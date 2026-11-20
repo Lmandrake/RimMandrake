@@ -362,7 +362,7 @@ HEAD_PX = 13.0
 
 
 def svg_of(files):
-    out = ['<svg viewBox="0 0 %d %d" class="map" role="img" aria-label="treemap of code files by review state">'
+    out = ['<svg viewBox="0 0 %d %d" class="map" data-path="" role="img" aria-label="treemap of code files by review state">'
            % (W, H),
            '<defs><pattern id="hatch" width="5" height="5" patternUnits="userSpaceOnUse" '
            'patternTransform="rotate(45)"><rect width="5" height="5" fill="#2a221a"/>'
@@ -375,8 +375,8 @@ def svg_of(files):
             tip = "%s\n%s lines · %s: %s" % (f["path"], f"{f['loc']:,}", f["state"], f["why"])
             if f["page_state"]:
                 tip += "\nboundary page: %s (%s)" % (f["page_state"], f["page_detail"] or "")
-            out.append('<rect x="%.1f" y="%.1f" width="%.1f" height="%.1f" class="s-%s"><title>%s</title></rect>'
-                       % (x, y, w, h, f["state"], html.escape(tip)))
+            out.append('<rect x="%.1f" y="%.1f" width="%.1f" height="%.1f" class="s-%s" data-p="%s"><title>%s</title></rect>'
+                       % (x, y, w, h, f["state"], html.escape(f["path"], quote=True), html.escape(tip)))
             if f["page_state"]:
                 out.append('<rect x="%.1f" y="%.1f" width="%.1f" height="%.1f" class="ring-%s"/>'
                            % (x + 0.75, y + 0.75, max(w - 1.5, 0), max(h - 1.5, 0), f["page_state"].lower()))
@@ -403,6 +403,127 @@ def svg_of(files):
     out += labels
     out.append("</svg>")
     return "".join(out)
+
+
+def tree_json(files):
+    """The collapsed tree for the click script: a leaf is [name, lines, state, page_state, why, page_detail]; a folder
+    is {"n": name, "s": lines, "k": [kids, largest first]}. Same tree and order as svg_of draws."""
+    def conv(node):
+        if "file" in node:
+            f = node["file"]
+            return [node["name"], f["loc"], f["state"], f["page_state"], f["why"], f["page_detail"]]
+        kids = sorted(node["kids"].values(), key=lambda k: -k["size"])
+        return {"n": node["name"], "s": node["size"], "k": [conv(k) for k in kids]}
+    return json.dumps(conv(tree_of(files)), ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c")
+
+
+CLICK_JS = r"""
+(function () {
+  var el = document.getElementById('tree');
+  var svg = document.querySelector('svg.map');
+  var crumb = document.getElementById('crumb');
+  if (!el || !svg || !crumb) { return; }
+  var T = JSON.parse(el.textContent), W = 1600, H = 1000, HEAD = 13;
+  var stack = [{node: T, path: '', name: 'all code'}];
+  function isLeaf(n) { return Array.isArray(n); }
+  function size(n) { return isLeaf(n) ? Math.max(n[1], 1) : n.s; }
+  function esc(t) { return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;'); }
+  function worst(row, side) {
+    var s = 0, mx = 0, mn = Infinity;
+    for (var i = 0; i < row.length; i++) { s += row[i]; mx = Math.max(mx, row[i]); mn = Math.min(mn, row[i]); }
+    return Math.max(mx * side * side / (s * s), (s * s) / (side * side * mn));
+  }
+  function squarify(sizes, x, y, w, h) {
+    var total = 0, i, j, k, rects = [];
+    for (i = 0; i < sizes.length; i++) { total += sizes[i]; }
+    if (total <= 0 || w <= 0 || h <= 0) { return sizes.map(function () { return [x, y, 0, 0]; }); }
+    var vals = sizes.map(function (v) { return v * w * h / total; });
+    i = 0;
+    while (i < vals.length) {
+      var side = Math.min(w, h), row = [vals[i]];
+      j = i + 1;
+      while (j < vals.length && worst(row.concat([vals[j]]), side) <= worst(row, side)) { row.push(vals[j]); j++; }
+      var s = row.reduce(function (a, b) { return a + b; }, 0);
+      if (w >= h) {
+        var cw = h ? s / h : 0, yy = y;
+        for (k = 0; k < row.length; k++) { var rh = cw ? row[k] / cw : 0; rects.push([x, yy, cw, rh]); yy += rh; }
+        x += cw; w -= cw;
+      } else {
+        var rh2 = w ? s / w : 0, xx = x;
+        for (k = 0; k < row.length; k++) { var rw = rh2 ? row[k] / rh2 : 0; rects.push([xx, y, rw, rh2]); xx += rw; }
+        y += rh2; h -= rh2;
+      }
+      i = j;
+    }
+    return rects;
+  }
+  function f1(v) { return v.toFixed(1); }
+  function draw() {
+    var out = [], labels = [];
+    function put(node, x, y, w, h, depth, path) {
+      if (isLeaf(node)) {
+        var p = path ? path + '/' + node[0] : node[0];
+        var tip = p + '\n' + node[1].toLocaleString('en-US') + ' lines \u00b7 ' + node[2] + ': ' + node[4];
+        if (node[3]) { tip += '\nboundary page: ' + node[3] + ' (' + (node[5] || '') + ')'; }
+        out.push('<rect x="' + f1(x) + '" y="' + f1(y) + '" width="' + f1(w) + '" height="' + f1(h) + '" class="s-' +
+          node[2] + '" data-p="' + esc(p) + '"><title>' + esc(tip) + '</title></rect>');
+        if (node[3]) {
+          out.push('<rect x="' + f1(x + 0.75) + '" y="' + f1(y + 0.75) + '" width="' + f1(Math.max(w - 1.5, 0)) +
+            '" height="' + f1(Math.max(h - 1.5, 0)) + '" class="ring-' + node[3].toLowerCase() + '"/>');
+        }
+        return;
+      }
+      var here = depth ? (path ? path + '/' + node.n : node.n) : path;
+      var pad = depth ? 1 : 0, top = 0;
+      if (depth) { out.push('<rect x="' + f1(x) + '" y="' + f1(y) + '" width="' + f1(w) + '" height="' + f1(h) +
+        '" class="dir"/>'); }
+      if (depth && depth <= 3 && w > 70 && h > 34) {
+        top = HEAD;
+        var name = node.n, room = Math.floor(w / 6.2);
+        if (name.length > room) { name = '\u2026' + name.slice(name.length - (room - 1)); }
+        labels.push('<text x="' + f1(x + 3) + '" y="' + f1(y + 10) + '" class="lab d' + depth + '">' + esc(name) +
+          '</text>');
+      }
+      var kids = node.k;
+      var rects = squarify(kids.map(size), x + pad, y + pad + top, w - 2 * pad, h - 2 * pad - top);
+      for (var i = 0; i < kids.length; i++) {
+        put(kids[i], rects[i][0], rects[i][1], rects[i][2], rects[i][3], depth + 1, here);
+      }
+    }
+    var cur = stack[stack.length - 1];
+    put(cur.node, 0, 0, W, H, 0, cur.path);
+    svg.innerHTML = svg.querySelector('defs').outerHTML + out.join('') + labels.join('');
+    svg.setAttribute('data-path', cur.path);
+    crumb.innerHTML = '';
+    stack.forEach(function (c, i) {
+      var a = document.createElement(i === stack.length - 1 && i > 0 ? 'b' : 'a');
+      a.textContent = c.name;
+      if (a.tagName === 'A') { a.setAttribute('data-i', String(i)); a.href = '#'; }
+      if (i) { crumb.appendChild(document.createTextNode(' / ')); }
+      crumb.appendChild(a);
+    });
+  }
+  svg.addEventListener('click', function (e) {
+    var p = e.target.getAttribute && e.target.getAttribute('data-p');
+    if (!p) { return; }
+    var cur = stack[stack.length - 1], kids = cur.node.k;
+    for (var i = 0; i < kids.length; i++) {
+      var kid = kids[i];
+      if (isLeaf(kid)) { continue; }
+      var kp = cur.path ? cur.path + '/' + kid.n : kid.n;
+      if (p.indexOf(kp + '/') === 0) { stack.push({node: kid, path: kp, name: kid.n}); draw(); return; }
+    }
+  });
+  crumb.addEventListener('click', function (e) {
+    var a = e.target;
+    if (!a.getAttribute || a.tagName !== 'A') { return; }
+    e.preventDefault();
+    stack = stack.slice(0, Number(a.getAttribute('data-i')) + 1);
+    draw();
+  });
+})();
+"""
 
 
 # ---- the page --------------------------------------------------------------------------------------------------------
@@ -438,6 +559,9 @@ td:first-child,th:first-child{text-align:left}
 .map .ring-unreadable{stroke:var(--yellow);stroke-dasharray:3 2}
 .map .lab{fill:#e6d6b8;font-size:10px;pointer-events:none;paint-order:stroke;stroke:#120f0c;stroke-width:2.5px}
 .map .lab.d1{font-size:11px;font-weight:600;fill:#f0d9a8}
+.map rect[data-p]{cursor:pointer}
+#crumb{margin:0 0 6px;color:var(--dim)}#crumb a{color:#e6be7e;text-decoration:none;cursor:pointer}
+#crumb a:hover{text-decoration:underline}#crumb b{color:var(--ink)}
 .legend span.it{margin-right:16px;white-space:nowrap;display:inline-block}
 code{color:#d8cdb8;font-size:12px}
 .cols{display:flex;gap:10px;flex-wrap:wrap}.cols>.panel{flex:1 1 380px}
@@ -517,7 +641,7 @@ def render(facts, native_out):
     b.append('<br><span class="it"><span class="sw ring-clean"></span>ring: boundary page CLEAN</span>'
              '<span class="it"><span class="sw ring-dirty"></span>ring: boundary page DIRTY</span>'
              '<span class="it"><span class="sw ring-unreadable"></span>ring: boundary page UNREADABLE</span>'
-             '<span class="it" style="color:var(--dim)">size = lines; hover a cell for its path and reason</span>')
+             '<span class="it" style="color:var(--dim)">size = lines; hover a cell for its path and reason; click a cell to open its folder, the breadcrumb to come back</span>')
     b.append('</div>')
     if tot:
         b.append('<div class="cols"><div class="panel"><table><tr><th>state</th><th>files</th><th>lines</th>'
@@ -543,7 +667,9 @@ def render(facts, native_out):
                      (" Pages that could not be read: %s." % e("; ".join(facts["blind_pages"])))
                      if facts["blind_pages"] else ""))
         b.append('</div>')
+        b.append('<div id="crumb"><b>all code</b></div>')
         b.append(svg_of(facts["files"]))
+        b.append('<script type="application/json" id="tree">%s</script>' % tree_json(facts["files"]))
         b.append('<div class="cols"><div class="panel"><b>By folder</b> (lines; files in brackets)<table><tr>'
                  '<th>folder</th><th>read-clean</th><th>dirty</th><th>never read</th><th>unmeasured</th></tr>')
         for key, g in by_folder(facts["files"])[:30]:
@@ -560,7 +686,7 @@ def render(facts, native_out):
     b.append('<p class="sub">Page: <code>%s%s%s</code>. Facts: <code>%s</code> beside it. Promises: '
              '<code>design/specs/2026-11-19-codebase-now/boundary.md</code>.</p>'
              % (e(native_out), sep, PAGE_NAME, FACTS_NAME))
-    b.append("<script>%s</script></body></html>\n" % STALE_JS)
+    b.append("<script>%s</script><script>%s</script></body></html>\n" % (STALE_JS, CLICK_JS))
     return "".join(b)
 
 

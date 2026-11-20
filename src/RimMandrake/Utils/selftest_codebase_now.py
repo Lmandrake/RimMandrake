@@ -7,6 +7,7 @@ this repo's own review record or the real page on D:\\.
     python3 src/RimMandrake/Utils/selftest_codebase_now.py      exit 0 all pass, 1 a test failed
 """
 import hashlib
+from html import unescape as html_unescape
 import json
 import os
 import re
@@ -285,12 +286,68 @@ def t_no_network_no_model():
         assert bad not in src, "codebase_now.py names %s" % bad
 
 
+def _chrome():
+    for c in (os.environ.get("CHROME_EXE"), "/mnt/c/Program Files/Google/Chrome/Application/chrome.exe",
+              "/mnt/c/Program Files (x86)/Google/Chrome/Application/chrome.exe"):
+        if c and os.path.exists(c):
+            return c
+    raise AssertionError("UNMEASURED: no Chrome binary, so a click on the treemap cannot be run")
+
+
+def t_click_a_cell_drills_in():
+    """A click on a treemap cell descends one folder; the breadcrumb comes back. Run in real headless Chrome."""
+    root = repo()
+    _write(root, "src/sub/z1.py", "z = 1\nz = 2\n")
+    _write(root, "src/sub/z2.py", "z = 3\n")
+    _sh(root, "add", "-A")
+    _sh(root, "-c", "user.name=t", "-c", "user.email=t@t", "commit", "-q", "-m", "deeper")
+    rc, facts, out = build(root)
+    html = page(out)
+    probe = """<script>
+var R = [];
+function st() { var s = document.querySelector('svg.map');
+  return {path: s.getAttribute('data-path'), n: s.querySelectorAll('rect').length}; }
+function cell(p) { var r = document.querySelectorAll('svg.map rect[data-p]');
+  for (var i = 0; i < r.length; i++) { if (r[i].getAttribute('data-p') === p) { return r[i]; } } return null; }
+function click(e) { e.dispatchEvent(new MouseEvent('click', {bubbles: true, cancelable: true})); }
+try {
+  R.push(st());
+  click(cell('src/sub/z1.py')); R.push(st());
+  click(cell('src/sub/z1.py')); R.push(st());
+  var c = document.querySelector('#crumb a'); click(c); R.push(st());
+} catch (e) { R.push({err: String(e)}); }
+document.body.insertAdjacentHTML('beforeend', '<pre id="probe">' + JSON.stringify(R) + '</pre>');
+</script>"""
+    scratch = "/mnt/d/ClaudeWork/rimmandrake/scratch/codebase_now_click"
+    os.makedirs(scratch, exist_ok=True)
+    target = os.path.join(scratch, "probe.html")
+    with open(target, "w", encoding="utf-8") as f:
+        f.write(html.replace("</body>", probe + "</body>"))
+    win = subprocess.run(["wslpath", "-w", target], capture_output=True, text=True).stdout.strip()
+    prof = subprocess.run(["wslpath", "-w", os.path.join(scratch, "profile")], capture_output=True,
+                          text=True).stdout.strip()
+    r = subprocess.run([_chrome(), "--headless=new", "--disable-gpu", "--no-first-run", "--user-data-dir=" + prof,
+                        "--virtual-time-budget=4000", "--dump-dom", "file:///" + win.replace("\\", "/")],
+                       capture_output=True, timeout=120)
+    dom = r.stdout.decode("utf-8", "replace")
+    m = re.search(r'<pre id="probe">(\[.*?)</pre>', dom, re.S)
+    assert m, "the probe script did not run in Chrome: %s" % r.stderr.decode("utf-8", "replace")[-300:]
+    got = json.loads(html_unescape(m.group(1)))
+    assert not any("err" in g for g in got), got
+    start, one, two, back = got
+    assert start["path"] == "", got
+    assert one["path"] == "src" and one["n"] != start["n"], "first click did not drill in: %s" % got
+    assert two["path"] == "src/sub" and two["n"] != one["n"], "second click did not drill in: %s" % got
+    assert back["path"] == "" and back["n"] == start["n"], "breadcrumb did not come back: %s" % got
+    print("  click read %d states: %s" % (len(got), got))
+
+
 def main():
     tests = [t_every_file_has_one_state, t_read_clean_is_hash_equal, t_unreadable_file_is_unmeasured,
              t_evidence_trees_excluded_and_said, t_flagged_unmeasured_without_source,
              t_page_state_where_a_page_names_it, t_tests_cache_reused_only_when_unchanged,
              t_could_not_look_says_unmeasured, t_stale_clone_says_unmeasured, t_stale_page_says_so,
-             t_whole_page_or_none, t_no_network_no_model]
+             t_whole_page_or_none, t_no_network_no_model, t_click_a_cell_drills_in]
     failed = 0
     for t in tests:
         try:

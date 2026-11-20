@@ -67,6 +67,9 @@ answers one question only: which code files a cold read found clean, and which c
   the page's modification time is the reading `rm-deadman` checks. Tested by `t_whole_page_or_none`.
 - **no-network-no-model.** The page loads nothing from the network and the program calls no model. Tested by
   `t_no_network_no_model`.
+- **click-a-cell-drills-in.** A click on a treemap cell opens the folder of that cell one level down (the tree is
+  embedded in the page; no network), and a click on the breadcrumb comes back. Tested by `t_click_a_cell_drills_in`,
+  which clicks in real headless Chrome (UNMEASURED where no Chrome is found).
 
 ## LIMITS
 
