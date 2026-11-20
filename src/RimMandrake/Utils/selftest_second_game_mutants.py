@@ -79,7 +79,7 @@ MUTANTS = [
     ("paths_ignore_the_name", GP, 'not in ("", "a"):', 'in ("never",):', T_GI, "paths"),
     ("paths_import_on_nothing_set", GP, 'if os.environ.get("RM_GAME_INSTANCE", "").strip().lower() not in ("", "a"):\n    import sys', 'import game_instance as _touch\nif os.environ.get("RM_GAME_INSTANCE", "").strip().lower() not in ("", "a"):\n    import sys', T_GI, "paths"),
     ("rw_pid_is_always_game_a", RW, 'pid_of() { python3 "$GI" pid; }', 'pid_of() { python3 "$GI" pid a; }', T_GI, "rw_game"),
-    ("rw_kills_by_name", RW, 'python3 "$GI" stop "$pid" >/dev/null\n', 'taskkill.exe /IM RimWorldWin64.exe >/dev/null\n', T_GI, "rw_game"),
+    ("rw_kills_by_name", RW, 'out=$(python3 "$GI" stop "$pid" 2>&1); rc=$?\n', 'out=$(taskkill.exe /IM RimWorldWin64.exe 2>&1); rc=$?\n', T_GI, "rw_game"),
     ("rw_keeps_game_a_folders", RW, 'eval "$_env"; NAMED=', 'NAMED=', T_GI, "rw_game"),
     ("rw_up_uses_game_a_route", RW, '    if [ -n "$NAMED" ]; then python3 "$GI" launch ${1:+"$1"}; return $?; fi\n', '', T_GI, "rw_game"),
     ("rw_init_uses_game_a_route", RW, '    if [ -n "$NAMED" ]; then python3 "$GI" prepare; return $?; fi\n', '', T_GI, "rw_game"),
@@ -124,7 +124,7 @@ MUTANTS = [
     ("guard_call_ignores_the_game", CL, 'with _cl.redirect_stdout(buf), host_guard.instance_env(inst):', 'with _cl.redirect_stdout(buf):', T_IK, ""),
     ("host_no_instance_suffix", HG_, 'return "%s.%s" % (machine, inst) if machine and inst not in ("", "a") else machine', 'return machine', T_IK, ""),
     ("remote_loses_the_game", HG_, '"RM_GAME_INSTANCE=%s " % inst if inst else ""', '""', T_IK, ""),
-    ("remote_trusts_an_old_clone", HG_, "if inst else \"\"\n    cmd =", "if False else \"\"\n    cmd =", T_IK, ""),
+    ("remote_trusts_an_old_clone", HG_, "% (RUNNER_DIR, machine)) if inst else \"\"", "% (RUNNER_DIR, machine)) if False else \"\"", T_IK, ""),
     ("instance_env_not_restored", HG_, '        for k, v in saved.items():\n            if v is None:\n                os.environ.pop(k, None)\n            else:\n                os.environ[k] = v\n', '        pass\n', T_IK, ""),
     ("lock_ignores_the_name", DL, 'if (os.environ.get("RM_GAME_INSTANCE") or "").strip().lower() not in ("", "a"):\n        import game_instance ', 'if False:\n        import game_instance ', T_IK, ""),
 ]

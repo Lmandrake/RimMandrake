@@ -260,8 +260,16 @@ class World:
         env = dict(self.env, **extra)
         if instance:
             env["RM_GAME_INSTANCE"] = instance
-        return subprocess.run(argv, env=env, capture_output=True, text=True, timeout=timeout, cwd=cwd or self.tmp,
-                              stdin=subprocess.DEVNULL)
+        # A command that outlasts its timeout is a failed check (rc 124, the cause in stderr), not a crash of the selftest:
+        # a planted fault that makes `rw_game.sh up` hang must end on a FAIL line, the only verdict that counts as a kill.
+        try:
+            return subprocess.run(argv, env=env, capture_output=True, text=True, timeout=timeout, cwd=cwd or self.tmp,
+                                  stdin=subprocess.DEVNULL)
+        except subprocess.TimeoutExpired as e:
+            def _text(b):
+                return b.decode("utf-8", "replace") if isinstance(b, bytes) else (b or "")
+            return subprocess.CompletedProcess(argv, 124, _text(e.stdout),
+                                               _text(e.stderr) + "timed out after %s s" % timeout)
 
     def gi(self, *args, instance=None, **extra):
         return self.run([sys.executable, os.path.join(self.repo, "src/RimMandrake/Utils/game_instance.py")] + list(args),
