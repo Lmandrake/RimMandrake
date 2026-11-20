@@ -32,7 +32,7 @@ A small `./pages` command (and, if he wants it, a second Startup shortcut) runs
 `chrome.exe --new-window <url> <url> <url>` with the HTML pages. Each page reloads itself.
 - **To build:** the opener, about 30 lines. Also a self-reload line in `maturation_now.py`. FLEET_NOW in a tab is
   `FLEET_NOW.html`, which `fleet_now.py` makes from `RELENTLESS_NOW.md` (built; `STATUS_BOARD.html` is the dead
-  Relentless board and is not a tab).
+  board of the retired Relentless era and is not a tab).
 - **Buys:** the cheapest path. The tabs are real browser tabs (Ctrl+Tab), and he can zoom and search each one.
 - **Costs:** a closed tab stays closed until the next `./pages`. Chrome puts the tabs in his normal profile, among his
   own tabs.
