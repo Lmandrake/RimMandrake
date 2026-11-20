@@ -1,13 +1,13 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":14041,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=28363cf1984d18c9e68609afd801754497955492af86c9476258e086aa514366 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":14041,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=9fafa8d37fd3a8dee19830b0db512feff0e1f6aa71ef6cd9b03fa5737596af20 -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage offline_build · 1342 events in 11 shards · reducer 1
-holder lease run-1795161691, token 8, last active 2026-11-20T08:01:50Z
+version 0.1.0 · stage offline_build · 1344 events in 12 shards · reducer 1
+holder lease run-1795161691, token 8, last active 2026-11-20T08:11:51Z
 holder session 06d43a37-734a-427c-b264-59be304e6bdf, context 221639 of ceiling 400000
 
-## Last checkpoint (HOLDER.run-1795160350, 2026-11-20T07:55:00Z)
-- done: Visit 2 read; 13 road-back items filed caused by RIMMANDRAKE_ROUTE_FLOWWORKS_VISIT_TWO_FAILURES_BACK (3 offline, 10 game-up); FlowWorks in_game -> offline_build
-- next: Fix the 3 offline items; then send the record back to in_game with --game-only for the 10 live items
-- ruled out: ProofResetRect is not gone: big_pit_scene calls it on RM_SubmergeDraw; sc_source_pays fault is the row, not the mod
+## Last checkpoint (HOLDER.run-1795161691, 2026-11-20T08:11:51Z)
+- done: RIMMANDRAKE_POINT_FLOWWORKS_GEYSER_CHECK_AT_VISIT_ONE_RUNNER closed at f2c6a84eee53: scene_geyser_tub reads the pool label and soak hediffs (selftest_geyser_tub_scene.py green, draft red); sc_geyser_tub UNRUN for Stage 6
+- next: Fix the other 2 offline road-back items, then send the record back to in_game with --game-only
+- ruled out: a test-table command change: the certificate empty-game check runs STAGE3_SCENES entries, so the scene was rewired in place and the table command kept
 
 ## Open findings (178)
 (claimed fixes, awaiting a judge, on one line each with the oldest 127 open findings, named without their 'finding:': `modledger.py show --mod FlowWorks finding:<NAME>`)
@@ -490,6 +490,6 @@ spend recorded: USD 78.94, 45401435 tokens
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
 - notes: 11, never printed here (`modledger.py find --mod FlowWorks <words>`)
-- the full history: 1342 events (views/history.md; never read whole)
+- the full history: 1344 events (views/history.md; never read whole)
 
-cursor: t=2026-11-20T08:01:55Z.1795161715431267680 (modledger.py since --mod FlowWorks t=2026-11-20T08:01:55Z.1795161715431267680 prints what changed after this packet)
+cursor: t=2026-11-20T08:11:51Z.1795162311768841302 (modledger.py since --mod FlowWorks t=2026-11-20T08:11:51Z.1795162311768841302 prints what changed after this packet)
