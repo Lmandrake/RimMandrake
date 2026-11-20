@@ -9034,3 +9034,4 @@
 {"seat":"RUNNER","event":"live","id":"OPS_MATURATION_MOD_PAUSED_FYEB","result":"broken","detail":"Ops alarm MATURATION_PAUSED: maturation.paused = 1 mods (MEASURED), line > 0","ts":"2026-11-20T03:13:35Z","tsn":1795144415185908889}
 {"seat":"RUNNER","event":"raise","id":"OPS_MATURATION_MOD_PAUSED_FYEB","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-20T03:13:41Z","tsn":1795144421954646519}
 {"seat":"RUNNER","event":"live","id":"OPS_MATURATION_MOD_PAUSED_FYEB","result":"broken","detail":"Ops alarm MATURATION_PAUSED: maturation.paused = 1 mods (MEASURED), line > 0","ts":"2026-11-20T03:14:53Z","tsn":1795144493262184319}
+{"seat":"RUNNER","event":"live","id":"OPS_MATURATION_MOD_PAUSED_FYEB","result":"broken","detail":"Ops alarm MATURATION_PAUSED: maturation.paused = 1 mods (MEASURED), line > 0","ts":"2026-11-20T03:17:39Z","tsn":1795144659783852144}
