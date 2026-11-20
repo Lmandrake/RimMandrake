@@ -116,6 +116,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
 TexPathChecks.Run();           // RIMMANDRAKE_TRACE_GSS_ILLEGAL_PATH_ONLY_ON_FIRST_START: TexPathChecks.cs + ../Core/TexPath.cs
                         LegacyNameChecks.Run();        // rename from Messy Conduit (2026-10-05): saved type names + settings files: LegacyNameChecks.cs + ../Core/LegacyName.cs
             DeterminismChecks.Run(Check, Path.Combine(AppContext.BaseDirectory, "matrix_det_scenes.json"));   // lane F: fresh == incremental
+            StyledFreshChecks.Run();       // RIMMANDRAKE_MEND_SLACK_STYLED_RUNS_FRESH_BUILD_DIVERGES: live == fresh over every run look
             GptReadFixChecks.Run();        // GPT source read 2026-10-06 fixes: GptReadFixChecks.cs
             TheftChecks.Run();             // POWER_THEFT_BUILD_SLOW_GOODWILL_LEAK (owner 2026-10-10): TheftChecks.cs
             TapWindowChecks.Run();         // GSS_POWER_THEFT_FIX_WRONG_VICTIM: TapWindowChecks.cs

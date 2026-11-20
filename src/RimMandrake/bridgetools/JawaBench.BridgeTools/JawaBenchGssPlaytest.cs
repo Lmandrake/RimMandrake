@@ -640,13 +640,23 @@ namespace JawaBench.BridgeTools
 
         private static IEnumerable<PWait> GFrames(int n) { for (int i = 0; i < n; i++) yield return null; }
 
+        /// <summary>A build-menu row that names one of the four looks ("Industrial", "Scrapper (current) - default", "Modern: orange"),
+        /// not a row another mod adds to every float menu.</summary>
+        private static bool GLookRow(string label)
+        {
+            if (label == null) return false;
+            string l = label.Replace(" (current)", "").Replace(" - default", "");
+            return GAer.AerialStyles.Looks.Any(k => l == k || l.StartsWith(k + ": ", StringComparison.Ordinal));
+        }
+
         /// <summary>Frames until the cord component has laid everything it planned (it lays over frames, on a worker and in slices: on a
         /// 316-mod list four frames were not enough, and the walk compared a half-laid map with a fresh build), at most
         /// <paramref name="most"/>. The compare after it reports what was still pending.</summary>
         private static IEnumerable<PWait> GSettle(Map m, int most = 240)
         {
             var comp = m.GetComponent<GSS.RM_MapComponent_CordGraph>();
-            for (int i = 0; i < most && comp != null && (comp.LastPending > 0 || i < 4); i++) yield return null;
+            // a loaded map's component has built nothing yet and reads LastPending 0: wait for its first build too
+            for (int i = 0; i < most && comp != null && (comp.LastPending > 0 || comp.Builds == 0 || i < 4); i++) yield return null;
         }
 
         /// <summary>The first free, undrafted, hauling-capable colonist (also used by FlowWorks' hose_carry).</summary>
@@ -1013,12 +1023,14 @@ namespace JawaBench.BridgeTools
                     var des = new Designator_Build(d);
                     des.ProcessInput(null);
                     List<FloatMenuOption> dopts = GTakeFloatMenu();
-                    FloatMenuOption pick = dopts?.FirstOrDefault(o => !o.Label.Contains("(current)"));
+                    // a look row of ours, not current: another mod adds a row to every float menu ("Search Option" on the full list), and
+                    // picking it changed nothing (visit 2: Industrial -> Industrial)
+                    FloatMenuOption pick = dopts?.FirstOrDefault(o => GLookRow(o.Label) && !o.Label.Contains("(current)"));
                     ThingStyleDef before = des.ThingStyleDefNonPreceptSource;
                     pick?.action?.Invoke();
                     ThingStyleDef after = des.ThingStyleDefNonPreceptSource;
                     Check("build " + dn + ": the button opens a look menu and a pick changes the designator's style",
-                        dopts != null && dopts.Count >= 2 && pick != null && after != before,
+                        dopts != null && dopts.Count(o => GLookRow(o.Label)) >= 2 && pick != null && after != before,
                         (dopts == null ? "no menu" : string.Join("/", dopts.Select(o => o.Label))) + " style " + before?.defName + "->" + after?.defName);
                     Find.DesignatorManager.Deselect();
                 }
@@ -1093,12 +1105,13 @@ namespace JawaBench.BridgeTools
         /// GSS playtest runs. closure_scan.py (run by build.py) refuses a build that puts such a field back.</summary>
         private static class GssLambdaHome
         {
-            /// <summary>The live component's laid cords against a fresh builder on a fresh snapshot (GimmeSomeSlackProbe "fresh").</summary>
+            /// <summary>The live component's laid cords against a fresh builder on a fresh snapshot, built with production's map inputs
+            /// (RM_MapComponent_CordGraph.FreshBuild, as GimmeSomeSlackProbe "fresh"). This build had its own copy with bare settings:
+            /// no run looks, no tap ids, so every styled review station read as diverged (RIMMANDRAKE_MEND_SLACK_STYLED_RUNS_FRESH_BUILD_DIVERGES).</summary>
             internal static Dictionary<string, object> Fresh(Map m)
             {
                 var comp = m.GetComponent<GSS.RM_MapComponent_CordGraph>();
-                GSlack.CordWorld w = GSS.CordWorldAdapter.Snapshot(m);
-                List<GCore.LaidPiece> fresh = new GCore.CordBuilder().Build(w, GSS.GimmeSomeSlackSettings.BuildOptions(), cc => GSS.CordWorldAdapter.IsLive(m, cc));
+                List<GCore.LaidPiece> fresh = GSS.RM_MapComponent_CordGraph.FreshBuild(m);
                 var cur = comp.Pieces.Where(p => p.EndA != null).GroupBy(p => p.Key).ToDictionary(g => g.Key, g => g.First().GeometryHash());
                 int same = 0, diff = 0, missing = 0;
                 var diffKeys = new List<string>();
@@ -1108,7 +1121,11 @@ namespace JawaBench.BridgeTools
                     else if (h == p.GeometryHash()) same++;
                     else { diff++; if (diffKeys.Count < 4) diffKeys.Add("differs " + p.Key); }
                 }
-                int extra = cur.Keys.Count(k => !fresh.Any(p => p.Key == k));
+                var freshKeys = new HashSet<string>(fresh.Select(p => p.Key));
+                List<string> liveOnly = cur.Keys.Where(k => !freshKeys.Contains(k)).ToList();
+                int extra = liveOnly.Count;
+                // both sides of a divergence: visit 2 named only the fresh side, and the live key it should be read beside was never shown
+                diffKeys.AddRange(liveOnly.Take(4).Select(k => "extra " + k));
                 return PD("edges", fresh.Count(p => p.EndA != null), "same", same, "different", diff, "missing", missing, "extraInLive", extra,
                     "equal", diff == 0 && missing == 0 && extra == 0, "diffKeys", diffKeys, "builds", comp.Builds, "planned", comp.LastPlanned, "reused", comp.LastReused);
             }
@@ -1253,7 +1270,12 @@ namespace JawaBench.BridgeTools
             if (offset < 0 || offset > 2) { c.Invalid("game at tick " + TicksGameSafe() + ", not within 0-2 ticks of the checkpoint's " + ticksAtSave + " - load " + Val("save") + " first"); yield break; }
             int[] rr = Val("rect").Split(' ').Select(s => int.Parse(s, CultureInfo.InvariantCulture)).ToArray();
             var r = new CellRect(rr[0], rr[1], rr[2], rr[3]);
-            foreach (PWait x in GFrames(6)) yield return x;           // let the cord layer rebuild from the loaded map
+            // let the cord layer rebuild from the loaded map: until it has laid everything it planned. Six fixed frames read a half-laid
+            // 170-edge review map (116 edges) on the full list and "lost" a line that was still pending (visit 2)
+            var lcomp = c.map.GetComponent<GSS.RM_MapComponent_CordGraph>();
+            int settleFrames = 0;
+            foreach (PWait x in GSettle(c.map)) { settleFrames++; yield return x; }
+            c.ev["settle"] = PD("frames", settleFrames, "most", 240, "pending", lcomp?.LastPending, "builds", lcomp?.Builds);
             var s0 = cp.Where(l => l.StartsWith("s0 ")).Select(l => l.Substring(3)).ToList();
             var l0 = GSnapshot(c.map, r.ExpandedBy(2).ClipInsideMap(c.map));
             var t0 = s0.Select(GTopo).ToList();

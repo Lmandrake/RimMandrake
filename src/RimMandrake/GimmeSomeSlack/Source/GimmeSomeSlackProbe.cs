@@ -366,18 +366,7 @@ namespace RimMandrake.GimmeSomeSlack
         }
 
         /// <summary>A from-scratch build on the live map with the inputs production builds with (Fresh, SameFrame).</summary>
-        private static List<LaidPiece> FreshPieces(Map map)
-        {
-            CordWorld w = CordWorldAdapter.Snapshot(map);
-            var b = new CordBuilder();
-            // GPT review 2026-10-08 #24: the same inputs production builds with (its per-cell PileAt), and stale extras counted
-            BuildOptions opt = GimmeSomeSlackSettings.BuildOptions();
-            opt.StraightPlugIds = CordWorldAdapter.TapIds(map);
-            Dictionary<Cell, Aerial.CellStyle> styled = Aerial.ConduitStylePicker.CellStyles(map);
-            opt.PileAt = c => styled.TryGetValue(c, out Aerial.CellStyle cs) ? (cs.Look == "Modern" ? PileArt.Strips : PileArt.Junctions) : (PileArt?)null;
-            opt.PlugBootAt = c => styled.TryGetValue(c, out Aerial.CellStyle cs) ? CordBuilder.PlugBootU(cs.Look) : (double?)null;
-            return b.Build(w, opt, c => CordWorldAdapter.IsLive(map, c));
-        }
+        private static List<LaidPiece> FreshPieces(Map map) => RM_MapComponent_CordGraph.FreshBuild(map);
 
         /// <summary>Order-free fingerprint of a set of laid pieces (key + geometry hash of every cord edge).</summary>
         private static string SceneHash(IEnumerable<LaidPiece> pieces)
@@ -561,9 +550,7 @@ namespace RimMandrake.GimmeSomeSlack
         private static string WorldDump(Map map, RM_MapComponent_CordGraph comp, string name)
         {
             CordWorld w = CordWorldAdapter.Snapshot(map);
-            BuildOptions opt = GimmeSomeSlackSettings.BuildOptions();
-            opt.StraightPlugIds = CordWorldAdapter.TapIds(map);
-            Dictionary<Cell, Aerial.CellStyle> styled = Aerial.ConduitStylePicker.CellStyles(map);
+            BuildOptions opt = RM_MapComponent_CordGraph.MapBuildOptions(map, out Dictionary<Cell, Aerial.CellStyle> styled, out _, out _);
             var inv = CultureInfo.InvariantCulture;
             string L(IEnumerable<Cell> cs) => "[" + string.Join(",", cs.Select(c => "[" + c.X + "," + c.Z + "]")) + "]";
             var conduit = w.ConduitCells().ToList();
@@ -764,9 +751,7 @@ namespace RimMandrake.GimmeSomeSlack
             bool In(V2 q) => q.X >= a[0] && q.X <= a[0] + a[2] && q.Z >= a[1] && q.Z <= a[1] + a[3];
             List<LaidPiece> ps = comp.Pieces.ToList();
             // each run's plug boot follows its look, as the component's own build reads it
-            Dictionary<Cell, Aerial.CellStyle> st = Aerial.ConduitStylePicker.CellStyles(comp.map);
-            BuildOptions opt = GimmeSomeSlackSettings.BuildOptions();
-            opt.PlugBootAt = c => st.TryGetValue(c, out Aerial.CellStyle cs) ? CordBuilder.PlugBootU(cs.Look) : (double?)null;
+            BuildOptions opt = RM_MapComponent_CordGraph.MapBuildOptions(comp.map);
             StubJoins.JoinRead j = StubJoins.Joins(comp.LastWorld, ps, opt, "live", In);
             StubJoins.LiveRead l = StubJoins.LiveEnds(ps, "live", keep: In);
             CordEndAudit.EndRead e = CordEndAudit.Ends(comp.Graph, ps, "live", In);

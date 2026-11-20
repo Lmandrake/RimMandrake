@@ -192,6 +192,16 @@ namespace RimMandrake.GimmeSomeSlack.Core
         public double PlugBoot = CordBuilder.ExtPlugBootU;
         internal Func<Cell, double?> PlugBootAt;
         internal double PlugBootFor(Cell c) => PlugBootAt?.Invoke(c) ?? PlugBoot;
+        /// <summary>Stage 2: each run's pile art and plug boot follow the look the run stores at a cell (strips in Modern,
+        /// junction boxes otherwise; null = no stored look, the default's). The one recipe for every build of a map, the
+        /// component's and every from-scratch build that is compared with it: a fresh build without it keyed every styled
+        /// run by the default look and read a whole review station as diverged (RIMMANDRAKE_MEND_SLACK_STYLED_RUNS_FRESH_BUILD_DIVERGES).</summary>
+        internal BuildOptions UseLooks(Func<Cell, string> lookAt)
+        {
+            PileAt = c => lookAt(c) is string l ? (l == "Modern" ? PileArt.Strips : PileArt.Junctions) : (PileArt?)null;
+            PlugBootAt = c => lookAt(c) is string l ? CordBuilder.PlugBootU(l) : (double?)null;
+            return this;
+        }
         /// <summary>Dive-through (owner 2026-10-06: cords dive through walls and water; setting, default on): a lead with no
         /// walkable route dives at the barrier it meets and resurfaces beyond it, instead of being drawn unroutable.</summary>
         public bool DiveThrough = true;

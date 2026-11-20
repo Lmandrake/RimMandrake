@@ -267,6 +267,33 @@ namespace RimMandrake.GimmeSomeSlack
         /// frame's build: 0 unless a worker lay threw).</summary>
         public int LastLanded, LastLaidOnCaller;
 
+        /// <summary>This map's build inputs, the one recipe: the settings, the tap clamps' ids (their plugs go straight in), and
+        /// each run's stored look (stage 2: pile art and plug boot by look, Core <see cref="BuildOptions.UseLooks"/>). Production
+        /// builds with it and so does every from-scratch build compared with production (<see cref="FreshBuild"/>): the JawaBench
+        /// playtest's copy built with bare settings and read every styled review station as diverged
+        /// (RIMMANDRAKE_MEND_SLACK_STYLED_RUNS_FRESH_BUILD_DIVERGES; GSS_FRESH_BUILD_ORACLE_FIX_TAP_CLAMPS was the same drift).</summary>
+        internal static BuildOptions MapBuildOptions(Map map, out Dictionary<Cell, Aerial.CellStyle> styled, out double tapIdsMs, out double stylesMs)
+        {
+            BuildOptions opt = GimmeSomeSlackSettings.BuildOptions();
+            long tTap = System.Diagnostics.Stopwatch.GetTimestamp();
+            opt.StraightPlugIds = CordWorldAdapter.TapIds(map);
+            long tStyle = System.Diagnostics.Stopwatch.GetTimestamp();
+            Dictionary<Cell, Aerial.CellStyle> st = styled = Aerial.ConduitStylePicker.CellStyles(map);
+            tapIdsMs = (tStyle - tTap) * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
+            stylesMs = (System.Diagnostics.Stopwatch.GetTimestamp() - tStyle) * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
+            return opt.UseLooks(c => st.TryGetValue(c, out Aerial.CellStyle cs) ? cs.Look : null);
+        }
+
+        internal static BuildOptions MapBuildOptions(Map map) => MapBuildOptions(map, out _, out _, out _);
+
+        /// <summary>A from-scratch build of this map's cords with production's inputs (a whole-map snapshot, MapBuildOptions, the
+        /// live test): the oracle the live pieces are compared with (GimmeSomeSlackProbe fresh/sameframe, the JawaBench playtest).</summary>
+        internal static List<LaidPiece> FreshBuild(Map map)
+        {
+            CordWorld w = CordWorldAdapter.Snapshot(map);
+            return new CordBuilder().Build(w, MapBuildOptions(map), c => CordWorldAdapter.IsLive(map, c));
+        }
+
         public void Rebuild() => Rebuild(true);
 
         public void Rebuild(bool complete)
@@ -300,18 +327,8 @@ namespace RimMandrake.GimmeSomeSlack
                 LastSnapBaseMs = Snap.BaseMs;
                 LastSnapCloneMs = Snap.CloneMs;
                 LastSnapPowerMs = Snap.PowerMs;
-                BuildOptions opt = GimmeSomeSlackSettings.BuildOptions();
-                long tTap = System.Diagnostics.Stopwatch.GetTimestamp();
-                opt.StraightPlugIds = CordWorldAdapter.TapIds(map);
-                long tStyle = System.Diagnostics.Stopwatch.GetTimestamp();
-                styled = Aerial.ConduitStylePicker.CellStyles(map);
+                BuildOptions opt = MapBuildOptions(map, out styled, out LastTapIdsMs, out LastStylesMs);
                 long tBuild = System.Diagnostics.Stopwatch.GetTimestamp();
-                LastTapIdsMs = (tStyle - tTap) * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
-                LastStylesMs = (tBuild - tStyle) * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
-                Dictionary<Cell, Aerial.CellStyle> st = styled;
-                // stage 2: each run's pile art follows ITS look (strips in Modern, junction boxes otherwise); unstyled = default
-                opt.PileAt = c => st.TryGetValue(c, out Aerial.CellStyle cs) ? (cs.Look == "Modern" ? PileArt.Strips : PileArt.Junctions) : (PileArt?)null;
-                opt.PlugBootAt = c => st.TryGetValue(c, out Aerial.CellStyle cs) ? CordBuilder.PlugBootU(cs.Look) : (double?)null;
                 // at least 1 ms of lay time: the builder always lays one edge, so a slow snapshot cannot stall the cords
                 opt.LayBudgetMs = complete ? 0 : Math.Max(1.0, FrameBudgetMs - sw.Elapsed.TotalMilliseconds);
                 // GSS_SLICE_FIX_EDGE_OVERSHOOTS_BUDGET: a frame's build lays no edge itself (one edge alone cost up to 28 ms

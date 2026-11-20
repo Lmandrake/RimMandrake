@@ -81,6 +81,7 @@
     <Compile Include="PileLookChecks.cs" />
     <Compile Include="LegacyNameChecks.cs" />
     <Compile Include="DeterminismChecks.cs" />
+    <Compile Include="StyledFreshChecks.cs" />
     <Compile Include="ReviewRound1Checks.cs" />
     <Compile Include="ReviewRound3Checks.cs" />
     <Compile Include="ReviewRound5Checks.cs" />

@@ -5,7 +5,10 @@
       grouping, AerialLineProfiles.RangeFor) -- the same helper the real "Auto-link selected" gizmo uses -- never the power
       AerialSettings.Range for every kind.
   GSS_FRESH_BUILD_ORACLE_FIX_TAP_CLAMPS   FreshPieces (the fresh/sameframe oracle) must set opt.StraightPlugIds from
-      CordWorldAdapter.TapIds(map) before Build, exactly as production Rebuild does.
+      CordWorldAdapter.TapIds(map) before Build, exactly as production Rebuild does. Since
+      RIMMANDRAKE_MEND_SLACK_STYLED_RUNS_FRESH_BUILD_DIVERGES both take their options from ONE recipe,
+      RM_MapComponent_CordGraph.MapBuildOptions (FreshPieces -> FreshBuild -> MapBuildOptions; Rebuild -> MapBuildOptions),
+      so the guard reads the tap ids there and both callers' use of it.
   C#4 owner-section invalidation queues a GSS layer regeneration after piece publication, even offscreen.
   D#2 retired fallen lays release their WhipCursors and native tail meshes.
 
@@ -45,13 +48,19 @@ def check_anchor(anchor):
 
 def check_fresh(probe, prod):
     out = []
-    fp = body(probe, "private static List<LaidPiece> FreshPieces(Map map)")
-    a = fp.find("opt.StraightPlugIds = CordWorldAdapter.TapIds(map)")
-    b = fp.find("b.Build(")
+    if "private static List<LaidPiece> FreshPieces(Map map) => RM_MapComponent_CordGraph.FreshBuild(map);" not in probe:
+        out.append("FreshPieces is not RM_MapComponent_CordGraph.FreshBuild (the one fresh build on production's inputs)")
+    mbo = body(prod, "internal static BuildOptions MapBuildOptions(Map map, out")
+    fb = body(prod, "internal static List<LaidPiece> FreshBuild(Map map)")
+    reb = body(prod, "public void Rebuild(bool complete)")
+    a = mbo.find("opt.StraightPlugIds = CordWorldAdapter.TapIds(map)")
+    b = mbo.find("return opt")
     if a < 0 or b < 0 or a > b:
-        out.append("FreshPieces does not set StraightPlugIds = TapIds(map) before Build")
-    if "opt.StraightPlugIds = CordWorldAdapter.TapIds(map)" not in prod:
-        out.append("production Rebuild no longer sets StraightPlugIds (guard reference lost)")
+        out.append("MapBuildOptions does not set StraightPlugIds = TapIds(map) before it returns the options")
+    if "MapBuildOptions(map)" not in fb or ".Build(" not in fb:
+        out.append("FreshBuild does not build on MapBuildOptions")
+    if "MapBuildOptions(map, out" not in reb:
+        out.append("production Rebuild no longer builds on MapBuildOptions (guard reference lost)")
     return out
 
 
@@ -95,11 +104,10 @@ def main():
     # can-fail: the original defects restored in memory must each be caught
     m1 = cprobe.replace("CompAerialAnchor.AutoLinkPairs(mine)",
                         "AerialMath.MinimumSpanningLinks(mine.Select(s => s.Info()).ToList(), AerialSettings.Range)")
-    m4 = probe.replace("opt.StraightPlugIds = CordWorldAdapter.TapIds(map);\n            Dictionary<Cell, Aerial.CellStyle> styled",
-                       "Dictionary<Cell, Aerial.CellStyle> styled", 1)
+    m4 = prod.replace("            opt.StraightPlugIds = CordWorldAdapter.TapIds(map);\n", "", 1)
     if not check_plan(m1):
         fails.append("instrument blind: pipe-pole mutation not caught")
-    if m4 == probe or not check_fresh(m4, prod):
+    if m4 == prod or not check_fresh(probe, m4):
         fails.append("instrument blind: tap-clamp mutation not caught")
     if not check_cord_prints(prod.replace("pendingPrints.Add(s);", "")):
         fails.append("instrument blind: omitted offscreen print queue not caught")
