@@ -9806,3 +9806,4 @@
 {"seat":"RUNNER","event":"raise","id":"OPS_STEVE_UNSTICK_UNCLAIMED_ETBS","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-20T23:00:18Z","tsn":1795215618619415022}
 {"seat":"RUNNER","event":"live","id":"OPS_STEVE_UNSTICK_UNCLAIMED_ETBS","result":"broken","detail":"Ops alarm STEVE_INCIDENT_UNCLAIMED: steve.incident_unclaimed_min = 36.1 min the oldest unclaimed steward incident has waited (MEASURED), line > 30","ts":"2026-11-20T23:01:25Z","tsn":1795215685374911236}
 {"seat":"RUNNER","event":"raise","id":"OPS_STEVE_UNSTICK_UNCLAIMED_ETBS","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-20T23:01:31Z","tsn":1795215691810446099}
+{"seat":"RUNNER","event":"live","id":"OPS_STEVE_UNSTICK_UNCLAIMED_ETBS","result":"kept","detail":"sweep: running again","ts":"2026-11-20T23:03:08Z","tsn":1795215788054291383}
