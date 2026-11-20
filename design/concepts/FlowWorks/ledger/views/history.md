@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":16705,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=3f63d6bd534fbbb5d97e840eefafa625fce12d804e73538ae59da9fd9987519d -->
-# FlowWorks — mod ledger history (1357 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":16705,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=550734935382790e8437ba4aefa303f20e7607e9c91537c7af3f1a7294e907dd -->
+# FlowWorks — mod ledger history (1359 events, merged across shards)
 
 - 2026-11-16T07:16:23Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 55 of 57 bars met at the lock
 - 2026-11-16T07:16:23Z BACKFILL#2 decision version v0.1.0: 
@@ -1358,3 +1358,5 @@
 - 2026-11-20T08:40:55Z DISPATCH#47 session.id session v0.1.0: 
 - 2026-11-20T08:43:51Z DISPATCH#48 lease.grant lease v0.1.0: 
 - 2026-11-20T08:43:56Z DISPATCH#49 run.start run v0.1.0: 
+- 2026-11-20T08:49:12Z HOLDER.run-1795164214#1 session.checkpoint session v0.1.0: 
+- 2026-11-20T08:49:30Z HOLDER.run-1795164214#2 trap.noted trap:proofsubmerge-nothing-drawn-means-drawn-whole-or-absent v0.1.0: ProofSubmerge answers 'REFUSED: nothing drawn under liquid' both for a thing drawn whole and for no thing at the cell; only a list_things presence read tells them apart (16d4894f4893).

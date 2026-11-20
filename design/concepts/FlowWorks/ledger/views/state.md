@@ -1,13 +1,13 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":16705,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=e3d6535f5fd7c4c95cfb8804ee6356573434c50a282436037af31a81210279ef -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":16705,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=33d76588b39c74718ef0115a87d01bc55ddda568b6cd5e5f63cb53e49a7e5e28 -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage offline_build · 1357 events in 13 shards · reducer 1
-holder lease run-1795164214, token 10, last active 2026-11-20T08:43:51Z
+version 0.1.0 · stage offline_build · 1359 events in 14 shards · reducer 1
+holder lease run-1795164214, token 10, last active 2026-11-20T08:49:30Z
 holder session dc4839d2-8d3a-46dc-a3f2-c3b4f7fd4c5b, context 177453 of ceiling 400000
 
-## Last checkpoint (HOLDER.run-1795162652, 2026-11-20T08:38:15Z)
-- done: RIMMANDRAKE_REPIN_SOURCE_PAYS_FILM_IS_NOT_A_LEAK closed at f81a24fa857b: SRC_flow_stops_when_empty follows the film to 0 L / 0 dL (bound SRC_FILM_PULSES=4000, UNMEASURED past it); accept 3/3, selftest 31/31 with a 57-regime whole-dL film sweep; sc_source_pays UNRUN for Stage 6 (736da208b3c3)
+## Last checkpoint (HOLDER.run-1795164214, 2026-11-20T08:49:12Z)
+- done: RIMMANDRAKE_RESET_FLOWWORKS_BIG_PIT_CALLED_WRONG_CLASS closed at 16d4894f4893: stage resets on RM_NorthstarProofs as x;z;w;h, exits 2 on a refused reset; OL judges nothing-drawn only after a presence read; accept 6/6; OL_OWNER_LOOK_READS UNRUN
 - next: Fix the remaining offline road-back item, then send the record back to in_game with --game-only
-- ruled out: a bars.md re-pin: the locked scenes.json text already says draw the pond empty; only the unlocked row code changed
+- ruled out: another wrong-class or comma-arg ProofResetRect call in northstar: audited, none
 
 ## Open findings (178)
 (claimed fixes, awaiting a judge, on one line each with the oldest 127 open findings, named without their 'finding:': `modledger.py show --mod FlowWorks finding:<NAME>`)
@@ -190,7 +190,7 @@ holder session dc4839d2-8d3a-46dc-a3f2-c3b4f7fd4c5b, context 177453 of ceiling 4
 - RIMMANDRAKE_PIN_FLOWWORKS_CONVERTER_CALLER_RATE_AND_SUN [open, problem · bars inv_converters]: T_CONVERT stays green when CompLiquidConverter drops the th…
 - RIMMANDRAKE_PIN_FLOWWORKS_DRILL_CALLER_READS_SETTING [open, problem · bars inv_drilling]: T_DRILL stays green when Building_LiquidDrill.CurrentBlock…
 
-## Traps (265) — what a reader would otherwise get wrong (each cut to 60 chars; `modledger.py show --mod FlowWorks <subject>` for the whole)
+## Traps (266) — what a reader would otherwise get wrong (each cut to 60 chars; `modledger.py show --mod FlowWorks <subject>` for the whole)
 - trap:the-inventory-s-proof-field-reads-stale-20
 - trap:three-inventory-rows-are-impl-absent
 - trap:every-live-scene-s-tier-says-quicktest
@@ -311,6 +311,7 @@ holder session dc4839d2-8d3a-46dc-a3f2-c3b4f7fd4c5b, context 177453 of ceiling 4
 - trap:tossrange-4-9-is-marked-provisional-auto-decided
 - trap:z-log-budget-charges-the-error-to-gss
 - trap:a-per-square-rounded-fake-hands-back-every-small-take
+- trap:proofsubmerge-nothing-drawn-means-drawn-whole-or-absent
 - 145 traps on closed or claimed findings (verified, withdrawn, claimed_fixed), not listed: `modledger.py find --mod FlowWorks --class trap <words>`
 
 ## Causes refuted (46) — do not chase these again
@@ -491,6 +492,6 @@ spend recorded: USD 78.94, 45401435 tokens
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
 - notes: 11, never printed here (`modledger.py find --mod FlowWorks <words>`)
-- the full history: 1357 events (views/history.md; never read whole)
+- the full history: 1359 events (views/history.md; never read whole)
 
-cursor: t=2026-11-20T08:43:56Z.1795164236739757826 (modledger.py since --mod FlowWorks t=2026-11-20T08:43:56Z.1795164236739757826 prints what changed after this packet)
+cursor: t=2026-11-20T08:49:30Z.1795164570607706917 (modledger.py since --mod FlowWorks t=2026-11-20T08:49:30Z.1795164570607706917 prints what changed after this packet)

@@ -1,0 +1,11 @@
+# at 16d4894f4893
+ok    (a) stage calls ProofResetRect on a class that defines it ['RimMandrake.FlowWorks.RM_NorthstarProofs'] 
+ok    (a2) the reset arg is the site as x;z;w;h (8;8;77;43) 
+ok    (a3) a refused reset stops the stage (exit 2) with a reset row, before any clear/dig/spawn (0 such calls) 
+ok    (b1) no thing at the planned cells: no *_covered row reads FAIL (0 FAIL of 396) 
+ok    (b2) things present, read "nothing drawn": the wet *_covered rows read FAIL (396 of 396) 
+ok    (b3) presence unreadable: no *_covered row reads FAIL (0 FAIL of 396) 
+accept_big_pit_stage_resets: ok
+rc=0
+selftest_owner_look_regressions: PASS (0 bad)
+PASS 674/674

@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "ceee55b1221c595a6b309d506c108c8192ba4a1bbb2cc8b23be472fb938c5c40",
+  "body_sha256": "b5bac22d9130f0ce2008fb9f1ee870f9bd75a3eb0f67c1b55e5cf779459fd753",
   "reducer": 1,
   "shards": {
    "BACKFILL": 893183,
@@ -12,6 +12,7 @@
    "HOLDER.run-1795160350": 1258,
    "HOLDER.run-1795161691": 1067,
    "HOLDER.run-1795162652": 2404,
+   "HOLDER.run-1795164214": 1355,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1232,11 +1233,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795162652",
-   "done": "RIMMANDRAKE_REPIN_SOURCE_PAYS_FILM_IS_NOT_A_LEAK closed at f81a24fa857b: SRC_flow_stops_when_empty follows the film to 0 L / 0 dL (bound SRC_FILM_PULSES=4000, UNMEASURED past it); accept 3/3, selftest 31/31 with a 57-regime whole-dL film sweep; sc_source_pays UNRUN for Stage 6 (736da208b3c3)",
+   "by": "HOLDER.run-1795164214",
+   "done": "RIMMANDRAKE_RESET_FLOWWORKS_BIG_PIT_CALLED_WRONG_CLASS closed at 16d4894f4893: stage resets on RM_NorthstarProofs as x;z;w;h, exits 2 on a refused reset; OL judges nothing-drawn only after a presence read; accept 6/6; OL_OWNER_LOOK_READS UNRUN",
    "next": "Fix the remaining offline road-back item, then send the record back to in_game with --game-only",
-   "ruled_out": "a bars.md re-pin: the locked scenes.json text already says draw the pond empty; only the unlocked row code changed",
-   "ts": "2026-11-20T08:38:15Z"
+   "ruled_out": "another wrong-class or comma-arg ProofResetRect call in northstar: audited, none",
+   "ts": "2026-11-20T08:49:12Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1688,7 +1689,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1357,
+  "events": 1359,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7789,7 +7790,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-20T08:43:51Z",
+   "last": "2026-11-20T08:49:30Z",
    "lease": "run-1795164214",
    "released": false,
    "token": 10
@@ -7881,6 +7882,7 @@
    "HOLDER.run-1795160350",
    "HOLDER.run-1795161691",
    "HOLDER.run-1795162652",
+   "HOLDER.run-1795164214",
    "JUDGE.judge-1794833810",
    "JUDGE.judge-1794849236",
    "JUDGE.judge-1795134433",
@@ -9091,6 +9093,14 @@
     "ts": "2026-11-16T11:42:04Z",
     "version": "0.1.0",
     "where": "proof_hose --only relay"
+   },
+   "trap:proofsubmerge-nothing-drawn-means-drawn-whole-or-absent": {
+    "by": "HOLDER.run-1795164214",
+    "status": "noted",
+    "text": "ProofSubmerge answers 'REFUSED: nothing drawn under liquid' both for a thing drawn whole and for no thing at the cell; only a list_things presence read tells them apart (16d4894f4893).",
+    "ts": "2026-11-20T08:49:30Z",
+    "version": "0.1.0",
+    "where": "src/RimMandrake/FlowWorks/northstar/owner_look_regressions.py judge_absent"
    },
    "trap:propane-was-not-wired-here-it-was-split": {
     "by": "BACKFILL",
