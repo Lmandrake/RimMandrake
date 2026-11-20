@@ -126,6 +126,21 @@ def hook_checks():
     dec, why = hook("rm-detached-bench-rimmandrake-fix-contagion-sheet-1794848893", "steward2")
     ok(dec == "deny" and "N=0" in why, "hook: any other detached run is still gated by the Conductor budget (N=0 -> "
        "deny; read %s: %s)" % (dec, why[:160]))
+    # RIMMANDRAKE_ALLOW_REWRITE_BATCH_ITS_ONE_MEANING_READER: a plain-English rewrite batch (unit named for
+    # RIMMANDRAKE_REWRITE_*) must start one fresh Opus meaning reader per file (batch_plan.md step 6), one at a time
+    rw = "rm-detached-bench-rimmandrake-rewrite-subagent-files-share-1795131536"
+    n_rw = rr.get("rm-detached-bench-rimmandrake-rewrite-")
+    ok(n_rw == 1, "rules: slot_rules.json role_runs gives a rewrite batch exactly one reader at a time (read %r)" % (n_rw,))
+    budget(0)
+    helpers("rewrite1", 0)
+    dec, why = hook(rw, "rewrite1")
+    ok(dec is None, "hook: CONDUCTOR N=0, three window helpers running, a rewrite batch asks for its meaning reader -> "
+       "allowed under its own allowance (read %s: %s)" % (dec, why[:160]))
+    helpers("rewrite1", 1)
+    dec, why = hook(rw, "rewrite1")
+    ok(dec == "deny" and why.startswith("slots_full"), "hook: a rewrite batch with its one reader running -> the next "
+       "waits, slots_full (read %s: %s)" % (dec, why[:160]))
+    helpers("rewrite1", 0)
     budget(0)
     dec, why = hook("rm-role-operations-1794775000", "ops1")
     ok(dec == "deny" and "N=0" in why, "hook: any other role run is still gated by the Conductor budget (N=0 -> deny; "
