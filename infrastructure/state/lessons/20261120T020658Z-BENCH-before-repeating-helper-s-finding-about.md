@@ -1,0 +1,1 @@
+Before repeating a helper's finding about what a rule required, read the rule text: on 2026-11-19 a keyword count said the old review loop's re-review after a fix was optional, the Conductor told the owner so, and the rule text and the tool docstring said the opposite (a fixed file stays DIRTY until a fresh blind reader passes it).
