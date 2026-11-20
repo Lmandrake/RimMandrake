@@ -9801,3 +9801,4 @@
 {"seat":"RUNNER","event":"live","id":"OPS_FINDINGS_DIAGNOSE_XZLM","result":"broken","detail":"Ops alarm UNTRIAGED: flow.untriaged_findings = 1 findings with no outcome yet (MEASURED), line > 0","ts":"2026-11-20T22:37:28Z","tsn":1795214248343144828}
 {"seat":"RUNNER","event":"raise","id":"OPS_FINDINGS_DIAGNOSE_XZLM","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-20T22:37:34Z","tsn":1795214254653170396}
 {"seat":"RUNNER","event":"note","id":"STEVE_LANE_UNSTICK_IDLE_UNOWNED_5465","text":"steward: SteveDesktop lane proven again: job J20261120T222055Z-498222 DONE with its canary on at 2026-11-20T22:47:13Z, after IDLE_EMPTY since 2026-11-20T21:41:10Z (55 min unowned, 66 min impact)","ts":"2026-11-20T22:47:25Z","tsn":1795214845170756495}
+{"seat":"RUNNER","event":"live","id":"OPS_FINDINGS_DIAGNOSE_XZLM","result":"kept","detail":"sweep: running again","ts":"2026-11-20T22:48:08Z","tsn":1795214888141448307}
