@@ -505,8 +505,8 @@ def system_cause(rec, runner=None):
     import detached_helper as DH
     if not isinstance(rec, dict):
         return ""
-    if rec.get("state") == "launch_failed":
-        return "its launch never started (%s)" % str(rec.get("result") or rec.get("err") or "launch_failed")[:160]
+    if rec.get("status") == "launch_failed" or rec.get("state") == "launch_failed":   # real records: the word is in `status` (`state` is a folder path); the old reading stays
+        return "its launch never started (%s)" % str(rec.get("result") or rec.get("why") or rec.get("err") or "launch_failed")[:160]
     res = str(rec.get("result") or "")
     if res.startswith("killed"):
         return "killed with no result JSON (%s)" % res

@@ -556,6 +556,14 @@ def main():
            and RV.system_cause(dict(RECS[U1], result="exit-code/claude-error (1 -)")) == ""
            and RV.system_cause(dict(RECS[U1], result="unknown (- -)")) == "",
            "a timeout and a CLI exit with no result are system causes; claude's own error and 'unknown' are not")
+        # a real launch_failed record (2026-11-20, run ...1794834319): `state` is the state folder PATH, the failure word
+        # is in `status`; read as void_system, never charged. Foils: a finished run with spend, and a running one.
+        lf = {"unit": "u-lf", "status": "launch_failed", "state": "/mnt/d/ClaudeWork/rimmandrake/dispatcher",
+              "why": "systemd-run did not answer (OSError); systemd reads the unit inactive"}
+        ok(RV.system_cause(lf).startswith("its launch never started") and "systemd-run did not answer" in RV.system_cause(lf)
+           and RV.system_cause(dict(lf, status="finished", result="success (exited 0)")) == ""
+           and RV.system_cause({"unit": "u", "status": "finished", "state": "/x", "result": "success (exited 0)"}) == "",
+           "a launch_failed record (status word, state is a path) is void_system; a finished run stays charged")
         # the instrument trap of 2026-11-18 ~11:10 AM PST: a success run classed void_system goes back, its fault dropped
         st3 = {"mods": {"Fake": {"steward": {}, "voided": [
             {"book": "steward", "key": "k1", "entry": {"item": "I1", "unit": U1, "at": T0}, "class": "void_system",
