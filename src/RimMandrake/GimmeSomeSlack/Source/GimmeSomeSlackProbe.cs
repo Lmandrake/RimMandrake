@@ -30,6 +30,8 @@ namespace RimMandrake.GimmeSomeSlack
         public static string request = "";
         public static string result = "";
         public static int serial;
+        /// <summary>The current command finished an owed build before it read (census "settledForRead").</summary>
+        private static bool readSettled;
 
         public static void Service(Map map, RM_MapComponent_CordGraph comp)
         {
@@ -83,6 +85,9 @@ namespace RimMandrake.GimmeSomeSlack
 
         private static string Run(Map map, RM_MapComponent_CordGraph comp, string cmd)
         {
+            // RIMMANDRAKE_SETTLE_SLACK_CUT_CENSUS_DEAD_END_POLL_LATE: a read of the laid set never answers from before a build the
+            // component owes (a frame's build shows the previous pieces until the graph and lay workers land)
+            readSettled = ProbeRead.ReadsLaidSet(cmd) && comp.SettleForRead();
             if (cmd == "census") return Census(map, comp);
             if (cmd == "colonists") return Colonists(map);                                   // site reveal (validation_core.reveal)
             if (cmd.StartsWith("pawn:")) return PawnVerb(map, cmd);
@@ -991,6 +996,10 @@ namespace RimMandrake.GimmeSomeSlack
             F("overlayWiresPrinted", ConduitVisuals.OverlayWiresPrinted.ToString());
             F("builds", comp.Builds.ToString());
             F("lastPlanned", comp.LastPlanned.ToString());
+            // after the settle: 0 unless the complete build failed (then the pieces are the last published set, never a verdict)
+            F("pending", comp.LastPending.ToString());
+            F("settledForRead", J.B(readSettled));
+            F("settledReads", comp.SettledReads.ToString());
             F("lastReused", comp.LastReused.ToString());
             CordGraph gr = comp.Graph;
             CordWorld w = comp.LastWorld;

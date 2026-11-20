@@ -50,6 +50,7 @@
     <Compile Include="Core\CordSlacken.cs" />
     <Compile Include="Core\CordReach.cs" />
     <Compile Include="Core\RebuildGate.cs" />
+    <Compile Include="Core\ProbeRead.cs" />
     <Compile Include="Core\RebuildTail.cs" />
     <Compile Include="Core\SnapshotPool.cs" />
     <Compile Include="Core\SliceWindow.cs" />

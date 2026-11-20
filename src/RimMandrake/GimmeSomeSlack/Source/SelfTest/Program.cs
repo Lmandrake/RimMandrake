@@ -50,6 +50,8 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             if (Environment.GetEnvironmentVariable("GSS_FIT_TRACE") == "1") CordBuilder.FitTrace = true;   // a strand with no fitted join names why in its Lay
             if (args.Contains("--lay-profile")) { SliceGateChecks.LayProfile(); return 0; }
             if (args.Contains("--slice-repeat")) return SliceGateChecks.SliceRepeat(20, args.Contains("--old-form"));
+            // RIMMANDRAKE_SETTLE_SLACK_CUT_CENSUS_DEAD_END_POLL_LATE: --probe-read-old runs the read as before the fix (it never settles), which must go red
+            if (args.Contains("--probe-read-only") || args.Contains("--probe-read-old")) { if (args.Contains("--probe-read-old")) ProbeReadChecks.Run((e, p, s) => false); else ProbeReadChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (probe read only)"); return fails == 0 ? 0 : 1; }
             if (args.Contains("--perdig-only")) { RebuildPerDigChecks.Run(); SliceGateChecks.Run(); RebuildTailChecks.Run(); SnapshotPoolChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (rebuild-per-dig only)"); return fails == 0 ? 0 : 1; }
             int sd = Array.IndexOf(args, "--scene-dump");
             if (sd >= 0) return SceneDump.Run(args[sd + 1], args[sd + 2]);
@@ -145,6 +147,7 @@ TexPathChecks.Run();           // RIMMANDRAKE_TRACE_GSS_ILLEGAL_PATH_ONLY_ON_FIR
             RebuildPerDigChecks.Run();     // GSS_SNAPSHOT_MEASURE_REBUILD_PER_DIG (live 2026-10-26): RebuildPerDigChecks.cs
             SliceGateChecks.Run();         // GSS_PLAN_FIX_SECOND_PER_FULL_BUILD + far-dig gate (live round 4): SliceGateChecks.cs
             RebuildTailChecks.Run();       // GSS_SLICE_FIX_LONE_REBUILD_HITS_140MS (live round 7): RebuildTailChecks.cs
+            ProbeReadChecks.Run();         // RIMMANDRAKE_SETTLE_SLACK_CUT_CENSUS_DEAD_END_POLL_LATE (visit 2): a laid-set read settles an owed build
             HiddenConduitSeedChecks.Run(); // I3_HIDDEN_SEED: hidden connections preserve one legacy net seed
             StyledWinnerLegacyBridgeChecks.Run(); // I5_STYLED_WINNER_BRIDGE: placement fast path must resolve runs behind bridge conduits
             SnapshotPoolChecks.Run();      // GSS_BUILD_FIX_SLICE_GROWS_WITH_CORDS round 10 (live round 9): SnapshotPoolChecks.cs

@@ -130,6 +130,20 @@ namespace RimMandrake.GimmeSomeSlack
         public bool StaleOffscreen;
         public int OffscreenRebuilds;
 
+        /// <summary>RIMMANDRAKE_SETTLE_SLACK_CUT_CENSUS_DEAD_END_POLL_LATE (visit 2: the first census after a cut listed the live end
+        /// only): a probe read of the laid set first finishes the build this component owes (Core/ProbeRead.OwesBuild: edges left
+        /// to the workers, or a stale mark whose frame rebuild has not run), with the complete Rebuild. True when it built.</summary>
+        internal bool SettleForRead()
+        {
+            if (!ProbeRead.OwesBuild(GimmeSomeSlackSettings.enabled, LastPending, StaleOffscreen)) return false;
+            StaleOffscreen = false;          // as MapComponentUpdate does before its rebuild: an event after this build marks it again
+            Rebuild(true);
+            SettledReads++;
+            return true;
+        }
+        /// <summary>Probe reads that had to finish an owed build first (SettleForRead).</summary>
+        public int SettledReads;
+
         // ---- lane C (2026-10-02): per-net strand variant (extension-cord colour, Star Wars cable kind)
         private Dictionary<LaidPiece, int> netSeeds = new Dictionary<LaidPiece, int>();
 

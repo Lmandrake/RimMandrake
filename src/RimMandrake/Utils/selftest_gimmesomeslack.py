@@ -61,8 +61,38 @@ def sliced_rebuild_callers():
     return 1 if bad else 0
 
 
+def probe_read_wiring(probe_text=None, comp_text=None):
+    """RIMMANDRAKE_SETTLE_SLACK_CUT_CENSUS_DEAD_END_POLL_LATE (visit 2: M8 read the published pieces while the workers still owed the
+    cut's edges). The offline SelfTest proves the read decision (Core/ProbeRead.cs, ProbeReadChecks); this proves the Verse side
+    calls it: the probe's dispatcher settles a laid-set read first, the component settles with the complete Rebuild, and the
+    census reports the pending count the save/load triplet's read requires (validation.py run_triplet reads "pending" == "0")."""
+    import re
+    if probe_text is None:
+        with open(os.path.join(SOURCE, "GimmeSomeSlackProbe.cs"), encoding="utf-8") as f:
+            probe_text = f.read()
+    if comp_text is None:
+        with open(os.path.join(SOURCE, "RM_MapComponent_CordGraph.cs"), encoding="utf-8") as f:
+            comp_text = f.read()
+    bad = []
+    run = re.search(r"private static string Run\(Map map, RM_MapComponent_CordGraph comp, string cmd\)\s*\{(.*?)if \(cmd == \"census\"\)", probe_text, re.S)
+    if not run or not re.search(r"ProbeRead\.ReadsLaidSet\(cmd\)\s*&&\s*comp\.SettleForRead\(\)", run.group(1)):
+        bad.append("the probe's Run does not settle a laid-set read (ProbeRead.ReadsLaidSet + SettleForRead) before it dispatches")
+    census = re.search(r"private static string Census\(Map map, RM_MapComponent_CordGraph comp\)(.*?)\n        \}\n", probe_text, re.S)
+    if not census or 'F("pending", comp.LastPending' not in census.group(1):
+        bad.append("the census does not report pending (the triplet's read is then never taken)")
+    settle = re.search(r"internal bool SettleForRead\(\)\s*\{(.*?)\n        \}", comp_text, re.S)
+    if not settle or "ProbeRead.OwesBuild(" not in settle.group(1) or "Rebuild(true)" not in settle.group(1):
+        bad.append("RM_MapComponent_CordGraph.SettleForRead does not finish an owed build with the complete Rebuild(true)")
+    for b in bad:
+        print("FAIL probe read wiring: " + b)
+    print("probe read wiring: " + ("FAIL" if bad else "ok"))
+    return 1 if bad else 0
+
+
 def main(argv):
     if sliced_rebuild_callers():
+        return 1
+    if probe_read_wiring():
         return 1
     if "--no-export" not in argv:
         r = subprocess.run([sys.executable, os.path.join(HERE, "mockups", "messy_conduit", "export_oracle.py")])
@@ -77,7 +107,7 @@ def main(argv):
             print("selftest build FAILED")
             return rc
         dll = winbuild.staged_win(rec, SELFTEST) + "\\bin\\Release\\net8.0\\RimMandrakeGimmeSomeSlack.SelfTest.dll"
-        args = [winbuild.dotnet_exe(), dll] + (["--probe"] if "--probe" in argv else []) + (["--perdig-only"] if "--perdig-only" in argv else []) + (["--slice-repeat"] if "--slice-repeat" in argv else []) + (["--old-form"] if "--old-form" in argv else []) + (["--lay-profile"] if "--lay-profile" in argv else []) + (["--shape-diag"] if "--shape-diag" in argv else []) + (["--endkind-only"] if "--endkind-only" in argv else []) + (["--joins-only"] if "--joins-only" in argv else []) + (["--live-sweep-only"] if "--live-sweep-only" in argv else []) + (["--geometry"] if "--geometry" in argv else []) + (["--geometry-only"] if "--geometry-only" in argv else []) + (["--no-slacken"] if "--no-slacken" in argv else [])
+        args = [winbuild.dotnet_exe(), dll] + (["--probe"] if "--probe" in argv else []) + (["--perdig-only"] if "--perdig-only" in argv else []) + (["--slice-repeat"] if "--slice-repeat" in argv else []) + (["--old-form"] if "--old-form" in argv else []) + (["--lay-profile"] if "--lay-profile" in argv else []) + (["--shape-diag"] if "--shape-diag" in argv else []) + (["--endkind-only"] if "--endkind-only" in argv else []) + (["--joins-only"] if "--joins-only" in argv else []) + (["--live-sweep-only"] if "--live-sweep-only" in argv else []) + (["--geometry"] if "--geometry" in argv else []) + (["--geometry-only"] if "--geometry-only" in argv else []) + (["--no-slacken"] if "--no-slacken" in argv else []) + [f for f in ("--probe-read-only", "--probe-read-old") if f in argv]
         for i, a in enumerate(argv):   # approach B fuzz knobs (GssFuzz.cs): --fuzz-scale F, --fuzz-only NAME, --fuzz-seed N
             if a.startswith("--fuzz") and i + 1 < len(argv):
                 args += [a, argv[i + 1]]
