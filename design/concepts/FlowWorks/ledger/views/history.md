@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":16055,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=c4066d09147f92abf7fb1836cd0fa75645cc17e7d7313776111471abfb8164f9 -->
-# FlowWorks — mod ledger history (1355 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":16705,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=3f63d6bd534fbbb5d97e840eefafa625fce12d804e73538ae59da9fd9987519d -->
+# FlowWorks — mod ledger history (1357 events, merged across shards)
 
 - 2026-11-16T07:16:23Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 55 of 57 bars met at the lock
 - 2026-11-16T07:16:23Z BACKFILL#2 decision version v0.1.0: 
@@ -1356,3 +1356,5 @@
 - 2026-11-20T08:39:19Z HOLDER.run-1795162652#5 trap.noted trap:a-per-square-rounded-fake-hands-back-every-small-take v0.1.0: A fake that rounds each square to whole dL after levelling hands back any take under one dL a square, so a slow film never drains and every slow regime reads UNMEASURED: the sweep looked green but was blind. Fake.spread keeps the total in whole dL; section (d) refuses a sweep missing any verdict.
 - 2026-11-20T08:40:54Z DISPATCH#46 run.end run v0.1.0: 
 - 2026-11-20T08:40:55Z DISPATCH#47 session.id session v0.1.0: 
+- 2026-11-20T08:43:51Z DISPATCH#48 lease.grant lease v0.1.0: 
+- 2026-11-20T08:43:56Z DISPATCH#49 run.start run v0.1.0: 
