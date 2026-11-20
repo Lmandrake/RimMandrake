@@ -3044,11 +3044,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.27,
+    "seconds": 0.47,
     "last": "PASS",
-    "at": "2026-11-18T22:38:34Z",
+    "at": "2026-11-20T00:10:56Z",
     "result": "PASS",
-    "build": "ff6f41418bc787c4590d",
+    "build": "68ac6ea5d7a45a47b095",
     "command": "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only toss_flame"
    },
    "command": "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only toss_flame"
@@ -3840,11 +3840,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 85.72,
+    "seconds": 282.97,
     "last": "--only PitLook1114*: 7 case(s) and 0 hose suite(s) ran, 1367 filtered out",
-    "at": "2026-11-18T22:40:00Z",
+    "at": "2026-11-20T00:15:39Z",
     "result": "PASS",
-    "build": "2db8d01dd58eb279ea65",
+    "build": "fc94780b56996b8dc9fe",
     "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only PitLook1114*"
    }
   },
@@ -3875,7 +3875,17 @@
    "id": "T_MODERN_FIT_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/FlowWorks/Tools/selftest_fw_modern_fit.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 2.87,
+    "last": "selftest_fw_modern_fit.py: 0 failure(s)",
+    "at": "2026-11-20T00:15:42Z",
+    "result": "PASS",
+    "build": "86340e20d35f4e60913c",
+    "command": "python3 src/RimMandrake/FlowWorks/Tools/selftest_fw_modern_fit.py"
+   }
   },
   "T_PIPE_ATLAS_CELL_OFFLINE": {
    "stage": "4-5",
@@ -3885,7 +3895,17 @@
    "id": "T_PIPE_ATLAS_CELL_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/FlowWorks/Tools/selftest_pipe_atlas_cell_geometry.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.69,
+    "last": "G3: holds on 4 looks",
+    "at": "2026-11-20T00:15:43Z",
+    "result": "PASS",
+    "build": "0a348ba43fd5e7d73b54",
+    "command": "python3 src/RimMandrake/FlowWorks/Tools/selftest_pipe_atlas_cell_geometry.py"
+   }
   },
   "T_PLAYER_TRUTHS_ART_OFFLINE": {
    "stage": "4-5",
@@ -3895,7 +3915,17 @@
    "id": "T_PLAYER_TRUTHS_ART_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/FlowWorks/Tools/selftest_player_truths_art.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 1.29,
+    "last": "PT19: holds",
+    "at": "2026-11-20T00:15:44Z",
+    "result": "PASS",
+    "build": "04ff28ba9bf4621710ae",
+    "command": "python3 src/RimMandrake/FlowWorks/Tools/selftest_player_truths_art.py"
+   }
   },
   "T_WEIR_LOOKS_OFFLINE": {
    "stage": "4-5",
@@ -3905,7 +3935,17 @@
    "id": "T_WEIR_LOOKS_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/FlowWorks/Tools/selftest_weir_looks.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 55.89,
+    "last": "ALL OK",
+    "at": "2026-11-20T00:16:40Z",
+    "result": "PASS",
+    "build": "2b99fc34ee54cd0c932e",
+    "command": "python3 src/RimMandrake/FlowWorks/Tools/selftest_weir_looks.py"
+   }
   },
   "T_WEIR_MATERIAL_OFFLINE": {
    "stage": "4-5",
@@ -3915,7 +3955,17 @@
    "id": "T_WEIR_MATERIAL_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/FlowWorks/Tools/selftest_weir_material.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.03,
+    "last": "RESULT PASS",
+    "at": "2026-11-20T00:16:40Z",
+    "result": "PASS",
+    "build": "8468b3412a46409cb53f",
+    "command": "python3 src/RimMandrake/FlowWorks/Tools/selftest_weir_material.py"
+   }
   },
   "T_WEIR_SPILL_OFFLINE": {
    "stage": "4-5",
@@ -3925,7 +3975,17 @@
    "id": "T_WEIR_SPILL_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/FlowWorks/Tools/selftest_weir_spill_animated.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 2.26,
+    "last": "ALL OK",
+    "at": "2026-11-20T00:16:42Z",
+    "result": "PASS",
+    "build": "b9cc8518074e6acf8b0a",
+    "command": "python3 src/RimMandrake/FlowWorks/Tools/selftest_weir_spill_animated.py"
+   }
   },
   "T_MODERN_BRIDGE_ART_OFFLINE": {
    "stage": "4-5",
@@ -3935,7 +3995,17 @@
    "id": "T_MODERN_BRIDGE_ART_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/FlowWorks/art_source/ModernBridge/selftest_modern_bridge_art.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 3.71,
+    "last": "ALL OK",
+    "at": "2026-11-20T00:16:46Z",
+    "result": "PASS",
+    "build": "6b57aa97dd68b4d88d74",
+    "command": "python3 src/RimMandrake/FlowWorks/art_source/ModernBridge/selftest_modern_bridge_art.py"
+   }
   },
   "T_SUSPENSION_REDESIGN_ART_OFFLINE": {
    "stage": "4-5",
@@ -3945,7 +4015,17 @@
    "id": "T_SUSPENSION_REDESIGN_ART_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/FlowWorks/art_source/SuspensionRedesign/selftest_suspension_redesign.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 16.24,
+    "last": "all ok",
+    "at": "2026-11-20T00:17:02Z",
+    "result": "PASS",
+    "build": "a0dac323bd94cdf8e490",
+    "command": "python3 src/RimMandrake/FlowWorks/art_source/SuspensionRedesign/selftest_suspension_redesign.py"
+   }
   },
   "T_CONSERVATION_ROUNDTRIP_OFFLINE": {
    "stage": "4-5",
@@ -3955,7 +4035,17 @@
    "id": "T_CONSERVATION_ROUNDTRIP_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/FlowWorks/northstar/selftest_conservation_roundtrip.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.21,
+    "last": "PASS: 42 checks across the 13 trips, all conserve volume",
+    "at": "2026-11-20T00:17:03Z",
+    "result": "PASS",
+    "build": "5faccf956fad35326561",
+    "command": "python3 src/RimMandrake/FlowWorks/northstar/selftest_conservation_roundtrip.py"
+   }
   },
   "T_HOLE_PRISON_OFFLINE": {
    "stage": "4-5",
@@ -3965,7 +4055,17 @@
    "id": "T_HOLE_PRISON_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/FlowWorks/northstar/selftest_hole_prison.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 105.57,
+    "last": "PASS: fault controls, abort cleanup and selected C# pit-room cases",
+    "at": "2026-11-20T00:18:48Z",
+    "result": "PASS",
+    "build": "69639284a6e6bf547ead",
+    "command": "python3 src/RimMandrake/FlowWorks/northstar/selftest_hole_prison.py"
+   }
   },
   "T_JAWA_SHALLOWS_OFFLINE": {
    "stage": "4-5",
@@ -3975,7 +4075,17 @@
    "id": "T_JAWA_SHALLOWS_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/FlowWorks/northstar/selftest_jawa_shallows_proof.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.03,
+    "last": "ALL OK",
+    "at": "2026-11-20T00:18:48Z",
+    "result": "PASS",
+    "build": "ce2713b3512af8a3db7e",
+    "command": "python3 src/RimMandrake/FlowWorks/northstar/selftest_jawa_shallows_proof.py"
+   }
   },
   "T_LEVEL_WATER_OFFLINE": {
    "stage": "4-5",
@@ -3985,7 +4095,17 @@
    "id": "T_LEVEL_WATER_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/FlowWorks/northstar/selftest_level_water.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 5.67,
+    "last": "0 failure(s)",
+    "at": "2026-11-20T00:18:54Z",
+    "result": "PASS",
+    "build": "787b2eeb12943194e3cc",
+    "command": "python3 src/RimMandrake/FlowWorks/northstar/selftest_level_water.py"
+   }
   },
   "T_POND_CAPACITY_RULE_OFFLINE": {
    "stage": "4-5",
@@ -3995,7 +4115,17 @@
    "id": "T_POND_CAPACITY_RULE_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/FlowWorks/northstar/selftest_pond_capacity_rule.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.06,
+    "last": "PASS  selftest_pond_capacity_rule: 0 failed",
+    "at": "2026-11-20T00:18:54Z",
+    "result": "PASS",
+    "build": "ea493995d440e28fded4",
+    "command": "python3 src/RimMandrake/FlowWorks/northstar/selftest_pond_capacity_rule.py"
+   }
   },
   "T_BELT_FIXES_H_OFFLINE": {
    "stage": "4-5",
@@ -4005,7 +4135,17 @@
    "id": "T_BELT_FIXES_H_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_belt_fixes_h.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.03,
+    "last": "PASS",
+    "at": "2026-11-20T00:18:54Z",
+    "result": "PASS",
+    "build": "c80a0134c9aad1cdaef3",
+    "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_belt_fixes_h.py"
+   }
   },
   "T_CALL_SITES_OFFLINE": {
    "stage": "4-5",
@@ -4015,7 +4155,17 @@
    "id": "T_CALL_SITES_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_call_sites.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 1.61,
+    "last": "56/56 call sites asserted and proven able to fail (12 old-rule splices)",
+    "at": "2026-11-20T00:18:56Z",
+    "result": "PASS",
+    "build": "e77e85fb495088f26aa7",
+    "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_call_sites.py"
+   }
   },
   "T_DRAWBRIDGE_ART_OFFLINE": {
    "stage": "4-5",
@@ -4025,7 +4175,17 @@
    "id": "T_DRAWBRIDGE_ART_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_drawbridge_art.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.43,
+    "last": "ok: drawbridge art resolves for 2 materials x 5 looks (incl. none); 0 fall back to the look picture; 0 owed",
+    "at": "2026-11-20T00:18:56Z",
+    "result": "PASS",
+    "build": "396405702424580251f7",
+    "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_drawbridge_art.py"
+   }
   },
   "T_FROZEN_HANDOVER_OFFLINE": {
    "stage": "4-5",
@@ -4035,7 +4195,17 @@
    "id": "T_FROZEN_HANDOVER_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_frozen_handover.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.02,
+    "last": "PASS",
+    "at": "2026-11-20T00:18:56Z",
+    "result": "PASS",
+    "build": "a4f2d6f64b29ed3a13ca",
+    "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_frozen_handover.py"
+   }
   },
   "T_GPT_B_FIXES_OFFLINE": {
    "stage": "4-5",
@@ -4045,7 +4215,17 @@
    "id": "T_GPT_B_FIXES_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_gpt_b.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.08,
+    "last": "PASS: 0 failure(s)",
+    "at": "2026-11-20T00:18:56Z",
+    "result": "PASS",
+    "build": "835a97d1234c385ff1f2",
+    "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_gpt_b.py"
+   }
   },
   "T_GPT_BATCH_A_FIXES_OFFLINE": {
    "stage": "4-5",
@@ -4055,7 +4235,17 @@
    "id": "T_GPT_BATCH_A_FIXES_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_gpt_batch_a.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.07,
+    "last": "16/16 passed",
+    "at": "2026-11-20T00:18:56Z",
+    "result": "PASS",
+    "build": "83ced163ff9381597c1d",
+    "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_gpt_batch_a.py"
+   }
   },
   "T_GPT_C_FIXES_OFFLINE": {
    "stage": "4-5",
@@ -4065,7 +4255,17 @@
    "id": "T_GPT_C_FIXES_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_gpt_c.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.2,
+    "last": "33/33 passed",
+    "at": "2026-11-20T00:18:56Z",
+    "result": "PASS",
+    "build": "44b8331549b462a4c801",
+    "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_gpt_c.py"
+   }
   },
   "T_LOOKS_ROUND_OFFLINE": {
    "stage": "4-5",
@@ -4075,7 +4275,17 @@
    "id": "T_LOOKS_ROUND_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_looks_round.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.04,
+    "last": "ok  looks round: 74 canal terrains named by depth, 5 new fluids wired, tar/acid/propane/bubbles/see-through",
+    "at": "2026-11-20T00:18:56Z",
+    "result": "PASS",
+    "build": "371c943982792c59b3a7",
+    "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_looks_round.py"
+   }
   },
   "T_REVIEW1022_LIQUIDNET_OFFLINE": {
    "stage": "4-5",
@@ -4085,7 +4295,17 @@
    "id": "T_REVIEW1022_LIQUIDNET_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_review1022_liquidnet.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.02,
+    "last": "all passed",
+    "at": "2026-11-20T00:18:56Z",
+    "result": "PASS",
+    "build": "b32fa332b06149b55dd4",
+    "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_review1022_liquidnet.py"
+   }
   },
   "T_REVIEW1022_SHEET_OFFLINE": {
    "stage": "4-5",
@@ -4095,7 +4315,17 @@
    "id": "T_REVIEW1022_SHEET_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_review1022_sheet.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.02,
+    "last": "PASS",
+    "at": "2026-11-20T00:18:57Z",
+    "result": "PASS",
+    "build": "c4df72bcaebfb9eec920",
+    "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_review1022_sheet.py"
+   }
   },
   "T_SALT_BREAK_POTABLE_OFFLINE": {
    "stage": "4-5",
@@ -4105,7 +4335,17 @@
    "id": "T_SALT_BREAK_POTABLE_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_salt_break_potable.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.04,
+    "last": "PASS salt-break PotableReachable asks all 6 drink sources with the Potable filter; 3 undo splices and 7 behaviour mutants go red",
+    "at": "2026-11-20T00:18:57Z",
+    "result": "PASS",
+    "build": "5c83f75b20fb0a5fc1cc",
+    "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_salt_break_potable.py"
+   }
   },
   "T_SPREADING_FUEL_IRRIGATION_OFFLINE": {
    "stage": "4-5",
@@ -4115,7 +4355,17 @@
    "id": "T_SPREADING_FUEL_IRRIGATION_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_spreading_fuel_irrigation.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.02,
+    "last": "PASS spreading fuel/poison soak never irrigates (6 checks)",
+    "at": "2026-11-20T00:18:57Z",
+    "result": "PASS",
+    "build": "c3b26e9bd56e511ab6d5",
+    "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_spreading_fuel_irrigation.py"
+   }
   },
   "T_SUSPENSION_ART_OFFLINE": {
    "stage": "4-5",
@@ -4125,7 +4375,17 @@
    "id": "T_SUSPENSION_ART_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_suspension_art.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 27.85,
+    "last": "suspension art: 111/111 texture files pass",
+    "at": "2026-11-20T00:19:24Z",
+    "result": "PASS",
+    "build": "d585457c7f8cc82f95f3",
+    "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_suspension_art.py"
+   }
   },
   "T_SWALE_STATIC_OFFLINE": {
    "stage": "4-5",
@@ -4135,7 +4395,17 @@
    "id": "T_SWALE_STATIC_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_swale.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.03,
+    "last": "PASS",
+    "at": "2026-11-20T00:19:24Z",
+    "result": "PASS",
+    "build": "b14b9810a54087917060",
+    "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_swale.py"
+   }
   },
   "T_FREEZE_BIG_MAP_OFFLINE": {
    "stage": "4-5",
@@ -4149,7 +4419,17 @@
    "id": "T_FREEZE_BIG_MAP_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/FlowWorks/selftest_freeze_big_map.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.04,
+    "last": "LEVEL_STAGING_DIAGNOSE_FREEZE_ON_BIG_MAP: 10/10 PASS",
+    "at": "2026-11-20T00:19:25Z",
+    "result": "PASS",
+    "build": "ab1221c5cdfe7a430437",
+    "command": "python3 src/RimMandrake/FlowWorks/selftest_freeze_big_map.py"
+   }
   },
   "T_HEAVY_TRUSS_LABELS_OFFLINE": {
    "stage": "4-5",
@@ -4159,7 +4439,17 @@
    "id": "T_HEAVY_TRUSS_LABELS_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/FlowWorks/selftest_heavy_truss_labels.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.02,
+    "last": "ok    heavy truss labels (3 defs)",
+    "at": "2026-11-20T00:19:25Z",
+    "result": "PASS",
+    "build": "15f3a2054e3d8335c974",
+    "command": "python3 src/RimMandrake/FlowWorks/selftest_heavy_truss_labels.py"
+   }
   },
   "T_HOSE_PIPE_SADDLE_OFFLINE": {
    "stage": "4-5",
@@ -4169,7 +4459,17 @@
    "id": "T_HOSE_PIPE_SADDLE_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/FlowWorks/selftest_hose_pipe_saddle.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.05,
+    "last": "hose pipe saddle: 22/22 rows PASS",
+    "at": "2026-11-20T00:19:25Z",
+    "result": "PASS",
+    "build": "bad1409dfab492cf1461",
+    "command": "python3 src/RimMandrake/FlowWorks/selftest_hose_pipe_saddle.py"
+   }
   },
   "T_HOSE_PORT_OFFLINE": {
    "stage": "4-5",
@@ -4179,7 +4479,17 @@
    "id": "T_HOSE_PORT_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/FlowWorks/selftest_hose_port.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 2.61,
+    "last": "hose port gates: PASS (0 failing)",
+    "at": "2026-11-20T00:19:27Z",
+    "result": "PASS",
+    "build": "d162b61cb84342c51bc5",
+    "command": "python3 src/RimMandrake/FlowWorks/selftest_hose_port.py"
+   }
   },
   "T_PIPE_GIRTH_OFFLINE": {
    "stage": "4-5",
@@ -4189,7 +4499,17 @@
    "id": "T_PIPE_GIRTH_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/FlowWorks/selftest_pipe_girth_half.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.2,
+    "last": "PASS 5/5",
+    "at": "2026-11-20T00:19:27Z",
+    "result": "PASS",
+    "build": "da0581efac1d3f5d55cc",
+    "command": "python3 src/RimMandrake/FlowWorks/selftest_pipe_girth_half.py"
+   }
   },
   "T_PUMP_STATION_PORTS_COMPILED_OFFLINE": {
    "stage": "4-5",
@@ -4199,7 +4519,17 @@
    "id": "T_PUMP_STATION_PORTS_COMPILED_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/FlowWorks/selftest_pump_station_ports_compiled.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.03,
+    "last": "selftest_pump_station_ports_compiled.py: 0 failure(s)",
+    "at": "2026-11-20T00:19:27Z",
+    "result": "PASS",
+    "build": "b61e963010f2a23c3e97",
+    "command": "python3 src/RimMandrake/FlowWorks/selftest_pump_station_ports_compiled.py"
+   }
   },
   "T_TANK_ART_EDGES_OFFLINE": {
    "stage": "4-5",
@@ -4209,7 +4539,17 @@
    "id": "T_TANK_ART_EDGES_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/FlowWorks/selftest_tank_art_edges.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.37,
+    "last": "selftest_tank_art_edges.py: 0 failure(s)",
+    "at": "2026-11-20T00:19:28Z",
+    "result": "PASS",
+    "build": "b80945527c69cd343322",
+    "command": "python3 src/RimMandrake/FlowWorks/selftest_tank_art_edges.py"
+   }
   },
   "T_THERMOSTAT_SUBNOTCH_OFFLINE": {
    "stage": "4-5",
@@ -4219,7 +4559,17 @@
    "id": "T_THERMOSTAT_SUBNOTCH_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/FlowWorks/selftest_thermostat_subnotch.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.16,
+    "last": "13/13 pins hold; 16/16 mutants killed",
+    "at": "2026-11-20T00:19:28Z",
+    "result": "PASS",
+    "build": "64a102fc1f7b81a3f8dd",
+    "command": "python3 src/RimMandrake/FlowWorks/selftest_thermostat_subnotch.py"
+   }
   },
   "T_WRECKED_LINKS_OFFLINE": {
    "stage": "4-5",
@@ -4229,7 +4579,17 @@
    "id": "T_WRECKED_LINKS_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/FlowWorks/selftest_wrecked_links_draw_in.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.42,
+    "last": "wrecked_links: 9 wrecked defs judged, 5 owe pipes, 7 owe conduit, 0 problems",
+    "at": "2026-11-20T00:19:28Z",
+    "result": "PASS",
+    "build": "1add6d112540f1315e73",
+    "command": "python3 src/RimMandrake/FlowWorks/selftest_wrecked_links_draw_in.py"
+   }
   },
   "T_POND_FILM_OFFLINE": {
    "stage": "4-5",
@@ -4239,7 +4599,17 @@
    "id": "T_POND_FILM_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/Utils/selftest_flowworks_pond_film.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.03,
+    "last": "0 failing",
+    "at": "2026-11-20T00:19:28Z",
+    "result": "PASS",
+    "build": "57bb00ea94381fdef7ad",
+    "command": "python3 src/RimMandrake/Utils/selftest_flowworks_pond_film.py"
+   }
   },
   "T_SHEET_KERNEL_OFFLINE": {
    "stage": "4-5",
@@ -4249,7 +4619,17 @@
    "id": "T_SHEET_KERNEL_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/Utils/selftest_flowworks_sheet.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 129.99,
+    "last": "48/48 passed",
+    "at": "2026-11-20T00:21:38Z",
+    "result": "PASS",
+    "build": "0a04be35fce1294b8aac",
+    "command": "python3 src/RimMandrake/Utils/selftest_flowworks_sheet.py"
+   }
   },
   "T_TRENCH_COVER_CSHARP_OFFLINE": {
    "stage": "4-5",
@@ -4259,7 +4639,17 @@
    "id": "T_TRENCH_COVER_CSHARP_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/Utils/selftest_flowworks_trench_cover.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 233.07,
+    "last": "PASS: 0 failure(s)",
+    "at": "2026-11-20T00:25:32Z",
+    "result": "PASS",
+    "build": "cf83d00d3cf6b4ec3b61",
+    "command": "python3 src/RimMandrake/Utils/selftest_flowworks_trench_cover.py"
+   }
   }
  },
  "bars": [
