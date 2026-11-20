@@ -316,6 +316,19 @@ check("rule 6 (EK 139): a note on how a fix's red was re-demonstrated is no trap
 check("the round-5 fixture lints clean and nothing it plans is refused", not M.lint(root, MOD, None)[0] and
       not res["refused"], (M.lint(root, MOD, None)[0][:3], res["refused"][:3]))
 
+# EK 125 in the round-5 re-mine: one currency question read [] in the run and [1] twice when asked again; a statement
+# either of two passes found false leaves
+_answers = [{"T_X": []}, {"T_X": [1]}]
+R.CALL = lambda prompt, model, system=None: (_answers.pop(0) if _answers else {"T_X": []}, 0.01)
+_rp = os.path.join(tempfile.mkdtemp(prefix="modledger_r5_rd_"), "r.json")
+R.read_tickets(_rp, {"T_X": "=== CURRENT T_X\nTITLE: -\n[1] (stated 2026-11-15) a criterion is impossible"}, [], 5,
+               field="current", system=R.CURRENT_SYSTEM, log=lambda *a: None)
+with open(_rp, encoding="utf-8") as fh_:
+    _got = json.load(fh_)["tickets"]["T_X"].get("current")
+check("currency: a statement either of two reader passes found false is false (EK 125, a reader that varies)",
+      _got == [1], _got)
+shutil.rmtree(os.path.dirname(_rp), ignore_errors=True)
+
 shutil.rmtree(root, ignore_errors=True)
 shutil.rmtree(B.RELENTLESS_STORE, ignore_errors=True)
 print("selftest_modledger_round5: %d failure%s" % (len(FAIL), "" if len(FAIL) == 1 else "s"))

@@ -1139,7 +1139,9 @@ def reduce(events):
             opened_version = True
         elif ev.get("version") and not opened_version:
             st["version"] = ev["version"]
-        elif k == "stage.enter":
+        # a line's own version is read beside its kind, never instead of it: in one elif chain every line above a late
+        # version.open was skipped (RIMMANDRAKE_FIX_REDUCER_SKIPS_LINES_ABOVE_LATE_VERSION_OPEN)
+        if k == "stage.enter":
             st["stage"] = b.get("stage")
         elif k == "stage.accepted":
             st["stage"] = b.get("to")

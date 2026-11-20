@@ -1,7 +1,7 @@
 {
 "model": "sonnet",
 "prompt_version": "2026-11-16.2",
-"spent_usd_last_run": 0.3558,
+"spent_usd_last_run": 2.3787,
 "tickets": {
 "ABSOLUTE_DESCENT_FIX_MISSES_DECK_SHOVE": {
 "at": "2026-11-16T03:36:26",
@@ -19,6 +19,10 @@
 },
 "ALL_OFF_FIX_DEPTH_ENGINE_STAYS_ON": {
 "at": "2026-11-16T03:36:26",
+"current": [
+1
+],
+"current_hash": "69174f4cb4ce206c",
 "hash": "ca20c1855c587634",
 "keep": [
 1
@@ -42,6 +46,8 @@
 },
 "AUTO_SPLICE_FIX_SKIPS_OBSTACLE_CHECK": {
 "at": "2026-11-16T03:36:26",
+"current": [],
+"current_hash": "5b1e6e80c2b1836e",
 "hash": "41940e94af707006",
 "keep": [
 1
@@ -66,7 +72,7 @@
 "BIGNET_PROOF_FIX_SIZE_NOT_RESTORED": {
 "at": "2026-11-16T03:36:26",
 "current": [],
-"current_hash": "f1ddd2659c52e60b",
+"current_hash": "3e7b061fa7b51e0a",
 "hash": "753093c41e3bd0ac",
 "keep": [
 1
@@ -165,8 +171,12 @@
 },
 "CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
 "at": "2026-11-16T03:36:26",
-"current": [],
-"current_hash": "040961db3d97e50f",
+"current": [
+2,
+3,
+4
+],
+"current_hash": "ae3e4eed69cc2ef9",
 "hash": "99174fb930f7e931",
 "keep": [
 1,
@@ -263,6 +273,8 @@
 },
 "CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL": {
 "at": "2026-11-16T03:36:26",
+"current": [],
+"current_hash": "d5a314ad8da83f3b",
 "hash": "d149f10be1ef8b31",
 "keep": [
 1
@@ -322,6 +334,8 @@
 },
 "COVER_BLAST_FIX_DECK_LEFT_INTACT": {
 "at": "2026-11-16T03:36:26",
+"current": [],
+"current_hash": "9f0a4b877471da1d",
 "hash": "88ce39b61d61f896",
 "keep": [
 1
@@ -364,7 +378,7 @@
 "DBH_WATER_MEND_ACID_ON_TAP": {
 "at": "2026-11-16T03:36:26",
 "current": [],
-"current_hash": "bbaa8cbf6699296c",
+"current_hash": "1f9f67dd88892507",
 "hash": "7f6f98304a9d5672",
 "keep": [
 1
@@ -391,7 +405,7 @@
 "DEEP_BEDS_FIX_FLOOR_STOPS_AT_FOUR": {
 "at": "2026-11-16T03:36:26",
 "current": [],
-"current_hash": "36b9acf461d2ca93",
+"current_hash": "ffa8b94c748ecbe6",
 "hash": "92c323cbabe8a01a",
 "keep": [
 1,
@@ -425,6 +439,8 @@
 },
 "DEEP_SAND_FIX_READS_AS_FRESHWATER": {
 "at": "2026-11-16T03:36:10",
+"current": [],
+"current_hash": "9dc2ab19f9fe90dc",
 "hash": "fc61b1af0a3b05be",
 "keep": [
 1
@@ -448,6 +464,8 @@
 },
 "DEEP_STONE_FIX_NOBODY_PICKS_UP_SHOVEL": {
 "at": "2026-11-16T03:36:10",
+"current": [],
+"current_hash": "eda5103df5f99c62",
 "hash": "31e6a8964290dd9f",
 "keep": [
 1
@@ -494,6 +512,8 @@
 },
 "DEEP_STONE_PROOF_FIX_RERUN_LETTER_FAILS": {
 "at": "2026-11-16T03:36:10",
+"current": [],
+"current_hash": "5d78daeb13488201",
 "hash": "efe43f0e89645d02",
 "keep": [
 1
@@ -517,6 +537,8 @@
 },
 "DEPTH_PROOFS_FIX_EXIT_ZERO_ON_FAIL": {
 "at": "2026-11-16T03:36:10",
+"current": [],
+"current_hash": "7a52256a51223718",
 "hash": "5ce925f91ad2da34",
 "keep": [
 1
@@ -540,6 +562,10 @@
 },
 "DIG_FINDS_PROVE_NEVER_FINISHES_ON_STEVE": {
 "at": "2026-11-16T03:36:10",
+"current": [
+5
+],
+"current_hash": "11c19818f8571599",
 "hash": "21ec9abcb1951536",
 "keep": [
 1,
@@ -589,8 +615,11 @@
 },
 "DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS": {
 "at": "2026-11-16T03:36:10",
-"current": [],
-"current_hash": "202f96c7b82716e6",
+"current": [
+2,
+3
+],
+"current_hash": "ef28c94ca1e5eb62",
 "hash": "41803338fc15319a",
 "keep": [
 1,
@@ -649,6 +678,10 @@
 },
 "DRILL_SURVEY_EXPLAIN_BEFORE_STEEL_IS_SPENT": {
 "at": "2026-11-16T03:36:20",
+"current": [
+1
+],
+"current_hash": "325972a1c3ca6bf1",
 "hash": "aea177e89a981325",
 "keep": [
 1
@@ -693,6 +726,8 @@
 },
 "EXCAVATION_LEGACY_MIGRATION_FLAG_1": {
 "at": "2026-11-16T03:36:20",
+"current": [],
+"current_hash": "bdd686dc4c17bf84",
 "hash": "937b139249317e3e",
 "keep": [
 1
@@ -717,7 +752,7 @@
 "FERRY_ROPE_FIX_BUILT_ONLY_WHEN_ASKED": {
 "at": "2026-11-16T03:36:20",
 "current": [],
-"current_hash": "fcca3e982c2c57cc",
+"current_hash": "d9d0269896151175",
 "hash": "f3e648ffc029f914",
 "keep": [
 1,
@@ -761,7 +796,7 @@
 "FILL_TERRAIN_FIX_HAZARDS_DRUNK_AS_WATER": {
 "at": "2026-11-16T03:36:20",
 "current": [],
-"current_hash": "a07f948f427e02aa",
+"current_hash": "fc04d49d5d93976b",
 "hash": "63c04c648b78cf2b",
 "keep": [
 1
@@ -814,7 +849,7 @@
 "FLOOD_DEBIT_MEND_DEEP_CELL_ONE_LEVEL": {
 "at": "2026-11-16T03:36:20",
 "current": [],
-"current_hash": "02423469e7390295",
+"current_hash": "84a4300613757397",
 "hash": "c3d69f216e6d4647",
 "keep": [
 1,
@@ -846,7 +881,7 @@
 "FLOOD_DRIVER_OWNERSHIP_CONTRACT_1": {
 "at": "2026-11-16T03:36:20",
 "current": [],
-"current_hash": "c8a11429c743a957",
+"current_hash": "93f00c469154645e",
 "hash": "b7db75df0ae75037",
 "keep": [
 1,
@@ -907,6 +942,8 @@
 },
 "FLOOD_SWITCH_RACE_MEND_ENGINE_OFF": {
 "at": "2026-11-16T03:36:20",
+"current": [],
+"current_hash": "717bb9d2df8bb927",
 "hash": "9a33263c43ea73ee",
 "keep": [
 1,
@@ -1001,7 +1038,7 @@
 "FLOWWORKS_BARS_JUDGE_FIVE_IN_ONE_SITTING": {
 "at": "2026-11-16T03:36:11",
 "current": [],
-"current_hash": "613ebb198d72ff9e",
+"current_hash": "1956a6e3d19e0c4a",
 "hash": "3d1728bb9c336cb2",
 "keep": [
 1,
@@ -1171,7 +1208,7 @@
 "current": [
 1
 ],
-"current_hash": "ce60a7c64926d2a8",
+"current_hash": "412076ea5a2956cc",
 "hash": "cf660ea8f7ab1398",
 "keep": [
 1,
@@ -1205,6 +1242,8 @@
 },
 "FLOWWORKS_CLIMBERS_REWIRE_NAMES_THAT_LEFT": {
 "at": "2026-11-16T03:36:22",
+"current": [],
+"current_hash": "7cddfe9e67d5d66f",
 "hash": "a72dde40248d3db2",
 "keep": [
 1
@@ -1261,8 +1300,10 @@
 },
 "FLOWWORKS_CONTAINER_MATERIALS_1": {
 "at": "2026-11-16T03:36:27",
-"current": [],
-"current_hash": "9867e847c2ec7327",
+"current": [
+1
+],
+"current_hash": "a202e3382cd2b958",
 "hash": "2653c59464ca35ad",
 "keep": [
 1,
@@ -1314,7 +1355,7 @@
 "FLOWWORKS_CONVERTER_FIX_BLOCKED_STARVES_REST": {
 "at": "2026-11-16T03:36:27",
 "current": [],
-"current_hash": "fc83131077dbbc87",
+"current_hash": "bcfb307f14e5dfb7",
 "hash": "54f6ac4633640f28",
 "keep": [
 1,
@@ -1343,6 +1384,10 @@
 },
 "FLOWWORKS_CONVERTER_FIX_CAP_EATS_CHANGE": {
 "at": "2026-11-16T03:36:27",
+"current": [
+1
+],
+"current_hash": "206031dc4ccabb5f",
 "hash": "75e1b3cf90ef792f",
 "keep": [
 1
@@ -1380,8 +1425,11 @@
 },
 "FLOWWORKS_DEPTH_REBUILD_ONE_BIG_DIG": {
 "at": "2026-11-16T03:36:40",
-"current": [],
-"current_hash": "06d89da6735d7e59",
+"current": [
+1,
+2
+],
+"current_hash": "86b506cdb70c37dc",
 "hash": "905d6261cec4154c",
 "keep": [
 1,
@@ -1470,6 +1518,8 @@
 },
 "FLOWWORKS_DONOR_AFFORDANCE_GAP_1": {
 "at": "2026-11-16T03:36:40",
+"current": [],
+"current_hash": "0311f505e230ef06",
 "hash": "a8e6acc1ba3e52cd",
 "keep": [
 1,
@@ -1506,8 +1556,11 @@
 },
 "FLOWWORKS_DOOR_FAMILY_1": {
 "at": "2026-11-16T03:36:40",
-"current": [],
-"current_hash": "7c3ae76a18b7e32c",
+"current": [
+1,
+3
+],
+"current_hash": "38f97a626daae287",
 "hash": "909f2ec35ef8106e",
 "keep": [
 1,
@@ -1577,32 +1630,30 @@
 }
 },
 "FLOWWORKS_FINISH_ARTISAN_LOOP_DREAD_FOURTH": {
-"at": "2026-11-16T03:36:50",
-"hash": "7b59672d25ffcbe1",
+"at": "2026-11-19T15:50:00",
+"hash": "ab6b7f34b1ff8533",
 "keep": [
 1
 ],
 "keep_hash": "bf9f397bf9721025",
-"owner": [
-6
-],
-"owner_hash": "9c74eeca52fe2ef7",
+"owner": [],
+"owner_hash": "a0a27466ea30e710",
 "reading": {
-"accept": "none, no acceptance test filed; a mod closes when the owner says so",
+"accept": "none, no acceptance test filed; the item file says to prove it where the title says and verify.",
 "bars": [],
 "causes_refuted": [],
 "changed": null,
 "class": "problem",
-"defect": "Task: run an Artisan loop on FlowWorks as the fourth experiment, set up from the Pyrelands lessons and the GPT brainstorm, possibly in several sequential aspects. Loops were closed 2026-11-08; remaining bars close live with the owner as judge.",
-"proposed_fix": "Prepare the offline plan for a live FlowWorks sitting with the owner, after GSS finishes. Start where Artisan left off (ralph/RATCHET.md Remaining list), and work the unproven bars with him as live judge.",
+"defect": "Task: run an Artisan loop on FlowWorks as the fourth experiment after Pyrelands, set up from its lessons and the GPT brainstorm. Loops were closed 2026-11-08; remaining bars were to close live with the owner as judge. Dropped as outmoded when Artisan was retired.",
+"proposed_fix": "None current. FlowWorks now goes through the Maturation Pipeline; the Artisan loop is retired (design/RimMandrake/retired_loops_2026-11-13.md).",
 "traps": [
 {
-"text": "The dashboard showed 'no count' for ARTISAN_NOW only because artisan_now.py:623 COUNT_LINE parses '- bar: verdict' bullets while the loop wrote a table; the real count was 7T/7F/16U of 30. The record also says the first_look and bars2 shots are at rootSize 7.2, closer than a player's floor of root 11, so the LOOK was NOT READY.",
-"where": "artisan_now.py:623 COUNT_LINE; ralph LOOK.md shots"
+"text": "The item file lives under items/closed/ and says 'state: proposed', but the item was dropped, not built; its 'what is left' says nothing is owed beyond the title. The loop was stopped and the ratchet never reached proof.",
+"where": "infrastructure/state/items/closed/FLOWWORKS_FINISH_ARTISAN_LOOP_DREAD_FOURTH.md"
 },
 {
-"text": "A detached setup run's clone was bundled as an orphan, not pushed to any remote; restore it with relentless restore_bundle if its work is wanted.",
-"where": "/home/mandrake/rm/relentless/store/orphans/bundles/20261107T231851Z-FLOWWORKS_FINISH_ARTISAN_LOOP_DREAD_FOURTH.det"
+"text": "The Conductor peek read LOOK.md as NOT READY: shots were taken at rootSize 7.2, closer than a player's floor of root 11. ARTISAN_NOW showed 'no count' only because artisan_now.py:623 COUNT_LINE parses '- bar: verdict' bullets, not the table the loop writes (real count 7T/7F/16U of 30).",
+"where": "artisan_now.py:623; ralph_flowworks LOOK.md"
 }
 ]
 }
@@ -1871,7 +1922,7 @@
 "FLOWWORKS_LIQUID_FACES_1": {
 "at": "2026-11-16T03:36:53",
 "current": [],
-"current_hash": "c100710ed6c83bf6",
+"current_hash": "e136b05c8450eb1a",
 "hash": "3e875620ae0314ba",
 "keep": [
 1
@@ -1896,7 +1947,7 @@
 "FLOWWORKS_LIQUID_KITS_WIRE_NO_REVIEW_ROW": {
 "at": "2026-11-16T03:36:53",
 "current": [],
-"current_hash": "7569e36a224313ce",
+"current_hash": "e8d181985e8102bf",
 "hash": "b1f2cbf542787da7",
 "keep": [
 1
@@ -1921,7 +1972,7 @@
 "FLOWWORKS_LIVE_ROWS_REMEASURE_STALE_HASH": {
 "at": "2026-11-16T03:36:53",
 "current": [],
-"current_hash": "e97fa22641dbc5c9",
+"current_hash": "82f9606d03313f3e",
 "hash": "9afadbbf0c7af094",
 "keep": [
 1,
@@ -1951,7 +2002,7 @@
 "FLOWWORKS_MODCHECK_FIX_SIX_STANDING_FAILS": {
 "at": "2026-11-16T03:36:53",
 "current": [],
-"current_hash": "2aa88f56d7db1395",
+"current_hash": "c14aa657b6983fa4",
 "hash": "dec05ffcdbfe73ab",
 "keep": [
 1,
@@ -1992,7 +2043,7 @@
 "FLOWWORKS_NORTHSTAR_BASELINE_RUN_1": {
 "at": "2026-11-16T03:36:53",
 "current": [],
-"current_hash": "76b7d5694fbecd61",
+"current_hash": "db66bfdc15ec1243",
 "hash": "8b957a5b851f136a",
 "keep": [
 1,
@@ -2046,7 +2097,7 @@
 "FLOWWORKS_NORTHSTAR_GREEN_MINIMAL_1": {
 "at": "2026-11-16T03:36:53",
 "current": [],
-"current_hash": "001a0ecf40fa8b67",
+"current_hash": "1c0df06a738dca74",
 "hash": "67903bcdd255266c",
 "keep": [
 1
@@ -2093,6 +2144,10 @@
 },
 "FLOWWORKS_NORTHSTAR_SHIP_1": {
 "at": "2026-11-16T03:37:12",
+"current": [
+1
+],
+"current_hash": "43adbe1f9641d2d5",
 "hash": "0ddf2581e8e77036",
 "keep": [
 1,
@@ -2137,6 +2192,8 @@
 },
 "FLOWWORKS_NORTHSTAR_TRIAL_1": {
 "at": "2026-11-16T03:37:12",
+"current": [],
+"current_hash": "e3b23e237e3f2fd3",
 "hash": "765690e22ac673d4",
 "keep": [
 1,
@@ -2171,10 +2228,8 @@
 },
 "FLOWWORKS_NORTHSTAR_WIRE_1": {
 "at": "2026-11-16T03:37:12",
-"current": [
-1
-],
-"current_hash": "85cd7d1efbc46d3c",
+"current": [],
+"current_hash": "c7a18ba6c1a88d3a",
 "hash": "72738859ef89663e",
 "keep": [
 1,
@@ -2217,6 +2272,8 @@
 },
 "FLOWWORKS_OWNER_RECONCILE_CUTOVER_STALE": {
 "at": "2026-11-16T03:37:12",
+"current": [],
+"current_hash": "ff769635a7636c41",
 "hash": "36f0f6fd3cea616e",
 "keep": [
 1
@@ -2261,7 +2318,7 @@
 "current": [
 1
 ],
-"current_hash": "61d693fe2aa789be",
+"current_hash": "706313a0c2d7eb6e",
 "hash": "c4896d2bb4eebd1b",
 "keep": [
 1
@@ -2286,7 +2343,7 @@
 "FLOWWORKS_PITFALL_FIX_HISTORY_NOT_SAVED": {
 "at": "2026-11-16T03:37:12",
 "current": [],
-"current_hash": "613eb838eb80fbec",
+"current_hash": "0b06eedfacdd10d0",
 "hash": "8d49f4502fac89ea",
 "keep": [
 1
@@ -2310,8 +2367,10 @@
 },
 "FLOWWORKS_PIT_FALL_ONLY_FORCED_1": {
 "at": "2026-11-16T03:37:12",
-"current": [],
-"current_hash": "fba8cec2e8d10b42",
+"current": [
+1
+],
+"current_hash": "47721a5c5f58c665",
 "hash": "7225cc4d6abeb929",
 "keep": [
 1,
@@ -2364,7 +2423,7 @@
 "FLOWWORKS_PIT_OCCUPANT_LIP_CUT_1": {
 "at": "2026-11-16T03:37:12",
 "current": [],
-"current_hash": "255108dbe337ac69",
+"current_hash": "e665dde9a7bd46f9",
 "hash": "512c5aec6e7951ee",
 "keep": [
 1
@@ -2389,7 +2448,7 @@
 "FLOWWORKS_PIT_PAWN_ROWS_RED_1": {
 "at": "2026-11-16T03:37:12",
 "current": [],
-"current_hash": "67a2131f80e2954f",
+"current_hash": "8c7583457a1ac3cc",
 "hash": "5980b62252f498a7",
 "keep": [
 1,
@@ -2427,7 +2486,7 @@
 "FLOWWORKS_PIT_TRAVEL_BUILD_FLY_JUMP_FLOAT": {
 "at": "2026-11-16T03:37:12",
 "current": [],
-"current_hash": "bbf7e5c2a61fa19c",
+"current_hash": "d89602a5fea81863",
 "hash": "e6b41dfecc8024c3",
 "keep": [
 1,
@@ -2458,8 +2517,10 @@
 },
 "FLOWWORKS_PLAYTEST_CAMPAIGN_1": {
 "at": "2026-11-16T03:37:07",
-"current": [],
-"current_hash": "57077ce89bc013ec",
+"current": [
+3
+],
+"current_hash": "5ce036efcec5dc29",
 "hash": "17ba93fe99e6b037",
 "keep": [
 1,
@@ -2515,8 +2576,10 @@
 },
 "FLOWWORKS_PRISON_BUILD_NO_BED_REQUIRED": {
 "at": "2026-11-16T03:37:07",
-"current": [],
-"current_hash": "b200279359b2897b",
+"current": [
+2
+],
+"current_hash": "557688bd10f3178d",
 "hash": "362347494f687c0c",
 "keep": [
 1
@@ -2569,7 +2632,7 @@
 "FLOWWORKS_PROOF_POKES_RESTORE_PRIOR": {
 "at": "2026-11-16T03:37:07",
 "current": [],
-"current_hash": "10a9f0a91372a431",
+"current_hash": "79e1f4a8d5c4a489",
 "hash": "db459606014a5f0a",
 "keep": [
 1,
@@ -2605,6 +2668,10 @@
 },
 "FLOWWORKS_PROVE_OWED_LIVE_CHECKS_ONE_SITTING": {
 "at": "2026-11-16T03:37:07",
+"current": [
+1
+],
+"current_hash": "0367b8d16b1f4e0a",
 "hash": "51ae292fdb644121",
 "keep": [
 1
@@ -2644,6 +2711,10 @@
 },
 "FLOWWORKS_PUMP_FIX_POURS_BACK_STILL_THREE": {
 "at": "2026-11-16T03:37:07",
+"current": [
+1
+],
+"current_hash": "3c64fbc67ecb56f1",
 "hash": "f88d50edcbc3cda1",
 "keep": [
 1
@@ -2833,7 +2904,7 @@
 "FLOWWORKS_REACTOR_FIX_STUCK_ENDS_SHIFT": {
 "at": "2026-11-16T03:37:21",
 "current": [],
-"current_hash": "9156233360f8ef8b",
+"current_hash": "80e58bc00c28283c",
 "hash": "fd2629f9b0f3d962",
 "keep": [
 1,
@@ -2862,6 +2933,8 @@
 },
 "FLOWWORKS_REDROWS_PROVE_FIXED_STILL_FROWN": {
 "at": "2026-11-16T03:37:21",
+"current": [],
+"current_hash": "3cfd3d2fa6b4b11a",
 "hash": "518578ac75b2df1f",
 "keep": [
 1
@@ -2886,7 +2959,7 @@
 "FLOWWORKS_RESET_BUILD_TWELVE_SCREENS_MISSING": {
 "at": "2026-11-16T03:37:21",
 "current": [],
-"current_hash": "6b43614e69bb3483",
+"current_hash": "72b80aa0c41b9edb",
 "hash": "cf3133d7d35e7865",
 "keep": [
 1
@@ -2912,10 +2985,8 @@
 },
 "FLOWWORKS_REVIEW_LOOKS_ROUND_1": {
 "at": "2026-11-16T03:37:21",
-"current": [
-2
-],
-"current_hash": "61b23d4c35d558e1",
+"current": [],
+"current_hash": "d4c07f01fea68e6a",
 "hash": "910cc3dad0a38b3c",
 "keep": [
 1,
@@ -3069,9 +3140,9 @@
 "FLOWWORKS_SELFTEST_FIX_FOUR_RED_AT_BASE": {
 "at": "2026-11-16T03:37:21",
 "current": [
-1
+3
 ],
-"current_hash": "8b484e7669b626b5",
+"current_hash": "b4fe42bd9ffcc8da",
 "hash": "5e708aa2d689a5ff",
 "keep": [
 1,
@@ -3109,7 +3180,7 @@
 "FLOWWORKS_SELFTEST_FIX_TWO_STRAY_REDS": {
 "at": "2026-11-16T03:37:41",
 "current": [],
-"current_hash": "7401d8fee6820bcc",
+"current_hash": "a84ab6044c2fb7ac",
 "hash": "794cf1d8c37b3325",
 "keep": [
 1,
@@ -3173,7 +3244,7 @@
 "FLOWWORKS_SETTINGS_POLISH_SUPERDEEP_LEAKS": {
 "at": "2026-11-16T03:37:41",
 "current": [],
-"current_hash": "b082fd3ec4f9daa3",
+"current_hash": "98ff518214344c5a",
 "hash": "dad9a1f11e4521e7",
 "keep": [
 1,
@@ -3219,7 +3290,7 @@
 "FLOWWORKS_SETTINGS_UNTANGLE_THE_JUNK_DRAWER": {
 "at": "2026-11-16T03:37:41",
 "current": [],
-"current_hash": "07b0be69e3c11564",
+"current_hash": "d401876637baff2a",
 "hash": "368dfdda952511b8",
 "keep": [
 1,
@@ -3251,7 +3322,7 @@
 "FLOWWORKS_SETTINGS_WIRE_AFTER_TANKS": {
 "at": "2026-11-16T03:37:41",
 "current": [],
-"current_hash": "58a37bbeb068f19b",
+"current_hash": "3633a69435a6616f",
 "hash": "3c1b72d1140e6af5",
 "keep": [
 1
@@ -3291,8 +3362,11 @@
 },
 "FLOWWORKS_SHEETS_DIAGNOSE_LOAD_DIVERGES": {
 "at": "2026-11-16T03:37:41",
-"current": [],
-"current_hash": "54ee92c90f7c6555",
+"current": [
+1,
+2
+],
+"current_hash": "3aab57baf98df092",
 "hash": "a8e0b7ef5ccccdde",
 "keep": [
 1,
@@ -3386,7 +3460,7 @@
 "FLOWWORKS_STOCK_BISECT_RED_CHECK": {
 "at": "2026-11-16T03:37:41",
 "current": [],
-"current_hash": "35df55553957577b",
+"current_hash": "fe909a7b111279dc",
 "hash": "4d61d575e514776e",
 "keep": [
 1,
@@ -3437,8 +3511,10 @@
 },
 "FLOWWORKS_TABS_RECONCILE_PIPES_WITH_PIPES": {
 "at": "2026-11-16T03:37:37",
-"current": [],
-"current_hash": "59bef51e8597d30e",
+"current": [
+1
+],
+"current_hash": "35221a5e8b4f69e2",
 "hash": "e052147b5378096d",
 "keep": [
 1
@@ -3530,6 +3606,8 @@
 },
 "FLOWWORKS_V2_DIAGNOSE_THREE_NEW_REDS": {
 "at": "2026-11-16T03:37:37",
+"current": [],
+"current_hash": "88a55f212fdfeb77",
 "hash": "b4b9069fb62e8070",
 "keep": [
 1,
@@ -3567,7 +3645,7 @@
 "FLOWWORKS_V2_FIX_PIT_ROWS_RESCUE_LADDER": {
 "at": "2026-11-16T03:37:37",
 "current": [],
-"current_hash": "8cb777a1e38d2129",
+"current_hash": "5dcccb9aab11a745",
 "hash": "699b98f178d8746c",
 "keep": [
 1
@@ -3593,6 +3671,8 @@
 },
 "FLOWWORKS_VERYSHALLOW_FIX_RESIDUE_GAP": {
 "at": "2026-11-16T03:37:37",
+"current": [],
+"current_hash": "e5972a689d0bcd69",
 "hash": "b00fac7aadb392a8",
 "keep": [
 1
@@ -3616,10 +3696,8 @@
 },
 "FLOWWORKS_VISUAL_PRINCIPLES_1": {
 "at": "2026-11-16T03:37:37",
-"current": [
-1
-],
-"current_hash": "431d016479c147c9",
+"current": [],
+"current_hash": "5dc3f6eb5074b1a1",
 "hash": "bab8344eab7e94d9",
 "keep": [
 1,
@@ -3652,7 +3730,7 @@
 "FLOWWORKS_WATERBODY_DIAGNOSE_SOIL_THROW": {
 "at": "2026-11-16T03:37:37",
 "current": [],
-"current_hash": "ab3087263d8d09bf",
+"current_hash": "1141aa8f600aefe9",
 "hash": "c9838dcdfd1c4304",
 "keep": [
 1,
@@ -3684,6 +3762,8 @@
 },
 "FLOWWORKS_WETPROBE_BUILD_READ_THE_DAMP_FIRST": {
 "at": "2026-11-16T03:37:37",
+"current": [],
+"current_hash": "9152285158b04970",
 "hash": "9311778875de6b6b",
 "keep": [
 1
@@ -3708,7 +3788,7 @@
 "FLOWWORKS_WETTING_BUILD_TWO_SQUARES_DAMP": {
 "at": "2026-11-16T03:37:37",
 "current": [],
-"current_hash": "d719f59fc232028d",
+"current_hash": "80800ea956a4df3b",
 "hash": "bee978c659f10d5e",
 "keep": [
 1
@@ -3732,10 +3812,8 @@
 },
 "FLOW_ORDER_EXTERNAL_INPUT_1": {
 "at": "2026-11-16T03:37:42",
-"current": [
-1
-],
-"current_hash": "cf0f6a21b85f63d5",
+"current": [],
+"current_hash": "6cb4ae52433ce166",
 "hash": "f10bb073c6eecab1",
 "keep": [
 1,
@@ -3766,30 +3844,30 @@
 }
 },
 "FLOW_SOURCE_SINK_BUILD_TAPS_FOR_MAPMAKERS": {
-"at": "2026-11-16T03:37:42",
+"at": "2026-11-19T15:50:00",
 "current": [],
-"current_hash": "703d86007ed9b858",
-"hash": "08db78cc2a97470b",
+"current_hash": "6de02d5b1e865de2",
+"hash": "7468a1b95f5a05f7",
 "keep": [
 1
 ],
-"keep_hash": "29cad1d32fe04c08",
+"keep_hash": "491c4eeb2b7d194d",
 "owner": [
 1
 ],
 "owner_hash": "6f6342c821e22c43",
 "reading": {
-"accept": "Live check: place via RM_MapControls.PlaceSource/PlaceSink static_call on a dug channel, watch level, L0 ledger flowSources/flowSinks, no conservation warning, save/reload.",
+"accept": "Offline selftest, 6 cases green (not deployed). Live: watch level, L0 ledger flowSources/flowSinks, no conservation warning, save/reload.",
 "bars": [],
 "causes_refuted": [],
-"changed": null,
+"changed": "Built RM_FlowSource/RM_FlowSink in Source/MapControls/ at b696fdb9a2; gizmos made dev-only after review. Offline selftest 6 cases green; not deployed.",
 "class": "problem",
-"defect": "Task: map makers, review/test maps and Inhabited need dev-placed FlowWorks Source and Sink objects; the Source emits any FlowWorks liquid at an adjustable rate, the Sink removes any liquid. Not buildable, minimal look.",
-"proposed_fix": "Add RM_FlowSource/RM_FlowSink (Source/MapControls/), placed via RM_MapControls.PlaceSource/PlaceSink. Remaining: deploy and live check on a dug channel (level, ledger flowSources/flowSinks, no conservation warning, save/reload).",
+"defect": "Task: map makers and review/test maps need dev-placed FlowWorks Source and Sink objects. The Source makes any FlowWorks liquid at a set rate; the Sink does the reverse for any liquid. They are not buildable and have a minimal look.",
+"proposed_fix": "Built RM_FlowSource/RM_FlowSink in Source/MapControls/ (b696fdb9a2). Remaining: live check, placing via RM_MapControls.PlaceSource/PlaceSink static_call on a dug channel.",
 "traps": [
 {
-"text": "Built at b696fdb9a2 with only the offline selftest (6 cases) green; not deployed and not live-checked. Building_RM_MapControl.cs and its XML were still dirty pending code review.",
-"where": "Source/MapControls/, Building_RM_MapControl.cs"
+"text": "The build is offline-green only and not deployed. Building_RM_MapControl.cs and its XML were still dirty for code review, so b696fdb9a2 may not hold the final state.",
+"where": "Source/MapControls/Building_RM_MapControl.cs"
 }
 ]
 }
@@ -3813,7 +3891,7 @@
 "FLUID_PALETTE_EXHAUSTION_MEND_KEY_ZERO": {
 "at": "2026-11-16T03:37:42",
 "current": [],
-"current_hash": "05b048d75fceb7b2",
+"current_hash": "5168cfdf7a0aa623",
 "hash": "c721bfdad2eb8b9c",
 "keep": [
 1,
@@ -3844,6 +3922,8 @@
 },
 "FOUNTAIN_LOOP_BUILD_PUMPS_ITS_OWN_RAIN": {
 "at": "2026-11-16T03:37:42",
+"current": [],
+"current_hash": "3e852cf046482b9a",
 "hash": "eb3e4b8c3171ea15",
 "keep": [
 1,
@@ -3908,7 +3988,7 @@
 "FUEL_FIRE_SELFTEST_FIX_SQUARE_COVERAGE": {
 "at": "2026-11-16T03:37:42",
 "current": [],
-"current_hash": "3976f87796dad56a",
+"current_hash": "b468d5c1170bbdd9",
 "hash": "aabdca1420c9719c",
 "keep": [
 1
@@ -3966,6 +4046,8 @@
 },
 "FW_ART_POLISH_REDRAW_FOUR_SMALL_MISSES": {
 "at": "2026-11-16T03:37:42",
+"current": [],
+"current_hash": "0eb4cb59fadcf704",
 "hash": "d0ce2e813cebfda3",
 "keep": [
 1
@@ -4030,6 +4112,10 @@
 },
 "FW_PROOF_DRIVERS_FIX_LATE_FALSE_PASS": {
 "at": "2026-11-16T03:37:42",
+"current": [
+1
+],
+"current_hash": "cfb0c8ee679b5515",
 "hash": "c585bc172dc1b518",
 "keep": [
 1
@@ -4058,7 +4144,7 @@
 "FW_PROOF_TOOLS_HARDEN_READ_GAPS": {
 "at": "2026-11-16T03:37:46",
 "current": [],
-"current_hash": "de236ae15431cd10",
+"current_hash": "b2209749b4afdb9c",
 "hash": "cf00851be53a6077",
 "keep": [
 1,
@@ -4095,6 +4181,8 @@
 },
 "FW_RIVER_SITE_DIAGNOSE_NOBODY_SWEPT_AWAY": {
 "at": "2026-11-16T03:37:46",
+"current": [],
+"current_hash": "7956d743bd08ba05",
 "hash": "87b37cf920f58dd1",
 "keep": [
 1,
@@ -4150,6 +4238,8 @@
 },
 "FW_SELFTEST_REPAIR_TWO_PATTERNS_ADRIFT": {
 "at": "2026-11-16T03:37:46",
+"current": [],
+"current_hash": "0f83973ab2c93373",
 "hash": "cc0f2c0d4eb5cdfa",
 "keep": [
 1
@@ -4177,8 +4267,10 @@
 },
 "GLOWTANK_SALT_FIX_ONE_PINCH_ONLY": {
 "at": "2026-11-16T03:37:46",
-"current": [],
-"current_hash": "7e54af4ac57d9fb9",
+"current": [
+1
+],
+"current_hash": "37708cb172ce9293",
 "hash": "6b4b05b6cb7d7ef1",
 "keep": [
 1
@@ -4203,7 +4295,7 @@
 "GLOW_TANK_PROOF_FIX_BLIND_READ_PASSES": {
 "at": "2026-11-16T03:37:46",
 "current": [],
-"current_hash": "8e88864b0af19243",
+"current_hash": "6acfd34de997087e",
 "hash": "6b9f7f8bdfaeb00d",
 "keep": [
 1
@@ -4246,6 +4338,8 @@
 },
 "GRATE_FIRE_FIX_SOLID_DECK_BURNS_TOO": {
 "at": "2026-11-16T03:37:46",
+"current": [],
+"current_hash": "6b9646318319c38d",
 "hash": "5d028d49c63d7916",
 "keep": [
 1,
@@ -4297,6 +4391,8 @@
 },
 "GSS_POWER_THEFT_FIX_WRONG_VICTIM": {
 "at": "2026-11-16T03:38:03",
+"current": [],
+"current_hash": "198708cb7ad9255d",
 "hash": "ad82b993ba032724",
 "keep": [
 1
@@ -4345,7 +4441,7 @@
 "HEAT_BUDGET_PREFIX_MEND_LATE_CELLS_STARVE": {
 "at": "2026-11-16T03:38:03",
 "current": [],
-"current_hash": "124b9f80cebd1b2c",
+"current_hash": "13cd5c0ce152a962",
 "hash": "fe4aef9438ebac3f",
 "keep": [
 1
@@ -4369,6 +4465,8 @@
 },
 "HOSE_BUILDINGS_FIX_BATTERY_HIDE_AND_SEEK": {
 "at": "2026-11-16T03:38:03",
+"current": [],
+"current_hash": "485bf15c22fd78f5",
 "hash": "9149df7c353cf7a3",
 "keep": [
 1
@@ -4395,7 +4493,7 @@
 "HOSE_CLEAR_FIX_WALL_SEAM_LOOPHOLE": {
 "at": "2026-11-16T03:38:03",
 "current": [],
-"current_hash": "13e098de36d375ac",
+"current_hash": "009bfd9078f8a64b",
 "hash": "b180f263fd626b55",
 "keep": [
 1,
@@ -4465,7 +4563,7 @@
 "HOSE_JOINTS_REPAIR_ENDS_MISS_THE_NOZZLES": {
 "at": "2026-11-16T03:38:03",
 "current": [],
-"current_hash": "27be3d91afa2f2ad",
+"current_hash": "a747fcd026795bf1",
 "hash": "8ae67708a97c9eef",
 "keep": [
 1,
@@ -4501,6 +4599,8 @@
 },
 "HOSE_LAY_POLISH_CENTRE_VS_MOUTH": {
 "at": "2026-11-16T03:38:03",
+"current": [],
+"current_hash": "dde0aa62e4c82fe8",
 "hash": "9f27581e57218778",
 "keep": [
 1
@@ -4547,7 +4647,7 @@
 "HOSE_OFF_MEND_SLEEPWALKING_RETRACT": {
 "at": "2026-11-16T03:38:10",
 "current": [],
-"current_hash": "0be67d3b56fbc1e0",
+"current_hash": "0e5417612accaacb",
 "hash": "d2cb2f565e8ffff4",
 "keep": [
 1
@@ -4574,7 +4674,7 @@
 "HOSE_ORDERS_MEND_WAITING_FOREVER": {
 "at": "2026-11-16T03:38:10",
 "current": [],
-"current_hash": "f8ef8d544caff0dc",
+"current_hash": "651cc3a1576cce6d",
 "hash": "f52ae2ede5bcf675",
 "keep": [
 1,
@@ -4637,6 +4737,8 @@
 },
 "HOSE_ROUTE_FIX_TUNNELS_UNDER_WALLS": {
 "at": "2026-11-16T03:38:10",
+"current": [],
+"current_hash": "b592f040db2e7846",
 "hash": "e2b1328e55cc7a1d",
 "keep": [
 1,
@@ -4691,7 +4793,7 @@
 "HOSE_RULINGS_BUILD_THREE_REVERSALS_ONE_CARD": {
 "at": "2026-11-16T03:38:10",
 "current": [],
-"current_hash": "7a78fbde096306ef",
+"current_hash": "7110059d49bc2397",
 "hash": "d77569b9a1a8ffc8",
 "keep": [
 1,
@@ -4749,7 +4851,7 @@
 "HOSE_SPILL_FIX_OFF_SWITCH_STILL_POURS": {
 "at": "2026-11-16T03:38:10",
 "current": [],
-"current_hash": "c0c2dfd37a3e96f3",
+"current_hash": "335bbc3b830d37a1",
 "hash": "2ec227f630cecc6c",
 "keep": [
 1
@@ -4800,6 +4902,8 @@
 },
 "HOSE_STYLES_FIX_RELOAD_DRIFT_SEEN": {
 "at": "2026-11-16T03:38:10",
+"current": [],
+"current_hash": "c5238e684add248e",
 "hash": "02a30d0abf06d502",
 "keep": [
 1
@@ -4842,6 +4946,8 @@
 },
 "INDUSTRIAL_RUINS_FIX_HIDDEN_EH_DEPENDENCY": {
 "at": "2026-11-16T03:38:06",
+"current": [],
+"current_hash": "d71ee17323704e27",
 "hash": "8e42a6ddfef16a0f",
 "keep": [
 1
@@ -4880,7 +4986,7 @@
 "JOINT_GATE_HARDEN_TRUST_THE_DRAWN_BOX": {
 "at": "2026-11-16T03:38:06",
 "current": [],
-"current_hash": "fc9f53433cf08e71",
+"current_hash": "5066ed6e05487c20",
 "hash": "8ca3f6e527bd8d30",
 "keep": [
 1,
@@ -4929,6 +5035,10 @@
 },
 "LADDER_ROWS_WIDEN_STILL_COUNT_TO_TWO": {
 "at": "2026-11-16T03:38:06",
+"current": [
+1
+],
+"current_hash": "2b678d74dbd6c0c3",
 "hash": "b88db8965e760891",
 "keep": [
 1
@@ -5007,6 +5117,8 @@
 },
 "LEVELLING_BUDGET_FIX_STARVES_LATER_HOSES": {
 "at": "2026-11-16T03:38:06",
+"current": [],
+"current_hash": "8a0bab200e0f9e86",
 "hash": "2524467af9c99f71",
 "keep": [
 1
@@ -5073,6 +5185,8 @@
 },
 "LEVEL_WATER_FIX_POND_SPLITS_ARMS": {
 "at": "2026-11-16T03:38:06",
+"current": [],
+"current_hash": "12edc79317ffe5a7",
 "hash": "a61389586dfe8ab1",
 "keep": [
 1
@@ -5120,7 +5234,7 @@
 "LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD": {
 "at": "2026-11-16T03:38:15",
 "current": [],
-"current_hash": "18f7ff2df6eab4ff",
+"current_hash": "6394f68d81f47923",
 "hash": "0960d2de7a3f3a76",
 "keep": [
 1,
@@ -5158,7 +5272,7 @@
 "LIQUID_FIRE_MEND_COVER_AND_SAVE": {
 "at": "2026-11-16T03:38:15",
 "current": [],
-"current_hash": "d5fdb5466408a7e9",
+"current_hash": "75b88268bda88560",
 "hash": "fa8ac6701d470bf4",
 "keep": [
 1
@@ -5185,7 +5299,7 @@
 "LIQUID_FIRE_QUEUE_ORIGIN_1": {
 "at": "2026-11-16T03:38:15",
 "current": [],
-"current_hash": "556a3e4013aef446",
+"current_hash": "06547f1b83955979",
 "hash": "16e00c21eab0f7a1",
 "keep": [
 1,
@@ -5240,8 +5354,13 @@
 },
 "LIQUID_LEDGER_BUILD_NO_UNIT_LOST": {
 "at": "2026-11-16T03:38:15",
-"current": [],
-"current_hash": "9a33deaeab6c3dd6",
+"current": [
+1,
+2,
+3,
+8
+],
+"current_hash": "7d385aed5191b185",
 "hash": "b371f8316f157488",
 "keep": [
 1,
@@ -5298,6 +5417,8 @@
 },
 "LIQUID_LOOK_MATERIAL_OWNERSHIP_1": {
 "at": "2026-11-16T03:38:15",
+"current": [],
+"current_hash": "9053b568c100a52a",
 "hash": "28b7491fbe08892e",
 "keep": [
 1
@@ -5345,6 +5466,8 @@
 },
 "LIQUID_PUMP_REDRAW_PLAN_VIEW_HUB": {
 "at": "2026-11-16T03:38:15",
+"current": [],
+"current_hash": "269350d1dbe96a74",
 "hash": "77b34540148729e1",
 "keep": [
 1
@@ -5371,8 +5494,10 @@
 },
 "LIQUID_RECESSION_TOPOLOGY_1": {
 "at": "2026-11-16T03:38:15",
-"current": [],
-"current_hash": "1fc4bba4c4bb02ea",
+"current": [
+1
+],
+"current_hash": "0702053ecd16518d",
 "hash": "7fc125766af5a5ed",
 "keep": [
 1
@@ -5400,7 +5525,7 @@
 "LIQUID_ROTATION_FIX_STARVED_STRANGER": {
 "at": "2026-11-16T03:38:15",
 "current": [],
-"current_hash": "e3c8f0e5279060a4",
+"current_hash": "eac15c3f4959fa33",
 "hash": "d7fb6edbd667a777",
 "keep": [
 1
@@ -5428,7 +5553,7 @@
 "LIQUID_THEFT_FIX_TANK_HIDES_ITSELF": {
 "at": "2026-11-16T03:38:37",
 "current": [],
-"current_hash": "7dfe3ca58ff2a84b",
+"current_hash": "5385e400e6977305",
 "hash": "f1529018357b137a",
 "keep": [
 1,
@@ -5483,7 +5608,7 @@
 "current": [
 2
 ],
-"current_hash": "ab3d25b6ac02eaed",
+"current_hash": "97e6b52ca51fbf20",
 "hash": "c2f706d1934d432d",
 "keep": [
 1,
@@ -5599,8 +5724,10 @@
 },
 "MODCHECK_SUITE_CORRECTIONS_1": {
 "at": "2026-11-16T03:38:37",
-"current": [],
-"current_hash": "e335f7dae956bac9",
+"current": [
+3
+],
+"current_hash": "6f104219868b7ef5",
 "hash": "d8ffb1bfbc809958",
 "keep": [
 1,
@@ -5640,8 +5767,11 @@
 },
 "MODERN_PUMP_REDRAW_SAME_RED_DIFFERENT_DAY": {
 "at": "2026-11-16T03:38:37",
-"current": [],
-"current_hash": "469c149671df3418",
+"current": [
+1,
+2
+],
+"current_hash": "58f8c31f6cd30111",
 "hash": "4acac5c9cdd68019",
 "keep": [
 1,
@@ -5676,6 +5806,8 @@
 },
 "MODERN_RED_LEFTOVERS_REDRAW_TODAYS_LOOK": {
 "at": "2026-11-16T03:38:37",
+"current": [],
+"current_hash": "6fc1e3eb16b31950",
 "hash": "319a24c4121448f2",
 "keep": [
 1,
@@ -5709,7 +5841,7 @@
 "NATURAL_HEAT_CACHE_PROVE_STALE_DAYS": {
 "at": "2026-11-16T03:38:37",
 "current": [],
-"current_hash": "660f725596c7a7f7",
+"current_hash": "f2f11f292409abf8",
 "hash": "dfead247f2c9bb98",
 "keep": [
 1,
@@ -5764,7 +5896,7 @@
 "NORTH_STAR_WALK_AUTHORING_1": {
 "at": "2026-11-16T03:38:35",
 "current": [],
-"current_hash": "af43488a43d0e195",
+"current_hash": "7fbdfbade47b01d2",
 "hash": "a92316c6ff725b27",
 "keep": [
 1,
@@ -5805,10 +5937,8 @@
 },
 "OUTFLOW_REGRESSION_FIX_HARDCODED_CAP": {
 "at": "2026-11-16T03:38:35",
-"current": [
-1
-],
-"current_hash": "3369a9b04c372837",
+"current": [],
+"current_hash": "bd53a0939988ede3",
 "hash": "477fd9af1472d653",
 "keep": [
 1
@@ -5832,6 +5962,8 @@
 },
 "P5_SITE_FIX_RERUN_DIGS_DEEPER": {
 "at": "2026-11-16T03:38:35",
+"current": [],
+"current_hash": "d7c143b5af64c8ba",
 "hash": "81fd6cc3fcad520a",
 "keep": [
 1
@@ -5870,7 +6002,7 @@
 "PIPE_ADAPTER_FIX_DEBT_NEVER_PAID": {
 "at": "2026-11-16T03:38:35",
 "current": [],
-"current_hash": "9120b7827fced68c",
+"current_hash": "448319e53a37f526",
 "hash": "c7b1c4d2119a32dc",
 "keep": [
 1
@@ -6001,7 +6133,7 @@
 "PIT_PRISON_JUDGE_D3_ROOMS": {
 "at": "2026-11-16T03:38:35",
 "current": [],
-"current_hash": "e29065471b955ac0",
+"current_hash": "0d6f9a856908b7b1",
 "hash": "12fe98c994124689",
 "keep": [
 1
@@ -6151,6 +6283,8 @@
 },
 "PIT_SHOT_PROOF_FIX_OTHER_TARGET_PASSES": {
 "at": "2026-11-16T03:38:36",
+"current": [],
+"current_hash": "15090ba39d16b90c",
 "hash": "20decadb93d7da68",
 "keep": [
 1
@@ -6175,7 +6309,7 @@
 "PIT_TRAVEL_SELFTEST_FIX_DOUBLE_COUNT": {
 "at": "2026-11-16T03:38:36",
 "current": [],
-"current_hash": "e1b97bb75a981504",
+"current_hash": "9078c5d0608427c1",
 "hash": "c2d7e8e5020062e6",
 "keep": [
 1,
@@ -6369,7 +6503,7 @@
 "current": [
 1
 ],
-"current_hash": "0d214634790db2e9",
+"current_hash": "15765b5cf9b339fc",
 "hash": "21418012e535e782",
 "keep": [
 1,
@@ -6532,7 +6666,7 @@
 "REVIEW_MAP_FIX_COVER_NEW_DEFS": {
 "at": "2026-11-16T03:38:42",
 "current": [],
-"current_hash": "960ec3c4f2bcba1d",
+"current_hash": "6e5d83c859d35d1c",
 "hash": "f0b59c5d9edac635",
 "keep": [
 1
@@ -6574,7 +6708,7 @@
 "REVIEW_STAGE_FIX_SMALL_MAPS_HELD_GATES": {
 "at": "2026-11-16T03:38:42",
 "current": [],
-"current_hash": "4828fa5204bb9fe6",
+"current_hash": "45bd3f0976e05944",
 "hash": "1a40d30058e27f9b",
 "keep": [
 1,
@@ -6628,16 +6762,51 @@
 ]
 }
 },
-"RIMMANDRAKE_ADVANCE_FLOWWORKS_OFFLINE_BESIDE_THE_PILOT": {
-"at": "2026-11-16T03:38:55",
-"current": [],
-"current_hash": "d9ab8ce53e960501",
-"hash": "898dc177880ee93a",
+"RIMMANDRAKE_ADAPT_SUITE_SCENES_TO_EMPTY_GAME_FLOWWORKS_ONLY": {
+"at": "2026-11-19T15:50:00",
+"current": [
+3
+],
+"current_hash": "99f08dfd85016cf0",
+"hash": "5ceef671c451fede",
 "keep": [
 1,
 2
 ],
-"keep_hash": "684044af251d0576",
+"keep_hash": "1ec5697da92581d7",
+"reading": {
+"accept": "python3 src/RimMandrake/rimflow/acceptance/guard_empty_game_suite_accept.py prints PASS 7/7, exit 0 (was FAIL 4/7 on 9879c70256).",
+"bars": [],
+"causes_refuted": [],
+"changed": "Landed at d78464b22365: adds suite_vacuous and wires the judge certificate. Acceptance PASS 7/7; selftest_asks_on_empty_game 14/14.",
+"class": "problem",
+"defect": "The certificate's asks_on_empty_game clause ran in-game scenes on an empty game only for FlowWorks' concept_scenes.py. Every other mod's modcheck Suite chains (validation.py) read 'did not run: no empty-game adapter'.",
+"proposed_fix": "Build scene_empty_game.suite_vacuous(suite): run each live chain on a modcheck.TestContext over an empty session (bare-success calls, empty things_at, no-op ticks), list PASS components; use it in judge_certificate._asks_on_empty_game, loading validation.py in its own bounded process.",
+"traps": [
+{
+"text": "On base 9879c70256 the acceptance test shows FAIL 4/7, and the four passing clauses are 'is not listed' clauses that are true when nothing is listed, so they are not evidence of the build.",
+"where": "src/RimMandrake/rimflow/acceptance/guard_empty_game_suite_accept.py"
+},
+{
+"text": "Chains run real Python. northstar_site.save_fixture copies the real Saves folder to a backup dir and validation.py:2605 writes a file, so the adapter needs a write/subprocess sandbox. Whether the unguarded runs wrote a backup was UNMEASURED. The record does not say the sandbox was added before landing.",
+"where": "northstar_site.save_fixture; validation.py:2605"
+}
+]
+}
+},
+"RIMMANDRAKE_ADVANCE_FLOWWORKS_OFFLINE_BESIDE_THE_PILOT": {
+"at": "2026-11-19T15:50:00",
+"current": [],
+"current_hash": "6d73ba8331ee2b93",
+"hash": "5d2d9c6579ae9c21",
+"keep": [
+1,
+2,
+3,
+4,
+5
+],
+"keep_hash": "603bed60a929a9a2",
 "owner": [
 1,
 2,
@@ -6648,21 +6817,39 @@
 ],
 "owner_hash": "bdf8c7a1968fadf4",
 "reading": {
-"accept": "none, the pipeline's own stages judge it (spec design/specs/2026-11-13-maturation-pipeline.md).",
-"bars": [],
-"causes_refuted": [],
-"changed": "Stage 3 reconcile landed: preflight refusals 48 -> 7; 3 of 4 red deciders green (settings table list lacked new settings; liquid-looks generator held stale values after a hand-edit; natives' home waters were undrinkable to their natives); 20 held rows placed; 6 owed offline tests built; 17 scenes written UNRUN.",
-"class": "problem",
-"defect": "Task: advance FlowWorks 0.1.0 (locked) by hand through the offline maturation stages, to stage 5 at most, no game: journal, bars-to-tests table with stages, throwaway preflight.",
-"proposed_fix": "Run the pipeline stages offline per design/specs/2026-11-13-maturation-pipeline.md; publish journal.md, version/test_table.json and version/preflight.json; reconcile Stage 3 refusals.",
-"traps": [
+"accept": "none, the pipeline's own stages judge it.",
+"bars": [
+"pit_reads_as_hole",
+"pawn_height_follows_depth"
+],
+"causes_refuted": [
 {
-"text": "The 17 in-game scene entries are written but UNRUN until Stage 6; some coordinates and call arguments are guesses. The in-game settings check moved offline and the mod-list/settings-field checks passed only because scenes name neither.",
-"where": "design/concepts/FlowWorks/version/test_table.json scenes"
+"depends_on": [],
+"text": "The red settings and liquid-looks tests were wrong in their own data (settings list missing new settings, looks generator stale after a hand edit), not in the mod. The natives' home-water test was a real mod fault."
 },
 {
-"text": "The v2 offline decider X4 stays red because two rulings disagreed (0.05 pit sink vs 'walls 20% above the head'); owner kept 0.05 and retired the 20% rule, so X4 must be rewritten to follow 0.05. Wetting bars move to 0.2.0 and the swale rebuild is 0.2.0, so 0.1.0 has no wetted ground and keeps the metal-slide swale.",
-"where": "validation_v2.py X4"
+"depends_on": [
+"validation_v2.py"
+],
+"text": "X4 (1.2 heads below the rim, 'walls 20% above the head') is retired, not a mod bug: the owner kept the 0.05 per half metre pit sink and the check is rewritten to follow it."
+}
+],
+"changed": "Stage 3 landed (cd47000508, 907246980, 507b8cb3d, f2945e0d1): 3 of 4 red deciders fixed (stale settings table, liquid looks generator, natives' home water); 20 held rows placed; 6 owed tests built; 17 scenes unrun. Preflight 48 to 7. 39753a53ff enacts the three cards.",
+"class": "problem",
+"defect": "Task: take FlowWorks 0.1.0 (locked) through the offline Maturation Pipeline stages by hand, to stage 5 at most, no game: journal, bars-to-tests table, preflight. Stage 2 preflight refused 48 times, dropping to 7 after the Stage 3 reconcile.",
+"proposed_fix": "Stage 3 reconcile: place held rows, fix the red deciders, build owed offline tests, and write scene entries unrun. Rule on the three owner questions in the journal: wetting, the X4 pit-sink conflict, swale.",
+"traps": [
+{
+"text": "The mod-list and settings-field checks passed in preflight only because the scenes name neither, so they proved nothing.",
+"where": "FlowWorks preflight, version/preflight.json"
+},
+{
+"text": "The 17 scene entries are written but UNRUN until Stage 6. Some coordinates and call arguments are guesses. Five owed offline tests (wetting, probe, toss flame, fetch fallen, coating) are red as intended because the behaviour does not exist yet.",
+"where": "version/test_table.json; selftest_stage3_owed.py"
+},
+{
+"text": "Wetting bars and the swale rebuild moved to 0.2.0 by owner card, so 0.1.0 passes with no wetted ground and keeps the metal-slide swale.",
+"where": "FlowWorks 0.1.0 bars; RIMMANDRAKE_REBUILD_SWALE_AS_SOAKING_FLOOR_NOT_FURNITURE"
 }
 ]
 }
@@ -6734,38 +6921,55 @@
 }
 },
 "RIMMANDRAKE_BUILD_FLOWWORKS_THREE_RED_OFFLINE_TESTS_NOBODY_OWED": {
-"at": "2026-11-16T03:38:55",
-"hash": "47a802e96146a69c",
+"at": "2026-11-19T15:50:11",
+"hash": "0431863d7d19957a",
 "keep": [
 1,
-2
+2,
+3,
+4
 ],
-"keep_hash": "50008f474120f6f0",
+"keep_hash": "42f3534554c8f8cd",
 "reading": {
-"accept": "`python3 src/RimMandrake/rimflow/maturation.py certificate FlowWorks --run` reads all three green.",
-"bars": [],
+"accept": "python3 src/RimMandrake/rimflow/maturation.py certificate FlowWorks --run reads all three green (recorded red at 1:34 AM PST 2026-11-16)",
+"bars": [
+"inv_raider_fetch_fallen",
+"inv_liquid_coating",
+"inv_toss_flame",
+"raiders_fetch_their_fallen"
+],
 "causes_refuted": [
 {
 "depends_on": [],
-"text": "toss_flame and coating deciders were not red on main: already PASS (measured at fc2ab0af91), so only fetch_fallen needed building."
+"text": "toss_flame and liquid coating deciders were not missing features: both already passed on main at fc2ab0af91; the red certificate was old results."
 }
 ],
-"changed": "fetch_fallen built at 636550d40b36 (RM_RaiderFetchFallen), red -> PASS; toss_flame and coating deciders were already PASS on main (fc2ab0af91). Certificate rerun still in progress.",
+"changed": "Built RM_RaiderFetchFallen (636550d40b): unhit raiders set a ladder for a comrade in the pit and carry the downed one up; once hit they fight; a fleeing raid leaves its fallen. Setting registered in two settings lists (8e4a9cd5e482), which had turned two tests red.",
 "class": "problem",
-"defect": "FlowWorks sits at Stage 3 with three offline deciders red and no item owing them: T_FETCH_FALLEN_OFFLINE, T_LIQUID_COATING_OFFLINE, T_TOSS_FLAME_OFFLINE.",
-"proposed_fix": "Build the feature or correct the test for each, offline.",
+"defect": "FlowWorks certificate read three offline deciders red with no item owing them: T_FETCH_FALLEN_OFFLINE, T_LIQUID_COATING_OFFLINE, T_TOSS_FLAME_OFFLINE. Fetch-fallen feature was missing; the other two were stale results.",
+"proposed_fix": "Build the feature or correct the test for each decider, offline, until the FlowWorks certificate reads all three green.",
 "traps": [
 {
-"text": "The first certificate --run was killed at the 1 h background cap after 38/83 deciders (all green); use `certificate --run --resume`. A concurrent FlowWorks certificate run from another session contends.",
-"where": "src/RimMandrake/rimflow/maturation.py certificate"
+"text": "The new code file was not in the project file at first, so it compiled into nothing while the test still passed. The test now catches that.",
+"where": "RM_RaiderFetchFallen, FlowWorks project file"
+},
+{
+"text": "Live scene sc_fetch_fallen is recorded UNRUN; the fetch behaviour is untested in the game, only offline deciders are green.",
+"where": "sc_fetch_fallen"
+},
+{
+"text": "A full certificate --run is killed at the 1 h background cap (after 38/83 deciders); use --resume, which skips deciders already green on the current build.",
+"where": "src/RimMandrake/rimflow/maturation.py certificate FlowWorks --run --resume"
 }
 ]
 }
 },
 "RIMMANDRAKE_BUILD_FLOWWORKS_TOSS_FLAME_JOBDEF_STILL_UNKNOWN": {
 "at": "2026-11-16T03:38:55",
-"current": [],
-"current_hash": "858c72af11f937f3",
+"current": [
+1
+],
+"current_hash": "72e908ef727fbf91",
 "hash": "baab26b5a000c8a1",
 "keep": [
 1
@@ -6790,30 +6994,32 @@
 }
 },
 "RIMMANDRAKE_BURY_GSS_CORDS_IN_FW_SUPERDEEP_PIT_WATER": {
-"at": "2026-11-16T03:38:55",
-"hash": "e070afe63b035bf8",
+"at": "2026-11-19T15:50:11",
+"current": [],
+"current_hash": "d4094431f348a788",
+"hash": "07354c9322f474b6",
 "keep": [
 1,
 2
 ],
-"keep_hash": "5a45c0b05e607ff5",
+"keep_hash": "5df98a0724b5d500",
 "reading": {
-"accept": "none, a matrix scene with RM_Fill_Water_Superdeep would guard it.",
+"accept": "proof_all --live --only scenes, tier gimmesomeslack_flowworks: SC_under_liquid_pit passes (2 m water: no cord on water, dives at banks with 2 stubs).",
 "bars": [],
 "causes_refuted": [
 {
 "depends_on": [],
-"text": "Not the deep-swim bug: swim setting on or off makes no difference; the cell is path-walkable in both, and GSS has always drawn a cord here."
+"text": "Not the deep-swim setting: XW1 gave stubs 0, cord_edges 1 with swim on and off, the cell walkable in both; GSS has always drawn a cord there."
 }
 ],
-"changed": null,
+"changed": "Proven done in the game: SC_under_liquid_pit passes three runs. Under 2 m of pit water no cord lies on the water and the run dives at the banks (2 water stubs); under 1 m it lies on the pit floor and shows through, the pit battery above it.",
 "class": "problem",
-"defect": "Gimme Some Slack draws one cord lying on RM_Fill_Water_Superdeep because SnapshotBlock.Of buries only Impassable water, and this terrain inherits WaterShallow (Standable, WaterproofConduitable). Vanilla WaterDeep dives with two stubs.",
-"proposed_fix": "Designer to decide: if a cord should dive under swim-depth Standable water, FlowWorks tags its swim-depth terrains (terrain tag or DefModExtension) that GSS reads by name, and handle dug-depth cells swim-deep only via the excavation component.",
+"defect": "GSS lays one cord on the surface of FlowWorks' RM_Fill_Water_Superdeep instead of diving. SnapshotBlock.Of buries only Impassable water, and Superdeep inherits WaterShallow (Standable, WaterproofConduitable).",
+"proposed_fix": "Let GSS dive under swim-depth def-Standable water via a terrain tag or DefModExtension FlowWorks puts on its swim-depth terrains, read by name; decide dug-depth cells. Add a Superdeep matrix scene.",
 "traps": [
 {
-"text": "FlowWorks decides 'deep' in RM_Swim.IsDeepSwimIndex (swim terrain or dug depth, not decked), which GSS cannot see without a cross-mod contract. Brim (1.5 m) and vanilla chest-deep river stay wadeable ground and show a cord (XW2, XW3).",
-"where": "Source RM_Swim.IsDeepSwimIndex; GSS Source/Core/SnapshotBlock.cs"
+"text": "Brim (1.5 m) and vanilla chest-deep river (WaterMovingChestDeep) are wadeable and keep a cord on the surface (stubs 0, cord_edges 1); only vanilla WaterDeep gave 2 stubs. A cord there is not a bug.",
+"where": "matrix F60 canal scene, XW2/XW3/XW4"
 }
 ]
 }
@@ -6821,7 +7027,7 @@
 "RIMMANDRAKE_CHALLENGE_FLOWWORKS_BLIND_CYCLE_ONE_FIFTY_SEVEN_BARS": {
 "at": "2026-11-16T03:38:56",
 "current": [],
-"current_hash": "a42fbd13c7cd3519",
+"current_hash": "2cd06eb7a3a50a52",
 "hash": "a74f8196ab558520",
 "keep": [
 1,
@@ -6872,8 +7078,8 @@
 }
 },
 "RIMMANDRAKE_CLARIFY_GSS_NOHOSE_BAR_PIPE_POLES_ARE_FLOWWORKS": {
-"at": "2026-11-16T03:38:56",
-"hash": "ca6758747abeaed3",
+"at": "2026-11-19T15:50:11",
+"hash": "72be789d9a85f221",
 "keep": [
 1
 ],
@@ -6884,14 +7090,9 @@
 "causes_refuted": [],
 "changed": null,
 "class": "polish",
-"defect": "Bar no_hose_in_gss says 'No hose, reel or pipe is drawn by this mod', but GSS's renderer draws FlowWorks pipe-pole spans (AerialLineKind.Pipe, AerialMaterials.PipeMats), which bar settings_switch_cleanly requires.",
-"proposed_fix": "The neutral fixer words the bar as 'no hose, reel or pipe thing of GSS's own', which is how the decider already reads it.",
-"traps": [
-{
-"text": "The bar's literal wording says no pipe is drawn, but the decider reads it as 'no hose, reel or pipe thing of GSS's own'. GSS drawing FlowWorks pipe-pole spans is expected.",
-"where": "bar no_hose_in_gss, row nohose_pipe_span_drawing"
-}
-]
+"defect": "Bar no_hose_in_gss says no hose, reel or pipe is drawn by the mod, but GSS's renderer draws FlowWorks pipe-pole spans (AerialLineKind.Pipe, AerialMaterials.PipeMats), which bar settings_switch_cleanly requires. The decider reads it as GSS's own.",
+"proposed_fix": "The neutral fixer words the bar as 'no hose, reel or pipe thing of GSS's own'.",
+"traps": []
 }
 },
 "RIMMANDRAKE_CORRECT_SPRINKLER_RADIUS_TEXT_SAYS_TWENTY_FIVE": {
@@ -6926,8 +7127,10 @@
 },
 "RIMMANDRAKE_DECIDE_FIVE_WATER_SWITCHES_THAT_FEED_NOTHING": {
 "at": "2026-11-16T03:38:56",
-"current": [],
-"current_hash": "e9390bdb3afec7f3",
+"current": [
+2
+],
+"current_hash": "3396dbd7e7cebbb1",
 "hash": "f4b1f72901e0b6db",
 "keep": [
 1,
@@ -6967,6 +7170,10 @@
 },
 "RIMMANDRAKE_DECIDE_SIXTH_WATER_SWITCH_THE_FIVE_MISSED": {
 "at": "2026-11-16T03:38:56",
+"current": [
+1
+],
+"current_hash": "5f9d75894d8b13ce",
 "hash": "a0f1c59616a47a28",
 "keep": [
 1,
@@ -7000,7 +7207,7 @@
 "RIMMANDRAKE_DELETE_FILL_N_ONE_WATER_NUMBER_SEVEN_FIXES": {
 "at": "2026-11-16T03:38:54",
 "current": [],
-"current_hash": "bd627ecf20281450",
+"current_hash": "cef2602a91847967",
 "hash": "82873e2c9170ba9f",
 "keep": [
 1,
@@ -7074,6 +7281,8 @@
 },
 "RIMMANDRAKE_DESIGN_FLOWWORKS_DIG_INTERFACE_CONSOLIDATION": {
 "at": "2026-11-16T03:38:54",
+"current": [],
+"current_hash": "7e4ec57b5a31ae9a",
 "hash": "6f6218a7e14bc626",
 "keep": [
 1
@@ -7201,6 +7410,8 @@
 },
 "RIMMANDRAKE_FINISH_FLOWWORKS_WALK_SCENE_HALF_THE_BAR_UNASKED": {
 "at": "2026-11-16T03:39:09",
+"current": [],
+"current_hash": "23a7f5b79ca45ce3",
 "hash": "4e9ad29a45ae2f31",
 "keep": [
 1,
@@ -7293,25 +7504,87 @@
 "traps": []
 }
 },
-"RIMMANDRAKE_FIX_JAWABENCH_AWARENESS_INSTALL_CRASHES_START": {
-"at": "2026-11-16T03:39:09",
-"hash": "24482e5e58871d04",
+"RIMMANDRAKE_FIX_FLOWWORKS_CROP_WEEK_FOLLOWS_PULSE_SLIDER": {
+"at": "2026-11-19T15:50:11",
+"current": [],
+"current_hash": "645f66e3311572ae",
+"hash": "f4699b973a547c5c",
 "keep": [
 1
 ],
-"keep_hash": "63dfc8dbb6c47783",
+"keep_hash": "c0907945256e8722",
+"reading": {
+"accept": "selftest_flowworks_stock.py --only 'SheetCropWeek*,SheetCropAge*,DrillSurvey_caller*,Thirst_need_falls*' rc 0; SheetCropWeek_a_week_at_every_flow_pulse_interval red on a395d97a12.",
+"bars": [
+"inv_overflow_sheet"
+],
+"causes_refuted": [],
+"changed": "CropKillPulsesFor converts the stored delay to the current pulse interval, so the first CropDrowning lands a week after the crop starts standing at any slider setting (4b33b22f00).",
+"class": "problem",
+"defect": "SyncParams stores CropKillPulses as a raw pulse count (cropDrownPulses), unconverted for the flow-pulse slider (60-2500 ticks). Crops drown after 1.68 days at 60 ticks and 70 days at 2500, not a week.",
+"proposed_fix": "RM_SheetMath.CropKillPulsesFor(pulsesAtBase, interval) converts the stored delay (pulses at the 250-tick base); SyncParams uses it; slider and Days() read/write at the base. Scribe key and default unchanged.",
+"traps": [
+{
+"text": "Soak, evaporation and boil were converted per day (pulsesPerDay); only the crop timer was not, so the other timers do not show this bug.",
+"where": "src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs pulseIntervalTicks"
+}
+]
+}
+},
+"RIMMANDRAKE_FIX_FLOWWORKS_FUZZ_FOUR_FLAWS_SINK_STILL_FLOAT": {
+"at": "2026-11-19T15:50:11",
+"hash": "aefd2f26a570b498",
+"keep": [
+1
+],
+"keep_hash": "220979fc6525c20e",
+"reading": {
+"accept": "none written yet; per finding a case red on dbf76d554c and green after (e.g. vv_laws.py prove FlowWorks --family conservation), or a not-a-bug ruling; kernel_fuzz baseline stays 0 failures.",
+"bars": [],
+"causes_refuted": [],
+"changed": null,
+"class": "problem",
+"defect": "Fuzz test machinery flaws (static review, not reproduced): per-fluid and sink laws compare float levels at 1e-3 (10 dL), so a 1 dL change passes; probe failure counts are a lower bound; planted counts include earlier families; JSON writer leaves chars below U+0020 unescaped.",
+"proposed_fix": "Per-fluid/sink totals in integer dL; count the union of failing scenes; per-family planted deltas with no planting in shrink; escape every char below U+0020.",
+"traps": [
+{
+"text": "The findings are a static review, not reproduced by the filer; line numbers are those of dbf76d554c. Only test machinery is affected, not the mod.",
+"where": "FlowKernelFuzz.cs:308,:312; VV/ShippedMatrixProbe.cs:205,:236,:248,:326"
+}
+]
+}
+},
+"RIMMANDRAKE_FIX_JAWABENCH_AWARENESS_INSTALL_CRASHES_START": {
+"at": "2026-11-19T15:50:11",
+"current": [],
+"current_hash": "52d89fbbd097f913",
+"hash": "14220076736c1d8b",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "fd01a24bd196164a",
 "reading": {
 "accept": "none, no acceptance test filed.",
 "bars": [],
 "causes_refuted": [],
 "changed": null,
 "class": "problem",
-"defect": "Game start crashes natively on the first `steve.sh up` after `steve.sh deploy` (3 of 3, 2 of 4 launches); stacks run through JawaBenchAwareness.Install/JawaBenchTpsInstall.Run from RimBridgeExtensionDiscovery.TryCreateInstance. One crash was earlier, and one mid-run.",
-"proposed_fix": "Read the crash report and the `<Install>b__11` lambda in JawaBenchAwareness.cs; check whether it patches from a non-main thread.",
+"defect": "The game crashes natively at startup on some launches. Two crashes follow the JawaBench awareness line, in the Install lambda via TryCreateInstance; a third came earlier. The first up after deploy crashed 3 of 3, restarts 4 of 4 clean.",
+"proposed_fix": "Read the crash report and the Install b__11 lambda in JawaBenchAwareness.cs; check whether it patches from a non-main thread.",
 "traps": [
 {
-"text": "The JawaBench awareness frame is not the only crash site: a third crash came right after `[FlowWorks] hose essential patches`, and a mid-run native crash happened ~7 min into a fifth fresh map in one process; whether deploy-then-up matters is unproven.",
-"where": "Player.log, up.log, up3.log"
+"text": "The awareness frame is not the only crash site: a third crash came right after the FlowWorks hose essential patches, and a mid-run native crash ~7 min into a fifth fresh map. Whether first-up-after-deploy matters is unproven.",
+"where": "Player.log; up.log, up3.log"
+},
+{
+"text": "A fresh quicktest map once came up with Verse.MapDrawer.get_SectionCount NRE in FinalizeInit (every bridge batch op NREs); a restart cleared it.",
+"where": "steve.sh up, quicktest map"
+},
+{
+"text": "Logs are overwritten by the next launch; crash reports are under the Crashes temp folder.",
+"where": "C:\\Users\\sjlewis\\AppData\\Local\\Temp\\Ludeon Studios\\RimWorld by Ludeon Studios\\Crashes"
 }
 ]
 }
@@ -7335,6 +7608,11 @@
 },
 "RIMMANDRAKE_FIX_STRANDED_COLONIST_READS_UNTRAPPED_NO_RESCUE": {
 "at": "2026-11-16T03:39:09",
+"current": [
+1,
+2
+],
+"current_hash": "2512b5cd6918a73d",
 "hash": "026da22a7fc2f0af",
 "keep": [
 1
@@ -7376,9 +7654,9 @@
 "RIMMANDRAKE_JUDGE_FLOWWORKS_REVIEW_SAVE_FOUR_LOOK_QUESTIONS": {
 "at": "2026-11-16T03:39:26",
 "current": [
-1
+3
 ],
-"current_hash": "12e95b28723508b3",
+"current_hash": "7e54ee43f92b5f59",
 "hash": "e0ce7173189abd2d",
 "keep": [
 1,
@@ -7421,37 +7699,39 @@
 }
 },
 "RIMMANDRAKE_KEEP_DIG_PROGRESS_ACROSS_MEALS_AND_NAPS": {
-"at": "2026-11-16T03:39:26",
+"at": "2026-11-19T15:50:11",
 "current": [],
-"current_hash": "6118b6ede04d3d8d",
-"hash": "3cac1c9c3c0b9f2f",
+"current_hash": "b03d28735a123571",
+"hash": "009054941c415536",
 "keep": [
 1,
 2
 ],
-"keep_hash": "651764552fa995c9",
+"keep_hash": "6bef7e4c1caa4377",
 "reading": {
-"accept": "python.exe D:\\ClaudeWork\\rimmandrake\\conductor\\evening_20261113\\tools\\digreset.py 125 0.6 must print ratio <= 1.2 (base 1.61); baseline digreset.py <z> 0 stays ~1.0.",
+"accept": "digreset.py <z> 0.6 (drafted+undrafted at 60%) must print ratio <= 1.2 (base 1.61); baseline digreset.py <z> 0 stays ~1.0.",
 "bars": [],
 "causes_refuted": [],
-"changed": "RM_JobDriver_ShovelFloor keeps vanilla's AffectFloor toil and parks/resumes work per square (RM_MapComponent_DigProgress, saved; RemoveDesignation postfix clears on cancel; no tick). Live pass with FlowWorks 92da49b132 deployed: ratio 1.03.",
+"changed": "RM_JobDriver_ShovelFloor keeps vanilla's AffectFloor toil and parks/resumes work per square (RM_MapComponent_DigProgress, saved; cancel clears; no tick), landed d23e9b6a83. Live digreset 125 0.6 ratio 1.03.",
 "class": "problem",
-"defect": "An interrupted dig/fill cut restarts from zero: vanilla JobDriver_AffectFloor sets workLeft = BaseWorkAmount in initAction and FlowWorks keeps no per-cell progress, so at labour x4 a long notch outlasts a work stretch and may never land.",
-"proposed_fix": "Persist per-cell remaining work (saved, in a map component) and resume it when the dig/fill job starts; clear on designation cancel; discard if the square's depth changed.",
+"defect": "An interrupted dig/fill cut restarts from zero: vanilla JobDriver_AffectFloor sets workLeft = BaseWorkAmount in initAction and FlowWorks keeps no per-cell progress. At labour x4 a long notch outlasts a work stretch and may never land.",
+"proposed_fix": "Persist per-cell remaining work in the map component (ExposeData) and read it in the dig/fill job's initAction, so a resumed cut continues.",
 "traps": [
 {
-"text": "Of the 8 new DigProgress selftests, 6 test only the new code and cannot fail on base; only the 2 source-wiring cases were red on base (6/8). The selftest alone does not prove the fix; the live digreset test does.",
+"text": "Of the 8 new DigProgress selftests, 6 test only new code and cannot fail on base (6/8 on base); only the two wiring cases are red.",
 "where": "DigProgress selftest"
 },
 {
-"text": "The old Pyrelands patch was not reused whole: it rebuilt the toil and added a 2000-tick think-tree re-read that players would see.",
-"where": "Pyrelands dig-progress patch"
+"text": "The old Pyrelands patch was not reused whole: it rebuilt the toil and added a 2000-tick think-tree re-read, player-visible.",
+"where": "RM_JobDriver_ShovelFloor"
 }
 ]
 }
 },
 "RIMMANDRAKE_LAND_RALPH_FLOWWORKS_PIT_FEATURES": {
 "at": "2026-11-16T03:39:26",
+"current": [],
+"current_hash": "997a3d56ed4b2c15",
 "hash": "1078f566f55b5293",
 "keep": [
 1,
@@ -7510,6 +7790,8 @@
 },
 "RIMMANDRAKE_LIGHT_FUEL_SAP_TERRAIN_FIRES_STARTED_ZERO": {
 "at": "2026-11-16T03:39:26",
+"current": [],
+"current_hash": "d4ca5ec85c33d2dd",
 "hash": "2a1e15aba90a248f",
 "keep": [
 1
@@ -7581,6 +7863,74 @@
 "traps": []
 }
 },
+"RIMMANDRAKE_NOTE_FLOWWORKS_COATING_LAWS_MISS_COLONISTS": {
+"at": "2026-11-19T15:50:11",
+"current": [],
+"current_hash": "052b323aab6b4c39",
+"hash": "87eab6fdb9931b6f",
+"keep": [
+1
+],
+"keep_hash": "85842551112a1142",
+"reading": {
+"accept": "python3 design/concepts/FlowWorks/version/blind_challenge/cycle_3/lane2/plant_faults.py --no-lane1 --require-caught --only COAT_COLONISTS_NEVER_COATED,COAT_CANAL_LIQUID_NEVER_COATS --out /tmp/x.jsonl exits 0 once pinned (rc 1 on a43ee25d3b)",
+"bars": [
+"inv_liquid_coating"
+],
+"causes_refuted": [],
+"changed": null,
+"class": "polish",
+"defect": "The coating source laws stay green when no humanlike is ever coated or a dug canal's liquid never coats (planted COAT_COLONISTS_NEVER_COATED, COAT_CANAL_LIQUID_NEVER_COATS: selftest_stage3_owed.py --only coating rc0).",
+"proposed_fix": "sc_coating_wash coats a colonist out of a dug canal of oil.",
+"traps": [
+{
+"text": "T_LIQUID_COATING_OFFLINE is only the offline half of the coating bar; the bar proves at Stage 6 and the live scene sc_coating_wash decides.",
+"where": "T_LIQUID_COATING_OFFLINE, sc_coating_wash"
+}
+]
+}
+},
+"RIMMANDRAKE_NOTE_FLOWWORKS_DRILL_DRAWS_POWER_WHEN_OFF_UNPINNED": {
+"at": "2026-11-19T15:50:11",
+"hash": "05dfa8d2ca19621a",
+"keep": [
+1
+],
+"keep_hash": "aa9e7b16cb89e1d0",
+"reading": {
+"accept": "python3 design/concepts/FlowWorks/version/blind_challenge/cycle_3/lane2/plant_faults.py --no-lane1 --require-caught --only CALLER_DRILL_DRAWS_POWER_SWITCHED_OFF --out /tmp/x.jsonl exits 0 once a test pins it (rc 1 on a43ee25d3b)",
+"bars": [
+"inv_settings"
+],
+"causes_refuted": [],
+"changed": null,
+"class": "polish",
+"defect": "No offline test catches a liquid drill drawing power while switched off or off in Mod Settings (planted CALLER_DRILL_DRAWS_POWER_SWITCHED_OFF: T_DRILL rc0).",
+"proposed_fix": "Add a source law in the T_SETTINGS_SWEEP_OFFLINE family pinning Building_LiquidDrill.TickRare's on = liquidDrillingEnabled && switch.",
+"traps": [
+{
+"text": "inv_drilling's bar does not cover power draw, so T_DRILL passing does not cover it; it is owed to Stage 6 inv_settings.",
+"where": "T_DRILL, inv_drilling"
+}
+]
+}
+},
+"RIMMANDRAKE_NOTE_FLOWWORKS_SHEET_TOOLTIP_TWO_CM": {
+"at": "2026-11-19T15:50:11",
+"hash": "2677dd03f0124680",
+"reading": {
+"accept": "none, wording choice (words or behaviour).",
+"bars": [
+"inv_overflow_sheet"
+],
+"causes_refuted": [],
+"changed": null,
+"class": "polish",
+"defect": "The crops-drown tooltip says water at least 2 cm kills crops, but the kernel's standing tier starts at 3 cm rising (2 cm falling); relief lifts some squares past 3 cm.",
+"proposed_fix": "Change the tooltip in Sheet/RM_SheetSettings.cs to 3 cm rising, 2 cm falling, or accept the behaviour as worded.",
+"traps": []
+}
+},
 "RIMMANDRAKE_PIN_CONVERTER_CALLER_KEEPS_CLIPPED_INCOME": {
 "at": "2026-11-16T03:39:26",
 "hash": "c2fdc1605e24ea4d",
@@ -7623,6 +7973,106 @@
 ]
 }
 },
+"RIMMANDRAKE_PIN_FLOWWORKS_COATING_LAWS_MISS_DEAD_TICK": {
+"at": "2026-11-19T15:50:16",
+"hash": "09dd37454b6c9e6a",
+"reading": {
+"accept": "plant_faults.py --require-caught over the six coating faults exits 0; each of the six turns T_LIQUID_COATING_OFFLINE red.",
+"bars": [
+"inv_liquid_coating"
+],
+"causes_refuted": [],
+"changed": "Added coating laws (unguarded tick, hediff class, field defaults, slimes and icy water, csproj) in selftest_stage3_owed.py so the six planted faults are caught; red on a395d97a, green on 4b33b22f.",
+"class": "problem",
+"defect": "T_LIQUID_COATING_OFFLINE stayed green with six planted coating faults: a guarded coat tick that never runs, a plain hediff class (Coat's cast throws), fluid defs that coat/wash everything, yellow slime without coat, icy water without wash.",
+"proposed_fix": "Add five laws to selftest_stage3_owed.py coating(): unguarded tick, hediff class, field defaults, slimes and icy water, csproj, each with undo mutants.",
+"traps": []
+}
+},
+"RIMMANDRAKE_PIN_FLOWWORKS_CONVERTER_KEEPS_DRINKERS_RESERVE": {
+"at": "2026-11-19T15:50:16",
+"hash": "263a384582c8db66",
+"reading": {
+"accept": "python3 design/concepts/FlowWorks/version/blind_challenge/cycle_3/lane2/plant_faults.py --no-lane1 --require-caught --only CALLER_CONVERTER_DRINKS_RESERVE --out /tmp/x.jsonl exits 0 (rc 1 on a43ee25d3b).",
+"bars": [
+"inv_converters"
+],
+"causes_refuted": [],
+"changed": "Added case Converter_caller_keeps_drinkers_reserve in BlindCycle3Checks.cs; planted CALLER_CONVERTER_DRINKS_RESERVE is now caught, red on a43ee25d3b, green on 96941bfa43.",
+"class": "problem",
+"defect": "T_CONVERT, PY_WATER_NOT_FOOD and PY_NATIVES_DRINK_OWN_WATER all stayed green when CompLiquidConverter's batches are not bounded by RM_DrinkReserve.Spendable, so a converter could eat the drinkers' reserve of potable water.",
+"proposed_fix": "Add case Converter_caller_keeps_drinkers_reserve to BlindCycle3Checks.cs so T_CONVERT goes red when converter batches are not bounded by RM_DrinkReserve.Spendable.",
+"traps": []
+}
+},
+"RIMMANDRAKE_PIN_FLOWWORKS_CROP_DELAY_TEXT_FOLLOWS_PULSE": {
+"at": "2026-11-19T15:50:16",
+"hash": "e4f8d108b0b31815",
+"reading": {
+"accept": "python3 design/concepts/FlowWorks/version/blind_challenge/cycle_3/lane2/plant_faults.py --no-lane1 --require-caught --only CALLER_SHEET_MESSAGE_DAYS_AT_BASE,SETTINGS_CROP_DAYS_LABEL_UNCONVERTED --out /tmp/x.jsonl exits 0 (rc 1 on a43ee25d3b).",
+"bars": [
+"inv_overflow_sheet"
+],
+"causes_refuted": [],
+"changed": "Added case Sheet_crop_delay_text_converts_with_its_own_pulse in BlindCycle3Checks.cs; both planted text faults are now caught, red on a43ee25d3b, green on 96941bfa43.",
+"class": "problem",
+"defect": "The crop-drowning message and the delay slider's label could state the wrong days at a moved flow pulse (planted CALLER_SHEET_MESSAGE_DAYS_AT_BASE, SETTINGS_CROP_DAYS_LABEL_UNCONVERTED) with T_SHEET and PY_FLOWWORKS_SHEET_DROWN_MESSAGE green.",
+"proposed_fix": "Add case Sheet_crop_delay_text_converts_with_its_own_pulse to BlindCycle3Checks.cs so a decider goes red when either text converts pulses with the wrong pulse length.",
+"traps": []
+}
+},
+"RIMMANDRAKE_PIN_FLOWWORKS_DRILL_CALLER_CHARGE_UNSEEN": {
+"at": "2026-11-19T15:50:16",
+"current": [],
+"current_hash": "08bf93cd9f842053",
+"hash": "ac85800795308cc3",
+"keep": [
+1
+],
+"keep_hash": "4f6004c590d73cb7",
+"reading": {
+"accept": "plant_faults.py --require-caught --only CALLER_DRILL_CHARGES_ASKED,CALLER_DRILL_DESTROY_LOSES_PENDING exits 0; T_DRILL goes red when the drill charges the asked-for dL or deletes pending units on destroy.",
+"bars": [
+"inv_drilling"
+],
+"causes_refuted": [],
+"changed": "Added case DrillSurvey_caller_charges_what_landed_and_returns_what_it_holds in CoverFloorSurveyChecks.cs; red on a395d97a, green on 4b33b22f.",
+"class": "problem",
+"defect": "T_DRILL stayed green when Building_LiquidDrill charged the asked-for dL instead of what landed (SpentUnits(beforeDl, beforeDl + addDl)) or deleted its pending units on destroy (ReturnUnits(0f)).",
+"proposed_fix": "Add SelfTest/CoverFloorSurveyChecks.cs case DrillSurvey_caller_charges_what_landed_and_returns_what_it_holds so T_DRILL goes red on either fault.",
+"traps": [
+{
+"text": "The existing pin for these caller lines lives only in selftest_flowworks_gpt_batch_a.py, which decides no bar; cycle 1's RIMMANDRAKE_PIN_DRILL_DECIDER_TO_ITS_LANDED_CHARGE pinned the kernel, not the caller line.",
+"where": "selftest_flowworks_gpt_batch_a.py"
+}
+]
+}
+},
+"RIMMANDRAKE_PIN_FLOWWORKS_FETCH_FIRE_WINDOW_AND_KEY_UNWATCHED": {
+"at": "2026-11-19T15:50:16",
+"hash": "89473b618eb0024c",
+"keep": [
+1
+],
+"keep_hash": "f4915423e028192f",
+"reading": {
+"accept": "Laws pin UnderFireTicks > 0 and the RMFlow_RaidersFetchFallen key; planted FETCH_NEVER_UNDER_FIRE and XML_KEY_FETCH_WARNING_GONE turn T_FETCH_FALLEN_OFFLINE red.",
+"bars": [
+"inv_raider_fetch_fallen"
+],
+"causes_refuted": [],
+"changed": null,
+"class": "polish",
+"defect": "T_FETCH_FALLEN_OFFLINE stays green when planted faults zero UnderFireTicks, drop the RMFlow_RaidersFetchFallen warning key (raw key shown), or make the fetch jobdef interruptible.",
+"proposed_fix": "Add two laws in selftest_stage3_owed.py fetch_fallen(): pin UnderFireTicks > 0 and the RMFlow_RaidersFetchFallen key.",
+"traps": [
+{
+"text": "A broken raid still leaves its fallen (the flee duty has no fetch giver), so the bar's 'leave them when driven off' holds despite the unpinned under-fire window.",
+"where": "inv_raider_fetch_fallen; selftest_stage3_owed.py fetch_fallen()"
+}
+]
+}
+},
 "RIMMANDRAKE_PIN_FLOWWORKS_FILL_SCENE_FIXES_RED_BEFORE_GREEN": {
 "at": "2026-11-16T03:39:26",
 "hash": "1867db420c07c9f8",
@@ -7645,6 +8095,151 @@
 {
 "text": "Closed on the offline test only; the live reruns of sc_fill_front and sc_fill_tiers were never run, recorded UNRUN for Stage 6 in in_game/unrun.jsonl (1b15a9ba4b). The close does not mean they passed live.",
 "where": "design/concepts/FlowWorks/version/in_game/unrun.jsonl"
+}
+]
+}
+},
+"RIMMANDRAKE_PIN_FLOWWORKS_SHEET_CALLER_CROP_AGE_UNSEEN": {
+"at": "2026-11-19T15:50:16",
+"current": [],
+"current_hash": "e8fa1dd8748ae084",
+"hash": "2ea53a05b9f16688",
+"keep": [
+1
+],
+"keep_hash": "9febf63698bed323",
+"reading": {
+"accept": "plant_faults.py --require-caught --only CALLER_SHEET_CROP_AGE_IGNORED exits 0; T_SHEET goes red when the caller stops handing CropDrowns the crop's own age.",
+"bars": [
+"inv_overflow_sheet"
+],
+"causes_refuted": [],
+"changed": "Added SheetCropAge_the_caller_judges_each_crop_by_its_own_age in SheetWaterChecks.cs; planted CALLER_SHEET_CROP_AGE_IGNORED now caught, red on a395d97a, green on 4b33b22f.",
+"class": "problem",
+"defect": "T_SHEET and PY_FLOWWORKS_SHEET_DROWN_MESSAGE stayed green when RM_MapComponent_Sheet passed CropDrowns(stand, int.MaxValue, ...) instead of each crop's own age.",
+"proposed_fix": "Add SelfTest/SheetWaterChecks.cs case SheetCropAge_the_caller_judges_each_crop_by_its_own_age, a source law on the Verse-bound caller.",
+"traps": [
+{
+"text": "Sheet_crop_drowning_is_each_crops_own_exposure_not_a_one_time_puddle tests the kernel only, so it does not see the caller's age argument.",
+"where": "Sheet_crop_drowning_is_each_crops_own_exposure_not_a_one_time_puddle"
+}
+]
+}
+},
+"RIMMANDRAKE_PIN_FLOWWORKS_SHEET_DELAY_UP_AND_DRYING_CAP": {
+"at": "2026-11-19T15:50:16",
+"hash": "5c81d79edd0c1246",
+"reading": {
+"accept": "plant_faults.py --no-lane1 --require-caught --only SHEET_PULSES_ROUND_DOWN,SHEET_HEAT_DRIES_UNCAPPED --out /tmp/x.jsonl exits 0 (rc 1 on a43ee25d3b).",
+"bars": [
+"inv_overflow_sheet"
+],
+"causes_refuted": [],
+"changed": "Added case Sheet_crop_delay_never_short_and_drying_capped_at_three_times in BlindCycle3Checks.cs; both planted faults caught, red on a43ee25d3b, green on 96941bfa43.",
+"class": "problem",
+"defect": "Stock T_SHEET stayed green when the crop delay rounded down a pulse (SHEET_PULSES_ROUND_DOWN) or hot ground dried past 3x (SHEET_HEAT_DRIES_UNCAPPED); only blind lane 1 caught them.",
+"proposed_fix": "Add case Sheet_crop_delay_never_short_and_drying_capped_at_three_times to BlindCycle3Checks.cs so T_SHEET goes red on either fault.",
+"traps": []
+}
+},
+"RIMMANDRAKE_PIN_FLOWWORKS_SHEET_SETTINGS_REACH_THE_KERNEL": {
+"at": "2026-11-19T15:50:16",
+"hash": "5d3369c63ee530c8",
+"reading": {
+"accept": "plant_faults.py --no-lane1 --require-caught --only CALLER_SHEET_DOOR_SETTING_IGNORED,SETTINGS_RAIN_READS_PUMP_SWITCH --out /tmp/x.jsonl exits 0 (rc 1 on a43ee25d3b).",
+"bars": [
+"inv_overflow_sheet"
+],
+"causes_refuted": [],
+"changed": "Added case Sheet_every_setting_reaches_the_kernel_and_its_own_inflow in BlindCycle3Checks.cs; both planted faults caught, red on a43ee25d3b, green on 96941bfa43.",
+"class": "problem",
+"defect": "Stock T_SHEET stayed green when the door-leak slider was wired to a fixed 5 percent (CALLER_SHEET_DOOR_SETTING_IGNORED) or the rain spill switch answered for pumps (SETTINGS_RAIN_READS_PUMP_SWITCH).",
+"proposed_fix": "Add case Sheet_every_setting_reaches_the_kernel_and_its_own_inflow to BlindCycle3Checks.cs, source laws since the code is Verse-bound.",
+"traps": []
+}
+},
+"RIMMANDRAKE_PIN_FLOWWORKS_SHEET_TIER_EDGE_LANE_ONE_ONLY": {
+"at": "2026-11-19T15:50:16",
+"hash": "860a9fea58bbbd45",
+"reading": {
+"accept": "A T_SHEET case asserts NextTier(None, 3 cm) == Sheet, turning the planted SHEET_SHEET_TIER_BOUNDARY red.",
+"bars": [
+"inv_overflow_sheet"
+],
+"causes_refuted": [],
+"changed": null,
+"class": "polish",
+"defect": "T_SHEET does not pin the 3 cm sheet-tier boundary: planted '>' for '>=' at SheetUpDl left T_SHEET green; only blind lane 1 SHEET_TIER_HYSTERESIS caught it. It is a 1-dL boundary.",
+"proposed_fix": "Add one assertion in Sheet_tier_hysteresis_does_not_flap that NextTier(None, 3 cm) == Sheet.",
+"traps": []
+}
+},
+"RIMMANDRAKE_PIN_FLOWWORKS_SPRINKLER_RADIUS_DEFAULT_UNWATCHED": {
+"at": "2026-11-19T15:50:16",
+"current": [],
+"current_hash": "7633dddcba71de29",
+"hash": "c2a152ca952a681b",
+"keep": [
+1
+],
+"keep_hash": "51c05778f26f0c9a",
+"reading": {
+"accept": "O2 (or a SelfTest case) compares float/int initialisers with Scribe defaults and a case pins the label's count; planted SPRK_SETTING_RADIUS_DEFAULT_DRIFT and SPRK_SETTING_LABEL_29_AGAIN go red.",
+"bars": [
+"inv_sprinklers"
+],
+"causes_refuted": [],
+"changed": null,
+"class": "polish",
+"defect": "No offline test is red when the sprinkler radius initialiser (3.9) drifts from its Scribe default (2.9) or the 25-square label reverts to 29; validation_v2 O2 checks bool toggles only.",
+"proposed_fix": "Extend validation_v2.py --offline O2 to numeric settings (compare float/int initialisers with Scribe defaults), and pin the label's count with a case.",
+"traps": [
+{
+"text": "validation_v2 O2 checks bool toggles only, so a green O2 says nothing about float/int setting defaults such as the sprinkler radius.",
+"where": "validation_v2.py --offline O2"
+}
+]
+}
+},
+"RIMMANDRAKE_PIN_FLOWWORKS_THIRST_CALLER_FALL_UNSEEN": {
+"at": "2026-11-19T15:50:16",
+"hash": "c023dd8c5e287826",
+"reading": {
+"accept": "plant_faults.py --require-caught --only CALLER_THIRST_IGNORES_HEAT_AND_LABOUR exits 0; T_THIRST goes red when the need stops feeding the ruled factors into its fall.",
+"bars": [
+"inv_bottles_thirst"
+],
+"causes_refuted": [],
+"changed": "Added case Thirst_need_falls_at_the_ruled_rate_with_heat_labour_sleep_and_slider in ThirstChecks.cs; planted CALLER_THIRST_IGNORES_HEAT_AND_LABOUR now caught, red on a395d97a, green on 4b33b22f.",
+"class": "problem",
+"defect": "T_THIRST stayed green when Need_RM_Thirst fell at FallPerInterval(BaseFallPerDay), ignoring heat x3, labour, sleep and the rate slider.",
+"proposed_fix": "Add SelfTest/ThirstChecks.cs case Thirst_need_falls_at_the_ruled_rate_with_heat_labour_sleep_and_slider so T_THIRST goes red when the need stops feeding the ruled factors.",
+"traps": []
+}
+},
+"RIMMANDRAKE_PIN_FLOWWORKS_TOSS_RANGE_AND_RELIGHT_UNWATCHED": {
+"at": "2026-11-19T15:50:16",
+"current": [],
+"current_hash": "fc4d02aa167c6d6c",
+"hash": "a43c9600298bc975",
+"keep": [
+1
+],
+"keep_hash": "9f2e7e7956822f3c",
+"reading": {
+"accept": "Laws pin TossRange near 5 and the IsBurning guard; planted TOSS_RANGE_ACROSS_THE_MAP and TOSS_RELIGHTS_BURNING turn T_TOSS_FLAME_OFFLINE red.",
+"bars": [
+"inv_toss_flame"
+],
+"causes_refuted": [],
+"changed": null,
+"class": "polish",
+"defect": "T_TOSS_FLAME_OFFLINE stays green when TossRange is planted at 49 (across the map) or the toss relights an already burning square; TossRange is PROVISIONAL (auto-decided 2026-11-15).",
+"proposed_fix": "Add two laws in selftest_stage3_owed.py toss_flame(): pin TossRange near 5 and the IsBurning guard.",
+"traps": [
+{
+"text": "TossRange (4.9) is marked PROVISIONAL, auto-decided 2026-11-15; the bar names no range, so pinning it near 5 rests on the setting's own text.",
+"where": "TossRange; inv_toss_flame"
 }
 ]
 }
@@ -7691,12 +8286,45 @@
 ]
 }
 },
+"RIMMANDRAKE_PLANT_FLOWWORKS_SETTLING_LAW_SHUTTLE_TRIPS_OTHERS": {
+"at": "2026-11-19T15:50:16",
+"current": [],
+"current_hash": "d33fd9d2fcd860bd",
+"hash": "3e52b673b4a211f9",
+"keep": [
+1,
+2
+],
+"keep_hash": "0caa64dcdecfeadd",
+"reading": {
+"accept": "python3 src/RimMandrake/Utils/vv_laws.py prove FlowWorks --family settling prints settling/kernel_fuzz PROVEN ... by settled_scene_reaches_fixed_point (NOT_PROVEN before).",
+"bars": [],
+"causes_refuted": [
+{
+"depends_on": [
+"src/RimMandrake/FlowWorks/Source/SelfTest/VV/ShippedMatrixProbe.cs"
+],
+"text": "The original shuttle was assumed to reverse or continue: it need not, since with depths [2,2] and water [U,U] the first move leaves [2U,0] and neither cell is eligible again; the pair is not kept between calls and need not be adjacent (Codex finding 3)."
+}
+],
+"changed": "Shuttle plant now keeps one pair and moves 1 dL, tripping no other law; the 24-pulse window runs per-pulse checks and counts no filling body. settling/kernel_fuzz PROVEN red 13/10000 by settled_scene_reaches_fixed_point, baseline 0/10000.",
+"class": "problem",
+"defect": "The settling law settled_scene_reaches_fixed_point was never seen red: the ShippedMatrixProbe shuttle plant turned kernel_fuzz red only via fluids_never_turn_into_each_other or sink_drain_accounted_cell_by_cell, because per-pulse checks return first and the probe hook cannot see fluid or sinks.",
+"proposed_fix": "Plant from the world side: a hook in the staged ArrayWorld (knows cellFluid and sink) shuttling one pair of same-fluid non-sink cells in a no-sink scene; keep the pair, check donor stock and receiver room each call.",
+"traps": [
+{
+"text": "Settling proves on 10000 scenes because only 58/10000 are settled-expected; a smaller run may not reach the law. Codex's remaining per-fluid/sink/count findings stay open in RIMMANDRAKE_FIX_FLOWWORKS_FUZZ_FOUR_FLAWS_SINK_STILL_FLOAT.",
+"where": "src/RimMandrake/Utils/vv_laws.py prove FlowWorks --family settling"
+}
+]
+}
+},
 "RIMMANDRAKE_PROVE_FLOWWORKS_FILL_AGAINST_DEPTH_METRES": {
 "at": "2026-11-16T03:39:25",
 "current": [
 1
 ],
-"current_hash": "3ff3bef0f5086204",
+"current_hash": "aab9794718def923",
 "hash": "87c83075ec75a665",
 "keep": [
 1
@@ -7727,8 +8355,10 @@
 },
 "RIMMANDRAKE_PROVE_FLOWWORKS_TOGGLES_DENSE": {
 "at": "2026-11-16T03:39:25",
-"current": [],
-"current_hash": "2e8bab2d95a0ea65",
+"current": [
+3
+],
+"current_hash": "096a59fae5f58c96",
 "hash": "72c046dd58900c35",
 "keep": [
 1,
@@ -7767,7 +8397,7 @@
 "RIMMANDRAKE_REALIGN_FLOWWORKS_PROOFS_AFTER_UNDER_LIQUID_LAW": {
 "at": "2026-11-16T03:39:25",
 "current": [],
-"current_hash": "0d2c26865144b86b",
+"current_hash": "7f2d76eabdd7751e",
 "hash": "d895fcbbca8ae756",
 "keep": [
 1,
@@ -7798,6 +8428,8 @@
 },
 "RIMMANDRAKE_REBUILD_FLOWWORKS_FETCH_SCENE_RAID_NEVER_CAME": {
 "at": "2026-11-16T03:39:25",
+"current": [],
+"current_hash": "566c97355913ad6e",
 "hash": "39e72ee0501892f9",
 "keep": [
 1,
@@ -7830,7 +8462,7 @@
 "RIMMANDRAKE_REBUILD_FLOWWORKS_GARDEN_SCENE_MACHINES_NEVER_PIPED": {
 "at": "2026-11-16T03:39:25",
 "current": [],
-"current_hash": "9abbb6d40576626d",
+"current_hash": "3a94c63aac23ffa3",
 "hash": "2110db57b1731dfe",
 "keep": [
 1,
@@ -7863,6 +8495,8 @@
 },
 "RIMMANDRAKE_REBUILD_FLOWWORKS_HOSE_SCENE_PUMP_HAD_NO_SOURCE": {
 "at": "2026-11-16T03:39:25",
+"current": [],
+"current_hash": "85300773a7906346",
 "hash": "6f1c508a4a90a388",
 "keep": [
 1
@@ -7914,6 +8548,8 @@
 },
 "RIMMANDRAKE_REBUILD_FLOWWORKS_ISLANDS_SCENE_SPAWNED_A_DRAW_STYLE": {
 "at": "2026-11-16T03:39:30",
+"current": [],
+"current_hash": "f1ea6be027cbb45e",
 "hash": "30967ac0b238136d",
 "keep": [
 1,
@@ -7944,6 +8580,10 @@
 },
 "RIMMANDRAKE_REBUILD_FLOWWORKS_MOAT_SCENE_PASSED_ON_REFUSED": {
 "at": "2026-11-16T03:39:30",
+"current": [
+1
+],
+"current_hash": "7a3ef47c0fca94d0",
 "hash": "602e615409605768",
 "keep": [
 1,
@@ -7977,7 +8617,7 @@
 "RIMMANDRAKE_REBUILD_FLOWWORKS_PAWN_HEIGHT_SCENE_ZEROS_PASSED": {
 "at": "2026-11-16T03:39:30",
 "current": [],
-"current_hash": "39b32ef887542ff7",
+"current_hash": "09ce4fcfa384fb48",
 "hash": "76c53259b83ad8bd",
 "keep": [
 1,
@@ -8016,6 +8656,8 @@
 },
 "RIMMANDRAKE_REBUILD_FLOWWORKS_PITTRAP_SCENE_STOPPED_BY_OWN_RAID": {
 "at": "2026-11-16T03:39:30",
+"current": [],
+"current_hash": "3288d0a714df8a3c",
 "hash": "9da8a0f6e1783618",
 "keep": [
 1
@@ -8041,6 +8683,8 @@
 },
 "RIMMANDRAKE_REBUILD_FLOWWORKS_SOURCE_PAYS_SCENE_POND_NEVER_THERE": {
 "at": "2026-11-16T03:39:30",
+"current": [],
+"current_hash": "a4aa9c9967d65040",
 "hash": "2572e62706c87b09",
 "keep": [
 1,
@@ -8099,6 +8743,8 @@
 },
 "RIMMANDRAKE_REBUILD_FLOWWORKS_TRENCH_SCENE_READ_LID_PROOF": {
 "at": "2026-11-16T03:39:30",
+"current": [],
+"current_hash": "b27fbaf6aba03d64",
 "hash": "348deee25b718933",
 "keep": [
 1
@@ -8157,6 +8803,8 @@
 },
 "RIMMANDRAKE_REPAIR_FLOWWORKS_OL_SHADOW_JUDGE_PRESUMED_STALE": {
 "at": "2026-11-16T03:39:30",
+"current": [],
+"current_hash": "62be8d2a94410ec3",
 "hash": "1aa27bfa754829a7",
 "keep": [
 1,
@@ -8204,6 +8852,35 @@
 ]
 }
 },
+"RIMMANDRAKE_REPIN_FLOWWORKS_PIT_CENSUS_AFTER_GSS_DROPPED_RIPPLE": {
+"at": "2026-11-19T15:50:04",
+"current": [],
+"current_hash": "a8e0ce486f2f5333",
+"hash": "1811be1dcdabc3cc",
+"keep": [
+1
+],
+"keep_hash": "55d8c87b99b8f7e0",
+"reading": {
+"accept": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_pit_draw_census.py exits 0 (rc 1 on 96941bfa43)",
+"bars": [
+"inv_pits",
+"pit_reads_as_hole",
+"no_snared_standing"
+],
+"causes_refuted": [],
+"changed": "Re-pinned the census: an ABSENT pin (no ground ripple anywhere) replaces the deleted guard's route row. rc 0 at HEAD, rc 1 at 96941bfa43 and at --base b560ff91e8^.",
+"class": "problem",
+"defect": "PY_FLOWWORKS_PIT_DRAW_CENSUS went red because its route pin 'a cord under liquid does not ripple' (CordUnderLiquid.SeenAt guard in RM_MapComponent_CordGraph.cs) names a line deleted when GSS removed ground ripple everywhere.",
+"proposed_fix": "In selftest_flowworks_pit_draw_census.py, replace the route row for the deleted guard with a law that GSS draws no ground ripple; a judge may not delete an assertion, so the steward re-pins it.",
+"traps": [
+{
+"text": "The census's recorded PASS (10:52Z) predates GSS b560ff91e8, which removed floor ripple; the criterion's meaning (no cord ripples under liquid) is kept, but the old route pin named a line that no longer exists.",
+"where": "src/RimMandrake/FlowWorks/selftest_flowworks_pit_draw_census.py"
+}
+]
+}
+},
 "RIMMANDRAKE_REPIN_PIT_COVER_CHECK_PAST_GSS_NEW_PARAMETER": {
 "at": "2026-11-16T03:39:25",
 "hash": "1d7bdca9a0b9286e",
@@ -8228,6 +8905,8 @@
 },
 "RIMMANDRAKE_REPORT_SUBMERGE_SHADOW_QUEUE_JUDGE_CANNOT_SEE_ORDER": {
 "at": "2026-11-16T03:39:25",
+"current": [],
+"current_hash": "4d83d1e638270f51",
 "hash": "2c9dd07a25d93817",
 "keep": [
 1
@@ -8251,6 +8930,10 @@
 },
 "RIMMANDRAKE_RESTORE_PUMP_TANK_SETTINGS_PRIOR_VARARG_HIDES_SETTER": {
 "at": "2026-11-16T03:39:25",
+"current": [
+1
+],
+"current_hash": "90ed1ee5292a6315",
 "hash": "f0b892493f154691",
 "keep": [
 1
@@ -8288,6 +8971,73 @@
 "defect": "RM_MapComponent_RiverCurrent.Move() calls pather.StopDead() + Notify_Teleported(false); the pather has no path and the job is not ended, so a Goto toil (completes only on PatherArrival) waits forever and the pawn stands frozen until drafted.",
 "proposed_fix": "After the move, re-issue the pather toward the job's destination, or end the job so the pawn re-thinks; check whether TerminalBiomes' sea shove (same idiom) freezes the same way.",
 "traps": []
+}
+},
+"RIMMANDRAKE_SETTLE_PARTIAL_IMPL_TWO_INVENTORY_ROWS_UNCOUNTED": {
+"at": "2026-11-19T15:50:04",
+"current": [],
+"current_hash": "1f8cb6dd25247825",
+"hash": "801351c91d925285",
+"keep": [
+1,
+2
+],
+"keep_hash": "216010d0551ccc1d",
+"reading": {
+"accept": "designer_stage.py showcases design/concepts/FlowWorks and the same for design/concepts/GimmeSomeSlack each exit 0 with a counted table; no inventory row has impl outside designer_stage.IMPL, and IMPL is unchanged.",
+"bars": [],
+"causes_refuted": [
+{
+"depends_on": [
+"src/RimMandrake/rimflow/designer_stage.py"
+],
+"text": "A fourth impl value 'partial' in the schema was rejected: every reader of impl and the coverage rules would need a rule for half-built; impl answers only 'is there code for it', how much works is the proof field."
+},
+{
+"depends_on": [
+"src/RimMandrake/rimflow/designer_stage.py"
+],
+"text": "Teaching 'showcases' alone to read partial was rejected: it would create a second vocabulary."
+}
+],
+"changed": null,
+"class": "problem",
+"defect": "designer_stage.py showcases refuses two concepts before counting coverage: FlowWorks inventory entry 28 (inv_liquid_coating) and GimmeSomeSlack entry 23 carry impl \"partial\", but designer_stage.IMPL allows only present/absent/unknown.",
+"proposed_fix": "Restate the rows, not the schema: GSS cords_join_stubs_on_position_and_slope becomes impl present (proof missing, note on unjoined art); FlowWorks inv_liquid_coating becomes impl absent (proof missing). IMPL unchanged.",
+"traps": []
+}
+},
+"RIMMANDRAKE_SHARPEN_FLOWWORKS_VOLUME_LAW_ONE_DECILITRE_SLIPS_BY": {
+"at": "2026-11-19T15:50:04",
+"current": [],
+"current_hash": "4f8794cd111e55ea",
+"hash": "5be76138de28c18c",
+"keep": [
+1,
+2
+],
+"keep_hash": "ac7440ca3956ce7b",
+"reading": {
+"accept": "vv_laws.py prove FlowWorks --family conservation with the 1 dL plant is PROVEN; NOT_PROVEN on the base.",
+"bars": [],
+"causes_refuted": [
+{
+"depends_on": [
+"src/RimMandrake/FlowWorks/Source/SelfTest/FlowKernelFuzz.cs"
+],
+"text": "The kernel re-rounding a cell to whole levels each pulse (which would make the law right) was ruled out: the kernel does not round the decilitre away; the check was wrong, not the mod."
+}
+],
+"changed": "The law now compares exactly in dL instead of the 10 dL float tolerance, and the probe plants one dL. Prove on base NOT_PROVEN (0/300, planted 1156); after PROVEN (baseline 0/300, red 162/300); unplanted 10000 scenes 0 failures.",
+"class": "problem",
+"defect": "The FlowWorks conservation law (volume_in_equals_out_plus_stored, FlowKernelFuzz.cs) did not see 1 dL appearing from nowhere: its float tolerance of 1e-3 levels equals 10 dL (U = 10000 dL/level), so a sub-level leak passed (0/300 red over 1156 plants).",
+"proposed_fix": "Make the law exact in decilitres and have ShippedMatrixProbe plant one dL (k.water[i] += 1).",
+"traps": [
+{
+"text": "The law's tolerance was in levels (1e-3 level = 10 dL), so a green kernel_fuzz did not mean sub-level volume was conserved; a whole level went red 141/300 but one dL went 0/300.",
+"where": "src/RimMandrake/FlowWorks/Source/SelfTest/FlowKernelFuzz.cs, volume_in_equals_out_plus_stored"
+}
+]
 }
 },
 "RIMMANDRAKE_SUBMERGE_PIT_FITTINGS_BY_LEVEL": {
@@ -8330,6 +9080,8 @@
 },
 "RIMMANDRAKE_SWEEP_WATER_SOLVERS_ON_BIG_MAPS": {
 "at": "2026-11-16T03:39:50",
+"current": [],
+"current_hash": "d5aa9a183b253c38",
 "hash": "b45aa29e7d728c09",
 "keep": [
 1,
@@ -8392,6 +9144,31 @@
 ]
 }
 },
+"RIMMANDRAKE_TRACE_SLACK_MINIFIED_LOOKUP_ERROR_WITH_FLOWWORKS": {
+"at": "2026-11-19T15:50:04",
+"current": [],
+"current_hash": "eaa1b01a83389360",
+"hash": "4d8746fd95e51356",
+"keep": [
+1
+],
+"keep_hash": "fa3a003e6c0cbff8",
+"reading": {
+"accept": "none, the caller is not identified; first step is a stack.",
+"bars": [],
+"causes_refuted": [],
+"changed": null,
+"class": "problem",
+"defect": "Log error 'Tried to get ThingsOfDef of MinifiedThing' with no stack appeared in 2 of 5 scenes runs on tier gimmesomeslack_flowworks, never in eight runs on tier gimmesomeslack; Z_log_budget charges it to GSS. The thrower is not identified.",
+"proposed_fix": "First step is a stack: run the scenes block on that tier with Verse.Log stack traces kept and read the first frame to identify the caller.",
+"traps": [
+{
+"text": "Z_log_budget charges the error to GSS, but GSS calls ThingsOfDef only with its own conduit, lamp and tap-clamp defs; the caller is guessed (~75%) to be FlowWorks or a bridge tool staging a FlowWorks scene, not confirmed.",
+"where": "r7_fw_scenes3.json row Z_log_budget"
+}
+]
+}
+},
 "RIMMANDRAKE_TRIM_SPRINKLER_VALVE_SHORT_ON_EXACT_FIT": {
 "at": "2026-11-16T03:39:50",
 "hash": "a0b681bb2515dc4a",
@@ -8433,6 +9210,8 @@
 },
 "RIMMANDRAKE_VETO_DUPLICATE_PICKUP_ACROSS_SEALED_PIT_DROPS_HAUL": {
 "at": "2026-11-16T03:39:50",
+"current": [],
+"current_hash": "7fb5e663791ffc78",
 "hash": "9fe686c5ff19f693",
 "keep": [
 1
@@ -8529,6 +9308,8 @@
 },
 "RIVER_COLORS_WIDEN_RED_BLUE_GREEN_DEATH": {
 "at": "2026-11-16T03:39:50",
+"current": [],
+"current_hash": "cab70e8b77e12cf0",
 "hash": "3e08a3cb4a6d4eb7",
 "keep": [
 1
@@ -8576,6 +9357,8 @@
 },
 "RIVER_SITE_FIX_MAPS_OUTLIVE_THEIR_RUN": {
 "at": "2026-11-16T03:39:53",
+"current": [],
+"current_hash": "0ce1e540d5a05302",
 "hash": "7a27f81c5a6cb942",
 "keep": [
 1
@@ -8599,6 +9382,8 @@
 },
 "RIVER_TOGGLE_PROOFS_BUILD_ELEVEN_UNCLAIMED": {
 "at": "2026-11-16T03:39:53",
+"current": [],
+"current_hash": "4ce2bbf37143d07e",
 "hash": "5db77769feb119c8",
 "keep": [
 1
@@ -8623,7 +9408,7 @@
 "SCENARIO_REELS_FIX_STILL_FACING_WEST": {
 "at": "2026-11-16T03:39:53",
 "current": [],
-"current_hash": "957af39913450e6f",
+"current_hash": "7129017d0ef4618b",
 "hash": "6b2218d780803c77",
 "keep": [
 1
@@ -8737,6 +9522,8 @@
 },
 "SESSION_HURT_DIAGNOSE_BRUISED_AT_THE_BELL": {
 "at": "2026-11-16T03:39:53",
+"current": [],
+"current_hash": "a86a5f3d11c2587c",
 "hash": "07b9f97a4e3544b0",
 "keep": [
 1,
@@ -8851,7 +9638,7 @@
 "STATION_REACH_CENTRE_RETHINK_FOOTPRINT": {
 "at": "2026-11-16T03:39:56",
 "current": [],
-"current_hash": "95bffda5e58e1e0d",
+"current_hash": "5f88110d59c67b8c",
 "hash": "598212ee7e4292e7",
 "keep": [
 1
@@ -8911,7 +9698,7 @@
 "SUSPENSION_BASE_REWIRE_COVERS_STEP_OUT": {
 "at": "2026-11-16T03:39:56",
 "current": [],
-"current_hash": "e282a848721514a3",
+"current_hash": "2dace518ca46c60d",
 "hash": "5bd07ad7a8f70e79",
 "keep": [
 1,
@@ -8986,6 +9773,8 @@
 },
 "SWIM_WARNING_FIX_ANY_PAWN_MESSAGE": {
 "at": "2026-11-16T03:39:56",
+"current": [],
+"current_hash": "90e78364921becb9",
 "hash": "d858c0c3f9e5b51f",
 "keep": [
 1
@@ -9012,7 +9801,7 @@
 "TAKEN_BY_LAND_SERVICE_1": {
 "at": "2026-11-16T03:39:56",
 "current": [],
-"current_hash": "ab6a2f8191b0de02",
+"current_hash": "b45e3cbdc583d77f",
 "hash": "733ad81667c9c143",
 "keep": [
 1,
@@ -9045,7 +9834,7 @@
 "TANK_CONTENTS_SALVAGE_ON_DECONSTRUCT": {
 "at": "2026-11-16T03:39:56",
 "current": [],
-"current_hash": "ad3b2bbe454a2d7b",
+"current_hash": "8ee754778e0571d6",
 "hash": "0055e4a080d49d06",
 "keep": [
 1
@@ -9071,8 +9860,8 @@
 }
 },
 "TANK_LOOKS_WIRE_FOUR_STYLE_SWITCH": {
-"at": "2026-11-16T03:39:56",
-"hash": "a339f1707882299e",
+"at": "2026-11-19T15:50:04",
+"hash": "283ff535a386a297",
 "keep": [
 1
 ],
@@ -9082,15 +9871,15 @@
 ],
 "owner_hash": "8073b51ec1da545f",
 "reading": {
-"accept": "Selftest TankStyles_choose_style_gizmo; live row pipe_looks.tank_choose_style_live at review-map station tank_styles (owed after deploying FlowWorks).",
+"accept": "Selftest TankStyles_choose_style_gizmo ok (401/401); live row pipe_looks.tank_choose_style_live at review-map station tank_styles.",
 "bars": [
 "inv_looks"
 ],
 "causes_refuted": [],
-"changed": "CompTankLook added on all four tank defs with a this-tank/every-selected-tank gizmo; selftest TankStyles_choose_style_gizmo ok (401/401), DLL b09a6557aa. Live row not yet run.",
+"changed": "Added CompTankLook (PipeLook.cs) to all four tank defs, giving built tanks a Choose style gizmo (this tank / every selected tank); selftest 401/401, DLL b09a6557aa.",
 "class": "problem",
-"defect": "Built FlowWorks tanks have no style switch. The four tank defs already had style defs, all 16 look PNGs and the build-button picker, but no Choose style gizmo on a built tank.",
-"proposed_fix": "Add CompTankLook (PipeLook.cs) to all four tank defs, giving a Choose style gizmo for this tank or every selected tank.",
+"defect": "Built FlowWorks tanks lacked a switch for their four looks; the tanks had style defs, 16 look PNGs and the build-button picker, but no Choose style gizmo on a BUILT tank.",
+"proposed_fix": "CompTankLook (PipeLook.cs) on all four tank defs, giving a Choose style gizmo for this tank / every selected tank. Next: deploy FlowWorks, then run the live row pipe_looks.tank_choose_style_live at station tank_styles.",
 "traps": []
 }
 },
@@ -9157,7 +9946,7 @@
 "TAR_COOLING_GLASS_MEND_ENGINE_CELLS": {
 "at": "2026-11-16T03:39:56",
 "current": [],
-"current_hash": "6e56c649be52d8f7",
+"current_hash": "a412bf63e5496114",
 "hash": "a56a827b9e8ffb52",
 "keep": [
 1,
@@ -9205,6 +9994,8 @@
 },
 "TAR_LAG_FIX_NO_WATER_CONTROL": {
 "at": "2026-11-16T03:39:56",
+"current": [],
+"current_hash": "22741788e7d057ad",
 "hash": "52fe9428cc7accf0",
 "keep": [
 1
@@ -9228,6 +10019,8 @@
 },
 "TAR_REFINERY_FIX_CAN_FALLBACK_DEAD": {
 "at": "2026-11-16T03:39:56",
+"current": [],
+"current_hash": "0b0841259b01a265",
 "hash": "dde8683ba6a2ac9b",
 "keep": [
 1
@@ -9251,8 +10044,11 @@
 },
 "TESTENV_BUMBLEDRONE_HARDEN_UNINVITED_BUZZ": {
 "at": "2026-11-16T03:39:56",
-"current": [],
-"current_hash": "59a781db15e027e1",
+"current": [
+1,
+2
+],
+"current_hash": "85f980830ae42732",
 "hash": "ca242fa1a75ae81b",
 "keep": [
 1,
@@ -9360,24 +10156,24 @@
 }
 },
 "TESTQ_MODS_WIRE_BEYOND_FLOWWORKS": {
-"at": "2026-11-16T03:39:56",
-"hash": "e9d14764550997c4",
+"at": "2026-11-19T15:50:04",
+"hash": "994a915b532238e8",
 "keep": [
 1
 ],
 "keep_hash": "190c1763d4b98871",
 "reading": {
-"accept": "coverage.py check --min-wired 6 exits 0 (testq selects at least 6 of 132 harnessed mods, each with a passing bad_selection probe).",
+"accept": "testq selects at least 6 of 132 harnessed mods, each with a passing bad_selection probe feeding L5 (coverage.py check --min-wired 6).",
 "bars": [],
 "causes_refuted": [],
-"changed": "Blind check at 7379a46fcf16 passed: coverage.py reports 6 of 130 mods wired and selectable (FlowWorks, Stillsand, Contagion, TerminalBiomes, FeverWood, EnvironmentalHazards), and testq-tick.service walks 'coverage.py wired'.",
+"changed": null,
 "class": "problem",
-"defect": "Only 1 of 132 harnessed mods was selectable by testq; the next mods must be wired by bridge backlog, each with a bad_selection probe feeding coverage measure L5.",
+"defect": "Only 1 of 132 harnessed mods was selectable by testq; the next mods needed wiring by bridge backlog, each with a bad_selection probe feeding coverage measure L5.",
 "proposed_fix": "Wire the first 5 mods beyond FlowWorks, each with a passing bad_selection probe feeding coverage measure L5.",
 "traps": [
 {
-"text": "The item file's state says ready with nothing recorded as owed, yet the ledger holds a close at 7379a46fcf16 after the blind PASS; its live check reading testq/tick.log flipped broken/kept on 2026-11-04 and 2026-11-07.",
-"where": "infrastructure/state/items/TESTQ_MODS_WIRE_BEYOND_FLOWWORKS.md; testq/tick.log live check"
+"text": "The title's '1 of 132 mods' is stale: 35 mods are wired now (testq/wired_mods.json); the open gap is the coverage selftest red carried by RIMMANDRAKE_CLAIM_WIRED_MUST_SHOWS_THREE_MODS_BARE.",
+"where": "testq/wired_mods.json"
 }
 ]
 }
@@ -9438,7 +10234,7 @@
 "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY": {
 "at": "2026-11-16T03:40:01",
 "current": [],
-"current_hash": "73799cbaa0ed8f3c",
+"current_hash": "4360379bb16611de",
 "hash": "39820ed6b4571b54",
 "keep": [
 1,
@@ -9514,6 +10310,8 @@
 },
 "THIRST_STORE_TANK_DIAGNOSE_LATE_BRINE": {
 "at": "2026-11-16T03:40:24",
+"current": [],
+"current_hash": "9d5bd43ad7371d62",
 "hash": "9418031c3d1eb63c",
 "keep": [
 1,
@@ -9621,6 +10419,10 @@
 },
 "UNIVERSAL_PIPE_FIX_LAST_RULING_STILL_RED": {
 "at": "2026-11-16T03:40:24",
+"current": [
+2
+],
+"current_hash": "9c5af104eea4af0b",
 "hash": "658e33ecb5a1136d",
 "keep": [
 1,
@@ -9658,7 +10460,7 @@
 "VALIDATION_HOSE_REELS_FIX_STILL_WEST": {
 "at": "2026-11-16T03:40:24",
 "current": [],
-"current_hash": "a9a8dfb80c230d1c",
+"current_hash": "8fe9a2d465cbc0b7",
 "hash": "ac265ef9cef9199c",
 "keep": [
 1,
@@ -9695,6 +10497,8 @@
 },
 "VV_MATRIX_FIX_SURFACE_FAILURES_UNDERCOUNT": {
 "at": "2026-11-16T03:40:24",
+"current": [],
+"current_hash": "651097de8e2a2ce1",
 "hash": "fbf4ec3c2e2ffc96",
 "keep": [
 1
@@ -9718,6 +10522,8 @@
 },
 "WALKS3_OUTFLOW_FIX_HOSE_WONT_JUMP_DITCH": {
 "at": "2026-11-16T03:40:24",
+"current": [],
+"current_hash": "3bf901bede18c5f1",
 "hash": "f15385a73a84e029",
 "keep": [
 1
@@ -9798,7 +10604,7 @@
 "WEIR_POOL_DIAGNOSE_DAMMED_AT_THE_EDGE": {
 "at": "2026-11-16T03:40:08",
 "current": [],
-"current_hash": "fc290a1a5936becf",
+"current_hash": "a6e1162bcfa70f99",
 "hash": "fc52bb2c86875b1b",
 "keep": [
 1,
@@ -9850,8 +10656,10 @@
 },
 "WEIR_WASH_ITEM_LOSS_MEND_PLACE_FIRST": {
 "at": "2026-11-16T03:40:08",
-"current": [],
-"current_hash": "dc27364e871c4514",
+"current": [
+3
+],
+"current_hash": "2ec6f543d514a2bf",
 "hash": "1adc59eba25006d9",
 "keep": [
 1,
@@ -9874,6 +10682,35 @@
 {
 "text": "ext breach_wash PASS does not cover the no-strand-room case. A real no-room cannot be staged because the despawned stack's own cell is always free in the search, so the probe uses the seam washPlaceValidator to make the Near search refuse every cell.",
 "where": "RM_Building_BankWeir.washPlaceValidator, RM_RiverWorksProofWorks.ProofBreachNoRoom, works/breach_wash_no_room_keeps_catch"
+}
+]
+}
+},
+"WRECKED_LINKS_FIX_RUINS_SNUB_THEIR_PIPES": {
+"at": "2026-11-19T15:50:04",
+"current": [],
+"current_hash": "a1dbdbe1406fa30d",
+"hash": "c612b9be05213282",
+"keep": [
+1
+],
+"keep_hash": "856a1ba773cfe5b7",
+"owner": [
+1
+],
+"owner_hash": "2172d017ad4fd99d",
+"reading": {
+"accept": "python3 src/RimMandrake/Utils/run_selftests.py --only src/RimMandrake/FlowWorks/selftest_wrecked_links_draw_in.py (rc 0 GREEN, offline); live criteria A1/A2 (L2): place a pipe and conduit end beside each tagged ruin and read the net.",
+"bars": [],
+"causes_refuted": [],
+"changed": "Code landed at b69a9aa0f1 (RM_LiquidJoins.cs, RM_IndustrialLiquidWorks.xml, FlowWorks DLL rebuilt): wrecked tiers draw in pipes and conduit like repaired ones.",
+"class": "problem",
+"defect": "Wrecked tiers (RM_PumpingStation_Wrecked first) have no CompPower and no pipe comp unlike _Kludged/_Repaired, so adjacent pipes and conduit do not link to them, leaving gaps between pipes, conduit and the unit.",
+"proposed_fix": "Make every wrecked/ruin tier draw in pipes and conduit like its repaired tier (visual linking only): no net role or power comp, no joining a power or liquid net.",
+"traps": [
+{
+"text": "The offline selftest passing (rc 0, GREEN) does not close the item: it reads the def and source shape and cannot build a net, so A1/A2 (linking and hooking in on a live net graph, per ruin def) remain unproven live.",
+"where": "src/RimMandrake/FlowWorks/selftest_wrecked_links_draw_in.py; infrastructure/state/live_proofs/WRECKED_LINKS_FIX_RUINS_SNUB_THEIR_PIPES.criteria"
 }
 ]
 }

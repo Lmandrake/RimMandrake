@@ -1,12 +1,12 @@
 {
 "model": "sonnet",
 "prompt_version": "2026-11-16.2",
-"spent_usd_last_run": 0.0656,
+"spent_usd_last_run": 0.1633,
 "tickets": {
 "RIMMANDRAKE_ABSORB_EXTRA_EXPLOSION_EFFECTS_OWN_FLECKS": {
 "at": "2026-11-16T03:36:09",
 "current": [],
-"current_hash": "4dd406a2d4452b02",
+"current_hash": "fdbd9a657bc9340b",
 "hash": "0f46a2cd03cc6ac5",
 "keep": [
 1,
@@ -37,6 +37,31 @@
 ]
 }
 },
+"RIMMANDRAKE_ALIGN_LANE_FRAME_ROW_TO_P99_STILL_WORST": {
+"at": "2026-11-19T15:30:46",
+"hash": "30f4acefeca5fc8a",
+"keep": [
+1
+],
+"keep_hash": "11592a4f89de23b8",
+"reading": {
+"accept": "selftest_explosiveknockback_blind_cycle1.py (offline) passes; red on 3387bc2292, PASS at ce0b84ea6d.",
+"bars": [
+"frame_time_probe"
+],
+"causes_refuted": [],
+"changed": "Row L1_frame_probe_reading now tests the p99 bar and refuses a long stall rather than the retired worst-frame rule; blind_cycle1 green at ce0b84ea6d.",
+"class": "problem",
+"defect": "ExplosiveKnockback blind cycle 1 lane 1 row L1_frame_probe_reading asserts the retired worst-frame rule; the bar is p99, so the blind_cycle1 selftest was red on base.",
+"proposed_fix": "Change row L1_frame_probe_reading to test the p99 frame bar (and refuse a long stall) instead of the retired worst-frame rule; spec in /tmp/ek_p99_spec.md.",
+"traps": [
+{
+"text": "The blind-cycle-1 row L1_frame_probe_reading asserted the retired worst-frame rule; the bar is p99, so a pass or fail on the old rule did not measure the bar.",
+"where": "selftest_explosiveknockback_blind_cycle1.py row L1_frame_probe_reading"
+}
+]
+}
+},
 "RIMMANDRAKE_ASK_GOODS_WILD_FACTOR_BECOME_A_SLIDER": {
 "at": "2026-11-16T03:36:09",
 "hash": "b644c62e18aaeb7d",
@@ -63,9 +88,43 @@
 "owner": [],
 "owner_hash": "8bf7c07dd3055334"
 },
+"RIMMANDRAKE_BREAK_COVER_UNDER_LANDING_STACK_STILL_WHOLE": {
+"at": "2026-11-19T15:30:46",
+"current": [],
+"current_hash": "279a7130c1c48687",
+"hash": "9e1b2665b8c1f5c5",
+"keep": [
+1,
+2
+],
+"keep_hash": "ffc7d61d4cf5b966",
+"reading": {
+"accept": "Offline: selftest_explosiveknockback_storeroom_bomb_pit.py and selftest_explosiveknockback_kernel.py green, red on base. Live: knockback_runner.py --scenes storeroom_bomb_pit,storeroom_bomb_pit_control --ticks 900 (proof build) needs cover=True, gone=True, control unchanged.",
+"bars": [
+"thrown_into_pit_falls",
+"inv_pits_receive",
+"blast_breaks_pit_cover"
+],
+"causes_refuted": [],
+"changed": "Kernel LandingBreaksCover plus compat BreakCoverUnder spring the cover through FlowWorks Building_PitCover.Spring when a thrown stack (or corpse) lands on a covered pit cell. Gas bursts and closed containers never break a cover; FlowWorks' deck load is unchanged.",
+"class": "problem",
+"defect": "A thrown stack landing on a covered pit cell leaves the cover intact (visit 3 sc_storeroom_bomb_pit: cover=False, gone=False, descents=1). RM_ThingFlyer_Knockback never touches a cover; FlowWorks' SpanDeck load sums living walking pawns only.",
+"proposed_fix": "On the flyer's landing on a covered pit cell, break the cover (Knockback side, reusing RM_KnockbackCompat's cover lookup) so the stack falls through with one descent; leave FlowWorks' deck load unchanged.",
+"traps": [
+{
+"text": "The live row sc_storeroom_bomb_pit is recorded UNRUN (4986a70e58) and needs the proof build at Stage 6; only the offline checks (storeroom selftest, kernel 191/191) are green, so the in-game fix is unverified.",
+"where": "test-table row sc_storeroom_bomb_pit; knockback_runner.py --scenes storeroom_bomb_pit,storeroom_bomb_pit_control"
+},
+{
+"text": "The launch-check 'must-fail: grep -q Cover RM_ThingFlyer_Knockback.cs' is only a launch guard (the flyer had no cover code at filing), not the oracle.",
+"where": "src/RimMandrake/ExplosiveKnockback/Source/RM_ThingFlyer_Knockback.cs"
+}
+]
+}
+},
 "RIMMANDRAKE_BREAK_PIT_COVER_UNDER_THROWN_STACK_PAWNS_ONLY": {
-"at": "2026-11-16T03:36:09",
-"hash": "d7544fabf949a314",
+"at": "2026-11-19T15:30:46",
+"hash": "4d88b9409928b403",
 "keep": [
 1
 ],
@@ -73,24 +132,20 @@
 "reading": {
 "accept": "Live cover row of knockback_runner.py --scenes storeroom_bomb_pit --ticks 900 (cover=True), plus an offline check that a stack landing on a covered cell destroys the cover and descends once; watch it fail on the base.",
 "bars": [
-"thrown_into_pit_falls",
-"inv_pits_receive"
+"thrown_into_pit_falls"
 ],
 "causes_refuted": [],
 "changed": null,
 "class": "problem",
-"defect": "sc_storeroom_bomb_pit expects a thrown stack landing on a covered pit cell to fall through with one descent and destroy the cover, but Building_SpanDeck's load sums living walking pawns only and RM_ThingFlyer_Knockback never touches a cover.",
-"proposed_fix": "Build it where the builder chooses; the flyer's landing on a covered pit cell (Knockback side) touches the least. Widening SpanDeck's load would change FlowWorks for every item dropped on a deck.",
-"traps": [
-{
-"text": "The scene text stands and the code must change to match it: the locked certified leaf thrown_into_pit_falls says a thrown good onto a covered pit cell falls through and leaves the cover broken.",
-"where": "design/concepts/ExplosiveKnockback/tree.json; sheet.md:44"
-}
-]
+"defect": "sc_storeroom_bomb_pit expects the stack aimed at a covered cell to fall through with one descent and destroy the cover, but no code does it: Building_SpanDeck's load sums living walking pawns only and RM_ThingFlyer_Knockback never touches a cover.",
+"proposed_fix": "Build it: a landing thrown stack breaks the cover and falls through, preferably on the flyer's landing (Knockback side); widening SpanDeck's walking-pawn load would change FlowWorks for every item dropped on a deck.",
+"traps": []
 }
 },
 "RIMMANDRAKE_BRUISE_KNOCKBACK_LANDING_ON_PAWN": {
 "at": "2026-11-16T03:36:09",
+"current": [],
+"current_hash": "a2dd131032f516b3",
 "hash": "d1dd07e96d6ab66f",
 "keep": [
 1
@@ -137,9 +192,11 @@
 "RIMMANDRAKE_BUILD_KNOCKBACK_CREATURE_MASS_AND_BLAST_POWER": {
 "at": "2026-11-16T03:36:09",
 "current": [
-2
+1,
+2,
+4
 ],
-"current_hash": "520a2ca17be80196",
+"current_hash": "055b56d35ddcf08e",
 "hash": "36a9c9839c807ec3",
 "keep": [
 1,
@@ -186,6 +243,10 @@
 },
 "RIMMANDRAKE_BUILD_KNOCKBACK_STAGE_THREE_ELEVEN_BARS_UNRUN": {
 "at": "2026-11-16T03:36:09",
+"current": [
+1
+],
+"current_hash": "0e5fb333f211658e",
 "hash": "457d171d3189d19a",
 "keep": [
 1,
@@ -242,8 +303,10 @@
 },
 "RIMMANDRAKE_CHAIN_FLAMMABLE_GAS_CLUMPS": {
 "at": "2026-11-16T03:36:09",
-"current": [],
-"current_hash": "5fddd8ccfabe7b97",
+"current": [
+3
+],
+"current_hash": "6be79276b9b2690d",
 "hash": "54f72f91641301f6",
 "keep": [
 1,
@@ -278,9 +341,9 @@
 "RIMMANDRAKE_CHALLENGE_KNOCKBACK_BLIND_TWO_FIRST_EXIT_MISSED": {
 "at": "2026-11-16T03:36:26",
 "current": [
-1
+3
 ],
-"current_hash": "24d3a224b34be975",
+"current_hash": "9c95b1604aede5f8",
 "hash": "b05cfac895a7b500",
 "keep": [
 1,
@@ -413,7 +476,7 @@
 "RIMMANDRAKE_DECIDE_EXPLOSION_MODS_KEEP_ABSORB": {
 "at": "2026-11-16T03:36:26",
 "current": [],
-"current_hash": "661ca908a0a2aef8",
+"current_hash": "bd506b5d3395074f",
 "hash": "9515e453d708bbfd",
 "keep": [
 1
@@ -481,7 +544,7 @@
 "RIMMANDRAKE_DEPLOY_KNOCKBACK_DRAWING_STORAGE_OPEN": {
 "at": "2026-11-16T03:36:26",
 "current": [],
-"current_hash": "20e94cc3ff964ed3",
+"current_hash": "93d476f1eb154f6c",
 "hash": "5fe7ccef525db24e",
 "keep": [
 1,
@@ -511,21 +574,18 @@
 }
 },
 "RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH": {
-"at": "2026-11-16T03:35:59",
+"at": "2026-11-19T15:30:48",
 "current": [
-1,
-3
+1
 ],
-"current_hash": "28a73f0775c69a57",
-"hash": "3f290bb662ebfcc2",
+"current_hash": "d2fd8d2e1138c776",
+"hash": "4922ce0c9fe23139",
 "keep": [
 1,
-2,
 3,
-4,
-5
+4
 ],
-"keep_hash": "a27dc0c462c24ada",
+"keep_hash": "48402faab67f26a8",
 "owner": [
 1,
 2,
@@ -546,43 +606,29 @@
 ],
 "owner_hash": "1ae8b767f77d9eaf",
 "reading": {
-"accept": "none filed for the ticket as a whole; stage 5 close runs designer_stage.py close (concept_tree gate incl. owner-certified coverage, scene_errors, showcase_check), which passed.",
-"bars": [
-"inv_which_blasts",
-"inv_closed_guard",
-"inv_shield",
-"inv_gas_tags",
-"inv_creature_mass_limit",
-"inv_blast_power_damage",
-"closed_container_holds",
-"heavier_flies_less"
-],
-"causes_refuted": [
-{
-"depends_on": [],
-"text": "Colonist weight band 60-76 kg suggested by the judge was wrong: 60-63 kg throws 6 cells at the higher damage and ties the capped rat, so the band was set to 64-76 kg."
-},
-{
-"depends_on": [],
-"text": "The melee shove-into-pit contest (masses and melee skills) does not belong in Explosive Knockback; it goes to FlowWorks as its own item."
-}
-],
-"changed": "Stage 3 reworked: creature mass limit 150 kg replaces body-size 2.5, force scales with damage / type default damage, showcase 2 sc_mass_and_power added. The 5 scene gaps were fixed per smallest_fix (colonist band 64-76 kg). g1 was fixed by pinning sc_settings_sweep animal and mech under 90 kg. Locked on the owner's word.",
+"accept": "designer_stage.py close stage 5 (concept_tree gate incl. owner-certified coverage, scene_errors, showcase_check) accepted; status locked. Exam10 passed 119/119.",
+"bars": [],
+"causes_refuted": [],
+"changed": "Stage 5 locked at 1a52342277 on the owner's certification. Fixed 6 scene gaps (creature mass limit 150 kg replacing body size 2.5, force x damage, gas scene, pinned animal/mech masses under 90 kg in sc_settings_sweep). Tree later re-certified after container-thrown rewording.",
 "class": "problem",
-"defect": "Task: take the Explosive Knockback concept through Designer stages 0-5 to a locked tree. The coverage judge never signed (not_covered, 6 gaps), so concept_tree.py gate refuses with 'no coverage signature'; only a rm-coverage-judge run can sign.",
-"proposed_fix": "Run Designer stages 0-5 with the owner's sitting answers (Q1-Q11), fix the coverage judge's gaps in the scenes and record, then lock the concept with the owner's certification.",
+"defect": "Task: take the Explosive Knockback concept through Designer stages 0-5 to a locked tree. Coverage judge never signed (last verdict not_covered, 6 gaps), so concept_tree.py gate refuses with 'no coverage signature'; lock rests on the owner's word.",
+"proposed_fix": "Run Designer stages 0-5 on design/concepts/ExplosiveKnockback, fix the judge's scene gaps at stage 3, rerun exam, then owner certifies via concept_tree certify (only a coverage-judge run signs).",
 "traps": [
 {
-"text": "Stage 5 is locked on the owner's word, not on a judge signature. The last judge verdict (rm-coverage-judge-1794599960) is still not_covered with 6 gaps; the gate has no owner-certification route, so concept_tree.py gate alone still refuses with 'no coverage signature'. The owner-certified stamp (concept_tree certify) is what passed.",
+"text": "The lock is not a judge pass: the last judge verdict (rm-coverage-judge-1794599960) is not_covered with 6 gaps, and concept_tree.py gate still refuses with 'no coverage signature'. Coverage rests on an owner-certified stamp, not a signature.",
 "where": "design/concepts/ExplosiveKnockback/stage.json; concept_tree.py gate"
 },
 {
-"text": "A gas shove onto an open pit drops the pawn in (dl_gas_shove_open_pit), going by the owner's earlier words 'Only if they get blown/forced in do they fall', although the card said to align the scene with the sheet; the owner confirmed it stands.",
-"where": "scene dl_gas_shove_open_pit"
+"text": "Judge carried 5 fixed gaps as unfixed only because no coverage_fixes.json claim was written; claims must be filed for the judge to count fixes.",
+"where": "coverage_fixes.json"
 },
 {
-"text": "Vanilla grenade, mortar shell and IED all deal 50 damage, so the force-times-damage rule changes nothing for them; it shows only on rockets, antigrain and modded weapons.",
-"where": "design/RimMandrake/explosion_mods_characterized_2026-11-12.md"
+"text": "Colonist mass band in the test scene is 64-76 kg, not 60-76: 60-63 kg throws 6 cells at higher damage and ties the capped rat.",
+"where": "design/concepts/ExplosiveKnockback scenes (sc_mass_and_power)"
+},
+{
+"text": "Melee shove-into-pit contest is out of this mod (belongs to FlowWorks); a gas shove onto an open pit drops the pawn in.",
+"where": "sc_pit_fall / dl_gas_shove_open_pit"
 }
 ]
 }
@@ -593,6 +639,8 @@
 },
 "RIMMANDRAKE_DRAW_CONTAINER_JOLT_AS_MOVE_NOT_GHOST": {
 "at": "2026-11-16T03:35:59",
+"current": [],
+"current_hash": "bb3dc0d384573c03",
 "hash": "d4bd1c349fb93821",
 "keep": [
 1
@@ -649,11 +697,10 @@
 "RIMMANDRAKE_DRIVE_EXPLOSIVEKNOCKBACK_IN_GAME_ACCEPTANCE_FIRST": {
 "at": "2026-11-16T03:35:59",
 "current": [
-1,
-2,
-3
+3,
+4
 ],
-"current_hash": "dec1b0ad9c602900",
+"current_hash": "e2af17e7b894cf2d",
 "hash": "9082a56fc7ab13f7",
 "keep": [
 1,
@@ -708,30 +755,73 @@
 ]
 }
 },
+"RIMMANDRAKE_DROP_THROWS_INTO_COVERED_PITS_K08_MUST_FLIP": {
+"at": "2026-11-19T15:30:48",
+"current": [],
+"current_hash": "62363045d6d15b50",
+"hash": "4c28ac9c15f6b494",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "6f3b3f6b198c6baf",
+"reading": {
+"accept": "python3 design/concepts/ExplosiveKnockback/version/blind_challenge/cycle_5/lane2/accept_covered_pit.py -> rc 0, 'covered pit acceptance: 6 of 6' (rc 1, 2 of 6 on 10abd71ff0).",
+"bars": [
+"thrown_into_pit_falls",
+"blast_breaks_pit_cover"
+],
+"causes_refuted": [],
+"changed": "Fixed at 610b127ba8: a pit cell, open or covered, ends a throw in it (wall when throwIntoPits off); LandingBreaksCover no longer excludes pawns; ThrowPawn remembers explosion id so blast-thrown pawns break the cover (gas shoves never). K-08/K-24 flipped. Acceptance 2/6 -> 6/6.",
+"class": "problem",
+"defect": "RM_KnockbackMath.Resolve lets a throw planned beyond a covered pit fly over it (treated as ground, K-08), and LandingBreaksCover excludes pawns, so a blast-thrown colonist never breaks a cover; locked scene sc_pit_fall says both fall through and the cover breaks.",
+"proposed_fix": "Resolve: a pit cell, open or covered, ends the throw in it (wall when intoPits off). LandingBreaksCover drops the Pawn exclusion for blast ids (>=0); ThrowPawn remembers explosion id; flip K-08 in SelfTest; extend pit_colonist proof.",
+"traps": [
+{
+"text": "Live in-game check of sc_pit_fall's covered lane is UNRUN; the fix is verified offline only.",
+"where": "knockback_runner.py --scenes pit_colonist,pit_colonist_control (unrun.jsonl)"
+},
+{
+"text": "Old selftest K-08 'cover is ground' and K-24 'a pawn's landing doesn't break covers' pinned the opposite behaviour and were flipped; the reason is logged for the next blind judge.",
+"where": "cycle_5/tests_edited.json; Source/SelfTest/Program.cs"
+},
+{
+"text": "No finding.claimed_fixed went into the mod ledger because the holder lease was fenced; the finding's subject is the old id RIMMANDRAKE_STOP_THROWS_OVER_COVERED_PITS_K08_SAYS_GROUND.",
+"where": "EK mod ledger"
+}
+]
+}
+},
 "RIMMANDRAKE_EXPOSE_FRAME_PROBE_TO_BRIDGE_WALK_STUCK_UNMEASURED": {
-"at": "2026-11-16T03:44:33",
-"hash": "65ee63da6de0b71e",
+"at": "2026-11-19T15:30:45",
+"hash": "3712c59131a1bbee",
 "keep": [
 1
 ],
-"keep_hash": "276e23327909bddb",
+"keep_hash": "7810a824b2bf7849",
 "reading": {
-"accept": "grep -c 'public static string Frame(' src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs prints >=1 (0 on 3d1f9ae2ca); selftest_explosiveknockback_walk_raid.py W0 all rows PASS with fake Frame stop under 50 ms; proofgate selftest stays green.",
+"accept": "grep -c 'public static string Frame(' src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs prints >=1 (0 before); selftest_explosiveknockback_walk_raid.py W0 all PASS; selftest_explosiveknockback_proofgate.py stays green.",
 "bars": [
 "walk_storeroom_raid",
 "frame_time_probe"
 ],
 "causes_refuted": [],
-"changed": "Added the Frame bridge read and a real-time FRAME_BUDGET act in the walk (0459550b0c), so FRAME_BUDGET is measured; selftest W0/W19/W20 were red before and green after.",
+"changed": "Added the RM_KnockbackProof.Frame bridge read and a real-time FRAME_BUDGET act in the walk, so the row is now measured live (run 4: mod on p99 83.1 ms, off 80.2 ms). Grep gives 1, walk selftest 0 failed, proofgate PASS.",
 "class": "problem",
 "defect": "RM_FrameProbe.Begin/Stop are internal and jawa/static_call reaches only public static methods, so walk_storeroom_raid's FRAME_BUDGET row is UNMEASURED by construction and the walk can never PASS.",
-"proposed_fix": "Add public static string Frame(\"begin|stop\") on RM_KnockbackProof as a bridge read of RM_FrameProbe; rebuild C# (winbuild.py, proof and release) with .srchash; edit walk selftest W0 to expect all rows PASS.",
-"traps": []
+"proposed_fix": "Add public static string Frame(\"begin|stop\") on RM_KnockbackProof as a bridge read of RM_FrameProbe; edit walk selftest W0 to expect every row PASS with a Frame stop summary under 50 ms. Rebuild proof and release DLLs with .srchash.",
+"traps": [
+{
+"text": "The walk's FRAME_BUDGET row is now measured but still reads UNMEASURED as list noise: the staged colony with its raid running is already over the 50 ms bar with the mod off (80.2 ms vs 83.1 ms on), so the row cannot decide anything. Whether to judge against the mod-off run is a criterion question left open in visit_3/SUMMARY.md.",
+"where": "sc_walk_raid FRAME_BUDGET row, design/concepts/ExplosiveKnockback/version/in_game/visit_3/SUMMARY.md"
+}
+]
 }
 },
 "RIMMANDRAKE_FILL_HEAVY_LOCKER_REAL_MASS_ESTIMATE_FELL_SHORT": {
-"at": "2026-11-16T03:36:03",
-"hash": "c6c5d628738d09b7",
+"at": "2026-11-19T15:30:45",
+"hash": "a073e137d18b471b",
 "keep": [
 1
 ],
@@ -742,16 +832,11 @@
 "closed_container_holds"
 ],
 "causes_refuted": [],
-"changed": null,
+"changed": "The fill now reads the locker's real mass after every gun, fixing the estimated-mass shortfall; closed_containers PASS live on the 34-mod EK list, proof build 9329b24c, where it was INVALID at 74.9 kg before.",
 "class": "problem",
-"defect": "In sc_closed_containers the heavy-locker fill loop in RM_KnockbackProof_StageThree.cs adds estimated gun mass (GetStatValueAbstract, total += gm) and never re-reads Mass(heavyBox), so the locker can stop short of 76 kg and the scene reads INVALID (74.9 kg once).",
-"proposed_fix": "After each placement set total = Mass(heavyBox) instead of accumulating the estimated gun mass.",
-"traps": [
-{
-"text": "The INVALID in visit 3 pass 2 was a harness fill shortfall (74.9 kg, below 76), not a mod fault; the rerun (_p2b) PASSED.",
-"where": "design/concepts/ExplosiveKnockback/version/in_game/visit_3/evidence/sc_closed_containers_p2.txt"
-}
-]
+"defect": "The sc_closed_containers heavy-locker fill loop in RM_KnockbackProof_StageThree.cs adds the GetStatValueAbstract mass estimate (total += gm) and never re-reads Mass(heavyBox), so the locker can stop short of 76 kg (INVALID once at 74.9 kg).",
+"proposed_fix": "Set total = Mass(heavyBox) after each gun placement instead of accumulating estimated gun mass.",
+"traps": []
 }
 },
 "RIMMANDRAKE_FIND_DARK_HAZE_EAST_OF_GAS_CHAIN": {
@@ -774,6 +859,8 @@
 },
 "RIMMANDRAKE_FIND_WHY_GAS_CHAIN_STOPS_FIVE_OF_SEVENTEEN": {
 "at": "2026-11-16T03:36:03",
+"current": [],
+"current_hash": "09bed56805e4b173",
 "hash": "710126e374cb09be",
 "keep": [
 1
@@ -825,7 +912,7 @@
 "current": [
 2
 ],
-"current_hash": "1892876f0bce418b",
+"current_hash": "bdba562ad6ed746c",
 "hash": "f211913e4200c83e",
 "keep": [
 1,
@@ -902,8 +989,24 @@
 "traps": []
 }
 },
+"RIMMANDRAKE_FIX_KNOCKBACK_RAID_NULL_PAWN_STORM_780_TICKS": {
+"at": "2026-11-19T15:30:45",
+"hash": "ead5e47244ce9680",
+"reading": {
+"accept": "none, live-only: a rerun of the raid walk logs 0 'Exception ticking' and 0 'TweenedPosRoot' lines.",
+"bars": [],
+"causes_refuted": [],
+"changed": null,
+"class": "problem",
+"defect": "The raid walk logs 780x 'Exception ticking Levin' (vanilla Pawn.Tick+0x60 at (246,0,36)) and 447x root Update NRE in PawnTweener.TweenedPosRoot via Pawn_DrawTracker.DrawPos; both read as a pawn left with a null map/position by a knockback.",
+"proposed_fix": "Fix the knockback so no pawn is left with a null map/position (see midair saves EK_WALK_RAID_MIDAIR_*), and cut the walk's reloads (57 reloads in 2 h, heap 2.9 to 11.4 GB).",
+"traps": []
+}
+},
 "RIMMANDRAKE_FIX_STOREROOM_COVER_STACK_PLAN_FOUR_RUNS_INVALID": {
 "at": "2026-11-16T03:36:03",
+"current": [],
+"current_hash": "affcc4b00d576d50",
 "hash": "43834747ba127944",
 "keep": [
 1
@@ -928,57 +1031,72 @@
 }
 },
 "RIMMANDRAKE_FIX_WALK_RAID_SIX_FAILED_ROWS_AFTER_CRASHES": {
-"at": "2026-11-16T03:36:27",
-"current": [
-2
-],
-"current_hash": "fbc864e54e06a2d9",
-"hash": "97778be5f10215b5",
+"at": "2026-11-19T15:30:47",
+"current": [],
+"current_hash": "bb3736079d5acc11",
+"hash": "5a99ae0cedc97c6e",
 "keep": [
 1,
 2,
 3,
 4,
-5
+5,
+6,
+7,
+8
 ],
-"keep_hash": "6473e96b7e2e4831",
+"keep_hash": "199c932e677159a3",
+"owner": [
+1,
+2
+],
+"owner_hash": "05599a95600e54bb",
 "reading": {
-"accept": "Live: the sc_walk_raid row command in design/concepts/ExplosiveKnockback/version/in_game/visit_2/rows.jsonl exits 0 (exit 1 on 61567a7b75); each MOD cause also gets an offline selftest red before its fix.",
+"accept": "Live: the command in the sc_walk_raid row of design/concepts/ExplosiveKnockback/version/in_game/visit_2/rows.jsonl exits 0 (watched exit 1 on 61567a7b75); each MOD cause also gets an offline selftest red before its fix.",
 "bars": [
 "walk_storeroom_raid",
-"gas_goes_clump_by_clump",
-"blast_breaks_pit_cover"
+"frame_time_probe"
 ],
 "causes_refuted": [
 {
-"depends_on": [
-"src/RimMandrake/ExplosiveKnockback/validation.py"
-],
-"text": "Reload row 11 before vs 7 after was not the mod losing things: the census before the save and after the load were a tick apart (PauseOnLoad runs one DoSingleTick) while shell 1's wave was still spreading; also things born after the save take id, cell and count from the RNG."
+"depends_on": [],
+"text": "Reload row 11 before vs 7 after was not the mod losing things: the census before the save and after the load were taken a tick apart while shell 1's wave was still spreading (harness defect)."
+},
+{
+"depends_on": [],
+"text": "Cover rows were not a mod fault: the first storeroom shell broke the cover and dropped its rider before the grenade (SITE staging fault)."
+},
+{
+"depends_on": [],
+"text": "Mod frame cost was not request flush (1-3 ms warm, 8-18 ms first throw only), journal (in memory), flyer drawing (0.1-3.6 ms), map mesh (0.1 ms), or job searches at the blast (same in both arms, equal totals)."
 },
 {
 "depends_on": [
-"src/RimMandrake/ExplosiveKnockback/validation.py"
+"design/concepts/ExplosiveKnockback/version/in_game/visit_3/SUMMARY.md"
 ],
-"text": "Cover rows' zero descents were not a mod failure: the site was at fault, since the first storeroom shell broke the cover and dropped its rider before the grenade."
+"text": "Run 5 FAIL 91.3 vs 37.1 ms was a harness artifact, not mod cost: the off arm ran uncapped (863 vs 498 window rows), diluting p99 by frame rate."
+},
+{
+"depends_on": [],
+"text": "The bundle's instrumented probe build as the cause of a game crash is unproven: SteveDesktop crashed natively in Mono with other builds too."
 }
 ],
-"changed": "Harness: reload row now compares live/load/reload at save+10 (saveload_triplet), census holds only the save's things; grenade first with cover read before it (the first storeroom shell had broken the cover and dropped its rider). Mod: EK bursts a vent-gas cell at most once per 600 ticks (GasCellOnceTicks).",
+"changed": "Reload row: harness now compares saveload_triplet at save+10 and keys the census to things in the save. Cover rows: staging fixed (grenade first, cover read before). Request row: blast-killed pawn paired with its corpse. Gas rows (MOD): vent-gas cell bursts at most once per 600 ticks (f03d8d4f4a). Frame: landing job search skipped (7c6cb7412a).",
 "class": "problem",
-"defect": "sc_walk_raid failed 6 rows at visit 2 (run 2 on 61567a7b75): reload census 11 before save vs 7 after, cover broken with 0 descents, gas cells burst twice in 900 ticks, one request (Human38765) without outcome. FRAME_BUDGET is UNMEASURED by construction.",
-"proposed_fix": "Classify each row MOD vs HARNESS; use saveload_triplet for reload, record ev.grenade and ev.gas_bursts, pair blast-killed pawn with its corpse; each MOD cause gets an offline selftest red before its fix.",
+"defect": "sc_walk_raid failed six rows at visit 2: reload census lost things (11 before save, 7 after), pit covers broke with 0 descents, gas cells burst twice in 900 ticks, and one request (Human38765) had no outcome. The frame row was later unmeasurable on the 316-mod colony.",
+"proposed_fix": "Fix harness rows (saveload_triplet, rider check, killed-by-blast pairing), gate each gas cell to one burst per 600 ticks, skip the job search in landing, and judge the frame row against the same colony's mod-off arm within 10%.",
 "traps": [
 {
-"text": "A corpse never descends (Building_PitCover.DeSpawn takes Pawn things only), so a rider killed by the grenade makes the cover row SITE UNMEASURED, not a mod failure.",
-"where": "validation.py walk_storeroom_raid ev.grenade"
+"text": "The 50 ms barrage bar cannot judge the walk: the 316-mod colony is 80.2 ms p99 with the mod off (83.1 on). The walk's frame row is judged against its own mod-off arm within 10%, and the frame comparison runs on the 34-mod EK tier list; the full-list walk reads that result via --frame-evidence.",
+"where": "validation.py FRAME_BUDGET; design/concepts/ExplosiveKnockback/version/in_game/visit_4/rows.jsonl"
 },
 {
-"text": "A blast-killed pawn is requested by name but executed as its corpse (Resolve), so its outcome names Corpse_<race><id>; unpaired it looks like a request with no outcome.",
-"where": "validation.py B_REQUESTS_MATCH_PLAN, ev.killed_by_blast"
+"text": "Short frame runs on the same build swung from -1% to +19%; mod-off arms alone spread 38-51 ms, so 3 pairs flip pass/fail. Only the pre-registered 21-pair cold run is decisive (+3.1%).",
+"where": "design/concepts/ExplosiveKnockback/version/in_game/visit_4/evidence/ek_frames_small_DECISIVE_21.json"
 },
 {
-"text": "FRAME_BUDGET is UNMEASURED by construction until RM_FrameProbe has a bridge read (RIMMANDRAKE_EXPOSE_FRAME_PROBE_TO_BRIDGE_WALK_STUCK_UNMEASURED), so the walk cannot exit 0 until then.",
-"where": "sc_walk_raid FRAME_BUDGET row"
+"text": "A rider killed by the grenade is a corpse, which never descends (Building_PitCover.DeSpawn takes Pawn things only), so a missing descent is SITE UNMEASURED, not a mod failure.",
+"where": "validation.py walk_storeroom_raid cover rows"
 }
 ]
 }
@@ -1033,6 +1151,8 @@
 },
 "RIMMANDRAKE_FLY_KNOCKBACK_GOODS_WILD": {
 "at": "2026-11-16T03:36:27",
+"current": [],
+"current_hash": "bc4722023fad037e",
 "hash": "ab59d944caca0b68",
 "keep": [
 1,
@@ -1069,6 +1189,10 @@
 },
 "RIMMANDRAKE_GIVE_WALK_RAID_LIVE_MODE_STATIC_EXITS_ZERO": {
 "at": "2026-11-16T03:36:27",
+"current": [
+1
+],
+"current_hash": "466426bebbe9e033",
 "hash": "819a72b97f111105",
 "keep": [
 1
@@ -1093,30 +1217,25 @@
 }
 },
 "RIMMANDRAKE_GUARD_PROOF_VERDICTS_FIVE_WEAKENED_STAYED_GREEN": {
-"at": "2026-11-16T03:36:27",
+"at": "2026-11-19T15:30:47",
 "current": [],
 "current_hash": "1af823e83445e451",
-"hash": "3acbf037b8ae030b",
+"hash": "3c2c3cb51b4ad233",
 "keep": [
 1
 ],
 "keep_hash": "4361aa629c5f2747",
 "reading": {
-"accept": "A mock-verdict harness feeding each scene's verdict a wrong journal; each of the five weakened verdicts must flip to FAIL.",
+"accept": "A mock-verdict harness feeding each scene's verdict a wrong journal; the weakened verdicts must be caught offline.",
 "bars": [
 "inv_proof_scenes"
 ],
 "causes_refuted": [],
-"changed": null,
+"changed": "Four weakened verdicts lifted into RM_KnockbackVerdicts and pinned by kernel V-07..V-10; the fireHalf no-op lane is caught by T_STAGE3_SCENES F5. All five re-planted faults were caught offline.",
 "class": "polish",
-"defect": "Five proof-scene live verdicts were weakened (flying_off skip, goods wall position, deep water, container 0 cells, fireHalf lane no-op) and pass every offline suite; only a live run sees them. A correct mod still passes; a broken mod plus a weakened check would slip.",
-"proposed_fix": "Extend validation.py --mock with one wrong-journal case per scene.",
-"traps": [
-{
-"text": "The five weakenings (PF_PROOF_FLYOFF_SKIP_UNCHECKED, PF_GO_WALL_POSITION_UNCHECKED, PF_GO_WATER_UNCHECKED, PF_ST3_CONTAINER_ZERO_CELLS_OK, PF_ST3_FIREHALF_LANE_NOOP) weaken a verdict, not the mod, and were missed offline; the live run decides these bars at Stage 6.",
-"where": "proof scenes' live verdicts"
-}
-]
+"defect": "Five proof-scene live verdict expressions (flying_off skip, goods wall position, deep water, container 0 cells, fireHalf lane no-op) were weakened yet passed every offline suite; only a live run saw them. A correct mod still passes; a broken mod plus a weakened check would slip.",
+"proposed_fix": "Extend validation.py --mock with one wrong-journal case per scene, feeding each scene's verdict a wrong journal.",
+"traps": []
 }
 },
 "RIMMANDRAKE_KEEP_SPARED_SLEEPER_IN_BED_ON_FULL_LIST": {
@@ -1221,10 +1340,45 @@
 "traps": []
 }
 },
+"RIMMANDRAKE_LIFT_PROOF_VERDICTS_INTO_TESTED_CODE_NINE_SLIPPED": {
+"at": "2026-11-19T15:31:12",
+"current": [],
+"current_hash": "2bfa4eae9e74b1c2",
+"hash": "87d2b3f8d7a19f17",
+"keep": [
+1,
+2
+],
+"keep_hash": "c033dfde26017b82",
+"reading": {
+"accept": "plant_faults.py --ids <the nine, re-pointed at the moved code> records caught true for each (caught false at a898e049d4); T_SCRIPT, T_PROOFGATE, T_RESTORE, T_KERNEL green; --finish shows tree clean.",
+"bars": [
+"inv_proof_scenes"
+],
+"causes_refuted": [],
+"changed": "Verdict and plan lines of calibration, storeroom PlanGood/WantCells, goods_obstacles, hose drop+control, pit probe, goods_fly_off and closed_containers now call Verse-free RM_KnockbackVerdicts.cs (RM_PROOFS/RM_KB_SELFTEST only), pinned by kernel V-01..V-10 (246/246); the 9 faults plus 5 more re-planted, 14/14 caught offline.",
+"class": "problem",
+"defect": "Nine planted faults in proof-scene verdict and plan code (calibration cells, storeroom plan mass limit/kernel, goods-obstacle control and door lane, hose control and three-cells row, pit probe INVALID and text) survived every offline suite because the verdicts are Verse code in RM_KnockbackProof*.cs that no offline test executes.",
+"proposed_fix": "Lift each scene's verdict and plan arithmetic into Verse-free static functions (RM_KnockbackVerdicts.cs compiled by Source/SelfTest), have the Verse scenes call them, and add offline cases pinning pass, fail and INVALID edges; in-game behaviour unchanged.",
+"traps": [
+{
+"text": "Offline green does not cover the callers: a caller passing a wrong value into a lifted function is still only caught at Stage 6. Seven Stage-6 checks (sc_mortar_throw, sc_storeroom_bomb_pit, sc_goods_obstacles, sc_hose_drop, sc_pit_fetch, sc_closed_containers, P_goods_fly_off) are recorded UNRUN, so in-game behaviour is unverified.",
+"where": "RM_KnockbackVerdicts.cs callers; RIMMANDRAKE_NOTE_KNOCKBACK_CALLER_MUTANTS_OWED_TO_STAGE_SIX"
+},
+{
+"text": "Text checks that read the moved lines had to follow the move (journal_jolt, goods_obstacles G1, cycle_1 check_fix_wiring, stage3 hose needle); the verdict file must stay out of the release DLL, which proofgate checks.",
+"where": "selftest_explosiveknockback_journal_jolt, goods_obstacles G1, cycle_1 check_fix_wiring"
+}
+]
+}
+},
 "RIMMANDRAKE_LIMIT_KNOCKBACK_STORAGE_CLOSED": {
 "at": "2026-11-16T03:36:38",
-"current": [],
-"current_hash": "d570c24db45a7fd3",
+"current": [
+1,
+2
+],
+"current_hash": "a94cfcc677e228eb",
 "hash": "f5ca4720caec38a9",
 "keep": [
 1,
@@ -1289,8 +1443,68 @@
 ]
 }
 },
+"RIMMANDRAKE_NOTE_KNOCKBACK_CALLER_MUTANTS_OWED_TO_STAGE_SIX": {
+"at": "2026-11-19T15:31:12",
+"current": [],
+"current_hash": "e8aa60662c710c86",
+"hash": "d2d577195fc5abe3",
+"keep": [
+1
+],
+"keep_hash": "68bf226ce385d789",
+"reading": {
+"accept": "none, a steward re-pin or a live Stage-6 planted-break run (Stage 6 runs each as a planted break and sees its scene FAIL).",
+"bars": [
+"the_spared"
+],
+"causes_refuted": [],
+"changed": null,
+"class": "polish",
+"defect": "10 planted faults in game-side Verse callers (MC grid/sleeper/pawn mass, TF rebound/heavy knock/landing cover, PF redirect/door landing, DW unpatched percent/fire switch) survived offline, as expected since no offline test runs Verse code.",
+"proposed_fix": "Hand the 10 to Stage 6's brief as planted breaks to run live.",
+"traps": [
+{
+"text": "The title lists the last two faults truncated (PF_DW_UNPATCHED_PER); the full ids are PF_DW_UNPATCHED_PERCENT_IGNORED and PF_DW_FIRE_SWITCH_IGNORED.",
+"where": "lane2/faults.json, blind fault record evidence"
+}
+]
+}
+},
+"RIMMANDRAKE_PASS_FRAME_LINE_TEN_PERCENT_FLOAT_SAID_FAIL": {
+"at": "2026-11-19T15:31:12",
+"current": [
+1
+],
+"current_hash": "884b7af5eb8a016c",
+"hash": "3800b6e629099d27",
+"keep": [
+1
+],
+"keep_hash": "07b059a130aff5cb",
+"reading": {
+"accept": "python3 src/RimMandrake/ExplosiveKnockback/validation.py --selftest exits 0 with FB_AT_BUDGET_LINE_10PCT expecting PASS (rc 1 at a907fc6756 with the corrected case); both mutants still red; walk_raid selftest green.",
+"bars": [
+"walk_storeroom_raid"
+],
+"causes_refuted": [],
+"changed": "frame_row now takes the excess as (on - off) / off, so exactly +10% passes; selftest 8 cases 0 failed, both planted mutants still rc 1, walk_raid green (W25 +3.6% PASS, W26 +10.1% FAIL).",
+"class": "problem",
+"defect": "validation.py _Walk.frame_row computed over = on/off - 1.0, which reads 0.10000000000000009 for 110 ms vs 100 ms, so FRAME_BUDGET FAILed while printing '+10.0% ... PASS at most +10%'; the selftest enshrined that FAIL against the card's 'within 10%'.",
+"proposed_fix": "Take the excess as (on - off) / off, exact at the line; case FB_AT_BUDGET_LINE_10PCT expects PASS. Bar, FRAME_OVER_OFF and the PF_V_FRAME_ROW_ALWAYS_PASS line unchanged.",
+"traps": [
+{
+"text": "The old selftest case FB_AT_BUDGET_LINE_10PCT expected FAIL, enshrining the float artefact as correct; the row's printed text said PASS while the status was FAIL.",
+"where": "src/RimMandrake/ExplosiveKnockback/validation.py _Walk.frame_row, case FB_AT_BUDGET_LINE_10PCT"
+}
+]
+}
+},
 "RIMMANDRAKE_PILOT_BLIND_CHALLENGE_ON_KNOCKBACK_NEVER_RUN_BEFORE": {
 "at": "2026-11-16T03:36:38",
+"current": [
+1
+],
+"current_hash": "0738268f05e44363",
 "hash": "4facdbd448ca41af",
 "keep": [
 1,
@@ -1321,6 +1535,8 @@
 },
 "RIMMANDRAKE_PIN_KNOCKBACK_NONPUSH_FORCES_IN_LINT_TABLE": {
 "at": "2026-11-16T03:36:38",
+"current": [],
+"current_hash": "b1f96e73de500fa3",
 "hash": "f32619d8a9fbb545",
 "keep": [
 1
@@ -1344,6 +1560,22 @@
 ]
 }
 },
+"RIMMANDRAKE_PIN_KNOCKBACK_PROOF_VERDICTS_NINE_MUTANTS_UNSEEN": {
+"at": "2026-11-19T15:31:12",
+"hash": "ff37601c7a1a7513",
+"reading": {
+"accept": "none, a steward re-pin or a live Stage-6 planted-break run.",
+"bars": [
+"inv_proof_scenes"
+],
+"causes_refuted": [],
+"changed": null,
+"class": "problem",
+"defect": "9 planted faults in the proof scenes' verdict and planning code survived every offline suite and lane 1; T_SCRIPT only stages scenes through a fake session and no offline test runs a scene's Verse verdict, so a verdict loosened to always pass reads green.",
+"proposed_fix": "Steward re-pin: offline deciders prove staging, release gate and restore; verdict honesty moves to Stage 6 as per-scene planted-break runs. Code-side alternative: lift verdict arithmetic into RM_KnockbackMath and test it.",
+"traps": []
+}
+},
 "RIMMANDRAKE_PLAN_STOREROOM_COVER_STACK_NEVER_MATCHED": {
 "at": "2026-11-16T03:36:38",
 "hash": "c35f8908646e8bd7",
@@ -1365,6 +1597,8 @@
 },
 "RIMMANDRAKE_PROVE_KNOCKBACK_ALL_FLY_PERF": {
 "at": "2026-11-16T03:36:38",
+"current": [],
+"current_hash": "0756275069c45f0b",
 "hash": "9b6efb6309b3e9c3",
 "keep": [
 1,
@@ -1402,7 +1636,7 @@
 "current": [
 1
 ],
-"current_hash": "58980a7b4b5d60e4",
+"current_hash": "e96882a3259bf232",
 "hash": "189ef43389e92d2c",
 "keep": [
 1,
@@ -1435,8 +1669,10 @@
 },
 "RIMMANDRAKE_PROVE_KNOCKBACK_OUTERRIM_BLAST_LANES": {
 "at": "2026-11-16T03:36:38",
-"current": [],
-"current_hash": "97a397fd4f1084be",
+"current": [
+1
+],
+"current_hash": "69a58064beacdae7",
 "hash": "94c4e1c813b89d29",
 "keep": [
 1
@@ -1461,8 +1697,8 @@
 }
 },
 "RIMMANDRAKE_PROVE_PIT_GOODS_RETRIEVABLE": {
-"at": "2026-11-16T03:36:38",
-"hash": "d53e899afa1b297d",
+"at": "2026-11-19T15:31:12",
+"hash": "a214b100153002da",
 "keep": [
 1
 ],
@@ -1472,26 +1708,22 @@
 ],
 "owner_hash": "a83e462ba500ed1b",
 "reading": {
-"accept": "none, no command filed; scripted proof row sc_pit_fetch still owed.",
+"accept": "knockback_runner.py --scenes pit_goods_fetch --ticks 60000 live; PASS means a colonist fetched the stack and corpse and the raised-ladder control kept its stack.",
 "bars": [
-"pit_goods_fetched",
-"inv_pit_floor_haul"
+"pit_goods_fetched"
 ],
 "causes_refuted": [],
-"changed": null,
+"changed": "sc_pit_fetch passed live 2026-11-17 on proof build 9329b24c: a colonist fetched the stack and the corpse off the pit floor; the raised-ladder control kept its stack.",
 "class": "problem",
-"defect": "Task: prove goods thrown into a pit stay retrievable (a colonist fetches one from the pit floor down the ladder); if haulers cannot reach the floor by the lowered ladder, RM_PitPathing.cs routing is FlowWorks' fix.",
-"proposed_fix": "Run scene sc_pit_fetch as a scripted proof row; if haulers cannot reach the floor, file the fix to FlowWorks from the finding.",
-"traps": [
-{
-"text": "The owner's live look (a pawn hauled an item from the pit to a storage zone outside) was not the scripted proof; the row is still owed and the item stays open.",
-"where": "save EK_SITTING_STATION1_STOREROOM_PIT_20261112"
-}
-]
+"defect": "Owner Q10 'goods in a pit stay retrievable' was unproven by a scripted row; RM_PitPathing.cs routes non-held pawns around open pit cells, so haulers might not reach the floor by the lowered ladder.",
+"proposed_fix": "Run scene sc_pit_fetch (leaf pit_goods_fetched) so a colonist fetches goods from the pit floor down the ladder; if haulers cannot reach it, the fix is FlowWorks', filed from the finding.",
+"traps": []
 }
 },
 "RIMMANDRAKE_PROVE_PROOF_GATE_EXIT_AN_OR_PASSED_GREEN": {
 "at": "2026-11-16T03:36:38",
+"current": [],
+"current_hash": "73309dea17bb65d3",
 "hash": "7ebdb6f694ec6667",
 "keep": [
 1
@@ -1515,8 +1747,35 @@
 ]
 }
 },
+"RIMMANDRAKE_PROVE_SCENE_RUNNER_LIVE_SAME_ROWS_FEWER_CALLS": {
+"at": "2026-11-19T15:31:12",
+"current": [],
+"current_hash": "0b4fb1d034f53593",
+"hash": "2f42ecc88b298cae",
+"keep": [
+1
+],
+"keep_hash": "f72b3bea65449be9",
+"reading": {
+"accept": "none offline, a live-game proof (UNRUN): same per-scene status in both arms (INVALID = UNMEASURED), fewer bridge calls in the new arm, evidence JSON of each kept.",
+"bars": [],
+"causes_refuted": [],
+"changed": null,
+"class": "problem",
+"defect": "The shared scene runner's first slice (fd8e514b76) is proven offline only; it is unproven live that scene_runner.py gives the same verdict rows as knockback_runner.py with fewer bridge calls.",
+"proposed_fix": "Run storeroom_bomb_pit and its pit-filled control both ways on the same scratch map (knockback_runner.py --ticks 900 vs scene_runner.py --type RimMandrake.ExplosiveKnockback.RM_KnockbackScenes) and record wall time and bridge-call count.",
+"traps": [
+{
+"text": "The runner's Outside row (haulables on pit rows >= 1, a vanilla count) disagreeing with the main lane's verdict is a finding about one of them, not a reason to edit the count; the JawaBench companion with jawa/run_scenes needs a game restart to load.",
+"where": "src/RimMandrake/Utils/scene_runner.py; JawaBenchSceneRunnerTools.cs"
+}
+]
+}
+},
 "RIMMANDRAKE_READ_CONTAINER_JOLT_OFFSET_IN_PROOF": {
 "at": "2026-11-16T03:36:38",
+"current": [],
+"current_hash": "1b1a48aaf50ee5dc",
 "hash": "84decef14cdb4bd1",
 "keep": [
 1
@@ -1542,6 +1801,8 @@
 },
 "RIMMANDRAKE_READ_WALK_TICK_COST_RUNNING_PAUSED_READ_ZERO": {
 "at": "2026-11-16T03:44:33",
+"current": [],
+"current_hash": "58db2c03f6369015",
 "hash": "c63d5b11e3cee302",
 "keep": [
 1
@@ -1589,9 +1850,9 @@
 "RIMMANDRAKE_RECERTIFY_KNOCKBACK_TREE_AFTER_HIS_OWN_REWORDING": {
 "at": "2026-11-16T03:36:42",
 "current": [
-3
+2
 ],
-"current_hash": "9a6156ebafb6b681",
+"current_hash": "5259dc445f6e69b9",
 "hash": "32a8f38acedb6776",
 "keep": [
 1,
@@ -1628,10 +1889,8 @@
 },
 "RIMMANDRAKE_RECERTIFY_KNOCKBACK_TREE_BARRAGE_P99_HELD_AGAIN": {
 "at": "2026-11-16T03:36:42",
-"current": [
-1
-],
-"current_hash": "bcc82d0568c27957",
+"current": [],
+"current_hash": "4e3de02f76359126",
 "hash": "291cc157dc00ea62",
 "keep": [
 1,
@@ -1679,10 +1938,35 @@
 ]
 }
 },
+"RIMMANDRAKE_REGISTER_EK_SELFTESTS_THIRTEEN_NO_TABLE_ENTRY_SAW": {
+"at": "2026-11-19T15:31:12",
+"current": [],
+"current_hash": "e04b0d30f887351f",
+"hash": "284c1ebf72b8085a",
+"keep": [
+1
+],
+"keep_hash": "e33704c14fdd14a6",
+"reading": {
+"accept": "The python one-liner over test_table.json prints '0 unlisted: []' with rc 0 (watched rc 1, 13 unlisted); certificate --run OK.",
+"bars": [],
+"causes_refuted": [],
+"changed": "Acceptance rc 0 (was 13 unlisted) and certificate OK with 44 bars; a stale-binary staging bug that made the map suite red was fixed, and T_KERNEL's red-seen re-recorded with a planted pit fault; blind_cycle1 and stage6_visit1 moved to supports per Codex review.",
+"class": "problem",
+"defect": "13 of 22 on-disk selftest_explosiveknockback*.py suites are named by no command in test_table.json, so the certificate, blind brief and table-driven harness never see them (walk_raid already kills both frame mutants).",
+"proposed_fix": "Register each (kind offline, file, reads, command, bar supported) or list it under a top-level unlisted_suites map with a one-line why, then run maturation.py certificate ExplosiveKnockback --run.",
+"traps": [
+{
+"text": "Registered supports journal_jolt and blind_cycle1 are red on stale text checks (filed as RIMMANDRAKE_REPOINT_EK_JOURNAL_JOLT_CHECKS_AFTER_PLAN_MOVE), so their red shows on certificate runs despite the table being complete.",
+"where": "test_table.json T_JOURNAL_JOLT_OFFLINE, T_BLIND_CYCLE1_OFFLINE"
+}
+]
+}
+},
 "RIMMANDRAKE_REPAIR_BARRAGE_FRAME_CRITERION_BASELINE_FAILS_TOO": {
 "at": "2026-11-16T03:36:42",
 "current": [],
-"current_hash": "5037ad5ea9192b61",
+"current_hash": "76e47696837afb9e",
 "hash": "bb4fc3bd27dc8a4f",
 "keep": [
 1,
@@ -1743,8 +2027,90 @@
 ]
 }
 },
+"RIMMANDRAKE_REPOINT_EK_JOURNAL_JOLT_CHECKS_AFTER_PLAN_MOVE": {
+"at": "2026-11-19T15:31:12",
+"hash": "70c1a9c6fe8a0eab",
+"keep": [
+1
+],
+"keep_hash": "d86e203a402f8592",
+"reading": {
+"accept": "journal_jolt selftest exits 0 with 16 of 16 planted breaks caught, and selftest_explosiveknockback_blind_cycle1.py exits 0 (both watched FAIL).",
+"bars": [],
+"causes_refuted": [],
+"changed": null,
+"class": "problem",
+"defect": "selftest_explosiveknockback_journal_jolt.py greps RM_MapComponent_Knockback.cs for throw rules that ffc3937ee7 moved into RM_KnockbackPlan.cs, so 6 checks FAIL and only 11 of 16 planted breaks are caught; blind_cycle1's check_fix_wiring.py has the same cause (8/11 FAIL).",
+"proposed_fix": "Read first whether each rule still holds in RM_KnockbackPlan.cs, then repoint each journal/jolt and blind_cycle1 check to where the rule now lives.",
+"traps": [
+{
+"text": "Whether each rule still holds in RM_KnockbackPlan.cs is unread; a red check may reflect the move, not a mod defect.",
+"where": "selftest_explosiveknockback_journal_jolt.py, cycle_1/lane2/check_fix_wiring.py"
+}
+]
+}
+},
+"RIMMANDRAKE_RESCUE_KNOCKBACK_AFTER_SLACK_FABLE_ENDS": {
+"at": "2026-11-19T15:31:12",
+"hash": "0b52bb310a18a75b",
+"owner": [],
+"owner_hash": "6e77c49c04655e5a",
+"reading": {
+"accept": "none, no acceptance test filed.",
+"bars": [],
+"causes_refuted": [],
+"changed": "Launched after the Slack Fable ended: detached run rm-detached-bench-rimmandrake-rescue-knockback-past-ceilin-1794936287 (model fable) on RIMMANDRAKE_RESCUE_KNOCKBACK_PAST_CEILING_CYCLE_SIX; outcome recorded launched.",
+"class": "problem",
+"defect": "Task: launch a Fable Rescue on ExplosiveKnockback once the Slack Fable rescue ends, one Fable at a time, and record the maturation_rescue.py outcome launched.",
+"proposed_fix": "Launch the Fable rescue per roles/fable_rescue.md after the Slack rescue ends and record the outcome launched for proposal rp-explosiveknockback-1794898236.",
+"traps": []
+}
+},
+"RIMMANDRAKE_RESCUE_KNOCKBACK_PAST_CEILING_CYCLE_SIX": {
+"at": "2026-11-19T15:31:07",
+"current": [],
+"current_hash": "2f44ce62a2f5633a",
+"hash": "72262cd52c24bee2",
+"keep": [
+1,
+2,
+3,
+4
+],
+"keep_hash": "447348913fa7d686",
+"reading": {
+"accept": "Report names each open 0.1.0 ticket taken and what closed it; every touched bar holds over a written range; blind cycle 6 ready for the pipeline with no hand act to restart the Dispatch tick.",
+"bars": [],
+"causes_refuted": [
+{
+"depends_on": [],
+"text": "The flipping live checks (gas_chain, cauldron_gas, pit_fall, pit_enemy, barrage) were not faults in the mod; the record reads them as SITE or HARNESS faults."
+}
+],
+"changed": "Landed ffc3937ee7: the throw decision is one Verse-free plan. The map fixed wall-stack rebound (14,070 of 47,952 goods sat still), the full-pit landing onto rim/beyond (401 of 2,200), sandbag hop, and container rest-cell line. The Verse side now applies the plan. Later commits: 5e44c9c0b6 (check repair), ac2ebc01cb (T_RESTORE unblocked).",
+"class": "problem",
+"defect": "Explosive Knockback 0.1.0 was stuck at Stages 4+5 with blind cycle 6 unrun and paused at its stage spend ceiling. Live checks flipped, and each blind cycle found the next miss in Verse callers (Execute, grid, landings) that no offline test reads.",
+"proposed_fix": "Lift the whole throw decision into a Verse-free plan (Source/RM_KnockbackPlan.cs) that the SelfTest compiles, add an enumerating map instrument reading the bars as properties, and fix what it finds.",
+"traps": [
+{
+"text": "Three text checks (gas_clumps, settings_sweep, validation.py static) read the old file's text for rules moved into the plan, so they went red on the change by location only. The steward's v2 patch repaired them; v1 had missed a planted new KbRules() at Execute/HeldReason/ItemWillBeThrown.",
+"where": "gas_clumps, settings_sweep, validation.py static; steward_handoff/three_checks_follow_the_plan_v2.patch"
+},
+{
+"text": "sc_barrage_perf and sc_walk_raid are UNRUN on this build; the wall bounce puts more stacks in the air. The commands are in design/concepts/ExplosiveKnockback/version/in_game/unrun.jsonl (316-mod list).",
+"where": "design/concepts/ExplosiveKnockback/version/in_game/unrun.jsonl"
+},
+{
+"text": "The changed source files read DIRTY to code_review_status.py because no non-author has reviewed the full files.",
+"where": "code_review_status.py"
+}
+]
+}
+},
 "RIMMANDRAKE_RESTORE_ON_THROW_IN_KNOCKBACK_PROOF_TWO_LEAKS": {
 "at": "2026-11-16T03:36:42",
+"current": [],
+"current_hash": "d47cdd0ebf03e9b5",
 "hash": "c0e299e6823c46e7",
 "keep": [
 1,
@@ -1832,6 +2198,11 @@
 },
 "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS": {
 "at": "2026-11-16T03:36:42",
+"current": [
+1,
+2
+],
+"current_hash": "c53be60cd69c28a6",
 "hash": "2e211fe53dd10536",
 "keep": [
 1,
@@ -1911,6 +2282,22 @@
 ]
 }
 },
+"RIMMANDRAKE_SHOVE_PAWNS_STANDING_ON_COVERS_IN_BURNING_GAS": {
+"at": "2026-11-19T15:31:07",
+"hash": "e7f935d1ba45644d",
+"reading": {
+"accept": "none, a new offline case the fix writes; would_pass: a pawn on a cover's deck beside a burning clump is shoved one cell, and goods on a deck scatter.",
+"bars": [
+"gas_goes_clump_by_clump"
+],
+"causes_refuted": [],
+"changed": null,
+"class": "polish",
+"defect": "RM_MapComponent_Knockback.PawnSkipReason and Execute skip anything on a superdeep cell as in_pit; IsSuperdeep is true under an intact cover. A pawn on a pit cover, or goods lying on it, are never moved by a gas burst, which breaks no cover.",
+"proposed_fix": "in_pit = IsSuperdeep && (no cover || the thing is beneath the lid, RM_KnockbackCompat.IsBeneathCover).",
+"traps": []
+}
+},
 "RIMMANDRAKE_SKIP_GOODS_WHEN_FLIGHT_OFF_OLD_HOP_LINGERED": {
 "at": "2026-11-16T03:36:56",
 "hash": "819061d516e02713",
@@ -1960,6 +2347,8 @@
 },
 "RIMMANDRAKE_SPLIT_KNOCKBACK_SWEEP_OFFLINE_TABLE_LIVE_WIRING": {
 "at": "2026-11-16T03:36:56",
+"current": [],
+"current_hash": "c344c06683309737",
 "hash": "bdc8865e25c94f13",
 "keep": [
 1
@@ -1999,6 +2388,8 @@
 },
 "RIMMANDRAKE_STAGE_HEAVY_LOCKER_LANE_LWM_CAPS_AT_58KG": {
 "at": "2026-11-16T03:36:56",
+"current": [],
+"current_hash": "aab4b9b297482129",
 "hash": "10e9e2b5a76d3dee",
 "keep": [
 1,
@@ -2046,6 +2437,8 @@
 },
 "RIMMANDRAKE_STAGE_KNOCKBACK_CONTAINER_SURVIVES_BLAST": {
 "at": "2026-11-16T03:36:56",
+"current": [],
+"current_hash": "29ea19a12fd85ed3",
 "hash": "a450c985531193a3",
 "keep": [
 1,
@@ -2075,6 +2468,33 @@
 ]
 }
 },
+"RIMMANDRAKE_STOP_GAS_SHOVE_PAST_WALL_CORNER_UNSEEN": {
+"at": "2026-11-19T15:31:07",
+"current": [],
+"current_hash": "44a8aeeaf41e8b4b",
+"hash": "40fb8de58ca92c71",
+"keep": [
+1
+],
+"keep_hash": "f419d241d1e42e70",
+"reading": {
+"accept": "Live only, not yet watched fail: map_agreement.py case 'c:wall:1:0;c:wall:0:1;t:a:steel2:1:1;b:gas:1.9' expects a stays on 1,1 (DISAGREE today); after the fix AGREE and selftest_explosiveknockback_map.py green.",
+"bars": [
+"gas_goes_clump_by_clump"
+],
+"causes_refuted": [],
+"changed": null,
+"class": "problem",
+"defect": "RM_MapComponent_Knockback.GasBurst queues every pawn, corpse and good within gasBurstRadius by GenRadial alone, with no line of sight. A burning clump can shove a thing diagonally past a wall corner into another room, which a real explosion never reaches.",
+"proposed_fix": "Skip cells GenSight.LineOfSight(c, cell, map) refuses, and give the map's model the same rule for gas (KnockbackMap.cs A5).",
+"traps": [
+{
+"text": "The acceptance case has not been watched fail; the claim that the game moves the stack today is read from the source, not measured live.",
+"where": "map_agreement.py case c:wall:1:0;c:wall:0:1;t:a:steel2:1:1;b:gas:1.9"
+}
+]
+}
+},
 "RIMMANDRAKE_STOP_KNOCKBACK_HIT_ACROSS_SANDBAG_NO_CONTACT": {
 "at": "2026-11-16T03:36:56",
 "hash": "6a850fc59313b811",
@@ -2095,8 +2515,58 @@
 "traps": []
 }
 },
+"RIMMANDRAKE_STOP_KNOCKBACK_THROW_AT_PAWN_ON_PIT_COVER": {
+"at": "2026-11-19T15:31:07",
+"current": [],
+"current_hash": "6abdd6136b01caeb",
+"hash": "f3f6a21b390400f7",
+"keep": [
+1
+],
+"keep_hash": "e1ee066719722b86",
+"reading": {
+"accept": "python3 design/concepts/ExplosiveKnockback/version/blind_challenge/cycle_5/lane2/check_pit_pawn.py -> rc 0, 6 of 6 (rc 1 on a898e049d4, watched).",
+"bars": [
+"pawn_hits_pawn_stops"
+],
+"causes_refuted": [],
+"changed": "Fixed at 42225e0686: PitCell makes a pawn on an open or covered pit cell block a thrown pawn, and RM_MapKbGrid.At routes superdeep cells through it, ignoring pawns beneath the lid. Check rc 0 6 of 6, kernel 198/198.",
+"class": "problem",
+"defect": "RM_MapKbGrid.At returned KbCell.CoveredPit for a superdeep cell with a cover before OtherPawnAt was asked, so a pawn standing on a pit cover did not block a thrown pawn. The kernel passed the thrown pawn over it and could set it down on its cell.",
+"proposed_fix": "Add RM_KnockbackMath.PitCell(covered, forPawn, pawnThere), where a pawn there blocks a thrown pawn. RM_MapKbGrid.At answers superdeep cells through it, counting only pawns not beneath the lid (IsBeneathCover). Add K-25 in SelfTest/Program.cs.",
+"traps": [
+{
+"text": "The planted fault PF_MC_GRID_IGNORES_PAWNS (the grid never reports a pawn) survived all 13 offline suites and lane 1, because the grid had no offline test; green offline suites did not cover this.",
+"where": "RM_MapComponent_Knockback.cs RM_MapKbGrid.At"
+}
+]
+}
+},
+"RIMMANDRAKE_STOP_THROWS_OVER_COVERED_PITS_K08_SAYS_GROUND": {
+"at": "2026-11-19T15:31:07",
+"hash": "1766c68c08f6c087",
+"reading": {
+"accept": "python3 design/concepts/ExplosiveKnockback/version/blind_challenge/cycle_5/lane2/accept_covered_pit.py -> rc 0, 6 of 6 (2 of 6 on 42225e0686, watched).",
+"bars": [
+"thrown_into_pit_falls"
+],
+"causes_refuted": [],
+"changed": "Fixed at 610b127ba8 under the route item RIMMANDRAKE_DROP_THROWS_INTO_COVERED_PITS_K08_MUST_FLIP: a throw over a cover ends in it, and a blast-thrown pawn breaks the cover. Acceptance 6 of 6, kernel 202/202, K-25 6 of 6.",
+"class": "problem",
+"defect": "RM_KnockbackMath.Resolve treats KbCell.CoveredPit as ground, so a throw planned beyond a covered pit flies over it and lands on the far side. A thrown pawn that lands on a cover never breaks it, because LandingBreaksCover excludes KbKind.Pawn.",
+"proposed_fix": "Resolve: a CoveredPit cell stops the throw in it when intoPits (a wall when off). LandingBreaksCover drops the Pawn exclusion for blast ids (>= 0). ThrowPawn remembers the explosion id and the landing patch breaks the cover via BreakCoverUnder. Rewrite K-08.",
+"traps": [
+{
+"text": "K-08 'cover is ground' (SelfTest/Program.cs:326) pins the wrong behaviour, and the proof case pit_colonist stages only the open-pit lane. The covered lane, the planned-beyond-the-rim start assertion and the filled-pit control are not built, so the live proof cannot see this.",
+"where": "SelfTest/Program.cs:326; RM_KnockbackProof.cs case pit_colonist"
+}
+]
+}
+},
 "RIMMANDRAKE_SWITCH_ELECTRICAL_BURN_WITH_FIRE_HALF_FLAME_HEIR": {
 "at": "2026-11-16T03:36:56",
+"current": [],
+"current_hash": "82d99afbae0a89e6",
 "hash": "23f58e9b2ae529b6",
 "keep": [
 1
@@ -2122,6 +2592,8 @@
 },
 "RIMMANDRAKE_TEST_JOLT_DECAY_DOC_PROMISES_UNTESTED": {
 "at": "2026-11-16T03:36:56",
+"current": [],
+"current_hash": "1a0919a6ebf7beab",
 "hash": "af71918ce150142e",
 "keep": [
 1
@@ -2145,8 +2617,26 @@
 ]
 }
 },
+"RIMMANDRAKE_TEST_WALK_FRAME_JUDGE_OFFLINE_TWO_MUTANTS_LIVED": {
+"at": "2026-11-19T15:31:07",
+"hash": "9608b702233e1445",
+"reading": {
+"accept": "none, a new offline case the fix writes; would_pass: on/off p99 at +9%, +11%, a missing arm and unlike arms give PASS, FAIL, UNMEASURED, UNMEASURED.",
+"bars": [
+"frame_time_probe"
+],
+"causes_refuted": [],
+"changed": "validation.py --selftest now calls the FRAME_BUDGET judge with fixed arms (8 cases, four of them the unreadable kinds). Both named mutants re-planted and watched kill it (rc 1, 2 failed each), at 9a437178d847.",
+"class": "polish",
+"defect": "The FRAME_BUDGET judge in validation.py had no offline test feeding it two arms, so mutants PF_V_FRAME_OVER_LOOSE (10% -> 50%) and PF_V_FRAME_ROW_ALWAYS_PASS survived every offline suite.",
+"proposed_fix": "Add a --selftest in validation.py (or a selftest file) that calls the FRAME_BUDGET judge with fixed arm dicts.",
+"traps": []
+}
+},
 "RIMMANDRAKE_THROW_ALL_HARMFUL_BLASTS": {
 "at": "2026-11-16T03:36:56",
+"current": [],
+"current_hash": "4e6923c06f164504",
 "hash": "c2c4d191c3d20cfb",
 "keep": [
 1
@@ -2177,7 +2667,7 @@
 "RIMMANDRAKE_THROW_CLOSED_CRATES_WHOLE_CONTENTS_RIDE_SAFE": {
 "at": "2026-11-16T03:36:55",
 "current": [],
-"current_hash": "2ce87569e65c2700",
+"current_hash": "2c1c523847699f50",
 "hash": "8aac9114eb73de7e",
 "keep": [
 1,
@@ -2236,6 +2726,8 @@
 },
 "RIMMANDRAKE_TRACE_PIT_FETCH_CONTROL_STACK_PAST_RAISED_LADDER": {
 "at": "2026-11-16T03:36:55",
+"current": [],
+"current_hash": "c07a60788a7eaf5f",
 "hash": "629d2dc207cc35ff",
 "keep": [
 1,
@@ -2341,6 +2833,8 @@
 },
 "RIMMANDRAKE_WRITE_GAS_INTO_PIT_SCENE_UNKNOWN_EVERY_BUILD": {
 "at": "2026-11-16T03:36:55",
+"current": [],
+"current_hash": "b1c3e5448e000f69",
 "hash": "1e381993b16b0ee5",
 "keep": [
 1
@@ -2389,8 +2883,10 @@
 },
 "RIMMANDRAKE_WRITE_STOREROOM_BOMB_PIT_SCENE_TABLE_NAMED_FIRST": {
 "at": "2026-11-16T03:36:55",
-"current": [],
-"current_hash": "447d030601e187a5",
+"current": [
+1
+],
+"current_hash": "e28d1c909203dc89",
 "hash": "95be4b33155b8382",
 "keep": [
 1

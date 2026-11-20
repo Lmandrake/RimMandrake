@@ -161,6 +161,7 @@
     {"test": "src/RimMandrake/rimflow/selftest_modledger_backfill.py", "seconds": 0.4},
     {"test": "src/RimMandrake/rimflow/selftest_modledger_round4.py", "seconds": 0.5},
     {"test": "src/RimMandrake/rimflow/selftest_modledger_round5.py", "seconds": 0.5},
+    {"test": "src/RimMandrake/rimflow/selftest_modledger_reduce_late_version.py", "seconds": 0.2},
     {"test": "src/RimMandrake/rimflow/selftest_stage_move_ledger.py", "seconds": 0.5},
     {"test": "src/RimMandrake/rimflow/selftest_pilot_stage_runs.py", "seconds": 1.0},
     {"test": "src/RimMandrake/rimflow/selftest_holder_live_brief.py", "seconds": 1.0},

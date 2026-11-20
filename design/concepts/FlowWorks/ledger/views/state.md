@@ -1,6 +1,6 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":881268,"DISPATCH":7450,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"STEWARD":2597} body_sha256=db528dee1bcddb7f146b70cf8102977ce87f92d0986cde8b2f63c7238790cf6b -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":7450,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"STEWARD":2597} body_sha256=7c03c661c215abef4d76f3a2e4f648499bbe80a747c09650290303ef56e86730 -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage blind_challenge · 1290 events in 8 shards · reducer 1
+version 0.1.0 · stage blind_challenge · 1294 events in 8 shards · reducer 1
 holder lease run-1794861652, token 4, last active 2026-11-16T21:17:55Z
 holder session f6f3356a-a412-4765-a4c4-e2070488d864, context 137670 of ceiling 400000
 
@@ -9,8 +9,8 @@ holder session f6f3356a-a412-4765-a4c4-e2070488d864, context 137670 of ceiling 4
 - next: Run blind cycle 4 judge on FlowWorks 0.1.0 at origin/main so a judge who did not make the cycle-3 fixes (96941bfa43, d0d33973116a) judges them
 - ruled out: No CRITERION FLAW and no weakened test in cycle 3; the census red was a stale pin after GSS b560ff91e8 (owner ripple removal), not a FlowWorks draw defect
 
-## Open findings (142)
-(claimed fixes, awaiting a judge, on one line each with the oldest 141 open findings, named without their 'finding:': `modledger.py show --mod FlowWorks finding:<NAME>`)
+## Open findings (181)
+(claimed fixes, awaiting a judge, on one line each with the oldest 123 open findings, named without their 'finding:': `modledger.py show --mod FlowWorks finding:<NAME>`)
 - RIMMANDRAKE_ANCHOR_CROP_DROWN_DELAY_IN_DAYS_NOT_PULSES [open, polish · bars inv_overflow_sheet]: cropDrownPulses ships 1680 (7 days at the 250-tick pulse) b…
 - RIMMANDRAKE_PIN_MACHINE_RATES_A_TENFOLD_STILL_PASSES [open, polish · bars inv_converters]: Planted DEF_STILL_RATE_TENFOLD (RM_LiquidStills.xml 6000 to…
 - ABSOLUTE_DESCENT_FIX_MISSES_DECK_SHOVE [open, problem]: With pitRelativeClimbEnabled off, IsFallingArrival (RM_Supe…
@@ -42,7 +42,6 @@ holder session f6f3356a-a412-4765-a4c4-e2070488d864, context 137670 of ceiling 4
 - FLOWWORKS_WETPROBE_BUILD_READ_THE_DAMP_FIRST [open, problem]: Task: add a bridge read of per-cell wetting level, cause an…
 - FLOWWORKS_WETTING_BUILD_TWO_SQUARES_DAMP [open, problem]: Task: ground within two squares of a filled canal must be w…
 - FOUNTAIN_LOOP_BUILD_PUMPS_ITS_OWN_RAIN [open, problem · bars inv_overflow_sheet, inv_liquid_net, source_pays_and_refills]: Task: build the RM_Fountain building in FlowWorks. It draws…
-- FROZEN_OVERFLOW_DIG_FIX_ICE_POURS_LIQUID [open, problem · bars ice_cuts_and_melts, inv_overflow_sheet]: HandOverTakenCells pours state.Dl into a newly dug channel/…
 - FUEL_FIRE_SELFTEST_FIX_SQUARE_COVERAGE [open, problem · bars inv_fire]: FuelFireChecks.CheckPlan (lines 90-99) tests coverage with…
 - FW_SELFTEST_REPAIR_TWO_PATTERNS_ADRIFT [open, problem]: Two source-pattern cases in the full FlowWorks C# SelfTest…
 - GLOW_TANK_PROOF_FIX_BLIND_READ_PASSES [open, problem]: glow_tank_live.py:155-159: an empty inspect() (refused call…
@@ -74,42 +73,28 @@ holder session f6f3356a-a412-4765-a4c4-e2070488d864, context 137670 of ceiling 4
 - REFUSED_HANDOVER_DRAIN_FIX_PUDDLE_OVERSTAYS [open, problem · bars inv_overflow_sheet]: HandOverTakenCells credits a wet square that became a Recei…
 - REVIEW_MAP_FIX_STATIONS_NO_LEAD_OUT [open, problem · bars hose_reads_as_hose, inv_hoses]: In review_map, hose lays at stations 63, 66 and 67 are refu…
 - REVIEW_STAGE_FIX_SMALL_MAPS_HELD_GATES [open, problem · bars sluice_drains_on_command]: owner_review_stage places bars_* rows off-map on a 250 map…
-- RIMMANDRAKE_BREAK_PIT_COVER_UNDER_THROWN_STACK_PAWNS_ONLY [open, problem]: A thrown stack landing on a covered pit cell does not break…
-- RIMMANDRAKE_BURY_GSS_CORDS_IN_FW_SUPERDEEP_PIT_WATER [open, problem]: Gimme Some Slack draws one cord lying on RM_Fill_Water_Supe…
 - RIMMANDRAKE_CHECK_SHOOTING_RULE_OFF_PICKS_FARTHER_PIT_FOE [open, problem]: With the superdeep shooting rule OFF, the shooter picked 11…
-- RIMMANDRAKE_DRYRUN_SCENES_ON_EMPTY_GAME_THREE_PASSED [open, problem]: In-game scene rows can read PASS with nothing on the map: o…
-- RIMMANDRAKE_EARN_CALIBRATION_BOTH_WAYS [open, problem]: A `covered` verdict signs under an UNTESTED judge brief (ca…
-- RIMMANDRAKE_FIT_SENSE_V3_WRAPUP_NEVER_FINISHED_IN_FIFTEEN [open, problem]: After the rm-metronome.timer cutover, the v3 and wrapup sen…
-- RIMMANDRAKE_FIX_JAWABENCH_AWARENESS_INSTALL_CRASHES_START [open, problem]: Game start crashes natively on the first `steve.sh up` afte…
 - RIMMANDRAKE_FIX_STRANDED_COLONIST_READS_UNTRAPPED_NO_RESCUE [open, problem · bars drained_hole_is_a_prison, ways_in_and_out]: A colonist stranded in a roofed 5x5 pit dug 4 m reads `trap…
-- RIMMANDRAKE_FOLD_FRAME_JUDGE_INTO_PRELOOK [open, problem]: Two judges exist: the north-star frame judge (judge_cli.py)…
 - RIMMANDRAKE_JUDGE_FLOWWORKS_REVIEW_SAVE_FOUR_LOOK_QUESTIONS [open, problem · bars pit_reads_as_hole, pawn_height_follows_depth, canal_reads_as_dug, hose_reads_as_hose]: Review save shows looks no bar decides: dry 1-notch canal r…
 - RIMMANDRAKE_LAND_RALPH_FLOWWORKS_PIT_FEATURES [open, problem · bars raiders_fetch_their_fallen, inv_raider_fetch_fallen, drained_hole_is_a_prison, inv_prison_no_bed, hung_bridge_spans, pawn_height_follows_depth, pit_reads_as_hole, covered_pit_springs]: Ralph's FlowWorks pit features (raider rescue, bedless pris…
 - RIMMANDRAKE_LIGHT_FUEL_SAP_TERRAIN_FIRES_STARTED_ZERO [open, problem · bars inv_fire]: With liquidIgnitionEnabled ON, a burning log beside RM_Fuel…
 - RIMMANDRAKE_PROVE_FLOWWORKS_TOGGLES_DENSE [open, problem · bars inv_pits, inv_liquid_roster, inv_fire]: Dense live proofs were owed for four FlowWorks toggles (fal…
 - RIMMANDRAKE_RESUME_SWEPT_PAWN_STUCK_MID_RIVER [open, problem]: RM_MapComponent_RiverCurrent.Move() calls pather.StopDead()…
-- RIMMASTER_MOVE_IMAGE_SKILLS_OUT_PAST_CODE_PATHS [open, problem]: generating-images and editing-images are general skills but…
-- SELFTEST_ASSERT_CLOSE_FIX_ACCEPTS_NAN [open, problem]: AssertClose (SelfTest/Program.cs:118-123) tests Math.Abs(go…
 - SMALL_PUMP_HOSE_FIX_LAYS_UNCONNECTED [open, problem · bars no_impossible_plumbing]: Targeting an isolated RM_LiquidPump (1x1, PassThroughOnly)…
 - SUNKEN_DRAWBRIDGE_FIX_REJECTS_HINGE_BANK [open, problem · bars inv_bridges, hung_bridge_spans]: Raising a sunken drawbridge starts the landing search on it…
 - SUSPENSION_BASE_REWIRE_COVERS_STEP_OUT [open, problem]: Task: lift Building_PitCover into a span base class, with p…
 - SWALE_CANAL_ART_REFERENCE_1 [open, problem · bars canal_reads_as_dug]: RM_Swale art is a placeholder; real FlowWorks canal screens…
 - SWIM_WARNING_FIX_ANY_PAWN_MESSAGE [open, problem · bars inv_swim]: depth_rebuild_proofs.py:233-244: SWIM_armour_warned_before_…
 - TAR_LAG_FIX_NO_WATER_CONTROL [open, problem]: The tar lag check (_expect_tar_lag, extensions.py:746-753)…
-- TESTQ_MODS_WIRE_BEYOND_FLOWWORKS [open, problem]: Only 1 of 132 harnessed mods was selectable by testq; the n…
 - TIMBER_WINCH_FIX_POWERS_STEEL_BRIDGE [open, problem]: A winch links to a drawbridge by adjacency only (RM_Drawbri…
 - TRANSFER_AUDIT_FIX_FAILED_MOVE_COUNTS [open, problem]: TransferChecks.cs:551 regex `==\s*\w` also matches `== 0` (…
 - VV_MATRIX_FIX_SURFACE_FAILURES_UNDERCOUNT [open, problem]: ShippedMatrixProbe.cs:165 sets failures = Math.Max(a,b,c),…
 - WALKS3_OUTFLOW_FIX_HOSE_WONT_JUMP_DITCH [open, problem]: water_scenes_walk s3_geom() sets outflow=canal[0] and _pump…
 - WEIR_CATCH_FIX_ESCAPES_CAP_RADIUS [open, problem]: GenPlace Near placement of a captured stack (RM_Weir.cs:385…
 - BODY_CLASSIFY_FIX_STICKY_OFF_NEVER_FORMS [open, problem]: In validation_v2 run4, S5_sticky_limitless failed: W6 (stic…
-- RAIDER_CHOP_FIX_AXE_NEVER_LANDS [open, problem]: Ladderless raiders take RM_RaiderChopForLadder jobs for ~80…
 - READOUT_CHECK_FIX_STALE_AFTER_PROOF_REWIRE [open, problem]: SelfTest Readout_two_numbers_and_the_limitless_mark fails:…
-- RIMMANDRAKE_BUILD_FLOWWORKS_THREE_RED_OFFLINE_TESTS_NOBODY_OWED [open, problem]: FlowWorks sits at Stage 3 with three offline deciders red a…
-- RIMMANDRAKE_CLARIFY_GSS_NOHOSE_BAR_PIPE_POLES_ARE_FLOWWORKS [open, polish]: Bar no_hose_in_gss says 'No hose, reel or pipe is drawn by…
 - RIMMANDRAKE_COVER_FLOWWORKS_REVIEW_MAP_THIRTY_NINE_STILL_UNSHOWN [open, problem]: selftest_review_map.py is red on main: 43 inventory items m…
 - RIMMANDRAKE_ENACT_FLOWWORKS_THREE_CARDS_WETTING_SINK_SWALE [open, problem]: Task: enact three owner cards for FlowWorks 0.1.0: move the…
-- RIMMANDRAKE_KEEP_DIG_PROGRESS_ACROSS_MEALS_AND_NAPS [open, problem]: An interrupted dig/fill cut restarts from zero: vanilla Job…
 - RIMMANDRAKE_MAP_NEW_FLOWWORKS_DEFS_REVIEW_MAP_FELL_BEHIND [open, problem]: The FlowWorks human review map lacks rows for 5 new defs (J…
 - RIMMANDRAKE_REPAIR_DECK_COLLAPSE_SEAM_CHECK_LOST_ITS_ANCHOR [open, problem]: C# case DeckCollapse_GSS_shock_seam_is_soft_and_load_safe (…
 - RIMMANDRAKE_REPORT_SUBMERGE_SHADOW_QUEUE_JUDGE_CANNOT_SEE_ORDER [open, problem]: FlowWorks ProofSubmerge reports no shadow draw queue, so th…
@@ -120,41 +105,95 @@ holder session f6f3356a-a412-4765-a4c4-e2070488d864, context 137670 of ceiling 4
 - THIRST_CHAIN_UNSTICK_STILL_SIPPING [open, problem]: FlowWorks chain 'thirst' on SteveDesktop hangs: one filler…
 - FLOWWORKS_BARS_JUDGE_FIVE_IN_ONE_SITTING [open, problem · bars one_still_surface]: The FlowWorks north-star section hash covers the whole sect…
 - FLOWWORKS_DEPTH_REBUILD_ONE_BIG_DIG [open, problem · bars one_still_surface, fill_level_legible, no_full_source_after_draw]: Task epic: FlowWorks water must be exactly level (decilitre…
-- FLOWWORKS_FINISH_ARTISAN_LOOP_DREAD_FOURTH [open, problem]: Task: run an Artisan loop on FlowWorks as the fourth experi…
 - FLOWWORKS_REVIEW_LOOKS_ROUND_1 [open, problem · bars pit_reads_as_hole, inv_pits, inv_liquid_roster, pawn_height_follows_depth]: Owner review of the review map: scorched dirt/stone show no…
 - FLOWWORKS_SCRIPT_MEASURE_PREP_AND_CONTROLS [open, problem · bars inv_prison_no_bed, toss_flame_from_rim, inv_toss_flame, drained_hole_is_a_prison, moat_raid_sequence]: Designer deep pass on FlowWorks: read its proof scripts, na…
 - RIMMANDRAKE_DESIGN_FLOWWORKS_DIG_INTERFACE_CONSOLIDATION [open, problem]: The FlowWorks dig UI is a daunting grid of options (5 Order…
 - RIMMANDRAKE_SUBMERGE_PIT_FITTINGS_BY_LEVEL [open, problem · bars inv_pits]: Pit liquid is a base-terrain swap, so ladders, spikes, the…
 - RIMMANDRAKE_SWEEP_WATER_SOLVERS_ON_BIG_MAPS [open, problem]: Task: offline Python bakeoff of FlowWorks water solvers (A…
 - RIVER_COLORS_WIDEN_RED_BLUE_GREEN_DEATH [open, problem]: FlowWorks colours rivers per tile only by biome (RiverTint.…
-- FLOW_SOURCE_SINK_BUILD_TAPS_FOR_MAPMAKERS [open, problem]: Task: map makers, review/test maps and Inhabited need dev-p…
 - RIMMANDRAKE_DELETE_FILL_N_ONE_WATER_NUMBER_SEVEN_FIXES [open, problem]: Water is stored in two forms: a whole-notch fill grid plus…
 - RIMMANDRAKE_DESIGN_MELEE_SHOVE_INTO_PIT_CONTEST_FLOWWORKS [open, problem]: No melee shove exists: a pawn cannot shove another into an…
 - RIMMANDRAKE_PROVE_FLOWWORKS_FILL_AGAINST_DEPTH_METRES [open, problem · bars fill_level_legible]: Pit fill N vs depth M vs metres needed checking. Answer: 1…
-- TANK_LOOKS_WIRE_FOUR_STYLE_SWITCH [open, problem · bars inv_looks]: Built FlowWorks tanks have no style switch. The four tank d…
-- RIMMANDRAKE_FIX_FLOWWORKS_CROP_WEEK_FOLLOWS_PULSE_SLIDER [open, problem · bars inv_overflow_sheet]: Crop-drown delay is a raw pulse count (cropDrownPulses 1680…
-- RIMMANDRAKE_PIN_FLOWWORKS_DRILL_CALLER_CHARGE_UNSEEN [open, problem · bars inv_drilling]: T_DRILL proves SpentUnits but not its caller: planted 'char…
-- RIMMANDRAKE_PIN_FLOWWORKS_THIRST_CALLER_FALL_UNSEEN [open, problem · bars inv_bottles_thirst]: T_THIRST proves the ruled fall numbers in RM_ThirstMath but…
-- RIMMANDRAKE_PIN_FLOWWORKS_COATING_LAWS_MISS_DEAD_TICK [open, problem · bars inv_liquid_coating]: T_LIQUID_COATING_OFFLINE stays green under 6 planted faults…
-- RIMMANDRAKE_PIN_FLOWWORKS_SHEET_CALLER_CROP_AGE_UNSEEN [open, problem · bars inv_overflow_sheet]: T_SHEET proves CropDrowns per crop but not that the caller…
-- RIMMANDRAKE_PIN_FLOWWORKS_SHEET_TIER_EDGE_LANE_ONE_ONLY [open, polish · bars inv_overflow_sheet]: Planted '>' for '>=' at the 3 cm sheet tier (SheetUpDl) lef…
-- RIMMANDRAKE_PIN_FLOWWORKS_SPRINKLER_RADIUS_DEFAULT_UNWATCHED [open, polish · bars inv_sprinklers]: Planted sprinklerNativeRadius initialiser 3.9 (Scribe defau…
-- RIMMANDRAKE_PIN_FLOWWORKS_TOSS_RANGE_AND_RELIGHT_UNWATCHED [open, polish · bars inv_toss_flame]: Planted TossRange 49 (tossed from anywhere, not the rim) an…
-- RIMMANDRAKE_PIN_FLOWWORKS_FETCH_FIRE_WINDOW_AND_KEY_UNWATCHED [open, polish · bars inv_raider_fetch_fallen]: Planted UnderFireTicks 0 (never leaves the fallen under fir…
-- RIMMANDRAKE_PIN_FLOWWORKS_SHEET_SETTINGS_REACH_THE_KERNEL [open, problem · bars inv_overflow_sheet]: T_SHEET stays green when the door-leak slider is wired to a…
-- RIMMANDRAKE_PIN_FLOWWORKS_CROP_DELAY_TEXT_FOLLOWS_PULSE [open, problem · bars inv_overflow_sheet]: the crop-drowning message and the delay slider label can st…
-- RIMMANDRAKE_PIN_FLOWWORKS_SHEET_DELAY_UP_AND_DRYING_CAP [open, problem · bars inv_overflow_sheet]: T_SHEET stays green when PulsesFor rounds down (a crop drow…
-- RIMMANDRAKE_PIN_FLOWWORKS_CONVERTER_KEEPS_DRINKERS_RESERVE [open, problem · bars inv_converters, inv_bottles_thirst]: T_CONVERT and both thirst tests stay green when CompLiquidC…
-- RIMMANDRAKE_NOTE_FLOWWORKS_DRILL_DRAWS_POWER_WHEN_OFF_UNPINNED [open, polish · bars inv_settings]: Polish: no offline test catches a drill drawing power while…
-- RIMMANDRAKE_NOTE_FLOWWORKS_COATING_LAWS_MISS_COLONISTS [open, polish · bars inv_liquid_coating]: Polish (Stage 6 bar): selftest_stage3_owed.py --only coatin…
 - FLOWWORKS_NORTHSTAR_TRIAL_1 [open, problem · bars one_still_surface]: Parent of the FlowWorks north-star trial: no bar has a vali…
 - FLOWWORKS_REDROWS_PROVE_FIXED_STILL_FROWN [open, problem]: mod_completion.py FlowWorks still lists 13 broken parts bec…
 - FWSHEET_CULL_MIXED_CONTAINER_ROWS [open, problem]: The FlowWorks walk sheet container rows offered different o…
 - REVIEW_MAP_FIX_COVER_NEW_DEFS [open, problem]: selftest_review_map and selftest_extensions were red at HEA…
 - THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY [open, problem · bars inv_bottles_thirst]: Task: FlowWorks needs its own drinking bottles and its own…
-- RIMMANDRAKE_REPIN_FLOWWORKS_PIT_CENSUS_AFTER_GSS_DROPPED_RIPPLE on d0d33973116a56ea96e87153e1d5c95a6893b402
+- RIMMANDRAKE_FIX_FLOWWORKS_CROP_WEEK_FOLLOWS_PULSE_SLIDER on 4b33b22f003b1c7cd76acc19a2e028d1bcfd4b67
+- RIMMANDRAKE_PIN_FLOWWORKS_DRILL_CALLER_CHARGE_UNSEEN on 4b33b22f003b1c7cd76acc19a2e028d1bcfd4b67
+- RIMMANDRAKE_PIN_FLOWWORKS_THIRST_CALLER_FALL_UNSEEN on 4b33b22f003b1c7cd76acc19a2e028d1bcfd4b67
+- RIMMANDRAKE_PIN_FLOWWORKS_COATING_LAWS_MISS_DEAD_TICK on 4b33b22f003b1c7cd76acc19a2e028d1bcfd4b67
+- RIMMANDRAKE_PIN_FLOWWORKS_SHEET_CALLER_CROP_AGE_UNSEEN on 4b33b22f003b1c7cd76acc19a2e028d1bcfd4b67
+- RIMMANDRAKE_PIN_FLOWWORKS_SHEET_TIER_EDGE_LANE_ONE_ONLY [open, polish · bars inv_overflow_sheet]: T_SHEET does not pin the 3 cm sheet-tier boundary: planted…
+- RIMMANDRAKE_PIN_FLOWWORKS_SPRINKLER_RADIUS_DEFAULT_UNWATCHED [open, polish · bars inv_sprinklers]: No offline test is red when the sprinkler radius initialise…
+- RIMMANDRAKE_PIN_FLOWWORKS_TOSS_RANGE_AND_RELIGHT_UNWATCHED [open, polish · bars inv_toss_flame]: T_TOSS_FLAME_OFFLINE stays green when TossRange is planted…
+- RIMMANDRAKE_PIN_FLOWWORKS_FETCH_FIRE_WINDOW_AND_KEY_UNWATCHED [open, polish · bars inv_raider_fetch_fallen]: T_FETCH_FALLEN_OFFLINE stays green when planted faults zero…
+- RIMMANDRAKE_PIN_FLOWWORKS_SHEET_SETTINGS_REACH_THE_KERNEL on 96941bfa43
+- RIMMANDRAKE_PIN_FLOWWORKS_CROP_DELAY_TEXT_FOLLOWS_PULSE on 96941bfa43
+- RIMMANDRAKE_PIN_FLOWWORKS_SHEET_DELAY_UP_AND_DRYING_CAP on 96941bfa43
+- RIMMANDRAKE_PIN_FLOWWORKS_CONVERTER_KEEPS_DRINKERS_RESERVE on 96941bfa43
+- RIMMANDRAKE_NOTE_FLOWWORKS_DRILL_DRAWS_POWER_WHEN_OFF_UNPINNED [open, polish · bars inv_settings]: No offline test catches a liquid drill drawing power while…
+- RIMMANDRAKE_NOTE_FLOWWORKS_COATING_LAWS_MISS_COLONISTS [open, polish · bars inv_liquid_coating]: The coating source laws stay green when no humanlike is eve…
+- RIMMANDRAKE_NOTE_FLOWWORKS_SHEET_TOOLTIP_TWO_CM [open, polish · bars inv_overflow_sheet]: The crops-drown tooltip says water at least 2 cm kills crop…
+- RIMMANDRAKE_FIX_FLOWWORKS_FUZZ_FOUR_FLAWS_SINK_STILL_FLOAT [open, problem]: Fuzz test machinery flaws (static review, not reproduced):…
+- RIMMANDRAKE_FIX_JAWABENCH_AWARENESS_INSTALL_CRASHES_START [open, problem]: The game crashes natively at startup on some launches. Two…
+- RIMMANDRAKE_SETTLE_PARTIAL_IMPL_TWO_INVENTORY_ROWS_UNCOUNTED [open, problem · bars inv_liquid_coating]: designer_stage.py showcases refuses two concepts before cou…
+- BOTTLE_STOCK_MEND_FREE_REFILLS on 51bcdabdb8a0
+- CANAL_SWIM_VERIFY_POISON_POOL_PARTY on 17a082d2d09a
+- WRECKED_LINKS_FIX_RUINS_SNUB_THEIR_PIPES [open, problem]: Wrecked tiers (RM_PumpingStation_Wrecked first) have no Com…
+- COVER_DECK_TUNE_QUADRATIC_CENSUS on 17a082d2d09a
+- DBH_WATER_MEND_ACID_ON_TAP on 579306aad895
+- FERRY_ROPE_FIX_BUILT_ONLY_WHEN_ASKED on 17a082d2d09a
+- FLOOD_RELEASE_PROBE_FORGOTTEN_REFUSALS on 17a082d2d09a
+- FLOWWORKS_DOOR_FAMILY_1 on 084a1e16e9f0
+- FLOWWORKS_HOTPATH_MEASURE_EVERY_FRAME on 19b45b92e815
+- FLOWWORKS_NORTHSTAR_REVALIDATE_1 on 8d5ea975ad1f
+- FLOWWORKS_NORTHSTAR_SITE_PREP_1 on f5292ce9a43f
+- FLOWWORKS_PROBES_MEND_HOOK_HAZARDS on 6e9e9ed655d0
+- FLOWWORKS_SETTINGS_UNTANGLE_THE_JUNK_DRAWER on f8a8b2179a98
+- FLOWWORKS_TOGGLE_MEND_MIDGAME_LEFTOVERS on 7496f5a6bbc4
+- FW_PROOF_DRIVERS_FIX_LATE_FALSE_PASS on 1fdc27463451
+- FW_PROOF_DRIVERS_FIX_EARLY_FALSE_PASS on 8e42411c169d
+- HOSE_IMPORT_MEND_ONE_SHOT_MISS on e6409b3f6504
+- HOSE_OFF_MEND_SLEEPWALKING_RETRACT on 8866eeddf831
+- HOSE_ORDERS_MEND_WAITING_FOREVER on 127605b1e92c
+- HOSE_SPILL_MEND_POND_GETS_NOTHING on 176d6455be66
+- LADDER_ROWS_WIDEN_STILL_COUNT_TO_TWO on 47ddee0286b6
+- LIQUID_FIRE_MEND_COVER_AND_SAVE on 86c093c8c5d1
+- LIQUID_ROTATION_FIX_STARVED_STRANGER on 7e492a762f01
+- LIQUID_THEFT_VERIFY_FALSE_ACCUSATION on bce8fc696030
+- MAP_STATICS_PRUNE_GHOST_MAPS on 1d77c1765101
+- PANNING_SPOT_VERIFY_EMPTY_RIVER on 17a082d2d09a
+- PIPE_ADAPTER_FIX_DEBT_NEVER_PAID on 3f08277146eb
+- PIT_FALL_MEND_SAVED_MIDAIR on 17a082d2d09a
+- PIT_REACH_VERIFY_FLYERS_AND_GIANTS on 9b22587f388a
+- PLACEMENT_FAILURE_MEND_LOST_IN_POSTING on b7b7c3b3df58
+- REACH_VETO_FIX_ONE_END_ENOUGH on 9b22587f388a
+- RIVER_CURRENT_PROBE_LATE_GRAB on 17a082d2d09a
+- SLUICE_GATE_SETTINGS_EXCISE_KNOBS_ON_NOTHING on 93b24c3d9bef
+- TANK_CONTENTS_SALVAGE_ON_DECONSTRUCT on 181f26b085bd
+- TANK_SETTLE_FIX_DOUBLE_DIPPED on 121eb90aa35e
+- FLOWWORKSMOD_DOC_FIX_STALE_PHASE_NOTES on 669564da550f
+- FLOWWORKS_ALPHABIOMES_RETIRE_GHOST_TERRAINS on 92a6172e522e
+- FLOWPINS_FIX_PASS_ON_REGRESSION on da5c09f66fe0
+- FLOWWORKS_CHANNEL_OSCILLATION_1 on 64ff430d93db
+- FLOWWORKS_HOSE_DEPLOY_DRAG_1 on 0f8ba4857d32
+- FLOWWORKS_KEYS_PRUNE_DEAD_DRILL_STRINGS on 669564da550f
+- FLOWWORKS_LABELS_POLISH_LEVELS_TO_METRES on b778706cf7b1
+- FLOWWORKS_RAIN_SETTING_CALLSITES_FIX_DRIFT on 0105185322f5
+- FLOWWORKS_SHARED_SOURCE_STALL_1 on 1ca52175b919
+- FLOWWORKS_STOCK_BISECT_RED_CHECK on 3a1334ca93c6
+- PIT_CHAINS_REPAIR_STALE_SINCE_RULING on 3a2dfdf4b15a
+- RIMMANDRAKE_KEEP_DIG_PROGRESS_ACROSS_MEALS_AND_NAPS [open, problem]: An interrupted dig/fill cut restarts from zero: vanilla Job…
+- RIMMANDRAKE_TRACE_SLACK_MINIFIED_LOOKUP_ERROR_WITH_FLOWWORKS [open, problem]: Log error 'Tried to get ThingsOfDef of MinifiedThing' with…
+- SELFTEST_FILTER_BUILD_SERIAL_DLL on f06f2f36d0ac
+- SELFTEST_ONLY_FIX_UNREQUESTED_CASES_READ on 6873efad10a1
+- SWIM_REAPPLY_FIX_LATE_TOGGLE_STAYS_DRY on 413f16e88b02
+- TRENCH_STRIDE_UNDERPASS_FIX_ONE_BUG on c22de8bf0b58
+- FLOW_SOURCE_SINK_BUILD_TAPS_FOR_MAPMAKERS [open, problem]: Task: map makers and review/test maps need dev-placed FlowW…
+- TANK_LOOKS_WIRE_FOUR_STYLE_SWITCH [open, problem · bars inv_looks]: Built FlowWorks tanks lacked a switch for their four looks;…
 
-## Traps (297) — what a reader would otherwise get wrong (each cut to 60 chars; `modledger.py show --mod FlowWorks <subject>` for the whole)
+## Traps (264) — what a reader would otherwise get wrong (each cut to 60 chars; `modledger.py show --mod FlowWorks <subject>` for the whole)
 - trap:the-inventory-s-proof-field-reads-stale-20
 - trap:three-inventory-rows-are-impl-absent
 - trap:every-live-scene-s-tier-says-quicktest
@@ -164,35 +203,23 @@ holder session f6f3356a-a412-4765-a4c4-e2070488d864, context 137670 of ceiling 4
 - trap:three-bar-vocabularies
 - trap:stage-json-is-the-only-locked-file-that
 - trap:a-new-cs-file-not-in-the-csproj-compiles-nothing
-- trap:the-all-off-fixture-is-not-actually-all
 - trap:the-census-s-wall-and-length-measurements-of
 - trap:after-site-size-100-dig-pulse-without-size
 - trap:a-weaker-blast-that-leaves-the-first-cover
 - trap:the-rectangle-reset-in-rm-northstarproofs-clears-rolled
 - trap:the-exit-code-is-not-evidence-of-a
 - trap:the-river-map-is-the-cause-is-not
-- trap:the-tick-figures-come-from-code-arithmetic-not
 - trap:first-find-sends-letter-has-never-been-read
 - trap:sha-ee9fa61fbc-and-the-lesson-s-commit-13ba79077b
 - trap:the-owner-held-validation-until-the-girth-look
-- trap:the-10-20-sitting-already-ruled-bars-1
-- trap:the-caveat-is-filed-as-ladder-rows-widen
 - trap:the-stale-rsw-names-raise-no-error-they
-- trap:add-mod-hash-to-the-walk-output-then
-- trap:p3-has-open-mod-findings-pump-canal-stalls
-- trap:level-surface-bar-py-is-a-stub-today
-- trap:the-dashboard-showed-no-count-for-artisan-now
 - trap:the-hose-live-rows-are-gated-by-offline
 - trap:core-live-rows-j-workgiver-selection-fail-rm
 - trap:a-red-run-never-closes-this-item-as
-- trap:the-14-northstar-validation-v2-result-json-run
 - trap:stale-means-nothing-here-the-stored-green-is
 - trap:green-full-cannot-be-run-as-is-no
 - trap:31-of-the-48-python-hits-were-not
 - trap:none-of-the-48-python-hits-were-covered
-- trap:transient-flowworks-live-sitting-plan-md-is-untracked
-- trap:the-unmeasured-since-from-colony-loss-in-the
-- trap:the-pre-judgement-certificate-refuses-flowworks-into-the
 - trap:grate-rows-grate-fire-fix-solid-deck-burns
 - trap:soil-vs-granite-tar-difference-was-because-tar
 - trap:the-four-reds-were-not-wrecked-links-three
@@ -205,7 +232,6 @@ holder session f6f3356a-a412-4765-a4c4-e2070488d864, context 137670 of ceiling 4
 - trap:glowtank-setting-off-no-line-pass-can-be
 - trap:reading-a-burning-fuel-spreading-onto-the-solid
 - trap:only-scorch-differs-between-grate-and-solid-the
-- trap:the-proof-lacks-v-clear-huge-plants-so
 - trap:the-original-built-sha-101e561a6e06-no-longer-resolves
 - trap:c8a-f5-polygonal-fallback-accepting-a-tighter-than
 - trap:the-failing-run-fell-inside-host-fault-window
@@ -215,10 +241,7 @@ holder session f6f3356a-a412-4765-a4c4-e2070488d864, context 137670 of ceiling 4
 - trap:the-modern-look-s-red-gloss-is-a
 - trap:antiquities-and-shipmemory-s-wait-ticks-failures-were
 - trap:rimproperty-s-chain-setup-abort-and-half-of
-- trap:no-live-modcheck-re-run-has-happened-since
 - trap:the-run-log-transient-modcheck-wave-bridge-20260913
-- trap:modern-containers-blue-drum-soda-bottle-blue-bucket
-- trap:modern-joins-are-drawn-in-the-modern-pipe
 - trap:drafts-are-registered-as-art-ledger-variants-but
 - trap:bottle-m-and-bucket-m-are-also-listed
 - trap:prompt-sources-stopped-asking-for-red-on-2026
@@ -230,15 +253,7 @@ holder session f6f3356a-a412-4765-a4c4-e2070488d864, context 137670 of ceiling 4
 - trap:p7-pass-only-means-eb-was-not-selected
 - trap:mod-failing-to-hold-gates-open-ruled-out
 - trap:the-label-truncates-gate-open-s-report-to
-- trap:the-in-game-settings-check-moved-offline-and
-- trap:wetting-bars-move-to-0-2-0-and
-- trap:widening-spandeck-s-walking-pawn-load-would-change
-- trap:not-the-deep-swim-bug-swim-setting-on
-- trap:flowworks-decides-deep-in-rm-swim-isdeepswimindex-swim
 - trap:the-depth-menu-s-digger-days-estimate-omits
-- trap:judge-calibration-json-says-flowworks-was-signed-by
-- trap:the-jawabench-awareness-frame-is-not-the-only
-- trap:not-held-must-not-mean-not-stranded-the
 - trap:at-sheet-scale-a-colonist-in-a-dry
 - trap:the-small-grey-round-thing-on-the-floor
 - trap:the-branch-s-depth-drawing-sink-numbers-0
@@ -246,7 +261,6 @@ holder session f6f3356a-a412-4765-a4c4-e2070488d864, context 137670 of ceiling 4
 - trap:the-clone-unlanded-alarm-for-the-kept-clone
 - trap:the-off-control-and-the-corrosion-rows-passed
 - trap:ingest-skips-exact-tier-proofs-relentless-game-reads
-- trap:selftest-flowworks-northstar-tier-want-rows-are-red
 - trap:first-real-run-shooting-rule-off-fail-filed
 - trap:the-criss-cross-reservoir-ripples-were-not-mainly
 - trap:the-froude-speed-cap-does-not-fix-the
@@ -254,8 +268,6 @@ holder session f6f3356a-a412-4765-a4c4-e2070488d864, context 137670 of ceiling 4
 - trap:earlier-pit-dig-bakeoff-rows-measured-a-dry
 - trap:accepted-costs-undying-criss-cross-ripples-after-a
 - trap:the-smoothdiff-fr-1-21x-ms-tick-figure
-- trap:removing-the-folder-breaks-every-art-job-until
-- trap:the-scripts-do-not-run-outside-this-repo
 - trap:ramp-steps-are-hex-sized-because-one-tile
 - trap:the-earlier-live-fail-120-kg-held-121
 - trap:the-2026-10-19-a3-fail-verify-rerun
@@ -263,14 +275,9 @@ holder session f6f3356a-a412-4765-a4c4-e2070488d864, context 137670 of ceiling 4
 - trap:the-tar-viscosity-check-reads-as-proving-tar
 - trap:the-exported-field-is-named-plainly-failures-but
 - trap:a-bank-end-s3-outflow-bank-used-by
-- trap:built-at-b696fdb9a2-with-only-the-offline-selftest
-- trap:ladder-parity-raider-fells-tree-earlier-read-a
 - trap:closing-sha-d2c7a3a835-was-replaced-by-the-2026
-- trap:the-first-certificate-run-was-killed-at-the
 - trap:t-pit-cover-had-gone-red-because-gimme
 - trap:a-drill-fault-survived-its-bar-s-own
-- trap:the-maturation-reader-had-flaws-the-faults-json
-- trap:the-bar-s-literal-wording-says-no-pipe
 - trap:fw-one-water-grid-exact-first-read-fail
 - trap:validation-v2-live-e8-player-dig-unmeasured-was
 - trap:validation-v2-e9-log-budget-conservation-exception-overflows
@@ -279,21 +286,36 @@ holder session f6f3356a-a412-4765-a4c4-e2070488d864, context 137670 of ceiling 4
 - trap:the-mod-s-dopulse-alone-starts-a-sliced
 - trap:the-c-selftests-do-not-build-the-slime
 - trap:chunk-3-pinned-end-state-fingerprint-was-re
-- trap:after-the-change-the-concept-tree-py-gate
-- trap:of-the-8-new-digprogress-selftests-6-test
-- trap:the-old-pyrelands-patch-was-not-reused-whole
 - trap:the-fix-has-not-been-watched-red-the
-- trap:both-violations-are-baselined-in-proof-restore-check
 - trap:explosiveknockback-s-scene-was-relaid-so-its-lanes
 - trap:the-cause-of-the-59-among-0-tried
 - trap:oq-1-dubs-thirst-runs-ours-steps-aside
 - trap:the-10-23-criteria-row-labelled-t8-is
 - trap:many-thirst-live-fails-are-harness-or-run
-- trap:lift-via-coverage-judge-py-release-record-json
-- trap:it-is-owned-by-the-live-pit-work
-- 161 traps on closed or claimed findings (verified, withdrawn, claimed_fixed), not listed: `modledger.py find --mod FlowWorks --class trap <words>`
+- trap:the-tick-figures-come-from-code-arithmetic-not
+- trap:the-ordered-run-sheet-is-bridge-run-1
+- trap:item-4-depth-named-water-labels-was-replaced
+- trap:the-regression-can-pass-with-no-drainage-six
+- trap:the-findings-are-a-static-review-not-reproduced
+- trap:the-awareness-frame-is-not-the-only-crash
+- trap:a-fresh-quicktest-map-once-came-up-with
+- trap:logs-are-overwritten-by-the-next-launch-crash
+- trap:a-fourth-impl-value-partial-in-the-schema
+- trap:teaching-showcases-alone-to-read-partial-was-rejected
+- trap:the-offline-selftest-passing-rc-0-green-does
+- trap:the-red-settings-and-liquid-looks-tests-were
+- trap:the-mod-list-and-settings-field-checks-passed
+- trap:wetting-bars-and-the-swale-rebuild-moved-to
+- trap:the-build-is-offline-green-only-and-not
+- trap:of-the-8-new-digprogress-selftests-6-test
+- trap:the-old-pyrelands-patch-was-not-reused-whole
+- trap:t-liquid-coating-offline-is-only-the-offline
+- trap:validation-v2-o2-checks-bool-toggles-only-so
+- trap:tossrange-4-9-is-marked-provisional-auto-decided
+- trap:z-log-budget-charges-the-error-to-gss
+- 145 traps on closed or claimed findings (verified, withdrawn, claimed_fixed), not listed: `modledger.py find --mod FlowWorks --class trap <words>`
 
-## Causes refuted (43) — do not chase these again
+## Causes refuted (46) — do not chase these again
 - cause:285-shows-lake-floor-1-5184-squares-plains: Mod regression in deep beds: ruled out as SITE. Player_s2_river_load.log:285 sh… (on f518e7c1987b)
 - cause:l5-colonists-clean-spill-unmeasured-on-run-20261018t233414: L5_colonists_clean_spill UNMEASURED on run 20261018T233414 was a harness fault:… (on 97ef816aed51)
 - cause:spores-were-not-the-cause-of-the-later: Spores were not the cause of the later A1 failure: after the spore purge Viking… (on 2ad8ba48157c)
@@ -317,7 +339,6 @@ holder session f6f3356a-a412-4765-a4c4-e2070488d864, context 137670 of ceiling 4
 - cause:the-night-live-tank-loop-on-fail-pour: The night-live tank_loop_on FAIL 'pour-in never ran' was not a mod fault: the h… (on 5dc5890fcec0)
 - cause:not-a-mod-fault-the-mod-path-stepone: Not a mod fault: the mod path StepOne -> next !InBounds -> WashAway -> TakenByL… (on 8681c1595e51)
 - cause:the-failures-were-not-a-mod-bug-the: The failures were not a mod bug: the harness expected a pawn to walk into an un… (on 3a2dfdf4b15a)
-- cause:toss-flame-and-coating-deciders-were-not-red: toss_flame and coating deciders were not red on main: already PASS (measured at… (on fc2ab0af913e)
 - cause:visit-1-s-toggle-row-passing-did-not: Visit 1's toggle row passing did not show the engine toggled: the old off/on ne… (on f1e06be47a88)
 - cause:the-steward-s-claim-that-the-pawn-never: The steward's claim that the pawn never reached the pits is refuted: cell and d… (on 25ad4b10c4df90738575ef6cb2eead6bc2cb520f)
 - cause:the-mod-was-not-wrong-rm-underliquid-cs: The mod was not wrong: RM_UnderLiquid.cs:150-154 keeps dry shadow alpha under c… (on e9f2f50fd215)
@@ -337,8 +358,12 @@ holder session f6f3356a-a412-4765-a4c4-e2070488d864, context 137670 of ceiling 4
 - cause:the-10-18-t6-fail-dehydration-0-075: The 10-18 T6 FAIL (dehydration 0.075) was not a mod defect: it traced to the pr… (on 4b6120a31eee)
 - cause:the-reopen-notes-for-t13-desperate-toxic-last: The reopen notes for T13_desperate_toxic_last (S3da9d64afd, S73995370fc) do not… (on 7fdf43c9319b)
 - cause:the-12-24-half-full-backup-came-from: The 12/24 half-full backup came from the old test's per-square model; with the… (on d6fb92a61c5ce03b4791d635e0f86ab43c81c6d0)
+- cause:not-the-deep-swim-setting-xw1-gave-stubs: Not the deep-swim setting: XW1 gave stubs 0, cord_edges 1 with swim on and off,… (on 298de5b1bfea)
+- cause:the-original-shuttle-was-assumed-to-reverse-or: The original shuttle was assumed to reverse or continue: it need not, since wit… (on 8fe7940f1f4c8ce9a0b9fdefbabce46962b039de)
+- cause:the-kernel-does-not-round-the-decilitre-away: The kernel re-rounding a cell to whole levels each pulse (which would make the… (on dbf76d554cd6dfbd05ea7bc5192dc6591350dcf3)
+- cause:toss-flame-and-liquid-coating-deciders-were-not: toss_flame and liquid coating deciders were not missing features: both already… (on fc2ab0af913e)
 
-## His answers (57) (each cut to 100 chars, a decision named without its 'decision:': `modledger.py show`)
+## His answers (56) (each cut to 100 chars, a decision named without its 'decision:': `modledger.py show`)
 - version: Yes, lock the other four mods (owner, 2026-11-13 ~3:40 PM PST, typed to the Conductor; said of Flow…
 - q:filled-water-moat-has-raiders-swimming: Filled water moat has raiders swimming across it (getting tired swimming in deep water), then water…
 - q:two-squares-away-from-the-canal: Two squares away from the canal should become · … This isn't the same as flood water … Wetted groun…
@@ -354,20 +379,16 @@ holder session f6f3356a-a412-4765-a4c4-e2070488d864, context 137670 of ceiling 4
 - q:flowworks-northstar-green-full-1: Must FlowWorks pass on the full mod list before complete? → Small list is enough
 - q:canal-overflow-build-every-puddle-audited: Build for all flowworks liquids.
 - q:canal-spill-wire-garden-grows-downhill: At some point, I'd really like to see a demo of "spill out of a FlowWorks canal" running along the…
-- q:rimmandrake-design-knockback-first-touch: SORRY! Melee shove is a great idea, but it belongs in FlowWorks, not here. Drop this recommendation…
 - q:pipe-fittings-redraw-no-more-ladders: May we draft replacements for FlowWorks pipe art (real 3- and 4-way fittings, one coupling per join…
 - q:fountain-sculptures-design-water-meets-art: Now that we're building the ability for water to flow over the ground (overspill), We can do some r…
 - q:rimmandrake-advance-flowworks-offline-beside-the-pilot: Which version does the swale rebuild (a soaking floor tile, not furniture) belong to? → Next versio…
 - finding:FLOWWORKS_SLUICE_TWO_DOORS_1: There are sealed sluice gates (standard) and the ones made of metal grates that always allow liquid…
 - finding:FLOWWORKS_PIT_FALL_ONLY_FORCED_1: You can't fall in by careless colonist pathing. Only if they get blown/forced in do they fall. Enem…
-- finding:FLOWWORKS_REVIEW_LOOKS_ROUND_1: Yes, that looks great!
 - finding:FLOWWORKS_CONTAINER_MATERIALS_1: Player can set what kinds of bottles they use (leather, glass(any stone), metal) depending on what…
 - finding:HOSE_REEL_MIGRATE_TO_FLOWWORKS_AT_LAST: Yes, a tank would pass liquid on to a hose screwed into it, without a pump needed.
 - finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST: Flat dead-end channel fills far end first — the look you want? → No: wet front moves out from the m…
 - finding:CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL: Connect it today and make it tremendous. ... a powerful, intense fire that should feel like you lit…
 - finding:PIT_PRISON_JUDGE_D3_ROOMS: Should 3-deep pits work as prisons → Superdeep only, as designed
-- finding:FLOW_SOURCE_SINK_BUILD_TAPS_FOR_MAPMAKERS: We should have some debug-style objects in the game in FlowWorks that allow players making their ow…
-- finding:TANK_LOOKS_WIRE_FOUR_STYLE_SWITCH: The tanks should have switchable art like everything else in here. I don't see the switch.
 - finding:LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD: D1 scheme → A: litres, metres, 0.5 m notch
 - finding:FLOWWORKS_DEPTH_REBUILD_ONE_BIG_DIG: Who goes down into a pit to tend or rescue → Anyone who can climb out
 - finding:MINERALS_FW_RETIRE_ITS_MAPGEN_IN_HOUSE: May donor test pass despite Minerals NRE → Pass it, retire that mod, and ensure we create whatever…
@@ -385,7 +406,6 @@ holder session f6f3356a-a412-4765-a4c4-e2070488d864, context 137670 of ceiling 4
 - finding:RIVER_COLORS_WIDEN_RED_BLUE_GREEN_DEATH: Rivers/roads order → 1 AND FlowWorks is supposed to allow world rivers to be in any color as well.…
 - finding:HOSE_RULINGS_BUILD_THREE_REVERSALS_ONE_CARD: You'll find this might not predict how they'll look in the game when connected in various ways
 - finding:FLOWWORKS_SCRIPT_MEASURE_PREP_AND_CONTROLS: What lights your moat? → New 'toss a flame' order (Recommended)
-- finding:FLOWWORKS_FINISH_ARTISAN_LOOP_DREAD_FOURTH: Pit ladder → Keep it, with a warning; Thirst bed → Start with bottles
 - finding:RIMMANDRAKE_FIX_CLIMB_SLOW_OUTLASTS_LADDER: The colonist DID slow and speed back up climbing the ladder more accurate to its size than before.
 - finding:RIMMANDRAKE_SUBMERGE_PIT_FITTINGS_BY_LEVEL: Shadows should ALWAYS be inside the pit only for "negative height items" like a pit of course. But…
 - finding:RIMMANDRAKE_PROVE_FLOWWORKS_FILL_AGAINST_DEPTH_METRES: Fill N → Delete it (Design A: exact dL/metres only, fill N gone from code/tools/tests, 'Water stand…
@@ -396,6 +416,10 @@ holder session f6f3356a-a412-4765-a4c4-e2070488d864, context 137670 of ceiling 4
 - finding:RIMMANDRAKE_DECIDE_FIVE_WATER_SWITCHES_THAT_FEED_NOTHING: What should happen to the five FlowWorks settings that do nothing? -> Remove them now
 - finding:RIMMANDRAKE_WEIGH_TAP_BACKS_UP_AT_HALF_FULL_CHANNEL: A tap backs up and leaves its channel half full under the new water engine: which behaviour do you…
 - finding:RIMMANDRAKE_DECIDE_SIXTH_WATER_SWITCH_THE_FIVE_MISSED: What should happen to the dead setting 'Connected water levels to one surface' → Remove it now
+- finding:FLOWWORKS_REVIEW_LOOKS_ROUND_1: Yes, that looks great!
+- finding:WRECKED_LINKS_FIX_RUINS_SNUB_THEIR_PIPES: I can see in the current test that the very broken version of the wrecked pump does not count to pu…
+- finding:FLOW_SOURCE_SINK_BUILD_TAPS_FOR_MAPMAKERS: We should have some debug-style objects in the game in FlowWorks that allow players making their ow…
+- finding:TANK_LOOKS_WIRE_FOUR_STYLE_SWITCH: The tanks should have switchable art like everything else in here. I don't see the switch.
 
 ## Open questions (0)
 
@@ -458,17 +482,17 @@ holder session f6f3356a-a412-4765-a4c4-e2070488d864, context 137670 of ceiling 4
 - bar:walk_moat_season [locked] verdict none: walk bar from tree.json, proves at stage 6
 - bar:ways_in_and_out [locked] verdict none: experience bar from tree.json, proves at stage 6
 
-spend recorded: USD 33.19, 24322723 tokens
+spend recorded: USD 78.94, 45401435 tokens
 
 ## Left out
-- closed findings: 218, oldest first (`modledger.py show --mod FlowWorks <subject>`)
+- closed findings: 174, oldest first (`modledger.py show --mod FlowWorks <subject>`)
 - closed traps: 1, oldest first (`modledger.py show --mod FlowWorks <subject>`)
 - tests: 42, oldest first (`modledger.py show --mod FlowWorks <subject>`)
-- claimed fixes in brief: 1 on one line (name and sha), their claim, test and fix by `show`
-- open findings in brief: the oldest 141 on one line, their fix and accept by `modledger.py show --mod FlowWorks <subject>`
+- claimed fixes in brief: 58 on one line (name and sha), their claim, test and fix by `show`
+- open findings in brief: the oldest 123 on one line, their fix and accept by `modledger.py show --mod FlowWorks <subject>`
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
 - notes: 11, never printed here (`modledger.py find --mod FlowWorks <words>`)
-- the full history: 1290 events (views/history.md; never read whole)
+- the full history: 1294 events (views/history.md; never read whole)
 
-cursor: t=2026-11-16T21:22:29Z.1794864149094812743 (modledger.py since --mod FlowWorks t=2026-11-16T21:22:29Z.1794864149094812743 prints what changed after this packet)
+cursor: t=2026-11-19T23:58:30Z.1795132710168704284 (modledger.py since --mod FlowWorks t=2026-11-19T23:58:30Z.1795132710168704284 prints what changed after this packet)

@@ -156,7 +156,7 @@ def record_text(name, title, state, prose, evs, fault=None, fixrec=None, prose_p
 
 
 FIELD_VERSION = {"reading": PROMPT_VERSION, "owner": "owner-2026-11-16.2", "keep": "keep-2026-11-16.2",
-                 "current": "current-2026-11-19.5"}
+                 "current": "current-2026-11-19.5b"}
 
 
 def rec_hash(text, field="reading"):
@@ -184,6 +184,10 @@ def _call(prompt, model, timeout=600, system=None):
 
 
 CALL = _call       # the selftest stands a fake in here
+# danger: one currency question, asked as written in the same batch, read [] in the round-5 EK re-mine and [1] twice
+# when asked again (EK 125, the storeroom-mortar trap a later commit repaired); a kept false trap is a WRONG entry.
+# So the currency reader reads each batch twice and a statement either pass found false leaves.
+PASSES = {"current": 2}
 
 
 def batches(todo, limit=BATCH_CHARS):
@@ -216,7 +220,16 @@ def read_tickets(path, records, bars, budget_usd, model="sonnet", workers=4, log
 
     def one(b):
         text = head + "\n\n".join(t for _, t in b)
-        return b, (CALL(text, model) if system is None else CALL(text, model, system=system))
+        if system is None:
+            return b, CALL(text, model)
+        ans, usd = CALL(text, model, system=system)
+        for _ in range(PASSES.get(field, 1) - 1):      # a statement any pass found false is false (PASSES)
+            a2, u2 = CALL(text, model, system=system)
+            usd += u2
+            for n, v in (a2 or {}).items():
+                if isinstance(v, list) and isinstance(ans.get(n, []), list):
+                    ans[n] = sorted(set(ans.get(n) or []) | set(v))
+        return b, (ans, usd)
 
     pending = list(bl)
     with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as ex:
