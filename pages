@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# pages: open CODEBASE_NOW, STATUS_BOARD (FLEET_NOW) and MATURATION_NOW as tabs of one Edge window; see src/RimMandrake/Utils/pages_open.py
+exec python3 "$(dirname "$(readlink -f "$0")")/src/RimMandrake/Utils/pages_open.py" "$@"

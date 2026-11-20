@@ -1512,7 +1512,8 @@ def build(d, now):
                      % esc(o["name"]) for o in d["others"])
     cant = "".join("<li>%s</li>" % inline_md(x) for x in unread_lines(d))
     parts_html = ['<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Maturation now</title>'
-                  '<meta name="viewport" content="width=device-width,initial-scale=1"><style>'
+                  '<meta name="viewport" content="width=device-width,initial-scale=1">'
+                  '<meta http-equiv="refresh" content="300"><style>'
                   'body{background:#0e1014;color:%s;font:14px/1.5 %s;margin:0;padding:18px 22px}'
                   '.wrap{max-width:1040px;margin:0 auto}h1{font-size:26px;margin:4px 0 6px}'
                   'h2{font-size:17px;margin:22px 0 8px;color:%s}code{font-family:Consolas,monospace;font-size:12px}'
@@ -1521,7 +1522,9 @@ def build(d, now):
                   'padding:6px 10px;border-bottom:1px solid %s}td{padding:6px 10px;border-bottom:1px solid #262b34;'
                   'vertical-align:top}li{margin:3px 0}.m{color:%s}</style></head><body><div class="wrap">'
                   % (TEXT, FONT, TEXT, CARD, DIM, EDGE, DIM),
-                  "<h1>%s</h1>" % title, "<p>%s</p>" % inline_md(measured), needs_html(d), "<p>%s</p>" % top_chips(d),
+                  "<h1>%s</h1>" % title,
+                  '<p id="built" class="m">Built %s. This tab reloads itself every 5 minutes; if this time is older '
+                  'than that, the writer stopped.</p>' % esc(pac(now)), "<p>%s</p>" % inline_md(measured), needs_html(d), "<p>%s</p>" % top_chips(d),
                   "<p class='m'>%s</p>" % inline_md(lead), picture(d),
                   "<h2>Every mod, one line</h2>", tbl, convergence_html(d), "<h2>Each mod</h2>"] + [
                       card(m) for m in d["mods"]]

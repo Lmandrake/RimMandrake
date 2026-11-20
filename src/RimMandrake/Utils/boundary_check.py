@@ -26,6 +26,7 @@ TOP = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "
 # page -> its tests file, repo-relative. A new boundary page is added here.
 PAGES = {
     "design/specs/2026-11-19-codebase-now/boundary.md": "src/RimMandrake/Utils/selftest_codebase_now.py",
+    "design/specs/2026-11-19-standing-status-tabs/boundary.md": "src/RimMandrake/Utils/selftest_standing_tabs.py",
     "design/specs/2026-11-19-judge-gates-and-designer-close/boundary.md": "src/RimMandrake/rimflow/selftest_judge_gates_designer_close.py",
     "design/specs/2026-11-19-exam-expect-verdict/boundary.md": "src/RimMandrake/rimflow/selftest_designer_stage.py",
     "design/specs/2026-11-18-pipeline-control-surface/boundary.md": "src/RimMandrake/rimflow/selftest_control.py",
