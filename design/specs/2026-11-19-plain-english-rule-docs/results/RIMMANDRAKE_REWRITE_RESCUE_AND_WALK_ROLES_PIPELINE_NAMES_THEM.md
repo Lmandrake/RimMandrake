@@ -19,7 +19,7 @@ words.
 
 | file | bytes before | bytes after | words before | words after | STE before | STE after | long before | long after | flagged before | flagged after |
 |---|---|---|---|---|---|---|---|---|---|---|
-| `fable_rescue.md` | 19,456 | 21,776 | 3,261 | 3,553 | 4.57 | 2.28 | 67 | 23 | 3 | 0 |
+| `fable_rescue.md` | 19,456 | 21,760 | 3,261 | 3,550 | 4.57 | 2.28 | 67 | 23 | 3 | 0 |
 | `walk_brief.md` | 3,485 | 3,797 | 396 | 456 | 2.53 | 1.10 | 7 | 2 | 0 | 0 |
 | `criteria_fixer.md` | 2,535 | 2,957 | 385 | 456 | 4.68 | 1.54 | 8 | 3 | 1 | 1 |
 
@@ -54,7 +54,7 @@ command "Only two acts can loosen an owner bar".
 | "v2 folds in the Slack Fable's review from inside the work" | who the "Slack Fable" is | "the review that the Slack rescue's Fable agent wrote from inside the work" |
 | "The launcher pastes everything below the line" | who the launcher is | names the Conductor. Source: `maturation_rescue.py` prints "launch a Fable Rescue (roles/fable_rescue.md) ... nothing was launched" to the Conductor's log. |
 | "Polish is listed, not built." and "(his move, or the Conductor's act, owner 2026-11-19)" | what "his move" moves | "Moving work to a later version is his move, or the Conductor's act" |
-| "That is the gradient." | what "the gradient" is | gloss from the owner's quote in the same file: "a number moved in small steps until a check turns green" |
+| "That is the gradient." | what "the gradient" is | gloss from the line itself: "a number changed until a check turns green" (the second meaning read removed "in small steps", which the old line does not say) |
 | "all of it may be merged, split, replaced or deleted" | the subject (the list came after the verb) | the reader is the subject: "You may merge, split, replace or delete any of the following" |
 | "the certificate's red came from a fifth pair" | a fifth pair of what | adds the source's own words: `pipeline_view_from_fable.md`: "1.4 slack against the seated plug" |
 | "A long measurement holds the shared build stage" | what the build stage is | "The build stage is the folder on D: where `src/RimMandrake/Utils/winbuild.py` builds a mod." (`winbuild.stage_dir`) |
@@ -140,6 +140,11 @@ slots were free.
 
 The reader also named a risk: the offline-model block is reworded. `selftest_offline_model_rule.py` passed on the
 repaired text.
+
+A second fresh Opus reader read the repaired `fable_rescue.md` against the old text. It found 1 change: the gloss of
+"the gradient" said "a number moved in small steps", and the old line does not say "small steps". The gloss now reads
+"a number changed until a check turns green". The second reader found no other change. It checked hardest the move of
+work to a later version, the stopping conditions, and the offline-model block.
 
 ### `walk_brief.md`: no findings
 

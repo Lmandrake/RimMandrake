@@ -86,9 +86,8 @@ More effort on the same path was already tried. Your task is to change the path.
    - a check that read only a handful of cases.
 
    Neither kind is a failure by itself.
-3. **If you catch yourself changing a number to move a check, stop.** That is the gradient: a number moved in small
-   steps until a check turns green. Go back to the instrument. On Slack, 21 of 37 edits before the rescue were changed
-   constants.
+3. **If you catch yourself changing a number to move a check, stop.** That is the gradient: a number changed until a
+   check turns green. Go back to the instrument. On Slack, 21 of 37 edits before the rescue were changed constants.
 4. **Nothing here is sacred except the owner's bars and rulings.** You may merge, split, replace or delete any of
    the following, if the change dissolves the problem: code structure, class boundaries, our own internal rules, the
    order of passes, an earlier builder's approach. On Slack, a "proven dead zone" rested on *"only the outer half of a cord whips"*.
