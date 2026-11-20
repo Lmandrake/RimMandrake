@@ -1,7 +1,7 @@
-# BOUNDARY: `code_review_status.py check`, what CLEAN means, and FLAGGED, Design Version 0.2.0
+# BOUNDARY: `code_review_status.py check`, what CLEAN means, FLAGGED, and a mod's locked bars, Design Version 0.3.0
 
 Code: `src/RimMandrake/Utils/code_review_status.py` (`page_states`, `code_files`, `cmd_check`, `flags`, `cmd_flag`,
-`cmd_unflag`, `cmd_list`, `cmd_mark_clean`). Item:
+`cmd_unflag`, `cmd_list`, `cmd_mark_clean`, `mod_of`, `mod_page_state`). Item:
 `RIMMANDRAKE_ENACT_CLEAN_MEANS_PROMISES_TESTED_ONE_FIX_ROUND`, written 2026-11-19. The owner's ruling of 2026-11-19
 (`design/RimMandrake/standing_rulings.md` §Code is clean when its promises are tested): for all code, CLEAN is judged
 against a stated page of promises with named covering tests; the reviewer fixes a significant finding, and one blind
@@ -16,6 +16,11 @@ the file is flagged and nobody reviews it again; flagged files are examined abou
 watched failing on the base `b57a0b2520` (14 failures), except `t_a_flag_changes_no_page_state`, which guards against
 a change and passed there; six planted faults in the new code each turned the tests red.
 
+Version 0.3.0 (item `RIMMANDRAKE_COUNT_LOCKED_BARS_AS_MOD_PAGE_CHECK_GREY`, 2026-11-19) makes a mod's locked bar list
+the page of each file inside the mod, from the owner's card of 2026-11-19 evening ("Locked bars are the page"): the
+bars say what the mod promises, and the mod's test table rows that decide each bar are its promise tests. The card's
+stated cost stands: a file that no bar touches reads by its mod's bars without anyone having read it.
+
 ## ACCEPTS (the only inputs this is built for)
 
 - **repo-paths.** One or more file paths inside the repo root, absolute or repo-relative.
@@ -23,6 +28,11 @@ a change and passed there; six planted faults in the new code each turned the te
   backticks that a space or the line end follows), each file in backticks: a full repo path; a path relative to an
   ancestor folder of a full path in that sentence (`rimflow/cli.py`); or a bare name in the folder of a full path in
   that sentence (`maturation_hands.py`). A backtick token that resolves to no file is not a file and is skipped.
+
+- **a-mod-store.** A file under `src/RimMandrake/<Mod>/` where `design/concepts/<Mod>/` exists is a mod file. Its
+  store is `version/VERSION.json`, `version/locked_bars.json` (`ids`, `version`) and `version/test_table.json`
+  (`bars[]` with `id` and `decides`; `tests{}` with `kind`, `command`, `known_red` and `runs_today` {`ran`, `rc`,
+  `result`, `build`, `command`}), as `maturation.py lock-bars` and `maturation.py certificate --run` write them.
 
 - **a-flag-request.** `flag <path> --why "…"` or `unflag <path> --why "…"` with a path inside the repo root and a
   non-empty why. `list --flagged`.
@@ -35,6 +45,14 @@ a change and passed there; six planted faults in the new code each turned the te
   makes the file read CLEAN. The fresh reader of the page and the review catch that, not `check`.
 - **a-tests-file-red-for-its-environment.** A tests file that exits non-zero because its machine lacks something
   reads DIRTY with its exit code, not UNREADABLE; the exit code and the last output line are in the detail.
+
+- **a-file-no-bar-touches.** Every file inside a mod reads by its mod's bars, whether or not a bar's test reads it
+  (the card's stated cost).
+- **an-in-game-verdict.** A test of kind `live_minimal`, `live_full` or `look` reads UNRUN even after a visit or his
+  walk passed it: `check` does not read `version/in_game/visit_<N>/rows.jsonl` or the walk. A bar it decides reads
+  UNREADABLE until that reader is built.
+- **a-recorded-run-that-lies.** `check` reads `runs_today` as recorded on the current build and never reruns a mod
+  test (`maturation.py certificate <Mod> --run` reruns and stamps them).
 
 ## PROMISES (each one is owed a test of the same name)
 
@@ -59,6 +77,31 @@ a change and passed there; six planted faults in the new code each turned the te
 - **record-mode-keeps-the-review-record.** `check --record` answers from the review record as `check` did before
   this page (CLEAN when the recorded hash matches the bytes, else DIRTY; exit 0 or 1), for callers that track a
   review round and not cleanliness.
+
+- **a-mod-file-reads-its-locked-bars.** A mod file whose VERSION.json state is `locked` or `passed` and whose
+  `locked_bars.json` records that version reads its mod's locked bars as its promises. It reads CLEAN (exit 0) only
+  when every locked bar is in the test table with at least one decider, and every decider is green: a test of any
+  kind but the game's, whose `runs_today` ran on the build that `judge_certificate.test_build` gives now, with the
+  table's command, rc 0 and result PASS, and which carries no `known_red`. The detail names the mod, its version and
+  `bars green N of N`.
+- **a-mod-without-locked-bars-has-no-page.** A mod file reads `NO PAGE` (exit 4) when its mod has no VERSION.json,
+  its state is not `locked` or `passed`, or it has no `locked_bars.json`; the detail says which. A file under
+  `src/RimMandrake/<X>/` with no `design/concepts/<X>/` reads as before this version.
+- **a-bar-without-a-green-test-is-dirty.** A mod file reads DIRTY (exit 1) when a locked bar is not in the test table,
+  decides on no test, or names a decider that the table does not hold, or an offline decider with no command (a test that runs in
+  the game, his walk's `look` included, needs none); when the mod has no
+  test table; or when a decider ran on the current build and its run is red (rc not 0 or result not PASS), or it
+  carries `known_red`. The detail names each bar and test.
+- **an-unrun-or-stale-mod-test-is-unreadable.** A decider with no recorded run, a run on another build or with another
+  command, or a test that runs in the game, makes the file read `UNREADABLE` (exit 3), never CLEAN, with the count of
+  bars UNRUN and STALE. It reads DIRTY instead when another bar of the mod reads DIRTY.
+- **an-unreadable-mod-store-is-unreadable.** When VERSION.json, `locked_bars.json` or `test_table.json` cannot be read
+  or parsed, `locked_bars.json` records another version than VERSION.json, holds no list of unique ids, or the test
+  table is another version's, the file reads `UNREADABLE` (exit 3) with the cause, never CLEAN or NO PAGE.
+- **a-mod-file-on-a-page-takes-the-worse.** A mod file that a boundary page also names reads the worse of the two
+  answers (DIRTY, then UNREADABLE, then CLEAN), and the detail names both.
+- **each-mod-store-is-read-once.** One `check` call reads each mod's store, and computes each test's build, at most
+  once, however many of the mod's files it is given.
 
 - **flag-records-why-and-sticks.** `flag` appends one record (path, why, seat, time, the file's hash) to
   `infrastructure/state/code_review/flags/<SEAT>.jsonl`, and the path stays FLAGGED however its bytes change, until

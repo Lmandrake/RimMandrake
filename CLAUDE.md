@@ -451,6 +451,8 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
   survive, and what it promises.
 - `python3 src/RimMandrake/Utils/code_review_status.py check <path>` measures it. It reads CLEAN, DIRTY, UNREADABLE
   or NO PAGE.
+- For a file inside a mod, the mod's locked bars are its page, and the test table rows that decide each bar are its
+  tests.
 - A full-file review that finds nothing does not make a file clean. Two meanings stay apart:
   - PAGE-CLEAN: each promise has a passing test (`check`). This is what CLEAN means.
   - READ-CLEAN: a cold read of these bytes found nothing significant (`mark-clean`, read by `check --record`).

@@ -333,6 +333,203 @@ def t_a_flag_changes_no_page_state():
     eq((rc, state(rows, "src/pkg/one.py")), (1, "DIRTY"), "check --record on a flagged file with no record")
 
 
+# ---- a mod's locked bars are its page (version 0.3.0) ----
+
+sys.path.insert(0, os.path.join(os.path.dirname(HERE), "rimflow"))
+import judge_certificate as JC  # noqa: E402  the build identity a mod test's recorded run is bound to
+
+MOD_SRC = "src/RimMandrake/Mod"
+MOD_FILES = ("%s/Source/a.cs" % MOD_SRC, "%s/Source/b.cs" % MOD_SRC, "%s/validation.py" % MOD_SRC)
+MOD_A = MOD_FILES[0]
+VDIR = "design/concepts/Mod/version"
+
+
+def offline(tid, reads="a"):
+    return {"id": tid, "kind": "offline", "file": "%s/selftest_%s.py" % (MOD_SRC, tid.lower()),
+            "reads": ["%s/Source/%s.cs" % (MOD_SRC, reads)], "command": "python3 %s/selftest_%s.py" % (MOD_SRC, tid.lower())}
+
+
+def stamp(r, t, rc=0, result=None, build=None, command=None):
+    t["runs_today"] = {"ran": True, "rc": rc, "result": result or ("PASS" if rc == 0 else "FAIL"),
+                       "build": build or JC.test_build(r, t), "command": command or t["command"], "last": "x"}
+    return t
+
+
+def mod_root(name, edit=None, version=None, locked=None, table=True):
+    """A repo root with one locked mod, `Mod`, of two bars, each decided by one offline test that ran green on this
+    build. `edit(r, tt)` changes the table before it is written; version/locked override VERSION.json/locked_bars.json
+    (a string is written as the file's raw text; None as the default; False leaves the file out)."""
+    r = root(name, {})
+    for f in MOD_FILES:
+        write(r, f, "// %s\n" % f)
+    tt = {"mod": "Mod", "version": "0.1.0", "bars": [{"id": "bar_one", "decides": ["T_ONE"]},
+                                                    {"id": "bar_two", "decides": ["T_TWO"]}],
+          "tests": {"T_ONE": offline("T_ONE", "a"), "T_TWO": offline("T_TWO", "b")}}
+    for t in tt["tests"].values():
+        write(r, t["file"], "pass\n")
+        stamp(r, t)
+    if edit:
+        edit(r, tt)
+    import json
+    for rel, default, given in (("VERSION.json", {"mod": "Mod", "version": "0.1.0", "state": "locked"}, version),
+                                ("locked_bars.json", {"mod": "Mod", "version": "0.1.0", "ids": ["bar_one", "bar_two"]},
+                                 locked),
+                                ("test_table.json", tt, None if table is True else table)):
+        if given is False:
+            continue
+        write(r, "%s/%s" % (VDIR, rel), given if isinstance(given, str) else json.dumps(given if given else default))
+    return r
+
+
+def line(rows, rel):
+    return rows.get(rel, ("", ""))[1]
+
+
+def t_a_mod_file_reads_its_locked_bars():
+    mod_root("modclean")
+    rc, rows = check(*MOD_FILES)
+    eq(rc, 0, "mod clean: exit")
+    for rel in MOD_FILES:
+        eq(state(rows, rel), "CLEAN", "mod clean: %s (a file no bar touches reads by its mod's bars)" % rel)
+    eq("bars green 2 of 2" in line(rows, MOD_A), True, "mod clean: detail counts the bars (%s)" % line(rows, MOD_A))
+    eq("Mod 0.1.0" in line(rows, MOD_A), True, "mod clean: detail names the mod and its version")
+
+    def extra(r, tt):   # a table bar that is not locked is no promise
+        tt["bars"].append({"id": "bar_not_locked", "decides": ["T_GONE"]})
+    mod_root("modextra", extra)
+    eq(check(MOD_A)[0], 0, "a table bar that is not locked changes nothing")
+    mod_root("modpassed", version={"mod": "Mod", "version": "0.1.0", "state": "passed 2026-11-19"})
+    eq(check(MOD_A)[0], 0, "a passed version's locked bars stay the page")
+    mod_root("modrecord", lambda r, tt: tt["tests"]["T_ONE"].update(kind="record"))
+    eq(check(MOD_A)[0], 0, "a record test with a green run on this build is green")
+
+
+def t_a_mod_without_locked_bars_has_no_page():
+    for name, kw in (("nover", {"version": False}), ("drafting", {"version": {"mod": "Mod", "version": "0.2.0",
+                                                                             "state": "drafting"}}),
+                     ("nolocked", {"locked": False})):
+        mod_root("mod" + name, **kw)
+        rc, rows = check(MOD_A)
+        eq((rc, state(rows, MOD_A)), (4, "NO PAGE"), "mod no page: %s" % name)
+        eq("Mod" in line(rows, MOD_A) and "locked" in line(rows, MOD_A), True,
+           "mod no page: %s: the detail says why (%s)" % (name, line(rows, MOD_A)))
+    r = mod_root("modnoconcept")
+    write(r, "src/RimMandrake/Other/x.cs", "//\n")
+    rc, rows = check("src/RimMandrake/Other/x.cs")
+    eq((rc, state(rows, "src/RimMandrake/Other/x.cs")), (4, "NO PAGE"), "a folder with no concept reads as before")
+    eq("boundary.md" in line(rows, "src/RimMandrake/Other/x.cs"), True, "no concept: the old detail")
+
+
+def t_a_bar_without_a_green_test_is_dirty():
+    cases = (
+        ("notinta", lambda r, tt: tt["bars"].pop(1), "bar_two"),
+        ("nodecider", lambda r, tt: tt["bars"][1].update(decides=[]), "bar_two"),
+        ("noentry", lambda r, tt: tt["tests"].pop("T_TWO"), "T_TWO"),
+        ("nocommand", lambda r, tt: tt["tests"]["T_TWO"].update(command=""), "T_TWO"),
+        ("red", lambda r, tt: stamp(r, tt["tests"]["T_TWO"], rc=1), "T_TWO"),
+        ("redresult", lambda r, tt: stamp(r, tt["tests"]["T_TWO"], rc=0, result="FAIL"), "T_TWO"),
+        ("knownred", lambda r, tt: tt["tests"]["T_TWO"].update(known_red="SOME_ITEM"), "T_TWO"),
+        ("redandunrun", lambda r, tt: (stamp(r, tt["tests"]["T_TWO"], rc=1),
+                                       tt["tests"]["T_ONE"].pop("runs_today")), "T_TWO"),
+    )
+    for name, edit, names in cases:
+        mod_root("moddirty" + name, edit)
+        rc, rows = check(MOD_A)
+        eq((rc, state(rows, MOD_A)), (1, "DIRTY"), "mod dirty: %s" % name)
+        eq(names in line(rows, MOD_A), True, "mod dirty: %s: the detail names %s (%s)" % (name, names, line(rows, MOD_A)))
+    mod_root("moddirtynotable", table=False)
+    rc, rows = check(MOD_A)
+    eq((rc, state(rows, MOD_A)), (1, "DIRTY"), "mod dirty: no test table, so no bar has a test")
+
+
+def t_an_unrun_or_stale_mod_test_is_unreadable():
+    def edited_after(r, tt):
+        write(r, "%s/Source/b.cs" % MOD_SRC, "// changed after the run\n")
+    cases = (
+        ("norun", lambda r, tt: tt["tests"]["T_TWO"].pop("runs_today"), "UNRUN"),
+        ("notran", lambda r, tt: tt["tests"]["T_TWO"]["runs_today"].update(ran=False), "UNRUN"),
+        ("nobuild", lambda r, tt: tt["tests"]["T_TWO"]["runs_today"].pop("build"), "STALE"),
+        ("stale", edited_after, "STALE"),
+        ("command", lambda r, tt: tt["tests"]["T_TWO"].update(command="python3 other.py"), "STALE"),
+        ("ingame", lambda r, tt: tt["tests"]["T_TWO"].update(kind="live_minimal"), "UNRUN"),
+        ("look", lambda r, tt: tt["tests"]["T_TWO"].update(kind="look"), "UNRUN"),
+        ("lookcommandless", lambda r, tt: tt["tests"]["T_TWO"].update(kind="look", command=None), "UNRUN"),
+    )
+    for name, edit, word in cases:
+        mod_root("modunrun" + name, edit)
+        rc, rows = check(MOD_A)
+        eq((rc, state(rows, MOD_A)), (3, "UNREADABLE"), "mod unrun: %s" % name)
+        eq(word in line(rows, MOD_A) and "bar_two" in line(rows, MOD_A), True,
+           "mod unrun: %s: the detail says %s and names the bar (%s)" % (name, word, line(rows, MOD_A)))
+
+
+def t_an_unreadable_mod_store_is_unreadable():
+    cases = (
+        ("version", {"version": "{not json"}),
+        ("locked", {"locked": "{not json"}),
+        ("lockedother", {"locked": {"version": "0.0.9", "ids": ["bar_one", "bar_two"]}}),
+        ("lockednoids", {"locked": {"version": "0.1.0", "ids": "bar_one"}}),
+        ("lockeddup", {"locked": {"version": "0.1.0", "ids": ["bar_one", "bar_one"]}}),
+        ("table", {"table": "{not json"}),
+        ("tableother", {"table": {"version": "0.0.9", "bars": [], "tests": {}}}),
+        ("tablebars", {"table": {"version": "0.1.0", "bars": "x", "tests": {}}}),
+    )
+    for name, kw in cases:
+        mod_root("modunread" + name, **kw)
+        rc, rows = check(MOD_A)
+        eq((rc, state(rows, MOD_A)), (3, "UNREADABLE"), "mod store unreadable: %s (%s)" % (name, line(rows, MOD_A)))
+
+
+def t_a_mod_file_on_a_page_takes_the_worse():
+    page = PAGE.replace("`src/pkg/one.py` (`f`)", "`%s`, `src/pkg/one.py` (`f`)" % MOD_A)
+    r = mod_root("modpage", lambda r, tt: stamp(r, tt["tests"]["T_TWO"], rc=1))
+    write(r, "design/specs/p/boundary.md", page)
+    write(r, "tests/t_p.py", TESTS_OK % 0)
+    CRS.PAGES = {"design/specs/p/boundary.md": "tests/t_p.py"}
+    rc, rows = check(MOD_A)
+    eq((rc, state(rows, MOD_A)), (1, "DIRTY"), "clean page + red mod bar")
+    eq("design/specs/p/boundary.md" in line(rows, MOD_A) and "T_TWO" in line(rows, MOD_A), True,
+       "the detail names both (%s)" % line(rows, MOD_A))
+    r = mod_root("modpage2")
+    write(r, "design/specs/p/boundary.md", page)
+    write(r, "tests/t_p.py", TESTS_OK % 1)
+    CRS.PAGES = {"design/specs/p/boundary.md": "tests/t_p.py"}
+    rc, rows = check(MOD_A)
+    eq((rc, state(rows, MOD_A)), (1, "DIRTY"), "red page + clean mod")
+    write(r, "tests/t_p.py", TESTS_OK % 0)
+    eq(check(MOD_A)[0], 0, "clean page + clean mod")
+
+
+def t_each_mod_store_is_read_once():
+    mod_root("modonce")
+    calls = {"build": 0}
+    real = JC.test_build
+
+    def counting(root_, t):
+        calls["build"] += 1
+        return real(root_, t)
+    JC.test_build = counting
+    try:
+        reads = []
+        real_open = open
+        import builtins
+
+        def spy(f, *a, **k):
+            if str(f).endswith("test_table.json"):
+                reads.append(f)
+            return real_open(f, *a, **k)
+        builtins.open = spy
+        try:
+            rc, _rows = check(*MOD_FILES)
+        finally:
+            builtins.open = real_open
+    finally:
+        JC.test_build = real
+    eq(rc, 0, "read once: exit")
+    eq(calls["build"], 2, "test builds computed for three files of a mod with two tests")
+    eq(len(reads), 1, "test table opened for three files of one mod")
+
+
 def main():
     t_clean_needs_a_page_and_passing_tests()
     t_a_promise_without_a_test_is_dirty()
@@ -348,6 +545,13 @@ def main():
     t_a_flagged_file_is_not_picked_for_review()
     t_unflag_ends_the_flag()
     t_a_flag_changes_no_page_state()
+    t_a_mod_file_reads_its_locked_bars()
+    t_a_mod_without_locked_bars_has_no_page()
+    t_a_bar_without_a_green_test_is_dirty()
+    t_an_unrun_or_stale_mod_test_is_unreadable()
+    t_an_unreadable_mod_store_is_unreadable()
+    t_a_mod_file_on_a_page_takes_the_worse()
+    t_each_mod_store_is_read_once()
     os.chdir(HERE)
     shutil.rmtree(TMP, ignore_errors=True)
     for f in FAILS:

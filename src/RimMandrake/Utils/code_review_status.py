@@ -8,6 +8,9 @@ A file is CLEAN when a boundary page names it, each promise there has a test
 of the same name, and the page's tests file passes. DIRTY: a promise lacks a
 test or the tests fail. UNREADABLE: a page or tests file could not be read or
 run. NO PAGE: no page names it (not a defect; it gets a page when next changed).
+A file inside a mod (src/RimMandrake/<Mod>/) also reads against its mod's
+locked bars: the bars are the promises, the test table rows that decide each
+bar are the tests (owner, by card 2026-11-19; `mod_page_state`).
 
 The review record below (`mark-clean`, `reopen`, `list`, `check --record`)
 records that a review round was done on exact bytes. It makes nothing CLEAN.
@@ -95,6 +98,7 @@ import time
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import boundary_check as BC  # noqa: E402  the page reader and the promise-to-test match
+sys.path.append(os.path.join(os.path.dirname(HERE), "rimflow"))  # judge_certificate, for mod pages (last: shadows nothing)
 # CODE_REVIEW_STATUS_ROOT redirects the whole tool at a throwaway repo, same
 # discipline as rimflow's RIMFLOW_LEDGER/RIMFLOW_ITEMS — a selftest must never
 # run mark-clean/reopen against this repo's own real ledger.
@@ -746,9 +750,167 @@ def _run_tests(tests):
     return r.returncode, (tail[-1].strip()[:160] if tail else "no output")
 
 
+# A mod's locked bars are the page of every file inside the mod (owner, by card
+# 2026-11-19 evening, "Locked bars are the page"); the test table rows that
+# decide a bar are its promise tests. Page: version 0.3.0 of the page above.
+MOD_SRC = ("src", "RimMandrake")
+INGAME_KINDS = ("live_minimal", "live_full", "look")   # run in the game; `check` reads no game run
+MOD_CAUSES_SHOWN = 6   # causes named in one detail line; the counts carry the rest
+
+
+def mod_of(rel):
+    """-> the mod a repo-relative path lies inside (src/RimMandrake/<Mod>/... with
+    design/concepts/<Mod>/), or None."""
+    parts = rel.split("/")
+    if len(parts) >= 4 and tuple(parts[:2]) == MOD_SRC and \
+            os.path.isdir(os.path.join(ROOT, "design", "concepts", parts[2])):
+        return parts[2]
+    return None
+
+
+def _mod_json(mod, name):
+    """-> (obj, None), (None, "no file") or (None, cause) for design/concepts/<mod>/version/<name>."""
+    p = os.path.join(ROOT, "design", "concepts", mod, "version", name)
+    try:
+        with open(p, encoding="utf-8") as f:
+            return json.load(f), None
+    except FileNotFoundError:
+        return None, "no file"
+    except (OSError, UnicodeDecodeError, ValueError) as e:
+        return None, "version/%s cannot be read: %s" % (name, str(e)[:120])
+
+
+def mod_page_state(mod, builds=None):
+    """-> (state, detail) of the files inside `mod` against its locked bars (the
+    mod promises on the page above). `builds` caches each test's build id."""
+    import judge_certificate as JC  # noqa: E402  the build a recorded run is bound to (rimflow/)
+    builds = {} if builds is None else builds
+    head = "mod %s" % mod
+    v, err = _mod_json(mod, "VERSION.json")
+    if err == "no file":
+        return "NO PAGE", "%s has no version/VERSION.json, so no locked bars" % head
+    if err or not isinstance(v, dict):
+        return "UNREADABLE", "%s: %s" % (head, err or "version/VERSION.json is not an object")
+    ver, st = v.get("version"), str(v.get("state") or "")
+    head = "mod %s %s" % (mod, ver)
+    if not re.match(r"(locked|passed)\b", st):
+        return "NO PAGE", "%s is not locked (state %r), so it has no locked bars" % (head, st)
+    lb, err = _mod_json(mod, "locked_bars.json")
+    if err == "no file":
+        return "NO PAGE", ("%s is %s but has no version/locked_bars.json, so no locked bars "
+                           "(`maturation.py lock-bars %s` records them)" % (head, st, mod))
+    if err:
+        return "UNREADABLE", "%s: %s" % (head, err)
+    ids = lb.get("ids") if isinstance(lb, dict) else None
+    if not isinstance(ids, list) or not ids or not all(isinstance(i, str) and i for i in ids) \
+            or len(set(ids)) != len(ids):
+        return "UNREADABLE", "%s: version/locked_bars.json holds no list of unique bar ids" % head
+    if lb.get("version") != ver:
+        return "UNREADABLE", "%s: version/locked_bars.json records version %s's bars" % (head, lb.get("version"))
+    tt, err = _mod_json(mod, "test_table.json")
+    if err == "no file":
+        return "DIRTY", "%s: no version/test_table.json, so none of its %d locked bars has a test" % (head, len(ids))
+    if err:
+        return "UNREADABLE", "%s: %s" % (head, err)
+    bars = tt.get("bars") if isinstance(tt, dict) else None
+    tests = tt.get("tests") if isinstance(tt, dict) else None
+    if not isinstance(bars, list) or not isinstance(tests, dict):
+        return "UNREADABLE", "%s: version/test_table.json holds no bars list and tests map" % head
+    if tt.get("version") != ver:
+        return "UNREADABLE", "%s: version/test_table.json is version %s's table" % (head, tt.get("version"))
+    rows = {b.get("id"): b for b in bars if isinstance(b, dict)}
+    count = {"green": 0, "DIRTY": 0, "UNRUN": 0, "STALE": 0, "UNREADABLE": 0}
+    causes = []
+    for bid in ids:
+        b, bad = rows.get(bid), []    # bad: (kind, cause); kind DIRTY, UNRUN, STALE or UNREADABLE
+        ds = b.get("decides") if isinstance(b, dict) else None
+        if b is None:
+            bad.append(("DIRTY", "bar %s is not in the test table" % bid))
+        elif not isinstance(ds, list) or not ds:
+            bad.append(("DIRTY", "bar %s decides on no test" % bid))
+        for d in ds if b is not None and isinstance(ds, list) else []:
+            t = tests.get(d)
+            if not isinstance(t, dict):
+                bad.append(("DIRTY", "bar %s's test %s is not in the table" % (bid, d)))
+                continue
+            if t.get("known_red"):
+                bad.append(("DIRTY", "bar %s's test %s carries known_red %s" % (bid, d, t["known_red"])))
+                continue
+            if t.get("kind") in INGAME_KINDS:
+                bad.append(("UNRUN", "bar %s's test %s runs in the game (%s), and check reads no game run"
+                            % (bid, d, t.get("kind"))))
+                continue
+            if not t.get("command"):
+                bad.append(("DIRTY", "bar %s's test %s runs offline and has no command" % (bid, d)))
+                continue
+            r = t.get("runs_today") if isinstance(t.get("runs_today"), dict) else {}
+            if not r.get("ran"):
+                bad.append(("UNRUN", "bar %s's test %s has no recorded run" % (bid, d)))
+                continue
+            if d not in builds:
+                try:
+                    builds[d] = JC.test_build(ROOT, t)
+                except (OSError, UnicodeDecodeError) as e:
+                    builds[d] = e
+            if isinstance(builds[d], Exception):
+                bad.append(("UNREADABLE", "bar %s's test %s: its build cannot be read: %s" % (bid, d, builds[d])))
+            elif not r.get("build") or r["build"] != builds[d]:
+                bad.append(("STALE", "bar %s's test %s ran on build %s, not this build %s (`maturation.py "
+                            "certificate %s --run`)" % (bid, d, r.get("build") or "(none)", builds[d], mod)))
+            elif r.get("command") is not None and r["command"] != t["command"]:
+                bad.append(("STALE", "bar %s's test %s ran another command than the table's" % (bid, d)))
+            elif not (r.get("rc") == 0 and r.get("result", "PASS") == "PASS"):
+                bad.append(("DIRTY", "bar %s's test %s is red on this build (rc %s, %s)"
+                            % (bid, d, r.get("rc"), r.get("result"))))
+        kinds = [k for k, _c in bad]
+        worst = next((k for k in ("DIRTY", "UNREADABLE", "STALE", "UNRUN") if k in kinds), "green")
+        count[worst] += 1
+        causes += [(k, c) for k, c in bad if k == worst][:1]
+    tally = ", ".join(["bars green %d of %d" % (count["green"], len(ids))]
+                      + ["%s %d" % (k, n) for k, n in count.items() if k != "green" and n])
+    order = ("DIRTY", "UNREADABLE", "STALE", "UNRUN")
+    shown = [c for _k, c in sorted(causes, key=lambda kc: order.index(kc[0]))]   # worst first, stable
+    more = len(shown) - MOD_CAUSES_SHOWN
+    detail = "%s locked bars: %s%s%s" % (head, tally, "; " if shown else "", "; ".join(shown[:MOD_CAUSES_SHOWN])
+                                         + ("; +%d more" % more if more > 0 else ""))
+    state = "DIRTY" if count["DIRTY"] else "UNREADABLE" if len(ids) - count["green"] else "CLEAN"
+    return state, detail
+
+
+def _with_mod(page_answer, mod_answer):
+    """-> the worse of a file's page answer and its mod answer (a-mod-file-on-a-page-takes-the-worse)."""
+    if mod_answer is None:
+        return page_answer
+    (ps, pd), (ms, md) = page_answer, mod_answer
+    if ms == "NO PAGE":
+        return (ps, pd) if ps != "NO PAGE" else (ps, "%s; %s" % (md, pd))
+    if ps == "NO PAGE":
+        return ms, md
+    rank = ("DIRTY", "UNREADABLE", "CLEAN")
+    return min((ps, ms), key=rank.index), "%s; %s" % (pd, md)
+
+
 def page_states(rels):
     """-> [(state, rel, detail)], state CLEAN / DIRTY / UNREADABLE / NO PAGE,
     for repo-relative file paths (the promises on the page above)."""
+    out = _boundary_states(rels)
+    mods, builds = {}, {}
+    for i, (state, rel, detail) in enumerate(out):
+        mod = mod_of(rel)
+        if mod is None:
+            continue
+        if mod not in mods:
+            try:
+                mods[mod] = mod_page_state(mod, builds)
+            except ImportError as e:
+                mods[mod] = ("UNREADABLE", "mod %s: the build reader judge_certificate cannot load: %s" % (mod, e))
+        s, d = _with_mod((state, detail), mods[mod])
+        out[i] = (s, rel, d)
+    return out
+
+
+def _boundary_states(rels):
+    """-> [(state, rel, detail)] against the boundary pages alone."""
     named = {}
     for page in sorted(glob.glob(os.path.join(ROOT, "design", "specs", "*", "boundary.md"))):
         rel_page = os.path.relpath(page, ROOT).replace(os.sep, "/")

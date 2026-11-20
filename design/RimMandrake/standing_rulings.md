@@ -387,6 +387,11 @@ and 9 of 15 later claims pointed at lines the last fix had just written.
   mod content first, when no mod step needs the machine. It follows the same method (significant, the reviewer fixes,
   one blind reread, flag). The clean/dirty view returns to the Desktop visualizations. Not built yet: the item
   `RIMMANDRAKE_RESTART_QUIET_FILE_SCAN_3580_NEVER_READ` holds it.
+- **A mod's locked bars are the page of every file inside the mod** (his card, 2026-11-19 evening: *"Locked bars are
+  the page"*). The promises are `design/concepts/<Mod>/version/locked_bars.json`, and the tests are the test table
+  rows that decide each bar. A mod with no locked bars reads NO PAGE. A bar with no test, or a red test, reads DIRTY.
+  A bar whose test has not run on these bytes (in-game tests included) reads UNREADABLE. Detail:
+  `design/specs/2026-11-19-clean-means-promises-tested/boundary.md`.
 - **Code with no page reads NO PAGE, not DIRTY** (the Conductor's reading, delegated, told to him 2026-11-19). It gets
   its page when someone next changes it, or when it is on a mod's next-step path. Nobody writes pages for untouched
   code in a sweep. For pipeline machinery, Decision 1 of §A boundary page before pipeline code also says when a page
