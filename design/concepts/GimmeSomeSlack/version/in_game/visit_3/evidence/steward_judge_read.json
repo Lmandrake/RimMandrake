@@ -1,0 +1,21 @@
+{
+  "reader": "rm-detached-bench-rimmandrake-confirm-gimmesomeslack-visit-1795194029 (steward, RIMMANDRAKE_CONFIRM_GIMMESOMESLACK_VISIT_THREE_EXIT_MET); did not make the art or the visit",
+  "why": "sc_four_looks and sc_dense_tangle each name a judge reading in test_table.json 'observes'; visit 3 (as visit 2) ran only their scripted reads. The helper allocator refused a judge subagent (CONDUCTOR N=0), so the steward read the captures itself.",
+  "source": "D:\\ClaudeWork\\scratch\\gss_v3\\shots\\st01-st04.png, st16.png (visit 3's game render of GSS_OWNER_LOOK_20261116, same deployed build sha256:f8936daf...); sheets in screenshots/sheet0.jpg, sheet3.jpg",
+  "sc_four_looks": {
+    "method": "st01-st04 converted to grayscale, renamed look_A..D by a seeded shuffle, the key read only after the verdict",
+    "limit": "each capture keeps its floating station label, which names the look, so the NAMING was not blind; the shuffle also came out in station order. Only 'told apart by eye' is counted.",
+    "told_apart": "YES",
+    "cues": {
+      "Scrapper": "dark cord with regular light tape bands; square junction boxes",
+      "Industrial": "thick plain dark cable, no bands; junction boxes with cable glands",
+      "Modern": "thin light-grey cords; long power strips with plugs at junctions",
+      "Futuristic": "mid-grey cord with a light edge; cross-shaped round connectors with nubs; capsule switch"
+    },
+    "verdict": "PASS"
+  },
+  "sc_dense_tangle": {
+    "read": "each station's 3x3 conduit block (st01-st04, grayscale) and the electric room's block (st16, colour) read as one tangled heap of looped wires with junction pieces in it, not a grid or parallel lines; Modern's heap is the loosest but still a heap with strips in it",
+    "verdict": "PASS"
+  }
+}

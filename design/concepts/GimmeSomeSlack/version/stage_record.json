@@ -2,9 +2,9 @@
   "schema": 1,
   "mod": "GimmeSomeSlack",
   "version": "0.1.0",
-  "stage": "in_game",
-  "stage_label": "In-game acceptance (Stage 6)",
-  "since": "2026-11-20T01:21:20-08:00",
+  "stage": "pre_human",
+  "stage_label": "Walk brief (Stage 7)",
+  "since": "2026-11-20T09:05:01-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -18,7 +18,7 @@
     "visit": 6,
     "total": 6
   },
-  "pre_human_arrivals": 0,
+  "pre_human_arrivals": 1,
   "moves": [
     {
       "from": "offline_build",
@@ -205,6 +205,26 @@
         "by",
         "version",
         "hold"
+      ]
+    },
+    {
+      "from": "in_game",
+      "to": "pre_human",
+      "at": "2026-11-20T09:05:01-08:00",
+      "by": "BENCH",
+      "why": "steward run RIMMANDRAKE_CONFIRM_GIMMESOMESLACK_VISIT_THREE_EXIT_MET: visit 3 exit met, read and confirmed; delegated: evidence-for-ask: steward did the judge reading the driver could not start",
+      "unit": "rm-detached-bench-rimmandrake-confirm-gimmesomeslack-visit-1795194029",
+      "confirmed": {
+        "steward_confirms": "Read visit_3/SUMMARY.md, rows.jsonl (470 rows; 197 checks PASS on last row), strange.jsonl (4: 3 explained, 1 filed RIMMANDRAKE_TRACE_SLACK_FLOWWORKS_TIER_MINIFIED_LOOKUP_ERROR), polish.md. Judge the judge: no 'not met' reasons; sc_walk run-1 FAIL is HARNESS, repaired b346975f10 (waits for cords laid; unlaid at the limit stays FAIL, not weakened), planted FAIL / real PASS recorded, red-seen T_H_PLAYTEST_RUNNER; its one removed test line is a re-wrap. Z_log_budget FAIL on the FlowWorks tier is SITE (FlowWorks RM_PitAccess caller), PASS on tier gimmesomeslack runA/runD. P15 UNMEASURED is an offline decider gap (bars no_hose* decided by T_NO_HOSE at 4-5), filed in cycle 6 as RIMMANDRAKE_GUARD_GSS_NOHOSE_FLEXIBLE_PIPES_CLAUSE_UNMUTATED; deployed build names no hose. No mod fix in the sitting, so no fix reader owed; no shipping-file diff 345366aa49..HEAD. Record gap found: sc_four_looks and sc_dense_tangle name a judge reading no visit ran; steward read st01-04 grayscale and st16: four looks told apart by eye PASS, dense block reads as a tangle PASS (evidence/steward_judge_read.json; naming not blind, labels visible). Verdict: exit met stands; walk save GSS_VISIT3_WALK_20261120.rws."
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "steward_confirms",
+        "exit_met",
+        "build_match"
       ]
     }
   ],
