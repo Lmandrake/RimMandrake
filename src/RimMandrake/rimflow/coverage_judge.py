@@ -1232,12 +1232,23 @@ def reader_prompt(items):
             % (BR.RULE_TEXT, json.dumps(items, ensure_ascii=False, indent=1)))
 
 
+# The judge and its second reader read and never edit (item RIMMANDRAKE_RESUME_WRONG_CHECK_WORKER_WITH_MOD_FIX_EXTENSION:
+# "do not let it edit files"); a gap is the Designer's to mend. Page: design/specs/2026-11-20-coverage-judge-reads-only/
+READ_ONLY_DENY = "Edit,Write,NotebookEdit"
+
+
+def judge_tail(name, schema):
+    """-> the command-line tail a coverage judge or second reader starts with: its model, label, JSON answer and schema,
+    and the editing tools denied."""
+    return ["--model", MODEL, "--name", name, "--output-format", "json", "--json-schema",
+            json.dumps(schema, separators=(",", ":")), "--disallowedTools", READ_ONLY_DENY,
+            "--dangerously-skip-permissions"]
+
+
 def llm_reader(d, repo, unit, charge=True, runner=None):
     """The default second reader: one fresh Opus call that did not judge. -> reader(items) -> [grade] or None."""
     def reader(items):
-        argv = [CLAUDE, "-p", reader_prompt(items), "--model", MODEL, "--name", "COVERAGE SECOND READER %s" % unit,
-                "--output-format", "json", "--json-schema", json.dumps(READER_SCHEMA, separators=(",", ":")),
-                "--dangerously-skip-permissions"]
+        argv = [CLAUDE, "-p", reader_prompt(items)] + judge_tail("COVERAGE SECOND READER %s" % unit, READER_SCHEMA)
         def bill(res):
             # measuring and charging are apart: a call that ran and cannot be measured is charged unmeasured
             if not charge:
@@ -1847,8 +1858,7 @@ def _judge(d, repo, runner, timeout, now, charge, reader, unit):
     env = dict(os.environ, RM_ROLE_UNIT=unit)
 
     def tail_for(schema):
-        return ["--model", MODEL, "--name", "COVERAGE JUDGE %s" % unit, "--output-format", "json",
-                "--json-schema", json.dumps(schema, separators=(",", ":")), "--dangerously-skip-permissions"]
+        return judge_tail("COVERAGE JUDGE %s" % unit, schema)
     tail = tail_for(SCHEMA)
     round_no = len(rounds(st0, d)) + 1
     text = delta_prompt(d, repo, dp, round_no) if dp is not None else prompt(d, repo, ids, prior is not None, round_no)

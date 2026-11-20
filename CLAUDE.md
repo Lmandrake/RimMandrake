@@ -367,6 +367,8 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
     run files that line itself, with the evidence why, before it ends.
   - A fix that needs the live game takes it when it is free (see "The bridge is passed through one file").
   - A run that edits a deciding test records its red run with `maturation.py red-seen` before it closes.
+  - A resume never crosses a blind boundary. A blind judge, the fresh reader of a fix, an examiner, a challenger and
+    the coverage judge always start fresh.
 - Fix tickets with one cause, or in the same files, in one run.
 - A brief that reviews, judges, audits or files findings states three things:
   - the level that is enough;

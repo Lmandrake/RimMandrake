@@ -544,6 +544,11 @@ failure classes came from reviewers, judges and auto-filers with no stopping lev
     back, before it ends; the router files only what they did not.
   - A fix that needs the live game takes it when it is free (§The bridge is passed through one file): any role, a
     judge included.
+  - A resume never crosses a blind boundary (owner, 2026-11-20, about 5:30 AM PST: *"And of course blind judges and
+    others don't inherit the builder's context, or anywhere else the whole point was NOT to inherit the context. I
+    didn't mean that."*). A blind judge, the fresh reader of a fix, an examiner, a challenger and the coverage judge
+    always start fresh; a run that keeps context (a continuation, a holder, the run that records its own red-seen
+    proof) resumes only its own session, never the session of a run whose work it judges.
   - A run that edits a deciding test records its red run with `maturation.py red-seen` before it closes. Measured
     2026-11-20: two fixers (`44124fa343`, `345366aa49`) edited Gimme Some Slack's deciding test file and saw planted
     faults go red without recording it; the certificate then refused 18 of 26 bars on `red_seen`, and the mod sat
