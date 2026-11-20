@@ -1,0 +1,13 @@
+diff --git a/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs b/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs
+index 5dd1b708d7..63dcbc6c2d 100644
+--- a/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs
++++ b/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs
+@@ -4639,7 +4639,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
+             return face - into * DeviceStripBack + x * (StripLeadX * DeviceStripScale) + z * (StripLeadZ * DeviceStripScale);
+         }
+         /// <summary>The device box's one arm, art -X (CordDecal.Ports).</summary>
+-        public const int DeviceBoxPorts = 4;
++        public const int DeviceBoxPorts = 0;
+ 
+         /// <summary>Round 3: under the side-view plug of a Modern cord plugged into a side or the hidden north face of a wall, the cord runs dead
+         /// straight along into for the plug's whole length (head face to boot end), so nothing of a bend shows past the plug's body.</summary>

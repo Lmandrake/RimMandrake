@@ -1,0 +1,28 @@
+{
+ "T_CORE": {
+  "at": "2026-11-20T12:50:37Z",
+  "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py",
+  "file": "src/RimMandrake/Utils/selftest_gimmesomeslack.py",
+  "last": "4597/4598 checks passed",
+  "patch": "diff --git a/src/RimMandrake/GimmeSomeSlack/Source/Core/ProbeRead.cs b/src/RimMandrake/GimmeSomeSlack/Source/Core/ProbeRead.cs\nindex 58b4a3237f..7e08df0b53 100644\n--- a/src/RimMandrake/GimmeSomeSlack/Source/Core/ProbeRead.cs\n+++ b/src/RimMandrake/GimmeSomeSlack/Source/Core/ProbeRead.cs\n@@ -34,6 +34,6 @@ namespace RimMandrake.GimmeSomeSlack.Core\n         /// dirty event marked the cords stale and the next frame's rebuild has not run (<paramref name=\"staleOffscreen\"/>). A\n         /// change no event announced is NOT owed: a probe read must still see that bug (D2_fresh_builder_same, live_flip_fresh.py).</summary>\n         public static bool OwesBuild(bool enabled, int lastPending, bool staleOffscreen) =>\n-            enabled && (lastPending > 0 || staleOffscreen);\n+            enabled && (lastPending > 99999 || staleOffscreen);\n     }\n }\n",
+  "patch_files": [
+   "src/RimMandrake/GimmeSomeSlack/Source/Core/ProbeRead.cs"
+  ],
+  "patch_sha": "253794eb853b5092",
+  "rc": 1,
+  "test_blob": "0c06e38e23803a48d87a43cf71b919091c075b2b"
+ },
+ "T_STUB_JOINS": {
+  "at": "2026-11-20T12:45:10Z",
+  "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --no-export --joins-only",
+  "file": "src/RimMandrake/Utils/selftest_gimmesomeslack.py",
+  "last": "8/9 checks passed (stub joins only)",
+  "patch": "diff --git a/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs b/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs\nindex 5dd1b708d7..63dcbc6c2d 100644\n--- a/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs\n+++ b/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs\n@@ -4639,7 +4639,7 @@ namespace RimMandrake.GimmeSomeSlack.Core\n             return face - into * DeviceStripBack + x * (StripLeadX * DeviceStripScale) + z * (StripLeadZ * DeviceStripScale);\n         }\n         /// <summary>The device box's one arm, art -X (CordDecal.Ports).</summary>\n-        public const int DeviceBoxPorts = 4;\n+        public const int DeviceBoxPorts = 0;\n \n         /// <summary>Round 3: under the side-view plug of a Modern cord plugged into a side or the hidden north face of a wall, the cord runs dead\n         /// straight along into for the plug's whole length (head face to boot end), so nothing of a bend shows past the plug's body.</summary>\n",
+  "patch_files": [
+   "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs"
+  ],
+  "patch_sha": "0b073eaaa42e5284",
+  "rc": 1,
+  "test_blob": "0c06e38e23803a48d87a43cf71b919091c075b2b"
+ }
+}

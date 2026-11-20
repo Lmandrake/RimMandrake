@@ -1,0 +1,12 @@
+diff --git a/src/RimMandrake/GimmeSomeSlack/Source/Core/ProbeRead.cs b/src/RimMandrake/GimmeSomeSlack/Source/Core/ProbeRead.cs
+index 58b4a3237f..7e08df0b53 100644
+--- a/src/RimMandrake/GimmeSomeSlack/Source/Core/ProbeRead.cs
++++ b/src/RimMandrake/GimmeSomeSlack/Source/Core/ProbeRead.cs
+@@ -34,6 +34,6 @@ namespace RimMandrake.GimmeSomeSlack.Core
+         /// dirty event marked the cords stale and the next frame's rebuild has not run (<paramref name="staleOffscreen"/>). A
+         /// change no event announced is NOT owed: a probe read must still see that bug (D2_fresh_builder_same, live_flip_fresh.py).</summary>
+         public static bool OwesBuild(bool enabled, int lastPending, bool staleOffscreen) =>
+-            enabled && (lastPending > 0 || staleOffscreen);
++            enabled && (lastPending > 99999 || staleOffscreen);
+     }
+ }
