@@ -701,10 +701,6 @@ Global settings change every station at once, so they are never faked side by si
 | `gss.sparksOnlyOverlay` | False | sparks only while the power overlay is open | 13, 29 |
 | `gss.maxSparkingEnds` | 24 | most sparking ends per map | no station (needs 24+ live ends on one map) |
 | `gss.highlight` | True | selecting a powered building highlights its net's cords | 23 |
-| `gss.sway` | True | hanging cords sway in the wind | 12 (unpause) |
-| `gss.swayAmplitude` | 1.0 | cord sway strength | 12 |
-| `gss.swayMode` | CPU | cord sway on the CPU or the plant wind shader | 12 |
-| `gss.floorRipple` | True | outdoor floor cords ripple | 1-4 (unpause) |
 | `gss.excludedConduits` | [] | which conduits become cords (a list: Mod Settings window only) | 24, 25 |
 | `gss.lod` | True | far zoom: one thin strand, no pieces | any: zoom out |
 | `gss.debugDraw` | False | draw the node graph | any |
@@ -717,6 +713,7 @@ Global settings change every station at once, so they are never faked side by si
 | `aerial.keepWiresOnGravship` | True | wires on a launched gravship stay strung | no station (needs a gravship launch) |
 | `aerial.sway` | Auto | wire sway: Auto / CPU (always) / Off | 6, 21 (unpause) |
 | `aerial.swayStrength` | 1.0 | wire sway strength | 6, 21 |
+| `aerial.swayLook` | Rope | how pole wires swing: Pendulum, Rope or Gust | 6, 21 |
 | `aerial.explosionsCut` | True | explosions cut wires | 13 |
 | `aerial.kineticSway` | True | Kinetic Arms push waves swing wires, never cut | no station (needs a Kinetic Arms push wave) |
 | `aerial.shockReach` | All | live lines shock whoever crosses them: All (floor cord ends too) / Only downed lines / None | 29 |
@@ -888,10 +885,12 @@ Owner 2026-10-05: *"reduce the number of north Star verifications and verificati
   }
  },
  "notes": [
-  "swept 3 hostile/non-colonist pawn(s) off the review map"
+  "swept 2 hostile/non-colonist pawn(s) off the review map"
  ],
  "pawns_in_region": [
-  "Human596"
+  "Human1082",
+  "Human1085",
+  "Human1087"
  ],
  "peaceful": true,
  "station_roofs": true,
@@ -921,11 +920,11 @@ Owner 2026-10-05: *"reduce the number of north Star verifications and verificati
   "3": {
    "runs": [
     {
-     "PowerConduit_Modern_Orange": 16,
+     "PowerConduit_Modern_Blue": 16,
      "PowerSwitch_Modern": 1
     },
     {
-     "PowerConduit_Modern_Orange": 2
+     "PowerConduit_Modern_Green": 2
     }
    ]
   },
@@ -952,7 +951,7 @@ Owner 2026-10-05: *"reduce the number of north Star verifications and verificati
      "PowerConduit_Modern_Mix": 18
     },
     {
-     "PowerConduit_Modern_Blue": 12
+     "PowerConduit_Modern_Yellow": 12
     },
     {
      "PowerConduit_Modern_Orange": 12
@@ -1231,8 +1230,8 @@ Owner 2026-10-05: *"reduce the number of north Star verifications and verificati
      "WaterproofConduit_Futuristic": 6
     },
     {
-     "PowerConduit_Modern_Yellow": 7,
-     "WaterproofConduit_Modern_Yellow": 6
+     "PowerConduit_Modern_Green": 7,
+     "WaterproofConduit_Modern_Green": 6
     },
     {
      "PowerConduit_Industrial": 7,
@@ -1249,6 +1248,6 @@ Owner 2026-10-05: *"reduce the number of north Star verifications and verificati
   }
  },
  "styled_refused": [],
- "wall_s": 56.9
+ "wall_s": 58.1
 }
 ```

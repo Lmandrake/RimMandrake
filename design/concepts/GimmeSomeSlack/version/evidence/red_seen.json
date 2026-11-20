@@ -12,6 +12,19 @@
   "rc": 1,
   "test_blob": "0c06e38e23803a48d87a43cf71b919091c075b2b"
  },
+ "T_H_PLAYTEST_RUNNER": {
+  "at": "2026-11-20T15:51:20Z",
+  "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_playtest_runner.py",
+  "file": "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_playtest_runner.py",
+  "last": "RESUME: save_reload_b read the saved game (NOT_RELOADED); retry in 5 s",
+  "patch": "diff --git a/src/RimMandrake/GimmeSomeSlack/northstar/gss_playtest_runner.py b/src/RimMandrake/GimmeSomeSlack/northstar/gss_playtest_runner.py\nindex fe7deca0c3..e409318705 100644\n--- a/src/RimMandrake/GimmeSomeSlack/northstar/gss_playtest_runner.py\n+++ b/src/RimMandrake/GimmeSomeSlack/northstar/gss_playtest_runner.py\n@@ -180,7 +180,7 @@ def wait_cords_laid(poll, limit_s=600.0, clock=time.monotonic, sleep=time.sleep,\n         n += 1\n         last = m if isinstance(m, dict) else {}\n         pend, builds = last.get(\"pending\"), last.get(\"builds\")\n-        if isinstance(pend, int) and isinstance(builds, int) and pend == 0 and builds > 0:\n+        if True:   # PLANTED: every poll reads laid\n             return {\"laid\": True, \"polls\": n, \"seconds\": round(clock() - t0, 2), \"last\": last}\n         left = remaining()\n         if left <= 0:\n",
+  "patch_files": [
+   "src/RimMandrake/GimmeSomeSlack/northstar/gss_playtest_runner.py"
+  ],
+  "patch_sha": "66d950162f08850a",
+  "rc": 1,
+  "test_blob": "130d8579e10c3a3de37bae17294cbd7944651256"
+ },
  "T_STUB_JOINS": {
   "at": "2026-11-20T12:45:10Z",
   "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --no-export --joins-only",

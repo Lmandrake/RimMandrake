@@ -1,0 +1,13 @@
+diff --git a/src/RimMandrake/GimmeSomeSlack/northstar/gss_playtest_runner.py b/src/RimMandrake/GimmeSomeSlack/northstar/gss_playtest_runner.py
+index fe7deca0c3..e409318705 100644
+--- a/src/RimMandrake/GimmeSomeSlack/northstar/gss_playtest_runner.py
++++ b/src/RimMandrake/GimmeSomeSlack/northstar/gss_playtest_runner.py
+@@ -180,7 +180,7 @@ def wait_cords_laid(poll, limit_s=600.0, clock=time.monotonic, sleep=time.sleep,
+         n += 1
+         last = m if isinstance(m, dict) else {}
+         pend, builds = last.get("pending"), last.get("builds")
+-        if isinstance(pend, int) and isinstance(builds, int) and pend == 0 and builds > 0:
++        if True:   # PLANTED: every poll reads laid
+             return {"laid": True, "polls": n, "seconds": round(clock() - t0, 2), "last": last}
+         left = remaining()
+         if left <= 0:
