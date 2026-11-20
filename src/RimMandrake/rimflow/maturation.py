@@ -2866,8 +2866,8 @@ def read_exit(root, mod, n, tt=None, game_only_bars=None):
     out["state"] = "not_met" if why else "met"
     if not why:
         pol = out["checks"].get("lane1_fail_left_as_polish") or {}
-        why.append("the block says exit_met true and every file check agrees (%d offline bars, %d deciders rerun PASS)%s%s"
-                   % (len(bars), sum(len(x[1]) for x in bars), "; lane-1 FAIL left as Polish, not part of passing (the "
+        why.append("the block says exit_met %s and every file check agrees (%d offline bars, %d deciders rerun PASS)%s%s"
+                   % ("true" if blk["exit_met"] else "false (the owed judge, not counted on a game-only move)", len(bars), sum(len(x[1]) for x in bars), "; lane-1 FAIL left as Polish, not part of passing (the "
                       "steward confirms the move): %s" % ", ".join("%s (%s)" % kv for kv in sorted(pol.items()))
                       if pol else "", "; lane-1 not_kernel UNSETTLED row(s) deferred to Stage 6, owed there: %s" % ", ".join(
                           deferred[:8]) if deferred else ""))

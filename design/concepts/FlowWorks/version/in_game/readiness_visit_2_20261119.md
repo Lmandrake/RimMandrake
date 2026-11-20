@@ -1,10 +1,12 @@
 # Is the pipeline ready for FlowWorks 0.1.0's move to Stage 6 (in-game visit 2) by the game-only road?
 
-**Verdict: NOT READY** (2026-11-19, about 8:00 PM PST; detached helper on
-`RIMMANDRAKE_CLEAR_FLOWWORKS_PAPERWORK_TO_GAME_ONLY_ROAD`). One BLOCKS row is open: the move itself is refused on
-`exit_met`. The certificate is clean: before tonight's rerun it read `REFUSED` on 23 of 55 bars (stale build stamps only);
-after `certificate FlowWorks --run` (12 deciders rerun in 1506 s, 110 kept green) it reads `OK ... certified: 55 bars'
-offline deciders registered, run on this build, green and seen red (81 grandfathered)` [measured, 8:04 PM PST].
+**Verdict: READY** (refreshed 2026-11-19, 8:31 PM PST, detached helper on
+`RIMMANDRAKE_UNBLOCK_GAME_ONLY_ADVANCE_AT_BLIND_EXIT`). No BLOCKS row is open. Row 1 cleared by the reader change
+07ba8608f8 (the Conductor's route b): a dry `evaluate` of the game-only move reads `ok True`, 8 clauses passed, 0 refused,
+hand step `steward_confirms` only [measured 8:31 PM]. The certificate still passes in that evaluate (`judge_certificate`
+clause) [measured 8:31 PM]; tonight's run read 55 of 55 bars certified [measured 8:04 PM]. Two launch gates are not
+clean, and neither is a ticket: the game's FlowWorks copy differs from the repo, and the bridge companion now reads
+STALE (both in the next table). `launch_mod` refuses the visit until each is fixed, which is the correct refusal.
 
 The rule is `design/RimMandrake/standing_rulings.md` §No mod runs forward on a broken pipeline. The format follows
 `D:\ClaudeWork\rimmandrake\conductor\pipeline_lanes_20261119.md` and the 4:06 PM refresh
@@ -33,14 +35,14 @@ today, not again by me.
 | One mod at a time (`max_live` 1) | GimmeSomeSlack in-game visit 2 is live (`rm-detached-bench-rimmandrake-drive-gimmesomeslack-in-game-1795143532`, 50 min at 7:49 PM) [measured: `maturation_dispatch.py status`]. FlowWorks launches only after it ends. | a wait |
 | This helper counts as live on FlowWorks | `maturation_dispatch.py status`: "FlowWorks wait live waiting on rm-detached-bench-rimmandrake-clear-flowworks-paperwork-to-…" [measured]. Its title names the mod (finding 1 of the 4:06 PM refresh, not filed). It ends when this run ends. | a wait, not a ticket |
 | The game's FlowWorks copy | `maturation.mod_deployed(FlowWorks)`: "differs from the repo (~ Assemblies/RimMandrakeFlowWorks.dll, ~ .srchash)" [measured]. `launch_mod` refuses the visit until it is deployed. The refusal is correct. | Conductor act, with the game down (GSS holds the game now): `python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod FlowWorks --apply` |
-| Bridge companion | `maturation.companion_current()`: FRESH, source hash f38860ed43de [measured] | none |
+| Bridge companion | `maturation.companion_current()`: STALE at 8:26 PM, embedded source hash f38860ed43de, the companion sources now hash 209877e3ebed [measured]. It read FRESH at 8:00 PM, so a commit to the companion sources came in between. `launch_mod` checks the companion. | Conductor act or the tick's own rebuild, with the game down [guess ~60% that the tick rebuilds it by itself] |
 | Driver spend cap | `ingame_cap_usd` 30, `ingame_model` opus, `ingame_auto_runs_per_visit` 1 [measured: `maturation_dispatch.json`]. 32 Stage-6 tests; visit 1 ran its 31 [measured: visit_1/SUMMARY.md]. A stop at the cap reads `visit_unfinished`, and the Conductor relaunches it with `--resume` [from the 4:06 PM list]. | Conductor decision, no ticket |
 
 ## Components and open tickets
 
 | # | Component | Looked? | Open ticket and what it can do | Class | Item |
 |---|---|---|---|---|---|
-| 1 | The advance (`maturation.evaluate`, blind_challenge -> in_game with `--game-only`) | yes [measured: a dry `evaluate`, writes nothing] | blind_challenge -> in_game is the FORWARD step too, so `exit_met` applies. Cycle 4's Exit block says `exit_met: false` (it fixed four Problems, so a fifth judge is owed), and three lane-1 game-side rows name offline bars. Only his OWNER event with words (`--owner-said OWNER:<tsn>`) overrides it. A Conductor `--per-ruling` event carries no words. Clauses order, game_only, by, version, hold and steward_confirms PASS. | **BLOCKS** (stuck stage: the move is refused) | `RIMMANDRAKE_UNBLOCK_GAME_ONLY_ADVANCE_AT_BLIND_EXIT` (acceptance red: `src/RimMandrake/rimflow/acceptance/game_only_blind_exit_accept.py`) |
+| 1 | The advance (`maturation.evaluate`, blind_challenge -> in_game with `--game-only`) | yes [measured 8:31 PM: a dry `evaluate`, writes nothing] | none. `RIMMANDRAKE_UNBLOCK_GAME_ONLY_ADVANCE_AT_BLIND_EXIT` landed at 07ba8608f8: on a game-only move whose `game_only` clause passes, `exit_met` does not count the new judge owed for cycle 4's four FIXED Problems, nor the SHEET, THIRST and DRILL rows (each bar is carried by a named game-only item). `read_exit` reads cycle 4 `met` that way. An unfixed Problem, an uncarried offline row, and every other move still refuse (selftest_maturation_game_only_exit.py; each guard's planted fault seen red) | clean | none |
 | 2 | Certificate before the visit (`judge_certificate`, `--to in_game`) | yes [measured] | none: `certificate FlowWorks --to in_game` rc 0, 55 of 55 bars certified [measured 8:04 PM]. A later commit to a decider's inputs makes its stamp stale again; the tick reruns a stale stamp at zero tokens [from the 4:06 PM list]. | clean | none |
 | 3 | Certificate: empty-game check on in-game scenes | yes [measured] | `scene_hole_prison` was not examined ("not in STAGE3_SCENES"). FIXED tonight: 65926ef481 adds it, and its selftest was red first and green after. `scene_empty_game.py --json` reads `vacuous: []` over all 18 scenes [measured]. 4 harnesses (live_session, river_scenes_walk, suspension_bridge_proof, validation_v2) have no empty-game adapter. The certificate reads them as DID NOT RUN and does not refuse. I did not read those 4 files. | RARE (a vacuous PASS needs a scene that stages nothing and reads PASS; visit 1's rows from them were real readings) | none |
 | 4 | Tick, control store, switch | yes [measured: `./pipe show` rev 74: ALL ON, FlowWorks ON] | `RIMMANDRAKE_FIX_SLICE_REVIEW_TWENTY_FINDINGS_QUEUE_FIRST` (state done, not closed): page and grant findings | NOT ON PATH [from the GSS lists] | as named |
@@ -79,11 +81,11 @@ Other open mod tickets the visit will meet (they are not pipeline tickets and do
 - Whether visit 1 stopped at its spend cap. The summary lists its 31 tests done, and I found no cap line [guess ~75%
   that the cap fits 32].
 
-## What would turn this READY
+## What is left before the visit runs (no ticket)
 
-1. Row 1: the Conductor picks a route on `RIMMANDRAKE_UNBLOCK_GAME_ONLY_ADVANCE_AT_BLIND_EXIT`: (a) his words as an
-   OWNER event (`--owner-said OWNER:<tsn>`), which needs no code; or (b) a reader change. Route (b) loosens an exit
-   gate, so it is the Conductor's mindful act, and its acceptance test is written.
-2. Nothing more for the certificate; rerun `certificate FlowWorks --run --resume` if a decider's inputs change first.
-3. The launch waits clear by themselves (the GSS visit ends; this helper ends). Then the Conductor deploys FlowWorks
-   with the game down.
+1. The Conductor runs the advance (the command is in the item's close note).
+2. The launch waits clear by themselves: the GimmeSomeSlack visit ends (live 86 min at 8:26 PM [measured]), and this
+   helper ends.
+3. With the game down, deploy FlowWorks (`python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod FlowWorks --apply`)
+   and bring the companion to FRESH.
+4. Rerun `certificate FlowWorks --run --resume` only if a decider's inputs change first.

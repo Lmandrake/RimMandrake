@@ -97,6 +97,7 @@ def t_game_only_exit_skips_owed_judge_and_named_rows():
     check(ex["checks"].get("lane1_deferred_to_game_only_items") == {"R1": ["G1"], "R2": ["G2"]},
           "the reading names each row's item", ex["checks"])
     check(any("game-only move" in w for w in ex["why"]), "its why says it is the game-only reading", ex["why"])
+    check(not any("exit_met true" in w for w in ex["why"]), "its why never says the judge's false was true", ex["why"])
     ex = read(make("judge_true", judge_true=True))
     check(ex["state"] == "met" and "judge_owed" not in ex["checks"], "a judge's true with a FIXED Problem: met, no "
           "owed judge", ex)
