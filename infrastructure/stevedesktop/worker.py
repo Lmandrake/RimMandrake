@@ -336,6 +336,57 @@ def heal_dirty(logdir):
         return 0, "heal_dirty: %s" % e
 
 
+def boot_time():
+    """-> epoch seconds of this (WSL) boot, from /proc/stat btime; None if unreadable."""
+    try:
+        with open("/proc/stat") as f:
+            for ln in f:
+                if ln.startswith("btime "):
+                    return float(ln.split()[1])
+    except (OSError, ValueError, IndexError):
+        pass
+    return None
+
+
+def clear_boot_stale_index_lock(logdir):
+    """RIMMANDRAKE_FIX_STEVE_WORKER_STALE_INDEX_LOCK_BEFORE_PULL: a reboot mid-git left .git/index.lock in the runner
+    clone, and the next job's `pull --ff-only` refused SYNC and paused the lane (J20261120T213808Z-8aa00b).
+    Runner clone only: a lock OLDER THAN THIS BOOT is removed, since no process that held it survived the reboot.
+    A lock from this boot is left alone (a live git may hold it); the pull then refuses as before.
+    -> message ('' when nothing was done). Never raises; a removal is recorded in logdir/index_lock_cleared.txt."""
+    if not runner_clone_only():
+        return ""
+    lock = os.path.join(CLONE, ".git", "index.lock")
+    try:
+        mtime = os.path.getmtime(lock)
+    except OSError:
+        return ""
+    bt = boot_time()
+    if bt is None or mtime >= bt:
+        return ""
+    try:
+        os.remove(lock)
+        msg = "removed .git/index.lock left from before this boot (lock %s, boot %s)" % (
+            time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(mtime)), time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(bt)))
+    except OSError as e:
+        return "pre-boot index.lock could not be removed: %s" % e
+    try:
+        if logdir:
+            os.makedirs(logdir, exist_ok=True)
+            write_text(os.path.join(logdir, "index_lock_cleared.txt"), msg)
+    except OSError:
+        pass
+    return msg
+
+
+def ready_for_pull(d):
+    """The start's steps before `pull --ff-only`, each of which once refused a job SYNC: a leftover pin, dirt on
+    main, and a reboot's leftover index.lock."""
+    unpin(d)    # a crashed attempt can leave the clone on its detached pin: pull needs main
+    heal_dirty(d)   # dirt left on main by the last attempt would make the pull refuse SYNC
+    clear_boot_stale_index_lock(d)  # a reboot mid-git leaves index.lock: pull refuses 'File exists'
+
+
 def git(*args):
     r = subprocess.run(["git", "-C", CLONE] + list(args), capture_output=True, text=True, timeout=300)
     return r.returncode, (r.stdout + r.stderr).strip()
@@ -443,8 +494,7 @@ def cmd_start(retry):
         S.dump(job, os.path.join(d, "job.json"))
         write_text(p("jobs", job["id"]), aid)
 
-        unpin(d)    # a crashed attempt can leave the clone on its detached pin: pull needs main
-        heal_dirty(d)   # dirt left on main by the last attempt would make the pull refuse SYNC
+        ready_for_pull(d)
         if os.environ.get("TESTQ_SKIP_PULL") != "1":
             rc, msg = git("pull", "-q", "--ff-only", "origin", "main")
             if rc != 0:
