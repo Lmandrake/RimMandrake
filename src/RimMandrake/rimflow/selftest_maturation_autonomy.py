@@ -700,6 +700,10 @@ def exam_gate_checks(root):
     ok("designer_stage.py check" not in brief and "coverage_judge.py status" in brief,
        "exam gate: the retake brief's done clause is the exam gate a steward can meet (coverage_judge.py status), "
        "never `designer_stage.py check` (an open run's result.json)")
+    spec = A.advance_checks(r) if r.get("aut") else None
+    ok(spec == "## launch-checks\nmust-pass: python3 src/RimMandrake/rimflow/designer_stage.py open design/concepts/P "
+       "--run launch-check --preview\n", "exam gate: the retake steward's item is filed with the Designer open preview "
+       "as its launch check (RIMMANDRAKE_PREVIEW_THREE_GATES_READ_ONLY_FOR_LAUNCH_CHECKS) (read %r)" % (spec,))
     name = A.item_name(dict(r, mod="Pyrelands"), set()) if r.get("aut") else ""
     ok(name == "RIMMANDRAKE_RETAKE_PYRELANDS_EXAM_FAILING_ITS_GATE", "exam gate: its item is named for it (read %s)" %
        name)

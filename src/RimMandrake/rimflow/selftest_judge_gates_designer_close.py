@@ -318,6 +318,18 @@ def t_gate_preview_blocks_are_one_must_pass():
           CJ.WOULD_JUDGE_EXIT.get("something_new", 126) == 126 and CJ.WOULD_JUDGE_EXIT["judge"] == 0)
 
 
+def t_exam_retake_steward_carries_the_open_gate():
+    import maturation_autonomy as MA
+    got = crash_or(MA.advance_checks, {"steward_kind": "exam_retake", "mod": "Foo", "stage": "designer"})
+    check("exam-retake-steward-carries-the-open-gate: the exam_retake row's block is the Designer open preview",
+          got == LC.block_for("designer_open", mod="Foo") and [c["kind"] for c in LC.parse(got)] == ["must-pass"], got)
+    ready = crash_or(MA.advance_checks, {"steward_kind": "ready", "mod": "Foo", "stage": "offline_build"})
+    route = crash_or(MA.advance_checks, {"steward_kind": "exit_not_met", "mod": "Foo", "stage": "in_game"})
+    check("exam-retake-steward-carries-the-open-gate: a ready row keeps its advance block, a routing row gets none",
+          isinstance(ready, str) and "maturation.py gate Foo --to blind_challenge" in ready and route is None,
+          (ready, route))
+
+
 def guarded(fn, tmp):
     """Run one temp-dir test; a crash is that test's failure, never the end of the run."""
     sub = tempfile.mkdtemp(dir=tmp)
@@ -348,6 +360,7 @@ def main():
         guarded(t_stale_refusal_counts_no_strike, tmp)
         t_experience_gap_naming_a_def_word_blocks()
         t_gate_preview_blocks_are_one_must_pass()
+        t_exam_retake_steward_carries_the_open_gate()
     finally:
         DS.done_items, DS.closed_items = saved
     print("%s: %d failure(s)" % ("FAIL" if FAILS else "PASS", len(FAILS)))

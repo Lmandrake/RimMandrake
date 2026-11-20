@@ -4,7 +4,8 @@ Code: `src/RimMandrake/rimflow/designer_stage.py` (`_ids`, `scene_errors`, `ask_
 `closed_items`, `closed_blocker`, `lift_closed_block`, `unblock_closed`, `open_preview`, `refusals_since_loop`),
 `src/RimMandrake/rimflow/coverage_judge.py` (`is_refusal`, `moved_inputs`, `_judge`, `stop_reason`, `look_balance`,
 `plan`, `WOULD_JUDGE_EXIT`), `src/RimMandrake/rimflow/bar_rule.py` (`_TUNING`) and
-`src/RimMandrake/rimflow/launch_checks.py` (`block_for`, `GATE_PREVIEWS`). Written 2026-11-19 by the lane
+`src/RimMandrake/rimflow/launch_checks.py` (`block_for`, `GATE_PREVIEWS`), with the one steward the code files for
+these gates (`src/RimMandrake/rimflow/maturation_autonomy.py` `advance_checks`, the `exam_retake` row). Written 2026-11-19 by the lane
 `RIMMANDRAKE_FIX_JUDGE_GATES_AND_DESIGNER_CLOSE_CRASHES` for its items `RIMMANDRAKE_REFUSE_MALFORMED_IDS_CLOSE_RUN_CRASHES_INSTEAD`,
 `RIMMANDRAKE_UNBLOCK_CONCEPTS_WHOSE_BLOCKER_CLOSED_DAYS_AGO`, `RIMMANDRAKE_PREVIEW_THREE_GATES_READ_ONLY_FOR_LAUNCH_CHECKS`,
 `RIMMANDRAKE_REVALIDATE_INPUTS_BEFORE_REFUSAL_STALE_THIRD_STRIKE` and `RIMMANDRAKE_SPARE_EXPERIENCE_GAPS_FROM_BAR_WORD_DETECTOR`.
@@ -65,5 +66,9 @@ these rules; the rest of these files has other pages or none.
   `block_for("certify", mod=..., owner_event="OWNER:<tsn>")` return a block that `parse` reads as one must-pass. A
   missing or malformed mod or event raises ValueError. A coverage plan value that `WOULD_JUDGE_EXIT` does not name
   exits 126 (could not look), never 0 or 1.
+- **exam-retake-steward-carries-the-open-gate.** `maturation_autonomy.advance_checks` gives an `exam_retake` steward
+  row exactly `block_for("designer_open", mod=<its mod>)`, so a retake on a concept the Designer gate refuses (blocked,
+  parked, stopped) never launches. A `ready` row keeps its `advance` block; a routing steward (`exit_not_met`) gets
+  none.
 
 Later lists beside this page: `polish.md`.

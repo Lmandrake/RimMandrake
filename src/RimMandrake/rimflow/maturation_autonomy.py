@@ -1614,11 +1614,16 @@ ADVANCE_KINDS = ("ready",)     # a steward that only advances; designer_locked's
 
 
 def advance_checks(row):
-    """-> the `## launch-checks` block for a steward item that advances the mod one stage, or None."""
+    """-> the `## launch-checks` block for a steward item the code files that a gate can refuse, or None: an advance
+    re-reads `maturation.py gate`; an exam retake re-reads the Designer's own open gate (`designer_stage.py open
+    --preview`), so a retake on a concept that is blocked, parked or stopped never launches
+    (RIMMANDRAKE_PREVIEW_THREE_GATES_READ_ONLY_FOR_LAUNCH_CHECKS)."""
+    import launch_checks
+    if row.get("steward_kind") == "exam_retake":
+        return launch_checks.block_for("designer_open", mod=row["mod"])
     stage = row.get("stage")
     if row.get("steward_kind") not in ADVANCE_KINDS or stage not in M.WORDS or M.WORDS.index(stage) + 1 >= len(M.WORDS):
         return None
-    import launch_checks
     return launch_checks.block_for("advance", mod=row["mod"], to=M.WORDS[M.WORDS.index(stage) + 1])
 
 
