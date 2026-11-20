@@ -38,8 +38,11 @@ policy."*).
   unknown, one of his five acts, a north-star bar, files held by another live run, a verdict that must stay
   independent, assigned work that would not finish). The ticket says which. A failed check is classed first (the mod,
   the check or the scene is wrong). A wrong check or scene is repaired in the same sitting, seen FAIL on a planted
-  fault and PASS on the real build, or set aside with one polish line when no bar needs it. It never sends the mod
-  back, and neither "independent verdict" nor "work would not finish" excuses its repair.
+  fault and PASS on the real build, or removed from the test table when no bar needs it (one polish line records the
+  removal). It never sends the mod back, and neither "independent verdict" nor "work would not finish" excuses its
+  repair. A mod fault the judge or driver can fix is fixed in the sitting with a before/after test, and one fresh
+  reader checks that fix once; only a fault it could not fix goes down the road back, with the evidence why. A fix
+  that needs the live game takes it when it is free (`rimflow bridge take --idle-ok`).
 - The pipeline never "blesses" a small change (owner, 2026-11-05). For a small change, the agent does a quick manual
   validation on the spot. Then the agent closes the item with that evidence. Never queue a small change for a Judge
   (`standing_rulings.md`).

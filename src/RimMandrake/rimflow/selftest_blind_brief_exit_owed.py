@@ -2,9 +2,10 @@
 """selftest: the blind judge's brief states the same exit the reader enforces
 (item RIMMANDRAKE_ALIGN_BLIND_BRIEF_EXIT_WITH_JUDGE_OWED_READER).
 
-The reader (blind exit, RIMMANDRAKE_SEND_FIXES_TO_NEW_BLIND_JUDGE) never passes a cycle whose own Problems were FIXED:
-"send it back to just before Stage 4 again for a new blind judgement pass". ExplosiveKnockback cycle 3's judge followed
-the brief's older text ("A Problem FIXED red-first is closed") and wrote exit_met true against that reader.
+Since the owner's ruling of 2026-11-20 ("I agree with your blind judge -> fresh reader argument."; item
+RIMMANDRAKE_RESUME_WRONG_CHECK_WORKER_WITH_MOD_FIX_EXTENSION), a cycle whose judge fixed the mod owes ONE fresh reader
+of each fix, never a whole new blind cycle; the judge writes exit_met true and the reader (read_exit, review_sound)
+waits for that review. ExplosiveKnockback cycle 3 showed what a brief that disagrees with its reader costs.
 """
 import os
 import sys
@@ -21,12 +22,12 @@ text = got[0] if isinstance(got, tuple) else got
 exit_part = text[text.find("## The exit, and who reads it"):]
 if "## The exit, and who reads it" not in text:
     fails.append("blind brief has no exit section")
-if "A Problem FIXED red-first is closed." in exit_part:
-    fails.append("blind brief still says a FIXED Problem closes the exit")
-if "new blind judge is owed" not in exit_part:
-    fails.append("blind brief does not say a cycle's own fixes owe a new blind judge")
-if "exit_met: false" not in exit_part:
-    fails.append("blind brief does not tell the judge to write exit_met: false when it fixed a Problem")
+if "new blind judge is owed" in exit_part:
+    fails.append("blind brief still says a cycle's own fixes owe a new blind judge")
+if "one fresh reader" not in exit_part:
+    fails.append("blind brief does not say a mod fix owes one fresh reader")
+if "exit_met: true when that holds, also when you fixed the mod" not in " ".join(exit_part.split()):
+    fails.append("blind brief does not tell the judge to write exit_met: true when it fixed the mod")
 
 if fails:
     print("FAIL selftest_blind_brief_exit_owed: %d" % len(fails))

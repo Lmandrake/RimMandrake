@@ -1462,15 +1462,16 @@ def blind_main():
             f.write(tt_saved)
         # a fix shown as a list of runs (Pyrelands cycle 1 wrote it so); a lane-1 FAIL cleared by lane 1 after the fixes
         runs = dict(red=[{"cmd": "a", "rc": 1}, {"cmd": "b", "rc": 1}], green=[{"cmd": "a", "rc": 0}, {"cmd": "b", "rc": 0}])
-        # RIMMANDRAKE_SEND_FIXES_TO_NEW_BLIND_JUDGE: a cycle whose Problems were FIXED owes a new judge, never met
+        # a cycle whose mod Problems were FIXED owes one fresh reader of each fix, never a new blind cycle (owner,
+        # 2026-11-20: "I agree with your blind judge -> fresh reader argument."); not met until the reader reads
         for kw, what in ((dict(fix_runs=runs), "a FIXED Problem shown red then green as lists of runs"),
                          (dict(fixed=True), "a FIXED Problem shown red then green")):
             write_cycle(root, "FlowWorks", 1, **kw)
             g = M.blind_facts(root, "FlowWorks")
             ex = g.get("exit") or {}
-            ok(ex.get("state") == "not_met" and ex.get("checks", {}).get("judge_owed") is True
-               and "new blind judge is owed" in " ".join(ex.get("why") or []) and g.get("owed") == "exit not met",
-               "%s: a new blind judge is owed, not met (%s)" % (what, (ex.get("why") or ["-"])[0][:100]))
+            ok(ex.get("state") == "not_met" and ex.get("checks", {}).get("fix_reader_owed")
+               and "one fresh reader is owed" in " ".join(ex.get("why") or []) and g.get("owed") == "exit not met",
+               "%s: one fresh reader of the fix is owed, not met (%s)" % (what, (ex.get("why") or ["-"])[0][:100]))
         # RIMMANDRAKE_DEFER_BLIND_EXIT_STAGE_SIX_ROWS_NEVER_OFFLINE's rows: one bar proving live, one offline
         fw_tt = json.load(open(os.path.join(root, "design/concepts/FlowWorks/version/test_table.json")))
         live_bar = next(b["id"] for b in fw_tt["bars"] if str(b.get("proves_at")) not in M.OFFLINE_PROVES)
@@ -1827,11 +1828,13 @@ def ingame_main():
                                                "diagnose it by experiment", "Never run `maturation.py advance`")),
             "the brief names the skeleton, the machine-checkable exit block, diagnosis in the sitting, no advance")
         chk(lambda: M.INGAME_DEFAULT[:50] in text[0], "no stage-6 decision written: the standing default")
-        chk(lambda: all(w not in text[0] for w in ("supersedes the FAIL", "fix in the sitting", "fixes made in the sitting"))
-            and all(w in text[0] for w in ("road back", "a new visit reruns", "the row stays FAIL")),
-            "brief and exit reader agree on a FAIL: no fix-and-rerun in the sitting (read_ingame_exit refuses an "
-            "earlier FAIL and rows from two builds); the FAIL is filed, goes down its road back, a new visit reruns it "
-            "(RIMMANDRAKE_FIX_MATURATION_REVIEW_FINDINGS_SIX_PREDATE_SCOPE point 5)")
+        chk(lambda: all(w not in text[0] for w in ("supersedes the FAIL", "Do not fix the mod in the sitting"))
+            and all(w in " ".join(text[0].split()) for w in (
+                "fix it in the sitting", "re-run EVERY check on the fixed build", "one fresh reader", "road back",
+                "a new visit reruns", "the row stays FAIL")),
+            "brief and exit reader agree on a FAIL: a mod fault the driver can fix is fixed in the sitting, every check "
+            "re-run on the fixed build, one fresh reader of the fix (owner, 2026-11-20); one it cannot fix stays FAIL, "
+            "goes down its road back, a new visit reruns it")
         t2 = json.loads(json.dumps(tt))
         t2["tests"][live6[0]]["testq"] = {"chain": "selftest"}
         ttp = os.path.join(root, "design/concepts/Pyrelands/version/test_table.json")

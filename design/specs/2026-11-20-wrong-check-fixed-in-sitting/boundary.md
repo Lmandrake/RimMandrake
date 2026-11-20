@@ -1,6 +1,9 @@
 # BOUNDARY: a wrong check is repaired or set aside in the sitting (maturation.py read_ingame_exit, read_exit, the stage briefs), Design Version 0.1.0
 
-Code: `src/RimMandrake/rimflow/maturation.py` and `src/RimMandrake/rimflow/maturation_autonomy.py`. **This page covers
+Code: `src/RimMandrake/rimflow/maturation.py` and `src/RimMandrake/rimflow/maturation_autonomy.py`. Owner rulings
+2026-11-20: the first part, and the follow-up of item `RIMMANDRAKE_RESUME_WRONG_CHECK_WORKER_WITH_MOD_FIX_EXTENSION`
+(a needless check is removed; a mod fault the judge or driver can fix is fixed in the sitting, with one fresh reader of
+the fix). **This page covers
 only how a failed or unmeasured line is classed and what each class does to the exit**: `line_class`, `repair_shown`
 and their use in `read_ingame_exit`; `check_repair` and its use in `read_exit`; and the class text in
 `ingame_brief_text`, `blind_brief_text`, `steward_brief` and `fixer_brief`. Item
@@ -16,14 +19,21 @@ that selftest also plants a fault in each part of the reader and sees its test g
 - **a-repair-record.** A re-run row with `repair`: `{"class": "HARNESS"|"SITE", "commit": <sha>, "planted":
   {"plant": <what was planted or the known-bad state>, "command": <its command>, "verdict": "FAIL", "evidence":
   <path>}}`. The row's own verdict is the real-build reading.
-- **a-set-aside-row.** A last row classed HARNESS or SITE with `set_aside`: the polish line, or with `unrepaired`: why
-  the driver could not repair it (no tools, the fix is not known, another run holds the files).
+- **an-unrepaired-row.** A last row classed HARNESS or SITE with `unrepaired` (why the driver could not repair it: no
+  tools, the fix is not known, another run holds the files) and `owner` (the run or the filed item that keeps it).
+- **a-mod-fix-record.** A re-run row after a MOD FAIL with `mod_fix`: `{"commit": <sha>, "red": {"cmd", "rc"}, "green":
+  {"cmd", "rc"}}`, the before/after test (red an rc non-zero on the parent, green rc 0 on the fix).
+- **a-fix-review.** One row per mod fix in `fix_reviews.jsonl` (the visit folder, or the cycle's `lane2/`): `{"fix":
+  <commit> | "fault": <id>, "reader": <unit>, "verdict": "sound"|"unsound", "why"}`, by a reader that did not make the
+  fix.
 - **a-blind-check-fault.** A blind-cycle Problem with `against` `check` or `scene`, FIXED, whose `fixes.jsonl` row
   carries `plant`, `red` (the repaired check on the plant, an rc non-zero), `green` (the repaired check on the real
   build, rc 0) and `sha`.
 
 ## DOES NOT SURVIVE (not handled)
 
+- **a-reader-that-says-it-did-not-fix.** The reader checks that the review's `reader` is not the fix's `unit`. It
+  cannot check that the reader really read the fix.
 - **a-repair-not-recorded.** A driver that changes a check and re-runs it without writing `repair` gets the reading of
   an unchanged re-run: an earlier HARNESS or SITE row spends nothing, and the last PASS counts. The reader cannot see
   that the check changed.
@@ -39,8 +49,17 @@ that selftest also plants a fault in each part of the reader and sees its test g
   counts as PASS; the visit reads met, and the reading keeps the class, the commit and both readings.
 - **repair-without-planted-not-pass.** The same with the planted reading missing, or not FAIL, reads the check
   `not_counted`, never PASS; its bar, with no other counted decider, reads undecided, and the visit not_met.
-- **set-aside-does-not-block.** A HARNESS FAIL with `set_aside` (a polish line) does not count and does not block when
-  another in-game check of each of its bars counts PASS; when none does, the bar reads undecided and the visit not_met.
+- **needless-check-is-removed.** A HARNESS or SITE line whose every bar another check decides reads not_met with
+  "remove it from the test table"; the same visit with that check taken out of the table reads met. A `set_aside`
+  field changes nothing.
+- **not-counted-needs-owner.** A needed check (its bar has no other decider) that is repaired and not shown both ways,
+  or said `unrepaired`, reads `not_counted` only with an `owner`; its bar reads undecided. Without an owner it reads
+  `unhandled`.
+- **mod-fixed-in-sitting-counts.** A MOD FAIL followed by a PASS whose `mod_fix` shows red then green counts as PASS
+  when a reader that did not make the fix wrote a `sound` review of it; with no review, an `unsound` one, or a review by
+  the fixer's own unit, the visit reads not_met and names the owed reader. A `mod_fix` with no red reads `mod`.
+- **one-build-is-the-last-rows.** Earlier rows on the build before a fix in the sitting do not make the visit read two
+  builds; the last rows of the checks must name one build.
 - **scene-wrong-same-as-check.** A SITE line follows the same rules as a HARNESS line.
 - **unclassed-not-silent.** An UNMEASURED or FAIL last row with no class reads not_met and is named `unclassed`.
 - **wrong-unhandled-not-silent.** A HARNESS or SITE last row neither repaired, set aside nor said `unrepaired` reads
@@ -49,8 +68,13 @@ that selftest also plants a fault in each part of the reader and sees its test g
   lines send it back.
 - **blind-check-repair-owes-no-judge.** A blind cycle whose only FIXED Problem is `against: check`, shown on its plant
   and on the real build, with a fix sha whose files are all in `tests_edited.json`, reads met; the same Problem
-  `against: mod`, or with no `plant`, or with a fix sha that touches another file, still owes a new blind judge.
+  `against: mod`, or with no `plant`, or with a fix sha that touches another file (or git cannot read), is a mod fix.
+- **blind-mod-fix-owes-one-fresh-reader.** A blind cycle whose FIXED mod Problem has a `sound` review by a reader that
+  is not the fix's `unit` reads met, also when the judge wrote exit_met false; with no review, an `unsound` one, a
+  review by the fixer's unit or a fix row that names no unit, it reads not_met and names `fix_reader_owed`.
 - **briefs-carry-the-rule.** The in-game driver, blind-judge, steward (router) and fixer briefs each carry the
-  classing step, the two tests and the repair rule; the driver brief no longer says a wrong check is only a note.
+  classing step, the two tests, the repair rule, the mod fix in the sitting with one fresh reader, the live game taken
+  when free (`bridge take --idle-ok`) and the `red-seen` record for an edited deciding test; none still says to set a
+  check aside, that a wrong check is only a note, or that a cycle's fixes owe a new blind judge.
 
 Later lists beside this page: `polish.md` (none yet); `next_version.md` (none yet).

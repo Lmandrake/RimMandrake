@@ -497,7 +497,9 @@ failure classes came from reviewers, judges and auto-filers with no stopping lev
 
   The ticket that you file carries that evidence, and the fix where you could see it.
 - **Test 1 comes first.** "If you see it, do it" never licenses a touch that fails test 1.
-- **A wrong check is repaired or set aside in the sitting; it never sends the mod back** (owner, 2026-11-20, item
+- **A fault is fixed in the sitting; a wrong check is repaired or removed there; neither sends the mod back** (owner,
+  2026-11-20, items `RIMMANDRAKE_ENACT_WRONG_CHECK_FIXED_IN_SITTING_NOT_RETURNED` and
+  `RIMMANDRAKE_RESUME_WRONG_CHECK_WORKER_WITH_MOD_FIX_EXTENSION`; first ruling at item
   `RIMMANDRAKE_ENACT_WRONG_CHECK_FIXED_IN_SITTING_NOT_RETURNED`). His words (Fri 2026-11-20, about 4:10 AM PST), asked
   whether to extend the significance rule to tests: *"Agreed, modify standing rule in-place to include your extension
   for "inappropriate/insignificant test""*; asked whether the in-game driver should repair a wrong check in the
@@ -507,27 +509,50 @@ failure classes came from reviewers, judges and auto-filers with no stopping lev
   that can be overcome."* Earlier (about 3:55 AM PST): *"I am distressed that judging events are still being used to
   slowly improve testing definitions rather than game content."* The cause (measured 2026-11-20): FlowWorks in-game
   visit 2 read 8 FAIL and 5 UNMEASURED of 31; the router filed all 13 lines and moved the mod back to the offline
-  build; all six fixer runs that followed repaired checks, and none changed the mod.
+  build; all six fixer runs that followed repaired checks, and none changed the mod. His further words the same
+  morning: about 4:25 AM PST, *"Also, even if the "mod is wrong" should not throw the mod backwards! If the judge can
+  just fix it right now with a before/after test, and thus show passing... just do it! If it needs a live game... ok,
+  fine. But seriously, I'm almost about to say just spin up the game and do it right then. These loops are TOO LONG
+  AND SLOW."*; about 4:40 AM PST, on the blind judge that fixes with one fresh reader of the fix: *"I agree with your
+  blind judge -> fresh reader argument."*; about 4:50 AM PST, *"And yes... if a live game is available, of course a
+  judge (or any role!) should be able to just grab it and use it to get something done! IT's an unused resource
+  otherwise... the worst case."*; about 5:05 AM PST, on "set it aside": *"How does that help if there's a needless
+  test present? The next judge will hit it again..."*
   - Class each failed or unmeasured check first: the mod is wrong (`class` MOD), the check is wrong (HARNESS) or the
     staged scene is wrong (SITE). These are the classes of skill `live-debugging-proof-harness`.
-  - A wrong check or scene is worth repair only if a bar would go undecided without it. Otherwise delete the check, or
-    set it aside as not counted, with one line on the polish list. No ticket.
+  - A wrong check or scene is worth repair only if a bar would go undecided without it. A check that no bar needs is
+    removed: taken out of the test table (and deleted when nothing else names it), so that no later judge meets it
+    again. One line on the polish list is the record of the removal. No ticket.
   - "A failure happened" (test 1) does not make a wrong check worth the touch by itself: the failure was the check's.
   - The agent that classes a check wrong repairs it in the same sitting and runs it again while the game is up. The
     reasons "my verdict must stay independent" and "my assigned work would not finish" (test 2) do not excuse a wrong
     check or scene: its repair does not touch the mod.
   - The guard that replaces distrust: a repaired check counts only after it is seen to FAIL on a planted fault (or on
     a state that is known bad) and PASS on the real build, in that sitting, with both readings recorded beside the
-    row. A repair that cannot be shown both ways leaves the check not counted (UNMEASURED), never PASS. Plant with what
-    exists: the planted cases of the blind challenge, a check's `--old` or mutant switch, or a save or state that is
-    known bad. Where no plant exists for a check, the repaired check stays not counted.
-  - A wrong check or scene never moves the mod back a stage. Only a check classed "the mod is wrong", or a bar left
-    undecided, does. The router files an item only for a mod-wrong line, and for a wrong check that the driver could
-    not repair when a bar needs it, with the evidence why (no tools, the fix is not known, another run holds the files).
-  - In the blind challenge, a Problem `against` a check or scene that the judge repairs, shown both ways, owes no new
-    blind judge. A Problem fixed in the mod still owes one.
-  - Enforced by `maturation.py` (`read_ingame_exit`: `line_class`, `repair_shown`, undecided bars; `read_exit`:
-    `check_repair`) and carried by the blind-judge, in-game driver, steward and fixer briefs (`WRONG_CHECK_RULE`).
+    row. A needed check whose repair cannot be shown both ways stays not counted (UNMEASURED), never PASS, and keeps
+    an owner: the run that found it, or a filed item with the evidence. "Not counted" is for that case only. Plant with
+    what exists: the planted cases of the blind challenge, a check's `--old` or mutant switch, or a save or state that
+    is known bad.
+  - A mod fault that the judge or driver can fix is fixed in the sitting: a before/after test (red on the parent,
+    green on the fix), the fix, and the check shown passing on the fixed build (in a visit, every check is re-run on
+    that build). Then one fresh reader, a run that did not make the fix, reads only that fix, once, and writes its
+    review (`fix_reviews.jsonl`); the steward run that reads the record is that reader. This replaces the whole new
+    blind cycle that a fixed mod used to owe.
+  - Only a mod fault that could not be fixed in the sitting goes down the road back, with the evidence why (no tools,
+    the fix is not known, another run holds the files, one of his five acts, a north-star bar), and so does a bar left
+    undecided. A wrong check or scene never moves the mod back. The driver or judge files each line that still goes
+    back, before it ends; the router files only what they did not.
+  - A fix that needs the live game takes it when it is free (§The bridge is passed through one file): any role, a
+    judge included.
+  - A run that edits a deciding test records its red run with `maturation.py red-seen` before it closes. Measured
+    2026-11-20: two fixers (`44124fa343`, `345366aa49`) edited Gimme Some Slack's deciding test file and saw planted
+    faults go red without recording it; the certificate then refused 18 of 26 bars on `red_seen`, and the mod sat
+    from 2:14 AM to about 4:50 AM PST until a hand ran `maturation.py red-seen` (`509bca1964`).
+  - In the blind challenge, a Problem `against` a check or scene that the judge repairs, shown both ways, owes
+    nothing more. A Problem fixed in the mod owes its one fresh reader.
+  - Enforced by `maturation.py` (`read_ingame_exit`: `line_class`, `repair_shown`, `mod_fix_shown`, `review_sound`,
+    needless and undecided lines; `read_exit`: `check_repair`, `review_sound`) and carried by the blind-judge,
+    in-game driver, steward, fixer and builder briefs (`WRONG_CHECK_RULE`, `RED_SEEN_RULE`).
     Page: `design/specs/2026-11-20-wrong-check-fixed-in-sitting/boundary.md`; test:
     `src/RimMandrake/rimflow/selftest_wrong_check_fixed_in_sitting.py`.
 - **Group the repairs.** Tickets with one cause, or in the same files, are fixed in one run and one context.
@@ -730,6 +755,17 @@ runner. A seat MAY take the bridge, deploy and restart the game on its own when 
 `rimflow bridge take --idle-ok --for "<what>"` and `./game --idle-ok --why "<what>" ...` do it), and lists each act in his daily digest (class `bridge idle`). Still
 binding: his OWNER hold (below) and `./bridge` override, never a flyer's flight (`--flyer` or flight wording refuses),
 and the game is never fullscreened or focused, so it does not steal his screen. The arena lane config key `owner_playing` is ignored and dropped.
+
+🔴 **Any role that needs the live game to finish a fix takes it when it is free** (owner, 2026-11-20, about 4:50 AM
+PST: *"And yes... if a live game is available, of course a judge (or any role!) should be able to just grab it and use
+it to get something done! IT's an unused resource otherwise... the worst case."*). A judge, a driver or a fixer
+takes the bridge with `rimflow bridge take --idle-ok --for "<what>"` when it is free, ours, or stale by the 45-minute
+rule, starts the game with `./game --idle-ok --why "<what>" up`, does the fix, and releases the bridge the moment the
+work stops. A mod does not wait a stage for a game that sits unused. The briefs that carry it are the in-game driver's,
+the blind judge's and the live fixer's (`FREE_GAME_RULE` in `maturation.py`). An offline-stage fixer gets only offline
+items, because a game-only item goes back to Stage 6, so its brief keeps "Never take the bridge or a game". The same limits bind as above. Measured
+2026-11-20: neither `cli.py bridge take --idle-ok` nor `./game --idle-ok` reads a role key; a BENCH take under the role
+units of a driver, a blind judge and a coverage judge succeeded.
 
 🔴 **His OWNER hold is takeable 45 minutes after his last interaction** (owner, by question card 2026-10-30, "Should
 agents ever be allowed to take your hold?", typed: *"45 minutes after my last interaction, or I deliberately release

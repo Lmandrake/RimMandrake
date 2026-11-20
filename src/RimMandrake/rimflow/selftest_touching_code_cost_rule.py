@@ -61,15 +61,23 @@ for a in AGENTS:
 # the extension of 2026-11-20 (RIMMANDRAKE_ENACT_WRONG_CHECK_FIXED_IN_SITTING_NOT_RETURNED): a wrong check is repaired or
 # set aside in the sitting and never sends the mod back; selftest_wrong_check_fixed_in_sitting.py tests the code
 WRONG = {
-    "CLAUDE.md": ["A wrong check is repaired or set aside in the sitting. It never sends the mod back",
-                  "seen to FAIL on a planted fault", "Only a check classed \"the mod is wrong\", or a bar left undecided"],
+    "CLAUDE.md": ["Fix a fault in the sitting. Repair or remove a wrong check in the sitting. Neither sends the mod back",
+                  "seen to FAIL on a planted fault", "Remove a check that no bar needs from the test table",
+                  "one fresh reader, a run that did not make the fix, reads only that fix, once",
+                  "Any role that needs the live game to finish a fix does this, a judge included",
+                  "records its red run with `maturation.py red-seen` before it closes"],
     "design/RimMandrake/standing_rulings.md": [
-        "**A wrong check is repaired or set aside in the sitting; it never sends the mod back** (owner, 2026-11-20",
+        "**A fault is fixed in the sitting; a wrong check is repaired or removed there; neither sends the mod back**",
         "We need to stop treating all agents as corrupt.", "include your extension",
         "judging events are still being used to slowly improve testing definitions rather than game content",
-        "The guard that replaces distrust"],
-    "infrastructure/agents/CHARTER.md": ["A wrong check or scene is repaired in the same sitting"],
-    "design/specs/2026-11-13-maturation-pipeline.md": ["A wrong check or scene never goes back"],
+        "The guard that replaces distrust", "How does that help if there's a needless test present?",
+        "I agree with your blind judge -> fresh reader argument.", "IT's an unused resource otherwise",
+        "These loops are TOO LONG AND SLOW.",
+        "**Any role that needs the live game to finish a fix takes it when it is free**"],
+    "infrastructure/agents/CHARTER.md": ["A wrong check or scene is repaired in the same sitting",
+                                         "or removed from the test table when no bar needs it"],
+    "design/specs/2026-11-13-maturation-pipeline.md": ["A wrong check or scene never goes back",
+                                                       "a fixed mod owes ONE fresh reader of each fix"],
 }
 for k, v in WRONG.items():
     PRESENT.setdefault(k, []).extend(v)
@@ -89,6 +97,12 @@ ABSENT.update({
                                                       "A failed or UNMEASURED line is filed as a NAMED item"],
     "src/RimMandrake/rimflow/maturation_dispatch.py": ["each failed line item down its road back"],
 })
+# the follow-up ruling of 2026-11-20 deleted "set aside" for a check no bar needs ("The next judge will hit it again")
+for path, words in {"CLAUDE.md": ["A wrong check is repaired or set aside in the sitting"],
+                    "design/RimMandrake/standing_rulings.md": ["set it aside as not counted, with one line on the polish"],
+                    "infrastructure/agents/CHARTER.md": ["or set aside with one polish line when no bar needs it"],
+                    "design/specs/2026-11-13-maturation-pipeline.md": ["it is set aside with one polish line"]}.items():
+    ABSENT.setdefault(path, []).extend(words)
 
 
 def flat(s):

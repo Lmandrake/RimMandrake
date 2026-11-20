@@ -2041,27 +2041,54 @@ SELF_FIX_RULE = ("- The pipeline fixes its own defects (owner, 2026-11-15): a de
                  "north-star bar, with the evidence and what you tried on the ticket. Never work around it by hand. A "
                  "mod's own gaps still go through the stages. Full text: `design/RimMandrake/standing_rulings.md` "
                  "§The pipeline fixes its own defects.")
-# The owner's ruling of 2026-11-20 (RIMMANDRAKE_ENACT_WRONG_CHECK_FIXED_IN_SITTING_NOT_RETURNED): a wrong check is
-# repaired or set aside in the sitting and never sends the mod back. Carried by the blind judge, the in-game driver, the
-# steward (router) and the road-back fixer; read_ingame_exit and read_exit enforce it. Full text: standing_rulings.md
-# §Touching code has a cost. selftest_wrong_check_fixed_in_sitting.py.
+# The owner's rulings of 2026-11-20 (RIMMANDRAKE_ENACT_WRONG_CHECK_FIXED_IN_SITTING_NOT_RETURNED and
+# RIMMANDRAKE_RESUME_WRONG_CHECK_WORKER_WITH_MOD_FIX_EXTENSION): a wrong check is repaired or removed in the sitting, a
+# mod fault the judge or driver can fix is fixed there with one fresh reader of the fix, and any role takes a free game.
+# Carried by the blind judge, the in-game driver, the steward (router) and the road-back fixer; read_ingame_exit and
+# read_exit enforce it. Full text: standing_rulings.md §Touching code has a cost. selftest_wrong_check_fixed_in_sitting.py.
+# The red-seen proof had no owner (measured 2026-11-20: two fixers edited Gimme Some Slack's deciding test file, saw
+# planted faults go red, and did not record it; the certificate refused 18 bars on red_seen and the mod sat about 2.5 h).
+# Carried by every brief whose run may edit a deciding test: builder, certificate builder, fixer, blind judge, driver.
+RED_SEEN_RULE = (
+    "- **A run that edits a deciding test records its red run before it closes:** `python3 "
+    "src/RimMandrake/rimflow/maturation.py red-seen <Mod> <test id> --patch <the planted fault's patch>`, for each decider "
+    "in a file you changed (one edit to a shared test file invalidates every decider in it). A certificate refuses an "
+    "edited decider with no recorded red run, and the mod waits until one is recorded.")
+# Any role that needs the live game to finish a fix takes it when it is free (owner, 2026-11-20: "if a live game is
+# available, of course a judge (or any role!) should be able to just grab it"). Carried by the briefs whose fix can need
+# the game: the in-game driver, the blind judge and the live fixer (maturation_autonomy.live_rules). An offline-stage
+# fixer gets only offline items (a game-only item goes back to Stage 6), so its brief keeps "Never take the bridge".
+FREE_GAME_RULE = (
+    "- **A fix that needs the live game takes it when it is free** (owner, 2026-11-20): the bridge free, ours, or stale "
+    "by the 45-minute rule, with `python3 src/RimMandrake/rimflow/cli.py bridge take --idle-ok --for \"<what>\" --seat "
+    "BENCH` and `./game --idle-ok --why \"<what>\" up`; release it the moment the work stops (`python3 "
+    "src/RimMandrake/rimflow/cli.py bridge release --seat BENCH`). His OWNER hold, the `./bridge` override, no flyer "
+    "flight, and never fullscreen or focus the game still bind. A mod does not wait a stage for a game that sits unused.")
 WRONG_CHECK_RULE = "\n".join([
     "**Class each failed or UNMEASURED line first** (owner, 2026-11-20; `design/RimMandrake/standing_rulings.md` "
     "§Touching code has a cost): mod wrong (`class` MOD: the mod's code, defs or settings), check wrong (`class` HARNESS: "
     "the script, the instrument, the criterion) or scene wrong (`class` SITE: the staged scene). Then:",
     "- Test 1, the worth of the touch: a wrong check or scene is worth repair only if a bar would go undecided without "
-    "it. \"A failure happened\" does not make it worth the touch by itself: the failure was the check's. Otherwise delete "
-    "it or set it aside as not counted, with one line on the polish list. No ticket.",
+    "it. \"A failure happened\" does not make it worth the touch by itself: the failure was the check's. A check that no "
+    "bar needs is not kept: remove it from the test table (and delete it when nothing else names it), with one line on "
+    "the polish list as the record of the removal. No ticket. A needless check left in place meets the next judge again.",
     "- Test 2, if you see it, do it: the agent that classes a check or scene wrong repairs it in the same sitting and runs "
     "it again. \"My verdict must stay independent\" and \"my assigned work would not finish\" do not excuse a wrong "
     "check or scene: its repair does not touch the mod.",
     "- The guard: a repaired check counts only after it is seen to FAIL on a planted fault (or on a state known bad) and "
-    "PASS on the real build, in that sitting, with both readings recorded beside the row. A repair that cannot be shown "
-    "both ways leaves the check not counted (UNMEASURED), never PASS. To plant, use what exists: a planted case of the "
-    "blind challenge (`lane2/planted_faults.json`, `plant_faults.py`), the check's own `--old` or mutant switch, or a save "
-    "or state known bad. Build no new framework. Where no plant exists for a check, the repaired check stays not counted.",
+    "PASS on the real build, in that sitting, with both readings recorded beside the row. A needed check whose repair "
+    "cannot be shown both ways stays not counted (UNMEASURED), never PASS, and keeps an owner: this run, or a filed item "
+    "with the evidence. To plant, use what exists: a planted case of the blind challenge (`lane2/planted_faults.json`, "
+    "`plant_faults.py`), the check's own `--old` or mutant switch, or a save or state known bad. Build no new framework.",
     "- A repair never weakens what the check observes, and never touches the mod.",
-    "- A wrong check or scene never sends the mod back a stage. Only a mod wrong line, or a bar left undecided, does."])
+    "- **Mod wrong, and you can fix it: fix it in the sitting.** Write a before/after test (red on the parent, green on "
+    "the fix), fix the mod, and show the check passing on the fixed build. Then one fresh reader, a run that did not "
+    "make the fix, reads only that fix, once (owner, 2026-11-20). Only a mod fault you could not fix in the sitting goes "
+    "down the road back, with the evidence why (no tools, the fix is not known, another run holds the files, it needs one "
+    "of his five acts or a north-star bar).",
+    RED_SEEN_RULE,
+    "- A wrong check or scene never sends the mod back a stage. Only a mod wrong line not fixed in the sitting, or a bar "
+    "left undecided, does."])
 # What the Gimme Some Slack and Pyrelands rescues taught (2026-11-16; owner: "let's make these changes to the
 # builder/fixers so they act better from now on too"): green on the suite's examples was taken for green everywhere,
 # builders tuned between bars that want opposite things, and a rescue ended with open cases as a footnote. Carried by
@@ -2281,7 +2308,7 @@ def brief_text(root, mod, cap_usd=None, bars=None):
           "- One dated line in the journal's history for what you built. Every file you touch stays DIRTY until "
           "`code_review_status.py check` says CLEAN.",
           "- Never guess a defName, field or namespace (RimSage, the def, or `measure`).",
-          SELF_FIX_RULE, "", HOW_A_BAR_HOLDS, "", OFFLINE_MODEL]
+          SELF_FIX_RULE, "", HOW_A_BAR_HOLDS, "", RED_SEEN_RULE, "", OFFLINE_MODEL]
     return "\n".join(L) + "\n", f
 
 
@@ -2728,7 +2755,7 @@ def check_repair(root, x, fx, edited):
     """-> (True, None) when FIXED Problem x is a wrong check or scene repaired, not a mod fix: `against` check or scene,
     its fixes.jsonl row fx names its `plant` (red: the repaired check on that plant; green: on the real build; read_exit
     checks the rcs), and the fix commit changes only paths in tests_edited.json or the cycle's record. Else (False, why):
-    a mod fix, which owes a new blind judge. A commit git cannot read counts as a mod fix, and why names the cause
+    a mod fix, which owes one fresh reader. A commit git cannot read counts as a mod fix, and why names the cause
     (owner, 2026-11-20, RIMMANDRAKE_ENACT_WRONG_CHECK_FIXED_IN_SITTING_NOT_RETURNED)."""
     if str(x.get("against", "")).lower() not in AGAINST_WRONG:
         return False, "against %s, not check or scene" % (x.get("against") or "nothing")
@@ -2759,12 +2786,15 @@ def read_exit(root, mod, n, tt=None, game_only_bars=None):
     present, and the planted-fault results ending tree_clean_after true. A lane-1 FAIL (recorded blind, before the
     fixes) clears only when LANE1_AFTER_FIX has no FAIL and shows it PASS, or when a Polish fault names that row in its
     evidence (Polish is not part of passing; the reading prints each such row for the steward to confirm). Every fault
-    must carry a class, Problem or Polish: an unclassed one could hide an open Problem. Any doubt reads not_met.
+    must carry a class, Problem or Polish: an unclassed one could hide an open Problem. Any doubt reads not_met. A
+    FIXED Problem that is a check repair (check_repair) owes nothing more; a FIXED mod Problem owes one fresh reader's
+    sound review in lane2/fix_reviews.jsonl (review_sound), and with every review sound and every other file check
+    agreeing, a judge's exit_met false is read as that owed reader (owner, 2026-11-20).
 
     game_only_bars ({bar: [item ids]}): given only for a game-only move whose `game_only` clause passed. Then two
     things do not count, and nothing else changes: a lane-1 not_kernel UNSETTLED row whose every bar a named game-only
-    item carries (_lane1_deferred), and the new blind judge owed only for the cycle's own FIXED Problems (with every
-    file check agreeing, the judge's exit_met false is that owed judge). An unfixed Problem, any other file check, or a
+    item carries (_lane1_deferred), and the fresh reader owed only for the cycle's own FIXED Problems (with every
+    file check agreeing, the judge's exit_met false is that owed reader). An unfixed Problem, any other file check, or a
     judge's false in a cycle that fixed nothing still reads not_met (RIMMANDRAKE_UNBLOCK_GAME_ONLY_ADVANCE_AT_BLIND_EXIT)."""
     if tt is None:
         tt, _ = read_json(root, mod, "version/test_table.json")
@@ -2931,24 +2961,40 @@ def read_exit(root, mod, n, tt=None, game_only_bars=None):
         # RIMMANDRAKE_UNBLOCK_GAME_ONLY_ADVANCE_AT_BLIND_EXIT); each fix was shown red then green above
         out["checks"]["judge_owed_not_counted_game_only"] = fixed
         del why[:]
-    elif fixed and not why:
-        # RIMMANDRAKE_SEND_FIXES_TO_NEW_BLIND_JUDGE: his road back (spec s4 Stages 4 and 5): fix it, "then send it back
-        # to just before Stage 4 again for a new blind judgement pass". A cycle's own fixes never pass its exit.
-        out["checks"]["judge_owed"] = True
-        why.append("a new blind judge is owed: %d Problem(s) were FIXED in this cycle (%s), and a fixed mod goes back "
-                   "to a new blind judgement pass (advance --to blind_challenge opens cycle %d; file nothing new)" % (
-                       len(fixed), ", ".join(fixed[:6]), n + 1))
+    elif fixed:
+        # the blind judge fixes the mod in the sitting, and ONE fresh reader that did not make the fix checks only that
+        # fix, once (owner, 2026-11-20: "I agree with your blind judge -> fresh reader argument."); this replaces the
+        # whole new blind cycle RIMMANDRAKE_SEND_FIXES_TO_NEW_BLIND_JUDGE sent a fixed mod to
+        rv = fix_reviews(os.path.join(d, "lane2", FIX_REVIEWS))
+        read_rv = {i: review_sound(rv, i, (fixes.get(i) or {}).get("unit")) for i in fixed}
+        owed = [i for i in fixed if not read_rv[i][0]]
+        if owed:
+            out["checks"]["fix_reader_owed"] = owed
+        if all(w == JUDGE_SAYS_FALSE for w in why):
+            del why[:]          # a judge that fixed the mod wrote false: the reader below decides
+            if owed:
+                why.append("one fresh reader is owed for %d mod fix(es) made in this cycle (%s): a run that did not make "
+                           "the fix reads only that fix, once, and writes %s/lane2/%s; the steward run is that reader "
+                           "(file nothing new)" % (len(owed), "; ".join("%s: %s" % (i, read_rv[i][1]) for i in owed[:6]),
+                                                   rel(mod, base), FIX_REVIEWS))
+            else:
+                out["checks"]["fix_readers_sound"] = fixed
     out["state"] = "not_met" if why else "met"
     if not why:
         pol = out["checks"].get("lane1_fail_left_as_polish") or {}
         why.append("the block says exit_met %s and every file check agrees (%d offline bars, %d deciders rerun PASS)%s%s"
-                   % ("true" if blk["exit_met"] else "false (the owed judge, not counted on a game-only move)", len(bars), sum(len(x[1]) for x in bars), "; lane-1 FAIL left as Polish, not part of passing (the "
+                   % ("true" if blk["exit_met"] else "false (read as the owed fix reader, now done)"
+                      if out["checks"].get("fix_readers_sound") else "false (the owed judge, not counted on a game-only "
+                      "move)", len(bars), sum(len(x[1]) for x in bars), "; lane-1 FAIL left as Polish, not part of passing (the "
                       "steward confirms the move): %s" % ", ".join("%s (%s)" % kv for kv in sorted(pol.items()))
                       if pol else "", "; lane-1 not_kernel UNSETTLED row(s) deferred to Stage 6, owed there: %s" % ", ".join(
                           deferred[:8]) if deferred else ""))
         if out["checks"].get("judge_owed_not_counted_game_only"):
-            why.append("game-only move: the new blind judge owed for %d FIXED Problem(s) (%s) is not counted; each fix "
+            why.append("game-only move: the fresh reader owed for %d FIXED Problem(s) (%s) is not counted; each fix "
                        "was shown red then green in lane2/fixes.jsonl" % (len(fixed), ", ".join(fixed[:6])))
+        if out["checks"].get("fix_readers_sound"):
+            why.append("%d mod fix(es) made in this cycle, each read sound by one fresh reader: %s" % (
+                len(fixed), ", ".join(fixed[:6])))
         if by_item:
             why.append("game-only move: lane-1 row(s) on offline bars carried by named game-only items: %s" % "; ".join(
                 "%s -> %s" % (k, ", ".join(v)) for k, v in sorted(by_item.items())))
@@ -3098,7 +3144,8 @@ def blind_brief_text(root, mod, cap_usd=None):
          "You are a helper of the Conductor; this brief carries the owner's authority. You are %s blind judge: you did "
          "not build this mod%s, and you are told nothing any earlier judge or builder found." % (
              "the" if n == 1 else "a NEW", "" if n == 1 else " and you did not judge an earlier cycle"), "",
-         "- Offline only: no game, no bridge, no deploy, no ModsConfig change.",
+         "- Offline by default: no game, no bridge, no deploy, no ModsConfig change, unless a fix needs the live "
+         "game: then take it when it is free (the rule under \"What you may and may not edit\"), and release it.",
          "- You start no helpers and no subagents.",
          "- Work in your own clone, and run `./sync` first.",
          "- Commit by explicit path. Land with `./publish`; load skill `clone-landing-commits` once, before your first "
@@ -3308,12 +3355,18 @@ def blind_brief_text(root, mod, cap_usd=None):
           "When a fix needs bar text: if the code is wrong, fix the code; if the criterion is wrong but the bar keeps "
           "its meaning, mark it NOTED_FOR_CONDUCTOR (the steward re-pins it); if the bar's words are wrong, mark it "
           "NOTED_FOR_CONDUCTOR (the neutral fixer). Build no verdict on a NOTED bar.", "",
-          WRONG_CHECK_RULE, "",
+          WRONG_CHECK_RULE, FREE_GAME_RULE, "",
           "Here: a Problem `against` check or scene that you repair is FIXED with a `fixes.jsonl` row that names `plant` "
           "(what you planted), `red` (the repaired check run on that plant: an rc non-zero) and `green` (the repaired "
           "check run on the real build: rc 0), both at the fix sha; the fix commit changes only files you list in "
-          "`tests_edited.json`. Such a repair owes no new blind judge (`read_exit` lists it under `check_repairs`). A "
-          "Problem `against` mod that you FIXED owes one. A wrong check that no bar needs is Polish: no fix, no item."]
+          "`tests_edited.json`. Such a repair owes no reader (`read_exit` lists it under `check_repairs`). A check that "
+          "no bar needs: remove it from the test table, with one line on the polish list; no fix, no item.",
+          "A Problem `against` mod: fix it in the sitting (the fix rules above, red first), and write `unit` (your unit) "
+          "on its `fixes.jsonl` row. Then one fresh reader, a run that did not make the fix, reads only that fix, once, "
+          "and writes `lane2/%s` (`{\"fault\": <id>, \"reader\": <its unit>, \"verdict\": \"sound\"|\"unsound\", "
+          "\"why\"}`); the steward run that reads this cycle is that reader. Never write that file yourself. A Problem "
+          "you could not fix stays PENDING with `unfixed` (why: no tools, the fix is not known, another run holds the "
+          "files, one of his five acts, a north-star bar) and goes down the road back." % FIX_REVIEWS]
 
     # ---- output and exit
     heads = ["Start time"] + (["Changed files to bars"] if n >= 2 else []) + [
@@ -3330,11 +3383,10 @@ def blind_brief_text(root, mod, cap_usd=None):
           "then the fixes, then the record; then `./publish`.", "",
           "## The exit, and who reads it", "",
           "**The exit condition:** every offline bar (%s) is green on your rerun, and no Problem is left PENDING or "
-          "NOTED_FOR_CONDUCTOR, and no Problem `against` the mod was FIXED in this cycle. A Problem you FIXED red-first is "
-          "closed as an item, but a cycle's own mod fixes never pass its exit: a new blind judge is owed (his road back: "
-          "\"send it back to just before Stage 4 again for a new blind judgement pass\"), so a cycle that fixed the mod "
-          "writes exit_met: false. A check or scene repair shown on its plant and on the real build is not a mod fix "
-          "and owes no judge." % (
+          "NOTED_FOR_CONDUCTOR, and each mod fix you made is shown red then green with your `unit` on its row. Write "
+          "exit_met: true when that holds, also when you fixed the mod: the reader then waits only for the one fresh "
+          "reader of each mod fix (owner, 2026-11-20, in place of a whole new blind cycle). A check or scene repair "
+          "shown on its plant and on the real build owes no reader." % (
               ", ".join("`%s`" % b for b, _ in bars) or "none in the table: say so in Exit"), "",
           "Write the Exit section as this block, exactly these three keys (a program reads it):", "",
           "```", "## Exit", "offline_bars: {%s}" % ", ".join("%s: green|red" % b for b, _ in bars),
@@ -3386,10 +3438,12 @@ def blind_brief_text(root, mod, cap_usd=None):
 #   rows.jsonl     one row per run of a stage-6 check: {"test", "verdict": PASS|FAIL|UNMEASURED, "site_checked": bool,
 #                  "game": "archmagi"|"stevedesktop", "mod_sha", "command", "evidence", "held": [...], and the fields
 #                  `build_match.py identity` prints: "mod_hash", "game_build", "active_mods", "tier" or "full_list",
-#                  "unit"}; the last row per test counts, never past an earlier MOD or unclassed FAIL (a mod-wrong
-#                  FAIL goes down its road back, spec Stage 6, and a new visit reruns it), and only on the build he
-#                  walks (the build match, read_ingame_exit). "class" (MOD | HARNESS | SITE), "repair", "set_aside" and
-#                  "unrepaired" class a failed line (line_class; owner, 2026-11-20).
+#                  "unit"}; the last row per test counts, never past an earlier MOD or unclassed FAIL unless the
+#                  row carries the mod fix made in the sitting (a mod fault not fixed goes down its road back, spec
+#                  Stage 6, and a new visit reruns it), and only on the build he
+#                  walks (the build match, read_ingame_exit). "class" (MOD | HARNESS | SITE), "repair", "mod_fix",
+#                  "unrepaired" and "owner" class a failed line (line_class; owner, 2026-11-20); fix_reviews.jsonl holds
+#                  the fresh reader's review of each mod fix made in the sitting.
 #                  "held" names what the site switched off or locked for the run ("fire", "weather", ...; [] when the whole
 #                  mod ran): maturation_rescue.py's C5 reads a bar whose every decider ran held as untested by the real
 #                  mechanic, and a row without "held" as UNMEASURED (RIMMANDRAKE_PROPOSE_RESCUE_WHEN_MOD_CIRCLES_BOTH_HAND_LAUNCHED)
@@ -3602,12 +3656,15 @@ def pass_record(root, mod, rec, owner, sha, t, wid):
 
 
 # ---- a failed or unmeasured line is classed (owner, 2026-11-20, RIMMANDRAKE_ENACT_WRONG_CHECK_FIXED_IN_SITTING_NOT_
-# RETURNED; standing_rulings §Touching code has a cost): the mod is wrong (MOD), the check is wrong (HARNESS) or the
-# staged scene is wrong (SITE), the classes of skill live-debugging-proof-harness. A wrong check or scene is repaired in
-# the sitting and counts only when seen FAIL on a plant and PASS on the real build, or it is set aside; it never sends
-# the mod back. Only a MOD line or an undecided bar does. Boundary: design/specs/2026-11-20-wrong-check-fixed-in-sitting/
+# RETURNED and RIMMANDRAKE_RESUME_WRONG_CHECK_WORKER_WITH_MOD_FIX_EXTENSION; standing_rulings §Touching code has a cost):
+# the mod is wrong (MOD), the check is wrong (HARNESS) or the staged scene is wrong (SITE), the classes of skill
+# live-debugging-proof-harness. A wrong check or scene a bar needs is repaired in the sitting and counts only when seen
+# FAIL on a plant and PASS on the real build; one no bar needs is removed from the test table. A mod fault the driver
+# can fix is fixed in the sitting with a before/after test, and one fresh reader checks that fix. Only a mod fault not
+# fixed, or a bar left undecided, sends the mod back. Boundary: design/specs/2026-11-20-wrong-check-fixed-in-sitting/
 
 WRONG_CLASSES = ("HARNESS", "SITE")
+FIX_REVIEWS = "fix_reviews.jsonl"
 
 
 def repair_shown(r):
@@ -3627,33 +3684,84 @@ def repair_shown(r):
     return ("its repair names no %s" % ", no ".join(miss)) if miss else None
 
 
+def mod_fix_shown(r):
+    """-> None when row r's `mod_fix` shows the mod fixed in the sitting: its commit, and a before/after test (red: an rc
+    non-zero, green: every rc 0, each side naming its command). Else -> why not."""
+    mf = r.get("mod_fix")
+    if not isinstance(mf, dict):
+        return "its `mod_fix` is not a record"
+    red, green = _rcs(mf.get("red")), _rcs(mf.get("green"))
+    miss = [w for w, bad in (
+        ("fix commit", not SHA_RE.match(str(mf.get("commit") or ""))),
+        ("red run (an rc non-zero before the fix)", not any(isinstance(c, int) and c != 0 for c in red)),
+        ("green run (rc 0 after the fix)", not green or any(c != 0 for c in green)),
+        ("command for each run", not (_side_cmds(mf, "red") and _side_cmds(mf, "green")))) if bad]
+    return ("its mod fix names no %s" % ", no ".join(miss)) if miss else None
+
+
+def review_sound(reviews, key, maker):
+    """-> (True, None) when the last `fix_reviews.jsonl` row for fix key (its `fix` commit or blind `fault` id) reads
+    `sound` by a reader that is not maker (the unit that made the fix). Else (False, why). One fresh reader checks only
+    that fix, once (owner, 2026-11-20: "I agree with your blind judge -> fresh reader argument.")."""
+    mine = [x for x in reviews or [] if isinstance(x, dict) and key and key in (x.get("fix"), x.get("fault"))]
+    if not mine:
+        return False, "no fresh reader has read it"
+    x = mine[-1]
+    if not maker:
+        return False, "the fix names no unit, so its reader cannot be shown to be another"
+    if not str(x.get("reader") or "").strip() or str(x.get("reader")).strip() == str(maker).strip():
+        return False, "its review names no reader, or the unit that made the fix (%s)" % maker
+    if str(x.get("verdict", "")).lower() != "sound":
+        return False, "its reader %s read it %s: %s" % (x.get("reader"), x.get("verdict") or "with no verdict",
+                                                         x.get("why") or "no reason given")
+    return True, None
+
+
+def fix_reviews(path):
+    """-> the rows of a fix_reviews.jsonl: [] when no reader has written the file yet (each fix then reads owed). A
+    file that is there and cannot be read raises, so the exit reads not met by name (evaluate turns a raise into a
+    refusal), never as "no review"."""
+    if not os.path.exists(path):
+        return []
+    rows = _jsonl(path)
+    if rows is None:
+        raise ValueError("%s is there and cannot be read" % path)
+    return rows
+
+
 def _said(r, field):
     return len(str(r.get(field) or "").split()) >= EXPLAIN_WORDS
 
 
 def line_class(r, earlier, tt=None):
-    """-> how a check's last row r counts at the exit: pass | mod (the mod is wrong: the road back) | not_counted (a
-    wrong check or scene set aside, said unrepaired, or repaired and not shown both ways: it blocks only through an
-    undecided bar) | unclassed (a FAIL or UNMEASURED with no class) | unhandled (classed wrong, nothing done about it).
-    earlier: the classes of the check's earlier real FAIL rows (never HARNESS or SITE)."""
-    if earlier:
-        return "mod" if "MOD" in earlier else "unclassed"
+    """-> how a check's last row r counts at the exit: pass | mod (the mod is wrong and not fixed in the sitting: the
+    road back) | not_counted (a needed check or scene that is repaired and not shown both ways, or said unrepaired, and
+    keeps an `owner`: it blocks through its undecided bar) | unclassed (a FAIL or UNMEASURED with no class) | unhandled
+    (classed wrong, and neither repaired nor owned). read_ingame_exit turns a wrong line that no bar needs into
+    needless. earlier: the classes of the check's earlier real FAIL rows (never HARNESS or SITE)."""
     v, cls = str(r.get("verdict", "")).upper(), str(r.get("class", "")).upper()
+    if earlier:
+        if set(earlier) == {"MOD"} and v == "PASS" and mod_fix_shown(r) is None:
+            return "pass"           # fixed in the sitting; its fresh reader is read separately
+        return "mod" if "MOD" in earlier else "unclassed"
     if "repair" in r:
-        return "pass" if v == "PASS" and repair_shown(r) is None else "not_counted"
+        if v == "PASS" and repair_shown(r) is None:
+            return "pass"
+        return "not_counted" if str(r.get("owner") or "").strip() else "unhandled"
     if v == "PASS":
         return "pass"
     if cls == "MOD":
         return "mod"
     if cls in WRONG_CLASSES:
-        return "not_counted" if _said(r, "set_aside") or _said(r, "unrepaired") else "unhandled"
+        return "not_counted" if _said(r, "unrepaired") and str(r.get("owner") or "").strip() else "unhandled"
     return "unclassed"
 
 
 def _not_counted_why(r):
     if "repair" in r:
-        return "repaired and not shown both ways: %s" % (repair_shown(r) or "its re-run reads %s" % r.get("verdict"))
-    return "set aside: %s" % r["set_aside"] if _said(r, "set_aside") else "unrepaired: %s" % r.get("unrepaired")
+        return "repaired and not shown both ways: %s; owner %s" % (
+            repair_shown(r) or "its re-run reads %s" % r.get("verdict"), r.get("owner"))
+    return "unrepaired: %s; owner %s" % (r.get("unrepaired"), r.get("owner"))
 
 
 def read_ingame_exit(root, mod, n, tt=None):
@@ -3698,16 +3806,45 @@ def read_ingame_exit(root, mod, n, tt=None):
             last[t] = r
     lines_ = out["lines"] = {}
     for t, _ in checks:
+        r = last.get(t)
+        cnt = line_class(r, earlier.get(t)) if r is not None else "no_row"
+        rp = r.get("repair") if r is not None and isinstance(r.get("repair"), dict) else {}
+        cls = str(r.get("class") or rp.get("class") or "").upper() if r is not None else ""
+        lines_[t] = {"count": cnt, "class": cls or None, "bars": _bars_of(tt, t)}
+    # a wrong check or scene that no bar needs (every bar it decides has another decider that reads a counted PASS or a
+    # MOD FAIL) is removed from the test table, never kept as not counted (owner, 2026-11-20: "How does that help if
+    # there's a needless test present? The next judge will hit it again...")
+    for t, ln in lines_.items():
+        if ln["count"] in ("not_counted", "unhandled") and ln["class"] in WRONG_CLASSES and all(
+                any(lines_[k]["count"] in ("pass", "mod") for k, _ in checks if k != t and b in _bars_of(tt, k))
+                for b in ln["bars"]):
+            ln["count"] = "needless"
+    reviews = fix_reviews(os.path.join(d, FIX_REVIEWS))
+    owed = out["fix_readers_owed"] = []
+    for t, _ in checks:
         claim = blk["ingame_rows"].get(t)
         r = last.get(t)
         v = str((r or {}).get("verdict", "")).upper()
         out["rows"][t] = v or "NO ROW"
-        cnt = line_class(r, earlier.get(t)) if r is not None else "no_row"
-        rp = r.get("repair") if r is not None and isinstance(r.get("repair"), dict) else {}
-        cls = str(r.get("class") or rp.get("class") or "").upper() if r is not None else ""
-        ln = lines_[t] = {"count": cnt, "class": cls or None, "bars": _bars_of(tt, t)}
+        ln = lines_[t]
+        cnt = ln["count"]
         if r is not None and isinstance(r.get("repair"), dict):
             ln["repair"], ln["real"] = r["repair"], v
+        if cnt == "pass" and earlier.get(t):
+            ln["mod_fix"] = r["mod_fix"]
+            mf = r["mod_fix"]
+            good, rwhy = review_sound(reviews, mf.get("commit"), mf.get("unit") or r.get("unit"))
+            ln["review"] = "sound" if good else rwhy
+            if not good:
+                owed.append({"check": t, "fix": mf.get("commit"), "why": rwhy})
+                why.append("in-game check %s: the mod fix %s made in the sitting owes one fresh reader (%s): a run that "
+                           "did not make the fix reads only that fix, once, and writes %s/%s" % (
+                               t, mf.get("commit"), rwhy, rel(mod, base), FIX_REVIEWS))
+        if cnt == "needless":
+            why.append("in-game check %s is classed %s and no bar needs it (another check decides each of its bars "
+                       "%s): remove it from the test table (and delete it when nothing else names it), with one line "
+                       "on the polish list as the record" % (t, ln["class"], ", ".join(ln["bars"]) or "(none)"))
+            continue
         if cnt == "not_counted":
             ln["why"] = _not_counted_why(r)
             out["rows"][t] = "UNMEASURED" if "repair" in r else v
@@ -3719,17 +3856,19 @@ def read_ingame_exit(root, mod, n, tt=None):
         if r is None:
             why.append("in-game check %s has no row in rows.jsonl" % t)
             continue
-        if v != "PASS":
+        if v != "PASS" or cnt == "unhandled":
             why.append("in-game check %s: its last row reads %s%s" % (t, v or "no verdict", {
-                "mod": " (classed MOD: the mod is wrong; it goes down its road back)",
+                "mod": " (classed MOD: the mod is wrong; fix it in the sitting with a before/after test, or it goes "
+                       "down its road back with the evidence why not)",
                 "unclassed": " with no class: class it MOD (the mod is wrong), HARNESS (the check is wrong) or SITE "
                              "(the scene is wrong)",
-                "unhandled": " (classed %s: the check or scene is wrong) and is neither repaired (`repair`, seen FAIL "
-                             "on a plant and PASS on the real build), set aside (`set_aside`: its polish line) nor said "
-                             "`unrepaired` (why not)" % ln["class"]}.get(cnt, "")))
-        if earlier.get(t):
-            why.append("in-game check %s: an earlier row reads FAIL (classed %s); a later PASS does not hide it (the "
-                       "failure goes down its road back, and a new visit reruns it)" % (t, ", ".join(earlier[t])))
+                "unhandled": " (classed %s: the check or scene is wrong, and a bar needs it) and is neither repaired "
+                             "(`repair`, seen FAIL on a plant and PASS on the real build) nor said `unrepaired` with "
+                             "its `owner` (the run or the filed item that keeps it)" % ln["class"]}.get(cnt, "")))
+        if earlier.get(t) and cnt != "pass":
+            why.append("in-game check %s: an earlier row reads FAIL (classed %s); a later PASS does not hide it unless "
+                       "the row carries the mod fix made in the sitting (`mod_fix`, red then green)" % (
+                           t, ", ".join(earlier[t])))
         if r.get("site_checked") is not True:
             why.append("in-game check %s: its row does not say the site was checked first (site_checked)" % t)
         elif not _site_shown(root, r):
@@ -3756,8 +3895,10 @@ def read_ingame_exit(root, mod, n, tt=None):
                    "counts: repair one in the sitting, seen FAIL on a plant and PASS on the real build, and re-run it" % (
                        b, ", ".join(undecided[b]), "; ".join(lines_[t]["why"] for t in undecided[b])))
     # RIMMANDRAKE_BIND_STAGE_EVIDENCE_TO_ONE_BUILD (the part that needs no ruling): one visit judges ONE build, so every
-    # row's mod_sha names the same commit (a short hash agrees with a long one it starts)
-    shas = sorted({str(r.get("mod_sha")) for r in rows or [] if SHA_RE.match(str(r.get("mod_sha") or ""))}, key=len)
+    # check's last row names the same commit (a short hash agrees with a long one it starts); rows before a mod fix made
+    # in the sitting are on the old build and count for nothing, so they are not read here
+    shas = sorted({str(last[t].get("mod_sha")) for t, _ in checks if t in last and lines_[t]["count"] != "needless"
+                   and SHA_RE.match(str(last[t].get("mod_sha") or ""))}, key=len)
     one = all(b.startswith(a) for i, a in enumerate(shas) for b in shas[i + 1:])
     if not one:
         why.append("the rows name more than one build (mod_sha %s): one visit judges one build" % ", ".join(shas))
@@ -4330,27 +4471,39 @@ def ingame_brief_text(root, mod, cap_usd=None, seat="BENCH"):
           "id in the row). Screenshots go in `%s/screenshots/` only if under 1 MB each; else name their paths." % vdir,
           "", "## A FAIL is diagnosed and classed in the sitting", "",
           "A FAIL or UNMEASURED is not a verdict to carry home bare: diagnose it by experiment while the game is up "
-          "(change one thing, watch the row), and class it.", "", WRONG_CHECK_RULE, "",
+          "(change one thing, watch the row), and class it.", "", WRONG_CHECK_RULE, FREE_GAME_RULE, "",
           "What each class does here (`read_ingame_exit` reads these row fields):",
-          "- **Mod wrong** (`class: \"MOD\"`): file it as a rimflow item with what you found, and the row stays FAIL. "
-          "Do not fix the mod in the sitting: the exit reading counts no check with an earlier MOD FAIL row and no "
-          "visit whose rows name two builds, so a fix-and-rerun of the mod wastes the visit. The fault goes down its "
-          "road back (spec Stage 6: the lowest stage that can show it, an offline test that fails on the old code "
-          "first), and a new visit reruns it on the fixed build.",
+          "- **Mod wrong, and you can fix it** (`class: \"MOD\"` on the failed row): fix it in the sitting. Write the "
+          "before/after test first and see it red on the parent, fix the mod, see it green, commit, redeploy, and re-run "
+          "EVERY check on the fixed build (one visit judges one build: the last rows must all name it; the rows before "
+          "the fix count for nothing). Write the re-run row of this check with `mod_fix`: `{\"commit\": <sha>, \"unit\": "
+          "<your unit>, \"red\": {\"cmd\": ..., \"rc\": <non-zero>, \"on\": <parent>}, \"green\": {\"cmd\": ..., "
+          "\"rc\": 0, \"on\": <sha>}}`. Then one fresh reader, a run that did not make the fix, reads only that fix, "
+          "once, and writes `%s/%s` (`{\"fix\": <sha>, \"reader\": <its unit>, \"verdict\": \"sound\"|\"unsound\", "
+          "\"why\"}`); the steward run that reads this visit is that reader. Never write that file yourself." % (
+              vdir, FIX_REVIEWS),
+          "- **Mod wrong, and you cannot fix it in the sitting**: the row stays FAIL; say why on the row (`unfixed`: no "
+          "tools, the fix is not known, another run holds the files, one of his five acts, a north-star bar). It goes "
+          "down its road back (spec Stage 6: the lowest stage that can show it, an offline test that fails on the old "
+          "code first), and a new visit reruns it on the fixed build.",
           "- **Check or scene wrong, and a bar needs it** (`class: \"HARNESS\"` or `\"SITE\"` on the failed row): repair "
           "the check or the scene, commit the repair, keep the deployed build (the rows keep its `mod_sha`), plant the "
           "fault and run the repaired check on it, then run it on the real build. Write the re-run row with `repair`: "
           "`{\"class\": \"HARNESS\"|\"SITE\", \"commit\": <sha>, \"planted\": {\"plant\": <what you planted>, "
           "\"command\": ..., \"verdict\": \"FAIL\", \"evidence\": <path>}}`; that row's own PASS is the real-build "
-          "reading. The earlier HARNESS or SITE row spends nothing. No item.",
-          "- **Check or scene wrong, and no bar needs it**: `set_aside`: its one polish line (also on `%s/polish.md`). "
-          "It is not counted and does not block. No item." % vdir,
-          "- **Check or scene wrong, and you cannot repair it**: `unrepaired`: why (you lack the tools, the fix is not "
-          "known, another run holds the files). File an item with that evidence only if a bar would go undecided.",
-          "- A FAIL or UNMEASURED row with no class never passes and is never set aside silently: the exit reads it "
-          "not met.", "",
-          "Run the remaining checks all the same: every mod-wrong FAIL this visit finds is one the road back fixes at "
-          "once.", "",
+          "reading. The earlier HARNESS or SITE row spends nothing. No item. When no plant exists, or you cannot repair "
+          "it, the row says `unrepaired` (why) and `owner` (your item, or the item you file with the evidence): the "
+          "check is not counted and its bar reads undecided.",
+          "- **Check or scene wrong, and no bar needs it** (another check decides each of its bars): remove it from the "
+          "test table (`design/concepts/%s/version/test_table.json`: the entry, and its id in each bar's `decides`), "
+          "delete its code when nothing else names it, and write one line on `%s/polish.md` as the record. No item. The "
+          "exit reads a needless check left in the table as not met." % (mod, vdir),
+          "- A FAIL or UNMEASURED row with no class never passes: the exit reads it not met.",
+          "- **File your own failures before you end**, while you hold them: each line that still goes back (a mod "
+          "fault you could not fix, a needed check not counted) is one named rimflow item, `--caused-by` your item, with "
+          "its acceptance test (red now, green on a fix) and what you found; write its id on the row as `filed`. The "
+          "road back starts from your items; no router run rebuilds them.", "",
+          "Run the remaining checks all the same.", "",
           "## The record (skeleton first: create it before the first live call)", "",
           "`%s/`:" % vdir,
           "- `rows.jsonl`: one row per run: `{\"test\": id, \"verdict\": \"PASS\"|\"FAIL\"|\"UNMEASURED\", "
@@ -4375,8 +4528,8 @@ def ingame_brief_text(root, mod, cap_usd=None, seat="BENCH"):
           "```", "```", "",
           "`python3 src/RimMandrake/rimflow/maturation.py next %s` reads it and checks it against the files: met needs "
           "every counted check pass in the block AND PASS in its last row with the site checked, the game and mod_sha "
-          "named (a check not counted, that is set aside, said unrepaired or repaired and not shown both ways, reads "
-          "unmeasured in the block and blocks only when it leaves a bar undecided), "
+          "named (a needed check not counted, said unrepaired or repaired and not shown both ways, reads unmeasured "
+          "in the block and leaves its bar undecided; a mod fix made in the sitting needs its fresh reader's review), "
           "every row on the walk build (`build_match.py check --mod %s` reads that part alone), every strange thing "
           "explained or filed, and the savegame on disk. That reading is evidence for the steward, "
           "not a move: the Conductor reads your SUMMARY.md and advances with `--to pre_human --steward-confirms "
@@ -4385,7 +4538,8 @@ def ingame_brief_text(root, mod, cap_usd=None, seat="BENCH"):
           "## Report (10 lines or fewer, plain words)", "",
           "Tag every number [measured] or [guess ~N%%]: checks PASS of %d, FAIL, UNMEASURED; each owed case's outcome; "
           "each failed line's class; each mod-wrong FAIL's filed item; each repaired check's commit and its planted and "
-          "real readings; each check set aside; strange things seen, explained, filed; the savegame path; the mod list "
+          "real readings; each mod fix made in the sitting and its before/after test; each check removed; each item you "
+          "filed; strange things seen, explained, filed; the savegame path; the mod list "
           "and game; whether the exit is met; bridge released." % len(checks)]
     steward = (read_text(root, mod, STEWARD_FILE) or "").strip()
     ivs, undated = MN.parse_interventions(read_text(root, mod, "journal.md") or "", "journal")

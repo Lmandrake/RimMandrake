@@ -55,15 +55,17 @@ def row(test, verdict="PASS", **kw):
     return r
 
 
-def visit(name, rows, claims=None):
+def visit(name, rows, claims=None, reviews=None, tt=None):
     """A fresh root with WMod at in_game, visit 1 holding rows; claims ({test: pass|fail|unmeasured}) default to each
     test's last row."""
     root = os.path.join(TMP, name)
     shutil.rmtree(root, ignore_errors=True)
     c = "design/concepts/%s/" % MOD
     v = c + "version/in_game/visit_1/"
-    put(root, c + "version/test_table.json", TT6)
+    put(root, c + "version/test_table.json", tt or TT6)
     put(root, c + "version/VERSION.json", {"version": "0.1.0"})
+    if reviews is not None:
+        put(root, v + "fix_reviews.jsonl", lines(reviews))
     put(root, c + "version/stage_record.json", {"mod": MOD, "version": "0.1.0", "stage": "in_game",
                                                  "moves": [{"from": "blind_challenge", "to": "in_game",
                                                             "at": "2026-11-20T10:00:00Z"}]})
@@ -79,18 +81,34 @@ def visit(name, rows, claims=None):
     return root
 
 
-def ingame(rows, claims=None, name="v"):
-    return M.read_ingame_exit(visit(name, rows, claims), MOD, 1)
+def ingame(rows, claims=None, name="v", reviews=None, tt=None):
+    return M.read_ingame_exit(visit(name, rows, claims, reviews, tt), MOD, 1)
 
 
 ALL_PASS = [row("c1"), row("c2"), row("c3")]
 
 
-def repaired(test="c1", cls="HARNESS", planted=PLANT, commit="abc1234def"):
+def repaired(test="c1", cls="HARNESS", planted=PLANT, commit="abc1234def", owner=None):
     rp = {"class": cls, "commit": commit}
     if planted is not None:
         rp["planted"] = planted
-    return [row(test, "FAIL", **{"class": cls}), row(test, "PASS", repair=rp)]
+    return [row(test, "FAIL", **{"class": cls}), row(test, "PASS", repair=rp, **({"owner": owner} if owner else {}))]
+
+
+FIXER, READER = "rm-detached-bench-drive-wmod-visit-one-1", "rm-detached-bench-route-wmod-visit-one-2"
+MOD_FIX = {"commit": "def5678abc", "red": {"cmd": "python3 tests/flow.py", "rc": 1, "on": "abc1234def"},
+           "green": {"cmd": "python3 tests/flow.py", "rc": 0, "on": "def5678abc"}}
+
+
+def mod_fixed(fix=MOD_FIX):
+    return [row("c1", "FAIL", **{"class": "MOD", "mod_sha": "abc1234def", "unit": FIXER}),
+            row("c1", mod_fix=fix, unit=FIXER, mod_sha="def5678abc"), row("c2", mod_sha="def5678abc"),
+            row("c3", mod_sha="def5678abc")]
+
+
+def review(reader=READER, verdict="sound", fix="def5678abc"):
+    return [{"fix": fix, "reader": reader, "verdict": verdict, "why": "the diff touches only the flow sum, and the "
+             "before/after test reads it"}]
 
 
 # ---- the promises ----------------------------------------------------------------------------------------------------
@@ -120,28 +138,64 @@ def t_repair_without_planted_not_pass():
     outs = []
     for name, planted in (("noplant", None), ("planted_pass", dict(PLANT, verdict="PASS")),
                           ("planted_noplant", dict(PLANT, plant="")), ("no_commit", PLANT)):
-        ex = ingame(repaired(planted=planted, commit="" if name == "no_commit" else "abc1234def")
+        ex = ingame(repaired(planted=planted, commit="" if name == "no_commit" else "abc1234def",
+                             owner="RIMMANDRAKE_MEND_WMOD_FLOW_CHECK_NO_PLANT_YET")
                     + [row("c2"), row("c3")], claims={"c1": "unmeasured"}, name=name)
         outs.append((name, ex["state"], ex["lines"]["c1"]["count"], ex.get("undecided_bars")))
     return all(s == "not_met" and c == "not_counted" and u == ["b_one"] for _, s, c, u in outs), outs
 
 
-def t_set_aside_does_not_block():
-    polish = "c3 reads the wrong cell; c2 decides b_two on its own, so c3 is set aside"
-    ok_ = ingame([row("c1"), row("c2"), row("c3", "FAIL", **{"class": "HARNESS", "set_aside": polish})])
-    bad = ingame([row("c1", "FAIL", **{"class": "HARNESS", "set_aside": polish}), row("c2"), row("c3")], name="v2")
-    return (ok_["state"] == "met" and ok_["lines"]["c3"]["count"] == "not_counted"
-            and bad["state"] == "not_met" and bad.get("undecided_bars") == ["b_one"]), (ok_["why"], bad["why"])
+def t_needless_check_is_removed():
+    needless = [row("c1"), row("c2"), row("c3", "FAIL", **{"class": "HARNESS", "set_aside":
+                                                          "c3 reads the wrong cell; c2 decides b_two on its own"})]
+    left = ingame(needless)
+    tt = json.loads(json.dumps(TT6))
+    del tt["tests"]["c3"]
+    tt["bars"][1]["decides"] = ["c2"]
+    gone = ingame(needless, tt=tt, name="v2")
+    return (left["state"] == "not_met" and left["lines"]["c3"]["count"] == "needless"
+            and any("c3" in w and "remove it from the test table" in w for w in left["why"])
+            and gone["state"] == "met"), (left["why"], gone["why"])
+
+
+def t_not_counted_needs_owner():
+    owned = ingame([row("c1", "FAIL", **{"class": "HARNESS", "unrepaired": "the fix is not known: the probe has no "
+                                         "hook on the flow sum", "owner": "RIMMANDRAKE_MEND_WMOD_FLOW_PROBE_HOOK"}),
+                    row("c2"), row("c3")])
+    bare = ingame([row("c1", "FAIL", **{"class": "HARNESS", "unrepaired": "the fix is not known: the probe has no "
+                                        "hook on the flow sum"}), row("c2"), row("c3")], name="v2")
+    return (owned["lines"]["c1"]["count"] == "not_counted" and owned.get("undecided_bars") == ["b_one"]
+            and owned["state"] == "not_met" and bare["lines"]["c1"]["count"] == "unhandled"
+            and bare["state"] == "not_met"), (owned["why"], bare["why"])
+
+
+def t_mod_fixed_in_sitting_counts():
+    good = ingame(mod_fixed(), reviews=review(), name="mf_good")
+    none_ = ingame(mod_fixed(), name="mf_none")
+    unsound = ingame(mod_fixed(), reviews=review(verdict="unsound"), name="mf_unsound")
+    own = ingame(mod_fixed(), reviews=review(reader=FIXER), name="mf_own")
+    nored = ingame(mod_fixed(dict(MOD_FIX, red={"cmd": "python3 tests/flow.py", "rc": 0})), reviews=review(),
+                   name="mf_nored")
+    owed = all(x["state"] == "not_met" and x.get("fix_readers_owed") for x in (none_, unsound, own))
+    return (good["state"] == "met" and good["lines"]["c1"]["count"] == "pass" and good["lines"]["c1"].get("mod_fix")
+            and owed and nored["lines"]["c1"]["count"] == "mod"), (good["why"], none_["why"], own["why"], nored["why"])
+
+
+def t_one_build_is_the_last_rows():
+    ex = ingame(mod_fixed(), reviews=review(), name="ob")
+    mixed = ingame(mod_fixed()[:2] + [row("c2", mod_sha="abc1234def"), row("c3", mod_sha="def5678abc")],
+                   reviews=review(), name="ob2")
+    return (not any("more than one build" in w for w in ex["why"])
+            and any("more than one build" in w for w in mixed["why"])), (ex["why"], mixed["why"])
 
 
 def t_scene_wrong_same_as_check():
     rep = ingame(repaired(cls="SITE") + [row("c2"), row("c3")])
-    nop = ingame(repaired(cls="SITE", planted=None) + [row("c2"), row("c3")], claims={"c1": "unmeasured"}, name="v2")
-    aside = ingame([row("c1"), row("c2"), row("c3", "UNMEASURED", **{"class": "SITE", "set_aside":
-                                                                     "the scene had no water source to read at all"})],
-                   name="v3")
+    nop = ingame(repaired(cls="SITE", planted=None, owner="RIMMANDRAKE_STAGE_WMOD_SCENE_NO_PLANT_YET")
+                 + [row("c2"), row("c3")], claims={"c1": "unmeasured"}, name="v2")
+    needless = ingame([row("c1"), row("c2"), row("c3", "UNMEASURED", **{"class": "SITE"})], name="v3")
     return (rep["state"] == "met" and nop["state"] == "not_met" and nop["lines"]["c1"]["count"] == "not_counted"
-            and aside["state"] == "met"), (rep["why"], nop["why"], aside["why"])
+            and needless["lines"]["c3"]["count"] == "needless"), (rep["why"], nop["why"], needless["why"])
 
 
 def t_unclassed_not_silent():
@@ -152,24 +206,20 @@ def t_unclassed_not_silent():
 
 
 def t_wrong_unhandled_not_silent():
-    ex = ingame([row("c1"), row("c2"), row("c3", "FAIL", **{"class": "HARNESS"})])
-    unr = ingame([row("c1"), row("c2"), row("c3", "FAIL", **{"class": "HARNESS", "unrepaired":
-                                                             "the fix is not known: the reader has no hook here"})],
-                 name="v2")
-    return (ex["state"] == "not_met" and any("c3" in w and "set aside" in w for w in ex["why"])
-            and unr["state"] == "met" and unr["lines"]["c3"]["count"] == "not_counted"), (ex["why"], unr["why"])
+    ex = ingame([row("c1", "FAIL", **{"class": "HARNESS"}), row("c2"), row("c3")])
+    return (ex["state"] == "not_met" and ex["lines"]["c1"]["count"] == "unhandled"
+            and any("c1" in w and "repaired" in w and "owner" in w for w in ex["why"])), ex["why"]
 
 
 def t_mix_reads_each_line():
     tt = json.loads(json.dumps(TT6))
-    rows = repaired("c1") + [row("c2", "FAIL", **{"class": "MOD"}),
-                             row("c3", "FAIL", **{"class": "SITE", "set_aside": "scene staged no pawn, c2 decides"})]
+    rows = repaired("c1") + [row("c2", "FAIL", **{"class": "MOD"}), row("c3", "FAIL", **{"class": "SITE"})]
     ex = ingame(rows, name="mix")
     got = {t: ex["lines"][t]["count"] for t in tt["tests"]}
-    return (ex["state"] == "not_met" and got == {"c1": "pass", "c2": "mod", "c3": "not_counted"}
+    return (ex["state"] == "not_met" and got == {"c1": "pass", "c2": "mod", "c3": "needless"}
             and not ex.get("undecided_bars")
             and sum("in-game check c2" in w for w in ex["why"]) >= 1
-            and not any("in-game check c1" in w or "in-game check c3" in w for w in ex["why"])), (got, ex["why"])
+            and not any("in-game check c1" in w for w in ex["why"])), (got, ex["why"])
 
 
 # ---- the blind cycle -------------------------------------------------------------------------------------------------
@@ -178,7 +228,8 @@ TTB = {"version": "0.1.0", "tests": {"t1": {"command": "python3 t1.py"}},
        "bars": [{"id": "b_off", "proves_at": "4-5", "decides": ["t1"]}]}
 
 
-def cycle(name, against="check", plant="t1 run on a copy with the flow set to 0", touched=("tests/t1.py",)):
+def cycle(name, against="check", plant="t1 run on a copy with the flow set to 0", touched=("tests/t1.py",),
+          unit="rm-blind-judge-wmod-1", reviews=None, judge_true=True):
     root = os.path.join(TMP, name)
     shutil.rmtree(root, ignore_errors=True)
     c = "design/concepts/%s/" % MOD
@@ -189,7 +240,9 @@ def cycle(name, against="check", plant="t1 run on a copy with the flow set to 0"
                                                  "moves": [{"from": "offline_build", "to": "blind_challenge",
                                                             "at": "2026-11-20T09:00:00Z"}]})
     put(root, cy + "SUMMARY.md", "# cycle 1\n\n## Exit\noffline_bars: {b_off: green}\nproblems_open: 0\n"
-        "exit_met: true\n")
+        "exit_met: %s\n" % ("true" if judge_true else "false"))
+    if reviews is not None:
+        put(root, cy + "lane2/fix_reviews.jsonl", lines(reviews))
     put(root, cy + "lane2/reruns.jsonl", lines([{"test": "t1", "command": "python3 t1.py", "rc": 0, "result": "PASS"}]))
     fault = {"id": "CHK_A", "class": "Problem", "status": "FIXED abc1234"}
     if against:
@@ -199,6 +252,8 @@ def cycle(name, against="check", plant="t1 run on a copy with the flow set to 0"
           "green": {"cmd": "python3 t1.py", "rc": [0]}}
     if plant:
         fx["plant"] = plant
+    if unit:
+        fx["unit"] = unit
     put(root, cy + "lane2/fixes.jsonl", lines([fx]))
     put(root, cy + "lane1/lane1_rows.jsonl", lines([{"id": "L_ok", "verdict": "PASS"}]))
     put(root, cy + "tests_edited.json", {"edited": [{"path": "tests/t1.py", "what": "reads the right cell"}]})
@@ -225,17 +280,37 @@ def t_blind_check_repair_owes_no_judge():
     touched = blind("b_touch", touched=("tests/t1.py", "src/WMod/Source/Flow.cs"))
     root, _ = cycle("b_blind")
     blindgit = M.read_exit(root, MOD, 1)       # the temp root is no git repo: git cannot look
-    owed = [x["state"] == "not_met" and x["checks"].get("judge_owed")
+    owed = [x["state"] == "not_met" and x["checks"].get("fix_reader_owed") == ["CHK_A"]
             for x in (as_mod, unset, noplant, touched, blindgit)]
     owed.append("COULD NOT LOOK" in str(blindgit["checks"].get("mod_fixes_why", {}).get("CHK_A")))
     return (good["state"] == "met" and good["checks"].get("check_repairs") == ["CHK_A"] and all(owed)), (
         good["why"], [x["why"][:1] for x in (as_mod, unset, noplant, touched)])
 
 
+BLIND_REVIEW = [{"fault": "CHK_A", "reader": "rm-steward-wmod-cycle-one-2", "verdict": "sound",
+                 "why": "the fix changes the flow sum only, and t1 reads it red before and green after"}]
+
+
+def t_blind_mod_fix_owes_one_fresh_reader():
+    good = blind("bm_good", against="mod", reviews=BLIND_REVIEW)
+    judge_false = blind("bm_false", against="mod", reviews=BLIND_REVIEW, judge_true=False)
+    none_ = blind("bm_none", against="mod")
+    unsound = blind("bm_unsound", against="mod", reviews=[dict(BLIND_REVIEW[0], verdict="unsound")])
+    own = blind("bm_own", against="mod", reviews=[dict(BLIND_REVIEW[0], reader="rm-blind-judge-wmod-1")])
+    nounit = blind("bm_nounit", against="mod", reviews=BLIND_REVIEW, unit=None)
+    owed = all(x["state"] == "not_met" and x["checks"].get("fix_reader_owed") == ["CHK_A"]
+               for x in (none_, unsound, own, nounit))
+    return (good["state"] == "met" and judge_false["state"] == "met" and owed), (
+        good["why"], judge_false["why"], [x["why"][:1] for x in (none_, unsound, own, nounit)])
+
+
 # ---- the briefs ------------------------------------------------------------------------------------------------------
 
 BRIEF_PINS = ("mod wrong", "check wrong", "scene wrong", "Test 1", "Test 2", "FAIL on a planted fault",
-              "never sends the mod back")
+              "never sends the mod back", "remove it from the test table", "fix it in the sitting",
+              "one fresh reader", "maturation.py red-seen")
+# the free game rule rides only the briefs whose fix can need the game; the offline-stage fixer keeps its ban
+FREE_GAME = ("in-game driver", "blind judge", "live fixer")
 
 
 def t_briefs_carry_the_rule():
@@ -248,9 +323,17 @@ def t_briefs_carry_the_rule():
              "live fixer": MA.fixer_brief("RIMMANDRAKE_FIX_SELFTEST_LINE_ONE_OF_ONE", MOD, 1.0, live=True)}
     flat = {k: " ".join(v.split()) for k, v in texts.items()}
     lacks = ["%s lacks %r" % (k, p) for k, v in flat.items() for p in BRIEF_PINS if p not in v]
+    lacks += ["%s lacks the free game rule" % k for k in FREE_GAME if "bridge take --idle-ok" not in flat[k]]
+    lacks += ["the offline fixer brief lost its game ban, or gained the free game rule"
+              for v in [flat["fixer"]] if "Never take the bridge or a game." not in v or "bridge take --idle-ok" in v]
     stale = ["%s still says %r" % (k, s) for k, v in flat.items()
              for s in ("a check you judge wrong is a note to the Conductor", "File EACH failed or UNMEASURED line",
-                       "A failed or UNMEASURED line is filed as a NAMED item") if s in v]
+                       "A failed or UNMEASURED line is filed as a NAMED item", "set it aside", "set_aside",
+                       "new blind judge is owed", "Do not fix the mod in the sitting") if s in v]
+    import maturation_dispatch as MD
+    builders = {"offline builder": M.brief_text(root, MOD)[0],
+                "certificate builder": MD.cert_brief(MOD, {"T_ONE": "RIMMANDRAKE_GREEN_WMOD_T_ONE_RED_DECIDER_ONLY"}, 1.0, {"T_ONE": ["b_one"]})}
+    lacks += ["%s lacks the red-seen line" % k for k, v in builders.items() if "maturation.py red-seen" not in v]
     return not lacks and not stale, lacks + stale
 
 
@@ -279,6 +362,8 @@ def _mutants():
         "not_counted" if not r.get("class") and r.get("verdict") != "PASS" else real_class(r, earlier, tt))
     yield "every blind Problem is a check repair", "check_repair", lambda root, x, fx, edited: (True, None)
     yield "no blind Problem is a check repair", "check_repair", lambda root, x, fx, edited: (False, "planted")
+    yield "a mod fix counts with no red run", "mod_fix_shown", lambda r: None
+    yield "every fix review is sound", "review_sound", lambda reviews, key, maker: (True, None)
     del real_shown, real_repair
 
 
@@ -298,9 +383,10 @@ def missed_mutants(tests):
 
 def main():
     tests = [t_all_pass_met, t_mod_wrong_not_met, t_check_wrong_repaired_counts, t_repair_without_planted_not_pass,
-             t_set_aside_does_not_block, t_scene_wrong_same_as_check, t_unclassed_not_silent,
+             t_needless_check_is_removed, t_not_counted_needs_owner, t_mod_fixed_in_sitting_counts,
+             t_one_build_is_the_last_rows, t_scene_wrong_same_as_check, t_unclassed_not_silent,
              t_wrong_unhandled_not_silent, t_mix_reads_each_line, t_blind_check_repair_owes_no_judge,
-             t_briefs_carry_the_rule]
+             t_blind_mod_fix_owes_one_fresh_reader, t_briefs_carry_the_rule]
     fails = run(tests)
     missed = missed_mutants(tests) if not fails else []
     shutil.rmtree(TMP, ignore_errors=True)

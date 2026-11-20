@@ -99,7 +99,7 @@ def t_game_only_exit_skips_owed_judge_and_named_rows():
     check(any("game-only move" in w for w in ex["why"]), "its why says it is the game-only reading", ex["why"])
     check(not any("exit_met true" in w for w in ex["why"]), "its why never says the judge's false was true", ex["why"])
     ex = read(make("judge_true", judge_true=True))
-    check(ex["state"] == "met" and "judge_owed" not in ex["checks"], "a judge's true with a FIXED Problem: met, no "
+    check(ex["state"] == "met" and "fix_reader_owed" not in ex["checks"], "a judge's true with a FIXED Problem: met, no "
           "owed judge", ex)
     got = []
 
@@ -140,8 +140,8 @@ def t_not_game_only_move_unchanged():
     check(ex["why"][0] == M.JUDGE_SAYS_FALSE and any("R1" in w and "R2" in w for w in ex["why"]),
           "the judge's false and both rows block, as before", ex.get("why"))
     ex = M.read_exit(make("plain_true", judge_true=True, rows=[]), MOD, 1)
-    check(ex["checks"].get("judge_owed") is True and ex["state"] == "not_met",
-          "a cycle's own fixes still owe a new blind judge", ex)
+    check(ex["checks"].get("fix_reader_owed") == ["FIX_A"] and ex["state"] == "not_met",
+          "a cycle's own fixes still owe their one fresh reader", ex)
     got = []
 
     def clause(cid, text, good, evidence, **kw):

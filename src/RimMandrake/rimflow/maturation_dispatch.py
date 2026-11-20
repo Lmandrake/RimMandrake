@@ -1366,7 +1366,7 @@ def cert_brief(mod, chosen, cap, bars, gate=None):
               "item with the published sha.",
               "3. Rerun `certificate %s --run`, land the table, and end with `maturation.py certificate %s --to %s` "
               "exiting 0, or a note starting `LEFT OPEN:` on each item still red: what remains, what you tried, and the "
-              "map or the experiment that would settle it." % (mod, mod, to), "", M.HOW_A_BAR_HOLDS]
+              "map or the experiment that would settle it." % (mod, mod, to), "", M.HOW_A_BAR_HOLDS, "", M.RED_SEEN_RULE]
     return "\n".join(lines) + "\n"
 
 

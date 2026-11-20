@@ -1417,12 +1417,20 @@ STEWARD_RULES = """Rules (the owner's, carried; every one binds you):
   mod's merits; void one the tick did not class itself with `python3 src/RimMandrake/rimflow/maturation_dispatch.py
   void <unit> --why "..."` and say so in your note.
 - File a NAMED item (`rimflow file <NAME> --for BENCH --caused-by %(item)s ...`; name grammar
-  PROJECT_VERB_INTENTION_TWIST, `rimflow namecheck`) only for: a mod wrong line (class MOD); a line with no class that
-  you class mod wrong from its evidence; and a wrong check or scene that the driver could not repair (`unrepaired`)
-  when a bar would go undecided without it, with the evidence why (no tools, the fix is not known, another run holds
-  the files). Each carries its acceptance test (a command that fails now and passes on a fix, or `Acceptance test:
-  none, <reason>`), caused by THIS item so the tick finds and fixes them. A check or scene set aside, or repaired and
-  shown both ways, gets no item. `maturation.py next` reads each line's class (`lines`) and the undecided bars.
+  PROJECT_VERB_INTENTION_TWIST, `rimflow namecheck`) only for a line that still goes back and that the driver or judge
+  did not file itself (a row or fault that names `filed` is filed): a mod wrong line not fixed in the sitting; a line
+  with no class that you class mod wrong from its evidence; a needed check or scene that the driver could not repair
+  (`unrepaired`), with the evidence why (no tools, the fix is not known, another run holds the files). Each carries its
+  acceptance test (a command that fails now and passes on a fix, or `Acceptance test: none, <reason>`). A check or
+  scene repaired and shown both ways, a needless check removed, and a mod fix made in the sitting get no item.
+  `maturation.py next` reads each line's class (`lines`), the undecided bars and the fix readers owed.
+- You are the one fresh reader of each mod fix made in the sitting (owner, 2026-11-20): you did not make it, and this
+  run starts fresh. When the reading names `fix_readers_owed` (a visit) or `fix_reader_owed` (a blind cycle), read only
+  that fix, once: its diff (`git show <sha>`), its before/after test (run it at the parent and at the fix), and the
+  check it repairs. Write one row per fix to the record's `fix_reviews.jsonl` (`{"fix": <sha>` for a visit, `"fault":
+  <id>` for a cycle`, "reader": <your unit>, "verdict": "sound"|"unsound", "why": ...}`) and land it. Sound: the
+  reading can turn met, and you advance. Unsound: file it as a named item with what you found; it goes down the road
+  back. Never read a second time, and never fix the fix yourself.
 - Move the mod only with `python3 src/RimMandrake/rimflow/maturation.py advance <Mod> --to <stage> --by BENCH --why
   "..." [--steward-confirms "<what you read and the verdict>"]`, forward one stage or along a drawn road back.
 - Land with `./publish -m "subject" <explicit paths>` (the record, the journal, the ledger shard); a move that is not on
@@ -1477,10 +1485,10 @@ def steward_brief(root, mod, row):
                         "that runs in under 120 s, never a bridge, game or live run), its item's prose (items/<ID>.md) "
                         "carries `## launch-checks` then `must-fail: <that command>`, so a fixer whose red already passes "
                         "is refused at launch. Then send the mod down its road back (%s) only for a mod wrong line or an "
-                        "undecided bar: a wrong check or scene never sends the mod back. If the reading says "
-                        "a new blind judge is owed (its Problems were FIXED in the cycle), file nothing new: advance "
-                        "--to blind_challenge, so a judge who did not see the fixes judges them. The tick launches "
-                        "one fixer per item, and the next visit or cycle when they close.%s" % (
+                        "undecided bar: a wrong check or scene never sends the mod back. If the reading says only "
+                        "fresh readers of mod fixes are owed, you are that reader (the rule below): read each fix once, "
+                        "write the reviews, and when the reading then reads met, advance. The tick runs the mod's "
+                        "holder on all the items first, and the next visit or cycle when they close.%s" % (
                             "in-game visit" if row.get("stage") == "in_game" else "blind cycle",
                             "advance --to offline_build for a mod wrong line, or --to blind_challenge when every line "
                             "that sends it back is an undecided bar whose blind-lane check the driver could not repair, "
@@ -1576,7 +1584,7 @@ def live_rules(purpose, mod, seat="BENCH"):
             "src/RimMandrake/rimflow/cli.py show <ITEM>`): run them, diagnose and fix what fails while the game is up, "
             "and re-run until it passes or you know why it cannot.\n"
             "- Before you end: the game is at a clean state or closed, and the bridge is released.\n" % (
-                "\n".join(rules), purpose))
+                "\n".join(rules), purpose)) + M.FREE_GAME_RULE + "\n"
 
 
 # the offline half of a road-back item (RIMMANDRAKE_CLOSE_OFFLINE_STAGE_ITEMS_OFFLINE_GAME_WAS_DEMANDED; spec Stage 3 exit and

@@ -348,18 +348,25 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
   - your verdict must stay independent of the work;
   - your assigned work would not finish.
 - Test 1 comes first. Test 2 never makes a fix that fails test 1 worth it.
-- A wrong check is repaired or set aside in the sitting. It never sends the mod back:
+- Fix a fault in the sitting. Repair or remove a wrong check in the sitting. Neither sends the mod back:
   - Class each failed or unmeasured check first: the mod is wrong, the check is wrong, or the staged scene is wrong.
-  - A wrong check or scene is worth repair only if a bar would go undecided without it. Otherwise delete it, or set it
-    aside as not counted, with one line on the polish list. No ticket.
+  - A wrong check or scene is worth repair only if a bar would go undecided without it. Remove a check that no bar
+    needs from the test table, and delete it when nothing else names it. Write one line on the polish list as the
+    record. No ticket.
   - "A failure happened" does not make a wrong check worth the fix by itself. The failure was the check's.
   - The agent that classes a check wrong repairs it in the same sitting and runs it again. "My verdict must stay
     independent" and "my assigned work would not finish" do not excuse a wrong check or scene. The repair does not
     touch the mod.
   - A repaired check counts only after it is seen to FAIL on a planted fault (or a state known bad) and PASS on the
-    real build, in that sitting, with both readings beside the row. A repair that cannot be shown both ways leaves the
-    check not counted (UNMEASURED), never PASS.
-  - Only a check classed "the mod is wrong", or a bar left undecided, moves the mod back a stage.
+    real build, in that sitting, with both readings beside the row. A needed check whose repair cannot be shown both
+    ways stays not counted (UNMEASURED), never PASS, and keeps an owner.
+  - When the mod is wrong and the judge or driver can fix it, fix it in the sitting: a before/after test (red on the
+    parent, green on the fix), the fix, and the check shown passing. Then one fresh reader, a run that did not make the
+    fix, reads only that fix, once.
+  - Only a mod fault that could not be fixed in the sitting, or a bar left undecided, moves the mod back a stage. The
+    run files that line itself, with the evidence why, before it ends.
+  - A fix that needs the live game takes it when it is free (see "The bridge is passed through one file").
+  - A run that edits a deciding test records its red run with `maturation.py red-seen` before it closes.
 - Fix tickets with one cause, or in the same files, in one run.
 - A brief that reviews, judges, audits or files findings states three things:
   - the level that is enough;
@@ -613,7 +620,8 @@ python3 src/RimMandrake/Utils/system_click.py <x> <y>          OS-level click fo
 - His presence at the machine is not an event. Nothing reads his input clock. When he touches, leaves or returns to
   the machine, nothing is gated, delayed, yielded, requeued or aborted.
 - A seat may take the bridge when the bridge is free, ours, or stale by the 45-minute rule. Then it may also deploy
-  and restart the game. Use `rimflow bridge take --idle-ok --for "<what>"` and `./game --idle-ok --why "<what>" ...`. Each act goes
+  and restart the game. Any role that needs the live game to finish a fix does this, a judge included. A mod does not
+  wait a stage for a game that sits unused. Use `rimflow bridge take --idle-ok --for "<what>"` and `./game --idle-ok --why "<what>" ...`. Each act goes
   in his daily digest, class `bridge idle`.
 - These still bind: his OWNER hold, the `./bridge` override, no flyer flight, and never fullscreen or focus the game.
 - When you hold the bridge, you may start Steam, launch the game, or do anything else that you need. Do not ask.
