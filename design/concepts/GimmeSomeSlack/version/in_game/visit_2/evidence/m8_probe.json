@@ -1,0 +1,188 @@
+{
+ "reads": [
+  {
+   "at": "t+0",
+   "ends": [
+    [
+     156,
+     153
+    ],
+    [
+     158,
+     153
+    ],
+    [
+     178,
+     159
+    ],
+    [
+     180,
+     159
+    ]
+   ],
+   "decals": {
+    "FrayDead": 3,
+    "FrayLive": 1,
+    "JunctionTape": 1,
+    "Plug": 2,
+    "StubWall": 1
+   },
+   "pieces": 6,
+   "edges": 5
+  },
+  {
+   "at": "t+30",
+   "ends": [
+    [
+     156,
+     153
+    ],
+    [
+     158,
+     153
+    ],
+    [
+     178,
+     159
+    ],
+    [
+     180,
+     159
+    ]
+   ],
+   "decals": {
+    "FrayDead": 3,
+    "FrayLive": 1,
+    "JunctionTape": 1,
+    "Plug": 2,
+    "StubWall": 1
+   },
+   "pieces": 6,
+   "edges": 5
+  },
+  {
+   "at": "t+250",
+   "ends": [
+    [
+     156,
+     153
+    ],
+    [
+     158,
+     153
+    ],
+    [
+     178,
+     159
+    ],
+    [
+     180,
+     159
+    ]
+   ],
+   "decals": {
+    "FrayDead": 3,
+    "FrayLive": 1,
+    "JunctionTape": 1,
+    "Plug": 2,
+    "StubWall": 1
+   },
+   "pieces": 6,
+   "edges": 5
+  },
+  {
+   "at": "t+1000",
+   "ends": [
+    [
+     156,
+     153
+    ],
+    [
+     158,
+     153
+    ],
+    [
+     178,
+     159
+    ],
+    [
+     180,
+     159
+    ]
+   ],
+   "decals": {
+    "FrayDead": 3,
+    "FrayLive": 1,
+    "JunctionTape": 1,
+    "Plug": 2,
+    "StubWall": 1
+   },
+   "pieces": 6,
+   "edges": 5
+  },
+  {
+   "at": "2s real, no tick",
+   "ends": [
+    [
+     156,
+     153
+    ],
+    [
+     158,
+     153
+    ],
+    [
+     178,
+     159
+    ],
+    [
+     180,
+     159
+    ]
+   ],
+   "decals": {
+    "FrayDead": 3,
+    "FrayLive": 1,
+    "JunctionTape": 1,
+    "Plug": 2,
+    "StubWall": 1
+   },
+   "pieces": 6
+  },
+  {
+   "at": "after fresh probe",
+   "ends": [
+    [
+     156,
+     153
+    ],
+    [
+     158,
+     153
+    ],
+    [
+     178,
+     159
+    ],
+    [
+     180,
+     159
+    ]
+   ],
+   "decals": {
+    "FrayDead": 3,
+    "FrayLive": 1,
+    "JunctionTape": 1,
+    "Plug": 2,
+    "StubWall": 1
+   },
+   "pieces": 6
+  }
+ ],
+ "m8": "FAIL",
+ "fresh": {
+  "edges": 5,
+  "different": 0,
+  "missing": 0
+ }
+}

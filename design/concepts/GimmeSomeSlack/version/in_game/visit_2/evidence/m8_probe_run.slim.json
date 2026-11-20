@@ -1,0 +1,119 @@
+{
+ "label": "m8_probe_run",
+ "order": 10,
+ "source": "/mnt/d/ClaudeWork/scratch/gss_v2/m8_probe_run.json",
+ "mode": "partial",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "owlchemist.cherrypicker",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.patches"
+  ],
+  "running_sha256": "8df273a92998c0f56b1814631b132c7a4eb749a638a0c53f18a3ffc84d77d414",
+  "assembly_matches": 1,
+  "assembly_sha256": "a00e4619bc455dfa82e70d7a75a870cce61cf1790e4f15755cf31dd750c417c2",
+  "tier": {
+   "name": "gimmesomeslack",
+   "written_for": "gimmesomeslack",
+   "source": "ModsConfig.xml activeMods",
+   "active": 12,
+   "active_equals_running": true,
+   "matched_list": "gimmesomeslack"
+  }
+ },
+ "active_mods": [
+  "brrainz.harmony",
+  "ludeon.rimworld",
+  "ludeon.rimworld.royalty",
+  "ludeon.rimworld.ideology",
+  "ludeon.rimworld.biotech",
+  "ludeon.rimworld.anomaly",
+  "ludeon.rimworld.odyssey",
+  "brrainz.rimbridgeserver",
+  "owlchemist.cherrypicker",
+  "ray1203.simplecamerasetting",
+  "mandrake.rm.gimmesomeslack",
+  "mandrake.rm.patches"
+ ],
+ "game_build": "1.6.4871 rev590",
+ "run_identity": {
+  "run_id": "20261119T194020",
+  "job": "proof_all",
+  "host_os": "nt",
+  "started": "2026-11-19T19:40:20",
+  "git": {
+   "source": "git",
+   "sha": "6d345a2e95ee61b79c4d0966fa49745fccdc63fa"
+  },
+  "deploy_start": {
+   "mod": "GimmeSomeSlack",
+   "at": "2026-11-19T19:40:20",
+   "state": "in-sync",
+   "reason": null,
+   "src_dir": "src/RimMandrake/GimmeSomeSlack",
+   "src_hash": "e247670902f184f7",
+   "deployed_hash": "e247670902f184f7",
+   "n_src": 362,
+   "n_deployed": 362,
+   "n_held": 162,
+   "drift": {
+    "new": 0,
+    "changed": 0,
+    "gone": 0,
+    "sample": []
+   },
+   "dlls": [
+    {
+     "dll": "Assemblies/RimMandrakeGimmeSomeSlack.dll",
+     "sha": "a00e4619bc455dfa",
+     "srchash": "# project: RimMandrake/GimmeSomeSlack/Source/RimMandrake_GimmeSo"
+    }
+   ],
+   "src_dirty": false
+  },
+  "deploy_end": {
+   "mod": "GimmeSomeSlack",
+   "at": "2026-11-19T19:41:56",
+   "state": "in-sync",
+   "reason": null,
+   "src_dir": "src/RimMandrake/GimmeSomeSlack",
+   "src_hash": "e247670902f184f7",
+   "deployed_hash": "e247670902f184f7",
+   "n_src": 362,
+   "n_deployed": 362,
+   "n_held": 162,
+   "drift": {
+    "new": 0,
+    "changed": 0,
+    "gone": 0,
+    "sample": []
+   },
+   "dlls": [
+    {
+     "dll": "Assemblies/RimMandrakeGimmeSomeSlack.dll",
+     "sha": "a00e4619bc455dfa",
+     "srchash": "# project: RimMandrake/GimmeSomeSlack/Source/RimMandrake_GimmeSo"
+    }
+   ],
+   "src_dirty": false
+  }
+ },
+ "mod_hash": "b162df027b14644b06f02603ac57f5917b6693a5400ef0a401f55e367c9430dd",
+ "rows": [
+  {
+   "id": "M8_break_two_ends_live_dead",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": "{'west(battery side)': {'cell': [156, 153], 'tip': [156.86, 153.5], 'wall': False, 'registryLive': True, 'netLive': True, 'net': '-34152962'}, 'east': None, 'cordsAcrossNets': 0, 'endsListed': [[156, 153], [178, 159], [180, 159]], 'frays': 2}"
+  }
+ ]
+}

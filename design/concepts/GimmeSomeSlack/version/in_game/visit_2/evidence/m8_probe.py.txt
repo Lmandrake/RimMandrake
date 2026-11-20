@@ -1,0 +1,38 @@
+"""Visit 2 M8 diagnosis: run proof_all core; when M8 reads FAIL, re-read the census at later ticks and after a fresh build,
+and record whether the east (dead) cut end ever appears in the ends list. Writes D:\\ClaudeWork\\scratch\\gss_v2\\m8_probe.json."""
+import json, os, sys, time
+HERE = os.path.dirname(os.path.abspath(__file__))
+REPO = os.path.abspath(os.path.join(HERE, "..", ".."))
+NS = os.path.join(REPO, "src", "RimMandrake", "GimmeSomeSlack", "northstar")
+sys.path.insert(0, NS); sys.path.insert(0, os.path.dirname(NS)); sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
+import validation as V
+OUT = r"D:\ClaudeWork\scratch\gss_v2\m8_probe.json"
+log = {"reads": []}
+_row = V.row
+def ends_of(c):
+    return sorted(tuple(e["cell"]) for e in (c.get("ends") or []))
+def row(rows, rid, st, cls, det, *a, **k):
+    r = _row(rows, rid, st, cls, det, *a, **k)
+    if rid == "M8_break_two_ends_live_dead":
+        B = V.Bridge()
+        log["m8"] = st
+        for label, n in (("t+0", 0), ("t+30", 30), ("t+250", 250), ("t+1000", 1000)):
+            if n:
+                B.ticks(n)
+            B.probe("poll")
+            c = B.probe("census")
+            log["reads"].append({"at": label, "ends": ends_of(c), "decals": c.get("decals"), "pieces": c.get("pieces"), "edges": c.get("cordEdges")})
+        time.sleep(2.0)
+        c = B.probe("census")
+        log["reads"].append({"at": "2s real, no tick", "ends": ends_of(c), "decals": c.get("decals"), "pieces": c.get("pieces")})
+        fr = B.probe("fresh")
+        log["fresh"] = {k: fr.get(k) for k in ("edges", "different", "missing", "diffs", "why") if k in fr}
+        c = B.probe("census")
+        log["reads"].append({"at": "after fresh probe", "ends": ends_of(c), "decals": c.get("decals"), "pieces": c.get("pieces")})
+        json.dump(log, open(OUT, "w"), indent=1, default=str)
+    return r
+V.row = row
+import validation_core as VC
+VC.row = row
+import proof_all as P
+sys.exit(P.main(["--live", "--no-shots", "--skip-offline", "--only", "core", "--out", r"D:\ClaudeWork\scratch\gss_v2\m8_probe_run.json"]))
