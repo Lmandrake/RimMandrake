@@ -14,6 +14,7 @@ Offline, no build, no game. Proves:
       source replacement and a family whose plant was removed are refused; a mutation run that times out is that
       family's UNMEASURED with its cause (the run still records); lint on an unreadable law file prints its problems
       and exits 1 instead of crashing
+  L10 the clock: a FAIL reading names every reason under the VERDICT line, of any kind (19:06 read FAIL with matrix_why [])
   L7  the clock: a run that answered nothing (no VERDICT line) exits non-zero and its reading says UNMEASURED; the reading
       is written after the runs; a timeout kills the child's whole process group
 Run: python3 src/RimMandrake/Utils/selftest_vv_laws.py
@@ -257,6 +258,27 @@ def main():
     # L9 a run with no VERDICT keeps the tail of its output in the reading, so the cause is not lost
     src = open(os.path.join(HERE, "vv_matrix_clock.py")).read()
     check("L9 the clock reading keeps the matrix output tail", '"matrix_tail"' in src)
+    # L10 a FAIL reading names EVERY reason the matrix gave, not only the "red at shipped" kind (2026-11-19 19:06: FAIL
+    # with matrix_why [] - the one reason, "AUTHORED suite through the probe is not clean", was filtered out)
+    reasons = ["AUTHORED suite through the probe is not clean: ['A_b', 'C_d']",
+               "negative control did not reproduce (the matrix cannot see the bug it exists for)",
+               "kernel_fuzz red at shipped: 3/2000; laws broken: L1",
+               "surface_random: no kernel pulse went through the hook"]
+    outs = {"FAIL": "== summary ==\n  SHIPPED  kernel_fuzz  3/2000\nresults: D:\\x\nVERDICT: FAIL\n  " + "\n  ".join(reasons) + "\n",
+            "PASS": "== summary ==\n  SHIPPED  kernel_fuzz  0/2000\nresults: D:\\x\nVERDICT: PASS\n"}
+    for kind, text in outs.items():
+        if os.path.exists(reading):
+            os.remove(reading)
+        C.run, C.reading_path = (lambda cmd, timeout, t=text: (1 if kind == "FAIL" else 0, t)), (lambda: reading)
+        try:
+            with contextlib.redirect_stdout(io.StringIO()):
+                C.main([])
+            why = _j.load(open(reading))["matrix_why"]
+        finally:
+            C.run, C.reading_path = real
+        want = reasons if kind == "FAIL" else []
+        check("L10 a %s reading's matrix_why is the matrix's own reasons (%d of %d)" % (kind, len(set(why) & set(want)), len(want)),
+              why == want, why)
     print("vv laws: %d failed" % len(FAILS) if FAILS else "vv laws: all passed")
     return 1 if FAILS else 0
 

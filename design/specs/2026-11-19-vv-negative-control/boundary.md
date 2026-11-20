@@ -1,7 +1,7 @@
 # BOUNDARY: the shipped-settings matrix's negative control, Design Version 0.1.0
 
 Code: `src/RimMandrake/Utils/vv_shipped_matrix.py` (`stage_flowworks(control=True)`, `negative_control`, `derive` with
-`read_at`) and the `VV_CONTROL` split in `src/RimMandrake/FlowWorks/Source/SelfTest/VV/ShippedMatrixProbe.cs`. Item:
+`read_at`, and `stage_tree` with `compiled` and `tracked_data`, the staged tree every probe build reads) and the `VV_CONTROL` split in `src/RimMandrake/FlowWorks/Source/SelfTest/VV/ShippedMatrixProbe.cs`. Item:
 `RIMMANDRAKE_INSTALL_VV_MATRIX_CLOCK_WRITTEN_NOT_RUNNING`. Written 2026-11-19. Each promise has a test of its name in
 `src/RimMandrake/Utils/selftest_vv_negative_control.py`, which builds and runs the control for real (dotnet.exe,
 offline, no game) into its own `_selftest` stage folder. The control keeps no state between runs, so the page has no
@@ -47,5 +47,16 @@ longer names `levelSetEnabled` / `levelBySurfaceEnabled` / `creepEnabled` (the e
   no-op that reads green.
 - **the-control-is-built-before-the-long-runs.** `main()` builds the control right after the probe, before any suite
   or rates run, so a control that no longer compiles stops the run in its first minute, not after 36.
+- **the-stage-holds-what-the-suite-reads.** `stage_tree` copies the compiled trees from the working tree and every
+  git-tracked file under `src/` that is not media (`tracked_data`), and removes from the stage any data file the repo
+  no longer tracks. A selftest run through the probe reads the same files as one run from the repo. On 2026-11-19 at
+  19:06 the matrix read FAIL because its 25 AUTHORED-suite fails were all files that the old hand-made list had not
+  copied (other mods' Source and Defs, Languages, About, art_source fixtures, a northstar script, the GSS DLL). A warm
+  stage copies only a data file that is missing or whose repo key (blob id, or size and mtime for a file changed in
+  the working tree) differs from the stage's manifest: 38 s warm against 5 min 44 s for a per-file rsync stat on D:
+  (measured 2026-11-19). The test plants one case per regime (a file no longer tracked, a tracked file changed since
+  the last stage, a staged file gone missing) and checks every tracked data file, the 14 files by name and that no
+  media is staged. Not promised: a staged file edited by hand while its repo file and key stay the same (only
+  `stage_tree` writes the data layer).
 
 Later lists beside this page: `polish.md` and `next_version.md` (none yet).

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# selftest-timeout: 300   (stage + build + 2 x 2000 control seeds: 12.6 s warm, about 60 s cold, measured 2026-11-19)
+# selftest-timeout: 900   (stage + build + 2 x 2000 control seeds: 51 s warm; the stage data layer is 9 min cold on D: once per stage folder, measured 2026-11-19)
 """The shipped-settings matrix's negative control, built and run for real (dotnet.exe, offline, no game).
 
 Page: design/specs/2026-11-19-vv-negative-control/boundary.md (each promise has a test of its name here).
@@ -108,7 +108,74 @@ def t_the_control_is_built_before_the_long_runs():
     check("the-control-is-built-before-the-long-runs", stopped and "suite" not in calls and "rates" not in calls, calls)
 
 
+# the files the 25 AUTHORED-suite fails of 2026-11-19 19:06 could not find in the stage (authored_fails.txt of that run)
+READ_0619 = ["src/RimMandrake/FlowWorks/northstar/pump_outflow_live.py",
+             "src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_VentGasTap.xml",
+             "src/RimMandrake/FlowWorks/Languages/English/Keyed/FlowWorks_Keys.xml",
+             "src/RimUtinni/UtinniPatches/Patches/ClimbingGear_JawaFactions.xml",
+             "src/RimMandrake/HugeThings/Source/Titanic/WallsSlots/TrenchStrideHook.cs",
+             "src/RimMandrake/Pyrelands/Source/RM_TerrainDig.cs",
+             "src/RimMandrake/FlowWorks/art_source/Drawbridge/anchor_cable_art.json",
+             "src/RimMandrake/GimmeSomeSlack/Defs/Aerial/RM_ConduitStyles.xml",
+             "src/RimMandrake/GimmeSomeSlack/Assemblies/RimMandrakeGimmeSomeSlack.dll",
+             "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs",
+             "src/RimMandrake/GimmeSomeSlack/Source/Aerial/CompAerialAnchor.cs",
+             "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialLineProfiles.cs",
+             "src/RimMandrake/BlueDesert/Defs/ThingDefs_Items/RM_BlueIce.xml",
+             "src/RimMandrake/FlowWorks/About/About.xml"]
+
+
+def stage_misses(dest, rels):
+    """-> the rels a selftest would not find in the stage at dest."""
+    return [r for r in rels if not os.path.isfile(os.path.join(dest, *r.split("/")))]
+
+
+def t_the_stage_holds_what_the_suite_reads():
+    """Stages into its own folder with four plants, one per regime a later run meets: a file the repo no longer tracks
+    (pruned), a tracked file whose repo content changed since the last stage (its manifest key is made old: recopied), a
+    staged file that went missing (recopied), and the 14 files the 19:06 fails could not find."""
+    import json
+    dest = M.STAGE + "_tree"
+    stale = os.path.join(dest, "src", "RimMandrake", "ZZ_vv_stale", "Defs", "gone.xml")
+    changed, lost = READ_0619[1], READ_0619[2]
+    man = os.path.join(dest, M.MANIFEST)
+    os.makedirs(os.path.dirname(stale), exist_ok=True)
+    open(stale, "w").write("<Defs/>")
+    if os.path.isfile(man):
+        with open(man, encoding="utf-8") as f:
+            had = json.load(f)
+        had[changed] = "planted-old-key"
+        with open(man, "w", encoding="utf-8") as f:
+            json.dump(had, f)
+    for rel, junk in ((changed, "planted stale content"), (lost, None)):
+        path = os.path.join(dest, *rel.split("/"))
+        if junk is None:
+            if os.path.exists(path):
+                os.remove(path)
+        else:
+            os.makedirs(os.path.dirname(path), exist_ok=True)
+            open(path, "w").write(junk)
+    try:
+        data = M.stage_tree(dest)
+    except SystemExit as e:
+        check("the-stage-holds-what-the-suite-reads", False, "staging stopped: %s" % e)
+        return
+    have = M.stage_files(dest, M.compiled())
+    miss, extra = sorted(set(data) - have), sorted(have - set(data))
+    miss19 = stage_misses(dest, READ_0619)
+    same = open(os.path.join(dest, *changed.split("/")), "rb").read() == open(os.path.join(M.ROOT, *changed.split("/")), "rb").read()
+    media = [r for r in data if r.lower().endswith(M.MEDIA)]
+    built = stage_misses(dest, ["src/RimMandrake/FlowWorks/Source/SelfTest/Program.cs", "src/Directory.Build.props"])
+    check("the-stage-holds-what-the-suite-reads", not miss and not extra and not miss19 and same and not media and not built,
+          "tracked data files missing %d of %d (limit 0; first %s); untracked files left %d (limit 0, the planted one "
+          "among them: %s); 19:06 fail files missing %d of %d (limit 0; %s); changed file recopied %s; media staged %d "
+          "(limit 0); compiled tree missing %s" % (
+              len(miss), len(data), miss[:3], len(extra), os.path.exists(stale), len(miss19), len(READ_0619), miss19,
+              same, len(media), built))
+
+
 def main():
+    t_the_stage_holds_what_the_suite_reads()
     t_the_control_is_built_before_the_long_runs()
     t_the_control_builds()
     t_a_plant_or_trace_is_refused_in_the_control()

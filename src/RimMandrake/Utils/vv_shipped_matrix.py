@@ -13,7 +13,8 @@ the same field) are pushed through the adapter lines that copy settings into RM_
 player-facing bool setting that an adapter line reads and re-evaluates the adapter (so viscosity off also turns creep off,
 exactly as the game does). The owner's saved settings file is read and its differences listed, never used.
 
-HOW. Stages FlowWorks/Source (+ Defs, _Shared) on D:\\ClaudeWork\\rimmandrake\\build\\VV_PILOT1_<clone hash>, deletes the probe
+HOW. Stages the compiled trees and every tracked non-media file under src/ (stage_tree) on
+D:\\ClaudeWork\\rimmandrake\\build\\VV_PILOT1_<clone hash>, deletes the probe
 bin/obj (stale-stage lesson 2026-10-16), inserts one line into the STAGED ArrayWorld.Pulse
 (`VV.MatrixFlags.Apply(k);` just before `k.Pulse`) and one into the staged Program.Case (case name), builds
 SelfTest/VV/ShippedMatrixProbe.cs with the whole SelfTest compile list, and runs it with Windows dotnet.exe.
@@ -329,22 +330,108 @@ def sibling_sources():
     return sorted(n for n in names if n != "FlowWorks" and os.path.isdir(os.path.join(base, n, "Source")))
 
 
+COMPILED = ["src/RimMandrake/FlowWorks/Source/", "src/RimMandrake/_Shared/", "src/Directory.Build.targets", "src/Directory.Build.props"]
+MEDIA = (".png", ".psd", ".ogg", ".wav")    # winbuild.RSYNC_EXCLUDES' media; no selftest reads one (2026-11-19 run: 0 of 25 fails)
+
+
+def compiled():
+    """What the build compiles, copied from the working tree: FlowWorks/Source, _Shared, the Directory.Build files and
+    every sibling mod Source the SelfTest csproj or its .targets name (sibling_sources)."""
+    return COMPILED + ["src/RimMandrake/%s/Source/" % m for m in sibling_sources()]
+
+
+def tracked_data(comp=None):
+    """Every git-tracked file under src/ that the build does not compile from the working tree (COMPILED) and that is not
+    media: what a selftest may READ. The suite reads other mods' Source, Defs, About, Languages and Patches, art_source
+    fixtures, northstar scripts and tracked DLLs (2026-11-19 19:06: 25 AUTHORED fails, each a file the hand-made list
+    never copied), so the list is the repo's own, not a list of guesses that the next test outgrows.
+    -> {rel: key}: the index blob id, or for a file changed in the working tree its size and mtime (read on the Linux
+    side, which is cheap), so a warm stage copies only what changed without statting D: once per file."""
+    comp = compiled() if comp is None else comp
+    r = subprocess.run(["git", "ls-files", "-s", "-z", "--", "src"], cwd=ROOT, capture_output=True, timeout=120, check=True)
+    m = subprocess.run(["git", "ls-files", "-m", "-z", "--", "src"], cwd=ROOT, capture_output=True, timeout=120, check=True)
+    changed = set(m.stdout.decode("utf-8").split("\0"))
+    out = {}
+    for ent in r.stdout.decode("utf-8").split("\0"):
+        if not ent:
+            continue
+        meta, rel = ent.split("\t", 1)
+        parts = rel.split("/")
+        if (rel.lower().endswith(MEDIA) or any(rel == c or rel.startswith(c) for c in comp)
+                or {"bin", "obj", "Textures", "Sounds", "__pycache__"} & set(parts[:-1])):
+            continue
+        if rel in changed:
+            try:
+                st = os.stat(os.path.join(ROOT, rel))
+            except FileNotFoundError:      # deleted in the working tree: a selftest run from the repo would not find it
+                continue
+            out[rel] = "wt:%d:%d" % (st.st_size, st.st_mtime_ns)
+        else:
+            out[rel] = meta.split()[1]
+    return out
+
+
+def stage_files(dest, comp):
+    """-> the set of repo-relative files under dest/src outside the compiled trees (os.walk: scandir names, no stat per
+    file; 14.6 s for 11,664 files on D:, measured 2026-11-19, against 174 s for rsync's stat of the same files)."""
+    have = set()
+    for d, dirs, files in os.walk(os.path.join(dest, "src")):
+        rd = os.path.relpath(d, dest).replace(os.sep, "/") + "/"
+        if any(rd.startswith(c) for c in comp if c.endswith("/")):
+            dirs[:] = []
+            continue
+        have.update(rd + fn for fn in files)
+    return have - set(comp)
+
+
+MANIFEST = ".vv_data_manifest.json"
+
+
+def stage_tree(dest, data=True):
+    """The staged copy of the repo the probe builds and its selftests read: compiled() from the working tree (--delete),
+    and tracked_data() beside it. A data file the repo no longer tracks is removed from the stage, so a test that lists a
+    folder sees the repo's folder, not an old run's. Warm, only a data file that is missing from the stage or whose key
+    (tracked_data) differs from the one the stage's manifest recorded is copied; the manifest is written after the copy
+    succeeds, so a copy that died is redone. data=False: the compiled trees only, for a stage that builds and runs rates
+    but never the suite (the control, a law plant): the build reads Source only (the SelfTest csproj and its harness
+    .targets), and the data layer cost 9 min cold on D: (measured 2026-11-19). -> the data list."""
+    os.makedirs(dest, exist_ok=True)
+    comp = compiled()
+    _rsync(comp, dest)
+    want = tracked_data(comp) if data else {}
+    man = os.path.join(dest, MANIFEST)
+    try:
+        with open(man, encoding="utf-8") as f:
+            had = json.load(f)
+    except (OSError, ValueError):
+        had = {}
+    have = stage_files(dest, comp)
+    for rel in sorted(have - set(want)):
+        os.remove(os.path.join(dest, *rel.split("/")))
+    todo = [rel for rel, k in want.items() if rel not in have or had.get(rel) != k]
+    if todo:
+        lst = os.path.join(dest, ".vv_data_files")
+        with open(lst, "w", encoding="utf-8") as f:
+            f.write("\n".join(todo) + "\n")
+        # with a manifest every listed file is known to differ (-I: copied whatever its size and time); with none (a
+        # first run, or a stage made before the manifest) rsync's own size-and-time test skips what is already there
+        flags = "-tRI" if had else "-tR"
+        r = subprocess.run(["rsync", flags, "--no-perms", "--no-owner", "--no-group", "--modify-window=2", "--files-from", lst,
+                            ".", dest + "/"], cwd=ROOT, timeout=1800)
+        if r.returncode:
+            sys.exit("VV: rsync of the tracked data failed (%d)" % r.returncode)
+    with open(man + ".tmp", "w", encoding="utf-8") as f:
+        json.dump(want, f)
+    os.replace(man + ".tmp", man)
+    return list(want)
+
+
 def stage_flowworks(control=False, source_plants=(), tag=""):
     """control=True: the same stage with RM_FlowKernel.cs replaced by CONTROL_REV's, and a minimal compile list.
     source_plants: (repo-relative file, find, replace) applied to the STAGED copy before the build (vv_laws.py prove); a
     planted stage gets its own folder (tag), so a normal run never builds a planted file."""
     dest = STAGE + ("_control" if control else "") + (("_plant_" + tag) if tag else "")
-    os.makedirs(dest, exist_ok=True)
-    # the selftests read the mod's shipped Defs/, Patches/ and Tools/ (call-site and data pins), so they are staged
-    rels = ["src/RimMandrake/FlowWorks/Source/", "src/RimMandrake/FlowWorks/Defs/", "src/RimMandrake/FlowWorks/Patches/",
-            "src/RimMandrake/FlowWorks/Tools/", "src/RimMandrake/_Shared/",
-            "src/Directory.Build.targets", "src/Directory.Build.props"]
-    # ThirstChecks' Thirst_slime_last_resort_ruled reads OTHER mods (read-only copies): the compose manifest,
-    # the About/ and Defs/ of the slime-outcome mods, and GelatinousSlime's SlimeIngestion.cs
-    rels += ["src/RimMandrake/Biomes.compose.json", "src/RimMandrake/GelatinousSlime/Source/SlimeIngestion.cs"]
-    rels += ["src/RimMandrake/%s/%s/" % (m, sub) for m in ("Contagion", "TheRot", "GelatinousSlime") for sub in ("About", "Defs")]
-    rels += ["src/RimMandrake/%s/Source/" % m for m in sibling_sources()]
-    _rsync(rels, dest)
+    stage_tree(dest, data=not (control or tag))    # only the plain stage runs the suite, which reads the data
     for rel, find, repl in source_plants:
         _patch(os.path.join(dest, rel), find, repl)
     st = os.path.join(dest, "src", "RimMandrake", "FlowWorks", "Source", "SelfTest")
