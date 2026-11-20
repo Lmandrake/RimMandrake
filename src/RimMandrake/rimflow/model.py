@@ -776,6 +776,7 @@ MACHINE_FAMILIES = (
     re.compile(r"^[A-Z0-9]+_DESIGN_FIRST_TOUCH$"),                  # first_touch.SUFFIX
     re.compile(r"^(OPS|LIVE_RESTORE|STEVE_LANE_UNSTICK)_[A-Z0-9_]+$"),  # ops_watch / steward alarms
     re.compile(r"^AUDIT_HARDFLAG_FIX_[A-Z0-9]+$"),                  # audit_hardflag_file
+    re.compile(r"^HARNESS_REPAIR_CAUSE_[0-9A-F]{8}(_[0-9]+)?$"),    # testq retest.repair_base / repair_slot
 )
 
 

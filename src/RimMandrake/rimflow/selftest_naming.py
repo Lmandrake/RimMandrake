@@ -155,6 +155,23 @@ def t_gitindex_sees_new_ids_not_constants():
     assert got == ["TPS_TIMERS_AUDIT_WATCHING_THE_WATCH", "SANDSTORM_WEATHER_TUNING_1"], got
 
 
+def t_harness_repair_names_mint():
+    """RIMMANDRAKE_RENAME_INGEST_REPAIR_ITEMS_MINT_REFUSES_THEM: testq ingest spawns retest.repair_base(cause) and its
+    _N generations; strict mint refused every one from 2026-11-05 on, so no harness repair was filed (10 jobs)."""
+    sys.path.insert(0, os.path.join(os.path.dirname(HERE), "Utils", "testq"))
+    import retest                                            # noqa: E402
+    for cause in ("bridge timeout at step 3", "x", "the 17704C88 cause"):
+        base = retest.repair_base(cause)
+        for name in (base, "%s_2" % base, "%s_13" % base):
+            probs = model.mint_problems(name, set(), strict=True)
+            assert probs == [], "%s refused: %s" % (name, probs)
+    all_digits = "HARNESS_REPAIR_CAUSE_12345678"             # a hex digest with no letter in it
+    assert model.mint_problems(all_digits, set(), strict=True) == [], model.mint_problems(all_digits, set(), strict=True)
+    for human in ("HARNESS_REPAIR_THE_BRIDGE_AGAIN", "HARNESS_REPAIR_CAUSE_ABCD123", "HARNESS_REPAIR_CAUSE_abcd1234"):
+        assert model.mint_problems(human, set(), strict=True), "%s is not the machine shape, yet it minted" % human
+    assert model.mint_problems(base, {base}, strict=True), "an existing repair name still collides"
+
+
 def t_item_heading_recognises_new_ids():
     assert model.is_item_heading("TPS_TIMERS_AUDIT_WATCHING_THE_WATCH", [])
     assert not model.is_item_heading("The", [])

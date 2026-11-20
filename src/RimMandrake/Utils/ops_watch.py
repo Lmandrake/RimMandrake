@@ -1082,6 +1082,17 @@ def c_testing(now, rules, ctx):
         bad = []
         jobs = done_jobs(now - 7 * DAY, bad, now)
     bad = bad or []
+    # RIMMANDRAKE_RENAME_INGEST_REPAIR_ITEMS_MINT_REFUSES_THEM: ingest stamps a record `ingested` with an `error` once it
+    # stops retrying; nothing read that, and 10 harness repairs were lost over 10 days without a sign
+    lost = sorted(((d.get("job") or {}).get("id") or "?", str(d["ingested"]["error"])) for _, d in jobs
+                  if isinstance(d.get("ingested"), dict) and d["ingested"].get("error"))
+    gave = [j for j, _ in lost]
+    said = "; ".join("%s: %s" % (j, err[:120]) for j, err in lost[:3])
+    if bad:
+        out["testing.ingest_gave_up_7d"] = E(len(gave), "%d done record(s) unreadable: a floor" % len(bad),
+                                             "testq records ingest gave up on, 7 d", said=said, jobs=gave)
+    else:
+        out["testing.ingest_gave_up_7d"] = M(len(gave), "testq records ingest gave up on, 7 d", said=said, jobs=gave)
     closes = ctx.get("closes")
     if closes is None:      # costs the Steve half only: Archmagi's day records do not need the ledger
         out["testing.steve_nothing_h_7d"] = U("the ledger was not readable, so closes after a run are unknown")
