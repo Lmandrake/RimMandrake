@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "d76b0e268ff542b484e145e12d4e9a0c0806893fdc55a76ce07bd1490a2e9e5d",
+  "body_sha256": "12d28ad819c346f95e8d45181c964d43a9763b40d0140d5548f6e782a063b66c",
   "reducer": 1,
   "shards": {
    "BACKFILL": 893183,
@@ -11,7 +11,7 @@
    "HOLDER.run-1795152236": 3418,
    "HOLDER.run-1795160350": 1258,
    "HOLDER.run-1795161691": 1067,
-   "HOLDER.run-1795162652": 1664,
+   "HOLDER.run-1795162652": 2404,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1688,7 +1688,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1352,
+  "events": 1353,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7789,7 +7789,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-20T08:38:15Z",
+   "last": "2026-11-20T08:39:19Z",
    "lease": "run-1795162652",
    "released": false,
    "token": 9
@@ -8403,6 +8403,14 @@
     "ts": "2026-11-16T10:13:59Z",
     "version": "0.1.0",
     "where": "src/RimMandrake/FlowWorks/Source/RimMandrake_FlowWorks.csproj"
+   },
+   "trap:a-per-square-rounded-fake-hands-back-every-small-take": {
+    "by": "HOLDER.run-1795162652",
+    "status": "noted",
+    "text": "A fake that rounds each square to whole dL after levelling hands back any take under one dL a square, so a slow film never drains and every slow regime reads UNMEASURED: the sweep looked green but was blind. Fake.spread keeps the total in whole dL; section (d) refuses a sweep missing any verdict.",
+    "ts": "2026-11-20T08:39:19Z",
+    "version": "0.1.0",
+    "where": "src/RimMandrake/FlowWorks/northstar/selftest_source_pays_scene.py (Fake.spread, film_sweep)"
    },
    "trap:a-planned-full-sweep-needs-16740-s-but": {
     "by": "BACKFILL",

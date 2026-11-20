@@ -1,7 +1,7 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":15372,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":1664,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=bc0b24a56fd12958ba1d9f828bd3b0903bb72055d34a3f66c9d44371aed7c60c -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":15372,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=b11b2319d36bb6cf3c996b709d20e8e615beeda185401059d1eefc6815224662 -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage offline_build · 1352 events in 13 shards · reducer 1
-holder lease run-1795162652, token 9, last active 2026-11-20T08:38:15Z
+version 0.1.0 · stage offline_build · 1353 events in 13 shards · reducer 1
+holder lease run-1795162652, token 9, last active 2026-11-20T08:39:19Z
 holder session e253ffba-ec5f-4ace-823c-57c7e385de14, context 178348 of ceiling 400000
 
 ## Last checkpoint (HOLDER.run-1795162652, 2026-11-20T08:38:15Z)
@@ -190,7 +190,7 @@ holder session e253ffba-ec5f-4ace-823c-57c7e385de14, context 178348 of ceiling 4
 - RIMMANDRAKE_PIN_FLOWWORKS_CONVERTER_CALLER_RATE_AND_SUN [open, problem · bars inv_converters]: T_CONVERT stays green when CompLiquidConverter drops the th…
 - RIMMANDRAKE_PIN_FLOWWORKS_DRILL_CALLER_READS_SETTING [open, problem · bars inv_drilling]: T_DRILL stays green when Building_LiquidDrill.CurrentBlock…
 
-## Traps (264) — what a reader would otherwise get wrong (each cut to 60 chars; `modledger.py show --mod FlowWorks <subject>` for the whole)
+## Traps (265) — what a reader would otherwise get wrong (each cut to 60 chars; `modledger.py show --mod FlowWorks <subject>` for the whole)
 - trap:the-inventory-s-proof-field-reads-stale-20
 - trap:three-inventory-rows-are-impl-absent
 - trap:every-live-scene-s-tier-says-quicktest
@@ -310,6 +310,7 @@ holder session e253ffba-ec5f-4ace-823c-57c7e385de14, context 178348 of ceiling 4
 - trap:validation-v2-o2-checks-bool-toggles-only-so
 - trap:tossrange-4-9-is-marked-provisional-auto-decided
 - trap:z-log-budget-charges-the-error-to-gss
+- trap:a-per-square-rounded-fake-hands-back-every-small-take
 - 145 traps on closed or claimed findings (verified, withdrawn, claimed_fixed), not listed: `modledger.py find --mod FlowWorks --class trap <words>`
 
 ## Causes refuted (46) — do not chase these again
@@ -490,6 +491,6 @@ spend recorded: USD 78.94, 45401435 tokens
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
 - notes: 11, never printed here (`modledger.py find --mod FlowWorks <words>`)
-- the full history: 1352 events (views/history.md; never read whole)
+- the full history: 1353 events (views/history.md; never read whole)
 
-cursor: t=2026-11-20T08:38:15Z.1795163895145746026 (modledger.py since --mod FlowWorks t=2026-11-20T08:38:15Z.1795163895145746026 prints what changed after this packet)
+cursor: t=2026-11-20T08:39:19Z.1795163959971224622 (modledger.py since --mod FlowWorks t=2026-11-20T08:39:19Z.1795163959971224622 prints what changed after this packet)
