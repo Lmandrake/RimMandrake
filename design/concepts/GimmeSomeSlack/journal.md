@@ -13,12 +13,12 @@ mods read alike.
 - **Design Version 0.1.0, locked** on his word 2026-11-13 ~3:40 PM PST (`version/VERSION.json`); the lock record pins the text
   at that word, `bf33322d77` (re-pinned 2026-11-14, steward's decision). Code: `src/RimMandrake/GimmeSomeSlack/` (C#, 62
   sources; C# SelfTest 4515 checks; `validation.py`; `northstar/proof_all.py`, the one dense live proof).
-- **Stage now:** Stage 6, in-game acceptance, since 2026-11-17 9:22 AM PST (`version/stage_record.json`).
+- **Stage now:** Stage 6, in-game acceptance, since 2026-11-20 1:21 AM PST (`version/stage_record.json`).
 - **Bars:** 48 (23 inventory rows of `record.json` + 26 leaves of `tree.json`; `shock_reach_setting` is both, so 49 rows
   name 48 ids; `cords_draw_under_things` added by his card 2026-11-14). The test-and-stage table is
   `version/test_table.json` (read view `version/test_table.md`), made by the throwaway `version/make_test_table.py`. Of 48
   bars: 48 have a deciding test runnable today (counts as of now: "Waiting on").
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-17 9:22 AM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-20 1:21 AM PST).
 - **Open questions for him:** "Questions for him", the last part of this top section.
 
 ### The vision (his root paragraph, `record.json` root, OWNER:1793895896496551063)
@@ -367,4 +367,13 @@ row 2; Stage 3 about $10.3 and 50 minutes (12:15 to 13:05 PST). No helpers, no g
 - Owner said: per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: delegated: steward road back: every visit-1 FAIL/UNMEASURED line is filed and closed (M8 dead cut end, D2 fresh builder, box leads off slope, walk split at 1d580847bd/298de5b1bf; sparking-wall and under-item checks mended per the owner's 2026-11-16 ruling; three unwritten drivers now in scene_rows.py and passing on the FlowWorks tier) by the Fable run RIMMANDRAKE_LAY_SLACK_CLOSE_FITTINGS_TWENTY_ONE_UNLAID (published 1bd5dfa700cb); the Conductor released the hold 2026-11-17 9:04 AM PST for the next visit; all 198 rows were made on 6ecfb14c, another build, so visit 2 reruns every check incl. the full-list walk
 - Was, "Stage now": - **Stage now:** Stage 6, in-game acceptance, since 2026-11-16 3:25 AM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-16 3:25 AM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-20 1:21 AM PST, stage change: In-game acceptance (Stage 6) to In-game acceptance (Stage 6) (by BENCH)
+
+- Why: visit 2 road back: both FAIL lines are game-only (RIMMANDRAKE_SETTLE_SLACK_CUT_CENSUS_DEAD_END_POLL_LATE for M8/sc_cut_ends, RIMMANDRAKE_MEND_SLACK_STYLED_RUNS_FRESH_BUILD_DIVERGES for sc_walk), filed --needs game-up; the next visit launches when they close and reruns every check, sc_settings on its FlowWorks tier
+- Checks passed: order, by, version, hold.
+- Steward confirms: read visit_2/SUMMARY.md and rows.jsonl (197 checks: 194 PASS, 3 FAIL, 0 UNMEASURED last rows, one build a00e4619/85f388636e). Judge the judge: REAL MISS = M8+sc_cut_ends (census reads before the graph worker publishes; game-only), sc_walk (fresh build != live cords on review stations 5 and 31, save-load loses a line; full list, game-only). CRITERION FLAW = test-table tiers of sc_removal_consequence (can only run on tier bridge) and sc_true_to_grid (reads a FlowWorks-only input), fixed at 994c0ff639, bars' meaning unchanged, the table is not pinned. RECORD GAP = sc_settings ran on tier gimmesomeslack, the table names the FlowWorks tier: a re-run next visit. The driver's MATCH item premise was false (superseded). No tests weakened: the visit's only test edit adds selftest_gravship_scene_exit.py (774d8f068b). P15 no-hose is already the Polish item RIMMANDRAKE_GUARD_GSS_NOHOSE_FLEXIBLE_PIPES_CLAUSE_UNMUTATED. Verdict: back to in_game, game-only.
+- Was, "Stage now": - **Stage now:** Stage 6, in-game acceptance, since 2026-11-17 9:22 AM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-17 9:22 AM PST).
 - Record: `version/stage_record.json`.
