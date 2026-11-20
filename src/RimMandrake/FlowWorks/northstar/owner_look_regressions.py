@@ -14,7 +14,9 @@ ingame validations, yes?"  The table of every defect: design/RimMandrake/validat
 
 Runs on the keeper scene UNDER_LIQUID_LAW_BIGPIT_20261112b (big_pit_scene.py's series: BP0 dry .. BP5 brim water, BP6 tar),
 read from its scene_plan.json (`--plan`; default <OUT>\\scene_plan.json). Read only, unless --acts (then it pours on the
-spare dry test pit, default 140,100, and drains it again; never on the series, never saves). Minimal list, about a minute.
+spare dry test pit the plan names, its "spare" [x, z, side, depth], and drains it again; never on the series, never saves;
+`--acts x,z` names a spare by hand, e.g. 140,100 on the 11-12 keeper save, whose plan predates "spare"). Minimal list, about
+a minute.
 
 What a row can and cannot see: RM_SubmergeDraw.ProofSubmerge reports what the ONE under-liquid law decides for the first
 thing at a cell (share under, seenLine, seenFoot, shadow, label alpha). It reads the law each drawer is handed, not the
@@ -57,7 +59,7 @@ import sys
 SUB = "RimMandrake.FlowWorks.RM_SubmergeDraw"
 GL = "RimMandrake.FlowWorks.RM_GodLiquid"
 PW = 16
-SPARE = (140, 100, 6, 8)        # the spare dry test pit of the keeper save: SW corner, side, depth notches
+SPARE_SIDE_DEPTH = (6, 8)       # a spare named by hand (--acts x,z) with no plan spare: the 11-12 keeper's side and notches
 THING_SHADOW_ALPHA = 0.30       # RM_UnderLiquid.DefaultThingShadowAlpha (kept equal by selftest_flowworks_underliquid_parity)
 SHEET_QUEUE = 2449              # RM_FaceMaterial.SheetQueue: a floor shadow must draw before it (UnderSheetQueue 2448)
 NOTCH_M = 0.5                   # RM_Volume.MetresPerNotch: ProofSubmerge's level= is in notches
@@ -299,6 +301,15 @@ def judge_scene(plan, proof, here=None):
     return rows
 
 
+def spare_of(plan, at=None):
+    """The spare pit --acts pours on: (x, z, side, depth notches). at (x, z) by hand wins and keeps the plan spare's side and
+    depth (else SPARE_SIDE_DEPTH); else the plan's "spare"; None when neither (never another save's pit, guessed)."""
+    sp = plan.get("spare")
+    if at:
+        return tuple(at) + (tuple(sp[2:]) if sp else SPARE_SIDE_DEPTH)
+    return tuple(sp) if sp else None
+
+
 def blocked_rows():
     return [("OL_label_text_true_depth", "BLOCKED", "no reader for the on-screen pit label (" + LABEL_HOOK + "); "
              "expected text is pinned offline by PitLabelChecks"),
@@ -357,20 +368,20 @@ def main(argv):
         return 2
     out = argv[1]
     plan_path = os.path.join(out, "scene_plan.json")
-    spare = None
+    act, at = False, None
     rest = argv[2:]
     while rest:
         a = rest.pop(0)
         if a == "--plan":
             plan_path = rest.pop(0)
         elif a == "--acts":
-            spare = SPARE
+            act = True
             if rest and "," in rest[0]:
-                x, z = (int(v) for v in rest.pop(0).split(","))
-                spare = (x, z) + SPARE[2:]
+                at = tuple(int(v) for v in rest.pop(0).split(","))
     os.makedirs(out, exist_ok=True)
     with open(plan_path) as fh:
         plan = json.load(fh)
+    spare = spare_of(plan, at) if act else None
     sm0 = call("jawa/screenshot_mode")
     seen = {}
 
@@ -384,7 +395,9 @@ def main(argv):
     if spare:
         rows += acts(spare)
     else:
-        rows.append(("OL_pour_never_no_room", "UNMEASURED", "acts off (pass --acts to pour on the spare pit)"))
+        rows.append(("OL_pour_never_no_room", "UNMEASURED", "acts off (pass --acts to pour on the spare pit)" if not act else
+                     "the plan names no spare pit (a scene_plan.json older than big_pit_scene's spare): re-run big_pit_scene.py "
+                     "plan and stage, or pass --acts x,z for a save whose spare is known"))
     rows += blocked_rows()
     call("jawa/screenshot_mode", enabled=False)
     rows.append(("OL_screenshot_mode_off",) + judge_screenshot(sm0, call("jawa/screenshot_mode")))

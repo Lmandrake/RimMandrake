@@ -35,6 +35,11 @@ COPY_ROWS = [("BP0_dry", 2, 22, 0, None), ("BP1_0.5m", 21, 22, 1, None), ("BP2_1
              ("BP3_2m", 59, 22, 4, None), ("BP4_3m", 2, 2, 6, None), ("BP5_brim", 21, 2, 8, None),
              ("BP6_tar1.5m", 40, 2, 3, "RM_Fluid_Tar")]
 HEADER_AT = (2, 41)              # offset of the series label
+# the spare dry pit owner_look_regressions --acts brims and overflows (RIMMANDRAKE_DIG_OL_SPARE_PIT_ONLY_IN_OLD_SAVE: only the
+# 11-12 keeper save had one, so OL_pour_never_no_room was UNMEASURED on every staged scene). Side 6 is that save's spare; it
+# lies in the free SE of the site (east of BP6, south of BP3), 8 cells or more off every copy, inside the reset and cleared
+# rect; the copies keep 3 cells between each other (COPY_ROWS)
+SPARE_AT, SPARE_SIDE = (64, 7), 6
 # installed furniture: (def, source mod); positions come from pack_layout
 FURN = [("SculptureGrand", "Core"), ("DoubleBed", "Core"), ("RM_GlowTank", "RimMandrake LuminousPigment"),
         ("RM_HoseReel", "RimMandrake FlowWorks"), ("Table2x2c", "Core"), ("TableButcher", "Core"),
@@ -139,6 +144,11 @@ def scene_things(sizes):
 def copies_for(origin):
     ox, oz = origin
     return [(k, ox + dx, oz + dz, f, fl) for k, dx, dz, f, fl in COPY_ROWS]
+
+
+def spare_for(origin):
+    """[x, z, side, depth notches] of the spare dry pit: SW corner in world cells. Nothing is spawned in it."""
+    return [origin[0] + SPARE_AT[0], origin[1] + SPARE_AT[1], SPARE_SIDE, DEPTH]
 
 
 def site_rect(origin):
@@ -265,6 +275,10 @@ def key_markdown(plan, provisional=False):
     for key, x0, z0, f, fl in plan["copies"]:
         L.append("| %s | %d,%d | %d notch(es) = %s | %s | %.1f,%.1f |" % (key, x0, z0, f, format_metres(metres(f)), fl or ("water" if f else "dry"),
                                                                           x0 + PW / 2, z0 + PW / 2))
+    if plan.get("spare"):
+        sx, sz, sw, sd = plan["spare"]
+        L += ["", "Spare dry pit (for `owner_look_regressions.py --acts`: brimmed, overflowed, drained; nothing in it): SW corner "
+              "%d,%d, %dx%d cells dug %d notches." % (sx, sz, sw, sw, sd)]
     L += ["", "Series label header at %d,%d (tag `bigpit`). The deepest copy is the brim one (%s)." % (ox + HEADER_AT[0], oz + HEADER_AT[1],
                                                                                               [c[0] for c in plan["copies"] if c[3] == DEPTH][0]),
           "", "## Contents (identical in every copy)", "", "| kind | def | source | local cell | stack | stuff |", "|---|---|---|---|---|---|"]
@@ -422,7 +436,7 @@ def do_plan(origin_arg):
         row("plan_layout", "FAIL", str(ex))
         return False
     plan = {"origin": list(origin), "map_size": size, "geysers": gz, "sizes": sizes, "stuff": stuff, "things": things,
-            "copies": copies_for(origin), "site": list(site_rect(origin)), "captures": capture_list(origin)}
+            "copies": copies_for(origin), "spare": spare_for(origin), "site": list(site_rect(origin)), "captures": capture_list(origin)}
     with open(plan_path(), "w") as fh:
         json.dump(plan, fh, indent=1)
     with open(os.path.join(OUT, "BIG_PIT_KEY.md"), "w") as fh:
@@ -533,6 +547,11 @@ def stage(plan):
             for j in range(PW):
                 r = call("jawa/flowworks_excavation_drive", x=x0 + i, z=z0 + j, deepenLevels=DEPTH, setBodyWaterM=-1, fillInLevels=0)
                 bad += r.get("success") is False
+    sp = plan.get("spare")       # an older plan has none: OL --acts then says so (re-run plan)
+    for i in range(sp[2] if sp else 0):
+        for j in range(sp[2]):
+            r = call("jawa/flowworks_excavation_drive", x=sp[0] + i, z=sp[1] + j, deepenLevels=sp[3], setBodyWaterM=-1, fillInLevels=0)
+            bad += r.get("success") is False
     log("dig_failed_calls", bad)
     bridge().ticks(70)            # one swim refresh on the fresh dry pits (see pit_fittings_matrix stage)
     lim = stack_limits({r[2] for r in plan["things"]})
