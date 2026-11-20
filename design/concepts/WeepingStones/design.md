@@ -354,6 +354,18 @@ pools placed and named by hand); the huge-things engine, for the gorrask as a la
 
 Every feature is in one bucket.
 
+**The one signature (his first-version answer of 2026-11-19): NOT CHOSEN YET; two candidates, listed for the
+Conductor.** His experience line holds both: *"Bright dry stone and secret weeping shade, where every pool is a
+gathering. Keep the oasis healthy, or it breeds something wrong."*
+- *The truce at the water:* no hunt at full water, and retribution for the first guilty blow, for crew, raiders and
+  Empire alike. A normal stop is sure to see it: the ship's water is the pool, and the crowd is already drinking
+  there when the crew arrives.
+- *The pen:* stocked pool care for the length of a stop, the readable water, the nasty fish, and the vhorrin when it
+  goes wrong. It is his line's second half and the cleanse's signature (2026-11-17); this design keeps it for the
+  length of a stop, but a vhorrin needs mismanagement over time, so a stop sees it only if the crew stocks a pen.
+If the truce is chosen, the pen, the netting of live stock, the ones that are not fish and the vhorrin move to
+0.2.0 with their rows. If the pen is chosen, the truce stays as life (how the animals at the water behave).
+
 **0.1.0, the stop**
 - The land: dry stone, weeping shaded faces, green pool margins, the open seep exception; clear and windy, fog,
   the odd sandstorm; no rain, no snow. (the ground, pools, plants and weather are built; nothing known draws the wet
@@ -412,7 +424,8 @@ Every feature is in one bucket.
   blocked on a kind of site that does not exist yet.
 - Pilgrim and courtship choreography at the pools. Truce-stones and Oomo tokens.
 - The four close misses of 2026-10-02 (the fish walk, the pilgrim passage through the ship, the dewsilk casket,
-  the fish that lies), recorded by his ruling as *"close misses"*, not dead and not to be pitched again as new.
+  the fish that lies), recorded by his ruling as *"close misses"*, not dead and not to be pitched again as new. The
+  pilgrim passage, a ship idea, stays down by his answer of 2026-11-19; he can bring it back by name.
 
 **Dropped (already cut or declined; listed so nobody revives them by accident)**
 - Wind-hour (*"nah."*) and the born-and-dying water (*"nah too much."*), both dead by his word, 2026-09-24.
@@ -430,23 +443,8 @@ Every feature is in one bucket.
 
 ## NEEDS HIM
 
-Each carries a theme word in brackets. Two are left, both scope; five were answered on 2026-11-19 (next section).
+None open. Every entry is answered (next section).
 
-1. **[scope] Is the pen still the signature, for a ship?** His experience line ends *"Keep the oasis healthy, or
-   it breeds something wrong"*, and the cleanse built 0.1.0 on seasons of husbandry. A ship is here for a month at
-   most. This design keeps the pen as something a crew runs for the length of a stop, with the vhorrin as what
-   happens when the Empire distracts it, and makes the truce the thing the stop turns on. *Keep that split*
-   (default). *Make the truce the signature outright and move the pen to 0.2.0:* a smaller, sharper first version
-   that sets his own line aside for a version. *Hold the cleanse's reading:* the pen across seasons, which no
-   visit sees.
-   *Waits on the first-version size question of 2026-11-19.*
-3. **[scope] The pilgrim passage: declined, listed so it is not revived.** The landed ship blocks the pilgrims'
-   way to the water, and the crew either launches or grants *"a permanent public passage"* through it, where
-   *"closing it later is a recorded breach."* He was shown it on 2026-10-02 with three other ideas and typed:
-   *"None of these. Close misses."* That was before he stated the ship lens. It is the only idea in the Weeping
-   Stones' sources about what the ship does to the place. *Leave it declined* (default). *Look at it again under
-   the lens:* his to raise, not this design's.
-   *Waits on the declined-ship-ideas question of 2026-11-19.*
 
 ## Answered on 2026-11-19
 
@@ -466,3 +464,14 @@ can undo any one by name.
    *Delegated call.*
 6. **[scope] The ivvol's protection.** Farmers' belief only (the design's default). *Delegated call.*
 7. **[cover] Is a ship at a crowded pool loud?** Not loud (the design's default). *Delegated call.*
+
+**Answered by his five cards of 2026-11-19** (item
+`RIMMANDRAKE_ENACT_FIVE_BIOME_ANSWERS_INTO_26_DESIGNS`; each card and his pick, word for word:
+`design/RimMandrake/biome_rulings.md` §Five biome answers). Each keeps its number.
+
+1. **[scope] Is the pen still the signature, for a ship?** *His card of 2026-11-19 (first version):* 0.1.0 holds one
+   signature that a normal stop is sure to see. Whether it is the truce or the pen is not obvious from this design
+   and his words, so both are listed for the Conductor (Scope, top). Until the choice is made the split stays as
+   written.
+3. **[scope] The pilgrim passage.** *His card of 2026-11-19 (declined ship ideas):* it stays declined, as he typed
+   on 2026-10-02 (*"None of these. Close misses."*). He can bring it back by name.

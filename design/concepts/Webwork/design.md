@@ -99,12 +99,13 @@ and neither answer is free. The canopy is one plant's work: the dulloth, whose l
 in his art note *"like lilly pads grown straight up out of the ground above you to the scale of a tree."* *"From
 below it is a ceiling; from above, a sealed floor of dark green."* That floor is what the ship comes down through.
 
-**Fuel (his ruling of 2026-11-18).** A **richer source**, named in the sheet: the still-tree. *"The
-still-burners — the Wildsteam's belching flame weapons, fueled by liquors and oils tapped from the trees and
+**Fuel (his rulings of 2026-11-18 and 2026-11-19).** The slow route and buying. The sheet names a candidate
+richer source, the still-tree: *"The still-burners — the Wildsteam's belching flame weapons, fueled by liquors and oils tapped from the trees and
 fermented in their stills: one fuel item that is also a drink and a trade good."* The tree is built (the tavrosk,
 *"a squat tree that is mostly trunk ... it looks kept, like a barrel someone owns"*); tapping it and fermenting
 the sap is built as far as the drink (the tree is harvested for tavrosk liquor today); burning that liquor as
-fuel is not, and is the small build for 0.2.0. The emergency route has good feedstock too: this is a jungle, and
+fuel is not, and is the small build for 0.2.0. His fuel answer of 2026-11-19 did not make the Webwork one of the
+richer sources, so the liquor is slow-route stuff and a trade good, and the "richer" reading waits with that build. The emergency route has good feedstock too: this is a jungle, and
 its margin scrub, the brennoth, *"looks like kindling because it is."* Fuel can be **bought** from the Wildsteam,
 who are at war on this biome's far side and *"pay for mandibles"*; a crew with fresh mandibles has the one
 currency they want. Campaign layer.
@@ -358,7 +359,13 @@ silk and a clutch down a path it prepared, and lifts with the web still ringing.
 | The nest is a place: marked by its blooms, guarded, with clutches that can be cut out; it lays again while any owner lives. | Follow the signs to the nest, raid it, wait. | Its guardians are finite: the wall does not replace the fallen (owed: today it does). Save and reload mid-raid. |
 | A carried egg marks the carrier to the web; a shelved one does not; dropping it does not end the hunt at once. | Carry a clutch down a corridor; shelve it aboard; on another run, drop it. | The egg spoils on schedule and never hatches. |
 | Droids are attacked first, among prey equally in reach. | A droid and a person enter the shade together, the same distance from a hunter. | With the preference switched off they are treated alike. A droid standing in sunlight is not preferred over a person in shade. |
-| Quarrok chew anchors and the web they cut stops feeling; vennick run the silk toward eggs. | Watch a beetle file and a mite stream on a map with a nest. | A cut span no longer alarms when touched. The mites' line ends at a clutch. |
+| Quarrok chew anchors and the web they cut stops feeling. | Watch a beetle file on a map with a nest. | A cut span no longer alarms when touched. |
+
+**Promises that moved to 0.2.0 with their features** (his first-version answer of 2026-11-19):
+
+| the player sees | the scene | what rules out a fake |
+|---|---|---|
+| Vennick run the silk toward eggs. | Watch a mite stream on a map with a nest. | The mites' line ends at a clutch. |
 | Spiders spin toward a ship within reach of shade and wrap its doors; a wrap is cut or burned off; a ship in a kept clearing is not reached. | One ship at the canopy's edge, one in open sun, over the days of a stop. | The silk appears only where a living spider worked, with the work visible first. |
 
 Settings: one switch per major feature, defaults as shipped, everything off leaves a quiet, dim, heavily webbed
@@ -394,6 +401,14 @@ for); the ship's acoustic scanner; the Empire's search and the visibility dial.
 
 Every feature is in one bucket.
 
+**The one signature (his first-version answer of 2026-11-19): the owned web answers.** Touching or robbing the web,
+the ship's landing included, brings its hunters over connected shade; the spit binds; droids are taken first;
+direct sunlight is the owners' wall, so a kept clearing is how a crew breaks the pursuit while the jungle grows back.
+*Why a normal stop is sure to see it:* a ship landing on a living Webwork draws the owners within the hour. His
+experience line: *"So quiet that you know you're in terrible danger. It makes treasure, it eats all, and it's coming
+for you."* *Runner-up:* the spider siege of a neighbouring home (the cleanse's runner-up), already 0.2.0. Silk spun
+at the landed ship and its wrapped doors move to 0.2.0: a ship moment, and the Webwork's wear in 0.1.0 is the heat.
+
 **0.1.0, the stop**
 - The land: sealed canopy and gloom, water held inside the plants, cables, strands, carpet at spider sites,
   ordinary weather, webfall. (built)
@@ -419,17 +434,20 @@ Every feature is in one bucket.
   that follow the web are not placed by anything yet.)
 - The egg: inert, perishable, valuable, and the carried mark. (The egg is built. The carried mark is not
   working: see the mark defect above.)
-- Quarrok and vennick doing their jobs; the vennick's run toward clutches. (quarrok built; the vennick's
-  clutch-seeking moved in)
+- Quarrok chewing anchors, so the web they cut stops feeling. (built)
 - The trace cast: skennet, cravvet, the flying sivvern; the sixteen invented plants as ordinary plants, with the
   brimlock's water and the fellome's food. (built; a seventeenth plant, the glasmaw, was added after the roster)
-- Silk spun at the ship and its doors wrapped. (built for the siege; pointing it at a landed ship is owed)
 - Canopy as one step of cover. (owed, small)
 - The heat of the clearing on crew and hull; the thermal veil as the answer. (The shield frame is built. Heat
   here is ordinary hot air plus the one Direct Sun from geometry, by his ruling of 2026-10-19; the biome's old
   heat-kind fields are obsolete and must stop having any effect. Never run on a Webwork map.)
 
 **0.2.0, the stop with company**
+*Moved here from 0.1.0 by his first-version answer of 2026-11-19 (one signature a stop is sure to
+see); each line goes back by one move:*
+- The vennick's run along the silk toward clutches. (built; moved in)
+- Silk spun at the ship and its doors wrapped. (built for the siege; pointing it at a landed ship is owed)
+*Already here before that answer:*
 - The siege on the next tile over: the owners arrive at a home beside the Webwork, spin, wrap doors, cocoon the
   downed, and leave after days. His order of 2026-10-22: *"Make a webwork event into neighboring biomes where
   spiders come in and start spinning webs as a map attack. Their version of a raid. Siege"*, and his card the
@@ -470,7 +488,9 @@ Every feature is in one bucket.
 - A web front that creeps without spiders. His words, 2026-10-22: *"Webs don't creep they are made by spiders."*
   With it went harvesting from the creeping border.
 - The living colossus (the morravell, *"the one thing the web cannot hold"*, whose feeding opens *"a line of
-  fresh sun-holes"*), falling sheets of web, the Cut Cocoon and the testimony rite (not chosen 2026-10-02).
+  fresh sun-holes"*), falling sheets of web, the Cut Cocoon and the testimony rite (not chosen 2026-10-02). The
+  cut cocoon's found site and the roots in the ship ("Your Hull Is a Trellis") stay down by his answer of
+  2026-11-19 on declined ship ideas; he can bring either back by name.
 - Castes by another door: the parked guild names and the donor hatchling (one race, one kind).
 - A player-built sticky trap (deliberately never built); the commanded slick-or-locked web.
 - An egg that hatches as an item, or a second egg def (ruled out 2026-09-24).
@@ -483,20 +503,8 @@ Every feature is in one bucket.
 
 ## NEEDS HIM
 
-1. *(hull)* **Roots in the ship.** On 2026-10-02 he was offered *"Your Hull Is a Trellis"*: where a living silk gutter
-   touches a landed ship, pale roots thread an inside doorframe, thicken, force the door and split the frame;
-   *"cut it out, or take off: the supply is severed but the damage flies with you."* He did not choose it that
-   day: the card recommended taking all three new ideas and he took the lance only. The review called it *"the
-   biome acting on the ship in its own voice (the plantation occupies structures), not a ship gadget."* He was
-   offered the Greentide's hull rasp the same week, did not choose that either, and on 2026-11-18
-   said yes to it by name. *Silk and wrapped doors only* (default: built parts, and the owners' own hand).
-   *Add the roots:* a second wear that works in the dark while nobody is watching, and a new system.
-   *Waits on the declined-ship-ideas question of 2026-11-19.*
-7. *(scope)* **Should the cut cocoon exist as a thing to find?** The rite was not chosen on 2026-10-02. Its found
-   site is one of the best pictures in the sources: *"a silk cocoon on a sunlit rock, cut open from the inside,
-   empty, knife marks on the inner wall and boot prints going away into the light. Someone got out."* *Leave it
-   out* (default). *Place it as scenery with no rite attached:* small, and it tells a crew that people do leave.
-   *Waits on the declined-ship-ideas question of 2026-11-19.*
+None open. Every entry is answered (next section).
+
 
 ## Answered on 2026-11-19
 
@@ -516,3 +524,13 @@ can undo any one by name.
    older one is `RSW_Wyyyschokk` (the generic bestiary animal); its label changes and its defName stays, because
    TrophyCraft and the Utinni tolerances patch name it. **This changes the design's default.** Was: *Leave both*.
    Undo: set this answer back to *Leave both*; nothing is built. *Delegated call.*
+
+**Answered by his five cards of 2026-11-19** (item
+`RIMMANDRAKE_ENACT_FIVE_BIOME_ANSWERS_INTO_26_DESIGNS`; each card and his pick, word for word:
+`design/RimMandrake/biome_rulings.md` §Five biome answers). Each keeps its number.
+
+1. *(hull)* **Roots in the ship.** *His card of 2026-11-19 (declined ship ideas):* they stay turned down. The
+   Webwork's wear in 0.1.0 is the heat of the clearing; silk at the ship and its wrapped doors are 0.2.0 by his
+   first-version answer of the same night. He can bring the roots back by name.
+7. *(scope)* **Should the cut cocoon exist as a thing to find?** *His card of 2026-11-19 (declined ship ideas):* it
+   stays out, with its rite. He can bring it back by name.

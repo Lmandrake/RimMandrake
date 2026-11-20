@@ -78,8 +78,9 @@ succeeded; a loud crew halves every wait and a hidden one doubles it.
 allowable for each biome"*). On open ground the ladder's arithmetic gives a probe on day 5 to 8, a first real
 fight around day 12 to 20 and the bombardment around day 20 to 32 if the Empire wins every step.
 - **In a warm basin: about a month.** Open salt under a sun that never sets. Nothing hides.
-- **In the dark scour: about six to nine weeks.** A crew the search reads as discreet or hidden has every wait
-  multiplied by 1.4 or by 2 (`EmpireLadderMath.BandIntervalMultiplier`), and the scour is dark.
+- **In the dark scour: about six weeks, longer while an ash storm blows.** Full dark is one step (each wait about
+  1.4 times longer, `EmpireLadderMath.BandIntervalMultiplier`), and a storm adds a second while it lasts (his card
+  of 2026-11-19: steps add up).
 
 Neither is the usual stay. The Wastes ends a stop by dose: nothing here attacks, nothing here hurries, and every
 day costs a little more of everyone's body.
@@ -89,19 +90,20 @@ the choice of where to land.
 - *Warm basins:* **none** in clear air.
 - *Any family, while an ash storm blows:* **one step.** The sheet calls the storms *"blinding"*; this design
   counts blowing ash with canopy, steam and fog. It lasts as long as the storm does, and the storm charges for it.
-- *The dark scour:* **full dark, which still pauses the search.** The sheet: *"Past arc ~100 the only light is the
-  stormwall's glow on one horizon."* His ruling of 2026-08-05 pauses the orbital clock on dark tiles; only the
-  Abyss is on the built list, and adding the scour's tiles is the small build this biome owes. At ground level
+- *The dark scour:* **full dark, one step.** The sheet: *"Past arc ~100 the only light is the stormwall's glow on
+  one horizon."* His card of 2026-11-19: *"Full dark is one step, like fog"*, and nothing pauses the search for
+  good. A glow on one horizon does not light the tile. Giving the scour's tiles their step is the small build this
+  biome owes. At ground level
   the same rule as the Sump's holds: a watcher sees a target in darkness only from six cells
   (`EmpireLadderMath.Sees`), so every lamp is a choice. The dark costs the crew its best instrument: the cleanse
   found that darkness, ash cover and fresh cleaning all stop the plants being read by eye. In the scour the ground
   is read by lamp, which is seen, or by glow. The sheet lists *"the radiotroph groves"* among its *"point-sources
   of wrong light"*, and his art note on the radmoss asks for *"vivid odd luminescent coloration"*; whether the
-  shipped moss gives light is `UNMEASURED`. Whether the scour counts as full dark for the orbital pause is
-  `NEEDS HIM` 4.
+  shipped moss gives light is `UNMEASURED`.
 
-**Fuel (his ruling of 2026-11-18).** The Wastes is one of the **richer sources**, by three routes that are all in
-the sources.
+**Fuel (his rulings of 2026-11-18 and 2026-11-19).** The Wastes is **not** one of the richer sources: his fuel
+answer of 2026-11-19 names the Abyss, the Fever Wood and the Sump. The Wastes has the slow route and buying. The
+three routes the sources give, kept here as text:
 - **Soot bricks.** The sootgrazer *"eats deposition itself and presses what it can't burn into brick"*:
   *"fuel-grade soot bricks ... sells low but the supply is endless where the sky keeps falling."* A penned
   sootgrazer on ash is a fuel plant with legs. (The animal and the brick are built; two of its live checks failed on 2026-10-08 and
@@ -118,8 +120,8 @@ the sources.
 The fourth route is the one the sheet calls *"the cursed prize"*: the vault-roots' *"densely concentrated fuel
 deposits"*. Digging them out is *"exactly what the Junkers do and exactly what reopens the wound."* In these
 versions it stays cursed and unbuilt as a fuel: destroying a loaded root releases what it bound, and that is all.
-The Wastes is not replete. Giving soot bricks something that burns them, the ship first, is the build this ruling
-asks for. Which route is the Wastes' own is `Answered on 2026-11-19` 5.
+The Wastes is not replete. Wartshrub is its own fuel stuff (`Answered on 2026-11-19` 5), on the slow route.
+Giving soot bricks something that burns them waits for 0.2.0 with the sootgrazer's bricks.
 
 **What the place does to the ship (his ruling of 2026-11-18, in 0.1.0).** It wears it down from the hour it
 lands, and that is already built. The frame his ruling points at (`src/RimUtinni/ShipShields/`, his shield rulings
@@ -377,12 +379,17 @@ Each can happen inside the visit. Each says what is on screen.
 | Nothing rots, in the warm basins too. *(Unknown whether built.)* | Raw food left out in a basin for the visit. | The same food on another biome's map at the same temperature rots. |
 | Destroying a loaded vault-root releases what it bound, once. *(Not built: roots hold nothing today.)* | Cut, burn and dig one; read the ground. | A root that had bound nothing releases nothing. |
 | Every resident is visibly marked, none hunts people, and the real flyer really flies. | A crew member walks through each species; the grimewing's flight read from its flight state. | A provoked gravelgut or gristleswarm fights; an unprovoked one never does. The scabspinner never makes crew or tame stock its routine prey. |
+| In the dark scour an unlit crew is not seen by a watcher beyond a few cells; a lit one is. | A probe passes an unlit and a lamplit camp at the same distance on a scour tile. | The same pass on a basin tile sees both. |
+| Wartshrub gives fuel by the slow route. | Harvest it; put the product in a tank. | |
+| A ship with no screen up is worn by the air of the Wastes, faster in a storm; a ship behind a particulate or aerosol screen is not. | Two landed ships through one storm, one screened. | The same unscreened ship on a clean biome's map takes no such wear. (The wear is built; this scene has never been run.) |
+
+**Promises that moved to 0.2.0 with their features** (his first-version answer of 2026-11-19):
+
+| the player sees | the scene | what rules out a fake |
+|---|---|---|
 | A wild gripper swaps its junk for something better of the crew's and drops its haul when hurt; a tamed one does not steal. | Unguarded valuables near a wild gripper; then the same with a tamed one. | The stolen thing is the thing recovered. Forbidden items are left alone. |
 | A sloghog on poisoned ground yields bezoars and a sootgrazer on ash yields soot bricks, faster there than on clean ground. | One of each penned on dirty ground and one of each on clean floor. | The clean-floor pair lag visibly. |
 | The Middenshell is announced hours ahead, crosses on a route the player can read, flattens what is in its path except the ship, doses whoever stands near, never attacks, and leaves a trail. | Let one arrive with a yard in its path and the ship beside it. | Shooting it does not turn it on the crew. Nothing it crushes vanishes without wreckage or a message. The ship's parts are untouched. |
-| In the dark scour an unlit crew is not seen by a watcher beyond a few cells; a lit one is. | A probe passes an unlit and a lamplit camp at the same distance on a scour tile. | The same pass on a basin tile sees both. |
-| Wartshrub and soot bricks give fuel. | Harvest one; pen the other; put the product in a tank. | |
-| A ship with no screen up is worn by the air of the Wastes, faster in a storm; a ship behind a particulate or aerosol screen is not. | Two landed ships through one storm, one screened. | The same unscreened ship on a clean biome's map takes no such wear. (The wear is built; this scene has never been run.) |
 
 Settings: one switch per major feature, defaults as shipped, everything off leaves a dry, bleak flat with odd
 animals (standing rule, every mod).
@@ -411,6 +418,13 @@ the ship's acoustic scanner; the Empire's search and the visibility dial.
 
 Every feature is in one bucket.
 
+**The one signature (his first-version answer of 2026-11-19): the land is the monster.** Dose comes from ground and
+air and differs by ground; ash storms dose the open, dirty the ground, bury and uncover; the ship is the clean
+refuge, and it stays clean only with upkeep. *Why a normal stop is sure to see it:* the dose starts the first hour a
+crew is outside, and tracked contamination reaches the decks by the first evening. His experience line: *"The land
+is the monster, and the creatures are its victims."* *Runner-up:* the Middenshell's procession (the cleanse's
+strongest spectacle), now 0.2.0.
+
 **0.1.0, the stop**
 - The land in its three families: salt, ash, broken ground, brine, preserved remains; old contamination laid once
   on ash flats, wreck surrounds and brine margins with cleaner ground left to build on; no rain, no snow; the
@@ -424,8 +438,6 @@ Every feature is in one bucket.
   (`WASTELAND_TOXIC_BUILDUP_NEVER_APPLIES_1`) and the mechanics review of 2026-10-22 still lists the check as
   failed with no re-run. The dunes binding has since been repaired in source. Not built: old contamination moving with the ash. Today a storm only
   adds new pollution on random open cells, so the danger map grows and is never redrawn.)
-- A finite, tracked buried hoard laid down before the crew arrives. (not built; the cleanse specified it for a
-  later version; moved in)
 - Preservation: nothing rots. (unknown: the census could not find what makes it so in a warm basin)
 - Radmoss, vault-root and what destroying a loaded root does; scumgrass, pusberry, boilbulb, wartshrub. (The
   plants and their harvests are built. Radmoss following dose, roots binding poison and roots releasing it are
@@ -433,18 +445,24 @@ Every feature is in one bucket.
 - The cast as animals with ordinary lives: scumslider (the scumrat, redrawn on his art note), slagmole,
   scabspinner, boilhide, gristleswarm and its soot cousin, gravelgut, kroffa with clean milk, frethik with eggs,
   the excretor, grimewing with real flight. (built; the grimewing has no flight flip-book yet)
-- The gripper's swap. (built; live pass; moved in)
-- Sloghog bezoars and sootgrazer soot bricks. (built; moved in; two failed live checks to fix)
-- The Middenshell: omen, arrival, readable route, crawl, crushing, proximity dose, trail. (built; eight of nine
-  body checks and six of seven arrival checks passed live; the proximity dose failed and was not re-run. Moved in.)
 - Wrecks and sealed warcasket sarcophagi as salvage. (wrecks built; a real sealed corpse inside is built in the
   campaign layer, `RUT_JunkerSealedCorpses.xml`, and needs the Warcasket mod)
 - The air and the storm wearing an unscreened ship; the particulate screen and the aerosol screen as the answers.
   (built in `src/RimUtinni/ShipShields/` and the Warscar; never run on a Wastes map)
-- Cover by family, and dark-scour tiles on the orbital pause list. (owed, small)
-- Soot bricks burned as fuel, by the ship first. (owed: nothing consumes a soot brick today)
+- Cover by family: an ash storm one step while it blows, the dark scour one step for its full dark, added. (owed,
+  small)
 
 **0.2.0, the stop with company**
+*Moved here from 0.1.0 by his first-version answer of 2026-11-19 (one signature a stop is sure to
+see); each line goes back by one move:*
+- A finite, tracked buried hoard laid down before the crew arrives. (not built; the cleanse specified it for a
+  later version; moved in)
+- The gripper's swap. (built; live pass; moved in)
+- Sloghog bezoars and sootgrazer soot bricks. (built; moved in; two failed live checks to fix)
+- The Middenshell: omen, arrival, readable route, crawl, crushing, proximity dose, trail. (built; eight of nine
+  body checks and six of seven arrival checks passed live; the proximity dose failed and was not re-run. Moved in.)
+- Soot bricks burned as fuel, by the ship first. (owed: nothing consumes a soot brick today)
+*Already here before that answer:*
 - The Middenshell's lure toward waste stockpiles and its tentacle that eats things near it. (built, never seen
   live)
 - The Deadlight Halo (*"shadows double, instrument clicks accelerate, and a sickly light rims every pawn"*) and
@@ -489,13 +507,8 @@ Every feature is in one bucket.
 
 ## NEEDS HIM
 
-4. *(cover)* **Is the dark scour full dark for the search from orbit?** His card of 2026-11-18: *"full dark still
-   pauses it."* The sheet says the scour's only light is the stormwall's glow on one horizon. Only the Abyss is on
-   the built pause list. *Yes, add the scour's tiles* (default: a cold, poisoned, lightless flat becomes one of
-   the planet's real hides, and a stop there runs six to nine weeks at the edge). *No, it is one step, like ash:*
-   the glow counts as light, and the scour is only a slower clock.
-   *Waits on the cover-scale question (what ordinary darkness is worth, and whether kinds of cover add up) of
-   2026-11-19.*
+None open. Every entry is answered (next section).
+
 
 ## Answered on 2026-11-19
 
@@ -511,10 +524,19 @@ can undo any one by name.
    default). *Delegated call.*
 3. *(hull)* **Does the Middenshell touch the ship?** Keep it: the Middenshell goes around the ship. This keeps his
    shield ruling of 2026-09-02: *"no environment is immediately lethal"* (the design's default). *Delegated call.*
-5. *(fuel)* **Which fuel is the Wastes' own?** Wartshrub (built, proven, scarce; the design's default). The rich-fuel
-   question (which biomes are the few with a richer source) can change whether it counts as richer. *Delegated call.*
+5. *(fuel)* **Which fuel is the Wastes' own?** Wartshrub (built, proven, scarce; the design's default). *Delegated
+   call.* His fuel card of 2026-11-19 then settled that it does not count as richer: it is slow-route stuff.
 6. *(scope)* **Does the Middenshell count as the Wastes' giant?** Yes, it counts (*"Every biome should have something
    like this"*, 2026-10-21; the design's default). *Delegated call.*
 7. *(scope)* **Should the waste run exist?** Keep it in the campaign layer (the design's default). *Delegated call.*
 8. *(hull)* **Is the throat cask Wastes content again?** Leave it in the campaign layer (the design's default).
    *Delegated call.*
+
+**Answered by his five cards of 2026-11-19** (item
+`RIMMANDRAKE_ENACT_FIVE_BIOME_ANSWERS_INTO_26_DESIGNS`; each card and his pick, word for word:
+`design/RimMandrake/biome_rulings.md` §Five biome answers). Each keeps its number.
+
+4. *(cover)* **Is the dark scour full dark for the search from orbit?** *His card of 2026-11-19 (cover):* it is full
+   dark, and full dark is one step, not a pause; an ash storm adds a step while it blows. A scour stop runs about
+   six weeks at the edge, longer in storms. **This changes the design's default.** Was: the scour on the paused
+   list, six to nine weeks.

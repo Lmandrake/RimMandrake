@@ -353,11 +353,16 @@ four currencies, and leaves early by its own choice.
 | What crosses the film leaves prints that point the way it went and last until the wind returns; the returning wind clears film and prints together as a visible front. | A raid, a hauler and a grazer cross the film; save and reload; wait for wind. | Prints laid before the reload are still there after it. Film gone with prints left, or the reverse, fails. |
 | Buried shells show as clean spots after a fall and can be defused for parts or set off from range. | A map with shells; a Settling; one defused, one triggered. | A spot with no shell under it would pass a lazy check: dig one that is not marked and find nothing. |
 | A chatrak carrying the madness shows it in stages, then attacks for good; a treated one does not turn. | One carrier left alone, one cured, one clean arrival kept on the map. | The cured one stays calm through the time the other took. |
-| An invisible hunter attacks only someone alone, shows when it strikes, and can be read beforehand by its prints and by the beetles going quiet around it. | One pawn alone at night on film; then two together on the same path. | The pair is not attacked. The hunter's kill is dragged and the drag is on the film. |
 | Time here marks a person; the mark costs mood for good, gives nightmares only while on this ground, and roofs do not stop it. | Two crew, one who stayed a week and one who stayed a day, then both on another map. | Nightmares stop on leaving; the mark does not. |
+| The crust beetles tick faster over hotter ground, the barrels keen in wind and fall silent in a Settling. | Walk a pawn from clean slag onto thick crust, in wind and in calm (a listening check at a joint sitting). | |
+
+**Promises that moved to 0.2.0 with their features** (his first-version answer of 2026-11-19):
+
+| the player sees | the scene | what rules out a fake |
+|---|---|---|
+| An invisible hunter attacks only someone alone, shows when it strikes, and can be read beforehand by its prints and by the beetles going quiet around it. | One pawn alone at night on film; then two together on the same path. | The pair is not attacked. The hunter's kill is dragged and the drag is on the film. |
 | Dead projector rings near a landed ship hum while it stays, and a humming ring keeps the fall and the film off the ground under it. | Land near a dead ring; wait for a Settling; lift off. | The ring goes dead again when the ship leaves. A ring far from the ship stays dead. |
 | Mynocks board a landed ship, breed, and eat conduit, lamps and flooring until hunted out; a few are a nuisance and many are a problem. | A landed ship with wild mynocks near; leave them; then hunt them. | The damage stops when the last one is dead, and they are ordinary animals that can be shot. |
-| The crust beetles tick faster over hotter ground, the barrels keen in wind and fall silent in a Settling. | Walk a pawn from clean slag onto thick crust, in wind and in calm (a listening check at a joint sitting). | |
 
 Settings: one switch per major feature, defaults as shipped, everything off leaves a hot, sterile ruin field
 (standing rule, every mod).
@@ -390,6 +395,17 @@ bones; the Empire's search and the visibility dial.
 
 Every feature is in one bucket.
 
+**The one signature (his first-version answer of 2026-11-19): NOT CHOSEN YET; two candidates, listed for the
+Conductor.** His experience line names a curse that scavenging teaches: *"Poisoned forever, mad beasts, silent
+guns. Everyone calls it cursed, and everyone who scavenges here learns why."*
+- *The Settling:* in a long calm a pale fall doses people in the open and lays a film that records every walker,
+  shows buried shells, and lifts when the wind returns. The cleanse chose it (2026-11-17). A stop sees it only if a
+  long calm comes inside the stay; the design does not say how often one does.
+- *The mark:* time on this ground marks a person, costs mood for good, and gives nightmares only here. A normal stop
+  is sure to see it, because it accrues from time spent; it is the curse that *"everyone who scavenges here learns"*.
+Moved now, because they are extras under either choice: the invisible hunter, the humming rings and the landed ship
+waking them, and the mynocks aboard. The chatrak's turn stays as life (a native animal's disease and its cure).
+
 **0.1.0, the stop**
 - The land: sterile megastructure floors, slag and craters, the outward-facing line, stripped wrecks, sealed
   salvage, every ancient danger already sprung, poison ponds, ground that renews its pollution. (Built in part.
@@ -405,13 +421,9 @@ Every feature is in one bucket.
   the campaign's animals where its patch puts them. (built. His art sheet of 2026-10-05 cut the interim grazer
   and the mole: *"Cut this, no longer needed"*.)
 - The chatrak's turn, its warning stages, and cure. (built; live pass)
-- The invisible hunter and its signs: prints, the quiet ring, the shimmer, the drag. (built offline; moved in)
 - The mark: accrual, the lasting cost, nightmares only here. (built; live pass. The nightmare gate is an owed
   repair.)
 - Turrets that track and never fire. (built)
-- Humming rings that screen the fall, and the landed ship waking dead ones. (built; moved in)
-- Mynocks aboard. (built in the shared vermin mod; the animals arrive by the campaign's roster today, which is a
-  wiring question for the free tier and not a design one)
 - The Geiger choir: tick, keen, silence. (built)
 - Chatrak plate as a material. (built)
 - The ship worn by the air and by the heat, with one field to answer them. (built in the campaign's shield
@@ -419,6 +431,13 @@ Every feature is in one bucket.
 - No cover from orbit; fuel by the slow route only. (nothing to build)
 
 **0.2.0, the stop with company**
+*Moved here from 0.1.0 by his first-version answer of 2026-11-19 (one signature a stop is sure to
+see); each line goes back by one move:*
+- The invisible hunter and its signs: prints, the quiet ring, the shimmer, the drag. (built offline; moved in)
+- Humming rings that screen the fall, and the landed ship waking dead ones. (built; moved in)
+- Mynocks aboard. (built in the shared vermin mod; the animals arrive by the campaign's roster today, which is a
+  wiring question for the free tier and not a design one)
+*Already here before that answer:*
 - Ring evaluation and salvage; the buildable aerosol screen aboard; glower shield panels and plate. (built in
   part)
 - The hospice: kneeling rings, intact deserters with histories, the cradle, the five stages of waking, failure
@@ -449,7 +468,7 @@ Every feature is in one bucket.
 - Any fertile cell, any green plant, snow weathers, intact treasure in the open (sheet bans).
 - Sentinels that raid or pursue (sheet ban; local reprisal only).
 - Glower-black uses (fuel, pigment, the war-black hull) and the Watch ritual (out by card, 2026-09-30). The hull
-  plating is a cut ship idea and is listed under `NEEDS HIM`, not revived.
+  plating is a cut ship idea; it stays down by his answer of 2026-11-19, and he can bring it back by name.
 - The calm alarm and the entombed line (out by card, turn four). The bearing, the phantom barrage and the slag
   ricochet (left blank twice; treated as not picked).
 - Narrowing the aerosol screen (he rejected it in words).
@@ -462,13 +481,8 @@ Every feature is in one bucket.
 
 ## NEEDS HIM
 
-4. **The war-black hull, and glower as fuel.** (hull) The first review offered *"war-black hull plating, a
-   cosmetic with a tiny beauty-and-prestige stat, the Warscar's mark on every ship that stopped here"*, with
-   glower as a brazier fuel and a pigment. His card of 2026-09-30 (turn 2, by card, so no words of his to quote)
-   put all three out. Seven weeks later he ruled that every biome has a fuel source and wears on the hull with
-   armour that answers it. *Leave them out* (default: a cut is a cut). *Bring back the plating as the Warscar's
-   armour against its own air.* *Bring back the fuel as the biome's slow route.*
-   *Waits on the declined-ship-ideas question of 2026-11-19.*
+None open. Every entry is answered (next section).
+
 
 One question the cleanse put on its owner pages is answered here without asking: the label is "Warscar", the later
 of the two cards.
@@ -493,3 +507,11 @@ can undo any one by name.
 6. (scope) **Do the dead of the old line stay dead for free-tier players?** Rewire the dressing onto this biome, item
    `WARSCAR_REWIRE_SCARLANDS_KIT_TWIN_GONE` (the design's default). *Delegated call.*
 7. (scope) **The hospice in 0.1.0?** *His ruling:* the move card of 2026-11-18 (*"Move it, list every move"*): 0.2.0.
+
+**Answered by his five cards of 2026-11-19** (item
+`RIMMANDRAKE_ENACT_FIVE_BIOME_ANSWERS_INTO_26_DESIGNS`; each card and his pick, word for word:
+`design/RimMandrake/biome_rulings.md` §Five biome answers). Each keeps its number.
+
+4. **The war-black hull, and glower as fuel.** *His card of 2026-11-19 (declined ship ideas):* they stay out, as his
+   card of 2026-09-30 put them. The Warscar's fuel is the slow route only; the ship's wear here is the air and the
+   heat, answered by one field. He can bring any of the three back by name.
