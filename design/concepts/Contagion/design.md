@@ -103,9 +103,9 @@ three good legs and a stump climbing out of it.
 Overhead, at canopy height, drift translucent bags *"stuffed with mismatched eyes, all of them open, all of them
 looking up."* They are the forecast.
 
-Before the first hour is out the player should have seen: a sky that is plainly a sick red storm and not overcast;
-plants that read as grown flesh at ordinary zoom; and at least one Unfinished, half-made its own way, die back into
-slime.
+Before the first hour is out the player should have seen: a sky that is plainly a sick red storm and not overcast,
+and plants that read as grown flesh at ordinary zoom. (An Unfinished dying back into slime is 0.2.0, by his
+first-version answer of 2026-11-19.)
 
 ## The first day
 
@@ -291,16 +291,21 @@ The first read said no source covers this. Two do, and one of them is built.
 | A roof, a tree's cast shade and water each count as refuge. | One pawn in each through a Burn, one in the open. | The Burn uses the shared shade, with no test of its own. |
 | UV-shy natives are hurt by the Burn and dive during the tells; Scaldhide and Crispling are not hurt and come out. | A mixed group through a Burn. | A native that dives only after being burned fails. |
 | No native runs from the sun under the Bloom; they do when the Burn clears the sky. | The same animals under Bloom and in a Burn. | |
-| The Repulsor warns that its Burn covers the whole map, clears the sky, and stops without power. | Power it; read the warning; cut the power. | A cleared patch is wrong: the Burn is map-wide. |
 | A worker out in the Bloom shows an early touched state and one message when change begins. | A worker left outdoors, one kept in. | |
 | Changes come from a mixed deck, each with a real cost, capped, never twice on one body. | A run to the cap. | A change that is only a label, or only a gain, fails: *"it never just upgrades you."* |
 | A Sunbeam held on the patient stops the change, keeps what has changed and leaves a burn. | A patient at warning stage and one already changed. | Later exposure can start it again. |
-| Each budded Unfinished is half-made its own way and dies into slime and mulch. | A Bloody Mess over several buddings. | Two identical in a row is suspect; one that vanishes with no sign fails. |
-| A gestation shows its odds before the sample is spent and, when the wanted part misses, still brings matched tissue. | A run that hits and a run that misses. | A cancelled run does not spend the sample. |
-| A corpse becomes skin, then a lasting print, and a Bloody Mess eats the rest. | A death left alone. | |
 | The plants read as grown flesh; zhool haze turns plants, in our biomes only. | A fresh map; a zhool beside ordinary plants. | A recoloured forest fails. |
 | The natives are there in numbers, each plainly its own creature, each with the death or trick its description promises. | A walk of the roster. | No number is a promise. The flyers' flight is read from state, never live-tested without him. |
 | A save reloaded mid-way, and the main actions done in another order, give the same Burn, body and batch. | The walk. | |
+
+**Promises that moved to 0.2.0 with their features** (his first-version answer of 2026-11-19):
+
+| the player sees | the scene | what rules out a fake |
+|---|---|---|
+| The Repulsor warns that its Burn covers the whole map, clears the sky, and stops without power. | Power it; read the warning; cut the power. | A cleared patch is wrong: the Burn is map-wide. |
+| Each budded Unfinished is half-made its own way and dies into slime and mulch. | A Bloody Mess over several buddings. | Two identical in a row is suspect; one that vanishes with no sign fails. |
+| A gestation shows its odds before the sample is spent and, when the wanted part misses, still brings matched tissue. | A run that hits and a run that misses. | A cancelled run does not spend the sample. |
+| A corpse becomes skin, then a lasting print, and a Bloody Mess eats the rest. | A death left alone. | |
 
 Settings: one switch per major feature, defaults as shipped, each switch stops only its own feature (standing rule,
 every mod). The three 0.2.0 features he named ship switched off; today they ship on, and that is owed work.
@@ -327,14 +332,19 @@ visibility dial; plain fertiliser.
 
 Every feature is in one bucket.
 
+**The one signature (his first-version answer of 2026-11-19): the Burn under the Bloom.** Under the standing red lid
+the Bloom touches and changes whoever stays out; then the tells come, the cloud tears, and everyone runs for shade,
+a roof, a tree's shade or water; a Sunbeam arrests unwanted change. *Why a normal stop is sure to see it:* the lid
+stands over every map, and the tells and a Burn come on the first day; the ship is the biggest refuge on the map.
+His experience line: *"A mutation engine under a red lid, where nothing is finished, including you. When the sky
+clears, run."* *Runner-up:* the biological laboratory (the Unfinished, the genome batch, bodyprints); it lost because
+it is a second progression a stop can skip.
+
 **0.1.0, the stop** (the locked sheet's version, read for a ship)
 - The Bloom as a red lid; the Burn; the tells; the Dive; the armoured natives coming out. (built; the Dive and the
   natives' Burn damage are owed or were failing)
 - Refuge as shared shade; one dash at a cost. (built in part; water as cover is owed)
 - The touched state, the mixed deck, the Sunbeam arrest. (built)
-- The ground Repulsor with its warning. (built)
-- The Unfinished. The genome loop's ordinary batch with odds shown first. (built; the odds display is owed)
-- Bodyprints by phases. (owed, by his card of 2026-10-16)
 - Flesh flora; zhool haze; the grotesque cast with each creature's promised trick; the new smaller Zhool'Iza.
   (built; the Zhool'Iza is owed)
 - Mulch as plain fertiliser.
@@ -343,6 +353,12 @@ Every feature is in one bucket.
 - The ogleknot; the blistered bulloo. (built)
 
 **0.2.0, the stop with company** (the first three by his word of 2026-11-16)
+*Moved here from 0.1.0 by his first-version answer of 2026-11-19 (one signature a stop is sure to
+see); each line goes back by one move:*
+- The ground Repulsor with its warning. (built)
+- The Unfinished. The genome loop's ordinary batch with odds shown first. (built; the odds display is owed)
+- Bodyprints by phases. (owed, by his card of 2026-10-16)
+*Already here before that answer:*
 - The Coalescence, all of it.
 - The Grown Limbs, all of it: Pillar Arm, Lash, Eyeburst, Caudal Spring, Bellows.
 - Helix trade: draftprints, contracts, the curators' caravan.
@@ -373,7 +389,8 @@ Every feature is in one bucket.
 - Bars that pin yields, creature numbers or art variant counts (2026-11-16).
 - The donor cast, the exotic draft names, "Eyegore", the Fleshsop that *"needs to be loved to live another day"*.
 - Edible forage. Any native that persists under open sky. Fish.
-- A spore membrane for the ship (cut by him 2026-09-02: *"spores aren't magical, just particulates."*).
+- A spore membrane for the ship (cut by him 2026-09-02: *"spores aren't magical, just particulates."*). It stays
+  down by his answer of 2026-11-19 on declined ship ideas.
 - Goo creeping onto the hull, and the Repulsor as a hull-cleaning lamp (the first read's own proposals; withdrawn).
 - The seven other ideas of the GPT consult of 2026-09-30: he picked three by card (Draftprints, the Dive,
   Bodyprints) and *"GPT's seven other ideas were not picked, so they are out."* The record does not name them.
@@ -398,10 +415,6 @@ Each is tagged with one theme word.
    (`design/Jawa/proposals/ship_shields_deep_design.md` §2), not his words. His row of 2026-09-02 says only that the
    screen handles *"spores"* *"completely"*. A *Yes* changes a built default and makes the screen the answer to this
    biome's spine, so it stays his.
-3. **[hull] A ship idea he cut, listed so nobody revives it:** the spore membrane, a sealed positive-pressure skin
-   for exactly this biome, with its research gated behind a Helix story beat. Cut on the shield sheet, 2026-09-02:
-   *"spores aren't magical, just particulates."* Not revived here.
-   *Waits on the declined-ship-ideas question of 2026-11-19.*
 
 ## Answered on 2026-11-19
 
@@ -424,3 +437,10 @@ can undo any one by name.
 8. **[locked-tree] The locked sheet and tree describe a colony that settles the valley** *His ruling:* his word of
    2026-11-18, *"Let's rewrite them all and let git be provenance."* The tree is not edited now; a Designer run
    reconciles it when the hold lifts.
+
+**Answered by his five cards of 2026-11-19** (item
+`RIMMANDRAKE_ENACT_FIVE_BIOME_ANSWERS_INTO_26_DESIGNS`; each card and his pick, word for word:
+`design/RimMandrake/biome_rulings.md` §Five biome answers). Each keeps its number.
+
+3. **[hull] The spore membrane.** *His card of 2026-11-19 (declined ship ideas):* it stays turned down, as he cut it
+   on 2026-09-02. He can bring it back by name.

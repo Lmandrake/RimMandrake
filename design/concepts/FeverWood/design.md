@@ -219,7 +219,9 @@ it."*
 - *The richer source is seep-oil.* The sheet, twice: *"strange oily deposits boiling gently to the surface —
   gathered for perfumes, lubrication, and fuel"*, and *"perfume, lubricant, and fuel from the deep decay"*. The
   barrel plant that carries it stands inside some pool's reach, so every drum is skimmed from under the water's
-  nose, in pairs. The harvest is built; the recipe that turns the oil into chemfuel is not, and is 0.2.0.
+  nose, in pairs. His fuel answer of 2026-11-19 makes the Fever Wood one of the three richer sources, so the
+  seep-oil is its fuel in 0.1.0. The harvest is built; the recipe that turns the oil into chemfuel is not, and is
+  owed 0.1.0 work.
 - *Buying it.* The only sellers the sources name are Sporefall's Wildsteam traders (the kit spec stocks goods at
   *"Sporefall/Wildsteam traders"*), who are campaign layer. The sheet gives the town *"stills running
   nectar-liquor and seep-oil"* and calls the oil *"the still-burners' second source"*, so the refining is already
@@ -358,9 +360,14 @@ A promise here is something a player sees. None of them is a number.
 | Thornbugs give nectar calm and none frightened; a far fight does not dry them. | Gather; stage a threat near one herd and far from another. | The frightened herd recovers only after the threat is gone. |
 | Imperial troopers are seized like anyone else. | Walk a trooper squad across a mapped reach. | A native animal on the same cells is left alone. |
 | The bark ambusher strikes once and does not chase. | Small prey passes a silloch; prey that breaks free flees. | The silloch stays at its trunk. |
-| The vaulm seals and the drommath swells when hurt or mishandled, every time, never at random. | Hurt each; hit again inside and after its recovery. | An untouched one beside it does nothing. |
 | A ship resting on marsh, or with an edge inside a pool's reach, is visibly worn day by day, with a sign before the damage; a ship on firm ground outside every reach is not, and a worn ship can always launch. | Three landings: on marsh, on firm ground inside a reach with noise made, on firm ground clear of every pool. Run the days, then launch each. | With the water and the wear switched off, the marsh landing is untouched. An edge on stilt footings stops sinking. |
 | Under the closed crown the Empire's search comes one step slower than it does for the same crew on open ground. | The same crew, as loud, landed here and on an uncovered tile; read the search's next contact on both. | A crew made loud here loses the step. |
+
+**Promises that moved to 0.2.0 with their features** (his first-version answer of 2026-11-19):
+
+| the player sees | the scene | what rules out a fake |
+|---|---|---|
+| The vaulm seals and the drommath swells when hurt or mishandled, every time, never at random. | Hurt each; hit again inside and after its recovery. | An untouched one beside it does nothing. |
 
 Neither new row pins a rate: how fast a hull wears and how long a step is are tuning, and stay out of any bar.
 
@@ -402,6 +409,13 @@ shared-machinery file has the whole of it):
 
 Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 
+**The one signature (his first-version answer of 2026-11-19): the water below.** One animal under every pool hears
+the landing, raises a standing limb, sets its victims' gear out as bait, seizes whoever comes near with a rescue
+clock, and is driven off by withdrawing, severing or the eye's death. *Why a normal stop is sure to see it:* the
+landing itself is heard below, so the hush and a standing limb at the nearest pool come on arrival, and every
+harvest stands inside some pool's reach. *Runner-up:* the reactive ant hive (the cleanse's runner-up), a separate
+expedition.
+
 **0.1.0, the stop**
 - The land: solid mineable trunks that cannot fall; static living-wood routes and bough-soil; marsh that refuses
   heavy building, with stilts; still black pools. (built)
@@ -416,27 +430,31 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 - Thornbug nectar on the calm deal; ordinary harvests (fruit, tuber, resin medicine, seep-oil, clay, cordage,
   cane sap). (built)
 - The bark ambusher that does not chase; the carrion mound; the wood-eating grub as an ordinary animal. (built)
-- The vaulm's seal and the drommath's swelling. (built; moved in, see `rewrite_choices.md`)
 - The water takes troopers too; trunks break the Empire's sightlines. (consequences of built things; scenes owed)
 - The place wears the hull: marsh under it and limbs in reach of it, each with a sign, answered by where the ship
   is put down, by stilt footings and by hand. (unbuilt; campaign layer, on the shared hull-wear machinery; his
   ruling of 2026-11-18)
 - The closed crown as partial cover from orbit. (unbuilt; campaign layer, one entry in the pursuit; his card of
   2026-11-18)
-- Fuel by the slow route, and seep-oil as a trade good. (the base game's refining; the harvest is built)
-- The radioactive charge that quiets a pool without a fight. (built; his ladder of 2026-09-23 names it and the
-  validated water bar says "treatment"; moved in by the second reader, `Answered on 2026-11-19` 1) With hull wear in, it is
-  also how a crew buys days of quiet for a ship parked in reach.
+- Seep-oil rendered to chemfuel as the Fever Wood's richer source (his fuel answer of 2026-11-19); the slow route
+  as everywhere; seep-oil as a trade good. (the harvest is built; the recipe is not)
 - Limbs that nobody hurts sink back by themselves after a while, so a quiet pool does not fill up and a standing
   sentinel does not mute the crown for good. (built; *"the pool breathes"*)
 - Natives are never seized and drink their own water. Every loss shows a sign.
 
 **0.2.0, the stop with company**
+*Moved here from 0.1.0 by his first-version answer of 2026-11-19 (one signature a stop is sure to
+see); each line goes back by one move:*
+- The vaulm's seal and the drommath's swelling. (built; moved in, see `rewrite_choices.md`)
+- The no-fight charge: the radioactive charge that quiets a pool without a fight. (built; his ladder of 2026-09-23 names it and the
+  validated water bar says "treatment"; moved in by the second reader, `Answered on 2026-11-19` 1) With hull wear in, it is
+  also how a crew buys days of quiet for a ship parked in reach.
+*Already here before that answer:*
 - Sink-mud that catches by weight and never harms by itself, and the too-even green skin that hides it (*"firm
   ground — which is the lie"*). (unbuilt)
 - The lure: live bait worth eating, staggered raiders, the two fronts, and what they leave. (built)
 - The oil boil. (built; owner's card of 2026-10-02)
-- Seep-oil rendered to chemfuel, and fuel on sale at Sporefall. (unbuilt)
+- Fuel on sale at Sporefall. (unbuilt; campaign layer)
 - The mirror list: a dated note of which pools *"moved lately"*, bought from Sporefall's traders, stale by the
   time it is read. (built, but nothing sells it; the locked Designer sheet keeps it, so the cleanse's advice to
   retire it does not stand. Campaign layer.)
@@ -469,6 +487,9 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 - The mirror-break incident; a bespoke arrival letter; the grolth's acid trail.
 
 **Dropped (already cut or declined by the owner; listed so nobody revives them by accident)**
+- The Mooring (a tentacle that holds a hull edge, the section torn off at launch), the rented trunk-top landing pad
+  at Sporefall and the steel saddle across two trunks: passed over on his card of 2026-10-02; they stay down by his
+  answer of 2026-11-19, and he can bring them back by name.
 - Ants carrying thornbugs off alive, and the raid-back quest (cut 2026-10-23).
 - The hive parasite (cut 2026-10-23). Any rite (*"none, move on"*, 2026-10-02).
 - A sap-drinker that drops into the pool; a crafted bloodless lure; any protection against the eye; split crown and
@@ -486,21 +507,13 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 
 ## NEEDS HIM
 
-One question is left. Three others were answered by his card of 2026-11-18 and are written into the design above:
-the crown is partial cover from orbit; the place wears the hull, in 0.1.0; seep-oil is the Fever Wood's richer fuel
-source. Two more were answered on 2026-11-19 (next section).
+None open. Three were answered by his card of 2026-11-18 and are written into the design above: the crown is
+partial cover from orbit; the place wears the hull, in 0.1.0; seep-oil is the Fever Wood's richer fuel source. The
+rest were answered on 2026-11-19 (next section).
 
-2. **The Mooring in full: bring it back?** (hull) Offered by name on his card of 2026-10-02 (*"if you stay, a
-   tentacle wraps a hull edge and holds. Launch anyway and that section tears off into the pool"*) and not
-   chosen; he took the oil boil only. No words of his were recorded against it, and he passed over it before he
-   had said the ship lens or ruled hull wear in. Default here: out. Yes puts the snare, the torn-off section and
-   the crew's own plate as bait into 0.2.0. The same card passed over a rented trunk-top landing pad at
-   Sporefall and a steel saddle across two trunks; they come back with it or not at all.
-   *Waits on the declined-ship-ideas question of 2026-11-19.*
 
-Two readings this document rests on, flagged where they are used: "one step" of cover is one visibility band
-(cover), and an unbuilt fuel recipe goes in 0.2.0 (fuel). Both are asked once for every biome in
-`design/RimMandrake/biome_shared_machinery_2026-11-18.md`.
+Two readings this document rested on are settled by his cards of 2026-11-19: "one step" of cover is one
+visibility band, and the richer seep-oil recipe is 0.1.0 work.
 
 ## Answered on 2026-11-19
 
@@ -511,10 +524,18 @@ call** means the Conductor took the obvious answer (`RIMMANDRAKE_ENACT_CONDUCTOR
 can undo any one by name.
 
 1. (scope) **The no-fight charge: 0.1.0 or 0.2.0?** *His ruling:* his ladder of 2026-09-23, his answer of 2026-11-10
-   and the move card of 2026-11-18 (*"Move it, list every move"*). 0.1.0; the first-version size question can still
-   move it.
+   and the move card of 2026-11-18 (*"Move it, list every move"*). 0.1.0 then; his first-version answer of 2026-11-19
+   (one signature a stop is sure to see) then moved it to 0.2.0: withdrawing, severing and the eye still drive the
+   water off without it.
 3. (other) **Is there a fever in the Fever Wood?** Yes, at 0.2.0. His freeze ruling R15 (2026-09-07) says *"the fever
    is fungal — the wood's own spore load"*, and nothing later reversed it. The sheet's ban 5 forbids a *"fungal
    miracle"*, not a disease. R15 also owes a clear line between this fever and the Miasma's and the Rot's registers.
    **This changes the design's default.** Was: no fever. Undo: strike the fever line from the 0.2.0 list and set this
    answer back to *no fever*. *Delegated call.*
+
+**Answered by his five cards of 2026-11-19** (item
+`RIMMANDRAKE_ENACT_FIVE_BIOME_ANSWERS_INTO_26_DESIGNS`; each card and his pick, word for word:
+`design/RimMandrake/biome_rulings.md` §Five biome answers). Each keeps its number.
+
+2. **The Mooring in full: bring it back?** (hull) *His card of 2026-11-19 (declined ship ideas):* they stay turned
+   down, the trunk-top pad and the saddle with it. He can bring them back by name.

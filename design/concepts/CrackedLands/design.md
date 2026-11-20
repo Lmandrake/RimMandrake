@@ -72,9 +72,9 @@ halves every wait and a hidden one doubles it.
 
 **Cover from orbit here: none from the sky, and one step for a ship down in the cut.** The sky is *"clear, hot,
 still"*: no canopy, no steam, no fog. What the place has is depth. The canyons are *"cut deep enough to shade
-themselves"*, and a hull on the canyon floor sits in that shade under the walls. This design reads that as the
-card's one step, on the floor only, and nothing on the benches or the flats. It is this design's reading of the
-card of 2026-11-18, which names canopy, steam and fog and not rock; see `NEEDS HIM`. It makes the landing the
+themselves"*, and a hull on the canyon floor sits in that shade under the walls. His card of 2026-11-19 makes
+rock walls one step of cover, added to any other kind on the tile: one step on the floor only, and nothing on the
+benches or the flats. It makes the landing the
 choice the card asked for: the floor hides the ship and is where the flood comes; the bench is safe from the water
 and in plain view. All of it is owed work.
 
@@ -90,8 +90,9 @@ He already ruled the cure for a first visit: *"the plot organizes a witnessed fl
 tile"*; and the trigger is the **first gravship landing within range** of the Cracked Lands, *"tied to player
 motion, not the calendar."* His constraint behind it: *"timing rides the plot, never weather RNG."* The quest spec's
 phrase for what the player is doing is *"choosing your moment to believe the warnings."* So the ship's first stop
-here is the one stop where the flood is promised. It is a campaign quest, designed and unbuilt (0.2.0 here; see
-`NEEDS HIM`). After it, floods run as a standing rare event. Beyond that the interval is tuning, and this design
+here is the one stop where the flood is promised. It is a campaign quest, designed and unbuilt, and by his first-version
+answer of 2026-11-19 the first stop's flood is in 0.1.0: one quest and a production "arm the flood" call to build.
+After it, floods run as a standing rare event. Beyond that the interval is tuning, and this design
 asks only that a crew which stays into its second week has heard the chimes.
 
 A season is fifteen days. Nothing in 0.1.0 needs one.
@@ -346,9 +347,21 @@ from butchery; the acoustic sounder; the passage of giants; the Empire's search 
 
 Every feature is in one bucket.
 
+**The one signature (his first-version answer of 2026-11-19): the flood.** The herald and the chimes come, then a
+wall-to-wall flood of hot, crud-laden water that can kill; a hull on the floor takes the river aboard and can always
+launch on the chimes; the retreat leaves the shade briefly fertile and salvage on the flood line. *Why a normal stop
+is sure to see it:* in 0.1.0 the first stop always meets one flood (his ruling of 2026-09-10 ties a witnessed flood
+to the first gravship landing within range, *"tied to player motion, not the calendar"*), and after it floods run
+as a standing rare event. The Conductor's draft for this card named the cost: *"The Cracked Lands flood then has to
+happen during a first stop."* *Runner-up:* finding hidden water and carrying the Swale technique away (the cleanse's
+runner-up), later.
+
 **0.1.0, the stop**
 - The land: pans, stained walls, shade-bound flora, banks with refuge ledges. (built)
 - The flood: wall to wall, with chimes and roar. (built as a capped patch today; wall to wall is owed)
+- The witnessed flood on the first stop: the first gravship landing within range arms one flood inside that stop;
+  the Farmers' invitation carries it in the campaign. (designed, unbuilt: one quest and a production "arm the
+  flood" call; moved in by his first-version answer of 2026-11-19)
 - The herald sequence before the chimes: wind, ticking, the tarruq's hush. (built)
 - Harm that can kill, by impact and drowning. (built as one light hit today; owed)
 - A hull on the floor in the river, the water aboard; launching on the chimes. (owed: today the flood skips
@@ -371,8 +384,8 @@ Every feature is in one bucket.
   with the ship. (the Swale is built; the rest is not)
 - The uttaqar's wounds turning to stone, and its disguise as rock. The muttavaq dredging a trail through the
   floor. (built in part)
-- The witnessed-flood invitation, fired by the first gravship landing within range. (designed; campaign layer;
-  `NEEDS HIM` 4)
+- The Farmers' invitation as the campaign's story around the first stop's flood. (designed; campaign layer; the
+  flood itself is in 0.1.0, `Answered on 2026-11-19` 4)
 - The ledge carvings and their one-time thought. (built; their words are placeholders owed to him)
 - The ship's acoustic sounder readings here. (built)
 
@@ -401,19 +414,7 @@ Every feature is in one bucket.
 
 ## NEEDS HIM
 
-Each is tagged with one theme word.
-
-1. **[cover] Does a deep cut count as cover from orbit?** The card names canopy, steam and fog. *Yes, one step, on
-   the canyon floor only* (default here): the landing becomes a real choice between hidden-and-floodable and
-   safe-and-seen. *No:* the Cracked Lands have no cover anywhere, every stop is on the open clock, and the floor is
-   simply the wrong place to park.
-   *Waits on the cover-scale question (what ordinary darkness is worth, and whether kinds of cover add up) of
-   2026-11-19.*
-4. **[scope] Is the witnessed flood part of the first stop?** He ruled on 2026-09-10 that the Farmers' invitation
-   fires on the first gravship landing within range. It is a campaign quest, unbuilt, and it is the only thing
-   that puts the biome's event inside a short visit. *0.2.0, with the campaign* (default, as the first read had
-   it). *0.1.0:* the first stop always meets the flood; one quest and a production "arm the flood" call to build.
-   *Waits on the first-version size question of 2026-11-19.*
+None open. Every entry is answered (next section).
 
 ## Answered on 2026-11-19
 
@@ -431,3 +432,14 @@ can undo any one by name.
 5. **[scope] The fossil case.** Kept, at 0.2.0 with the fossils (the design's default). *Delegated call.*
 6. **[other] The words on the ledges.** An agent drafts the lines and a judge picks them (a taste call). The one
    sourced line, *"the mercy that kills, then feeds."*, stays. *Delegated call.*
+
+**Answered by his five cards of 2026-11-19** (item
+`RIMMANDRAKE_ENACT_FIVE_BIOME_ANSWERS_INTO_26_DESIGNS`; each card and his pick, word for word:
+`design/RimMandrake/biome_rulings.md` §Five biome answers). Each keeps its number.
+
+1. **[cover] Does a deep cut count as cover from orbit?** *His card of 2026-11-19 (cover):* yes. Rock walls are one
+   step, added to any other kind on the tile; on the canyon floor only, as this design had it.
+4. **[scope] Is the witnessed flood part of the first stop?** *His card of 2026-11-19 (first version):* yes. The flood
+   is the Cracked Lands' signature and a normal stop must see it, so the first stop always meets the flood in 0.1.0:
+   one quest and a production "arm the flood" call to build. **This changes the design's default.** Was: 0.2.0, with
+   the campaign.

@@ -415,12 +415,17 @@ It arrives late, and it arrives into the same Dark.
 | Grain wears unroofed stone and steel, spares what is roofed, and leaves dust that becomes fuel. | Matched pieces roofed and unroofed through an etchfall; sweep and refine. | Dry weather: no wear. |
 | An Unveiling clears the Dark everywhere for a while and the Dark returns. | A full Unveiling with lamps, moths and a predator in place before, during and after. | It reveals nothing through unexplored fog. |
 | Gusts are real and intermittent; gharrek open on each one. | A day of natural wind with gharrek on the map. | Steady wind with a gust sound over it fails. |
-| The fold lamp holds a lane of clear air that walls stop. | A lamp pointed down an open approach and at a wall. | Unfuelled: the lane closes. |
-| Vines turn to the strongest light; a picked glowberry lights its carrier. | Move the only lamp; hand a berry to a crew member in the Dark. | |
 | The pools hold living swimmers and the line brings up the same creatures. | Watch a pool; fish it. | A catch with nothing living in the pool fails (standing ruling). |
 | Etchfall wears the outside of a landed hull, with the grain's own sound and dust as the sign; a hull face behind roofed building, or under the ship's light screen, is spared; a worn ship can always launch. | A landed ship through an etchfall with one side bare, one side behind a lean-to; then launch. | Dry weather: no wear. With the wear switched off the bare side is untouched. |
 | A quiet, dark ship gains cover; lamps slow it; the engine ends it. | A landed ship run dark, run lit, then started. | With the feature switched off none of the three changes anything. |
 | A probe can be beaten by stillness and darkness or by killing it, and its report ends the cover and brings the search back to ordinary pace. | Three probes: avoided, destroyed, and allowed to report. Read the pursuit's next timer after each. | A probe that reports changes the timer; the other two do not. |
+
+**Promises that moved to 0.2.0 with their features** (his first-version answer of 2026-11-19):
+
+| the player sees | the scene | what rules out a fake |
+|---|---|---|
+| The fold lamp holds a lane of clear air that walls stop. | A lamp pointed down an open approach and at a wall. | Unfuelled: the lane closes. |
+| Vines turn to the strongest light; a picked glowberry lights its carrier. | Move the only lamp; hand a berry to a crew member in the Dark. | |
 
 The hull row pins no rate: how fast plate wears is tuning and stays out of any bar.
 
@@ -460,15 +465,20 @@ shared-machinery file has the whole of it):
 "Built" is the 2026-11-17 census, not a pass. Items marked **(his mark)** were moved into 0.1.0 by the owner on
 2026-11-17.
 
+**The one signature (his first-version answer of 2026-11-19): the hidden ship.** A quiet, dark, cold-engined ship
+gathers cover in the Dark; lamps slow it, the engine ends it, probes still come, and a probe's report ends it.
+*Why a normal stop is sure to see it:* every stop lands a ship that sits quiet in the Dark from its first night, and
+the Empire's ladder sends its first probe within the stop. His move card of 2026-11-18 already names the hide the
+Abyss's signature. *Runner-up:* living light against the native feeders (the cleanse's signature of 2026-11-17); it
+lost because the ship lens makes the ship the subject. The Dark itself stays as land: without it there is no hide.
+
 **0.1.0, the hide**
 - The land: black etched highland and dark sand; stillness broken by gusts; etchfall; the rare Unveiling; the
   biome's dark swirling face on the world map. (built)
 - The Dark: dimming with outlines kept (unbuilt presentation), the sight and aim penalty (built), intervening Dark
   spoiling shots (unbuilt), lamps shrinking (built), rooms cleared by warmth (built), muffled sound and the gust
   soundscape (built).
-- Living light: the lamp tree and crops under it, glow globes, glowing grass (built); vines that turn to light and
-  a picked berry that lights its carrier **(his mark; unbuilt)**.
-- The fold lamp, reached by ordinary research **(his mark; built)**.
+- Living light: the lamp tree and crops under it, glow globes, glowing grass. (built)
 - The moths that eat light; the ishvarith; the saevitha; the ombrathia; the gharrek; the tameable sorter that
   tidies; the herds, pack animals and milkers; the summ as an ordinary great beast. (built)
 - Etchfall, tholin and its fuel; etchcap in its hollows. (built)
@@ -482,6 +492,11 @@ shared-machinery file has the whole of it):
   2026-10-01; on the shared hull-wear machinery; his ruling of 2026-11-18)
 
 **0.2.0, Lightfall and the long stay** (as he approved on 2026-11-17, except the line above)
+*Moved here from 0.1.0 by his first-version answer of 2026-11-19 (one signature a stop is sure to
+see); each line goes back by one move:*
+- The fold lamp, reached by ordinary research **(his mark; built)**.
+- Living light: vines that turn to light and a picked berry that lights its carrier **(his mark; unbuilt)**.
+*Already here before that answer:*
 - The brood at the bottom of Lightfall: the landscape-sized sleeping mother, the clutch, the bone field, one wake
   meter fed by greed, the egg, the storms that follow a stolen egg home, the summing that *"never stops growing"*.
 - The Ship in the Wall and the fittings it yields; the great bone aboard. The ship takes four kinds of part and
@@ -497,7 +512,6 @@ shared-machinery file has the whole of it):
   later."*).
 - The roster's bespoke behaviours not yet built (corpse-stripping, spine spray, hungry digging, and the like);
   glow-globe poison; fungus spores.
-- The lasting etch scar on a ship that has been here, if he wants it (asked under `NEEDS HIM`).
 
 **Later**
 - The four darkness rites the deep dark teaches (the Dark Vigil, the Blind Offering, the Snuffing, the Lightless
@@ -514,6 +528,8 @@ shared-machinery file has the whole of it):
 **Dropped (already cut or declined; listed so nobody revives them by accident)**
 - Gust turbines and gust power (cut by card, 2026-10-01).
 - A ship touch in the free tier (declined by card, 2026-10-01).
+- The lasting etch scar, moths on the ship's own lamps lifting the cover, and the heatless stealth lamp (passed over
+  on his card of 2026-10-01; they stay down by his answer of 2026-11-19, and he can bring any one back by name).
 - Any on-screen Nhaleth; the name "Forsakens" for them (his words, 2026-10-01).
 - Anything that reads as a fantasy dragon: no fire breath, no hoard, never the word (his words, 2026-10-01).
 - Geothermal anything; steady wind; water rain; permanent clear weather; clean sensing; sun-fed residents (the
@@ -531,16 +547,8 @@ shared-machinery file has the whole of it):
 
 ## NEEDS HIM
 
-Each has the default this design uses, so nothing waits on him to read on. The first three are the first pass's;
-the rest were found by the second reader (the ninth on reading the ladder to its end).
+None open. Every entry is answered (next section).
 
-5. **[hull] The lasting etch scar.** The review offered a mark the ship carries everywhere, *"I was in the Abyss"*;
-   he chose no free-tier ship touch on 2026-10-01 and has not been asked about it for the campaign. Default: the
-   hull wears and is repaired like any damage, with no lasting mark.
-   *Waits on the declined-ship-ideas question of 2026-11-19.*
-8. **[other] Two declined ship ideas, listed and not revived:** moths on the ship's own lamps lifting the cover, and
-   the heatless stealth lamp (both on his card of 2026-10-01, neither chosen).
-   *Waits on the declined-ship-ideas question of 2026-11-19.*
 
 Not a question: the Abyss has no locked Designer tree. Not asked again: where the greed line lies (his waiver),
 the gust turbines (cut), the rites (deferred by him).
@@ -574,3 +582,12 @@ can undo any one by name.
    ocean is like the Dark... VERY concealed. But nowhere pauses it indefinitely."* The Dark is the top level of cover,
    and the top level is the built fourfold delay. Nothing pauses the search for good, a ship holding its cover
    included. This later word overtakes *"full dark still pauses it"*.
+
+**Answered by his five cards of 2026-11-19** (item
+`RIMMANDRAKE_ENACT_FIVE_BIOME_ANSWERS_INTO_26_DESIGNS`; each card and his pick, word for word:
+`design/RimMandrake/biome_rulings.md` §Five biome answers). Each keeps its number.
+
+5. **[hull] The lasting etch scar.** *His card of 2026-11-19 (declined ship ideas):* they stay turned down. No lasting
+   mark; the hull wears and is repaired like any damage. He can bring it back by name.
+8. **[other] Moths on the ship's lamps lifting the cover, and the heatless stealth lamp.** *His card of 2026-11-19
+   (declined ship ideas):* they stay turned down. Both are on the Dropped list.

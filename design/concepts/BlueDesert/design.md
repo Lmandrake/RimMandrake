@@ -66,26 +66,24 @@ provisional): a probe droid five to eight days after landing on open ground, the
 team, an ion cordon on the ship, a breaching assault, and an orbital bombardment that cannot be fought. A loud crew
 halves every wait and a hidden one doubles it.
 
-**Cover from orbit here: full dark.** The Blue Desert never sees the sun, and by his rulings *"Dark/covered tiles
-PAUSE the orbital clock and substitute their own dangers and scarcities"* (2026-08-05) and, on today's card, *"full
-dark still pauses it"*. It gets no second kind of cover on top: the sky is *"usually clear — much less shelter than
-the crags"*, and the ice fog hides the crew at ground level only. As built, the pursuit's list of slowed biomes
-holds the Abyss alone (waits multiplied by four), so the Blue Desert's pause is owed work, not a fact of the game
-today.
+**Cover from orbit here: full dark, one step.** The Blue Desert never sees the sun. By his card of 2026-11-19
+*"Full dark is one step, like fog"*, and nothing pauses the search for good. It gets no second kind of cover on top:
+the sky is *"usually clear — much less shelter than the crags"*, and the ice fog hides the crew at ground level
+only. As built, the pursuit's list of slowed biomes holds the Abyss alone, so the Blue Desert's step is owed work
+(the shared partial-cover entry), not a fact of the game today.
 
-**How long a stop lasts (the outer edge).** If the dark pause is built the way the Abyss's is, a quiet crew gets
-the ladder's own figure for a dark refuge, *"roughly 40–64 days between rungs"*, so the Empire is not what ends a
-stop here. The larder is: nothing native is food for the crew, and the heater eats fuel every hour.
-`UNSETTLED`: nobody has measured how long the ship's stores feed six Jawa. This design treats **about a month
-to six weeks** as the outer edge of a stay, set by food and nerve, and expects most stops to be far shorter: a
-salvage run of a few days. A season is fifteen days, so one regrowth of a cleared patch can be seen and little else
+**How long a stop lasts (the outer edge).** One step makes each wait about 1.4 times the open-ground figure. His card
+puts a night-side stop at *"about six weeks"*, and the larder ends one about then too: nothing native is food for
+the crew, and the heater eats fuel every hour. `UNSETTLED`: nobody has measured how long the ship's stores feed six
+Jawa. This design treats **about six weeks** as the outer edge of a stay, set by the Empire, food and nerve, and
+expects most stops to be far shorter: a salvage run of a few days. A season is fifteen days, so one regrowth of a cleared patch can be seen and little else
 that is slow.
 
-`Answered on 2026-11-19` 1 (see the end) answers whether a blast chain, visible from orbit on a black plain, ends the pause. This design
-assumes it does, which makes the biome's own signature the thing that gives the crew away. Once the pause is lost
-the stop runs on the open-ground clock, taken from the Greentide design's arithmetic and not re-derived here: a probe
+`Answered on 2026-11-19` 1 (see the end) answers that a blast chain, visible from orbit on a black plain, takes away the dark's step while it
+lasts. That makes the biome's own signature the thing that gives the crew away. Without the step the stop runs on
+the open-ground clock, taken from the Greentide design's arithmetic and not re-derived here: a probe
 on day 5 to 8, a first real fight around day 12 to 20, the bombardment around day 20 to 32 if the Empire wins every
-step. Also `NEEDS HIM`: whether the plain night side counts as "full dark" at all, or only the Abyss does.
+step.
 
 ---
 
@@ -260,11 +258,11 @@ It arrives late if the crew has kept dark, and soon if it has not.
 ## What the crew takes away
 
 - **Blue ice:** the top grade of water on the planet, and the hold's own refrigeration while it lasts.
-- **Fuel:** this is one of the richer fuel stops. Cold wax from every plant and carcass, refined cold to chemfuel:
-  *"a chemfuel windfall that explodes if you warm it."* An amber vashpuk bladder regrows after tapping, *"a
-  renewable cold-wax well"*, refilling in about ten days, so a long stop taps it two or three times: *"a fuel well
-  that is also a bomb you must never let warm."* One vhaulk taken the hard way is a tankful. It is not the richest: the propane lakes,
-  one step colder, are the replete source. Nobody here sells fuel, because nobody is here.
+- **Fuel:** the slow route, and buying elsewhere (his fuel answer of 2026-11-19: the Blue Desert is not one of
+  the richer sources). Cold wax from plants and carcasses renders to chemfuel in a cold room at the slow route's
+  rate; in a warm room the wax goes first. The propane lakes, one step colder, are the replete source. Nobody here
+  sells fuel, because nobody is here. The richer reading (the vashpuk well, a vhaulk as a tankful) is kept in the
+  0.2.0 list as text.
 - **Salvage:** meteoritic metal, wreckage, the gear at the old workings.
 - **Wax as cargo,** to sell on the dayside, for as long as the hold stays cold. *"The phase-line physics travels
   with you."*
@@ -325,12 +323,17 @@ that grows and never a wall, and ends at launch.
 | Native animals are fuel: a kill is a blast, the dorrak's hump is the fatal place, the krissek burns blue when it runs and goes up once. | One of each killed; a dorrak shot in the hump and one shot elsewhere. | One death, one blast: the krissek does not go off twice. |
 | The vhaulk goes off only when killed by heat, or at once when ion touches it alive; killed cold, its cistern is intact. | Three vhaulks: a heat kill, an ion hit, a kinetic kill. | The kinetic carcass, warmed afterwards, is still dangerous. It leaves the map with a notice, never silently. |
 | Wax, native feed and native corpses stay dangerous in the warm, in stacks, in hands and across a reload. | Each carried from a cold room into a warm one; one saved halfway. | Splitting a stack or loading the save does not make it safe. |
-| Loose blue ice keeps a closed hold cold through a power failure far longer than a repair takes. | Two matched holds with a heated room next door, one with ice and one without; the power cut. | The hold without ice crosses the wax's limit; the one with ice is still cold, with ice left, well after the repair is done. |
 | Wax refined in a cold room is ordinary chemfuel; in a warm room the wax goes first. | The same bill run cold and run warm. | The finished fuel stacks, fuels and burns like any other. |
-| A foreign animal that eats a native plant is visibly ill. | A crew pet and a dorrak fed the same fern. | |
 | Drift piles deepest beside walls, doors and the hull and slows travel there until cleared or eroded. | A wall, a door and the ship through a drift storm; trips timed after the storm ends. | Trips timed in the storm prove nothing: the weather itself slows walking. |
 | Ice fog cuts range and accuracy and slows movement while it lasts. | The same shot in clear air and in fog. | |
 | The vrisk really flies. | Its flight state read while aloft (never a live capture: standing rule). | |
+
+**Promises that moved to 0.2.0 with their features** (his first-version answer of 2026-11-19):
+
+| the player sees | the scene | what rules out a fake |
+|---|---|---|
+| A foreign animal that eats a native plant is visibly ill. | A crew pet and a dorrak fed the same fern. | |
+| Loose blue ice keeps a closed hold cold through a power failure far longer than a repair takes. | Two matched holds with a heated room next door, one with ice and one without; the power cut. | The hold without ice crosses the wax's limit; the one with ice is still cold, with ice left, well after the repair is done. |
 
 Settings: one switch per major feature, defaults as shipped, everything off leaves a cold empty ice plain with
 ordinary animals (standing rule, every mod). A switch that says off must never make anything more dangerous: today
@@ -359,6 +362,13 @@ dial; the ship's acoustic sounder; the passage of giants (`HugeThings`); the Nig
 
 Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 
+**The one signature (his first-version answer of 2026-11-19): the charge.** Every native plant and animal is fuel
+that only the cold keeps quiet. Warmth or damage makes it warn, crack and blow; the blast runs through connected
+growth and into cargo; a prepared gap, safe cutting and cold handling are the answers. *Why a normal stop is sure to
+see it:* the ship lands warm on a field of charges, and its first heater, fire, kill or careless cut warms one on the
+first day of work. His experience line names it: *"Mine slowly and carefully or risk your own passion's heat turning
+everything into a bomb."* *Runner-up:* the ablation line giving something up (study, siege forms), already 0.2.0.
+
 **0.1.0, the stop**
 - The land: old water ice, ice-sand drift that goes deep beside structures and the hull, ice fog, the Haze as a
   veil, static abandoned workings and ice-locked wrecks. (built, except readable workings with ordinary ice and
@@ -369,13 +379,20 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 - The dorrak's hump, the krissek's halo and single blast, the vhaulk's three ways to die and its walk-off, the
   vrisk's flight, the rest as ordinary animals (murrek visible, dovvik a grazer, ossivel a herd). (built)
 - Wax, feed and corpses that stay dangerous warm. (wax is built; corpses and feed are owed)
-- The cold hold on loose ice. (owed)
 - Wax to chemfuel in a cold room. (owed)
-- The butane gut for foreign eaters. (built)
 - Drift against the hull, cleared by hand. (the sand grid is built; proof that it goes deep is owed since
   2026-09-24)
 
 **0.2.0, the stop with company**
+*Moved here from 0.1.0 by his first-version answer of 2026-11-19 (one signature a stop is sure to
+see); each line goes back by one move:*
+- The butane gut for foreign eaters. (built)
+- The cold hold on loose ice. (owed)
+*Already here before that answer:*
+- *Not chosen as a richer source (his fuel answer of 2026-11-19); kept as text, his to bring back by name:* the Blue
+  Desert as a fuel stop. *"A chemfuel windfall that explodes if you warm it."* An amber vashpuk bladder regrows
+  after tapping, *"a renewable cold-wax well"*, refilling in about ten days, so a long stop taps it two or three
+  times: *"a fuel well that is also a bomb you must never let warm."* One vhaulk taken the hard way is a tankful.
 - The murrek buried in fresh drift, flushed by digging, re-armed by every storm. (built)
 - The ablation line giving something up while the crew watches: a crack, a shape under the ice, the payload.
   (built)
@@ -420,13 +437,8 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 
 ## NEEDS HIM
 
-4. **Is the plain night side "full dark"?** This page claims the full pause on his words *"full dark still pauses
-   it"*. Evidence against assuming it: the only biome on the built list is the Abyss, whose Dark is a substance,
-   and three other sunless designs ask the same thing (`biome_shared_machinery_2026-11-18.md`, question 1).
-   *Full dark* (default here). *One step of cover only,* which makes this a stop of about six weeks like the
-   Greentide.
-   *Waits on the cover-scale question (what ordinary darkness is worth, and whether kinds of cover add up) of
-   2026-11-19.*
+
+None open. Every entry is answered (next section).
 
 Themes, for gathering these across biomes: 1 cover · 2 hull · 3 other · 4 cover · 5 hull · 6 other.
 
@@ -451,3 +463,11 @@ can undo any one by name.
    not built. Ask again when it is built. *Delegated call.*
 6. **What is the Blue Desert's deck part now?** *His ruling:* his answer of 2026-11-10, *"no rack needed"*. The later
    word wins: the Blue Desert gives the ship a room and a habit, not a part.
+
+**Answered by his five cards of 2026-11-19** (item
+`RIMMANDRAKE_ENACT_FIVE_BIOME_ANSWERS_INTO_26_DESIGNS`; each card and his pick, word for word:
+`design/RimMandrake/biome_rulings.md` §Five biome answers). Each keeps its number.
+
+4. **Is the plain night side "full dark"?** *His card of 2026-11-19 (cover):* full dark is one step, like fog, and
+   nothing pauses the search for good. **This changes the design's default.** Was: a full pause. Now: one step of
+   cover, a stop of about six weeks at the outer edge; the clock section above says so.

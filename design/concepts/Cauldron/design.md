@@ -237,8 +237,9 @@ Each can happen inside the visit. Each says what is on screen.
 - **Metal,** by the tree-load. The best reason to come.
 - **Reagent** from condensate, the thing this stop makes that other people pay for. With it the crew buys what it
   cannot make: medicine first.
-- **Fuel:** this is one of the richer fuel stops. Xithess crowns and sessarix resin are chemfuel in the hand, with
-  no refinery in between. It is not replete: the plants are picked, not pumped. Nobody on the ground sells fuel.
+- **Fuel:** the slow route, and buying elsewhere (his fuel answer of 2026-11-19: the Cauldron is not one of the
+  richer sources). Xithess crowns and sessarix resin are biomass for the slow route. Nobody on the ground sells
+  fuel. The richer reading is kept in the 0.2.0 list as text.
 - **Toxic prized meat,** *"the things a cook brags about surviving."*
 - **Vexxith,** *"everything made from it outlives the argument, the forge, and the smith."*
 - **The knowledge of filtering,** which works anywhere there is bad water.
@@ -268,7 +269,7 @@ own, said a month earlier, and it is built. This design adds no hull system and 
   the sampler under the frame is owed shared work.
 - **Hands-on work.** An older pitch that he neither took nor struck on 2026-09-28: the ship *"becomes the biome's
   newest tree"*, growing crystal scab that is scrubbed off for trace metal. It is not built and not promised.
-  Two days later he declined GPT's extension of it by name; see `NEEDS HIM`, where it is listed and not revived.
+  Two days later he declined GPT's extension of it by name. It stays down (his answer of 2026-11-19).
 - **The approach.** His ruling names *"rough weather turbulence in the approach"* among the ways biomes wear on a
   ship, and this is the biome with the angry sky. No Cauldron source describes a rough descent, so none is promised
   here; it belongs to whatever shared rule covers storm approaches.
@@ -278,12 +279,19 @@ own, said a month earlier, and it is built. This design adds no hull system and 
 | the player sees | the scene | what rules out a fake |
 |---|---|---|
 | A rainless mineral forest in even dusk: dark soils, pale metal-streaked trunks, chemical fog, lightning, no green. | A fresh map through a cycle of its weathers. | Rain or snow ever falling fails it. |
-| The pools are what they are through contact, filling, pumping and filtering. | A pawn wades, a tank is filled, the tank is filtered, the output is drunk. | A coloured pool, or a tank filled by hand for the test, proves nothing about delivered water. |
 | The vents quiet, a message says so, and nearby small natives go still, about an hour before a bloom. | An active vent with eskith and a suush near it, run into a bloom; a worker walks to shelter on the cue. | A map with no animals still warns. A capped vent warns by message. |
 | A roof or a full seal stops what the air does; a robe does not; pool contact and smoke are separate. | Four pawns through one bloom: roofed, sealed, robed, and roofed but wading. | An acid-proof coat on an unsealed wearer protects the coat. |
 | Metal load stays through care, travel and reload, and only an advanced-medicine purge removes it. | A loaded pawn tended, flown to another map, saved and loaded, then purged. | Ordinary tending and waiting change nothing, however long. |
 | Acid can leave permanent facial and sensory damage after ordinary healing. | A burn that heals; the Health tab after. | A scar label with no capacity change is not it. |
-| Slow thornwood felling pays wood and metal, more from older trunks, and the assay told the truth. | An old and a young trunk assayed, then felled; an interrupted felling. | The interrupted job pays nothing. |
+| Slow thornwood felling pays wood and metal, more from older trunks. | An old and a young trunk felled; an interrupted felling. | The interrupted job pays nothing. |
+| The native animals and plants feed, breed and pay what they are said to pay; the meat is toxic unless prepared. | A week of ordinary husbandry and foraging. | |
+| The exposed hull burns slowly in the acid air until lined. | The ship through several days, with and without the liner. | Vexxith parts take none. |
+
+**Promises that moved to 0.2.0 with their features** (his first-version answer of 2026-11-19):
+
+| the player sees | the scene | what rules out a fake |
+|---|---|---|
+| The pools are what they are through contact, filling, pumping and filtering. | A pawn wades, a tank is filled, the tank is filtered, the output is drunk. | A coloured pool, or a tank filled by hand for the test, proves nothing about delivered water. |
 | One spark carries through connected gas, over water, and stops at a gas-free gap and at a sealed wall; a save mid-burn resumes burning. | A gas field across a pond with one gap and one walled corner; ignite; save halfway. | The pond does not stop it. |
 | A gas blast visibly throws nearby loose goods. | Stacks beside an ignited pocket. | Goods that move with no visible blast, or a blast that moves nothing, both fail. |
 | A tap stops its vent and banks condensate; a powered Filter-Works makes reagent from it and drinking water from bad water, and says why when it stops. | Tap, tank, works; run it short of power, cartridges and room in turn. | Stored stock never silently disappears. |
@@ -291,8 +299,6 @@ own, said a month earlier, and it is built. This design adds no hull system and 
 | Shooting a suush sets it off as a gas blast. | One shot, one punched. | Melee does not start it. |
 | A wild vexxiss drinks a vent quiet, pries an ordinary tap, and goes for whoever lit a fire and puts it out; tame, it shears for vexxith. | A vent, a tap and a lit fire near a wild one; a tame one sheared. | It never attacks its own faction's fire-lighter. |
 | Rhossak keep to their grove and say so; galled ones give edible galls. | A bound herd with its tree, then with the tree felled. | With no tree left they read as unbound animals; none disappears. |
-| The native animals and plants feed, breed and pay what they are said to pay; the meat is toxic unless prepared. | A week of ordinary husbandry and foraging. | |
-| The exposed hull burns slowly in the acid air until lined. | The ship through several days, with and without the liner. | Vexxith parts take none. |
 
 Settings: one switch per major feature, defaults as shipped, everything off leaves a dim wet forest with ordinary
 animals (standing rule, every mod). The suush's flight is checked by reading its flight state, never by watching it
@@ -319,6 +325,14 @@ dial; the Scarlands' aerosol screen, which answers this biome's air next door.
 
 Every feature is in one bucket.
 
+**The one signature (his first-version answer of 2026-11-19): the vent bloom.** The vents falter, a message says
+so and the small natives go still; about an hour later the bloom poisons every unsealed body outdoors; a roof or a
+full seal stops it, a robe does not; and the metal load it leaves stays until an advanced-medicine purge. *Why a
+normal stop is sure to see it:* the bloom is one of the Cauldron's four ruled weathers and comes round on the vent
+cycle, so a stop of days meets the falter and at least one bloom. His experience line: *"life twists under the load…
+including you."* *Runner-up:* the gas that pools and burns as a chain (the largest system in the mod); it lost
+because a stop can live through the bloom without ever lighting the gas.
+
 **0.1.0, the stop**
 - The land: the four ruled weathers (scatter-dusk, vent bloom, vapour bank, dewfall), dark soils, hazardous pools
   with real chemistry, vents. (built; pool identity through use is unproven)
@@ -327,17 +341,25 @@ Every feature is in one bucket.
 - Metal load that never clears itself and an advanced-medicine purge. (the load is built and wrongly decays; the
   purge is owed)
 - Permanent acid injury. (owed)
-- Thornwood felling for metal, assay and flecks. (built; seven fleck textures missing)
+- Thornwood felling for wood and metal, more from older trunks: an ordinary product of a native tree. (built)
+- The native cast as ordinary animals and plants with their products; xithess and sessarix burn on the slow route.
+  (built)
+- The acid-worn hull and its liner. (built)
+
+**0.2.0, the stop with company**
+*Moved here from 0.1.0 by his first-version answer of 2026-11-19 (one signature a stop is sure to
+see); each line goes back by one move:*
+- The assay and the metal flecks. (built; seven fleck textures missing)
 - Connected gas fire over water; thrown goods. (built; saving mid-burn is owed; throwing needs
   `ExplosiveKnockback`)
 - Gas tap, tank, Filter-Works, cartridges. (built; four live checks passed 2026-10-21)
 - The corroded ruin and study of its rig. (built; live checks passed 2026-10-21)
 - The suush's burst. The vexxiss drinking vents, prying taps, warding fire; tame shearing for vexxith. (built)
-- Rhossak binding and galls. The native cast as ordinary animals and plants with their products. Xithess and
-  sessarix as fuel. (built)
-- The acid-worn hull and its liner. (built)
-
-**0.2.0, the stop with company**
+- Rhossak binding and galls. (built)
+*Already here before that answer:*
+- *Not chosen as a richer source (his fuel answer of 2026-11-19); kept as text, his to bring back by name:*
+  *"Xithess crowns and sessarix resin are chemfuel in the hand, with no refinery in between. It is not replete:
+  the plants are picked, not pumped."*
 - The vexxiss poisoning water it wades through, and its identifiable tracks. (built)
 - Zisska fire-spit, bedbug paralysis, the garsulix's death blast, fexxil venom, kissaveth gas when cut. (built)
 - Vexxith-lined tap and filter vessel; the plate-only door. (built)
@@ -351,7 +373,6 @@ Every feature is in one bucket.
 - The age-based scab and crystal-fan coat on trunks.
 - Refining shed ossrith crystal to uranium.
 - The three rites (the Filtered Cup, the Engine Hour, the Capping) and Oomo's grudging shrine.
-- The scab on the ship, if he wants it.
 - A Farmer work party as an encounter (new here; the sources only name the Farmers in descriptions).
 
 **Dropped (already cut or declined; listed so nobody revives them by accident)**
@@ -361,6 +382,8 @@ Every feature is in one bucket.
 - Volcanism, steam, geysers, any heat source; green foliage; rain.
 - The tile scorer and its rarity setting (worldgen is out in every version).
 - The frozen sheet's bans on grazers and fast animals, for the seven imports he kept.
+- The scab on the ship (*"neither adopted nor struck"*, 2026-09-28): it stays down by his answer of 2026-11-19 on
+  declined ship ideas; he can bring it back by name.
 - GPT's extensions he declined on the enrichment card of 2026-09-30, *"None of these thanks"*: Scabweight (the
   ship-scab extension), Pressure Lattice, ruin-learned filtercraft, Oomo's courtesy; and the Engine Below, not
   picked. *"The ruled versions of those features still stand... only GPT's extensions are out."*
@@ -368,15 +391,8 @@ Every feature is in one bucket.
 
 ## NEEDS HIM
 
-1. **Does the ship grow scabs?** The record, in order. 2026-09-28: the pitch (*"The ship becomes the biome's newest
-   tree"*) was *"neither adopted nor struck"*. 2026-09-30: on the GPT enrichment card he declined the ship, vent
-   and tech group whole, *"None of these thanks"*, which included "Scabweight", GPT's extension of the scab; on the
-   same card he picked the vexxith loop, whose list of uses includes *"gravship scab-scrapers"*. 2026-10-09: he
-   described the hull wear as acid damage answered by material, which is what was built. This page does not revive
-   the scab. *No* (default): the built acid wear and its liner are the whole of what the place does to the hull.
-   *Yes, later:* scab to scrub, trace metal for the trouble; a new system. *Yes, instead of the acid wear:* the
-   built sampler is retired.
-   *Waits on the declined-ship-ideas question of 2026-11-19.*
+
+None open. Every entry is answered (next section).
 
 Themes, for gathering these across biomes: 1 hull · 2 other · 3 locked-tree · 4 scope.
 
@@ -396,3 +412,11 @@ can undo any one by name.
 4. **Oomo's shrine: in, or later?** *His ruling:* his ruling of 2026-11-17: *"The rituals. Little custom details that
    weren't strictly necessary. They absolutely should be, at minimum, moved to the next version if not retired
    outright."* It is later than the list of 2026-10-15. Later.
+
+**Answered by his five cards of 2026-11-19** (item
+`RIMMANDRAKE_ENACT_FIVE_BIOME_ANSWERS_INTO_26_DESIGNS`; each card and his pick, word for word:
+`design/RimMandrake/biome_rulings.md` §Five biome answers). Each keeps its number.
+
+1. **Does the ship grow scabs?** *His card of 2026-11-19 (declined ship ideas):* they stay turned down. The built acid
+   wear and its liner are the whole of what the place does to the hull. The scab is on the Dropped list; he can bring
+   it back by name.
