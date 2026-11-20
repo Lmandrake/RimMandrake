@@ -1740,6 +1740,131 @@ def spend_by_stage(rec):
     return out
 
 
+# ---- tuning tripwire T1: a builder diff that changes only numbers -----------------------------------------------------
+#
+# RIMMANDRAKE_FLAG_NUMBER_ONLY_DIFFS_IN_MATURATION_NEXT (the owner, 2026-11-16; Slack had 21 of 37 edits that changed only
+# numbers). `next`, which every builder runs on itself before it stops (SELF_CHECK_RULE), prints a note; it never refuses.
+# Page: design/specs/2026-11-19-maturation-tripwires/boundary.md.
+
+NUM_RX = re.compile(r"(?<![A-Za-z_])[-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?[fFdDmM]?(?![A-Za-z_])")
+NAME_RX = re.compile(r"([A-Za-z_][A-Za-z0-9_]*)\s*(?:=|:)(?!=)")
+TAG_RX = re.compile(r"<([A-Za-z_][A-Za-z0-9_.]*)[^>]*>")
+TRIPWIRE_NOTE = ("this diff changes only numbers in %d constants; this item has had %d such diffs on the same check. Map "
+                 "where each bar holds before the next one.")
+
+
+def _const_name(line, lineno):
+    m = NAME_RX.search(line)
+    if m:
+        return m.group(1)
+    m = TAG_RX.search(line)
+    return m.group(1) if m else "line %d" % lineno
+
+
+def number_only_constants(diff):
+    """A unified diff -> the sorted "file:NAME" keys it changes when every changed line differs from its pair only in
+    numeric literals; None when any change is more (a line added or removed alone, a word changed); [] when it changes
+    nothing. NAME: the identifier before = or :, else the XML tag, else the line number."""
+    keys, path, minus, plus, newline = set(), None, [], [], 0
+
+    def flush():
+        if len(minus) != len(plus):
+            return False
+        for (_, a), (n, b) in zip(minus, plus):
+            if a == b or NUM_RX.sub("#", a) != NUM_RX.sub("#", b):
+                return False
+            keys.add("%s:%s" % (path, _const_name(b, n)))
+        minus.clear()
+        plus.clear()
+        return True
+    for ln in str(diff or "").splitlines():
+        if ln.startswith("+++ "):
+            path = ln[4:].strip()
+            path = path[2:] if path.startswith("b/") else path
+            continue
+        if ln.startswith("--- ") or ln.startswith("diff ") or ln.startswith("index "):
+            continue
+        if ln.startswith("@@"):
+            if not flush():
+                return None
+            m = re.match(r"@@ -\d+(?:,\d+)? \+(\d+)", ln)
+            newline = int(m.group(1)) if m else 0
+            continue
+        if ln.startswith("-"):
+            minus.append((newline, ln[1:]))
+        elif ln.startswith("+"):
+            plus.append((newline, ln[1:]))
+            newline += 1
+        else:
+            if not flush():
+                return None
+            newline += 1
+    return sorted(keys) if flush() else None
+
+
+def tripwire_history(item):
+    import doorbell
+    return os.path.join(doorbell.state_dir(), "maturation", "number_diffs", "%s.jsonl" % re.sub(r"[^\w.-]", "_", item))
+
+
+def tripwire(diff, item, hist):
+    """-> None for a diff that is not number-only (nothing recorded), else {"constants", "count", "note"}: count is the
+    number-only diffs this item has had on any of the same constants, this one included, each diff once (by its
+    hash) however often `next` reads it. hist: the item's history file (tripwire_history)."""
+    import hashlib
+    keys = number_only_constants(diff)
+    if not keys:
+        return None
+    h = hashlib.sha256(str(diff).encode("utf-8")).hexdigest()[:16]
+    rows = []
+    try:
+        with open(hist, encoding="utf-8") as f:
+            for ln in f:
+                try:
+                    rows.append(json.loads(ln))
+                except ValueError:
+                    continue
+    except FileNotFoundError:
+        pass
+    if not any(r.get("hash") == h for r in rows):
+        rows.append({"hash": h, "constants": keys, "at": iso(now_ts())})
+        os.makedirs(os.path.dirname(hist), exist_ok=True)
+        with open(hist, "a", encoding="utf-8") as f:
+            f.write(json.dumps(rows[-1]) + "\n")
+    n = sum(1 for r in rows if set(r.get("constants") or []) & set(keys))
+    return {"constants": keys, "count": n, "note": TRIPWIRE_NOTE % (len(keys), n)}
+
+
+def run_diff(root, mod):
+    """-> (the diff of MOD's files since this detached run began, item) or (None, cause): read from RM_DETACHED_UNIT's
+    record (its launch time and item) against the last origin/main commit before it. (None, None) outside a run."""
+    unit = os.environ.get("RM_DETACHED_UNIT")
+    if not unit:
+        return None, None
+    try:
+        import detached_helper as DH
+        rec = DH.read_record(unit)
+    except Exception as e:  # noqa: BLE001
+        return None, "the run record of %s could not be read: %s" % (unit, e)
+    if not isinstance(rec, dict):
+        return None, "no readable run record for %s" % unit
+    at, item = rec.get("at"), rec.get("item")
+    if not isinstance(at, (int, float)) or not item:
+        return None, "the run record of %s names no launch time or item" % unit
+    paths = ["src/RimMandrake/%s" % mod, "design/concepts/%s" % mod]
+    try:
+        base = subprocess.run(["git", "-C", root, "rev-list", "-1", "--before=@%d" % int(at), "origin/main"],
+                              capture_output=True, text=True, timeout=60).stdout.strip()
+        if not base:
+            return None, "no origin/main commit before the run began"
+        r = subprocess.run(["git", "-C", root, "diff", base, "--"] + paths, capture_output=True, text=True, timeout=120)
+    except (OSError, subprocess.SubprocessError) as e:
+        return None, "git could not run: %s" % e
+    if r.returncode:
+        return None, "git diff failed: %s" % (r.stderr.strip()[:200] or r.returncode)
+    return r.stdout, item
+
+
 # ---- next ------------------------------------------------------------------------------------------------------------
 
 DISPATCH_READING_MAX_AGE_S = 1800   # ops_watch's MATURATION_READING_MAX_AGE_S: the tick runs every 60 s; 30 missed is dead
@@ -4045,6 +4170,9 @@ def main(argv=None):
         p = sub.add_parser(c)
         p.add_argument("mod")
         p.add_argument("--json", action="store_true")
+        if c == "next":     # tuning tripwire T1; inside a detached run both default to the run's own diff and item
+            p.add_argument("--diff-file", help="a unified diff to read for the tuning tripwire")
+            p.add_argument("--item", help="the item whose number-only diffs are counted")
     a = sub.add_parser("advance")
     a.add_argument("mod")
     a.add_argument("--to", required=True, choices=WORDS)
@@ -4157,6 +4285,22 @@ def main(argv=None):
         ov = dispatch_overlay(o.mod, nx["next"], rd, rp, time.time())
         nx["next"] = ov.pop("next")
         nx["dispatch"] = ov
+        # tuning tripwire T1: a note, never a refusal; the exit code stays next's own
+        if o.diff_file:
+            try:
+                with open(o.diff_file, encoding="utf-8", errors="replace") as fh:
+                    dtext, item, dwhy = fh.read(), o.item, None
+            except OSError as e:
+                dtext, item, dwhy = None, o.item, "%s: %s" % (type(e).__name__, e)
+        else:
+            dtext, item = run_diff(root, o.mod)
+            dwhy = item if dtext is None else None
+            item = o.item or (item if dtext is not None else None)
+        if dtext is not None:
+            tw = tripwire(dtext, item, tripwire_history(item)) if item else None
+            nx["tripwire"] = tw if tw else {"note": None, "read": True}
+        elif dwhy:
+            nx["tripwire"] = {"note": None, "read": False, "why": dwhy}
         if o.json:
             print(json.dumps(nx, indent=2, ensure_ascii=False))
             return 0
@@ -4177,6 +4321,11 @@ def main(argv=None):
                 g.get("visit"), len(g.get("checks") or []), len(g.get("testq") or []), g["exit"]["state"],
                 "; ".join(g["exit"]["why"][:4]) or "no record yet"))
         print("  launch: %s" % nx.get("launch", "none"))
+        tw = nx.get("tripwire") or {}
+        if tw.get("note"):
+            print("  tuning tripwire: %s (%s)" % (tw["note"], ", ".join(tw["constants"])))
+        elif tw.get("read") is False:
+            print("  tuning tripwire: diff UNMEASURED (%s)" % tw.get("why"))
         print(ov["line"])
         print(nx["next"])
         return 0
@@ -4252,6 +4401,9 @@ def main(argv=None):
             ran["wall_s"] = round(time.time() - t0, 1)
         cv = certificate(root, o.mod, o.to)
         if o.json:
+            if ran is not None:
+                rows, none, unread = JC.margin_rows(JC.read_table(root, o.mod)[0] or {})
+                ran["margins"] = {"thinnest_first": rows, "not_printed": none, "unmeasured": unread}
             print(json.dumps(dict(cv, run=ran, **({"grandfather": g} if g is not None else {})), indent=2,
                              ensure_ascii=False))
         else:
@@ -4261,6 +4413,20 @@ def main(argv=None):
                     "; failed: %s" % ", ".join(ran["failed"])) if ran["failed"] else "") + (
                     "; %s" % ran["error"] if ran.get("error") else ""))
             JC.print_certificate(cv)
+            if ran is not None:     # tuning tripwire T2: the thinnest margins first; the verdict above is unchanged
+                tt, _ = JC.read_table(root, o.mod)
+                rows, none, unread = JC.margin_rows(tt or {})
+                print("MARGINS %s (thinnest first; |worst - limit| / |limit|):" % o.mod)
+                for r in rows:
+                    print("  %s: worst %s against limit %s over %d cases%s" % (
+                        r["test"], r["worst"], r["limit"], r["cases"], (" (%s)" % r["name"]) if r.get("name") else ""))
+                for t in none:
+                    print("  %s: margin not printed" % t)
+                for t in unread:
+                    print("  %s: margin UNMEASURED (its run did not finish, or was kept from before margins were read)"
+                          % t)
+                if not (rows or none or unread):
+                    print("  no offline test ran")
         return 0 if cv["ok"] else 1
     if o.cmd == "lock-bars":
         r = lock_bars(root, o.mod, o.by, o.why, o.add, o.remove, o.source)

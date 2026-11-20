@@ -35,6 +35,8 @@ import os
 import subprocess
 import time
 
+import check_margin as CM
+
 TABLE = "version/test_table.json"
 RUN_TIMEOUT_S = 1800      # the slowest measured offline decider is FlowWorks' C# suite, 531 s
 RED_SEEN = "version/evidence/red_seen.json"
@@ -155,20 +157,45 @@ def run_offline(root, mod, runner=subprocess.run, now=None, resume=False):
             r = runner(t["command"], shell=True, cwd=root, capture_output=True, text=True, timeout=RUN_TIMEOUT_S,
                        env=_run_env())
             rc, last = r.returncode, _last_line(r.stdout, r.stderr)
+            margins = CM.parse(r.stdout)      # T2: [] when it printed none
         except subprocess.TimeoutExpired:
-            rc, last = -1, "timed out after %d s" % RUN_TIMEOUT_S
+            rc, last, margins = -1, "timed out after %d s" % RUN_TIMEOUT_S, None
         except OSError as e:
-            rc, last = -1, "could not start: %s" % e
+            rc, last, margins = -1, "could not start: %s" % e, None
         secs = round(time.time() - t0, 2)
         at = now if now is not None else datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
         t["runs_today"] = {"ran": True, "rc": rc, "seconds": secs, "last": last, "at": at,
                            "result": "PASS" if rc == 0 else "FAIL", "build": build, "command": t["command"]}
+        if margins is not None:         # a run that never finished read no margin: no key, never []
+            t["runs_today"]["margins"] = margins
         ran += 1
         total += secs
         if rc != 0:
             failed.append(tid)
         _write_table(root, mod, tt)     # after each test: a run killed part way keeps the stamps it earned
     return {"ran": ran, "failed": failed, "seconds": round(total, 2), "skipped": skipped}
+
+
+def margin_rows(tt):
+    """T2 (RIMMANDRAKE_LIST_THINNEST_MARGINS_IN_CERTIFICATE_RUN): -> (rows, none, unread) over the tests run_offline
+    runs. rows: [{"test", "worst", "limit", "cases", "name"?, "thinness"}], each test's thinnest margin, thinnest first;
+    none: ids that ran and printed no margin; unread: ids whose stamp holds no margins key (not run since margins were
+    read, or a run that never finished). Reads only: the verdict is certify's alone."""
+    rows, none, unread = [], [], []
+    dec = {d for b in tt.get("bars") or [] if isinstance(b, dict) and isinstance(b.get("offline_decides"), list)
+           for d in b["offline_decides"]}
+    for tid, t in sorted((tt.get("tests") or {}).items()):
+        if not isinstance(t, dict) or not t.get("command") or not (t.get("kind") == "offline" or tid in dec):
+            continue
+        ms = (t.get("runs_today") or {}).get("margins") if isinstance(t.get("runs_today"), dict) else None
+        if not isinstance(ms, list):
+            unread.append(tid)
+        elif not ms:
+            none.append(tid)
+        else:
+            m = min(ms, key=CM.thinness)
+            rows.append(dict(m, test=tid, thinness=CM.thinness(m)))
+    return sorted(rows, key=lambda r: (r["thinness"], r["test"])), none, unread
 
 
 def _ended_items(root, ids):
