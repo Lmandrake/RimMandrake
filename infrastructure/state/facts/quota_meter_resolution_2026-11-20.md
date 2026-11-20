@@ -73,7 +73,7 @@ Reading it:
   ratio is the better one. [guess ~70%]
 - Local tokens miss everything the same account spends on other machines (the series shows `lukas` on
   `stevedesktop`) and any use outside Claude Code, and list-price weights are not the provider's quota weights.
-  So the ratio is an upper bound on cost per point, and drifts when the model mix changes. [measured that other
+  So the ratio is a lower bound on true tokens per point, and drifts when the model mix changes. [measured that other
   machines exist; the size of their share: UNMEASURED]
 - Consequence: within one whole-percent step, an estimate of tenths is good to roughly +-0.15 of a point only on
   a day of pooled use, and worse for an hour. [guess ~60%]
