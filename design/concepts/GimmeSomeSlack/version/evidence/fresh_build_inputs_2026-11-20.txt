@@ -1,0 +1,32 @@
+# RIMMANDRAKE_MEND_SLACK_STYLED_RUNS_FRESH_BUILD_DIVERGES offline acceptance, 2026-11-20 01:53 PST
+
+## selftest_gss_fresh_build_inputs.py on the OLD code (7439e62811)
+fresh inputs: 0 file(s) read, 1 finding(s)
+settle: 4 finding(s)   look pick: 2 finding(s)
+FAIL RM_MapComponent_CordGraph has no MapBuildOptions(Map ...): no one recipe for a map's build inputs
+FAIL save_reload_b reads the loaded cords before GSettle (a fixed frame count reads a half-laid map)
+FAIL save_reload_b still waits a fixed 6 frames
+FAIL GSettle does not wait for the component's first build (after a load LastPending reads 0 before any build)
+FAIL save_reload_b does not record how the settle ended (frames, pending)
+FAIL the designator look pick takes any row not marked current: dopts?.FirstOrDefault(o => !o.Label.Contains("(current)"))
+FAIL no GLookRow helper
+FAIL instrument blind: the bare-settings playtest fresh build not caught
+FAIL instrument blind: MapBuildOptions without the run looks not caught
+FAIL instrument blind: the fixed-frame save_reload_b read not caught
+selftest_gss_fresh_build_inputs: FAIL
+exit=1
+
+## the same test on the fix (44124fa343)
+fresh inputs: 45 file(s) read, 0 finding(s)
+settle: 0 finding(s)   look pick: 0 finding(s)
+selftest_gss_fresh_build_inputs: PASS
+exit=0
+
+## GSS SelfTest on the fix (selftest_gimmesomeslack.py --no-export), styled-fresh lines and total
+86:styled fresh: 100 cases; live == fresh complete 100, async 100; bare-settings recipe diverged 84 (rule 84)
+4564/4564 checks passed
+
+## planted fault: UseLooks gives Modern junction boxes (restored after)
+86:FAIL styled fresh: can fail: the bare-settings fresh build (visit 2's walk) diverges in 87/100 cases, exactly the 84 where a run's look keys a pile or plug boot other than the default's (3 off the rule); first: Modern/-/Modern: diverged True, rule says False
+87:styled fresh: 100 cases; live == fresh complete 100, async 100; bare-settings recipe diverged 87 (rule 84)
+4563/4564 checks passed
