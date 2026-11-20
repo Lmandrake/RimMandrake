@@ -12,8 +12,8 @@ All the pages are files in `D:\ClaudeWork\rimmandrake\conductor\`. Each one is w
 | what he calls it | file | written by | how often | reloads itself in an open tab |
 |---|---|---|---|---|
 | CODEBASE_NOW | `CODEBASE_NOW.html` | `codebase_now.py`, `rm-codebase-now.timer` | 15 min | yes, 900 s; also shows STALE past 1 h |
-| FLEET_NOW (the HTML board) | `STATUS_BOARD.html` | `status_board.py`, called by `running_now.py` (`rm-running.timer`) | 5 min | yes |
-| FLEET_NOW (the text page) | `RELENTLESS_NOW.md` (a retired name, kept because its readers open it) | `running_now.py`, `rm-running.timer` | 1 min | no: Markdown, read in Typora |
+| the old Relentless board (NOT FLEET_NOW; owner 2026-11-19 7:09 PM PST: "Not Relentless, FLEET_NOW") | `STATUS_BOARD.html` | `status_board.py`, called by `running_now.py` | 5 min | yes; dead, to be retired |
+| FLEET_NOW | `RELENTLESS_NOW.md` (a retired file name; the body is HTML) and `FLEET_NOW.html`, its tab form | `running_now.py`, `rm-running.timer` (1 min); `fleet_now.py`, `rm-fleet-now.timer` (1 min) | 1 min | the `.html`: yes, 60 s, with a build time |
 | MATURATION_NOW | `MATURATION_NOW.html` and `MATURATION_NOW.md` | `maturation_now.py`, called by the maturation dispatch tick | each tick | no |
 
 There is no opener. The Windows Startup folder holds one shortcut, `Start Agent Fleet.lnk`, and it runs
@@ -31,8 +31,8 @@ goes stale between publishes.
 A small `./pages` command (and, if he wants it, a second Startup shortcut) runs
 `chrome.exe --new-window <url> <url> <url>` with the HTML pages. Each page reloads itself.
 - **To build:** the opener, about 30 lines. Also a self-reload line in `maturation_now.py`. FLEET_NOW in a tab is
-  `STATUS_BOARD.html`; `RELENTLESS_NOW.md` stays in Typora, or `running_now.py` writes an HTML twin of it (a second
-  small change).
+  `FLEET_NOW.html`, which `fleet_now.py` makes from `RELENTLESS_NOW.md` (built; `STATUS_BOARD.html` is the dead
+  Relentless board and is not a tab).
 - **Buys:** the cheapest path. The tabs are real browser tabs (Ctrl+Tab), and he can zoom and search each one.
 - **Costs:** a closed tab stays closed until the next `./pages`. Chrome puts the tabs in his normal profile, among his
   own tabs.
@@ -49,7 +49,7 @@ has its own window with no tab strip, at a fixed place (one per monitor, or tile
 ### C. One shell page with tabs, served locally
 
 A static `STANDING.html` in the same folder holds a tab strip and one iframe per page, and it reloads the active
-iframe on the page's cadence. A browser does not render a Markdown page, so FLEET_NOW comes in as `STATUS_BOARD.html`.
+iframe on the page's cadence. A browser does not render a Markdown page, so FLEET_NOW comes in as `FLEET_NOW.html`.
 - **To build:** the shell page and its selftest. Chromium may refuse a `file://` page inside a `file://` frame, so a
   small local static server (`python -m http.server` as a user unit) can be needed. That server can also serve the
   phone over Tailscale.
