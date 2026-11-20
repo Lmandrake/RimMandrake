@@ -1,0 +1,1 @@
+For an owner walk the Conductor switched off the whole in-game stage twice on 2026-11-20 and other mods waited hours, although a second game instance exists. A ticket filed for a failure that happened is launched in the same sitting (if you see it, do it); 'not a small fix' is not one of the listed reasons to set it down.
