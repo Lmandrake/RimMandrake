@@ -1,0 +1,3 @@
+A negative control that runs a known-bad OLD revision must force the configuration that shipped WITH that revision, derived from that revision's own sources, never today's. The vv matrix control forced today's derived kernel fields; when 2026-11-13 deleted levelSetEnabled from today's kernel, the old kernel quietly ran it at false and read 0/2000 where it must read 194/2000. It was blind for six days and nothing noticed, because the only thing that ran it was a 40-minute clock that first died on a compile break. Test the control itself offline (build + red + authored-green) so drift shows in a selftest, not in a clock.
+item: RIMMANDRAKE_INSTALL_VV_MATRIX_CLOCK_WRITTEN_NOT_RUNNING
+home: ~/dev/MandrakeWorkflows/skills/mutate-your-checker/SKILL.md
