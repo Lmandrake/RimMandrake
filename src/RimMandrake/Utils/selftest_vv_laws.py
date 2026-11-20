@@ -247,6 +247,16 @@ def main():
     finally:
         V.LAW_FILES.clear()
         V.LAW_FILES.update(keep2)
+    import subprocess
+    import vv_shipped_matrix as M
+    # L8 the control revision must resolve in the clone that runs the clock (a commit on no branch broke the full run at its last step)
+    rev_ok = subprocess.run(["git", "cat-file", "-e", M.CONTROL_REV + ":src/RimMandrake/FlowWorks/Source/SelfTest/FlowKernelFuzz.cs"],
+                            cwd=M.ROOT, capture_output=True).returncode == 0
+    brc = subprocess.run(["git", "branch", "-a", "--contains", M.CONTROL_REV.rstrip("^")], cwd=M.ROOT, capture_output=True, text=True).stdout.strip()
+    check("L8 the negative-control revision resolves and is on a branch", rev_ok and bool(brc), (M.CONTROL_REV, rev_ok, brc))
+    # L9 a run with no VERDICT keeps the tail of its output in the reading, so the cause is not lost
+    src = open(os.path.join(HERE, "vv_matrix_clock.py")).read()
+    check("L9 the clock reading keeps the matrix output tail", '"matrix_tail"' in src)
     print("vv laws: %d failed" % len(FAILS) if FAILS else "vv laws: all passed")
     return 1 if FAILS else 0
 

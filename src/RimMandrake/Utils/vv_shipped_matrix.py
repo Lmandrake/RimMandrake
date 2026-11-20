@@ -58,7 +58,7 @@ KERNEL_CS = os.path.join(SRC, "RM_FlowKernel.cs")
 EP = os.path.join(ROOT, "src", "RimUtinni", "EmpirePursuit", "Source")
 import game_paths  # noqa: E402  the one path seam (HERE is on sys.path above)
 OWNER_SETTINGS = os.path.join(game_paths.LOCALLOW, "Config", "Mod_FlowWorks_RimMandrakeFlowWorksMod.xml")
-CONTROL_REV = "c82dd1c08^"
+CONTROL_REV = "4706f9eacdb9b62f1fc691246e66e9c5594ab399^"
 TAG = hashlib.sha1(os.path.realpath(ROOT).encode()).hexdigest()[:8]
 STAGE = os.path.join(winbuild.BUILD_ROOT, "VV_PILOT1_" + TAG)
 

@@ -103,7 +103,7 @@ def main(argv=None):
     rec = {"when": time.strftime("%Y-%m-%dT%H:%M:%S%z"), "wall_s": None, "matrix_rc": mrc,
            "matrix_verdict": verdict or "UNMEASURED (no VERDICT line; exit %d)" % mrc,
            "matrix_why": [l.strip() for l in mout.splitlines()[-12:] if l.startswith("  ") and "red at" in l],
-           "results": last(r"^results: (.+)$", mout), "prove_rc": None, "prove_line": "not run (no --prove)"}
+           "results": last(r"^results: (.+)$", mout), "matrix_tail": mout.splitlines()[-15:], "prove_rc": None, "prove_line": "not run (no --prove)"}
     # an answer that is missing is not a pass: a zero exit with no VERDICT (or no proof line) is an exit of its own (3)
     rc = mrc if verdict else (mrc or 3)
     if a.prove:
