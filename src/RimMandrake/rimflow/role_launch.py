@@ -3444,6 +3444,17 @@ def _started_at(proc, n, btime):
         return None
 
 
+def _proc_state(proc, n):
+    """-> the /proc state letter of pid n ("Z" a zombie), "gone" when it exited, or None when stat cannot be read."""
+    try:
+        with open(os.path.join(proc, n, "stat"), "rb") as f:
+            return f.read().rsplit(b")", 1)[1].split()[0].decode("ascii", "replace")
+    except FileNotFoundError:
+        return "gone"
+    except (OSError, IndexError):
+        return None
+
+
 def _boot_time(proc):
     try:
         with open(os.path.join(proc, "stat"), "rb") as f:
@@ -3463,7 +3474,9 @@ SINCE_SLACK_S = 5       # clock-tick rounding and boot-time granularity between 
 def scan_marked(marker, proc="/proc", uid=None, since=None):
     """-> (pids carrying RM_ROLE_UNIT=<marker>, None) or (the pids it could see, why the scan is blind).
     Blind (review r2 #3): /proc unlistable, or a process whose environ cannot be read and that is not POSITIVELY
-    ruled out. Ruled out: it exited mid-scan (entry gone), it belongs to another uid (a run of ours never changes
+    ruled out. Ruled out: it exited mid-scan (entry gone), it is a zombie (its environ is never readable and it runs
+    nothing: one `[python3] <defunct>` of this uid made every scan blind, measured 2026-11-19,
+    RIMMANDRAKE_SKIP_ZOMBIES_IN_MARKER_SCAN_ONE_DEFUNCT_BLINDS), it belongs to another uid (a run of ours never changes
     uid), or `since` (the run's start, epoch) is given and it started more than SINCE_SLACK_S before it (the marker
     is inherited, so every process of a run is younger than the run). Measured 2026-10-27: this user's systemd,
     (sd-pam) and ssh-agent are same-uid and unreadable (non-dumpable), so without `since` a real scan is blind."""
@@ -3489,6 +3502,8 @@ def scan_marked(marker, proc="/proc", uid=None, since=None):
             except FileNotFoundError:
                 continue                    # exited between listdir and open
             except OSError:
+                if _proc_state(proc, n) in ("Z", "gone"):
+                    continue                # a zombie or exited: carries no live marker (a None state is not ruled out)
                 try:
                     owner = os.stat(os.path.join(proc, n)).st_uid
                 except FileNotFoundError:

@@ -36,5 +36,10 @@ command still running when the run ends is killed. Each promise has a test of it
 - **a-reused-det-clone-takes-the-seat-identity.** `take_clone` on a standing `<ITEM>.det` clone gives it the seat clone's
   repo-local `user.email` (`scratch_clone.set_identity`), as a newly made clone gets
   (`RIMMANDRAKE_SET_HELPER_CLONE_NOREPLY_GMAIL_SLIPS_ONTO_PUBLIC`: RimMandrake is public).
+- **role-launch-scan-rules-out-zombies.** `role_launch.scan_marked` rules out a process whose `/proc/<pid>/stat` state
+  is `Z` (a zombie: its environ is never readable and it runs nothing) or that exited, as it rules out another uid's.
+  A same-uid live process whose environ cannot be read, or whose state cannot be read, still makes the scan blind
+  (`RIMMANDRAKE_SKIP_ZOMBIES_IN_MARKER_SCAN_ONE_DEFUNCT_BLINDS`: one `[python3] <defunct>` blinded every scan,
+  2026-11-19).
 
 Later lists beside this page: `polish.md` (none yet).

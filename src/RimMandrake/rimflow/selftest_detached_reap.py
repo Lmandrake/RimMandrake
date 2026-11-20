@@ -111,6 +111,36 @@ def t_a_blind_scan_kills_nothing():
           and "a process is working in it" in text, text)
 
 
+def t_role_launch_scan_rules_out_zombies():
+    """A fake /proc: an unreadable environ (a directory there) on a zombie is ruled out; on a live or unknown-state
+    process of this uid it is blind. Then the real /proc with a real zombie child (`true`, never waited on)."""
+    import role_launch as RL
+    def fake(states):
+        root = tempfile.mkdtemp(prefix="proc_", dir=TMP)
+        for n, state in states.items():
+            os.makedirs(os.path.join(root, n, "environ"))       # open() on it raises IsADirectoryError (an OSError)
+            if state is None:                                   # a stat that cannot be read (not "gone")
+                os.makedirs(os.path.join(root, n, "stat"))
+            else:
+                with open(os.path.join(root, n, "stat"), "w") as f:
+                    f.write("%s (python3) %s 1 1 1 0 -1 0 0 0 0 0 0 0 0 0 20 0 1 0 100 0 0\n" % (n, state))
+        return root
+    pids, blind = RL.scan_marked("rm-x", proc=fake({"4242": "Z"}))
+    check("role-launch-scan-rules-out-zombies (a zombie is not blind)", blind is None and pids == [], blind)
+    pids, blind = RL.scan_marked("rm-x", proc=fake({"4242": "S"}))
+    check("role-launch-scan-rules-out-zombies (a live unreadable one is blind)", blind and "4242" in blind, blind)
+    pids, blind = RL.scan_marked("rm-x", proc=fake({"4242": None}))
+    check("role-launch-scan-rules-out-zombies (an unreadable state is blind)", blind and "4242" in blind, blind)
+    z = subprocess.Popen(["true"])
+    KIDS.append(z)
+    time.sleep(0.5)
+    with open("/proc/%d/stat" % z.pid, "rb") as f:
+        st = f.read().rsplit(b")", 1)[1].split()[0]
+    pids, blind = RL.scan_marked("no-such-unit-x", since=time.time() - 30)
+    check("role-launch-scan-rules-out-zombies (a real zombie child, state %s)" % st.decode(), st == b"Z" and
+          blind is None, blind)
+
+
 def t_a_reused_det_clone_takes_the_seat_identity():
     src = os.path.join(TMP, "seatclone")
     subprocess.run(["git", "init", "-q", src], check=True)
@@ -133,7 +163,7 @@ def main():
     try:
         for t in (t_a_leftover_child_is_ended_and_the_clone_returned, t_an_unmarked_process_in_the_clone_keeps_it,
                   t_another_units_marker_is_not_this_runs, t_a_blind_scan_kills_nothing,
-                  t_a_reused_det_clone_takes_the_seat_identity):
+                  t_a_reused_det_clone_takes_the_seat_identity, t_role_launch_scan_rules_out_zombies):
             try:
                 t()
             except Exception as e:  # noqa: BLE001
