@@ -1,0 +1,7 @@
+Selftests run on 4d9866955c, 2026-11-20 05:50 PST, all exit 0:
+src/RimMandrake/Utils/selftest_switching_plan_drain.py rc=0 selftest_switching_plan_drain: PASS (0 failed)
+src/RimMandrake/rimflow/selftest_left_open_continue.py rc=0 selftest_left_open_continue: PASS (0 failed)
+src/RimMandrake/Utils/selftest_switching_plan.py rc=0 all passed
+src/RimMandrake/rimflow/selftest_seat_context_backstop.py rc=0 PASS: 0 failure(s)
+.claude/hooks/selftest_switch_checkpoint_signal.py rc=0 ALL PASS
+Live: account-plan pass 2026-11-20T05:50:00-08:00 ran this code: do normal, live system, 16% left, line 1; notice carries drain false.
