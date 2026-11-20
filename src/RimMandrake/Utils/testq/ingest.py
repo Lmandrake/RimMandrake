@@ -390,12 +390,18 @@ def repair(job, res, cause, rec=None):
         needle = "seen again in testq %s" % att
         return None if note_once(name, needle, "%s (job %s): %s" % (needle, job["id"], (res.get("note") or cause)[:160])) \
             else "repair note refused on %s" % name
-    write_repair_prose(name, repair_prose(name, job, res, cause, env_read))
+    wrote = write_repair_prose(name, repair_prose(name, job, res, cause, env_read))
     cause_item = job.get("item") or next(iter(sorted((job.get("row_items") or {}).values())), None) or LANE_ITEM
     rc, out = rimflow("spawn", "--from", cause_item, "--for", "BENCH",      # FOUNDRY is retired (owner, 2026-11-02)
                       "--needs", "offline", "--name", name,
                       "--title", ("harness fault, no verdict (testq %s, %s): %s" % (att, job["mod"], cause))[:160])
     if rc != 0:
+        # The template this call wrote goes with the refused spawn: left behind it sat untracked for days, and once
+        # another clone filed the same item with fresh prose, every replay in this clone refused on the different
+        # untracked file (incident publish-20261120063531, ~/rm/dispatch). The retry writes it again.
+        if wrote:
+            with contextlib.suppress(OSError):
+                os.remove(wrote)
         return "repair %s not filed: %s" % (name, out[-160:])
     _REPAIRED[base] = name
     return None

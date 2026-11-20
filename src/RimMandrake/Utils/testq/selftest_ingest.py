@@ -860,6 +860,30 @@ def template_checks(env):
         ingest.ingest_one(e2e)
         check(len([c for c in calls if c[0] == "spawn"]) == 1 and os.path.exists(e2e_path),
               "ingest_one: the same record outside every window files its repair with a template")
+        # a spawn that refuses leaves NO template: an orphan items/<NAME>.md sat untracked in ~/rm/dispatch for 4 days
+        # (spawn refused 2026-11-15, 6 tries), then another clone filed the same item with fresh prose and every replay
+        # there refused on the different untracked file (incident publish-20261120063531)
+        ingest._REPAIRED.clear()
+        ingest._REPAIR_ITEMS[0] = {}
+        orphan = done_rec(ITEM, rows=(("r1", "PASS"),))
+        orphan["result"].update(rows=[dict(dead, chain="c8"), {"row": "r1", "chain": "c2", "verdict": "PASS",
+                                                               "detail": ""}], attempt=orphan["job"]["id"] + ".a7")
+        o_cause = R.causes_of(orphan["result"])[0]
+        o_path = os.path.join(items_dir, R.repair_base(o_cause) + ".md")
+        if os.path.exists(o_path):
+            os.remove(o_path)
+        ingest.rimflow = lambda *a: (calls.append(a) or (1, "name must be <= 64 chars")) if a[0] == "spawn" \
+            else fake(*a)
+        del calls[:]
+        got = ingest.repair(orphan["job"], orphan["result"], o_cause, orphan)
+        check(got and "not filed" in got and len([c for c in calls if c[0] == "spawn"]) == 1,
+              "a refused spawn is an error to retry: %r" % got)
+        check(not os.path.exists(o_path), "a refused spawn leaves no template behind (%s exists: %s)" % (o_path, os.path.exists(o_path)))
+        ingest.rimflow = fake
+        del calls[:]
+        ingest.repair(orphan["job"], orphan["result"], o_cause, orphan)
+        check(len([c for c in calls if c[0] == "spawn"]) == 1 and os.path.exists(o_path),
+              "the retry after a refused spawn files it with a fresh template")
         # the pass instrument, both ways
         ok, why = R.repaired_by(rec["result"], name)
         check(not ok and "still carries" in why, "negative control: the sighting fails its own repair: %s" % why)
