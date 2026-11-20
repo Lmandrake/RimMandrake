@@ -344,9 +344,9 @@ Left, one ticket each, every one with its acceptance test watched failing:
 |---|---|
 | `RIMMANDRAKE_RENAME_RUN_STORE_AND_POOL_OFF_TICK_PATH` | the store and pool under `/home/mandrake/rm/relentless`, and the `RELENTLESS_*` env names |
 | `RIMMANDRAKE_RETIRE_FOUNDRY_SLOT_KEY_INDEX_NAMED_A_GHOST` | the allocator's RELENTLESS and FOUNDRY keys and the FOUNDRY seat clone lists |
-| `RIMMANDRAKE_RENAME_FLEET_STATES_READER_STILL_NAMED_FOR_TICK` | `fleet_mods.relentless_states` |
+| `RIMMANDRAKE_RENAME_FLEET_STATES_READER_STILL_NAMED_FOR_TICK` | `fleet_mods.relentless_states`; dropped 2026-11-19, not worth the touch (`infrastructure/state/facts/pipeline_polish_parked.md`) |
 | `RIMMANDRAKE_RENAME_DEPLOY_CHECKOUT_OFF_THE_PULSE_NAME` | `pulse-deploy`, `RM_PULSE_*`, `rm-dashboard` |
-| `RIMMANDRAKE_RENAME_SEVEN_WORK_DIRS_STILL_NAMED_FOR_LOOPS` | seven `D:\ClaudeWork\rimmandrake\` dirs live code reads |
+| `RIMMANDRAKE_RENAME_SEVEN_WORK_DIRS_STILL_NAMED_FOR_LOOPS` | seven `D:\ClaudeWork\rimmandrake\` dirs live code reads; dropped 2026-11-19, not worth the touch (`infrastructure/state/facts/pipeline_polish_parked.md`) |
 | `RIMMANDRAKE_SWEEP_SELFTEST_TEXT_STILL_NAMING_THE_OLD_TICK` | 56 selftests naming the tick in text |
 | `RIMMANDRAKE_PROBE_STORE_LEFTOVERS_A_WEEK_FOR_ANY_READER` | 8 store leftovers last written 2026-11-04 to 11-06 |
 | `RIMMANDRAKE_SWEEP_STEVEDESKTOP_CLONES_CARRYING_LOOP_TREES` | SteveDesktop clones with `ralph/` and `whittle/` trees |
