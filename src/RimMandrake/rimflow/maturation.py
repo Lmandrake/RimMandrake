@@ -785,13 +785,14 @@ def _mtime_or_now(fp):
         return time.time()
 
 
-def exit_met_clause(root, mod, rec, cur, owner, clause, rec_ref, req_ref):
+def exit_met_clause(root, mod, rec, cur, owner, clause, rec_ref, req_ref, game_only_bars=None):
     """RIMMANDRAKE_BIND_ADVANCE_TO_EXIT_READINGS: a forward move out of the blind challenge or the in-game stage needs
     the program's exit reading met (read_exit of the current cycle, read_ingame_exit of the current visit) with nothing
     blocking it; a steward's word alone no longer moves a mod past either. The only override is his OWNER event
     (--owner-said OWNER:<tsn>) newer than the reading it overrides (the newest of the cycle or visit's opening and its
     evidence files). A reading that cannot be made is not met; a reader that is itself wrong is repaired, never waved
-    past."""
+    past. game_only_bars ({bar: [item ids]}, given only when the move is game-only and its `game_only` clause passed)
+    reads the blind exit the game-only way (read_exit; RIMMANDRAKE_UNBLOCK_GAME_ONLY_ADVANCE_AT_BLIND_EXIT)."""
     tt, terr = read_json(root, mod, "version/test_table.json")
     blocked = [] if tt is not None else ["version/test_table.json: %s" % terr]
     try:
@@ -799,6 +800,8 @@ def exit_met_clause(root, mod, rec, cur, owner, clause, rec_ref, req_ref):
             bf = blind_facts(root, mod)
             n, ex, opened = bf.get("cycle"), bf.get("exit") or {}, bf.get("opened")
             blocked += [b for b in bf.get("blocked") or [] if not b.startswith("version/test_table.json")]
+            if game_only_bars is not None and n is not None:
+                ex = read_exit(root, mod, n, tt, game_only_bars=game_only_bars)
             what, reader, base = "blind cycle %s" % n, "read_exit", "%s/cycle_%s" % (BLIND_DIR, n)
         else:
             n = max(1, len(ingame_openings(rec)))
@@ -897,6 +900,7 @@ def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, w
                ROADS_BACK[cur])) if cur in ROADS_BACK else ""),
            fix="run advance with --to %s, finishing %s first" % (nxt or cur, label(cur)),
            why_sound="the eight stages, their order and the roads back are his and carried rulings (spec §3)")
+    go_bars = None      # {bar: [item ids]} once the game_only clause below passes; the blind exit reads it (read_exit)
     if game_only and to == "in_game" and cur in OFFLINE_STAGES:
         ids = [str(i) for i in game_only]
         need, ended = ledger_needs(root, ids), ledger_ended(root, ids)
@@ -906,9 +910,12 @@ def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, w
         # every open sibling (same caused_by) is named: an offline item of the same road back keeps the record here
         unnamed = [x["id"] for x in ledger_items_caused_by(root, sorted(set(ledger_caused_by(root, ids).values())))
                    if x["id"] not in ids]
+        go_ok = bool(ids) and not offline and not shut and not unnamed and was6
+        if go_ok:
+            go_bars = bars_named_by(root, mod, ids)
         clause("game_only", "every item the move names is open and needs the live game (ledger needs game-up or "
                "bridge), it names every open item of its road back, and the record came to this stage from Stage 6",
-               bool(ids) and not offline and not shut and not unnamed and was6, [req_ref, rec_ref],
+               go_ok, [req_ref, rec_ref],
                observed="items %s; needs %s; closed %s; open and not named %s; a move from in_game on the record: %s"
                % (", ".join(ids), ", ".join("%s=%s" % (i, need.get(i)) for i in ids), ", ".join(shut) or "none",
                   ", ".join(unnamed) or "none", was6),
@@ -1071,7 +1078,7 @@ def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, w
                    fix="the Conductor reads the stage's evidence and passes --steward-confirms", cost="owner",
                    why_sound="the stage's exit is not settled as a program check (plan section 3)")
             if forward:
-                exit_met_clause(root, mod, rec, cur, owner, clause, rec_ref, req_ref)
+                exit_met_clause(root, mod, rec, cur, owner, clause, rec_ref, req_ref, game_only_bars=go_bars)
             if cur == "in_game":
                 # the BUILD MATCH (owner, 2026-11-17): a verdict made on another build than the one he walks does not
                 # count; its check is re-run (build_match.py, read by read_ingame_exit)
@@ -2618,18 +2625,19 @@ def _side_cmds(fx, side):
 LANE1_OK = ("PASS", "INFO")
 
 
-def _lane1_deferred(r, tt):
+def _lane1_deferred(r, tt, named=None):
     """A lane-1 row the blind exit defers to Stage 6 (not a pass, not a block): a `not_kernel` UNSETTLED row naming at
     least one bar, every one of them in the test table and proving outside OFFLINE_PROVES. The blind brief asks lane 1 to
     write a game-side bar this way; it proves live through its stage-6 checks (ingame_debts carries it there). A row
     naming an offline bar, or a bar the table does not hold, still blocks (RIMMANDRAKE_DEFER_BLIND_EXIT_STAGE_SIX_ROWS_
-    NEVER_OFFLINE; the loophole ef6a38dbb6 closed stays closed)."""
+    NEVER_OFFLINE; the loophole ef6a38dbb6 closed stays closed). named ({bar: [item ids]}, a game-only move's bars that
+    its items name) also defers an offline bar that a named game-only item carries to Stage 6."""
     if not isinstance(r, dict) or "_bad" in r or str(r.get("kind", "")).lower() != "not_kernel" or \
             str(r.get("verdict", "")).upper() != "UNSETTLED":
         return False
     at = {b.get("id"): str(b.get("proves_at")) for b in (tt or {}).get("bars") or [] if isinstance(b, dict)}
     bars = _split_bars(r.get("bars"))
-    return bool(bars) and all(b in at and at[b] not in OFFLINE_PROVES for b in bars)
+    return bool(bars) and all(b in at and (at[b] not in OFFLINE_PROVES or bool((named or {}).get(b))) for b in bars)
 
 
 def _planted_caught(r):
@@ -2669,7 +2677,10 @@ def exit_block(summary):
     return got
 
 
-def read_exit(root, mod, n, tt=None):
+JUDGE_SAYS_FALSE = "the judge's block says exit_met false"
+
+
+def read_exit(root, mod, n, tt=None, game_only_bars=None):
     """-> {cycle, state, why[], claimed, checks}: the program's reading of cycle n's exit.
 
     state: absent (no cycle_n folder) | no_exit_block (no Exit block with the three keys yet: a cycle in progress, or
@@ -2680,7 +2691,13 @@ def read_exit(root, mod, n, tt=None):
     present, and the planted-fault results ending tree_clean_after true. A lane-1 FAIL (recorded blind, before the
     fixes) clears only when LANE1_AFTER_FIX has no FAIL and shows it PASS, or when a Polish fault names that row in its
     evidence (Polish is not part of passing; the reading prints each such row for the steward to confirm). Every fault
-    must carry a class, Problem or Polish: an unclassed one could hide an open Problem. Any doubt reads not_met."""
+    must carry a class, Problem or Polish: an unclassed one could hide an open Problem. Any doubt reads not_met.
+
+    game_only_bars ({bar: [item ids]}): given only for a game-only move whose `game_only` clause passed. Then two
+    things do not count, and nothing else changes: a lane-1 not_kernel UNSETTLED row whose every bar a named game-only
+    item carries (_lane1_deferred), and the new blind judge owed only for the cycle's own FIXED Problems (with every
+    file check agreeing, the judge's exit_met false is that owed judge). An unfixed Problem, any other file check, or a
+    judge's false in a cycle that fixed nothing still reads not_met (RIMMANDRAKE_UNBLOCK_GAME_ONLY_ADVANCE_AT_BLIND_EXIT)."""
     if tt is None:
         tt, _ = read_json(root, mod, "version/test_table.json")
     base = "%s/cycle_%d" % (BLIND_DIR, n)
@@ -2698,7 +2715,7 @@ def read_exit(root, mod, n, tt=None):
         return out
     why = out["why"]
     if not blk["exit_met"]:
-        why.append("the judge's block says exit_met false")
+        why.append(JUDGE_SAYS_FALSE)
     bars = offline_bars(tt)
     # zero offline bars is a locked table whose every bar proves live (Graffiti 0.1.0): "every offline bar green" holds
     # with nothing to rerun, and the exit rests on the Problems and the file checks below. It was a block, so such a
@@ -2781,11 +2798,16 @@ def read_exit(root, mod, n, tt=None):
         why.append("lane1/lane1_rows.jsonl has no rows (lane 1 judged nothing)")
     # UNSETTLED (or any verdict but PASS and INFO) is not a pass: it clears the way a FAIL does, except a not_kernel row
     # on Stage-6-or-later bars only, which is deferred to Stage 6 (_lane1_deferred)
-    deferred = sorted({r.get("id", "?") for r in l1 or [] if _lane1_deferred(r, tt)})
+    named = game_only_bars or {}
+    deferred = sorted({r.get("id", "?") for r in l1 or [] if _lane1_deferred(r, tt, named)})
     fails = [r.get("id", "?") for r in l1 or [] if (str(r.get("verdict", "")).upper() not in LANE1_OK or "_bad" in r)
-             and not _lane1_deferred(r, tt)]
+             and not _lane1_deferred(r, tt, named)]
+    by_item = {r.get("id", "?"): sorted({i for b in _split_bars(r.get("bars")) for i in named.get(b) or ()})
+               for r in l1 or [] if _lane1_deferred(r, tt, named) and not _lane1_deferred(r, tt)}
     if deferred:
         out["checks"]["lane1_deferred_to_stage6"] = deferred
+    if by_item:
+        out["checks"]["lane1_deferred_to_game_only_items"] = by_item
     if l1 and not fails:
         out["checks"]["lane1_fail_cleared_after_fix"] = True     # nothing to clear: no row blocks
     if fails:
@@ -2793,7 +2815,7 @@ def read_exit(root, mod, n, tt=None):
         # clears only when lane 1 rerun after the fixes (LANE1_AFTER_FIX) has no FAIL and shows each of those rows PASS.
         after = _jsonl(os.path.join(d, LANE1_AFTER_FIX))
         bad_after = [r.get("id", "?") for r in after or [] if (str(r.get("verdict", "")).upper() not in LANE1_OK
-                     or "_bad" in r) and not _lane1_deferred(r, tt)]
+                     or "_bad" in r) and not _lane1_deferred(r, tt, named)]
         passed = {r.get("id") for r in after or [] if str(r.get("verdict", "")).upper() == "PASS"}
         # a FAIL a Polish fault owns is not passing's; a row that PASSes after the fixes is cleared, not left as Polish
         polish = _polish_rows(faults, sorted((set(fails) - passed) | set(bad_after)))
@@ -2829,7 +2851,12 @@ def read_exit(root, mod, n, tt=None):
         why.append("lane2/planted_results.jsonl: none of its %d planted fault(s) was caught" % len(planted))
     fixed = [x.get("id", "?") for x in problems if str(x.get("status", "")).startswith("FIXED")]
     out["checks"]["fixed_this_cycle"] = fixed
-    if fixed and not why:
+    if fixed and game_only_bars is not None and all(w == JUDGE_SAYS_FALSE for w in why):
+        # a game-only move: the owed judge is not counted (the Conductor's act on
+        # RIMMANDRAKE_UNBLOCK_GAME_ONLY_ADVANCE_AT_BLIND_EXIT); each fix was shown red then green above
+        out["checks"]["judge_owed_not_counted_game_only"] = fixed
+        del why[:]
+    elif fixed and not why:
         # RIMMANDRAKE_SEND_FIXES_TO_NEW_BLIND_JUDGE: his road back (spec s4 Stages 4 and 5): fix it, "then send it back
         # to just before Stage 4 again for a new blind judgement pass". A cycle's own fixes never pass its exit.
         out["checks"]["judge_owed"] = True
@@ -2844,6 +2871,12 @@ def read_exit(root, mod, n, tt=None):
                       "steward confirms the move): %s" % ", ".join("%s (%s)" % kv for kv in sorted(pol.items()))
                       if pol else "", "; lane-1 not_kernel UNSETTLED row(s) deferred to Stage 6, owed there: %s" % ", ".join(
                           deferred[:8]) if deferred else ""))
+        if out["checks"].get("judge_owed_not_counted_game_only"):
+            why.append("game-only move: the new blind judge owed for %d FIXED Problem(s) (%s) is not counted; each fix "
+                       "was shown red then green in lane2/fixes.jsonl" % (len(fixed), ", ".join(fixed[:6])))
+        if by_item:
+            why.append("game-only move: lane-1 row(s) on offline bars carried by named game-only items: %s" % "; ".join(
+                "%s -> %s" % (k, ", ".join(v)) for k, v in sorted(by_item.items())))
     return out
 
 
@@ -3818,6 +3851,44 @@ def ledger_needs(root, ids):
                     seen.append((str(e.get("ts") or ""), e.get("tsn") or 0, e["id"], n))
     for _, _, i, n in sorted(seen, key=lambda x: (x[0], x[1])):     # shards interleave: time order, not file order
         out[i] = n
+    return out
+
+
+def ledger_titles(root, ids):
+    """-> {id: title} for these ledger items: the title of the newest event that carries one (file, spawn or a later
+    edit), in time order. An item with no titled event is absent."""
+    d = os.path.join(root, "infrastructure", "state", "ledger", "events")
+    want, seen = set(ids), []
+    for f in sorted(os.listdir(d)) if os.path.isdir(d) and want else []:
+        if not f.endswith(".jsonl"):
+            continue
+        with open(os.path.join(d, f), encoding="utf-8") as fh:
+            for ln in fh:
+                if '"title"' not in ln:
+                    continue
+                try:
+                    e = json.loads(ln)
+                except ValueError:
+                    continue
+                if e.get("id") in want and e.get("title"):
+                    seen.append((str(e.get("ts") or ""), e.get("tsn") or 0, e["id"], str(e["title"])))
+    return {i: t for _, _, i, t in sorted(seen, key=lambda x: (x[0], x[1]))}
+
+
+def bars_named_by(root, mod, ids):
+    """-> {bar: [item ids]}: each bar of the mod's test table whose id one of these items' ledger titles names as a
+    whole word. The game-only blind exit reads it (read_exit); a bar no title names is absent."""
+    tt, _ = read_json(root, mod, "version/test_table.json")
+    titles = ledger_titles(root, ids)
+    out = {}
+    for b in (tt or {}).get("bars") or []:
+        bid = b.get("id") if isinstance(b, dict) else None
+        if not bid:
+            continue
+        pat = re.compile(r"(?<![A-Za-z0-9_])%s(?![A-Za-z0-9_])" % re.escape(str(bid)))
+        got = sorted(i for i in ids if pat.search(titles.get(i, "")))
+        if got:
+            out[bid] = got
     return out
 
 
