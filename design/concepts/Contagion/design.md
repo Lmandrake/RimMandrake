@@ -111,6 +111,9 @@ first-version answer of 2026-11-19.)
 
 - **The hull is the refuge.** A refuge is whatever casts shade: a roof, a tree's cast shade, water. The ship is the
   biggest roof on the map. How far from it a work party goes is the whole risk of the stop.
+- **The screen's yard.** By his card of 2026-11-20 a raised particulate screen keeps the Bloom off the crew inside
+  its bubble: a safe yard by the ramp. Whether it also stops the Burn is not ruled; this design assumes not, since
+  the Burn is light and the screen's rulings name particulates.
 - **The tells.** Before a Burn the gawpsacks sink as one, the rattlegrope shakes, and red puffs rise. Always
   before, never after. The natives dive during the tells; the two armoured ones walk *out*.
 - **The Burn.** The cloud tears and *"a white shaft of sterilizing sun"* hits the valley floor. Everyone within a
@@ -273,6 +276,8 @@ The first read said no source covers this. Two do, and one of them is built.
   things standing at the ship wear a little at a time, a letter warns after about six hours that the fouling is
   getting worse, and the wear then doubles its pace. A powered shield switched to its particulate mode stops all of
   it. The ship says so on landing and does not refuse to land.
+- **The screen also keeps the Bloom off the crew inside its bubble** (his card of 2026-11-20, `Answered` 2). That
+  is an owed build line, above under Scope.
 - **So the wear here is the air itself:** spore, red rain and whatever the rain carries, working into the gear
   parked at the ramp. Nothing in it is this page's proposal.
 - **The hull is otherwise the answer, not the victim:** it is the roof, and the biggest one on the map.
@@ -289,6 +294,7 @@ The first read said no source covers this. Two do, and one of them is built.
 | Crew within one dash of shade get in during the tells; a far party is caught out. | Two parties at two distances from the ship. | The far party pays. |
 | A prepared crew member crosses between refuges in a Burn and lives, hurt; one who stays out is in grave trouble. | One dash, and one pawn left standing in it. | Unhurt fails; dead on a normal dash fails. |
 | A roof, a tree's cast shade and water each count as refuge. | One pawn in each through a Burn, one in the open. | The Burn uses the shared shade, with no test of its own. |
+| Under the Bloom, a crew member inside a raised particulate screen's bubble is not touched; one outside it is. | Two pawns in the open under the Bloom, one inside the bubble and one beyond it; then the screen lowered. | The pawn inside is touched once the screen is down. |
 | UV-shy natives are hurt by the Burn and dive during the tells; Scaldhide and Crispling are not hurt and come out. | A mixed group through a Burn. | A native that dives only after being burned fails. |
 | No native runs from the sun under the Bloom; they do when the Burn clears the sky. | The same animals under Bloom and in a Burn. | |
 | A worker out in the Bloom shows an early touched state and one message when change begins. | A worker left outdoors, one kept in. | |
@@ -344,6 +350,9 @@ it is a second progression a stop can skip.
 - The Bloom as a red lid; the Burn; the tells; the Dive; the armoured natives coming out. (built; the Dive and the
   natives' Burn damage are owed or were failing)
 - Refuge as shared shade; one dash at a cost. (built in part; water as cover is owed)
+- A raised particulate screen keeps the Bloom off crew inside its bubble (his card of 2026-11-20). (owed build: the
+  touched dose reads only what is overhead and never asks about a shield, so the built behaviour does not match.
+  No build ticket is filed while the mod is held.)
 - The touched state, the mixed deck, the Sunbeam arrest. (built)
 - Flesh flora; zhool haze; the grotesque cast with each creature's promised trick; the new smaller Zhool'Iza.
   (built; the Zhool'Iza is owed)
@@ -402,19 +411,7 @@ see); each line goes back by one move:*
 
 ## NEEDS HIM
 
-Each is tagged with one theme word.
-
-2. **[hull] Does a raised particulate screen keep the Bloom off the crew standing inside its bubble?** His words
-   give the light screen *"bio contamination, spores"* handled *"completely"*, and the shield design protects *"the
-   ship and a bubble around it"*. As built, the touched dose reads only what is overhead and never asks about a
-   shield. *No, the screen protects the ship and its gear* (default; as built). *Yes, inside the bubble:* then the
-   screen is the answer to this biome's spine for anyone who stays by the ramp, and the trip away from it is the
-   whole risk.
-   *Left open on 2026-11-19:* The draft of 2026-11-19 answered this *Yes* as his ruling. The second reader left it
-   open: *"the ship and a bubble around it"* is the shield design's own text
-   (`design/Jawa/proposals/ship_shields_deep_design.md` §2), not his words. His row of 2026-09-02 says only that the
-   screen handles *"spores"* *"completely"*. A *Yes* changes a built default and makes the screen the answer to this
-   biome's spine, so it stays his.
+None open. Every entry is answered (next section).
 
 ## Answered on 2026-11-19
 
@@ -444,3 +441,16 @@ can undo any one by name.
 
 3. **[hull] The spore membrane.** *His card of 2026-11-19 (declined ship ideas):* it stays turned down, as he cut it
    on 2026-09-02. He can bring it back by name.
+
+**Answered by his card of 2026-11-20** (item `RIMMANDRAKE_PICK_SEVEN_BIOME_SIGNATURES_LISTED_NOT_GUESSED`; the
+enact item is `RIMMANDRAKE_ENACT_SIGNATURE_PICKS_INTO_DESIGNS_SLIME_KEEPS_FILM`). Each keeps its number.
+
+2. **[hull] Does a raised particulate screen keep the Bloom off the crew standing inside its bubble?** It was left
+   open on 2026-11-19: *"the ship and a bubble around it"* is the shield design's text, not his words, and a Yes
+   changes a built default. *His card of 2026-11-20, about 6:00 AM PST:* **Yes: inside the bubble too**:
+   *"Why: it makes the screen worth raising and gives the crew a safe yard by the ramp. Buys: the trip away from the
+   ship becomes the whole risk, a clear rule. Costs: a code change to a built default, and anyone who stays by the ramp
+   is never in danger."*
+   **This changes the design's default.** Was: *No, the screen protects the ship and its gear* (as built). Owed build:
+   the touched dose must ask whether the pawn stands inside a raised particulate screen's bubble; today it reads only
+   what is overhead. No build ticket is filed while the Contagion is held.

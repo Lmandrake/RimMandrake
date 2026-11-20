@@ -235,6 +235,12 @@ What this means, and how to check it was applied:
 - **Shade gear is the parasol and roof structures.** A tent is any quick roof. The standing sun
   shield is not a shade item.
 - **Ambient heat is vanilla air temperature**, shown on the thermometer; shade never changes it.
+- **One written exception: the Scald's steam and water** — owner, by card, 2026-11-20: *"yes keep the clock, AND it
+  should be even worse in the Scald water itself (hot water is not the same as hot air"*. The Scald's beach steam
+  keeps its exposure clock (`RM_HediffComp_EnvironmentalExposure`, answered by ordinary heat armour), and the
+  Scald's water harms faster than that steam. The sun, air heat and heatstroke stay one kind in the Scald as
+  everywhere. The line above that steam heat is plain air temperature holds for every other biome. Design:
+  `design/concepts/TerminalBiomes/TheScald_design.md`.
 - Test: no BiomeDef or patch under `src/` carries `heatKind`, `heatOffsetC` or any per-biome sun
   field, and the selftest gives the same numbers at the same elevation in every biome
   (`DIRECT_SUN_SELFTEST_BUILD_EVERY_BIOME_EQUAL`).

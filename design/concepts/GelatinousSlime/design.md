@@ -11,8 +11,9 @@ six biome mods HELD BY OWNER: this is a design document only and it launches not
 `design/concepts/GelatinousSlime/` (`src/RimMandrake/rimflow/designer_cleanse.py`, `case_text`), so this file is in
 its path by sitting here. Nothing in the pipeline reads it by name yet. The Slime has a Designer tree: an adopted
 root (`root.md`), a locked sheet of twelve leaves (`sheet.md`) and a chosen showcase, all written for a colony; and a
-cleanse proposal of 2026-11-17 that moved the gene journey out and asked him whether that was right. This design
-answers that question by scope (the journey is in) and says where it parts from each.
+cleanse proposal of 2026-11-17 that moved the gene journey out and asked him whether that was right. His card of
+2026-11-20 answered it the cleanse's way: the contact film is the signature and the journey is in 0.2.0. This
+design says where it parts from each.
 
 **Second reader, 2026-11-18:** a second agent that did not write this page read the mod brief, the Titanoslime
 spec, the review, the gene lists and the roster whole (the first read had them in part) and repaired it. The gene
@@ -149,7 +150,7 @@ member standing on bare slime has started to show a film.
 
 ## The first week
 
-- **The gene.** By his card of 2026-09-10 the machine is a thing held in the hand: *"It is a machine you hold that
+- *(0.2.0, by his card of 2026-11-20)* **The gene.** By his card of 2026-09-10 the machine is a thing held in the hand: *"It is a machine you hold that
   tells you WHERE you must go to extract (a scanner). Then you place it upon the slime, and it expends itself
   sucking up just the right parts of the slime, becoming an injectible. Then it is used up once used to inject."*
   So: pick one gene from the archive of *"everything that ever touched it"*. The seeker points to where on the
@@ -163,7 +164,7 @@ member standing on bare slime has started to show a film.
   should make a Jawa argue with themselves."* And *"the marked are hard to love"*: *"One gene is a quirk; four is
   a creature."* That matters in a clan whose whole future is who will lie down with whom. The seeker is crafted
   blank at an ordinary bench; nobody has to sell one.
-- **What is on the list.** In the campaign's archive: a scavenger's nose that finds a third more in every wreck and
+- *(0.2.0)* **What is on the list.** In the campaign's archive: a scavenger's nose that finds a third more in every wreck and
   never closes; a trader's head that grieves over anything given away (*"that had VALUE"*); buoyant step, to *"wade
   the Slime like a local"*; and resistance itself, whose price is the cure (*"you chose the wall over the well"*).
   The riders nobody chooses include involuntary loud Jawaese when startled, a pocketing instinct, a snore, and one
@@ -185,7 +186,7 @@ member standing on bare slime has started to show a film.
 
 Each can happen inside the visit. Each says what is on screen.
 
-1. **The gene run.** *On screen:* one Jawa far out on the shining flat, standing still beside a device that is
+1. **The gene run (0.2.0).** *On screen:* one Jawa far out on the shining flat, standing still beside a device that is
    drinking the ground, the film creeping up its legs, and a hill of green glass beginning to turn that way. Then
    the long slow walk home with the dose. Then a bunk aboard, a needle, a body gone slack, a clock in the health
    tab, and a friend with the other needle. *Why it lands:* every step is chosen and the clock is on screen. If the
@@ -260,8 +261,8 @@ It arrives on time. Nothing here hides the ship.
 
 - **Full tanks and a full larder,** of the least appetising food on the planet. *"A place to fill your belly and
   your tanks."*
-- **A gene,** chosen, with its rider and its mark, in one crew member for life and in their eggs after.
-- **Resistance,** the same way: the Slime-resistant gene is in the archive like any other, and it shuts off the
+- *(0.2.0)* **A gene,** chosen, with its rider and its mark, in one crew member for life and in their eggs after.
+- *(0.2.0)* **Resistance,** the same way: the Slime-resistant gene is in the archive like any other, and it shuts off the
   cure with the hazard.
 - **The deck part: the archive vat (0.2.0).** This biome's entry on the list of what each place gives the ship
   (`BIOME_SHIP_CONTRIBUTIONS_1`; `RM_ArchiveVat`, built): it *"grows a dead colonist back from the slime's last
@@ -279,6 +280,9 @@ It arrives on time. Nothing here hides the ship.
   traders not built into the biome.
 - **Not the piece.** Off the body it shrinks; it *"never stockpiles."*
 - **The film,** if they were careless, until the desert dries it out.
+- **Nothing unique in 0.1.0.** With the gene and resistance in 0.2.0 (his card of 2026-11-20 named this cost), the
+  Slime has no take-away of its own in its first version: food, tanks and block are had elsewhere. A 0.1.0 draw is a
+  proposal for him on the item `RIMMANDRAKE_PICK_SEVEN_BIOME_SIGNATURES_LISTED_NOT_GUESSED`.
 
 ## What the place does to the ship
 
@@ -310,12 +314,17 @@ It arrives on time. Nothing here hides the ship.
 | Leaving for dry country, or a completed antidote treatment, ends the hold. | One late-stage pawn flown to desert, one treated. | The antidote is toxic and shows it. |
 | Slime gives food, block and poison relief by ordinary work, and raw slime's cure starts the film. | A cooked meal eaten, a block pressed, a poisoned pawn fed raw slime. | A free cure with no film fails. |
 | Organism rain leaves drinkable standing water on bare ground, none on floors or under roofs, and drains away. | One rain over mixed ground with barrels out. | Water that stays, or that cannot be drunk, fails. |
-| A chosen gene is found with the seeker and drawn in the open on the body, the carrier exposed while it drinks; the dose keeps for days and then spoils. | The journey start to finish; one dose left to spoil. | A dose made at a bench or handed over by a helper is not the journey. |
-| The injection, given anywhere, brings a coma and a race; a friend's antidote in time saves the patient; there is a message when little time is left. | One rescued aboard, one not. | No new interface: the game's own, plus the one message. Nobody rescues themselves. |
-| The survivor keeps the chosen gene, an unchosen one, and a mark others react to; it passes to offspring. | The rescued pawn, afterwards and a generation on. | A journey with no cost fails. |
 | The natives live as an ecology (herds that pool at night, three sizes of scoop-feeder, a real flier, a hunter of the herds); outsiders arrive part-read; nothing turns hostile from being read. | A week of the map left alone. | Flight is read from state, never watched unattended. |
 | The giant swallows prey whole, shows how long a rescue has, gives up the same person if freed in time, and keeps what it gains from feeding. | A crew member engulfed and cut free; an animal engulfed and digested; a save and reload after. | A giant that shrinks again unseen fails. |
 | The Slime itself leaves a landed ship alone, and the deck counts as built floor. | A ship through several days, crew kept on deck. | A film on someone who never left the deck fails. |
+
+**Promises that moved to 0.2.0 with their features** (his card of 2026-11-20: the contact film is the signature):
+
+| the player sees | the scene | what rules out a fake |
+|---|---|---|
+| A chosen gene is found with the seeker and drawn in the open on the body, the carrier exposed while it drinks; the dose keeps for days and then spoils. | The journey start to finish; one dose left to spoil. | A dose made at a bench or handed over by a helper is not the journey. |
+| The injection, given anywhere, brings a coma and a race; a friend's antidote in time saves the patient; there is a message when little time is left. | One rescued aboard, one not. | No new interface: the game's own, plus the one message. Nobody rescues themselves. |
+| The survivor keeps the chosen gene, an unchosen one, and a mark others react to; it passes to offspring. | The rescued pawn, afterwards and a generation on. | A journey with no cost fails. |
 
 Settings: one switch per major feature, defaults as shipped, everything off leaves a mild wet plain with ordinary
 soft animals; switching a feature off stops what it does, clears film safely, releases anything swallowed and keeps
@@ -330,7 +339,7 @@ size the giant has earned (standing rule, every mod, and the cleanse's own detai
   is to leave.
 - **A creature that holds what it swallows, and grows** (`RM_CompEngulfer`; the life-stage growth with no Harmony
   patch).
-- **Choosing a gene and paying an unknown price** (the seeker, the archive, the rider).
+- **Choosing a gene and paying an unknown price** (the seeker, the archive, the rider). 0.2.0.
 - **Organism rain that is drinkable and drains** (and that `FlowWorks` treats as toxic water for distilling).
 
 **Merely active here:** soft ground that slows (the Greentide's churnmud mires; this only slows); real flight for
@@ -342,19 +351,14 @@ Empire's search and the visibility dial; the acoustic sounder.
 
 Every feature is in one bucket.
 
-**The one signature (his first-version answer of 2026-11-19): NOT CHOSEN YET; two candidates, listed for the
-Conductor.** The design and his words point two ways, so this page does not guess, and nothing is moved out of
-0.1.0 until the choice is made.
-- *The living ground (contact film):* touching or eating the body raw reads and absorbs flesh by stages, with
-  belongings left behind; food, block and poison relief come from it; drying country and the antidote are the ways
-  out. A normal stop is sure to see it: the ship lands on the body, *"footprints always show"*, and unprotected
-  flesh converts in about a week. The cleanse chose it (2026-11-17); his experience line fits it: *"Kind, generous
-  and slowly eating you."*
-- *The gene journey:* archive, seeker, extraction, the dose, the coma, the friend's rescue, the rider and the mark.
-  It is his original ask (2026-09-10), the Conductor's showcase pick, and this design's default, and it fits in a
-  few days; but a stop sees it only if the crew chooses to send someone.
-If the film is chosen, the gene journey and resistance by gene move to 0.2.0 with their promise rows. If the
-journey is chosen, the film stays as land and life (it is how the ground behaves) and nothing else moves.
+**The one signature (his card of 2026-11-20): the living ground (contact film).** Touching or eating the body raw
+reads and absorbs flesh by stages, with belongings left behind; food, block and poison relief come from it; drying
+country and the antidote are the ways out. *Why a normal stop is sure to see it:* the ship lands on the body,
+*"footprints always show"*, and unprotected flesh converts in about a week. He picked it against the Conductor's
+recommendation (the gene journey), with this description: *"Why: every stop sees it, since the ship lands on the body and flesh converts in about a week. It fits your line
+"Kind, generous and slowly eating you." Buys: a smaller first version. Costs: the gene journey and gene resistance
+move to 0.2.0, and the Slime has no unique take-away until then."*
+So the gene journey and resistance by gene move to 0.2.0 with their promise rows (above).
 
 **0.1.0, the stop**
 - The land: crust, soft ground, channels, no rock; organism rain, drinkable and draining. (built; the rain's
@@ -362,9 +366,6 @@ journey is chosen, the film stays as land and life (it is how the ground behaves
 - Contact film, its course, dissolution with belongings left; drying country and the antidote as the ways out.
   (built)
 - Food, pressed block and poison relief from the body. (built)
-- The gene journey: archive, seeker, extraction in the open, the perishable dose, coma, the friend's rescue with
-  its one message, the rider, the mark, inheritance. (built)
-- Resistance as a gene taken the same way. (built)
 - The native ecology: gelatid, the gappo family, dwommo, fubbum; part-read visitors; nothing made hostile.
   (built; several still wear stand-in art)
 - The Titanoslime: engulfing, visible rescue time, permanent growth. (built; his look at its art is owed)
@@ -374,6 +375,12 @@ journey is chosen, the film stays as land and life (it is how the ground behaves
 - A fed giant walking through what is in its way. (the giant-creature mod's wake; unproven on this animal)
 
 **0.2.0, the stop with company**
+*Moved here from 0.1.0 by his card of 2026-11-20 (the contact film is the signature); each line goes back by one
+move:*
+- The gene journey: archive, seeker, extraction in the open, the perishable dose, coma, the friend's rescue with
+  its one message, the rider, the mark, inheritance. (built)
+- Resistance as a gene taken the same way. (built)
+*Already here before that card:*
 - The piece torn from the giant: a thrown weapon that coats friend and foe, on short-lived ground, and does not
   keep. (built)
 - A wounded giant leaking gelatids. (built)
@@ -445,6 +452,8 @@ can undo any one by name.
    Unfiled Hull, the tamper-proof seal). *His card of 2026-11-19 (declined ship ideas):* they stay turned down. He can
    bring any one back by name.
 2. **[scope] Is the gene journey the heart of a stop, or an extra?** *His card of 2026-11-19 (first version):* 0.1.0
-   holds one signature that a normal stop is sure to see. Which one is the Slime's is not obvious from this design
-   and his words (the contact film or the gene journey; Scope, top), so it is listed for the Conductor with both
-   candidates. Until it is chosen the journey stays where this design put it.
+   holds one signature that a normal stop is sure to see. *His card of 2026-11-20, about 5:45 AM PST:* the Slime's is
+   the **Contact film**: *"Why: every stop sees it, since the ship lands on the body and flesh converts in about a week. It fits your line
+   "Kind, generous and slowly eating you." Buys: a smaller first version. Costs: the gene journey and gene resistance
+   move to 0.2.0, and the Slime has no unique take-away until then."*
+   The gene journey and resistance by gene are in 0.2.0 with their promise rows.

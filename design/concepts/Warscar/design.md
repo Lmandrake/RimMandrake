@@ -186,26 +186,26 @@ leathery and wet-winged peeling off a dead machine and drifting toward the ship.
 
 ## The first week
 
-- **The Settling.** Calm air is the hazard. When the wind has been low for hours *"the barrels on the line stop
+- *(0.2.0, by his card of 2026-11-20)* **The Settling.** Calm air is the hazard. When the wind has been low for hours *"the barrels on the line stop
   keening, the ticking carries farther in the hush, and a fine pale fall begins to come straight down. It is the
   war, still hanging in the air after all this time."* Anyone in the open takes poison; anyone under a roof or a
   humming ring does not. *"By morning every unroofed surface wears a film, and the film keeps footprints."*
-- **Reading the film.** Every person, animal and raider that crosses it leaves prints pointing the way they went,
+- *(0.2.0)* **Reading the film.** Every person, animal and raider that crosses it leaves prints pointing the way they went,
   and the prints stay until the wind returns. *"You can read where the raiders came in, where your hauler went,
   where the grazer circled before it charged."* It is this biome's answer to the rule that nothing vanishes
   without a readable sign.
-- **The film finds the shells.** Buried unexploded ordnance is still faintly warm and the film will not settle on
+- *(0.2.0)* **The film finds the shells.** Buried unexploded ordnance is still faintly warm and the film will not settle on
   it, so *"after a Settling each one shows as a clean round spot."* Mark it; defuse it for shells and components,
   or set it off from a distance. *"The Settling becomes a minesweeper."* (One thing lies about it: a scar roach
   eats film, so a roach's clean patch looks like a shell's.)
-- **The lift.** When the wind comes back the film goes, across the whole map, as *"a visible grey front crossing
+- *(0.2.0)* **The lift.** When the wind comes back the film goes, across the whole map, as *"a visible grey front crossing
   the map downwind"* with a brief dose for anyone it passes. *"The wind is back. The ground forgets."*
 - **The grazer turns.** The plated chatrak is *"an animal built beyond fear, guaranteed to lose its mind"*. The
   owner's words for it: *"they care little about weapons or much of anything... until the madness inevitably
   comes."* It shows first, in stages a player can learn (plates lift, it stops eating, it circles), and the
-  circling is on the film as a tight loop of heavy prints. Then it attacks and does not stop. (Live pass on all
+  circling is on the film (0.2.0) as a tight loop of heavy prints. Then it attacks and does not stop. (Live pass on all
   seven parts of the turn, 2026-10-06.)
-- **Something nobody can see.** A line of prints walks across the film with nothing above it. See the moments.
+- *(0.2.0)* **Something nobody can see.** A line of prints walks across the film with nothing above it. See the moments.
 - **The mark deepens, and it has a line.** By the owner's ruling it is both a small permanent cost to mood and
   nightmares while on this ground; *"leaving the map ends the nightmares, never the mark."* As built, a mark that
   has not yet crossed its halfway point fades after the crew leaves, a tenth a day, to nothing. Past that point
@@ -227,14 +227,14 @@ Each can happen inside the visit. Each says what is on screen.
    lichen off a hull"*, shots sparking off it, not looking up.
 3. **The snap.** *On screen:* the same placid animal, plates lifted, walking a tight circle for a day; then a
    sprint. *Why it lands:* the player watched it get ready and decided it could wait.
-4. **The page.** *On screen:* morning after a calm: the whole map dusted pale and written on, every route anyone
+4. **The page (0.2.0).** *On screen:* morning after a calm: the whole map dusted pale and written on, every route anyone
    took overnight drawn in prints.
 5. **Prints with nobody in them.** *On screen:* a single line of fresh prints crossing the film toward a crew
    member working alone, and the ticking of the beetles going quiet in a small ring that moves with it. The
    owner's words for the thing making them: *"Gotta make some invisible hunters now... tricky in this genre."* His
    answer of 2026-11-10 on how it meets people: *"Lone travel accepts an ambush. Companions and local clues
    provide protection."* It never attacks two together.
-6. **The minesweeper.** *On screen:* a hooded figure crouched over a clean round spot in the film with a
+6. **The minesweeper (0.2.0).** *On screen:* a hooded figure crouched over a clean round spot in the film with a
    toolkit, and the rest of the crew watching from very far away.
 7. **The ring wakes.** *On screen:* a dead projector ring humming because the ship is near, and when the fall
    comes, *"the film stops at the edge of the dome in a crisp circle."*
@@ -257,11 +257,11 @@ Each can happen inside the visit. Each says what is on screen.
 
 It arrives on time. Nothing here delays it.
 
-- **It leaves prints too.** After a calm the film shows where a probe drifted, where the scouts stood and which
+- *(0.2.0)* **It leaves prints too.** After a calm the film shows where a probe drifted, where the scouts stood and which
   way the strike team came in, *"before the letter says so"*.
-- **The fall does not care whose armour.** A Settling doses everyone in the open. The crew has its roofs and its
+- *(0.2.0)* **The fall does not care whose armour.** A Settling doses everyone in the open. The crew has its roofs and its
   ring; a team walking in across the terraces has neither.
-- **The ground is still mined.** Every shell the crew marked and did not defuse can be set off from range, and the
+- *(0.2.0)* **The ground is still mined.** Every shell the crew marked and did not defuse can be set off from range, and the
   crew knows where they are because the film showed them.
 - **The grazers turn on whoever is near.** A chatrak that snaps during a fight is on nobody's side.
 - **The ground marks them too.** As built, the mark accrues in every person on the map, visitors and prisoners
@@ -318,7 +318,7 @@ four currencies, and leaves early by its own choice.
 ## What the crew takes away
 
 - **Sealed salvage:** hermetic crates, ancient pods, the contents of the levels under the husks.
-- **Shells and components** from defused ordnance.
+- *(0.2.0)* **Shells and components** from defused ordnance.
 - **Chatrak plate,** *"the only light-armour leather that turns bullets"*. It is harder to come by than it
   sounds: the base game makes a carcass that carried the madness rot unbutcherable more often than not.
 - **A projector core,** from stripping a dead ring: *"a prize you carry out, not a bench recipe."*
@@ -349,20 +349,21 @@ four currencies, and leaves early by its own choice.
 | Nothing grows; open native ground renews its poison; a floor or roof pauses it and removing the cover restarts it. | Three patches of native ground: bare, floored, roofed. Clean them all, wait, uncover one. | The ground's own inspect text and the pollution overlay agree with what happened. |
 | Open wrecks are stripped, sealed containers pay, and every ancient danger on the map is already sprung. | Open every sealed thing on a generated map. | A sealed threat that wakes on opening fails. |
 | Broken turrets follow movement and never fire, on Warscar maps only. | A pawn walks the line; then the same turrets on another biome's map. | The other map's turrets do not turn. |
-| In a long calm a pale fall begins, doses people in the open and not under a roof or a humming ring, and leaves a film. | Let a calm arrive by the weather's own course, with one pawn out, one roofed, one under a ring. | A calm forced by a debug command proves only the plumbing; the season must produce one by itself. |
-| What crosses the film leaves prints that point the way it went and last until the wind returns; the returning wind clears film and prints together as a visible front. | A raid, a hauler and a grazer cross the film; save and reload; wait for wind. | Prints laid before the reload are still there after it. Film gone with prints left, or the reverse, fails. |
-| Buried shells show as clean spots after a fall and can be defused for parts or set off from range. | A map with shells; a Settling; one defused, one triggered. | A spot with no shell under it would pass a lazy check: dig one that is not marked and find nothing. |
 | A chatrak carrying the madness shows it in stages, then attacks for good; a treated one does not turn. | One carrier left alone, one cured, one clean arrival kept on the map. | The cured one stays calm through the time the other took. |
 | Time here marks a person; the mark costs mood for good, gives nightmares only while on this ground, and roofs do not stop it. | Two crew, one who stayed a week and one who stayed a day, then both on another map. | Nightmares stop on leaving; the mark does not. |
-| The crust beetles tick faster over hotter ground, the barrels keen in wind and fall silent in a Settling. | Walk a pawn from clean slag onto thick crust, in wind and in calm (a listening check at a joint sitting). | |
+| The crust beetles tick faster over hotter ground, the barrels keen in wind and fall silent in a calm. | Walk a pawn from clean slag onto thick crust, in wind and in calm (a listening check at a joint sitting). | |
 
-**Promises that moved to 0.2.0 with their features** (his first-version answer of 2026-11-19):
+**Promises that moved to 0.2.0 with their features** (his first-version answer of 2026-11-19; the Settling's three
+rows by his card of 2026-11-20):
 
 | the player sees | the scene | what rules out a fake |
 |---|---|---|
 | An invisible hunter attacks only someone alone, shows when it strikes, and can be read beforehand by its prints and by the beetles going quiet around it. | One pawn alone at night on film; then two together on the same path. | The pair is not attacked. The hunter's kill is dragged and the drag is on the film. |
 | Dead projector rings near a landed ship hum while it stays, and a humming ring keeps the fall and the film off the ground under it. | Land near a dead ring; wait for a Settling; lift off. | The ring goes dead again when the ship leaves. A ring far from the ship stays dead. |
 | Mynocks board a landed ship, breed, and eat conduit, lamps and flooring until hunted out; a few are a nuisance and many are a problem. | A landed ship with wild mynocks near; leave them; then hunt them. | The damage stops when the last one is dead, and they are ordinary animals that can be shot. |
+| In a long calm a pale fall begins, doses people in the open and not under a roof or a humming ring, and leaves a film. | Let a calm arrive by the weather's own course, with one pawn out, one roofed, one under a ring. | A calm forced by a debug command proves only the plumbing; the season must produce one by itself. |
+| What crosses the film leaves prints that point the way it went and last until the wind returns; the returning wind clears film and prints together as a visible front. | A raid, a hauler and a grazer cross the film; save and reload; wait for wind. | Prints laid before the reload are still there after it. Film gone with prints left, or the reverse, fails. |
+| Buried shells show as clean spots after a fall and can be defused for parts or set off from range. | A map with shells; a Settling; one defused, one triggered. | A spot with no shell under it would pass a lazy check: dig one that is not marked and find nothing. |
 
 Settings: one switch per major feature, defaults as shipped, everything off leaves a hot, sterile ruin field
 (standing rule, every mod).
@@ -370,9 +371,9 @@ Settings: one switch per major feature, defaults as shipped, everything off leav
 ## Shared machinery
 
 **Featured here** (the Warscar is where each is vital and should be proven):
-- **Ground that keeps footprints** (the capped track grid and its draw layer, ruled one kit shared with the
+- *(0.2.0 here)* **Ground that keeps footprints** (the capped track grid and its draw layer, ruled one kit shared with the
   Stillsand; each biome supplies only its surface and its eraser: film and wind here, sand and dunes there).
-- **Weather that falls when the wind stops, and lifts as a front** (`RM_Settling` on the shared environmental
+- *(0.2.0)* **Weather that falls when the wind stops, and lifts as a front** (`RM_Settling` on the shared environmental
   weather condition).
 - **A screen against airborne poison** (the particulate screen, lifted from the ship-shields mod; it works on
   toxic fallout, toxic rain, the Wasteland's ash and anything else that goes through the same vanilla call).
@@ -395,16 +396,17 @@ bones; the Empire's search and the visibility dial.
 
 Every feature is in one bucket.
 
-**The one signature (his first-version answer of 2026-11-19): NOT CHOSEN YET; two candidates, listed for the
-Conductor.** His experience line names a curse that scavenging teaches: *"Poisoned forever, mad beasts, silent
-guns. Everyone calls it cursed, and everyone who scavenges here learns why."*
-- *The Settling:* in a long calm a pale fall doses people in the open and lays a film that records every walker,
-  shows buried shells, and lifts when the wind returns. The cleanse chose it (2026-11-17). A stop sees it only if a
-  long calm comes inside the stay; the design does not say how often one does.
-- *The mark:* time on this ground marks a person, costs mood for good, and gives nightmares only here. A normal stop
-  is sure to see it, because it accrues from time spent; it is the curse that *"everyone who scavenges here learns"*.
-Moved now, because they are extras under either choice: the invisible hunter, the humming rings and the landed ship
-waking them, and the mynocks aboard. The chatrak's turn stays as life (a native animal's disease and its cure).
+**The one signature (his card of 2026-11-20): the mark.** Time on this ground marks a person, costs mood for good,
+and gives nightmares only here. *Why a normal stop is sure to see it:* it accrues from time spent, so every stop
+gets it; it is the curse that *"everyone who scavenges here learns"* (his experience line: *"Poisoned forever, mad
+beasts, silent guns. Everyone calls it cursed, and everyone who scavenges here learns why."*). He picked **The mark**
+with this description: *"Why: it is the curse "everyone who scavenges here learns". Buys: every stop sees it, because it builds from time
+spent. Costs: a permanent mood cost may make players avoid the biome, and the Settling's footprint film waits.
+Recommended: it is the only candidate a stop is sure to see."*
+So the Settling (the calm, the fall, the film and its prints, the lift front) and the shells the film finds move to
+0.2.0 with their rows. The invisible hunter, the humming rings and the landed ship waking them, and the mynocks
+aboard were extras and are in 0.2.0 since 2026-11-19. The chatrak's turn stays as life (a native animal's disease
+and its cure).
 
 **0.1.0, the stop**
 - The land: sterile megastructure floors, slag and craters, the outward-facing line, stripped wrecks, sealed
@@ -414,8 +416,6 @@ waking them, and the mynocks aboard. The chatrak's turn stays as life (a native 
   deleted twin and never to this biome, and nobody has checked whether the base game's ruins here hold a sealed
   threat that still wakes. And no code arranges the line to face outward; it rests on the base game's ruin
   layouts, which nobody has looked at for that.)
-- The Settling: calm, fall, film, prints on the shared grid, the lift front. (built, never seen live)
-- Buried shells found by the film; defuse or trigger. (built; moved in)
 - The cast: chatrak, tetchik, pallbearer, scar roach, rakeshank, bileworm, rimclaw, the three feral munitions
   (the tick that bursts, the one that shoots arcs, the juggernaut), korrum, wreck-lichen and glower crust, with
   the campaign's animals where its patch puts them. (built. His art sheet of 2026-10-05 cut the interim grazer
@@ -431,6 +431,9 @@ waking them, and the mynocks aboard. The chatrak's turn stays as life (a native 
 - No cover from orbit; fuel by the slow route only. (nothing to build)
 
 **0.2.0, the stop with company**
+*Moved here from 0.1.0 by his card of 2026-11-20 (the mark is the signature); each line goes back by one move:*
+- The Settling: calm, fall, film, prints on the shared grid, the lift front. (built, never seen live)
+- Buried shells found by the film; defuse or trigger. (built)
 *Moved here from 0.1.0 by his first-version answer of 2026-11-19 (one signature a stop is sure to
 see); each line goes back by one move:*
 - The invisible hunter and its signs: prints, the quiet ring, the shimmer, the drag. (built offline; moved in)
@@ -514,3 +517,12 @@ can undo any one by name.
 4. **The war-black hull, and glower as fuel.** *His card of 2026-11-19 (declined ship ideas):* they stay out, as his
    card of 2026-09-30 put them. The Warscar's fuel is the slow route only; the ship's wear here is the air and the
    heat, answered by one field. He can bring any of the three back by name.
+
+**Answered by his card of 2026-11-20** (item `RIMMANDRAKE_PICK_SEVEN_BIOME_SIGNATURES_LISTED_NOT_GUESSED`; the
+enact item is `RIMMANDRAKE_ENACT_SIGNATURE_PICKS_INTO_DESIGNS_SLIME_KEEPS_FILM`). Each keeps its number.
+
+8. **Which is the Warscar's one 0.1.0 signature, the Settling or the mark?** It was left unchosen in Scope. *His card
+   of 2026-11-20, about 5:45 AM PST:* **The mark**: *"Why: it is the curse "everyone who scavenges here learns". Buys: every stop sees it, because it builds from time
+   spent. Costs: a permanent mood cost may make players avoid the biome, and the Settling's footprint film waits.
+   Recommended: it is the only candidate a stop is sure to see."*
+   The Settling and the shells it finds move to 0.2.0 with their rows.

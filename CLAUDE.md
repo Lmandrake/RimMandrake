@@ -182,7 +182,8 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 
 - Before you design or build heat, sun, shade or a biome's climate, read `design/RimMandrake/standing_rulings.md`
   §Direct Sun. Design and migration: `design/RimMandrake/unified_direct_sun_heat_2026-10-19.md`.
-- No biome has its own heat kind, number or exception.
+- No biome has its own heat kind, number or exception, except one: the Scald keeps its steam clock, and its water
+  harms faster than its steam (§Direct Sun).
 - No animal or pawn ever vanishes without a sign that the player can read.
 
 ## Every DLC is assumed

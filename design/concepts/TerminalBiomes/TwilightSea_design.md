@@ -388,7 +388,8 @@ it and a ship that can always leave (standing rule, every mod).
 
 **Featured here** (the Twilight is where each is vital and should be proven):
 - **Water that carries** (`RM_MapComponent_ChannelCurrent`, `RM_GenStep_TwilightChannels`, the surge condition, the
-  sunk condition, on `FlowWorks`' bank and arrest seams). The river pass measured that nothing else in the base
+  sunk condition, on `FlowWorks`' bank and arrest seams). Built and proven here first; by his write-in of 2026-11-20
+  it belongs to all four seas. The river pass measured that nothing else in the base
   game, the tide mod or our source moves a pawn along a flow; this is the one new movement system, and by his
   typed word its bank works are owed on ordinary surface rivers too.
 - **Light as ground that moves** (`RM_MapComponent_WellLedger`: one clock for every well). The Abyss features light
@@ -418,14 +419,19 @@ sea (his redirect of 2026-09-26).
 
 Every feature is in one bucket. "Built" is source presence, not a pass.
 
-**The one signature (his first-version answer of 2026-11-19): the river on the floor.** Gold light-wells and the
-banks draw workers out across the floor; the bottom river's current carries off whoever steps onto its bed; a surge
-is warned by the floor itself and widens the reach; a carried worker ends at the sink, findable and worsening, and
-recovers once carried home. *Why a normal stop is sure to see it:* the ship lands clear of the river's reach, and
-the best ground and the wells lie across or beside it, so the first work party meets the bank and the stakes. He
-approved this chain on 2026-11-17 as the signature of the whole four-sea mod; it stays the Twilight's own.
-*Runner-up:* the cultivated light and tenancy economy (the cleanse's runner-up), 0.2.0. The lid's keeper passing
-overhead moves to 0.2.0: it harms nothing and a stop can miss it.
+**The one signature: OPEN, one question for him (`NEEDS HIM` 6).** The river is no longer this sea's signature: his
+write-in on the card of 2026-11-20 makes it a system of all four seas (below). His own candidate is *"the falling
+shards of the ocean's colorful cover"*, typed with a "Perhaps", so it is an invitation and not a ruling. The
+candidates, with what each costs, are under `NEEDS HIM` 6; the design's recommendation there is the falling sky.
+Until he answers, every candidate stays where it is below, and nothing moves. The lid's keeper passing overhead is in
+0.2.0: it harms nothing and a stop can miss it. *Runner-up of the cleanse:* the cultivated light and tenancy
+economy, 0.2.0.
+
+**The river is shared by all four seas, and is no sea's signature** (his write-in on the card of 2026-11-20,
+`Answered`, entry 7). Bed, banks, lit stakes, the current, the surge and the sink are a system of every sea floor.
+Here it is built, and it stays in this sea's 0.1.0 as land of the floor. Whether the other three seas get it in
+0.1.0 or at 0.2.0 is one question for him, on the item `RIMMANDRAKE_PICK_SEVEN_BIOME_SIGNATURES_LISTED_NOT_GUESSED`;
+if he puts it at 0.2.0 everywhere, this sea's river moves there with its rows.
 
 **0.1.0, the stop**
 - The floor as a real place on the ship's layer: the lid as a sky, gold wells, dark between, no rain, mild water.
@@ -517,7 +523,34 @@ see); each line goes back by one move:*
 
 ## NEEDS HIM
 
-None open. Every entry is answered (next section).
+6. **What is the Twilight's one 0.1.0 signature?** His card of 2026-11-20 took the river away from every sea and
+   gave each sea its own (`Answered` 7). The Grey's, the Chill's and the Scald's were named; the Twilight's is open.
+   The other three, for contrast: the Grey's sea acts on whoever touches it (encasement); the Chill's garden answers
+   the ship's warmth; the Scald's herd is work that walks.
+   - *The falling sky (his candidate: "the falling shards of the ocean's colorful cover").* Flakes of the lid settle
+     on the hull all the time; now and then a pane lets go: a window-shaped shadow for a few seconds, then a
+     room-sized sheet of living glass that can kill and lies where it lands. Panes pile on a parked ship and a launch
+     waits until the deck is cleared; each cleared pane is harvest. *Sure to see:* the flakes, on every stop; a whole
+     pane, on a stop of some days (how often a pane falls is a storyteller incident, `UNMEASURED`). *The player:*
+     reads the shadow and runs, clears the deck, carries panes into the hold, parks away from a dying well. *Build:*
+     nothing new; it is built (`RM_MapComponent_VeilFall`, `RM_IncidentWorker_PaneStrike`,
+     `RM_Patch_GravEngineLaunchGate`) and already in 0.1.0 as this sea's hull wear. *Differs:* the only sea where the
+     sky acts on the ship, and pays the crew for being cleared off it.
+   - *The light that moves.* A well wanes, closes, and another opens elsewhere; the floor forecasts it (browning
+     strings, gilt, afterglow). *Sure to see:* the wells, on every stop; a well turning over, only on a stay of about
+     a week. *The player:* moves the work to the light and reads the floor's forecast. *Build:* built
+     (`RM_MapComponent_WellLedger`); the afterglow and the well-driven placement sit behind a switch, and keeping
+     new wells out of the surge's reach is owed. *Differs:* the only sea where the ground's worth moves.
+   - *The dark between the wells.* The predator's dark, crossed by a cut lamp-bladder's light: *"You hold a small
+     circle of gold and things move at its edge."* *Sure to see:* only if a crew crosses the dark, which the sink
+     and the far wells ask of it. *The player:* carries light, walks lit turf, fetches from the sink. *Build:* the
+     loohn and the bladders are built; nothing teaches the danger yet. *Differs:* the only sea whose risk is an
+     animal waiting in the dark.
+   *Recommended: the falling sky.* It is his own, it is built, it acts on the ship (the lens he called *"the
+   overriding priority"*), and like the Scald's herd it makes two things one: here, the signature and the hull wear.
+   *The strongest argument against it:* because it is already this sea's hull wear, the Twilight's 0.1.0 gains
+   nothing a shared system did not already promise; a judge could say the Twilight has no signature of its own, and
+   a short stop may see flakes and no pane.
 
 The cleanse proposal of 2026-11-17 asked him one question, whether the wells may turn over in about a week when the
 frozen sheet says years. He had answered it on 2026-09-26 in his own words (*"the light can move around slowly over a
@@ -549,3 +582,12 @@ can undo any one by name.
 5. **Ship or light ideas he declined or cut** (the selling of light, light calling the sea, the Ark Seed). *His card
    of 2026-11-19 (declined ship ideas):* they stay out. He can bring any one back by
    name.
+
+**Answered by his card of 2026-11-20** (item `RIMMANDRAKE_PICK_SEVEN_BIOME_SIGNATURES_LISTED_NOT_GUESSED`; the
+enact item is `RIMMANDRAKE_ENACT_SIGNATURE_PICKS_INTO_DESIGNS_SLIME_KEEPS_FILM`). Each keeps its number.
+
+7. **Is the river the Twilight's signature, or the signature of all four seas?** It was the Twilight's, under his
+   approval of 2026-11-17 that read it as the one signature of the four-sea mod. On the card of 2026-11-20 he took
+   neither offered option and typed, about 6:00 AM PST: *"Actually having underocean rivers should be commonplace in all the oceans, so this isn't even special for Twilight. EACH of them should get an actual special. Perhaps the Twilight should be the falling shards of the ocean's colorful cover"*
+   So the river is shared by all four seas and is no sea's signature; this replaces his approval of 2026-11-17. The
+   Twilight's own signature is open (`NEEDS HIM` 6).

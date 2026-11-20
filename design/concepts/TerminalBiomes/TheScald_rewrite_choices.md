@@ -72,7 +72,8 @@ The combined design is retired; this list is the record of what was wrong in it 
 2. **The steam clock, moved into 0.1.0 against the cleanse.** The cleanse switched it off, reading the one-sun
    ruling as forbidding it. But he asked for steam *"deadly without protective gear"*, folded its protection into
    ordinary heat armour by card, and tuned the rind coat against it on 2026-11-06, after the one-sun ruling. I
-   took his later card. It is `NEEDS HIM` 2, and reverting is one scope line and one promise row.
+   took his later card. His card of 2026-11-20 kept it (*"yes keep the clock"*) and made the water worse than the
+   steam; the design's `Answered` 2 has his words.
 3. **Nodules, at 0.2.0.** *"Ore is NODULES you simply gather"*: lumps of gold on a sea floor, for a crew that has
    never mined and always scavenged. Under his "very Jawa" test nothing here scores higher, and it is cheap
    (items, a scatter, six sprites). It could come forward.
@@ -188,7 +189,7 @@ read only for what exists and for the comments that quote his cards.
 | "A thriving world inside the heat... wonder and understanding the herds worthwhile beyond extraction" | answers | kept, quoted, as the frame | His card, 2026-11-10. | |
 | "A useful working visit... withdrawing when cooling or supplies become inadequate" | answers | kept, quoted; it sets what ends a stop | | |
 | A sea visit: arrival, safe edge, temptation, bad choice, recovery | cleanse definition | kept as the shape of the first day | | |
-| One signature for the whole mod (the Twilight's current); the Scald gets land and life only | cleanse owner pages | kept, reshaped: the Scald has its own 0.1.0 (herd, vents, the warm ship) | His hull ruling and his 2026-11-10 answers. | The cleanse's way: a Scald that is scenery in its first version. |
+| One signature for the whole mod (the Twilight's current); the Scald gets land and life only | cleanse owner pages | kept, reshaped: the Scald has its own 0.1.0 (herd, vents, the warm ship); replaced by his write-in of 2026-11-20: the river is shared by all four seas and each sea has its own signature | His hull ruling and his 2026-11-10 answers. | The cleanse's way: a Scald that is scenery in its first version. |
 | "Cyan glow under white steam — the sea that is also a forge" | sheet §9 | kept, quoted, for the beach | | |
 | Art direction: light, palette, silhouettes, motion, sound | sheet §9 | kept as art direction | | |
 | "A bottom-walker's back breaking the surface at the deep center, rare and enormous" | sheet §9; kit S5 | kept, reshaped: seen from the beach at the deep-water edge | His card of 2026-11-01. | |

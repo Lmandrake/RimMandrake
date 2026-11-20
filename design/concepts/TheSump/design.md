@@ -209,12 +209,12 @@ black footprints going up the ramp.
   brought from elsewhere cannot drink here at all and show it; the natives drink tar.
 - **The margin ring.** Skelver rosettes to forage, korveth shrubs swelling into black pitch nodules (*"a plant
   growing its own coal"*), and, rarely, lanneth, dark stalks hung with amber pods, the Sump's one sweet thing.
-- **The first dig.** A bowed white bell on a bare black stem, alone: the tolleth, *"the grave-bloom"*, which grows
+- *(0.2.0, by his card of 2026-11-20)* **The first dig.** A bowed white bell on a bare black stem, alone: the tolleth, *"the grave-bloom"*, which grows
   only where the tar is holding something. The crew sinks a shaft there. Jawa do not need to be told twice.
 
 ## The first week
 
-- **The dig lottery.** *"Every dig is treasure or a click."* The shaft pays by depth: junk and bitumen, then bones
+- *(0.2.0)* **The dig lottery.** *"Every dig is treasure or a click."* The shaft pays by depth: junk and bitumen, then bones
   and hides *"of ages the bestiary never named"*, then sunken machines and sealed casings. And traps, which by the
   owner's ruling come up **more often** than anything of the people who set them, *"preserved in perfect working
   order"*: *"The tar preserves everything, including intentions."* A trap clicks before it fires. The owner's
@@ -279,7 +279,7 @@ Each can happen inside the visit. Each says what is on screen.
 3. **The false floor.** *On screen:* a crew member steps onto a pale, perfect, ungnawed crust and goes through it
    to the waist, mired and hurt; a second one has to haul the first out onto real glass. No mouse was on that
    crust, and the player can see that now.
-4. **The click.** *On screen:* a dig shaft, a sound, a pause letter, and every Jawa on the map running in a
+4. **The click (0.2.0).** *On screen:* a dig shaft, a sound, a pause letter, and every Jawa on the map running in a
    different direction while one miner runs the other way, toward it.
 5. **The kethrel.** *On screen:* a glossy shapeless animal comes off the tar wearing a carapace of somebody's
    blasters, slag and components, clanking, and settles near the crew's salvage pile to add to it. A handler coaxes
@@ -303,7 +303,7 @@ Each can happen inside the visit. Each says what is on screen.
     every gulveth in sight turns and wades toward the mess at a barge's full speed, straight through tar that
     would hold anything else, and one of them stops to investigate the Jawa who was standing too close and is now
     the same colour as lunch.
-12. **The thing that died reaching** (owed; the table pays placeholder salvage today). *On screen:* the shaft
+12. **The thing that died reaching** (0.2.0; owed; the table pays placeholder salvage today). *On screen:* the shaft
     opens on a carcass the size of the ship's bridge, limbs still spread, wrapped around a machine. The machine's
     lights come on.
 13. **The dead refinery wakes.** *On screen:* a split column patched with hull plate shudders, and black tar goes
@@ -365,7 +365,7 @@ willingly, and it can be lit into a terrible smoky horror nothing can cross."*
 **Out, before the Empire:**
 - The water the ship carried running low, with nothing on the map to refill it.
 - A woken beast walking toward the ship.
-- A deep stratum that clicked and was not answered in time.
+- *(0.2.0)* A deep stratum that clicked and was not answered in time.
 - Solvent gone, the crew slowed to a crawl and the decks black.
 - A pool that caught fire and will not go out.
 
@@ -382,7 +382,7 @@ willingly, and it can be lit into a terrible smoky horror nothing can cross."*
 
 ## What the crew takes away
 
-- **Dig finds:** old bones and hides, sunken machines, sealed casings, partial remains of the old wars.
+- *(0.2.0)* **Dig finds:** old bones and hides, sunken machines, sealed casings, partial remains of the old wars.
 - **Bitumen and pitch,** for sealing, glue and paving, and **glasswalk for the ship's own decks** (his named gift).
 - **Fuel,** cracked from tar at the found refinery or bought from Junkers (see the clock section).
 - **Solvent and seepwax.** The acid that cleans tar also cleans it anywhere else the crew meets it.
@@ -410,18 +410,19 @@ willingly, and it can be lit into a terrible smoky horror nothing can cross."*
 | Glasswalk never fouls and is never walked at full speed. | A dirty walker on glasswalk, on ordinary floor and on bare pan. | Glasswalk does not clean the walker's boots. |
 | Sump-mice cross tar freely and bend around what is under it. | A map with a dormant bulge and open pools; watch the lines. | Remove the bulge: the lines straighten. |
 | The pallick fails under a walker, mires and hurts and does not kill; mice never cross it. | A pawn walks onto pallick and onto mirrelin crust beside it; a helper stands by. | Mirrelin holds. A mouse routed at the pallick goes around. |
-| A dig pays by depth and sometimes clicks; the click gives time to clear the site and for a nearby miner to answer it. | A shaft worked through several strata with a miner near and with one far. | A stratum table with no trap row would pass a lazy check: the scene must see a click and both outcomes. No whole Assailant or Rakatan ever comes up. |
 | The skellarn really flies, lands, and walks the open tar. | A skellarn over a pool with mice on it (flight read from its flight state, never from a screenshot). | It is not mired where a pawn would be. |
 | An unlit crew in the dusk is not seen by a watcher beyond a few cells; a lit one is. | A probe passes an unlit camp and a lamplit camp at the same distance. | The same pass on a daylit map sees both. |
 | Native plants grow with no sun and no sunlamp, and nothing native glows. | Skelver, korveth and lanneth growing through the visit. | A plant from elsewhere planted beside them does not grow. |
 
-**Promises that moved to 0.2.0 with their features** (his first-version answer of 2026-11-19):
+**Promises that moved to 0.2.0 with their features** (his first-version answer of 2026-11-19; the dig's row by his
+card of 2026-11-20):
 
 | the player sees | the scene | what rules out a fake |
 |---|---|---|
 | A dormant bulge wakes by cause, with signs first, and the woken beast is slow, unfightable, goes for built things and leaves a mound and a letter for each one taken. | Wake one by a deep dig with the ship's yard built at a distance; load and launch ahead of it. | Shooting it changes nothing that matters. Nothing it takes disappears without a mound. It sinks back and is a bulge again. |
 | The kethrel picks up loose scrap near the tar, wears it in visible stages, and gives every piece back on molt or death. | Scrap left by a pool; a kethrel loads; a handler coaxes a molt. | The dropped things are the same things, counted. |
 | A belch coats ground, goods and decks near a pit, and solvent or glasswalk answers it. | Trigger a belch beside a stockpile and the ship's ramp. | Glasswalk under the splash takes no deposit. |
+| A dig pays by depth and sometimes clicks; the click gives time to clear the site and for a nearby miner to answer it. | A shaft worked through several strata with a miner near and with one far. | A stratum table with no trap row would pass a lazy check: the scene must see a click and both outcomes. No whole Assailant or Rakatan ever comes up. |
 
 Settings: one switch per major feature, defaults as shipped, everything off leaves a cold dark flat with black
 ground (standing rule, every mod).
@@ -434,7 +435,7 @@ ground (standing rule, every mod).
   here is it the whole day.
 - **Animals whose avoidance is a map** (`RM_MapComponent_DreadField`, `RM_JobGiver_DreadAvoidWander`,
   `RM_CompFilthTrail`): mice bend around dread sources and leave a trail that shows it.
-- **Work that rolls on a table and can roll a trap** (`RM_CompWorkedLottery`, `RM_LotteryTableDef`): the dig. Any
+- **Work that rolls on a table and can roll a trap** (`RM_CompWorkedLottery`, `RM_LotteryTableDef`): the dig, 0.2.0. Any
   excavation, salvage or wreck-stripping elsewhere can use the same table.
 - **A dormant set-piece that wakes by cause and eats buildings** (`RUT_BeastBulge`, `RM_CompBeastWakeRelay`,
   `RM_CompStationEater`, `RM_TarBeast`). The third of the Patient family, with the sarlacc and the Fever Wood's
@@ -454,16 +455,15 @@ visibility dial.
 
 Every feature is in one bucket.
 
-**The one signature (his first-version answer of 2026-11-19): NOT CHOSEN YET; two candidates, listed for the
-Conductor.** His experience line holds both halves: *"The sump hides all and makes you fight it for every action."*
-- *The tar's burden:* crossing raw tar slows and dirties a walker and travels onto floors and decks; solvent,
-  scrubbing and glasswalk answer it; the sump-mice and the honest plants show where the tar is safe. A normal stop is
-  sure to see it: the ship lands on the black and the crew's first walk is across tar. The cleanse chose it
-  (2026-11-17) and deferred the dig on purpose.
-- *The dig (the playable "hides all"):* the shaft, the stratum lottery and the click. This design moved it into
-  0.1.0 on his words "hides all"; a stop sees it only if the crew chooses to dig.
-Moved now, because they are extras under either choice: the dormant bulge and its beast, the kethrel, and the belch.
-If the tar is chosen, the dig moves to 0.2.0 with its row; if the dig is chosen, the tar stays as land.
+**The one signature (his card of 2026-11-20): the tar's burden.** Crossing raw tar slows and dirties a walker and
+travels onto floors and decks; solvent, scrubbing and glasswalk answer it; the sump-mice and the honest plants show
+where the tar is safe. *Why a normal stop is sure to see it:* the ship lands on the black and the crew's first walk
+is across tar. He picked **Tar burden** with this description: *"Why: every stop sees it, since the crew's first walk is across tar. Buys: it is already built, bar one scrubbing
+defect. Costs: the dig moves to 0.2.0, so the "hides all" half of your line is not playable yet. Recommended: it
+passes your 'a stop must see it' test and is nearly done."*
+His experience line is *"The sump hides all and makes you fight it for every action."* The fight is in 0.1.0; the
+"hides all" half, the dig, is in 0.2.0. The dormant bulge and its beast, the kethrel and the belch were extras and
+are in 0.2.0 since 2026-11-19.
 
 **0.1.0, the stop**
 - The land: permanent dry dusk, deep and shallow tar, cooled glass reaches, the pan, the margin ring of
@@ -474,8 +474,6 @@ If the tar is chosen, the dig moves to 0.2.0 with its row; if the dig is chosen,
 - Sump-mice as the instrument; the pallick's false floor; the tolleth and soffeth as honest signs. (mouse-lines
   built; the pallick is built as a plant but its collapse and the mice's avoidance of it are not; placing the sign
   plants on the right cells is not built either. All three are owed, and without them the mice are scenery.)
-- The dig shaft, the stratum lottery and the click. (built; moved in. Most of what the table pays today is
-  placeholder salvage: the old bones, hides, casings and machines the sheet promises are still to be authored.)
 - The Deep Black mere. (built; it had no line on this page)
 - The first-landing letter, with text that names only signs that work. (built; his idea)
 - The wrecked tar refinery, found and kludged back. (built in FlowWorks, never run for the Sump)
@@ -486,15 +484,18 @@ If the tar is chosen, the dig moves to 0.2.0 with its row; if the dig is chosen,
   first is built in the pursuit code; the second is the small build his ruling asks for)
 - Chemfuel from tar at the found refinery. (built, unproven; this replaces the first pass's "rendering bench",
   which nothing in the sources asks for)
-- Owed and small, found by reading the build notes to the end: the dig's click has no sound and no letter today,
-  only a countdown on inspection; an unqualified miner can be sent to disarm automatically, which his answer of
-  2026-11-10 makes a defect; mouse tracks build up over days and fade in about a week, so a map the ship has just
+- Owed and small, found by reading the build notes to the end: mouse tracks build up over days and fade in about a week, so a map the ship has just
   landed on shows the mice and no tracery, and the tracks need laying down when the map is made; mice and the
   grounded skellarn have no built way to cross tar yet.
 - Tar fouling of the ship's decks and standing ground, answered by solvent and glasswalk. (the decks are built by
   being floor; the hull skin is owed)
 
 **0.2.0, the stop with company**
+*Moved here from 0.1.0 by his card of 2026-11-20 (the tar's burden is the signature); goes back by one move:*
+- The dig shaft, the stratum lottery and the click. (built. Most of what the table pays today is placeholder
+  salvage: the old bones, hides, casings and machines the sheet promises are still to be authored. Owed with it: the
+  click has no sound and no letter today, only a countdown on inspection; an unqualified miner can be sent to disarm
+  automatically, which his answer of 2026-11-10 makes a defect.)
 *Moved here from 0.1.0 by his first-version answer of 2026-11-19 (one signature a stop is sure to
 see); each line goes back by one move:*
 - The dormant bulge, its warning signs, and the station-eating beast that is evacuated ahead of. (the bulge, the
@@ -567,7 +568,8 @@ No ship idea that he declined or cut was found in the Sump's sources. The neares
 re-paving the Ashfall Road, tar rain, and the mess-lover trait, each listed under Dropped with his words.
 
 Two questions the cleanse put on its owner pages are answered here by scope instead of asked again, and each is a
-line under "Scope moves" in `rewrite_choices.md`: the playable "hides all" (the dig) is in 0.1.0, not deferred; and
+line under "Scope moves" in `rewrite_choices.md`: the playable "hides all" (the dig), which his card of 2026-11-20
+moved to 0.2.0 (`Answered` 11); and
 the water problem is not solved, it is the stop's own clock.
 
 ## Answered on 2026-11-19
@@ -607,3 +609,12 @@ can undo any one by name.
 5. **Which fuel class is the Sump?** *His card of 2026-11-19 (rich fuel):* a richer source, one of three with the
    Abyss and the Fever Wood. The found refinery on a pool that never runs dry is the Sump's fuel in 0.1.0, slow by
    his word of 2026-09-07.
+
+**Answered by his card of 2026-11-20** (item `RIMMANDRAKE_PICK_SEVEN_BIOME_SIGNATURES_LISTED_NOT_GUESSED`; the
+enact item is `RIMMANDRAKE_ENACT_SIGNATURE_PICKS_INTO_DESIGNS_SLIME_KEEPS_FILM`). Each keeps its number.
+
+11. **Which is the Sump's one 0.1.0 signature, the tar's burden or the dig?** It was left unchosen in Scope. *His
+    card of 2026-11-20, about 5:45 AM PST:* **Tar burden**: *"Why: every stop sees it, since the crew's first walk is across tar. Buys: it is already built, bar one scrubbing
+    defect. Costs: the dig moves to 0.2.0, so the "hides all" half of your line is not playable yet. Recommended: it
+    passes your 'a stop must see it' test and is nearly done."*
+    The dig moves to 0.2.0 with its row.

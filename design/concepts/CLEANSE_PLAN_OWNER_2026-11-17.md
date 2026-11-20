@@ -16,6 +16,6 @@ His marks, all of them (read from the sheet as saved 9:02 PM PST; five cells):
 
 Abyss `heat_observation` stays 0.2.0: he withdrew a DROP ("We'll make that determination later.").
 
-TerminalBiomes, one signature for the four seas (the current/bank/sink chain; `design/concepts/TerminalBiomes/cleanse/ambiguities.md` item 1, reading B): approved by the owner 2026-11-17, on a condition: *"I guess so. I don't see why not as long as we build it in waves of functionality biome by biome."* Its build plan is staged per biome.
+TerminalBiomes: his card of 2026-11-20 replaced the one signature for the four seas that he approved here on 2026-11-17. The current/bank/sink chain is shared by all four seas and is no sea's signature; each sea has its own (*"EACH of them should get an actual special."*). The four sea designs in `design/concepts/TerminalBiomes/` carry it.
 
 Nothing is applied to any concept tree by this file. The owner's hold on builds is unchanged by it.

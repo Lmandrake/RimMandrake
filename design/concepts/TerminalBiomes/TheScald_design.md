@@ -150,8 +150,9 @@ opens and the air comes in.
 - **The steam is a clock.** Out in it, unroofed and unprotected, a crew member goes from damp to scalded to
   steam-burned by stages a player can read, and by his card of 2026-09-25 is dead in under two days. A roof stops
   it; the ship is a roof. So work on this beach is done in shifts from the ramp.
-- **The water burns.** Wading costs burns, more in the deep than the shallow (his word: *"Yes, deep water should
-  burn harder"*). The sealed cool margin is the one water that does not, and the only place a line can be put in.
+- **The water burns, and faster than the steam.** Wading costs burns, more in the deep than the shallow (his word:
+  *"Yes, deep water should burn harder"*). His card of 2026-11-20: *"it should be even worse in the Scald water
+  itself (hot water is not the same as hot air"*. The sealed cool margin is the one water that does not, and the only place a line can be put in.
 - **What lives here is not hurt by any of it.** *"Likely should make its own creatures immune to that"* (owner,
   2026-09-25); natives carry one tag that the steam, the boil and the steam devils all read.
 
@@ -369,7 +370,7 @@ How it arrives on a floor is `UNSETTLED` (above). What the Scald does to whoever
 | The sails gather over a vent before it discharges, every time; the discharge burns and interrupts whoever is near. | Several cycles of one vent field, with a worker who leaves at the gathering and one who stays. | No discharge without the gathering first. Sails drifting between vents at other times are not a warning. |
 | A ship parked on the floor warms room by room, most where it has most outside wall; cooling holds it; no door seals and launch is never blocked. | A ship parked for days, one room cooled and one not; then launch. | The same ship on another sea's floor does not warm. Dividing a room with inside walls does not raise its load. |
 | On the beach, the steam stands, lifts for a still day, and returns. Unroofed and unprotected in it a visitor sickens by readable stages and can die; a roof, a still day and heat-armoured clothing each answer it; no clothing makes it free. | Three pawns on the beach through steam and a still day: one in the open, one roofed, one in a boil-suit. | A native in the open is unharmed. The clock does not run on the floor map. |
-| On the beach, boiling water burns a wader, more in the deep; the cool margin does not; wrecks in the shallows can be salvaged at that price. | A wader in shallow, in deep and in the margin; a salvage job on a still day and a steam day. | The water burns the same on a still day. |
+| On the beach, boiling water burns a wader, more in the deep, and faster than the steam harms someone in the open; the cool margin does not; wrecks in the shallows can be salvaged at that price. | A wader in shallow, in deep and in the margin; a salvage job on a still day and a steam day. | The water burns the same on a still day. |
 | The Empire's search comes one step slower on the beach, and at the top level of cover on the floor, than for the same crew on open ground; on the floor it still comes. | The same crew, as loud, landed on the beach, on the floor and on an uncovered tile; read the search's next contact on all three. | A crew made loud here loses the step. A search that never comes on the floor. |
 | Nothing vanishes. | A trampled pawn, a vent-burned pawn, a steam-killed pawn, each with a save and reload in the middle. | |
 
@@ -393,7 +394,9 @@ steamy beach with ordinary life on them (standing rule, every mod). Most of thes
 - **Standing steam with still spells, and an exposure clock answered by ordinary heat armour.** The weather pulse
   is the Forge's class pointed the other way (`RM_GameCondition_WeatherPulse`); the clock is the shared
   `RM_HediffComp_EnvironmentalExposure` that the Miasma and the Rot also use. His card of 2026-10-08 folded the
-  Scald's own protection stat into the base game's heat armour, so no second kind of heat exists here.
+  Scald's own protection stat into the base game's heat armour. His card of 2026-11-20 keeps the clock and makes the
+  water worse than the steam (*"hot water is not the same as hot air"*): the one written exception to one kind of
+  heat (`standing_rulings.md` §Direct Sun). Air heat and the sun stay one kind here.
 
 **Shared with the other three seas:** the ship as the only door (`RM_SeabedLayer` and its floor maps); catch with
 a living counterpart; calm underwater weather.
@@ -415,17 +418,24 @@ agitated water (`RM_MapComponent_WaterAgitation`, built for this sea and usable 
 
 Every feature is in one bucket. "In source" is my search of 2026-11-18, not a pass.
 
-**The one signature (his first-version answer of 2026-11-19): NOT CHOSEN YET; listed for the Conductor.**
-The four seas are one mod, and two readings disagree:
-- *His approval of 2026-11-17:* one signature for the whole four-sea mod, the Twilight's river (bank, current,
-  surge, sink), with this sea as land, ordinary life and now the three shared systems only (`design/concepts/
-  CLEANSE_PLAN_OWNER_2026-11-17.md`). His first-version answer *"keeps your 11-17 hard edge"*. Against it: a stop at this sea never
-  sees the Twilight's river, and the answer asks for a signature *"a normal stop must see"*.
-- *Its own signature, one of two from his answers of 2026-11-10:* the herd (grazing that bares the mat, the
-  following job, the trample with its warning), or the vent cycle and the sails' gathering (*"Learning the reliable
-  gathering of sail creatures and the vent cycle allows calculated work through the warning before retreat."*). A
-  normal stop is sure to see both: the herd grazes the floor round the ship, and the vents discharge on their cycle.
-Moved now, because they are extras under either reading: nothing (every 0.1.0 item here is land, life, a shared system or a candidate).
+**The one signature (his card of 2026-11-20): the herd.** Grazing that bares the mat, the following job, the
+trample with its warning. He picked it with this description: *"Why: it ties straight to the Scald's unique take-away, the pigment mat gathered behind the herd. Buys: the
+signature and the reason to visit are one thing. Costs: the vent cycle becomes plain land behaviour, with less to
+learn."* *Why a normal stop is sure to see it:* the
+herd grazes the floor round the ship. The vent cycle and the sails' gathering stay in 0.1.0 as land behaviour, built,
+and are not the signature: nothing in 0.1.0 teaches them as the thing to learn here.
+
+**The river is shared by all four seas, and is no sea's signature** (his write-in on the card of 2026-11-20,
+`Answered`, card of 2026-11-20, entry 6). Bed, banks, lit stakes, the current, the surge and the sink are a system of every sea
+floor. *Its version in the Scald is not ruled:* whether it comes in 0.1.0 or waits for 0.2.0 is one question for him, on
+the item `RIMMANDRAKE_PICK_SEVEN_BIOME_SIGNATURES_LISTED_NOT_GUESSED`. *What it adds here:* the current, the surge
+and the sunk condition read no biome (measured 2026-11-20: `RM_MapComponent_ChannelCurrent`, `RM_GameCondition_Undersurge`,
+`RM_HediffComp_Sunk`); the channel generator `RM_GenStep_TwilightChannels` is gated to the Twilight's floor by name
+and registered on that floor's generator alone. So this sea needs the gate opened and one registration patch (small
+code), a bed, bank and stake look of its own (art and defs), and the river's promise rows proven on its floor (the
+biggest part, and live). *Fit:* the Scald's water hurts faster than its steam (his write-in of 2026-11-20, `Answered`
+entry 2), so a river here carries a worker through water that burns; the carrying centre and the sink must keep
+clear of the boiling pools, and the rescue clock is the burn's as well as the sink's.
 
 **0.1.0, the stop**
 - The floor as a real place on the ship's layer: walkable hot sediment at a constant 55 °C, boiling pools with
@@ -435,7 +445,8 @@ Moved now, because they are extras under either reading: nothing (every 0.1.0 it
 - The floor's life: ten animals, eight plants on the roster and two at the vents, every catch alive below.
   (in source)
 - The herd: grazing, the bared mat, the following job, the trample with its warning. (in source)
-- The vent cycle and the sails' gathering. (in source; displacement of loose items by a discharge is not built)
+- The vent cycle and the sails' gathering, as land behaviour and not the signature (his card of 2026-11-20). (in
+  source; displacement of loose items by a discharge is not built)
 - The Immersion Berth. (in source)
 - The beach: steam sky and still days, agitated water, boiling water that burns, the cool margin, vents and
   geysers, wrecks in the shallows, fishing. (in source; the margin cove is unplaced on the beach map)
@@ -477,7 +488,8 @@ Moved now, because they are extras under either reading: nothing (every 0.1.0 it
   Sea."* The passing-shadow wonder of 2026-09-25 went with them.
 - Mee and faa here (*"Put them in the twilight sea instead."*, 2026-10-02).
 - A cold plant (*"No, this is silly. No cold."*, 2026-09-26). Brine pools (*the Grey Sea's*, typed 2026-09-25).
-- A potable, drained, cooled or tamed Scald. Burn immunity anyone can wear. A second kind of heat.
+- A potable, drained, cooled or tamed Scald. Burn immunity anyone can wear. Any second kind of heat beyond the
+  steam clock and the water that his card of 2026-11-20 keeps.
 - "No macro-life in the boil" (withdrawn by him, 2026-11-01).
 - Kettle scale on the hull; steam and sound only (the two ship touches not picked on 2026-10-02).
 - For the wreck: a navigation core (declined by card, 2026-09-25). For the floor: gem clusters and gas seeps
@@ -487,19 +499,7 @@ Moved now, because they are extras under either reading: nothing (every 0.1.0 it
 
 ## NEEDS HIM
 
-One is left, and it is his: entry 2, handed back with its evidence.
-
-2. **Is the steam's clock still wanted, now that there is one kind of heat?** *Yes, in 0.1.0 on the beach*
-   (default). His words asked for steam *"deadly without protective gear"* (2026-09-25); his card of 2026-10-08
-   folded its protection into ordinary heat armour; his card of 2026-11-06 tuned the rind coat against it, which
-   is after the one-sun ruling of 2026-10-19. *No, hot air only:* the cleanse's reading of that ruling
-   (*"Volcanic/steam/fog heat is plain air temperature"*); then the beach is a hot, blind shore and the gear is
-   only for wading.
-   *Left open on 2026-11-19:* The draft of 2026-11-19 answered this *No, hot air only* as his ruling: on 2026-10-19 he
-   called volcanic, steam and hot-fog heat *"Hotter air on the thermometer"*. The second reader left it open, for
-   three reasons. The steam clock is built (`RM_HediffComp_EnvironmentalExposure`, read by ordinary heat armour). His
-   card of 2026-11-06, after that ruling, tuned the rind coat against the steam. And his words of 2026-09-25 ask for
-   steam *"deadly without protective gear"*. Two of his acts point different ways, so it stays his.
+None open. Every entry is answered (next section).
 
 ## Answered on 2026-11-19
 
@@ -523,3 +523,27 @@ can undo any one by name.
 
 5. **Kettle scale and a navigation core in the Rakatan wreck.** *His card of 2026-11-19 (declined ship ideas):* they
    stay turned down. The Immersion Berth is the Scald's wear. He can bring either back by name.
+
+**Answered by his card of 2026-11-20** (item `RIMMANDRAKE_PICK_SEVEN_BIOME_SIGNATURES_LISTED_NOT_GUESSED`; the
+enact item is `RIMMANDRAKE_ENACT_SIGNATURE_PICKS_INTO_DESIGNS_SLIME_KEEPS_FILM`). Each keeps its number.
+
+2. **Is the steam's clock still wanted, now that there is one kind of heat?** *His ruling:* his card of 2026-11-20,
+   about 6:00 AM PST. He picked "keep" and typed: *"yes keep the clock, AND it should be even worse in the Scald water itself (hot water is not the same as hot air"*. His message ended with an aside: *"but why did
+   you go down there without protection anyway?"* So the clock stays on the beach in 0.1.0, answered by ordinary
+   heat armour as built; and the Scald water itself harms faster than the steam does. This is a written exception to
+   the one-kind-of-heat ruling (`design/RimMandrake/standing_rulings.md` §Direct Sun): air heat, the sun and
+   heatstroke stay one kind everywhere; the Scald's steam keeps its exposure clock, and its water is worse than its
+   air. It had been left open on 2026-11-19 because two of his acts pointed different ways (the one-sun card of
+   2026-10-19 called steam heat *"Hotter air on the thermometer"*; his card of 2026-11-06 tuned the rind coat against
+   the steam). Owed in the build: the wading burn must hurt faster than the steam clock (today both are built and
+   their relative pace is `UNMEASURED`). `UNSETTLED`: the floor map lies inside the Scald's water, and this design
+   treats its 55 °C as ordinary air heat; whether "the Scald water itself" covers the whole floor or only the boiling
+   pools and the beach shallows is not fixed by his words. His aside asks why a crew went down *"without protection"*,
+   which leans toward the whole floor; the dive gear that would answer it is in 0.2.0.
+6. **Which is this sea's one 0.1.0 signature?** It was left unchosen between his approval of 2026-11-17
+   (the Twilight's river as the one signature of all four seas) and this sea's own, the herd or the vent cycle.
+   He picked **The herd**: *"Why: it ties straight to the Scald's unique take-away, the pigment mat gathered behind the herd. Buys: the
+   signature and the reason to visit are one thing. Costs: the vent cycle becomes plain land behaviour, with less to
+   learn."*
+   On the seas he typed: *"Actually having underocean rivers should be commonplace in all the oceans, so this isn't even special for Twilight. EACH of them should get an actual special. Perhaps the Twilight should be the falling shards of the ocean's colorful cover"* So the river is shared by all four seas and is no sea's
+   signature; this replaces his approval of 2026-11-17.

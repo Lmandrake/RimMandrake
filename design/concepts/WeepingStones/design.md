@@ -178,35 +178,35 @@ middle of it, very small, being ignored.
   janitor"* (*"It is edible in the sense that most things are"*); the ullo, *"the wedding bell"*, whose
   *"light goes out in your hands"*; and now and then the vobbal, which stacks pebbles and offerings into towers
   in the shallows, and which *"some oases forbid catching."*
-- **The fish.** His verdict of 2026-09-24 on the pool stock: *"Make the fish nasty and way too active. And some
+- *(0.2.0, by his card of 2026-11-20, for the pen)* **The fish.** His verdict of 2026-09-24 on the pool stock: *"Make the fish nasty and way too active. And some
   shouldn't be fish but alien beasts you really wonder if we should be eating."* The first crew member to put a
   hand into a pen finds out.
 
 ## The first week
 
-- **Netting stock.** A wild pool holds a thin wild stock. A crew member with a net can take breeders: skarrin,
+- *(0.2.0)* **Netting stock.** A wild pool holds a thin wild stock. A crew member with a net can take breeders: skarrin,
   *"a forearm-long pool fish that spends as much time above the water as in it"*; the iaala, *"a boiling crowd of
   little armored fish that hit thrown feed like one animal and leave nothing"*; the fan eel, *"never where
   you left it"*, which escapes. The net is thrown, and a fast fish can be out from under it before it lands. That
   is his ruling of 2026-10-07, not a defect: *"It's supposed to depend on how fast they are. Whether the net can
   hit the right place."*
-- **A pen for the length of a stop.** A pen drawn over a stretch of pool beside the ship, stocked, fed and read.
+- *(0.2.0)* **A pen for the length of a stop.** A pen drawn over a stretch of pool beside the ship, stocked, fed and read.
   The owner's answer of 2026-11-10 on the routine: *"Care automatically; harvest only on orders. Use existing
   RimWorld animal tools for this work; do not invent new UI. Deliberate harvest orders protect breeding stock,
   while the player must notice overcrowding."* That is the rule to build to; today's workers harvest on their own and keep no reserve. Whatever the pen
   yields before the Empire arrives goes into the hold. (`UNSETTLED`: a stop's pen is small, and in a small pen the
   breeders that must be kept may already be a crowd. Nothing yet says which gives way.)
-- **The ones that are not fish.** In the same water live the loomu, *"a cat-sized, boneless, dove-grey thing that
+- *(0.2.0)* **The ones that are not fish.** In the same water live the loomu, *"a cat-sized, boneless, dove-grey thing that
   ... repeats what it hears at the bank: the feed whistle, the wind through the vanes, a child's laugh, its
   keeper's name for it"*; the huldu, *"body-warm, with a pulse you can feel through the skin"*, which when lifted
   from the water *"grips the handler's forearm and presses close, and it shivers"*; and the ivvol, *"a
   doormat-sized floor-thing that knows the feed schedule better than the apprentice does."* The stocked-pool
   design's line for all three: *"They are the best eating in the biome. Everyone says so. Nobody says it
   comfortably."* Whoever cooks one and whoever eats one remembers doing it.
-- **The pool reads back.** A healthy pen cuts rings on the water; a thin one is hungry; a silent one is in
+- *(0.2.0)* **The pool reads back.** A healthy pen cuts rings on the water; a thin one is hungry; a silent one is in
   trouble. That is the design. Today the pen's state is a line of text when the pen is selected, and nothing is
   drawn on the water.
-- **The vhorrin.** A pen left crowded or left to crash, because the crew was busy with something else, can turn
+- *(0.2.0)* **The vhorrin.** A pen left crowded or left to crash, because the crew was busy with something else, can turn
   out one fish that is *"the same stock, grown past the point where the pen can hold anything else"*. It eats the
   farm (as designed; the built vhorrin takes one fish's place and then eats nothing). It has to be culled,
   deliberately, and a culled vhorrin is a great deal of meat. Because care is automatic and harvest is on
@@ -230,15 +230,15 @@ Each can happen inside the visit. Each says what is on screen.
 2. **The first blow.** *On screen:* a crew member, startled, fires at the water's edge. Every head at the pool
    comes up at once and every animal there turns on the one who fired. *Why it is alarming:* the player has
    perhaps two seconds to get that Jawa up the ramp.
-3. **The boil.** *On screen:* a handful of feed hits a stocked pen and the surface erupts; a handler pulls back
+3. **The boil (0.2.0).** *On screen:* a handful of feed hits a stocked pen and the surface erupts; a handler pulls back
    an arm with rather less sleeve on it.
-4. **The escape.** *On screen:* a fan eel leaves the pen, crosses wet stone on its gills, and is in the next pool
+4. **The escape (0.2.0).** *On screen:* a fan eel leaves the pen, crosses wet stone on its gills, and is in the next pool
    before anyone has put down the bucket.
 5. **The one that says your name.** *On screen:* a loomu in the seep-warm water at the bank gives a Jawa's own
    trading cry back to it, in its own voice, and then again. *Why it is funny, and then not:* it is on the menu.
-6. **The one that holds on.** *On screen:* a huldu lifted for the pot grips the handler's arm and shivers, and
+6. **The one that holds on (0.2.0).** *On screen:* a huldu lifted for the pot grips the handler's arm and shivers, and
    the handler stands there.
-7. **The vhorrin.** *On screen:* a pen that boiled with fish yesterday is silent, the gauge reads wrong, and
+7. **The vhorrin (0.2.0).** *On screen:* a pen that boiled with fish yesterday is silent, the gauge reads wrong, and
    there is one long shape in it, with pieces of the others floating.
 8. **The fan-dancer.** *On screen:* a small reptile at the bank throws open a crest-fan as wide as it is long,
    rattles, and dances at another one, in the middle of the crew's bucket line.
@@ -282,7 +282,7 @@ the metering station near the spaceport is despised past politics."*
 
 **Out, before the Empire:** very little, and that is the character of the stop.
 - The crew breaking the truce, once.
-- A pen gone wrong at the wrong moment.
+- *(0.2.0)* A pen gone wrong at the wrong moment.
 - No cover at all from above.
 
 **Stay, longer than the Empire would like:**
@@ -300,7 +300,7 @@ better than it is used to.
 - **Fuel, bought.**
 - **A hold of fish,** and the memory of what some of it was.
 - **Iaala paste,** a ration *"that keeps"*, and **huldu fur,** which he called *"a trading commodity"*.
-- **Breeding stock in a wet skin,** for the next water the crew can pen. The stocked-pool design's own picture:
+- *(0.2.0)* **Breeding stock in a wet skin,** for the next water the crew can pen. The stocked-pool design's own picture:
   *"A colonist nets breeding stock at a strange oasis, carries it home in a wet skin."*
 - **Medicine and keeping food:** salvecomb, bladder-fruit, a dewgourd.
 - **A tirbak,** if one can be bought or tamed: a pack animal that carries its own water for days. (Tirbak and
@@ -319,14 +319,20 @@ better than it is used to.
 | Predators and prey drink at the same water; nothing starts a hunt near it. | A hungry predator and its prey at a full pool, wild and tamed. | The same pair far from water: the hunt happens. |
 | Whoever lands the first guilty blow near the water is turned on by the animals there; defending oneself is not a breach. | A raider fires on a crew member at the pool; on another run the crew member fires first. | The defender who shoots back is not punished. The same shots on the dry shoulder draw no retribution. |
 | Shade under an overhang protects from the sun where the sun is high. | A pawn in the open and one under an overhang, on a high-sun tile and on a low-sun tile. | No local heat field: the difference follows the sun's angle. |
+| The natives carry the comb and live their lives at the water; the real flyers really fly. | Sillik, ssurr, mirrik, burra burra, tirbak, vhakk, vellak and dewglider on one map; flight read from flight state. | The vhakk hunts on the approach and stops at the green. |
+| An unshielded hull wears in a sandstorm and, at the hottest oases, in killing heat; a shielded one does not; on a mild tile in clear air or fog nothing wears it. | A ship parked through a sandstorm, shielded and unshielded; the same on a hot seep tile. | No wear on a mild tile in clear air. (If the weeping-hull proposal is taken it adds a row: the shaded side wets and greens, the sunlit side stays dry, and wiping it off works.) |
+
+**Promises that moved to 0.2.0 with their features** (his card of 2026-11-20: the truce at the water is the
+signature):
+
+| the player sees | the scene | what rules out a fake |
+|---|---|---|
 | Wild pool stock can be netted alive and carried. | A handler nets a breeder from a wild pool and puts it in a pen. | A net that lands on the fish takes it; a fish that has moved off is missed, by his ruling of 2026-10-07. The animal that was netted is the animal in the pen. |
 | A pen is cared for without orders and harvested only on orders, with existing animal tools; breeders are not sold off by accident. | A stocked, fed pen through the days of a stop with a harvest order given once. | A pen left with no reserve set must not be emptied by helpful workers. Real births, not repeated wild captures, are what count as a farm. |
 | The pool's state can be read from the water before a loss: productive, thin, crowded, silent. | Four pens in the four states, looked at with the inspect pane closed (a joint sitting). | A fed, crowded pen must not look reassuring. |
 | A mismanaged pen breeds a vhorrin, which eats the stock in its pen and leaves remains; culling it ends that and yields meat; the pen can recover. | Crowd one pen and starve another; cull; restock. | Save and reload with a vhorrin mid-meal. A well-kept pen never breeds one. |
 | The fish are nasty: a pen bites the hand that feeds it, and one species escapes over wet stone by a route the player can see. | Feed a pen bare-handed; watch a fan eel pen. | The escaped eel is somewhere reachable, not gone. |
 | Eating the ones that are not fish is remembered by the eater (built) and the cook (owed). | Two meals, one of murrin and one of huldu, served to the same pawns. | A callous eater does not mind. |
-| The natives carry the comb and live their lives at the water; the real flyers really fly. | Sillik, ssurr, mirrik, burra burra, tirbak, vhakk, vellak and dewglider on one map; flight read from flight state. | The vhakk hunts on the approach and stops at the green. |
-| An unshielded hull wears in a sandstorm and, at the hottest oases, in killing heat; a shielded one does not; on a mild tile in clear air or fog nothing wears it. | A ship parked through a sandstorm, shielded and unshielded; the same on a hot seep tile. | No wear on a mild tile in clear air. (If the weeping-hull proposal is taken it adds a row: the shaded side wets and greens, the sunlit side stays dry, and wiping it off works.) |
 
 Settings: one switch per major feature, defaults as shipped, everything off leaves a dry bright upland with pools
 and a lot of animals (standing rule, every mod).
@@ -337,10 +343,10 @@ and a lot of animals (standing rule, every mod).
 - **A truce at water: no hunt starts inside its reach, and the first guilty blow is answered by every animal
   there** (in `EnvironmentalHazards`; any biome with a pool could carry it, and only here is it the law of the
   place).
-- **Husbandry of things that live in water, in a pen drawn over the water** (the stocked pool: stock, feed, net,
-  harvest, overdraw, cull, with `FlowWorks` under it).
-- **A consequence that grows out of neglect and is cured by a deliberate act** (the vhorrin).
-- **Food that leaves a memory in whoever cooked and ate it** (the doubt).
+- *(0.2.0)* **Husbandry of things that live in water, in a pen drawn over the water** (the stocked pool: stock, feed,
+  net, harvest, overdraw, cull, with `FlowWorks` under it).
+- *(0.2.0)* **A consequence that grows out of neglect and is cured by a deliberate act** (the vhorrin).
+- *(0.2.0)* **Food that leaves a memory in whoever cooked and ate it** (the doubt).
 - **A creature that carries a place with it** (the walking condenser, 0.2.0: a pool and its truce wherever the
   oldest gorrask settles).
 
@@ -354,17 +360,16 @@ pools placed and named by hand); the huge-things engine, for the gorrask as a la
 
 Every feature is in one bucket.
 
-**The one signature (his first-version answer of 2026-11-19): NOT CHOSEN YET; two candidates, listed for the
-Conductor.** His experience line holds both: *"Bright dry stone and secret weeping shade, where every pool is a
-gathering. Keep the oasis healthy, or it breeds something wrong."*
-- *The truce at the water:* no hunt at full water, and retribution for the first guilty blow, for crew, raiders and
-  Empire alike. A normal stop is sure to see it: the ship's water is the pool, and the crowd is already drinking
-  there when the crew arrives.
-- *The pen:* stocked pool care for the length of a stop, the readable water, the nasty fish, and the vhorrin when it
-  goes wrong. It is his line's second half and the cleanse's signature (2026-11-17); this design keeps it for the
-  length of a stop, but a vhorrin needs mismanagement over time, so a stop sees it only if the crew stocks a pen.
-If the truce is chosen, the pen, the netting of live stock, the ones that are not fish and the vhorrin move to
-0.2.0 with their rows. If the pen is chosen, the truce stays as life (how the animals at the water behave).
+**The one signature (his card of 2026-11-20): the truce at the water.** No hunt at full water, and retribution for
+the first guilty blow, for crew, raiders and Empire alike. *Why a normal stop is sure to see it:* the ship's water is
+the pool, and the crowd is already drinking there when the crew arrives. He picked **Truce at the water** with this
+description: *"Why: every stop sees it, since the ship's water is the pool and the crowd is already drinking there. Costs: the
+pen, live-stock netting and the monster move to 0.2.0, so "it breeds something wrong" waits. Recommended: it passes
+the 'a stop must see it' test."*
+His experience line is *"Bright dry stone and secret weeping shade, where every pool is a gathering. Keep the oasis
+healthy, or it breeds something wrong."* The gathering is in 0.1.0; the second half (the pen, the netting of live
+stock, the ones that are not fish and the vhorrin) is in 0.2.0 with its rows. Plain fishing for the six gentle
+wild fish stays: it is how the pools are used, not the pen.
 
 **0.1.0, the stop**
 - The land: dry stone, weeping shaded faces, green pool margins, the open seep exception; clear and windy, fog,
@@ -380,20 +385,24 @@ If the truce is chosen, the pen, the netting of live stock, the ones that are no
   shipped description contradicts the ambush ban)
 - The plants: dewblade, weep-mat, verdimoss, shadefern, bladderquill and its fruit, salvecomb, rockfinger, talvessar,
   dripfringe, steamfrond and its korrim spice, dewgourd. (built)
-- Fishing for the six gentle wild fish, and netting live stock with a thrown net that a fast fish can escape, by
-  his ruling. (built; the net job failed its last recorded live run, 2026-10-07, on another biome's map)
-- The stocked pen for the length of a stop: care without orders, harvest on orders, the readable water, the
-  nasty fish, the fan eel's escape. (built offline in part: the jobs exist, but harvest takes no orders and keeps
-  no reserve, nothing is drawn on the water, and the escape is a silent move to dry ground)
-- The ones that are not fish, and the doubt. (built for the eater; the cook's memory is not)
-- The vhorrin, its cull and the pen's recovery. (built offline: it appears and can be culled; it does not yet eat
-  the stock, and recovery is unproven)
+- Fishing for the six gentle wild fish. (built)
 - Water for the ship. (built by being water)
 - Hull wear from sandstorms and, at the hottest oases, from heat, answered by his shields. (built in
   `src/RimUtinni/ShipShields/`; never watched here)
 - No cover in clear air; fog as one step. (owed, small)
 
 **0.2.0, the stop with company**
+*Moved here from 0.1.0 by his card of 2026-11-20 (the truce at the water is the signature); each line goes back
+by one move:*
+- Netting live stock with a thrown net that a fast fish can escape, by his ruling. (built; the net job failed its
+  last recorded live run, 2026-10-07, on another biome's map)
+- The stocked pen for the length of a stop: care without orders, harvest on orders, the readable water, the
+  nasty fish, the fan eel's escape. (built offline in part: the jobs exist, but harvest takes no orders and keeps
+  no reserve, nothing is drawn on the water, and the escape is a silent move to dry ground)
+- The ones that are not fish, and the doubt. (built for the eater; the cook's memory is not)
+- The vhorrin, its cull and the pen's recovery. (built offline: it appears and can be culled; it does not yet eat
+  the stock, and recovery is unproven)
+*Already here before that card:*
 - The ship's shaded side weeping. (a proposal of this design, in no source; out of 0.1.0 by the delegated call of
   2026-11-19)
 - The walking condenser: the oldest gorrask, the pool that forms round it for a season and dries when it leaves,
@@ -470,7 +479,16 @@ can undo any one by name.
 
 1. **[scope] Is the pen still the signature, for a ship?** *His card of 2026-11-19 (first version):* 0.1.0 holds one
    signature that a normal stop is sure to see. Whether it is the truce or the pen is not obvious from this design
-   and his words, so both are listed for the Conductor (Scope, top). Until the choice is made the split stays as
-   written.
+   and his words, so both were listed. *His card of 2026-11-20:* the truce at the water (entry 8). The pen is in
+   0.2.0.
 3. **[scope] The pilgrim passage.** *His card of 2026-11-19 (declined ship ideas):* it stays declined, as he typed
    on 2026-10-02 (*"None of these. Close misses."*). He can bring it back by name.
+
+**Answered by his card of 2026-11-20** (item `RIMMANDRAKE_PICK_SEVEN_BIOME_SIGNATURES_LISTED_NOT_GUESSED`; the
+enact item is `RIMMANDRAKE_ENACT_SIGNATURE_PICKS_INTO_DESIGNS_SLIME_KEEPS_FILM`). Each keeps its number.
+
+8. **Which is the Weeping Stones' one 0.1.0 signature, the truce at the water or the pen?** It was left unchosen in
+   Scope. *His card of 2026-11-20, about 5:45 AM PST:* **Truce at the water**: *"Why: every stop sees it, since the ship's water is the pool and the crowd is already drinking there. Costs: the
+   pen, live-stock netting and the monster move to 0.2.0, so "it breeds something wrong" waits. Recommended: it passes
+   the 'a stop must see it' test."*
+   The pen, the netting of live stock, the ones that are not fish and the vhorrin move to 0.2.0 with their rows.

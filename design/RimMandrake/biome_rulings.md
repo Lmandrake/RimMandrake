@@ -207,6 +207,11 @@ planet-wide, not only on Pyrelands. Intentional Utinni placement is undesigned. 
 BiomeDef never declares a heat kind, a sun-heat number or a shade rule. Its sun is its tile's
 position; its hot air is its temperature. Full text: `standing_rulings.md` §Direct Sun.
 
+**One written exception, the Scald, by his card of 2026-11-20:** *"yes keep the clock, AND it should be even worse
+in the Scald water itself (hot water is not the same as hot air"*. The Scald's steam keeps its exposure clock on the
+beach, answered by ordinary heat armour, and the Scald's water harms faster than the steam. The sun, air heat and
+heatstroke stay one kind there too. Detail: `standing_rulings.md` §Direct Sun.
+
 ## Natives drink their own environmental water — owner, 2026-11-01
 
 *"Yes, natives should drink their own environmental water. That's a ruling for all Baroque Biomes, period, including this one."* A native creature standing in or beside its biome's own water (the Scald's boil included) must not accrue thirst/dehydration from it; applies to every Baroque Biome. Consequence for the player is unchanged (Scald ban 1, never potable). First finding: `SCALD_NATIVES_THIRST_PROBE_PARCHED_LAKESIDE`; a roster-wide audit is filed as `NATIVES_DRINK_OWN_WATER_AUDIT_EVERY_BIOME`.
@@ -318,3 +323,29 @@ map. Recommended: it is the smallest rule that stops silent deaths, and one rule
   It is not built. Its test runs on every day-side map.
 - He typed nothing more, so the fuller discussion of 2026-11-10 has not been held. The rule stands until he opens
   it.
+
+## Seven signature picks by card — owner, 2026-11-20, about 5:45 to 6:00 AM PST
+
+He answered two cards on the item `RIMMANDRAKE_PICK_SEVEN_BIOME_SIGNATURES_LISTED_NOT_GUESSED` (the card store:
+`python3 src/RimMandrake/rimflow/card_capture.py show RIMMANDRAKE_PICK_SEVEN_BIOME_SIGNATURES_LISTED_NOT_GUESSED`;
+the ledger: OWNER notes of 2026-11-20T13:54:57Z and 14:02:58Z to 14:03:23Z). The enact item is
+`RIMMANDRAKE_ENACT_SIGNATURE_PICKS_INTO_DESIGNS_SLIME_KEEPS_FILM`. Each design carries its answer in its answered
+section, with the option's description word for word.
+
+- **Gelatinous Slime: the contact film** (against the recommendation). The gene journey and resistance by gene are
+  in 0.2.0. The card named the cost: the Slime has no unique take-away in 0.1.0 until a draw is chosen.
+- **The Sump: the tar's burden.** The dig is in 0.2.0, so the "hides all" half of his line waits.
+- **The Warscar: the mark.** The Settling and the shells its film finds are in 0.2.0.
+- **The Weeping Stones: the truce at the water.** The pen, the netting of live stock, the ones that are not fish and
+  the vhorrin are in 0.2.0.
+- **The four seas: each its own signature, and the river shared by all four.** He took neither offered option and
+  typed: *"Actually having underocean rivers should be commonplace in all the oceans, so this isn't even special for Twilight. EACH of them should get an actual special. Perhaps the Twilight should be the falling shards of the ocean's colorful cover"*. This replaces his approval of 2026-11-17 (one signature, the Twilight's river, for the
+  four-sea mod). The Grey Sea's is *the sea keeps what it is given*; the Chill's is *the garden answers warmth*; the
+  Scald's is **the herd** (picked on the second card; the vent cycle stays as plain land behaviour). The Twilight's
+  is open: his "Perhaps" is an invitation, not a ruling. Whether the river comes to the other three seas in 0.1.0 or
+  at 0.2.0 is not ruled.
+- **The Contagion: yes, inside the bubble too.** A raised particulate screen keeps the Bloom off crew inside its
+  bubble. The built dose reads only what is overhead, so the build owes a change to a built default; no build ticket
+  is filed while the mod is held.
+- **The Scald's steam clock: keep.** His words: *"yes keep the clock, AND it should be even worse in the Scald water
+  itself (hot water is not the same as hot air"*. The exception is written under §No biome-specific sun or heat.

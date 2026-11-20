@@ -413,16 +413,21 @@ the Empire's search and the visibility dial; the one sun from geometry, which on
 Every feature is in one bucket. Moves against the cleanse proposal and against the retired combined four-seas
 design are listed, with reasons, in `GreySea_rewrite_choices.md`.
 
-**The one signature (his first-version answer of 2026-11-19): NOT CHOSEN YET; listed for the Conductor.**
-The four seas are one mod, and two readings disagree:
-- *His approval of 2026-11-17:* one signature for the whole four-sea mod, the Twilight's river (bank, current,
-  surge, sink), with this sea as land, ordinary life and now the three shared systems only (`design/concepts/
-  CLEANSE_PLAN_OWNER_2026-11-17.md`). His first-version answer *"keeps your 11-17 hard edge"*. Against it: a stop at this sea never
-  sees the Twilight's river, and the answer asks for a signature *"a normal stop must see"*.
-- *Its own signature, the sea keeps what it is given:* whoever touches a pool or stands in a chimney's plume is
-  encased where they stand and is got out by mining. A normal stop is sure to see it: the pools and plumes are
-  everywhere on the floor and the statuary shows it from the first minute.
-Moved now, because they are extras under either reading: the lamp (light-seekers, the fessk at the rim, the giant that breaks the lamp).
+**The one signature (his card of 2026-11-20): the sea keeps what it is given.** Whoever touches a pool or stands in
+a chimney's plume is encased where they stand and is got out by mining. *Why a normal stop is sure to see it:* the
+pools and plumes are everywhere on the floor and the statuary shows it from the first minute. The lamp
+(light-seekers, the fessk at the rim, the giant that breaks the lamp) is an extra and is in 0.2.0.
+
+**The river is shared by all four seas, and is no sea's signature** (his write-in on the card of 2026-11-20,
+`Answered`, card of 2026-11-20, entry 5). Bed, banks, lit stakes, the current, the surge and the sink are a system of every sea
+floor. *Its version in the Grey is not ruled:* whether it comes in 0.1.0 or waits for 0.2.0 is one question for him, on
+the item `RIMMANDRAKE_PICK_SEVEN_BIOME_SIGNATURES_LISTED_NOT_GUESSED`. *What it adds here:* the current, the surge
+and the sunk condition read no biome (measured 2026-11-20: `RM_MapComponent_ChannelCurrent`, `RM_GameCondition_Undersurge`,
+`RM_HediffComp_Sunk`); the channel generator `RM_GenStep_TwilightChannels` is gated to the Twilight's floor by name
+and registered on that floor's generator alone. So this sea needs the gate opened and one registration patch (small
+code), a bed, bank and stake look of its own (art and defs), and the river's promise rows proven on its floor (the
+biggest part, and live). *Fit:* the Grey's brine channels already run to the pools, so a river here must keep its sink and its
+carrying centre clear of every pool and plume: a carried worker must never be delivered into encasement.
 
 **0.1.0, the stop**
 - The floor as a place on the ship's layer: murk without penalty, pillars, domes, chimneys with crystallising
@@ -506,6 +511,15 @@ can undo any one by name.
 4. **Is the Grey's floor "full dark"?** *His ruling:* his word of 2026-11-18 (4:09 PM PST): *"Going under the ocean is
    like the Dark... VERY concealed. But nowhere pauses it indefinitely."* The Grey's floor is the top level of cover,
    like the Abyss's Dark. **This changes the design's default.** Was: *One step, like fog*.
+
+**Answered by his card of 2026-11-20** (item `RIMMANDRAKE_PICK_SEVEN_BIOME_SIGNATURES_LISTED_NOT_GUESSED`; the
+enact item is `RIMMANDRAKE_ENACT_SIGNATURE_PICKS_INTO_DESIGNS_SLIME_KEEPS_FILM`). Each keeps its number.
+
+5. **Which is this sea's one 0.1.0 signature?** It was left unchosen between his approval of 2026-11-17
+   (the Twilight's river as the one signature of all four seas) and this sea's own. He took neither option as
+   offered and typed, about 6:00 AM PST: *"Actually having underocean rivers should be commonplace in all the oceans, so this isn't even special for Twilight. EACH of them should get an actual special. Perhaps the Twilight should be the falling shards of the ocean's colorful cover"*
+   So the river is shared by all four seas and is no sea's signature; this replaces his approval of 2026-11-17.
+   The Grey's signature is its own: the sea keeps what it is given.
 
 ## Found while reading, for whoever builds
 

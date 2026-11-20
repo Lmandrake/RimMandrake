@@ -492,16 +492,22 @@ geometry, which on the night side and on a sea floor is nothing.
 
 Every feature is in one bucket.
 
-**The one signature (his first-version answer of 2026-11-19): NOT CHOSEN YET; listed for the Conductor.**
-The four seas are one mod, and two readings disagree:
-- *His approval of 2026-11-17:* one signature for the whole four-sea mod, the Twilight's river (bank, current,
-  surge, sink), with this sea as land, ordinary life and now the three shared systems only (`design/concepts/
-  CLEANSE_PLAN_OWNER_2026-11-17.md`). His first-version answer *"keeps your 11-17 hard edge"*. Against it: a stop at this sea never
-  sees the Twilight's river, and the answer asks for a signature *"a normal stop must see"*.
-- *Its own signature, the garden answers warmth:* the ship's warmth flowers a ring of plants round the hull and
-  leaves trails; harming the garden brings warning arcs, then the lattices wake. A normal stop is sure to see the
-  bloom and the trails, because the parked ship is warm; the defence comes only if the crew harms the garden.
-Moved now, because they are extras under either reading: the wax procession and the fuselight's explosion.
+**The one signature (his card of 2026-11-20): the garden answers warmth.** The ship's warmth flowers a ring of plants
+round the hull and leaves trails; harming the garden brings warning arcs, then the lattices wake. *Why a normal stop
+is sure to see it:* the parked ship is warm, so the bloom and the trails come to every stop; the defence comes only
+if the crew harms the garden. The wax procession and the fuselight's explosion are extras and are in 0.2.0.
+
+**The river is shared by all four seas, and is no sea's signature** (his write-in on the card of 2026-11-20,
+`Answered`, card of 2026-11-20, entry 7). Bed, banks, lit stakes, the current, the surge and the sink are a system of every sea
+floor. *Its version in the Chill is not ruled:* whether it comes in 0.1.0 or waits for 0.2.0 is one question for him, on
+the item `RIMMANDRAKE_PICK_SEVEN_BIOME_SIGNATURES_LISTED_NOT_GUESSED`. *What it adds here:* the current, the surge
+and the sunk condition read no biome (measured 2026-11-20: `RM_MapComponent_ChannelCurrent`, `RM_GameCondition_Undersurge`,
+`RM_HediffComp_Sunk`); the channel generator `RM_GenStep_TwilightChannels` is gated to the Twilight's floor by name
+and registered on that floor's generator alone. So this sea needs the gate opened and one registration patch (small
+code), a bed, bank and stake look of its own (art and defs), and the river's promise rows proven on its floor (the
+biggest part, and live). *Fit:* here the river is liquid fuel over ice, and a carried worker lies at the sink on one suit
+charge, so the rescue clock is the suit's as well as the sink's; no fire is possible on this floor, so the stakes
+cannot be lit by flame.
 
 **0.1.0, the stop**
 - The floor as a place on the ship's layer: ice bedrock, fuel pools ringed with standable crust, rime terraces,
@@ -593,3 +599,12 @@ can undo any one by name.
    krellik-frost hull insulation). *His card of 2026-11-19 (declined ship ideas):* they stay out. He can bring any one
    back by name. Whether a crew may still load drums of ordinary fuel to sell elsewhere is not settled by that
    answer and stays `UNSETTLED`.
+
+**Answered by his card of 2026-11-20** (item `RIMMANDRAKE_PICK_SEVEN_BIOME_SIGNATURES_LISTED_NOT_GUESSED`; the
+enact item is `RIMMANDRAKE_ENACT_SIGNATURE_PICKS_INTO_DESIGNS_SLIME_KEEPS_FILM`). Each keeps its number.
+
+7. **Which is this sea's one 0.1.0 signature?** It was left unchosen between his approval of 2026-11-17
+   (the Twilight's river as the one signature of all four seas) and this sea's own. He took neither option as
+   offered and typed, about 6:00 AM PST: *"Actually having underocean rivers should be commonplace in all the oceans, so this isn't even special for Twilight. EACH of them should get an actual special. Perhaps the Twilight should be the falling shards of the ocean's colorful cover"*
+   So the river is shared by all four seas and is no sea's signature; this replaces his approval of 2026-11-17.
+   The Chill's signature is its own: the garden answers warmth.
