@@ -241,7 +241,10 @@ def s4(a, b):
         ok("close", i, "--sha", a, *flag)
         check(item(i).state == "done", "the owner overrides with %s" % flag[0])
 
-    i = new("WHY", prose="Cites `design/RimMandrake/standing_rulings.md` only.\n")
+    # cite a real path that `a` does not touch: `a` is a live commit, and some touch standing_rulings.md too
+    cite = next(c for c in ("design/RimMandrake/standing_rulings.md", "design/RimMandrake/biome_rulings.md",
+                            "design/NAMING_SCHEME_PLAN.md") if c not in paths_of(a))
+    i = new("WHY", prose="Cites `%s` only.\n" % cite)
     passed(i, a)
     refused("a sha touching none of the cited paths", "none of the", "close", i, "--sha", a)
     ok("close", i, "--sha", a, "--why", "the fix landed elsewhere, the item cites the ruling")
