@@ -26,25 +26,25 @@ goes stale between publishes.
 
 ## Three ways to do it
 
-### A. One Edge window, one tab per page (recommended)
+### A. One Chrome window, one tab per page (recommended)
 
 A small `./pages` command (and, if he wants it, a second Startup shortcut) runs
-`msedge.exe --new-window <url> <url> <url>` with the HTML pages. Each page reloads itself.
+`chrome.exe --new-window <url> <url> <url>` with the HTML pages. Each page reloads itself.
 - **To build:** the opener, about 30 lines. Also a self-reload line in `maturation_now.py`. FLEET_NOW in a tab is
   `STATUS_BOARD.html`; `RELENTLESS_NOW.md` stays in Typora, or `running_now.py` writes an HTML twin of it (a second
   small change).
 - **Buys:** the cheapest path. The tabs are real browser tabs (Ctrl+Tab), and he can zoom and search each one.
-- **Costs:** a closed tab stays closed until the next `./pages`. Edge puts the tabs in his normal profile, among his
+- **Costs:** a closed tab stays closed until the next `./pages`. Chrome puts the tabs in his normal profile, among his
   own tabs.
 
 ### B. Own windows: one chrome-free window per page
 
-The same opener runs `msedge.exe --app=<url> --window-position=x,y --window-size=w,h` once per page. Each page then
+The same opener runs `chrome.exe --app=<url> --window-position=x,y --window-size=w,h` once per page. Each page then
 has its own window with no tab strip, at a fixed place (one per monitor, or tiled).
 - **To build:** A, plus a window layout in a small JSON file that he can edit.
 - **Buys:** "in their own windows", word for word. Each page stays in sight at one time, and Alt+Tab names each one.
 - **Costs:** three windows to manage. Placement on a second monitor needs a measured layout. App windows need a
-  separate Edge profile, or they can join his main window.
+  separate Chrome profile, or they can join his main window.
 
 ### C. One shell page with tabs, served locally
 

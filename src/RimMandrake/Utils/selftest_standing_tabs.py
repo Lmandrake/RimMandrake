@@ -42,6 +42,7 @@ def t_three_tabs_in_order():
     assert [x.rsplit("/", 1)[1] for x in u] == NAMES, u
     assert len(r.stdout.splitlines()) >= 3 and sum(1 for l in r.stdout.splitlines() if "file:///" in l) == 3
     assert "--new-window" in r.stdout
+    assert "chrome" in r.stdout.lower() and "edge" not in r.stdout.lower(), r.stdout
 
 
 def t_missing_page_named_others_open():

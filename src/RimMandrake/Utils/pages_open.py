@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""pages_open.py: open the standing status pages as tabs of ONE Edge window (./pages).
+"""pages_open.py: open the standing status pages as tabs of ONE Chrome window (./pages).
 
 Tabs, in order: CODEBASE_NOW.html, STATUS_BOARD.html (the HTML FLEET_NOW), MATURATION_NOW.html, from the conductor
 folder that rmpaths names. A missing page is named and the rest still open. Promises: design/specs/2026-11-19-standing-status-tabs/boundary.md.
@@ -33,7 +33,7 @@ def plan(show=False):
     for n in PAGES:
         (present if os.path.isfile(os.path.join(here, n)) else missing).append(n)
     urls = [url_of(win.rstrip("\\/") + "\\" + n) for n in present]
-    cmd = ["cmd.exe", "/c", "start", ""] + ([] if show else ["/min"]) + ["msedge", "--new-window"] + urls
+    cmd = ["cmd.exe", "/c", "start", ""] + ([] if show else ["/min"]) + ["chrome", "--new-window"] + urls
     return cmd, urls, missing
 
 
@@ -63,7 +63,7 @@ def main(argv=None, launcher=launch):
     if rc:
         print("launch failed: exit %s" % rc)
         return 3
-    print("opened %d tab(s) in one Edge window" % len(urls))
+    print("opened %d tab(s) in one Chrome window" % len(urls))
     return 2 if missing else 0
 
 

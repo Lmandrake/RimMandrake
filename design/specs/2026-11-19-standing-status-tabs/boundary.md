@@ -10,11 +10,11 @@ CODEBASE_NOW"*. Written 2026-11-19. Each promise has a test of its name in
 ## ACCEPTS (the only inputs the opener is built for)
 
 - **a-conductor-folder-by-rmpaths.** The folder is `rmpaths.rm_path("conductor")` (env `RM_DATA_ROOT`), read each run.
-- **a-windows-desktop-with-edge.** `cmd.exe` reaches Windows from WSL2 and Edge is registered as `msedge`.
+- **a-windows-desktop-with-chrome.** `cmd.exe` reaches Windows from WSL2 and Chrome is registered as `chrome` (never Edge: owner, 2026-11-19 7:14 PM PST, *"OMG you used Edge?! never. Chrome please."*).
 
 ## DOES NOT SURVIVE (not promised; where the opener notices, it says so)
 
-- **no-edge-or-no-desktop.** The launch command fails; the opener prints the failure and exits 3. It cannot tell a
+- **no-chrome-or-no-desktop.** The launch command fails; the opener prints the failure and exits 3. It cannot tell a
   window that opened and closed at once from one that never opened.
 - **a-tab-the-owner-closed.** A closed tab stays closed until the next `./pages`. A second `./pages` opens a second window.
 - **a-stale-tab-in-a-dead-writer.** The tab reloads the file; if the writer died, the file is old. The page shows its
