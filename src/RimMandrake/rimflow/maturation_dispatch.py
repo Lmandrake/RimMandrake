@@ -2885,16 +2885,45 @@ def clone_counts(root):
     return int(n[1]), int(n[0])
 
 
-def clone_reading(st, now, got):
+def clone_head(root):
+    """-> probe_result value(HEAD's sha), or could_not_look(why) when git cannot say. The tick passes a blind answer
+    to clone_reading as head=None, which never restarts the clock."""
+    import probe_result as PR
+    try:
+        r = subprocess.run(["git", "-C", root, "rev-parse", "HEAD"], capture_output=True, text=True, timeout=30)
+    except (OSError, subprocess.SubprocessError) as e:
+        return PR.could_not_look("git rev-parse HEAD: %s" % e)
+    sha = r.stdout.strip()
+    if r.returncode or not sha:
+        return PR.could_not_look("git rev-parse HEAD: rc %s %s" % (r.returncode, r.stderr.strip()[:200]))
+    return PR.value(sha)
+
+
+def _head_sha(answer):
+    """clone_head's answer as clone_reading's head: the sha, or None for a blind read (unknown never resets)."""
+    return answer.value if getattr(answer, "ok", False) else (answer if isinstance(answer, str) else None)
+
+
+def clone_reading(st, now, got, head=None):
     """The clone's distance from origin/main and how long it has been behind, carried in state.json between ticks:
-    behind_since is the first tick that saw it behind, level_at the last tick that saw it level (its last good sync).
-    Minutes behind count from behind_since, not from commit dates: a commit pushed hours after it was made is new here."""
+    behind_since is the first tick that saw THIS HEAD behind, level_at the last tick that saw it level (its last good
+    sync). The danger is old code, and the code is as old as HEAD's last move: under steady origin churn the clone
+    fast-forwards every ~90 s and still reads behind on every tick, which crossed CLONE_STALE_MIN on a healthy clone
+    (RIMMANDRAKE_MEASURE_CLONE_LAG_FROM_LAST_PULL_CHURN_TRIPS, 2026-11-19). So a known HEAD that moved since the last
+    tick, with nothing of its own (ahead 0: a fast-forward), restarts the clock; an unknown HEAD (None) never does, and
+    a clone whose HEAD moves by local commits (ahead > 0) keeps counting. Minutes count from behind_since, not from
+    commit dates: a commit pushed hours after it was made is new here."""
     c = st.setdefault("clone", {})
     behind, ahead = got
     out = {"at": now, "level_at": c.get("level_at"), "level_pac": pac(c["level_at"]) if c.get("level_at") else None}
     if behind is None:
         return dict(out, measured=False, why=ahead)
+    moved = bool(head and c.get("head") and head != c["head"] and not ahead)
+    if head:
+        c["head"] = head
     if behind:
+        if moved:
+            c["behind_since"] = now
         c.setdefault("behind_since", now)
     else:
         c.pop("behind_since", None)
@@ -3123,7 +3152,8 @@ def _tick(root, cfg, apply, fx=None, now=None, page=True):
     # the dry pass (the forecast) gates on the counts the last applying tick measured (fx clone_seen), aged to its own
     # clock by the same clone_reading (counts held, behind_since kept), so it refuses where the applying tick would
     seen = fx.get("clone_seen")
-    clone = (clone_reading(st, now, (fx.get("clone") or (lambda: clone_counts(root)))()) if apply else
+    clone = (clone_reading(st, now, (fx.get("clone") or (lambda: clone_counts(root)))(),
+                           head=_head_sha((fx.get("clone_head") or (lambda: clone_head(root)))())) if apply else
              clone_reading({"clone": {k: seen.get(k) for k in ("behind_since", "level_at") if seen.get(k)}}, now,
                            (seen.get("behind"), seen.get("ahead"))) if isinstance(seen, dict) and seen.get("measured")
              else seen)

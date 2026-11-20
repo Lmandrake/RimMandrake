@@ -66,11 +66,47 @@ def t_unreadable_run_record_ends_nothing():
     check(got == {} and not run.get("ended"), "no run.end, the run stays open", (got, run))
 
 
+def t_clone_age_counts_from_heads_last_move():
+    """clone_reading: the clock restarts on a fast-forwarded HEAD, never on a stuck, locally moved or unknown one."""
+    st, t0, worst = {}, 1000.0, 0.0
+    for i in range(10):
+        worst = max(worst, MD.clone_reading(st, t0 + 90 * i, (2 + i % 3, 0), head="ff%d" % i)["behind_min"])
+    check(worst < MD.CLONE_STALE_MIN, "churn: a clone fast-forwarding every 90 s stays under the alarm line", worst)
+    st = {}
+    for i in range(10):
+        r = MD.clone_reading(st, t0 + 90 * i, (6, 0), head="stuck")
+    check(r["behind_min"] == 13.5, "a HEAD that does not move counts on (13.5 min after 9 ticks)", r["behind_min"])
+    st = {}
+    for i in range(10):
+        r = MD.clone_reading(st, t0 + 90 * i, (49, 7), head="local%d" % i)
+    check(r["behind_min"] == 13.5, "a HEAD moved by local commits (ahead 7) counts on", r["behind_min"])
+    st = {}
+    MD.clone_reading(st, t0, (3, 0), head="a")
+    r = MD.clone_reading(st, t0 + 400, (3, 0), head=None)
+    check(r["behind_min"] == 6.7, "an unknown HEAD does not restart the clock", r["behind_min"])
+    r = MD.clone_reading(st, t0 + 500, (0, 0), head="b")
+    check(r["behind_min"] == 0 and r["level_at"] == t0 + 500 and "behind_since" not in st["clone"],
+          "a level tick reads 0 and clears the clock", (r, st))
+    r = MD.clone_reading({}, t0, (None, "fetch refused"), head="c")
+    check(r["measured"] is False and r["why"] == "fetch refused", "a refused fetch stays UNMEASURED", r)
+    blind = MD.clone_head(os.path.join(TMP, "no-repo-here"))
+    check(blind.kind == "could_not_look" and blind.cause and MD._head_sha(blind) is None,
+          "clone_head: git cannot say -> could not look, passed on as head None", (blind.kind, blind.cause))
+    repo = os.path.join(TMP, "repo")
+    os.makedirs(repo)
+    import subprocess
+    subprocess.run(["git", "-C", repo, "init", "-q"], check=True)
+    subprocess.run(["git", "-C", repo, "-c", "user.name=t", "-c", "user.email=t@t", "commit", "-q", "--allow-empty",
+                    "-m", "x"], check=True)
+    h = MD._head_sha(MD.clone_head(repo))
+    check(isinstance(h, str) and len(h) == 40, "clone_head: a real clone reads its HEAD sha (the probe can see)", h)
+
+
 def main(argv=None):
     argv = sys.argv[1:] if argv is None else argv
     only = set(argv[argv.index("--only") + 1:]) if "--only" in argv else None
     for t in (t_dispatch_state_absent_is_empty_unreadable_raises, t_unparseable_time_is_no_time,
-              t_unreadable_run_record_ends_nothing):
+              t_unreadable_run_record_ends_nothing, t_clone_age_counts_from_heads_last_move):
         if only is not None and t.__name__ not in only:
             continue
         print("== %s" % t.__name__)

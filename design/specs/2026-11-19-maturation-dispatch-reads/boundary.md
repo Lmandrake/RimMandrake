@@ -42,5 +42,10 @@ not handled, and no fix is built.
   an ISO one; `arrivals` then records no arrival from that time, so `_off_ceiling` counts every run.
 - **unreadable-run-record-ends-nothing.** `end_ledger_runs` with a run record that cannot be read (None) and a unit
   the facts do not list as ended records no run.end and leaves the run open.
+- **clone-age-counts-from-heads-last-move.** `clone_reading(st, now, got, head=<sha>)` counts `behind_min` from the
+  first tick that saw THIS HEAD behind: a HEAD that moved with ahead 0 (a fast-forward) restarts the clock, so a clone
+  pulling every 90 s under steady origin churn never reads 5 min. A HEAD that does not move, a HEAD that moved by local
+  commits (ahead > 0) and an unknown HEAD (None, also what `clone_head` returns when git cannot say) keep counting. A
+  level tick clears it; a refused fetch stays UNMEASURED (`RIMMANDRAKE_MEASURE_CLONE_LAG_FROM_LAST_PULL_CHURN_TRIPS`).
 
 Later lists beside this page: `polish.md` and `next_version.md` (none yet).
