@@ -2138,3 +2138,4 @@
 {"seat":"DISPATCHER","event":"note","id":"OPERATIONS_MONITOR_ACCOUNTS_OFF_SHARED_TABLE","text":"dispatcher alarm : Operations run rm-role-operations-1795187076 used 447509 weighted tokens (raw 3150089), budget 320000","ts":"2026-11-20T15:12:58Z","tsn":1795187578157728388}
 {"seat":"DISPATCHER","event":"note","id":"V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE","text":"dispatcher: Conductor quick run: launched","ts":"2026-11-20T16:00:17Z","tsn":1795190417357892319}
 {"seat":"DISPATCHER","event":"note","id":"V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE","text":"dispatcher: Conductor quick run: completed","ts":"2026-11-20T16:03:04Z","tsn":1795190584915825963}
+{"seat":"DISPATCHER","event":"note","id":"RIMFLOW_V3_BUILD_DISPATCHER_FIRST","text":"dispatcher alarm : testq-sweep.service first failed 2026-11-20T09:32:07Z; no safe automatic repair for it","ts":"2026-11-20T16:37:22Z","tsn":1795192642630024706}
