@@ -100,9 +100,16 @@ def test_r2_2_bound_registry_rollback():
           and "TimeoutStopSec=30" in argv, "r2#2 launch_argv: the scope and the unit carry run_max_s + grace as "
           "RuntimeMaxSec, KILL 30 s later")
     sh = os.path.join(HERE, "..", "Utils", "claude_bounded.sh")
-    r = subprocess.run(["bash", sh, "--version"], env=dict(os.environ, CLAUDE_SCOPE_RUNTIME_MAX="abc",
-                                                            AGENT_SEAT="SCRATCH"),
-                       capture_output=True, text=True, timeout=60)
+    # The nightly unit's PATH has no ~/.local/bin, so claude_bounded would exit 127 before it reads the bound: a stub
+    # `claude` on PATH keeps this case the same in a login shell and in a service.
+    with tempfile.TemporaryDirectory() as stub:
+        with open(os.path.join(stub, "claude"), "w") as f:
+            f.write("#!/bin/sh\nexit 0\n")
+        os.chmod(os.path.join(stub, "claude"), 0o755)
+        r = subprocess.run(["bash", sh, "--version"], env=dict(os.environ, CLAUDE_SCOPE_RUNTIME_MAX="abc",
+                                                                AGENT_SEAT="SCRATCH",
+                                                                PATH=stub + os.pathsep + os.environ.get("PATH", "")),
+                           capture_output=True, text=True, timeout=60)
     check(r.returncode == 2 and "refusing to start unbounded" in (r.stdout + r.stderr),
           "r2#2 claude_bounded refuses a malformed bound (rc %d)" % r.returncode)
     src = open(sh, encoding="utf-8").read()
