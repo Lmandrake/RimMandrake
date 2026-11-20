@@ -905,6 +905,17 @@ def _road_back_ids(s, rb):
         pre = opener.split("|")[:4]
         ids += [v.get("item") for k, v in sorted(book.items()) if isinstance(v, dict) and v.get("item")
                 and k.split("|")[:4] == pre and v.get("item") not in ids]
+    # the in-game driver or blind judge files its own failures, caused by its own item (owner, 2026-11-20;
+    # RIMMANDRAKE_RESUME_WRONG_CHECK_WORKER_WITH_MOD_FIX_EXTENSION): the last visit or cycle launched before the road
+    # back opened is read too. Measured: FlowWorks visit 2's driver filed 8 items the tick never saw.
+    t0 = rb.get("at") if isinstance(rb.get("at"), (int, float)) else None
+    runs = [x for x in (s.get({"in_game": "ingame_auto", "blind_challenge": "blind_auto"}.get(rb.get("from"), "")) or [])
+            if isinstance(x, dict) and x.get("item") and isinstance(x.get("at"), (int, float))
+            and (t0 is None or x["at"] <= t0)]
+    if runs:
+        last = max(runs, key=lambda x: x["at"])["item"]
+        if last not in ids:
+            ids.append(last)
     return ids
 
 
@@ -1487,8 +1498,9 @@ def steward_brief(root, mod, row):
                         "is refused at launch. Then send the mod down its road back (%s) only for a mod wrong line or an "
                         "undecided bar: a wrong check or scene never sends the mod back. If the reading says only "
                         "fresh readers of mod fixes are owed, you are that reader (the rule below): read each fix once, "
-                        "write the reviews, and when the reading then reads met, advance. The tick runs the mod's "
-                        "holder on all the items first, and the next visit or cycle when they close.%s" % (
+                        "write the reviews, and when the reading then reads met, advance. The tick runs a pilot mod's "
+                        "holder on all the items first (any other mod: one fixer per item), and the next visit or cycle "
+                        "when they close.%s" % (
                             "in-game visit" if row.get("stage") == "in_game" else "blind cycle",
                             "advance --to offline_build for a mod wrong line, or --to blind_challenge when every line "
                             "that sends it back is an undecided bar whose blind-lane check the driver could not repair, "

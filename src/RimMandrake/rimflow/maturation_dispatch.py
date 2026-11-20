@@ -1076,6 +1076,21 @@ def red_deciders(f):
                    and r.get("clause") == "green" and r.get("test")})
 
 
+def red_seen_owed(f):
+    """-> the deciders a certificate refuses on red_seen ALONE (every refused row is clause red_seen: an edited decider
+    owes its planted-fault proof), sorted; [] when it refuses anything else too, or nothing. Measured 2026-11-20: Gimme
+    Some Slack sat about 2.5 h on such a certificate, because stale_key drops red_seen and cert_red_decide read only
+    green (RIMMANDRAKE_RESUME_WRONG_CHECK_WORKER_WITH_MOD_FIX_EXTENSION)."""
+    cv = f.get("certificate")
+    ref = [r for r in (cv.get("rows") or [] if isinstance(cv, dict) else []) if r.get("status") == "REFUSED"]
+    if not ref or any(r.get("clause") != "red_seen" for r in ref):
+        return []
+    return sorted({r.get("test") for r in ref if r.get("test")})
+
+
+CERT_BOOK = {"red": "cert_red", "red_seen": "cert_red_seen"}     # the state each kind books its one try in
+
+
 def cert_red_decide(cfg, s, f, row, put, now, account, live_total, cap, releases=None, to="blind_challenge",
                     what="the move into the blind challenge"):
     """At the offline build waiting on its certificate, with deciders recorded red (FlowWorks, 2026-11-16 1:36 AM PST:
@@ -1089,15 +1104,20 @@ def cert_red_decide(cfg, s, f, row, put, now, account, live_total, cap, releases
     the offline build's, at its cap and ceiling, booked as offline_build spend, and the record does not move
     (RIMMANDRAKE_ROUTE_RED_DECIDER_AT_VISIT_AND_CYCLE_GATES). A try booked at another stage is not this gate's try."""
     mod = row["mod"]
-    reds = red_deciders(f)
+    reds, kind = red_deciders(f), "red"
+    if not reds:
+        # a certificate that refuses on red_seen alone gets the same one run, whose brief records the proof
+        reds, kind = red_seen_owed(f), "red_seen"
     if not reds:
         return None
-    row["cert_reds"] = reds
+    row["cert_reds"], row["cert_kind"] = reds, kind
     row["cert_gate"] = {"stage": f.get("stage"), "to": to, "what": what}
+    clause = "green" if kind == "red" else "red_seen"
     row["certificate"] = {"rows": [r for r in (f.get("certificate") or {}).get("rows") or []
-                                   if r.get("clause") == "green" and r.get("test") in reds]}
-    row["known_red"] = {t: (f.get("known_red") or {}).get(t) for t in reds if (f.get("known_red") or {}).get(t)}
-    prior = s.get("cert_red") if isinstance(s.get("cert_red"), dict) else None
+                                   if r.get("clause") == clause and r.get("test") in reds]}
+    row["known_red"] = {t: (f.get("known_red") or {}).get(t) for t in reds if (f.get("known_red") or {}).get(t)} \
+        if kind == "red" else {}
+    prior = s.get(CERT_BOOK[kind]) if isinstance(s.get(CERT_BOOK[kind]), dict) else None
     if prior and prior.get("stage", "offline_build") != f.get("stage"):
         prior = None
     if prior and prior.get("unit") and 0 <= now - float(prior.get("at") or 0) < float(cfg.get("settle_s", 180)):
@@ -1137,9 +1157,11 @@ def cert_red_decide(cfg, s, f, row, put, now, account, live_total, cap, releases
             row["waits_on"] = cert_red_waits(row)
         return "decided"
     row["cap"] = cap
-    put("launch", "its certificate refuses %d red decider(s) (%s) and nothing is live on it: the item owing each and "
-        "one builder on them%s (%s)" % (len(reds), ", ".join(reds), ", a retry after a transient fault" if retry
-                                       else "", account[1]))
+    put("launch", "its certificate refuses %d %s (%s) and nothing is live on it: the item owing each and "
+        "one %s on them%s (%s)" % (len(reds), "red decider(s)" if kind == "red" else
+                                   "edited decider(s) on red_seen alone (no recorded red run)", ", ".join(reds),
+                                   "builder" if kind == "red" else "run that records the proof (maturation.py red-seen)",
+                                   ", a retry after a transient fault" if retry else "", account[1]))
     return "launch"
 
 
@@ -1319,12 +1341,15 @@ def cert_rerun_worker(mod, key, unit, runner=subprocess.run, take=None, now=time
     return res
 
 
-def cert_item_id(mod, test, known):
-    """-> a rimflow name for the item owing red decider `test`: RIMMANDRAKE_GREEN_<MOD>_<TEST words>_RED_DECIDER, test
-    words dropped from the end until it fits 9 words and 64 chars (rimflow namecheck)."""
+def cert_item_id(mod, test, known, kind="red"):
+    """-> a rimflow name for the item owing red decider `test`: RIMMANDRAKE_GREEN_<MOD>_<TEST words>_RED_DECIDER (kind
+    red_seen: RIMMANDRAKE_PROVE_<MOD>_<TEST words>_RED_SEEN_OWED), test words dropped from the end until it fits 9
+    words and 64 chars (rimflow namecheck)."""
     words = [w for w in re.split(r"[^A-Z0-9]+", str(test).upper()) if w]
+    head, tail = (["RIMMANDRAKE", "GREEN"], ["RED", "DECIDER"]) if kind == "red" else (
+        ["RIMMANDRAKE", "PROVE"], ["RED", "SEEN", "OWED"])
     while True:
-        parts = ["RIMMANDRAKE", "GREEN", mod.upper()] + words + ["RED", "DECIDER"]
+        parts = head + [mod.upper()] + words + tail
         name = "_".join(parts)
         if (len(parts) <= 9 and len(name) <= 64) or not words:
             break
@@ -1332,10 +1357,88 @@ def cert_item_id(mod, test, known):
     if name not in known:
         return name
     for k in range(2, 20):
-        cand = "%s_AGAIN_%s" % (name[:-len("_DECIDER")], ONES[k])
+        cand = "%s_AGAIN_%s" % (name.rsplit("_", 1)[0], ONES[k])
         if cand not in known and len(cand) <= 64 and cand.count("_") <= 8:
             return cand
     return None
+
+
+RESUME_WARM_S = 55 * 60     # a resume within the 1 h prompt-cache TTL reads its context warm; measured 2026-11-20, 15 warm
+                            # resumes cost 0.85M weighted against 13.8M for 18 cold ones (report, context-kept-not-reloaded)
+
+
+def _decider_files(root, mod, tests):
+    tt, _ = M.read_json(root, mod, "version/test_table.json")
+    return {t: ((tt or {}).get("tests") or {}).get(t, {}).get("file") for t in tests}
+
+
+def _commit_time(root, path):
+    """-> a probe_result answer: the commit time of the last change to path on HEAD (value, epoch seconds), empty when
+    no commit touched it, or could_not_look naming why."""
+    import probe_result as PR
+    try:
+        r = subprocess.run(["git", "-C", root, "log", "-1", "--format=%ct", "--", path], capture_output=True, text=True,
+                           timeout=60)
+    except (OSError, subprocess.TimeoutExpired) as e:
+        return PR.could_not_look("git log %s: %s" % (path, e))
+    if r.returncode != 0:
+        return PR.could_not_look("git log %s exited %d" % (path, r.returncode))
+    out = r.stdout.strip()
+    return PR.value(float(out)) if out.isdigit() else PR.empty()
+
+
+def editing_session(root, mod, tests, now, fx=None):
+    """-> (session, unit, why): the one detached run whose window [at, ended] holds the last commit to a decider's
+    file, when it ended under RESUME_WARM_S ago and recorded its session; else (None, None, why it starts fresh). The run
+    that edited the test holds the knowledge of the fault it planted (report, context-kept-not-reloaded, change 5)."""
+    fx = fx or {}
+    files = (fx.get("decider_files") or _decider_files)(root, mod, tests)
+    read = [(fx.get("commit_time") or _commit_time)(root, p) for p in sorted({p for p in files.values() if p})]
+    times = [float(t.value) for t in read if getattr(t, "kind", None) == "value"]
+    if not times:
+        return None, None, "no decider file with a commit git can read (%s)" % (
+            "; ".join(str(t) for t in read) or "the test table names no file")
+    try:
+        import detached_helper as DH
+        recs = fx["records"]() if "records" in fx else list(DH.all_records())
+    except Exception as e:      # noqa: BLE001  the records cannot be read: start fresh, and say so
+        return None, None, "the run records could not be read (%s: %s)" % (type(e).__name__, e)
+    ct = max(times)
+    hits = [r for r in recs if isinstance(r.get("at"), (int, float)) and isinstance(r.get("ended"), (int, float))
+            and r["at"] <= ct <= r["ended"] + 60]
+    if len(hits) != 1:
+        return None, None, "%d runs were live at the decider's last commit" % len(hits)
+    r = hits[0]
+    if not r.get("session"):
+        return None, None, "the run %s recorded no session" % r.get("unit")
+    if now - r["ended"] >= RESUME_WARM_S:
+        return None, None, "the run %s ended %d min ago (its cache is cold)" % (r.get("unit"), (now - r["ended"]) // 60)
+    return r["session"], r.get("unit"), "the run %s that edited the decider ended %d min ago" % (
+        r.get("unit"), (now - r["ended"]) // 60)
+
+
+def red_seen_brief(mod, chosen, cap, bars, gate=None):
+    """The brief of the one run that records the red_seen proof a certificate refuses on alone."""
+    g = gate or {}
+    lines = ["# Record the red run each edited decider of %s owes (its certificate refuses on red_seen alone)" % mod, "",
+             "Items: %s. Seat BENCH. Offline only: no game, no bridge, no helpers." % ", ".join(sorted(set(
+                 chosen.values()))), "",
+             "`maturation.py certificate %s --to %s` refuses these deciders on `red_seen`: each one's test file changed "
+             "after its last recorded red run, so nobody has seen it fail since. Every other clause passes." % (
+                 mod, g.get("to") or "blind_challenge"), ""]
+    lines += ["- `%s` (bars %s): item %s" % (t, ", ".join(bars.get(t) or []) or "-", it) for t, it in sorted(
+        chosen.items())]
+    lines += ["", "For each test: write a planted fault as a patch to the CODE the test reads (never the test itself: "
+              "red-seen refuses that), and run `python3 src/RimMandrake/rimflow/maturation.py red-seen %s <test> "
+              "--patch <the patch>` for each one, e.g. `python3 src/RimMandrake/rimflow/maturation.py red-seen %s %s "
+              "--patch <the patch>`. It applies the fault, wants the test red, and reverses it; only a red run is "
+              "recorded in `design/concepts/%s/version/evidence/red_seen.json`. A planted fault the test does not "
+              "catch is a real finding about the test: repair the test (red first), then record again." % (
+                  mod, mod, sorted(chosen)[0] if chosen else "<test>", mod),
+              "", "Land `version/evidence/red_seen.json` with `./publish -m ... <paths>`, rerun the certificate "
+              "(`python3 src/RimMandrake/rimflow/maturation.py certificate %s --to %s`), and close each item with the "
+              "published sha." % (mod, g.get("to") or "blind_challenge"), "", M.RED_SEEN_RULE, "", M.SELF_FIX_RULE]
+    return "\n".join(lines) + "\n"
 
 
 def cert_brief(mod, chosen, cap, bars, gate=None):
@@ -1377,29 +1480,30 @@ def cert_launch(root, cfg, st, row, now, fx, known, do_file):
     s["cert_red"]: the reds, the items, the unit, the stage it was found at. -> True when it started."""
     mod, s = row["mod"], st["mods"][row["mod"]]
     cfg = MM.for_mod(cfg, mod)      # its builder on red deciders: the mod's pin (idempotent on execute's own view)
-    reds, kr = row["cert_reds"], row.get("known_red") or {}
-    mine = s.setdefault("cert_red_items", {})
-    own = {t: cert_item_id(mod, t, set()) for t in reds}
+    reds, kr, kind = row["cert_reds"], row.get("known_red") or {}, row.get("cert_kind") or "red"
+    mine = s.setdefault("cert_red_items" if kind == "red" else "cert_red_seen_items", {})
+    own = {t: cert_item_id(mod, t, set(), kind) for t in reds}
     cand = {t: kr.get(t) or mine.get(t) or (own[t] if own[t] in known else None) for t in reds}
     ended = (fx.get("ended") or (lambda ids: M.ledger_ended(root, ids)))([v for v in cand.values() if v])
     bars = {}
     for r in ((row.get("certificate") or {}).get("rows") or []):
-        if r.get("test") in reds and r.get("clause") == "green":
+        if r.get("test") in reds and r.get("clause") == ("green" if kind == "red" else "red_seen"):
             bars.setdefault(r["test"], []).append(r.get("bar"))
     chosen, failed = {}, None
     gate = row.get("cert_gate") or {}
-    prior = s.get("cert_red") if isinstance(s.get("cert_red"), dict) else {}
+    prior = s.get(CERT_BOOK[kind]) if isinstance(s.get(CERT_BOOK[kind]), dict) else {}
     if prior.get("stage", "offline_build") != gate.get("stage", "offline_build"):
         prior = {}
     for t in reds:
         if cand.get(t) and cand[t] not in ended:
             chosen[t] = cand[t]
             continue
-        name = cert_item_id(mod, t, known)
+        name = cert_item_id(mod, t, known, kind)
         title = ("%s Stage 3: offline decider %s is recorded red; make it green, offline (filed by the Dispatch step)"
-                 % (mod, t))
-        why = ("delegated: maturation_dispatch.py; the certificate refuses %s as recorded red with no open item owing "
-               "it, measured %s" % (t, pac(now)))
+                 % (mod, t) if kind == "red" else "%s: decider %s was edited and has no recorded red run; record it "
+                 "with maturation.py red-seen (filed by the Dispatch step)" % (mod, t))
+        why = ("delegated: maturation_dispatch.py; the certificate refuses %s as %s with no open item owing it, "
+               "measured %s" % (t, "recorded red" if kind == "red" else "red_seen alone", pac(now)))
         ok, text = do_file(name, title, why) if name else (False, "no free item name")
         if not ok:
             failed = text
@@ -1411,8 +1515,12 @@ def cert_launch(root, cfg, st, row, now, fx, known, do_file):
     if not failed:
         cap = row.get("cap") or cfg["cap_usd"]
         item = sorted(set(chosen.values()))[0]
-        brief = cert_brief(mod, chosen, cap, bars, gate)
+        brief = (cert_brief if kind == "red" else red_seen_brief)(mod, chosen, cap, bars, gate)
         do_brief = fx.get("launch_brief") or AUT.launch_brief
+        # the red_seen proof: resume the run that edited the decider while its context is warm, else start fresh
+        sess, sunit, swhy = editing_session(root, mod, reds, now, fx) if kind == "red_seen" else (None, None, None)
+        if sess:
+            do_brief = (lambda b, sid: lambda *a, **k: b(*a, session=sid, **k))(do_brief, sess)
         if (fx.get("pilot") or pilot_ledger)(root, mod):
             try:
                 led = ledger_open(root, mod, "builder", brief, stage="offline_build", now=now, fx=fx)
@@ -1430,9 +1538,11 @@ def cert_launch(root, cfg, st, row, now, fx, known, do_file):
         if unit:
             s.setdefault("launches", []).append({"unit": unit, "item": item, "at": now, "cap": cap,
                                                  "stage": "offline_build", "cert_reds": reds})
-    s["cert_red"] = {"tests": reds, "items": chosen, "unit": unit, "at": now, "failed": None if unit else text,
-                     "code": cfg.get("_code"), "stage": gate.get("stage", "offline_build"),
-                     "tries": int(prior.get("tries") or 0) + 1 if not prior.get("unit") and prior else 1}
+    s[CERT_BOOK[kind]] = {"tests": reds, "items": chosen, "unit": unit, "at": now, "failed": None if unit else text,
+                          "code": cfg.get("_code"), "stage": gate.get("stage", "offline_build"),
+                          "tries": int(prior.get("tries") or 0) + 1 if not prior.get("unit") and prior else 1}
+    if kind == "red_seen" and not failed:
+        s[CERT_BOOK[kind]].update(resumed=sunit if sess else None, resume_why=swhy)
     if unit:
         row.update(decision="launched", unit=unit, item=sorted(set(chosen.values()))[0], why=text,
                    items=sorted(set(chosen.values())))
@@ -2367,7 +2477,13 @@ def pilot_holders(root, cfg, st, facts, rows, launches, now, fx=None):
     for row in rows:
         mod = row["mod"]
         s = st.setdefault("mods", {}).setdefault(mod, {})
-        if row.get("decision") != "fixer_spent" or not s.get("road_back") or (facts.get(mod) or {}).get("live_units"):
+        # a pilot's holder runs FIRST on all the open road-back items, before any one-fixer-per-item run (the report
+        # context-kept-not-reloaded, change 4: FlowWorks' road back ran a router and four fresh fixers, 2.20M of 4.20M
+        # weighted spent reading the same mod again); a per-item fixer row whose holder already ran on the same set
+        # keeps its fixer
+        first = row.get("decision") == "fixer" and row.get("aut") == "fixer"
+        if row.get("decision") != "fixer_spent" and not first or not s.get("road_back") or (
+                facts.get(mod) or {}).get("live_units"):
             continue
         # only the launches ahead of it on the advancing list count against it: a later mod's launch is evicted by
         # prioritise, never the other way round (RIMMANDRAKE_LAUNCH_PYRELANDS_FIRST_AT_ONE_SLOT)
@@ -2384,6 +2500,8 @@ def pilot_holders(root, cfg, st, facts, rows, launches, now, fx=None):
             if need:
                 row["need"] = "%s: %s" % (mod, need)
         spent = holder_spent(s, ids)
+        if spent and first:
+            continue        # the holder ran on this set: the per-item fixers take it from here, as before
         if spent:
             put("holder_spent", spent, "PAUSED, %s; the pipeline gives one holder run per set of open road-back items "
                 "(pilot-launch %s --why ... starts another by hand)" % (spent, mod))
@@ -2394,8 +2512,9 @@ def pilot_holders(root, cfg, st, facts, rows, launches, now, fx=None):
         if no_slot(cfg, planned, put):
             continue
         row.update(holder_items=items, cap=MM.for_mod(cfg, mod).get("cap_usd"))
-        put("launch", "its road-back fixers are spent and its ledger is ready: one holder run on all %d open items "
-            "(%s), nothing live on it (%s)" % (len(ids), ", ".join(ids), account[1]))
+        put("launch", "%s and its ledger is ready: one holder run on all %d open items (%s), nothing live on it (%s)"
+            % ("its road back opened (the holder goes first, before any per-item fixer)" if first else
+               "its road-back fixers are spent", len(ids), ", ".join(ids), account[1]))
         launches = [m for m in launches if m != mod] + [mod]
     return rows, launches
 

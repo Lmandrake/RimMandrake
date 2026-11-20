@@ -59,6 +59,10 @@ PAGES = {
         "src/RimMandrake/rimflow/selftest_maturation_game_only_exit.py",
     "design/specs/2026-11-20-wrong-check-fixed-in-sitting/boundary.md":
         "src/RimMandrake/rimflow/selftest_wrong_check_fixed_in_sitting.py",
+    "design/specs/2026-11-20-red-seen-owner/boundary.md":
+        "src/RimMandrake/rimflow/selftest_red_seen_owner.py",
+    "design/specs/2026-11-20-road-back-holder-first/boundary.md":
+        "src/RimMandrake/rimflow/selftest_road_back_holder_first.py",
     "design/specs/2026-11-19-coverage-signoff-and-slots/boundary.md": "src/RimMandrake/rimflow/selftest_coverage_signoff.py",
     "design/specs/2026-11-19-maturation-dispatch-reads/boundary.md":
         "src/RimMandrake/rimflow/selftest_maturation_dispatch_reads.py",
