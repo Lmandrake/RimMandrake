@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_VISIT_TWO.det\src\RimMandrake\FlowWorks\northstar\big_pit_scene.py", line 743, in <module>
+    sys.exit(main(sys.argv))
+             ~~~~^^^^^^^^^^
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_VISIT_TWO.det\src\RimMandrake\FlowWorks\northstar\big_pit_scene.py", line 716, in main
+    plan = load_plan()
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_VISIT_TWO.det\src\RimMandrake\FlowWorks\northstar\big_pit_scene.py", line 331, in load_plan
+    with open(plan_path()) as fh:
+         ~~~~^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_VISIT_TWO.det\\design\\concepts\\FlowWorks\\version\\in_game\\visit_2\\evidence\\bigpit\\scene_plan.json'

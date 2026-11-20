@@ -1,0 +1,21 @@
+{
+ "log": [
+  {
+   "UNMEASURED": {
+    "row": "plan_defs",
+    "verdict": "UNMEASURED",
+    "got": "size/stuff unreadable for ['RM_AncientStasisLocker_Refurbished', 'RM_BrineCrock', 'RM_EvaporativeCrock', 'RM_GlowTank', 'RM_ResinSealingJarShelf']"
+   }
+  },
+  {
+   "elapsed_s": 5.5
+  }
+ ],
+ "rows": [
+  {
+   "row": "plan_defs",
+   "verdict": "UNMEASURED",
+   "got": "size/stuff unreadable for ['RM_AncientStasisLocker_Refurbished', 'RM_BrineCrock', 'RM_EvaporativeCrock', 'RM_GlowTank', 'RM_ResinSealingJarShelf']"
+  }
+ ]
+}

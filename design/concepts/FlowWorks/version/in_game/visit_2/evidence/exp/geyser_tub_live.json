@@ -1,0 +1,26 @@
+{
+ "script": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_VISIT_TWO.det\\src\\RimMandrake\\FlowWorks\\northstar\\geyser_tub_live.py",
+ "mode": "live",
+ "rows": [
+  {
+   "id": "TUB_reads_hot_tub",
+   "status": "PASS",
+   "detail": "line=Pit, 1.0 m water in 4.0 m (walk speed 30%) \u2014 Hole 4 m \u00b7 Water 1.00 m (2,000 L) \u00b7 Hot tub"
+  },
+  {
+   "id": "TUB_dry_pit_not_a_tub",
+   "status": "PASS",
+   "detail": "line=Pit, 4.0 m deep (walk speed 100%) \u2014 Hole 4 m \u00b7 Water 0.00 m (0 L)"
+  },
+  {
+   "id": "TUB_beside_stays_cold",
+   "status": "PASS",
+   "detail": "line=Pit, 1.0 m water in 4.0 m (walk speed 30%) \u2014 Hole 4 m \u00b7 Water 1.00 m (2,000 L)"
+  },
+  {
+   "id": "TUB_pawn_soaks_bonus",
+   "status": "PASS",
+   "detail": "{'mid': {'Scratch': 5.0, 'Scarification': 1.0, 'RM_HotPoolSoak': 1.0}, 'after': {'Scratch': 5.0, 'Scarification': 1.0, 'RM_HotPoolAfterglow': 0.498666674}, 'pool': 'spawned=True thingId=SteamGeyser24589 seatNotches=8 vent=65.0,99.0 heated=16 levelMetres=1.000 covered=True fluid=RM_Fluid_Water bathable=True pool=True spraying=True plumeBubbles=2734 dryPuffs=257 coveredPuffsStopped=5026 soakers=1 capped=False'}"
+  }
+ ]
+}

@@ -1,0 +1,4 @@
+UNMEASURED {"row": "plan_defs", "verdict": "UNMEASURED", "got": "size/stuff unreadable for ['RM_AncientStasisLocker_Refurbished', 'RM_BrineCrock', 'RM_EvaporativeCrock', 'RM_GlowTank', 'RM_ResinSealingJarShelf']"}
+elapsed_s 5.5
+TOTALS Counter({'UNMEASURED': 1})
+[bridge split] 5.4 s wall: load 0.0 / ticks 0.0 / reads 1.4 / other 3.7 / outside calls 0.2 s

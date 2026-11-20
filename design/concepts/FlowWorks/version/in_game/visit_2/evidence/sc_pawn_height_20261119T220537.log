@@ -1,0 +1,4 @@
+FAIL \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_VISIT_TWO.det\design\concepts\FlowWorks\version\in_game\visit_2\evidence\sc_pawn_height_20261119T220537.json AssertionError("rows not all PASS: [('PH_offset_follows_depth', 'PASS'), ('PH_swims_and_tires_at_2m', 'PASS'), ('PH_control_undug_no_offset', 'UNMEASURED')]")
+[bridge split] 334.1 s wall: load 0.4 / ticks 0.8 / reads 3.0 / other 317.6 / outside calls 12.3 s
+[bridge split] WARN 60 calls of jawa/flowworks_excavation_drive (2.4 s): batch them
+[bridge split] WARN 59 calls of jawa/static_call (2.3 s): batch them

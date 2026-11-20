@@ -1,0 +1,4 @@
+FAIL \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_VISIT_TWO.det\design\concepts\FlowWorks\version\in_game\visit_2\evidence\exp\source_pays_long.json AssertionError("rows not all PASS: [('SRC_pond_drops', 'PASS'), ('SRC_shore_recedes', 'PASS'), ('SRC_control_tap_zero', 'PASS'), ('SRC_flow_stops_when_empty', 'FAIL'), ('SRC_refill_visible', 'PASS'), ('SRC_lake_reads_endless', 'UNMEASURED')]")
+[bridge split] 46.6 s wall: load 0.4 / ticks 5.9 / reads 3.8 / other 20.6 / outside calls 15.9 s
+[bridge split] WARN 260 calls of jawa/flowworks_excavation_drive (10.1 s): batch them
+[bridge split] WARN 215 calls of jawa/static_call (8.4 s): batch them

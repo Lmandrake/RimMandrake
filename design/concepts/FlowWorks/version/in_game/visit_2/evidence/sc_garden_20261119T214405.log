@@ -1,0 +1,4 @@
+FAIL \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_VISIT_TWO.det\design\concepts\FlowWorks\version\in_game\visit_2\evidence\sc_garden_20261119T214405.json AssertionError("rows not all PASS: [('GARDEN_head_draws_its_net', 'PASS'), ('GARDEN_no_pump_no_spray', 'PASS'), ('GARDEN_faucet_drinks_from_its_tank', 'PASS'), ('GARDEN_filter_keeps_its_rate', 'PASS'), ('GARDEN_still_within_its_def_rate', 'PASS'), ('GARDEN_drill_pours_its_yield', 'PASS'), ('GARDEN_drill_charges_what_landed', 'PASS'), ('GARDEN_walled_yard_lies_level', 'FAIL')]")
+[bridge split] 57.7 s wall: load 0.4 / ticks 20.1 / reads 3.7 / other 17.6 / outside calls 15.9 s
+[bridge split] WARN 224 calls of jawa/static_call (8.8 s): batch them
+[bridge split] WARN 111 calls of jawa/pawn_need (4.4 s): batch them

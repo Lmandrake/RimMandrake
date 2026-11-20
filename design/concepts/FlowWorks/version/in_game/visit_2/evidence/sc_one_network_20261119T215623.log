@@ -1,0 +1,6 @@
+site save calm: CLEAN load 3.9s ready 5.8s 
+extensions: {'PASS': 2} in 31.3s -> \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_VISIT_TWO.det\design\concepts\FlowWorks\version\in_game\visit_2\evidence\sc_one_network_20261119T215623.json
+[modcheck] chain machinery_pipes START 05:56:40Z
+[modcheck] chain machinery_pipes END 14s PASS=2 FAIL=0 UNMEASURED=0 NOT_RUN=0 hold=5.7s body=7.5s teardown=1.0s
+[bridge split] 31.4 s wall: load 0.0 / ticks 0.8 / reads 3.6 / other 8.8 / outside calls 18.1 s
+[bridge split] WARN 51 calls of jawa/time_clock (2.0 s): batch them

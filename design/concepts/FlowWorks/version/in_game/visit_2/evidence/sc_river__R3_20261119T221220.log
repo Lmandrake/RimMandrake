@@ -1,0 +1,17 @@
+====================================================================================================
+R3. Swept off the map edge, then walks home
+  staged factions (game read): {'Human142057': 'PlayerColony', 'Human142060': 'PlayerColony', 'Human142063': 'PlayerColony', 'Human142066': 'PlayerColony', 'Human142069': 'PlayerColony', 'Human142072': 'PlayerColony'}
+  6 colonists staged on edge river cells [(35, 0), (145, 249), (28, 0), (137, 249), (32, 0), (141, 249)]; pending 0
+         screenshot: \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_VISIT_TWO.det\Transient\fw_scenes\live\rivers\R3_p00.png
+  after 250 ticks: pending 3, still on map: 3 of 6
+         screenshot: \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_VISIT_TWO.det\Transient\fw_scenes\live\rivers\R3_swept.png
+  R3.a    MATCHES    pending 0 -> 3 after 250 ticks (6 colonists staged)
+  R3.b    MATCHES    walk-home call: SWEPT pending=0
+  after return, Human142057: faction PlayerColony (staged as PlayerColony), position {'x': 106, 'z': 249}
+  after return, Human142063: faction PlayerColony (staged as PlayerColony), position {'x': 0, 'z': 172}
+  after return, Human142069: faction PlayerColony (staged as PlayerColony), position {'x': 240, 'z': 249}
+  R3.c    MATCHES    washed away ['Human142057', 'Human142063', 'Human142069']; back on the map after return: ['Human142057', 'Human142063', 'Human142069']
+         screenshot: \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_VISIT_TWO.det\Transient\fw_scenes\live\rivers\R3_home.png
+  R3.d    UNMEASURED the 'Swept away' / 'Back from the river' letters are not read by this walk (the river suite's swept chain reads them)
+index: \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_VISIT_TWO.det\Transient\fw_scenes\live\rivers\index.html
+[bridge split] 11.5 s wall: load 0.0 / ticks 0.3 / reads 0.7 / other 1.6 / outside calls 8.9 s
