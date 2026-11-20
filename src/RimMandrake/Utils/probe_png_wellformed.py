@@ -113,7 +113,8 @@ def _tracked_dirty_pngs() -> list[str]:
     # expected, normal outcome here (we are LOOKING for the dirty ones), not
     # a tool failure, so this deliberately does not use check=True.
     out = subprocess.run(
-        [sys.executable, str(STATUS_SCRIPT), "check", *all_pngs],
+        # --record: the review record's answer; plain `check` answers against a page of promises since 2026-11-19.
+        [sys.executable, str(STATUS_SCRIPT), "check", "--record", *all_pngs],
         cwd=REPO_ROOT, capture_output=True, text=True,
     ).stdout
     dirty = []

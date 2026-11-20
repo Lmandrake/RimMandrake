@@ -443,27 +443,26 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
   path to pass.
 - Only a refusal from a CALIBRATED brief sends work back.
 
-## Code isn't clean until a review says so
+## Code is clean when its promises are tested
 
-- Every file is DIRTY until `python3 src/RimMandrake/Utils/code_review_status.py check <path>` says CLEAN. The check
-  uses a content hash.
-- Use `mark-clean` only after a full-file review finds nothing.
-- Before you spend a review on a file, check that the file is still reachable.
-- Procedure: `design/RimMandrake/standing_rulings.md` §Code isn't clean until a review says so.
-
-### Pipeline machinery is under a different rule
-
-- Pipeline machinery is any file that `pipeline_files` matches in `src/RimMandrake/Utils/pipeline_tests.json`.
-- Before you write new pipeline code, write its one-page list: `design/specs/<component>/boundary.md`. The page says
-  what the code accepts, which failures it does not survive, and what it promises. Each promise gets a test of the
-  same name.
-- Pipeline code is clean when every promise on its page has a test and the code has had two looks. The two looks are
-  one full inspection against the page and one check that reads only the repairs. A later edit stays clean while those
-  tests pass. A full-file review that finds nothing is not the bar for pipeline code.
-- Fix a review claim only if it breaks a promise on the page. Write each other claim as one line on `polish.md` or
-  `next_version.md` beside the page.
+- This rule applies to all code: mods, defs, C#, tools, hooks and pipeline machinery.
+- A file is CLEAN when a page of promises names it, each promise has a test of the same name, and those tests pass.
+  The page is `design/specs/<component>/boundary.md`. It says what the code accepts, which failures it does not
+  survive, and what it promises.
+- `python3 src/RimMandrake/Utils/code_review_status.py check <path>` measures it. It reads CLEAN, DIRTY, UNREADABLE
+  or NO PAGE.
+- A full-file review that finds nothing does not make a file clean. `mark-clean` only records a review round.
+- A review gets one round. Fix each claim that breaks a promise, and each minor error that is cheap to fix. Then the
+  review is over. There is no second round and no round that checks the repairs.
+- Write each claim that breaks no promise as one line on `polish.md` beside the page. It is never a ticket.
+- Code with no page reads NO PAGE. It is not DIRTY. It gets its page when someone next changes it, or when it is on a
+  mod's next-step path. Do not write pages for untouched code.
+- Before you write new pipeline code, write its page. Pipeline machinery is any file that `pipeline_files` matches in
+  `src/RimMandrake/Utils/pipeline_tests.json`.
 - Codex and GPT reviews of pipeline code stay stopped until a calibrated review brief exists. The owner stopped them.
-- Full text: `design/RimMandrake/standing_rulings.md` §A boundary page before pipeline code.
+- Before you spend a review on a file, check that the file is still reachable.
+- Full text: `design/RimMandrake/standing_rulings.md` §Code is clean when its promises are tested, and §A boundary
+  page before pipeline code.
 
 ## What is where
 

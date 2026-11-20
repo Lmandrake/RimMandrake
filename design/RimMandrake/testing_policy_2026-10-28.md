@@ -102,14 +102,16 @@ Provenance of each tunable: **O** owner's words, **C** owner by card, **D** code
 - **The known-red list:** `src/RimMandrake/Utils/known_reds.py` (the rule is its docstring). ops_watch alarms
   (`NIGHTLY_NEWS`) only on a red not on the list or an entry past its age.
 
-### 2.4 Code review to CLEAN (`code_review_status.py`)
-- **Purpose:** a second read before a file becomes trusted. Diff-scoped review is valid only once the file
-  is CLEAN.
-- **Cadence:** once per file after its edits settle. Diff-scoped after that.
+### 2.4 Code review, one round against the page (`code_review_status.py`)
+- **Purpose:** a second read of a file against its boundary page. CLEAN is not earned by the review: a file is
+  CLEAN when its page's promises have passing tests (owner, 2026-11-19, `standing_rulings.md` §Code is clean when
+  its promises are tested).
+- **Cadence:** one round per page version, after the edits settle. Fix each claim that breaks a promise and each
+  cheap minor error; then the review is over.
 - **Helps:** decision and evidence code, parsers, filters, schemas.
 - **Hurts:** a full review of a file that is edited again the same day. MEASURED: 326 paths were cleaned 4 or
   more times in 14 days.
-- **Signs we need it:** before a commit of a DIRTY file; before a mutation full run.
+- **Signs we need it:** a new or extended page; before a mutation full run.
 - **It was a mistake when:** the file changed again within hours and the review was repeated in full.
 - **Tunables:** `code_review.full_review_quiet_hours` 12 [A].
 

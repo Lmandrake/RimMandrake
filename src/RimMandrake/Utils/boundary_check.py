@@ -62,6 +62,8 @@ PAGES = {
     "design/specs/2026-11-19-run-end-continue/boundary.md": "src/RimMandrake/rimflow/selftest_left_open_continue.py",
     "design/specs/2026-11-19-card-brief-spend/boundary.md": "src/RimMandrake/rimflow/selftest_card_brief_spend.py",
     "design/specs/2026-11-19-run-return-reap/boundary.md": "src/RimMandrake/rimflow/selftest_detached_reap.py",
+    "design/specs/2026-11-19-clean-means-promises-tested/boundary.md":
+        "src/RimMandrake/Utils/selftest_code_review_page_state.py",
 }
 SECTIONS = ("PROMISES", "SURVIVES")
 HEAD_RX = re.compile(r"^##\s+(\S+)")

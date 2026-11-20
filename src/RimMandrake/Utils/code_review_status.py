@@ -1,24 +1,26 @@
 #!/usr/bin/env python3
-"""code_review_status.py — the "clean or dirty" ledger CLAUDE.md's
-"Code isn't clean until a review says so" policy actually points at.
+"""code_review_status.py — what CLEAN means, and the review record.
 
-A file is CLEAN only if it has an entry here AND its content on disk is
-byte-identical to what was recorded at the last `mark-clean`. Anything else
-— no entry, or any edit since (committed or not) — is DIRTY. There is no
-other way to earn CLEAN: fixing a finding does not clean a file, only a
-full-file review returning zero significant findings does, recorded here
-with `mark-clean`. (Pipeline machinery is under a different rule since the
-owner's card of 2026-11-18: standing_rulings.md, section "A boundary page
-before pipeline code".)
+`check` reads CLEAN against a page of promises (owner, 2026-11-19,
+standing_rulings.md §Code is clean when its promises are tested; this tool's
+own page: design/specs/2026-11-19-clean-means-promises-tested/boundary.md).
+A file is CLEAN when a boundary page names it, each promise there has a test
+of the same name, and the page's tests file passes. DIRTY: a promise lacks a
+test or the tests fail. UNREADABLE: a page or tests file could not be read or
+run. NO PAGE: no page names it (not a defect; it gets a page when next changed).
+
+The review record below (`mark-clean`, `reopen`, `list`, `check --record`)
+records that a review round was done on exact bytes. It makes nothing CLEAN.
 
 🔴 This is not a Python-only tool. It covers ANY file that contributes to
 what the game actually loads — .py tooling, .cs mod source, .xml Defs and
-Patches alike. "Code isn't clean until a review says so" (CLAUDE.md) never
-said Python; do not narrow it. Owner ruling 2026-09-03, after an agent was
+Patches alike. The clean rule (CLAUDE.md) never said Python; do not
+narrow it. Owner ruling 2026-09-03, after an agent was
 told mid-review not to mark-clean a .cs file "because C# isn't in scope
 yet" — it always was.
 
-    python3 src/RimMandrake/Utils/code_review_status.py check <path> [<path> ...]
+    python3 src/RimMandrake/Utils/code_review_status.py check <path> [<path> ...]   exit 0/1/3/4 (page above)
+    python3 src/RimMandrake/Utils/code_review_status.py check --record <path> ...  the review record, exit 0/1
     python3 src/RimMandrake/Utils/code_review_status.py mark-clean <path> [--sha <sha>]
         [--gpt-job <job> | --reviewer-seat <SEAT> [--reviewer-session <id>] [--reviewer-agent <name>]]
         records WHO reviewed (default: this process, whoami()) apart from the recording seat; see review_identity.py
@@ -69,15 +71,19 @@ entry whose sha no longer resolves gets no hash and reads as DIRTY
 import argparse
 import contextlib
 import fcntl
+import glob
 import hashlib
 import json
 import os
+import re
 import stat as stat_mod
 import subprocess
 import sys
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+import boundary_check as BC  # noqa: E402  the page reader and the promise-to-test match
 # CODE_REVIEW_STATUS_ROOT redirects the whole tool at a throwaway repo, same
 # discipline as rimflow's RIMFLOW_LEDGER/RIMFLOW_ITEMS — a selftest must never
 # run mark-clean/reopen against this repo's own real ledger.
@@ -553,7 +559,157 @@ def clean_state(rel, entry):
     return "CLEAN", "clean at %s on %s" % (entry.get("sha", "?"), entry.get("date", "?"))
 
 
+# ---- CLEAN against a page of promises (owner, 2026-11-19) -------------------
+# `check` reads CLEAN only against a stated page of promises whose tests pass:
+# design/specs/2026-11-19-clean-means-promises-tested/boundary.md. The review
+# record above answers only `check --record` (a review round on these bytes).
+PAGES = BC.PAGES  # page -> its tests file, repo-relative; boundary_check.py owns the list
+
+
+def code_files(page):
+    """-> the repo-relative files that a page's first `Code:` or `Source:`
+    sentence names in backticks (ACCEPTS a-code-line on the page above).
+    Raises BC.Unreadable when the page cannot be read or has no such line."""
+    try:
+        with open(page, encoding="utf-8") as f:
+            lines = f.read().splitlines()
+    except (OSError, UnicodeDecodeError) as e:
+        raise BC.Unreadable("%s: %s" % (page, e))
+    start = next((i for i, ln in enumerate(lines) if re.match(r"(Code|Source):\s", ln)), None)
+    if start is None:
+        raise BC.Unreadable("%s: no `Code:` or `Source:` line, so the files it names cannot be read" % page)
+    para = []
+    for ln in lines[start:]:
+        if not ln.strip():
+            break
+        para.append(ln.strip())
+    tokens = []
+    for i, part in enumerate(" ".join(para).split("`")):
+        if i % 2:
+            tokens.append(part.strip())
+        elif re.search(r"\.(\s|$)", part):
+            break  # the sentence ends at a `.` outside backticks
+    isfile = lambda rel: os.path.isfile(os.path.join(ROOT, rel))
+    full = [t for t in tokens if "/" in t and isfile(t)]
+    dirs = list(dict.fromkeys(os.path.dirname(t) for t in full))
+    ancestors = list(dict.fromkeys(a for d in dirs for a in
+                                   ("/".join(d.split("/")[:n]) for n in range(len(d.split("/")), 0, -1))))
+    out = set(full)
+    for t in tokens:
+        if t in out or not re.fullmatch(r"[\w./-]+\.\w+", t):
+            continue
+        for d in (ancestors if "/" in t else dirs):
+            if isfile(d + "/" + t):
+                out.add(os.path.normpath(d + "/" + t).replace(os.sep, "/"))
+                break
+    return out
+
+
+# Danger: a tests file that never ends hangs `check` and every caller (ship_check,
+# run_mutation, a publish); open-ended calls hung runs before (call_deadline_lint.py,
+# CALL_DEADLINES_ENFORCE_130_OPEN_ENDED). The slowest tests file a page registers ran
+# well under a minute on 2026-11-19 (14 of them in 109 s in one check). Past it: UNREADABLE.
+TESTS_TIMEOUT_S = 600
+
+
+def _run_tests(tests):
+    """-> (exit code, last output line) of one tests file run from the root, or
+    the cause string when it could not start or did not end in time."""
+    try:
+        r = subprocess.run([sys.executable, os.path.join(ROOT, tests)], cwd=ROOT, capture_output=True,
+                           text=True, errors="replace", timeout=TESTS_TIMEOUT_S)
+    except subprocess.TimeoutExpired:
+        return "did not end within %d s (TESTS_TIMEOUT_S)" % TESTS_TIMEOUT_S
+    except OSError as e:
+        return "could not start: %s" % e
+    tail = [ln for ln in (r.stdout + r.stderr).splitlines() if ln.strip()]
+    return r.returncode, (tail[-1].strip()[:160] if tail else "no output")
+
+
+def page_states(rels):
+    """-> [(state, rel, detail)], state CLEAN / DIRTY / UNREADABLE / NO PAGE,
+    for repo-relative file paths (the promises on the page above)."""
+    named = {}
+    for page in sorted(glob.glob(os.path.join(ROOT, "design", "specs", "*", "boundary.md"))):
+        rel_page = os.path.relpath(page, ROOT).replace(os.sep, "/")
+        try:
+            named[rel_page] = code_files(page)
+        except BC.Unreadable as e:
+            named[rel_page] = e
+    blind = ["%s" % v for v in named.values() if isinstance(v, BC.Unreadable)]
+    runs, out = {}, []
+    for rel in rels:
+        mine = [p for p, v in named.items() if not isinstance(v, BC.Unreadable) and rel in v]
+        if not mine:
+            if blind:
+                out.append(("UNREADABLE", rel, "no readable page names it, and whether these name it is unknown: "
+                            + "; ".join(blind)))
+            else:
+                out.append(("NO PAGE", rel, "no design/specs/*/boundary.md names it in its Code: sentence"))
+            continue
+        dirty, unread, ok = [], [], []
+        for page in mine:
+            tests = PAGES.get(page)
+            if not tests:
+                unread.append("%s has no tests file registered in boundary_check.py PAGES" % page)
+                continue
+            try:
+                names = BC.promises(os.path.join(ROOT, page))
+                _have, ran = BC.tests_in(os.path.join(ROOT, tests))
+            except BC.Unreadable as e:
+                unread.append(str(e))
+                continue
+            if not names:
+                dirty.append("%s lists no promise" % page)
+                continue
+            missing = [n for n in names if BC.test_name(n) not in ran]
+            dirty += ["promise %s on %s has no test %s that main() runs in %s" % (n, page, BC.test_name(n), tests)
+                      for n in missing]
+            if missing:
+                continue
+            if tests not in runs:
+                runs[tests] = _run_tests(tests)
+            res = runs[tests]
+            if isinstance(res, str):
+                unread.append("tests file %s %s" % (tests, res))
+            elif res[0] != 0:
+                dirty.append("tests file %s exit %d (%s)" % (tests, res[0], res[1]))
+            else:
+                ok.append("%s: promises covered %d of %d, %s passes" % (page, len(names), len(names), tests))
+        state = "DIRTY" if dirty else "UNREADABLE" if unread else "CLEAN"
+        out.append((state, rel, "; ".join(dirty + unread + ok)))
+    return out
+
+
+#: exit code per answer, worst first (the-worst-answer-sets-the-exit)
+CHECK_EXIT = (("DIRTY", 1), ("UNREADABLE", 3), ("UNREVIEWABLE", 3), ("NO PAGE", 4), ("CLEAN", 0))
+
+
 def cmd_check(paths):
+    """CLEAN / DIRTY / UNREADABLE / NO PAGE against the pages of promises."""
+    rows, ask = [], []
+    for p in paths:
+        rel = repo_rel(p)
+        if rel.startswith("../") or rel == "..":
+            rows.append(("UNREVIEWABLE", p, "outside the repo root"))
+        elif os.path.isdir(os.path.join(ROOT, rel)):
+            rows.append(("UNREVIEWABLE", rel, "a directory, not a file"))
+        elif proven_gone(rel):
+            rows.append(("UNREVIEWABLE", rel, "no such file under the repo root"))
+        else:
+            ask.append(rel)
+            rows.append(None)
+    answers = iter(page_states(ask))
+    rows = [r if r is not None else next(answers) for r in rows]
+    for state, rel, detail in rows:
+        print("%s  %s  (%s)" % (state, rel, detail))
+    seen = {r[0] for r in rows}
+    return next((code for state, code in CHECK_EXIT if state in seen), 0)
+
+
+def cmd_check_record(paths):
+    """`check --record`: the review record's answer (the meaning of `check`
+    before 2026-11-19), for callers that track a review round."""
     data = load()
     rels = [repo_rel(p) for p in paths]
     # One batched spawn for every entry-less path (never one per path).
@@ -1041,8 +1197,10 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
 
-    p_check = sub.add_parser("check", help="report CLEAN/DIRTY for one or more paths")
+    p_check = sub.add_parser("check", help="CLEAN / DIRTY / UNREADABLE / NO PAGE against the pages of promises")
     p_check.add_argument("paths", nargs="+")
+    p_check.add_argument("--record", action="store_true",
+                         help="answer from the review record instead (a review round on these bytes, not CLEAN)")
 
     p_mark = sub.add_parser("mark-clean", help="record a path as reviewed clean at a commit")
     p_mark.add_argument("path")
@@ -1068,7 +1226,7 @@ def main():
 
     args = ap.parse_args()
     if args.cmd == "check":
-        sys.exit(cmd_check(args.paths))
+        sys.exit(cmd_check_record(args.paths) if args.record else cmd_check(args.paths))
     elif args.cmd == "reopen":
         rc = cmd_reopen(args.paths, args.reason)
         if rc == 0:

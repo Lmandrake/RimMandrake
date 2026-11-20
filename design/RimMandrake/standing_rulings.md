@@ -325,43 +325,52 @@ a duplicate, write a pointer instead.
 - Origin is SSH (`git@github.com:Lmandrake/RimMandrake.git`); a push that falls back to https can use a one-shot token header (`gh auth token`).
 - ⚠️ A `cd` in one Bash call persists into later calls (`modcheck` needs `python3 -m modcheck.cli <verb>` from `src/RimMandrake/Utils`); use absolute paths or `cd` back.
 
-## Code isn't clean until a review says so
+## Code is clean when its promises are tested — owner, 2026-11-19
 
-**Every file in this repo is dirty by default — including files nobody has
-touched today.** The only way a file is CLEAN is a clean
-record in `infrastructure/state/code_review/<SEAT>.jsonl` (append-only, last
-record per path wins; owned by `code_review_status.py`, never hand-edited) whose recorded content hash is
-byte-identical to the file on disk. No entry, or any byte changed — DIRTY.
-(Content-based, not commit-based: a rewrite reverted to identical bytes is
-CLEAN; a path moved by `git mv` has no entry at the new path — review 2026-09-06.)
+His words (Thu 2026-11-19, about 3:55 PM PST, item `RIMMANDRAKE_ENACT_CLEAN_MEANS_PROMISES_TESTED_ONE_FIX_ROUND`):
+*"Please adopt the Nov 18 rule to all code: we are redefining "clean" to be with respect to a stated design doc/promise
+list with specified covering tests. If minor errors continue to be found, you get two rounds, then you're ignored. That
+seems too much to be honest. If you find minor errors and fix them, that's it. That's the new rule, ok? Push back if
+you disagree, but enough is enough."*
+
+- **For all code** (mods, defs, C#, tools, hooks and pipeline machinery), CLEAN is judged against a stated page of
+  promises: `design/specs/<component>/boundary.md`, in the form of §A boundary page before pipeline code. A file is
+  CLEAN when a page names it in its `Code:` line, each promise on that page has a test of the same name, and those
+  tests pass. A later edit stays clean while those tests pass.
+- **"A full-file review finds nothing" is not a pass condition, for any code.** A review record (`mark-clean`) does
+  not make a file CLEAN.
+- **A review gets one round.** The reviewer reports. Fix each claim that breaks a promise, and each minor error that
+  is cheap to fix. Then the review is over: there is no second round and no round that checks the repairs.
+- **A claim that breaks no promise** is one line on `polish.md` beside the page. It is never a ticket.
+- **Code with no page reads NO PAGE, not DIRTY** (the Conductor's reading, delegated, told to him 2026-11-19). It gets
+  its page when someone next changes it, or when it is on a mod's next-step path. Nobody writes pages for untouched
+  code in a sweep. For pipeline machinery, Decision 1 of §A boundary page before pipeline code also says when a page
+  is owed.
 
 ```
-python3 src/RimMandrake/Utils/code_review_status.py check <path>...   CLEAN/DIRTY, with the reason if dirty
-python3 src/RimMandrake/Utils/code_review_status.py mark-clean <path>  only after a full-file review finds nothing — refuses on uncommitted changes
-python3 src/RimMandrake/Utils/code_review_status.py list               every recorded entry and its current state
+python3 src/RimMandrake/Utils/code_review_status.py check <path>...           CLEAN / DIRTY / UNREADABLE / NO PAGE
+python3 src/RimMandrake/Utils/code_review_status.py check --record <path>...  the review record: was a round done on these bytes
+python3 src/RimMandrake/Utils/code_review_status.py mark-clean <path>         record that the one review round is done on these bytes
 ```
 
-- **Fixing a finding does not clean a file.** Only a full-file review returning
-  zero significant findings does, recorded with `mark-clean`.
-  - **Pipeline machinery is under a different rule (owner card, 2026-11-18, answered 11:19 to 11:25 PM PST):** for
-    a file matched by `pipeline_files` in `src/RimMandrake/Utils/pipeline_tests.json`, the two lines above do not
-    apply. Such a file is clean when every promise on its boundary page has a test and it has had its two looks; a
-    later edit stays clean while those tests pass and the page is unchanged. Full text: §A boundary page before
-    pipeline code. Mods, defs, C#, art tooling and every other file keep the rule above.
-- **Diff-scoped (incremental) review is only valid once a file is CLEAN.** Before
-  that first clean mark, review the whole file — never just the diff.
-- A single edit after `mark-clean` makes the file DIRTY again — `check` will say
-  so and name the commits.
-- **Before spending a review on a file, check it is still reachable** — owner,
-  2026-09-03: old scripts sit around long after they stop mattering. A Python
-  file with no importer, no `python3 <it>` in any doc/hook/script, and no CLI
-  entry point is a DEAD-FILE candidate; a `.cs` file dropped from the `.csproj`
-  or with no live caller (reflection-registered bridge tools included — grep
-  the tool-name string, not just C# call sites) is the same. Say what you
-  checked. **Don't delete on a grep alone — verify, then file it** (or drop
-  it, if it's plainly gone) rather than spending a full review on code nobody
-  runs. A file only a human runs by hand can look unused to a naive grep and
+`check` exits 0 CLEAN, 1 DIRTY (a promise has no test, or its tests file fails), 3 UNREADABLE (a page or tests file
+could not be read or run, or a page is not registered in `boundary_check.py` `PAGES`), 4 NO PAGE; over several paths
+the worst answer sets the exit. It runs each naming page's tests file once per call. Its own page:
+`design/specs/2026-11-19-clean-means-promises-tested/boundary.md`.
+
+- **Before you spend a review on a file, check that it is still reachable** — owner, 2026-09-03: old scripts sit
+  around long after they stop mattering. A Python file with no importer, no `python3 <it>` in any doc, hook or script,
+  and no CLI entry point is a DEAD-FILE candidate; a `.cs` file dropped from the `.csproj` or with no live caller
+  (reflection-registered bridge tools included — grep the tool-name string, not just C# call sites) is the same. Say
+  what you checked. **Don't delete on a grep alone — verify, then file it** (or drop it, if it's plainly gone) rather
+  than spending a review on code nobody runs. A file only a human runs by hand can look unused to a naive grep and
   not be.
+- **What this does not change.** The judge rule for mod work (§The judge refuses flaws, not polish: one full
+  inspection, then one check of the repairs) is a separate ruling about mod judges. His stop of 2026-11-18 8:22 PM PST
+  on Codex and GPT reviews of pipeline machinery stands (§A boundary page before pipeline code). "The test is built
+  with the item" and "The pipeline fixes its own defects" stand.
+- **Test that this was applied:** `code_review_status.py check` on a file that no page names reads NO PAGE; on a file
+  whose page has every promise tested and passing it reads CLEAN, with no review record.
 
 ## What is where
 
@@ -1194,12 +1203,8 @@ repair drew new claims [measured, `design/specs/2026-11-18-review-growth-cycle/0
   component gets its page when it is next extended, never in a sweep. One fresh reader that did not write the page
   reads it before code is cut to it. The cost he accepted: *"New code that kills runs goes live in half a day, not
   one hour."*
-- **Decision 2, when pipeline machinery is clean.** Card: *"When is a piece of pipeline code 'clean'?"* He picked
-  *"Promises tested + two looks (Recommended)"*: *"gives review a stopping point ... later edits stay clean while
-  promise tests pass. Costs: needs the boundary page; a real case left off the page is not looked for."* The two
-  looks are one full inspection against the page and one recheck that reads only the repairs. A third look happens
-  only for a new page version. This replaces, for pipeline machinery only, "Only a full-file review returning zero
-  significant findings" cleans a file (§Code isn't clean until a review says so).
+- **Decision 2, when code is clean**, is now his ruling of 2026-11-19 for all code: promises tested, and one review
+  round (§Code is clean when its promises are tested).
 - **Decision 3, the open complaints of 2026-11-18.** Card: *"What do we do with these 18?"* He picked *"Fix only
   real problems (Recommended)"*: *"A complaint that breaks a promise on the list gets fixed. The others go on a
   'later' list."* A claim outside the page goes to `polish.md` or `next_version.md` beside the page as one line: no
@@ -1231,13 +1236,11 @@ repair drew new claims [measured, `design/specs/2026-11-18-review-growth-cycle/0
 - **Changing a page after it has passed** is next-version work: a new accepted input, survived failure or promise is
   written for the next Design Version and never added to the current one's bars. Moving a failure to DOES NOT SURVIVE
   accepts a risk: the Conductor decides it (delegated, logged) and he sees it in the daily digest.
-- **What this does not change.** Code that is not pipeline machinery keeps the old rule whole. "The test is built
-  with the item" and "The pipeline fixes its own defects" stand. 🔴 **His stop of 8:22 PM PST the same evening is not
+- **What this does not change.** "The test is built with the item" and "The pipeline fixes its own defects" stand. 🔴 **His stop of 8:22 PM PST the same evening is not
   lifted by this card:** *"Go ahead and stop the review growth cycle now. I don't want to pay for that anymore."* No
   Codex or GPT review of pipeline machinery runs, and no ticket is filed from a review finding, until the review
   brief of design section 5.3 exists and is calibrated (a later item; the ruling "only a calibrated brief's refusal
-  sends work back" applies). Until then no pipeline file can earn its two looks, and `code_review_status.py check`
-  reading DIRTY on one is the expected state, not a finding.
+  sends work back" applies).
 - **First page (the pilot):** the control store, `design/specs/2026-11-18-pipeline-control-surface/boundary.md`.
 - **Test that this was applied:** a new pipeline component has a `boundary.md` committed before its first code
   commit; a review finding on pipeline machinery quotes a page entry or sits on a later list.

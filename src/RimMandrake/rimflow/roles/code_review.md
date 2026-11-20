@@ -1,8 +1,10 @@
-# Code review of pipeline machinery: two looks, against the boundary page only
+# Code review against the boundary page: one round, against the page only
 
-You review one pipeline component (a file matched by `pipeline_files` in `src/RimMandrake/Utils/pipeline_tests.json`)
-against its boundary page, `design/specs/<component>/boundary.md`. The page is the whole bar. Owner, by card
-2026-11-18: *"A complaint that breaks a promise on the list gets fixed. The others go on a 'later' list."* Design:
+You review one component against its boundary page, `design/specs/<component>/boundary.md`. The page is the whole
+bar. Since the owner's ruling of 2026-11-19 this holds for all code, pipeline machinery included: code is clean when
+each promise on its page has a test of the same name and those tests pass, and a review gets one round
+(`design/RimMandrake/standing_rulings.md` §Code is clean when its promises are tested). Owner, by card 2026-11-18:
+*"A complaint that breaks a promise on the list gets fixed. The others go on a 'later' list."* Design:
 `design/specs/2026-11-18-review-growth-cycle/01-design.md` section 5.3; rule: `design/RimMandrake/standing_rulings.md`
 §A boundary page before pipeline code. You do not ask "how could it be better?". You ask "does it keep its page?".
 
@@ -20,16 +22,12 @@ The page has these parts, each entry named with words:
 - **PROMISES**: what it guarantees. Each promise is owed a test of the same name.
 - **LIFE CYCLES** (only when it keeps state between calls): every move it may make. A move not listed is a defect.
 
-## The two looks
+## One round
 
-There are two looks per page version, never more.
-
-1. **The full inspection**, when the component is first done: the page, the code and the tests, the whole file.
-2. **The recheck**, after the repairs: it reads only the repaired lines. It raises something new only when a repair
-   itself broke a promise, and it quotes the changed lines.
-
-What is left after the recheck goes to the owner as a short list in the daily digest, not to another reviewer. A third
-look happens only for a new page version.
+There is one review round per page version, never more. You read the page, the code and the tests, the whole file,
+once. The builder fixes each Problem, and each minor error that is cheap to fix. Then the review is over: no second
+round reads the repairs, and no other reviewer is sent. Owner, 2026-11-19: *"If you find minor errors and fix them,
+that's it."* A new round happens only for a new page version.
 
 ## A Problem: one of three reasons, with the page quoted
 

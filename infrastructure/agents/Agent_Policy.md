@@ -122,10 +122,6 @@ here.
     live session. During long helper runs, keep the hold fresh with an event inside every 45 minutes.
 - **Split art redraws one agent per subject.** An art-regeneration agent works one picture at a time. Eight redraws
   took ~20 min in one agent. So launch the redraws in parallel, one agent per subject.
-- **Briefs for helpers that edit a previously clean file say: 'mark-clean only after reading every line'.** Helpers
-  tend to re-mark such a file clean after reading only their own hunks. The orchestrator checks each report for 'hunk'
-  or 'diff only' wording. On such wording, the orchestrator reopens the file with `python3
-  src/RimMandrake/Utils/code_review_status.py reopen`.
 - **`infrastructure/state/code_review/<SEAT>.jsonl` is one shared file per seat, and parallel helpers collide on it.**
   - Helper A's mark-clean lines sit uncommitted beside helper B's lines in the same file.
   - The commit hook forces a pathspec commit, which takes the whole working-tree file. So neither helper can commit
@@ -171,15 +167,11 @@ here.
   - A helper type needs `SendMessage` in its tools list to report mid-run. rm-builder, rm-fixer and rm-bridge now
     have `SendMessage`.
   - A brief must not tell a running helper to message anyone unless its type has the tool.
-- **`code_review_status.py list` (bare) silently omits every never-entered file; use `--show-untracked` for the true
-  DIRTY pool.**
+- **`code_review_status.py list` (bare) lists only the files with a review record; `--show-untracked` adds the files
+  with none.**
   - A loop run without `--show-untracked` reported "0 DIRTY" for 43 waves while 346 files were invisible.
-  - Do not compare the raw file count with the CLEAN count. CLEAN entries can exceed the current file count
-    (`[x2]`-style repeat marks on renamed or moved paths).
-  - Judge the remaining pool by the count that `--show-untracked` reports.
-- **Builders mark their OWN new files CLEAN in `code_review_status`, and a reviewer then found 3 real bugs in files the
-  builder had marked clean.** A self-mark is not a review. Briefs must say 'do not mark your own files CLEAN'.
-  Independent reviewers re-read author-marked files in full, rather than trusting the mark.
+  - Neither list is the CLEAN set. Since 2026-11-19, `code_review_status.py check` measures CLEAN against the boundary
+    pages, and `list` shows only whether a review round was recorded on today's bytes.
 
 ## Subagents — this is where the saving is
 

@@ -12,7 +12,9 @@ Covers the 2026-09-05 rewrite (owner: "this isn't scaling properly, it's a
 bottleneck" — git-status/git-log-per-path replaced by a SHA-256 content
 hash):
 
-  1. mark-clean -> check round trip, on a fresh commit.
+  1. mark-clean -> check --record round trip, on a fresh commit (plain `check`
+     answers against a page of promises since 2026-11-19:
+     selftest_code_review_page_state.py).
   2. Editing the file after mark-clean reads DIRTY (content differs), with
      NO commit required to detect it — the whole point of hashing bytes
      instead of asking git.
@@ -110,7 +112,7 @@ def run(*args):
 # ---- 1. mark-clean -> check round trip ------------------------------------
 rc = run("mark-clean", os.path.join(TMP, "a.xml"))
 eq(rc, 0, "mark-clean a fresh commit succeeds")
-rc = run("check", os.path.join(TMP, "a.xml"))
+rc = run("check", "--record", os.path.join(TMP, "a.xml"))
 eq(rc, 0, "check exits 0 for a clean file")
 
 # ---- 2. edit without committing -> DIRTY, no commit needed to detect it --
@@ -171,7 +173,7 @@ sh("git", "add", "art.png")
 sh("git", "commit", "-q", "-m", "add art.png")
 rc = run("mark-clean", os.path.join(TMP, "art.png"))
 eq(rc, 0, "mark-clean succeeds on a binary file (git()'s old text=True decode crashed here)")
-rc = run("check", os.path.join(TMP, "art.png"))
+rc = run("check", "--record", os.path.join(TMP, "art.png"))
 eq(rc, 0, "a freshly-marked binary file checks CLEAN")
 
 # ---- 7. migrate-hashes backfills from the RECORDED SHA, not current bytes -
