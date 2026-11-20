@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":7450,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"STEWARD":2597} body_sha256=572988d3aab24ad7aef47af31a481da63e2c0d0e21267d478a78e437497d8b98 -->
-# FlowWorks — mod ledger history (1294 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":7829,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"STEWARD":2597} body_sha256=122de35e440bb8157bd25d08823d3476e6fc3b18a5aecbd1e0c527d940e9be77 -->
+# FlowWorks — mod ledger history (1295 events, merged across shards)
 
 - 2026-11-16T07:16:23Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 55 of 57 bars met at the lock
 - 2026-11-16T07:16:23Z BACKFILL#2 decision version v0.1.0: 
@@ -1295,3 +1295,4 @@
 - 2026-11-19T23:58:30Z BACKFILL#1099 finding.open finding:TANK_LOOKS_WIRE_FOUR_STYLE_SWITCH v0.1.0: Built FlowWorks tanks lacked a switch for their four looks; the tanks had style defs, 16 look PNGs and the build-button picker, but no Choose style gizmo on a BUILT tank.
 - 2026-11-19T23:58:30Z BACKFILL#1100 decision finding:FLOW_SOURCE_SINK_BUILD_TAPS_FOR_MAPMAKERS v0.1.0: 
 - 2026-11-19T23:58:30Z BACKFILL#1101 decision finding:TANK_LOOKS_WIRE_FOUR_STYLE_SWITCH v0.1.0: 
+- 2026-11-20T00:27:37Z DISPATCH#23 run.start run v0.1.0: 
