@@ -119,6 +119,19 @@ def writer():
                        env=dict(os.environ, RM_PRIORITY_LIST=str(TMP / "writer" / "cli.json")), capture_output=True, text=True)
     check("the tool refuses an item the ledger does not hold", r.returncode == 1 and "NO_SUCH_ITEM_X" in r.stderr
           and not (TMP / "writer" / "cli.json").exists(), r.stdout + r.stderr)
+    # `add` beside a finished entry drops that entry by itself (it once refused the whole add until a full `set`)
+    led = d / "events.jsonl"
+    (d / "events").mkdir()
+    (d / "events" / "BENCH.jsonl").write_text("".join(json.dumps(e) + "\n" for e in (
+        filed("ITEM_DONE_A"), filed("ITEM_OPEN_B"), filed("ITEM_NEW_C"),
+        dict(seat="BENCH", event="close", id="ITEM_DONE_A", sha="abc", ts="2026-10-02T00:00:00Z"))), encoding="utf-8")
+    lst = d / "add.json"
+    lst.write_text(json.dumps(doc([entry("ITEM_DONE_A"), entry("ITEM_OPEN_B")], by="Conductor")), encoding="utf-8")
+    r = subprocess.run([sys.executable, str(HERE / "priority_list.py"), "add", "ITEM_NEW_C", "--mod", "ModA", "--by", "Conductor"],
+                       env=dict(os.environ, RM_PRIORITY_LIST=str(lst), RIMFLOW_LEDGER=str(led)), capture_output=True, text=True)
+    got = [e.get("id") for e in json.loads(lst.read_text(encoding="utf-8")).get("entries") or []]
+    check("add drops a closed entry by itself and names it", r.returncode == 0 and got == ["ITEM_OPEN_B", "ITEM_NEW_C"]
+          and "ITEM_DONE_A" in r.stdout, (got, r.stdout + r.stderr))
 
 
 # ---------------------------------------------------------------- the alarms: the real pass under the shipped rules
@@ -190,11 +203,25 @@ def alarms():
     check("a stale list reads distressed", k["plan.list_age_h"]["class"] == "distressed" and k["plan.distressed"]["v"] == 1, k.get("plan.list_age_h"))
     check("a stale list files the alarm", len(tagged(fired, "PLAN_DISTRESS")) == 1, fired)
 
+    # RIMMANDRAKE_PRUNE_PRIORITY_LIST_CLOSED_ENTRY_STALLS_PLAN: a finished entry once held PLAN_DISTRESS open 7 days (the
+    # fourth time) and hid real distress. A finished entry drops by itself; only a list with no open entry left alarms.
     lay(done=["ITEM_LISTED"])
     put(DATA, doc([entry("ITEM_LISTED"), entry("ITEM_OTHER")]))
     k, fired, _ = go()
-    check("a closed entry reads distressed", k["plan.list_state"]["v"] == "closed_entry" and k["plan.list_state"]["class"] == "distressed", k.get("plan.list_state"))
-    check("a closed entry files the alarm and is named", len(tagged(fired, "PLAN_DISTRESS")) == 1, fired)
+    p = k["plan.list_state"]
+    check("a closed entry beside an open one reads sane and files nothing", p["v"] == "ok" and p["class"] == "sane"
+          and k["plan.distressed"]["v"] == 0 and not tagged(fired, "PLAN_"), (p, fired))
+    check("the dropped entry is named on the reading", "ITEM_LISTED" in json.dumps(p.get("x") or {}), p)
+    check("the open entry is still read for advance", list(((k["plan.days_since_advance"].get("x") or {}).get("per_entry") or {}))
+          == ["ITEM_OTHER"], k["plan.days_since_advance"])
+
+    lay(done=["ITEM_LISTED", "ITEM_OTHER"])
+    put(DATA, doc([entry("ITEM_LISTED"), entry("ITEM_OTHER")]))
+    k, fired, _ = go()
+    p = k["plan.list_state"]
+    check("a list with every entry closed reads spent, distressed", p["v"] == "spent" and p["class"] == "distressed", p)
+    check("a spent list files the alarm and names its entries", len(tagged(fired, "PLAN_DISTRESS")) == 1
+          and "ITEM_OTHER" in json.dumps(p.get("x") or {}), (p, fired))
 
     lay()
     k, fired, _ = go()

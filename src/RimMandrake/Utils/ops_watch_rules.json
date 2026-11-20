@@ -65,7 +65,7 @@
    "owner": "Producer",
    "ack_within_min": 30,
    "max_age_min": 30,
-   "why": "DI3: a list missing, torn, too long or holding a closed entry is a plan nobody is obeying; the ring and the pool have fallen back or are spending a place on nothing.",
+   "why": "DI3: a list missing, torn, too long or spent (no open entry left) is a plan nobody is obeying; the ring and the pool have fallen back. A closed entry beside open ones drops by itself (RIMMANDRAKE_PRUNE_PRIORITY_LIST_CLOSED_ENTRY_STALLS_PLAN).",
    "classes": {"sane": {"in": ["ok"]}, "distressed": {"otherwise": true}}
   },
   "plan.list_age_h": {

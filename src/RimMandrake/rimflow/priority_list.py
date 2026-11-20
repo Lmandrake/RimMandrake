@@ -10,7 +10,8 @@ infrastructure/state/priority_list.json, written by Producer or Conductor throug
 Only the Dispatcher's ring (`rimflow next`) and relentless's pool order by it. A listed item goes ahead of everything
 else on those two paths, raised items included; an item `rimflow raise` puts up that is not listed keeps its place
 behind the list and ahead of the rest. A list that is missing, torn or too long gives no order, so both paths keep
-today's; ops_watch's `plan` family reads that as distressed. Age and advance limits are the ranges block of
+today's; ops_watch's `plan` family reads that as distressed. A listed item that has closed drops by itself: no reader
+orders by it, `add` removes it, and ops_watch reads distress only when no open entry is left (a spent list). Age and advance limits are the ranges block of
 Utils/ops_watch_rules.json (plan.list_age_h, plan.days_since_advance), never here.
 
     python3 src/RimMandrake/rimflow/priority_list.py show
@@ -213,6 +214,8 @@ def main(argv=None):
     a.add_argument("--mod", required=True, help="the mod whose modcheck status is this entry's finish line")
     a.add_argument("--by", required=True, choices=WRITERS)
     args = ap.parse_args(argv)
+    if os.environ.get("RIMFLOW_LEDGER"):        # the redirect cli.py's _bind_paths makes, so a selftest reads its own
+        model.EVENTS = os.environ["RIMFLOW_LEDGER"]
     root = model.ROOT
     cur = load(root)
     if args.cmd == "show":
@@ -230,6 +233,13 @@ def main(argv=None):
         print("REFUSED: the entries are not a list", file=sys.stderr)
         return 1
     world = model.replay(model.read())
+    if args.cmd == "add":
+        # RIMMANDRAKE_PRUNE_PRIORITY_LIST_CLOSED_ENTRY_STALLS_PLAN: a finished entry already on the list drops by itself;
+        # it once refused the whole add until somebody wrote a full `set`
+        gone = closed_entries(cur["entries"], world, model.OPEN_STATES)
+        if gone:
+            entries = [e for e in entries if entry_key(e) not in gone]
+            print("dropped closed: %s" % ", ".join(gone))
     try:
         dead = closed_entries([e for e in entries if isinstance(e, dict) and (e.get("id") or e.get("row"))], world, model.OPEN_STATES)
         if dead:

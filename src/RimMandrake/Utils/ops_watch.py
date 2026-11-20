@@ -2570,8 +2570,10 @@ def c_plan(now, rules, ctx):
     else:
         pts["plan.list_age_h"] = U(got["why"], "h")
     closed = PL.closed_entries(entries, world, model.OPEN_STATES) if world is not None else []
-    if closed:
-        state = "closed_entry"
+    # RIMMANDRAKE_PRUNE_PRIORITY_LIST_CLOSED_ENTRY_STALLS_PLAN: a finished entry drops by itself (it held PLAN_DISTRESS
+    # open 7 days, the fourth time, and hid real distress); a list with no open entry left is spent, and that alarms
+    if closed and state == "ok" and len(closed) == len(entries):
+        state = "spent"
     p = ops_dir() / "plan_advance.json"
     kept = read_json(p) if p.exists() else {}
     if not isinstance(kept, dict):
@@ -2585,7 +2587,7 @@ def c_plan(now, rules, ctx):
     if world is not None and days:
         since = min(new[k]["rose_t"] for k in days)
         closes = sum(1 for ev in evs if ev.get("event") == "close" and (epoch(ev.get("ts")) or 0) >= since)
-    pts["plan.list_state"] = M(state, why=(got["why"] or ", ".join(closed)))
+    pts["plan.list_state"] = M(state, why=(got["why"] or ", ".join(closed)), dropped_closed=closed)
     if days:
         pts["plan.days_since_advance"] = M(max(days.values()), "days", per_entry=days, closes=closes)
     else:
