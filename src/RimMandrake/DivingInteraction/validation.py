@@ -492,8 +492,8 @@ def grey_floor_is_a_place(t):
     """A map made on the Grey Sea's floor tile runs the Grey generator and shows pillars, flora and cast."""
     plants, cast = _roster("wildPlants"), _roster("wildAnimals")
     with t.component("grey_roster_read_offline", beyond_toggle=True):
-        # sanity probe: the instrument sees the ruled roster (16 plants, 17 animals on 2026-10-06)
-        if len(plants) < 10 or len(cast) < 10 or "RM_Fessk" not in cast:
+        # sanity probe: the instrument sees the ruled roster (17 plants, 9 animals since the 2026-10-18 sallik cut)
+        if len(plants) < 10 or len(cast) < 5 or "RM_Fessk" not in cast:
             raise ExpectationFailed("RM_GreySea roster misread: %d plants, %d animals" % (len(plants), len(cast)))
     state = {}
     with t.component("grey_floor_map_generates", beyond_toggle=True):
