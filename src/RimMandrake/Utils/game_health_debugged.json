@@ -58,6 +58,16 @@
    ],
    "session": "dc55a1095512450da3377ac72992847d",
    "why": "explain names every key: mem.* = reload ratchet over 57 loads (heap_ratchet reload_ratchet r2 0.993; HEAP_BISECT_RELOAD_RETAINERS_59_MB_SLOPE, growth scope RIMMANDRAKE_SCOPE_HEAP_GROWTH_TO_ONE_GAME_SIX_LOADS); log.errors = 780 Pawn.Tick + 447 PawnTweener NREs in the knockback raid walk (this item)"
+  },
+  {
+   "at": "2026-11-20T06:22:30Z",
+   "item": "OPS_GAME_HEALTH_DEBUG_PXQI",
+   "keys": [
+    "mem.managed_growth_mb_per_h",
+    "tps.stall_max_s"
+   ],
+   "session": "06c6824f570940a7bfcb3d1e562cf5e6",
+   "why": "Test session of the GSS visit-two helper, not play: 41 min, never unpaused (no run window), 4 game loads in 35 min (2 new games on a 250x250 RM_TheRot, 2 gsspt saves). managed_growth 1295 MB/h is load churn, flat by 30 min (known reload ratchet, HEAP_DIAGNOSE_RELOAD_RATCHET_NOT_MAP_SCALE). stall 107 s: one event at 04:41-04:43Z, paused, main thread busy in update before the first gsspt run; mainStack capture failed (NotImplementedException), so cause UNMEASURED. No repeat; a stall over 30 s in a played session rings again."
   }
  ]
 }
