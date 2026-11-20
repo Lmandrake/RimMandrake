@@ -58,8 +58,8 @@ Not run in a basic checkout and never blocks one; run only when requested (desig
 
 ## north star
 state: VALIDATED
-validated-hash: d11b172d8faccb2b62e21a0c8eddc66af6cb89afa6949cc3db18eaf9c2a5a2c0
-validated-by: BY CARD: Pit sink 0.05 per half metre against the older 'walls 20% above the head' check: which stands? → Keep 0.05, retire the 20% rule; the old check (X4 in validation_v2.py) is rewritten to follow 0.05
+validated-hash: 1b7f5fcce4a0e3ac13afb2943daaa767637838be428c87a80cdc05ccf1948ef7
+validated-by: PER RULING CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: Conductor's instruction 2026-11-19 (item RIMMANDRAKE_CLEAR_FLOWWORKS_PAPERWORK_TO_GAME_ONLY_ROAD, under RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS): 'both stay in 0.1.0; add one north-star line each, plain sentences about what the player sees, then re-validate as the Conductor's act' (inv_prison_no_bed, inv_toss_flame, his cards of 2026-11-04); inv_geyser_tub and inv_liquid_coating 'stay in 0.1.0 too' (his card of 2026-11-14 'Bars for all four now'). Four bars added from the locked tree leaves and record.json text; none removed or edited.
 
 The `state:` line above is authoritative;
 `design/RimMandrake/north_star_validation_spec.md` defines what each state means, and a
@@ -341,6 +341,18 @@ enough. **A future pass must not re-add an irrigation line as an oversight.**
 - [ ] `ice_cuts_to_crushed_ice_that_melts` (change) — cutting ice ground leaves a pile of crushed ice, which over time visibly melts away to water while its room grows colder.
 - [ ] `digging_takes_hours` (change) — digging or filling one square of ditch by shovel takes a pawn hours of game time, not moments; raiders filling a trench carry the fill in first.
 
+**The hole as a prison, the flame from the rim, the geyser tub and the coating**
+- [ ] `drained_hole_is_a_prison` (change) — the player clicks capture from the rim on a raider held in a drained moat or
+      a pit with no prisoner bed there, and the raider becomes a prisoner held in that hole, fed and kept like any
+      prisoner.
+- [ ] `toss_flame_from_rim` (change) — the player picks a square of a burnable canal, moat or pit; a colonist walks to
+      the rim and tosses a flame onto that square, and the liquid there lights.
+- [ ] `geyser_pit_is_a_hot_tub` — a pit dug on a geyser keeps the geyser at its bottom; once water or another harmless
+      liquid covers the vent it bubbles there, the pit reads Hot Tub on mouse-over, and pawns nearby bathe in it; a
+      geyser beside the water rather than under it heats nothing.
+- [ ] `liquid_coating_washes_off` (change) — a pawn who comes out of oil, tar, blood or another staining liquid carries
+      it as a named condition with a clean look, and walking into normal water plainly washes it off.
+
 ### cannot show
 
 - [ ] `never_liquid_on_open_ground` — liquid standing on undug ground outside both the
@@ -455,6 +467,10 @@ enough. **A future pass must not re-add an irrigation line as an oversight.**
 | `pump_hose_joins_at_side_port` | owner 2026-10-18, "a more squarish device with a clear place for pumps to join … connectable from any angle"; he typed 2026-10-20 (correcting the card "One port per side, either kind"): *"No. a HOSE must connect at one of the four sides. A solid pipe must only be adjacent and is then drawn undernead to the center of the object as ruled previously."* Renamed from `pump_port_takes_pipe_or_hose` (earlier `pump_port_takes_pipe_and_hose`), which made a pipe take a port |
 | `ice_cuts_to_crushed_ice_that_melts` | owner rulings 2026-10-25, ICE_YIELD_DECIDE_ONE_CUT_FOUR_NOTCHES and ICE_MELT_TAME_STACK_FLOOD; card "North star: add the two orphan bars → Add both lines as drafted (Recommended)" 2026-10-26 |
 | `digging_takes_hours` | DIG_FILL owner card 2026-10-25: *"Everyone pays and it's backbreaking work. Like real life. Digging a ditch or filling a ditch takes hours."*; added by card 2026-10-26 |
+| `drained_hole_is_a_prison` | his card of 2026-11-04 (ask_prisoner_click): *"you click 'capture' from the rim as now, but a drained moat (or pit) counts as a prison without a bed."*; locked bar `inv_prison_no_bed`; vision line 4 |
+| `toss_flame_from_rim` | his card of 2026-11-04 (ask_match): *"a new order where a colonist walks to the rim and tosses a flame onto the square the player picks."*; locked bar `inv_toss_flame`; vision line 4 |
+| `geyser_pit_is_a_hot_tub` | his card of 2026-11-14, "Bars for all four now" (OWNER:1794693278631337978); bar `inv_geyser_tub` |
+| `liquid_coating_washes_off` | his card of 2026-11-14, "Bars for all four now" (OWNER:1794693278631337978); bar `inv_liquid_coating` |
 
 ## proposed bars (NOT hash-bound — proposals for his sitting)
 
