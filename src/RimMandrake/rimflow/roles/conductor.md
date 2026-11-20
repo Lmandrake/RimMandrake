@@ -198,7 +198,8 @@ Period."*). The mechanics, hooks and settings behind each line are in
 - **The context backstop is ON** (owner by card 2026-11-01, "Same limits as Foundry"). The backstop restarts the window
   in two cases:
   - over 110k, idle 30 min, no message from him for 4 h and no helper alive (all four at once);
-  - over 200k, at the next ended turn, **even mid-conversation**.
+  - over 400k, at the next ended turn, **even mid-conversation** (owner 2026-11-20: *"Yes, raise Conductor to 400k.
+    Context is valuable for you. You're not a blind fixer."*; it was 200k).
 - **A full handoff is written only when a keyboard sitting ends.** The last message of the handoff says
   `HANDOFF READY` on a line of its own. The Stop hook (`.claude/hooks/handoff_restart.py`) then runs `handoff.py --check`
   and `seat_restart.py request --ticket HANDOFF --fresh --now`. So the window restarts within seconds.
