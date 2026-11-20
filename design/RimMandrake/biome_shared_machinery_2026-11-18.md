@@ -124,12 +124,16 @@ leash"*; whether that is still the ship layer in use was not checked.
 | biome | class | the source | who sells | built? |
 |---|---|---|---|---|
 | **The Abyss** | richer, and the hide burns it | tholin swept after etchfall | nobody (*"No salvage. No sun. No trade."*) | Yes: the refining recipe is in `src/RimMandrake/Abyss/`. |
-| **The Greentide** | richer (the sheet's *"the dayside's fuel economy"* could carry replete; his word) | resin; and greenwood for the slow route | Jawa crawlers at the band's edge; the Wildsteam's seats (campaign) | Harvests yes; recipe and sellers no. Its blower burns chemfuel (built). |
-| **The Fever Wood** | richer | seep-oil, standing inside a pool's reach | Sporefall's Wildsteam traders (campaign) | Harvest yes; recipe and sellers no. |
-| The Blue Desert *(search only)* | richer; its design says the propane lakes, *"one step colder"*, are the replete source | cold wax from every plant and carcass, refined cold | nobody | Per its design. |
-| The Lantern Deeps *(search only)* | richer | the candler's cold wax, *"burns like chemfuel and needs no refinery"* | nobody, per its design | Per its design. |
-| The Sump *(search only)* | richer | tar | per its design | Its design says rendering tar to ship fuel is not built. |
+| **The Greentide** | the slow route and buying (his fuel answer of 2026-11-19) | greenwood for the slow route; resin and green wood are goods | Jawa crawlers at the band's edge; the Wildsteam's seats (campaign) | Harvests yes; recipe and sellers no. Its blower burns chemfuel (built). |
+| **The Fever Wood** | richer (his fuel answer of 2026-11-19) | seep-oil, standing inside a pool's reach | Sporefall's Wildsteam traders (campaign) | Harvest yes; recipe and sellers no. |
+| The Blue Desert *(search only)* | the slow route and buying (his fuel answer of 2026-11-19); the Chill, *"one step colder"*, is the replete source | cold wax from plants and carcasses, rendered at the slow rate | nobody | Per its design. |
+| The Lantern Deeps *(search only)* | the slow route and buying (his fuel answer of 2026-11-19) | the candler's cold wax, at the slow route's rate | nobody, per its design | Per its design. |
+| The Sump *(search only)* | richer (his fuel answer of 2026-11-19) | tar at the found refinery | per its design | Its design says rendering tar to ship fuel is not built. |
 | The Sleeping Ice *(search only)* | emergency route only, *"and barely that"* | carcasses and what was carried in; a few salvaged cylinders | `UNSETTLED` in its design | Per its design. |
+
+**His answer of 2026-11-19** (card, `biome_rulings.md` §Five biome answers, 3): the richer sources are the Abyss,
+the Fever Wood and the Sump; the Chill's beach is replete; every other biome, the Cauldron, the Wastes and the
+Webwork included, has the slow route and buying.
 
 Two cautions for whoever builds this. A biome is written as rich only where a source line supports it (his
 instruction in the brief for these rewrites). And the two wax biomes above describe what reads like the same stuff:
@@ -143,37 +147,38 @@ and one more thing each design must state. Recommended: it answers your 'what he
 every biome."* On how long a stop then lasts: *"The numbers you're generating are likely the outer edge allowable
 for each biome, and that's just fine. Go with that."*
 
+**His card of 2026-11-19, which replaces the "full dark still pauses it" half** (`biome_rulings.md` §Five biome
+answers, 1): *"Full dark is one step, like fog; canopy, steam, fog and rock walls one step each, added."* The
+Abyss's Dark and the sea floor are the top level, and nothing pauses the search for good. Cover is what is on the
+tile at that moment.
+
 **What exists.** The pursuit (`src/RimUtinni/EmpirePursuit/`) has one list, `surveyShadowBiomes`, with one biome on
 it (`RM_Abyss`), and one multiplier for it (four). The crew's visibility (`src/RimMandrake/Visibility/`) sets the
 pace in five bands: hidden, discreet, noticed, marked, exposed, with each wait multiplied by 2, 1.4, 1, 0.7 and 0.5
 (`EmpireLadderMath.cs`, whose header marks every number provisional). The Abyss adds a ship that gathers cover
 while quiet, dark and cold-engined (`RM_MapComponentShipCover`).
 
-**What is missing, and is the build.** A second, weaker list: biomes with partial cover. The three pilot designs
-read "one step" as one visibility band quieter, because bands are the only steps the search has; that is a reading
-and is flagged on each choices page. On today's numbers it turns a stop of about a month at the outside into one of
+**What is missing, and is the build.** A second, weaker list: biomes with partial cover, one step per kind of cover on the tile, added. One step is one
+visibility band quieter (the card of 2026-11-19 defined a step as one level, each wait about 1.4 times longer). On today's numbers it turns a stop of about a month at the outside into one of
 about six weeks. A loud crew loses the step.
 
 | biome | cover | why | outer edge of a stop, as its design states |
 |---|---|---|---|
 | **The Abyss** (featured) | full | permanent Dark; on the built list | about two months before first contact; longer while the ship's own cover holds |
-| **The Greentide** | partial | canopy and steam, together one step | about six weeks |
+| **The Greentide** | partial | canopy and steam, two steps added; a clearing takes the steam's step while it lasts | longer than six weeks; per its design |
 | **The Fever Wood** | partial | closed crown | about six weeks |
-| The Sump *(search only)* | partial | deep dusk, not full dark | per its design |
-| The Sleeping Ice *(search only)* | partial, for a ship run cold; asks whether its sunless night is full dark | | 28 to 45 days one step quieter |
-| The Blue Desert *(search only)* | its design claims full dark | never sees the sun | per its design |
-| The Lantern Deeps *(search only)* | the surface host's; asks whether that dark pauses the search as built | | per its design |
+| The Sump *(search only)* | partial | fog on fog days; the dusk adds a step only where the sun's angle measures full dark | per its design |
+| The Sleeping Ice *(search only)* | partial: full dark, one step | never sees the sun | 28 to 45 days one step quieter |
+| The Blue Desert *(search only)* | partial: full dark, one step; a blast takes it while it lasts | never sees the sun | about six weeks |
+| The Lantern Deeps *(search only)* | the surface host's full dark, one step | the ship sits on a night-side host | about six weeks |
 
 ## Questions left that are one question across all the biomes
 
 The two this file used to end on are answered above. These came out of applying the answers.
 
-1. **Which sunless places are "full dark"?** Only the Abyss is on the built list, and its Dark is a substance. The
-   Blue Desert's design claims full dark, the Sump's takes one step, the Sleeping Ice's and the Lantern Deeps' each
-   ask. One ruling settles four designs: is the plain night side full dark, or only the Abyss?
-2. **Is "one step" one visibility band?** All three pilot designs assume so.
-3. **Which version are the richer sources' recipes in?** His words give none. The pilot designs put an unbuilt
-   recipe in 0.2.0 and leave a built one (tholin) where it is.
+Questions 1 to 3 here (which sunless places are full dark, whether one step is one band, and which version
+holds the richer recipes) were answered by his cards of 2026-11-19 (`biome_rulings.md` §Five biome answers).
+
 4. **Does a running shield give the ship away?** Asked by the Abyss's design, where light is what breaks cover.
    Assumed not.
 

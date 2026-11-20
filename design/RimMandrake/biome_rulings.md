@@ -210,3 +210,111 @@ position; its hot air is its temperature. Full text: `standing_rulings.md` §Dir
 ## Natives drink their own environmental water — owner, 2026-11-01
 
 *"Yes, natives should drink their own environmental water. That's a ruling for all Baroque Biomes, period, including this one."* A native creature standing in or beside its biome's own water (the Scald's boil included) must not accrue thirst/dehydration from it; applies to every Baroque Biome. Consequence for the player is unchanged (Scald ban 1, never potable). First finding: `SCALD_NATIVES_THIRST_PROBE_PARCHED_LAKESIDE`; a roster-wide audit is filed as `NATIVES_DRINK_OWN_WATER_AUDIT_EVERY_BIOME`.
+
+## Five biome answers by card — owner, 2026-11-19, 11:20 to 11:24 PM PST
+
+He answered five cards in one sitting. The card store held no copy; the cards and his picks are read from the
+Conductor window's session (`66b3b472-803f-4aa2-a899-c6cd70eb7752`, tool results 2026-11-20T07:20:37Z and
+07:24:01Z). The ledger event is OWNER tsn `1795159482276691000` on item
+`RIMMANDRAKE_ENACT_FIVE_BIOME_ANSWERS_INTO_26_DESIGNS`; it stamps card 1 only, and its "10:17 PM PST" is one hour
+early against those timestamps. He typed no words of his own on any of the five. The 26 biome designs carry these
+answers in their `Answered on 2026-11-19` sections.
+
+### 1. Cover from orbit: one step each, and steps add up
+
+Card: *"After each landing the Empire searches for the ship from orbit, up a ladder: probe droid, scouts, strike
+team. The game has five levels of how hidden a crew is; one level more makes each wait about 1.4 times longer. On
+2026-11-18 you ruled that canopy, steam and fog each slow the search one step, and that the Abyss's Dark and the sea
+floor are 'VERY concealed. But nowhere pauses it indefinitely.' Two things are open: what ordinary full darkness is
+worth on the side where the sun never rises, and whether two kinds of cover add up. I then apply one reading to every
+case: cover is what is on the tile at that moment. ... Which cover scale do you want?"*
+He picked **"One step each, they add up"**: *"Why: each place earns what it has. Full dark is one step, like fog;
+canopy, steam, fog and rock walls one step each, added. Buys: where you land is a real choice everywhere. Costs: the
+plain night side is only a little safer than day; a stop there runs about six weeks. Recommended: it keeps your 'no
+biome a free hideout'."*
+
+- One step is one level of the crew's visibility: each wait of the search is about 1.4 times longer.
+- Ordinary full dark is one step. How dark a tile is comes from the sun's angle at that tile (a measurement).
+- Canopy, steam, fog and rock walls are one step each. Steps on the same tile add up.
+- The Abyss's Dark and the sea floor are the top level. No sum of ordinary steps goes past the top level.
+- Nothing pauses the search for good. No biome is a free hideout.
+- Cover is what is on the tile at that moment: fog counts on fog days; a blast, a Burn, an Unveiling or a lit ship
+  takes away the dark or the cover while it lasts.
+
+### 2. A biome's first version: one signature that a stop is sure to see
+
+Card: *"Each biome mod has a first version (0.1.0) and a next one (0.2.0). On 2026-11-17 you picked 'Land, life, one
+signature' for the first version: terrain, plants, animals, weather, and exactly one signature mechanic. On
+2026-11-18 you asked that every design be seen through the Jawa ship on the run, as 'the overriding priority'. The
+rewrites then brought many 'did you see that?' moments back into first versions; the Leaning Scrub keeps nearly all
+thirteen. Seven designs ask the same thing. How much goes into each biome's first version?"*
+He picked **"One signature a stop surely sees"**: *"Why: it keeps both rulings. Land and life, the ship's three
+shared systems (cover, hull wear, fuel), and one signature a normal stop must see; the rest goes to 0.2.0. Buys: the
+smallest build that can pass. Costs: several of your own picks wait a version and some designs need a re-cut.
+Recommended: it keeps your 11-17 hard edge."*
+
+- A biome's 0.1.0 holds land, life, the ship's three shared systems (cover, hull wear, fuel) and one signature.
+- A normal stop must see the signature. Each design names its signature and says why a stop is sure to see it.
+- Everything else goes to 0.2.0, with its text kept. A moment that the rewrites of 2026-11-18 moved into 0.1.0 goes
+  back to 0.2.0 unless it is part of the signature or one of the three shared systems.
+- Picks of his that are not the signature also wait for 0.2.0. The card named that cost.
+
+### 3. Rich fuel: three of the strongest, and the Chill stays replete
+
+Card: *"You ruled on 2026-11-18 that most biomes have only the 'hideously slow' fuel route (plants and carcasses,
+for emergencies), that 'A few biomes have richer sources', and that buying fuel is 'the intended motivation to have
+to trade constantly'. Nine of the 26 designs now claim a richer source: the Abyss, Blue Desert, Cauldron, Fever Wood,
+Greentide, Lantern Deeps, Sump, Wastes and Webwork. Two more name a candidate. Only one richer recipe is built: the
+Abyss's tholin. The Chill's frozen beach stays the one place full of fuel. How many richer fuel sources do you
+want?"*
+He picked **"Three or four strongest"**: *"Why: trade stays the main route. The pick is the Abyss (built), the Fever
+Wood (your fuel card named its seep-oil) and the Sump (your story card calls it the fuel route). Buys: fewer builds,
+and trade matters. Costs: six designs lose a draw and need another reason to visit. Recommended: 'a few' and 'buy
+it' are your words."*
+
+- Richer sources: the Abyss (tholin), the Fever Wood (seep-oil), the Sump (tar at the found refinery).
+- Replete: the Chill's frozen beach.
+- Every other biome has the slow route (biomass rendered to chemfuel) and buying. The Blue Desert, the Cauldron,
+  the Greentide, the Lantern Deeps, the Wastes and the Webwork lost their richer claim. The Forge and the Leaning
+  Scrub, which named candidates, stay on the slow route.
+- He did not pick "Decide at 0.2.0", which moved every richer source but the tholin to 0.2.0. So the three richer
+  sources are each biome's fuel in 0.1.0.
+- A biome that lost a draw still needs a reason to visit (his note of 2026-11-18): the table is
+  `design/RimMandrake/biome_reason_to_visit_2026-11-19.md`.
+
+### 4. Ship ideas turned down before the ship lens stay turned down
+
+Card: *"Before 2026-11-18, review cards offered about twenty ideas where a biome acts on the landed ship: roots that
+split a doorframe, a tentacle that holds a hull edge, a mould film that rides the hull to the next landing. You said
+no to about six in typed words, for example 'No, we dont need a downwind lee around the ship.' About fourteen were
+passed over with no words. Then you put hull wear into the first version and said to keep old version decisions 'a
+LITTLE open'. One precedent: you passed over the Greentide's hull rasp on 2026-10-02, then said yes to it by name on
+2026-11-18. What should happen to the ship ideas you turned down before the ship lens?"*
+He picked **"They stay turned down"**, not the recommended option: *"Why: a decision is a decision. Buys: no work
+now, and you can bring any one back by name. Costs: a good idea stays down unless you happen to remember it."*
+
+- Every ship idea that he refused or passed over before 2026-11-18 stays out of every version. There is no review
+  sheet and no second look.
+- He can bring any one back by name. Nobody else revives one.
+- The recount of 2026-11-19 (`design/RimMandrake/biome_declined_ship_ideas_recount_2026-11-19.md`: 11 refused in
+  his typed words, 1 replaced in his words, 29 passed over silently) is the list of what stays down.
+
+### 5. Overheating: a crew member walks to shade alone
+
+Card: *"The sun heats people by its angle; shade comes from roofs, parasols and trees. On 2026-11-10 you wrote 'We
+need a deeper design discussion here' about what people do when they overheat. That talk has not happened and
+nothing is built. The Long Shade design uses a starting rule: before heatstroke turns serious, a crew member walks to
+the nearest shade, recovers, and goes back to work; people under the player's direct control are left alone. The
+same rule would apply on every day-side biome. Type more if you want the full talk. ... What does a crew member do
+alone when the sun starts to hurt them?"*
+He picked **"They walk to shade alone"**: *"Why: nobody dies of sun without a sign. Buys: the player sees the danger
+as a crew that runs for shade. Costs: work stops on hot days, and the new behaviour needs a test on every day-side
+map. Recommended: it is the smallest rule that stops silent deaths, and one rule serves every day-side biome."*
+
+- Before heatstroke turns serious, a crew member walks to the nearest reachable shade where they can recover,
+  recovers there, and goes back to work.
+- A person under the player's direct control (drafted) is left alone.
+- It is one shared rule for every day-side biome, built once with the one sun (`standing_rulings.md` §Direct Sun).
+  It is not built. Its test runs on every day-side map.
+- He typed nothing more, so the fuller discussion of 2026-11-10 has not been held. The rule stands until he opens
+  it.
