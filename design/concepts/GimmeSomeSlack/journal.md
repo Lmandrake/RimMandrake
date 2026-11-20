@@ -13,12 +13,12 @@ mods read alike.
 - **Design Version 0.1.0, locked** on his word 2026-11-13 ~3:40 PM PST (`version/VERSION.json`); the lock record pins the text
   at that word, `bf33322d77` (re-pinned 2026-11-14, steward's decision). Code: `src/RimMandrake/GimmeSomeSlack/` (C#, 62
   sources; C# SelfTest 4515 checks; `validation.py`; `northstar/proof_all.py`, the one dense live proof).
-- **Stage now:** Stage 7, the walk brief, since 2026-11-20 9:05 AM PST (`version/stage_record.json`).
+- **Stage now:** Stage 8, his live walk, since 2026-11-20 9:13 AM PST (`version/stage_record.json`).
 - **Bars:** 48 (23 inventory rows of `record.json` + 26 leaves of `tree.json`; `shock_reach_setting` is both, so 49 rows
   name 48 ids; `cords_draw_under_things` added by his card 2026-11-14). The test-and-stage table is
   `version/test_table.json` (read view `version/test_table.md`), made by the throwaway `version/make_test_table.py`. Of 48
   bars: 48 have a deciding test runnable today (counts as of now: "Waiting on").
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-20 9:05 AM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-20 9:13 AM PST).
 - **Open questions for him:** "Questions for him", the last part of this top section.
 
 ### The vision (his root paragraph, `record.json` root, OWNER:1793895896496551063)
@@ -385,4 +385,12 @@ row 2; Stage 3 about $10.3 and 50 minutes (12:15 to 13:05 PST). No helpers, no g
 - Steward confirms: Read visit_3/SUMMARY.md, rows.jsonl (470 rows; 197 checks PASS on last row), strange.jsonl (4: 3 explained, 1 filed RIMMANDRAKE_TRACE_SLACK_FLOWWORKS_TIER_MINIFIED_LOOKUP_ERROR), polish.md. Judge the judge: no 'not met' reasons; sc_walk run-1 FAIL is HARNESS, repaired b346975f10 (waits for cords laid; unlaid at the limit stays FAIL, not weakened), planted FAIL / real PASS recorded, red-seen T_H_PLAYTEST_RUNNER; its one removed test line is a re-wrap. Z_log_budget FAIL on the FlowWorks tier is SITE (FlowWorks RM_PitAccess caller), PASS on tier gimmesomeslack runA/runD. P15 UNMEASURED is an offline decider gap (bars no_hose* decided by T_NO_HOSE at 4-5), filed in cycle 6 as RIMMANDRAKE_GUARD_GSS_NOHOSE_FLEXIBLE_PIPES_CLAUSE_UNMUTATED; deployed build names no hose. No mod fix in the sitting, so no fix reader owed; no shipping-file diff 345366aa49..HEAD. Record gap found: sc_four_looks and sc_dense_tangle name a judge reading no visit ran; steward read st01-04 grayscale and st16: four looks told apart by eye PASS, dense block reads as a tangle PASS (evidence/steward_judge_read.json; naming not blind, labels visible). Verdict: exit met stands; walk save GSS_VISIT3_WALK_20261120.rws.
 - Was, "Stage now": - **Stage now:** Stage 6, in-game acceptance, since 2026-11-20 1:21 AM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-20 1:21 AM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-20 9:13 AM PST, stage change: Walk brief (Stage 7) to His live walk (Stage 8) (by BENCH)
+
+- Why: walk brief arrival_1 written
+- Checks passed: order, by, version, hold, walk_brief.
+- Was, "Stage now": - **Stage now:** Stage 7, the walk brief, since 2026-11-20 9:05 AM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-20 9:05 AM PST).
 - Record: `version/stage_record.json`.

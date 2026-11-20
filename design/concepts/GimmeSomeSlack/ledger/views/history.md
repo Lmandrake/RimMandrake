@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod GimmeSomeSlack) reducer=1 shards={"BACKFILL":440876,"DISPATCH":12162,"HOLDER.run-1794828190":994,"JUDGE.judge-1794822790":13753,"JUDGE.judge-1794822890":2037} body_sha256=67b2f66eda3cd0c0bfafa88ab0e94f1316daa0a17f955afbb3a504c85aad2726 -->
-# GimmeSomeSlack — mod ledger history (621 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod GimmeSomeSlack) reducer=1 shards={"BACKFILL":440876,"DISPATCH":12461,"HOLDER.run-1794828190":994,"JUDGE.judge-1794822790":13753,"JUDGE.judge-1794822890":2037} body_sha256=d2ce41ccce8a9acf41cf153bb1dc0f80f822fe4968aed0d1c2fb8d3d27b31428 -->
+# GimmeSomeSlack — mod ledger history (622 events, merged across shards)
 
 - 2026-11-16T07:11:06Z BACKFILL#1 spend spend v0.1.0: 
 - 2026-11-16T07:11:06Z BACKFILL#2 stage.accepted stage v0.1.0: offline_build -> blind_challenge: Stage 3 exit: every bar has a check that runs; the one walk bar proves at Stage 8
@@ -622,3 +622,4 @@
 - 2026-11-19T23:47:38Z BACKFILL#563 decision finding:GSS_FINISH_RALPH_LOOP_WAITS_GAME_TURN v0.1.0: 
 - 2026-11-20T00:07:19Z BACKFILL#564 finding.open finding:RIMMANDRAKE_REWORD_GSS_NO_PIPE_BAR_POLES_ON_PURPOSE v0.1.0: Bar no_hose_in_gss says 'No hose, reel or pipe is drawn by this mod', but GSS's aerial engine draws FlowWorks pipe-pole spans by design (AerialLineKind.Pipe, PipeMats, CompAerialAnchor 'Link pipe span').
 - 2026-11-20T17:05:01Z DISPATCH#34 stage.accepted stage v0.1.0: 
+- 2026-11-20T17:13:41Z DISPATCH#35 stage.accepted stage v0.1.0: 
