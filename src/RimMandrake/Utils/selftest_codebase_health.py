@@ -43,23 +43,23 @@ def eq(got, want, what):
 def classify(**kw):
     """classify() with everything known and nothing set, unless overridden."""
     args = dict(path="a.py", loc_measured=True, uncommitted=set(), doing_files={},
-                bug_files={}, verdict="dirty", wt_known=True, ledger_known=True)
+                bug_files={}, verdict="never-read", wt_known=True, ledger_known=True)
     args.update(kw)
     return ch.classify(**args)[0]
 
 
 # ---- 1. precedence -------------------------------------------------------
 eq(classify(bug_files={"a.py": ["X_1"]}), "red", "bug alone is red")
-eq(classify(bug_files={"a.py": ["X_1"]}, verdict="clean"), "red",
+eq(classify(bug_files={"a.py": ["X_1"]}, verdict="read-clean"), "red",
    "RED BEATS GREEN — a review-clean file named by an open bug is red")
 eq(classify(bug_files={"a.py": ["X_1"]}, uncommitted={"a.py"}), "red",
    "RED BEATS BLUE")
 eq(classify(bug_files={"a.py": ["X_1"]}, loc_measured=False), "red",
    "RED BEATS UNMEASURED — a known bug is known whatever else is not")
-eq(classify(uncommitted={"a.py"}, verdict="clean"), "blue",
+eq(classify(uncommitted={"a.py"}, verdict="read-clean"), "blue",
    "BLUE BEATS GREEN — uncommitted work invalidates a clean mark")
 eq(classify(doing_files={"a.py": ["X_1"]}), "blue", "an open `doing` item is blue")
-eq(classify(verdict="clean"), "green", "clean review with no other signal is green")
+eq(classify(verdict="read-clean"), "green", "clean review with no other signal is green")
 eq(classify(), "grey", "the default, measured, is grey")
 
 # ---- 2. unknown is never grey -------------------------------------------
@@ -67,7 +67,7 @@ eq(classify(wt_known=False), "unmeasured", "git status unreadable -> UNMEASURED"
 eq(classify(ledger_known=False), "unmeasured", "ledger unreplayable -> UNMEASURED")
 eq(classify(verdict="unknown"), "unmeasured", "stale review sha -> UNMEASURED")
 eq(classify(loc_measured=False), "unmeasured", "undecodable file -> UNMEASURED")
-eq(classify(wt_known=False, verdict="clean"), "unmeasured",
+eq(classify(wt_known=False, verdict="read-clean"), "unmeasured",
    "a clean mark does not rescue an undetermined working tree")
 for bad in ("wt_known", "ledger_known"):
     eq(classify(**{bad: False}) == "grey", False, "%s=False must never be grey" % bad)
@@ -148,6 +148,20 @@ ok, reasons, headline = ch.run_headline(True, False, COUNTS_BAD, 16,
 eq(ok, False, "ledger unreplayable alone is also NOT ok")
 eq("ledger could not be replayed" in headline, True,
    "the ledger failure reason is named")
+
+# ---- 6. RIMMANDRAKE_SWITCH_HEALTH_BOARDS_TO_PAGE_CLEAN_RECORD_LINGERS: this board reads the review record,
+# so it names that meaning READ-CLEAN (owner card 2026-11-19 5:54 PM). CLEAN is the page meaning
+# (code_review_status.py check), and a file with no record is never read, never DIRTY.
+v, _ = ch.review_verdicts(["no/such/file_never_recorded.py"])
+eq(v.get("no/such/file_never_recorded.py"), "never-read", "a path with no review record reads never-read, not dirty")
+eq(classify(verdict="read-clean"), "green", "a read-clean record with no other signal is green")
+eq(classify(verdict="clean"), "grey", "the old 'clean' verdict is gone: only read-clean paints green")
+eq(ch.classify("a.py", True, set(), {}, {}, "never-read", True, True)[1],
+   ["no cold-read mark has ever been recorded for this path"], "the never-read reason says never read")
+page = ch.PAGE if hasattr(ch, "PAGE") else ""
+eq('green:"READ-CLEAN"' in page and 'grey:"NOT READ-CLEAN"' in page, True,
+   "the page's chip labels name the review-record meaning")
+eq('green:"CLEAN"' in page or 'grey:"DIRTY"' in page, False, "no chip says CLEAN or DIRTY in the review-record meaning")
 
 if FAILS:
     print("FAIL selftest_codebase_health.py")

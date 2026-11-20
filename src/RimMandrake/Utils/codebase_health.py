@@ -23,16 +23,19 @@ assigned, by this precedence — the FIRST rule that matches wins:
            staged, or untracked-but-not-ignored), OR it is named by an open
            rimflow item whose state is `doing`.
 
-  3. GREEN "clean"
+  3. GREEN "read-clean"
+           READ-CLEAN, the review record's meaning, never the page meaning of CLEAN
+           (`code_review_status.py check`; owner card 2026-11-19 5:54 PM).
            `infrastructure/state/code_review/*.jsonl` holds a clean mark for this exact path
            whose content hash is byte-identical to the file on disk (content-
            based, not commit-based). This is read through the
            `code_review_status` module — its own `load()` and `clean_state()`
            — never by hand-parsing the JSON.
 
-  4. GREY  "dirty" — the default, and per CLAUDE.md the correct answer for
-           almost every file. No review entry at all, or any byte changed since.
-           Grey is a MEASURED verdict, not a shrug.
+  4. GREY  "not read-clean" — the default: no cold-read mark at all (never
+           read), or any byte changed since its mark. Grey is a MEASURED verdict,
+           not a shrug, and it is not DIRTY: a file with no boundary page reads
+           NO PAGE in the page meaning.
 
   5. HATCHED / UNMEASURED
            Status could not be determined. Reserved and visibly distinct so it
@@ -86,7 +89,7 @@ VENDOR = os.path.join(HERE, "vendor_viz")
 sys.path.insert(0, os.path.dirname(HERE))  # src/RimMandrake/, which holds rimflow/
 sys.path.insert(0, HERE)
 
-import code_review_status as CRS  # noqa: E402  the authority on CLEAN/DIRTY
+import code_review_status as CRS  # noqa: E402  the review record (READ-CLEAN) and the page states
 
 CODE_EXT = {
     "py", "cs", "xml", "lua", "sh", "js", "mjs", "ts", "html", "css",
@@ -205,7 +208,9 @@ def working_tree_changes():
 # ------------------------------------------------------------ review status
 
 def review_verdicts(paths):
-    """{path: 'clean' | 'dirty' | 'unknown'} via the code_review_status module.
+    """{path: 'read-clean' | 'changed' | 'never-read' | 'unknown'} via the code_review_status module.
+
+    These are the review record's (READ-CLEAN) states, not the page meaning of CLEAN.
 
     'unknown' is a real outcome: a legacy entry `migrate-hashes` couldn't
     resolve a hash for. The module's own check() folds both into DIRTY for
@@ -225,13 +230,13 @@ def review_verdicts(paths):
     for p in paths:
         entry = log.get(p)
         if entry is None:
-            verdicts[p] = "dirty"          # measured: no entry has ever been recorded
+            verdicts[p] = "never-read"     # measured: no entry has ever been recorded
             continue
         state, detail = CRS.clean_state(p, entry)
         if state == "CLEAN":
-            verdicts[p] = "clean"
+            verdicts[p] = "read-clean"
         elif entry.get("hash"):
-            verdicts[p] = "dirty"          # measured: content differs from the recorded hash
+            verdicts[p] = "changed"        # measured: content differs from the recorded hash
         else:
             verdicts[p] = "unknown"        # legacy entry, no hash ever resolved for it
     return verdicts, log
@@ -473,14 +478,14 @@ def classify(path, loc_measured, uncommitted, doing_files, bug_files, verdict,
         return "unmeasured", ["git status could not be read, so 'in dev' is undetermined"]
     if not ledger_known:
         return "unmeasured", ["the rimflow ledger could not be replayed, so bug/doing state is undetermined"]
-    if verdict == "clean":
-        return "green", ["review recorded clean, content unchanged since"]
+    if verdict == "read-clean":
+        return "green", ["cold read recorded clean (READ-CLEAN), content unchanged since"]
     if verdict == "unknown":
         return "unmeasured", ["a review entry exists but its recorded sha does not resolve"]
     if clean_count > 0:
-        return "grey", ["reviewed and marked clean %d× before — dirty again every time"
+        return "grey", ["marked read-clean %d× before — changed again every time"
                         % clean_count]
-    return "grey", ["no review entry has ever been recorded for this path"]
+    return "grey", ["no cold-read mark has ever been recorded for this path"]
 
 
 # -------------------------------------------------------- run-level headline
@@ -507,7 +512,7 @@ def run_headline(wt_known, ledger_known, counts, total_files, istats):
                        % istats.get("error", "unknown error"))
     ok = not reasons
     if ok:
-        text = ("OK: measured %d files (%d clean, %d dirty, %d unmeasured)."
+        text = ("OK: measured %d files (%d read-clean, %d not read-clean, %d unmeasured)."
                 % (total_files, counts["green"], counts["grey"], counts["unmeasured"]))
     else:
         text = ("THE RUN COULD NOT MEASURE: " + "; ".join(reasons) +
@@ -656,7 +661,7 @@ code{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#c3cbdb}
       <section><h2>Colour, by precedence</h2><div id="legend"></div></section>
       <section><h2>This run</h2><div id="stats"></div></section>
       <section><h2>Unmapped open bugs</h2><div id="unmapped"></div></section>
-      <section><h2>Reviewed, dirty again</h2><div id="recid"></div></section>
+      <section><h2>Read-clean, then changed again</h2><div id="recid"></div></section>
       <section><h2>Reading it</h2>
         <div class="rule"><i style="background:transparent"></i><span>
         Area is lines of code. Click a cell to descend, the breadcrumb to come back.
@@ -670,10 +675,12 @@ code{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#c3cbdb}
         red tooltip names the item, so the claim can be read at source. A mention can still
         be incidental; nothing is inferred beyond the naming.</span></div>
       <div class="rule"><i style="background:var(--green)"></i><span>
-        <b>Green is expected to be empty.</b> CLAUDE.md's rule is that every file is dirty
-        until a full-file review says otherwise, recorded by
-        <code>code_review_status.py mark-clean</code>. The count above says how many entries
-        exist. Zero green means zero recorded reviews, not a broken tool.</span></div>
+        <b>Green is the review record, not CLEAN.</b> Green means a cold read found nothing
+        significant in these bytes (READ-CLEAN, recorded by
+        <code>code_review_status.py mark-clean</code>). CLEAN means each promise on the file's
+        boundary page has a passing test (<code>code_review_status.py check</code>); a full-file
+        review that finds nothing does not make a file clean. The count above says how many
+        entries exist. Zero green means zero recorded reads, not a broken tool.</span></div>
       </section>
     </aside>
   </main>
@@ -683,13 +690,13 @@ __LIBS__
 <script>
 const DATA = __DATA__;
 const COLOR = {red:"#e0483c",blue:"#2f7fd8",green:"#3ea55f",grey:"#79808f",unmeasured:"#c9a227"};
-const LABEL = {red:"BUG",blue:"IN DEV",green:"CLEAN",grey:"DIRTY",unmeasured:"UNMEASURED"};
+const LABEL = {red:"BUG",blue:"IN DEV",green:"READ-CLEAN",grey:"NOT READ-CLEAN",unmeasured:"UNMEASURED"};
 const ORDER = ["red","blue","green","grey","unmeasured"];
 const RULES = [
  ["red","1 · RED — known error or bug","Named by path in the descriptive prose of an OPEN rimflow item of kind <code>bug</code>, <code>defect</code> or <code>fix</code>. Red wins over every other rule: a review-clean file named by an open bug is red. An item's <i>verify</i> and <i>criteria</i> sections are deliberately not read — they name the instrument, not the defect."],
  ["blue","2 · BLUE — in dev","Uncommitted changes in the working tree, or named by an open item whose state is <code>doing</code>."],
- ["green","3 · GREEN — clean","The code-review records (code_review/*.jsonl) hold a clean mark whose hash matches the file's current bytes."],
- ["grey","4 · GREY — dirty","The default, and the correct answer for almost every file: no review entry, or the file's bytes changed since its clean mark. A measured verdict, not a shrug."],
+ ["green","3 · GREEN — read-clean","The code-review records (code_review/*.jsonl) hold a cold-read clean mark whose hash matches the file's current bytes. This is READ-CLEAN, not CLEAN: CLEAN means each promise on the file's boundary page has a passing test (<code>code_review_status.py check</code>; the codebase_now board shows both)."],
+ ["grey","4 · GREY — not read-clean","The default: no cold-read mark (never read), or the file's bytes changed since its mark. A measured verdict, not a shrug, and not DIRTY: a file with no boundary page reads NO PAGE."],
  ["unmeasured","5 · HATCHED — UNMEASURED","Status could not be determined: git refused, a recorded review sha no longer resolves, or the file is not decodable as text. Never counted as dirty."]
 ];
 
@@ -798,7 +805,7 @@ if(RECID.length === 0){
     .text("None. Every file ever marked clean is still clean.");
 } else {
   recid.append("div").attr("class","rule").append("span").html(
-    "<b>"+RECID.length+"</b> file(s) went clean, then dirty again — the small number "
+    "<b>"+RECID.length+"</b> file(s) went read-clean, then changed again — the small number "
     + "in a cell's top-right corner is this same count.");
   RECID.slice(0, 40).forEach(r=>{
     const row = recid.append("div").attr("class","recid");
@@ -1164,11 +1171,11 @@ def main(argv=None):
     for s in STATUSES:
         print("  %-11s %6d files  %9d lines  %s"
               % (s.upper(), counts[s], loc_by[s],
-                 {"red": "known bug", "blue": "in dev", "green": "review-clean",
-                  "grey": "dirty (measured)", "unmeasured": "could not determine"}[s]))
+                 {"red": "known bug", "blue": "in dev", "green": "read-clean",
+                  "grey": "not read-clean (measured)", "unmeasured": "could not determine"}[s]))
     print("  review entries recorded: %d" % len(log))
     if recidivists:
-        print("  reviewed-then-dirty-again: %d file(s), worst is x%d (%s)"
+        print("  read-clean-then-changed-again: %d file(s), worst is x%d (%s)"
               % (len(recidivists), recidivists[0]["cycles"], recidivists[0]["path"]))
     print("  open items %d, open bugs %d (%d mapped to a file, %d naming none)"
           % (istats["openItems"], istats["openBugs"],

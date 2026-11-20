@@ -625,7 +625,7 @@ svg.reg{width:100%;height:190px;display:block}
           <div class="panel" id="goalSheet"></div>
         </div>
         <div>
-          <h2>Code review <span class="n">one tile, not this dashboard's parent</span></h2>
+          <h2>Code review <span class="n">the review record (READ-CLEAN), not CLEAN: code_review_status.py check</span></h2>
           <div class="panel"><div class="tiles" id="crTiles" style="grid-template-columns:repeat(auto-fit,minmax(96px,1fr))"></div>
             <div class="dirtylist" id="dirtyList"></div></div>
         </div>
@@ -1041,9 +1041,9 @@ drawRegression("regContent", "legContent", DATA.regression, CLADDER, STROKEC, "c
     d.appendChild(el("div", {"class":"l"}, [label]));
     return d;
   }
-  mount.appendChild(tile(cr.clean, "clean", "green"));
-  mount.appendChild(tile(cr.dirty, "dirty", cr.dirty?"":"green"));
-  mount.appendChild(tile(cr.recidivists, "clean→dirty again"));
+  mount.appendChild(tile(cr.clean, "read-clean", "green"));
+  mount.appendChild(tile(cr.dirty, "changed since read", cr.dirty?"":"green"));
+  mount.appendChild(tile(cr.recidivists, "read-clean→changed again"));
   if(cr.unknown) mount.appendChild(tile(cr.unknown, "unknown state", "red"));
   mount.appendChild(tile(cr.total, "recorded"));
   const dl = document.getElementById("dirtyList");
