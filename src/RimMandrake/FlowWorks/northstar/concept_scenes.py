@@ -2174,6 +2174,24 @@ STAGE3_SCENES = {f.__name__: f for f in (scene_fill_front, scene_one_surface, sc
                  scene_geyser_tub, scene_coating_wash)}
 
 
+def _hole_prison_stage(B, snapshot, reload_snapshot, receipt, save_mid=None, load_mid=None):
+    """scene_hole_prison in the table's shape, so the certificate's empty-game check examines it: it asserts instead of
+    writing rows, so an assertion is one UNMEASURED staging row (as _run does) and a clean end is one PASS row."""
+    rows = []
+    try:
+        scene = globals()['scene_hole_prison']   # looked up at call time: a selftest swaps the scene for a stub
+        scene(B, snapshot, reload_snapshot, receipt, save_occupied=save_mid, load_occupied=load_mid)
+        rows.append({'id': 'PRISON_capture_holds_without_bed', 'status': 'PASS', 'kind': 'MOD',
+                     'detail': 'every require of scene_hole_prison held'})
+    except AssertionError as e:
+        rows.append({'id': 'scene_hole_prison_staging', 'status': 'UNMEASURED', 'kind': 'HARNESS', 'detail': repr(e)[:400]})
+    return {'status': 'PASS' if all(r['status'] == 'PASS' for r in rows) else 'FAIL', 'rows': rows}
+
+
+_hole_prison_stage.__name__ = 'scene_hole_prison'
+STAGE3_SCENES['scene_hole_prison'] = _hole_prison_stage
+
+
 
 def main():
     ap = argparse.ArgumentParser()
