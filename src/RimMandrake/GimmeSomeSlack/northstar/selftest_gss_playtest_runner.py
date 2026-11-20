@@ -55,6 +55,7 @@ def main():
     assert P.combine([{"type": "run_start"}, ok, pend, end], b) == "PASS"
     n += 4
     n += _resume_wait(G)
+    n += _cords_laid_wait(G)
     n += _resume_deadline(G, pend, end)
     n += _save_reload_b_source(src)
     n += _site_prepare_source(src)
@@ -125,6 +126,43 @@ def _resume_wait(G):
     return n
 
 
+def _cords_laid_wait(G):
+    """Visit 3 on the full list (2026-11-20): save_reload_b's C# settle gave up at 240 frames with 56 of 168 edges still
+    pending, and the compare called a still-laying cord "lost". Paused, the same load lays them all in ~5 s on frames
+    alone (168 -> 0 pending over 51 builds). The launcher now waits, by the non-settling 'motion' probe, until the loaded
+    map's cord component has built at least once and has nothing pending; a layer still laying at the limit is NOT ready
+    (INCOMPLETE), never a compare."""
+    n = 0
+    seq = iter([{"success": False}, {"pending": 0, "builds": 0}, {"pending": 168, "builds": 2}, {"pending": 56, "builds": 21},
+                RuntimeError("busy"), {"pending": 0, "builds": 51}])
+
+    def poll():
+        x = next(seq)
+        if isinstance(x, Exception):
+            raise x
+        return x
+    ck = _Clock()
+    w = G.wait_cords_laid(poll, limit_s=60, clock=ck, sleep=ck.sleep)
+    assert w["laid"] and w["polls"] == 6 and w["last"] == {"pending": 0, "builds": 51}, w
+    n += 1
+    # a fresh component (builds 0, pending 0) has not laid anything yet: not laid
+    ck = _Clock()
+    w = G.wait_cords_laid(lambda: {"pending": 0, "builds": 0}, limit_s=5, clock=ck, sleep=ck.sleep)
+    assert not w["laid"] and ck.t >= 5, w
+    n += 1
+    # still laying at the limit: not laid, and the last reading says how much was pending
+    ck = _Clock()
+    w = G.wait_cords_laid(lambda: {"pending": 56, "builds": 21}, limit_s=5, clock=ck, sleep=ck.sleep)
+    assert not w["laid"] and w["last"]["pending"] == 56, w
+    n += 1
+    # a probe that never answers is not laid (could not look), never laid by silence
+    ck = _Clock()
+    w = G.wait_cords_laid(lambda: {"success": False, "error": "probe set failed"}, limit_s=5, clock=ck, sleep=ck.sleep)
+    assert not w["laid"], w
+    n += 1
+    return n
+
+
 def _resume_deadline(G, pend, end):
     """Drive the CLI's automatic resume with a fake bridge and clock."""
     first = [{"type": "run_start"}, dict(pend, evidence={"resumeRecipe": "save_reload_b",
@@ -170,7 +208,10 @@ def _resume_deadline(G, pend, end):
               patch.object(G, "run_once", run_once),
               patch.object(G.time, "sleep", ck.sleep),
               patch.object(G, "resume_loop", partial(G.resume_loop, clock=ck, sleep=ck.sleep)),
-              patch.object(G, "wait_for_map", partial(G.wait_for_map, clock=ck, sleep=ck.sleep))):
+              patch.object(G, "wait_for_map", partial(G.wait_for_map, clock=ck, sleep=ck.sleep)),
+              # the loaded map's cords read laid at once here (their wait is _cords_laid_wait's): no bridge, no clock
+              patch.object(G, "_motion_poll", lambda remaining: {"pending": 0, "builds": 1}),
+              patch.object(G, "wait_cords_laid", partial(G.wait_cords_laid, clock=ck, sleep=ck.sleep))):
             rc = G.main(argv)
         assert rc == 1 and bridge.timeout == 120.0
         return ck(), starts

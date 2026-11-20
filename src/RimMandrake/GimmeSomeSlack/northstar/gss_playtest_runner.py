@@ -160,6 +160,46 @@ def wait_for_map(poll, ticks_at_save, limit_s=600.0, clock=time.monotonic, sleep
     return {"ready": False, "polls": n, "seconds": round(clock() - t0, 1), "last": last}
 
 
+def wait_cords_laid(poll, limit_s=600.0, clock=time.monotonic, sleep=time.sleep, remaining=None, gap_s=0.25):
+    """After the loaded map is up: wait until its cord component has built at least once and has no edge pending, read by
+    the probe's 'motion' verb (not a laid-set read, so it never finishes a build itself). Visit 3 on the full list
+    (2026-11-20): save_reload_b's own settle stopped at 240 frames with 56 of 168 edges pending and called a still-laying
+    cord lost; paused, the same load laid every edge on frames in ~5 s. Bounded by the resume's own --load-wait (a game that
+    never finishes laying must not hold the launcher). Not laid at the limit, or a probe that never answered: laid False."""
+    t0, n, last = clock(), 0, None
+    if remaining is None:
+        deadline = t0 + limit_s
+
+        def remaining():
+            return deadline - clock()
+    while remaining() > 0:
+        try:
+            m = poll()
+        except Exception as ex:   # noqa: BLE001 - a busy main thread right after a load
+            m = {"error": str(ex)}
+        n += 1
+        last = m if isinstance(m, dict) else {}
+        pend, builds = last.get("pending"), last.get("builds")
+        if isinstance(pend, int) and isinstance(builds, int) and pend == 0 and builds > 0:
+            return {"laid": True, "polls": n, "seconds": round(clock() - t0, 2), "last": last}
+        left = remaining()
+        if left <= 0:
+            break
+        sleep(min(gap_s, left))
+    return {"laid": False, "polls": n, "seconds": round(clock() - t0, 2), "last": last}
+
+
+def _motion_poll(remaining):
+    """One non-settling read of the cord component (GimmeSomeSlackProbe 'motion'): {pending, builds} or the probe's error."""
+    sys.path.insert(0, os.path.dirname(HERE))
+    import validation as Val
+    B = _motion_poll.__dict__.get("B")
+    if B is None:
+        B = _motion_poll.B = Val.Bridge()
+    m = B.probe("motion", wait_s=max(1.0, min(10.0, remaining())))
+    return {k: m.get(k) for k in ("pending", "builds", "success", "error") if k in m}
+
+
 def not_reloaded(recs):
     """save_reload_b ran on the game that was saved, not on the loaded one (its C# guard)."""
     return bool(recs) and any(r.get("type") == "scenario" and r.get("status") == "INVALID"
@@ -251,7 +291,13 @@ def main(argv=None):
         if lr.get("success"):
             def wait(remaining):
                 poll = partial(_resume_call, remaining, s, calls, "rimworld/get_game_info")
-                return wait_for_map(poll, ev.get("ticksAtSave"), remaining=remaining)
+                w = wait_for_map(poll, ev.get("ticksAtSave"), remaining=remaining)
+                if w.get("ready"):
+                    # save_reload_b compares the loaded map's cords with the snapshot: only once the mod has laid them all
+                    lw = wait_cords_laid(partial(_motion_poll, remaining), remaining=remaining)
+                    print("RESUME: cords laid=%s after %s s (%d polls, last %s)" % (lw["laid"], lw["seconds"], lw["polls"], lw["last"]))
+                    w = dict(w, cords=lw, ready=lw["laid"])
+                return w
 
             start_b = partial(run_once, s, calls, a, ev.get("resumeRecipe"), pend.get("runId"))
             r = resume_loop(wait, start_b, limit_s=a.load_wait)
