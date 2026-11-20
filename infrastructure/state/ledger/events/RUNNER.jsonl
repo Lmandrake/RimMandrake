@@ -8896,3 +8896,4 @@
 {"seat":"RUNNER","event":"live","id":"OPS_SCRATCH_DIRT_MEASURE_AT_END_YOGQ","result":"kept","detail":"sweep: running again","ts":"2026-11-20T00:18:29Z","tsn":1795133909825066599}
 {"seat":"RUNNER","event":"live","id":"OPS_SCRATCH_DIRT_MEASURE_AT_END_YOGQ","result":"broken","detail":"Ops alarm SCRATCH_DIRTY_END: disk.scratch_dirty_end = 2 sanity problems at the end of the last run (MEASURED), line > 0","ts":"2026-11-20T00:24:03Z","tsn":1795134243779748124}
 {"seat":"RUNNER","event":"raise","id":"OPS_SCRATCH_DIRT_MEASURE_AT_END_YOGQ","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-20T00:24:09Z","tsn":1795134249795805902}
+{"seat":"RUNNER","event":"live","id":"OPS_SCRATCH_DIRT_MEASURE_AT_END_YOGQ","result":"broken","detail":"Ops alarm SCRATCH_DIRTY_END: disk.scratch_dirty_end = 2 sanity problems at the end of the last run (MEASURED), line > 0","ts":"2026-11-20T00:25:24Z","tsn":1795134324089408293}
