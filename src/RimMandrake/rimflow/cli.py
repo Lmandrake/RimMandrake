@@ -348,11 +348,7 @@ def _split_card(ev):
     qs = card.get("questions") if isinstance(card, dict) else None
     if not qs or len(qs) < 2 or not ev.get("id"):
         return None, []
-    probe = dict(ev)
-    for k in model.SPILL_FIELDS:        # prose spills to a side file; only the rest must fit
-        if isinstance(probe.get(k), str):
-            probe[k] = probe[k][:model.SPILL_KEEP]
-    if len(json.dumps(probe, separators=(",", ":"), ensure_ascii=False).encode("utf-8")) < model.PIPE_BUF - 256:
+    if _line_probe(ev) < model.PIPE_BUF - 256:     # prose spills to a side file; only the rest must fit
         return None, []
     ev["card"] = dict(card, questions=qs[:1])
     rest = []
@@ -365,6 +361,40 @@ def _split_card(ev):
     return card, rest
 
 
+CARD_FIT_FIELDS = ("his_words", "answer", "question")   # never a picked description: the brief and close gates read those
+
+
+def _line_probe(ev):
+    """-> the bytes `ev` takes on one ledger line once model.append spills its prose fields to their heads."""
+    probe = dict(ev)
+    for k in model.SPILL_FIELDS:
+        if isinstance(probe.get(k), str):
+            probe[k] = probe[k][:model.SPILL_KEEP]
+    return len(json.dumps(probe, separators=(",", ":"), ensure_ascii=False).encode("utf-8"))
+
+
+def _fit_card(ev):
+    """A card question still too big for one ledger line after `_split_card` (his 1.7 KB typed answer, stored as both
+    `answer` and `his_words`, and in a bare --by-card's summary: refused four times on 2026-11-19,
+    RIMMANDRAKE_FIX_CARD_STAMP_OVER_LEDGER_LINE_LIMIT) keeps each long text whole in a side file: the largest of its
+    question, answer and his words, then the byCard summary, become their head plus a pointer (fulltext.fit) until the
+    line fits. The item prose still gets the whole card (`_write_one`). Mutates `ev`. -> ev."""
+    card = ev.get("card")
+    if not isinstance(card, dict) or _line_probe(ev) < model.PIPE_BUF - 256:
+        return ev
+    import fulltext
+    card = ev["card"] = dict(card, questions=[dict(q) for q in card.get("questions") or []])
+    texts = sorted(((len(q[k].encode("utf-8")), i, k) for i, q in enumerate(card["questions"])
+                    for k in CARD_FIT_FIELDS if isinstance(q.get(k), str) and len(q[k]) > model.SPILL_KEEP), reverse=True)
+    for _n, i, k in texts:
+        card["questions"][i][k] = fulltext.fit(card["questions"][i][k], model.SPILL_KEEP)
+        if _line_probe(ev) < model.PIPE_BUF - 256:
+            return ev
+    if isinstance(ev.get("byCard"), str) and len(ev["byCard"]) > model.SPILL_KEEP:
+        ev["byCard"] = fulltext.fit(ev["byCard"], model.SPILL_KEEP)
+    return ev
+
+
 def _write_one(ev):
     """check() then append() ONE event, no rendering. `_emit`'s core, split out (step 3)
     so a lease group — `lease` + `claim` + `start` — can land as several checked writes
@@ -375,7 +405,12 @@ def _write_one(ev):
     try:
         model.check(ev, _replay_now())
         _stamp_owner_and_override(ev)
+        full = ev.get("card")
         whole, rest = _split_card(ev)
+        for e in [ev] + rest:
+            _fit_card(e)
+        if whole is None and isinstance(full, dict) and ev.get("card") is not full:
+            whole = full                # fitted, not split: the prose below still records it whole
         # 🔴 NO PATH: the event goes to THIS SEAT'S shard, `<ledger>/events/<SEAT>.
         # jsonl`, so BENCH and FOUNDRY never append to the same git-tracked file and
         # can never conflict in one on rebase. See `model.SHARD_DIR`.

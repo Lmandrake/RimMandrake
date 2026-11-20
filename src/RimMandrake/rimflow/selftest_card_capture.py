@@ -66,6 +66,7 @@ def env(tmp, **over):
     e["RIMFLOW_SEAT"] = "BUILD"
     e["RM_CARDS_STORE"] = os.path.join(tmp, "cards", "cards.jsonl")
     e["RM_CARDS_TRANSCRIPTS"] = os.path.join(tmp, "transcripts")
+    e["RM_FULLTEXT_DIR"] = os.path.join(tmp, "fulltext")
     e.update(over)
     return e
 
@@ -173,6 +174,107 @@ def overflow_cases(tmp):
     os.makedirs(os.path.join(empty, "transcripts"))
     rc, out, err = run(empty, "note", H, "--text", "x", "--by-card", "no such question → nope")
     check("no answered card" in err, "overflow: an empty card store is named in the warning")
+
+
+# ---- a card too big for one ledger line even split (RIMMANDRAKE_FIX_CARD_STAMP_OVER_LEDGER_LINE_LIMIT), one test per
+# promise on design/specs/2026-11-19-card-stamp-fit/boundary.md. The fixture is tonight's card's shape: three questions,
+# his long typed answer on the first (no option picked), a picked option with a description on each other. SOLO is one
+# question (never split) too long for a line, with a picked option: the fit, not the split, must carry it.
+
+TYPED = "He typed this answer himself. " * 120     # 3.6 KB: the bare --by-card summary alone is over a line
+BIG = [{"question": "q-typed " + "Q" * 800, "header": "Old tickets", "multiSelect": False,
+        "options": [{"label": "Judge them all", "description": "D-a " + "a" * 300}, {"label": "Leave them", "description": "D-b"}]},
+       {"question": "q-two " + "R" * 370, "header": "Next moves", "multiSelect": True,
+        "options": [{"label": "Stop rule", "description": "D-stop Costs: needs a calibration run. " + "s" * 300},
+                    {"label": "One fault", "description": "D-one " + "o" * 300}]},
+       {"question": "q-three " + "S" * 370, "header": "Pages", "multiSelect": False,
+        "options": [{"label": "Locked bars", "description": "D-locked " + "l" * 320}, {"label": "Other", "description": "x"}]}]
+STAMP = []
+SOLO = [{"question": "q-solo " + "V" * 4200, "header": "Solo", "multiSelect": False,
+         "options": [{"label": "Take it", "description": "D-take Costs: needs a calibration run. " + "t" * 300},
+                     {"label": "Leave it", "description": "D-leave"}]}]
+SOLO_ID = "RIMMANDRAKE_PROBE_ONE_HUGE_QUESTION_CARD_FIXTURE"
+
+
+def solo(tmp):
+    """File one item with a bare --by-card on SOLO, once. -> (rc, err, its events, its prose)."""
+    if len(STAMP) < 2:
+        stamped(tmp)
+        hook_card(tmp, SOLO, {SOLO[0]["question"]: "Take it"})
+        rc, out, err = run(tmp, "file", SOLO_ID, "--for", "BUILD", "--title", "t", "--by-card")
+        STAMP.append((rc, err))
+    rc, err = STAMP[1]
+    return rc, err, [e for e in events(tmp) if e.get("id") == SOLO_ID], prose(tmp, SOLO_ID)
+
+
+def stamped(tmp):
+    """File one item with a bare --by-card on the big card, once. -> (rc, err, the item's events, its prose, id)."""
+    iid = "RIMMANDRAKE_PROBE_TYPED_ANSWER_CARD_FIXTURE"
+    if not STAMP:
+        hook_card(tmp, BIG, {BIG[0]["question"]: TYPED, BIG[1]["question"]: "Stop rule",
+                             BIG[2]["question"]: "Locked bars"})
+        rc, out, err = run(tmp, "file", iid, "--for", "BUILD", "--title", "T" * 150, "--by-card",
+                           "--why", "W" * 400)
+        STAMP.append((rc, err))
+    rc, err = STAMP[0]
+    return rc, err, [e for e in events(tmp) if e.get("id") == iid], prose(tmp, iid), iid
+
+
+def ledger_lines(tmp):
+    lines = []
+    for dp, _, fs in os.walk(tmp):
+        if os.sep + "cards" in dp or "transcripts" in dp:
+            continue
+        lines += [l for f in fs if f.endswith(".jsonl") for l in open(os.path.join(dp, f), "rb").read().splitlines(True)]
+    return lines
+
+
+def t_a_card_over_one_line_records(tmp):
+    rc, err, mine, _md, _iid = stamped(tmp)
+    lines = ledger_lines(tmp)
+    check(rc == 0 and mine and max(len(l) for l in lines) < 4096,
+          "card fit: a card whose one question is over a ledger line records with a bare --by-card, every line < 4096 "
+          "(rc %d, %s)" % (rc, err.strip()[-200:]))
+    rc, err, mine, _md = solo(tmp)
+    check(rc == 0 and len(mine) == 1 and max(len(l) for l in ledger_lines(tmp)) < 4096,
+          "card fit: one question too long for a line records as one event (rc %d, %s)" % (rc, err.strip()[-200:]))
+
+
+def t_the_whole_card_reaches_the_item_prose(tmp):
+    rc, err, _mine, md, _iid = stamped(tmp)
+    flat = " ".join(md.split())
+    check(rc == 0 and " ".join(TYPED.split()) in flat and BIG[0]["question"] in md
+          and all(o["description"] in md for q, lab in zip(BIG[1:], ("Stop rule", "Locked bars"))
+                  for o in q["options"] if o["label"] == lab),
+          "card fit: the item prose holds his whole typed answer, the whole question and every picked description")
+    rc, err, _mine, md = solo(tmp)
+    check(rc == 0 and SOLO[0]["question"] in md and SOLO[0]["options"][0]["description"] in md,
+          "card fit: a card fitted but not split still reaches the prose whole")
+
+
+def t_picked_descriptions_stay_whole_on_the_events(tmp):
+    _rc, _err, mine, _md, _iid = stamped(tmp)
+    got = [o.get("description") for e in mine for q in (e.get("card") or {}).get("questions") or []
+           for o in q.get("picked") or []]
+    want = [o["description"] for q, lab in zip(BIG[1:], ("Stop rule", "Locked bars")) for o in q["options"]
+            if o["label"] == lab]
+    check(sorted(got) == sorted(want), "card fit: each picked description is whole on an event card (the gates read "
+          "them there): %d of %d" % (len([d for d in got if d in want]), len(want)))
+    _rc, _err, mine, _md = solo(tmp)
+    got = [o.get("description") for e in mine for q in (e.get("card") or {}).get("questions") or []
+           for o in q.get("picked") or []]
+    check(got == [SOLO[0]["options"][0]["description"]], "card fit: the fitted question's picked description is whole")
+
+
+def t_a_card_that_fits_is_stamped_whole(tmp):
+    q = [dict(BIG[1], question="q-small")]
+    hook_card(tmp, q, {"q-small": "One fault"})
+    iid = "RIMMANDRAKE_PROBE_SMALL_CARD_STAYS_WHOLE_FIXTURE"
+    rc, out, err = run(tmp, "file", iid, "--for", "BUILD", "--title", "t", "--by-card")
+    ev = last_for(tmp, iid) or {}
+    cq = ((ev.get("card") or {}).get("questions") or [{}])[0]
+    check(rc == 0 and cq.get("question") == "q-small" and cq.get("answer") == "One fault"
+          and "whole text" not in json.dumps(ev), "card fit: a card that fits one line is stamped whole, nothing cut")
 
 
 def main():
@@ -289,6 +391,9 @@ def main():
               "owed: a negation owes nothing, a real cost does (%r)" % CC.consequences(neg))
 
         overflow_cases(tmp)
+        for t in (t_a_card_over_one_line_records, t_the_whole_card_reaches_the_item_prose,
+                  t_picked_descriptions_stay_whole_on_the_events, t_a_card_that_fits_is_stamped_whole):
+            t(tmp)
 
         import model  # noqa: E402
         check("card" in model.UNIVERSAL_FIELDS, "model: card is a universal field")
