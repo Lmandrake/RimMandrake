@@ -108,6 +108,9 @@ def add(a):
         have = {r["id"] for r in rows}
         rows += [{"id": k, "status": v, "class": "OFFLINE_GATE", "detail": "proof_all.py --offline-gate"} for k, v in sorted(st.items())
                  if k not in have]
+    if a.only:                                # an excluded row is not this run's evidence: it must not feed a scene read either
+        keep = set(a.only.split(","))         # (visit 2, 19:19: run 3's SL3, excluded as a harness split, still turned
+        rows = [r for r in rows if r["id"] in keep or r.get("class") == "OFFLINE_GATE"]   # sc_true_to_grid FAIL via the slim)
     env = res.get("env") or {}
     if not env and a.env:                     # a one-row result (gravship_scene, --removal-check) records no env: the list it ran on, read at the run
         env = json.load(open(a.env))
