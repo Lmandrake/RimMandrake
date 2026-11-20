@@ -1,0 +1,21 @@
+{
+ "mod": "ColdStorage",
+ "version": "0.1.0",
+ "state": "open: admitted at intake 2026-11-20; no locked design yet; the 0.1.0 / later split in admission_proposal.md is a proposal for the Designer",
+ "ruled_on": "2026-11-20",
+ "ruled_by": "owner",
+ "owner_words": "2026-11-20 (ledger 19:49Z, 11:49 AM PST), after RimFridge left the live list that morning: Also we need to reproduce rimfridge. In the new system it needs to be ticketed into part of a mod.",
+ "record": "ColdStorage",
+ "bars_total": "UNMEASURED",
+ "bars_met": "UNMEASURED",
+ "judge_rounds": 0,
+ "tokens_spent": 0,
+ "measured_from": {
+  "bars_total": "no Designer tree yet; the Designer's Lock step sets the bars",
+  "tokens_spent": "no Designer stage has run on this concept; the pre-pipeline build spend (2026-10-26 to 2026-11-12) is not charged here"
+ },
+ "caveats": [
+  "the Star Wars cooling ladder a player builds (RSW_CoolingSupplyUnit, RSW_CoolingUnit_Wall, RSW_CoolingChamber, RSW_DrinksChiller, RSW_CryoUnit) lives in mandrake.rsw.cuisine (src/RimStarWars/Cuisine/Defs/RSW_CoolingUnits.xml), not in this mod; admission_proposal.md section 'Tier'",
+  "admitted by item RIMMANDRAKE_ADMIT_COLD_STORAGE_AS_PIPELINE_MOD_RIMFRIDGE_GONE; first-touch Designer item COLDSTORAGE_DESIGN_FIRST_TOUCH"
+ ]
+}
