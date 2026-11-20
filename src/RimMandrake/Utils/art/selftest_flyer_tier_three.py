@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# selftest-timeout: 600   (measured 2026-11-19: 273 s wall alone on 14 cores, 268 s of it CPU in the flyer_cutout bakes; the 240 s default crashed it)
 """selftest_flyer_tier_three.py - the tier-3 flyers fly on still-body flip-books cut from their kept statics
 (FLYER_TIER_THREE_REBUILD_EASY_WINGS_ONLY; recipe: design/RimMandrake/flyer_stable_body_study.md 3.1, 3.2).
 
