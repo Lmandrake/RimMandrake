@@ -1,0 +1,1 @@
+A Claude Code hook process now carries CLAUDE_CODE_SHELL in its environ (measured 2026-11-20), so the env mark alone no longer separates a Bash-tool child from a hook; seat_restart.background_commands now excludes any child that runs a .claude/hooks/ file.
