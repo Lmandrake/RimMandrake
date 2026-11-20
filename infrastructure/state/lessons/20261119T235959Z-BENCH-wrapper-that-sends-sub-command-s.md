@@ -1,0 +1,1 @@
+A wrapper that sends a sub-command's output to /dev/null and ignores its exit code reports a refusal as a failure of the act. rw_game.sh down said 'pid survives taskkill /F' when game_instance stop had REFUSED and sent nothing (11-16); keep each sub-command's words and exit, and say which of refused, failed or survived happened.

@@ -1,0 +1,1 @@
+A command run over ssh on SteveDesktop gets its environment from ~/.bashrc, which sources ~/rm/runner's testcentre_env.sh, not the env file of the clone the command runs in. When the command cds into another clone (~/rm/gameb), source that clone's own testcentre_env.sh, or the code and its paths come from two different ages (RIMMASTER_FIX_REMOTE_TAKE_HOLDS_LOCK_NOBODY_READS).
