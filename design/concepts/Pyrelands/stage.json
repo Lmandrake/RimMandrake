@@ -783,10 +783,17 @@
     "ref": "run rm-role-designer-1795257816",
     "stage": 4,
     "tokens": 400000
+   },
+   {
+    "at": "2026-11-21T10:54:25Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1795258152",
+    "stage": 4,
+    "tokens": 429730
    }
   ],
   "reserve": 60000,
-  "spent": 21077740
+  "spent": 21507470
  },
  "coverage_releases": [
   {
@@ -2426,6 +2433,30 @@
    "stage": 4,
    "what": "void_system",
    "why": "run rm-role-designer-1795257816: the unit ended with no claude result of its own; its rejection spends no retry"
+  },
+  {
+   "at": "2026-11-21T10:49:21Z",
+   "stage": 4,
+   "what": "over_budget",
+   "why": "21077740 of 4000000 spent; run rm-role-designer-1795258152 goes on with 400000 (advisory)"
+  },
+  {
+   "at": "2026-11-21T10:49:22Z",
+   "stage": 4,
+   "what": "open",
+   "why": "run rm-role-designer-1795258152, stage 4, budget 400000"
+  },
+  {
+   "at": "2026-11-21T10:54:25Z",
+   "stage": 5,
+   "what": "close",
+   "why": "run rm-role-designer-1795258152: stage 4 done"
+  },
+  {
+   "at": "2026-11-21T10:54:25Z",
+   "stage": 5,
+   "what": "exam_map",
+   "why": "read map recorded for 40 scenarios"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -3037,12 +3068,46 @@
    "why": [
     "no result.json (a closing message is not a result)"
    ]
+  },
+  {
+   "at": "2026-11-21T10:54:25Z",
+   "inputs": {
+    "exam": "338a753e0135511be4e514478f371c0a3547c93863777a56ed02a61e1824c3f6",
+    "floor": "bd9d7fd896359814f8ad5c820b6b23ee1d61a06a6d4a33cbe92595cc4771b32d",
+    "owner": "79abe4290fa077e9fd73b85d4c6d6e47ee49c99ed1608b827f1afbe5f8895520",
+    "root": "ae26d34f7fa9f55c5bb0ea115379238907576a0151185aabfad9d1f495425fab",
+    "scenes": "b08126e2f6529eba85ebc5a0ad8aa8cad5da44f3c4744986affd96371a3eb245",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54"
+   },
+   "manifest": {
+    "designer.md": "311493e8980d351a9204dac50b507be22a3dcba6191c6c39f4c7609c01105747",
+    "designer_exam.md": "fcf9e077af73f6d526f7720d8e9cf0f593b10a4766d459aa013693ef575eee45"
+   },
+   "outcome": "done",
+   "owner_uncited": [
+    "1793766816609436834",
+    "1794611171307640419",
+    "1794790810777772480",
+    "1794790871101885625"
+   ],
+   "pinned_at": {
+    "exam": "2dd1b01316cbaddecefa5d369a8f0e8ac561a2ae",
+    "floor": "2dd1b01316cbaddecefa5d369a8f0e8ac561a2ae",
+    "root": "2dd1b01316cbaddecefa5d369a8f0e8ac561a2ae",
+    "scenes": "2dd1b01316cbaddecefa5d369a8f0e8ac561a2ae",
+    "sheet": "2dd1b01316cbaddecefa5d369a8f0e8ac561a2ae",
+    "tree": "2dd1b01316cbaddecefa5d369a8f0e8ac561a2ae"
+   },
+   "run": "rm-role-designer-1795258152",
+   "stage": 4,
+   "summary": "No new exam needed: exam.json from run rm-role-designer-1795255597 (40/40 right, accept_where_reject_core 0, no challenger miss, control without fire_walks_with_wind missed e5 and c3) is frozen against the current inputs (tree 78f3df67, sheet 628feeb2; unchanged since), and exam_reads.json is recorded. That run's accepted stage-4 close (commit 939119ba74, stage 5 ready) was lost: run rm-role-designer-1795257816 opened at stage 4 on a stage.json from before the harvest landed, and its void harvest (0a3974a3de) wrote stage 4 back. This result re-records the same exam so the concept reaches stage 5 again; no tree, sheet, scene or floor changed."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 4,
+ "stage": 5,
  "status": "ready",
  "waiting_owner_feed": "79abe4290fa077e9fd73b85d4c6d6e47ee49c99ed1608b827f1afbe5f8895520"
 }
