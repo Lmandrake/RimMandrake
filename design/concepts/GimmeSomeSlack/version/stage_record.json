@@ -4,7 +4,7 @@
   "version": "0.1.1",
   "stage": "in_game",
   "stage_label": "In-game acceptance (Stage 6)",
-  "since": "2026-11-20T21:23:58-08:00",
+  "since": "2026-11-20T23:44:15-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -88,6 +88,23 @@
         "steward_confirms",
         "exit_met",
         "judge_certificate"
+      ]
+    },
+    {
+      "from": "in_game",
+      "to": "in_game",
+      "at": "2026-11-20T23:44:15-08:00",
+      "by": "BENCH",
+      "why": "steward: visit 1 not met only on re-runs: the mod changed after the visit (switch lamp 2e073c2b60, bar switch_light_reads_state by his card fdde703a0a), so all 203 checks re-run on build f8936daf; sc_switch_light new, never run; sc_walk needs game a (full list), held by another run all visit. No mod-wrong line, no wrong check. Game-only: next visit.",
+      "unit": "rm-detached-bench-rimmandrake-route-gimmesomeslack-visit-o-1795246077",
+      "confirmed": {
+        "steward_confirms": "read visit_1 SUMMARY.md + maturation.py next: 201 PASS/1 UNMEASURED on b9ae8819; judge-the-judge: build_match 203 re-run = REAL MISS (re-run not done; build changed after the visit, not a visit fault); sc_switch_light no row = REAL MISS (check added 23:27, after the visit); sc_walk undecided = REAL MISS (not run, game a busy, owner named in unrun.jsonl). No RECORD GAP, no CRITERION FLAW; no tests_edited by a judge; no fix_readers_owed. Verdict: back to in_game, nothing filed."
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold"
       ]
     }
   ]

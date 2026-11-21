@@ -13,12 +13,12 @@ mods read alike.
 - **Design Version 0.1.0, locked** on his word 2026-11-13 ~3:40 PM PST (`version/VERSION.json`); the lock record pins the text
   at that word, `bf33322d77` (re-pinned 2026-11-14, steward's decision). Code: `src/RimMandrake/GimmeSomeSlack/` (C#, 62
   sources; C# SelfTest 4515 checks; `validation.py`; `northstar/proof_all.py`, the one dense live proof).
-- **Stage now:** Stage 6, in-game acceptance, since 2026-11-20 9:23 PM PST (`version/stage_record.json`).
+- **Stage now:** Stage 6, in-game acceptance, since 2026-11-20 11:44 PM PST (`version/stage_record.json`).
 - **Bars:** 48 (23 inventory rows of `record.json` + 26 leaves of `tree.json`; `shock_reach_setting` is both, so 49 rows
   name 48 ids; `cords_draw_under_things` added by his card 2026-11-14). The test-and-stage table is
   `version/test_table.json` (read view `version/test_table.md`), made by the throwaway `version/make_test_table.py`. Of 48
   bars: 48 have a deciding test runnable today (counts as of now: "Waiting on").
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-20 9:23 PM PST).
+- **Waiting on:** visit 2, after its certificate is green on the new build (refuses now: red_seen owed on T_CORE, T_STUB_JOINS, T_SWITCH_LIGHT_OFFLINE, edited by the switch-lamp item RIMMANDRAKE_LIGHT_SLACK_SWITCH_GREEN_RED_DARK_WHEN_UNPOWERED whose run is still live; ran_on_this_build on 5 deciders). Visit 2 re-runs all 203 checks on the walk build incl. sc_switch_light, and sc_walk on game a (his full list).
 - **Open questions for him:** "Questions for him", the last part of this top section.
 
 ### The vision (his root paragraph, `record.json` root, OWNER:1793895896496551063)
@@ -477,4 +477,13 @@ row 2; Stage 3 about $10.3 and 50 minutes (12:15 to 13:05 PST). No helpers, no g
 - Steward confirms: read blind_challenge/cycle_1/SUMMARY.md, faults.json (0 Problems, 4 Polish), tests_edited.json (judge's own lane-1 test only; git shows no GSS source or test-table commit after the 19:30 PST cycle start), fixes.jsonl empty (no fix reader owed); reran T_NO_HOSE myself: PASS rc=0; rerun_offline.py --recheck: 38 of 38 match; judge-the-judge: no RECORD GAP, CRITERION FLAW or REAL MISS; verdict: exit met, advance to in_game
 - Was, "Stage now": - **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-20 7:23 PM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-20 7:23 PM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-20 11:44 PM PST, stage change: In-game acceptance (Stage 6) to In-game acceptance (Stage 6) (by BENCH)
+
+- Why: steward: visit 1 not met only on re-runs: the mod changed after the visit (switch lamp 2e073c2b60, bar switch_light_reads_state by his card fdde703a0a), so all 203 checks re-run on build f8936daf; sc_switch_light new, never run; sc_walk needs game a (full list), held by another run all visit. No mod-wrong line, no wrong check. Game-only: next visit.
+- Checks passed: order, by, version, hold.
+- Steward confirms: read visit_1 SUMMARY.md + maturation.py next: 201 PASS/1 UNMEASURED on b9ae8819; judge-the-judge: build_match 203 re-run = REAL MISS (re-run not done; build changed after the visit, not a visit fault); sc_switch_light no row = REAL MISS (check added 23:27, after the visit); sc_walk undecided = REAL MISS (not run, game a busy, owner named in unrun.jsonl). No RECORD GAP, no CRITERION FLAW; no tests_edited by a judge; no fix_readers_owed. Verdict: back to in_game, nothing filed.
+- Was, "Stage now": - **Stage now:** Stage 6, in-game acceptance, since 2026-11-20 9:23 PM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-20 9:23 PM PST).
 - Record: `version/stage_record.json`.
