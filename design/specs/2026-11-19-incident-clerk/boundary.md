@@ -35,6 +35,8 @@ plan with no trigger line). Each promise has a test of its name in `src/RimMandr
   climbs on its own clock, and every climb is a rung change that buys its run.
 - **a-deep-read-with-nothing-to-read.** With no open incident at his rung the deep read writes nothing and is tried
   again each tick of that day; an incident that reaches his rung later that day is read by it then.
+- **a-collector-that-never-reads-again.** A point frozen at its pre-ack observation holds the line quiet. Its
+  collector's `.blind` alarm in ops_watch and the daily deep read catch it, not the clerk.
 - **a-deep-run-the-launcher-refuses.** The deep read's rows land when the ring is made; a run the launcher then holds
   or refuses is re-asked as the dispatcher re-asks any fresh run, and is not re-written as a second deep read.
 
@@ -59,6 +61,10 @@ plan with no trigger line). Each promise has a test of its name in `src/RimMandr
 - **a-plan-with-no-trigger-keeps-its-model-revisit-and-is-asked-for-one.** An incident whose plan has no trigger line
   is graded by `revisit_news` as before (moved readings buy a run); its `revisited` and `revisit_quiet` rows carry
   `trigger_owed: true`, and the run's ring asks for a `--trigger` line.
+- **a-reading-made-before-the-ack-crosses-nothing.** A metric clause whose point carries an `x.observed_at` older
+  than the incident's `acked_t` is held as "read before the ack, not yet read again", never crossed: the ack already
+  planned around that reading. The same value observed after the ack crosses as usual. A point with no `observed_at`
+  counts as read now.
 - **the-daily-deep-read-launches-once-a-day-on-opus.** From `deep_read_local` each local day, the first tick revisits
   every open untamed incident at his rung that is not recovering, as one batch of `deep` rings (`revisited` rows with
   `deep: true`), whatever their triggers say; a later tick that day adds none; the next day it comes again. The

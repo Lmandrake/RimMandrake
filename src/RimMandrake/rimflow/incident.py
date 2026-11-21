@@ -426,10 +426,13 @@ def parse_trigger(text):
     return out
 
 
-def trigger_state(clauses, status, now, fresh):
+def trigger_state(clauses, status, now, fresh, since=None):
     """-> ("crossed" | "blind" | "held", [one text per clause that decided it]). Crossed when any clause is true; else
     blind when any metric clause could not be read (a stale status, an absent, unmeasured or non-number point: never
-    "held" on a reading nobody made); else held, each clause's reading named."""
+    "held" on a reading nobody made); else held, each clause's reading named. `since` is the ack's epoch: a point whose
+    own observation (x.observed_at) is older than it is the reading the ack already planned around, so it is held as
+    not yet re-read, never crossed (maturation-20261120030922, 2026-11-21: a run was called 80 s after an ack on the
+    11:54Z reading that the ack itself answered). A collector that never reads again is ops_watch's blind alarm's."""
     points = (status.get("points") or {}) if isinstance(status, dict) else {}
     crossed, blind, held = [], [], []
     for c in clauses:
@@ -447,6 +450,8 @@ def trigger_state(clauses, status, now, fresh):
             blind.append("%s: its reading is %s, not MEASURED" % (key, p.get("m")))
         elif not isinstance(v, (int, float)) or isinstance(v, bool):
             blind.append("%s: its reading %r is not a number" % (key, v))
+        elif since and (observed_t(p) or since) < since:
+            held.append("%s %s, read before the ack, not yet read again (line %s %s)" % (key, v, op, "%g" % n))
         elif TRIGGER_OPS[op](v, n):
             crossed.append("%s reads %s (%s %s)" % (key, v, op, "%g" % n))
         else:
@@ -468,7 +473,7 @@ def clerk_trigger(inc, status, now, fresh):
         clauses = parse_trigger(line)
     except ValueError as e:
         return "blind", ["its stored line does not parse: %s" % e]
-    return trigger_state(clauses, status, now, fresh)
+    return trigger_state(clauses, status, now, fresh, since=inc.get("acked_t"))
 
 
 def clerk_news(inc, tstate, rows, out, now, pol):

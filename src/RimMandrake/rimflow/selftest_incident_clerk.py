@@ -217,6 +217,32 @@ def t_a_plan_with_no_trigger_keeps_its_model_revisit_and_is_asked_for_one():
           res["rows"])
 
 
+def t_a_reading_made_before_the_ack_crosses_nothing():
+    """maturation-20261120030922, 2026-11-21: an ack at 12:27Z planned 'overdue reads 0 at the next pass'; the clerk
+    revisited at 12:28Z on hand_acts_overdue 1, a point observed at 11:54Z, before the ack, and called a run for it."""
+    p = "a-reading-made-before-the-ack-crosses-nothing"
+    tb = table()
+    now = T0 + 60 * M
+    rows = inc_rows(trigger="m.c-1 > 0")              # acked at T0 + 1 min
+    st = status(now, c_1=1)
+    st["points"]["m.c-1"]["x"] = {"observed_at": IN.iso(T0 - 30 * M)}
+    res = IN.step(tb, rows, st, now)
+    check(p, not evs(res, "c-1", ("revisited",)) and not res["rings"],
+          "a crossing value observed before the ack calls no run", (res["rows"], res["rings"]))
+    st["points"]["m.c-1"]["x"] = {"observed_at": IN.iso(T0 + 30 * M)}
+    res2 = IN.step(tb, rows, st, now)
+    e = evs(res2, "c-1")
+    check(p, [x["ev"] for x in e] == ["revisited"] and len(res2["rings"]) == 1,
+          "the same value observed after the ack crosses: one run", (res2["rows"], res2["rings"]))
+    due = T0 + 241 * M
+    st = status(due, c_1=1)
+    st["points"]["m.c-1"]["x"] = {"observed_at": IN.iso(T0 - 30 * M)}
+    res3 = IN.step(tb, rows, st, due)
+    q = evs(res3, "c-1")
+    check(p, [x["ev"] for x in q] == ["revisit_quiet"] and "before the ack" in json.dumps(q) and not res3["rings"],
+          "at a due revisit the pre-ack reading is named as not yet re-read, and no run", (res3["rows"], res3["rings"]))
+
+
 def rig():
     real = json.load(open(os.path.join(HERE, "dispatcher_schedule.json")))
     return dict(real, seats={}, ledger_notes=False, publish=False,
@@ -272,7 +298,8 @@ def main():
     t_a_trigger_that_cannot_be_read_calls_the_agent()
     t_a_plan_with_no_trigger_keeps_its_model_revisit_and_is_asked_for_one()
     t_the_daily_deep_read_launches_once_a_day_on_opus()
-    n = 7
+    t_a_reading_made_before_the_ack_crosses_nothing()
+    n = 8
     print("selftest_incident_clerk: %d of %d promises pass%s" % (n - len(FAILED), n,
                                                                  "" if not FAILED else " (FAIL: %s)" % ", ".join(sorted(FAILED))))
     return 1 if FAILED else 0
