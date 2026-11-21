@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":28527,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=6c52940cbc7e35897e3d124fa03e294f86928311c34ee98510e5b2d3216a5448 -->
-# FlowWorks — mod ledger history (1400 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":28527,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":843,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=8ee0688707f03702aa5f9d9c0af8be35939aede00dcf583390d50ed21c061b7e -->
+# FlowWorks — mod ledger history (1403 events, merged across shards)
 
 - 2026-11-16T07:16:23Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 55 of 57 bars met at the lock
 - 2026-11-16T07:16:23Z BACKFILL#2 decision version v0.1.0: 
@@ -1401,3 +1401,6 @@
 - 2026-11-21T03:09:07Z DISPATCH#83 session.id session v0.1.0: 
 - 2026-11-21T04:32:56Z DISPATCH#84 lease.grant lease v0.1.0: 
 - 2026-11-21T04:33:02Z DISPATCH#85 run.start run v0.1.0: 
+- 2026-11-21T04:35:29Z HOLDER.run-1795235568#1 lease.renew lease v0.1.0: 
+- 2026-11-21T04:51:19Z HOLDER.run-1795235568#2 lease.renew lease v0.1.0: 
+- 2026-11-21T05:04:04Z HOLDER.run-1795235568#3 lease.renew lease v0.1.0: 

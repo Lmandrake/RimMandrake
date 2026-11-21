@@ -1,4 +1,5 @@
-// RIMMANDRAKE_FIX_BIG_PIT_SCENE_BUILDINGS_STAY_DRY, RIMMANDRAKE_TUNE_WATER_CLARITY_DARKER_AND_HALF_AS_OPAQUE and
+// RIMMANDRAKE_FIX_BIG_PIT_SCENE_BUILDINGS_STAY_DRY, RIMMANDRAKE_TUNE_WATER_CLARITY_DARKER_AND_HALF_AS_OPAQUE,
+// RIMMANDRAKE_MOCK_FLOWWORKS_WATER_BY_DEPTH_ON_REAL_GROUND and
 // RIMMANDRAKE_TINT_PIT_WATER_READS_AS_WATER_NOT_MUD: RM_UnderLiquid
 // against its offline twin, model/underliquid.py. The golden table below is WRITTEN by
 // selftest_flowworks_underliquid_parity.py --write from the model (that selftest also fails when it drifts); these checks
@@ -14,29 +15,36 @@ namespace RimMandrake.FlowWorks.SelfTest
 		internal static readonly float[,] Golden =
 		{
 			{ 0.45f, 0.0f, 1.0f },
-			{ 0.45f, 0.01f, 0.99685f },
-			{ 0.45f, 0.25f, 0.92225f },
-			{ 0.45f, 0.5f, 0.84654f },
-			{ 0.45f, 1.0f, 0.70163f },
-			{ 0.45f, 1.5f, 0.5661f },
-			{ 0.45f, 2.0f, 0.44104f },
-			{ 0.45f, 3.0f, 0.22923f },
-			{ 0.45f, 3.5f, 0.14897f },
+			{ 0.45f, 0.01f, 0.64808f },
+			{ 0.45f, 0.2f, 0.61189f },
+			{ 0.45f, 0.25f, 0.60248f },
+			{ 0.45f, 0.5f, 0.55622f },
+			{ 0.45f, 1.0f, 0.46766f },
+			{ 0.45f, 1.5f, 0.38484f },
+			{ 0.45f, 2.0f, 0.30841f },
+			{ 0.45f, 3.0f, 0.17897f },
+			{ 0.45f, 3.5f, 0.12993f },
 			{ 0.45f, 4.0f, 0.1f },
+			{ 0.45f, 5.0f, 0.1f },
 			{ 0.45f, 6.0f, 0.1f },
+			{ 0.45f, 8.0f, 0.1f },
 			{ 0.25f, 0.0f, 1.0f },
-			{ 0.25f, 0.01f, 0.99454f },
-			{ 0.25f, 0.25f, 0.86632f },
-			{ 0.25f, 0.5f, 0.739f },
-			{ 0.25f, 1.0f, 0.50566f },
-			{ 0.25f, 1.5f, 0.30612f },
-			{ 0.25f, 2.0f, 0.15282f },
+			{ 0.25f, 0.01f, 0.64666f },
+			{ 0.25f, 0.2f, 0.58434f },
+			{ 0.25f, 0.25f, 0.5683f },
+			{ 0.25f, 0.5f, 0.4905f },
+			{ 0.25f, 1.0f, 0.3479f },
+			{ 0.25f, 1.5f, 0.22596f },
+			{ 0.25f, 2.0f, 0.13228f },
 			{ 0.25f, 3.0f, 0.1f },
 			{ 0.25f, 3.5f, 0.1f },
 			{ 0.25f, 4.0f, 0.1f },
+			{ 0.25f, 5.0f, 0.1f },
 			{ 0.25f, 6.0f, 0.1f },
+			{ 0.25f, 8.0f, 0.1f },
 			{ 0.0f, 0.0f, 1.0f },
 			{ 0.0f, 0.01f, 0.0f },
+			{ 0.0f, 0.2f, 0.0f },
 			{ 0.0f, 0.25f, 0.0f },
 			{ 0.0f, 0.5f, 0.0f },
 			{ 0.0f, 1.0f, 0.0f },
@@ -45,7 +53,9 @@ namespace RimMandrake.FlowWorks.SelfTest
 			{ 0.0f, 3.0f, 0.0f },
 			{ 0.0f, 3.5f, 0.0f },
 			{ 0.0f, 4.0f, 0.0f },
-			{ 0.0f, 6.0f, 0.0f }
+			{ 0.0f, 5.0f, 0.0f },
+			{ 0.0f, 6.0f, 0.0f },
+			{ 0.0f, 8.0f, 0.0f }
 		};
 		// END GOLDEN
 
@@ -61,6 +71,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 			Case("UnderLiquid_seen_matches_the_offline_model", () =>
 			{
 				RM_UnderLiquid.DeepOpacity = RM_UnderLiquid.DefaultDeepOpacity;
+				RM_UnderLiquid.ShallowOpacity = RM_UnderLiquid.DefaultShallowOpacity;
 				RM_UnderLiquid.FullMetres = RM_UnderLiquid.DefaultFullMetres;
 				for (int i = 0; i < Golden.GetLength(0); i++)
 				{
@@ -74,8 +85,15 @@ namespace RimMandrake.FlowWorks.SelfTest
 				RM_UnderLiquid.FullMetres = 8f;
 				Assert(RM_UnderLiquid.Seen(0.45f, 4f) > 0.2f, "can-fail: full at 8 m shows a 4 m floor more");
 				RM_UnderLiquid.FullMetres = RM_UnderLiquid.DefaultFullMetres;
-				float s4 = 1f - RM_UnderLiquid.Seen(0.45f, 4f), s05 = 1f - RM_UnderLiquid.Seen(0.45f, 0.5f);
-				Assert(s4 > 0.85f && s4 < 0.95f && s05 < 0.2f, "can-fail: shipped water is a body at 4 m (" + s4 + "), faint at 0.5 m (" + s05 + ")");
+				// the shallow strength moves the law: 0 is the 11-13 law (0.5 m hid 15%); it never exceeds the deep strength
+				RM_UnderLiquid.ShallowOpacity = 0f;
+				Assert(RM_UnderLiquid.Seen(0.45f, 0.5f) > 0.8f, "can-fail: shallow strength 0 is faint at 0.5 m");
+				RM_UnderLiquid.ShallowOpacity = 1f;
+				Assert(Near(RM_UnderLiquid.Seen(0.45f, 0.2f), 1f - RM_UnderLiquid.DeepOpacity), "can-fail: shallow strength past the deep one is held to it");
+				RM_UnderLiquid.ShallowOpacity = RM_UnderLiquid.DefaultShallowOpacity;
+				// the written target (design/concepts/FlowWorks/version/water_by_depth_target.json): firm from the first step
+				float s4 = 1f - RM_UnderLiquid.Seen(0.45f, 4f), s02 = 1f - RM_UnderLiquid.Seen(0.45f, 0.2f);
+				Assert(s4 > 0.85f && s4 < 0.95f && s02 >= 0.35f, "can-fail: shipped water is a body at 4 m (" + s4 + "), reads at 0.2 m (" + s02 + ")");
 			});
 			Case("UnderLiquid_buildings_shadows_labels_match_the_model", () =>
 			{

@@ -5,8 +5,9 @@ WHY: the owner picks the water target from offline mockups (model/water_mockup.p
 mockup's SHIPPED row is what the game draws today. This keeps that true:
   1. SHIPPED over a 4 m pit floor at 2 m reproduces the colour measured in the 2026-11-12 capture BP3 (within 0.02 a
      channel; it was 0.011 when written);
-  2. SHIPPED hides exactly what RM_UnderLiquid.Seen hides (via model/underliquid.py) at every mockup depth, and the
-     figures the item quotes (6% at 0.2 m, 15% at 0.5 m, 30% at 1 m, 56% at 2 m, 90% at 5 m);
+  2. SHIPPED hides exactly what the 11-13 law hid (model/underliquid.py seen_approved_1113, shipped until 2026-11-20) at
+     every mockup depth, and the figures the item quotes (6% at 0.2 m, 15% at 0.5 m, 30% at 1 m, 56% at 2 m, 90% at 5 m);
+     and FIRM, the picked target, hides exactly what RM_UnderLiquid.Seen (model seen) hides now;
   3. every candidate is a different look (no two hide the same at every depth with the same colour), each hides more
      with depth (never clearer deeper), and the dry case is untouched.
 CAN IT FAIL: a planted halved law and a planted pale body colour must each turn check 1 red (run in this file).
@@ -42,13 +43,14 @@ def main():
 
     worst, n = 0.0, 0
     for d in wm.DEPTHS[1:]:
-        want = 1.0 - ul.seen(ul.REFERENCE_CLARITY, d)
+        want = 1.0 - ul.seen_approved_1113(ul.REFERENCE_CLARITY, d)
         worst = max(worst, abs(wm.hides(wm.law_shipped, d) - want))
-        n += 1
+        worst = max(worst, abs(wm.hides(wm.law_firm, d) - (1.0 - ul.seen(ul.REFERENCE_CLARITY, d))))
+        n += 2
     for d, fig in ITEM_FIGURES.items():
         worst = max(worst, abs(round(wm.hides(wm.law_shipped, d), 2) - fig))
         n += 1
-    print(f"2 SHIPPED = RM_UnderLiquid.Seen and the item's figures: worst {worst:.4f} limit 0.005 cases {n}")
+    print(f"2 SHIPPED = the 11-13 law and the item's figures, FIRM = RM_UnderLiquid.Seen: worst {worst:.4f} limit 0.005 cases {n}")
     if worst > 0.005:
         fails.append(f"SHIPPED hides differ from the law by {worst:.4f}")
 

@@ -8,8 +8,10 @@ Source/Superdeep/RM_UnderLiquid.cs. This keeps the two in parity:
      shadow, the label cut-off, the pawn cover's water colour) is the same number on both sides;
   2. the golden table in SelfTest/UnderLiquidParityChecks.cs (which the dotnet SelfTest checks RM_UnderLiquid.Seen
      against) is exactly what the model computes (`--write` regenerates it after a model change);
-  3. the owner's water look holds in the model ("Blue that grows with depth", then "too little opacity" at 8:55 PM): faint
-     at 0.5 m, clearly water at 2 m, a body at 4 m between the halved retune and the afternoon law (nearer the old), every
+  3. the owner's water look holds in the model ("Blue that grows with depth", then "too little opacity" at 8:55 PM, then
+     2026-11-20 "Barely reads at shallower depths": the written target design/concepts/FlowWorks/version/
+     water_by_depth_target.json, held exactly by selftest_flowworks_water_target.py): firm from the first step (at least
+     SHALLOW_OPACITY, read as water at 0.2 m), clearly water at 2 m, a body at 4 m between the halved retune and the afternoon law (nearer the old), every
      0.5 m step tellable, deeper never clearer, opaque liquids hide, a dark saturated body colour per liquid;
   4. the production C# carries each fix (buildings, pawns and corpses covered, one floor shadow, labels fade, the wet
      floor drawn in the dry pit's own dark ground, the settings) and the EVEN sheet: the drowned floor and walls drawn
@@ -108,15 +110,18 @@ def model_checks(model) -> list[tuple[str, bool]]:
     op = lambda m: 1 - model.seen(W, m)  # noqa: E731
     old4, half4, new4 = 1 - model.seen_old(W, 4.0), 1 - model.seen_halved(W, 4.0), op(4.0)
     ops = [op(m / 10) for m in range(0, 61)]
-    steps = [op(0.5 * (k + 1)) - op(0.5 * k) for k in range(8)]
+    ladder = (0.0, 0.2, 0.5, 1.0, 1.5, 2.0, 5.0)   # the target's depths (water_by_depth_target.json)
+    steps = [op(b) - op(a) for a, b in zip(ladder, ladder[1:])]
     body = model.body(model.WATER_COLOUR)
     sat = lambda c: (max(c) - min(c)) / max(c)  # noqa: E731
     return [
         ("4 m of water is a body: opacity %.3f between the halved retune %.3f and the afternoon law %.3f, nearer the old"
          % (new4, half4, old4), (half4 + old4) / 2 < new4 < old4),
-        ("0.5 m is very transparent, a faint tint (%.3f)" % op(0.5), 0.08 <= op(0.5) <= 0.2),
-        ("2 m is clearly water with things readable (%.3f)" % op(2.0), 0.45 <= op(2.0) <= 0.65),
-        ("every 0.5 m step to 4 m is tellable (smallest %.3f)" % min(steps), min(steps) >= 0.04),
+        ("shallow water reads (2026-11-20 target): 0.01 m hides SHALLOW_OPACITY (%.3f), 0.2 m hides %.3f >= 0.35, 0.5 m %.3f < 2 m"
+         % (op(0.01), op(0.2), op(0.5)), op(0.01) >= model.SHALLOW_OPACITY - 1e-3 and op(0.2) >= 0.35 and op(0.5) < op(2.0)),
+        ("2 m is clearly water with things readable (%.3f)" % op(2.0), 0.45 <= op(2.0) <= 0.75),
+        ("every step of the target's depths (dry, 0.2, 0.5, 1, 1.5, 2, 5 m) is tellable (smallest %.3f)" % min(steps),
+         min(steps) >= 0.04),
         ("deeper is never clearer, 0..6 m", all(b >= a - 1e-12 for a, b in zip(ops, ops[1:]))),
         ("full at FULL_METRES, and a murkier liquid sooner",
          abs(op(model.FULL_METRES) - model.DEEP_OPACITY) < 1e-9 and model.full_metres(0.35) < model.FULL_METRES),
@@ -141,7 +146,7 @@ CONSTS = [("ItemMetres", "ITEM_METRES"), ("MinifiedMetres", "MINIFIED_METRES"),
           ("SwaleMetres", "SWALE_METRES"), ("LyingLadderMetres", "LYING_LADDER_METRES"), ("StakeMetres", "STAKE_METRES"),
           ("CorpseMetres", "CORPSE_METRES"), ("FullCoverMetres", "FULL_COVER_METRES"),
           ("MinThingMetres", "MIN_THING_METRES"), ("LabelHidden", "LABEL_HIDDEN"),
-          ("DefaultDeepOpacity", "DEEP_OPACITY"), ("DefaultDarken", "DARKEN"), ("DefaultFullMetres", "FULL_METRES"),
+          ("DefaultDeepOpacity", "DEEP_OPACITY"), ("DefaultShallowOpacity", "SHALLOW_OPACITY"), ("DefaultDarken", "DARKEN"), ("DefaultFullMetres", "FULL_METRES"),
           ("ReferenceClarity", "REFERENCE_CLARITY"), ("CurvePower", "CURVE_POWER"), ("BodyGamma", "BODY_GAMMA"),
           ("DefaultThingShadowAlpha", "THING_SHADOW_ALPHA")]
 
@@ -157,8 +162,8 @@ def cs_checks(model, ul: str, draw: str, walls: str, mod: str, gold: str, progra
     out.append(("fallback liquid colour = model WATER_COLOUR",
                 bool(wb) and all(abs(float(a) - b) < 1e-6 for a, b in zip(wb.groups(), model.WATER_COLOUR))))
     seen = method_body(ulm, r"public\s+static\s+float\s+Seen\s*\(\s*float\s+clarity\s*,\s*float\s+metresOver\s*\)")
-    out.append(("C# Seen is DeepOpacity x Rise over the liquid's full depth",
-                "DeepOpacity" in seen and "Rise(" in seen and "FullMetresFor(" in seen))
+    out.append(("C# Seen is ShallowOpacity + (DeepOpacity - shallow) x Rise over the liquid's full depth",
+                "DeepOpacity" in seen and "ShallowOpacity" in seen and "Rise(" in seen and "FullMetresFor(" in seen))
     body = method_body(ulm, r"public\s+static\s+Float3\s+Body\s*\(\s*Float3\s+colour\s*\)")
     out.append(("C# Body darkens by Darken and deepens by BodyGamma", "Darken" in body and "Deepen(" in body
                 and "BodyGamma" in ulm))
@@ -204,7 +209,7 @@ def cs_checks(model, ul: str, draw: str, walls: str, mod: str, gold: str, progra
     st = method_body(wam, r"private\s+void\s+SeeThrough\s*\(")
     out.append(("the wet floor is the DRY pit's own dark ground (DryTerrainFor), not the light ground dug from",
                 "DryTerrainFor(" in st and "OriginalTerrainAt" not in st))
-    for s in ("underLiquidDeepOpacity", "underLiquidFullMetres", "underLiquidDarken", "pitThingShadowAlpha"):
+    for s in ("underLiquidDeepOpacity", "underLiquidShallowOpacity", "underLiquidFullMetres", "underLiquidDarken", "pitThingShadowAlpha"):
         out.append(("setting %s is saved and shown" % s, ('Scribe_Values.Look(ref ' + s) in mom and mom.count(s) >= 4))
     return out
 
@@ -228,11 +233,12 @@ def main() -> int:
         print("WROTE golden table: " + str(GOLD)); texts[4] = GOLD.read_text(encoding="utf-8")
     bad = run("", model_checks(model)) + run("", cs_checks(model, *texts))
     # can-fail: both earlier laws, a spliced golden row, and each C# fix taken out must go red
-    for name, law in (("afternoon", "seen_old"), ("halved", "seen_halved")):
+    for name, law, must in (("afternoon", "seen_old", "4 m of water is a body"), ("halved", "seen_halved", "4 m of water is a body"),
+                            ("11-13 approved (too transparent on 11-20)", "seen_approved_1113", "shallow water reads")):
         old = load_model()
-        old.seen = (lambda f: lambda c, m, d=1.0, full=4.0: f(c, m))(getattr(old, law))
+        old.seen = (lambda f: lambda c, m, d=1.0, full=4.0, shallow_opacity=0.0: f(c, m))(getattr(old, law))
         red_old = [n for n, ok in model_checks(old) if not ok]
-        ok = any(n.startswith("4 m of water is a body") for n in red_old)
+        ok = any(n.startswith(must) for n in red_old)
         print(("PASS " if ok else "FAIL ") + "can-fail: the %s law goes red: " % name + "; ".join(red_old)[:160]); bad += not ok
     spliced = texts[4].replace(str(model.golden_rows()[4][2]) + "f", "0.11111f", 1)
     ok = not [g for n, g in cs_checks(model, texts[0], texts[1], texts[2], texts[3], spliced, texts[5], texts[6], texts[7])

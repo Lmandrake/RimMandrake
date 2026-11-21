@@ -151,7 +151,9 @@ namespace RimMandrake.FlowWorks.SelfTest
 				// 4 m (images/3.png, KEEP): "not visible at 4 m" would need a new law, flagged, not done.
 				float s1 = RM_UnderLiquid.Seen(Water, 1f), s2 = RM_UnderLiquid.Seen(Water, 2f), s4 = RM_UnderLiquid.Seen(Water, 4f);
 				Assert(s1 > s2 && s2 > s4, "can-fail: deeper hides more (" + s1 + ", " + s2 + ", " + s4 + ")");
-				Assert(s1 < 0.9f && s1 > 0.5f, "can-fail: 1 m: tinted, still seen (" + s1 + ")");
+				// 1 m hides 53% by the written target (design/concepts/FlowWorks/version/water_by_depth_target.json, 2026-11-20:
+				// "Barely reads at shallower depths"); before it, 30%
+				Assert(s1 < 0.9f && s1 > 0.4f, "can-fail: 1 m: tinted, still seen (" + s1 + ")");
 				Assert(s2 < 0.5f && s4 <= 0.11f, "can-fail: 2 m barely, 4 m about gone (" + s2 + ", " + s4 + ")");
 				string draw = RiverSwitchFlipChecks.Src("Superdeep/RM_SubmergeDraw.cs");
 				Assert(draw.Contains("t is Filth || (t is Building_SteamGeyser && RM_GeyserPit.On)") && draw.Contains("RM_FaceMaterial.UnderSheetQueue"),
@@ -164,7 +166,9 @@ namespace RimMandrake.FlowWorks.SelfTest
 				// under water that would be great").
 				Assert(RM_UnderLiquid.OverlayAlpha(Water, 0f, RM_UnderLiquid.WallSlotMetres) == 1f, "dry: whole");
 				float flush = RM_UnderLiquid.OverlayAlpha(Water, 1f, 1f);
-				Assert(flush < 1f && flush > 0.5f, "can-fail: a thing flush with the line shows its icon dimmed, not whole (" + flush + ")");
+				// dimmed as its thing is at 1 m, never below the written target's 1 m (water_by_depth_target.json: seen 0.4677;
+				// before that target this read 0.5, the 11-13 law's margin)
+				Assert(flush < 1f && flush >= 1f - 0.5323f - 1e-3f, "can-fail: a thing flush with the line shows its icon dimmed, not whole (" + flush + ")");
 				Assert(RM_UnderLiquid.OverlayAlpha(Water, 4f, 1f) < RM_UnderLiquid.OverlayAlpha(Water, 1f, 1f), "can-fail: deeper icons dimmer");
 				Assert(RM_UnderLiquid.OverlayAlpha(0f, 1.5f, RM_UnderLiquid.WallSlotMetres) == 0f, "can-fail: a cooler under 1.5 m of tar: icons hidden");
 				Assert(RM_UnderLiquid.Share(1.5f, 0f, RM_UnderLiquid.WallSlotMetres) == 1f, "can-fail: 1.5 m covers a wall-slot cooler (arrow and all)");

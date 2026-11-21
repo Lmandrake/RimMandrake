@@ -15,7 +15,7 @@ RM_PitReliefMath.FloorBrightness(depth notches); the north and side faces are th
 
 Water: every pixel under the line is passed through one candidate law `apply(rgb, metres_over)`: the floor at the full
 depth, a wall face from the rim (0 under) to its foot, a thing from its foot (the full depth) up to its top. Candidate
-SHIPPED is today's law (RM_UnderLiquid.Seen / Body, the model/underliquid.py twin); it reproduces the 2026-11-12 capture
+SHIPPED is the law shipped until 2026-11-20 (approved 11-13; model/underliquid.py seen_approved_1113, Body); it reproduces the 2026-11-12 capture
 BP3 (2 m of water over a 4 m pit floor) to within 0.012 per channel (`--calibrate`).
 
 Not drawn (the same in every candidate, so they do not decide a pick): waves and ripples (0.2.0), floor shadows, the
@@ -78,7 +78,7 @@ BODY_SHIPPED = np.array(ul.body(ul.WATER_COLOUR), np.float32)
 
 
 def law_shipped(rgb, m):
-    s = np.vectorize(lambda x: ul.seen(ul.REFERENCE_CLARITY, float(x)))(m).astype(np.float32)[..., None]
+    s = np.vectorize(lambda x: ul.seen_approved_1113(ul.REFERENCE_CLARITY, float(x)))(m).astype(np.float32)[..., None]
     return _lerp(BODY_SHIPPED, rgb, s)
 
 
@@ -88,7 +88,8 @@ def rise_v(x):
 
 
 def law_firm(rgb, m):
-    """SHIPPED's colour and deep end, with a firm start: 35% at the first centimetre, 90% at 4 m."""
+    """SHIPPED's colour and deep end, with a firm start: 35% at the first centimetre, 90% at 4 m. Picked 2026-11-20 as the
+    written target (design/concepts/FlowWorks/version/water_by_depth_target.json); RM_UnderLiquid.Seen now draws it."""
     a = (0.35 + 0.55 * rise_v(m / 4.0))[..., None]
     return _lerp(rgb, BODY_SHIPPED, a)
 

@@ -1,0 +1,315 @@
+{
+ "judge_model": "claude-opus-5-5",
+ "brief": "design/RimMandrake/art_judge_brief.md@9efee45cad",
+ "subject": "FlowWorks water law by depth",
+ "item": "RIMMANDRAKE_MOCK_FLOWWORKS_WATER_BY_DEPTH_ON_REAL_GROUND",
+ "authority": "Conductor ruling 2026-11-20 20:00 PST: this taste call goes to a judge (CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM)",
+ "how_looked": "Every candidate at full size (64 px/cell, per the sheet header) and at play zoom 1/2 (32 px/cell) and 1/4 (16 px/cell); all four ground sheets; pit-floor luminance/saturation measured on one open floor patch per pit, every ground (/mnt/d/ClaudeWork/rimmandrake/judge_water_by_depth/floor_lum.txt).",
+ "verdicts": [
+  {
+   "picture": "Transient/flowworks_water_by_depth/img/cand_SHIPPED.jpg",
+   "fp": "fd732f1685c5a453",
+   "facing": "n/a",
+   "verdict": "REDO",
+   "violated": "E4 + owner 2026-11-20",
+   "quote": "Water has somehow managed to become too transparent again. Barely reads at shallower depths.",
+   "seen": "0.2 m and 0.5 m indistinguishable from the dry pit at 32 and 16 px/cell on all four grounds (hides 6%/15%); 1 m only a grey cast (30%). Deep end 90%, the approved reference.",
+   "redo_brief": "keep colour and deep end, raise 0.2-1 m to FIRM's strength (that is FIRM)"
+  },
+  {
+   "picture": "Transient/flowworks_water_by_depth/img/cand_FIRM.jpg",
+   "fp": "a3c34e3989c2d627",
+   "facing": "n/a",
+   "verdict": "KEEP",
+   "notes": "Reads as dark blue water from 0.2 m at 32 and 16 px/cell on sand, soil, granite and mud; through 1 m the standing colonist's covered legs, the body, steel stack, table and ladder stay visible. No light jump (pit floor luminance .201 dry to .226 at 0.2 m). Hiding monotone 39-90%; deep end identical to the approved SHIPPED (90%). 5 m reads more saturated (saturation .17 to .25), not lighter (luminance .192 to .197): acceptable."
+  },
+  {
+   "picture": "Transient/flowworks_water_by_depth/img/cand_AQUA.jpg",
+   "fp": "16e3ba07c3b1be6b",
+   "facing": "n/a",
+   "verdict": "REDO",
+   "violated": "E4 + owner 2026-11-12",
+   "quote": "pits are quite dark when dry, then suddenly become light for some reason with just a little water. That should not be.",
+   "seen": "dark dry pit turns pale aqua at 0.2 m (floor luminance .201 to .383), stays light to 2 m, then snaps to navy at 5 m; deep end 95%, above the approved 90% with no reason given.",
+   "redo_brief": "darkened blue in the shallows (FIRM's colour); deep end no stronger than 90%"
+  },
+  {
+   "picture": "Transient/flowworks_water_by_depth/img/cand_AQUA_SOFT.jpg",
+   "fp": "dab9a35aaa3d0b5c",
+   "facing": "n/a",
+   "verdict": "REDO",
+   "violated": "E4 + owner 2026-11-12",
+   "quote": "pits are quite dark when dry, then suddenly become light for some reason with just a little water. That should not be.",
+   "seen": "same light jump as AQUA at FIRM's strength (floor luminance .201 to .356 at 0.2 m), pale blue-grey to 2 m, navy at 5 m. Shows the jump is the aqua colour, not the strength.",
+   "redo_brief": "the darkened blue colour at this strength is FIRM"
+  },
+  {
+   "picture": "Transient/flowworks_water_by_depth/img/cand_CLEAR.jpg",
+   "fp": "2d47f69afb39d083",
+   "facing": "n/a",
+   "verdict": "REDO",
+   "violated": "E4 + owner 2026-11-12; the deferred deep-end question",
+   "quote": "Its color should also be darkened. ... suddenly become light for some reason with just a little water. That should not be.",
+   "seen": "pale grey-green at 0.2 m (luminance .201 to .280); green-teal with a bright cyan wall band from 1 m; 5-8 m a brighter, bluer water than the dark-teal 2 m (saturation .18 to .26), a visible hue break at play zoom.",
+   "redo_brief": "no surface sheen, no cyan band, one hue family to 8 m, 5 m no lighter than 2 m"
+  }
+ ],
+ "pick": "FIRM",
+ "pick_why": "FIRM keeps the colour and the 90% deep end he approved on 11-13 and only strengthens the shallows (39/44/53% at 0.2/0.5/1 m against 6/15/30%), which is what his 11-20 walk asked for: \"the water should be more legible (less transparent)\". At 32 px/cell 0.2 m already reads as dark blue water on all four grounds, while through 1 m the colonist's covered legs, the body, steel stack, table and ladder stay visible. It has no light jump (pit floor luminance .201 dry to .226 at 0.2 m; AQUA .383, CLEAR .280), stays dark-ish at every depth, and hides monotonically. Its 5 m reads more saturated than 2 m but not lighter (luminance .192 to .197); this is exactly the deep end he approved, and with nothing visible under it the pit still reads deeper, so I judge it acceptable.",
+ "deep_end_question": {
+  "SHIPPED": "5 m more saturated than 2 m (sat .13 to .25), not lighter (L .192 to .198): acceptable, approved 11-13",
+  "FIRM": "same deep end as SHIPPED: acceptable",
+  "AQUA": "5 m darker navy than 2 m (L .274 to .146): monotone, but via a snap from light to navy",
+  "AQUA_SOFT": "as AQUA (L .265 to .148)",
+  "CLEAR": "5-8 m brighter, bluer than the dark-teal 2 m, with a cyan rim: a visible break, not acceptable"
+ },
+ "renderer_faith": "Faithful enough to decide on. SHIPPED is calibrated to an in-game capture (within 0.011/channel at 2 m) and reproduces both of his in-game observations (shallows barely read; 5 m more saturated than 2 m). The water measures the same on all four grounds (pit-floor luminance differs by 0.01 or less between rows), the dry and wet pit floors are the same texture, and every object sits in place in every pit. Not drawn and the same in every row: waves, shadows, sink offset, time-of-day light. One approximation: at 0.5 m the 0.8 m table shows a dry strip at its top edge and a covered rest (the game's cut-from-the-foot rule); it is identical in every row and does not affect the pick.",
+ "adjustments": [],
+ "proposals": [
+  "polish: FIRM's 0.2 m and 0.5 m are hard to tell apart (39% vs 44% hidden; floor luminance .226 vs .222). If he wants the first half-metre to read as a step, widen that gap a little; no owner line requires it.",
+  "polish: if, in game, FIRM's 5 m still reads 'brighter' than 2 m to him, lower the deep colour's value about 10% so 5 m sits at or below 2 m's luminance; the mockup measures them equal (.197 vs .192), so this is not owed now."
+ ],
+ "criteria": {
+  "E4": "E4. His note on a subject is a requirement, quoted verbatim; a candidate that ignores it is REDO.",
+  "OWNER_CARD_TERRAIN": "Owner card 2026-11-20: the mockups must be on representative terrain (several grounds, furniture, bodies).",
+  "OWNER_2026-11-12@SHIPPED": "Owner 2026-11-12: \"So the new water is much better: it's very transparent at first, but it becomes about twice too opaque as it should by the end. Its color should also be darkened. Also, the rows show that pits are quite dark when dry, then suddenly become light for some reason with just a little water. That should not be. Keep them darker, so perhaps the light water would look ok mixed with the darker bottom.\"",
+  "OWNER_2026-11-20@SHIPPED": "Owner 2026-11-20 walk: \"Water has somehow managed to become too transparent again. Barely reads at shallower depths.\" and \"7-16: No, the water should be more legible (less transparent).\"",
+  "OWNER_DEEP_END@SHIPPED": "Owner 2026-11-13 approved today's law (SHIPPED, 90% at 5 m) on a 0.5-4 m big-pit series; deep end must not exceed that without a reason. Open look question deferred to this pass: \"5 m of water reads a brighter, more saturated blue than 2 m\".",
+  "B2@SHIPPED": "B2. Legibility at play zoom: at 32 px/cell the subject reads as a few bold shapes with a body value clearly apart from the ground; grey mud is a REDO reason. Advisory measure only, never a refusal on a number.",
+  "OWNER_2026-11-12@FIRM": "Owner 2026-11-12: \"So the new water is much better: it's very transparent at first, but it becomes about twice too opaque as it should by the end. Its color should also be darkened. Also, the rows show that pits are quite dark when dry, then suddenly become light for some reason with just a little water. That should not be. Keep them darker, so perhaps the light water would look ok mixed with the darker bottom.\"",
+  "OWNER_2026-11-20@FIRM": "Owner 2026-11-20 walk: \"Water has somehow managed to become too transparent again. Barely reads at shallower depths.\" and \"7-16: No, the water should be more legible (less transparent).\"",
+  "OWNER_DEEP_END@FIRM": "Owner 2026-11-13 approved today's law (SHIPPED, 90% at 5 m) on a 0.5-4 m big-pit series; deep end must not exceed that without a reason. Open look question deferred to this pass: \"5 m of water reads a brighter, more saturated blue than 2 m\".",
+  "B2@FIRM": "B2. Legibility at play zoom: at 32 px/cell the subject reads as a few bold shapes with a body value clearly apart from the ground; grey mud is a REDO reason. Advisory measure only, never a refusal on a number.",
+  "OWNER_2026-11-12@AQUA": "Owner 2026-11-12: \"So the new water is much better: it's very transparent at first, but it becomes about twice too opaque as it should by the end. Its color should also be darkened. Also, the rows show that pits are quite dark when dry, then suddenly become light for some reason with just a little water. That should not be. Keep them darker, so perhaps the light water would look ok mixed with the darker bottom.\"",
+  "OWNER_2026-11-20@AQUA": "Owner 2026-11-20 walk: \"Water has somehow managed to become too transparent again. Barely reads at shallower depths.\" and \"7-16: No, the water should be more legible (less transparent).\"",
+  "OWNER_DEEP_END@AQUA": "Owner 2026-11-13 approved today's law (SHIPPED, 90% at 5 m) on a 0.5-4 m big-pit series; deep end must not exceed that without a reason. Open look question deferred to this pass: \"5 m of water reads a brighter, more saturated blue than 2 m\".",
+  "B2@AQUA": "B2. Legibility at play zoom: at 32 px/cell the subject reads as a few bold shapes with a body value clearly apart from the ground; grey mud is a REDO reason. Advisory measure only, never a refusal on a number.",
+  "OWNER_2026-11-12@AQUA_SOFT": "Owner 2026-11-12: \"So the new water is much better: it's very transparent at first, but it becomes about twice too opaque as it should by the end. Its color should also be darkened. Also, the rows show that pits are quite dark when dry, then suddenly become light for some reason with just a little water. That should not be. Keep them darker, so perhaps the light water would look ok mixed with the darker bottom.\"",
+  "OWNER_2026-11-20@AQUA_SOFT": "Owner 2026-11-20 walk: \"Water has somehow managed to become too transparent again. Barely reads at shallower depths.\" and \"7-16: No, the water should be more legible (less transparent).\"",
+  "OWNER_DEEP_END@AQUA_SOFT": "Owner 2026-11-13 approved today's law (SHIPPED, 90% at 5 m) on a 0.5-4 m big-pit series; deep end must not exceed that without a reason. Open look question deferred to this pass: \"5 m of water reads a brighter, more saturated blue than 2 m\".",
+  "B2@AQUA_SOFT": "B2. Legibility at play zoom: at 32 px/cell the subject reads as a few bold shapes with a body value clearly apart from the ground; grey mud is a REDO reason. Advisory measure only, never a refusal on a number.",
+  "OWNER_2026-11-12@CLEAR": "Owner 2026-11-12: \"So the new water is much better: it's very transparent at first, but it becomes about twice too opaque as it should by the end. Its color should also be darkened. Also, the rows show that pits are quite dark when dry, then suddenly become light for some reason with just a little water. That should not be. Keep them darker, so perhaps the light water would look ok mixed with the darker bottom.\"",
+  "OWNER_2026-11-20@CLEAR": "Owner 2026-11-20 walk: \"Water has somehow managed to become too transparent again. Barely reads at shallower depths.\" and \"7-16: No, the water should be more legible (less transparent).\"",
+  "OWNER_DEEP_END@CLEAR": "Owner 2026-11-13 approved today's law (SHIPPED, 90% at 5 m) on a 0.5-4 m big-pit series; deep end must not exceed that without a reason. Open look question deferred to this pass: \"5 m of water reads a brighter, more saturated blue than 2 m\".",
+  "B2@CLEAR": "B2. Legibility at play zoom: at 32 px/cell the subject reads as a few bold shapes with a body value clearly apart from the ground; grey mud is a REDO reason. Advisory measure only, never a refusal on a number."
+ },
+ "contract": {
+  "item": "RIMMANDRAKE_MOCK_FLOWWORKS_WATER_BY_DEPTH_ON_REAL_GROUND",
+  "family": "art_judge_brief",
+  "sha": "fp:SHIPPED=fd732f1685c5a453,FIRM=a3c34e3989c2d627,AQUA=16e3ba07c3b1be6b,AQUA_SOFT=dab9a35aaa3d0b5c,CLEAR=2d47f69afb39d083",
+  "passed": [
+   {
+    "clause": "E4",
+    "evidence": [
+     "Transient/flowworks_water_by_depth/img/cand_FIRM.jpg"
+    ]
+   },
+   {
+    "clause": "OWNER_CARD_TERRAIN",
+    "evidence": [
+     "Transient/flowworks_water_by_depth/img/ground_sand.jpg",
+     "Transient/flowworks_water_by_depth/img/ground_soil.jpg",
+     "Transient/flowworks_water_by_depth/img/ground_granite.jpg",
+     "Transient/flowworks_water_by_depth/img/ground_mud.jpg"
+    ]
+   },
+   {
+    "clause": "OWNER_2026-11-12@SHIPPED",
+    "evidence": [
+     "Transient/flowworks_water_by_depth/img/cand_SHIPPED.jpg"
+    ]
+   },
+   {
+    "clause": "OWNER_DEEP_END@SHIPPED",
+    "evidence": [
+     "Transient/flowworks_water_by_depth/img/cand_SHIPPED.jpg"
+    ]
+   },
+   {
+    "clause": "B2@SHIPPED",
+    "evidence": [
+     "Transient/flowworks_water_by_depth/img/cand_SHIPPED.jpg"
+    ]
+   },
+   {
+    "clause": "OWNER_2026-11-12@FIRM",
+    "evidence": [
+     "Transient/flowworks_water_by_depth/img/cand_FIRM.jpg"
+    ]
+   },
+   {
+    "clause": "OWNER_2026-11-20@FIRM",
+    "evidence": [
+     "Transient/flowworks_water_by_depth/img/cand_FIRM.jpg"
+    ]
+   },
+   {
+    "clause": "OWNER_DEEP_END@FIRM",
+    "evidence": [
+     "Transient/flowworks_water_by_depth/img/cand_FIRM.jpg"
+    ]
+   },
+   {
+    "clause": "B2@FIRM",
+    "evidence": [
+     "Transient/flowworks_water_by_depth/img/cand_FIRM.jpg"
+    ]
+   },
+   {
+    "clause": "OWNER_2026-11-20@AQUA",
+    "evidence": [
+     "Transient/flowworks_water_by_depth/img/cand_AQUA.jpg"
+    ]
+   },
+   {
+    "clause": "OWNER_DEEP_END@AQUA",
+    "evidence": [
+     "Transient/flowworks_water_by_depth/img/cand_AQUA.jpg"
+    ]
+   },
+   {
+    "clause": "B2@AQUA",
+    "evidence": [
+     "Transient/flowworks_water_by_depth/img/cand_AQUA.jpg"
+    ]
+   },
+   {
+    "clause": "OWNER_2026-11-20@AQUA_SOFT",
+    "evidence": [
+     "Transient/flowworks_water_by_depth/img/cand_AQUA_SOFT.jpg"
+    ]
+   },
+   {
+    "clause": "OWNER_DEEP_END@AQUA_SOFT",
+    "evidence": [
+     "Transient/flowworks_water_by_depth/img/cand_AQUA_SOFT.jpg"
+    ]
+   },
+   {
+    "clause": "B2@AQUA_SOFT",
+    "evidence": [
+     "Transient/flowworks_water_by_depth/img/cand_AQUA_SOFT.jpg"
+    ]
+   },
+   {
+    "clause": "OWNER_2026-11-20@CLEAR",
+    "evidence": [
+     "Transient/flowworks_water_by_depth/img/cand_CLEAR.jpg"
+    ]
+   },
+   {
+    "clause": "B2@CLEAR",
+    "evidence": [
+     "Transient/flowworks_water_by_depth/img/cand_CLEAR.jpg"
+    ]
+   }
+  ],
+  "refusals": [
+   {
+    "clause": "OWNER_2026-11-20@SHIPPED",
+    "criterion_hash": "42048405df08e908",
+    "evidence": [
+     "Transient/flowworks_water_by_depth/img/cand_SHIPPED.jpg",
+     "Transient/flowworks_water_by_depth/img/ground_sand.jpg",
+     "Transient/flowworks_water_by_depth/img/ground_soil.jpg",
+     "Transient/flowworks_water_by_depth/img/ground_granite.jpg",
+     "Transient/flowworks_water_by_depth/img/ground_mud.jpg"
+    ],
+    "observed": "cand_SHIPPED.jpg: the 0.2 m and 0.5 m pits look like the dry pit at 32 px/cell (1/2 scale) and 16 px/cell (1/4): no blue, floor saturation 0.08/0.05 against dry 0.08; 1 m is only a grey cast (hides 30%). On every ground.",
+    "would_pass": "water from 0.2 m reads as blue water at 32 px/cell, e.g. hiding about 35-45% at 0.2 m while things under stay visible",
+    "smallest_fix": {
+     "what": "Raise the shallow end of the law to FIRM's numbers (39%/44%/53% at 0.2/0.5/1 m), keeping colour and deep end.",
+     "attainable": "yes",
+     "cost": "rerun"
+    },
+    "criterion_verdict": "sound",
+    "criterion_why": "His 11-20 walk saw exactly this in game; the mockup reproduces it, so the line is checkable and attainable (FIRM passes it).",
+    "new_since": "first"
+   },
+   {
+    "clause": "OWNER_2026-11-12@AQUA",
+    "criterion_hash": "35e99ab64bb8a86d",
+    "evidence": [
+     "Transient/flowworks_water_by_depth/img/cand_AQUA.jpg",
+     "Transient/flowworks_water_by_depth/img/ground_sand.jpg",
+     "Transient/flowworks_water_by_depth/img/ground_soil.jpg",
+     "Transient/flowworks_water_by_depth/img/ground_granite.jpg",
+     "Transient/flowworks_water_by_depth/img/ground_mud.jpg"
+    ],
+    "observed": "cand_AQUA.jpg: the dark dry pit (floor luminance .201) turns pale aqua at 0.2 m (luminance .383) on every ground; the colour stays light blue-grey to 2 m, then jumps to navy at 5 m. That is the light jump he named, and the colour is not darkened.",
+    "would_pass": "the pit floor at 0.2 m stays within about +0.03 luminance of the dry pit and the water is a dark blue, as in FIRM",
+    "smallest_fix": {
+     "what": "Replace the aqua shallow colour with the darkened blue of SHIPPED/FIRM (that is FIRM itself); keep the strength curve.",
+     "attainable": "yes",
+     "cost": "rerun"
+    },
+    "criterion_verdict": "sound",
+    "criterion_why": "He named the dry-to-wet light jump as a flaw; it is measurable as floor luminance and FIRM shows it is avoidable.",
+    "new_since": "first"
+   },
+   {
+    "clause": "OWNER_2026-11-12@AQUA_SOFT",
+    "criterion_hash": "35e99ab64bb8a86d",
+    "evidence": [
+     "Transient/flowworks_water_by_depth/img/cand_AQUA_SOFT.jpg",
+     "Transient/flowworks_water_by_depth/img/ground_sand.jpg",
+     "Transient/flowworks_water_by_depth/img/ground_soil.jpg",
+     "Transient/flowworks_water_by_depth/img/ground_granite.jpg",
+     "Transient/flowworks_water_by_depth/img/ground_mud.jpg"
+    ],
+    "observed": "cand_AQUA_SOFT.jpg: the dark dry pit (floor luminance .201) turns pale aqua at 0.2 m (luminance .356) on every ground; the colour stays light blue-grey to 2 m, then jumps to navy at 5 m. That is the light jump he named, and the colour is not darkened.",
+    "would_pass": "the pit floor at 0.2 m stays within about +0.03 luminance of the dry pit and the water is a dark blue, as in FIRM",
+    "smallest_fix": {
+     "what": "Replace the aqua shallow colour with the darkened blue of SHIPPED/FIRM (that is FIRM itself); keep the strength curve.",
+     "attainable": "yes",
+     "cost": "rerun"
+    },
+    "criterion_verdict": "sound",
+    "criterion_why": "He named the dry-to-wet light jump as a flaw; it is measurable as floor luminance and FIRM shows it is avoidable.",
+    "new_since": "first"
+   },
+   {
+    "clause": "OWNER_2026-11-12@CLEAR",
+    "criterion_hash": "35e99ab64bb8a86d",
+    "evidence": [
+     "Transient/flowworks_water_by_depth/img/cand_CLEAR.jpg",
+     "Transient/flowworks_water_by_depth/img/ground_sand.jpg",
+     "Transient/flowworks_water_by_depth/img/ground_soil.jpg",
+     "Transient/flowworks_water_by_depth/img/ground_granite.jpg",
+     "Transient/flowworks_water_by_depth/img/ground_mud.jpg"
+    ],
+    "observed": "cand_CLEAR.jpg: 0.2 m lifts the dark pit to a pale grey-green (luminance .201 to .280, the largest jump after AQUA); from 1 m a bright cyan band runs along the pit walls and the water is green-teal, not the darkened blue.",
+    "would_pass": "0.2 m stays within about +0.03 luminance of the dry pit, and no bright cyan band at the waterline on any depth",
+    "smallest_fix": {
+     "what": "Drop the pale surface sheen at 0.2-0.5 m and the cyan wall band, and pull the hue from teal toward FIRM's blue.",
+     "attainable": "yes",
+     "cost": "rerun"
+    },
+    "criterion_verdict": "sound",
+    "criterion_why": "Both parts are his own named flaws (light jump, colour darkened), measurable and attainable.",
+    "new_since": "first"
+   },
+   {
+    "clause": "OWNER_DEEP_END@CLEAR",
+    "criterion_hash": "ae1edda789ad9de8",
+    "evidence": [
+     "Transient/flowworks_water_by_depth/img/cand_CLEAR.jpg",
+     "Transient/flowworks_water_by_depth/img/ground_sand.jpg",
+     "Transient/flowworks_water_by_depth/img/ground_soil.jpg",
+     "Transient/flowworks_water_by_depth/img/ground_granite.jpg",
+     "Transient/flowworks_water_by_depth/img/ground_mud.jpg"
+    ],
+    "observed": "cand_CLEAR.jpg: 2 m is a dark teal (saturation .18) and 5-8 m a brighter, clearly bluer water (saturation .24-.26, luminance .212 to .216) with a bright cyan rim; at 16 px/cell the 5 m pit reads as a different, lighter water than 2 m.",
+    "would_pass": "the 5 m and 8 m pits read as the same water as 2 m, no lighter, with nothing under visible",
+    "smallest_fix": {
+     "what": "Keep one hue family from 2 m to 8 m and set the 5 m colour no lighter than 2 m.",
+     "attainable": "yes",
+     "cost": "rerun"
+    },
+    "criterion_verdict": "sound",
+    "criterion_why": "The question he deferred is decided here by looking; the break is visible at play zoom.",
+    "new_since": "first"
+   }
+  ]
+ }
+}

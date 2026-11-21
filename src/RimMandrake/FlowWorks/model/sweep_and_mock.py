@@ -138,8 +138,8 @@ def main():
     out = sys.argv[1] if len(sys.argv) > 1 else "."
     cases, bad = sweep()
     with open(os.path.join(out, "sweep.json"), "w") as f:
-        json.dump(dict(law="seen = 1 - %.2f*rise(m/full(clarity)), full %.1f m, power %.1f; body darken %.2f"
-                       % (U.DEEP_OPACITY, U.FULL_METRES, U.CURVE_POWER, U.DARKEN),
+        json.dump(dict(law="seen = 1 - (%.2f + (%.2f - shallow)*rise(m/full(clarity))), full %.1f m, power %.1f; body darken %.2f"
+                       % (U.SHALLOW_OPACITY, U.DEEP_OPACITY, U.FULL_METRES, U.CURVE_POWER, U.DARKEN),
                        cases=len(cases), invariant_breaks=bad, sample=cases[::97]), f, indent=1)
     levels = [0.0, 0.5, 1.0, 2.0, 3.0, 4.0]
     rows = [[render(4.0, lv, WATER, False) for lv in levels], [render(4.0, lv, WATER, True) for lv in levels],

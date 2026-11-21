@@ -11,5 +11,31 @@
   "patch_sha": "23570f90c0249680",
   "rc": 1,
   "test_blob": "795a35172468d169244de38d74f8539d7b80b12b"
+ },
+ "T_GEYSER_TUB": {
+  "at": "2026-11-21T05:14:29Z",
+  "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only GeyserTub*",
+  "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+  "last": "can-fail: the vent is seen under 1 m of fresh water (top 0.3389504, foot 0.30054277, target 0.4677)",
+  "patch": "--- a/src/RimMandrake/FlowWorks/Source/Superdeep/RM_UnderLiquid.cs\n+++ b/src/RimMandrake/FlowWorks/Source/Superdeep/RM_UnderLiquid.cs\n@@ -97,7 +97,7 @@\n \t\t// the experience numbers; Mod Settings write them (RimMandrakeFlowWorksSettings.PushUnderLiquid), these are the\n \t\t// shipped defaults\n \t\tpublic const float DefaultDeepOpacity = 0.90f;\n-\t\tpublic const float DefaultShallowOpacity = 0.35f;\n+\t\tpublic const float DefaultShallowOpacity = 0.6f;\n \t\tpublic const float DefaultFullMetres = 4.0f;\n \t\tpublic const float DefaultDarken = 0.6f;\n \t\tpublic const float DefaultThingShadowAlpha = 0.30f;\n",
+  "patch_files": [
+   "src/RimMandrake/FlowWorks/Source/Superdeep/RM_UnderLiquid.cs"
+  ],
+  "patch_sha": "2d06843bd91769b1",
+  "rc": 1,
+  "test_blob": "ecdb632246123de160f342b464f55bcbb9ce7ca5"
+ },
+ "T_UNDERLIQUID": {
+  "at": "2026-11-21T05:16:08Z",
+  "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only DeepBed*,Submerge*,UnderLiquid*,WaterLook*",
+  "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+  "last": "can-fail: a thing flush with the line shows its icon dimmed, not whole (0.30054277)",
+  "patch": "--- a/src/RimMandrake/FlowWorks/Source/Superdeep/RM_UnderLiquid.cs\n+++ b/src/RimMandrake/FlowWorks/Source/Superdeep/RM_UnderLiquid.cs\n@@ -97,7 +97,7 @@\n \t\t// the experience numbers; Mod Settings write them (RimMandrakeFlowWorksSettings.PushUnderLiquid), these are the\n \t\t// shipped defaults\n \t\tpublic const float DefaultDeepOpacity = 0.90f;\n-\t\tpublic const float DefaultShallowOpacity = 0.35f;\n+\t\tpublic const float DefaultShallowOpacity = 0.6f;\n \t\tpublic const float DefaultFullMetres = 4.0f;\n \t\tpublic const float DefaultDarken = 0.6f;\n \t\tpublic const float DefaultThingShadowAlpha = 0.30f;\n",
+  "patch_files": [
+   "src/RimMandrake/FlowWorks/Source/Superdeep/RM_UnderLiquid.cs"
+  ],
+  "patch_sha": "2d06843bd91769b1",
+  "rc": 1,
+  "test_blob": "ecdb632246123de160f342b464f55bcbb9ce7ca5"
  }
 }

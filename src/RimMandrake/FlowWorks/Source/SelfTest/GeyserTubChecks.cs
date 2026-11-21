@@ -92,8 +92,14 @@ namespace RimMandrake.FlowWorks.SelfTest
                 // 0.4 m vent mound under 1 m: its top 0.6 m under, its foot 1 m under; both must still be clearly seen.
                 const float water = 0.45f, level = 1.0f, mound = RM_GeyserTubMath.GeyserMetres;
                 Assert(RM_UnderLiquid.Share(level, 0f, mound) == 1f, "under 1 m the whole mound is under the line");
+                // The vent was hidden by a draw shift (fixed 11cbfa650a), never by the law. Seen at least as the written target
+                // says for 1 m (design/concepts/FlowWorks/version/water_by_depth_target.json: 1 m hides 0.5323, so seen
+                // 0.4677; through 1 m "the colonist's covered legs, the body, steel stack, table and ladder stay visible", its
+                // judge). Before that target this read 0.6, the 11-13 law's margin.
+                const float targetSeenAtOneMetre = 1f - 0.5323f;
                 float top = RM_UnderLiquid.Seen(water, level - mound), foot = RM_UnderLiquid.Seen(water, level);
-                Assert(top >= 0.6f && foot >= 0.6f, "can-fail: the vent is seen under 1 m of fresh water (top " + top + ", foot " + foot + ")");
+                Assert(top >= targetSeenAtOneMetre - 1e-3f && foot >= targetSeenAtOneMetre - 1e-3f,
+                    "can-fail: the vent is seen under 1 m of fresh water (top " + top + ", foot " + foot + ", target " + targetSeenAtOneMetre + ")");
                 Assert(RM_UnderLiquid.BandsFor(water, level - mound, level) > 0, "its drowned part is drawn (bands > 0)");
                 Assert(RM_UnderLiquid.Seen(water, 0.5f - mound) > RM_UnderLiquid.Seen(water, level - mound), "shallower is seen better");
                 Assert(RM_UnderLiquid.Seen(0f, level - mound) == 0f, "can-fail: an opaque liquid (tar) hides it: the law can say no");

@@ -33,6 +33,10 @@ namespace RimMandrake.FlowWorks
 	/// floor (RM_ExcavationWalls.SeeThrough). Extended for
 	/// RIMMANDRAKE_FIX_BIG_PIT_SCENE_BUILDINGS_STAY_DRY: installed buildings by their cover (<see cref="BuildingMetres"/>),
 	/// pawns and corpses, one floor shadow (<see cref="ThingShadow"/>) and labels (<see cref="LabelAlpha"/>).
+	/// Firm from the first step for RIMMANDRAKE_MOCK_FLOWWORKS_WATER_BY_DEPTH_ON_REAL_GROUND (owner 2026-11-20: "Barely reads
+	/// at shallower depths ... the water should be more legible (less transparent)"): a clear liquid hides at least
+	/// <see cref="ShallowOpacity"/> wherever it covers a thing. The written target, picked from offline mockups:
+	/// design/concepts/FlowWorks/version/water_by_depth_target.json (selftest_flowworks_water_target.py).
 	/// The offline twin is model/underliquid.py; selftest_flowworks_underliquid_parity.py keeps the two equal.
 	/// Verse-free: SelfTest SubmergeDrawChecks and UnderLiquidParityChecks run this.
 	/// </summary>
@@ -93,12 +97,17 @@ namespace RimMandrake.FlowWorks
 		// the experience numbers; Mod Settings write them (RimMandrakeFlowWorksSettings.PushUnderLiquid), these are the
 		// shipped defaults
 		public const float DefaultDeepOpacity = 0.90f;
+		public const float DefaultShallowOpacity = 0.35f;
 		public const float DefaultFullMetres = 4.0f;
 		public const float DefaultDarken = 0.6f;
 		public const float DefaultThingShadowAlpha = 0.30f;
 
 		/// <summary>The most a clear liquid ever hides: its body at full depth (setting underLiquidDeepOpacity).</summary>
 		public static float DeepOpacity = DefaultDeepOpacity;
+
+		/// <summary>The least a clear liquid hides once it covers a thing, however shallow (setting
+		/// underLiquidShallowOpacity; never more than <see cref="DeepOpacity"/>).</summary>
+		public static float ShallowOpacity = DefaultShallowOpacity;
 
 		/// <summary>The depth (m) at which fresh water reaches <see cref="DeepOpacity"/> (setting underLiquidFullMetres).</summary>
 		public static float FullMetres = DefaultFullMetres;
@@ -169,7 +178,7 @@ namespace RimMandrake.FlowWorks
 		public static float Clamp01(float v) => v <= 0f ? 0f : (v >= 1f ? 1f : v);
 
 		/// <summary>The one see-through law: 1 above the line; 0 for an opaque liquid; else
-		/// 1 - DeepOpacity x rise(metres over / FullMetresFor(clarity)).</summary>
+		/// 1 - (ShallowOpacity + (DeepOpacity - ShallowOpacity) x rise(metres over / FullMetresFor(clarity))).</summary>
 		public static float Seen(float clarity, float metresOver)
 		{
 			if (metresOver <= 0f)
@@ -184,7 +193,8 @@ namespace RimMandrake.FlowWorks
 			{
 				return 1f;
 			}
-			return 1f - DeepOpacity * Rise(metresOver / FullMetresFor(clarity));
+			float shallow = ShallowOpacity < DeepOpacity ? ShallowOpacity : DeepOpacity;
+			return 1f - (shallow + (DeepOpacity - shallow) * Rise(metresOver / FullMetresFor(clarity)));
 		}
 
 		/// <summary>The depth (m) at which a liquid of this clarity (0..1, exclusive) reaches <see cref="DeepOpacity"/>: fresh

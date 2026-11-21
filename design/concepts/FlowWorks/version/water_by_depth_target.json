@@ -1,0 +1,43 @@
+{
+  "what": "FlowWorks 0.1.0: the written target for water colour and clarity by depth (RIMMANDRAKE_MOCK_FLOWWORKS_WATER_BY_DEPTH_ON_REAL_GROUND). Fresh water (seeThrough 0.45) in a dug pit, default settings. 'hides' = how much of what lies under the water is hidden (0 = seen as dry, 1 = only the water's colour). Waves are not part of this target (0.2.0).",
+  "picked": "FIRM",
+  "picked_name": "Same blue, firm from the first step",
+  "picked_by": "a naive Opus taste judge (delegated: taste), on the Conductor's ruling of 2026-11-20 20:00 PST (note on RIMMANDRAKE_SERVE_FLOWWORKS_WATER_MOCKUPS_HIS_PICK_OF_FIVE); verdict infrastructure/state/delegated/2026-11-20/flowworks_water_by_depth.json",
+  "picked_from": "five offline mockups (src/RimMandrake/FlowWorks/model/water_mockup.py: SHIPPED, FIRM, AQUA, AQUA_SOFT, CLEAR) over sand, soil, rough granite and mud, with a colonist, a body, a table, a steel stack and a ladder in each pit",
+  "owner_words": [
+    "2026-11-12: it's very transparent at first, but it becomes about twice too opaque as it should by the end. Its color should also be darkened. ... pits are quite dark when dry, then suddenly become light for some reason with just a little water. That should not be. Keep them darker",
+    "2026-11-20: Water has somehow managed to become too transparent again. Barely reads at shallower depths. ... 7-16: No, the water should be more legible (less transparent).",
+    "2026-11-20 card: (1) and it needs to be on representative terrain (put some different textures on the ground as well as furniture, bodies, etc)."
+  ],
+  "law": "hides(m) = 0 at or above the line; under it, SHALLOW + (DEEP - SHALLOW) x rise(m / full), rise(x) = 1 - (1 - x)^1.4, full = 4 m for fresh water (a murkier liquid sooner, by RM_UnderLiquid.FullMetresFor). Drawn colour = lerp(what lies under, body colour, hides).",
+  "shallow_opacity": 0.35,
+  "deep_opacity": 0.90,
+  "full_metres": 4.0,
+  "curve_power": 1.4,
+  "clarity": 0.45,
+  "hides_by_depth": {
+    "0.2": 0.3881,
+    "0.5": 0.4438,
+    "1.0": 0.5323,
+    "1.5": 0.6152,
+    "2.0": 0.6916,
+    "5.0": 0.9,
+    "8.0": 0.9
+  },
+  "body_colour": [0.0953, 0.2048, 0.3765],
+  "mid_grey_becomes": {
+    "0.2": [0.343, 0.385, 0.452],
+    "0.5": [0.32, 0.369, 0.445],
+    "1.0": [0.285, 0.343, 0.434],
+    "1.5": [0.251, 0.318, 0.424],
+    "2.0": [0.22, 0.296, 0.415],
+    "5.0": [0.136, 0.234, 0.389],
+    "8.0": [0.136, 0.234, 0.389]
+  },
+  "kept_from_11_13": "the body colour and the 90% deep end he approved on 2026-11-13 are unchanged; only the shallows hide more (6/15/30% at 0.2/0.5/1 m became 39/44/53%)",
+  "judge_polish": [
+    "0.2 m and 0.5 m are hard to tell apart (39% vs 44% hidden); no owner line requires a wider step",
+    "if 5 m still reads brighter than 2 m in game, lower the deep colour's value about 10%; the mockup measures them equal (floor luminance .197 vs .192)"
+  ],
+  "checked_by": "src/RimMandrake/FlowWorks/selftest_flowworks_water_target.py"
+}

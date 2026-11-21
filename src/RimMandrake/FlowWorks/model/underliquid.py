@@ -14,10 +14,13 @@ Law (RIMMANDRAKE_TINT_PIT_WATER_READS_AS_WATER_NOT_MUD, owner by card 2026-11-12
 you for too little opacity.")
   seen(clarity, m)  how much of a thing lying m metres under the surface is seen (1 = as dry):
                     1 above the line; 0 for an opaque liquid (clarity 0: tar, oil, blood);
-                    else 1 - DEEP_OPACITY * rise(m / full(clarity)), rise(x) = 1 - (1 - x) ** CURVE_POWER up to 1 at x = 1.
-                    A gentle start (0.5 m of fresh water hides 0.15: "very transparent at first"), clearly water by 2 m
-                    (0.56), a body of deep water at 4 m (DEEP_OPACITY 0.90, between the 2026-11-12 law's 0.97 and the
-                    halved 0.48, nearer the old). full(clarity) = FULL_METRES x ln(REFERENCE_CLARITY) / ln(clarity): fresh
+                    else 1 - (SHALLOW_OPACITY + (DEEP_OPACITY - SHALLOW_OPACITY) * rise(m / full(clarity))),
+                    rise(x) = 1 - (1 - x) ** CURVE_POWER up to 1 at x = 1. Firm from the first centimetre (fresh water
+                    hides 39% at 0.2 m, 44% at 0.5 m, 53% at 1 m, 69% at 2 m), a body of deep water at 4 m (DEEP_OPACITY
+                    0.90, between the 2026-11-12 law's 0.97 and the halved 0.48, nearer the old). The written target:
+                    design/concepts/FlowWorks/version/water_by_depth_target.json (the FIRM mockup, 2026-11-20; owner
+                    2026-11-20: "Barely reads at shallower depths ... the water should be more legible (less
+                    transparent)"); selftest_flowworks_water_target.py holds this file and the C# to it. full(clarity) = FULL_METRES x ln(REFERENCE_CLARITY) / ln(clarity): fresh
                     water reaches its full opacity at FULL_METRES; a murkier liquid sooner, a clearer one later.
   drawn colour      lerp(body(liquid), under, seen): ONE even sheet of the liquid's deep body colour over the whole drowned
                     pit (floor and walls drawn OPAQUE in the dry pit's own dark ground, owner: "Keep them darker"; their
@@ -42,6 +45,8 @@ import math
 
 NOTCH = 0.5
 DEEP_OPACITY = 0.90         # setting underLiquidDeepOpacity: the most a clear liquid hides (its body at full depth)
+SHALLOW_OPACITY = 0.35      # setting underLiquidShallowOpacity: the least a clear liquid hides once it covers a thing
+                            # (water_by_depth_target.json shallow_opacity, the FIRM mockup)
 FULL_METRES = 4.0           # setting underLiquidFullMetres: fresh water reaches DEEP_OPACITY at this depth
 REFERENCE_CLARITY = 0.45    # fresh water's seeThrough: the liquid FULL_METRES is stated for
 CURVE_POWER = 1.4           # rise(x) = 1 - (1 - x) ** CURVE_POWER: gentle at first, tellable steps to the full depth
@@ -74,14 +79,25 @@ def rise(x):
     return 1.0 - (1.0 - x) ** CURVE_POWER
 
 
-def seen(clarity, metres_over, deep_opacity=DEEP_OPACITY, full=FULL_METRES):
+def seen(clarity, metres_over, deep_opacity=DEEP_OPACITY, full=FULL_METRES, shallow_opacity=SHALLOW_OPACITY):
+    return _law(clarity, metres_over, deep_opacity, full, shallow_opacity)
+
+
+def _law(clarity, metres_over, deep_opacity, full, shallow_opacity):
     if metres_over <= 0:
         return 1.0
     if clarity <= 0:
         return 0.0
     if clarity >= 1:
         return 1.0
-    return 1.0 - deep_opacity * rise(metres_over / full_metres(clarity, full))
+    shallow = min(shallow_opacity, deep_opacity)
+    return 1.0 - (shallow + (deep_opacity - shallow) * rise(metres_over / full_metres(clarity, full)))
+
+
+def seen_approved_1113(clarity, metres_over):
+    """The law he approved on 2026-11-13 (9a5bbf7a66) and called too transparent on 2026-11-20: no shallow strength
+    (0.5 m of fresh water hid 0.15). The mockup's SHIPPED row draws it."""
+    return _law(clarity, metres_over, DEEP_OPACITY, FULL_METRES, 0.0)
 
 
 def seen_old(clarity, metres_over):
@@ -169,7 +185,7 @@ def look(pit_depth_m, level_m, clarity, height_m):
 
 # the golden table both sides check: (clarity, metres over) -> seen
 GOLDEN_CLARITY = (0.45, 0.25, 0.0)
-GOLDEN_METRES = (0.0, 0.01, 0.25, 0.5, 1.0, 1.5, 2.0, 3.0, 3.5, 4.0, 6.0)
+GOLDEN_METRES = (0.0, 0.01, 0.2, 0.25, 0.5, 1.0, 1.5, 2.0, 3.0, 3.5, 4.0, 5.0, 6.0, 8.0)   # with the target's depths
 
 
 def golden_rows():
