@@ -110,8 +110,10 @@ INSTALL_FILES = (GAME_EXE, "UnityPlayer.dll", "UnityCrashHandler64.exe", "Versio
                  "Licenses.txt", "SteamInputDefaultConfiguration.vdf")
 COPY_TIMEOUT_S = 1800   # danger: a copy that never ends holds the run (robocopy's retry defaults held BENCH 3.6 h on
                         # 2026-11-02, tool_traps.md); the copy of 2.5 GB takes minutes, so 30 min is far past a real one
+# What crosses from WSL to python.exe. .claude/settings.json sets the same list for every agent shell, so a game that is
+# only named (RM_GAME_INSTANCE=b) still reaches the tool (selftest_game_instance.py name_crosses checks the copy).
 _WSLENV = ("RM_GAME_INSTANCE", "RM_GAME_USERDATA/p", "RM_GAME_LOGDIR/p", "GABP_SERVER_PORT", "GABP_TOKEN",
-           "RIMFLOW_DRIVER_LOCK/p", "RM_INSTANCES_ROOT/p")
+           "RIMFLOW_DRIVER_LOCK/p", "RM_INSTANCES_ROOT/p", "RM_GAME_A_LOGDIR/p")
 _SAVE_RE = re.compile(r'"-savedatafolder=([^"]*)"|-savedatafolder="([^"]*)"|-savedatafolder=([^\s"]+)', re.I)
 
 
@@ -320,7 +322,6 @@ def env(name=None):
     a_log = os.environ.get("RM_GAME_A_LOGDIR") or os.environ.get("RM_GAME_LOGDIR", "")
     if a_log.strip() and not _under_root(a_log):
         out["RM_GAME_A_LOGDIR"] = a_log
-        wslenv += [] if "RM_GAME_A_LOGDIR/p" in wslenv else ["RM_GAME_A_LOGDIR/p"]
     out["WSLENV"] = ":".join(wslenv)
     return out
 

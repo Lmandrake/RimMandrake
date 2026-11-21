@@ -235,11 +235,8 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
   `RIMMANDRAKE`. The registry Id stays `rimmaster`.
 - Every older name stays valid forever and is never renamed: `RIMMASTER_*`, `SUBJECT_INTENT_TWIST`, `…_1`, and the
   `B*`/`C*`/`D*`/`W*` names.
-- `rimflow namecheck <NAME>` shows how a name parses, and says REFUSED for a bad name. It is advisory.
-- `file` and `spawn` refuse only an id that already exists or is not UPPER_SNAKE ASCII. They file every other bad
-  name and print a `NAME NOTE:` line. The event records the problems in its `name_note` field.
-- `rimflow` reads the registry from `$LODESTAR_ROOT/sync/registry.md` (default `~/dev/Lodestar`). If it cannot read
-  the registry, the refusal names that path.
+- `rimflow namecheck <NAME>` shows how a name parses. A bad name never stops a filing: the tool files it and prints
+  what is wrong.
 - History: `design/RimMandrake/ticket_naming_2026-10-10.md`.
 
 ## Correctness outranks seat ownership; wrong material is deleted
@@ -318,12 +315,6 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 - His five acts (above) still wait for him. Each question about one of them also carries its evidence.
 - The pipeline locks a new mod at Design Version 0.1.0. Do not ask him for that version.
 - Full text: `design/RimMandrake/standing_rulings.md` §Evidence-for-Ask.
-
-## A limit from before the Maturation Pipeline is suspect
-
-- Do not refuse an act because of a limit from before the Maturation Pipeline. Act, or ask the owner first.
-- If you ask, quote the old decision's date and text.
-- Full text: `design/RimMandrake/standing_rulings.md` §A limit from before the Maturation Pipeline is suspect.
 
 ## The pipeline fixes its own defects
 
@@ -444,8 +435,10 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
   - the per-run spend stop that he ordered;
   - the account order and leave lines;
   - the machine-safety brakes.
+- Do not refuse an act because of a limit from before the Maturation Pipeline. Act, or ask the owner first, with the
+  old decision's date and text.
 - Full text and the planned measurement: `design/RimMandrake/standing_rulings.md` §No limit without the danger it
-  guards.
+  guards, and §A limit from before the Maturation Pipeline is suspect.
 
 ## A passing bar is an experience, never a tuning number
 
@@ -664,8 +657,6 @@ python3 src/RimMandrake/Utils/system_click.py <x> <y>          OS-level click fo
   `stop` ends one. A seat that needs game b starts it; do not ask.
 - To act on game b: `eval "$(python3 src/RimMandrake/Utils/game_instance.py env b)"` for a tool, `--host archmagi.b` for
   `rimflow bridge`, `--instance b` for `deploy_custom_mods.py`. A deploy for game b writes only game b's folders.
-- `RM_GAME_INSTANCE=b` alone does not reach a `python.exe` tool. That tool then drives game a on port 5174, with no
-  error. The `env b` line exports the port, the token and `WSLENV`.
 - Choose the game by the work:
   - Work that a tier mod list can prove goes to any free game. If game a is busy or held, use game b or SteveDesktop.
   - Only a check that needs his full mod list must use game a. The full list on game b beside game a does not fit in

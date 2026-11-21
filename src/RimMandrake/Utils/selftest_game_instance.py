@@ -543,9 +543,27 @@ SECTIONS = {"names": names, "stop": stop, "blind": blind, "paths": paths, "launc
             "bridge": bridge, "game_idle_ok": game_idle_ok, "both_orders": both_orders, "free": free}
 
 
+def name_crosses():
+    """Every agent shell of this repo forwards a named game to python.exe (.claude/settings.json env WSLENV carries
+    game_instance._WSLENV), so a bare RM_GAME_INSTANCE=b reaches the bridge client, which then uses game b's own port:
+    a tool never drives game a because the name stayed behind in WSL (2026-11-20: a game-b proof hit game a)."""
+    import json
+    top = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
+    try:
+        have = json.load(open(os.path.join(top, ".claude", "settings.json"), encoding="utf-8")).get("env", {}).get("WSLENV", "")
+    except (OSError, ValueError) as e:
+        check(False, "name_crosses: .claude/settings.json could not be read: %s" % e)
+        return
+    missing = [v for v in G._WSLENV if v not in have.split(":")]
+    check(not missing, "every agent shell forwards the named game to python.exe (settings.json WSLENV lacks %s)" % missing)
+    check(G.port("b") != G.BASE_PORT, "a named game's port is never game a's")
+
+
 def main():
     only = [s for s in os.environ.get("GI_ONLY", "").split(",") if s]
     check(os.path.dirname(os.path.abspath(G.__file__)) == HERE and os.path.dirname(os.path.abspath(F.__file__)) == HERE, "tests the copy beside it")
+    if not only or "name_crosses" in only:
+        name_crosses()
     if not only or "owners" in only:
         owners()
     if not only or "repo" in only:

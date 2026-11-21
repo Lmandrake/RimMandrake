@@ -1,7 +1,8 @@
 {
   "env": {
     "CLAUDE_CODE_DISABLE_TERMINAL_TITLE": "1",
-    "CLAUDE_CODE_SHELL": "/bin/bash"
+    "CLAUDE_CODE_SHELL": "/bin/bash",
+    "WSLENV": "RM_GAME_INSTANCE:RM_GAME_USERDATA/p:RM_GAME_LOGDIR/p:GABP_SERVER_PORT:GABP_TOKEN:RIMFLOW_DRIVER_LOCK/p:RM_INSTANCES_ROOT/p:RM_GAME_A_LOGDIR/p"
   },
   "statusLine": {
     "type": "command",

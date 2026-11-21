@@ -22,31 +22,35 @@ None. No principle below needs one of his five acts, and none changes what a mod
 
 ## The nine principles
 
-The order is by the number of repairs that each one explains. Counts are in the next section.
+The order is by the number of repairs that each one explains, largest first. Counts are in the next section. A fresh
+reader read this file once on 2026-11-21. Its answer was applied: the first draft's "one home" and "identity"
+principles are one (principle 2), and the first draft's "named target" principle was two (principles 4 and 8).
 
-1. **One home for a fact.** A fact is written in one durable place. Every other place reads it there, or is a copy
-   that a program makes and checks. Nobody keeps a second copy by hand.
-2. **A stop that the work did not cause costs the work nothing and starts its own repair.** A run that was killed,
+1. **A stop that the work did not cause costs the work nothing and starts its own repair.** A run that was killed,
    refused, held or never started spends no trial of the mod. The program that sees the stop starts the next act
    itself. It does not write a hand step.
-3. **A program acts only on a target that was named; a test cannot make a live effect.** A tool with no named game,
-   clone, store or ledger stops. It does not fall back to the real one. The launcher and the ledger writer refuse a
-   test process.
-4. **A fault of form is repaired at the gate.** The gate repairs the input, or it returns the exact repair to the same
+2. **One home for a fact, identity included.** A fact is written in one durable place. Every other place reads it
+   there, or is a copy that a program makes and checks. The mod, item, stage, game and run of a piece of work are such
+   facts: the launch writes them as fields, and no reader builds a name again or infers them from a title, a note or
+   a path.
+3. **A fault of form is repaired at the gate.** The gate repairs the input, or it returns the exact repair to the same
    agent in the same run. A program never sends refused input again unchanged.
-5. **An identity is recorded once, as a field, and read.** The mod, item, stage, game and run of a piece of work are
-   fields that the launch writes. No reader builds a name again or infers identity from a title, a note or a path.
-6. **"Could not look" is its own answer.** An unreadable source gives UNMEASURED. It never gives 0, empty, dead or
+4. **A test makes no live effect.** The launcher and the ledger writer refuse a test process. A test does not have
+   to isolate itself from each real store.
+5. **"Could not look" is its own answer.** An unreadable source gives UNMEASURED. It never gives 0, empty, dead or
    "none found".
-7. **Validity follows the relation.** A result stays valid until something that its check reads or exercises changes.
+6. **Validity follows the relation.** A result stays valid until something that its check reads or exercises changes.
    A whole-artifact hash does not decide validity when a per-part relation can be read.
-8. **A limit names its danger.** A cap, timeout, count or text cut names the danger and the evidence. A limit that
+7. **A limit names its danger.** A cap, timeout, count or text cut names the danger and the evidence. A limit that
    cannot name both is removed.
-9. **A rule that a tool can do is done by the tool.** A rule line for agents is written only when no tool can do the
-   act or repair the fault. When the tool does it, the rule line is deleted.
+8. **A program acts only on a target that was named.** A tool with no named game, clone or store stops. It does not
+   fall back to a default one.
+9. **A rule that a tool can do is done by the tool.** The test for one rule line: on the input that the rule guards,
+   does a tool do the act, or return the repair to the agent? If yes, delete the rule line. Done means: the sections
+   listed under "The rule tree, measured" hold fewer lines, and no section restates what a gate prints.
 
-Principles 2 and 4 belong to the live run `RIMMANDRAKE_REPAIR_AT_THE_REFUSAL_NO_STOP_FOR_UNTIED_SHOES`. Principle 7
-belongs to the live run `RIMMANDRAKE_RERUN_ONLY_CHECKS_THE_CHANGE_TOUCHES_NOT_ALL_203`. This item owns 1, 3, 5, 6, 8
+Principles 1 and 3 belong to the live run `RIMMANDRAKE_REPAIR_AT_THE_REFUSAL_NO_STOP_FOR_UNTIED_SHOES`. Principle 6
+belongs to the live run `RIMMANDRAKE_RERUN_ONLY_CHECKS_THE_CHANGE_TOUCHES_NOT_ALL_203`. This item owns 2, 4, 5, 7, 8
 and 9.
 
 ## How the repairs were counted
@@ -59,7 +63,9 @@ and 9.
   `[measured]`. The other six classes were not read; their precision is taken as 0.7 `[guess ~60%]`.
 - Step 3, the unmatched 464: a random sample of 120 was read and classed by hand `[measured]`. Each sample count is
   scaled by 464/120.
-- The estimate for a class is (pattern matches × precision) + (scaled sample count). Each estimate is a
+- Each commit is classed once. A commit that shows two faults is cited under both below, and counted under one.
+- The estimate for a class of general fault is (pattern matches × precision) + (scaled sample count). The rule-text
+  row and the not-a-repair row are not scaled by a precision: their patterns match a file prefix or a mod name. Each estimate is a
   `[guess ~65%]` to within one third of its value. No diff was opened to make these counts.
 - Not counted: the Conductor log (7,562 lines) and the closed items (2,671 files) were not read in full: their counts
   per class are UNMEASURED. The census of 2026-11-15 gives about 134 hand interventions and 42 lessons `[measured by
@@ -73,12 +79,12 @@ and 9.
 | a single bug with no general fault found | not matched | 73 | about 73 |
 | mod work, an owner setting, removal of a retired era, bookkeeping | 124 | 73 | about 197 |
 
-The rows do not sum to 967: the estimates carry the precision factor. About 375 of 967 commits (39%) were per-case
+The rows do not sum to 967: the first row carries the precision factor. About 375 of 967 commits (39%) were per-case
 repairs of nine general faults `[guess ~65%]`.
 
 ## Evidence for each principle
 
-### 1. One home for a fact — about 44 repairs
+### 2. One home for a fact, identity included — about 83 repairs
 
 - `97f0cc2819` His hold: the control store is the one writer and `mod_owner_hold.json` its mirror.
 - `a29c004373` The plan timer read a stale week drop-in, not `switching_plan.json`.
@@ -88,11 +94,21 @@ repairs of nine general faults `[guess ~65%]`.
 - `0c320de76d`, `864fc98a51` The hand-act record and the tick's books disagreed about one run.
 - `65e95f5a90` Positive steps text: seven copies became one source.
 - `c32e228e91`, `774dff5a6e`, `45e3f2d4c7` State that lived only in a clone was lost or stranded.
-- What the per-case repairs left: mirror files, "agrees with" selftests, and rule lines that say which copy wins.
+- `f34e6e7228` The tick's item name lost its visit word; the spawn guard refused it three times.
+- `c8e06b5d31`, `5e6f692d65` A run was placed on the mod that its notes cited, not the mod that its launch recorded.
+- `551b86c17d` A manual account switch was attributed by a time window, not by the switcher log.
+- `6ddd8a7517`, `3043049714`, `e85a351a54` Examiner, cleanse marks and progress were matched by label, not by id.
+- `839d7e1393`, `29c5f7491e` The model was named by tier in one place and by full id in another.
+- `4f12b10443` (the model case done right) A launch names its unit as a field; the reader of systemd-run options went.
+- `938880262a`, `da889bc937` A session and a parent were found by search, then recorded as fields.
+- What the per-case repairs left: mirror files, "agrees with" selftests, rule lines that say which copy wins, a
+  parser for each name shape, and a name builder in each caller.
 - The one change: a copy is made by a program and carries a `GENERATED from <home>` line. One publish check makes each
   copy again and compares. A file with that line that differs fails. A fact with no generator is read from its home.
+  For identity the home exists: the control store's run record holds unit, family, mod, item, stage, role and model.
+  Add the game. Every reader takes identity from that record. One function builds an item name; nothing parses one.
 
-### 2. A stop the work did not cause — about 90 repairs (live run)
+### 1. A stop the work did not cause — about 90 repairs (live run)
 
 - `7db1e1b33e` A `launch_failed` record is `void_system`, never charged.
 - `2d58382ecc` A refused launch that waits is no fault.
@@ -107,25 +123,33 @@ repairs of nine general faults `[guess ~65%]`.
 - The one change: each run end carries one class (the work failed; the system stopped it; it was held; form). Every
   counter reads that class. A stop with a class other than "the work failed" starts its repair or its retry.
 
-### 3. A named target; no live effect from a test — about 64 repairs
+### 4. A test makes no live effect — about 50 repairs
 
 - Tonight: a selftest of a live run reached the real launcher, started two real runs on fixture mod `A`, and filed
   real items (ledger notes of 2026-11-21 08:56Z and 09:04Z on `RIMMANDRAKE_REPAIR_A_FAULT_LOOP_AT_THE_RUN_TWO`).
 - `5f1df790a8`, `b28d8d018f`, `8716c3bcdd`, `328611932d`, `1fe595f83e` Five selftests read the live void store, the
   live bridge or the live ledger.
 - `RIMMANDRAKE_ISOLATE_SEAT_RESTART_D1_FROM_REAL_UNPUSHED_COMMITS` A test read the clone's real unpushed commits.
+- `conductor_log_guard.py`: two selftests rang fake alarms in the real Conductor log (422 and 18 lines). "Each test was
+  redirected in turn; this closes the class", for the log only.
+- What the per-case repairs left: an isolation fix inside each selftest, an environment variable per store
+  (`RM_CONTROL_DB`, `RM_OWNER_HOLD_FILE`, `RM_DISPATCHER_STATE` and others), and three separate definitions of "a test
+  process" (`control.test_process`, `conductor_log_guard.under_test`, `RM_UNDER_SELFTEST` readers).
+- The one change: one definition of "this is a test process". The three doors to a live effect refuse it: the launch
+  primitive (`control.launch_unit`), the ledger writer (`model.append`) and the Conductor log writers.
+
+### 8. A program acts only on a target that was named — about 14 repairs
+
 - `08b3ba8881`, `e400c1b366` A game-b tool with no port in its environment drove game a, with no error.
 - `4ee4209d57` A tool watched game a's Saves folder while it drove game b.
 - `b5c602d88d`, `98ba034b57` A gate read Archmagi's bridge for a SteveDesktop act.
+- `11a050e9d8`, `9eb814c040` A gate read the Dispatcher's clone, not the concept's own clone.
 - `e8dbd5efb3` The harness wrote during a dry run.
-- What the per-case repairs left: an isolation fix inside each selftest, an environment variable per store
-  (`RM_CONTROL_DB`, `RM_OWNER_HOLD_FILE`, `RM_DISPATCHER_STATE` and others), and rule lines such as "`RM_GAME_INSTANCE=b`
-  alone does not reach a `python.exe` tool".
-- The one change: one predicate says "this is a test process" (`control.test_process()` exists). The launch primitive
-  (`control.launch_unit`) and the ledger writer (`model.append`) refuse a live effect from a test process. A tool that
-  is given a game name with no port stops and names `game_instance.py env <name>`.
+- What the per-case repairs left: rule lines such as "`RM_GAME_INSTANCE=b` alone does not reach a `python.exe` tool".
+- The one change: the bridge client stops when a game is named and its port is not in the environment. The stop names
+  the repair (`game_instance.py env <name>`).
 
-### 4. A fault of form is repaired at the gate — about 57 repairs (live run)
+### 3. A fault of form is repaired at the gate — about 57 repairs (live run)
 
 - `9e5768e86f` A 66-character item name was refused three times; names now never refuse a filing.
 - `29c5f7491e` A full model id is repaired to its tier.
@@ -139,20 +163,7 @@ repairs of nine general faults `[guess ~65%]`.
   333 refusal lines in 48 `rimflow` files `[measured by the Conductor]`.
 - The one change: the shared answer for a fault of form that the live run builds (`form_fault.py` in its clone).
 
-### 5. An identity is recorded once and read — about 39 repairs
-
-- `f34e6e7228` The tick's item name lost its visit word; the spawn guard refused it three times.
-- `c8e06b5d31`, `5e6f692d65` A run was placed on the mod that its notes cited, not the mod that its launch recorded.
-- `551b86c17d` A manual account switch was attributed by a time window, not by the switcher log.
-- `6ddd8a7517`, `3043049714`, `e85a351a54` Examiner, cleanse marks and progress were matched by label, not by id.
-- `839d7e1393`, `29c5f7491e` The model was named by tier in one place and by full id in another.
-- `4f12b10443` (the model case done right) A launch names its unit as a field; the reader of systemd-run options went.
-- `938880262a`, `da889bc937` A session and a parent were found by search, then recorded as fields.
-- What the per-case repairs left: a parser for each name shape, and a name builder in each caller.
-- The one change: the control store's run record already holds unit, family, mod, item, stage, role and model. Add
-  the game. Every reader takes identity from that record. One function builds an item name, and nothing parses one.
-
-### 6. "Could not look" is its own answer — about 38 repairs
+### 5. "Could not look" is its own answer — about 38 repairs
 
 - `a79ad5e7bb` `read_version_bugs` answered a bare None.
 - `1a51e02130`, `f1c99aefbb` A spend field and a proof log with no reading read 0.
@@ -163,7 +174,7 @@ repairs of nine general faults `[guess ~65%]`.
   lint at `./publish`). It is the pattern for the others: one type and one check replaced the per-case repairs.
 - What is left: 62 places on the lint's allowlist `[measured by 9a14f32660]`. No new machinery is needed.
 
-### 7. Validity follows the relation — about 25 repairs (live run)
+### 6. Validity follows the relation — about 25 repairs (live run)
 
 - `453e648953`, `84ef53b231` After a coverage repair, only the touched exam scenarios run again.
 - `0957677739`, `cd86ab4735`, `5880cdb533` Re-pin rules, one per case.
@@ -171,7 +182,7 @@ repairs of nine general faults `[guess ~65%]`.
 - The census of 2026-11-15: 13 hand re-pins of locked files for test text or bookkeeping.
 - The one change: the shared relation module of the live run.
 
-### 8. A limit names its danger — about 18 repairs
+### 7. A limit names its danger — about 18 repairs
 
 - `321aee60b5` The launcher had a $15 default with no danger named.
 - `87fb5ccdd2` A 240 s default timeout crashed a 273 s test.
@@ -180,9 +191,10 @@ repairs of nine general faults `[guess ~65%]`.
 - The census of 2026-11-15: the Designer's chain cap of 8 was pressed past by hand three times.
 - The rule exists (`9f6d6fe34c`). The pattern search found more limits added (about 34 commits) than limits repaired
   `[guess ~55%]`.
-- The one change: none is proposed. Two lints exist (`no_bare_cuts`, the call-deadline lint). A registry of limits
-  would be a new framework. The next step is a count: `git grep` the numeric defaults of timeouts and caps in pipeline
-  files, and remove each one that has no LIMITS row.
+- The one change: none is proposed. Two lints exist (`no_bare_cuts`, the call-deadline lint), and each boundary page
+  has a LIMITS section. A separate registry of limits would be a new framework. The next step is a count: `git grep`
+  the numeric defaults of timeouts and caps in pipeline files. A default with no danger named beside it and no entry
+  under LIMITS on its page is deleted, and its caller runs with no limit.
 
 ### 9. A rule that a tool can do is done by the tool — about 56 commits added rule text
 
@@ -210,13 +222,13 @@ Root `CLAUDE.md`, sections classed by hand against the nine principles:
 
 | principle | sections of the root `CLAUDE.md` that are cases of it | lines |
 |---|---|---|
-| 2 and 4 | A fault of form (19); No trial is spent (9); The pipeline fixes its own defects (12); A refusal carries its path (6); His word is not refused (8); the refusal lines of Queue items are NAMED (5); the fix-in-the-sitting half of Touching code (about 25); Evidence-for-Ask (11) | about 95 |
-| 3 | There are several live games (27); about 10 lines of The bridge; 5 lines of Facts you cannot guess | about 42 |
-| 7 | After a change (14) | 14 |
-| 8 | No limit without the danger (17); A limit from before the Maturation Pipeline (6) | 23 |
-| 1 | the clone-state lines of Git (6); Transient (9) | about 15 |
+| 1 and 3 | A fault of form (19); No trial is spent (9); The pipeline fixes its own defects (12); A refusal carries its path (6); His word is not refused (8); the refusal lines of Queue items are NAMED (5); the fix-in-the-sitting half of Touching code (about 25); Evidence-for-Ask (11) | about 95 |
+| 8 | There are several live games (27); about 10 lines of The bridge; 5 lines of Facts you cannot guess | about 42 |
+| 6 | After a change (14) | 14 |
+| 7 | No limit without the danger (17); A limit from before the Maturation Pipeline (6) | 23 |
+| 2 | the clone-state lines of Git (6); Transient (9) | about 15 |
 | 9 | lines that only restate what a hook does (blanket stage, worktree, compound command) | about 10 |
-| 6 | two lines of Facts you cannot guess | 2 |
+| 5 | two lines of Facts you cannot guess | 2 |
 
 About 200 of 736 lines (27%) are cases of the nine principles `[guess ~70%]`. The other lines are game facts, design
 rulings, authority rules and pointers: they are not pipeline repairs. The same classing of `standing_rulings.md`, by
@@ -225,42 +237,44 @@ title: guess ~65%]`. The role files and the trap lists were not classed line by 
 
 What can be deleted, and when:
 
-- Now, with principle 3 in the machinery: the rule lines about a bare `RM_GAME_INSTANCE=b`, and the per-selftest
-  isolation code that the launcher and ledger guards make unnecessary.
-- After the two live runs land: the root sections of principles 2, 4 and 7 can become one short section each. Today
-  they are eight sections with about 109 lines.
+- Now, with principles 4 and 8 in the machinery: the rule lines about a bare `RM_GAME_INSTANCE=b`, and the second and
+  third definitions of a test process.
+- After the two live runs land: the root sections of principles 1, 3 and 6 can become one short section each. Today
+  they are nine sections with about 109 lines.
 - Not deletable by a principle: his five acts, his holds, the OWNER bridge hold, `./pipe` stops, the spend stop, the
   account order and leave lines, the machine-safety brakes, the blind boundaries of judges, and the north-star bars.
 
 ## The two live runs, judged against this review
 
-Read at 2026-11-21 about 2:00 AM PST. Neither run has landed machinery yet `[measured: git log origin/main]`.
+Read twice: at 2026-11-21 about 1:15 AM PST (nothing landed) and at 2:15 AM PST (both had landed parts; both still
+live). This item did not edit their files.
 
-- `RIMMANDRAKE_REPAIR_AT_THE_REFUSAL_NO_STOP_FOR_UNTIED_SHOES` (principles 2 and 4). Its brief asks for one shared
-  answer for a fault of form, and a class on every refusal that reaches the fault loop. That is the principle. Two
-  parts of its brief can become per-case rules:
-  - Its census writes one row per refusal site, and it converts site by site. If the shared answer is not the only
-    way for a gate to refuse, a new gate brings the old behaviour back. The check to make after it lands: does one
-    function own "refuse", and does a lint fail a bare `sys.exit(2)` in a pipeline file?
-  - Its fix for tonight's test leak is "the real launcher only when the fixture list is empty", inside one function.
-    That is a per-case repair of principle 3. This item makes the general repair at the launch primitive.
-- `RIMMANDRAKE_RERUN_ONLY_CHECKS_THE_CHANGE_TOUCHES_NOT_ALL_203` (principle 7). Its plan has one shared relation
-  module, then five places that use it. That is the principle. The check to make after it lands: do the certificate,
-  the exam retake map and the re-pin rules read that one module, and are their own freshness rules deleted?
+- `RIMMANDRAKE_REPAIR_AT_THE_REFUSAL_NO_STOP_FOR_UNTIED_SHOES` (principles 1 and 3), commit `1e91cc0953`.
+  - It is the principle: `form_fault.py` (177 lines) states "There is no table of refusal kinds", and the fault loop
+    counts only a run that started and died `[measured: the file's text]`.
+  - It is not yet a deletion: +856 and -76 lines in that commit `[measured]`. Two non-test files call `form_fault`
+    (`maturation_dispatch.py`, `run_void.py`) `[measured]`. The gates in the other files with refusal lines still
+    refuse in their own way.
+  - The specific rule to watch: its census converts gate by gate. Exact next step after it ends: make `form_fault`
+    the only way for a pipeline file to refuse (one lint at `./publish` that fails a bare `sys.exit(2)` or a bare
+    `REFUSED` print), then delete the per-cause branches of `run_void.py` that the started-and-died rule covers.
+  - Its fix for tonight's test leak inside one function ("the real launcher only when the fixture list is empty") is
+    now unnecessary: `control.launch_unit` refuses a test process (Results, principle 4). It can be deleted when the
+    run ends.
+- `RIMMANDRAKE_RERUN_ONLY_CHECKS_THE_CHANGE_TOUCHES_NOT_ALL_203` (principle 6), commits `b23dbf2b12`, `d8a8a48ef4`,
+  `fe98fec94d`.
+  - It is the principle: one module, `rerun_relation.py`, and the certificate and Stage 6 read it `[measured: the
+    commit file lists]`.
+  - The risk: the module is 603 lines and follows Python symbols and JSON keys to decide what a change touches
+    `[measured: line count and function names]`. That is a large new mechanism. A relation that reads only what each
+    check declares (`reads`, `exercises`) and file paths is smaller. Whether the symbol reach is needed is not
+    measured here: `[guess ~50%]` that the declared relation alone decides the same reruns.
+  - Exact next step after it ends: count how many reruns the symbol reach saves beyond the declared relation on the
+    three live mods. If few, delete the symbol reach. Then delete the older freshness rules that the module covers
+    (the exam retake map of `453e648953`, the re-pin rules of `0957677739`, `cd86ab4735`, `5880cdb533`).
+  - `standing_rulings.md` grew by 47 lines in `fe98fec94d` and the root `CLAUDE.md` by 14 for this rule. No older
+    rule text was deleted for it yet.
 
-## Part 2 plan, for the principles this item owns
+## Part 2
 
-| principle | repairs | the change | state |
-|---|---|---|---|
-| 1 one home for a fact | about 44 | `GENERATED from` line and one compare check | next step below |
-| 3 named target, no live effect from a test | about 64 | guards at `control.launch_unit` and `model.append`; a named game with no port stops | this run |
-| 5 identity as a field | about 39 | readers take identity from the run record | next step below |
-| 6 could not look | about 38 | already in the machinery | no change |
-| 8 a limit names its danger | about 18 | count the unnamed numeric defaults, remove them | next step below |
-| 9 a rule a tool can do | about 56 | delete the rule lines that principle 3 covers; merge sections after the live runs land | this run, in part |
-
-Results and counts are written below as each one lands.
-
-## Results
-
-(none yet)
+What was fixed, what was deleted, the counts and each exact next step: `results.md` beside this file.
