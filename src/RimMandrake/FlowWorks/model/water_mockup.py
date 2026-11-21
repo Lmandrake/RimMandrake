@@ -148,7 +148,7 @@ CANDIDATES = [
     ("AQUA_SOFT", "Aqua shallows, navy deeps, at FIRM's strength", law_aqua_soft,
      "AQUA's colours with FIRM's strength, so colour and strength can be judged apart."),
     ("CLEAR", "Clear water that loses red", law_clear,
-     "Like real clear water: what lies under keeps its texture but loses its red, then its green, with depth, and a faint pale sheen marks the surface. Over the dark pit floor it is darkest (a dark teal) near 2 m; deeper, only the water's own blue shows, a little lighter."),
+     "Like real clear water: what lies under keeps its texture but loses its red, then its green, with depth, and a faint pale sheen marks the surface. Over the dark pit floor it is darkest (a dark teal) near 2 m; deeper, only the water's own blue shows, clearly bluer and brighter. Things standing in it (colonist, body, table) get the nearest cover the game can draw on them: one colour at one strength."),
 ]
 
 
@@ -272,6 +272,20 @@ def scale(sprite, w_px):
                       ).astype(np.float32) / 255.0
 
 
+def as_cover(law):
+    """What the game can draw over a thing (a pawn, an item, a building): one colour at one alpha (RM_SubmergeDraw's
+    silhouette cover), never a per-colour multiply. The cover that moves black and white as the law does on average:
+    out = C x a + rgb x (1 - a), a = 1 - mean(law(white) - law(black)), C = law(black) / a. Equal to the law for a plain
+    sheet; for CLEAR, the buildable stand-in."""
+    def f(rgb, m):
+        n = m.shape[0]
+        lo = law(np.zeros((n, 3), np.float32), m)
+        hi = law(np.ones((n, 3), np.float32), m)
+        a = np.clip(1.0 - (hi - lo).mean(-1, keepdims=True), 1e-6, 1.0)
+        return lo + rgb * (1.0 - a)
+    return f
+
+
 def drown_sprite(sprite, law, foot_m_over, height_m, quad=None, uniform=False):
     """Cut a thing's picture the way the game does (RM_UnderLiquid.Share, from its foot): its drawn quad's rows
     quad = (top, bottom), transparent margin included, span height_m; rows above the quad (a pawn's head) are higher
@@ -343,7 +357,7 @@ def tile(ground_key, sprites, grounds, law, water_m, seed=1):
         if sprite is sprites.pawn:
             quad = (int(BODY_QUAD[0] * k), int(BODY_QUAD[1] * k))
         if level > 0:
-            s = drown_sprite(s, law, level, height_m, quad=quad, uniform=uniform)
+            s = drown_sprite(s, as_cover(law), level, height_m, quad=quad, uniform=uniform)
         qt, qb = quad if quad else (0, s.shape[0])
         x = x0 + int((cx + 0.5) * PX - s.shape[1] / 2)
         y = z0 + int((cz + 0.5) * PX - (qt + qb) / 2)
@@ -356,7 +370,7 @@ def tile(ground_key, sprites, grounds, law, water_m, seed=1):
     lad_h = hn + PX // 3 + PX // 4
     lad = np.asarray(Image.fromarray((lad * 255).astype(np.uint8), "RGBA").resize((int(PX * 0.7), lad_h), Image.LANCZOS)
                      ).astype(np.float32) / 255.0
-    lad = drown_sprite(lad, law, level, pit_m) if level > 0 else lad
+    lad = drown_sprite(lad, as_cover(law), level, pit_m) if level > 0 else lad
     over(rgba, lad, x0 + int(PX * 0.15), z0)
     put(sprites.table, 3.5, 0.5, 2.0, TABLE_M)                  # a 2x2 table on cells 3-4, rows 0-1
     put(sprites.steel, 0.0, 2.0, 0.75, ITEM_M)

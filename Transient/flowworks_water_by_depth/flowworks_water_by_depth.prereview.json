@@ -1,8 +1,8 @@
 {
  "sheet": "flowworks_water_by_depth.html",
  "looked_by": "judge:claude-opus-5-5",
- "when": "2026-11-20T19:03:42-0800",
- "caught": "Two naive Opus judges read it: CLEAR's description said 'dark with depth' while its 5-8 m tiles are lighter (rewritten); things were cut at the opaque outline so every depth looked deeper (now cut by the game's rule, drawn quad from the foot); the page now says the four grounds differ only at the bank and walls. A new selftest also caught FIRM/AQUA/AQUA_SOFT tinting a point at the waterline (fixed).",
+ "when": "2026-11-20T19:06:36-0800",
+ "caught": "Two naive Opus judges read it: CLEAR's description said 'dark with depth' while its 5-8 m tiles are lighter (rewritten); things were cut at the opaque outline so every depth looked deeper (now cut by the game's rule, drawn quad from the foot); the page now says the four grounds differ only at the bank and walls. A new selftest also caught FIRM/AQUA/AQUA_SOFT tinting a point at the waterline (fixed). Things under CLEAR were drawn with a per-colour tint the game cannot draw on pawns or items; now drawn with the buildable cover.",
  "criteria": [
   "renders, and is recognisable as the named thing",
   "every candidate in a question depicts the same object",
@@ -33,7 +33,7 @@
   "CLEAR": {
    "fp": "2d47f69afb39d083",
    "verdict": "FIXED",
-   "note": "FIXED: description rewritten to match the picture (darkest dark teal near 2 m, own blue deeper); fresh reader confirmed."
+   "note": "FIXED twice: description rewritten to match the picture (fresh reader OK); then things under CLEAR water redrawn with the cover the game can draw (one colour at one alpha, not a per-colour multiply), looked at again by seat:BENCH: renders, every object in place, the table no longer turns bright cyan."
   }
  },
  "dropped": []

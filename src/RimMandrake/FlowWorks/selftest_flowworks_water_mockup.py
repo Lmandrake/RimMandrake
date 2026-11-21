@@ -66,6 +66,17 @@ def main():
     if same or mono_bad or dry_bad:
         fails.append(f"candidates: identical {same}, clearer deeper {mono_bad}, wet when dry {dry_bad}")
 
+    # 4. a thing's cover equals the law for every plain-sheet law (the game draws a thing's cover as one colour at one
+    #    alpha; only CLEAR needs the stand-in)
+    rng = np.random.default_rng(7)
+    rgb, m = rng.random((200, 3)).astype(np.float32), (rng.random(200) * 8).astype(np.float32)
+    off = {k: float(np.abs(wm.as_cover(fn)(rgb, m) - fn(rgb, m)).max()) for k, _n, fn, _d in wm.CANDIDATES}
+    bad = [k for k, v in off.items() if k != "CLEAR" and v > 1e-5]
+    print(f"4 thing cover = law for plain sheets: worst {max(v for k, v in off.items() if k != 'CLEAR'):.2e} limit 1e-5 "
+          f"cases {200 * (len(off) - 1)}; CLEAR stand-in differs by {off['CLEAR']:.3f}")
+    if bad:
+        fails.append(f"thing cover differs from the law for {bad}")
+
     # can it fail: two planted faults must each turn check 1 red
     body = wm.BODY_SHIPPED
 
