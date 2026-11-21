@@ -1,0 +1,482 @@
+[
+ {
+  "key": "SHIPPED",
+  "name": "Ships now (approved 11-13)",
+  "what": "Today's law, unchanged since his 11-13 approval: one dark blue sheet that thickens with depth.",
+  "hides_line": "6% at 0.2 m, 15% at 0.5 m, 30% at 1 m, 43% at 1.5 m, 56% at 2 m, 90% at 5 m, 90% at 8 m",
+  "hides_by_depth": {
+   "0.2": 0.0624,
+   "0.5": 0.1535,
+   "1.0": 0.2984,
+   "1.5": 0.4339,
+   "2.0": 0.559,
+   "5.0": 0.9,
+   "8.0": 0.9
+  },
+  "mid_grey_becomes": {
+   "0.2": [
+    0.475,
+    0.482,
+    0.492
+   ],
+   "0.5": [
+    0.438,
+    0.455,
+    0.481
+   ],
+   "1.0": [
+    0.379,
+    0.412,
+    0.463
+   ],
+   "1.5": [
+    0.324,
+    0.372,
+    0.446
+   ],
+   "2.0": [
+    0.274,
+    0.335,
+    0.431
+   ],
+   "5.0": [
+    0.136,
+    0.234,
+    0.389
+   ],
+   "8.0": [
+    0.136,
+    0.234,
+    0.389
+   ]
+  },
+  "fx": {
+   "wet": false,
+   "waterline": false,
+   "warp": 0.0,
+   "ripple": 0.0,
+   "frames": 1
+  },
+  "mechanism": "Drawn today: RM_ExcavationWalls.SeeThrough lays one sheet (RM_FaceMaterial.SheetMat, the body colour at alpha 1 - Seen) over the opaque floor and walls; things get RM_SubmergeDraw's cover (one colour at one alpha). Nothing moves."
+ },
+ {
+  "key": "FIRM",
+  "name": "Same blue, firm from the first step",
+  "what": "Today's colour and deep end, but any water at all hides at least 35% of what lies under it.",
+  "hides_line": "39% at 0.2 m, 44% at 0.5 m, 53% at 1 m, 62% at 1.5 m, 69% at 2 m, 90% at 5 m, 90% at 8 m",
+  "hides_by_depth": {
+   "0.2": 0.3881,
+   "0.5": 0.4438,
+   "1.0": 0.5323,
+   "1.5": 0.6152,
+   "2.0": 0.6916,
+   "5.0": 0.9,
+   "8.0": 0.9
+  },
+  "mid_grey_becomes": {
+   "0.2": [
+    0.343,
+    0.385,
+    0.452
+   ],
+   "0.5": [
+    0.32,
+    0.369,
+    0.445
+   ],
+   "1.0": [
+    0.285,
+    0.343,
+    0.434
+   ],
+   "1.5": [
+    0.251,
+    0.318,
+    0.424
+   ],
+   "2.0": [
+    0.22,
+    0.296,
+    0.415
+   ],
+   "5.0": [
+    0.136,
+    0.234,
+    0.389
+   ],
+   "8.0": [
+    0.136,
+    0.234,
+    0.389
+   ]
+  },
+  "fx": {
+   "wet": false,
+   "waterline": false,
+   "warp": 0.0,
+   "ripple": 0.0,
+   "frames": 1
+  },
+  "mechanism": "Built (6c668b36a8): the same sheet and cover with ShallowOpacity 0.35 in RM_UnderLiquid.Seen. Nothing moves."
+ },
+ {
+  "key": "AQUA",
+  "name": "Aqua shallows, navy deeps",
+  "what": "The colour changes with depth: clear aqua at the edge, navy by 4 m, and stronger than today at every depth.",
+  "hides_line": "48% at 0.2 m, 54% at 0.5 m, 62% at 1 m, 69% at 1.5 m, 76% at 2 m, 95% at 5 m, 95% at 8 m",
+  "hides_by_depth": {
+   "0.2": 0.4846,
+   "0.5": 0.5353,
+   "1.0": 0.6158,
+   "1.5": 0.6911,
+   "2.0": 0.7605,
+   "5.0": 0.95,
+   "8.0": 0.95
+  },
+  "mid_grey_becomes": {
+   "0.2": [
+    0.395,
+    0.542,
+    0.602
+   ],
+   "0.5": [
+    0.371,
+    0.52,
+    0.589
+   ],
+   "1.0": [
+    0.328,
+    0.476,
+    0.56
+   ],
+   "1.5": [
+    0.282,
+    0.423,
+    0.523
+   ],
+   "2.0": [
+    0.235,
+    0.365,
+    0.479
+   ],
+   "5.0": [
+    0.082,
+    0.158,
+    0.319
+   ],
+   "8.0": [
+    0.082,
+    0.158,
+    0.319
+   ]
+  },
+  "fx": {
+   "wet": false,
+   "waterline": false,
+   "warp": 0.0,
+   "ripple": 0.0,
+   "frames": 1
+  },
+  "mechanism": "The same sheet with a body colour that changes with depth (one more input to SheetTint). Nothing moves."
+ },
+ {
+  "key": "AQUA_SOFT",
+  "name": "Aqua shallows, navy deeps, at FIRM's strength",
+  "what": "AQUA's colours with FIRM's strength, so colour and strength can be judged apart.",
+  "hides_line": "39% at 0.2 m, 44% at 0.5 m, 53% at 1 m, 62% at 1.5 m, 69% at 2 m, 90% at 5 m, 90% at 8 m",
+  "hides_by_depth": {
+   "0.2": 0.3881,
+   "0.5": 0.4438,
+   "1.0": 0.5323,
+   "1.5": 0.6152,
+   "2.0": 0.6916,
+   "5.0": 0.9,
+   "8.0": 0.9
+  },
+  "mid_grey_becomes": {
+   "0.2": [
+    0.416,
+    0.534,
+    0.582
+   ],
+   "0.5": [
+    0.393,
+    0.517,
+    0.574
+   ],
+   "1.0": [
+    0.351,
+    0.479,
+    0.552
+   ],
+   "1.5": [
+    0.306,
+    0.431,
+    0.52
+   ],
+   "2.0": [
+    0.259,
+    0.377,
+    0.481
+   ],
+   "5.0": [
+    0.104,
+    0.176,
+    0.329
+   ],
+   "8.0": [
+    0.104,
+    0.176,
+    0.329
+   ]
+  },
+  "fx": {
+   "wet": false,
+   "waterline": false,
+   "warp": 0.0,
+   "ripple": 0.0,
+   "frames": 1
+  },
+  "mechanism": "As AQUA."
+ },
+ {
+  "key": "CLEAR",
+  "name": "Clear water that loses red",
+  "what": "Like real clear water: what lies under keeps its texture but loses its red, then its green, with depth, and a faint pale sheen marks the surface. Over the dark pit floor it is darkest (a dark teal) near 2 m; deeper, only the water's own blue shows, clearly bluer and brighter. Things standing in it (colonist, body, table) get the nearest cover the game can draw on them: one colour at one strength.",
+  "hides_line": "23% at 0.2 m, 37% at 0.5 m, 53% at 1 m, 63% at 1.5 m, 69% at 2 m, 88% at 5 m, 94% at 8 m",
+  "hides_by_depth": {
+   "0.2": 0.2263,
+   "0.5": 0.3686,
+   "1.0": 0.5256,
+   "1.5": 0.6256,
+   "2.0": 0.6947,
+   "5.0": 0.8809,
+   "8.0": 0.9447
+  },
+  "mid_grey_becomes": {
+   "0.2": [
+    0.394,
+    0.501,
+    0.534
+   ],
+   "0.5": [
+    0.277,
+    0.461,
+    0.523
+   ],
+   "1.0": [
+    0.172,
+    0.406,
+    0.506
+   ],
+   "1.5": [
+    0.125,
+    0.365,
+    0.491
+   ],
+   "2.0": [
+    0.104,
+    0.334,
+    0.478
+   ],
+   "5.0": [
+    0.087,
+    0.254,
+    0.422
+   ],
+   "8.0": [
+    0.087,
+    0.239,
+    0.393
+   ]
+  },
+  "fx": {
+   "wet": false,
+   "waterline": false,
+   "warp": 0.0,
+   "ripple": 0.0,
+   "frames": 1
+  },
+  "mechanism": "The floor and walls: a per-colour multiply would need a tint quad per band (TintMat, VertexColor shader). Things: only the one-colour cover (as drawn), never the per-colour loss."
+ },
+ {
+  "key": "WET",
+  "name": "FIRM, with wet ground and a waterline",
+  "what": "FIRM's water, but the ground it covers is wet: the pit floor and walls under the water are darker and a little more saturated than the dry pit, a dark wet band runs along the bank just above the water, and a thin pale line marks where the water meets the wall.",
+  "hides_line": "39% at 0.2 m, 44% at 0.5 m, 53% at 1 m, 62% at 1.5 m, 69% at 2 m, 90% at 5 m, 90% at 8 m",
+  "hides_by_depth": {
+   "0.2": 0.3881,
+   "0.5": 0.4438,
+   "1.0": 0.5323,
+   "1.5": 0.6152,
+   "2.0": 0.6916,
+   "5.0": 0.9,
+   "8.0": 0.9
+  },
+  "mid_grey_becomes": {
+   "0.2": [
+    0.343,
+    0.385,
+    0.452
+   ],
+   "0.5": [
+    0.32,
+    0.369,
+    0.445
+   ],
+   "1.0": [
+    0.285,
+    0.343,
+    0.434
+   ],
+   "1.5": [
+    0.251,
+    0.318,
+    0.424
+   ],
+   "2.0": [
+    0.22,
+    0.296,
+    0.415
+   ],
+   "5.0": [
+    0.136,
+    0.234,
+    0.389
+   ],
+   "8.0": [
+    0.136,
+    0.234,
+    0.389
+   ]
+  },
+  "fx": {
+   "wet": true,
+   "waterline": true,
+   "warp": 0.0,
+   "ripple": 0.0,
+   "frames": 1
+  },
+  "mechanism": "Wet ground: the floor and drowned-wall quads in SeeThrough get a TintMat quad of the ground's own darker, more saturated colour (VertexColor shader, already used for the floor shade). Wet band: one more TintMat strip, soft-edged by vertex alpha, above the waterline (on the bank at the rim). Waterline: a ShadeMat strip WATERLINE_PX wide at the line, like the walls' light. All static, one redraw per level change. Cannot: wet pawns, items or the ladder (vanilla draws them; only the cover reaches them)."
+ },
+ {
+  "key": "RIPPLE",
+  "name": "FIRM, with a moving, distorted bottom",
+  "what": "FIRM's water, but what lies on the bottom is visibly rippled: the floor and walls under the water are displaced by moving waves (more with depth), and pale ripple-light lines cross the floor in the shallows. Animated: three frames.",
+  "hides_line": "39% at 0.2 m, 44% at 0.5 m, 53% at 1 m, 62% at 1.5 m, 69% at 2 m, 90% at 5 m, 90% at 8 m",
+  "hides_by_depth": {
+   "0.2": 0.3881,
+   "0.5": 0.4438,
+   "1.0": 0.5323,
+   "1.5": 0.6152,
+   "2.0": 0.6916,
+   "5.0": 0.9,
+   "8.0": 0.9
+  },
+  "mid_grey_becomes": {
+   "0.2": [
+    0.343,
+    0.385,
+    0.452
+   ],
+   "0.5": [
+    0.32,
+    0.369,
+    0.445
+   ],
+   "1.0": [
+    0.285,
+    0.343,
+    0.434
+   ],
+   "1.5": [
+    0.251,
+    0.318,
+    0.424
+   ],
+   "2.0": [
+    0.22,
+    0.296,
+    0.415
+   ],
+   "5.0": [
+    0.136,
+    0.234,
+    0.389
+   ],
+   "8.0": [
+    0.136,
+    0.234,
+    0.389
+   ]
+  },
+  "fx": {
+   "wet": false,
+   "waterline": false,
+   "warp": 6.0,
+   "ripple": 0.3,
+   "frames": 3
+  },
+  "mechanism": "Moving bottom: the floor and drowned-wall quads drawn with vanilla's Map/TerrainLavaShallow distortion shader (its _DistortionAmplitude/_DistortionFrequency/_DistortionSpeed, already set by RM_LiquidLooks for tar), one material per depth band so the amplitude grows with depth [guess ~60% that the shader draws a plain ground texture without its own glow: needs a live look]. Ripple light: RM_LiquidSurface's overlay (MoteGlow, additive, drifting by material offset) with a ripple-line texture, on pit water cells, alpha by depth. Cannot: displace pawns, items, the body, the table or the ladder (vanilla draws them; no grab-pass shader in the mod), so they stay sharp on a wavy floor, as in these pictures."
+ },
+ {
+  "key": "BLEND",
+  "name": "FIRM, wet ground plus a gentle moving bottom",
+  "what": "The research's combination: WET's wet ground, wet band and waterline, with a gentler version of RIPPLE's moving bottom and ripple-light. Animated: three frames.",
+  "hides_line": "39% at 0.2 m, 44% at 0.5 m, 53% at 1 m, 62% at 1.5 m, 69% at 2 m, 90% at 5 m, 90% at 8 m",
+  "hides_by_depth": {
+   "0.2": 0.3881,
+   "0.5": 0.4438,
+   "1.0": 0.5323,
+   "1.5": 0.6152,
+   "2.0": 0.6916,
+   "5.0": 0.9,
+   "8.0": 0.9
+  },
+  "mid_grey_becomes": {
+   "0.2": [
+    0.343,
+    0.385,
+    0.452
+   ],
+   "0.5": [
+    0.32,
+    0.369,
+    0.445
+   ],
+   "1.0": [
+    0.285,
+    0.343,
+    0.434
+   ],
+   "1.5": [
+    0.251,
+    0.318,
+    0.424
+   ],
+   "2.0": [
+    0.22,
+    0.296,
+    0.415
+   ],
+   "5.0": [
+    0.136,
+    0.234,
+    0.389
+   ],
+   "8.0": [
+    0.136,
+    0.234,
+    0.389
+   ]
+  },
+  "fx": {
+   "wet": true,
+   "waterline": true,
+   "warp": 3.0,
+   "ripple": 0.16,
+   "frames": 3
+  },
+  "mechanism": "WET's static quads plus RIPPLE's distortion shader and overlay at lower amplitude and strength. Same limits: nothing standing in the water is displaced or wetted; only the floor, the walls and the bank."
+ }
+]

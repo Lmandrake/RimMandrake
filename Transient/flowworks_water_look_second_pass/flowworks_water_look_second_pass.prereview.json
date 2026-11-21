@@ -1,0 +1,55 @@
+{
+ "sheet": "flowworks_water_look_second_pass.html",
+ "looked_by": "seat:BENCH",
+ "when": "2026-11-20T23:15:52-0800",
+ "caught": "Read every candidate at 64 and 32 px a cell on all four grounds and RIPPLE's frames: the first ripple-light pattern tiled as a visible grid and then read as cracked mud (replaced by a curved cell net); the wet band read as a blurred drop shadow (now a crisp ragged band); the dry tiles carried a frame label (removed).",
+ "criteria": [
+  "renders, and is recognisable as the named thing",
+  "every candidate in a question depicts the same object",
+  "coupled states are offered as sets",
+  "does not repeat a ruling he already made"
+ ],
+ "rows": {
+  "SHIPPED": {
+   "fp": "fd732f1685c5a453",
+   "verdict": "OK",
+   "note": "Renders as in the first pass; 0.2 m still reads like the dry pit (his complaint)."
+  },
+  "FIRM": {
+   "fp": "a3c34e3989c2d627",
+   "verdict": "OK",
+   "note": "Renders as in the first pass; blue-grey water from 0.2 m; the built law."
+  },
+  "AQUA": {
+   "fp": "16e3ba07c3b1be6b",
+   "verdict": "OK",
+   "note": "Renders as in the first pass; light jump at 0.2 m (refused 11-20 by the first judge, kept for comparison)."
+  },
+  "AQUA_SOFT": {
+   "fp": "dab9a35aaa3d0b5c",
+   "verdict": "OK",
+   "note": "Renders as in the first pass; same light jump at FIRM's strength."
+  },
+  "CLEAR": {
+   "fp": "2d47f69afb39d083",
+   "verdict": "OK",
+   "note": "Renders as in the first pass; teal, cyan rim at depth."
+  },
+  "WET": {
+   "fp": "7c5b00a8cc705a90",
+   "verdict": "OK",
+   "note": "Renders on all four grounds at 64 and 32 px a cell: drowned floor darker than FIRM's, a ragged dark wet band round the rim from 0.5 m (brim-full), a pale 2 px waterline inside the outline; dry pit identical to FIRM's. On mud the band is faint (dark on dark), as wet mud is."
+  },
+  "RIPPLE": {
+   "fp": "86296f583d797171",
+   "verdict": "OK",
+   "note": "Renders on all four grounds; three frames differ (net and wavy wall edge move); ripple light strong at 0.2-0.5 m, faint by 2 m, gone by 5 m; things stay sharp and unlit (the game cannot ripple them). Dry pit identical to FIRM's."
+  },
+  "BLEND": {
+   "fp": "9a6d4b2641deb82b",
+   "verdict": "OK",
+   "note": "Renders on all four grounds; WET's band and line with half RIPPLE's motion and light; three frames differ; dry pit identical to FIRM's."
+  }
+ },
+ "dropped": []
+}

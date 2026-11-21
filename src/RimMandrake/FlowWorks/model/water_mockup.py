@@ -150,7 +150,136 @@ CANDIDATES = [
      "AQUA's colours with FIRM's strength, so colour and strength can be judged apart."),
     ("CLEAR", "Clear water that loses red", law_clear,
      "Like real clear water: what lies under keeps its texture but loses its red, then its green, with depth, and a faint pale sheen marks the surface. Over the dark pit floor it is darkest (a dark teal) near 2 m; deeper, only the water's own blue shows, clearly bluer and brighter. Things standing in it (colonist, body, table) get the nearest cover the game can draw on them: one colour at one strength."),
+    # second pass (RIMMANDRAKE_RESEARCH_FLOWWORKS_WATER_LOOK_FIRM_ALREADY_PICKED, owner card 2026-11-20 evening: "Maybe dry
+    # and wet have different colors too ... Maybe more aggressive distortions on the surface will make it look more like
+    # water"): FIRM's sheet, plus the ground and surface effects in FX below. Research:
+    # design/concepts/FlowWorks/version/water_look_research.md
+    ("WET", "FIRM, with wet ground and a waterline", law_firm,
+     "FIRM's water, but the ground it covers is wet: the pit floor and walls under the water are darker and a little more saturated than the dry pit, a dark wet band runs along the bank just above the water, and a thin pale line marks where the water meets the wall."),
+    ("RIPPLE", "FIRM, with a moving, distorted bottom", law_firm,
+     "FIRM's water, but what lies on the bottom is visibly rippled: the floor and walls under the water are displaced by moving waves (more with depth), and pale ripple-light lines cross the floor in the shallows. Animated: three frames."),
+    ("BLEND", "FIRM, wet ground plus a gentle moving bottom", law_firm,
+     "The research's combination: WET's wet ground, wet band and waterline, with a gentler version of RIPPLE's moving bottom and ripple-light. Animated: three frames."),
 ]
+
+# ── ground and surface effects (second pass) ───────────────────────────────────────────────────────────────────────
+# Each candidate's effects; a candidate not named here draws its law alone (the first five). Numbers are mine, made for
+# these pictures (px at 64 px a cell).
+#   wet:       submerged ground (floor and walls under the line) x WET_VALUE in value and x WET_SAT in saturation, and a
+#              wet band WET_BAND_PX wide above the line (on the walls; on the bank when the water is at the rim)
+#   waterline: a pale meniscus line WATERLINE_PX wide where the water meets a wall or the rim, alpha WATERLINE_ALPHA
+#   warp:      peak displacement (px) of the floor and walls under the line; grows with depth as 1 - exp(-m / 0.5)
+#   ripple:    peak brightness of the ripple-light lines on the floor; fades with depth as exp(-m / 0.7)
+#   frames:    animation frames drawn (1 = still)
+FX = {
+    "WET": {"wet": True, "waterline": True, "warp": 0.0, "ripple": 0.0, "frames": 1},
+    "RIPPLE": {"wet": False, "waterline": False, "warp": 6.0, "ripple": 0.30, "frames": 3},
+    "BLEND": {"wet": True, "waterline": True, "warp": 3.0, "ripple": 0.16, "frames": 3},
+}
+NO_FX = {"wet": False, "waterline": False, "warp": 0.0, "ripple": 0.0, "frames": 1}
+WET_VALUE, WET_SAT = 0.70, 1.30
+WET_BAND_PX = 10
+WATERLINE_PX, WATERLINE_ALPHA = 2, 0.45
+WATERLINE_COLOUR = np.array((0.80, 0.88, 0.92), np.float32)
+RIPPLE_COLOUR = np.array((0.78, 0.90, 0.96), np.float32)
+
+# How the mod would draw each effect, and what it cannot do (the card: "Each candidate must be something the game can
+# draw"). Shown on the pick page and given to the judge.
+MECHANISM = {
+    "SHIPPED": "Drawn today: RM_ExcavationWalls.SeeThrough lays one sheet (RM_FaceMaterial.SheetMat, the body colour at "
+               "alpha 1 - Seen) over the opaque floor and walls; things get RM_SubmergeDraw's cover (one colour at one "
+               "alpha). Nothing moves.",
+    "FIRM": "Built (6c668b36a8): the same sheet and cover with ShallowOpacity 0.35 in RM_UnderLiquid.Seen. Nothing moves.",
+    "AQUA": "The same sheet with a body colour that changes with depth (one more input to SheetTint). Nothing moves.",
+    "AQUA_SOFT": "As AQUA.",
+    "CLEAR": "The floor and walls: a per-colour multiply would need a tint quad per band (TintMat, VertexColor shader). "
+             "Things: only the one-colour cover (as drawn), never the per-colour loss.",
+    "WET": "Wet ground: the floor and drowned-wall quads in SeeThrough get a TintMat quad of the ground's own darker, "
+           "more saturated colour (VertexColor shader, already used for the floor shade). Wet band: one more TintMat "
+           "strip, soft-edged by vertex alpha, above the waterline (on the bank at the rim). Waterline: a ShadeMat strip "
+           "WATERLINE_PX wide at the line, like the walls' light. All static, one redraw per level change. Cannot: wet "
+           "pawns, items or the ladder (vanilla draws them; only the cover reaches them).",
+    "RIPPLE": "Moving bottom: the floor and drowned-wall quads drawn with vanilla's Map/TerrainLavaShallow distortion "
+              "shader (its _DistortionAmplitude/_DistortionFrequency/_DistortionSpeed, already set by RM_LiquidLooks for "
+              "tar), one material per depth band so the amplitude grows with depth [guess ~60% that the shader draws a "
+              "plain ground texture without its own glow: needs a live look]. Ripple light: RM_LiquidSurface's overlay "
+              "(MoteGlow, additive, drifting by material offset) with a ripple-line texture, on pit water cells, alpha "
+              "by depth. Cannot: displace pawns, items, the body, the table or the ladder (vanilla draws them; no "
+              "grab-pass shader in the mod), so they stay sharp on a wavy floor, as in these pictures.",
+    "BLEND": "WET's static quads plus RIPPLE's distortion shader and overlay at lower amplitude and strength. Same "
+             "limits: nothing standing in the water is displaced or wetted; only the floor, the walls and the bank.",
+}
+
+
+def fx_of(key):
+    return FX.get(key, NO_FX)
+
+
+def wetten(rgb):
+    """Wet ground: darker and a little more saturated (rough, porous ground darkens when wet: Jensen et al. 1999)."""
+    v = rgb * WET_VALUE
+    mean = v.mean(-1, keepdims=True)
+    return np.clip(mean + (v - mean) * WET_SAT, 0.0, 1.0)
+
+
+def warp_amp(peak, m):
+    return peak * (1.0 - np.exp(-np.maximum(m, 0.0) / 0.5))
+
+
+def ripple_amp(peak, m):
+    return peak * np.exp(-np.maximum(m, 0.0) / 0.7)
+
+
+def wave_field(h, w, t, ox=0, oy=0):
+    """Two crossing travelling waves (unit amplitude), t in [0, 1) one loop; world-anchored by ox, oy."""
+    y, x = np.mgrid[0:h, 0:w].astype(np.float32)
+    x, y = x + ox, y + oy
+    tau = 2 * math.pi
+    dx = 0.65 * np.sin(tau * (y / 46.0 + x / 150.0 + t)) + 0.35 * np.sin(tau * (y / 21.0 - x / 67.0 + 2 * t))
+    dy = 0.65 * np.sin(tau * (x / 52.0 - y / 170.0 + t)) + 0.35 * np.sin(tau * (x / 25.0 + y / 59.0 - 2 * t))
+    return dx, dy
+
+
+def ripple_lines(h, w, t, ox=0, oy=0, cell=40.0, width=2.2):
+    """Caustic light: a net of thin bright lines on the borders of irregular cells about `cell` px across (Worley
+    F2 - F1, the usual stand-in for caustics), 0..1. Each cell's point circles its jittered home once per loop, t in
+    [0, 1); world-anchored by ox, oy (so neighbouring pits share one net)."""
+    y, x = np.mgrid[0:h, 0:w].astype(np.float32)
+    x, y = (x + ox) / cell, (y + oy) / cell
+    tau = 2 * math.pi
+    x, y = (x + 0.22 * np.sin(tau * (y / 1.7 + t)) + 0.12 * np.sin(tau * (y / 0.6 - x / 1.1)),
+            y + 0.22 * np.sin(tau * (x / 1.9 - t)) + 0.12 * np.sin(tau * (x / 0.7 + y / 1.3)))   # curved, never straight
+    gx, gy = np.floor(x).astype(int), np.floor(y).astype(int)
+    f1 = np.full(x.shape, 9.0, np.float32)
+    f2 = np.full(x.shape, 9.0, np.float32)
+    tau = 2 * math.pi
+    for jy in (-1, 0, 1):
+        for jx in (-1, 0, 1):
+            cx, cy = gx + jx, gy + jy
+            hsh = (cx * 374761393 + cy * 668265263) & 0xFFFFFF
+            r1 = (hsh % 997) / 997.0
+            r2 = ((hsh // 997) % 991) / 991.0
+            r3 = ((hsh // 7) % 983) / 983.0
+            px = cx + 0.5 + 0.35 * np.cos(tau * r1) + 0.12 * np.cos(tau * (t + r3))
+            py = cy + 0.5 + 0.35 * np.sin(tau * r2) + 0.12 * np.sin(tau * (t + r3))
+            d = np.sqrt((x - px) ** 2 + (y - py) ** 2)
+            f2 = np.where(d < f1, f1, np.minimum(f2, d))
+            f1 = np.minimum(f1, d)
+    along = 0.55 + 0.45 * np.sin(tau * (x / 2.3 + y / 3.1 + t))                        # brighter and fainter runs
+    return np.exp(-(f2 - f1) * cell / width) * along
+
+
+def displace(region, dx, dy):
+    """Bilinear sample of region at (x + dx, y + dy), clamped inside it."""
+    h, w = region.shape[:2]
+    y, x = np.mgrid[0:h, 0:w].astype(np.float32)
+    sx = np.clip(x + dx, 0, w - 1.001)
+    sy = np.clip(y + dy, 0, h - 1.001)
+    x0, y0 = sx.astype(int), sy.astype(int)
+    fx, fy = (sx - x0)[..., None], (sy - y0)[..., None]
+    a = region[y0, x0] * (1 - fx) + region[y0, x0 + 1] * fx
+    b = region[y0 + 1, x0] * (1 - fx) + region[y0 + 1, x0 + 1] * fx
+    return a * (1 - fy) + b * fy
 
 
 def hides(fn, d):
@@ -308,7 +437,7 @@ def drown_sprite(sprite, law, foot_m_over, height_m, quad=None, uniform=False):
     return out
 
 
-def tile(ground_key, sprites, grounds, law, water_m, seed=1):
+def tile(ground_key, sprites, grounds, law, water_m, seed=1, fx=None, frame=0):
     W, H = COLS * PX, ROWS * PX
     gtex, tint = grounds[ground_key]
     img = ground_patch(gtex, tint, W, H, seed).copy()
@@ -343,8 +472,49 @@ def tile(ground_key, sprites, grounds, law, water_m, seed=1):
         mo[hn:, -ws:] = np.minimum(mo[hn:, -ws:], ((level - pit_m) + f[::-1] * pit_m)[None, :])
     region = img[z0:z1, x0:x1]
     wet = mo > 0
+    fx = fx or NO_FX
+    t = frame / max(1, fx["frames"])
+    face = np.zeros_like(wet)
+    face[:hn, :] = True
+    if ws > 0:
+        face[:, :ws] = face[:, -ws:] = True
+    if wet.any() and fx["wet"]:
+        region[wet] = wetten(region[wet])
+        m_per_px = pit_m / max(1, hn)
+        band = face & ~wet & (mo > -WET_BAND_PX * m_per_px)
+        if band.any():
+            k = np.clip(1.0 + mo[band] / (WET_BAND_PX * m_per_px), 0.0, 1.0)[:, None]
+            region[band] = _lerp(region[band], wetten(region[band]), k)
+        if level >= pit_m - 1e-6:                                # at the rim: the band lies on the bank round the pit
+            yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
+            ddx = np.maximum(np.maximum(x0 - xx, xx - (x1 - 1)), 0.0)
+            ddz = np.maximum(np.maximum(z0 - yy, yy - (z1 - 1)), 0.0)
+            dist = np.sqrt(ddx ** 2 + ddz ** 2)
+            jag = 3.0 * np.sin(xx / 7.0 + 1.3 * np.sin(yy / 11.0)) * np.sin(yy / 9.0 + 0.7 * np.sin(xx / 5.0))
+            k = np.clip((WET_BAND_PX - dist - jag) / 3.0, 0.0, 1.0)      # a crisp, ragged edge (3 px feather)
+            k[z0:z1, x0:x1] = 0.0
+            sel = k > 0
+            img[sel] = _lerp(img[sel], wetten(img[sel]), k[sel][:, None])
+    if wet.any() and fx["warp"] > 0:
+        dx, dy = wave_field(z1 - z0, x1 - x0, t, x0, z0)
+        a = warp_amp(fx["warp"], mo)
+        moved = displace(region.copy(), dx * a, dy * a)
+        region[wet] = moved[wet]
     if wet.any():
         region[wet] = law(region[wet], mo[wet])
+    if wet.any() and fx["ripple"] > 0:
+        light = ripple_lines(z1 - z0, x1 - x0, t, x0, z0) * ripple_amp(fx["ripple"], mo)
+        region[wet] = np.clip(region[wet] + RIPPLE_COLOUR * light[wet][:, None], 0.0, 1.0)
+    if wet.any() and fx["waterline"]:
+        inner = wet.copy()
+        inner[:2, :] = inner[-2:, :] = inner[:, :2] = inner[:, -2:] = False   # the outline's 2 px
+        dry_p = np.pad(~inner, 1, constant_values=True)
+        near = np.zeros_like(dry_p)
+        for sy in range(-WATERLINE_PX, WATERLINE_PX + 1):
+            for sx in range(-WATERLINE_PX, WATERLINE_PX + 1):
+                near |= np.roll(np.roll(dry_p, sy, 0), sx, 1)
+        line = inner & near[1:-1, 1:-1]
+        region[line] = _lerp(region[line], WATERLINE_COLOUR, WATERLINE_ALPHA)
     # outline
     img[z0:z0 + 2, x0:x1] = img[z1 - 2:z1, x0:x1] = 0.10
     img[z0:z1, x0:x0 + 2] = img[z0:z1, x1 - 2:x1] = 0.10
@@ -407,19 +577,26 @@ def build(out: Path):
     for key, name, fn, desc in CANDIDATES:
         manifest["candidates"].append({"key": key, "name": name, "what": desc, "hides_line": hides_line(fn),
                                        "hides_by_depth": {str(d): round(hides(fn, d), 4) for d in DEPTHS[1:]},
-                                       "mid_grey_becomes": {str(d): colour_at(fn, d) for d in DEPTHS[1:]}})
+                                       "mid_grey_becomes": {str(d): colour_at(fn, d) for d in DEPTHS[1:]},
+                                       "fx": fx_of(key), "mechanism": MECHANISM[key]})
     for gi, (gkey, glabel, _f, _t) in enumerate(GROUNDS):
         rows = []
         for key, name, fn, _d in CANDIDATES:
-            row = []
-            for d in DEPTHS:
-                rgb, pit_m = tile(gkey, sprites, grounds, fn, d, seed=gi + 3)
-                im = Image.fromarray((np.clip(rgb, 0, 1) * 255 + 0.5).astype(np.uint8), "RGB")
-                label(im, "dry pit, 1 m" if d == 0 else f"{d:g} m of water", (8, 6))
-                fn_png = out / f"{gkey}_{key}_{str(d).replace('.', 'p')}m.png"
-                im.save(fn_png)
-                row.append(fn_png.name)
-            rows.append({"candidate": key, "tiles": row})
+            row, frames = [], []
+            fx = fx_of(key)
+            for fr in range(fx["frames"]):
+                names = []
+                for d in DEPTHS:
+                    rgb, pit_m = tile(gkey, sprites, grounds, fn, d, seed=gi + 3, fx=fx, frame=fr)
+                    im = Image.fromarray((np.clip(rgb, 0, 1) * 255 + 0.5).astype(np.uint8), "RGB")
+                    txt = "dry pit, 1 m" if d == 0 else f"{d:g} m of water"
+                    label(im, txt + (f"  (frame {fr + 1}/{fx['frames']})" if fx["frames"] > 1 and d > 0 else ""), (8, 6))
+                    stem = f"{gkey}_{key}_{str(d).replace('.', 'p')}m" + (f"_f{fr}" if fr else "")
+                    im.save(out / f"{stem}.png")
+                    names.append(f"{stem}.png")
+                frames.append(names)
+            row = frames[0]
+            rows.append({"candidate": key, "tiles": row, "frames": frames})
         manifest["grounds"].append({"key": gkey, "label": glabel, "rows": rows, "sheet": contact(out, gkey, glabel, rows)})
     (out / "candidates.json").write_text(json.dumps(manifest, indent=1))
     return manifest
@@ -453,7 +630,7 @@ def contact(out: Path, gkey, glabel, rows, gap=6, head=40, left=230):
 
 
 REPO = MOD.parents[2]
-SHEET_ID = "flowworks_water_by_depth"
+SHEET_ID = "flowworks_water_look_second_pass"   # the first pass's page was flowworks_water_by_depth
 SHEET_DIR = REPO / "Transient" / SHEET_ID
 TEMPLATE = Path.home() / ".claude/skills/review-sheets/assets/sheet_template.html"
 
@@ -481,6 +658,38 @@ def candidate_image(out: Path, manifest, key, dest: Path, gap=6, left=190):
     im.save(dest, quality=92)
 
 
+def frames_image(out: Path, manifest, key, dest: Path, ground="sand", gap=6, left=190):
+    """An animated candidate's frames on one ground: a row per frame, a column per depth."""
+    tw, th = COLS * PX, ROWS * PX
+    g = next(g for g in manifest["grounds"] if g["key"] == ground)
+    row = next(r for r in g["rows"] if r["candidate"] == key)
+    W = left + len(DEPTHS) * (tw + gap)
+    im = Image.new("RGB", (W, len(row["frames"]) * (th + gap)), (28, 30, 36))
+    for fi, names in enumerate(row["frames"]):
+        y = fi * (th + gap)
+        label(im, f"frame {fi + 1}", (8, y + 10), 18)
+        for ci, name in enumerate(names):
+            im.paste(Image.open(out / name), (left + ci * (tw + gap), y))
+    im.save(dest, quality=92)
+
+
+def zoom_image(out: Path, manifest, ground, dest: Path, factor=2, gap=4, left=120):
+    """Every candidate on one ground at play zoom (64 / factor px a cell): a row per candidate."""
+    tw, th = COLS * PX // factor, ROWS * PX // factor
+    g = next(g for g in manifest["grounds"] if g["key"] == ground)
+    W = left + len(DEPTHS) * (tw + gap)
+    im = Image.new("RGB", (W, 30 + len(g["rows"]) * (th + gap)), (28, 30, 36))
+    label(im, f"{g['label']} at {PX // factor} px a cell (play zoom); columns: dry, "
+          + ", ".join(f"{d:g}" for d in DEPTHS[1:]) + " m", (6, 4), 14)
+    for ri, r in enumerate(g["rows"]):
+        y = 30 + ri * (th + gap)
+        label(im, r["candidate"], (6, y + 6), 14)
+        for ci, name in enumerate(r["tiles"]):
+            t = Image.open(out / name)
+            im.paste(t.resize((tw, th), Image.LANCZOS), (left + ci * (tw + gap), y))
+    im.save(dest, quality=92)
+
+
 def replace_block(html, block_id, payload):
     open_tag = f'<script id="{block_id}" type="application/json">'
     i = html.index(open_tag) + len(open_tag)
@@ -495,11 +704,17 @@ def build_sheet(tiles: Path, manifest):
     for c in manifest["candidates"]:
         dest = img / f"cand_{c['key']}.jpg"
         candidate_image(tiles, manifest, c["key"], dest)
+        meta = {"made by": "water_mockup.py, offline", "how the game would draw it": c["mechanism"],
+                "pass": "second (2026-11-21)" if c["key"] in FX else "first (2026-11-20)"}
+        if c["fx"]["frames"] > 1:
+            fdest = img / f"frames_{c['key']}.jpg"
+            frames_image(tiles, manifest, c["key"], fdest)
+            meta["frames"] = f"img/{fdest.name} (sand, every depth, {c['fx']['frames']} frames of the loop)"
         items.append({
-            "id": c["key"], "label": f"{c['key']}: {c['name']}", "group": "water law (pick one)",
+            "id": c["key"], "label": f"{c['key']}: {c['name']}", "group": "water look (pick one)",
             "thumb": f"img/{dest.name}",
             "effect": f"{c['what']} Hides what lies under it: {c['hides_line']}.",
-            "meta": {"made by": "water_mockup.py, offline"},
+            "meta": meta,
             "trueSize": {"none": "each picture is a whole scene at 64 px a cell, with a 1.75 m colonist in and beside "
                                  "the pit for scale"},
         })
@@ -508,38 +723,41 @@ def build_sheet(tiles: Path, manifest):
         dest = img / f"ground_{g['key']}.jpg"
         Image.open(tiles / g["sheet"]).save(dest, quality=92)
         ground_links.append(f'<a href="img/{dest.name}" target="_blank">{g["label"]}</a>')
+        zoom_image(tiles, manifest, g["key"], img / f"zoom_{g['key']}.jpg")
+    zoom_links = " · ".join(f'<a href="img/zoom_{g["key"]}.jpg" target="_blank">{g["label"]}</a>'
+                            for g in manifest["grounds"])
     html_path = SHEET_DIR / f"{SHEET_ID}.html"
     dec_path = SHEET_DIR / f"{SHEET_ID}.decisions.json"
     brief = (
-        "<p><b>Pick the water you want; your pick becomes FlowWorks 0.1.0's written target for water colour and "
-        "clarity by depth, and one build follows it.</b> Your card of 2026-11-20 (\"Colour and clarity now\", with "
-        "\"it needs to be on representative terrain\"). Waves wait for 0.2.0.</p>"
+        "<p><b>Second pass on FlowWorks water.</b> A judge picked FIRM on 2026-11-20 and it is built. Your card notes of "
+        "that evening asked for more: \"Maybe dry and wet have different colors too ... Maybe more aggressive "
+        "distortions on the surface will make it look more like water.\" Three new looks sit beside the first five: "
+        "<b>WET</b> (wet ground, a wet band and a waterline), <b>RIPPLE</b> (a moving, distorted bottom with ripple "
+        "light) and <b>BLEND</b> (both, gentler). All three keep FIRM's water colour and strength; only the ground and "
+        "the surface change. Research behind them: design/concepts/FlowWorks/version/water_look_research.md.</p>"
         "<p>Each row is one candidate. Its picture has four grounds (sand, soil, rough granite, mud) and eight "
         "columns: a dry 1 m pit, then 0.2, 0.5, 1, 1.5, 2, 5 and 8 m of fresh water. In every pit: a standing "
         "colonist (1.75 m), a body lying on the floor, a wooden table (0.8 m), a steel stack and a ladder on the north "
-        "wall. On the bank: a dry colonist and a chair, for scale and the dry colours. Click a picture to zoom.</p>"
-        "<p>To compare candidates on one ground, open a ground sheet (a row per candidate): "
-        + " · ".join(ground_links) + ".</p>"
-        "<p><b>SHIPPED</b> is what the game draws today, the look you approved on 11-13; this mockup matches a "
-        "capture of that look to within 0.011 per colour channel at 2 m. <b>AQUA_SOFT</b> has AQUA's colours with "
-        "FIRM's strength, so you can judge colour and strength apart. Mark one row \"Make this the target\". "
-        "To mix two (say AQUA's colours, a bit weaker at 0.2 m), mark the nearest one and write the change in its "
-        "note.</p>"
-        "<p><b>What differs between the four grounds:</b> only the bank and the pit walls. The floor under the water is "
-        "always the dug channel floor (as in the game), so in one candidate the water itself looks the same on every "
-        "ground; the grounds show how it reads against a pale, a brown, a grey and a dark bank. Things are cut by "
-        "height the way the game cuts them: 0.5 m barely reaches a colonist's feet, 1 m covers the legs, 2 m all of "
-        "him. Not drawn, the same in every row: waves, floor shadows, a pawn's sink offset, labels, time-of-day "
-        "light.</p>")
+        "wall. On the bank: a dry colonist and a chair, for scale and the dry colours. RIPPLE and BLEND move: their "
+        "row shows frame 1, and a frames picture (in the row's details) shows three frames of the loop. "
+        "Each row also says how the game would draw it and what it cannot do (nothing standing in the water is "
+        "rippled or wetted: the game draws pawns and items itself).</p>"
+        "<p>To compare all eight on one ground at true scale, open a ground sheet: " + " · ".join(ground_links) + ". "
+        "At play zoom (32 px a cell): " + zoom_links + ".</p>"
+        "<p>A fresh Opus judge picks one tonight (your card's \"Judge picks tonight\"); you can overrule it in game. "
+        "Not drawn, the same in every row: floor shadows, a pawn's sink offset, labels, time-of-day light, vanilla's "
+        "own sky reflection.</p>")
     config = {
         "sheetId": SHEET_ID,
-        "title": "FlowWorks water: colour and clarity by depth",
-        "subtitle": "pick one; it becomes the 0.1.0 target",
+        "title": "FlowWorks water look, second pass: wet ground and a moving bottom",
+        "subtitle": "eight looks; the judge's pick becomes the 0.1.0 target",
         "briefHtml": brief,
         "criterion": "Rows are in order from today's look to the most changed. The order does not rank them.",
         "invented": [
-            "The four non-shipped laws (FIRM, AQUA, AQUA_SOFT, CLEAR) and all their numbers are mine, made for this "
-            "sheet. None of them is in the game.",
+            "The non-shipped looks (AQUA, AQUA_SOFT, CLEAR, WET, RIPPLE, BLEND) and all their numbers are mine, made "
+            "for these sheets. FIRM is in the game since 6c668b36a8; none of the others is.",
+            "The ripple light (a curved cell net) and the waves are drawn by formulas of mine; in the game they would "
+            "be a texture drifting over the water and a distortion shader, so the exact shapes will differ.",
             "\"Hides\" is one number per depth: one minus the black-to-white contrast that survives the water. "
             "For a plain sheet of colour it equals the sheet's opacity.",
             "The ground texture scale (8 cells per texture), granite's grey tint and the wood colour of the table "

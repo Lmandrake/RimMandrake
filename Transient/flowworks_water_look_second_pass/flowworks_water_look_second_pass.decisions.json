@@ -1,0 +1,12 @@
+{
+  "sheetId": "flowworks_water_look_second_pass",
+  "posture": "whitelist",
+  "decidedCount": 0,
+  "decisions": {},
+  "frozen": false,
+  "reviewStatus": {
+    "state": "prefill",
+    "by": "water_mockup.py",
+    "evidence": "built offline; no row pre-filled, the pick is the owner's"
+  }
+}
