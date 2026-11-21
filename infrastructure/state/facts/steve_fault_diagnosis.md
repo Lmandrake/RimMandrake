@@ -266,3 +266,28 @@ launch, register probe with RPCONTROL ok=1, `driverquery /v` after the boot). No
   Studio mixer [guess ~88%: one boot each side].
 - 🔑 sjlewis's `PolicyConfig\PropertyStore` holds about 700 per-app VOLUME records (not routes). The API's `ClearAllPersistedApplicationDefaultEndpoints`
   would also clear every other app's route: reset one app with `SetPersistedDefaultAudioEndpoint(pid, flow, role, NULL)` instead.
+
+## 🔴 Moving the game's sound off Sonic Studio about 9 s after the start still gave one fault reading (MEASURED 2026-11-21, one boot)
+
+Item `RIMMANDRAKE_KEEP_STEVE_LANE_GAME_SOUND_OFF_SONIC_STUDIO_AT_LAUNCH`. Record and raw evidence:
+`D:\ClaudeWork\rimmandrake\conductor\night_20261120\steve_lane_launch_audio.md` and its `laneaudio\` folder. Same method as the tests above.
+
+- **No launch switch gives "no audio".** Unity 2022.3.35f1 (RimWorld 1.6's engine) documents no player argument for audio, and "Disable
+  Unity Audio" is a build setting. RimWorld reads only `quicktest`, `legacy-xml-deserializer` and `savedatafolder`. `volumeMaster` 0 in
+  Prefs (already set on Steve) still gives an ACTIVE session on Sonic Studio.
+- **The step:** `rw_game.sh up` starts `infrastructure/stevedesktop/game_audio_route.ps1` before the game. The watcher waits for the game's
+  own render session, then sets the per-app route for that pid to "Realtek Digital Output" (reset, then set), and checks the stream moved.
+  `up` prints `audio route: ROUTED ...` (the log is `audio_route.log` in the game's log folder). No system default changes.
+- **The lane-style launch after a reboot (boot 16:47:59Z, all drivers loaded, defaults on Sonic Studio):** the game was ACTIVE on Sonic
+  Studio from 2.3 s to 9.1 s after start, and ACTIVE on Realtek from 9.4 s. A separate reader saw it on Realtek at 19.6 s and 51 s.
+  The first two route sets (2.2 s, 5.3 s) did not move the stream, and the third one (8.4 s) did. The dev run behaved the same way
+  (moved at 8.5 s), so about 7 s on the mixer is the floor with this method [guess ~70%].
+- **Boot reading: FAULT, by the 20-min rule.** The fault watch read `bad_cpus=[14] exits=[1]` in its 16:50:51Z cycle; CPU 14's check
+  ran about 10-14 s after the start, just after the 6.8 s on the mixer. That watch read 0 bad cycles in the earlier CLEAN boots
+  (about 100 polls). Then everything read clean: the register probe 10 of 10 cycles, 3.1 to 48.1 min, and the watch 17 cycles.
+- **What this means:** the stream on the mixer for a few seconds is enough for at least one wrong result. In the boots where the game stayed
+  on the mixer, the fault came again and again until the reboot; here it came once, before the move, and not after [guess ~70%: one boot].
+  That fits the earlier tests (the fault needs the game's stream to pass the mixer), and it says that a move after the start is not enough.
+  Only a stream that never opens on the mixer can be clean: the system default off Sonic Studio (the default test), or the driver off.
+- **The step is OFF by default** (`AUDIO_TO=${RW_GAME_AUDIO_TO-}` in `rw_game.sh`; the brief said: on FAULT, remove it). The code
+  and its selftest stay. To turn it on: `RW_GAME_AUDIO_TO='Realtek Digital Output'`. The per-app route was removed and Steve was restored.

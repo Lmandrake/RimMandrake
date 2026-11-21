@@ -81,7 +81,7 @@ MUTANTS = [
     ("rw_pid_is_always_game_a", RW, 'pid_of() { python3 "$GI" pid; }', 'pid_of() { python3 "$GI" pid a; }', T_GI, "rw_game"),
     ("rw_kills_by_name", RW, 'out=$(python3 "$GI" stop "$pid" 2>&1); rc=$?\n', 'out=$(taskkill.exe /IM RimWorldWin64.exe 2>&1); rc=$?\n', T_GI, "rw_game"),
     ("rw_keeps_game_a_folders", RW, 'eval "$_env"; NAMED=', 'NAMED=', T_GI, "rw_game"),
-    ("rw_up_uses_game_a_route", RW, '    if [ -n "$NAMED" ]; then python3 "$GI" launch ${1:+"$1"}; return $?; fi\n', '', T_GI, "rw_game"),
+    ("rw_up_uses_game_a_route", RW, '    if [ -n "$NAMED" ]; then\n        audio_arm "$(named_exe_win)" && armed=0\n        python3 "$GI" launch ${1:+"$1"}; local lrc=$?\n        [ "$armed" -eq 0 ] && audio_report\n        return $lrc\n    fi\n', '', T_GI, "rw_game"),
     ("rw_init_uses_game_a_route", RW, '    if [ -n "$NAMED" ]; then python3 "$GI" prepare; return $?; fi\n', '', T_GI, "rw_game"),
     ("rw_blind_reads_as_stopped", RW, '''local pid; pid=$(pid_of) || { echo "REFUSED: the game list could not be read; nothing stopped"; return 2; }''', 'local pid; pid=$(pid_of)', T_GI, "rw_game"),
     ("session_kills_by_name", LS, '        game_instance.stop()\n', '        sh(["taskkill.exe", "/IM", "RimWorldWin64.exe"], timeout=60)\n', T_GI, "sites"),

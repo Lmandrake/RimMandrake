@@ -66,8 +66,10 @@ status() {
 # game, and neither Unity 2022.3 nor RimWorld has a switch for no audio device. So `up` starts game_audio_route.ps1 BEFORE the
 # game: it waits for the game's own audio session and moves that live stream to RW_GAME_AUDIO_TO with the per-app route
 # (a route saved before the start is ignored by a fresh game). No system default device is touched.
-# To remove the step: set RW_GAME_AUDIO_TO= (empty) in testcentre_env.sh, or delete audio_arm/audio_report and their calls.
-AUDIO_TO=${RW_GAME_AUDIO_TO-Realtek Digital Output}
+# The step is OFF by default. Its one boot after a reboot (2026-11-21, boot 16:47:59Z) read FAULT: the game was ACTIVE on the mixer
+# for 6.8 s before the move, and the fault watch caught one wrong result about 10-14 s after the start; the register probe then read
+# clean for 48 min. To turn the step on: RW_GAME_AUDIO_TO='Realtek Digital Output' (testcentre_env.sh, or this default).
+AUDIO_TO=${RW_GAME_AUDIO_TO-}
 AUDIO_LOG="$RM_GAME_LOGDIR/audio_route.log"
 AUDIO_PS1="$RM_GAME_LOGDIR/rimmandrake_audio_route.ps1"   # a Windows-side copy: no \\wsl.localhost path for a hidden PowerShell
 # audio_arm <exe as Windows path> -> 0 armed (the watcher printed READY), 1 off by setting, 2 could not arm.
