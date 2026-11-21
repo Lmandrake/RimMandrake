@@ -5,14 +5,8 @@
  "authored_by": "concept",
  "root_ref": "design/validation_walks/RimMandrake/Pyrelands.md#north-star",
  "root_state": "VALIDATED",
- "root_hash": "1a7028c5ef0a0588255ef19a9b09ad305c64faad821c8e7371ce9466d3820673",
- "coverage": {
-  "signed_by": "CoverageJudge",
-  "at": "2026-11-17T20:35:08Z",
-  "tree_hash": "2151214485d8553d2b830b2b86104a8d54ce19017d8b8a0fc8eefd556cc6b8c1",
-  "sheet_hash": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
-  "ledger_item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS"
- },
+ "root_hash": "6ad3da0a6e44abb1094d65b4d4918cb8e839049de167f2abf59f48d61fdd2cf7",
+ "coverage": null,
  "floor": {
   "ref": "concept_floor.json",
   "hash": "0e3d21c2c6f327e0cf7c0430fba9084dd442b1a23cd2dedd73377def76843cd4",
