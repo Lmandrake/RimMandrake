@@ -38,6 +38,19 @@
   "rc": 1,
   "test_blob": "795a35172468d169244de38d74f8539d7b80b12b"
  },
+ "T_FETCH_FALLEN_OFFLINE": {
+  "at": "2026-11-21T12:17:15Z",
+  "command": "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only fetch_fallen",
+  "file": "src/RimMandrake/FlowWorks/selftest_stage3_owed.py",
+  "last": "RED 1: fetch_fallen: a way down is a walk onto the fallen's square, never a touch from the lip; then a downed one is carried to the lip",
+  "patch": "diff --git a/src/RimMandrake/FlowWorks/Source/Superdeep/RM_RaiderFetchFallen.cs b/src/RimMandrake/FlowWorks/Source/Superdeep/RM_RaiderFetchFallen.cs\nindex 4d75eb8458..a8d0333bdc 100644\n--- a/src/RimMandrake/FlowWorks/Source/Superdeep/RM_RaiderFetchFallen.cs\n+++ b/src/RimMandrake/FlowWorks/Source/Superdeep/RM_RaiderFetchFallen.cs\n@@ -102,7 +102,7 @@ namespace RimMandrake.FlowWorks\n \t\t\t// A way down is a walk ONTO his square. Touch is no test of it: a man on a pit square beside undug ground is\n \t\t\t// touched from the lip, so every held man in a pit two squares wide read \"reachable\" and nobody set a ladder\n \t\t\t// (RIMMANDRAKE_TRACE_FLOWWORKS_FALLEN_RAIDER_WAITS_FOR_NO_LADDER, live 2026-11-21).\n-\t\t\tif (p.CanReach(fallen.Position, PathEndMode.OnCell, Danger.Deadly))\n+\t\t\tif (p.CanReach(fallen, PathEndMode.ClosestTouch, Danger.Deadly))\n \t\t\t{\n \t\t\t\t// a standing comrade climbs out by the ladder himself; a downed one is carried up\n \t\t\t\treturn fallen.Downed ? CarryJob(p, fallen, LipFor(p, fallen)) : null;\n",
+  "patch_files": [
+   "src/RimMandrake/FlowWorks/Source/Superdeep/RM_RaiderFetchFallen.cs"
+  ],
+  "patch_sha": "cb09f86bd462c6a9",
+  "rc": 1,
+  "test_blob": "93adac986daf8b950a0f22fbbbf07d57b7e9b02b"
+ },
  "T_GEYSER_TUB": {
   "at": "2026-11-21T05:14:29Z",
   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only GeyserTub*",

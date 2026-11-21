@@ -1,0 +1,845 @@
+{
+"what": "sc_fetch_fallen passage staging dug 8 levels (4 m), game b, build 58cfa254e87e; ProofFetchPlan per free raider every 30 ticks",
+"held": [
+"Human21279",
+"Human21286"
+],
+"reads": [
+[
+0,
+[
+[
+"Human21245",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21254",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=60,59..60,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21259",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21266",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=58,60..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21291",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=58,61..59,61 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21299",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21307",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21309",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=60,59..60,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+]
+],
+[]
+],
+[
+1,
+[
+[
+"Human21245",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21254",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=60,59..60,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21259",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21266",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=58,60..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21291",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=58,64..59,64 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21299",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21307",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21309",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=60,59..60,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+]
+],
+[]
+],
+[
+2,
+[
+[
+"Human21245",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=61,61..60,61 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21254",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=61,60..60,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21259",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21266",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=58,60..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21291",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=58,64..59,64 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21299",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21307",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21309",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=60,59..60,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+]
+],
+[]
+],
+[
+3,
+[
+[
+"Human21245",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=61,63..60,63 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21254",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=61,64..60,64 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21259",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21266",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=58,60..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21291",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=58,64..59,64 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21299",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21307",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21309",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=60,59..60,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+]
+],
+[]
+],
+[
+4,
+[
+[
+"Human21245",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=61,64..60,64 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21254",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=61,64..60,64 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21259",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21266",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=58,60..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21291",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=58,64..59,64 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21299",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21307",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21309",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=60,59..60,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+]
+],
+[]
+],
+[
+5,
+[
+[
+"Human21245",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=61,64..60,64 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21254",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=61,64..60,64 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21259",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21266",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=58,60..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21291",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=58,64..59,64 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21299",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21307",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21309",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=60,59..60,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+]
+],
+[]
+],
+[
+6,
+[
+[
+"Human21245",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=61,64..60,64 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21254",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=61,64..60,64 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21259",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21266",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=58,60..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21291",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=58,64..59,64 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21299",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21307",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21309",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=60,59..60,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+]
+],
+[]
+],
+[
+7,
+[
+[
+"Human21245",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=61,64..60,64 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21254",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=61,64..60,64 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21259",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21266",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=58,60..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21291",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=58,64..59,64 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21299",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21307",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21309",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=60,59..60,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+]
+],
+[]
+],
+[
+8,
+[
+[
+"Human21245",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=61,64..60,64 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21254",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=61,64..60,64 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21259",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21266",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=58,60..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21291",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=58,64..59,64 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21299",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21307",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21309",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=60,59..60,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+]
+],
+[]
+],
+[
+9,
+[
+[
+"Human21245",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=61,64..60,64 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21254",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=61,64..60,64 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21259",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21266",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=58,64..59,64 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21291",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=58,64..59,64 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21299",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21307",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21309",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=60,59..60,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+]
+],
+[]
+],
+[
+10,
+[
+[
+"Human21245",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=61,64..60,64 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21254",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=61,64..60,64 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21259",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21266",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=58,65..59,65 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21291",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=58,64..59,64 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21299",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21307",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21309",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=60,59..60,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+]
+],
+[]
+],
+[
+11,
+[
+[
+"Human21245",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=61,64..60,64 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21254",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=61,64..60,64 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21259",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21266",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=58,65..59,65 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21291",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=58,64..59,64 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21299",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21307",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21309",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=60,59..60,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+]
+],
+[]
+],
+[
+12,
+[
+[
+"Human21245",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=61,64..60,64 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21254",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=61,64..60,64 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21259",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21266",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=58,65..59,65 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21291",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=58,64..59,64 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21299",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21307",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21309",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=60,59..60,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+]
+],
+[]
+],
+[
+13,
+[
+[
+"Human21245",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=61,64..60,64 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21254",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=61,64..60,64 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21259",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21266",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=58,64..59,64 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21291",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=58,64..59,64 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21299",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21307",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21309",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=60,59..60,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+]
+],
+[]
+],
+[
+14,
+[
+[
+"Human21245",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=61,64..60,64 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21254",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=61,64..60,64 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21259",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21266",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=58,64..59,64 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21291",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=58,64..59,64 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21299",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21307",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21309",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=60,59..60,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+]
+],
+[]
+],
+[
+15,
+[
+[
+"Human21245",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=61,64..60,64 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21254",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=61,64..60,64 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21259",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21266",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=58,60..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21291",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=58,64..59,64 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21299",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21307",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21309",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=60,59..60,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+]
+],
+[]
+],
+[
+16,
+[
+[
+"Human21245",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=61,64..60,64 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21254",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=61,64..60,64 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21259",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21266",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=58,60..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21291",
+"PLAN k=2 fallen=21279 at=60,64 cs=0 ct=1 plan=here cells=58,64..59,64 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21299",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21307",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21309",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=60,59..60,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+]
+],
+[]
+],
+[
+17,
+[
+[
+"Human21245",
+"PLAN k=2 fallen=21279 at=59,64 cs=0 ct=1 plan=here cells=61,64..60,64 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21254",
+"PLAN k=2 fallen=21279 at=59,64 cs=0 ct=1 plan=here cells=61,64..60,64 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21259",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21266",
+"PLAN k=2 fallen=21279 at=59,64 cs=0 ct=1 plan=here cells=58,64..59,64 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21291",
+"PLAN k=2 fallen=21279 at=59,64 cs=0 ct=1 plan=here cells=58,64..59,64 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21299",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21307",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21309",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=60,59..60,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+]
+],
+[]
+],
+[
+18,
+[
+[
+"Human21245",
+"PLAN k=2 fallen=21279 at=59,64 cs=0 ct=1 plan=here cells=61,64..60,64 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21254",
+"PLAN k=2 fallen=21279 at=59,64 cs=0 ct=1 plan=here cells=61,64..60,64 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21259",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21266",
+"PLAN k=2 fallen=21279 at=59,64 cs=0 ct=1 plan=here cells=58,64..59,64 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21291",
+"PLAN k=2 fallen=21279 at=59,64 cs=0 ct=1 plan=here cells=58,64..59,64 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21299",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21307",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21309",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=60,59..60,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+]
+],
+[]
+],
+[
+19,
+[
+[
+"Human21245",
+"PLAN k=2 fallen=21279 at=59,64 cs=0 ct=1 plan=here cells=61,64..60,64 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21254",
+"PLAN k=2 fallen=21279 at=59,64 cs=0 ct=1 plan=here cells=61,64..60,64 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21259",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21266",
+"PLAN k=2 fallen=21279 at=59,64 cs=0 ct=1 plan=here cells=58,64..59,64 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21291",
+"PLAN k=2 fallen=21279 at=59,64 cs=0 ct=1 plan=here cells=58,64..59,64 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21299",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21307",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21309",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=60,59..60,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+]
+],
+[]
+],
+[
+20,
+[
+[
+"Human21245",
+"PLAN k=2 fallen=21279 at=59,64 cs=0 ct=1 plan=here cells=61,64..60,64 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21254",
+"PLAN k=2 fallen=21279 at=59,64 cs=0 ct=1 plan=here cells=61,64..60,64 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21259",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21266",
+"PLAN k=2 fallen=21279 at=59,64 cs=0 ct=1 plan=here cells=58,64..59,64 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21291",
+"PLAN k=2 fallen=21279 at=59,64 cs=0 ct=1 plan=here cells=58,64..59,64 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21299",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=61,61..60,61 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21307",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21309",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=60,59..60,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+]
+],
+[]
+],
+[
+21,
+[
+[
+"Human21245",
+"PLAN k=2 fallen=21279 at=59,64 cs=0 ct=1 plan=here cells=61,64..60,64 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21254",
+"PLAN k=2 fallen=21279 at=59,64 cs=0 ct=1 plan=here cells=61,64..60,64 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21259",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21266",
+"PLAN k=2 fallen=21279 at=59,64 cs=0 ct=1 plan=here cells=58,64..59,64 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21291",
+"PLAN k=2 fallen=21279 at=59,64 cs=0 ct=1 plan=here cells=58,64..59,64 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21299",
+"PLAN k=2 fallen=21279 at=59,64 cs=0 ct=1 plan=here cells=61,63..60,63 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+],
+[
+"Human21307",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=True wood=0 job=none waiting=False"
+],
+[
+"Human21309",
+"PLAN k=2 fallen=21286 at=59,60 cs=0 ct=1 plan=here cells=59,59..59,60 depths=0/8 reach=6 slots=null carried=False wood=0 job=none waiting=False"
+]
+],
+[]
+]
+]
+}
