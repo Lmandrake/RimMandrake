@@ -10381,3 +10381,4 @@
 {"seat":"RUNNER","event":"live","id":"OPS_DESIGNER_UNSTICK_READY_AND_WAITING_GZKV","result":"broken","detail":"Ops alarm QUEUE_STALLED: queues.designer.stalled_min = 71.6 min pending > 0 with no claim, finish or heartbeat (MEASURED), line > 60","ts":"2026-11-21T16:02:36Z","tsn":1795276956315714653}
 {"seat":"RUNNER","event":"live","id":"OPS_DESIGNER_UNSTICK_READY_AND_WAITING_GZKV","result":"kept","detail":"sweep: running again","ts":"2026-11-21T16:03:09Z","tsn":1795276989958921172}
 {"seat":"RUNNER","event":"live","id":"OPS_STEVE_DIAGNOSE_INVALID_MBTX_YAHV","result":"kept","detail":"sweep: running again","ts":"2026-11-21T16:03:17Z","tsn":1795276997185652451}
+{"seat":"RUNNER","event":"live","id":"OPS_DESIGNER_UNSTICK_READY_AND_WAITING_GZKV","result":"broken","detail":"Ops alarm QUEUE_STALLED: queues.designer.stalled_min = 71.6 min pending > 0 with no claim, finish or heartbeat (MEASURED), line > 60","ts":"2026-11-21T16:05:18Z","tsn":1795277118540296240}
