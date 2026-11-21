@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod GimmeSomeSlack) reducer=1 shards={"BACKFILL":440876,"DISPATCH":13065,"HOLDER.run-1794828190":994,"JUDGE.judge-1794822790":13753,"JUDGE.judge-1794822890":2037} body_sha256=522e3171f219e59e80cefc7edf8c9bf91619cae5dfb54403aa6c1716fd64b058 -->
-# GimmeSomeSlack — mod ledger history (624 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod GimmeSomeSlack) reducer=1 shards={"BACKFILL":440876,"DISPATCH":13612,"HOLDER.run-1794828190":994,"JUDGE.judge-1794822790":13753,"JUDGE.judge-1794822890":2037} body_sha256=d048f2e870158995ac06f6069adb3efb4ddd15756d4100378a88eaa242fc9e04 -->
+# GimmeSomeSlack — mod ledger history (625 events, merged across shards)
 
 - 2026-11-16T07:11:06Z BACKFILL#1 spend spend v0.1.0: 
 - 2026-11-16T07:11:06Z BACKFILL#2 stage.accepted stage v0.1.0: offline_build -> blind_challenge: Stage 3 exit: every bar has a check that runs; the one walk bar proves at Stage 8
@@ -625,3 +625,4 @@
 - 2026-11-20T17:13:41Z DISPATCH#35 stage.accepted stage v0.1.0: 
 - 2026-11-20T23:33:19Z DISPATCH#36 stage.accepted stage v0.1.0: 
 - 2026-11-21T00:59:23Z DISPATCH#37 stage.accepted stage v0.1.0: 
+- 2026-11-21T01:03:45Z DISPATCH#38 version.open version v0.1.1: opened by next-version (BENCH): repair: 0.1.1 was opened 2026-11-20 4:09 PM PST before next-version wrote version.open (RIMMANDRAKE_OPEN_MOD_LEDGER_VERSION_WITH_ITS_NEXT_VERSION); the preflight-to-offline_build stage.accepted DISPATCH:d2ef0eafff878f00 belongs to 0.1.1

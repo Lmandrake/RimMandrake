@@ -962,8 +962,15 @@ def next_version_main(root):
     v2 = dict(v, version="9.9.9", state="locked 2026-11-15")
     with open(vp, "w") as f:
         json.dump(v2, f)
+    import modledger
+    modledger.append(root, mod, "DISPATCH", "stage.accepted", "stage", body={"from": "his_walk", "to": "passed",
+                     "by": "BENCH"}, version=str(old["version"]), env_writer=None)   # the mod has a ledger at the old version
     r = M.next_version(root, mod, "BENCH", "selftest: the Designer locked 9.9.9")
     rec = M.load(root, mod)
+    # RIMMANDRAKE_OPEN_MOD_LEDGER_VERSION_WITH_ITS_NEXT_VERSION: the mod ledger opens the new version with the record;
+    # GimmeSomeSlack's ledger read 0.1.0 after next-version opened 0.1.1, so every 0.1.1 event was tagged 0.1.0
+    lv = modledger.reduce(modledger.read(root, mod)).get("version")
+    ok(lv == "9.9.9", "next-version opens the new version in the mod ledger too (ledger reads %s, want 9.9.9)" % lv)
     kept = read(root, mod, "version/stage_record_%s.json" % old["version"])
     ok(r["ok"] and rec["version"] == "9.9.9" and rec["stage"] == "preflight" and rec["cycles"]["total"] == 0
        and json.loads(kept) == old, "a locked new version: a new record at preflight, the old one kept whole (%s)" % r)

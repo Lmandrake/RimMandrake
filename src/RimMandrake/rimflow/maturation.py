@@ -1183,6 +1183,18 @@ def ledger_stage_move(root, mod, cur, to, by):
                             body={"from": cur, "to": to, "by": by}, env_writer=None)
 
 
+def ledger_version_open(root, mod, new, by, why):
+    """A mod that has a ledger opens each new Design Version in it when next-version opens the record: one DISPATCH
+    version.open (RIMMANDRAKE_OPEN_MOD_LEDGER_VERSION_WITH_ITS_NEXT_VERSION: GimmeSomeSlack's ledger still read 0.1.0
+    after 0.1.1 opened, so its 0.1.1 stage moves were tagged 0.1.0). -> the event id, or None for a mod with no ledger."""
+    import modledger
+    if not os.path.isdir(os.path.join(root, "design", "concepts", mod, "ledger")) and not modledger.read(root, mod):
+        return None
+    return modledger.append(root, mod, "DISPATCH", "version.open", "version",
+                            body={"version": str(new), "text": "opened by next-version (%s): %s" % (by, str(why)[:300])},
+                            version=str(new), env_writer=None)
+
+
 def tag_new_since(verdict):
     """RIMMANDRAKE_COUNT_ADVANCE_REFUSALS_SO_A_LOOP_RINGS: say what is new in each refusal since the item's earlier
     counted ones, MEASURED from the contract's counters (as coverage_judge.tag_gaps does), never guessed; the record
@@ -1594,6 +1606,7 @@ def next_version(root, mod, by, why):
             raise OSError("next-version failed (%s) and %d set-aside path(s) could not be moved back: %s"
                           % (e, len(left), "; ".join(left))) from e
         raise
+    ledger_version_open(root, mod, new, by, why)   # after the record is committed: never rolls the move back
     return {"ok": True, "why": why, "from": old, "to": new, "stage": stage, "kept": rel(mod, keep),
             "archived": [rel(mod, a) for a, _ in moves], "aside": rel(mod, aside) if moves else None}
 
