@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "2923ca6a866214d5fe3c2f6dc333b0599897654bb7b2dbc66a0272a44ac8604f",
+  "body_sha256": "100c81959b7ec70c975310084ff72ac5fb2fc6ff67c255a86574a0564c40d9fe",
   "reducer": 1,
   "shards": {
    "BACKFILL": 893183,
@@ -19,7 +19,7 @@
    "HOLDER.run-1795244678": 3570,
    "HOLDER.run-1795257509": 5815,
    "HOLDER.run-1795260677": 3322,
-   "HOLDER.run-1795263747": 1279,
+   "HOLDER.run-1795263747": 1891,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1260,11 +1260,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795260677",
-   "done": "sc_moat_raid fixed and PASS six of six live on game b, eb15c22de9cd: moat dug to its water (6 notches, 3 m), winch in the plot, control ends at the crossing, capture by the pit-trap idiom; walk and traps written, c9e4ad0fa3bf",
-   "next": "Record sc_moat_raid PASS for moat_raid_sequence in the next in-game visit",
-   "ruled_out": "the mod refusing the swim path; the job giver picking no target; the assault lord holding the raiders; the leaf raising itself in the control",
-   "ts": "2026-11-21T12:13:07Z"
+   "by": "HOLDER.run-1795263747",
+   "done": "sc_pit_trap_raid PASS three of three rows, 2 of 2 live runs on game a at main; planted no-lid run red; walk and new item, 38d6682c81",
+   "next": "Record sc_pit_trap_raid PASS for drained_hole_is_a_prison in the next in-game visit",
+   "ruled_out": "the raid never reaching the trench; the mod failing to drop a loaded deck",
+   "ts": "2026-11-21T12:42:47Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1716,7 +1716,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1472,
+  "events": 1473,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7817,7 +7817,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-21T12:41:06Z",
+   "last": "2026-11-21T12:42:47Z",
    "lease": "run-1795263747",
    "released": false,
    "token": 29
