@@ -17,6 +17,11 @@ import maturation_dispatch as MD  # noqa: E402
 
 FAILS = []
 FX = os.path.join(HERE, "selftest_stage_ceiling_arrival.json")
+# The fixture names real units, and void_units() also reads the LIVE void store (run_void.active). A hand void of
+# 2026-11-20 on the fixture's USD 30.00 GSS drive unit turned three promises red on every clone (5.47, 89.42, 20.47:
+# each exactly 30.00 short). The test reads only the voids it hands in (s["voided"]): an empty store of its own.
+import tempfile  # noqa: E402
+os.environ["RM_RUN_VOIDS_FILE"] = os.path.join(tempfile.mkdtemp(prefix="stage_ceiling_voids_"), "voids.jsonl")
 
 
 def check(ok, what):
@@ -82,6 +87,8 @@ def t_this_steps_launches_count():
 def main(argv=None):
     argv = sys.argv[1:] if argv is None else argv
     only = set(argv[argv.index("--only") + 1:]) if "--only" in argv else None
+    check(MD.RV.active() == {}, "isolation: the test's own void store is empty (read %d standing voids)"
+          % len(MD.RV.active()))
     for t in (t_counts_only_since_arrival, t_a_move_within_the_stage_is_not_an_arrival,
               t_unknown_arrival_counts_every_run, t_void_runs_spend_nothing, t_this_steps_launches_count):
         if only is not None and t.__name__ not in only:
