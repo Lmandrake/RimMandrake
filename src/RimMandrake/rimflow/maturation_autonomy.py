@@ -1840,8 +1840,21 @@ def M_word(n):
     return MD.word(n or 0) if isinstance(n, int) else "ONE"
 
 
+def card_brief(item, text, events_dir=None):
+    """-> text, with "## What the card said" and each of the item's cards (as a launched agent may read them) appended
+    when a picked description is not in it: a tick brief on a by-card item is otherwise refused at launch by gate I3
+    (FlowWorks' pits fixer, three refusals, 2026-11-20). text unchanged for an item with no card or a brief carrying it."""
+    import card_capture as CC
+    cards = CC.item_cards(item, events_dir=events_dir or CC.EVENTS)
+    if not CC.brief_missing(text, cards):
+        return text
+    return "%s\n\n%s\n\nThe owner decided this item by card; its whole text, word for word:\n\n%s\n" % (
+        text.rstrip("\n"), CC.HEADING, "\n\n".join(CC.flatten(c, brief=True) for c in cards))
+
+
 def launch_brief(item, text, model, cap, seat="BENCH", runner=subprocess.run, env=None, session=None):
     path = os.path.join(M.brief_dir(), "%s-%d.md" % (item, int(time.time())))
+    text = card_brief(item, text)
     with open(path, "w", encoding="utf-8") as fh:
         fh.write(text)
     argv = [sys.executable, M.detached_helper_path(), "launch", "--seat", seat, "--item", item, "--brief-file", path,
