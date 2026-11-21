@@ -528,6 +528,7 @@ def add_ingame(root, mod, f, runs):
     f["certificate"] = M.certificate(root, mod, "in_game")
     f["known_red"] = known_red(root, mod)          # cert_wait's red-decider route reads which items owe them
     f["cert_rerun_result"] = rerun_result(mod)     # cert_wait's zero-token rerun reads its last result
+    f["cert_rerun_landed"] = rerun_landed(root, f["cert_rerun_result"])
     t0 = _ts(f.get("opened"))
     void = RV.active()      # a VOID run worked on nothing the visit counts (run_void.py)
     f["ingame_runs"] = [r.get("unit") for r in runs or [] if _is_ingame_item(r.get("item")) and ran(r)
@@ -548,6 +549,7 @@ def add_cert(root, mod, f):
     f["certificate"] = M.certificate(root, mod, "blind_challenge")
     f["known_red"] = known_red(root, mod)
     f["cert_rerun_result"] = rerun_result(mod)
+    f["cert_rerun_landed"] = rerun_landed(root, f["cert_rerun_result"])
     return f
 
 
@@ -561,6 +563,7 @@ def add_blind(root, mod, f, runs):
     f["certificate"] = M.certificate(root, mod, "blind_challenge")
     f["known_red"] = known_red(root, mod)          # cert_wait's red-decider route reads which items owe them
     f["cert_rerun_result"] = rerun_result(mod)     # cert_wait's zero-token rerun reads its last result
+    f["cert_rerun_landed"] = rerun_landed(root, f["cert_rerun_result"])
     f["cycle_decision"] = cycle_decision(M.load(root, mod) or {})
     t0 = _ts(f.get("opened"))
     void = RV.active()      # a VOID run worked on nothing the cycle counts (run_void.py)
@@ -1291,6 +1294,16 @@ def cert_rerun_decide(cfg, s, f, row, put, now, to="blind_challenge", what="the 
         if prior.get("unit") and not mine and AUT.tries_left(cfg, mod, prior.get("tries")):
             void = "the rerun %s left no result within %d s (killed or timed out): void_system" % (
                 prior["unit"], RERUN_MAX_S)
+        elif prior.get("unit") and mine and mine.get("published") and mine.get("key_after") != key \
+                and f.get("cert_rerun_landed") is False:
+            # the rerun cleared this key in its pool clone and published; this tree has not synced that commit, so the
+            # certificate read here is older than the rerun: wait for the sync, never a repair (False only: an
+            # unreadable tree keeps the route below, so this is never a silent wait)
+            row["waits_on"] = "%s's published %s to reach this tree (zero-token certificate rerun)" % (
+                prior["unit"], mine["published"])
+            put("live", "certificate rerun %s published %s; this tree has not synced it yet, so the certificate read "
+                "here predates it" % (prior["unit"], mine["published"]))
+            return "decided"
         elif prior.get("unit"):
             return wait("the zero-token certificate rerun %s on this build %s" % (prior["unit"], (
                 "ended (ok %s, published %s%s)" % (mine.get("ok"), mine.get("published") or "nothing",
@@ -1343,6 +1356,30 @@ def rerun_result(mod):
     """-> the last certificate rerun's result for mod (cert_rerun_worker writes it), or None."""
     r = _read(os.path.join(rerun_dir(), "%s.json" % mod), None)
     return r if isinstance(r, dict) else None
+
+
+def rerun_landed(root, res):
+    """-> True when the rerun's published commit is in root's HEAD, False when root is a git tree that does not hold it
+    yet (the tick's tree syncs after the rerun's pool clone published), None when there is no published commit or the
+    tree cannot be read. RIMMANDRAKE_REPAIR_FLOWWORKS_FORM_REFUSAL_AT_THE_RUN_THREE (2026-11-21): FlowWorks' rerun
+    published b65672378c and the tick, 41 s later in a tree without it, read the old stale stamps and owed a repair."""
+    sha = res.get("published") if isinstance(res, dict) else None
+    if not isinstance(sha, str) or not re.fullmatch(r"[0-9a-f]{7,40}", sha):
+        return None
+    try:
+        h = subprocess.run(["git", "-C", root, "rev-parse", "--verify", "-q", "HEAD"], capture_output=True, text=True,
+                           timeout=60)
+        if h.returncode != 0:
+            return None
+        c = subprocess.run(["git", "-C", root, "cat-file", "-e", sha + "^{commit}"], capture_output=True, text=True,
+                           timeout=60)
+        if c.returncode != 0:
+            return False                     # not even fetched here yet
+        a = subprocess.run(["git", "-C", root, "merge-base", "--is-ancestor", sha, "HEAD"], capture_output=True,
+                           text=True, timeout=60)
+    except (OSError, subprocess.SubprocessError):
+        return None
+    return {0: True, 1: False}.get(a.returncode)
 
 
 def cert_rerun_unit(mod, key, runner=subprocess.run, now=None):

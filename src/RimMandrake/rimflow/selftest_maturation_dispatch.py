@@ -2014,6 +2014,42 @@ def cert_rerun_main():
     ok(not la and not rows[0].get("need") and reps2 and "stale" in reps2[0]["text"],
        "cert rerun: the rerun itself left this build stale (a decider rewrites what it reads): no loop, a repair owed "
        "with the evidence, no hand line (%s: %s)" % (rows[0].get("decision"), [x["what"] for x in reps2]))
+    # RIMMANDRAKE_REPAIR_FLOWWORKS_FORM_REFUSAL_AT_THE_RUN_THREE (2026-11-21 04:57 AM PST): FlowWorks' rerun published
+    # its fresh stamps (b65672378c) from its pool clone; 41 s later the tick read the certificate in its own tree, which
+    # had not synced that commit yet, saw the same stale key, and owed a repair run for a rerun that had worked. A rerun
+    # whose published commit is not yet in the tick's tree is a wait for the sync, never a repair.
+    cleared = {"unit": "rm-cert-rerun-3", "key": key, "key_after": None, "ok": False, "published": "b65672378c",
+               "end": now + 8000}
+    st5 = {"mods": {"ExplosiveKnockback": {"cert_rerun": {"key": key, "unit": "rm-cert-rerun-3", "at": now + 7500}}}}
+    lag = dict(facts(two, result=cleared)["ExplosiveKnockback"], cert_rerun_landed=False)
+    rows, la = MD.decide(cfg, st5, {"ExplosiveKnockback": lag}, now + 8100, (True, "ok"), releases=[], bridge=FREE_BRIDGE)
+    reps5 = [x for x in (st5["mods"]["ExplosiveKnockback"].get("form_repairs") or []) if x.get("state") == "owed"]
+    ok(not la and not reps5 and rows[0].get("decision") == "live" and "b65672378c" in str(rows[0].get("waits_on")),
+       "cert rerun: its published stamps are not yet in this tree: wait for the sync, no second rerun, no repair owed "
+       "(%s: %s; waits_on %s; repairs %d)" % (rows[0].get("decision"), rows[0].get("why"), rows[0].get("waits_on"),
+                                               len(reps5)))
+    landed = dict(lag, cert_rerun_landed=True)
+    rows, la = MD.decide(cfg, st5, {"ExplosiveKnockback": landed}, now + 8200, (True, "ok"), releases=[],
+                         bridge=FREE_BRIDGE)
+    reps5 = [x for x in (st5["mods"]["ExplosiveKnockback"].get("form_repairs") or []) if x.get("state") == "owed"]
+    ok(not la and len(reps5) == 1,
+       "cert rerun: the same stale key with the rerun's commit in this tree is a real stale build: a repair is owed "
+       "(%s: repairs %d)" % (rows[0].get("decision"), len(reps5)))
+    unk = dict(lag, cert_rerun_landed=None)
+    st6 = {"mods": {"ExplosiveKnockback": {"cert_rerun": {"key": key, "unit": "rm-cert-rerun-3", "at": now + 7500}}}}
+    rows, la = MD.decide(cfg, st6, {"ExplosiveKnockback": unk}, now + 8100, (True, "ok"), releases=[], bridge=FREE_BRIDGE)
+    ok(not la and [x for x in st6["mods"]["ExplosiveKnockback"].get("form_repairs") or [] if x.get("state") == "owed"],
+       "cert rerun: the tree could not be read (landed unknown): the old route stands, a repair is owed, never a "
+       "silent wait (%s)" % rows[0].get("decision"))
+    if hasattr(MD, "rerun_landed"):
+        head = subprocess.run(["git", "rev-parse", "HEAD"], cwd=REPO, capture_output=True, text=True).stdout.strip()
+        ok(MD.rerun_landed(REPO, {"published": head}) is True and MD.rerun_landed(REPO, {"published": "0" * 40}) is False
+           and MD.rerun_landed(REPO, {"published": None}) is None and MD.rerun_landed(d0 := tempfile.mkdtemp(),
+                                                                                     {"published": head}) is None,
+           "cert rerun: rerun_landed reads True for a commit in the tree, False for one not yet here, None with no "
+           "published commit or no git tree")
+    else:
+        ok(False, "cert rerun: maturation_dispatch has rerun_landed")
     red = two + [{"bar": "bar_t", "test": "T_RED", "clause": "green", "status": "REFUSED", "observed": "rc 1",
                   "smallest_fix": "fix"}]
     rows, la = MD.decide(dict(cfg, max_live=4), {"mods": {}}, facts(red), now, (True, "ok"), releases=[], bridge=FREE_BRIDGE)

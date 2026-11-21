@@ -1,4 +1,17 @@
 {
+ "PY_FLOWWORKS_NORTHSTAR": {
+  "at": "2026-11-21T13:01:48Z",
+  "command": "python3 src/RimMandrake/FlowWorks/northstar/selftest_flowworks_northstar.py",
+  "file": "src/RimMandrake/FlowWorks/northstar/selftest_flowworks_northstar.py",
+  "last": "FAIL: 1 failure(s): ['settings RimMandrakeFlowWorksSettings: defaults equal the C#']",
+  "patch": "diff --git a/src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs b/src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs\nindex 3b6460dfad..9980fd9acd 100644\n--- a/src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs\n+++ b/src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs\n@@ -84,7 +84,7 @@ namespace RimMandrake.FlowWorks\n         // square, canal or pond, 0.5 m a day; front speed and source reach are PROVISIONAL.\n         public static bool canalFireEnabled = true;\n         // RIMMANDRAKE_BUILD_FLOWWORKS_TOSS_FLAME_JOBDEF_STILL_UNKNOWN: the \"toss a flame\" order (RM_TossFlame.cs).\n-        public static bool tossFlameOrderEnabled = true;\n+        public static bool tossFlameOrderEnabled = false;\n         // LIQUID_HEAT_PUSH_1: hot/icy liquid warms or chills its room through vanilla heat (strength PROVISIONAL).\n         public static bool liquidHeatPushEnabled = true;\n         // FLOWWORKS_WATERBODY_DIAGNOSE_SOIL_THROW: fixes a vanilla water-body count bug when water changes type.\n",
+  "patch_files": [
+   "src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs"
+  ],
+  "patch_sha": "9a7e53b099266fc5",
+  "rc": 1,
+  "test_blob": "b7621127fdb5617db99cc80349ed936abbf1b807"
+ },
  "PY_FLOWWORKS_PIT_DRAW_CENSUS": {
   "at": "2026-11-21T08:53:25Z",
   "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_pit_draw_census.py",
@@ -63,6 +76,45 @@
   "patch_sha": "2d06843bd91769b1",
   "rc": 1,
   "test_blob": "ecdb632246123de160f342b464f55bcbb9ce7ca5"
+ },
+ "T_LIQUID_COATING_OFFLINE": {
+  "at": "2026-11-21T13:00:50Z",
+  "command": "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only coating",
+  "file": "src/RimMandrake/FlowWorks/selftest_stage3_owed.py",
+  "last": "RED 1: coating: stepping out of a coating liquid adds the coat",
+  "patch": "diff --git a/src/RimMandrake/FlowWorks/Source/RM_LiquidCoating.cs b/src/RimMandrake/FlowWorks/Source/RM_LiquidCoating.cs\nindex 7ba2cee937..9e1df6bef9 100644\n--- a/src/RimMandrake/FlowWorks/Source/RM_LiquidCoating.cs\n+++ b/src/RimMandrake/FlowWorks/Source/RM_LiquidCoating.cs\n@@ -129,7 +129,7 @@ namespace RimMandrake.FlowWorks\n \t\t\t{\n \t\t\t\th = (Hediff_LiquidCoat)HediffMaker.MakeHediff(CoatDef, p);\n \t\t\t\th.liquid = liquid;\n-\t\t\t\tp.health.AddHediff(h);\n+\t\t\t\t\n \t\t\t}\n \t\t\th.liquid = liquid;\n \t\t\th.ageTicks = 0;\n",
+  "patch_files": [
+   "src/RimMandrake/FlowWorks/Source/RM_LiquidCoating.cs"
+  ],
+  "patch_sha": "4c8393008d2ee6d2",
+  "rc": 1,
+  "test_blob": "93adac986daf8b950a0f22fbbbf07d57b7e9b02b"
+ },
+ "T_PRISON_CARE_OFFLINE": {
+  "at": "2026-11-21T13:00:47Z",
+  "command": "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only prison_care",
+  "file": "src/RimMandrake/FlowWorks/selftest_stage3_owed.py",
+  "last": "RED 2: prison_care: kept = a secure prisoner of the colony, held in that pit; prison_care mutant 'kept forgets the hold': its text is not in the source (the law moved)",
+  "patch": "diff --git a/src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPrisonCare.cs b/src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPrisonCare.cs\nindex 74fa59fdb0..da98d8111a 100644\n--- a/src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPrisonCare.cs\n+++ b/src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPrisonCare.cs\n@@ -14,7 +14,7 @@ namespace RimMandrake.FlowWorks\n             && room.ProperRoom && RM_PitRooms.IsPitRoom(room);\n \n         public static bool Kept(Pawn p) => p != null && p.Spawned && p.IsPrisonerOfColony\n-            && p.guest.PrisonerIsSecure && PrisonRoom(p.GetRoom()) && RM_SuperdeepTrap.IsHeld(p)\n+            && p.guest.PrisonerIsSecure && PrisonRoom(p.GetRoom()) \n             && RM_PitRooms.HoldsBySize(p);\n \n         public static bool LipCare(Pawn p) => RimMandrakeFlowWorksSettings.wardenFromLipEnabled && Kept(p);\n",
+  "patch_files": [
+   "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPrisonCare.cs"
+  ],
+  "patch_sha": "8e3ff9e948b6060e",
+  "rc": 1,
+  "test_blob": "93adac986daf8b950a0f22fbbbf07d57b7e9b02b"
+ },
+ "T_TOSS_FLAME_OFFLINE": {
+  "at": "2026-11-21T13:00:48Z",
+  "command": "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only toss_flame",
+  "file": "src/RimMandrake/FlowWorks/selftest_stage3_owed.py",
+  "last": "RED 2: toss_flame: its JobDriver walks to the rim and lights the picked square; toss_flame: dry burnable ground falls back to a vanilla fire",
+  "patch": "diff --git a/src/RimMandrake/FlowWorks/Source/RM_TossFlame.cs b/src/RimMandrake/FlowWorks/Source/RM_TossFlame.cs\nindex b95b9ff54f..e4a96febf3 100644\n--- a/src/RimMandrake/FlowWorks/Source/RM_TossFlame.cs\n+++ b/src/RimMandrake/FlowWorks/Source/RM_TossFlame.cs\n@@ -138,7 +138,7 @@ namespace RimMandrake.FlowWorks\n \t\t\t{\n \t\t\t\treturn true;\n \t\t\t}\n-\t\t\treturn FireUtility.TryStartFireIn(c, map, TossFireSize, pawn);\n+\t\t\treturn false;\n \t\t}\n \t}\n \n",
+  "patch_files": [
+   "src/RimMandrake/FlowWorks/Source/RM_TossFlame.cs"
+  ],
+  "patch_sha": "bb0ee4131c829914",
+  "rc": 1,
+  "test_blob": "93adac986daf8b950a0f22fbbbf07d57b7e9b02b"
  },
  "T_UNDERLIQUID": {
   "at": "2026-11-21T05:16:08Z",

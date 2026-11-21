@@ -253,7 +253,8 @@
   "src/RimMandrake/rimflow/rerun_relation.py::scope::or-empty": 1,
   "src/RimMandrake/rimflow/rerun_relation.py::Relation._table_at::except-returns-empty": 1,
   "src/RimMandrake/rimflow/rerun_relation.py::Relation.undeclared::or-empty": 1,
-  "src/RimMandrake/rimflow/control.py::to_run_text::or-empty": 1
+  "src/RimMandrake/rimflow/control.py::to_run_text::or-empty": 1,
+  "src/RimMandrake/rimflow/maturation_dispatch.py::rerun_landed::except-returns-empty": 1
  },
  "reasons": {
   "src/RimMandrake/rimflow/detached_helper.py::drain_refusal::except-returns-empty": [
@@ -1070,6 +1071,9 @@
   ],
   "src/RimMandrake/rimflow/control.py::to_run_text::or-empty": [
    "NOT A COLLAPSE: `M.load(...) or {}` is an absent or unreadable stage record, which reads as not at Stage 6 and adds no segment to the why line; the stage reading itself (`next`) names an unreadable record"
+  ],
+  "src/RimMandrake/rimflow/maturation_dispatch.py::rerun_landed::except-returns-empty": [
+   "NOT A COLLAPSE: None is the could-not-look answer, apart from True (landed) and False (not yet here); cert_rerun_decide waits only on False, so an unreadable tree keeps the repair route"
   ]
  }
 }
