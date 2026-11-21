@@ -1,0 +1,1 @@
+A mod's make_test_table.py regenerates test_table.json from its own maps only: tests a later run added to the table by hand are dropped. Regenerating GimmeSomeSlack's table for 0.1.1 dropped six offline tests (support only). The generator now carries such tests from the committed table; on any other mod's generator, diff the tests and bars before you land a regeneration.

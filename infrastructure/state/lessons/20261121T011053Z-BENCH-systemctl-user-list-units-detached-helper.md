@@ -1,0 +1,1 @@
+systemctl --user list-units on a detached helper's unit prints its whole command line, which holds the full brief, into the transcript. To ask whether a unit is alive, use systemctl --user is-active <unit>.
