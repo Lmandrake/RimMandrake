@@ -1,0 +1,2 @@
+A lent account's floor_pct_left (slot_rules.json) binds only the Dispatcher's account_pick, which is recommend-only with hold: [] (dispatcher_schedule.json). A 'SWITCH steven -> lukas' pick holds no work and switches nothing. The switching engine (switching_plan.py status, next_pass) draws the account to its own exception line. Before claiming that a floor stops an account early, read the engine's next_pass, not lent_allowance alone (OP-20261121T1507Z was withdrawn for this).
+home: skills/rimflow-operations/SKILL.md
