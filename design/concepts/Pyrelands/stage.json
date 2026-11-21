@@ -832,10 +832,17 @@
     "ref": "run rm-role-designer-1795262630",
     "stage": 5,
     "tokens": 400000
+   },
+   {
+    "at": "2026-11-21T14:38:34Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1795271745",
+    "stage": 3,
+    "tokens": 255571
    }
   ],
   "reserve": 60000,
-  "spent": 23907470
+  "spent": 24163041
  },
  "coverage_releases": [
   {
@@ -2649,6 +2656,30 @@
    "stage": 5,
    "what": "void_system",
    "why": "run rm-role-designer-1795262630: the unit ended with no claude result of its own; its rejection spends no retry"
+  },
+  {
+   "at": "2026-11-21T14:35:51Z",
+   "stage": 3,
+   "what": "invalidated",
+   "why": "inputs changed since stage 3 was accepted: scenes; back to stage 3"
+  },
+  {
+   "at": "2026-11-21T14:35:52Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "23907470 of 4000000 spent; run rm-role-designer-1795271745 goes on with 400000 (advisory)"
+  },
+  {
+   "at": "2026-11-21T14:35:52Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1795271745, stage 3, budget 400000"
+  },
+  {
+   "at": "2026-11-21T14:38:34Z",
+   "stage": 4,
+   "what": "close",
+   "why": "run rm-role-designer-1795271745: stage 3 done"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -3068,67 +3099,6 @@
    "why": "inputs changed since stage 3 was accepted: sheet, tree, scenes; back to stage 3"
   },
   {
-   "at": "2026-11-16T00:41:57Z",
-   "inputs": {
-    "exam": "a65757c2436fbac4ede517e5bc3bd2b2816770d5ef9f599393afc0aea302883e",
-    "floor": "bd9d7fd896359814f8ad5c820b6b23ee1d61a06a6d4a33cbe92595cc4771b32d",
-    "owner": "b62ded42e21c0077baa22f864c407e6528f1a181dd3daf694b9ea54ef9cac3f1",
-    "root": "ae26d34f7fa9f55c5bb0ea115379238907576a0151185aabfad9d1f495425fab",
-    "scenes": "b08126e2f6529eba85ebc5a0ad8aa8cad5da44f3c4744986affd96371a3eb245",
-    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
-    "tree": "2151214485d8553d2b830b2b86104a8d54ce19017d8b8a0fc8eefd556cc6b8c1"
-   },
-   "manifest": {
-    "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
-    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7",
-    "designer_write.md": "84139dc63d0722043e1523968bdd6c8222d64684c0613e0e1f0acf1911d20941"
-   },
-   "outcome": "done",
-   "owner_uncited": [
-    "1793766816609436834",
-    "1794611171307640419",
-    "1794774895716093173"
-   ],
-   "repinned": [
-    {
-     "at": "2026-11-17T17:09:38Z",
-     "inputs": [
-      "sheet",
-      "tree",
-      "scenes"
-     ],
-     "sources": [
-      "OWNER:1794926128945577969@1d7b17ad85ce",
-      "OWNER:1794926130118775229@1d7b17ad85ce",
-      "OWNER:1794842055508243067@1d7b17ad85ce",
-      "OWNER:1794790810777772480",
-      "OWNER:1794790871101885625",
-      "OWNER:1794894282613045211@49e11870b4",
-      "OWNER:1794894288587863659@49e11870b4"
-     ]
-    },
-    {
-     "at": "2026-11-17T19:49:53Z",
-     "inputs": [
-      "sheet",
-      "tree",
-      "scenes"
-     ],
-     "sources": [
-      "OWNER:1794894282613045211@c1564dea9c63",
-      "OWNER:1794894288587863659@c1564dea9c63",
-      "OWNER:1794926130118775229@c1564dea9c63",
-      "OWNER:1794894282613045211@c07cd5a998e6",
-      "OWNER:1794894288587863659@c07cd5a998e6",
-      "OWNER:1794926130118775229@314117207ec9"
-     ]
-    }
-   ],
-   "run": "rm-role-designer-1794789422",
-   "stage": 3,
-   "summary": "Stage 3 re-accepted after the furnace-beast enlargement (6120bb02aa, his card 2026-11-15 'Keep twice, raise body to 9+', OWNER:1794786804170379047) edited sheet, tree and scenes. The one open round-7 gap g1 (rm-coverage-judge-1794779751: the x2 bar unattainable against RSW_Zeer 4.5 at body 6) is closed by the build, not the criterion: body 9, draw 7.5; claimed in coverage_fixes.json; recorded as d_furnace_body_nine. The older 'five coverage gaps (2026-11-06)' were claimed and judged in rounds 4-6. Gate A lint PASS, showcase set accepted (burn_line 6 new, fire_cast 3, sky_and_shelter 3, fire_solace 3 at overlap 0.25), selftest_pyrelands_defs_offline PASS 16/16 mutants red. The sc_furnace_giant live read stays UNRUN."
-  },
-  {
    "at": "2026-11-17T17:37:55Z",
    "outcome": "invalidated",
    "stage": 4,
@@ -3148,36 +3118,6 @@
    "outcome": "invalidated",
    "stage": 4,
    "why": "inputs changed since stage 4 was accepted: sheet, tree, scenes; back to stage 4"
-  },
-  {
-   "at": "2026-11-17T20:05:06Z",
-   "inputs": {
-    "exam": "4de0b1a14538602f7719b948f67e1c2d15b461d23592c9cc45d55a35051d2e15",
-    "floor": "bd9d7fd896359814f8ad5c820b6b23ee1d61a06a6d4a33cbe92595cc4771b32d",
-    "owner": "79abe4290fa077e9fd73b85d4c6d6e47ee49c99ed1608b827f1afbe5f8895520",
-    "root": "ae26d34f7fa9f55c5bb0ea115379238907576a0151185aabfad9d1f495425fab",
-    "scenes": "b08126e2f6529eba85ebc5a0ad8aa8cad5da44f3c4744986affd96371a3eb245",
-    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
-    "tree": "2151214485d8553d2b830b2b86104a8d54ce19017d8b8a0fc8eefd556cc6b8c1"
-   },
-   "manifest": {
-    "designer.md": "b0a38c9400e276337bd745b50eed4d244b8dc92f4f53feabf235180cc13cb940",
-    "designer_exam.md": "de16443a97b34d590c9997247a53b9fec8da93ad2756b211d0ead83dc04621a6"
-   },
-   "outcome": "done",
-   "owner_uncited": [
-    "1793766816609436834",
-    "1794611171307640419",
-    "1794790810777772480",
-    "1794790871101885625"
-   ],
-   "quick_look": {
-    "offer": false,
-    "why": "the exam asks him nothing: every scenario's expect comes from a leaf, both Readers matched it, and no decision is open"
-   },
-   "run": "bench-pyre-exam-st4-r9-20261117",
-   "stage": 4,
-   "summary": "Cold Reader exam retaken on the tree and sheet as re-pinned for the locked change of 2026-11-17T19:49:53Z (round-9 gap fixes 314117207e, c07cd5a998, c1564dea9c; re-pin f00e3ad737): 40 frozen scenarios (Examiner aa81345c846acbccb e1-e32, Challenger a38265bfec3640110 c1-c8; 23 rejects), Readers a8df6ea0288f94114 and a682832acb7f2183e agree on all 40, 40/40, accept_where_reject_core 0, no challenger misses; control on the exam-control copy with fire_walks_with_wind removed (a68e1a33a4f8efa28) accepted e5 and c3, wind rejects both Readers caught, so the set discriminates. exam.json carries it."
   },
   {
    "at": "2026-11-17T20:13:42Z",
@@ -3217,41 +3157,6 @@
    "to": 3
   },
   {
-   "at": "2026-11-21T10:01:06Z",
-   "inputs": {
-    "exam": "4de0b1a14538602f7719b948f67e1c2d15b461d23592c9cc45d55a35051d2e15",
-    "floor": "bd9d7fd896359814f8ad5c820b6b23ee1d61a06a6d4a33cbe92595cc4771b32d",
-    "owner": "79abe4290fa077e9fd73b85d4c6d6e47ee49c99ed1608b827f1afbe5f8895520",
-    "root": "ae26d34f7fa9f55c5bb0ea115379238907576a0151185aabfad9d1f495425fab",
-    "scenes": "b08126e2f6529eba85ebc5a0ad8aa8cad5da44f3c4744986affd96371a3eb245",
-    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
-    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54"
-   },
-   "manifest": {
-    "designer.md": "311493e8980d351a9204dac50b507be22a3dcba6191c6c39f4c7609c01105747",
-    "designer_scene_contract.md": "4c85571580f2ae54de94219ec74edf463f8ae8749abcdaa0314be65e387fc29f",
-    "designer_write.md": "60d594e1c393ded4d79979774a68490c90fca810dac391e54cd50240dcef6d3e"
-   },
-   "outcome": "done",
-   "owner_uncited": [
-    "1793766816609436834",
-    "1794611171307640419",
-    "1794790810777772480",
-    "1794790871101885625"
-   ],
-   "pinned_at": {
-    "exam": "436f439b2af6927aed5e71c3c5fdc1a29dbdf935",
-    "floor": "436f439b2af6927aed5e71c3c5fdc1a29dbdf935",
-    "root": "436f439b2af6927aed5e71c3c5fdc1a29dbdf935",
-    "scenes": "436f439b2af6927aed5e71c3c5fdc1a29dbdf935",
-    "sheet": "436f439b2af6927aed5e71c3c5fdc1a29dbdf935",
-    "tree": "436f439b2af6927aed5e71c3c5fdc1a29dbdf935"
-   },
-   "run": "rm-role-designer-1795255099",
-   "stage": 3,
-   "summary": "Stage 3 has nothing left to write: the root_hash restamp landed at 47e044e556 (tree root_hash 6ad3da0a6e44 = the walk's validated hash), concept_tree.py lint (Gate A) PASS, and designer_stage.py showcases accepts the set (burn_line 6 new, fire_cast 3, sky_and_shelter 3, fire_solace 3 at overlap 0.25). No leaf, sheet, scene or floor line changed in this run. Owed next, not stage 3's: stage 4 retakes the exam whole (exam.json is frozen against the pre-restamp tree and has no exam_reads.json), then the coverage signature voided by the restamp is the Conductor window's certification of judge rm-coverage-judge-1794947629 (covered, 0 gaps; one-entry delta: root_hash only)."
-  },
-  {
    "at": "2026-11-21T10:46:28Z",
    "outcome": "rejected",
    "run": "rm-role-designer-1795257816",
@@ -3260,40 +3165,6 @@
    "why": [
     "no result.json (a closing message is not a result)"
    ]
-  },
-  {
-   "at": "2026-11-21T10:54:25Z",
-   "inputs": {
-    "exam": "338a753e0135511be4e514478f371c0a3547c93863777a56ed02a61e1824c3f6",
-    "floor": "bd9d7fd896359814f8ad5c820b6b23ee1d61a06a6d4a33cbe92595cc4771b32d",
-    "owner": "79abe4290fa077e9fd73b85d4c6d6e47ee49c99ed1608b827f1afbe5f8895520",
-    "root": "ae26d34f7fa9f55c5bb0ea115379238907576a0151185aabfad9d1f495425fab",
-    "scenes": "b08126e2f6529eba85ebc5a0ad8aa8cad5da44f3c4744986affd96371a3eb245",
-    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
-    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54"
-   },
-   "manifest": {
-    "designer.md": "311493e8980d351a9204dac50b507be22a3dcba6191c6c39f4c7609c01105747",
-    "designer_exam.md": "fcf9e077af73f6d526f7720d8e9cf0f593b10a4766d459aa013693ef575eee45"
-   },
-   "outcome": "done",
-   "owner_uncited": [
-    "1793766816609436834",
-    "1794611171307640419",
-    "1794790810777772480",
-    "1794790871101885625"
-   ],
-   "pinned_at": {
-    "exam": "2dd1b01316cbaddecefa5d369a8f0e8ac561a2ae",
-    "floor": "2dd1b01316cbaddecefa5d369a8f0e8ac561a2ae",
-    "root": "2dd1b01316cbaddecefa5d369a8f0e8ac561a2ae",
-    "scenes": "2dd1b01316cbaddecefa5d369a8f0e8ac561a2ae",
-    "sheet": "2dd1b01316cbaddecefa5d369a8f0e8ac561a2ae",
-    "tree": "2dd1b01316cbaddecefa5d369a8f0e8ac561a2ae"
-   },
-   "run": "rm-role-designer-1795258152",
-   "stage": 4,
-   "summary": "No new exam needed: exam.json from run rm-role-designer-1795255597 (40/40 right, accept_where_reject_core 0, no challenger miss, control without fire_walks_with_wind missed e5 and c3) is frozen against the current inputs (tree 78f3df67, sheet 628feeb2; unchanged since), and exam_reads.json is recorded. That run's accepted stage-4 close (commit 939119ba74, stage 5 ready) was lost: run rm-role-designer-1795257816 opened at stage 4 on a stage.json from before the harvest landed, and its void harvest (0a3974a3de) wrote stage 4 back. This result re-records the same exam so the concept reaches stage 5 again; no tree, sheet, scene or floor changed."
   },
   {
    "at": "2026-11-21T11:11:15Z",
@@ -3354,12 +3225,48 @@
    "why": [
     "no result.json (a closing message is not a result)"
    ]
+  },
+  {
+   "at": "2026-11-21T14:35:51Z",
+   "outcome": "invalidated",
+   "stage": 3,
+   "why": "inputs changed since stage 3 was accepted: scenes; back to stage 3"
+  },
+  {
+   "at": "2026-11-21T14:38:34Z",
+   "inputs": {
+    "exam": "338a753e0135511be4e514478f371c0a3547c93863777a56ed02a61e1824c3f6",
+    "floor": "bd9d7fd896359814f8ad5c820b6b23ee1d61a06a6d4a33cbe92595cc4771b32d",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "ae26d34f7fa9f55c5bb0ea115379238907576a0151185aabfad9d1f495425fab",
+    "scenes": "63731df24257efae1af20bef7242c6dbf16fd7679c299de98cc6ea999d503ede",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54"
+   },
+   "manifest": {
+    "designer.md": "3af0d6eb45348799ae2e1c0c577cca378f67029a23148836776deed1a71587b9",
+    "designer_scene_contract.md": "3f3442c11d62057691f663f4003294543ffa85368b515337b03699c2fffdb811",
+    "designer_write.md": "3a475694e9cc54b12ac4c186fbe76f1611ef534744383544d070bbaa1d89e8ee"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "pinned_at": {
+    "exam": "c161b7e2fef16694ba38446a5889a3ccfcc0d8dc",
+    "floor": "c161b7e2fef16694ba38446a5889a3ccfcc0d8dc",
+    "root": "c161b7e2fef16694ba38446a5889a3ccfcc0d8dc",
+    "scenes": "c161b7e2fef16694ba38446a5889a3ccfcc0d8dc",
+    "sheet": "c161b7e2fef16694ba38446a5889a3ccfcc0d8dc",
+    "tree": "c161b7e2fef16694ba38446a5889a3ccfcc0d8dc"
+   },
+   "run": "rm-role-designer-1795271745",
+   "stage": 3,
+   "summary": "Stage 3 re-accepted after the one changed input, scenes.json (f3b1999757, RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN): six scene controls that no bridge tool could run were narrowed or removed, each with its reason in rules_out and a line in version/polish.md. No tree, sheet, floor or record decision changed; the Design Version 0.1.0 bars are untouched. Gate A lint PASS; designer_stage.py showcases accepts the set unchanged (burn_line 6, fire_cast 3, sky_and_shelter 3, fire_solace 3 new, overlap 0.25). Read of the two scenes left with control 'none': sc_ruins still rules out its leaf's false pass (inspect-text-only scorch) by reading footprint terrain, ProbeAsh depth and wall paint; sc_furnace_giant still reads the live race def and both spawned pawns' body sizes, so its 'size read from the XML' false pass rests on the live read, not a control. Neither needs a design change. The concept can go on to stage 4 and 5 as before."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 5,
+ "stage": 4,
  "status": "ready",
  "waiting_owner_feed": "79abe4290fa077e9fd73b85d4c6d6e47ee49c99ed1608b827f1afbe5f8895520"
 }
