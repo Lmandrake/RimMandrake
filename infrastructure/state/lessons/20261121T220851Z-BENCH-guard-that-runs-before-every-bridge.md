@@ -1,0 +1,1 @@
+A guard that runs before every bridge call must never spawn a process. driver_lock.my_identity spawned powershell.exe (about 233 ms) on every mutating call from python.exe under a WSL holder, so every python.exe proof paid about 10 times its bridge time (a 2,000-cell dig took 11 min). Profile one call with the transport stubbed before blaming the mod or the main thread.

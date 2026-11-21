@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "b5f47e3f62efe4cc46c6676711b52dbfb62fae8516751437586fb7e8715ae99a",
+  "body_sha256": "3b4f9d6840b5df1409994137854c7094f2aa678dbb8cbebf80a54b79c028f12d",
   "reducer": 1,
   "shards": {
    "BACKFILL": 893183,
@@ -22,7 +22,7 @@
    "HOLDER.run-1795263747": 1891,
    "HOLDER.run-1795268290": 5226,
    "HOLDER.run-1795285878": 924,
-   "HOLDER.run-1795297113": 977,
+   "HOLDER.run-1795297113": 2709,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1264,10 +1264,10 @@
   },
   "checkpoint": {
    "by": "HOLDER.run-1795297113",
-   "done": "OL rows wired (7f87c7714c05, item closed); islands classed MOD: a raid that turns to LordToil_ExitMap never takes the lowered leaf; dig cost is python-side (18 ms in the bridge, ~300 ms wall)",
-   "next": "Read CanReachMapEdge on a stuck island raider, then fix the leaf toggle",
-   "ruled_out": "islands as a game-a difference; dig cost growing with the body; safe_advance frame starvation (real clock 0/3)",
-   "ts": "2026-11-21T21:42:12Z"
+   "done": "dig-cost item closed at cb0bc0086e: python.exe client powershell spawn per mutating call fixed (42.5 ms vs 273.9 ms live, game b); door tests stop inheriting a game-b publisher env (d32f7dc988)",
+   "next": "Work the islands item (CanReachMapEdge read on the stuck raid, then RM_Drawbridges.NotifyToggled region notify) and the filter slowdown item on game b",
+   "ruled_out": "dig call cost grows with the dug body; dig cost is the mod or the main thread",
+   "ts": "2026-11-21T22:08:37Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1719,7 +1719,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1514,
+  "events": 1517,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7820,7 +7820,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-21T21:42:12Z",
+   "last": "2026-11-21T22:08:43Z",
    "lease": "run-1795297113",
    "released": false,
    "token": 34
@@ -8510,6 +8510,14 @@
     "ts": "2026-11-16T11:41:23Z",
     "version": "0.1.0",
     "where": "modcheck status FlowWorks; offline P-O4"
+   },
+   "trap:a-slow-dig-call-from-python-exe-was-the-bridge-client": {
+    "by": "HOLDER.run-1795297113",
+    "status": "noted",
+    "text": "A 250-340 ms dig call from python.exe (visit 3) was the bridge client, not the mod: ~18 ms inside the bridge, flat with body size; a powershell.exe spawn per mutating call (driver_lock.my_identity). Fixed cb0bc0086e: 42.5 ms live on game b vs 273.9 ms control. Older python.exe timings carry that cost.",
+    "ts": "2026-11-21T22:08:43Z",
+    "version": "0.1.0",
+    "where": "src/RimMandrake/rimflow/driver_lock.py my_identity"
    },
    "trap:a-weaker-blast-that-leaves-the-first-cover": {
     "by": "BACKFILL",

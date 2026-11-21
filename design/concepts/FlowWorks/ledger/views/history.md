@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":49433,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"HOLDER.run-1795260677":3322,"HOLDER.run-1795263747":1891,"HOLDER.run-1795268290":5226,"HOLDER.run-1795285878":924,"HOLDER.run-1795297113":977,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=43b31080e2a53b20b07980a263576f2334233ae44e25320416bb40a9bbcb03d4 -->
-# FlowWorks — mod ledger history (1514 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":49433,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"HOLDER.run-1795260677":3322,"HOLDER.run-1795263747":1891,"HOLDER.run-1795268290":5226,"HOLDER.run-1795285878":924,"HOLDER.run-1795297113":2709,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=765f54b43d058482201331ccfb0fafeb95922b178d29fba3807abdef39295c42 -->
+# FlowWorks — mod ledger history (1517 events, merged across shards)
 
 - 2026-11-16T07:16:23Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 55 of 57 bars met at the lock
 - 2026-11-16T07:16:23Z BACKFILL#2 decision version v0.1.0: 
@@ -1513,5 +1513,8 @@
 - 2026-11-21T21:40:40Z DISPATCH#146 run.start run v0.1.0: 
 - 2026-11-21T21:41:09Z HOLDER.run-1795297113#1 lease.renew lease v0.1.0: 
 - 2026-11-21T21:42:12Z HOLDER.run-1795297113#2 session.checkpoint session v0.1.0: 
+- 2026-11-21T21:46:45Z HOLDER.run-1795297113#3 lease.renew session v0.1.0: 
 - 2026-11-21T21:46:49Z DISPATCH#147 run.end run v0.1.0: 
 - 2026-11-21T21:46:49Z DISPATCH#148 session.id session v0.1.0: 
+- 2026-11-21T22:08:37Z HOLDER.run-1795297113#4 session.checkpoint session v0.1.0: 
+- 2026-11-21T22:08:43Z HOLDER.run-1795297113#5 trap.noted trap:a-slow-dig-call-from-python-exe-was-the-bridge-client v0.1.0: A 250-340 ms dig call from python.exe (visit 3) was the bridge client, not the mod: ~18 ms inside the bridge, flat with body size; a powershell.exe spawn per mutating call (driver_lock.my_identity). Fixed cb0bc0086e: 42.5 ms live on game b vs 273.9 ms control. Older python.exe timings carry that cost.
