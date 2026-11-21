@@ -85,6 +85,17 @@ GRACE_S = 120          # finish + publish time on top of the run's own bound
 # has NO default level: a $15 default named no danger and stopped 4 real runs (3 lessons), so a launch states its cap,
 # and --resume carries the earlier run's (boundary design/specs/2026-11-19-launch-spend-cap/boundary.md).
 MODELS = ("fable", "opus", "sonnet")  # owner ladder 2026-11-12: Fable for blank-page design; Haiku is banned
+
+
+def model_tier(model):
+    """The tier a model name means: 'claude-fable-5-2', 'Opus' and 'us.anthropic.claude-opus-5-5-v1:0' are faults of
+    form, repaired to 'fable' / 'opus' / 'opus'. A name that holds no allowed tier comes back as given, so the model
+    gate still refuses it (Haiku is banned). Seen 2026-11-21: the tick passed a full id, three refusals paused a mod."""
+    if not isinstance(model, str):
+        return model
+    low = model.strip().lower()
+    hits = [t for t in MODELS if t in low]
+    return hits[0] if len(hits) == 1 else model
 # The CLI alias "fable" resolved to claude-fable-5-1 (measured 2026-11-12); the ladder means Fable 5.2, so pass the full id.
 MODEL_IDS = {"fable": "claude-fable-5-2"}
 SEATS = ("BENCH", "STEVE", "RUNNER")   # FOUNDRY retired (owner by card 2026-11-02)
@@ -1124,6 +1135,7 @@ def _launch(seat, item, brief, model, max_s, budget, now, runner, known, clone, 
                   judge=_refusal)
     if bad:
         return 2, bad
+    model = model_tier(model)   # a full model id is a fault of form: repaired here, never refused
     bad = pf.gate("H4", lambda: None if model in MODELS else "refused: model %r is not one of %s" % (model, ", ".join(MODELS)),
                   judge=_refusal)
     if bad:

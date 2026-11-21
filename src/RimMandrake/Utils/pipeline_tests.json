@@ -141,6 +141,7 @@
     {"test": "src/RimMandrake/rimflow/selftest_stage5_program.py", "seconds": 0.8},
     {"test": ".claude/hooks/selftest_role_result_before_stop.py", "seconds": 0.2},
     {"test": "src/RimMandrake/rimflow/selftest_detached_helper.py", "seconds": 2.6},
+    {"test": "src/RimMandrake/rimflow/selftest_detached_helper_model_tier.py", "seconds": 0.5},
     {"test": "src/RimMandrake/rimflow/selftest_detached_game_env.py", "seconds": 0.5},
     {"test": "src/RimMandrake/rimflow/selftest_left_open_continue.py", "seconds": 1.5},
     {"test": "src/RimMandrake/rimflow/selftest_spend_blind_agents.py", "seconds": 8},
