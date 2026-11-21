@@ -123,10 +123,18 @@ def owner_pid():
     return os.getppid()
 
 
+_NT_STARTS = {}     # Windows pid -> its start time, read once per process: a pid's start never changes while we live
+
+
 def my_identity():
     pid = owner_pid()
     if os.name == "nt":
-        return {"pid": pid, "start": _win_start(pid), "boot_id": None, "platform": "nt", "host": socket.gethostname()}
+        # RIMMANDRAKE_MEASURE_FLOWWORKS_DIG_CALL_QUARTER_SECOND_ON_SITTING_MAP: _win_start spawns powershell.exe
+        # (~230 ms), and host_guard._reentrant asks for this identity before every mutating bridge call. Only a read
+        # start is kept; an unreadable one (None) is asked again next time.
+        if _NT_STARTS.get(pid) is None:
+            _NT_STARTS[pid] = _win_start(pid)
+        return {"pid": pid, "start": _NT_STARTS[pid], "boot_id": None, "platform": "nt", "host": socket.gethostname()}
     me = {"pid": pid, "start": _proc_start(pid), "boot_id": current_boot_id(), "platform": "wsl",
           "host": socket.gethostname()}
     if os.environ.get("WSL_DISTRO_NAME"):   # lets a Windows python.exe find this holder's /proc (_wsl_proc_root)

@@ -8,7 +8,8 @@ for every Windows process. Each case runs the REAL python.exe against a throwawa
 to Windows by WSLENV /p) held by a real sleeping WSL process; nothing reads or writes a live lock, and no game is
 reached (the bridge client is asked only whether it would refuse, never sent a call).
 
-Exit 0 all pass; 1 a case failed; 2 UNMEASURED (no python.exe on this machine: the cases cannot run, never a pass).
+`timed` runs only promise a-windows-python-client-checks-the-lock-in-under-50-ms (selftest_game_lock.py calls it
+by that name). Exit 0 all pass; 1 a case failed; 2 UNMEASURED (no python.exe on this machine: the cases cannot run, never a pass).
 """
 import atexit
 import json
@@ -40,6 +41,26 @@ print(json.dumps({"os": os.name, "lock": lk, "crossing": host_guard.crossing(),
                   "new_run": host_guard.crossing(new_run=True),
                   "client": rimbridge_client._driver_crossing("127.0.0.1"),
                   "alive": list(driver_lock._alive(cur)) if cur else None}))
+"""
+
+TIMED = r"""
+import atexit, json, os, shutil, sys, tempfile, time
+sys.path.insert(0, sys.argv[1]); sys.path.insert(0, sys.argv[2])
+EV = tempfile.mkdtemp(prefix="st_gl_winpy_ev_")     # a Windows-native dir, as the real log (D:\\ClaudeWork) is: a log on
+atexit.register(shutil.rmtree, EV, True)            # the \\wsl.localhost share costs ~30 ms a call in 9p writes alone
+os.environ["RIMBRIDGE_EVIDENCE_LOG"] = os.path.join(EV, "evidence.jsonl")
+os.environ["RM_BRIDGE_SPLIT"] = "0"
+import rimbridge_client as RC
+REPLY = {"content": [{"type": "text", "text": json.dumps({"success": True})}]}
+RC.RimBridge._request = lambda self, method, params=None: REPLY     # no game: only the client's own steps are timed
+b = RC.RimBridge(host="127.0.0.1", port=5175)
+tool, params = "jawa/flowworks_excavation_drive", {"x": 10, "z": 10, "deepenLevels": 8}
+b._call_one(tool, params, check=False)                              # warm: imports, first identity read
+n = int(sys.argv[3]); t0 = time.perf_counter()
+for _ in range(n):
+    b._call_one(tool, params, check=False)
+print(json.dumps({"os": os.name, "mutating": not b.looks_read_only(tool, params), "n": n,
+                  "ms": (time.perf_counter() - t0) / n * 1000}))
 """
 
 
@@ -76,17 +97,18 @@ def plant(name, holder_pid, clone, heartbeat_age_s=0, gen=7):
     return path
 
 
-def probe(lock, **extra):
+def probe(lock, timed=0, **extra):
     env = {k: v for k, v in os.environ.items() if k not in ("RM_HOST_GUARD_GEN", "RM_BRIDGE_CROSS_WHY",
                                                               "RIMFLOW_LEDGER", "RM_GAME_INSTANCE", "RM_DRIVER_PID")}
     env.update(RIMFLOW_DRIVER_LOCK=lock, **extra)
     names = ["RIMFLOW_DRIVER_LOCK/p"] + list(extra)
     env["WSLENV"] = ":".join([x for x in (os.environ.get("WSLENV") or "").split(":")
                               if x and x.split("/")[0] not in [n.split("/")[0] for n in names]] + names)
-    script = os.path.join(TMP, "probe.py")
+    script = os.path.join(TMP, "timed.py" if timed else "probe.py")
     with open(script, "w") as fh:
-        fh.write(PROBE)
-    r = subprocess.run(["python.exe", win(script), win(HERE), win(os.path.join(CLONE, "src", "RimMandrake", "Utils"))],
+        fh.write(TIMED if timed else PROBE)
+    r = subprocess.run(["python.exe", win(script), win(HERE), win(os.path.join(CLONE, "src", "RimMandrake", "Utils"))]
+                       + ([str(timed)] if timed else []),
                        capture_output=True, text=True, timeout=120, env=env, cwd=CLONE)
     try:
         return json.loads(r.stdout.strip().splitlines()[-1])
@@ -139,5 +161,26 @@ def main():
     return 1 if FAILS else 0
 
 
+def main_timed():
+    """`timed`: promise a-windows-python-client-checks-the-lock-in-under-50-ms only."""
+    if not shutil.which("python.exe"):
+        print("UNMEASURED: no python.exe on this machine; the timed case cannot run")
+        return 2
+    holder = sleeper()
+
+    # a-windows-python-client-checks-the-lock-in-under-50-ms: the holder's own clone, no inherited take (a run that
+    # took the bridge with `rimflow bridge take`, then drives with python.exe). Measured 2026-11-21: 233 ms of every
+    # 255 ms mutating call went to a powershell.exe spawn reading this process's own start time in
+    # driver_lock.my_identity (host_guard._reentrant), so a 2,000-cell dig took 11 min. 50 ms a call is the item's bar.
+    r = probe(plant("timed", holder.pid, CLONE), timed=20)
+    check(r.get("os") == "nt" and r.get("mutating") is True and r.get("ms") is not None and r["ms"] < 50,
+          "a mutating call's client-side steps take under 50 ms under a live WSL holder (worst mean %s ms of %s "
+          "calls, limit 50)" % (None if r.get("ms") is None else round(r["ms"], 1), r.get("n")), r)
+
+
+    print("\n%s: %d failed" % ("FAIL" if FAILS else "PASS", len(FAILS)))
+    return 1 if FAILS else 0
+
+
 if __name__ == "__main__":
-    sys.exit(main())
+    sys.exit(main_timed() if sys.argv[1:] == ["timed"] else main())

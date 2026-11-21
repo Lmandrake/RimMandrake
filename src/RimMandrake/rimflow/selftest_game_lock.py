@@ -520,6 +520,17 @@ def t_a_windows_python_client_obeys_the_lock():
     check(p.returncode == 0, "a Windows python.exe bridge client obeys the lock (every case)", p.stdout[-900:])
 
 
+def t_a_windows_python_client_checks_the_lock_in_under_50_ms():
+    """The real python.exe, a live WSL holder from this clone, the transport stubbed: a mutating call's client steps
+    average under 50 ms (selftest_game_lock_windows_python.py timed). Red at 315 ms before the identity was cached."""
+    p = subprocess.run([sys.executable, os.path.join(HERE, "selftest_game_lock_windows_python.py"), "timed"],
+                       capture_output=True, text=True, timeout=300)
+    if p.returncode == 2:
+        print("UNMEASURED a-windows-python-client-checks-the-lock-in-under-50-ms: %s" % p.stdout.strip()[-200:])
+        return
+    check(p.returncode == 0, "a Windows python.exe client checks the lock in under 50 ms a call", p.stdout[-900:])
+
+
 def main():
     t_a_query_answers_under_100_ms()        # first: the cases below spawn and kill dozens of processes
     t_one_record_per_game()
@@ -536,6 +547,7 @@ def main():
     t_the_tick_line_that_named_a_dead_run_as_live()
     t_the_old_shared_file_is_neither_written_nor_read()
     t_a_windows_python_client_obeys_the_lock()
+    t_a_windows_python_client_checks_the_lock_in_under_50_ms()
     for p in SLEEPERS:
         if p.poll() is None:
             p.kill()
