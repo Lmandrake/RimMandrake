@@ -1,0 +1,3081 @@
+{
+ "official_db": "/tmp/offdump/defs.sqlite",
+ "live_db": "/tmp/livedump/defs.sqlite",
+ "official_id": "OFFICIAL-2026-08-29",
+ "rows": [
+  {
+   "def": "Autodoor",
+   "label": "autodoor (1x1)",
+   "package": "ludeon.rimworld",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 50,
+   "designationCategory": "Structure",
+   "buildable": true,
+   "size": [
+    1,
+    1
+   ],
+   "drawSize": [
+    1,
+    1
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Door/Autodoor_Mover",
+   "graphicClass": "Graphic_Single",
+   "texPath_live": "Things/Building/Door/Autodoor_Mover",
+   "texPath_changed_live": false,
+   "tex_w": 64,
+   "tex_h": 64,
+   "tex_source": "stem ludeon.rimworld.core/Autodoor_Mover.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "Battery",
+   "label": "battery",
+   "package": "ludeon.rimworld",
+   "group": "storage",
+   "power_role": [
+    "storage"
+   ],
+   "basePowerConsumption": null,
+   "designationCategory": "Power",
+   "buildable": true,
+   "size": [
+    1,
+    2
+   ],
+   "drawSize": [
+    2,
+    3
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Power/Battery",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Power/Battery",
+   "texPath_changed_live": false,
+   "tex_w": 128,
+   "tex_h": 256,
+   "tex_source": "stem ludeon.rimworld.core/Battery_north.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "BiofuelRefinery",
+   "label": "biofuel refinery",
+   "package": "ludeon.rimworld",
+   "group": "production",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 170,
+   "designationCategory": "Production",
+   "buildable": true,
+   "size": [
+    3,
+    2
+   ],
+   "drawSize": [
+    3,
+    2
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Production/Refinery",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Production/Refinery",
+   "texPath_changed_live": false,
+   "tex_w": 192,
+   "tex_h": 128,
+   "tex_source": "stem ludeon.rimworld.core/Refinery_south.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "ChemfuelPoweredGenerator",
+   "label": "chemfuel powered generator",
+   "package": "ludeon.rimworld",
+   "group": "generation",
+   "power_role": [
+    "generation"
+   ],
+   "basePowerConsumption": -1000,
+   "designationCategory": "Power",
+   "buildable": true,
+   "size": [
+    2,
+    2
+   ],
+   "drawSize": [
+    2,
+    2
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Power/ChemfuelPoweredGenerator",
+   "graphicClass": "Graphic_Single",
+   "texPath_live": "Things/Building/Power/ChemfuelPoweredGenerator",
+   "texPath_changed_live": false,
+   "tex_w": 128,
+   "tex_h": 128,
+   "tex_source": "stem ludeon.rimworld.core/ChemfuelPoweredGenerator.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "CommsConsole",
+   "label": "comms console",
+   "package": "ludeon.rimworld",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 200,
+   "designationCategory": "Misc",
+   "buildable": true,
+   "size": [
+    3,
+    2
+   ],
+   "drawSize": [
+    5,
+    4
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Misc/CommsConsole",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Misc/CommsConsole",
+   "texPath_changed_live": false,
+   "tex_w": 256,
+   "tex_h": 256,
+   "tex_source": "stem ludeon.rimworld.core/CommsConsole_south.png",
+   "px_per_cell": 51.2
+  },
+  {
+   "def": "Cooler",
+   "label": "cooler",
+   "package": "ludeon.rimworld",
+   "group": "climate",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 200,
+   "designationCategory": "Temperature",
+   "buildable": true,
+   "size": [
+    1,
+    1
+   ],
+   "drawSize": [
+    1,
+    1
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Misc/TempControl/Cooler",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Misc/TempControl/Cooler",
+   "texPath_changed_live": false,
+   "tex_w": 64,
+   "tex_h": 64,
+   "tex_source": "stem ludeon.rimworld.core/Cooler_south.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "DeepDrill",
+   "label": "deep drill",
+   "package": "ludeon.rimworld",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 200,
+   "designationCategory": "Production",
+   "buildable": true,
+   "size": [
+    1,
+    1
+   ],
+   "drawSize": [
+    2,
+    2
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Production/DeepDrill",
+   "graphicClass": "Graphic_Single",
+   "texPath_live": "Things/Building/Production/DeepDrill",
+   "texPath_changed_live": false,
+   "tex_w": 128,
+   "tex_h": 128,
+   "tex_source": "stem ludeon.rimworld.core/DeepDrill.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "ElectricCrematorium",
+   "label": "electric crematorium",
+   "package": "ludeon.rimworld",
+   "group": "production",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 250,
+   "designationCategory": "Production",
+   "buildable": true,
+   "size": [
+    3,
+    2
+   ],
+   "drawSize": [
+    3,
+    2
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Production/Crematorium",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Production/Crematorium",
+   "texPath_changed_live": false,
+   "tex_w": 192,
+   "tex_h": 128,
+   "tex_source": "stem ludeon.rimworld.core/Crematorium_south.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "ElectricSmelter",
+   "label": "electric smelter",
+   "package": "ludeon.rimworld",
+   "group": "production",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 700,
+   "designationCategory": "Production",
+   "buildable": true,
+   "size": [
+    3,
+    1
+   ],
+   "drawSize": [
+    3.5,
+    1.5
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Production/ElectricSmelter",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Production/ElectricSmelter",
+   "texPath_changed_live": false,
+   "tex_w": 224,
+   "tex_h": 96,
+   "tex_source": "stem ludeon.rimworld.core/ElectricSmelter_south.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "ElectricSmithy",
+   "label": "electric smithy",
+   "package": "ludeon.rimworld",
+   "group": "production",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 210,
+   "designationCategory": "Production",
+   "buildable": true,
+   "size": [
+    3,
+    1
+   ],
+   "drawSize": [
+    3.5,
+    1.5
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Production/TableSmithingElectric",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Production/TableSmithingElectric",
+   "texPath_changed_live": false,
+   "tex_w": 224,
+   "tex_h": 96,
+   "tex_source": "stem ludeon.rimworld.core/TableSmithingElectric_south.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "ElectricStove",
+   "label": "electric stove",
+   "package": "ludeon.rimworld",
+   "group": "production",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 350,
+   "designationCategory": "Production",
+   "buildable": true,
+   "size": [
+    3,
+    1
+   ],
+   "drawSize": [
+    3.5,
+    1.5
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Production/TableStoveElectric",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Production/TableStoveElectric",
+   "texPath_changed_live": false,
+   "tex_w": 224,
+   "tex_h": 96,
+   "tex_source": "stem ludeon.rimworld.core/TableStoveElectric_south.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "ElectricTailoringBench",
+   "label": "electric tailor bench",
+   "package": "ludeon.rimworld",
+   "group": "production",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 120,
+   "designationCategory": "Production",
+   "buildable": true,
+   "size": [
+    3,
+    1
+   ],
+   "drawSize": [
+    3.5,
+    1.5
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Production/TableTailorElectric",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Production/TableTailorElectric",
+   "texPath_changed_live": false,
+   "tex_w": 224,
+   "tex_h": 96,
+   "tex_source": "stem ludeon.rimworld.core/TableTailorElectric_south.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "FabricationBench",
+   "label": "fabrication bench",
+   "package": "ludeon.rimworld",
+   "group": "production",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 250,
+   "designationCategory": "Production",
+   "buildable": true,
+   "size": [
+    5,
+    2
+   ],
+   "drawSize": [
+    7,
+    4
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Production/FabricationBench",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Production/FabricationBench",
+   "texPath_changed_live": false,
+   "tex_w": 448,
+   "tex_h": 256,
+   "tex_source": "stem ludeon.rimworld.core/FabricationBench_south.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "FlatscreenTelevision",
+   "label": "flatscreen television",
+   "package": "ludeon.rimworld",
+   "group": "entertainment",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 330,
+   "designationCategory": "Joy",
+   "buildable": true,
+   "size": [
+    2,
+    1
+   ],
+   "drawSize": [
+    2,
+    1
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Joy/FlatscreenTelevision",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Joy/FlatscreenTelevision",
+   "texPath_changed_live": false,
+   "tex_w": 128,
+   "tex_h": 64,
+   "tex_source": "stem ludeon.rimworld.core/FlatscreenTelevision_south.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "FloodLight",
+   "label": "flood light",
+   "package": "ludeon.rimworld",
+   "group": "lighting",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 100,
+   "designationCategory": "LightsTab",
+   "buildable": true,
+   "size": [
+    1,
+    1
+   ],
+   "drawSize": [
+    2.5,
+    2.5
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Furniture/FloodLight",
+   "graphicClass": "Graphic_Single",
+   "texPath_live": "Things/Building/Furniture/FloodLight",
+   "texPath_changed_live": false,
+   "tex_w": 256,
+   "tex_h": 256,
+   "tex_source": "stem ludeon.rimworld.core/FloodLight.png",
+   "px_per_cell": 102.4
+  },
+  {
+   "def": "GeothermalGenerator",
+   "label": "geothermal generator",
+   "package": "ludeon.rimworld",
+   "group": "generation",
+   "power_role": [
+    "generation"
+   ],
+   "basePowerConsumption": -3600,
+   "designationCategory": "Power",
+   "buildable": true,
+   "size": [
+    6,
+    6
+   ],
+   "drawSize": [
+    6,
+    6
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Power/GeothermalPlant",
+   "graphicClass": "Graphic_Single",
+   "texPath_live": "Things/Building/Power/GeothermalPlant",
+   "texPath_changed_live": false,
+   "tex_w": 512,
+   "tex_h": 512,
+   "tex_source": "stem ludeon.rimworld.core/GeothermalPlant.png",
+   "px_per_cell": 85.3
+  },
+  {
+   "def": "GroundPenetratingScanner",
+   "label": "ground-penetrating scanner",
+   "package": "ludeon.rimworld",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 700,
+   "designationCategory": "Misc",
+   "buildable": true,
+   "size": [
+    3,
+    3
+   ],
+   "drawSize": [
+    2.65,
+    2.65
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Misc/GroundPenetratingScanner",
+   "graphicClass": "Graphic_Single",
+   "texPath_live": "Things/Building/Misc/GroundPenetratingScanner",
+   "texPath_changed_live": false,
+   "tex_w": 128,
+   "tex_h": 128,
+   "tex_source": "stem ludeon.rimworld.core/GroundPenetratingScanner.png",
+   "px_per_cell": 48.3
+  },
+  {
+   "def": "Heater",
+   "label": "heater",
+   "package": "ludeon.rimworld",
+   "group": "climate",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 175,
+   "designationCategory": "Temperature",
+   "buildable": true,
+   "size": [
+    1,
+    1
+   ],
+   "drawSize": [
+    1,
+    1
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Misc/TempControl/Heater",
+   "graphicClass": "Graphic_Single",
+   "texPath_live": "Things/Building/Misc/TempControl/Heater",
+   "texPath_changed_live": false,
+   "tex_w": 64,
+   "tex_h": 64,
+   "tex_source": "stem ludeon.rimworld.core/Heater.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "HiTechResearchBench",
+   "label": "hi-tech research bench",
+   "package": "ludeon.rimworld",
+   "group": "research",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 250,
+   "designationCategory": "Production",
+   "buildable": true,
+   "size": [
+    5,
+    2
+   ],
+   "drawSize": [
+    7,
+    4
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Production/ResearchBenchHiTech",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Production/ResearchBenchHiTech",
+   "texPath_changed_live": false,
+   "tex_w": 448,
+   "tex_h": 256,
+   "tex_source": "stem ludeon.rimworld.core/ResearchBenchHiTech_south.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "HiddenConduit",
+   "label": "hidden conduit",
+   "package": "ludeon.rimworld",
+   "group": "network",
+   "power_role": [
+    "network"
+   ],
+   "basePowerConsumption": null,
+   "designationCategory": "Power",
+   "buildable": true,
+   "size": [
+    1,
+    1
+   ],
+   "drawSize": [
+    1,
+    1
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Power/ConduitInvisible",
+   "graphicClass": "Graphic_Single",
+   "texPath_live": "Things/Building/Linked/PowerConduit_Atlas",
+   "texPath_changed_live": true,
+   "tex_w": null,
+   "tex_h": null,
+   "tex_source": "UNMEASURED: no extracted vanilla picture named Things/Building/Power/ConduitInvisible (looked for things/building/power/conduitinvisible)",
+   "px_per_cell": null
+  },
+  {
+   "def": "HydroponicsBasin",
+   "label": "hydroponics basin",
+   "package": "ludeon.rimworld",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 70,
+   "designationCategory": "Production",
+   "buildable": true,
+   "size": [
+    1,
+    4
+   ],
+   "drawSize": [
+    1,
+    4
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Production/HydroponicsBasin",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Production/HydroponicsBasin",
+   "texPath_changed_live": false,
+   "tex_w": 64,
+   "tex_h": 256,
+   "tex_source": "stem ludeon.rimworld.core/HydroponicsBasin_north.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "InfiniteChemreactor",
+   "label": "infinite chemreactor",
+   "package": "ludeon.rimworld",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 300,
+   "designationCategory": null,
+   "buildable": false,
+   "size": [
+    2,
+    2
+   ],
+   "drawSize": [
+    3,
+    3
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Special/InfiniteChemreactor",
+   "graphicClass": "Graphic_Single",
+   "texPath_live": "Things/Building/Special/InfiniteChemreactor",
+   "texPath_changed_live": false,
+   "tex_w": 256,
+   "tex_h": 256,
+   "tex_source": "stem ludeon.rimworld.core/InfiniteChemreactor.png",
+   "px_per_cell": 85.3
+  },
+  {
+   "def": "LongRangeMineralScanner",
+   "label": "long-range mineral scanner",
+   "package": "ludeon.rimworld",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 700,
+   "designationCategory": "Misc",
+   "buildable": true,
+   "size": [
+    3,
+    3
+   ],
+   "drawSize": [
+    4,
+    4
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Misc/LongRangeMineralScanner",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Misc/LongRangeMineralScanner",
+   "texPath_changed_live": false,
+   "tex_w": 256,
+   "tex_h": 256,
+   "tex_source": "stem ludeon.rimworld.core/LongRangeMineralScanner_south.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "MegascreenTelevision",
+   "label": "megascreen television",
+   "package": "ludeon.rimworld",
+   "group": "entertainment",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 450,
+   "designationCategory": "Joy",
+   "buildable": true,
+   "size": [
+    3,
+    1
+   ],
+   "drawSize": [
+    3,
+    1
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Joy/MegascreenTelevision",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Joy/MegascreenTelevision",
+   "texPath_changed_live": false,
+   "tex_w": 256,
+   "tex_h": 64,
+   "tex_source": "stem ludeon.rimworld.core/MegascreenTelevision_south.png",
+   "px_per_cell": 85.3
+  },
+  {
+   "def": "MoisturePump",
+   "label": "moisture pump",
+   "package": "ludeon.rimworld",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 150,
+   "designationCategory": "Misc",
+   "buildable": true,
+   "size": [
+    1,
+    1
+   ],
+   "drawSize": [
+    1,
+    1
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Misc/MoisturePump",
+   "graphicClass": "Graphic_Single",
+   "texPath_live": "Things/Building/Misc/MoisturePump",
+   "texPath_changed_live": false,
+   "tex_w": 64,
+   "tex_h": 64,
+   "tex_source": "stem ludeon.rimworld.core/MoisturePump.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "MultiAnalyzer",
+   "label": "multi-analyzer",
+   "package": "ludeon.rimworld",
+   "group": "research",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 200,
+   "designationCategory": "Misc",
+   "buildable": true,
+   "size": [
+    2,
+    2
+   ],
+   "drawSize": [
+    2.46875,
+    2.46875
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Misc/MultiAnalyzer",
+   "graphicClass": "Graphic_Single",
+   "texPath_live": "Things/Building/Misc/MultiAnalyzer",
+   "texPath_changed_live": false,
+   "tex_w": 128,
+   "tex_h": 128,
+   "tex_source": "stem ludeon.rimworld.core/MultiAnalyzer.png",
+   "px_per_cell": 51.8
+  },
+  {
+   "def": "NutrientPasteDispenser",
+   "label": "nutrient paste dispenser",
+   "package": "ludeon.rimworld",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 200,
+   "designationCategory": "Production",
+   "buildable": true,
+   "size": [
+    3,
+    4
+   ],
+   "drawSize": [
+    3,
+    4
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Production/NutrientDispenser",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Production/NutrientDispenser",
+   "texPath_changed_live": false,
+   "tex_w": 192,
+   "tex_h": 256,
+   "tex_source": "stem ludeon.rimworld.core/NutrientDispenser_south.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "OrbitalTradeBeacon",
+   "label": "orbital trade beacon",
+   "package": "ludeon.rimworld",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 40,
+   "designationCategory": "Misc",
+   "buildable": true,
+   "size": [
+    1,
+    1
+   ],
+   "drawSize": [
+    1,
+    1
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Misc/DropBeacon",
+   "graphicClass": "Graphic_Single",
+   "texPath_live": "Things/Building/Misc/DropBeacon",
+   "texPath_changed_live": false,
+   "tex_w": 64,
+   "tex_h": 64,
+   "tex_source": "stem ludeon.rimworld.core/DropBeacon.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "PowerConduit",
+   "label": "power conduit",
+   "package": "ludeon.rimworld",
+   "group": "network",
+   "power_role": [
+    "network"
+   ],
+   "basePowerConsumption": null,
+   "designationCategory": "Power",
+   "buildable": true,
+   "size": [
+    1,
+    1
+   ],
+   "drawSize": [
+    1,
+    1
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Power/ConduitInvisible",
+   "graphicClass": "Graphic_Single",
+   "texPath_live": "RimMandrake/GimmeSomeSlack/ConduitTransparent",
+   "texPath_changed_live": true,
+   "tex_w": null,
+   "tex_h": null,
+   "tex_source": "UNMEASURED: no extracted vanilla picture named Things/Building/Power/ConduitInvisible (looked for things/building/power/conduitinvisible)",
+   "px_per_cell": null
+  },
+  {
+   "def": "PowerSwitch",
+   "label": "power switch",
+   "package": "ludeon.rimworld",
+   "group": "network",
+   "power_role": [
+    "network"
+   ],
+   "basePowerConsumption": null,
+   "designationCategory": "Power",
+   "buildable": true,
+   "size": [
+    1,
+    1
+   ],
+   "drawSize": [
+    1,
+    1
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Power/PowerSwitch",
+   "graphicClass": "Graphic_Single",
+   "texPath_live": "RimMandrake/GimmeSomeSlack/PowerSwitch",
+   "texPath_changed_live": true,
+   "tex_w": 64,
+   "tex_h": 64,
+   "tex_source": "stem ludeon.rimworld.core/PowerSwitch.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "PsychicEmanator",
+   "label": "psychic emanator",
+   "package": "ludeon.rimworld",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 200,
+   "designationCategory": null,
+   "buildable": false,
+   "size": [
+    1,
+    1
+   ],
+   "drawSize": [
+    2,
+    2
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Special/PsychicEmanator",
+   "graphicClass": "Graphic_Single",
+   "texPath_live": "Things/Building/Special/PsychicEmanator",
+   "texPath_changed_live": false,
+   "tex_w": 128,
+   "tex_h": 128,
+   "tex_source": "stem ludeon.rimworld.core/PsychicEmanator.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "Ship_Beam",
+   "label": "ship structural beam",
+   "package": "ludeon.rimworld",
+   "group": "network",
+   "power_role": [
+    "network"
+   ],
+   "basePowerConsumption": null,
+   "designationCategory": "Ship",
+   "buildable": true,
+   "size": [
+    2,
+    6
+   ],
+   "drawSize": [
+    2,
+    8
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Ship/ShipBeam",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Ship/ShipBeam",
+   "texPath_changed_live": false,
+   "tex_w": 256,
+   "tex_h": 1024,
+   "tex_source": "stem ludeon.rimworld.core/ShipBeam_north.png",
+   "px_per_cell": 128.0
+  },
+  {
+   "def": "Ship_ComputerCore",
+   "label": "ship computer core",
+   "package": "ludeon.rimworld",
+   "group": "network",
+   "power_role": [
+    "network"
+   ],
+   "basePowerConsumption": null,
+   "designationCategory": "Ship",
+   "buildable": true,
+   "size": [
+    2,
+    2
+   ],
+   "drawSize": [
+    2,
+    2
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Ship/ShipComputerCore",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Ship/ShipComputerCore",
+   "texPath_changed_live": false,
+   "tex_w": 256,
+   "tex_h": 256,
+   "tex_source": "stem ludeon.rimworld.core/ShipComputerCore_north.png",
+   "px_per_cell": 128.0
+  },
+  {
+   "def": "Ship_CryptosleepCasket",
+   "label": "ship cryptosleep casket",
+   "package": "ludeon.rimworld",
+   "group": "network",
+   "power_role": [
+    "network"
+   ],
+   "basePowerConsumption": null,
+   "designationCategory": "Ship",
+   "buildable": true,
+   "size": [
+    1,
+    2
+   ],
+   "drawSize": [
+    1,
+    2
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Ship/ShipCryptosleepCasket",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Ship/ShipCryptosleepCasket",
+   "texPath_changed_live": false,
+   "tex_w": 128,
+   "tex_h": 256,
+   "tex_source": "stem ludeon.rimworld.core/ShipCryptosleepCasket_south.png",
+   "px_per_cell": 128.0
+  },
+  {
+   "def": "Ship_Engine",
+   "label": "ship engine",
+   "package": "ludeon.rimworld",
+   "group": "network",
+   "power_role": [
+    "network"
+   ],
+   "basePowerConsumption": null,
+   "designationCategory": "Ship",
+   "buildable": true,
+   "size": [
+    3,
+    4
+   ],
+   "drawSize": [
+    4.25,
+    4.25
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Ship/ShipEngine",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Ship/ShipEngine",
+   "texPath_changed_live": false,
+   "tex_w": 512,
+   "tex_h": 512,
+   "tex_source": "stem ludeon.rimworld.core/ShipEngine_south.png",
+   "px_per_cell": 120.5
+  },
+  {
+   "def": "Ship_Reactor",
+   "label": "ship reactor",
+   "package": "ludeon.rimworld",
+   "group": "generation",
+   "power_role": [
+    "generation"
+   ],
+   "basePowerConsumption": -1000,
+   "designationCategory": "Ship",
+   "buildable": true,
+   "size": [
+    6,
+    7
+   ],
+   "drawSize": [
+    8,
+    8
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Ship/ShipReactor",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Ship/ShipReactor",
+   "texPath_changed_live": false,
+   "tex_w": 1024,
+   "tex_h": 1024,
+   "tex_source": "stem ludeon.rimworld.core/ShipReactor_north.png",
+   "px_per_cell": 128.0
+  },
+  {
+   "def": "Ship_SensorCluster",
+   "label": "sensor cluster",
+   "package": "ludeon.rimworld",
+   "group": "network",
+   "power_role": [
+    "network"
+   ],
+   "basePowerConsumption": null,
+   "designationCategory": "Ship",
+   "buildable": true,
+   "size": [
+    2,
+    2
+   ],
+   "drawSize": [
+    2,
+    2
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Ship/ShipSensorCluster",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Ship/ShipSensorCluster",
+   "texPath_changed_live": false,
+   "tex_w": 256,
+   "tex_h": 256,
+   "tex_source": "stem ludeon.rimworld.core/ShipSensorCluster_north.png",
+   "px_per_cell": 128.0
+  },
+  {
+   "def": "SolarGenerator",
+   "label": "solar generator",
+   "package": "ludeon.rimworld",
+   "group": "generation",
+   "power_role": [
+    "generation"
+   ],
+   "basePowerConsumption": -1700,
+   "designationCategory": "Power",
+   "buildable": true,
+   "size": [
+    4,
+    4
+   ],
+   "drawSize": [
+    4,
+    4
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Power/SolarCollector",
+   "graphicClass": "Graphic_Single",
+   "texPath_live": "Things/Building/Power/SolarCollector",
+   "texPath_changed_live": false,
+   "tex_w": 256,
+   "tex_h": 256,
+   "tex_source": "stem ludeon.rimworld.core/SolarCollector.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "StandingLamp",
+   "label": "standing lamp",
+   "package": "ludeon.rimworld",
+   "group": "lighting",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 30,
+   "designationCategory": "LightsTab",
+   "buildable": true,
+   "size": [
+    1,
+    1
+   ],
+   "drawSize": [
+    1,
+    1
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Furniture/LampStanding",
+   "graphicClass": "Graphic_Single",
+   "texPath_live": "Things/Building/Furniture/LampStanding",
+   "texPath_changed_live": false,
+   "tex_w": 64,
+   "tex_h": 64,
+   "tex_source": "stem ludeon.rimworld.core/LampStanding.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "SunLamp",
+   "label": "sun lamp",
+   "package": "ludeon.rimworld",
+   "group": "lighting",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 2900,
+   "designationCategory": "LightsTab",
+   "buildable": true,
+   "size": [
+    1,
+    1
+   ],
+   "drawSize": [
+    1,
+    1
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Production/LampSun",
+   "graphicClass": "Graphic_Single",
+   "texPath_live": "Things/Building/Production/LampSun",
+   "texPath_changed_live": false,
+   "tex_w": 64,
+   "tex_h": 64,
+   "tex_source": "stem ludeon.rimworld.core/LampSun.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "TableMachining",
+   "label": "machining table",
+   "package": "ludeon.rimworld",
+   "group": "production",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 350,
+   "designationCategory": "Production",
+   "buildable": true,
+   "size": [
+    3,
+    1
+   ],
+   "drawSize": [
+    3.5,
+    1.5
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Production/TableMachining",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Production/TableMachining",
+   "texPath_changed_live": false,
+   "tex_w": 224,
+   "tex_h": 96,
+   "tex_source": "stem ludeon.rimworld.core/TableMachining_south.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "TubeTelevision",
+   "label": "tube television",
+   "package": "ludeon.rimworld",
+   "group": "entertainment",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 200,
+   "designationCategory": "Joy",
+   "buildable": true,
+   "size": [
+    1,
+    1
+   ],
+   "drawSize": [
+    1,
+    1
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Joy/TubeTelevision",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Joy/TubeTelevision",
+   "texPath_changed_live": false,
+   "tex_w": 64,
+   "tex_h": 64,
+   "tex_source": "stem ludeon.rimworld.core/TubeTelevision_south.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "Turret_Autocannon",
+   "label": "autocannon turret",
+   "package": "ludeon.rimworld",
+   "group": "turret",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 150,
+   "designationCategory": "Security",
+   "buildable": true,
+   "size": [
+    2,
+    2
+   ],
+   "drawSize": [
+    1.5,
+    1.5
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Security/TurretHeavy_Base",
+   "graphicClass": "Graphic_Single",
+   "texPath_live": "Things/Building/Security/TurretHeavy_Base",
+   "texPath_changed_live": false,
+   "tex_w": 128,
+   "tex_h": 128,
+   "tex_source": "stem ludeon.rimworld.core/TurretHeavy_Base.png",
+   "px_per_cell": 85.3
+  },
+  {
+   "def": "Turret_FoamTurret",
+   "label": "foam turret",
+   "package": "ludeon.rimworld",
+   "group": "turret",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 80,
+   "designationCategory": "Security",
+   "buildable": true,
+   "size": [
+    1,
+    1
+   ],
+   "drawSize": [
+    3,
+    3
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Security/TurretMini_Base",
+   "graphicClass": "Graphic_Single",
+   "texPath_live": "Things/Building/Security/TurretMini_Base",
+   "texPath_changed_live": false,
+   "tex_w": 192,
+   "tex_h": 192,
+   "tex_source": "stem ludeon.rimworld.core/TurretMini_Base.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "Turret_MiniTurret",
+   "label": "mini-turret",
+   "package": "ludeon.rimworld",
+   "group": "turret",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 80,
+   "designationCategory": "Security",
+   "buildable": true,
+   "size": [
+    1,
+    1
+   ],
+   "drawSize": [
+    3,
+    3
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Security/TurretMini_Base",
+   "graphicClass": "Graphic_Single",
+   "texPath_live": "Things/Building/Security/TurretMini_Base",
+   "texPath_changed_live": false,
+   "tex_w": 192,
+   "tex_h": 192,
+   "tex_source": "stem ludeon.rimworld.core/TurretMini_Base.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "Turret_RocketswarmLauncher",
+   "label": "rocketswarm launcher",
+   "package": "ludeon.rimworld",
+   "group": "turret",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 150,
+   "designationCategory": "Security",
+   "buildable": true,
+   "size": [
+    2,
+    2
+   ],
+   "drawSize": [
+    1.5,
+    1.5
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Security/TurretHeavy_Base",
+   "graphicClass": "Graphic_Single",
+   "texPath_live": "Things/Building/Security/TurretHeavy_Base",
+   "texPath_changed_live": false,
+   "tex_w": 128,
+   "tex_h": 128,
+   "tex_source": "stem ludeon.rimworld.core/TurretHeavy_Base.png",
+   "px_per_cell": 85.3
+  },
+  {
+   "def": "Turret_Sniper",
+   "label": "uranium slug turret",
+   "package": "ludeon.rimworld",
+   "group": "turret",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 150,
+   "designationCategory": "Security",
+   "buildable": true,
+   "size": [
+    2,
+    2
+   ],
+   "drawSize": [
+    1.5,
+    1.5
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Security/TurretHeavy_Base",
+   "graphicClass": "Graphic_Single",
+   "texPath_live": "Things/Building/Security/TurretHeavy_Base",
+   "texPath_changed_live": false,
+   "tex_w": 128,
+   "tex_h": 128,
+   "tex_source": "stem ludeon.rimworld.core/TurretHeavy_Base.png",
+   "px_per_cell": 85.3
+  },
+  {
+   "def": "VanometricPowerCell",
+   "label": "vanometric power cell",
+   "package": "ludeon.rimworld",
+   "group": "generation",
+   "power_role": [
+    "generation"
+   ],
+   "basePowerConsumption": -1000,
+   "designationCategory": null,
+   "buildable": false,
+   "size": [
+    1,
+    2
+   ],
+   "drawSize": [
+    2,
+    3
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Special/VanometricPowerCell",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Special/VanometricPowerCell",
+   "texPath_changed_live": false,
+   "tex_w": 128,
+   "tex_h": 256,
+   "tex_source": "stem ludeon.rimworld.core/VanometricPowerCell_north.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "VitalsMonitor",
+   "label": "vitals monitor",
+   "package": "ludeon.rimworld",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 80,
+   "designationCategory": "Misc",
+   "buildable": true,
+   "size": [
+    1,
+    1
+   ],
+   "drawSize": [
+    1,
+    1
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Misc/VitalsMonitor",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Misc/VitalsMonitor",
+   "texPath_changed_live": false,
+   "tex_w": 64,
+   "tex_h": 64,
+   "tex_source": "stem ludeon.rimworld.core/VitalsMonitor_south.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "WallLamp",
+   "label": "wall lamp",
+   "package": "ludeon.rimworld",
+   "group": "lighting",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 30,
+   "designationCategory": "LightsTab",
+   "buildable": true,
+   "size": [
+    1,
+    1
+   ],
+   "drawSize": [
+    1,
+    1
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Furniture/WallLamp/WallLamp",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Furniture/WallLamp/WallLamp",
+   "texPath_changed_live": false,
+   "tex_w": 64,
+   "tex_h": 64,
+   "tex_source": "stem ludeon.rimworld.core/WallLamp_south.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "WatermillGenerator",
+   "label": "watermill generator",
+   "package": "ludeon.rimworld",
+   "group": "generation",
+   "power_role": [
+    "generation"
+   ],
+   "basePowerConsumption": -1100,
+   "designationCategory": "Power",
+   "buildable": true,
+   "size": [
+    5,
+    6
+   ],
+   "drawSize": [
+    5,
+    6
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Power/WatermillGenerator/WatermillGeneratorBody",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Power/WatermillGenerator/WatermillGeneratorBody",
+   "texPath_changed_live": false,
+   "tex_w": 320,
+   "tex_h": 384,
+   "tex_source": "stem ludeon.rimworld.core/WatermillGeneratorBody_south.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "WaterproofConduit",
+   "label": "waterproof conduit",
+   "package": "ludeon.rimworld",
+   "group": "network",
+   "power_role": [
+    "network"
+   ],
+   "basePowerConsumption": null,
+   "designationCategory": "Power",
+   "buildable": true,
+   "size": [
+    1,
+    1
+   ],
+   "drawSize": [
+    1,
+    1
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Power/ConduitInvisible",
+   "graphicClass": "Graphic_Single",
+   "texPath_live": "RimMandrake/GimmeSomeSlack/ConduitTransparent",
+   "texPath_changed_live": true,
+   "tex_w": null,
+   "tex_h": null,
+   "tex_source": "UNMEASURED: no extracted vanilla picture named Things/Building/Power/ConduitInvisible (looked for things/building/power/conduitinvisible)",
+   "px_per_cell": null
+  },
+  {
+   "def": "WindTurbine",
+   "label": "wind turbine",
+   "package": "ludeon.rimworld",
+   "group": "generation",
+   "power_role": [
+    "generation"
+   ],
+   "basePowerConsumption": -2300,
+   "designationCategory": "Power",
+   "buildable": true,
+   "size": [
+    7,
+    2
+   ],
+   "drawSize": [
+    5,
+    2
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Power/WindTurbine/WindTurbineBody",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Power/WindTurbine/WindTurbineBody",
+   "texPath_changed_live": false,
+   "tex_w": 256,
+   "tex_h": 128,
+   "tex_source": "stem ludeon.rimworld.core/WindTurbineBody_south.png",
+   "px_per_cell": 51.2
+  },
+  {
+   "def": "WoodFiredGenerator",
+   "label": "wood-fired generator",
+   "package": "ludeon.rimworld",
+   "group": "generation",
+   "power_role": [
+    "generation"
+   ],
+   "basePowerConsumption": -1000,
+   "designationCategory": "Power",
+   "buildable": true,
+   "size": [
+    2,
+    2
+   ],
+   "drawSize": [
+    2,
+    2
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Power/WoodFiredGenerator",
+   "graphicClass": "Graphic_Single",
+   "texPath_live": "Things/Building/Power/WoodFiredGenerator",
+   "texPath_changed_live": false,
+   "tex_w": 128,
+   "tex_h": 128,
+   "tex_source": "stem ludeon.rimworld.core/WoodFiredGenerator.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "AtmosphericHeater",
+   "label": "atmospheric heater",
+   "package": "ludeon.rimworld.anomaly",
+   "group": "climate",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 1500,
+   "designationCategory": "Anomaly",
+   "buildable": true,
+   "size": [
+    3,
+    3
+   ],
+   "drawSize": [
+    3,
+    3
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/AtmosphericHeater",
+   "graphicClass": "Graphic_Indexed",
+   "texPath_live": "Things/Building/AtmosphericHeater",
+   "texPath_changed_live": false,
+   "tex_w": null,
+   "tex_h": null,
+   "tex_source": "UNMEASURED: no extracted vanilla picture named Things/Building/AtmosphericHeater (looked for things/building/atmosphericheater)",
+   "px_per_cell": null
+  },
+  {
+   "def": "BioferriteGenerator",
+   "label": "bioferrite generator",
+   "package": "ludeon.rimworld.anomaly",
+   "group": "generation",
+   "power_role": [
+    "generation"
+   ],
+   "basePowerConsumption": -4000,
+   "designationCategory": "Power",
+   "buildable": true,
+   "size": [
+    3,
+    2
+   ],
+   "drawSize": [
+    3,
+    2
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/BioferriteGenerator/BioferriteGenerator",
+   "graphicClass": "Graphic_Multi_BuildingWorking",
+   "texPath_live": "Things/Building/BioferriteGenerator/BioferriteGenerator",
+   "texPath_changed_live": false,
+   "tex_w": 256,
+   "tex_h": 128,
+   "tex_source": "path ludeon.rimworld.anomaly/textures/things/building/bioferritegenerator/bioferritegenerator_south.png",
+   "px_per_cell": 85.3
+  },
+  {
+   "def": "BioferriteHarvester",
+   "label": "bioferrite harvester",
+   "package": "ludeon.rimworld.anomaly",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 100,
+   "designationCategory": "Anomaly",
+   "buildable": true,
+   "size": [
+    1,
+    2
+   ],
+   "drawSize": [
+    2,
+    3
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/BioferriteHarvester/BioferriteHarvester",
+   "graphicClass": "Graphic_Multi_BuildingWorking",
+   "texPath_live": "Things/Building/BioferriteHarvester/BioferriteHarvester",
+   "texPath_changed_live": false,
+   "tex_w": 128,
+   "tex_h": 256,
+   "tex_source": "path ludeon.rimworld.anomaly/textures/things/building/bioferriteharvester/bioferriteharvester_south.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "BioferriteShaper",
+   "label": "bioferrite shaper",
+   "package": "ludeon.rimworld.anomaly",
+   "group": "production",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 250,
+   "designationCategory": "Anomaly",
+   "buildable": true,
+   "size": [
+    3,
+    1
+   ],
+   "drawSize": [
+    3.5,
+    1.5
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/BioferriteShaper/BioferriteShaper",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/BioferriteShaper/BioferriteShaper",
+   "texPath_changed_live": false,
+   "tex_w": 224,
+   "tex_h": 96,
+   "tex_source": "path ludeon.rimworld.anomaly/textures/things/building/bioferriteshaper/bioferriteshaper_south.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "ElectricInhibitor",
+   "label": "electric inhibitor",
+   "package": "ludeon.rimworld.anomaly",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 70,
+   "designationCategory": "Anomaly",
+   "buildable": true,
+   "size": [
+    1,
+    2
+   ],
+   "drawSize": [
+    1,
+    2
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/ElectricInhibitor/ElectricInhibitor",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/ElectricInhibitor/ElectricInhibitor",
+   "texPath_changed_live": false,
+   "tex_w": 64,
+   "tex_h": 128,
+   "tex_source": "path ludeon.rimworld.anomaly/textures/things/building/electricinhibitor/electricinhibitor_south.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "Electroharvester",
+   "label": "electroharvester",
+   "package": "ludeon.rimworld.anomaly",
+   "group": "generation",
+   "power_role": [
+    "generation"
+   ],
+   "basePowerConsumption": -2000,
+   "designationCategory": "Anomaly",
+   "buildable": true,
+   "size": [
+    2,
+    1
+   ],
+   "drawSize": [
+    3,
+    2
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Electroharvester/Electroharvester",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Electroharvester/Electroharvester",
+   "texPath_changed_live": false,
+   "tex_w": 192,
+   "tex_h": 128,
+   "tex_source": "path ludeon.rimworld.anomaly/textures/things/building/electroharvester/electroharvester_south.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "FrenzyInducer",
+   "label": "frenzy inducer",
+   "package": "ludeon.rimworld.anomaly",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 150,
+   "designationCategory": "Anomaly",
+   "buildable": true,
+   "size": [
+    1,
+    1
+   ],
+   "drawSize": [
+    1.5,
+    1.5
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/FrenzyInducer",
+   "graphicClass": "Graphic_Single",
+   "texPath_live": "Things/Building/FrenzyInducer",
+   "texPath_changed_live": false,
+   "tex_w": 128,
+   "tex_h": 128,
+   "tex_source": "path ludeon.rimworld.anomaly/textures/things/building/frenzyinducer.png",
+   "px_per_cell": 85.3
+  },
+  {
+   "def": "ProximityDetector",
+   "label": "proximity detector",
+   "package": "ludeon.rimworld.anomaly",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 75,
+   "designationCategory": "LightsTab",
+   "buildable": true,
+   "size": [
+    1,
+    1
+   ],
+   "drawSize": [
+    1,
+    1
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/ProximityDetector",
+   "graphicClass": "Graphic_Single",
+   "texPath_live": "Things/Building/ProximityDetector",
+   "texPath_changed_live": false,
+   "tex_w": 64,
+   "tex_h": 64,
+   "tex_source": "path ludeon.rimworld.anomaly/textures/things/building/proximitydetector.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "SecurityDoor",
+   "label": "security door",
+   "package": "ludeon.rimworld.anomaly",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 50,
+   "designationCategory": "Structure",
+   "buildable": true,
+   "size": [
+    2,
+    1
+   ],
+   "drawSize": [
+    1,
+    1
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/SecurityDoor/SecurityDoor2x1_Underlayer_Mover",
+   "graphicClass": "Graphic_Single",
+   "texPath_live": "Things/Building/SecurityDoor/SecurityDoor2x1_Underlayer_Mover",
+   "texPath_changed_live": false,
+   "tex_w": 64,
+   "tex_h": 64,
+   "tex_source": "path ludeon.rimworld.anomaly/textures/things/building/securitydoor/securitydoor2x1_underlayer_mover.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "SerumCentrifuge",
+   "label": "serum lab",
+   "package": "ludeon.rimworld.anomaly",
+   "group": "production",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 375,
+   "designationCategory": "Anomaly",
+   "buildable": true,
+   "size": [
+    2,
+    2
+   ],
+   "drawSize": [
+    3,
+    3
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/SerumCentrifuge/SerumCentrifuge",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/SerumCentrifuge/SerumCentrifuge",
+   "texPath_changed_live": false,
+   "tex_w": 256,
+   "tex_h": 256,
+   "tex_source": "path ludeon.rimworld.anomaly/textures/things/building/serumcentrifuge/serumcentrifuge_south.png",
+   "px_per_cell": 85.3
+  },
+  {
+   "def": "SleepSuppressor",
+   "label": "sleep suppressor",
+   "package": "ludeon.rimworld.anomaly",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 300,
+   "designationCategory": "Anomaly",
+   "buildable": true,
+   "size": [
+    2,
+    1
+   ],
+   "drawSize": [
+    2,
+    2
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/SleepSuppressor/SleepSuppressor",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/SleepSuppressor/SleepSuppressor",
+   "texPath_changed_live": false,
+   "tex_w": 128,
+   "tex_h": 128,
+   "tex_source": "path ludeon.rimworld.anomaly/textures/things/building/sleepsuppressor/sleepsuppressor_south.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "BandNode",
+   "label": "band node",
+   "package": "ludeon.rimworld.biotech",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 300,
+   "designationCategory": null,
+   "buildable": false,
+   "size": [
+    2,
+    2
+   ],
+   "drawSize": [
+    2,
+    2
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Misc/BandNode",
+   "graphicClass": "Graphic_Single",
+   "texPath_live": "Things/Building/Misc/BandNode",
+   "texPath_changed_live": false,
+   "tex_w": 128,
+   "tex_h": 128,
+   "tex_source": "path ludeon.rimworld.biotech/textures/things/building/misc/bandnode.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "BasicRecharger",
+   "label": "mech recharger",
+   "package": "ludeon.rimworld.biotech",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 200,
+   "designationCategory": null,
+   "buildable": false,
+   "size": [
+    3,
+    1
+   ],
+   "drawSize": [
+    2.9,
+    1.25
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Production/BasicRecharger",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Production/BasicRecharger",
+   "texPath_changed_live": false,
+   "tex_w": 192,
+   "tex_h": 88,
+   "tex_source": "path ludeon.rimworld.biotech/textures/things/building/production/basicrecharger_south.png",
+   "px_per_cell": 66.2
+  },
+  {
+   "def": "DeathrestAccelerator",
+   "label": "deathrest accelerator",
+   "package": "ludeon.rimworld.biotech",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 800,
+   "designationCategory": "Biotech",
+   "buildable": true,
+   "size": [
+    1,
+    2
+   ],
+   "drawSize": [
+    1,
+    2
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Misc/DeathrestAccelerator/DeathrestAccelerator",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Misc/DeathrestAccelerator/DeathrestAccelerator",
+   "texPath_changed_live": false,
+   "tex_w": 64,
+   "tex_h": 128,
+   "tex_source": "path ludeon.rimworld.biotech/textures/things/building/misc/deathrestaccelerator/deathrestaccelerator_south.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "DeathrestCasket",
+   "label": "deathrest casket",
+   "package": "ludeon.rimworld.biotech",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 100,
+   "designationCategory": "Biotech",
+   "buildable": true,
+   "size": [
+    1,
+    2
+   ],
+   "drawSize": [
+    2,
+    2
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Misc/DeathrestCasket/DeathrestCasket",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Misc/DeathrestCasket/DeathrestCasket",
+   "texPath_changed_live": false,
+   "tex_w": 128,
+   "tex_h": 128,
+   "tex_source": "path ludeon.rimworld.biotech/textures/things/building/misc/deathrestcasket/deathrestcasket_south.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "GeneAssembler",
+   "label": "gene assembler",
+   "package": "ludeon.rimworld.biotech",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 100,
+   "designationCategory": "Biotech",
+   "buildable": true,
+   "size": [
+    3,
+    2
+   ],
+   "drawSize": [
+    3,
+    2
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Misc/GeneAssembler/GeneAssembler",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Misc/GeneAssembler/GeneAssembler",
+   "texPath_changed_live": false,
+   "tex_w": 192,
+   "tex_h": 128,
+   "tex_source": "path ludeon.rimworld.biotech/textures/things/building/misc/geneassembler/geneassembler_south.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "GeneBank",
+   "label": "gene bank",
+   "package": "ludeon.rimworld.biotech",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 40,
+   "designationCategory": "Biotech",
+   "buildable": true,
+   "size": [
+    2,
+    1
+   ],
+   "drawSize": [
+    2,
+    1
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Misc/Genebank/Genebank",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Misc/Genebank/Genebank",
+   "texPath_changed_live": false,
+   "tex_w": 128,
+   "tex_h": 64,
+   "tex_source": "path ludeon.rimworld.biotech/textures/things/building/misc/genebank/genebank_south.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "GeneExtractor",
+   "label": "gene extractor",
+   "package": "ludeon.rimworld.biotech",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 200,
+   "designationCategory": "Biotech",
+   "buildable": true,
+   "size": [
+    2,
+    2
+   ],
+   "drawSize": [
+    2,
+    2
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Misc/GeneExtractor/GeneExtractor",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Misc/GeneExtractor/GeneExtractor",
+   "texPath_changed_live": false,
+   "tex_w": 128,
+   "tex_h": 128,
+   "tex_source": "path ludeon.rimworld.biotech/textures/things/building/misc/geneextractor/geneextractor_south.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "GeneProcessor",
+   "label": "gene processor",
+   "package": "ludeon.rimworld.biotech",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 50,
+   "designationCategory": "Biotech",
+   "buildable": true,
+   "size": [
+    2,
+    2
+   ],
+   "drawSize": [
+    2,
+    2
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Misc/GeneProcessor",
+   "graphicClass": "Graphic_Single",
+   "texPath_live": "Things/Building/Misc/GeneProcessor",
+   "texPath_changed_live": false,
+   "tex_w": 128,
+   "tex_h": 128,
+   "tex_source": "path ludeon.rimworld.biotech/textures/things/building/misc/geneprocessor.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "GlucosoidPump",
+   "label": "glucosoid pump",
+   "package": "ludeon.rimworld.biotech",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 100,
+   "designationCategory": "Biotech",
+   "buildable": true,
+   "size": [
+    1,
+    2
+   ],
+   "drawSize": [
+    1,
+    2
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Misc/GlucosoidPump/GlucosoidPump",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Misc/GlucosoidPump/GlucosoidPump",
+   "texPath_changed_live": false,
+   "tex_w": 64,
+   "tex_h": 128,
+   "tex_source": "path ludeon.rimworld.biotech/textures/things/building/misc/glucosoidpump/glucosoidpump_south.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "GrowthVat",
+   "label": "growth vat",
+   "package": "ludeon.rimworld.biotech",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 200,
+   "designationCategory": "Biotech",
+   "buildable": true,
+   "size": [
+    1,
+    2
+   ],
+   "drawSize": [
+    1,
+    2
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Misc/GrowthVat/GrowthVat",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Misc/GrowthVat/GrowthVat",
+   "texPath_changed_live": false,
+   "tex_w": 64,
+   "tex_h": 128,
+   "tex_source": "path ludeon.rimworld.biotech/textures/things/building/misc/growthvat/growthvat_south.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "HemogenAmplifier",
+   "label": "hemogen amplifier",
+   "package": "ludeon.rimworld.biotech",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 100,
+   "designationCategory": "Biotech",
+   "buildable": true,
+   "size": [
+    1,
+    2
+   ],
+   "drawSize": [
+    1,
+    2
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Misc/HemogenAmplifier/HemogenAmplifier",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Misc/HemogenAmplifier/HemogenAmplifier",
+   "texPath_changed_live": false,
+   "tex_w": 64,
+   "tex_h": 128,
+   "tex_source": "path ludeon.rimworld.biotech/textures/things/building/misc/hemogenamplifier/hemogenamplifier_south.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "Hemopump",
+   "label": "hemopump",
+   "package": "ludeon.rimworld.biotech",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 100,
+   "designationCategory": "Biotech",
+   "buildable": true,
+   "size": [
+    1,
+    2
+   ],
+   "drawSize": [
+    1,
+    2
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Misc/Hemopump/Hemopump",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Misc/Hemopump/Hemopump",
+   "texPath_changed_live": false,
+   "tex_w": 64,
+   "tex_h": 128,
+   "tex_source": "path ludeon.rimworld.biotech/textures/things/building/misc/hemopump/hemopump_south.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "LargeMechGestator",
+   "label": "large mech gestator",
+   "package": "ludeon.rimworld.biotech",
+   "group": "production",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 500,
+   "designationCategory": null,
+   "buildable": false,
+   "size": [
+    4,
+    3
+   ],
+   "drawSize": [
+    6,
+    5
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Production/MechGestatorLarge",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Production/MechGestatorLarge",
+   "texPath_changed_live": false,
+   "tex_w": 768,
+   "tex_h": 640,
+   "tex_source": "path ludeon.rimworld.biotech/textures/things/building/production/mechgestatorlarge_south.png",
+   "px_per_cell": 128.0
+  },
+  {
+   "def": "MechBooster",
+   "label": "mech booster",
+   "package": "ludeon.rimworld.biotech",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 200,
+   "designationCategory": null,
+   "buildable": false,
+   "size": [
+    2,
+    2
+   ],
+   "drawSize": [
+    2,
+    2
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Power/MechBooster",
+   "graphicClass": "Graphic_Single",
+   "texPath_live": "Things/Building/Power/MechBooster",
+   "texPath_changed_live": false,
+   "tex_w": 128,
+   "tex_h": 128,
+   "tex_source": "path ludeon.rimworld.biotech/textures/things/building/power/mechbooster.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "MechGestator",
+   "label": "mech gestator",
+   "package": "ludeon.rimworld.biotech",
+   "group": "production",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 350,
+   "designationCategory": null,
+   "buildable": false,
+   "size": [
+    3,
+    2
+   ],
+   "drawSize": [
+    5.6,
+    4
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Production/MechGestatorStandard",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Production/MechGestatorStandard",
+   "texPath_changed_live": false,
+   "tex_w": 720,
+   "tex_h": 480,
+   "tex_source": "path ludeon.rimworld.biotech/textures/things/building/production/mechgestatorstandard_south.png",
+   "px_per_cell": 128.6
+  },
+  {
+   "def": "PollutionPump",
+   "label": "pollution pump",
+   "package": "ludeon.rimworld.biotech",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 200,
+   "designationCategory": "Biotech",
+   "buildable": true,
+   "size": [
+    1,
+    1
+   ],
+   "drawSize": [
+    1,
+    1
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Production/PollutionPump",
+   "graphicClass": "Graphic_Single",
+   "texPath_live": "Things/Building/Production/PollutionPump",
+   "texPath_changed_live": false,
+   "tex_w": 64,
+   "tex_h": 64,
+   "tex_source": "path ludeon.rimworld.biotech/textures/things/building/production/pollutionpump.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "PsychofluidPump",
+   "label": "psychofluid pump",
+   "package": "ludeon.rimworld.biotech",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 100,
+   "designationCategory": "Biotech",
+   "buildable": true,
+   "size": [
+    1,
+    2
+   ],
+   "drawSize": [
+    1,
+    2
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Misc/PsychofluidPump/PsychofluidPump",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Misc/PsychofluidPump/PsychofluidPump",
+   "texPath_changed_live": false,
+   "tex_w": 64,
+   "tex_h": 128,
+   "tex_source": "path ludeon.rimworld.biotech/textures/things/building/misc/psychofluidpump/psychofluidpump_south.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "StandardRecharger",
+   "label": "large mech recharger",
+   "package": "ludeon.rimworld.biotech",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 400,
+   "designationCategory": null,
+   "buildable": false,
+   "size": [
+    3,
+    2
+   ],
+   "drawSize": [
+    3.8,
+    2.8
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Production/StandardRecharger",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Production/StandardRecharger",
+   "texPath_changed_live": false,
+   "tex_w": 256,
+   "tex_h": 192,
+   "tex_source": "path ludeon.rimworld.biotech/textures/things/building/production/standardrecharger_south.png",
+   "px_per_cell": 67.4
+  },
+  {
+   "def": "SubcoreEncoder",
+   "label": "subcore encoder",
+   "package": "ludeon.rimworld.biotech",
+   "group": "production",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 50,
+   "designationCategory": "Biotech",
+   "buildable": true,
+   "size": [
+    3,
+    2
+   ],
+   "drawSize": [
+    3,
+    2
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Production/SubcoreEncoder",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Production/SubcoreEncoder",
+   "texPath_changed_live": false,
+   "tex_w": 192,
+   "tex_h": 128,
+   "tex_source": "path ludeon.rimworld.biotech/textures/things/building/production/subcoreencoder_south.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "SubcoreRipscanner",
+   "label": "subcore ripscanner",
+   "package": "ludeon.rimworld.biotech",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 150,
+   "designationCategory": "Biotech",
+   "buildable": true,
+   "size": [
+    3,
+    2
+   ],
+   "drawSize": [
+    3,
+    2
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Production/SubcoreRipscanner",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Production/SubcoreRipscanner",
+   "texPath_changed_live": false,
+   "tex_w": 192,
+   "tex_h": 128,
+   "tex_source": "path ludeon.rimworld.biotech/textures/things/building/production/subcoreripscanner_south.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "SubcoreSoftscanner",
+   "label": "subcore softscanner",
+   "package": "ludeon.rimworld.biotech",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 150,
+   "designationCategory": "Biotech",
+   "buildable": true,
+   "size": [
+    3,
+    2
+   ],
+   "drawSize": [
+    3,
+    2
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Production/SubcoreSoftscanner",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Production/SubcoreSoftscanner",
+   "texPath_changed_live": false,
+   "tex_w": 192,
+   "tex_h": 128,
+   "tex_source": "path ludeon.rimworld.biotech/textures/things/building/production/subcoresoftscanner_south.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "ToxifierGenerator",
+   "label": "toxifier generator",
+   "package": "ludeon.rimworld.biotech",
+   "group": "generation",
+   "power_role": [
+    "generation"
+   ],
+   "basePowerConsumption": -1400,
+   "designationCategory": "Power",
+   "buildable": true,
+   "size": [
+    2,
+    2
+   ],
+   "drawSize": [
+    2,
+    2
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Power/ToxifierGenerator",
+   "graphicClass": "Graphic_Single",
+   "texPath_live": "Things/Building/Power/ToxifierGenerator",
+   "texPath_changed_live": false,
+   "tex_w": 128,
+   "tex_h": 128,
+   "tex_source": "path ludeon.rimworld.biotech/textures/things/building/power/toxifiergenerator.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "WastepackAtomizer",
+   "label": "wastepack atomizer",
+   "package": "ludeon.rimworld.biotech",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 400,
+   "designationCategory": "Biotech",
+   "buildable": true,
+   "size": [
+    3,
+    2
+   ],
+   "drawSize": [
+    3,
+    2
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Misc/WastepackAtomizer",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Misc/WastepackAtomizer",
+   "texPath_changed_live": false,
+   "tex_w": 192,
+   "tex_h": 128,
+   "tex_source": "path ludeon.rimworld.biotech/textures/things/building/misc/wastepackatomizer_south.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "Autobong",
+   "label": "autobong",
+   "package": "ludeon.rimworld.ideology",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 150,
+   "designationCategory": "LightsTab",
+   "buildable": true,
+   "size": [
+    2,
+    2
+   ],
+   "drawSize": [
+    2,
+    2
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Misc/Autobong/Autobong",
+   "graphicClass": "Graphic_Single",
+   "texPath_live": "Things/Building/Misc/Autobong/Autobong",
+   "texPath_changed_live": false,
+   "tex_w": 128,
+   "tex_h": 128,
+   "tex_source": "path ludeon.rimworld.ideology/textures/things/building/misc/autobong/autobong.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "BiosculpterPod",
+   "label": "biosculpter pod",
+   "package": "ludeon.rimworld.ideology",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 200,
+   "designationCategory": "Ideology",
+   "buildable": true,
+   "size": [
+    3,
+    2
+   ],
+   "drawSize": [
+    3,
+    2
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Misc/BiosculpterPod/BiosculpterPod",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Misc/BiosculpterPod/BiosculpterPod",
+   "texPath_changed_live": false,
+   "tex_w": 192,
+   "tex_h": 128,
+   "tex_source": "path ludeon.rimworld.ideology/textures/things/building/misc/biosculpterpod/biosculpterpod_south.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "LightBall",
+   "label": "lightball",
+   "package": "ludeon.rimworld.ideology",
+   "group": "lighting",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 60,
+   "designationCategory": "LightsTab",
+   "buildable": true,
+   "size": [
+    1,
+    1
+   ],
+   "drawSize": [
+    1,
+    1
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Misc/Lightball/Lightball",
+   "graphicClass": "Graphic_Single",
+   "texPath_live": "Things/Building/Misc/Lightball/Lightball",
+   "texPath_changed_live": false,
+   "tex_w": 64,
+   "tex_h": 64,
+   "tex_source": "path ludeon.rimworld.ideology/textures/things/building/misc/lightball/lightball.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "Loudspeaker",
+   "label": "loudspeaker",
+   "package": "ludeon.rimworld.ideology",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 150,
+   "designationCategory": "LightsTab",
+   "buildable": true,
+   "size": [
+    1,
+    1
+   ],
+   "drawSize": [
+    1.32,
+    1.32
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Misc/Loudspeaker/Loudspeaker",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Misc/Loudspeaker/Loudspeaker",
+   "texPath_changed_live": false,
+   "tex_w": 64,
+   "tex_h": 64,
+   "tex_source": "path ludeon.rimworld.ideology/textures/things/building/misc/loudspeaker/loudspeaker_south.png",
+   "px_per_cell": 48.5
+  },
+  {
+   "def": "NeuralSupercharger",
+   "label": "neural supercharger",
+   "package": "ludeon.rimworld.ideology",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 400,
+   "designationCategory": "Ideology",
+   "buildable": true,
+   "size": [
+    1,
+    3
+   ],
+   "drawSize": [
+    1.05,
+    3
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Misc/NeuralSupercharger/NeuralSupercharger",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Misc/NeuralSupercharger/NeuralSupercharger",
+   "texPath_changed_live": false,
+   "tex_w": 64,
+   "tex_h": 256,
+   "tex_source": "path ludeon.rimworld.ideology/textures/things/building/misc/neuralsupercharger/neuralsupercharger_south.png",
+   "px_per_cell": 61.0
+  },
+  {
+   "def": "SleepAccelerator",
+   "label": "sleep accelerator",
+   "package": "ludeon.rimworld.ideology",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 50,
+   "designationCategory": "Ideology",
+   "buildable": true,
+   "size": [
+    1,
+    1
+   ],
+   "drawSize": [
+    1,
+    1
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Misc/SleepAccelerator/SleepAccelerator",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Misc/SleepAccelerator/SleepAccelerator",
+   "texPath_changed_live": false,
+   "tex_w": 64,
+   "tex_h": 64,
+   "tex_source": "path ludeon.rimworld.ideology/textures/things/building/misc/sleepaccelerator/sleepaccelerator_south.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "AncientGravReactor",
+   "label": "ancient grav reactor",
+   "package": "ludeon.rimworld.odyssey",
+   "group": "generation",
+   "power_role": [
+    "generation"
+   ],
+   "basePowerConsumption": -4000,
+   "designationCategory": null,
+   "buildable": false,
+   "size": [
+    5,
+    5
+   ],
+   "drawSize": [
+    5,
+    5
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Ancient/GravReactor/AncientGravReactor",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/Ancient/GravReactor/AncientGravReactor",
+   "texPath_changed_live": false,
+   "tex_w": 512,
+   "tex_h": 512,
+   "tex_source": "path ludeon.rimworld.odyssey/textures/things/building/ancient/gravreactor/ancientgravreactor_south.png",
+   "px_per_cell": 102.4
+  },
+  {
+   "def": "AncientTerraformer",
+   "label": "ancient terraformer",
+   "package": "ludeon.rimworld.odyssey",
+   "group": "generation",
+   "power_role": [
+    "generation"
+   ],
+   "basePowerConsumption": -4000,
+   "designationCategory": null,
+   "buildable": false,
+   "size": [
+    4,
+    4
+   ],
+   "drawSize": [
+    4,
+    4
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/AncientTerraformer",
+   "graphicClass": "Graphic_Single",
+   "texPath_live": "Things/Building/AncientTerraformer",
+   "texPath_changed_live": false,
+   "tex_w": 256,
+   "tex_h": 256,
+   "tex_source": "path ludeon.rimworld.odyssey/textures/things/building/ancientterraformer.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "GravEngine",
+   "label": "gravship engine",
+   "package": "ludeon.rimworld.odyssey",
+   "group": "generation",
+   "power_role": [
+    "generation"
+   ],
+   "basePowerConsumption": -4800,
+   "designationCategory": "VGE_Platform",
+   "buildable": true,
+   "size": [
+    3,
+    3
+   ],
+   "drawSize": [
+    3,
+    3
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Structures/GravEngines/GravEngine/GravEngine",
+   "graphicClass": "Graphic_GravEngineSingle",
+   "texPath_live": "Things/Structures/GravEngines/GravEngine/GravEngine",
+   "texPath_changed_live": false,
+   "tex_w": 256,
+   "tex_h": 256,
+   "tex_source": "stem ludeon.rimworld.odyssey/textures/things/building/ancient/gravengine.png (stem shared by 2 files: size of the core one)",
+   "px_per_cell": 85.3
+  },
+  {
+   "def": "GravcorePowerCell",
+   "label": "gravcore power cell",
+   "package": "ludeon.rimworld.odyssey",
+   "group": "generation",
+   "power_role": [
+    "generation"
+   ],
+   "basePowerConsumption": -1200,
+   "designationCategory": "VGE_Power_GT",
+   "buildable": true,
+   "size": [
+    1,
+    1
+   ],
+   "drawSize": [
+    1,
+    1
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Structures/Power/GravcorePowerCell",
+   "graphicClass": "Graphic_Single",
+   "texPath_live": "Things/Structures/Power/GravcorePowerCell",
+   "texPath_changed_live": false,
+   "tex_w": 64,
+   "tex_h": 64,
+   "tex_source": "stem ludeon.rimworld.odyssey/textures/things/building/gravcorepowercell.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "GravshipShieldGenerator",
+   "label": "gravship shield generator",
+   "package": "ludeon.rimworld.odyssey",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 200,
+   "designationCategory": null,
+   "buildable": false,
+   "size": [
+    3,
+    3
+   ],
+   "drawSize": [
+    3,
+    3
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/GravshipShieldGenerator",
+   "graphicClass": "Graphic_Single",
+   "texPath_live": "Things/Building/GravshipShieldGenerator",
+   "texPath_changed_live": false,
+   "tex_w": 256,
+   "tex_h": 256,
+   "tex_source": "path ludeon.rimworld.odyssey/textures/things/building/gravshipshieldgenerator.png",
+   "px_per_cell": 85.3
+  },
+  {
+   "def": "LifeSupportUnit",
+   "label": "life support unit",
+   "package": "ludeon.rimworld.odyssey",
+   "group": "generation",
+   "power_role": [
+    "generation"
+   ],
+   "basePowerConsumption": -3200,
+   "designationCategory": null,
+   "buildable": false,
+   "size": [
+    1,
+    1
+   ],
+   "drawSize": [
+    1,
+    1
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/LifesupportUnit/LifesupportUnit",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/LifesupportUnit/LifesupportUnit",
+   "texPath_changed_live": false,
+   "tex_w": 64,
+   "tex_h": 64,
+   "tex_source": "path ludeon.rimworld.odyssey/textures/things/building/lifesupportunit/lifesupportunit_south.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "OrbitalScanner",
+   "label": "orbital scanner",
+   "package": "ludeon.rimworld.odyssey",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 500,
+   "designationCategory": "Odyssey",
+   "buildable": true,
+   "size": [
+    2,
+    2
+   ],
+   "drawSize": [
+    3,
+    3
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/OrbitalScanner/OrbitalScanner",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Building/OrbitalScanner/OrbitalScanner",
+   "texPath_changed_live": false,
+   "tex_w": 256,
+   "tex_h": 256,
+   "tex_source": "path ludeon.rimworld.odyssey/textures/things/building/orbitalscanner/orbitalscanner_south.png",
+   "px_per_cell": 85.3
+  },
+  {
+   "def": "OxygenPump",
+   "label": "oxygen pump",
+   "package": "ludeon.rimworld.odyssey",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 150,
+   "designationCategory": "VGE_Vacuum",
+   "buildable": true,
+   "size": [
+    1,
+    1
+   ],
+   "drawSize": [
+    1,
+    1
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Structures/OxygenPump/OxygenPump",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Structures/OxygenPump/OxygenPump",
+   "texPath_changed_live": false,
+   "tex_w": 64,
+   "tex_h": 64,
+   "tex_source": "stem ludeon.rimworld.odyssey/textures/things/building/oxygenpump/oxygenpump_south.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "PilotSubpersonaCore",
+   "label": "pilot subpersona core",
+   "package": "ludeon.rimworld.odyssey",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 30,
+   "designationCategory": "Odyssey",
+   "buildable": true,
+   "size": [
+    1,
+    1
+   ],
+   "drawSize": [
+    1,
+    1
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/PilotSubpersonaCore",
+   "graphicClass": "Graphic_Single",
+   "texPath_live": "Things/Building/PilotSubpersonaCore",
+   "texPath_changed_live": false,
+   "tex_w": 64,
+   "tex_h": 64,
+   "tex_source": "path ludeon.rimworld.odyssey/textures/things/building/pilotsubpersonacore.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "VacBarrier",
+   "label": "vac barrier",
+   "package": "ludeon.rimworld.odyssey",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 50,
+   "designationCategory": "VGE_Vacuum",
+   "buildable": true,
+   "size": [
+    1,
+    1
+   ],
+   "drawSize": [
+    2,
+    2
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Structures/VacBarriers/VacBarrier_Barrier",
+   "graphicClass": "Graphic_Multi",
+   "texPath_live": "Things/Structures/VacBarriers/VacBarrier_Barrier",
+   "texPath_changed_live": false,
+   "tex_w": 128,
+   "tex_h": 128,
+   "tex_source": "stem ludeon.rimworld.odyssey/textures/things/building/vacbarrier/vacbarrier_barrier_south.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "ShipLandingBeacon",
+   "label": "ship landing beacon",
+   "package": "ludeon.rimworld.royalty",
+   "group": "other",
+   "power_role": [
+    "consumer"
+   ],
+   "basePowerConsumption": 50,
+   "designationCategory": "Misc",
+   "buildable": true,
+   "size": [
+    1,
+    1
+   ],
+   "drawSize": [
+    1,
+    1
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Misc/ShipLandingBeacon",
+   "graphicClass": "Graphic_Single",
+   "texPath_live": "Things/Building/Misc/ShipLandingBeacon",
+   "texPath_changed_live": false,
+   "tex_w": 64,
+   "tex_h": 64,
+   "tex_source": "path ludeon.rimworld.royalty/textures/things/building/misc/shiplandingbeacon.png",
+   "px_per_cell": 64.0
+  },
+  {
+   "def": "UnstablePowerCell",
+   "label": "unstable power cell",
+   "package": "ludeon.rimworld.royalty",
+   "group": "generation",
+   "power_role": [
+    "generation"
+   ],
+   "basePowerConsumption": -400,
+   "designationCategory": null,
+   "buildable": false,
+   "size": [
+    1,
+    1
+   ],
+   "drawSize": [
+    1,
+    1
+   ],
+   "drawSize_source": "live capture",
+   "texPath": "Things/Building/Mech/UnstablePowerCell",
+   "graphicClass": "Graphic_Single",
+   "texPath_live": "Things/Building/Mech/UnstablePowerCell",
+   "texPath_changed_live": false,
+   "tex_w": 64,
+   "tex_h": 64,
+   "tex_source": "path ludeon.rimworld.royalty/textures/things/building/mech/unstablepowercell.png",
+   "px_per_cell": 64.0
+  }
+ ]
+}
