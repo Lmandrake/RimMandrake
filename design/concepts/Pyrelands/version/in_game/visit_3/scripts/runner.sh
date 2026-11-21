@@ -6,7 +6,7 @@ cd "$(dirname "$0")/../../../../../../.."
 eval "$(python3 src/RimMandrake/Utils/game_instance.py env b)"
 export RM_HOST_GUARD_GEN=${RM_HOST_GUARD_GEN:-17}
 export RM_BRIDGE_LINEAGE=${RM_BRIDGE_LINEAGE:-pv3_visit3}   # one sequential driver: its own finished calls never refuse it
-export WSLENV="$WSLENV:RM_HOST_GUARD_GEN:RM_BRIDGE_LINEAGE:PYRE_WALK:PYRE_PLANT_ASHFALL_STRIKE:PYRE_PLANT_NO_RAIN_GATE_OFF:PYRE_PLANT_CONTROL_HAS_SPRAYER"
+export WSLENV="$WSLENV:RM_HOST_GUARD_GEN:RM_BRIDGE_LINEAGE:PYRE_WALK:PYRE_PLANT_ASHFALL_STRIKE:PYRE_PLANT_NO_RAIN_GATE_OFF:PYRE_PLANT_CONTROL_HAS_SPRAYER:PYRE_PLANT_RING_GAP"
 V=design/concepts/Pyrelands/version/in_game/visit_3
 E=$V/evidence
 TAG=$1; shift

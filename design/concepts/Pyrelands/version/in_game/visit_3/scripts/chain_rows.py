@@ -8,7 +8,8 @@ for p in sorted(glob.glob(os.path.join(E, "pv3_*.json"))):
     if want and c not in want:
         continue
     d = json.load(open(p))
-    rows = [r for r in d.get("components", []) if r.get("chain") == c]
+    sel = d.get("chains_selected") or [c]
+    rows = [r for r in d.get("components", []) if r.get("chain") in sel]
     if d.get("refused"):
         print("%s REFUSED %s" % (c, d["refused"]))
     for r in rows:

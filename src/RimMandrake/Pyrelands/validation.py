@@ -264,6 +264,32 @@ def _top_up(t, vitals):
             row["food"] = 1.0
 
 
+def _subject_row(t, pid):
+    """The pawn's list_pawns row with health, corpses included, so a dead subject reads dead rather than absent (an absent
+    row read as 'the hediff is gone' would pass a patient the venom killed). None only when it is on no list."""
+    r = t.bridge_call("jawa/list_pawns", includeHealth=True, includeCorpses=True, limit=500)
+    if not _live(t):
+        return None
+    for p in (_ok(r, "list_pawns").get("pawns") or []):
+        if p.get("id") == pid:
+            return p
+    return None
+
+
+def _retire_venom_patients(t):
+    """Kill every living colonist that carries the venom (the earlier rows' patients). -> their ids."""
+    r = t.bridge_call("jawa/list_pawns", includeHealth=True, limit=500)
+    if not _live(t):
+        return []
+    out = []
+    for p in (_ok(r, "list_pawns").get("pawns") or []):
+        if p.get("isPlayer") and not p.get("dead") and _has_hediff(p, VENOM):
+            _ok(t.bridge_call("jawa/damage", damageDef="Bullet", amount=5000, thingId=p["id"], allowColonists=True),
+                "damage(retire %s)" % p["id"])
+            out.append(p["id"])
+    return out
+
+
 @contextlib.contextmanager
 def _comp(t, name, **kw):
     """t.component() plus the `_unmeasured` fix-up: the verdict stays UNMEASURED, its detail
@@ -287,6 +313,9 @@ def _comp(t, name, **kw):
     if pre is not None:
         post = _vitals(t, force=True) or {}
         damage = vitals_damage(pre, post)
+        measured = _GEN.pop("measured_death", None)
+        if measured:   # the row's own subject: its death or fall is what the row measures, not damage to the test
+            damage = [d for d in damage if not d.startswith(measured + " ")]
         off = _offsite(t)
         if off:     # PYRE_SITE_VITALS_REPAIR_HALF_THE_COLONY: colonists the current-map reads cannot see are unwatched
             damage = damage + ["%d colonist(s) live OFF the site map, unfed and unwatched (retire_offsite_colonies)" % off]
@@ -3470,7 +3499,8 @@ def venom_rises(series, min_rise=0.02):
 
 # The bite rows HURT their own test colonist on purpose: the vitals latch's default kinds stop on that very bite ("hurt",
 # and "downed" from the bleeding over six hours), which read the row UNMEASURED before it could ask (visit 1, 2026-11-15).
-# Every other kind still stops the advance (death included). Used only by the flamefang_venom chain.
+# Every other kind still stops the advance (death included). Used by the flamefang_venom chain and the firefoam harvest
+# window (_harvest_through_fire), whose rows measure a burn.
 BITE_STOP_ON = "death,colonist_hostile,hostile_arrival,threat_structure,modal_stuck,colony_loss,starving,mental," \
                "clock_discontinuity,specimen_lost,coverage,cancel"
 
@@ -3713,8 +3743,10 @@ def burn_injuries(row):
             if isinstance(h, dict) and "Burn" in str(h.get("def") or h.get("defName") or h.get("hediff") or "")]
 
 
-def _stage_burning_fruit(t, x, z):
-    """A 9x9 grass burn, ripe scorch-fruit in its 3x3 centre, a fire ring on every path in. -> (fruit ids, ring rect)."""
+def _stage_burning_fruit(t, x, z, west_gap=False):
+    """A 9x9 grass burn, ripe scorch-fruit in its 3x3 centre, a fire ring on every path in. -> (fruit ids, ring rect).
+    west_gap: the planted state of the control (PLANT_RING_GAP_ENV): the west edge, the colonist's side, is left unlit,
+    as the visit-2 site was, so the fruit is reachable without crossing fire."""
     rect = "%d,%d,9,9" % (x, z)
     t.bridge_call("jawa/weather_set", weather="Clear", lockWeather=True)
     _plants(t, "RM_FE_Plant_EmberGrass", (x, z, 9, 9))
@@ -3722,6 +3754,8 @@ def _stage_burning_fruit(t, x, z):
     # the ring: all four edges. SITE (visit 2, 2026-11-20): only the bottom strip (x, z, 9, 2) was lit, and the control
     # colonist walked in from the open side and took the fruit unburned
     for edge in ((x, z, 9, 2), (x, z + 7, 9, 2), (x, z + 2, 2, 5), (x + 7, z + 2, 2, 5)):
+        if west_gap and edge == (x, z + 2, 2, 5):
+            continue
         _fire(t, edge)
     _wait(t, 250)
     fruit = [p.get("id") for p in _things(t, FRUIT_PLANT, "%d,%d,3,3" % (x + 3, z + 3), limit=20)]
@@ -3729,7 +3763,7 @@ def _stage_burning_fruit(t, x, z):
     return fruit, fires
 
 
-PLANT_CONTROL_HAS_SPRAYER_ENV = "PYRE_PLANT_CONTROL_HAS_SPRAYER"   # planted state for the repaired control row
+PLANT_RING_GAP_ENV = "PYRE_PLANT_RING_GAP"   # planted state for the repaired control row: the ring open on one side
 HARVEST_SAMPLE_TICKS = 250      # one sample per ring-fire read: a 2-cell grass ring burns out inside the 3000-tick window
 
 
@@ -3747,22 +3781,36 @@ def _harvest_through_fire(t, cid, fruit, ticks=3000, ring=None):
     out, done = [], 0
     while done < ticks:
         step = min(HARVEST_SAMPLE_TICKS, ticks - done)
-        _wait(t, step)
+        # a burn is what this row measures (the sprayer row's "no burn injury", the control's "or comes back burned"),
+        # so the advance does not stop on it: the bite rows' stop list (every other kind still stops it). Visit 3: the
+        # default latch stopped both sampled runs at tick 240 on the sprayer colonist's hand burn, reading UNMEASURED.
+        _bite_wait(t, step)
         done += step
         if not _live(t):
             continue
         left = [p.get("id") for p in _things(t, FRUIT_PLANT, "%d,%d,3,3" % (x + 3, z + 3), limit=20)]
         row = _pawn_row(t, cid, health=True) or {}
+        cx, cz = row.get("x"), row.get("z")
+        # "taken" is only "gone from the 3x3": a fruit plant the fire burns is gone too (visit 3: the control colonist
+        # never left its cell and a fruit still went at tick 2000). A harvest is the colonist inside the ring's interior,
+        # or a yield stack appearing by the burn.
+        inside = isinstance(cx, int) and isinstance(cz, int) and x + 2 <= cx <= x + 6 and z + 2 <= cz <= z + 6
         out.append({"tick": done, "fires": _count(t, "Fire", ring), "fruitLeft": len(left),
-                    "taken": [f for f in fruit[:3] if f not in left], "cell": [row.get("x"), row.get("z")],
-                    "job": row.get("job") or row.get("curJob"), "burns": len(burn_injuries(row))})
+                    "taken": [f for f in fruit[:3] if f not in left], "cell": [cx, cz], "inside": inside,
+                    "yield": _count(t, "RM_FE_ScorchFruitYield", "%d,%d,15,15" % (x - 3, z - 3)),
+                    "job": _job_of(t, cid), "burns": len(burn_injuries(row))})
     return out
 
 
-def taken_while_burning(timeline):
-    """The first timeline sample at which a fruit was gone while the ring still held fire, or None. Pure."""
+FOAM_FILTH = "Filth_FireFoam"   # what RM_FE_Bullet_FirefoamSplash leaves (vanilla firefoam filth)
+
+
+def harvested_while_burning(timeline):
+    """The first sample at which the colonist was inside the ring's interior, or a yield stack had appeared beside the
+    burn, while the ring still held fire; or None. Pure."""
+    y0 = (timeline[0].get("yield") or 0) if timeline else 0
     for smp in timeline or []:
-        if smp.get("taken") and (smp.get("fires") or 0) > 0:
+        if (smp.get("fires") or 0) > 0 and (smp.get("inside") or (smp.get("yield") or 0) > y0):
             return smp
     return None
 
@@ -3790,8 +3838,13 @@ def firefoam_sprayer(t):
         timeline = _harvest_through_fire(t, cid, fruit, ring="%d,%d,9,9" % (x, z))
         left = set(p.get("id") for p in _things(t, FRUIT_PLANT, "%d,%d,3,3" % (x + 3, z + 3), limit=20))
         row = _pawn_row(t, cid, health=True)
+        foam = _count(t, FOAM_FILTH, "%d,%d,9,9" % (x, z))
         if _live(t):
             _note(t, "sprayer run timeline (every %d ticks)" % HARVEST_SAMPLE_TICKS, timeline)
+            _note(t, "firefoam on the burn after the sprayer run (%s cells)" % FOAM_FILTH, foam)
+            if not foam:
+                _fail("the colonist carrying the sprayer laid no firefoam on the burn (%s 0 in the 9x9): it did not foam "
+                      "a way through; jobs seen %r" % (FOAM_FILTH, sorted(set(str(s_.get("job")) for s_ in timeline))))
             _note(t, "sprayer run", {"spawned": spr, "gun": gun, "fruit": fruit, "left": sorted(left),
                                      "burns": burn_injuries(row)})
             if not gun:
@@ -3803,16 +3856,12 @@ def firefoam_sprayer(t):
         _extinguish(t)
     _independent(t)
     with _comp(t, "without_sprayer_fire_stops_or_burns"):
-        fruit, fires = _stage_burning_fruit(t, x, z)
+        gap = os.environ.get(PLANT_RING_GAP_ENV) == "1"
+        if gap:
+            _note(t, "PLANTED FAULT", "%s=1: the control's ring is left open on the west, the colonist's side"
+                  % PLANT_RING_GAP_ENV)
+        fruit, fires = _stage_burning_fruit(t, x, z, west_gap=gap)
         cid = _spawn_colonist(t, x - 3, z + 4)
-        if os.environ.get(PLANT_CONTROL_HAS_SPRAYER_ENV) == "1":
-            # planted state for the repaired control: this colonist is handed the sprayer, so it crosses the burning
-            # ring unburned, which is exactly what the control must catch
-            _note(t, "PLANTED FAULT", "%s=1: the control colonist holds the sprayer" % PLANT_CONTROL_HAS_SPRAYER_ENV)
-            t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d,1" % (SPRAYER, x - 3, z + 4))
-            g2 = [g.get("id") for g in _things(t, SPRAYER, "%d,%d,1,1" % (x - 3, z + 4), limit=5)]
-            if g2:
-                t.bridge_call("jawa/ordered_job", pawnId=cid, jobDef="Equip", targetAId=g2[0], waitTicks=120)
         timeline = _harvest_through_fire(t, cid, fruit, ring="%d,%d,9,9" % (x, z))
         left = set(p.get("id") for p in _things(t, FRUIT_PLANT, "%d,%d,3,3" % (x + 3, z + 3), limit=20))
         row = _pawn_row(t, cid, health=True)
@@ -3826,11 +3875,11 @@ def firefoam_sprayer(t):
                 _unmeasured(t, "the harvest window was not sampled, so when the fruit was taken is unknown")
             # the fire stops the colonist when no fruit is taken while the ring still burns; a fruit taken from cold
             # ground after the ring burned out is not a path through fire
-            hot = taken_while_burning(timeline)
+            hot = harvested_while_burning(timeline)
             if hot and not burn_injuries(row):
-                _fail("without the sprayer the colonist took fruit unburned while %d fires still burned in the ring "
-                      "(tick %d): the fruit was reachable without crossing fire, so the sprayer row proves nothing"
-                      % (hot.get("fires"), hot.get("tick")))
+                _fail("without the sprayer the colonist reached the fruit unburned while %d fires still burned in the ring "
+                      "(tick %d, cell %r, yield %r): the fruit was reachable without crossing fire, so the sprayer row "
+                      "proves nothing" % (hot.get("fires"), hot.get("tick"), hot.get("cell"), hot.get("yield")))
 
 
 WALK_DAYS = 7          # each half of the two-week walk
@@ -4777,20 +4826,35 @@ def _ten_flamefang_venom(t):
             if not ok:
                 _fail(why)
     _independent(t)
+    # SITE (Pyrelands visit 3, 2026-11-21): the earlier rows' envenomed patients stayed on the map untended through this
+    # row's ten days; one died of the venom and two were downed, which voided the row (RESTART). They are not its
+    # subject, so they leave the map before it starts.
+    retired = _retire_venom_patients(t)
     with _comp(t, "venom_wait_out"):
+        if _live(t):
+            _note(t, "earlier venom patients retired before the wait-out", retired)
         cid = _spawn_colonist(t, x + 10, z + 8)
         row = _bite_until(t, cid, "RM_Flamefang", x + 10, z + 8, hediff=VENOM, clear_wounds=True)
-        days = []
-        for _ in range(10):
-            s = hediff_severity(_pawn_row(t, cid, health=True), VENOM)
+        # the subject's own death by the venom is this row's answer (a FAIL), not damage to the test
+        _GEN["measured_death"] = cid
+        days, died = [], None
+        for day in range(10):
+            sub = _subject_row(t, cid)
+            if _live(t) and (sub is None or sub.get("dead")):
+                died = day
+                break
+            s = hediff_severity(sub, VENOM)
             days.append(s)
             if _live(t) and s is None:
                 break
             _bite_wait(t, TEN_DAY)
         if _live(t):
-            _note(t, "untended venom severity each day until it goes (immunity unread)", days)
+            _note(t, "untended venom severity each day until it goes (immunity unread)", {"days": days, "diedOnDay": died})
             if not _has_hediff(row, VENOM):
                 _unmeasured(t, "the wait-out colonist was never envenomed")
+            if died is not None:
+                _fail("the untended colonist died of %s by day %d (severity each day %r): the venom killed before "
+                      "immunity completed" % (VENOM, died, days))
             if days[-1] is not None:
                 _fail("the venom was still present after 10 days: %r" % days)
 

@@ -29,3 +29,27 @@ DONE scorchfruit_fire_born reload_rc=0 rc=1 76s 09:43:06
 DONE scorchfruit_produces reload_rc=0 rc=1 46s 09:43:52
 DONE ullai_and_giant (batch2 child, runner stopped) 09:44:35
 START batch3 2026-11-21 09:44:48
+DONE firehawk@firehawk_rerun reload_rc=0 rc=1 106s 09:46:34
+DONE ruins@ruins_repaired reload_rc=0 rc=1 20s 09:46:54
+DONE +script:design/concepts/Pyrelands/version/in_game/visit_3/scripts/plant_ruins_unpaint.py@plant_ruins_unpaint reload_rc=skipped rc=0 1s 09:46:55
+DONE +ruins@ruins_planted reload_rc=skipped rc=1 7s 09:47:02
+DONE no_ordinary_rain@no_ordinary_rain_repaired reload_rc=0 rc=1 32s 09:47:34
+DONE firefoam_sprayer@firefoam_sprayer_sampled reload_rc=0 rc=1 38s 09:48:12
+END batch3 2026-11-21 09:48:12
+START batch3b 2026-11-21 09:48:12
+DONE no_ordinary_rain@no_ordinary_rain_planted reload_rc=0 rc=1 28s 09:48:40
+END batch3b 2026-11-21 09:48:40
+START batch3c 2026-11-21 09:48:40
+DONE firefoam_sprayer@firefoam_sprayer_planted reload_rc=0 rc=1 37s 09:49:17
+END batch3c 2026-11-21 09:49:17
+START batch3d 2026-11-21 09:49:17
+DONE cinderfall@cinderfall_planted_strike reload_rc=0 rc=1 400s 09:55:57
+END batch3d 2026-11-21 09:55:57
+START batch4a 2026-11-21 09:55:57
+DONE firefoam_sprayer@firefoam_sprayer_sampled2 reload_rc=0 rc=1 52s 09:56:49
+END batch4a 2026-11-21 09:56:49
+START batch4b 2026-11-21 09:56:49
+DONE firefoam_sprayer@firefoam_sprayer_planted2 reload_rc=0 rc=1 65s 09:57:54
+END batch4b 2026-11-21 09:57:54
+START batch4c 2026-11-21 09:57:54
+DONE flamefang_venom reload_rc=0 rc=1 150s 10:00:24
