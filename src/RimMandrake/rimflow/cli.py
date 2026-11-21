@@ -2906,8 +2906,11 @@ def _close_gate(args, it, sha, no_code):
     # never refused for a missing level-tagged pass: the close goes, recorded `uncheckedLifted` (owner 2026-11-20)
     word = bool(model.OWNER_SAID or model.BY_CARD or (args.seat_is_owner and not model.PER_RULING)
                 or getattr(model, "PER_RULING", "") == conductor_acts.RULING)   # any --per-ruling stamps OWNER
-    found = model.close_refusals(it, sha, no_code, owner=said, word=word)
-    args.unchecked_lifted = bool(word and not no_code and any(
+    # a missing level-tagged pass is a fault of form for every closer (standing_rulings.md §A fault of form is repaired
+    # where it is found; three runs on 2026-11-20 typed a `verify --level L0` by hand only to pass it): the close goes,
+    # noted and recorded `uncheckedLifted`. A fail, an owed criterion and the guard still refuse: they are the work.
+    found = [f for f in model.close_refusals(it, sha, no_code, owner=said, word=word) if f[0] != "unchecked"]
+    args.unchecked_lifted = bool(not no_code and any(
         k == "unchecked" for k, _ in model.run_refusals(it, sha, no_code)))
     if not no_code:
         found += _sha_refusals(args.id, sha, said or model.AGENT_WHY)
@@ -2973,8 +2976,9 @@ def cmd_close(args, seat):
     ev = {"seat": seat, "event": "close", "id": args.id, "sha": sha}
     if getattr(args, "unchecked_lifted", False):
         ev["uncheckedLifted"] = True
-        print("close: %s: no level-tagged pass on %s; closed on %s, recorded (uncheckedLifted)"
-              % (args.id, str(sha)[:12], "his word" if not model.PER_RULING else "the Conductor's act"), file=sys.stderr)
+        import form_fault as FF
+        FF.repaired("%s: no level-tagged pass on %s" % (args.id, str(sha)[:12]),
+                    "closed on the closer's own attestation, recorded (uncheckedLifted)", stream=sys.stderr)
     if args.reason:
         ev["reason"] = args.reason
     if no_code:

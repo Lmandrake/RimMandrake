@@ -2655,7 +2655,7 @@ def _fold_close_gate(ev, item):
     said = _owner_word(ev)
     word = his_or_conductor(ev)
     found = [why for k, why in run_refusals(item, ev["sha"]) if not (k == "fail" and said)
-             and not (k == "unchecked" and word)]
+             and not (k == "unchecked" and (word or ev.get("uncheckedLifted")))]
     if found:
         raise TransitionError("%s: close at %s has not earned done: %s" % (item.id, str(ev["sha"])[:12], "; ".join(found)))
 

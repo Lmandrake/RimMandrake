@@ -142,10 +142,14 @@ def s1(a, b, led):
     refused("owed criteria with --no-code", "owed", "close", i, "--no-code", "skip it")
     refused("owed criteria with the owner's word", "owed", "close", i, "--sha", a, "--per-ruling", i)
 
+    # 2026-11-21 (form_fault): a missing level-tagged pass is a fault of form: the close goes, noted, recorded
+    # uncheckedLifted (it was refused, and three runs typed an L0 verify by hand to pass it)
     i = new("UNCHECKED")
-    refused("no check run on that sha", "unchecked", "close", i, "--sha", a)
     passed(i, b)
-    refused("a check on ANOTHER sha", "unchecked", "close", i, "--sha", a)
+    rc, out = cli("close", i, "--sha", a)
+    last = [e for e in events() if e.get("event") == "close"][-1]
+    check(rc == 0 and item(i).state == "done" and last.get("uncheckedLifted") is True and "NOTE (form, repaired)" in out,
+          "no check on that sha (one on ANOTHER sha): the close goes, noted, recorded uncheckedLifted (rc %d)" % rc)
 
     i = new("MASKED_FAIL")
     passed(i, a)
@@ -155,7 +159,8 @@ def s1(a, b, led):
 
     i = built("L0_ONLY", a, ("C1", "L0"))
     check(item(i).state == "built" and item(i).held, "the setup: an L0 manifest stops at built, no run on the sha")
-    refused("a manifest is no check on the sha", "unchecked", "close", i, "--sha", a)
+    rc, _ = cli("close", i, "--sha", a)
+    check(rc == 0 and item(i).state == "done", "a manifest with no check on the sha: the close goes, recorded (rc %d)" % rc)
 
     i = new("NEWER_FAIL")
     passed(i, a)
@@ -360,12 +365,10 @@ def s6_every_way_to_done(a, b, led):
     check(held(i), "a fail newer than the pass holds `implemented` too")
 
     i = new("REFUSED_CLOSE_SIDESTEP")
-    refused("the setup: an unchecked close", "unchecked", "close", i, "--sha", b)
     ok("implemented", i, "--sha", b, "--none-owed")
-    check(held(i), "a refused close is not sidestepped by `implemented --none-owed`")
-    refused("nor closed from built while it holds", "unchecked", "close", i, "--sha", b)
-    ok("close", i, "--no-code", "nothing to check, said out loud")
-    check(item(i).state == "done" and not item(i).held, "--no-code remains the one door, and it lifts the hold")
+    check(held(i), "`implemented --none-owed` with no pass on the sha holds at built")
+    rc, _ = cli("close", i, "--sha", b)
+    check(rc == 0 and item(i).state == "done", "a close from built with no pass goes, recorded uncheckedLifted (rc %d)" % rc)
 
     i = new("LEDGER_ONLY_NONE_OWED")
     refused("`implemented` at a ledger-only sha, none owed", "nothing but the ledger", "implemented", i, "--sha", led, "--none-owed")
