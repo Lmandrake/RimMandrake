@@ -1,4 +1,17 @@
 {
+ "PY_FLOWWORKS_UNDERLIQUID_PARITY": {
+  "at": "2026-11-21T07:49:57Z",
+  "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_underliquid_parity.py",
+  "file": "src/RimMandrake/FlowWorks/selftest_flowworks_underliquid_parity.py",
+  "last": "RESULT RED 1",
+  "patch": "--- a/src/RimMandrake/FlowWorks/Source/Superdeep/RM_UnderLiquid.cs\n+++ b/src/RimMandrake/FlowWorks/Source/Superdeep/RM_UnderLiquid.cs\n@@ -97,7 +97,7 @@\n \t\t// the experience numbers; Mod Settings write them (RimMandrakeFlowWorksSettings.PushUnderLiquid), these are the\n \t\t// shipped defaults\n \t\tpublic const float DefaultDeepOpacity = 0.90f;\n-\t\tpublic const float DefaultShallowOpacity = 0.35f;\n+\t\tpublic const float DefaultShallowOpacity = 0.6f;\n \t\tpublic const float DefaultFullMetres = 4.0f;\n \t\tpublic const float DefaultDarken = 0.6f;\n \t\tpublic const float DefaultThingShadowAlpha = 0.30f;\n",
+  "patch_files": [
+   "src/RimMandrake/FlowWorks/Source/Superdeep/RM_UnderLiquid.cs"
+  ],
+  "patch_sha": "2d06843bd91769b1",
+  "rc": 1,
+  "test_blob": "7b1488674bd548217fadf4d07fc4c99a5c37ebf1"
+ },
  "PY_SETTINGS_REGISTRY": {
   "at": "2026-11-18T21:47:10Z",
   "command": "python3 src/RimMandrake/FlowWorks/northstar/selftest_settings_registry.py",
