@@ -1,7 +1,7 @@
 # BOUNDARY: a refused launch that waits is not a fault; an in-game visit deploys what the game loads, Design Version 0.1.0
 
 Code: `src/RimMandrake/rimflow/maturation.py` (`deploy_state`, `mod_deployed`, `deploy_repair`, the in-game branch of
-`launch_mod`, `WAIT_MARK`), `src/RimMandrake/rimflow/maturation_autonomy.py` (`wait_refusal`, `_retriable`,
+`launch_mod`, `WAIT_MARK`, `_companion_cmd`), `src/RimMandrake/rimflow/maturation_autonomy.py` (`wait_refusal`, `_retriable`,
 `_execute_one`), `src/RimMandrake/rimflow/maturation_dispatch.py` (`retriable`, `still_retried`, `launch_counted`,
 `drain_gate` in `_tick`) and `src/RimMandrake/rimflow/run_void.py` (`sync_system`'s never-started branch).
 Items: `RIMMANDRAKE_DEPLOY_BEFORE_GAME_VISIT_PYRELANDS_REFUSED_THRICE` and
@@ -65,6 +65,19 @@ because the composed Baroque Biomes copy differed from the repo, by one dev scri
 - **a-seatless-tick-stops-its-game.** The deploy's game stop hands the launch's seat to `game_instance.stop`, which
   passes it to `rimflow bridge idle` as `--seat`: the systemd tick names no seat in its env, and a seatless reading
   refused "I cannot tell which seat I am" (GimmeSomeSlack visit 2, 2026-11-21).
+- **a-stale-companion-rebuilds-with-the-game-down.** A JawaBench companion that `companion_current` does not read
+  FRESH, with the bridge free: the game is stopped if it is up, `bridgetools/build.py --gm --apply --instance <game>`
+  runs once for the visit's game, the game is started again if it was up, the companion is read again, and the visit
+  launches. On 2026-11-21 FlowWorks visit 3 was refused for a STALE companion with the bridge free and the fix named,
+  and the tick never sends a refused input again (item RIMMANDRAKE_REPAIR_FLOWWORKS_FORM_REFUSAL_AT_THE_RUN_FOUR).
+  `build.py` reads only its own game's process: game b up never refuses game a's companion deploy
+  (`game_a_deploy_ignores_game_b` in `src/RimMandrake/bridgetools/selftest_build_deploy.py`).
+- **a-stale-companion-and-drift-share-one-restart.** A stale companion and loaded drift: one stop, the rebuild and the
+  deploy, one start.
+- **a-failed-companion-build-is-a-fault.** A rebuild that exits non-zero, or a companion still not current after it:
+  REFUSED, naming the cause; not a wait.
+- **a-stale-companion-on-a-held-game-waits.** His hold on the game: no rebuild and no stop; the refusal starts with
+  `WAIT_MARK`.
 - **a-failed-deploy-is-a-fault.** A deploy that exits non-zero: REFUSED, naming the deploy failure; not a wait.
 - **a-blind-plan-is-could-not-look.** A plan that cannot run, or prints neither last line: REFUSED as could-not-look,
   never read as current, and no deploy is tried.
@@ -90,5 +103,9 @@ because the composed Baroque Biomes copy differed from the repo, by one dev scri
   written while the game holds it fails, and a game that ignores the close would hold the tick. Evidence: none
   measured for RimWorld's close time on this machine; the limit only bounds the wait, and the `/F` stop it falls back
   to is the one `game_instance.stop --force` already offers.
+
+- The deploy and the companion rebuild each run for up to 1800 s. Danger: a hung `deploy_custom_mods.py` or
+  `build.py` (a stuck Windows build server) would hold the tick for ever. Evidence: none measured for a hang; the
+  limit is far above a normal run (a companion build is minutes), so it bounds a hang only.
 
 Later lists beside this page: `polish.md`.

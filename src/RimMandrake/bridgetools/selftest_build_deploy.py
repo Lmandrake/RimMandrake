@@ -115,6 +115,30 @@ def foreign_checkout_status(B, tmp):
         B.REPO_ROOT, B.PROJECT = saved
 
 
+def game_a_deploy_ignores_game_b(B):
+    """A game-b process never maps game a's companion (each game has its own install and BridgeTools), so with game b up
+    and game a down, game a's deploy is not refused (RIMMANDRAKE_REPAIR_FLOWWORKS_FORM_REFUSAL_AT_THE_RUN_FOUR: the
+    in-game launch's companion repair stops game a only). A game a row, or a row nobody can attribute, still counts."""
+    real = load()
+
+    class GI:
+        rows = []
+
+        def games(self):
+            return self.rows
+
+        def running(self, name=None):
+            return any(g["instance"] in (name, None) for g in self.rows)
+    gi = GI()
+    real._gi, real.GAME = (lambda: gi), "a"
+    got = []
+    for rows in ([{"instance": "b"}], [{"instance": "a"}, {"instance": "b"}], [{"instance": None}], []):
+        gi.rows = rows
+        got.append(real.game_running())
+    check(got == [False, True, True, False], "game_a_deploy_ignores_game_b",
+          "b only / a+b / unattributed / none read %s, want [False, True, True, False]" % got)
+
+
 def main():
     B = load()
     tmp = tempfile.mkdtemp(prefix="selftest_build_deploy_")
@@ -209,6 +233,7 @@ def main():
         check("JawaBench.Old.dll" in out, "plan_names_stale_siblings", out[-200:])
         clean_waits_for_stage_lock(B, tmp)
         foreign_checkout_status(B, tmp)
+        game_a_deploy_ignores_game_b(B)
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
     print("build deploy: %d failure(s)" % len(fails))

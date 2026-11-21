@@ -380,12 +380,11 @@ def build_stamp(blob):
 
 
 def game_running():
-    """-> True/False from the process list, or None when it cannot be read (then the copy's own refusal decides). Game
-    a: any game up (a game nobody can attribute counts); a named game: that game, because game a's process never loads
-    b's own BridgeTools folder."""
+    """-> True/False from the process list, or None when it cannot be read (then the copy's own refusal decides). The
+    deploy's own game (a game nobody can attribute counts): each game maps only its own install's BridgeTools, so game
+    b up never refuses game a's deploy (RIMMANDRAKE_REPAIR_FLOWWORKS_FORM_REFUSAL_AT_THE_RUN_FOUR)."""
     try:
-        game_instance = _gi()
-        return game_instance.running(GAME) if GAME != "a" else bool(game_instance.games())
+        return _gi().running(GAME)
     except Exception as e:  # noqa: BLE001 - an unreadable list is UNMEASURED, said aloud, never "no game"
         print("  game process check UNMEASURED (%s: %s); the replace itself still refuses a mapped DLL"
               % (type(e).__name__, e))

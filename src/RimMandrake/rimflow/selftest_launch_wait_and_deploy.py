@@ -107,7 +107,8 @@ class Fixture:
     def __init__(self):
         self.root = tempfile.mkdtemp(prefix="launch_wait_deploy_")
         self.keys = ("MATURATION_DETACHED_HELPER", "FAKE_DH_LOG", "MATURATION_BRIEF_DIR", "MATURATION_CLOCK",
-                     "MATURATION_DEPLOY_PLAN", "FAKE_PLAN_DIR", "FAKE_APPLY_RC", M.COMPANION_ENV)
+                     "MATURATION_DEPLOY_PLAN", "FAKE_PLAN_DIR", "FAKE_APPLY_RC", M.COMPANION_ENV,
+                     "MATURATION_COMPANION_BUILD", "FAKE_BUILD_RC")
         self.was = {k: os.environ.get(k) for k in self.keys}
         self.was.update(ST.isolate(self.root))
         ST.copy_ingame(self.root)
@@ -402,12 +403,113 @@ def t_a_seatless_tick_stops_its_game(fx):
           "(seated %r; bare %r)" % (seated, (bare or "")[:120]))
 
 
+FAKE_BUILD = r"""#!/usr/bin/env python3
+import os, sys
+d = os.environ["FAKE_PLAN_DIR"]
+with open(os.path.join(d, "build.log"), "a") as f:
+    f.write(" ".join(sys.argv[1:]) + "\n")
+rc = int(os.environ.get("FAKE_BUILD_RC", "0"))
+if rc:
+    print("CANNOT DEPLOY WHILE RIMWORLD IS RUNNING (the process list shows it). Nothing was written.")
+    sys.exit(rc)
+open(os.path.join(d, "built"), "w").close()
+print("deployed. RESTART RIMWORLD")
+"""
+
+
+class Companion:
+    """A companion reader: STALE until the fake build has run (its `built` marker), then FRESH; `stays` keeps it STALE."""
+
+    def __init__(self, fx, stays=False):
+        self.fx, self.stays, self.reads = fx, stays, []
+        for n in ("built", "build.log"):
+            if os.path.exists(os.path.join(fx.pd, n)):
+                os.remove(os.path.join(fx.pd, n))
+        b = os.path.join(fx.root, "fake_build.py")
+        with open(b, "w") as f:
+            f.write(FAKE_BUILD)
+        os.environ[M.COMPANION_BUILD_ENV] = "%s %s" % (sys.executable, b)
+
+    def __call__(self, game="a"):
+        self.reads.append(game)
+        if os.path.exists(os.path.join(self.fx.pd, "built")) and not self.stays:
+            return True, "FRESH (stand-in)"
+        return False, "STALE /x/JawaBench.BridgeTools.dll (stand-in)"
+
+    def builds(self):
+        p = os.path.join(self.fx.pd, "build.log")
+        return open(p).read().splitlines() if os.path.exists(p) else []
+
+
+def companion_launch(fx, comp, g, game="a"):
+    return M.launch_mod(fx.root, P, 20, ST.ITEM, bridge=lambda p, s, game="a": (True, "free"), companion=comp,
+                        game=game, game_ops=g)
+
+
+def t_a_stale_companion_rebuilds_with_the_game_down(fx):
+    """RIMMANDRAKE_REPAIR_FLOWWORKS_FORM_REFUSAL_AT_THE_RUN_FOUR: FlowWorks visit 3 was refused for a STALE companion
+    with the bridge free and the fix named (`build.py --gm --apply`), and the tick never sends a refused input again."""
+    fx.plan(SYNC)
+    comp, g = Companion(fx), FakeGame(up=True)
+    r = companion_launch(fx, comp, g, game="b")
+    b = comp.builds()
+    check(r[0] == 0 and r[2] and len(fx.launched()) == 1 and len(b) == 1
+          and all(x in b[0].split() for x in ("--gm", "--apply")) and "--instance b" in b[0]
+          and [x[0] for x in g.log] == ["stop", "launch"] and g.up and len(comp.reads) >= 2,
+          "a-stale-companion-rebuilds-with-the-game-down: a STALE companion with the bridge free: game b stopped, "
+          "`build.py --gm --apply --instance b` once, game b started, the companion read again, the visit launches "
+          "(builds %s, game ops %s, reads %s, rc %s %s)" % (b, g.log, comp.reads, r[0], (r[1] or "")[:200]))
+
+
+def t_a_stale_companion_and_drift_share_one_restart(fx):
+    fx.plan(drift("~  Biomes/Pyrelands/Assemblies/FireEcologyHook.dll"), after=SYNC)
+    comp, g = Companion(fx), FakeGame(up=True)
+    r = companion_launch(fx, comp, g)
+    calls = fx.plan_calls()
+    check(r[0] == 0 and r[2] and len(comp.builds()) == 1 and sum("--apply" in c for c in calls) == 1
+          and [x[0] for x in g.log] == ["stop", "launch"],
+          "a-stale-companion-and-drift-share-one-restart: a STALE companion and a drifting DLL: one stop, the rebuild "
+          "and the deploy, one start, then the visit (builds %s, plan calls %s, game ops %s, rc %s %s)" % (
+              comp.builds(), calls, g.log, r[0], (r[1] or "")[:200]))
+
+
+def t_a_failed_companion_build_is_a_fault(fx):
+    fx.plan(SYNC)
+    comp, g = Companion(fx), FakeGame(up=False)
+    os.environ["FAKE_BUILD_RC"] = "1"
+    try:
+        r = companion_launch(fx, comp, g)
+    finally:
+        os.environ.pop("FAKE_BUILD_RC", None)
+    check(r[0] == 2 and r[1].startswith("REFUSED") and "companion" in r[1] and "CANNOT DEPLOY" in r[1]
+          and not fx.launched(),
+          "a-failed-companion-build-is-a-fault: a rebuild that exits non-zero: REFUSED, naming the rebuild and its "
+          "line, not a wait, nothing launched (rc %s %s)" % (r[0], (r[1] or "")[:240]))
+    fx.plan(SYNC)
+    comp, g = Companion(fx, stays=True), FakeGame(up=False)
+    r = companion_launch(fx, comp, g)
+    check(r[0] == 2 and r[1].startswith("REFUSED") and "STALE" in r[1] and not fx.launched(),
+          "a-failed-companion-build-is-a-fault: a companion still STALE after the rebuild: REFUSED, naming it "
+          "(rc %s %s)" % (r[0], (r[1] or "")[:240]))
+
+
+def t_a_stale_companion_on_a_held_game_waits(fx):
+    fx.plan(SYNC)
+    comp, g = Companion(fx), FakeGame(up=True, held="game a is held: pipe off game:a")
+    r = companion_launch(fx, comp, g)
+    check(r[0] == 2 and r[1].startswith(M.WAIT_MARK) and not comp.builds() and g.log == [] and not fx.launched(),
+          "a-stale-companion-on-a-held-game-waits: his hold on the game: no rebuild, no stop, the refusal starts with "
+          "WAIT_MARK (rc %s %s)" % (r[0], (r[1] or "")[:200]))
+
+
 def main():
     fx = Fixture()
     try:
         for t in (t_non_game_drift_launches, t_loaded_drift_deploys_then_launches, t_a_dll_deploys_with_the_game_down,
                   t_a_failed_deploy_is_a_fault, t_a_blind_plan_is_could_not_look, t_a_held_bridge_or_game_waits,
-                  t_a_game_only_def_refuses, t_an_empty_or_add_only_plan, t_a_seatless_tick_stops_its_game):
+                  t_a_game_only_def_refuses, t_an_empty_or_add_only_plan, t_a_seatless_tick_stops_its_game,
+                  t_a_stale_companion_rebuilds_with_the_game_down, t_a_stale_companion_and_drift_share_one_restart,
+                  t_a_failed_companion_build_is_a_fault, t_a_stale_companion_on_a_held_game_waits):
             safe(lambda: t(fx) is None, t.__name__[2:] + " ran")
     finally:
         fx.close()
