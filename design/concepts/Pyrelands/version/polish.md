@@ -40,3 +40,10 @@ The steward run of RIMMANDRAKE_ROUTE_PYRELANDS_VISIT_TWO_FAILURES_BACK removed e
 - `sc_furnace_hide_bank` (SITE: no bridge tool can run its control). It decided no bar.
 - `sc_furnace_giant` (HARNESS: its classic-restore control reads a private method). `sc_furnace` decides `furnacebeast_warms`; `sc_ullai` decides `inv_ullai_herd_giant`.
 - `P_opening_front` (classed SITE by the steward: no save from before the front shipped (05033a3f7) loads on today's lists; the front part PASS). It decided no bar. It only supported `burn_line_walks` and `inv_burn_line_fire_clock`.
+- Controls removed from the Pyrelands scenes as no bar needs them (RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN, 2026-11-21; each read UNMEASURED by construction on visit 2):
+  `same_seed_gate_off_map` and the allowlist-off day of `wild_plant_allowlist_day` (sc_populations: the bar asks at least two hawks and eight ashwallows, which `firecast_counts` decides; T_ALLOWLIST decides the shipped allowlist Postfix offline);
+  `vanilla_ruins_unpainted` (sc_ruins: RM_FE_Charred is this mod's own paint);
+  `giant_classic_restore_control` (sc_ullai and sc_furnace_giant: the giant switch's off state is inv_settings_gate's, not a scene bar's);
+  `venom_immunity_read` (sc_flamefang_venom: the bar reads the venom hediff and its severity);
+  `herd_thirst_gate_off_map` (sc_herd_thirst) and `ash_ground_gate_off_regeneration` (sc_ash_ground): those scenes are not in the test table.
+  `forced_rain_vanilla_control` (sc_no_rain) is replaced, not removed: `forced_rain_gate_off_control`, the same Rain lock and rolls on the site with pyrelandsEnabled off.

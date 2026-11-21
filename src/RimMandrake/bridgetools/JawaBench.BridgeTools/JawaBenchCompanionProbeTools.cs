@@ -148,6 +148,100 @@ namespace JawaBench.BridgeTools
             return ProbeRender(v);
         }
 
+        // RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN (2026-11-21): the Thing twin of comp_read. A Harmony postfix on
+        // an INSTANCE getter of the thing itself (Pyrelands' wet roots on Plant.GrowthRateFactor_Temperature) was readable by no
+        // tool: comp_read reads comps, static_call reaches statics. Reading the property through reflection runs the patched
+        // getter, so the value is the one the game uses.
+        [Tool(
+            "jawa/thing_read",
+            Description =
+                "Reflectively read fields and non-indexer properties of live THINGS themselves (not their comps: comp_read), " +
+                "INCLUDING private members and Harmony-patched instance getters (the getter runs, so a postfix is in the value), " +
+                "e.g. Plant.GrowthRateFactor_Temperature. Select by thingIds (comma ThingIDs), defName (comma list) and/or rect " +
+                "'x,z,w,h' on the CURRENT map; at least one is required (a whole-map read is refused). members = comma list, " +
+                "required. A member a thing does not have is listed under that row's missing[], never dropped; a getter that " +
+                "throws reads 'ERR <type>: <message>'. READ-ONLY.",
+            ResultDescription = "success, rows[] (id, defName, x, z, className, values{name:text}, missing[]), matched, truncated, limit, ticksGame.")]
+        // LIMIT (limit, 200): the danger is a reply that carries every thing on a map (inspect_string's note: a whole-map read
+        // is how the bridge livelocks the game). A cut is reported in the reply's truncated flag, never silent.
+        public static async Task<object> ThingRead(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Comma list of field/property names to read.")] string members,
+            [ToolParameter(Description = "Comma-separated ThingIDs.", DefaultValue = null)] string thingIds = null,
+            [ToolParameter(Description = "Exact defName, or a comma list. Combines with rect.", DefaultValue = null)] string defName = null,
+            [ToolParameter(Description = "Rect filter 'x,z,w,h'. Combines with defName.", DefaultValue = null)] string rect = null,
+            [ToolParameter(Description = "Cap on rows returned; the reply's truncated flag says when the cap cut the list.", DefaultValue = 200)] int limit = 200)
+        {
+            var names = (members ?? "").Split(',').Select(q => q.Trim()).Where(q => q.Length > 0).ToList();
+            if (names.Count == 0) return Fail("Give members (a comma list of field or property names).");
+            var wantIds = new HashSet<string>((thingIds ?? "").Split(',').Select(q => q.Trim()).Where(q => q.Length > 0), StringComparer.OrdinalIgnoreCase);
+            var wantDefs = new HashSet<string>((defName ?? "").Split(',').Select(q => q.Trim()).Where(q => q.Length > 0), StringComparer.OrdinalIgnoreCase);
+            if (wantIds.Count == 0 && wantDefs.Count == 0 && string.IsNullOrWhiteSpace(rect))
+                return Fail("Give thingIds, defName or rect: a whole-map read is refused.");
+            CellRect? box = null;
+            if (!string.IsNullOrWhiteSpace(rect))
+            {
+                var p = rect.Split(',');
+                if (p.Length != 4 || !int.TryParse(p[0].Trim(), out var rx) || !int.TryParse(p[1].Trim(), out var rz)
+                    || !int.TryParse(p[2].Trim(), out var rw) || !int.TryParse(p[3].Trim(), out var rh))
+                    return Fail("rect must be 'x,z,w,h', got '" + rect + "'.");
+                box = new CellRect(rx, rz, rw, rh);
+            }
+            return await ctx.MainThread.InvokeAsync<object>(() =>
+            {
+                if (Current.ProgramState != ProgramState.Playing) return Fail("Not in a loaded game.");
+                Map map = Find.CurrentMap;
+                if (map == null) return Fail("No current map.");
+                const BindingFlags F = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+                var rows = new List<object>();
+                int matched = 0;
+                foreach (Thing t in map.listerThings.AllThings)
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    if (t == null) continue;
+                    if (wantIds.Count > 0 && !wantIds.Contains(t.ThingID)) continue;
+                    if (wantDefs.Count > 0 && !wantDefs.Contains(t.def?.defName ?? "")) continue;
+                    if (box.HasValue && (!t.Spawned || !box.Value.Contains(t.Position))) continue;
+                    matched++;
+                    if (rows.Count >= limit) continue;
+                    Type ty = t.GetType();
+                    var values = new Dictionary<string, string>();
+                    var missing = new List<string>();
+                    foreach (string name in names)
+                    {
+                        FieldInfo fi = null;
+                        for (Type tt = ty; tt != null && fi == null; tt = tt.BaseType) fi = tt.GetField(name, F | BindingFlags.DeclaredOnly);
+                        PropertyInfo pi = null;
+                        if (fi == null)
+                            for (Type tt = ty; tt != null && pi == null; tt = tt.BaseType)
+                            {
+                                PropertyInfo cand = tt.GetProperty(name, F | BindingFlags.DeclaredOnly);
+                                if (cand != null && cand.CanRead && cand.GetIndexParameters().Length == 0) pi = cand;
+                            }
+                        try
+                        {
+                            if (fi != null) values[name] = ProbeRenderOwner(fi.GetValue(t));
+                            else if (pi != null) values[name] = ProbeRenderOwner(pi.GetValue(t, null));
+                            else missing.Add(name);
+                        }
+                        catch (Exception e)
+                        {
+                            Exception x = e.InnerException ?? e;
+                            values[name] = "ERR " + x.GetType().Name + ": " + x.Message;
+                        }
+                    }
+                    rows.Add(new
+                    {
+                        id = t.ThingID, defName = t.def?.defName,
+                        x = t.Spawned ? t.Position.x : (int?)null, z = t.Spawned ? t.Position.z : (int?)null,
+                        className = ty.FullName, values, missing,
+                    });
+                }
+                return (object)new { success = true, rows, matched, truncated = matched > rows.Count, limit, ticksGame = TicksGameSafe() };
+            });
+        }
+
         [Tool(
             "jawa/thing_ambient_temp",
             Description =

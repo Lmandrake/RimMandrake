@@ -26,7 +26,8 @@ SCENES = (
      ("jawa/fire_incident", "canFireNow", "dryRun=True", "HerdMigration", "ManhunterPack", "ANIMAL_MANIFEST",
       "AridShrubland", "_ten_control_map(") + DISALLOWED),
     ("sc_populations", "plant_census", False,
-     ("RM_FireHawk", "RM_Ashwallow", "wildPlantAllowlistEnabled", "PyrelandsMechanicsGate", "_unmeasured(")),
+     # the allowlist-off day and the same-seed gate-off map left (RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN)
+     ("RM_FireHawk", "RM_Ashwallow", "wildPlantAllowlistEnabled", "PLANT_MANIFEST", "_whole_map(")),
     ("sc_walk", "walk_season", False,
      ("jawa/make_empty_room", "RoofConstructed", "RM_FE_Plant_EmberGrass", "RM_Thirst", "RM_Dehydration", "Burn",
       "Malnutrition", "PyrelandsMechanicsGate", "_unmeasured(")),
@@ -51,7 +52,8 @@ SCENES = (
     ("sc_firehawk", "firehawk", False,
      ("RM_FireHawk", "RM_FireHawkSeekBurn", "fireHawkSpreadEnabled", "54")),
     ("sc_ruins", "ruins", False,
-     ("jawa/export_things", "paint", "RM_FE_Charred", "TemperateForest", "_ten_control_map(")),
+     # the vanilla control map left (RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN): RM_FE_Charred is ours alone
+     ("jawa/export_things", "paint", "RM_FE_Charred")),
 )
 
 

@@ -3754,6 +3754,27 @@ def _ten_gate_on(t):
     return None if v is None else v.strip().lower() == "true"
 
 
+ROSTER_TYPE = "RimMandrake.Biomes.RM_BiomesSettings"   # PyrelandsMechanicsGate.ShellType
+ROSTER_KEY = "Pyrelands"                               # PyrelandsMechanicsGate.RosterKey
+
+
+def _ten_roster_set(t, on):
+    """The Baroque Biomes roster toggle, RM_BiomesSettings.enabled["Pyrelands"] (an instance dictionary entry; an absent
+    key reads on), written through jawa/mod_settings_field key= (RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN).
+    Back on is written as True, which RM_BiomesSettings.Enabled reads the same as absent. -> the reply."""
+    r = t.bridge_call("jawa/mod_settings_field", typeName=ROSTER_TYPE, action="set", field="enabled", key=ROSTER_KEY,
+                      value="true" if on else "false")
+    if _live(t) and not (r or {}).get("success"):
+        _unmeasured(t, "the roster toggle write was refused: %r" % (r,))
+    return r
+
+
+def _ten_roster_on(t):
+    """RM_BiomesSettings.Enabled("Pyrelands") read back (PyrelandsMechanicsGate.ShellOn reads the same) -> bool or None."""
+    v = _ten_static(t, ROSTER_TYPE, "Enabled", ROSTER_KEY)
+    return None if v is None else v.strip().lower() == "true"
+
+
 def _ten_control_map_tile(t, biome):
     """A land tile the world ALREADY carries as `biome` (flat or small hills, no world object on it), or None. Read
     only: no tile's biome is written (no worldgen of any kind)."""
@@ -3987,14 +4008,34 @@ def fire_sense(t):
                 _fail("with the gate off P still took %s: %r" % (TEN_STEP_JOB, seq))
     _independent(t)
     with _comp(t, "fire_sense_roster_toggle_off"):
-        _unmeasured(t, "the shell's Pyrelands roster toggle (RM_BiomesSettings.enabled[\"Pyrelands\"], a dictionary entry) "
-                       "has no bridge setter; the gate-off control runs through pyrelandsEnabled instead")
+        _ten_roster_set(t, False)
+        try:
+            roster, on = _ten_roster_on(t), _ten_gate_on(t)
+            q = _spawn_colonist(t, x + 6, z - 8)
+            t.bridge_call("jawa/set_work_priority", pawnId=q, workType="Firefighter", priority=0)
+            _ten_lit_plot(t, (x + 3, z - 9, 3, 3))
+            seq = _ten_jobs(t, q, 20, 30)
+            _extinguish(t)
+        finally:
+            _ten_roster_set(t, True)
+        if _live(t):
+            _note(t, "roster toggle off: RM_BiomesSettings.Enabled, PyrelandsMechanicsGate.On and the jobs beside the fire",
+                  {"roster": roster, "on": on, "jobs": seq})
+            if roster is not False:
+                _fail("RM_BiomesSettings.enabled[Pyrelands] = False left Enabled(\"Pyrelands\") %r" % roster)
+            if on is not False:
+                _fail("the roster toggle off left PyrelandsMechanicsGate.get_On %r" % on)
+            if TEN_STEP_JOB in seq:
+                _fail("with the roster toggle off P still took %s: %r" % (TEN_STEP_JOB, seq))
 
 
 def _ten_plant_census(t):
-    """sc_populations: the firecast counts (RM_FireHawk >= 2, RM_Ashwallow >= 8); a day with wildPlantAllowlistEnabled on,
-    then a day off, censusing plants outside PLANT_MANIFEST (on: none may appear); the same-seed map with
-    PyrelandsMechanicsGate off is UNMEASURED (no tool regenerates the site's tile with its seed beside the live site)."""
+    """sc_populations: the firecast counts (RM_FireHawk >= 2, RM_Ashwallow >= 8); a day of wild-plant spawning with
+    wildPlantAllowlistEnabled on, censusing plants outside PLANT_MANIFEST (none may appear).
+    Removed controls (RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN, polish.md): the allowlist-off day (no donor
+    plant is in a minimal list's wild-plant pass, and T_ALLOWLIST decides the shipped Postfix over every candidate
+    combination offline) and the same-seed gate-off map (the bar asks at least two fire-hawks and eight ashwallows, which
+    firecast_counts decides; the top-up's exact shortfall is not a bar)."""
     _independent(t)
     with _comp(t, "firecast_counts"):
         kinds = _ten_wild_kinds(t)
@@ -4007,26 +4048,16 @@ def _ten_plant_census(t):
                 _fail("RM_Ashwallow %d on the site, the scene asks >= 8" % kinds.get("RM_Ashwallow", 0))
     _independent(t)
     with _comp(t, "wild_plant_allowlist_day"):
-        days = {}
-        for on in (True, False):
-            _set(t, {"wildPlantAllowlistEnabled": on})
-            pre = _whole_map(t, "Plant")
-            _wait(t, TEN_DAY)
-            post = _whole_map(t, "Plant")
-            days[on] = dict((k, post[k] - pre.get(k, 0)) for k in post
-                            if k not in PLANT_MANIFEST and post[k] > pre.get(k, 0))
         _set(t, {"wildPlantAllowlistEnabled": True})
+        pre = _whole_map(t, "Plant")
+        _wait(t, TEN_DAY)
+        post = _whole_map(t, "Plant")
+        foreign = dict((k, post[k] - pre.get(k, 0)) for k in (post or {})
+                       if k not in PLANT_MANIFEST and post[k] > pre.get(k, 0))
         if _live(t):
-            _note(t, "plants outside PLANT_MANIFEST that appeared in a day (allowlist on / off)", days)
-            if days[True]:
-                _fail("with wildPlantAllowlistEnabled on, foreign plants appeared: %r" % days[True])
-            if not days[False]:
-                _unmeasured(t, "no foreign plant appeared with the allowlist off either: no donor plant is in this "
-                               "tile's wild-plant pass and no bridge tool adds one, so the on-day is not told apart")
-    _independent(t)
-    with _comp(t, "same_seed_gate_off_map"):
-        _unmeasured(t, "no bridge tool regenerates the site's tile with the same seed beside the live site, and "
-                       "PyrelandsMechanicsGate cannot be held off through map generation of a second map")
+            _note(t, "plants outside PLANT_MANIFEST that appeared in a day with the allowlist on", foreign)
+            if foreign:
+                _fail("with wildPlantAllowlistEnabled on, foreign plants appeared: %r" % foreign)
 
 
 def _ten_walk_season(t):
@@ -4057,8 +4088,28 @@ def _ten_walk_season(t):
                 _fail("ash gained %.3f with the gate off" % (a1 - a0))
     _independent(t)
     with _comp(t, "walk_roster_toggle"):
-        _unmeasured(t, "the shell's Pyrelands roster toggle (RM_BiomesSettings.enabled[\"Pyrelands\"]) has no bridge "
-                       "setter; walk_gate_off_then_on uses pyrelandsEnabled")
+        if not walk:
+            _unmeasured(t, "the walk parts run only with PYRE_WALK=1 (full list, Stage 6)")
+        _ten_roster_set(t, False)
+        try:
+            roster, off = _ten_roster_on(t), _ten_gate_on(t)
+            a0, f0 = _depth(t, None), _count(t, "Fire")
+            _wait(t, TEN_DAY)
+            a1, f1 = _depth(t, None), _count(t, "Fire")
+        finally:
+            _ten_roster_set(t, True)
+        on = _ten_gate_on(t)
+        _wait(t, TEN_DAY)
+        a2 = _depth(t, None)
+        if _live(t):
+            _note(t, "roster toggle off a day, then on a day: Enabled(Pyrelands), the gate, ash depthSum, fires",
+                  {"roster": roster, "off": off, "on": on, "ash": [a0, a1, a2], "fires": [f0, f1]})
+            if roster is not False or off is not False or on is not True:
+                _fail("roster toggle off read Enabled %r / gate %r, back on the gate %r" % (roster, off, on))
+            if f1:
+                _fail("%d fires burning after a day with the roster toggle off" % f1)
+            if a1 is not None and a0 is not None and a1 > a0 + 1e-6:
+                _fail("ash gained %.3f with the roster toggle off" % (a1 - a0))
     _independent(t)
     with _comp(t, "walk_roofed_grass_withers"):
         if not walk:
@@ -4343,8 +4394,9 @@ def _ten_furnace_sleep(t):
 
 def _ten_flamefang_venom(t):
     """sc_flamefang_venom: two colonists bitten (VENOM); a doctor tends one (TendPatient); severity every hour for six
-    hours, tended below untended at every read after the first; the immunity read has no bridge tool (UNMEASURED); the
-    untended venom read daily until the hediff goes."""
+    hours, tended below untended at every read after the first; the untended venom read daily until the hediff goes. The
+    immunity read is removed (RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN, polish.md): the bar reads the venom
+    hediff and its severity, not immunity."""
     x, z = PAD_VENOM
     _independent(t)
     with _comp(t, "venom_tended_vs_untended"):
@@ -4371,9 +4423,6 @@ def _ten_flamefang_venom(t):
             if not all(low):
                 _fail("tended venom was not below untended at every read: %r" % series)
     _independent(t)
-    with _comp(t, "venom_immunity_read"):
-        _unmeasured(t, "no bridge tool reads a pawn's immunity (ImmunityRecord); the venom is read by severity instead")
-    _independent(t)
     with _comp(t, "venom_wait_out"):
         cid = _spawn_colonist(t, x + 10, z + 8)
         row = _bite_until(t, cid, "RM_Flamefang", x + 10, z + 8, hediff=VENOM)
@@ -4395,9 +4444,12 @@ def _ten_flamefang_venom(t):
 def _ten_ash_fertility_watered(t):
     """sc_ash_watered: a wet and a dry deep-ash strip of Plant_Potato; the cell temperature above the crop's
     maxOptimalGrowthTemperature asserted (else UNMEASURED); five daily inspect reads, the wet-roots line on wet only;
-    control: ashWaterFertilityEnabled off drops it. Plant.GrowthRateFactor_Temperature is an instance property no bridge
-    tool reads (static_call is static only): UNMEASURED."""
+    control: ashWaterFertilityEnabled off drops it. Each daily read also takes every crop's Plant.GrowthRateFactor_Temperature
+    (jawa/thing_read runs the patched getter, RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN) and vanilla's
+    PlantUtility.GrowthRateFactorFor_Temperature at the dry strip's cell temperature; growth_rate_factor_temperature
+    judges them."""
     wet_line = "Wet ash keeps its roots"   # Languages: the wet-roots inspect line (PyrelandsWetRoots)
+    _GEN.pop("wet_roots_reads", None)
     _independent(t)
     with _comp(t, "wet_roots_cool_the_crop"):
         _pad(t, TEN_PAD_WET)
@@ -4424,7 +4476,14 @@ def _ten_ash_fertility_watered(t):
             for k, r in (("wet", wet), ("dry", dry)):
                 got = t.bridge_call("jawa/inspect_string", rect=_rs(r), limit=10) or {}
                 lines[k] = any(wet_line in str(ln) for row in got.get("things") or [] for ln in row.get("inspect") or [])
-            reads.append({"temp": temp, "wetLine": lines["wet"], "dryLine": lines["dry"]})
+            fac = dict((k, _ten_temp_factors(t, r)) for k, r in (("wet", wet), ("dry", dry)))
+            dr = t.bridge_call("jawa/cell_temperature", cell="%d,%d" % (dry[0], dry[1])) or {}
+            dry_temp = dr.get("temperature", dr.get("temp"))
+            van = (_ten_static(t, "RimWorld.PlantUtility", "GrowthRateFactorFor_Temperature", "%s|%r" % (TEN_CROP, dry_temp))
+                   if isinstance(dry_temp, (int, float)) else None)
+            reads.append({"temp": temp, "wetLine": lines["wet"], "dryLine": lines["dry"], "wetFactor": fac["wet"],
+                          "dryFactor": fac["dry"], "dryTemp": dry_temp, "vanillaDry": _ten_num(van)})
+            _GEN["wet_roots_reads"] = {"reads": reads, "top": top}
             _wait(t, TEN_DAY)
         if _live(t):
             _note(t, "daily: cell temperature vs %s maxOptimalGrowthTemperature %r, the wet-roots line" % (TEN_CROP, top),
@@ -4447,8 +4506,69 @@ def _ten_ash_fertility_watered(t):
             _fail("with ashWaterFertilityEnabled off the wet strip still shows '%s'" % wet_line)
     _independent(t)
     with _comp(t, "growth_rate_factor_temperature"):
-        _unmeasured(t, "Plant.GrowthRateFactor_Temperature is an instance property; jawa/static_call reaches only static "
-                       "members and no bridge tool reads it per plant")
+        got = _GEN.get("wet_roots_reads")
+        if _live(t):
+            _note(t, "daily GrowthRateFactor_Temperature: wet / dry strip and vanilla's at the dry cell", got)
+            ok, why = growth_factor_verdict(got)
+            if ok is None:
+                _unmeasured(t, why)
+            if not ok:
+                _fail(why)
+
+
+GROWTH_FACTOR_TOL = 1e-4   # the dry strip's factor and vanilla's are the same function of the same temperature; this only
+                           # absorbs the text rendering of two floats (Convert.ToString, round-trip digits)
+
+
+def _ten_num(v):
+    """A rendered number -> float, or None for anything that is not one (an ERR text, None)."""
+    try:
+        return float(str(v).strip())
+    except (TypeError, ValueError):
+        return None
+
+
+def _ten_temp_factors(t, rect):
+    """Plant.GrowthRateFactor_Temperature of every TEN_CROP in `rect` (jawa/thing_read; the patched getter runs) ->
+    [float], or None when the read failed or any value is unreadable (never a partial list)."""
+    r = t.bridge_call("jawa/thing_read", rect=_rs(rect), defName=TEN_CROP, members="GrowthRateFactor_Temperature")
+    if not (r or {}).get("success") or (r or {}).get("truncated"):
+        return None
+    vals = [_ten_num((row.get("values") or {}).get("GrowthRateFactor_Temperature")) for row in r.get("rows") or []]
+    return vals if vals and all(v is not None for v in vals) else None
+
+
+def growth_factor_verdict(got):
+    """The sc_ash_watered factor bar on the daily reads -> (True, None) | (False, why) | (None, why: could not see).
+    Every day: each dry-strip factor equals vanilla's at the dry cell (wet roots leaves dry ash alone) and the weakest
+    wet-strip factor is at least the strongest dry one; on each hot day (cell above maxOptimalGrowthTemperature, where
+    PyrelandsWetRoots.CooledFactor acts) the strongest wet factor is above the strongest dry one. At least one hot day.
+    Strongest, not weakest, on the hot day: the 3-wide wet strip reaches past ashNaturalWaterRadius (default 2) from its
+    water column, so its far column is dry ash and reads the dry factor by design."""
+    if not got or not got.get("reads"):
+        return None, "wet_roots_cool_the_crop did not reach its daily reads, so no factor was read"
+    reads, top = got["reads"], got.get("top")
+    if not isinstance(top, (int, float)):
+        return None, "maxOptimalGrowthTemperature unread: %r" % (top,)
+    blind = [i for i, rd in enumerate(reads) if not rd.get("wetFactor") or not rd.get("dryFactor")
+             or rd.get("vanillaDry") is None or not isinstance(rd.get("temp"), (int, float))]
+    if blind:
+        return None, "the factors were unreadable on day(s) %r: %r" % (blind, [reads[i] for i in blind])
+    hot = [rd for rd in reads if rd["temp"] > top]
+    if not hot:
+        return None, "the cell never read above maxOptimalGrowthTemperature %.1f: %r" % (top, [rd["temp"] for rd in reads])
+    for i, rd in enumerate(reads):
+        off = [f for f in rd["dryFactor"] if abs(f - rd["vanillaDry"]) > GROWTH_FACTOR_TOL]
+        if off:
+            return False, "day %d: dry-strip factor(s) %r differ from vanilla's %.4f at %.1f C" % (
+                i, off, rd["vanillaDry"], rd["dryTemp"])
+        if min(rd["wetFactor"]) < max(rd["dryFactor"]) - GROWTH_FACTOR_TOL:
+            return False, "day %d: the watered strip's factor %r is below the dry strip's %r" % (
+                i, rd["wetFactor"], rd["dryFactor"])
+        if rd["temp"] > top and not max(rd["wetFactor"]) > max(rd["dryFactor"]) + GROWTH_FACTOR_TOL:
+            return False, "hot day %d (%.1f C > %.1f): the watered strip's factor %r is not above the dry strip's %r" % (
+                i, rd["temp"], top, rd["wetFactor"], rd["dryFactor"])
+    return True, None
 
 
 def _ten_firehawk(t):
@@ -4519,7 +4639,9 @@ def _ten_ruins_charred_walls(t):
 
 def _ten_ruins(t):
     """sc_ruins: the ruin walls carry RM_FE_Charred paint (FireEcologyHook's ChangePaint), read through export_things'
-    paint field; control: a vanilla TemperateForest map beside the site, whose unowned walls carry none."""
+    paint field. The vanilla TemperateForest control map is removed (RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN,
+    polish.md): RM_FE_Charred is this mod's own paint, so no vanilla ruin can carry it, and the bar is about Pyrelands
+    ruins only."""
     _independent(t)
     with _comp(t, "ruin_walls_charred_paint"):
         walls, charred = _ten_ruins_charred_walls(t)
@@ -4530,19 +4652,6 @@ def _ten_ruins(t):
             if not charred:
                 _fail("none of %d ruin walls carries RM_FE_Charred paint: %r"
                       % (len(walls), sorted(set(str(w.get("paint")) for w in walls))[:6]))
-    _independent(t)
-    with _comp(t, "vanilla_ruins_unpainted"):
-        ctl = _ten_control_map(t, "TemperateForest")
-        try:
-            walls, charred = _ten_ruins_charred_walls(t)
-        finally:
-            _ten_control_map_drop(t, ctl)
-        if _live(t):
-            _note(t, "unowned walls on the vanilla TemperateForest control", {"walls": len(walls), "charred": len(charred)})
-            if not walls:
-                _unmeasured(t, "the vanilla control map generated no unowned walls")
-            if charred:
-                _fail("%d walls on the vanilla control carry RM_FE_Charred paint" % len(charred))
 
 
 # ---- RIMMANDRAKE_BUILD_PYRELANDS_ROUND_SIX_PARTS_AFTER_THE_TEN: the owed parts of the round-6 gap scenes ----
@@ -4919,10 +5028,11 @@ def _r6_ash_run(t, weather, hours, settings):
 
 def _r6_ground_deep_ash(t):
     """sc_ash_ground (g4, g6, g7): water asserted on the site before the other reads (none: regenerate the fixture on the
-    next seed, never a pass); a vanilla AridShrubland control map's shore read (no rich-soil ring); the same seed with
-    PyrelandsMechanicsGate off has no regeneration tool (UNMEASURED); from ashground_noon the ash fall with
+    next seed, never a pass); a vanilla AridShrubland control map's shore read (no rich-soil ring); from ashground_noon the ash fall with
     ashfallAccumulationEnabled off banks no more than clear weather, and a clear half-day with ambientAshEnabled off banks
-    none; at noon a play-zoom capture pair of ten ash-laden ember-grass cells, as they lie and after ClearAsh."""
+    none; at noon a play-zoom capture pair of ten ash-laden ember-grass cells, as they lie and after ClearAsh. The same-seed
+    gate-off regeneration is removed (RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN, polish.md): sc_ash_ground
+    left the test table (no bar needs it)."""
     _independent(t)
     with _comp(t, "ash_ground_water_asserted"):
         cells = _r6_terrain_cells(t, _whole(t))
@@ -4957,11 +5067,6 @@ def _r6_ground_deep_ash(t):
                 _fail("every vanilla shore cell reads the Pyrelands ring terrain: %r" % tally)
             if any(d == DEEP_ASH for d in cells.values()):
                 _fail("deep ash on the vanilla control map")
-    _independent(t)
-    with _comp(t, "ash_ground_gate_off_regeneration"):
-        _unmeasured(t, "no bridge tool regenerates the site's seed and tile beside the live site with "
-                       "PyrelandsMechanicsGate held off through generation (GenStep_PyrelandsStandingWater, "
-                       "GenStep_PyrelandsGreenRing)")
     _independent(t)
     with _comp(t, "ash_fall_accumulation_off"):
         _ten_noon_hour(t)
@@ -5078,50 +5183,84 @@ def _r6_fresh_burn_bonus(t):
         t.bridge_call("jawa/set_roof_batch", ops="None:%s" % _rs(pads["A"]))
 
 
-def _r6_no_ordinary_rain(t):
-    """sc_no_rain (g8): GameCondition_ForceWeather (Royalty's WeatherController GameConditionDef) started on the site and
-    on a vanilla TemperateForest control, the weather read when it changes and an hour later (jawa/weather_get). The
-    condition's forced weather must read Rain first: WeatherController starts on its def's weatherDef (Fog) and no bridge
-    tool writes GameCondition_ForceWeather.weather, so the run records that and stops UNMEASURED rather than judge Fog."""
-    def forced_run(t):
-        before = (t.bridge_call("jawa/weather_get") or {}).get("weather")
-        r = t.bridge_call("jawa/game_condition", action="start", condition="WeatherController", durationTicks=2 * TEN_DAY)
-        info = t.bridge_call("jawa/weather_get") or {}
-        conds = [c for c in info.get("conditions") or [] if c.get("def") == "WeatherController"]
-        forced = [c.get("forcedWeather") or c.get("weather") for c in conds]
-        _wait(t, SKY_SETTLE_TICKS)
-        now = (t.bridge_call("jawa/weather_get") or {}).get("weather")
-        _wait(t, TEN_HOUR)
-        later = (t.bridge_call("jawa/weather_get") or {}).get("weather")
-        t.bridge_call("jawa/game_condition", action="end", condition="WeatherController")
-        return {"start": r, "before": before, "forced": forced, "changed": now, "hourLater": later}
+def _r6_forced_rain_roll(t):
+    """Lock Rain (jawa/weather_set lockWeather: a GameCondition_ForceWeather whose weather IS Rain), then make
+    WeatherDecider roll now, twice (jawa/weather_roll_next: StartNextWeather -> ChooseNextWeather, the method
+    PyrelandsNoOrdinaryRain postfixes; the map re-rolls the same way every 4000 ticks while the forced weather differs
+    from the current one). weather_set's own TransitionTo(Rain) bypasses the decider, so the verdict reads the ROLLS, not
+    the weather right after the lock. Under a tutorial storyteller ChooseNextWeather returns Clear before it reads the
+    forced weather (TutorSystem.TutorialMode && ClearWeatherAllowed; visit 1 rain_postfix.py met it on the quiet profile's
+    Tutor), so the storyteller is Phoebe for the rolls only: no tick passes while it is swapped, so no incident can fire.
+    Then an hour with the storyteller back. The prior lock (or none) is put back. -> the readings."""
+    w0 = t.bridge_call("jawa/weather_get") or {}
+    # weather_get's conditions[] names the def, not the forced weather: a lock in force is taken to hold the weather now
+    prior = [w0.get("weather") for c in w0.get("conditions") or [] if c.get("def") == "WeatherController"][:1]
+    teller = ((t.bridge_call("jawa/storyteller_swap") or {}).get("before") or {}).get("storytellerDef")
+    out = {"before": w0.get("weather"), "priorLock": prior, "storyteller": teller}
+    try:
+        t.bridge_call("jawa/storyteller_swap", storytellerDef="Phoebe")
+        lock = t.bridge_call("jawa/weather_set", weather="Rain", lockWeather=True) or {}
+        rolls = [t.bridge_call("jawa/weather_roll_next") or {} for _ in range(2)]
+        out.update({"lock": {"success": lock.get("success"), "after": lock.get("after"), "lockInForce": lock.get("lockInForce")},
+                    "lockedTo": [r.get("lockedTo") for r in rolls],
+                    "rolled": [(r.get("after") or {}).get("weather") for r in rolls]})
+    finally:
+        if teller:
+            t.bridge_call("jawa/storyteller_swap", storytellerDef=teller)
+    out["now"] = (t.bridge_call("jawa/weather_get") or {}).get("weather")
+    _wait(t, TEN_HOUR)
+    out["hourLater"] = (t.bridge_call("jawa/weather_get") or {}).get("weather")
+    if prior and prior[0]:
+        t.bridge_call("jawa/weather_set", weather=prior[0], lockWeather=True)
+    else:
+        t.bridge_call("jawa/weather_set", unlock=True)
+    return out
 
+
+def _r6_forced_rain_blind(t, run):
+    """UNMEASURED when the reading cannot show the decider choosing under a forced Rain (the instrument, never the mod)."""
+    if not run.get("storyteller"):
+        _unmeasured(t, "the storyteller was not read, so it could not be swapped off a tutorial one and back: %r" % run)
+    if not (run.get("lock") or {}).get("success") or not (run.get("lock") or {}).get("lockInForce"):
+        _unmeasured(t, "the Rain lock was not registered: %r" % run.get("lock"))
+    if any(lt != "Rain" for lt in run.get("lockedTo") or [None]):
+        _unmeasured(t, "the decider's forced weather read %r at the rolls, not Rain" % run.get("lockedTo"))
+
+
+def _r6_no_ordinary_rain(t):
+    """sc_no_rain (g8): under a forced Rain (GameCondition_ForceWeather, jawa/weather_set lockWeather) the weather the
+    decider gives the site is black rain, never Rain (_r6_forced_rain_roll). Control: the same roll on the same site with
+    the Mod enabled master (pyrelandsEnabled) off gives Rain, so the lock does force the roll and the swap is
+    PyrelandsNoOrdinaryRain's (RM_FireEcoKernel.RainBecomesBlackRain is gated on PyrelandsMechanicsGate.On). It replaces
+    the vanilla TemperateForest control map, which the scratch world had no tile for
+    (RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN)."""
     _independent(t)
     with _comp(t, "forced_rain_becomes_black_rain"):
-        site = forced_run(t)
+        site = _r6_forced_rain_roll(t)
         if _live(t):
-            _note(t, "WeatherController on the site", site)
-            if not site["forced"] or site["forced"][0] != "Rain":
-                _unmeasured(t, "the condition's forced weather reads %r, not Rain: WeatherController starts on its def's "
-                               "Fog and no bridge tool sets GameCondition_ForceWeather.weather" % (site["forced"],))
-            if "Rain" in (site["changed"], site["hourLater"]):
+            _note(t, "forced Rain on the site, rolled by WeatherDecider", site)
+            _r6_forced_rain_blind(t, site)
+            if "Rain" in (site.get("rolled") or []) + [site.get("now"), site.get("hourLater")]:
                 _fail("under a forced-Rain condition the site's weather is Rain: %r" % site)
-            if site["changed"] != BLACKRAIN:
-                _fail("under a forced-Rain condition the site's weather is %r, not %s" % (site["changed"], BLACKRAIN))
+            if any(w != BLACKRAIN for w in site.get("rolled") or [None]) or site.get("now") != BLACKRAIN:
+                _fail("under a forced-Rain condition the decider gave the site %r (now %r), not %s"
+                      % (site.get("rolled"), site.get("now"), BLACKRAIN))
     _independent(t)
-    with _comp(t, "forced_rain_vanilla_control"):
-        ctl = _ten_control_map(t, "TemperateForest")
+    with _comp(t, "forced_rain_gate_off_control"):
+        _set(t, {"pyrelandsEnabled": False})
         try:
-            van = forced_run(t)
+            gate = _ten_gate_on(t)
+            ctl = _r6_forced_rain_roll(t)
         finally:
-            _ten_control_map_drop(t, ctl)
+            _set(t, {"pyrelandsEnabled": True})
         if _live(t):
-            _note(t, "WeatherController on the vanilla TemperateForest control", van)
-            if not van["forced"] or van["forced"][0] != "Rain":
-                _unmeasured(t, "the control's forced weather reads %r, not Rain (no setter for the condition's weather)"
-                            % (van["forced"],))
-            if van["changed"] != "Rain":
-                _fail("the forced-Rain condition gave the vanilla control %r, not Rain" % van["changed"])
+            _note(t, "forced Rain on the site with pyrelandsEnabled off (the gate-off control)", dict(ctl, gate=gate))
+            if gate is not False:
+                _unmeasured(t, "pyrelandsEnabled False left PyrelandsMechanicsGate.get_On %r" % gate)
+            _r6_forced_rain_blind(t, ctl)
+            if any(w != "Rain" for w in ctl.get("rolled") or [None]):
+                _fail("with the mechanics off the forced-Rain roll gave %r, not Rain: the lock does not force the roll"
+                      % ctl.get("rolled"))
 
 
 def _r6_scorchfruit_fire_born(t):
@@ -5207,8 +5346,8 @@ def _r6_ullai_and_giant(t):
     """sc_furnace_giant (g10): furnaceBeastGiant on at load; every resolved RM_Pyrelands roster kind (biome_probe, the
     patch-added cast included, at least R6_ROSTER_MIN kinds or the read is blind) read live: race baseBodySize and the
     last life stage's drawSize; giant_margin over every other kind (relational only: no bar pins a size, owner 2026-11-16,
-    bar_rule). Control: RM_PyrelandsGiants.RestoreClassicFurnaceBeast is private and takes a PawnKindDef, so
-    jawa/static_call (public static only) cannot invoke it without a reload: UNMEASURED."""
+    bar_rule). The classic-restore control is removed (RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN, polish.md):
+    the giant switch's off state is a Mod Settings check (inv_settings_gate, T_SETTINGS_SWEEP_OFFLINE), not the giant bar."""
     _independent(t)
     with _comp(t, "giant_margin_over_roster"):
         on = _live_setting(t, "furnaceBeastGiant")
@@ -5241,10 +5380,6 @@ def _r6_ullai_and_giant(t):
             ok, why = giant_margin(dict((k, (v[0], v[1])) for k, v in sizes.items()))
             if not ok:
                 _fail(why)
-    _independent(t)
-    with _comp(t, "giant_classic_restore_control"):
-        _unmeasured(t, "RM_PyrelandsGiants.RestoreClassicFurnaceBeast is private and takes a PawnKindDef; jawa/static_call "
-                       "invokes public static methods only, so the classic restore cannot run without a reload")
 
 
 def _r6_embergrass_regrow(t):
@@ -5482,8 +5617,8 @@ def roof_withers(t):
     """Scene sc_roof_withers (g5). PyrelandsMechanicsGate on (asserted), weather locked Clear, no fire within 20 cells;
     two walled 5x5 mature ember-grass patches on deep ash 3 cells apart, a roof on A only (asserted from get_roof_batch);
     hourly for 48 h: A's plants lose hit points, show RM_WithersUnderRoof's line and are all gone by hour 36; B keeps every
-    plant; no fire at any read. Then the same pair again with the gate off (pyrelandsEnabled False; the shell's roster
-    toggle has no bridge setter): neither patch loses a plant. Live half: scenes.json live_command (UNRUN here)."""
+    plant; no fire at any read. Then the same pair again with the gate off (pyrelandsEnabled False), and again with the
+    shell's roster toggle off (_ten_roster_set): neither patch loses a plant. Live half: scenes.json live_command (UNRUN here)."""
     _pad(t, R6_PAD_WITHER)
     x, z = t.anchor
     with _comp(t, "roofed_ember_grass_withers"):
@@ -5525,8 +5660,20 @@ def roof_withers(t):
                 _fail("with the gate off a patch lost plants: A %r, B %r" % ([r["A"] for r in hs], [r["B"] for r in hs]))
     _independent(t)
     with _comp(t, "roof_withers_roster_toggle_off"):
-        _unmeasured(t, "the shell's Pyrelands roster toggle (RM_BiomesSettings.enabled[\"Pyrelands\"]) has no bridge "
-                       "setter; gate_off_kills_nothing runs through pyrelandsEnabled")
+        _ten_roster_set(t, False)
+        try:
+            roster, off = _ten_roster_on(t), _ten_gate_on(t)
+            run = _r6_roof_withers_pair(t, x, z - 10, "roster toggle off")
+        finally:
+            _ten_roster_set(t, True)
+        if _live(t):
+            _note(t, "roster toggle off: roofed A vs open B, hourly", dict(run, roster=roster, gate=off))
+            if roster is not False or off is not False:
+                _fail("the roster toggle off read Enabled %r, PyrelandsMechanicsGate.get_On %r" % (roster, off))
+            hs = run["hours"]
+            if any(r["A"] < run["startA"] or r["B"] < run["startB"] for r in hs):
+                _fail("with the roster toggle off a patch lost plants: A %r, B %r"
+                      % ([r["A"] for r in hs], [r["B"] for r in hs]))
 
 
 def herds_of(animals, radius=R6_HERD_RADIUS):
@@ -5599,7 +5746,8 @@ def herd_thirst(t):
     RM_ThirstGrassWateredExtension) and 4 Muffalo (without) spawned equidistant from one water cell, staggered once and
     then set to one level; RM_Thirst hourly for 72 h (the ullai fall at most R6_THIRST_RATIO of the muffalo's); each wild
     herd's arrivals within R6_DRINK_CELLS of water by the hour over 168 h (arrival_overlaps: none shared; none at all is
-    UNMEASURED); no native dehydrates; vitals and incidents unchanged. The toggle-off same-seed map has no tool."""
+    UNMEASURED); no native dehydrates; vitals and incidents unchanged. The toggle-off same-seed map is removed
+    (RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN, polish.md): sc_herd_thirst decides no bar in the test table."""
     _pad(t, PAD_PROBE)
     with _comp(t, "natives_thirst_slow_and_staggered"):
         need = t.bridge_call("jawa/get_defs", defs="NeedDef/RM_Thirst", fields="label")
@@ -5691,10 +5839,6 @@ def herd_thirst(t):
                 _unmeasured(t, "no wild herd reached the water over %d hours" % R6_ARRIVAL_HOURS)
             if overlap:
                 _fail("two herds at the water in the same hour: %r" % overlap[:10])
-    _independent(t)
-    with _comp(t, "herd_thirst_gate_off_map"):
-        _unmeasured(t, "no bridge tool regenerates the site's seed and tile with PyrelandsMechanicsGate held off "
-                       "through generation, where MapComponent_PyrelandsHerdThirst would return before it staggers")
 
 
 # Fire-hawk hunt rewards and the map-wide ember carry: live chains built WITH their items (owner 2026-11-13), kept in their own

@@ -156,10 +156,12 @@ namespace JawaBench.BridgeTools
                 "field's real type (bool/int/float/double/string/enum only - refuses other " +
                 "types by name rather than guessing a conversion). action='list' (default, " +
                 "typeName only) reports every public field's name/type/kind/current value so a " +
-                "caller can discover names without reading source first.",
+                "caller can discover names without reading source first. key= addresses ONE entry of a field that is a " +
+                "Dictionary with string keys (e.g. RM_BiomesSettings.enabled, key 'Pyrelands'): get reads that entry " +
+                "(present=false when absent), set writes it, coerced to the dictionary's value type.",
             ResultDescription = "list: success, fields[] (name, type, kind, value). " +
-                "get: success, field, fieldKind, value. " +
-                "set: success, field, fieldKind, valueBefore, valueAfter.")]
+                "get: success, field, fieldKind, value (with key: key, present). " +
+                "set: success, field, fieldKind, valueBefore, valueAfter (with key: key, presentBefore).")]
         public static async Task<object> ModSettingsField(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -170,7 +172,9 @@ namespace JawaBench.BridgeTools
             [ToolParameter(Description = "get/set: the field name.")]
             string field = null,
             [ToolParameter(Description = "set: the value as a string, coerced to the field's real type ('true'/'false' for bool, parsed for numeric, verbatim for string, name for enum).")]
-            string value = null)
+            string value = null,
+            [ToolParameter(Description = "get/set on a Dictionary<string,T> field: the entry's key (RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN: the Baroque Biomes roster toggle is RM_BiomesSettings.enabled[key]).", DefaultValue = null)]
+            string key = null)
         {
             return await ctx.MainThread.InvokeAsync<object>(() =>
             {
@@ -235,6 +239,63 @@ namespace JawaBench.BridgeTools
                     {
                         return Fail("'" + field + "' is an INSTANCE field but no loaded Mod's GetSettings<" + typeName + ">() could be located (assembly-matched mod search found none).");
                     }
+                }
+
+                if (key != null && (a == "get" || a == "set"))
+                {
+                    Type ft = fi.FieldType;
+                    Type dictIface = ft.IsGenericType && ft.GetGenericTypeDefinition() == typeof(Dictionary<,>) ? ft
+                        : ft.GetInterfaces().FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IDictionary<,>));
+                    Type[] kv = dictIface?.GetGenericArguments();
+                    if (kv == null || kv[0] != typeof(string))
+                    {
+                        return Fail("'" + field + "' is a " + ft.Name + ", not a dictionary with string keys: key= applies only to one.");
+                    }
+                    var dict = fi.GetValue(target) as System.Collections.IDictionary;
+                    if (dict == null)
+                    {
+                        return Fail("'" + field + "' is null on " + typeName + ": no dictionary to address.");
+                    }
+                    bool presentBefore = dict.Contains(key);
+                    string entryBefore = presentBefore ? SafeFieldToString(dict[key]) : null;
+                    if (a == "get")
+                    {
+                        return (object)new { success = true, action = "get", field = fi.Name, fieldKind = kind, key, present = presentBefore, value = entryBefore, typeIdentity, ticksGame = TicksGameSafe() };
+                    }
+                    Assembly asmK = settingsType.Assembly;
+                    bool modAsmK = LoadedModManager.RunningMods.Any(m => m.assemblies?.loadedAssemblies?.Contains(asmK) == true)
+                        && asmK.GetTypes().Any(t => typeof(ModSettings).IsAssignableFrom(t));
+                    if (!JawaBenchSafetyCore.SettingsTypeWritable(typeof(ModSettings).IsAssignableFrom(settingsType),
+                            settingsType.IsAbstract && settingsType.IsSealed, modAsmK, settingsType.FullName))
+                    {
+                        return Fail("REFUSED: '" + typeName + "' is neither a Verse.ModSettings class nor a static *Settings class of a running mod's assembly; set writes only a mod's settings (list and get still read any type).");
+                    }
+                    string whyK, declaredK;
+                    if (JawaBenchCompanionSafety.Effective(out whyK, out declaredK) != JawaBenchSafetyCore.Test)
+                    {
+                        return Fail("REFUSED: set is off under the CAMPAIGN profile (" + whyK + "); change a campaign game's settings in the Mod Settings dialog. list and get stay available.",
+                            new { profile = JawaBenchSafetyCore.Campaign, profileWhy = whyK });
+                    }
+                    if (value == null)
+                    {
+                        return Fail("Give 'value' for action='set'.");
+                    }
+                    object coercedK;
+                    try
+                    {
+                        coercedK = CoerceSettingsValue(value, kv[1]);
+                    }
+                    catch (Exception e)
+                    {
+                        return Fail("Could not coerce '" + value + "' to " + kv[1].Name + ": " + e.Message);
+                    }
+                    dict[key] = coercedK;
+                    return (object)new
+                    {
+                        success = true, action = "set", field = fi.Name, fieldKind = kind, key, presentBefore,
+                        valueBefore = entryBefore, valueAfter = dict.Contains(key) ? SafeFieldToString(dict[key]) : null,
+                        typeIdentity, ticksGame = TicksGameSafe(),
+                    };
                 }
 
                 if (a == "get")

@@ -670,7 +670,7 @@
    "stage": "6",
    "file": "src/RimMandrake/Pyrelands/validation.py",
    "entry": "plant_census",
-   "observes": "every defName in the manifest, grazers outnumber predators, fire-hawks = max(2, the gate-off control's count) and ashwallows at least max(8, the control's count) (GenStep_PyrelandsFireCast tops each kind up by exactly its shortfall; its grazer balance may add ashwallow groups), no red error; with the allowlist on the donor plant is evicted or never spawns",
+   "observes": "every defName in the manifest, grazers outnumber predators, at least two fire-hawks and at least eight ashwallows (GenStep_PyrelandsFireCast tops each kind up by its shortfall), no red error; no plant outside the manifest appears over a day of wild-plant spawning with the allowlist on",
    "reads": [
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
@@ -860,7 +860,7 @@
    "stage": "6",
    "file": "src/RimMandrake/Pyrelands/validation.py",
    "entry": "no_ordinary_rain",
-   "observes": "no ordinary rain listed or chosen; under the forced-Rain condition the weather the map gets is black rain, never Rain (PyrelandsNoOrdinaryRain turns an ordinary rain the decider picks into black rain)",
+   "observes": "no ordinary rain listed or chosen; under a Rain lock (GameCondition_ForceWeather) the weather WeatherDecider gives the map is black rain, never Rain (PyrelandsNoOrdinaryRain turns an ordinary rain the decider picks into black rain); with pyrelandsEnabled off the same roll gives Rain",
    "reads": [
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"

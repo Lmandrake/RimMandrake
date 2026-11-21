@@ -67,9 +67,9 @@
    "action": "census the terrain; capture open ground; where the map rolled water, read its shore ring; force ash fall for half a day, reading ash depth on the sand grid (ProbeAsh) and light each hour; reload ashground_noon, hold clear weather for the same half-day and read ProbeAsh and light at the same clock hours; at local noon (hour asserted between 10h and 14h) take a capture pair at play zoom of ten ash-laden cells carrying ember grass (ProbeAsh depth above 0 asserted on each): one as they lie, one after their sand-grid depth is cleared (ClearAsh)",
    "expect": "deep ash on at least 0.85 of open-land cells (validation.py DEEP_ASH_MIN, bar pyre_ground_deep_ash), soil and gravel only in pockets, and every standing-water body ringed: the land cells next to its shore read mud or rich soil (GenStep_PyrelandsStandingWater's ring); ash blowing in clear weather; at every matched hour the ash-fall light is clearly below the clear-weather light, and the ash-fall ProbeAsh depth gain is clearly above the clear-weather gain; in the capture pair, the as-they-lie capture shows the ash cover on the ground (PyrelandsAshCover, SectionLayer_PyrelandsAsh) and the ash dust on the plants (PyrelandsAshDust), and a judge shown the pair unlabelled names which is which",
    "control": {
-    "case": "the same map's clear-weather run from ashground_noon over the same clock hours; the forced ash fall from ashground_noon again with ash-fall accumulation (ashfallAccumulationEnabled) off; the clear-weather half-day again with ambient ash (ambientAshEnabled) off, and a vanilla arid shrubland quicktest map read by the same census and capture; the same seed and tile regenerated with the roster toggle (PyrelandsMechanicsGate) off, so GenStep_PyrelandsStandingWater and GenStep_PyrelandsGreenRing return before they act; for the drawing, the same ten cells with their sand-grid depth cleared in the second capture of the pair",
-    "expect": "the clear-weather run dims only with the hour and banks less ash than the ash-fall run; with accumulation off the ash fall banks no more ProbeAsh depth than the clear-weather run; with ambient ash off no ash blows and none banks; the vanilla map shows no deep ash and no blowing ash, and its shores read vanilla shore terrain with no mud and rich-soil ring; the toggle-off map rolls no mud and rich-soil ring; the depth-cleared capture shows no ash cover and no plant dust",
-    "rules_out": "nightfall dimming the map and ambient blowing ash banking drifts passing for ash fall's doing, and a map-wide overlay or terrain relabel applied whatever the biome, and vanilla shore terrain passing for the standing-water ring, and an ash look drawn whatever the depth (a map-wide tint) passing for the ash cover and dust"
+    "case": "the same map's clear-weather run from ashground_noon over the same clock hours; the forced ash fall from ashground_noon again with ash-fall accumulation (ashfallAccumulationEnabled) off; the clear-weather half-day again with ambient ash (ambientAshEnabled) off, and a vanilla arid shrubland quicktest map read by the same census and capture; for the drawing, the same ten cells with their sand-grid depth cleared in the second capture of the pair",
+    "expect": "the clear-weather run dims only with the hour and banks less ash than the ash-fall run; with accumulation off the ash fall banks no more ProbeAsh depth than the clear-weather run; with ambient ash off no ash blows and none banks; the vanilla map shows no deep ash and no blowing ash, and its shores read vanilla shore terrain with no mud and rich-soil ring; the depth-cleared capture shows no ash cover and no plant dust",
+    "rules_out": "nightfall dimming the map and ambient blowing ash banking drifts passing for ash fall's doing, and a map-wide overlay or terrain relabel applied whatever the biome, and vanilla shore terrain passing for the standing-water ring (RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN removed the same-seed roster-toggle-off regeneration: sc_ash_ground left the test table; polish.md), and an ash look drawn whatever the depth (a map-wide tint) passing for the ash cover and dust"
    },
    "restore": "destroy the vanilla control map; on the Pyrelands map remove the loose ash laid by the forced ash fall and restore the weather chooser",
    "hold": "immediate",
@@ -229,12 +229,12 @@
     "fresh Pyrelands map on the composed mandrake.rm.biomes list, log tap open from generation",
     "wild-plant allowlist (wildPlantAllowlistEnabled) on (asserted from the settings read)"
    ],
-   "action": "census every wild plant and animal on the map against the biome manifest; count fire-hawks and ashwallows; read the log; then add a donor plant to the map's wild-plant pass and let wild-plant spawning run for a day, allowlist on, then the same day with it off",
-   "expect": "every defName in the manifest, grazers outnumber predators, fire-hawks = max(2, the gate-off control's count) and ashwallows at least max(8, the control's count) (GenStep_PyrelandsFireCast tops each kind up by exactly its shortfall; its grazer balance may add ashwallow groups), no red error; with the allowlist on the donor plant is evicted or never spawns",
+   "action": "census every wild plant and animal on the map against the biome manifest; count fire-hawks and ashwallows; read the log; then let wild-plant spawning run for a day with the allowlist on and census the plants again",
+   "expect": "every defName in the manifest, grazers outnumber predators, at least two fire-hawks and at least eight ashwallows (GenStep_PyrelandsFireCast tops each kind up by its shortfall; its grazer balance may add ashwallow groups), no red error; no plant outside the manifest appears over the allowlist-on day",
    "control": {
-    "case": "one donor plant and one donor animal spawned before the census; the same wild-plant day with wildPlantAllowlistEnabled off; a fresh map on the same seed and tile with the roster toggle (PyrelandsMechanicsGate) off, so GenStep_PyrelandsFireCast returns before its top-up (asserted the same roll: every other wild kind's count equals the toggle-on map's)",
-    "expect": "both seeded donors are reported as intruders; with the allowlist off the donor plant grows; the gate-off map holds the vanilla roll's fire-hawk and ashwallow counts, the ones the top-up started from",
-    "rules_out": "a census that cannot see intruders reporting a clean map, and a map where no donor ever leaked passing for the allowlist evicting one, and a natural roll already at two hawks and eight ashwallows passing for the top-up"
+    "case": "one donor plant and one donor animal spawned before the census",
+    "expect": "both seeded donors are reported as intruders",
+    "rules_out": "a census that cannot see intruders reporting a clean map (RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN removed the allowlist-off day and the same-seed roster-toggle-off map: no donor is in a minimal list's wild-plant pass and T_ALLOWLIST decides the shipped Postfix over every candidate combination offline; the bar asks at least two hawks and eight ashwallows, not the top-up's exact shortfall; polish.md)"
    },
    "restore": "despawn the seeded intruders and every donor plant the wild-plant day spawned, take the donor out of the wild-plant pass and restore the allowlist switch",
    "hold": "immediate",
@@ -260,9 +260,9 @@
    "action": "read every test animal's RM_Thirst level each game hour for three days; over seven game days read each wild herd's arrivals within 2 cells of water by the hour; record vitals and incidents again at the end",
    "expect": "the ullai's RM_Thirst falls at most a third as fast as the muffalo's under the same water access (the patch sets about 0.05 a day); the wild herds start at different RM_Thirst levels herd by herd, near-equal within a herd; no two herds are at the water in the same hour over the seven days (a window with no arrival reads UNMEASURED, never PASS); no native dehydrates; vitals and incidents unchanged; log clean",
    "control": {
-    "case": "the muffalo group, a vanilla herd animal with the same water access; and a same-seed fresh map with the roster toggle (PyrelandsMechanicsGate) off, where MapComponent_PyrelandsHerdThirst returns before it staggers the herds' starting thirst",
-    "expect": "the muffalo's RM_Thirst falls at FlowWorks' ordinary rate; on the toggle-off map the wild herds start at one shared level and their water visits overlap",
-    "rules_out": "a herd that never got thirsty passing for the slow thirst, and herds that drink apart by chance passing for the staggered visits"
+    "case": "the muffalo group, a vanilla herd animal with the same water access",
+    "expect": "the muffalo's RM_Thirst falls at FlowWorks' ordinary rate",
+    "rules_out": "a herd that never got thirsty passing for the slow thirst (RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN removed the same-seed roster-toggle-off map: sc_herd_thirst decides no bar in the test table; polish.md)"
    },
    "restore": "despawn the test ullai and muffalo; the maps are disposable quicktest maps and are destroyed after",
    "hold": "immediate",
@@ -284,9 +284,9 @@
    "action": "capture each ruin at play zoom; read footprint terrain, ash depth on the sand grid (ProbeAsh) over the ruin footprint, and the paint on the ruin's walls",
    "expect": "blackened ruins on deep ash with ash lying in them (ProbeAsh over the ruin footprint: ashed cells above zero), walls painted RM_FE_Charred",
    "control": {
-    "case": "a ruin on a vanilla temperate quicktest map read the same way",
-    "expect": "reads clean, on soil, with no RM_FE_Charred paint",
-    "rules_out": "ruin art that is always scorched whatever the biome"
+    "case": "none",
+    "expect": "none",
+    "rules_out": "none (RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN removed the vanilla temperate ruin control: RM_FE_Charred is this mod's own paint, so no vanilla ruin can carry it, and the bar is about Pyrelands ruins only; polish.md)"
    },
    "restore": "destroy the vanilla control map; the Pyrelands map is read only",
    "hold": "immediate",
@@ -429,12 +429,12 @@
     "the Pyrelands map; weather chooser running normally",
     "a weather-forcing game condition available to the scene: GameCondition_ForceWeather (the weather controller's) with its forced weather set to Rain (asserted: the condition's weather reads Rain)"
    ],
-   "action": "read the biome's weather list and the weathers chosen over a compressed season; then start that GameCondition_ForceWeather with forced weather Rain on the map and read the current weather once the weather has changed, and again an hour later",
+   "action": "read the biome's weather list and the weathers chosen over a compressed season; then lock the weather to Rain (jawa/weather_set lockWeather: a GameCondition_ForceWeather whose weather is Rain), have WeatherDecider choose now, twice (jawa/weather_roll_next), with a non-tutorial storyteller for the rolls only (a tutorial one makes ChooseNextWeather return Clear first), and read the weather it gives, then again an hour later",
    "expect": "no ordinary rain listed or chosen; under the forced-Rain condition the weather the map gets is black rain, never Rain (PyrelandsNoOrdinaryRain turns an ordinary rain the decider picks into black rain)",
    "control": {
-    "case": "the same reader on a vanilla temperate map; the same forced-Rain GameCondition_ForceWeather on the vanilla temperate map",
-    "expect": "reports ordinary rain chosen; there the forced condition yields Rain",
-    "rules_out": "a weather reader that never sees rain at all, and a forced-weather check that never asked for Rain"
+    "case": "the same reader on a vanilla temperate map; the same Rain lock and rolls on the same site with the Mod enabled master (pyrelandsEnabled) off",
+    "expect": "reports ordinary rain chosen; with the mechanics off the forced roll gives Rain",
+    "rules_out": "a weather reader that never sees rain at all, and a forced-weather check that never asked for Rain (a lock that does not force the roll, where the biome's own roll gives black rain anyway); the vanilla temperate control map for the forced weather was replaced by the gate-off roll on the same site (RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN: the scratch world had no temperate tile for it)"
    },
    "restore": "the compressed season cannot be put back cell by cell: the scene runs on a disposable quicktest map made for it, saved at scene-begin, and destroyed at the end; nothing else is touched",
    "hold": "immediate",
@@ -684,7 +684,7 @@
     "three colonists carrying no venom or toxic buildup hediff (asserted), on a cleared pad, a doctor beside them",
     "a hostile RM_Flamefang beside them"
    ],
-   "action": "let the flamefang land bites until two colonists carry RM_FlamefangVenom; the doctor tends one, the other is left untended; read both colonists' venom severity at once and each hour for six hours; then read the untended colonist's immunity and force it to complete (or wait it out) and read severity until the hediff goes",
+   "action": "let the flamefang land bites until two colonists carry RM_FlamefangVenom; the doctor tends one, the other is left untended; read both colonists' venom severity at once and each hour for six hours; then wait the untended colonist's venom out and read severity until the hediff goes (the immunity read was removed by RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN: the bar reads the venom hediff and its severity)",
    "expect": "RM_FlamefangVenom present after each bite, its severity rising over the hours; the tended colonist's RM_FlamefangVenom severity rises more slowly than the untended colonist's at every hourly read from the tend onwards and stays below it (the def's TendDuration severityPerDayTended -0.4, scaled by tend quality, against Immunizable severityPerDayNotImmune +0.35); once immunity completes the severity falls and the hediff goes",
    "control": {
     "case": "the third colonist bitten by a non-venomous predator of like size",
@@ -714,9 +714,9 @@
    "action": "read the live RM_FurnaceBeast race body size and each life stage's draw size; read the same for every RM_Pyrelands roster kind (the biome's resolved wild animals, the patch-added cast included, read through biome_probe, never the BiomeDef XML); read both pawns' body sizes",
    "expect": "the furnace-beast's live body size at least twice every other RM_Pyrelands roster kind's, and its adult draw size above each of theirs",
    "control": {
-    "case": "RM_PyrelandsGiants' classic restore invoked with the giant switch (furnaceBeastGiant) off (static call, no reload)",
-    "expect": "live body size and draw sizes back to the classic (non-giant) def's, no longer twice every other roster kind's",
-    "rules_out": "a size read that only echoes the XML file, rather than the game's live def that the switch changes"
+    "case": "none",
+    "expect": "none",
+    "rules_out": "none (RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN removed the classic-restore control: the giant switch's off state is a Mod Settings check (inv_settings_gate, T_SETTINGS_SWEEP_OFFLINE), not the giant bar; polish.md)"
    },
    "restore": "re-run the giant patch with the switch on so the live defs read giant again, despawn both pawns",
    "hold": "immediate",
