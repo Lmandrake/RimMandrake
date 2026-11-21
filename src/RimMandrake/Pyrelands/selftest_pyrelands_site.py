@@ -1880,7 +1880,8 @@ def test_sky_clauses_2026_11_15():
     check("lightning passes on visit 1's settled windows", v.lightning_verdict(cinder, ash)[0])
     check("lightning fails with no strike under cinderfall", not v.lightning_verdict([0] * 10, ash)[0])
     check("lightning fails with strikes under ash fall", not v.lightning_verdict(cinder, [3] + [0] * 9)[0])
-    check("lightning fails on an unread window", not v.lightning_verdict(cinder[:9] + [None], ash)[0])
+    check("lightning is unread (None), never a fail or a pass, on an unread window",
+          v.lightning_verdict(cinder[:9] + [None], ash)[0] is None)
     check("wash passes on visit 1's black-rain loss over a dry-wear clear", v.wash_verdict((450.0, 449.0), (315.027, 161.088))[0])
     check("wash fails with black rain no wetter than clear", not v.wash_verdict((450.0, 449.0), (450.0, 449.0))[0])
     check("wash fails when black rain takes less than twice clear's loss", not v.wash_verdict((450.0, 380.0), (450.0, 330.0))[0])
@@ -1894,6 +1895,126 @@ def test_sky_clauses_2026_11_15():
           and not v.fires_out_verdict(rf, rf[:-1] + [None])[0])
 
 
+def test_lightning_row_counts_strikes_2026_11_21():
+    """RIMMANDRAKE_TRACE_PYRE_ASHFALL_FIRE_IN_FIRST_LIGHTNING_WINDOW: cinderfall_lightning decides on lightning STRIKES
+    (calls of WeatherEvent_LightningStrike.FireEvent, counted by jawa/health_profile), never on new fires. The SHIPPED row
+    (_sky_lightning) runs against a fake game; only the game's replies are faked.
+    Range: under each sky, the strikes per window and the new fires per window, each one of four shapes (none, one in the
+    first window, scattered, every window), set apart, so a fire with no strike and a strike with no fire both occur; the
+    profiler runs, is refused, does not resolve, or stops counting before the last window; the planted fault on or off.
+    4 x 4 x 4 x 4 x 4 = 1024 cases, plus the plant. Left out: the real strike rate and fire spread (live, Stage 6), and the
+    weather blend (vanilla: WeatherManager.TransitionTicks 4000 < SKY_SETTLE_TICKS 4500, read from source)."""
+    import itertools
+    v = _load_validation("pyre_validation_strikes")
+    N = v.SKY_WINDOWS
+    shapes = {"none": [0] * N, "first": [1] + [0] * (N - 1), "scattered": [0, 2, 0, 0, 5, 0, 0, 0, 1, 0], "every": [3] * N}
+
+    class Game(object):
+        def __init__(self, strikes, fires, profiler="ok"):
+            self.strikes, self.fires, self.profiler = strikes, fires, profiler   # {sky: per-window list}
+            self.sky, self.window, self.calls, self.reads, self.log = None, 0, 0, 0, []
+
+        def bridge_call(self, tool, **kw):
+            self.log.append((tool, kw))
+            if tool == "jawa/health_profile":
+                a = kw.get("action")
+                if a == "start":
+                    self.calls, self.reads = 0, 0
+                    if self.profiler == "refused":
+                        return {"success": False, "error": "refused: the campaign profile does not allow it"}
+                    if self.profiler == "unresolved":
+                        return {"success": True, "profile": {"status": "running", "methods": [], "refused": [kw.get("methods")]}}
+                    return {"success": True, "profile": {"status": "running", "refused": [],
+                                                         "methods": [{"method": kw.get("methods"), "calls": 0}]}}
+                if a == "status":
+                    self.reads += 1
+                    expired = self.profiler == "expires" and self.reads >= N
+                    return {"success": True, "profile": {"status": "expired" if expired else "running", "refused": [],
+                                                         "methods": [{"method": v.STRIKE_METHOD, "calls": self.calls}]}}
+                return {"success": True, "profile": {"status": "stopped"}}
+            return {"success": True}
+
+        def wait(self, n):
+            assert n == v.SKY_WINDOW_TICKS, n
+            self.calls += self.strikes.get(self.sky, [0] * N)[self.window]
+            self.window += 1
+
+        def count(self):
+            return self.fires.get(self.sky, [0] * N)[self.window - 1]
+
+    def run(game, plant=None):
+        """-> ("PASS"|"FAIL"|"UNMEASURED", why, notes) of the shipped row against `game`."""
+        notes = []
+        patched = dict(_live=lambda t: True, _independent=lambda t: None, _sky_def_leg=lambda t, c: None,
+                       _isolate=lambda t: None, _extinguish=lambda t: None,
+                       _comp=lambda t, *a, **k: __import__("contextlib").nullcontext(),
+                       _note=lambda t, label, data: notes.append((label, data)),
+                       _wait=lambda t, n, fast=None: game.wait(n), _count=lambda t, d, rect=None: game.count(),
+                       _things=lambda t, d, rect=None, limit=500: [{"def": "Fire", "x": 7, "z": 9}] * min(limit, game.count()))
+
+        def sky(t, w):
+            game.sky, game.window = w, 0
+        patched["_sky"] = sky
+
+        def unmeasured(t, why):
+            raise v._Unmeasured(why)
+        patched["_unmeasured"] = unmeasured
+        saved = dict((k, getattr(v, k)) for k in patched)
+        env = os.environ.pop(v.PLANT_ASHFALL_STRIKE_ENV, None) if hasattr(v, "PLANT_ASHFALL_STRIKE_ENV") else None
+        try:
+            for k, f in patched.items():
+                setattr(v, k, f)
+            if plant:
+                os.environ[v.PLANT_ASHFALL_STRIKE_ENV] = plant
+            try:
+                v._sky_lightning(game)
+                return "PASS", "", notes
+            except v.ExpectationFailed as e:
+                return "FAIL", str(e), notes
+            except v._Unmeasured as e:
+                return "UNMEASURED", str(e), notes
+        finally:
+            for k, f in saved.items():
+                setattr(v, k, f)
+            os.environ.pop(getattr(v, "PLANT_ASHFALL_STRIKE_ENV", "PYRE_PLANT_ASHFALL_STRIKE"), None)
+            if env is not None:
+                os.environ[v.PLANT_ASHFALL_STRIKE_ENV] = env
+
+    C, A = v.CINDERFALL, v.ASHFALL
+    # visit 2's reading: 91 cinderfall fires, one ash-fall fire in the first window, and (the trace) no strike under ash fall
+    visit2 = Game({C: shapes["scattered"], A: shapes["none"]},
+                  {C: [1, 12, 0, 9, 0, 0, 31, 13, 1, 24], A: [1, 0, 0, 0, 0, 0, 0, 0, 0, 0]})
+    got, why, notes = run(visit2)
+    check("visit 2's one ash-fall fire with no strike PASSES the row (it is not lightning)", got == "PASS", (got, why))
+    text = json.dumps(notes, default=str)
+    check("the row's note names the ash-fall fire as not lightning, with its window and cell",
+          "not lightning" in text and '"window": 1' in text and '"x": 7' in text, text[:600])
+    starts = [kw for tool, kw in visit2.log if tool == "jawa/health_profile" and kw.get("action") == "start"]
+    check("the row counts strikes on %s, once for each sky" % getattr(v, "STRIKE_METHOD", "?"),
+          [kw.get("methods") for kw in starts] == [getattr(v, "STRIKE_METHOD", None)] * 2, starts)
+    got, why, _ = run(Game({C: shapes["scattered"], A: shapes["first"]}, {C: shapes["scattered"], A: shapes["none"]}))
+    check("one strike under ash fall that lit nothing (a fogged cell, bare sand) FAILS the row", got == "FAIL", (got, why))
+    # the planted fault: the ash-fall leg under a vanilla strike maker
+    plant = Game({C: shapes["scattered"], "DryThunderstorm": shapes["scattered"], A: shapes["none"]},
+                 {C: shapes["scattered"], "DryThunderstorm": shapes["scattered"]})
+    got, why, notes = run(plant, plant="DryThunderstorm")
+    check("PLANTED: the ash-fall leg under DryThunderstorm FAILS the row and says it was planted",
+          got == "FAIL" and any("PLANTED" in label for label, _ in notes), (got, why, notes[:1]))
+    check("PLANTED: the planted sky is the one locked for the ash-fall leg",
+          "DryThunderstorm" in json.dumps([n for n in notes], default=str), notes[:1])
+    # the whole range
+    wrong, counts = [], {}
+    for sc, sa, fc, fa, prof in itertools.product(shapes, shapes, shapes, shapes, ("ok", "refused", "unresolved", "expires")):
+        got, why, _ = run(Game({C: shapes[sc], A: shapes[sa]}, {C: shapes[fc], A: shapes[fa]}, profiler=prof))
+        want = "UNMEASURED" if prof != "ok" else ("PASS" if sc != "none" and sa == "none" else "FAIL")
+        counts[got] = counts.get(got, 0) + 1
+        if got != want:
+            wrong.append((sc, sa, fc, fa, prof, got, want, why[:120]))
+    print("     range: 1024 cases read, verdicts %r, wrong %d (limit 0)" % (sorted(counts.items()), len(wrong)))
+    check("every case of the range reads the verdict its strikes support (fires never decide; no read is never a verdict)",
+          not wrong and sum(counts.values()) == 1024, wrong[:5])
+
+
 def main():
     for t in (test_tier, test_manifests_match_suite, test_defaults_match_source, test_gate_a, test_gate_b,
               test_gate_c, test_site_pure, test_site_build, test_site_offsite_refused, test_naming_dialog_lesson, test_plan_refuses_on_gate_b,
@@ -1903,7 +2024,8 @@ def main():
               test_heat_guard_2026_10_15,
               test_furnace_heat_and_sleep_2026_11_08, test_on_site_finds_the_site_2026_11_12,
               test_offline_acceptance_2026_11_12, test_ruins_count_charred_floors_2026_11_15,
-              test_old_save_row_skips_a_fixture_born_lit_2026_11_15, test_sky_clauses_2026_11_15):
+              test_old_save_row_skips_a_fixture_born_lit_2026_11_15, test_sky_clauses_2026_11_15,
+              test_lightning_row_counts_strikes_2026_11_21):
         try:
             t()
         except Exception as ex:

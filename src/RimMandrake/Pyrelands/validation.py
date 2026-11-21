@@ -1788,6 +1788,19 @@ STRIKE_EVENT = "WeatherEvent_LightningStrike"   # GenExplosion Flame at the stri
 DOUSE_FIELDS = ("blackRainDousingEnabled", "blackRainDousing")   # Patch_FireTick_BlackRainDouses: vanilla rain alone loses to grass
 SKY_SETTLE_TICKS = 4500     # a locked weather blended in (visit 1: the first reads after a switch carried the last sky)
 SKY_WINDOWS, SKY_WINDOW_TICKS = 10, 1000
+# cinderfall_lightning counts STRIKES, not fires (RIMMANDRAKE_TRACE_PYRE_ASHFALL_FIRE_IN_FIRST_LIGHTNING_WINDOW). A fire count
+# is wrong both ways: a strike on a fogged cell or bare sand lights nothing, and one strike's fire spreads to 31 in a window
+# (visit 2). Visits 1 and 2 each read one fire in ash fall's first window, with no lightning maker on the def. The prior sky
+# cannot strike then: WeatherManager.TransitionTicks is 4000 and SKY_SETTLE_TICKS is 4500, so the cinderfall weight is 0
+# before the window opens (vanilla WeatherManagerTick). jawa/health_profile counts the calls of this one method. The
+# WeatherEventHandler calls FireEvent once for each strike event, at the time it adds the event.
+STRIKE_METHOD = "RimWorld.WeatherEvent_LightningStrike:FireEvent"
+STRIKE_PROFILE_MINUTES = 60     # the profiler's own maximum: it must expire (its law). A leg is ten 1000-tick windows,
+                                # about 3.2 min at the measured ~53 ticks/s. A leg that outlives the profiler reads UNMEASURED.
+# Planted fault for this row: the "ash fall" leg runs under this sky (DryThunderstorm: a vanilla strike maker, one strike per
+# 1200 ticks on average), so the row must read FAIL. Unset: the real AshFall.
+PLANT_ASHFALL_STRIKE_ENV = "PYRE_PLANT_ASHFALL_STRIKE"
+FIRE_ROWS_KEPT = 5              # fire rows named per leg in the note: enough to name a cause, not a dump
 WASH_TICKS, WASH_DEPTH, WASH_MIN_SHARE = 2500, 0.5, 0.10
 FIRE_PAD_OUT = (PAD_PROBE[0], PAD_PROBE[1] - 30)   # the fires-out pad, off the wash patch at PAD_PROBE
 FIRE_OUT_POLLS, FIRE_OUT_STEP = 12, 250
@@ -1853,13 +1866,31 @@ def sky_clause_defs(defs, settings=None, douse_def=BLACKRAIN):
     return out
 
 
-def lightning_verdict(cinder, ashfall):
-    """Pure. New fires per window under each settled sky -> (ok, why): some under cinderfall, none under ash fall."""
+def strike_deltas(cumulative):
+    """Pure. The strike-call counter read after each window (cumulative, None = unread) -> strikes in each window. A window
+    whose read, or the read before it, is None is None. A counter that went down (a profiler restart) is None too."""
+    out, last = [], 0
+    for c in cumulative or []:
+        out.append(None if c is None or last is None or c < last else c - last)
+        last = c
+    return out
+
+
+def lightning_verdict(cinder, ashfall, cinder_fires=None, ash_fires=None):
+    """Pure. Lightning strikes per window under each settled sky (calls of STRIKE_METHOD) -> (ok, why): some under
+    cinderfall, none under ash fall. ok None = a window was not read: UNMEASURED, never a fail or a pass.
+    The fire counts are evidence only. A window under ash fall with fires and no strike names those fires as not lightning."""
     if not cinder or not ashfall or None in cinder or None in ashfall:
-        return False, "unread windows: cinderfall %r, ash fall %r" % (cinder, ashfall)
+        return None, "unread windows: strikes under cinderfall %r, ash fall %r" % (cinder, ashfall)
     ok = sum(cinder) > 0 and sum(ashfall) == 0
-    return ok, "fires per %d ticks: cinderfall %r (total %d), ash fall %r (total %d)" % (
-        SKY_WINDOW_TICKS, cinder, sum(cinder), ashfall, sum(ashfall))
+    why = "strikes per %d ticks: cinderfall %r (total %d), ash fall %r (total %d); worst ash-fall window %d, limit 0; %d windows read" % (
+        SKY_WINDOW_TICKS, cinder, sum(cinder), ashfall, sum(ashfall), max(ashfall), len(cinder) + len(ashfall))
+    if cinder_fires is not None or ash_fires is not None:
+        why += "; new fires per window (evidence only): cinderfall %r, ash fall %r" % (cinder_fires, ash_fires)
+    unlit = [i + 1 for i, (s, f) in enumerate(zip(ashfall, ash_fires or [])) if f and not s]
+    if unlit:
+        why += "; ash-fall window(s) %r had fire and no strike: not lightning" % unlit
+    return ok, why
 
 
 def wash_verdict(clear, rain, min_share=WASH_MIN_SHARE):
@@ -1904,29 +1935,73 @@ def _sky(t, weather):
     _extinguish(t)
 
 
-def _fire_windows(t):
-    seen = []
+def _strike_profile_start(t):
+    """Start the strike counter. -> None when it runs, else why it cannot count (the row then reads UNMEASURED)."""
+    r = t.bridge_call("jawa/health_profile", action="start", methods=STRIKE_METHOD, minutes=STRIKE_PROFILE_MINUTES)
+    if not _live(t):
+        return None
+    prof = (r or {}).get("profile") or {}
+    if not isinstance(r, dict) or r.get("success") is False:
+        return "jawa/health_profile start refused: %r" % (r,)
+    if prof.get("refused") or STRIKE_METHOD not in [m.get("method") for m in prof.get("methods") or []]:
+        return "%s did not resolve in the running game: %r" % (STRIKE_METHOD, prof.get("refused"))
+    return None
+
+
+def _strike_calls(t):
+    """The strike counter now, or None when it cannot be read (not running: expired, stopped, disabled after a fault)."""
+    r = t.bridge_call("jawa/health_profile", action="status")
+    if not _live(t):
+        return None
+    prof = (r or {}).get("profile") or {}
+    if not isinstance(r, dict) or r.get("success") is False or prof.get("status") != "running":
+        return None
+    row = [m for m in prof.get("methods") or [] if m.get("method") == STRIKE_METHOD]
+    return row[0].get("calls") if row and isinstance(row[0].get("calls"), int) else None
+
+
+def _sky_windows(t):
+    """Ten windows under the settled sky -> (strikes per window, new fires per window, the first fire rows, profiler error).
+    Each window's fires are put out, so the next window counts only new ones."""
+    why = _strike_profile_start(t)
+    cumulative, fires, rows = [], [], []
     for _ in range(SKY_WINDOWS):
         _wait(t, SKY_WINDOW_TICKS)
+        # a start that failed counts nothing: a status read then shows an earlier profile, or a zero that was never counted
+        cumulative.append(None if why else _strike_calls(t))
         n = _count(t, "Fire")
-        seen.append(n)
+        fires.append(n)
         if n:
+            if len(rows) < FIRE_ROWS_KEPT:
+                rows += [dict(r, window=len(fires)) if isinstance(r, dict) else {"row": r, "window": len(fires)}
+                         for r in _things(t, "Fire", limit=FIRE_ROWS_KEPT - len(rows))]
             _extinguish(t)
-    return seen
+    t.bridge_call("jawa/health_profile", action="stop")
+    return strike_deltas(cumulative), fires, rows, why
 
 
 def _sky_lightning(t):
     _independent(t)
     with _comp(t, "cinderfall_lightning", beyond_toggle=True):
         _sky_def_leg(t, "lightning")
-        _isolate(t)     # no burn line, fire hawk or furnace beast lights a fire the count would read as a strike
+        _isolate(t)     # no burn line, fire hawk or furnace beast fire: the fire rows in the note stay few enough to read
+        ash_sky = os.environ.get(PLANT_ASHFALL_STRIKE_ENV) or ASHFALL
+        if ash_sky != ASHFALL:
+            _note(t, "PLANTED FAULT: the ash-fall leg runs under %s" % ash_sky, PLANT_ASHFALL_STRIKE_ENV)
         got = {}
-        for w in (ASHFALL, CINDERFALL):
+        for key, w in ((ASHFALL, ash_sky), (CINDERFALL, CINDERFALL)):
             _sky(t, w)
-            got[w] = _fire_windows(t)
+            got[key] = _sky_windows(t)
         if _live(t):
-            ok, why = lightning_verdict(got[CINDERFALL], got[ASHFALL])
-            _note(t, "lightning: new fires per window under each sky", why)
+            for key in (ASHFALL, CINDERFALL):
+                if got[key][2]:
+                    _note(t, "lightning: fires under %s (first %d rows, window = 1..%d)" % (key, FIRE_ROWS_KEPT, SKY_WINDOWS),
+                          got[key][2])
+            ok, why = lightning_verdict(got[CINDERFALL][0], got[ASHFALL][0], got[CINDERFALL][1], got[ASHFALL][1])
+            _note(t, "lightning: strikes (%s calls) per window under each sky" % STRIKE_METHOD, why)
+            if ok is None:
+                _unmeasured(t, "%s; profiler: ash fall %s, cinderfall %s" % (
+                    why, got[ASHFALL][3] or "ran", got[CINDERFALL][3] or "ran"))
             if not ok:
                 _fail(why)
 

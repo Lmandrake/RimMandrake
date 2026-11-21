@@ -53,17 +53,17 @@
   "test_blob": "de6276dffc1c6364bfa5707523f6c90815e728ee"
  },
  "T_SITE": {
-  "at": "2026-11-19T03:49:13Z",
+  "at": "2026-11-21T15:24:07Z",
   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_site.py",
   "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_site.py",
-  "last": "FAIL: 1 failure(s)",
-  "patch": "diff --git a/src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs b/src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs\nindex b486caa201..56ec1a3df4 100644\n--- a/src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs\n+++ b/src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs\n@@ -163,7 +163,7 @@ namespace RimMandrake.Pyrelands\n             Scribe_Values.Look(ref scorchFruitMapCap, \"scorchFruitMapCap\", 40);\n             Scribe_Values.Look(ref ashfallAccumulationEnabled, \"ashfallAccumulationEnabled\", true);\n             Scribe_Values.Look(ref ashfallRateMultiplier, \"ashfallRateMultiplier\", 1f);\n-            Scribe_Values.Look(ref biomeGenerationEnabled, \"biomeGenerationEnabled\", false);\n+            Scribe_Values.Look(ref biomeGenerationEnabled, \"biomeGenerationEnabled\", true);\n             Scribe_Values.Look(ref wildPlantAllowlistEnabled, \"wildPlantAllowlistEnabled\", true);\n             Scribe_Values.Look(ref plantGrowthStagesEnabled, \"plantGrowthStagesEnabled\", true);\n             Scribe_Values.Look(ref scorchedRuinsEnabled, \"scorchedRuinsEnabled\", true);\n",
+  "last": "FAIL: 4 failure(s)",
+  "patch": "--- a/src/RimMandrake/Pyrelands/validation.py\n+++ b/src/RimMandrake/Pyrelands/validation.py\n@@ -1882,7 +1882,7 @@\n     The fire counts are evidence only. A window under ash fall with fires and no strike names those fires as not lightning.\"\"\"\n     if not cinder or not ashfall or None in cinder or None in ashfall:\n         return None, \"unread windows: strikes under cinderfall %r, ash fall %r\" % (cinder, ashfall)\n-    ok = sum(cinder) > 0 and sum(ashfall) == 0\n+    ok = sum(cinder) > 0\n     why = \"strikes per %d ticks: cinderfall %r (total %d), ash fall %r (total %d); worst ash-fall window %d, limit 0; %d windows read\" % (\n         SKY_WINDOW_TICKS, cinder, sum(cinder), ashfall, sum(ashfall), max(ashfall), len(cinder) + len(ashfall))\n     if cinder_fires is not None or ash_fires is not None:\n",
   "patch_files": [
-   "src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs"
+   "src/RimMandrake/Pyrelands/validation.py"
   ],
-  "patch_sha": "bce6fbba1ee4a095",
+  "patch_sha": "a1f1a97e57105a5b",
   "rc": 1,
-  "test_blob": "d84bad651d4f5f12d13fb754af19899ef959f25d"
+  "test_blob": "244e2667b68a184f0a53d9b9f2eb4738067e9270"
  },
  "T_VENOM_STAGING": {
   "at": "2026-11-21T14:59:42Z",
