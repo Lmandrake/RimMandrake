@@ -21,10 +21,18 @@ Static reads of the C# (comments stripped), for every public static bool/float/i
                    checkbox bound to burnLineEnabled left "The wind carries the fire" toggling the burn line, every check green)
   sliders          every slider's range holds its field's shipped default (a range that excludes it moves the value the
                    first time the settings window draws)
+  kernel_gates     the kernel's own gate predicates, evaluated over every input (blind cycle 4: a MechanicsOn that ignored the
+                   Baroque Biomes toggle and a BurnStampMay that ignored "Mod enabled" left every check here green):
+                   MechanicsOn is master AND (no shell OR toggle); BurnStampMay is false whenever the gate or its own switch is off
+  gate_args        every caller of a kernel gate predicate hands it PyrelandsMechanicsGate.On at the gate's place (blind cycle 4:
+                   BurnStampMay(true, ...) in a postfix that consults the gate elsewhere stayed green)
+  wind_reads_pred  the wind carry's one predicate is what the wind patches read: WindCarriedFire.Governs reads WindCarries, and
+                   both wind patches call Governs (blind cycle 4: Governs without WindCarries carried fire with every switch off)
 Every planted fault must go red and the clean copy stay green.
 Run: python3 <this file>      exit 0 = PASS, 1 = FAIL
 """
 import glob
+import itertools
 import os
 import re
 import shutil
@@ -192,7 +200,98 @@ def facts(mod):
         if l is None or d < l - 1e-6 or (h is not None and d > h + 1e-6):
             bad.append("%s ships %s outside its slider [%s, %s]" % (target, d, lo.strip(), hi.strip()))
     fact("sliders", bad if sliders else ["no slider found"], "%d sliders hold their defaults" % len(sliders))
+    kern = code.get(os.path.join("Kernel", "RM_FireEcoKernel.cs"), "")
+    bad = []
+    for meth, ok_fn in KERNEL_GATES:
+        names, expr = _return_expr(kern, meth)
+        if expr is None:
+            bad.append("%s is not one `return <bool expression>;` in RM_FireEcoKernel.cs" % meth)
+            continue
+        for combo in itertools.product((False, True), repeat=len(names)):
+            env = dict(zip(names, combo))
+            try:
+                got = bool(eval(expr, {"__builtins__": {}}, env))
+            except Exception as e:  # an expression the reader cannot evaluate is not a passed gate
+                bad.append("%s: cannot evaluate %r (%s)" % (meth, expr, e))
+                break
+            want = ok_fn(*combo)
+            if want is not None and got != want:
+                bad.append("%s%s = %s, wants %s" % (meth, combo, got, want))
+                break
+    fact("kernel_gates", bad, "%d kernel gate predicates hold over every input" % len(KERNEL_GATES))
+    bad = []
+    for meth, pos in GATE_ARGS:
+        calls = 0
+        for f, s in code.items():
+            if f.startswith("Kernel" + os.sep):
+                continue
+            for m in re.finditer(r"\.%s\(" % re.escape(meth), s):
+                args = _call_args(s, m.end() - 1)
+                calls += 1
+                if args is None or len(args) <= pos or args[pos] != GATE:
+                    bad.append("%s in %s: gate argument %r, not %s" % (meth, f, args[pos] if args and len(args) > pos else None, GATE))
+        if not calls:
+            bad.append("%s has no caller (renamed?)" % meth)
+    fact("gate_args", bad, "%d kernel gate predicates take %s from every caller" % (len(GATE_ARGS), GATE))
+    hook = code.get("FireEcologyHook.cs", "")
+    bad = []
+    gov = _method_body(hook, "WindCarriedFire", "Governs")
+    if gov is None or not re.search(r"\.WindCarries\b", gov):
+        bad.append("WindCarriedFire.Governs does not read MapComponent_BurnLine.WindCarries")
+    for cls, meth in (("Patch_FireTick_WindCarries", "Postfix"), ("Patch_FireTrySpread_WindInstead", "Prefix")):
+        b = _method_body(hook, cls, meth)
+        if b is None or "WindCarriedFire.Governs(" not in b:
+            bad.append("%s.%s does not ask WindCarriedFire.Governs" % (cls, meth))
+    fact("wind_reads_pred", bad, "both wind patches ask Governs, and Governs reads WindCarries")
     return out
+
+
+# (kernel method, the truth it must hold: args in signature order -> expected bool, or None = any)
+KERNEL_GATES = [
+    ("MechanicsOn", lambda master, shell, toggle: master and (not shell or toggle)),
+    ("BurnStampMay", lambda gate, bonusOn, spawned, attached, scorchable:
+        False if not gate or not bonusOn else (True if spawned and not attached and scorchable else None)),
+]
+# (kernel gate predicate, index of its gate argument at the call)
+GATE_ARGS = [("BurnStampMay", 0), ("FireTickMayRoll", 0), ("BlackRainDouseAmount", 0), ("RainBecomesBlackRain", 2),
+             ("DomeOnHeatHit", 2), ("TryClaimSighting", 2)]
+
+
+def _return_expr(s, meth):
+    """(parameter names, the body's one return expression as Python) of a `static bool meth(...)`, or (names, None)."""
+    m = re.search(r"\bstatic\s+bool\s+%s\s*\(([^)]*)\)\s*\{" % re.escape(meth), s)
+    if not m:
+        return [], None
+    names = [p.split()[-1] for p in m.group(1).split(",") if p.strip()]
+    body = _block(s, m.end() - 1)
+    r = re.fullmatch(r"\s*return\s+([^;]+);\s*", body or "")
+    if not r:
+        return names, None
+    e = r.group(1)
+    if re.search(r"[^\w\s&|!()]", e):
+        return names, None
+    e = e.replace("&&", " and ").replace("||", " or ")
+    e = re.sub(r"!(?!=)", " not ", e)
+    return names, e
+
+
+def _call_args(s, i):
+    """The top-level arguments of the call whose '(' is at index i, stripped, or None."""
+    d, j, start, args = 0, i, i + 1, []
+    while j < len(s):
+        c = s[j]
+        if c in "([{":
+            d += 1
+        elif c in ")]}":
+            d -= 1
+            if d == 0:
+                args.append(s[start:j].strip())
+                return [re.sub(r"\s+", " ", a) for a in args]
+        elif c == "," and d == 1:
+            args.append(s[start:j].strip())
+            start = j + 1
+        j += 1
+    return None
 
 
 S = "Source/"
@@ -219,6 +318,12 @@ MUTANTS = [
     ("wind carry ungated", S + "MapComponent_BurnLine.cs", "WindCarries => IsPyrelandsMap && PyrelandsMechanicsGate.On &&", "WindCarries => IsPyrelandsMap &&"),
     ("wind carry ignores its switch", S + "MapComponent_BurnLine.cs", "&& RM_PyrelandsSettings.windCarriesFireEnabled;", ";"),
     ("wind checkbox bound to the burn line", S + SETTINGS, '"The wind carries the fire", ref windCarriesFireEnabled,', '"The wind carries the fire", ref burnLineEnabled,'),
+    # blind challenge cycle 4 (each one stayed green before)
+    ("kernel gate ignores the roster toggle", S + "Kernel/RM_FireEcoKernel.cs", "return modMaster && (!shellPresent || shellOn);", "return modMaster;"),
+    ("burn stamp kernel ignores the master", S + "Kernel/RM_FireEcoKernel.cs", "return pyrelandsEnabled && bonusOn && spawned && !attachedToPawn && scorchable;",
+     "return bonusOn && spawned && !attachedToPawn && scorchable;"),
+    ("burn stamp caller passes true", S + "FireEcologyHook.cs", "BurnStampMay(PyrelandsMechanicsGate.On,", "BurnStampMay(true,"),
+    ("wind patches ignore the wind predicate", S + "FireEcologyHook.cs", "if (burn == null || !burn.WindCarries) return false;", "if (burn == null) return false;"),
 ]
 
 
