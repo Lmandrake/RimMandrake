@@ -1,0 +1,1 @@
+Killing a runner script started as a Claude background Bash task (kill -9 on the bash loop or its timeout wrapper) ends the task, and the harness then kills the whole process group, including the python.exe chain you meant to keep: 23 min of a seven-day Pyrelands chain was lost on 2026-11-20. To lift a cap on a running chain, let it finish or rerun it; never kill its parent.
