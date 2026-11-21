@@ -1539,6 +1539,17 @@ def ingame_main():
                     and asked == ["Pyrelands in-game acceptance visit 1"])
         chk(t_on, "on, visit 1 owed, the bridge takeable: one live driver launches (the cap, opus, the in-game brief)")
 
+        # RIMMANDRAKE_RESUME_CAPPED_VISIT_BY_TICK_PYRELANDS_SAT_IDLE: a visit stopped by its spend cap is continued once
+        # by detached_helper's own continuation (left_open_continue), never left at visit_unfinished for a hand
+        # (Pyrelands visit 2: 42 of 46 rows recorded, capped 9:37 PM PST 2026-11-20, sat 85 min)
+        def t_cap_continues():
+            a = launches()
+            return (len(a) == 1 and "--continue-on-cap" in a[0]
+                    and a[0][a[0].index("--continue-on-cap") + 1] == str(MD.INGAME_CONTINUE_ON_CAP)
+                    and MD.INGAME_CONTINUE_ON_CAP == 1)
+        chk(t_cap_continues, "the in-game driver launches with --continue-on-cap 1: a capped visit continues by itself, "
+                             "once")
+
         def t_item():
             nc = subprocess.run([sys.executable, os.path.join(HERE, "cli.py"), "namecheck", filed[0][0]],
                                 capture_output=True, text=True, timeout=120)

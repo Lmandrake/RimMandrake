@@ -1201,6 +1201,12 @@ def cert_red_waits(row, ahead=()):
         " (launch priority: %s first)" % ", ".join(ahead) if ahead else "")
 
 
+# A visit stopped by its spend cap is continued once by detached_helper's own continuation, never left at
+# visit_unfinished for a hand (RIMMANDRAKE_RESUME_CAPPED_VISIT_BY_TICK_PYRELANDS_SAT_IDLE: Pyrelands visit 2 had 42 of
+# 46 rows when capped, 2026-11-20 9:37 PM PST, and sat 85 min). The 1 keeps the cap meaningful (danger: a runaway
+# unattended burn, owner 2026-11-12): at most twice the visit's cap.
+INGAME_CONTINUE_ON_CAP = 1
+
 RERUN_MAX_S = 4 * 3600     # a certificate rerun unit's bound (RuntimeMaxSec); FlowWorks' C# suite alone ran 531 s
 
 
@@ -2810,7 +2816,9 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
                 cfg, s, row, now, "ingame_auto", {"visit_id": row.get("visit_id"), "visit": row.get("visit")},
                 lambda: ingame_item_id(mod, row.get("visit"), known),
                 lambda it: do_file(it, title, why, needs="game-up"), do_publish,
-                lambda it: launch_holder(mod, s, row, row["cap"], it, **dict(resume_kw(row), game=row.get("game", "a"))))
+                lambda it: launch_holder(mod, s, row, row["cap"], it, **dict(
+                    resume_kw(row), game=row.get("game", "a"),
+                    **({"continue_on_cap": INGAME_CONTINUE_ON_CAP} if _takes(do_launch, "continue_on_cap") else {}))))
             if ok:
                 row.update(decision="launched", unit=unit, item=item, why=text)
                 known.add(item) if isinstance(known, set) else None

@@ -2677,7 +2677,7 @@ def _twins_reader(runner, twins):
 
 def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=subprocess.run, bridge=None,
                resume=None, bars=None, preface=None, env=None, session=None, reconcile=None, game=None, companion=None,
-               deployed=None, twins=None, game_ops=None):
+               deployed=None, twins=None, game_ops=None, continue_on_cap=0):
     """-> (exit code, text, unit or None). Refuses (2) a missing or non-positive cap, a missing item, a mod at neither
     the offline build nor the blind challenge, one with no build work owed, and at the blind challenge a model below
     opus or a cycle already recorded or blocked, and at in-game acceptance a model other than opus, a visit already
@@ -2787,7 +2787,9 @@ def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=s
     with open(path, "w", encoding="utf-8") as fh:
         fh.write(text)
     argv = [sys.executable, detached_helper_path(), "launch", "--seat", seat, "--item", item, "--brief-file", path,
-            "--model", model, "--budget-usd", "%g" % budget_usd] + (["--resume", session] if session else [])
+            "--model", model, "--budget-usd", "%g" % budget_usd] + (["--resume", session] if session else []) + (
+        # a run stopped by its spend cap gets detached_helper's own continuation, this many times (left_open_continue)
+        ["--continue-on-cap", str(int(continue_on_cap))] if continue_on_cap else [])
     env = dict(env or {}, RM_CONTROL_MOD=os.path.basename(os.path.normpath(mod)),
                **({"RM_CONTROL_STAGE": f["stage"]} if f.get("stage") else {}))     # admission's scopes (control.py)
     for k, v in sorted((env or {}).items()):
