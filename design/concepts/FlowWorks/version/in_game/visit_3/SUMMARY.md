@@ -57,18 +57,20 @@ sc_fill_tiers, sc_slime, sc_pit_reads, sc_covered_pit, sc_sluice, sc_one_network
   under save_guard (519 keepers backed up, VERIFIED none changed). Eleven captures looked at (screenshots/review_*.jpg): station 21
   (2 m water) shows pale square blocks (filed for a judge); the planks stations read as ground by design.
 
-## Results (17 PASS, 3 FAIL, 2 UNMEASURED of the 22 run; 23 named in the brief) [measured]
+## Results (18 PASS, 4 FAIL, 1 UNMEASURED of 23; sc_garden counts as FAIL: a MOD FAIL on the build is not hidden by its later PASS) [measured]
 
 The brief names 23 checks but lists 22 distinct ids plus sc_walk; every listed id ran. Game a on Archmagi, FlowWorks deployed once
 (mod hash sha256:f7b24409aa42..., DLL at 175293dc5f; every counted row on it), game 1.6.4871 rev590. Lists: the 13-mod flowworks tier
-(all five DLC) for the scenes, evening_20261113 (23 mods) for OL and PIT_LOOK (their save and scene defs), his full list (315) for
-sc_walk and the walk savegame. Two mutant DLLs ran only for the planted readings (evidence/plant/), then the real DLL was redeployed.
+(all five DLC) for the scenes, evening_20261113 for PIT_LOOK (22 mods, exact tier, on the continuation) and OL (23 mods: that list
+plus the Tribes mod), his full list (315) for sc_walk and the walk savegame. Two mutant DLLs ran only for the planted readings
+(evidence/plant/), then the real DLL was redeployed.
 
 PASS: sc_fill_front, sc_one_surface, sc_coating_wash, sc_hose_look, sc_toss_flame, sc_trench_cover, sc_fetch_fallen, sc_pit_trap_raid,
-sc_geyser_tub, sc_hole_prison, sc_pawn_height, sc_dig_finds, sc_canal_fire, sc_hung_bridge, sc_ways_out, sc_garden (scene repaired,
-shown both ways), PIT_LOOK_1114_LIVE, sc_walk. (OL_OWNER_LOOK_READS__pit_relief PASS is a supporting row.)
+sc_geyser_tub, sc_hole_prison, sc_pawn_height, sc_dig_finds, sc_canal_fire, sc_hung_bridge, sc_ways_out, sc_moat_raid, sc_garden (scene
+repaired, shown both ways; one FAIL on the same build, filed: see the continuation), PIT_LOOK_1114_LIVE, sc_walk.
+(OL_OWNER_LOOK_READS__pit_relief PASS is a supporting row.)
 FAIL: sc_ice (MOD, filed), sc_source_pays (MOD after a HARNESS repair, filed), sc_islands (SITE presumed, unrepaired, owner item).
-UNMEASURED: sc_moat_raid (SITE presumed, unrepaired, owner item), OL_OWNER_LOOK_READS (HARNESS: 3 BLOCKED rows, owner item).
+UNMEASURED: OL_OWNER_LOOK_READS (HARNESS: 3 BLOCKED rows, owner item).
 
 Visit 2's failures now passing on this build: sc_fetch_fallen, sc_pit_trap_raid, sc_trench_cover, sc_pawn_height, sc_geyser_tub,
 sc_hung_bridge, sc_garden (after the scene repair), and OL's 9 FAILs.
@@ -118,22 +120,43 @@ wired). Your call.
   NOT done: the zoomed captures on FLOWWORKS_OWNER_WALK_END_20261120 and the judge reads against water_by_depth_target.json
   (wall-time bound; a judge that did not make them must read them before his look).
 
-## The exact-tier rerun (08:05-08:47), and where the visit stops
+## The exact-tier rerun (08:05-08:47)
 
 `build_match.py check` read only 11 of 31 rows as counting: the first pass ran on the 13-mod list game a already held at 05:41, whose
 order puts mandrake.rm.patches before mandrake.rm.flowworks, and a minimal-list row counts only on the list modset_builder.py builds
 for its tier (flowworks before patches). Not a verdict: the same 13 mods. I swapped game a to the exact tier (a stale evening swap
 marker of mine refused the first write; removed; game a force-stopped twice while it loaded his full list by mistake) and reran:
 PASS sc_fill_front, sc_one_surface, sc_trench_cover, sc_geyser_tub, sc_coating_wash, sc_toss_flame, sc_canal_fire; FAIL sc_ice
-(same MOD reading). Then sc_hose_look, sc_garden and sc_source_pays each stalled after the calm site load (160 s, game paused at
-tick 3, bridge answering, no dialog: screenshots/desktop_stall_0846.jpg): UNMEASURED, HARNESS, cause not found. At 8:47 AM PST, past
-the 3-hour bound, I stopped. Not rerun on the exact tier list: sc_islands, sc_moat_raid, sc_dig_finds, sc_fetch_fallen,
-sc_pit_trap_raid, sc_hole_prison, sc_hung_bridge, sc_ways_out, sc_pawn_height, sc_hose_look, sc_garden, sc_source_pays. Their
-first-pass readings (above) stand as evidence; build_match does not count them.
+(same MOD reading). Then sc_hose_look, sc_garden and sc_source_pays were each killed at 160 s, the bound I had set on run_row (the
+screenshot screenshots/desktop_stall_0846.jpg shows the game paused at tick 3 inside the scene's setup). At 8:47 AM PST, past the
+3-hour bound, I stopped.
+
+## Continuation (2026-11-21 8:52-10:20 AM PST, same item, fresh session)
+
+- The 8:36 "stall" was not a stall [measured]: sc_hose_look ran to PASS in 232 s with a 520 s bound. From about 8:30 AM every scene
+  spent 3-15x longer in python-side time between bridge calls (strange.jsonl, explained), so the 160 s bound cut them off. Class
+  HARNESS (my bound, not the check); the three rows say so. The check code is unchanged.
+- Rerun on the exact flowworks tier, calm site asserted on each row: PASS sc_hose_look, sc_garden, sc_dig_finds, sc_pawn_height,
+  sc_ways_out, sc_hung_bridge, sc_moat_raid (two held this time), sc_hole_prison, sc_fetch_fallen, sc_pit_trap_raid. FAIL
+  sc_source_pays (the same MOD reading: the sink stops on a 1 dL film, filed) and sc_islands (the six raiders stay on the span, 3 of
+  3 runs on game a, SITE presumed, owner item).
+- sc_garden FAILed once before it passed (9:04 AM): the drip filter ran at 4.1x for three chunks, then at base rate (10 batches
+  against [32, 33]). The rerun 12 minutes later PASSed (32 batches), with converterRateMultiplier polled at 4.1 throughout. Ruled out:
+  a mutant DLL loaded (md5 matches, game started after the deploy), the setting not landing, power or fuel (the filter needs neither),
+  a leftover python.exe from the killed runs, a shared settings file with game b. Cause not found; class MOD presumed [guess ~50%];
+  filed RIMMANDRAKE_TRACE_FLOWWORKS_FILTER_SLOWS_ONE_RUN_IN_TWO with its acceptance test (3 PASS runs in a row).
+- PIT_LOOK_1114_LIVE on the exact evening_20261113 tier (22 mods): that tier now forbids the Tribes mod, which his sitting save
+  SITTING_20261114_PIT_FIXES holds, so the bridge refused the load and my helper load_save.py exited 0 on the refusal (it tested a
+  tuple for truth): one FAIL row on no map, class HARNESS. Helper repaired (exit code; --ignore-missing-mods loads the save without
+  the Tribes content). Rerun: 19 of 19 PASS, Player.log 0 exceptions; the row's `held` names the dropped Tribes content.
+- OL_OWNER_LOOK_READS not rerun: its 3 BLOCKED rows keep it UNMEASURED on any list (two need the harness wiring filed as
+  RIMMANDRAKE_WIRE_FLOWWORKS_OL_TO_READERS_LANDED_EIGHT_DAYS_AGO, one needs a new C# shadow-queue report), so a 30-minute re-stage
+  of the big pit on the 22-mod list would not change its verdict. build_match still names it to run.
+- No mod code changed. Game a left at the main menu on the evening_20261113 list; bridge released.
 
 ## Exit
 ```
-ingame_rows: {sc_dig_finds: pass, sc_fill_front: pass, sc_one_surface: pass, sc_source_pays: unmeasured, sc_canal_fire: pass, sc_pawn_height: pass, sc_ways_out: pass, sc_hose_look: unmeasured, sc_trench_cover: pass, sc_hung_bridge: pass, sc_ice: fail, sc_moat_raid: unmeasured, sc_hole_prison: pass, sc_toss_flame: pass, sc_fetch_fallen: pass, sc_islands: fail, sc_walk: pass, sc_pit_trap_raid: pass, sc_garden: unmeasured, OL_OWNER_LOOK_READS: unmeasured, sc_geyser_tub: pass, sc_coating_wash: pass, PIT_LOOK_1114_LIVE: pass}
+ingame_rows: {sc_dig_finds: pass, sc_fill_front: pass, sc_one_surface: pass, sc_source_pays: fail, sc_canal_fire: pass, sc_pawn_height: pass, sc_ways_out: pass, sc_hose_look: pass, sc_trench_cover: pass, sc_hung_bridge: pass, sc_ice: fail, sc_moat_raid: pass, sc_hole_prison: pass, sc_toss_flame: pass, sc_fetch_fallen: pass, sc_islands: fail, sc_walk: pass, sc_pit_trap_raid: pass, sc_garden: fail, OL_OWNER_LOOK_READS: unmeasured, sc_geyser_tub: pass, sc_coating_wash: pass, PIT_LOOK_1114_LIVE: pass}
 strange_open: 0
 savegame: C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Saves\FLOWWORKS_OWNER_REVIEW_VISIT3_FULL_20261121_0753.rws
 exit_met: false

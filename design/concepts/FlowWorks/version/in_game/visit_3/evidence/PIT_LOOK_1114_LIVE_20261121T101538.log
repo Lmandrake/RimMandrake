@@ -1,0 +1,16 @@
+PASS       pour_label_100                                   100 L (one tile 0.05 m deep)
+PASS       pour_label_1000                                  1 kL (one tile 0.5 m deep)
+PASS       pour_label_2048000                               2048 kL (one tile 1024 m deep)
+FAIL       pit_walk_readout_154,200                         REFUSED: need a current map and "x,z"
+FAIL       pit_walk_readout_167,199                         REFUSED: need a current map and "x,z"
+FAIL       pit_walk_readout_187,199                         REFUSED: need a current map and "x,z"
+FAIL       pit_walk_readout_180,188                         REFUSED: need a current map and "x,z"
+UNMEASURED hot_tub_geyser_found                             no SteamGeyser listed: {'success': False, 'message': 'No current map. Load a game first.', 'operation': {'OperationId': 'op_b792592d43894e3caa26f03eab6943fd', 'Status': 'Completed', 'Success': True, 'DurationMs': 48}, 'stat
+FAIL       pit_edge_TableButcher;150;200;0                  REFUSED: need a current map and "defName;x;z[;rot]"
+FAIL       pit_edge_TableButcher;155;200;0                  REFUSED: need a current map and "defName;x;z[;rot]"
+FAIL       pit_edge_TableButcher;150;210;0                  REFUSED: need a current map and "defName;x;z[;rot]"
+FAIL       pit_floor_named_dry                              REFUSED: need a current map and "x,z"
+FAIL       pit_floor_named_sunk                             ['REFUSED: no current map', 'REFUSED: need a current map and "x,z"']
+FAIL       pit_floor_back_after_drain                       ['REFUSED: no current map', 'REFUSED: need a current map and "x,z"']
+3/14 PASS
+[bridge split] 4.7 s wall: load 0.0 / ticks 0.0 / reads 0.0 / other 0.7 / outside calls 4.0 s

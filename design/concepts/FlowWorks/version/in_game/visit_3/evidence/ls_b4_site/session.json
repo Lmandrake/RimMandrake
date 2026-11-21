@@ -8,7 +8,7 @@
   "assembly_matches": 1,
   "config": "min-13",
   "assembly_identical": true,
-  "ticks_per_s": 1852.2,
+  "ticks_per_s": 728.5,
   "b4_staged": true
  },
  "zones": {
@@ -178,10 +178,10 @@
     ]
    }
   ],
-  "B0": 2.3,
-  "B4_ticks": 10000,
-  "B4": 236.1,
-  "total_s": 238.5
+  "B0": 8.5,
+  "B4_ticks": 6500,
+  "B4": 406.7,
+  "total_s": 415.7
  },
  "rows": [
   {
@@ -222,8 +222,8 @@
    "cls": "HARNESS",
    "detail": {
     "ticks": 600,
-    "wall_s": 0.32,
-    "ticks_per_s": 1852.2,
+    "wall_s": 0.82,
+    "ticks_per_s": 728.5,
     "frameBudgetMs": 150.0
    },
    "block": "B0",
@@ -291,13 +291,13 @@
    "status": "PASS",
    "cls": "MOD",
    "detail": {
-    "trench": 27.22,
-    "open": 31.78,
+    "trench": 26.67,
+    "open": 29.45,
     "n": 6,
     "trials": [
      {
       "trench": 30.0,
-      "open": 33.33,
+      "open": 26.67,
       "ok": true,
       "healed": [
        true,
@@ -309,14 +309,13 @@
         "Crack": 10.0
        },
        "open": {
-        "Shredded": 26.666666019999997,
-        "Crack": 6.66666651
+        "Shredded": 26.66666604
        }
       }
      },
      {
-      "trench": 33.33,
-      "open": 30.0,
+      "trench": 20.0,
+      "open": 20.0,
       "ok": true,
       "healed": [
        true,
@@ -324,13 +323,10 @@
       ],
       "added": {
        "trench": {
-        "Crack": 13.33333302,
-        "Shredded": 19.99999951
+        "Shredded": 20.0
        },
        "open": {
-        "Crack": 10.0,
-        "Shredded": 20.0,
-        "BloodLoss": 0.00119999994
+        "Shredded": 20.0
        }
       }
      },
@@ -344,33 +340,17 @@
       ],
       "added": {
        "trench": {
-        "Shredded": 20.0
+        "Shredded": 19.99999953
        },
        "open": {
-        "Shredded": 26.666666019999997,
-        "Crack": 13.33333302
+        "Shredded": 26.66666604,
+        "Crack": 13.33333302,
+        "TraumaSavant": 0.001
        }
       }
      },
      {
-      "trench": 33.33,
-      "open": 33.33,
-      "ok": true,
-      "healed": [
-       true,
-       true
-      ],
-      "added": {
-       "trench": {
-        "Shredded": 33.33333253
-       },
-       "open": {
-        "Shredded": 33.33333253
-       }
-      }
-     },
-     {
-      "trench": 20.0,
+      "trench": 30.0,
       "open": 25.0,
       "ok": true,
       "healed": [
@@ -379,16 +359,18 @@
       ],
       "added": {
        "trench": {
-        "Shredded": 20.0
+        "Shredded": 20.0,
+        "Crack": 10.0
        },
        "open": {
-        "Shredded": 25.0
+        "Shredded": 20.0,
+        "Crack": 5.0
        }
       }
      },
      {
-      "trench": 26.67,
-      "open": 29.0,
+      "trench": 40.0,
+      "open": 35.0,
       "ok": true,
       "healed": [
        true,
@@ -396,11 +378,31 @@
       ],
       "added": {
        "trench": {
-        "Shredded": 19.99999953,
-        "Crack": 6.66666651
+        "Shredded": 30.0,
+        "Crack": 10.0
        },
        "open": {
-        "Shredded": 29.0
+        "Crack": 10.0,
+        "Shredded": 25.0
+       }
+      }
+     },
+     {
+      "trench": 20.0,
+      "open": 30.0,
+      "ok": true,
+      "healed": [
+       true,
+       true
+      ],
+      "added": {
+       "trench": {
+        "Shredded": 19.99999951,
+        "BloodLoss": 0.00119999994
+       },
+       "open": {
+        "Shredded": 25.0,
+        "Crack": 5.0
        }
       }
      }
@@ -446,7 +448,7 @@
     "trail": [
      {
       "n": 1,
-      "total": 48.7,
+      "total": 59.5,
       "depths": [
        4.0
       ],
@@ -454,53 +456,14 @@
      },
      {
       "n": 2,
-      "total": 109.6,
+      "total": 120.3,
       "depths": [
-       4.0,
-       4.0
-      ],
-      "covers_left": 6
-     },
-     {
-      "n": 3,
-      "total": 170.3,
-      "depths": [
-       4.0,
        4.0,
        4.0
       ],
       "covers_left": 0
      }
     ]
-   },
-   "block": "B4",
-   "eyes": false
-  },
-  {
-   "id": "B4_reservoir_fish_rolled",
-   "item": "FISH_ROLL_MEND_PONDS_BORN_BARREN",
-   "criterion": "A2",
-   "status": "PASS",
-   "cls": "MOD",
-   "detail": {
-    "why": "",
-    "waterBody": {
-     "hasBody": true,
-     "type": "Freshwater",
-     "size": 96,
-     "hasFish": true,
-     "commonFish": [
-      "Fish_Tilapia"
-     ],
-     "population": 15.0809755
-    },
-    "fwBody": {
-     "id": null,
-     "cellCount": null,
-     "stock": null,
-     "capacity": null,
-     "limitless": null
-    }
    },
    "block": "B4",
    "eyes": false
@@ -559,6 +522,50 @@
    "eyes": false
   },
   {
+   "id": "B4_reservoir_fish_rolled",
+   "item": "FISH_ROLL_MEND_PONDS_BORN_BARREN",
+   "criterion": "A2",
+   "status": "UNMEASURED",
+   "cls": "SITE",
+   "detail": {
+    "why": "a 96-square body lost the game's size roll (certain only at 200+)",
+    "waterBody": {
+     "hasBody": true,
+     "type": "Freshwater",
+     "size": 96,
+     "hasFish": false,
+     "commonFish": [],
+     "population": 7.190199
+    },
+    "fwBody": {
+     "id": null,
+     "cellCount": null,
+     "stock": null,
+     "capacity": null,
+     "limitless": null
+    }
+   },
+   "block": "B4",
+   "eyes": false
+  },
+  {
+   "id": "B4_reservoir_catch",
+   "item": "POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD",
+   "criterion": "A7",
+   "status": "FAIL",
+   "cls": "MOD",
+   "detail": {
+    "why": "fishing zone refused on the dug reservoir",
+    "biomeFish": true,
+    "refusals": [
+     "no water-body type here (terrain RM_Channel_Mid)"
+    ],
+    "error": "NOTHING was zoned - every cell in 113,17,10,20 was refused, so the zone was not created."
+   },
+   "block": "B4",
+   "eyes": false
+  },
+  {
    "id": "B4_access_portable_ladder_out",
    "item": "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS",
    "criterion": "A1",
@@ -599,16 +606,16 @@
    "status": "PASS",
    "cls": "MOD",
    "detail": {
-    "gear": "{'success': True, 'action': 'wear', 'displaced': [], 'notes': [], 'pawn': {'thingId': 'Human21183', 'thingIdNumber': 21183, 'name': 'Tamara Cummings', 'nameShor",
+    "gear": "{'success': True, 'action': 'wear', 'displaced': [], 'notes': [], 'pawn': {'thingId': 'Human21182', 'thingIdNumber': 21182, 'name': \"Jeff 'Wet' Craddock\", 'name",
     "pawn": {
      "cell": [
       53,
-      25
+      24
      ],
      "depth": 0.0,
      "held": "False",
      "trapped": "False",
-     "raw": "CLIMB k=7 held=False trapped=False cell=53,25 | POCKET k=7 comp=0 pocket=False size=62500 depth=0 gen=1500 built=1500 rebuilds=306"
+     "raw": "CLIMB k=7 held=False trapped=False cell=53,24 | POCKET k=7 comp=0 pocket=False size=62500 depth=0 gen=1500 built=1500 rebuilds=306"
     },
     "orderTaken": true
    },
@@ -647,15 +654,17 @@
     "jump": "{}",
     "pawn": {
      "cell": [
-      76,
+      74,
       36
      ],
      "depth": 0.0,
      "held": "False",
      "trapped": "False",
-     "raw": "CLIMB k=2 held=False trapped=False cell=76,36 | POCKET k=2 comp=0 pocket=False size=62408 depth=0 gen=1500 built=1500 rebuilds=306"
+     "raw": "CLIMB k=2 held=False trapped=False cell=74,36 | POCKET k=2 comp=0 pocket=False size=62408 depth=0 gen=1500 built=1500 rebuilds=306"
     },
-    "hediffs": {},
+    "hediffs": {
+     "Scarification": 2.5
+    },
     "owed": "jump back out, skip, knockback-still-falls: not read"
    },
    "block": "B4",
@@ -709,64 +718,6 @@
    "eyes": false
   },
   {
-   "id": "B4_reservoir_catch",
-   "item": "POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD",
-   "criterion": "A7",
-   "status": "PASS",
-   "cls": "MOD",
-   "detail": {
-    "zone": "Fishing zone 1",
-    "zoneCells": [
-     96,
-     96
-    ],
-    "body": {
-     "hasBody": true,
-     "type": "Freshwater",
-     "rootCell": {
-      "x": 115,
-      "z": 19
-     },
-     "size": 96,
-     "trackedCells": 96,
-     "population": 15.0809755,
-     "maxPopulation": 20.0,
-     "populationPct": 0.754048765,
-     "populationFactor": 0.0306461528,
-     "hasFish": true,
-     "commonFish": [
-      "Fish_Tilapia"
-     ],
-     "uncommonFish": [],
-     "numCellsFrozen": 0,
-     "numCellsCanFreeze": 96,
-     "pollutionPct": 0.0
-    },
-    "fishBefore": 0,
-    "fishAfter": 1,
-    "fishOnMap": [
-     {
-      "def": "Fish_Tilapia",
-      "count": 1,
-      "stacks": 1
-     }
-    ],
-    "jobTicks": 8824,
-    "fishCell": {
-     "x": 115,
-     "z": 34
-    },
-    "standSpot": {
-     "x": 114,
-     "z": 34,
-     "terrain": "RM_Channel_Mid"
-    },
-    "whyNot": null
-   },
-   "block": "B4",
-   "eyes": false
-  },
-  {
    "id": "B4_dehydration_rate",
    "item": "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY",
    "criterion": "T6",
@@ -774,11 +725,11 @@
    "cls": "MOD",
    "detail": {
     "sev": [
-     0.003,
-     0.0345000029
+     0.00225,
+     0.0164999943
     ],
-    "ticks": 9500,
-    "projected60k": 0.1989473867368421,
+    "ticks": 6000,
+    "projected60k": 0.14249994300000002,
     "home": [
      183,
      17
