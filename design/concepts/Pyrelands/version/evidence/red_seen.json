@@ -53,17 +53,17 @@
   "test_blob": "de6276dffc1c6364bfa5707523f6c90815e728ee"
  },
  "T_SITE": {
-  "at": "2026-11-21T15:24:07Z",
+  "at": "2026-11-21T15:52:30Z",
   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_site.py",
   "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_site.py",
   "last": "FAIL: 4 failure(s)",
-  "patch": "--- a/src/RimMandrake/Pyrelands/validation.py\n+++ b/src/RimMandrake/Pyrelands/validation.py\n@@ -1882,7 +1882,7 @@\n     The fire counts are evidence only. A window under ash fall with fires and no strike names those fires as not lightning.\"\"\"\n     if not cinder or not ashfall or None in cinder or None in ashfall:\n         return None, \"unread windows: strikes under cinderfall %r, ash fall %r\" % (cinder, ashfall)\n-    ok = sum(cinder) > 0 and sum(ashfall) == 0\n+    ok = sum(cinder) > 0\n     why = \"strikes per %d ticks: cinderfall %r (total %d), ash fall %r (total %d); worst ash-fall window %d, limit 0; %d windows read\" % (\n         SKY_WINDOW_TICKS, cinder, sum(cinder), ashfall, sum(ashfall), max(ashfall), len(cinder) + len(ashfall))\n     if cinder_fires is not None or ash_fires is not None:\n",
+  "patch": "diff --git a/src/RimMandrake/Utils/modset_builder.py b/src/RimMandrake/Utils/modset_builder.py\n--- a/src/RimMandrake/Utils/modset_builder.py\n+++ b/src/RimMandrake/Utils/modset_builder.py\n@@ -617,7 +617,7 @@\n            \"biome transitions, Map Designer, flora injectors and the Tribes mod kept off the list. mandrake.rm.patches \"\n            \"rides along so metal, stone and gem walls do not burn (owner 2026-11-08, ca4586309b).\",\n     \"want\": [BRIDGE, \"mandrake.rm.biomes\", \"mandrake.rut.patches\",\n-             \"mandrake.rsw.swbestiary\", \"mandrake.rm.patches\"],\n+             \"mandrake.rsw.swbestiary\", TRIBES, \"mandrake.rm.patches\"],\n     \"forbid\": [\"m00nl1ght.geologicallandforms\",\n                \"m00nl1ght.geologicallandforms.biometransitions\",\n                \"zylle.mapdesigner\",\n",
   "patch_files": [
-   "src/RimMandrake/Pyrelands/validation.py"
+   "src/RimMandrake/Utils/modset_builder.py"
   ],
-  "patch_sha": "a1f1a97e57105a5b",
+  "patch_sha": "c4757383b07513be",
   "rc": 1,
-  "test_blob": "244e2667b68a184f0a53d9b9f2eb4738067e9270"
+  "test_blob": "b2cd8f0affca4773c9a65ac338fc430bc1227065"
  },
  "T_VENOM_STAGING": {
   "at": "2026-11-21T14:59:42Z",

@@ -95,14 +95,12 @@ DLLS = (
      "RimMandrake.Biomes/Biomes/Pyrelands/Assemblies/FireEcologyHook.dll", "mandrake.rm.biomes"),
     ("src/RimMandrake/BiomesShell/Assemblies/RimMandrake.Biomes.dll",
      "RimMandrake.Biomes/Assemblies/RimMandrake.Biomes.dll", "mandrake.rm.biomes"),
-    ("src/RimUtinni/PyrelandsMechanics/Assemblies/RimMandrake.Utinni.PyrelandsMechanics.dll",
-     "PyrelandsMechanics/Assemblies/RimMandrake.Utinni.PyrelandsMechanics.dll",
-     "mandrake.rut.pyrelandsmechanics"),
     ("src/RimUtinni/UtinniPatches/Assemblies/RimMandrake.Utinni.UtinniPatches.dll",
      "UtinniPatches/Assemblies/RimMandrake.Utinni.UtinniPatches.dll", "mandrake.rut.patches"),
 )
-DEPLOYED_DIRS = ("RimMandrake.Biomes", "UtinniPatches", "PyrelandsMechanics")
-DEPLOY_PLANS = (["--compose", "biomes"], ["--mod", "UtinniPatches", "--mod", "PyrelandsMechanics"])
+# The Tribes mod (PyrelandsMechanics) is not on the pyrelands tier (modset_builder TRIBES): no DLL, deploy or folder of it here.
+DEPLOYED_DIRS = ("RimMandrake.Biomes", "UtinniPatches")
+DEPLOY_PLANS = (["--compose", "biomes"], ["--mod", "UtinniPatches"])
 
 # Log (plan §3.8 item 7): these refuse.
 LOG_FATAL = ("CommonalityOfAnimal",)
@@ -395,7 +393,7 @@ def a_deploy_current(env):
                                                 (" e.g. %s" % drift[:3]) if drift else ""))
             bad = bad or bool(drift) or (rc not in (0, 1))
         return (FAIL if bad else PASS), "; ".join(out), "0 changes (plan only)"
-    return _row("3.2.1", "deploy current: compose biomes + UtinniPatches + PyrelandsMechanics", f)
+    return _row("3.2.1", "deploy current: compose biomes + UtinniPatches", f)
 
 
 def a4_srchash(env):
@@ -419,7 +417,7 @@ def a4_srchash(env):
             if st != "MATCH":
                 problems.append("%s: stamp %s %s" % (name, st, detail[:2]))
             seen.append(name)
-        return (FAIL if problems else PASS), "; ".join(problems) or "4 DLLs agree", \
+        return (FAIL if problems else PASS), "; ".join(problems) or "%d DLLs agree" % len(DLLS), \
             "source == repo stamp == deployed stamp, DLL bytes equal"
     return _row("3.8.4", ".srchash agrees across source, repo and deployed", f)
 

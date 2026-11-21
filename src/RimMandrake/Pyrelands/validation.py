@@ -6,9 +6,9 @@ design/validation_walks/RimMandrake/Pyrelands.md (19 must-show bars, 1 cannot-sh
 PACKAGING. This dev folder (`src/RimMandrake/Pyrelands`, packageId `mandrake.rm.pyrelands`) is
 the SOURCE only. The biome ships COMPOSED inside `mandrake.rm.biomes` (Biomes.compose.json,
 wave 2), so the thing a run must load is `mandrake.rm.biomes` plus `mandrake.rut.patches` (the
-fauna roster), `mandrake.rsw.swbestiary` (seven roster keys; the MayRequire on that patch
-Operation is inert, so the list must carry it) and `mandrake.rut.pyrelandsmechanics`. The
-walk's `list:` line says so. `modcheck run Pyrelands` appends the DEV folder's packageId with
+fauna roster) and `mandrake.rsw.swbestiary` (seven roster keys; the MayRequire on that patch
+Operation is inert, so the list must carry it). The Tribes mod `mandrake.rut.pyrelandsmechanics`
+stays OFF the list (version 0.1.0 is the biome alone; the pyrelands tier forbids it). `modcheck run Pyrelands` appends the DEV folder's packageId with
 no dependency closure and would land on a list without the biome, so drive the trial's own
 tier instead (northstar_plan.py).
 

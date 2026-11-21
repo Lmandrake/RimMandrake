@@ -466,7 +466,7 @@ class FakeEnv(P.Env):
         return list(self._manifest), [], []
 
     def stamp_status(self, repo_dll):
-        if "src_drift" in self.faults and "PyrelandsMechanics" in repo_dll:
+        if "src_drift" in self.faults and "UtinniPatches" in repo_dll:
             return "MISMATCH", ["Foo.cs: hash in stamp does not match committed source"]
         return "MATCH", []
 
@@ -485,7 +485,7 @@ class FakeEnv(P.Env):
 
 MANIFEST = (["brrainz.harmony", "ludeon.rimworld"] + list(P.DLCS) +
             ["brrainz.rimbridgeserver", "mandrake.rm.biomes", "mandrake.rut.patches",
-             "mandrake.rsw.swbestiary", "mandrake.rut.pyrelandsmechanics"])
+             "mandrake.rsw.swbestiary"])
 
 
 @contextlib.contextmanager
@@ -532,9 +532,21 @@ def test_tier():
     if not t:
         return
     check("tier dlc True (owner 2026-09-19)", t["dlc"] is True)
-    check("tier want = plan 3.1 + mandrake.rm.patches (285a403024)", set(t["want"]) == {mb.BRIDGE, "mandrake.rm.biomes", "mandrake.rut.patches", "mandrake.rm.patches",
-                                                    "mandrake.rsw.swbestiary", "mandrake.rut.pyrelandsmechanics"})
+    check("tier want = plan 3.1 + mandrake.rm.patches (285a403024), no Tribes mod", set(t["want"]) == {mb.BRIDGE, "mandrake.rm.biomes", "mandrake.rut.patches", "mandrake.rm.patches",
+                                                    "mandrake.rsw.swbestiary"})
     ex = set(t["forbid"])
+    # RIMMANDRAKE_TRACE_PYRE_FIREHAWK_TURNS_MANHUNTER_IN_BURN_WALK: Pyrelands 0.1.0 is the biome alone and the Tribes mod stays
+    # out of its test lists (VERSION.json scope, by card 2026-11-13). Visit 2 loaded it: its fire rite answered the fire clock,
+    # lit the front in the tribal leader's name, and a wild fire-hawk burned in that fire rolled vanilla revenge ("Fire-hawk
+    # revenge", tick 845150) and stopped burn_line_burned_share. Every tier that tests Pyrelands forbids it.
+    tribes = "mandrake.rut.pyrelandsmechanics"
+    for name in ("pyrelands", "pyrelands_rite", "ratchet_pilot", "biomes_sprint"):
+        tt = mb.TIERS.get(name) or {}
+        check("tier %s neither wants nor allows the Tribes mod" % name,
+              tribes not in tt.get("want", ()) and tribes in tt.get("forbid", ()), (tt.get("want"), tt.get("forbid")))
+    check("preflight deploys and checks no Tribes DLL",
+          all(pid != tribes for _r, _d, pid in P.DLLS) and "PyrelandsMechanics" not in P.DEPLOYED_DIRS
+          and not any("PyrelandsMechanics" in a for plan in P.DEPLOY_PLANS for a in plan), (P.DLLS, P.DEPLOYED_DIRS, P.DEPLOY_PLANS))
     check("tier excludes transitions/mapdesigner/BCP", {"m00nl1ght.geologicallandforms",
           "m00nl1ght.geologicallandforms.biometransitions", "zylle.mapdesigner",
           "kopp.biomecompatibilityproject"} <= ex)
@@ -561,6 +573,10 @@ def test_tier():
     inst["mandrake.rut.patches"] = rec("mandrake.rut.patches", ["zylle.mapdesigner"])
     _o, _m, banned = mb.resolve_tier("pyrelands", inst)
     check("resolve_tier refuses a forbidden mod pulled in by closure", any("zylle.mapdesigner" in r for r in banned), banned)
+    inst["mandrake.rut.patches"] = rec("mandrake.rut.patches", [tribes])
+    _o, _m, banned_t = mb.resolve_tier("pyrelands", inst)
+    check("resolve_tier refuses the Tribes mod pulled in by closure", any(tribes in r for r in banned_t), banned_t)
+    inst["mandrake.rut.patches"] = rec("mandrake.rut.patches", ["zylle.mapdesigner"])
     # main() must refuse too (plan-only, no ModsConfig write): patch scan + --tier
     old_scan = mb.scan
     mb.scan = lambda: inst

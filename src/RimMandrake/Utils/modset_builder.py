@@ -606,28 +606,35 @@ TIERS["greentideant"] = {
 # sarg.alphabiomes was retired 2026-10-18 (retired_mods.json keeps it out of every tier) and
 # no composed entry of mandrake.rm.biomes depends on it any more. Plant purity is guarded by
 # WildPlantAllowlist + bar 1.
+# The Tribes mod (mandrake.rut.pyrelandsmechanics) is FORBIDDEN: Pyrelands 0.1.0 is the biome alone and the Tribes stay out of
+# its test lists until their own 0.1.0 starts (design/concepts/Pyrelands/version/VERSION.json scope, by card 2026-11-13). Visit 2
+# loaded it, its fire rite lit a front in the tribal leader's name, and a wild fire-hawk burned in that fire went Manhunter by
+# vanilla revenge (RIMMANDRAKE_TRACE_PYRE_FIREHAWK_TURNS_MANHUNTER_IN_BURN_WALK).
+TRIBES = "mandrake.rut.pyrelandsmechanics"
 TIERS["pyrelands"] = {
     "why": "PYRELANDS_NORTHSTAR_TRIAL_1: the composed Baroque Biomes + the Utinni "
-           "fauna/mechanics patch closure for the Pyrelands north-star trial, with "
-           "biome transitions, Map Designer and flora injectors kept off the list. mandrake.rm.patches "
+           "fauna patch closure for the Pyrelands north-star trial, with "
+           "biome transitions, Map Designer, flora injectors and the Tribes mod kept off the list. mandrake.rm.patches "
            "rides along so metal, stone and gem walls do not burn (owner 2026-11-08, ca4586309b).",
     "want": [BRIDGE, "mandrake.rm.biomes", "mandrake.rut.patches",
-             "mandrake.rsw.swbestiary", "mandrake.rut.pyrelandsmechanics", "mandrake.rm.patches"],
+             "mandrake.rsw.swbestiary", "mandrake.rm.patches"],
     "forbid": ["m00nl1ght.geologicallandforms",
                "m00nl1ght.geologicallandforms.biometransitions",
                "zylle.mapdesigner",
                "kopp.biomecompatibilityproject",
-               "noxilie.regrow.wmb.alphabiomes"],
+               "noxilie.regrow.wmb.alphabiomes",
+               TRIBES],
     "dlc": True,
 }
 
 # sc_rite_hook_alone (bar fire_rite_hook_silent_alone) runs on a list WITHOUT the Tribes mechanics, so the rite hook is
-# null. Visits 1 and 2 built this list by hand from the pyrelands tier, so build_match could never count its row.
+# null. Visits 1 and 2 built this list by hand from the pyrelands tier, so build_match could never count its row. Since the
+# pyrelands tier forbids the Tribes too, the two lists are the same; this name stays so rows recorded under it still resolve.
 TIERS["pyrelands_rite"] = {
-    "why": "sc_rite_hook_alone: the pyrelands tier without mandrake.rut.pyrelandsmechanics, so the fire rite hook is "
-           "left null and its silence can be read (Pyrelands visit 2, 2026-11-21).",
-    "want": [w for w in TIERS["pyrelands"]["want"] if w != "mandrake.rut.pyrelandsmechanics"],
-    "forbid": TIERS["pyrelands"]["forbid"] + ["mandrake.rut.pyrelandsmechanics"],
+    "why": "sc_rite_hook_alone: the pyrelands tier, which carries no mandrake.rut.pyrelandsmechanics, so the fire rite hook "
+           "is left null and its silence can be read (Pyrelands visit 2, 2026-11-21).",
+    "want": list(TIERS["pyrelands"]["want"]),
+    "forbid": list(TIERS["pyrelands"]["forbid"]),
     "dlc": True,
 }
 
@@ -642,7 +649,7 @@ TIERS["ratchet_pilot"] = {
            "only reach it through guarded patches. Round 4 applied its list before that commit and loaded it, so "
            "`modcheck record` refused the suites; forbidding it makes a stale list fail at the plan, not at record.",
     "want": [BRIDGE, "mandrake.rm.biomes", "mandrake.rut.patches", "mandrake.rsw.swbestiary",
-             "mandrake.rut.pyrelandsmechanics", "mandrake.rm.flowworks", "mandrake.rm.gimmesomeslack",
+             "mandrake.rm.flowworks", "mandrake.rm.gimmesomeslack",
              "mandrake.rm.patches"],
     "forbid": ["m00nl1ght.geologicallandforms",
                "m00nl1ght.geologicallandforms.biometransitions",
@@ -651,7 +658,8 @@ TIERS["ratchet_pilot"] = {
                "noxilie.regrow.wmb.alphabiomes",
                "mandrake.rm.pits",
                "glitchgoblin.invisibleconduitcont",
-               "mlie.starwarsanimalcollection"],
+               "mlie.starwarsanimalcollection",
+               TRIBES],   # Pyrelands is tested here: the Tribes stay out (see TRIBES above)
     "forbid_substr": ["manywaters"],
     "dlc": True,
 }
@@ -677,7 +685,7 @@ def _composed_in_biomes(key):
 _EG_FOLDED = _composed_in_biomes("ExplosiveGrowth")
 TIERS["biomes_sprint"] = {
     "why": "BIOME_SPRINT_PROVE_SCRUB_SETS_PACE: ONE launch for every sprint suite -- all of Baroque Biomes (Cauldron, "
-           "Contagion, LeaningScrub and the rest, composed) + the pilot mods (FlowWorks, GSS, Pyrelands mechanics) with "
+           "Contagion, LeaningScrub and the rest, composed) + the pilot mods (FlowWorks, GSS; the Tribes mod stays out, see TRIBES) with "
            "ratchet_pilot's guards, so the pilot guards (M6) run on the same load. Phase 0 donors (Star Wars Animal "
            "Collection, Alpha Animals and its Outposts patch) are forbidden: a dependency dragging one back fails the "
            "plan. Huge Things (mandrake.rm.hugethings) loads in every sprint test (owner 2026-10-16: 'We have so many huge "

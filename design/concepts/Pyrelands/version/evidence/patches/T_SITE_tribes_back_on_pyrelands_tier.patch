@@ -1,0 +1,12 @@
+diff --git a/src/RimMandrake/Utils/modset_builder.py b/src/RimMandrake/Utils/modset_builder.py
+--- a/src/RimMandrake/Utils/modset_builder.py
++++ b/src/RimMandrake/Utils/modset_builder.py
+@@ -617,7 +617,7 @@
+            "biome transitions, Map Designer, flora injectors and the Tribes mod kept off the list. mandrake.rm.patches "
+            "rides along so metal, stone and gem walls do not burn (owner 2026-11-08, ca4586309b).",
+     "want": [BRIDGE, "mandrake.rm.biomes", "mandrake.rut.patches",
+-             "mandrake.rsw.swbestiary", "mandrake.rm.patches"],
++             "mandrake.rsw.swbestiary", TRIBES, "mandrake.rm.patches"],
+     "forbid": ["m00nl1ght.geologicallandforms",
+                "m00nl1ght.geologicallandforms.biometransitions",
+                "zylle.mapdesigner",
