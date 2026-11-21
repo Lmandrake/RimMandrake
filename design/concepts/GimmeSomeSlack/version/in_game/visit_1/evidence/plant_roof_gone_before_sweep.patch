@@ -1,0 +1,10 @@
+--- a/src/RimMandrake/GimmeSomeSlack/northstar/scene_rows.py
++++ b/src/RimMandrake/GimmeSomeSlack/northstar/scene_rows.py
+@@ -910,6 +910,7 @@
+     B.call("jawa/set_roof_batch", ops="RoofConstructed:%d,%d,1,1" % mast)
+     B.ticks(2)
+     roofed = B.ap("roofgate:%d,%d" % mast).get("roofed")     # the forced roof is read back, never assumed
++    B.call("jawa/set_roof_batch", ops="None:%d,%d,1,1" % mast)   # PLANTED: the roof is gone before the sweep, so no cut is owed
+     # the cut is the mod's roof sweep (RM_MapComponent_Aerial.RoofSweep), once every 250 ticks: the read waits one whole
+     # cycle. Visit 1 of 0.1.1 (2026-11-20): read 3 ticks after the roof, the span still stood Up and the row read FAIL
+     # (class HARNESS: the sweep had not come round yet).

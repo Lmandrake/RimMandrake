@@ -797,6 +797,7 @@ def statics_new_game(B, V, rows):
 SWITCH_OFF_ROWS = ["SC_switch_off_cords_connected", "SC_switch_off_on_differs_only_in_power"]
 POLE_ICON_ROWS = ["SC_pole_icons_main_thread_log", "SC_pole_icons_loaded"]
 POLE_SOUTH_ROWS = ["SC_pole_prints_on_common_layer", "SC_pole_south_of_tree_shot"]
+SWEEP_TICKS = 260   # the aerial map component's sweep (roof, owner, watchdog) runs once every 250 ticks; 10 spare
 NO_ROOF_ROWS = ["SC_roof_designator_refuses_pole_cell", "SC_auto_roof_skips_pole_cell", "SC_forced_roof_still_cuts_spans"]
 
 
@@ -907,12 +908,19 @@ def no_roof_over_pole(B, V, rows):
     V.row(rows, "SC_auto_roof_skips_pole_cell", "PASS" if ok else "FAIL", "MOD", {"poleCell": p, "neighbour": q})
     c0 = B.ap("census")
     B.call("jawa/set_roof_batch", ops="RoofConstructed:%d,%d,1,1" % mast)
-    B.ticks(3)
+    B.ticks(2)
+    roofed = B.ap("roofgate:%d,%d" % mast).get("roofed")     # the forced roof is read back, never assumed
+    # the cut is the mod's roof sweep (RM_MapComponent_Aerial.RoofSweep), once every 250 ticks: the read waits one whole
+    # cycle. Visit 1 of 0.1.1 (2026-11-20): read 3 ticks after the roof, the span still stood Up and the row read FAIL
+    # (class HARNESS: the sweep had not come round yet).
+    B.ticks(SWEEP_TICKS)
     c1 = B.ap("census")
     def links(c):
         return [l for a in c.get("anchors") or [] for l in a.get("links") or []]
     up0 = sum(l.get("state") == "Up" for l in links(c0))
     cut1 = [l for l in links(c1) if l.get("state") != "Up"]
-    V.row(rows, "SC_forced_roof_still_cuts_spans", "PASS" if up0 >= 1 and cut1 else ("UNMEASURED" if up0 == 0 else "FAIL"),
-          "MOD" if up0 else "SITE", {"upBefore": up0, "afterForcedRoof": cut1[:4]})
+    V.row(rows, "SC_forced_roof_still_cuts_spans",
+          "UNMEASURED" if up0 == 0 or roofed is not True else ("PASS" if cut1 else "FAIL"),
+          "SITE" if up0 == 0 or roofed is not True else "MOD",
+          {"upBefore": up0, "roofedAfterForce": roofed, "ticksWaited": SWEEP_TICKS + 2, "afterForcedRoof": cut1[:4]})
     B.call("jawa/set_roof_batch", ops="None:%d,%d,%d,%d" % SITE)
