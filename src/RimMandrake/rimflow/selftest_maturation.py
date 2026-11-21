@@ -1958,8 +1958,12 @@ def ingame_main():
             (dict(site_reading=None), "site_checked true with no site reading and no evidence file",
              "nothing to show it"),
             (dict(sha="latest"), "a mod_sha that is not a hash", "not a commit hash"),
-            (dict(sha2="def5678"), "rows on two builds (RIMMANDRAKE_BIND_STAGE_EVIDENCE_TO_ONE_BUILD)", "more than one build"),
         )
+        # his ruling of 2026-11-21 (RIMMANDRAKE_RERUN_ONLY_CHECKS_THE_CHANGE_TOUCHES_NOT_ALL_203) narrows
+        # RIMMANDRAKE_BIND_STAGE_EVIDENCE_TO_ONE_BUILD: rows on two builds count when the build match counts each
+        chk(lambda: reads(dict(sha2="def5678"), "met"),
+            "rows on two builds whose deployed folders equal the walk's: each counts, met (only the checks a change "
+            "touches run again)")
         for kw, what, word in broken:
             chk(lambda kw=kw, word=word: reads(kw, "not_met", word), "%s: not met, and the reading says why" % what)
         chk(lambda: reads(dict(block=False), "no_exit_block") and M.ingame_facts(root, P)["owed"] == "no exit block"

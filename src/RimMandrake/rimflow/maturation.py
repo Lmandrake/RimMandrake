@@ -1080,20 +1080,26 @@ def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, w
             if forward:
                 exit_met_clause(root, mod, rec, cur, owner, clause, rec_ref, req_ref, game_only_bars=go_bars)
             if cur == "in_game":
-                # the BUILD MATCH (owner, 2026-11-17): a verdict made on another build than the one he walks does not
-                # count; its check is re-run (build_match.py, read by read_ingame_exit)
+                # the BUILD MATCH (owner, 2026-11-17, narrowed 2026-11-21): a row counts on the build he walks when its
+                # game build and list match and the change since its commit touches nothing its check reads or
+                # exercises (rerun_relation.py); only the touched checks run again (build_match.py, read by
+                # read_ingame_exit)
                 n = max(1, len(ingame_openings(rec)))
                 bm = read_ingame_exit(root, mod, n).get("build_match")
-                clause("build_match", "every in-game check's last row was made on the build he walks: its mod hash and "
-                       "game build equal the walk's, its mod list his walk's (a full-list test) or its tier's (a "
-                       "minimal-list test) (build_match.py)", bool(bm) and bm["read"] > 0 and not bm["rerun"],
+                clause("build_match", "every in-game check's last row counts on the build he walks: its game build "
+                       "equals the walk's, its mod list is his walk's (a full-list test) or its tier's (a minimal-list "
+                       "test), and its mod hash equals the walk's or the change since its commit touches nothing it "
+                       "reads or exercises; the walk folder is the current source (build_match.py)",
+                       bool(bm) and bm["read"] > 0 and not bm["rerun"] and not bm.get("deploy"),
                        [rec_ref], observed=BM.summary(bm) if bm else "visit %d has no Exit block to read" % n,
                        would_pass="python3 src/RimMandrake/rimflow/build_match.py check --mod %s --visit %d exits 0"
                        % (mod, n),
-                       fix="re-run each listed check on the walk build, its row carrying the fields `build_match.py "
-                           "identity` prints", cost="rerun",
-                       why_sound="his ruling of 2026-11-17 (RIMMANDRAKE_FOLD_STAGE_SEVEN_INTO_WALK_BRIEF_NO_VETO): a "
-                                 "verdict whose mod hash or game build differs does not count, and its line is re-run")
+                       fix="run only the listed checks on the walk build (each row carrying the fields `build_match.py "
+                           "identity` prints)%s" % ("; first %s" % bm["deploy"] if bm and bm.get("deploy") else ""),
+                       cost="rerun",
+                       why_sound="his ruling of 2026-11-17 (RIMMANDRAKE_FOLD_STAGE_SEVEN_INTO_WALK_BRIEF_NO_VETO), "
+                                 "narrowed by his of 2026-11-21 (RIMMANDRAKE_RERUN_ONLY_CHECKS_THE_CHANGE_TOUCHES_NOT_ALL_203): "
+                                 "only the checks the change touches run again")
         elif cur == "pre_human":
             wb = read_walk_brief(root, mod, rec)
             clause("walk_brief", "his walk brief for this arrival is written (%s), by an agent that made none of the "
@@ -3829,9 +3835,11 @@ def walk_identity(root, mod, rec):
     if not bm or not bm.get("read"):
         out["why"].append("visit %d's build match did not run, so its mod_sha is not known to be the walk build" % n)
     elif bm.get("rerun"):
-        # a redeploy since Stage 6: the visit's sha and the folder hash he walks would name two builds
-        out["why"].append("visit %d's checks do not count on the walk build as deployed now (%s): re-run them on it"
-                          % (n, bm.get("worst")))
+        # a change since Stage 6 that touches checks: only those run again (owner, 2026-11-21)
+        out["why"].append("visit %d's checks %s do not count on the walk build as deployed now (%s): run only those on "
+                          "it" % (n, ", ".join(bm["rerun"][:12]), bm.get("worst")))
+    elif bm.get("deploy"):
+        out["why"].append("the walk build is not the current source: %s" % bm["deploy"])
     for k in ("mod_hash", "game_build", "active_mods", "game", "standin", "deployed_folder"):
         if walk.get(k) is not None:
             out[k] = walk[k]
@@ -4148,6 +4156,11 @@ def read_ingame_exit(root, mod, n, tt=None):
     rows = _jsonl(os.path.join(d, "rows.jsonl"))
     if rows is None:
         why.append("rows.jsonl is missing")
+    # a check this visit did not run keeps the last row of the latest earlier visit that ran it (owner, 2026-11-21:
+    # only the checks a change touches run again); the build match below decides whether that row still counts
+    ran_here = {r.get("test") or r.get("id") for r in rows or []}
+    carried = {t: r for t, r in (BM.carried_rows(root, mod, n - 1).items() if n > 1 else ()) if t and t not in ran_here}
+    rows = [carried[t] for t in sorted(carried)] + list(rows or [])
     # an earlier row counts against its check only as a real FAIL: an UNMEASURED row (a run the 540 s command bound
     # split) or a FAIL the driver classed HARNESS or SITE (the check or the scene was wrong) spends nothing (standing_
     # rulings, No trial is spent by a system failure, and §Touching code has a cost); the last row decides (line_class)
@@ -4176,9 +4189,12 @@ def read_ingame_exit(root, mod, n, tt=None):
             ln["count"] = "needless"
     reviews = fix_reviews(os.path.join(d, FIX_REVIEWS))
     owed = out["fix_readers_owed"] = []
+    out["carried"] = sorted(carried)
     for t, _ in checks:
         claim = blk["ingame_rows"].get(t)
         r = last.get(t)
+        if claim is None and t in carried and str((r or {}).get("verdict", "")).upper() == "PASS":
+            claim = "pass"          # carried from visit r["_visit"]: this visit's block need not list it
         v = str((r or {}).get("verdict", "")).upper()
         out["rows"][t] = v or "NO ROW"
         ln = lines_[t]
@@ -4252,11 +4268,11 @@ def read_ingame_exit(root, mod, n, tt=None):
     # RIMMANDRAKE_BIND_STAGE_EVIDENCE_TO_ONE_BUILD (the part that needs no ruling): one visit judges ONE build, so every
     # check's last row names the same commit (a short hash agrees with a long one it starts); rows before a mod fix made
     # in the sitting are on the old build and count for nothing, so they are not read here
+    # rows made on several builds (a check rerun after a change, beside rows carried from before it) are judged each from
+    # its own commit by the build match below (owner, 2026-11-21); the build is then the mod's source now
     shas = sorted({str(last[t].get("mod_sha")) for t, _ in checks if t in last and lines_[t]["count"] != "needless"
                    and SHA_RE.match(str(last[t].get("mod_sha") or ""))}, key=len)
     one = all(b.startswith(a) for i, a in enumerate(shas) for b in shas[i + 1:])
-    if not one:
-        why.append("the rows name more than one build (mod_sha %s): one visit judges one build" % ", ".join(shas))
     out["build"] = shas[-1] if shas and one else None
     # the BUILD MATCH (owner, 2026-11-17, RIMMANDRAKE_FOLD_STAGE_SEVEN_INTO_WALK_BRIEF_NO_VETO): a check's last row counts
     # only when its mod hash and game build equal the build he walks (the labelled savegame's, read on Archmagi) and its
@@ -4268,6 +4284,12 @@ def read_ingame_exit(root, mod, n, tt=None):
         why.append("the build match could not run (%s: %s): no in-game check counts until it does" % (
             type(e).__name__, e))
     out["build_match"] = bm
+    if bm and not one and not bm.get("rerun") and not bm.get("deploy"):
+        out["build"] = BM.source_sha(root, mod)       # every row counts on the source now: that is the build
+    elif not one and not bm:
+        why.append("the rows name more than one build (mod_sha %s) and no build match read them" % ", ".join(shas))
+    if bm and bm.get("deploy"):
+        why.append("the walk build is not the current source: %s" % bm["deploy"])
     if bm and bm.get("walk_why"):
         why.append("the walk build is unreadable (%s): no in-game check counts until build_match.py reads it" % "; ".join(
             bm["walk_why"]))
@@ -4682,6 +4704,11 @@ def ingame_facts(root, mod):
                 "blocked": blocked, "checks": [k for k, _ in checks],
                 "full_list": [k for k, t in checks if BM.is_full(t)],
                 "testq": [k for k, t in checks if isinstance(t.get("testq"), dict)]})
+    try:
+        out["to_run"], out["counted_earlier"] = ingame_to_run(root, mod, n, tt)
+    except Exception as e:      # a relation that cannot be read relates nothing: every check runs
+        out["to_run"], out["counted_earlier"] = [k for k, _ in checks], []
+        out["to_run_why"] = "the change relation could not be read (%s: %s)" % (type(e).__name__, e)
     out["owed"] = ("blocked" if blocked else "run" if ex["state"] == "absent" else
                    "no exit block" if ex["state"] == "no_exit_block" else
                    "exit met" if ex["state"] == "met" else "exit not met")
@@ -4735,6 +4762,27 @@ def _check_lines(tt, ids, root):
     return out
 
 
+def ingame_to_run(root, mod, n, tt):
+    """-> (to_run, counted): the stage-6 checks visit n runs, and those it does not because an earlier visit's last row
+    is a PASS that the change since its commit does not touch (rerun_relation.py; owner, 2026-11-21: only the checks a
+    change touches run again). A check with no earlier row, a last row that is not a PASS, a touched check and one
+    whose relation cannot be read all run. The Stage 6 exit's build match reads the walk build and decides for good."""
+    checks = ingame_tests(tt or {})
+    if n <= 1:
+        return [k for k, _ in checks], []
+    last = BM.carried_rows(root, mod, n - 1)
+    rel = BM.RR.relate(root, mod, dict(checks), {t: r for t, r in last.items() if t})
+    run, counted = [], []
+    for k, _ in checks:
+        r = last.get(k)
+        st = (rel["rows"].get(k) or {}).get("state")
+        if r and str(r.get("verdict", "")).upper() == "PASS" and r.get("site_checked") is True and st == "untouched":
+            counted.append(k)
+        else:
+            run.append(k)
+    return run, counted
+
+
 def ingame_brief_text(root, mod, cap_usd=None, seat="BENCH"):
     """-> (the mechanical half of an in-game acceptance brief, ingame_facts). Never refuses; launch_mod does."""
     f = ingame_facts(root, mod)
@@ -4746,7 +4794,9 @@ def ingame_brief_text(root, mod, cap_usd=None, seat="BENCH"):
     when = pac_heading(now_ts())
     # no spend bound in the brief (owner 2026-11-16): the launch's --budget-usd is enforced by spend_watchdog.py
     purpose = "%s in-game acceptance visit %d" % (mod, n)
-    checks = f.get("checks") or []
+    every = f.get("checks") or []
+    checks = list(f["to_run"]) if f.get("to_run") is not None else list(every)     # ingame_facts read the relation
+    counted = list(f.get("counted_earlier") or [])
     full = [k for k in checks if (tt.get("tests") or {}).get(k, {}).get("kind") == "live_full"]
     debts = ingame_debts(root, mod, tt)
     L = ["# In-game acceptance (Stage 6): %s %s, visit %d" % (mod, ver, n), "",
@@ -4783,8 +4833,18 @@ def ingame_brief_text(root, mod, cap_usd=None, seat="BENCH"):
     L += [r % tuple(x for x in ((purpose, seat) if "take --idle-ok" in r else (seat,) if "release" in r else
                                 (mod,) if "deploy_custom_mods" in r else ()))
           for r in BRIDGE_RULES]
-    L += ["", "## The checks: every stage-6 in-game check of `design/concepts/%s/version/test_table.json` (%d)"
-          % (mod, len(checks)), "",
+    L += ["", "## The checks to run: %d of the %d stage-6 in-game checks of `design/concepts/%s/version/test_table.json`"
+          % (len(checks), len(every), mod), "",
+          "Only the checks a change touches run again (root CLAUDE.md, After a change, only the checks that the change "
+          "touches run again). %s" % (
+              "%d check(s) keep their PASS from an earlier visit, because the change since that row's commit touches "
+              "nothing they read or exercise (`python3 src/RimMandrake/rimflow/rerun_relation.py --mod %s` names "
+              "them and the change). Do not run them. If you change the mod in the sitting, run "
+              "`python3 src/RimMandrake/rimflow/build_match.py check --mod %s` and run only the checks it names."
+              % (len(counted), mod, mod) if counted else
+              "This is the first visit, or no earlier row still counts, so every check runs. If you change the mod in "
+              "the sitting, run `python3 src/RimMandrake/rimflow/build_match.py check --mod %s` and run again only "
+              "the checks it names." % mod) + (" %s" % f["to_run_why"] if f.get("to_run_why") else ""), "",
           "Run each with its exact command. Batch them: one dense prepared map holds many checks at once (the mod's own "
           "proof script builds it). %s" % ("%d need%s the full list (%s); run %s last, in one load." % (
               len(full), "s" if len(full) == 1 else "", ", ".join(full), "it" if len(full) == 1 else "those")
@@ -4869,11 +4929,12 @@ def ingame_brief_text(root, mod, cap_usd=None, seat="BENCH"):
           "src/RimMandrake/rimflow/build_match.py identity --mod %s --tier <the tier you loaded>` prints (`--full` "
           "instead for a check whose `why_full_list` says why), run on the game machine after the deploy and the list "
           "swap: `mod_hash` (the deployed folder), `game_build`, `active_mods` (ModsConfig.xml, parsed, in order), "
-          "`tier` or `full_list`, `unit`. The BUILD MATCH (owner, 2026-11-17) counts a row only when its mod hash and "
-          "game build equal the build he walks (the labelled savegame below, read on Archmagi) and its list is his "
-          "walk's (a full-list check) or the list modset_builder.py builds for its tier (a minimal-list check); a row "
-          "without the fields, or on another build, is re-run. Redeploying changes the hash: identity again after "
-          "every deploy." % mod,
+          "`tier` or `full_list`, `unit`. The BUILD MATCH (owner, 2026-11-17, narrowed 2026-11-21) counts a row when its "
+          "game build equals the build he walks (the labelled savegame below, read on Archmagi), its list is his "
+          "walk's (a full-list check) or the list modset_builder.py builds for its tier (a minimal-list check), and "
+          "its mod hash equals the walk's or the change since its `mod_sha` touches nothing its check reads or "
+          "exercises. A row without the fields, or one the change touches, runs again; no other row does. Redeploying "
+          "changes the hash: identity again after every deploy." % mod,
           "- `strange.jsonl`: as above; an empty file when nothing strange was seen.",
           "- the labelled savegame for his walk (dense, labelled scenes; spec rule 5), its path in the block.",
           "- `SUMMARY.md`: what ran, what failed and what you did about it, the owed cases one by one, then this block "
@@ -5098,6 +5159,12 @@ def main(argv=None):
             print("  in-game visit %s: %d stage-6 checks (%d with a testq block); exit %s: %s" % (
                 g.get("visit"), len(g.get("checks") or []), len(g.get("testq") or []), g["exit"]["state"],
                 "; ".join(g["exit"]["why"][:4]) or "no record yet"))
+            if g.get("to_run") is not None:
+                print("  checks to run in visit %s: %d (%s); %d keep their PASS from an earlier visit (the change since "
+                      "touches nothing they read or exercise)%s" % (
+                          g.get("visit"), len(g["to_run"]), ", ".join(g["to_run"]) or "none",
+                          len(g.get("counted_earlier") or []),
+                          "; %s" % g["to_run_why"] if g.get("to_run_why") else ""))
         print("  launch: %s" % nx.get("launch", "none"))
         tw = nx.get("tripwire") or {}
         if tw.get("note"):

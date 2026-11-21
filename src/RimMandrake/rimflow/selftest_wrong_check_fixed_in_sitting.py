@@ -185,8 +185,11 @@ def t_one_build_is_the_last_rows():
     ex = ingame(mod_fixed(), reviews=review(), name="ob")
     mixed = ingame(mod_fixed()[:2] + [row("c2", mod_sha="abc1234def"), row("c3", mod_sha="def5678abc")],
                    reviews=review(), name="ob2")
-    return (not any("more than one build" in w for w in ex["why"])
-            and any("more than one build" in w for w in mixed["why"])), (ex["why"], mixed["why"])
+    # his ruling of 2026-11-21 (RIMMANDRAKE_RERUN_ONLY_CHECKS_THE_CHANGE_TOUCHES_NOT_ALL_203): rows on two builds are
+    # not refused for that; the build match judges each row from its own commit, so the mixed visit reads as the
+    # single-build one does
+    return (not any("more than one build" in w for w in ex["why"] + mixed["why"])
+            and mixed["state"] == ex["state"]), (ex["why"], mixed["why"])
 
 
 def t_scene_wrong_same_as_check():
