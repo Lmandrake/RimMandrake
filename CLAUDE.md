@@ -286,6 +286,14 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 - Ledger: `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`, with the Conductor's text in `--why`.
 - Full text: `design/RimMandrake/standing_rulings.md` §The Conductor speaks with the owner's authority.
 
+## His word and the Conductor's act are not refused
+
+- No gate, hook or tool refuses an act of the owner or the Conductor for lack of a quote, a card text, a card answer
+  or a provenance flag of a particular kind. Record the act. Write a missing piece as a note, or let the tool add it.
+- `--owner-said` records his words as he typed them, a question included.
+- His five acts, his holds, his OWNER bridge hold and `./pipe` stops still bind. No helper gains this.
+- Full text: `design/RimMandrake/standing_rulings.md` §His word and the Conductor's act are not refused.
+
 ## Owner authority on the ledger: one field per kind of authority
 
 - `--owner-said`: his words. You may fix typos and join his own sentences. Do not change the meaning.

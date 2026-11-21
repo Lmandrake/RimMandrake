@@ -1292,10 +1292,10 @@ def t_owner_said_authorizes_where_no_seat_is_configured():
     refused(("game", "UP", "--seat", "NOTASEAT", "--owner-said", "game up"),
             "not one of", "a typo'd --seat was silently discarded because a quote "
             "was also present", env_=env(seat=None))
-    refused(("game", "UP", "--owner-said", "yes"), "not the agreement",
-            "bare assent stood in for an instruction", env_=env(seat=None))
-    refused(("game", "UP", "--owner-said", "should the game be up?"), "is a question",
-            "a question stood in for an instruction", env_=env(seat=None))
+    # owner 2026-11-20: his words are recorded as typed, a question or an assent included, never refused for their form
+    ok("game", "UP", "--owner-said", "yes", env=env(seat=None))
+    ok("game", "UP", "--owner-said", "can you put the game up?", env=env(seat=None))
+    assert "can you put the game up?" in _ledger_text(), "his question is on the event as he typed it"
 
 
 def t_note_with_an_owner_flag_is_his_and_help_says_so():

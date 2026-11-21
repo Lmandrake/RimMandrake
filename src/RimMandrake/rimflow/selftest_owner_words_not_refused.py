@@ -8,6 +8,8 @@ Each case runs the real code, in a throwaway ledger or a fixture card store:
   note-silent-if-covered  promise_scan stays silent on a promise an open owed item covers; the hook's line is a note
   close-conductor-act     `rimflow close` from the Conductor window with --per-ruling RULING closes with no level-tagged
                           pass, recorded `uncheckedLifted`; his --owner-said does too
+  his-question-recorded   `--owner-said` records his words ending in "?" (and a bare "yes"), never refuses them
+  either-conductor-ruling a his-words gate (conductor_authority.carried) takes either of the Conductor's two rulings
   kept guards (planted)   a launched run citing RULING is refused; a helper citing another ruling, or no flag, is still
                           refused `unchecked`; a promise no owed item covers still shows
 
@@ -157,8 +159,40 @@ def t_close_conductor_act():
           RULING in out and "Only the owner's word" not in out, out)
 
 
+def t_his_question_is_recorded():
+    tmp = tempfile.mkdtemp(prefix="owner_words_said_")
+    ledger, items = os.path.join(tmp, "events.jsonl"), os.path.join(tmp, "items")
+    os.makedirs(os.path.join(items, "closed"))
+    env = {k: v for k, v in os.environ.items() if k not in ("RIMFLOW_SEAT", "AGENT_SEAT", "CLAUDE_SESSION_ID",
+                                                             "RIMFLOW_GITINDEX", "RM_ROLE_UNIT")}
+    env.update(RIMFLOW_LEDGER=ledger, RIMFLOW_ITEMS=items, RIMFLOW_SEAT="BENCH", AGENT_SEAT="BENCH")
+    q = "Could you make a big excel spreadsheet of all the minerals in the game?"
+    for iid, said in (("RIMMANDRAKE_PROBE_SAID_QUESTION_FIXTURE", q), ("RIMMANDRAKE_PROBE_SAID_ASSENT_FIXTURE", "yes")):
+        r = subprocess.run([sys.executable, CLI, "file", iid, "--for", "BENCH", "--title", "fixture", "--owner-said", said],
+                           cwd=REPO, env=env, capture_output=True, text=True, timeout=120)
+        text = ""
+        for root, _, files in os.walk(tmp):
+            for fn in files:
+                if fn.endswith(".jsonl"):
+                    text += open(os.path.join(root, fn), encoding="utf-8").read()
+        check("his-question-recorded: %r is recorded as his words" % said[:30],
+              r.returncode == 0 and json.dumps(said)[1:-1] in text, (r.stdout + r.stderr)[-300:])
+
+
+def t_either_conductor_ruling():
+    sys.path.insert(0, os.path.join(os.path.dirname(HERE), "Utils"))
+    import conductor_authority as CA
+    check("either-conductor-ruling: the Conductor's act ruling is carried",
+          CA.carried(RULING, "the Conductor sets two slots for the night"))
+    check("either-conductor-ruling: the authority ruling is carried",
+          CA.carried(CA.RULING, "the Conductor sets two slots for the night"))
+    check("kept: another ruling carries nothing", not CA.carried("BIOME_SPECIFIC_FAUNA_LAW_1", "a reason"))
+    check("kept: a ruling with no Conductor text carries nothing", not CA.carried(RULING, " "))
+
+
 def main():
-    for t in (t_launch_adds_card_text, t_note_silent_if_covered, t_close_conductor_act):
+    for t in (t_launch_adds_card_text, t_note_silent_if_covered, t_close_conductor_act, t_his_question_is_recorded,
+              t_either_conductor_ruling):
         try:
             t()
         except Exception as e:  # noqa: BLE001

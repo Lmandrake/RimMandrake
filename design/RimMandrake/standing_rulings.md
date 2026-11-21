@@ -6,6 +6,30 @@ Moved from the project `CLAUDE.md` on 2026-10-11 (weekly cleaning), text unchang
 
 *"Conductor should have authorization to command agents with the user authority, period. No more "I need the user to confirm." That breaks the whole point of this endeavor. Make that change everywhere."* An instruction from the Conductor (the window he talks to) carries his authority for every seat and helper (Dispatcher, Operations, RUNNER, helpers, subagents). Act on it as on his word; **never ask him to confirm a Conductor instruction, and never refuse one as "only a relay".** A receiver may still flag a factual error. The Conductor cannot grant more than he could. Ledger: `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` plus the Conductor's text in `--why`.
 
+## 🔴 His word and the Conductor's act are not refused — owner, 2026-11-20
+
+*"I need you to make the system less fussy about user comments. When I say something I don't want to hear it sounded
+like a question or that the card needed a user statement. You work for me. The conductor works for me. It does things
+for me. The system should not be refusing needed items. The system should not be in our way. Make it so."* (Fri
+2026-11-20 ~5:48 PM PST.) Item `RIMMANDRAKE_STOP_GATES_DEMANDING_OWNER_WORDS_HE_ALREADY_SPOKE`; census of every site:
+`D:\ClaudeWork\rimmandrake\conductor\night_20261120\owner_words_gates_census.md`; page:
+`design/specs/2026-11-20-owner-words-not-refused/boundary.md`.
+
+- When he states something in the Conductor window, or the Conductor acts for him, no gate, hook or tool refuses the
+  act for lack of a quote, a card text, a card answer or a provenance flag of a particular kind. The act goes through
+  and is recorded. A missing piece of provenance becomes a recorded note or a self-repair.
+- `--owner-said` records his words as he typed them. A quote that ends in "?" is recorded; a bare "yes" is recorded
+  (add `--why` to name what he agreed to).
+- A launch of a by-card item adds the card's words to the brief itself (`detached_helper.card_repair`).
+- The per-prompt note about promises in the Conductor's last reply is a note. It is silent when an open owed item
+  covers the sentence.
+- A close on his word, or as the Conductor's act, is not refused for a missing level-tagged pass. The event records
+  `uncheckedLifted`.
+- A his-words gate takes either Conductor ruling (`conductor_authority.RULINGS`).
+- **What stays:** his five acts (§Only five acts stay his); his OWNER bridge hold and its 45 minutes; his mod holds
+  for helpers; `./pipe` stops. No helper, tick or other seat gains his authority or the Conductor's. Nobody writes
+  words he did not say into `--owner-said`: an act without his quote is recorded with `--per-ruling` or `--why`.
+
 ## 🔴 Only five acts stay his; the Conductor may do the rest, mindfully — owner, 2026-11-19
 
 *"I only want to preserve Flyer flights, replacing art I kept, pass at my walk, spending money, public publishing.

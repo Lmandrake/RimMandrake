@@ -5139,33 +5139,15 @@ def _norm_said(said):
 
 
 def _check_owner_said(said):
-    """Refuse a quote that is not an INSTRUCTION. Returns None, or `die`s.
-
-    Extracted from `main` (2026-09-03) so both guards can be exercised directly
-    instead of only through a whole command.
-    """
-    # ⛔ A quote too short to be a quote is not authorization. This is the only
-    # guard: it stops `--owner-said yes` standing in for something he never said.
-    # ⛔ A QUESTION IS NOT AN INSTRUCTION. Caught within a minute of shipping this
-    # flag: REP dropped an item quoting the owner ASKING what he could knock out.
-    # The quote must be him telling you to do THIS, not him talking nearby.
-    if said.rstrip().endswith("?"):
-        die("`--owner-said` must quote an INSTRUCTION, and %r is a question.\n\n"
-            "The owner asking about a thing is not the owner authorizing it. Quote "
-            "the words\nwhere he told you to act; if there are none, act as your "
-            "own seat and say whose\ncall it was, or ask him.\n" % said[:80])
-    # \U0001f534 OWNER, 2026-08-22: the floor used to be a blunt `len < 12`, and it
-    # refused HIS OWN documented phrases — "game UP" is 7 characters and "game is
-    # up", the example printed in CLAUDE.md, is 10. He said *"Simply do (1) right
-    # now"*. \u26d4 The guard's REAL job was never length: it was to stop
-    # `--owner-said yes` standing in for an instruction he never gave. So reject
-    # bare ASSENT, which is him agreeing to something said elsewhere, and let a
-    # short but complete instruction through.
-    if _norm_said(said) in ASSENT_ONLY:
-        die("`--owner-said` must quote the INSTRUCTION, not the agreement.\n%r is "
-            "him assenting to something YOU said; the ledger would record your "
-            "words as his.\n\nQuote the sentence that says what to do — "
-            "'game up' is fine, 'yes' is not.\n" % said)
+    """-> None. His words are recorded as he typed them, never refused for their form (owner 2026-11-20: "When I say
+    something I don't want to hear it sounded like a question"; RIMMANDRAKE_STOP_GATES_DEMANDING_OWNER_WORDS_HE_
+    ALREADY_SPOKE). A guard that refused a quote ending in "?" refused 30 of his own instructions ("Could you make a big
+    excel spreadsheet ...?"). A bare assent ("yes", "do it") is his word on what the Conductor proposed: it is recorded,
+    and a note asks for --why to name what he agreed to when none is given. Nobody writes words he did not say here:
+    that rule binds the caller, and no form check can enforce it."""
+    if _norm_said(said) in ASSENT_ONLY and not (getattr(model, "AGENT_WHY", "") or "").strip():
+        print("note: --owner-said %r is recorded as his assent; add --why \"<what he agreed to>\" next time so a reader "
+              "knows what it answered" % said[:40], file=sys.stderr)
 
 
 def _check_per_ruling(ref):

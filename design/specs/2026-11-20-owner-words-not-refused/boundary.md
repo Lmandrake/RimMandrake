@@ -4,7 +4,8 @@ Code: `src/RimMandrake/rimflow/detached_helper.py` (`card_repair`, the I3 step i
 `src/RimMandrake/rimflow/promise_scan.py` (`covered`, `scan(owed_items=)`), `src/RimMandrake/rimflow/owed.py`
 (`safe_banner_and_items`), `.claude/hooks/conductor_goodbye.py` (`untracked_lines`), `src/RimMandrake/rimflow/model.py`
 (`his_or_conductor`, `close_refusals(word=)`, `_fold_close_gate`) and `src/RimMandrake/rimflow/cli.py` (`_close_gate`,
-`cmd_close`). Item: `RIMMANDRAKE_STOP_GATES_DEMANDING_OWNER_WORDS_HE_ALREADY_SPOKE`, written 2026-11-20. Rule:
+`cmd_close`, `_check_owner_said`), `src/RimMandrake/Utils/conductor_authority.py` (`carried`, `words`).
+Item: `RIMMANDRAKE_STOP_GATES_DEMANDING_OWNER_WORDS_HE_ALREADY_SPOKE`, written 2026-11-20. Rule:
 `design/RimMandrake/standing_rulings.md` §His word and the Conductor's act are not refused. Census of every site:
 `D:\ClaudeWork\rimmandrake\conductor\night_20261120\owner_words_gates_census.md`. Each promise has a test of its name
 in `src/RimMandrake/rimflow/selftest_owner_words_not_refused.py`.
@@ -35,5 +36,10 @@ in `src/RimMandrake/rimflow/selftest_owner_words_not_refused.py`.
   RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS`, or with his `--owner-said` or `--by-card`, is not refused for a
   missing level-tagged pass; the close event records `uncheckedLifted: true`. Still refused (planted in the test): the
   same close from a launched run, a close citing any other ruling, and a seat's own close without a pass.
+- **his-question-is-recorded.** `rimflow … --owner-said "<his words>"` records his words as typed, a quote ending in
+  "?" and a bare assent ("yes") included; neither is refused. An assent with no `--why` prints one note line.
+- **either-conductor-ruling.** `conductor_authority.carried` takes `CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` or
+  `RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS` with the Conductor's text; any other ruling, or no text,
+  carries nothing.
 
 Later lists beside this page: `polish.md` (none yet).
