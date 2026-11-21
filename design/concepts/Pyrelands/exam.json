@@ -765,5 +765,1330 @@
    }
   }
  },
- "retaken_at": "2026-11-21T10:09:17Z"
+ "retaken_at": "2026-11-21T10:09:17Z",
+ "carried": {
+  "e1": {
+   "from": {
+    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "scenarios_hash": "28f4a86525c0a76c6c8d15506a8dbc9129cb37dfdf3753032f7c1750309e07de",
+    "readers": [
+     "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "burn_line_walks"
+   ],
+   "verdicts": {
+    "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)": "accept",
+    "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)": "accept"
+   },
+   "right": true,
+   "hash": "a6f9fe084d076d8e39ee19a54b0b2dcd5cf442acbe2a075d5f8cd7e73995b30e",
+   "shared": "8095035155053c7fea7cf5aa98f16542f25c4f1052e4b21e50bb5c85b641cb8f",
+   "unit_hashes": {
+    "burn_line_walks": "6211fd215c1a7d2f144f90c066236d86e1f99b02e491e430c6c0c33e7b9d1a4c"
+   }
+  },
+  "e2": {
+   "from": {
+    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "scenarios_hash": "28f4a86525c0a76c6c8d15506a8dbc9129cb37dfdf3753032f7c1750309e07de",
+    "readers": [
+     "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "burn_line_walks"
+   ],
+   "verdicts": {
+    "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)": "reject",
+    "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)": "reject"
+   },
+   "right": true,
+   "hash": "8c5b44c10067cc5330067fdc13c9a6186c1b7e57f15de2ccdc49b8bf1d04ca0d",
+   "shared": "8095035155053c7fea7cf5aa98f16542f25c4f1052e4b21e50bb5c85b641cb8f",
+   "unit_hashes": {
+    "burn_line_walks": "6211fd215c1a7d2f144f90c066236d86e1f99b02e491e430c6c0c33e7b9d1a4c"
+   }
+  },
+  "e3": {
+   "from": {
+    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "scenarios_hash": "28f4a86525c0a76c6c8d15506a8dbc9129cb37dfdf3753032f7c1750309e07de",
+    "readers": [
+     "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "burn_line_walks"
+   ],
+   "verdicts": {
+    "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)": "reject",
+    "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)": "reject"
+   },
+   "right": true,
+   "hash": "3179e39528383b4bf6e1265759c1ed74488156d53f2bb85ffde4b55896b5107c",
+   "shared": "8095035155053c7fea7cf5aa98f16542f25c4f1052e4b21e50bb5c85b641cb8f",
+   "unit_hashes": {
+    "burn_line_walks": "6211fd215c1a7d2f144f90c066236d86e1f99b02e491e430c6c0c33e7b9d1a4c"
+   }
+  },
+  "e4": {
+   "from": {
+    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "scenarios_hash": "28f4a86525c0a76c6c8d15506a8dbc9129cb37dfdf3753032f7c1750309e07de",
+    "readers": [
+     "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "fire_walks_with_wind"
+   ],
+   "verdicts": {
+    "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)": "accept",
+    "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)": "accept"
+   },
+   "right": true,
+   "hash": "5afc0ffbf80c9f6722be5c3d4467efcb062938b134d2c1cce4401d9bdfc2890f",
+   "shared": "8095035155053c7fea7cf5aa98f16542f25c4f1052e4b21e50bb5c85b641cb8f",
+   "unit_hashes": {
+    "fire_walks_with_wind": "97ada22050e9b76ac10a71692a144650fbd7b190d126e443bd3df48ffa9b93c5"
+   }
+  },
+  "e5": {
+   "from": {
+    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "scenarios_hash": "28f4a86525c0a76c6c8d15506a8dbc9129cb37dfdf3753032f7c1750309e07de",
+    "readers": [
+     "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "fire_walks_with_wind"
+   ],
+   "verdicts": {
+    "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)": "reject",
+    "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)": "reject"
+   },
+   "right": true,
+   "hash": "ace68dc675d47c0b645a3d30eeb8525a561fd9a1209df8827aeacf5902d0fef5",
+   "shared": "8095035155053c7fea7cf5aa98f16542f25c4f1052e4b21e50bb5c85b641cb8f",
+   "unit_hashes": {
+    "fire_walks_with_wind": "97ada22050e9b76ac10a71692a144650fbd7b190d126e443bd3df48ffa9b93c5"
+   }
+  },
+  "e6": {
+   "from": {
+    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "scenarios_hash": "28f4a86525c0a76c6c8d15506a8dbc9129cb37dfdf3753032f7c1750309e07de",
+    "readers": [
+     "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "fire_walks_with_wind"
+   ],
+   "verdicts": {
+    "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)": "accept",
+    "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)": "accept"
+   },
+   "right": true,
+   "hash": "ee00ed8aac265dadf55d124591904d48c64385f407ef757dae719641a36675f2",
+   "shared": "8095035155053c7fea7cf5aa98f16542f25c4f1052e4b21e50bb5c85b641cb8f",
+   "unit_hashes": {
+    "fire_walks_with_wind": "97ada22050e9b76ac10a71692a144650fbd7b190d126e443bd3df48ffa9b93c5"
+   }
+  },
+  "e7": {
+   "from": {
+    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "scenarios_hash": "28f4a86525c0a76c6c8d15506a8dbc9129cb37dfdf3753032f7c1750309e07de",
+    "readers": [
+     "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "ash_ground_and_blowing_ash"
+   ],
+   "verdicts": {
+    "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)": "reject",
+    "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)": "reject"
+   },
+   "right": true,
+   "hash": "57772859cd5a7642fe6514065518c424e99861d7ea15e0168fd5510f7afd3081",
+   "shared": "8095035155053c7fea7cf5aa98f16542f25c4f1052e4b21e50bb5c85b641cb8f",
+   "unit_hashes": {
+    "ash_ground_and_blowing_ash": "a5c31c8c575de2eb2a75122e70cf75bc93cb128f97769e64fdadc435107b422d"
+   }
+  },
+  "e8": {
+   "from": {
+    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "scenarios_hash": "28f4a86525c0a76c6c8d15506a8dbc9129cb37dfdf3753032f7c1750309e07de",
+    "readers": [
+     "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "ash_fertile_when_watered"
+   ],
+   "verdicts": {
+    "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)": "accept",
+    "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)": "accept"
+   },
+   "right": true,
+   "hash": "0a66b75f9eba228f9c35236b4b787203e20a2419f1d27ef1859f35a502d95508",
+   "shared": "8095035155053c7fea7cf5aa98f16542f25c4f1052e4b21e50bb5c85b641cb8f",
+   "unit_hashes": {
+    "ash_fertile_when_watered": "23ed8f0728b22fb1e4deefaa055903ccb4f45909230c71f5aee8090afc747cf3"
+   }
+  },
+  "e9": {
+   "from": {
+    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "scenarios_hash": "28f4a86525c0a76c6c8d15506a8dbc9129cb37dfdf3753032f7c1750309e07de",
+    "readers": [
+     "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "ash_fertile_when_watered"
+   ],
+   "verdicts": {
+    "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)": "reject",
+    "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)": "reject"
+   },
+   "right": true,
+   "hash": "a9b1cb3a4acb2b7c24d3f726655bff8952c12c00e4b352c64fac38da8575b800",
+   "shared": "8095035155053c7fea7cf5aa98f16542f25c4f1052e4b21e50bb5c85b641cb8f",
+   "unit_hashes": {
+    "ash_fertile_when_watered": "23ed8f0728b22fb1e4deefaa055903ccb4f45909230c71f5aee8090afc747cf3"
+   }
+  },
+  "e10": {
+   "from": {
+    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "scenarios_hash": "28f4a86525c0a76c6c8d15506a8dbc9129cb37dfdf3753032f7c1750309e07de",
+    "readers": [
+     "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "fresh_burn_compounds_with_black_rain"
+   ],
+   "verdicts": {
+    "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)": "accept",
+    "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)": "accept"
+   },
+   "right": true,
+   "hash": "1c7e50e1ef9c9637f8b225e03ed64e686eac5247340a5ea16818ae8b249add90",
+   "shared": "8095035155053c7fea7cf5aa98f16542f25c4f1052e4b21e50bb5c85b641cb8f",
+   "unit_hashes": {
+    "fresh_burn_compounds_with_black_rain": "34f2aff2f303c1434ec9a24c8e1ab82f66ffd521dfc1cb93504b4d537bc5f217"
+   }
+  },
+  "e11": {
+   "from": {
+    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "scenarios_hash": "28f4a86525c0a76c6c8d15506a8dbc9129cb37dfdf3753032f7c1750309e07de",
+    "readers": [
+     "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "fresh_burn_compounds_with_black_rain"
+   ],
+   "verdicts": {
+    "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)": "reject",
+    "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)": "reject"
+   },
+   "right": true,
+   "hash": "b095a2fc3651d2725a121428e1634804289f0506e4d70325f754eda8f2386065",
+   "shared": "8095035155053c7fea7cf5aa98f16542f25c4f1052e4b21e50bb5c85b641cb8f",
+   "unit_hashes": {
+    "fresh_burn_compounds_with_black_rain": "34f2aff2f303c1434ec9a24c8e1ab82f66ffd521dfc1cb93504b4d537bc5f217"
+   }
+  },
+  "e12": {
+   "from": {
+    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "scenarios_hash": "28f4a86525c0a76c6c8d15506a8dbc9129cb37dfdf3753032f7c1750309e07de",
+    "readers": [
+     "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "grass_carpets_and_regreens"
+   ],
+   "verdicts": {
+    "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)": "accept",
+    "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)": "accept"
+   },
+   "right": true,
+   "hash": "f27f7a6927993bfaa2e30c7f3eb92b1e1daeac29057afda2da5f88bd322f26cc",
+   "shared": "8095035155053c7fea7cf5aa98f16542f25c4f1052e4b21e50bb5c85b641cb8f",
+   "unit_hashes": {
+    "grass_carpets_and_regreens": "b8665e5477c7e813129a81aa1003576a924e3ef5f071c2cfaab354c2caf2c673"
+   }
+  },
+  "e13": {
+   "from": {
+    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "scenarios_hash": "28f4a86525c0a76c6c8d15506a8dbc9129cb37dfdf3753032f7c1750309e07de",
+    "readers": [
+     "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "grass_carpets_and_regreens"
+   ],
+   "verdicts": {
+    "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)": "reject",
+    "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)": "reject"
+   },
+   "right": true,
+   "hash": "c446dd9214a8ae07fd37abb8521c22a2b42150668521a10b6309416008139278",
+   "shared": "8095035155053c7fea7cf5aa98f16542f25c4f1052e4b21e50bb5c85b641cb8f",
+   "unit_hashes": {
+    "grass_carpets_and_regreens": "b8665e5477c7e813129a81aa1003576a924e3ef5f071c2cfaab354c2caf2c673"
+   }
+  },
+  "e14": {
+   "from": {
+    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "scenarios_hash": "28f4a86525c0a76c6c8d15506a8dbc9129cb37dfdf3753032f7c1750309e07de",
+    "readers": [
+     "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "grass_carpets_and_regreens"
+   ],
+   "verdicts": {
+    "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)": "reject",
+    "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)": "reject"
+   },
+   "right": true,
+   "hash": "22ebdb799ed1e487997d1125f0a4f485dc12ce15647c24b44a6f89b01bb444fe",
+   "shared": "8095035155053c7fea7cf5aa98f16542f25c4f1052e4b21e50bb5c85b641cb8f",
+   "unit_hashes": {
+    "grass_carpets_and_regreens": "b8665e5477c7e813129a81aa1003576a924e3ef5f071c2cfaab354c2caf2c673"
+   }
+  },
+  "e15": {
+   "from": {
+    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "scenarios_hash": "28f4a86525c0a76c6c8d15506a8dbc9129cb37dfdf3753032f7c1750309e07de",
+    "readers": [
+     "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "scorchfruit_born_of_fire"
+   ],
+   "verdicts": {
+    "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)": "reject",
+    "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)": "reject"
+   },
+   "right": true,
+   "hash": "46c226854515f7e6f7f4a895827421bd559cf82ef03ee14cd610c541b4596e6d",
+   "shared": "8095035155053c7fea7cf5aa98f16542f25c4f1052e4b21e50bb5c85b641cb8f",
+   "unit_hashes": {
+    "scorchfruit_born_of_fire": "a5e24c8e8135acf8c6bcdd78470c86cd9b6661c5ce4edb3ae1ebb17d19b004c7"
+   }
+  },
+  "e16": {
+   "from": {
+    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "scenarios_hash": "28f4a86525c0a76c6c8d15506a8dbc9129cb37dfdf3753032f7c1750309e07de",
+    "readers": [
+     "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "populations_are_the_biomes_own"
+   ],
+   "verdicts": {
+    "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)": "accept",
+    "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)": "accept"
+   },
+   "right": true,
+   "hash": "caf03a574ee15c51eec8a31c029e6cb13358fca13f2706c8de3cb8f9db921d8e",
+   "shared": "8095035155053c7fea7cf5aa98f16542f25c4f1052e4b21e50bb5c85b641cb8f",
+   "unit_hashes": {
+    "populations_are_the_biomes_own": "da8370a13075520ba57dd26ad659bec8e6c3d8e5a8f118c86f774ca11b910b84"
+   }
+  },
+  "e17": {
+   "from": {
+    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "scenarios_hash": "28f4a86525c0a76c6c8d15506a8dbc9129cb37dfdf3753032f7c1750309e07de",
+    "readers": [
+     "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "ruins_stand_blackened"
+   ],
+   "verdicts": {
+    "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)": "accept",
+    "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)": "accept"
+   },
+   "right": true,
+   "hash": "afb8fcd98a8a2668d66b58bd623fac26aef941c7c89c8d34dbe87aa4ca5c00c3",
+   "shared": "8095035155053c7fea7cf5aa98f16542f25c4f1052e4b21e50bb5c85b641cb8f",
+   "unit_hashes": {
+    "ruins_stand_blackened": "c57106b2e3ba52f3c3ba015016a568f9b69f3b4f1210b9f3deae6b8d59596812"
+   }
+  },
+  "e18": {
+   "from": {
+    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "scenarios_hash": "28f4a86525c0a76c6c8d15506a8dbc9129cb37dfdf3753032f7c1750309e07de",
+    "readers": [
+     "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "firehawk_lights_ahead"
+   ],
+   "verdicts": {
+    "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)": "accept",
+    "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)": "accept"
+   },
+   "right": true,
+   "hash": "4197219846320d106b1953e3136f6765428320113d56dc051c1ca4c1dbe1cce6",
+   "shared": "8095035155053c7fea7cf5aa98f16542f25c4f1052e4b21e50bb5c85b641cb8f",
+   "unit_hashes": {
+    "firehawk_lights_ahead": "e7c61f40a41f587a7101dd5b0e3931be50c8c14f74c330a70b5cbc6756284e13"
+   }
+  },
+  "e19": {
+   "from": {
+    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "scenarios_hash": "28f4a86525c0a76c6c8d15506a8dbc9129cb37dfdf3753032f7c1750309e07de",
+    "readers": [
+     "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "furnacebeast_warms"
+   ],
+   "verdicts": {
+    "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)": "reject",
+    "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)": "reject"
+   },
+   "right": true,
+   "hash": "b1d4d337f70c5b172ca3ca4552d702b50abb99fc1bc938d76c05f318fbe434de",
+   "shared": "8095035155053c7fea7cf5aa98f16542f25c4f1052e4b21e50bb5c85b641cb8f",
+   "unit_hashes": {
+    "furnacebeast_warms": "123bbbcef024c07e5d69c8737caf677dfb8ca8338b28c9ae2aa4944e624f639f"
+   }
+  },
+  "e20": {
+   "from": {
+    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "scenarios_hash": "28f4a86525c0a76c6c8d15506a8dbc9129cb37dfdf3753032f7c1750309e07de",
+    "readers": [
+     "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "ashwallow_dives_unharmed"
+   ],
+   "verdicts": {
+    "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)": "accept",
+    "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)": "accept"
+   },
+   "right": true,
+   "hash": "781a2c62da23e6dfc95b234285db698d84e65ab597851b3d8706fd0fb27f8aee",
+   "shared": "8095035155053c7fea7cf5aa98f16542f25c4f1052e4b21e50bb5c85b641cb8f",
+   "unit_hashes": {
+    "ashwallow_dives_unharmed": "2fd8b8db9ae77848fd039557b792cfd035369cc0d8031f7ea9423bf9a84d9948"
+   }
+  },
+  "e21": {
+   "from": {
+    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "scenarios_hash": "28f4a86525c0a76c6c8d15506a8dbc9129cb37dfdf3753032f7c1750309e07de",
+    "readers": [
+     "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "ullai_graze_old_burns"
+   ],
+   "verdicts": {
+    "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)": "reject",
+    "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)": "reject"
+   },
+   "right": true,
+   "hash": "057408c8c6a4706e78952ae8681fc518bd2fa675c5bf457dd50688d39771ec2f",
+   "shared": "8095035155053c7fea7cf5aa98f16542f25c4f1052e4b21e50bb5c85b641cb8f",
+   "unit_hashes": {
+    "ullai_graze_old_burns": "11e24d5a0affbdf9627b214d4ce49d93d7d70d29d80af08cbac3e46a8c92fad6"
+   }
+  },
+  "e22": {
+   "from": {
+    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "scenarios_hash": "28f4a86525c0a76c6c8d15506a8dbc9129cb37dfdf3753032f7c1750309e07de",
+    "readers": [
+     "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "three_skies"
+   ],
+   "verdicts": {
+    "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)": "reject",
+    "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)": "reject"
+   },
+   "right": true,
+   "hash": "308a9327d05258558faa3229d4ed25cab719c0d70e7344358b184bb2b6cfadeb",
+   "shared": "8095035155053c7fea7cf5aa98f16542f25c4f1052e4b21e50bb5c85b641cb8f",
+   "unit_hashes": {
+    "three_skies": "3e39a47a8bcd2ace0c7b5ab9184445383c6ce5f73fd8d62f099be7fab3df0170"
+   }
+  },
+  "e23": {
+   "from": {
+    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "scenarios_hash": "28f4a86525c0a76c6c8d15506a8dbc9129cb37dfdf3753032f7c1750309e07de",
+    "readers": [
+     "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "no_ordinary_rain"
+   ],
+   "verdicts": {
+    "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)": "accept",
+    "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)": "accept"
+   },
+   "right": true,
+   "hash": "26c85a0c26ee777cbed0f82b6d8bbba29854caaeccaf9ceeb8157989714ef988",
+   "shared": "8095035155053c7fea7cf5aa98f16542f25c4f1052e4b21e50bb5c85b641cb8f",
+   "unit_hashes": {
+    "no_ordinary_rain": "0c7d0f2bcbd2e6c721c574476a79223568a83d0d8eb6434f85a6a6e93cefa6ff"
+   }
+  },
+  "e24": {
+   "from": {
+    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "scenarios_hash": "28f4a86525c0a76c6c8d15506a8dbc9129cb37dfdf3753032f7c1750309e07de",
+    "readers": [
+     "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "ash_fertility_probe"
+   ],
+   "verdicts": {
+    "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)": "accept",
+    "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)": "accept"
+   },
+   "right": true,
+   "hash": "8cab10df9bbf8e329353e9282e26b229208c4ad53465a053380f6ade0f0150bf",
+   "shared": "8095035155053c7fea7cf5aa98f16542f25c4f1052e4b21e50bb5c85b641cb8f",
+   "unit_hashes": {
+    "ash_fertility_probe": "f936ee0ce40f309b49c5afeb07d8643b7e8afff2db63b9806e21a83db45371d1"
+   }
+  },
+  "e25": {
+   "from": {
+    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "scenarios_hash": "28f4a86525c0a76c6c8d15506a8dbc9129cb37dfdf3753032f7c1750309e07de",
+    "readers": [
+     "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "walk_season_on_the_pyre"
+   ],
+   "verdicts": {
+    "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)": "reject",
+    "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)": "reject"
+   },
+   "right": true,
+   "hash": "2fb47402f6f64909f1038e5ce01e82b12ee8946f3e421d71bcac32b944156b45",
+   "shared": "8095035155053c7fea7cf5aa98f16542f25c4f1052e4b21e50bb5c85b641cb8f",
+   "unit_hashes": {
+    "walk_season_on_the_pyre": "258cd4588c4a96ebaf060daea7bc5f63d51edf222e04805a495660a70308cc83"
+   }
+  },
+  "e26": {
+   "from": {
+    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "scenarios_hash": "28f4a86525c0a76c6c8d15506a8dbc9129cb37dfdf3753032f7c1750309e07de",
+    "readers": [
+     "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "firefoam_sprayer_reaches_the_fruit"
+   ],
+   "verdicts": {
+    "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)": "accept",
+    "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)": "accept"
+   },
+   "right": true,
+   "hash": "15858186dca46d22626e763f19142f3a15df197fc90c4168444188fbad096215",
+   "shared": "8095035155053c7fea7cf5aa98f16542f25c4f1052e4b21e50bb5c85b641cb8f",
+   "unit_hashes": {
+    "firefoam_sprayer_reaches_the_fruit": "fe72c144149838d51c1e6fee65d7f759afcb354fbf8039759ccff2c4d62da1a8"
+   }
+  },
+  "e27": {
+   "from": {
+    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "scenarios_hash": "28f4a86525c0a76c6c8d15506a8dbc9129cb37dfdf3753032f7c1750309e07de",
+    "readers": [
+     "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "sand_shovel_yields_glass_sand"
+   ],
+   "verdicts": {
+    "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)": "accept",
+    "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)": "accept"
+   },
+   "right": true,
+   "hash": "49b88e5c6ac9daac03d90680acf70554d7a3edfead5d0d6f066a50e0ead1ac5e",
+   "shared": "8095035155053c7fea7cf5aa98f16542f25c4f1052e4b21e50bb5c85b641cb8f",
+   "unit_hashes": {
+    "sand_shovel_yields_glass_sand": "02d8d417dc5cf9af55fdbd1cea3a58a895b0414080456100b7b0e8d51b76fcc0"
+   }
+  },
+  "e28": {
+   "from": {
+    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "scenarios_hash": "28f4a86525c0a76c6c8d15506a8dbc9129cb37dfdf3753032f7c1750309e07de",
+    "readers": [
+     "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "fire_rite_hook_silent_alone"
+   ],
+   "verdicts": {
+    "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)": "reject",
+    "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)": "reject"
+   },
+   "right": true,
+   "hash": "a6c57d9bafd9dae60f6702979f69c92e346c7fe3e67500e40cb29173a4cdc919",
+   "shared": "8095035155053c7fea7cf5aa98f16542f25c4f1052e4b21e50bb5c85b641cb8f",
+   "unit_hashes": {
+    "fire_rite_hook_silent_alone": "04ba256fcddfc07aa7f6823e97c63e46a501279e848c95ccd4c4bc2d1b9febcf"
+   }
+  },
+  "e29": {
+   "from": {
+    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "scenarios_hash": "28f4a86525c0a76c6c8d15506a8dbc9129cb37dfdf3753032f7c1750309e07de",
+    "readers": [
+     "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "biome_text_says_engineered"
+   ],
+   "verdicts": {
+    "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)": "accept",
+    "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)": "accept"
+   },
+   "right": true,
+   "hash": "dfceed0f1fec6a057c2b3dc920386f71c430323cfec479c8b9c4a6da26b42a63",
+   "shared": "8095035155053c7fea7cf5aa98f16542f25c4f1052e4b21e50bb5c85b641cb8f",
+   "unit_hashes": {
+    "biome_text_says_engineered": "e6f2b0ce21f6fb5250cc37442ac88bc73ae9cc869e1a83ae8ff802683bb58a5c"
+   }
+  },
+  "e30": {
+   "from": {
+    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "scenarios_hash": "28f4a86525c0a76c6c8d15506a8dbc9129cb37dfdf3753032f7c1750309e07de",
+    "readers": [
+     "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "flamefang_bite_carries_venom"
+   ],
+   "verdicts": {
+    "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)": "accept",
+    "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)": "accept"
+   },
+   "right": true,
+   "hash": "2edd8303b0b4bc6cc5c8516ec713167ce22ea0740b3a0a41fed74341966b73e4",
+   "shared": "8095035155053c7fea7cf5aa98f16542f25c4f1052e4b21e50bb5c85b641cb8f",
+   "unit_hashes": {
+    "flamefang_bite_carries_venom": "a5c54897da51da50ad462727c30ee98d45b5a579bba45c3025719a1308cdd95a"
+   }
+  },
+  "e31": {
+   "from": {
+    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "scenarios_hash": "28f4a86525c0a76c6c8d15506a8dbc9129cb37dfdf3753032f7c1750309e07de",
+    "readers": [
+     "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "firehawk_hunt_rewards"
+   ],
+   "verdicts": {
+    "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)": "reject",
+    "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)": "reject"
+   },
+   "right": true,
+   "hash": "fab2724798afd829287be91cf089291f59ff493a5cf4d6cb53c0e4fd5650a1ef",
+   "shared": "8095035155053c7fea7cf5aa98f16542f25c4f1052e4b21e50bb5c85b641cb8f",
+   "unit_hashes": {
+    "firehawk_hunt_rewards": "846322f9bb96ae65e2ed8c7dbbe835337dba2e3cd0e6d607243abb06e829f0c4"
+   }
+  },
+  "e32": {
+   "from": {
+    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "scenarios_hash": "28f4a86525c0a76c6c8d15506a8dbc9129cb37dfdf3753032f7c1750309e07de",
+    "readers": [
+     "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "ullai_cross_the_map_as_vanilla_herds"
+   ],
+   "verdicts": {
+    "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)": "accept",
+    "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)": "accept"
+   },
+   "right": true,
+   "hash": "fb70c4816726ddd2d3371afc6f066c1c2181a2b9f4705dae79d9160553a9a459",
+   "shared": "8095035155053c7fea7cf5aa98f16542f25c4f1052e4b21e50bb5c85b641cb8f",
+   "unit_hashes": {
+    "ullai_cross_the_map_as_vanilla_herds": "e9662bc4a8887942de1cccea7dbb9a5848c49bda6766713921356fcdab01c3a2"
+   }
+  },
+  "c1": {
+   "from": {
+    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "scenarios_hash": "28f4a86525c0a76c6c8d15506a8dbc9129cb37dfdf3753032f7c1750309e07de",
+    "readers": [
+     "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "burn_line_walks"
+   ],
+   "verdicts": {
+    "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)": "reject",
+    "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)": "reject"
+   },
+   "right": true,
+   "hash": "f4bed3ef5adafca5f74c0ec7fa8b2ffbcae3216ed76ffbfe734855a058a0b947",
+   "shared": "8095035155053c7fea7cf5aa98f16542f25c4f1052e4b21e50bb5c85b641cb8f",
+   "unit_hashes": {
+    "burn_line_walks": "6211fd215c1a7d2f144f90c066236d86e1f99b02e491e430c6c0c33e7b9d1a4c"
+   }
+  },
+  "c2": {
+   "from": {
+    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "scenarios_hash": "28f4a86525c0a76c6c8d15506a8dbc9129cb37dfdf3753032f7c1750309e07de",
+    "readers": [
+     "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "burn_line_walks"
+   ],
+   "verdicts": {
+    "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)": "reject",
+    "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)": "reject"
+   },
+   "right": true,
+   "hash": "028000bafdcfae860a4d4942b6cf9cb72ea18ceef9c3540627d226c8f1d84900",
+   "shared": "8095035155053c7fea7cf5aa98f16542f25c4f1052e4b21e50bb5c85b641cb8f",
+   "unit_hashes": {
+    "burn_line_walks": "6211fd215c1a7d2f144f90c066236d86e1f99b02e491e430c6c0c33e7b9d1a4c"
+   }
+  },
+  "c3": {
+   "from": {
+    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "scenarios_hash": "28f4a86525c0a76c6c8d15506a8dbc9129cb37dfdf3753032f7c1750309e07de",
+    "readers": [
+     "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "fire_walks_with_wind"
+   ],
+   "verdicts": {
+    "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)": "reject",
+    "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)": "reject"
+   },
+   "right": true,
+   "hash": "7b65d65b42daaeeb91678b504fe53699a7f6e36d82265e6be55e10198c91fa08",
+   "shared": "8095035155053c7fea7cf5aa98f16542f25c4f1052e4b21e50bb5c85b641cb8f",
+   "unit_hashes": {
+    "fire_walks_with_wind": "97ada22050e9b76ac10a71692a144650fbd7b190d126e443bd3df48ffa9b93c5"
+   }
+  },
+  "c4": {
+   "from": {
+    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "scenarios_hash": "28f4a86525c0a76c6c8d15506a8dbc9129cb37dfdf3753032f7c1750309e07de",
+    "readers": [
+     "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "ash_fertile_when_watered"
+   ],
+   "verdicts": {
+    "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)": "reject",
+    "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)": "reject"
+   },
+   "right": true,
+   "hash": "94277dd9bc9dd62c3bdfdbcfd1e25dfda8345ea54ea871b1d76d1cfba7db66c4",
+   "shared": "8095035155053c7fea7cf5aa98f16542f25c4f1052e4b21e50bb5c85b641cb8f",
+   "unit_hashes": {
+    "ash_fertile_when_watered": "23ed8f0728b22fb1e4deefaa055903ccb4f45909230c71f5aee8090afc747cf3"
+   }
+  },
+  "c5": {
+   "from": {
+    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "scenarios_hash": "28f4a86525c0a76c6c8d15506a8dbc9129cb37dfdf3753032f7c1750309e07de",
+    "readers": [
+     "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "grass_carpets_and_regreens"
+   ],
+   "verdicts": {
+    "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)": "reject",
+    "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)": "reject"
+   },
+   "right": true,
+   "hash": "615d161f107a43016878a98c4e6b4be44d55e43f8a09a8efdf760147b56944a8",
+   "shared": "8095035155053c7fea7cf5aa98f16542f25c4f1052e4b21e50bb5c85b641cb8f",
+   "unit_hashes": {
+    "grass_carpets_and_regreens": "b8665e5477c7e813129a81aa1003576a924e3ef5f071c2cfaab354c2caf2c673"
+   }
+  },
+  "c6": {
+   "from": {
+    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "scenarios_hash": "28f4a86525c0a76c6c8d15506a8dbc9129cb37dfdf3753032f7c1750309e07de",
+    "readers": [
+     "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "grass_carpets_and_regreens"
+   ],
+   "verdicts": {
+    "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)": "reject",
+    "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)": "reject"
+   },
+   "right": true,
+   "hash": "434bbbcd842d9c8e02e5fdb3aea860bb7b09af0d1f5c8f707aaae54ad5729406",
+   "shared": "8095035155053c7fea7cf5aa98f16542f25c4f1052e4b21e50bb5c85b641cb8f",
+   "unit_hashes": {
+    "grass_carpets_and_regreens": "b8665e5477c7e813129a81aa1003576a924e3ef5f071c2cfaab354c2caf2c673"
+   }
+  },
+  "c7": {
+   "from": {
+    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "scenarios_hash": "28f4a86525c0a76c6c8d15506a8dbc9129cb37dfdf3753032f7c1750309e07de",
+    "readers": [
+     "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "scorchfruit_born_of_fire"
+   ],
+   "verdicts": {
+    "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)": "reject",
+    "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)": "reject"
+   },
+   "right": true,
+   "hash": "392d88bd3aa97e695967f81dc78841a65916f7f3752546628c303b449bf03aad",
+   "shared": "8095035155053c7fea7cf5aa98f16542f25c4f1052e4b21e50bb5c85b641cb8f",
+   "unit_hashes": {
+    "scorchfruit_born_of_fire": "a5e24c8e8135acf8c6bcdd78470c86cd9b6661c5ce4edb3ae1ebb17d19b004c7"
+   }
+  },
+  "c8": {
+   "from": {
+    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "scenarios_hash": "28f4a86525c0a76c6c8d15506a8dbc9129cb37dfdf3753032f7c1750309e07de",
+    "readers": [
+     "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "fresh_burn_compounds_with_black_rain"
+   ],
+   "verdicts": {
+    "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)": "reject",
+    "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)": "reject"
+   },
+   "right": true,
+   "hash": "2e6e26bd6dfb83263944325ffffc614a2b3fae2fa24373b6f3b601594a737576",
+   "shared": "8095035155053c7fea7cf5aa98f16542f25c4f1052e4b21e50bb5c85b641cb8f",
+   "unit_hashes": {
+    "fresh_burn_compounds_with_black_rain": "34f2aff2f303c1434ec9a24c8e1ab82f66ffd521dfc1cb93504b4d537bc5f217"
+   }
+  }
+ },
+ "retake": {
+  "outcome": "none_touched",
+  "retaken": [],
+  "carried": [
+   "e1",
+   "e2",
+   "e3",
+   "e4",
+   "e5",
+   "e6",
+   "e7",
+   "e8",
+   "e9",
+   "e10",
+   "e11",
+   "e12",
+   "e13",
+   "e14",
+   "e15",
+   "e16",
+   "e17",
+   "e18",
+   "e19",
+   "e20",
+   "e21",
+   "e22",
+   "e23",
+   "e24",
+   "e25",
+   "e26",
+   "e27",
+   "e28",
+   "e29",
+   "e30",
+   "e31",
+   "e32",
+   "c1",
+   "c2",
+   "c3",
+   "c4",
+   "c5",
+   "c6",
+   "c7",
+   "c8"
+  ],
+  "changed": [],
+  "against": {
+   "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54",
+   "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+   "scenarios_hash": "28f4a86525c0a76c6c8d15506a8dbc9129cb37dfdf3753032f7c1750309e07de",
+   "at": "2026-11-21T10:54:25Z"
+  },
+  "units": {
+   "burn_line_walks": "6211fd215c1a7d2f144f90c066236d86e1f99b02e491e430c6c0c33e7b9d1a4c",
+   "fire_walks_with_wind": "97ada22050e9b76ac10a71692a144650fbd7b190d126e443bd3df48ffa9b93c5",
+   "ash_ground_and_blowing_ash": "a5c31c8c575de2eb2a75122e70cf75bc93cb128f97769e64fdadc435107b422d",
+   "ash_fertile_when_watered": "23ed8f0728b22fb1e4deefaa055903ccb4f45909230c71f5aee8090afc747cf3",
+   "fresh_burn_compounds_with_black_rain": "34f2aff2f303c1434ec9a24c8e1ab82f66ffd521dfc1cb93504b4d537bc5f217",
+   "grass_carpets_and_regreens": "b8665e5477c7e813129a81aa1003576a924e3ef5f071c2cfaab354c2caf2c673",
+   "scorchfruit_born_of_fire": "a5e24c8e8135acf8c6bcdd78470c86cd9b6661c5ce4edb3ae1ebb17d19b004c7",
+   "populations_are_the_biomes_own": "da8370a13075520ba57dd26ad659bec8e6c3d8e5a8f118c86f774ca11b910b84",
+   "ruins_stand_blackened": "c57106b2e3ba52f3c3ba015016a568f9b69f3b4f1210b9f3deae6b8d59596812",
+   "firehawk_lights_ahead": "e7c61f40a41f587a7101dd5b0e3931be50c8c14f74c330a70b5cbc6756284e13",
+   "furnacebeast_warms": "123bbbcef024c07e5d69c8737caf677dfb8ca8338b28c9ae2aa4944e624f639f",
+   "ashwallow_dives_unharmed": "2fd8b8db9ae77848fd039557b792cfd035369cc0d8031f7ea9423bf9a84d9948",
+   "ullai_graze_old_burns": "11e24d5a0affbdf9627b214d4ce49d93d7d70d29d80af08cbac3e46a8c92fad6",
+   "three_skies": "3e39a47a8bcd2ace0c7b5ab9184445383c6ce5f73fd8d62f099be7fab3df0170",
+   "no_ordinary_rain": "0c7d0f2bcbd2e6c721c574476a79223568a83d0d8eb6434f85a6a6e93cefa6ff",
+   "ash_fertility_probe": "f936ee0ce40f309b49c5afeb07d8643b7e8afff2db63b9806e21a83db45371d1",
+   "walk_season_on_the_pyre": "258cd4588c4a96ebaf060daea7bc5f63d51edf222e04805a495660a70308cc83",
+   "firefoam_sprayer_reaches_the_fruit": "fe72c144149838d51c1e6fee65d7f759afcb354fbf8039759ccff2c4d62da1a8",
+   "sand_shovel_yields_glass_sand": "02d8d417dc5cf9af55fdbd1cea3a58a895b0414080456100b7b0e8d51b76fcc0",
+   "fire_rite_hook_silent_alone": "04ba256fcddfc07aa7f6823e97c63e46a501279e848c95ccd4c4bc2d1b9febcf",
+   "biome_text_says_engineered": "e6f2b0ce21f6fb5250cc37442ac88bc73ae9cc869e1a83ae8ff802683bb58a5c",
+   "flamefang_bite_carries_venom": "a5c54897da51da50ad462727c30ee98d45b5a579bba45c3025719a1308cdd95a",
+   "firehawk_hunt_rewards": "846322f9bb96ae65e2ed8c7dbbe835337dba2e3cd0e6d607243abb06e829f0c4",
+   "ullai_cross_the_map_as_vanilla_herds": "e9662bc4a8887942de1cccea7dbb9a5848c49bda6766713921356fcdab01c3a2"
+  },
+  "sheet_order": [
+   [
+    "",
+    null
+   ],
+   [
+    "his words",
+    null
+   ],
+   [
+    "his words",
+    null
+   ],
+   [
+    "his words",
+    null
+   ],
+   [
+    "his words",
+    null
+   ],
+   [
+    "his words",
+    null
+   ],
+   [
+    "his words",
+    null
+   ],
+   [
+    "his words",
+    null
+   ],
+   [
+    "his words",
+    null
+   ],
+   [
+    "his words",
+    null
+   ],
+   [
+    "does",
+    "burn_line_walks"
+   ],
+   [
+    "does",
+    "fire_walks_with_wind"
+   ],
+   [
+    "does",
+    "ash_ground_and_blowing_ash"
+   ],
+   [
+    "does",
+    "ash_fertile_when_watered"
+   ],
+   [
+    "does",
+    "fresh_burn_compounds_with_black_rain"
+   ],
+   [
+    "does",
+    "grass_carpets_and_regreens"
+   ],
+   [
+    "does",
+    "scorchfruit_born_of_fire"
+   ],
+   [
+    "does",
+    "populations_are_the_biomes_own"
+   ],
+   [
+    "does",
+    "ruins_stand_blackened"
+   ],
+   [
+    "does",
+    "firehawk_lights_ahead"
+   ],
+   [
+    "does",
+    "firehawk_hunt_rewards"
+   ],
+   [
+    "does",
+    "furnacebeast_warms"
+   ],
+   [
+    "does",
+    "ashwallow_dives_unharmed"
+   ],
+   [
+    "does",
+    "ullai_graze_old_burns"
+   ],
+   [
+    "does",
+    "ullai_cross_the_map_as_vanilla_herds"
+   ],
+   [
+    "does",
+    "flamefang_bite_carries_venom"
+   ],
+   [
+    "does",
+    "three_skies"
+   ],
+   [
+    "does",
+    "firefoam_sprayer_reaches_the_fruit"
+   ],
+   [
+    "does",
+    "sand_shovel_yields_glass_sand"
+   ],
+   [
+    "does",
+    "fire_rite_hook_silent_alone"
+   ],
+   [
+    "does",
+    "biome_text_says_engineered"
+   ],
+   [
+    "does",
+    "ash_fertility_probe"
+   ],
+   [
+    "does",
+    "walk_season_on_the_pyre"
+   ],
+   [
+    "does",
+    null
+   ],
+   [
+    "does",
+    null
+   ],
+   [
+    "does",
+    null
+   ],
+   [
+    "does not",
+    "no_ordinary_rain"
+   ],
+   [
+    "does not",
+    null
+   ],
+   [
+    "does not",
+    null
+   ],
+   [
+    "open",
+    null
+   ],
+   [
+    "delegated",
+    null
+   ],
+   [
+    "delegated",
+    null
+   ],
+   [
+    "delegated",
+    null
+   ],
+   [
+    "delegated",
+    null
+   ],
+   [
+    "delegated",
+    null
+   ],
+   [
+    "delegated",
+    null
+   ],
+   [
+    "pruning",
+    null
+   ],
+   [
+    "pruning",
+    null
+   ],
+   [
+    "pruning",
+    null
+   ],
+   [
+    "pruning",
+    null
+   ],
+   [
+    "pruning",
+    null
+   ],
+   [
+    "pruning",
+    null
+   ],
+   [
+    "pruning",
+    null
+   ],
+   [
+    "pruning",
+    null
+   ],
+   [
+    "pruning",
+    null
+   ],
+   [
+    "pruning",
+    null
+   ],
+   [
+    "pruning",
+    null
+   ],
+   [
+    "pruning",
+    null
+   ],
+   [
+    "pruning",
+    null
+   ],
+   [
+    "pruning",
+    null
+   ],
+   [
+    "pruning",
+    null
+   ],
+   [
+    "pruning",
+    null
+   ],
+   [
+    "pruning",
+    null
+   ],
+   [
+    "pruning",
+    null
+   ],
+   [
+    "pruning",
+    null
+   ],
+   [
+    "pruning",
+    null
+   ],
+   [
+    "pruning",
+    null
+   ],
+   [
+    "pruning",
+    null
+   ],
+   [
+    "pruning",
+    null
+   ],
+   [
+    "pruning",
+    null
+   ]
+  ],
+  "by": "exam_retake.py carry",
+  "at": "2026-11-21T19:47:58Z"
+ }
 }

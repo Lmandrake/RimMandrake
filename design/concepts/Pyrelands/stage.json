@@ -839,10 +839,17 @@
     "ref": "run rm-role-designer-1795271745",
     "stage": 3,
     "tokens": 255571
+   },
+   {
+    "at": "2026-11-21T19:50:00Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1795290438",
+    "stage": 4,
+    "tokens": 227863
    }
   ],
   "reserve": 60000,
-  "spent": 24163041
+  "spent": 24390904
  },
  "coverage_releases": [
   {
@@ -2680,6 +2687,30 @@
    "stage": 4,
    "what": "close",
    "why": "run rm-role-designer-1795271745: stage 3 done"
+  },
+  {
+   "at": "2026-11-21T19:47:30Z",
+   "stage": 4,
+   "what": "over_budget",
+   "why": "24163041 of 4000000 spent; run rm-role-designer-1795290438 goes on with 400000 (advisory)"
+  },
+  {
+   "at": "2026-11-21T19:47:30Z",
+   "stage": 4,
+   "what": "open",
+   "why": "run rm-role-designer-1795290438, stage 4, budget 400000"
+  },
+  {
+   "at": "2026-11-21T19:50:01Z",
+   "stage": 5,
+   "what": "close",
+   "why": "run rm-role-designer-1795290438: stage 4 done"
+  },
+  {
+   "at": "2026-11-21T19:50:01Z",
+   "stage": 5,
+   "what": "exam_map",
+   "why": "read map recorded for 40 scenarios"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -3261,12 +3292,45 @@
    "run": "rm-role-designer-1795271745",
    "stage": 3,
    "summary": "Stage 3 re-accepted after the one changed input, scenes.json (f3b1999757, RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN): six scene controls that no bridge tool could run were narrowed or removed, each with its reason in rules_out and a line in version/polish.md. No tree, sheet, floor or record decision changed; the Design Version 0.1.0 bars are untouched. Gate A lint PASS; designer_stage.py showcases accepts the set unchanged (burn_line 6, fire_cast 3, sky_and_shelter 3, fire_solace 3 new, overlap 0.25). Read of the two scenes left with control 'none': sc_ruins still rules out its leaf's false pass (inspect-text-only scorch) by reading footprint terrain, ProbeAsh depth and wall paint; sc_furnace_giant still reads the live race def and both spawned pawns' body sizes, so its 'size read from the XML' false pass rests on the live read, not a control. Neither needs a design change. The concept can go on to stage 4 and 5 as before."
+  },
+  {
+   "at": "2026-11-21T19:50:01Z",
+   "inputs": {
+    "exam": "a5ef9c64173e9beccc50b49e5a099416d47ab56064a4104980a2fd2d97b934e8",
+    "floor": "bd9d7fd896359814f8ad5c820b6b23ee1d61a06a6d4a33cbe92595cc4771b32d",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "ae26d34f7fa9f55c5bb0ea115379238907576a0151185aabfad9d1f495425fab",
+    "scenes": "f5f4b24fd63ae93e674492b1a84d0ce327c1c1a8daaf14192955f981f30bef71",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54"
+   },
+   "manifest": {
+    "designer.md": "c20433fca1ae2c7f68faa3efeb0867fa676a6141a174e657112a6959a890866a",
+    "designer_exam.md": "4c4778d6aecd0835e5fb429b8431afd9ac4ab060c1d8b07fb58d83a201321a6c"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "pinned_at": {
+    "exam": "e87b5725d7e8f9cef99e6ca599dd104b7df21c65",
+    "floor": "e87b5725d7e8f9cef99e6ca599dd104b7df21c65",
+    "root": "e87b5725d7e8f9cef99e6ca599dd104b7df21c65",
+    "scenes": "e87b5725d7e8f9cef99e6ca599dd104b7df21c65",
+    "sheet": "e87b5725d7e8f9cef99e6ca599dd104b7df21c65",
+    "tree": "e87b5725d7e8f9cef99e6ca599dd104b7df21c65"
+   },
+   "quick_look": {
+    "offer": false,
+    "why": "nothing was asked and no design changed; a look at the running mod would settle no open item at this stage"
+   },
+   "run": "rm-role-designer-1795290438",
+   "stage": 4,
+   "summary": "Stage 4 re-passed by carry. The only input that moved since the last passed exam is scenes.json (f3b1999757, six unrunnable scene controls narrowed or removed; stage 3 re-accepted by rm-role-designer-1795271745). exam_retake.py plan read NONE_TOUCHED: no scenario reads scenes, and tree and sheet are as examined for all 40 scenarios. carry on an empty fresh file restamped exam.json's inputs and carried the 40 answers (32 examiner, 8 challenger); exam_reads.json re-recorded. No leaf, bar, sheet line or record decision changed; Design Version 0.1.0 bars untouched."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 4,
+ "stage": 5,
  "status": "ready",
  "waiting_owner_feed": "79abe4290fa077e9fd73b85d4c6d6e47ee49c99ed1608b827f1afbe5f8895520"
 }
