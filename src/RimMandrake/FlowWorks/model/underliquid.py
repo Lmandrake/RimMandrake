@@ -65,6 +65,30 @@ WATER_COLOUR = (0.62, 0.80, 0.98)
 NORTH_BY_DROP = [0, .12, .23, .35, .50, .62]
 SIDE_BY_DROP = [0, .06, .11, .17, .23, .29]
 
+# the ground and surface effects (RIMMANDRAKE_RESEARCH_FLOWWORKS_WATER_LOOK_FIRM_ALREADY_PICKED: the judge picked BLEND;
+# target design/concepts/FlowWorks/version/water_by_depth_target.json "effects"; RM_UnderLiquid's twins)
+WET_DARKEN = 0.30           # setting pitWaterWetGroundEnabled: ground under the line under black at this alpha (value x 0.70)
+WET_BAND_CELLS = 0.15625    # the wet band above the line (10 px at 64 px a cell), fading to nothing
+WET_BAND_DARKEN = 0.30      # its darkest, at the line
+WATERLINE_CELLS = 0.03125   # the pale line where the water meets a wall or the rim (2 px at 64 px a cell)
+WATERLINE_ALPHA = 0.45
+WATERLINE_COLOUR = (0.80, 0.88, 0.92)
+RIPPLE_PEAK = 0.16          # setting pitWaterRippleLight: the ripple light's alpha at the surface
+RIPPLE_FADE_METRES = 0.7    # it fades as exp(-metres / this): faint by 2 m
+RIPPLE_COLOUR = (0.78, 0.90, 0.96)
+
+
+def wet_alpha(enabled=True, darken=WET_DARKEN):
+    """The black tint over ground under the line (RM_UnderLiquid.WetAlpha)."""
+    return darken if enabled else 0.0
+
+
+def ripple_alpha(metres_over, peak=RIPPLE_PEAK):
+    """The ripple light's alpha over water this deep (RM_UnderLiquid.RippleAlpha); 0 on a dry floor."""
+    if metres_over <= 0.0 or peak <= 0.0:
+        return 0.0
+    return peak * math.exp(-metres_over / RIPPLE_FADE_METRES)
+
 
 def full_metres(clarity, full=FULL_METRES):
     """The depth at which a liquid of this clarity reaches its full opacity (0 < clarity < 1)."""

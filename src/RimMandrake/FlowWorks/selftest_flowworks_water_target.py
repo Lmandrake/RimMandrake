@@ -16,13 +16,19 @@ naive taste judge on the Conductor's ruling). This test holds the shipped law to
      1/4/10 m): seen stays in [0, 1], never clearer deeper, dry above the line, an opaque liquid hides at once, and a
      clear liquid hides at least its shallow strength and at most its deep strength. Left out: per-pixel drawing (a live
      look, Stage 6), waves (0.2.0).
+  5. the effects (second pass, RIMMANDRAKE_RESEARCH_FLOWWORKS_WATER_LOOK_FIRM_ALREADY_PICKED: BLEND picked): the judged
+     mockup's BLEND numbers are the target's; the model's wet ground, wet band, waterline and ripple light equal the
+     target (ripple alpha at each listed depth); RM_UnderLiquid's literals equal them; and the drawers call them
+     (RM_ExcavationWalls draws the wet tint, band and waterline, RM_LiquidSurface the ripple light).
 CAN IT FAIL: run in this file: the law shipped before this build (shallow 0), a pale body (Darken 0.3), a spliced golden
-row and a C# shallow default of 0 must each go RED.
+row, a C# shallow default of 0, a model with dry ground (wet darken 0), a C# ripple peak of 0.3 (RIPPLE's, refused) and
+a wall drawer that never calls the wet tint must each go RED.
     python3 src/RimMandrake/FlowWorks/selftest_flowworks_water_target.py
 """
 from __future__ import annotations
 
 import json
+import math
 import re
 import sys
 from pathlib import Path
@@ -34,6 +40,8 @@ REPO = HERE.parents[2]
 TARGET = REPO / "design" / "concepts" / "FlowWorks" / "version" / "water_by_depth_target.json"
 UL = HERE / "Source" / "Superdeep" / "RM_UnderLiquid.cs"
 GOLD = HERE / "Source" / "SelfTest" / "UnderLiquidParityChecks.cs"
+WALLS = HERE / "Source" / "Superdeep" / "RM_ExcavationWalls.cs"
+SURFACE = HERE / "Source" / "RM_LiquidSurface.cs"
 sys.path.insert(0, str(HERE / "model"))
 sys.path.insert(0, str(HERE))
 import underliquid as ul  # noqa: E402
@@ -49,7 +57,76 @@ def cs_water_colour(text):
     return tuple(float(x) for x in m.groups()) if m else None
 
 
-def checks(t, model, ul_cs, gold_cs):
+def cs_float3(text, name):
+    m = re.search(name + r"\s*=\s*new\s+Float3\(\s*([0-9.]+)f\s*,\s*([0-9.]+)f\s*,\s*([0-9.]+)f\s*\)", text)
+    return [float(x) for x in m.groups()] if m else None
+
+
+def effects_checks(t, model, ul_cs, walls_cs, surface_cs):
+    out = []
+    e = t["effects"]
+    wg, wb, wl, rl = e["wet_ground"], e["wet_band"], e["waterline"], e["ripple_light"]
+    near = lambda a, b, tol=1e-6: a is not None and b is not None and abs(a - b) <= tol
+    nearv = lambda a, b, tol=1e-6: a is not None and b is not None and len(a) == len(b) and all(abs(x - y) <= tol for x, y in zip(a, b))
+    # 5a. the judged picture: water_mockup's BLEND
+    fx = wm.FX.get("BLEND", {})
+    px = float(wm.PX)
+    bad = [n for n, ok in (
+        ("BLEND wet", fx.get("wet") is True), ("BLEND waterline", fx.get("waterline") is True),
+        ("BLEND ripple peak", near(fx.get("ripple"), rl["peak"])),
+        ("BLEND warp (judged)", near(fx.get("warp", 0) / px, e["bottom_distortion"]["judged_peak_cells"])),
+        ("wet value", near(wm.WET_VALUE, 1 - wg["darken"])), ("wet saturation (judged)", near(wm.WET_SAT, wg["saturation_judged"])),
+        ("band", near(wm.WET_BAND_PX / px, wb["cells"])), ("line", near(wm.WATERLINE_PX / px, wl["cells"])),
+        ("line alpha", near(wm.WATERLINE_ALPHA, wl["alpha"])), ("line colour", nearv(list(map(float, wm.WATERLINE_COLOUR)), wl["colour"], 1e-6)),
+        ("ripple colour", nearv(list(map(float, wm.RIPPLE_COLOUR)), rl["colour"])),
+        ("ripple fade", all(near(float(wm.ripple_amp(1.0, d)), math.exp(-d / rl["fade_metres"]), 1e-5) for d in (0.2, 1.0, 2.0))),
+    ) if not ok]
+    out.append((f"5a the target's effects are the judged BLEND mockup's (12 read){': ' + ', '.join(bad) if bad else ''}", not bad))
+    # 5b. the model
+    g = lambda n: getattr(model, n, None)
+    bad = [n for n, ok in (
+        ("WET_DARKEN", near(g("WET_DARKEN"), wg["darken"])), ("WET_BAND_CELLS", near(g("WET_BAND_CELLS"), wb["cells"])),
+        ("WET_BAND_DARKEN", near(g("WET_BAND_DARKEN"), wb["darken"])),
+        ("WATERLINE_CELLS", near(g("WATERLINE_CELLS"), wl["cells"])), ("WATERLINE_ALPHA", near(g("WATERLINE_ALPHA"), wl["alpha"])),
+        ("WATERLINE_COLOUR", nearv(g("WATERLINE_COLOUR") and list(g("WATERLINE_COLOUR")), wl["colour"])),
+        ("RIPPLE_PEAK", near(g("RIPPLE_PEAK"), rl["peak"])), ("RIPPLE_FADE_METRES", near(g("RIPPLE_FADE_METRES"), rl["fade_metres"])),
+        ("RIPPLE_COLOUR", nearv(g("RIPPLE_COLOUR") and list(g("RIPPLE_COLOUR")), rl["colour"])),
+    ) if not ok]
+    w = 0.0
+    if callable(g("ripple_alpha")):
+        for k, v in rl["alpha_by_depth"].items():
+            w = max(w, abs(model.ripple_alpha(float(k)) - v))
+        if model.ripple_alpha(0.0) != 0.0 or model.ripple_alpha(-1.0) != 0.0:
+            bad.append("ripple_alpha lights a dry floor")
+    else:
+        bad.append("ripple_alpha missing")
+    out.append((f"5b model effects = target ({len(rl['alpha_by_depth'])} ripple depths, worst {w:.5f} limit {TOL})"
+                + (f": {', '.join(bad)}" if bad else ""), not bad and w <= TOL))
+    # 5c. the C# literals
+    ulm = mask_comments(ul_cs)
+    got = {n: cs_float(ulm, n) for n in ("DefaultWetDarken", "WetBandCells", "WetBandDarken", "WaterlineCells", "WaterlineAlpha",
+                                          "DefaultRipplePeak", "RippleFadeMetres")}
+    want = {"DefaultWetDarken": wg["darken"], "WetBandCells": wb["cells"], "WetBandDarken": wb["darken"],
+            "WaterlineCells": wl["cells"], "WaterlineAlpha": wl["alpha"], "DefaultRipplePeak": rl["peak"],
+            "RippleFadeMetres": rl["fade_metres"]}
+    bad = [f"{n}={got[n]} want {v}" for n, v in want.items() if not near(got[n], v)]
+    for n, v in (("WaterlineColour", wl["colour"]), ("RippleColour", rl["colour"])):
+        if not nearv(cs_float3(ulm, n), v):
+            bad.append(f"{n}={cs_float3(ulm, n)} want {v}")
+    out.append((f"5c C# effect literals are the target's (9 read){': ' + '; '.join(bad) if bad else ''}", not bad))
+    # 5d. the drawers call them
+    wm_ = mask_comments(walls_cs)
+    sm_ = mask_comments(surface_cs)
+    need = [("RM_ExcavationWalls", wm_, n) for n in ("RM_UnderLiquid.WetAlpha", "RM_UnderLiquid.WetBandCells",
+                                                      "RM_UnderLiquid.WaterlineCells")] + \
+           [("RM_LiquidSurface", sm_, "RM_UnderLiquid.RippleAlpha")]
+    miss = [f"{f} never calls {n}" for f, txt, n in need if n not in txt]
+    out.append((f"5d wiring: the wall drawer draws wet tint, band and line, the surface draws ripple light"
+                + (f": {'; '.join(miss)}" if miss else ""), not miss))
+    return out
+
+
+def checks(t, model, ul_cs, gold_cs, walls_cs="", surface_cs=""):
     out = []
     depths = sorted(float(d) for d in t["hides_by_depth"])
     c = t["clarity"]
@@ -59,7 +136,7 @@ def checks(t, model, ul_cs, gold_cs):
     for d in depths:
         w = max(w, abs(wm.hides(wm.law_firm, d) - t["hides_by_depth"][key(t, d)]))
     wc = max(abs(a - b) for d in depths for a, b in zip(wm.colour_at(wm.law_firm, d), t["mid_grey_becomes"][key(t, d)]))
-    out.append((f"1 the target is the FIRM mockup: hides worst {w:.5f} limit {TOL} · colour worst {wc:.4f} limit "
+    out.append((f"1 the target's law is the judged mockup's (FIRM's law, BLEND keeps it): hides worst {w:.5f} limit {TOL} · colour worst {wc:.4f} limit "
                 f"{COLOUR_TOL} · cases {2 * len(depths)}", w <= TOL and wc <= COLOUR_TOL))
 
     # 2. the model hides and colours as the target says
@@ -138,6 +215,7 @@ def checks(t, model, ul_cs, gold_cs):
     out.append((f"4 the range: {n} cases (clarities {len(clar)}, depths {len(ms)}, settings 30); worst excess "
                 + ", ".join(f"{k} {v:.2e}" for k, v in worst.items()) + " limit 1e-6",
                 all(v <= 1e-6 for v in worst.values())))
+    out += effects_checks(t, model, ul_cs, walls_cs, surface_cs)
     return out
 
 
@@ -167,8 +245,9 @@ class Planted:
 def main():
     t = json.loads(TARGET.read_text(encoding="utf-8"))
     ul_cs, gold_cs = UL.read_text(encoding="utf-8"), GOLD.read_text(encoding="utf-8")
+    walls_cs, surface_cs = WALLS.read_text(encoding="utf-8"), SURFACE.read_text(encoding="utf-8")
     bad = 0
-    for name, ok in checks(t, ul, ul_cs, gold_cs):
+    for name, ok in checks(t, ul, ul_cs, gold_cs, walls_cs, surface_cs):
         print(("PASS " if ok else "FAIL ") + name)
         bad += not ok
 
@@ -185,9 +264,15 @@ def main():
          "3 golden table"),
         ("a C# shallow default of 0", ul, re.sub(r"(DefaultShallowOpacity\s*=\s*)[0-9.]+f", r"\g<1>0.0f", ul_cs), gold_cs,
          "3 C# defaults"),
+        ("a model with dry ground (wet darken 0)", Planted(WET_DARKEN=0.0), ul_cs, gold_cs, "5b model effects"),
+        ("a C# ripple peak of 0.3 (RIPPLE's, refused by the judge)",
+         ul, re.sub(r"(DefaultRipplePeak\s*=\s*)[0-9.]+f", r"\g<1>0.3f", ul_cs), gold_cs, "5c C# effect"),
+        ("a wall drawer that never calls the wet tint", ul, ul_cs, gold_cs, "5d wiring", walls_cs.replace("RM_UnderLiquid.WetAlpha", "0f")),
     ]
-    for name, model, u, g, must in plants:
-        reds = [n for n, ok in checks(t, model, u, g) if not ok]
+    for plant in plants:
+        name, model, u, g, must = plant[:5]
+        walls = plant[5] if len(plant) > 5 else walls_cs
+        reds = [n for n, ok in checks(t, model, u, g, walls, surface_cs) if not ok]
         ok = any(r.startswith(must) for r in reds)
         print(("PASS " if ok else "FAIL ") + f"can-fail: {name} goes red ({'; '.join(r[:60] for r in reds)[:200]})")
         bad += not ok

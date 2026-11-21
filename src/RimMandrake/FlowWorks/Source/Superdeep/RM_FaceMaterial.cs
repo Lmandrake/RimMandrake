@@ -200,6 +200,13 @@ namespace RimMandrake.FlowWorks
 		/// <summary>Vertex-colour material drawn over the scorch textures (the heat tint).</summary>
 		public static Material TintMat => tintMat ?? (tintMat = new Material(MaterialPool.MatFrom(new MaterialRequest(BaseContent.WhiteTex, ShaderDatabase.VertexColor))) { renderQueue = TintQueue });
 
+		private static Material wetBandMat;
+
+		/// <summary>The wet band above a waterline (RIMMANDRAKE_RESEARCH_FLOWWORKS_WATER_LOOK_FIRM_ALREADY_PICKED): black under
+		/// the game's rough terrain-fade shader, so the vertex alpha is the band's darkness and RoughAlphaAdd makes its far edge
+		/// ragged, as wet sand ends; drawn in the tint queue (over the ground and the walls' light, under the liquid's sheet).</summary>
+		public static Material WetBandMat => wetBandMat ?? (wetBandMat = ScorchMatFrom(BaseContent.BlackTex, TintQueue));
+
 		/// <summary>Scorch textures (art_source/scorch_2026-10-06, made from GPT concept art): drawn with the game's own
 		/// rough terrain-fade shader, so the vertex alpha is the COVERAGE and RoughAlphaAdd breaks every edge up the
 		/// way soil fades into grass — no hard-edged quads, no stamps. World-space UVs, so it never repeats per cell.</summary>
@@ -207,9 +214,11 @@ namespace RimMandrake.FlowWorks
 		public static Material DirtAshMat => dirtAshMat ?? (dirtAshMat = ScorchMat("Terrain/FlowWorks/RM_Scorch_DirtAsh", AshQueue));
 		public static Material SootMat => sootMat ?? (sootMat = ScorchMat("Terrain/FlowWorks/RM_Scorch_Soot", SootQueue));
 
-		private static Material ScorchMat(string path, int queue)
+		private static Material ScorchMat(string path, int queue) =>
+			ScorchMatFrom(ContentFinder<Texture2D>.Get(path, false) ?? BaseContent.GreyTex, queue);
+
+		private static Material ScorchMatFrom(Texture2D tex, int queue)
 		{
-			Texture2D tex = ContentFinder<Texture2D>.Get(path, false) ?? BaseContent.GreyTex;
 			Material m = new Material(MaterialPool.MatFrom(new MaterialRequest(tex, ShaderDatabase.TerrainFadeRough)))
 			{
 				renderQueue = queue

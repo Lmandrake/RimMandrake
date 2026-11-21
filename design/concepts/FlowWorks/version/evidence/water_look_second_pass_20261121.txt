@@ -1,0 +1,50 @@
+RIMMANDRAKE_RESEARCH_FLOWWORKS_WATER_LOOK_FIRM_ALREADY_PICKED offline acceptance (BLEND, judge-picked)
+== base abf903dfbd (target + test written, build not yet):
+PASS 1 the target's law is the judged mockup's (FIRM's law, BLEND keeps it): hides worst 0.00004 limit 0.0005 · colour worst 0.0000 limit 0.0015 · cases 14
+PASS 2 model seen = target at each listed depth: worst 0.00004 at 1 m limit 0.0005 cases 7
+PASS 2 model fresh-water body colour (0.0953, 0.2048, 0.3765) = target (0.0953, 0.2048, 0.3765): worst 0.00003 limit 0.0005 cases 3
+PASS 2 model sheet over a mid grey = target: worst 0.0004 limit 0.0015 cases 7
+PASS 3 C# defaults are the target's (5 read)
+PASS 3 C# Body(WaterColour) from its literals = target: worst 0.00003 limit 0.0005 cases 3
+PASS 3 golden table (dotnet checks Seen against it) = target: 42 rows, worst 0.00004 limit 0.0005
+PASS 4 the range: 660660 cases (clarities 20, depths 1001, settings 30); worst excess range 0.00e+00, clearer_deeper 0.00e+00, below_shallow 0.00e+00, above_deep 0.00e+00, dry 0.00e+00, opaque 0.00e+00 limit 1e-6
+PASS 5a the target's effects are the judged BLEND mockup's (12 read)
+FAIL 5b model effects = target (7 ripple depths, worst 0.00000 limit 0.0005): WET_DARKEN, WET_BAND_CELLS, WET_BAND_DARKEN, WATERLINE_CELLS, WATERLINE_ALPHA, WATERLINE_COLOUR, RIPPLE_PEAK, RIPPLE_FADE_METRES, RIPPLE_COLOUR, ripple_alpha missing
+FAIL 5c C# effect literals are the target's (9 read): DefaultWetDarken=None want 0.3; WetBandCells=None want 0.15625; WetBandDarken=None want 0.3; WaterlineCells=None want 0.03125; WaterlineAlpha=None want 0.45; DefaultRipplePeak=None want 0.16; RippleFadeMetres=None want 0.7; WaterlineColour=None want [0.8, 0.88, 0.92]; RippleColour=None want [0.78, 0.9, 0.96]
+FAIL 5d wiring: the wall drawer draws wet tint, band and line, the surface draws ripple light: RM_ExcavationWalls never calls RM_UnderLiquid.WetAlpha; RM_ExcavationWalls never calls RM_UnderLiquid.WetBandCells; RM_ExcavationWalls never calls RM_UnderLiquid.WaterlineCells; RM_LiquidSurface never calls RM_UnderLiquid.RippleAlpha
+PASS can-fail: the law shipped before this build (no shallow strength) goes red (2 model seen = target at each listed depth: worst 0.32574 at; 2 model sheet over a mid grey = target: worst 0.1318 limit 0; 4 the range: 660660 cases (clarities 20, depths 1001, settin; 5b model effec)
+PASS can-fail: a pale body (Darken 0.3) goes red (2 model fresh-water body colour (0.1668, 0.3584, 0.6588) = t; 2 model sheet over a mid grey = target: worst 0.2540 limit 0; 5b model effects = target (7 ripple depths, worst 0.00000 li; 5c C# effect l)
+PASS can-fail: a spliced golden row goes red (3 golden table (dotnet checks Seen against it) = target: 42 ; 5b model effects = target (7 ripple depths, worst 0.00000 li; 5c C# effect literals are the target's (9 read): DefaultWetD; 5d wiring: the)
+PASS can-fail: a C# shallow default of 0 goes red (3 C# defaults are the target's (5 read): DefaultShallowOpaci; 5b model effects = target (7 ripple depths, worst 0.00000 li; 5c C# effect literals are the target's (9 read): DefaultWetD; 5d wiring: the)
+PASS can-fail: a model with dry ground (wet darken 0) goes red (5b model effects = target (7 ripple depths, worst 0.00000 li; 5c C# effect literals are the target's (9 read): DefaultWetD; 5d wiring: the wall drawer draws wet tint, band and line, th)
+PASS can-fail: a C# ripple peak of 0.3 (RIPPLE's, refused by the judge) goes red (5b model effects = target (7 ripple depths, worst 0.00000 li; 5c C# effect literals are the target's (9 read): DefaultWetD; 5d wiring: the wall drawer draws wet tint, band and line, th)
+PASS can-fail: a wall drawer that never calls the wet tint goes red (5b model effects = target (7 ripple depths, worst 0.00000 li; 5c C# effect literals are the target's (9 read): DefaultWetD; 5d wiring: the wall drawer draws wet tint, band and line, th)
+RESULT RED 3
+== fix (this commit):
+PASS 1 the target's law is the judged mockup's (FIRM's law, BLEND keeps it): hides worst 0.00004 limit 0.0005 · colour worst 0.0000 limit 0.0015 · cases 14
+PASS 2 model seen = target at each listed depth: worst 0.00004 at 1 m limit 0.0005 cases 7
+PASS 2 model fresh-water body colour (0.0953, 0.2048, 0.3765) = target (0.0953, 0.2048, 0.3765): worst 0.00003 limit 0.0005 cases 3
+PASS 2 model sheet over a mid grey = target: worst 0.0004 limit 0.0015 cases 7
+PASS 3 C# defaults are the target's (5 read)
+PASS 3 C# Body(WaterColour) from its literals = target: worst 0.00003 limit 0.0005 cases 3
+PASS 3 golden table (dotnet checks Seen against it) = target: 42 rows, worst 0.00004 limit 0.0005
+PASS 4 the range: 660660 cases (clarities 20, depths 1001, settings 30); worst excess range 0.00e+00, clearer_deeper 0.00e+00, below_shallow 0.00e+00, above_deep 0.00e+00, dry 0.00e+00, opaque 0.00e+00 limit 1e-6
+PASS 5a the target's effects are the judged BLEND mockup's (12 read)
+PASS 5b model effects = target (7 ripple depths, worst 0.00004 limit 0.0005)
+PASS 5c C# effect literals are the target's (9 read)
+PASS 5d wiring: the wall drawer draws wet tint, band and line, the surface draws ripple light
+PASS can-fail: the law shipped before this build (no shallow strength) goes red (2 model seen = target at each listed depth: worst 0.32574 at; 2 model sheet over a mid grey = target: worst 0.1318 limit 0; 4 the range: 660660 cases (clarities 20, depths 1001, settin)
+PASS can-fail: a pale body (Darken 0.3) goes red (2 model fresh-water body colour (0.1668, 0.3584, 0.6588) = t; 2 model sheet over a mid grey = target: worst 0.2540 limit 0)
+PASS can-fail: a spliced golden row goes red (3 golden table (dotnet checks Seen against it) = target: 42 )
+PASS can-fail: a C# shallow default of 0 goes red (3 C# defaults are the target's (5 read): DefaultShallowOpaci)
+PASS can-fail: a model with dry ground (wet darken 0) goes red (5b model effects = target (7 ripple depths, worst 0.00004 li)
+PASS can-fail: a C# ripple peak of 0.3 (RIPPLE's, refused by the judge) goes red (5c C# effect literals are the target's (9 read): DefaultRipp)
+PASS can-fail: a wall drawer that never calls the wet tint goes red (5d wiring: the wall drawer draws wet tint, band and line, th)
+RESULT GREEN
+== selftest_flowworks_underliquid_parity.py:
+RESULT GREEN
+== selftest_flowworks_water_mockup.py:
+PASS selftest_flowworks_water_mockup
+== C# SelfTest (selftest_flowworks_stock.py):
+ok    UnderLiquid_wet_ground_and_ripple_light_match_the_target
+1370/1370 passed

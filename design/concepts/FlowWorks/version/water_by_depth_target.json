@@ -1,17 +1,19 @@
 {
-  "what": "FlowWorks 0.1.0: the written target for water colour and clarity by depth (RIMMANDRAKE_MOCK_FLOWWORKS_WATER_BY_DEPTH_ON_REAL_GROUND). Fresh water (seeThrough 0.45) in a dug pit, default settings. 'hides' = how much of what lies under the water is hidden (0 = seen as dry, 1 = only the water's colour). Waves are not part of this target (0.2.0).",
-  "picked": "FIRM",
-  "picked_name": "Same blue, firm from the first step",
-  "picked_by": "a naive Opus taste judge (delegated: taste), on the Conductor's ruling of 2026-11-20 20:00 PST (note on RIMMANDRAKE_SERVE_FLOWWORKS_WATER_MOCKUPS_HIS_PICK_OF_FIVE); verdict infrastructure/state/delegated/2026-11-20/flowworks_water_by_depth.json",
-  "picked_from": "five offline mockups (src/RimMandrake/FlowWorks/model/water_mockup.py: SHIPPED, FIRM, AQUA, AQUA_SOFT, CLEAR) over sand, soil, rough granite and mud, with a colonist, a body, a table, a steel stack and a ladder in each pit",
+  "what": "FlowWorks 0.1.0: the written target for water colour and clarity by depth (RIMMANDRAKE_MOCK_FLOWWORKS_WATER_BY_DEPTH_ON_REAL_GROUND). Fresh water (seeThrough 0.45) in a dug pit, default settings. 'hides' = how much of what lies under the water is hidden (0 = seen as dry, 1 = only the water's colour). Since the second pass (2026-11-21) it also holds the ground and surface effects under 'effects'. Waves are not part of this target (0.2.0).",
+  "picked": "BLEND",
+  "picked_name": "FIRM, wet ground plus a gentle moving bottom",
+  "picked_by": "second pass: a naive Opus taste judge (delegated: taste), on the owner's card of 2026-11-20 evening (\"Judge picks tonight\"); verdict infrastructure/state/delegated/2026-11-21/flowworks_water_look_second_pass.json. First pass: FIRM, verdict infrastructure/state/delegated/2026-11-20/flowworks_water_by_depth.json",
+  "picked_from": "eight offline mockups (src/RimMandrake/FlowWorks/model/water_mockup.py: SHIPPED, FIRM, AQUA, AQUA_SOFT, CLEAR, WET, RIPPLE, BLEND) over sand, soil, rough granite and mud, with a colonist, a body, a table, a steel stack and a ladder in each pit; page Transient/flowworks_water_look_second_pass/",
   "owner_words": [
     "2026-11-12: it's very transparent at first, but it becomes about twice too opaque as it should by the end. Its color should also be darkened. ... pits are quite dark when dry, then suddenly become light for some reason with just a little water. That should not be. Keep them darker",
     "2026-11-20: Water has somehow managed to become too transparent again. Barely reads at shallower depths. ... 7-16: No, the water should be more legible (less transparent).",
-    "2026-11-20 card: (1) and it needs to be on representative terrain (put some different textures on the ground as well as furniture, bodies, etc)."
+    "2026-11-20 card: (1) and it needs to be on representative terrain (put some different textures on the ground as well as furniture, bodies, etc).",
+    "2026-11-20 evening card: Maybe dry and wet have different colors too. ... Maybe more aggressive distortions on the surface will make it look more like water.",
+    "2026-10-05: When filled with water it should move and act like water (ripples, V waves, etc.) not just be solid coloration."
   ],
   "law": "hides(m) = 0 at or above the line; under it, SHALLOW + (DEEP - SHALLOW) x rise(m / full), rise(x) = 1 - (1 - x)^1.4, full = 4 m for fresh water (a murkier liquid sooner, by RM_UnderLiquid.FullMetresFor). Drawn colour = lerp(what lies under, body colour, hides).",
   "shallow_opacity": 0.35,
-  "deep_opacity": 0.90,
+  "deep_opacity": 0.9,
   "full_metres": 4.0,
   "curve_power": 1.4,
   "clarity": 0.45,
@@ -24,20 +26,102 @@
     "5.0": 0.9,
     "8.0": 0.9
   },
-  "body_colour": [0.0953, 0.2048, 0.3765],
+  "body_colour": [
+    0.0953,
+    0.2048,
+    0.3765
+  ],
   "mid_grey_becomes": {
-    "0.2": [0.343, 0.385, 0.452],
-    "0.5": [0.32, 0.369, 0.445],
-    "1.0": [0.285, 0.343, 0.434],
-    "1.5": [0.251, 0.318, 0.424],
-    "2.0": [0.22, 0.296, 0.415],
-    "5.0": [0.136, 0.234, 0.389],
-    "8.0": [0.136, 0.234, 0.389]
+    "0.2": [
+      0.343,
+      0.385,
+      0.452
+    ],
+    "0.5": [
+      0.32,
+      0.369,
+      0.445
+    ],
+    "1.0": [
+      0.285,
+      0.343,
+      0.434
+    ],
+    "1.5": [
+      0.251,
+      0.318,
+      0.424
+    ],
+    "2.0": [
+      0.22,
+      0.296,
+      0.415
+    ],
+    "5.0": [
+      0.136,
+      0.234,
+      0.389
+    ],
+    "8.0": [
+      0.136,
+      0.234,
+      0.389
+    ]
   },
   "kept_from_11_13": "the body colour and the 90% deep end he approved on 2026-11-13 are unchanged; only the shallows hide more (6/15/30% at 0.2/0.5/1 m became 39/44/53%)",
   "judge_polish": [
     "0.2 m and 0.5 m are hard to tell apart (39% vs 44% hidden); no owner line requires a wider step",
     "if 5 m still reads brighter than 2 m in game, lower the deep colour's value about 10%; the mockup measures them equal (floor luminance .197 vs .192)"
   ],
-  "checked_by": "src/RimMandrake/FlowWorks/selftest_flowworks_water_target.py"
+  "checked_by": "src/RimMandrake/FlowWorks/selftest_flowworks_water_target.py",
+  "effects": {
+    "what": "BLEND's additions to the law above. The law (hides, body colour) is FIRM's, unchanged.",
+    "wet_ground": {
+      "darken": 0.3,
+      "what": "ground under the line (pit floor, drowned walls) drawn under black at this alpha: value x 0.70",
+      "saturation_judged": 1.3,
+      "saturation_built": 1.0,
+      "why_not_saturation": "the game cannot read a ground's colour at draw time; one black tint gives the value only. Measured on the judged BLEND tiles (sand, mud, granite at 0.2/1/2 m): dropping the saturation moves a pixel by at most 0.020 a channel, mean 0.0014"
+    },
+    "wet_band": {
+      "cells": 0.15625,
+      "darken": 0.3,
+      "what": "a ragged dark band on the ground just above the line: on the dry wall above it, or on the bank round a brim-full pit, fading to nothing over this width"
+    },
+    "waterline": {
+      "cells": 0.03125,
+      "alpha": 0.45,
+      "colour": [
+        0.8,
+        0.88,
+        0.92
+      ],
+      "what": "a thin pale line where the water meets a wall or the rim, drawn over the water"
+    },
+    "ripple_light": {
+      "peak": 0.16,
+      "fade_metres": 0.7,
+      "colour": [
+        0.78,
+        0.9,
+        0.96
+      ],
+      "net_cell_cells": 0.625,
+      "what": "a drifting net of thin light lines on the water, additive, alpha = peak x exp(-metres / fade_metres): strong in the shallows, faint by 2 m",
+      "alpha_by_depth": {
+        "0.2": 0.1202,
+        "0.5": 0.0783,
+        "1.0": 0.0383,
+        "1.5": 0.0188,
+        "2.0": 0.0092,
+        "5.0": 0.0001,
+        "8.0": 0.0
+      }
+    },
+    "bottom_distortion": {
+      "judged_peak_cells": 0.046875,
+      "built": false,
+      "why_not": "the judge's own fallback (adjustment 3): the only engine shader that moves a texture, Map/TerrainLavaShallow, paints its own hot colours under the tint (live 2026-10-06: tar's neutral grey came out olive; RM_LiquidLooks.cs). The motion comes from the drifting ripple light."
+    }
+  }
 }

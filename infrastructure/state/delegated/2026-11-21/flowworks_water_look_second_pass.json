@@ -1,0 +1,706 @@
+{
+ "judge_model": "claude-opus-5-5",
+ "brief": "design/RimMandrake/art_judge_brief.md@abf903dfbd",
+ "subject": "FlowWorks pit water look (second pass)",
+ "item": "RIMMANDRAKE_RESEARCH_FLOWWORKS_WATER_LOOK_FIRM_ALREADY_PICKED",
+ "authority": "owner card 2026-11-20 evening: Judge picks tonight (delegated: taste)",
+ "how_looked": "Every cand_*.jpg (4 grounds x 8 depths, 64 px a cell) at about 1/3 scale; every zoom_*.jpg (all eight on one ground at 32 px a cell); both frames_*.jpg; full-resolution crops of FIRM/WET/RIPPLE/BLEND at 0.2 m and 1 m on sand; open pit-floor luminance, saturation and texture spread measured per candidate, ground and depth (/mnt/d/ClaudeWork/rimmandrake/judge_water_second_pass/floor_lum.txt).",
+ "verdicts": [
+  {
+   "picture": "Transient/flowworks_water_look_second_pass/img/cand_SHIPPED.jpg",
+   "fp": "fd732f1685c5a453",
+   "facing": "n/a",
+   "verdict": "REDO",
+   "violated": "E4 + owner 2026-11-20; owner 2026-10-05",
+   "quote": "Water has somehow managed to become too transparent again. Barely reads at shallower depths. / When filled with water it should move and act like water (ripples, V waves, etc.) not just be solid coloration.",
+   "seen": "0.2 and 0.5 m look like the dry pit at 32 px a cell on every ground (hides 6%/15%); 1 m a grey cast; nothing moves.",
+   "redo_brief": "FIRM's strength plus BLEND's motion (that is BLEND)"
+  },
+  {
+   "picture": "Transient/flowworks_water_look_second_pass/img/cand_FIRM.jpg",
+   "fp": "a3c34e3989c2d627",
+   "facing": "n/a",
+   "verdict": "REDO",
+   "violated": "E4 + owner 2026-10-05",
+   "quote": "When filled with water it should move and act like water (ripples, V waves, etc.) not just be solid coloration.",
+   "seen": "Colour and strength are right: dark blue-grey water from 0.2 m on all four grounds at 32 px a cell, no light jump (L .199 dry to .224), things under visible to 1 m, deep end 90%. But it is one static sheet: solid coloration, nothing moves, dry and drowned ground the same colour under the blue.",
+   "redo_brief": "keep colour and strength; add WET's wet ground and line and the gentle motion (that is BLEND)"
+  },
+  {
+   "picture": "Transient/flowworks_water_look_second_pass/img/cand_AQUA.jpg",
+   "fp": "16e3ba07c3b1be6b",
+   "facing": "n/a",
+   "verdict": "REDO",
+   "violated": "E4 + owner 2026-11-12; owner 2026-11-13 deep end; owner 2026-10-05",
+   "quote": "pits are quite dark when dry, then suddenly become light for some reason with just a little water. That should not be.",
+   "seen": "pale aqua at 0.2 m (floor L .199 to .382), light to 2 m, snaps to navy at 5 m; 95% deep, above the approved 90%; static.",
+   "redo_brief": "FIRM's darkened blue, deep end 90%, add motion"
+  },
+  {
+   "picture": "Transient/flowworks_water_look_second_pass/img/cand_AQUA_SOFT.jpg",
+   "fp": "dab9a35aaa3d0b5c",
+   "facing": "n/a",
+   "verdict": "REDO",
+   "violated": "E4 + owner 2026-11-12; owner 2026-10-05",
+   "quote": "pits are quite dark when dry, then suddenly become light for some reason with just a little water. That should not be.",
+   "seen": "same light jump at FIRM's strength (L .199 to .355 at 0.2 m), so the jump is the aqua colour; static.",
+   "redo_brief": "FIRM's darkened blue at this strength, add motion"
+  },
+  {
+   "picture": "Transient/flowworks_water_look_second_pass/img/cand_CLEAR.jpg",
+   "fp": "2d47f69afb39d083",
+   "facing": "n/a",
+   "verdict": "REDO",
+   "violated": "E4 + owner 2026-11-12; owner 2026-11-13 deep end; owner 2026-10-05",
+   "quote": "Its color should also be darkened. ... suddenly become light for some reason with just a little water. That should not be.",
+   "seen": "pale grey-green at 0.2 m (L .199 to .279); cyan wall band from 1 m; 5-8 m a brighter cyan-blue than the dark-teal 2 m (L .192 to .210), a hue break at play zoom; 94% at 8 m; static. Its per-colour loss also cannot reach things standing in it.",
+   "redo_brief": "no sheen or cyan band, darkened blue, one hue family 2-8 m capped at 90%, add motion"
+  },
+  {
+   "picture": "Transient/flowworks_water_look_second_pass/img/cand_WET.jpg",
+   "fp": "7c5b00a8cc705a90",
+   "facing": "n/a",
+   "verdict": "REDO",
+   "violated": "E4 + owner 2026-10-05",
+   "quote": "When filled with water it should move and act like water (ripples, V waves, etc.) not just be solid coloration.",
+   "seen": "The best static look: drowned floor darker than dry (L .199 to .179, no light jump, answers 11-12 'Keep them darker' and the 11-20 evening 'dry and wet have different colors'); a ragged wet band on the bank from 0.5 m reads as wet ground at 32 px a cell (faint on mud, as wet mud is); a pale waterline. But nothing moves.",
+   "redo_brief": "add BLEND's gentle motion and ripple light (that is BLEND)"
+  },
+  {
+   "picture": "Transient/flowworks_water_look_second_pass/img/cand_RIPPLE.jpg",
+   "fp": "86296f583d797171",
+   "facing": "n/a",
+   "verdict": "REDO",
+   "violated": "E4 + owner 2026-11-12; owner 2026-10-05 (white overlay)",
+   "quote": "then suddenly become light for some reason with just a little water. That should not be. / Can't we make the water just look like Shallow water?",
+   "seen": "the white ripple net is the brightest thing in the pit and lifts 0.2 m above dry (L .199 to .242); at 32 px a cell the 0.2-0.5 m floor reads as white-veined marble on every ground; scalloped top-wall edge at 1-2 m reads as a broken wall. Three frames do move.",
+   "redo_brief": "halve ripple light and distortion (that is BLEND's motion)"
+  },
+  {
+   "picture": "Transient/flowworks_water_look_second_pass/img/cand_BLEND.jpg",
+   "fp": "9a6d4b2641deb82b",
+   "facing": "n/a",
+   "verdict": "KEEP",
+   "notes": "0.2 m reads as water at 32 px a cell on all four grounds: blue-grey over a darkened drowned floor (L .199 dry to .189, no light jump; saturation .35 brown to .24 blue), a pale waterline and a faint ripple net under the blue; the colonist's legs, body, steel stack, table and ladder stay visible to 1 m. Deep reads as deep: hiding rises 39/44/53/62/69/90% and by 5 m nothing under the water shows; deep end the approved 90%. Wet band on the bank from brim-full reads as wet ground, not a shadow. Three frames differ (net and wall edge move). Passes 10-05 (moves), 11-12 (darker, not lighter), 11-20 (legible shallows), 11-13 (deep end), the terrain card."
+  }
+ ],
+ "pick": "BLEND",
+ "pick_why": "BLEND is FIRM's colour and strength, which the 11-20 judge picked and which answer his 11-20 walk (\"the water should be more legible\"), plus the three things only it brings together: it moves (10-05: \"it should move and act like water ... not just be solid coloration\"; 11-20 evening: \"more aggressive distortions\"), drowned ground is a darker, different colour from dry (11-20 evening: \"dry and wet have different colors\"), and the first 0.2 m makes the pit darker, not lighter (11-12: \"Keep them darker\"; floor L .199 dry to .189, against FIRM .224 and RIPPLE .242). At 32 px a cell 0.2 m reads as water on sand, soil, granite and mud by colour, waterline and the faint net; deep reads as deep because things fade monotonically to gone by 5 m. RIPPLE's stronger light, the literal 'more aggressive' answer, turns the shallows into white-veined marble at play zoom and lightens them, so the gentler BLEND is the one that reads as water.",
+ "deep_end_question": "FIRM, WET, RIPPLE and BLEND share SHIPPED's approved deep end: 5 m is more saturated (s .64 to .72) and very slightly lighter than 2 m (L .16 to .18) but hides everything under it, so it reads deeper; acceptable as approved 11-13. AQUA/AQUA_SOFT snap light-to-navy; CLEAR breaks hue to cyan.",
+ "renderer_faith": "Faithful enough to decide on. The water law of FIRM/WET/RIPPLE/BLEND is FIRM's, calibrated in the first pass against an in-game capture, and measures the same on all four grounds (floor L within .002 between grounds). WET's static half (wet-tint quads, bank band, waterline) uses TintMat/ShadeMat quads the mod already draws: faithful. The moving half is a promise with a stated risk: the bottom distortion relies on vanilla's Map/TerrainLavaShallow shader drawing a plain ground texture without its glow (the maker's own guess ~60%, needs a live look), and the ripple net is a formula standing in for an overlay texture, so its exact shape will differ in game. The mockup honestly shows the mechanism's limit (pawns, body, table, ladder stay sharp and unwetted on a moving floor). Every effect drawn is one the mechanism text says the game can draw. CLEAR's per-colour loss on things is not drawable (its text says so); that does not decide its verdict.",
+ "adjustments": [
+  "Ripple light at BLEND's strength (about 0.16) or lower, fading to nothing by 2 m; never RIPPLE's 0.3. Check in game that the 0.2 m pit floor stays no lighter than the dry pit.",
+  "Bottom distortion at BLEND's amplitude (about 3 px at 64 px a cell, so about 1.5 px at play zoom) or lower.",
+  "If the live look shows TerrainLavaShallow cannot draw the plain ground (glow or wrong texture), ship WET's static quads plus the drifting ripple-light overlay alone; the motion then comes from the overlay, and that still meets 10-05."
+ ],
+ "proposals": [
+  "polish: the scalloped top-wall edge in BLEND at 1.5-2 m is still faintly visible; if it reads as a broken wall in game, damp the distortion on wall quads to half the floor's.",
+  "polish: the wet band only appears once the pit is brim-full; a pit filled part-way could show the wet strip on the drowned wall just above the line instead (the mockup's 0.2 m pit shows none).",
+  "polish: on rough granite the wet darkening could be weaker than on sand, soil and mud (the research's own ~70% guess); no owner line requires it.",
+  "proposal (brief): add the 10-05 'should move and act like water' line to the FlowWorks water subject's constraint list so the next judge does not KEEP a static look; the 11-20 judge was not given it."
+ ],
+ "criteria": {
+  "E4": "E4. His note on a subject is a requirement, quoted verbatim; a candidate that ignores it is REDO.",
+  "OWNER_CARD_TERRAIN": "Owner card 2026-11-20: \"(1) and it needs to be on representative terrain (put some different textures on the ground as well as furniture, bodies, etc).\"",
+  "OWNER_2026-10-05_MOVE@SHIPPED": "Owner 2026-10-05: \"When filled with water it should move and act like water (ripples, V waves, etc.) not just be solid coloration.\"",
+  "OWNER_2026-10-05_SPECKS@SHIPPED": "Owner 2026-10-05, on an earlier overlay's drifting white specks on water: \"Can't we make the water just look like Shallow water?\"",
+  "OWNER_2026-11-12@SHIPPED": "Owner 2026-11-12: \"So the new water is much better: it's very transparent at first, but it becomes about twice too opaque as it should by the end. Its color should also be darkened. Also, the rows show that pits are quite dark when dry, then suddenly become light for some reason with just a little water. That should not be. Keep them darker, so perhaps the light water would look ok mixed with the darker bottom.\"",
+  "OWNER_2026-11-20@SHIPPED": "Owner 2026-11-20 walk: \"Water has somehow managed to become too transparent again. Barely reads at shallower depths.\" and \"7-16: No, the water should be more legible (less transparent).\"",
+  "OWNER_DEEP_END@SHIPPED": "Owner 2026-11-13 approved the then-shipped law (SHIPPED, 90% hidden at 5 m); the deep end should not exceed that without a reason.",
+  "B2@SHIPPED": "B2. Legibility at play zoom: at 32 px/cell the subject reads as a few bold shapes with a body value clearly apart from the ground; grey mud is a REDO reason. Advisory measure only, never a refusal on a number.",
+  "OWNER_2026-10-05_MOVE@FIRM": "Owner 2026-10-05: \"When filled with water it should move and act like water (ripples, V waves, etc.) not just be solid coloration.\"",
+  "OWNER_2026-10-05_SPECKS@FIRM": "Owner 2026-10-05, on an earlier overlay's drifting white specks on water: \"Can't we make the water just look like Shallow water?\"",
+  "OWNER_2026-11-12@FIRM": "Owner 2026-11-12: \"So the new water is much better: it's very transparent at first, but it becomes about twice too opaque as it should by the end. Its color should also be darkened. Also, the rows show that pits are quite dark when dry, then suddenly become light for some reason with just a little water. That should not be. Keep them darker, so perhaps the light water would look ok mixed with the darker bottom.\"",
+  "OWNER_2026-11-20@FIRM": "Owner 2026-11-20 walk: \"Water has somehow managed to become too transparent again. Barely reads at shallower depths.\" and \"7-16: No, the water should be more legible (less transparent).\"",
+  "OWNER_DEEP_END@FIRM": "Owner 2026-11-13 approved the then-shipped law (SHIPPED, 90% hidden at 5 m); the deep end should not exceed that without a reason.",
+  "B2@FIRM": "B2. Legibility at play zoom: at 32 px/cell the subject reads as a few bold shapes with a body value clearly apart from the ground; grey mud is a REDO reason. Advisory measure only, never a refusal on a number.",
+  "OWNER_2026-10-05_MOVE@AQUA": "Owner 2026-10-05: \"When filled with water it should move and act like water (ripples, V waves, etc.) not just be solid coloration.\"",
+  "OWNER_2026-10-05_SPECKS@AQUA": "Owner 2026-10-05, on an earlier overlay's drifting white specks on water: \"Can't we make the water just look like Shallow water?\"",
+  "OWNER_2026-11-12@AQUA": "Owner 2026-11-12: \"So the new water is much better: it's very transparent at first, but it becomes about twice too opaque as it should by the end. Its color should also be darkened. Also, the rows show that pits are quite dark when dry, then suddenly become light for some reason with just a little water. That should not be. Keep them darker, so perhaps the light water would look ok mixed with the darker bottom.\"",
+  "OWNER_2026-11-20@AQUA": "Owner 2026-11-20 walk: \"Water has somehow managed to become too transparent again. Barely reads at shallower depths.\" and \"7-16: No, the water should be more legible (less transparent).\"",
+  "OWNER_DEEP_END@AQUA": "Owner 2026-11-13 approved the then-shipped law (SHIPPED, 90% hidden at 5 m); the deep end should not exceed that without a reason.",
+  "B2@AQUA": "B2. Legibility at play zoom: at 32 px/cell the subject reads as a few bold shapes with a body value clearly apart from the ground; grey mud is a REDO reason. Advisory measure only, never a refusal on a number.",
+  "OWNER_2026-10-05_MOVE@AQUA_SOFT": "Owner 2026-10-05: \"When filled with water it should move and act like water (ripples, V waves, etc.) not just be solid coloration.\"",
+  "OWNER_2026-10-05_SPECKS@AQUA_SOFT": "Owner 2026-10-05, on an earlier overlay's drifting white specks on water: \"Can't we make the water just look like Shallow water?\"",
+  "OWNER_2026-11-12@AQUA_SOFT": "Owner 2026-11-12: \"So the new water is much better: it's very transparent at first, but it becomes about twice too opaque as it should by the end. Its color should also be darkened. Also, the rows show that pits are quite dark when dry, then suddenly become light for some reason with just a little water. That should not be. Keep them darker, so perhaps the light water would look ok mixed with the darker bottom.\"",
+  "OWNER_2026-11-20@AQUA_SOFT": "Owner 2026-11-20 walk: \"Water has somehow managed to become too transparent again. Barely reads at shallower depths.\" and \"7-16: No, the water should be more legible (less transparent).\"",
+  "OWNER_DEEP_END@AQUA_SOFT": "Owner 2026-11-13 approved the then-shipped law (SHIPPED, 90% hidden at 5 m); the deep end should not exceed that without a reason.",
+  "B2@AQUA_SOFT": "B2. Legibility at play zoom: at 32 px/cell the subject reads as a few bold shapes with a body value clearly apart from the ground; grey mud is a REDO reason. Advisory measure only, never a refusal on a number.",
+  "OWNER_2026-10-05_MOVE@CLEAR": "Owner 2026-10-05: \"When filled with water it should move and act like water (ripples, V waves, etc.) not just be solid coloration.\"",
+  "OWNER_2026-10-05_SPECKS@CLEAR": "Owner 2026-10-05, on an earlier overlay's drifting white specks on water: \"Can't we make the water just look like Shallow water?\"",
+  "OWNER_2026-11-12@CLEAR": "Owner 2026-11-12: \"So the new water is much better: it's very transparent at first, but it becomes about twice too opaque as it should by the end. Its color should also be darkened. Also, the rows show that pits are quite dark when dry, then suddenly become light for some reason with just a little water. That should not be. Keep them darker, so perhaps the light water would look ok mixed with the darker bottom.\"",
+  "OWNER_2026-11-20@CLEAR": "Owner 2026-11-20 walk: \"Water has somehow managed to become too transparent again. Barely reads at shallower depths.\" and \"7-16: No, the water should be more legible (less transparent).\"",
+  "OWNER_DEEP_END@CLEAR": "Owner 2026-11-13 approved the then-shipped law (SHIPPED, 90% hidden at 5 m); the deep end should not exceed that without a reason.",
+  "B2@CLEAR": "B2. Legibility at play zoom: at 32 px/cell the subject reads as a few bold shapes with a body value clearly apart from the ground; grey mud is a REDO reason. Advisory measure only, never a refusal on a number.",
+  "OWNER_2026-10-05_MOVE@WET": "Owner 2026-10-05: \"When filled with water it should move and act like water (ripples, V waves, etc.) not just be solid coloration.\"",
+  "OWNER_2026-10-05_SPECKS@WET": "Owner 2026-10-05, on an earlier overlay's drifting white specks on water: \"Can't we make the water just look like Shallow water?\"",
+  "OWNER_2026-11-12@WET": "Owner 2026-11-12: \"So the new water is much better: it's very transparent at first, but it becomes about twice too opaque as it should by the end. Its color should also be darkened. Also, the rows show that pits are quite dark when dry, then suddenly become light for some reason with just a little water. That should not be. Keep them darker, so perhaps the light water would look ok mixed with the darker bottom.\"",
+  "OWNER_2026-11-20@WET": "Owner 2026-11-20 walk: \"Water has somehow managed to become too transparent again. Barely reads at shallower depths.\" and \"7-16: No, the water should be more legible (less transparent).\"",
+  "OWNER_DEEP_END@WET": "Owner 2026-11-13 approved the then-shipped law (SHIPPED, 90% hidden at 5 m); the deep end should not exceed that without a reason.",
+  "B2@WET": "B2. Legibility at play zoom: at 32 px/cell the subject reads as a few bold shapes with a body value clearly apart from the ground; grey mud is a REDO reason. Advisory measure only, never a refusal on a number.",
+  "OWNER_2026-10-05_MOVE@RIPPLE": "Owner 2026-10-05: \"When filled with water it should move and act like water (ripples, V waves, etc.) not just be solid coloration.\"",
+  "OWNER_2026-10-05_SPECKS@RIPPLE": "Owner 2026-10-05, on an earlier overlay's drifting white specks on water: \"Can't we make the water just look like Shallow water?\"",
+  "OWNER_2026-11-12@RIPPLE": "Owner 2026-11-12: \"So the new water is much better: it's very transparent at first, but it becomes about twice too opaque as it should by the end. Its color should also be darkened. Also, the rows show that pits are quite dark when dry, then suddenly become light for some reason with just a little water. That should not be. Keep them darker, so perhaps the light water would look ok mixed with the darker bottom.\"",
+  "OWNER_2026-11-20@RIPPLE": "Owner 2026-11-20 walk: \"Water has somehow managed to become too transparent again. Barely reads at shallower depths.\" and \"7-16: No, the water should be more legible (less transparent).\"",
+  "OWNER_DEEP_END@RIPPLE": "Owner 2026-11-13 approved the then-shipped law (SHIPPED, 90% hidden at 5 m); the deep end should not exceed that without a reason.",
+  "B2@RIPPLE": "B2. Legibility at play zoom: at 32 px/cell the subject reads as a few bold shapes with a body value clearly apart from the ground; grey mud is a REDO reason. Advisory measure only, never a refusal on a number.",
+  "OWNER_2026-10-05_MOVE@BLEND": "Owner 2026-10-05: \"When filled with water it should move and act like water (ripples, V waves, etc.) not just be solid coloration.\"",
+  "OWNER_2026-10-05_SPECKS@BLEND": "Owner 2026-10-05, on an earlier overlay's drifting white specks on water: \"Can't we make the water just look like Shallow water?\"",
+  "OWNER_2026-11-12@BLEND": "Owner 2026-11-12: \"So the new water is much better: it's very transparent at first, but it becomes about twice too opaque as it should by the end. Its color should also be darkened. Also, the rows show that pits are quite dark when dry, then suddenly become light for some reason with just a little water. That should not be. Keep them darker, so perhaps the light water would look ok mixed with the darker bottom.\"",
+  "OWNER_2026-11-20@BLEND": "Owner 2026-11-20 walk: \"Water has somehow managed to become too transparent again. Barely reads at shallower depths.\" and \"7-16: No, the water should be more legible (less transparent).\"",
+  "OWNER_DEEP_END@BLEND": "Owner 2026-11-13 approved the then-shipped law (SHIPPED, 90% hidden at 5 m); the deep end should not exceed that without a reason.",
+  "B2@BLEND": "B2. Legibility at play zoom: at 32 px/cell the subject reads as a few bold shapes with a body value clearly apart from the ground; grey mud is a REDO reason. Advisory measure only, never a refusal on a number."
+ },
+ "contract": {
+  "item": "RIMMANDRAKE_RESEARCH_FLOWWORKS_WATER_LOOK_FIRM_ALREADY_PICKED",
+  "family": "art_judge_brief",
+  "sha": "fp:SHIPPED=fd732f1685c5a453,FIRM=a3c34e3989c2d627,AQUA=16e3ba07c3b1be6b,AQUA_SOFT=dab9a35aaa3d0b5c,CLEAR=2d47f69afb39d083,WET=7c5b00a8cc705a90,RIPPLE=86296f583d797171,BLEND=9a6d4b2641deb82b",
+  "passed": [
+   {
+    "clause": "E4",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_BLEND.jpg"
+    ]
+   },
+   {
+    "clause": "OWNER_CARD_TERRAIN",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/zoom_sand.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_soil.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_granite.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_mud.jpg"
+    ]
+   },
+   {
+    "clause": "OWNER_2026-10-05_SPECKS@SHIPPED",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_SHIPPED.jpg"
+    ]
+   },
+   {
+    "clause": "OWNER_2026-11-12@SHIPPED",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_SHIPPED.jpg"
+    ]
+   },
+   {
+    "clause": "OWNER_DEEP_END@SHIPPED",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_SHIPPED.jpg"
+    ]
+   },
+   {
+    "clause": "B2@SHIPPED",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_SHIPPED.jpg"
+    ]
+   },
+   {
+    "clause": "OWNER_2026-10-05_SPECKS@FIRM",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_FIRM.jpg"
+    ]
+   },
+   {
+    "clause": "OWNER_2026-11-12@FIRM",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_FIRM.jpg"
+    ]
+   },
+   {
+    "clause": "OWNER_2026-11-20@FIRM",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_FIRM.jpg"
+    ]
+   },
+   {
+    "clause": "OWNER_DEEP_END@FIRM",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_FIRM.jpg"
+    ]
+   },
+   {
+    "clause": "B2@FIRM",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_FIRM.jpg"
+    ]
+   },
+   {
+    "clause": "OWNER_2026-10-05_SPECKS@AQUA",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_AQUA.jpg"
+    ]
+   },
+   {
+    "clause": "OWNER_2026-11-20@AQUA",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_AQUA.jpg"
+    ]
+   },
+   {
+    "clause": "B2@AQUA",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_AQUA.jpg"
+    ]
+   },
+   {
+    "clause": "OWNER_2026-10-05_SPECKS@AQUA_SOFT",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_AQUA_SOFT.jpg"
+    ]
+   },
+   {
+    "clause": "OWNER_2026-11-20@AQUA_SOFT",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_AQUA_SOFT.jpg"
+    ]
+   },
+   {
+    "clause": "OWNER_DEEP_END@AQUA_SOFT",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_AQUA_SOFT.jpg"
+    ]
+   },
+   {
+    "clause": "B2@AQUA_SOFT",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_AQUA_SOFT.jpg"
+    ]
+   },
+   {
+    "clause": "OWNER_2026-10-05_SPECKS@CLEAR",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_CLEAR.jpg"
+    ]
+   },
+   {
+    "clause": "OWNER_2026-11-20@CLEAR",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_CLEAR.jpg"
+    ]
+   },
+   {
+    "clause": "B2@CLEAR",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_CLEAR.jpg"
+    ]
+   },
+   {
+    "clause": "OWNER_2026-10-05_SPECKS@WET",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_WET.jpg"
+    ]
+   },
+   {
+    "clause": "OWNER_2026-11-12@WET",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_WET.jpg"
+    ]
+   },
+   {
+    "clause": "OWNER_2026-11-20@WET",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_WET.jpg"
+    ]
+   },
+   {
+    "clause": "OWNER_DEEP_END@WET",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_WET.jpg"
+    ]
+   },
+   {
+    "clause": "B2@WET",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_WET.jpg"
+    ]
+   },
+   {
+    "clause": "OWNER_2026-10-05_MOVE@RIPPLE",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_RIPPLE.jpg"
+    ]
+   },
+   {
+    "clause": "OWNER_2026-11-20@RIPPLE",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_RIPPLE.jpg"
+    ]
+   },
+   {
+    "clause": "OWNER_DEEP_END@RIPPLE",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_RIPPLE.jpg"
+    ]
+   },
+   {
+    "clause": "B2@RIPPLE",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_RIPPLE.jpg"
+    ]
+   },
+   {
+    "clause": "OWNER_2026-10-05_MOVE@BLEND",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_BLEND.jpg"
+    ]
+   },
+   {
+    "clause": "OWNER_2026-10-05_SPECKS@BLEND",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_BLEND.jpg"
+    ]
+   },
+   {
+    "clause": "OWNER_2026-11-12@BLEND",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_BLEND.jpg"
+    ]
+   },
+   {
+    "clause": "OWNER_2026-11-20@BLEND",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_BLEND.jpg"
+    ]
+   },
+   {
+    "clause": "OWNER_DEEP_END@BLEND",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_BLEND.jpg"
+    ]
+   },
+   {
+    "clause": "B2@BLEND",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_BLEND.jpg"
+    ]
+   }
+  ],
+  "refusals": [
+   {
+    "clause": "OWNER_2026-10-05_MOVE@SHIPPED",
+    "criterion_hash": "a813caf9d353cb9b",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_SHIPPED.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_sand.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_soil.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_granite.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_mud.jpg",
+     "/mnt/d/ClaudeWork/rimmandrake/judge_water_second_pass/floor_lum.txt",
+     "Transient/flowworks_water_look_second_pass/candidates.json"
+    ],
+    "observed": "cand_SHIPPED.jpg and the four zoom sheets: one static sheet; its mechanism text in candidates.json: \"Nothing moves.\". At every depth it is solid coloration, the thing he said water should not be.",
+    "would_pass": "the water visibly moves (a drifting ripple light or a moving distortion of the bottom), as BLEND's three frames do",
+    "smallest_fix": {
+     "what": "Add BLEND's motion: the ripple-light overlay (RM_LiquidSurface, alpha about 0.16, fading out by 2 m) and the gentle bottom distortion (about 3 px at 64 px a cell).",
+     "attainable": "yes",
+     "cost": "rerun"
+    },
+    "criterion_verdict": "sound",
+    "criterion_why": "He asked for water that moves on 10-05 and again on the 11-20 evening card (\"more aggressive distortions\"); BLEND and RIPPLE show the mod can draw motion on the floor and bank, so the line is attainable.",
+    "new_since": "first"
+   },
+   {
+    "clause": "OWNER_2026-10-05_MOVE@FIRM",
+    "criterion_hash": "a813caf9d353cb9b",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_FIRM.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_sand.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_soil.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_granite.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_mud.jpg",
+     "/mnt/d/ClaudeWork/rimmandrake/judge_water_second_pass/floor_lum.txt",
+     "Transient/flowworks_water_look_second_pass/candidates.json"
+    ],
+    "observed": "cand_FIRM.jpg and the four zoom sheets: one static sheet; its mechanism text in candidates.json: \"Nothing moves.\". At every depth it is solid coloration, the thing he said water should not be.",
+    "would_pass": "the water visibly moves (a drifting ripple light or a moving distortion of the bottom), as BLEND's three frames do",
+    "smallest_fix": {
+     "what": "Add BLEND's motion: the ripple-light overlay (RM_LiquidSurface, alpha about 0.16, fading out by 2 m) and the gentle bottom distortion (about 3 px at 64 px a cell).",
+     "attainable": "yes",
+     "cost": "rerun"
+    },
+    "criterion_verdict": "sound",
+    "criterion_why": "He asked for water that moves on 10-05 and again on the 11-20 evening card (\"more aggressive distortions\"); BLEND and RIPPLE show the mod can draw motion on the floor and bank, so the line is attainable.",
+    "new_since": "first"
+   },
+   {
+    "clause": "OWNER_2026-10-05_MOVE@AQUA",
+    "criterion_hash": "a813caf9d353cb9b",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_AQUA.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_sand.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_soil.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_granite.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_mud.jpg",
+     "/mnt/d/ClaudeWork/rimmandrake/judge_water_second_pass/floor_lum.txt",
+     "Transient/flowworks_water_look_second_pass/candidates.json"
+    ],
+    "observed": "cand_AQUA.jpg and the four zoom sheets: one static sheet; its mechanism text in candidates.json: \"Nothing moves.\". At every depth it is solid coloration, the thing he said water should not be.",
+    "would_pass": "the water visibly moves (a drifting ripple light or a moving distortion of the bottom), as BLEND's three frames do",
+    "smallest_fix": {
+     "what": "Add BLEND's motion: the ripple-light overlay (RM_LiquidSurface, alpha about 0.16, fading out by 2 m) and the gentle bottom distortion (about 3 px at 64 px a cell).",
+     "attainable": "yes",
+     "cost": "rerun"
+    },
+    "criterion_verdict": "sound",
+    "criterion_why": "He asked for water that moves on 10-05 and again on the 11-20 evening card (\"more aggressive distortions\"); BLEND and RIPPLE show the mod can draw motion on the floor and bank, so the line is attainable.",
+    "new_since": "first"
+   },
+   {
+    "clause": "OWNER_2026-10-05_MOVE@AQUA_SOFT",
+    "criterion_hash": "a813caf9d353cb9b",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_AQUA_SOFT.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_sand.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_soil.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_granite.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_mud.jpg",
+     "/mnt/d/ClaudeWork/rimmandrake/judge_water_second_pass/floor_lum.txt",
+     "Transient/flowworks_water_look_second_pass/candidates.json"
+    ],
+    "observed": "cand_AQUA_SOFT.jpg and the four zoom sheets: one static sheet; its mechanism text in candidates.json: \"As AQUA.\". At every depth it is solid coloration, the thing he said water should not be.",
+    "would_pass": "the water visibly moves (a drifting ripple light or a moving distortion of the bottom), as BLEND's three frames do",
+    "smallest_fix": {
+     "what": "Add BLEND's motion: the ripple-light overlay (RM_LiquidSurface, alpha about 0.16, fading out by 2 m) and the gentle bottom distortion (about 3 px at 64 px a cell).",
+     "attainable": "yes",
+     "cost": "rerun"
+    },
+    "criterion_verdict": "sound",
+    "criterion_why": "He asked for water that moves on 10-05 and again on the 11-20 evening card (\"more aggressive distortions\"); BLEND and RIPPLE show the mod can draw motion on the floor and bank, so the line is attainable.",
+    "new_since": "first"
+   },
+   {
+    "clause": "OWNER_2026-10-05_MOVE@CLEAR",
+    "criterion_hash": "a813caf9d353cb9b",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_CLEAR.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_sand.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_soil.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_granite.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_mud.jpg",
+     "/mnt/d/ClaudeWork/rimmandrake/judge_water_second_pass/floor_lum.txt",
+     "Transient/flowworks_water_look_second_pass/candidates.json"
+    ],
+    "observed": "cand_CLEAR.jpg and the four zoom sheets: static tint quads and a static sheen; its mechanism text in candidates.json: \"The floor and walls: a per-colour multiply would need a tint quad per band (TintMat, VertexColor shader). Things: only the one-colour cover (as drawn), never th\". At every depth it is solid coloration, the thing he said water should not be.",
+    "would_pass": "the water visibly moves (a drifting ripple light or a moving distortion of the bottom), as BLEND's three frames do",
+    "smallest_fix": {
+     "what": "Add BLEND's motion: the ripple-light overlay (RM_LiquidSurface, alpha about 0.16, fading out by 2 m) and the gentle bottom distortion (about 3 px at 64 px a cell).",
+     "attainable": "yes",
+     "cost": "rerun"
+    },
+    "criterion_verdict": "sound",
+    "criterion_why": "He asked for water that moves on 10-05 and again on the 11-20 evening card (\"more aggressive distortions\"); BLEND and RIPPLE show the mod can draw motion on the floor and bank, so the line is attainable.",
+    "new_since": "first"
+   },
+   {
+    "clause": "OWNER_2026-10-05_MOVE@WET",
+    "criterion_hash": "a813caf9d353cb9b",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_WET.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_sand.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_soil.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_granite.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_mud.jpg",
+     "/mnt/d/ClaudeWork/rimmandrake/judge_water_second_pass/floor_lum.txt",
+     "Transient/flowworks_water_look_second_pass/candidates.json"
+    ],
+    "observed": "cand_WET.jpg and the four zoom sheets: static wet-tint quads, a static band and a static line; its mechanism text in candidates.json: \"All static, one redraw per level change.\". At every depth it is solid coloration, the thing he said water should not be.",
+    "would_pass": "the water visibly moves (a drifting ripple light or a moving distortion of the bottom), as BLEND's three frames do",
+    "smallest_fix": {
+     "what": "Add BLEND's motion: the ripple-light overlay (RM_LiquidSurface, alpha about 0.16, fading out by 2 m) and the gentle bottom distortion (about 3 px at 64 px a cell).",
+     "attainable": "yes",
+     "cost": "rerun"
+    },
+    "criterion_verdict": "sound",
+    "criterion_why": "He asked for water that moves on 10-05 and again on the 11-20 evening card (\"more aggressive distortions\"); BLEND and RIPPLE show the mod can draw motion on the floor and bank, so the line is attainable.",
+    "new_since": "first"
+   },
+   {
+    "clause": "OWNER_2026-11-20@SHIPPED",
+    "criterion_hash": "42048405df08e908",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_SHIPPED.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_sand.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_soil.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_granite.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_mud.jpg",
+     "/mnt/d/ClaudeWork/rimmandrake/judge_water_second_pass/floor_lum.txt",
+     "Transient/flowworks_water_look_second_pass/candidates.json"
+    ],
+    "observed": "cand_SHIPPED.jpg, zoom_*.jpg: at 32 px a cell the 0.2 m and 0.5 m pits look like the dry pit on all four grounds (still brown; floor saturation .35 dry to .30/.18, hides 6%/15%); 1 m is only a grey cast.",
+    "would_pass": "0.2 m reads as blue water at 32 px a cell on every ground while the things under it stay visible",
+    "smallest_fix": {
+     "what": "Raise 0.2-1 m to FIRM's strength (39/44/53%), keeping colour and deep end.",
+     "attainable": "yes",
+     "cost": "rerun"
+    },
+    "criterion_verdict": "sound",
+    "criterion_why": "His 11-20 walk saw exactly this in game; FIRM's strength shows it is attainable.",
+    "new_since": "first"
+   },
+   {
+    "clause": "OWNER_2026-11-12@AQUA",
+    "criterion_hash": "35e99ab64bb8a86d",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_AQUA.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_sand.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_soil.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_granite.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_mud.jpg",
+     "/mnt/d/ClaudeWork/rimmandrake/judge_water_second_pass/floor_lum.txt",
+     "Transient/flowworks_water_look_second_pass/candidates.json"
+    ],
+    "observed": "cand_AQUA.jpg, zoom_*.jpg: the dark dry pit (floor luminance .199) turns pale aqua at 0.2 m (.382) on every ground, stays light blue to 2 m, then snaps to navy at 5 m.",
+    "would_pass": "the 0.2 m floor is no lighter than about the dry pit's luminance, and the water is a darkened blue",
+    "smallest_fix": {
+     "what": "Use FIRM's darkened blue in the shallows (that is FIRM/BLEND's colour).",
+     "attainable": "yes",
+     "cost": "rerun"
+    },
+    "criterion_verdict": "sound",
+    "criterion_why": "He named the dry-to-wet light jump as a flaw; it is measurable and FIRM, WET and BLEND avoid it.",
+    "new_since": "first"
+   },
+   {
+    "clause": "OWNER_2026-11-12@AQUA_SOFT",
+    "criterion_hash": "35e99ab64bb8a86d",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_AQUA_SOFT.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_sand.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_soil.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_granite.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_mud.jpg",
+     "/mnt/d/ClaudeWork/rimmandrake/judge_water_second_pass/floor_lum.txt",
+     "Transient/flowworks_water_look_second_pass/candidates.json"
+    ],
+    "observed": "cand_AQUA_SOFT.jpg, zoom_*.jpg: the dark dry pit (floor luminance .199) turns pale aqua at 0.2 m (.355) on every ground, stays light blue to 2 m, then snaps to navy at 5 m.",
+    "would_pass": "the 0.2 m floor is no lighter than about the dry pit's luminance, and the water is a darkened blue",
+    "smallest_fix": {
+     "what": "Use FIRM's darkened blue in the shallows (that is FIRM/BLEND's colour).",
+     "attainable": "yes",
+     "cost": "rerun"
+    },
+    "criterion_verdict": "sound",
+    "criterion_why": "He named the dry-to-wet light jump as a flaw; it is measurable and FIRM, WET and BLEND avoid it.",
+    "new_since": "first"
+   },
+   {
+    "clause": "OWNER_DEEP_END@AQUA",
+    "criterion_hash": "e63b4d9d8329e9a3",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_AQUA.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_sand.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_soil.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_granite.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_mud.jpg",
+     "/mnt/d/ClaudeWork/rimmandrake/judge_water_second_pass/floor_lum.txt",
+     "Transient/flowworks_water_look_second_pass/candidates.json"
+    ],
+    "observed": "cand_AQUA.jpg, candidates.json hides_line \"95% at 5 m, 95% at 8 m\": the deep end hides 95% at 5 and 8 m (navy, nothing under it visible), above the approved 90%, and no reason is given.",
+    "would_pass": "5 m hides no more than 90% unless a reason is written",
+    "smallest_fix": {
+     "what": "Cap the deep end at 90%.",
+     "attainable": "yes",
+     "cost": "rerun"
+    },
+    "criterion_verdict": "sound",
+    "criterion_why": "He approved 90% on 11-13; exceeding it is a change he did not ask for.",
+    "new_since": "first"
+   },
+   {
+    "clause": "OWNER_2026-11-12@CLEAR",
+    "criterion_hash": "35e99ab64bb8a86d",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_CLEAR.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_sand.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_soil.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_granite.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_mud.jpg",
+     "/mnt/d/ClaudeWork/rimmandrake/judge_water_second_pass/floor_lum.txt",
+     "Transient/flowworks_water_look_second_pass/candidates.json"
+    ],
+    "observed": "cand_CLEAR.jpg, zoom_*.jpg, candidates.json (\"a faint pale sheen marks the surface\"): 0.2 m lifts the dark pit to a pale grey-green (floor luminance .199 to .279); from 1 m a bright cyan band runs along the walls; the water is green-teal, not the darkened blue.",
+    "would_pass": "0.2 m no lighter than about the dry pit, no bright cyan band, a darkened blue",
+    "smallest_fix": {
+     "what": "Drop the pale sheen and the cyan band, and pull the hue toward FIRM's blue.",
+     "attainable": "yes",
+     "cost": "rerun"
+    },
+    "criterion_verdict": "sound",
+    "criterion_why": "Both are his named flaws (light jump, colour to be darkened); FIRM shows they are avoidable.",
+    "new_since": "first"
+   },
+   {
+    "clause": "OWNER_DEEP_END@CLEAR",
+    "criterion_hash": "e63b4d9d8329e9a3",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_CLEAR.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_sand.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_soil.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_granite.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_mud.jpg",
+     "/mnt/d/ClaudeWork/rimmandrake/judge_water_second_pass/floor_lum.txt",
+     "Transient/flowworks_water_look_second_pass/candidates.json"
+    ],
+    "observed": "cand_CLEAR.jpg, candidates.json (\"darkest (a dark teal) near 2 m; deeper ... clearly bluer and brighter\"): 2 m is a dark teal (L .192) and 8 m a brighter, clearly bluer, cyan-rimmed water (L .210) that reads as a different water at play zoom; 8 m hides 94%, above the approved 90%.",
+    "would_pass": "5 and 8 m read as the same water as 2 m, no lighter, hiding no more than 90%",
+    "smallest_fix": {
+     "what": "One hue family 2-8 m, 5 m no lighter than 2 m, cap at 90%.",
+     "attainable": "yes",
+     "cost": "rerun"
+    },
+    "criterion_verdict": "sound",
+    "criterion_why": "The approved deep end is the reference; the hue break is visible at 32 px a cell.",
+    "new_since": "first"
+   },
+   {
+    "clause": "OWNER_2026-11-12@RIPPLE",
+    "criterion_hash": "35e99ab64bb8a86d",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_RIPPLE.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_sand.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_soil.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_granite.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_mud.jpg",
+     "/mnt/d/ClaudeWork/rimmandrake/judge_water_second_pass/floor_lum.txt",
+     "Transient/flowworks_water_look_second_pass/candidates.json",
+     "Transient/flowworks_water_look_second_pass/img/frames_RIPPLE.jpg"
+    ],
+    "observed": "cand_RIPPLE.jpg, frames_RIPPLE.jpg, zoom_*.jpg: the pale ripple-light net lifts the 0.2 m floor above the dry pit (luminance .199 to .242, the most of the FIRM family; FIRM .224, BLEND .189) and is the brightest thing in the pit, brighter than the colonist's highlights.",
+    "would_pass": "the 0.2 m floor stays at or below about the dry pit's luminance with the ripple light on",
+    "smallest_fix": {
+     "what": "Halve the ripple light (about 0.16, as BLEND) and keep it fading out by 2 m.",
+     "attainable": "yes",
+     "cost": "rerun"
+    },
+    "criterion_verdict": "sound",
+    "criterion_why": "He named lightening with a little water as a flaw; BLEND shows motion without it.",
+    "new_since": "first"
+   },
+   {
+    "clause": "OWNER_2026-10-05_SPECKS@RIPPLE",
+    "criterion_hash": "12fde507cdab8305",
+    "evidence": [
+     "Transient/flowworks_water_look_second_pass/img/cand_RIPPLE.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_sand.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_soil.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_granite.jpg",
+     "Transient/flowworks_water_look_second_pass/img/zoom_mud.jpg",
+     "/mnt/d/ClaudeWork/rimmandrake/judge_water_second_pass/floor_lum.txt",
+     "Transient/flowworks_water_look_second_pass/candidates.json",
+     "Transient/flowworks_water_look_second_pass/img/frames_RIPPLE.jpg"
+    ],
+    "observed": "cand_RIPPLE.jpg, zoom_*.jpg, candidates.json (\"pale ripple-light lines cross the floor in the shallows\"): at 32 px a cell, on all four grounds, the 0.2-0.5 m floor reads as white-veined marble or crazed stone, not as water; a strong white overlay on the water is the family he refused on 10-05. At 1-2 m the scalloped top-wall edge reads as a broken wall.",
+    "would_pass": "at 32 px a cell the shallows read as water over a floor, with the light as a faint net under the blue, as BLEND's",
+    "smallest_fix": {
+     "what": "Ripple light at about half strength (BLEND) and distortion about 3 px at 64 px a cell.",
+     "attainable": "yes",
+     "cost": "rerun"
+    },
+    "criterion_verdict": "sound",
+    "criterion_why": "He asked for water that looks like water, not a white overlay; BLEND passes it, so it is attainable.",
+    "new_since": "first"
+   }
+  ]
+ }
+}

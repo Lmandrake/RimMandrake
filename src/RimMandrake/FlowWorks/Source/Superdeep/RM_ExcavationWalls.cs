@@ -627,6 +627,8 @@ namespace RimMandrake.FlowWorks
 			Color32 fs = SheetTint(body, RM_UnderLiquid.Seen(clarity, levelM));
 			Color32 shade = ShadeBlack;
 			shade.a = Alpha(RM_PitReliefMath.FloorShade(d));
+			// wet ground under the line is darker (RIMMANDRAKE_RESEARCH_FLOWWORKS_WATER_LOOK_FIRM_ALREADY_PICKED; 0 with the setting off)
+			Color32 wetK = new Color32(0, 0, 0, Alpha(RM_UnderLiquid.WetAlpha));
 			int nr = RM_PitReliefMath.FloorRects(wW, wE, hFull, wnw, hnw, wne, hne, floorRects);
 			for (int i = 0; i < nr; i++)
 			{
@@ -635,6 +637,10 @@ namespace RimMandrake.FlowWorks
 				if (shade.a > 0)
 				{
 					QuadVMat(RM_FaceMaterial.TintMat, c.x + x0, c.z + z0, x1 - x0, z1 - z0, y + 0.0001f, shade, shade);
+				}
+				if (wetK.a > 0)
+				{
+					QuadVMat(RM_FaceMaterial.TintMat, c.x + x0, c.z + z0, x1 - x0, z1 - z0, y + 0.0002f, wetK, wetK);
 				}
 				QuadVMat(RM_FaceMaterial.SheetMat, c.x + x0, c.z + z0, x1 - x0, z1 - z0, y + 0.0005f, fs, fs);
 			}
@@ -658,6 +664,10 @@ namespace RimMandrake.FlowWorks
 					Quad(RM_FaceMaterial.FaceMat(faceGround), c.x + bx0, c.z + z0, bx1 - bx0, z1 - z0, y + 0.0002f, Opaque, Opaque, UvFace);
 					QuadVMat(RM_FaceMaterial.ShadeMat, c.x + bx0, c.z + z0, bx1 - bx0, z1 - z0, y + 0.0003f,
 						new Color32(255, 248, 232, (byte)(lit * 255f)), new Color32(255, 248, 232, (byte)(lit * 255f)));
+					if (wetK.a > 0)
+					{
+						QuadVMat(RM_FaceMaterial.TintMat, c.x + bx0, c.z + z0, bx1 - bx0, z1 - z0, y + 0.00035f, wetK, wetK);
+					}
 					// the sheet between the side walls' feet; each strip carries its own (never twice over a corner)
 					QuadVMat(RM_FaceMaterial.SheetMat, c.x + wW, c.z + z0, 1f - wW - wE, z1 - z0, y + 0.0005f, SheetTint(body, s0),
 						SheetTint(body, s1));
@@ -665,6 +675,76 @@ namespace RimMandrake.FlowWorks
 			}
 			SideUnder(map, eng, c, d, west, false, lv, levelM, clarity, body, 1f - hDry, y + 0.0004f);
 			SideUnder(map, eng, c, d, east, true, lv, levelM, clarity, body, 1f - hDry, y + 0.0004f);
+			WetEdges(map, eng, c, d, lv, north, west, east, y);
+		}
+
+		/// <summary>RIMMANDRAKE_RESEARCH_FLOWWORKS_WATER_LOOK_FIRM_ALREADY_PICKED (owner card 2026-11-20 evening: "Maybe dry and
+		/// wet have different colors too"; a naive judge picked BLEND; target design/concepts/FlowWorks/version/
+		/// water_by_depth_target.json "effects"): where the water meets the pit's edge, a dark wet band on the ground just
+		/// above the line (on the dry wall above it, or on the bank round a brim-full pit; ragged by the rough fade) and a thin
+		/// pale waterline drawn over the water. The near (south) wall is hidden, so the water meets the near rim there.
+		/// Nothing when the setting is off.</summary>
+		private void WetEdges(Map map, RM_MapComponent_Excavation eng, IntVec3 c, int d, float lv, int north, int west, int east, float y)
+		{
+			if (!(RM_UnderLiquid.WetAlpha > 0f))
+			{
+				return;
+			}
+			int south = NeighbourLevel(map, eng, c + IntVec3.South, d);
+			float band = RM_UnderLiquid.WetBandCells, l = RM_UnderLiquid.WaterlineCells;
+			Color32 wet = new Color32(0, 0, 0, Alpha(RM_UnderLiquid.WetBandDarken)), none = new Color32(0, 0, 0, 0);
+			RM_UnderLiquid.Float3 wc = RM_UnderLiquid.WaterlineColour;
+			Color32 line = new Color32((byte)(255f * wc.r + 0.5f), (byte)(255f * wc.g + 0.5f), (byte)(255f * wc.b + 0.5f),
+				Alpha(RM_UnderLiquid.WaterlineAlpha));
+			Material bandMat = RM_FaceMaterial.WetBandMat, lineMat = RM_FaceMaterial.SheetMat;
+			float yb = y + 0.0003f, yl = y + 0.0006f;
+			float zTop = 1f;
+			if (RM_UnderLiquid.Exposed(d, north, 0f) > 0f)
+			{
+				float hDry = RM_UnderLiquid.NorthFace(RM_UnderLiquid.Exposed(d, north, lv));
+				zTop = 1f - hDry;
+				if (hDry > 0f)
+				{
+					Quad(bandMat, c.x, c.z + zTop, 1f, Mathf.Min(band, hDry), yb, wet, none, UvWorld);
+				}
+				else
+				{
+					Quad(bandMat, c.x, c.z + 1f, 1f, band, yb, wet, none, UvWorld);
+				}
+				QuadVMat(lineMat, c.x, c.z + zTop - (hDry > 0f ? 0f : RM_WallFaceMath.RimLine) - l, 1f, l, yl, line, line);
+			}
+			if (d - south > 0)
+			{
+				QuadVMat(lineMat, c.x, c.z + RM_WallFaceMath.SouthLining(d - south), 1f, l, yl, line, line);
+				if (!(RM_UnderLiquid.Exposed(d, south, lv) > 0f))
+				{
+					Quad(bandMat, c.x, c.z - band, 1f, band, yb, none, wet, UvWorld);
+				}
+			}
+			for (int side = 0; side < 2; side++)
+			{
+				bool isEast = side == 1;
+				int nb = isEast ? east : west;
+				if (!(RM_UnderLiquid.Exposed(d, nb, 0f) > 0f))
+				{
+					continue;
+				}
+				float wDry = RM_UnderLiquid.SideFace(RM_UnderLiquid.Exposed(d, nb, lv));
+				float inset = wDry > 0f ? 0f : RM_WallFaceMath.SideLine;
+				float bw = wDry > 0f ? Mathf.Min(band, wDry) : band;
+				float bh = wDry > 0f ? zTop : 1f;
+				if (!isEast)
+				{
+					// the band from the bank side (clear) to the line (wet); a brim-full pit's lies on the bank beyond the edge
+					QuadHWorld(bandMat, wDry > 0f ? c.x + wDry - bw : c.x - band, c.z, bw, bh, yb, none, wet);
+					QuadHMat(lineMat, c.x + wDry + inset, c.z, l, zTop, yl, line, line);
+				}
+				else
+				{
+					QuadHWorld(bandMat, wDry > 0f ? c.x + 1f - wDry : c.x + 1f, c.z, bw, bh, yb, wet, none);
+					QuadHMat(lineMat, c.x + 1f - wDry - inset - l, c.z, l, zTop, yl, line, line);
+				}
+			}
 		}
 
 		/// <summary>The drowned strip of one side wall, between its waterline (the dry face's foot) and its full foot: the
@@ -688,6 +768,7 @@ namespace RimMandrake.FlowWorks
 			// RIMMANDRAKE_DIM_FLOWWORKS_DROWNED_WALLS_PALE_FRAME_IN_WATER: the strip stops at the far wall's waterline; above it the dry
 			// north face is drawn, and the strip's light lay twice there (the pale north corners)
 			float stripTop = RM_PitReliefMath.SideUnderTop(wetTop);
+			Color32 wetK = new Color32(0, 0, 0, Alpha(RM_UnderLiquid.WetAlpha));
 			for (int b = 0; b < RM_UnderLiquid.Bands; b++)
 			{
 				// distance from the bank edge: wDry (the line) .. wFull (the foot)
@@ -698,6 +779,10 @@ namespace RimMandrake.FlowWorks
 				Quad(face, x0, c.z, e1 - e0, stripTop, y, Opaque, Opaque, UvWorld);
 				QuadVMat(RM_FaceMaterial.ShadeMat, x0, c.z, e1 - e0, stripTop, y + 0.0001f, new Color32(255, 248, 232, (byte)(lit * 255f)),
 					new Color32(255, 248, 232, (byte)(lit * 255f)));
+				if (wetK.a > 0)
+				{
+					QuadVMat(RM_FaceMaterial.TintMat, x0, c.z, e1 - e0, stripTop, y + 0.00015f, wetK, wetK);
+				}
 				QuadVMat(RM_FaceMaterial.SheetMat, x0, c.z, e1 - e0, wetTop, y + 0.0001f, st, st);
 			}
 		}
@@ -842,6 +927,30 @@ namespace RimMandrake.FlowWorks
 			{
 				sm.uvs.Add(Vector3.zero);
 			}
+			sm.colors.Add(left);
+			sm.colors.Add(left);
+			sm.colors.Add(right);
+			sm.colors.Add(right);
+			Tris(sm, n);
+		}
+
+		/// <summary>Horizontal gradient (left→right) with world uvs (a rough-fade material breaks its edge up by them).</summary>
+		private void QuadHWorld(Material mat, float x0, float z0, float w, float h, float y, Color32 left, Color32 right)
+		{
+			if (mat == null || w <= 0f || h <= 0f)
+			{
+				return;
+			}
+			LayerSubMesh sm = GetSubMesh(mat);
+			int n = sm.verts.Count;
+			sm.verts.Add(new Vector3(x0, y, z0));
+			sm.verts.Add(new Vector3(x0, y, z0 + h));
+			sm.verts.Add(new Vector3(x0 + w, y, z0 + h));
+			sm.verts.Add(new Vector3(x0 + w, y, z0));
+			sm.uvs.Add(new Vector3(x0, z0, 0f));
+			sm.uvs.Add(new Vector3(x0, z0 + h, 0f));
+			sm.uvs.Add(new Vector3(x0 + w, z0 + h, 0f));
+			sm.uvs.Add(new Vector3(x0 + w, z0, 0f));
 			sm.colors.Add(left);
 			sm.colors.Add(left);
 			sm.colors.Add(right);

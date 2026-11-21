@@ -144,6 +144,54 @@ namespace RimMandrake.FlowWorks
 
 		private static float Deepen(float v) => (float)System.Math.Pow(Clamp01(v), BodyGamma);
 
+		// ── the ground and surface effects (RIMMANDRAKE_RESEARCH_FLOWWORKS_WATER_LOOK_FIRM_ALREADY_PICKED; owner card
+		// 2026-11-20 evening: "Maybe dry and wet have different colors too ... Maybe more aggressive distortions on the
+		// surface will make it look more like water"). A naive judge picked BLEND from offline mockups; the written target is
+		// design/concepts/FlowWorks/version/water_by_depth_target.json "effects" (selftest_flowworks_water_target.py check 5).
+		// The bottom distortion BLEND showed is not built: the only engine shader that moves a texture paints lava colours
+		// under its tint (RM_LiquidLooks, live 2026-10-06); the drifting ripple light carries the motion (the judge's
+		// fallback). Twins in model/underliquid.py.
+
+		/// <summary>Ground under the line (the pit floor, drowned walls) is drawn under black at this alpha: wet ground is
+		/// darker (value x 0.70). Setting pitWaterWetGroundEnabled.</summary>
+		public const float DefaultWetDarken = 0.30f;
+
+		/// <summary>The wet band on the ground just above the line (on the dry wall, or on the bank round a brim-full pit):
+		/// this wide, black at <see cref="WetBandDarken"/> at the line fading to nothing.</summary>
+		public const float WetBandCells = 0.15625f;
+		public const float WetBandDarken = 0.30f;
+
+		/// <summary>The thin pale line where the water meets a wall or the rim, drawn over the water.</summary>
+		public const float WaterlineCells = 0.03125f;
+		public const float WaterlineAlpha = 0.45f;
+		public static readonly Float3 WaterlineColour = new Float3(0.80f, 0.88f, 0.92f);
+
+		/// <summary>The drifting ripple light on clear water in a pit: additive, alpha <see cref="RippleAlpha"/>. Setting
+		/// pitWaterRippleLight (0 = off).</summary>
+		public const float DefaultRipplePeak = 0.16f;
+		public const float RippleFadeMetres = 0.7f;
+		public static readonly Float3 RippleColour = new Float3(0.78f, 0.90f, 0.96f);
+
+		/// <summary>Setting pitWaterWetGroundEnabled (wet tint, wet band and waterline).</summary>
+		public static bool WetGround = true;
+
+		/// <summary>Setting pitWaterRippleLight.</summary>
+		public static float RipplePeak = DefaultRipplePeak;
+
+		/// <summary>The black tint over wet ground (0 with the setting off).</summary>
+		public static float WetAlpha => WetGround ? DefaultWetDarken : 0f;
+
+		/// <summary>The ripple light's alpha over water <paramref name="metresOver"/> deep: strong in the shallows, faint by
+		/// 2 m, 0 on a dry floor.</summary>
+		public static float RippleAlpha(float metresOver)
+		{
+			if (!(metresOver > 0f) || !(RipplePeak > 0f))
+			{
+				return 0f;
+			}
+			return RipplePeak * (float)System.Math.Exp(-metresOver / RippleFadeMetres);
+		}
+
 		public struct Float3
 		{
 			public readonly float r, g, b;

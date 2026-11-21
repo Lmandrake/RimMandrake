@@ -114,6 +114,25 @@ namespace RimMandrake.FlowWorks.SelfTest
 				float l = RM_UnderLiquid.LabelAlpha(0.45f, 2f, 0.3f);
 				Assert(l > 0f && l < 1f, "can-fail: a label over a thing under clear water fades (" + l + ")");
 			});
+			Case("UnderLiquid_wet_ground_and_ripple_light_match_the_target", () =>
+			{
+				// RIMMANDRAKE_RESEARCH_FLOWWORKS_WATER_LOOK_FIRM_ALREADY_PICKED: water_by_depth_target.json "effects" (BLEND)
+				RM_UnderLiquid.WetGround = true;
+				RM_UnderLiquid.RipplePeak = RM_UnderLiquid.DefaultRipplePeak;
+				Assert(Near(RM_UnderLiquid.WetAlpha, 0.30f), "can-fail: wet ground is drawn under black at 0.30 (" + RM_UnderLiquid.WetAlpha + ")");
+				float[,] want = { { 0.2f, 0.1202f }, { 0.5f, 0.0783f }, { 1f, 0.0383f }, { 2f, 0.0092f }, { 5f, 0.0001f } };
+				for (int i = 0; i < want.GetLength(0); i++)
+				{
+					float a = RM_UnderLiquid.RippleAlpha(want[i, 0]);
+					Assert(Near(a, want[i, 1], 6e-5f), "can-fail: ripple light at " + want[i, 0] + " m = " + a + ", target " + want[i, 1]);
+				}
+				Assert(RM_UnderLiquid.RippleAlpha(0f) == 0f && RM_UnderLiquid.RippleAlpha(-0.5f) == 0f, "can-fail: no ripple light on a dry floor");
+				RM_UnderLiquid.WetGround = false;
+				RM_UnderLiquid.RipplePeak = 0f;
+				Assert(RM_UnderLiquid.WetAlpha == 0f && RM_UnderLiquid.RippleAlpha(0.2f) == 0f, "can-fail: the settings switch both off");
+				RM_UnderLiquid.WetGround = true;
+				RM_UnderLiquid.RipplePeak = RM_UnderLiquid.DefaultRipplePeak;
+			});
 			Case("UnderLiquid_flat_things_cast_no_floor_shadow_and_edges_are_soft", () =>
 			{
 				// RIMMANDRAKE_REMOVE_DARK_SQUARE_AROUND_SUNK_GEYSER_UNWELCOME_BOX: a geyser or rug (fill 0, no vanilla shadow)

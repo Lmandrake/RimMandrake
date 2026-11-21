@@ -240,7 +240,9 @@ namespace RimMandrake.FlowWorks
 
 		public override void MapComponentUpdate()
 		{
-			if (!RimMandrakeFlowWorksSettings.liquidSurfaceMotionEnabled || Find.CurrentMap != map || RimWorld.Planet.WorldRendererUtility.WorldRendered)
+			bool film = RimMandrakeFlowWorksSettings.liquidSurfaceMotionEnabled;
+			bool ripple = RippleOn;
+			if ((!film && !ripple) || Find.CurrentMap != map || RimWorld.Planet.WorldRendererUtility.WorldRendered)
 			{
 				return;
 			}
@@ -251,13 +253,17 @@ namespace RimMandrake.FlowWorks
 				lastView = view;
 				lastBuildFrame = Time.frameCount;
 			}
+			float t = Time.realtimeSinceStartup;
+			float y = AltitudeLayer.TerrainScatter.AltitudeFor() + 0.01f;
+			Matrix4x4 m = Matrix4x4.TRS(new Vector3(0f, y, 0f), Quaternion.identity, Vector3.one);
+			if (ripple)
+			{
+				DrawRipple(m, t);
+			}
 			if (meshes.Count == 0)
 			{
 				return;
 			}
-			float t = Time.realtimeSinceStartup;
-			float y = AltitudeLayer.TerrainScatter.AltitudeFor() + 0.01f;
-			Matrix4x4 m = Matrix4x4.TRS(new Vector3(0f, y, 0f), Quaternion.identity, Vector3.one);
 			foreach (KeyValuePair<RM_LiquidSurfaceLook, Mesh> kv in meshes)
 			{
 				RM_LiquidSurfaceLook look = kv.Key;
@@ -286,6 +292,12 @@ namespace RimMandrake.FlowWorks
 			}
 			RM_MapComponent_Excavation eng = map.GetComponent<RM_MapComponent_Excavation>();
 			TerrainGrid tg = map.terrainGrid;
+			RebuildRipple(view, eng);
+			if (!RimMandrakeFlowWorksSettings.liquidSurfaceMotionEnabled)
+			{
+				meshes.Clear();
+				return;
+			}
 			foreach (IntVec3 c in view)
 			{
 				RM_LiquidSurfaceLook look = LookFor(tg.TerrainAt(c));
@@ -341,6 +353,213 @@ namespace RimMandrake.FlowWorks
 			}
 			meshPool.Clear();
 			meshes.Clear();
+			for (int i = 0; i < rippleMeshes.Length; i++)
+			{
+				if (rippleMeshes[i] != null)
+				{
+					UnityEngine.Object.Destroy(rippleMeshes[i]);
+					rippleMeshes[i] = null;
+				}
+			}
+		}
+
+		// ── ripple light on clear water in a cut ─────────────────────────────
+		// RIMMANDRAKE_RESEARCH_FLOWWORKS_WATER_LOOK_FIRM_ALREADY_PICKED (owner card 2026-11-20 evening; 2026-10-05: "When filled
+		// with water it should move and act like water ... not just be solid coloration"): a naive judge picked BLEND, whose
+		// motion is a net of thin light lines on the water, strong in the shallows and gone by about 2 m
+		// (RM_UnderLiquid.RippleAlpha; target design/concepts/FlowWorks/version/water_by_depth_target.json "effects"). One
+		// additive layer drifting by material offset, its cells grouped into RippleSteps alpha steps (one draw each). Only
+		// the water's open part: the far wall's dry face is left out, and pawns and things draw over it.
+
+		private const int RippleSteps = 8;
+		private const float RippleTileCells = 2.5f;    // one texture tile: 4 x 4 net cells of 0.625 cell (40 px at 64 px a cell)
+		private const float RippleDrift = 0.06f;       // cells a second
+		private static Texture2D rippleTex;
+		private static Material[] rippleMats;
+		private readonly List<Vector3>[] rippleVerts = new List<Vector3>[RippleSteps + 1];
+		private readonly Mesh[] rippleMeshes = new Mesh[RippleSteps + 1];
+		private readonly bool[] rippleLive = new bool[RippleSteps + 1];
+
+		private static bool RippleOn => RimMandrakeFlowWorksSettings.pitWaterRippleLightEnabled && RM_UnderLiquid.RipplePeak > 0f
+			&& RimMandrakeFlowWorksSettings.liquidSeeThroughEnabled && RimMandrakeFlowWorksSettings.excavationWallFacesEnabled;
+
+		private void RebuildRipple(CellRect view, RM_MapComponent_Excavation eng)
+		{
+			for (int k = 0; k <= RippleSteps; k++)
+			{
+				rippleLive[k] = false;
+				if (rippleVerts[k] == null)
+				{
+					rippleVerts[k] = new List<Vector3>();
+				}
+				rippleVerts[k].Clear();
+			}
+			if (!RippleOn || eng == null)
+			{
+				return;
+			}
+			float step = RM_UnderLiquid.RipplePeak / RippleSteps;
+			foreach (IntVec3 c in view)
+			{
+				int d = eng.ExcavatedDepthAt(c);
+				if (d <= 0)
+				{
+					continue;
+				}
+				float lv = RM_UnderLiquid.NoteLevel(RM_SubmergeDraw.NoteAt(eng, c));
+				float levelM = (lv > d ? d : lv) * RM_UnderLiquid.Notch;
+				float a = RM_UnderLiquid.RippleAlpha(levelM);
+				int k = Mathf.Clamp(Mathf.RoundToInt(a / step), 0, RippleSteps);
+				if (k == 0)
+				{
+					continue;
+				}
+				RM_LiquidSurfaceLook look = RM_SubmergeDraw.LookAt(map, eng, c);
+				if (look == null || !(look.seeThrough > 0f))
+				{
+					continue;
+				}
+				IntVec3 n = c + IntVec3.North;
+				int nd = n.InBounds(map) && !eng.IsSourceCell(n) ? eng.ExcavatedDepthAt(n) : d;
+				float top = 1f - RM_UnderLiquid.NorthFace(RM_UnderLiquid.Exposed(d, nd, lv));
+				List<Vector3> v = rippleVerts[k];
+				v.Add(new Vector3(c.x, 0f, c.z));
+				v.Add(new Vector3(c.x, 0f, c.z + top));
+				v.Add(new Vector3(c.x + 1f, 0f, c.z + top));
+				v.Add(new Vector3(c.x + 1f, 0f, c.z));
+			}
+			for (int k = 1; k <= RippleSteps; k++)
+			{
+				if (rippleVerts[k].Count == 0)
+				{
+					continue;
+				}
+				if (rippleMeshes[k] == null)
+				{
+					rippleMeshes[k] = new Mesh { name = "RM_LiquidSurface.ripple" };
+				}
+				FillMesh(rippleMeshes[k], rippleVerts[k]);
+				rippleLive[k] = true;
+			}
+		}
+
+		private void DrawRipple(Matrix4x4 m, float t)
+		{
+			if (rippleMats == null)
+			{
+				rippleTex = CausticTexture();
+				rippleMats = new Material[RippleSteps + 1];
+			}
+			RM_UnderLiquid.Float3 rc = RM_UnderLiquid.RippleColour;
+			float step = RM_UnderLiquid.RipplePeak / RippleSteps;
+			Vector2 drift = new Vector2(t * RippleDrift * 0.8f, t * RippleDrift * 0.6f) / RippleTileCells;
+			for (int k = 1; k <= RippleSteps; k++)
+			{
+				if (!rippleLive[k])
+				{
+					continue;
+				}
+				Material mat = rippleMats[k];
+				if (mat == null)
+				{
+					mat = rippleMats[k] = new Material(MaterialPool.MatFrom(new MaterialRequest(rippleTex, ShaderDatabase.MoteGlow)))
+					{
+						mainTexture = rippleTex,
+						mainTextureScale = Vector2.one / RippleTileCells
+					};
+				}
+				float a = k * step;
+				mat.color = new Color(rc.r * a, rc.g * a, rc.b * a, 1f);
+				mat.mainTextureOffset = drift;
+				Graphics.DrawMesh(rippleMeshes[k], m, mat, 0);
+			}
+		}
+
+		private static void FillMesh(Mesh mesh, List<Vector3> verts)
+		{
+			mesh.Clear();
+			int n = verts.Count;
+			Vector2[] uv = new Vector2[n];
+			int[] tris = new int[n / 4 * 6];
+			for (int i = 0; i < n; i++)
+			{
+				uv[i] = new Vector2(verts[i].x, verts[i].z);
+			}
+			for (int q = 0, k = 0; q < n; q += 4, k += 6)
+			{
+				tris[k] = q;
+				tris[k + 1] = q + 1;
+				tris[k + 2] = q + 2;
+				tris[k + 3] = q;
+				tris[k + 4] = q + 2;
+				tris[k + 5] = q + 3;
+			}
+			if (n > 65000)
+			{
+				mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
+			}
+			mesh.SetVertices(verts);
+			mesh.uv = uv;
+			mesh.triangles = tris;
+			mesh.RecalculateBounds();
+		}
+
+		/// <summary>A tileable net of thin light lines on the borders of 4 x 4 irregular cells (Worley F2 - F1, the usual
+		/// stand-in for caustics; model/water_mockup.py ripple_lines draws the same), its coordinates bent by periodic waves
+		/// so no line is straight, brighter and fainter along its runs. White in colour and alpha; the material colour sets
+		/// its strength.</summary>
+		private static Texture2D CausticTexture()
+		{
+			const int N = 128, G = 4;
+			const float cellPx = N / (float)G, width = 1.76f;
+			System.Random r = new System.Random(4021);
+			float[,] jx = new float[G, G], jy = new float[G, G];
+			for (int i = 0; i < G; i++)
+			{
+				for (int j = 0; j < G; j++)
+				{
+					jx[i, j] = 0.5f + 0.35f * (float)System.Math.Cos(2.0 * System.Math.PI * r.NextDouble());
+					jy[i, j] = 0.5f + 0.35f * (float)System.Math.Sin(2.0 * System.Math.PI * r.NextDouble());
+				}
+			}
+			Texture2D tex = new Texture2D(N, N, TextureFormat.RGBA32, true) { wrapMode = TextureWrapMode.Repeat, filterMode = FilterMode.Bilinear };
+			float tau = 2f * Mathf.PI;
+			for (int py = 0; py < N; py++)
+			{
+				for (int px = 0; px < N; px++)
+				{
+					float u = px / cellPx, v = py / cellPx;
+					// periodic bends: whole waves per tile, so the tile still repeats seamlessly
+					float x = u + 0.22f * Mathf.Sin(tau * (v / G * 2f)) + 0.12f * Mathf.Sin(tau * (v / G * 5f - u / G * 3f));
+					float yv = v + 0.22f * Mathf.Sin(tau * (u / G * 2f)) + 0.12f * Mathf.Sin(tau * (u / G * 5f + v / G * 3f));
+					int gx = Mathf.FloorToInt(x), gy = Mathf.FloorToInt(yv);
+					float f1 = 9f, f2 = 9f;
+					for (int oy = -1; oy <= 1; oy++)
+					{
+						for (int ox = -1; ox <= 1; ox++)
+						{
+							int cx = gx + ox, cy = gy + oy;
+							int wx = ((cx % G) + G) % G, wy = ((cy % G) + G) % G;
+							float dx = x - (cx + jx[wx, wy]), dy = yv - (cy + jy[wx, wy]);
+							float dd = Mathf.Sqrt(dx * dx + dy * dy);
+							if (dd < f1)
+							{
+								f2 = f1;
+								f1 = dd;
+							}
+							else if (dd < f2)
+							{
+								f2 = dd;
+							}
+						}
+					}
+					float along = 0.55f + 0.45f * Mathf.Sin(tau * (u / G * 2f + v / G * 1f));
+					float h = Mathf.Exp(-(f2 - f1) * cellPx / width) * along;
+					tex.SetPixel(px, py, new Color(h, h, h, h));
+				}
+			}
+			tex.Apply(true, true);
+			return tex;
 		}
 
 		private Mesh BuildMesh(RM_LiquidSurfaceLook look, List<Vector3> verts)

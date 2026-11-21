@@ -356,6 +356,10 @@ namespace RimMandrake.FlowWorks
         public static float underLiquidFullMetres = RM_UnderLiquid.DefaultFullMetres;    // depth fresh water reaches it at
         public static float underLiquidDarken = RM_UnderLiquid.DefaultDarken;            // how dark a clear liquid's body colour is
         public static float pitThingShadowAlpha = RM_UnderLiquid.DefaultThingShadowAlpha; // a thing's floor shadow in a pit
+        // RIMMANDRAKE_RESEARCH_FLOWWORKS_WATER_LOOK_FIRM_ALREADY_PICKED (judge-picked BLEND): wet ground and ripple light
+        public static bool pitWaterWetGroundEnabled = true;        // ground under water darker, a wet band above the line, a waterline
+        public static bool pitWaterRippleLightEnabled = true;      // drifting ripple light on clear water in a cut
+        public static float pitWaterRippleLight = RM_UnderLiquid.DefaultRipplePeak; // its strength at the surface
         public static bool pitEdgeStraddleRefusedEnabled = true;   // RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE: furniture never hangs over a pit edge (RM_PitEdgePlacement)
         public static bool pitWalkNormalEnabled = true;            // walking along a pit floor is normal; only climbing is slow (item 9)
         // Liquids that may fill a cut (item 4): a FluidDef named here is refused by every fill (pump, drill, debug,
@@ -698,6 +702,9 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref underLiquidShallowOpacity, "underLiquidShallowOpacity", RM_UnderLiquid.DefaultShallowOpacity);
             Scribe_Values.Look(ref underLiquidFullMetres, "underLiquidFullMetres", RM_UnderLiquid.DefaultFullMetres);
             Scribe_Values.Look(ref underLiquidDarken, "underLiquidDarken", RM_UnderLiquid.DefaultDarken);
+            Scribe_Values.Look(ref pitWaterWetGroundEnabled, "pitWaterWetGroundEnabled", true);
+            Scribe_Values.Look(ref pitWaterRippleLightEnabled, "pitWaterRippleLightEnabled", true);
+            Scribe_Values.Look(ref pitWaterRippleLight, "pitWaterRippleLight", RM_UnderLiquid.DefaultRipplePeak);
             Scribe_Values.Look(ref pitThingShadowAlpha, "pitThingShadowAlpha", RM_UnderLiquid.DefaultThingShadowAlpha);
             PushUnderLiquid();
             Scribe_Values.Look(ref pitWalkNormalEnabled, "pitWalkNormalEnabled", true);
@@ -809,6 +816,7 @@ namespace RimMandrake.FlowWorks
             .Declare("pitScorchEnabled", "pitScorchFadeDays")
             .Declare("liquidBubblesEnabled", "liquidBubbleDensity")
             .Declare("pitSubmergeCutEnabled", "underLiquidDeepOpacity", "underLiquidShallowOpacity", "underLiquidFullMetres", "underLiquidDarken", "pitThingShadowAlpha")
+            .Declare("pitWaterRippleLightEnabled", "pitWaterRippleLight")
             .Declare("trapTriggerEnabled", "trapSensitivityMultiplier")
             .Declare("superdeepRoomsEnabled", "captureDownEnabled", "pitRoomMinDepthMetres")
             .Declare("superdeepShootingRuleEnabled", "shootingCliffMetres")
@@ -1837,7 +1845,7 @@ namespace RimMandrake.FlowWorks
 
             }
 
-            if (Section(list, "How cuts and liquids look", new[] { "pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitScorchEnabled", "pitScorchFadeDays", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled", "pitLipOccupantCutWidth", "liquidSurfaceMotionEnabled", "liquidWakesEnabled", "liquidLooksEnabled", "liquidBubblesEnabled", "liquidBubbleDensity", "liquidSeeThroughEnabled", "pitSubmergeCutEnabled", "underLiquidDeepOpacity", "underLiquidFullMetres", "underLiquidDarken", "pitThingShadowAlpha" }))
+            if (Section(list, "How cuts and liquids look", new[] { "pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitScorchEnabled", "pitScorchFadeDays", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled", "pitLipOccupantCutWidth", "liquidSurfaceMotionEnabled", "liquidWakesEnabled", "liquidLooksEnabled", "liquidBubblesEnabled", "liquidBubbleDensity", "liquidSeeThroughEnabled", "pitSubmergeCutEnabled", "underLiquidDeepOpacity", "underLiquidFullMetres", "underLiquidDarken", "pitThingShadowAlpha", "pitWaterWetGroundEnabled", "pitWaterRippleLightEnabled", "pitWaterRippleLight" }))
             {
             list.CheckboxLabeled("Pawns sink into dug channels and rise out of them", ref pitDepthDrawOffsetEnabled,
                 "A pawn standing in a dug square is drawn lower the deeper the square, and rises smoothly as it "
@@ -1948,6 +1956,20 @@ namespace RimMandrake.FlowWorks
                 list.Label("Shadow of a thing standing in a pit, on its floor: " + pitThingShadowAlpha.ToStringPercent()
                     + " (shipped " + RM_UnderLiquid.DefaultThingShadowAlpha.ToStringPercent() + ")");
                 pitThingShadowAlpha = Mathf.Round(list.Slider(pitThingShadowAlpha, 0f, 0.8f) * 20f) / 20f;
+            }
+            list.CheckboxLabeled("Wet ground under and beside water in a cut", ref pitWaterWetGroundEnabled,
+                "The floor and walls under the water are darker than dry ground, a dark wet band runs along the ground "
+              + "just above the water, and a thin pale line marks where the water meets a wall. Drawing only. Off: the "
+              + "ground under the water keeps its dry colour, with no band and no line.");
+            list.CheckboxLabeled("Ripple light on clear water in a cut", ref pitWaterRippleLightEnabled,
+                "A net of thin light lines drifts over clear water in a cut, strong in the shallows and gone by about 2 m, "
+              + "so even ankle-deep water reads as water. It lights the water, never what stands in it. Drawing only. "
+              + "Off: the water's surface is still.");
+            using (Dependent(list, "pitWaterRippleLight"))
+            {
+                list.Label("Ripple light strength: " + pitWaterRippleLight.ToStringPercent() + " (shipped "
+                    + RM_UnderLiquid.DefaultRipplePeak.ToStringPercent() + ")");
+                pitWaterRippleLight = Mathf.Round(list.Slider(pitWaterRippleLight, 0.02f, 0.4f) * 50f) / 50f;
             }
             }
 
@@ -2134,7 +2156,7 @@ namespace RimMandrake.FlowWorks
         private static bool appliedKnown;
         private static float appliedRoomMin = -1f;
         private static bool appliedHollow, appliedClimb, appliedRamps, appliedRooms, appliedWalls, appliedMat, appliedOutline,
-            appliedScorch, appliedLooks, appliedSee, appliedPortable, appliedSubmerge;
+            appliedScorch, appliedLooks, appliedSee, appliedPortable, appliedSubmerge, appliedWetGround = true;
         private static float appliedClimbMul, appliedDeepOpacity, appliedShallowOpacity, appliedFullMetres, appliedDarken, appliedThingShadow;
 
         /// <summary>RM_UnderLiquid is Verse-free (the SelfTest compiles it): the law's setting numbers are pushed into it.</summary>
@@ -2145,6 +2167,8 @@ namespace RimMandrake.FlowWorks
             RM_UnderLiquid.FullMetres = underLiquidFullMetres;
             RM_UnderLiquid.Darken = underLiquidDarken;
             RM_UnderLiquid.ThingShadowAlpha = pitThingShadowAlpha;
+            RM_UnderLiquid.WetGround = pitWaterWetGroundEnabled;
+            RM_UnderLiquid.RipplePeak = pitWaterRippleLightEnabled ? pitWaterRippleLight : 0f;
         }
         private static int appliedRampSpan, appliedPortableReach;
 
@@ -2180,7 +2204,8 @@ namespace RimMandrake.FlowWorks
                 bool lawMoved = appliedDeepOpacity != underLiquidDeepOpacity || appliedShallowOpacity != underLiquidShallowOpacity
                     || appliedFullMetres != underLiquidFullMetres
                     || appliedDarken != underLiquidDarken
-                    || appliedThingShadow != pitThingShadowAlpha;
+                    || appliedThingShadow != pitThingShadowAlpha
+                    || appliedWetGround != pitWaterWetGroundEnabled;
                 if (lawMoved)
                 {
                     SectionLayer_RMExcavationWalls.RedrawAll();
@@ -2220,6 +2245,7 @@ namespace RimMandrake.FlowWorks
             appliedFullMetres = underLiquidFullMetres;
             appliedDarken = underLiquidDarken;
             appliedThingShadow = pitThingShadowAlpha;
+            appliedWetGround = pitWaterWetGroundEnabled;
         }
     }
 
