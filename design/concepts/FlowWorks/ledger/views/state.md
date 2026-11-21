@@ -1,13 +1,13 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":44722,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"HOLDER.run-1795260677":3322,"HOLDER.run-1795263747":1891,"HOLDER.run-1795268290":1698,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=689bda00cddec990aa54425b98b8186a26b80d490c77c6e686b5dcd4f69db7d1 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":44722,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"HOLDER.run-1795260677":3322,"HOLDER.run-1795263747":1891,"HOLDER.run-1795268290":3297,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=9a6827ed28870dc8e1fd9047667328bb9e2aa58d1ceab90c9cfd85d63972009f -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage in_game · 1487 events in 22 shards · reducer 1
-holder lease run-1795268290, token 31, last active 2026-11-21T15:26:00Z
+version 0.1.0 · stage in_game · 1491 events in 22 shards · reducer 1
+holder lease run-1795268290, token 31, last active 2026-11-21T16:50:05Z
 holder session 288f91ef-136a-4cf4-beb7-249398a482e8, context 409643 of ceiling 400000 — ROTATE DUE
 
-## Last checkpoint (HOLDER.run-1795263747, 2026-11-21T12:42:47Z)
-- done: sc_pit_trap_raid PASS three of three rows, 2 of 2 live runs on game a at main; planted no-lid run red; walk and new item, 38d6682c81
-- next: Record sc_pit_trap_raid PASS for drained_hole_is_a_prison in the next in-game visit
-- ruled out: the raid never reaching the trench; the mod failing to drop a loaded deck
+## Last checkpoint (HOLDER.run-1795268290, 2026-11-21T16:50:05Z)
+- done: visit 3 game a: 17 PASS, FAIL sc_ice (MOD, filed), sc_islands (SITE), 5 UNMEASURED; garden scene repaired both ways; source_pays check repaired, reads the mod; walk save FLOWWORKS_OWNER_REVIEW_VISIT3_FULL_20261121_0753
+- next: Rerun on the exact flowworks tier list the checks build_match names, after finding why scenes stalled at 08:36
+- ruled out: sc_islands: a lowered leaf that carries no walker; sc_garden: a filter rate fault (one tank drink)
 
 ## Open findings (178)
 (claimed fixes, awaiting a judge, on one line each with the oldest 127 open findings, named without their 'finding:': `modledger.py show --mod FlowWorks finding:<NAME>`)
@@ -499,6 +499,6 @@ spend recorded: USD 78.94, 45401435 tokens
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
 - notes: 11, never printed here (`modledger.py find --mod FlowWorks <words>`)
-- the full history: 1487 events (views/history.md; never read whole)
+- the full history: 1491 events (views/history.md; never read whole)
 
-cursor: t=2026-11-21T15:26:00Z.1795274760522307671 (modledger.py since --mod FlowWorks t=2026-11-21T15:26:00Z.1795274760522307671 prints what changed after this packet)
+cursor: t=2026-11-21T16:50:05Z.1795279805177648031 (modledger.py since --mod FlowWorks t=2026-11-21T16:50:05Z.1795279805177648031 prints what changed after this packet)

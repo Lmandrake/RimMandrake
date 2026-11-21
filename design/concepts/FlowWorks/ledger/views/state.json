@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "75e0fd87be11e78594187a10850efff4910f42ed078f0b3745f454a4d3697083",
+  "body_sha256": "8145c037cae88f00e3e59badafff3de6ffa28d9159f7dc2b7299dbbd46dd1c22",
   "reducer": 1,
   "shards": {
    "BACKFILL": 893183,
@@ -20,7 +20,7 @@
    "HOLDER.run-1795257509": 5815,
    "HOLDER.run-1795260677": 3322,
    "HOLDER.run-1795263747": 1891,
-   "HOLDER.run-1795268290": 1698,
+   "HOLDER.run-1795268290": 3297,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1261,11 +1261,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795263747",
-   "done": "sc_pit_trap_raid PASS three of three rows, 2 of 2 live runs on game a at main; planted no-lid run red; walk and new item, 38d6682c81",
-   "next": "Record sc_pit_trap_raid PASS for drained_hole_is_a_prison in the next in-game visit",
-   "ruled_out": "the raid never reaching the trench; the mod failing to drop a loaded deck",
-   "ts": "2026-11-21T12:42:47Z"
+   "by": "HOLDER.run-1795268290",
+   "done": "visit 3 game a: 17 PASS, FAIL sc_ice (MOD, filed), sc_islands (SITE), 5 UNMEASURED; garden scene repaired both ways; source_pays check repaired, reads the mod; walk save FLOWWORKS_OWNER_REVIEW_VISIT3_FULL_20261121_0753",
+   "next": "Rerun on the exact flowworks tier list the checks build_match names, after finding why scenes stalled at 08:36",
+   "ruled_out": "sc_islands: a lowered leaf that carries no walker; sc_garden: a filter rate fault (one tank drink)",
+   "ts": "2026-11-21T16:50:05Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1717,7 +1717,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1487,
+  "events": 1491,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7818,7 +7818,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-21T15:26:00Z",
+   "last": "2026-11-21T16:50:05Z",
    "lease": "run-1795268290",
    "released": false,
    "token": 31

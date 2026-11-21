@@ -1,0 +1,2627 @@
+{
+  "script": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_VISIT_THREE_RUN_TWO.det\\src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py",
+  "started": 1795278744.2993236,
+  "mode": "live",
+  "calls": [
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 60,
+        "z": 60,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 60
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_33c4570690e5432ab85f5d4cf7079005",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 61,
+        "z": 60,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 61,
+          "z": 60
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_e8d29ba6536d4e55b7156afa79353722",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 62,
+        "z": 60,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 62,
+          "z": 60
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_6ce3cdc6cc06448888a973ba983edab3",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 63,
+        "z": 60,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 63,
+          "z": 60
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_5b08bc93aaa54bfaa292448f73b2c922",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 46
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 64,
+        "z": 60,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 64,
+          "z": 60
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_ccc662441bef41389ba0d7c1cf648d30",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 65,
+        "z": 60,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 65,
+          "z": 60
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_c0ecb875747f44428f26a5b96f158077",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 39
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 66,
+        "z": 60,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 66,
+          "z": 60
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_e34c577fd6794c91a0aa664daf61fc06",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 42
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 67,
+        "z": 60,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 67,
+          "z": 60
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_dd2fe14e696b44f5b27b36280d256fb6",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 44
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 60,
+        "z": 66,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 66
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_0a75f1ec4b4a49728688b317b8e1d843",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 61,
+        "z": 66,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 61,
+          "z": 66
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_8b3a44af5c4e463d88d3cc98e6dab32f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 34
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 62,
+        "z": 66,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 62,
+          "z": 66
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_8493fe84f72f4577a7d98dc87e85a995",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 46
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 63,
+        "z": 66,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 63,
+          "z": 66
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_93cfd976eeb044c58585bb36e9beaa82",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 64,
+        "z": 66,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 64,
+          "z": 66
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_008f74ad6ba74d7884f9f04f63c2c2c9",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 65,
+        "z": 66,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 65,
+          "z": 66
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_05ae5753ef7b4dbd964187aeba6aaf7e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 39
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 66,
+        "z": 66,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 66,
+          "z": 66
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_43918554207d48c88b0a38607d1090fe",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 67,
+        "z": 66,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 67,
+          "z": 66
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_97091db67c2c424fa5589c9a4e8028b1",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 39
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "60,60,1,RM_Fluid_Chemfuel"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (60, 0, 60) W=20000dL fluid=RM_Fluid_Chemfuel",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_257c8db0e3a64926b89b46959dbdcb04",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "61,60,1,RM_Fluid_Chemfuel"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (61, 0, 60) W=20000dL fluid=RM_Fluid_Chemfuel",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_685a391710cd47488d0d5b0e08a947fd",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 46
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "62,60,1,RM_Fluid_Chemfuel"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (62, 0, 60) W=20000dL fluid=RM_Fluid_Chemfuel",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_1b848bcd843d440e9a215cf6b45f715a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 15
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "63,60,1,RM_Fluid_Chemfuel"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (63, 0, 60) W=20000dL fluid=RM_Fluid_Chemfuel",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_b088f8e3ff1f4c1ea63d748c30e0ccec",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 38
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "64,60,1,RM_Fluid_Chemfuel"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (64, 0, 60) W=20000dL fluid=RM_Fluid_Chemfuel",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_6c8710651f4b4c1dbde1bc8f41910304",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "65,60,1,RM_Fluid_Chemfuel"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (65, 0, 60) W=20000dL fluid=RM_Fluid_Chemfuel",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_126832d01a064dc49bfe653d2c369dcb",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 45
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "66,60,1,RM_Fluid_Chemfuel"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (66, 0, 60) W=20000dL fluid=RM_Fluid_Chemfuel",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_1b9cb09cd7c94ff3ab258d38d679b296",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 39
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "67,60,1,RM_Fluid_Chemfuel"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (67, 0, 60) W=20000dL fluid=RM_Fluid_Chemfuel",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_1c6cd110e06448a79242aba9251d3de1",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 34
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "60,66,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (60, 0, 66) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_b95b6e2b2d0541b7b5d14400a7e18d3c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "61,66,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (61, 0, 66) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_c08db8f135034d94b17070a7fcaaf32c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "62,66,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (62, 0, 66) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_b9a711d4610343d3a9d297e99384e38a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "63,66,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (63, 0, 66) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_90cb0d01e6eb4c629b5d47706bae727e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "64,66,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (64, 0, 66) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_59a130a2ea0b455d849d5b9ffe148d71",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "65,66,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (65, 0, 66) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_4c8d71aa9e504efb968a9731abb30e56",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 39
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "66,66,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (66, 0, 66) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_6f8551f1733e466fa44df2a2fca975f5",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 39
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "67,66,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (67, 0, 66) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_6525e7db995b4ed698c8f040a5eb9d0a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 38
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/spawn_pawn",
+      "args": {
+        "kindDef": "Colonist",
+        "x": 66,
+        "z": 64,
+        "faction": "player",
+        "count": 1,
+        "xenotype": "Baseliner"
+      },
+      "result": {
+        "success": true,
+        "message": "Spawned 1/1 Colonist in faction PlayerColony as Baseliner.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "xenotypeRequested": "Baseliner",
+        "pawns": [
+          {
+            "ok": true,
+            "id": "Human21169",
+            "name": "Cait",
+            "kindRequested": "Colonist",
+            "kindActual": "Colonist",
+            "kindSubstituted": false,
+            "faction": "PlayerColony",
+            "hostile": false,
+            "x": 66,
+            "z": 64,
+            "spawned": true,
+            "xenotype": "Baseliner",
+            "xenotypeRequested": "Baseliner",
+            "xenotypeApplied": true
+          }
+        ],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_c38f3c9b7cb4463d9c44c985d1fea6f9",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 46
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/ordered_job",
+      "args": {
+        "pawnId": "Human21169",
+        "jobDef": "RM_TossFlame",
+        "targetAX": 66,
+        "targetAZ": 60
+      },
+      "result": {
+        "success": true,
+        "accepted": true,
+        "interruptibleBefore": true,
+        "requestedJobDef": "RM_TossFlame",
+        "afterJobDef": "RM_TossFlame",
+        "nowRunningRequested": true,
+        "ticksElapsed": 0,
+        "pausedDuringWait": true,
+        "queueLength": 0,
+        "operation": {
+          "OperationId": "op_4f3d339e1d304f7c97ea1025c5decd7f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 17387
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_LiquidFireProof",
+        "ProofCell",
+        "66,60"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCell(System.String)",
+        "result": "FIRECELL 66,60 burning=True pending=False due=-1 hops=-1 now=62",
+        "thingArgs": [],
+        "ticksGame": 62,
+        "operation": {
+          "OperationId": "op_a07a2e4c248c4c9e844c8cd325952ee7",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 41
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 62
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_things",
+      "args": {
+        "defName": "Fire",
+        "rect": "66,60,1,1"
+      },
+      "result": {
+        "success": true,
+        "things": [],
+        "scanned": 15103,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 4,
+        "perDef": {},
+        "ticksGame": 62,
+        "message": "NOTHING MATCHED. 15103 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+          "OperationId": "op_25d9cba484ea4e80b4ac88d5c5a6af1a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 62
+        }
+      }
+    },
+    {
+      "tool": "jawa/spawn_pawn",
+      "args": {
+        "kindDef": "Colonist",
+        "x": 66,
+        "z": 70,
+        "faction": "player",
+        "count": 1,
+        "xenotype": "Baseliner"
+      },
+      "result": {
+        "success": true,
+        "message": "Spawned 1/1 Colonist in faction PlayerColony as Baseliner.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "xenotypeRequested": "Baseliner",
+        "pawns": [
+          {
+            "ok": true,
+            "id": "Human21173",
+            "name": "Dude",
+            "kindRequested": "Colonist",
+            "kindActual": "Colonist",
+            "kindSubstituted": false,
+            "faction": "PlayerColony",
+            "hostile": false,
+            "x": 66,
+            "z": 70,
+            "spawned": true,
+            "xenotype": "Baseliner",
+            "xenotypeRequested": "Baseliner",
+            "xenotypeApplied": true
+          }
+        ],
+        "ticksGame": 62,
+        "operation": {
+          "OperationId": "op_0a324ddbfed748eda6ddc31d18a9cd3b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 44
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 62
+        }
+      }
+    },
+    {
+      "tool": "jawa/ordered_job",
+      "args": {
+        "pawnId": "Human21173",
+        "jobDef": "RM_TossFlame",
+        "targetAX": 66,
+        "targetAZ": 66
+      },
+      "result": {
+        "success": true,
+        "accepted": true,
+        "interruptibleBefore": true,
+        "requestedJobDef": "RM_TossFlame",
+        "afterJobDef": "RM_TossFlame",
+        "nowRunningRequested": true,
+        "ticksElapsed": 0,
+        "pausedDuringWait": true,
+        "queueLength": 0,
+        "operation": {
+          "OperationId": "op_c08a8be4b63f41d09102ec0e8f3bd723",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 17326
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 62
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_LiquidFireProof",
+        "ProofCell",
+        "66,66"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCell(System.String)",
+        "result": "FIRECELL 66,66 burning=False pending=False due=-1 hops=-1 now=122",
+        "thingArgs": [],
+        "ticksGame": 122,
+        "operation": {
+          "OperationId": "op_a8a8ac865855455b9ac9352e41699fff",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 39
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 122
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_things",
+      "args": {
+        "defName": "Fire",
+        "rect": "66,66,1,1"
+      },
+      "result": {
+        "success": true,
+        "things": [],
+        "scanned": 15111,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {},
+        "ticksGame": 122,
+        "message": "NOTHING MATCHED. 15111 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+          "OperationId": "op_7f7908559ab546d7a277119493202af4",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 122
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_LiquidFireProof",
+        "ProofCell",
+        "66,66"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCell(System.String)",
+        "result": "FIRECELL 66,66 burning=False pending=False due=-1 hops=-1 now=182",
+        "thingArgs": [],
+        "ticksGame": 182,
+        "operation": {
+          "OperationId": "op_3765e7ad93a04f9a9bc3364dc66976f0",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 50
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 182
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_things",
+      "args": {
+        "defName": "Fire",
+        "rect": "66,66,1,1"
+      },
+      "result": {
+        "success": true,
+        "things": [],
+        "scanned": 15112,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {},
+        "ticksGame": 182,
+        "message": "NOTHING MATCHED. 15112 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+          "OperationId": "op_5e7bb202ce96400499459b94b863a296",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 182
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_LiquidFireProof",
+        "ProofCell",
+        "66,66"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCell(System.String)",
+        "result": "FIRECELL 66,66 burning=False pending=False due=-1 hops=-1 now=242",
+        "thingArgs": [],
+        "ticksGame": 242,
+        "operation": {
+          "OperationId": "op_3b80ce5a2fe1428eb1539b67f743ffa8",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 46
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 242
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_things",
+      "args": {
+        "defName": "Fire",
+        "rect": "66,66,1,1"
+      },
+      "result": {
+        "success": true,
+        "things": [],
+        "scanned": 15113,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {},
+        "ticksGame": 242,
+        "message": "NOTHING MATCHED. 15113 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+          "OperationId": "op_8d7fc7f72d7843eeb817b6d2b09ca3b5",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 242
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_LiquidFireProof",
+        "ProofCell",
+        "66,66"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCell(System.String)",
+        "result": "FIRECELL 66,66 burning=False pending=False due=-1 hops=-1 now=302",
+        "thingArgs": [],
+        "ticksGame": 302,
+        "operation": {
+          "OperationId": "op_ab5973208b2947d1b667e54100831b4b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 42
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 302
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_things",
+      "args": {
+        "defName": "Fire",
+        "rect": "66,66,1,1"
+      },
+      "result": {
+        "success": true,
+        "things": [],
+        "scanned": 15114,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {},
+        "ticksGame": 302,
+        "message": "NOTHING MATCHED. 15114 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+          "OperationId": "op_b5579cd3351c4f2ab7702124139c3457",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 302
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_LiquidFireProof",
+        "ProofCell",
+        "66,66"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCell(System.String)",
+        "result": "FIRECELL 66,66 burning=False pending=False due=-1 hops=-1 now=362",
+        "thingArgs": [],
+        "ticksGame": 362,
+        "operation": {
+          "OperationId": "op_8b87877aeebc48b4a277c41da9663da9",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 362
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_things",
+      "args": {
+        "defName": "Fire",
+        "rect": "66,66,1,1"
+      },
+      "result": {
+        "success": true,
+        "things": [],
+        "scanned": 15114,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {},
+        "ticksGame": 362,
+        "message": "NOTHING MATCHED. 15114 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+          "OperationId": "op_131d6cb447354395a73d4d5b1c52246f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 362
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_LiquidFireProof",
+        "ProofCell",
+        "66,66"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCell(System.String)",
+        "result": "FIRECELL 66,66 burning=False pending=False due=-1 hops=-1 now=422",
+        "thingArgs": [],
+        "ticksGame": 422,
+        "operation": {
+          "OperationId": "op_afcbbc14ab4f4b55a0ad2ccf685fcf94",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 422
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_things",
+      "args": {
+        "defName": "Fire",
+        "rect": "66,66,1,1"
+      },
+      "result": {
+        "success": true,
+        "things": [],
+        "scanned": 15114,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {},
+        "ticksGame": 422,
+        "message": "NOTHING MATCHED. 15114 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+          "OperationId": "op_f3e3ff016bc542f6924eb1c862aa1182",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 422
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_LiquidFireProof",
+        "ProofCell",
+        "66,66"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCell(System.String)",
+        "result": "FIRECELL 66,66 burning=False pending=False due=-1 hops=-1 now=482",
+        "thingArgs": [],
+        "ticksGame": 482,
+        "operation": {
+          "OperationId": "op_b61d0cac2c234f8bb0993e7503deadec",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 34
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 482
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_things",
+      "args": {
+        "defName": "Fire",
+        "rect": "66,66,1,1"
+      },
+      "result": {
+        "success": true,
+        "things": [],
+        "scanned": 15116,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {},
+        "ticksGame": 482,
+        "message": "NOTHING MATCHED. 15116 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+          "OperationId": "op_87e6e6f2851b401dbf0f40ec44e279dd",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 482
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_LiquidFireProof",
+        "ProofCell",
+        "66,66"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCell(System.String)",
+        "result": "FIRECELL 66,66 burning=False pending=False due=-1 hops=-1 now=542",
+        "thingArgs": [],
+        "ticksGame": 542,
+        "operation": {
+          "OperationId": "op_7103b61b4a0b43e5ad7a56beb2b1582d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 542
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_things",
+      "args": {
+        "defName": "Fire",
+        "rect": "66,66,1,1"
+      },
+      "result": {
+        "success": true,
+        "things": [],
+        "scanned": 15116,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {},
+        "ticksGame": 542,
+        "message": "NOTHING MATCHED. 15116 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+          "OperationId": "op_b75ab43f24094cbb9f301ad798bb6bd3",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 542
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_LiquidFireProof",
+        "ProofCell",
+        "66,66"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCell(System.String)",
+        "result": "FIRECELL 66,66 burning=False pending=False due=-1 hops=-1 now=602",
+        "thingArgs": [],
+        "ticksGame": 602,
+        "operation": {
+          "OperationId": "op_279a616086ac4d81967bda087bdfaa0e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 44
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 602
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_things",
+      "args": {
+        "defName": "Fire",
+        "rect": "66,66,1,1"
+      },
+      "result": {
+        "success": true,
+        "things": [],
+        "scanned": 15116,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {},
+        "ticksGame": 602,
+        "message": "NOTHING MATCHED. 15116 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+          "OperationId": "op_3ecd0bf5f0b04440a6029e848624b01c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 602
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_LiquidFireProof",
+        "ProofCell",
+        "66,66"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCell(System.String)",
+        "result": "FIRECELL 66,66 burning=False pending=False due=-1 hops=-1 now=662",
+        "thingArgs": [],
+        "ticksGame": 662,
+        "operation": {
+          "OperationId": "op_37dfcdb917ee43428d7df990b9f5c55f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 44
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 662
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_things",
+      "args": {
+        "defName": "Fire",
+        "rect": "66,66,1,1"
+      },
+      "result": {
+        "success": true,
+        "things": [],
+        "scanned": 15116,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {},
+        "ticksGame": 662,
+        "message": "NOTHING MATCHED. 15116 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+          "OperationId": "op_937fa78827d6497d8809451b1a12dd38",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 662
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_LiquidFireProof",
+        "ProofCell",
+        "66,66"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCell(System.String)",
+        "result": "FIRECELL 66,66 burning=False pending=False due=-1 hops=-1 now=722",
+        "thingArgs": [],
+        "ticksGame": 722,
+        "operation": {
+          "OperationId": "op_a74b480b32be4b9da1289424932c2fae",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 38
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 722
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_things",
+      "args": {
+        "defName": "Fire",
+        "rect": "66,66,1,1"
+      },
+      "result": {
+        "success": true,
+        "things": [],
+        "scanned": 15117,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {},
+        "ticksGame": 722,
+        "message": "NOTHING MATCHED. 15117 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+          "OperationId": "op_0a6fea379f39403b8c59c84fd88e9f03",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 722
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_LiquidFireProof",
+        "ProofCell",
+        "66,66"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCell(System.String)",
+        "result": "FIRECELL 66,66 burning=False pending=False due=-1 hops=-1 now=782",
+        "thingArgs": [],
+        "ticksGame": 782,
+        "operation": {
+          "OperationId": "op_15584d2fc15146e1aa8763ec2b314006",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 782
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_things",
+      "args": {
+        "defName": "Fire",
+        "rect": "66,66,1,1"
+      },
+      "result": {
+        "success": true,
+        "things": [],
+        "scanned": 15117,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {},
+        "ticksGame": 782,
+        "message": "NOTHING MATCHED. 15117 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+          "OperationId": "op_063d553e7c004b9b8ea8b79c8a4f0205",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 782
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_LiquidFireProof",
+        "ProofCell",
+        "66,66"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCell(System.String)",
+        "result": "FIRECELL 66,66 burning=False pending=False due=-1 hops=-1 now=842",
+        "thingArgs": [],
+        "ticksGame": 842,
+        "operation": {
+          "OperationId": "op_76572a707be6432c9d9dad607cdb8ae9",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 40
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 842
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_things",
+      "args": {
+        "defName": "Fire",
+        "rect": "66,66,1,1"
+      },
+      "result": {
+        "success": true,
+        "things": [],
+        "scanned": 15117,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {},
+        "ticksGame": 842,
+        "message": "NOTHING MATCHED. 15117 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+          "OperationId": "op_d5eb46b979f44e0d84f2e70a31b84fde",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 842
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_LiquidFireProof",
+        "ProofCell",
+        "66,66"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCell(System.String)",
+        "result": "FIRECELL 66,66 burning=False pending=False due=-1 hops=-1 now=902",
+        "thingArgs": [],
+        "ticksGame": 902,
+        "operation": {
+          "OperationId": "op_20d082e414b544ec8c4949e5dac2e709",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 902
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_things",
+      "args": {
+        "defName": "Fire",
+        "rect": "66,66,1,1"
+      },
+      "result": {
+        "success": true,
+        "things": [],
+        "scanned": 15117,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {},
+        "ticksGame": 902,
+        "message": "NOTHING MATCHED. 15117 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+          "OperationId": "op_a84b235883b945f9bd9622a6520535a4",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 902
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_LiquidFireProof",
+        "ProofCell",
+        "66,66"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCell(System.String)",
+        "result": "FIRECELL 66,66 burning=False pending=False due=-1 hops=-1 now=962",
+        "thingArgs": [],
+        "ticksGame": 962,
+        "operation": {
+          "OperationId": "op_947d455b77744673827d901e228dc8ab",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 962
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_things",
+      "args": {
+        "defName": "Fire",
+        "rect": "66,66,1,1"
+      },
+      "result": {
+        "success": true,
+        "things": [],
+        "scanned": 15117,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {},
+        "ticksGame": 962,
+        "message": "NOTHING MATCHED. 15117 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+          "OperationId": "op_c2e69b69ea0341ea8910ba7c52f501f1",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 962
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_LiquidFireProof",
+        "ProofCell",
+        "66,66"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCell(System.String)",
+        "result": "FIRECELL 66,66 burning=False pending=False due=-1 hops=-1 now=1022",
+        "thingArgs": [],
+        "ticksGame": 1022,
+        "operation": {
+          "OperationId": "op_55db5a4cb1fb4df29bd2602f92ef98f3",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1022
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_things",
+      "args": {
+        "defName": "Fire",
+        "rect": "66,66,1,1"
+      },
+      "result": {
+        "success": true,
+        "things": [],
+        "scanned": 15117,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {},
+        "ticksGame": 1022,
+        "message": "NOTHING MATCHED. 15117 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+          "OperationId": "op_f5f3e87dc6f94328b2788b88361a81a7",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1022
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_LiquidFireProof",
+        "ProofCell",
+        "66,66"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCell(System.String)",
+        "result": "FIRECELL 66,66 burning=False pending=False due=-1 hops=-1 now=1082",
+        "thingArgs": [],
+        "ticksGame": 1082,
+        "operation": {
+          "OperationId": "op_6488ae5da91745c98b3985803a12e191",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 40
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1082
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_things",
+      "args": {
+        "defName": "Fire",
+        "rect": "66,66,1,1"
+      },
+      "result": {
+        "success": true,
+        "things": [],
+        "scanned": 15117,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {},
+        "ticksGame": 1082,
+        "message": "NOTHING MATCHED. 15117 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+          "OperationId": "op_2ddee7396fc8470abf6d7e70f3e30071",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1082
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_LiquidFireProof",
+        "ProofCell",
+        "66,66"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCell(System.String)",
+        "result": "FIRECELL 66,66 burning=False pending=False due=-1 hops=-1 now=1142",
+        "thingArgs": [],
+        "ticksGame": 1142,
+        "operation": {
+          "OperationId": "op_29115301338e4320aa7643ef8d8ec467",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 41
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1142
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_things",
+      "args": {
+        "defName": "Fire",
+        "rect": "66,66,1,1"
+      },
+      "result": {
+        "success": true,
+        "things": [],
+        "scanned": 15117,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {},
+        "ticksGame": 1142,
+        "message": "NOTHING MATCHED. 15117 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+          "OperationId": "op_723179a1d6974cde9eb734cc7b1172ec",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1142
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_LiquidFireProof",
+        "ProofCell",
+        "66,66"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCell(System.String)",
+        "result": "FIRECELL 66,66 burning=False pending=False due=-1 hops=-1 now=1202",
+        "thingArgs": [],
+        "ticksGame": 1202,
+        "operation": {
+          "OperationId": "op_b8564e52bd9a4fdaba412c9b2f16636d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 38
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1202
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_things",
+      "args": {
+        "defName": "Fire",
+        "rect": "66,66,1,1"
+      },
+      "result": {
+        "success": true,
+        "things": [],
+        "scanned": 15117,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {},
+        "ticksGame": 1202,
+        "message": "NOTHING MATCHED. 15117 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+          "OperationId": "op_2eb5433ba82441e08be2841de781677b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1202
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_LiquidFireProof",
+        "ProofCell",
+        "66,66"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCell(System.String)",
+        "result": "FIRECELL 66,66 burning=False pending=False due=-1 hops=-1 now=1262",
+        "thingArgs": [],
+        "ticksGame": 1262,
+        "operation": {
+          "OperationId": "op_b6f1be9fe6584fd59068088abd3c850c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 45
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1262
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_things",
+      "args": {
+        "defName": "Fire",
+        "rect": "66,66,1,1"
+      },
+      "result": {
+        "success": true,
+        "things": [],
+        "scanned": 15118,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {},
+        "ticksGame": 1262,
+        "message": "NOTHING MATCHED. 15118 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+          "OperationId": "op_60aea3c493ba4ccfbec33d2941bd421f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 50
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1262
+        }
+      }
+    }
+  ],
+  "site": {
+    "site": "calm",
+    "save": "RM_TestSite_calm_v3",
+    "utc": "2026-11-21T16:32:24Z",
+    "problems": [],
+    "load_s": 4.6,
+    "quietMap": {
+      "profile": "quiet_site",
+      "suite": "isolated",
+      "row": "test_site_saves_load_calm",
+      "topic": null,
+      "controls": [
+        {
+          "name": "threat_structures_cleared",
+          "what": "hostile threat structures vanished at setup (vitals classifier: turret, spawner, dormant, condition causer, non-humanlike faction); keep_defs spared",
+          "hides": "hive/infestation/mech-cluster interactions; insect-faction behaviour on the site",
+          "readBack": {
+            "removed": [],
+            "threatsAfter": 0,
+            "kept": 0,
+            "errors": []
+          }
+        },
+        {
+          "name": "hostiles_removed",
+          "what": "hostile pawns present at setup removed by Vanish (no death action, no corpse)",
+          "hides": "combat interactions with the mod's things",
+          "readBack": {
+            "acted": 0,
+            "residue": []
+          }
+        },
+        {
+          "name": "proximity_letters_sent",
+          "what": "every CompProximityLetter marked sent (the mapgen void monolith's 'Fallen monolith')",
+          "hides": "the Anomaly monolith discovery letter and any mod building's proximity letter",
+          "readBack": {
+            "letters": [
+              [
+                "VoidMonolith",
+                "Fallen monolith",
+                true
+              ]
+            ],
+            "unsentAfter": 0
+          }
+        },
+        {
+          "name": "modal_broker",
+          "what": "explicit window handlers only (MODAL_HANDLERS); an unknown force-pause window is CAPTURED and blocks the row, never closed blindly; the same window still open after its handler escalates",
+          "hides": "the handled dialog's other choices (VEF new-faction: 'Do nothing' means the faction is not spawned)",
+          "readBack": {
+            "handled": [],
+            "unknown": []
+          }
+        }
+      ],
+      "notSuppressed": [
+        "active quests and their parts (never ended by default: ending a quest changes the world)",
+        "scenario parts (ScenPart_CreateIncident ticks outside the storyteller)",
+        "existing game conditions, map/world/game components and mod tickers",
+        "hives and other pawn-spawning structures, births, egg hatching, breeders",
+        "pending drop pods / shuttles / transporters, caravans and world pawns arriving",
+        "weather transitions, fires, existing hostile behaviour"
+      ],
+      "keepDefs": [],
+      "events": [],
+      "problems": [],
+      "verify": null,
+      "arrivals": [],
+      "note": "enableStoryteller is not saved with the game: re-apply after any load"
+    },
+    "sky": {
+      "weather": [
+        {
+          "after": "Clear",
+          "ok": true
+        },
+        {
+          "after": "Clear",
+          "ok": true
+        }
+      ],
+      "extinguished": 0,
+      "strayFires": 0,
+      "verified": true,
+      "error": null
+    },
+    "check": {
+      "site": "calm",
+      "utc": "2026-11-21T16:32:32Z",
+      "problems": [],
+      "map": {
+        "tile": 112579,
+        "mapId": 0,
+        "sizeX": 250,
+        "sizeZ": 250,
+        "mapBiome": "AridShrubland",
+        "outdoorTempNow": 13.9428368
+      },
+      "foggedCells": 0,
+      "triggers": 0,
+      "danger": [],
+      "ruins": 0,
+      "hostiles": [],
+      "threatStructures": [],
+      "fires": 0,
+      "weather": {
+        "current": "Clear",
+        "rainRate": 0.0
+      },
+      "colonists": [
+        [
+          "Human475",
+          false
+        ],
+        [
+          "Human478",
+          false
+        ],
+        [
+          "Human483",
+          false
+        ]
+      ],
+      "verified": true
+    },
+    "ready_s": 9.7,
+    "verified": true
+  },
+  "scene": "scene_toss_flame",
+  "rows": [
+    {
+      "id": "TOSS_picked_square_lights_first",
+      "status": "PASS",
+      "kind": "MOD",
+      "detail": "({'success': True, 'accepted': True, 'interruptibleBefore': True, 'requestedJobDef': 'RM_TossFlame', 'afterJobDef': 'RM_TossFlame', 'nowRunningRequested': True, 'ticksElapsed': 0, 'pausedDuringWait': True, 'queueLength': 0, 'operation': {'OperationId': 'op_4f3d339e1d304f7c97ea1025c5decd7f', 'Status': 'Completed', 'Success': True, 'DurationMs': 17387}, 'state': {'programState': 'Playing', 'hasCurre"
+    },
+    {
+      "id": "TOSS_control_water_twin_stays_dark",
+      "status": "PASS",
+      "kind": "MOD",
+      "detail": "({'success': True, 'accepted': True, 'interruptibleBefore': True, 'requestedJobDef': 'RM_TossFlame', 'afterJobDef': 'RM_TossFlame', 'nowRunningRequested': True, 'ticksElapsed': 0, 'pausedDuringWait': True, 'queueLength': 0, 'operation': {'OperationId': 'op_c08a8be4b63f41d09102ec0e8f3bd723', 'Status': 'Completed', 'Success': True, 'DurationMs': 17326}, 'state': {'programState': 'Playing', 'hasCurre"
+    }
+  ],
+  "status": "PASS",
+  "finished": 1795278828.14242
+}
