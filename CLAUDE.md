@@ -337,6 +337,25 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 - A mod's gaps still go through the stages.
 - Full text: `design/RimMandrake/standing_rulings.md` §The pipeline fixes its own defects.
 
+## A fault of form is repaired where it is found; it never stops the work
+
+- This rule applies to every gate, hook, tool, tick and brief, and to every agent and program that they check.
+- A fault of form is a fault in how work is presented: a name, a flag, a missing paste, a missing section, a stale
+  stamp, a file that a tool can make, a format.
+- A fault of substance is a fault in the work: the mod is wrong, the test is wrong, the run died, the machine failed.
+- A gate that finds a fault of form does one of two things, in this order:
+  - the tool repairs the fault itself, writes a note, and the work continues;
+  - the tool returns the fault and its repair to the same agent, in the same run. The agent repairs it and does the
+    act again at once, with its context.
+- A fault of form never counts as a system fault. It never pauses a mod, voids a run, spends a trial or waits for a
+  hand. A program never sends the same refused input again unchanged.
+- A verdict about a mod reads the mod. A fault of form in the paperwork around a run is never a reason to call the
+  run's result unknown.
+- Only a fault of substance may stop work. The stop names the fault and who repairs it, and starts that repair.
+- If you find a gate that breaks this rule on a pipeline path, repair the gate in the same run.
+- Item: `RIMMANDRAKE_REPAIR_AT_THE_REFUSAL_NO_STOP_FOR_UNTIED_SHOES`. Full text:
+  `design/RimMandrake/standing_rulings.md` §A fault of form is repaired where it is found.
+
 ## Touching code has a cost; if you see it, do it
 
 - This rule applies to fixers, reviewers and judges. It applies to each pipeline monitor before it files. The rule
