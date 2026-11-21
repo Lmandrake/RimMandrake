@@ -781,34 +781,86 @@ def islands(ctx):
         row("SB_islands_restore_ground_ordered", "PASS" if good else "FAIL", {"read": txt})
 
 
-def reach_verdict(depth0, can_reach, depths, tracked_after):
-    """MIDCHANNEL_ISLAND_FILL_REACH_UNMEASURED: the row's verdict from what the live run read. A square in the MIDDLE of a dug
-    channel (every neighbour dug too) is what an island is made of; Designator_RestoreGround says "use it for a ground island
-    in a hole", so a colonist must reach it from the bank and fill it all the way back, with no bridge first.
-    -> (status, outcome, why). outcome is the measured answer the item asks for: "reached_and_grounded",
-    "reached_not_grounded" or "needs_bridge_first" (the fill job's Touch end cannot be reached from the bank)."""
-    if can_reach is not True:
-        return "FAIL", "needs_bridge_first", "a colonist on the bank cannot touch the mid-channel square (canReach=%s)" % can_reach
-    last = depths[-1] if depths else depth0
-    if last == 0 and tracked_after is False:
-        return "PASS", "reached_and_grounded", "filled %s -> 0 in %d jobs and the restore let go of it" % (depth0, len(depths))
-    if last == 0:
-        return "FAIL", "reached_and_grounded", "ground again but the restore still tracks the square"
-    return "FAIL", "reached_not_grounded", "reachable, but the square stopped at depth %s of %s" % (last, depth0)
+LABOUR_REACH = 0.25   # digLabourMultiplier for this row only (restored after): it judges reach and grounding, not the fill's
+                      # time; at 1.0 sixteen notches of fill do not fit one 540 s run (holder sub-run 5, 2026-11-20)
+
+
+def reach_verdict(depth0, lone_reach, edge, mid):
+    """RIMMANDRAKE_TRACE_FLOWWORKS_ISLAND_RESTORE_OUT_OF_BANK_REACH (re-pin of MIDCHANNEL_ISLAND_FILL_REACH_UNMEASURED).
+    The old row ordered Restore on the LONE middle square of a 4 m cut and asked a bank colonist to touch it. That reach is
+    impossible by the owner's climb rule (2026-10-12: "Three or more traps"; RM_PitTrapMath.StepAllowed |dD| <= K, a person K 2,
+    "nobody jumps a cliff on purpose") and the fill job's Touch end (WorkGiver_FillInCanal: PathEndMode.Touch, a stand square
+    next to the target, all of them 8 notches down). Visit 2 read exactly that refusal (canReach=False). So the row now
+    asserts the refusal AND the route a player has: Restore a causeway from the bank (edge square, then the middle one).
+    edge / mid: {"can": canReach read just before that square's fills, "depths": [depth after each job], "tracked": bool}.
+    -> (status, outcome, why)."""
+    if lone_reach is not False:
+        return ("FAIL", "lone_square_reach_says_yes" if lone_reach else "lone_square_unread",
+                "the lone mid square, every neighbour 8 notches down, read canReach=%s (the climb rule says no)" % lone_reach)
+    for name, sq in (("edge", edge), ("mid", mid)):
+        if sq.get("can") is not True:
+            return ("FAIL", "needs_bridge_first" if name == "edge" else "mid_unreachable_after_edge",
+                    "the %s square: canReach=%s%s" % (name, sq.get("can"), "" if name == "edge" else " with the edge grounded"))
+        last = sq["depths"][-1] if sq.get("depths") else depth0
+        if last != 0:
+            return "FAIL", "reached_not_grounded", "the %s square stopped at depth %s of %s" % (name, last, depth0)
+        if sq.get("tracked") is not False:
+            return "FAIL", "reached_and_grounded", "the %s square is ground again but the restore still tracks it (%s)" % (
+                name, sq.get("tracked"))
+    return ("PASS", "reached_and_grounded", "lone mid refused; causeway edge %s -> 0 in %d jobs, mid %s -> 0 in %d jobs, both let go"
+            % (depth0, len(edge["depths"]), depth0, len(mid["depths"])))
 
 
 def reach(ctx):
-    """MIDCHANNEL_ISLAND_FILL_REACH_UNMEASURED: can a colonist reach a square in the middle of a dug channel and Restore ground
-    it, or must a bridge go first? A 7x3 channel at x 28..34, z 86..88 (clear of every other section), all DEEP; the middle
-    square (31,87) has only dug neighbours. Restore ground is ordered on it, a shovelled colonist stands on the bank 2 south,
-    gravel beside it; each fill job is ORDERED (an idle colonist's own scan is not this row's question: extensions.py, the
-    2026-10-11 unprompted-pickup run) and the restore component puts the fill order back after each one."""
+    """Island restore reach (reach_verdict says why the row is a causeway). A 7x3 channel at x 28..34, z 86..88, all DEEP;
+    the middle square M (31,87) has only dug neighbours, the edge square E (31,86) borders the bank. Restore ground is ordered
+    on E..M, a shovelled colonist stands on the bank at (31,84), gravel beside it. M is probed first (must be refused), then
+    each square is filled by ORDERED jobs (an idle colonist's own scan is not this row's question: extensions.py, the
+    2026-10-11 unprompted-pickup run); the restore component puts the fill order back after each one."""
     P0, xz, row, proof, dig, B = (ctx[k] for k in ("P", "xz", "row", "proof", "dig", "B"))
     P = lambda x, z: P0(x + 28, z)  # noqa: E731
-    mid, bank, pile = P(3, 87), P(3, 84), P(5, 84)
+    mid, edge, bank, pile = P(3, 87), P(3, 86), P(3, 84), P(5, 84)
+    ST = "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings"
 
     def depth(c):
         return (B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=0, setBodyWaterM=-1) or {}).get("depth")
+
+    def probe(c):
+        pr = B.call("jawa/flowworks_job_probe", x=c[0], z=c[1], kind="fillin", pawnId=pid) or {}
+        V.require(pr.get("success") and pr.get("designationPresent") is True, "the fill probe read the order at %s" % xz(c),
+                  str(pr)[:200], cls="HARNESS")
+        return (pr.get("pawn") or {}).get("canReach"), pr.get("workGiver") or {}
+
+    def fill(c):
+        out = {"depths": [], "jobs": []}
+        out["can"], out["wg"] = probe(c)
+        if out["can"] is not True:
+            return out
+        for _ in range(DEEP + 2):
+            d = depth(c)
+            if d == 0:
+                break
+            gv = (B.call("jawa/list_things", defName="RM_Gravel", limit=50) or {}).get("things") or []
+            if not V.require(gv, "gravel left to fill with", str(gv)[:120], cls="HARNESS"):
+                break  # require() records the fault and returns False; it does not raise
+            od = B.call("jawa/ordered_job", pawnId=pid, jobDef="RM_FillInCanalJob", targetAX=c[0], targetAZ=c[1],
+                        targetBId=gv[0].get("id"), count=1, waitTicks=0) or {}
+            out["jobs"].append(bool(od.get("accepted")))
+            if not od.get("accepted"):
+                break
+            t = 0   # a fill is hours of shovel work (DIG_FILL_TUNE_HOURS_OF_SHOVEL_WORK); 15000 ticks is 6 h at labour 1.0
+            while t < 15000 and depth(c) == d:
+                ctx["ticks"](500)
+                t += 500
+            out["depths"].append(depth(c))
+            if out["depths"][-1] == d:
+                break
+            ctx["ticks"](300)   # the restore component (every 250 ticks) puts the fill order back
+        if out["depths"] and out["depths"][-1] == 0:
+            ctx["ticks"](300)
+            _kv, txt2 = proof("ProofRestore", "%s;%s" % (xz(c), xz(c)))
+            out["tracked"], out["restoreAfter"] = "Already being restored" in txt2, txt2[:120]
+        return out
 
     with V.scope("SB_islands_restore_reach"):
         for x in range(0, 7):
@@ -817,53 +869,31 @@ def reach(ctx):
         d0 = depth(mid)
         V.require(d0 == DEEP and all(depth(P(x, z)) == DEEP for x in (2, 3, 4) for z in (86, 88)) and depth(P(2, 87)) == DEEP
                   and depth(P(4, 87)) == DEEP, "the channel is dug around the middle square", "mid depth %s" % d0, cls="SITE")
-        kv, txt = proof("ProofRestore", "%s;%s" % (xz(mid), xz(mid)))
-        V.require(kv.get("accepted") == "1" and kv.get("fillOrders") == "1", "Restore ground ordered on the middle square", txt)
+        kv, txt = proof("ProofRestore", "%s;%s" % (xz(edge), xz(mid)))
+        V.require(kv.get("accepted") == "2" and kv.get("fillOrders") == "2", "Restore ground ordered on the causeway", txt)
         pid = ctx["spawn"](bank)
         V.require(pid, "a colonist on the bank", str(pid), cls="HARNESS")
         sh = B.call("jawa/pawn_gear", **{"pawn": str(pid), "action": "inventory", "def": "RM_Shovel", "stuff": "WoodLog",
                                           "count": 1}) or {}
         V.require(sh.get("success"), "shovel in the colonist's pack", str(sh)[:160], cls="HARNESS")
-        B.call("rimworld/spawn_thing", defName="RM_Gravel", stackCount=DEEP + 4, x=pile[0], z=pile[1])
-        ctx["ticks"](2)
-        probe = B.call("jawa/flowworks_job_probe", x=mid[0], z=mid[1], kind="fillin", pawnId=pid) or {}
-        V.require(probe.get("success") and probe.get("designationPresent") is True, "the fill probe read the order",
-                  str(probe)[:200], cls="HARNESS")
-        can = (probe.get("pawn") or {}).get("canReach")
-        wg = probe.get("workGiver") or {}
-        depths, jobs = [], []
-        if can is True:
-            for _ in range(DEEP + 2):
-                d = depth(mid)
-                if d == 0:
-                    break
-                gv = [t for t in ((B.call("jawa/list_things", defName="RM_Gravel", limit=50) or {}).get("things") or [])]
-                if not V.require(gv, "gravel left to fill with", str(gv)[:120], cls="HARNESS"):
-                    break  # require() records the fault and returns False; it does not raise
-                od = B.call("jawa/ordered_job", pawnId=pid, jobDef="RM_FillInCanalJob", targetAX=mid[0], targetAZ=mid[1],
-                            targetBId=gv[0].get("id"), count=1, waitTicks=0) or {}
-                jobs.append(bool(od.get("accepted")))
-                if not od.get("accepted"):
-                    break
-                t = 0   # a fill is hours of shovel work (DIG_FILL_TUNE_HOURS_OF_SHOVEL_WORK), deeper notches longer: 6 h a job
-                while t < 15000 and depth(mid) == d:
-                    ctx["ticks"](1000)
-                    t += 1000
-                depths.append(depth(mid))
-                if depths[-1] == d:
-                    break
-                ctx["ticks"](300)   # the restore component (every 250 ticks) puts the fill order back
-        tracked = None
-        if depths and depths[-1] == 0:
-            ctx["ticks"](300)
-            kv2, txt2 = proof("ProofRestore", "%s;%s" % (xz(mid), xz(mid)))
-            # a square still tracked refuses a new order with "Already being restored."; tracked= counts the whole map
-            tracked = "Already being restored" in txt2
-        st, outcome, why = reach_verdict(d0, can, depths, tracked if depths else None)
-        row("SB_islands_restore_reach", st, {"outcome": outcome, "why": why, "canReach": can, "depth0": d0, "depths": depths,
-                                             "jobsAccepted": jobs, "hasJobOnCell": wg.get("hasJobOnCell"),
-                                             "jobDef": wg.get("jobDef"), "failReason": wg.get("failReason"),
-                                             "claim": "a colonist reaches a mid-channel dug square and Restore grounds it"})
+        B.call("rimworld/spawn_thing", defName="RM_Gravel", stackCount=2 * DEEP + 4, x=pile[0], z=pile[1])
+        prior = (B.call("jawa/mod_settings_field", typeName=ST, field="digLabourMultiplier", action="get") or {}).get("value")
+        V.require(prior is not None, "the labour setting reads", str(prior), cls="HARNESS")
+        B.call("jawa/mod_settings_field", typeName=ST, field="digLabourMultiplier", action="set", value=str(LABOUR_REACH))
+        try:
+            ctx["ticks"](2)
+            lone, lone_wg = probe(mid)
+            e = fill(edge)
+            m = fill(mid) if e.get("depths") and e["depths"][-1] == 0 else {"depths": [], "jobs": [], "can": None}
+        finally:
+            B.call("jawa/mod_settings_field", typeName=ST, field="digLabourMultiplier", action="set", value=str(prior))
+        st, outcome, why = reach_verdict(d0, lone, e, m)
+        strip = lambda q: {k: v for k, v in q.items() if k != "wg"}  # noqa: E731
+        row("SB_islands_restore_reach", st, {"outcome": outcome, "why": why, "depth0": d0, "loneMidCanReach": lone,
+                                             "loneMidHasJobOnCell": lone_wg.get("hasJobOnCell"),
+                                             "edge": strip(e), "mid": strip(m), "labour": LABOUR_REACH,
+                                             "claim": "the lone mid square is refused (climb rule) and a bank colonist grounds "
+                                                      "the causeway edge then the mid square by Restore"})
 
 
 SECTIONS = {"posts": None, "grate": grate, "underpass": underpass, "waters": waters, "jetty": jetty, "looks": looks,
@@ -877,7 +907,7 @@ class FakeBridge(object):
     def __init__(self):
         self.next_id, self.calls, self.reads, self.tags, self.last_tier, self.span = 1000, [], 0, {}, "", 0
         self.shot, self.fell, self.under_shallow, self.dug, self.hp = 0, 0, {}, {}, 0
-        self.depth = {}
+        self.depth, self.settings = {}, {}
 
     def call(self, tool, **kw):
         method = tool
@@ -892,8 +922,17 @@ class FakeBridge(object):
             self.depth[cell] = self.depth.get(cell, 0) + (kw.get("deepenLevels") or 0)
             return {"success": True}
         if method == "jawa/flowworks_job_probe":
-            return {"success": True, "designationPresent": True, "pawn": {"canReach": True},
-                    "workGiver": {"hasJobOnCell": True, "jobDef": "RM_FillInCanalJob"}}
+            # the climb rule (RM_PitTrapMath.StepAllowed, a person K 2) and the fill job's Touch end: reachable when a square
+            # next to the target is within 2 notches of the bank; reach_fault "yes"/"no" plants a reach veto that lies
+            c = (kw.get("x"), kw.get("z"))
+            can = any(self.depth.get((c[0] + i, c[1] + j), 0) <= 2 for i in (-1, 0, 1) for j in (-1, 0, 1) if i or j)
+            can = {"yes": True, "no": False}.get(FakeBridge.reach_fault, can)
+            return {"success": True, "designationPresent": True, "pawn": {"canReach": can},
+                    "workGiver": {"hasJobOnCell": can, "jobDef": "RM_FillInCanalJob"}}
+        if method == "jawa/mod_settings_field":
+            if kw.get("action") == "set":
+                self.settings[kw.get("field")] = kw.get("value")
+            return {"success": True, "value": self.settings.get(kw.get("field"), "1")}
         if method == "jawa/ordered_job":                                    # one fill job: half a metre back
             cell = (kw.get("targetAX"), kw.get("targetAZ"))
             self.depth[cell] = max(0, self.depth.get(cell, 0) - 1)
@@ -932,6 +971,7 @@ class FakeBridge(object):
         return {"success": True}
 
     ox, floor_z = 140, 140
+    reach_fault = None       # selftest_suspension_bridge_reach plants "yes" / "no"
     tier_decks = {"timber": 6}
 
     def static(self, m, arg):
@@ -957,6 +997,8 @@ class FakeBridge(object):
                 if self.depth.get(tuple(int(v) for v in a.split(",")), 0) == 0:
                     return "RESTORE accepted=0 refused=1 tracked=4 fillOrders=0 first=refused"
                 return "RESTORE accepted=1 refused=0 tracked=5 fillOrders=1 first=-"
+            if a.split(",")[0] == b.split(",")[0]:              # SB_islands_restore_reach: the causeway, edge then middle
+                return "RESTORE accepted=2 refused=0 tracked=6 fillOrders=2 first=-"
             return "RESTORE accepted=4 refused=0 tracked=4 fillOrders=4 first=-"
         if m == "ProofPath":
             return "PATH found=True cells=9 decked=6"
