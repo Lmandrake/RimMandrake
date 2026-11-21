@@ -1,0 +1,40 @@
+{
+ "sheet": "flowworks_water_by_depth.html",
+ "looked_by": "judge:claude-opus-5-5",
+ "when": "2026-11-20T19:03:42-0800",
+ "caught": "Two naive Opus judges read it: CLEAR's description said 'dark with depth' while its 5-8 m tiles are lighter (rewritten); things were cut at the opaque outline so every depth looked deeper (now cut by the game's rule, drawn quad from the foot); the page now says the four grounds differ only at the bank and walls. A new selftest also caught FIRM/AQUA/AQUA_SOFT tinting a point at the waterline (fixed).",
+ "criteria": [
+  "renders, and is recognisable as the named thing",
+  "every candidate in a question depicts the same object",
+  "coupled states are offered as sets",
+  "does not repeat a ruling he already made"
+ ],
+ "rows": {
+  "SHIPPED": {
+   "fp": "fd732f1685c5a453",
+   "verdict": "OK",
+   "note": "Renders; matches today's law (calibrated to the 11-12 capture within 0.011/channel); 0.2 m reads like the dry pit, which is his complaint."
+  },
+  "FIRM": {
+   "fp": "a3c34e3989c2d627",
+   "verdict": "OK",
+   "note": "Renders; same blue as SHIPPED, visibly water from 0.2 m."
+  },
+  "AQUA": {
+   "fp": "16e3ba07c3b1be6b",
+   "verdict": "OK",
+   "note": "Renders; aqua at the edge to navy at depth; differs from AQUA_SOFT (stronger at every depth)."
+  },
+  "AQUA_SOFT": {
+   "fp": "dab9a35aaa3d0b5c",
+   "verdict": "OK",
+   "note": "Renders; AQUA's colours at FIRM's strength, close to AQUA but not identical."
+  },
+  "CLEAR": {
+   "fp": "2d47f69afb39d083",
+   "verdict": "FIXED",
+   "note": "FIXED: description rewritten to match the picture (darkest dark teal near 2 m, own blue deeper); fresh reader confirmed."
+  }
+ },
+ "dropped": []
+}

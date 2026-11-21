@@ -1,0 +1,262 @@
+[
+ {
+  "key": "SHIPPED",
+  "name": "Ships now (approved 11-13)",
+  "what": "Today's law, unchanged since his 11-13 approval: one dark blue sheet that thickens with depth.",
+  "hides_line": "6% at 0.2 m, 15% at 0.5 m, 30% at 1 m, 43% at 1.5 m, 56% at 2 m, 90% at 5 m, 90% at 8 m",
+  "hides_by_depth": {
+   "0.2": 0.0624,
+   "0.5": 0.1535,
+   "1.0": 0.2984,
+   "1.5": 0.4339,
+   "2.0": 0.559,
+   "5.0": 0.9,
+   "8.0": 0.9
+  },
+  "mid_grey_becomes": {
+   "0.2": [
+    0.475,
+    0.482,
+    0.492
+   ],
+   "0.5": [
+    0.438,
+    0.455,
+    0.481
+   ],
+   "1.0": [
+    0.379,
+    0.412,
+    0.463
+   ],
+   "1.5": [
+    0.324,
+    0.372,
+    0.446
+   ],
+   "2.0": [
+    0.274,
+    0.335,
+    0.431
+   ],
+   "5.0": [
+    0.136,
+    0.234,
+    0.389
+   ],
+   "8.0": [
+    0.136,
+    0.234,
+    0.389
+   ]
+  }
+ },
+ {
+  "key": "FIRM",
+  "name": "Same blue, firm from the first step",
+  "what": "Today's colour and deep end, but any water at all hides at least 35% of what lies under it.",
+  "hides_line": "39% at 0.2 m, 44% at 0.5 m, 53% at 1 m, 62% at 1.5 m, 69% at 2 m, 90% at 5 m, 90% at 8 m",
+  "hides_by_depth": {
+   "0.2": 0.3881,
+   "0.5": 0.4438,
+   "1.0": 0.5323,
+   "1.5": 0.6152,
+   "2.0": 0.6916,
+   "5.0": 0.9,
+   "8.0": 0.9
+  },
+  "mid_grey_becomes": {
+   "0.2": [
+    0.343,
+    0.385,
+    0.452
+   ],
+   "0.5": [
+    0.32,
+    0.369,
+    0.445
+   ],
+   "1.0": [
+    0.285,
+    0.343,
+    0.434
+   ],
+   "1.5": [
+    0.251,
+    0.318,
+    0.424
+   ],
+   "2.0": [
+    0.22,
+    0.296,
+    0.415
+   ],
+   "5.0": [
+    0.136,
+    0.234,
+    0.389
+   ],
+   "8.0": [
+    0.136,
+    0.234,
+    0.389
+   ]
+  }
+ },
+ {
+  "key": "AQUA",
+  "name": "Aqua shallows, navy deeps",
+  "what": "The colour changes with depth: clear aqua at the edge, navy by 4 m, and stronger than today at every depth.",
+  "hides_line": "48% at 0.2 m, 54% at 0.5 m, 62% at 1 m, 69% at 1.5 m, 76% at 2 m, 95% at 5 m, 95% at 8 m",
+  "hides_by_depth": {
+   "0.2": 0.4846,
+   "0.5": 0.5353,
+   "1.0": 0.6158,
+   "1.5": 0.6911,
+   "2.0": 0.7605,
+   "5.0": 0.95,
+   "8.0": 0.95
+  },
+  "mid_grey_becomes": {
+   "0.2": [
+    0.395,
+    0.542,
+    0.602
+   ],
+   "0.5": [
+    0.371,
+    0.52,
+    0.589
+   ],
+   "1.0": [
+    0.328,
+    0.476,
+    0.56
+   ],
+   "1.5": [
+    0.282,
+    0.423,
+    0.523
+   ],
+   "2.0": [
+    0.235,
+    0.365,
+    0.479
+   ],
+   "5.0": [
+    0.082,
+    0.158,
+    0.319
+   ],
+   "8.0": [
+    0.082,
+    0.158,
+    0.319
+   ]
+  }
+ },
+ {
+  "key": "AQUA_SOFT",
+  "name": "Aqua shallows, navy deeps, at FIRM's strength",
+  "what": "AQUA's colours with FIRM's strength, so colour and strength can be judged apart.",
+  "hides_line": "39% at 0.2 m, 44% at 0.5 m, 53% at 1 m, 62% at 1.5 m, 69% at 2 m, 90% at 5 m, 90% at 8 m",
+  "hides_by_depth": {
+   "0.2": 0.3881,
+   "0.5": 0.4438,
+   "1.0": 0.5323,
+   "1.5": 0.6152,
+   "2.0": 0.6916,
+   "5.0": 0.9,
+   "8.0": 0.9
+  },
+  "mid_grey_becomes": {
+   "0.2": [
+    0.416,
+    0.534,
+    0.582
+   ],
+   "0.5": [
+    0.393,
+    0.517,
+    0.574
+   ],
+   "1.0": [
+    0.351,
+    0.479,
+    0.552
+   ],
+   "1.5": [
+    0.306,
+    0.431,
+    0.52
+   ],
+   "2.0": [
+    0.259,
+    0.377,
+    0.481
+   ],
+   "5.0": [
+    0.104,
+    0.176,
+    0.329
+   ],
+   "8.0": [
+    0.104,
+    0.176,
+    0.329
+   ]
+  }
+ },
+ {
+  "key": "CLEAR",
+  "name": "Clear water that loses red",
+  "what": "Like real clear water: what lies under keeps its texture but loses its red, then its green, with depth, and a faint pale sheen marks the surface. Over the dark pit floor it is darkest (a dark teal) near 2 m; deeper, only the water's own blue shows, a little lighter.",
+  "hides_line": "23% at 0.2 m, 37% at 0.5 m, 53% at 1 m, 63% at 1.5 m, 69% at 2 m, 88% at 5 m, 94% at 8 m",
+  "hides_by_depth": {
+   "0.2": 0.2263,
+   "0.5": 0.3686,
+   "1.0": 0.5256,
+   "1.5": 0.6256,
+   "2.0": 0.6947,
+   "5.0": 0.8809,
+   "8.0": 0.9447
+  },
+  "mid_grey_becomes": {
+   "0.2": [
+    0.394,
+    0.501,
+    0.534
+   ],
+   "0.5": [
+    0.277,
+    0.461,
+    0.523
+   ],
+   "1.0": [
+    0.172,
+    0.406,
+    0.506
+   ],
+   "1.5": [
+    0.125,
+    0.365,
+    0.491
+   ],
+   "2.0": [
+    0.104,
+    0.334,
+    0.478
+   ],
+   "5.0": [
+    0.087,
+    0.254,
+    0.422
+   ],
+   "8.0": [
+    0.087,
+    0.239,
+    0.393
+   ]
+  }
+ }
+]
