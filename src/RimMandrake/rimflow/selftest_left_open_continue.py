@@ -451,6 +451,59 @@ def t_a_left_open_mention_inside_a_sentence_is_not_a_note():
           DH.owed_close(rec, "claimed", []) != "", "owed_close said nothing")
 
 
+def _transcript(clone, sid, turns):
+    """A session transcript in the shape claude writes: each turn's assistant text, then a stop_hook_summary."""
+    cfg = os.path.join(TMP, "claude_cfg")
+    d = os.path.join(cfg, "projects", re.sub(r"[^A-Za-z0-9]", "-", clone))
+    os.makedirs(d, exist_ok=True)
+    with open(os.path.join(d, sid + ".jsonl"), "w", encoding="utf-8") as f:
+        for i, text in enumerate(turns):
+            if i:
+                f.write(json.dumps({"type": "user", "message": {"role": "user", "content": "<task-notification>"}})
+                        + "\n")
+            f.write(json.dumps({"type": "assistant", "isSidechain": False, "message": {"role": "assistant",
+                    "content": [{"type": "tool_use", "name": "Bash", "input": {}}]}}) + "\n")
+            f.write(json.dumps({"type": "assistant", "isSidechain": False, "message": {"role": "assistant",
+                    "content": [{"type": "text", "text": text}]}}) + "\n")
+            f.write(json.dumps({"type": "system", "subtype": "stop_hook_summary"}) + "\n")
+    return cfg
+
+
+def t_a_late_remark_keeps_the_report():
+    """RIMMANDRAKE_KEEP_RUN_REPORT_WHEN_LATE_REMARK_FOLLOWS: two runs of 2026-11-19 (8:15 and 8:41 PM PST) wrote a full
+    report, then a background watch ended and the run said one more line; out.json held only that line."""
+    report = "Done: four items closed.\n\nLEFT OPEN: the in-game visit is owed."
+    late = "The background wait loop was stopped at its time limit. It doesn't matter."
+    item = OWED_ITEM + "_LATE"
+    clone = os.path.join(TMP, "clones", item + ".det")
+    cfg = _transcript(clone, "sess-late-1", [report, late])
+    old = os.environ.get("CLAUDE_CONFIG_DIR")
+    os.environ["CLAUDE_CONFIG_DIR"] = cfg
+    try:
+        rec = make_run(item=item, at=T0 + 43500, out={"result": late, "result_index": 1, "session_id": "sess-late-1",
+                                                      "usage": {}})
+        got = DH.run_report(rec) if hasattr(DH, "run_report") else ""
+        check("a-late-remark-keeps-the-report: the report comes first, then the late line",
+              got.startswith("Done: four items closed.") and got.rstrip().endswith("It doesn't matter."), repr(got))
+        check("a-late-remark-keeps-the-report: its LEFT OPEN is read", DH.result_left_open(rec).startswith(
+              "LEFT OPEN: the in-game visit is owed."), repr(DH.result_left_open(rec)))
+        tail = DH.outcome(rec, {"SERVICE_RESULT": "success", "EXIT_CODE": "exited", "EXIT_STATUS": "0"})[2]
+        check("a-late-remark-keeps-the-report: the ended line carries the report", "four items closed" in tail, tail)
+        one = make_run(item=item, at=T0 + 43600, out={"result": "only turn", "session_id": "sess-none", "usage": {}})
+        check("a-late-remark-keeps-the-report: a one-turn run reads its result as before",
+              (DH.run_report(one) if hasattr(DH, "run_report") else "") == "only turn")
+        lost = make_run(item=item, at=T0 + 43700, out={"result": late, "result_index": 1, "session_id": "sess-gone",
+                                                       "usage": {}})
+        got = DH.run_report(lost) if hasattr(DH, "run_report") else ""
+        check("a-late-remark-keeps-the-report: an unreadable transcript says so beside the last result",
+              late in got and "UNMEASURED" in got, repr(got))
+    finally:
+        if old is None:
+            os.environ.pop("CLAUDE_CONFIG_DIR", None)
+        else:
+            os.environ["CLAUDE_CONFIG_DIR"] = old
+
+
 def t_a_lane_ticket_under_a_running_wait_is_skipped():
     future, past = DH.iso(T0 + 9 * 86400), DH.iso(T0 - 600)
     rec = make_run(item=LANE[0], brief=LANE_BRIEF, at=T0 + 43000)
@@ -708,6 +761,7 @@ def main():
               test_finish_kicks, test_launch_records_opt_in, test_waiting,
               t_an_owed_run_is_continued_to_close_or_say, t_an_owed_continuation_that_ends_owed_again_is_an_alarm,
               t_a_left_open_in_the_result_counts_as_the_note, t_a_left_open_mention_inside_a_sentence_is_not_a_note,
+              t_a_late_remark_keeps_the_report,
               t_a_lane_ticket_under_a_running_wait_is_skipped,
               t_the_step_rereads_the_target_before_launch, t_launch_checks_are_skipped_only_for_the_same_item,
               t_an_open_lane_item_is_its_own_target, t_a_refused_continuation_spends_no_daily_slot,

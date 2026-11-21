@@ -1281,12 +1281,78 @@ def left_open_noted(notes, item, since):
     return False
 
 
+def _transcript_path(rec, sid):
+    """-> the session transcript of the run, or None. claude keeps it under its config dir, in a folder named by the
+    run's cwd (the clone) with every non-alphanumeric as '-'."""
+    clone = str(rec.get("clone") or "")
+    roots = [os.environ.get("CLAUDE_CONFIG_DIR") or "", os.path.expanduser("~/.claude")]
+    for root in [r for r in roots if r]:
+        p = os.path.join(root, "projects", re.sub(r"[^A-Za-z0-9]", "-", clone), sid + ".jsonl")
+        if clone and os.path.isfile(p):
+            return p
+    for root in [r for r in roots if r]:
+        hits = glob.glob(os.path.join(root, "projects", "*", sid + ".jsonl"))
+        if hits:
+            return hits[0]
+    return None
+
+
+def _turn_finals(path):
+    """-> the last main-chain assistant text of each finished turn (a stop_hook_summary ends a turn), oldest first."""
+    finals, last = [], None
+    with open(path, encoding="utf-8", errors="replace") as f:
+        for line in f:
+            try:
+                r = json.loads(line)
+            except ValueError:
+                continue
+            if r.get("type") == "assistant" and not r.get("isSidechain"):
+                parts = [c.get("text") for c in ((r.get("message") or {}).get("content") or [])
+                         if isinstance(c, dict) and c.get("type") == "text" and c.get("text")]
+                if parts:
+                    last = "\n".join(parts)
+            elif r.get("type") == "system" and r.get("subtype") == "stop_hook_summary" and last is not None:
+                finals.append(last)
+                last = None
+    if last is not None:
+        finals.append(last)
+    return finals
+
+
+def run_report(rec, res=None):
+    """-> the run's report text. claude's result JSON holds only the LAST turn: when a background task ended after the
+    report, the run said one more line and that line was all the result kept (twice on 2026-11-19,
+    RIMMANDRAKE_KEEP_RUN_REPORT_WHEN_LATE_REMARK_FOLLOWS). For such a result (result_index >= 1) the final text of each
+    of the last result_index + 1 turns is read from the transcript, oldest first. A transcript it cannot read leaves
+    the last result, with a line naming the report UNMEASURED; it never passes for the whole report silently."""
+    import role_launch as RL
+    if res is None:
+        res = RL.read_result({"out": rec.get("out") or "", "err": rec.get("err") or ""})
+    if not isinstance(res, dict):
+        return ""
+    last = str(res.get("result") or "")
+    n = res.get("result_index")
+    if not isinstance(n, int) or isinstance(n, bool) or n < 1:
+        return last
+    sid = str(res.get("session_id") or "")
+    p = _transcript_path(rec, sid) if sid else None
+    why = "no session_id" if not sid else ("no transcript for session %s" % sid if not p else "")
+    finals = []
+    if p:
+        try:
+            finals = _turn_finals(p)
+        except OSError as e:
+            why = "transcript unreadable: %s" % e
+    if finals:
+        return "\n\n".join(finals[-(n + 1):])
+    return "%s\n\n(earlier report UNMEASURED: this is turn %d of the run and %s)" % (
+        last, n + 1, why or "the transcript holds no finished turn")
+
+
 def result_left_open(rec):
     """-> the paragraph of the run's result text that starts LEFT OPEN: (to the next blank line), or "". Two of the 13
     runs that ended owed by 2026-11-19 wrote what was left there and not as a note."""
-    import role_launch as RL
-    res = RL.read_result({"out": rec.get("out") or "", "err": rec.get("err") or ""})
-    t = str(res.get("result") or "") if isinstance(res, dict) else ""
+    t = run_report(rec)
     # A note starts a line or a sentence (optional */_ emphasis). A mention inside a sentence, such as "no `LEFT OPEN:`
     # note", is not one: read as a note it sent an owed run the carry-on brief (2026-11-19 8:01 PM PST,
     # RIMMANDRAKE_FIX_LEFT_OPEN_PARSE_READS_ITS_OWN_DENIAL).
@@ -1375,7 +1441,9 @@ def outcome(rec, env):
         except RL.UnknownModel as e:
             rec["unknown_model"] = str(e)
     if isinstance(res, dict):
-        tail = str(res.get("result") or res.get("subtype") or "")
+        tail = run_report(rec, res)
+        if not tail:            # an empty result: its subtype says what kind of end it was
+            tail = str(res.get("subtype") or "")
         if res.get("is_error"):
             svc = svc + "/claude-error"
     else:

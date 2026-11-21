@@ -41,6 +41,12 @@ Each promise has a check of its name in `src/RimMandrake/rimflow/selftest_left_o
   continuation header quotes that paragraph, to the next blank line, with every sentence that states spend, tokens, a
   budget or an account level taken out. A mention of `LEFT OPEN:` inside a sentence ("no `LEFT OPEN:` note") is not a
   note: the run is owed, and gets the owed-close brief, not the carry-on brief.
+- **a-late-remark-keeps-the-report.** When the run's result JSON is a later turn (`result_index` 1 or more: a
+  background task ended after the report and the run said one more line), the run's report is the final text of each
+  of its last `result_index + 1` turns, read from the session transcript (`<CLAUDE_CONFIG_DIR or ~/.claude>/projects/
+  <clone path, non-alphanumerics as ->/<session_id>.jsonl`), oldest first. The `LEFT OPEN:` read and the ended line
+  both read that report. A one-turn result is read as before. A transcript it cannot read leaves the last result,
+  with a line that names the report `UNMEASURED` and why.
 - **a-lane-ticket-under-a-running-wait-is-skipped.** A lane hand-off goes to the first open lane ticket whose own dated
   wait is not still running; when every open lane ticket waits, nothing launches and the why names the wait.
 - **the-step-rereads-the-target-before-launch.** The continuation step reads its target's state and wait again just
