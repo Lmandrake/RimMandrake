@@ -226,11 +226,15 @@ class _FakeGame(object):
             return {"success": True, "defs": [{"defName": "RM_FE_Ground_DeepAsh", "fields": {"fertility": 0.7}}]}
         if tool == "jawa/map_info":
             return {"success": True, "sizeX": 100, "sizeZ": 100, "mapBiome": "RM_Pyrelands"}
+        if tool == "jawa/static_call" and kw.get("method") == "RearmOpeningFront":
+            return {"success": True, "result": "1"}
         return {"success": True}
 
 
-def run_fake_burn_line(V, game):
-    """_r6_burn_line against `game` with the harness around it stubbed -> {component: verdict}, the share note."""
+def run_fake_burn_line(V, game, real_fires=False):
+    """_r6_burn_line against `game` with the harness around it stubbed -> {component: verdict}, the share note. With
+    `real_fires` the fires are read by validation.py's own reader from `game`'s jawa/list_things rows (and the opening
+    front from its ProbeOpeningFront), not by the stub: the stub hid a reader that dropped every row (visit 2)."""
     import contextlib
     res, notes = {}, {}
 
@@ -276,9 +280,13 @@ def run_fake_burn_line(V, game):
         game.settings.update(values)
 
     stubs = {"_comp": comp, "_independent": lambda t: None, "_on_site": lambda t: None, "_wait": wait, "_set": set_,
-             "_ten_static": lambda t, ty, m, args=None: "done=True;lit=4", "_ten_hour": lambda t: (game.tick / 2500.0) % 24,
+             "_ten_static": lambda t, ty, m, args=None: "done=True;lit=4;litTick=%d" % game.tick,
+             "_ten_hour": lambda t: (game.tick / 2500.0) % 24,
              "_r6_guard": lambda t: {}, "_r6_guard_changes": lambda a, b: [], "_r6_fires": fires,
              "_note": lambda t, label, data: notes.__setitem__(label, data)}
+    if real_fires:
+        for k in ("_r6_fires", "_ten_static"):
+            del stubs[k]
     saved = dict((k, getattr(V, k)) for k in stubs)
     try:
         for k, v in stubs.items():
@@ -327,6 +335,147 @@ def chain_checks():
         out.append(("chain checks crashed: %r" % ex, False))
     return out
 
+CS_ROWS = os.path.join(HERE, "..", "bridgetools", "JawaBench.BridgeTools", "JawaBenchTerrainTools.cs")
+
+
+def list_things_row_keys():
+    """The field names of one jawa/list_things row, read from the bridge's own ThingListRow (the shape the live reader gets)."""
+    text = open(CS_ROWS, encoding="utf-8").read()
+    m = re.search(r"static object ThingListRow\(Thing thing, IntVec3 pos\)(.*?)\n        \}", text, re.S)
+    if not m:
+        return None
+    return re.findall(r"^\s*(\w+)\s*=", m.group(1).split("new", 1)[1], re.M)
+
+
+def bridge_fire_row(keys, i, x, z):
+    """A Fire row with exactly the bridge's keys."""
+    vals = {"id": "Fire%d" % (9000 + i), "def": "Fire", "label": "Fire", "x": x, "z": z, "spawned": True, "rot": 0,
+            "stackCount": 1, "hitPoints": -1, "maxHitPoints": -1}
+    return dict((k, vals.get(k)) for k in keys)
+
+
+def blind_reader(rows):
+    """PLANTED FAULT: the reader as visit 2 ran it: a dict `position` first, so a row with x and z and no position read
+    (None, None) and was dropped."""
+    out = []
+    for f in rows:
+        if f.get("parent"):
+            continue
+        p = f.get("position") or {}
+        x, z = (p.get("x"), p.get("z")) if isinstance(p, dict) else (f.get("x"), f.get("z"))
+        if x is not None and z is not None:
+            out.append((int(x), int(z)))
+    return out
+
+
+class _WalkGame(_FakeGame):
+    """_FakeGame with fires a reader must find: jawa/list_things answers rows in the bridge's shape. Nothing burns until
+    RearmOpeningFront (fire clock on) lights the opening front on the next watch interval; it walks one cell east an hour
+    and burns until the map is extinguished. mode: "walk" (as shipped), "still" (a front that does not move), "dark"
+    (no fire at hour 6), "unlit" (the re-arm lights nothing), "noxz" (rows with no cell), "offleak" (fire with
+    burnLineEnabled off after an extinguish: the off control must see it)."""
+
+    def __init__(self, V, keys, mode="walk"):
+        _FakeGame.__init__(self, V, [0.01, 0.01, 0.02, 0.03, 0.05], [0.01, 0.15, 0.40, 0.60, 0.81])
+        self.keys, self.mode = keys, mode
+        self.settings["fireClockEnabled"] = False
+        self.lit_tick, self.rearm_tick, self.lit_reads = -1, None, []
+        self.reseed = [(50 + i, 60) for i in range(12)]   # burn_line_present's reseeded line, still burning
+
+    def fire_cells(self):
+        if self.mode == "offleak" and not self.settings["burnLineEnabled"]:
+            return [(5, 5)]
+        if self.lit_tick < 0 or self.tick < self.lit_tick:
+            return list(self.reseed)
+        h = (self.tick - self.lit_tick) // 2500
+        if self.mode == "dark" and h == 6:
+            return []
+        x = 10 if self.mode == "still" else 10 + h
+        return list(self.reseed) + [(x, 10 + k) for k in range(4)]
+
+    def call(self, tool, **kw):
+        if tool == "jawa/map_fire" and kw.get("action") == "extinguish":
+            self.reseed, self.lit_tick = [], -1
+            return {"success": True}
+        if tool == "jawa/static_call" and kw.get("method") == "RearmOpeningFront":
+            self.rearm_tick = self.tick
+            if self.settings["fireClockEnabled"] and self.mode != "unlit":
+                self.lit_tick = self.tick + 60
+            return {"success": True, "result": "1"}
+        if tool == "jawa/static_call" and kw.get("method") == "ProbeOpeningFront":
+            lit = self.lit_tick >= 0 and self.tick >= self.lit_tick
+            self.lit_reads.append(lit)
+            return {"success": True, "result": "done=%s;lit=%d;litTick=%d;mapAge=900000;now=%d"
+                    % (lit, 5 if lit else 0, self.lit_tick if lit else 620039, self.tick)}
+        if tool == "jawa/list_things" and kw.get("defName") == "Fire":
+            cells = self.fire_cells()
+            if self.mode == "noxz":
+                return {"success": True, "things": [{"id": "Fire1", "def": "Fire"}] if cells else []}
+            return {"success": True, "things": [bridge_fire_row(self.keys, i, x, z) for i, (x, z) in enumerate(cells)]}
+        return _FakeGame.call(self, tool, **kw)
+
+
+def fire_reader_checks():
+    """RIMMANDRAKE_REORDER_PYRE_BURN_WALK_BEFORE_ITS_FRONT_DIES: visit 2's walk read 0 fires at all 24 hours, 2 of 2 runs,
+    while burn_line_present had just counted 12 through the same tool. The reader looked for `position`; the bridge's row
+    has x and z. Here the reader meets rows in the bridge's own shape, and the walk runs on a front it must find."""
+    out = []
+    try:
+        V = load_validation()
+        keys = list_things_row_keys()
+        out.append(("bridge row: ThingListRow carries x and z, no position or parent (%s)" % keys,
+                    bool(keys) and "x" in keys and "z" in keys and "position" not in keys and "parent" not in keys))
+        rows = [bridge_fire_row(keys or ["x", "z"], i, 40 + i, 12) for i in range(12)]
+        cells, unplaced = V.fire_cells(rows)
+        out.append(("fire_cells: 12 bridge rows read as 12 cells", cells == [(40 + i, 12) for i in range(12)] and not unplaced))
+        out.append(("PLANTED FAULT the position-first reader reads 0 of the same 12", blind_reader(rows) == []))
+        out.append(("fire_cells: a dict or list position is read too",
+                    V.fire_cells([{"position": {"x": 3, "z": 4}}, {"position": [5, 0, 6]}])[0] == [(3, 4), (5, 6)]))
+        out.append(("fire_cells: no rows is an empty read", V.fire_cells([]) == ([], [])))
+        out.append(("fire_cells: an attached fire (parent) is not the burn line",
+                    V.fire_cells([{"x": 1, "z": 1, "parent": "Ullai12"}]) == ([], [])))
+        c, bad = V.fire_cells([{"id": "Fire1", "def": "Fire"}, {"x": 2, "z": 3}])
+        out.append(("fire_cells: a row with no cell is returned as unplaced, never dropped", c == [(2, 3)] and len(bad) == 1))
+    except Exception as ex:   # noqa: BLE001 - a crash is a FAIL
+        out.append(("fire reader checks crashed: %r" % ex, False))
+    try:
+        V = load_validation()
+        keys = list_things_row_keys()
+
+        def walk(mode):
+            g = _WalkGame(V, keys or ["x", "z"], mode)
+            res, _ = run_fake_burn_line(V, g, real_fires=True)
+            return g, res
+        g, res = walk("walk")
+        out.append(("walk, real reader: the re-armed opening front is found and walks (PASS)",
+                    res.get("burn_line_walks_hourly") == "PASS" and g.rearm_tick is not None
+                    and g.settings["fireClockEnabled"] is True))
+        out.append(("walk, real reader: burn_line_present's reseed is put out before the re-arm (the watch reads the front)",
+                    g.reseed == []))
+        out.append(("walk, real reader: the burn-line-off control reads a cleared map (PASS)",
+                    res.get("burn_line_off_control") == "PASS"))
+        out.append(("walk, real reader: a front that does not move FAILS", walk("still")[1].get("burn_line_walks_hourly") == "FAIL"))
+        out.append(("walk, real reader: an hour with no fire FAILS", walk("dark")[1].get("burn_line_walks_hourly") == "FAIL"))
+        g, res = walk("unlit")
+        out.append(("walk, real reader: a re-arm that lights nothing is UNMEASURED before the day is spent",
+                    res.get("burn_line_walks_hourly") == "UNMEASURED"
+                    and g.tick - g.rearm_tick == V.OPENING_WAIT_TICKS + V.BURN_LINE_WAIT_TICKS))   # the off control's wait only
+        out.append(("walk, real reader: rows with no cell are UNMEASURED, never 0 fires",
+                    walk("noxz")[1].get("burn_line_walks_hourly") == "UNMEASURED"))
+        out.append(("off control, real reader: fire with burnLineEnabled off FAILS",
+                    walk("offleak")[1].get("burn_line_off_control") == "FAIL"))
+        saved = V._r6_fires
+        try:
+            V._r6_fires = lambda t: blind_reader(V._things(t, "Fire", limit=2000))
+            g, res = walk("walk")
+        finally:
+            V._r6_fires = saved
+        out.append(("PLANTED FAULT the position-first reader FAILS the same walking front",
+                    res.get("burn_line_walks_hourly") == "FAIL"))
+    except Exception as ex:   # noqa: BLE001 - a crash is a FAIL
+        out.append(("walk checks crashed: %r" % ex, False))
+    return out
+
 
 def checks(text, rewards):
     out = []
@@ -357,7 +506,7 @@ def checks(text, rewards):
 def main():
     text = open(VALIDATION, encoding="utf-8").read()
     rewards = open(REWARDS, encoding="utf-8").read()
-    res = checks(text, rewards) + pure_checks() + chain_checks()
+    res = checks(text, rewards) + pure_checks() + chain_checks() + fire_reader_checks()
     for what, ok in res:
         print("%s %s" % ("PASS" if ok else "FAIL", what))
     bad = sum(1 for _, ok in res if not ok)

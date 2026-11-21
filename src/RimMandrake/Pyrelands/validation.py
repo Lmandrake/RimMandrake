@@ -1350,9 +1350,9 @@ def burn_line(t):
             _fail("burnLineEnabled ON, map extinguished, %d ticks (> StandingBurnQuietTicks %d) and no free-standing "
                   "Fire: the standing burn did not reseed" % (BURN_LINE_WAIT_TICKS, BURN_QUIET_TICKS))
         t.screenshot(rect=_frame(t, [(f.get("x"), f.get("z")) for f in fires], cluster=FRAME_CLUSTER))   # the front
-        # SITE (visit 2, 2026-11-20): an extinguish here put out the reseeded front, and burn_line_walks_hourly then
-        # watched 24 hours with 0 fires (the next reseed needs StandingBurnQuietTicks, longer than its day). The walk
-        # starts from this front; _teardown puts the map out at the chain's end.
+        # The walk does not start from this reseed: it puts the map out and re-arms the opening front (visit 2's 0 fires at
+        # every hour were its reader, blind to the bridge's x/z rows, not this front; RIMMANDRAKE_REORDER_PYRE_BURN_WALK_
+        # BEFORE_ITS_FRONT_DIES). _teardown puts the map out at the chain's end.
     _r6_burn_line(t)
 
 
@@ -4824,19 +4824,38 @@ def _r6_shot(t, rect, name):
     return t.screenshot(name=name, rect=tuple(rect), ppc=R6_PLAY_PPC)
 
 
-def _r6_fires(t):
-    """Free-standing Fire cells on the map -> [(x, z)]."""
-    out = []
-    for f in _things(t, "Fire", limit=2000):
+def fire_cells(rows):
+    """Pure. jawa/list_things Fire rows -> ([(x, z)] of the fires, [rows with no readable cell]). The bridge's row
+    (JawaBenchTerrainTools.ThingListRow) carries x and z at its top level, and no position or parent; a dict or list
+    `position` is read too. A row with a truthy parent (an attached fire) is not the burn line. A row with no cell is
+    returned, never dropped: visit 2's reader looked for `position` first, dropped every row and read 0 fires at all 24
+    hours on a burning map (RIMMANDRAKE_REORDER_PYRE_BURN_WALK_BEFORE_ITS_FRONT_DIES)."""
+    cells, unplaced = [], []
+    for f in rows or []:
+        if not isinstance(f, dict):
+            unplaced.append(f)
+            continue
         if f.get("parent"):
             continue
-        p = f.get("position") or {}
-        x, z = (p.get("x"), p.get("z")) if isinstance(p, dict) else (f.get("x"), f.get("z"))
-        if x is None and isinstance(p, (list, tuple)) and len(p) >= 2:
+        x, z, p = f.get("x"), f.get("z"), f.get("position")
+        if (x is None or z is None) and isinstance(p, dict):
+            x, z = p.get("x"), p.get("z")
+        if (x is None or z is None) and isinstance(p, (list, tuple)) and len(p) >= 2:
             x, z = p[0], p[-1]
-        if x is not None and z is not None:
-            out.append((int(x), int(z)))
-    return out
+        try:
+            cells.append((int(x), int(z)))
+        except (TypeError, ValueError):
+            unplaced.append(f)
+    return cells, unplaced
+
+
+def _r6_fires(t):
+    """Free-standing Fire cells on the map -> [(x, z)]; UNMEASURED when a row has no cell (a blind count is not 0)."""
+    cells, unplaced = fire_cells(_things(t, "Fire", limit=2000))
+    if unplaced:
+        _unmeasured(t, "list_things gave %d Fire row(s) with no cell, so the fire count would read blind: %r"
+                    % (len(unplaced), unplaced[:2]))
+    return cells
 
 
 def front_walks(rows, min_shift=R6_FRONT_MIN_SHIFT):
@@ -4943,7 +4962,11 @@ def _r6_share_days(t, ground, arm, t0, first=1):
 
 
 def _r6_burn_line(t):
-    """sc_burn_line_walks: the opening front asserted lit (ProbeOpeningFront done, lit > 0); vitals and pending incidents
+    """sc_burn_line_walks: the walk watches a fresh map's opening front, as the scenario says. The site is an aged fixture
+    whose own front was lit at its birth and is long out (visit 2), so the map is extinguished (burn_line_present's reseed
+    included), fireClockEnabled set, and MapComponent_BurnLine.RearmOpeningFront lays yesterday's fire and lights its arc
+    by the mod's own arrival path (no test fire); ProbeOpeningFront must then say lit by that re-arm (litTick at or after
+    it), else the row is UNMEASURED before a day is spent. Then vitals and pending incidents
     recorded; 24 hourly captures at play zoom of the front's box, each capture's clock hour asserted; one save while the
     front walks (burn_line_walking, kept for his review); front_walks decides; the guard read again at the end.
     The flood read (burn_line_burned_share): the burned share of open plantable ground at the start and at each day end
@@ -4953,8 +4976,22 @@ def _r6_burn_line(t):
     Control: the same day with burnLineEnabled off and the map extinguished lights no free-standing Fire."""
     _independent(t)
     with _comp(t, "burn_line_walks_hourly"):
-        _set(t, {"burnLineEnabled": True})
+        _set(t, {"burnLineEnabled": True, "fireClockEnabled": True})
+        _extinguish(t)
+        rearm_tick = _r6_tick(t)
+        if t.session is not None:
+            t.session._pyre_opening_rearmed = True   # opening_front's old-save read is UNMEASURED after this in a session
+        r = t.bridge_call("jawa/static_call", type=BURN_LINE, method="RearmOpeningFront")
+        if _live(t) and str((_ok(r, "RearmOpeningFront") or {}).get("result")).strip() != "1":
+            _unmeasured(t, "RearmOpeningFront refused (is this Pyrelands DLL deployed, is the current map Pyrelands?): %r" % r)
+        _wait(t, OPENING_WAIT_TICKS)
         kv = parse_kv(_ten_static(t, BURN_LINE, "ProbeOpeningFront") or "")
+        if _live(t):
+            lit, lit_tick = str(kv.get("lit") or ""), str(kv.get("litTick") or "")
+            if kv.get("done") != "True" or not lit.isdigit() or int(lit) <= 0 or not lit_tick.lstrip("-").isdigit() \
+                    or rearm_tick is None or int(lit_tick) < rearm_tick:
+                _unmeasured(t, "the re-armed opening front did not light (re-armed at tick %r, ProbeOpeningFront %r): no "
+                               "fresh front to watch" % (rearm_tick, kv))
         guard0 = _r6_guard(t)
         try:   # the share's reads are burn_line_burned_share's to judge; their failure is not the front's
             ground, err = _r6_share_ground(t), None
@@ -4985,8 +5022,6 @@ def _r6_burn_line(t):
         if _live(t):
             _note(t, "front by the hour (captures at %d px/cell)" % R6_PLAY_PPC,
                   {"opening": kv, "startHour": h0, "rows": rows, "shots": shots, "save": saved})
-            if kv.get("done") != "True" or int(kv.get("lit", 0) or 0) <= 0:
-                _unmeasured(t, "the opening front is not lit on this map (ProbeOpeningFront %r)" % kv)
             if h0 is None or any(r["hour"] is None for r in rows):
                 _unmeasured(t, "glow_at gave no clock hour at a capture, so its hour cannot be asserted")
             for i, r in enumerate(rows):
