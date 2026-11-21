@@ -1,8 +1,8 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":28527,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=acb9c1fb1310c6d6a9c630f1101b7bb086262d1c40ada5df102fffd61841aa8e -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":29210,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=33b4a02e0cb6f7b3cc5163d1fd8ea3445bf84b1941e5b36cfd0c866e49d86994 -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage offline_build · 1405 events in 17 shards · reducer 1
+version 0.1.0 · stage offline_build · 1407 events in 17 shards · reducer 1
 holder lease run-1795235568, token 19, last active 2026-11-21T05:19:25Z
-holder session ae30ba5b-fcc6-4640-befd-6fec119dedcc, context 281111 of ceiling 400000
+holder session ff15b029-4df8-495c-acec-5406c94c8b7b, context 271235 of ceiling 400000
 
 ## Last checkpoint (HOLDER.run-1795235568, 2026-11-21T05:19:25Z)
 - done: RIMMANDRAKE_MOCK_FLOWWORKS_WATER_BY_DEPTH_ON_REAL_GROUND built at 6c668b36a8: judge picked FIRM, target in version/water_by_depth_target.json, Seen gains ShallowOpacity 0.35 + setting; offline acceptance GREEN (RED 5 on base), C# 1369/1369; OL_OWNER_LOOK_READS UNRUN
@@ -493,6 +493,6 @@ spend recorded: USD 78.94, 45401435 tokens
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
 - notes: 11, never printed here (`modledger.py find --mod FlowWorks <words>`)
-- the full history: 1405 events (views/history.md; never read whole)
+- the full history: 1407 events (views/history.md; never read whole)
 
-cursor: t=2026-11-21T05:19:25Z.1795238365957606416 (modledger.py since --mod FlowWorks t=2026-11-21T05:19:25Z.1795238365957606416 prints what changed after this packet)
+cursor: t=2026-11-21T05:22:24Z.1795238544404455468 (modledger.py since --mod FlowWorks t=2026-11-21T05:22:24Z.1795238544404455468 prints what changed after this packet)

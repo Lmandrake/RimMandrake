@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":28527,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=01a17bdc81dd655bc453fde5d7270c4626e679fec3518e4c4a7fc0671ac800d3 -->
-# FlowWorks — mod ledger history (1405 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":29210,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=15e7770672fb1d1b1334ad00c272ce6e8f59cc4568669980c3c600d36302e4f5 -->
+# FlowWorks — mod ledger history (1407 events, merged across shards)
 
 - 2026-11-16T07:16:23Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 55 of 57 bars met at the lock
 - 2026-11-16T07:16:23Z BACKFILL#2 decision version v0.1.0: 
@@ -1406,3 +1406,5 @@
 - 2026-11-21T05:04:04Z HOLDER.run-1795235568#3 lease.renew lease v0.1.0: 
 - 2026-11-21T05:19:10Z HOLDER.run-1795235568#4 trap.noted trap:water-look-checks-held-old-law-margins v0.1.0: Water look checks from before 2026-11-20 held the 11-13 law margins (vent seen >= 0.6 at 1 m, flush icon > 0.5); under the written target (1 m seen 0.4677) they read red though nothing got worse. Take a look check number from version/water_by_depth_target.json, never from the law of the day.
 - 2026-11-21T05:19:25Z HOLDER.run-1795235568#5 session.checkpoint session v0.1.0: 
+- 2026-11-21T05:22:24Z DISPATCH#86 run.end run v0.1.0: 
+- 2026-11-21T05:22:24Z DISPATCH#87 session.id session v0.1.0: 
