@@ -1,0 +1,1 @@
+A test table's `reads` cannot tell whether a bar is built: live in-game scenes read validation.py and scenes.json, never the C# they drive (GSS 25 of 49 bars, measured 2026-11-20). Measure a proposed gate on the real tables before you build it.
