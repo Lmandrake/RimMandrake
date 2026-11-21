@@ -1871,6 +1871,12 @@
    "stage": 3,
    "what": "close",
    "why": "run rm-role-designer-1794947616: stage 5 return"
+  },
+  {
+   "at": "2026-11-21T00:49:00Z",
+   "stage": 3,
+   "what": "pending_decision",
+   "why": "restamp clause dropped: done at 47e044e556 (RIMMANDRAKE_RESIGN_PYRELANDS_COVERAGE_AFTER_RESTAMP_VOIDED_IT)"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -1899,7 +1905,7 @@
    "why": "the judge-and-rework loop has spent 11220115 tokens since 2026-11-15T06:01:06Z, past its ceiling of 8000000 (2x the cap)"
   }
  ],
- "pending_decision": "root hash restamp: the walk's north star was re-validated on his words 2026-11-16 (OWNER:1794894282613045211, d_burn_line_natural_grassfire; validated-hash 6ad3da0a6e44, commit 8e22c23799), but tree.json still cites root_hash 1a7028c5ef0a (later stage-3 reworks hand-edited the tree instead of running `write`), so `concept_tree.py gate` refuses 'tree cites a root hash that is not the walk's' although coverage judge rm-coverage-judge-1794947629 returned covered (0 gaps). Stage 3: run `concept_tree.py write` to restamp root_hash/root_state from the walk with no other change to leaves, sheet, scenes or floor; the stage-3 lint now refuses this (RIMMANDRAKE_LINT_STALE_ROOT_HASH_BEFORE_THE_JUDGE_SIGNS). Then re-pin the exam and give the coverage judge the one-entry delta (root_hash only).",
+ "pending_decision": "root hash restamp DONE at 47e044e556 (root_hash 1a7028c5 -> 6ad3da0a, 24 leaves equal, lint PASS): stage 3 has nothing left to do. Owed, not stage 3's: (a) the coverage signature, voided by the restamp: the Conductor window certifies past judge rm-coverage-judge-1794947629 (covered, 0 gaps) with its own --per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS note on BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS, then concept_tree.py certify --owner-event OWNER:<tsn>; a judge look is refused while the loop is past its ceiling. (b) exam.json is frozen against the pre-restamp tree 2151214485d8 (EXAM_FROZEN: a repin never re-pins it) and has no read map (exam_reads.json), so stage 4 retakes the exam whole on the next designer visit.",
  "recovery": [],
  "results": [
   {
