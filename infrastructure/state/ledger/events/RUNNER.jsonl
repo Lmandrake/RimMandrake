@@ -9865,3 +9865,5 @@
 {"seat":"RUNNER","event":"live","id":"OPS_MATURATION_HAND_ACT_UNFOLDED_ZLWA","result":"broken","detail":"Ops alarm MATURATION_HAND_ACT: maturation.hand_acts_overdue = 3 acts (MEASURED), line > 0","ts":"2026-11-21T01:17:52Z","tsn":1795223872846382512}
 {"seat":"RUNNER","event":"raise","id":"OPS_MATURATION_HAND_ACT_UNFOLDED_ZLWA","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-21T01:17:58Z","tsn":1795223878760029448}
 {"seat":"RUNNER","event":"live","id":"OPS_MATURATION_HAND_ACT_UNFOLDED_ZLWA","result":"kept","detail":"sweep: running again","ts":"2026-11-21T01:18:30Z","tsn":1795223910203526764}
+{"seat":"RUNNER","event":"live","id":"OPS_STEVE_SEATS_RESTORE_QTWK_RGFZ","result":"broken","detail":"Ops alarm STEVE_SEATS: unreachable -- steve.seats_absent_min = 18.0 min a Steve seat has been absent (MEASURED), line > 10","ts":"2026-11-21T01:19:09Z","tsn":1795223949826408804}
+{"seat":"RUNNER","event":"raise","id":"OPS_STEVE_SEATS_RESTORE_QTWK_RGFZ","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-21T01:19:16Z","tsn":1795223956212010989}
