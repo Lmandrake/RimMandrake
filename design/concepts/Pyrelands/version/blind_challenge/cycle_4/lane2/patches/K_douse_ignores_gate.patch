@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs
++++ b/src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs
+@@ -229,7 +229,7 @@
+         /// by the sky's black-rain share. 0 when off or sheltered.</summary>
+         public static float BlackRainDouseAmount(bool gateOn, bool enabled, float dousePer150, float share, bool exposed)
+         {
+-            if (!gateOn || !enabled || !exposed || share <= 0f || dousePer150 <= 0f) return 0f;
++            if (!enabled || !exposed || share <= 0f || dousePer150 <= 0f) return 0f;
+             return dousePer150 * (share > 1f ? 1f : share);
+         }
+ 

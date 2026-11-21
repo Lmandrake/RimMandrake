@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/Pyrelands/Source/FireEcologyHook.cs
++++ b/src/RimMandrake/Pyrelands/Source/FireEcologyHook.cs
+@@ -514,7 +514,7 @@
+                 bool scorchable = RM_FireEcoKernel.ScorchableHere(usable && FireEcologyBiomeGate.On(map), terrain?.defName);
+                 // The fresh-burn stamp (PYRE_ASH_BUILD_EVERY_SCAR_A_SEEDBED §4): this cell burned now. Its own toggle, independent
+                 // of dusting and fruit. The gate is scorchable ground, deep ash included, on a map fire ecology runs on (ScorchableHere).
+-                if (RM_FireEcoKernel.BurnStampMay(PyrelandsMechanicsGate.On, RM_PyrelandsSettings.freshBurnBonusEnabled, usable,
++                if (RM_FireEcoKernel.BurnStampMay(true, RM_PyrelandsSettings.freshBurnBonusEnabled, usable,
+                         __instance.parent != null, scorchable))
+                 {
+                     MapComponent_PyrelandsAshField.For(map)?.StampBurn(pos, Find.TickManager.TicksGame);

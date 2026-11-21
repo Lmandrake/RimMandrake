@@ -21,3 +21,8 @@ Polish improves play but is not part of passing 0.1.0. **Each entry below is PRO
 - **Change:** in `sc_firehawk`, stage two fuel piles of clearly different size, both in reach. The expect is that the drop lands on the larger pile. The control is to remove the larger pile, after which the drop goes to the smaller.
 - **Acceptance test:** `python3 -c "import json,sys;x=[c for c in json.load(open('design/concepts/Pyrelands/scenes.json'))['scenes'] if c['id']=='sc_firehawk'][0];sys.exit(0 if 'larg' in x['expect'].lower() and 'larg' in json.dumps(x['control']).lower() else 1)"`
 - **Decision:** pending his confirmation.
+
+## Blind cycle 4 (2026-11-20), two lines, no tickets
+
+- `RIMMANDRAKE_NOTE_PYRE_WIND_FAULTS_LIVE_ONLY_TO_SEE`: five planted wind and rain faults (line lit along the wind, line at any bearing, wind not taken from yesterday's scar, a fire carried more than once, black rain dousing under a roof) stay green in every offline test; their bars prove at Stage 6, where the live scenes must see them (`sc_fire_walks_with_wind` sets its wind by `SetWindForTest`, so it cannot see the scar's wind). Record: `version/blind_challenge/cycle_4/lane2/planted_results.jsonl`.
+- `PYRE_ABOUT_WORLDGEN_WORDLIST_MISSES_PLACING`: `T_DEFS_OFFLINE`'s fact `about_no_worldgen_promise_while_off` reads a verb list, so "Placing the Pyrelands on newly generated worlds is on by default." would stay green. The shipped About text is true; not worth the touch.

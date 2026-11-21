@@ -1,0 +1,54 @@
+{
+ "faults": [
+  {
+   "id": "RIMMANDRAKE_REPAIR_PYRE_GATE_DECIDER_FOUR_FAULTS_GREEN",
+   "class": "Problem",
+   "bar": "inv_settings_gate",
+   "criterion": "record.json inv_settings_gate: each mechanic on/off, and the Baroque Biomes roster toggle gates mechanics, not only worldgen; floor mod_settings: every mechanic switches off cleanly",
+   "evidence": [
+    "planted_results.jsonl: K_roster_toggle_ignored (MechanicsOn ignores the roster toggle) and K_stamp_ignores_master (BurnStampMay ignores Mod enabled) stayed green in T_SETTINGS_SWEEP_OFFLINE, T_SETTINGS_SCREENS and T_SITE; caught only by blind lane 1 (gate_truth_table, gate_closed_shuts_every_kernel_gate)",
+    "planted_results.jsonl: H_stamp_caller_skips_gate (BurnStampMay(true, ...) in the fire-tick postfix) and H_wind_ignores_its_switch (WindCarriedFire.Governs no longer reads WindCarries: the wind carries fire with every switch off, on every map) stayed green in all three deciders and in lane 1",
+    "the decider is static (source text): its entry_gated fact passes a postfix whose body consults the gate anywhere, so a gate argument replaced by true elsewhere in the same body is not seen; it checks the WindCarries expression but not that the patches read it; it checks PyrelandsMechanicsGate.On's text but not the kernel MechanicsOn it calls",
+    "planted_results.jsonl: K_douse_ignores_gate (BlackRainDouseAmount without its gate guard) stayed green in all three deciders; caught by T_FUZZ, which decides no offline bar"
+   ],
+   "would_pass": "each of the four planted faults turns the decider red, and the shipped tree stays green",
+   "smallest_fix": "three facts in selftest_pyrelands_settings_sweep.py: kernel_gates (evaluate MechanicsOn and BurnStampMay's return expressions over every input), gate_args (every caller of the six kernel gate predicates hands PyrelandsMechanicsGate.On at the gate's place), wind_reads_pred (Governs reads WindCarries; both wind patches ask Governs); the four faults added as mutants; and each of the six kernel gate predicates must shut on its own gate argument first (5 plants, 6 mutants added in all)",
+   "verdict_on_criterion": "the criterion is right; the check did not observe it where the gate is decided",
+   "status": "FIXED 3962b91eb4751c361519cd139f5f5e5d16bbf92d",
+   "against": "check",
+   "class_line": "HARNESS",
+   "miss_of": 3
+  },
+  {
+   "id": "RIMMANDRAKE_NOTE_PYRE_WIND_FAULTS_LIVE_ONLY_TO_SEE",
+   "class": "Polish",
+   "bar": "fire_walks_with_wind",
+   "criterion": "fire_walks_with_wind and burn_line_walks (stage 6); three_skies (stage 6)",
+   "evidence": [
+    "planted_results.jsonl: B_line_lit_along_the_wind, FF_line_any_bearing, FF_wind_not_from_scar, H_carry_never_marked and H_douses_under_a_roof stay green in every offline test (T_FUZZ, T_BURN_ECOLOGY, T_WIND_BURN_ROWS, lane 1)",
+    "these bars prove at stage 6; their deciders are live scenes (sc_fire_walks_with_wind, sc_burn_line_walks, sc_three_skies), not run offline, so no green decider missed them"
+   ],
+   "would_pass": "the stage-6 scenes observe the line's bearing across the wind, the wind from yesterday's scar on a fresh map, one carry per fire and no dousing under a roof",
+   "smallest_fix": "none here; recorded for the Stage 6 driver (sc_fire_walks_with_wind sets the wind by SetWindForTest, so it cannot see FF_wind_not_from_scar)",
+   "verdict_on_criterion": "not judged offline",
+   "status": "PENDING",
+   "against": "check",
+   "polish_route": "one line on design/concepts/Pyrelands/version/polish.md (2026-11-20, blind cycle 4); no ticket"
+  },
+  {
+   "id": "PYRE_ABOUT_WORLDGEN_WORDLIST_MISSES_PLACING",
+   "class": "Polish",
+   "bar": "inv_art_and_text",
+   "criterion": "T_DEFS_OFFLINE fact about_no_worldgen_promise_while_off",
+   "evidence": [
+    "planted_results.jsonl AB_promises_worldgen: About.xml 'Placing the Pyrelands on newly generated worlds is on by default.' stays green; the fact's verb list (places itself|is placed|appears|generates|spawns) has no 'placing' and no 'generated'"
+   ],
+   "would_pass": "n/a: the shipped text is true; a word list will always miss some false sentence, and the text bar rests on his sheet approval and the art and text judge",
+   "smallest_fix": "none (not worth the touch: no false text exists or happened)",
+   "verdict_on_criterion": "criterion right; check heuristic",
+   "status": "PENDING",
+   "against": "check",
+   "polish_route": "one line on design/concepts/Pyrelands/version/polish.md (2026-11-20, blind cycle 4); no ticket"
+  }
+ ]
+}

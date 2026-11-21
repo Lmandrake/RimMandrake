@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/Pyrelands/Source/FireEcologyHook.cs
++++ b/src/RimMandrake/Pyrelands/Source/FireEcologyHook.cs
+@@ -364,7 +364,7 @@
+                 cachedBurn = MapComponent_BurnLine.For(map);
+             }
+             burn = cachedBurn;
+-            if (burn == null || !burn.WindCarries) return false;
++            if (burn == null) return false;
+             // Natural ground only (any Pyrelands ground, or the soil and gravel pockets): a fire on a floor keeps vanilla's rule.
+             return FireEcologyHookMod.IsScorchableGround(fire.Position.GetTerrain(map));
+         }

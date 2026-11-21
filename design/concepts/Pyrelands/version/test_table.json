@@ -416,12 +416,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.89,
-    "last": "PASS: every Pyrelands setting scribed, shipped as ruled, read and gated; 21 of 21 mutants red, the clean copy green",
-    "at": "2026-11-17T20:30:20Z",
+    "seconds": 3.79,
+    "last": "PASS: every Pyrelands setting scribed, shipped as ruled, read and gated; 27 of 27 mutants red, the clean copy green",
+    "at": "2026-11-21T01:45:38Z",
     "result": "PASS",
-    "build": "1031b721ce6d69fef086",
-    "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_settings_sweep.py"
+    "build": "76cb502505a019f1b0de",
+    "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_settings_sweep.py",
+    "margins": []
    }
   },
   "T_DEFS_OFFLINE": {
@@ -1714,13 +1715,14 @@
    "item": "RIMMANDRAKE_FIX_PYRELANDS_ROUND_SIX_SEVENTEEN_GAPS",
    "runs_today": {
     "ran": true,
-    "rc": 1,
-    "seconds": 2.61,
-    "last": "FAIL: 1 of 18 checks failed",
-    "at": "2026-11-18T23:41:54Z",
-    "result": "FAIL",
-    "build": "8247d7df8273c20713ab",
-    "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_round6_gaps.py"
+    "rc": 0,
+    "seconds": 1.72,
+    "last": "PASS: 0 of 18 checks failed",
+    "at": "2026-11-21T01:45:40Z",
+    "result": "PASS",
+    "build": "2a8b965ea16688b45b92",
+    "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_round6_gaps.py",
+    "margins": []
    }
   },
   "sc_fire_walks_with_wind": {
@@ -1752,7 +1754,18 @@
    "id": "T_FURNACE_ART_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_furnace_beast_art.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 1.4,
+    "last": "PASS",
+    "at": "2026-11-21T01:45:41Z",
+    "result": "PASS",
+    "build": "5295c015c8bfc3cd8d04",
+    "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_furnace_beast_art.py",
+    "margins": []
+   }
   }
  },
  "bars": [

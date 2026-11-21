@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs
++++ b/src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs
+@@ -80,7 +80,7 @@
+         /// Independent of the ash-dusting and scorch-fruit toggles.</summary>
+         public static bool BurnStampMay(bool pyrelandsEnabled, bool bonusOn, bool spawned, bool attachedToPawn, bool scorchable)
+         {
+-            return pyrelandsEnabled && bonusOn && spawned && !attachedToPawn && scorchable;
++            return bonusOn && spawned && !attachedToPawn && scorchable;
+         }
+ 
+         /// <summary>Fresh-burn bonus: base x max(0, 1 - age/duration), on its own clock; rain never takes it away (owner, d_blackrain_stop_wipe:

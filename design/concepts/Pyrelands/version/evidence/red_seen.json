@@ -1,4 +1,17 @@
 {
+ "T_SETTINGS_SWEEP_OFFLINE": {
+  "at": "2026-11-21T01:42:41Z",
+  "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_settings_sweep.py",
+  "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_settings_sweep.py",
+  "last": "FAIL: the unchanged copy is not green",
+  "patch": "--- a/src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs\n+++ b/src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs\n@@ -229,7 +229,7 @@\n         /// by the sky's black-rain share. 0 when off or sheltered.</summary>\n         public static float BlackRainDouseAmount(bool gateOn, bool enabled, float dousePer150, float share, bool exposed)\n         {\n-            if (!gateOn || !enabled || !exposed || share <= 0f || dousePer150 <= 0f) return 0f;\n+            if (!enabled || !exposed || share <= 0f || dousePer150 <= 0f) return 0f;\n             return dousePer150 * (share > 1f ? 1f : share);\n         }\n \n",
+  "patch_files": [
+   "src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs"
+  ],
+  "patch_sha": "6467e19c7ead9951",
+  "rc": 1,
+  "test_blob": "de6276dffc1c6364bfa5707523f6c90815e728ee"
+ },
  "T_SITE": {
   "at": "2026-11-19T03:49:13Z",
   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_site.py",

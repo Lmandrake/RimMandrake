@@ -1,0 +1,13 @@
+{
+ "edited": [
+  {
+   "path": "src/RimMandrake/Pyrelands/selftest_pyrelands_settings_sweep.py",
+   "why": "added facts kernel_gates (MechanicsOn and BurnStampMay evaluated over every input; six gate predicates shut on their gate argument), gate_args and wind_reads_pred, and 6 mutants (the 5 planted gate faults it missed, plus the hawk letter's kernel gate). Nothing removed or loosened.",
+   "before_sha256": "1451129049a06e9566feb93cc714273edc80a0f0aa9ec0493fe9d50f54b7f817",
+   "after_sha256": "cedbfe8bab60e6968095460d180441c37f0b0ac2de8230b60ba526f431a3e967",
+   "before_on": "df4deb9076753b8651d93fc8b70a713487e53a85",
+   "after_on": "3962b91eb4751c361519cd139f5f5e5d16bbf92d"
+  }
+ ],
+ "also_edited_not_a_test": []
+}
