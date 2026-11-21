@@ -52,6 +52,31 @@ def push_refspec(tok):
     return pos[1] if len(pos) > 1 else None
 
 
+def push_dst(refspec):
+    """The ref a refspec writes on the remote: <dst> of <src>:<dst>, else <src> itself.
+    No refspec -> "" (the current branch, which may be main)."""
+    if not refspec:
+        return ""
+    s = refspec.lstrip("+")
+    return s.split(":", 1)[1] if ":" in s else s
+
+
+BASE_BRANCH = ("main", "refs/heads/main")
+
+
+def already_on_base(cwd, rev, dst, base="origin/main"):
+    """True when the push cannot drop a ledger line: it does not write main, and its
+    commit is an ancestor of the base, so every line it carries is already on the base
+    and was linted when it landed. Linting such a commit against the base instead reads
+    every LATER base line as NOT_APPEND (the false refusal of an older pass tag).
+    A push that writes main is never skipped: rewinding main really drops lines."""
+    if dst in ("", "HEAD") or dst in BASE_BRANCH:
+        return False
+    r = subprocess.run(["git", "-C", cwd, "merge-base", "--is-ancestor",
+                        rev + "^{commit}", base], capture_output=True, text=True, timeout=8)
+    return r.returncode == 0
+
+
 ZERO = "0" * 40
 SUMMARY = re.compile(r"^ledger_lint: \d+ findings? over ", re.M)
 
@@ -80,6 +105,8 @@ def git_pre_push(stdin_lines, cwd):
     for line in stdin_lines:
         parts = line.split()
         if len(parts) < 4 or parts[1] == ZERO:
+            continue
+        if already_on_base(cwd, parts[1], parts[2]):
             continue
         base = parts[3] if parts[3] != ZERO else "origin/main"
         r = subprocess.run([sys.executable or "python3", script, "--rev", parts[1],
@@ -132,7 +159,10 @@ def main():
             script = os.path.join(root, "src", "RimMandrake", "Utils", "ledger_lint.py")
             if not root or not os.path.isfile(script):
                 continue
-            rev = pushed_head(where, push_refspec(tok))
+            spec = push_refspec(tok)
+            rev = pushed_head(where, spec)
+            if already_on_base(where, rev, push_dst(spec)):
+                continue
             r = subprocess.run([sys.executable or "python3", script, "--rev", rev,
                                 "--root", root, "--base", "origin/main"],
                                capture_output=True, text=True, timeout=40)

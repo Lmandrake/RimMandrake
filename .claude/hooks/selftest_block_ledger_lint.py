@@ -5,6 +5,7 @@ no summary line) fails OPEN *with* a "NOT linted" warning instead of passing sil
 or refusing with an empty reason."""
 import importlib.util
 import io
+import json
 import os
 import shutil
 import subprocess
@@ -22,6 +23,7 @@ LINT = "src/RimMandrake/Utils/ledger_lint.py"
 spec = importlib.util.spec_from_file_location("bll", os.path.join(HERE, "block_ledger_lint.py"))
 bll = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(bll)
+ZERO = bll.ZERO
 
 
 def git(cwd, *a):
@@ -49,10 +51,76 @@ def pre_push(work, sha, base):
     return rc, err.getvalue()
 
 
+def pre_tool(work, command):
+    """Run the hook in PreToolUse mode; -> True when it denies the command."""
+    payload = json.dumps({"tool_input": {"command": command}, "cwd": work})
+    r = subprocess.run([sys.executable, os.path.join(HERE, "block_ledger_lint.py")],
+                       input=payload, capture_output=True, text=True, env=ENV, timeout=60)
+    return '"deny"' in r.stdout
+
+
+def ancestor_cases(tmp, results):
+    """A ref whose commit is already inside origin/main publishes no ledger line that
+    origin/main lacks, so a tag on an older pass commit must pass; a push that drops a
+    line from main, or a new commit that drops one, must still be refused."""
+    bare = os.path.join(tmp, "origin.git")
+    git(tmp, "init", "-q", "--bare", "-b", "main", bare)
+    work = os.path.join(tmp, "a")
+    os.makedirs(work)
+    git(work, "init", "-q", "-b", "main")
+    git(work, "remote", "add", "origin", bare)
+    write(work, LINT, open(os.path.join(REPO, LINT)).read())
+    a = '{"seat":"T","event":"note","id":"A","ts":"1"}\n'
+    b = '{"seat":"T","event":"note","id":"B","ts":"2"}\n'
+    write(work, SHARD, a)
+    old = commit(work, "old pass commit")
+    write(work, SHARD, a + b)
+    commit(work, "later append")
+    git(work, "push", "-q", "origin", "main")
+    git(work, "tag", "-a", "-m", "pass", "mod/X/v0.1.0", old)
+    tag_obj = git(work, "rev-parse", "mod/X/v0.1.0")
+    results.append(("PreToolUse: annotated tag on an ancestor of origin/main is ALLOWED",
+                    not pre_tool(work, "git push origin mod/X/v0.1.0")))
+    results.append(("PreToolUse: refs/tags/ spelling of the same tag is ALLOWED",
+                    not pre_tool(work, "git push origin refs/tags/mod/X/v0.1.0")))
+    rc, err = pre_push_line(work, "refs/tags/mod/X/v0.1.0 %s refs/tags/mod/X/v0.1.0 %s"
+                            % (tag_obj, ZERO))
+    results.append(("git-native: new tag on an ancestor of origin/main is ALLOWED",
+                    rc == 0 and "REFUSED" not in err))
+    # planted faults: each must stay refused
+    results.append(("PreToolUse: forced rewind of main to the ancestor is REFUSED",
+                    pre_tool(work, "git push --force origin %s:main" % old)))
+    results.append(("PreToolUse: same rewind spelled refs/heads/main is REFUSED",
+                    pre_tool(work, "git push -f origin %s:refs/heads/main" % old)))
+    rc, err = pre_push_line(work, "refs/heads/main %s refs/heads/main %s"
+                            % (old, git(work, "rev-parse", "origin/main")))
+    results.append(("git-native: rewind of main to the ancestor is REFUSED",
+                    rc == 1 and "NOT_APPEND" in err))
+    write(work, SHARD, b)                       # a NEW commit that drops line A
+    drop = commit(work, "drops a line")
+    git(work, "branch", "feat", drop)
+    results.append(("PreToolUse: branch push of a commit that drops a line is REFUSED",
+                    pre_tool(work, "git push origin feat")))
+    git(work, "tag", "-a", "-m", "bad", "mod/X/v0.2.0", drop)
+    results.append(("PreToolUse: tag on a non-ancestor commit that drops a line is REFUSED",
+                    pre_tool(work, "git push origin mod/X/v0.2.0")))
+    rc, err = pre_push_line(work, "refs/heads/feat %s refs/heads/feat %s" % (drop, ZERO))
+    results.append(("git-native: new branch that drops a line is REFUSED",
+                    rc == 1 and "NOT_APPEND" in err))
+
+
+def pre_push_line(work, line):
+    err = io.StringIO()
+    with redirect_stderr(err):
+        rc = bll.git_pre_push([line], work)
+    return rc, err.getvalue()
+
+
 def main():
     tmp = tempfile.mkdtemp(prefix="bll_selftest_")
     results = []
     try:
+        ancestor_cases(tmp, results)
         work = os.path.join(tmp, "w")
         os.makedirs(work)
         git(work, "init", "-q", "-b", "main")
@@ -87,7 +155,7 @@ def main():
         fails += not ok
         print(("PASS " if ok else "FAIL ") + name)
     print("selftest_block_ledger_lint: %d/%d passed" % (len(results) - fails, len(results)))
-    return 1 if fails or len(results) != 4 else 0
+    return 1 if fails or len(results) != 13 else 0
 
 
 if __name__ == "__main__":
