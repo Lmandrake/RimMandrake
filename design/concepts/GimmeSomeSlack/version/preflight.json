@@ -1,37 +1,37 @@
 {
  "mod": "GimmeSomeSlack",
- "version": "0.1.0",
- "ran_at": "2026-11-14T22:10:19-0800",
- "seconds": 4.69,
- "dump_read_seconds": 4.3,
- "dump": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/captures/2026-11-12T08-10-06Z",
+ "version": "0.1.1",
+ "ran_at": "2026-11-20T16:47:59-0800",
+ "seconds": 4.85,
+ "dump_read_seconds": 4.4,
+ "dump": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/captures/2026-11-20T19-51-00Z",
  "by": "design/concepts/GimmeSomeSlack/version/preflight_throwaway.py (throwaway, no model)",
- "verdict": "pass",
+ "verdict": "refuse",
  "checks": [
   {
    "check": "bars_match_required_ids",
    "result": "pass",
-   "n": 48
+   "n": 53
   },
   {
    "check": "every_bar_has_a_test",
    "result": "pass",
-   "n": 48
+   "n": 53
   },
   {
    "check": "every_test_names_its_stage",
    "result": "pass",
-   "n": 226
+   "n": 240
   },
   {
    "check": "every_cited_test_is_listed",
    "result": "pass",
-   "n": 726
+   "n": 744
   },
   {
    "check": "game_tests_say_why",
    "result": "pass",
-   "n": 199
+   "n": 203
   },
   {
    "check": "full_list_tests_say_why",
@@ -41,32 +41,32 @@
   {
    "check": "named_files_exist",
    "result": "pass",
-   "n": 1142
+   "n": 1349
   },
   {
    "check": "inventory_evidence_exists",
    "result": "pass",
-   "n": 72
+   "n": 74
   },
   {
    "check": "built_mod_decider_entries_exist",
-   "result": "pass",
-   "n": 26
+   "result": "refuse",
+   "n": 31
   },
   {
    "check": "built_mod_offline_deciders_run",
-   "result": "pass",
-   "n": 5
+   "result": "refuse",
+   "n": 9
   },
   {
    "check": "built_offline_tests_green",
    "result": "pass",
-   "n": 27
+   "n": 35
   },
   {
    "check": "named_defs_and_symbols_real",
    "result": "pass",
-   "n": 60
+   "n": 68
   },
   {
    "check": "our_defs_in_dump",
@@ -92,23 +92,39 @@
   {
    "check": "held_statements_placed",
    "result": "pass",
-   "n": 2
+   "n": 18
   },
   {
    "check": "held_statements_without_a_bar",
    "result": "note",
-   "n": 3,
-   "note": "all three sit on cords_draw_under_things, the bar his card 2026-11-14 added"
+   "n": 19,
+   "note": "7 of 19 placed statements sit on no bar of this version (requests, other mods' art, next version)"
   },
   {
    "check": "lock_pins_current",
    "result": "pass",
-   "n": 8
+   "n": 9
   }
  ],
- "refusals": [],
+ "refusals": [
+  {
+   "check": "built_mod_decider_entries_exist",
+   "line": "sc_no_roof_over_pole, sc_pole_icons_loaded, sc_pole_south_of_tree, sc_switch_off_ends",
+   "evidence": "scenes.json names entry points that are not defined: 'def <entry>(' occurs 0 times in the named file",
+   "smallest_fix": "Stage 3 builds the entry points (item GSS_SCENES_BUILD_EVERY_CORD_A_FOIL, live), each red first",
+   "return_to": "3"
+  },
+  {
+   "check": "built_mod_offline_deciders_run",
+   "line": "T_POLE_SOUTH_DRAWS_FRONT_OFFLINE, T_SWITCH_OFF_NODE_OFFLINE",
+   "evidence": "specified at this lock, not built",
+   "smallest_fix": "Stage 3 builds them, red first",
+   "return_to": "3"
+  }
+ ],
  "name_classes": {
   "csharp": [
+   "BuildingOnTop",
    "DecalKind",
    "ExternalContacts",
    "IsBlob",
@@ -122,7 +138,10 @@
    "PowerNets",
    "PrintedStatic",
    "RebuildContacts",
-   "ThingDef"
+   "StaticConstructorOnStartup",
+   "StubArt",
+   "ThingDef",
+   "TryReconnect"
   ],
   "def": [
    "HiddenConduit",
@@ -134,6 +153,7 @@
   ],
   "file": [
    "AerialLineProfiles",
+   "AerialProbe",
    "AerialSettings",
    "CompAerialAnchor",
    "CompPowerTap",
@@ -162,6 +182,9 @@
    "RestringJob",
    "SliceWindow",
    "SnapshotPool",
+   "SouthDrawsFront",
+   "StubJoinAudit",
+   "StubJoinChecks",
    "StylePicker",
    "SwitchFlipChecks",
    "TapLedger",
@@ -178,5 +201,23 @@
   "save_or_id": [
    "RM_gss_walk_20261015b"
   ]
- }
+ },
+ "repairs": [
+  {
+   "check": "named_defs_and_symbols_real",
+   "sitting": "RIMMANDRAKE_STEWARD_GIMMESOMESLACK_PREFLIGHT_STAGE",
+   "flaw": "the scan read GSS and FlowWorks only, so MandrakePatches' real SouthDrawsFront rule (Source/SouthDrawsFront/) read UNKNOWN",
+   "repair": "MandrakePatches C# and source file and folder names count",
+   "red": "GSS_PREFLIGHT_PLANT=1: refuse (RM_PlantedDefThatIsNotReal, RM_PlantedStaleDef)",
+   "green": "real 0.1.1 spec: pass"
+  },
+  {
+   "check": "held_statements_placed",
+   "sitting": "RIMMANDRAKE_STEWARD_GIMMESOMESLACK_PREFLIGHT_STAGE",
+   "flaw": "it globbed owner_look_defects_*.md only and never saw his walk record gss_walk_20261120.md: a blind pass",
+   "repair": "every numbered row of a gss_walk_*.md 'His points' table counts",
+   "red": "the committed 0.1.0 table: refuse (16 walk rows unplaced); GSS_PREFLIGHT_PLANT=1: refuse",
+   "green": "0.1.1 table: pass (18 placed)"
+  }
+ ]
 }

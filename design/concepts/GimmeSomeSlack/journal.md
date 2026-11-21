@@ -13,12 +13,12 @@ mods read alike.
 - **Design Version 0.1.0, locked** on his word 2026-11-13 ~3:40 PM PST (`version/VERSION.json`); the lock record pins the text
   at that word, `bf33322d77` (re-pinned 2026-11-14, steward's decision). Code: `src/RimMandrake/GimmeSomeSlack/` (C#, 62
   sources; C# SelfTest 4515 checks; `validation.py`; `northstar/proof_all.py`, the one dense live proof).
-- **Stage now:** Stage 2, preflight, since 2026-11-20 4:09 PM PST (`version/stage_record.json`).
+- **Stage now:** Stage 3, offline build, since 2026-11-20 4:59 PM PST (`version/stage_record.json`).
 - **Bars:** 48 (23 inventory rows of `record.json` + 26 leaves of `tree.json`; `shock_reach_setting` is both, so 49 rows
   name 48 ids; `cords_draw_under_things` added by his card 2026-11-14). The test-and-stage table is
   `version/test_table.json` (read view `version/test_table.md`), made by the throwaway `version/make_test_table.py`. Of 48
   bars: 48 have a deciding test runnable today (counts as of now: "Waiting on").
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-20 3:33 PM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-20 4:59 PM PST).
 - **Open questions for him:** "Questions for him", the last part of this top section.
 
 ### The vision (his root paragraph, `record.json` root, OWNER:1793895896496551063)
@@ -410,4 +410,13 @@ row 2; Stage 3 about $10.3 and 50 minutes (12:15 to 13:05 PST). No helpers, no g
 - The 0.1.0 record (at Version passed (Passed)) is kept as `version/stage_record_0.1.0.json`.
 - Its numbered evidence (10 cycle, visit and arrival paths) is set aside in `version/previous/0.1.0`.
 - Was, "Stage now": - **Stage now:** Version passed on his word, since 2026-11-20 3:33 PM PST (`version/stage_record.json`).
+- Record: `version/stage_record.json`.
+
+### 2026-11-20 4:59 PM PST, stage change: Preflight (Stage 2) to Offline build (Stage 3) (by BENCH)
+
+- Why: Preflight (Stage 2) of 0.1.1 run by the steward: preflight_throwaway.py wrote version/preflight.json for 0.1.1 (verdict refuse, 2 refusals, both return_to 3). delegated: evidence-for-ask: the four PATCH bars' deciders transcribed into the test table from the locked record.json proof_note of each bar (no bar's words changed; the 49 kept bars' decides unchanged), his 2026-11-20 walk rows placed
+- Checks passed: order, by, version, hold, preflight_record, steward_confirms.
+- Steward confirms: Read version/preflight.json (0.1.1, 19 checks, 2 refusals), record.json inventory rows of the four 0.1.1 bars, gss_walk_20261120.md, test_table.json. Both refusals are unbuilt checks, not spec faults: built_mod_decider_entries_exist names sc_switch_off_ends, sc_pole_icons_loaded, sc_pole_south_of_tree, sc_no_roof_over_pole (live entries not written yet); built_mod_offline_deciders_run names T_SWITCH_OFF_NODE_OFFLINE, T_POLE_SOUTH_DRAWS_FRONT_OFFLINE (offline tests not built yet). Each is the PATCH work of the four 0.1.1 items, for Stage 3 to build red first. Two preflight checks were repaired in the sitting and shown both ways (named_defs_and_symbols_real, held_statements_placed; readings in preflight.json repairs). Verdict: ready for the offline build.
+- Was, "Stage now": - **Stage now:** Stage 2, preflight, since 2026-11-20 4:09 PM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-20 3:33 PM PST).
 - Record: `version/stage_record.json`.

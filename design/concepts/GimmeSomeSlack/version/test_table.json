@@ -1,7 +1,7 @@
 {
  "mod": "GimmeSomeSlack",
- "version": "0.1.0",
- "made": "2026-11-16T07:39:13-08:00",
+ "version": "0.1.1",
+ "made": "2026-11-20T16:47:17-08:00",
  "made_by": "rm-builder, Maturation hand run beside the pilot, row 2 (throwaway version/make_test_table.py)",
  "stages": {
   "2": "preflight (a program)",
@@ -45,6 +45,171 @@
    "test": "sc_cords_under_items (in scenes.json since 2026-11-14) keeps it so",
    "stage": "6",
    "kind": "approval: the regression the in-game read guards; bar added by his card 2026-11-14"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/gss_walk_20261120.md",
+   "row": 1,
+   "words": "row 1 of the walk record's His points table",
+   "bars": [
+    "switch_off_cords_stay_connected"
+   ],
+   "test": "T_SWITCH_OFF_NODE_OFFLINE",
+   "stage": "4-5 then 6",
+   "kind": "defect; 0.1.1 bar (RIMMANDRAKE_SEAT_SLACK_CORDS_IN_OFF_SWITCH_NOT_CUT)"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/gss_walk_20261120.md",
+   "row": 2,
+   "words": "row 2 of the walk record's His points table",
+   "bars": [
+    "four_looks_one_run"
+   ],
+   "test": "T_CORE",
+   "stage": "4-5 then 6",
+   "kind": "approval"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/gss_walk_20261120.md",
+   "row": 3,
+   "words": "row 3 of the walk record's His points table",
+   "bars": [
+    "four_looks_one_run"
+   ],
+   "test": "T_CORE",
+   "stage": "4-5 then 6",
+   "kind": "approval"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/gss_walk_20261120.md",
+   "row": 4,
+   "words": "row 4 of the walk record's His points table",
+   "bars": [
+    "fallen_span_on_ground",
+    "downed_spans"
+   ],
+   "test": "(the bar's own deciders) + (the bar's own deciders)",
+   "stage": "4-5 then 6",
+   "kind": "approval"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/gss_walk_20261120.md",
+   "row": 5,
+   "words": "row 5 of the walk record's His points table",
+   "bars": [],
+   "test": "-",
+   "stage": "-",
+   "kind": "art of another mod: RIMMANDRAKE_ABSORB_EXTRA_EXPLOSION_EFFECTS_OWN_FLECKS (Explosive Knockback), no GSS bar"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/gss_walk_20261120.md",
+   "row": 6,
+   "words": "row 6 of the walk record's His points table",
+   "bars": [
+    "no_unforced_sharp_turn",
+    "cords_lie_slack"
+   ],
+   "test": "T_CORD_GEOMETRY_OFFLINE + T_CORE",
+   "stage": "4-5 then 6",
+   "kind": "approval"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/gss_walk_20261120.md",
+   "row": 7,
+   "words": "row 7 of the walk record's His points table",
+   "bars": [],
+   "test": "-",
+   "stage": "-",
+   "kind": "request, next version: RIMMANDRAKE_CUT_SLACK_REVIEW_STATIONS_NOBODY_READS (VERSION.json caveats)"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/gss_walk_20261120.md",
+   "row": 8,
+   "words": "row 8 of the walk record's His points table",
+   "bars": [
+    "junction_strips",
+    "cords_join_stubs_on_position_and_slope"
+   ],
+   "test": "T_CORE + T_STUB_JOINS",
+   "stage": "4-5 then 6",
+   "kind": "approval"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/gss_walk_20261120.md",
+   "row": 9,
+   "words": "row 9 of the walk record's His points table",
+   "bars": [
+    "pole_buttons_show_icons"
+   ],
+   "test": "(the bar's own deciders)",
+   "stage": "4-5 then 6",
+   "kind": "defect; 0.1.1 bar (RIMMANDRAKE_LOAD_SLACK_POLE_ICONS_ON_MAIN_THREAD)"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/gss_walk_20261120.md",
+   "row": 10,
+   "words": "row 10 of the walk record's His points table",
+   "bars": [],
+   "test": "-",
+   "stage": "-",
+   "kind": "request, next version: RIMMANDRAKE_WIRE_STYLE_ICONS_INTO_EVERY_LOOK_MENU"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/gss_walk_20261120.md",
+   "row": 11,
+   "words": "row 11 of the walk record's His points table",
+   "bars": [],
+   "test": "-",
+   "stage": "-",
+   "kind": "request, next version: RIMMANDRAKE_STYLE_SLACK_BATTERY_LIKE_THE_LAMP; art on RIMMANDRAKE_DESIGN_HOME_FOR_VANILLA_ELECTRICAL_ART"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/gss_walk_20261120.md",
+   "row": 12,
+   "words": "row 12 of the walk record's His points table",
+   "bars": [],
+   "test": "-",
+   "stage": "-",
+   "kind": "art, held by RIMMANDRAKE_DESIGN_HOME_FOR_VANILLA_ELECTRICAL_ART"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/gss_walk_20261120.md",
+   "row": 13,
+   "words": "row 13 of the walk record's His points table",
+   "bars": [
+    "poles_draw_in_front_when_south"
+   ],
+   "test": "T_POLE_SOUTH_DRAWS_FRONT_OFFLINE",
+   "stage": "4-5 then 6",
+   "kind": "defect; 0.1.1 bar (RIMMANDRAKE_DRAW_SLACK_POLES_IN_FRONT_WHEN_SOUTH)"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/gss_walk_20261120.md",
+   "row": 14,
+   "words": "row 14 of the walk record's His points table",
+   "bars": [
+    "no_roof_over_pole"
+   ],
+   "test": "(the bar's own deciders)",
+   "stage": "4-5 then 6",
+   "kind": "defect; 0.1.1 bar (RIMMANDRAKE_BLOCK_SLACK_ROOF_OVER_POLE_KEEP_THE_CUT)"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/gss_walk_20261120.md",
+   "row": 15,
+   "words": "row 15 of the walk record's His points table",
+   "bars": [],
+   "test": "-",
+   "stage": "-",
+   "kind": "request, held by RIMMANDRAKE_DESIGN_HOME_FOR_VANILLA_ELECTRICAL_ART"
+  },
+  {
+   "file": "design/RimMandrake/validation_holding/gss_walk_20261120.md",
+   "row": 16,
+   "words": "row 16 of the walk record's His points table",
+   "bars": [],
+   "test": "-",
+   "stage": "-",
+   "kind": "approval of the whole mod: the 0.1.0 pass (e1d9c3c042)"
   }
  ],
  "corrections": [
@@ -113,6 +278,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordEndAudit.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordGraph.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordLiveEnd.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordMotion.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordPlugExit.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordReach.cs",
@@ -121,6 +287,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordSlacken.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/HookupPick.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/LegacyName.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/ProbeRead.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/RebuildGate.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/RebuildTail.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SettingsPrint.cs",
@@ -128,6 +295,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotBlock.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotPool.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/StubJoinAudit.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/TexPath.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/WallMount.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialDefOf.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialLineProfiles.cs",
@@ -179,10 +347,13 @@
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/LabWorld.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/LaneAChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/LegacyNameChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/LiveEndCensus.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/LiveEndSweepChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/LoopLassoChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/MotionBucketChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/PhantomSparkChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/PileLookChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/ProbeReadChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/Program.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/RebuildPerDigChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/RebuildTailChecks.cs",
@@ -191,6 +362,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/ReviewRound4Checks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/ReviewRound5Checks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/ReviewRound6Checks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SceneDump.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/ShockRuleChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SittingChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SliceGateChecks.cs",
@@ -198,10 +370,12 @@
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/StubJoinChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/StyleStage1Checks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/StyleStage2Checks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/StyledFreshChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/StyledWinnerLegacyBridgeChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SwitchFlipChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/TapClampPoseChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/TapWindowChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/TexPathChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/TheftChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/UnityShim.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/UnroutableCensus.cs",
@@ -212,13 +386,10 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 281.45,
+    "seconds": 310.6,
     "last": "4600/4600 checks passed",
-    "at": "2026-11-20T12:24:08Z",
-    "result": "PASS",
-    "build": "822fd624ab101de374fd",
-    "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py",
-    "margins": []
+    "at": "2026-11-20T16:28:22-08:00",
+    "result": "PASS"
    }
   },
   "T_STUB_JOINS": {
@@ -236,13 +407,10 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 21.82,
+    "seconds": 21.04,
     "last": "9/9 checks passed (stub joins only)",
-    "at": "2026-11-20T12:24:30Z",
-    "result": "PASS",
-    "build": "ca70bdc720cc32034d5e",
-    "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --no-export --joins-only",
-    "margins": []
+    "at": "2026-11-20T16:28:22-08:00",
+    "result": "PASS"
    }
   },
   "T_STUB_ART_CENSUS": {
@@ -259,13 +427,10 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.28,
+    "seconds": 0.34,
     "last": "PASS",
-    "at": "2026-11-20T12:24:30Z",
-    "result": "PASS",
-    "build": "c618649769b72815266f",
-    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_stub_art_census.py",
-    "margins": []
+    "at": "2026-11-20T16:28:22-08:00",
+    "result": "PASS"
    }
   },
   "T_GATE": {
@@ -283,13 +448,10 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 333.18,
-    "last": "GATE_JSON {\"red\": [], \"steps\": {\"validation_offline\": {\"rows\": 9, \"not_pass\": [], \"statuses\": {\"O8_lamp_mast_vanilla_register\": \"PASS\", \"O7_gpt_read_fixes\": \"PASS\", \"O1_mod_files\": \"PASS\", \"O2_settings_defaults\": \"PASS\", \"O5_style_art_sane\": \"PASS\", \"O6_review_round1\": \"PASS\", \"O3_core_selftest\": \"PASS\", \"O3n_selftest_can_fail\": \"PASS\", \"O4_python_oracle\": \"PASS\"}, \"wall_s\": 293.4}, \"matrix_selftest\": {\"exit\": 0, \"fail\": [], \"summary\": [\"62/62 checks passed (18 negative controls among them)\"], \"wall_s\": 14.7}, \"human_review_plan\": {\"exit\": 0, \"tail\": [\"layout ok: 31 stations (1-11 style gallery) + art board M + free area; key sheet -> /home/mandrake/rm/bench/Transient/mc_human_review\"], \"wall_s\": 0.1}, \"selftest_human_review\": {\"exit\": 0, \"tail\": [\"41/41 checks passed\"], \"wall_s\": 0.1}, \"selftest_proof_all\": {\"exit\": 0, \"tail\": [\"ALL PASS\"], \"wall_s\": 23.9}, \"selftest_gss_stub_art_census\": {\"exit\": 0, \"tail\": [\"PASS\"], \"wall_s\": 0.3}, \"selftest_gss_statics_census\": {\"exit\": 0, \"tail\": [\"PASS\"], \"wall_s\": 0.1}, \"design_spec\": {\"exit\": 0, \"tail\": [\"wrote /mnt/d/ClaudeWork/rimmandrake/scratch/gss_proof/scenes_design.json\"], \"wall_s\": 0.4}}, \"spec_posix\": \"/mnt/d/ClaudeWork/rimmandrake/scratch/gss_proof/scenes_design.json\", \"spec_win\": \"D:\\\\ClaudeWork\\\\rimmandrake\\\\scratch\\\\gss_proof\\\\scenes_design.json\"}",
-    "at": "2026-11-20T12:30:03Z",
-    "result": "PASS",
-    "build": "b52a7bc60be202e6fb9a",
-    "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py --offline-gate",
-    "margins": []
+    "seconds": 361.01,
+    "last": "O4_python_oracle             PASS      44/44 checks passed",
+    "at": "2026-11-20T16:28:22-08:00",
+    "result": "PASS"
    }
   },
   "T_MATRIX": {
@@ -315,13 +477,10 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 14.19,
-    "last": "62/62 checks passed (18 negative controls among them)",
-    "at": "2026-11-20T12:30:18Z",
-    "result": "PASS",
-    "build": "543a99ec707c8aaad1cf",
-    "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar_matrix/selftest.py",
-    "margins": []
+    "seconds": 11.54,
+    "last": "61/61 checks passed (18 negative controls among them)",
+    "at": "2026-11-20T16:28:22-08:00",
+    "result": "PASS"
    }
   },
   "T_NO_HOSE": {
@@ -339,13 +498,10 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.56,
+    "seconds": 3.92,
     "last": "PASS  G0_clean_copy  want=green got=[]",
-    "at": "2026-11-20T12:30:20Z",
-    "result": "PASS",
-    "build": "9358d48c3f4d03f55bf4",
-    "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_no_hose.py",
-    "margins": []
+    "at": "2026-11-20T16:28:22-08:00",
+    "result": "PASS"
    }
   },
   "T_SHOCK_OUTLIVES": {
@@ -390,13 +546,10 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.1,
+    "seconds": 0.13,
     "last": "ALL PASS",
-    "at": "2026-11-20T12:30:20Z",
-    "result": "PASS",
-    "build": "d8822c7331602e8cd461",
-    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_shock_outlives_wire.py",
-    "margins": []
+    "at": "2026-11-20T16:28:22-08:00",
+    "result": "PASS"
    }
   },
   "T_SHOCK_OUTLIVES_BINDING": {
@@ -441,13 +594,10 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 8.81,
+    "seconds": 11.68,
     "last": "ALL PASS",
-    "at": "2026-11-20T12:30:29Z",
-    "result": "PASS",
-    "build": "5506d336f1cc921fc56c",
-    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_shock_outlives_wire_binding.py",
-    "margins": []
+    "at": "2026-11-20T16:28:22-08:00",
+    "result": "PASS"
    }
   },
   "T_SHOCK_BITES_BINDING": {
@@ -492,13 +642,10 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.41,
+    "seconds": 0.46,
     "last": "ALL PASS",
-    "at": "2026-11-20T12:30:30Z",
-    "result": "PASS",
-    "build": "6bc3224843e75ff5ad03",
-    "command": "python3 src/RimMandrake/Utils/selftest_gss_shock_still_bites_binding.py",
-    "margins": []
+    "at": "2026-11-20T16:28:22-08:00",
+    "result": "PASS"
    }
   },
   "T_END_HEAP": {
@@ -514,6 +661,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordEndAudit.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordGraph.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordLiveEnd.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordMotion.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordPlugExit.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordReach.cs",
@@ -522,6 +670,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordSlacken.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/HookupPick.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/LegacyName.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/ProbeRead.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/RebuildGate.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/RebuildTail.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SettingsPrint.cs",
@@ -529,6 +678,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotBlock.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotPool.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/StubJoinAudit.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/TexPath.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/WallMount.cs"
    ],
    "command": "python3 src/RimMandrake/Utils/selftest_gss_end_heap_budget.py",
@@ -537,11 +687,8 @@
     "rc": 0,
     "seconds": 0.02,
     "last": "gss end-heap budget: ok",
-    "at": "2026-11-20T12:30:30Z",
-    "result": "PASS",
-    "build": "c93dbd1bf503321a9eab",
-    "command": "python3 src/RimMandrake/Utils/selftest_gss_end_heap_budget.py",
-    "margins": []
+    "at": "2026-11-20T16:28:22-08:00",
+    "result": "PASS"
    }
   },
   "T_JUNCTION_ART": {
@@ -553,32 +700,141 @@
    "reads": [
     "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Junction_Tape.png",
     "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Junction_Tin.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Junction_Tin_p1.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Junction_Tin_p10.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Junction_Tin_p11.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Junction_Tin_p12.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Junction_Tin_p13.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Junction_Tin_p14.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Junction_Tin_p2.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Junction_Tin_p3.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Junction_Tin_p4.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Junction_Tin_p5.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Junction_Tin_p6.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Junction_Tin_p7.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Junction_Tin_p8.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Junction_Tin_p9.png",
     "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Cybertek/Junction_T.png",
     "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Cybertek/Junction_X.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Cybertek/Junction_X_p1.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Cybertek/Junction_X_p10.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Cybertek/Junction_X_p11.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Cybertek/Junction_X_p12.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Cybertek/Junction_X_p13.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Cybertek/Junction_X_p14.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Cybertek/Junction_X_p2.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Cybertek/Junction_X_p3.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Cybertek/Junction_X_p4.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Cybertek/Junction_X_p5.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Cybertek/Junction_X_p6.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Cybertek/Junction_X_p7.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Cybertek/Junction_X_p8.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Cybertek/Junction_X_p9.png",
     "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/Junction_T.png",
     "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/Junction_X.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/Junction_X_p1.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/Junction_X_p10.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/Junction_X_p11.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/Junction_X_p12.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/Junction_X_p13.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/Junction_X_p14.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/Junction_X_p2.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/Junction_X_p3.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/Junction_X_p4.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/Junction_X_p5.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/Junction_X_p6.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/Junction_X_p7.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/Junction_X_p8.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/Junction_X_p9.png",
     "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/Junction_T.png",
     "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/Junction_X.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/Junction_X_p1.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/Junction_X_p10.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/Junction_X_p11.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/Junction_X_p12.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/Junction_X_p13.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/Junction_X_p14.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/Junction_X_p2.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/Junction_X_p3.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/Junction_X_p4.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/Junction_X_p5.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/Junction_X_p6.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/Junction_X_p7.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/Junction_X_p8.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/Junction_X_p9.png",
     "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/Junction_T.png",
     "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/Junction_X.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/Junction_X_p1.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/Junction_X_p10.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/Junction_X_p11.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/Junction_X_p12.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/Junction_X_p13.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/Junction_X_p14.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/Junction_X_p2.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/Junction_X_p3.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/Junction_X_p4.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/Junction_X_p5.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/Junction_X_p6.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/Junction_X_p7.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/Junction_X_p8.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/Junction_X_p9.png",
     "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Junction_T.png",
     "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Junction_X.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Junction_X_p1.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Junction_X_p10.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Junction_X_p11.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Junction_X_p12.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Junction_X_p13.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Junction_X_p14.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Junction_X_p2.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Junction_X_p3.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Junction_X_p4.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Junction_X_p5.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Junction_X_p6.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Junction_X_p7.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Junction_X_p8.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Junction_X_p9.png",
     "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/Junction_T.png",
     "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/Junction_X.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/Junction_X_p1.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/Junction_X_p10.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/Junction_X_p11.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/Junction_X_p12.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/Junction_X_p13.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/Junction_X_p14.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/Junction_X_p2.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/Junction_X_p3.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/Junction_X_p4.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/Junction_X_p5.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/Junction_X_p6.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/Junction_X_p7.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/Junction_X_p8.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/Junction_X_p9.png",
     "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/StarWars/Junction_T.png",
-    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/StarWars/Junction_X.png"
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/StarWars/Junction_X.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/StarWars/Junction_X_p1.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/StarWars/Junction_X_p10.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/StarWars/Junction_X_p11.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/StarWars/Junction_X_p12.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/StarWars/Junction_X_p13.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/StarWars/Junction_X_p14.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/StarWars/Junction_X_p2.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/StarWars/Junction_X_p3.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/StarWars/Junction_X_p4.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/StarWars/Junction_X_p5.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/StarWars/Junction_X_p6.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/StarWars/Junction_X_p7.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/StarWars/Junction_X_p8.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/StarWars/Junction_X_p9.png"
    ],
    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_junction_necks.py",
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.14,
+    "seconds": 0.22,
     "last": "12/12 junction PNGs pass",
-    "at": "2026-11-20T12:30:30Z",
-    "result": "PASS",
-    "build": "f4ad821eaac05cf84d69",
-    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_junction_necks.py",
-    "margins": []
+    "at": "2026-11-20T16:28:22-08:00",
+    "result": "PASS"
    }
   },
   "T_STRIP_ART": {
@@ -595,13 +851,10 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.06,
+    "seconds": 0.08,
     "last": "PASS",
-    "at": "2026-11-20T12:30:30Z",
-    "result": "PASS",
-    "build": "652afb30042fdfc3686e",
-    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_strip_art.py",
-    "margins": []
+    "at": "2026-11-20T16:28:22-08:00",
+    "result": "PASS"
    }
   },
   "T_FW_PIT_DRAW_CENSUS": {
@@ -619,13 +872,10 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.17,
-    "last": "PASS",
-    "at": "2026-11-20T12:30:30Z",
-    "result": "PASS",
-    "build": "f112aa121a2e97896b13",
-    "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_pit_draw_census.py",
-    "margins": []
+    "seconds": 0.9,
+    "last": "  bright = max((max(p[:3]) for p in im.getdata() if p[3] > 10), default=0)",
+    "at": "2026-11-20T16:28:22-08:00",
+    "result": "PASS"
    }
   },
   "T_PROOF_LEAVES": {
@@ -642,13 +892,10 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.08,
+    "seconds": 0.12,
     "last": "GREEN: every row cites a leaf, every leaf has a row or a live item owing it (0 owed)",
-    "at": "2026-11-20T12:30:30Z",
-    "result": "PASS",
-    "build": "dcf713114573e9fdb341",
-    "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_proof_leaves.py",
-    "margins": []
+    "at": "2026-11-20T16:28:22-08:00",
+    "result": "PASS"
    }
   },
   "T_H_RESTRING_PROOF": {
@@ -665,13 +912,10 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.16,
-    "last": "{\"fault\": null, \"row\": {\"id\": \"M15f_restring_joined_run_one_look\", \"status\": \"PASS\", \"class\": \"MOD\", \"detail\": {\"schema\": 1, \"jobDef\": \"RM_RestringSpan\", \"readings\": [{\"cmd\": \"colonists\", \"reply\": {\"success\": true, \"cmd\": \"colonists\", \"pawns\": [{\"id\": 7, \"pos\": [80, 180], \"drafted\": true, \"downed\": false, \"job\": null}]}}, {\"cmd\": \"cstyles\", \"reply\": {\"success\": true, \"cmd\": \"cstyles\", \"defaultKey\": \"Scrapper\", \"members\": [{\"id\": 2, \"x\": 104, \"z\": 185, \"look\": \"Scrapper\", \"rawStyle\": \"Style_Scrapper\", \"colour\": null, \"run\": 2}, {\"id\": 3, \"x\": 116, \"z\": 185, \"look\": \"Scrapper\", \"rawStyle\": \"Style_Scrapper\", \"colour\": null, \"run\": 3}]}}, {\"cmd\": \"cut:2,3\", \"reply\": {\"success\": true, \"cmd\": \"cut:2,3\", \"done\": true}}, {\"cmd\": \"cprocess\", \"reply\": {\"success\": true, \"cmd\": \"cprocess\"}}, {\"cmd\": \"census\", \"reply\": {\"success\": true, \"cmd\": \"census\", \"anchors\": [{\"id\": 2, \"x\": 104, \"z\": 185, \"net\": 11, \"links\": [{\"other\": 3, \"state\": \"Cut\"}]}, {\"id\": 3, \"x\": 116, \"z\": 185, \"net\": 22, \"links\": [{\"other\": 2, \"state\": \"Cut\"}]}]}}, {\"cmd\": \"crestyle:104,185:Modern_Orange\", \"reply\": {\"success\": true, \"cmd\": \"crestyle:104,185:Modern_Orange\"}}, {\"cmd\": \"crestyle:116,185:Industrial\", \"reply\": {\"success\": true, \"cmd\": \"crestyle:116,185:Industrial\"}}, {\"cmd\": \"cstyles\", \"reply\": {\"success\": true, \"cmd\": \"cstyles\", \"defaultKey\": \"Scrapper\", \"members\": [{\"id\": 2, \"x\": 104, \"z\": 185, \"look\": \"Modern\", \"rawStyle\": \"Style_Modern\", \"colour\": null, \"run\": 2}, {\"id\": 3, \"x\": 116, \"z\": 185, \"look\": \"Industrial\", \"rawStyle\": \"Style_Industrial\", \"colour\": null, \"run\": 3}]}}, {\"cmd\": \"restringorder:2\", \"reply\": {\"success\": true, \"cmd\": \"restringorder:2\", \"cut\": 1, \"designated\": true, \"jobsDone\": 0, \"spansRestrung\": 0}}, {\"cmd\": \"pawn:7=undraft\", \"reply\": {\"success\": true, \"cmd\": \"pawn:7=undraft\", \"pawn\": {\"id\": 7, \"pos\": [80, 180], \"drafted\": false, \"downed\": false, \"job\": null}}}, {\"cmd\": \"restringjob:2\", \"reply\": {\"success\": true, \"cmd\": \"restringjob:2\", \"cut\": 1, \"designated\": true, \"jobsDone\": 0, \"spansRestrung\": 0, \"by\": \"Human7\"}}, {\"cmd\": \"colonists\", \"reply\": {\"success\": true, \"cmd\": \"colonists\", \"pawns\": [{\"id\": 7, \"pos\": [80, 180], \"drafted\": false, \"downed\": false, \"job\": \"RM_RestringSpan\"}]}}, {\"cmd\": \"restringstate:2\", \"reply\": {\"success\": true, \"cmd\": \"restringstate:2\", \"cut\": 0, \"designated\": false, \"jobsDone\": 1, \"spansRestrung\": 1}}, {\"cmd\": \"cprocess\", \"reply\": {\"success\": true, \"cmd\": \"cprocess\"}}, {\"cmd\": \"census\", \"reply\": {\"success\": true, \"cmd\": \"census\", \"anchors\": [{\"id\": 2, \"x\": 104, \"z\": 185, \"net\": 11, \"links\": [{\"other\": 3, \"state\": \"Up\"}]}, {\"id\": 3, \"x\": 116, \"z\": 185, \"net\": 11, \"links\": [{\"other\": 2, \"state\": \"Up\"}]}]}}, {\"cmd\": \"cstyles\", \"reply\": {\"success\": true, \"cmd\": \"cstyles\", \"defaultKey\": \"Scrapper\", \"members\": [{\"id\": 2, \"x\": 104, \"z\": 185, \"look\": \"Industrial\", \"rawStyle\": \"Style_Industrial\", \"colour\": null, \"run\": 2}, {\"id\": 3, \"x\": 116, \"z\": 185, \"look\": \"Industrial\", \"rawStyle\": \"Style_Industrial\", \"colour\": null, \"run\": 2}]}}, {\"cmd\": \"crestyle:104,185:Scrapper\", \"reply\": {\"success\": true, \"cmd\": \"crestyle:104,185:Scrapper\"}}, {\"cmd\": \"crestyle:116,185:Scrapper\", \"reply\": {\"success\": true, \"cmd\": \"crestyle:116,185:Scrapper\"}}, {\"cmd\": \"cprocess\", \"reply\": {\"success\": true, \"cmd\": \"cprocess\"}}], \"cleanup\": [{\"colonists\": [{\"success\": true, \"cmd\": \"pawn:7=draft\", \"pawn\": {\"id\": 7, \"pos\": [110, 185], \"drafted\": true, \"downed\": false, \"job\": null}}, {\"success\": true, \"cmd\": \"pawn:7=tp:80,180\", \"pawn\": {\"id\": 7, \"pos\": [80, 180], \"drafted\": true, \"downed\": false, \"job\": null}}, {\"success\": true, \"cmd\": \"colonists\", \"pawns\": [{\"id\": 7, \"pos\": [80, 180], \"drafted\": true, \"downed\": false, \"job\": null}]}]}], \"parkBeforeCut\": [{\"success\": true, \"cmd\": \"pawn:7=draft\", \"pawn\": {\"id\": 7, \"pos\": [80, 180], \"drafted\": true, \"downed\": false, \"job\": null}}, {\"success\": true, \"cmd\": \"pawn:7=tp:80,180\", \"pawn\": {\"id\": 7, \"pos\": [80, 180], \"drafted\": true, \"downed\": false, \"job\": null}}, {\"success\": true, \"cmd\": \"colonists\", \"pawns\": [{\"id\": 7, \"pos\": [80, 180], \"drafted\": true, \"downed\": false, \"job\": null}]}], \"splitNets\": [11, 22], \"before\": [[\"Modern\", null, \"Style_Modern\"], [\"Industrial\", null, \"Style_Industrial\"]], \"splitRuns\": [2, 3], \"order\": {\"success\": true, \"cmd\": \"restringorder:2\", \"cut\": 1, \"designated\": true, \"jobsDone\": 0, \"spansRestrung\": 0}, \"job\": {\"success\": true, \"cmd\": \"restringjob:2\", \"cut\": 1, \"designated\": true, \"jobsDone\": 0, \"spansRestrung\": 0, \"by\": \"Human7\"}, \"worker\": {\"success\": true, \"pawns\": [{\"thingId\": \"Human7\", \"thingIdNumber\": 7}]}, \"completion\": {\"success\": true, \"cmd\": \"restringstate:2\", \"cut\": 0, \"designated\": false, \"jobsDone\": 1, \"spansRestrung\": 1}, \"joinedNets\": [11, 11], \"after\": [[\"Industrial\", null, \"Style_Industrial\"], [\"Industrial\", null, \"Style_Industrial\"]], \"joinedRuns\": [2, 2]}}, \"calls\": [\"colonists\", \"pawn:7=draft\", \"pawn:7=tp:80,180\", \"colonists\", \"cstyles\", \"cut:2,3\", [\"ticks\", 2], \"cprocess\", \"census\", \"crestyle:104,185:Modern_Orange\", \"crestyle:116,185:Industrial\", \"cstyles\", \"restringorder:2\", \"pawn:7=undraft\", \"restringjob:2\", [\"jawa/pawn_get\", {\"pawn\": \"Human7\"}], \"colonists\", [\"ticks\", 250], \"restringstate:2\", [\"ticks\", 3], \"cprocess\", \"census\", \"cstyles\", \"pawn:7=draft\", \"pawn:7=tp:80,180\", \"colonists\", \"crestyle:104,185:Scrapper\", \"crestyle:116,185:Scrapper\", \"cprocess\"]}",
-    "at": "2026-11-20T12:30:30Z",
-    "result": "PASS",
-    "build": "cf30cff164913cc6c4e3",
-    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_restring_proof.py",
-    "margins": []
+    "seconds": 0.24,
+    "last": "OK",
+    "at": "2026-11-20T16:28:22-08:00",
+    "result": "PASS"
    }
   },
   "T_H_KINETIC_SWAY": {
@@ -688,13 +932,10 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.41,
-    "last": "M22b_kinetic_sway_off_does_nothing FAIL      {'schema': 1, 'setting': 'kineticSway', 'enabled': False, 'damageSelector': 'RM_Repulse_Palm', 'damageDef': 'RM_Repulse_Palm', 'readings': [{'cmd': 'set:kineticSway=False', 'reply': {'success': True, 'cmd': 'set:kineticSway=False', '_probeSerial': 5, 'value': 'False'}}, {'cmd': 'census', 'reply': {'success': True, 'cmd': 'census', '_probeSerial': 6, 'kineticSways': 8, 'explosionCuts': 4, 'settings': {'kineticSway': 'False', 'dripLoops': 'True', 'cutWiresOnOwnerChange': 'True', 'keepWiresOnGravship': 'True'}, 'anchors': [{'id': 4, 'x': 92, 'z': 135, 'net': 11, 'links': [{'other': 5, 'state': 'Up', 'hp': 30.0}]}, {'id': 5, 'x': 104, 'z': 135, 'net': 11, 'links': [{'other': 4, 'state': 'Up', 'hp': 30.0}]}]}}, {'cmd': 'explode:98,135,2.5,50,RM_Repulse_Palm', 'reply': {'success': True, 'cmd': 'explode:98,135,2.5,50,RM_Repulse_Palm', '_probeSerial': 7, 'cuts': 0, 'sways': 0, 'damageDef': 'RM_Repulse_Palm', 'synthetic': False, 'kinetic': True, 'harmsHealth': True, 'spansReached': 1}}, {'cmd': 'census', 'reply': {'success': True, 'cmd': 'census', '_probeSerial': 8, 'kineticSways': 9, 'explosionCuts': 4, 'settings': {'kineticSway': 'False', 'dripLoops': 'True', 'cutWiresOnOwnerChange': 'True', 'keepWiresOnGravship': 'True'}, 'anchors': [{'id': 4, 'x': 92, 'z': 135, 'net': 11, 'links': [{'other': 5, 'state': 'Up', 'hp': 30.0}]}, {'id': 5, 'x': 104, 'z': 135, 'net': 11, 'links': [{'other': 4, 'state': 'Up', 'hp': 30.0}]}]}}], 'anchors': [4, 5], 'censusSwayDelta': 1, 'censusCutDelta': 0, 'spanStillUp': True, 'synthetic': False, 'kinetic': True, 'harmsHealth': True, 'spansReached': 1, 'settingBefore': 'False', 'settingAfter': 'False', 'hpBefore': [30.0, 30.0], 'hpAfter': [30.0, 30.0], 'error': 'ValueError: wrong kineticSways delta'}",
-    "at": "2026-11-20T12:30:31Z",
-    "result": "PASS",
-    "build": "176063f4698c6b04a97b",
-    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_kinetic_sway.py",
-    "margins": []
+    "seconds": 0.61,
+    "last": "OK",
+    "at": "2026-11-20T16:28:22-08:00",
+    "result": "PASS"
    }
   },
   "T_H_AERIAL_PROBE_BATCH": {
@@ -713,11 +954,8 @@
     "rc": 0,
     "seconds": 0.67,
     "last": "PASS: 0 failed",
-    "at": "2026-11-20T12:30:31Z",
-    "result": "PASS",
-    "build": "63a6c9fbde3afe925f38",
-    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_aerial_probe_batch.py",
-    "margins": []
+    "at": "2026-11-20T16:28:22-08:00",
+    "result": "PASS"
    }
   },
   "T_H_EXPLODE_PARSE": {
@@ -734,13 +972,10 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.42,
+    "seconds": 3.47,
     "last": "failures=0",
-    "at": "2026-11-20T12:30:33Z",
-    "result": "PASS",
-    "build": "46d5a4fab57770a5eb8c",
-    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_explode_parse.py",
-    "margins": []
+    "at": "2026-11-20T16:28:22-08:00",
+    "result": "PASS"
    }
   },
   "T_H_NO_TWO_ALIKE_SHORT": {
@@ -757,13 +992,10 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.03,
+    "seconds": 0.02,
     "last": "GREEN: 5 cases",
-    "at": "2026-11-20T12:30:33Z",
-    "result": "PASS",
-    "build": "2cf36faaca54b76e0284",
-    "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_no_two_alike_short.py",
-    "margins": []
+    "at": "2026-11-20T16:28:22-08:00",
+    "result": "PASS"
    }
   },
   "T_H_PLAYTEST_RUNNER": {
@@ -780,13 +1012,10 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.07,
-    "last": "39/39 passed",
-    "at": "2026-11-20T12:30:33Z",
-    "result": "PASS",
-    "build": "6f17ed57b55addf12216",
-    "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_playtest_runner.py",
-    "margins": []
+    "seconds": 0.09,
+    "last": "43/43 passed",
+    "at": "2026-11-20T16:28:22-08:00",
+    "result": "PASS"
    }
   },
   "T_H_PROOF_DRIVERS": {
@@ -803,13 +1032,10 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.21,
+    "seconds": 0.23,
     "last": "gss proof drivers: all ok",
-    "at": "2026-11-20T12:30:33Z",
-    "result": "PASS",
-    "build": "cf23db6f421fbd6e55ca",
-    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_proof_drivers.py",
-    "margins": []
+    "at": "2026-11-20T16:28:22-08:00",
+    "result": "PASS"
    }
   },
   "T_H_REVIEW_LEFTOVERS": {
@@ -826,13 +1052,10 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.31,
-    "last": "PT_A3_goodwill_day           UNMEASURED UNFINISHED: phase 'day' stopped before its row; rerun the same command with the same --out",
-    "at": "2026-11-20T12:30:33Z",
-    "result": "PASS",
-    "build": "21fd023550c5fd3e1eb0",
-    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_review_leftovers.py",
-    "margins": []
+    "seconds": 0.35,
+    "last": "OK",
+    "at": "2026-11-20T16:28:22-08:00",
+    "result": "PASS"
    }
   },
   "T_H_WEAKCLOSE_GUARDS": {
@@ -849,13 +1072,10 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.02,
+    "seconds": 0.03,
     "last": "selftest_gss_weakclose_guards: PASS",
-    "at": "2026-11-20T12:30:33Z",
-    "result": "PASS",
-    "build": "3ebfc1edd23065f1d7b5",
-    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_weakclose_guards.py",
-    "margins": []
+    "at": "2026-11-20T16:28:22-08:00",
+    "result": "PASS"
    }
   },
   "T_H_HUMAN_REVIEW": {
@@ -872,13 +1092,10 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.05,
+    "seconds": 0.06,
     "last": "41/41 checks passed",
-    "at": "2026-11-20T12:30:33Z",
-    "result": "PASS",
-    "build": "17792a8c0a98e8c5fcf8",
-    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_human_review.py",
-    "margins": []
+    "at": "2026-11-20T16:28:22-08:00",
+    "result": "PASS"
    }
   },
   "T_H_PROOF_ALL": {
@@ -895,13 +1112,10 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 21.42,
+    "seconds": 35.01,
     "last": "ALL PASS",
-    "at": "2026-11-20T12:30:55Z",
-    "result": "PASS",
-    "build": "2ce8f03b2ddfd22ebd1b",
-    "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/selftest_proof_all.py",
-    "margins": []
+    "at": "2026-11-20T16:28:22-08:00",
+    "result": "PASS"
    }
   },
   "T_SETTINGS_SWEEP_OFFLINE": {
@@ -925,6 +1139,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/GssSessionReset.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/RM_MapComponent_CordGraph.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/RuinHookupProof.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SafeTex.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SectionLayer_RM_MessyCords.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/StyleProbe.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/TipSparks.cs"
@@ -935,13 +1150,10 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.44,
+    "seconds": 2.96,
     "last": "PASS",
-    "at": "2026-11-20T12:30:57Z",
-    "result": "PASS",
-    "build": "464c253c4c8ed4aceb40",
-    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_settings_sweep.py",
-    "margins": []
+    "at": "2026-11-20T16:28:22-08:00",
+    "result": "PASS"
    }
   },
   "T_SHOCK_RULE_OFFLINE": {
@@ -989,13 +1201,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 288.3,
+    "seconds": 310.6,
     "last": "4600/4600 checks passed",
-    "at": "2026-11-20T12:35:46Z",
+    "at": "2026-11-20T16:28:22-08:00",
     "result": "PASS",
-    "build": "ed8cfd990ea75557d75a",
-    "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py",
-    "margins": []
+    "via": "T_CORE"
    }
   },
   "T_CORD_GEOMETRY_OFFLINE": {
@@ -1011,6 +1221,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordEndAudit.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordGraph.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordLiveEnd.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordMotion.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordPlugExit.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordReach.cs",
@@ -1019,6 +1230,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordSlacken.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/HookupPick.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/LegacyName.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/ProbeRead.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/RebuildGate.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/RebuildTail.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SettingsPrint.cs",
@@ -1026,6 +1238,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotBlock.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotPool.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/StubJoinAudit.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/TexPath.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/WallMount.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/LabWorld.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/oracle_scenes.json"
@@ -1036,13 +1249,10 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 303.49,
+    "seconds": 309.87,
     "last": "4609/4609 checks passed",
-    "at": "2026-11-20T12:40:49Z",
-    "result": "PASS",
-    "build": "7ca930bc735c71748538",
-    "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --geometry",
-    "margins": []
+    "at": "2026-11-20T16:28:22-08:00",
+    "result": "PASS"
    }
   },
   "T_STATICS_CENSUS": {
@@ -1093,6 +1303,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordEndAudit.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordGraph.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordLiveEnd.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordMotion.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordPlugExit.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordReach.cs",
@@ -1101,6 +1312,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordSlacken.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/HookupPick.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/LegacyName.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/ProbeRead.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/RebuildGate.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/RebuildTail.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SettingsPrint.cs",
@@ -1108,6 +1320,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotBlock.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotPool.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/StubJoinAudit.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/TexPath.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/WallMount.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/GimmeSomeSlackDefOf.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/GimmeSomeSlackMod.cs",
@@ -1115,6 +1328,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/GssSessionReset.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/RM_MapComponent_CordGraph.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/RuinHookupProof.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SafeTex.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SectionLayer_RM_MessyCords.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/AStarHeapChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/AerialSelfTest.cs",
@@ -1136,10 +1350,13 @@
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/LabWorld.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/LaneAChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/LegacyNameChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/LiveEndCensus.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/LiveEndSweepChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/LoopLassoChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/MotionBucketChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/PhantomSparkChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/PileLookChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/ProbeReadChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/Program.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/RebuildPerDigChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/RebuildTailChecks.cs",
@@ -1148,6 +1365,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/ReviewRound4Checks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/ReviewRound5Checks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/ReviewRound6Checks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SceneDump.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/ShockRuleChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SittingChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SliceGateChecks.cs",
@@ -1155,10 +1373,12 @@
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/StubJoinChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/StyleStage1Checks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/StyleStage2Checks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/StyledFreshChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/StyledWinnerLegacyBridgeChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SwitchFlipChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/TapClampPoseChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/TapWindowChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/TexPathChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/TheftChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/UnityShim.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/UnroutableCensus.cs",
@@ -1172,13 +1392,71 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.13,
+    "seconds": 0.14,
     "last": "PASS",
-    "at": "2026-11-20T12:40:49Z",
-    "result": "PASS",
-    "build": "854ff73d1d7a7eb740b8",
-    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_statics_census.py",
-    "margins": []
+    "at": "2026-11-20T16:28:22-08:00",
+    "result": "PASS"
+   }
+  },
+  "T_SWITCH_OFF_NODE_OFFLINE": {
+   "id": "T_SWITCH_OFF_NODE_OFFLINE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SwitchOffChecks.cs",
+   "observes": "the mod selftest reads an off power switch as a node of the cord graph with both cords ending on its stubs: no cut, live or dead end at the switch, on and off differing only in the powered look; planted: a switch dropped from the graph when off goes red; run by T_CORE (bar switch_off_cords_stay_connected)",
+   "reads": [
+    "src/RimMandrake/GimmeSomeSlack/Source/RM_MapComponent_CordGraph.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/ConduitPlacementGate.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/ConduitTargets.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordAudit.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordEndAudit.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordGraph.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordLiveEnd.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordMotion.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordPlugExit.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordReach.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordShape.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordShapeAudit.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordSlacken.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/HookupPick.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/LegacyName.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/ProbeRead.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/RebuildGate.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/RebuildTail.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SettingsPrint.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SliceWindow.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotBlock.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotPool.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/StubJoinAudit.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/TexPath.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/WallMount.cs"
+   ],
+   "new": true,
+   "built_in_stage": "3",
+   "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py",
+   "runs_today": {
+    "ran": false,
+    "why": "specified, not built: Stage 3 builds it failing first"
+   }
+  },
+  "T_POLE_SOUTH_DRAWS_FRONT_OFFLINE": {
+   "id": "T_POLE_SOUTH_DRAWS_FRONT_OFFLINE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/GimmeSomeSlack/selftest_gss_pole_south_draws_front.py",
+   "observes": "over the SouthDrawsFront rule (MandrakePatches) and the mast def: the mast is drawn above every plant or building north of it within its picture height and below one south of it; planted: the mast on its old Building layer goes red (bar poles_draw_in_front_when_south)",
+   "reads": [
+    "src/RimMandrake/GimmeSomeSlack/Defs/Aerial/RM_AerialAnchors.xml",
+    "src/RimMandrake/MandrakePatches/Source/SouthDrawsFront/SouthDrawsFrontKernel.cs",
+    "src/RimMandrake/MandrakePatches/Source/SouthDrawsFront/SouthDrawsFrontPatches.cs"
+   ],
+   "new": true,
+   "built_in_stage": "3",
+   "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_pole_south_draws_front.py",
+   "runs_today": {
+    "ran": false,
+    "why": "specified, not built: Stage 3 builds it failing first"
    }
   },
   "sc_conduit_invisible": {
@@ -1769,6 +2047,92 @@
    "runs_today": {
     "ran": false,
     "why": "live: see the item's notes for its last run"
+   }
+  },
+  "sc_switch_off_ends": {
+   "id": "sc_switch_off_ends",
+   "kind": "live_minimal",
+   "stage": "6",
+   "tier": "gimmesomeslack",
+   "file": "src/RimMandrake/GimmeSomeSlack/validation.py",
+   "entry": "scene_switch_off_ends",
+   "entry_exists": false,
+   "new": true,
+   "observes": "the AerialProbe ends:/endkind: probe on an off power switch finds no live or dead cut end within 1.5 cells of it",
+   "reads": [
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialProbe.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/RM_MapComponent_CordGraph.cs"
+   ],
+   "why_game": "the cord pieces at a switch come from the running map's graph and its live power state",
+   "for_bar": "switch_off_cords_stay_connected",
+   "command": "python.exe src\\RimMandrake\\GimmeSomeSlack\\validation.py --scene scene_switch_off_ends   (minimal list; entry ABSENT)",
+   "runs_today": {
+    "ran": false,
+    "why": "live: offline-only run; entry ABSENT in the code"
+   }
+  },
+  "sc_pole_icons_loaded": {
+   "id": "sc_pole_icons_loaded",
+   "kind": "live_minimal",
+   "stage": "6",
+   "tier": "gimmesomeslack",
+   "file": "src/RimMandrake/GimmeSomeSlack/validation.py",
+   "entry": "scene_pole_icons_loaded",
+   "entry_exists": false,
+   "new": true,
+   "observes": "after a cold load Player.log holds no 'Tried to get a resource ... from a different thread' line for UI/Commands/TryReconnect, UI/Designators/Cancel or any Gimme Some Slack path, and the three pole button icons (Link wire, Unlink wire, Unlink all) are non-null",
+   "reads": [
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/CompAerialAnchor.cs"
+   ],
+   "why_game": "the thread a texture loads on and the icon it yields exist only in the running game's load; Player.log after a cold load is the instrument",
+   "for_bar": "pole_buttons_show_icons",
+   "command": "python.exe src\\RimMandrake\\GimmeSomeSlack\\validation.py --scene scene_pole_icons_loaded   (minimal list; entry ABSENT)",
+   "runs_today": {
+    "ran": false,
+    "why": "live: offline-only run; entry ABSENT in the code"
+   }
+  },
+  "sc_pole_south_of_tree": {
+   "id": "sc_pole_south_of_tree",
+   "kind": "live_minimal",
+   "stage": "6",
+   "tier": "gimmesomeslack",
+   "file": "src/RimMandrake/GimmeSomeSlack/validation.py",
+   "entry": "scene_pole_south_of_tree",
+   "entry_exists": false,
+   "new": true,
+   "observes": "a capture of a pole south of a tree and one north of it: the south pole is drawn in front, the north one behind",
+   "reads": [
+    "src/RimMandrake/GimmeSomeSlack/Defs/Aerial/RM_AerialAnchors.xml"
+   ],
+   "why_game": "draw order is a property of the running renderer; the offline read proves the layer, not the drawn result",
+   "for_bar": "poles_draw_in_front_when_south",
+   "command": "python.exe src\\RimMandrake\\GimmeSomeSlack\\validation.py --scene scene_pole_south_of_tree   (minimal list; entry ABSENT)",
+   "runs_today": {
+    "ran": false,
+    "why": "live: offline-only run; entry ABSENT in the code"
+   }
+  },
+  "sc_no_roof_over_pole": {
+   "id": "sc_no_roof_over_pole",
+   "kind": "live_minimal",
+   "stage": "6",
+   "tier": "gimmesomeslack",
+   "file": "src/RimMandrake/GimmeSomeSlack/validation.py",
+   "entry": "scene_no_roof_over_pole",
+   "entry_exists": false,
+   "new": true,
+   "observes": "auto-roof and a build-roof designation over a mast cell form no roof and the refusal names the pole; a god-mode roof still cuts the spans",
+   "reads": [
+    "src/RimMandrake/GimmeSomeSlack/Defs/Aerial/RM_AerialAnchors.xml",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/PlaceWorkers_Aerial.cs"
+   ],
+   "why_game": "auto-roof, the roof designator and a god-mode roof run in the live game's roof systems",
+   "for_bar": "no_roof_over_pole",
+   "command": "python.exe src\\RimMandrake\\GimmeSomeSlack\\validation.py --scene scene_no_roof_over_pole   (minimal list; entry ABSENT)",
+   "runs_today": {
+    "ran": false,
+    "why": "live: offline-only run; entry ABSENT in the code"
    }
   },
   "LOOK_STAGE8": {
@@ -2599,7 +2963,7 @@
    "reads": [
     "src/RimMandrake/GimmeSomeSlack/validation.py",
     "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_proof_leaves.py",
-    "src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py"
+    "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_wall_end_rows.py"
    ],
    "support_only": true,
    "leaves": [
@@ -3003,7 +3367,7 @@
    "reads": [
     "src/RimMandrake/GimmeSomeSlack/validation.py",
     "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_proof_leaves.py",
-    "src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py"
+    "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_wall_end_rows.py"
    ],
    "support_only": true,
    "leaves": [
@@ -3078,7 +3442,9 @@
    "entry_exists": true,
    "observes": "older proof row, evidence for cords_lie_slack, drawing_true_to_grid (proof_leaves.ROW_LEAVES), not the scene contract",
    "reads": [
-    "src/RimMandrake/GimmeSomeSlack/validation.py"
+    "src/RimMandrake/GimmeSomeSlack/validation.py",
+    "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_proof_leaves.py",
+    "src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py"
    ],
    "support_only": true,
    "leaves": [
@@ -4135,6 +4501,32 @@
    "stage": "6",
    "file": "src/RimMandrake/GimmeSomeSlack/validation_aerial.py",
    "entry": "R3_sway_proxy",
+   "entry_exists": true,
+   "observes": "older proof row, evidence for settings_switch_cleanly, spans_above_everything (proof_leaves.ROW_LEAVES), not the scene contract",
+   "reads": [
+    "src/RimMandrake/GimmeSomeSlack/validation_aerial.py",
+    "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_proof_leaves.py",
+    "src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py"
+   ],
+   "support_only": true,
+   "leaves": [
+    "settings_switch_cleanly",
+    "spans_above_everything"
+   ],
+   "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py --live",
+   "why_game": "a live state read through the bridge on the gimmesomeslack tier",
+   "runs_today": {
+    "ran": false,
+    "why": "live: offline-only run",
+    "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   }
+  },
+  "P_R3b_sway_looks_each_draw": {
+   "id": "P_R3b_sway_looks_each_draw",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/GimmeSomeSlack/validation_aerial.py",
+   "entry": "R3b_sway_looks_each_draw",
    "entry_exists": true,
    "observes": "older proof row, evidence for settings_switch_cleanly, spans_above_everything (proof_leaves.ROW_LEAVES), not the scene contract",
    "reads": [
@@ -5513,7 +5905,8 @@
    "entry_exists": true,
    "observes": "older proof row, evidence for floor_end_shocks_crossers (proof_leaves.ROW_LEAVES), not the scene contract",
    "reads": [
-    "src/RimMandrake/GimmeSomeSlack/northstar/scene_rows.py"
+    "src/RimMandrake/GimmeSomeSlack/northstar/scene_rows.py",
+    "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_fixer_row.py"
    ],
    "support_only": true,
    "leaves": [
@@ -5582,7 +5975,8 @@
    "entry_exists": true,
    "observes": "older proof row, evidence for shock_reach_setting (proof_leaves.ROW_LEAVES), not the scene contract",
    "reads": [
-    "src/RimMandrake/GimmeSomeSlack/northstar/scene_rows.py"
+    "src/RimMandrake/GimmeSomeSlack/northstar/scene_rows.py",
+    "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_fixer_row.py"
    ],
    "support_only": true,
    "leaves": [
@@ -5721,7 +6115,8 @@
    "entry_exists": true,
    "observes": "older proof row, evidence for drawing_true_to_grid (proof_leaves.ROW_LEAVES), not the scene contract",
    "reads": [
-    "src/RimMandrake/GimmeSomeSlack/northstar/scene_rows.py"
+    "src/RimMandrake/GimmeSomeSlack/northstar/scene_rows.py",
+    "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_cords_under_items.py"
    ],
    "support_only": true,
    "leaves": [
@@ -5818,8 +6213,8 @@
    "observes": "older proof row, evidence for drawing_true_to_grid (proof_leaves.ROW_LEAVES), not the scene contract",
    "reads": [
     "src/RimMandrake/GimmeSomeSlack/northstar/selftest_proof_all.py",
-    "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_proof_leaves.py",
-    "src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py"
+    "src/RimMandrake/GimmeSomeSlack/northstar/live_flip_fresh.py",
+    "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_proof_leaves.py"
    ],
    "support_only": true,
    "leaves": [
@@ -6026,6 +6421,27 @@
     "margins": []
    }
   },
+  "T_DROPPED_CORDS_AERIAL_MASTER_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/GimmeSomeSlack/selftest_gss_dropped_cords_ignore_aerial_master.py",
+   "observes": "Another mod's dropped live cord is not an overhead line: the overhead-lines master switch must not silence it.",
+   "reads": [],
+   "id": "T_DROPPED_CORDS_AERIAL_MASTER_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_dropped_cords_ignore_aerial_master.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.02,
+    "last": "PASS  M2_old_checkpawns_gate reads red",
+    "at": "2026-11-20T12:40:49Z",
+    "result": "PASS",
+    "build": "c4c6b37099a61b1e1360",
+    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_dropped_cords_ignore_aerial_master.py",
+    "margins": []
+   }
+  },
   "T_FLIP_FRESH_OFFLINE": {
    "stage": "4-5",
    "file": "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_flip_fresh.py",
@@ -6046,50 +6462,6 @@
     "result": "PASS",
     "build": "37ae32ffda996eb72aae",
     "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_flip_fresh.py",
-    "margins": []
-   }
-  },
-  "T_TEXPATH_OFFLINE": {
-   "stage": "4-5",
-   "file": "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_texpath.py",
-   "observes": "RIMMANDRAKE_TRACE_GSS_ILLEGAL_PATH_ONLY_ON_FIRST_START: every texture the mod asks for by a path it builds goes through SafeTex (Source/SafeTex.cs, Source/Core/TexPath.cs), which refuses a path no file system takes and names it. The guard's own rule is checked in the C# selftest (TexPathChecks.cs); this reads the mod's source for a call that goes round it.",
-   "reads": [
-    "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_texpath.py"
-   ],
-   "id": "T_TEXPATH_OFFLINE",
-   "kind": "offline",
-   "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_texpath.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
-   "runs_today": {
-    "ran": true,
-    "rc": 0,
-    "seconds": 0.03,
-    "last": "PASS",
-    "at": "2026-11-20T12:40:49Z",
-    "result": "PASS",
-    "build": "810469fe1ff6545ae1a4",
-    "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_texpath.py",
-    "margins": []
-   }
-  },
-  "T_DROPPED_CORDS_AERIAL_MASTER_OFFLINE": {
-   "stage": "4-5",
-   "file": "src/RimMandrake/GimmeSomeSlack/selftest_gss_dropped_cords_ignore_aerial_master.py",
-   "observes": "Another mod's dropped live cord is not an overhead line: the overhead-lines master switch must not silence it.",
-   "reads": [],
-   "id": "T_DROPPED_CORDS_AERIAL_MASTER_OFFLINE",
-   "kind": "offline",
-   "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_dropped_cords_ignore_aerial_master.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
-   "runs_today": {
-    "ran": true,
-    "rc": 0,
-    "seconds": 0.02,
-    "last": "PASS  M2_old_checkpawns_gate reads red",
-    "at": "2026-11-20T12:40:49Z",
-    "result": "PASS",
-    "build": "c4c6b37099a61b1e1360",
-    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_dropped_cords_ignore_aerial_master.py",
     "margins": []
    }
   },
@@ -6134,6 +6506,29 @@
     "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_no_ground_wind.py",
     "margins": []
    }
+  },
+  "T_TEXPATH_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_texpath.py",
+   "observes": "RIMMANDRAKE_TRACE_GSS_ILLEGAL_PATH_ONLY_ON_FIRST_START: every texture the mod asks for by a path it builds goes through SafeTex (Source/SafeTex.cs, Source/Core/TexPath.cs), which refuses a path no file system takes and names it. The guard's own rule is checked in the C# selftest (TexPathChecks.cs); this reads the mod's source for a call that goes round it.",
+   "reads": [
+    "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_texpath.py"
+   ],
+   "id": "T_TEXPATH_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_texpath.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.03,
+    "last": "PASS",
+    "at": "2026-11-20T12:40:49Z",
+    "result": "PASS",
+    "build": "810469fe1ff6545ae1a4",
+    "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_texpath.py",
+    "margins": []
+   }
   }
  },
  "bars": [
@@ -6174,6 +6569,7 @@
    "supports": [
     "T_END_HEAP",
     "T_MATRIX",
+    "T_NO_GROUND_WIND_OFFLINE",
     "P_MX_F00_T0_S0",
     "P_MX_F04_T1_S0",
     "P_MX_F11_T2_S3",
@@ -6193,8 +6589,7 @@
     "P_B1_rope_settle",
     "P_B7_ground_cords_never_sway",
     "P_SW6_needless_loops_off_reaches_builder",
-    "P_SC_cords_all_slack",
-    "T_NO_GROUND_WIND_OFFLINE"
+    "P_SC_cords_all_slack"
    ],
    "held": [],
    "offline_decides": [
@@ -6231,7 +6626,9 @@
     "P_SC_bend_draws_no_joint_tee_draws_one",
     "P_SC_box_stub_slope"
    ],
-   "held": [],
+   "held": [
+    "gss_walk_20261120.md#8"
+   ],
    "offline_decides": [
     "T_CORE"
    ],
@@ -6325,6 +6722,8 @@
     "sc_cut_ends"
    ],
    "supports": [
+    "T_FLIP_FRESH_OFFLINE",
+    "T_LIVE_END_SWEEP_OFFLINE",
     "P_MX_A08_N5_R19_cut",
     "P_MX_A09_N2_R6_cut",
     "P_M8_break_two_ends_live_dead",
@@ -6343,9 +6742,7 @@
     "P_SC_cut_battery_each_side_both_live",
     "P_SC_dead_wire_shocks_nobody",
     "P_SC_floor_end_dead_spares",
-    "P_SC_cord_end_one_kind",
-    "T_FLIP_FRESH_OFFLINE",
-    "T_LIVE_END_SWEEP_OFFLINE"
+    "P_SC_cord_end_one_kind"
    ],
    "held": [],
    "offline_decides": [
@@ -6398,6 +6795,7 @@
     "P_R1_span_altitude_above_pawns_below_blueprints",
     "P_R2_spans_and_heads_drawn",
     "P_R3_sway_proxy",
+    "P_R3b_sway_looks_each_draw",
     "P_M21c_drip_loops_off_plain_curve",
     "P_M21d_drip_loops_on_loop_samples",
     "P_M22a_kinetic_sway_on_swings_never_cuts",
@@ -6433,7 +6831,9 @@
     "P_M15_explosion_cuts_span",
     "P_M15d_diagonal_cut_halves_meet_on_line"
    ],
-   "held": [],
+   "held": [
+    "gss_walk_20261120.md#4"
+   ],
    "offline_decides": [],
    "offline_green_today": false,
    "every_decider_runnable_today": true,
@@ -6555,6 +6955,7 @@
    "supports": [
     "T_GATE",
     "T_JUNCTION_ART",
+    "T_TEXPATH_OFFLINE",
     "P_ST1_styles_textures_load",
     "P_ST2_switch_changes_textures",
     "P_ST3_extcord_colour_modes",
@@ -6578,8 +6979,7 @@
     "P_S12c_D5_multilink_one_frame",
     "P_S12e_batched_links_merge",
     "P_S7_save_load_styles",
-    "P_S12d_D4_pending_queue_save",
-    "T_TEXPATH_OFFLINE"
+    "P_S12d_D4_pending_queue_save"
    ],
    "held": [],
    "offline_decides": [
@@ -6632,6 +7032,7 @@
     "P_M7_off_restores_vanilla",
     "P_M7b_on_again_invisible",
     "P_R3_sway_proxy",
+    "P_R3b_sway_looks_each_draw",
     "P_M19n_taps_off_control",
     "P_M20a_fallen_wire_shock_flip",
     "P_M20b_fallen_wire_knockback_flip",
@@ -6680,6 +7081,7 @@
     "P_M7_off_restores_vanilla",
     "P_M7b_on_again_invisible",
     "P_R3_sway_proxy",
+    "P_R3b_sway_looks_each_draw",
     "P_M19n_taps_off_control",
     "P_M20a_fallen_wire_shock_flip",
     "P_M20b_fallen_wire_knockback_flip",
@@ -6844,10 +7246,10 @@
     "sc_shock_reach"
    ],
    "supports": [
+    "T_DROPPED_CORDS_AERIAL_MASTER_OFFLINE",
     "P_SC_shock_reach_default_all",
     "P_SC_shock_reach_three_values",
-    "P_SC_shock_reach_deck_cord_per_value",
-    "T_DROPPED_CORDS_AERIAL_MASTER_OFFLINE"
+    "P_SC_shock_reach_deck_cord_per_value"
    ],
    "held": [],
    "offline_decides": [
@@ -6870,6 +7272,7 @@
    ],
    "supports": [
     "T_FW_PIT_DRAW_CENSUS",
+    "T_CORDS_UNDER_ITEMS_OFFLINE",
     "P_MX_D00_n1_S0",
     "P_MX_D05_n10_S1",
     "P_MX_D10_n100_S2",
@@ -6924,8 +7327,7 @@
     "P_D1_zero_tick_rereads_same",
     "P_D2_fresh_builder_same",
     "P_SL3_after_load_census_equal",
-    "LOOK_STAGE8",
-    "T_CORDS_UNDER_ITEMS_OFFLINE"
+    "LOOK_STAGE8"
    ],
    "held": [
     "owner_look_defects_2026-11-12.md#34",
@@ -6951,15 +7353,95 @@
     "sc_stub_joins"
    ],
    "supports": [],
-   "held": [],
+   "held": [
+    "gss_walk_20261120.md#8"
+   ],
    "offline_decides": [
     "T_STUB_JOINS",
     "T_STUB_ART_CENSUS"
    ],
-   "offline_green_today": false,
+   "offline_green_today": true,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
    "any_decider_runnable_today": true
+  },
+  {
+   "id": "switch_off_cords_stay_connected",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_SWITCH_OFF_NODE_OFFLINE",
+    "sc_switch_off_ends"
+   ],
+   "supports": [],
+   "held": [
+    "gss_walk_20261120.md#1"
+   ],
+   "offline_decides": [
+    "T_SWITCH_OFF_NODE_OFFLINE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false,
+   "any_decider_runnable_today": false
+  },
+  {
+   "id": "pole_buttons_show_icons",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "sc_pole_icons_loaded"
+   ],
+   "supports": [],
+   "held": [
+    "gss_walk_20261120.md#9"
+   ],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false,
+   "any_decider_runnable_today": false
+  },
+  {
+   "id": "poles_draw_in_front_when_south",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_POLE_SOUTH_DRAWS_FRONT_OFFLINE",
+    "sc_pole_south_of_tree"
+   ],
+   "supports": [],
+   "held": [
+    "gss_walk_20261120.md#13"
+   ],
+   "offline_decides": [
+    "T_POLE_SOUTH_DRAWS_FRONT_OFFLINE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false,
+   "any_decider_runnable_today": false
+  },
+  {
+   "id": "no_roof_over_pole",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "sc_no_roof_over_pole"
+   ],
+   "supports": [],
+   "held": [
+    "gss_walk_20261120.md#14"
+   ],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false,
+   "any_decider_runnable_today": false
   },
   {
    "id": "conduit_invisible",
@@ -6999,6 +7481,7 @@
    "supports": [
     "T_MATRIX",
     "T_END_HEAP",
+    "T_NO_GROUND_WIND_OFFLINE",
     "P_MX_F00_T0_S0",
     "P_MX_F04_T1_S0",
     "P_MX_F11_T2_S3",
@@ -7018,10 +7501,11 @@
     "P_B1_rope_settle",
     "P_B7_ground_cords_never_sway",
     "P_SW6_needless_loops_off_reaches_builder",
-    "P_SC_cords_all_slack",
-    "T_NO_GROUND_WIND_OFFLINE"
+    "P_SC_cords_all_slack"
    ],
-   "held": [],
+   "held": [
+    "gss_walk_20261120.md#6"
+   ],
    "offline_decides": [
     "T_CORE",
     "T_CORD_GEOMETRY_OFFLINE"
@@ -7044,7 +7528,9 @@
     "P_M2c_no_sharp_bends",
     "P_SC_box_stub_slope"
    ],
-   "held": [],
+   "held": [
+    "gss_walk_20261120.md#6"
+   ],
    "offline_decides": [
     "T_CORD_GEOMETRY_OFFLINE"
    ],
@@ -7261,6 +7747,8 @@
     "sc_cut_ends"
    ],
    "supports": [
+    "T_FLIP_FRESH_OFFLINE",
+    "T_LIVE_END_SWEEP_OFFLINE",
     "P_MX_A08_N5_R19_cut",
     "P_MX_A09_N2_R6_cut",
     "P_M8_break_two_ends_live_dead",
@@ -7279,9 +7767,7 @@
     "P_SC_cut_battery_each_side_both_live",
     "P_SC_dead_wire_shocks_nobody",
     "P_SC_floor_end_dead_spares",
-    "P_SC_cord_end_one_kind",
-    "T_FLIP_FRESH_OFFLINE",
-    "T_LIVE_END_SWEEP_OFFLINE"
+    "P_SC_cord_end_one_kind"
    ],
    "held": [],
    "offline_decides": [
@@ -7363,6 +7849,7 @@
     "P_R1_span_altitude_above_pawns_below_blueprints",
     "P_R2_spans_and_heads_drawn",
     "P_R3_sway_proxy",
+    "P_R3b_sway_looks_each_draw",
     "P_M21c_drip_loops_off_plain_curve",
     "P_M21d_drip_loops_on_loop_samples",
     "P_M22a_kinetic_sway_on_swings_never_cuts",
@@ -7399,7 +7886,9 @@
     "P_M15_explosion_cuts_span",
     "P_M15d_diagonal_cut_halves_meet_on_line"
    ],
-   "held": [],
+   "held": [
+    "gss_walk_20261120.md#4"
+   ],
    "offline_decides": [],
    "offline_green_today": false,
    "every_decider_runnable_today": true,
@@ -7511,6 +8000,7 @@
    "supports": [
     "T_GATE",
     "T_JUNCTION_ART",
+    "T_TEXPATH_OFFLINE",
     "P_ST1_styles_textures_load",
     "P_ST2_switch_changes_textures",
     "P_ST3_extcord_colour_modes",
@@ -7534,10 +8024,12 @@
     "P_S12c_D5_multilink_one_frame",
     "P_S12e_batched_links_merge",
     "P_S7_save_load_styles",
-    "P_S12d_D4_pending_queue_save",
-    "T_TEXPATH_OFFLINE"
+    "P_S12d_D4_pending_queue_save"
    ],
-   "held": [],
+   "held": [
+    "gss_walk_20261120.md#2",
+    "gss_walk_20261120.md#3"
+   ],
    "offline_decides": [
     "T_CORE"
    ],
@@ -7559,6 +8051,7 @@
     "T_CORE",
     "T_GATE",
     "T_H_AERIAL_PROBE_BATCH",
+    "T_DROPPED_CORDS_AERIAL_MASTER_OFFLINE",
     "P_SW3_break_readout_off_no_glow_no_whip",
     "P_SW4_sparks_only_overlay_shut_no_glow",
     "P_B5_selection_highlight",
@@ -7578,6 +8071,7 @@
     "P_M7_off_restores_vanilla",
     "P_M7b_on_again_invisible",
     "P_R3_sway_proxy",
+    "P_R3b_sway_looks_each_draw",
     "P_M19n_taps_off_control",
     "P_M20a_fallen_wire_shock_flip",
     "P_M20b_fallen_wire_knockback_flip",
@@ -7591,8 +8085,7 @@
     "P_M22b_kinetic_sway_off_does_nothing",
     "P_M21e_keep_wires_on_gravship_off_setting_state",
     "P_M21f_keep_wires_on_gravship_on_setting_state",
-    "P_S11_lamp_master_off_vanilla",
-    "T_DROPPED_CORDS_AERIAL_MASTER_OFFLINE"
+    "P_S11_lamp_master_off_vanilla"
    ],
    "held": [],
    "offline_decides": [
@@ -7709,14 +8202,5 @@
    "any_test_runnable_today": true,
    "any_decider_runnable_today": true
   }
- ],
- "unlisted_suites": {
-  "selftest_gss_fixer_row.py": "proof-harness: asserts a scene's verdict (scene_rows.fixer_verdict) and its driver against a scripted bridge, not a mod behaviour (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
-  "selftest_gss_scenes_gate_rows.py": "proof-harness: asserts validation.py --scenes-from carries a scene's offline gate rows into its verdict, not a mod behaviour (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
-  "selftest_gss_wall_end_rows.py": "proof-harness: asserts the proof rows changed by the owner's 2026-11-16 wall-end ruling refuse what they now must, a test of the rows, not of the mod (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
-  "selftest_live_stub_joins_probe.py": "live-driver: asserts live_stub_joins.py's probe path through the companion, not a mod behaviour (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
-  "selftest_gss_art_manifest_sizes.py": "review tooling: asserts gss_art_manifest.py sizes pieces as the C# draws them, for art review sheets, not a mod behaviour (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
-  "selftest_stage_pole_sway_matrix.py": "review tooling: asserts stage_pole_sway_matrix.py writes through rmpaths, a staging tool, not a mod behaviour (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
-  "selftest_gss_selftest_run_lock.py": "test machinery: asserts the C# selftest holds its shared-stage lock from build through run, not a mod behaviour (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
- }
+ ]
 }

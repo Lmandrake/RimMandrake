@@ -41,6 +41,19 @@ if PLANT:
     EXTRA_TEXT = " RM_PlantedDefThatIsNotReal RM_PlantedStaleDef "
 
 
+# checks repaired in a sitting, each seen both ways (a known-bad state refused, the real build passed), 2026-11-20
+REPAIRS = [
+    dict(check="named_defs_and_symbols_real", sitting="RIMMANDRAKE_STEWARD_GIMMESOMESLACK_PREFLIGHT_STAGE",
+         flaw="the scan read GSS and FlowWorks only, so MandrakePatches' real SouthDrawsFront rule (Source/SouthDrawsFront/) read UNKNOWN",
+         repair="MandrakePatches C# and source file and folder names count",
+         red="GSS_PREFLIGHT_PLANT=1: refuse (RM_PlantedDefThatIsNotReal, RM_PlantedStaleDef)", green="real 0.1.1 spec: pass"),
+    dict(check="held_statements_placed", sitting="RIMMANDRAKE_STEWARD_GIMMESOMESLACK_PREFLIGHT_STAGE",
+         flaw="it globbed owner_look_defects_*.md only and never saw his walk record gss_walk_20261120.md: a blind pass",
+         repair="every numbered row of a gss_walk_*.md 'His points' table counts",
+         red="the committed 0.1.0 table: refuse (16 walk rows unplaced); GSS_PREFLIGHT_PLANT=1: refuse", green="0.1.1 table: pass (18 placed)"),
+]
+
+
 def check(name, ok, n, **refusal):
     checks.append(dict(check=name, result="pass" if ok else "refuse", n=n))
     if not ok:
@@ -157,7 +170,11 @@ if PLANT:
     dump_ours.add("RM_PlantedStaleDef")
 src = " ".join(open(f, encoding="utf-8").read() for f in glob.glob(G + "Source/**/*.cs", recursive=True))
 src += " ".join(open(f, encoding="utf-8").read() for f in glob.glob("src/RimMandrake/FlowWorks/Source/**/*.cs", recursive=True))
+# 0.1.1: bar poles_draw_in_front_when_south names MandrakePatches' SouthDrawsFront rule, a real C# symbol of ours
+src += " ".join(open(f, encoding="utf-8").read() for f in glob.glob("src/RimMandrake/MandrakePatches/Source/**/*.cs", recursive=True))
 files = {os.path.splitext(os.path.basename(p))[0] for p in glob.glob(G + "**/*", recursive=True)}
+# 0.1.1: "the SouthDrawsFront rule" is MandrakePatches' feature folder Source/SouthDrawsFront/ (classes SouthDrawsFront*)
+files |= {os.path.splitext(os.path.basename(p))[0] for p in glob.glob("src/RimMandrake/MandrakePatches/Source/**/*", recursive=True)}
 WORDS = {"GimmeSomeSlack", "FlowWorks", "RimMandrake", "MessyConduit", "SelfTest", "StarWarsJawa"}
 cls = {}
 for tok in toks:
@@ -181,7 +198,7 @@ for tok in toks:
 unk = sorted(t for t, c in cls.items() if c in ("UNKNOWN", "STALE_DUMP_DEF"))
 check("named_defs_and_symbols_real", not unk, len(toks), line=", ".join(("%s (%s)" % (t, cls[t])) for t in unk),
       evidence="named in tree/scenes/record; not a defName in the dump (%d names, capture %s) or our Defs, not a C# symbol of GSS "
-               "or FlowWorks, not a GSS file; STALE_DUMP_DEF = a def of ours the dump holds but no repo XML defines now" % (len(dump_names), os.path.basename(refresh.D_DUMP)),
+               "FlowWorks or MandrakePatches, not a GSS or MandrakePatches source file or folder; STALE_DUMP_DEF = a def of ours the dump holds but no repo XML defines now" % (len(dump_names), os.path.basename(refresh.D_DUMP)),
       smallest_fix="correct the name in the text (a fact) or say what it is", return_to="1")
 ours_not_in_dump = sorted(n for n in xml_names if n not in dump_names)
 checks.append(dict(check="our_defs_in_dump", result="note", n=len(xml_names),
@@ -224,12 +241,22 @@ for f in sorted(glob.glob("design/RimMandrake/validation_holding/owner_look_defe
         if line.startswith("|") and len(cols) > 3 and re.match(r"^[0-9]+[a-z]?$", cols[1]) and \
                 re.search(r"\bGSS\b|Gimme ?Some ?Slack", cols[2]):
             held_hits.append((f, cols[1]))
+# a walk record of this mod (gss_walk_*.md): every numbered row of its "His points" table is his, and about GSS
+for f in sorted(glob.glob("design/RimMandrake/validation_holding/gss_walk_*.md")):
+    sec = False
+    for line in open(f, encoding="utf-8"):
+        if line.startswith("## "):
+            sec = line.startswith("## His points")
+        cols = [c.strip() for c in line.split("|")]
+        if sec and line.startswith("|") and len(cols) > 3 and re.match(r"^[0-9]+[a-z]?$", cols[1]):
+            held_hits.append((f, cols[1]))
 placed = {(h["file"], str(h["row"])) for h in table["held_statements"]}
 unplaced = [("%s#%s" % (os.path.basename(f), r)) for f, r in held_hits if (f, r) not in placed]
 check("held_statements_placed", not unplaced, len(held_hits), line=", ".join(unplaced),
       evidence="a held row names GSS but the table places it nowhere", smallest_fix="place it on a bar and a test", return_to="1")
 checks.append(dict(check="held_statements_without_a_bar", result="note", n=len(table["held_statements"]),
-                   note="all three sit on cords_draw_under_things, the bar his card 2026-11-14 added"))
+                   note="%d of %d placed statements sit on no bar of this version (requests, other mods' art, next version)"
+                        % (sum(1 for h in table["held_statements"] if not h["bars"]), len(table["held_statements"]))))
 
 # 10. the locked bytes: current blobs against bars.md's pins
 pins = re.findall(r"\| `(design/concepts/GimmeSomeSlack/[^`]+)` \| `([0-9a-f]{40})` \|", open(C + "version/bars.md").read())
@@ -243,11 +270,12 @@ check("lock_pins_current", not drift, len(pins), line=", ".join(drift),
       smallest_fix="a test-text correction is re-pinned with a journal line; a changed bar is a new version",
       return_to="1")
 
-out = dict(mod="GimmeSomeSlack", version="0.1.0", ran_at=time.strftime("%Y-%m-%dT%H:%M:%S%z"),
+out = dict(mod="GimmeSomeSlack", version=json.load(open(C + "version/VERSION.json"))["version"], ran_at=time.strftime("%Y-%m-%dT%H:%M:%S%z"),
            seconds=round(time.time() - T0, 2), dump_read_seconds=round(t_dump, 2), dump=refresh.D_DUMP,
            by="design/concepts/GimmeSomeSlack/version/preflight_throwaway.py (throwaway, no model)",
            verdict="refuse" if refusals else "pass", checks=checks, refusals=refusals,
-           name_classes={c: sorted(t for t, k in cls.items() if k == c) for c in sorted(set(cls.values()))})
+           name_classes={c: sorted(t for t, k in cls.items() if k == c) for c in sorted(set(cls.values()))},
+           repairs=REPAIRS)
 if not PLANT:
     json.dump(out, open(C + "version/preflight.json", "w"), indent=1)
 for c in checks:

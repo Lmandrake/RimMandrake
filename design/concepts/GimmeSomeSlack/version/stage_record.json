@@ -2,10 +2,10 @@
   "schema": 1,
   "mod": "GimmeSomeSlack",
   "version": "0.1.1",
-  "stage": "preflight",
-  "stage_label": "Preflight (Stage 2)",
-  "since": "2026-11-20T16:09:35-08:00",
-  "since_from": "next-version by BENCH",
+  "stage": "offline_build",
+  "stage_label": "Offline build (Stage 3)",
+  "since": "2026-11-20T16:59:23-08:00",
+  "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
     "at": "2026-11-20T16:09:35-08:00",
@@ -28,6 +28,25 @@
       "why": "Conductor act under RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS: he passed 0.1.0 with fixes as 0.1.1 by card OWNER:1795217553611770372 and picked Gimme Some Slack 0.1.1 for the pipeline; 0.1.1 is locked (conductor_event OWNER:1795219726240521449) with the four walk faults as scope",
       "version_from": "0.1.0",
       "version_to": "0.1.1"
+    },
+    {
+      "from": "preflight",
+      "to": "offline_build",
+      "at": "2026-11-20T16:59:23-08:00",
+      "by": "BENCH",
+      "why": "Preflight (Stage 2) of 0.1.1 run by the steward: preflight_throwaway.py wrote version/preflight.json for 0.1.1 (verdict refuse, 2 refusals, both return_to 3). delegated: evidence-for-ask: the four PATCH bars' deciders transcribed into the test table from the locked record.json proof_note of each bar (no bar's words changed; the 49 kept bars' decides unchanged), his 2026-11-20 walk rows placed",
+      "unit": "rm-detached-bench-rimmandrake-steward-gimmesomeslack-prefl-1795220569",
+      "confirmed": {
+        "steward_confirms": "Read version/preflight.json (0.1.1, 19 checks, 2 refusals), record.json inventory rows of the four 0.1.1 bars, gss_walk_20261120.md, test_table.json. Both refusals are unbuilt checks, not spec faults: built_mod_decider_entries_exist names sc_switch_off_ends, sc_pole_icons_loaded, sc_pole_south_of_tree, sc_no_roof_over_pole (live entries not written yet); built_mod_offline_deciders_run names T_SWITCH_OFF_NODE_OFFLINE, T_POLE_SOUTH_DRAWS_FRONT_OFFLINE (offline tests not built yet). Each is the PATCH work of the four 0.1.1 items, for Stage 3 to build red first. Two preflight checks were repaired in the sitting and shown both ways (named_defs_and_symbols_real, held_statements_placed; readings in preflight.json repairs). Verdict: ready for the offline build."
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "preflight_record",
+        "steward_confirms"
+      ]
     }
   ]
 }

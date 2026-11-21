@@ -135,6 +135,21 @@ NEW = {  # specified at this lock; Stage 3 builds each and shows it red first
         observes="every mutable static field in Source (outside SelfTest) is cleared in GssSessionReset.cs or listed immutable "
                  "with a reason; planted: a new static collection not reset goes red",
         reads=[G + "Source/GssSessionReset.cs"] + sorted(glob.glob(G + "Source/**/*.cs", recursive=True))),
+    # 0.1.1 PATCH (his walk of 2026-11-20): transcribed from record.json proof_note of each new bar, nothing added
+    "T_SWITCH_OFF_NODE_OFFLINE": dict(
+        stage="4-5", file=G + "Source/SelfTest/SwitchOffChecks.cs",
+        observes="the mod selftest reads an off power switch as a node of the cord graph with both cords ending on its stubs: "
+                 "no cut, live or dead end at the switch, on and off differing only in the powered look; planted: a switch "
+                 "dropped from the graph when off goes red; run by T_CORE (bar switch_off_cords_stay_connected)",
+        reads=[G + "Source/RM_MapComponent_CordGraph.cs"] + CORE),
+    "T_POLE_SOUTH_DRAWS_FRONT_OFFLINE": dict(
+        stage="4-5", file=G + "selftest_gss_pole_south_draws_front.py",
+        observes="over the SouthDrawsFront rule (MandrakePatches) and the mast def: the mast is drawn above every plant or "
+                 "building north of it within its picture height and below one south of it; planted: the mast on its old "
+                 "Building layer goes red (bar poles_draw_in_front_when_south)",
+        reads=[G + "Defs/Aerial/RM_AerialAnchors.xml",
+               "src/RimMandrake/MandrakePatches/Source/SouthDrawsFront/SouthDrawsFrontKernel.cs",
+               "src/RimMandrake/MandrakePatches/Source/SouthDrawsFront/SouthDrawsFrontPatches.cs"]),
 }
 
 # ---- the judgment: which offline tests decide (or support) each bar ----
@@ -154,6 +169,9 @@ OFF_DECIDES = {
     "cords_draw_under_things": ["T_CORE"],
     # added 2026-11-16 under the lock rule (RIMMANDRAKE_BIND_SLACK_STUB_ANGLE_RULE_FOURTH_ASK)
     "cords_join_stubs_on_position_and_slope": ["T_STUB_JOINS", "T_STUB_ART_CENSUS"],
+    # 0.1.1 PATCH bars (record.json proof_note): the offline halves; the live halves are added with the scenes below
+    "switch_off_cords_stay_connected": ["T_SWITCH_OFF_NODE_OFFLINE"],
+    "poles_draw_in_front_when_south": ["T_POLE_SOUTH_DRAWS_FRONT_OFFLINE"],
 }
 OFF_SUPPORTS = {
     "conduit_invisible": ["T_GATE"], "cords_lie_slack": ["T_MATRIX", "T_END_HEAP"], "cords_meet_walls_at_face": ["T_CORE", "T_END_HEAP"],
@@ -189,6 +207,29 @@ HELD = [
          bars=["cords_draw_under_things"], test="sc_cords_under_items (in scenes.json since 2026-11-14) keeps it so",
          stage="6", kind="approval: the regression the in-game read guards; bar added by his card 2026-11-14"),
 ]
+
+W = H + "gss_walk_20261120.md"  # his walk of 2026-11-20, "His points" table; the class column is the walk record's
+_WALK = [  # row, bars, kind
+    (1, ["switch_off_cords_stay_connected"], "defect; 0.1.1 bar (RIMMANDRAKE_SEAT_SLACK_CORDS_IN_OFF_SWITCH_NOT_CUT)"),
+    (2, ["four_looks_one_run"], "approval"), (3, ["four_looks_one_run"], "approval"),
+    (4, ["fallen_span_on_ground", "downed_spans"], "approval"),
+    (5, [], "art of another mod: RIMMANDRAKE_ABSORB_EXTRA_EXPLOSION_EFFECTS_OWN_FLECKS (Explosive Knockback), no GSS bar"),
+    (6, ["no_unforced_sharp_turn", "cords_lie_slack"], "approval"),
+    (7, [], "request, next version: RIMMANDRAKE_CUT_SLACK_REVIEW_STATIONS_NOBODY_READS (VERSION.json caveats)"),
+    (8, ["junction_strips", "cords_join_stubs_on_position_and_slope"], "approval"),
+    (9, ["pole_buttons_show_icons"], "defect; 0.1.1 bar (RIMMANDRAKE_LOAD_SLACK_POLE_ICONS_ON_MAIN_THREAD)"),
+    (10, [], "request, next version: RIMMANDRAKE_WIRE_STYLE_ICONS_INTO_EVERY_LOOK_MENU"),
+    (11, [], "request, next version: RIMMANDRAKE_STYLE_SLACK_BATTERY_LIKE_THE_LAMP; art on RIMMANDRAKE_DESIGN_HOME_FOR_VANILLA_ELECTRICAL_ART"),
+    (12, [], "art, held by RIMMANDRAKE_DESIGN_HOME_FOR_VANILLA_ELECTRICAL_ART"),
+    (13, ["poles_draw_in_front_when_south"], "defect; 0.1.1 bar (RIMMANDRAKE_DRAW_SLACK_POLES_IN_FRONT_WHEN_SOUTH)"),
+    (14, ["no_roof_over_pole"], "defect; 0.1.1 bar (RIMMANDRAKE_BLOCK_SLACK_ROOF_OVER_POLE_KEEP_THE_CUT)"),
+    (15, [], "request, held by RIMMANDRAKE_DESIGN_HOME_FOR_VANILLA_ELECTRICAL_ART"),
+    (16, [], "approval of the whole mod: the 0.1.0 pass (e1d9c3c042)"),
+]
+for _r, _b, _k in _WALK:
+    HELD.append(dict(file=W, row=_r, words="row %d of the walk record's His points table" % _r, bars=_b,
+                     test=" + ".join(OFF_DECIDES.get(b, ["(the bar's own deciders)"])[0] for b in _b) if _b else "-",
+                     stage="4-5 then 6" if _b else "-", kind=_k))
 
 CORRECTIONS = [  # rm-coverage-judge-1794599377's five gaps; needles are text the fix put in scenes.json
     ("g1", "sc_floor_end_shock", ["at least two cells from its end"]),
@@ -226,6 +267,7 @@ for k, t in OFF.items():
     print(k, row["runs_today"]["result"], row["runs_today"]["seconds"], flush=True)
 # Stage 3 (2026-11-14) built all four: a .py runs on its own; a SelfTest .cs is run by T_CORE (or, known red, under --geometry)
 NEW_CMD = {"T_CORD_GEOMETRY_OFFLINE": ["src/RimMandrake/Utils/selftest_gimmesomeslack.py", "--geometry"],
+           "T_SWITCH_OFF_NODE_OFFLINE": ["src/RimMandrake/Utils/selftest_gimmesomeslack.py"],
            "T_SHOCK_RULE_OFFLINE": ["src/RimMandrake/Utils/selftest_gimmesomeslack.py"]}
 for k, t in NEW.items():
     argv = NEW_CMD.get(k) or [t["file"]]
@@ -287,6 +329,37 @@ tests["sc_stub_joins"] = dict(
     why_game="the drawn pieces come from the running map's graph, looks and settings, not a generated scene",
     command="python.exe src\\RimMandrake\\GimmeSomeSlack\\northstar\\live_stub_joins.py (game up on the gimmesomeslack tier, bridge held)",
     runs_today=dict(ran=False, why="live: see the item's notes for its last run"))
+# 0.1.1 PATCH live halves, from record.json proof_note; entries do not exist yet (Stage 3 builds each, red first)
+NEW_LIVE = {
+    "sc_switch_off_ends": ("switch_off_cords_stay_connected", "scene_switch_off_ends",
+        "the AerialProbe ends:/endkind: probe on an off power switch finds no live or dead cut end within 1.5 cells of it",
+        [G + "Source/Aerial/AerialProbe.cs", G + "Source/RM_MapComponent_CordGraph.cs"],
+        "the cord pieces at a switch come from the running map's graph and its live power state"),
+    "sc_pole_icons_loaded": ("pole_buttons_show_icons", "scene_pole_icons_loaded",
+        "after a cold load Player.log holds no 'Tried to get a resource ... from a different thread' line for "
+        "UI/Commands/TryReconnect, UI/Designators/Cancel or any Gimme Some Slack path, and the three pole button icons "
+        "(Link wire, Unlink wire, Unlink all) are non-null",
+        [G + "Source/Aerial/CompAerialAnchor.cs"],
+        "the thread a texture loads on and the icon it yields exist only in the running game's load; Player.log after a "
+        "cold load is the instrument"),
+    "sc_pole_south_of_tree": ("poles_draw_in_front_when_south", "scene_pole_south_of_tree",
+        "a capture of a pole south of a tree and one north of it: the south pole is drawn in front, the north one behind",
+        [G + "Defs/Aerial/RM_AerialAnchors.xml"],
+        "draw order is a property of the running renderer; the offline read proves the layer, not the drawn result"),
+    "sc_no_roof_over_pole": ("no_roof_over_pole", "scene_no_roof_over_pole",
+        "auto-roof and a build-roof designation over a mast cell form no roof and the refusal names the pole; a "
+        "god-mode roof still cuts the spans",
+        [G + "Defs/Aerial/RM_AerialAnchors.xml", G + "Source/Aerial/PlaceWorkers_Aerial.cs"],
+        "auto-roof, the roof designator and a god-mode roof run in the live game's roof systems"),
+}
+for sid, (bid, fn, obs, rd, why) in NEW_LIVE.items():
+    f = G + "validation.py"
+    exists = re.search(r"^\s*def %s\(" % re.escape(fn), open(f).read(), re.M) is not None
+    tests[sid] = dict(id=sid, kind="live_minimal", stage="6", tier="gimmesomeslack", file=f, entry=fn, entry_exists=exists,
+                      new=True, observes=obs, reads=rd, why_game=why, for_bar=bid,
+                      command="python.exe %s --scene %s   (minimal list; entry %s)" % (f.replace("/", "\\"), fn, "exists" if exists else "ABSENT"),
+                      runs_today=dict(ran=False, why="live: offline-only run; entry %s in the code" % ("exists" if exists else "ABSENT")))
+    OFF_DECIDES.setdefault(bid, []).append(sid)
 tests["LOOK_STAGE8"] = dict(id="LOOK_STAGE8", kind="look", stage="8", file=None, entry=None, entry_exists=False,
                             observes="his walk of a scavenger base on his full list, with a mid-way reload",
                             reads=[C + "sheet.md", C + "version/vision.md"], why_game="his eye is the instrument",
@@ -312,6 +385,21 @@ for rid, leaves in proof_leaves.ROW_LEAVES.items():
         why_game="a live state read through the bridge on the gimmesomeslack tier",
         runs_today=dict(ran=False, why="live: offline-only run", last_live=("FAIL" if rid in LAST_FAIL else "PASS") + " in " + LAST
                         if not gs else "PASS (gravship_scene on/off, same job)"))
+
+# ---- carry: tests a later run added to the committed table by hand (this script does not make them) stay, with every
+# bar's support of them; regenerating without this dropped six offline tests (2026-11-20, steward run of 0.1.1 preflight)
+_committed = json.load(open(C + "version/test_table.json"))
+CARRIED = sorted(k for k in _committed["tests"] if k not in tests)
+for k in CARRIED:
+    tests[k] = _committed["tests"][k]
+for _b in _committed["bars"]:
+    for _s in _b["supports"]:
+        if _s in CARRIED:
+            OFF_SUPPORTS.setdefault(_b["id"], []).append(_s)
+    for _d in _b["decides"]:
+        if _d in CARRIED:
+            OFF_DECIDES.setdefault(_b["id"], []).append(_d)
+print("carried from the committed table:", ", ".join(CARRIED) or "none", flush=True)
 
 # ---- bars ----
 checklist = {r["id"]: r for r in verdict["checklist"]}
@@ -389,7 +477,7 @@ for gid, where, needles in CORRECTIONS:
                      status="applied 910f69411e (Designer run rm-role-designer-1794600246); no judge has read it since"))
 
 out = dict(
-    mod="GimmeSomeSlack", version="0.1.0", made=NOW,
+    mod="GimmeSomeSlack", version=json.load(open(C + "version/VERSION.json"))["version"], made=NOW,
     made_by="rm-builder, Maturation hand run beside the pilot, row 2 (throwaway version/make_test_table.py)",
     stages={"2": "preflight (a program)", "4-5": "blind offline challenge and game-logic testing", "6": "in-game acceptance",
             "8": "his live walk"},
@@ -438,7 +526,7 @@ cnt = [
         ", ".join("%s %s%s" % (k, tests[k]["runs_today"].get("result") or "NOT BUILT",
                                " (known red, %s)" % tests[k]["known_red"] if tests[k].get("known_red") else "") for k in NEW)),
 ]
-L = ["# Gimme Some Slack 0.1.0: test-and-stage table", "",
+L = ["# Gimme Some Slack %s: test-and-stage table" % out["version"], "",
      "Generated %s from `test_table.json` (the record; this is its read view) by the throwaway `make_test_table.py`. Stages: 2 "
      "preflight, 4-5 blind offline, 6 in-game, 8 his walk. A bar passes when every deciding test passes. Columns follow "
      "Explosive Knockback's table." % NOW, "", "## Counts (measured)", ""] + ["- " + c for c in cnt] + [
