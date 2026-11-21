@@ -1,0 +1,189 @@
+[
+ {
+  "id": "PF_NOHOSE_LABEL_HOSE_REEL",
+  "file": "Defs/Aerial/RM_AerialAnchors.xml",
+  "old": "<label>scrap power mast</label>",
+  "new": "<label>scrap hose reel</label>",
+  "bars": [
+   "no_hose",
+   "no_hose_in_gss"
+  ],
+  "slow": false
+ },
+ {
+  "id": "PF_NOHOSE_GSS_MAST_LAYS_PIPE",
+  "file": "Defs/Aerial/RM_AerialAnchors.xml",
+  "old": "      <li Class=\"RimMandrake.GimmeSomeSlack.Aerial.AerialAnchorExtension\">\n        <maxLinks>4</maxLinks>\n        <attachZ>2.66</attachZ>",
+  "new": "      <li Class=\"RimMandrake.GimmeSomeSlack.Aerial.AerialAnchorExtension\">\n        <lineKind>Pipe</lineKind>\n        <maxLinks>4</maxLinks>\n        <attachZ>2.66</attachZ>",
+  "bars": [
+   "no_hose",
+   "no_hose_in_gss"
+  ],
+  "slow": false,
+  "note": "behaviour: a GSS mast now strings PIPE spans, so GSS itself draws a pipe; no def name, texture or type changes"
+ },
+ {
+  "id": "PF_NOHOSE_OWN_PIPE_TEXTURE",
+  "file": "Source/Aerial/AerialMaterials.cs",
+  "old": "m.SpanPath = wire.SpanPath;",
+  "new": "m.SpanPath = \"RimMandrake/GimmeSomeSlack/Aerial/PipeSpan\";",
+  "bars": [
+   "no_hose",
+   "no_hose_in_gss"
+  ],
+  "slow": false
+ },
+ {
+  "id": "PF_NOHOSE_HOSE_CLASS",
+  "file": "Source/Aerial/ShockRule.cs",
+  "old": "    public static class ShockRule\n    {",
+  "new": "    internal static class HoseReelDrawer { }\n    public static class ShockRule\n    {",
+  "bars": [
+   "no_hose",
+   "no_hose_in_gss"
+  ],
+  "slow": false
+ },
+ {
+  "id": "PF_K_ROOF_EITHER_END",
+  "file": "Source/Aerial/AerialMath.cs",
+  "old": "if (a.Roofed || b.Roofed) return LinkVerdict.Roofed;",
+  "new": "if (a.Roofed && b.Roofed) return LinkVerdict.Roofed;",
+  "bars": [
+   "no_roof_over_pole",
+   "overhead_spans"
+  ],
+  "slow": true
+ },
+ {
+  "id": "PF_K_RESTRINGER_SHOCKED",
+  "file": "Source/Aerial/AerialMath.cs",
+  "old": "=> flesh && !dead && !alreadyOut && !restringing;",
+  "new": "=> flesh && !dead && !alreadyOut;",
+  "bars": [
+   "fallen_wire_shocks_crossers"
+  ],
+  "slow": true
+ },
+ {
+  "id": "PF_K_TAP_CREATES_POWER",
+  "file": "Source/Aerial/AerialMath.cs",
+  "old": "return Math.Min(rateW * k, avail);",
+  "new": "return rateW * k;",
+  "bars": [
+   "tap_steals_and_costs_goodwill",
+   "power_theft"
+  ],
+  "slow": true
+ },
+ {
+  "id": "PF_K_SPAN_SAGS_UP",
+  "file": "Source/Aerial/AerialMath.cs",
+  "old": "            List<double> ts = SpanTs(len, step);\n            var pts = new List<P2>(ts.Count);\n            foreach (double t in ts)\n            {\n                P2 p = P2.Lerp(a, b, t);\n                p.Z -= sag * Droop(t);",
+  "new": "            List<double> ts = SpanTs(len, step);\n            var pts = new List<P2>(ts.Count);\n            foreach (double t in ts)\n            {\n                P2 p = P2.Lerp(a, b, t);\n                p.Z += sag * Droop(t);",
+  "bars": [
+   "spans_above_everything"
+  ],
+  "slow": true
+ },
+ {
+  "id": "PF_K_CUT_SPAN_FALLS_AGAIN",
+  "file": "Source/Aerial/AerialMath.cs",
+  "old": "if (killed && st == SpanState.Up)",
+  "new": "if (killed)",
+  "bars": [
+   "fallen_span_on_ground",
+   "downed_spans"
+  ],
+  "slow": true
+ },
+ {
+  "id": "PF_K_FALLEN_WIRE_IGNORES_WALLS",
+  "file": "Source/Aerial/AerialMath.cs",
+  "old": "if (s > 0.75 && !open(ground(s, k))) return Math.Max(0, s - 0.2);",
+  "new": "if (false && s > 0.75 && !open(ground(s, k))) return Math.Max(0, s - 0.2);",
+  "bars": [
+   "fallen_span_on_ground",
+   "cords_meet_walls_at_face"
+  ],
+  "slow": true
+ },
+ {
+  "id": "PF_G_FLOOR_ENDS_BITE_UNDER_DOWNED_ONLY",
+  "file": "Source/Aerial/ShockRule.cs",
+  "old": "kind == LineKind.FloorEnd ? reach == ShockReach.All : reach != ShockReach.None;",
+  "new": "reach != ShockReach.None;",
+  "bars": [
+   "shock_reach_setting",
+   "floor_end_shock"
+  ],
+  "slow": true
+ },
+ {
+  "id": "PF_G_TAPS_DOUBLE_CLAIM_SURPLUS",
+  "file": "Source/Aerial/CompPowerTap.cs",
+  "old": "TapRegistry.TakenThisTick(victim), working)",
+  "new": "0, working)",
+  "bars": [
+   "tap_steals_and_costs_goodwill",
+   "power_theft"
+  ],
+  "slow": true
+ },
+ {
+  "id": "PF_G_SPAN_SHOCKS_WITH_MASTER_OFF",
+  "file": "Source/Aerial/RM_FallenWireShock.cs",
+  "old": "if (kind == LineKind.DownedSpan && !AerialSettings.enabled) continue;",
+  "new": "if (false) continue;",
+  "bars": [
+   "settings_switch_cleanly",
+   "fallen_wire_shocks_crossers"
+  ],
+  "slow": false
+ },
+ {
+  "id": "PF_G_SHIPPED_REACH_DOWNED_ONLY",
+  "file": "Source/Aerial/AerialSettings.cs",
+  "old": "public static ShockReach shockReach = ShockReach.All;",
+  "new": "public static ShockReach shockReach = ShockReach.OnlyDownedLines;",
+  "bars": [
+   "shock_reach_setting",
+   "mod_settings"
+  ],
+  "slow": true
+ },
+ {
+  "id": "PF_G_LINK_RANGE_DOUBLED",
+  "file": "Source/Aerial/CompAerialAnchor.cs",
+  "old": "return AerialMath.CanLink(a.Info(), bi, a.Range);",
+  "new": "return AerialMath.CanLink(a.Info(), bi, a.Range * 2);",
+  "bars": [
+   "spans_above_everything",
+   "overhead_spans"
+  ],
+  "slow": false
+ },
+ {
+  "id": "PF_G_ANY_JOB_EXEMPT_ON_CUT",
+  "file": "Source/Aerial/RM_FallenWireShock.cs",
+  "old": "if (p.CurJobDef != Restringing.Job) return false;",
+  "new": "if (p.CurJobDef == null) return false;",
+  "bars": [
+   "fallen_wire_shocks_crossers"
+  ],
+  "slow": false
+ },
+ {
+  "id": "PF_P_SWITCH_NOT_STYLEABLE",
+  "file": "Patches/RM_ConduitStyleable.xml",
+  "old": "<xpath>Defs/ThingDef[defName=\"PowerSwitch\"]/comps/li[@Class=\"CompProperties_Styleable\"]</xpath>",
+  "new": "<xpath>Defs/ThingDef[defName=\"PowerSwitchX\"]/comps/li[@Class=\"CompProperties_Styleable\"]</xpath>",
+  "bars": [
+   "four_looks_one_run",
+   "switch_off_cords_stay_connected"
+  ],
+  "slow": true,
+  "equivalent": true,
+  "note": "EQUIVALENT MUTANT, not counted: with the conditional's match xpath broken, its own nomatch branch adds the same CompProperties_Styleable to PowerSwitch, so the loaded defs do not change"
+ }
+]

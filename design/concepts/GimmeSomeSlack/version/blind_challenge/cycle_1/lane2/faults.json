@@ -1,0 +1,76 @@
+{
+ "faults": [
+  {
+   "id": "RIMMANDRAKE_NOTE_SLACK_DLL_HOSE_NAMES_ONLY_ALTITUDES",
+   "class": "Polish",
+   "bar": "no_hose_in_gss",
+   "criterion": "offline scan: no ThingDef, texture or class for hoses or reels under src/RimMandrake/GimmeSomeSlack",
+   "evidence": [
+    "lane 1 row ns_dll_no_hose_reel_name (FAIL): the shipped Assemblies/RimMandrakeGimmeSomeSlack.dll holds HoseBaseLift, HoseFittingLift, HoseQueue, HoseTopAltitude, LayerHose",
+    "src/RimMandrake/_Shared/SlackGeometry/DrawOrder.cs lines 30-53: these are altitude and draw-queue constants of the shared draw-order table (LayerHose = LayerShadows; HoseQueue(q) = q + 3), named for FlowWorks' hose layer",
+    "src/RimMandrake/GimmeSomeSlack/Source/RimMandrakeGimmeSomeSlack.csproj line 67 compiles that shared file into the GSS DLL; no file under GSS Source/ names a hose (lane 1 row ns_csharp_no_hose_reel_type PASS)",
+    "T_NO_HOSE (northstar/selftest_gss_no_hose.py) lists exactly these names in ALLOWED_NAMES, with the same reason"
+   ],
+   "would_pass": "the lane-1 DLL row allows the five shared draw-order names, or the shared table renames them (e.g. LayerFlexLine)",
+   "smallest_fix": "none owed: no hose def, texture, class or drawing ships; a rename in the shared table is cosmetic",
+   "verdict_on_criterion": "met: what reads as hose in the DLL is a shared altitude constant, not a hose def, texture or class",
+   "status": "PENDING",
+   "against": "check",
+   "class_line": "HARNESS",
+   "polish_route": "this record; not worth the touch (no reader of the defs and source sees a hose; the names are compiled-in constants)"
+  },
+  {
+   "id": "RIMMANDRAKE_CLIP_SLACK_FALLEN_WIRE_TENTH_CELL_INTO_WALL",
+   "class": "Polish",
+   "bar": "fallen_span_on_ground",
+   "criterion": "fallen wire present at ground layer below pawns; the floor-cord leaf cords_meet_walls_at_face: never drawn across a wall or rock",
+   "evidence": [
+    "lane 1 row fallen_wire_never_on_a_wall (FAIL): 15 of 5934 random walled lays put a ground point inside a wall cell, the deepest 0.117 cell past the face (seed 20261120; smallest failing case seed 714544641, 1 wall, 6.2 cells)",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs LayFallen clearTo: walkability is sampled every 0.2 cell of the path's line, the drawn cable every 0.06-0.1 cell, with coils added after the check, so a bend between two samples can clip a wall corner",
+    "the wire never crosses a wall (the deepest point is 0.117 cell, inside the wall's visible face band); a shock contact on a wall cell harms no one (no pawn stands there)"
+   ],
+   "would_pass": "every grounded point of a fallen wire lies on a walkable cell, or within a few hundredths of a cell of a face",
+   "smallest_fix": "in clearTo, sample at the drawn step (0.1) and check each coil's points too; or clamp the drawn points to the last open cell",
+   "verdict_on_criterion": "met for the bar: the wire lies on the ground and stops at the wall; a tenth of a cell over a face is a look, not a crossing",
+   "status": "PENDING",
+   "against": "mod",
+   "class_line": "MOD",
+   "polish_route": "this record; not worth the touch: rare (0.25% of random walled lays), at most 0.117 cell, no failure seen in play"
+  },
+  {
+   "id": "RIMMANDRAKE_SHARE_SLACK_TAP_SURPLUS_UNTESTED_IN_CALLER",
+   "class": "Polish",
+   "bar": "tap_steals_and_costs_goodwill",
+   "criterion": "tap net draws from the victim's net only (sc_tap_theft); offline decider T_CORE",
+   "evidence": [
+    "planted fault PF_G_TAPS_DOUBLE_CLAIM_SURPLUS (CompPowerTap.cs: TapRegistry.TakenThisTick(victim) -> 0, so each tap on one victim claims the whole surplus) survives T_CORE and every fast offline test (lane2/planted_results.jsonl)",
+    "scenes.json sc_tap_theft clamps ONE tap; no scene or test puts two taps on one victim",
+    "the shipped caller is right: CompPowerTap.cs line 147 passes TakenThisTick(victim); the kernel's sharing rule passes lane 1 (tap_shared_surplus_conserved, 20000 cases)"
+   ],
+   "would_pass": "a check with two taps on one victim net reads their sum <= the victim's gain plus stored energy",
+   "smallest_fix": "add a two-tap case to sc_tap_theft or an offline read of CompPowerTap's argument wiring",
+   "verdict_on_criterion": "met: the bar's words (one tap steals; goodwill drains) are decided and the code shares the surplus; several taps on one victim is not in the bar",
+   "status": "PENDING",
+   "against": "check",
+   "class_line": "HARNESS",
+   "polish_route": "this record; not worth the touch: the code is correct, no bar names several taps, no failure happened"
+  },
+  {
+   "id": "RIMMANDRAKE_MISS_SLACK_PIPE_KIND_IN_BLIND_LANE_ONE",
+   "class": "Polish",
+   "bar": "no_hose",
+   "criterion": "GSS draws no hose or pipe",
+   "evidence": [
+    "planted fault PF_NOHOSE_GSS_MAST_LAYS_PIPE (<lineKind>Pipe</lineKind> on a GSS mast: GSS would string pipe spans of its own) is caught by T_NO_HOSE but not by lane 1: blind_no_hose.py reads a fixed list of def fields and lineKind is not on it"
+   ],
+   "would_pass": "blind_no_hose.py reads every non-prose def field, as T_NO_HOSE does",
+   "smallest_fix": "widen DEF_FIELDS in lane1/blind_no_hose.py for the next judge who reruns it",
+   "verdict_on_criterion": "met by the builder's decider (T_NO_HOSE catches it); the miss is in this judge's own lane-1 test",
+   "status": "PENDING",
+   "against": "check",
+   "class_line": "HARNESS",
+   "polish_route": "this record; lane 1 stays as recorded, blind",
+   "repair": "blind_no_hose.py now reads lineKind and spanTexPath: FAIL on the plant PF_NOHOSE_GSS_MAST_LAYS_PIPE and PASS on the real tree, both in this sitting (planted_results.jsonl; lane2/lane1_rows_after_fix.jsonl)"
+  }
+ ]
+}

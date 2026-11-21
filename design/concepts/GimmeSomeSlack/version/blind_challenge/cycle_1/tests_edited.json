@@ -1,0 +1,12 @@
+[
+ {
+  "path": "design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_1/lane1/blind_no_hose.py",
+  "kind": "blind lane-1 test (this judge's own; no builder test or decider was edited)",
+  "why": "lane 2 settled lane-1 row ns_pipe_words_in_code (GSS draws a pipe only for its own lineKind Pipe def or pipe art) and found the scanner missed PF_NOHOSE_GSS_MAST_LAYS_PIPE; the row is now decided (lineKind/spanTexPath read) and the self-check plants a pipe-kind mast",
+  "before_sha256_16": "7723451ac4773e38",
+  "after_sha256_16": "c4ae2c698574b98a",
+  "seen_fail": "PF_NOHOSE_GSS_MAST_LAYS_PIPE planted: ns_pipe_words_in_code FAIL (lane2/planted_results.jsonl, last row for that id)",
+  "seen_pass": "real tree: ns_pipe_words_in_code PASS (lane2/lane1_rows_after_fix.jsonl)",
+  "lane1_recorded": "lane1/lane1_rows.jsonl stays as recorded, blind (written by the file at 4cbf7a6)"
+ }
+]

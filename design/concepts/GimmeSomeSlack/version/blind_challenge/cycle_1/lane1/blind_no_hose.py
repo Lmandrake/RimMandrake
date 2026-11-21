@@ -130,13 +130,25 @@ def scan(root):
     rows.append(dict(id="ns_dll_no_hose_reel_name", bars=["no_hose", "no_hose_in_gss"], kind="fixed",
                      verdict="FAIL" if hose_dll or not ndll else "PASS", cases=ndll,
                      detail="%d shipped DLLs; hose/reel names in metadata: %s" % (ndll, hose_dll[:10])))
-    # 5. pipe drawing in code: the bars say "no pipe drawing"; code that names pipes is listed, the drawing itself is decided in lane 2
-    rows.append(dict(id="ns_pipe_words_in_code", bars=["no_hose", "no_hose_in_gss"], kind="info",
-                     verdict="UNSETTLED" if pipe_files or pipe_types else "PASS", cases=len(cs),
-                     detail="pipe-named types %s; files with pipe-word identifiers %s. Undecided from the bars alone: whether GSS "
-                            "itself DRAWS a pipe (a span or mesh of pipe kind with its own art) or only serves FlowWorks' pipe poles "
-                            "with FlowWorks' art. Settled by reading the game-side span drawer for AerialLineKind.Pipe and where "
-                            "its material comes from (lane 2)." % (pipe_types[:8], sorted(pipe_files.items(), key=lambda x: -x[1])[:10])))
+    # 5. pipe drawing in code. Lane 2 (cycle 1, after reading the callers) settled the rule: GSS's aerial engine draws a pipe span
+    # only for an anchor whose def sets lineKind Pipe (AerialMaterials.SpanMats/PipeMats), with that def's spanTexPath art. So GSS
+    # draws a pipe of its own exactly when one of ITS defs or patches sets a pipe line kind or names pipe art, or it ships pipe
+    # art (rows above). Pipe words in code that serves another mod's pipe poles are listed, not failed.
+    pipe_kind = []
+    for f in xmls:
+        try:
+            tree = ET.parse(os.path.join(root, f))
+        except ET.ParseError:
+            continue
+        for el in tree.iter():
+            if isinstance(el.tag, str) and el.tag in ("lineKind", "spanTexPath") and el.text and (el.tag == "spanTexPath" or has(el.text, PIPE)):
+                pipe_kind.append("%s <%s>%s" % (f, el.tag, el.text.strip()))
+    decided = not pipe_kind and not pipe_defs and not bad_tex and not pipe_lits
+    rows.append(dict(id="ns_pipe_words_in_code", bars=["no_hose", "no_hose_in_gss"], kind="fixed",
+                     verdict="PASS" if decided else "FAIL", cases=len(cs) + len(xmls),
+                     detail="GSS defs/patches setting a pipe line kind or pipe span art: %s. " % (pipe_kind[:6] or "none") +
+                     "pipe-named types %s; files with pipe-word identifiers (code serving FlowWorks' pipe-pole defs, which carry "
+                            "their own art) %s" % (pipe_types[:8], sorted(pipe_files.items(), key=lambda x: -x[1])[:10])))
     return rows
 
 
@@ -153,7 +165,7 @@ def self_check():
                  "Source/SelfTest/T.cs": "class HoseReelTest {}", "Assemblies/A.dll": b"\x00Cord\x00Mast\x00"}
         for p, s in clean.items(): w(p, s, "wb" if isinstance(s, bytes) else "w")
         base = {r["id"]: r["verdict"] for r in scan(d)}
-        results = {"clean_tree": all(v == "PASS" for k, v in base.items() if k != "ns_pipe_words_in_code")}
+        results = {"clean_tree": all(v == "PASS" for v in base.values())}
         plants = {
             "def": ("Defs/B.xml", "<Defs><ThingDef><defName>RM_HoseReel</defName></ThingDef></Defs>", "ns_defs_no_hose_reel"),
             "texture_only": ("Textures/RimMandrake/Hoses/HoseCoil.png", "x", "ns_textures_no_hose_reel_pipe"),
@@ -161,6 +173,7 @@ def self_check():
             "class": ("Source/H.cs", "public class CompHoseDrawer {}", "ns_csharp_no_hose_reel_type"),
             "dll": ("Assemblies/A.dll", b"\x00Cord\x00RM_HoseReel\x00", "ns_dll_no_hose_reel_name"),
             "texpath_literal": ("Source/P.cs", "class P { string t = \"RimMandrake/Pipes/PipeRun\"; }", "ns_csharp_no_pipe_texture_literal"),
+            "pipe_kind_mast": ("Defs/C.xml", "<Defs><ThingDef><defName>RM_Mast2</defName><modExtensions><li><lineKind>Pipe</lineKind></li></modExtensions></ThingDef></Defs>", "ns_pipe_words_in_code"),
         }
         for name, (p, s, row) in plants.items():
             full = os.path.join(d, p); had = os.path.exists(full); old = open(full, "rb").read() if had else None
