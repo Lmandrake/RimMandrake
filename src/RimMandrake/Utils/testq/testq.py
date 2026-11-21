@@ -2006,7 +2006,10 @@ Type=oneshot
 WorkingDirectory={clone}
 {git_env}ExecStartPre=-/usr/bin/git -C {clone} pull -q --ff-only origin main
 ExecStart=/bin/bash -c 'for m in ${{TESTQ_SWEEP_MODS:-FlowWorks}}; do /usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/testq.py sweep "$m"; done'
-TimeoutStartSec=300
+# No start timeout (RIMMANDRAKE_UNCAP_TESTQ_SWEEP_KILLED_AT_FIVE_MINUTES): the old 300 s named no danger, and on 11-21
+# it killed the sweep mid-run (gaps.settled alone took 134 s), so nothing was queued. A hung sweep only delays the next
+# night: the timer starts no second copy while one runs.
+TimeoutStartSec=infinity
 """,
     "testq-sweep.timer": """[Unit]
 Description=testq daily full sweep at 01:30 local

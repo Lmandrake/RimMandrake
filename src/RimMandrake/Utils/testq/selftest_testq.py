@@ -782,6 +782,11 @@ def main():
             envl = [l for l in body if l.startswith("Environment=GIT_CONFIG_COUNT=")]
             pre = [i for i, l in enumerate(body) if l.startswith("ExecStartPre=") and " pull " in l]
             check(envl and pre and body.index(envl[0]) < pre[0], "%s sets the git env before its pull: %s" % (un, body[:8]))
+        # the sweep has no start timeout (RIMMANDRAKE_UNCAP_TESTQ_SWEEP_KILLED_AT_FIVE_MINUTES): 11-21 01:35 PST systemd killed
+        # it at TimeoutStartSec=300 while gaps.settled alone took 134 s, so it queued nothing. The cap named no danger.
+        swb = _TQ.UNITS["testq-sweep.service"].format(clone="/c", git_env=_TQ.GIT_ENV).splitlines()
+        tos = [l.split("=", 1)[1].strip() for l in swb if l.startswith("TimeoutStartSec=")]
+        check(tos == ["infinity"], "testq-sweep.service sets no start timeout (TimeoutStartSec=infinity): %s" % tos)
         genv = dict(os.environ)
         genv.update(kv.split("=", 1) for kv in _TQ.GIT_ENV.strip()[len("Environment="):].split())
         got = [subprocess.run(["git", "config", "--get", k], env=genv, capture_output=True, text=True).stdout.strip()
