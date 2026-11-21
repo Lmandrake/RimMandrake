@@ -12,7 +12,7 @@ Reads the repo's XML and C# only (plus the def dump for the rainRate of weathers
   furnace (g6 static)    RM_FurnaceBeast body size at least twice every other RM_Pyrelands animal's (native AND
                          patch-added rows) and its adult draw size strictly the largest; Patch_FurnaceBeastHeatImmunity
                          names it and absorbs Heat damage
-  sand shovel            RM_FE_Ground_Sand digs to 5 RM_GlassSand and leaves RM_FE_Ground_Gravel
+  sand shovel            RM_FE_Ground_Sand digs to 5 RM_GlassSand and leaves RM_FE_Ground_Gravel; the designator joins Orders
 
 Then every planted fault (a mutant copy of the files) must turn at least one fact red, and the clean copy must stay green.
 Run: python3 <this file>      exit 0 = PASS, 1 = a fact or a mutant failed, 2 = UNMEASURED (no def dump)
@@ -249,6 +249,15 @@ def facts(root, dump_rain):
     y = (ext.findtext("yield"), ext.findtext("count"), ext.findtext("leaves")) if ext is not None else None
     fact("sand_shovel_yields_glass_sand", y == ("RM_GlassSand", "5", "RM_FE_Ground_Gravel") and "RM_GlassSand" in td,
          "yield/count/leaves %s; RM_GlassSand defined %s" % (y, "RM_GlassSand" in td))
+    # the Orders-tab patch (moved here from validation.py's live sand_shovel chain, which read it on disk:
+    # RIMMANDRAKE_UNMEASURE_SAND_SHOVEL_ROW_PASSING_ON_EMPTY_MAP)
+    op = os.path.join(root, MOD, "Patches", "RM_ShovelSand_Orders.xml")
+    orders = _parse(op) if os.path.isfile(op) else None
+    adds = [li.text for o in (orders.iter("Operation") if orders is not None else [])
+            if "DesignationCategoryDef[defName=\"Orders\"]/specialDesignatorClasses" in (o.findtext("xpath") or "")
+            for li in o.iter("li")]
+    fact("sand_shovel_designator_on_orders", "RimMandrake.Pyrelands.Designator_RM_ShovelTerrain" in adds,
+         "Orders specialDesignatorClasses adds %s" % (adds or "nothing"))
     return out
 
 
@@ -286,6 +295,8 @@ MUTANTS = [
     ("heat patch absorbs nothing", MOD + "/Source/Patch_FurnaceBeastHeatImmunity.cs", "absorbed = true", "absorbed = false"),
     ("shovel yields 4", D + "TerrainDefs/ScorchableGround.xml", "<count>5</count>", "<count>4</count>"),
     ("shovel leaves sand", D + "TerrainDefs/ScorchableGround.xml", "<leaves>RM_FE_Ground_Gravel</leaves>", "<leaves>RM_FE_Ground_Sand</leaves>"),
+    ("shovel off the Orders tab", MOD + "/Patches/RM_ShovelSand_Orders.xml", "<li>RimMandrake.Pyrelands.Designator_RM_ShovelTerrain</li>",
+     "<li>RimMandrake.Pyrelands.Designator_RM_NoSuchDesignator</li>"),
 ]
 
 

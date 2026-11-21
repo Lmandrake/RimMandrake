@@ -1,0 +1,13 @@
+diff --git a/src/RimMandrake/Pyrelands/Patches/RM_ShovelSand_Orders.xml b/src/RimMandrake/Pyrelands/Patches/RM_ShovelSand_Orders.xml
+index f6dc22bdc0..c0c2182b87 100644
+--- a/src/RimMandrake/Pyrelands/Patches/RM_ShovelSand_Orders.xml
++++ b/src/RimMandrake/Pyrelands/Patches/RM_ShovelSand_Orders.xml
+@@ -4,7 +4,7 @@
+   <Operation Class="PatchOperationAdd">
+     <xpath>/Defs/DesignationCategoryDef[defName="Orders"]/specialDesignatorClasses</xpath>
+     <value>
+-      <li>RimMandrake.Pyrelands.Designator_RM_ShovelTerrain</li>
++      <li>RimMandrake.Pyrelands.Designator_RM_NoSuchDesignator</li>
+     </value>
+   </Operation>
+ </Patch>

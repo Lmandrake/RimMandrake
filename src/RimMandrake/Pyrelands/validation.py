@@ -3195,21 +3195,9 @@ def sand_shovel(t):
     work), not a terrain clear-yield -- vanilla has no clear action on natural terrain. RM_FE_Ground_Sand carries
     RM_TerrainDigYieldExtension: 5 glass sand per cell, the cell becomes RM_FE_Ground_Gravel (a finite deposit).
     ProofShovel lays one sand cell on the current map and completes the dig. Not proven here: a miner choosing the
-    order (WorkGiver) -- first poke: designate sand on a Pyrelands map with a colonist assigned to Mining."""
-    import xml.etree.ElementTree as ET
-    here = os.path.dirname(os.path.abspath(__file__))
-    with t.component("sand_carries_the_dig_yield", beyond_toggle=True):
-        root = ET.parse(os.path.join(here, "Defs", "TerrainDefs", "ScorchableGround.xml")).getroot()
-        sand = [d for d in root if d.findtext("defName") == "RM_FE_Ground_Sand"]
-        if len(sand) != 1:
-            _fail("RM_FE_Ground_Sand not found once (sanity probe)")
-        ext = sand[0].find("modExtensions/li[@Class='RimMandrake.Pyrelands.RM_TerrainDigYieldExtension']")
-        if ext is None or ext.findtext("yield") != "RM_GlassSand" or ext.findtext("leaves") != "RM_FE_Ground_Gravel":
-            _fail("sand does not dig to RM_GlassSand leaving gravel")
-        patch = ET.parse(os.path.join(here, "Patches", "RM_ShovelSand_Orders.xml")).getroot()
-        if "RimMandrake.Pyrelands.Designator_RM_ShovelTerrain" not in [li.text for li in patch.iter("li")]:
-            _fail("the designator is not added to the Orders tab")
-    _independent(t)
+    order (WorkGiver) -- first poke: designate sand on a Pyrelands map with a colonist assigned to Mining.
+    The def half (the dig-yield extension, the Orders-tab patch) is offline, in selftest_pyrelands_defs_offline.py: read
+    on disk inside this live chain it passed on an empty game (RIMMANDRAKE_UNMEASURE_SAND_SHOVEL_ROW_PASSING_ON_EMPTY_MAP)."""
     with t.component("shovel_yields_glass_sand_and_leaves_gravel", toggle="sandShovelEnabled"):
         if t.session is None:
             t.upstream_reason = "UNMEASURED: no bridge session"

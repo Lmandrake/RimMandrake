@@ -1,4 +1,17 @@
 {
+ "T_DEFS_OFFLINE": {
+  "at": "2026-11-21T01:56:09Z",
+  "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_defs_offline.py",
+  "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_defs_offline.py",
+  "last": "FAIL: the unchanged copy is not green (the copy misses a file facts() reads)",
+  "patch": "diff --git a/src/RimMandrake/Pyrelands/Patches/RM_ShovelSand_Orders.xml b/src/RimMandrake/Pyrelands/Patches/RM_ShovelSand_Orders.xml\nindex f6dc22bdc0..c0c2182b87 100644\n--- a/src/RimMandrake/Pyrelands/Patches/RM_ShovelSand_Orders.xml\n+++ b/src/RimMandrake/Pyrelands/Patches/RM_ShovelSand_Orders.xml\n@@ -4,7 +4,7 @@\n   <Operation Class=\"PatchOperationAdd\">\n     <xpath>/Defs/DesignationCategoryDef[defName=\"Orders\"]/specialDesignatorClasses</xpath>\n     <value>\n-      <li>RimMandrake.Pyrelands.Designator_RM_ShovelTerrain</li>\n+      <li>RimMandrake.Pyrelands.Designator_RM_NoSuchDesignator</li>\n     </value>\n   </Operation>\n </Patch>\n",
+  "patch_files": [
+   "src/RimMandrake/Pyrelands/Patches/RM_ShovelSand_Orders.xml"
+  ],
+  "patch_sha": "f6b67b23e7a33422",
+  "rc": 1,
+  "test_blob": "4f7ba0444c9b52b398ecffe2b0184f6af59b789f"
+ },
  "T_SETTINGS_SWEEP_OFFLINE": {
   "at": "2026-11-21T01:42:41Z",
   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_settings_sweep.py",

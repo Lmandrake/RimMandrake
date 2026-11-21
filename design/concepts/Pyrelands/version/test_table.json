@@ -260,12 +260,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 5.28,
+    "seconds": 4.52,
     "last": "PASS: 0 failure(s)",
-    "at": "2026-11-18T23:41:51Z",
+    "at": "2026-11-21T01:56:21Z",
     "result": "PASS",
-    "build": "2c4cfbe5463a1a69d47c",
-    "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_site.py"
+    "build": "db6e610bbafb94c2d7e5",
+    "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_site.py",
+    "margins": []
    }
   },
   "T_FRUIT_CLEAR": {
@@ -281,12 +282,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.14,
+    "seconds": 0.03,
     "last": "selftest_pyrelands_fruit_clear: PASS",
-    "at": "2026-11-18T23:41:51Z",
+    "at": "2026-11-21T01:56:21Z",
     "result": "PASS",
-    "build": "ecda884011403dccbdfc",
-    "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_fruit_clear.py"
+    "build": "422a1ee80ea5f7279c1b",
+    "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_fruit_clear.py",
+    "margins": []
    }
   },
   "T_SETTINGS_SCREENS": {
@@ -441,12 +443,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 50.17,
-    "last": "PASS: 9 def facts hold, 20 of 20 mutants red, the clean copy green",
-    "at": "2026-11-17T20:31:10Z",
+    "seconds": 57.34,
+    "last": "PASS: 10 def facts hold, 21 of 21 mutants red, the clean copy green",
+    "at": "2026-11-21T01:57:19Z",
     "result": "PASS",
-    "build": "5205ec1a3364f2fdc127",
-    "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_defs_offline.py"
+    "build": "41e4cdd8325f11c1a080",
+    "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_defs_offline.py",
+    "margins": []
    }
   },
   "T_CUT_STAYS_CUT": {
@@ -1716,11 +1719,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.72,
+    "seconds": 2.19,
     "last": "PASS: 0 of 18 checks failed",
-    "at": "2026-11-21T01:45:40Z",
+    "at": "2026-11-21T01:57:21Z",
     "result": "PASS",
-    "build": "2a8b965ea16688b45b92",
+    "build": "a4890806eed4810f0198",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_round6_gaps.py",
     "margins": []
    }
