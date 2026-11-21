@@ -46,6 +46,8 @@ is a separate page. Each promise has a test of its name in `src/RimMandrake/rimf
 - **act-advances-and-lands.** `gameonly_and_land` moves the record to `in_game` by `DISPATCH`, with `game_only` confirmed
   on the named ids. It lands, in one landing, the stage record, `journal.md` and the other files the move wrote, all
   under `design/concepts/<mod>/`.
+- **a-file-git-ignores-is-never-landed.** A file the move writes that git ignores (its own `.stage_move.lock`) is not
+  handed to the landing. Measured 2026-11-20 9:24 PM PST: land.sh refused FlowWorks' whole game-only exit for that file.
 - **unlanded-act-puts-files-back.** When the landing fails, every file the move changed is put back byte for byte, every
   new file is removed, and the act raises.
 - **refused-act-raises-and-writes-nothing.** A move that `maturation.advance` refuses (here an open sibling item left

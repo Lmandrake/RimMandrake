@@ -158,6 +158,23 @@ def t_act_advances_and_lands():
             and all(p.startswith(rel) for p in paths) and len(landed) == 1), (text, rec.get("stage"), mv, landed)
 
 
+def t_a_file_git_ignores_is_never_landed():
+    """The move's own lock (design/concepts/*/.stage_move.lock, in .gitignore) was handed to land.sh, which refused
+    it: FlowWorks' game-only exit failed at 9:24 PM PST 2026-11-20 ("The following paths are ignored")."""
+    import subprocess
+    root, cdir = _root()
+    subprocess.run(["git", "init", "-q", root], check=True)
+    with open(os.path.join(root, ".gitignore"), "w") as f:
+        f.write("design/concepts/*/.stage_move.lock\n")
+    landed = []
+    A.gameonly_and_land(root, PILOT, [LIVE_A, LIVE_B], now=100,
+                        land=lambda subject, paths: landed.append(sorted(paths)) or "PUBLISHED abc")
+    paths = landed[0] if landed else []
+    made = os.path.exists(os.path.join(cdir, ".stage_move.lock"))
+    return (made and paths and not any(x.endswith(".stage_move.lock") for x in paths)
+            and "design/concepts/%s/%s" % (PILOT, M.RECORD) in paths), (made, paths)
+
+
 def t_unlanded_act_puts_files_back():
     root, cdir = _root()
     was = _snap(cdir)
@@ -277,7 +294,8 @@ def t_the_offline_holder_run_drives_its_named_game():
 def main():
     tests = [t_game_only_road_back_takes_the_exit, t_version_bug_goes_before_the_exit,
              t_spent_version_bug_holds_the_exit, t_unreadable_version_bugs_take_no_exit,
-             t_version_bugs_read_by_title_kind_and_needs, t_act_advances_and_lands, t_unlanded_act_puts_files_back,
+             t_version_bugs_read_by_title_kind_and_needs, t_act_advances_and_lands, t_a_file_git_ignores_is_never_landed,
+             t_unlanded_act_puts_files_back,
              t_refused_act_raises_and_writes_nothing, t_execute_books_the_act_once,
              t_pilot_holder_waits_for_the_version_problem_fixer, t_a_spent_game_only_set_goes_to_a_free_game,
              t_no_free_game_names_each_game, t_the_offline_holder_run_drives_its_named_game]

@@ -533,6 +533,12 @@ def gameonly_and_land(root, mod, ids, now=None, land=None, advance=None):
             [r.get("clause") for r in ((res.get("verdict") or {}).get("refusals") or [])])))
     now_files = snap()
     rels = sorted(os.path.relpath(p, root).replace(os.sep, "/") for p in now_files if was.get(p) != now_files[p])
+    # a file git ignores (the move's own .stage_move.lock) is never landed: land.sh refused the whole landing for it
+    # (FlowWorks, 2026-11-20 9:24 PM PST). A check-ignore that cannot run keeps every path, and the landing says why.
+    ign = subprocess.run(["git", "-C", root, "check-ignore", "--stdin"], input="\n".join(rels), capture_output=True,
+                         text=True, timeout=60) if rels else None
+    if ign is not None and ign.returncode in (0, 1):
+        rels = [x for x in rels if x not in set(ign.stdout.split("\n"))]
     subject = "maturation: the pipeline takes %s's game-only exit to Stage 6 (%s)" % (mod, ", ".join(ids))
     try:
         if not rels:
