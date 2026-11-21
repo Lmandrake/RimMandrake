@@ -22,6 +22,8 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[3]
 for p in (HERE, ROOT / 'src/RimMandrake/Utils', ROOT / 'src/RimMandrake/Utils/modcheck'):
     sys.path.insert(0, str(p))
+import trap_passage_fake as M  # noqa: E402
+
 SRC = Path(sys.argv[1]) if len(sys.argv) > 1 else HERE / 'concept_scenes.py'
 spec = importlib.util.spec_from_file_location('concept_scenes_under_test', SRC)
 C = importlib.util.module_from_spec(spec)
@@ -34,13 +36,15 @@ COVER_REFUSED = 'REFUSED: arg must be x,z on a current map with FlowWorks'
 class Fake:
     """mod: 'fetch' (raiders ladder the pit for a fallen comrade and carry one out), 'ladder_only' (the ladder goes in, nobody
     comes out), None (today: no fetch job), 'crossing' (a ladder goes in
-    whether or not anyone fell). fault: 'far' (the raid spawns 40 squares off and never comes), 'one' (one raider falls)."""
+    whether or not anyone fell). fault: 'far' (the raid spawns 40 squares off and never comes), 'one' (one raider falls).
+    The ground, the strung-out raid and the deck that needs two on it at once are trap_passage_fake's (live game b
+    2026-11-21)."""
 
     def __init__(self, mod='fetch', fault=None):
         self.mod, self.fault = mod, fault
         self.stop_on = 'default'
         self.g = {'dug': {}, 'spikes': set(), 'covers': {}, 'hostile': {}, 'ladders': [], 'announced': set(), 'n': 0,
-                  'fall_poll': None, 'polls': 0, 'ladder_poll': 0}
+                  'fall_poll': None, 'polls': 0, 'ladder_poll': 0, 'walls': set()}
         self.saves, self.contract = {}, []
 
     def save(self, k):
@@ -63,25 +67,13 @@ class Fake:
         step = (g['clock'] + n) // 100 - g['clock'] // 100     # squares walked: one per 100 ticks of the whole clock
         g['clock'] += n
         trench = set(C._trap_cells()) if hasattr(C, '_trap_cells') else set()
-        for hid, h in sorted(g['hostile'].items()):
-            if h['held'] or self.fault == 'far':
-                continue
-            nz = min(h['z'] + step, O[1] + 9)
-            if h['z'] < O[1] <= nz and (h['x'], O[1]) in g['covers'] and g['covers'][(h['x'], O[1])]:
-                h['z'], h['held'] = O[1], True
-                if sum(1 for q in g['hostile'].values() if q['held']) >= (1 if self.fault == 'one' else 2):
-                    for c in g['covers']:
-                        g['covers'][c] = False             # the deck gives way whole
-                    g['fall_poll'] = g['polls']
-                continue
-            if h['z'] < O[1] <= nz and (h['x'], O[1]) in g['dug']:
-                nz = O[1] - 1                              # an open trench: they stop at its lip
-            h['z'] = nz
+        if self.fault != 'far' and M.walk(g, step, O[1] + 20, need=1 if self.fault == 'one' else 2):
+            g['fall_poll'] = g['polls']
         held = any(h['held'] for h in g['hostile'].values())
         if self.mod == 'fetch' and g['ladders'] and g['polls'] >= g['ladder_poll'] + 1:
             for h in g['hostile'].values():
                 if h['held']:
-                    h['z'], h['held'] = O[1] - 1, False   # carried up the ladder to the lip (RM_RaiderFetchFallen)
+                    h['x'], h['held'] = min(c[0] for c in trench) - 1, False   # carried up the ladder to the lip (RM_RaiderFetchFallen)
                     break
         if (self.mod in ('fetch', 'ladder_only') and held and g['polls'] >= (g['fall_poll'] or 0) + 2) or \
                 (self.mod == 'crossing' and g['hostile'] and g['polls'] >= 3):
@@ -105,16 +97,13 @@ class Fake:
                     g['spikes'].add((x, z))
             return {'success': True}
         if tool == 'jawa/build_batch':
-            for op in kw['ops'].split(';'):
-                d, xz = op.split(':')
-                c = tuple(int(v) for v in xz.split(',')[:2])
-                banks = sum(1 for dz in (-1, 1) if (c[0], c[1] + dz) not in g['dug']) + \
-                    sum(1 for dx in (-1, 1) if (c[0] + dx, c[1]) not in g['dug'])
-                if d.startswith('RM_PitCover') and g['dug'].get(c, 0) >= 8 and banks >= 2:
-                    g['covers'][c] = True
-                else:
-                    self.contract.append('cover refused at %s (banks %d)' % (c, banks))
+            M.build(g, kw['ops'], self.contract)
             return {'success': True}
+        if tool == 'jawa/pawn_force_incapacitate':       # sc_pit_trap_raid's drive-off: the free raiders leave the map
+            g['hostile'].pop(kw.get('pawn'), None)
+            return {'success': True}
+        if tool == 'jawa/damage_log':
+            return {'success': True, 'events': []}
         if tool == 'jawa/set_plants':
             if not all(':' in op for op in kw['ops'].split(';')):
                 self.contract.append('set_plants op names no def: %s' % kw['ops'])
@@ -132,9 +121,7 @@ class Fake:
             cx, cz = (int(v) for v in (kw.get('spawnCenter') or '%d,%d' % (O[0], O[1] - 20)).split(','))
             if self.fault == 'far':
                 cz -= 40
-            for i in range(6):
-                g['n'] += 1
-                g['hostile']['Human%d' % (500 + g['n'])] = {'x': cx - 2 + i % 5, 'z': cz - i // 5, 'held': False}
+            M.spawn_raid(g, cx, cz, 6)
             return {'success': True, 'executed': True}
         if tool == 'jawa/list_pawns':
             require_hostile = kw.get('faction') == 'hostile'
@@ -144,6 +131,8 @@ class Fake:
             x, z, w, h = (int(v) for v in kw['rect'].split(','))
             if kw.get('group') == 'Corpse':              # nobody dies in this fake: the trench holds no corpse
                 return {'success': True, 'things': []}
+            if kw.get('defName') == 'Wall':
+                return {'success': True, 'things': [{'def': 'Wall', 'x': c[0], 'z': c[1]} for c in sorted(g['walls'])]}
             return {'success': True, 'things': [t for t in g['ladders'] if t['def'] == kw['defName']
                                                 and x <= t['x'] < x + w and z <= t['z'] < z + h]}
         if tool == 'jawa/ordered_job':                   # RM_CaptureDown from the lip: a held raider becomes a prisoner

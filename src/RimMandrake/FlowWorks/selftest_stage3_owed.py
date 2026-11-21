@@ -134,9 +134,19 @@ def fetch_fallen(cs, xml):
          _any(cs, r"static bool IsFallen\(Pawn p, Pawn c\)[\s\S]{0,500}?RM_SuperdeepTrap\.IsHeld\(c\) \|\| \(c\.Downed && RM_SuperdeepTrap\.StepDepthAt\(")
          and _any(cs, r"static bool IsFallen\(Pawn p, Pawn c\)[\s\S]{0,300}?c\.Faction == p\.Faction")),
         ("no way down yet: the rescuer plans a ladder line to him and sets it (carried, taken, or chopped wood)",
-         _any(cs, r"RM_RaiderTrench\.TryPlan\(p, k, fallen, [\s\S]{0,600}?RM_RaiderTrench\.LadderJob\(p, plan, k, out bool waiting\)")),
-        ("a reachable fallen is carried out of the pit to the lip",
-         _any(cs, r"p\.CanReach\(fallen, PathEndMode\.ClosestTouch, Danger\.Deadly\)[\s\S]{0,400}?CarryJob\(p, fallen")
+         _any(cs, r"RM_RaiderTrench\.TryPlan\(p, k, fallen, [\s\S]{0,600}?RM_RaiderTrench\.LadderJob\(p, plan, k, out bool waiting, true\)")),
+        # the same sitting: LadderSlots refused a ladder on the line's last square, and a fetch plan always ends on the
+        # pit's edge square, so no fetch ever got a ladder job. The fetch asks for the end-in-the-pit slots.
+        ("the fetch's ladder may stand on the pit's edge square (the plan's last), a crossing's never",
+         _any(cs, r"LadderSlots\(int\[\] d, int k, int reach, bool endsInPit = false\)[\s\S]{0,900}?deep == d\.Length - 1 && !endsInPit")
+         and _any(cs, r"LadderJob\(Pawn p, Plan plan, int k, out bool waiting, bool endsInPit = false\)[\s\S]{0,900}?LadderSlots\(plan\.depths, k, reach, endsInPit\)")),
+        # RIMMANDRAKE_TRACE_FLOWWORKS_FALLEN_RAIDER_WAITS_FOR_NO_LADDER (live game b 2026-11-21): "a way down" was judged
+        # by touch (CanReach ClosestTouch on the man), and a held man on a pit square beside undug ground is touched from
+        # the lip: 9 of 9 free raiders read reach=True for 40 reads and none set a ladder (63 of 63 ProofReachPair reads:
+        # on his square False, touch True). The way down is a walk ONTO his square.
+        ("a way down is a walk onto the fallen's square, never a touch from the lip; then a downed one is carried to the lip",
+         _any(cs, r"p\.CanReach\(fallen\.Position, PathEndMode\.OnCell, Danger\.Deadly\)[\s\S]{0,400}?CarryJob\(p, fallen")
+         and not _any(cs, r"static Job TryFetch\(Pawn p\)[\s\S]{0,1200}?p\.CanReach\(fallen, PathEndMode\.(ClosestTouch|Touch)")
          and _any(cs, r"class JobDriver_RM_RaiderFetchFallen[\s\S]{0,2500}?Toils_Haul\.StartCarryThing\(TargetIndex\.A\)"
                       r"[\s\S]{0,400}?Toils_Goto\.GotoCell\(TargetIndex\.B, PathEndMode\.OnCell\)[\s\S]{0,600}?TryDropCarriedThing\(")),
         ("under fire they leave the fallen: a harmed raider neither starts nor keeps a fetch",
@@ -225,7 +235,10 @@ FETCH_MUTANTS = {
     "giver asks nothing": (FETCH_FILE, "return RM_RaiderFetchFallen.TryFetch(pawn);", "return null;"),
     "a standing captive forgotten": (FETCH_FILE, "RM_SuperdeepTrap.IsHeld(c) || (c.Downed && RM_SuperdeepTrap.StepDepthAt(", "(c.Downed && RM_SuperdeepTrap.StepDepthAt("),
     "any faction's fallen": (FETCH_FILE, "c.Faction == p.Faction", "c.Faction != null"),
-    "no ladder set": (FETCH_FILE, "RM_RaiderTrench.LadderJob(p, plan, k, out bool waiting)", "RM_RaiderTrench.GotoNothing(out bool waiting)"),
+    "touched from the lip": (FETCH_FILE, "if (p.CanReach(fallen.Position, PathEndMode.OnCell, Danger.Deadly))",
+                             "if (p.CanReach(fallen, PathEndMode.ClosestTouch, Danger.Deadly))"),
+    "no ladder set": (FETCH_FILE, "RM_RaiderTrench.LadderJob(p, plan, k, out bool waiting, true)", "RM_RaiderTrench.GotoNothing(out bool waiting)"),
+    "a crossing's slots for a fetch": (FETCH_FILE, "RM_RaiderTrench.LadderJob(p, plan, k, out bool waiting, true)", "RM_RaiderTrench.LadderJob(p, plan, k, out bool waiting)"),
     "never carried": (FETCH_FILE, "Toils_Haul.StartCarryThing(TargetIndex.A)", "Toils_General.Wait(1)"),
     "dropped in the pit": (FETCH_FILE, "Toils_Goto.GotoCell(TargetIndex.B, PathEndMode.OnCell)", "Toils_General.Wait(1)"),
     "brave under fire": (FETCH_FILE, "this.FailOn(() => RM_RaiderFetchFallen.UnderFire(pawn));", ""),

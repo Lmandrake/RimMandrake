@@ -1533,37 +1533,78 @@ def _wetting(S):
 # undeclared hostile_arrival and site_recover vanished every raider (no fallen, no ladder); and the control read "no ladder"
 # off an empty map and PASSED. Now: a 1-wide trench across the passage (each lid rests on its two banks), lids built and
 # read back covered, the scene's own raid run on a narrowed governor, and every row UNMEASURED when its event never happened.
-TRAP_W = 9                                          # trench cells across the passage, x = O[0]-4 .. O[0]+4 at z = O[1]
+# RIMMANDRAKE_STAGE_FLOWWORKS_PIT_TRAP_RAID_NONE_FELL (Test Pilot sitting, game b 2026-11-21): the trench lay ACROSS the raid's
+# path, 9 wide and 1 deep, so each raider stood on the deck for one square (about 15 ticks). A plank deck is ONE span and
+# gives way on the total load (120 kg, two raiders): one raider alone walked over it and the lids stayed (57,60 read
+# covered=True, held=False), and a raid that arrived strung out never put two on it (9 raiders within 2 squares, 200 polls,
+# nobody fell: visit 2's miss). The fall was chance. Now it is his pit-trap PASSAGE (scenes.json): a wall line with a gap,
+# and the covered pit runs north from the gap ALONG the raid's path, TRAP_PL squares long, so the raiders the gap funnels
+# stand on the deck together (4 of 4 live raids: two held within 210 ticks of the first step). A strip of ground stays
+# each side of the pit in the gap: the capture's lip, and the way round for the control and for the raid after the fall.
+TRAP_PW, TRAP_PL = 2, 8                             # pit squares: x = O[0]-1 .. O[0], z = O[1] .. O[1]+7
+TRAP_STRIP = 1                                      # ground left each side of the pit inside the gap
+TRAP_WALL = 18                                      # the wall line reaches this far each side of O[0], at z = O[1]
 TRAP_COVER = 'RM_PitCover_PlankLattice'             # gives way under 120 kg on the deck: about two raiders at once
 TRAP_TREE = 'Plant_TreeOak'                         # wood the raiders could chop for a ladder (scenes.json: saplings beside it)
 RAID_STOP_ON = 'clock_discontinuity,modal_stuck,colony_loss,cancel'   # a raid hurts, downs and kills by design
 TRAP_POLL, TRAP_POLLS = 60, 200                     # 12,000 ticks: fall, chop, ladder; 60-tick reads as TR_POLL (why there)
-TRAP_RAID_AT = (O[0], O[1] - 12)                     # 8-square arrival scatter stays south of the trench (it was O1-4: some
-                                                     # landed north of it, between the trench and the defenders)
+TRAP_RAID_AT = (O[0], O[1] - 12)                     # 8-square arrival scatter stays south of the wall (it was O1-4: some
+                                                     # landed north of the trench, between it and the defenders)
 
 
 def _trap_cells():
-    return _line(O[0] - TRAP_W // 2, O[1], TRAP_W)
+    x0 = O[0] - TRAP_PW // 2
+    return [(x0 + i, O[1] + j) for j in range(TRAP_PL) for i in range(TRAP_PW)]
+
+
+def _trap_walls():
+    """The wall line at z = O[1], broken by the gap: the pit's width and TRAP_STRIP squares of ground each side."""
+    x0 = O[0] - TRAP_PW // 2
+    gap = range(x0 - TRAP_STRIP, x0 + TRAP_PW + TRAP_STRIP)
+    return [(x, O[1]) for x in range(O[0] - TRAP_WALL, O[0] + TRAP_WALL + 1) if x not in gap]
+
+
+def _trap_rect(pit, pad=1):
+    xs, zs = [c[0] for c in pit], [c[1] for c in pit]
+    return '%d,%d,%d,%d' % (min(xs) - pad, min(zs) - pad, max(xs) - min(xs) + 1 + 2 * pad, max(zs) - min(zs) + 1 + 2 * pad)
+
+
+def _trap_lip(cell):
+    """The strip square beside pit square `cell` (every pit square touches one: the pit is TRAP_PW = 2 wide)."""
+    x0 = O[0] - TRAP_PW // 2
+    return (x0 - 1 if cell[0] == x0 else x0 + TRAP_PW, cell[1])
 
 
 def _cheb(a, b):
     return max(abs(a[0] - b[0]), abs(a[1] - b[1]))
 
 
-def _pit_trap(S, fall=True):
-    """Stage the spiked trench (lidded when `fall`), trees beside it, two defenders across it, and fire a raid of about six
-    at its south side. -> the trench cells. Staging that does not read back is an AssertionError (the scene's _staging row)."""
+# RIMMANDRAKE_TRACE_FLOWWORKS_FALLEN_RAIDER_WAITS_FOR_NO_LADDER: the fetch scene's pit is 3 m (6 levels), the deepest a
+# portable ladder spans (portableLadderMaxLevels 6; RaiderTrenchChecks pins "4 m is past a 3 m ladder"). At 4 m (8) no
+# raider can ladder it by the mod's own rule, so the scene asked for what the design refuses. The prison scene keeps 4 m.
+TRAP_DEPTH, FETCH_DEPTH = 8, 6
+
+
+def _pit_trap(S, fall=True, depth=TRAP_DEPTH):
+    """Stage the passage: the wall line with its gap, the spiked pit running north from the gap (lidded when `fall`), trees
+    south of the wall, two defenders north of the pit, and fire a raid of about six south of the wall. -> the pit cells.
+    Staging that does not read back is an AssertionError (the scene's _staging row)."""
     pit = _trap_cells()
-    S.dig(pit, 8)
+    S.dig(pit, depth)
     S.call('jawa/spawn_batch', ops=';'.join('RM_Spikes:%d,%d' % c for c in pit))
+    S.call('jawa/build_batch', ops=';'.join('Wall:%d,%d' % c for c in _trap_walls()), stuff='BlocksGranite', faction='player')
+    standing = {(t.get('x'), t.get('z')) for t in S.call('jawa/list_things', defName='Wall', rect='%d,%d,%d,1' % (
+        O[0] - TRAP_WALL, O[1], 2 * TRAP_WALL + 1)).get('things') or []}
+    require(set(_trap_walls()) <= standing, 'the passage wall did not read back whole: missing %s' % sorted(
+        set(_trap_walls()) - standing)[:4])
     if fall:
         S.call('jawa/build_batch', ops=';'.join('%s:%d,%d' % ((TRAP_COVER,) + c) for c in pit), faction='player',
                wipeExisting=False)
         lids = [S.sc(EXC, 'ProofCover', '%d,%d' % c) for c in pit]
         require(all('covered=True' in t for t in lids), 'the trench lids did not read back covered: %s' % lids[:3])
-    S.call('jawa/set_plants', ops='%s:%d,%d,3,2' % (TRAP_TREE, O[0] + TRAP_W, O[1] - 3), density=1.0, growth=1.0)
+    S.call('jawa/set_plants', ops='%s:%d,%d,3,2' % (TRAP_TREE, O[0] + 9, O[1] - 4), density=1.0, growth=1.0)
     for dx in (-2, 2):
-        S.pawn('Colonist', (O[0] + dx, O[1] + 10), 'player')
+        S.pawn('Colonist', (O[0] + dx, O[1] + TRAP_PL + 9), 'player')
     _fire_raid(S, 700, TRAP_RAID_AT)
     return pit
 
@@ -1573,7 +1614,9 @@ def _watch_trap(S, pit, until_ladder=True, until_held=0):
     (ProofTrap held=), and any portable ladder in or beside the trench. -> {reached, held, ladder, raiders, polls, refused}.
     reached: a raider came within 2 squares of the trench (the event the rows need); held: raider ids the trench holds;
     refused: ProofTrap replies that were no TRAP read for a raider standing in the trench (a blind read, not a "not held").
-    until_held: stop once that many are held (sc_pit_trap_raid captures them before the fetch can take them out).
+    until_held: stop once that many have fallen, held or dead on the spikes (sc_pit_trap_raid captures the living before
+    the fetch can take them out; live game b 2026-11-21: one of two died on landing and a wait for two HELD ran the raid
+    out for 12,000 ticks).
     fallen: how many went into the trench, the most of (held ids seen) and (held now + corpses on trench squares) at any
     poll. A raider who falls and dies on the spikes between two reads is never seen held (live game b 2026-11-21: one held
     of a raid whose fallen were gone by the next 300-tick read, and visit 2's FETCH_two_fell read one); nobody dies on a
@@ -1581,7 +1624,7 @@ def _watch_trap(S, pit, until_ladder=True, until_held=0):
     prior, S.B.stop_on = S.B.stop_on, RAID_STOP_ON
     seen = {'reached': False, 'held': set(), 'ladder': [], 'raiders': 0, 'polls': 0, 'last': [], 'refused': 0,
             'fallen': 0, 'corpses': 0}
-    rect = '%d,%d,%d,3' % (pit[0][0] - 1, pit[0][1] - 1, len(pit) + 2)
+    rect = _trap_rect(pit)
     try:
         for _ in range(TRAP_POLLS):
             S.ticks(TRAP_POLL)
@@ -1610,7 +1653,7 @@ def _watch_trap(S, pit, until_ladder=True, until_held=0):
                 seen['ladder'] = lad
                 if until_ladder:
                     break
-            if until_held and len(seen['held']) >= until_held:
+            if until_held and seen['fallen'] >= until_held:
                 break
     finally:
         S.B.stop_on = prior
@@ -1650,7 +1693,7 @@ def _watch_fetch(S, pit, held):
 
 
 def _fetch_fallen(S):
-    pit = _pit_trap(S)
+    pit = _pit_trap(S, depth=FETCH_DEPTH)
     seen = _watch_trap(S, pit)
     _fetch_rows(S, seen)
     # FLOWWORKS_RAIDERS_BUILD_LADDER_FOR_FALLEN: the ladder is half the bar; the fallen must come out (carried if downed)
@@ -1665,7 +1708,7 @@ def _fetch_fallen(S):
 def _fetch_fallen_scene(S):
     _fetch_fallen(S)
     S.again()
-    pit = _pit_trap(S, fall=False)                  # control: no lid, so no one falls; the same raid must not ladder the pit
+    pit = _pit_trap(S, fall=False, depth=FETCH_DEPTH)   # control: no lid, so no one falls; the same raid must not ladder the pit
     seen = _watch_trap(S, pit, until_ladder=False)
     S.row('FETCH_control_none_fallen_no_ladder', not seen['ladder'] and not seen['held'] and not seen['fallen'],
           ('the raid never came within 2 squares of the trench (raiders seen %d); ' % seen['raiders'] if not seen['reached']
@@ -1694,6 +1737,33 @@ def _able(S, pid):
                for p in S.call('jawa/list_pawns', faction='player').get('pawns') or [])
 
 
+def _ptr_fate(S, pid):
+    """What the game recorded last about a captive that is no longer on the map: its kill event (who, with what, when),
+    else the last damage, else 'no record'. Read from the bridge's damage recorder; a recorder that refuses says so."""
+    r = S.B.call('jawa/damage_log', thingId=str(pid), limit=40) or {}
+    ev = r.get('events') or []
+    kills = [e for e in ev if e.get('kind') == 'kill']
+    if kills:
+        e = kills[-1]
+        return 'killed at tick %s by %s (%s) at %s,%s' % (e.get('tick'), e.get('instigatorId') or 'no instigator',
+                                                        e.get('damageDef'), e.get('x'), e.get('z'))
+    if not r.get('success'):
+        return 'damage recorder refused: %s' % str(r)[:80]
+    return ('last damage %s at tick %s, no kill event' % (ev[-1].get('damageDef'), ev[-1].get('tick'))) if ev else 'no record'
+
+
+def _raid_driven_off(S, held):
+    """Every live hostile the pit does not hold leaves the map. -> the ids that left. One still there is a staging fault."""
+    free = [p['id'] for p in S.call('jawa/list_pawns', faction='hostile').get('pawns') or []
+            if p.get('id') not in held and not p.get('dead') and p.get('x') is not None]
+    for pid in free:
+        S.call('jawa/pawn_force_incapacitate', pawn=pid, action='vanish')
+    left = [p['id'] for p in S.call('jawa/list_pawns', faction='hostile').get('pawns') or []
+            if p.get('id') not in held and not p.get('dead') and p.get('x') is not None]
+    require(not left, 'free raiders still on the map after the drive-off: %s' % left[:4])
+    return free
+
+
 def _pit_trap_raid(S):
     for k in ('captureDownEnabled', 'superdeepRoomsEnabled'):
         S.setting(k, True)
@@ -1706,26 +1776,47 @@ def _pit_trap_raid(S):
                  'fallen': seen['fallen'], 'corpsesInTrench': seen['corpses']}
         S.row('PTR_two_fall', seen['fallen'] >= 2, dict(where, held=sorted(seen['held'])),
               unmeasured=no_raid or (seen['fallen'] < 2 and seen['refused'] > 0))
-        caught, warden = [], None
+        # the scene's "driven off" moment: the capture is asked once the free raiders are gone (visit 2: the live raid
+        # downed the warden on the lip inside the capture window, and the row could only read UNMEASURED). Every hostile
+        # the pit does not hold leaves the map (Vanish: no corpse, no death event); the held stay where they fell.
+        gone = _raid_driven_off(S, seen['held']) if seen['held'] else []
+        # One warden per captive, both ordered at once (a player with two colonists at the rim does this). Live game b
+        # 2026-11-21: with ONE warden capturing in turn, the warden finished the first capture at t=420 and, free again,
+        # hit the second held raider beside its lip; one blow killed the spike-wounded man (damage_log: kill, instigator
+        # the warden), and the second read was "no spawned pawn". A warden on RM_CaptureDown does not swing.
+        caught = []
         for pid in sorted(seen['held'])[:2]:
             before, v = _ptr_prisoner(S, pid)
             cell = kv(v).get('cell', '')
-            lip = (int(cell.split(',')[0]), O[1] + 1) if before is not None and ',' in cell else None
-            o = {'accepted': False, 'why': 'no pit cell in %r' % v[:80]}
-            able = None
+            lip = _trap_lip(tuple(int(q) for q in cell.split(','))) if before is not None and ',' in cell else None
+            c = {'pawn': pid, 'before': before, 'after': before, 'lip': lip, 'accepted': False, 'warden': None,
+                 'wardenAbleAfter': None, 'verdict': v[:120], 'reply': v[:120], 'trace': []}
             if lip:
-                if not (warden and _able(S, warden)):     # a downed or dead warden captures nobody: a fresh one asks
-                    warden = S.pawn('Colonist', lip, 'player')
-                o = S.call('jawa/ordered_job', pawnId=warden, jobDef='RM_CaptureDown', targetAId=pid,
-                           targetBX=lip[0], targetBZ=lip[1])
-                S.ticks(PTR_CAPTURE_TICKS)
-                able = _able(S, warden)
-            after, a = _ptr_prisoner(S, pid)
-            caught.append({'pawn': pid, 'before': before, 'after': after, 'lip': lip, 'accepted': o.get('accepted'),
-                           'warden': warden, 'wardenAbleAfter': able, 'verdict': v[:120], 'reply': a[:120]})
-        # a capture the raid cut short (its warden downed, no prisoner) did not ask the mod: UNMEASURED, never FAIL
+                c['warden'] = S.pawn('Colonist', lip, 'player')
+                c['accepted'] = S.call('jawa/ordered_job', pawnId=c['warden'], jobDef='RM_CaptureDown', targetAId=pid,
+                                       targetBX=lip[0], targetBZ=lip[1]).get('accepted')
+            caught.append(c)
+        for _ in range(PTR_CAPTURE_TICKS // TRAP_POLL):               # 60-tick reads: where each captive went, and when
+            waiting = [c for c in caught if c['lip'] and c['after'] is False]
+            if not waiting:
+                break
+            S.ticks(TRAP_POLL)
+            for c in waiting:
+                c['after'], c['reply'] = _ptr_prisoner(S, c['pawn'])
+                c['trace'] = (c['trace'] + [c['reply'][8:60]])[-3:]
+        for c in caught:
+            c['reply'] = c['reply'][:120]
+            if c['warden']:
+                c['wardenAbleAfter'] = _able(S, c['warden'])
+            if c['after'] is None:                                     # gone: say how, so the row names its own miss
+                c['fate'] = _ptr_fate(S, c['pawn'])
+        # a capture its warden could not finish (downed, no prisoner) or whose captive is gone did not ask the mod:
+        # UNMEASURED, never FAIL
         S.row('PTR_fallen_become_prisoners', bool(caught) and all(c['before'] is False and c['after'] for c in caught),
-              {'captured': caught} if caught else 'nobody fell, so there was no one to capture',
+              {'drivenOff': len(gone), 'captured': [
+                  '%s prisoner %s->%s, warden able %s, %s' % (c['pawn'], c['before'], c['after'], c['wardenAbleAfter'],
+                                                            c.get('fate') or c['reply'][8:70]) for c in caught]} if caught
+              else 'nobody fell, so there was no one to capture',
               unmeasured=not caught or any(c['before'] is None or c['after'] is None
                                            or (not c['after'] and c['wardenAbleAfter'] is False) for c in caught))
         S.again()

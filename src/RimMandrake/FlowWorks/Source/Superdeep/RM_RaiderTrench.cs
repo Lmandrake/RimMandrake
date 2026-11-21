@@ -448,7 +448,7 @@ namespace RimMandrake.FlowWorks
 		/// <summary>Null when ladders cannot do this crossing (<paramref name="waiting"/> false: breach instead) or cannot do it
 		/// YET (<paramref name="waiting"/> true: the next slot is out of reach or another raider is setting it; think again later);
 		/// else the next ladder job, or the step down into the trench once every ladder stands.</summary>
-		internal static Job LadderJob(Pawn p, Plan plan, int k, out bool waiting)
+		internal static Job LadderJob(Pawn p, Plan plan, int k, out bool waiting, bool endsInPit = false)
 		{
 			waiting = false;
 			ThingDef def = RimMandrakeFlowWorks_DefOf.RM_LadderPortable;
@@ -461,7 +461,7 @@ namespace RimMandrake.FlowWorks
 			{
 				return null;   // portable ladders switched off
 			}
-			List<RM_RaiderTrenchMath.LadderSlot> slots = RM_RaiderTrenchMath.LadderSlots(plan.depths, k, reach);
+			List<RM_RaiderTrenchMath.LadderSlot> slots = RM_RaiderTrenchMath.LadderSlots(plan.depths, k, reach, endsInPit);
 			if (slots == null || slots.Count == 0)
 			{
 				return null;

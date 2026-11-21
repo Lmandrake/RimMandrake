@@ -525,3 +525,30 @@ moved into the north star; one remains.
 - The live dig/fill/read surface is `jawa/flowworks_excavation_drive` (Deepen/TrySetDriverFill), `jawa/flowworks_excavation_report` (D/F, source/sink, map counters) and `jawa/flowworks_spawn_flood` in `src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchFlowWorksTools.cs`, plus the `jawa/static_call` read surfaces in the mod (`RM_PromotionProofs`, `RM_NorthstarProofs`, `RM_LiquidFireProof`, `RM_DigDiscoveryProof`, `RM_FluidIdentityProof`). `jawa/canal_dig` is a STUB since ruling 24 that always fails — never call it.
 - 🔴 This walk USED TO CLAIM "No [S] line: nothing here is a visual-only concern". That claim was false and is deleted. MEASURED 2026-09-16: the mod ships **zero bespoke textures** — the dug channel borrows `Terrain/Surfaces/Gravel`, the test source borrows the drop-beacon sprite — so every state assertion above can pass while the player looks at gravel. That is exactly the defect class the north star system exists to catch (`design/RimMandrake/north_star_validation_spec.md`), and this walk was one of the 7 that dismissed the visual pass in writing.
 - ✅ **The rename is complete and this walk carries the new name.** MEASURED 2026-09-17: file is `FlowWorks.md`, `subject:` reads `src/RimMandrake/FlowWorks`, `About.xml` declares `mandrake.rm.flowworks`, C# namespaces are `RimMandrake.FlowWorks.*`, def files are `FlowWorks_*.xml`. The six remaining "fluidcanal" strings in `src/` are the live defName `RM_FluidCanalFlood` (its ThingDef and DefOf agree, so it functions), three history comments, and a compiled DLL — none is owed work. A prior note here claimed this file was still `FluidCanals.md`; that was false and is deleted.
+
+### Raiders fetch their fallen (Test Pilot sitting 2026-11-21, game b, `RIMMANDRAKE_TRACE_FLOWWORKS_FALLEN_RAIDER_WAITS_FOR_NO_LADDER`)
+
+The scene `sc_fetch_fallen` (`concept_scenes.py --scene scene_fetch_fallen`) had two raiders held in the pit and no ladder.
+Three causes were stacked; each one alone gives the same picture.
+
+- CAUSE 1 (mod): `RM_RaiderFetchFallen.TryFetch` judged "a way down" by touch (`CanReach(fallen, ClosestTouch)`). A held man on
+  a pit square beside undug ground is touched from the lip, so the giver took him for a man who climbs out himself. Read:
+  `ProofFetchFallen` printed `reach=True held=True` for 9 of 9 free raiders over 40 reads; `ProofReachPair` printed on-square
+  False and touch True in 63 of 63 reads. Now the test is a walk onto his square. Check: `selftest_stage3_owed.py --only
+  fetch_fallen`, law "a way down is a walk onto the fallen's square", mutant "touched from the lip".
+- CAUSE 2 (mod): `RM_RaiderTrenchMath.LadderSlots` refused a ladder on the line's last square. A fetch plan always ends on the
+  pit's edge square, so no fetch ever got a ladder job, in any pit. Read: after cause 1 was fixed, `reach=False` and still no
+  `RM_RaiderSetLadder` or `RM_RaiderChopForLadder` job in 60 reads. Now a fetch asks for `endsInPit` slots. Check: C# case
+  `RaiderTrench_fetch_ladder_stands_on_the_pit_edge`; law "the fetch's ladder may stand on the pit's edge square".
+- CAUSE 3 (scene): the scene dug the pit 4 m (8 levels). A portable ladder spans 3 m (`portableLadderMaxLevels` 6), and
+  `RaiderTrenchChecks` pins "4 m is past a 3 m ladder". The scene now digs 3 m (`FETCH_DEPTH`). Lids read covered on a 3 m pit
+  and a 3 m pit holds a raider (live).
+- The read that names the failing step for one raider: `jawa/static_call RimMandrake.FlowWorks.RM_RaiderFetchFallenProof
+  ProofFetchPlan <pawnId>` (plan line, depths, reach, slots, carried ladder, wood, the job).
+- RULED OUT: the raiders were under fire. `underFire=False` on every free raider, every read.
+- RULED OUT: the chop job starts and never lands (`RAIDER_CHOP_FIX_AXE_NEVER_LANDS`). No chop job started before the fixes.
+  After them a raider read `wood=15` and took `RM_RaiderSetLadder`, so the chop lands on this site.
+- RULED OUT: the raid was not on the assault duty, or found no fallen comrade. `rescuer=True fallen=<id>` on every free raider.
+- RULED OUT: visit 2's "one fell, not two" was the mod. The 300-tick read missed a raider who died on the spikes (fixed at
+  51e9d9ce4a), and the old trench lay across the path, so two on the deck at once was chance (the passage staging fixes it).
+- STILL TRUE BY DESIGN: raiders set no ladder into a 4 m pit. `ProofFetchPlan` prints `slots=null` there.

@@ -101,6 +101,20 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(step != null && step.Count == 2 && step[0].cell == 2 && step[0].toward == 1, "a wall inside the line: ladder in the deeper square");
                 Assert(RM_RaiderTrenchMath.LadderSlots(new[] { 4, 0, 0 }, 2, 6) == null, "can-fail: never a ladder on the raider's own end");
             });
+            // RIMMANDRAKE_TRACE_FLOWWORKS_FALLEN_RAIDER_WAITS_FOR_NO_LADDER: a fetch plan ENDS on the pit's edge square (the
+            // fallen man's own level), so the one ladder stands on the line's last square; a crossing never does that.
+            Case("RaiderTrench_fetch_ladder_stands_on_the_pit_edge", () =>
+            {
+                Assert(RM_RaiderTrenchMath.LadderSlots(new[] { 0, 6 }, 2, 6) == null, "a crossing: never a ladder on the far end");
+                var f = RM_RaiderTrenchMath.LadderSlots(new[] { 0, 6 }, 2, 6, true);
+                Assert(f != null && f.Count == 1 && f[0].cell == 1 && f[0].toward == 0 && f[0].drop == 6,
+                    "a fetch: the ladder stands on the pit's edge square, hung on the lip");
+                var slope = RM_RaiderTrenchMath.LadderSlots(new[] { 0, 0, 1, 5 }, 2, 6, true);
+                Assert(slope != null && slope.Count == 1 && slope[0].cell == 3 && slope[0].toward == 2, "past a walkable step, the same");
+                Assert(RM_RaiderTrenchMath.LadderSlots(new[] { 0, 8 }, 2, 6, true) == null, "can-fail: 4 m is past a 3 m ladder for a fetch too");
+                Assert(RM_RaiderTrenchMath.LadderSlots(new[] { 6, 0 }, 2, 6, true) == null, "can-fail: never a ladder on the raider's own end");
+                Assert(RM_RaiderTrenchMath.LadderSlots(new[] { 0, 2 }, 2, 6, true).Count == 0, "a step he climbs needs no ladder");
+            });
             Case("RaiderTrench_times_and_jump_share", () =>
             {
                 Assert(RM_RaiderTrenchMath.LadderTicks(0, 1f) == 600, "10 s");

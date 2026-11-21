@@ -29,6 +29,7 @@ ROOT = HERE.parents[3]
 for p in (HERE, ROOT / 'src/RimMandrake/Utils', ROOT / 'src/RimMandrake/Utils/modcheck'):
     sys.path.insert(0, str(p))
 import clockgate  # noqa: E402
+import trap_passage_fake as M  # noqa: E402
 
 SRC = Path(sys.argv[1]) if len(sys.argv) > 1 else HERE / 'concept_scenes.py'
 spec = importlib.util.spec_from_file_location('concept_scenes_under_test', SRC)
@@ -59,14 +60,18 @@ class Fake:
     'refuse_trap' (ProofTrap REFUSED), 'warden_downed' (the raid downs the warden once its first capture lands: live on
     game b 2026-11-21, ptr2 capture log), 'warden_downed_mid' (the raid downs the warden before its first capture lands), 'spike_kill' (the first raider to fall
     dies on the spikes before the next poll and lies there a corpse: live game b 2026-11-21 ptr3 read one held of a raid
-    whose fallen were gone by the next 300-tick read)."""
+    whose fallen were gone by the next 300-tick read), 'kill_second' (the second held raider is killed while the captures
+    run). Always, as live on game b 2026-11-21 (Test Pilot sitting): a free raider on the map while a capture is asked
+    downs that warden; a warden whose own order is done (or who never had one) kills a held raider no order protects; the
+    raid walks in strung out and the deck needs two on it at once (trap_passage_fake)."""
 
     def __init__(self, mod='capture', fault=None):
         self.mod, self.fault = mod, fault
         self.stop_on = 'default'
         self.g = {'dug': {}, 'spikes': set(), 'covers': {}, 'hostile': {}, 'player': {}, 'orders': {}, 'settings': {},
-                  'n': 0, 'ticked': 0, 'downed': set(), 'corpses': []}
+                  'n': 0, 'ticked': 0, 'downed': set(), 'corpses': [], 'walls': set(), 'kills': {}, 'wardens': set()}
         self.saves, self.contract, self.stops = {}, [], []
+        self.order_log, self.vanished = [], []     # outlive the scene's restore (the map does not)
 
     def save(self, k):
         self.saves[k] = deepcopy(self.g)
@@ -89,37 +94,43 @@ class Fake:
             raise clockgate.GovernorStop(r)
         step = (g['ticked'] + n) // 100 - g['ticked'] // 100   # squares walked: one per 100 ticks of the whole clock
         g['ticked'] += n
-        for hid, h in sorted(g['hostile'].items()):
-            if h['held'] or self.fault == 'far':
-                continue
-            nz = min(h['z'] + step, O[1] + 9)
-            cell = (h['x'], O[1])
-            if h['z'] < O[1] <= nz and g['covers'].get(cell) and self.fault != 'nofall':
-                h['z'], h['held'] = O[1], True
-                if sum(1 for q in g['hostile'].values() if q['held']) >= 2:
-                    for c in g['covers']:
-                        g['covers'][c] = False      # the deck gives way whole
-                continue
-            if h['z'] < O[1] <= nz and cell in g['dug'] and not g['covers'].get(cell):
-                if self.mod == 'falls_open':
-                    h['z'], h['held'] = O[1], True
-                    continue
-                nz = O[1] - 1                       # an open trench: they stop at its lip
-            h['z'] = nz
+        if self.fault != 'far':
+            M.walk(g, step, O[1] + 20, falls_open=self.mod == 'falls_open', nofall=self.fault == 'nofall')
         if self.fault == 'spike_kill':
             for hid in [k for k, q in sorted(g['hostile'].items()) if q['held']][:1]:
                 q = g['hostile'].pop(hid)
                 g['n'] += 1
                 g['corpses'].append({'id': 'Corpse%d' % (700 + g['n']), 'x': q['x'], 'z': q['z']})
-        for pid, warden in list(g['orders'].items()):
-            h = g['hostile'].get(pid)
-            if self.fault == 'warden_downed_mid':
+        free = [k for k, q in g['hostile'].items() if not q['held']]
+        if self.fault == 'kill_second' and g['orders']:
+            for pid in sorted(k for k, q in g['hostile'].items() if q['held'])[1:2]:
+                g['hostile'].pop(pid); g['orders'].pop(pid, None)
+                g['kills'][pid] = {'kind': 'kill', 'tick': g['ticked'], 'instigatorId': 'Human999', 'damageDef': 'Blunt',
+                                   'x': 0, 'z': 0}
+        for pid, o in list(g['orders'].items()):
+            h, warden = g['hostile'].get(pid), o['warden']
+            o['ticks'] += n
+            if free or self.fault == 'warden_downed_mid':
                 g['downed'].add(warden)             # shot by the raid before the capture lands
-            elif self.mod == 'capture' and h and h['held'] and n >= 300 and self._verdict(pid) == 'Allowed':
+                del g['orders'][pid]
+                continue
+            if o['ticks'] < 180:
+                continue
+            if self.mod == 'capture' and h and h['held'] and self._verdict(pid) == 'Allowed':
                 h['prisoner'] = True
             if self.fault == 'warden_downed':
-                g['downed'].add(warden)             # shot by the raid once the capture has landed
+                g['downed'].add(warden)             # shot once the capture has landed
+            elif self.mod != 'capture':
+                continue                            # a capture that never lands: the warden stays on the job
             del g['orders'][pid]
+        busy = {o['warden'] for o in g['orders'].values()}
+        if any(w not in busy and w not in g['downed'] for w in g['wardens']):
+            # a warden with no order of its own swings at a held raider no order protects (kill log, game b, t=422)
+            for pid in sorted(k for k, q in g['hostile'].items() if q['held'] and not q.get('prisoner')
+                              and k not in g['orders']):
+                g['hostile'].pop(pid)
+                g['kills'][pid] = {'kind': 'kill', 'tick': g['ticked'], 'instigatorId': sorted(g['wardens'])[0],
+                                   'damageDef': 'Blunt', 'x': 0, 'z': 0}
         return {'success': True, 'advanced': n}
 
     def _verdict(self, pid):
@@ -149,16 +160,18 @@ class Fake:
                     g['spikes'].add((x, z))
             return {'success': True}
         if tool == 'jawa/build_batch':
-            for op in kw['ops'].split(';'):
-                d, xz = op.split(':')
-                c = tuple(int(v) for v in xz.split(',')[:2])
-                banks = sum(1 for dz in (-1, 1) if (c[0], c[1] + dz) not in g['dug']) + \
-                    sum(1 for dx in (-1, 1) if (c[0] + dx, c[1]) not in g['dug'])
-                if d.startswith('RM_PitCover') and g['dug'].get(c, 0) >= 8 and banks >= 2:
-                    g['covers'][c] = True
-                else:
-                    self.contract.append('cover refused at %s (banks %d)' % (c, banks))
+            M.build(g, kw['ops'], self.contract)
             return {'success': True}
+        if tool == 'jawa/pawn_force_incapacitate':
+            h = g['hostile'].get(kw.get('pawn'))
+            if kw.get('action') != 'vanish' or h is None or h['held']:
+                self.contract.append('the drive-off may only vanish a free raider: %s' % kw)
+            g['hostile'].pop(kw.get('pawn'), None)
+            self.vanished.append(kw.get('pawn'))
+            return {'success': True}
+        if tool == 'jawa/damage_log':
+            e = g['kills'].get(kw.get('thingId'))
+            return {'success': True, 'events': [e] if e else []}
         if tool == 'jawa/set_plants':
             if not all(':' in op for op in kw['ops'].split(';')):
                 self.contract.append('set_plants op names no def: %s' % kw['ops'])
@@ -188,9 +201,7 @@ class Fake:
             cx, cz = (int(v) for v in str(kw.get('spawnCenter') or '%d,%d' % (O[0], O[1] - 20)).split(','))
             if self.fault == 'far':
                 cz -= 40
-            for i in range(0 if self.fault == 'zero' else 6):
-                g['n'] += 1
-                g['hostile']['Human%d' % (500 + g['n'])] = {'x': cx - 2 + i % 5, 'z': cz - i // 5, 'held': False}
+            M.spawn_raid(g, cx, cz, 0 if self.fault == 'zero' else 6)
             return {'success': True, 'executed': True}
         if tool == 'jawa/list_pawns':
             ps = [{'id': k, 'x': h['x'], 'z': h['z'], 'dead': False} for k, h in g['hostile'].items()] \
@@ -206,6 +217,8 @@ class Fake:
             if kw.get('group') == 'Corpse':
                 x, z, w, hh = (int(v) for v in kw['rect'].split(','))
                 return {'success': True, 'things': [t for t in g['corpses'] if x <= t['x'] < x + w and z <= t['z'] < z + hh]}
+            if kw.get('defName') == 'Wall':
+                return {'success': True, 'things': [{'def': 'Wall', 'x': c[0], 'z': c[1]} for c in sorted(g['walls'])]}
             return {'success': True, 'things': []}
         if tool == 'jawa/ordered_job':
             pid, w = kw.get('targetAId'), kw.get('pawnId')
@@ -219,7 +232,9 @@ class Fake:
             if lip in g['dug'] or None in lip or C._cheb(lip, (h['x'], h['z'])) > 1:
                 self.contract.append('RM_CaptureDown lip %s is no undug square beside %s' % (lip, (h['x'], h['z'])))
                 return {'success': True, 'accepted': False}
-            g['orders'][pid] = w
+            g['orders'][pid] = {'warden': w, 'ticks': 0}
+            g['wardens'].add(w)
+            self.order_log.append((g['ticked'], pid, w))
             return {'success': True, 'accepted': True, 'requestedJobDef': 'RM_CaptureDown'}
         if tool == 'jawa/static_call':
             return {'success': True, 'result': self.static(kw['type'], kw['method'], kw.get('args', ''))}
@@ -317,5 +332,26 @@ r, o, _ = run(mod=None, fault='warden_downed')
 check('a mod whose capture makes no prisoner, the warden downed by the window\'s end: UNMEASURED, never PASS (one end read '
       'cannot tell the mod from the shot; the able-warden case above keeps the mod\'s FAIL)',
       r.get('PTR_fallen_become_prisoners') == 'UNMEASURED', r)
+# RIMMANDRAKE_STAGE_FLOWWORKS_PIT_TRAP_RAID_NONE_FELL (Test Pilot sitting, game b 2026-11-21): red on the base 396480cc16
+rows, out, F = run()
+pit = C._trap_cells()
+walls = set(C._trap_walls()) if hasattr(C, '_trap_walls') else set()
+check('the pit runs ALONG the raid\'s path (6 or more squares north to south) behind a wall line with a gap: a raid that '
+      'walks in strung out still puts two on the deck at once (the trench across the path, one square deep, let 9 raiders '
+      'cross one at a time and nobody fell)',
+      len({c[1] for c in pit}) >= 6 and walls and all((x, min(c[1] for c in pit)) in walls
+                                                       for x in (min(c[0] for c in pit) - 3, max(c[0] for c in pit) + 3))
+      and rows.get('PTR_two_fall') == 'PASS', [sorted(pit)[:3], len(walls), rows])
+check('the free raiders leave the map before a capture is asked, and no held raider is among them (a free raider downs '
+      'the warden on the lip: visit 2\'s UNMEASURED)', len(F.vanished) >= 4 and F.order_log
+      and rows.get('PTR_fallen_become_prisoners') == 'PASS', [F.vanished, rows])
+check('each captive has its own warden and both orders are given at the same tick (one warden capturing in turn was free '
+      'after the first and killed the second held raider: kill log t=422)',
+      len(F.order_log) == 2 and len({o[0] for o in F.order_log}) == 1
+      and len({o[2] for o in F.order_log}) == 2, F.order_log)
+r, o, F = run(fault='kill_second')
+d = [c['detail'] for c in o['rows'] if c['id'] == 'PTR_fallen_become_prisoners']
+check('a captive killed while the captures run: the row UNMEASURED and its detail names the kill (who, when)',
+      r.get('PTR_fallen_become_prisoners') == 'UNMEASURED' and d and 'killed at tick' in d[0] and 'Human999' in d[0], [r, d])
 print('selftest_pit_trap_raid_scene: %s (%d failed)' % ('FAIL' if FAILS else 'ok', len(FAILS)))
 sys.exit(1 if FAILS else 0)

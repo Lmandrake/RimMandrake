@@ -99,7 +99,10 @@ namespace RimMandrake.FlowWorks
 			{
 				return null;
 			}
-			if (p.CanReach(fallen, PathEndMode.ClosestTouch, Danger.Deadly))
+			// A way down is a walk ONTO his square. Touch is no test of it: a man on a pit square beside undug ground is
+			// touched from the lip, so every held man in a pit two squares wide read "reachable" and nobody set a ladder
+			// (RIMMANDRAKE_TRACE_FLOWWORKS_FALLEN_RAIDER_WAITS_FOR_NO_LADDER, live 2026-11-21).
+			if (p.CanReach(fallen.Position, PathEndMode.OnCell, Danger.Deadly))
 			{
 				// a standing comrade climbs out by the ladder himself; a downed one is carried up
 				return fallen.Downed ? CarryJob(p, fallen, LipFor(p, fallen)) : null;
@@ -111,7 +114,8 @@ namespace RimMandrake.FlowWorks
 			{
 				return null;
 			}
-			Job ladder = RM_RaiderTrench.LadderJob(p, plan, k, out bool waiting);
+			// the plan ends on the pit's edge square (his level): the ladder stands there, the line's last square
+			Job ladder = RM_RaiderTrench.LadderJob(p, plan, k, out bool waiting, true);
 			if (ladder == null)
 			{
 				return null;   // waiting on another rescuer's ladder, or ladders cannot reach him: fight instead
@@ -184,7 +188,57 @@ namespace RimMandrake.FlowWorks
 			Pawn fallen = Rescuer(p) ? FallenFor(p) : null;
 			return "FETCH on=" + On + " rescuer=" + Rescuer(p) + " underFire=" + UnderFire(p) + " fallen="
 				+ (fallen == null ? "none" : fallen.thingIDNumber + " downed=" + fallen.Downed + " held=" + RM_SuperdeepTrap.IsHeld(fallen)
-				+ " reach=" + p.CanReach(fallen, PathEndMode.ClosestTouch, Danger.Deadly)) + " job=" + (p.CurJobDef?.defName ?? "none");
+				+ " reach=" + p.CanReach(fallen.Position, PathEndMode.OnCell, Danger.Deadly)
+				+ " touch=" + p.CanReach(fallen, PathEndMode.ClosestTouch, Danger.Deadly)) + " job=" + (p.CurJobDef?.defName ?? "none");
+		}
+	}
+
+	/// <summary>Bridge/debug read (jawa/static_call), kept apart from the decision: WHY one raider gets a ladder job for its
+	/// fallen or not, step by step (the plan line, its depths, the ladder's reach, the slots, the supply).
+	/// "PLAN k=K fallen=id cs=A ct=B plan=memo|here|none cells=x,z..x,z depths=0/6 reach=6 slots=N carried=b wood=N job=def|none waiting=b"</summary>
+	public static class RM_RaiderFetchFallenProof
+	{
+		public static string ProofFetchPlan(string pawnId)
+		{
+			Map map = Find.CurrentMap;
+			if (map == null || !int.TryParse(pawnId, out int id))
+			{
+				return "REFUSED: ProofFetchPlan:pawnId (a map current)";
+			}
+			Pawn p = null;
+			foreach (Pawn q in map.mapPawns.AllPawnsSpawned)
+			{
+				if (q.thingIDNumber == id)
+				{
+					p = q;
+					break;
+				}
+			}
+			if (p == null || !RM_RaiderFetchFallen.Rescuer(p))
+			{
+				return "REFUSED: no spawned rescuer " + id;
+			}
+			Pawn fallen = RM_RaiderFetchFallen.FallenFor(p);
+			if (fallen == null)
+			{
+				return "PLAN fallen=none";
+			}
+			int k = RM_PocketGrid.ClimbLimitOf(p);
+			RM_PocketGrid g = RM_PocketGrid.ForPawn(map, p);
+			string head = "PLAN k=" + k + " fallen=" + fallen.thingIDNumber + " at=" + fallen.Position.x + "," + fallen.Position.z
+				+ " cs=" + g.ComponentOf(k, p.Position) + " ct=" + g.ComponentOf(k, fallen.Position);
+			if (!RM_RaiderTrench.TryPlan(p, k, fallen, p.Position, out RM_RaiderTrench.Plan plan))
+			{
+				return head + " plan=none";
+			}
+			int reach = RM_LadderUtility.MaxLevelsOf(RimMandrakeFlowWorks_DefOf.RM_LadderPortable);
+			List<RM_RaiderTrenchMath.LadderSlot> slots = RM_RaiderTrenchMath.LadderSlots(plan.depths, k, reach, true);
+			Job job = RM_RaiderTrench.LadderJob(p, plan, k, out bool waiting, true);
+			IntVec3 a = plan.cells[0], b = plan.cells[plan.cells.Count - 1];
+			return head + " plan=here cells=" + a.x + "," + a.z + ".." + b.x + "," + b.z + " depths=" + string.Join("/", plan.depths)
+				+ " reach=" + reach + " slots=" + (slots == null ? "null" : slots.Count.ToString())
+				+ " carried=" + (RM_LadderParity.CarriedLadder(p) != null) + " wood=" + RM_LadderParity.WoodCarried(p)
+				+ " job=" + (job?.def?.defName ?? "none") + " waiting=" + waiting;
 		}
 	}
 

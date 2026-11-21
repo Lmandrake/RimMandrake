@@ -175,7 +175,9 @@ namespace RimMandrake.FlowWorks
 		/// hung toward the shallower one. Null when ladders cannot do it: a drop past the portable ladder's reach (reach &gt; 0;
 		/// 0 = any depth), a square that would need two ladders (a 1-square-wide slot between two walls: a square holds one),
 		/// or a ladder that would have to stand on either end (those are each side's own ground).</summary>
-		public static List<LadderSlot> LadderSlots(int[] d, int k, int reach)
+		/// <paramref name="endsInPit"/>: the line ends down in the pit (a fetch of a fallen comrade: its last square is the
+		/// pit's edge square, his own level), so the one ladder may stand on the last square; a crossing's never does.
+		public static List<LadderSlot> LadderSlots(int[] d, int k, int reach, bool endsInPit = false)
 		{
 			int kk = Math.Max(1, k);
 			var slots = new List<LadderSlot>();
@@ -189,7 +191,7 @@ namespace RimMandrake.FlowWorks
 				}
 				int deep = d[i + 1] > d[i] ? i + 1 : i;
 				int shallow = deep == i ? i + 1 : i;
-				if (deep == 0 || deep == d.Length - 1 || (reach > 0 && drop > reach) || !used.Add(deep))
+				if (deep == 0 || (deep == d.Length - 1 && !endsInPit) || (reach > 0 && drop > reach) || !used.Add(deep))
 				{
 					return null;
 				}
