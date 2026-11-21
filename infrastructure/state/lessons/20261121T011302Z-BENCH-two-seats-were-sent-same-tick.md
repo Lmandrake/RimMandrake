@@ -1,0 +1,1 @@
+Two seats were sent the same tick defect on 2026-11-20 (GimmeSomeSlack steward read spent while live): RIMMANDRAKE_SEE_LIVE_STEWARD_BEFORE_CALLING_IT_SPENT landed 50083b6b3e while this item's helper wrote the same _gate change, and its ./publish conflicted. A helper briefed on a defect should run git fetch and read git log origin/main for the file before writing the fix.
