@@ -5559,6 +5559,21 @@ def arrival_overlaps(arrivals):
     return sorted(h for h, n in seen.items() if n > 1)
 
 
+def one_herd_level(levels, tol=0.05, unstaggered=0.8, band=0.003):
+    """Pure. RM_Thirst of one spawned herd read just after MapComponent_PyrelandsHerdThirst's stagger -> (True|False|None,
+    why). True: every animal reads one level within `tol` and the level is not FlowWorks' InitialLevel 0.8 (within
+    `band`). The stagger draws Rand(0.22, 1), so a real stagger lands in that band about 0.8% of the time (a false FAIL
+    that odd). None: an animal is unreadable. Visit 2, 2026-11-21: the old read of every native herd failed a correct mod,
+    because herds_of links animals transitively days after the stagger and so merges two staggered herds."""
+    if not levels or any(v is None for v in levels):
+        return None, "an animal's RM_Thirst is unreadable: %r" % (levels,)
+    if max(levels) - min(levels) > tol:
+        return False, "one herd holds levels %.3f apart: %r" % (max(levels) - min(levels), levels)
+    if all(abs(v - unstaggered) <= band for v in levels):
+        return False, "the herd still reads FlowWorks' starting level %.1f: never staggered: %r" % (unstaggered, levels)
+    return True, "one level %.3f" % (sum(levels) / len(levels))
+
+
 def thirst_fall_rates(series):
     """Pure. {kind: [[level per pawn] per hour]} -> {kind: mean RM_Thirst fall per live pawn-hour, None with no live
     pair}. A pair counts only when both readings exist (a dead or despawned pawn reads None); a rise (a drink) adds a
@@ -5613,6 +5628,7 @@ def herd_thirst(t):
         tests = {"RM_Ullai": [_spawn_wild(t, "RM_Ullai", wx - 12, wz + i) for i in range(4)],
                  "Muffalo": [_spawn_wild(t, "Muffalo", wx + 12, wz + i) for i in range(4)]}
         _wait(t, R6_HERD_STAGGER_TICKS)
+        staggered = [_need(t, pid, "RM_Thirst") for pid in tests["RM_Ullai"]]
         for ids in tests.values():
             for pid in ids:
                 t.bridge_call("jawa/pawn_need", pawn=pid, action="need", need="RM_Thirst", level=0.8)
@@ -5660,8 +5676,12 @@ def herd_thirst(t):
             levels = [round(sum(v) / len(v), 2) for v in start.values() if v and None not in v]
             if len(herds) > 1 and len(set(levels)) < 2:
                 _fail("the wild herds start at one shared RM_Thirst level: %r" % levels)
-            if any(v and None not in v and max(v) - min(v) > 0.05 for v in start.values()):
-                _fail("a herd's animals start far apart: %r" % start)
+            one, why = one_herd_level(staggered)
+            _note(t, "spawned ullai herd after the stagger", {"levels": staggered, "verdict": one, "why": why})
+            if one is None:
+                _unmeasured(t, why)
+            if one is False:
+                _fail("the spawned ullai herd: %s" % why)
             if dehydrated:
                 _fail("natives dehydrated: %r" % sorted(dehydrated))
             dmg = _r6_guard_changes(guard0, guard1)

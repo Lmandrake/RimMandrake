@@ -54,15 +54,19 @@ with RimBridge(h, p, tk) as rb:
     call("jawa/set_plants", ops="RM_FE_Plant_EmberGrass:%d,%d,5,5;RM_FE_Plant_EmberGrass:%d,%d,5,5" % (rx + 3, rz + 5, rx + 12, rz + 5), growth=1.0)
     call("jawa/set_roof_batch", ops="RoofConstructed:%d,%d,5,5" % (rx + 3, rz + 5))
     # 5. the map's own charred ruin
-    ex = call("jawa/export_things", rect="0,0,250,250", includePawns=False, includeItems=False, limit=2000)
+    # limit 2000 truncated on this grass-carpeted map and returned one charred wall (2026-11-21); read past it
+    ex = call("jawa/export_things", rect="0,0,250,250", includePawns=False, includeItems=False, limit=100000)
+    out["exportCount"], out["exportTruncated"] = ex.get("count"), ex.get("truncated")
     walls = [w for w in ex.get("things") or [] if "Wall" in str(w.get("def")) and w.get("paint") == "RM_FE_Charred"]
     ruin = None
-    if walls:
+    if len(walls) >= 4:
         # the wall with the most charred walls within 8 cells: a per-axis median of scattered ruins lands on open
         # ground or rock (the first save framed a rock outcrop this way)
         pts = [(int(w.get("x", 0)), int(w.get("z", 0))) for w in walls]
         ruin = max(pts, key=lambda a: sum(abs(a[0] - b[0]) <= 8 and abs(a[1] - b[1]) <= 8 for b in pts))
         out["ruinCluster"] = sum(abs(ruin[0] - b[0]) <= 8 and abs(ruin[1] - b[1]) <= 8 for b in pts)
+        if out["ruinCluster"] < 4:
+            ruin = None   # a lone charred wall is not a ruin to walk to; the station is dropped and recorded
     stations = [(fx + 10, fz + 17, "VISIT2: LIVE burn front in fresh ember grass - unpause and watch it walk", (fx, fz, 20, 16)),
                 (cx_ + 10, cz_ + 17, "VISIT2: creatures - ullai herd, furnace-beast giant, ashwallows", (cx_, cz_, 20, 16)),
                 (sx + 10, sz + 12, "VISIT2: scorch-fruit standing in ash", (sx + 4, sz + 2, 12, 12)),

@@ -128,6 +128,13 @@ def pure_checks():
         out.append(("thirst_fall_rates: a control with no live hour reads None", r["Muffalo"] is None))
         r = V.thirst_fall_rates({"Muffalo": [[0.5, 0.4], [0.6, 0.3]], "RM_Ullai": slow})
         out.append(("thirst_fall_rates: a drink (a rise) is not a fall", abs(r["Muffalo"] - 0.05) < 1e-9))
+        # visit 2: herds_of links natives transitively, days after the stagger; two staggered herds read as one "far
+        # apart" herd. The spawned ullai herd, read just after the stagger, is the measure.
+        out.append(("one_herd_level: four ullai on one level pass", V.one_herd_level([0.4371, 0.4372, 0.4370, 0.4371])[0] is True))
+        out.append(("one_herd_level: two levels in one herd fail", V.one_herd_level([0.84, 0.7275, 0.7275, 0.84])[0] is False))
+        out.append(("one_herd_level: an unstaggered herd (FlowWorks' 0.8 start) fails",
+                    V.one_herd_level([0.8, 0.8, 0.8, 0.8])[0] is False))
+        out.append(("one_herd_level: an unreadable animal is None", V.one_herd_level([0.5, None])[0] is None))
         ok, _ = V.giant_margin({"RM_FurnaceBeast": (9.0, 7.5), "RM_Ullai": (1.8, 3.0), "RM_Flamefang": (2.0, 2.5)})
         out.append(("giant_margin passes bs 9 over every kind", ok))
         bad, _ = V.giant_margin({"RM_FurnaceBeast": (9.0, 7.5), "RM_Ullai": (4.6, 3.0)})

@@ -19,7 +19,11 @@ with RimBridge(h, p, tk) as rb:
         out["menu_err"] = str(e)[:200]
     out["menu"] = bool(await_lifecycle(call, "menu", 180.0))
     out["load"] = {k: v for k, v in (call("rimworld/load_game", saveName=SAVE) or {}).items() if k in ("success", "message")}
-    out["ready"] = bool(await_lifecycle(call, "map_ready", 600.0))
+    if out["load"].get("success") is False:   # e.g. the save names mods this list lacks: no map will come
+        print(json.dumps(out, indent=1, default=str)); print("UNMEASURED: the load was refused")
+        json.dump(out, open(r"design\concepts\Pyrelands\version\in_game\visit_2\evidence\old_save_read.json", "w"), indent=1, default=str)
+        sys.exit(2)
+    out["ready"] = bool(await_lifecycle(call, "map_ready", 1800.0))
     call("rimworld/set_time_speed", speed=0)
     mi = call("jawa/map_info")
     out["map"] = {k: mi.get(k) for k in ("tile", "biome", "mapBiome", "ticksGame", "mapId") if k in mi}
