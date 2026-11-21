@@ -1,0 +1,52 @@
+# RIMMANDRAKE_REBUILD_FLOWWORKS_PITS_AS_RELATIVE_TERRAIN offline evidence at e2288f4c84e8 (2026-11-21T02:08:11Z)
+## selftest_flowworks_pit_relative_terrain.py (1 of 5 on base dfa4d9e52a, watched red)
+PASS planner_faces_every_step: planner: 15 differing edges, 0 without a segment; the 5.5 m row draws 3 inner north faces (0.50 cells); source reads all 8 neighbours: True
+PASS deepening_redraws_walls: model redraws_on_deepen(4-everywhere -> his pit) = True; RedrawStep dirties the mesh: True; calls {'deepen': True, 'fill_in': True, 'deck_spawn': True, 'deck_despawn': True}
+PASS floor_shade_follows_depth_past_two_metres: model floor_shade(7)=0.17762 floor_shade(11)=0.32107; layer shades dry floors True, drowned floors True
+PASS model_sweep: 24 checks, 0 failures; random fields: 199463 cases
+PASS csharp_matches_model: golden table = model: True; compiled and registered: True; layer reads RM_PitReliefMath: all; concealed squares skipped: True
+5 of 5 PASS
+## model/pitdraw.py sweep
+height pairs x levels: lines exactly on the deeper side                        worst 0          limit 0      cases 69003
+height pairs: tallest face + lining, or both side faces (cells)                worst 0.7        limit 1.0    cases 69003
+floor brightness falls with every notch (smallest fall)                        worst 0.00305    limit 0.0    cases 40
+his floors 3.5 m vs 5.5 m, relative contrast                                   worst 0.17444    limit 0.1    cases 1
+floors 1 m apart, down to 8 m: smallest relative contrast                      worst 0.07036    limit 0.05   cases 14
+2 m floor keeps its look (shade at 4 notches)                                  worst 0.0        limit 0.0    cases 1
+face foot never lighter for a bigger drop                                      worst 1          limit 1      cases 161
+face foot: drops 1 m apart from 2.5 m to 8 m (smallest alpha step)             worst 0.04239    limit 0.02   cases 11
+face foot: a doubled drop, 2.5 m to 20 m (smallest alpha step)                 worst 0.22       limit 0.15   cases 16
+wall light layers over any point, dry and wet (most)                           worst 1          limit 1      cases 28136
+challenge: the old drowned parts (2 m pit, 0.5 m water) wash a point twice     worst 2          limit 2      cases 1
+one square re-cut or re-lidded: art changes only within its 3x3                worst 0          limit 0      cases 1500
+every height change redraws                                                    worst 0          limit 0      cases 1640
+random fields (2..9 squares a side, wet, covered): edges, corners, overlaps    worst 0          limit 0      cases 199463
+scene his_pit_2026_11_20                                                       worst 0          limit 0      cases 24
+scene stepped_east_west                                                        worst 0          limit 0      cases 27
+scene l_shaped_pit                                                             worst 0          limit 0      cases 21
+scene island_in_a_pit                                                          worst 0          limit 0      cases 30
+scene bowl                                                                     worst 0          limit 0      cases 33
+scene terraces                                                                 worst 0          limit 0      cases 54
+scene checker_deep                                                             worst 0          limit 0      cases 33
+scene map_edge_pit                                                             worst 0          limit 0      cases 10
+scene canal_into_pit                                                           worst 0          limit 0      cases 18
+wholly covered 3x3 pit: segments drawn                                         worst 0          limit 0      cases 9
+PASS: 0 failures
+## northstar/selftest_pit_relief_live.py
+ok    mock clean      rc 0 rows {'RELIEF_CUT_REDRAWS_ITS_SQUARE': ('PASS', 'MOD'), 'RELIEF_CUT_REDRAWS_ACROSS_SECTION_EDGE': ('PASS', 'MOD')}
+ok    mock no_redraw  rc 1 rows {'RELIEF_CUT_REDRAWS_ITS_SQUARE': ('FAIL', 'MOD'), 'RELIEF_CUT_REDRAWS_ACROSS_SECTION_EDGE': ('FAIL', 'MOD')}
+ok    mock two_arg    rc 1 rows {'RELIEF_CUT_REDRAWS_ITS_SQUARE': ('PASS', 'MOD'), 'RELIEF_CUT_REDRAWS_ACROSS_SECTION_EDGE': ('FAIL', 'MOD')}
+ok    mock old_deploy rc 2 rows {'RELIEF_CUT_REDRAWS_ITS_SQUARE': ('UNMEASURED', 'HARNESS'), 'RELIEF_CUT_REDRAWS_ACROSS_SECTION_EDGE': ('UNMEASURED', 'HARNESS')}
+ok    mock no_dig     rc 2 rows {'RELIEF_CUT_REDRAWS_ITS_SQUARE': ('UNMEASURED', 'SITE'), 'RELIEF_CUT_REDRAWS_ACROSS_SECTION_EDGE': ('UNMEASURED', 'SITE')}
+ok    mock blind      rc 2 rows {'RELIEF_CUT_REDRAWS_ITS_SQUARE': ('UNMEASURED', 'HARNESS'), 'RELIEF_CUT_REDRAWS_ACROSS_SECTION_EDGE': ('UNMEASURED', 'HARNESS')}
+ok    verdict: stale and not dirty is FAIL
+ok    verdict: stale but dirty is PASS
+ok    verdict: art unchanged is SITE, never PASS
+ok    verdict: a missing read is HARNESS
+PASS: 0 checks failed
+## C# SelfTest (selftest_flowworks_stock.py, full)
+ok    PitRelief_floor_shade_and_face_foot_match_the_model
+ok    PitRelief_corners_match_the_model
+ok    PitRelief_floor_rects_and_drowned_parts_match_the_model
+ok    PitRelief_redraw_and_concealment_rules
+1369/1369 passed
