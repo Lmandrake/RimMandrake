@@ -118,16 +118,27 @@ def t_the_floors_never_reach_zero():
 
     def walk(o):
         if isinstance(o, dict):
-            for v in o.values():
-                yield from walk(v)
+            for k, v in o.items():
+                if k not in ("from", "until"):      # an exception's times are dates, not rule texts
+                    yield from walk(v)
         elif isinstance(o, list):
             for v in o:
                 yield from walk(v)
         elif isinstance(o, str) and "2026-11-20" in o:
             yield o
+
+    def unmindful(plan):
+        return [t for t in walk(plan) if CA.why_problem(t, mindful=True) is not None]
     texts = list(walk(SHIPPED))
-    check("each 2026-11-20 rule text names lost: and undo:",
-          texts and all(CA.why_problem(t, mindful=True) is None for t in texts), texts)
+    check("each 2026-11-20 rule text names lost: and undo:", texts and not unmindful(SHIPPED), unmindful(SHIPPED))
+    # 2026-11-20 ~4:30 PM: a dated exception from that day (from "2026-11-20T16:45:00-08:00") read as an unmindful rule
+    dated = dict(SHIPPED, exceptions=[{"id": "X", "from": "2026-11-20T16:45:00-08:00", "until": "2026-11-27T16:00:00-08:00",
+                                       "order": ["system", "steven", "lukas"],
+                                       "_why": "[CA] 2026-11-20 the owner said use system up first, then steven; "
+                                               "lost: steven's week is spent to its floor; undo: delete this exception"}])
+    bare = dict(SHIPPED, _order="[CA] 2026-11-20 system first, the owner said so today")
+    check("an exception's from/until dates are no rule text; a 2026-11-20 rule without lost:/undo: is still caught",
+          not unmindful(dated) and unmindful(bare) == [bare["_order"]], (unmindful(dated), unmindful(bare)))
 
 
 def fake_switcher():

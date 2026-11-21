@@ -113,6 +113,12 @@ def judge(unit_text, dep):
             probs.append("runs code from %s" % r)
         if re.search(r"(^|[\s'\"])src/RimMandrake/", v) and not eff.get("WorkingDirectory"):
             probs.append("relative script path with no WorkingDirectory")
+    for env in eff.get("Environment", []):
+        # The plan's rulings land in switching_plan.json; an override file goes stale (2026-11-20: a 2026-11-05 week
+        # file still routed the switch to steven and lacked the drain floors). An empty Environment= clears it above.
+        for m in re.finditer(r"(?:^|[\s\"'])RM_SWITCH_PLAN=([^\s\"']+)", env):
+            probs.append("Environment RM_SWITCH_PLAN=%s: the account plan must read the standard "
+                         "src/RimMandrake/Utils/switching_plan.json, where his rulings land" % m.group(1))
     return probs
 
 

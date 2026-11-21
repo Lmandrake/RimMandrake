@@ -21,11 +21,14 @@ def ok(cond, what):
         FAILS.append(what)
 
 
-def run(env):
-    e = {k: v for k, v in os.environ.items() if k not in ("RM_DETACHED_UNIT", "RM_SWITCH_PLAN_DIR", "RM_SWITCH_SIGNAL_DIR")}
+def run(env, session=None):
+    e = {k: v for k, v in os.environ.items()
+         if k not in ("RM_DETACHED_UNIT", "RM_SWITCH_PLAN_DIR", "RM_SWITCH_SIGNAL_DIR", "CLAUDE_CODE_ENTRYPOINT")}
     e.update(env)
-    r = subprocess.run([sys.executable, HOOK], input='{"hook_event_name": "PostToolUse", "tool_name": "Bash"}',
-                       capture_output=True, text=True, timeout=30, env=e)
+    ev = {"hook_event_name": "PostToolUse", "tool_name": "Bash"}
+    if session:
+        ev["session_id"] = session
+    r = subprocess.run([sys.executable, HOOK], input=json.dumps(ev), capture_output=True, text=True, timeout=30, env=e)
     return r.returncode, r.stdout.strip()
 
 
@@ -69,8 +72,26 @@ def main():
             outs = list(ex.map(lambda _: run(dict(env, RM_DETACHED_UNIT="rm-detached-bench-race-3"))[1], range(8)))
         ok(sum("CHECKPOINT NOW" in o for o in outs) == 1,
            "eight concurrent tool calls on one notice: exactly one signal (read %d)" % sum("CHECKPOINT NOW" in o for o in outs))
-        rc, out = run({k: v for k, v in env.items() if k != "RM_DETACHED_UNIT"})
-        ok(rc == 0 and out == "", "not a detached run (a window, the Conductor): silent")
+        bare = {k: v for k, v in env.items() if k != "RM_DETACHED_UNIT"}
+        rc, out = run(dict(bare, CLAUDE_CODE_ENTRYPOINT="sdk-cli"), session="s-p")
+        ok(rc == 0 and out == "", "a `claude -p` run outside detached_helper (a judge, a script): silent")
+        rc, out = run(bare, session="s-none")
+        ok(rc == 0 and out == "", "no entrypoint and no unit (not a Claude window): silent")
+        # 2026-11-20: a switch closes every window and reopens it fresh (launch_fleet.ps1 -Fresh), and the 2026-11-17
+        # 03:35 stop killed the Conductor window and 3 more with no word to them. A window (entrypoint `cli`, measured
+        # on the live Conductor's children; `claude -p` runs read `sdk-cli`) is told once per notice per session.
+        win = dict(bare, CLAUDE_CODE_ENTRYPOINT="cli")
+        rc, out = run(win, session="conductor-1")
+        wctx = ((json.loads(out) if out else {}).get("hookSpecificOutput") or {}).get("additionalContext", "")
+        ok(rc == 0 and "SWITCH PENDING" in wctx and "./publish" in wctx and "handoff" in wctx
+           and "subagent" in wctx and "fresh" in wctx,
+           "a window on a soft notice: told the switch reopens it fresh; publish, handoff, no new subagent (read %r)"
+           % wctx[:120])
+        ok(not re.search(r"%|USD|\$|spend|budget|remain|left of", wctx, re.I), "the window line states no spend")
+        rc, out = run(win, session="conductor-1")
+        ok(rc == 0 and out == "", "the same window, the same notice: told once")
+        rc, out = run(win, session="hestia-2")
+        ok("SWITCH PENDING" in out, "another window session is told on its own")
         for st in ("none", "stop"):
             notice(st, "2026-11-18T16:00:00-08:00")
             rc, out = run(env)
