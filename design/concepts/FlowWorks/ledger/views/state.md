@@ -1,13 +1,13 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":22662,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=0e49b5990714bb57253c1a7688effb2c518bbc136581d9ba097724b89484bc57 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":22662,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=fdfba7be6a544a2cd52e9aa085736b3406f9a7bf6d2253629f628b39a380a72d -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage offline_build · 1379 events in 15 shards · reducer 1
-holder lease run-1795223527, token 14, last active 2026-11-21T01:12:15Z
+version 0.1.0 · stage offline_build · 1382 events in 16 shards · reducer 1
+holder lease run-1795223527, token 14, last active 2026-11-21T02:10:25Z
 holder session 12bf7f47-91a3-4798-a535-5d111c4b1347, context 340673 of ceiling 400000
 
-## Last checkpoint (HOLDER.run-1795165115, 2026-11-20T09:04:26Z)
-- done: RIMMANDRAKE_DIG_OL_SPARE_PIT_ONLY_IN_OLD_SAVE at d1052da8ddf0: big_pit_scene plans and digs a 6x6 dry spare (plan key spare, SE of the site, >=8 cells off every copy); OL --acts reads it from --plan; a plan without one reads UNMEASURED naming it; accept 6/6 red 5 at base; OL_OWNER_LOOK_READS UNRUN
-- next: Send the record back to in_game with --game-only and re-stage the big pit (plan, stage) before running OL --acts
-- ruled out: another OL row tied to the old save: none; the 9 mini FAILs of the same visit were the reset fault, closed at 16d4894f4893
+## Last checkpoint (HOLDER.run-1795223527, 2026-11-21T02:10:25Z)
+- done: RIMMANDRAKE_REBUILD_FLOWWORKS_PITS_AS_RELATIVE_TERRAIN landed e2288f4c84e8 and closed (with the absorbed concealed-cover and pale-frame items): pits drawn as relative terrain, offline 5/5 (1/5 on base), C# 1369/1369; in-game look UNRUN as OL_OWNER_LOOK_READS
+- next: Send the record back to in_game and run pit_relief_live.py plus the pit captures of OL_OWNER_LOOK_READS on the e2288f4c84e8 deploy
+- ruled out: the wall planner was already relative on 4-neighbour edges; the flat look was no re-mesh past 2 m plus one floor colour past 2 m; the 2-argument MapMeshDirty does not reach adjacent sections for a custom flag
 
 ## Open findings (178)
 (claimed fixes, awaiting a judge, on one line each with the oldest 127 open findings, named without their 'finding:': `modledger.py show --mod FlowWorks finding:<NAME>`)
@@ -492,6 +492,6 @@ spend recorded: USD 78.94, 45401435 tokens
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
 - notes: 11, never printed here (`modledger.py find --mod FlowWorks <words>`)
-- the full history: 1379 events (views/history.md; never read whole)
+- the full history: 1382 events (views/history.md; never read whole)
 
-cursor: t=2026-11-21T01:55:18Z.1795226118396527050 (modledger.py since --mod FlowWorks t=2026-11-21T01:55:18Z.1795226118396527050 prints what changed after this packet)
+cursor: t=2026-11-21T02:10:25Z.1795227025801930888 (modledger.py since --mod FlowWorks t=2026-11-21T02:10:25Z.1795227025801930888 prints what changed after this packet)

@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "2bcc9d60023ebec1f48827798a50203a51e536940306c6454c54a0375499e801",
+  "body_sha256": "479e4842faf6b99e33aa28fa31c41a68dcc3057f0ad955196fca5b1992c08cb9",
   "reducer": 1,
   "shards": {
    "BACKFILL": 893183,
@@ -14,6 +14,7 @@
    "HOLDER.run-1795162652": 2404,
    "HOLDER.run-1795164214": 1355,
    "HOLDER.run-1795165115": 1137,
+   "HOLDER.run-1795223527": 1482,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1234,11 +1235,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795165115",
-   "done": "RIMMANDRAKE_DIG_OL_SPARE_PIT_ONLY_IN_OLD_SAVE at d1052da8ddf0: big_pit_scene plans and digs a 6x6 dry spare (plan key spare, SE of the site, >=8 cells off every copy); OL --acts reads it from --plan; a plan without one reads UNMEASURED naming it; accept 6/6 red 5 at base; OL_OWNER_LOOK_READS UNRUN",
-   "next": "Send the record back to in_game with --game-only and re-stage the big pit (plan, stage) before running OL --acts",
-   "ruled_out": "another OL row tied to the old save: none; the 9 mini FAILs of the same visit were the reset fault, closed at 16d4894f4893",
-   "ts": "2026-11-20T09:04:26Z"
+   "by": "HOLDER.run-1795223527",
+   "done": "RIMMANDRAKE_REBUILD_FLOWWORKS_PITS_AS_RELATIVE_TERRAIN landed e2288f4c84e8 and closed (with the absorbed concealed-cover and pale-frame items): pits drawn as relative terrain, offline 5/5 (1/5 on base), C# 1369/1369; in-game look UNRUN as OL_OWNER_LOOK_READS",
+   "next": "Send the record back to in_game and run pit_relief_live.py plus the pit captures of OL_OWNER_LOOK_READS on the e2288f4c84e8 deploy",
+   "ruled_out": "the wall planner was already relative on 4-neighbour edges; the flat look was no re-mesh past 2 m plus one floor colour past 2 m; the 2-argument MapMeshDirty does not reach adjacent sections for a custom flag",
+   "ts": "2026-11-21T02:10:25Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1690,7 +1691,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1379,
+  "events": 1382,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7791,7 +7792,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-21T01:12:15Z",
+   "last": "2026-11-21T02:10:25Z",
    "lease": "run-1795223527",
    "released": false,
    "token": 14
@@ -7885,6 +7886,7 @@
    "HOLDER.run-1795162652",
    "HOLDER.run-1795164214",
    "HOLDER.run-1795165115",
+   "HOLDER.run-1795223527",
    "JUDGE.judge-1794833810",
    "JUDGE.judge-1794849236",
    "JUDGE.judge-1795134433",
