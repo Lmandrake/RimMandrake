@@ -361,7 +361,8 @@ def stop_tickets(dst, s, items):
     return [{"id": i} for i in out]
 
 
-ACTS = ("autolock", "autorepin", "autounblock")     # the pipeline's acts on a concept: one landing each, no run, no slot
+ACTS = ("autolock", "autorepin", "autounblock", "autogameonly")  # the pipeline's acts on a concept: one landing each,
+# no run, no slot
 ITEM_NAME = re.compile(r"\b[A-Z][A-Z0-9]*(?:_[A-Z0-9]+){3,}\b")
 
 
@@ -453,6 +454,91 @@ def _unblock_route(fx, row, s, dst):
                why="the Designer is blocked on %s, and every item it names is closed (%s): the pipeline lifts the "
                    "block once, and the Designer's next run re-reads its gate" % (str(dst.get("blocked_on")), ids))
     row["steward_why"] = "the lift of a Designer block whose items are closed (%s)" % ids
+
+
+def version_bugs(mod, ver, items):
+    """-> [{id, needs}] the open offline Problems of MOD's version VER, oldest filed first: ledger items of kind bug, in
+    no live-game window, whose title starts `<mod> <ver>` (the Problem items the review files, e.g. `FlowWorks 0.1.0,
+    Convergent (a Problem): ...`). None when the version is unknown. ITEMS: {id: Item} (ledger_items()).
+    RIMMANDRAKE_UNPARK_FLOWWORKS_STUCK_AT_OFFLINE_STAGE_EIGHT_HOURS: they are built before the record goes back to the
+    game, so the game-only items are never tried on a build those fixes then change."""
+    import model
+    if not ver:
+        return None
+    head = re.compile(r"^%s %s(?![\w.])" % (re.escape(mod), re.escape(ver)))
+    out = [x for x in items.values() if x.kind == "bug" and x.state and x.state not in model.TERMINAL
+           and (x.needs or "offline") not in M.LIVE_NEEDS and head.match(str(x.title or ""))]
+    return [{"id": x.id, "needs": x.needs} for x in sorted(out, key=lambda x: (x.created_index or 0, x.id))]
+
+
+def read_version_bugs(mod, ver):
+    """version_bugs over the whole ledger; None when it cannot be read."""
+    try:
+        return version_bugs(mod, ver, ledger_items())
+    except Exception:       # noqa: BLE001  an unreadable ledger is no exit, never a guess
+        return None
+
+
+def gameonly_key(ver, stage, ids):
+    """The steward key of the pipeline's one game-only exit for this set of items at this stage."""
+    return "%s|%s|game_only|%s" % (ver, stage, hashlib.sha1(",".join(sorted(ids)).encode("utf-8")).hexdigest()[:12])
+
+
+def gameonly_and_land(root, mod, ids, now=None, land=None, advance=None):
+    """The pipeline's game-only exit: `maturation.py advance <mod> --to in_game --game-only <ids>` by DISPATCH, then
+    every file the move wrote under design/concepts/<mod>/ (the stage record, journal.md, the mod ledger and its views)
+    landed in one landing. -> the landing's last line. A refused move raises and writes nothing; an unlanded move is no
+    move: every changed file is put back byte for byte and every new one removed, and the act's own retry count
+    decides (RIMMANDRAKE_UNPARK_FLOWWORKS_STUCK_AT_OFFLINE_STAGE_EIGHT_HOURS)."""
+    import designer_stage as DS
+    d = M.mod_dir(root, mod)
+
+    def snap():
+        # the files a move to in_game writes: the record and journal (commit_move, no extra for in_game) and the mod
+        # ledger with its views (ledger_stage_move); the top-level files of the mod and of version/ are read too, so a
+        # write the move gains later is still put back. Evidence folders (18 MB of FlowWorks' 20) are never read.
+        out = {}
+        for top, sub, fs in os.walk(d):
+            rel = os.path.relpath(top, d).replace(os.sep, "/")
+            if rel not in (".", "version") and rel.split("/")[0] != "ledger":
+                sub[:] = []
+                continue
+            for n in fs:
+                p = os.path.join(top, n)
+                with open(p, "rb") as f:
+                    out[p] = f.read()
+        return out
+    was = snap()
+    why = ("every open road-back item (%s) is a fault only the game can show, and the version's offline Problems are "
+           "closed: the Maturation tick takes the game-only exit back to Stage 6 "
+           "(RIMMANDRAKE_UNPARK_FLOWWORKS_STUCK_AT_OFFLINE_STAGE_EIGHT_HOURS)" % ", ".join(ids))
+    res = (advance or M.advance)(root, mod, "in_game", "DISPATCH", why, game_only=list(ids))
+    if not res.get("ok"):
+        raise RuntimeError("the game-only exit of %s was refused: %s" % (mod, json.dumps(
+            {k: res.get(k) for k in ("malformed", "moved_meanwhile", "submit_error", "why") if res.get(k)} or
+            [r.get("clause") for r in ((res.get("verdict") or {}).get("refusals") or [])])))
+    now_files = snap()
+    rels = sorted(os.path.relpath(p, root).replace(os.sep, "/") for p in now_files if was.get(p) != now_files[p])
+    subject = "maturation: the pipeline takes %s's game-only exit to Stage 6 (%s)" % (mod, ", ".join(ids))
+    try:
+        if not rels:
+            raise RuntimeError("the game-only exit of %s wrote no file" % mod)
+        if land:
+            return land(subject, rels)
+        p = subprocess.run([DS.LAND, "-m", subject] + rels, cwd=root, capture_output=True, text=True, timeout=300,
+                           env=dict(os.environ, LAND_REPO=root))
+        if p.returncode:
+            raise RuntimeError("land.sh exited %d: %s" % (p.returncode, p.stderr.strip()))
+        return (p.stdout.strip().splitlines() or ["PUBLISHED ?"])[-1]
+    except Exception:
+        for p in now_files:
+            if p not in was:
+                os.remove(p)
+        for p, b in was.items():
+            if now_files.get(p) != b:
+                with open(p, "wb") as f:
+                    f.write(b)
+        raise
 
 
 def ticket_runs(item):
@@ -696,6 +782,7 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
     # (RIMMANDRAKE_RETURN_SLOT_OF_REPLACED_LAUNCH_FIXER_NEVER_RAN: at max_live 1 the fixer read slots_full for good)
     open_items = fx.get("open_items", lambda ids: M.ledger_items_caused_by(root, ids))
     endings = fx.get("live_endings", lambda ids: M.ledger_live_endings(root, ids))
+    vbugs = fx.get("version_bugs", read_version_bugs)
     dstate = fx.get("designer_state", lambda m: designer_state(root, m))
     locked = fx.get("version_locked", lambda m: version_locked(root, m))
     evidence = fx.get("version_evidence", lambda m: version_evidence(root, m))
@@ -740,7 +827,8 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
             launches = [m for m in launches if m != mod]
             _stop_tickets(fx, row, s, dst, now, root=root, ver=ver, cfg=cfg)
         elif dec in LAUNCH and s.get("road_back") and row.get("stage") in ROAD_BACK_STAGES and \
-                _road_back(s, row, open_items, now, moved=True, endings=endings, cfg=cfg):
+                _road_back(s, row, open_items, now, moved=True, endings=endings, cfg=cfg, ver=ver,
+                           version_bugs=vbugs):
             # RIMMANDRAKE_RUN_ROAD_BACK_FIXERS_SAME_STAGE_SKIPPED_THEM: the road back's items get their fixers before
             # the next cycle or visit launches (a blind_challenge -> blind_challenge road back launched at once)
             launches = [m for m in launches if m != mod]
@@ -751,7 +839,7 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
         else:
             _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx.get("designer_unit", designer_unit),
                    fx.get("designer_chain", lambda m: designer_chain(m, now)), now=now, fx_evidence=evidence,
-                   fx_exam=fx.get("exam_gate", lambda m: exam_gate(root, m)), endings=endings)
+                   fx_exam=fx.get("exam_gate", lambda m: exam_gate(root, m)), endings=endings, fx_version_bugs=vbugs)
             if row.get("decision") == "designer_blocked":
                 # a Designer blocked on a filed fix item (a pipeline defect) gets that item's one fixer run; the mod
                 # stays paused meanwhile (RIMMANDRAKE_BUDGET_DESIGNER_EXAM_HELPERS_FIVE_READERS_ZERO_SLOTS)
@@ -767,7 +855,9 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
                                  "autorepin": "the pipeline's re-pin of %s was tried (%s) and the grant still waits on "
                                               "the re-pin; ",
                                  "autounblock": "the pipeline's lift of %s's Designer block was tried (%s) and stage.json "
-                                                "still reads blocked; "}[row["aut"]])
+                                                "still reads blocked; ",
+                                 "autogameonly": "the pipeline's game-only exit of %s to Stage 6 was tried (%s) and the "
+                                                 "record still reads an offline stage; "}[row["aut"]])
                            % (mod, str(x.get("failed") or x.get("landed") or "ended")) +
                            "`maturation_dispatch.py clear %s --why ...` un-pauses it" % mod)
                 if row.get("repin_sources") is not None:
@@ -984,7 +1074,7 @@ def pilot_run_model(root, default):
     return RL.pilot_model(root, "rm-testpilot", default)
 
 
-def _road_back(s, row, open_items, now=None, moved=False, endings=None, cfg=None):
+def _road_back(s, row, open_items, now=None, moved=False, endings=None, cfg=None, ver=None, version_bugs=None):
     """-> True when the mod's open road back decides the row: a fixer on its next open item, fixers spent, or an
     unreadable ledger. Keyed on the road back being open, never on a stage change: blind_challenge -> blind_challenge
     is the road back ROADS_BACK draws for a blind cycle, so the stage never changes.
@@ -993,7 +1083,9 @@ def _road_back(s, row, open_items, now=None, moved=False, endings=None, cfg=None
     clone). Then the steward runs it covers are marked road_back_closed, so the state they read is a new state
     (_after_road_backs). An empty road back on an unmoved mod stays open: the clone's ledger may not hold the steward's
     filings yet; a steward that filed nothing stays spent.
-    endings: the ledger reader of the Test Pilot step (_pilot_step); None leaves the step out."""
+    endings: the ledger reader of the Test Pilot step (_pilot_step); None leaves the step out.
+    ver, version_bugs: the version and the reader of its open offline Problems (read_version_bugs), read when every
+    open item needs the live game at an offline stage: they get their fixer runs first, then the game-only exit."""
     rb = s.get("road_back")
     if not rb:
         return False
@@ -1010,11 +1102,43 @@ def _road_back(s, row, open_items, now=None, moved=False, endings=None, cfg=None
                 if row.get("stage") in M.OFFLINE_STAGES else [])
         work = [x for x in items if x not in game]
         if not work:
+            # the record goes back to Stage 6 by the tick's own act, once the version's offline Problems are built: the
+            # game-only items are never tried on a build those fixes then change
+            # (RIMMANDRAKE_UNPARK_FLOWWORKS_STUCK_AT_OFFLINE_STAGE_EIGHT_HOURS; it printed the move for a hand, and
+            # FlowWorks sat at Stage 3 for 515 minutes)
             ids6 = [x["id"] for x in game]
-            row.update(decision="game_only", aut=None, why="every open road-back item (%s) is a fault only the game can "
-                       "show, and %s is an offline stage: none gets a run here" % (", ".join(ids6), row.get("stage")),
-                       need="%s: PAUSED, its open road-back items need the live game (%s); Stage 6 work, not %s's: %s"
-                       % (row.get("mod"), ", ".join(ids6), row.get("stage"), M.game_only_cmd(row.get("mod"), ids6)))
+            mod, stage = row.get("mod"), row.get("stage")
+            vb = (version_bugs or read_version_bugs)(mod, ver)
+            if vb is None:
+                row.update(decision="blind", aut=None, why="every open road-back item (%s) needs the live game, and the "
+                           "ledger cannot be read for %s %s's own open Problems: no game-only exit on a guess" % (
+                               ", ".join(ids6), mod, ver or "(version unknown)"))
+                return True
+            if not vb:
+                row.update(aut="autogameonly", decision="autogameonly", steward_key=gameonly_key(ver, stage, ids6),
+                           game_only_items=list(ids6), need=None,
+                           why="every open road-back item (%s) is a fault only the game can show, %s is an offline "
+                               "stage, and %s %s has no open offline Problem: the pipeline takes the game-only exit "
+                               "back to Stage 6" % (", ".join(ids6), stage, mod, ver))
+                row["steward_why"] = "the game-only exit of %s at %s (%s)" % (mod, stage, ", ".join(ids6))
+                return True
+            fixed = s.setdefault("fixers", {})
+            todo = [x for x in vb if x["id"] not in fixed] + [
+                x for x in vb if x["id"] in fixed and _retriable(fixed[x["id"]], cfg, mod)]
+            names = ", ".join(x["id"] for x in vb)
+            if todo:
+                row.update(aut="fixer", fix_item=todo[0]["id"], fix_for="version", decision="fixer", need=None,
+                           why="every open road-back item (%s) needs the live game; first %s %s's open offline Problem "
+                               "%s (of %d: %s) gets one fixer run, then the pipeline takes the game-only exit" % (
+                               ", ".join(ids6), mod, ver, todo[0]["id"], len(vb), names))
+            else:
+                row.update(decision="fixer_spent", aut=None,
+                           why="every open road-back item (%s) needs the live game, and %s %s's open offline Problems "
+                               "(%s) have each had their one fixer run and are still open" % (
+                               ", ".join(ids6), mod, ver, names),
+                           need="%s: PAUSED, the game-only exit waits on %s %s's open offline Problems (%s), each "
+                                "fixer-run once; close them, or take the exit by hand: %s" % (
+                                mod, mod, ver, names, M.game_only_cmd(mod, ids6)))
             return True
         items = work
         if _pilot_step(s, row, items, endings):
@@ -1085,7 +1209,7 @@ def _mark_worked(s, ver, stage, live, now, ended=None):
 
 
 def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=designer_unit, fx_dchain=None, now=None,
-           fx_evidence=None, fx_exam=None, endings=None):
+           fx_evidence=None, fx_exam=None, endings=None, fx_version_bugs=None):
     mod, dec, stage = row["mod"], row.get("decision"), row.get("stage")
     dst = dstate(mod)
     lc = chain_owed(dst)
@@ -1122,7 +1246,8 @@ def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=desig
                      lc.get("at"), str(lc.get("why")), exam_step))
         return
     # an open road back: its filed items are fixed before the mod moves on, whether or not the steward moved its stage
-    if stage in ROAD_BACK_STAGES and _road_back(s, row, open_items, now, endings=endings, cfg=cfg):
+    if stage in ROAD_BACK_STAGES and _road_back(s, row, open_items, now, endings=endings, cfg=cfg, ver=ver,
+                                                version_bugs=fx_version_bugs):
         return
     if row.get("road_back_closed") and dec == "stopped":
         s.pop("stopped", None)
@@ -1622,6 +1747,19 @@ def fixer_brief(item, mod, cap, fix_for=None, live=False):
                 "be fixed offline, or the fix is the owner's (a bar, a ruling, a spend cap), write that in a note "
                 "starting LEFT OPEN: and drop nothing. Never take the bridge or a game.\n%s\n" % (
                     item, mod, item, item, mod, mod, item, mod, M.SELF_FIX_RULE))
+    if fix_for == "version":
+        # RIMMANDRAKE_UNPARK_FLOWWORKS_STUCK_AT_OFFLINE_STAGE_EIGHT_HOURS: an open offline Problem of the version, built
+        # before the record goes back to the game; never a line of a visit to drop when the check is wrong
+        return ("# Version Problem fix: %s (%s)\n\nItem: %s. Seat BENCH.\n\nRead `python3 "
+                "src/RimMandrake/rimflow/cli.py show %s` to its end: it is an open Problem of %s's version, filed by "
+                "its review, and the record goes back to Stage 6 only after it closes (the game-only items there must "
+                "not be tried on a build this fix then changes). Build it to its own spec and acceptance test, the "
+                "test first (watch it fail on the base), land with `./publish -m ... <paths>`, and close the item with "
+                "the published sha. If what it owes is his pick or his look, or more than one run, do every part that "
+                "is yours, then write a note starting LEFT OPEN: that says what landed and what is owed, and by whom. "
+                "Drop nothing: it is his Problem, not a check to judge. Never take the bridge or a game.\n%s\n\n%s\n\n"
+                "%s\n\n%s\n" % (item, mod, item, item, mod, OFFLINE_CLOSE % {"mod": mod, "item": item},
+                                M.SELF_FIX_RULE, M.HOW_A_BAR_HOLDS, M.OFFLINE_MODEL))
     return ("# Road-back fix: %s (%s)\n\nItem: %s. Seat BENCH.\n\nRead `python3 "
             "src/RimMandrake/rimflow/cli.py show %s` to its end: it is one failed line of %s's in-game visit or blind "
             "cycle, sent back by the steward. Class it first, by the rule below: if the check or the scene is wrong, "
@@ -1734,6 +1872,15 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
                     "tries": int((row.get("retry_of") or {}).get("tries") or 0) + 1, "landed": text}
                 row.update(decision="launched", why="the pipeline lifted %s's Designer block, every item it named closed "
                            "(%s): %s" % (row["mod"], ", ".join(row["unblock_items"]), text))
+                continue
+            if row["aut"] == "autogameonly":     # RIMMANDRAKE_UNPARK_FLOWWORKS_STUCK_AT_OFFLINE_STAGE_EIGHT_HOURS
+                text = fx.get("autogameonly", gameonly_and_land)(root, row["mod"], row["game_only_items"], now=now)
+                st["mods"][row["mod"]].setdefault("steward", {})[row["steward_key"]] = {
+                    "item": None, "unit": None, "at": now, "failed": None, "items": list(row["game_only_items"]),
+                    "tries": int((row.get("retry_of") or {}).get("tries") or 0) + 1, "landed": text}
+                row.update(decision="launched", why="the pipeline took %s's game-only exit to Stage 6, its open "
+                           "road-back items all faults only the game can show (%s): %s" % (
+                               row["mod"], ", ".join(row["game_only_items"]), text))
                 continue
             if row["aut"] == "autorepin":    # RIMMANDRAKE_REPIN_WHEN_GRANT_ITEMS_CLOSE: an act like the autolock
                 text = fx.get("autorepin", repin_and_land)(root, row["mod"], row["repin_sources"], now=now)

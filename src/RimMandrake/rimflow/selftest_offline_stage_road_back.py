@@ -140,15 +140,17 @@ for stage, want in (("offline_build", False), ("blind_challenge", False), ("in_g
 def road_back(items, stage):
     s = {"road_back": {"caused_by": "ROUTE_X"}}
     row = {"mod": PILOT, "stage": stage}
-    A._road_back(s, row, lambda ids: items, 100)
+    A._road_back(s, row, lambda ids: items, 100, ver="0.1.0", version_bugs=lambda m, v: [])
     return row
 
 
 row = road_back(ALL_LIVE, "offline_build")
-check("the tick at Stage 3 gives no fixer to game-only items; it reads game_only", row.get("decision") == "game_only"
-      and not row.get("aut") and not row.get("fix_item"), row)
-check("its Needs Conductor line is the move back to Stage 6", "--to in_game" in str(row.get("need")) and
-      "--game-only" in str(row.get("need")), row)
+# RIMMANDRAKE_UNPARK_FLOWWORKS_STUCK_AT_OFFLINE_STAGE_EIGHT_HOURS: this check pinned the hand line (decision game_only,
+# the move printed in the Needs Conductor line), which left the record parked at Stage 3 against promise 3 above; the
+# tick now takes the move itself (selftest_tick_game_only_exit.py holds the act's promises)
+check("the tick at Stage 3 gives no fixer to game-only items; it takes the game-only exit back to Stage 6 itself",
+      row.get("decision") == "autogameonly" and row.get("aut") == "autogameonly" and not row.get("fix_item")
+      and row.get("game_only_items") == [LIVE_A, LIVE_B] and not row.get("need"), row)
 row = road_back([{"id": LIVE_A, "needs": "game-up"}, {"id": OFF_C, "needs": "offline"}], "offline_build")
 check("the tick at Stage 3 with a mix: the fixer goes to the offline item only", row.get("fix_item") == OFF_C, row)
 row = road_back(ALL_LIVE, "in_game")

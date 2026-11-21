@@ -2493,6 +2493,11 @@ def pilot_holders(root, cfg, st, facts, rows, launches, now, fx=None):
         items = open_items(AUT._road_back_ids(s, s["road_back"]))
         if not items:
             continue
+        if not M.game_takeable(row.get("stage")) and all((x or {}).get("needs") in M.LIVE_NEEDS for x in items):
+            # every item needs the game and the stage is offline: road_back_holder would refuse the run, and the row is
+            # the version's own Problem fixer (or its spent hold) before the game-only exit
+            # (RIMMANDRAKE_UNPARK_FLOWWORKS_STUCK_AT_OFFLINE_STAGE_EIGHT_HOURS)
+            continue
         ids = sorted(x["id"] for x in items)
 
         def put(decision, why, need=None):
@@ -2519,7 +2524,7 @@ def pilot_holders(root, cfg, st, facts, rows, launches, now, fx=None):
     return rows, launches
 
 
-NO_SLOT_AUT = ("autolock", "autorepin", "autounblock")     # the pipeline's acts on a concept, not runs: no slot
+NO_SLOT_AUT = AUT.ACTS     # the pipeline's acts on a concept, not runs: no slot (one list, so a new act is never a run)
 
 
 def takes_slot(row):

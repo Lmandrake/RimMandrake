@@ -2448,7 +2448,8 @@ def test_pilot_main():
         def res(st, endings, stage="in_game", items=(item,)):
             rows = [{"mod": "M", "stage": stage, "decision": "launch", "visit": 2, "why": "visit owed"}]
             fx = {"open_items": lambda ids: list(items) if "ROUTE_X" in ids else [], "designer_state": lambda m: {},
-                  "version_locked": lambda m: True, "live_endings": lambda ids: endings}
+                  "version_locked": lambda m: True, "live_endings": lambda ids: endings,
+                  "version_bugs": lambda m, v: []}
             rows, launches = A.resolve(tmp, cfg, st, facts, rows, ["M"], CLOCK, fx)
             return rows[0], launches
 
@@ -2474,8 +2475,11 @@ def test_pilot_main():
         ok(r0.get("decision") == "pilot", "the sitting comes first even when no fixer ran yet (hand runs ended it %d "
                                           "times; read %s)" % (n, r0.get("decision")))
         r2, _ = res(state(spent), {"FIX_ME": {"sat": 0, "ends": ends(n)}}, stage="offline_build")
-        ok(r2.get("decision") == "game_only" and not r2.get("pilot"),
-           "at an offline stage a live item gets no run, never a sitting (read %s)" % r2.get("decision"))
+        # RIMMANDRAKE_UNPARK_FLOWWORKS_STUCK_AT_OFFLINE_STAGE_EIGHT_HOURS: the row was the hand line game_only; it is now
+        # the tick's own game-only exit, an act (no run, no slot), still never a fixer or a sitting
+        ok(r2.get("decision") == "autogameonly" and r2.get("aut") == "autogameonly" and not r2.get("pilot")
+           and not r2.get("fix_item"),
+           "at an offline stage a live item gets no run, never a sitting: the game-only exit (read %s)" % r2.get("decision"))
         r3, _ = res(state(spent), {"FIX_ME": {"sat": 0, "ends": ends(n)}}, items=({"id": "FIX_ME", "needs": "offline"},))
         ok(r3.get("decision") == "fixer_spent" and not r3.get("pilot"),
            "an item that needs no live game never goes to a sitting (read %s)" % r3.get("decision"))
