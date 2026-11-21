@@ -13,12 +13,12 @@ mods read alike.
 - **Design Version 0.1.0, locked** on his word 2026-11-13 ~3:40 PM PST (`version/VERSION.json`); the lock record pins the text
   at that word, `bf33322d77` (re-pinned 2026-11-14, steward's decision). Code: `src/RimMandrake/GimmeSomeSlack/` (C#, 62
   sources; C# SelfTest 4515 checks; `validation.py`; `northstar/proof_all.py`, the one dense live proof).
-- **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-20 7:23 PM PST (`version/stage_record.json`).
+- **Stage now:** Stage 6, in-game acceptance, since 2026-11-20 9:23 PM PST (`version/stage_record.json`).
 - **Bars:** 48 (23 inventory rows of `record.json` + 26 leaves of `tree.json`; `shock_reach_setting` is both, so 49 rows
   name 48 ids; `cords_draw_under_things` added by his card 2026-11-14). The test-and-stage table is
   `version/test_table.json` (read view `version/test_table.md`), made by the throwaway `version/make_test_table.py`. Of 48
   bars: 48 have a deciding test runnable today (counts as of now: "Waiting on").
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-20 7:23 PM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-20 9:23 PM PST).
 - **Open questions for him:** "Questions for him", the last part of this top section.
 
 ### The vision (his root paragraph, `record.json` root, OWNER:1793895896496551063)
@@ -467,4 +467,13 @@ row 2; Stage 3 about $10.3 and 50 minutes (12:15 to 13:05 PST). No helpers, no g
 - Blind cycle 1 of this visit (1 in all).
 - Was, "Stage now": - **Stage now:** Stage 3, offline build, since 2026-11-20 4:59 PM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-20 4:59 PM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-20 9:23 PM PST, stage change: Blind challenge, tests first (Stages 4 and 5) to In-game acceptance (Stage 6) (by BENCH)
+
+- Why: delegated: evidence-for-ask: blind cycle 1 of 0.1.1 met its exit; the two lane-1 FAILs are Polish (fallen-wire clip <=0.117 cell on a Stage-6 bar; DLL hose names are shared altitude constants); 34 not_kernel rows are game-side, owed at Stage 6
+- Checks passed: order, by, version, hold, steward_confirms, exit_met, judge_certificate.
+- Steward confirms: read blind_challenge/cycle_1/SUMMARY.md, faults.json (0 Problems, 4 Polish), tests_edited.json (judge's own lane-1 test only; git shows no GSS source or test-table commit after the 19:30 PST cycle start), fixes.jsonl empty (no fix reader owed); reran T_NO_HOSE myself: PASS rc=0; rerun_offline.py --recheck: 38 of 38 match; judge-the-judge: no RECORD GAP, CRITERION FLAW or REAL MISS; verdict: exit met, advance to in_game
+- Was, "Stage now": - **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-20 7:23 PM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-20 7:23 PM PST).
 - Record: `version/stage_record.json`.

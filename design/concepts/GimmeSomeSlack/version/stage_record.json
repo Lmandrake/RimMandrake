@@ -2,9 +2,9 @@
   "schema": 1,
   "mod": "GimmeSomeSlack",
   "version": "0.1.1",
-  "stage": "blind_challenge",
-  "stage_label": "Blind challenge, tests first (Stages 4 and 5)",
-  "since": "2026-11-20T19:23:17-08:00",
+  "stage": "in_game",
+  "stage_label": "In-game acceptance (Stage 6)",
+  "since": "2026-11-20T21:23:58-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -67,6 +67,26 @@
         "walk_bars_confirmed",
         "table_version",
         "fourth_cycle",
+        "judge_certificate"
+      ]
+    },
+    {
+      "from": "blind_challenge",
+      "to": "in_game",
+      "at": "2026-11-20T21:23:58-08:00",
+      "by": "BENCH",
+      "why": "delegated: evidence-for-ask: blind cycle 1 of 0.1.1 met its exit; the two lane-1 FAILs are Polish (fallen-wire clip <=0.117 cell on a Stage-6 bar; DLL hose names are shared altitude constants); 34 not_kernel rows are game-side, owed at Stage 6",
+      "unit": "rm-detached-bench-rimmandrake-confirm-gimmesomeslack-cycle-1795238532",
+      "confirmed": {
+        "steward_confirms": "read blind_challenge/cycle_1/SUMMARY.md, faults.json (0 Problems, 4 Polish), tests_edited.json (judge's own lane-1 test only; git shows no GSS source or test-table commit after the 19:30 PST cycle start), fixes.jsonl empty (no fix reader owed); reran T_NO_HOSE myself: PASS rc=0; rerun_offline.py --recheck: 38 of 38 match; judge-the-judge: no RECORD GAP, CRITERION FLAW or REAL MISS; verdict: exit met, advance to in_game"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "steward_confirms",
+        "exit_met",
         "judge_certificate"
       ]
     }
