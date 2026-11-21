@@ -91,7 +91,11 @@ STEAM_ANSWER_S = 15         # its WaitingPrevProcess came 1 s after the URL, bot
 STEAM_URL = "steam://rungameid/294100"
 INSTANCES_ENV = "RM_GAME_INSTANCES"
 A_PORT_RE = re.compile(r"\[RimBridge\][^\n]*on port\s+(\d+)")
-WAIT_S = 600
+# --wait's bound. Danger: a game that stays alive but never starts its bridge (a hung load) would hold a --wait caller
+# forever; process exit and a failed bridge already end the wait sooner. Evidence of a hung load: none measured yet, so
+# the bound sits past the slowest measured cold load (his full list: ~14.5 min on 2026-11-21, ~25 min in the
+# rimworld-load-round skill) instead of under it. At 600 s it reported a healthy full-list load as failed (2026-11-21).
+WAIT_S = 3600
 EX_BLIND, EX_REFUSED = 2, 3
 WIN_DIRS = ("/mnt/c/Windows/System32/WindowsPowerShell/v1.0", "/mnt/c/Windows/System32")
 REPO = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))

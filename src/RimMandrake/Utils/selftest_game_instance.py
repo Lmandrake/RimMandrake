@@ -31,6 +31,9 @@ def stdout(r):
 
 def names(w):
     check(G.check_name("B") == "b" and G.port("a") == 5174 and G.port("b") == 5175 and G.port("c") == 5176, "port is 5174 plus the index")
+    # 2026-11-21 (Pyrelands visit 2): launch a --wait returned 1 at 600 s while his full list was still loading (the
+    # bridge answered at about 14.5 min); the slowest full-list cold load on record is about 25 min
+    check(G.WAIT_S >= 1500, "launch --wait outlasts a full-list cold load (WAIT_S %d s >= 1500)" % G.WAIT_S)
     for bad in ("bb", "1", "b.", "a b"):
         try:
             G.check_name(bad)
