@@ -1,0 +1,1 @@
+maturation.py certificate FlowWorks --run takes over 55 minutes after a C# change (2026-11-21: killed by a 3300 s timeout with 0 lines printed, because its stdout is block-buffered into a file). Run it with python3 -u, a background limit of 2 hours, and --resume after any kill; a kill keeps the deciders already stamped.

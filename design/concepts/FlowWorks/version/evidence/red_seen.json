@@ -1,14 +1,27 @@
 {
+ "PY_FLOWWORKS_PIT_DRAW_CENSUS": {
+  "at": "2026-11-21T08:53:25Z",
+  "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_pit_draw_census.py",
+  "file": "src/RimMandrake/FlowWorks/selftest_flowworks_pit_draw_census.py",
+  "last": "FAILED (1)",
+  "patch": "diff --git a/src/RimMandrake/GimmeSomeSlack/Source/PlantedUnclassifiedDraw.cs b/src/RimMandrake/GimmeSomeSlack/Source/PlantedUnclassifiedDraw.cs\nnew file mode 100644\n--- /dev/null\n+++ b/src/RimMandrake/GimmeSomeSlack/Source/PlantedUnclassifiedDraw.cs\n@@ -0,0 +1,10 @@\n+using UnityEngine;\n+using Verse;\n+\n+namespace RimMandrake.GimmeSomeSlack\n+{\n+    internal static class PlantedUnclassifiedDraw\n+    {\n+        public static void Draw(Mesh m, Material mat) { Graphics.DrawMesh(m, Matrix4x4.identity, mat, 0); }\n+    }\n+}\n",
+  "patch_files": [
+   "src/RimMandrake/GimmeSomeSlack/Source/PlantedUnclassifiedDraw.cs"
+  ],
+  "patch_sha": "8d5ac0a1dd5aac80",
+  "rc": 1,
+  "test_blob": "4cb9e6bd4ef50c560618fb6c5f3e6715604bbe2c"
+ },
  "PY_FLOWWORKS_UNDERLIQUID_PARITY": {
-  "at": "2026-11-21T07:49:57Z",
+  "at": "2026-11-21T08:49:50Z",
   "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_underliquid_parity.py",
   "file": "src/RimMandrake/FlowWorks/selftest_flowworks_underliquid_parity.py",
-  "last": "RESULT RED 1",
-  "patch": "--- a/src/RimMandrake/FlowWorks/Source/Superdeep/RM_UnderLiquid.cs\n+++ b/src/RimMandrake/FlowWorks/Source/Superdeep/RM_UnderLiquid.cs\n@@ -97,7 +97,7 @@\n \t\t// the experience numbers; Mod Settings write them (RimMandrakeFlowWorksSettings.PushUnderLiquid), these are the\n \t\t// shipped defaults\n \t\tpublic const float DefaultDeepOpacity = 0.90f;\n-\t\tpublic const float DefaultShallowOpacity = 0.35f;\n+\t\tpublic const float DefaultShallowOpacity = 0.6f;\n \t\tpublic const float DefaultFullMetres = 4.0f;\n \t\tpublic const float DefaultDarken = 0.6f;\n \t\tpublic const float DefaultThingShadowAlpha = 0.30f;\n",
+  "last": "RESULT RED 2",
+  "patch": "--- a/src/RimMandrake/FlowWorks/model/underliquid.py\n+++ b/src/RimMandrake/FlowWorks/model/underliquid.py\n@@ -44,7 +44,7 @@\n import math\n \n NOTCH = 0.5\n-DEEP_OPACITY = 0.90         # setting underLiquidDeepOpacity: the most a clear liquid hides (its body at full depth)\n+DEEP_OPACITY = 0.95         # setting underLiquidDeepOpacity: the most a clear liquid hides (its body at full depth)\n SHALLOW_OPACITY = 0.35      # setting underLiquidShallowOpacity: the least a clear liquid hides once it covers a thing\n                             # (water_by_depth_target.json shallow_opacity, the FIRM mockup)\n FULL_METRES = 4.0           # setting underLiquidFullMetres: fresh water reaches DEEP_OPACITY at this depth\n",
   "patch_files": [
-   "src/RimMandrake/FlowWorks/Source/Superdeep/RM_UnderLiquid.cs"
+   "src/RimMandrake/FlowWorks/model/underliquid.py"
   ],
-  "patch_sha": "2d06843bd91769b1",
+  "patch_sha": "55be3763dbc48e92",
   "rc": 1,
   "test_blob": "7b1488674bd548217fadf4d07fc4c99a5c37ebf1"
  },
