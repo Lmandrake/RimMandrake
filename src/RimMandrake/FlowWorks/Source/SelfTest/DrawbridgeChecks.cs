@@ -36,6 +36,26 @@ namespace RimMandrake.FlowWorks.SelfTest
 
         public static void Run(Action<string, Action> Case)
         {
+            // ISLAND_RAIDERS_NEVER_CROSS_LOWERED_LEAF (test pilot 2026-11-21): grenadiers sent at a winch by
+            // JobGiver_RM_DrawbridgeWinch also blew up the hinge anchor beside it (always inside the blast) and a deck, the
+            // span collapsed, and they were marooned over the channel they meant to cross. The attack spares its own bridge.
+            Case("Drawbridge_R5_winch_attack_spares_the_leaf_it_would_cross", () =>
+            {
+                int w = RM_DrawbridgeMath.WinchAttackSpareTicks;
+                Assert(RM_DrawbridgeMath.WinchAttackSpares(7, 100, 7, 100), "the attacker's own blast spares the bridge of the winch it attacks");
+                Assert(RM_DrawbridgeMath.WinchAttackSpares(7, 100, 7, 100 + w), "a grenade still in flight when the winch dies is spared too");
+                Assert(!RM_DrawbridgeMath.WinchAttackSpares(7, 100, 7, 101 + w), "can-fail: past the window the bridge is hurt as any building is");
+                Assert(!RM_DrawbridgeMath.WinchAttackSpares(7, 100, 8, 100), "can-fail: another bridge is never spared");
+                Assert(!RM_DrawbridgeMath.WinchAttackSpares(-1, 0, 7, 100), "can-fail: no winch attack, no sparing (a colonist's or a trasher's blast)");
+                Assert(!RM_DrawbridgeMath.WinchAttackSpares(7, 100, 7, 99), "can-fail: a stamp from the future (a loaded game) spares nothing");
+                string raid = Src("Pits", "Drawbridge", "RM_DrawbridgeRaid.cs");
+                string job = Body(raid, "public static Job WinchJob(Pawn pawn, Building_DrawbridgeWinch winch)");
+                Assert(job.Split(new[] { "StampWinchAttack(pawn, winch);" }, StringSplitOptions.None).Length == 3,
+                    "both attack jobs (melee and shot) stamp the attacker");
+                string deck = Src("Pits", "Suspension", "Building_SuspensionDeck.cs");
+                Assert(deck.Split(new[] { "absorbed = RM_DrawbridgeRaid.SparesBridge(this, dinfo);" }, StringSplitOptions.None).Length == 3,
+                    "the deck and the anchor both ask before they take damage");
+            });
             Case("Drawbridge_P1_materials_timber_and_steel_only", () =>
             {
                 Assert(RM_DrawbridgeMath.IsDrawbridgeTier(SuspensionTier.Timber) && RM_DrawbridgeMath.IsDrawbridgeTier(SuspensionTier.Steel),

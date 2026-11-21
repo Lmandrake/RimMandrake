@@ -246,6 +246,18 @@ namespace RimMandrake.FlowWorks
 		public const int OrderRaise = 1;
 		public const int OrderLower = 2;
 
+		/// <summary>ISLAND_RAIDERS_NEVER_CROSS_LOWERED_LEAF: how long (ticks) after a raider is sent at a winch his own hits
+		/// spare that winch's bridge: the attack job's expiry (600) plus a grenade's flight.</summary>
+		public const int WinchAttackSpareTicks = 720;
+
+		/// <summary>A raider sent at a winch (JobGiver_RM_DrawbridgeWinch) wants the leaf DOWN to cross it. His blast at the
+		/// winch always reaches the hinge anchor beside it and often a deck; one lost square collapses the span and maroons
+		/// him. So for the window his damage spares the anchors and decks of that same bridge (stampRecord -1: no attack).</summary>
+		public static bool WinchAttackSpares(int stampRecord, int stampTick, int record, int now)
+		{
+			return stampRecord >= 0 && stampRecord == record && now >= stampTick && now - stampTick <= WinchAttackSpareTicks;
+		}
+
 		/// <summary>How often (ticks) the map's free-hostile count is re-read for peace/locked mode.</summary>
 		public const int ModeCheckInterval = 60;
 

@@ -1165,6 +1165,50 @@ namespace RimMandrake.FlowWorks
 				+ " rebuilds=" + g.Rebuilds;
 		}
 
+		/// <summary>Bridge/proof read (jawa/static_call): why CanReachMapEdge answers what it does for this pawn. The pawnless
+		/// vanilla answer (regions only: the map-edge postfix returns at once without a pawn), the pawn's own answer, and each
+		/// input of RM_Patch_Reachability_SuperdeepMapEdge.Owned on the grid view ForPawn picks, beside the plain grid.
+		/// ISLAND_RAIDERS_NEVER_CROSS_LOWERED_LEAF: the read that names the stale input.</summary>
+		public static string ProofEdge(Pawn p)
+		{
+			if (p == null || !p.Spawned)
+			{
+				return "REFUSED: no spawned pawn";
+			}
+			Map map = p.Map;
+			IntVec3 c = p.Position;
+			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
+			bool vanilla = map.reachability.CanReachMapEdge(c, TraverseParms.For(TraverseMode.PassDoors));
+			bool own = map.reachability.CanReachMapEdge(c, TraverseParms.For(p, Danger.Deadly, TraverseMode.ByPawn));
+			int k = ClimbLimitOf(p);
+			var sb = new System.Text.StringBuilder();
+			sb.Append("EDGE at=").Append(c).Append(" vanilla=").Append(vanilla).Append(" own=").Append(own).Append(" k=").Append(k)
+			  .Append(" cliffOn=").Append(RM_CliffMask.On).Append(" free=").Append(FreePitTraveller(p))
+			  .Append(" gen=").Append(eng?.ClimbGeneration ?? -1).Append(" tick=").Append(Find.TickManager.TicksGame)
+			  .Append(" floorDiffers=").Append(Pits.RM_SuspensionUnderpass.FloorViewDiffers(map))
+			  .Append(" usesFloor=").Append(Pits.RM_SuspensionUnderpass.UsesFloorView(p));
+			RM_PocketGrid[] gs = { ForPawn(map, p), For(map) };
+			for (int i = 0; i < gs.Length; i++)
+			{
+				RM_PocketGrid g = gs[i];
+				if (g == null)
+				{
+					sb.Append(i == 0 ? " | pawnGrid none" : " | plain none");
+					continue;
+				}
+				int comp = g.ComponentOf(k, c);
+				bool pocket = g.ComponentIsPocket(k, comp);
+				bool wide = g.WideEverywhere(k, comp, RM_SuperdeepTrap.RequiredWidth(p));
+				sb.Append(i == 0 ? " | pawnGrid" : " | plain").Append(" same=").Append(ReferenceEquals(g, gs[1]))
+				  .Append(" floor=").Append(g.floorView).Append(" stride=").Append(g.stride).Append(" comp=").Append(comp)
+				  .Append(" pocket=").Append(pocket).Append(" wide=").Append(wide).Append(" touchesEdge=").Append(g.TouchesEdge(k, comp))
+				  .Append(" trappedIn=").Append(g.TrappedIn(k, comp, p)).Append(" reachesEdge=").Append(g.ReachesEdge(k, comp, p))
+				  .Append(" built=").Append(g.builtGeneration).Append(" builtTick=").Append(g.builtTick)
+				  .Append(" midLoad=").Append(g.builtMidLoad).Append(" rebuilds=").Append(g.Rebuilds);
+			}
+			return sb.ToString();
+		}
+
 		/// <summary>Player text (design §8.2: "the size table is stated, not hidden"), from the live band edges.</summary>
 		public static string BandText()
 		{

@@ -95,6 +95,55 @@ namespace RimMandrake.FlowWorks.Pits
 			return best;
 		}
 
+		/// <summary>Attacker thingIDNumber → (bridge record id, tick): who was last sent at which bridge's winch. Not saved:
+		/// a load mid-volley costs at most the grenades in flight.</summary>
+		private static readonly Dictionary<int, KeyValuePair<int, int>> winchAttacks = new Dictionary<int, KeyValuePair<int, int>>();
+
+		public static int Spared;
+
+		private static void StampWinchAttack(Pawn pawn, Building_DrawbridgeWinch winch)
+		{
+			RM_MapComponent_SuspensionBridges comp = RM_MapComponent_SuspensionBridges.Of(pawn.Map);
+			if (comp == null)
+			{
+				return;
+			}
+			int now = Find.TickManager.TicksGame;
+			if (winchAttacks.Count > 64)
+			{
+				winchAttacks.Clear();   // stale raids; live attackers re-stamp on their next job
+			}
+			foreach (SuspensionBridgeRecord r in comp.Bridges)
+			{
+				foreach (DrawbridgeLeaf l in r.leaves)
+				{
+					if (l.winch == winch)
+					{
+						winchAttacks[pawn.thingIDNumber] = new KeyValuePair<int, int>(r.id, now);
+						return;
+					}
+				}
+			}
+		}
+
+		/// <summary>ISLAND_RAIDERS_NEVER_CROSS_LOWERED_LEAF: true when this hit on a deck or anchor comes from a raider sent
+		/// at this bridge's winch (RM_DrawbridgeMath.WinchAttackSpares): he means to drop the leaf, not to lose the crossing.</summary>
+		public static bool SparesBridge(Thing part, DamageInfo dinfo)
+		{
+			if (winchAttacks.Count == 0 || !(dinfo.Instigator is Pawn p) || part?.Map == null
+				|| !winchAttacks.TryGetValue(p.thingIDNumber, out KeyValuePair<int, int> stamp))
+			{
+				return false;
+			}
+			SuspensionBridgeRecord r = RM_MapComponent_SuspensionBridges.Of(part.Map)?.RecordAt(part.Position);
+			if (r == null || !RM_DrawbridgeMath.WinchAttackSpares(stamp.Key, stamp.Value, r.id, Find.TickManager.TicksGame))
+			{
+				return false;
+			}
+			Spared++;
+			return true;
+		}
+
 		/// <summary>An executable attack on the winch, or null (R5: winch attacks need an executable route).</summary>
 		public static Job WinchJob(Pawn pawn, Building_DrawbridgeWinch winch)
 		{
@@ -117,6 +166,7 @@ namespace RimMandrake.FlowWorks.Pits
 				}
 				if (pawn.CanReach(winch, PathEndMode.Touch, Danger.Deadly))
 				{
+					StampWinchAttack(pawn, winch);
 					Job melee = JobMaker.MakeJob(JobDefOf.AttackMelee, winch);
 					melee.expiryInterval = 600;
 					melee.checkOverrideOnExpire = true;
@@ -141,6 +191,7 @@ namespace RimMandrake.FlowWorks.Pits
 			}
 			if (dest == pawn.Position)
 			{
+				StampWinchAttack(pawn, winch);
 				Job shoot = JobMaker.MakeJob(JobDefOf.AttackStatic, winch);
 				shoot.expiryInterval = 600;
 				shoot.checkOverrideOnExpire = true;

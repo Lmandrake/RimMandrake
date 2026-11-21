@@ -137,6 +137,16 @@ namespace RimMandrake.FlowWorks.Pits
 
 		public RM_MapComponent_SuspensionBridges Bridges => Map?.GetComponent<RM_MapComponent_SuspensionBridges>();
 
+		/// <summary>ISLAND_RAIDERS_NEVER_CROSS_LOWERED_LEAF: a raider sent at this bridge's winch does not wreck the crossing.</summary>
+		public override void PreApplyDamage(ref DamageInfo dinfo, out bool absorbed)
+		{
+			absorbed = RM_DrawbridgeRaid.SparesBridge(this, dinfo);
+			if (!absorbed)
+			{
+				base.PreApplyDamage(ref dinfo, out absorbed);
+			}
+		}
+
 		public SuspensionBridgeRecord Record => Bridges?.RecordAt(Position);
 
 		public override float LoadRatingKg
@@ -311,6 +321,16 @@ namespace RimMandrake.FlowWorks.Pits
 	/// swings the span it held down from that end.</summary>
 	public class Building_SuspensionAnchor : Building
 	{
+		/// <summary>ISLAND_RAIDERS_NEVER_CROSS_LOWERED_LEAF: a raider sent at this bridge's winch does not wreck the crossing.</summary>
+		public override void PreApplyDamage(ref DamageInfo dinfo, out bool absorbed)
+		{
+			absorbed = RM_DrawbridgeRaid.SparesBridge(this, dinfo);
+			if (!absorbed)
+			{
+				base.PreApplyDamage(ref dinfo, out absorbed);
+			}
+		}
+
 		public SuspensionTier Tier => def.GetModExtension<RM_SuspensionExtension>()?.tier ?? SuspensionTier.Timber;
 
 		/// <summary>DRAWBRIDGE_CABLES_FIX_STOP_SHORT: facing a deck square, the ropes run on from where the picture stops to

@@ -1,7 +1,7 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":49433,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"HOLDER.run-1795260677":3322,"HOLDER.run-1795263747":1891,"HOLDER.run-1795268290":5226,"HOLDER.run-1795285878":924,"HOLDER.run-1795297113":3434,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=be056b1097e189dd09c492951e0f9d046c294810266de3af6fff06fe8077124a -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":49433,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"HOLDER.run-1795260677":3322,"HOLDER.run-1795263747":1891,"HOLDER.run-1795268290":5226,"HOLDER.run-1795285878":924,"HOLDER.run-1795297113":4566,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=1a94705e4c2bb40a0f3e9823c5c7c16bf99a6ff496548b85d1d2e3932fb55649 -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage in_game · 1518 events in 24 shards · reducer 1
-holder lease run-1795297113, token 34, last active 2026-11-21T22:23:10Z
+version 0.1.0 · stage in_game · 1522 events in 24 shards · reducer 1
+holder lease run-1795297113, token 34, last active 2026-11-21T23:05:37Z
 holder session 4720565c-d7e2-4cf6-ade9-763c375b47fa, context 439086 of ceiling 400000 — ROTATE DUE
 
 ## Last checkpoint (HOLDER.run-1795297113, 2026-11-21T22:08:37Z)
@@ -501,6 +501,6 @@ spend recorded: USD 78.94, 45401435 tokens
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
 - notes: 11, never printed here (`modledger.py find --mod FlowWorks <words>`)
-- the full history: 1518 events (views/history.md; never read whole)
+- the full history: 1522 events (views/history.md; never read whole)
 
-cursor: t=2026-11-21T22:23:10Z.1795299790574168169 (modledger.py since --mod FlowWorks t=2026-11-21T22:23:10Z.1795299790574168169 prints what changed after this packet)
+cursor: t=2026-11-21T23:05:37Z.1795302337330806888 (modledger.py since --mod FlowWorks t=2026-11-21T23:05:37Z.1795302337330806888 prints what changed after this packet)

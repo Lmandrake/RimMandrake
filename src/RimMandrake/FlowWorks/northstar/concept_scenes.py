@@ -1923,6 +1923,15 @@ def _pit_trap_raid(S):
 # house, and two landed inside one chunk (read every 20 ticks: 200 -> 100 -> gone), so "held" winches fell (visit 2).
 # RULED OUT: the mod dropping a leaf whose winch still stands (the winch left list_things on the read its leaf first said
 # winch=False; the other leaf stayed up); stale winch ids after the restage (every reset answered success on fresh ids).
+# RIMMANDRAKE_STAGE_FLOWWORKS_ISLAND_RAIDERS_NEVER_CROSS_LOWERED_LEAF (Test Pilot, game b, 2026-11-21), MOD: the mod's own
+# winch job (JobGiver_RM_DrawbridgeWinch) sends the grenadiers at the winch; a frag blast at the winch always reaches the
+# hinge anchor beside it and often a leaf deck, one lost square collapses the span, and the six stood on the steel span
+# over two holes (CanReachMapEdge False, vanilla regions True, pocket grid current and right). Fix: the attacker's hits
+# spare that bridge's decks and anchors (RM_DrawbridgeRaid.SparesBridge; selftest Drawbridge_R5_winch_attack_spares_the_
+# leaf_it_would_cross). ProofLeaf now reads standing=n/m and ISL_lost_winch_drops_its_leaf needs every deck standing.
+# RULED OUT: a bridge read freeing them (4 of 5 runs with no read stuck, 1 free: it flaked on the grenade scatter); a
+# stale reachability or pocket grid after NotifyToggled (grid built at the current generation; the veto was correct).
+# Probe: probe_islands_exit.py (--read edge pedge trace, --keep).
 #   x: west island <= O0 | drawbridge O0..O0+4 (hole +1..+3) | pillar +4,+5 | steel span +5..+16 (hole +6..+15)
 #      | pillar +16,+17 | drawbridge +17..+21 (hole +18..+20) | east island >= +21; channel dug 4 m at z = O1-3..O1+3
 DPROOF = 'RimMandrake.FlowWorks.Pits.RM_DrawbridgeProofs'
@@ -2081,9 +2090,16 @@ def _islands(S):
     finally:
         S.B.stop_on = prior
     after = [_isl_leaf(S, dx) for dx in lost]
-    dropped = [dx for dx, l in zip(lost, after) if l.get('progress') == '0']
+    # A leaf "dropped" only if its decks still stand: the raiders' grenades at the winch used to wreck the hinge anchor and
+    # a deck, the span collapsed, and ProofLeaf went on reading "progress 0" over a hole (test pilot 2026-11-21).
+    def _stands(l):
+        n, _, m = (l.get('standing') or '').partition('/')
+        return n.isdigit() and m.isdigit() and int(m) > 0 and n == m
+    dropped = [dx for dx, l in zip(lost, after) if l.get('progress') == '0' and _stands(l)]
+    wrecked = [dx for dx, l in zip(lost, after) if not _stands(l)]
     S.row('ISL_lost_winch_drops_its_leaf', bool(lost) and dropped == lost,
-          (why or ('' if lost else 'no winch was lost; ')) + 'staged=%s leaves %s after %s' % (staged, lost, after),
+          (why or ('' if lost else 'no winch was lost; ')) + ('leaf %s lost its decks with its winch; ' % wrecked if wrecked else '')
+          + 'staged=%s leaves %s after %s' % (staged, lost, after),
           unmeasured=not lost)
     out = _isl_watch(S, st, until='escape') if dropped else None
     S.row('ISL_raiders_escape', bool(out and out['escaped']),

@@ -201,10 +201,25 @@ namespace RimMandrake.FlowWorks.Pits
 				}
 			}
 			bool hasWinch = l.winch != null && l.winch.Spawned;
+			// ISLAND_RAIDERS_NEVER_CROSS_LOWERED_LEAF: a collapsed leaf still read "progress 0, lowered"; count what stands.
+			int standing = 0, squares = 0;
+			for (int i = l.first; i <= l.last; i++)
+			{
+				for (int lane = 0; lane < r.width; lane++)
+				{
+					squares++;
+					IntVec3 at = r.Cell(lane, i);
+					if (at.InBounds(map) && at.GetFirstThing<Building_SuspensionDeck>(map) != null)
+					{
+						standing++;
+					}
+				}
+			}
 			return "LEAF leaf=" + (r.leaves.IndexOf(l) + 1) + "/" + r.leaves.Count + " progress=" + l.progress + " full=" + full
 				+ " target=" + (l.targetRaised ? "raised" : "lowered") + " raised=" + up + "/" + l.Span.Length + " frozen=" + l.frozen
 				+ " winch=" + hasWinch + " powered=" + (hasWinch && l.winch.Powered) + " hold=" + l.holdRaised + " auto=" + l.autoLowering
-				+ " pending=" + Pending(l) + " tip=" + l.tipCommitted + " hinge=" + (l.hingeAtFirst ? "A" : "B") + " version=" + l.version;
+				+ " pending=" + Pending(l) + " tip=" + l.tipCommitted + " hinge=" + (l.hingeAtFirst ? "A" : "B") + " version=" + l.version
+				+ " standing=" + standing + "/" + squares;
 		}
 
 		/// <summary>"x,z;raise|lower[;instant]": RM_Drawbridges.DevSetTarget. 'instant' (staging only, never a claim) also sets
