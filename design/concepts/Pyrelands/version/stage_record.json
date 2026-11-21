@@ -2,9 +2,9 @@
   "schema": 1,
   "mod": "Pyrelands",
   "version": "0.1.0",
-  "stage": "blind_challenge",
-  "stage_label": "Blind challenge, tests first (Stages 4 and 5)",
-  "since": "2026-11-17T12:31:40-08:00",
+  "stage": "in_game",
+  "stage_label": "In-game acceptance (Stage 6)",
+  "since": "2026-11-20T18:01:00-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -125,6 +125,26 @@
         "version",
         "hold",
         "fourth_cycle",
+        "judge_certificate"
+      ]
+    },
+    {
+      "from": "blind_challenge",
+      "to": "in_game",
+      "at": "2026-11-20T18:01:00-08:00",
+      "by": "BENCH",
+      "why": "steward: blind cycle 4 exit met, read and confirmed; certificate OK after the sand_shovel fix 01853a05a6",
+      "unit": "rm-detached-bench-rimmandrake-confirm-pyrelands-cycle-four-1795225890",
+      "confirmed": {
+        "steward_confirms": "read design/concepts/Pyrelands/version/blind_challenge/cycle_4/SUMMARY.md, faults.json, fixes.jsonl, tests_edited.json: exit_met true, 6 offline bars green, 0 Problems open (the one Problem, a HARNESS gate decider miss, fixed 3962b91eb4). Re-ran myself: T_SETTINGS_SWEEP_OFFLINE green (27/27 mutants red) and red under 3 of the 5 plants (H_wind_ignores_its_switch, K_douse_ignores_gate, H_stamp_caller_skips_gate); the test edit is 126 lines added, 0 removed, sha256 matches. Certificate refusal (sand_shovel asks_on_empty_game) was a wrong check, fixed 01853a05a6; certificate --to in_game now OK. Verdict: exit met, advance."
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "steward_confirms",
+        "exit_met",
         "judge_certificate"
       ]
     }
