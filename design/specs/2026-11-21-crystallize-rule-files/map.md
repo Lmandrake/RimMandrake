@@ -6,6 +6,12 @@ Item `RIMMANDRAKE_CRYSTALLIZE_RULE_FILES_DOUBLED_IN_EIGHT_DAYS`. One row per sec
 
 base: `cea8d0bae6c6187609e7cf04996e5299d12869df`
 
+foreign: `ecb17dcdd8117fc406f0d37c92787c70b614d2d5`
+
+The foreign commit is another item's (`RIMMANDRAKE_RULE_MECHANICS_ARE_UNIVERSAL_THE_BIOME_ONLY_SHOWCASES`, 2026-11-21): it
+wrote his universal-mechanics ruling into the Designer role files, so `roles/designer.md` and `roles/designer_write.md`
+grew by those lines.
+
 The base above is the second run's (`RIMMANDRAKE_MERGE_TWELVE_REFUSAL_RULE_SECTIONS_THAT_WAITED`, 2026-11-21): the
 commit before it merged the twelve sections of principles 1 and 3. The first run's base was `f5c8bd66e9`; its check
 passed there (`results.md`). Every row below that the second run did not touch reads the same at both bases.

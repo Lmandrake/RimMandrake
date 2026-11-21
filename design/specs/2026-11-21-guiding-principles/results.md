@@ -71,6 +71,9 @@ Polish it listed: on `polish.md` (one line), and "Decorative atmosphere stays" a
 
 ## Checks
 
+- Published at `ecb17dcdd8` (`./publish`: 115 pipeline checks green; 1 red that was already red the same way on
+  origin/main before the change, `acceptance/guard_pilot_launch_live_run_accept.py`: no game was free). The map's
+  `foreign:` line, which lists that commit, landed in the commit after it.
 - Lose-nothing check (`selftest_rule_files_lose_nothing.py check`): PASS after the map rows of the two corrected
   sections were updated and this run's commit was listed under `foreign:` (the Designer role files grew by the ruled
   lines).
