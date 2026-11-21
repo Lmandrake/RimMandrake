@@ -75,7 +75,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 Console.WriteLine("switch lamp pixels written to " + args[sld + 1]);
                 return 0;
             }
-            if (args.Contains("--switchlight-only")) { SwitchLightChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (switch light only)"); return fails == 0 ? 0 : 1; }
+            if (args.Contains("--switchlight-only")) { SwitchLightChecks.Run(); SwitchLightChecks.Plant(); Console.WriteLine($"{checks - fails}/{checks} checks passed (switch light only)"); return fails == 0 ? 0 : 1; }
             if (args.Contains("--switchlight-plant")) { SwitchLightChecks.Plant(); Console.WriteLine($"{checks - fails}/{checks} checks passed (switch light plant)"); return fails == 0 ? 0 : 1; }
             if (args.Contains("--switchoff-only")) { SwitchOffChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (switch off only)"); return fails == 0 ? 0 : 1; }
             if (args.Contains("--joins-only")) { StubJoinChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (stub joins only)"); return fails == 0 ? 0 : 1; }

@@ -2162,7 +2162,9 @@ SCENE_EXTRA_ROWS = {   # scenes with no requirement leaf, or rows the leaf map d
 SCENE_OWN_ROWS = {"sc_cords_under_items": "UNDER_ROWS",
                   # 0.1.1 PATCH (his walk of 2026-11-20): each new scene is decided by its own rows in northstar/scene_rows.py
                   "sc_switch_off_ends": "SWITCH_OFF_ROWS", "sc_pole_icons_loaded": "POLE_ICON_ROWS",
-                  "sc_pole_south_of_tree": "POLE_SOUTH_ROWS", "sc_no_roof_over_pole": "NO_ROOF_ROWS"}
+                  "sc_pole_south_of_tree": "POLE_SOUTH_ROWS", "sc_no_roof_over_pole": "NO_ROOF_ROWS",
+                  # RIMMANDRAKE_LIGHT_SLACK_SWITCH_GREEN_RED_DARK_WHEN_UNPOWERED (bar switch_light_reads_state)
+                  "sc_switch_light": "SWITCH_LIGHT_ROWS"}
 
 
 def scene_rows_for(sid, scenes=None, row_leaves=None):
@@ -2347,7 +2349,11 @@ def scene_no_roof_over_pole(B, V, rows):
     """scenes.json sc_no_roof_over_pole (bar no_roof_over_pole): scene_rows.no_roof_over_pole, decided by NO_ROOF_ROWS."""
     return _own_scene("sc_no_roof_over_pole", "no_roof_over_pole", B, V, rows)
 
-ONE_SCENES = ("scene_switch_off_ends", "scene_pole_icons_loaded", "scene_pole_south_of_tree", "scene_no_roof_over_pole")
+def scene_switch_light(B, V, rows):
+    """scenes.json sc_switch_light (bar switch_light_reads_state): scene_rows.switch_light, decided by SWITCH_LIGHT_ROWS."""
+    return _own_scene("sc_switch_light", "switch_light", B, V, rows)
+
+ONE_SCENES = ("scene_switch_off_ends", "scene_pole_icons_loaded", "scene_pole_south_of_tree", "scene_no_roof_over_pole", "scene_switch_light")
 
 
 def run_one_scene(name, out=None):

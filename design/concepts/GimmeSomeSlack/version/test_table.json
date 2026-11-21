@@ -1,7 +1,7 @@
 {
  "mod": "GimmeSomeSlack",
  "version": "0.1.1",
- "made": "2026-11-20T18:07:09-08:00",
+ "made": "2026-11-20T23:26:58-08:00",
  "made_by": "rm-builder, Maturation hand run beside the pilot, row 2 (throwaway version/make_test_table.py)",
  "stages": {
   "2": "preflight (a program)",
@@ -45,6 +45,17 @@
    "test": "sc_cords_under_items (in scenes.json since 2026-11-14) keeps it so",
    "stage": "6",
    "kind": "approval: the regression the in-game read guards; bar added by his card 2026-11-14"
+  },
+  {
+   "file": "infrastructure/state/ledger/events/OWNER.jsonl",
+   "row": "OWNER:1795233641482676326",
+   "words": "You know with respect to the switch issue with gss showing disconnection the switch should have some illuminated indicator on it showing whether it is open or closed but always powered (green Vs red) vs unpowered (no glow). That would help with the user awareness part. Please make that so.",
+   "bars": [
+    "switch_light_reads_state"
+   ],
+   "test": "T_SWITCH_LIGHT_OFFLINE + sc_switch_light",
+   "stage": "4-5 then 6",
+   "kind": "request, 0.1.1: bar added by his card 2026-11-20 (OWNER:1795244532644873616)"
   },
   {
    "file": "design/RimMandrake/validation_holding/gss_walk_20261120.md",
@@ -295,6 +306,8 @@
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotBlock.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotPool.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/StubJoinAudit.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchLampArt.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchLight.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchNode.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/TexPath.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/WallMount.cs",
@@ -375,6 +388,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/StyledFreshChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/StyledWinnerLegacyBridgeChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SwitchFlipChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SwitchLightChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SwitchOffChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/TapClampPoseChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/TapWindowChecks.cs",
@@ -711,6 +725,8 @@
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotBlock.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotPool.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/StubJoinAudit.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchLampArt.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchLight.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchNode.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/TexPath.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/WallMount.cs"
@@ -1224,6 +1240,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/SafeTex.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SectionLayer_RM_MessyCords.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/StyleProbe.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SwitchLightDraw.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/TipSparks.cs"
    ],
    "new": true,
@@ -1326,6 +1343,8 @@
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotBlock.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotPool.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/StubJoinAudit.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchLampArt.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchLight.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchNode.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/TexPath.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/WallMount.cs",
@@ -1412,6 +1431,8 @@
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotBlock.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotPool.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/StubJoinAudit.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchLampArt.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchLight.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchNode.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/TexPath.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/WallMount.cs",
@@ -1469,6 +1490,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/StyledFreshChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/StyledWinnerLegacyBridgeChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SwitchFlipChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SwitchLightChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SwitchOffChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/TapClampPoseChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/TapWindowChecks.cs",
@@ -1478,6 +1500,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/UnroutableCensus.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/WaterStubChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/StyleProbe.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SwitchLightDraw.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/TipSparks.cs"
    ],
    "new": true,
@@ -1561,6 +1584,8 @@
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotBlock.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotPool.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/StubJoinAudit.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchLampArt.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchLight.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchNode.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/TexPath.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/WallMount.cs",
@@ -1618,6 +1643,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/StyledFreshChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/StyledWinnerLegacyBridgeChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SwitchFlipChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SwitchLightChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SwitchOffChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/TapClampPoseChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/TapWindowChecks.cs",
@@ -1627,6 +1653,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/UnroutableCensus.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/WaterStubChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/StyleProbe.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SwitchLightDraw.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/TipSparks.cs"
    ],
    "new": true,
@@ -1675,6 +1702,8 @@
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotBlock.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotPool.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/StubJoinAudit.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchLampArt.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchLight.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchNode.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/TexPath.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/WallMount.cs"
@@ -1692,6 +1721,55 @@
     "build": "ca7a1b9a3a9079e583c0",
     "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py",
     "margins": []
+   }
+  },
+  "T_SWITCH_LIGHT_OFFLINE": {
+   "id": "T_SWITCH_LIGHT_OFFLINE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SwitchLightChecks.cs",
+   "observes": "the shipped lamp rule (Core/SwitchLight) over every side/power/state/setting case (4^4 sides x closed/open x setting) and the brief's sequences (power lost while open, flick while unpowered, far side only, setting flip): green closed and powered, red open and powered, dark unpowered or setting off; seven planted wrong rules (the base's no lamp, colours swapped, open reads no side, one side only, setting ignored, hasPowerSource for active, unpowered open red) each caught every run (bar switch_light_reads_state)",
+   "reads": [
+    "src/RimMandrake/GimmeSomeSlack/Source/SwitchLightDraw.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/ConduitPlacementGate.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/ConduitTargets.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordAudit.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordEndAudit.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordGraph.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordLiveEnd.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordMotion.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordPlugExit.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordReach.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordShape.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordShapeAudit.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordSlacken.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/HookupPick.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/LegacyName.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/ProbeRead.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/RebuildGate.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/RebuildTail.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SettingsPrint.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SliceWindow.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotBlock.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotPool.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/StubJoinAudit.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchLampArt.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchLight.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchNode.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/TexPath.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/WallMount.cs"
+   ],
+   "new": true,
+   "built_in_stage": "3",
+   "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --no-export --switchlight-only",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 1.79,
+    "last": "1056/1056 checks passed (switch light only)",
+    "at": "2026-11-20T23:26:58-08:00",
+    "result": "PASS"
    }
   },
   "T_POLE_SOUTH_DRAWS_FRONT_OFFLINE": {
@@ -2403,6 +2481,28 @@
    "why_game": "auto-roof, the roof designator and a god-mode roof run in the live game's roof systems",
    "for_bar": "no_roof_over_pole",
    "command": "python.exe src\\RimMandrake\\GimmeSomeSlack\\validation.py --scene scene_no_roof_over_pole   (minimal list; entry exists)",
+   "runs_today": {
+    "ran": false,
+    "why": "live: offline-only run; entry exists in the code"
+   }
+  },
+  "sc_switch_light": {
+   "id": "sc_switch_light",
+   "kind": "live_minimal",
+   "stage": "6",
+   "tier": "gimmesomeslack",
+   "file": "src/RimMandrake/GimmeSomeSlack/validation.py",
+   "entry": "scene_switch_light",
+   "entry_exists": true,
+   "new": true,
+   "observes": "two batteries, an in-line power switch: the GSS probe switchlights reads the lamp dark with no power, green closed and powered, red open and powered, dark after the power is lost while open, red with power on the far side only, and dark with the switchLight setting off (fake-game proof: selftest_gss_switch_light_scene.py)",
+   "reads": [
+    "src/RimMandrake/GimmeSomeSlack/Source/SwitchLightDraw.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/GimmeSomeSlackProbe.cs"
+   ],
+   "why_game": "the lamp reads the running map's power nets (PowerNetManager rebuilds them on the tick after a flick or a battery change)",
+   "for_bar": "switch_light_reads_state",
+   "command": "python.exe src\\RimMandrake\\GimmeSomeSlack\\validation.py --scene scene_switch_light   (minimal list; entry exists)",
    "runs_today": {
     "ran": false,
     "why": "live: offline-only run; entry exists in the code"
@@ -7714,6 +7814,27 @@
    ],
    "offline_decides": [],
    "offline_green_today": false,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true,
+   "any_decider_runnable_today": true
+  },
+  {
+   "id": "switch_light_reads_state",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_SWITCH_LIGHT_OFFLINE",
+    "sc_switch_light"
+   ],
+   "supports": [],
+   "held": [
+    "OWNER.jsonl#OWNER:1795233641482676326"
+   ],
+   "offline_decides": [
+    "T_SWITCH_LIGHT_OFFLINE"
+   ],
+   "offline_green_today": true,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
    "any_decider_runnable_today": true

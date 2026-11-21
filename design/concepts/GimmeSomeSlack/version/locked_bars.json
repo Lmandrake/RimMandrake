@@ -56,7 +56,8 @@
   "owner_change_coils_wires",
   "statics_clear_between_games",
   "no_hose_in_gss",
-  "walk_scavenger_base"
+  "walk_scavenger_base",
+  "switch_light_reads_state"
  ],
  "history": [
   {
@@ -92,6 +93,18 @@
    "added": [],
    "removed": [],
    "count": 53
+  },
+  {
+   "at": "2026-11-21T07:26:07Z",
+   "by": "BENCH",
+   "why": "RIMMANDRAKE_LIGHT_SLACK_SWITCH_GREEN_RED_DARK_WHEN_UNPOWERED: the switch lamp bar his card put in 0.1.1 (\"In 0.1.1 (Recommended)\")",
+   "how": "changed by his card",
+   "source": "OWNER:1795244532644873616",
+   "added": [
+    "switch_light_reads_state"
+   ],
+   "removed": [],
+   "count": 54
   }
  ]
 }

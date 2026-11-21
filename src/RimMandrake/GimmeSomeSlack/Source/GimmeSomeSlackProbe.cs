@@ -105,6 +105,7 @@ namespace RimMandrake.GimmeSomeSlack
             if (cmd == "slack") return SlackTable(comp);
             if (cmd == "statics") return Statics();
             if (cmd == "switchlights") return SwitchLights(map);   // sc_switch_light (bar switch_light_reads_state)
+            if (cmd.StartsWith("battery:")) return Battery(map, cmd.Substring(8));   // sc_switch_light: power comes and goes
             if (cmd.StartsWith("flick:")) return Flick(map, cmd.Substring(6));   // sc_switch_off_ends (his walk of 2026-11-20, row 1)
             if (cmd.StartsWith("ends:")) return EndsNear(comp, cmd.Substring(5));
             if (cmd.StartsWith("endkind:")) return EndKind(comp, cmd.Substring(8));   // RIMMANDRAKE_FIX_SLACK_CORD_ENDS_OWNER_CAUGHT_TWO
@@ -676,6 +677,24 @@ namespace RimMandrake.GimmeSomeSlack
             return "{\"success\":true,\"cmd\":\"switchlights\",\"setting\":" + J.B(GimmeSomeSlackSettings.switchLight) + ",\"switches\":[" +
                    string.Join(",", rows) + "],\"drawnGreen\":" + SwitchLightDraw.LastGreen + ",\"drawnRed\":" + SwitchLightDraw.LastRed +
                    ",\"drawnDark\":" + SwitchLightDraw.LastDark + "}";
+        }
+
+        /// <summary>battery:x,z=full|empty: fill or drain the battery at the cell, so a scene can bring power and take it away
+        /// without a generator, weather or time (sc_switch_light).</summary>
+        private static string Battery(Map map, string args)
+        {
+            var inv = CultureInfo.InvariantCulture;
+            string[] kv = args.Split('=');
+            string[] a = kv[0].Split(',');
+            var c = new IntVec3(int.Parse(a[0], inv), 0, int.Parse(a[1], inv));
+            if (!c.InBounds(map)) return "{\"success\":false,\"cmd\":\"battery\",\"error\":\"out of bounds\"}";
+            CompPowerBattery b = map.thingGrid.ThingsListAt(c).Select(t => (t as ThingWithComps)?.GetComp<CompPowerBattery>()).FirstOrDefault(x => x != null);
+            if (b == null) return "{\"success\":false,\"cmd\":\"battery\",\"error\":\"no battery at the cell\"}";
+            string how = kv.Length > 1 ? kv[1].Trim() : "";
+            if (how == "full") b.SetStoredEnergyPct(1f);          // vanilla's own DEV: Fill / DEV: Empty
+            else if (how == "empty") b.SetStoredEnergyPct(0f);
+            else return "{\"success\":false,\"cmd\":\"battery\",\"error\":\"want =full or =empty\"}";
+            return "{\"success\":true,\"cmd\":\"battery\",\"storedWd\":" + b.StoredEnergy.ToString("0.###", inv) + "}";
         }
 
         private static string Flick(Map map, string args)

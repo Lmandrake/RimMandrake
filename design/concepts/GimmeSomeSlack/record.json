@@ -841,6 +841,28 @@
    "quote": "You shouldn't be able to build a power pole inside a roofed building at all, they're too big... but nice test if you ever did, you can leave the behavior in the code, just disable building it that way.",
    "note": "His walk of 2026-11-20, row 14 of the walk record. A fault fixed in 0.1.1 PATCH (his card of 2026-11-20, OWNER:1795217553611770372: \"Pass now, fixes are 0.1.1\"); item RIMMANDRAKE_BLOCK_SLACK_ROOF_OVER_POLE_KEEP_THE_CUT. Added as a plain sentence about what the player sees, never a tuning number.",
    "proof_note": "live: auto-roof and a build-roof designation over a mast cell form no roof and the refusal names the pole; a god-mode roof still cuts the spans (Stage 4)"
+  },
+  {
+   "id": "switch_light_reads_state",
+   "what": "A powered switch glows green when closed and red when open; an unpowered switch is dark.",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchLight.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SwitchLightDraw.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchLampArt.cs",
+    "ITEM:RIMMANDRAKE_LIGHT_SLACK_SWITCH_GREEN_RED_DARK_WHEN_UNPOWERED"
+   ],
+   "proof": "missing",
+   "scope": "opened_by_owner",
+   "scope_source": "OWNER:1795244532644873616",
+   "source": [
+    "OWNER:1795233641482676326",
+    "OWNER:1795244532644873616"
+   ],
+   "speaker": "owner",
+   "quote": "You know with respect to the switch issue with gss showing disconnection the switch should have some illuminated indicator on it showing whether it is open or closed but always powered (green Vs red) vs unpowered (no glow). That would help with the user awareness part. Please make that so.",
+   "note": "His words 2026-11-20 about 8:05 PM PST; his card the same evening: colours \"Green flows, red cut (Recommended)\" and version \"In 0.1.1 (Recommended)\". Added to 0.1.1 by maturation.py lock-bars --add citing that card. Powered: a closed switch's own net has an active power source; an open switch's net on any of its four cardinal side cells has one (Core/SwitchLight.cs header). A plain sentence about what the player sees, never a tuning number.",
+   "proof_note": "offline: T_SWITCH_LIGHT_OFFLINE (SelfTest/SwitchLightChecks.cs: every side/power/state/setting case and the brief's sequences, with planted wrong rules caught every run); live: sc_switch_light (scene_rows.switch_light: two batteries, an in-line switch, the probe switchlights read through empty, full, flick, power lost, far side, setting off)"
   }
  ],
  "contradictions": [

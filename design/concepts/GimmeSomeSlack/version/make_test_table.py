@@ -148,6 +148,15 @@ NEW = {  # specified at this lock; Stage 3 builds each and shows it red first
                  "no cut, live or dead end at the switch, on and off differing only in the powered look; planted: a switch "
                  "dropped from the graph when off goes red; run by T_CORE (bar switch_off_cords_stay_connected)",
         reads=[G + "Source/RM_MapComponent_CordGraph.cs"] + CORE),
+    # added 2026-11-20 by his card (OWNER:1795244532644873616, "In 0.1.1"): RIMMANDRAKE_LIGHT_SLACK_SWITCH_GREEN_RED_DARK_WHEN_UNPOWERED
+    "T_SWITCH_LIGHT_OFFLINE": dict(
+        stage="4-5", file=G + "Source/SelfTest/SwitchLightChecks.cs",
+        observes="the shipped lamp rule (Core/SwitchLight) over every side/power/state/setting case (4^4 sides x closed/open x setting) "
+                 "and the brief's sequences (power lost while open, flick while unpowered, far side only, setting flip): green closed and "
+                 "powered, red open and powered, dark unpowered or setting off; seven planted wrong rules (the base's no lamp, colours "
+                 "swapped, open reads no side, one side only, setting ignored, hasPowerSource for active, unpowered open red) each caught "
+                 "every run (bar switch_light_reads_state)",
+        reads=[G + "Source/SwitchLightDraw.cs"] + CORE),
     "T_POLE_SOUTH_DRAWS_FRONT_OFFLINE": dict(
         stage="4-5", file=G + "selftest_gss_pole_south_draws_front.py",
         observes="over the SouthDrawsFront rule (MandrakePatches) and the mast def: the mast is drawn above every plant or "
@@ -180,6 +189,8 @@ OFF_DECIDES = {
     # 0.1.1 PATCH bars (record.json proof_note): the offline halves; the live halves are added with the scenes below
     "switch_off_cords_stay_connected": ["T_SWITCH_OFF_NODE_OFFLINE"],
     "poles_draw_in_front_when_south": ["T_POLE_SOUTH_DRAWS_FRONT_OFFLINE"],
+    # added 2026-11-20 by his card (OWNER:1795244532644873616); the live half sc_switch_light is added with the scenes below
+    "switch_light_reads_state": ["T_SWITCH_LIGHT_OFFLINE"],
 }
 OFF_SUPPORTS = {
     "conduit_invisible": ["T_GATE"], "cords_lie_slack": ["T_MATRIX", "T_END_HEAP"], "cords_meet_walls_at_face": ["T_CORE", "T_END_HEAP"],
@@ -215,6 +226,12 @@ HELD = [
          words="[Image #8] Also, the GSS cables are now correctly below the items.",
          bars=["cords_draw_under_things"], test="sc_cords_under_items (in scenes.json since 2026-11-14) keeps it so",
          stage="6", kind="approval: the regression the in-game read guards; bar added by his card 2026-11-14"),
+    dict(file="infrastructure/state/ledger/events/OWNER.jsonl", row="OWNER:1795233641482676326",
+         words="You know with respect to the switch issue with gss showing disconnection the switch should have some illuminated indicator on "
+               "it showing whether it is open or closed but always powered (green Vs red) vs unpowered (no glow). That would help with the "
+               "user awareness part. Please make that so.",
+         bars=["switch_light_reads_state"], test="T_SWITCH_LIGHT_OFFLINE + sc_switch_light", stage="4-5 then 6",
+         kind="request, 0.1.1: bar added by his card 2026-11-20 (OWNER:1795244532644873616)"),
 ]
 
 W = H + "gss_walk_20261120.md"  # his walk of 2026-11-20, "His points" table; the class column is the walk record's
@@ -277,6 +294,7 @@ for k, t in OFF.items():
 # Stage 3 (2026-11-14) built all four: a .py runs on its own; a SelfTest .cs is run by T_CORE (or, known red, under --geometry)
 NEW_CMD = {"T_CORD_GEOMETRY_OFFLINE": ["src/RimMandrake/Utils/selftest_gimmesomeslack.py", "--geometry"],
            "T_SWITCH_OFF_NODE_OFFLINE": ["src/RimMandrake/Utils/selftest_gimmesomeslack.py"],
+           "T_SWITCH_LIGHT_OFFLINE": ["src/RimMandrake/Utils/selftest_gimmesomeslack.py", "--no-export", "--switchlight-only"],
            "T_SHOCK_RULE_OFFLINE": ["src/RimMandrake/Utils/selftest_gimmesomeslack.py"]}
 for k, t in NEW.items():
     argv = NEW_CMD.get(k) or [t["file"]]
@@ -360,6 +378,12 @@ NEW_LIVE = {
         "god-mode roof still cuts the spans",
         [G + "Defs/Aerial/RM_AerialAnchors.xml", G + "Source/Aerial/PlaceWorkers_Aerial.cs"],
         "auto-roof, the roof designator and a god-mode roof run in the live game's roof systems"),
+    "sc_switch_light": ("switch_light_reads_state", "scene_switch_light",
+        "two batteries, an in-line power switch: the GSS probe switchlights reads the lamp dark with no power, green closed and "
+        "powered, red open and powered, dark after the power is lost while open, red with power on the far side only, and dark "
+        "with the switchLight setting off (fake-game proof: selftest_gss_switch_light_scene.py)",
+        [G + "Source/SwitchLightDraw.cs", G + "Source/GimmeSomeSlackProbe.cs"],
+        "the lamp reads the running map's power nets (PowerNetManager rebuilds them on the tick after a flick or a battery change)"),
 }
 for sid, (bid, fn, obs, rd, why) in NEW_LIVE.items():
     f = G + "validation.py"

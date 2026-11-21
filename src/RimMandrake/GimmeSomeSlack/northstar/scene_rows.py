@@ -844,6 +844,60 @@ def switch_off_ends(B, V, rows):
           {"on": sorted(r.get("piece") for r in on_e.get("rows") or []), "off": sorted(r.get("piece") for r in at_switch)})
 
 
+SWITCH_LIGHT_ROWS = ["SC_switch_light_dark_unpowered", "SC_switch_light_green_closed_powered", "SC_switch_light_red_open_powered",
+                     "SC_switch_light_dark_after_power_lost", "SC_switch_light_red_far_side", "SC_switch_light_setting_off_dark"]
+
+
+def switch_light(B, V, rows):
+    """sc_switch_light (bar switch_light_reads_state; RIMMANDRAKE_LIGHT_SLACK_SWITCH_GREEN_RED_DARK_WHEN_UNPOWERED): battery W, conduit, an in-line
+    power switch, conduit, battery E; both batteries start empty. The GSS probe switchlights reads the switch's lamp as the mod's rule reads it
+    from the live map (SwitchLightDraw.LampOf); battery:x,z=full|empty brings power and takes it away. Steps: empty -> dark; W full, closed ->
+    green; flick open -> red (power on the W side); W empty while open -> dark; E full, W empty, open -> red (the far side); setting
+    switchLight off -> dark, then restored. Rows: SWITCH_LIGHT_ROWS."""
+    x, z = SC0
+    _site(B, V)
+    sw = (x + 10, z + 5)
+    bw, be = (x + 2, z + 4), (x + 19, z + 4)
+    B.call("jawa/build_batch", ops="Battery:%d,%d,0" % bw, faction="player", wipeExisting=False)
+    B.call("jawa/build_batch", ops="Battery:%d,%d,0" % be, faction="player", wipeExisting=False)
+    B.call("jawa/build_batch", ops="PowerSwitch:%d,%d,0" % sw, faction="player", wipeExisting=False)
+    run = _line(x + 3, z + 5, x + 9, z + 5) + _line(x + 11, z + 5, x + 18, z + 5)
+    B.call("jawa/build_batch", ops=V.ops("PowerConduit", run), faction="player", wipeExisting=False)
+    B.ticks(3)
+
+    def bat(at, how):
+        return B.probe("battery:%d,%d=%s" % (at[0], at[1], how))
+
+    def lamp():
+        B.ticks(3)       # a flick or a battery change rebuilds the nets on the next tick (PowerNetManager)
+        r = B.probe("switchlights")
+        mine = [s for s in r.get("switches") or [] if s.get("pos") == [sw[0], sw[1]]]
+        return (mine[0] if mine else {}), r
+
+    def step(row, want, detail):
+        got, r = lamp()
+        if not r.get("success") or not got:
+            V.row(rows, row, "UNMEASURED", "HARNESS", {"read": r, "switch": sw, **detail})
+        else:
+            V.row(rows, row, "PASS" if got.get("lamp") == want else "FAIL", "MOD", {"lamp": got, "want": want, "setting": r.get("setting"), **detail})
+        return got
+
+    b0 = [bat(bw, "empty"), bat(be, "empty")]
+    B.probe("flick:%d,%d=on" % sw)
+    step("SC_switch_light_dark_unpowered", "Dark", {"batteries": b0})
+    step("SC_switch_light_green_closed_powered", "Green", {"west": bat(bw, "full")})
+    fl = B.probe("flick:%d,%d=off" % sw)
+    step("SC_switch_light_red_open_powered", "Red", {"flick": fl})
+    step("SC_switch_light_dark_after_power_lost", "Dark", {"west": bat(bw, "empty")})
+    step("SC_switch_light_red_far_side", "Red", {"east": bat(be, "full")})
+    B.probe("flick:%d,%d=on" % sw)
+    s_off = B.probe("set:switchLight=false")
+    try:
+        step("SC_switch_light_setting_off_dark", "Dark", {"set": s_off})
+    finally:
+        B.probe("set:switchLight=true")
+
+
 def pole_icons_loaded(B, V, rows, player_log):
     """sc_pole_icons_loaded (bar pole_buttons_show_icons; row 9): after a cold load Player.log holds no 'Tried to get a resource ... from a different
     thread' line for UI/Commands/TryReconnect, UI/Designators/Cancel or a Gimme Some Slack path, and AerialProbe icons reads both button icons
