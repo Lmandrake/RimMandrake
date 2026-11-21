@@ -1,0 +1,1 @@
+A bridge read can change what it measures: RM_RaiderTrench.ProofJobTrace (its TryCross dry run, every poll) freed a stuck raid 6 of 6 times where no read left it stuck 3 of 3. Probe a stuck AI first with reads off, then read once at the end.

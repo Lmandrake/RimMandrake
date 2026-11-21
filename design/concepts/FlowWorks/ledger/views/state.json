@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "766074bbf875de48217f8f0605208a376ffb7b96f86596af7fff30943bd2c317",
+  "body_sha256": "ccd1dafd74c173350eb321e1a45784d28590716a7d63f6d4abdca7b584f7d66a",
   "reducer": 1,
   "shards": {
    "BACKFILL": 893183,
@@ -22,6 +22,7 @@
    "HOLDER.run-1795263747": 1891,
    "HOLDER.run-1795268290": 5226,
    "HOLDER.run-1795285878": 924,
+   "HOLDER.run-1795297113": 977,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1262,11 +1263,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795285878",
-   "done": "visit 3 stewarded: in_game -> offline_build; ice and sink MOD items needs offline; island scene and filter flake game-up; moat item dropped; OL kept",
-   "next": "Fix the ice and sink items offline, then advance --to in_game --game-only the island and filter items",
-   "ruled_out": "a weakened assertion in driver repairs a07d2f8ea8 and 6fbf4d8c3b: none",
-   "ts": "2026-11-21T18:41:54Z"
+   "by": "HOLDER.run-1795297113",
+   "done": "OL rows wired (7f87c7714c05, item closed); islands classed MOD: a raid that turns to LordToil_ExitMap never takes the lowered leaf; dig cost is python-side (18 ms in the bridge, ~300 ms wall)",
+   "next": "Read CanReachMapEdge on a stuck island raider, then fix the leaf toggle",
+   "ruled_out": "islands as a game-a difference; dig cost growing with the body; safe_advance frame starvation (real clock 0/3)",
+   "ts": "2026-11-21T21:42:12Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1718,7 +1719,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1510,
+  "events": 1512,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7819,7 +7820,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-21T21:40:34Z",
+   "last": "2026-11-21T21:42:12Z",
    "lease": "run-1795297113",
    "released": false,
    "token": 34
@@ -7921,6 +7922,7 @@
    "HOLDER.run-1795263747",
    "HOLDER.run-1795268290",
    "HOLDER.run-1795285878",
+   "HOLDER.run-1795297113",
    "JUDGE.judge-1794833810",
    "JUDGE.judge-1794849236",
    "JUDGE.judge-1795134433",
