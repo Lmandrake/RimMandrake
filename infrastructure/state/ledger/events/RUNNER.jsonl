@@ -10222,3 +10222,4 @@
 {"seat":"RUNNER","event":"note","id":"SELFTEST_FIX_GSS_ART_MANIFEST_SIZES_SLAT","text":"ops_watch: cleared at 2026-11-21T12:00:52Z (testing.red_rvxcpn now 0)","ts":"2026-11-21T12:01:01Z","tsn":1795262461186432438}
 {"seat":"RUNNER","event":"live","id":"OPS_STEVE_DIAGNOSE_INVALID_MBTX_YAHV","result":"broken","detail":"Ops alarm STEVE_INVALID: steve.invalid_streak = 3 INVALID results in a row (MEASURED), line >= 3","ts":"2026-11-21T12:02:33Z","tsn":1795262553152331843}
 {"seat":"RUNNER","event":"live","id":"OPS_STEVE_DIAGNOSE_INVALID_MBTX_YAHV","result":"kept","detail":"sweep: running again","ts":"2026-11-21T12:03:19Z","tsn":1795262599789910717}
+{"seat":"RUNNER","event":"live","id":"OPS_STEVE_DIAGNOSE_INVALID_MBTX_YAHV","result":"broken","detail":"Ops alarm STEVE_INVALID: steve.invalid_streak = 3 INVALID results in a row (MEASURED), line >= 3","ts":"2026-11-21T12:06:37Z","tsn":1795262797479750432}
