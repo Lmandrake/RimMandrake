@@ -1,0 +1,1 @@
+./publish with two -m flags lands the LAST -m as the commit subject, not the first: fa04fa200c (2026-11-21) carries its body paragraph as its subject. Pass one -m, and put body lines after a blank line inside it.

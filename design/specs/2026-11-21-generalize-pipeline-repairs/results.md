@@ -88,3 +88,8 @@ State at 2026-11-21 2:20 AM PST.
 
 By the owner's measure (fewer and more general rules than on 2026-11-20), this run has not reached the goal: the root
 `CLAUDE.md` is still 89 lines longer than on 2026-11-20. The large deletions depend on the two live runs ending.
+
+### Polish (no ticket)
+
+- `selftest_tick_names.py` makes its temp folder inside the repo root (`.rimflow_selftest_tick_names/`) and leaves it when the run is killed. Seen once in this run's sweep.
+- Commit `fa04fa200c` carries its body paragraph as its subject (`./publish` took the last `-m`). The intended subject: a test makes no live effect.
