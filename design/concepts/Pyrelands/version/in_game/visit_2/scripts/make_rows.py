@@ -5,7 +5,7 @@ any FAIL -> FAIL, else any UNMEASURED -> UNMEASURED, else PASS (none read -> UNM
 line build_match.py printed for the loaded tier (evidence/identity_<tier>.json). ANNOT adds class / repair / unrepaired
 / owner / filed for a non-PASS row, written by the driver after the diagnosis. Rows are written in order; a later run
 of the same check is a later row.
-  python3 .../make_rows.py <test>=<evidence json>[,<json>...][#chainA+chainB][@tier] ...   (appends to rows.jsonl)"""
+  python3 .../make_rows.py <test>=<evidence json>[,<json>...][#chainA+chainB][~componentA+componentB][@tier] ...   (appends to rows.jsonl)"""
 import json, os, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 V2 = os.path.dirname(HERE)
@@ -16,13 +16,15 @@ DRIVER = ("python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Py
 ANNOT_FILE = os.path.join(HERE, "annotations.json")
 
 
-def verdict(paths, chains):
+def verdict(paths, chains, names=None):
     comps = []
     for p in paths:
         d = json.load(open(os.path.join(ROOT, p)))
         for c in d.get("components") or []:
             det = str(c.get("detail") or c.get("evidenceFull") or "")
             if "chain not run" in det or (chains and c.get("chain") not in chains):
+                continue
+            if names and c.get("name") not in names:
                 continue
             comps.append(c)
     vs = [c.get("verdict") for c in comps]
@@ -39,6 +41,8 @@ def main(argv):
         test, _, rest = spec.partition("=")
         rest, _, tier = rest.partition("@")
         tier = tier or "pyrelands"
+        rest, _, names = rest.partition("~")
+        names = set(names.split("+")) if names else None
         rest, _, only = rest.partition("#")
         paths = rest.split(",")
         chains = set()
@@ -47,7 +51,7 @@ def main(argv):
             chains |= set(d.get("chains_selected") or [])
         if only:
             chains &= set(only.split("+"))
-        v, n, bad = verdict(paths, chains)
+        v, n, bad = verdict(paths, chains, names)
         ident = json.load(open(os.path.join(V2, "evidence", "identity_%s.json" % tier)))
         row = {"test": test, "verdict": v, "site_checked": True, "game": "archmagi",
                "mod_sha": ident.get("mod_sha"), "command": DRIVER % ",".join(sorted(chains)),

@@ -1,7 +1,7 @@
 {
   "mod": "Pyrelands",
   "mode": "live",
-  "started_utc": "2026-11-21T04:51:59Z",
+  "started_utc": "2026-11-21T05:21:14Z",
   "expected": [
     "pyre_plant_distribution_correct",
     "pyre_animal_distribution_correct",
@@ -239,10 +239,10 @@
     },
     {
       "id": "firehawk.far_hawk_seeks_the_burn",
-      "status": "FAIL",
+      "status": "PASS",
       "functional": true,
-      "evidence": "ExpectationFailed: the hawk 60 cells off never took RM_FireHawkSeekBurn: ['RM_FireHawkCarryEmber', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'Wait_MaintainPosture', 'GotoWander', 'Wait_Wander', 'Wait_MaintainPosture', 'Wait_Wander', 'GotoWander', 'Wait_Wa",
-      "evidenceFull": "ExpectationFailed: the hawk 60 cells off never took RM_FireHawkSeekBurn: ['RM_FireHawkCarryEmber', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'Wait_MaintainPosture', 'GotoWander', 'Wait_Wander', 'Wait_MaintainPosture', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander']"
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
     },
     {
       "id": "firehawk.far_hawk_spread_off_control",
@@ -1104,17 +1104,17 @@
       ],
       "screenshots": [
         {
-          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\firehawk_carries_ember_1795236723538_1__cell_rect.png",
-          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\firehawk_carries_ember_1795236723538_1__cell_rect.png",
-          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/firehawk_carries_ember_1795236723538_1__cell_rect.png"
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\firehawk_carries_ember_1795238481557_1__cell_rect.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\firehawk_carries_ember_1795238481557_1__cell_rect.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/firehawk_carries_ember_1795238481557_1__cell_rect.png"
         }
       ]
     },
     {
       "chain": "firehawk",
       "name": "far_hawk_seeks_the_burn",
-      "verdict": "FAIL",
-      "evidenceFull": "ExpectationFailed: the hawk 60 cells off never took RM_FireHawkSeekBurn: ['RM_FireHawkCarryEmber', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'Wait_MaintainPosture', 'GotoWander', 'Wait_Wander', 'Wait_MaintainPosture', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander']",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
       "shows": [],
       "screenshots": []
     },
@@ -2088,190 +2088,190 @@
     }
   ],
   "summary": {
-    "PASS": 1,
-    "FAIL": 1,
+    "PASS": 2,
+    "FAIL": 0,
     "UNMEASURED": 116
   },
   "all_green": false,
   "timing": {
-    "n": 1557,
-    "total_ms": 60756.255,
-    "mean_ms": 39.0214,
-    "p50_ms": 18.9659,
-    "p95_ms": 322.9761,
+    "n": 2109,
+    "total_ms": 143973.672,
+    "mean_ms": 68.2663,
+    "p50_ms": 50.0317,
+    "p95_ms": 369.6908,
     "by_tool": {
       "jawa/static_call": {
-        "n": 3,
-        "mean_ms": 87.7635,
+        "n": 5,
+        "mean_ms": 74.6166,
         "errors": 0
       },
       "rimworld/get_game_info": {
-        "n": 246,
-        "mean_ms": 2.7049,
+        "n": 346,
+        "mean_ms": 15.7792,
         "errors": 0
       },
       "jawa/map_info": {
-        "n": 132,
-        "mean_ms": 7.8581,
+        "n": 182,
+        "mean_ms": 50.1179,
         "errors": 0
       },
       "rimworld/get_ui_state": {
         "n": 1,
-        "mean_ms": 3.592,
+        "mean_ms": 17.4476,
         "errors": 0
       },
       "jawa/prefs": {
         "n": 1,
-        "mean_ms": 26.4541,
+        "mean_ms": 50.1293,
         "errors": 0
       },
       "jawa/world_mutators_get": {
         "n": 1,
-        "mean_ms": 24.8805,
+        "mean_ms": 49.562,
         "errors": 0
       },
       "jawa/list_things": {
-        "n": 122,
-        "mean_ms": 18.4704,
+        "n": 172,
+        "mean_ms": 49.8484,
         "errors": 0
       },
       "jawa/get_roof_batch": {
         "n": 20,
-        "mean_ms": 8.5672,
+        "mean_ms": 49.8454,
         "errors": 0
       },
       "rimworld/get_cell_info": {
         "n": 20,
-        "mean_ms": 3.2189,
+        "mean_ms": 16.8629,
         "errors": 0
       },
       "jawa/cell_temperature": {
         "n": 20,
-        "mean_ms": 23.8808,
+        "mean_ms": 50.7376,
         "errors": 0
       },
       "jawa/world_tile_get": {
         "n": 1,
-        "mean_ms": 22.7072,
+        "mean_ms": 50.0563,
         "errors": 0
       },
       "jawa/weather_get": {
         "n": 2,
-        "mean_ms": 25.153,
+        "mean_ms": 50.901,
         "errors": 0
       },
       "jawa/time_clock": {
         "n": 1,
-        "mean_ms": 25.6523,
+        "mean_ms": 48.0946,
         "errors": 0
       },
       "jawa/incident_queue_clear": {
         "n": 1,
-        "mean_ms": 22.2137,
+        "mean_ms": 49.9704,
         "errors": 0
       },
       "jawa/list_pawns": {
-        "n": 260,
-        "mean_ms": 9.4933,
+        "n": 360,
+        "mean_ms": 50.5792,
         "errors": 0
       },
       "jawa/window_list_close": {
         "n": 2,
-        "mean_ms": 23.9699,
+        "mean_ms": 49.5151,
         "errors": 0
       },
       "jawa/drain_log": {
         "n": 1,
-        "mean_ms": 27.3514,
+        "mean_ms": 54.3667,
         "errors": 0
       },
       "jawa/name_colony": {
         "n": 1,
-        "mean_ms": 25.57,
+        "mean_ms": 61.8693,
         "errors": 0
       },
       "jawa/destroy_batch": {
         "n": 4,
-        "mean_ms": 161.5061,
+        "mean_ms": 168.7788,
         "errors": 0
       },
       "jawa/pawn_need": {
-        "n": 387,
-        "mean_ms": 21.9395,
+        "n": 537,
+        "mean_ms": 51.2481,
         "errors": 0
       },
       "jawa/pawn_health": {
         "n": 19,
-        "mean_ms": 24.513,
+        "mean_ms": 49.7964,
         "errors": 0
       },
       "jawa/mod_settings_field": {
         "n": 20,
-        "mean_ms": 25.6958,
+        "mean_ms": 54.1462,
         "errors": 0
       },
       "jawa/set_terrain_batch": {
         "n": 3,
-        "mean_ms": 262.8149,
+        "mean_ms": 275.7008,
         "errors": 0
       },
       "jawa/set_plants": {
         "n": 14,
-        "mean_ms": 36.0555,
+        "mean_ms": 55.4527,
         "errors": 0
       },
       "jawa/set_terrain": {
         "n": 3,
-        "mean_ms": 23.6791,
+        "mean_ms": 50.1696,
         "errors": 0
       },
       "jawa/map_fire": {
         "n": 15,
-        "mean_ms": 35.4404,
+        "mean_ms": 54.0525,
         "errors": 0
       },
       "jawa/spawn_pawn": {
         "n": 3,
-        "mean_ms": 22.9023,
+        "mean_ms": 49.9712,
         "errors": 0
       },
       "jawa/safe_advance": {
-        "n": 121,
-        "mean_ms": 305.9126,
+        "n": 171,
+        "mean_ms": 327.8849,
         "errors": 0
       },
       "jawa/site_state": {
-        "n": 121,
-        "mean_ms": 24.1271,
+        "n": 171,
+        "mean_ms": 52.9245,
         "errors": 0
       },
       "jawa/clear_ui": {
         "n": 1,
-        "mean_ms": 21.9487,
+        "mean_ms": 66.7376,
         "errors": 0
       },
       "rimworld/screenshot_cell_rect": {
         "n": 1,
-        "mean_ms": 926.1664,
+        "mean_ms": 882.7732,
         "errors": 0
       },
       "rimworld/list_colonists": {
         "n": 6,
-        "mean_ms": 2.946,
+        "mean_ms": 16.6818,
         "errors": 0
       },
       "jawa/weather_set": {
         "n": 1,
-        "mean_ms": 18.3103,
+        "mean_ms": 49.3807,
         "errors": 0
       },
       "jawa/pawn_force_incapacitate": {
         "n": 3,
-        "mean_ms": 26.2977,
+        "mean_ms": 49.8002,
         "errors": 0
       }
     }
   },
   "partial": false,
-  "mod_hash": "5105ea536bf181f74361e4f9f2bb6eaf63bcc27edfa27a5d49a1634526f1689b"
+  "mod_hash": "3a6ba34cf690cbb01f8db6848f92a35eeab6e1ef6b3d3bf4d9a9c4798f7a0738"
 }
