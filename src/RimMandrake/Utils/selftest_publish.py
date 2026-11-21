@@ -143,6 +143,50 @@ def t_new_file_and_delete(a, b):
     assert "dir/new.sh" in names and "g.txt" not in names, names
 
 
+ITEMS_DIR = "infrastructure/state/items"
+BENCH_SHARD = "infrastructure/state/ledger/events/BENCH.jsonl"
+
+
+def _close_move(a, iid):
+    """What `rimflow close` does on disk: append to the shard and rename the prose into items/closed/ (no commit)."""
+    with open(os.path.join(a, BENCH_SHARD), "a") as f:
+        f.write('{"event": "close", "id": "%s"}\n' % iid)
+    os.makedirs(os.path.join(a, ITEMS_DIR, "closed"), exist_ok=True)
+    os.rename(os.path.join(a, ITEMS_DIR, iid + ".md"), os.path.join(a, ITEMS_DIR, "closed", iid + ".md"))
+
+
+def t_shard_publish_carries_the_close_prose_move(a, b):
+    """RIMMANDRAKE_LAND_CLOSED_PROSE_MOVE_HELPERS_PUBLISH_SHARD_ONLY: a helper publishes only its ledger shard after
+    `rimflow close`; the prose rename close made must land with it (five items drifted, 2026-11-18/19)."""
+    for iid in ("ITEM_A", "ITEM_B"):
+        write(a, "%s/%s.md" % (ITEMS_DIR, iid), "# %s\n" % iid)
+    write(a, BENCH_SHARD, "")
+    sh(a, "add", ITEMS_DIR, BENCH_SHARD)
+    sh(a, "commit", "-q", "-m", "seed items")
+    sh(a, "push", "-q", "origin", "HEAD:main")
+    _close_move(a, "ITEM_A")
+    os.remove(os.path.join(a, ITEMS_DIR, "ITEM_B.md"))      # a deletion with no closed copy is not a close move
+    quiet(P.publish, a, [BENCH_SHARD], "ledger: close ITEM_A")
+    names = sh(a, "ls-tree", "-r", "--name-only", "origin/main").split()
+    assert ITEMS_DIR + "/closed/ITEM_A.md" in names, "closed prose did not land: %s" % names
+    assert ITEMS_DIR + "/ITEM_A.md" not in names, "live prose still on main: %s" % names
+    assert ITEMS_DIR + "/ITEM_B.md" in names, "an unrelated deletion was carried: %s" % names
+
+
+def t_non_ledger_publish_carries_no_prose_move(a, b):
+    write(a, "%s/ITEM_A.md" % ITEMS_DIR, "# ITEM_A\n")
+    write(a, BENCH_SHARD, "")
+    sh(a, "add", ITEMS_DIR, BENCH_SHARD)
+    sh(a, "commit", "-q", "-m", "seed items")
+    sh(a, "push", "-q", "origin", "HEAD:main")
+    _close_move(a, "ITEM_A")
+    write(a, "g.txt", "changed\n")
+    quiet(P.publish, a, ["g.txt"], "code only")
+    names = sh(a, "ls-tree", "-r", "--name-only", "origin/main").split()
+    assert ITEMS_DIR + "/ITEM_A.md" in names and ITEMS_DIR + "/closed/ITEM_A.md" not in names, \
+        "a publish that names no ledger shard carried a prose move: %s" % names
+
+
 def t_rebases_onto_moved_origin(a, b):
     peer = peer_push(b, "g.txt", "peer g\n")
     write(a, "f.txt", LINES.replace("line 9", "LINE 9"))

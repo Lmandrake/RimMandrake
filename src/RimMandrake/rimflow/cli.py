@@ -1847,7 +1847,7 @@ def _replaces(args, seat, w):
             print("%s -> superseded by %s." % (parent, args.id))
             moved = _move_prose_to_closed(parent)
             if moved:
-                print("prose moved: %s -> %s — stage BOTH paths in your commit." % moved)
+                print("prose moved: %s -> %s — stage BOTH paths in your commit (./publish naming the ledger shard carries them)." % moved)
         except SystemExit:
             # ⛔ DO NOT NAME A CAUSE HERE. This used to assert "— it belongs to another
             # seat", which is only ONE of the things `_emit` refuses for: a seat
@@ -2564,7 +2564,7 @@ def cmd_drop(args, seat):
     _announce_unblocks(args.id)
     moved = _move_prose_to_closed(args.id)
     if moved:
-        print("prose moved: %s -> %s — stage BOTH paths in your commit." % moved)
+        print("prose moved: %s -> %s — stage BOTH paths in your commit (./publish naming the ledger shard carries them)." % moved)
     return 0
 
 
@@ -2613,7 +2613,7 @@ def _simple_run(verb, extra, args, seat, pf):
         _announce_unblocks(args.id)
         moved = _move_prose_to_closed(args.id)
         if moved:
-            print("prose moved: %s -> %s — stage BOTH paths in your commit." % moved)
+            print("prose moved: %s -> %s — stage BOTH paths in your commit (./publish naming the ledger shard carries them)." % moved)
     return 0
 
 
@@ -2972,7 +2972,7 @@ def cmd_close(args, seat):
     _announce_unblocks(args.id)
     moved = _move_prose_to_closed(args.id)
     if moved:
-        print("prose moved: %s -> %s — stage BOTH paths in your commit." % moved)
+        print("prose moved: %s -> %s — stage BOTH paths in your commit (./publish naming the ledger shard carries them)." % moved)
     return 0
 
 
@@ -3184,7 +3184,7 @@ def cmd_implemented(args, seat):
         _announce_unblocks(args.id)
         moved = _move_prose_to_closed(args.id)
         if moved:
-            print("prose moved: %s -> %s — stage BOTH paths in your commit." % moved)
+            print("prose moved: %s -> %s — stage BOTH paths in your commit (./publish naming the ledger shard carries them)." % moved)
         return 0
     if after.held:
         print("  holds short of done, nothing owed but:\n%s\n  A level-tagged pass on this sha finishes it: rimflow verify "
@@ -3259,7 +3259,7 @@ def cmd_verify(args, seat):
         print("%s REOPENED: a fail on the closed work. done -> ready; the close stands in the log." % args.id)
         moved = _move_prose_back(args.id)
         if moved:
-            print("prose moved: %s -> %s — stage BOTH paths in your commit." % moved)
+            print("prose moved: %s -> %s — stage BOTH paths in your commit (./publish naming the ledger shard carries them)." % moved)
     elif before is not None and before.state == "validated" and it.state == "built":
         print("%s demoted: validated -> built; owes %s again." % (args.id, ", ".join(it.owed_levels()) or "nothing new"))
     if r.result == "pass" and r.criterion and getattr(it, "built_sha", None) and not model.same_sha(r.sha, it.built_sha):
@@ -3280,7 +3280,7 @@ def cmd_verify(args, seat):
         _announce_unblocks(args.id)
         moved = _move_prose_to_closed(args.id)
         if moved:
-            print("prose moved: %s -> %s — stage BOTH paths in your commit." % moved)
+            print("prose moved: %s -> %s — stage BOTH paths in your commit (./publish naming the ledger shard carries them)." % moved)
     return 0
 
 

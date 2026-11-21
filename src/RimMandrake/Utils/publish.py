@@ -1071,12 +1071,40 @@ def _undo(top, made, named):
     return "this run's commit was undone: your files are as you left them"
 
 
+LEDGER_SHARDS = "infrastructure/state/ledger/events/"
+ITEMS_DIR = "infrastructure/state/items/"
+
+
+def carried_prose_moves(top, named):
+    """-> the prose-move paths `rimflow close` left on disk, carried with a ledger shard. close renames
+    items/<ID>.md to items/closed/<ID>.md and leaves the commit to the caller; a helper publishes only its shard, so
+    the move never landed (six items drifted by 2026-11-20, RIMMANDRAKE_LAND_CLOSED_PROSE_MOVE_HELPERS_PUBLISH_SHARD_ONLY).
+    Only the exact pair counts: a tracked items/<ID>.md deleted from the tree whose items/closed/<ID>.md exists. A
+    publish that names no ledger shard carries nothing."""
+    if not any(p.startswith(LEDGER_SHARDS) for p in named):
+        return []
+    r = run(top, "ls-files", "--deleted", "-z", "--", ITEMS_DIR)     # unreadable: a Refuse, never "none"
+    out_ = []
+    for p in (r.stdout or "").split("\0"):
+        rest = p[len(ITEMS_DIR):] if p.startswith(ITEMS_DIR) else ""
+        if not rest.endswith(".md") or "/" in rest:
+            continue
+        closed = ITEMS_DIR + "closed/" + rest
+        if os.path.isfile(os.path.join(top, closed)):
+            out_ += [x for x in (p, closed) if x not in named]
+    return out_
+
+
 def _publish(top, paths, msg, cwd=None):
     skips = door_skips()
     if paths:
         if not msg or not msg.strip():
             raise Refuse("a message is required (-m or -F)")
         named = rel_paths(top, paths, cwd or top)
+        carried = carried_prose_moves(top, named)
+        if carried:
+            print("carried with the ledger shard (rimflow close moved the prose): %s" % ", ".join(carried))
+            named = sorted(set(named) | set(carried))
         made = commit(top, named, with_skip_trailers(top, msg if msg.endswith("\n") else msg + "\n", skips))
         if not made:
             print("no change in the named paths; pushing any local commits")
