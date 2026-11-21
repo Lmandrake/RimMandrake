@@ -29,8 +29,17 @@ import json
 import os
 import time
 
-_PROFILE = os.environ.get("USERPROFILE") or ("/mnt/c/Users/Mandrake" if os.path.isdir("/mnt/c/Users/Mandrake") else "")
-SAVES = os.path.join(_PROFILE, "AppData", "LocalLow", "Ludeon Studios", "RimWorld by Ludeon Studios", "Saves")
+import sys
+
+_UTILS = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if _UTILS not in sys.path:
+    sys.path.insert(0, _UTILS)
+import game_paths  # noqa: E402
+
+# The Saves folder of the game this process names (game_paths follows RM_GAME_INSTANCE: game b has its own). Hard-wired
+# to game a's LocalLow before 2026-11-20, a keeper saved on game b was watched in game a's folder and read "no new file"
+# (RIMMANDRAKE_POINT_REVIEWMAP_AT_GAME_B_SAVES_KEEPER_BLIND; boundary design/specs/2026-11-20-reviewmap-game-saves/).
+SAVES = game_paths.SAVES
 SIGNS = os.path.join(os.path.dirname(SAVES), "JawaBenchReviewSigns")   # the companion's sidecar folder
 SIGN_BREAK = "\\n"          # the two characters backslash + n: one line break in a drawn sub
 SIGN_WIDTH = 60
