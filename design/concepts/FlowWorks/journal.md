@@ -12,7 +12,7 @@ now, offline only"). Its table matches the pilot's columns (`design/concepts/Exp
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`: "Yes, lock the other four mods").
   Code exists and is large: `src/RimMandrake/FlowWorks/` (C# mod, a 325+ case C# SelfTest, about 168 Python selftests,
   a northstar proof harness).
-- **Stage now:** Stage 3, offline build, since 2026-11-19 11:54 PM PST (`version/stage_record.json`).
+- **Stage now:** Stage 6, in-game acceptance, since 2026-11-20 9:40 PM PST (`version/stage_record.json`).
 - **Bars:** 57 = 29 inventory rows of `record.json` + 28 leaves of `tree.json` (`coverage_judge.required_ids()`); 59 at the
   lock, his card of 2026-11-14 added `inv_geyser_tub` and `inv_liquid_coating` (61), and his card of 2026-11-14 ~9:43 PM
   PST moved the four wetting bars to 0.2.0 (interventions below; `version/next_version/README.md`).
@@ -22,7 +22,7 @@ now, offline only"). Its table matches the pilot's columns (`design/concepts/Exp
 - **Held look statements for this mod:** 103 rows in five files of `design/RimMandrake/validation_holding/` (2026-11-12:
   56 rows; 2026-11-13 morning: 18; 2026-11-13 dig interface: 2; 2026-11-13 evening: 5; 2026-11-14: 22); 83 are placed
   in `version/test_table.json`, all 103 placed. [measured, preflight C8, 2:40 PM PST]
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-19 11:54 PM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-20 9:40 PM PST).
 
 ### The vision (his root paragraph, approved 2026-11-04, OWNER:1793794915205594887; eight lines in `version/vision.md`)
 
@@ -381,4 +381,13 @@ None open; question 3 (the dig speed) is answered in the history entry of 2026-1
 - Steward confirms: read visit_2/SUMMARY.md and rows.jsonl (18 PASS, 8 FAIL, 5 UNMEASURED of 31, build_match 31 of 31): verdict not met stands; sc_source_pays is a CRITERION FLAW (row against his ponds-pump-to-last-dL ruling), geyser a RECORD GAP (table runs the draft scene), OL a harness REAL MISS (reset called on the wrong class), PIT_LOOK a CRITERION FLAW (a look row the script can never decide), the rest REAL MISS or staging gaps needing live experiments; no test assertion weakened in the visit (only f24f71dba4 exit-code split)
 - Was, "Stage now": - **Stage now:** Stage 6, in-game acceptance, since 2026-11-19 8:41 PM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-19 8:41 PM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-20 9:40 PM PST, stage change: Offline build (Stage 3) to In-game acceptance (Stage 6) (by DISPATCH)
+
+- Why: every open road-back item (RIMMANDRAKE_JUDGE_FLOWWORKS_DROWNED_BODY_COVER_BY_EYE, RIMMANDRAKE_PROBE_FLOWWORKS_GARDEN_YARD_MOUND_RELIEF_OR_KERNEL, RIMMANDRAKE_READ_FLOWWORKS_PAWN_HEIGHT_CONTROL_SINK_NONE, RIMMANDRAKE_STAGE_FLOWWORKS_ICE_CUT_SHOVEL_KEEP_FROZEN, RIMMANDRAKE_STAGE_FLOWWORKS_PIT_TRAP_RAID_NONE_FELL, RIMMANDRAKE_STAGE_FLOWWORKS_TRENCH_RAID_NEVER_CAME_CLOSE, RIMMANDRAKE_TRACE_FLOWWORKS_FALLEN_RAIDER_WAITS_FOR_NO_LADDER, RIMMANDRAKE_TRACE_FLOWWORKS_HELD_WINCH_FELL_IN_THE_CONTROL, RIMMANDRAKE_TRACE_FLOWWORKS_ISLAND_RESTORE_OUT_OF_BANK_REACH, RIMMANDRAKE_TRACE_FLOWWORKS_MOAT_SWIMMERS_ONLY_IN_THE_CONTROL) is a fault only the game can show, and the version's offline Problems are closed: the Maturation tick takes the game-only exit back to Stage 6 (RIMMANDRAKE_UNPARK_FLOWWORKS_STUCK_AT_OFFLINE_STAGE_EIGHT_HOURS)
+- Checks passed: order, game_only, by, version, hold.
+- Game only: RIMMANDRAKE_JUDGE_FLOWWORKS_DROWNED_BODY_COVER_BY_EYE, RIMMANDRAKE_PROBE_FLOWWORKS_GARDEN_YARD_MOUND_RELIEF_OR_KERNEL, RIMMANDRAKE_READ_FLOWWORKS_PAWN_HEIGHT_CONTROL_SINK_NONE, RIMMANDRAKE_STAGE_FLOWWORKS_ICE_CUT_SHOVEL_KEEP_FROZEN, RIMMANDRAKE_STAGE_FLOWWORKS_PIT_TRAP_RAID_NONE_FELL, RIMMANDRAKE_STAGE_FLOWWORKS_TRENCH_RAID_NEVER_CAME_CLOSE, RIMMANDRAKE_TRACE_FLOWWORKS_FALLEN_RAIDER_WAITS_FOR_NO_LADDER, RIMMANDRAKE_TRACE_FLOWWORKS_HELD_WINCH_FELL_IN_THE_CONTROL, RIMMANDRAKE_TRACE_FLOWWORKS_ISLAND_RESTORE_OUT_OF_BANK_REACH, RIMMANDRAKE_TRACE_FLOWWORKS_MOAT_SWIMMERS_ONLY_IN_THE_CONTROL
+- Was, "Stage now": - **Stage now:** Stage 3, offline build, since 2026-11-19 11:54 PM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-19 11:54 PM PST).
 - Record: `version/stage_record.json`.
