@@ -1,0 +1,33 @@
+RIMMANDRAKE_MOCK_FLOWWORKS_WATER_BY_DEPTH_ON_REAL_GROUND offline acceptance, at 6c668b36a8
+== base 9efee45cad:
+PASS 1 the target is the FIRM mockup: hides worst 0.00004 limit 0.0005 · colour worst 0.0000 limit 0.0015 · cases 14
+FAIL 2 model seen = target at each listed depth: worst 0.32574 at 0.2 m limit 0.0005 cases 7
+PASS 2 model fresh-water body colour (0.0953, 0.2048, 0.3765) = target (0.0953, 0.2048, 0.3765): worst 0.00003 limit 0.0005 cases 3
+FAIL 2 model sheet over a mid grey = target: worst 0.1318 limit 0.0015 cases 7
+FAIL 3 C# defaults are the target's (5 read): DefaultShallowOpacity=None want 0.35
+PASS 3 C# Body(WaterColour) from its literals = target: worst 0.00003 limit 0.0005 cases 3
+FAIL 3 golden table (dotnet checks Seen against it) = target: 33 rows, worst 0.29034 limit 0.0005, MISSING depths ['0.2', '5', '8']
+FAIL 4 the range: 660660 cases (clarities 20, depths 1001, settings 30); worst excess range 0.00e+00, clearer_deeper 0.00e+00, below_shallow 6.00e-01, above_deep 0.00e+00, dry 0.00e+00, opaque 0.00e+00 limit 1e-6
+PASS can-fail: the law shipped before this build (no shallow strength) goes red (2 model seen = target at each listed depth: worst 0.32574 at; 2 model sheet over a mid grey = target: worst 0.1318 limit 0; 3 C# defaults are the target's (5 read): DefaultShallowOpaci; 3 golden table)
+PASS can-fail: a pale body (Darken 0.3) goes red (2 model seen = target at each listed depth: worst 0.32574 at; 2 model fresh-water body colour (0.1668, 0.3584, 0.6588) = t; 2 model sheet over a mid grey = target: worst 0.2540 limit 0; 3 C# defaults )
+PASS can-fail: a spliced golden row goes red (2 model seen = target at each listed depth: worst 0.32574 at; 2 model sheet over a mid grey = target: worst 0.1318 limit 0; 3 C# defaults are the target's (5 read): DefaultShallowOpaci; 3 golden table)
+PASS can-fail: a C# shallow default of 0 goes red (2 model seen = target at each listed depth: worst 0.32574 at; 2 model sheet over a mid grey = target: worst 0.1318 limit 0; 3 C# defaults are the target's (5 read): DefaultShallowOpaci; 3 golden table)
+RESULT RED 5
+== fix 6c668b36a8:
+PASS 1 the target is the FIRM mockup: hides worst 0.00004 limit 0.0005 · colour worst 0.0000 limit 0.0015 · cases 14
+PASS 2 model seen = target at each listed depth: worst 0.00004 at 1 m limit 0.0005 cases 7
+PASS 2 model fresh-water body colour (0.0953, 0.2048, 0.3765) = target (0.0953, 0.2048, 0.3765): worst 0.00003 limit 0.0005 cases 3
+PASS 2 model sheet over a mid grey = target: worst 0.0004 limit 0.0015 cases 7
+PASS 3 C# defaults are the target's (5 read)
+PASS 3 C# Body(WaterColour) from its literals = target: worst 0.00003 limit 0.0005 cases 3
+PASS 3 golden table (dotnet checks Seen against it) = target: 42 rows, worst 0.00004 limit 0.0005
+PASS 4 the range: 660660 cases (clarities 20, depths 1001, settings 30); worst excess range 0.00e+00, clearer_deeper 0.00e+00, below_shallow 0.00e+00, above_deep 0.00e+00, dry 0.00e+00, opaque 0.00e+00 limit 1e-6
+PASS can-fail: the law shipped before this build (no shallow strength) goes red (2 model seen = target at each listed depth: worst 0.32574 at; 2 model sheet over a mid grey = target: worst 0.1318 limit 0; 4 the range: 660660 cases (clarities 20, depths 1001, settin)
+PASS can-fail: a pale body (Darken 0.3) goes red (2 model fresh-water body colour (0.1668, 0.3584, 0.6588) = t; 2 model sheet over a mid grey = target: worst 0.2540 limit 0)
+PASS can-fail: a spliced golden row goes red (3 golden table (dotnet checks Seen against it) = target: 42 )
+PASS can-fail: a C# shallow default of 0 goes red (3 C# defaults are the target's (5 read): DefaultShallowOpaci)
+RESULT GREEN
+== C# SelfTest (selftest_flowworks_stock.py) on the fix:
+1369/1369 passed
+hose: 188/188 checks passed
+hose: 457/457 assertions passed (moved from Gimme Some Slack: 350; new: 107)

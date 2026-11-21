@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "78a108a7bd55c65f8ab813b16d8c829c2fbcdb1d984898101a60beef000bc8e3",
+  "body_sha256": "ac20cf7cc1ca7ef51f5e2f69bfc9e9db05d3832b62da5b7141bb434d8ac2c907",
   "reducer": 1,
   "shards": {
    "BACKFILL": 893183,
@@ -15,7 +15,7 @@
    "HOLDER.run-1795164214": 1355,
    "HOLDER.run-1795165115": 1137,
    "HOLDER.run-1795223527": 1482,
-   "HOLDER.run-1795235568": 843,
+   "HOLDER.run-1795235568": 2438,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1236,11 +1236,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795223527",
-   "done": "RIMMANDRAKE_REBUILD_FLOWWORKS_PITS_AS_RELATIVE_TERRAIN landed e2288f4c84e8 and closed (with the absorbed concealed-cover and pale-frame items): pits drawn as relative terrain, offline 5/5 (1/5 on base), C# 1369/1369; in-game look UNRUN as OL_OWNER_LOOK_READS",
-   "next": "Send the record back to in_game and run pit_relief_live.py plus the pit captures of OL_OWNER_LOOK_READS on the e2288f4c84e8 deploy",
-   "ruled_out": "the wall planner was already relative on 4-neighbour edges; the flat look was no re-mesh past 2 m plus one floor colour past 2 m; the 2-argument MapMeshDirty does not reach adjacent sections for a custom flag",
-   "ts": "2026-11-21T02:10:25Z"
+   "by": "HOLDER.run-1795235568",
+   "done": "RIMMANDRAKE_MOCK_FLOWWORKS_WATER_BY_DEPTH_ON_REAL_GROUND built at 6c668b36a8: judge picked FIRM, target in version/water_by_depth_target.json, Seen gains ShallowOpacity 0.35 + setting; offline acceptance GREEN (RED 5 on base), C# 1369/1369; OL_OWNER_LOOK_READS UNRUN",
+   "next": "Send the record back to in_game; run OL_OWNER_LOOK_READS on the 6c668b36a8 deploy (water stations 7-22 against the target) with the pit relief checks",
+   "ruled_out": "the geyser vent was hidden on 11-13 by a draw shift (11cbfa650a), not by the law, so its 0.6 threshold was a margin of the old law, not a bar",
+   "ts": "2026-11-21T05:19:25Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1692,7 +1692,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1403,
+  "events": 1405,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7793,7 +7793,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-21T05:04:04Z",
+   "last": "2026-11-21T05:19:25Z",
    "lease": "run-1795235568",
    "released": false,
    "token": 19
@@ -10411,6 +10411,14 @@
     "ts": "2026-11-16T11:41:42Z",
     "version": "0.1.0",
     "where": "fw_live_checks.py W1_wakes_terrain_walked"
+   },
+   "trap:water-look-checks-held-old-law-margins": {
+    "by": "HOLDER.run-1795235568",
+    "status": "noted",
+    "text": "Water look checks from before 2026-11-20 held the 11-13 law margins (vent seen >= 0.6 at 1 m, flush icon > 0.5); under the written target (1 m seen 0.4677) they read red though nothing got worse. Take a look check number from version/water_by_depth_target.json, never from the law of the day.",
+    "ts": "2026-11-21T05:19:10Z",
+    "version": "0.1.0",
+    "where": "Source/SelfTest/GeyserTubChecks.cs, SubmergeDrawChecks.cs, UnderLiquidParityChecks.cs"
    },
    "trap:water-spills-as-a-surface-fill-not-filth": {
     "by": "BACKFILL",

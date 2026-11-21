@@ -1,13 +1,13 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":28527,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":843,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=a19fe250acde92cee30502a25dd2142defc7536a87994c4bb0f3205093c977bd -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":28527,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=acb9c1fb1310c6d6a9c630f1101b7bb086262d1c40ada5df102fffd61841aa8e -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage offline_build · 1403 events in 17 shards · reducer 1
-holder lease run-1795235568, token 19, last active 2026-11-21T05:04:04Z
+version 0.1.0 · stage offline_build · 1405 events in 17 shards · reducer 1
+holder lease run-1795235568, token 19, last active 2026-11-21T05:19:25Z
 holder session ae30ba5b-fcc6-4640-befd-6fec119dedcc, context 281111 of ceiling 400000
 
-## Last checkpoint (HOLDER.run-1795223527, 2026-11-21T02:10:25Z)
-- done: RIMMANDRAKE_REBUILD_FLOWWORKS_PITS_AS_RELATIVE_TERRAIN landed e2288f4c84e8 and closed (with the absorbed concealed-cover and pale-frame items): pits drawn as relative terrain, offline 5/5 (1/5 on base), C# 1369/1369; in-game look UNRUN as OL_OWNER_LOOK_READS
-- next: Send the record back to in_game and run pit_relief_live.py plus the pit captures of OL_OWNER_LOOK_READS on the e2288f4c84e8 deploy
-- ruled out: the wall planner was already relative on 4-neighbour edges; the flat look was no re-mesh past 2 m plus one floor colour past 2 m; the 2-argument MapMeshDirty does not reach adjacent sections for a custom flag
+## Last checkpoint (HOLDER.run-1795235568, 2026-11-21T05:19:25Z)
+- done: RIMMANDRAKE_MOCK_FLOWWORKS_WATER_BY_DEPTH_ON_REAL_GROUND built at 6c668b36a8: judge picked FIRM, target in version/water_by_depth_target.json, Seen gains ShallowOpacity 0.35 + setting; offline acceptance GREEN (RED 5 on base), C# 1369/1369; OL_OWNER_LOOK_READS UNRUN
+- next: Send the record back to in_game; run OL_OWNER_LOOK_READS on the 6c668b36a8 deploy (water stations 7-22 against the target) with the pit relief checks
+- ruled out: the geyser vent was hidden on 11-13 by a draw shift (11cbfa650a), not by the law, so its 0.6 threshold was a margin of the old law, not a bar
 
 ## Open findings (178)
 (claimed fixes, awaiting a judge, on one line each with the oldest 127 open findings, named without their 'finding:': `modledger.py show --mod FlowWorks finding:<NAME>`)
@@ -190,7 +190,7 @@ holder session ae30ba5b-fcc6-4640-befd-6fec119dedcc, context 281111 of ceiling 4
 - RIMMANDRAKE_PIN_FLOWWORKS_CONVERTER_CALLER_RATE_AND_SUN [open, problem · bars inv_converters]: T_CONVERT stays green when CompLiquidConverter drops the th…
 - RIMMANDRAKE_PIN_FLOWWORKS_DRILL_CALLER_READS_SETTING [open, problem · bars inv_drilling]: T_DRILL stays green when Building_LiquidDrill.CurrentBlock…
 
-## Traps (266) — what a reader would otherwise get wrong (each cut to 60 chars; `modledger.py show --mod FlowWorks <subject>` for the whole)
+## Traps (267) — what a reader would otherwise get wrong (each cut to 60 chars; `modledger.py show --mod FlowWorks <subject>` for the whole)
 - trap:the-inventory-s-proof-field-reads-stale-20
 - trap:three-inventory-rows-are-impl-absent
 - trap:every-live-scene-s-tier-says-quicktest
@@ -312,6 +312,7 @@ holder session ae30ba5b-fcc6-4640-befd-6fec119dedcc, context 281111 of ceiling 4
 - trap:z-log-budget-charges-the-error-to-gss
 - trap:a-per-square-rounded-fake-hands-back-every-small-take
 - trap:proofsubmerge-nothing-drawn-means-drawn-whole-or-absent
+- trap:water-look-checks-held-old-law-margins
 - 145 traps on closed or claimed findings (verified, withdrawn, claimed_fixed), not listed: `modledger.py find --mod FlowWorks --class trap <words>`
 
 ## Causes refuted (46) — do not chase these again
@@ -492,6 +493,6 @@ spend recorded: USD 78.94, 45401435 tokens
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
 - notes: 11, never printed here (`modledger.py find --mod FlowWorks <words>`)
-- the full history: 1403 events (views/history.md; never read whole)
+- the full history: 1405 events (views/history.md; never read whole)
 
-cursor: t=2026-11-21T05:04:04Z.1795237444426218569 (modledger.py since --mod FlowWorks t=2026-11-21T05:04:04Z.1795237444426218569 prints what changed after this packet)
+cursor: t=2026-11-21T05:19:25Z.1795238365957606416 (modledger.py since --mod FlowWorks t=2026-11-21T05:19:25Z.1795238365957606416 prints what changed after this packet)
