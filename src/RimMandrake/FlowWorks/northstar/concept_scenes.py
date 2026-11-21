@@ -2394,7 +2394,8 @@ def _garden(S):
                          (S.B.call('jawa/pawn_need', pawn=p['id'], action='list') or {}).get('needs') or [])
             if needs.get('Food', 1.0) < 0.5:
                 S.B.call('jawa/pawn_need', pawn=p['id'], action='need', need='Food', level=1.0)
-            if (p['id'] != drinker or drank) and needs.get('RM_Thirst', 1.0) < 0.3:
+            # topped up well above ThirstyBelow (0.3, RM_ThirstMath): at < 0.3 a pawn already seeks a drink inside the chunk
+            if (p['id'] != drinker or drank) and needs.get('RM_Thirst', 1.0) < 0.9:
                 S.B.call('jawa/pawn_need', pawn=p['id'], action='need', need='RM_Thirst', level=1.0)
 
     log = []                                       # one entry a chunk: tank units, drill read, yard read, head lines
