@@ -125,7 +125,8 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 
 ## Facts you cannot guess
 
-- The game reads `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods`, never this repo. A file that you write
+- Game a reads `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods`, and game b reads its own `Mods` folder
+  (§There are several live games). No game reads this repo. A file that you write
   here is not deployed.
 - A cold load on the full mod list takes many minutes. A quicktest map takes about 90 s. So never restart the game
   only to look at the result. The figures: `design/RimMandrake/CLAUDE.history.md` and the `rimworld-load-round` skill.
@@ -612,9 +613,36 @@ python3 src/RimMandrake/Utils/system_click.py <x> <y>          OS-level click fo
 
 - This is a user-level rule. Here, reach the other machine over Tailscale.
 
+## There are several live games; a busy game is not a reason to wait
+
+- Never write or say "waiting for the live game". Name the game. Say why no other game can take the work.
+- The games, each with its own bridge lock:
+  - Game a on Archmagi: Steam's install. It is the owner's game, and it holds his full mod list. Lock `archmagi` (the
+    default).
+  - Game b on Archmagi: its own install, Mods and BridgeTools (`D:\ClaudeWork\rimmandrake\instances\b\game`). Lock
+    `archmagi.b`.
+  - The SteveDesktop games: locks `stevedesktop` and `stevedesktop.b`. Submit work to them through the SteveDesktop
+    test lane (`infrastructure/stevedesktop/RUNBOOK.md`).
+- A bridge holder is one seat that drives one game. Each game has one holder at a time. Two seats may drive two games
+  at the same time.
+- `python3 src/RimMandrake/Utils/game_instance.py status` lists the games that run. `launch <name>` starts one and
+  `stop` ends one. A seat that needs game b starts it; do not ask.
+- To act on game b: `RM_GAME_INSTANCE=b` for a tool, `--host archmagi.b` for `rimflow bridge`, `--instance b` for
+  `deploy_custom_mods.py`. A deploy for game b writes only game b's folders.
+- Choose the game by the work:
+  - Work that a tier mod list can prove goes to any free game. If game a is busy or held, use game b or SteveDesktop.
+  - Only a check that needs his full mod list must use game a. The full list on game b beside game a does not fit in
+    Archmagi's memory. Such a wait names the checks and game a.
+  - Game a is his. His OWNER hold and `./pipe off game:a` stop work on game a only. Work then goes to game b.
+- A pipeline stage or tick line that reads "needs the live game" while a game is free is a pipeline defect. Fix it.
+- Full text: `design/specs/2026-11-20-per-game-hold-own-install/boundary.md` and
+  `design/RimMandrake/two_rimworld_instances_2026-11-07.md`.
+
 ## The bridge is passed through one file
 
-- One window drives the live game at a time. `infrastructure/state/BRIDGE` records who holds the bridge.
+- One window drives each live game at a time. `rimflow bridge who [--host <game>]` says who holds a game's bridge.
+  `infrastructure/state/BRIDGE` records the holder of game a.
+- The rules below apply to each game's lock. A command with no `--host` acts on game a.
 - Write that file only with `rimflow bridge who | take --for "<what for>" | release`. Release the bridge the moment
   you stop.
 - The lock errs toward allowing. A hold with no event for 45 minutes is stale: take it. `take --force` works on any
