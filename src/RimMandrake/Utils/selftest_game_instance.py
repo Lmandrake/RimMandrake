@@ -298,14 +298,15 @@ def bridge(w):
     for verdict, cases in (("refuses", refuse), ("allowed", allow)):
         for label, holds, owner in cases:
             inst = "b" if label.startswith("game b") else None
-            w.bridge(*holds)
+            w.bridge(*holds, machine="stevedesktop" if label.startswith("SteveDesktop") else "archmagi")
             if owner == "unmeasured":
                 os.makedirs(w.env["RIMFLOW_OWNER_ACT_STAMP"])        # an unreadable ./bridge stamp: UNMEASURED
             p = w.start_b() if inst else w.start_a()
             r = w.gi("stop", instance=inst, RM_HOST="stevedesktop" if label.startswith("SteveDesktop") else "archmagi",
                      timeout=120)
             if verdict == "refuses":
-                check(r.returncode == G.EX_REFUSED and F.alive(p) and w.kills() == [] and "rimflow bridge" in r.stderr,
+                check(r.returncode == G.EX_REFUSED and F.alive(p) and w.kills() == [] and (
+                      "rimflow bridge" in r.stderr or "what passes: its run ends or releases it" in r.stderr),
                       "stop with %s: refused, nothing sent, and says what would pass: %s %s"
                       % (label, r.returncode, r.stderr.strip()[-300:]))
             else:
@@ -432,6 +433,11 @@ def free(w):
     check(r.returncode == G.EX_REFUSED and F.alive(b), "the held game b is never stopped")
     r = w.gi("stop", "--instance", "a", RM_HOST="archmagi", timeout=120)
     check(r.returncode == 0 and F.wait_dead(a) and F.alive(b), "the idle leftover a may be stopped; b lives: %s" % r.stderr[-200:])
+    # b held by the asker's own window: `bridge idle` reads it as ours (TAKEABLE), and it is still no leftover
+    w.bridge(("BENCH", 120, "archmagi.b"))
+    r = w.gi("leftovers", RM_HOST="archmagi", timeout=120)
+    check(r.returncode == 0 and not re.search(r"^b\s", r.stdout, re.M),
+          "leftovers: b held by the asker's own window is not one: %s" % r.stdout)
     w.bridge()
 
     # Every detached run is seat BENCH, so `rimflow bridge idle` reads another BENCH run's hold as "ours" (MEASURED

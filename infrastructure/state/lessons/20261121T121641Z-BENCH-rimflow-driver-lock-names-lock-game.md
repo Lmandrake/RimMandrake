@@ -1,0 +1,1 @@
+RIMFLOW_DRIVER_LOCK names the lock of the game that RM_GAME_INSTANCE names. A tool that sets RM_GAME_INSTANCE for a child must move RIMFLOW_DRIVER_LOCK with it (game_instance.child_env). When only one changed, a child read game a's lock as game b's (selftest_game_instance, 2026-11-21).

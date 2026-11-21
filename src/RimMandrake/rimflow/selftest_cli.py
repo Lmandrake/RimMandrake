@@ -1502,55 +1502,51 @@ def t_the_real_ledger_audit_can_see_a_leak():
 
 
 def t_a_take_in_another_clone_refuses_until_forced_or_stale():
-    """BRIDGE_LOCK_CROSS_CLONE_RACE_1: two seat clones keep separate ledgers, so a take
-    in one was invisible to the other until pushed (2026-10-07: both held it, two loads
-    killed). The shared lock file outside git is what the other clone sees at once. Clone A is BENCH, which can still
-    file and claim since FOUNDRY retired (2026-11-02); clone B plays the other window."""
+    """BRIDGE_LOCK_CROSS_CLONE_RACE_1: two seat clones keep separate ledgers, so a take in one was invisible to the other
+    until pushed (2026-10-07: both held it, two loads killed). Game a's driver lock, on the drive both clones share, is
+    what the other clone sees at once: the one record of who drives the game
+    (RIMMANDRAKE_BUILD_ONE_GAME_LOCK_CLAIM_FOUR_RECORDS_DISAGREE). Clone A is BENCH; clone B plays the other window.
+    Holders are real sleeping processes (RM_DRIVER_PID), so a holder that ends frees the game at once."""
     fresh()
-    shared = os.path.join(_tmp(), "BRIDGE_SHARED.json")
+    lock = os.path.join(_tmp(), "DRIVER_LOCK.json")
     other = os.path.join(_tmp(), "clone_b")
     os.makedirs(os.path.join(other, "items"), exist_ok=True)
-    env_a = lambda seat: env(seat, RIMFLOW_SHARED_BRIDGE=shared)
-    env_b = lambda seat: env(seat, RIMFLOW_SHARED_BRIDGE=shared,
-                             RIMFLOW_LEDGER=os.path.join(other, "events.jsonl"),
-                             RIMFLOW_ITEMS=os.path.join(other, "items"))
-    ok("bridge", "take", "--for", "load round", env=env_a("BENCH"))
-    body = json.load(open(shared))
-    assert body.get("holder") == "BENCH", "a take did not write the shared lock: %s" % body
-    refused(["bridge", "take", "--for", "my load"], "another clone",
-            "the other clone's live take was invisible", seat="FOUNDRY", env_=env_b("FOUNDRY"))
-    out = ok("bridge", "who", env=env_b("FOUNDRY"))
-    assert "another clone" in out, "who hid the other clone's hold: %s" % out
-    # the holder's ordinary events keep the lock fresh
-    body = json.load(open(shared))
-    t0 = body["touched"] = "2020-01-01T00:00:00Z"
-    json.dump(body, open(shared, "w"))
-    ok("file", "SHARED_TOUCH_ITEM_PROBE_FIXTURE", "--for", "BENCH", "--title", "t", env=env_a("BENCH"))
-    assert json.load(open(shared))["touched"] != t0, "an ordinary event of the holder left the shared lock's touched"
-    body = json.load(open(shared))
-    body["touched"] = t0
-    json.dump(body, open(shared, "w"))
-    ok("claim", "SHARED_TOUCH_ITEM_PROBE_FIXTURE", env=env_a("BENCH"))
-    assert json.load(open(shared))["touched"] != t0, "a claim, written as a lease group, left the shared lock's touched"
-    # --force crosses it, and says so on the event
-    ok("bridge", "take", "--force", "--for", "urgent", env=env_b("FOUNDRY"))
-    evs = []
-    d = os.path.join(other, "events")   # the ledger is shards beside the head (see _ledger_paths)
-    for f in (sorted(os.listdir(d)) if os.path.isdir(d) else []):
-        if f.endswith(".jsonl"):
-            evs += [json.loads(l) for l in open(os.path.join(d, f)) if l.strip()]
-    tk = [e for e in evs if e.get("event") == "bridge" and e.get("state") == "taken"]
-    assert tk and "another clone" in (tk[-1].get("override") or ""), tk
-    assert json.load(open(shared))["holder"] == "FOUNDRY"
-    ok("bridge", "release", env=env_b("FOUNDRY"))
-    assert json.load(open(shared)).get("holder") is None, "release left the shared lock held"
-    # a stale shared hold (older than the staleness window) does not block
-    ok("bridge", "release", env=env_a("BENCH"))    # this clone's own ledger hold, so the take below meets only the stale one
-    with open(shared, "w") as fh:
-        json.dump({"holder": "FOUNDRY", "since": "2020-01-01T00:00:00Z", "touched": "2020-01-01T00:00:00Z",
-                   "clone": "/elsewhere"}, fh)
-    ok("bridge", "take", "--for", "after the stale one", env=env_a("BENCH"))
-    assert json.load(open(shared))["holder"] == "BENCH"
+    a_win, b_win = subprocess.Popen(["sleep", "300"]), subprocess.Popen(["sleep", "300"])
+    try:
+        env_a = lambda seat: env(seat, RIMFLOW_DRIVER_LOCK=lock, RM_DRIVER_PID=str(a_win.pid))
+        env_b = lambda seat: env(seat, RIMFLOW_DRIVER_LOCK=lock, RM_DRIVER_PID=str(b_win.pid),
+                                 RIMFLOW_LEDGER=os.path.join(other, "events.jsonl"),
+                                 RIMFLOW_ITEMS=os.path.join(other, "items"))
+        ok("bridge", "take", "--for", "load round", env=env_a("BENCH"))
+        body = json.load(open(lock))
+        assert body.get("seat") == "BENCH", "a take did not write the lock: %s" % body
+        refused(["bridge", "take", "--for", "my load"], "load round",
+                "the other clone's live take was invisible", seat="FOUNDRY", env_=env_b("FOUNDRY"))
+        out = ok("bridge", "who", env=env_b("FOUNDRY"))
+        assert "bridge held by BENCH" in out and "load round" in out, "who hid the other clone's hold: %s" % out
+        # --force crosses it, and says so on the event
+        ok("bridge", "take", "--force", "--for", "urgent", env=env_b("FOUNDRY"))
+        evs = []
+        d = os.path.join(other, "events")   # the ledger is shards beside the head (see _ledger_paths)
+        for f in (sorted(os.listdir(d)) if os.path.isdir(d) else []):
+            if f.endswith(".jsonl"):
+                evs += [json.loads(l) for l in open(os.path.join(d, f)) if l.strip()]
+        tk = [e for e in evs if e.get("event") == "bridge" and e.get("state") == "taken"]
+        assert tk and "--force" in (tk[-1].get("override") or ""), tk
+        assert json.load(open(lock))["seat"] == "FOUNDRY"
+        ok("bridge", "release", env=env_b("FOUNDRY"))
+        assert not os.path.exists(lock), "release left the lock held"
+        # a holder whose process has ended does not block, however fresh its take
+        ok("bridge", "take", "--for", "short-lived", env=env_b("FOUNDRY"))
+        b_win.kill()
+        b_win.wait()
+        ok("bridge", "take", "--for", "after the ended one", env=env_a("BENCH"))
+        assert json.load(open(lock))["seat"] == "BENCH"
+    finally:
+        for p in (a_win, b_win):
+            if p.poll() is None:
+                p.kill()
+                p.wait()
 
 
 def _assert_no_leaks(leaks):

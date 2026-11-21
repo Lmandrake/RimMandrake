@@ -11,8 +11,8 @@ deploy and rw_game.sh - so a window and a script can never both drive one game.
   * Children inherit the take: a holder exports RM_HOST_GUARD_GEN=<generation> (and adds it to WSLENV so a Windows
     python.exe child sees it); a nested acquire whose generation matches the live lock is a no-op pass-through. So
     `host_guard.py run -- worker` -> rw_game.sh -> modcheck all count as one driver.
-  * On Archmagi a script also refuses while the cross-clone shared bridge file names a live window holder, because
-    a window that took the bridge before the driver lock existed, or from the other clone, is still driving.
+  * The driver lock is the one record of who drives a game (game_lock.py, RIMMANDRAKE_BUILD_ONE_GAME_LOCK_CLAIM_FOUR_
+    RECORDS_DISAGREE): every window take writes it too, so no second file is consulted.
   * A take made from ANOTHER machine (Archmagi taking SteveDesktop's game for an interactive session) carries that
     machine's identity; driver_lock reads it as "not inspectable" and its heartbeat decides (45 min).
 
@@ -161,22 +161,6 @@ def crossing(path=None, new_run=False):
         cur.get("seat"), cur.get("purpose"), how)
 
 
-def _shared_window_holder(seat):
-    """Archmagi only: a live window holder named by the cross-clone shared bridge file, else None."""
-    m = _model()
-    if local_host() != m.DEFAULT_BRIDGE_HOST:
-        return None
-    sh = m.read_shared_bridge()
-    if not sh or sh.get("holder") in (None, seat):
-        return None
-    age = m.shared_bridge_age_seconds(sh)
-    if sh.get("holder") == "OWNER":     # his hold is not stale by its own age: acquire() measures his rule on it
-        return "OWNER (shared bridge file, %s min ago, for: %s)" % ("?" if age is None else age // 60, sh.get("purpose"))
-    if age is None or age >= m.BRIDGE_STALE_SECONDS:
-        return None
-    return "%s (shared bridge file, %d min ago, for: %s)" % (sh["holder"], age // 60, sh.get("purpose"))
-
-
 def _measures_owner():
     """This machine reads his interactions (his windows' transcripts, the ledger, the ./bridge stamp)."""
     return local_machine() == _model().DEFAULT_BRIDGE_HOST
@@ -244,15 +228,6 @@ def acquire(seat, purpose, force=None, identity=None, path=None, owner_cleared=N
         return {"ok": True, "reentrant": True, "generation": inherited, "why": "inherited take", "path": path}
     seat = _model().bridge_identity(seat)   # the name its `bridge take` wrote into the shared file
     identity = identity or self_identity()
-    other = _shared_window_holder(seat)
-    if other and other.startswith("OWNER "):
-        sh = _model().read_shared_bridge() or {}
-        ok, text = _owner_measured([("the shared lock's OWNER hold", sh.get("touched"))])
-        if not ok:
-            return {"ok": False, "why": "the OWNER holds this machine's bridge (%s): %s" % (other, text), "path": path}
-        other = None                   # takeable by his rule means 45 min past every interaction: stale, as any other
-    if other and not force:
-        return {"ok": False, "why": "a window holds this machine's bridge: %s" % other, "path": path}
     cur, _problem = driver_lock._read(path)
     refusal, owner_cleared, measured_hb = _owner_gate(cur, seat, identity, owner_cleared)
     if refusal:

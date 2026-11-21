@@ -1,0 +1,1 @@
+Without RM_DATA_ROOT set, every import of rmpaths cost about 110 ms: a Python subprocess runs Lodestar's agent_storage.py, which reads ~/dev on the slow D: drive. rmpaths now caches the answer on ext4 (~/.cache/rimmandrake/rmpaths_root.json), keyed on machines.md. A tool that must answer fast can also set RM_DATA_ROOT (2026-11-21).

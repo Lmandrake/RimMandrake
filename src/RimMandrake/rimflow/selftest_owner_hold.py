@@ -136,9 +136,17 @@ class World:
             for i, e in enumerate(events):
                 f.write(json.dumps(dict(e, tsn=1_700_000_000_000_000_000 + i)) + "\n")
         self.shared = os.path.join(self.tmp, "shared.json")
-        if shared:
-            with open(self.shared, "w") as f:
-                json.dump(shared, f)
+        self.lock = None
+        if shared:          # another clone's hold of his: game a's lock (game_lock.py), his take's process long gone
+            done = subprocess.Popen(["true"])
+            done.wait()
+            self.lock = os.path.join(self.tmp, "DRIVER_LOCK.json")
+            with open(self.lock, "w") as f:
+                json.dump({"seat": shared["holder"], "purpose": "other clone", "acquired": shared["since"],
+                           "heartbeat": shared["touched"], "generation": 1,
+                           "identity": {"pid": done.pid, "start": 1.0, "platform": "wsl",
+                                        "host": __import__("socket").gethostname(),
+                                        "boot_id": open("/proc/sys/kernel/random/boot_id").read().strip()}}, f)
         self.env = {k: v for k, v in os.environ.items()
                     if k not in ("RIMFLOW_SEAT", "AGENT_SEAT", "CLAUDE_SESSION_ID", "CLAUDECODE", "RIMFLOW_RAN_BY",
                                  "RIMFLOW_BRIDGE_SEAT", "RM_ROLE_UNIT")}   # a Conductor window's takes, even when a Relentless worker runs this
@@ -149,6 +157,8 @@ class World:
                         RIMFLOW_OWNER_ACT_STAMP=os.path.join(self.tmp, "OWNER_LAST_ACT.json"),
                         RIMFLOW_DISPATCH_LOCK=os.path.join(self.tmp, "dispatch.lock"),
                         RIMFLOW_BRIDGE_LOCK=os.path.join(self.tmp, "bridge.lock"))
+        if self.lock:
+            self.env["RIMFLOW_DRIVER_LOCK"] = self.lock
 
     def rf(self, *a, seat="BENCH"):
         env = dict(self.env, RIMFLOW_SEAT=seat)      # seat="": nothing names one but what the test put in env
@@ -234,7 +244,7 @@ def test_e2e():
         check(rc != 0 and "UNMEASURED" in out, "torn transcript -> refused UNMEASURED (%s)" % out[:160])
     finally:
         w.close()
-    # (f) cross-clone: the shared lock says OWNER, 2 h old
+    # (f) cross-clone: game a's lock says OWNER, 2 h old
     sh = {"holder": "OWNER", "since": iso(7200), "touched": iso(7200), "clone": "/other"}
     w = World([], shared=sh)
     try:

@@ -64,10 +64,10 @@ import sys
 import time
 
 try:                                                    # python3 -m rimflow.cli
-    from . import conductor_acts, principal, driver_lock, fulltext, host_guard, lease, model, owner_interaction, priority, priority_list, probe, reconcile, testpilot_route
+    from . import conductor_acts, principal, driver_lock, fulltext, game_lock, host_guard, lease, model, owner_interaction, priority, priority_list, probe, reconcile, testpilot_route
 except ImportError:                                     # python3 .../rimflow/cli.py
     sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    from rimflow import conductor_acts, principal, driver_lock, fulltext, host_guard, lease, model, owner_interaction, priority, priority_list, probe, reconcile, testpilot_route   # noqa: F401
+    from rimflow import conductor_acts, principal, driver_lock, fulltext, game_lock, host_guard, lease, model, owner_interaction, priority, priority_list, probe, reconcile, testpilot_route   # noqa: F401
 
 PROSE_BUDGET = 2400          # chars of items/<ID>.md that `next` will print, ~600 tokens
 
@@ -3463,85 +3463,89 @@ def _idle_seconds(ts):
     return max(0, int(time.time() - e))
 
 
-def _mirror_from_ledger(actor, note=None):
-    """Rewrite the BRIDGE mirror from a FRESH replay, and answer who the ledger says holds it.
+def lock_reading(hk=None):
+    """-> game_lock.query of bridge `hk`'s game (None: game a) when this machine holds that game's lock, else None:
+    another machine's game, or no lock path here (a test ledger without RIMFLOW_DRIVER_LOCK). The lock is the one
+    record of who drives a game (game_lock.py); the ledger's bridge events are history, and nothing decides from them
+    (RIMMANDRAKE_BUILD_ONE_GAME_LOCK_CLAIM_FOUR_RECORDS_DISAGREE: the two disagreed four times on 2026-11-21)."""
+    machine, inst = model.split_bridge_host(hk or model.DEFAULT_BRIDGE_HOST)
+    if host_guard.local_machine() not in (None, machine):
+        return None
+    g = inst or game_lock.GAME_A
+    path = game_lock.lock_path(g)
+    # pipe=False: `pipe off game:<g>` binds pipeline runs, not a window's take (his walk is held by the Conductor's
+    # take); a control store that cannot be read must not stop the bridge either
+    return game_lock.query(g, pipe=False, path=path) if path else None
 
-    🔴 THE MIRROR IS WRITTEN FROM THE LEDGER, NEVER FROM INTENT. Every branch below used
-    to mirror the holder it had just decided on — so a take that lost a race appended
-    its event (harmless: the ledger's last event wins) and then wrote ITS OWN name into
-    the file, leaving the one glanceable line naming a different window than the ledger.
-    `bridge who` re-derived correctly, but only for someone already doubting the answer,
-    and a mirror nobody can believe at a glance is the whole point thrown away.
 
-    🔑 This is a mirror fix, not a lock: it never refuses a take, in keeping with the
-    ruling that this system errs toward ALLOWING (owner, 2026-09-02). The loser of a
-    race is told who won; it is not told no.
-    """
+def lock_holder(r, evs=None):
+    """-> the seat a lock reading names as holding its game (a live holder, or his OWNER lock live or not), else None.
+    evs (the replayed ledger): his OWNER lock whose process is gone and which he deliberately released after it was
+    taken is his no longer (host_guard.owner_released: "... or I deliberately release it", owner by card 2026-10-30)."""
+    if not r or r.get("state") not in ("HELD", "HIS_HOLD") or not r.get("seat"):
+        return None
+    if r["seat"] == "OWNER" and not r.get("alive") and evs is not None and host_guard.owner_released(
+            {"seat": "OWNER", "acquired": r.get("since"), "heartbeat": r.get("heartbeat"),
+             "identity": r.get("holder") or {}}, evs):
+        return None
+    return r["seat"] if (r.get("alive") or r.get("seat") == "OWNER") else None
+
+
+def _mirror_bridge(actor, note=None):
+    """Rewrite the BRIDGE glance file from game a's lock (the ledger's replay only where no lock is readable here), and
+    -> the holder it names. It is a print of the lock for a glance, never a record anything decides from."""
     _, w3 = load()
-    others = {k: v for k, v in w3.bridge_hosts.items() if k != model.DEFAULT_BRIDGE_HOST and v.get("holder")}
-    model.write_bridge_file(w3.bridge_holder, actor, w3.bridge_purpose,
-                            w3.bridge_since, note=note, others=others)
-    return w3.bridge_holder
+    r = lock_reading()
+    others = {}
+    for k in sorted(set(model.BRIDGE_HOSTS) | set(w3.bridge_hosts)):
+        if k == model.DEFAULT_BRIDGE_HOST:
+            continue
+        rk = lock_reading(k)
+        if rk is not None:
+            if lock_holder(rk):
+                others[k] = {"holder": lock_holder(rk), "since": rk.get("since"), "purpose": rk.get("purpose")}
+        elif (w3.bridge_hosts.get(k) or {}).get("holder"):
+            others[k] = w3.bridge_hosts[k]
+    if r is None:
+        holder, purpose, since = w3.bridge_holder, w3.bridge_purpose, w3.bridge_since
+    else:
+        holder, purpose, since = lock_holder(r), r.get("purpose"), r.get("since")
+    model.write_bridge_file(holder, actor, purpose if holder else None, since if holder else None, note=note,
+                            others=others)
+    return holder
 
 
-# The shared lock stamps `since` just after the take's ledger event, so the same take reads a few seconds apart.
-WHO_SAME_TAKE_SECONDS = 120
-
-
-def _who_against_shared(holder, since, purpose, idle, record):
-    """-> (since, purpose, idle, warning): the ledger's reading of a hold, corrected by the shared lock when that is
-    newer (BRIDGEWHO_FIX_STALE_CLONE_SAYS_HOUR_IDLE). A clone's ledger copy lags until it syncs. A newer take under the
-    SAME holder name looks like the old hold gone idle, which sent the Conductor after a false orphan. A different
-    holder is `_bridge_who`'s other warning."""
-    if not holder or not record:
-        return since, purpose, idle, None
-    held, was, clone = record.get("holder"), _epoch(since), record.get("clone") or "?"
-    if not held:
-        freed = _epoch(record.get("touched"))
-        if freed and was and freed > was:
-            return since, purpose, idle, (
-                "⚠️  the shared lock says the bridge was released at %s (%s); this clone's ledger is behind, and the "
-                "hold below is only its old copy." % (record.get("touched"), clone))
-        return since, purpose, idle, None
-    if held != holder:
-        return since, purpose, idle, None
-    age = model.shared_bridge_age_seconds(record)
-    fresher = age if age is not None and (idle is None or age < idle) else idle
-    newer = _epoch(record.get("since"))
-    if newer and was and newer - was > WHO_SAME_TAKE_SECONDS:
-        return record["since"], record.get("purpose"), fresher, (
-            "⚠️  this clone's ledger is behind: it has %s's hold since %s%s. The shared lock has a newer take (%s), "
-            "reported below." % (holder, since, "" if idle is None else ", idle %d min" % (idle // 60), clone))
-    return since, purpose, fresher, None
+def _who_lines(r, hk=None):
+    """Print a lock reading as `bridge who` always has: the reading's own line, then the habitual holder line.
+    -> the exit code: 0 for an answer, 2 when the lock could not be looked at (never read as free or held)."""
+    flag = " --host %s" % hk if hk else ""
+    print(r["line"])
+    if r["state"] == "UNKNOWN":
+        print("bridge UNKNOWN%s — the lock could not be looked at: %s" % (" (%s)" % hk if hk else "", r.get("cause")))
+        return 2
+    holder = lock_holder(r)
+    if holder:
+        print("%sbridge held by %s since %s%s" % ("%s " % hk if hk else "", holder, r.get("since") or "?",
+                                                 ("  for: " + r["purpose"]) if r.get("purpose") else ""))
+    else:
+        print("%sbridge FREE — take it:  rimflow bridge take%s --for \"<what for>\"" % ("%s " % hk if hk else "", flag))
+    return 0
 
 
 def _bridge_who():
-    """`bridge who` — the answer, re-derived, plus the mirror repaired on the way."""
-    # Re-derived from the ledger, so this answer is true even when the mirror is not.
-    with _bridge_lock():            # a snapshot from before the lock may predate a take: mirror and answer read fresh
-        _mirror_from_ledger(None)
-        _, w = load()
+    """`bridge who` — game a's driver lock, the one record (game_lock.py). Where no lock is readable here (another
+    machine, a test ledger without one) the ledger's history is printed, and said to be history."""
+    r = lock_reading()
+    _mirror_bridge(None)
+    if r is not None:
+        return _who_lines(r)
+    _, w = load()
     holder, since, purpose = w.bridge_holder, w.bridge_since, w.bridge_purpose
-    shared = model.read_shared_bridge()
-    if shared and shared.get("holder") not in (None, holder):
-        age = model.shared_bridge_age_seconds(shared)
-        print("⚠️  the shared lock says %s holds it from another clone (%s, touched %s min ago%s); "
-              "this clone's ledger does not know yet."
-              % (shared["holder"], shared.get("clone") or "?", "?" if age is None else age // 60,
-                 ", STALE" if age is None or age >= model.BRIDGE_STALE_SECONDS else ""))
-    dl = _archmagi_lock_path()
-    if dl:
-        st = driver_lock.status(dl)
-        print("driver lock: %s%s" % (st.get("state"), "" if st.get("state") in ("FREE",) else
-                                     "  %s %s gen %s (%s)" % (st.get("seat"), (st.get("identity") or {}).get("pid"),
-                                                              st.get("generation"), st.get("how"))))
+    print("(no driver lock is readable here: the ledger's history follows, not a reading of the game)")
     if not holder:
         print("bridge FREE — take it:  rimflow bridge take --for \"<what for>\"")
         return 0
     idle = _idle_seconds(w.last_seen.get(holder))
-    since, purpose, idle, behind = _who_against_shared(holder, since, purpose, idle, model.read_shared_bridge_record())
-    if behind:
-        print(behind)
     print("bridge held by %s since %s%s%s"
           % (holder, since or "?",
              ("  for: " + purpose) if purpose else "",
@@ -3589,7 +3593,7 @@ def _bridge_give(args, seat, w, holder):
         _emit({"seat": holder or seat, "event": "bridge", "state": "released",
                "override": "the OWNER cleared the bridge%s"
                            % (" off %s" % holder if holder else "")}, w, quiet=True)
-        _mirror_from_ledger("OWNER", note="cleared by the owner")
+        _mirror_bridge("OWNER", note="cleared by the owner")
         model.write_shared_bridge(None)
         _driver_release(seat, force="the OWNER cleared the bridge")
         print("bridge FREE — the owner cleared it")
@@ -3602,7 +3606,7 @@ def _bridge_give(args, seat, w, holder):
     if args.purpose:
         ev["purpose"] = args.purpose
     _emit(ev, w, quiet=True)
-    _mirror_from_ledger("OWNER", note="handed over by the owner")
+    _mirror_bridge("OWNER", note="handed over by the owner")
     model.write_shared_bridge(to, args.purpose)
     _driver_release(seat, force="the OWNER handed the bridge to %s; %s takes the driver lock on its next take" % (to, to))
     print("bridge -> %s (the owner said so)" % to)
@@ -3718,7 +3722,7 @@ def _restore_owed_settings(seat, holder):
     return line
 
 
-def _bridge_release(seat, w, holder, expect_token=None):
+def _bridge_release(seat, w, holder, expect_token=None, force=False):
     """`bridge release` — allowed even on someone else's lock, but never unrecorded.
 
     ⚠️ `_apply` clears the holder for ANY `released` event, whoever sent it — so a
@@ -3744,8 +3748,8 @@ def _bridge_release(seat, w, holder, expect_token=None):
             return 0
     else:
         with _bridge_lock():
-            return _bridge_release_locked(seat, w)
-    return _bridge_release_write(seat, w, holder)
+            return _bridge_release_locked(seat, w, force)
+    return _bridge_release_write(seat, w, holder, lock_reading(), force)
 
 
 def _ruling_only_owner(seat):
@@ -3787,45 +3791,60 @@ def _conductor_cut(owner, purpose, flyer):
         conductor_acts.RULING, owner[1] if owner else "his last interaction UNMEASURED")
 
 
-def _bridge_release_locked(seat, w):
-    """A plain release, decided on a fresh replay under the bridge lock. 🔴 A seat may not release his OWNER hold
-    until 45 min after his last interaction (owner, by card 2026-10-30): release-then-take would cut it otherwise."""
+def _bridge_release_locked(seat, w, force=False):
+    """A plain release, decided on game a's lock (the ledger's replay only where no lock is readable here), under the
+    bridge lock. 🔴 A seat may not release his OWNER hold until 45 min after his last interaction (owner, by card
+    2026-10-30): release-then-take would cut it otherwise."""
     evs, w2 = load()
-    holder = w2.bridge_holder
+    r = lock_reading()
+    holder = lock_holder(r, evs) if r is not None else w2.bridge_holder
+    holds = [("his hold's own event", r.get("since") if r is not None else w2.bridge_since)]
+    if r is not None and r.get("seat") == "OWNER":
+        holds.append(("his driver lock", r.get("heartbeat")))
     if holder == "OWNER" and _ruling_only_owner(seat):
-        owner = _owner_verdict(_hold_events(w2, evs), evs)
+        owner = _owner_verdict(_hold_events(w2, evs) if r is None else holds, evs)
         if not owner[0]:
             _conductor_cut(owner, None, False)
     if holder == "OWNER" and seat != "OWNER":
-        owner = _owner_verdict([("his hold's own event", w2.bridge_since)], evs)
+        owner = _owner_verdict(holds, evs)
         if not owner[0]:
             die(_owner_refusal(owner).replace("His hold is takeable", "A seat may release or take his hold", 1))
-        sh = model.read_shared_bridge()
-        if sh and sh.get("holder") == "OWNER":      # the write below clears his shared lock too: his rule for it
-            owner = _shared_owner_verdict(sh, evs)
-            if not owner[0]:
-                die(_owner_refusal(owner).replace("His hold is takeable", "A seat may release or take his hold", 1))
-    return _bridge_release_write(seat, w, holder)
+    return _bridge_release_write(seat, w, holder, r, force)
 
 
-def _bridge_release_write(seat, w, holder):
+def _bridge_release_write(seat, w, holder, r=None, force=False):
+    """Free game a's lock when this process tree holds it (or --force, recorded), then write the release as history.
+    🔴 A release never says FREE over a lock another live process holds: the 2026-11-21 records disagreed exactly so
+    (RIMMANDRAKE_BUILD_ONE_GAME_LOCK_CLAIM_FOUR_RECORDS_DISAGREE). A lock whose holder process is gone is already free."""
+    if r is not None and r["state"] == "UNKNOWN":
+        die("bridge NOT released: %s\n  nothing written; look at the lock, then retry  rimflow bridge release" % r["line"])
+    live_other = r is not None and r.get("alive") and not r.get("mine") and r.get("seat") != "OWNER"
+    if live_other and not force:
+        die("bridge NOT released: %s\n  only its holder process releases it (it frees the moment that process exits);"
+            "\n  nothing written.  cut across it (recorded)  rimflow bridge release --force" % r["line"],
+            code=host_guard.EX_HELD)
     ev = {"seat": seat, "event": "bridge", "state": "released"}
-    crossed = bool(holder and holder != seat)
+    crossed = bool(holder and holder != seat) or bool(live_other)
     if crossed:
-        ev["override"] = "released the bridge out from under %s" % holder
+        ev["override"] = "released the bridge out from under %s%s" % (
+            holder or r.get("seat"), " (--force, its holder process alive)" if live_other else "")
     _refuse_before_lock(ev)
-    failed = _driver_release_failed(_driver_release(seat, **_his_dead_lock(seat)))
+    kw = _his_dead_lock(seat)
+    if live_other and not kw:
+        dl = _archmagi_lock_path()
+        kw = {"force": "bridge release --force by %s" % seat, "expect": driver_lock._read(dl)[0] if dl else None}
+    failed = _driver_release_failed(_driver_release(seat, **kw))
     if failed:                         # never "released" over an enforcing lock that may still be ours
         die("bridge NOT released: the driver lock did not come free (%s).\n  nothing written: the ledger still "
             "shows %s holding it; retry  rimflow bridge release" % (failed, holder or "nobody"))
     _emit(ev, w, quiet=True)
-    _mirror_from_ledger(seat)
+    _mirror_bridge(seat)
     sh = model.read_shared_bridge()
     if sh is None or sh.get("holder") in (seat, holder):
         model.write_shared_bridge(None)
     if crossed:
         print("bridge released by %s — it was held by %s, and that is on the event"
-              % (seat, holder))
+              % (seat, holder or r.get("seat")))
     else:
         print("bridge released by %s — it is now FREE for the other window" % seat)
     return 0
@@ -3890,24 +3909,7 @@ def _take_decision(holder, seat, idle, force, purpose, owner=None):
            model.BRIDGE_STALE_SECONDS // 60))
 
 
-# Self-declared and fail-safe: any form of fly/flies/flew/flown/flight/flyer (also inside "butterfly", which only
-# costs a refusal), take off/takeoff, airborne, glide, soar, aloft, wingspan. Not "flow" (FlowWorks).
-_FLIGHT_RE = re.compile(r"fl(?:y|ie|ew|own|ight)|take[-\s]*offs?|airborne|glid|soar|aloft|wingspan", re.I)
-
-
-# The one flight wording a delegated take admits: a read of a flyer's state with the game paused, by the tool that
-# refuses unless paused and still (his card 2026-11-13, RIMMANDRAKE_ADMIT_PAUSED_FLYER_READS_AT_BRIDGE_TAKE: "paused
-# reads allowed (no ticks, no pictures; anything moving still waits for him)"). Both the words and the tool's name must
-# be there, and they are cut out before the check, so any other flight word beside them still refuses.
-_PAUSED_FLYER_READ = re.compile(r"(?<!un)\bpaused flyer state read\b", re.I)
-_PAUSED_FLYER_TOOL = re.compile(r"\bflyer_tier_three_state_read\.py\b", re.I)
-
-
-def flight_purpose(text):
-    text = text or ""
-    if _PAUSED_FLYER_READ.search(text) and _PAUSED_FLYER_TOOL.search(text):
-        text = _PAUSED_FLYER_TOOL.sub(" ", _PAUSED_FLYER_READ.sub(" ", text))
-    return bool(_FLIGHT_RE.search(text))
+flight_purpose = game_lock.flight_purpose     # his flight rule has one home: game_lock.py
 
 
 def _delegated_gate(holder, seat, holder_idle, purpose, flyer, owner=None):
@@ -3930,30 +3932,6 @@ def _delegated_gate(holder, seat, holder_idle, purpose, flyer, owner=None):
         "the OWNER's hold: %s" % owner[1] if holder == "OWNER" and holder != seat
         else "held by %s, stale" % holder if holder not in (None, seat)
         else "ours" if holder == seat else "free")}, None
-
-
-def _shared_owner_verdict(shared, evs=None):
-    """The verdict on an OWNER hold seen in the shared (cross-clone) lock: his rule, with the lock's `touched` as the
-    hold's own last event."""
-    return _owner_verdict([("the shared lock's OWNER hold", (shared or {}).get("touched"))], evs)
-
-
-def _shared_delegated_refusal(seat, evs=None):
-    """The cross-clone half of the delegated gate: another clone's take is not in this ledger until it is pushed.
-    His OWNER hold there refuses until 45 min after his last interaction; another seat's refuses while its shared lock
-    is fresh (45-min rule)."""
-    shared = model.read_shared_bridge()
-    holder = (shared or {}).get("holder")
-    if holder == "OWNER":               # before the own-seat exemption, as in _delegated_gate
-        ok, txt = _shared_owner_verdict(shared, evs)
-        return None if ok else _owner_refusal((ok, txt)).replace("holds the bridge", "holds the bridge in another clone", 1)
-    if holder in (None, seat):
-        return None
-    age = model.shared_bridge_age_seconds(shared)
-    if age is not None and age < model.BRIDGE_STALE_SECONDS:
-        return ("refused: %s holds the bridge in another clone (%d min ago); a delegated take takes only a free or "
-                "stale bridge" % (holder, age // 60))
-    return None
 
 
 def _driver_owner_gate(seat, evs):
@@ -3998,20 +3976,44 @@ def _bridge_take(args, seat, w, holder, purpose):
         return _bridge_take_locked(args, seat, evs, w)
 
 
+def _lock_view(w, evs, r):
+    """-> (holder, idle, his hold's events) for a take or `idle` decision: from game a's lock when it is readable here
+    (a live holder reads idle 0; a holder whose process is gone holds nothing), else the ledger's replay."""
+    if r is None:
+        holder = w.bridge_holder
+        return holder, (_idle_seconds(w.last_seen.get(holder)) if holder else None), _hold_events(w, evs)
+    holds = (_hold_events(w, evs) if w.bridge_holder == "OWNER" else []) + [("his driver lock", r.get("heartbeat"))]
+    return lock_holder(r, evs), (0 if r.get("alive") else None), holds
+
+
+def _live_other(r, seat, what):
+    """-> the refusal when another seat's live process holds game a's lock, else None (the lock's own words)."""
+    if r is None or not r.get("alive") or r.get("mine") or r.get("seat") in (None, seat, "OWNER"):
+        return None
+    return ("%s refused: %s\n  it frees the moment that process exits.\n  check     rimflow bridge who\n"
+            "  or cut across it (recorded)  rimflow bridge take --force --for \"<what for>\"" % (what, r["line"]))
+
+
 def _bridge_take_locked(args, seat, evs, w):
-    holder = w.bridge_holder
-    idle = _idle_seconds(w.last_seen.get(holder)) if holder else None
-    owner = _owner_verdict(_hold_events(w, evs), evs) if holder == "OWNER" else None
+    r = lock_reading()
+    if r is not None and r["state"] == "UNKNOWN" and not args.force:
+        die("bridge NOT taken: %s\n  look at it; --force breaks an unreadable lock (recorded)" % r["line"])
+    if not args.force:
+        refusal = _live_other(r, seat, "bridge take")
+        if refusal:
+            die(refusal, code=host_guard.EX_HELD)
+    holder, idle, holds = _lock_view(w, evs, r)
+    owner = _owner_verdict(holds, evs) if holder == "OWNER" else None
     cut = None
     if holder == "OWNER" and _ruling_only_owner(seat) and not (owner and owner[0]):
         cut = _conductor_cut(owner, args.purpose, getattr(args, "flyer", False))
-    why, refusal = _take_decision(holder, seat, idle, args.force, w.bridge_purpose, owner=owner)
+    why, refusal = _take_decision(holder, seat, idle, args.force, (r or {}).get("purpose") if r is not None
+                                  else w.bridge_purpose, owner=owner)
     if refusal:
         die(refusal)
     idle_ev = None
     if getattr(args, "idle_ok", False):
         idle_ev, refusal = _delegated_gate(holder, seat, idle, args.purpose, getattr(args, "flyer", False), owner=owner)
-        refusal = refusal or _shared_delegated_refusal(seat, evs)
         if refusal:
             die(refusal)
     ev = {"seat": seat, "event": "bridge", "state": "taken"}
@@ -4030,29 +4032,8 @@ def _bridge_take_locked(args, seat, evs, w):
             if args.force else "took the bridge: %s" % why)
     if cut:
         ev["override"] = cut
-    # 🔴 BRIDGE_LOCK_CROSS_CLONE_RACE_1: the OTHER clone's take is not in this clone's ledger
-    # until it is pushed. The shared lock on the common drive is what it can see at once.
-    shared = model.read_shared_bridge()
-    if shared and shared.get("holder") == "OWNER" and seat != "OWNER":
-        # his rule, --force included (owner, by card 2026-10-30)
-        ok, txt = _shared_owner_verdict(shared, evs)
-        if not ok:
-            die(_owner_refusal((ok, txt)).replace("holds the bridge", "holds the bridge in another clone (%s)"
-                                                  % (shared.get("clone") or "?"), 1))
-        ev["override"] = "took the OWNER's hold in another clone: %s" % txt
-    elif shared and shared.get("holder") not in (None, seat):
-        age = model.shared_bridge_age_seconds(shared)
-        alive = age is not None and age < model.BRIDGE_STALE_SECONDS
-        if alive and not args.force:
-            die("bridge is held by %s in another clone (%s), %d min ago%s.\n"
-                "  Its take is not in this clone's ledger yet; the shared lock %s says so.\n"
-                "  wait      — rimflow bridge who\n"
-                "  or take it — rimflow bridge take --force --for \"<what for>\""
-                % (shared["holder"], shared.get("clone") or "?", age // 60,
-                   ("; for: " + shared["purpose"]) if shared.get("purpose") else "",
-                   model.shared_bridge_path()))
-        if alive and args.force:
-            ev["override"] = "took the bridge with --force while %s held it in another clone" % shared["holder"]
+    # The OTHER clone's take is in game a's lock the instant it is made (the lock is on the drive every clone shares),
+    # so no second, cross-clone file is consulted here (RIMMANDRAKE_BUILD_ONE_GAME_LOCK_CLAIM_FOUR_RECORDS_DISAGREE).
     refusal, cleared = _driver_owner_gate(seat, evs)
     if refusal:
         die(refusal)
@@ -4069,11 +4050,12 @@ def _bridge_take_locked(args, seat, evs, w):
             die("%s.\n  The driver lock is keyed on the holder PROCESS, so a second window of the same seat is "
                 "refused too.\n  It frees the moment that process exits.\n"
                 "  check     rimflow bridge who\n"
-                "  or cut across it (recorded)  rimflow bridge take --force --for \"<what for>\"" % got["why"])
+                "  or cut across it (recorded)  rimflow bridge take --force --for \"<what for>\"" % got["why"],
+                code=host_guard.EX_HELD)
         if got.get("broke") and "override" not in ev:
             ev["override"] = "took the driver lock from a dead or forced holder"
     _emit(ev, w, quiet=True)
-    won = _mirror_from_ledger(
+    won = _mirror_bridge(
         seat, note=("taken from %s: %s" % (holder, why)) if why else None)
     if won == seat:
         model.write_shared_bridge(seat, args.purpose, identity=driver_lock.my_identity(),
@@ -4124,15 +4106,21 @@ def _guard_call(hk, args_list):
     return host_guard.remote(hk, args_list)
 
 
-def _guard_owner_hold(hk):
-    """-> the status of host `hk`'s driver lock when its holder is the OWNER (alive or not: his rule outlives the
-    guard's heartbeat), else None. An unreachable guard answers None: the take then fails at the same guard."""
+def _guard_status(hk):
+    """-> host `hk`'s driver lock status (host_guard status --json), or None when its guard cannot be read."""
     rc, out = _guard_call(hk, ["status", "--json"])
     try:
         st = json.loads(out) if rc == 0 else None
     except ValueError:
         st = None
-    return st if isinstance(st, dict) and st.get("seat") == "OWNER" and st.get("state") in ("HELD", "STALE") else None
+    return st if isinstance(st, dict) else None
+
+
+def _guard_owner_hold(hk):
+    """-> the status of host `hk`'s driver lock when its holder is the OWNER (alive or not: his rule outlives the
+    guard's heartbeat), else None. An unreachable guard answers None: the take then fails at the same guard."""
+    st = _guard_status(hk)
+    return st if st and st.get("seat") == "OWNER" and st.get("state") in ("HELD", "STALE") else None
 
 
 def _bridge_other_host(args, seat, w, hk):
@@ -4153,20 +4141,28 @@ def _bridge_other_host(args, seat, w, hk):
 
 
 def _bridge_other_host_locked(args, seat, w, hk):
-    ent = w.bridge_hosts.get(hk) or {}
-    holder = ent.get("holder")
+    # The game's own lock is its one record: read here for this machine's games (lock_reading), through that machine's
+    # guard for another's. The ledger's host entry is history; nothing below decides from it.
     ident = json.dumps(driver_lock.my_identity())
     if args.action == "give":
         die("`bridge give` is the Archmagi bridge's owner switch; for %s use take/release (--force is recorded)." % hk)
+    r = lock_reading(hk)
     if args.action == "who":
+        if r is not None:
+            return _who_lines(r, hk)
         rc, out = _guard_call(hk, ["status"])
         print("%s guard: %s" % (hk, out if rc in (0,) else "UNREACHABLE (exit %d) %s" % (rc, out)))
-        if not holder:
-            print("%s bridge FREE in the ledger — take it:  rimflow bridge take --host %s --for \"<what for>\"" % (hk, hk))
-        else:
-            print("%s bridge held by %s since %s%s" % (hk, holder, ent.get("since") or "?",
-                                                      ("  for: " + ent["purpose"]) if ent.get("purpose") else ""))
-        return 0
+        return 0 if rc == 0 else 2
+    if r is not None:
+        if r["state"] == "UNKNOWN" and not args.force:
+            die("%s bridge NOT changed: %s" % (hk, r["line"]))
+        holder = lock_holder(r)
+        ent = {"since": r.get("since"), "purpose": r.get("purpose")}
+    else:
+        # another machine's game keeps its lane (the SteveDesktop test lane): its own guard enforces every take there,
+        # and its OWNER hold is read from that guard below (_guard_owner_hold); the ledger's entry names the holder
+        ent = w.bridge_hosts.get(hk) or {}
+        holder = ent.get("holder")
     if args.action == "release":
         if holder == "OWNER" and seat != "OWNER":
             # his rule for release too: release-then-take would cut his hold (owner, by card 2026-10-30)
@@ -4177,7 +4173,13 @@ def _bridge_other_host_locked(args, seat, w, hk):
         if holder and holder != seat:
             ev["override"] = "released the %s bridge out from under %s" % (hk, holder)
         _refuse_before_lock(ev)
-        rc, out = _guard_call(hk, ["release", "--seat", seat, "--identity-json", ident])
+        if r is not None and r.get("alive") and not r.get("mine") and r.get("seat") != "OWNER":
+            die("%s bridge NOT released: %s\n  only its holder process releases it; nothing written" % (hk, r["line"]),
+                code=host_guard.EX_HELD)
+        if r is not None and r["state"] == "FREE":
+            rc, out = 0, "its lock was already free (%s)" % r["line"]
+        else:
+            rc, out = _guard_call(hk, ["release", "--seat", seat, "--identity-json", ident])
         if rc != 0 and not (rc == host_guard.EX_HELD and "not this process" in out):
             # 🔴 the guard still holds our take (or could not be reached): the ledger must not say FREE over an
             # enforcing lock that is not (RIMMANDRAKE_HARDEN_BRIDGE_LOCK_OWNER_HOLES). Nothing is written; the hold
@@ -4186,13 +4188,21 @@ def _bridge_other_host_locked(args, seat, w, hk):
                 "  check   rimflow bridge who --host %s\n  retry   rimflow bridge release --host %s"
                 % (hk, rc, out, holder or "nobody", hk, hk, hk))
         _emit(ev, w, quiet=True)
-        _mirror_from_ledger(None)
+        _mirror_bridge(None)
         if rc != 0:                    # the guard was another process's, never ours: the ledger release is the truth
             print("%s bridge released by %s (its guard lock is not this window's: %s)" % (hk, seat, out))
         else:
             print("%s bridge released by %s" % (hk, seat))
         return 0
-    holder_idle = _idle_seconds(w.last_seen.get(holder)) if holder else None
+    holder_idle = (0 if r.get("alive") else None) if r is not None else (
+        _idle_seconds(w.last_seen.get(holder)) if holder else None)
+    if r is not None and not args.force:
+        refusal = _live_other(r, seat, "%s bridge take" % hk)
+        if refusal and args.action == "idle":
+            print("NOT TAKEABLE  " + r["line"])
+            return 1
+        if refusal:
+            die(refusal.replace("rimflow bridge take", "rimflow bridge take --host %s" % hk), code=host_guard.EX_HELD)
     # his OWNER hold on this host: takeable only 45 min after his last interaction (owner, by card 2026-10-30)
     holds = [("his %s hold's own event" % hk, ent.get("since"))] if holder == "OWNER" else []
     # 🔴 the guard's lock is shared by both clones; this ledger is not. A take of his from the other clone, unpushed,
@@ -4239,7 +4249,7 @@ def _bridge_other_host_locked(args, seat, w, hk):
             "driving that game.\n  check   rimflow bridge who --host %s\n  cut across it (recorded)  "
             "rimflow bridge take --host %s --force --for \"<what for>\"" % (hk, rc, out, hk, hk))
     _emit(ev, w, quiet=True)
-    _mirror_from_ledger(None)
+    _mirror_bridge(None)
     print("%s bridge taken by %s%s" % (hk, seat, ("  (%s)" % why) if why else ""))
     print("  guard: %s\n  pass RM_HOST_GUARD_GEN to what you run there (rw_game.sh, modcheck) so it drives under "
           "this take; re-run take within 45 min to keep it." % out)
@@ -4317,7 +4327,17 @@ def cmd_bridge(args, seat):
         # another window, so a hold that is not ours is left alone and nothing is written.
         if args.action != "release":
             die("--mine is a `bridge release` flag (got `bridge %s --mine`)" % args.action)
-        now, tok = _bridge_hold(hk)          # fast path: not ours -> nothing to lock for
+        r = lock_reading(hk)
+        if r is not None:                    # the lock says whose it is: this process tree's, or nothing is released
+            if not r.get("mine"):
+                print("bridge release --mine: this process tree does not hold the %s bridge (%s) - nothing released"
+                      % (hk, r["line"]))
+                return 0
+            if hk != model.DEFAULT_BRIDGE_HOST:
+                return _bridge_other_host(args, seat, w, hk)
+            _restore_owed_settings(seat, seat)
+            return _bridge_release(seat, w, seat)
+        now, tok = _bridge_hold(hk)          # no lock readable here: the ledger's hold, as before
         if now != seat:
             print("bridge release --mine: %s does not hold the %s bridge (holder: %s) - nothing released"
                   % (seat, hk, now or "nobody"))
@@ -4354,12 +4374,16 @@ def cmd_bridge(args, seat):
             return _bridge_give(args, seat, w, w.bridge_holder)
     if args.action == "release":
         _restore_owed_settings(seat, holder)
-        return _bridge_release(seat, w, holder)
+        return _bridge_release(seat, w, holder, force=args.force)
     if args.action == "idle":
-        owner = _owner_verdict([("his hold's own event", since)], evs) if holder == "OWNER" else None
-        ev, refusal = _delegated_gate(holder, seat, _idle_seconds(w.last_seen.get(holder)) if holder else None,
-                                      args.purpose, args.flyer, owner=owner)
-        refusal = refusal or _shared_delegated_refusal(seat, evs) or _driver_owner_gate(seat, evs)[0]
+        r = lock_reading()
+        if r is not None and r["state"] == "UNKNOWN":
+            print("NOT TAKEABLE  " + r["line"])
+            return 1
+        holder, idle, holds = _lock_view(w, evs, r)
+        owner = _owner_verdict(holds, evs) if holder == "OWNER" else None
+        ev, refusal = _delegated_gate(holder, seat, idle, args.purpose, args.flyer, owner=owner)
+        refusal = _live_other(r, seat, "a delegated take is") or refusal or _driver_owner_gate(seat, evs)[0]
         dl = None if refusal else _archmagi_lock_path()     # what the take behind this report would refuse on
         refusal = refusal or (driver_lock.refusal(dl, driver_lock.my_identity()) if dl else None)
         if refusal:

@@ -44,24 +44,23 @@ things** — a colony and a 568-mod game respectively.
 
 ---
 
-## 0b. 🔴 Claim the bridge before you drive it — `rimflow bridge take`/`release`
+## 0b. 🔴 Claim the game before you drive it — `game_lock.py claim`/`release`
 
-Whoever drives the bridge (a testq live lane, a Test Pilot, a sitting for an owner live look, an L3 evaluation per
-`infrastructure/VALIDATION_LADDER.md`) runs `rimflow bridge take` before driving and `rimflow bridge release` the instant it
-stops. No chat message, no asking, no waiting on another seat's grant; a refused `take` is your answer.
+Whoever drives a game (a testq lane, a Test Pilot, an owner live look, an L3 evaluation) claims its lock first and
+releases it the instant it stops. A refused claim is your answer (75 held, 3 his hold, 2 could not look).
 
 ```
-python3 src/RimMandrake/rimflow/cli.py bridge take
+python3 src/RimMandrake/rimflow/game_lock.py claim a --for "<what for>"   (or rimflow bridge take)
 ...drive it...
-python3 src/RimMandrake/rimflow/cli.py bridge release
+python3 src/RimMandrake/rimflow/game_lock.py release a
 ```
 
 🔴 **There are several games, and each has its own bridge, lock and holder.** Game a is Steam's install on Archmagi
 (his game, his full list; bridge port 5174, lock `archmagi`, the default). Game b is its own install on Archmagi
 (`D:\ClaudeWork\rimmandrake\instances\b\game`; port 5175, lock `archmagi.b`). The SteveDesktop games take work through
 `infrastructure/stevedesktop/RUNBOOK.md`. To drive game b, run `eval "$(python3 src/RimMandrake/Utils/game_instance.py env b)"`
-first: the bridge client, `game_paths`, `rimflow bridge take|release` and the driver lock all follow it (or pass `--host
-archmagi.b` to `rimflow bridge`). `python3 src/RimMandrake/Utils/game_instance.py status` lists the games that run; `launch b --wait` starts
+first: the bridge client, `game_paths` and the driver lock all follow it (`game_lock.py claim b`, or `--host archmagi.b`
+for `rimflow bridge`). `python3 src/RimMandrake/Utils/game_instance.py status` lists the games and their drivers; `launch b --wait` starts
 game b. If game a is busy or held, drive game b; only a check that needs his full list waits for game a. Never write
 "waiting for the live game": name the game and why no other game can take the work.
 

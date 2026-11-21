@@ -18,6 +18,7 @@ import json
 import os
 import re
 import shutil
+import socket
 import subprocess
 import sys
 import tempfile
@@ -102,7 +103,9 @@ def test_delegated_reach():
     # the decision on a given world (the outer half re-reads the ledger under the bridge lock first)
     calls, emitted = [], []
     keep = cli._guard_call, cli._emit
-    cli._guard_call = lambda hk, a: (calls.append(a), (0, "ok"))[1]
+    # the far machine's guard is that game's one record: its status is what the decision reads
+    far = {"st": {"state": "HELD", "seat": "OWNER", "heartbeat": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}}
+    cli._guard_call = lambda hk, a: (calls.append(a), (0, json.dumps(far["st"]) if a[:1] == ["status"] else "ok"))[1]
     cli._emit = lambda ev, w, quiet=False: emitted.append(ev)
     try:
         w = argparse.Namespace(bridge_hosts={"stevedesktop": {"holder": "OWNER", "since": "x"}}, last_seen={})
@@ -112,6 +115,7 @@ def test_delegated_reach():
         check(rc == 1 and not any(c and c[0] == "take" for c in calls) and not emitted, "idle --host: OWNER hold -> NOT TAKEABLE, nothing taken "
               "(rc=%s calls=%s emitted=%s)" % (rc, calls, emitted))
         w.bridge_hosts = {}
+        far["st"] = {"state": "FREE"}
         del calls[:], emitted[:]
         rc = cli._bridge_other_host_locked(mk("idle"), "BENCH", w, "stevedesktop")
         check(rc == 0 and not any(c and c[0] == "take" for c in calls) and not emitted,
@@ -125,10 +129,11 @@ def test_delegated_reach():
         check(refused and not emitted, "take --host --idle-ok --flyer -> refused")
     finally:
         cli._guard_call, cli._emit = keep
-    # (b) his OWNER hold in the shared (cross-clone) lock: takeable only 45 min after his last deliberate interaction
+    # (b) his OWNER hold in another clone, seen in game a's lock: takeable only 45 min after his last deliberate interaction
     # (owner, by card 2026-10-30: "45 minutes after my last interaction, or I deliberately release it"). The hold's
     # own touch counts as one; nothing about his presence at the machine is read. A live seat hold refuses `idle`.
     tmp = tempfile.mkdtemp(prefix="rf_nopres2_")
+    live = []
     try:
         os.makedirs(os.path.join(tmp, "items"))
         shared = os.path.join(tmp, "shared.json")
@@ -141,10 +146,26 @@ def test_delegated_reach():
             return subprocess.run([sys.executable, os.path.join(HERE, "cli.py")] + list(a), env=env,
                                   capture_output=True, text=True, timeout=120)
 
+        # another clone's hold is in game a's lock (the one record, game_lock.py): his OWNER take's process exits at
+        # once; a seat's fresh hold is a live process, a 46-min-old one a process that has ended
+        lock = env["RIMFLOW_DRIVER_LOCK"] = os.path.join(tmp, "DRIVER_LOCK.json")
+
         def put(holder, age_s):
             t = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time() - age_s))
-            with open(shared, "w") as f:
-                json.dump({"holder": holder, "since": t, "touched": t, "clone": "/other"}, f)
+            if holder != "OWNER" and age_s < 45 * 60:
+                live.append(subprocess.Popen(["sleep", "300"]))
+                time.sleep(0.05)
+                pid = live[-1].pid
+                with open("/proc/%d/stat" % pid) as f:
+                    start = round(int(f.read().rsplit(")", 1)[1].split()[19]) / os.sysconf("SC_CLK_TCK"), 2)
+            else:
+                done = subprocess.Popen(["true"])
+                done.wait()
+                pid, start = done.pid, 1.0
+            with open(lock, "w") as f:
+                json.dump({"seat": holder, "purpose": "other clone", "acquired": t, "heartbeat": t, "generation": 1,
+                           "identity": {"pid": pid, "start": start, "platform": "wsl", "host": socket.gethostname(),
+                                        "boot_id": open("/proc/sys/kernel/random/boot_id").read().strip()}}, f)
         put("OWNER", 10 * 60)
         r = rf("bridge", "take", "--idle-ok", "--for", "deploy")
         check(r.returncode != 0 and "OWNER" in (r.stderr + r.stdout), "shared OWNER hold touched 10 min ago -> "
@@ -164,6 +185,8 @@ def test_delegated_reach():
         r = rf("bridge", "idle", "--for", "deploy")
         check(r.returncode == 0, "control: shared stale FOUNDRY hold -> TAKEABLE (%s)" % r.stdout.strip()[:120])
     finally:
+        for p in live:
+            p.kill()
         shutil.rmtree(tmp, ignore_errors=True)
 
 

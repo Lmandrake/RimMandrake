@@ -10,9 +10,8 @@
 #   python3 src/RimMandrake/rimflow/cli.py bridge take --for "<what for>"
 #   python3 src/RimMandrake/rimflow/cli.py bridge release
 #
-# The ledger is the truth; infrastructure/state/BRIDGE is a mirror of it that any
-# window can read in one glance. `who` re-derives the mirror, so it is never a
-# second source of truth to argue with.
+# Each game's driver lock is the one record of who drives it (src/RimMandrake/rimflow/game_lock.py
+# query|claim|release|run); `who` reads it, and the ledger keeps the history.
 set -euo pipefail
 cd "$(dirname "$0")"
 CLI="src/RimMandrake/rimflow/cli.py"

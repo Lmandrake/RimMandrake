@@ -11,6 +11,7 @@ import json
 import os
 import shutil
 import signal
+import socket
 import stat
 import subprocess
 import sys
@@ -283,6 +284,8 @@ class World:
         env = dict(self.env, **extra)
         if instance:
             env["RM_GAME_INSTANCE"] = instance
+            if instance != "a" and "RIMFLOW_DRIVER_LOCK" in env:     # as `game_instance.py env b` exports it
+                env["RIMFLOW_DRIVER_LOCK"] = os.path.join(self.root, instance, "DRIVER_LOCK.json")
         # A command that outlasts its timeout is a failed check (rc 124, the cause in stderr), not a crash of the selftest:
         # a planted fault that makes `rw_game.sh up` hang must end on a FAIL line, the only verdict that counts as a kill.
         try:
@@ -319,7 +322,7 @@ class World:
         except OSError:
             return []
 
-    def bridge(self, *holds):
+    def bridge(self, *holds, machine="archmagi"):
         """The fake machine's ledger is exactly these bridge takes: (seat, age_s[, host]) each, oldest first. Also emptied of
         his interaction sources, so an OWNER hold is judged by its own age alone unless a test adds one."""
         with open(self.env["RIMFLOW_LEDGER"], "w") as f:
@@ -330,11 +333,52 @@ class World:
                 ev.update({"host": host[0]} if host else {})
                 f.write(json.dumps(ev) + "\n")
         for p in (self.env["RIMFLOW_SHARED_BRIDGE"], self.env["RIMFLOW_DRIVER_LOCK"], self.env["RIMFLOW_OWNER_ACT_STAMP"],
-                  os.path.join(self.rf, "events"), os.path.join(self.rf, "BRIDGE")):      # a take's shard and mirror
+                  os.path.join(self.rf, "events"), os.path.join(self.rf, "BRIDGE"),       # a take's shard and mirror
+                  os.path.join(self.b_dir, "DRIVER_LOCK.json")):
             if os.path.isdir(p):
                 shutil.rmtree(p)
             elif os.path.exists(p):
                 os.remove(p)
+        self.plant_locks(holds, machine)
+
+    def plant_locks(self, holds, machine="archmagi"):
+        """Each hold also in the game's lock, the one record of who drives a game (game_lock.py), as a live take leaves
+        it: a fresh hold by a live process (a sleeper; this env's own seat's is this env's process, RM_DRIVER_PID), a
+        hold 45+ min old by a process that has ended, his OWNER hold by his `bridge take`, which exits at once. Only the
+        holds of `machine`'s own games: another machine's lock is not on this one."""
+        self.env.pop("RM_DRIVER_PID", None)
+        for p in getattr(self, "_holders", []):
+            if p.poll() is None:
+                p.kill()
+                p.wait()
+        self._holders = []
+        boot = open("/proc/sys/kernel/random/boot_id").read().strip()
+        tick = os.sysconf("SC_CLK_TCK")
+        for seat, age_s, *host in holds:
+            hk = (host[0] if host else "archmagi").lower()
+            m, _dot, inst = hk.partition(".")
+            if m != machine:
+                continue
+            path = os.path.join(self.b_dir, "DRIVER_LOCK.json") if inst == "b" else self.env["RIMFLOW_DRIVER_LOCK"]
+            if seat != "OWNER" and age_s < 45 * 60:
+                proc = subprocess.Popen(["sleep", "600"])
+                self._holders.append(proc)
+                import atexit
+                atexit.register(proc.kill)              # a selftest that ends early leaves no sleeper behind
+                with open("/proc/%d/stat" % proc.pid) as f:
+                    start = round(int(f.read().rsplit(")", 1)[1].split()[19]) / tick, 2)
+                pid = proc.pid
+                if seat == self.env.get("RIMFLOW_SEAT"):
+                    self.env["RM_DRIVER_PID"] = str(pid)
+            else:
+                ended = subprocess.Popen(["true"])
+                ended.wait()
+                pid, start = ended.pid, 1.0
+            t = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time() - age_s))
+            with open(path, "w") as f:
+                json.dump({"seat": seat, "purpose": "fake hold", "acquired": t, "heartbeat": t, "generation": 1,
+                           "identity": {"pid": pid, "start": start, "boot_id": boot, "platform": "wsl",
+                                        "host": socket.gethostname()}}, f)
 
     def clear(self):
         """Every fake game down, by pid, whoever started it; the kill log emptied."""

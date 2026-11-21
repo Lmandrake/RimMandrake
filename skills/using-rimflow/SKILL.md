@@ -265,22 +265,16 @@ More traps for this section: [references/traps.md](references/traps.md) § Readi
 There are several games, and each has its own lock and one holder at a time: game a (Steam's install on Archmagi,
 his game, lock `archmagi`, the default), game b (its own install on Archmagi, lock `archmagi.b`) and the SteveDesktop
 games (`stevedesktop`, `stevedesktop.b`). Every `bridge` verb takes `--host <lock>`; `RM_GAME_INSTANCE=b` with no
-`--host` means this machine's game b. `infrastructure/state/BRIDGE` mirrors game a's lock only. A held game a is not a
-reason to wait: take game b, and name the game in every note (CLAUDE.md "There are several live games").
+`--host` means this machine's game b. A held game a is not a reason to wait: take game b, and name the game in every
+note (CLAUDE.md "There are several live games").
 
-`rimflow bridge` decides who drives each game, not for ownership but for
-attributability. `take --for "<what for>"` says what you're driving it for so
-the other window can judge whether to wait; `release` the moment you stop
-driving, not at session end. It errs toward **allowing, never toward mutual
-lockout**: a `take` is refused only while the holder is provably alive — an
-event within the last 45 minutes; after that the lock is stale (event
-silence, not game activity — the game can sit idle for hours while the
-holder is still working) and the next window simply takes it, saying so.
-`--force` works on any seat's hold and is recorded. 🔴 **His OWNER hold is the exception** (owner, by card
+Who drives each game is that game's driver lock, read and written by `game_lock.py query|claim|release|run` and by
+`rimflow bridge who|take|release` (which also writes the ledger's history; nothing decides from it). `take --for "<what
+for>"` says what you drive it for; `release` the moment you stop. A holder is a process: when it ends, the game is
+free at once. A live holder holds; `--force` cuts it and is recorded. 🔴 **His OWNER hold is the exception** (owner, by card
 2026-10-30: *"45 minutes after my last interaction, or I deliberately release it"*): no take, `--force` or
 release by a seat until 45 min after his last deliberate interaction (OWNER ledger event, `./bridge`, `./game`,
-his chat prompt to any seat); an unmeasured signal refuses (`rimflow/owner_interaction.py`). Nothing announces a release,
-so if you want a game's bridge, check `bridge
-who --host <lock>` again, or take another free game, rather than waiting to be told.
+his chat prompt to any seat); an unmeasured signal refuses (`rimflow/owner_interaction.py`). Nothing announces a release:
+run `game_lock.py query all` again, or take another free game.
 
 More traps for this section: [references/traps.md](references/traps.md) § Bridge lock.

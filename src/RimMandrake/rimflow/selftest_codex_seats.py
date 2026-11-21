@@ -26,8 +26,7 @@ for seat in model.CODEX_SEATS:
         assert handoff.seat() == seat
         assert model.ambient_window_seat() == seat
         assert handoff.own_hold('HELD BENCH', seat) is False
-    with patch.object(host_guard, '_shared_window_holder', return_value=None), \
-            patch.object(host_guard.driver_lock, 'acquire', return_value={'ok': True}) as take:
+    with patch.object(host_guard.driver_lock, 'acquire', return_value={'ok': True}) as take:
         host_guard.acquire(seat, 'fixture', identity={'pid': 1}, path='/unused')
         assert take.call_args.args[1] == seat
 

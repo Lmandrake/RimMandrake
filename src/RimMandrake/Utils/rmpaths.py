@@ -74,12 +74,69 @@ def _resolve(env_value: str, lodestar_value: str) -> str:
                               "in the user environment; Windows python cannot run Lodestar's helper")
     if not os.path.isfile(AGENT_STORAGE):
         raise RmDataRootUnset(f"{ENV_VAR} unset and Lodestar's {AGENT_STORAGE} is absent")
+    key = _cache_key()
+    hit = _cache_read(key)
+    if hit:
+        return _check(hit)
     r = subprocess.run([sys.executable or "python3", AGENT_STORAGE, PROJECT],
                        capture_output=True, text=True, timeout=30)
     out = r.stdout.strip()
     if r.returncode != 0 or not out:
         raise RmDataRootUnset(f"{ENV_VAR} unset and agent_storage.py failed: {r.stderr.strip()}")
+    _cache_write(key, out)
     return _check(out)
+
+
+# The helper above costs ~110 ms (a python subprocess reading ~/dev on the slow D: drive), paid by every tool that
+# imports this module without RM_DATA_ROOT set: `game_lock.py query` could not meet its 100 ms bound
+# (RIMMANDRAKE_BUILD_ONE_GAME_LOCK_CLAIM_FOUR_RECORDS_DISAGREE, measured 2026-11-21). The answer is cached on ext4,
+# keyed on everything the helper reads: the machine's name and overrides, and machines.md's size and mtime. Any
+# change to them, or a cache that cannot be read, runs the helper again.
+CACHE_ENV = "RM_PATHS_CACHE"
+
+
+def _cache_file() -> str:
+    return os.environ.get(CACHE_ENV) or os.path.join(
+        os.environ.get("XDG_CACHE_HOME") or os.path.expanduser("~/.cache"), "rimmandrake", "rmpaths_root.json")
+
+
+def _cache_key():
+    import socket
+    lodestar = os.environ.get("LODESTAR_ROOT") or os.path.expanduser("~/dev/Lodestar")
+    try:
+        st = os.stat(os.path.join(lodestar, "machines.md"))
+        md = [st.st_size, st.st_mtime_ns]
+    except OSError:
+        return None                                    # nothing to key on: never cache
+    return [socket.gethostname(), os.environ.get(LODESTAR_ENV, ""), os.environ.get("LODESTAR_MACHINE", ""),
+            lodestar, AGENT_STORAGE, md]
+
+
+def _cache_read(key):
+    if key is None or os.environ.get(CACHE_ENV) == "":
+        return None
+    try:
+        import json
+        with open(_cache_file(), encoding="utf-8") as fh:
+            d = json.load(fh)
+        return d["root"] if d.get("key") == key and isinstance(d.get("root"), str) and d["root"] else None
+    except (OSError, ValueError, KeyError, TypeError, AttributeError):
+        return None
+
+
+def _cache_write(key, root):
+    if key is None or os.environ.get(CACHE_ENV) == "":
+        return
+    try:
+        import json
+        p = _cache_file()
+        os.makedirs(os.path.dirname(p), exist_ok=True)
+        tmp = "%s.%d.tmp" % (p, os.getpid())
+        with open(tmp, "w", encoding="utf-8") as fh:
+            json.dump({"key": key, "root": root}, fh)
+        os.replace(tmp, p)
+    except OSError:
+        pass
 
 
 def rm_data_root() -> Path:

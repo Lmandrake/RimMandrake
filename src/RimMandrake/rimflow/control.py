@@ -2434,6 +2434,8 @@ NOT_PIPELINE = {
 BOOKKEEPING = {
     "rimflow/detached_helper.py:return_argv": "a finished run's clone-return step (starts no model)",
     "rimflow/role_launch.py:stoppost_handoff": "a finished run's wrap-up step, an ExecStopPost (starts no model)",
+    "rimflow/role_clones.py:make_in_background": "makes a missing role clone (`role_clones.py ensure`, a scratch "
+                                                 "clone copy; starts no model)",
 }
 
 
@@ -2697,6 +2699,7 @@ def show(mod=None, p=None, now=None, as_json=False):
            "refuses (pipe doctor)" % lock] if lock else []
     glob = [s for s in sw if s["scope"] == "all"]
     out.append("control rev %d: ALL %s" % (r0, "; ".join(describe(s) for s in glob) if glob else "ON"))
+    out += game_lines()
     for s in sw:
         if not s["scope"].startswith("mod:") and s["scope"] != "all":
             out.append("%s %s" % (s["scope"], label(s)[:150]))
@@ -2742,6 +2745,26 @@ def show(mod=None, p=None, now=None, as_json=False):
     return out
 
 
+def game_lines(short=False):
+    """-> one line per game: who drives it, read from its lock at this moment (game_lock.py, the one record of who drives
+    a game; RIMMANDRAKE_BUILD_ONE_GAME_LOCK_CLAIM_FOUR_RECORDS_DISAGREE). No lock readable here: no line. A reading that
+    fails says COULD NOT LOOK, never nothing."""
+    out = []
+    try:
+        sys.path.insert(0, HERE) if HERE not in sys.path else None
+        import game_lock as GL
+        for g in GL.games():
+            path = GL.lock_path(g)
+            if not path:
+                continue
+            r = GL.query(g, pipe=False, path=path)
+            out.append(("game %s %s%s" % (g, r["state"], " " + r["seat"] if r.get("seat") and r["state"] != "FREE"
+                                          else "")) if short else r["line"])
+    except Exception as e:      # noqa: BLE001
+        out.append("games: COULD NOT LOOK (%s: %s)" % (type(e).__name__, e))
+    return out
+
+
 def why(mod, p=None, now=None):
     """-> one line: what blocks this mod now, or what the tick last decided for it."""
     m = key(mod)
@@ -2758,6 +2781,8 @@ def why(mod, p=None, now=None):
         games = " | games held: %s" % "; ".join("%s %s" % kv for kv in sorted(gh.items())) if gh else ""
     except Unreadable as e:
         games = " | game holds UNMEASURED (%s)" % e
+    drivers = game_lines(short=True)
+    games += " | drivers now: %s" % "; ".join(drivers) if drivers else ""
     return "%s: %s | %s%s%s" % (m, ("BLOCKED " + b) if b else "nothing in control blocks it", tick, games,
                                 to_run_text(mod))
 

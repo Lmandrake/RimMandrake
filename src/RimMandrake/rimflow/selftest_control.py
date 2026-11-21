@@ -504,11 +504,14 @@ def t_owner_import():
 
 # ---------------------------------------------------------------- stopping: kill, write-now, the hook
 
+# The trap ignores SIGTERM, so only `pipe stop --kill` ends it. Danger guarded by its 300 s end: a run of this test killed
+# before that step left rm-probe-kill1 running for 80 min (2026-11-21), and every later run of this test, on any clone,
+# failed to start its fixture under the same unit name. 300 s outlasts the kill step (under 3 s) by far.
 TRAP = """#!/bin/bash
 trap '' TERM
-( trap '' TERM; exec -a rm-probe-child sleep 1000 ) &
+( trap '' TERM; exec -a rm-probe-child sleep 300 ) &
 echo $! > "$1"
-while true; do sleep 0.2; done
+for _ in $(seq 1500); do sleep 0.2; done
 """
 
 STUB = r"""

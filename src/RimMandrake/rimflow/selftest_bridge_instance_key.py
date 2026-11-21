@@ -138,7 +138,7 @@ def main():
         r = rf("FOUNDRY", "bridge", "take", "--host", "stevedesktop", "--for", "loop on a")
         check(r.returncode == 0 and os.path.exists(a_lock), "game a stays takeable beside it: %s" % (r.stdout + r.stderr)[-200:])
         r = rf("BENCH", "bridge", "who", "--host", "stevedesktop.b")
-        check("stevedesktop.b bridge held by BENCH" in r.stdout and "stevedesktop.b HELD" in r.stdout, "who --host b: %s" % r.stdout[:160])
+        check("stevedesktop.b bridge held by BENCH" in r.stdout and "game b: HELD by BENCH" in r.stdout, "who --host b reads game b's own lock: %s" % r.stdout[:160])
         check(M_bridge_gate(base, "BENCH", "stevedesktop.b") is None and M_bridge_gate(base, "BENCH", "stevedesktop") is not None, "bridge_gate is per game")
         env_b2 = dict(base, RM_GAME_INSTANCE="b", RIMFLOW_DRIVER_LOCK=b_lock)     # as `game_instance.py env b` exports it
         r = rf("BENCH", "bridge", "release", "--mine", env=env_b2)

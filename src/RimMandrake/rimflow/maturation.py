@@ -4736,19 +4736,33 @@ def ingame_facts(root, mod):
     return out
 
 
-def bridge_idle(purpose, seat="BENCH", runner=subprocess.run, game=None):
-    """-> (takeable, text): `rimflow bridge idle`, the delegated take's own verdict (the ledger holder, his OWNER hold,
-    the shared lock across clones and the Archmagi driver lock), read-only. game: whose bridge (RM_GAME_INSTANCE for
-    the reading; a, or None, is today's game a whatever this shell names). MATURATION_BRIDGE_IDLE names a stand-in
-    command (the selftests'); a reading that fails is not takeable."""
+def bridge_idle(purpose, seat="BENCH", runner=subprocess.run, game=None, lock=None):
+    """-> (takeable, text): may a NEW run take game `game` (None: a)? Read from the game's lock, the one record of who
+    drives it (game_lock.py, RIMMANDRAKE_BUILD_ONE_GAME_LOCK_CLAIM_FOUR_RECORDS_DISAGREE): any live holder, this
+    shell's own window included, is a hold; a holder whose process is gone holds nothing; a lock that cannot be read is
+    not takeable; a flyer's flight never is. Only his OWNER lock, whose rule needs his interactions measured, and a
+    machine with no lock readable here, ask `rimflow bridge idle` (the delegated take's own verdict, read-only).
+    MATURATION_BRIDGE_IDLE names a stand-in command (the selftests'); a reading that fails is not takeable.
+    lock: a game_lock.query stand-in (the selftests')."""
     cmd = os.environ.get("MATURATION_BRIDGE_IDLE")
+    if not cmd:
+        import game_lock as GL
+        g = game or "a"
+        if GL.flight_purpose(purpose):
+            return False, "NOT TAKEABLE  refused: flyer flight is never delegated (needs a human present)"
+        path = GL.lock_path(g)
+        if path or lock:
+            r = (lock or GL.query)(g, pipe=False, path=path)
+            if r["state"] == "UNKNOWN":
+                return False, "NOT TAKEABLE  " + r["line"]
+            if r.get("seat") != "OWNER":
+                if r["state"] == "HELD":
+                    return False, "NOT TAKEABLE  " + r["line"]
+                return True, "TAKEABLE  " + r["line"]
     argv = ([sys.executable, cmd] if cmd else [sys.executable, os.path.join(HERE, "cli.py")]) + [
         "bridge", "idle", "--for", purpose, "--seat", seat]
-    env = dict(os.environ)
-    if game and game != "a":
-        env["RM_GAME_INSTANCE"] = game
-    else:
-        env.pop("RM_GAME_INSTANCE", None)
+    import game_instance as GI
+    env = GI.child_env(game or "a")
     try:
         r = runner(argv, capture_output=True, text=True, timeout=120, stdin=subprocess.DEVNULL, env=env)
     except (OSError, subprocess.SubprocessError) as e:

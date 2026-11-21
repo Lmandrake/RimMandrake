@@ -450,6 +450,25 @@ def live_holder(name, new_run=False):
         return host_guard.crossing(new_run=new_run)
 
 
+def child_env(name, base=None):
+    """-> a copy of the environment aimed at game `name`: RM_GAME_INSTANCE, and RIMFLOW_DRIVER_LOCK with it when this
+    shell pins one (that variable names the lock of the game RM_GAME_INSTANCE names: `env b` exports both). Changing
+    one without the other made a child read game a's lock as game b's (RIMMANDRAKE_BUILD_ONE_GAME_LOCK_CLAIM_FOUR_
+    RECORDS_DISAGREE, found by selftest_game_instance 2026-11-21)."""
+    env = dict(os.environ if base is None else base)
+    have = (env.get(INSTANCE_ENV) or DEFAULT).strip().lower() or DEFAULT
+    if name == DEFAULT:
+        env.pop(INSTANCE_ENV, None)
+    else:
+        env[INSTANCE_ENV] = name
+    if "RIMFLOW_DRIVER_LOCK" in env and have != name:
+        if name == DEFAULT:
+            env.pop("RIMFLOW_DRIVER_LOCK")      # game a's own lock: driver_lock's default (none under a test ledger)
+        else:
+            env["RIMFLOW_DRIVER_LOCK"] = lock_path(name)
+    return env
+
+
 def bridge_host_args(name):
     """["--host", <machine>] when game `name` is this machine's today's game and the machine is not the default bridge
     host, else []. `rimflow bridge idle` with no --host reads ARCHMAGI's lock on every machine (ambient_bridge_host
@@ -480,11 +499,7 @@ def bridge_refusal(name, purpose=None, timeout=120, new_run=False, seat=None):
     if held:
         return ("game %s is another live driver's: %s\n  what passes: its run ends or releases it (another run's game "
                 "is never stopped or handed out)" % (name, held))
-    env = dict(os.environ)
-    if name == DEFAULT:
-        env.pop(INSTANCE_ENV, None)
-    else:
-        env[INSTANCE_ENV] = name            # the bridge of the game being stopped, whatever this shell drives
+    env = child_env(name)                   # the bridge of the game being stopped, whatever this shell drives
     host = bridge_host_args(name)
     try:
         r = subprocess.run([sys.executable, RIMFLOW_CLI, "bridge", "idle"] + host + ["--for", purpose]
@@ -858,14 +873,27 @@ def _read(path):
 
 
 def status_lines():
+    """One line per game: up or stopped, its port, and who drives it, read from its lock (game_lock.py, the one record
+    of who drives a game)."""
     rows = games()
     names = sorted({DEFAULT, current()} | {g["instance"] or "?" for g in rows})
     out = []
     for n in names:
         mine = [g["pid"] for g in rows if (g["instance"] or "?") == n]
-        out.append("%s  %-22s  port %s" % (n, "running pid %s" % ",".join(map(str, mine)) if mine else "stopped",
-                                           "?" if n == "?" else port(n)))
+        out.append("%s  %-22s  port %s%s" % (n, "running pid %s" % ",".join(map(str, mine)) if mine else "stopped",
+                                             "?" if n == "?" else port(n), "" if n == "?" else "  | " + _driver(n)))
     return out
+
+
+def _driver(name):
+    rf = os.path.join(REPO, "src", "RimMandrake", "rimflow")
+    if rf not in sys.path:
+        sys.path.insert(0, rf)
+    import game_lock
+    try:
+        return game_lock.query(name, pipe=False)["line"]
+    except Exception as e:  # noqa: BLE001  (could not look is said, never read as free)
+        return "game %s: COULD NOT LOOK (%s: %s)" % (name, type(e).__name__, e)
 
 
 def main(argv=None):

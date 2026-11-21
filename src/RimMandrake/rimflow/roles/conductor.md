@@ -473,8 +473,7 @@ python3 src/RimMandrake/rimflow/mod_owner_hold.py lift <Mod> --per-ruling RIMMAN
   install on Archmagi (lock `archmagi.b`). The SteveDesktop games take work through
   `infrastructure/stevedesktop/RUNBOOK.md`. Each game has one bridge holder at a time; two holders may drive two games.
   - Never tell him that work waits for "the live game". Name the game, and say why no other game can take the work.
-  - Read `python3 src/RimMandrake/Utils/game_instance.py status` and `rimflow bridge who --host archmagi.b` before you
-    say that any work waits for a game.
+  - Read `python3 src/RimMandrake/rimflow/game_lock.py query all` before you say that any work waits for a game.
   - A tick line that says work needs a game while a game is free, or that game b could take, is a pipeline defect. Fix
     it with a helper at once (CLAUDE.md "There are several live games").
 - When he sits down to walk game a, run `./pipe off game:a --why "his walk"`. When he is done, run `./pipe on game:a

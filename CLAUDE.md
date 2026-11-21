@@ -626,6 +626,7 @@ python3 skills/rimworld-modding/scripts/validate_patch.py <path> --defs ...
 ./game --said "<his words>" up|down|loading         the moment he says it; bare ./game measures
 ./game --why "<your reason>" down|loading|up        a reboot is yours to call; do not ask. Free the bridge first.
 ./bridge [conductor|free]                           his override; bare ./bridge says who has it
+python3 src/RimMandrake/rimflow/game_lock.py query  who drives each game (claim|release|run): the one record
 rimflow …                                           the ledger: file/claim/close/drop/verify
 rimflow pilot [<ID>]                                Test Pilot: 3 non-pass runs in a row or live-only defect → spawn rm-testpilot
 python3 src/RimMandrake/Utils/run_selftests.py --only <tests>   before a commit: only the tests for what you changed;
@@ -651,10 +652,9 @@ python3 src/RimMandrake/Utils/system_click.py <x> <y>          OS-level click fo
     `archmagi.b`.
   - The SteveDesktop games: locks `stevedesktop` and `stevedesktop.b`. Submit work to them through the SteveDesktop
     test lane (`infrastructure/stevedesktop/RUNBOOK.md`).
-- A bridge holder is one seat that drives one game. Each game has one holder at a time. Two seats may drive two games
-  at the same time.
-- `python3 src/RimMandrake/Utils/game_instance.py status` lists the games that run. `launch <name>` starts one and
-  `stop` ends one. A seat that needs game b starts it; do not ask.
+- A bridge holder is one process that drives one game. Two holders may drive two games at the same time.
+- `python3 src/RimMandrake/Utils/game_instance.py status` lists the games that run and who drives each. `launch <name>`
+  starts one and `stop` ends one. A seat that needs game b starts it; do not ask.
 - To act on game b: `eval "$(python3 src/RimMandrake/Utils/game_instance.py env b)"` for a tool, `--host archmagi.b` for
   `rimflow bridge`, `--instance b` for `deploy_custom_mods.py`. A deploy for game b writes only game b's folders.
 - Choose the game by the work:
@@ -668,14 +668,16 @@ python3 src/RimMandrake/Utils/system_click.py <x> <y>          OS-level click fo
 
 ## The bridge is passed through one file
 
-- One window drives each live game at a time. `rimflow bridge who [--host <game>]` says who holds a game's bridge.
-  `infrastructure/state/BRIDGE` records the holder of game a.
-- The rules below apply to each game's lock. A command with no `--host` acts on game a.
-- Write that file only with `rimflow bridge who | take --for "<what for>" | release`. Release the bridge the moment
-  you stop.
-- The lock errs toward allowing. A hold with no event for 45 minutes is stale: take it. `take --force` works on any
-  seat's hold.
-- The owner overrides with `./bridge conductor|free`.
+- Who drives each game has one record: that game's driver lock. Read and write it with
+  `python3 src/RimMandrake/rimflow/game_lock.py` (about 50 ms, no tokens):
+  - `query [a|b|all]` says who drives it, since when and for what.
+  - `claim a|b --for "<what for>"` takes it for this process tree. `release a|b` frees it the moment you stop.
+  - `run a|b --for "<what>" -- CMD` holds it for the life of CMD.
+  - Exit 0 is free or done, 75 held, 3 his hold, 2 could not look.
+- A holder is a process. When it ends, the game is free at once. A live holder holds; `--force` cuts it, recorded.
+- `rimflow bridge who|take|release [--host <game>]` and `./bridge` use the same lock and write the ledger's history.
+  Nothing decides from the ledger or from `infrastructure/state/BRIDGE`. The owner overrides with `./bridge
+  conductor|free`.
 - His OWNER hold: nobody may take it until 45 min after his last deliberate interaction, `--force` included. If the
   signal is unmeasured, the take is refused (`rimflow/owner_interaction.py`).
 - Only the Conductor window may cut his OWNER hold sooner, as its mindful act:
@@ -684,19 +686,15 @@ python3 src/RimMandrake/Utils/system_click.py <x> <y>          OS-level click fo
 - A ledger event in seat OWNER carries his authority. It is not proof that his own hands acted. So an agent's
   `--owner-said` or `--by-card` event does not restart his 45-minute clock (`is_his_act` in
   `src/RimMandrake/rimflow/owner_interaction.py`).
-- `host_guard` applies the same rule across clones: a live OWNER lock takes no `--force` without the verdict of the
-  `rimflow` cli.
 - His presence at the machine is not an event. Nothing reads his input clock. When he touches, leaves or returns to
   the machine, nothing is gated, delayed, yielded, requeued or aborted.
-- A seat may take the bridge when the bridge is free, ours, or stale by the 45-minute rule. Then it may also deploy
-  and restart the game. Any role that needs the live game to finish a fix does this, a judge included. A mod does not
-  wait a stage for a game that sits unused. Use `rimflow bridge take --idle-ok --for "<what>"` and `./game --idle-ok --why "<what>" ...`. Each act goes
-  in his daily digest, class `bridge idle`.
+- A seat may take a free game, deploy and restart it. Any role that needs the live game to finish a fix does this, a
+  judge included. A mod does not wait a stage for a game that sits unused. Use `rimflow bridge take --idle-ok --for
+  "<what>"` and `./game --idle-ok --why "<what>" ...`. Each act goes in his daily digest, class `bridge idle`.
 - These still bind: his OWNER hold, the `./bridge` override, no flyer flight, and never fullscreen or focus the game.
 - When you hold the bridge, you may start Steam, launch the game, or do anything else that you need. Do not ask.
-- A game-state relay is stamp-only: when a seat runs `./game`, the command writes the ledger event and messages no
-  window. Other windows read the game state with `rimflow next`. A message to each window uses tokens and rarely
-  informs.
+- A game-state relay is stamp-only: `./game` writes the ledger event and messages no window. Other windows read the
+  game state with `rimflow next`.
 - What counts as his interaction, and the full text: `design/RimMandrake/standing_rulings.md` §The bridge is passed
   through one file.
 

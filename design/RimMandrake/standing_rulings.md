@@ -795,13 +795,11 @@ The games. Each game has its own install, its own bridge and its own lock:
 
 The bridge holder:
 
-- A bridge holder is the one seat or run that drives one game. Each game has one holder at a time. Two holders may
-  drive two games at the same time, and one holder never drives two games.
-- `rimflow bridge who|take|release --host <lock>` acts on one game's lock; with no `--host` it acts on game a.
-  `RM_GAME_INSTANCE=b` points a tool, the bridge client and `rimflow bridge` at game b. `infrastructure/state/BRIDGE` is
-  the mirror of game a's lock only.
-- Every rule of "The bridge is passed through one file" (below) applies to each lock: the 45-minute stale rule,
-  `take --force`, his OWNER hold, `./bridge conductor|free`, the idle take.
+- A bridge holder is the one process that drives one game: its lock names it. Two holders may drive two games at
+  the same time; one holder never drives two games.
+- `game_lock.py query|claim|release|run a|b` and `rimflow bridge who|take|release --host <lock>` act on one game's
+  lock; with no `--host` rimflow acts on game a. `RM_GAME_INSTANCE=b` points a tool and the bridge client at game b.
+- Every rule of "The bridge is passed through one file" (below) applies to each lock.
 
 The policies:
 
@@ -825,23 +823,23 @@ The policies:
 
 **RELENTLESS** was the retired Relentless Pipeline's bridge holder (`model.bridge_identity`), not a seat: only old `bridge` events carry it.
 
-One window drives each game at a time, not for ownership but for attributability. The rules below hold for each
-game's lock (§There are several live games, above).
-Who holds game a is in **`infrastructure/state/BRIDGE`**, one glanceable line written by
-`rimflow bridge` and never by hand. It mirrors the ledger; `bridge who` re-derives it.
+One process drives each game at a time, not for ownership but for attributability. The one file is that game's
+driver lock (owner, 2026-11-21, about 3:35 AM PST: *"A single point of reference and truth? And most importantly, a
+token free lightning fast way to query, claim, and release."*). Design and measurements:
+`design/specs/2026-11-21-one-game-lock/boundary.md`.
 
 ```
-rimflow bridge who                        is it free? (also repairs the mirror)
-rimflow bridge take --for "<what for>"    request it — say what for, the other window reads it
-rimflow bridge release                    the moment you stop. Not at the end of the session
-rimflow bridge who --host archmagi.b      the same for game b (every verb takes --host <lock>)
+python3 src/RimMandrake/rimflow/game_lock.py query [a|b|all]               who drives it, since when, for what
+python3 src/RimMandrake/rimflow/game_lock.py claim a|b --for "<what for>"  take it for this process tree
+python3 src/RimMandrake/rimflow/game_lock.py release a|b                   the moment you stop
+python3 src/RimMandrake/rimflow/game_lock.py run a|b --for "<what>" -- CMD  hold it for CMD's life
 ```
 
-🔑 **It errs toward ALLOWING, never toward mutual lockout** (owner, 2026-09-02).
-A take is refused only while the holder is provably alive — an event within 45
-minutes; after that the lock is stale and the next window simply takes it, saying so.
-`take --force` works on any seat's hold and is recorded. **Nobody is coming to tell you it freed:
-if you want it, look again.**
+Exit 0 free or done, 75 held, 3 his hold, 2 could not look. `rimflow bridge who|take|release` and `./bridge` read and
+write the same lock, and write the ledger's history; nothing decides from the ledger or the BRIDGE glance file.
+
+🔑 **It errs toward ALLOWING, never toward mutual lockout** (owner, 2026-09-02). A holder whose process has ended holds
+nothing. A live holder holds; `--force` cuts it and is recorded.
 
 ⭐ **The owner overrides both of you with `./bridge conductor|free`**, and his word
 lands in the same file you already read.
@@ -849,8 +847,8 @@ lands in the same file you already read.
 🔴 **His presence at the machine is not an event** (owner, 2026-10-30, verbatim: *"I really, really need you to strip "when I come back to the machine" as an event for anything changing. It's causing so many problems and I don't need it."*). Nothing reads his
 keyboard or mouse clock, and his touching, leaving or returning to the machine never gates, delays, yields,
 requeues or aborts anything: a bridge take, deploy, restart, dispatcher ring, seat restart, arena lane, TestPilot or
-runner. A seat MAY take the bridge, deploy and restart the game on its own when it is free, ours, or stale by the
-45-minute rule (`rimflow bridge idle --for "<what>"` reports it;
+runner. A seat MAY take the bridge, deploy and restart the game on its own when it is free or ours
+(`rimflow bridge idle --for "<what>"` reports it;
 `rimflow bridge take --idle-ok --for "<what>"` and `./game --idle-ok --why "<what>" ...` do it), and lists each act in his daily digest (class `bridge idle`). Still
 binding: his OWNER hold (below) and `./bridge` override, never a flyer's flight (`--flyer` or flight wording refuses),
 and the game is never fullscreened or focused, so it does not steal his screen. The arena lane config key `owner_playing` is ignored and dropped.
@@ -858,8 +856,7 @@ and the game is never fullscreened or focused, so it does not steal his screen. 
 🔴 **Any role that needs the live game to finish a fix takes it when it is free** (owner, 2026-11-20, about 4:50 AM
 PST: *"And yes... if a live game is available, of course a judge (or any role!) should be able to just grab it and use
 it to get something done! IT's an unused resource otherwise... the worst case."*). A judge, a driver or a fixer
-takes the bridge with `rimflow bridge take --idle-ok --for "<what>"` when it is free, ours, or stale by the 45-minute
-rule, starts the game with `./game --idle-ok --why "<what>" up`, does the fix, and releases the bridge the moment the
+takes the bridge with `rimflow bridge take --idle-ok --for "<what>"` when it is free or ours, starts the game with `./game --idle-ok --why "<what>" up`, does the fix, and releases the bridge the moment the
 work stops. A mod does not wait a stage for a game that sits unused. The briefs that carry it are the in-game driver's,
 the blind judge's and the live fixer's (`FREE_GAME_RULE` in `maturation.py`). An offline-stage fixer gets only offline
 items, because a game-only item goes back to Stage 6, so its brief keeps "Never take the bridge or a game". The same limits bind as above. Measured
@@ -881,10 +878,9 @@ without the cli's verdict.
 
 🔴 **Holding the bridge is blanket authorization — never ask what to do with it** (owner,
 2026-09-19, verbatim: *"Never ask that. If you have bridge, you may start steam, launch
-game, anything you need."*). Once `bridge who`/`bridge take` says it's yours, starting
+game, anything you need."*). Once the lock says it's yours, starting
 Steam, launching the game, running a cold load, anything the session needs — none of it
-needs a question first. This supersedes asking-first instincts elsewhere in this file for
-anything gated only on "do you have the bridge."
+needs a question first.
 
 `src/RimMandrake/Utils/broadcast.py` is the owner's tool and the Conductor's (owner 2026-11-19, §Only five acts stay
 his; no other seat or helper runs it); the game-state relay above is its only other carve-out, and since 2026-09-29 that relay is STAMP-ONLY — a seat running it writes the

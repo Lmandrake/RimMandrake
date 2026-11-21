@@ -274,8 +274,8 @@ def run(fn):
 
 def test_release_exit():
     clean()
-    real_guard, real_mirror, real_drv = cli._guard_call, cli._mirror_from_ledger, cli._driver_release
-    cli._mirror_from_ledger = lambda *a, **k: None       # never the clone's BRIDGE mirror
+    real_guard, real_mirror, real_drv = cli._guard_call, cli._mirror_bridge, cli._driver_release
+    cli._mirror_bridge = lambda *a, **k: None       # never the clone's BRIDGE mirror
     args = types.SimpleNamespace(action="release", purpose=None, force=None)
     try:
         n0 = len(released())
@@ -298,7 +298,7 @@ def test_release_exit():
         check(rc == 0 and len(released()) == n0 + 1, "control: a driver lock that was never ours: released, exit 0",
               (rc, out))
     finally:
-        cli._guard_call, cli._mirror_from_ledger, cli._driver_release = real_guard, real_mirror, real_drv
+        cli._guard_call, cli._mirror_bridge, cli._driver_release = real_guard, real_mirror, real_drv
 
 
 def main():

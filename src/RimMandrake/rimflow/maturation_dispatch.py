@@ -400,6 +400,19 @@ def full_list_only(f):
     return full if checks and set(checks) <= set(full) else []
 
 
+def lock_says(game, query=None):
+    """-> "; the lock now: <its line>" for game `game`, read from its lock at this moment (game_lock.py), or "" when no
+    lock is readable here (a test tree, another machine). The tick's words about a game come from the lock."""
+    import game_lock as GL
+    try:
+        path = GL.lock_path(game)
+        if not path and query is None:
+            return ""
+        return "; the lock now: %s" % (query or GL.query)(game, pipe=False, path=path)["line"]
+    except Exception as e:  # noqa: BLE001  (a reading that fails is said, never dropped)
+        return "; the lock now: COULD NOT LOOK (%s: %s)" % (type(e).__name__, e)
+
+
 def pick_game(cfg, bridge, purpose, held=None, hold=None, only=None):
     """-> (the first free game, or None; [why not, per game]). A game is free when no live driver holds it (held:
     {game: unit}) and its own bridge reading says takeable. The games are cfg game_instances (else a); a reading that
@@ -418,7 +431,9 @@ def pick_game(cfg, bridge, purpose, held=None, hold=None, only=None):
             whys.append("game %s: %s" % (g, only[g]))
             continue
         if g in (held or {}):
-            whys.append("game %s: driven by %s" % (g, held[g]))
+            # the run record says who; the lock, read now, says whether that is still so (the tick named a dead run
+            # as live on 2026-11-21, RIMMANDRAKE_BUILD_ONE_GAME_LOCK_CLAIM_FOUR_RECORDS_DISAGREE)
+            whys.append("game %s: driven by %s%s" % (g, held[g], lock_says(g)))
             continue
         h = hold(g)
         if h:
