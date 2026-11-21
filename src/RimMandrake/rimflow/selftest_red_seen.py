@@ -102,6 +102,12 @@ def main():
                         runner=lambda *a, **k: (open(os.path.join(root, "src/café.py"), "a").write("#\n"), R(1))[1])
         ok(r["ok"] is False and open(os.path.join(root, "src/café.py"), encoding="utf-8").read() == accent,
            "a non-ASCII path the run changed is seen and restored (%s)" % r["why"][:90])
+        # RIMMANDRAKE_REPAIR_PYRE_TABLE_LIVE_COMMANDS_THAT_NEVER_START: a command that dies the same way with no fault
+        # (an import error, a shell syntax error: all 46 Pyrelands live commands, 2026-11-20) proves nothing
+        dead = "ModuleNotFoundError: No module named 'modcheck'"
+        r = JC.red_seen(root, MOD, "T_GOOD", patch=P["fault"], runner=lambda *a, **k: R(1, dead))
+        ok(r["ok"] is False and "without the fault" in r["why"] and "T_GOOD" not in red_record(root),
+           "a command that fails the same way without the fault is no red proof (%s)" % r["why"][:100])
         r = JC.red_seen(root, MOD, "T_GOOD", patch=P["fault"])
         ok(r["ok"] is True and red_record(root).get("T_GOOD", {}).get("rc") == 1, "control: a real red is recorded")
         JC.run_offline(root, MOD)

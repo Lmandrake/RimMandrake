@@ -40,6 +40,10 @@ import check_margin as CM
 
 TABLE = "version/test_table.json"
 RUN_TIMEOUT_S = 1800      # the slowest measured offline decider is FlowWorks' C# suite, 531 s
+# how long red_seen's no-fault probe waits before it reads the command as started. Danger: a probe as long as the test
+# doubles every red proof (live commands run for minutes); evidence: a start-up death (import, shell syntax) ends in
+# under 2 s, measured on the 46 Pyrelands live commands, 2026-11-20 (table_commands_start.py)
+START_PROBE_S = 20
 RED_SEEN = "version/evidence/red_seen.json"
 GRANDFATHER = "version/evidence/red_seen_grandfather.json"
 OFFLINE_STAGES = ("2", "4-5")   # a bar proving at one of these stages is decided offline
@@ -417,6 +421,18 @@ def red_seen(root, mod, test_id, patch=None, runner=subprocess.run, now=None):
     if rc == 0:
         return {"ok": False, "why": "%s stayed green under the fault (rc 0: %s): a test that could not fail; nothing "
                 "recorded" % (test_id, last or "no output")}
+    # the same command with no fault: one that ends at once the same way (an import error, a shell syntax error) never
+    # reached its test, so its red proves nothing about the fault (RIMMANDRAKE_REPAIR_PYRE_TABLE_LIVE_COMMANDS_THAT_NEVER_
+    # START: all 46 Pyrelands live commands died at start, 2026-11-20). Still running at START_PROBE_S: it started.
+    try:
+        r0 = runner(t["command"], shell=True, cwd=root, capture_output=True, text=True, timeout=START_PROBE_S,
+                    env=_run_env())
+        same = r0.returncode == rc and _last_line(r0.stdout, r0.stderr) == last
+    except (subprocess.TimeoutExpired, OSError):
+        same = False
+    if same:
+        return {"ok": False, "why": "%s fails the same way without the fault (rc %s: %s): the command never reached its "
+                "test, so the red proves nothing; repair the table's command; nothing recorded" % (test_id, rc, last)}
     at = now if now is not None else datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     reds[test_id] = {"rc": rc, "last": last, "at": at, "file": t.get("file"), "test_blob": test_blob(root, t),
                      "command": t["command"], "patch_files": paths, "patch": patch_text[:4000],
