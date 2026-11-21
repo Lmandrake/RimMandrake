@@ -47,15 +47,12 @@ namespace RimMandrake.TheForge
             return governed && !atHome && columnInReach && !urgentlyHungry && !exhausted;
         }
 
-        // The biome the vapour columns belong to. RM_MapComponent_VaporColumns builds a column round every steam geyser on
-        // every map, and every vanilla map has geysers, so the haze and ash spirals are gated on the map's biome here.
-        public const string HomeBiome = "RM_TheForge";
-
-        // Stages 1 and 2 (the haze grid and the ash spirals): shown only while their setting is on AND the map is a Forge map.
-        // Biome mechanics are promised inside our own biomes only (standing_rulings.md §Every mod ships superb Mod Settings).
-        public static bool ColumnVisualsShow(bool settingOn, string biomeDefName)
+        // Stage 2 (the ash spirals): shown while their setting is on and the map has a vapour column. It reads no biome: a
+        // steam geyser makes a column on any map, and the spirals show there (owner, 2026-11-21: a mechanic reads physical
+        // conditions, never the biome).
+        public static bool AshSpiralsShow(bool settingOn, int columnCellCount)
         {
-            return settingOn && string.Equals(biomeDefName, HomeBiome, StringComparison.Ordinal);
+            return settingOn && columnCellCount > 0;
         }
 
         public static bool MoteAlive(int age) { return age < MoteLifeTicks; }

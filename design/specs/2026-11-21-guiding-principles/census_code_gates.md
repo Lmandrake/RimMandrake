@@ -12,7 +12,7 @@ Two classing rules I used:
 
 | # | Mod | file:line | What is gated | How | Class |
 |---|---|---|---|---|---|
-| 1 | TheForge | `TheForge/Source/RM_ForgeSkyPastures.cs:40` and `:215`; `Kernel/RM_SkyKernel.cs:51-59` | Geyser vapour-column haze and ash spirals are drawn only on The Forge. This is the d07e03a938 case: "Biome mechanics are promised inside our own biomes only". | `ColumnVisualsShow(setting, defName)` compares to `HomeBiome="RM_TheForge"` | MECHANIC-GATE |
+| 1 | TheForge | `TheForge/Source/RM_ForgeSkyPastures.cs:40` and `:215`; `Kernel/RM_SkyKernel.cs:51-59` | Geyser vapour-column haze and ash spirals are drawn only on The Forge. This is the d07e03a938 case: "Biome mechanics are promised inside our own biomes only". | `ColumnVisualsShow(setting, defName)` compares to `HomeBiome="RM_TheForge"` | MECHANIC-GATE, fixed 2026-11-21 (RIMMANDRAKE_REMOVE_FORGE_GEYSER_PALE_MASK_KEEP_THE_SWIRLING_STEAM): the haze is removed on every map, and the spirals gate is `AshSpiralsShow(setting, column cells)`, which reads no biome |
 | 2 | Pyrelands | `Pyrelands/Source/RM_JobGiver_BurrowOnFire.cs:76-80` | The ashwallow dive from fire runs only on a Pyrelands map. This is the 675ab57651 case. | `burnLine.IsPyrelandsMap`, which is a defName list at `MapComponent_BurnLine.cs:146-158` | MECHANIC-GATE |
 | 3 | Pyrelands | `MapComponent_BurnLine.cs:150-158` | The burn line is measured only on Pyrelands maps. | `PyrelandsBiomeDefNames` | MECHANIC-GATE |
 | 4 | Pyrelands | `FireEcologyHook.cs:128-149`, `:197` | Fire ecology (ash, scorch, fruit) runs per map: native biome, or an opted-in map. | `FireEcologyOnMap(native, RM_PyrelandsSettings.AppliesToBiome)` | MECHANIC-GATE |

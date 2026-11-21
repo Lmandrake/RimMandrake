@@ -70,7 +70,6 @@ namespace RimMandrake.TheForge
         public static float plumeStrength = 1f;
 
         // FORGE_SKY_PASTURES_1 — the vapour-column pastures. Each is read live.
-        public static bool skyColumnGridEnabled = true;
         public static bool skyAshSpiralsEnabled = true;
         public static bool skyColumnHuntEnabled = true;
         public static bool jossurStoopEnabled = true;
@@ -155,7 +154,6 @@ namespace RimMandrake.TheForge
             Scribe_Values.Look(ref plumeHeatEnabled, "plumeHeatEnabled", true);
             Scribe_Values.Look(ref plumeAdaptedExempt, "plumeAdaptedExempt", true);
             Scribe_Values.Look(ref plumeStrength, "plumeStrength", 1f);
-            Scribe_Values.Look(ref skyColumnGridEnabled, "skyColumnGridEnabled", true);
             Scribe_Values.Look(ref skyAshSpiralsEnabled, "skyAshSpiralsEnabled", true);
             Scribe_Values.Look(ref skyColumnHuntEnabled, "skyColumnHuntEnabled", true);
             Scribe_Values.Look(ref jossurStoopEnabled, "jossurStoopEnabled", true);
@@ -349,19 +347,17 @@ namespace RimMandrake.TheForge
                 list.GapLine();
             }
 
-            if (Group(list, "Vapour columns and sky creatures", RimMandrake.Shared.SettingScope.Now, new[] { "skyColumnGridEnabled", "skyAshSpiralsEnabled", "skyColumnHuntEnabled", "jossurStoopEnabled", "skyColumnHighlightEnabled", "skyColumnWanderEnabled" }))
+            if (Group(list, "Vapour columns and sky creatures", RimMandrake.Shared.SettingScope.Now, new[] { "skyAshSpiralsEnabled", "skyColumnHuntEnabled", "jossurStoopEnabled", "skyColumnHighlightEnabled", "skyColumnWanderEnabled" }))
             {
-                list.CheckboxLabeled("Vapour-column haze", ref skyColumnGridEnabled,
-                    "A faint haze, brighter at the rim, marks the ground under each vapour column where the sky creatures graze. Forge maps only.");
-                list.CheckboxLabeled("  Ash spirals in the columns", ref skyAshSpiralsEnabled,
-                    "Ash flecks wind upward inside the vapour columns near the camera. Cosmetic only. Forge maps only.");
-                list.CheckboxLabeled("  Column-aware hunting", ref skyColumnHuntEnabled,
+                list.CheckboxLabeled("Ash spirals in the vapour columns", ref skyAshSpiralsEnabled,
+                    "Ash flecks wind upward inside the vapour column round a steam geyser, near the camera. Cosmetic only. Any map.");
+                list.CheckboxLabeled("Column-aware hunting", ref skyColumnHuntEnabled,
                     "Predators that live in the columns prefer prey inside them and ignore prey far out on the open ash.");
-                list.CheckboxLabeled("  Jossur stoops", ref jossurStoopEnabled,
+                list.CheckboxLabeled("Jossur stoops", ref jossurStoopEnabled,
                     "A hunting jossur takes to the air when its prey is a way off and closes in on the wing.");
-                list.CheckboxLabeled("  Selecting a sky creature lights up its columns", ref skyColumnHighlightEnabled,
+                list.CheckboxLabeled("Selecting a sky creature lights up its columns", ref skyColumnHighlightEnabled,
                     "While a column-bound flier is selected, the columns it can reach are outlined. Nothing is shown otherwise.");
-                list.CheckboxLabeled("  Sky creatures graze in the columns", ref skyColumnWanderEnabled,
+                list.CheckboxLabeled("Sky creatures graze in the columns", ref skyColumnWanderEnabled,
                     "Wild fleet fliers, bulloos and jossurs wander inside the vapour columns (or close by them) whenever a column is in reach. Off: they wander like any animal.");
                 list.GapLine();
             }

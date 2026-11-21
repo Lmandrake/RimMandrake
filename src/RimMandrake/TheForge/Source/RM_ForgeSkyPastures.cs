@@ -12,85 +12,15 @@ namespace RimMandrake.TheForge
     // FORGE_SKY_PASTURES_1. The vapour-column pastures made visible and made to matter.
     // The column FIELD is EnvironmentalHazards' (RM_MapComponent_VaporColumns, hourly rebuild, public InColumn): this file only reads
     // it, so nothing outside TheForge changes.
-    //   stage 1  grid      : SectionLayer_RM_SkyColumns, a static mesh printed per 17x17 section (faint haze, brighter rim)
+    //   stage 1  grid      : REMOVED 2026-11-21. A constant pale haze with a brighter rim round every column read as a
+    //                        region-selection mask round each steam geyser (owner: "it's the constant pale region-selection-
+    //                        looking mask I object to"). No map draws it. Do not bring back a static column overlay.
     //   stage 2  spirals   : ash flecks winding up inside columns near the camera
     //   stage 3  hunting   : column-aware prey score + the jossur stoop (see the end of this file)
     //   stage 4  highlight : outline of the columns a selected column-bound flier can reach, drawn per frame, nothing otherwise
     //   stage 5  pasture   : the wander that actually puts the sky creatures in the columns (RM_JobGiver_SkyPastureWander,
     //                        Defs/ThinkTreeDefs/RM_ThinkTree_ForgeSkyPasture.xml) and the dhokkur's vent-to-vent walk
     // Design record: Transient/work_SKY_PASTURES_20261003.md.
-
-    /// <summary>Prints the haze for the column cells owned by this section. Mesh rebuilds only when RM_SkyColumns dirties
-    /// the section (the component does that when the field's signature changes), so it costs nothing per frame.</summary>
-    public class SectionLayer_RM_SkyColumns : SectionLayer
-    {
-        private static Material hazeMat;
-        private static Material rimMat;
-        public static int LastPrintedCells;
-
-        public SectionLayer_RM_SkyColumns(Section section) : base(section)
-        {
-            relevantChangeTypes = (ulong)RM_TheForgeDefOf.RM_SkyColumns;
-        }
-
-        // The setting only hides the draw, so flipping it back needs no regeneration. A Forge map only: every vanilla map has
-        // steam geysers, and their haze over a Desert review map was an ugly pale ring of squares (owner, 2026-11-20).
-        public override bool Visible
-        {
-            get { return RM_SkyKernel.ColumnVisualsShow(RM_TheForgeSettings.Active(RM_TheForgeSettings.skyColumnGridEnabled), Map?.Biome?.defName); }
-        }
-
-        private static Material Haze
-        {
-            get
-            {
-                if (hazeMat == null)
-                {
-                    hazeMat = SolidColorMaterials.NewSolidColorMaterial(new Color(0.92f, 0.93f, 0.96f, 0.07f), ShaderDatabase.Transparent);
-                }
-                return hazeMat;
-            }
-        }
-
-        private static Material Rim
-        {
-            get
-            {
-                if (rimMat == null)
-                {
-                    rimMat = SolidColorMaterials.NewSolidColorMaterial(new Color(0.95f, 0.92f, 0.85f, 0.16f), ShaderDatabase.Transparent);
-                }
-                return rimMat;
-            }
-        }
-
-        public override void Regenerate()
-        {
-            ClearSubMeshes(MeshParts.All);
-            RM_MapComponent_VaporColumns cols = Map.GetComponent<RM_MapComponent_VaporColumns>();
-            int printed = 0;
-            if (cols != null)
-            {
-                float y = AltitudeLayer.Conduits.AltitudeFor();
-                Vector2 one = new Vector2(1f, 1f);
-                foreach (IntVec3 c in section.CellRect)
-                {
-                    if (!cols.InColumn(c))
-                    {
-                        continue;
-                    }
-                    bool edge = !cols.InColumn(c + IntVec3.North) || !cols.InColumn(c + IntVec3.South)
-                        || !cols.InColumn(c + IntVec3.East) || !cols.InColumn(c + IntVec3.West);
-                    Vector3 center = c.ToVector3Shifted();
-                    center.y = y;
-                    Printer_Plane.PrintPlane(this, center, one, edge ? Rim : Haze);
-                    printed++;
-                }
-            }
-            LastPrintedCells = printed;
-            FinalizeMesh(MeshParts.All);
-        }
-    }
 
     public class AshMote
     {
@@ -107,7 +37,6 @@ namespace RimMandrake.TheForge
         public const int MaxHighlightCells = 2500;
 
         private List<int> columnCells = new List<int>();
-        private int signature = -1;
         private int nextPoll = 120;
         private readonly List<AshMote> motes = new List<AshMote>();
 
@@ -116,7 +45,7 @@ namespace RimMandrake.TheForge
         private Pawn highlightFor;
         private int highlightFrame = -999;
 
-        public int StatPolls, StatDirtyBursts, StatMotesSpawned, StatFlecks, StatStoops;
+        public int StatPolls, StatMotesSpawned, StatFlecks, StatStoops;
 
         public RM_MapComponent_SkyPastures(Map map) : base(map) { }
 
@@ -134,7 +63,7 @@ namespace RimMandrake.TheForge
             nextPoll = Find.TickManager.TicksGame + 120;
         }
 
-        // Re-reads the field through its public InColumn; when the cell set changed, dirties every section once.
+        // Re-reads the field through its public InColumn (the spirals spawn on these cells).
         public void PollNow()
         {
             RM_MapComponent_VaporColumns cols = map.GetComponent<RM_MapComponent_VaporColumns>();
@@ -145,53 +74,15 @@ namespace RimMandrake.TheForge
                 return;
             }
             List<int> fresh = new List<int>(columnCells.Count + 16);
-            int sig = 17;
             CellIndices ci = map.cellIndices;
             foreach (IntVec3 c in map.AllCells)
             {
                 if (cols.InColumn(c))
                 {
-                    int i = ci.CellToIndex(c);
-                    fresh.Add(i);
-                    sig = unchecked(sig * 31 + i);
+                    fresh.Add(ci.CellToIndex(c));
                 }
             }
             columnCells = fresh;
-            if (sig != signature)
-            {
-                signature = sig;
-                DirtyAllSections();
-            }
-        }
-
-        // A section whose array slot is not built yet regenerates on its own, so skipping it is correct
-        // (the MessyConduit live finding, 2026-10-02: MapMeshDirty throws on a null slot during first load).
-        private void DirtyAllSections()
-        {
-            if (RM_TheForgeDefOf.RM_SkyColumns == null)
-            {
-                return;
-            }
-            StatDirtyBursts++;
-            for (int x = 0; x < map.Size.x; x += Section.Size)
-            {
-                for (int z = 0; z < map.Size.z; z += Section.Size)
-                {
-                    IntVec3 loc = new IntVec3(x, 0, z);
-                    try
-                    {
-                        if (map.mapDrawer.SectionAt(loc) == null)
-                        {
-                            continue;
-                        }
-                    }
-                    catch (System.NullReferenceException)
-                    {
-                        return;
-                    }
-                    map.mapDrawer.MapMeshDirty(loc, RM_TheForgeDefOf.RM_SkyColumns);
-                }
-            }
         }
 
         public override void MapComponentTick()
@@ -210,10 +101,11 @@ namespace RimMandrake.TheForge
         }
 
         // ---- stage 2: ash spirals --------------------------------------------------------------------------
+        // Shown round any vapour column on any map (a steam geyser makes one): the gate reads the setting and the column, never
+        // the biome (owner, 2026-11-21: a mechanic reads physical conditions, never the biome).
         private void StepMotes()
         {
-            if (!RM_SkyKernel.ColumnVisualsShow(RM_TheForgeSettings.Active(RM_TheForgeSettings.skyAshSpiralsEnabled), map.Biome?.defName)
-                || columnCells.Count == 0
+            if (!RM_SkyKernel.AshSpiralsShow(RM_TheForgeSettings.Active(RM_TheForgeSettings.skyAshSpiralsEnabled), columnCells.Count)
                 || Find.CurrentMap != map || Find.CameraDriver == null)
             {
                 if (motes.Count > 0)
@@ -324,10 +216,9 @@ namespace RimMandrake.TheForge
 
         public string DebugReport()
         {
-            return "skyColumnCells=" + columnCells.Count + " skyPolls=" + StatPolls + " skyDirtyBursts=" + StatDirtyBursts
+            return "skyColumnCells=" + columnCells.Count + " skyPolls=" + StatPolls
                 + " skyMotesLive=" + motes.Count + " skyMotesSpawned=" + StatMotesSpawned + " skyFlecks=" + StatFlecks
-                + " skyStoops=" + StatStoops + " skyHighlightCells=" + highlight.Count
-                + " skyGridPrinted=" + SectionLayer_RM_SkyColumns.LastPrintedCells + " " + PastureReport();
+                + " skyStoops=" + StatStoops + " skyHighlightCells=" + highlight.Count + " " + PastureReport();
         }
 
         // Stage 5 read-back: the wild pawns the pasture wander governs right now (awake, unsealed), and how many of them stand

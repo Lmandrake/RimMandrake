@@ -850,15 +850,15 @@ namespace RimMandrake.TheForge.SelfTest
                 Check(RM_SkyKernel.PreyScoreDelta(true, 0f, false) == 30f && RM_SkyKernel.PreyScoreDelta(false, 0f, true) == -60f && RM_SkyKernel.PreyScoreDelta(false, 20f, false) == -60f && RM_SkyKernel.PreyScoreDelta(false, 20f, true) == 0f && RM_SkyKernel.PreyScoreDelta(true, 20f, true) == 30f, "PreyScoreDelta table");
                 Check(RM_SkyKernel.HighlightReach(1f) == 8f && RM_SkyKernel.HighlightReach(100f) == 60f && RM_SkyKernel.HighlightReach(25f) == 25f, "HighlightReach clamp");
                 Check(RM_SkyKernel.MoteAlive(239) && !RM_SkyKernel.MoteAlive(240), "mote lifetime");
-                // The column haze and ash spirals show only on a Forge map (standing ruling: biome mechanics inside our own
-                // biomes only; owner 2026-11-20 on a Desert review map: "Why do steam geysers have this pale area surrounding
-                // them? It's ugly."). Every vanilla map has steam geysers, so the biome is the gate, not the geyser.
-                foreach (string biome in new[] { "RM_TheForge", "Desert", "AridShrubland", "TemperateForest", "RM_Pyrelands", "RM_TheScald", "rm_theforge", "", null })
+                // The ash spirals read conditions, never the biome (owner, 2026-11-21): shown while their setting is on and the map
+                // has a vapour column (a steam geyser makes one on any map), so a geyser on a Desert map gets them as a Forge
+                // geyser does. The gate takes no biome at all; the column-cell count is the only map input.
+                foreach (int cells in new[] { 0, 1, 2, 113, 6000, -1 })
                 {
                     foreach (bool on in new[] { true, false })
                     {
-                        bool spec = on && biome == "RM_TheForge";
-                        Check(RM_SkyKernel.ColumnVisualsShow(on, biome) == spec, $"ColumnVisualsShow(setting {on}, biome {biome ?? "null"}) spec {spec}"); Steps++;
+                        bool spec = on && cells > 0;
+                        Check(RM_SkyKernel.AshSpiralsShow(on, cells) == spec, $"AshSpiralsShow(setting {on}, column cells {cells}) spec {spec}"); Steps++;
                     }
                 }
                 // stage 5 pasture wander: the whole truth table of who it governs, and the destination leash on a swept grid

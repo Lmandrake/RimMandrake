@@ -235,7 +235,7 @@ WIRED = ["modEnabled", "weatherPulseEnabled", "grandCycleEnabled", "gasWashEnabl
          "forgeVoicesVisualCues", "dhuvvoxClockEnabled", "dhuvvoxRunSoundEnabled", "dhuvvoxSwarmEnabled",
          "plumeFrontsEnabled", "plumeObscureEnabled", "plumeSoakEnabled", "plumeHeatEnabled", "plumeAdaptedExempt",
          "plumeStrength",
-         "skyColumnGridEnabled", "skyAshSpiralsEnabled", "skyColumnHuntEnabled", "jossurStoopEnabled", "skyColumnHighlightEnabled",
+         "skyAshSpiralsEnabled", "skyColumnHuntEnabled", "jossurStoopEnabled", "skyColumnHighlightEnabled",
          "skyColumnWanderEnabled", "dhokkurColumnsEnabled",
          "floatstoneDoorEnabled", "spunstoneHullEnabled",
          # DHOGGUR_USE_DECIDE_SNUFFLING_FOR_A_JOB: driven by the dhoggur_swell chain
@@ -2036,8 +2036,8 @@ def _highlight_selection_only_problems(src):
 
 @suite.chain("sky_pastures")
 def sky_pastures(t):
-    """FORGE_SKY_PASTURES_1: the vapour-column grid haze, ash spirals, column-aware hunting, the jossur stoop and the
-    flier-selected highlight. NOTHING here is readable through a bridge tool (a section mesh, a fleck, a prey score, a
+    """FORGE_SKY_PASTURES_1: the ash spirals, column-aware hunting, the jossur stoop and the flier-selected highlight, and
+    the ABSENCE of the old column haze (removed 2026-11-21: a constant pale region round every steam geyser). NOTHING here is readable through a bridge tool (a fleck, a prey score, a
     flight state and a per-frame outline are all engine-internal and the flyer rule forbids a live flight hunt), so each
     component is a SOURCE claim, labelled as such, and the behaviour is recorded UNMEASURED live. Component names say
     what the source must carry; none claims the game was observed."""
@@ -2047,32 +2047,51 @@ def sky_pastures(t):
     mod = _read_cs("RM_TheForgeMod.cs")
     dbg = _read_cs("RM_ForgeCycleDebugActions.cs")
     defs = _read_text(os.path.join("Defs", "ThingDefs_Races", "RM_TheForgeNatives.xml"))
-    flag = _read_text(os.path.join("Defs", "MapMeshFlagDefs", "RM_SkyColumns.xml"))
 
     def need(cond, msg):
         if _live(t) or t.session is None:
             if not cond:
                 _fail(msg)
 
-    with _comp(t, "sky_source_grid_is_a_dirty_safe_section_layer", independent=True, toggle="skyColumnGridEnabled"):
-        need("class SectionLayer_RM_SkyColumns : SectionLayer" in src, "no SectionLayer for the grid")
-        need("relevantChangeTypes = (ulong)RM_TheForgeDefOf.RM_SkyColumns" in src, "the layer does not listen to its own flag")
-        need("<defName>RM_SkyColumns</defName>" in flag and "RM_SkyColumns" in _read_cs("RM_TheForgeDefOf.cs"),
-             "the MapMeshFlagDef or its DefOf is missing")
-        need("catch (System.NullReferenceException)" in src and "SectionAt(loc) == null" in src,
-             "dirtying does not guard the not-yet-built section slots (the MessyConduit first-load trap)")
-        need("skyColumnGridEnabled" in src, "the grid is not gated on skyColumnGridEnabled")
-        need("get { return RM_SkyKernel.ColumnVisualsShow(RM_TheForgeSettings.Active(RM_TheForgeSettings.skyColumnGridEnabled), "
-             "Map?.Biome?.defName); }" in src,
-             "the haze is not gated on a Forge map through RM_SkyKernel.ColumnVisualsShow (it draws a pale ring round every "
-             "steam geyser on every biome; owner 2026-11-20: \"It's ugly.\")")
+    # Owner, 2026-11-21: "there is a perpetual "marked region" with a pale radius and a brighter edge. ... it's the constant
+    # pale region-selection-looking mask I object to." That was the stage-1 haze (a SectionLayer printing a pale plane on
+    # every column cell, brighter on the rim). No map draws it: no TheForge class derives SectionLayer, its MapMeshFlagDef
+    # and its setting are gone. The selection-only outline (stage 4) is the one column overlay left.
+    with _comp(t, "sky_source_draws_no_column_haze", independent=True):
+        layers = []
+        for root, _dirs, files in os.walk(_SRC):
+            if os.sep + "obj" in root or os.sep + "bin" in root:
+                continue
+            for fn in files:
+                if fn.endswith(".cs"):
+                    rel = os.path.relpath(os.path.join(root, fn), _SRC)
+                    if re.search(r":\s*SectionLayer\b", _read_cs(rel)):
+                        layers.append(rel)
+        need(not layers, "a static column overlay is back: %s derives SectionLayer (the pale region round every steam "
+             "geyser the owner objected to, 2026-11-21)" % layers)
+        flagdefs = []
+        for root, _dirs, files in os.walk(os.path.join(_HERE, "Defs")):
+            for fn in files:
+                if fn.endswith(".xml"):
+                    rel = os.path.relpath(os.path.join(root, fn), _HERE)
+                    if "<MapMeshFlagDef>" in _read_text(rel):
+                        flagdefs.append(rel)
+        need(not flagdefs, "a MapMeshFlagDef for a column overlay is back: %s" % flagdefs)
+        need("skyColumnGridEnabled" not in mod and "skyColumnGridEnabled" not in src,
+             "the haze setting is back (skyColumnGridEnabled); the haze it switched is removed")
         need('Compile Include="RM_ForgeSkyPastures.cs"' in prj, "the csproj does not compile RM_ForgeSkyPastures.cs (a silent no-op)")
+    # The spirals read conditions, never the biome (owner, 2026-11-21): the gate is RM_SkyKernel.AshSpiralsShow with the
+    # setting and the column-cell count, so a steam geyser on any map gets them; nothing in the file or kernel reads a biome.
     with _comp(t, "sky_source_spirals_are_cosmetic_flecks", independent=True, toggle="skyAshSpiralsEnabled"):
         need("FleckMaker.ThrowDustPuffThick" in src and "skyAshSpiralsEnabled" in src, "no ash flecks under skyAshSpiralsEnabled")
         need("CurrentViewRect" in src, "spirals are not limited to the camera view")
-        need("if (!RM_SkyKernel.ColumnVisualsShow(RM_TheForgeSettings.Active(RM_TheForgeSettings.skyAshSpiralsEnabled), "
-             "map.Biome?.defName)" in src,
-             "the ash spirals are not gated on a Forge map through RM_SkyKernel.ColumnVisualsShow")
+        need("if (!RM_SkyKernel.AshSpiralsShow(RM_TheForgeSettings.Active(RM_TheForgeSettings.skyAshSpiralsEnabled), "
+             "columnCells.Count)" in src,
+             "the ash spirals are not gated through RM_SkyKernel.AshSpiralsShow(setting, column cells)")
+        kern = _read_cs(os.path.join("Kernel", "RM_SkyKernel.cs"))
+        need("Biome" not in src and "Biome" not in kern,
+             "the sky pastures read a biome (owner, 2026-11-21: a mechanic reads physical conditions, never the biome; "
+             "a steam geyser on a Desert map must get its spirals)")
     with _comp(t, "sky_source_hunt_scores_columns", independent=True, toggle="skyColumnHuntEnabled"):
         need("nameof(FoodUtility.GetPreyScoreFor)" in src and "skyColumnHuntEnabled" in src, "no gated prey-score postfix")
         need("InColumn(prey.Position)" in src, "the prey score does not read the column field")

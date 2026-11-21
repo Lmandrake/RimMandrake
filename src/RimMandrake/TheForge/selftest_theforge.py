@@ -857,7 +857,7 @@ def main():
         check("floor met: %s (%d >= %d)" % (group, len(names), floor), len(names) >= floor)
     check("seven phases derived from the enum", V.PHASES == ["StillHeat", "GasWash", "Rain", "Freeze", "Growth",
                                                              "Cracks", "Melt"], V.PHASES)
-    check("52 settings fields derived from the C# (ummisk +2, 2026-10-20; keelwork -2, 2026-10-23; sky pasture wander +2, 2026-11-03)", len(V.SETTINGS_DEFAULTS) == 52, sorted(V.SETTINGS_DEFAULTS))
+    check("51 settings fields derived from the C# (ummisk +2, 2026-10-20; keelwork -2, 2026-10-23; sky pasture wander +2, 2026-11-03; column haze -1, 2026-11-21)", len(V.SETTINGS_DEFAULTS) == 51, sorted(V.SETTINGS_DEFAULTS))
     check("every wired toggle is a real settings field", set(V.WIRED) <= set(V.SETTINGS_DEFAULTS),
           sorted(set(V.WIRED) - set(V.SETTINGS_DEFAULTS)))
     check("the five scaffolding fields are exactly the unwired remainder", len(V.SCAFFOLDING) == 5, V.SCAFFOLDING)
@@ -1052,30 +1052,49 @@ def main():
         check("highlight mutant (%s) reddens only the selection-only component" % label,
               set(bad) == {"sky_pastures.sky_source_highlight_is_selection_only"}, bad)
 
-    # Forge maps only (owner 2026-11-20 on a Desert review map: "Why do steam geysers have this pale area surrounding them?
-    # It's ugly."): the haze layer and the ash spirals each decide through RM_SkyKernel.ColumnVisualsShow with the map's
-    # biome; putting back the old setting-only gate reddens only that stage's component
-    grid_gate = "get { return RM_SkyKernel.ColumnVisualsShow(RM_TheForgeSettings.Active(RM_TheForgeSettings.skyColumnGridEnabled), Map?.Biome?.defName); }"
-    spiral_gate = "if (!RM_SkyKernel.ColumnVisualsShow(RM_TheForgeSettings.Active(RM_TheForgeSettings.skyAshSpiralsEnabled), map.Biome?.defName)"
-    biome_mutants = [
-        ("haze shown on every biome (the setting-only gate of 2026-10)", grid_gate,
-         "get { return RM_TheForgeSettings.Active(RM_TheForgeSettings.skyColumnGridEnabled); }",
-         "sky_pastures.sky_source_grid_is_a_dirty_safe_section_layer"),
-        ("haze gate given no biome", grid_gate, grid_gate.replace("Map?.Biome?.defName", "RM_SkyKernel.HomeBiome"),
-         "sky_pastures.sky_source_grid_is_a_dirty_safe_section_layer"),
-        ("spirals on every biome (the setting-only gate of 2026-10)", spiral_gate,
-         "if (!RM_TheForgeSettings.Active(RM_TheForgeSettings.skyAshSpiralsEnabled)",
+    # The pale mask is removed on every map, and the spirals read conditions, never the biome (owner, 2026-11-21: "it's the
+    # constant pale region-selection-looking mask I object to"; a mechanic reads physical conditions, never the biome).
+    # Each mutant puts back one piece of the old code; it reddens only the component that names that piece.
+    spiral_gate = "if (!RM_SkyKernel.AshSpiralsShow(RM_TheForgeSettings.Active(RM_TheForgeSettings.skyAshSpiralsEnabled), columnCells.Count)"
+    haze_layer = ("\n    public class SectionLayer_RM_SkyColumns : SectionLayer\n    {\n"
+                  "        public SectionLayer_RM_SkyColumns(Section section) : base(section) { }\n    }\n")
+    gate_mutants = [
+        ("the haze layer is back (d07e03a938's SectionLayer_RM_SkyColumns)",
+         lambda m: m.replace("    public class AshMote", haze_layer + "    public class AshMote", 1), None,
+         "sky_pastures.sky_source_draws_no_column_haze"),
+        ("the haze setting is back", None,
+         lambda m: m.replace("public static bool skyAshSpiralsEnabled = true;",
+                             "public static bool skyColumnGridEnabled = true;\n        public static bool skyAshSpiralsEnabled = true;", 1),
+         "sky_pastures.sky_source_draws_no_column_haze"),
+        ("spirals on a Forge map only (d07e03a938's biome gate)",
+         lambda m: m.replace(spiral_gate, "if (!RM_SkyKernel.ColumnVisualsShow(RM_TheForgeSettings.Active("
+                             "RM_TheForgeSettings.skyAshSpiralsEnabled), map.Biome?.defName)", 1), None,
+         "sky_pastures.sky_source_spirals_are_cosmetic_flecks"),
+        ("spirals gated by the setting alone, the column count unread",
+         lambda m: m.replace(spiral_gate, "if (!RM_TheForgeSettings.Active(RM_TheForgeSettings.skyAshSpiralsEnabled)", 1), None,
          "sky_pastures.sky_source_spirals_are_cosmetic_flecks"),
     ]
-    for label, old, new, comp in biome_mutants:
-        mutated = sky_src.replace(old, new, 1)
-        check("forge-only mutant applies to the source (%s)" % label, mutated != sky_src)
+    mod_src = real("RM_TheForgeMod.cs")
+    for label, sky_mut, mod_mut, comp in gate_mutants:
+        msky = sky_mut(sky_src) if sky_mut else sky_src
+        mmod = mod_mut(mod_src) if mod_mut else mod_src
+        check("gate mutant applies to the source (%s)" % label, msky != sky_src or mmod != mod_src)
         try:
-            V._read_cs = lambda n, m=mutated: m if n == "RM_ForgeSkyPastures.cs" else real(n)
+            V._read_cs = lambda n, a=msky, b=mmod: a if n == "RM_ForgeSkyPastures.cs" else (b if n == "RM_TheForgeMod.cs" else real(n))
             bad = reds(run())
         finally:
             V._read_cs = real
-        check("forge-only mutant (%s) reddens only %s" % (label, comp), set(bad) == {comp}, bad)
+        check("gate mutant (%s) reddens only %s" % (label, comp), set(bad) == {comp}, bad)
+    # a MapMeshFlagDef planted in a Defs file (the overlay's dirty flag) reddens only the no-haze component
+    rt0 = V._read_text
+    try:
+        V._read_text = lambda r: rt0(r).replace("</Defs>", "<MapMeshFlagDef><defName>RM_SkyColumns</defName></MapMeshFlagDef></Defs>", 1) \
+            if r.endswith("RM_TheForgeNatives.xml") else rt0(r)
+        bad = reds(run())
+    finally:
+        V._read_text = rt0
+    check("gate mutant (a MapMeshFlagDef is back) reddens only the no-haze component",
+          set(bad) == {"sky_pastures.sky_source_draws_no_column_haze"}, bad)
 
     # stage 5b homing (LIVE 2026-11-04: the PreWander insert alone lost to vanilla's sleep/eat nodes): losing the PreMain
     # homing, or deciding it outside the fuzzed kernel, reddens only the wiring component
