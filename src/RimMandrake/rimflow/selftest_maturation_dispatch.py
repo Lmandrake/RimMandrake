@@ -2519,8 +2519,11 @@ def test_pilot_main():
                                                   "file": lambda *a, **k: (False, "no filing")})
         want = RL.pilot_model(REPO, rules.get("pilot_agent", "rm-testpilot"), cfg.get("steward_model", "opus"))
         it, brief, model, cap = seen[0] if seen else (None, "", None, None)
-        ok(it == "FIX_ME" and model == want and model != cfg.get("steward_model"),
-           "the sitting launches on the item with the pilot model %s (read %s, %s)" % (want, it, model))
+        import detached_helper as DH    # the launch gate (H4) takes an alias and maps it to the full id itself
+        ok(it == "FIX_ME" and model in ("fable", "opus", "sonnet") and DH.MODEL_IDS.get(model, model) == want
+           and model != cfg.get("steward_model"),
+           "the sitting launches on the item with the pilot model %s, as the gate's alias (read %s, %s)"
+           % (want, it, model))
         ok("rm-testpilot" in brief and "TESTPILOT_SAT" in brief and "Do not spawn" in brief and "FIX_ME" in brief,
            "the sitting's brief makes the run the Test Pilot itself, ending on a TESTPILOT_SAT note")
         book = st["mods"]["M"]["fixers"]
