@@ -103,6 +103,19 @@
   "rc": 1,
   "test_blob": "93adac986daf8b950a0f22fbbbf07d57b7e9b02b"
  },
+ "T_MAP_CONTROLS": {
+  "at": "2026-11-21T19:46:26Z",
+  "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only GodLiquid*,MapControl*",
+  "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+  "last": "1380 of 1440 cases kept film the deep sink could reach: shelf 1/core 4/shallow x 2/deep z 2/rate -1/film 159: 19 squares over, max 1 dL | shelf 1/core 4/shallow x 2/deep z 2/rate -1/film 161: 19 squares over, max 1 dL | shelf 1/core 4/shallow x 2/deep z 2/rate -1/film 5931: 19 squares over, max 1 dL | shelf 1/core 4/shallow x 2/deep z 2/rate 0.25/film 1: 1 squares over, max 1 dL | shelf 1/core 4/shallow x 2/deep z 2/rate 0.25/film 159: 19 squares over, max 1 dL | shelf 1/core 4/shallow x 2/deep z 2/rate 0.25/film 161: 19 squares over, max 1 dL",
+  "patch": "--- a/src/RimMandrake/FlowWorks/Source/RM_FlowKernel.cs\n+++ b/src/RimMandrake/FlowWorks/Source/RM_FlowKernel.cs\n@@ -1021,13 +1021,13 @@\n \t\t\t// partition; a draining domain lays its remainder nearest the sink first, so a run drains to the last dL.\n \t\t\texHops.Clear();\n \t\t\tFunc<int, bool> draw = drawCell;\n-\t\t\tif (edgeSinksEnabled || draw != null)\n+\t\t\tif (edgeSinksEnabled)\n \t\t\t{\n \t\t\t\thopFrontier.Clear();\n \t\t\t\tfor (int i = 0; i < exDug.Count; i++)\n \t\t\t\t{\n \t\t\t\t\tint c = exDug[i];\n-\t\t\t\t\tif (((edgeSinksEnabled && world.IsSink(c)) || (draw != null && draw(c))) && !IsSealed(c))\n+\t\t\t\t\tif (world.IsSink(c) && !IsSealed(c))\n \t\t\t\t\t{\n \t\t\t\t\t\texHops[c] = 0;\n \t\t\t\t\t\thopFrontier.Add(c);\n",
+  "patch_files": [
+   "src/RimMandrake/FlowWorks/Source/RM_FlowKernel.cs"
+  ],
+  "patch_sha": "fffcd56ccbcb177f",
+  "rc": 1,
+  "test_blob": "ecdb632246123de160f342b464f55bcbb9ce7ca5"
+ },
  "T_PRISON_CARE_OFFLINE": {
   "at": "2026-11-21T13:00:47Z",
   "command": "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only prison_care",

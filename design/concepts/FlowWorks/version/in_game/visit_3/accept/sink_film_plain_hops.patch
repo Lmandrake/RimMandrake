@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/FlowWorks/Source/RM_FlowKernel.cs
++++ b/src/RimMandrake/FlowWorks/Source/RM_FlowKernel.cs
+@@ -1033,7 +1033,7 @@
+ 						hopFrontier.Add(c);
+ 					}
+ 				}
+-				if (draw == null)
++				if (true)
+ 				{
+ 					for (int head = 0; head < hopFrontier.Count; head++)
+ 					{

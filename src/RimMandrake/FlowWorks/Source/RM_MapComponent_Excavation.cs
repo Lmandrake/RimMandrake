@@ -265,6 +265,19 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>excavatedCells as kernel indices, in the set's own iteration order, rebuilt per pulse.</summary>
 		private readonly List<int> pulseSeeds = new List<int>();
+		/// <summary>RIMMANDRAKE_FIX_FLOWWORKS_SINK_STOPS_ON_LAST_DECILITRE_FILM: grid indices a flow sink draws from this pulse
+		/// (<see cref="NoteSinkDrawCell"/>), cleared before the map controls pulse. Not scribed: rebuilt every pulse.</summary>
+		private readonly HashSet<int> sinkDrawCells = new HashSet<int>();
+		private System.Func<int, bool> sinkDrawCellPred;
+
+		/// <summary>A flow sink draws from <paramref name="c"/> this pulse (Building_RM_FlowSink.FlowPulse).</summary>
+		public void NoteSinkDrawCell(IntVec3 c)
+		{
+			if (c.InBounds(map))
+			{
+				sinkDrawCells.Add(map.cellIndices.CellToIndex(c));
+			}
+		}
 
 		/// <summary>A single connected excavation this big is already far past
 		/// anything a colony digs by hand; the cap exists so one pathological
@@ -2931,6 +2944,7 @@ namespace RimMandrake.FlowWorks
 			ApplyRain();
 			// FLOW_SOURCE_SINK_BUILD_TAPS_FOR_MAPMAKERS: dev-placed flow sources pour and flow sinks drain here, with rain and
 			// before the components measure "before", so the ledger reads them as external input / output, never as a leak.
+			sinkDrawCells.Clear();
 			MapControls.RM_MapControls.PulseAll(map, this);
 			// PHASE 6, ruling 7: the burn takes its levels before the components measure "before", so burned
 			// liquid is never mistaken for a leak.
@@ -2977,6 +2991,9 @@ namespace RimMandrake.FlowWorks
 			flowKernel.flowPerPulse = RimMandrakeFlowWorksSettings.FlowPerPulse;
 			flowKernel.edgeSinksEnabled = RimMandrakeFlowWorksSettings.edgeSinksEnabled || MapControls.RM_MapControls.AnyDrainEdge(map);
 			flowKernel.viscosityEnabled = RimMandrakeFlowWorksSettings.viscosityEnabled;
+			// RIMMANDRAKE_FIX_FLOWWORKS_SINK_STOPS_ON_LAST_DECILITRE_FILM: the squares a flow sink drew from this pulse (PulseAll above
+			// ran it); the kernel lays a draining body's remainder nearest them first. Null when no sink draws.
+			flowKernel.drawCell = sinkDrawCells.Count == 0 ? null : (sinkDrawCellPred ??= idx => sinkDrawCells.Contains(idx));
 			// FLOW_ORDER_EXTERNAL_INPUT_1 part 2: the per-partition cap, and moving seams for a network bigger than it.
 			flowKernel.maxComponentCells = RimMandrakeFlowWorksSettings.MaxNetworkCells;
 			flowKernel.seamRotationEnabled = RimMandrakeFlowWorksSettings.networkSeamsMoveEnabled;

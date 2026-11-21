@@ -2214,6 +2214,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             DirtyReview1022Checks.Run(Case);   // DIRTY-file review 2026-10-22 second pass (DirtyReview1022Checks.cs)
             CsReview1028Checks.Run(Case);      // C# review 2026-10-28: WallReach W1-W4, LiquidNet settle route (CsReview1028Checks.cs)
             MapControlChecks.Run(Case);        // FLOW_SOURCE_SINK_BUILD_TAPS_FOR_MAPMAKERS: dev-placed flow source and sink (MapControlChecks.cs)
+            SinkFilmChecks.Run(Case);          // RIMMANDRAKE_FIX_FLOWWORKS_SINK_STOPS_ON_LAST_DECILITRE_FILM: a flow sink drains the film to 0 dL (SinkFilmChecks.cs)
             FlowDoorFacingChecks.Run(Case);    // SLUICE_GATE_REWIRE_TURNS_LIKE_A_DOOR: sluices and grates span between canal banks (FlowDoorFacingChecks.cs)
             LadderWallChecks.Run(Case);        // PIT_LADDER_REDRAW_HUNG_ON_THE_WALL: the ladder hangs on one wall, slid up holds everyone (LadderWallChecks.cs)
             PlayerTruthSweeps.Run(Case);       // PLAYER-TRUTH PILOT: exhaustive sweeps of what a player expects (PlayerTruthSweeps.cs)

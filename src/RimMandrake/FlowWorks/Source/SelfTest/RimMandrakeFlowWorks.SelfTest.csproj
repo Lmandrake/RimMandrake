@@ -317,6 +317,7 @@
     <Compile Include="GateAcidChecks.cs" />
     <Compile Include="ImmersionChecks.cs" />
     <Compile Include="MapControlChecks.cs" />
+    <Compile Include="SinkFilmChecks.cs" />
     <Compile Include="FlowDoorFacingChecks.cs" />
     <Compile Include="ReleaseRectHarness.cs" />
   </ItemGroup>

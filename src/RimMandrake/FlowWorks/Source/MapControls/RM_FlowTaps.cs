@@ -135,8 +135,7 @@ namespace RimMandrake.FlowWorks.MapControls
 		private float carry;
 		private float drainedTotal;
 
-		private readonly List<IntVec3> candCells = new List<IntVec3>();
-		private readonly List<int> candFill = new List<int>();
+		private readonly List<IntVec3> reachCells = new List<IntVec3>();
 
 		/// <summary>Cap for an unlimited sink: no reach can hold more than this many levels.</summary>
 		private const int UnlimitedCap = 5 * 255;
@@ -144,39 +143,33 @@ namespace RimMandrake.FlowWorks.MapControls
 		public override void FlowPulse(RM_MapComponent_Excavation ex)
 		{
 			int due = unlimited ? UnlimitedCap : RM_MapControlMath.Due(ref carry, ratePerPulse);
+			bool draws = RM_MapControlMath.SinkDraws(unlimited, ratePerPulse);
 			// UNLIMITED_SINK_FIX_FRACTIONAL_WATER: measured and taken in dL, so a part-notch sheet (exact-level water; no whole
 			// notch, FillAt 0) is a candidate and is drained, the part notch first. Fullest (in dL) first, a notch at most per take.
-			long dueDl = due * RM_LevelSolve.U;
-			long doneDl = 0;
-			while (doneDl < dueDl)
+			reachCells.Clear();
+			foreach (IntVec3 c in Reach())
 			{
-				candCells.Clear();
-				candFill.Clear();
-				foreach (IntVec3 c in Reach())
+				if (!Open(ex, c))
 				{
-					if (!Open(ex, c))
-					{
-						continue;
-					}
-					long w = ex.WaterDlAt(c);
-					if (w > 0 && (filter == null || (ex.FluidAt(c) ?? ex.ActiveFluid) == filter))
-					{
-						candCells.Add(c);
-						candFill.Add((int)Math.Min(w, int.MaxValue));
-					}
+					continue;
 				}
-				int pick = RM_MapControlMath.PickDrainTarget(candFill);
-				if (pick < 0)
+				reachCells.Add(c);
+				if (draws)
 				{
-					break;
+					// RIMMANDRAKE_FIX_FLOWWORKS_SINK_STOPS_ON_LAST_DECILITRE_FILM (visit 3: 80 squares kept 1 dL each): the kernel lays a
+					// level body's last odd dL nearest this square first, as it does for a map-edge sink, so the film reaches 0 dL.
+					ex.NoteSinkDrawCell(c);
 				}
-				long took = ex.TryTakeDl(candCells[pick], Math.Min(RM_LevelSolve.U, dueDl - doneDl), out _);
-				if (took <= 0)
-				{
-					break;
-				}
-				doneDl += took;
 			}
+			long dueDl = due * RM_LevelSolve.U;
+			long doneDl = RM_MapControlMath.DrainReach(dueDl, reachCells.Count,
+				i =>
+				{
+					IntVec3 c = reachCells[i];
+					long w = ex.WaterDlAt(c);
+					return w > 0 && (filter == null || (ex.FluidAt(c) ?? ex.ActiveFluid) == filter) ? w : 0;
+				},
+				(i, max) => ex.TryTakeDl(reachCells[i], max, out _));
 			if (doneDl > 0)
 			{
 				drainedTotal += doneDl / (float)RM_LevelSolve.U;

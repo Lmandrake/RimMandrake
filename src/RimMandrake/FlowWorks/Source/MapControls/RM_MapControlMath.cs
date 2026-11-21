@@ -139,6 +139,51 @@ namespace RimMandrake.FlowWorks.MapControls
 			return best;
 		}
 
+		/// <summary>RIMMANDRAKE_FIX_FLOWWORKS_SINK_STOPS_ON_LAST_DECILITRE_FILM: true when a sink at these settings draws at all (so
+		/// its reach squares are the kernel's draw squares this pulse: RM_FlowKernel.drawCell). A tap-0 sink draws nothing.</summary>
+		public static bool SinkDraws(bool unlimited, float ratePerPulse)
+		{
+			return unlimited || ClampRate(ratePerPulse) > 0f;
+		}
+
+		/// <summary>UNLIMITED_SINK_FIX_FRACTIONAL_WATER: one sink pulse over its reach, in dL: up to <paramref name="dueDl"/>, a notch
+		/// (RM_LevelSolve.U) at most per take, each take from the reach square holding the most (<see cref="PickDrainTarget"/>), a
+		/// part notch too. <paramref name="waterOf"/>(i) is reach square i's water (0 for a closed square or a liquid the sink does
+		/// not take); <paramref name="take"/>(i, max) takes up to max dL there and returns what it took. Stops when the reach is dry
+		/// or a take returns nothing. Returns the dL taken. Building_RM_FlowSink.FlowPulse runs this; the selftest runs it too.</summary>
+		public static long DrainReach(long dueDl, int reachCount, Func<int, long> waterOf, Func<int, long, long> take)
+		{
+			long doneDl = 0;
+			List<int> fills = new List<int>(reachCount);
+			List<int> idx = new List<int>(reachCount);
+			while (doneDl < dueDl)
+			{
+				fills.Clear();
+				idx.Clear();
+				for (int i = 0; i < reachCount; i++)
+				{
+					long w = waterOf(i);
+					if (w > 0)
+					{
+						idx.Add(i);
+						fills.Add((int)Math.Min(w, int.MaxValue));
+					}
+				}
+				int pick = PickDrainTarget(fills);
+				if (pick < 0)
+				{
+					break;
+				}
+				long took = take(idx[pick], Math.Min(RM_LevelSolve.U, dueDl - doneDl));
+				if (took <= 0)
+				{
+					break;
+				}
+				doneDl += took;
+			}
+			return doneDl;
+		}
+
 		/// <summary>The same rate per in-game hour (2500 ticks), for the label. Pulse ticks below 1 read as 1.</summary>
 		public static float PerHour(float ratePerPulse, int pulseTicks)
 		{

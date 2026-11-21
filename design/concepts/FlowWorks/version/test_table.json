@@ -2708,10 +2708,11 @@
    "kind": "offline",
    "stage": "4-5",
    "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
-   "observes": "map-maker controls and the debug liquid tools: source/sink taps at a set rate, level holder, current painter (27 C# cases)",
+   "observes": "map-maker controls and the debug liquid tools: source/sink taps at a set rate, a sink drawing a film to 0 dL, level holder, current painter (30 C# cases)",
    "reads": [
     "src/RimMandrake/FlowWorks/Source/SelfTest/GodLiquidChecks.cs",
-    "src/RimMandrake/FlowWorks/Source/SelfTest/MapControlChecks.cs"
+    "src/RimMandrake/FlowWorks/Source/SelfTest/MapControlChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/SinkFilmChecks.cs"
    ],
    "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only GodLiquid*,MapControl*",
    "runs_today": {

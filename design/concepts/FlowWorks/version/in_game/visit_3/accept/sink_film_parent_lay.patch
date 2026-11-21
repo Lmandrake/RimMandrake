@@ -1,0 +1,18 @@
+--- a/src/RimMandrake/FlowWorks/Source/RM_FlowKernel.cs
++++ b/src/RimMandrake/FlowWorks/Source/RM_FlowKernel.cs
+@@ -1021,13 +1021,13 @@
+ 			// partition; a draining domain lays its remainder nearest the sink first, so a run drains to the last dL.
+ 			exHops.Clear();
+ 			Func<int, bool> draw = drawCell;
+-			if (edgeSinksEnabled || draw != null)
++			if (edgeSinksEnabled)
+ 			{
+ 				hopFrontier.Clear();
+ 				for (int i = 0; i < exDug.Count; i++)
+ 				{
+ 					int c = exDug[i];
+-					if (((edgeSinksEnabled && world.IsSink(c)) || (draw != null && draw(c))) && !IsSealed(c))
++					if (world.IsSink(c) && !IsSealed(c))
+ 					{
+ 						exHops[c] = 0;
+ 						hopFrontier.Add(c);

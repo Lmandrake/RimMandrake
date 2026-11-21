@@ -173,6 +173,13 @@ namespace RimMandrake.FlowWorks
 		/// leaves a sealed cell and no flow order is walked through it, so the level stops at the gate. Null = no
 		/// cell is sealed (the offline worlds, and every map without a shut sluice).</summary>
 		public Func<int, bool> sealedCell;
+		/// <summary>RIMMANDRAKE_FIX_FLOWWORKS_SINK_STOPS_ON_LAST_DECILITRE_FILM (FlowWorks visit 3, 2026-11-21: an unlimited flow sink
+		/// stopped with 80 pond squares at 1 dL each). True for a dug square a map-control sink draws from this pulse. The solve lays
+		/// a body's remainder dL one each in key order; a flow sink is not an edge sink, so its square was ranked by cell index, and
+		/// once the body held fewer odd dL than that rank the sink's square read 0 every pulse and the film never left. A draw square
+		/// now seeds the sink hops (sinkHops) as an edge sink does, so the remainder lies nearest the sink first and the draw reaches
+		/// 0 dL. It drains nothing itself. Null = no draw square (the offline worlds, and every pulse with no sink drawing).</summary>
+		public Func<int, bool> drawCell;
 		/// <summary>Superdeep: what a natural source reads as (RM_ExcavationDepth.Superdeep).</summary>
 		public const byte Superdeep = 4;
 		/// <summary>DISABLED_LIQUID_FIX_LIMITLESS_SOURCE: <see cref="RM_ILevelWorld.LevelBodyOf"/>'s answer for a source whose
@@ -1010,35 +1017,43 @@ namespace RimMandrake.FlowWorks
 				exactDrainDl += drained;
 				sinkDrained += drained / (float)U;
 			}
-			// sinkHops: BFS from every sink square through dug, unsealed squares of this partition; a draining domain lays its
-			// remainder nearest the sink first, so a run drains to the last dL.
+			// sinkHops: BFS from every sink square (and every flow sink's draw square, drawCell) through dug, unsealed squares of this
+			// partition; a draining domain lays its remainder nearest the sink first, so a run drains to the last dL.
 			exHops.Clear();
-			if (edgeSinksEnabled)
+			Func<int, bool> draw = drawCell;
+			if (edgeSinksEnabled || draw != null)
 			{
 				hopFrontier.Clear();
 				for (int i = 0; i < exDug.Count; i++)
 				{
 					int c = exDug[i];
-					if (world.IsSink(c) && !IsSealed(c))
+					if (((edgeSinksEnabled && world.IsSink(c)) || (draw != null && draw(c))) && !IsSealed(c))
 					{
 						exHops[c] = 0;
 						hopFrontier.Add(c);
 					}
 				}
-				for (int head = 0; head < hopFrontier.Count; head++)
+				if (draw == null)
 				{
-					int c = hopFrontier[head];
-					int hc = exHops[c];
-					for (int d = 0; d < 4; d++)
+					for (int head = 0; head < hopFrontier.Count; head++)
 					{
-						int nb = Cardinal(c, d);
-						if (nb < 0 || exHops.ContainsKey(nb) || !exComp.Contains(nb) || !IsExcavated(nb) || IsSealed(nb))
+						int c = hopFrontier[head];
+						int hc = exHops[c];
+						for (int d = 0; d < 4; d++)
 						{
-							continue;
+							int nb = Cardinal(c, d);
+							if (nb < 0 || exHops.ContainsKey(nb) || !exComp.Contains(nb) || !IsExcavated(nb) || IsSealed(nb))
+							{
+								continue;
+							}
+							exHops[nb] = hc + 1;
+							hopFrontier.Add(nb);
 						}
-						exHops[nb] = hc + 1;
-						hopFrontier.Add(nb);
 					}
+				}
+				else
+				{
+					DeepestSinkHops();
 				}
 				hopFrontier.Clear();
 			}
@@ -1104,6 +1119,63 @@ namespace RimMandrake.FlowWorks
 					+ " limitlessCredit=" + exCredit + " sinkDrain=" + drained + " imbalance=" + imbalance + " dL");
 			}
 			world.ComponentResolved(component);
+		}
+
+		private readonly SortedSet<long> hopOpen = new SortedSet<long>();
+		private readonly Dictionary<int, int> hopNeck = new Dictionary<int, int>();
+
+		/// <summary>RIMMANDRAKE_FIX_FLOWWORKS_SINK_STOPS_ON_LAST_DECILITRE_FILM, the sweep's second regime (a shallow flow sink on a
+		/// 0.5 m shelf beside a 2 m core, a deep one across it: the core's last dL lay by the shallow one, which cannot take water
+		/// below its own floor, and stayed). With a flow sink drawing, each square's hops follow its best way to a sink square
+		/// (the seeds in <see cref="hopFrontier"/>): the deepest neck first (the shallowest square on the way, seed included), then the
+		/// fewest steps. So a square counts its distance to a sink that can drain it, and inside any one band of the solve the
+		/// remainder creeps down that way to the sink. Without a flow sink (edge sinks only) the plain BFS stays, the same
+		/// order its Python twin (level_water.py sinkHops) is diffed against.</summary>
+		private void DeepestSinkHops()
+		{
+			hopOpen.Clear();
+			hopNeck.Clear();
+			// key: (255 - neck) high, hops middle, cell low: SortedSet.Min is the widest neck, then the fewest hops
+			Func<int, int, int, long> key = (neck, hops, cell) => ((long)(255 - neck) << 52) | ((long)hops << 26) | (uint)cell;
+			for (int i = 0; i < hopFrontier.Count; i++)
+			{
+				int c = hopFrontier[i];
+				hopNeck[c] = depth[c];
+				hopOpen.Add(key(depth[c], 0, c));
+			}
+			while (hopOpen.Count > 0)
+			{
+				long top = hopOpen.Min;
+				hopOpen.Remove(top);
+				int c = (int)(top & ((1L << 26) - 1));
+				int neck = 255 - (int)(top >> 52);
+				int hc = (int)((top >> 26) & ((1L << 26) - 1));
+				if (hopNeck[c] != neck || exHops[c] != hc)
+				{
+					continue;
+				}
+				for (int d = 0; d < 4; d++)
+				{
+					int nb = Cardinal(c, d);
+					if (nb < 0 || !exComp.Contains(nb) || !IsExcavated(nb) || IsSealed(nb))
+					{
+						continue;
+					}
+					int nn = Math.Min(neck, depth[nb]);
+					if (hopNeck.TryGetValue(nb, out int haveNeck) && (haveNeck > nn || (haveNeck == nn && exHops[nb] <= hc + 1)))
+					{
+						continue;
+					}
+					if (hopNeck.ContainsKey(nb))
+					{
+						hopOpen.Remove(key(haveNeck, exHops[nb], nb));
+					}
+					hopNeck[nb] = nn;
+					exHops[nb] = hc + 1;
+					hopOpen.Add(key(nn, hc + 1, nb));
+				}
+			}
+			hopNeck.Clear();
 		}
 
 		private void ExactAddCell(int c)
