@@ -19,6 +19,32 @@ namespace JawaBench.BridgeTools
         static List<V.PawnObs> L(params V.PawnObs[] ps) => new List<V.PawnObs>(ps);
         static bool Has(List<V.Trigger> ts, string kind, string sev) => ts.Exists(t => t.Kind == kind && t.Severity == sev);
 
+        // A wall-second timeline of back-to-back safe_advance calls (runS each, gapS between), driven by the SHIPPED lease
+        // decisions in the order JawaBenchVitals wires them: the advance start (V.AdvanceArmAction; "arm" and "renew" set the
+        // TTL end to V.AutoArmUntil), the frame (V.TtlExpired, then the stepper ends a running advance on the disarm), the
+        // advance end (an auto-armed monitor renews). explicitTtlMin > 0: a governor row armed it at t=0 with that TTL.
+        static (int midRunDisarms, int firstAt, int idleExpiries, int advances) SimLease(int runS, int gapS, int horizonS, double explicitTtlMin)
+        {
+            bool armed = false, auto = false; double until = 0;
+            if (explicitTtlMin > 0) { armed = true; auto = false; until = explicitTtlMin * 60.0; }
+            int mid = 0, first = -1, idleExp = 0, advances = 0, t = 0;
+            while (t < horizonS)
+            {
+                string act = V.AdvanceArmAction(armed, auto);
+                if (act == "arm") { armed = true; auto = true; until = V.AutoArmUntil(t); }
+                else if (act == "renew") until = V.AutoArmUntil(t);
+                advances++;
+                int end = t + runS; bool aborted = false;
+                for (; t < end; t++)
+                    if (armed && V.TtlExpired(t, until, auto, true)) { armed = false; auto = false; mid++; if (first < 0) first = t; aborted = true; break; }
+                if (!aborted && V.AdvanceEndRenews(armed, auto)) until = V.AutoArmUntil(t);
+                int gapEnd = t + gapS;
+                for (; t < gapEnd; t++)
+                    if (armed && V.TtlExpired(t, until, auto, false)) { armed = false; auto = false; idleExp++; }
+            }
+            return (mid, first, idleExp, advances);
+        }
+
         internal static void Run(Action<bool, string, string> c)
         {
             void check(bool ok, string name, string why = "") => c(ok, name, why);
@@ -95,6 +121,37 @@ namespace JawaBench.BridgeTools
             check(V.AdvanceFrameStop(true, 1, 60, false) == "cancelled", "advance_frame_cancel_wins");
             check(V.AdvanceFrameStop(false, 61, 60, true) != null && V.AdvanceFrameStop(false, 61, 60, true).Contains("wall"), "advance_frame_wall_timeout_aborts");
             check(V.AdvanceFrameStop(false, 1, 60, true) == null, "advance_frame_armed_in_time_goes_on");
+
+            // --- the auto-arm lease (RIMMANDRAKE_RENEW_SAFE_ADVANCE_AUTO_ARM_HOURLY): safe_advance's own arm lasts while
+            // safe_advance uses it. Before the fix the 60 min auto-arm was never renewed, so 60 wall minutes after the first
+            // advance the TTL disarmed the monitor mid-advance (Pyrelands visit 2, 2026-11-21: embergrass_regrow stopped at
+            // 660/2000 ticks). An explicit arm keeps its own TTL. Each timeline below runs the SHIPPED decisions
+            // (V.AdvanceArmAction at start, V.TtlExpired every wall second, V.AdvanceEndRenews at end) and prints its worst TTL margin.
+            check(V.AdvanceArmAction(false, false) == "arm" && V.AdvanceArmAction(false, true) == "arm", "autoarm_unarmed_arms");
+            check(V.AdvanceArmAction(true, true) == "renew", "autoarm_armed_by_safe_advance_renews");
+            check(V.AdvanceArmAction(true, false) == "keep", "autoarm_explicit_arm_keeps_its_ttl");
+            check(V.AdvanceEndRenews(true, true) && !V.AdvanceEndRenews(true, false) && !V.AdvanceEndRenews(false, true), "autoarm_end_renews_only_its_own_arm");
+            check(V.TtlExpired(10, 5, false, false) && V.TtlExpired(10, 5, false, true) && V.TtlExpired(10, 5, true, false), "ttl_expires_unless_auto_and_running");
+            check(!V.TtlExpired(10, 5, true, true) && !V.TtlExpired(4, 5, false, false), "ttl_auto_armed_running_advance_never_expires");
+            // Range: chains of advances (wall 1 s .. 100 min each, gaps 0 .. 59 min) over 4 h, auto-armed or explicitly armed
+            // (TTL 30 / 240 min). Left out: a cancel or abort mid-run (Finish runs the same end path) and game reloads.
+            int cases = 0, midRunDisarms = 0, advances = 0; string autoFail = null;
+            foreach (int runS in new[] { 1, 60, 600, 1500, 3599, 3600, 3601, 6000 })
+                foreach (int gapS in new[] { 0, 30, 600, 3540, 3599 })
+                {
+                    cases++;
+                    var sim = SimLease(runS, gapS, 4 * 3600, 0);
+                    midRunDisarms += sim.midRunDisarms; advances += sim.advances;
+                    if (sim.midRunDisarms > 0 && autoFail == null) autoFail = "run " + runS + " s gap " + gapS + " s: first disarm mid-advance at t=" + sim.firstAt + " s";
+                }
+            check(autoFail == null, "autoarm_chain_never_disarms_mid_advance",
+                  (autoFail ?? "ok") + "; worst " + midRunDisarms + " mid-advance disarms (limit 0) over " + cases + " timelines, " + advances + " advances");
+            var idle = SimLease(60, 3601 + 60, 3 * 3600, 0);
+            check(idle.midRunDisarms == 0 && idle.idleExpiries > 0, "autoarm_lease_still_ends_after_an_idle_hour", "idle expiries " + idle.idleExpiries);
+            var exp30 = SimLease(700, 0, 3 * 3600, 30);
+            check(exp30.midRunDisarms > 0 && exp30.firstAt == 1800, "explicit_arm_ttl_still_binds_mid_advance", "first disarm t=" + exp30.firstAt + " s (want 1800)");
+            var exp240 = SimLease(600, 30, 3 * 3600, 240);
+            check(exp240.midRunDisarms == 0, "explicit_long_arm_holds_a_three_hour_chain", exp240.midRunDisarms + " mid-advance disarms");
 
             // --- per-frame tick cap (TICKBURST_PROVE_MANY_TICKS_ONE_FRAME): 0 = unlimited, a cap cuts the chunk, never overshoots
             check(V.NextChunk(60, 1000, 0, 0) == 60 && V.NextChunk(60, 1000, 0, 600) == 60, "nextchunk_cap0_unlimited");

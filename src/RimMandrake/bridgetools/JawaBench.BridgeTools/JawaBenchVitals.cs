@@ -58,6 +58,7 @@ namespace JawaBench.BridgeTools
         internal static readonly List<string> Tombs = new List<string>();     // death tombstone rows (json), bounded
 
         internal static volatile bool Armed;
+        internal static bool AutoArmed;   // armed by jawa/safe_advance for itself: its TTL counts from the last advance (V.AdvanceArmAction)
         private static double _until;
         internal static string By, Why, Row, ArmedUtc, LastDisarm, HookStatus = "not-installed", HookDetail, DriverStatus = "none";
         internal static bool TimeException;
@@ -107,6 +108,7 @@ namespace JawaBench.BridgeTools
             _until = Mono + ttl * 60.0;
             bool renew = Armed && Row == row;          // a different row starts a fresh latch and history
             By = by; Why = why; Row = row; TimeException = timeException; Budget = budget;
+            AutoArmed = false;                         // an explicit arm keeps its own TTL; safe_advance sets this after its own arm
             Critical.Clear(); foreach (var i in critical) Critical.Add(i);
             ResolveSpecimens(specimens);
             if (!renew)
@@ -129,8 +131,16 @@ namespace JawaBench.BridgeTools
         {
             if (!Armed) return;
             Emit(V.ChHeartbeat, "disarm", "\"reason\":" + V.J(reason) + ",\"triggers\":" + Latch.Seq + ",\"first\":" + (Latch.First?.Json() ?? "null"));
-            Armed = false;
+            Armed = false; AutoArmed = false;
             LastDisarm = reason;
+        }
+
+        /// <summary>Restarts the TTL of a monitor safe_advance armed for itself (RIMMANDRAKE_RENEW_SAFE_ADVANCE_AUTO_ARM_HOURLY).</summary>
+        internal static void RenewAutoArm(string at)
+        {
+            if (!Armed || !AutoArmed) return;
+            _until = V.AutoArmUntil(Mono);
+            Emit(V.ChHeartbeat, "renew", "\"at\":" + V.J(at) + ",\"ttlMin\":" + V.F(V.AutoArmTtlMin, 1) + ",\"by\":\"jawa/safe_advance\"");
         }
 
         internal static bool Populated()
@@ -306,7 +316,8 @@ namespace JawaBench.BridgeTools
             try
             {
                 double now = Mono;
-                if (now >= _until) { Disarm("ttl"); return; }
+                var run = JawaBenchSafeAdvance.Cur;
+                if (V.TtlExpired(now, _until, AutoArmed, run != null && run.State == "running")) { Disarm("ttl"); return; }
                 if (!GameReady()) return;
                 EnsureEpoch(now);
                 if (now - _lastWall < V.WallPassSeconds) return;
@@ -591,7 +602,7 @@ namespace JawaBench.BridgeTools
             sb.Append("\"samples\":").Append(Samples).Append(",\"processed\":").Append(Clock.Processed).Append(",\"disc\":").Append(Clock.Discontinuities)
               .Append(",\"discDeclared\":").Append(Clock.Declared).Append(",\"triggers\":").Append(Latch.Seq).Append(",\"latched\":").Append(V.B(Latch.First != null))
               .Append(",\"modalMaxAgeS\":").Append(V.F(Modals.MaxAge(now), 1)).Append(",\"lastSampleTick\":").Append(LastSampleTick)
-              .Append(",\"rowsDropped\":").Append(RowsDropped).Append(",\"faults\":").Append(Faults).Append(",\"ttlLeftS\":").Append(V.F(Math.Max(0, _until - now), 0))
+              .Append(",\"rowsDropped\":").Append(RowsDropped).Append(",\"faults\":").Append(Faults).Append(",\"ttlLeftS\":").Append(V.F(Math.Max(0, _until - now), 0)).Append(",\"autoArmed\":").Append(V.B(AutoArmed))
               .Append(",\"hooks\":").Append(V.J(HookStatus)).Append(",\"meters\":{");
             bool first = true;
             foreach (var ch in V.Channels)
@@ -759,6 +770,7 @@ namespace JawaBench.BridgeTools
             if (Current.Game != null && ReferenceEquals(Current.Game, r.Game))
                 try { r.EndTick = Find.TickManager.TicksGame; Find.TickManager.CurTimeSpeed = TimeSpeed.Paused; } catch { }
             r.State = state;
+            if (V.AdvanceEndRenews(JawaBenchVitals.Armed, JawaBenchVitals.AutoArmed)) JawaBenchVitals.RenewAutoArm("advance_end");
             JawaBenchVitals.Emit(V.ChClock, "advance", "\"state\":" + V.J(state) + ",\"requested\":" + r.Requested + ",\"executed\":" + r.Executed +
                                                      ",\"tickFrom\":" + r.StartTick + ",\"tickTo\":" + r.EndTick + ",\"stopBy\":" + (by?.Json() ?? "null") +
                                                      ",\"why\":" + V.J(why) + ",\"timeException\":" + V.B(r.TimeException));

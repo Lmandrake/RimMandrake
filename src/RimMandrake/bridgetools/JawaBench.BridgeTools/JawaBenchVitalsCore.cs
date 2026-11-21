@@ -379,6 +379,28 @@ namespace JawaBench.BridgeTools
             return null;
         }
 
+        /// <summary>TTL of the monitor that jawa/safe_advance arms for itself when nothing armed it. It guards against a
+        /// monitor left armed (hooks and wall passes running) after the last advance; it is counted from the last advance's
+        /// start or end, never from the first arm (RIMMANDRAKE_RENEW_SAFE_ADVANCE_AUTO_ARM_HOURLY: counted from the first
+        /// arm, it disarmed the monitor mid-advance 60 wall minutes into a chain, Pyrelands visit 2, 2026-11-21).</summary>
+        internal const double AutoArmTtlMin = 60;
+
+        internal static double AutoArmUntil(double now) => now + AutoArmTtlMin * 60.0;
+
+        /// <summary>What jawa/safe_advance does to the monitor at an advance start: "arm" (not armed: arm it for itself),
+        /// "renew" (armed by an earlier safe_advance: restart its TTL) or "keep" (armed explicitly by a governor row: that
+        /// row's TTL binds).</summary>
+        internal static string AdvanceArmAction(bool armed, bool autoArmed) => !armed ? "arm" : autoArmed ? "renew" : "keep";
+
+        /// <summary>Whether an advance's end restarts the monitor's TTL: only a monitor safe_advance armed for itself, so its
+        /// TTL counts from the last advance's end.</summary>
+        internal static bool AdvanceEndRenews(bool armed, bool autoArmed) => armed && autoArmed;
+
+        /// <summary>Whether the monitor's TTL disarms it now. A safe_advance-armed monitor never lapses while an advance
+        /// runs: the run's own wall bound ends that advance. An explicit arm's TTL always binds.</summary>
+        internal static bool TtlExpired(double now, double until, bool autoArmed, bool advanceRunning)
+            => now >= until && !(autoArmed && advanceRunning);
+
         /// <summary>The stepper's game-identity gate, checked every frame BEFORE anything reads Find.TickManager or steps a tick:
         /// "game_changed: ..." when there is no game, the program is not Playing, or Current.Game is not the Game the run
         /// started in (main menu, a load, a new game); "map_gone: ..." when the run's start map is no longer in Find.Maps;

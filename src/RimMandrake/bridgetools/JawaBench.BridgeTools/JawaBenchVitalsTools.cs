@@ -30,7 +30,7 @@ namespace JawaBench.BridgeTools
                 "prefix+postfix; a channel that is switched off or never ran reports UNMEASURED, never 0. ABSENCE IS NOT DEATH: " +
                 "a pawn that leaves the spawned set is 'departed'; only the Kill hook writes a death.",
             ResultDescription =
-                "success, armed, row, ttlLeftS, critical, specimens, latched{first, count, seq}, clock{processed, discontinuities, " +
+                "success, armed, row, ttlLeftS, autoArmed (armed by safe_advance: its TTL restarts at each advance and never lapses mid-advance), critical, specimens, latched{first, count, seq}, clock{processed, discontinuities, " +
                 "declared}, rollup, threats, modalMaxAgeS, gameEnding, channels{on, calls, cost, meanUs}, hooks, driver, counters; " +
                 "events: triggers[], tombs[]; sample: pawns[].")]
         public static async Task<object> Vitals(
@@ -124,7 +124,7 @@ namespace JawaBench.BridgeTools
             return new
             {
                 success = true, armed = VT.Armed, row = VT.Row, by = VT.By, why = VT.Why, armedUtc = VT.ArmedUtc, lastDisarm = VT.LastDisarm,
-                ttlLeftS = Math.Round(VT.TtlLeft, 0), timeException = VT.TimeException, budgetTicks = VT.Budget,
+                ttlLeftS = Math.Round(VT.TtlLeft, 0), autoArmed = VT.AutoArmed, timeException = VT.TimeException, budgetTicks = VT.Budget,
                 critical = VT.Critical.ToList(), specimens = VT.Specimens.Keys.ToList(), specimensUnresolved = VT.SpecimensUnresolved.ToList(),
                 latched = new { first = Json(VT.Latch.First), count = VT.Latch.Count, seq = VT.Latch.Seq, overflow = VT.Latch.Overflow },
                 clock = new { processed = VT.Clock.Processed, discontinuities = VT.Clock.Discontinuities, declared = VT.Clock.Declared },
@@ -225,8 +225,12 @@ namespace JawaBench.BridgeTools
                     return new { success = false, state = "refused", refused = refuse, requested = ticks, budget, populated = pop, timeException = exc,
                                  ticksGame = TicksGameSafe() };
                 }
-                bool armedHere = false;
-                if (!VT.Armed) { VT.Arm(60, "jawa/safe_advance", "auto-armed by safe_advance", null, new List<int>(), new List<int>(), false, 0); armedHere = true; }
+                // RIMMANDRAKE_RENEW_SAFE_ADVANCE_AUTO_ARM_HOURLY: safe_advance's own arm is renewed at every advance start and
+                // end and never lapses mid-advance; an explicit arm by a governor row keeps its own TTL ("keep").
+                string armAct = V.AdvanceArmAction(VT.Armed, VT.AutoArmed);
+                bool armedHere = armAct == "arm";
+                if (armedHere) { VT.Arm(V.AutoArmTtlMin, "jawa/safe_advance", "auto-armed by safe_advance", null, new List<int>(), new List<int>(), false, 0); VT.AutoArmed = true; }
+                else if (armAct == "renew") VT.RenewAutoArm("advance_start");
                 SA.CancelRequested = false;
                 var tm = Find.TickManager;
                 SA.Cur = new SA.Run
@@ -238,7 +242,7 @@ namespace JawaBench.BridgeTools
                 };
                 tm.CurTimeSpeed = TimeSpeed.Paused;
                 VT.Emit(V.ChClock, "advance", "\"state\":\"start\",\"requested\":" + ticks + ",\"budget\":" + budget + ",\"populated\":" + V.B(pop) +
-                                              ",\"timeException\":" + V.B(exc) + ",\"autoArmed\":" + V.B(armedHere));
+                                              ",\"timeException\":" + V.B(exc) + ",\"autoArmed\":" + V.B(armedHere) + ",\"armAction\":" + V.J(armAct));
                 return null;
             });
             if (err != null) return err;
