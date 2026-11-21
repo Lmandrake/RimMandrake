@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "48f7c3b77787dfc488474df15055f52d4b70b2fd33f6dc3f0b00f4f7cc18c4b5",
+  "body_sha256": "a6396f51d1c23bc8ee06e052c1473ca565e5886db4b8b7733b09a5b4dbb25ea3",
   "reducer": 1,
   "shards": {
    "BACKFILL": 893183,
@@ -17,7 +17,7 @@
    "HOLDER.run-1795223527": 1482,
    "HOLDER.run-1795235568": 2438,
    "HOLDER.run-1795244678": 3570,
-   "HOLDER.run-1795257509": 2475,
+   "HOLDER.run-1795257509": 5815,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -929,6 +929,16 @@
     "text": "Harness-side placement as the cause: extension_proof.py and extensions_rivers.py pass no site, they only call ProofWeirPool(arg) with arg 'keep', so there is no Python-side placement to move.",
     "ts": "2026-11-16T11:41:44Z"
    },
+   "cause:islands-control-mod-drops-leaf-while-winch-stands": {
+    "code_sha": "175293dc5f6355a432118029c2820c39fd2eea35",
+    "depends_on": [
+     "src/RimMandrake/FlowWorks/Source/Pits/Drawbridge/RM_Drawbridges.cs",
+     "src/RimMandrake/FlowWorks/Source/Pits/Drawbridge/RM_DrawbridgeControl.cs"
+    ],
+    "status": "refuted",
+    "text": "sc_islands 'a held winch fell anyway' was not the mod dropping a leaf whose winch stands: read every 20 ticks, the winch left jawa/list_things (200, 100, gone in one reset chunk) on the read where its leaf first said winch=False. HARNESS: the hit-point reset could not hold.",
+    "ts": "2026-11-21T11:23:05Z"
+   },
    "cause:l5-colonists-clean-spill-unmeasured-on-run-20261018t233414": {
     "code_sha": "97ef816aed51",
     "depends_on": [
@@ -1238,11 +1248,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795244678",
-   "done": "body cover closed 5940b27979 (PIT_LOOK_1114_LIVE 19/19 game b); UNDERLIQUID_PARITY red run c09d51e332; raid staging fixed 51e9d9ce4a (named faction, walk-in south of trench, 60-tick reads, corpses count, fresh warden); trench item closed; game-b python.exe trap fixed e400c1b366",
-   "next": "Stage sc_pit_trap_raid capture after the free raiders are gone; hide sc_fetch_fallen defenders behind a wall so the raid crosses the lids",
-   "ruled_out": "visit 2 trap/trench/fetch misses came from a worker-picked faction, 300-tick reads and a spawn centre 4 squares off; pits did not vanish on load (that run read game a)",
-   "ts": "2026-11-21T08:32:17Z"
+   "by": "HOLDER.run-1795257509",
+   "done": "sc_islands control fixed and PASS live on game b, 175293dc5f: winches held by ProofWinchHold (no damage reaches a held winch), not a hit-point reset; three water-look settings registered in site_spec (north-star selftest green)",
+   "next": "Record sc_islands PASS for the bars it decides (island_bridges_trap_and_fail) in the next in-game visit",
+   "ruled_out": "the mod dropping a leaf whose winch stands; stale winch ids after the restage; a fallen leaf of one hinge side not walkable",
+   "ts": "2026-11-21T11:22:40Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1694,7 +1704,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1452,
+  "events": 1456,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7795,7 +7805,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-21T11:20:31Z",
+   "last": "2026-11-21T11:23:05Z",
    "lease": "run-1795257509",
    "released": false,
    "token": 27
@@ -8325,6 +8335,15 @@
     "subject": "bar:inv_sprinklers",
     "text": "blind lane 1 (cycle 4): every kernel row for this bar PASS; its game-side half UNSETTLED (not_kernel) until lane 2",
     "ts": "2026-11-20T00:36:12Z"
+   },
+   {
+    "by": "HOLDER.run-1795257509",
+    "kind": "test.run",
+    "result": "PASS",
+    "sha": "175293dc5f6355a432118029c2820c39fd2eea35",
+    "subject": "finding:RIMMANDRAKE_TRACE_FLOWWORKS_HELD_WINCH_FELL_IN_THE_CONTROL",
+    "text": "PASS live, game b, calm site, 2026-11-21: all five rows; control held winches True, on an island [], leaves 720/720, WinchJobs +84, polls 50.",
+    "ts": "2026-11-21T11:22:54Z"
    }
   ],
   "traps": {

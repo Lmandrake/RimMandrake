@@ -1,13 +1,13 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":39401,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":2475,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=80c8a65732fdf9c60d347b967b42227bd27898b910fd3a4ad42369e8476ecc29 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":39401,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=9f38b618bb626487ae4df6074f63f1582164329b9a5c22808f39cceb100e5af5 -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage in_game · 1452 events in 19 shards · reducer 1
-holder lease run-1795257509, token 27, last active 2026-11-21T11:20:31Z
+version 0.1.0 · stage in_game · 1456 events in 19 shards · reducer 1
+holder lease run-1795257509, token 27, last active 2026-11-21T11:23:05Z
 holder session 82ebad1e-0f23-455d-8747-6fc2bff2bded, context 287789 of ceiling 400000
 
-## Last checkpoint (HOLDER.run-1795244678, 2026-11-21T08:32:17Z)
-- done: body cover closed 5940b27979 (PIT_LOOK_1114_LIVE 19/19 game b); UNDERLIQUID_PARITY red run c09d51e332; raid staging fixed 51e9d9ce4a (named faction, walk-in south of trench, 60-tick reads, corpses count, fresh warden); trench item closed; game-b python.exe trap fixed e400c1b366
-- next: Stage sc_pit_trap_raid capture after the free raiders are gone; hide sc_fetch_fallen defenders behind a wall so the raid crosses the lids
-- ruled out: visit 2 trap/trench/fetch misses came from a worker-picked faction, 300-tick reads and a spawn centre 4 squares off; pits did not vanish on load (that run read game a)
+## Last checkpoint (HOLDER.run-1795257509, 2026-11-21T11:22:40Z)
+- done: sc_islands control fixed and PASS live on game b, 175293dc5f: winches held by ProofWinchHold (no damage reaches a held winch), not a hit-point reset; three water-look settings registered in site_spec (north-star selftest green)
+- next: Record sc_islands PASS for the bars it decides (island_bridges_trap_and_fail) in the next in-game visit
+- ruled out: the mod dropping a leaf whose winch stands; stale winch ids after the restage; a fallen leaf of one hinge side not walkable
 
 ## Open findings (178)
 (claimed fixes, awaiting a judge, on one line each with the oldest 127 open findings, named without their 'finding:': `modledger.py show --mod FlowWorks finding:<NAME>`)
@@ -316,7 +316,7 @@ holder session 82ebad1e-0f23-455d-8747-6fc2bff2bded, context 287789 of ceiling 4
 - trap:grenades-that-take-a-winch-can-wreck-its-leaf-deck
 - 144 traps on closed or claimed findings (verified, withdrawn, claimed_fixed), not listed: `modledger.py find --mod FlowWorks --class trap <words>`
 
-## Causes refuted (46) — do not chase these again
+## Causes refuted (47) — do not chase these again
 - cause:285-shows-lake-floor-1-5184-squares-plains: Mod regression in deep beds: ruled out as SITE. Player_s2_river_load.log:285 sh… (on f518e7c1987b)
 - cause:l5-colonists-clean-spill-unmeasured-on-run-20261018t233414: L5_colonists_clean_spill UNMEASURED on run 20261018T233414 was a harness fault:… (on 97ef816aed51)
 - cause:spores-were-not-the-cause-of-the-later: Spores were not the cause of the later A1 failure: after the spore purge Viking… (on 2ad8ba48157c)
@@ -363,6 +363,7 @@ holder session 82ebad1e-0f23-455d-8747-6fc2bff2bded, context 287789 of ceiling 4
 - cause:the-original-shuttle-was-assumed-to-reverse-or: The original shuttle was assumed to reverse or continue: it need not, since wit… (on 8fe7940f1f4c8ce9a0b9fdefbabce46962b039de)
 - cause:the-kernel-does-not-round-the-decilitre-away: The kernel re-rounding a cell to whole levels each pulse (which would make the… (on dbf76d554cd6dfbd05ea7bc5192dc6591350dcf3)
 - cause:toss-flame-and-liquid-coating-deciders-were-not: toss_flame and liquid coating deciders were not missing features: both already… (on fc2ab0af913e)
+- cause:islands-control-mod-drops-leaf-while-winch-stands: sc_islands 'a held winch fell anyway' was not the mod dropping a leaf whose win… (on 175293dc5f6355a432118029c2820c39fd2eea35)
 
 ## His answers (56) (each cut to 100 chars, a decision named without its 'decision:': `modledger.py show`)
 - version: Yes, lock the other four mods (owner, 2026-11-13 ~3:40 PM PST, typed to the Conductor; said of Flow…
@@ -488,12 +489,12 @@ spend recorded: USD 78.94, 45401435 tokens
 ## Left out
 - closed findings: 181, oldest first (`modledger.py show --mod FlowWorks <subject>`)
 - closed traps: 2, oldest first (`modledger.py show --mod FlowWorks <subject>`)
-- tests: 47, oldest first (`modledger.py show --mod FlowWorks <subject>`)
+- tests: 48, oldest first (`modledger.py show --mod FlowWorks <subject>`)
 - claimed fixes in brief: 51 on one line (name and sha), their claim, test and fix by `show`
 - open findings in brief: the oldest 127 on one line, their fix and accept by `modledger.py show --mod FlowWorks <subject>`
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
 - notes: 11, never printed here (`modledger.py find --mod FlowWorks <words>`)
-- the full history: 1452 events (views/history.md; never read whole)
+- the full history: 1456 events (views/history.md; never read whole)
 
-cursor: t=2026-11-21T11:20:31Z.1795260031831061711 (modledger.py since --mod FlowWorks t=2026-11-21T11:20:31Z.1795260031831061711 prints what changed after this packet)
+cursor: t=2026-11-21T11:23:05Z.1795260185819032213 (modledger.py since --mod FlowWorks t=2026-11-21T11:23:05Z.1795260185819032213 prints what changed after this packet)
