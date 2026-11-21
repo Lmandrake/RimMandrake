@@ -2084,7 +2084,7 @@ FREE_GAME_RULE = (
     "with its own bridge holder: game a (Steam's install, his full list) and game b on Archmagi, and the SteveDesktop "
     "games. Take any game whose bridge is free, ours, or stale by the 45-minute rule, with `python3 "
     "src/RimMandrake/rimflow/cli.py bridge take --idle-ok --for \"<what>\" --seat BENCH` and `./game --idle-ok --why "
-    "\"<what>\" up`; for game b set `RM_GAME_INSTANCE=b` on every command (deploy with `--instance b`) and start it if "
+    "\"<what>\" up`; for game b run `eval \"$(python3 src/RimMandrake/Utils/game_instance.py env b)\"` first (a bare `RM_GAME_INSTANCE=b` does not reach a `python.exe` tool, which then drives game a; deploy with `--instance b`) and start it if "
     "it is down (`python3 src/RimMandrake/Utils/game_instance.py launch b --wait`). If game a is busy or held, use game "
     "b; only a check that needs his full list waits for game a, and then say so by name. Release it the moment the "
     "work stops (`python3 src/RimMandrake/rimflow/cli.py bridge release --seat BENCH`). His OWNER hold, the `./bridge` "

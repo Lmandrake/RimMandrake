@@ -629,8 +629,10 @@ python3 src/RimMandrake/Utils/system_click.py <x> <y>          OS-level click fo
   at the same time.
 - `python3 src/RimMandrake/Utils/game_instance.py status` lists the games that run. `launch <name>` starts one and
   `stop` ends one. A seat that needs game b starts it; do not ask.
-- To act on game b: `RM_GAME_INSTANCE=b` for a tool, `--host archmagi.b` for `rimflow bridge`, `--instance b` for
-  `deploy_custom_mods.py`. A deploy for game b writes only game b's folders.
+- To act on game b: `eval "$(python3 src/RimMandrake/Utils/game_instance.py env b)"` for a tool, `--host archmagi.b` for
+  `rimflow bridge`, `--instance b` for `deploy_custom_mods.py`. A deploy for game b writes only game b's folders.
+- `RM_GAME_INSTANCE=b` alone does not reach a `python.exe` tool. That tool then drives game a on port 5174, with no
+  error. The `env b` line exports the port, the token and `WSLENV`.
 - Choose the game by the work:
   - Work that a tier mod list can prove goes to any free game. If game a is busy or held, use game b or SteveDesktop.
   - Only a check that needs his full mod list must use game a. The full list on game b beside game a does not fit in

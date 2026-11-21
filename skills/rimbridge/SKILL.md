@@ -59,9 +59,10 @@ python3 src/RimMandrake/rimflow/cli.py bridge release
 🔴 **There are several games, and each has its own bridge, lock and holder.** Game a is Steam's install on Archmagi
 (his game, his full list; bridge port 5174, lock `archmagi`, the default). Game b is its own install on Archmagi
 (`D:\ClaudeWork\rimmandrake\instances\b\game`; port 5175, lock `archmagi.b`). The SteveDesktop games take work through
-`infrastructure/stevedesktop/RUNBOOK.md`. To drive game b, set `RM_GAME_INSTANCE=b` on every command: the bridge client,
-`game_paths`, `rimflow bridge take|release` and the driver lock all follow it (or pass `--host archmagi.b` to `rimflow
-bridge`). `python3 src/RimMandrake/Utils/game_instance.py status` lists the games that run; `launch b --wait` starts
+`infrastructure/stevedesktop/RUNBOOK.md`. To drive game b, run `eval "$(python3 src/RimMandrake/Utils/game_instance.py env b)"`
+first: the bridge client, `game_paths`, `rimflow bridge take|release` and the driver lock all follow it (or pass `--host
+archmagi.b` to `rimflow bridge`). A bare `RM_GAME_INSTANCE=b` does not cross to a `python.exe` tool, which then drives
+game a on 5174 with no error (measured 2026-11-21: `WSLENV=RM_GAME_INSTANCE/u` did not cross either; `env b` does). `python3 src/RimMandrake/Utils/game_instance.py status` lists the games that run; `launch b --wait` starts
 game b. If game a is busy or held, drive game b; only a check that needs his full list waits for game a. Never write
 "waiting for the live game": name the game and why no other game can take the work.
 
