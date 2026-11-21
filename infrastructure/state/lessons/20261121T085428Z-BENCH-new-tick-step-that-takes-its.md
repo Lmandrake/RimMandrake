@@ -1,0 +1,1 @@
+A new tick step that takes its launcher from fx with a REAL default (fx.get(k, real_fn)) leaks out of every older selftest that fakes file/launch but not k: on 2026-11-21 such a step filed, published and launched 4 real repair runs for fixture mods A and Pyrelands. Default a new side-effecting step to a stand-in whenever the caller fx fakes any launch.
