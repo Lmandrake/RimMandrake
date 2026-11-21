@@ -773,6 +773,74 @@
    "note": "Asked 2026-10-23 and 2026-10-24 (hoses), 2026-11-09 (this mod: \"You're not matching both position and slope. That's what it takes.\", OWNER:1794242437721637229) and four times on 2026-11-16 (rows 2, 4, 5, 6, 8, 10 of the holding file). Added under the lock rule (maturation spec section 4, Stage 1 item 4, a bar added because of a discovery) by RIMMANDRAKE_BIND_SLACK_STUB_ANGLE_RULE_FOURTH_ASK: Convergent, it fixes a Problem, so it stays in 0.1.0.",
    "proof_note": "offline: selftest_gimmesomeslack.py --joins-only (Source/SelfTest/StubJoinChecks.cs) and selftest_gss_stub_art_census.py; live: northstar/live_stub_joins.py on the review map save GSS_OWNER_LOOK_20261116 (probe joins:)",
    "impl_note": "impl present: the rule is in code (impl_evidence: StubJoinAudit.cs, CordBuilder.cs); proof stays missing. Not yet shown joined in his 2026-11-16 look (holding file rows 2, 4, 5, 6, 8, 10): the junction box arms, the power switch's stubs, the live end grafted onto a terminal wire, and the sparking conduit end inside a wall."
+  },
+  {
+   "id": "switch_off_cords_stay_connected",
+   "what": "With a power switch off, both cords still run into the switch's stubs and read connected without power, the unpowered side drawn unpowered; no cord ends cut, frays or sparks at the switch; on and off differ only in the powered look.",
+   "impl": "absent",
+   "search_scope": "walk record row 1 and its FILED table: an off switch is no node in the cord graph (northstar_matrix/oracle.py and the mod's cord graph), so its cords end cut; no code keeps an off switch as a node",
+   "proof": "missing",
+   "scope": "opened_by_owner",
+   "scope_source": "OWNER:1795218693430430560",
+   "source": [
+    "OWNER:1795218693430430560",
+    "design/RimMandrake/validation_holding/gss_walk_20261120.md"
+   ],
+   "speaker": "owner",
+   "quote": "Switching the switch to off shows the cables as suddenly completely disconnected from the switch, but they are not. They should read connected without power, not broken. Error/fix.",
+   "note": "His walk of 2026-11-20, row 1 of the walk record. A fault fixed in 0.1.1 PATCH (his card of 2026-11-20, OWNER:1795217553611770372: \"Pass now, fixes are 0.1.1\"); item RIMMANDRAKE_SEAT_SLACK_CORDS_IN_OFF_SWITCH_NOT_CUT. Added as a plain sentence about what the player sees, never a tuning number.",
+   "proof_note": "offline: the mod selftest reads an off switch as a node with both cords ending on its stubs; live: the AerialProbe ends:/endkind: probe on an off switch finds no live or dead cut end within 1.5 cells of it (Stage 4)"
+  },
+  {
+   "id": "pole_buttons_show_icons",
+   "what": "A selected power pole's Link wire, Unlink wire and Unlink all buttons each show a real icon, never the missing-texture square; loading the mod logs no 'from a different thread' resource error for any icon it uses.",
+   "impl": "absent",
+   "search_scope": "Source/Aerial/CompAerialAnchor.cs:115-116 loads the icons in static readonly fields (off the main thread at load); no [StaticConstructorOnStartup] or main-thread load of them exists",
+   "proof": "missing",
+   "scope": "opened_by_owner",
+   "scope_source": "OWNER:1795218699569565314",
+   "source": [
+    "OWNER:1795218699569565314",
+    "design/RimMandrake/validation_holding/gss_walk_20261120.md"
+   ],
+   "speaker": "owner",
+   "quote": "The UI for power poles is missing a lot of art",
+   "note": "His walk of 2026-11-20, row 9 of the walk record. A fault fixed in 0.1.1 PATCH (his card of 2026-11-20, OWNER:1795217553611770372: \"Pass now, fixes are 0.1.1\"); item RIMMANDRAKE_LOAD_SLACK_POLE_ICONS_ON_MAIN_THREAD. Added as a plain sentence about what the player sees, never a tuning number.",
+   "proof_note": "live: after a cold load Player.log holds no 'Tried to get a resource ... from a different thread' line for UI/Commands/TryReconnect, UI/Designators/Cancel or any Gimme Some Slack path, and the three button icons are non-null (Stage 4)"
+  },
+  {
+   "id": "poles_draw_in_front_when_south",
+   "what": "A power pole south of a plant, tree or building draws in front of it, and one north of such a thing draws behind it, as huge things do.",
+   "impl": "absent",
+   "search_scope": "grep of src/RimMandrake/GimmeSomeSlack for SouthDrawsFront: none; the mast def prints on the Building altitude layer, under plants and BuildingOnTop things north of it (walk record FILED table)",
+   "proof": "missing",
+   "scope": "opened_by_owner",
+   "scope_source": "OWNER:1795218705602276324",
+   "source": [
+    "OWNER:1795218705602276324",
+    "design/RimMandrake/validation_holding/gss_walk_20261120.md"
+   ],
+   "speaker": "owner",
+   "quote": "Power poles need the \"huge things\" ordering rule of appearing \"in front\" when they are south of something.",
+   "note": "His walk of 2026-11-20, row 13 of the walk record. A fault fixed in 0.1.1 PATCH (his card of 2026-11-20, OWNER:1795217553611770372: \"Pass now, fixes are 0.1.1\"); item RIMMANDRAKE_DRAW_SLACK_POLES_IN_FRONT_WHEN_SOUTH. Added as a plain sentence about what the player sees, never a tuning number.",
+   "proof_note": "offline: a selftest over the SouthDrawsFront rule and the mast def reads the mast drawn above every plant or building north of it within its picture height and below one south of it (Stage 2); live: a capture of a pole south of a tree (Stage 4)"
+  },
+  {
+   "id": "no_roof_over_pole",
+   "what": "No roof forms over a standing power pole: auto-roof leaves its cell open and a build-roof order there is refused with a message naming the pole; a roof that still comes (god mode, collapse, another mod) cuts its spans as before.",
+   "impl": "absent",
+   "search_scope": "grep of src/RimMandrake/GimmeSomeSlack defs and Source for allowAutoroof and a roof-placement refusal: none; the Roofed cut stays at Source/Aerial/RM_MapComponent_Aerial.cs:407",
+   "proof": "missing",
+   "scope": "opened_by_owner",
+   "scope_source": "OWNER:1795218711569920349",
+   "source": [
+    "OWNER:1795218711569920349",
+    "design/RimMandrake/validation_holding/gss_walk_20261120.md"
+   ],
+   "speaker": "owner",
+   "quote": "You shouldn't be able to build a power pole inside a roofed building at all, they're too big... but nice test if you ever did, you can leave the behavior in the code, just disable building it that way.",
+   "note": "His walk of 2026-11-20, row 14 of the walk record. A fault fixed in 0.1.1 PATCH (his card of 2026-11-20, OWNER:1795217553611770372: \"Pass now, fixes are 0.1.1\"); item RIMMANDRAKE_BLOCK_SLACK_ROOF_OVER_POLE_KEEP_THE_CUT. Added as a plain sentence about what the player sees, never a tuning number.",
+   "proof_note": "live: auto-roof and a build-roof designation over a mast cell form no roof and the refusal names the pole; a god-mode roof still cuts the spans (Stage 4)"
   }
  ],
  "contradictions": [
