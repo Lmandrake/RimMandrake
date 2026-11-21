@@ -131,3 +131,15 @@ nothing while the drain notice stands (`drain_gate`: rows read `account_hold`, "
   with the Ripple copy.
 - None was pruned. Under the new rule they are ignored (named by nothing), so they no longer stop a visit. Pruning
   them is safe on this evidence but not needed; no item filed.
+
+## Live proof (measured 2026-11-20 7:22 PM PST)
+
+- 7:10 PM cleared. 7:11 PM the relaunch filed `RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_VISIT` (both visit names were taken)
+  and the RUNNER spawn guard refused the bare name; three such refusals 7:12 to 7:14 (real faults). Fixed at
+  `f34e6e7228` (the namer drops the bare form), cleared again 7:18 PM.
+- 7:19 to 7:22 PM the tick read the plan (same non-game drift), deployed nothing, restarted nothing, and launched
+  visit 2 by itself: unit `rm-detached-bench-rimmandrake-drive-pyrelands-in-game-visi-1795231310`, item
+  `RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_VISIT_TWO_RUN_TWO`, active at 7:24 PM.
+- Found on the way: that tick peaked at its 1G MemoryMax with the composed plan inside it; filed as
+  `RIMMANDRAKE_SHRINK_TICK_DEPLOY_PLAN_PEAK_HIT_ONE_GIG`.
+- Not yet seen live: the deploy branch (loaded drift: game down, `--apply`, game up). Only the selftest proves it.
