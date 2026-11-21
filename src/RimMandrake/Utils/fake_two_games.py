@@ -176,6 +176,23 @@ for x in sys.argv[1:]:
 
 PYTHON_EXE = "#!/bin/sh\necho pong\n"
 
+# robocopy: src dst [file ...] | /E, then flags. Copies with shutil, as the real one adds and updates, never deletes; exit 1
+# is "files copied" (0-7 is success). It writes only where it is told: game_instance.install's own refusal is what keeps
+# it out of game a's folder, and the selftest checks that.
+ROBOCOPY = "#!/usr/bin/env python3\n" + SHIM_LIB + r'''
+import shutil
+a = [x for x in sys.argv[1:] if not re.fullmatch(r"/[A-Z]+(:\S*)?", x)]     # flags; a Linux path starts with / too
+log("robocopy " + " ".join(sys.argv[1:]))
+src, dst, files = a[0], a[1], a[2:]
+os.makedirs(dst, exist_ok=True)
+if files:
+    for f in files:
+        shutil.copyfile(os.path.join(src, f), os.path.join(dst, f))
+elif "/E" in sys.argv:
+    shutil.copytree(src, dst, dirs_exist_ok=True)
+sys.exit(1)
+'''
+
 TASKLIST = "#!/usr/bin/env python3\n" + SHIM_LIB + r'''
 live = games()
 for p, _ in live:
@@ -197,7 +214,7 @@ class World:
         with open(self.game_script, "w") as f:
             f.write(FAKE_GAME)
         for name, body in (("powershell.exe", POWERSHELL), ("taskkill.exe", TASKKILL), ("tasklist.exe", TASKLIST),
-                           ("cmd.exe", CMD), ("python.exe", PYTHON_EXE)):
+                           ("cmd.exe", CMD), ("python.exe", PYTHON_EXE), ("robocopy.exe", ROBOCOPY)):
             p = os.path.join(self.bin, name)
             with open(p, "w") as f:
                 f.write(body)
@@ -212,6 +229,12 @@ class World:
         os.makedirs(self.game_dir)
         with open(os.path.join(self.game_dir, "steam_appid.txt"), "w") as f:
             f.write("294100")
+        # game a's install as game_instance.install copies it into a named game's own folder
+        os.makedirs(os.path.join(self.game_dir, "Mods", "SomeLib"))
+        os.makedirs(os.path.join(self.game_dir, "BridgeTools", "JawaBench"))
+        for rel in ("RimWorldWin64.exe", "Version.txt", os.path.join("Mods", "SomeLib", "About.xml")):
+            with open(os.path.join(self.game_dir, rel), "w") as f:
+                f.write("fake")
         self.env = {k: v for k, v in os.environ.items()
                     if not k.startswith(("GABP_", "RM_GAME_", "RIMFLOW_", "RM_HOST", "WSLENV"))}
         self.env.update(PATH=self.bin + os.pathsep + os.environ["PATH"], RM_INSTANCES_ROOT=self.root,
@@ -234,7 +257,7 @@ class World:
                         RIMFLOW_DISPATCH_LOCK=os.path.join(self.rf, "dispatch.lock"),
                         RIMFLOW_BRIDGE_LOCK=os.path.join(self.rf, "bridge.lock"),
                         RIMFLOW_DRIVER_LOCK=os.path.join(self.rf, "DRIVER_LOCK.json"))
-        for tool in ("powershell.exe", "taskkill.exe", "tasklist.exe", "cmd.exe", "python.exe"):
+        for tool in ("powershell.exe", "taskkill.exe", "tasklist.exe", "cmd.exe", "python.exe", "robocopy.exe"):
             found = shutil.which(tool, path=self.env["PATH"])
             assert found and found.startswith(self.bin), "the %s shim does not resolve first: %s" % (tool, found)
         self.children = []

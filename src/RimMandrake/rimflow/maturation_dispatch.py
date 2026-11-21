@@ -383,18 +383,48 @@ def driver_games(facts):
     return out
 
 
-def pick_game(cfg, bridge, purpose, held=None):
+def game_hold(game):
+    """-> why game `game` is held by `pipe off game:<g>` (control.game_held), or None. A store that cannot be read holds
+    the game: could not look is never "not held"."""
+    import control as C
+    try:
+        return C.game_held(game)
+    except C.Unreadable as e:
+        return "the control store could not be read, so a hold on game %s cannot be ruled out: %s" % (game, e)
+
+
+def full_list_only(f):
+    """-> the visit's full-list checks when EVERY stage-6 check of it needs his full list, else []. Such a visit cannot
+    run on game b beside game a: a full list on b does not fit in memory beside a (about 17.5 GB against 19.6 GB of
+    headroom over a 12 GB floor, MEASURED 2026-11-20), so it waits for game a and says so. A visit with any tier check
+    may go to b; its full-list checks are UNMEASURED there (game_instance.brief)."""
+    checks, full = list(f.get("checks") or []), list(f.get("full_list") or [])
+    return full if checks and set(checks) <= set(full) else []
+
+
+def pick_game(cfg, bridge, purpose, held=None, hold=None, only=None):
     """-> (the first free game, or None; [why not, per game]). A game is free when no live driver holds it (held:
     {game: unit}) and its own bridge reading says takeable. The games are cfg game_instances (else a); a reading that
     cannot name a game (a one-argument stand-in) reads game a only. RIMMANDRAKE_LAUNCH_BOTH_GAMES_STEAM_REFUSES_A_BESIDE_B:
-    the owner, 2026-11-16, "don't forget we have two Rimworld games, so I don't want to hear any 'waiting for game'"."""
+    the owner, 2026-11-16, "don't forget we have two Rimworld games, so I don't want to hear any 'waiting for game'".
+    hold: the per-game hold reader (game_hold: `pipe off game:a` for his walk); a held game is never picked, whoever
+    holds its bridge, so his walk is kept even when the Conductor's bridge hold lapses. only: {game: why not} for games
+    this run cannot use (a full-list-only visit on game b)."""
     read = bridge or (lambda p, game="a": M.bridge_idle(p, cfg.get("seat", "BENCH"), game=game))
     named = M.takes_game(read)
     games = [g for g in (cfg.get("game_instances") or ["a"])] if named else ["a"]
     whys = []
+    hold = hold or game_hold
     for g in games:
+        if g in (only or {}):
+            whys.append("game %s: %s" % (g, only[g]))
+            continue
         if g in (held or {}):
             whys.append("game %s: driven by %s" % (g, held[g]))
+            continue
+        h = hold(g)
+        if h:
+            whys.append("game %s: %s" % (g, h))
             continue
         go, why = read(purpose, game=g) if named else read(purpose)
         if go:
@@ -1879,9 +1909,13 @@ def decide_ingame(cfg, s, f, row, put, now, account, live_total, drivers, bridge
         return False
     if no_slot(cfg, live_total, put):
         return False
-    game, whys = pick_game(cfg, bridge, "%s in-game acceptance visit %s" % (mod, n), held)
+    full = full_list_only(f)
+    only = {g: "every check of visit %s needs his full list (%s), which game %s cannot hold beside game a" % (
+        n, ", ".join(full), g) for g in games if g != "a"} if full else None
+    game, whys = pick_game(cfg, bridge, "%s in-game acceptance visit %s" % (mod, n), held, only=only)
     if not game:
-        put("bridge_held", "no game is free: %s" % "; ".join(whys))
+        put("bridge_held", "%sno game is free: %s" % (
+            "WAITS FOR GAME A, full list (%s): " % ", ".join(full) if full else "", "; ".join(whys)))
         return False
     row.update(cap=cap, visit_id=vid, game=game)
     if retry:

@@ -2,7 +2,7 @@
 
 # Two RimWorld instances on one machine (design, 2026-11-07)
 
-Status: rung one passed on SteveDesktop on 2026-11-07 and on Archmagi on 2026-11-16 (sections below); game a starts beside a running game b in either order since 2026-11-16 night ("Game a beside game b"). Parts 1 and 2 were written before the trial, from disk and the running system. The first list of tooling changes is built and proven offline (see "How a loop goes on game B"); no loop has run on B yet.
+Status: rung one passed on SteveDesktop on 2026-11-07 and on Archmagi on 2026-11-16 (sections below); game a starts beside a running game b in either order since 2026-11-16 night ("Game a beside game b"). Parts 1 and 2 were written before the trial, from disk and the running system. The first list of tooling changes is built and proven offline (see "How a loop goes on game B"); no loop has run on B yet. Since 2026-11-20 game b runs from its own install with its own Mods and BridgeTools (rung three), and `pipe off game:a` holds game a alone for his walk ("Game b's own install, 2026-11-20").
 
 Owner's words, 2026-11-07: "design a way to have two instances of Rimworld running. It would likely require running Steam in a protected environment without access to the Web. This might not be required though, so we should try it simply first. Just be prepared that we may have to do so. I'm not sure Steam will be happy with us launching two versions otherwise, so a one-two research punch. Fingers crossed it's easy."
 
@@ -94,7 +94,7 @@ File counts below are from `git grep` over `src/RimMandrake` and `*.sh`, excludi
 
 `WINDOW_TOOLS_DONT_FIND_WINDOWS`. `Utils/system_click.py` clicks absolute screen coordinates. `Utils/system_screenshot.py` grabs the whole virtual desktop. Neither looks for a window, so with two games each hits whatever is on top. Both games have the title "RimWorld by Ludeon Studios" (MEASURED for the one running; B's is the same exe). Finding a window means process id to window handle, which no tool does today, though the focus tools have process-based code to reuse. Bridge screenshots are per game and unaffected, so the answer for B is to use only those and never desktop clicks.
 
-`SHARED_MODS_FOLDER`. `Utils/deploy_custom_mods.py` writes into the one `Mods` folder and reports files "locked by the running game". With two games up, a mod's DLL can only be replaced when neither has it loaded, and the companion is loaded by both. A non-DLL deploy into a mod the other game is loading can give that game a half-written view. It works if each game's writable mods are disjoint; otherwise it needs rung three.
+`SHARED_MODS_FOLDER` (fixed 2026-11-20, below). Until then `Utils/deploy_custom_mods.py` and `bridgetools/build.py` wrote the one `Mods` and `BridgeTools` folder that both games loaded, so a deploy for game b changed folders game a had loaded. Game b now has its own install, and both tools take the game (`--instance`, or `RM_GAME_INSTANCE`).
 
 Smaller single-instance readers: 3 non-test files under the grep name 5174 (`rimbridge_client.py` as the default, `bridgetools/launch_ready.py:181` as a fallback, `Utils/vivify_world.py` in a comment), plus `FlowWorks/northstar/liquid_checks.py` and `suspension_bridge_proof.py` in the same vein. 38 non-test files contain the string `LocalLow`; how many are live paths rather than comments is UNMEASURED. `gamestate_probe.json`, `.belt_state` and the health observers keep one state each (5 files).
 
@@ -154,7 +154,7 @@ Only possible where the folder holds no `steam_appid.txt`, so Archmagi as it sta
 
 `D:\ClaudeWork\rimmandrake\instances\b\game\` with its own `Mods`, so B can have a different build of our mods, a free companion DLL, and deploys that never collide. Cost about 2.5 GB and 5 minutes (MEASURED sizes), less if `Data` and `RimWorldWin64_Data` are junctions; whether Unity tolerates those is UNMEASURED. `deploy_custom_mods.py` then needs a target instance (small: its folder comes from `game_paths`, so `RM_STEAMAPPS` nearly does it, though the layout must match `common\RimWorld`). Add `steam_appid.txt` in the copy so Workshop keeps working, if rung one showed Steam allows it. If Steam refused at rung one, the copy runs with no Steam and needs a local mod set, as in the Milkboy guide's junction of Workshop into `Mods`.
 
-Licence: this is the one rung that copies game files, and the Subscriber Agreement's wording on copying has no carve-out. The Multiplayer developers publish exactly this recipe and Ludeon sells the same game DRM-free, so I think the risk is small, but it is not nothing. If he bought from Ludeon rather than Steam (UNMEASURED; the owner would know), the DRM-free download is the clean version: it has no Steam dependency at all and needs no copy of Steam's install. Do not do this rung unless shared `Mods` actually hurts.
+Licence: this is the one rung that copies game files, and the Subscriber Agreement's wording on copying has no carve-out. The Multiplayer developers publish exactly this recipe and Ludeon sells the same game DRM-free, so I think the risk is small, but it is not nothing. If he bought from Ludeon rather than Steam (UNMEASURED; the owner would know), the DRM-free download is the clean version: it has no Steam dependency at all and needs no copy of Steam's install. Shared `Mods` did hurt (two walks on 2026-11-20 held every in-game run for hours), so this rung was built that day.
 
 ### Rung four: a second Windows user
 
@@ -372,7 +372,40 @@ What it does not change:
 - **Time in the game is often not the shortage.** The fast-testing work measured utilisation falling from 31% to 5 to 10% after Relentless took the game (`D:\Luke\dev\RimMandrake\design\RimMandrake\fast_testing_2026-11-05\ideas_inside.md`, C26 to C28), and on 2026-10-31 the bridge was held 1.5% of 24 hours (`D:\Luke\dev\RimMandrake\design\RimMandrake\parallel_review_2026-10-31\use_now.md`). Queueing came with the Artisan loops, and those are what this addresses. Past three or four loops, thinking time and tokens will bind before games do. A loop waiting behind two others this morning does not by itself show that a second game would stay busy all week.
 - **Cold starts.** Median 17 minutes from start to first row, 42 cold starts in 84 hours on the 2026-11-05 measure. Two games load two lists, each at its own full cost. Small lists remain the larger lever; `-savedatafolder` lists on a shared `Mods` make them cheaper to hold side by side.
 - **Memory on Archmagi.** No second full-list game there, and the agents' WSL competes for the same RAM. The owner's live looks stay one game on Archmagi.
-- **Deploys.** Shared `Mods` makes the companion DLL a both-games-down event. Rung three cures that at a licence-question cost.
+- **Deploys.** Each game has its own `Mods` and `BridgeTools` since 2026-11-20, so a deploy or a companion build for game b never waits for game a. A copy of the install costs about 2.5 GB.
 - **Machine faults.** One SteveDesktop fault now costs two games' runs.
 
 The trial passed and the first list of tooling is built. What is left is putting one loop on B.
+
+## Game b's own install, 2026-11-20 (item RIMMANDRAKE_SPLIT_SECOND_GAME_MODS_FOLDER_SHARED_WITH_FIRST)
+
+The owner walked game a from about 6:15 to 7:00 AM and from 11:37 AM to 3:36 PM PST. Both times every in-game run waited,
+because the only way to keep runs off his game was `./pipe off stage:in_game`. His words at 3:40 PM PST: "You should not
+have been waiting for the game. there are two games".
+
+**What changed.**
+- `./pipe off game:a --why "his walk"` holds game a alone (control.py scope `game:`). `pick_game` skips a held game and
+  gives the run to game b, so his walk no longer depends on the Conductor's bridge hold. `stop`, `launch`,
+  `deploy_custom_mods.py --apply` and `bridgetools/build.py --apply` refuse a held game without `--despite-hold "<why>"`.
+- Game b runs from its own install, `D:\ClaudeWork\rimmandrake\instances\b\game` (`game_instance.py install b`; `prepare`
+  makes it when it is missing). The copy is the game's files plus `Mods` and `BridgeTools`, 2.5 GB, 19 s on Archmagi
+  [measured]. C: had 2.1 TB free and D: 1.5 TB, so no junctions were needed. Steam's Workshop folder stays shared: only
+  `deploy_custom_mods.py` and `bridgetools/build.py` write into an install, and nothing of ours writes Workshop (census
+  of every file that names the install, 2026-11-20).
+- With `RM_GAME_INSTANCE=b`, `game_paths.GAME_DIR`, `LOCAL_MODS` and `GAME_DATA` are game b's own; `A_GAME_DIR` is Steam's.
+  The in-game gate checks the companion and the deploy of the run's own game.
+- A seat's list swap is per game (`modset_swaps/<seat>.b`): a swap on game a had refused every list for game b.
+- Inside the Conductor's own process tree, its walk hold on game a used to read as free. A new run's bridge reading
+  (`crossing(new_run=True)`) and `leftovers` now count a hold by the asker's own window.
+- A visit whose every check needs his full list waits for game a, and `./pipe why <Mod>` names those checks. A full list
+  on game b does not fit beside game a (about 17.5 GB against 19.6 GB headroom over a 12 GB floor, measured that
+  morning). In a mixed visit on game b the full-list checks are UNMEASURED.
+
+**Live proof, 16:12 to 16:30 PST.** Game a (pid 5032, Steam's install, a game loaded) stayed up throughout. Game b got its
+own install, a 13-mod `flowworks` tier list, a FlowWorks deploy that wrote one def file into b's own `Mods`, and a
+companion build deployed into b's own `BridgeTools` while game a ran (impossible before: one folder, held by a). Game b
+started from `D:\ClaudeWork\rimmandrake\instances\b\game\RimWorldWin64.exe`, bound port 5175 after 45 s and loaded its own
+companion ("ready: 433 tools, build d309e9d2f660"; game a's folder holds build c87a03b4b6). Both games answered
+`rimbridge/ping`. A manifest of game a's `Mods` and `BridgeTools` (17,256 files, 1,282 hashed) and a's ModsConfig hash
+were taken before and after: 0 files differ by size or mtime, 0 of 1,282 hashes differ, and the ModsConfig hash is the same. Game a still answered its bridge after. Game b was then stopped by pid. Evidence: `D:\ClaudeWork\rimmandrake\conductor\split_b_20261120\`.
+

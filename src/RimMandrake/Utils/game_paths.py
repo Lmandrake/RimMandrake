@@ -39,7 +39,7 @@ import re
 
 __all__ = ["MODS_CONFIG", "DEF_DUMP", "DUMP_ROOT", "CAPTURES", "PLAYER_LOG",
            "PREV_LOG", "IDEOS", "SAVES", "WORKSHOP", "LOCAL_MODS", "GAME_DATA",
-           "LOCALLOW", "STEAM", "GAME_DIR", "resolve", "win_to_wsl", "wsl_to_win", "describe", "captures",
+           "LOCALLOW", "STEAM", "GAME_DIR", "A_GAME_DIR", "resolve", "win_to_wsl", "wsl_to_win", "describe", "captures",
            "newest_capture", "KEEP_MARKER"]
 
 
@@ -100,18 +100,24 @@ _STEAM_WIN, _STEAM_WSL = _root("RM_STEAMAPPS", r"C:\Program Files (x86)\Steam\st
                                "/mnt/c/Program Files (x86)/Steam/steamapps")
 # A named game (RM_GAME_INSTANCE=b, game_instance.py) beats both path variables: SteveDesktop's .bashrc exports game a's
 # folder into every shell, and a tool following that would write a's ModsConfig on b's behalf. Nothing set imports nothing.
+# A named game also has its own install (game_instance.game_dir: <instances root>/<letter>/game, with its own Mods and
+# BridgeTools), so GAME_DIR, LOCAL_MODS and GAME_DATA follow the name and a deploy for b never writes the folder game a
+# loaded (RIMMANDRAKE_SPLIT_SECOND_GAME_MODS_FOLDER_SHARED_WITH_FIRST). WORKSHOP stays Steam's: nothing of ours writes it.
+_GAME_WIN, _GAME_WSL = os.path.join(_STEAM_WIN, r"common\RimWorld"), os.path.join(_STEAM_WSL, "common/RimWorld")
+#: Game a's install, Steam's, whatever game this process names (game_instance.install copies from it).
+A_GAME_DIR = resolve(_GAME_WIN, _GAME_WSL)
 if os.environ.get("RM_GAME_INSTANCE", "").strip().lower() not in ("", "a"):
     import sys
     if os.path.dirname(os.path.abspath(__file__)) not in sys.path:
         sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
     import game_instance as _instance
     _LOW_WIN, _LOW_WSL = _LOG_WIN, _LOG_WSL = _forms(_instance.data_dir())
+    _GAME_WIN, _GAME_WSL = _forms(os.path.join(_instance.data_dir(), _instance.INSTALL_SUB))
 
 LOCALLOW = resolve(_LOW_WIN, _LOW_WSL)
 STEAM = resolve(_STEAM_WIN, _STEAM_WSL)
-#: RimWorld's install folder (RimWorldWin64.exe, Data/, Mods/, BridgeTools/).
-GAME_DIR = resolve(os.path.join(_STEAM_WIN, r"common\RimWorld"),
-                   os.path.join(_STEAM_WSL, "common/RimWorld"))
+#: This game's install folder (RimWorldWin64.exe, Data/, Mods/, BridgeTools/): Steam's for game a, its own for b.
+GAME_DIR = resolve(_GAME_WIN, _GAME_WSL)
 
 MODS_CONFIG = resolve(os.path.join(_LOW_WIN, r"Config\ModsConfig.xml"),
                       os.path.join(_LOW_WSL, "Config/ModsConfig.xml"))
@@ -181,10 +187,8 @@ SAVES = resolve(os.path.join(_LOW_WIN, "Saves"),
                 os.path.join(_LOW_WSL, "Saves"))
 WORKSHOP = resolve(os.path.join(_STEAM_WIN, r"workshop\content\294100"),
                    os.path.join(_STEAM_WSL, "workshop/content/294100"))
-LOCAL_MODS = resolve(os.path.join(_STEAM_WIN, r"common\RimWorld\Mods"),
-                     os.path.join(_STEAM_WSL, "common/RimWorld/Mods"))
-GAME_DATA = resolve(os.path.join(_STEAM_WIN, r"common\RimWorld\Data"),
-                    os.path.join(_STEAM_WSL, "common/RimWorld/Data"))
+LOCAL_MODS = resolve(os.path.join(_GAME_WIN, "Mods"), os.path.join(_GAME_WSL, "Mods"))
+GAME_DATA = resolve(os.path.join(_GAME_WIN, "Data"), os.path.join(_GAME_WSL, "Data"))
 
 
 def describe():

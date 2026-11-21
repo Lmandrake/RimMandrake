@@ -1,0 +1,68 @@
+# BOUNDARY: the per-game hold and game b's own install, Design Version 0.1.0
+
+Code: `src/RimMandrake/rimflow/control.py` (the `game:` scope, `game_held`, `game_holds`), `src/RimMandrake/rimflow/maturation_dispatch.py` (`game_hold`, `full_list_only`, `pick_game`), `src/RimMandrake/rimflow/host_guard.py` (`crossing` with `new_run`), `src/RimMandrake/Utils/game_instance.py` (`install`, `game_dir`, `hold_refusal`, `held_by_anyone`, `leftovers`, `stop`, `brief`), `src/RimMandrake/Utils/game_paths.py` (`GAME_DIR`, `LOCAL_MODS`, `GAME_DATA`, `A_GAME_DIR`), `src/RimMandrake/Utils/deploy_custom_mods.py` (`--instance`, the hold on `--apply`), `src/RimMandrake/bridgetools/build.py` (`aim`, `--instance`), `src/RimMandrake/Utils/modset_builder.py` (`owned_backups`).
+Item: `RIMMANDRAKE_SPLIT_SECOND_GAME_MODS_FOLDER_SHARED_WITH_FIRST`, written 2026-11-20. The owner walked game a twice
+that day while every in-game run waited, although game b existed. His words at 6:20 AM PST: *"We can run two games you
+know..."*; at 3:40 PM PST: *"You should not have been waiting for the game. there are two games"*. Each promise has a
+test of its name in `src/RimMandrake/rimflow/selftest_game_hold_split_install.py`. This page covers only these parts of
+the files named; the rest of each file has its own page or none.
+
+## ACCEPTS (the only inputs this is built for)
+
+- **a-game-letter.** A game is one letter: `a` is Steam's install and his game; `b` and on are named games, each with a
+  data folder and an install under the instances root (`RM_INSTANCES_ROOT`, else `<data root>/instances`).
+- **the-control-store.** The one control store of `control.py`. A store that does not exist on a machine holds no game:
+  a hold is only ever written into it.
+- **game-as-install-copy-source.** Game a's install folder, read only. Its `Mods`, `BridgeTools`, `Data`,
+  `MonoBleedingEdge`, `RimWorldWin64_Data` and the top-level game files are what a named game's install copies.
+
+## DOES NOT SURVIVE (not promised)
+
+- **a-full-list-on-game-b-beside-game-a.** His full list on game b beside game a does not fit in memory on Archmagi
+  (about 17.5 GB needed, 19.6 GB headroom, a 12 GB floor; measured 2026-11-20). A visit whose every check needs the
+  full list waits for game a; a full-list check inside a mixed visit on b is recorded UNMEASURED by the driver.
+- **a-third-party-mod-updated-after-the-copy.** Game b's copy of a third-party mod in `Mods` is the copy of the day it
+  was made; `install --refresh` adds and updates, and never deletes.
+- **a-unity-registry-key.** Game b's exit writes a Unity registry key that game a reads at its next launch (design note
+  `design/RimMandrake/two_rimworld_instances_2026-11-07.md`). Nothing here touches it.
+- **a-tool-that-writes-the-game-folder-by-a-literal-path.** Only `deploy_custom_mods.py` and `bridgetools/build.py` write
+  into an install (census of 2026-11-20 over every file naming the install); a new tool that hard-codes Steam's path
+  writes game a's folder whatever game it means.
+
+## PROMISES (each one is owed a test of the same name)
+
+- **a-game-hold-is-a-scope-that-refuses-runs-on-that-game-only.** `pipe off game:a` writes a switch on scope `game:a`;
+  a run whose spec names game a is refused at admission and at its start; a run on game b, or one that names no game,
+  is not.
+- **a-held-game-is-never-picked-and-game-b-takes-the-run.** `pick_game` never returns a held game, whatever its bridge
+  reading says, so his walk is kept when the Conductor's bridge hold lapses; the next free game takes the run. A store
+  that cannot be read holds the game.
+- **a-full-list-only-visit-waits-for-game-a-and-says-so-by-name.** A visit whose every stage-6 check needs the full list
+  is offered game a only; while game a is held it waits, and the tick's reason names those checks and the hold.
+- **the-askers-own-hold-is-a-hold-for-a-new-run.** `crossing(new_run=True)` reads a live driver lock as held even when
+  the holder is the asker's own window; without `new_run` it does not (the holder may drive its own game).
+- **leftovers-never-offers-a-held-game.** `leftovers` never lists a game that is held, or whose driver lock has any
+  live holder, the asker's own window included; an idle game with neither is still listed.
+- **stop-of-a-held-game-refuses-unless-despite-hold.** `stop` of a held game signals nothing and refuses by name;
+  `--despite-hold "<why>"` passes it to the bridge check as before.
+- **a-named-games-paths-are-its-own-install.** With `RM_GAME_INSTANCE=b`, `game_paths.GAME_DIR`, `LOCAL_MODS` and
+  `GAME_DATA` lie under game b's own install; `WORKSHOP` and `A_GAME_DIR` stay Steam's. With no game named they are
+  Steam's, as before.
+- **a-deploy-for-game-b-writes-only-under-game-b.** `deploy_custom_mods.py --instance b` plans into game b's own `Mods`;
+  with no instance it plans into game a's, as before.
+- **a-deploy-into-a-held-game-refuses-and-writes-nothing.** `deploy_custom_mods.py --apply` into a held game exits
+  non-zero naming the hold, before any write.
+- **a-companion-build-for-game-b-writes-only-under-game-b.** `bridgetools/build.py` aimed at game b deploys into game b's
+  own `BridgeTools/JawaBench`; aimed at game a it keeps Steam's.
+- **the-in-game-gate-reads-the-runs-own-game.** `companion_current(game=b)` reads game b's own companion DLL, and
+  `mod_deployed(game=b)` runs the deploy plan with `--instance b`.
+- **install-writes-only-under-the-named-game.** `install` writes only under the named game's own install folder, copies
+  the game's files and `Mods` and not the rest of game a's folder, keeps an install that exists (copying only a top-level
+  game file it lacks), and refuses an install folder that overlaps game a's.
+- **a-named-games-list-swap-is-its-own.** `modset_builder.owned_backups(<seat>)` with a named game is
+  `modset_swaps/<seat>.<game>`, so a seat's list swap on game a never refuses a list for game b; game a keeps
+  `modset_swaps/<seat>`.
+- **game-bs-brief-names-its-own-install-and-its-unmeasured-full-list-checks.** A run brief for game b says that game b has
+  its own install, and names each full-list check the visit holds as UNMEASURED on b.
+
+Later lists beside this page: `polish.md` (two lines) and `next_version.md` (none yet).

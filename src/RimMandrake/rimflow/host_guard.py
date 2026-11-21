@@ -138,17 +138,21 @@ def _reentrant(path):
     return None
 
 
-def crossing(path=None):
+def crossing(path=None, new_run=False):
     """-> the refusal text when this process would change a game another live driver holds, else None
     (BRIDGE_LOCK_PROBE_PROOF_CROSSED_HOLDER). Reads only, takes nothing; rimbridge_client asks it before every
     mutating call, because a proof or a checker that connects directly never comes near `take`. Errs toward allowing:
     no lock path, an unreadable lock, or a Windows python (its parent chain cannot show the holder's window, and
-    acquire() cannot see that either) all pass."""
+    acquire() cannot see that either) all pass.
+    new_run: the question is "may a NEW run take this game", not "may I drive it". A new run is another process, so a
+    hold by this process's own window (or a take it inherited) is a hold too. The Conductor's walk hold on game a read
+    as free from the Conductor's own shell, and a hand launch there picked game a (RIMMANDRAKE_SPLIT_SECOND_GAME_MODS_
+    FOLDER_SHARED_WITH_FIRST, measured 2026-11-20)."""
     path = path or lock_path()
     if not path or os.name == "nt":
         return None
     cur, problem = driver_lock._read(path)
-    if problem or not cur or _reentrant(path) is not None:
+    if problem or not cur or (not new_run and _reentrant(path) is not None):
         return None
     alive, how = driver_lock._alive(cur)
     if not alive:

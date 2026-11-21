@@ -447,7 +447,8 @@ moment that it starts. So an act binds at once, with no publish and no tick wait
 ./pipe show [Mod]                            one screen: switches, live runs, look accounts, the tick's decision
 ./pipe why <Mod>                             one line: what blocks it, or what the tick last decided
 ./pipe log -n 20                             the last acts (who, when Pacific, why)
-./pipe off <all|Mod|stage:S|item:ID|family:F> --why "..."   new starts stop at once; live runs untouched
+./pipe off <all|Mod|stage:S|item:ID|family:F|game:G> --why "..."   new starts stop at once; live runs untouched
+./pipe off game:a --why "his walk"           hold his game only: in-game runs go to game b (see below)
 ./pipe on  <same> --why "..."                lifts a `pipe off` (never his hold) and asks for a tick now
 ./pipe stop <scope|unit> --at-easy-spot --why "..."   finish the unit in hand, write where you are, end (the default)
 ./pipe stop <scope|unit> --write-now [--deadline 5m] --why "..."   stop now, write where you are, end; then --kill
@@ -464,6 +465,17 @@ python3 src/RimMandrake/rimflow/mod_owner_hold.py lift <Mod> --per-ruling RIMMAN
                                              in his daily digest; this window only, never a helper; a lifted mod still waits
                                              for its readiness list to read READY
 ```
+- When he sits down to walk game a, run `./pipe off game:a --why "his walk"`. When he is done, run `./pipe on game:a
+  --why "walk over"`. Do not switch off `stage:in_game` for a walk.
+  - While the hold stands, no pipeline run starts on game a, and no tool deploys to, launches or stops game a without
+    `--despite-hold "<why>"`.
+  - The hold does not depend on your bridge hold. It stays when your bridge hold lapses.
+  - Every in-game run that can use game b goes to game b. Game b has its own install, Mods and BridgeTools
+    (`D:\ClaudeWork\rimmandrake\instances\b\game`), so its deploys never touch his game.
+  - A visit whose every check needs his full list waits. `./pipe why <Mod>` names those checks. Game b holds a tier list
+    only beside game a (memory). In a mixed visit on game b, the full-list checks are UNMEASURED.
+  - Full text: `design/specs/2026-11-20-per-game-hold-own-install/boundary.md` and
+    `design/RimMandrake/two_rimworld_instances_2026-11-07.md` §Game b's own install.
 - Always name the stop mode (owner, by card 2026-11-18: "we shouldn't rely on defaults"). Every brief that you write
   that can stop a run says which stop mode.
 - `maturation_dispatch.py pause|resume` are the same switch as `pipe off|on`.

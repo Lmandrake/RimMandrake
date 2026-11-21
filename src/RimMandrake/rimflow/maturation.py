@@ -2367,6 +2367,11 @@ def reconcile_text(mod, why):
             "nothing it already did.\n" % (why, mod))
 
 
+def _takes_kw(fn, name):
+    """Does stand-in fn take keyword `name`? (a selftest's (root, mod) deployed stand-in predates the game.)"""
+    return any(p.name == name or p.kind == p.VAR_KEYWORD for p in inspect.signature(fn).parameters.values())
+
+
 def takes_game(fn):
     """Can this bridge reading name a game (a `game` parameter)? A stand-in that cannot reads game a only."""
     try:
@@ -2385,7 +2390,8 @@ def companion_current(game="a"):
     (RIMMANDRAKE_REFUSE_INGAME_VISIT_ON_STALE_COMPANION: on 2026-11-17 GSS visit 2 was owed with the walk's fixed checks
     committed but the deployed DLL STALE, and nothing refused it.) companion_identity.verdict with cover on (a clean build of
     a later commit holding the same sources counts); anything but FRESH (STALE, UNSTAMPED, MISSING, UNMEASURED) is not
-    current. Both games load the one install's BridgeTools folder, so `game` changes nothing today."""
+    current. game: whose companion; each game has its own install, so a named game's DLL is under its own BridgeTools
+    (game_instance.game_dir; RIMMANDRAKE_SPLIT_SECOND_GAME_MODS_FOLDER_SHARED_WITH_FIRST)."""
     bt = os.path.join(os.path.dirname(HERE), "bridgetools")
     if bt not in sys.path:
         sys.path.insert(0, bt)
@@ -2395,8 +2401,9 @@ def companion_current(game="a"):
         utils = os.path.join(os.path.dirname(HERE), "Utils")
         if utils not in sys.path:
             sys.path.insert(0, utils)
-        import game_paths
-        dll = os.path.join(game_paths.GAME_DIR, "BridgeTools", "JawaBench", CI.DLL_NAME)
+        import game_instance
+        dll = os.path.join(game_instance._native(game_instance.game_dir(game or "a")), "BridgeTools", "JawaBench",
+                           CI.DLL_NAME)
     v = CI.verdict(dll, REPO, "HEAD", cover=True)
     return v.get("state") == "FRESH", CI.describe(v)
 
@@ -2404,12 +2411,15 @@ def companion_current(game="a"):
 DEPLOY_PLAN_ENV = "MATURATION_DEPLOY_PLAN"     # a command run in place of deploy_custom_mods.py (selftests)
 
 
-def mod_deployed(root, mod, runner=subprocess.run):
+def mod_deployed(root, mod, runner=subprocess.run, game="a"):
     """-> (current, why): does the game's copy of `mod` match the repo? deploy_custom_mods.py's plan (never --apply), for
     Baroque Biomes when Biomes.compose.json composes the mod; only its "Everything in sync." reads current, and a plan
     that cannot run is could-not-look. (2026-11-19: GSS visit 2 was owed with the game's DLL and .srchash older than the
-    repo build; the brief told the driver to deploy, and nothing in code checked.)"""
+    repo build; the brief told the driver to deploy, and nothing in code checked.) game: whose copy; the plan runs
+    with --instance <game>, so game b's own Mods folder is read, never a's."""
     args = ["--compose", "biomes"] if BM.composed_into(root, mod) else ["--mod", mod]
+    if game and game != "a":
+        args += ["--instance", game]
     fix = "deploy it while the game is down: `python3 src/RimMandrake/Utils/deploy_custom_mods.py %s --apply`" % " ".join(
         args)
     cmd = os.environ.get(DEPLOY_PLAN_ENV, "").split() or [
@@ -2429,13 +2439,14 @@ def mod_deployed(root, mod, runner=subprocess.run):
         r.returncode, (out.splitlines() or ["no output"])[-1][:200], fix)
 
 
-def game_brief(game):
-    """The brief's section naming the run's game: game_instance.brief (RIMMANDRAKE_LAUNCH_BOTH_GAMES_STEAM_REFUSES_A_BESIDE_B)."""
+def game_brief(game, full_list=None):
+    """The brief's section naming the run's game: game_instance.brief (RIMMANDRAKE_LAUNCH_BOTH_GAMES_STEAM_REFUSES_A_BESIDE_B);
+    full_list: the visit's full-list checks, which a run on a named game records UNMEASURED."""
     utils = os.path.join(os.path.dirname(HERE), "Utils")
     if utils not in sys.path:
         sys.path.insert(0, utils)
     import game_instance
-    return game_instance.brief(game)
+    return game_instance.brief(game, full_list)
 
 
 def live_twins(mod, stage, item, status=None):
@@ -2533,11 +2544,12 @@ def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=s
         if not cur:
             return 2, ("REFUSED: %s's in-game visit %s would drive an old JawaBench companion, so its checks would not be "
                        "the ones committed: %s; %s" % (mod, f.get("visit"), cwhy, COMPANION_FIX)), None
-        cur, dwhy = (deployed or mod_deployed)(root, mod)
+        cur, dwhy = (deployed(root, mod) if deployed and not _takes_kw(deployed, "game") else
+                     (deployed or mod_deployed)(root, mod, game=game))
         if not cur:
             return 2, "REFUSED: %s's in-game visit %s would play a game copy not checked against the repo: %s" % (
                 mod, f.get("visit"), dwhy), None
-        text = text.rstrip("\n") + "\n\n" + game_brief(game)
+        text = text.rstrip("\n") + "\n\n" + game_brief(game, f.get("full_list"))
     elif f.get("stage") != "offline_build":
         return 2, ("REFUSED: %s stands at %s; only an offline build, a blind challenge or an in-game acceptance "
                    "launches from here" % (mod, f.get("stage"))), None
@@ -4467,6 +4479,7 @@ def ingame_facts(root, mod):
     ex = read_ingame_exit(root, mod, n, tt)
     out.update({"visit": n, "visits_present": have, "exit": ex, "opened": ingame_openings(rec).get(n) or rec.get("since"),
                 "blocked": blocked, "checks": [k for k, _ in checks],
+                "full_list": [k for k, t in checks if BM.is_full(t)],
                 "testq": [k for k, t in checks if isinstance(t.get("testq"), dict)]})
     out["owed"] = ("blocked" if blocked else "run" if ex["state"] == "absent" else
                    "no exit block" if ex["state"] == "no_exit_block" else
@@ -4495,9 +4508,9 @@ def bridge_idle(purpose, seat="BENCH", runner=subprocess.run, game=None):
     line = next((x for x in reversed(text) if x.startswith(("TAKEABLE", "NOT TAKEABLE"))), text[-1] if text else "")
     go = r.returncode == 0 and line.startswith("TAKEABLE")
     if go and not cmd:      # seat BENCH reads another BENCH run's hold as ours: a live holder process is that run's
-        import host_guard
+        import host_guard   # new_run: the question is for a NEW run, so this shell's own window hold is a hold too
         with host_guard.instance_env(game if game and game != "a" else None):
-            held = host_guard.crossing()
+            held = host_guard.crossing(new_run=True)
         if held:
             return False, "NOT TAKEABLE  game %s: %s" % (game or "a", held)
     return go, line or "no reading (rc %s)" % r.returncode

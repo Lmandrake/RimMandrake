@@ -1526,8 +1526,13 @@ def owned_backups(by):
     if not by or not all(c.isalnum() or c in "-_" for c in by):
         raise ValueError("--by names a swap owner in letters, digits, - and _: %r" % by)
     import rmpaths
+    # one marker per game: a named game's list is its own file (game_paths follows RM_GAME_INSTANCE), so its swap is
+    # its own too. A seat's swap on game a refused every list for game b ("swap 'gimmesomeslack' is active but the live
+    # ModsConfig is neither its tier list nor its before-copy", MEASURED 2026-11-20 16:17 PST,
+    # RIMMANDRAKE_SPLIT_SECOND_GAME_MODS_FOLDER_SHARED_WITH_FIRST). Game a keeps its old folder.
+    game = (os.environ.get("RM_GAME_INSTANCE") or "").strip().lower()
     try:
-        return rmpaths.rm_str("modset_swaps", by)
+        return rmpaths.rm_str("modset_swaps", by if game in ("", "a") else "%s.%s" % (by, game))
     except rmpaths.RmDataRootUnset as e:      # fails by name, never a fallback into the clone (CLAUDE.md agent storage)
         raise ValueError("agent storage is unset, so no owned swap can be kept: %s" % e)
 

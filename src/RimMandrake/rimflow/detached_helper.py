@@ -1185,7 +1185,9 @@ def _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, 
     import control as C     # the one admission point (control.py): a switch, his hold or a duplicate refuses here
     cenv = rec.get("env") or {}
     cspec = {"family": "detached", "unit": unit, "item": item, "model": model, "mod": cenv.get("RM_CONTROL_MOD"),
-             "stage": cenv.get("RM_CONTROL_STAGE"), "extra_units": [scope_name(seat, unit)]}
+             "stage": cenv.get("RM_CONTROL_STAGE"), "extra_units": [scope_name(seat, unit)],
+             # the game it drives (`pipe off game:a` keeps every run off his game); an in-game run naming none drives a
+             "game": cenv.get("RM_GAME_INSTANCE") or ("a" if cenv.get("RM_CONTROL_STAGE") == "in_game" else None)}
     try:
         r = C.launch_unit(launch_argv(rec, msg, claude_bin()), cspec, runner=runner, clone=rec.get("clone"),
                           capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)

@@ -19,7 +19,8 @@ The store is one SQLite file (WAL) on ext4, outside every clone: ~/.local/state/
 publish, a clone or git: an act binds the moment its transaction commits, because every launch reads the store at the
 moment of launch (admit) and again when the unit itself starts (its ExecCondition, the `condition` verb).
 
-  switches      one row per (scope, layer). scope: all | mod:<M> | stage:<S> | item:<ID> | family:<F> | role:<R>.
+  switches      one row per (scope, layer). scope: all | mod:<M> | stage:<S> | item:<ID> | family:<F> | role:<R> |
+                game:<G> (one game: an in-game run's spec names its game).
                 layer: control (`pipe off`, `pipe stop`, `maturation_dispatch.py pause`) or owner (his hold, imported
                 from mod_owner_hold.json with his words). Any live row on one of a run's scopes refuses it. `pipe on`
                 lifts the control row only: his owner row stays (`mod_owner_hold.py lift` lifts it, with his words or as the
@@ -53,7 +54,8 @@ skips the unit, `pipe show` prints `CONTROL UNREADABLE: <cause>` (never "nothing
 fix. `pipe init --import` is the only thing that creates the production store. `pipe stop <unit> --kill` still kills by
 unit name when the store cannot be read (emergency stopping never waits on it).
 
-  pipe on|off <all|Mod|stage|item|family:F|role:R> --why ... [--owner-said ...]
+  pipe on|off <all|Mod|stage|item|family:F|role:R|game:G> --why ... [--owner-said ...]
+                         game:a holds one game: no run starts on it; in-game runs go to the other game
   pipe stop <scope|unit> --write-now|--at-easy-spot|--kill --why ... [--deadline 5m]
   pipe show [Mod] [--json]   pipe why <Mod>   pipe log [-n N]
   pipe void <run> --why ...   pipe grant <Mod> look +N --why ... --owner-said ...|--per-ruling ...
@@ -406,8 +408,13 @@ def scope_of(t, strict=True, unseeded=False):
         return "family:" + name
     if kind == "role":
         return "role:" + name
+    if kind == "game":
+        g = name.strip().lower()
+        if len(g) != 1 or not g.isalpha():
+            raise Refused("no game %r: a game is one letter (a is his game, b the second)" % name)
+        return "game:" + g
     if kind not in (None, "mod"):
-        raise Refused("no scope kind %r (all, mod:, stage:, item:, family:, role:)" % kind)
+        raise Refused("no scope kind %r (all, mod:, stage:, item:, family:, role:, game:)" % kind)
     m = key(name)
     if strict:
         mods = known_mods()
@@ -431,7 +438,30 @@ def run_scopes(spec):
         out.append("item:" + spec["item"])
     if spec.get("role"):
         out.append("role:" + spec["role"])
+    if spec.get("game"):                # the game an in-game run drives: `pipe off game:a` keeps every run off it
+        out.append("game:" + str(spec["game"]).strip().lower())
     return out
+
+
+def game_held(game, p=None, now=None):
+    """-> why game `game` is held (a live `pipe off game:<g>` switch), or None. Raises Unreadable when the store cannot
+    be read, so a reader can never take "could not look" for "not held". The per-game hold: the owner walks game a, and
+    every run that can use game b goes there (RIMMANDRAKE_SPLIT_SECOND_GAME_MODS_FOLDER_SHARED_WITH_FIRST; his words,
+    2026-11-20 3:40 PM PST: "You should not have been waiting for the game. there are two games")."""
+    g = str(game or "a").strip().lower()
+    c = read(p)
+    try:
+        rows = blocking(c, ["game:" + g], now)
+    except sqlite3.Error as e:
+        raise Unreadable(_err(e))
+    finally:
+        c.close()
+    return describe(rows[0]) if rows else None
+
+
+def game_holds(p=None, now=None):
+    """-> {game: why} for every live game switch. Raises Unreadable."""
+    return {r["scope"][5:]: describe(r) for r in switches(p, now) if r["scope"].startswith("game:")}
 
 
 def _live(row, now):
@@ -2634,7 +2664,12 @@ def why(mod, p=None, now=None):
     tr = tick_rows(rd).get(m) or {}
     tick = ("tick %s: %s %s" % (rd.get("at_pac", UNM), tr.get("decision") or "-", str(tr.get("why") or "")[:140])
             if rd else "tick reading UNMEASURED (%s)" % rd_why)
-    return "%s: %s | %s" % (m, ("BLOCKED " + b) if b else "nothing in control blocks it", tick)
+    try:
+        gh = game_holds(p, now)
+        games = " | games held: %s" % "; ".join("%s %s" % kv for kv in sorted(gh.items())) if gh else ""
+    except Unreadable as e:
+        games = " | game holds UNMEASURED (%s)" % e
+    return "%s: %s | %s%s" % (m, ("BLOCKED " + b) if b else "nothing in control blocks it", tick, games)
 
 
 def log(n=10, p=None):

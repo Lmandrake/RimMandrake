@@ -82,6 +82,29 @@ GAME_ROOT = ("/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld" if STA
              else r"C:\Program Files (x86)\Steam\steamapps\common\RimWorld")
 BRIDGETOOLS_ROOT = os.path.join(GAME_ROOT, "BridgeTools")
 DEPLOY_DIR = os.path.join(BRIDGETOOLS_ROOT, "JawaBench")
+GAME = "a"      # the game the deploy is for: a is Steam's install above; b has its own (aim)
+
+
+def _gi():
+    utils = os.path.join(REPO_ROOT, "src", "RimMandrake", "Utils")
+    if utils not in sys.path:
+        sys.path.insert(0, utils)
+    import game_instance
+    return game_instance
+
+
+def aim(name=None):
+    """Point the deploy at game `name` (None: RM_GAME_INSTANCE, else a). Game a keeps Steam's install; a named game
+    deploys into its own install's BridgeTools (game_instance.game_dir), never the folder game a has loaded
+    (RIMMANDRAKE_SPLIT_SECOND_GAME_MODS_FOLDER_SHARED_WITH_FIRST: both games used to load one BridgeTools folder)."""
+    global GAME, GAME_ROOT, BRIDGETOOLS_ROOT, DEPLOY_DIR
+    gi = _gi()
+    GAME = gi.check_name(name or gi.current())
+    if GAME != "a":
+        GAME_ROOT = gi._native(gi.game_dir(GAME))
+        BRIDGETOOLS_ROOT = os.path.join(GAME_ROOT, "BridgeTools")
+        DEPLOY_DIR = os.path.join(BRIDGETOOLS_ROOT, "JawaBench")
+    return DEPLOY_DIR
 
 # Anything in this list appearing in the output folder is a build error, not a
 # warning: each one is a duplicate of a type the host has already loaded.
@@ -357,11 +380,12 @@ def build_stamp(blob):
 
 
 def game_running():
-    """-> True/False from the process list, or None when it cannot be read (then the copy's own refusal decides)."""
+    """-> True/False from the process list, or None when it cannot be read (then the copy's own refusal decides). Game
+    a: any game up (a game nobody can attribute counts); a named game: that game, because game a's process never loads
+    b's own BridgeTools folder."""
     try:
-        sys.path.insert(0, os.path.join(REPO_ROOT, "src", "RimMandrake", "Utils"))
-        import game_instance
-        return bool(game_instance.games())
+        game_instance = _gi()
+        return game_instance.running(GAME) if GAME != "a" else bool(game_instance.games())
     except Exception as e:  # noqa: BLE001 - an unreadable list is UNMEASURED, said aloud, never "no game"
         print("  game process check UNMEASURED (%s: %s); the replace itself still refuses a mapped DLL"
               % (type(e).__name__, e))
@@ -369,7 +393,15 @@ def game_running():
 
 
 def bridge_holder():
-    """-> the seat holding the cross-clone bridge lock, or None when free or unreadable (rimflow's own rule)."""
+    """-> the seat holding the cross-clone bridge lock, or None when free or unreadable (rimflow's own rule). A named
+    game's bridge is its own driver lock: another live driver on it holds it; game a's lock is not b's."""
+    if GAME != "a":
+        try:
+            held = _gi().live_holder(GAME)
+            return ("another live driver of game %s (%s)" % (GAME, held)) if held else None
+        except Exception as e:  # noqa: BLE001
+            print("  bridge hold check UNMEASURED (%s: %s)" % (type(e).__name__, e))
+            return None
     try:
         sys.path.insert(0, os.path.join(REPO_ROOT, "src", "RimMandrake", "rimflow"))
         import model
@@ -384,7 +416,11 @@ def _my_seat():
     return (os.environ.get("RIMFLOW_SEAT") or os.environ.get("AGENT_SEAT") or "").strip().upper() or None
 
 
+DESPITE_HOLD = None     # main --despite-hold: deploy into a game held by `pipe off game:<g>`, on purpose
+
+
 def plan_deploy(dll, apply_it, allow_removal=False, ignore_hold=False):
+    print("deploy target: game %s, %s" % (GAME, DEPLOY_DIR))
     target = os.path.join(DEPLOY_DIR, DLL_NAME)
     exists = os.path.exists(target)
     ours = open(dll, "rb").read()
@@ -488,6 +524,9 @@ def plan_deploy(dll, apply_it, allow_removal=False, ignore_hold=False):
         print("\nalready deployed: identical bytes, nothing copied.")
         return True
     # RIMMANDRAKE_MAKE_COMPANION_DEPLOY_ATOMIC_HELD (x.B1): the game and the bridge hold are checked BEFORE any write
+    held = _gi().hold_refusal(GAME, DESPITE_HOLD) if apply_it else None
+    if held:
+        sys.exit("\nREFUSING TO DEPLOY into game %s's %s: %s" % (GAME, DEPLOY_DIR, held))
     if game_running():
         sys.exit("\nCANNOT DEPLOY WHILE RIMWORLD IS RUNNING (the process list shows it). Nothing was written.")
     holder = bridge_holder()
@@ -601,7 +640,15 @@ def main(argv=None):
     ap.add_argument("--allow-dirty", action="store_true",
                     help="permit --apply from a checkout whose companion sources have uncommitted changes. "
                          "Refused by default: in a shared seat clone those are usually a peer's edits.")
+    ap.add_argument("--instance", metavar="GAME", default=None,
+                    help="the game to deploy to: a (Steam's install) or a named game's own install. Default: "
+                         "RM_GAME_INSTANCE, else a")
+    ap.add_argument("--despite-hold", dest="despite_hold", metavar="WHY", default=None,
+                    help="--apply into a game held by `pipe off game:<g>`, on purpose: why")
     args = ap.parse_args(argv)
+    global DESPITE_HOLD
+    DESPITE_HOLD = args.despite_hold
+    aim(args.instance)
 
     dirty = source_dirty()
     if dirty:

@@ -132,6 +132,21 @@ def mod_dir(name):
 # The game side. Native-Windows form first, WSL form second; first one that
 # exists wins, so the same script serves both ways of running it.
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+
+def _instance_arg(argv):
+    """`--instance <letter>` from the command line, read BEFORE game_paths is imported: the Mods folder and ModsConfig
+    are fixed at import, and each game has its own (RIMMANDRAKE_SPLIT_SECOND_GAME_MODS_FOLDER_SHARED_WITH_FIRST)."""
+    for i, a in enumerate(argv):
+        if a == "--instance" and i + 1 < len(argv):
+            return argv[i + 1]
+        if a.startswith("--instance="):
+            return a.split("=", 1)[1]
+    return None
+
+
+if __name__ == "__main__" and _instance_arg(sys.argv[1:]):
+    os.environ["RM_GAME_INSTANCE"] = _instance_arg(sys.argv[1:]).strip().lower()
 from game_paths import LOCAL_MODS, MODS_CONFIG            # noqa: E402
 import biomes_compose                                      # noqa: E402
 
@@ -603,6 +618,11 @@ def main():
                     help="with --compose: also plan/deploy this ordinary mod in the SAME "
                          "run, so the def guard judges both together (e.g. --compose "
                          "biomes --with SWBestiary after a creature moved between them)")
+    ap.add_argument("--instance", metavar="GAME",
+                    help="the game to deploy to (a: Steam's install; b: its own install under the instances root). "
+                         "Default: RM_GAME_INSTANCE, else a")
+    ap.add_argument("--despite-hold", dest="despite_hold", metavar="WHY",
+                    help="--apply into a game held by `pipe off game:<g>`, on purpose: why")
     ap.add_argument("--gate", action="store_true",
                     help="plan only, for a gate that reads the mod headers and stale DLLs: skips the def guard and "
                          "compares *.dll alone (the full plan took 260 s over the Windows mount in a supervisor tick, "
@@ -620,6 +640,11 @@ def main():
         folded_refusal([n])
 
     mods_dir = first_existing(_MODS, "the RimWorld Mods folder")
+    if args.apply and _is_real_game(mods_dir):
+        import game_instance
+        held = game_instance.hold_refusal(game_instance.current(), args.despite_hold)
+        if held:
+            sys.exit("deploy_custom_mods.py: REFUSING --apply into %s: %s" % (mods_dir, held))
     config = first_existing(_CONFIG, "ModsConfig.xml")
     active = active_ids(config)
 
