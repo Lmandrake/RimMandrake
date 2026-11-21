@@ -1397,7 +1397,21 @@
    "section": "GSS",
    "label": "cord junction (X, tin) \u2014 Scrapper",
    "resources": [
-    "RimMandrake/GimmeSomeSlack/Junction_Tin"
+    "RimMandrake/GimmeSomeSlack/Junction_Tin",
+    "RimMandrake/GimmeSomeSlack/Junction_Tin_p1",
+    "RimMandrake/GimmeSomeSlack/Junction_Tin_p10",
+    "RimMandrake/GimmeSomeSlack/Junction_Tin_p11",
+    "RimMandrake/GimmeSomeSlack/Junction_Tin_p12",
+    "RimMandrake/GimmeSomeSlack/Junction_Tin_p13",
+    "RimMandrake/GimmeSomeSlack/Junction_Tin_p14",
+    "RimMandrake/GimmeSomeSlack/Junction_Tin_p2",
+    "RimMandrake/GimmeSomeSlack/Junction_Tin_p3",
+    "RimMandrake/GimmeSomeSlack/Junction_Tin_p4",
+    "RimMandrake/GimmeSomeSlack/Junction_Tin_p5",
+    "RimMandrake/GimmeSomeSlack/Junction_Tin_p6",
+    "RimMandrake/GimmeSomeSlack/Junction_Tin_p7",
+    "RimMandrake/GimmeSomeSlack/Junction_Tin_p8",
+    "RimMandrake/GimmeSomeSlack/Junction_Tin_p9"
    ],
    "size": {
     "drawSize": [
@@ -1411,7 +1425,21 @@
     "source": "Source/Core/CordBuilder.cs:501 JunctionScale 1.15 (pile junctions 0.6-1.05)"
    },
    "former": [
-    "RimMandrake/MessyConduit/Junction_Tin"
+    "RimMandrake/MessyConduit/Junction_Tin",
+    "RimMandrake/MessyConduit/Junction_Tin_p1",
+    "RimMandrake/MessyConduit/Junction_Tin_p10",
+    "RimMandrake/MessyConduit/Junction_Tin_p11",
+    "RimMandrake/MessyConduit/Junction_Tin_p12",
+    "RimMandrake/MessyConduit/Junction_Tin_p13",
+    "RimMandrake/MessyConduit/Junction_Tin_p14",
+    "RimMandrake/MessyConduit/Junction_Tin_p2",
+    "RimMandrake/MessyConduit/Junction_Tin_p3",
+    "RimMandrake/MessyConduit/Junction_Tin_p4",
+    "RimMandrake/MessyConduit/Junction_Tin_p5",
+    "RimMandrake/MessyConduit/Junction_Tin_p6",
+    "RimMandrake/MessyConduit/Junction_Tin_p7",
+    "RimMandrake/MessyConduit/Junction_Tin_p8",
+    "RimMandrake/MessyConduit/Junction_Tin_p9"
    ],
    "render_match": "Jawa|scrapper"
   },
@@ -1423,7 +1451,21 @@
    "section": "GSS",
    "label": "cord junction (X, tin) \u2014 Industrial",
    "resources": [
-    "RimMandrake/GimmeSomeSlack/Styles/StarWars/Junction_X"
+    "RimMandrake/GimmeSomeSlack/Styles/StarWars/Junction_X",
+    "RimMandrake/GimmeSomeSlack/Styles/StarWars/Junction_X_p1",
+    "RimMandrake/GimmeSomeSlack/Styles/StarWars/Junction_X_p10",
+    "RimMandrake/GimmeSomeSlack/Styles/StarWars/Junction_X_p11",
+    "RimMandrake/GimmeSomeSlack/Styles/StarWars/Junction_X_p12",
+    "RimMandrake/GimmeSomeSlack/Styles/StarWars/Junction_X_p13",
+    "RimMandrake/GimmeSomeSlack/Styles/StarWars/Junction_X_p14",
+    "RimMandrake/GimmeSomeSlack/Styles/StarWars/Junction_X_p2",
+    "RimMandrake/GimmeSomeSlack/Styles/StarWars/Junction_X_p3",
+    "RimMandrake/GimmeSomeSlack/Styles/StarWars/Junction_X_p4",
+    "RimMandrake/GimmeSomeSlack/Styles/StarWars/Junction_X_p5",
+    "RimMandrake/GimmeSomeSlack/Styles/StarWars/Junction_X_p6",
+    "RimMandrake/GimmeSomeSlack/Styles/StarWars/Junction_X_p7",
+    "RimMandrake/GimmeSomeSlack/Styles/StarWars/Junction_X_p8",
+    "RimMandrake/GimmeSomeSlack/Styles/StarWars/Junction_X_p9"
    ],
    "size": {
     "drawSize": [
@@ -1437,7 +1479,21 @@
     "source": "Source/Core/CordBuilder.cs:501 JunctionScale 1.15 (pile junctions 0.6-1.05)"
    },
    "former": [
-    "RimMandrake/MessyConduit/Styles/StarWars/Junction_X"
+    "RimMandrake/MessyConduit/Styles/StarWars/Junction_X",
+    "RimMandrake/MessyConduit/Styles/StarWars/Junction_X_p1",
+    "RimMandrake/MessyConduit/Styles/StarWars/Junction_X_p10",
+    "RimMandrake/MessyConduit/Styles/StarWars/Junction_X_p11",
+    "RimMandrake/MessyConduit/Styles/StarWars/Junction_X_p12",
+    "RimMandrake/MessyConduit/Styles/StarWars/Junction_X_p13",
+    "RimMandrake/MessyConduit/Styles/StarWars/Junction_X_p14",
+    "RimMandrake/MessyConduit/Styles/StarWars/Junction_X_p2",
+    "RimMandrake/MessyConduit/Styles/StarWars/Junction_X_p3",
+    "RimMandrake/MessyConduit/Styles/StarWars/Junction_X_p4",
+    "RimMandrake/MessyConduit/Styles/StarWars/Junction_X_p5",
+    "RimMandrake/MessyConduit/Styles/StarWars/Junction_X_p6",
+    "RimMandrake/MessyConduit/Styles/StarWars/Junction_X_p7",
+    "RimMandrake/MessyConduit/Styles/StarWars/Junction_X_p8",
+    "RimMandrake/MessyConduit/Styles/StarWars/Junction_X_p9"
    ],
    "render_match": "StarWars|industrial"
   },
@@ -1449,7 +1505,21 @@
    "section": "GSS",
    "label": "cord junction (X, tin) \u2014 Modern",
    "resources": [
-    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Junction_X"
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Junction_X",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Junction_X_p1",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Junction_X_p10",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Junction_X_p11",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Junction_X_p12",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Junction_X_p13",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Junction_X_p14",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Junction_X_p2",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Junction_X_p3",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Junction_X_p4",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Junction_X_p5",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Junction_X_p6",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Junction_X_p7",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Junction_X_p8",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Junction_X_p9"
    ],
    "size": {
     "drawSize": [
@@ -1463,7 +1533,21 @@
     "source": "Source/Core/CordBuilder.cs:501 JunctionScale 1.15 (pile junctions 0.6-1.05)"
    },
    "former": [
-    "RimMandrake/MessyConduit/Styles/ExtCord/Junction_X"
+    "RimMandrake/MessyConduit/Styles/ExtCord/Junction_X",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Junction_X_p1",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Junction_X_p10",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Junction_X_p11",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Junction_X_p12",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Junction_X_p13",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Junction_X_p14",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Junction_X_p2",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Junction_X_p3",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Junction_X_p4",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Junction_X_p5",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Junction_X_p6",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Junction_X_p7",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Junction_X_p8",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Junction_X_p9"
    ],
    "render_match": "ExtCord|modern"
   },
@@ -1475,7 +1559,21 @@
    "section": "GSS",
    "label": "cord junction (X, tin) \u2014 Modern (Blue)",
    "resources": [
-    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/Junction_X"
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/Junction_X",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/Junction_X_p1",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/Junction_X_p10",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/Junction_X_p11",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/Junction_X_p12",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/Junction_X_p13",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/Junction_X_p14",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/Junction_X_p2",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/Junction_X_p3",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/Junction_X_p4",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/Junction_X_p5",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/Junction_X_p6",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/Junction_X_p7",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/Junction_X_p8",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Blue/Junction_X_p9"
    ],
    "size": {
     "drawSize": [
@@ -1489,7 +1587,21 @@
     "source": "Source/Core/CordBuilder.cs:501 JunctionScale 1.15 (pile junctions 0.6-1.05)"
    },
    "former": [
-    "RimMandrake/MessyConduit/Styles/ExtCord/Blue/Junction_X"
+    "RimMandrake/MessyConduit/Styles/ExtCord/Blue/Junction_X",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Blue/Junction_X_p1",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Blue/Junction_X_p10",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Blue/Junction_X_p11",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Blue/Junction_X_p12",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Blue/Junction_X_p13",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Blue/Junction_X_p14",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Blue/Junction_X_p2",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Blue/Junction_X_p3",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Blue/Junction_X_p4",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Blue/Junction_X_p5",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Blue/Junction_X_p6",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Blue/Junction_X_p7",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Blue/Junction_X_p8",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Blue/Junction_X_p9"
    ],
    "render_match": "ExtCord|modern"
   },
@@ -1501,7 +1613,21 @@
    "section": "GSS",
    "label": "cord junction (X, tin) \u2014 Modern (Brown)",
    "resources": [
-    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/Junction_X"
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/Junction_X",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/Junction_X_p1",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/Junction_X_p10",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/Junction_X_p11",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/Junction_X_p12",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/Junction_X_p13",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/Junction_X_p14",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/Junction_X_p2",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/Junction_X_p3",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/Junction_X_p4",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/Junction_X_p5",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/Junction_X_p6",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/Junction_X_p7",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/Junction_X_p8",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Brown/Junction_X_p9"
    ],
    "size": {
     "drawSize": [
@@ -1515,7 +1641,21 @@
     "source": "Source/Core/CordBuilder.cs:501 JunctionScale 1.15 (pile junctions 0.6-1.05)"
    },
    "former": [
-    "RimMandrake/MessyConduit/Styles/ExtCord/Brown/Junction_X"
+    "RimMandrake/MessyConduit/Styles/ExtCord/Brown/Junction_X",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Brown/Junction_X_p1",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Brown/Junction_X_p10",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Brown/Junction_X_p11",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Brown/Junction_X_p12",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Brown/Junction_X_p13",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Brown/Junction_X_p14",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Brown/Junction_X_p2",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Brown/Junction_X_p3",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Brown/Junction_X_p4",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Brown/Junction_X_p5",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Brown/Junction_X_p6",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Brown/Junction_X_p7",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Brown/Junction_X_p8",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Brown/Junction_X_p9"
    ],
    "render_match": "ExtCord|modern"
   },
@@ -1527,7 +1667,21 @@
    "section": "GSS",
    "label": "cord junction (X, tin) \u2014 Modern (Green)",
    "resources": [
-    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/Junction_X"
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/Junction_X",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/Junction_X_p1",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/Junction_X_p10",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/Junction_X_p11",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/Junction_X_p12",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/Junction_X_p13",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/Junction_X_p14",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/Junction_X_p2",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/Junction_X_p3",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/Junction_X_p4",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/Junction_X_p5",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/Junction_X_p6",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/Junction_X_p7",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/Junction_X_p8",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Green/Junction_X_p9"
    ],
    "size": {
     "drawSize": [
@@ -1541,7 +1695,21 @@
     "source": "Source/Core/CordBuilder.cs:501 JunctionScale 1.15 (pile junctions 0.6-1.05)"
    },
    "former": [
-    "RimMandrake/MessyConduit/Styles/ExtCord/Green/Junction_X"
+    "RimMandrake/MessyConduit/Styles/ExtCord/Green/Junction_X",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Green/Junction_X_p1",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Green/Junction_X_p10",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Green/Junction_X_p11",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Green/Junction_X_p12",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Green/Junction_X_p13",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Green/Junction_X_p14",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Green/Junction_X_p2",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Green/Junction_X_p3",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Green/Junction_X_p4",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Green/Junction_X_p5",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Green/Junction_X_p6",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Green/Junction_X_p7",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Green/Junction_X_p8",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Green/Junction_X_p9"
    ],
    "render_match": "ExtCord|modern"
   },
@@ -1553,7 +1721,21 @@
    "section": "GSS",
    "label": "cord junction (X, tin) \u2014 Modern (Yellow)",
    "resources": [
-    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/Junction_X"
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/Junction_X",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/Junction_X_p1",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/Junction_X_p10",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/Junction_X_p11",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/Junction_X_p12",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/Junction_X_p13",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/Junction_X_p14",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/Junction_X_p2",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/Junction_X_p3",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/Junction_X_p4",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/Junction_X_p5",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/Junction_X_p6",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/Junction_X_p7",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/Junction_X_p8",
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/Yellow/Junction_X_p9"
    ],
    "size": {
     "drawSize": [
@@ -1567,7 +1749,21 @@
     "source": "Source/Core/CordBuilder.cs:501 JunctionScale 1.15 (pile junctions 0.6-1.05)"
    },
    "former": [
-    "RimMandrake/MessyConduit/Styles/ExtCord/Yellow/Junction_X"
+    "RimMandrake/MessyConduit/Styles/ExtCord/Yellow/Junction_X",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Yellow/Junction_X_p1",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Yellow/Junction_X_p10",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Yellow/Junction_X_p11",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Yellow/Junction_X_p12",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Yellow/Junction_X_p13",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Yellow/Junction_X_p14",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Yellow/Junction_X_p2",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Yellow/Junction_X_p3",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Yellow/Junction_X_p4",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Yellow/Junction_X_p5",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Yellow/Junction_X_p6",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Yellow/Junction_X_p7",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Yellow/Junction_X_p8",
+    "RimMandrake/MessyConduit/Styles/ExtCord/Yellow/Junction_X_p9"
    ],
    "render_match": "ExtCord|modern"
   },
@@ -1579,7 +1775,21 @@
    "section": "GSS",
    "label": "cord junction (X, tin) \u2014 Futuristic",
    "resources": [
-    "RimMandrake/GimmeSomeSlack/Styles/Cybertek/Junction_X"
+    "RimMandrake/GimmeSomeSlack/Styles/Cybertek/Junction_X",
+    "RimMandrake/GimmeSomeSlack/Styles/Cybertek/Junction_X_p1",
+    "RimMandrake/GimmeSomeSlack/Styles/Cybertek/Junction_X_p10",
+    "RimMandrake/GimmeSomeSlack/Styles/Cybertek/Junction_X_p11",
+    "RimMandrake/GimmeSomeSlack/Styles/Cybertek/Junction_X_p12",
+    "RimMandrake/GimmeSomeSlack/Styles/Cybertek/Junction_X_p13",
+    "RimMandrake/GimmeSomeSlack/Styles/Cybertek/Junction_X_p14",
+    "RimMandrake/GimmeSomeSlack/Styles/Cybertek/Junction_X_p2",
+    "RimMandrake/GimmeSomeSlack/Styles/Cybertek/Junction_X_p3",
+    "RimMandrake/GimmeSomeSlack/Styles/Cybertek/Junction_X_p4",
+    "RimMandrake/GimmeSomeSlack/Styles/Cybertek/Junction_X_p5",
+    "RimMandrake/GimmeSomeSlack/Styles/Cybertek/Junction_X_p6",
+    "RimMandrake/GimmeSomeSlack/Styles/Cybertek/Junction_X_p7",
+    "RimMandrake/GimmeSomeSlack/Styles/Cybertek/Junction_X_p8",
+    "RimMandrake/GimmeSomeSlack/Styles/Cybertek/Junction_X_p9"
    ],
    "size": {
     "drawSize": [
@@ -1593,7 +1803,21 @@
     "source": "Source/Core/CordBuilder.cs:501 JunctionScale 1.15 (pile junctions 0.6-1.05)"
    },
    "former": [
-    "RimMandrake/MessyConduit/Styles/Cybertek/Junction_X"
+    "RimMandrake/MessyConduit/Styles/Cybertek/Junction_X",
+    "RimMandrake/MessyConduit/Styles/Cybertek/Junction_X_p1",
+    "RimMandrake/MessyConduit/Styles/Cybertek/Junction_X_p10",
+    "RimMandrake/MessyConduit/Styles/Cybertek/Junction_X_p11",
+    "RimMandrake/MessyConduit/Styles/Cybertek/Junction_X_p12",
+    "RimMandrake/MessyConduit/Styles/Cybertek/Junction_X_p13",
+    "RimMandrake/MessyConduit/Styles/Cybertek/Junction_X_p14",
+    "RimMandrake/MessyConduit/Styles/Cybertek/Junction_X_p2",
+    "RimMandrake/MessyConduit/Styles/Cybertek/Junction_X_p3",
+    "RimMandrake/MessyConduit/Styles/Cybertek/Junction_X_p4",
+    "RimMandrake/MessyConduit/Styles/Cybertek/Junction_X_p5",
+    "RimMandrake/MessyConduit/Styles/Cybertek/Junction_X_p6",
+    "RimMandrake/MessyConduit/Styles/Cybertek/Junction_X_p7",
+    "RimMandrake/MessyConduit/Styles/Cybertek/Junction_X_p8",
+    "RimMandrake/MessyConduit/Styles/Cybertek/Junction_X_p9"
    ],
    "render_match": "Cybertek|futuristic"
   },
@@ -2697,7 +2921,21 @@
    "section": "GSS",
    "label": "power switch, on \u2014 Scrapper",
    "resources": [
-    "RimMandrake/GimmeSomeSlack/PowerSwitch"
+    "RimMandrake/GimmeSomeSlack/PowerSwitch",
+    "RimMandrake/GimmeSomeSlack/PowerSwitch_p1",
+    "RimMandrake/GimmeSomeSlack/PowerSwitch_p10",
+    "RimMandrake/GimmeSomeSlack/PowerSwitch_p11",
+    "RimMandrake/GimmeSomeSlack/PowerSwitch_p12",
+    "RimMandrake/GimmeSomeSlack/PowerSwitch_p13",
+    "RimMandrake/GimmeSomeSlack/PowerSwitch_p14",
+    "RimMandrake/GimmeSomeSlack/PowerSwitch_p2",
+    "RimMandrake/GimmeSomeSlack/PowerSwitch_p3",
+    "RimMandrake/GimmeSomeSlack/PowerSwitch_p4",
+    "RimMandrake/GimmeSomeSlack/PowerSwitch_p5",
+    "RimMandrake/GimmeSomeSlack/PowerSwitch_p6",
+    "RimMandrake/GimmeSomeSlack/PowerSwitch_p7",
+    "RimMandrake/GimmeSomeSlack/PowerSwitch_p8",
+    "RimMandrake/GimmeSomeSlack/PowerSwitch_p9"
    ],
    "size": {
     "drawSize": [
@@ -2711,7 +2949,21 @@
     "source": "Defs/RM_ConduitStyles.xml: inherits vanilla PowerSwitch graphic (1x1)"
    },
    "former": [
-    "RimMandrake/MessyConduit/PowerSwitch"
+    "RimMandrake/MessyConduit/PowerSwitch",
+    "RimMandrake/MessyConduit/PowerSwitch_p1",
+    "RimMandrake/MessyConduit/PowerSwitch_p10",
+    "RimMandrake/MessyConduit/PowerSwitch_p11",
+    "RimMandrake/MessyConduit/PowerSwitch_p12",
+    "RimMandrake/MessyConduit/PowerSwitch_p13",
+    "RimMandrake/MessyConduit/PowerSwitch_p14",
+    "RimMandrake/MessyConduit/PowerSwitch_p2",
+    "RimMandrake/MessyConduit/PowerSwitch_p3",
+    "RimMandrake/MessyConduit/PowerSwitch_p4",
+    "RimMandrake/MessyConduit/PowerSwitch_p5",
+    "RimMandrake/MessyConduit/PowerSwitch_p6",
+    "RimMandrake/MessyConduit/PowerSwitch_p7",
+    "RimMandrake/MessyConduit/PowerSwitch_p8",
+    "RimMandrake/MessyConduit/PowerSwitch_p9"
    ],
    "render_match": "Jawa|scrapper"
   },
@@ -2723,7 +2975,21 @@
    "section": "GSS",
    "label": "power switch, on \u2014 Industrial",
    "resources": [
-    "RimMandrake/GimmeSomeSlack/Styles/Industrial/PowerSwitch"
+    "RimMandrake/GimmeSomeSlack/Styles/Industrial/PowerSwitch",
+    "RimMandrake/GimmeSomeSlack/Styles/Industrial/PowerSwitch_p1",
+    "RimMandrake/GimmeSomeSlack/Styles/Industrial/PowerSwitch_p10",
+    "RimMandrake/GimmeSomeSlack/Styles/Industrial/PowerSwitch_p11",
+    "RimMandrake/GimmeSomeSlack/Styles/Industrial/PowerSwitch_p12",
+    "RimMandrake/GimmeSomeSlack/Styles/Industrial/PowerSwitch_p13",
+    "RimMandrake/GimmeSomeSlack/Styles/Industrial/PowerSwitch_p14",
+    "RimMandrake/GimmeSomeSlack/Styles/Industrial/PowerSwitch_p2",
+    "RimMandrake/GimmeSomeSlack/Styles/Industrial/PowerSwitch_p3",
+    "RimMandrake/GimmeSomeSlack/Styles/Industrial/PowerSwitch_p4",
+    "RimMandrake/GimmeSomeSlack/Styles/Industrial/PowerSwitch_p5",
+    "RimMandrake/GimmeSomeSlack/Styles/Industrial/PowerSwitch_p6",
+    "RimMandrake/GimmeSomeSlack/Styles/Industrial/PowerSwitch_p7",
+    "RimMandrake/GimmeSomeSlack/Styles/Industrial/PowerSwitch_p8",
+    "RimMandrake/GimmeSomeSlack/Styles/Industrial/PowerSwitch_p9"
    ],
    "size": {
     "drawSize": [
@@ -2737,7 +3003,21 @@
     "source": "Defs/RM_ConduitStyles.xml: inherits vanilla PowerSwitch graphic (1x1)"
    },
    "former": [
-    "RimMandrake/MessyConduit/Styles/Industrial/PowerSwitch"
+    "RimMandrake/MessyConduit/Styles/Industrial/PowerSwitch",
+    "RimMandrake/MessyConduit/Styles/Industrial/PowerSwitch_p1",
+    "RimMandrake/MessyConduit/Styles/Industrial/PowerSwitch_p10",
+    "RimMandrake/MessyConduit/Styles/Industrial/PowerSwitch_p11",
+    "RimMandrake/MessyConduit/Styles/Industrial/PowerSwitch_p12",
+    "RimMandrake/MessyConduit/Styles/Industrial/PowerSwitch_p13",
+    "RimMandrake/MessyConduit/Styles/Industrial/PowerSwitch_p14",
+    "RimMandrake/MessyConduit/Styles/Industrial/PowerSwitch_p2",
+    "RimMandrake/MessyConduit/Styles/Industrial/PowerSwitch_p3",
+    "RimMandrake/MessyConduit/Styles/Industrial/PowerSwitch_p4",
+    "RimMandrake/MessyConduit/Styles/Industrial/PowerSwitch_p5",
+    "RimMandrake/MessyConduit/Styles/Industrial/PowerSwitch_p6",
+    "RimMandrake/MessyConduit/Styles/Industrial/PowerSwitch_p7",
+    "RimMandrake/MessyConduit/Styles/Industrial/PowerSwitch_p8",
+    "RimMandrake/MessyConduit/Styles/Industrial/PowerSwitch_p9"
    ],
    "render_match": "StarWars|industrial"
   },
@@ -2749,7 +3029,21 @@
    "section": "GSS",
    "label": "power switch, on \u2014 Modern",
    "resources": [
-    "RimMandrake/GimmeSomeSlack/Styles/Modern/PowerSwitch"
+    "RimMandrake/GimmeSomeSlack/Styles/Modern/PowerSwitch",
+    "RimMandrake/GimmeSomeSlack/Styles/Modern/PowerSwitch_p1",
+    "RimMandrake/GimmeSomeSlack/Styles/Modern/PowerSwitch_p10",
+    "RimMandrake/GimmeSomeSlack/Styles/Modern/PowerSwitch_p11",
+    "RimMandrake/GimmeSomeSlack/Styles/Modern/PowerSwitch_p12",
+    "RimMandrake/GimmeSomeSlack/Styles/Modern/PowerSwitch_p13",
+    "RimMandrake/GimmeSomeSlack/Styles/Modern/PowerSwitch_p14",
+    "RimMandrake/GimmeSomeSlack/Styles/Modern/PowerSwitch_p2",
+    "RimMandrake/GimmeSomeSlack/Styles/Modern/PowerSwitch_p3",
+    "RimMandrake/GimmeSomeSlack/Styles/Modern/PowerSwitch_p4",
+    "RimMandrake/GimmeSomeSlack/Styles/Modern/PowerSwitch_p5",
+    "RimMandrake/GimmeSomeSlack/Styles/Modern/PowerSwitch_p6",
+    "RimMandrake/GimmeSomeSlack/Styles/Modern/PowerSwitch_p7",
+    "RimMandrake/GimmeSomeSlack/Styles/Modern/PowerSwitch_p8",
+    "RimMandrake/GimmeSomeSlack/Styles/Modern/PowerSwitch_p9"
    ],
    "size": {
     "drawSize": [
@@ -2763,7 +3057,21 @@
     "source": "Defs/RM_ConduitStyles.xml: inherits vanilla PowerSwitch graphic (1x1)"
    },
    "former": [
-    "RimMandrake/MessyConduit/Styles/Modern/PowerSwitch"
+    "RimMandrake/MessyConduit/Styles/Modern/PowerSwitch",
+    "RimMandrake/MessyConduit/Styles/Modern/PowerSwitch_p1",
+    "RimMandrake/MessyConduit/Styles/Modern/PowerSwitch_p10",
+    "RimMandrake/MessyConduit/Styles/Modern/PowerSwitch_p11",
+    "RimMandrake/MessyConduit/Styles/Modern/PowerSwitch_p12",
+    "RimMandrake/MessyConduit/Styles/Modern/PowerSwitch_p13",
+    "RimMandrake/MessyConduit/Styles/Modern/PowerSwitch_p14",
+    "RimMandrake/MessyConduit/Styles/Modern/PowerSwitch_p2",
+    "RimMandrake/MessyConduit/Styles/Modern/PowerSwitch_p3",
+    "RimMandrake/MessyConduit/Styles/Modern/PowerSwitch_p4",
+    "RimMandrake/MessyConduit/Styles/Modern/PowerSwitch_p5",
+    "RimMandrake/MessyConduit/Styles/Modern/PowerSwitch_p6",
+    "RimMandrake/MessyConduit/Styles/Modern/PowerSwitch_p7",
+    "RimMandrake/MessyConduit/Styles/Modern/PowerSwitch_p8",
+    "RimMandrake/MessyConduit/Styles/Modern/PowerSwitch_p9"
    ],
    "render_match": "ExtCord|modern"
   },
@@ -2775,7 +3083,21 @@
    "section": "GSS",
    "label": "power switch, on \u2014 Futuristic",
    "resources": [
-    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch"
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch",
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_p1",
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_p10",
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_p11",
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_p12",
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_p13",
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_p14",
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_p2",
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_p3",
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_p4",
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_p5",
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_p6",
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_p7",
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_p8",
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_p9"
    ],
    "size": {
     "drawSize": [
@@ -2789,7 +3111,21 @@
     "source": "Defs/RM_ConduitStyles.xml: inherits vanilla PowerSwitch graphic (1x1)"
    },
    "former": [
-    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch"
+    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch",
+    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch_p1",
+    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch_p10",
+    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch_p11",
+    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch_p12",
+    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch_p13",
+    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch_p14",
+    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch_p2",
+    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch_p3",
+    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch_p4",
+    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch_p5",
+    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch_p6",
+    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch_p7",
+    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch_p8",
+    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch_p9"
    ],
    "render_match": "Cybertek|futuristic"
   },
@@ -2801,7 +3137,21 @@
    "section": "GSS",
    "label": "power switch, off \u2014 Scrapper",
    "resources": [
-    "RimMandrake/GimmeSomeSlack/PowerSwitch_Off"
+    "RimMandrake/GimmeSomeSlack/PowerSwitch_Off",
+    "RimMandrake/GimmeSomeSlack/PowerSwitch_Off_p1",
+    "RimMandrake/GimmeSomeSlack/PowerSwitch_Off_p10",
+    "RimMandrake/GimmeSomeSlack/PowerSwitch_Off_p11",
+    "RimMandrake/GimmeSomeSlack/PowerSwitch_Off_p12",
+    "RimMandrake/GimmeSomeSlack/PowerSwitch_Off_p13",
+    "RimMandrake/GimmeSomeSlack/PowerSwitch_Off_p14",
+    "RimMandrake/GimmeSomeSlack/PowerSwitch_Off_p2",
+    "RimMandrake/GimmeSomeSlack/PowerSwitch_Off_p3",
+    "RimMandrake/GimmeSomeSlack/PowerSwitch_Off_p4",
+    "RimMandrake/GimmeSomeSlack/PowerSwitch_Off_p5",
+    "RimMandrake/GimmeSomeSlack/PowerSwitch_Off_p6",
+    "RimMandrake/GimmeSomeSlack/PowerSwitch_Off_p7",
+    "RimMandrake/GimmeSomeSlack/PowerSwitch_Off_p8",
+    "RimMandrake/GimmeSomeSlack/PowerSwitch_Off_p9"
    ],
    "size": {
     "drawSize": [
@@ -2815,7 +3165,21 @@
     "source": "Defs/RM_ConduitStyles.xml: inherits vanilla PowerSwitch graphic (1x1)"
    },
    "former": [
-    "RimMandrake/MessyConduit/PowerSwitch_Off"
+    "RimMandrake/MessyConduit/PowerSwitch_Off",
+    "RimMandrake/MessyConduit/PowerSwitch_Off_p1",
+    "RimMandrake/MessyConduit/PowerSwitch_Off_p10",
+    "RimMandrake/MessyConduit/PowerSwitch_Off_p11",
+    "RimMandrake/MessyConduit/PowerSwitch_Off_p12",
+    "RimMandrake/MessyConduit/PowerSwitch_Off_p13",
+    "RimMandrake/MessyConduit/PowerSwitch_Off_p14",
+    "RimMandrake/MessyConduit/PowerSwitch_Off_p2",
+    "RimMandrake/MessyConduit/PowerSwitch_Off_p3",
+    "RimMandrake/MessyConduit/PowerSwitch_Off_p4",
+    "RimMandrake/MessyConduit/PowerSwitch_Off_p5",
+    "RimMandrake/MessyConduit/PowerSwitch_Off_p6",
+    "RimMandrake/MessyConduit/PowerSwitch_Off_p7",
+    "RimMandrake/MessyConduit/PowerSwitch_Off_p8",
+    "RimMandrake/MessyConduit/PowerSwitch_Off_p9"
    ],
    "render_match": "Jawa|scrapper"
   },
@@ -2827,7 +3191,21 @@
    "section": "GSS",
    "label": "power switch, off \u2014 Industrial",
    "resources": [
-    "RimMandrake/GimmeSomeSlack/Styles/Industrial/PowerSwitch_Off"
+    "RimMandrake/GimmeSomeSlack/Styles/Industrial/PowerSwitch_Off",
+    "RimMandrake/GimmeSomeSlack/Styles/Industrial/PowerSwitch_Off_p1",
+    "RimMandrake/GimmeSomeSlack/Styles/Industrial/PowerSwitch_Off_p10",
+    "RimMandrake/GimmeSomeSlack/Styles/Industrial/PowerSwitch_Off_p11",
+    "RimMandrake/GimmeSomeSlack/Styles/Industrial/PowerSwitch_Off_p12",
+    "RimMandrake/GimmeSomeSlack/Styles/Industrial/PowerSwitch_Off_p13",
+    "RimMandrake/GimmeSomeSlack/Styles/Industrial/PowerSwitch_Off_p14",
+    "RimMandrake/GimmeSomeSlack/Styles/Industrial/PowerSwitch_Off_p2",
+    "RimMandrake/GimmeSomeSlack/Styles/Industrial/PowerSwitch_Off_p3",
+    "RimMandrake/GimmeSomeSlack/Styles/Industrial/PowerSwitch_Off_p4",
+    "RimMandrake/GimmeSomeSlack/Styles/Industrial/PowerSwitch_Off_p5",
+    "RimMandrake/GimmeSomeSlack/Styles/Industrial/PowerSwitch_Off_p6",
+    "RimMandrake/GimmeSomeSlack/Styles/Industrial/PowerSwitch_Off_p7",
+    "RimMandrake/GimmeSomeSlack/Styles/Industrial/PowerSwitch_Off_p8",
+    "RimMandrake/GimmeSomeSlack/Styles/Industrial/PowerSwitch_Off_p9"
    ],
    "size": {
     "drawSize": [
@@ -2841,7 +3219,21 @@
     "source": "Defs/RM_ConduitStyles.xml: inherits vanilla PowerSwitch graphic (1x1)"
    },
    "former": [
-    "RimMandrake/MessyConduit/Styles/Industrial/PowerSwitch_Off"
+    "RimMandrake/MessyConduit/Styles/Industrial/PowerSwitch_Off",
+    "RimMandrake/MessyConduit/Styles/Industrial/PowerSwitch_Off_p1",
+    "RimMandrake/MessyConduit/Styles/Industrial/PowerSwitch_Off_p10",
+    "RimMandrake/MessyConduit/Styles/Industrial/PowerSwitch_Off_p11",
+    "RimMandrake/MessyConduit/Styles/Industrial/PowerSwitch_Off_p12",
+    "RimMandrake/MessyConduit/Styles/Industrial/PowerSwitch_Off_p13",
+    "RimMandrake/MessyConduit/Styles/Industrial/PowerSwitch_Off_p14",
+    "RimMandrake/MessyConduit/Styles/Industrial/PowerSwitch_Off_p2",
+    "RimMandrake/MessyConduit/Styles/Industrial/PowerSwitch_Off_p3",
+    "RimMandrake/MessyConduit/Styles/Industrial/PowerSwitch_Off_p4",
+    "RimMandrake/MessyConduit/Styles/Industrial/PowerSwitch_Off_p5",
+    "RimMandrake/MessyConduit/Styles/Industrial/PowerSwitch_Off_p6",
+    "RimMandrake/MessyConduit/Styles/Industrial/PowerSwitch_Off_p7",
+    "RimMandrake/MessyConduit/Styles/Industrial/PowerSwitch_Off_p8",
+    "RimMandrake/MessyConduit/Styles/Industrial/PowerSwitch_Off_p9"
    ],
    "render_match": "StarWars|industrial"
   },
@@ -2853,7 +3245,21 @@
    "section": "GSS",
    "label": "power switch, off \u2014 Modern",
    "resources": [
-    "RimMandrake/GimmeSomeSlack/Styles/Modern/PowerSwitch_Off"
+    "RimMandrake/GimmeSomeSlack/Styles/Modern/PowerSwitch_Off",
+    "RimMandrake/GimmeSomeSlack/Styles/Modern/PowerSwitch_Off_p1",
+    "RimMandrake/GimmeSomeSlack/Styles/Modern/PowerSwitch_Off_p10",
+    "RimMandrake/GimmeSomeSlack/Styles/Modern/PowerSwitch_Off_p11",
+    "RimMandrake/GimmeSomeSlack/Styles/Modern/PowerSwitch_Off_p12",
+    "RimMandrake/GimmeSomeSlack/Styles/Modern/PowerSwitch_Off_p13",
+    "RimMandrake/GimmeSomeSlack/Styles/Modern/PowerSwitch_Off_p14",
+    "RimMandrake/GimmeSomeSlack/Styles/Modern/PowerSwitch_Off_p2",
+    "RimMandrake/GimmeSomeSlack/Styles/Modern/PowerSwitch_Off_p3",
+    "RimMandrake/GimmeSomeSlack/Styles/Modern/PowerSwitch_Off_p4",
+    "RimMandrake/GimmeSomeSlack/Styles/Modern/PowerSwitch_Off_p5",
+    "RimMandrake/GimmeSomeSlack/Styles/Modern/PowerSwitch_Off_p6",
+    "RimMandrake/GimmeSomeSlack/Styles/Modern/PowerSwitch_Off_p7",
+    "RimMandrake/GimmeSomeSlack/Styles/Modern/PowerSwitch_Off_p8",
+    "RimMandrake/GimmeSomeSlack/Styles/Modern/PowerSwitch_Off_p9"
    ],
    "size": {
     "drawSize": [
@@ -2867,7 +3273,21 @@
     "source": "Defs/RM_ConduitStyles.xml: inherits vanilla PowerSwitch graphic (1x1)"
    },
    "former": [
-    "RimMandrake/MessyConduit/Styles/Modern/PowerSwitch_Off"
+    "RimMandrake/MessyConduit/Styles/Modern/PowerSwitch_Off",
+    "RimMandrake/MessyConduit/Styles/Modern/PowerSwitch_Off_p1",
+    "RimMandrake/MessyConduit/Styles/Modern/PowerSwitch_Off_p10",
+    "RimMandrake/MessyConduit/Styles/Modern/PowerSwitch_Off_p11",
+    "RimMandrake/MessyConduit/Styles/Modern/PowerSwitch_Off_p12",
+    "RimMandrake/MessyConduit/Styles/Modern/PowerSwitch_Off_p13",
+    "RimMandrake/MessyConduit/Styles/Modern/PowerSwitch_Off_p14",
+    "RimMandrake/MessyConduit/Styles/Modern/PowerSwitch_Off_p2",
+    "RimMandrake/MessyConduit/Styles/Modern/PowerSwitch_Off_p3",
+    "RimMandrake/MessyConduit/Styles/Modern/PowerSwitch_Off_p4",
+    "RimMandrake/MessyConduit/Styles/Modern/PowerSwitch_Off_p5",
+    "RimMandrake/MessyConduit/Styles/Modern/PowerSwitch_Off_p6",
+    "RimMandrake/MessyConduit/Styles/Modern/PowerSwitch_Off_p7",
+    "RimMandrake/MessyConduit/Styles/Modern/PowerSwitch_Off_p8",
+    "RimMandrake/MessyConduit/Styles/Modern/PowerSwitch_Off_p9"
    ],
    "render_match": "ExtCord|modern"
   },
@@ -2879,7 +3299,21 @@
    "section": "GSS",
    "label": "power switch, off \u2014 Futuristic",
    "resources": [
-    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_Off"
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_Off",
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_Off_p1",
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_Off_p10",
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_Off_p11",
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_Off_p12",
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_Off_p13",
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_Off_p14",
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_Off_p2",
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_Off_p3",
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_Off_p4",
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_Off_p5",
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_Off_p6",
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_Off_p7",
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_Off_p8",
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_Off_p9"
    ],
    "size": {
     "drawSize": [
@@ -2893,7 +3327,21 @@
     "source": "Defs/RM_ConduitStyles.xml: inherits vanilla PowerSwitch graphic (1x1)"
    },
    "former": [
-    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch_Off"
+    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch_Off",
+    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch_Off_p1",
+    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch_Off_p10",
+    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch_Off_p11",
+    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch_Off_p12",
+    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch_Off_p13",
+    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch_Off_p14",
+    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch_Off_p2",
+    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch_Off_p3",
+    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch_Off_p4",
+    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch_Off_p5",
+    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch_Off_p6",
+    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch_Off_p7",
+    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch_Off_p8",
+    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch_Off_p9"
    ],
    "render_match": "Cybertek|futuristic"
   },
@@ -3947,6 +4395,6 @@
    "render_match": "Cybertek|futuristic"
   }
  ],
- "textures_seen": 181,
+ "textures_seen": 405,
  "lead_html": "<div style='border:2px solid #c9a227;padding:10px 14px;margin:0 0 12px;font-size:15px;line-height:1.5'><b>1. What this is:</b> every picture Gimme Some Slack draws in the game \u2014 116 rows, one per part per look (Scrapper, Industrial, Modern, Futuristic; Modern cords also per colour), each at its true in-game size beside a human, the same part's looks banded together. The power-tap clamp is first; the last 40 rows are hose art that <b>moved to FlowWorks</b>.<br><b>2. What you rule on:</b> for each picture in each look, keep it or redo it (say why in the note). The clamp rows also hold the new clamp candidates \u2014 pick one per look.<br><b>3. Your clicks save automatically.</b> The blue IN GAME frame is only the agent's starting point (a prefill, counted separately), never your choice; nothing installs until you say the sheet is done.</div>"
 }

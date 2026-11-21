@@ -134,10 +134,11 @@ def classify_gss(rel: str):
             look, variant, name = "Modern", p[2], p[3]
         else:
             look, name = FAMILY_LOOK[fam], p[2]
+        name = re.sub(r"_p\d+$", "", name)
         if name.startswith("Strand_"):
             variant, name = name[len("Strand_"):], "Strand"
         return name, look, variant, res
-    name = p[0]
+    name = re.sub(r"_p\d+$", "", p[0])          # Junction_X_p1..p14, PowerSwitch_p1..: pile-variant copies of one part
     alias = {"Strand_Jawa": ("Strand", "Jawa"), "Strand_ScrapTaped": ("Strand", "ScrapTaped"), "Junction_Tape": ("Junction_T", ""), "Junction_Tin": ("Junction_X", "")}
     if name in alias:
         name, variant = alias[name]
