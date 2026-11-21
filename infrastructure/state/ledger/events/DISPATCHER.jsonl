@@ -2187,3 +2187,4 @@
 {"seat":"DISPATCHER","event":"note","id":"V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE","text":"dispatcher: Conductor quick run: completed","ts":"2026-11-21T03:44:22Z","tsn":1795232662565780230}
 {"seat":"DISPATCHER","event":"note","id":"V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE","text":"dispatcher: Conductor quick run: launched","ts":"2026-11-21T04:00:34Z","tsn":1795233634603740821}
 {"seat":"DISPATCHER","event":"note","id":"V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE","text":"dispatcher: Conductor quick run: completed","ts":"2026-11-21T04:05:38Z","tsn":1795233938703186487}
+{"seat":"DISPATCHER","event":"note","id":"RIMFLOW_V3_BUILD_DISPATCHER_FIRST","text":"dispatcher alarm : testq-sweep.service first failed 2026-11-20T09:32:07Z; no safe automatic repair for it","ts":"2026-11-21T04:40:41Z","tsn":1795236041767418478}
