@@ -1109,7 +1109,8 @@ def preview(mod, sel):
     the refusal text when modcheck would refuse SEL, the row ids the run will execute, and the "pre" drivers
     [{name, timeout_s}] `--drivers on` would start. A full selector previews the drivers only. A mod it cannot find,
     or any other trouble, is neither refused nor planned (every value None)."""
-    out = {"refusal": None, "rows": None, "drivers": None, "chains": None, "driver_chains": None}
+    out = {"refusal": None, "rows": None, "drivers": None, "chains": None, "driver_chains": None,
+           "floor_uncovered": None}
     args = []
     for k in ("chains", "rows"):
         if sel.get(k):
@@ -1128,7 +1129,8 @@ def preview(mod, sel):
         if line.startswith("REFUSED:") and any(k in line for k in SELECTION_REFUSALS):
             return dict(out, refusal=line[len("REFUSED:"):].strip())
         for tag, key in (("EXPECTED_ROWS ", "rows"), ("EXPECTED_DRIVERS ", "drivers"),
-                         ("EXPECTED_CHAINS ", "chains"), ("EXPECTED_DRIVER_CHAINS ", "driver_chains")):
+                         ("EXPECTED_CHAINS ", "chains"), ("EXPECTED_DRIVER_CHAINS ", "driver_chains"),
+                         ("FLOOR_UNCOVERED ", "floor_uncovered")):
             if line.startswith(tag):
                 try:
                     out[key] = json.loads(line[len(tag):])
@@ -1554,8 +1556,11 @@ def cmd_sweep(a):
     if pv["drivers"] and todo and pv["driver_chains"]:
         g = split_sweep(pv["drivers"], pv["driver_chains"], todo)
         groups = g if len(g) > 1 else None
+    # A validated must-show line no component claims refuses the --full run on the worker (modcheck runner.refusal),
+    # after a deploy and a load: queue the chains instead, which test what is built
+    # (RIMMANDRAKE_RUN_TARGETED_CHECKS_PAST_UNBUILT_MUST_SHOW_LINES).
     sels = [{"chains": g} for g in groups] if groups else (
-        [{"chains": todo}] if stop and todo else [{"full": True}])
+        [{"chains": todo}] if (stop or pv.get("floor_uncovered")) and todo else [{"full": True}])
     todays = []
     for st in STATES:
         for rec in records(st):

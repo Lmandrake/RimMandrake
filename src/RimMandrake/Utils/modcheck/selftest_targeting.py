@@ -291,11 +291,20 @@ def t_run_targeted():
        "run: the summary (sheet JSON) records the chains covered", res["ToyMod"].get("targeted"))
     ok(not seen["record"], "run: a targeted run never overwrites the full-suite status entry", seen["record"])
     with stubbed_run() as seen2:
-        runner.visual_floor = lambda s, ns: {"bar": ["x"], "uncovered": ["x"], "orphans": []}
+        runner.visual_floor = lambda s, ns: {"bar": ["x"], "uncovered": [], "orphans": ["typo"]}
         with contextlib.redirect_stderr(io.StringIO()):
             res2 = runner.run([("ToyMod", "X_ITEM")], targets={"ToyMod": sel}, seat="BENCH")
     ok(res2["ToyMod"].get("refused") and not seen2["record"],
-       "run: a REFUSED targeted run does not write the full-suite status entry either", seen2["record"])
+       "run: a REFUSED targeted run (orphaned shows=) does not write the full-suite status entry either",
+       seen2["record"])
+    # RIMMANDRAKE_RUN_TARGETED_CHECKS_PAST_UNBUILT_MUST_SHOW_LINES: an uncovered line refuses the full run only
+    with stubbed_run() as seen3:
+        runner.visual_floor = lambda s, ns: {"bar": ["x"], "uncovered": ["x"], "orphans": []}
+        with contextlib.redirect_stderr(io.StringIO()):
+            res3 = runner.run([("ToyMod", "X_ITEM")], targets={"ToyMod": sel}, seat="BENCH")
+    ok(not res3["ToyMod"].get("refused") and [c[0] for c in seen3["suite"]] == [["thirst"]] and not seen3["record"],
+       "run: an uncovered must-show line does not refuse a targeted run, which still writes no status entry",
+       (res3["ToyMod"].get("refused"), seen3["suite"], seen3["record"]))
     cfg = [c[c.index("--config") + 1] for c in seen["verify"] if "verify" in c]
     ok(cfg == ["min+ToyMod TARGETED chains=thirst"], "run: the ledger verify config names the scope", cfg)
     ok(cli._verdict_line(res["ToyMod"]).startswith("TARGETED 1/3 chains (thirst) GREEN"),

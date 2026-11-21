@@ -98,7 +98,7 @@ def attempt(running, config_ids, keep=False, keep_composed=False, restores=None,
                  composed_into=lambda m: None, mod_dependency_ids=lambda d: ["toy.dep"],
                  mod_package_id=lambda d: TOY, closure_ids=lambda m, f: [],
                  load_validation=lambda d: fake_suite, northstar_for=lambda m: ("walk", None),
-                 visual_floor=lambda s, ns: {"bar": None}, refusal=lambda fl: None,
+                 visual_floor=lambda s, ns: {"bar": None}, refusal=lambda fl, **k: None,
                  ensure_playing_map=lambda *a, **k: "playing", ensure_test_profile=reached,
                  write_sheet=lambda m, s: sheets.append((m, s)) or "/tmp/sheet.html")
     real = {n: getattr(runner, n) for n in stubs}
@@ -281,7 +281,7 @@ def at_menu(running, config_ids, log, keep_composed=True, installed=None):
                  mod_package_id=lambda d: TOY, closure_ids=lambda m, f: [],
                  load_validation=lambda d: types.SimpleNamespace(chains=[("c1", None)]),
                  northstar_for=lambda m: ("walk", None), visual_floor=lambda s, ns: {"bar": None},
-                 refusal=lambda fl: None, ensure_test_profile=reached,
+                 refusal=lambda fl, **k: None, ensure_test_profile=reached,
                  write_sheet=lambda m, s: sheets.append(m) or "/tmp/sheet.html")
     real = {n: getattr(runner, n) for n in stubs}
     env_names = ("MODCHECK_KEEP_MODLIST", "MODCHECK_SKIP_DEPLOY", "MODCHECK_STALE_KEEP_COMPOSED")

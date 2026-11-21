@@ -181,6 +181,11 @@ uncovered_shows(must_show_ids, components) -> sorted ids with zero claiming comp
   as fatal as uncovered *settings*.
 - Only validated checklists are consulted. A DRAFT section contributes nothing
   to the floor — it cannot fail a mod, and it cannot green one either.
+- The refusal binds the FULL run, the one that decides the mod. A targeted run
+  (chosen chains, rows or an item) is not refused by an uncovered line: it tests
+  what is built, never writes the full-suite status entry and never greens the
+  mod. An orphaned `shows=` still refuses every run
+  (RIMMANDRAKE_RUN_TARGETED_CHECKS_PAST_UNBUILT_MUST_SHOW_LINES).
 
 The floor is per AXIS: §10.5 adds `uncovered_reads()`, the same shape again over
 `must read` ids. A mod with both axes must clear both.

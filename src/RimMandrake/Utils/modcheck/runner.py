@@ -754,16 +754,24 @@ def visual_floor(suite, ns):
             "orphans": floor.orphan_shows(declared, components)}
 
 
-def refusal(fl):
+def refusal(fl, targeted=False):
     """The one-line reason this mod cannot be run, or "" if it can.
 
     An uncovered must-show line is as fatal as an uncovered Mod Settings toggle
     (spec §3): the mod's stated experience has no test. An orphaned `shows=` is
     a lint error for the same reason a patch that matches nothing is -- it
     claims to cover something that does not exist.
+
+    `targeted`: a run of chosen chains, rows or an item. An uncovered line does
+    not refuse it: it tests what is built, never writes the full-suite status
+    entry and never greens the mod, so the line stays fatal where it decides,
+    the full run. Refusing it froze every check of FlowWorks once its walk gained
+    lines for bars still being built (82e59b2d76; testq-sweep.service failed,
+    RIMMANDRAKE_RUN_TARGETED_CHECKS_PAST_UNBUILT_MUST_SHOW_LINES). An orphan
+    still refuses every run.
     """
     parts = []
-    if fl["uncovered"]:
+    if fl["uncovered"] and not targeted:
         parts.append("validated must-show lines no component claims: %s"
                      % ", ".join(fl["uncovered"]))
     if fl["orphans"]:
@@ -901,7 +909,8 @@ def _env_reset(session):
 
 def run_suite(suite, session, debug=False, anchor=None, mod=None,
               judge_runner=None, situational=False, policy="abort", bland_world=False, retile=False,
-              hold_site=False, floor_suite=None, scope=None, canary=False, validity=False, gate=None):
+              hold_site=False, floor_suite=None, scope=None, canary=False, validity=False, gate=None,
+              targeted=False):
     """Run every chain in `suite` against an open `session`. Returns
     `{"chains": [...], "all_green": bool}`. Never raises on a component
     failure -- that is exactly what `suite.py`'s `component()` already
@@ -943,7 +952,7 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
     walk, ns = northstar_for(mod) if mod else (None, None)
     if mod:
         fl = visual_floor(floor_suite or suite, ns)
-        why = refusal(fl)
+        why = refusal(fl, targeted=targeted)
         if why:
             return {"chains": [], "all_green": False, "findings": [],
                     "refused": why, "visual": [], "visual_all_green": False,
@@ -1431,7 +1440,7 @@ def run(mods, debug=False, dry_run=False, situational=False, policy="abort", tar
             suite = load_validation(mod_dir)
             walk, ns = northstar_for(mod_folder)
             fl = visual_floor(suite, ns)
-            why = refusal(fl)
+            why = refusal(fl, targeted=bool(targets.get(mod_folder)))
             if why:
                 # Refused BEFORE the game is touched: a mod whose stated
                 # experience has no test cannot be validated by running it.
@@ -1524,7 +1533,7 @@ def run(mods, debug=False, dry_run=False, situational=False, policy="abort", tar
                 summary = run_suite(run_this, s, debug=debug, mod=mod_folder, floor_suite=suite,
                                     situational=situational, policy=policy, hold_site=True,
                                     canary=canary, validity=validity,
-                                    scope=(sel or {}).get("scope"), gate=gate)
+                                    scope=(sel or {}).get("scope"), gate=gate, targeted=bool(sel))
             if drv:
                 summary["drivers"] = drv
             if sel:

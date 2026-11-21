@@ -402,6 +402,9 @@ def main(argv=None):
                 print("REFUSED: %s" % ex)
                 return 2
             print("EXPECTED_DRIVERS " + _json.dumps(drivers.need_s(suite, [n for n, _ in suite.chains])[1]))
+            # the full run is refused on these lines (runner.refusal); testq sweep then queues the chains instead
+            print("FLOOR_UNCOVERED " + _json.dumps(
+                runner.visual_floor(suite, runner.northstar_for(args.mods[0])[1])["uncovered"]))
             # TESTQ_SWEEP_FIX_DRIVERS_OVER_CAP: which chains each driver serves, so testq sweep can split the sweep
             print("EXPECTED_CHAINS " + _json.dumps([n for n, _ in suite.chains]))
             print("EXPECTED_DRIVER_CHAINS " + _json.dumps(
@@ -430,7 +433,7 @@ def main(argv=None):
                 print("REFUSED: %s" % ex)
                 return 2
             if args.preview:    # the visual floor is offline: refuse here, not after a deploy and a load on the lane
-                why = runner.refusal(runner.visual_floor(suite, runner.northstar_for(mod)[1]))
+                why = runner.refusal(runner.visual_floor(suite, runner.northstar_for(mod)[1]), targeted=True)
                 if why:
                     print("REFUSED: %s" % why)
                     return 2
