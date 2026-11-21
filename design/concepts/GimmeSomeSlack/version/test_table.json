@@ -403,11 +403,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 311.15,
-    "last": "4606/4606 checks passed",
-    "at": "2026-11-21T02:40:44Z",
+    "seconds": 538.0,
+    "last": "5654/5654 checks passed",
+    "at": "2026-11-21T08:01:01Z",
     "result": "PASS",
-    "build": "a7c0115f61c18a91bed8",
+    "build": "6f4f3872588a2540e598",
     "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py",
     "margins": []
    }
@@ -427,11 +427,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 20.42,
+    "seconds": 29.06,
     "last": "9/9 checks passed (stub joins only)",
-    "at": "2026-11-21T02:41:05Z",
+    "at": "2026-11-21T08:01:30Z",
     "result": "PASS",
-    "build": "007e5bbde75c8f81bd18",
+    "build": "ae852361afa4a97a6956",
     "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --no-export --joins-only",
     "margins": []
    }
@@ -473,12 +473,12 @@
    "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py --offline-gate",
    "runs_today": {
     "ran": true,
-    "rc": 0,
-    "seconds": 348.44,
-    "last": "GATE_JSON {\"red\": [], \"steps\": {\"validation_offline\": {\"rows\": 9, \"not_pass\": [], \"statuses\": {\"O8_lamp_mast_vanilla_register\": \"PASS\", \"O7_gpt_read_fixes\": \"PASS\", \"O1_mod_files\": \"PASS\", \"O2_settings_defaults\": \"PASS\", \"O5_style_art_sane\": \"PASS\", \"O6_review_round1\": \"PASS\", \"O3_core_selftest\": \"PASS\", \"O3n_selftest_can_fail\": \"PASS\", \"O4_python_oracle\": \"PASS\"}, \"wall_s\": 315.7}, \"matrix_selftest\": {\"exit\": 0, \"fail\": [], \"summary\": [\"63/63 checks passed (19 negative controls among them)\"], \"wall_s\": 8.4}, \"human_review_plan\": {\"exit\": 0, \"tail\": [\"layout ok: 31 stations (1-11 style gallery) + art board M + free area; key sheet -> /home/mandrake/rm/relentless/clones/RIMMANDRAKE_RERUN_GIMMESOMESLACK_CERTIFICATE.det/Transient/mc_human_review\"], \"wall_s\": 0.1}, \"selftest_human_review\": {\"exit\": 0, \"tail\": [\"41/41 checks passed\"], \"wall_s\": 0.1}, \"selftest_proof_all\": {\"exit\": 0, \"tail\": [\"ALL PASS\"], \"wall_s\": 23.1}, \"selftest_gss_stub_art_census\": {\"exit\": 0, \"tail\": [\"PASS\"], \"wall_s\": 0.3}, \"selftest_gss_statics_census\": {\"exit\": 0, \"tail\": [\"PASS\"], \"wall_s\": 0.1}, \"design_spec\": {\"exit\": 0, \"tail\": [\"wrote /mnt/d/ClaudeWork/rimmandrake/scratch/gss_proof/scenes_design.json\"], \"wall_s\": 0.4}}, \"spec_posix\": \"/mnt/d/ClaudeWork/rimmandrake/scratch/gss_proof/scenes_design.json\", \"spec_win\": \"D:\\\\ClaudeWork\\\\rimmandrake\\\\scratch\\\\gss_proof\\\\scenes_design.json\"}",
-    "at": "2026-11-21T02:46:53Z",
-    "result": "PASS",
-    "build": "2b16d6c289c5fd24c252",
+    "rc": 1,
+    "seconds": 760.13,
+    "last": "GATE_JSON {\"red\": [\"selftest_human_review\", \"selftest_gss_statics_census\"], \"steps\": {\"validation_offline\": {\"rows\": 9, \"not_pass\": [], \"statuses\": {\"O8_lamp_mast_vanilla_register\": \"PASS\", \"O7_gpt_read_fixes\": \"PASS\", \"O1_mod_files\": \"PASS\", \"O2_settings_defaults\": \"PASS\", \"O5_style_art_sane\": \"PASS\", \"O6_review_round1\": \"PASS\", \"O3_core_selftest\": \"PASS\", \"O3n_selftest_can_fail\": \"PASS\", \"O4_python_oracle\": \"PASS\"}, \"wall_s\": 717.5}, \"matrix_selftest\": {\"exit\": 0, \"fail\": [], \"summary\": [\"63/63 checks passed (19 negative controls among them)\"], \"wall_s\": 9.7}, \"human_review_plan\": {\"exit\": 0, \"tail\": [\"layout ok: 31 stations (1-11 style gallery) + art board M + free area; key sheet -> /home/mandrake/rm/relentless/clones/RIMMANDRAKE_RERUN_GIMMESOMESLACK_CERTIFICATE.det/Transient/mc_human_review\"], \"wall_s\": 0.1}, \"selftest_human_review\": {\"exit\": 1, \"tail\": [\"40/41 checks passed\"], \"wall_s\": 0.1}, \"selftest_proof_all\": {\"exit\": 0, \"tail\": [\"ALL PASS\"], \"wall_s\": 31.3}, \"selftest_gss_stub_art_census\": {\"exit\": 0, \"tail\": [\"PASS\"], \"wall_s\": 0.4}, \"selftest_gss_statics_census\": {\"exit\": 1, \"tail\": [\"FAIL\"], \"wall_s\": 0.2}, \"design_spec\": {\"exit\": 0, \"tail\": [\"wrote /mnt/d/ClaudeWork/rimmandrake/scratch/gss_proof/scenes_design.json\"], \"wall_s\": 0.5}}, \"spec_posix\": \"/mnt/d/ClaudeWork/rimmandrake/scratch/gss_proof/scenes_design.json\", \"spec_win\": \"D:\\\\ClaudeWork\\\\rimmandrake\\\\scratch\\\\gss_proof\\\\scenes_design.json\"}",
+    "at": "2026-11-21T08:14:10Z",
+    "result": "FAIL",
+    "build": "b60871f10536351ae754",
     "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py --offline-gate",
     "margins": []
    }
@@ -530,11 +530,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.44,
+    "seconds": 4.06,
     "last": "PASS  G0_clean_copy  want=green got=[]",
-    "at": "2026-11-21T02:47:04Z",
+    "at": "2026-11-21T08:14:15Z",
     "result": "PASS",
-    "build": "d726e4fd3526496612d3",
+    "build": "b84b36b6e6c4e152997a",
     "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_no_hose.py",
     "margins": []
    }
@@ -735,11 +735,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.01,
+    "seconds": 0.02,
     "last": "gss end-heap budget: ok",
-    "at": "2026-11-21T02:47:12Z",
+    "at": "2026-11-21T08:14:15Z",
     "result": "PASS",
-    "build": "c3a378a4cc43a3d15cd1",
+    "build": "aaa59017f3c6be09970b",
     "command": "python3 src/RimMandrake/Utils/selftest_gss_end_heap_budget.py",
     "margins": []
    }
@@ -930,12 +930,12 @@
    "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_pit_draw_census.py",
    "runs_today": {
     "ran": true,
-    "rc": 0,
-    "seconds": 0.71,
-    "last": "PASS",
-    "at": "2026-11-21T02:47:13Z",
-    "result": "PASS",
-    "build": "f112aa121a2e97896b13",
+    "rc": 1,
+    "seconds": 0.68,
+    "last": "FAILED (1)",
+    "at": "2026-11-21T08:14:15Z",
+    "result": "FAIL",
+    "build": "66ed25c2870f43a9ea19",
     "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_pit_draw_census.py",
     "margins": []
    }
@@ -1249,11 +1249,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.42,
+    "seconds": 3.25,
     "last": "PASS",
-    "at": "2026-11-21T02:47:39Z",
+    "at": "2026-11-21T08:14:18Z",
     "result": "PASS",
-    "build": "28706f6f49ab842745c6",
+    "build": "f978ec2e05d928aac31f",
     "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_settings_sweep.py",
     "margins": []
    }
@@ -1304,11 +1304,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 310.41,
-    "last": "4606/4606 checks passed",
-    "at": "2026-11-21T02:52:50Z",
+    "seconds": 655.75,
+    "last": "5654/5654 checks passed",
+    "at": "2026-11-21T08:25:14Z",
     "result": "PASS",
-    "build": "ecde48213525696cd791",
+    "build": "bbad4fa6ca3d6c32c045",
     "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py",
     "margins": []
    }
@@ -1357,11 +1357,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 315.72,
-    "last": "4615/4615 checks passed",
-    "at": "2026-11-21T02:58:05Z",
+    "seconds": 713.05,
+    "last": "5663/5663 checks passed",
+    "at": "2026-11-21T08:37:07Z",
     "result": "PASS",
-    "build": "c40b6ce52fda4c635330",
+    "build": "59ededf4528dd643acb5",
     "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --geometry",
     "margins": []
    }
@@ -1509,11 +1509,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.18,
+    "seconds": 0.22,
     "last": "PASS",
-    "at": "2026-11-21T02:58:06Z",
+    "at": "2026-11-21T08:37:08Z",
     "result": "PASS",
-    "build": "d3aba357742a060d870d",
+    "build": "5cd5477e78ecbc7daf0c",
     "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_main_thread_textures.py",
     "margins": []
    }
@@ -1661,12 +1661,12 @@
    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_statics_census.py",
    "runs_today": {
     "ran": true,
-    "rc": 0,
-    "seconds": 0.11,
-    "last": "PASS",
-    "at": "2026-11-21T02:58:06Z",
-    "result": "PASS",
-    "build": "a55bad1549c48063a6b5",
+    "rc": 1,
+    "seconds": 0.14,
+    "last": "FAIL",
+    "at": "2026-11-21T08:37:08Z",
+    "result": "FAIL",
+    "build": "2a8367d04cc474cef83a",
     "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_statics_census.py",
     "margins": []
    }
@@ -1714,11 +1714,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 308.26,
-    "last": "4606/4606 checks passed",
-    "at": "2026-11-21T03:03:14Z",
+    "seconds": 347.93,
+    "last": "5654/5654 checks passed",
+    "at": "2026-11-21T08:42:56Z",
     "result": "PASS",
-    "build": "ca7a1b9a3a9079e583c0",
+    "build": "f4bc11c9d19d9c84171c",
     "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py",
     "margins": []
    }
@@ -1766,10 +1766,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.79,
+    "seconds": 8.72,
     "last": "1056/1056 checks passed (switch light only)",
-    "at": "2026-11-20T23:26:58-08:00",
-    "result": "PASS"
+    "at": "2026-11-21T08:43:04Z",
+    "result": "PASS",
+    "build": "0bcbe45a7415e2c468fe",
+    "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --no-export --switchlight-only",
+    "margins": []
    }
   },
   "T_POLE_SOUTH_DRAWS_FRONT_OFFLINE": {
@@ -6785,11 +6788,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.28,
+    "seconds": 0.3,
     "last": "PASS",
-    "at": "2026-11-21T03:03:15Z",
+    "at": "2026-11-21T08:43:05Z",
     "result": "PASS",
-    "build": "49fa40fb07cc1930ab81",
+    "build": "700811f60f6be1bdb862",
     "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_cords_under_items.py",
     "margins": []
    }
