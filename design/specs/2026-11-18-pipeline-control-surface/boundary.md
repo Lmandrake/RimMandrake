@@ -1,6 +1,7 @@
 # BOUNDARY: the control store and `pipe`, Design Version 0.1.0
 
-Code: `src/RimMandrake/rimflow/control.py`. This page says where the control store stops. A claim about the store
+Code: `src/RimMandrake/rimflow/control.py`, and the two doors that ask `src/RimMandrake/rimflow/test_process.py`
+(`launch_unit` here, `append` in `src/RimMandrake/rimflow/model.py`). This page says where the control store stops. A claim about the store
 counts only if it quotes an entry here (`standing_rulings.md` §A boundary page before pipeline code). Written
 2026-11-18 11:50 PM PST. Read fresh 2026-11-19 by `RIMMANDRAKE_READ_CONTROL_PAGE_FRESH_BEFORE_CODE_IS_CUT`: 4 holes
 added. Code cut to it 2026-11-19 by `RIMMANDRAKE_CUT_CONTROL_STORE_TO_PAGE_ARGV_READER_GOES`. "Tested by" names today's test in `selftest_control.py`; each promise also has a test of its own name there, and
@@ -162,6 +163,14 @@ boundary page before pipeline code, Decision 4: a rare failure is listed here, n
   `subjects(res)` lists exactly the accounts holding a live adjustment of `res`, for a reader that judges many in one
   read (`testpilot_route.routed`). Tested by `t_accounts`.
 - **a-test-never-touches-the-live-store.** Tested by `t_stop_review_fixes`.
+- **a-test-process-starts-no-real-unit.** A test process is defined in one place, `rimflow/test_process.py`: a
+  program named `selftest*.py` or `run_selftests.py`, a process with `RM_UNDER_SELFTEST`, or any descendant of one.
+  `launch_unit` from a test process, with no runner of its own, is refused before `systemd-run`. A unit of the `probe`
+  family (a drill's throwaway) and a launch that passes `runner=` go through. On 2026-11-21 a selftest's helper with a
+  clean environment reached the real launcher: two real runs and real items on a fixture mod.
+- **a-test-process-never-writes-the-real-ledger.** `model.append` from a test process refuses a write into the ledger
+  of the checkout that the code is in, before any byte. A ledger of the test's own (a path, `RIMFLOW_LEDGER`, a
+  rebound `model.EVENTS`) takes the event.
 - **ended-run-is-recorded-ended.** A unit that ends by itself is recorded ended: its start check and end receipt run
   the first `control.py` still on disk (the run's clone, the launcher's, then the seat clones'), so a clone returned
   before the receipt does not leave its run `started`. A run whose receipt still never ran (systemd reads its unit gone)

@@ -172,12 +172,11 @@ def db_path():
 
 
 def test_process():
-    """True in a test: the selftest harness (RM_UNDER_SELFTEST), a test that pointed the owner hold at its own file, a
-    selftest_* script run directly, or a process whose dispatcher state is not the live one. A test never reaches the
-    live store."""
-    if os.environ.get("RM_UNDER_SELFTEST") or os.environ.get("RM_OWNER_HOLD_FILE"):
-        return True
-    if os.path.basename(sys.argv[0] if sys.argv else "").startswith("selftest"):
+    """True in a test: a test process (test_process.under_test, the one definition), a test that pointed the owner hold
+    at its own file, or a process whose dispatcher state is not the live one. A test never reaches the live store."""
+    sys.path.insert(0, HERE) if HERE not in sys.path else None
+    import test_process as _tp
+    if _tp.under_test() or os.environ.get("RM_OWNER_HOLD_FILE"):
         return True
     st = os.environ.get("RM_DISPATCHER_STATE")
     if st:
@@ -1796,6 +1795,9 @@ def hook_cmd(verb, run, p, clone=None):
     return " ".join(shlex.quote(x) for x in words)
 
 
+_REAL_RUN = subprocess.run      # launch_unit: a test that replaced subprocess.run brought its own runner
+
+
 def launch_unit(args, spec, runner=None, p=None, clone=None, **kw):
     """THE launch primitive: every `systemd-run` that starts pipeline work goes through here (selftest_control
     enumerates the call sites; an unrouted one fails it). `args` are systemd-run's arguments: its options, `--`, then
@@ -1805,6 +1807,10 @@ def launch_unit(args, spec, runner=None, p=None, clone=None, **kw):
     start-time re-check) and ExecStopPost (its end receipt). After systemd-run returns, the run's state decides: refused
     or cancelled at start -> .refused, never "running". -> Launch. Raises what the runner raises (a timeout leaves the
     run admitted for reconcile: an ambiguous start is investigated, never relaunched under the same name)."""
+    if runner is None and subprocess.run is _REAL_RUN and spec.get("family") != "probe" and test_process():
+        return _refusal(list(args), "a test process starts no real pipeline unit (family %s): a test passes runner=, "
+                                    "replaces subprocess.run, or launches a throwaway unit in the probe family"
+                        % spec.get("family"))
     runner = runner or subprocess.run
     p = p or db_path()
     args = list(args)

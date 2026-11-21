@@ -2249,6 +2249,102 @@ t_a_test_never_touches_the_live_store = t_stop_review_fixes
 t_ended_run_is_recorded_ended = t_end_receipt_outlives_its_clone
 
 
+# ---------------------------------------------------------------- a test makes no live effect
+
+LEAK_CHILD = r"""
+import os, sys
+sys.path.insert(0, %(here)r)
+import control as C
+r = C.launch_unit(["--user", "--", "/bin/true"], {"family": %(family)r, "unit": "rm-probe-leak-%%d" %% os.getpid()})
+print("REFUSED" if r.refused else "RAN", r.why if r.refused else "")
+"""
+
+
+def _fake_systemd_run(name):
+    """A PATH whose systemd-run is a stand-in that only leaves a mark: the real subprocess.run runs it, nothing starts.
+    -> (the PATH, the mark's path)."""
+    d = os.path.join(TMP, "fake-bin-" + name)
+    os.makedirs(d, exist_ok=True)
+    mark = os.path.join(d, "ran")
+    if os.path.exists(mark):
+        os.unlink(mark)
+    exe = os.path.join(d, "systemd-run")
+    with open(exe, "w", encoding="utf-8") as f:
+        f.write("#!/bin/sh\necho ran > %s\n" % mark)
+    os.chmod(exe, 0o755)
+    return d + os.pathsep + os.environ.get("PATH", ""), mark
+
+
+def _leak_child(family):
+    """A child of this selftest with NO test mark in its environment and no selftest name: the shape of 2026-11-21's
+    leak (a selftest's helper reached the real launcher). -> (what the child said, whether systemd-run was reached)."""
+    path, mark = _fake_systemd_run("child-" + family)
+    env = {k: v for k, v in os.environ.items() if k not in ("RM_UNDER_SELFTEST", "RM_OWNER_HOLD_FILE", "RM_DISPATCHER_STATE")}
+    r = subprocess.run([PY, "-c", LEAK_CHILD % {"here": HERE, "family": family}], capture_output=True, text=True,
+                       timeout=60, env=dict(env, PATH=path))
+    return (r.stdout or "").strip() + (r.stderr or "")[-300:], os.path.exists(mark)
+
+
+def t_a_test_process_starts_no_real_unit():
+    """Replays the leak of 2026-11-21 (selftest_maturation_autonomy's fixture mod A got two real runs): a launch with
+    no runner of its own, from a test process or any child of one, is refused before systemd-run; a probe-family unit
+    (a drill's throwaway), a launch that passes runner=, and a test that replaced subprocess.run still go through."""
+    fresh()
+    path, mark = _fake_systemd_run("in")
+    old = os.environ.get("PATH", "")
+    os.environ["PATH"] = path
+    try:
+        r = C.launch_unit(["--user", "--", "/bin/true"], {"family": "detached", "unit": "rm-probe-leak-in"})
+        reached = os.path.exists(mark)
+        own = C.launch_unit(["--user", "--", "/bin/true"], {"family": "detached", "unit": "rm-probe-leak-own"},
+                            runner=lambda argv, **kw: subprocess.CompletedProcess(argv, 0, "", ""))
+        real = subprocess.run
+        subprocess.run = lambda argv, **kw: subprocess.CompletedProcess(argv, 0, "", "")
+        try:
+            patched = C.launch_unit(["--user", "--", "/bin/true"], {"family": "detached", "unit": "rm-probe-leak-patched"})
+        finally:
+            subprocess.run = real
+    finally:
+        os.environ["PATH"] = old
+    check(r.refused and "test process" in (r.why or "") and not reached,
+          "in a selftest, a pipeline-family launch with no runner of its own is refused before systemd-run",
+          (r.refused, getattr(r, "why", None), reached))
+    check(not own.refused and not patched.refused,
+          "a launch that passes runner=, or runs under a replaced subprocess.run, is the test's own act and goes through",
+          (getattr(own, "why", None), getattr(patched, "why", None)))
+    out, reached = _leak_child("detached")
+    check(out.startswith("REFUSED") and "test process" in out and not reached,
+          "a child of a selftest, with no mark in its environment, starts no real pipeline unit", (out, reached))
+    out, reached = _leak_child("probe")
+    check(out.startswith("RAN") and reached, "a probe-family unit (a drill's throwaway) still launches from a test", (out, reached))
+
+
+def t_a_test_process_never_writes_the_real_ledger():
+    """A test process that appends with the ledger of this checkout in use is refused before any byte is written; a
+    ledger of the test's own (a path, RIMFLOW_LEDGER, a rebound model.EVENTS) takes the same event."""
+    import model as M
+    ev = {"seat": "BENCH", "event": "note", "id": "SELFTEST_LIVE_EFFECT_PROBE", "text": "t", "why": "selftest"}
+    wrote, real = [], M._append_locked
+    M._append_locked = lambda path, blob: wrote.append(path) or 0
+    try:
+        try:
+            M.append(dict(ev))
+            raised = None
+        except Exception as e:      # noqa: BLE001
+            raised = e
+        own = os.path.join(TMP, "own-ledger", "events", "BENCH.jsonl")
+        try:
+            M.append(dict(ev), own)
+            own_err = None
+        except Exception as e:      # noqa: BLE001
+            own_err = e
+    finally:
+        M._append_locked = real
+    check(type(raised).__name__ == "TestLiveEffect" and not [w for w in wrote if w != own],
+          "a selftest's append to this checkout's own ledger is refused before the write", (raised, wrote))
+    check(own_err is None and own in wrote, "an append to a ledger of the test's own is written", (own_err, wrote))
+
+
 # ---------------------------------------------------------------- his hold: the store writes, the file mirrors it
 
 OHTOOL = os.path.join(HERE, "mod_owner_hold.py")
@@ -2658,7 +2754,8 @@ def main():
               t_permit_never_ghosts, t_before_is_read, t_hold_file_mirrors_the_store,
               t_his_hold_lifts_by_him_or_the_conductor, t_conductor_lift_only_from_its_window,
               t_conductors_lift_is_its_own_act, t_mirror_failure_is_an_alarm, t_held_stays_held_across_the_mirror,
-              t_next_fits_a_screen, t_deadline_is_wall_clock, t_an_unseeded_mod_can_be_switched_off):
+              t_next_fits_a_screen, t_deadline_is_wall_clock, t_an_unseeded_mod_can_be_switched_off,
+              t_a_test_process_starts_no_real_unit, t_a_test_process_never_writes_the_real_ledger):
         print("== %s" % t.__name__)
         try:
             t()

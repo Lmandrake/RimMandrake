@@ -1004,7 +1004,7 @@ _OUTER = [None]   # False inside a nested runner (or a fixture): it must not ove
 
 def main(argv=None) -> int:
     args = _parser().parse_args(argv)
-    os.environ["RM_UNDER_SELFTEST"] = "1"      # rimflow/conductor_log_guard.py: every child is a test process
+    os.environ["RM_UNDER_SELFTEST"] = "1"      # rimflow/test_process.py: every child is a test process
     nested = bool(os.environ.get("RM_SELFTEST_NESTED"))
     if not nested and not os.environ.get("RM_SELFTEST_SKIP_DISK_GUARD"):
         tmp = os.environ.get("TMPDIR", "/tmp")

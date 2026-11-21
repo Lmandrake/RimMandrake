@@ -42,6 +42,7 @@ os.environ.update(RIMFLOW_LEDGER=os.path.join(T, "events.jsonl"), RIMFLOW_ITEMS=
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(HERE))
 from rimflow import cli, driver_lock as D, host_guard as H, model  # noqa: E402
+cli._bind_paths()      # RIMFLOW_LEDGER binds only in cli.main(); without this the in-process calls wrote the real ledger
 
 FAILS = []
 LOCK = os.environ["RIMFLOW_DRIVER_LOCK"]

@@ -6,22 +6,22 @@ Twice a selftest kept a writer's real path and rang fake alarms in the log the C
 18 lines). Each test was redirected in turn; this closes the class. Every writer calls refuse_if_test(path) just before
 it opens the log, and a refusal is an OSError, which each writer already handles as a log it could not write.
 
-A test process is one whose program is selftest*.py, or anything under run_selftests.py, which sets RM_UNDER_SELFTEST for
-its children. selftest_conductor_log_guard.py holds every rules file's path equal to LIVE, so the guard cannot go blind.
+What a test process is: test_process.py, the one definition. selftest_conductor_log_guard.py holds every rules file's
+path equal to LIVE, so the guard cannot go blind.
 """
 import os
 import sys
 
+try:
+    from .test_process import under_test
+except ImportError:
+    from test_process import under_test
+
 LIVE = "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md"
-UNDER_SELFTEST = "RM_UNDER_SELFTEST"
 
 
 class TestWroteLiveLog(OSError):
     """A test process tried to append to the real Conductor log."""
-
-
-def under_test():
-    return bool(os.environ.get(UNDER_SELFTEST)) or os.path.basename(sys.argv[0] if sys.argv else "").startswith("selftest")
 
 
 def refuse_if_test(path, live=None):

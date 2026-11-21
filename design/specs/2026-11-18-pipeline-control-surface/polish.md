@@ -41,3 +41,4 @@ finding while the stop stands. Its other two findings were proven and fixed by
 
 - `pipe next` prints the full owner-hold quote on every held mod: 18 lines, 3,894 characters and 10.3 s on
   2026-11-19 (RIMMANDRAKE_PROVE_PIPELINE_CONTROL_ASKS_MET_HE_ASKED_BEFORE). One short line per held mod would do.
+- 2026-11-21 `acceptance/control_promise_breaks_accept.py` reads COULD NOT LOOK: the page promise `an-unseeded-mod-can-be-switched-off` has no planted break, so the harness refuses to run any break. Seen while adding two promises (RIMMANDRAKE_GENERALIZE_PIPELINE_REPAIRS_INTO_FEW_PRINCIPLES); not at the publish door.

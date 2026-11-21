@@ -99,6 +99,10 @@ ROOT = os.environ.get("CLAUDE_PROJECT_DIR") or os.path.dirname(
 STATE = os.path.join(ROOT, "infrastructure", "state")
 LEDGER = os.path.join(STATE, "ledger")
 EVENTS = os.path.join(LEDGER, "events.jsonl")
+# The ledger of the checkout this file is in, whatever ROOT or EVENTS were rebound to: a test never appends to it
+# (append; test_process.py).
+REAL_LEDGER = os.path.realpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..",
+                                            "infrastructure", "state", "ledger"))
 ITEMS = os.path.join(STATE, "items")
 
 # 🔑 Prose for an item that has REACHED A TERMINAL STATE lives one level down, in
@@ -1535,6 +1539,12 @@ def append(ev, path=None):
     # (see `_check_stamp`: a stamp-less line made `_apply` raise KeyError, which
     # non-strict replay cannot collect), and callers legitimately hand this function
     # an unstamped dict. Validating before stamping would refuse every one of them.
+    if os.path.realpath(path or os.path.join(shard_dir(), "x")).startswith(REAL_LEDGER + os.sep):
+        try:
+            from . import test_process as _tp
+        except ImportError:
+            import test_process as _tp
+        _tp.refuse("append to this checkout's ledger", "bind a ledger of the test's own (a path, RIMFLOW_LEDGER, or model.EVENTS)")
     ev.setdefault("ts", now())
     # Sub-second order as CONTENT (reader invariant 3): a same-second burst from one
     # window — `game UP` then `game DOWN`, `file` then `claim` — must replay in the order

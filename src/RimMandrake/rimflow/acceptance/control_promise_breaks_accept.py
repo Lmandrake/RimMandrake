@@ -144,10 +144,15 @@ brk("counts-and-limits-are-adjustments", "_used() freezes the count at the first
      '        measured = m0 if _numeric(m0) else measured\n'))
 brk("a-test-never-touches-the-live-store", "test_process() ignores RM_UNDER_SELFTEST and RM_OWNER_HOLD_FILE (the live "
     "path is a decoy in the copy, so the break cannot reach the live store)",
-    ('    if os.environ.get("RM_UNDER_SELFTEST") or os.environ.get("RM_OWNER_HOLD_FILE"):\n        return True',
+    ('    if _tp.under_test() or os.environ.get("RM_OWNER_HOLD_FILE"):\n        return True',
      '    if False:\n        return True'),
     ('DEFAULT_DB = os.path.join(os.path.expanduser("~"), ".local", "state", "rimmandrake", "control", "control.db")',
      'DEFAULT_DB = os.path.join(os.path.dirname(HERE), "decoy-live-store", "control.db")'))
+brk("a-test-process-starts-no-real-unit", "launch_unit() lets a test process reach systemd-run with no runner of its own",
+    ('    if runner is None and subprocess.run is _REAL_RUN and spec.get("family") != "probe" and test_process():', '    if False:'))
+brk("a-test-process-never-writes-the-real-ledger", "model.append() takes a test process's write to this checkout's ledger "
+    "(the test's writer is a recorder, so the break writes nothing)",
+    ("model.py", '.startswith(REAL_LEDGER + os.sep):', '.startswith(REAL_LEDGER + os.sep) and False:'))
 brk("ended-run-is-recorded-ended", "hook_cmd() does not fall through to the seat clones' control.py",
     ("[os.path.abspath(__file__)] + \\\n        [os.path.join(c, rel) for c in wrapup.seat_clones()]",
      "[os.path.abspath(__file__)]"))

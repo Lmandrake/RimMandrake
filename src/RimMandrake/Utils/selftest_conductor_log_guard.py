@@ -8,6 +8,7 @@ import os
 import subprocess
 import sys
 import tempfile
+import time
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -41,17 +42,32 @@ check("every rules file's Conductor log is the path the guard protects", paths =
 
 
 # ---- who is a test process: read in a child of each shape, which writes nothing
-def child(name, under):
-    script = TMP / name
-    script.write_text("import sys\nsys.path.insert(0, %r)\nimport conductor_log_guard as G\n"
-                      "try:\n    G.refuse_if_test(%r)\nexcept G.TestWroteLiveLog:\n    sys.exit(7)\n" % (str(RIMFLOW), REAL_LIVE), encoding="utf-8")
-    env = {k: v for k, v in os.environ.items() if k != G.UNDER_SELFTEST}
+MARK = "RM_UNDER_SELFTEST"      # test_process.MARK
+
+
+def child(name, under, orphan=False):
+    """rc of a child that asks the guard. orphan: the child outlives its shell, so no ancestor of it is a selftest (a
+    descendant of a selftest is a test process whatever its environment says); its rc comes back in a file."""
+    script, rcf = TMP / name, TMP / (name + ".rc")
+    script.write_text("import sys, time\nsys.path.insert(0, %r)\nimport conductor_log_guard as G\nrc = 0\n%s"
+                      "try:\n    G.refuse_if_test(%r)\nexcept G.TestWroteLiveLog:\n    rc = 7\n%s"
+                      % (str(RIMFLOW), "time.sleep(1)\n" if orphan else "", REAL_LIVE,
+                         "open(%r, 'w').write(str(rc))\n" % str(rcf) if orphan else "sys.exit(rc)\n"), encoding="utf-8")
+    env = {k: v for k, v in os.environ.items() if k != MARK}
     if under:
-        env[G.UNDER_SELFTEST] = "1"
+        env[MARK] = "1"
+    if orphan:
+        subprocess.run(["sh", "-c", '"$0" "$1" >/dev/null 2>&1 &', sys.executable, str(script)], env=env, timeout=60)
+        for _ in range(100):
+            if rcf.exists() and rcf.read_text():
+                return int(rcf.read_text())
+            time.sleep(0.1)
+        return -1
     return subprocess.run([sys.executable, str(script)], env=env, capture_output=True, text=True, timeout=60).returncode
 
 
-check("production: an ordinary program may write the real log", child("ops_watch_like.py", False) == 0)
+check("production: an ordinary program may write the real log", child("ops_watch_orphan.py", False, orphan=True) == 0)
+check("a child of a selftest is a test process with no mark in its environment", child("ops_watch_like.py", False) == 7)
 check("a selftest run by hand is a test process", child("selftest_by_hand.py", False) == 7)
 check("anything under run_selftests is a test process, whatever its name", child("ops_watch_like.py", True) == 7)
 
@@ -62,8 +78,8 @@ def runner_marks_children():
     (root / "src").mkdir(parents=True)
     said = TMP / "said.txt"
     (root / "src" / "selftest_probe.py").write_text(
-        "import os, pathlib\npathlib.Path(%r).write_text(os.environ.get(%r, 'unset'))\n" % (str(said), G.UNDER_SELFTEST), encoding="utf-8")
-    env = {k: v for k, v in os.environ.items() if k != G.UNDER_SELFTEST}
+        "import os, pathlib\npathlib.Path(%r).write_text(os.environ.get(%r, 'unset'))\n" % (str(said), MARK), encoding="utf-8")
+    env = {k: v for k, v in os.environ.items() if k != MARK}
     env.update(RM_SELFTEST_REPO_ROOT=str(root), RM_SELFTEST_STATE_DIR=str(TMP / "state"), RM_SELFTEST_LOCK=str(TMP / "lock"),
                RM_SELFTEST_CACHE_DIR=str(TMP / "cache"), RM_SELFTEST_SKIP_DISK_GUARD="1", RM_SELFTEST_NO_HARNESS="1")
     env.pop("RM_SELFTEST_NESTED", None)
