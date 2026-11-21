@@ -1,13 +1,13 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":41456,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"HOLDER.run-1795260677":2559,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=cba8293aa7ec85db53a06da0a77ffd1b5ffed8fd5d3201287ab18be397c80801 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":41456,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"HOLDER.run-1795260677":3322,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=46c389a980526087f45bac75c7d98715d8be244c6d853a8a56a23dc40c68a22d -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage in_game · 1466 events in 20 shards · reducer 1
-holder lease run-1795260677, token 28, last active 2026-11-21T12:11:02Z
+version 0.1.0 · stage in_game · 1467 events in 20 shards · reducer 1
+holder lease run-1795260677, token 28, last active 2026-11-21T12:13:07Z
 holder session 288f91ef-136a-4cf4-beb7-249398a482e8, context 304141 of ceiling 400000
 
-## Last checkpoint (HOLDER.run-1795257509, 2026-11-21T11:22:40Z)
-- done: sc_islands control fixed and PASS live on game b, 175293dc5f: winches held by ProofWinchHold (no damage reaches a held winch), not a hit-point reset; three water-look settings registered in site_spec (north-star selftest green)
-- next: Record sc_islands PASS for the bars it decides (island_bridges_trap_and_fail) in the next in-game visit
-- ruled out: the mod dropping a leaf whose winch stands; stale winch ids after the restage; a fallen leaf of one hinge side not walkable
+## Last checkpoint (HOLDER.run-1795260677, 2026-11-21T12:13:07Z)
+- done: sc_moat_raid fixed and PASS six of six live on game b, eb15c22de9cd: moat dug to its water (6 notches, 3 m), winch in the plot, control ends at the crossing, capture by the pit-trap idiom; walk and traps written, c9e4ad0fa3bf
+- next: Record sc_moat_raid PASS for moat_raid_sequence in the next in-game visit
+- ruled out: the mod refusing the swim path; the job giver picking no target; the assault lord holding the raiders; the leaf raising itself in the control
 
 ## Open findings (178)
 (claimed fixes, awaiting a judge, on one line each with the oldest 127 open findings, named without their 'finding:': `modledger.py show --mod FlowWorks finding:<NAME>`)
@@ -498,6 +498,6 @@ spend recorded: USD 78.94, 45401435 tokens
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
 - notes: 11, never printed here (`modledger.py find --mod FlowWorks <words>`)
-- the full history: 1466 events (views/history.md; never read whole)
+- the full history: 1467 events (views/history.md; never read whole)
 
-cursor: t=2026-11-21T12:11:02Z.1795263062177945004 (modledger.py since --mod FlowWorks t=2026-11-21T12:11:02Z.1795263062177945004 prints what changed after this packet)
+cursor: t=2026-11-21T12:13:07Z.1795263187599995760 (modledger.py since --mod FlowWorks t=2026-11-21T12:13:07Z.1795263187599995760 prints what changed after this packet)

@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "b1b0350382577dfaec77db0159b9680184f8172e7e727ee8eab849f932c4d22e",
+  "body_sha256": "9d44f1137eacba930e972c19ffc88d395c29db25e8768f83b4e4852d9410a77c",
   "reducer": 1,
   "shards": {
    "BACKFILL": 893183,
@@ -18,7 +18,7 @@
    "HOLDER.run-1795235568": 2438,
    "HOLDER.run-1795244678": 3570,
    "HOLDER.run-1795257509": 5815,
-   "HOLDER.run-1795260677": 2559,
+   "HOLDER.run-1795260677": 3322,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1259,11 +1259,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795257509",
-   "done": "sc_islands control fixed and PASS live on game b, 175293dc5f: winches held by ProofWinchHold (no damage reaches a held winch), not a hit-point reset; three water-look settings registered in site_spec (north-star selftest green)",
-   "next": "Record sc_islands PASS for the bars it decides (island_bridges_trap_and_fail) in the next in-game visit",
-   "ruled_out": "the mod dropping a leaf whose winch stands; stale winch ids after the restage; a fallen leaf of one hinge side not walkable",
-   "ts": "2026-11-21T11:22:40Z"
+   "by": "HOLDER.run-1795260677",
+   "done": "sc_moat_raid fixed and PASS six of six live on game b, eb15c22de9cd: moat dug to its water (6 notches, 3 m), winch in the plot, control ends at the crossing, capture by the pit-trap idiom; walk and traps written, c9e4ad0fa3bf",
+   "next": "Record sc_moat_raid PASS for moat_raid_sequence in the next in-game visit",
+   "ruled_out": "the mod refusing the swim path; the job giver picking no target; the assault lord holding the raiders; the leaf raising itself in the control",
+   "ts": "2026-11-21T12:13:07Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1715,7 +1715,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1466,
+  "events": 1467,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7816,7 +7816,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-21T12:11:02Z",
+   "last": "2026-11-21T12:13:07Z",
    "lease": "run-1795260677",
    "released": false,
    "token": 28
