@@ -671,63 +671,7 @@ def resume_go(rec, now):
                    projects=PROJECTS)
 
 
-def t_a_warm_continuation_resumes_the_ended_session():
-    plant_session(context=300000)
-    rec = resumable(session=SID)
-    r = resume_go(rec, T0 + 660)     # ended T0+600: 1 min gap
-    L = LAUNCHES[-1] if LAUNCHES else {}
-    check("warm: continued", r.get("act") == "continued", str(r))
-    check("warm: launched with resume_session of the ended session", L.get("resume_session") == SID, str(L)[:300])
-    check("warm: the prompt says it is the same session", "same session" in (L.get("brief") or ""), L.get("brief", "")[:300])
-    check("warm: the prompt does not repeat the brief", "the previous run's brief" not in (L.get("brief") or ""))
-    check("warm: record says continue_how resume", (L.get("extra") or {}).get("continue_how") == "resume", str(L.get("extra")))
-    # a lane hand-off to the next ticket is the same role, same brief: it resumes too
-    plant_session(context=200000)
-    rec = resumable(brief=LANE_BRIEF, session=SID)
-    clear_continuations()
-    del LAUNCHES[:]
-    got = {"state": "done", "notes": []}
-    p = LOC.plan(rec, got, {LANE[0]: "done", LANE[1]: "claimed"}, now=T0 + 700, gates=Gates().as_dict())
-    rec = DH.read_record(rec["unit"]); rec["continue_plan"] = p; DH.write_record(rec)
-    LOC.run(rec["unit"], now=T0 + 700, launch_fn=fake_launch, gates=Gates().as_dict(), reader=open_reader(),
-            projects=PROJECTS)
-    check("warm lane hand-off resumes", LAUNCHES and LAUNCHES[-1].get("resume_session") == SID, str(LAUNCHES)[:300])
-
-
-def t_a_cold_large_or_lost_session_starts_fresh():
-    cases = [("context 450k, over the ceiling", 450000, SID, T0 + 660, "ceiling"),
-             ("gap 70 min", 300000, SID, T0 + 600 + 70 * 60, "min"),
-             ("no transcript", 300000, "99999999-8888-7777-6666-555555555555", T0 + 660, "transcript"),
-             ("context unreadable", None, SID, T0 + 660, "UNMEASURED")]
-    for name, ctx, sid, now, word in cases:
-        plant_session(context=ctx)
-        rec = resumable(session=sid)
-        r = resume_go(rec, now)
-        L = LAUNCHES[-1] if LAUNCHES else {}
-        ex = L.get("extra") or {}
-        check("fresh (%s): continued" % name, r.get("act") == "continued", str(r))
-        check("fresh (%s): no resume_session" % name, L and not L.get("resume_session"), str(L.get("resume_session")))
-        check("fresh (%s): the written state carries the previous brief" % name,
-              "the previous run's brief" in (L.get("brief") or ""))
-        check("fresh (%s): continue_how fresh, why names it" % name,
-              ex.get("continue_how") == "fresh" and word.lower() in str(ex.get("continue_fresh_why")).lower(), str(ex))
-    # a resume launch refused for a vanished transcript is retried once fresh
-    plant_session(context=300000)
-    rec = resumable(session=SID)
-    clear_continuations()
-    calls = []
-
-    def gone(seat, item, brief, model, max_s, budget, **kw):
-        calls.append(kw.get("resume_session"))
-        if kw.get("resume_session"):
-            return 2, "REFUSED: session %s has no transcript under x; the holder starts from the packet" % SID
-        return fake_launch(seat, item, brief, model, max_s, budget, **kw)
-    got = {"state": "claimed", "notes": [dict(note(LEFT, T0 + 300), id=rec["item"])]}
-    p = LOC.plan(rec, got, {}, now=T0 + 700, gates=Gates().as_dict())
-    rec = DH.read_record(rec["unit"]); rec["continue_plan"] = p; DH.write_record(rec)
-    r = LOC.run(rec["unit"], now=T0 + 660, launch_fn=gone, gates=Gates().as_dict(), reader=open_reader(),
-                projects=PROJECTS)
-    check("a refused resume is retried fresh once", calls == [SID, None] and r.get("act") == "continued", str((calls, r)))
+# the resume-or-fresh choice: selftest_continuation_progress.py (design/specs/2026-11-21-live-sitting-context-burn/boundary.md)
 
 
 def t_a_blind_role_never_resumes():
@@ -766,8 +710,7 @@ def main():
               t_the_step_rereads_the_target_before_launch, t_launch_checks_are_skipped_only_for_the_same_item,
               t_an_open_lane_item_is_its_own_target, t_a_refused_continuation_spends_no_daily_slot,
               t_an_alarm_whose_log_write_failed_is_retried, t_the_alarm_honours_the_run_root,
-              t_the_run_end_note_carries_no_spend_sentence, t_a_warm_continuation_resumes_the_ended_session,
-              t_a_cold_large_or_lost_session_starts_fresh, t_a_blind_role_never_resumes):
+              t_the_run_end_note_carries_no_spend_sentence, t_a_blind_role_never_resumes):
         try:
             t()
         except Exception as e:  # noqa: BLE001

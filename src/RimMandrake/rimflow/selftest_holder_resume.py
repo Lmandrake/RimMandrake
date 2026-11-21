@@ -136,6 +136,8 @@ try:
     finally:
         M.brief_text, M.brief_dir = old_bt, old_bd
     b = seen.get("brief", "")
+    check("the holder's resume is marked --planned-resume (resume_plan decided it; the 150k rule does not apply)",
+          "--planned-resume" in seen.get("argv", []), seen.get("argv"))
     check("the launch passes --resume to the detached launcher", rc == 0 and "--resume" in seen.get("argv", []) and
           seen["argv"][seen["argv"].index("--resume") + 1] == SID, seen.get("argv"))
     check("the brief opens with the resume and the reconcile step", b.index("resumed (session") < b.index(

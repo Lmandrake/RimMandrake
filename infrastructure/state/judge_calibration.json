@@ -642,7 +642,7 @@
      "planted (code_review_calibration.py): the 21 claims that are a rare failure the page lists as not handled, or polish, by the same rule; must not be admitted as Problems"
     ]
    },
-   "hash": "8883a97eade16ebf",
+   "hash": "8f487294f6f811ba",
    "last_run": {
     "at": "2026-11-19T13:54:07Z",
     "cases": "came out the other way: c2.9, c3.4, c4.1, c4.14",
@@ -798,7 +798,7 @@
      "id": "c4.15"
     }
    ],
-   "reset_at": "2026-11-20T04:27:57Z",
+   "reset_at": "2026-11-21T16:51:22Z",
    "status": "UNTESTED",
    "timeout_s": 540,
    "was": "UNTESTED"
@@ -825,7 +825,7 @@
      "planted (coverage_calibration.py): good_one_kind_enough, his promise that a lit lantern keeps the beasts away, tested with one animal kind and a control: \"test it against every roster kind\" is advice (rule 1)"
     ]
    },
-   "hash": "c60d29aca9f565cd",
+   "hash": "fa25c79b921d4ee7",
    "last_run": {
     "at": "2026-11-18T21:33:57Z",
     "cases": "12 planted case(s) ran and came out as planted",
@@ -1200,7 +1200,7 @@
      "id": "good_one_kind_enough"
     }
    ],
-   "reset_at": "2026-11-20T13:53:02Z",
+   "reset_at": "2026-11-21T16:51:22Z",
    "status": "UNTESTED",
    "timeout_s": 1800,
    "was": "UNTESTED"
@@ -1226,7 +1226,7 @@
    ],
    "hash": "0ee972edfd0c3f9c",
    "last_run": {
-    "at": "2026-11-21T13:30:01Z",
+    "at": "2026-11-21T16:51:22Z",
     "cases": "822 planted case(s) ran and came out as planted",
     "exit": 0,
     "out": "evidence corpus: 55 false closes, 55 rejected; 767 valid closes, 767 accepted - OK",
@@ -1259,9 +1259,9 @@
     "src/RimMandrake/rimflow/selftest_maturation.py",
     "--submit"
    ],
-   "hash": "67555cefed7a2d77",
+   "hash": "60df0c9e1163d019",
    "last_run": {
-    "at": "2026-11-21T13:30:01Z",
+    "at": "2026-11-21T16:51:22Z",
     "cases": "3 planted case(s) ran and came out as planted",
     "exit": 0,
     "out": "ALL PASS",
@@ -1297,7 +1297,7 @@
      "id": "locked_version_passes"
     }
    ],
-   "reset_at": "2026-11-21T13:30:01Z",
+   "reset_at": "2026-11-21T16:51:22Z",
    "status": "CALIBRATED",
    "was": "CALIBRATED"
   },

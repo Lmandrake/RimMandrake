@@ -231,7 +231,7 @@ def t4_packet_line():
     t, _ = ML.packet_from(PILOT, ML.read(root, PILOT), budget=1)
     check("4 the briefest packet names every open finding but prints none of its text (FlowWorks' 246 open findings "
           "held the packet at 14,694 tokens)", F3[len("finding:"):] in t and "SENTINELOPENTEXT" not in t, t[-500:])
-    budget = 900
+    budget = 2000     # real tokens (chars / 1.8): the fixture's packet and holder lines need ~1.8k
     out = ML.launch(root, PILOT, "run-fit", "builder", stage="offline_build", budget=budget)
     check("4 the ledger part of a launch (packet and holder lines) fits the line", ML.tokens(out["brief"]) <= budget,
           ML.tokens(out["brief"]))

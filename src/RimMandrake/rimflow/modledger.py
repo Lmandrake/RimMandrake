@@ -138,8 +138,13 @@ def kind_allowed(writer, kind):
 
 
 def tokens(text):
-    """The spec's estimate: tokens = bytes / 4, rounded up."""
-    return (len(text.encode("utf-8")) + 3) // 4
+    """The estimate: characters / chars_per_token (modledger.json, measured 2026-11-21 at 1.8 on a FlowWorks brief;
+    the spec's bytes / 4 counted these texts about 2x low), rounded up. A config without the ratio fails by name."""
+    try:
+        r = float(config()["chars_per_token"])
+    except KeyError:
+        raise ModLedgerError("modledger.json has no chars_per_token: the token estimate cannot be made") from None
+    return int(-(-len(text) // r))
 
 
 def _canon(obj):

@@ -6,6 +6,7 @@ one runs. A detached run lives in its own transient systemd unit and survives th
 
   python3 src/RimMandrake/rimflow/detached_helper.py launch --seat BENCH --item ITEM_ID --brief-file F \
       --budget-usd USD|0 [--model fable|opus|sonnet] [--max-s none|SECONDS] [--resume SESSION] [--continue-on-cap N]
+      [--agent NAME]
   python3 src/RimMandrake/rimflow/detached_helper.py status [--all]
   python3 src/RimMandrake/rimflow/detached_helper.py finish --unit U     (the unit's ExecStopPost; never by hand)
   python3 src/RimMandrake/rimflow/detached_helper.py return --unit U [--no-publish-ledger]   (the unit's last ExecStopPost)
@@ -24,7 +25,11 @@ spend_watchdog.py, from outside the agent, at the cap the launch states (require
 without one carries the newest run record of that session's cap, and refuses when none is readable), never with
 claude --max-budget-usd, which tells the agent its spend every turn:
 owner 2026-11-16, RIMMANDRAKE_HIDE_SPEND_FROM_BUILDERS_CAP_NAGGED_EVERY_TURN); the brief states no spend or cap. The brief gets a footer: work in the clone, land with ./publish, put state, evidence and one
-imperative NEXT on the item as a rimflow note and publish the shard.
+imperative NEXT on the item as a rimflow note and publish the shard, and a PROGRESS: note after each experiment.
+--resume SESSION follows the one resume rule (left_open_continue.whole_or_fresh): a session whose context is at or over
+RESUME_WHOLE_MAX_TOKENS, when its item holds a progress record, launches FRESH from the brief, that record and the
+previous brief; otherwise it resumes. --agent NAME starts claude as that agent (its .claude/agents file is the system
+prompt); boundary design/specs/2026-11-21-live-sitting-context-burn/boundary.md.
 finish: runs when the unit stops for any reason (done, failed, killed at its bound). It first KILLs and stops the run's
 claude_bounded scope (claude-seat-<seat>-<unit>.scope): claude lives there, outside the unit, so a stopped unit alone left
 it running and billing (DETACHED_STOP_FIX_ORPHAN_KEEPS_BILLING, 2026-11-03: killed at 15:06:59, ran to ~15:13). It writes the outcome as a note
@@ -139,6 +144,10 @@ Ledger item: {item}. Seat: {seat}. {bound_text}.
   `python3 src/RimMandrake/rimflow/cli.py note {item} --text "..." --seat {seat} --why "detached run"`, then publish the
   shard: `./publish -m "ledger: {item} note" infrastructure/state/ledger/events/{seat}.jsonl`. An event you write with
   --per-ruling, --owner-said or --by-card (a `file` under a ruling, say) lands in OWNER.jsonl: publish that shard too.
+- After each experiment or step that changes what you know, write your progress record as a note whose text starts
+  `PROGRESS:` and names the theory, the experiment, the reading and the next action (`cli.py note {item} --text
+  "PROGRESS: theory: ... | experiment: ... | reading: ... | next: ..." --seat {seat} --why "detached run"`). A stopped
+  run with a large context is carried on by a fresh session that has only this brief and those notes.
 - This run ends when your turn ends: a helper or command still running in the background then is killed and its work
   is lost. Run helpers and long commands in the foreground and take their results before your last message; never end
   "waiting" for anything.
@@ -963,6 +972,24 @@ def game_env(env):
     return dict(env, **game_instance.env(name))
 
 
+AGENT_ENV = "RM_CLAUDE_AGENT"     # the run starts as `claude --agent <name>`: .claude/agents/<name>.md is its system prompt
+
+
+def agent_repair(rec, clone, msg):
+    """A run whose env names an agent with no .claude/agents/<name>.md in its clone: a fault of form, repaired here. The
+    agent is dropped from the env (no --agent), the record says why, and the brief gets the role-file line. -> msg."""
+    name = (rec.get("env") or {}).get(AGENT_ENV)
+    if not name:
+        return msg
+    path = os.path.join(clone or "", ".claude", "agents", "%s.md" % name)
+    if re.fullmatch(r"[a-z0-9][a-z0-9-]*", name) and os.path.isfile(path):
+        return msg
+    rec["env"] = {k: v for k, v in rec["env"].items() if k != AGENT_ENV}
+    rec["agent_dropped"] = "agent %r has no %s in the clone: launched without --agent" % (name, path)
+    return ("Your launch could not start you as agent %s (no `.claude/agents/%s.md` in your clone). If that file exists "
+            "on origin/main, read it in full first, as your role file.\n\n" % (name, name)) + msg
+
+
 def launch_argv(rec, msg, claude):
     """role_launch.launch_argv's shape, plus ExecStopPost=finish so the outcome is recorded even on a kill."""
     clone, unit, seat = rec["clone"], rec["unit"], rec["seat"]
@@ -982,6 +1009,8 @@ def launch_argv(rec, msg, claude):
            "--settings", _control_settings(rec)]     # its PostToolUse hook: the stop channel (`pipe stop --write-now`)
     if rec.get("resume_session"):       # a mod's holder session (modledger.resume_plan), carried into this clone
         cmd += ["--resume", rec["resume_session"]]
+    if (rec.get("env") or {}).get(AGENT_ENV):   # its role file is the system prompt: no Read of it, ~15k fewer a request
+        cmd += ["--agent", rec["env"][AGENT_ENV]]
     # the spend cap is enforced from outside: the agent is never told its spend (owner 2026-11-16, spend_watchdog.py);
     # --budget-usd 0 launches with no cap at all
     if rec["budget_usd"] > 0:
@@ -1285,6 +1314,7 @@ def _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, 
         rec["launch_checks_skipped"] = skip_launch_checks
     if env:
         rec["env"] = dict(env)
+        brief = agent_repair(rec, clone, brief)
     if resume_session:
         moved = carry_session(resume_session, clone, projects)
         if not moved:
@@ -1959,6 +1989,11 @@ def main(argv=None):
                    help="the Conductor's bypass of the item's ## launch-checks block; WHY is recorded on the run record")
     a.add_argument("--resume", metavar="SESSION", help="resume this claude session (a mod's holder; its transcript is "
                                                         "carried into the run's clone)")
+    a.add_argument("--planned-resume", action="store_true",
+                   help="the --resume was decided by its caller's own rule (a mod holder's modledger.resume_plan, his "
+                        "400k card): launch it as given, outside left_open_continue's 150k resume rule")
+    a.add_argument("--agent", metavar="NAME", help="start the run as `claude --agent NAME` (.claude/agents/NAME.md "
+                                                    "is its system prompt); sets RM_CLAUDE_AGENT on the run")
     a.add_argument("--continue-on-cap", type=int, default=0, metavar="N",
                    help="a stop by the spend watchdog is carried on by itself up to N times (left_open_continue.py); "
                         "default 0: a cap stop ends the work")
@@ -1982,6 +2017,8 @@ def main(argv=None):
             with open(args.brief_file, encoding="utf-8") as fh:
                 brief = fh.read()
         env = dict(kv.partition("=")[::2] for kv in args.env)
+        if args.agent:
+            env[AGENT_ENV] = args.agent
         bad = [k for k in env if not re.match(r"^RM_[A-Z0-9_]+$", k)]
         budget, carried = args.budget_usd, ""
         if budget is None and args.resume:
@@ -1998,11 +2035,17 @@ def main(argv=None):
         elif budget < 0:
             rc, text = 2, "REFUSED: --budget-usd %g is negative (0 = no cap)" % budget
         else:
+            extra = {"continue_on_cap": args.continue_on_cap} if args.continue_on_cap > 0 else {}
+            session, first = args.resume, ""
+            if session and not args.planned_resume:     # the one resume rule (left_open_continue.whole_or_fresh): a large session with a progress
+                import left_open_continue as LOC        # record starts fresh from it
+                cr = LOC.conductor_resume(session, args.item, brief)
+                session, brief, first = cr["session"], cr["brief"], cr["line"]
+                extra.update(cr["extra"])
             rc, text = launch({"CONDUCTOR": "BENCH"}.get(args.seat.upper(), args.seat.upper()), args.item, brief, args.model,
                               args.max_s, budget, clone=args.clone, skip_launch_checks=args.skip_launch_checks,
-                              env=env, resume_session=args.resume,
-                              extra={"continue_on_cap": args.continue_on_cap} if args.continue_on_cap > 0 else None)
-            text = carried + text
+                              env=env, resume_session=session, extra=extra or None)
+            text = (first + "\n" if first else "") + carried + text
     elif args.cmd == "finish":
         keep_off_result(args.unit)      # before anything prints: never into claude's result or error file
         rc, text = finish(args.unit)

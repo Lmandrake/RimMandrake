@@ -27,10 +27,14 @@ a `pipe off` switch on its scope; a gate that cannot be read is a named no. At m
 (its chain's first item) in 24 h; the next one is the alarm ALARM_ID in the Conductor log and no launch. The header
 carries no spend, cap or remainder (owner 2026-11-16: no launched agent is told its spend).
 
-The continuation RESUMES the ended session (`--resume`) when its transcript is found, the run ended under WARM_S ago
-(the prompt cache is still warm) and its last context is under modledger's holder_context_ceiling_tokens; the prompt
-is then the header alone. Else it starts fresh, with the header and the previous brief as its written state, and the
-record names why (continue_fresh_why). A blind role never resumes: a judge, reader, examiner, challenger or coverage
+The continuation RESUMES the ended session (`--resume`) when its transcript is found and its last context is under
+RESUME_WHOLE_MAX_TOKENS, whatever the time since it ended; the prompt is then the header alone. A larger (or unreadable)
+context starts FRESH when the run left a progress record (PROGRESS: or LEFT OPEN: notes on its item since its chain
+began): the brief is the header, that record and the previous brief, and the record names why (continue_fresh_why).
+With no progress record it resumes anyway, so nothing is lost (continue_resume_why). The Conductor's manual
+`detached_helper.py launch --resume` follows the same rule (conductor_resume). Boundary:
+design/specs/2026-11-21-live-sitting-context-burn/boundary.md (RIMMANDRAKE_STOP_RESUME_REWRITING_CONTEXT_A_MILLION_AT_ONCE).
+A blind role never resumes: a judge, reader, examiner, challenger or coverage
 judge starts fresh every time (RIMMANDRAKE_LAUNCH_SIX_CONTEXT_KEEPING_CHANGES_FROM_THE_SCAN; owner 2026-11-20: "The
 needless churn of shutdown->reload context->figure out what to do when you literally started that way before
 shutdown. That needs to STOP." and "blind judges and others don't inherit the builder's context").
@@ -53,9 +57,13 @@ ALARM_ID = "DETACHED_CONTINUE_LIMIT_REACHED"
 HEAD = "LEFT OPEN CONTINUE"
 LANE_RX = re.compile(r"\blane\b", re.I)
 BULLET_ID_RX = re.compile(r"^\s*[-*]\s+`([A-Z][A-Z0-9_]{7,})`", re.M)
-# Past the prompt cache's 1 h life the first resumed turn writes the whole context again at the cache-write price: 18 of
-# 33 resumes in the 2026-11-20 scan missed the cache (9.08M on the first turns of the 9 that waited 68 to 226 min).
-WARM_S = 3300
+# A resume carries the session's whole context into every request, and on a cache miss (past the 1 h cache life, or a
+# model change) its first request writes all of it again: 2026-11-21, resumes of 252k-362k contexts cost 0.72M-1.20M
+# weighted_v2 in that one request, 29-48% of a 2.5M cap; a fresh sitting starts at 74k-105k. Past this, a run that left a
+# progress record starts fresh from it (design/specs/2026-11-21-live-sitting-context-burn/boundary.md LIMITS).
+RESUME_WHOLE_MAX_TOKENS = 150000
+PROGRESS_HEADS = ("PROGRESS:", "LEFT OPEN:")
+CONDUCTOR_PROJECTS = None      # the transcripts' projects dir for conductor_resume (None: detached_helper's default)
 BLIND_STAGES = ("blind_challenge",)
 BLIND_VERBS = ("JUDGE", "CHALLENGE", "PILOT", "EXAMINE")     # maturation_dispatch.JUDGE_VERBS, and the exam's
 ROLE_RX = re.compile(r"\byou are (?:a|an|the)\s+(?:[\w-]+\s+){0,2}?(judge|reviewer|reader|examiner|challenger)\b", re.I)
@@ -269,7 +277,11 @@ def plan(rec, got, lane_states, now=None, gates=None, root=None):
     if len(done) >= MAX_PER_DAY:
         return dict(base, act="alarm", why="%d continuations of %s in 24 h already (%s)" % (
             len(done), rec.get("continue_root_item") or item, ", ".join(r["unit"] for r in done[-MAX_PER_DAY:])))
-    return dict(base, act="continue", target=target, open_lane=open_lane, capped=cap, kind=kind,
+    progress = progress_record(got.get("notes"), [x for x in (item, rec.get("continue_root_item")) if x],
+                               chain_start(rec, root))
+    if said:
+        progress.append({"ts": "its result text", "text": said})
+    return dict(base, act="continue", target=target, open_lane=open_lane, capped=cap, kind=kind, progress=progress,
                 note={"ts": noted.get("ts"), "text": noted.get("text")} if noted else None,
                 n=int(rec.get("continue_n") or 0) + 1,
                 why=("stopped from outside; --continue-on-cap %d" % opt) if cap else
@@ -299,35 +311,97 @@ def blind_role(rec, target=None):
     return "its brief's title says %r" % m.group(0) if m else None
 
 
+def chain_start(rec, root=None):
+    """-> the start time of the chain's first run (its continue_root's record), else this run's own start."""
+    first = DH.read_record(rec["continue_root"], root) if rec.get("continue_root") else None
+    for r in (first, rec):
+        if isinstance((r or {}).get("at"), (int, float)):
+            return r["at"]
+    return 0
+
+
+def progress_record(notes, items, since):
+    """-> the run's progress record: every note on one of `items` whose text starts PROGRESS: or LEFT OPEN: (any case),
+    written at or after `since`, as [{"ts", "text"}] oldest first, each text whole."""
+    out = []
+    for e in notes or []:
+        t = DH._epoch(e.get("ts")) if isinstance(e, dict) else None
+        if (t is not None and t >= since and e.get("event") == "note" and e.get("id") in set(items)
+                and str(e.get("text") or "").strip().upper().startswith(PROGRESS_HEADS)):
+            out.append((t, {"ts": e.get("ts"), "text": str(e.get("text"))}))
+    return [n for _, n in sorted(out, key=lambda x: x[0])]
+
+
+def progress_block(progress):
+    """The progress record as brief text, or "" when there is none."""
+    if not progress:
+        return ""
+    lines = ["---- the run's progress record (its PROGRESS: and LEFT OPEN: notes, oldest first, verbatim) ----"]
+    for n in progress:
+        lines.append("[%s]" % (n.get("ts") or "?"))
+        lines += ["> " + ln for ln in str(n.get("text") or "").splitlines() or [""]]
+    return "\n".join(lines) + "\n"
+
+
+def whole_or_fresh(ctx, progress):
+    """The one rule. -> (resume?, why). ctx: the session's last context in tokens, or None when unreadable."""
+    if ctx is not None and ctx < RESUME_WHOLE_MAX_TOKENS:
+        return True, "its context of %d tokens is under %d: it resumes" % (ctx, RESUME_WHOLE_MAX_TOKENS)
+    size = ("its context of %d tokens is at or over %d" % (ctx, RESUME_WHOLE_MAX_TOKENS) if ctx is not None else
+            "its context is UNMEASURED (no main-thread usage), counted as at or over %d" % RESUME_WHOLE_MAX_TOKENS)
+    if progress:
+        return False, "%s, and it left a progress record (%d note(s)): a fresh session starts from it" % (
+            size, len(progress))
+    return True, "%s, but it left no progress record (no PROGRESS: or LEFT OPEN: note since its chain began): it " \
+                 "resumes, so nothing is lost" % size
+
+
 def resume_choice(rec, p, now, projects=None):
-    """-> (session id, None) to resume the ended run's session, or (None, why it starts fresh)."""
+    """-> (session id, None, why it resumes) to resume the ended run's session, or (None, why it starts fresh, None)."""
     role = blind_role(rec, p.get("target"))
     if role:
-        return None, "a blind role (%s) always starts fresh, never in a session that holds earlier context" % role
-    ended = rec.get("ended")
-    if not isinstance(ended, (int, float)):
-        return None, "its end time is not recorded, so the cache's warmth is UNMEASURED"
-    if now - ended >= WARM_S:
-        return None, "it ended %d min ago, past the %d min the prompt cache stays warm" % ((now - ended) // 60,
-                                                                                         WARM_S // 60)
+        return None, "a blind role (%s) always starts fresh, never in a session that holds earlier context" % role, None
     import stop_resume as SR
     sid = rec.get("session") or rec.get("session_id")
     if not (sid and DH.find_transcript(sid, projects)):
         sid = SR.session_of(rec, projects)
     t = DH.find_transcript(sid, projects) if sid else None
     if not t:
-        return None, "no transcript of its session was found"
-    ctx = DH.context_tokens(t)
-    if ctx is None:
-        return None, "its session's context is UNMEASURED (no main-thread usage in %s)" % t
-    try:
-        import modledger
-        ceiling = int(modledger.config()["holder_context_ceiling_tokens"])
-    except Exception as e:  # noqa: BLE001
-        return None, "the context ceiling could not be read (%s: %s)" % (type(e).__name__, e)
-    if ctx >= ceiling:
-        return None, "its context of %d tokens is at or over the %d ceiling" % (ctx, ceiling)
-    return sid, None
+        return None, "no transcript of its session was found", None
+    resume, why = whole_or_fresh(DH.context_tokens(t), p.get("progress") or [])
+    return (sid, None, why) if resume else (None, why, None)
+
+
+def conductor_resume(session, item, brief, projects=None, reader=None):
+    """The Conductor's `launch --resume SESSION`, under the one rule. -> {"session": the session to resume or None,
+    "brief": the brief to launch, "extra": record fields, "line": one line to print first, or ""}."""
+    projects = projects or CONDUCTOR_PROJECTS
+    t = DH.find_transcript(session, projects)
+    if not t:          # the launch itself refuses a session with no transcript, as before
+        return {"session": session, "brief": brief, "extra": {}, "line": ""}
+    mine = sorted((r for r in DH.all_records() if session in (r.get("session"), r.get("resume_session"))
+                   and isinstance(r.get("at"), (int, float))), key=lambda r: r["at"])
+    if not mine:
+        return {"session": session, "brief": brief, "line": "", "extra": {"continue_resume_why": "no run record holds "
+                "session %s, so its progress record cannot be read: it resumes" % session}}
+    got = (reader or (lambda i: DH.read_item(DH.REPO, i)))(item)
+    if not isinstance(got, dict):       # could not look: never read as "no progress record", said as its own cause
+        return {"session": session, "brief": brief, "line": "", "extra": {"continue_resume_why": "the notes of %s "
+                "could not be read (progress record UNMEASURED): it resumes" % item}}
+    items = [item] + [x for x in (mine[0].get("continue_root_item"), mine[0].get("item")) if x and x != item]
+    progress = progress_record(got.get("notes"), items, chain_start(mine[0]))
+    resume, why = whole_or_fresh(DH.context_tokens(t), progress)
+    if resume:
+        return {"session": session, "brief": brief, "extra": {"continue_resume_why": why}, "line": ""}
+    orig = brief_of(mine[0])          # the session's first run holds the original brief; a resume's is its short prompt
+    text = (brief.rstrip() + "\n\nThis is a FRESH session, not a resume of session %s (%s). Your clone stands on "
+            "origin/main. First read `git log --oneline -15` and `python3 src/RimMandrake/rimflow/cli.py show %s`; do "
+            "not redo work that is already published. Then carry on from the progress record below.\n\n" % (
+                session, why, item)) + progress_block(progress)
+    if orig.strip():
+        text += "\n---- the previous run's brief ----\n" + orig.rstrip() + "\n"
+    return {"session": None, "brief": text, "line": "FRESH instead of --resume %s: %s" % (session, why),
+            "extra": {"continue_how": "fresh", "continue_fresh_why": why, "resume_converted_from": session}}
 
 
 def header(rec, p, now):
@@ -362,8 +436,9 @@ def header(rec, p, now):
         return "\n".join(lines) + "\n"
     lines.append("This is a fresh session with no memory of the previous one. Your clone stands on origin/main. First "
                  "read `git log --oneline -15` and `python3 src/RimMandrake/rimflow/cli.py show %s`; do not redo work "
-                 "that is already published. Then carry on from where it stopped." % p["target"])
-    return "\n".join(lines) + "\n"
+                 "that is already published. Then carry on from where it stopped%s." % (
+                     p["target"], ", as the progress record below says" if p.get("progress") else ""))
+    return "\n".join(lines) + "\n" + ("\n" + progress_block(p.get("progress")) if p.get("progress") else "")
 
 
 def alarm(rec, p, now, log_path=None, root=None):
@@ -454,7 +529,7 @@ def run(unit, now=None, launch_fn=None, gates=None, root=None, log_path=None, re
     rec["continue_claim"] = now
     DH.write_record(rec, root)
     root_brief = rec.get("continue_brief_src") or rec.get("brief_src")
-    sid, fresh_why = resume_choice(rec, p, now, projects)
+    sid, fresh_why, resume_why = resume_choice(rec, p, now, projects)
     import stop_resume as SR
 
     def written(resumed):
@@ -475,6 +550,8 @@ def run(unit, now=None, launch_fn=None, gates=None, root=None, log_path=None, re
         x = dict(extra, continue_how="resume" if session else "fresh")
         if why:
             x["continue_fresh_why"] = why
+        elif resume_why:
+            x["continue_resume_why"] = resume_why
         kw = {"resume_session": session, "projects": projects} if session else {}
         try:
             return launch_fn(rec.get("seat"), p["target"], written(bool(session)), rec.get("model"),

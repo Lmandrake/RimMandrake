@@ -151,6 +151,7 @@
     {"test": "src/RimMandrake/rimflow/selftest_detached_helper_model_tier.py", "seconds": 0.5},
     {"test": "src/RimMandrake/rimflow/selftest_detached_game_env.py", "seconds": 0.5},
     {"test": "src/RimMandrake/rimflow/selftest_left_open_continue.py", "seconds": 1.5},
+    {"test": "src/RimMandrake/rimflow/selftest_continuation_progress.py", "seconds": 5},
     {"test": "src/RimMandrake/rimflow/selftest_spend_blind_agents.py", "seconds": 8},
     {"test": "src/RimMandrake/rimflow/selftest_cap_stop_resume_blind.py", "seconds": 3},
     {"test": "src/RimMandrake/rimflow/selftest_launch_checks.py", "seconds": 1.5},

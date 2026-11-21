@@ -1100,8 +1100,18 @@ def pilot_brief(root, item, mod, why):
             "%s\n\nWhen the item's acceptance passes, land the fix with `./publish -m ... <paths>` and close the item "
             "with the published sha; otherwise write a note starting LEFT OPEN: on what still fails, after the "
             "TESTPILOT_SAT note. Drop nothing.\n%s\n%s" % (
-                item, mod, item, TR.brief({"id": item, "why": why}, None, detached=True), M.SELF_FIX_RULE,
+                item, mod, item, TR.brief({"id": item, "why": why}, None, detached=True, agent=True), M.SELF_FIX_RULE,
                 live_rules("%s Test Pilot sitting on %s" % (mod, item), mod)))
+
+
+PILOT_AGENT = "rm-testpilot"
+
+
+def pilot_env(env):
+    """-> the env of a tick sitting: the run starts as `claude --agent rm-testpilot` (detached_helper.AGENT_ENV), so its
+    role file is the system prompt, not a Read (RIMMANDRAKE_STOP_RESUME_REWRITING_CONTEXT_A_MILLION_AT_ONCE)."""
+    import detached_helper as DH
+    return dict(env or {}, **{DH.AGENT_ENV: PILOT_AGENT})
 
 
 def pilot_run_model(root, default):
@@ -1898,7 +1908,7 @@ def launch_brief(item, text, model, cap, seat="BENCH", runner=subprocess.run, en
     for k, v in sorted((env or {}).items()):        # a pilot holder's RM_MODLEDGER_WRITER (maturation_dispatch.ledger_open)
         argv += ["--env", "%s=%s" % (k, v)]
     if session:     # a pilot holder's recorded session (modledger.resume_plan), resumed
-        argv += ["--resume", session]
+        argv += ["--resume", session, "--planned-resume"]     # resume_plan decided it: not the 150k continuation rule
     r = runner(argv, capture_output=True, text=True, timeout=900, stdin=subprocess.DEVNULL)
     m = re.search(r"^DETACHED (\S+)", r.stdout or "", re.M)
     return r.returncode, ((r.stdout or "") + (r.stderr or "")).strip(), (m.group(1) if m and not r.returncode else None)
@@ -2010,6 +2020,8 @@ def _execute_one(root, cfg, st, row, now, do_file, do_launch, known, do_publish=
     if ok:
         cenv = dict(led["env"] if led else {}, RM_CONTROL_MOD=mod, **({"RM_CONTROL_STAGE": row["stage"]}
                                                                      if row.get("stage") else {}))
+        if row.get("pilot") and row["aut"] == "fixer":
+            cenv = pilot_env(cenv)
         rc, text2, unit = do_launch(item, brief, model, row["cap"], cfg.get("seat", "BENCH"), env=cenv)
         ok = rc == 0 and bool(unit)
         # the failure record and the transient test read the whole output; the row's why shows its first line

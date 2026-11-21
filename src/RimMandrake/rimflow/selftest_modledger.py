@@ -120,7 +120,8 @@ roots = []
 cfg = M.config()
 check("config names the 400k holder ceiling (his 'Try 400k first.')", cfg.get("holder_context_ceiling_tokens") == 400000,
       cfg.get("holder_context_ceiling_tokens"))
-check("config names the 15k packet budget", cfg.get("packet_budget_tokens") == 15000, cfg.get("packet_budget_tokens"))
+check("config names the 25k real-token packet budget and the measured 1.8 chars per token", cfg.get("packet_budget_tokens") == 25000
+      and cfg.get("chars_per_token") == 1.8, (cfg.get("packet_budget_tokens"), cfg.get("chars_per_token")))
 S = cfg.get("standard") or {}
 caps = S.get("caps") or {}
 check("config holds the standard's caps (text/fix 320, accept 240, said 600, line 1536, 6 refs x 160)",

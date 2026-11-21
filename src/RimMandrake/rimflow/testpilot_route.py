@@ -226,11 +226,23 @@ SIT = ("You are this sitting: the RimMandrake Test Pilot (rm-testpilot). Read `.
        "you sit. One sitting, one item.")
 
 
-def brief(verdict, host, detached=False):
+# the same, for a sitting launched as `claude --agent rm-testpilot` (detached_helper AGENT_ENV): the role file is already
+# its system prompt, so a Read of it would put ~10k tokens into every later request
+# (RIMMANDRAKE_STOP_RESUME_REWRITING_CONTEXT_A_MILLION_AT_ONCE)
+SIT_AGENT = ("You are this sitting: the RimMandrake Test Pilot (rm-testpilot). You were launched as that agent, so your role "
+             "file `.claude/agents/rm-testpilot.md` is your system prompt: do not Read it again. Load the "
+             "`test-pilot-sitting` skill: it is your method. Do not spawn a subagent: you sit. One sitting, one item.")
+PROGRESS_LINE = ("After each experiment, write your progress record on the item: `rimflow note <ID> --text \"PROGRESS: "
+                 "theory: ... | experiment: ... | reading: ... | next: ...\"`. A stopped sitting with a large context is "
+                 "carried on by a fresh session that has only this brief and those notes.")
+
+
+def brief(verdict, host, detached=False, agent=False):
     """The ready-to-paste brief for an rm-testpilot subagent on `host`; detached: the brief of a run that is the sitting
-    itself, and host None: the sitting picks the first free host when it starts."""
+    itself (agent: launched as `--agent rm-testpilot`), and host None: the sitting picks the first free host when it
+    starts."""
     i = verdict["id"]
-    lines = [SIT if detached else
+    lines = [(SIT_AGENT if agent else SIT) if detached else
              "Spawn subagent_type rm-testpilot with model \"fable\" (Fable 5.2, owner 2026-11-16) and this brief. One "
              "sitting, one item.",
              "",
@@ -244,7 +256,8 @@ def brief(verdict, host, detached=False):
                   HOST_NOTES["stevedesktop" if host == "stevedesktop" else "archmagi"]]
     # LIVE_FAILURES_EXPLAIN_MORE_THAN_A_LABEL (owner 2026-11-04): "Make sure the Test Pilot's job is to EXPLAIN the
     # failure, not just try to execute a test. ... Then there needs to be follow-up work to address them."
-    lines += ["Read first: `rimflow show %s` and Player.log's first exception." % i] + HOLDS_LINES
+    lines += ["Read first: `rimflow show %s` and Player.log's first exception." % i, PROGRESS_LINE.replace("<ID>", i)] \
+        + HOLDS_LINES
     # TEST_PILOT_WIDEN_PAST_THE_CHECKLIST, owner 2026-11-04: "it should regularly "look at" the screen and reason about
     # what it's seeing. ... It should be given latitude to gather context and then reason about how surprising any of it
     # is. That's what's the test pilot is really about. Measuring surprise."

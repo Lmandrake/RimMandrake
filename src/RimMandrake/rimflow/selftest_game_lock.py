@@ -344,7 +344,10 @@ def t_a_query_answers_under_100_ms():
         if meds[-1] < 100:
             break
     med = min(meds)
-    busy = os.getloadavg()[0] > (os.cpu_count() or 2) / 2
+    # contended: the wall time is mostly waiting for a core, not the query's own work (the door at load 5-6 on 14 cores,
+    # 2026-11-21: 121-135 ms wall against 64-69 ms CPU blocked three publishes; quiet: 38-45 ms wall, 33 ms CPU)
+    contended = min(meds) >= 1.5 * max(min(cpus), 1)
+    busy = os.getloadavg()[0] > (os.cpu_count() or 2) / 2 or contended
     if med >= 100 and busy:
         # A busy machine (./publish runs its door tests side by side: 110-274 ms wall there, 38-45 ms quiet,
         # 2026-11-21) measures the machine, not the tool: the wall bound is UNMEASURED this run, and the CPU each
