@@ -676,6 +676,145 @@ def test_midreturn():
             DH.RETURN_WAIT_S = real_wait
 
 
+def keeping_returner(text):
+    """Stands for return_clone when it keeps the clone again: records `text` as the run's steps, never `returned`."""
+    seen = []
+
+    def ret(unit, now=None, runner=None, root=None, **kw):
+        seen.append(unit)
+        rec = DH.read_record(unit, root)
+        rec["return_steps"] = [text]
+        DH.write_record(rec, root)
+        return 1, text
+    return seen, ret
+
+
+def giving_returner():
+    """Stands for return_clone when it gives the clone back: the clone goes and the record reads returned."""
+    seen = []
+
+    def ret(unit, now=None, runner=None, root=None, **kw):
+        seen.append(unit)
+        rec = DH.read_record(unit, root)
+        if os.path.isdir(rec["clone"]):
+            shutil.rmtree(rec["clone"])
+        rec.update(returned=now or T0, return_steps=["bundle none (nothing left to bundle)"])
+        DH.write_record(rec, root)
+        return 0, "RETURNED %s: bundle none (nothing left to bundle)" % unit
+    return seen, ret
+
+
+def _kept_launch(item, states, returner, sleep=lambda s: None):
+    """A launch of `item` with DH.CLONE_RETURNER standing in for return_clone, in the test pool."""
+    real_pool, real_ret = os.environ.get("RM_DETACHED_POOL"), getattr(DH, "CLONE_RETURNER", None)
+    os.environ["RM_DETACHED_POOL"] = POOL
+    DH.CLONE_RETURNER = returner
+    ORIGIN.update({"events": [json.dumps({"seat": "BENCH", "event": "file", "id": item, "title": "t"})]})
+    log, run = units_runner(states)
+    try:
+        rc, text = _mr_launch(item, run, sleep)
+    finally:
+        DH.CLONE_RETURNER = real_ret
+        ORIGIN.update({"events": None, "fetch_rc": 0, "grep_rc": None})
+        if real_pool is None:
+            os.environ.pop("RM_DETACHED_POOL", None)
+        else:
+            os.environ["RM_DETACHED_POOL"] = real_pool
+    return rc, text, log
+
+
+def t_a_kept_clone_is_returned_by_the_launch():
+    """Boundary page design/specs/2026-11-21-launch-returns-a-kept-clone/boundary.md. Measured 2026-11-21 1:40 PM PST:
+    four finished Pyrelands runs held RIMMANDRAKE_ROUTE_PYRELANDS_VISIT_THREE_FAILURES_BACK.det, each return had kept it
+    ("a process is working in it": a sibling run was still in it), and the tick's launch was refused twice."""
+    os.environ["RM_DETACHED_POOL"] = POOL
+    try:
+        item = "KEPT_CLONE_RETURNED_BY_LAUNCH"
+        u1, clone = det_clone(item, status="finished")
+        u2, _ = det_clone(item, status="finished", path=clone)
+        os.makedirs(os.path.join(clone, ".git"), exist_ok=True)
+    finally:
+        os.environ.pop("RM_DETACHED_POOL", None)
+    seen, ret = giving_returner()
+    rc, text, log = _kept_launch(item, {}, ret)
+    check(rc == 0 and sorted(seen) == sorted([u1, u2]) and len(_mr_starts(log)) == 1,
+          "kept: the launch runs each kept holder's return itself, once, and goes on (rc %s, returned %s): %s"
+          % (rc, seen, text[:160]))
+    check(text.count("NOTE (form, repaired): ") >= 1 and u1 in text and u2 in text,
+          "kept: the launch text carries one form NOTE naming each unit it returned: %s" % text[-300:])
+
+
+def t_a_return_that_keeps_again_is_refused_with_its_reason():
+    os.environ["RM_DETACHED_POOL"] = POOL
+    try:
+        item = "KEPT_CLONE_KEPT_AGAIN"
+        unit, clone = det_clone(item, status="finished")
+        os.makedirs(os.path.join(clone, ".git"), exist_ok=True)
+    finally:
+        os.environ.pop("RM_DETACHED_POOL", None)
+    why = "kept %s: a process is working in it" % clone
+    seen, ret = keeping_returner(why)
+    rc, text, log = _kept_launch(item, {}, ret)
+    check(rc == 2 and seen == [unit] and "return --unit " + unit in text and "--clone " + clone in text
+          and "a process is working in it" in text and _mr_starts(log) == [] and _mr_syncs(log) == [],
+          "kept: a return that keeps the clone again is refused once, naming return, --clone and its reason: %s" % text[:300])
+
+
+def t_a_live_or_dead_holder_is_never_returned_by_the_launch():
+    os.environ["RM_DETACHED_POOL"] = POOL
+    try:
+        item = "KEPT_CLONE_BESIDE_A_LIVE_RUN"
+        kept, clone = det_clone(item, status="finished")
+        live, _ = det_clone(item, status="running", path=clone)
+        dead_item = "KEPT_CLONE_DEAD_RUN"
+        dead, dclone = det_clone(dead_item, status="running")
+        returning_item = "KEPT_CLONE_STILL_RETURNING"
+        ret_unit, rclone = det_clone(returning_item, status="finished")
+        for c in (clone, dclone, rclone):
+            os.makedirs(os.path.join(c, ".git"), exist_ok=True)
+    finally:
+        os.environ.pop("RM_DETACHED_POOL", None)
+    seen, ret = giving_returner()
+    rc, text, log = _kept_launch(item, {live: "active"}, ret)
+    check(rc == 2 and seen == [] and live in text and _mr_starts(log) == [],
+          "kept: a live run beside a kept one: no return runs, refused at once: %s" % text[:160])
+    rc, text, log = _kept_launch(dead_item, {}, ret)
+    check(rc == 2 and seen == [] and "finish --unit " + dead in text and _mr_starts(log) == [],
+          "kept: a dead run (finish never ran) is never returned by the launch: %s" % text[:160])
+    real_wait = DH.RETURN_WAIT_S
+    DH.RETURN_WAIT_S = 0
+    try:
+        rc, text, log = _kept_launch(returning_item, {ret_unit + "-return": "active"}, ret)
+    finally:
+        DH.RETURN_WAIT_S = real_wait
+    check(rc == 2 and seen == [] and ret_unit + "-return" in text,
+          "kept: a run still giving the clone back is waited for, never returned again: %s" % text[:160])
+
+
+def t_a_kept_return_records_why():
+    os.environ["RM_DETACHED_POOL"] = POOL
+    try:
+        # a long pool path, as at ./publish's checkout: the reason must survive the refusal's clip
+        unit, clone = det_clone("KEPT_RETURN_RECORDS_WHY_BUSY_ON_A_LONG_POOL_PATH" + "_LONG" * 24)
+        rc, text = DH.return_clone(unit, now=T0 + 10, runner=units_runner({})[1], evictor=fake_evictor()[1],
+                                   busy=lambda c: True, scan=lambda u, since=None: ([], ""))
+        rec = DH.read_record(unit)
+        check("a process is working in it" in " ".join(rec.get("return_steps") or []) and not rec.get("returned"),
+              "kept: a busy return writes its reason into return_steps, never returned: %s" % rec.get("return_steps"))
+        held = DH.clone_holders(clone, units_runner({})[1], now=T0 + 20)
+        check(held and "left no steps" not in held[0][2] and "a process is working in it" in held[0][2],
+              "kept: the later refusal names why the return kept it: %s" % (held[0][2][:200] if held else held))
+        unit, clone = det_clone("KEPT_RETURN_RECORDS_WHY_MATE")
+        mate, _ = det_clone("KEPT_RETURN_RECORDS_WHY_MATE", status="running", path=clone)
+        DH.return_clone(unit, now=T0 + 10, runner=units_runner({mate: "active"})[1], evictor=fake_evictor()[1],
+                        busy=not_busy)
+        rec = DH.read_record(unit)
+        check(mate in " ".join(rec.get("return_steps") or []) and not rec.get("returned"),
+              "kept: a return kept for a live mate names the mate in return_steps: %s" % rec.get("return_steps"))
+    finally:
+        os.environ.pop("RM_DETACHED_POOL", None)
+
+
 def _mr_launch(item, run, sleep=None, clone=None):
     kw = {} if sleep is None else {"sleep": sleep}
     try:
@@ -771,7 +910,12 @@ def _test_midreturn():
     unit, clone = det_clone(item, status="finished")
     os.makedirs(os.path.join(clone, ".git"), exist_ok=True)
     log, run = units_runner({})
-    rc, text = _mr_launch(item, run, lambda s: None)
+    real_returner = getattr(DH, "CLONE_RETURNER", None)
+    DH.CLONE_RETURNER = keeping_returner("KEPT %s: bundle failed" % unit)[1]   # the launcher's own return keeps it again
+    try:
+        rc, text = _mr_launch(item, run, lambda s: None)
+    finally:
+        DH.CLONE_RETURNER = real_returner
     check(rc == 2 and "return --unit " + unit in text and "--clone " + clone in text and _mr_starts(log) == [],
           "midreturn: a clone its return kept is refused, naming return and --clone: %s" % text[:160])
     rc, text = _mr_launch(item, run, lambda s: None, clone=clone)
@@ -1505,6 +1649,10 @@ def main():
     t_a_resume_with_a_cap_takes_the_stated_cap()
     t_a_resume_whose_earlier_cap_cannot_be_read_is_refused()
     t_an_offline_run_at_the_in_game_stage_names_no_game()
+    t_a_kept_clone_is_returned_by_the_launch()
+    t_a_return_that_keeps_again_is_refused_with_its_reason()
+    t_a_live_or_dead_holder_is_never_returned_by_the_launch()
+    t_a_kept_return_records_why()
     print("%s: %d failure(s)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
     return 1 if FAILS else 0
 

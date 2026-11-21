@@ -394,14 +394,43 @@ def clone_holders(dest, runner=subprocess.run, now=None, root=None, kept_ok=Fals
     return out
 
 
-def hold_until_returned(dest, runner=subprocess.run, sleep=time.sleep, now=None, root=None, kept_ok=False):
-    """-> None when no run holds `dest` (waiting up to RETURN_WAIT_S while one is giving it back), else the refusal line."""
+CLONE_RETURNER = None   # a test's stand-in for return_clone; None = return_clone
+
+
+def kept_by_return(held):
+    """-> the units among `held` that are finished runs whose return KEPT the clone (units gone, record not returned)."""
+    return [u for u, wait, why in held if not wait and why.startswith("run %s finished but its return" % u)]
+
+
+def hold_until_returned(dest, runner=subprocess.run, sleep=time.sleep, now=None, root=None, kept_ok=False, notes=None):
+    """-> None when no run holds `dest` (waiting up to RETURN_WAIT_S while one is giving it back), else the refusal line.
+    A fault of form repaired here (RIMMANDRAKE_REPAIR_PYRELANDS_FORM_REFUSAL_AT_THE_RUN_FOUR): when every holder is a
+    finished run whose return kept the clone, the launcher runs that return itself (the command the refusal names),
+    once per holder, appends one NOTE line to `notes`, and checks again. A live, dead or still-returning holder is never
+    returned here. A return that keeps the clone again is refused with its own text."""
     waited = 0
+    tried = {}
     while True:
         held = clone_holders(dest, runner, now, root, kept_ok)
         if not held:
             return None
+        kept = kept_by_return(held)
+        if kept and len(kept) == len(held) and not set(kept) & set(tried):
+            import form_fault
+            for u in kept:
+                try:
+                    rc, text = (CLONE_RETURNER or return_clone)(u, now=now, runner=runner, root=root)
+                except Exception as e:  # noqa: BLE001  a return that raises is said, and the clone stays held
+                    rc, text = 1, "return raised %s: %s" % (type(e).__name__, e)
+                tried[u] = text
+                if notes is not None:
+                    notes.append("%sclone %s was held by finished run %s, whose return had kept it -> the launcher ran "
+                                 "its return: %s" % (form_fault.NOTE_HEAD, dest, u, fulltext.clip(text, 240, record_path(u, root))))
+            continue
         hard = [h for h in held if not h[1]]
+        if hard and tried:
+            return "refused: clone %s is held: %s" % (dest, " | ".join(
+                h[2] + ("; the launcher's own return: %s" % tried[h[0]] if h[0] in tried else "") for h in hard))
         if hard or waited >= RETURN_WAIT_S:
             return "refused: clone %s is held%s: %s" % (
                 dest, "" if hard else " after %d s of waiting" % waited, " | ".join(h[2] for h in (hard or held)))
@@ -736,6 +765,15 @@ def _tail(r, n=140):
     return ((getattr(r, "stdout", "") or "") + (getattr(r, "stderr", "") or "")).strip()[-n:]
 
 
+def kept_why(rec, reason, root=None):
+    """A finished run's return that keeps its clone writes the reason into return_steps (never `returned`), so a later
+    refusal names it instead of "its return step left no steps". The step leaves the clone's path out: the refusal
+    names the clone, and a long path pushed the reason past the refusal's clip. -> "kept <clone>: <reason>"."""
+    rec["return_steps"] = ["kept: " + reason]
+    write_record(rec, root)
+    return "kept %s: %s" % (rec["clone"], reason)
+
+
 def return_clone(unit, now=None, runner=subprocess.run, evictor=None, busy=None, publish_ledger=True, root=None, log_path=None,
                  scan=None):
     """The run's last step. -> (exit code, text). Gives the pool clone back after landing what can land and bundling the
@@ -753,14 +791,14 @@ def return_clone(unit, now=None, runner=subprocess.run, evictor=None, busy=None,
         return 0, "kept %s: the run is %s, not finished (its finish step has not recorded it)" % (clone, rec.get("status"))
     mates = other_users(rec, root, runner)
     if mates:
-        return 0, "kept %s: still in use by %s" % (clone, ", ".join(mates))
+        return 0, kept_why(rec, "still in use by %s" % ", ".join(mates), root)
     if not os.path.isdir(clone):
         rec.update(returned=now, return_steps=["clone already gone"])
         write_record(rec, root)
         return 0, "returned %s: the clone was already gone" % unit
     reaped = reap_leftovers(rec, scan)       # the run's own leftovers first: they are not "a process working in it"
     if (busy or clone_busy)(clone):
-        return 0, "kept %s: a process is working in it%s" % (clone, "; " + reaped if reaped else "")
+        return 0, kept_why(rec, "a process is working in it%s" % ("; " + reaped if reaped else ""), root)
     steps = [reaped] if reaped else []
 
     def run(argv, what, timeout=300):
@@ -1287,12 +1325,14 @@ def _launch(seat, item, brief, model, max_s, budget, now, runner, known, clone, 
         fresh = resume_fresh_clone(item, dest, runner, now)
         if fresh:       # the clone a finished run still holds may vanish under a resume: the resume takes its own
             dest, clone = fresh, None
-    held = hold_until_returned(dest, runner, sleep, now, kept_ok=bool(clone))
+    notes = []
+    held = hold_until_returned(dest, runner, sleep, now, kept_ok=bool(clone), notes=notes)
     if held:
         return 2, held
     with clone_lock(dest):
-        return _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, dest, skip_launch_checks, pf,
-                              env, resume=resume, extra=extra)
+        code, text = _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, dest, skip_launch_checks,
+                                    pf, env, resume=resume, extra=extra)
+    return code, "\n".join([text] + notes) if notes else text
 
 
 def _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, dest, skip_launch_checks=None, pf=None,
