@@ -1,0 +1,1574 @@
+[
+ {
+  "call": 1,
+  "pid": "Human21227",
+  "verdict": "VERDICT Allowed held=True prisoner=False cell=56,60",
+  "player": [
+   {
+    "id": "Human475",
+    "x": 122,
+    "z": 114,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human478",
+    "x": 114,
+    "z": 111,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human483",
+    "x": 122,
+    "z": 115,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human21193",
+    "x": 58,
+    "z": 82,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human21196",
+    "x": 62,
+    "z": 86,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   }
+  ],
+  "victim": [
+   {
+    "id": "Human21227",
+    "x": 56,
+    "z": 60,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   }
+  ]
+ },
+ {
+  "t": 100,
+  "pid": "Human21227",
+  "player": [
+   {
+    "id": "Human475",
+    "x": 122,
+    "z": 113,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human478",
+    "x": 112,
+    "z": 111,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human483",
+    "x": 122,
+    "z": 115,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human21193",
+    "x": 58,
+    "z": 84,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human21196",
+    "x": 65,
+    "z": 83,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human21277",
+    "x": 56,
+    "z": 61,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   }
+  ],
+  "victim": [
+   {
+    "id": "Human21227",
+    "x": 56,
+    "z": 60,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   }
+  ]
+ },
+ {
+  "t": 200,
+  "pid": "Human21227",
+  "player": [
+   {
+    "id": "Human475",
+    "x": 122,
+    "z": 113,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human478",
+    "x": 110,
+    "z": 111,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human483",
+    "x": 122,
+    "z": 115,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human21193",
+    "x": 58,
+    "z": 82,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human21196",
+    "x": 68,
+    "z": 78,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human21277",
+    "x": 56,
+    "z": 61,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   }
+  ],
+  "victim": [
+   {
+    "id": "Human21227",
+    "x": 56,
+    "z": 60,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   }
+  ]
+ },
+ {
+  "t": 300,
+  "pid": "Human21227",
+  "player": [
+   {
+    "id": "Human475",
+    "x": 121,
+    "z": 113,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human478",
+    "x": 108,
+    "z": 111,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human483",
+    "x": 121,
+    "z": 114,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human21193",
+    "x": 59,
+    "z": 81,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human21196",
+    "x": 68,
+    "z": 71,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human21277",
+    "x": 56,
+    "z": 61,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   }
+  ],
+  "victim": [
+   {
+    "id": "Human21227",
+    "x": 56,
+    "z": 60,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   }
+  ]
+ },
+ {
+  "t": 400,
+  "pid": "Human21227",
+  "player": [
+   {
+    "id": "Human475",
+    "x": 119,
+    "z": 111,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human478",
+    "x": 106,
+    "z": 111,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human483",
+    "x": 121,
+    "z": 114,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human21193",
+    "x": 59,
+    "z": 81,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human21196",
+    "x": 72,
+    "z": 66,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human21277",
+    "x": 55,
+    "z": 64,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   }
+  ],
+  "victim": [
+   {
+    "id": "Human21227",
+    "x": 56,
+    "z": 60,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   }
+  ]
+ },
+ {
+  "t": 500,
+  "pid": "Human21227",
+  "player": [
+   {
+    "id": "Human475",
+    "x": 119,
+    "z": 111,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human478",
+    "x": 104,
+    "z": 111,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human483",
+    "x": 120,
+    "z": 114,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human21193",
+    "x": 59,
+    "z": 81,
+    "dead": false,
+    "downed": true,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human21277",
+    "x": 54,
+    "z": 64,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   }
+  ],
+  "victim": [
+   {
+    "id": "Human21227",
+    "x": 57,
+    "z": 60,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   }
+  ]
+ },
+ {
+  "t": 600,
+  "pid": "Human21227",
+  "player": [
+   {
+    "id": "Human475",
+    "x": 119,
+    "z": 111,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human478",
+    "x": 102,
+    "z": 111,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human483",
+    "x": 118,
+    "z": 113,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human21193",
+    "x": 59,
+    "z": 81,
+    "dead": false,
+    "downed": true,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human21277",
+    "x": 54,
+    "z": 63,
+    "dead": false,
+    "downed": true,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   }
+  ],
+  "victim": [
+   {
+    "id": "Human21227",
+    "x": 58,
+    "z": 60,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   }
+  ]
+ },
+ {
+  "t": 700,
+  "pid": "Human21227",
+  "player": [
+   {
+    "id": "Human475",
+    "x": 119,
+    "z": 111,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human478",
+    "x": 100,
+    "z": 110,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human483",
+    "x": 116,
+    "z": 111,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human21193",
+    "x": 59,
+    "z": 81,
+    "dead": false,
+    "downed": true,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human21277",
+    "x": 54,
+    "z": 63,
+    "dead": false,
+    "downed": true,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   }
+  ],
+  "victim": [
+   {
+    "id": "Human21227",
+    "x": 59,
+    "z": 60,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   }
+  ]
+ },
+ {
+  "t": 800,
+  "pid": "Human21227",
+  "player": [
+   {
+    "id": "Human475",
+    "x": 118,
+    "z": 111,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human478",
+    "x": 98,
+    "z": 108,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human483",
+    "x": 114,
+    "z": 109,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human21193",
+    "x": 59,
+    "z": 81,
+    "dead": false,
+    "downed": true,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human21277",
+    "x": 54,
+    "z": 63,
+    "dead": false,
+    "downed": true,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   }
+  ],
+  "victim": [
+   {
+    "id": "Human21227",
+    "x": 60,
+    "z": 60,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   }
+  ]
+ },
+ {
+  "t": 900,
+  "pid": "Human21227",
+  "player": [
+   {
+    "id": "Human475",
+    "x": 116,
+    "z": 111,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human478",
+    "x": 96,
+    "z": 106,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human483",
+    "x": 112,
+    "z": 107,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human21193",
+    "x": 59,
+    "z": 81,
+    "dead": false,
+    "downed": true,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   }
+  ],
+  "victim": [
+   {
+    "id": "Human21227",
+    "x": 61,
+    "z": 60,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   }
+  ]
+ },
+ {
+  "call": 2,
+  "pid": "Human21227",
+  "verdict": "VERDICT AlreadyPrisoner held=True prisoner=True cell=61,60",
+  "player": [
+   {
+    "id": "Human475",
+    "x": 116,
+    "z": 111,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human478",
+    "x": 96,
+    "z": 106,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human483",
+    "x": 112,
+    "z": 107,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human21193",
+    "x": 59,
+    "z": 81,
+    "dead": false,
+    "downed": true,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   }
+  ],
+  "victim": [
+   {
+    "id": "Human21227",
+    "x": 61,
+    "z": 60,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   }
+  ]
+ },
+ {
+  "call": 3,
+  "pid": "Human21235",
+  "verdict": "VERDICT Allowed held=True prisoner=False cell=61,60",
+  "player": [
+   {
+    "id": "Human475",
+    "x": 116,
+    "z": 111,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human478",
+    "x": 96,
+    "z": 106,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human483",
+    "x": 112,
+    "z": 107,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human21193",
+    "x": 59,
+    "z": 81,
+    "dead": false,
+    "downed": true,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   }
+  ],
+  "victim": [
+   {
+    "id": "Human21235",
+    "x": 61,
+    "z": 60,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   }
+  ]
+ },
+ {
+  "t": 100,
+  "pid": "Human21235",
+  "player": [
+   {
+    "id": "Human475",
+    "x": 114,
+    "z": 111,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human478",
+    "x": 95,
+    "z": 105,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human483",
+    "x": 110,
+    "z": 106,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human21193",
+    "x": 59,
+    "z": 81,
+    "dead": false,
+    "downed": true,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   }
+  ],
+  "victim": [
+   {
+    "id": "Human21235",
+    "x": 61,
+    "z": 60,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   }
+  ]
+ },
+ {
+  "t": 200,
+  "pid": "Human21235",
+  "player": [
+   {
+    "id": "Human475",
+    "x": 112,
+    "z": 111,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human478",
+    "x": 93,
+    "z": 103,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human483",
+    "x": 108,
+    "z": 105,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human21193",
+    "x": 59,
+    "z": 81,
+    "dead": false,
+    "downed": true,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   }
+  ],
+  "victim": [
+   {
+    "id": "Human21235",
+    "x": 61,
+    "z": 60,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   }
+  ]
+ },
+ {
+  "t": 300,
+  "pid": "Human21235",
+  "player": [
+   {
+    "id": "Human475",
+    "x": 110,
+    "z": 111,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human478",
+    "x": 91,
+    "z": 101,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human483",
+    "x": 106,
+    "z": 104,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human21193",
+    "x": 59,
+    "z": 81,
+    "dead": false,
+    "downed": true,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   }
+  ],
+  "victim": [
+   {
+    "id": "Human21235",
+    "x": 61,
+    "z": 60,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   }
+  ]
+ },
+ {
+  "t": 400,
+  "pid": "Human21235",
+  "player": [
+   {
+    "id": "Human475",
+    "x": 108,
+    "z": 111,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human478",
+    "x": 89,
+    "z": 99,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human483",
+    "x": 104,
+    "z": 103,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   }
+  ],
+  "victim": [
+   {
+    "id": "Human21235",
+    "x": 61,
+    "z": 60,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   }
+  ]
+ },
+ {
+  "t": 500,
+  "pid": "Human21235",
+  "player": [
+   {
+    "id": "Human475",
+    "x": 106,
+    "z": 111,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human478",
+    "x": 87,
+    "z": 97,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human483",
+    "x": 102,
+    "z": 102,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   }
+  ],
+  "victim": [
+   {
+    "id": "Human21235",
+    "x": 61,
+    "z": 60,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   }
+  ]
+ },
+ {
+  "t": 600,
+  "pid": "Human21235",
+  "player": [
+   {
+    "id": "Human475",
+    "x": 104,
+    "z": 111,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human478",
+    "x": 86,
+    "z": 96,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human483",
+    "x": 100,
+    "z": 100,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   }
+  ],
+  "victim": [
+   {
+    "id": "Human21235",
+    "x": 61,
+    "z": 60,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   }
+  ]
+ },
+ {
+  "t": 700,
+  "pid": "Human21235",
+  "player": [
+   {
+    "id": "Human475",
+    "x": 102,
+    "z": 111,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human478",
+    "x": 86,
+    "z": 97,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human483",
+    "x": 98,
+    "z": 98,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   }
+  ],
+  "victim": [
+   {
+    "id": "Human21235",
+    "x": 61,
+    "z": 60,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   }
+  ]
+ },
+ {
+  "t": 800,
+  "pid": "Human21235",
+  "player": [
+   {
+    "id": "Human475",
+    "x": 100,
+    "z": 111,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human478",
+    "x": 86,
+    "z": 98,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human483",
+    "x": 100,
+    "z": 100,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   }
+  ],
+  "victim": [
+   {
+    "id": "Human21235",
+    "x": 61,
+    "z": 60,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   }
+  ]
+ },
+ {
+  "t": 900,
+  "pid": "Human21235",
+  "player": [
+   {
+    "id": "Human475",
+    "x": 99,
+    "z": 112,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human478",
+    "x": 86,
+    "z": 99,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human483",
+    "x": 105,
+    "z": 105,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   }
+  ],
+  "victim": [
+   {
+    "id": "Human21235",
+    "x": 62,
+    "z": 60,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   }
+  ]
+ },
+ {
+  "call": 4,
+  "pid": "Human21235",
+  "verdict": "VERDICT Allowed held=True prisoner=False cell=62,60",
+  "player": [
+   {
+    "id": "Human475",
+    "x": 99,
+    "z": 112,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human478",
+    "x": 86,
+    "z": 99,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   },
+   {
+    "id": "Human483",
+    "x": 105,
+    "z": 105,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   }
+  ],
+  "victim": [
+   {
+    "id": "Human21235",
+    "x": 62,
+    "z": 60,
+    "dead": false,
+    "downed": false,
+    "job": null,
+    "curJob": null,
+    "jobDef": null,
+    "mentalState": null,
+    "health": null
+   }
+  ]
+ }
+]

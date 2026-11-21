@@ -56,13 +56,16 @@ class Fake:
     """mod: 'capture' (RM_CaptureDown makes a held raider a prisoner), None (the order is taken, nobody becomes one),
     'falls_open' (raiders walk into an open trench and are held). fault: 'far' (the raid spawns 40 squares off), 'zero'
     (fire_raid spawns nobody), 'nofall' (the lids never give way), 'refuse_capture' (ProofCaptureDown REFUSED),
-    'refuse_trap' (ProofTrap REFUSED)."""
+    'refuse_trap' (ProofTrap REFUSED), 'warden_downed' (the raid downs the warden once its first capture lands: live on
+    game b 2026-11-21, ptr2 capture log), 'warden_downed_mid' (the raid downs the warden before its first capture lands), 'spike_kill' (the first raider to fall
+    dies on the spikes before the next poll and lies there a corpse: live game b 2026-11-21 ptr3 read one held of a raid
+    whose fallen were gone by the next 300-tick read)."""
 
     def __init__(self, mod='capture', fault=None):
         self.mod, self.fault = mod, fault
         self.stop_on = 'default'
         self.g = {'dug': {}, 'spikes': set(), 'covers': {}, 'hostile': {}, 'player': {}, 'orders': {}, 'settings': {},
-                  'n': 0, 'ticked': 0}
+                  'n': 0, 'ticked': 0, 'downed': set(), 'corpses': []}
         self.saves, self.contract, self.stops = {}, [], []
 
     def save(self, k):
@@ -84,11 +87,12 @@ class Fake:
                             'detail': 'present at arm: Human Thrasher (humanlike)'}}
             self.stops.append(r)
             raise clockgate.GovernorStop(r)
+        step = (g['ticked'] + n) // 100 - g['ticked'] // 100   # squares walked: one per 100 ticks of the whole clock
         g['ticked'] += n
         for hid, h in sorted(g['hostile'].items()):
             if h['held'] or self.fault == 'far':
                 continue
-            nz = min(h['z'] + n // 100, O[1] + 9)
+            nz = min(h['z'] + step, O[1] + 9)
             cell = (h['x'], O[1])
             if h['z'] < O[1] <= nz and g['covers'].get(cell) and self.fault != 'nofall':
                 h['z'], h['held'] = O[1], True
@@ -102,10 +106,19 @@ class Fake:
                     continue
                 nz = O[1] - 1                       # an open trench: they stop at its lip
             h['z'] = nz
+        if self.fault == 'spike_kill':
+            for hid in [k for k, q in sorted(g['hostile'].items()) if q['held']][:1]:
+                q = g['hostile'].pop(hid)
+                g['n'] += 1
+                g['corpses'].append({'id': 'Corpse%d' % (700 + g['n']), 'x': q['x'], 'z': q['z']})
         for pid, warden in list(g['orders'].items()):
             h = g['hostile'].get(pid)
-            if self.mod == 'capture' and h and h['held'] and n >= 300 and self._verdict(pid) == 'Allowed':
+            if self.fault == 'warden_downed_mid':
+                g['downed'].add(warden)             # shot by the raid before the capture lands
+            elif self.mod == 'capture' and h and h['held'] and n >= 300 and self._verdict(pid) == 'Allowed':
                 h['prisoner'] = True
+            if self.fault == 'warden_downed':
+                g['downed'].add(warden)             # shot by the raid once the capture has landed
             del g['orders'][pid]
         return {'success': True, 'advanced': n}
 
@@ -118,7 +131,7 @@ class Fake:
         return 'Allowed' if h['held'] else 'NotHeld'
 
     # ---- the bridge
-    def call(self, tool, **kw):
+    def call(self, tool, _answer=False, **kw):
         g = self.g
         if tool.startswith('jawa/'):
             unknown = sorted(set(kw) - set(SIGS.get(tool, ())))
@@ -151,6 +164,11 @@ class Fake:
                 self.contract.append('set_plants op names no def: %s' % kw['ops'])
                 return {'success': False, 'message': 'Could not parse ops.'}
             return {'success': True}
+        if tool == 'jawa/spawn_pawn' and kw.get('faction') == '?':    # the faction probe (_raid_factions): a refusal
+            return {'success': False, 'details': {'available': [{'def': 'PlayerColony', 'hostile': False},
+                                                                {'def': 'Mechanoid', 'hostile': True},
+                                                                {'def': 'TribeSavage', 'hostile': True},
+                                                                {'def': 'PirateYttakin', 'hostile': True}]}}
         if tool == 'jawa/spawn_pawn':
             if not all(k in kw for k in ('kindDef', 'x', 'z', 'faction')):
                 self.contract.append('spawn_pawn without kindDef/x/z/faction: %s' % kw)
@@ -162,6 +180,11 @@ class Fake:
         if tool == 'jawa/fire_raid':
             if kw.get('dryRun') is not False or not XZ.match(str(kw.get('spawnCenter', ''))):
                 self.contract.append('fire_raid not a placed live raid: %s' % kw)
+            if not kw.get('faction') or kw.get('arrivalMode') != 'EdgeWalkIn':
+                # the worker's own pick changed the raid every run (game b 2026-11-21: 0 pawns from Empire, a refusal)
+                self.contract.append('fire_raid leaves the faction or the arrival to the worker: %s' % kw)
+            if int(str(kw.get('spawnCenter', '0,0')).split(',')[1]) + 8 >= O[1]:
+                self.contract.append('fire_raid lands within 8 squares of the trench row or north of it: %s' % kw)
             cx, cz = (int(v) for v in str(kw.get('spawnCenter') or '%d,%d' % (O[0], O[1] - 20)).split(','))
             if self.fault == 'far':
                 cz -= 40
@@ -171,7 +194,8 @@ class Fake:
             return {'success': True, 'executed': True}
         if tool == 'jawa/list_pawns':
             ps = [{'id': k, 'x': h['x'], 'z': h['z'], 'dead': False} for k, h in g['hostile'].items()] \
-                if kw.get('faction') == 'hostile' else []
+                if kw.get('faction') == 'hostile' else [{'id': k, 'x': xz[0], 'z': xz[1], 'dead': False,
+                                                          'downed': k in g['downed']} for k, xz in g['player'].items()]
             if kw.get('rect'):
                 x, z, w, hh = (int(v) for v in kw['rect'].split(','))
                 ps = [p for p in ps if x <= p['x'] < x + w and z <= p['z'] < z + hh]
@@ -179,11 +203,16 @@ class Fake:
         if tool == 'jawa/list_things':
             if not re.match(r'^-?\d+,-?\d+,\d+,\d+$', kw.get('rect', '')):
                 self.contract.append('list_things rect not x,z,w,h: %r' % kw.get('rect'))
+            if kw.get('group') == 'Corpse':
+                x, z, w, hh = (int(v) for v in kw['rect'].split(','))
+                return {'success': True, 'things': [t for t in g['corpses'] if x <= t['x'] < x + w and z <= t['z'] < z + hh]}
             return {'success': True, 'things': []}
         if tool == 'jawa/ordered_job':
             pid, w = kw.get('targetAId'), kw.get('pawnId')
             h = g['hostile'].get(pid)
             lip = (kw.get('targetBX'), kw.get('targetBZ'))
+            if w in g['downed']:
+                return {'success': True, 'accepted': None, 'message': 'the pawn is downed'}
             if kw.get('jobDef') != 'RM_CaptureDown' or w not in g['player'] or h is None:
                 self.contract.append('ordered_job is no RM_CaptureDown by a colonist on a raider: %s' % kw)
                 return {'success': True, 'accepted': False}
@@ -273,5 +302,20 @@ check('ProofTrap REFUSED: the fall row UNMEASURED, never PASS', r.get('PTR_two_f
 r, o, _ = run(mod='falls_open', fault='refuse_trap')
 check('ProofTrap REFUSED on raiders standing in the open pit: the control UNMEASURED, never PASS',
       r.get('PTR_control_open_pit_no_one_falls') == 'UNMEASURED', r)
+r, o, _ = run(fault='spike_kill')
+check('two fall and one dies on the spikes before the next read: PTR_two_fall PASS (the corpse in the trench counts as '
+      'fallen), the dead one\'s capture UNMEASURED, never FAIL', r.get('PTR_two_fall') == 'PASS'
+      and r.get('PTR_fallen_become_prisoners') in ('UNMEASURED', 'PASS'), [r, [c for c in o['rows'] if c['id'] == 'PTR_two_fall']])
+r, o, F = run(fault='warden_downed')
+check('the raid downs the warden after the first capture: a fresh warden takes the second, both prisoners, row PASS '
+      '(live game b 2026-11-21: the downed warden was reused and the row read FAIL)',
+      r.get('PTR_fallen_become_prisoners') == 'PASS', [r, [c for c in o['rows'] if c['id'] == 'PTR_fallen_become_prisoners']])
+r, o, _ = run(fault='warden_downed_mid')
+check('the raid downs the warden before the capture lands: the capture row UNMEASURED (unasked), never PASS or FAIL',
+      r.get('PTR_fallen_become_prisoners') == 'UNMEASURED', r)
+r, o, _ = run(mod=None, fault='warden_downed')
+check('a mod whose capture makes no prisoner, the warden downed by the window\'s end: UNMEASURED, never PASS (one end read '
+      'cannot tell the mod from the shot; the able-warden case above keeps the mod\'s FAIL)',
+      r.get('PTR_fallen_become_prisoners') == 'UNMEASURED', r)
 print('selftest_pit_trap_raid_scene: %s (%d failed)' % ('FAIL' if FAILS else 'ok', len(FAILS)))
 sys.exit(1 if FAILS else 0)

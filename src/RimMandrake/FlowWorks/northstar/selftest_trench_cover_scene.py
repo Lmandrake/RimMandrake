@@ -92,6 +92,7 @@ class Fake:
                             'detail': 'present at arm: Human Thrasher (humanlike)'}}
             self.stops.append(r)
             raise clockgate.GovernorStop(r)
+        step = (g['ticked'] + n) // 100 - g['ticked'] // 100   # squares walked: one per 100 ticks of the whole clock
         g['ticked'] += n
         pit = (O[0] + 12, O[1])
         for i, (hid, h) in enumerate(sorted(self.hostiles().items())):
@@ -101,11 +102,11 @@ class Fake:
             if at_line and self.mod == 'shelter' and i == 0:
                 h['x'], h['z'], h['inPit'] = pit[0], pit[1], True     # the planted fault: shelter in the cage
                 continue
-            h['z'] = min(h['z'] + n // 100, O[1] - 1)                  # they stop at the trench's south lip
+            h['z'] = min(h['z'] + step, O[1] - 1)                  # they stop at the trench's south lip
         return {'success': True, 'advanced': n}
 
     # ---- the bridge
-    def call(self, tool, **kw):
+    def call(self, tool, _answer=False, **kw):
         g = self.g
         if tool.startswith('jawa/'):
             unknown = sorted(set(kw) - set(SIGS.get(tool, ())))
@@ -121,6 +122,11 @@ class Fake:
             if kw.get('action') == 'set':
                 g['settings'][kw['field']] = str(kw['value'])
             return {'success': True, 'value': g['settings'].get(kw['field'])}
+        if tool == 'jawa/spawn_pawn' and kw.get('faction') == '?':    # the faction probe (_raid_factions): a refusal
+            return {'success': False, 'details': {'available': [{'def': 'PlayerColony', 'hostile': False},
+                                                                {'def': 'Mechanoid', 'hostile': True},
+                                                                {'def': 'TribeSavage', 'hostile': True},
+                                                                {'def': 'PirateYttakin', 'hostile': True}]}}
         if tool == 'jawa/spawn_pawn':
             if not all(k in kw for k in ('kindDef', 'x', 'z', 'faction')):
                 self.contract.append('spawn_pawn without kindDef/x/z/faction: %s' % kw)

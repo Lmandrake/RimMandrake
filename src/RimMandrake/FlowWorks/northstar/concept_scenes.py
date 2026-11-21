@@ -939,7 +939,42 @@ TR_LEN, TR_NOTCHES, TR_PIT_NOTCHES = 11, 2, 8
 TR_SHOOTER = 'Mercenary_Gunner'                          # trench_cover_proof.SHOOTER_KIND: a ranged player pawn, nobody fights
 TR_SETTINGS = (('trenchCoverEnabled', True), ('trenchCoverStrength', 1.0), ('trenchCoverCap', 0.9))
 TR_RAID_POINTS, TR_RAID_AT = 400, (O[0] + 6, O[1] - 14)
-TR_POLL, TR_POLLS, TR_NEAR, TR_AFTER = 300, 20, 3, 6    # 6,000 ticks at most; 1,800 more once a raider is at the line
+# 6,000 ticks at most; 1,800 more once a raider is at the line. 60-tick polls: a pawn at vanilla's 4.6 squares/s covers
+# under 5 squares a poll, so it cannot cross the 7-square band TR_NEAR makes unread; at 300 ticks (23 squares a poll) visit
+# 2's raid ran past the trench unseen ("never came within 3 squares", its raiders 12-90 squares north of it at the end).
+TR_POLL, TR_POLLS, TR_NEAR, TR_AFTER = 60, 100, 3, 30
+# RIMMANDRAKE_STAGE_FLOWWORKS_PIT_TRAP_RAID_NONE_FELL: the raid worker chose the faction, so each run met a different raid
+# (live game b 2026-11-21: PirateYttakin and TribeSavageImpid walked in, PirateWaster was refused, Empire and
+# OutlanderRoughPig sent 0 pawns to the controls). Every scene raid now names its faction: the world's hostile humanlike
+# factions in a fixed order (Pirate kinds first, as _isl_hostile_faction picks; this calm site's world holds no base
+# 'Pirate'), the first that sends pawns, walking in at the scene's own spawn centre (EdgeWalkIn keeps a valid spawnCenter;
+# its pawns land within 8 squares). The faction used goes on S.r['raidFaction'] and so into the scene record.
+RAID_ARRIVAL = 'EdgeWalkIn'
+
+
+def _raid_factions(S):
+    """The world's hostile humanlike faction defs, Pirate kinds first, each group sorted (spawn_pawn's refusal of '?')."""
+    probe = S.B.call('jawa/spawn_pawn', _answer=True, kindDef='Colonist', x=0, z=0, faction='?', count=1) or {}
+    avail = (probe.get('details') or {}).get('available') or []
+    hostile = sorted({f.get('def') for f in avail if f.get('hostile') and f.get('def')
+                      and f.get('def') not in ('Entities', 'Mechanoid', 'Insect')})
+    return [f for f in hostile if str(f).startswith('Pirate')] + [f for f in hostile if not str(f).startswith('Pirate')]
+
+
+def _fire_raid(S, points, at):
+    """One scene raid: a named hostile faction, ImmediateAttack, walking in around `at`. Nobody sent is a staging fault."""
+    tried = []
+    for fac in _raid_factions(S):
+        kw = dict(points=points, dryRun=False, faction=fac, strategy='ImmediateAttack', arrivalMode=RAID_ARRIVAL,
+                  spawnCenter='%d,%d' % tuple(at))
+        r = S.B.call('jawa/fire_raid', _answer=True, **kw) or {}
+        S.r['calls'].append({'tool': 'jawa/fire_raid', 'args': kw, 'result': r})
+        n = r.get('pawnsArrivedTotal')
+        tried.append((fac, r.get('success'), n))
+        if r.get('success') and r.get('executed') is not False and (n is None or n > 0):
+            S.r['raidFaction'] = {'faction': fac, 'arrived': n, 'tried': tried}
+            return r
+    require(False, 'no hostile faction sent a raid: %s' % tried)
 
 
 def _tc():
@@ -1021,8 +1056,7 @@ def _trench_cover(S):
     c, ctxt = _tr_read(S, TC, ctl, cgun)
     S.row('TR_control_open_ground_no_cover', c is not None and TC.near_verdict(c, 'trench', 0.0, 1e-3) == 'PASS',
           {'reply': ctxt}, unmeasured=c is None)
-    S.call('jawa/fire_raid', points=TR_RAID_POINTS, dryRun=False, strategy='ImmediateAttack',
-           spawnCenter='%d,%d' % TR_RAID_AT)
+    _fire_raid(S, TR_RAID_POINTS, TR_RAID_AT)
     prior, S.B.stop_on = S.B.stop_on, RAID_STOP_ON  # the raid this scene fired is waived for every tick of it
     try:
         seen = _tr_watch(S, trench, pit)
@@ -1503,7 +1537,9 @@ TRAP_W = 9                                          # trench cells across the pa
 TRAP_COVER = 'RM_PitCover_PlankLattice'             # gives way under 120 kg on the deck: about two raiders at once
 TRAP_TREE = 'Plant_TreeOak'                         # wood the raiders could chop for a ladder (scenes.json: saplings beside it)
 RAID_STOP_ON = 'clock_discontinuity,modal_stuck,colony_loss,cancel'   # a raid hurts, downs and kills by design
-TRAP_POLL, TRAP_POLLS = 300, 40                     # 12,000 ticks: fall, chop, ladder
+TRAP_POLL, TRAP_POLLS = 60, 200                     # 12,000 ticks: fall, chop, ladder; 60-tick reads as TR_POLL (why there)
+TRAP_RAID_AT = (O[0], O[1] - 12)                     # 8-square arrival scatter stays south of the trench (it was O1-4: some
+                                                     # landed north of it, between the trench and the defenders)
 
 
 def _trap_cells():
@@ -1528,7 +1564,7 @@ def _pit_trap(S, fall=True):
     S.call('jawa/set_plants', ops='%s:%d,%d,3,2' % (TRAP_TREE, O[0] + TRAP_W, O[1] - 3), density=1.0, growth=1.0)
     for dx in (-2, 2):
         S.pawn('Colonist', (O[0] + dx, O[1] + 10), 'player')
-    S.call('jawa/fire_raid', points=700, dryRun=False, strategy='ImmediateAttack', spawnCenter='%d,%d' % (O[0], O[1] - 4))
+    _fire_raid(S, 700, TRAP_RAID_AT)
     return pit
 
 
@@ -1537,9 +1573,14 @@ def _watch_trap(S, pit, until_ladder=True, until_held=0):
     (ProofTrap held=), and any portable ladder in or beside the trench. -> {reached, held, ladder, raiders, polls, refused}.
     reached: a raider came within 2 squares of the trench (the event the rows need); held: raider ids the trench holds;
     refused: ProofTrap replies that were no TRAP read for a raider standing in the trench (a blind read, not a "not held").
-    until_held: stop once that many are held (sc_pit_trap_raid captures them before the fetch can take them out)."""
+    until_held: stop once that many are held (sc_pit_trap_raid captures them before the fetch can take them out).
+    fallen: how many went into the trench, the most of (held ids seen) and (held now + corpses on trench squares) at any
+    poll. A raider who falls and dies on the spikes between two reads is never seen held (live game b 2026-11-21: one held
+    of a raid whose fallen were gone by the next 300-tick read, and visit 2's FETCH_two_fell read one); nobody dies on a
+    trench square without going in, so his corpse there counts. The rows that ask "did they fall" read fallen."""
     prior, S.B.stop_on = S.B.stop_on, RAID_STOP_ON
-    seen = {'reached': False, 'held': set(), 'ladder': [], 'raiders': 0, 'polls': 0, 'last': [], 'refused': 0}
+    seen = {'reached': False, 'held': set(), 'ladder': [], 'raiders': 0, 'polls': 0, 'last': [], 'refused': 0,
+            'fallen': 0, 'corpses': 0}
     rect = '%d,%d,%d,3' % (pit[0][0] - 1, pit[0][1] - 1, len(pit) + 2)
     try:
         for _ in range(TRAP_POLLS):
@@ -1549,6 +1590,7 @@ def _watch_trap(S, pit, until_ladder=True, until_held=0):
                     if not p.get('dead') and p.get('x') is not None]
             seen['raiders'] = max(seen['raiders'], len(live))
             seen['last'] = [(p.get('id'), p.get('x'), p.get('z')) for p in live][:8]
+            held_now = 0
             for p in live:
                 if min(_cheb((p['x'], p['z']), c) for c in pit) <= 2:
                     seen['reached'] = True
@@ -1558,6 +1600,11 @@ def _watch_trap(S, pit, until_ladder=True, until_held=0):
                         seen['refused'] += 1
                     elif 'held=True' in txt:
                         seen['held'].add(p['id'])
+                        held_now += 1
+            dead = [t for t in S.call('jawa/list_things', group='Corpse', rect=rect).get('things') or []
+                    if (t.get('x'), t.get('z')) in pit]
+            seen['corpses'] = max(seen['corpses'], len(dead))
+            seen['fallen'] = max(seen['fallen'], len(seen['held']), held_now + len(dead))
             lad = S.call('jawa/list_things', defName='RM_LadderPortable', rect=rect).get('things') or []
             if lad:
                 seen['ladder'] = lad
@@ -1567,7 +1614,7 @@ def _watch_trap(S, pit, until_ladder=True, until_held=0):
                 break
     finally:
         S.B.stop_on = prior
-    if seen['held']:
+    if seen['held'] or seen['fallen']:
         seen['reached'] = True
     return seen
 
@@ -1576,7 +1623,8 @@ def _fetch_rows(S, seen):
     no_raid = not seen['reached']
     why = '' if not no_raid else 'the raid never came within 2 squares of the trench (raiders seen %d, last %s); ' % (
         seen['raiders'], seen['last'])
-    S.row('FETCH_two_fell', len(seen['held']) >= 2, why + 'held %s' % sorted(seen['held']), unmeasured=no_raid)
+    S.row('FETCH_two_fell', seen['fallen'] >= 2, why + 'fallen %d (held %s, corpses in the trench %d)' % (
+        seen['fallen'], sorted(seen['held']), seen['corpses']), unmeasured=no_raid)
     S.row('FETCH_ladder_into_pit', bool(seen['ladder']),
           ('nobody fell, so there was no one to fetch; ' if not seen['held'] else '') + why + str(seen['ladder']),
           unmeasured=not seen['held'])
@@ -1619,7 +1667,7 @@ def _fetch_fallen_scene(S):
     S.again()
     pit = _pit_trap(S, fall=False)                  # control: no lid, so no one falls; the same raid must not ladder the pit
     seen = _watch_trap(S, pit, until_ladder=False)
-    S.row('FETCH_control_none_fallen_no_ladder', not seen['ladder'] and not seen['held'],
+    S.row('FETCH_control_none_fallen_no_ladder', not seen['ladder'] and not seen['held'] and not seen['fallen'],
           ('the raid never came within 2 squares of the trench (raiders seen %d); ' % seen['raiders'] if not seen['reached']
            else '') + 'held %s ladder %s' % (sorted(seen['held']), seen['ladder']), unmeasured=not seen['reached'])
 
@@ -1639,6 +1687,13 @@ def _ptr_prisoner(S, pid):
     return (None if not txt.startswith('VERDICT ') else 'prisoner=True' in txt), txt
 
 
+def _able(S, pid):
+    """Is colonist pid spawned, alive and not downed? (the raid this scene fires shoots the warden: live game b 2026-11-21,
+    the first warden was downed at about t+600 of its capture window and the second order went to it.)"""
+    return any(p.get('id') == pid and not p.get('dead') and not p.get('downed')
+               for p in S.call('jawa/list_pawns', faction='player').get('pawns') or [])
+
+
 def _pit_trap_raid(S):
     for k in ('captureDownEnabled', 'superdeepRoomsEnabled'):
         S.setting(k, True)
@@ -1647,32 +1702,39 @@ def _pit_trap_raid(S):
     try:
         seen = _watch_trap(S, pit, until_ladder=False, until_held=2)
         no_raid = not seen['reached']
-        where = {'raidersSeen': seen['raiders'], 'polls': seen['polls'], 'refused': seen['refused'], 'last': seen['last']}
-        S.row('PTR_two_fall', len(seen['held']) >= 2, dict(where, held=sorted(seen['held'])),
-              unmeasured=no_raid or (len(seen['held']) < 2 and seen['refused'] > 0))
+        where = {'raidersSeen': seen['raiders'], 'polls': seen['polls'], 'refused': seen['refused'], 'last': seen['last'],
+                 'fallen': seen['fallen'], 'corpsesInTrench': seen['corpses']}
+        S.row('PTR_two_fall', seen['fallen'] >= 2, dict(where, held=sorted(seen['held'])),
+              unmeasured=no_raid or (seen['fallen'] < 2 and seen['refused'] > 0))
         caught, warden = [], None
         for pid in sorted(seen['held'])[:2]:
             before, v = _ptr_prisoner(S, pid)
             cell = kv(v).get('cell', '')
             lip = (int(cell.split(',')[0]), O[1] + 1) if before is not None and ',' in cell else None
             o = {'accepted': False, 'why': 'no pit cell in %r' % v[:80]}
+            able = None
             if lip:
-                warden = warden or S.pawn('Colonist', lip, 'player')
+                if not (warden and _able(S, warden)):     # a downed or dead warden captures nobody: a fresh one asks
+                    warden = S.pawn('Colonist', lip, 'player')
                 o = S.call('jawa/ordered_job', pawnId=warden, jobDef='RM_CaptureDown', targetAId=pid,
                            targetBX=lip[0], targetBZ=lip[1])
                 S.ticks(PTR_CAPTURE_TICKS)
+                able = _able(S, warden)
             after, a = _ptr_prisoner(S, pid)
             caught.append({'pawn': pid, 'before': before, 'after': after, 'lip': lip, 'accepted': o.get('accepted'),
-                           'verdict': v[:120], 'reply': a[:120]})
+                           'warden': warden, 'wardenAbleAfter': able, 'verdict': v[:120], 'reply': a[:120]})
+        # a capture the raid cut short (its warden downed, no prisoner) did not ask the mod: UNMEASURED, never FAIL
         S.row('PTR_fallen_become_prisoners', bool(caught) and all(c['before'] is False and c['after'] for c in caught),
               {'captured': caught} if caught else 'nobody fell, so there was no one to capture',
-              unmeasured=not caught or any(c['before'] is None or c['after'] is None for c in caught))
+              unmeasured=not caught or any(c['before'] is None or c['after'] is None
+                                           or (not c['after'] and c['wardenAbleAfter'] is False) for c in caught))
         S.again()
         pit = _pit_trap(S, fall=False)              # control: no lid; the same raid must path round and nobody fall
         seen = _watch_trap(S, pit, until_ladder=False)
-        S.row('PTR_control_open_pit_no_one_falls', not seen['held'],
-              {'held': sorted(seen['held']), 'raidersSeen': seen['raiders'], 'refused': seen['refused'], 'last': seen['last']},
-              unmeasured=not seen['reached'] or (not seen['held'] and seen['refused'] > 0))
+        S.row('PTR_control_open_pit_no_one_falls', not seen['held'] and not seen['fallen'],
+              {'held': sorted(seen['held']), 'fallen': seen['fallen'], 'corpsesInTrench': seen['corpses'],
+               'raidersSeen': seen['raiders'], 'refused': seen['refused'], 'last': seen['last']},
+              unmeasured=not seen['reached'] or (not seen['held'] and not seen['fallen'] and seen['refused'] > 0))
     finally:
         S.B.stop_on = prior
 

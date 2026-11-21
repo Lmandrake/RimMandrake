@@ -59,11 +59,14 @@ class Fake:
             g['hostile'].clear()                       # site_recover -> remove_intruders on the whole map
             return {'success': True, 'advanced': n}
         g['polls'] += 1
+        g['clock'] = g.get('clock', 0)
+        step = (g['clock'] + n) // 100 - g['clock'] // 100     # squares walked: one per 100 ticks of the whole clock
+        g['clock'] += n
         trench = set(C._trap_cells()) if hasattr(C, '_trap_cells') else set()
         for hid, h in sorted(g['hostile'].items()):
             if h['held'] or self.fault == 'far':
                 continue
-            nz = min(h['z'] + n // 100, O[1] + 9)
+            nz = min(h['z'] + step, O[1] + 9)
             if h['z'] < O[1] <= nz and (h['x'], O[1]) in g['covers'] and g['covers'][(h['x'], O[1])]:
                 h['z'], h['held'] = O[1], True
                 if sum(1 for q in g['hostile'].values() if q['held']) >= (1 if self.fault == 'one' else 2):
@@ -88,7 +91,7 @@ class Fake:
         return {'success': True, 'advanced': n}
 
     # ---- the bridge
-    def call(self, tool, **kw):
+    def call(self, tool, _answer=False, **kw):
         g = self.g
         if tool == 'jawa/flowworks_excavation_drive':
             c = (kw['x'], kw['z'])
@@ -117,6 +120,11 @@ class Fake:
                 self.contract.append('set_plants op names no def: %s' % kw['ops'])
                 return {'success': False, 'message': 'Could not parse ops.'}
             return {'success': True}
+        if tool == 'jawa/spawn_pawn' and kw.get('faction') == '?':    # the faction probe (_raid_factions): a refusal
+            return {'success': False, 'details': {'available': [{'def': 'PlayerColony', 'hostile': False},
+                                                                {'def': 'Mechanoid', 'hostile': True},
+                                                                {'def': 'TribeSavage', 'hostile': True},
+                                                                {'def': 'PirateYttakin', 'hostile': True}]}}
         if tool == 'jawa/spawn_pawn':
             g['n'] += 1
             return {'success': True, 'pawns': [{'id': 'Human%d' % (900 + g['n'])}]}
@@ -134,6 +142,8 @@ class Fake:
             return {'success': True, 'pawns': ps}
         if tool == 'jawa/list_things':
             x, z, w, h = (int(v) for v in kw['rect'].split(','))
+            if kw.get('group') == 'Corpse':              # nobody dies in this fake: the trench holds no corpse
+                return {'success': True, 'things': []}
             return {'success': True, 'things': [t for t in g['ladders'] if t['def'] == kw['defName']
                                                 and x <= t['x'] < x + w and z <= t['z'] < z + h]}
         if tool == 'jawa/ordered_job':                   # RM_CaptureDown from the lip: a held raider becomes a prisoner
