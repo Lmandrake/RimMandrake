@@ -1943,10 +1943,11 @@ def free_name(bases, known):
 
 def ingame_item_id(mod, visit, known):
     """-> a rimflow name for the live driver's item: RIMMANDRAKE_DRIVE_<MOD>_IN_GAME_ACCEPTANCE_VISIT_<N>, else the
-    shorter ..._IN_GAME_VISIT_<N>, each with _RUN_<N> once taken."""
+    shorter ..._IN_GAME_VISIT_<N>, each with _RUN_<N> once taken. Every name carries its visit word: the RUNNER spawn
+    guard (model.RUNNER_INGAME_NAME) refuses a bare ..._IN_GAME_VISIT (2026-11-20 7:11 PM PST, Pyrelands after a clear)."""
     m, n = mod.upper(), word(visit or 0)
     return free_name(["RIMMANDRAKE_DRIVE_%s_IN_GAME_ACCEPTANCE_VISIT_%s" % (m, n),
-                      "RIMMANDRAKE_DRIVE_%s_IN_GAME_VISIT_%s" % (m, n), "RIMMANDRAKE_DRIVE_%s_IN_GAME_VISIT" % m], known)
+                      "RIMMANDRAKE_DRIVE_%s_IN_GAME_VISIT_%s" % (m, n)], known)
 
 
 def blind_item_id(mod, cycle, known):

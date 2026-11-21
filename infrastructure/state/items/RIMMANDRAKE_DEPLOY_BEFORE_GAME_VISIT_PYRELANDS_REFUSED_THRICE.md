@@ -96,3 +96,38 @@ run id on this item. That live launch is the proof; the selftest alone is not.
 - The origin of the nine extra textures.
 - Whether other member biomes carry the same kind of non-game drift today (only this plan was read).
 - Which game the refused visit targeted (the default is a).
+
+## Resolution (detached helper, 2026-11-20 7:11 PM PST; fix 2d58382ecc)
+
+Full text: `design/specs/2026-11-20-launch-refusal-wait-and-deploy/boundary.md`; test
+`src/RimMandrake/rimflow/selftest_launch_wait_and_deploy.py` (red on the base: 10 failed, the drain case read 3 faults
+and the base `mod_deployed` read tonight's real plan as not current; green 29 of 29; four planted faults each caught).
+
+1. What must match: option (b), only the files the game loads, for the whole composed mod. A `.sh`, `Source/` or a
+   README cannot change what the game plays; a def, patch or DLL of another member can, so (c) is too narrow.
+2. Game-only files: drift when in Defs, Patches, Assemblies, Languages, About or LoadFolders.xml. A game-only texture
+   or sound is drift only when a repo def, patch or C# file names its path (`git grep` for the path between `>`/`<`
+   or quotes; a computed path is not seen, listed on the page as not survived).
+3. Self-repair: loaded drift that `--apply` cures (`+`, `~`, `-` the repo deleted) is deployed by `launch_mod` for
+   the visit's game (`--instance`): game down if up (graceful, `/F` after 120 s), `--apply`, game up if it was up,
+   plan read again. His game hold or a held bridge is a wait (`WAIT_MARK`), no deploy. A game-only loaded file the repo
+   never deleted refuses and names `--pull`/`--prune`.
+4. Refusals left: a failed deploy, a game that will not stop or start, a plan still differing after the deploy, a
+   game-only loaded file. Each names its cause and counts as a fault.
+
+Common cause, both items: a wait refusal (the account drain, `WAIT_MARK`) is booked with `wait`, spends no try,
+counts no system fault (`run_void.sync_system`, `retriable`, `still_retried`, `_retriable`), and the tick launches
+nothing while the drain notice stands (`drain_gate`: rows read `account_hold`, "waiting: account switch").
+
+## The nine extra textures (measured 2026-11-20 6:55 PM PST)
+
+- The seven `RM_FE_LooseAsh/LooseAsh*.png` are byte-identical (git blob hash) to the repo's files at `9994e0125f^`.
+  Commit `9994e0125f` (2026-11-08, branch ralph/pyrelands) deleted them on purpose with the loose-ash filth def
+  ("remove all debug-save conversion code (loose-ash filth, retired ash rungs)"); main's `--diff-filter=D` missed it
+  because the delete is on that branch's history, squashed into `8fb9f7f2b6`. Retired art; git keeps every byte.
+- `RM_FE_AshCoverRipple.png` is byte-identical to today's shipped `RM_FE_AshCover.png` (blob 18a3cee893).
+- `RM_FE_AshCoverStreak.png` has no copy in git and no def or C# names it: a variant from the 2026-11-08 ash-cover
+  tuning (`ash_cover_gen.py` era). A copy is kept at `D:\ClaudeWork\backups\pyrelands_extra_game_textures_20261120\`
+  with the Ripple copy.
+- None was pruned. Under the new rule they are ignored (named by nothing), so they no longer stop a visit. Pruning
+  them is safe on this evidence but not needed; no item filed.

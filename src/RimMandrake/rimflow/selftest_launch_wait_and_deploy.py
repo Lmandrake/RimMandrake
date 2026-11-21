@@ -340,6 +340,16 @@ def t_the_tick_waits_on_a_drain():
           "the-tick-waits-on-a-drain: no drain notice holds nothing")
 
 
+def t_a_visit_item_name_passes_the_spawn_guard():
+    import model
+    known = {"RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT_TWO", "RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_VISIT_TWO"}
+    names = [MD.ingame_item_id("Pyrelands", 2, set()), MD.ingame_item_id("Pyrelands", 2, known),
+             MD.ingame_item_id("GimmeSomeSlack", 3, {"RIMMANDRAKE_DRIVE_GIMMESOMESLACK_IN_GAME_VISIT_THREE"})]
+    check(all(n and model.RUNNER_INGAME_NAME.match(n) for n in names) and names[1] not in known,
+          "a-visit-item-name-passes-the-spawn-guard: with both visit names taken (2026-11-20 7:11 PM, after a clear) "
+          "the next name still passes the RUNNER spawn guard (%s)" % names)
+
+
 def main():
     fx = Fixture()
     try:
@@ -349,7 +359,8 @@ def main():
             safe(lambda: t(fx) is None, t.__name__[2:] + " ran")
     finally:
         fx.close()
-    for t in (t_drain_refusals_count_no_fault, t_a_real_launch_fault_still_counts, t_the_tick_waits_on_a_drain):
+    for t in (t_drain_refusals_count_no_fault, t_a_real_launch_fault_still_counts, t_the_tick_waits_on_a_drain,
+              t_a_visit_item_name_passes_the_spawn_guard):
         safe(lambda: t() is None, t.__name__[2:] + " ran")
     print("%d failed" % len(FAILS))
     return 1 if FAILS else 0
