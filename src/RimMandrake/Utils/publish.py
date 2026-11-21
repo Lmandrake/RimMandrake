@@ -966,13 +966,19 @@ def full_head_tree(top, rev="HEAD", what="HEAD"):
 # RIMMANDRAKE_STRIP_HOLDER_WRITER_FROM_DOOR_TESTS: a pilot holder's unit writes the mod ledger as HOLDER.<lease>; a door
 # test is about the tree, not the publisher, and one that writes a DISPATCH or BACKFILL shard was refused under it.
 LEDGER_IDENTITY = ("RM_MODLEDGER_WRITER", "RM_MODLEDGER_TOKEN")
+# RIMMANDRAKE_MEASURE_FLOWWORKS_DIG_CALL_QUARTER_SECOND_ON_SITTING_MAP: the same for the publisher's GAME. A game-b run's
+# unit carries `game_instance.py env b`, and door tests that read the caller's game (selftest_game_lock,
+# selftest_conductor_acts and three more) read red under it, red on the base too, so every game-b publish showed them
+# as PRE-EXISTING reds that hid real ones (measured 2026-11-21).
+GAME_CHOICE = ("RM_GAME_INSTANCE", "RM_GAME_USERDATA", "RM_GAME_LOGDIR", "GABP_SERVER_PORT", "GABP_TOKEN",
+               "RIMFLOW_DRIVER_LOCK")
 
 
 def _run_tree_checks(top, cfg, what="tree check", base=None):
     """base: (sha, why) from door_base for the pipeline checks, whose reds are re-run on it (split_pre_existing); None
     for the whole-tree checks, which refuse on any red."""
     limit = cfg.get("timeout_s", 60)
-    env = {k: v for k, v in os.environ.items() if k not in LEDGER_IDENTITY}
+    env = {k: v for k, v in os.environ.items() if k not in LEDGER_IDENTITY + GAME_CHOICE}
 
     def one(c, tree=top):
         t0 = time.monotonic()

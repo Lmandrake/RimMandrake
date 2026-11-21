@@ -287,6 +287,21 @@ def main():
         for k, v in was.items():
             os.environ.pop(k, None) if v is None else os.environ.__setitem__(k, v)
         check(err is None and "1 green" in out, "a holder's RM_MODLEDGER_WRITER/TOKEN never reach a door test (%r)" % err)
+        # RIMMANDRAKE_MEASURE_FLOWWORKS_DIG_CALL_QUARTER_SECOND_ON_SITTING_MAP: a game-b run's unit carries
+        # RM_GAME_INSTANCE=b and the rest of `game_instance.py env b`; selftest_game_lock, selftest_conductor_acts and
+        # three more door tests read the caller's game from it and went red under it (measured 2026-11-21).
+        game_vars = ("RM_GAME_INSTANCE", "RM_GAME_USERDATA", "RM_GAME_LOGDIR", "GABP_SERVER_PORT", "GABP_TOKEN",
+                     "RIMFLOW_DRIVER_LOCK")
+        script(tmp, "gamevars.py", "import os, sys\nw = [k for k in %r if k in os.environ]\n"
+               "print('FAIL the publisher\\'s game choice leaked: %%s' %% w) if w else print('ok')\nsys.exit(1 if w else 0)\n"
+               % (game_vars,))
+        fixture(tmp, ["gamevars.py"])
+        was = {k: os.environ.get(k) for k in game_vars}
+        os.environ.update({k: "b" for k in game_vars})
+        err, out = call(tmp, ["src/a.py"])
+        for k, v in was.items():
+            os.environ.pop(k, None) if v is None else os.environ.__setitem__(k, v)
+        check(err is None and "1 green" in out, "a game-b publisher's game choice never reaches a door test (%r)" % err)
     cfg = json.load(open(os.path.join(HERE, "..", "..", "..", P.TREE_CHECKS)))
     root = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
     listed = [c["test"] for c in cfg["checks"] + cfg.get("nightly_only", [])]
