@@ -72,6 +72,7 @@ REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 if HERE not in sys.path:
     sys.path.insert(0, HERE)
 import run_tmp  # noqa: E402  (its own TMPDIR: TMP_SCRATCH_ENFORCE_MUTANTS_CLEAN_UP)
+import principal  # noqa: E402  a gate of form never refuses the owner or the Conductor window (principal.form)
 try:                                    # whole text, never a silent cut (RIMMANDRAKE_STORE_TEXT_WHOLE_NO_CUTS)
     from . import fulltext
 except ImportError:
@@ -303,6 +304,29 @@ def origin_check(item, runner=subprocess.run, repo=None, seat=None):
     return "refused: %s is not on %s; %s%s" % (item, ORIGIN_REF, say, " (%s; %s may be stale)" % (stale, ORIGIN_REF) if stale else "")
 
 
+def origin_gate(item, runner=subprocess.run, repo=None, seat=None, env=None):
+    """origin_check, and its repair for a principal (the owner or the Conductor window, principal.form): when shards in
+    this clone file the item, the launcher runs the one ./publish itself and checks again, instead of refusing
+    (RIMMANDRAKE_NEVER_REFUSE_THE_CONDUCTOR_SEVEN_REFUSALS_ONE_NIGHT). Anyone else gets origin_check's refusal unchanged.
+    -> None when the item is on origin/main (now), else the refusal text, which names what the publish said."""
+    text = origin_check(item, runner=runner, repo=repo, seat=seat)
+    if not text:
+        return None
+    repo = repo or REPO
+    shards = local_shards(item, repo)
+    if not shards or not principal.form("%s was not on %s: the launcher publishes %s itself" % (
+            item, ORIGIN_REF, " ".join(shards)), env=env):
+        return text
+    argv = shlex.split(publish_command(item, shards))
+    try:
+        r = runner(argv, cwd=repo, capture_output=True, text=True, timeout=600, stdin=subprocess.DEVNULL)
+    except (OSError, subprocess.SubprocessError) as e:
+        return "%s; the launcher's own publish could not run (%s)" % (text, str(e)[-120:])
+    if r.returncode:
+        return "%s; the launcher's own publish exited %d: %s" % (text, r.returncode, _tail(r, 200))
+    return origin_check(item, runner=runner, repo=repo, seat=seat)
+
+
 def live_status(rec, runner=subprocess.run, now=None):
     """The record's status as its unit sees it: "launching" or "running" whose unit is inactive, failed or not found is
     "dead" (finish never ran: the 2026-11-14 stale records). A young "launching" record and an unreadable unit keep theirs."""
@@ -386,9 +410,59 @@ def seat_identity(dest):
         return "identity NOT set: %s: %s" % (type(e).__name__, e)
 
 
-def take_clone(item, runner=subprocess.run):
-    """-> (clone path, log line). A pool clone named <ITEM>.det: made by scratch_clone.py, or reused and synced."""
-    name = item + ".det"
+def resume_clone_name(item, now):
+    """The fresh pool clone a resume takes when <ITEM>.det is held by a finished run: <ITEM>.r<epoch>.det."""
+    return "%s.r%d.det" % (item, int(now))
+
+
+def resume_fresh_clone(item, dest, runner=subprocess.run, now=None, root=None):
+    """-> the path of a fresh pool clone for a resume, or None to use `dest`. A resume never depends on a clone that may
+    vanish (RIMMANDRAKE_NEVER_REFUSE_THE_CONDUCTOR_SEVEN_REFUSALS_ONE_NIGHT: a resume was refused on a finished run's
+    clone, and one given that clone with --clone died at once when the clone was removed under it). Only when every run
+    holding `dest` is FINISHED (its return step owns the clone): a live run still refuses (two runs, one clone), and a
+    dead one too (its finish never ran, so its work is in that clone and nowhere else)."""
+    held = clone_holders(dest, runner, now, root)
+    if not held or not all(not wait and why.startswith("run %s finished" % u) for u, wait, why in held):
+        return None
+    return os.path.join(pool_root(), "clones", resume_clone_name(item, now or time.time()))
+
+
+def session_bundle(session, root=None):
+    """-> (bundle dir, unit) from the newest run record of `session` that names one, else (None, why)."""
+    best = None
+    for r in all_records(root):
+        if session in (r.get("session"), r.get("resume_session")) and r.get("bundle") and \
+                (best is None or (r.get("at") or 0) > (best.get("at") or 0)):
+            best = r
+    if best is None:
+        return None, "no run record of session %s names a bundle" % session
+    if not os.path.isdir(best["bundle"]):
+        return None, "the bundle %s of %s is gone" % (best["bundle"], best["unit"])
+    return best["bundle"], best["unit"]
+
+
+def restore_session_bundle(item, session, clone, restorer=None, root=None):
+    """The resumed run's fresh clone takes the work its session left in a bundle. -> one line saying what it restored."""
+    bundle, unit = session_bundle(session, root)
+    if not bundle:
+        return "restored nothing: " + unit
+    try:
+        if restorer is None:
+            import run_store as R
+            restorer = R.Effects(R.rules(), R.Store(pool_root())).restore_bundle
+        bad = restorer(item, bundle, clone)     # -> the parts that did not come back ([] = all of it)
+    except Exception as e:  # noqa: BLE001  a failed restore is said, and the bundle stays where it is
+        return "restore of %s (run %s) FAILED: %s: %s; the bundle stays there" % (bundle, unit, type(e).__name__, e)
+    if not isinstance(bad, list):
+        return "restore of %s (run %s) UNMEASURED: the restorer answered %r, not a list of what failed" % (
+            bundle, unit, bad)
+    return "restored the work of run %s from %s%s" % (unit, bundle, "; NOT restored: " + "; ".join(bad) if bad else "")
+
+
+def take_clone(item, runner=subprocess.run, name=None):
+    """-> (clone path, log line). A pool clone named <ITEM>.det (or `name`, a resume's fresh one): made by
+    scratch_clone.py, or reused and synced."""
+    name = name or item + ".det"
     dest = os.path.join(pool_root(), "clones", name)
     if os.path.isdir(os.path.join(dest, ".git")):
         r = runner(["./sync"], cwd=dest, capture_output=True, text=True, timeout=300, stdin=subprocess.DEVNULL)
@@ -501,8 +575,11 @@ def owns_clone(rec):
     """True for the pool clone <pool>/clones/<ITEM>.det that launch made or reused itself. A clone the caller gave with
     --clone is theirs, and so is any other path: this step never touches them."""
     how = rec.get("clone_how") or ""
-    want = os.path.join(pool_root(), "clones", rec.get("item", "") + ".det")
-    return how.startswith(("made ", "reused ")) and os.path.abspath(rec.get("clone") or "") == os.path.abspath(want)
+    item = rec.get("item", "")
+    base = os.path.basename(os.path.abspath(rec.get("clone") or ""))
+    mine = base == item + ".det" or bool(re.fullmatch(re.escape(item) + r"\.r[0-9]+\.det", base))    # a resume's own
+    return how.startswith(("made ", "reused ")) and mine and \
+        os.path.dirname(os.path.abspath(rec.get("clone") or "")) == os.path.abspath(os.path.join(pool_root(), "clones"))
 
 
 def other_users(rec, root=None, runner=subprocess.run):
@@ -1158,10 +1235,14 @@ def _launch(seat, item, brief, model, max_s, budget, now, runner, known, clone, 
         draining = drain_refusal(now, extra, resume[0])
         if draining:
             return 2, draining
-    unpublished = pf.gate("I6", origin_check, item, runner=runner, seat=seat, judge=_refusal)   # before a clone or a unit
+    unpublished = pf.gate("I6", origin_gate, item, runner=runner, seat=seat, judge=_refusal)    # before a clone or a unit
     if unpublished:
         return 2, unpublished
     dest = clone or os.path.join(pool_root(), "clones", item + ".det")
+    if resume[0]:
+        fresh = resume_fresh_clone(item, dest, runner, now)
+        if fresh:       # the clone a finished run still holds may vanish under a resume: the resume takes its own
+            dest, clone = fresh, None
     held = hold_until_returned(dest, runner, sleep, now, kept_ok=bool(clone))
     if held:
         return 2, held
@@ -1181,9 +1262,11 @@ def _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, 
         how = "given " + clone
     else:
         try:
-            clone, how = take_clone(item, runner=runner)
+            clone, how = take_clone(item, runner=runner, name=os.path.basename(dest))
         except Exception as e:  # noqa: BLE001
             return 1, "clone failed: %s" % e
+        if resume_session and os.path.basename(dest) != item + ".det":
+            how += "; " + restore_session_bundle(item, resume_session, clone)
     notes = []
     if runner is subprocess.run:    # the ticket's new checks, against the copy this run's clone holds (spec 6.2)
         pf.run(root=clone)

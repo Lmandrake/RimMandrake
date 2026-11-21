@@ -530,6 +530,20 @@ def shard_line(event, **kw):
 
 
 def test_origin():
+    """Run as a launched run (the refusal path), whoever runs this test: the Conductor's own launch repairs the
+    refusal by publishing (selftest_never_refuse_conductor.py)."""
+    real_unit = os.environ.get("RM_ROLE_UNIT")
+    os.environ["RM_ROLE_UNIT"] = "rm-detached-selftest-origin-caller"
+    try:
+        _test_origin()
+    finally:
+        if real_unit is None:
+            os.environ.pop("RM_ROLE_UNIT", None)
+        else:
+            os.environ["RM_ROLE_UNIT"] = real_unit
+
+
+def _test_origin():
     """The item must be filed on origin/main before a clone is made or a unit starts. The fake origin holds the lines that
     `git grep` would print; the temp repo holds the working-tree shards the refusal names."""
     item = "SOME_ITEM_TO_BUILD"
@@ -1281,13 +1295,21 @@ def _origin_repo(name, shards):
 
 def _origin_launch(repo, item, runner, seat="BENCH"):
     real_repo, real_pool = DH.REPO, os.environ.get("RM_DETACHED_POOL")
+    real_unit = os.environ.get("RM_ROLE_UNIT")
     DH.REPO, os.environ["RM_DETACHED_POOL"] = repo, os.path.join(TMP, "originpool2")
+    # the caller is a launched run: the refusal path (the Conductor's own launch publishes the shard itself, tested in
+    # selftest_never_refuse_conductor.py), whoever runs this test
+    os.environ["RM_ROLE_UNIT"] = "rm-detached-selftest-origin-caller"
     try:
         GIT_CALLS.clear()
         ORIGIN.update({"events": [], "fetch_rc": 0, "grep_rc": None})
         return DH.launch(seat, item, "Build.", "sonnet", 600, 5, now=T0 + 330, runner=runner, known={item}, clone=CLONE)
     finally:
         DH.REPO = real_repo
+        if real_unit is None:
+            os.environ.pop("RM_ROLE_UNIT", None)
+        else:
+            os.environ["RM_ROLE_UNIT"] = real_unit
         if real_pool is None:
             os.environ.pop("RM_DETACHED_POOL", None)
         else:

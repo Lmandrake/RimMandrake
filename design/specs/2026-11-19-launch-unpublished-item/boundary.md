@@ -26,8 +26,10 @@ promise has a test of its name in `src/RimMandrake/rimflow/selftest_detached_hel
   origin/main, while shards in this clone file it, prints one line holding the exact command that passes:
   `to pass, run in <REPO>: ./publish -m "ledger: <ITEM> filed" <shard> [<shard>...]`, naming every local shard that
   files it, OWNER.jsonl included. A failed fetch is named after it, on the same line.
-- **an-unpublished-item-refusal-publishes-nothing.** The refusal runs no git command but the one fetch and the one
-  search: nothing is committed or pushed for the caller (no auto-publish), and no clone, unit or run record is made.
+- **an-unpublished-item-refusal-publishes-nothing.** For a caller that is not the owner or the Conductor window (a
+  launched run, another seat), the refusal runs no git command but the one fetch and the one search: nothing is
+  committed or pushed for the caller, and no clone, unit or run record is made. The Conductor's own launch runs that
+  `./publish` itself and goes on (`origin_gate`; design/specs/2026-11-21-never-refuse-the-conductor/boundary.md).
 - **an-item-filed-nowhere-here-names-where-to-publish.** When no local shard files the item, the one-line refusal says
   so and names the command to run in the clone that filed it: `./publish -m "ledger: <ITEM> filed"
   infrastructure/state/ledger/events/<SEAT>.jsonl infrastructure/state/ledger/events/OWNER.jsonl`, `<SEAT>` being the

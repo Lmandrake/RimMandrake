@@ -276,7 +276,7 @@ def main():
            "the build item is filed once, named by the refused count (%s)" % [x[0] for x in filed])
         nc = subprocess.run([sys.executable, os.path.join(HERE, "cli.py"), "namecheck", filed[0][0] if filed else "X"],
                             capture_output=True, text=True, timeout=120)
-        ok(nc.returncode == 0, "the minted item name passes rimflow namecheck")
+        ok(nc.returncode == 0 and "REFUSED" not in nc.stdout, "the minted item name passes rimflow namecheck")
         a = launches()[0] if launches() else []
         ok(a and a[a.index("--budget-usd") + 1] == "15" and a[a.index("--model") + 1] == "opus",
            "the launch carries the 15 USD cap and opus")
@@ -943,7 +943,7 @@ def blind_main():
            "the launch carries the settings' blind cap, opus and the blind-challenge brief")
         nc = subprocess.run([sys.executable, os.path.join(HERE, "cli.py"), "namecheck", filed[0][0] if filed else "X"],
                             capture_output=True, text=True, timeout=120)
-        ok(len(filed) == 1 and nc.returncode == 0 and "BLIND" in filed[0][0],
+        ok(len(filed) == 1 and nc.returncode == 0 and "REFUSED" not in nc.stdout and "BLIND" in filed[0][0],
            "the judge's item is filed once and its name passes namecheck (%s)" % [x[0] for x in filed])
         unit = json.load(open(os.path.join(sd, "state.json")))["mods"]["GimmeSomeSlack"]["blind_auto"][0]["unit"]
         world["live"]["GimmeSomeSlack"] = [unit]
@@ -1533,7 +1533,7 @@ def ingame_main():
         def t_item():
             nc = subprocess.run([sys.executable, os.path.join(HERE, "cli.py"), "namecheck", filed[0][0]],
                                 capture_output=True, text=True, timeout=120)
-            return (len(filed) == 1 and nc.returncode == 0 and "IN_GAME_ACCEPTANCE" in filed[0][0]
+            return (len(filed) == 1 and nc.returncode == 0 and "REFUSED" not in nc.stdout and "IN_GAME_ACCEPTANCE" in filed[0][0]
                     and filed[0][3].get("needs") == "game-up" and MD._is_ingame_item(filed[0][0]))
         chk(t_item, "its item is filed once, needs game-up, passes namecheck and reads as an in-game run")
 

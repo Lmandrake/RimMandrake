@@ -28,6 +28,9 @@ os.environ["RM_CONTROL_MODS"] = "Graffiti"
 os.environ["RM_CONTROL_TICK_UNIT"] = ""
 os.environ["RM_CONTROL_CONCEPTS"] = os.path.join(TMP, "concepts")
 os.makedirs(os.environ["RM_CONTROL_CONCEPTS"])
+os.environ["RM_DISPATCHER_STATE"] = os.path.join(TMP, "dispatcher")
+os.environ["RM_DETACHED_POOL"] = os.path.join(TMP, "pool")
+os.environ["RM_CONDUCTOR_LOG"] = os.path.join(TMP, "conductor.md")
 REAL_EVENTS = os.path.join(REPO, "infrastructure", "state", "ledger", "events")
 FAILS = []
 HELPER_UNIT = "rm-detached-selftest-never-refuse-helper"
@@ -194,7 +197,6 @@ def _live_run(C, unit):
 
 def t_replay_pipe_undo_stop_and_on_unit():
     import control as C
-    C.init(os.environ["RM_CONTROL_DB"])
     nokill = dict(killer=lambda us: [], reaper=lambda *a, **k: None, escalator=lambda *a, **k: "no timer in test")
     _live_run(C, "rm-probe-undo-1")
     r = C.stop("rm-probe-undo-1", "at_easy_spot", "easy-spot test", **nokill)
@@ -240,7 +242,6 @@ def t_replay_pipe_undo_stop_and_on_unit():
 
 def t_replay_fold_before_the_act_is_recorded():
     import maturation_hands as MH
-    os.environ["RM_DISPATCHER_STATE"] = os.path.join(TMP, "dispatcher")
     real = MH._sdir
     sdir = os.path.join(TMP, "hands")
     os.makedirs(sdir)
@@ -259,6 +260,136 @@ def t_replay_fold_before_the_act_is_recorded():
         MH._sdir = real
 
 
+class FakeSys:
+    """A fake runner for detached_helper: origin/main is a list of event lines that `./publish` extends with the local
+    shard's; systemd and git answer as a quiet host does. `calls` keeps every argv. Nothing real runs."""
+
+    def __init__(self, origin_lines=(), shards=None):
+        self.origin, self.shards, self.calls = list(origin_lines), dict(shards or {}), []
+
+    def __call__(self, argv, **kw):
+        self.calls.append(list(argv))
+        out = ""
+        if argv[:2] == ["git", "grep"]:
+            needle = argv[argv.index("-e") + 1]
+            hits = [ln for ln in self.origin if needle in ln]
+            return subprocess.CompletedProcess(argv, 0 if hits else 1, "\n".join(hits), "")
+        if argv and argv[0] == "./publish":
+            for path in argv[3:]:
+                self.origin += self.shards.get(path, [])
+            out = "PUBLISHED 0123456789abcdef"
+        if argv[:3] == ["systemctl", "--user", "show"]:
+            out = "inactive"
+        return subprocess.CompletedProcess(argv, 0, out, "")
+
+    def published(self):
+        return [c for c in self.calls if c and c[0] == "./publish"]
+
+
+def _det_repo(name, item):
+    import detached_helper as DH
+    repo = os.path.join(TMP, name)
+    ev = os.path.join(repo, *DH.EVENTS_REL.split("/"))
+    os.makedirs(ev)
+    line = json.dumps({"seat": "OWNER", "event": "file", "id": item, "title": "t", "for": "BENCH"})
+    with open(os.path.join(ev, "OWNER.jsonl"), "w") as f:
+        f.write(line + "\n")
+    return repo, {DH.EVENTS_REL + "/OWNER.jsonl": [line]}
+
+
+@contextlib.contextmanager
+def _det_repo_bound(repo):
+    import detached_helper as DH
+    real = DH.REPO
+    DH.REPO = repo
+    try:
+        yield DH
+    finally:
+        DH.REPO = real
+
+
+def t_replay_launch_publishes_the_ledger_shard():
+    item = "RIMMANDRAKE_PROBE_FILED_UNDER_A_RULING_NOT_PUBLISHED"
+    repo, shards = _det_repo("launch_pub", item)
+    clone = os.path.join(TMP, "launch_pub_clone")
+    os.makedirs(clone)
+    with _det_repo_bound(repo) as DH:
+        fake = FakeSys(shards=shards)
+        with as_caller(helper_env()):
+            rc, text = DH.launch("BENCH", item, "Build.", "sonnet", None, 0, runner=fake, known={item}, clone=clone,
+                                 skip_launch_checks="selftest")
+        check(rc == 2 and "is not on origin/main" in text and not fake.published(),
+              "launch replay: a helper's launch of an unpublished item is refused as before, nothing published", text)
+        fake = FakeSys(shards=shards)
+        with as_caller(conductor_env()), contextlib.redirect_stderr(io.StringIO()) as err:
+            rc, text = DH.launch("BENCH", item, "Build.", "sonnet", None, 0, runner=fake, known={item}, clone=clone,
+                                 skip_launch_checks="selftest")
+        pub = fake.published()
+        check(rc == 0 and pub and pub[0][3:] == [DH.EVENTS_REL + "/OWNER.jsonl"] and "publishes" in err.getvalue()
+              and any(c[:1] == ["systemd-run"] for c in fake.calls),
+              "launch replay: the Conductor's launch publishes the ledger shard itself, noted, and goes on", (rc, text, pub))
+
+
+def t_replay_resume_takes_a_fresh_clone_and_restores_the_bundle():
+    import detached_helper as DH
+    item = "RIMMANDRAKE_PROBE_RESUME_AFTER_A_KEPT_CLONE"
+    session = "0f1e2d3c-4b5a-6978-8796-a5b4c3d2e1f0"
+    pool = os.environ["RM_DETACHED_POOL"]
+    old = os.path.join(pool, "clones", item + ".det")
+    os.makedirs(os.path.join(old, ".git"))
+    bundle = os.path.join(TMP, "bundle_of_the_first_run")
+    os.makedirs(bundle)
+    projects = os.path.join(TMP, "projects")
+    os.makedirs(os.path.join(projects, "-some-old-clone"))
+    with open(os.path.join(projects, "-some-old-clone", session + ".jsonl"), "w") as f:
+        f.write('{"type":"user"}\n')
+    DH.write_record({"unit": "rm-detached-bench-probe-resume-first", "seat": "BENCH", "item": item, "clone": old,
+                     "clone_how": "made " + old, "status": "finished", "at": time.time() - 600, "budget_usd": 0.0,
+                     "session": session, "bundle": bundle, "return_steps": ["bundle failed: kept"]})
+    made, restored = [], []
+
+    def fake_take(item_, runner=None, name=None):
+        dest = os.path.join(pool, "clones", name or item_ + ".det")
+        os.makedirs(os.path.join(dest, ".git"), exist_ok=True)
+        made.append(dest)
+        return dest, "made " + dest
+
+    real_take, real_restore = DH.take_clone, getattr(DH, "restore_session_bundle", None)
+    DH.take_clone = fake_take
+    if real_restore:        # (absent on the base: the replay then shows the base's own refusal)
+        DH.restore_session_bundle = lambda i, s, c, restorer=None, root=None: real_restore(
+            i, s, c, restorer=lambda it, b, cl: restored.append((b, cl)) or [], root=root)
+    try:
+        fake = FakeSys(origin_lines=[json.dumps({"event": "file", "id": item})])
+        with as_caller(helper_env()):       # as the base did: refused on the held clone (helpers too gain the repair)
+            rc, text = DH.launch("BENCH", item, "Carry on.", "sonnet", None, 0, runner=fake, known={item},
+                                 resume_session=session, projects=projects, skip_launch_checks="selftest")
+    finally:
+        DH.take_clone = real_take
+        if real_restore:
+            DH.restore_session_bundle = real_restore
+    fresh = made[0] if made else ""
+    rec = {}
+    for r in DH.all_records():
+        if r.get("resume_session") == session:
+            rec = r
+    check(rc == 0 and fresh and fresh != old and os.path.basename(fresh).startswith(item + ".r"),
+          "resume replay: a resume on a clone a finished run holds takes a fresh pool clone, not that one", (rc, text))
+    check(restored == [(bundle, fresh)] and "restored the work of run" in rec.get("clone_how", ""),
+          "resume replay: the fresh clone takes the bundle from the run's finish record, and the record says so",
+          (restored, rec.get("clone_how")))
+    check(str(rec.get("resume_transcript") or "").startswith(projects) and os.path.exists(rec["resume_transcript"]),
+          "resume replay: the transcript is carried to the fresh clone",
+          rec.get("resume_transcript"))
+    check(DH.owns_clone(dict(rec, clone=fresh)), "resume replay: the fresh clone is the run's own, so its return gives "
+          "it back to the pool", rec.get("clone_how"))
+    # a live run on the clone still refuses a resume (two runs, one clone)
+    DH.write_record({"unit": "rm-detached-bench-probe-resume-live", "seat": "BENCH", "item": item, "clone": old,
+                     "clone_how": "made " + old, "status": "running", "at": time.time(), "budget_usd": 0.0})
+    check(DH.resume_fresh_clone(item, old, FakeSys()) is None, "resume replay: a clone a LIVE run holds gets no "
+          "fresh twin (the resume waits or refuses as before)")
+
+
 BEFORE = []
 
 
@@ -268,9 +399,12 @@ def t_real_ledger_unchanged():
 
 def main():
     BEFORE.append(_digest_real_shards())
+    import control
+    control.init(os.environ["RM_CONTROL_DB"])     # the test's own store (admission reads it on every launch)
     tests = [t_principal_is_the_conductor_window_or_the_owner, t_a_planted_form_gate_waives_for_the_conductor_only,
              t_replay_close_no_code_free_text, t_replay_long_names_file_spawn_namecheck, t_replay_note_positional_text,
              t_replay_pipe_undo_stop_and_on_unit, t_replay_fold_before_the_act_is_recorded,
+             t_replay_launch_publishes_the_ledger_shard, t_replay_resume_takes_a_fresh_clone_and_restores_the_bundle,
              t_real_ledger_unchanged]
     only = sys.argv[1:]
     for t in tests:

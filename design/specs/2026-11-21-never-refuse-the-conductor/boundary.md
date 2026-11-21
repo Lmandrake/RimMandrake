@@ -45,6 +45,15 @@ the name, dashes as underscores) in `src/RimMandrake/rimflow/selftest_never_refu
 - **replay-fold-before-the-act-is-recorded.** `maturation_hands.py fold <id> --item <ID>` for an id the tick has not
   recorded yet keeps the fold (`pending_act`), and the act reads folded once the tick records it. An item off the
   ledger is still refused (that is substance: the follow-up does not exist).
+- **replay-launch-publishes-the-ledger-shard.** `detached_helper.py launch` of an item filed only in this clone's
+  shard (OWNER.jsonl from a ruling, say): for the Conductor the launcher runs the exact `./publish -m "ledger: <ITEM>
+  filed" <shards>` itself, notes it, checks origin again and goes on; a helper run is refused with the command, as
+  before, and nothing is published.
+- **replay-resume-takes-a-fresh-clone-and-restores-the-bundle.** `launch --resume <session>` when `<ITEM>.det` is held
+  only by FINISHED runs (a return that kept the clone) takes a fresh pool clone `<ITEM>.r<epoch>.det`, carries the
+  transcript there, restores the bundle the session's newest run record names (run_store's restore_bundle), and the
+  record's `clone_how` says what it restored. The fresh clone is the run's own (`owns_clone`), so its return gives it
+  back. A clone a live or dead run holds gets no fresh twin. This repair is the tool's own and serves every caller.
 - **real-ledger-unchanged.** A run of the test leaves the real ledger shards byte for byte as they were.
 
 ## STILL BINDS EVERY CALLER (never routed through principal.form)
