@@ -22,3 +22,15 @@ watched red at visit 3 (rc 1, ICE_cut_leaves_crushed_ice FAIL). The offline half
 ## refs
 file: src/RimMandrake/FlowWorks/Source/RM_GroundClassMath.cs
 file: src/RimMandrake/FlowWorks/Source/RM_DigSpoil.cs
+
+## stage (steward, RIMMANDRAKE_ROUTE_FLOWWORKS_VISIT_THREE_FAILURES_BACK, 2026-11-21)
+needs offline. The fault is in pure code that the C# SelfTest already compiles: `RM_GroundClassMath.Classify` (GroundClassChecks.cs
+case `IceDig_ice_and_packed_snow_cut_into_crushed_ice` asserts Ice, RM_PackedIce, RM_ChillIceBedrock, RM_PackedSnow and VEE dense
+snow, never ThinIce) and `CutYield`. Offline acceptance: a new C# SelfTest case (in GroundClassChecks.cs, or beside RM_DigSpoil's
+pick) asserts that a cut on the surface a frozen pond takes (vanilla ThinIce) yields RM_CutSpoil.CrushedIce, and that loose Snow
+and unfrozen water still do not. Run it at the parent first (red), then on the fix (green), with the FlowWorks C# SelfTest
+`--only <case>`. The fixer decides the design (ThinIce as Ice ground, or a frozen-liquid crushed-ice path); the bar
+ice_cuts_and_melts decides, not this text.
+In-game check: test table stage-6 id `sc_ice`, live command
+`python.exe src\RimMandrake\FlowWorks\northstar\concept_scenes.py --scene scene_ice --out <json>`. The fixer records it UNRUN for
+Stage 6 with `maturation.py unrun` when it closes this item on the offline test.

@@ -2,10 +2,10 @@
   "schema": 1,
   "mod": "FlowWorks",
   "version": "0.1.0",
-  "stage": "in_game",
-  "stage_label": "In-game acceptance (Stage 6)",
-  "since": "2026-11-20T21:40:39-08:00",
-  "since_from": "advance by DISPATCH",
+  "stage": "offline_build",
+  "stage_label": "Offline build (Stage 3)",
+  "since": "2026-11-21T10:41:26-08:00",
+  "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
     "at": "2026-11-14T16:02:19-08:00",
@@ -184,6 +184,23 @@
       "checks_passed": [
         "order",
         "game_only",
+        "by",
+        "version",
+        "hold"
+      ]
+    },
+    {
+      "from": "in_game",
+      "to": "offline_build",
+      "at": "2026-11-21T10:41:26-08:00",
+      "by": "BENCH",
+      "why": "visit 3 not met. MOD lines not fixed in the sitting: sc_ice (RIMMANDRAKE_FIX_FLOWWORKS_FROZEN_POND_CUT_LEAVES_NO_CRUSHED_ICE, offline) and sc_source_pays (RIMMANDRAKE_FIX_FLOWWORKS_SINK_STOPS_ON_LAST_DECILITRE_FILM, offline). Undecided bar island_bridges_trap_and_fail: sc_islands scene presumed wrong, unrepaired (RIMMANDRAKE_STAGE_FLOWWORKS_ISLAND_RAIDERS_NEVER_CROSS_LOWERED_LEAF, game-up). sc_garden one MOD-presumed FAIL then PASS (RIMMANDRAKE_TRACE_FLOWWORKS_FILTER_SLOWS_ONE_RUN_IN_TWO, game-up). OL_OWNER_LOOK_READS needless, kept (held_statements name it). Judge the judge: every reason a REAL MISS; the driver's repairs a07d2f8ea8 and 6fbf4d8c3b weaken no assertion.",
+      "unit": "rm-detached-bench-rimmandrake-route-flowworks-visit-three-1795286075",
+      "confirmed": {
+        "steward_confirms": "read visit_3/SUMMARY.md, rows.jsonl and maturation.py next lines; 2 MOD lines filed offline, 1 undecided bar and 1 flake filed game-up; no mod fix in the sitting, so no fix reader owed"
+      },
+      "checks_passed": [
+        "order",
         "by",
         "version",
         "hold"

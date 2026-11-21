@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "656a49ef948d67757f41a79bf8197953ccefbe5917abf1044aba4745a91da02c",
+  "body_sha256": "108fb0752c0e3ba76031a02461f197f5b81bbd8dcb6af71445628842b6b01a37",
   "reducer": 1,
   "shards": {
    "BACKFILL": 893183,
@@ -21,6 +21,7 @@
    "HOLDER.run-1795260677": 3322,
    "HOLDER.run-1795263747": 1891,
    "HOLDER.run-1795268290": 5226,
+   "HOLDER.run-1795285878": 924,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1261,11 +1262,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795268290",
-   "done": "visit 3 exact-tier reruns on game a, 5ef7784393: 18 PASS, FAIL sc_ice, sc_source_pays, sc_islands, sc_garden (1 FAIL then PASS, filed RIMMANDRAKE_TRACE_FLOWWORKS_FILTER_SLOWS_ONE_RUN_IN_TWO), OL UNMEASURED; build match 30 of 31",
-   "next": "Steward reads visit_3/SUMMARY.md and sends sc_ice, sc_source_pays and the filter flake down their roads back",
-   "ruled_out": "the 08:36 scene stall (it was the driver run_row 160 s bound); a mutant DLL or unset converterRateMultiplier behind the garden filter FAIL",
-   "ts": "2026-11-21T18:25:10Z"
+   "by": "HOLDER.run-1795285878",
+   "done": "visit 3 stewarded: in_game -> offline_build; ice and sink MOD items needs offline; island scene and filter flake game-up; moat item dropped; OL kept",
+   "next": "Fix the ice and sink items offline, then advance --to in_game --game-only the island and filter items",
+   "ruled_out": "a weakened assertion in driver repairs a07d2f8ea8 and 6fbf4d8c3b: none",
+   "ts": "2026-11-21T18:41:54Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1717,7 +1718,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1500,
+  "events": 1502,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7818,7 +7819,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-21T18:34:22Z",
+   "last": "2026-11-21T18:41:54Z",
    "lease": "run-1795285878",
    "released": false,
    "token": 32
@@ -7919,6 +7920,7 @@
    "HOLDER.run-1795260677",
    "HOLDER.run-1795263747",
    "HOLDER.run-1795268290",
+   "HOLDER.run-1795285878",
    "JUDGE.judge-1794833810",
    "JUDGE.judge-1794849236",
    "JUDGE.judge-1795134433",

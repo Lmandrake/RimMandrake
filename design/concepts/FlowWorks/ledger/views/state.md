@@ -1,13 +1,13 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":46051,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"HOLDER.run-1795260677":3322,"HOLDER.run-1795263747":1891,"HOLDER.run-1795268290":5226,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=0faf11ad09b96587b3f056bb8f2a8c40d029c1a94711532bd9c102eb439b3511 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":46051,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"HOLDER.run-1795260677":3322,"HOLDER.run-1795263747":1891,"HOLDER.run-1795268290":5226,"HOLDER.run-1795285878":924,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=519491bb09a2f5459ec99a10373219130b7adbfa2f26c83cfe0dc0f95813d405 -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage in_game · 1500 events in 22 shards · reducer 1
-holder lease run-1795285878, token 32, last active 2026-11-21T18:34:22Z
+version 0.1.0 · stage in_game · 1502 events in 23 shards · reducer 1
+holder lease run-1795285878, token 32, last active 2026-11-21T18:41:54Z
 holder session cd47808a-7ad9-4eb2-b764-15f60713913e, context 435897 of ceiling 400000 — ROTATE DUE
 
-## Last checkpoint (HOLDER.run-1795268290, 2026-11-21T18:25:10Z)
-- done: visit 3 exact-tier reruns on game a, 5ef7784393: 18 PASS, FAIL sc_ice, sc_source_pays, sc_islands, sc_garden (1 FAIL then PASS, filed RIMMANDRAKE_TRACE_FLOWWORKS_FILTER_SLOWS_ONE_RUN_IN_TWO), OL UNMEASURED; build match 30 of 31
-- next: Steward reads visit_3/SUMMARY.md and sends sc_ice, sc_source_pays and the filter flake down their roads back
-- ruled out: the 08:36 scene stall (it was the driver run_row 160 s bound); a mutant DLL or unset converterRateMultiplier behind the garden filter FAIL
+## Last checkpoint (HOLDER.run-1795285878, 2026-11-21T18:41:54Z)
+- done: visit 3 stewarded: in_game -> offline_build; ice and sink MOD items needs offline; island scene and filter flake game-up; moat item dropped; OL kept
+- next: Fix the ice and sink items offline, then advance --to in_game --game-only the island and filter items
+- ruled out: a weakened assertion in driver repairs a07d2f8ea8 and 6fbf4d8c3b: none
 
 ## Open findings (178)
 (claimed fixes, awaiting a judge, on one line each with the oldest 127 open findings, named without their 'finding:': `modledger.py show --mod FlowWorks finding:<NAME>`)
@@ -499,6 +499,6 @@ spend recorded: USD 78.94, 45401435 tokens
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
 - notes: 11, never printed here (`modledger.py find --mod FlowWorks <words>`)
-- the full history: 1500 events (views/history.md; never read whole)
+- the full history: 1502 events (views/history.md; never read whole)
 
-cursor: t=2026-11-21T18:34:30Z.1795286070199315962 (modledger.py since --mod FlowWorks t=2026-11-21T18:34:30Z.1795286070199315962 prints what changed after this packet)
+cursor: t=2026-11-21T18:41:54Z.1795286514271120190 (modledger.py since --mod FlowWorks t=2026-11-21T18:41:54Z.1795286514271120190 prints what changed after this packet)

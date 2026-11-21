@@ -19,3 +19,16 @@ visit 3 6:35 AM PST (dry True, 0 L, max dL 1 on 80 squares, drained still). Offl
 ## refs
 file: src/RimMandrake/FlowWorks/Source/RM_FlowKernel.cs
 file: src/RimMandrake/FlowWorks/Source/MapControls
+
+## stage (steward, RIMMANDRAKE_ROUTE_FLOWWORKS_VISIT_THREE_FAILURES_BACK, 2026-11-21)
+needs offline. His ruling POND_PUMP_FIX_LAST_DROP_COUNTS ("ponds pump to last dL") settles the design question above: the draw
+reaches 0 dL. The fault lives in code the C# SelfTest can drive without the game: `Building_RM_FlowSink.FlowPulse`
+(MapControls/RM_FlowTaps.cs) takes only from `Reach()` and breaks on the first `took <= 0`, so a 1 dL film outside the reach
+must be levelled toward the sink by the kernel (RM_FlowKernel / RM_LevelSolve; LevelExactChecks.cs and FlowKernelFuzz.cs already
+run them). Offline acceptance: a C# SelfTest case that lays 80 squares at 1 dL each around an unlimited sink and pulses until
+the drained total stops; red when any square keeps 1 dL, green when every square reaches 0 dL. Run it at the parent first (red),
+then on the fix (green). If the offline case cannot reproduce the stall, return the item to `needs game-up` with that
+evidence on it.
+In-game check: test table stage-6 id `sc_source_pays` (row SRC_flow_stops_when_empty), live command
+`python.exe src\RimMandrake\FlowWorks\northstar\concept_scenes.py --scene scene_source_pays --out <json>`. The fixer records it
+UNRUN for Stage 6 with `maturation.py unrun` when it closes this item on the offline test.
