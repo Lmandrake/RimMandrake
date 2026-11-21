@@ -1243,5 +1243,262 @@
   "speaker": "owner",
   "quote": "Which ending should your Pyrelands paragraph have? → Use the proposed ending",
   "note": "turn_05 a_root_ending: the proposed ending replaced the last two sentences verbatim, by his card 2026-11-06; the rest is his text as approved 2026-11-05 (OWNER:1793895899845199295). The sentence that ordinary paving stops the ground fire was dropped by his card 2026-11-14 (\"Drop the sentence\", item RIMMANDRAKE_ASK_PYRE_ROOT_STILL_PROMISES_PAVING_HOLDS)."
- }
+ },
+ "owner_elsewhere_reviewed": [
+  {
+   "id": "oer_1793766816609436834",
+   "source": "OWNER:1793766816609436834",
+   "not_design_input": "Process: which mods get the scripted measurement prep; adds no bar."
+  },
+  {
+   "id": "oer_1794001013119830274",
+   "source": "OWNER:1794001013119830274",
+   "not_design_input": "Taken in: world switch ships off, labelled unsupported, is decision d_worldswitch_off_by_card (his later card OWNER:1794594166295378777 repeats it); checked offline by selftest_pyrelands_site.py."
+  },
+  {
+   "id": "oer_1794044108782773929",
+   "source": "OWNER:1794044108782773929",
+   "not_design_input": "Process: orders the third Artisan experiment on Pyrelands; no bar, leaf or scope line follows from it."
+  },
+  {
+   "id": "oer_1794066070183328517",
+   "source": "OWNER:1794066070183328517",
+   "not_design_input": "Taken in: gentle burst, anima trees blocked and pods standing until they rot are built behaviour carried by leaves grass_carpets_and_regreens and scorchfruit_born_of_fire and inventory inv_plant_roster, inv_scorchfruit."
+  },
+  {
+   "id": "oer_1794081941781479385",
+   "source": "OWNER:1794081941781479385",
+   "not_design_input": "Taken in: burst only when wet is in leaf grass_carpets_and_regreens; mostly grass-watered with a very slow thirst is inventory inv_animal_roster (RM_Pyrelands_NativesSlowThirst, PyrelandsHerdThirst); dry ash sowable is leaf ash_fertile_when_watered. The 70% is a tuning number, so no bar pins it."
+  },
+  {
+   "id": "oer_1794082573782049429",
+   "source": "OWNER:1794082573782049429",
+   "not_design_input": "Budget: raises the Artisan loop's spend limit; not design input."
+  },
+  {
+   "id": "oer_1794098823309702624",
+   "source": "OWNER:1794098823309702624",
+   "not_design_input": "Budget: more spend for the Artisan loop; not design input."
+  },
+  {
+   "id": "oer_1794106461877580339",
+   "source": "OWNER:1794106461877580339",
+   "not_design_input": "Budget: more spend for two loops; not design input."
+  },
+  {
+   "id": "oer_1794107009140947383",
+   "source": "OWNER:1794107009140947383",
+   "not_design_input": "Taken in: the ashwallow top-up is GenStep_PyrelandsFireCast in inventory inv_animal_roster. 'Start with bottles' is FlowWorks work (thirst in bed), not a Pyrelands line."
+  },
+  {
+   "id": "oer_1794107363963050532",
+   "source": "OWNER:1794107363963050532",
+   "not_design_input": "Taken in: no guaranteed water; inventory inv_ash_field reads 'a map may have none' (GenStep_PyrelandsStandingWater), and no bar promises water or survival."
+  },
+  {
+   "id": "oer_1794127454018438484",
+   "source": "OWNER:1794127454018438484",
+   "not_design_input": "Budget: more spend for three loops; not design input."
+  },
+  {
+   "id": "oer_1794128471491094167",
+   "source": "OWNER:1794128471491094167",
+   "not_design_input": "Taken in: no heat cap and grass ignition where it sleeps are leaf furnacebeast_warms ('a closed room ... clearly hotter'; 'falls asleep on grass sets that grass alight after a while') and inventory inv_furnacebeast."
+  },
+  {
+   "id": "oer_1794129296862779622",
+   "source": "OWNER:1794129296862779622",
+   "not_design_input": "Process: a mod closes when every bar has re-checkable evidence; governs closing, adds no bar."
+  },
+  {
+   "id": "oer_1794131538289753158",
+   "source": "OWNER:1794131538289753158",
+   "not_design_input": "Process: the Artisan loop's ratchet doc; adds no bar."
+  },
+  {
+   "id": "oer_1794156111288130949",
+   "source": "OWNER:1794156111288130949",
+   "not_design_input": "Not this mod: metal, stone and gem flammability 0 was built in MandrakePatches (mandrake.rm.patches). A Pyrelands test that saw a steel wall burn reads game behaviour now removed; no Pyrelands bar changes."
+  },
+  {
+   "id": "oer_1794156849791246957",
+   "source": "OWNER:1794156849791246957",
+   "not_design_input": "Process: Artisan loops closed and the rest of the bars closed live with him; adds no bar."
+  },
+  {
+   "id": "oer_1794156862831833808",
+   "source": "OWNER:1794156862831833808",
+   "not_design_input": "Taken in: 2-3 day regrowth after black rain accepted as built; leaf grass_carpets_and_regreens and fresh_burn_compounds_with_black_rain hold the experience without the number."
+  },
+  {
+   "id": "oer_1794158714857793648",
+   "source": "OWNER:1794158714857793648",
+   "not_design_input": "Taken in: ash darker, wet ash blackened and faster banking are look and tuning on the approved art set (inventory inv_art_and_text, inv_ash_field); he passed them live in OWNER:1794160944489815282. No bar pins a darkness or rate."
+  },
+  {
+   "id": "oer_1794159239681567513",
+   "source": "OWNER:1794159239681567513",
+   "not_design_input": "Taken in: ash rebuilt on vanilla sand buildup (inventory inv_ash_field, ProbeAsh). Ash footprints reuse the Baroque Biomes track grid (FOOTPRINT_TRACK_GRID_1), a shared engine and dependency; their open visibility fix is item RIMMASTER_FIX_ASH_FOOTPRINTS_AND_SAND_LABEL_AFTER_CLOSE, not a 0.1.0 bar."
+  },
+  {
+   "id": "oer_1794160108618496326",
+   "source": "OWNER:1794160108618496326",
+   "not_design_input": "Taken in: Quickgrass art recoloured in the files (approved art set, inventory inv_art_and_text); passed live in OWNER:1794164933469107884."
+  },
+  {
+   "id": "oer_1794160944489815282",
+   "source": "OWNER:1794160944489815282",
+   "not_design_input": "Taken in: live passes of the furnace-beast room, ash darkness and speed, and plant art; leaves furnacebeast_warms and ash_ground_and_blowing_ash hold the experiences."
+  },
+  {
+   "id": "oer_1794161054068623225",
+   "source": "OWNER:1794161054068623225",
+   "not_design_input": "Taken in: his live flyer verdict, RM_FireHawk passes as a flyer with its art kept; leaf firehawk_lights_ahead reads carry and drop as state, never a live flight test without him."
+  },
+  {
+   "id": "oer_1794161124914543219",
+   "source": "OWNER:1794161124914543219",
+   "not_design_input": "Taken in: the Hard Colony check is retired; no leaf of this tree checks colony difficulty or survival (none existed as a north-star bar)."
+  },
+  {
+   "id": "oer_1794161161536921229",
+   "source": "OWNER:1794161161536921229",
+   "not_design_input": "Taken in: live pass of all 16 species' art and facings (inventory inv_art_and_text)."
+  },
+  {
+   "id": "oer_1794161419087851290",
+   "source": "OWNER:1794161419087851290",
+   "not_design_input": "Taken in: wet ash look passed live (inventory inv_art_and_text, inv_ash_field); the dry look he did not see is not a bar."
+  },
+  {
+   "id": "oer_1794161465666681492",
+   "source": "OWNER:1794161465666681492",
+   "not_design_input": "Taken in: wet roots accepted as proven; inventory inv_ash_field (PyrelandsWetRoots), leaf ash_fertile_when_watered."
+  },
+  {
+   "id": "oer_1794164031576218606",
+   "source": "OWNER:1794164031576218606",
+   "not_design_input": "Not design input: no migration code for old debug saves; a code-hygiene order, no bar."
+  },
+  {
+   "id": "oer_1794164933469107884",
+   "source": "OWNER:1794164933469107884",
+   "not_design_input": "Taken in: ash coating and Quickgrass tint passed live (inventory inv_art_and_text). The missing footprints and the 'Windswept sand' hover label are defects on item RIMMASTER_FIX_ASH_FOOTPRINTS_AND_SAND_LABEL_AFTER_CLOSE, fixed after close as he chose ('Close now, fixes follow', OWNER:1794165038666799416); not a 0.1.0 bar."
+  },
+  {
+   "id": "oer_1794165038666799416",
+   "source": "OWNER:1794165038666799416",
+   "not_design_input": "Process: he closed the Artisan-era mod with fixes to follow; this concept's 0.1.0 lock is a later, separate act."
+  },
+  {
+   "id": "oer_1794195896161321896",
+   "source": "OWNER:1794195896161321896",
+   "not_design_input": "Scheduling: when to check footprints with him; not design input."
+  },
+  {
+   "id": "oer_1794594151279833849",
+   "source": "OWNER:1794594151279833849",
+   "not_design_input": "Taken in: the grasses' swift growth on seemingly dry ash, faster and bursting when watered, and crops treating ash as very fertile ground are leaves grass_carpets_and_regreens and ash_fertile_when_watered. The card's world switch is d_worldswitch_off_by_card; the firebreak leaf deletion is d_firebreak_cut; the banks-heat fold is in leaf furnacebeast_warms."
+  },
+  {
+   "id": "oer_1794594731584189037",
+   "source": "OWNER:1794594731584189037",
+   "not_design_input": "Taken in: same words as OWNER:1794594151279833849, on the grass-crawl fix item; leaf grass_carpets_and_regreens ('It must not read as grass that crawls on dry ash')."
+  },
+  {
+   "id": "oer_1794595111004078583",
+   "source": "OWNER:1794595111004078583",
+   "not_design_input": "Taken in: decision d_worldswitch_off_by_card."
+  },
+  {
+   "id": "oer_1794595450335992387",
+   "source": "OWNER:1794595450335992387",
+   "not_design_input": "Taken in across the tree: grass so swift bare ash shows only after a fire (grass_carpets_and_regreens); fire always coming (burn_line_walks, never out for long); beasts start fires (firehawk_lights_ahead, furnacebeast_warms); scorch-fruit abundance (scorchfruit_born_of_fire); black rain plenty (fresh_burn_compounds_with_black_rain). The Deep Tribes are their own mod, later (OWNER:1794634377273529965); smoke weather is next version (OWNER:1794926660294558917); filling moats and water tanks is FlowWorks; ash on paths is built ash banking on the sand grid (inv_ash_field)."
+  },
+  {
+   "id": "oer_1794596217832546098",
+   "source": "OWNER:1794596217832546098",
+   "not_design_input": "Taken in: smoke weather moved to the next version by his card OWNER:1794926660294558917; ash on paths is built ash banking (inv_ash_field)."
+  },
+  {
+   "id": "oer_1794611171307640419",
+   "source": "OWNER:1794611171307640419",
+   "not_design_input": "Process: he approved holding the Designer loop until the 0.1.0 lock on his word; the hold was later lifted (stage.json parks)."
+  },
+  {
+   "id": "oer_1794614552117745122",
+   "source": "OWNER:1794614552117745122",
+   "not_design_input": "Taken in: Tribes are not part of Pyrelands 0.1.0; superseded by his later card OWNER:1794634377273529965."
+  },
+  {
+   "id": "oer_1794634377273529965",
+   "source": "OWNER:1794634377273529965",
+   "not_design_input": "Taken in: the Deep Tribes are their own mod with their own version, later; no Pyrelands leaf names them."
+  },
+  {
+   "id": "oer_1794695014598425560",
+   "source": "OWNER:1794695014598425560",
+   "not_design_input": "Taken in: the paving sentence is dropped from the root (d_root_ending; root text carries no paving promise)."
+  },
+  {
+   "id": "oer_1794774895716093173",
+   "source": "OWNER:1794774895716093173",
+   "not_design_input": "Taken in: decision d_fix_seventeen_round_six_gaps (same card, OWNER:1794774724955142310)."
+  },
+  {
+   "id": "oer_1794790810777772480",
+   "source": "OWNER:1794790810777772480",
+   "not_design_input": "Taken in: decision d_fix_twelve_gaps_in_0_1_0 (card backfill of OWNER:1794748469904049550)."
+  },
+  {
+   "id": "oer_1794790871101885625",
+   "source": "OWNER:1794790871101885625",
+   "not_design_input": "Taken in: decision d_fix_seventeen_round_six_gaps (card backfill, full card text)."
+  },
+  {
+   "id": "oer_1794790877183439389",
+   "source": "OWNER:1794790877183439389",
+   "not_design_input": "Taken in: decision d_fix_seventeen_round_six_gaps (card backfill)."
+  },
+  {
+   "id": "oer_1794790914454411107",
+   "source": "OWNER:1794790914454411107",
+   "not_design_input": "Taken in: decision d_furnace_body_nine (card backfill of OWNER:1794786804170379047)."
+  },
+  {
+   "id": "oer_1794889190818165591",
+   "source": "OWNER:1794889190818165591",
+   "not_design_input": "Process: send the Pyrelands rescue to Fable; adds no bar."
+  },
+  {
+   "id": "oer_1794892832830017563",
+   "source": "OWNER:1794892832830017563",
+   "not_design_input": "Taken in: the burn is lit about two dozen cells wide (PyrelandsTuning.FireFrontWidthCells 24, 49e11870b4); a tuning number, so no bar pins it; the natural, very flammable look is leaf burn_line_walks."
+  },
+  {
+   "id": "oer_1794892878402800015",
+   "source": "OWNER:1794892878402800015",
+   "not_design_input": "Taken in: decision d_burn_line_natural_grassfire; leaf burn_line_walks reads as a natural grass fire."
+  },
+  {
+   "id": "oer_1794893158995507214",
+   "source": "OWNER:1794893158995507214",
+   "not_design_input": "Taken in: decision d_burn_line_natural_grassfire; no bar says 'far from buildings'."
+  },
+  {
+   "id": "oer_1794893318702466254",
+   "source": "OWNER:1794893318702466254",
+   "not_design_input": "Taken in: decision d_burn_line_natural_grassfire and inventory inv_burn_line_fire_clock keep the relight placement code as built."
+  },
+  {
+   "id": "oer_1794894275899112090",
+   "source": "OWNER:1794894275899112090",
+   "not_design_input": "Taken in: same words as OWNER:1794892832830017563 (fire front width 24, built 49e11870b4); leaf burn_line_walks."
+  },
+  {
+   "id": "oer_1794926660294558917",
+   "source": "OWNER:1794926660294558917",
+   "not_design_input": "Taken in: smoke weather is next version; no 0.1.0 leaf or inventory line names it."
+  }
+ ]
 }

@@ -23,9 +23,10 @@ The live read sc_furnace_giant is UNRUN, its command recorded in `scenes.json`.
 
 design/concepts/Pyrelands/tree.json
 
-Accepted tree hash 2c1e467c7ee1a8ccd33d6e94bde82661b919a19eabdf6e548afd4c031a427ff5 (`concept_tree.py hash`), sheet hash
-c356b3cd2d8d10f96c655b32c1f8c4da096b7c32acd1fd2d2487b8092ae942ab. `python3 src/RimMandrake/rimflow/concept_tree.py gate
-design/concepts/Pyrelands` must pass.
+Accepted tree hash 78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54 (`concept_tree.py hash`), sheet hash
+628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c. Signature: coverage judge rm-coverage-judge-1794947629
+(covered, 0 gaps), certified past the root_hash restamp 47e044e556 by the Conductor's act (OWNER:1795222813980581690).
+`python3 src/RimMandrake/rimflow/concept_tree.py gate design/concepts/Pyrelands` must pass.
 
 ## criteria
 
