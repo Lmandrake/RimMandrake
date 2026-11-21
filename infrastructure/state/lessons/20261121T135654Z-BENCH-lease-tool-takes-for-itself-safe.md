@@ -1,0 +1,1 @@
+A lease a tool takes for itself (safe_advance's 60 min monitor auto-arm) must restart at each use and never lapse mid-use; counted from the first arm it disarmed the monitor mid-advance one TTL into any chain (Pyrelands visit 2, 2026-11-21).
