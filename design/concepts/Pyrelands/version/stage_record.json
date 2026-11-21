@@ -2,10 +2,10 @@
   "schema": 1,
   "mod": "Pyrelands",
   "version": "0.1.0",
-  "stage": "in_game",
-  "stage_label": "In-game acceptance (Stage 6)",
-  "since": "2026-11-21T04:28:14-08:00",
-  "since_from": "advance by DISPATCH",
+  "stage": "offline_build",
+  "stage_label": "Offline build (Stage 3)",
+  "since": "2026-11-21T14:30:39-08:00",
+  "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
     "at": "2026-11-14T16:02:19-08:00",
@@ -178,6 +178,23 @@
       "checks_passed": [
         "order",
         "game_only",
+        "by",
+        "version",
+        "hold"
+      ]
+    },
+    {
+      "from": "in_game",
+      "to": "offline_build",
+      "at": "2026-11-21T14:30:39-08:00",
+      "by": "BENCH",
+      "why": "visit 3 exit not met: two MOD lines not fixed in the sitting (sc_firefoam_sprayer: the sprayer carrier never foams, RIMMANDRAKE_DESIGN_PYRE_SPRAYER_CARRIER_NEVER_FOAMS_ITS_PATH; sc_flamefang_venom: one untended bite kills, RIMMANDRAKE_TUNE_PYRE_FLAMEFANG_BITE_KILLS_BEFORE_IMMUNITY), plus undecided bars whose checks the driver could not repair (RIMMANDRAKE_FIND_PYRE_BURNLINE_OFF_CONTROL_THAT_CAN_FAIL, RIMMANDRAKE_READ_PYRE_REGROW_GROWTH_NONE_ON_ALL_SIX_DAYS, game-up) and sc_walk (game a, his full list, next visit). Road back for the MOD lines.",
+      "unit": "rm-detached-bench-rimmandrake-route-pyrelands-visit-three-1795299598",
+      "confirmed": {
+        "steward_confirms": "read design/concepts/Pyrelands/version/in_game/visit_3/SUMMARY.md, rows and lines: 33 PASS, 2 FAIL (MOD, real miss), 3 UNMEASURED (2 HARNESS unrepaired, owned by filed items; sc_walk needs game a); no test assertion weakened (validation.py diff 6ea9314ad1..HEAD read); fix_readers_owed none; verdict: not met, mod wrong, road back to offline_build"
+      },
+      "checks_passed": [
+        "order",
         "by",
         "version",
         "hold"

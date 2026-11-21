@@ -12,7 +12,7 @@ Pyrelands is not the pilot. It advances beside the pilot (Explosive Knockback), 
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`). Scope: the biome alone; the Deep
   Desert Tribes are a separate mod (`design/concepts/PyrelandsMechanics`), started only after this version passes.
   Code exists: `src/RimMandrake/Pyrelands/` (packageId `mandrake.rm.pyrelands`, ships composed in `mandrake.rm.biomes`).
-- **Stage now:** Stage 6, in-game acceptance, since 2026-11-21 4:28 AM PST (`version/stage_record.json`).
+- **Stage now:** Stage 3, offline build, since 2026-11-21 2:30 PM PST (`version/stage_record.json`).
 - **Bars:** 42 (21 inventory rows of `record.json` + 21 leaves of `tree.json`), as `version/bars.md` counts them; 41 at
   the lock, `inv_firehawk_hunt_rewards` added by his card 2026-11-14.
   Two inventory rows (`inv_firebreak_firefoam`, `inv_lightning_breaker`) are scope `out`: cut, kept only as absence checks.
@@ -29,7 +29,7 @@ Pyrelands is not the pilot. It advances beside the pilot (Explosive Knockback), 
   14 PROBLEM, 3 CORRECTION, 1 POLISH (g3). By his card 2026-11-15 12:22 PM PST the 17 are fixed in one locked change
   (`RIMMANDRAKE_FIX_PYRELANDS_ROUND_SIX_SEVENTEEN_GAPS`); g3 stays in `version/polish.md`, out of passing.
 - **Held look statements for this mod:** 0 (measured).
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-21 4:28 AM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-21 2:30 PM PST).
 
 ### The vision (his root paragraph, approved by card 2026-11-06, OWNER:1793950669508519029)
 
@@ -452,4 +452,13 @@ the tree, record and test-table edits, the re-pin and the lock-bars add are queu
 - Game only: RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN, RIMMANDRAKE_FIX_PYRE_ASHWALLOW_SHADE_DASH_BEATS_FIRE_DIVE, RIMMANDRAKE_FRAME_PYRE_CHAIN_SHOTS_ON_THEIR_SUBJECT, RIMMANDRAKE_RENEW_SAFE_ADVANCE_AUTO_ARM_HOURLY, RIMMANDRAKE_REORDER_PYRE_BURN_WALK_BEFORE_ITS_FRONT_DIES, RIMMANDRAKE_SHIELD_PYRE_WALK_FROM_FULL_LIST_EVENTS, RIMMANDRAKE_STAGE_PYRE_FLAMEFANG_BITES_LAND_ONCE_NOT_MAUL, RIMMANDRAKE_TRACE_PYRE_ASHFALL_FIRE_IN_FIRST_LIGHTNING_WINDOW, RIMMANDRAKE_TRACE_PYRE_FIREHAWK_TURNS_MANHUNTER_IN_BURN_WALK, RIMMANDRAKE_TRACE_PYRE_SITE_WITH_NO_STANDING_WATER_LEFT
 - Was, "Stage now": - **Stage now:** Stage 3, offline build, since 2026-11-21 3:04 AM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-21 3:04 AM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-21 2:30 PM PST, stage change: In-game acceptance (Stage 6) to Offline build (Stage 3) (by BENCH)
+
+- Why: visit 3 exit not met: two MOD lines not fixed in the sitting (sc_firefoam_sprayer: the sprayer carrier never foams, RIMMANDRAKE_DESIGN_PYRE_SPRAYER_CARRIER_NEVER_FOAMS_ITS_PATH; sc_flamefang_venom: one untended bite kills, RIMMANDRAKE_TUNE_PYRE_FLAMEFANG_BITE_KILLS_BEFORE_IMMUNITY), plus undecided bars whose checks the driver could not repair (RIMMANDRAKE_FIND_PYRE_BURNLINE_OFF_CONTROL_THAT_CAN_FAIL, RIMMANDRAKE_READ_PYRE_REGROW_GROWTH_NONE_ON_ALL_SIX_DAYS, game-up) and sc_walk (game a, his full list, next visit). Road back for the MOD lines.
+- Checks passed: order, by, version, hold.
+- Steward confirms: read design/concepts/Pyrelands/version/in_game/visit_3/SUMMARY.md, rows and lines: 33 PASS, 2 FAIL (MOD, real miss), 3 UNMEASURED (2 HARNESS unrepaired, owned by filed items; sc_walk needs game a); no test assertion weakened (validation.py diff 6ea9314ad1..HEAD read); fix_readers_owed none; verdict: not met, mod wrong, road back to offline_build
+- Was, "Stage now": - **Stage now:** Stage 6, in-game acceptance, since 2026-11-21 4:28 AM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-21 4:28 AM PST).
 - Record: `version/stage_record.json`.
