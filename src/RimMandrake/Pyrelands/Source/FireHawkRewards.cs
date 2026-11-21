@@ -114,9 +114,9 @@ namespace RimMandrake.Pyrelands
                 : "RM_FireHawkTargetGround".Translate().ToString();
             TaggedString text = "RM_FireHawkSightedText".Translate(
                 hawk.LabelShortCap.Named("HAWK"), ember.Named("EMBER"),
-                Distance(hawk.Position, source).Named("SOURCE_DIST"), Bearing(hawk.Position, source).Named("SOURCE_DIR"),
+                Distance(hawk.Position, source).Named("SOURCEDIST"), Bearing(hawk.Position, source).Named("SOURCEDIR"),
                 toward.Named("TARGET"),
-                Distance(hawk.Position, target).Named("TARGET_DIST"), Bearing(hawk.Position, target).Named("TARGET_DIR"));
+                Distance(hawk.Position, target).Named("TARGETDIST"), Bearing(hawk.Position, target).Named("TARGETDIR"));
             Find.LetterStack.ReceiveLetter("RM_FireHawkSightedLabel".Translate(), text, LetterDefOf.ThreatSmall, new LookTargets(hawk));
         }
 

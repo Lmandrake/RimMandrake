@@ -65,9 +65,19 @@ def check_letter(probs):
     if missing_use:
         probs.append("letter: the code never translates %s" % ", ".join(missing_use))
     text = keyed.get("RM_FireHawkSightedText", "")
-    for arg in ("{HAWK}", "{EMBER}", "{SOURCE_DIST}", "{SOURCE_DIR}", "{TARGET}", "{TARGET_DIST}", "{TARGET_DIR}"):
+    for arg in ("{HAWK}", "{EMBER}", "{SOURCEDIST}", "{SOURCEDIR}", "{TARGET}", "{TARGETDIST}", "{TARGETDIR}"):
         if arg not in text:
             probs.append("letter: RM_FireHawkSightedText lacks %s (it describes the ember the hawk carries now)" % arg)
+    # live 2026-11-20 (visit 2): the letter read "cells to the ." twice. Verse.GrammarResolverSimple ends an argument name
+    # at the first '_' inside {...} (the rest is a sub-symbol, as in {PAWN_pronoun}), so .Named("A_B") never fills {A_B}.
+    # Every {SYM} in the letter must resolve: the part before its first '_' is a .Named label the SendLetter call passes.
+    send = code[code.find("void SendLetter"):]
+    send = send[:send.find("ReceiveLetter")]
+    labels = set(re.findall(r'\.Named\(\s*"([^"]+)"\s*\)', send))
+    for sym in re.findall(r"\{([A-Za-z0-9_]+)\}", text):
+        if sym.split("_", 1)[0] not in labels:
+            probs.append("letter: {%s} resolves blank: the engine looks up argument %r (text before the first '_'), and "
+                         "SendLetter names only %s" % (sym, sym.split("_", 1)[0], ", ".join(sorted(labels)) or "nothing"))
     for word in ("biggest stand of unburnt fuel", "bring"):
         if word not in text:
             probs.append("letter: RM_FireHawkSightedText does not say %r" % word)

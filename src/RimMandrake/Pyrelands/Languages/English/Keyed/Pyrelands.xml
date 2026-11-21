@@ -16,9 +16,10 @@
 
   <!-- The first-sighting letter (FireHawkRewards.cs), once per game. {HAWK} the hawk's label or name; {EMBER} one of the two
        EmberFrom strings ({0} the plant burning where the ember was taken); {TARGET} one of the two Target strings ({0} the plant
-       at the drop cell); _DIST in cells from the hawk; _DIR one of the compass words. -->
+       at the drop cell); ...DIST in cells from the hawk; ...DIR one of the compass words. No '_' in a symbol name: the
+       engine reads {A_B} as argument A with sub-symbol B, so the slot comes out blank. -->
   <RM_FireHawkSightedLabel>Fire-hawk carrying an ember</RM_FireHawkSightedLabel>
-  <RM_FireHawkSightedText>{HAWK} is over your colony right now with a live ember in its beak: {EMBER}, snatched from the fire {SOURCE_DIST} cells to the {SOURCE_DIR}.\n\nIt is carrying it to {TARGET}, {TARGET_DIST} cells to the {TARGET_DIR}. A fire-hawk drops its ember on the biggest stand of unburnt fuel it can find on the map, and the next fire starts where the ember lands.\n\nThe only cure is to bring the hawk down before it gets there. Fire-hawks are common in the Pyrelands, and any one of them can do this.</RM_FireHawkSightedText>
+  <RM_FireHawkSightedText>{HAWK} is over your colony right now with a live ember in its beak: {EMBER}, snatched from the fire {SOURCEDIST} cells to the {SOURCEDIR}.\n\nIt is carrying it to {TARGET}, {TARGETDIST} cells to the {TARGETDIR}. A fire-hawk drops its ember on the biggest stand of unburnt fuel it can find on the map, and the next fire starts where the ember lands.\n\nThe only cure is to bring the hawk down before it gets there. Fire-hawks are common in the Pyrelands, and any one of them can do this.</RM_FireHawkSightedText>
   <RM_FireHawkEmberFromPlant>a burning sprig of {0}</RM_FireHawkEmberFromPlant>
   <RM_FireHawkEmberFromBurn>a burning twig</RM_FireHawkEmberFromBurn>
   <RM_FireHawkTargetPlant>the {0}</RM_FireHawkTargetPlant>
