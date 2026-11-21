@@ -1127,9 +1127,11 @@ namespace RimMandrake.FlowWorks
 		/// <summary>RIMMANDRAKE_FIX_FLOWWORKS_SINK_STOPS_ON_LAST_DECILITRE_FILM, the sweep's second regime (a shallow flow sink on a
 		/// 0.5 m shelf beside a 2 m core, a deep one across it: the core's last dL lay by the shallow one, which cannot take water
 		/// below its own floor, and stayed). With a flow sink drawing, each square's hops follow its best way to a sink square
-		/// (the seeds in <see cref="hopFrontier"/>): the deepest neck first (the shallowest square on the way, seed included), then the
-		/// fewest steps. So a square counts its distance to a sink that can drain it, and inside any one band of the solve the
-		/// remainder creeps down that way to the sink. Without a flow sink (edge sinks only) the plain BFS stays, the same
+		/// (the seeds in <see cref="hopFrontier"/>): the deepest neck first (the shallowest square on the way, seed included), then few
+		/// steps. Each square's hops are one more than a neighbour's on a way with its neck, ending at a sink that can drain it, so
+		/// inside any one band of the solve the remainder creeps down that way to the sink. (The steps are not always the fewest at
+		/// that neck: a square settled through a wider neck keeps its longer count for the squares beyond it. The creep needs only
+		/// the falling count.) Without a flow sink (edge sinks only) the plain BFS stays, the same
 		/// order its Python twin (level_water.py sinkHops) is diffed against.</summary>
 		private void DeepestSinkHops()
 		{
