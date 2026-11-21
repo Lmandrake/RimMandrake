@@ -1,8 +1,8 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":39401,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=9f38b618bb626487ae4df6074f63f1582164329b9a5c22808f39cceb100e5af5 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":40099,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=f6f472ae3114a4eb6ecea25fab3896d40fc7d66025a1e8c743dd8b3c9c2c6217 -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage in_game · 1456 events in 19 shards · reducer 1
+version 0.1.0 · stage in_game · 1458 events in 19 shards · reducer 1
 holder lease run-1795257509, token 27, last active 2026-11-21T11:23:05Z
-holder session 82ebad1e-0f23-455d-8747-6fc2bff2bded, context 287789 of ceiling 400000
+holder session 05fdff56-c65b-4f00-a8cb-e0e56b92b9c2, context 260161 of ceiling 400000
 
 ## Last checkpoint (HOLDER.run-1795257509, 2026-11-21T11:22:40Z)
 - done: sc_islands control fixed and PASS live on game b, 175293dc5f: winches held by ProofWinchHold (no damage reaches a held winch), not a hit-point reset; three water-look settings registered in site_spec (north-star selftest green)
@@ -495,6 +495,6 @@ spend recorded: USD 78.94, 45401435 tokens
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
 - notes: 11, never printed here (`modledger.py find --mod FlowWorks <words>`)
-- the full history: 1456 events (views/history.md; never read whole)
+- the full history: 1458 events (views/history.md; never read whole)
 
-cursor: t=2026-11-21T11:23:05Z.1795260185819032213 (modledger.py since --mod FlowWorks t=2026-11-21T11:23:05Z.1795260185819032213 prints what changed after this packet)
+cursor: t=2026-11-21T11:26:33Z.1795260393823665229 (modledger.py since --mod FlowWorks t=2026-11-21T11:26:33Z.1795260393823665229 prints what changed after this packet)
