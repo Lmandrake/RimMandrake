@@ -10638,3 +10638,4 @@
 {"seat":"RUNNER","event":"raise","id":"OPS_STEVE_DIAGNOSE_INVALID_MBTX_YAHV","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-21T20:27:52Z","tsn":1795292872910411261}
 {"seat":"RUNNER","event":"live","id":"OPS_STEVE_DIAGNOSE_INVALID_MBTX_YAHV","result":"broken","detail":"Ops alarm STEVE_INVALID: steve.invalid_streak = 3 INVALID results in a row (MEASURED), line >= 3","ts":"2026-11-21T20:29:04Z","tsn":1795292944494549318}
 {"seat":"RUNNER","event":"raise","id":"OPS_STEVE_DIAGNOSE_INVALID_MBTX_YAHV","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-21T20:29:11Z","tsn":1795292951673685921}
+{"seat":"RUNNER","event":"live","id":"OPS_STEVE_DIAGNOSE_INVALID_MBTX_YAHV","result":"broken","detail":"Ops alarm STEVE_INVALID: steve.invalid_streak = 3 INVALID results in a row (MEASURED), line >= 3","ts":"2026-11-21T20:30:22Z","tsn":1795293022162833476}
