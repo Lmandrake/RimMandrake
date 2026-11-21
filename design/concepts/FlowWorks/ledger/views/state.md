@@ -1,13 +1,13 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":31511,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=0fc486cf9d5b4512e7ea7de3042e3980094f2c07c392217bf65410e59f8b64b0 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":31511,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":966,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=70c02c5f83d989b0c997002a03b46eab212f561e0e3c85b74009426457134268 -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage in_game · 1414 events in 17 shards · reducer 1
-holder lease run-1795244678, token 21, last active 2026-11-21T07:04:49Z
+version 0.1.0 · stage in_game · 1416 events in 18 shards · reducer 1
+holder lease run-1795244678, token 21, last active 2026-11-21T07:11:39Z
 holder session ff15b029-4df8-495c-acec-5406c94c8b7b, context 352520 of ceiling 400000
 
-## Last checkpoint (HOLDER.run-1795235568, 2026-11-21T05:19:25Z)
-- done: RIMMANDRAKE_MOCK_FLOWWORKS_WATER_BY_DEPTH_ON_REAL_GROUND built at 6c668b36a8: judge picked FIRM, target in version/water_by_depth_target.json, Seen gains ShallowOpacity 0.35 + setting; offline acceptance GREEN (RED 5 on base), C# 1369/1369; OL_OWNER_LOOK_READS UNRUN
-- next: Send the record back to in_game; run OL_OWNER_LOOK_READS on the 6c668b36a8 deploy (water stations 7-22 against the target) with the pit relief checks
-- ruled out: the geyser vent was hidden on 11-13 by a draw shift (11cbfa650a), not by the law, so its 0.6 threshold was a margin of the old law, not a bar
+## Last checkpoint (HOLDER.run-1795244678, 2026-11-21T07:11:39Z)
+- done: holder run: pawn height, garden yard, ice closed (earlier sub-run); island restore re-pinned aa7e4cd91f and closed e1006ea437 on a live PASS
+- next: Relaunch the holder run for the 6 LEFT OPEN items; start with the shared raid staging (pit trap, trench, fetch fallen, moat)
+- ruled out: the island restore row was not a mod fault: the lone mid square is out of reach by the climb rule
 
 ## Open findings (178)
 (claimed fixes, awaiting a judge, on one line each with the oldest 127 open findings, named without their 'finding:': `modledger.py show --mod FlowWorks finding:<NAME>`)
@@ -493,6 +493,6 @@ spend recorded: USD 78.94, 45401435 tokens
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
 - notes: 11, never printed here (`modledger.py find --mod FlowWorks <words>`)
-- the full history: 1414 events (views/history.md; never read whole)
+- the full history: 1416 events (views/history.md; never read whole)
 
-cursor: t=2026-11-21T07:04:54Z.1795244694720499054 (modledger.py since --mod FlowWorks t=2026-11-21T07:04:54Z.1795244694720499054 prints what changed after this packet)
+cursor: t=2026-11-21T07:11:39Z.1795245099224715940 (modledger.py since --mod FlowWorks t=2026-11-21T07:11:39Z.1795245099224715940 prints what changed after this packet)

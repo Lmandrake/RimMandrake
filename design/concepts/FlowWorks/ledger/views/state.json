@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "e403182f6475cb1585629b0afc8ec3b8d4c97e78d619c5ce9ca5f80b8e3d15be",
+  "body_sha256": "98ba450db1988cab3d6aa4146c01ce77aa95dc34889e39d9c57d0383d91cd144",
   "reducer": 1,
   "shards": {
    "BACKFILL": 893183,
@@ -16,6 +16,7 @@
    "HOLDER.run-1795165115": 1137,
    "HOLDER.run-1795223527": 1482,
    "HOLDER.run-1795235568": 2438,
+   "HOLDER.run-1795244678": 966,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1236,11 +1237,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795235568",
-   "done": "RIMMANDRAKE_MOCK_FLOWWORKS_WATER_BY_DEPTH_ON_REAL_GROUND built at 6c668b36a8: judge picked FIRM, target in version/water_by_depth_target.json, Seen gains ShallowOpacity 0.35 + setting; offline acceptance GREEN (RED 5 on base), C# 1369/1369; OL_OWNER_LOOK_READS UNRUN",
-   "next": "Send the record back to in_game; run OL_OWNER_LOOK_READS on the 6c668b36a8 deploy (water stations 7-22 against the target) with the pit relief checks",
-   "ruled_out": "the geyser vent was hidden on 11-13 by a draw shift (11cbfa650a), not by the law, so its 0.6 threshold was a margin of the old law, not a bar",
-   "ts": "2026-11-21T05:19:25Z"
+   "by": "HOLDER.run-1795244678",
+   "done": "holder run: pawn height, garden yard, ice closed (earlier sub-run); island restore re-pinned aa7e4cd91f and closed e1006ea437 on a live PASS",
+   "next": "Relaunch the holder run for the 6 LEFT OPEN items; start with the shared raid staging (pit trap, trench, fetch fallen, moat)",
+   "ruled_out": "the island restore row was not a mod fault: the lone mid square is out of reach by the climb rule",
+   "ts": "2026-11-21T07:11:39Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1692,7 +1693,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1414,
+  "events": 1416,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7793,7 +7794,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-21T07:04:49Z",
+   "last": "2026-11-21T07:11:39Z",
    "lease": "run-1795244678",
    "released": false,
    "token": 21
@@ -7889,6 +7890,7 @@
    "HOLDER.run-1795165115",
    "HOLDER.run-1795223527",
    "HOLDER.run-1795235568",
+   "HOLDER.run-1795244678",
    "JUDGE.judge-1794833810",
    "JUDGE.judge-1794849236",
    "JUDGE.judge-1795134433",
