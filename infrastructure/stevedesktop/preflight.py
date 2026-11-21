@@ -18,6 +18,13 @@ Only causes that HAPPENED have a check (the census is in design/RimMandrake/test
   proof_lines   a proofs job whose clause has no `live-proof X:` line at source_sha could only read UNMEASURED after a
                 whole load (run_proofs). None happened as INVALID yet; the check is one blob read.
 
+  audio_driver  (RIMMANDRAKE_DISABLE_STEVE_SONIC_STUDIO_DRIVER_SOUND_IS_UNUSED) SteveDesktop's register fault needs the ASUS
+                Sonic Studio kernel audio driver AVoluteSS3Vad (steve_fault_diagnosis.md); it was turned off for good on
+                2026-11-21 (Start=4). Windows Update or ASUS Armoury Crate may put it back silently. A job is refused while
+                the driver is loaded (SCM RUNNING) or re-enabled (registry Start other than 4: it loads at the next boot).
+                No such service (Archmagi, any machine without it) passes; an unreadable state is skipped, never refused.
+                TESTQ_PREFLIGHT_AUDIO_DRIVER=0 turns it off (set it if the driver is turned back on on purpose).
+
 Opt-in (never the cause of an INVALID, and 10 s each): TESTQ_PREFLIGHT_TIER_BUILD=1 runs `modset_builder --tier T`
 (its plan, no --apply) and refuses on an unknown tier or a REFUSING line - not on NOT INSTALLED, which the deploy that
 follows may cure.
@@ -166,6 +173,60 @@ def check_proof_lines(job, clone, proofs_rel="infrastructure/state/live_proofs")
     return ("no `live-proof %s:` line in %s at %s" % (", ".join(miss), rel, job["source_sha"][:10])) if miss else None
 
 
+AUDIO_DRIVER = "AVoluteSS3Vad"
+WIN32 = "/mnt/c/Windows/System32"
+
+
+def read_driver(name=AUDIO_DRIVER, win32=WIN32, runner=subprocess.run):
+    """-> (start, state): registry Start as an int (None: no such key) and the SCM state word (RUNNING, STOPPED, ...;
+    ABSENT: no such service). Raises OSError/ValueError when it cannot read (no Windows interop, odd output)."""
+    key = "HKLM\\SYSTEM\\CurrentControlSet\\Services\\" + name
+    r = runner([os.path.join(win32, "reg.exe"), "query", key, "/v", "Start"], capture_output=True, text=True, timeout=30)
+    start = None
+    if r.returncode == 0:
+        for line in r.stdout.splitlines():
+            p = line.split()
+            if len(p) == 3 and p[0] == "Start" and p[1] == "REG_DWORD":
+                start = int(p[2], 16)
+        if start is None:
+            raise ValueError("reg.exe gave no Start value: %r" % r.stdout[-120:])
+    elif "unable to find" not in (r.stdout + r.stderr):
+        raise ValueError("reg.exe exit %d: %r" % (r.returncode, (r.stdout + r.stderr)[-120:]))
+    s = runner([os.path.join(win32, "sc.exe"), "query", name], capture_output=True, text=True, timeout=30)
+    if "1060" in s.stdout + s.stderr:
+        return start, "ABSENT"
+    for line in s.stdout.splitlines():
+        p = line.split()
+        if p and p[0] == "STATE" and len(p) >= 4:
+            return start, p[3]
+    raise ValueError("sc.exe exit %d gave no STATE: %r" % (s.returncode, (s.stdout + s.stderr)[-120:]))
+
+
+def driver_verdict(start, state):
+    """-> OFF | ABSENT | LOADED | ENABLED. Pure. LOADED and ENABLED are the driver's silent return."""
+    if state == "RUNNING":
+        return "LOADED"
+    if start is None and state == "ABSENT":
+        return "ABSENT"
+    if start != 4:
+        return "ENABLED"
+    return "OFF"
+
+
+def check_audio_driver(read=read_driver):
+    """-> (refusal or None, skipped reason or None)."""
+    try:
+        start, state = read()
+    except (OSError, ValueError, subprocess.SubprocessError) as e:
+        return None, "cannot read %s (%s: %s)" % (AUDIO_DRIVER, type(e).__name__, str(e)[:100])
+    v = driver_verdict(start, state)
+    if v in ("OFF", "ABSENT"):
+        return None, None
+    return ("%s (ASUS Sonic Studio audio driver) is %s (Start=%s, state %s): SteveDesktop's register fault returns with it. "
+            "Turn it off: reg add HKLM\\SYSTEM\\CurrentControlSet\\Services\\%s /v Start /t REG_DWORD /d 4 /f, then reboot"
+            % (AUDIO_DRIVER, "LOADED" if v == "LOADED" else "re-enabled", start, state, AUDIO_DRIVER)), None
+
+
 def check_tier_build(job, runner):
     import schema as S
     tier = S.tier_of(job)
@@ -179,7 +240,7 @@ def check_tier_build(job, runner):
     return None
 
 
-def check(job, runner, clone=None, config=None, backups=None, env=None):
+def check(job, runner, clone=None, config=None, backups=None, env=None, audio_read=None):
     """-> {"refused": [(check, reason)], "fixed": [note], "skipped": [note]}. Never raises: a crashed check is skipped."""
     env = os.environ if env is None else env
     res = {"refused": [], "fixed": [], "skipped": []}
@@ -222,6 +283,13 @@ def check(job, runner, clone=None, config=None, backups=None, env=None):
     why = run("proof_lines", lambda: check_proof_lines(job, clone))
     if why:
         res["refused"].append(("proof_lines", why))
+    if env.get("TESTQ_PREFLIGHT_AUDIO_DRIVER") != "0":
+        r = run("audio_driver", lambda: check_audio_driver(audio_read or read_driver))
+        if r:
+            if r[0]:
+                res["refused"].append(("audio_driver", r[0]))
+            if r[1]:
+                res["skipped"].append("audio_driver: " + r[1])
     return res
 
 

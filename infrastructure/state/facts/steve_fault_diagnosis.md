@@ -8,6 +8,23 @@ state `D:\ClaudeWork\rimmandrake\testq\fault_state.json`). Raw evidence: `D:\Cla
 `docker exec tailscale-gmail sh -c 'ssh -o BatchMode=yes mandrake@100.115.10.14 "<cmd>"'`, with the probe
 log at `/mnt/c/SteveDesktop/diag/logs/watch.log` (4262 CYCLE lines as of 2026-11-18T01:00Z).
 
+## 🔴 `AVoluteSS3Vad` is OFF for good (2026-11-21): the cure is in place
+
+- **What was turned off:** the ASUS Sonic Studio kernel audio driver `AVoluteSS3Vad` (PnP "Sonic Studio Virtual Mixer"). Its registry
+  `Start` is 4 (Disabled); the original was 3. Nothing was uninstalled, and no audio default was changed.
+- **Why:** the fault needs this driver (the sections below). The owner said on 2026-11-21 that SteveDesktop is otherwise unused, so its sound
+  is unused.
+- **The test boot (19:52:06Z, the driver off, the other nine vendor drivers loaded, the game started with the lane's own `rw_game.sh up`):
+  CLEAN.** 10 probe cycles with the game up, 3.8 to 48.7 min after the start, all clean, 18/18 CPUs; the fault watch was clean 10 of 10.
+  With the split's boot 1 and the unload test's B, the driver off was clean in 3 of 3 boots. After one more reboot (20:48:58Z) the driver was
+  still `Start=4` and absent from `driverquery /v`; nothing had re-enabled it. Record:
+  `D:\ClaudeWork\rimmandrake\conductor\night_20261120\steve_driver_off_for_good.md`.
+- **A silent return is seen:** the lane's preflight (`infrastructure/stevedesktop/preflight.py`, check `audio_driver`) refuses every job while
+  the driver is loaded or re-enabled. `fault_monitor.py` writes `steve_audio_driver.json` every tick, and its `check` fails on LOADED or ENABLED.
+- **To turn it back on** (the one command, admin PowerShell on Steve, then a reboot):
+  `reg add HKLM\SYSTEM\CurrentControlSet\Services\AVoluteSS3Vad /v Start /t REG_DWORD /d 3 /f`. The fault then returns. Also set
+  `TESTQ_PREFLIGHT_AUDIO_DRIVER=0` in `testcentre_env.sh`, or the lane refuses every job. Detail: `infrastructure/stevedesktop/RUNBOOK.md`.
+
 ## The register probe (running since 2026-11-20)
 
 - Task `SteveDiag Register Probe` (SYSTEM, at startup) runs `C:\SteveDesktop\diag\regprobe\regprobe.exe` every 300 s: on
@@ -221,8 +238,7 @@ Item `RIMMANDRAKE_SPLIT_STEVE_DRIVER_SET_AUDIO_DRIVER_ALONE_FIRST`. Record and r
   It is the default speaker endpoint over Realtek HD Audio 6.0.8960.1. With it off, the only working audio endpoint was "Realtek Digital Output".
 - The shape (upper YMM halves lost on a user thread) fits a kernel driver that uses AVX without saving the extended state [guess ~70%].
 - UNMEASURED: a newer Sonic Studio build. (Driver loaded, no stream through it: measured below.)
-- Nothing was left disabled (end state measured 14:22Z: 16/16 at original Start, 10/10 drivers loaded, HV on, WSL answering, lane resumed).
-  What to do about the driver is the owner's and Steve's choice; the options and their costs are in the record.
+- That test left nothing disabled (end state measured 14:22Z). The driver was turned off for good later the same day (the section at the top).
 
 ## 🔴 With `AVoluteSS3Vad` loaded but the game's audio on Realtek, the fault did not come (MEASURED 2026-11-21, one boot)
 

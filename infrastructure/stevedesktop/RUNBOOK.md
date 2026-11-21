@@ -442,6 +442,24 @@ Archmagi copies them back with
 | **No more security updates** | Bootstrap records `display_version` and `build` in the report. Agents keep the machine off untrusted inbound paths: SSH from LAN + Tailscale only, CRD dials out | Windows 10 left support on 2025-10-14. Consumer Extended Security Updates were published to run to 2026-10-13, which is before this week. So unless the machine is on a paid commercial ESU, Windows Update brings little or nothing now (Microsoft's published dates; not measured on this machine). That means fewer surprise reboots but no new patches. The machine must be on 22H2 (`display_version` 22H2, build 19045) for WSL to update |
 - **A power-loss reboot can leave the runner clone `~/rm/runner` with empty git objects and zero-length tracked files,** so every testq job is REFUSED SYNC and the lane pauses. Fix: `find .git/objects -type f -empty -delete`, `git fetch`, fsck, restore dirty files path-wise (`git diff --name-only -z | xargs -0 git checkout --`; the house hook refuses `reset --hard` even over ssh), `git pull --ff-only`, then `testq.py resume`. Rerun `findings_fold.py run` before `flow.untriaged_findings` drops.
 
+## The ASUS Sonic Studio audio driver is OFF for good (2026-11-21)
+
+- **What was turned off:** the kernel audio driver `AVoluteSS3Vad` (`AVoluteSS3Vad.sys`, PnP "Sonic Studio Virtual Mixer", part of
+  ASUS Sonic Studio). Its registry `Start` is 4 (Disabled); the original was 3 (Manual). Nothing was uninstalled. No audio default was
+  changed. With the driver off, the only working audio endpoint is "Realtek Digital Output" (S/PDIF), so analog speakers and the
+  microphone may be silent.
+- **Why:** SteveDesktop's register fault (the upper halves of the AVX registers are lost, `infrastructure/state/facts/steve_fault_diagnosis.md`)
+  needs this driver. The owner said on 2026-11-21 that SteveDesktop is otherwise unused, so its sound is unused.
+- **How a silent return is seen:** Windows Update or ASUS Armoury Crate may put the driver back. The lane's preflight
+  (`preflight.py`, check `audio_driver`) refuses every job while the driver is loaded or re-enabled, and the refusal names the cure. The
+  fault monitor (`rm-steve-fault.timer`, every 2 min) writes `D:\ClaudeWork\rimmandrake\testq\steve_audio_driver.json` (OFF, LOADED,
+  ENABLED or UNMEASURED), and `fault_monitor.py check` fails on LOADED or ENABLED.
+- **To turn it off again** (admin PowerShell on Steve, `ssh stevedesktop`):
+  `reg add HKLM\SYSTEM\CurrentControlSet\Services\AVoluteSS3Vad /v Start /t REG_DWORD /d 4 /f`, then reboot.
+- **To turn it back on** (the one command, then a reboot):
+  `reg add HKLM\SYSTEM\CurrentControlSet\Services\AVoluteSS3Vad /v Start /t REG_DWORD /d 3 /f`.
+  The register fault then returns. Also add `export TESTQ_PREFLIGHT_AUDIO_DRIVER=0` to `testcentre_env.sh`, or the lane refuses every job.
+
 ## Lockout safety (what the bootstrap never does)
 
 - It never edits `sshd_config`, so password logins on the LAN stay as Windows ships them.

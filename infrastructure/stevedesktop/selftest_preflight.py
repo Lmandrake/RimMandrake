@@ -178,6 +178,64 @@ check(w and "P9" in w, "proof_lines: missing clause named")
 check(P.check_proof_lines(dict(pj, item="NOPE"), repo), "proof_lines: no proofs file -> refusal")
 check(P.check_proof_lines(job, repo) is None, "proof_lines: a chains job is not checked")
 
+
+# audio_driver (RIMMANDRAKE_DISABLE_STEVE_SONIC_STUDIO_DRIVER_SOUND_IS_UNUSED): the Sonic Studio driver's silent return is refused
+class Out:
+    def __init__(self, rc, out, err=""):
+        self.returncode, self.stdout, self.stderr = rc, out, err
+
+
+def fake_runner(reg, sc):
+    return lambda argv, **kw: reg if argv[0].endswith("reg.exe") else sc
+
+
+REG4 = Out(0, "\nHKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\AVoluteSS3Vad\n    Start    REG_DWORD    0x4\n\n")
+REG3 = Out(0, REG4.stdout.replace("0x4", "0x3"))
+REGNONE = Out(1, "", "ERROR: The system was unable to find the specified registry key or value.\n")
+SCSTOP = Out(1062, "\nSERVICE_NAME: AVoluteSS3Vad\n        TYPE               : 1  KERNEL_DRIVER\n        STATE              : 1  STOPPED\n")
+SCRUN = Out(0, SCSTOP.stdout.replace("1  STOPPED", "4  RUNNING"))
+SCNONE = Out(1060, "[SC] EnumQueryServicesStatus:OpenService FAILED 1060:\n\nThe specified service does not exist as an installed service.\n")
+check(P.read_driver(runner=fake_runner(REG4, SCSTOP)) == (4, "STOPPED"), "read_driver: Start=4, STOPPED")
+check(P.read_driver(runner=fake_runner(REG3, SCRUN)) == (3, "RUNNING"), "read_driver: Start=3, RUNNING")
+check(P.read_driver(runner=fake_runner(REGNONE, SCNONE)) == (None, "ABSENT"), "read_driver: no such service")
+for bad, what in ((Out(5, "", "Access is denied."), "reg.exe error"), (Out(0, "garbage"), "reg.exe no Start line")):
+    try:
+        P.read_driver(runner=fake_runner(bad, SCSTOP))
+        check(False, "read_driver raises on " + what)
+    except ValueError:
+        check(True, "read_driver raises on " + what)
+try:
+    P.read_driver(runner=fake_runner(REG4, Out(0, "nothing")))
+    check(False, "read_driver raises on sc.exe with no STATE")
+except ValueError:
+    check(True, "read_driver raises on sc.exe with no STATE")
+check([P.driver_verdict(*x) for x in ((4, "STOPPED"), (None, "ABSENT"), (3, "RUNNING"), (4, "RUNNING"), (3, "STOPPED"), (None, "STOPPED"))]
+      == ["OFF", "ABSENT", "LOADED", "LOADED", "ENABLED", "ENABLED"], "driver_verdict table")
+check(P.check_audio_driver(lambda: (4, "STOPPED")) == (None, None), "audio_driver: off -> no refusal")
+check(P.check_audio_driver(lambda: (None, "ABSENT")) == (None, None), "audio_driver: no such driver (Archmagi) -> no refusal")
+r = P.check_audio_driver(lambda: (3, "RUNNING"))
+check(r[0] and "LOADED" in r[0] and "/d 4" in r[0], "audio_driver: loaded -> refusal naming the cure")
+r = P.check_audio_driver(lambda: (3, "STOPPED"))
+check(r[0] and "re-enabled" in r[0], "audio_driver: re-enabled, not yet loaded -> refusal")
+
+
+def blind():
+    raise OSError("no interop")
+
+
+r = P.check_audio_driver(blind)
+check(r[0] is None and r[1] and "cannot read" in r[1], "audio_driver: unreadable -> skipped, never refused")
+nojob = {"id": "J2", "item": "X", "mod": "RM_Nothing", "profile": "full", "source_sha": "0" * 40, "selector": {"chains": ["a"]}}
+noclone = tempfile.mkdtemp()
+res = P.check(nojob, RUNNER, clone=noclone, env={}, audio_read=lambda: (3, "RUNNING"))
+check(any(n == "audio_driver" for n, _ in res["refused"]) and "audio_driver" in P.note_of(res), "check(): a loaded driver is refused, named in note")
+res = P.check(nojob, RUNNER, clone=noclone, env={"TESTQ_PREFLIGHT_AUDIO_DRIVER": "0"}, audio_read=lambda: (3, "RUNNING"))
+check(not [x for x in res["refused"] if x[0] == "audio_driver"], "TESTQ_PREFLIGHT_AUDIO_DRIVER=0: the driver check does not run")
+res = P.check(nojob, RUNNER, clone=noclone, env={}, audio_read=lambda: (4, "STOPPED"))
+check(not [x for x in res["refused"] if x[0] == "audio_driver"], "check(): driver off -> no audio_driver refusal")
+res = P.check(nojob, RUNNER, clone=noclone, env={}, audio_read=blind)
+check(any(s.startswith("audio_driver: cannot read") for s in res["skipped"]), "check(): unreadable driver state is listed in skipped")
+
 # worker: a refusal is a finished REFUSED/PREFLIGHT attempt, nothing spawned
 check("PREFLIGHT" in S.CAUSES, "schema CAUSES has PREFLIGHT")
 src = open(os.path.join(HERE, "worker.py")).read()

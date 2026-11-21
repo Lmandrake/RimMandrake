@@ -9,7 +9,9 @@ foreign pause holds the reboot and a red canary inside the window does not; inge
 notes what it already wrote and queues the item job again; `check` fails on what it says it fails on, and the formats
 the parser reads are the ones watch2.ps1 writes. Heat (STEVE_HEAT_MEASURE_BEFORE_THE_SCREWDRIVER): the sampler's line on a
 CYCLE parses, a window says how hot the boot ran before its onset, a pre-sampler line is no reading (not cool), a
-heat=UNMEASURED cycle fails check, and stevetemp.cs prints the format HEAT_RE reads.
+heat=UNMEASURED cycle fails check, and stevetemp.cs prints the format HEAT_RE reads. Audio driver
+(RIMMANDRAKE_DISABLE_STEVE_SONIC_STUDIO_DRIVER_SOUND_IS_UNUSED): the AUDIODRV line parses, each tick writes
+steve_audio_driver.json, and `check` fails on LOADED or ENABLED and passes on OFF.
 """
 import json
 import os
@@ -313,9 +315,11 @@ class Machine:
     def __init__(self):
         self.boot, self.lines, self.up = BOOT_S, [start()], True
         self.busy, self.snaps, self.reboots = False, 0, 0
+        self.audio = None
 
     def install(self):
-        FM.steve_read = lambda: {"boot": self.boot, "cpus": 18, "rimworld": 1, "lines": list(self.lines)} if self.up else None
+        FM.steve_read = lambda: dict({"boot": self.boot, "cpus": 18, "rimworld": 1, "lines": list(self.lines)},
+                                     **({"audio": self.audio} if self.audio else {})) if self.up else None
         FM.worker_busy = lambda: self.busy
         FM.snapshot = self._snap
         FM.reboot = self._reboot
@@ -327,6 +331,14 @@ class Machine:
     def _reboot(self, _why):
         self.reboots += 1
         return True, ""
+
+
+def audio_checks():
+    got = [FM.audio_of([x]).get("verdict") for x in ("AUDIODRV 4 Stopped", "AUDIODRV 3 Running", "AUDIODRV 3 Stopped",
+                                                     "AUDIODRV none ABSENT", "AUDIODRV x", "FACTS 1 2 3")]
+    check(got == ["OFF", "LOADED", "ENABLED", "ABSENT", "UNMEASURED", "UNMEASURED"], "AUDIODRV parse table (got %r)" % got)
+    src = open(os.path.join(HERE, "fault_monitor.py")).read()
+    check('"AUDIODRV "+' in src and "Win32_SystemDriver" in src, "steve_read's PowerShell writes the AUDIODRV line audio_of reads")
 
 
 def quiet_tick(now):
@@ -457,6 +469,21 @@ def machine_checks(tmp):
         quiet_tick(BOOT_S + 60 * 60)
         check(FM.check(now=BOOT_S + 60 * 60) == 0, "check passes on a fresh clean reading")
         check(FM.check(now=BOOT_S + 60 * 60 + FM.STALE_S + 60) == 1, "check fails on a stale reading")
+        ad = lambda: T.read_json(T.q("steve_audio_driver.json")) or {}  # noqa: E731
+        check(ad().get("verdict") == "UNMEASURED", "a read with no audio field: the reading says UNMEASURED, not OFF")
+        m.audio = FM.audio_of(["AUDIODRV 3 Running"])
+        quiet_tick(BOOT_S + 60 * 60)
+        check(ad().get("verdict") == "LOADED" and FM.check(now=BOOT_S + 60 * 60) == 1, "audio driver LOADED: reading LOADED, check fails")
+        m.audio = FM.audio_of(["AUDIODRV 3 Stopped"])
+        quiet_tick(BOOT_S + 60 * 60)
+        check(ad().get("verdict") == "ENABLED" and FM.check(now=BOOT_S + 60 * 60) == 1, "audio driver re-enabled, not loaded: check fails")
+        m.audio = FM.audio_of(["AUDIODRV 4 Stopped"])
+        quiet_tick(BOOT_S + 60 * 60)
+        check(ad().get("verdict") == "OFF" and FM.check(now=BOOT_S + 60 * 60) == 0, "audio driver OFF: check passes")
+        m.up = False
+        quiet_tick(BOOT_S + 60 * 60)
+        check(ad().get("verdict") == "UNMEASURED" and "did not answer" in ad().get("why", ""), "Steve unreachable: audio reading UNMEASURED with its cause")
+        m.up = True
 
         m = fresh()
         m.lines += [cyc(170), cyc(175, [0])]
@@ -562,6 +589,7 @@ def main():
     tmp = tempfile.mkdtemp(prefix="rf_fault_")
     try:
         machine_checks(tmp)
+        audio_checks()
         ingest_checks(tmp)
         heat_checks(tmp)
     finally:

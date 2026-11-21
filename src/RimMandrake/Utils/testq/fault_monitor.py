@@ -33,6 +33,12 @@ CPU, one CYCLE line in C:\\SteveDesktop\\diag\\logs\\watch.log. This module is t
   deploy-heat put PawnIO (the signed driver LibreHardwareMonitor reads the Intel sensors through) and LibreHardwareMonitor
               on Steve, build stevetemp.exe there from steve_cpu_retest/stevetemp.cs, run it once, print its line.
 
+  audio driver  (RIMMANDRAKE_DISABLE_STEVE_SONIC_STUDIO_DRIVER_SOUND_IS_UNUSED) each tick also reads the ASUS Sonic Studio
+              kernel audio driver AVoluteSS3Vad (the fault needs it; turned off for good 2026-11-21) and writes
+              steve_audio_driver.json: OFF, ABSENT, LOADED (SCM Running), ENABLED (registry Start not 4: loads at the next
+              boot) or UNMEASURED. `check` fails on LOADED or ENABLED, so a silent return by Windows Update or Armoury Crate
+              is seen. The lane's preflight (infrastructure/stevedesktop/preflight.py audio_driver) refuses jobs on the same.
+
 Files in QHOME: fault_state.json (the reading), fault_windows.json (what gate reads), fault_watch.log (the mirror),
 fault_snapshots/<window>.txt (cause evidence), quarantined/<job>.json (results that must not count, kept).
 """
@@ -344,13 +350,16 @@ def ps(script, timeout=120):
 
 def steve_read():
     """-> {boot, cpus, rimworld, lines} or None when unreachable."""
-    rc, out = ps(r"""$o=Get-CimInstance Win32_OperatingSystem
+    rc, out = ps(r"""$ad=Get-ItemProperty 'HKLM:\SYSTEM\CurrentControlSet\Services\%s' -EA 0; $dv=Get-CimInstance Win32_SystemDriver -Filter "Name='%s'" -EA 0
+"AUDIODRV "+$(if($ad){$ad.Start}else{'none'})+" "+$(if($dv){$dv.State}else{'ABSENT'})
+$o=Get-CimInstance Win32_OperatingSystem
 $b=([DateTimeOffset]$o.LastBootUpTime).ToUnixTimeSeconds(); $n=(Get-CimInstance Win32_ComputerSystem).NumberOfLogicalProcessors
 $rw=@(Get-Process RimWorldWin64 -EA 0).Count
 "FACTS $b $n $rw"
 if(Test-Path '%s'){Get-Content '%s' -Tail 600}
 'REGPROBE_TAIL'
-if(Test-Path '%s'){Get-Content '%s' -Tail %d}""" % (WATCH_LOG, WATCH_LOG, REGPROBE_LOG, REGPROBE_LOG, REGPROBE_TAIL))
+if(Test-Path '%s'){Get-Content '%s' -Tail %d}""" % (AUDIO_DRIVER, AUDIO_DRIVER, WATCH_LOG, WATCH_LOG, REGPROBE_LOG, REGPROBE_LOG,
+                                                       REGPROBE_TAIL))
     if rc is None:
         return None
     lines = out.splitlines()
@@ -360,8 +369,39 @@ if(Test-Path '%s'){Get-Content '%s' -Tail %d}""" % (WATCH_LOG, WATCH_LOG, REGPRO
             rest = lines[i + 1:]
             cut = rest.index("REGPROBE_TAIL") if "REGPROBE_TAIL" in rest else len(rest)
             return {"boot": int(p[1]), "cpus": int(p[2]), "rimworld": int(p[3]), "lines": rest[:cut],
-                    "rp_lines": rest[cut + 1:]}
+                    "rp_lines": rest[cut + 1:], "audio": audio_of(lines[:i])}
     return None
+
+
+AUDIO_DRIVER = "AVoluteSS3Vad"
+
+
+def audio_verdict(start, state):
+    """-> OFF | ABSENT | LOADED | ENABLED (the same table as preflight.driver_verdict). Pure."""
+    if state == "RUNNING":
+        return "LOADED"
+    if start is None and state == "ABSENT":
+        return "ABSENT"
+    return "OFF" if start == 4 else "ENABLED"
+
+
+def audio_of(lines):
+    """The AUDIODRV line -> {start, state, verdict}; UNMEASURED (with why) when it is missing or not understood."""
+    for line in lines:
+        p = line.split()
+        if p[:1] == ["AUDIODRV"]:
+            if len(p) == 3 and (p[1] == "none" or p[1].isdigit()):
+                start, state = (None if p[1] == "none" else int(p[1])), p[2].upper()
+                return {"start": start, "state": state, "verdict": audio_verdict(start, state)}
+            return {"verdict": "UNMEASURED", "why": "AUDIODRV line not understood: %r" % line[:80]}
+    return {"verdict": "UNMEASURED", "why": "no AUDIODRV line in the read"}
+
+
+def audio_reading(fx, now):
+    r = dict(fx.get("audio") or {"verdict": "UNMEASURED", "why": "the read carried no audio field"}) if fx \
+        else {"verdict": "UNMEASURED", "why": "Steve did not answer"}
+    r.update(schema="steve.audio_driver/1", at=stamp(now), driver=AUDIO_DRIVER)
+    return r
 
 
 # StartTime must be LOCAL: Get-WinEvent reads a UTC DateTime's digits as local, so a window hours ago asks for the future
@@ -618,6 +658,7 @@ def tick(now=None):
                   clean_through=stamp(a["clean_through"]) if a["clean_through"] else None,
                   clean_through_s=a["clean_through"], open_window=a["open"]["id"] if a["open"] else None,
                   windows=len(a["windows"]), unparsed=a["unparsed"], control=a["control"], last_heat=a["last_heat"])
+        write_json("steve_audio_driver.json", audio_reading(fx, now))
         write_json("fault_heat.json", a["boots"])
         write_json("fault_windows.json", a["windows"])      # before the state: gate never reads a state ahead of its windows
         write_json("fault_state.json", st)
@@ -738,6 +779,11 @@ def check(_a=None, now=None):
         word, rl = regprobe_section(now)
         if word == "UNMEASURED":
             bad.append("register probe blind: " + rl[0].split(": ", 1)[1])
+    ad = T.read_json(T.q("steve_audio_driver.json")) or {"verdict": "UNMEASURED", "why": "no steve_audio_driver.json yet"}
+    if ad.get("verdict") in ("LOADED", "ENABLED"):
+        bad.append("%s is %s on SteveDesktop (Start=%s, state %s): the register fault returns with it; turn it off: "
+                   "reg add HKLM\\SYSTEM\\CurrentControlSet\\Services\\%s /v Start /t REG_DWORD /d 4 /f, then reboot"
+                   % (AUDIO_DRIVER, ad["verdict"], ad.get("start"), ad.get("state"), AUDIO_DRIVER))
     nleft = 0
     for rec in ([] if advisory() else T.records("done")):
         span = job_span(rec)
@@ -748,10 +794,11 @@ def check(_a=None, now=None):
         bad.append("%d done records inside a fault window are not quarantined" % nleft)
     for line in bad:
         print("FAIL " + line)
-    print("%s phase=%s reading_age=%ds windows=%d open=%s quarantined=%d last_cycle=%s heat=%s" % (
+    print("%s phase=%s reading_age=%ds windows=%d open=%s quarantined=%d last_cycle=%s heat=%s audio_driver=%s" % (
         "BAD" if bad else "OK", st.get("phase"), age, len(windows), st.get("open_window"),
         len(os.listdir(T.q("quarantined"))) if os.path.isdir(T.q("quarantined")) else 0, st.get("last_cycle"),
-        ("core_max %s C" % lh["core"]) if lh.get("core") is not None else (lh.get("unmeasured") or "none")))
+        ("core_max %s C" % lh["core"]) if lh.get("core") is not None else (lh.get("unmeasured") or "none"),
+        ad.get("verdict") + ("(%s)" % ad["why"] if ad.get("why") else "")))
     return 1 if bad else 0
 
 
