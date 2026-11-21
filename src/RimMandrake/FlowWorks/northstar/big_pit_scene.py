@@ -522,9 +522,20 @@ def spawn_stuffed(dn, x, z, n, plan):
     return call("jawa/spawn_batch", **kw)
 
 
-def stage(plan):
+def dug_cells(x0, z0, n, depth=DEPTH):
+    """The cells of an n x n rect already dug to `depth` notches (one excavation_rect read): a resumed stage skips them."""
+    r = call("jawa/flowworks_excavation_rect", x=x0, z=z0, w=n, h=n)
+    return {(q["x"], q["z"]) for q in r.get("rows") or [] if q.get("d") == depth}
+
+
+def stage(plan, resume=False):
+    """resume (step stage_resume): no reset and no clear; dig only the cells not yet at DEPTH, then spawn. On the 250 x 250
+    sitting map one dig call takes ~250 ms, so the ~2,100 digs of a stage do not fit one 540 s command (visit 3,
+    2026-11-21: `stage` killed at 530 s mid-dig): run `stage`, then `stage_resume` until it ends."""
     x, z, w, h = plan["site"]
     rect = "%d,%d,%d,%d" % (x, z, w, h)
+    if resume:
+        return stage_dig_and_spawn(plan)
     # ProofResetRect parses "x;z;w;h" and answers "RESET cells=..."; anything else leaves old digs, fills and rolled depths
     # on the site (visit 2: every copy read d=16 against DEPTH=8), so the stage refuses to build a scene on it
     reset = static_on(NSP, "ProofResetRect", "%d;%d;%d;%d" % (x, z, w, h))
@@ -539,17 +550,27 @@ def stage(plan):
     call("jawa/set_fog", action="unfog", rect=rect)
     call("jawa/set_terrain_batch", ops="Soil:" + rect)
     sky_gate(plan, "after_clear")
+    stage_dig_and_spawn(plan)
+
+
+def stage_dig_and_spawn(plan):
     assert_no_geyser(plan)
     call("jawa/weather_set", weather="Clear", lockWeather=True)
     bad = 0
     for key, x0, z0, f, fl in plan["copies"]:
+        done = dug_cells(x0, z0, PW)
         for i in range(PW):
             for j in range(PW):
+                if (x0 + i, z0 + j) in done:
+                    continue
                 r = call("jawa/flowworks_excavation_drive", x=x0 + i, z=z0 + j, deepenLevels=DEPTH, setBodyWaterM=-1, fillInLevels=0)
                 bad += r.get("success") is False
     sp = plan.get("spare")       # an older plan has none: OL --acts then says so (re-run plan)
+    done = dug_cells(sp[0], sp[1], sp[2], sp[3]) if sp else set()
     for i in range(sp[2] if sp else 0):
         for j in range(sp[2]):
+            if (sp[0] + i, sp[1] + j) in done:
+                continue
             r = call("jawa/flowworks_excavation_drive", x=sp[0] + i, z=sp[1] + j, deepenLevels=sp[3], setBodyWaterM=-1, fillInLevels=0)
             bad += r.get("success") is False
     log("dig_failed_calls", bad)
@@ -741,8 +762,8 @@ def main(argv):
     else:
         ok = True
         plan = load_plan()
-        if STEP == "stage":
-            stage(plan)
+        if STEP in ("stage", "stage_resume"):
+            stage(plan, resume=STEP == "stage_resume")
         elif STEP == "fill":
             fill(plan)
         elif STEP == "verify":
