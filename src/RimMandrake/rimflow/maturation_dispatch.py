@@ -2433,32 +2433,35 @@ def pilot_launch(root, cfg, mod, why, item=None, usd=None, fx=None, now=None):
     return (0 if unit else 1), "%s %s: %s" % ("LAUNCHED" if unit else "NOT STARTED", mod, text)
 
 
-def road_back_holder(root, cfg, st, mod, stage, opened, item, cap, now, fx):
+def road_back_holder(root, cfg, st, mod, stage, opened, item, cap, now, fx, game=None):
     """One pilot holder run on every open road-back item together (`opened`, [{id, needs}]), from the ledger packet:
-    pilot-launch's road back, and the tick's once the fixers are spent (pilot_holders). Items only the live game can
-    show get no run at an offline stage; at Stage 6 a live-only set gets the live brief when the bridge is takeable.
+    pilot-launch's road back, and the tick's once the fixers are spent (pilot_holders). Items only a game can show get
+    no run at an offline stage, unless `game` names the free game pilot_holders picked for them (the version's offline
+    Problems are spent: design/specs/2026-11-20-tick-game-only-exit/boundary.md); at Stage 6 a live-only set gets the
+    live brief on the first free game (pick_game).
     -> (rc, text, unit, item); rc None is a refusal before any launch, said in its words, nothing booked. Booked in s["holder_road_back"] with
     the item set it ran on (holder_spent reads it)."""
     have = M.ledger_needs(root, [x["id"] for x in opened if not x.get("needs")])
     opened = [dict(x, needs=x.get("needs") or have.get(x["id"])) for x in opened]
     # offline stages never wait for a game: at one, an item only the game can show is Stage 6 work, given no
     # run here (RIMMANDRAKE_CLOSE_OFFLINE_STAGE_ITEMS_OFFLINE_GAME_WAS_DEMANDED)
-    game6 = [x["id"] for x in opened if x["needs"] in M.LIVE_NEEDS] if not M.game_takeable(stage) else []
+    given = game
+    game6 = [x["id"] for x in opened if x["needs"] in M.LIVE_NEEDS] if not (M.game_takeable(stage) or given) else []
     ids = [x["id"] for x in opened if x["id"] not in game6]
     if not ids:
-        return None, ("REFUSED: %s stands at %s, an offline stage, and every open road-back item (%s) needs the "
-                   "live game: no offline run can close one, and none is given the game. They are Stage 6 "
+        return None, ("REFUSED: %s stands at %s, an offline stage, and every open road-back item (%s) needs a "
+                   "game: no offline run can close one, and no game was picked for them. They are Stage 6 "
                    "work; return the record there: %s" % (mod, stage, ", ".join(game6),
                                                           M.game_only_cmd(mod, game6))), None, item
     item = item if item and item not in game6 else ids[0]
     # at Stage 6, every open item needs the live game: the holder takes the bridge and the game, one holder at a
     # time (RIMMANDRAKE_LET_HOLDER_TAKE_BRIDGE_ALL_ITEMS_NEED_GAME)
-    live = M.game_takeable(stage) and AUT.live_only(opened)
-    game = None
-    if live:        # a free game of the two (pick_game), its bridge takeable; none free is a refusal with each reason
+    live = (M.game_takeable(stage) or bool(given)) and AUT.live_only(opened)
+    game = given if live else None
+    if live and not game:   # a free game (pick_game), its bridge takeable; none free is a refusal with each reason
         game, whys = pick_game(cfg, fx.get("bridge"), "%s live holder run" % mod)
         if not game:
-            return None, ("REFUSED: %s's open items all need the live game and no game is free (%s); "
+            return None, ("REFUSED: %s's open items all need a game and no game is free (%s); "
                           "one bridge holder per game" % (mod, "; ".join(whys))), None, item
     plan = modledger.resume_plan(root, mod)     # the holder's recorded session is resumed, not restarted
     rkw = {"session": plan["session_id"]} if plan.get("action") == "resume" and plan.get("session_id") else {}
@@ -2467,7 +2470,7 @@ def road_back_holder(root, cfg, st, mod, stage, opened, item, cap, now, fx):
         "\nThis is the mod's %sholder run: work every open road-back item together, from the packet above: %s. "
         "Close each one its acceptance test passes; a note starting LEFT OPEN: on each that is not.\n"
         % ("live " if live else "", ", ".join(ids)) + (
-        "Not yours: %s need%s the live game, Stage 6 work; work none of them here.\n" % (
+        "Not yours: %s need%s a game, Stage 6 work; work none of them here.\n" % (
             ", ".join(game6), "s" if len(game6) == 1 else "") if game6 else "") + (
         "\n" + M.game_brief(game) if game else "")), stage=stage, now=now, fx=fx)
     rc, text, unit = (fx.get("launch_brief") or AUT.launch_brief)(
@@ -2535,10 +2538,13 @@ def pilot_holders(root, cfg, st, facts, rows, launches, now, fx=None):
         items = open_items(AUT._road_back_ids(s, s["road_back"]))
         if not items:
             continue
-        if not M.game_takeable(row.get("stage")) and all((x or {}).get("needs") in M.LIVE_NEEDS for x in items):
-            # every item needs the game and the stage is offline: road_back_holder would refuse the run, and the row is
-            # the version's own Problem fixer (or its spent hold) before the game-only exit
-            # (RIMMANDRAKE_UNPARK_FLOWWORKS_STUCK_AT_OFFLINE_STAGE_EIGHT_HOURS)
+        game_set = not M.game_takeable(row.get("stage")) and all((x or {}).get("needs") in M.LIVE_NEEDS for x in items)
+        if game_set and row.get("decision") != "fixer_spent":
+            # every item needs a game, the stage is offline and the version's own Problem fixer is owed: it goes first,
+            # it may change the build the game-only items test (RIMMANDRAKE_UNPARK_FLOWWORKS_STUCK_AT_OFFLINE_STAGE_
+            # EIGHT_HOURS). Once those fixers are spent no pipeline act changes the build: the items go to a free game
+            # below (RIMMANDRAKE_DEFINE_BOTH_GAMES_EVERYWHERE_WAITING_SAID_AGAIN; FlowWorks sat behind one spent owner
+            # look with game b free, 2026-11-20)
             continue
         ids = sorted(x["id"] for x in items)
 
@@ -2558,10 +2564,27 @@ def pilot_holders(root, cfg, st, facts, rows, launches, now, fx=None):
             continue
         if no_slot(cfg, planned, put):
             continue
-        row.update(holder_items=items, cap=MM.for_mod(cfg, mod).get("cap_usd"))
-        put("launch", "%s and its ledger is ready: one holder run on all %d open items (%s), nothing live on it (%s)"
+        game, whys = None, []
+        if game_set:        # the game-only items, on the first free game: a driven game, or one taken this tick, is not
+            taken = {g: u for u, g in driver_games(facts).items() if u in live_drivers(facts)}
+            taken.update({r.get("game") or r.get("holder_game"): "a launch of this tick (%s)" % r["mod"]
+                          for r in rows if r["mod"] in launches and (r.get("game") or r.get("holder_game"))})
+            game, whys = pick_game(cfg, fx.get("bridge"), "%s live holder run on its game-only road-back items" % mod,
+                                   taken, hold=fx.get("hold"))
+            if not game:
+                put("no_game_free", "every open road-back item (%s) needs a game, %s's offline Problems are spent, and "
+                    "no game is free: %s" % (", ".join(ids), mod, "; ".join(whys)))
+                row.pop("need", None)   # a wait that ends by itself when a game frees: no hand is asked for
+                row["waits_on"] = "a free game: %s" % "; ".join(whys)
+                continue
+            row.pop("need", None)       # the PAUSED hold of fixer_spent is lifted: the run goes to a game
+        row.update(holder_items=items, cap=MM.for_mod(cfg, mod).get("cap_usd"),
+                   **({"holder_game": game} if game else {}))
+        put("launch", "%s and its ledger is ready: one holder run on all %d open items (%s)%s, nothing live on it (%s)"
             % ("its road back opened (the holder goes first, before any per-item fixer)" if first else
-               "its road-back fixers are spent", len(ids), ", ".join(ids), account[1]))
+               "its road-back fixers are spent" if not game else
+               "every open road-back item needs a game and its offline Problems are spent", len(ids), ", ".join(ids),
+               " on game %s%s" % (game, " (%s)" % "; ".join(whys) if whys else "") if game else "", account[1]))
         launches = [m for m in launches if m != mod] + [mod]
     return rows, launches
 
@@ -2708,7 +2731,8 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
         blind = row.get("stage") == "blind_challenge"
         if row.get("holder_items"):     # pilot_holders: one holder run on the open road-back items
             rc, text, unit, item = road_back_holder(root, cfg, st, mod, row.get("stage"), row["holder_items"], None,
-                                                    row.get("cap") or cfg["cap_usd"], now, fx)
+                                                    row.get("cap") or cfg["cap_usd"], now, fx,
+                                                    game=row.get("holder_game"))
             if unit:
                 s.setdefault("launches", []).append({"unit": unit, "item": item, "at": now, "cap": row.get("cap"),
                                                      "stage": row.get("stage"), "holder": True})

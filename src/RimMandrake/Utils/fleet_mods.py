@@ -450,13 +450,13 @@ def parked(it, rs):
 
 
 def waits_on(it, rs, evs=None):
-    """'you' / 'the game' / '' for an open item."""
+    """'you' / 'a free game' / '' for an open item."""
     if it is None:
         return ""
     if owner_queue.is_his(it, rs, evs):  # the same test as the board's Needs you (FLEETWATCH_NEEDS_FIX_NOTHING_WHILE_MODS_WAIT)
         return "you"
     if (rs or {}).get("status") == "game" or getattr(it, "blocked_kind", None) == "live":
-        return "the game"
+        return "a free game"
     return ""
 
 
@@ -465,7 +465,7 @@ HOLD_PLANS = {   # a Relentless tooling hold -> (who it waits on, what is planne
     "proof_weak": ("the Conductor", "its proof kept reading weak; the Conductor rewrites the proof so a blind checker "
                                     "can rerun it, or drops the item"),
     "strikes": ("the Conductor", "workers failed it several times running; the Conductor re-scopes or drops it"),
-    "game": ("the game", "it runs in the next live game round (the game takes one test at a time)"),
+    "game": ("a free game", "it runs on the first free game (game a or game b on Archmagi, or a SteveDesktop game); each game takes one test at a time"),
 }
 
 
@@ -495,7 +495,7 @@ def block_who(reason):
     """Who a free-text block reason waits on. Never 'you': only owner_queue.is_his says that (Needs you must match)."""
     r = reason.lower()
     if re.search(r"\b(live|quicktest|in[- ]game|game[- ]up|cold load)\b", r):
-        return "the game"
+        return "a free game"
     if re.search(r"\b(owner|card|ruling|deferred|parked)\b", r):
         return "a past ruling of yours (parked on purpose, no question open)"
     if re.search(r"\b(art|render|sprite|texture)s?\b", r):
@@ -527,7 +527,7 @@ def stuck_of(it, rs, evs=None, known=None, asks=None):
             return {"waits": "another item", "plan": "starts again by itself once '%s' is done"
                     % display_title(known[on].title or on)}
         if kind == "live":
-            return {"waits": "the game", "plan": "it runs in the next live game round (the game takes one test at a time)"}
+            return {"waits": "a free game", "plan": "it runs on the first free game (game a or game b on Archmagi, or a SteveDesktop game); each game takes one test at a time"}
         if kind == "judge":
             return {"waits": "a judge agent", "plan": "a fresh agent that did not make it rules on it, then work resumes"}
         if kind == "time":
@@ -544,7 +544,7 @@ def stuck_of(it, rs, evs=None, known=None, asks=None):
     if getattr(it, "held", False):
         return {"waits": "a fix", "plan": "a blind check failed it; the next worker fixes what failed and it is checked again"}
     if status == "game":
-        return {"waits": "the game", "plan": "it runs in the next live game round (the game takes one test at a time)"}
+        return {"waits": "a free game", "plan": "it runs on the first free game (game a or game b on Archmagi, or a SteveDesktop game); each game takes one test at a time"}
     if status == "retired":
         return {"waits": "the Conductor", "plan": "Relentless stopped trying; the Conductor rewrites or drops it"}
     if status == "blocked":

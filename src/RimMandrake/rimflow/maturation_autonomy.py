@@ -53,7 +53,7 @@ import pipeline_control as PC   # noqa: E402  the one control store (`pipe`)
 UNM = "UNMEASURED"
 EXCLUDE_MARKER = ".maturation-exclude"      # a concept folder holding it is never discovered (test fixtures)
 WAIT = {"live", "settling", "driver_busy", "bridge_held", "slots_full", "slots_unknown", "account_hold", "designer_wait",
-        "queued", "launch_retry", "upstream_wait", "certificate", "launch_wait"}
+        "queued", "launch_retry", "upstream_wait", "certificate", "launch_wait", "no_game_free"}
 # a launch that never started on one of these is retried (measured 2026-11-15: a git index.lock at publish, then the
 # launcher's "not on origin/main" refusal, read as a spent steward run)
 TRANSIENT = re.compile(r"index\.lock|is not on origin/main|ingest\.lock stayed busy|publish stopped|another "
@@ -1127,7 +1127,7 @@ def _road_back(s, row, open_items, now=None, moved=False, endings=None, cfg=None
             mod, stage = row.get("mod"), row.get("stage")
             vb = (version_bugs or read_version_bugs)(mod, ver)
             if vb is None or getattr(vb, "ok", True) is False:
-                row.update(decision="blind", aut=None, why="every open road-back item (%s) needs the live game, and "
+                row.update(decision="blind", aut=None, why="every open road-back item (%s) needs a game, and "
                            "%s %s's own open Problems cannot be read (%s): no game-only exit on a guess" % (
                                ", ".join(ids6), mod, ver or "(version unknown)",
                                getattr(vb, "cause", None) or "no answer"))
@@ -1146,14 +1146,15 @@ def _road_back(s, row, open_items, now=None, moved=False, endings=None, cfg=None
             names = ", ".join(x["id"] for x in vb)
             if todo:
                 row.update(aut="fixer", fix_item=todo[0]["id"], fix_for="version", decision="fixer", need=None,
-                           why="every open road-back item (%s) needs the live game; first %s %s's open offline Problem "
+                           why="every open road-back item (%s) needs a game; first %s %s's open offline Problem "
                                "%s (of %d: %s) gets one fixer run, then the pipeline takes the game-only exit" % (
                                ", ".join(ids6), mod, ver, todo[0]["id"], len(vb), names))
             else:
                 row.update(decision="fixer_spent", aut=None,
-                           why="every open road-back item (%s) needs the live game, and %s %s's open offline Problems "
-                               "(%s) have each had their one fixer run and are still open" % (
-                               ", ".join(ids6), mod, ver, names),
+                           why="every open road-back item (%s) needs a game, and %s %s's open offline Problems "
+                               "(%s) have each had their one fixer run and are still open; for a pilot mod the tick "
+                               "sends the game-only items to the first free game (pilot_holders), any other mod waits "
+                               "on the hand move below" % (", ".join(ids6), mod, ver, names),
                            need="%s: PAUSED, the game-only exit waits on %s %s's open offline Problems (%s), each "
                                 "fixer-run once; close them, or take the exit by hand: %s" % (
                                 mod, mod, ver, names, M.game_only_cmd(mod, ids6)))
@@ -1496,7 +1497,7 @@ PAUSE_WHY = {
     "launch_failed": "a launch failed", "launch_retry": "a launch is retried", "auto_spent": "the automatic runs of this visit are spent",
     "hand_run_seen": "a hand-launched run worked here and wrote no record", "steward_spent": "the steward run is spent",
     "fixer_spent": "the fixer runs are spent",
-    "game_only": "its open road-back items need the live game: Stage 6 work, the record goes back there",
+    "game_only": "its open road-back items need a game: Stage 6 work, the record goes back there",
     "cycle_unfinished": "a cycle record has no exit block",
     "visit_unfinished": "a visit record has no exit block", "cycle_limit": "three blind cycles: the Conductor decides",
     "seed_refused": "its record cannot be seeded", "designer_blocked": "the Designer is blocked",
@@ -1737,7 +1738,8 @@ def live_rules(purpose, mod, seat="BENCH"):
                                    (mod,) if "deploy_custom_mods" in r else ()))
              for r in M.BRIDGE_RULES]
     return ("\n## The bridge and the game (this run may use them; each rule binds)\n\n"
-            "Every item here needs the live game, so this run takes it; one bridge holder at a time.\n%s\n"
+            "Every item here needs a game, so this run drives one: the game that `## Your game` names, else game a; one "
+            "bridge holder per game, and a game that another run drives is never yours.\n%s\n"
             "- Bring the game up on the tier the test needs, after the bridge is yours (holding the bridge is blanket "
             "authorization to start Steam and launch the game): swap the list if the test names one, deploy, then "
             "`./game --idle-ok --why \"%s\" up` once it is at a usable menu or map.\n"
@@ -1796,7 +1798,7 @@ def fixer_brief(item, mod, cap, fix_for=None, live=False):
             "it is new), land "
             "with `./publish -m ... <paths>`, and close the item with the published sha. If it cannot be fixed "
             "offline, or the fix is the owner's (a bar, a ruling, a classification), write that in a note and drop "
-            "nothing. %s\n%s\n\n%s\n\n%s\n\n%s\n" % (item, mod, item, item, mod, "Its acceptance test needs the live game: use it "
+            "nothing. %s\n%s\n\n%s\n\n%s\n\n%s\n" % (item, mod, item, item, mod, "Its acceptance test needs a game: use it "
                                                "as the section below says, and write a note starting LEFT OPEN: on "
                                                "what still fails." if live else OFFLINE_CLOSE % {"mod": mod, "item": item},
                                                M.WRONG_CHECK_RULE, M.SELF_FIX_RULE, M.HOW_A_BAR_HOLDS, M.OFFLINE_MODEL)

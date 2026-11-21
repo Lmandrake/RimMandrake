@@ -2080,11 +2080,17 @@ RED_SEEN_RULE = (
 # the game: the in-game driver, the blind judge and the live fixer (maturation_autonomy.live_rules). An offline-stage
 # fixer gets only offline items (a game-only item goes back to Stage 6), so its brief keeps "Never take the bridge".
 FREE_GAME_RULE = (
-    "- **A fix that needs the live game takes it when it is free** (owner, 2026-11-20): the bridge free, ours, or stale "
-    "by the 45-minute rule, with `python3 src/RimMandrake/rimflow/cli.py bridge take --idle-ok --for \"<what>\" --seat "
-    "BENCH` and `./game --idle-ok --why \"<what>\" up`; release it the moment the work stops (`python3 "
-    "src/RimMandrake/rimflow/cli.py bridge release --seat BENCH`). His OWNER hold, the `./bridge` override, no flyer "
-    "flight, and never fullscreen or focus the game still bind. A mod does not wait a stage for a game that sits unused.")
+    "- **A fix that needs the live game takes it when it is free** (owner, 2026-11-20): there are several games, each "
+    "with its own bridge holder: game a (Steam's install, his full list) and game b on Archmagi, and the SteveDesktop "
+    "games. Take any game whose bridge is free, ours, or stale by the 45-minute rule, with `python3 "
+    "src/RimMandrake/rimflow/cli.py bridge take --idle-ok --for \"<what>\" --seat BENCH` and `./game --idle-ok --why "
+    "\"<what>\" up`; for game b set `RM_GAME_INSTANCE=b` on every command (deploy with `--instance b`) and start it if "
+    "it is down (`python3 src/RimMandrake/Utils/game_instance.py launch b --wait`). If game a is busy or held, use game "
+    "b; only a check that needs his full list waits for game a, and then say so by name. Release it the moment the "
+    "work stops (`python3 src/RimMandrake/rimflow/cli.py bridge release --seat BENCH`). His OWNER hold, the `./bridge` "
+    "override, no flyer flight, and never fullscreen or focus a game still bind. A mod does not wait a stage for a game "
+    "that sits unused, and no line says \"waiting for the live game\": name the game and why no other game can take "
+    "the work.")
 WRONG_CHECK_RULE = "\n".join([
     "**Class each failed or UNMEASURED line first** (owner, 2026-11-20; `design/RimMandrake/standing_rulings.md` "
     "§Touching code has a cost): mod wrong (`class` MOD: the mod's code, defs or settings), check wrong (`class` HARNESS: "

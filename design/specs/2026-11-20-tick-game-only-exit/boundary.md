@@ -2,8 +2,8 @@
 
 Code: `src/RimMandrake/rimflow/maturation_autonomy.py` (`_road_back`, `version_bugs`, `read_version_bugs`,
 `gameonly_key`, `gameonly_and_land`, the `autogameonly` act in `resolve` and `execute`, `fixer_brief` for
-`fix_for="version"`) and `src/RimMandrake/rimflow/maturation_dispatch.py` (`pilot_holders`, `NO_SLOT_AUT`). **This page
-covers only what the tick does at an offline stage when every open road-back item needs the live game.** Item
+`fix_for="version"`) and `src/RimMandrake/rimflow/maturation_dispatch.py` (`pilot_holders`, `road_back_holder` with a `game`, `NO_SLOT_AUT`). **This page
+covers only what the tick does at an offline stage when every open road-back item needs a game.** Item
 `RIMMANDRAKE_UNPARK_FLOWWORKS_STUCK_AT_OFFLINE_STAGE_EIGHT_HOURS`. Measured 2026-11-20: FlowWorks sat at Stage 3
 (offline_build) for 515 minutes with 10 open road-back items, all `game-up` or `bridge`. The tick read `game_only` and only
 printed `maturation.py advance FlowWorks --to in_game --game-only ...` for a hand, though a read-only evaluate of that
@@ -52,8 +52,22 @@ is a separate page. Each promise has a test of its name in `src/RimMandrake/rimf
   unnamed: the `game_only` clause) raises with the refused clause. It writes no file and lands nothing.
 - **execute-books-the-act-once.** `execute` runs the act once and books it under its steward key, with the items and the
   landing's line. The row reads `launched`.
-- **pilot-holder-skips-game-only-set-at-offline-stage.** At an offline stage, a pilot mod whose open road-back items all
-  need the game gets no holder launch: its version-Problem `fixer` row and its `fixer_spent` row stay as the autonomy
-  layer wrote them. A holder there would be refused by `road_back_holder`.
+- **pilot-holder-waits-for-the-version-problem-fixer.** At an offline stage, a pilot mod whose open road-back items all
+  need a game, and whose version Problem still has its fixer run owed, gets no holder launch: its version-Problem
+  `fixer` row stays as the autonomy layer wrote it. The fixer may change the build that the game-only items test.
+- **a-spent-game-only-set-goes-to-a-free-game.** At an offline stage, a pilot mod whose open road-back items all need a
+  game, and whose version Problems are spent (`fixer_spent`), gets one live holder run on those items, on the first
+  free game by `pick_game` (`design/specs/2026-11-20-per-game-hold-own-install/boundary.md`). A game that a live
+  in-game run drives, or that a launch of this tick took, is not free. The row reads `launch`, names the game in its
+  why and in `holder_game`, and keeps no PAUSED Needs Conductor line. Why: when the version Problems are spent, no act
+  of the pipeline changes the build, so the game-only items no longer wait for a changing build; they waited only for
+  a hand. Measured 2026-11-20 8:19 PM PST: FlowWorks held 10 game-only items behind one spent Problem (an owner look at
+  water colour), game a drove the Pyrelands visit, and game b was free, and nothing sent work to game b.
+- **no-free-game-names-each-game.** When no game is free for that run, the row reads `no_game_free`, a wait (`WAIT`)
+  that ends by itself when a game frees, with no Needs Conductor line. Its why and its `waits_on` name each game and
+  the reason it cannot take the run. They never say "the live game".
+- **the-offline-holder-run-drives-its-named-game.** `road_back_holder` with a `game` at an offline stage starts the run
+  on that game: the live brief, the game's own section (`game_instance.brief`) and `RM_GAME_INSTANCE` for that game. It
+  does not refuse the game-only items.
 
-Later lists beside this page: `polish.md` (none yet); `next_version.md` (none yet).
+Later lists beside this page: `polish.md` (two lines); `next_version.md` (none yet).

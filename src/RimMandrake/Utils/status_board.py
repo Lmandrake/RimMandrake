@@ -192,9 +192,9 @@ def most_worth_knowing(d):
         t = tr[-1]
         tried = t["answers"] + t["no_answer"]
         if tried >= 10 and t["answers"] * 2 < tried:
-            return ("Most worth knowing: building is fast, proving things in the game is not. The game takes one test at a "
+            return ("Most worth knowing: building is fast, proving things in a game is not. Each game takes one test at a "
                     "time, and of %d game tests today only %d gave a real answer (%d passed, %d failed); the rest were "
-                    "refused or measured nothing. Built work piles up waiting for the game."
+                    "refused or measured nothing. Built work piles up waiting for a free game."
                     % (tried, t["answers"], t["passed"], t["failed"]))
         if t["unhandled"] > max(5, t["handled"]):
             return ("Most worth knowing: more failures went to a person today (%d) than the machine handled itself (%d)."

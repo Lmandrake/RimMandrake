@@ -198,19 +198,80 @@ def t_execute_books_the_act_once():
             and x.get("items") == [LIVE_A, LIVE_B] and not x.get("failed")), (got, row.get("decision"), x)
 
 
-def t_pilot_holder_skips_game_only_set_at_offline_stage():
-    s = {"road_back": {"caused_by": ROUTE, "at": 50, "from": "in_game"}}
+CFG2 = {"cap_usd": 15, "max_live": 4, "seat": "BENCH", "game_instances": ["a", "b"]}
+FACTS = {PILOT: {"stage": "offline_build", "live_units": []}}
+
+
+def _bridge(free):
+    """A bridge reading that names its game (pick_game's two-argument form): free is the set of takeable games."""
+    def read(purpose, game="a"):
+        return (True, "TAKEABLE  delegated") if game in free else (False, "NOT TAKEABLE  game %s: rm-pyrelands-visit "
+                                                                         "holds the driver lock" % game)
+    return read
+
+
+def _spent_rows():
+    return [{"mod": PILOT, "stage": "offline_build", "decision": "fixer_spent", "aut": None,
+             "why": "spent", "need": "%s: PAUSED, the game-only exit waits on ..." % PILOT}]
+
+
+def _fx(free):
+    return {"open_items": lambda ids: list(ALL_LIVE), "account": lambda: (True, "ok"), "pilot": lambda root, mod: True,
+            "bridge": _bridge(free), "hold": lambda g: None}
+
+
+def _s():
+    return {"road_back": {"caused_by": ROUTE, "at": 50, "from": "in_game"}}
+
+
+def t_pilot_holder_waits_for_the_version_problem_fixer():
     rows = [{"mod": PILOT, "stage": "offline_build", "decision": "fixer", "aut": "fixer", "fix_item": BUG_V,
              "fix_for": "version"}]
-    facts = {PILOT: {"stage": "offline_build", "live_units": []}}
-    fx = {"open_items": lambda ids: list(ALL_LIVE), "account": lambda: (True, "ok"), "pilot": lambda root, mod: True}
-    rs, la = MD.pilot_holders(TMP, {"cap_usd": 15, "max_live": 4, "seat": "BENCH"}, {"mods": {PILOT: s}}, facts,
-                              rows, [PILOT], 100, fx)
-    spent = [{"mod": PILOT, "stage": "offline_build", "decision": "fixer_spent", "aut": None}]
-    rs2, _ = MD.pilot_holders(TMP, {"cap_usd": 15, "max_live": 4, "seat": "BENCH"}, {"mods": {PILOT: dict(s)}}, facts,
-                              spent, [], 100, fx)
-    return (rs[0].get("aut") == "fixer" and rs[0].get("fix_item") == BUG_V and not rs[0].get("holder_items")
-            and rs2[0].get("decision") == "fixer_spent" and not rs2[0].get("holder_items")), (rs[0], rs2[0])
+    rs, la = MD.pilot_holders(TMP, CFG2, {"mods": {PILOT: _s()}}, FACTS, rows, [PILOT], 100, _fx({"a", "b"}))
+    return (rs[0].get("aut") == "fixer" and rs[0].get("fix_item") == BUG_V and not rs[0].get("holder_items")), rs[0]
+
+
+def t_a_spent_game_only_set_goes_to_a_free_game():
+    rs, la = MD.pilot_holders(TMP, CFG2, {"mods": {PILOT: _s()}}, FACTS, _spent_rows(), [], 100, _fx({"b"}))
+    r = rs[0]
+    # a game a live in-game run drives is not free, whatever its bridge reading says
+    facts = {PILOT: dict(FACTS[PILOT]), "Pyrelands": {"stage": "in_game", "live_units": ["rm-pyr"],
+                                                      "ingame_live": ["rm-pyr"], "ingame_games": {"rm-pyr": "a"}}}
+    rs2, _ = MD.pilot_holders(TMP, CFG2, {"mods": {PILOT: _s()}}, facts, _spent_rows(), [], 100, _fx({"a", "b"}))
+    return (PILOT in la and r.get("decision") == "launch" and r.get("holder_game") == "b"
+            and [x["id"] for x in r.get("holder_items") or []] == [LIVE_A, LIVE_B] and "game b" in str(r.get("why"))
+            and not r.get("need") and rs2[0].get("holder_game") == "b"), (r, rs2[0])
+
+
+def t_no_free_game_names_each_game():
+    rs, la = MD.pilot_holders(TMP, CFG2, {"mods": {PILOT: _s()}}, FACTS, _spent_rows(), [], 100, _fx(set()))
+    r = rs[0]
+    text = "%s | %s" % (r.get("why"), r.get("waits_on"))
+    return (PILOT not in la and r.get("decision") == "no_game_free" and not r.get("holder_items")
+            and "game a:" in text and "game b:" in str(r.get("why")) and "game b:" in str(r.get("waits_on"))
+            and not r.get("need") and "no_game_free" in A.WAIT and "the live game" not in text), r
+
+
+def t_the_offline_holder_run_drives_its_named_game():
+    seen = []
+
+    def brief(item, text, model, cap, seat, env=None, **kw):
+        seen.append((item, text, dict(env or {})))
+        return 0, "DETACHED u", "u"
+    saved = (M.ledger_needs, L.resume_plan, MD.ledger_open, MD.ledger_after)
+    M.ledger_needs = lambda root, ids: {}
+    L.resume_plan = lambda root, mod: {"action": "packet", "reconcile": False, "why": "-"}
+    MD.ledger_open = lambda *a, **k: {"brief": a[3] if len(a) > 3 else k.get("brief", ""), "env": {}, "run": "r1",
+                                      "packet": ""}
+    MD.ledger_after = lambda *a, **k: "ledger ok"
+    try:
+        rc, text, unit, item = MD.road_back_holder(TMP, CFG2, {"mods": {PILOT: {}}}, PILOT, "offline_build",
+                                                   list(ALL_LIVE), None, 15.0, 100, {"launch_brief": brief}, game="b")
+    finally:
+        M.ledger_needs, L.resume_plan, MD.ledger_open, MD.ledger_after = saved
+    txt = seen[0][1] if seen else ""
+    return (rc == 0 and unit == "u" and seen and seen[0][2].get("RM_GAME_INSTANCE") == "b" and "## Your game: b" in txt
+            and "The bridge and the game" in txt and "Not yours" not in txt), (rc, text, txt[-900:])
 
 
 def main():
@@ -218,7 +279,8 @@ def main():
              t_spent_version_bug_holds_the_exit, t_unreadable_version_bugs_take_no_exit,
              t_version_bugs_read_by_title_kind_and_needs, t_act_advances_and_lands, t_unlanded_act_puts_files_back,
              t_refused_act_raises_and_writes_nothing, t_execute_books_the_act_once,
-             t_pilot_holder_skips_game_only_set_at_offline_stage]
+             t_pilot_holder_waits_for_the_version_problem_fixer, t_a_spent_game_only_set_goes_to_a_free_game,
+             t_no_free_game_names_each_game, t_the_offline_holder_run_drives_its_named_game]
     fails = []
     for fn in tests:
         try:

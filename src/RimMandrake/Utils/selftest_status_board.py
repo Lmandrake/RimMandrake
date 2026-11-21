@@ -45,16 +45,16 @@ cases = {
     "proof_weak hold": (item("X"), {"status": "held", "hold": {"kind": "proof_weak", "why": "w"}}, "the Conductor"),
     "strikes hold": (item("X"), {"status": "held", "hold": {"kind": "strikes", "why": "w"}}, "the Conductor"),
     "unknown hold": (item("X"), {"status": "held", "hold": {"kind": "zzz", "why": "w"}}, "the Conductor"),
-    "game hold": (item("X"), {"status": "held", "hold": {"kind": "game", "why": "w"}}, "the game"),
+    "game hold": (item("X"), {"status": "held", "hold": {"kind": "game", "why": "w"}}, "a free game"),
     "blocked on item": (item("X", blocked=True, blocked_kind="item", blocked_on="A_ONE"), {}, "another item"),
-    "blocked live": (item("X", blocked=True, blocked_kind="live"), {}, "the game"),
+    "blocked live": (item("X", blocked=True, blocked_kind="live"), {}, "a free game"),
     "blocked judge": (item("X", blocked=True, blocked_kind="judge"), {}, "a judge agent"),
     "blocked time": (item("X", blocked=True, blocked_kind="time", blocked_until="2026-11-09T00:00:00Z"), {}, "time"),
     "blocked external": (item("X", blocked=True, blocked_kind="external", blocked_reason="vendor fix"), {},
                          "something outside the project"),
     "blocked, no reason": (item("X", blocked=True), {}, "the Conductor"),
     "held FAIL": (item("X", held=True), {}, "a fix"),
-    "relentless game": (item("X"), {"status": "game"}, "the game"),
+    "relentless game": (item("X"), {"status": "game"}, "a free game"),
     "relentless retired": (item("X"), {"status": "retired"}, "the Conductor"),
     "relentless blocked": (item("X"), {"status": "blocked"}, "another item"),
 }
@@ -74,7 +74,7 @@ check("plain_reason: snag prefix gone, known id -> title, unknown id -> words, s
                      {"XB_ONE_XY": item("XB_ONE_XY", title="Build the first thing")}) ==
       "wait for 'Build the first thing' and another item; see foo_bar.py")
 check("plain_reason: a bare slug becomes words", M.plain_reason("tmp mount is masked_now") == "tmp mount is masked now")
-check("block_who: a live wait is the game", M.block_who("needs a live quicktest pass") == "the game")
+check("block_who: a live wait is a free game", M.block_who("needs a live quicktest pass") == "a free game")
 check("first_sentence cuts at a word and drops a trailing ;", M.first_sentence("needs a map type; then more") ==
       "needs a map type" and M.first_sentence("x " * 200).endswith("…"))
 flyer = {"status": "held", "hold": {"kind": "game", "why": "game phase: " + M.owner_queue.run_store.FLYER}}

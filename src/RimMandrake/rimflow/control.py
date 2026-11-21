@@ -2662,7 +2662,10 @@ def why(mod, p=None, now=None):
     b = blocked({"family": "detached", "unit": "-", "mod": m}, p, now)
     rd, rd_why = tick_reading()
     tr = tick_rows(rd).get(m) or {}
-    tick = ("tick %s: %s %s" % (rd.get("at_pac", UNM), tr.get("decision") or "-", str(tr.get("why") or "")[:140])
+    # the whole why, never cut: a cut hid which game a wait was for (RIMMANDRAKE_DEFINE_BOTH_GAMES_EVERYWHERE_WAITING_SAID_AGAIN)
+    waits = tr.get("waits_on")
+    tick = ("tick %s: %s %s%s" % (rd.get("at_pac", UNM), tr.get("decision") or "-", str(tr.get("why") or ""),
+                                  " | waits on: %s" % waits if waits else "")
             if rd else "tick reading UNMEASURED (%s)" % rd_why)
     try:
         gh = game_holds(p, now)
