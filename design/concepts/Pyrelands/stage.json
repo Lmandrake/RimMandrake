@@ -804,10 +804,17 @@
     "ref": "run rm-role-designer-1795260155",
     "stage": 5,
     "tokens": 400000
+   },
+   {
+    "at": "2026-11-21T11:33:52Z",
+    "kind": "unmeasured",
+    "ref": "run rm-role-designer-1795260661",
+    "stage": 5,
+    "tokens": 400000
    }
   ],
   "reserve": 60000,
-  "spent": 22307470
+  "spent": 22707470
  },
  "coverage_releases": [
   {
@@ -2521,6 +2528,31 @@
    "stage": 5,
    "what": "void_system",
    "why": "run rm-role-designer-1795260155: the unit ended with no claude result of its own; its rejection spends no retry"
+  },
+  {
+   "at": "2026-11-21T11:31:14Z",
+   "stage": 5,
+   "what": "over_budget",
+   "why": "22307470 of 4000000 spent; run rm-role-designer-1795260661 goes on with 400000 (advisory)"
+  },
+  {
+   "at": "2026-11-21T11:31:14Z",
+   "stage": 5,
+   "what": "open",
+   "why": "run rm-role-designer-1795260661, stage 5, budget 400000"
+  },
+  {
+   "at": "2026-11-21T11:33:52Z",
+   "stage": 5,
+   "void_system": "the unit ended with no claude result of its own",
+   "what": "retry",
+   "why": "run rm-role-designer-1795260661 result rejected: no result.json (a closing message is not a result)"
+  },
+  {
+   "at": "2026-11-21T11:33:52Z",
+   "stage": 5,
+   "what": "void_system",
+   "why": "run rm-role-designer-1795260661: the unit ended with no claude result of its own; its rejection spends no retry"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -3181,6 +3213,16 @@
    "at": "2026-11-21T11:25:28Z",
    "outcome": "rejected",
    "run": "rm-role-designer-1795260155",
+   "stage": 5,
+   "void_system": "the unit ended with no claude result of its own",
+   "why": [
+    "no result.json (a closing message is not a result)"
+   ]
+  },
+  {
+   "at": "2026-11-21T11:33:52Z",
+   "outcome": "rejected",
+   "run": "rm-role-designer-1795260661",
    "stage": 5,
    "void_system": "the unit ended with no claude result of its own",
    "why": [
