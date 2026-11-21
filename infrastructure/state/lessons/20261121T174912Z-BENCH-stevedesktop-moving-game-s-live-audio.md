@@ -1,0 +1,1 @@
+On SteveDesktop, moving the game's live audio stream off the Sonic Studio mixer about 9 s after start still gave one fault-watch wrong result (CPU 14, about 10-14 s after start). A few seconds of the stream on the mixer is enough. Only a stream that never opens on the mixer can give a clean boot (2026-11-21, one boot; record steve_lane_launch_audio.md).

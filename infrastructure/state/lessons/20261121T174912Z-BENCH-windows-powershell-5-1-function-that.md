@@ -1,0 +1,1 @@
+In Windows PowerShell 5.1, a function that outputs nothing gives $null to its caller, and @($null).Count is 1. A watcher that read an empty audio-session list as one blank session acted on a session that did not exist (game_audio_route.ps1, 2026-11-21). Drop nulls before you count: @($x | Where-Object { $_ -ne $null }).

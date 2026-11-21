@@ -1,0 +1,1 @@
+When you rewrite a line that a planted-fault suite (selftest_second_game_mutants.py) targets by exact text, the plant stops applying and reads 'not caught'. After an edit to rw_game.sh or game_instance.py, grep the mutant tables for the old text and move the plant to the new text.
