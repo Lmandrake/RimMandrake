@@ -18,7 +18,9 @@ frozen history alone and is almost never what you want. No other file is the
 source of truth. Item prose (spec, context, decisions) lives separately in
 `infrastructure/state/items/<ID>.md` while the item is open; on close/drop/
 supersede its prose file moves to `infrastructure/state/items/closed/`. IDs
-are `SUBJECT_INTENT_TWIST` (`rimflow namecheck <NAME>`: 3–7 words, ≤ 44 chars; legacy `…_1` ids stay valid),
+are `PROJECT_VERB_INTENTION_TWIST` (`rimflow namecheck <NAME>`: 4–9 words, ≤ 64 chars; legacy `…_1` ids stay valid;
+`file` and `spawn` refuse only an id that exists or is not UPPER_SNAKE, and file any other bad name with a
+`NAME NOTE:` line and a `name_note` field on the event),
 guessable cold — never a number. `rimflow
 next --seat <SEAT>` is the one command you need to start work; everything
 else (`show`, `why`, `render`, `reindex`) derives a view from the same ledger.

@@ -1884,15 +1884,25 @@ def _replaces(args, seat, w):
 def _mint_or_die(iid, w):
     """New items are named PROJECT_VERB_INTENTION_TWIST (design/RimMandrake/ticket_naming_2026-10-10.md).
 
+    Refuses only identity (model.refusing_name_problems: an id that exists, or not UPPER_SNAKE). A name that breaks the
+    grammar files with a printed `NAME NOTE:` and the problems on the event's `name_note` field (owner by card
+    2026-11-20, "Keep grammar, never refuse": "no filing is ever blocked; a bad name is fixed by the tool or filed with
+    a warning"). `namecheck` stays the advisory tool that says REFUSED. -> [grammar problem, ...], [] for a clean name.
     Mint-time only: every id already in the ledger, `_1` included, stays valid forever."""
-    probs = model.mint_problems(iid, set(w.items))
-    if probs:
+    known = set(w.items)
+    refuse = model.refusing_name_problems(iid, known)
+    if refuse:
         die("%s is not a new-style item name:\n  - %s\n\n"
             "New items are PROJECT_VERB_INTENTION_TWIST (owner 2026-11-05): slot 1 a registry Id or Name "
             "(this project: RIMMANDRAKE), slot 2 any verb, 4-9 words, <= 64 chars, then a TRUE aside.\n"
             "  e.g. RIMMANDRAKE_UNSTICK_BRIDGE_HANG_THIRD_TIME_LUCKY\n"
             "Check a name first:  rimflow namecheck <NAME>   (no word bank any more)"
-            % (iid, "\n  - ".join(probs)))
+            % (iid, "\n  - ".join(refuse)))
+    probs = model.mint_problems(iid, known)
+    if probs:
+        print("NAME NOTE: %s breaks the name grammar, filed anyway (owner 2026-11-20: never refuse a filing for its "
+              "name):\n  - %s\n  `rimflow namecheck <NAME>` shows the parse." % (iid, "\n  - ".join(probs)))
+    return probs
 
 
 def cmd_namecheck(args, seat):
@@ -2133,12 +2143,14 @@ def cmd_file(args, seat):
 
 
 def _file(args, seat, w, pf):
-    pf.gate("A1", _mint_or_die, args.id, w)
+    name_note = pf.gate("A1", _mint_or_die, args.id, w)
     args.for_ = _unretire(args.for_)
     _reader_or_die(args.for_)
     ev = {"seat": seat, "event": "file", "id": args.id, "title": args.title,
           "kind": args.kind, "row": args.row, "target": args.target_field,
           "needs": args.needs, "spec": args.spec, "caused_by": args.caused_by}
+    if name_note:
+        ev["name_note"] = list(name_note)
     fw = priority.flowworks_seat(args.id)
     if fw and args.for_ != fw:
         print("FlowWorks is %s's lane (infrastructure/state/flowworks_lane.json): filing %s for %s, not %s. File it and move on."
@@ -3333,7 +3345,7 @@ def cmd_spawn(args, seat):
     args.for_ = _unretire(args.for_)
     _reader_or_die(args.for_)
     _, w = load()
-    _mint_or_die(args.name, w)
+    name_note = _mint_or_die(args.name, w)
     known = (args.from_ in w.items or args.from_ in w.findings
              or model.RUN_RE.match(args.from_ or ""))
     if not known:
@@ -3347,6 +3359,8 @@ def cmd_spawn(args, seat):
         ev["title"] = args.title
     ev["for"] = args.for_
     ev["from"] = args.from_
+    if name_note:
+        ev["name_note"] = list(name_note)
     _emit(ev, w, quiet=True)
     print("%s spawned for %s, state proposed, caused by %s."
           % (args.name, args.for_, args.from_))

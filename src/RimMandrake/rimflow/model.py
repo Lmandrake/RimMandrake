@@ -484,7 +484,7 @@ VERBS = {
     # shadow preflight, its run id (= the line in ~/.local/state/rimmandrake/preflight/runs.jsonl), time and verdict.
     # Informational: nothing replays them. An older reader strips them (_tolerate_unknown_fields).
     "file":      {"who": "any",   "req": ("for", "title", "kind"),
-                  "opt": ("row", "target", "needs", "spec", "from") + PREFLIGHT_FIELDS},
+                  "opt": ("row", "target", "needs", "spec", "from", "name_note") + PREFLIGHT_FIELDS},
     "claim":     {"who": "owner", "req": (), "opt": PREFLIGHT_FIELDS},
     "start":     {"who": "owner", "req": (), "opt": PREFLIGHT_FIELDS},
     # `until` (RIM-1, 2026-10-25): the level of `on` that SATISFIES this block,
@@ -521,7 +521,7 @@ VERBS = {
     # (`spawn --from BLACKSTAR_SPAWNS_VESSELLESS_1 --for BUILD --name …`) and made the
     # documented command impossible. Found 2026-08-20 by the renderer, which tried it.
     "spawn":     {"who": "any",   "req": ("from", "for", "name"),
-                  "opt": ("kind", "needs", "this_deployment", "spec", "title")},
+                  "opt": ("kind", "needs", "this_deployment", "spec", "title", "name_note")},   # name_note: cli._mint_or_die
     # ⚠️ `reason` moved from `req` to `opt` on these three — owner's ruling, 2026-08-22.
     # Nothing reads them: no renderer, no `priority.rank()` branch, no `derive_matrix`
     # case. They were a required justification that only a human ever reads, which is
@@ -824,6 +824,20 @@ def mint_problems(iid, known_ids, strict=None):
                      % (words[0], " (did you mean %s?)" % ", ".join(near[:3]) if near else "",
                         " / ".join(THROWAWAY_SLOTS)))
     return probs
+
+
+def refusing_name_problems(iid, known_ids):
+    """-> [reason, ...] that `file` and `spawn` still REFUSE: an id that already exists, or one that is not
+    UPPER_SNAKE ASCII. Both are identity, not grammar: the ledger cannot hold two items with one id, and other code
+    splits ids on `_`. Every other mint_problems line is a NAME NOTE the door prints and records on the event, never a
+    refusal (owner by card 2026-11-20, RIMMANDRAKE_ENACT_GPT_STREAMLINE_REVIEW_TRUST_NOT_SUSPICION: "Keep grammar, never
+    refuse"; design/specs/2026-11-20-tick-names-never-refused/boundary.md)."""
+    s = str(iid or "")
+    if s in known_ids:
+        return ["%s already exists — give the new item its own name" % s]
+    if not _NEW_SHAPE.match(s):
+        return ["only UPPER_SNAKE ASCII: A-Z, 0-9 and single underscores"]
+    return []
 
 
 def is_item_heading(token, body_lines):

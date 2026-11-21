@@ -369,10 +369,11 @@ def t_a_refused_door_ends_its_stdout_on_a_refused_line():
     and read silence twice on 2026-11-19 (RIMMANDRAKE_FIX_FOUR_SMALL_DEFECTS_FOUND_AT_TODAYS_WAKE): the refusal's words
     go to stderr, so stdout's LAST line must say REFUSED, with the door, the id and the reason's first line."""
     fresh()
-    rc, out, err = run("file", "RIMMANDRAKE_FOO", "--for", "BUILD", "--title", "t")
+    # a lower-case id: still refused (identity, not grammar; a bad-grammar name files with a NAME NOTE since 2026-11-20)
+    rc, out, err = run("file", "rimmandrake_foo", "--for", "BUILD", "--title", "t")
     last = [l for l in out.splitlines() if l.strip()][-1:] or [""]
     assert rc != 0, "a refused name filed (exit 0)"
-    assert last[0].startswith("REFUSED: file RIMMANDRAKE_FOO (exit %d): " % rc) and "not a new-style item name" in last[0], \
+    assert last[0].startswith("REFUSED: file rimmandrake_foo (exit %d): " % rc) and "not a new-style item name" in last[0], \
         "stdout's last line is not the refusal: %r" % last[0]
     ok("file", "CLOSED_THEN_RECLAIMED_LINE_PROBE_FIXTURE", "--for", "BUILD", "--title", "t")
     out = ok("claim", "CLOSED_THEN_RECLAIMED_LINE_PROBE_FIXTURE")

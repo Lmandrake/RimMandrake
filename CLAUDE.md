@@ -235,7 +235,9 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
   `RIMMANDRAKE`. The registry Id stays `rimmaster`.
 - Every older name stays valid forever and is never renamed: `RIMMASTER_*`, `SUBJECT_INTENT_TWIST`, `…_1`, and the
   `B*`/`C*`/`D*`/`W*` names.
-- `rimflow namecheck <NAME>` shows how a name parses. `file` and `spawn` refuse a name that does not parse.
+- `rimflow namecheck <NAME>` shows how a name parses, and says REFUSED for a bad name. It is advisory.
+- `file` and `spawn` refuse only an id that already exists or is not UPPER_SNAKE ASCII. They file every other bad
+  name and print a `NAME NOTE:` line. The event records the problems in its `name_note` field.
 - `rimflow` reads the registry from `$LODESTAR_ROOT/sync/registry.md` (default `~/dev/Lodestar`). If it cannot read
   the registry, the refusal names that path.
 - History: `design/RimMandrake/ticket_naming_2026-10-10.md`.

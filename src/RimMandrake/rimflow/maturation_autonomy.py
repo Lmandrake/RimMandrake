@@ -71,8 +71,20 @@ WAIT_REFUSAL = re.compile(r"is draining \(switching plan notice|%s" % re.escape(
 
 
 def wait_refusal(text):
-    """-> True when a launch's refusal text names a cause that ends by itself (WAIT_REFUSAL)."""
-    return bool(text) and bool(WAIT_REFUSAL.search(str(text)))
+    """-> True when a launch's refusal text names a cause that ends by itself (WAIT_REFUSAL), or rimflow refused the
+    tick's own item name (name_refusal): that is the namer's defect, not a system fault, and the next tick names the item
+    again against a fresh known set (RIMMANDRAKE_FIX_TICK_NAMER_RUN_THREE_NAME_TOO_LONG: three such refusals paused
+    GimmeSomeSlack, 2026-11-20 about 11 PM PST)."""
+    return bool(text) and bool(WAIT_REFUSAL.search(str(text)) or name_refusal(text))
+
+
+NAME_REFUSAL = re.compile(r"spawn refused: .*is not a new-style item name")     # cli._mint_or_die's refusal head
+
+
+def name_refusal(text):
+    """-> True when the text is rimflow's refusal of the item name the tick itself built (file_and_publish's
+    "spawn refused: ... is not a new-style item name")."""
+    return bool(text) and bool(NAME_REFUSAL.search(str(text)))
 
 
 def transient(text):
@@ -1830,35 +1842,30 @@ def advance_checks(row):
 
 
 def item_name(row, known):
-    mod = row["mod"].upper()
-    n = M_word(row.get("visit") if row.get("stage") == "in_game" else row.get("cycle"))
+    """-> the steward item's name for `row` (MD.fit_name: valid for every mod, stage, number and run; an over-long name
+    drops its "?" words, then shortens the mod), or None past MD.RUN_MAX runs."""
+    import maturation_dispatch as MD
+    mod = "@" + row["mod"]
+    n = MD.nword(M_num(row.get("visit") if row.get("stage") == "in_game" else row.get("cycle")))
     kind = row.get("steward_kind")
     what = "VISIT" if row.get("stage") == "in_game" else "CYCLE"
-    base = {"exit_not_met": "RIMMANDRAKE_ROUTE_%s_%s_%s_FAILURES_BACK" % (mod, what, n),
-            "exit_met": "RIMMANDRAKE_CONFIRM_%s_%s_%s_EXIT_MET" % (mod, what, n),
-            "ready": "RIMMANDRAKE_ADVANCE_%s_PAST_%s" % (mod, str(row.get("stage")).upper()),
-            "hand_step": "RIMMANDRAKE_CONFIRM_%s_%s_HAND_STEPS" % (mod, str(row.get("stage")).upper()),
-            "chain": "RIMMANDRAKE_RETAKE_%s_EXAM_AFTER_LOCKED_CHANGE" % mod,
-            "exam_retake": "RIMMANDRAKE_RETAKE_%s_EXAM_FAILING_ITS_GATE" % mod,
-            "designer_locked": "RIMMANDRAKE_ADVANCE_%s_LOCKED_VERSION_TO_PREFLIGHT" % mod,
-            "stage": "RIMMANDRAKE_STEWARD_%s_%s_STAGE" % (mod, str(row.get("stage")).upper()),
-            "builder_stalled": "RIMMANDRAKE_TRIAGE_%s_BUILDER_RESOLVED_NOTHING" % mod,
-            "cycle_unfinished": "RIMMANDRAKE_COMPLETE_%s_CYCLE_%s_RECORD_NO_EXIT" % (mod, n),
-            }.get(kind, "RIMMANDRAKE_STEWARD_%s_HAND_STEP" % mod)
-    while len(base) > 56:
-        base = base.rsplit("_", 1)[0]
-    if base not in known:
-        return base
-    for k in range(2, 20):
-        cand = "%s_RUN_%s" % (base, M_word(k))
-        if cand not in known:
-            return cand
-    return None
+    stage = [w for w in str(row.get("stage")).upper().split("_") if w]
+    words = {"exit_not_met": ["ROUTE", mod, what, n, "?FAILURES", "?BACK"],
+             "exit_met": ["CONFIRM", mod, what, n, "EXIT", "?MET"],
+             "ready": ["ADVANCE", mod, "PAST"] + stage,
+             "hand_step": ["CONFIRM", mod] + stage + ["HAND", "?STEPS"],
+             "chain": ["RETAKE", mod, "EXAM", "AFTER", "?LOCKED", "?CHANGE"],
+             "exam_retake": ["RETAKE", mod, "EXAM", "FAILING", "?ITS", "?GATE"],
+             "designer_locked": ["ADVANCE", mod, "LOCKED", "?VERSION", "?TO", "?PREFLIGHT"],
+             "stage": ["STEWARD", mod] + stage + ["?STAGE"],
+             "builder_stalled": ["TRIAGE", mod, "BUILDER", "?RESOLVED", "?NOTHING"],
+             "cycle_unfinished": ["COMPLETE", mod, "CYCLE", n, "?RECORD", "?NO", "?EXIT"],
+             }.get(kind, ["STEWARD", mod, "HAND", "?STEP"])
+    return MD.fit_name(["RIMMANDRAKE"] + words, known)
 
 
-def M_word(n):
-    import maturation_dispatch as MD
-    return MD.word(n or 0) if isinstance(n, int) else "ONE"
+def M_num(n):
+    return n if isinstance(n, int) and not isinstance(n, bool) else 1
 
 
 def card_brief(item, text, events_dir=None):
@@ -2023,8 +2030,10 @@ def _execute_one(root, cfg, st, row, now, do_file, do_launch, known, do_publish=
         row.update(decision="launched", unit=unit, item=item, why=text)
         known.add(item) if isinstance(known, set) else None
     elif wait:
-        row.update(decision="launch_wait", why="the %s launch waits on a cause that ends by itself (no fault, no try "
-                   "spent); the next tick tries it again: %s" % (row["aut"], text))
+        row.update(decision="launch_wait", why=("the %s filing was refused for the tick's own item name (a namer "
+                   "defect: no fault, no try spent); the next tick names it again: %s" if name_refusal(full) else
+                   "the %s launch waits on a cause that ends by itself (no fault, no try spent); the next tick tries it "
+                   "again: %s") % (row["aut"], text))
     elif transient(full) and tries_left(cfg, row["mod"], tries):
         row.update(decision="launch_retry", why="the %s launch failed on a transient fault (try %d of %d), the next "
                    "tick tries it again: %s" % (row["aut"], tries, tries_most(cfg, row["mod"]), text))

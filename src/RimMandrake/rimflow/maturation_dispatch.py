@@ -271,11 +271,8 @@ def word(n):
 
 
 def item_id(mod, count, known):
-    """-> a rimflow name for a Stage 3 build item: RIMMANDRAKE_AUTOBUILD_<MOD>_<N>_BARS_LEFT, else shorter forms
-    (free_name), the last without the count so a long mod name still has room for _RUN_<N>."""
-    m, n = mod.upper(), word(count)
-    return free_name(["RIMMANDRAKE_AUTOBUILD_%s_%s_BARS_LEFT" % (m, n), "RIMMANDRAKE_AUTOBUILD_%s_%s_LEFT" % (m, n),
-                      "RIMMANDRAKE_AUTOBUILD_%s_BARS_LEFT" % m], known)
+    """-> a rimflow name for a Stage 3 build item: RIMMANDRAKE_AUTOBUILD_<MOD>_<N>_BARS_LEFT (fit_name)."""
+    return fit_name(["RIMMANDRAKE", "AUTOBUILD", "@" + mod, nword(count or 0), "?BARS", "LEFT"], known)
 
 
 def batch_of(bars, size):
@@ -1373,24 +1370,12 @@ def cert_rerun_worker(mod, key, unit, runner=subprocess.run, take=None, now=time
 
 def cert_item_id(mod, test, known, kind="red"):
     """-> a rimflow name for the item owing red decider `test`: RIMMANDRAKE_GREEN_<MOD>_<TEST words>_RED_DECIDER (kind
-    red_seen: RIMMANDRAKE_PROVE_<MOD>_<TEST words>_RED_SEEN_OWED), test words dropped from the end until it fits 9
-    words and 64 chars (rimflow namecheck)."""
-    words = [w for w in re.split(r"[^A-Z0-9]+", str(test).upper()) if w]
+    red_seen: RIMMANDRAKE_PROVE_<MOD>_<TEST words>_RED_SEEN_OWED), test words dropped from the end until it fits
+    (fit_name)."""
+    words = ["?" + w for w in re.split(r"[^A-Z0-9]+", str(test).upper()) if w]
     head, tail = (["RIMMANDRAKE", "GREEN"], ["RED", "DECIDER"]) if kind == "red" else (
         ["RIMMANDRAKE", "PROVE"], ["RED", "SEEN", "OWED"])
-    while True:
-        parts = head + [mod.upper()] + words + tail
-        name = "_".join(parts)
-        if (len(parts) <= 9 and len(name) <= 64) or not words:
-            break
-        words = words[:-1]
-    if name not in known:
-        return name
-    for k in range(2, 20):
-        cand = "%s_AGAIN_%s" % (name.rsplit("_", 1)[0], ONES[k])
-        if cand not in known and len(cand) <= 64 and cand.count("_") <= 8:
-            return cand
-    return None
+    return fit_name(head + ["@" + mod] + words + tail, known)
 
 
 RESUME_WARM_S = 55 * 60     # a resume within the 1 h prompt-cache TTL reads its context warm; measured 2026-11-20, 15 warm
@@ -1927,35 +1912,86 @@ def decide_ingame(cfg, s, f, row, put, now, account, live_total, drivers, bridge
     return True
 
 
-NAME_MAX_LEN, NAME_MAX_WORDS = 64, 9     # rimflow model's name grammar: `file` refuses anything longer
+NAME_MAX_LEN, NAME_MAX_WORDS = 64, 9     # rimflow model's name grammar (`rimflow namecheck`); `file` only warns now
+RUN_MAX = 99    # runs tried per name. Danger: an endless search on a wrong known set. Evidence: boundary page LIMITS
 
 
-def free_name(bases, known):
-    """-> the first of each base, then each base + _RUN_<N>, that is not in `known` and that rimflow `file` takes
-    (64 chars, 9 words at most), or None. A long base is still tried before a short one: its _RUN_<N> was over the
-    cap for every N while the short form had room (RIMMANDRAKE_UNSTICK_DISPATCH_CLONE_PUBLISH_LINT_REFUSES_HEAD: Gimme
-    Some Slack's visit 1 read "no free item name" with its first item filed)."""
-    def fits(n):
-        return len(n) <= NAME_MAX_LEN and len(n.split("_")) <= NAME_MAX_WORDS and n not in known
-    cands = [b for b in bases] + ["%s_RUN_%s" % (b, ONES[k]) for b in bases for k in range(2, 20)]
-    return next((c for c in cands if fits(c)), None)
+def nword(n):
+    """-> the number as ONE name word (TWENTYTHREE, not TWENTY_THREE, which costs two of the nine words)."""
+    return word(n).replace("_", "")
+
+
+def mod_words(mod):
+    return [w for w in re.split(r"[^A-Z0-9]+", str(mod).upper()) if w]
+
+
+def short_mod(mod, room):
+    """-> the mod as one word of at most `room` chars: whole when it fits, else a prefix + 4 hex of its SHA-1, so two
+    long mods with one prefix still differ. None when even the hash has no room."""
+    m = "".join(mod_words(mod))
+    if len(m) <= room:
+        return m
+    if room < 4:
+        return None
+    return m[:room - 4] + hashlib.sha1(str(mod).encode("utf-8")).hexdigest()[:4].upper()
+
+
+def _fit_one(words, run):
+    tail = ["RUN", nword(run)] if run else []
+
+    def render(ws, room=None):
+        out = []
+        for w in ws:
+            if w.startswith("@"):
+                out += mod_words(w[1:]) if room is None else [short_mod(w[1:], room)]
+            else:
+                out.append(w.lstrip("?"))
+        return None if None in out else out + tail
+
+    def fits(ps):
+        return ps is not None and len(ps) <= NAME_MAX_WORDS and len("_".join(ps)) <= NAME_MAX_LEN
+
+    ws = list(words)
+    ps = render(ws)
+    while not fits(ps) and any(w.startswith("?") for w in ws):
+        del ws[max(i for i, w in enumerate(ws) if w.startswith("?"))]
+        ps = render(ws)
+    if fits(ps):
+        return "_".join(ps)
+    mod = next((w[1:] for w in ws if w.startswith("@")), None)
+    if mod is None:
+        return None
+    full = render(ws, room=10 ** 6)
+    room = len("".join(mod_words(mod))) - max(0, len("_".join(full)) - NAME_MAX_LEN)
+    ps = render(ws, room=room)
+    return "_".join(ps) if fits(ps) else None
+
+
+def fit_name(words, known=(), runs=RUN_MAX):
+    """THE tick's naming rule (RIMMANDRAKE_FIX_TICK_NAMER_RUN_THREE_NAME_TOO_LONG;
+    design/specs/2026-11-20-tick-names-never-refused/boundary.md) -> the first of the name, then the name + RUN_<N> for
+    N = 2..runs, that fits rimflow's grammar (9 words, 64 chars) and is not in `known`; None past `runs`.
+    words: the name's words in order. "?W" may be dropped, "@Mod" is the mod; every other word is always kept. A
+    candidate too long drops its "?" words right to left, then shortens the mod (short_mod). The old namers cut the
+    base and added _RUN_<N> unchecked: GimmeSomeSlack's ..._VISIT_ONE_FAILURES_BACK_RUN_THREE was 66 chars and was
+    refused three times (2026-11-20, about 11 PM PST)."""
+    for run in [None] + list(range(2, runs + 1)):
+        n = _fit_one(words, run)
+        if n and n not in known:
+            return n
+    return None
 
 
 def ingame_item_id(mod, visit, known):
-    """-> a rimflow name for the live driver's item: RIMMANDRAKE_DRIVE_<MOD>_IN_GAME_ACCEPTANCE_VISIT_<N>, else the
-    shorter ..._IN_GAME_VISIT_<N>, each with _RUN_<N> once taken. Every name carries its visit word: the RUNNER spawn
-    guard (model.RUNNER_INGAME_NAME) refuses a bare ..._IN_GAME_VISIT (2026-11-20 7:11 PM PST, Pyrelands after a clear)."""
-    m, n = mod.upper(), word(visit or 0)
-    return free_name(["RIMMANDRAKE_DRIVE_%s_IN_GAME_ACCEPTANCE_VISIT_%s" % (m, n),
-                      "RIMMANDRAKE_DRIVE_%s_IN_GAME_VISIT_%s" % (m, n)], known)
+    """-> a rimflow name for the live driver's item: RIMMANDRAKE_DRIVE_<MOD>_IN_GAME_ACCEPTANCE_VISIT_<N> (fit_name).
+    Every name carries its visit word: the RUNNER spawn guard (model.RUNNER_INGAME_NAME) refuses a bare
+    ..._IN_GAME_VISIT (2026-11-20 7:11 PM PST, Pyrelands after a clear)."""
+    return fit_name(["RIMMANDRAKE", "DRIVE", "@" + mod, "IN", "GAME", "?ACCEPTANCE", "VISIT", nword(visit or 0)], known)
 
 
 def blind_item_id(mod, cycle, known):
-    """-> a rimflow name for the judge's item: RIMMANDRAKE_JUDGE_<MOD>_BLIND_CYCLE_<N>_TESTS_FIRST, else the shorter
-    ..._BLIND_CYCLE_<N>, each with _RUN_<N> once taken."""
-    m, n = mod.upper(), word(cycle or 0)
-    return free_name(["RIMMANDRAKE_JUDGE_%s_BLIND_CYCLE_%s_TESTS_FIRST" % (m, n),
-                      "RIMMANDRAKE_JUDGE_%s_BLIND_CYCLE_%s" % (m, n), "RIMMANDRAKE_JUDGE_%s_BLIND_CYCLE" % m], known)
+    """-> a rimflow name for the judge's item: RIMMANDRAKE_JUDGE_<MOD>_BLIND_CYCLE_<N>_TESTS_FIRST (fit_name)."""
+    return fit_name(["RIMMANDRAKE", "JUDGE", "@" + mod, "BLIND", "CYCLE", nword(cycle or 0), "?TESTS", "?FIRST"], known)
 
 
 # ---- the acts -------------------------------------------------------------------------------------------------------
