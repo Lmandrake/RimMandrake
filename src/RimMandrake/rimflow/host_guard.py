@@ -149,7 +149,7 @@ def crossing(path=None, new_run=False):
     as free from the Conductor's own shell, and a hand launch there picked game a (RIMMANDRAKE_SPLIT_SECOND_GAME_MODS_
     FOLDER_SHARED_WITH_FIRST, measured 2026-11-20)."""
     path = path or lock_path()
-    if not path or os.name == "nt":
+    if not path:
         return None
     cur, problem = driver_lock._read(path)
     if problem or not cur or (not new_run and _reentrant(path) is not None):
@@ -157,8 +157,25 @@ def crossing(path=None, new_run=False):
     alive, how = driver_lock._alive(cur)
     if not alive:
         return None
-    return "the driver lock is held by %s for %r (%s); this call would change the game under it" % (
-        cur.get("seat"), cur.get("purpose"), how)
+    if os.name == "nt" and not new_run and _windows_in_holders_clone(cur):
+        return None
+    return "the driver lock is held by %s for %r (%s); this call would change the game under it%s" % (
+        cur.get("seat"), cur.get("purpose"), how, WINDOWS_REPAIR if os.name == "nt" else "")
+
+
+# A Windows python.exe cannot see its WSL ancestors, so "under the holder's take" is proved by the generation it
+# inherited (game_lock.py run exports it through WSLENV) or, for a window that took the game and runs python.exe from
+# its own shell, by running the holder's own clone's code. Until 2026-11-21 crossing() passed every Windows process,
+# and a python.exe command from one run could drive game a while another run held it (measured about 4:10 AM PST;
+# RIMMANDRAKE_READ_GAME_LOCK_FRESH_WINDOWS_PYTHON_SLIPPED_PAST_ONCE).
+WINDOWS_REPAIR = ("; from Windows python, run it under the holder's take: `python3 src/RimMandrake/rimflow/"
+                  "game_lock.py run <a|b> --for \"<what>\" -- python.exe ...`")
+
+
+def _windows_in_holders_clone(cur):
+    """A Windows python running code from the clone that took the lock (driver_lock.TAKER_CLONE of each side)."""
+    theirs = driver_lock.clone_key(cur.get("clone"))
+    return bool(theirs) and theirs == driver_lock.clone_key(driver_lock.TAKER_CLONE)
 
 
 def _measures_owner():

@@ -127,8 +127,73 @@ def my_identity():
     pid = owner_pid()
     if os.name == "nt":
         return {"pid": pid, "start": _win_start(pid), "boot_id": None, "platform": "nt", "host": socket.gethostname()}
-    return {"pid": pid, "start": _proc_start(pid), "boot_id": current_boot_id(), "platform": "wsl",
-            "host": socket.gethostname()}
+    me = {"pid": pid, "start": _proc_start(pid), "boot_id": current_boot_id(), "platform": "wsl",
+          "host": socket.gethostname()}
+    if os.environ.get("WSL_DISTRO_NAME"):   # lets a Windows python.exe find this holder's /proc (_wsl_proc_root)
+        me["distro"] = os.environ["WSL_DISTRO_NAME"]
+    return me
+
+
+USER_HZ = 100                           # /proc/<pid>/stat's clock: fixed at 100 by the Linux x86 ABI (getconf CLK_TCK)
+_UNC = ("\\\\wsl.localhost\\", "\\\\wsl$\\")
+
+
+def _wsl_distro():
+    """-> the WSL distro this code lives in, from its own path when Windows python runs it from a WSL clone
+    (\\\\wsl.localhost\\<distro>\\... or \\\\wsl$\\<distro>\\...), else WSL_DISTRO_NAME, else None."""
+    here = os.path.abspath(__file__).replace("/", "\\")
+    for pre in _UNC:
+        if here.lower().startswith(pre):
+            return here[len(pre):].split("\\", 1)[0] or None
+    return os.environ.get("WSL_DISTRO_NAME") or None
+
+
+def _wsl_proc_root(ident):
+    """-> the directory a Windows python reads a WSL holder's /proc through, or None (cannot inspect it)."""
+    distro = ident.get("distro") or _wsl_distro()
+    return "\\\\wsl.localhost\\%s\\proc" % distro if distro else None
+
+
+def _wsl_alive_from_windows(ident, root):
+    """True / False / None for a WSL holder seen from Windows python, through the distro's /proc share (about 4 ms,
+    measured 2026-11-21). Without it a Windows caller judged a WSL holder by heartbeat alone: a holder that died read
+    held for 45 min, and one holding longer than 45 min read gone, so a python.exe claim could break a live hold
+    (RIMMANDRAKE_READ_GAME_LOCK_FRESH_WINDOWS_PYTHON_SLIPPED_PAST_ONCE). Only a definite answer is True or False: a
+    share that cannot be read is None, and the heartbeat decides."""
+    try:
+        with open(os.path.join(root, "sys", "kernel", "random", "boot_id")) as fh:
+            boot = fh.read().strip()
+    except OSError:
+        return None
+    if ident.get("boot_id") and boot and ident["boot_id"] != boot:
+        return False
+    try:
+        with open(os.path.join(root, str(int(ident.get("pid") or 0)), "stat")) as fh:
+            rest = fh.read().rsplit(")", 1)[1].split()
+        st = round(int(rest[19]) / USER_HZ, 2)
+    except FileNotFoundError:
+        return False
+    except (OSError, IndexError, ValueError):
+        return None
+    return ident.get("start") is not None and abs(st - ident["start"]) < 0.05
+
+
+def clone_key(path):
+    """A clone path in one spelling for both sides, or None for an empty one: \\\\wsl.localhost\\Ubuntu\\home\\x and
+    /home/x -> /home/x; D:\\Luke\\dev and /mnt/d/Luke/dev -> /mnt/d/luke/dev (a Windows drive is case-blind)."""
+    if not path:
+        return None
+    p = str(path).replace("\\", "/")
+    for pre in ("//wsl.localhost/", "//wsl$/"):
+        if p.lower().startswith(pre):
+            rest = p[len(pre):].split("/", 1)
+            p = "/" + (rest[1] if len(rest) > 1 else "")
+            break
+    else:
+        if len(p) >= 2 and p[1] == ":":
+            p = "/mnt/%s%s" % (p[0].lower(), p[2:])
+    p = p.rstrip("/") or "/"
+    return p.lower() if p.lower().startswith("/mnt/") else p
 
 
 def _win_probe(pid):
@@ -177,6 +242,9 @@ def process_alive(ident):
             return False
         st = _proc_start(int(ident.get("pid") or 0))
         return st is not None and ident.get("start") is not None and abs(st - ident["start"]) < 0.05
+    if plat == "wsl":                   # seen from Windows python: read the distro's /proc through its share
+        root = _wsl_proc_root(ident)
+        return _wsl_alive_from_windows(ident, root) if root else None
     if plat == "nt":
         state, st = _win_probe(int(ident.get("pid") or 0))
         if state == "gone":

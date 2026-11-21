@@ -1,7 +1,7 @@
 # BOUNDARY: one record of who drives each game, Design Version 0.1.0
 
-Code: `src/RimMandrake/rimflow/game_lock.py` (all of it), `src/RimMandrake/rimflow/cli.py` (`lock_reading`, `lock_holder`, `_mirror_bridge`, `_who_lines`, `_bridge_who`, `_lock_view`, `_live_other`, the take, idle and release decisions of `bridge` for game a and for `--host`), `src/RimMandrake/rimflow/host_guard.py` (`acquire`), `src/RimMandrake/rimflow/maturation.py` (`bridge_idle`), `src/RimMandrake/rimflow/maturation_dispatch.py` (`lock_says`, the driven-game line of `pick_game`), `src/RimMandrake/Utils/game_instance.py` (`status_lines`, `_driver`), `src/RimMandrake/rimflow/control.py` (`game_lines`, the game lines of `show` and `why`), `src/RimMandrake/Utils/rmpaths.py` (the data-root cache), `src/RimMandrake/rimflow/model.py` (`game_a_lock_path`,
-`game_a_lock_record`, `bridge_gate`), `src/RimMandrake/rimflow/driver_lock.py` (the `clone` and `role_unit` a take
+Code: `src/RimMandrake/rimflow/game_lock.py` (all of it), `src/RimMandrake/rimflow/cli.py` (`lock_reading`, `lock_holder`, `_mirror_bridge`, `_who_lines`, `_bridge_who`, `_lock_view`, `_live_other`, the take, idle and release decisions of `bridge` for game a and for `--host`), `src/RimMandrake/rimflow/host_guard.py` (`acquire`, `crossing`), `src/RimMandrake/rimflow/maturation.py` (`bridge_idle`), `src/RimMandrake/rimflow/maturation_dispatch.py` (`lock_says`, the driven-game line of `pick_game`), `src/RimMandrake/Utils/game_instance.py` (`status_lines`, `_driver`), `src/RimMandrake/rimflow/control.py` (`game_lines`, the game lines of `show` and `why`), `src/RimMandrake/Utils/rmpaths.py` (the data-root cache), `src/RimMandrake/rimflow/model.py` (`game_a_lock_path`,
+`game_a_lock_record`, `bridge_gate`), `src/RimMandrake/rimflow/driver_lock.py` (`process_alive` of a WSL holder seen from Windows, `clone_key`, the `clone` and `role_unit` a take
 records), and the game a readers `testq.bridge_holder`, `bridgetools/build.py` `bridge_holder`,
 `seat_restart.bridge_reading` and `wrapup.World.game_a_hold`.
 Item: `RIMMANDRAKE_BUILD_ONE_GAME_LOCK_CLAIM_FOUR_RECORDS_DISAGREE`, written 2026-11-21. The owner, about 3:35 AM PST:
@@ -48,6 +48,11 @@ Before: `rimflow bridge who` 5.0 s for game a, 1.8 s for game b.
   claims it. Until then the game reads FREE.
 - **a-driver-that-never-claims.** A tool that drives the game without a claim is guarded only where `host_guard.crossing`
   runs (every mutating `rimbridge_client` call).
+- **two-drivers-in-one-clone-from-windows.** A Windows `python.exe` cannot see its WSL ancestors, so one running the
+  holder's own clone's code passes `host_guard.crossing` without a take of its own. From another clone it is refused.
+- **a-wsl-holder-whose-distro-is-unknown-from-windows.** A Windows `python.exe` reads a WSL holder's process through
+  `\\wsl.localhost\<distro>\proc`. With no distro on the lock, in its own code path or in `WSL_DISTRO_NAME`, the
+  heartbeat decides (45 min).
 - **a-machine-with-no-lock-readable.** Another machine's game (SteveDesktop's, from Archmagi) is read through its guard
   over ssh, or its test lane. A clone with no lock path (a test ledger) prints the ledger's history, said to be history.
 
@@ -91,5 +96,12 @@ Before: `rimflow bridge who` 5.0 s for game a, 1.8 s for game b.
 - **the-old-shared-file-is-neither-written-nor-read.** A take or release writes no `BRIDGE_SHARED.json`, and one left
   on disk names no holder anywhere. `model.bridge_gate`, `testq`, `seat_restart` and `wrapup` name game a's holder from
   its lock, with the unit and clone that took it, and read it free the moment its process is gone.
+
+- **a-windows-python-client-obeys-the-lock.** A Windows `python.exe` bridge client (`host_guard.crossing`, which
+  `rimbridge_client` asks before each mutating call) is refused while another clone's live process holds the game. It
+  passes when it inherited the take (`RM_HOST_GUARD_GEN`, which `game_lock.py run` exports through `WSLENV`), when it
+  runs the holder's own clone's code, or when the holder is gone. From Windows, a WSL holder is judged by its process
+  (pid, start time, boot), not by its heartbeat: one that died reads gone at once, and one that holds past 45 min stays
+  held. The test runs the real `python.exe` and reads UNMEASURED where there is none.
 
 Later lists beside this page: `polish.md`, `next_version.md`.
