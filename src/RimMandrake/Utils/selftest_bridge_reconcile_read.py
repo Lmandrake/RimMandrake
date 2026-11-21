@@ -411,8 +411,16 @@ for cid, endpoint, settles in (("e1", "%s:%s" % (C.DEFAULT_HOST, C.DEFAULT_PORT 
         case("a marker sent to %s settles from the journal of %s" % (endpoint, HERE),
              err is None and last_reconciled().get("cid") == cid, (err, last_reconciled()))
     else:
-        case("a marker sent to %s is not settled by the journal of %s: refused, both named" % (endpoint, HERE),
-             err and cid in err and endpoint in err and [r["cid"] for r in C.outstanding_indeterminate()] == [cid], err)
+        # RIMMANDRAKE_SCOPE_BRIDGE_MARKER_TO_ITS_GAME_A_STOPS_B: a call to this game cannot apply another game's call
+        # twice, so another game's marker neither settles here nor refuses here; it stays for its own game.
+        case("a marker sent to %s is not settled by the journal of %s and does not refuse a call to it: kept" % (
+             endpoint, HERE), err is None and [r["cid"] for r in C.outstanding_indeterminate()] == [cid], err)
+clear()
+
+# 12b a marker with no endpoint (written before endpoints were recorded) still refuses: fail closed
+marker("e5", "jawa/prioritized_work", pid=os.getpid(), status="INDETERMINATE")   # a live writer: the journal cannot settle it
+err = Fake([SELF]).attempt()
+case("a marker with no endpoint still refuses a call to %s" % HERE, err and "e5" in err, err)
 clear()
 
 # 13 p1.F6: absent from a journal that has rolled past the call is UNMEASURED, not moot

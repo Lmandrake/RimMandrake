@@ -1422,11 +1422,17 @@ class RimBridge:
                                         % (tool, max(left, 0), DEADLINE_ENV, os.environ.get(DEADLINE_ENV),
                                            DEADLINE_MIN_CALL_S, self.connect_timeout, DEADLINE_MARGIN_S))
                 clamp = room
-            pending = outstanding_indeterminate()
+            # RIMMANDRAKE_SCOPE_BRIDGE_MARKER_TO_ITS_GAME_A_STOPS_B: the danger is a retry applying an unknown call twice
+            # on ITS game. A call to another game cannot do that, so a marker recorded at another endpoint is left for
+            # its own game and refuses nothing here (game a's dead FlowWorks call stopped every game-b mutation,
+            # 2026-11-21). A marker with no endpoint still refuses: fail closed.
+            here = "%s:%s" % (self.host, self.port)
+            ours = lambda recs: [p for p in recs if not p.get("endpoint") or _same_endpoint(p["endpoint"], here)]
+            pending = ours(outstanding_indeterminate())
             if pending:
-                pending = reconcile_auto()[1]
+                pending = ours(reconcile_auto()[1])
             if pending:
-                pending = reconcile_read(self)[1]
+                pending = ours(reconcile_read(self)[1])
             if pending:
                 raise IndeterminateError(
                     "refusing %s: %d earlier mutating call(s) have an UNKNOWN outcome (%s). A retry could apply it "
