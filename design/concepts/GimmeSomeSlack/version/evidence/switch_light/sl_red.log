@@ -1,0 +1,5 @@
+CSC : error CS2001: Source file 'D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\..\Core\SwitchLight.cs' could not be found. [D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\RimMandrakeGimmeSo
+Build FAILED.
+CSC : error CS2001: Source file 'D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\..\Core\SwitchLight.cs' could not be found. [D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\RimMandrakeGimmeSo
+BUILD FAILED (1) in D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\RimMandrakeGimmeSomeSlack.SelfTest.csproj
+selftest build FAILED

@@ -104,6 +104,7 @@ namespace RimMandrake.GimmeSomeSlack
             if (cmd == "doorstrays") return "{\"success\":true,\"cmd\":\"doorstrays\",\"strands\":" + comp.Pieces.Sum(p => p.Strands.Count) + ",\"strays\":" + comp.Pieces.Sum(p => p.Strands.Sum(q => q.DoorStrays)) + "}";
             if (cmd == "slack") return SlackTable(comp);
             if (cmd == "statics") return Statics();
+            if (cmd == "switchlights") return SwitchLights(map);   // sc_switch_light (bar switch_light_reads_state)
             if (cmd.StartsWith("flick:")) return Flick(map, cmd.Substring(6));   // sc_switch_off_ends (his walk of 2026-11-20, row 1)
             if (cmd.StartsWith("ends:")) return EndsNear(comp, cmd.Substring(5));
             if (cmd.StartsWith("endkind:")) return EndKind(comp, cmd.Substring(8));   // RIMMANDRAKE_FIX_SLACK_CORD_ENDS_OWNER_CAUGHT_TWO
@@ -659,6 +660,24 @@ namespace RimMandrake.GimmeSomeSlack
         /// <summary>ends:x,z,r -- every strand with an end within r cells of a point: what it is and where its two ends lie.</summary>
         /// <summary>flick:x,z=on|off -- set the flick switch of the building at a cell (a power switch) as a colonist's flick would leave it,
         /// at once (CompFlickable.SwitchIsOn sends FlickedOn/FlickedOff, so vanilla rebuilds the nets and the cords re-lay).</summary>
+        /// <summary>sc_switch_light: every spawned power switch on the map, its lamp as the rule reads it now (closed, powered, the
+        /// setting), and the lamps drawn last frame by state (SwitchLightDraw). A switch off screen reads but was not drawn.</summary>
+        private static string SwitchLights(Map map)
+        {
+            var rows = new List<string>();
+            foreach (ThingDef d in SwitchLightDraw.SwitchDefs())
+                foreach (Thing t in map.listerThings.ThingsOfDef(d))
+                {
+                    if (!(t is Building_PowerSwitch sw) || !sw.Spawned) continue;
+                    SwitchLamp lamp = SwitchLightDraw.LampOf(sw, GimmeSomeSlackSettings.switchLight, out bool closed, out bool powered);
+                    rows.Add("{\"pos\":[" + sw.Position.x + "," + sw.Position.z + "],\"lamp\":" + J.S(lamp.ToString()) + ",\"closed\":" + J.B(closed) +
+                             ",\"powered\":" + J.B(powered) + "}");
+                }
+            return "{\"success\":true,\"cmd\":\"switchlights\",\"setting\":" + J.B(GimmeSomeSlackSettings.switchLight) + ",\"switches\":[" +
+                   string.Join(",", rows) + "],\"drawnGreen\":" + SwitchLightDraw.LastGreen + ",\"drawnRed\":" + SwitchLightDraw.LastRed +
+                   ",\"drawnDark\":" + SwitchLightDraw.LastDark + "}";
+        }
+
         private static string Flick(Map map, string args)
         {
             var inv = CultureInfo.InvariantCulture;

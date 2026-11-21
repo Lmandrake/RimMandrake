@@ -58,6 +58,25 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             int slc = Array.IndexOf(args, "--slope-census");
             if (slc >= 0) return SceneDump.Census(args[slc + 1], slc + 2 < args.Length && int.TryParse(args[slc + 2], out int scn) ? scn : 120);
             if (args.Contains("--live-sweep-only")) { LiveEndSweepChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (live end sweep only)"); return fails == 0 ? 0 : 1; }
+            int sld = Array.IndexOf(args, "--switchlamp-dump");   // the lamp's pixels for tools/switch_lamp_mock.py: <dir>/lens_<state>.rgba, halo_<state>.rgba
+            if (sld >= 0)
+            {
+                foreach (SwitchLamp l in new[] { SwitchLamp.Dark, SwitchLamp.Green, SwitchLamp.Red })
+                {
+                    File.WriteAllBytes(Path.Combine(args[sld + 1], "lens_" + l + ".rgba"), SwitchLampArt.Lens(l));
+                    byte[] h = SwitchLampArt.Halo(l);
+                    if (h != null) File.WriteAllBytes(Path.Combine(args[sld + 1], "halo_" + l + ".rgba"), h);
+                }
+                File.WriteAllText(Path.Combine(args[sld + 1], "lamp.json"), "{\"px\":" + SwitchLampArt.Px + ",\"offX\":" + SwitchLampArt.OffX.ToString(System.Globalization.CultureInfo.InvariantCulture) +
+                    ",\"offZ\":" + SwitchLampArt.OffZ.ToString(System.Globalization.CultureInfo.InvariantCulture) + ",\"lens\":" + SwitchLampArt.LensCells.ToString(System.Globalization.CultureInfo.InvariantCulture) +
+                    ",\"halo\":" + SwitchLampArt.HaloCells.ToString(System.Globalization.CultureInfo.InvariantCulture) +
+                    ",\"ledX\":" + SwitchLampArt.LedX.ToString(System.Globalization.CultureInfo.InvariantCulture) + ",\"ledZ\":" + SwitchLampArt.LedZ.ToString(System.Globalization.CultureInfo.InvariantCulture) +
+                    ",\"ledCap\":" + SwitchLampArt.LedCapCells.ToString(System.Globalization.CultureInfo.InvariantCulture) + "}");
+                Console.WriteLine("switch lamp pixels written to " + args[sld + 1]);
+                return 0;
+            }
+            if (args.Contains("--switchlight-only")) { SwitchLightChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (switch light only)"); return fails == 0 ? 0 : 1; }
+            if (args.Contains("--switchlight-plant")) { SwitchLightChecks.Plant(); Console.WriteLine($"{checks - fails}/{checks} checks passed (switch light plant)"); return fails == 0 ? 0 : 1; }
             if (args.Contains("--switchoff-only")) { SwitchOffChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (switch off only)"); return fails == 0 ? 0 : 1; }
             if (args.Contains("--joins-only")) { StubJoinChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (stub joins only)"); return fails == 0 ? 0 : 1; }
             if (args.Contains("--endkind-only")) { CordEndKindChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (end kind + slope only)"); return fails == 0 ? 0 : 1; }
@@ -141,6 +160,7 @@ TexPathChecks.Run();           // RIMMANDRAKE_TRACE_GSS_ILLEGAL_PATH_ONLY_ON_FIR
             CordShapeChecks.Run();         // cords_never_repeat instrument: CordShapeChecks.cs + ../Core/CordShape.cs
             SittingChecks.Run();           // owner live sitting 2026-11-08 12:20 PM (Modern hooks, heap density, pole foot, pole-top kinks): SittingChecks.cs
             SwitchOffChecks.Run();         // T_SWITCH_OFF_NODE_OFFLINE (his walk 2026-11-20 row 1): an off switch stays a node: SwitchOffChecks.cs
+            SwitchLightChecks.Run();       // T_SWITCH_LIGHT_OFFLINE (owner 2026-11-20): the switch lamp green / red / dark: SwitchLightChecks.cs
             StubJoinChecks.Run();          // RIMMANDRAKE_BIND_SLACK_STUB_ANGLE_RULE_FOURTH_ASK (owner 2026-11-16): position AND slope at every stub
             LiveEndSweepChecks.Run();      // RIMMANDRAKE_INVENT_SLACK_LIVE_END_GREEN_BY_THIN_MARGIN: every live cut end the game can lay, by the three bars, with margin
             CordEndKindChecks.Run(scenes); // RIMMANDRAKE_FIX_SLACK_CORD_ENDS_OWNER_CAUGHT_TWO (owner look 2026-11-16): CordEndKindChecks.cs

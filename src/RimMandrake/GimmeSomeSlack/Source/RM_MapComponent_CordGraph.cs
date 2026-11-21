@@ -975,6 +975,7 @@ namespace RimMandrake.GimmeSomeSlack
                 if (!motionErrorLogged) { motionErrorLogged = true; Log.Error("[GimmeSomeSlack] per-frame cord motion failed, skipping it: " + ex); }
             }
             DrawLiveGlow();     // after the motion: the glow sits on this frame's tips, not the last
+            SwitchLightDraw.Draw(map);   // the switch lamps (bar switch_light_reads_state): own setting, not the master
             if (!GimmeSomeSlackSettings.enabled || !GimmeSomeSlackSettings.debugDraw || Find.CurrentMap != map) return;
             CordGraph g = builder.Graph;
             if (g == null) return;

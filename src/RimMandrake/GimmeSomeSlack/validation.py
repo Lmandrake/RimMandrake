@@ -119,7 +119,7 @@ SHIPPED = {"enabled": "true", "style": "CordStyle.StarWarsJawa", "slack": "1f", 
            "sparkIntensity": "1f", "hideHookupWires": "true", "debugDraw": "false",
            # phase 1b lane A
            "tangleMin": "9", "whip": "true", "sparksOnlyOverlay": "false",
-           "maxSparkingEnds": "24", "highlight": "true", "lod": "true",
+           "maxSparkingEnds": "24", "highlight": "true", "switchLight": "true", "lod": "true",
            # lane C art styles
            "extCordColorMode": "ExtCordColorMode.Mixed", "extCordColor": "0"}
 

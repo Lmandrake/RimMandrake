@@ -3,7 +3,7 @@
 """Offline selftest of the Gimme Some Slack core (graph reduction, planner, slack laying) against the
 Python oracle (src/RimMandrake/Utils/mockups/messy_conduit/).
 
-    python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py [--probe] [--no-export] [--dump <dir on /mnt/...>] [--geometry | --geometry-only] [--no-slacken] [--slice-repeat [--old-form]] [--lay-profile]
+    python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py [--probe] [--no-export] [--dump <dir on /mnt/...>] [--geometry | --geometry-only] [--no-slacken] [--slice-repeat [--old-form]] [--lay-profile] [--switchlight-only | --switchlight-plant]
 
 1. Re-exports the oracle's scenes and answers (export_oracle.py) unless --no-export.
 2. Builds src/RimMandrake/GimmeSomeSlack/Source/SelfTest/ (net8.0, compiles ../Core/*.cs, the
@@ -107,7 +107,7 @@ def main(argv):
             print("selftest build FAILED")
             return rc
         dll = winbuild.staged_win(rec, SELFTEST) + "\\bin\\Release\\net8.0\\RimMandrakeGimmeSomeSlack.SelfTest.dll"
-        args = [winbuild.dotnet_exe(), dll] + (["--probe"] if "--probe" in argv else []) + (["--perdig-only"] if "--perdig-only" in argv else []) + (["--slice-repeat"] if "--slice-repeat" in argv else []) + (["--old-form"] if "--old-form" in argv else []) + (["--lay-profile"] if "--lay-profile" in argv else []) + (["--shape-diag"] if "--shape-diag" in argv else []) + (["--endkind-only"] if "--endkind-only" in argv else []) + (["--joins-only"] if "--joins-only" in argv else []) + (["--switchoff-only"] if "--switchoff-only" in argv else []) + (["--live-sweep-only"] if "--live-sweep-only" in argv else []) + (["--geometry"] if "--geometry" in argv else []) + (["--geometry-only"] if "--geometry-only" in argv else []) + (["--no-slacken"] if "--no-slacken" in argv else []) + [f for f in ("--probe-read-only", "--probe-read-old") if f in argv]
+        args = [winbuild.dotnet_exe(), dll] + (["--probe"] if "--probe" in argv else []) + (["--perdig-only"] if "--perdig-only" in argv else []) + (["--slice-repeat"] if "--slice-repeat" in argv else []) + (["--old-form"] if "--old-form" in argv else []) + (["--lay-profile"] if "--lay-profile" in argv else []) + (["--shape-diag"] if "--shape-diag" in argv else []) + (["--endkind-only"] if "--endkind-only" in argv else []) + (["--joins-only"] if "--joins-only" in argv else []) + (["--switchoff-only"] if "--switchoff-only" in argv else []) + [f for f in ("--switchlight-only", "--switchlight-plant") if f in argv] + (["--live-sweep-only"] if "--live-sweep-only" in argv else []) + (["--geometry"] if "--geometry" in argv else []) + (["--geometry-only"] if "--geometry-only" in argv else []) + (["--no-slacken"] if "--no-slacken" in argv else []) + [f for f in ("--probe-read-only", "--probe-read-old") if f in argv]
         for i, a in enumerate(argv):   # approach B fuzz knobs (GssFuzz.cs): --fuzz-scale F, --fuzz-only NAME, --fuzz-seed N
             if a.startswith("--fuzz") and i + 1 < len(argv):
                 args += [a, argv[i + 1]]
@@ -129,6 +129,9 @@ def main(argv):
         if "--lab" in argv:   # LabWorld.cs: --lab WORLD.json OUT.json, the shape lab on a world the live probe dumped
             i = argv.index("--lab")
             args += ["--lab", winbuild.win(os.path.abspath(argv[i + 1])), winbuild.win(os.path.abspath(argv[i + 2]))]
+        if "--switchlamp-dump" in argv:   # SwitchLampArt pixels for GimmeSomeSlack/tools/switch_lamp_mock.py
+            i = argv.index("--switchlamp-dump")
+            args += ["--switchlamp-dump", winbuild.win(os.path.abspath(argv[i + 1]))]
         if "--dump" in argv:
             args += ["--dump", winbuild.win(os.path.abspath(argv[argv.index("--dump") + 1]))]
         return winbuild.run_interop(args, cwd=selftest_cwd(), timeout=None)

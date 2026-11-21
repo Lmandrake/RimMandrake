@@ -1,0 +1,8 @@
+planted [the base before this item: no lamp, so every switch reads dark]: CAUGHT (361 checks red)
+planted [colours swapped (real-switchgear red = closed)]: CAUGHT (361 checks red)
+planted [open reads only its own net (no sides): open is always dark]: CAUGHT (182 checks red)
+planted [reads the north side only]: CAUGHT (115 checks red)
+planted [the setting is ignored]: CAUGHT (353 checks red)
+planted [hasPowerSource read for HasActivePowerSource (an empty battery lights)]: CAUGHT (133 checks red)
+planted [unpowered open shows red]: CAUGHT (85 checks red)
+8/8 checks passed (switch light plant)

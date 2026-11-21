@@ -71,6 +71,9 @@ namespace RimMandrake.GimmeSomeSlack
         public static int maxSparkingEnds = 24;
         /// <summary>Selecting anything on a power net highlights every cord of that net.</summary>
         public static bool highlight = true;
+        /// <summary>RIMMANDRAKE_LIGHT_SLACK_SWITCH_GREEN_RED_DARK_WHEN_UNPOWERED: a lamp on each power switch, green closed and powered, red
+        /// open and powered, dark unpowered (SwitchLightDraw).</summary>
+        public static bool switchLight = true;
         /// <summary>Far-zoom simplification: one thin strand per cord, no decals.</summary>
         public static bool lod = true;
         // ---- art styles (lane C, 2026-10-02)
@@ -110,6 +113,7 @@ namespace RimMandrake.GimmeSomeSlack
             Scribe_Values.Look(ref sparksOnlyOverlay, "sparksOnlyOverlay", false);
             Scribe_Values.Look(ref maxSparkingEnds, "maxSparkingEnds", 24);
             Scribe_Values.Look(ref highlight, "highlight", true);
+            Scribe_Values.Look(ref switchLight, "switchLight", true);
             Scribe_Values.Look(ref lod, "lod", true);
             Scribe_Values.Look(ref extCordColorMode, "extCordColorMode", ExtCordColorMode.Mixed);
             Scribe_Values.Look(ref extCordColor, "extCordColor", 0);
@@ -139,6 +143,7 @@ namespace RimMandrake.GimmeSomeSlack
             sparksOnlyOverlay = false;
             maxSparkingEnds = 24;
             highlight = true;
+            switchLight = true;
             lod = true;
             extCordColorMode = ExtCordColorMode.Mixed;
             extCordColor = 0;
@@ -263,7 +268,7 @@ namespace RimMandrake.GimmeSomeSlack
                 list.GapLine();
             }
 
-            if (Group(list, "Breaks and sparks", RimMandrake.Shared.SettingScope.Now, new[] { "breakReadout", "sparkIntensity", "whip", "sparksOnlyOverlay", "maxSparkingEnds", "highlight" }))
+            if (Group(list, "Breaks and sparks", RimMandrake.Shared.SettingScope.Now, new[] { "breakReadout", "sparkIntensity", "whip", "sparksOnlyOverlay", "maxSparkingEnds", "highlight", "switchLight" }))
             {
             list.Label("These also govern fallen overhead wires (with their own sparking-ends budget of the same size); spark intensity and the overlay-only option also govern power-tap clamp sparks.");
             list.CheckboxLabeled("Break readout: live ends spark, dead ends lie limp", ref breakReadout);
@@ -280,6 +285,8 @@ namespace RimMandrake.GimmeSomeSlack
             {
             list.CheckboxLabeled("Selecting a powered building highlights every cord of its net", ref highlight);
             }
+            list.CheckboxLabeled("Power switch lamp: green = closed, red = open, dark = no power on either side", ref switchLight,
+                "A small light on every power switch. Green: the switch is closed and power flows. Red: the switch is open and cuts power that is there. Dark: no side of the switch has power.");
                 list.GapLine();
             }
 
@@ -327,7 +334,7 @@ namespace RimMandrake.GimmeSomeSlack
                      "excludedConduits", "lod", "debugDraw")
             .Declare("tangles", "tangleMin")          // BuildOptions: TangleMin is used only while Tangles (CordBuilder)
             .Declare("breakReadout", "whip")           // whip = whip && breakReadout (CordGraph, MessyCords layer)
-            .Independent("style", "breakReadout", "sparkIntensity", "sparksOnlyOverlay", "maxSparkingEnds")
+            .Independent("style", "breakReadout", "sparkIntensity", "sparksOnlyOverlay", "maxSparkingEnds", "switchLight")
             .Name("enabled", "Messy cords (master switch)").Name("tangles", "Dense conduit fields become one tangle")
             .Name("breakReadout", "Break readout");
 

@@ -1,0 +1,27 @@
+{
+  "verdict": "REFUSE",
+  "judge_model": "claude-opus-5-5",
+  "subject": "GimmeSomeSlack power-switch indicator lamp (SwitchLampArt.cs, OffX=-0.082 OffZ=0.10, LensCells=0.19)",
+  "evidence_files": [
+    "/mnt/d/ClaudeWork/rimmandrake/scratch/switch_light/mock_v1.png",
+    "/mnt/d/ClaudeWork/rimmandrake/scratch/switch_light/judge_crops/ref_vs_lamp_112.png"
+  ],
+  "questions": [
+    {"q": 1, "result": "PASS", "evidence": "mock_v1 36 and 56 px rows: on all four looks the green lens, red lens and smoked dark lens are distinct dots at a glance; green and red each carry a soft halo, and dark carries none."},
+    {"q": 2, "result": "PASS", "evidence": "The dark lens is smoked grey-green glass with a bezel and glint and no halo. It reads as an unlit bulb on every look, not as a third colour or a missing-texture pink/blank."},
+    {"q": 3, "result": "REFUSE", "evidence": "ref_vs_lamp_112 row 2: the Industrial open art (PowerSwitch_Off.png) has its yellow lever handle angled up-left to about texture px (43,52). The lens is centred on the baked LED at (53.5,51), radius about 12 px, and hides that handle in both open cells (red and dark). Only a sliver of yellow arc is left, so the open art no longer shows a lever. Scrapper and Futuristic overlap the pivot or cap only, and their levers still read. Modern is clear."},
+    {"q": 4, "result": "PASS", "evidence": "The round lens has a soft radial additive halo, with no square or clipped edges at any zoom. It has no artefacts, and a bezelled indicator suits all four looks without clashing."}
+  ],
+  "refusals": [
+    {
+      "flaw": "Q3 (Conductor brief, carrying the owner's 'help with the user awareness part'): the lamp must sit on the body 'without covering the lever/handle so the open/closed art can no longer be read'. On the Industrial look, open state, the lens covers the up-left lever handle. In the unpowered (dark) state the lamp says nothing about open or closed, so the covered lever was the only cue.",
+      "path_to_pass": "Keep the Industrial open lever handle visible. One way: give the Industrial look its own lamp offset clear of the handle (for example the lower-left body corner, about texture px 45-50, 78-82, which no lever art uses in either state), or shrink the Industrial lens to about the baked LED's size. Then re-render only the Industrial open cells (red and dark) at 56 and 112 px for the repair check. A per-look offset is a suggestion, not a requirement (standing_rulings Rule 3)."
+    }
+  ],
+  "polish": [
+    "Lens size (0.19 cell) reads a little large and UI-like on the small Scrapper and Industrial bodies at 112 px; about 0.15 would sit more quietly. Taste only.",
+    "Futuristic closed art carries its own cyan glow, which still shows in the closed-unpowered cell beside the dark lens. That is base art, not the lamp, and it may slightly dilute 'no glow = unpowered' on that look.",
+    "Modern's red lever sits beside the red lamp in the open state, so there are two reds on one body. It is still readable.",
+    "The Scrapper green halo picks up a yellowish cast over the copper bar at 112 px. This is minor."
+  ]
+}

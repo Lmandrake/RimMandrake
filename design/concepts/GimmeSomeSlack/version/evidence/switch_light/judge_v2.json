@@ -1,0 +1,23 @@
+{
+  "verdict": "PASS",
+  "judge_model": "claude-opus-5-5",
+  "look": "repair check (second and last look), standing_rulings Rule 2",
+  "subject": "GimmeSomeSlack power-switch indicator lamp v2 (offset -0.125,-0.13; lens 0.16; halo 0.52; Industrial closed LED cap 0.06)",
+  "evidence_files": [
+    "/mnt/d/ClaudeWork/rimmandrake/scratch/switch_light/mock_v2.png",
+    "/mnt/d/ClaudeWork/rimmandrake/scratch/switch_light/judge_crops/v2_ref_vs_lamp_112.png"
+  ],
+  "questions": [
+    {"q": 1, "result": "PASS", "evidence": "mock_v2 36 and 56 px rows: green and red lenses with halos and the unlit dark lens still read apart on all four looks. The smaller lens is still clear at 36 px."},
+    {"q": 2, "result": "PASS", "evidence": "The dark lens is still smoked glass with a bezel and glint and no halo. It reads as an unlit bulb, not a colour or a missing texture."},
+    {"q": 3, "result": "PASS", "evidence": "v2_ref_vs_lamp_112: in every look and every state the lamp sits on the lower-left of the body. The Industrial open handle (up-left) is fully visible, as are the Scrapper open diagonal lever and closed bar, the Modern red toggle, and the Futuristic central lever and cyan bar. Each lever matches its reference art."},
+    {"q": 4, "result": "PASS", "evidence": "Round lens with a soft round halo. No square edges, clipping or new artefacts at 36, 56 or 112 px."},
+    {"q": "c", "result": "PASS", "evidence": "Industrial closed cells: the baked green LED is now a small dark round dot in the same place. It reads as an unlit pilot LED on the panel, not as an artefact, and it no longer glows beside a dark lamp."}
+  ],
+  "refusals": [],
+  "polish": [
+    "At 36 px the dark lens almost disappears on the dark Scrapper, Industrial and Futuristic bodies. That fits 'no glow', but a player cannot see that a lamp exists there. Taste only.",
+    "Futuristic closed art keeps its own cyan glow in the closed-unpowered state, beside the dark lamp. This is base art, carried from v1.",
+    "Modern open state still has the red toggle beside the red lamp. Still readable, carried from v1."
+  ]
+}
