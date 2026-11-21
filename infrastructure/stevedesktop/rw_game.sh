@@ -4,7 +4,7 @@
 #
 #   rw_game.sh status         running? pid, session, bridge port from Player.log
 #   rw_game.sh up [--wait]    start the game unless running; --wait blocks until the bridge
-#                             announces its port in a Player.log written after the launch (max 600 s)
+#                             announces its port in a Player.log written after the launch (max RW_UP_WAIT_S, 1200 s)
 #   rw_game.sh down           graceful taskkill, then /F after 90 s; each stop's refusal or failure is named
 #   rw_game.sh init           renew the test companion profile; seed Prefs.xml if it lacks
 #                             runInBackground True (game must be stopped for that half)
@@ -148,14 +148,17 @@ up() {
     echo "started pid $pid"
     [ "$armed" -eq 0 ] && audio_report
     [ "${1:-}" = --wait ] || return 0
-    while [ $(( $(date +%s) - t0 )) -lt 600 ]; do
+    # RW_UP_WAIT_S guards a load that never reaches the bridge (a wedged load, e.g. J20261121T044455Z) so the job ends
+    # and the lane moves on. Measured 2026-11-21: DONE cold loads took 473-574 s; one at the old 600 s cap timed out with
+    # the game still loading on a clean machine (J20261121T205538Z-b4095c). The default is about twice the longest.
+    while [ $(( $(date +%s) - t0 )) -lt "${RW_UP_WAIT_S:-1200}" ]; do
         if [ -f "$LOG" ] && [ "$(stat -c %Y "$LOG")" -ge "$t0" ] && port_in_log >/dev/null; then
             echo "bridge up on port $(port_in_log) after $(( $(date +%s) - t0 )) s"; return 0
         fi
         [ -n "$(pid_of)" ] || { echo "FAILED: game exited during load; tail of Player.log:"; tail -n 15 "$LOG"; return 1; }
         sleep 5
     done
-    echo "TIMEOUT: no bridge port in a fresh Player.log after 600 s"; return 1
+    echo "TIMEOUT: no bridge port in a fresh Player.log after ${RW_UP_WAIT_S:-1200} s (RW_UP_WAIT_S)"; return 1
 }
 
 # A fresh or reset save-data folder lacks two files that modcheck run refuses without

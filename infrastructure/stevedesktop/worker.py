@@ -549,6 +549,9 @@ def cmd_start(retry):
     return out({"attempt": aid, "state": "started", "runner_sha": head, "unit": unit})
 
 
+# `init && up --wait`: rw_game.sh waits up to RW_UP_WAIT_S (1200 s) for the bridge, after init and Steam. This outer limit
+# guards a load command that hangs past its own wait (selftest_rw_game_up_wait.py keeps the two in order).
+LOAD_TIMEOUT_S = 1500
 PF = None   # the preflight module, once preflight_job has imported it
 
 
@@ -971,7 +974,7 @@ class Attempt:
     def load(self):
         cmd = os.environ.get("TESTQ_CMD_LOAD") or "%s init && %s up --wait" % (GAME, GAME)
         since = S.utcnow()
-        rc, tail = self.sh(cmd, timeout=900)
+        rc, tail = self.sh(cmd, timeout=LOAD_TIMEOUT_S)
         if rc != 0 and refused_line(tail):         # e.g. archmagi: no game running, and the lane never launches one
             return self.fail("REFUSED", "LOAD", refused_line(tail))
         if rc != 0:
@@ -1008,7 +1011,7 @@ class Attempt:
                     return self.fail("REFUSED" if refused_line(tail) else "INVALID", "LOAD",
                                      "%s; game down failed: %s" % (why, refused_line(tail) or tail))
                 since = S.utcnow()
-                rc, tail = self.sh(cmd, timeout=900)
+                rc, tail = self.sh(cmd, timeout=LOAD_TIMEOUT_S)
                 if rc != 0:
                     return self.fail("INVALID", "LOAD", "game reload failed, %s: %s" % (why, tail))
                 m = last_pid_line(r"started pid (\d+)", tail)
@@ -1043,7 +1046,7 @@ class Attempt:
                                      "stale bridge marker(s) %s on a kept game; game down failed: %s"
                                      % (" ".join(stale), refused_line(tail) or tail))
                 since = S.utcnow()
-                rc, tail = self.sh(cmd, timeout=900)
+                rc, tail = self.sh(cmd, timeout=LOAD_TIMEOUT_S)
                 if rc != 0:
                     return self.fail("INVALID", "LOAD", "game reload after the marker restart failed: " + tail)
                 m = last_pid_line(r"started pid (\d+)", tail)
