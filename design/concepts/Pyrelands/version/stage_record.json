@@ -2,10 +2,10 @@
   "schema": 1,
   "mod": "Pyrelands",
   "version": "0.1.0",
-  "stage": "offline_build",
-  "stage_label": "Offline build (Stage 3)",
-  "since": "2026-11-21T03:04:25-08:00",
-  "since_from": "advance by BENCH",
+  "stage": "in_game",
+  "stage_label": "In-game acceptance (Stage 6)",
+  "since": "2026-11-21T04:28:14-08:00",
+  "since_from": "advance by DISPATCH",
   "at_door": false,
   "seeded": {
     "at": "2026-11-14T16:02:19-08:00",
@@ -160,6 +160,24 @@
       },
       "checks_passed": [
         "order",
+        "by",
+        "version",
+        "hold"
+      ]
+    },
+    {
+      "from": "offline_build",
+      "to": "in_game",
+      "at": "2026-11-21T04:28:14-08:00",
+      "by": "DISPATCH",
+      "why": "every open road-back item (RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN, RIMMANDRAKE_FIX_PYRE_ASHWALLOW_SHADE_DASH_BEATS_FIRE_DIVE, RIMMANDRAKE_FRAME_PYRE_CHAIN_SHOTS_ON_THEIR_SUBJECT, RIMMANDRAKE_RENEW_SAFE_ADVANCE_AUTO_ARM_HOURLY, RIMMANDRAKE_REORDER_PYRE_BURN_WALK_BEFORE_ITS_FRONT_DIES, RIMMANDRAKE_SHIELD_PYRE_WALK_FROM_FULL_LIST_EVENTS, RIMMANDRAKE_STAGE_PYRE_FLAMEFANG_BITES_LAND_ONCE_NOT_MAUL, RIMMANDRAKE_TRACE_PYRE_ASHFALL_FIRE_IN_FIRST_LIGHTNING_WINDOW, RIMMANDRAKE_TRACE_PYRE_FIREHAWK_TURNS_MANHUNTER_IN_BURN_WALK, RIMMANDRAKE_TRACE_PYRE_SITE_WITH_NO_STANDING_WATER_LEFT) is a fault only the game can show, and the version's offline Problems are closed: the Maturation tick takes the game-only exit back to Stage 6 (RIMMANDRAKE_UNPARK_FLOWWORKS_STUCK_AT_OFFLINE_STAGE_EIGHT_HOURS)",
+      "unit": null,
+      "confirmed": {
+        "game_only": "RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN, RIMMANDRAKE_FIX_PYRE_ASHWALLOW_SHADE_DASH_BEATS_FIRE_DIVE, RIMMANDRAKE_FRAME_PYRE_CHAIN_SHOTS_ON_THEIR_SUBJECT, RIMMANDRAKE_RENEW_SAFE_ADVANCE_AUTO_ARM_HOURLY, RIMMANDRAKE_REORDER_PYRE_BURN_WALK_BEFORE_ITS_FRONT_DIES, RIMMANDRAKE_SHIELD_PYRE_WALK_FROM_FULL_LIST_EVENTS, RIMMANDRAKE_STAGE_PYRE_FLAMEFANG_BITES_LAND_ONCE_NOT_MAUL, RIMMANDRAKE_TRACE_PYRE_ASHFALL_FIRE_IN_FIRST_LIGHTNING_WINDOW, RIMMANDRAKE_TRACE_PYRE_FIREHAWK_TURNS_MANHUNTER_IN_BURN_WALK, RIMMANDRAKE_TRACE_PYRE_SITE_WITH_NO_STANDING_WATER_LEFT"
+      },
+      "checks_passed": [
+        "order",
+        "game_only",
         "by",
         "version",
         "hold"
