@@ -1,0 +1,31 @@
+RIMMANDRAKE_READ_FLOWWORKS_PAWN_HEIGHT_CONTROL_SINK_NONE guard, 2026-11-20 (holder sub-run 5)
+cause: calm site Plant_TreeDrago at (64,57) on the control lane (probe get_cells_info); pawn stops at (64,56), read off-cell -> None
+--- selftest on the fix (planted fault keeptree -> UNMEASURED; healthy PASS)
+ok    every staging call keeps its tool contract (one colonist per spawn; ProofSwim x,z) 
+ok    healthy fake (sink by depth to the cap, flat past it, same both ways; swims and tires at 2 m): every row PASS 
+ok    a sink that never applies (17 zeros): the offset row UNMEASURED, never PASS; the control cannot rule anything out 
+ok    a sink that falls with depth past D4: the offset row FAILs 
+ok    the walk back reads a different sink: the offset row FAILs 
+ok    a pawn that never reaches the pads: the offset row UNMEASURED, never PASS 
+ok    2 m of water and no swim: the swim row FAILs 
+ok    swims, never tires: the swim row FAILs 
+ok    a pool that holds no water: the swim row UNMEASURED, never PASS 
+ok    a sink on undug ground: the control FAILs 
+ok    the lane tree left standing: the control UNMEASURED, its off-cell reads named (target and where the pawn stood) 
+selftest_pawn_height_scene: ok
+--- selftest on parent HEAD 910f83c578 scene code (red: 3 FAIL)
+ok    every staging call keeps its tool contract (one colonist per spawn; ProofSwim x,z) 
+FAIL  healthy fake (sink by depth to the cap, flat past it, same both ways; swims and tires at 2 m): every row PASS {'PH_offset_follows_depth': 'PASS', 'PH_swims_and_tires_at_2m': 'PASS', 'PH_control_undug_no_offset': 'UNMEASURED'}
+ok    a sink that never applies (17 zeros): the offset row UNMEASURED, never PASS; the control cannot rule anything out 
+ok    a sink that falls with depth past D4: the offset row FAILs 
+ok    the walk back reads a different sink: the offset row FAILs 
+ok    a pawn that never reaches the pads: the offset row UNMEASURED, never PASS 
+ok    2 m of water and no swim: the swim row FAILs 
+ok    swims, never tires: the swim row FAILs 
+ok    a pool that holds no water: the swim row UNMEASURED, never PASS 
+FAIL  a sink on undug ground: the control FAILs {'PH_offset_follows_depth': 'FAIL', 'PH_swims_and_tires_at_2m': 'PASS', 'PH_control_undug_no_offset': 'UNMEASURED'}
+FAIL  the lane tree left standing: the control UNMEASURED, its off-cell reads named (target and where the pawn stood) ({'PH_offset_follows_depth': 'PASS', 'PH_swims_and_tires_at_2m': 'PASS', 'PH_control_undug_no_offset': 'UNMEASURED'}, "{'s
+selftest_pawn_height_scene: FAIL
+--- live game a, real build: sc_pawn_height_20261120T215851.json PH_control_undug_no_offset PASS, 10/10 reads on cell, worst |sink| 0.0 vs limit 1e-3, lane_cleared destroyed 7
+--- known-bad live state (tree standing): sc_pawn_height_20261119T220537.json control UNMEASURED, 2 of 10 None
+red-seen: NOT RECORDED (tool refuses a fault in concept_scenes.py, the test's own file; the live command has a <json> placeholder)

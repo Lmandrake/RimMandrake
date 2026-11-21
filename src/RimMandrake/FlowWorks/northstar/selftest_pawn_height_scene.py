@@ -17,6 +17,8 @@ the mod does; ProofSwim reads deepCell for a pawn in >= 1.8 m of water and exhau
   fault='notire'     swims, exhaustion never rises -> the swim row FAILs
   fault='dryswim'    the pool holds no water -> the swim row UNMEASURED
   fault='stepsink'   the sink also applies on undug ground -> the control FAILs
+  fault='keeptree'   the calm site's Drago tree at (64,57) stays on the control lane (visit 2, 2026-11-20: 2 of 10 reads
+                     None) -> the control UNMEASURED with the off-cell reads named, never PASS
 Red on the draft at HEAD before the fix, green on the fix. The fake proves the scene's logic, never the game; the live half is
 `python.exe src/RimMandrake/FlowWorks/northstar/concept_scenes.py --scene scene_pawn_height --out <json>`.
     python3 selftest_pawn_height_scene.py [path/to/concept_scenes.py]
@@ -40,7 +42,8 @@ PER, CAP, DL_PER_M = 0.05, 8, 20000
 class Fake:
     def __init__(self, fault=None):
         self.fault = fault
-        self.g = {'d': {}, 'dl': {}, 'pawns': {}, 'ex': {}, 'n': 0, 'tick': 0, 'back': False}
+        self.g = {'d': {}, 'dl': {}, 'pawns': {}, 'ex': {}, 'n': 0, 'tick': 0, 'back': False,
+                  'trees': {(64, 57)}}          # the calm site's Drago tree on the control lane (probed live 2026-11-20)
         self.saves, self.contract = {}, []
 
     def save(self, k):
@@ -108,9 +111,17 @@ class Fake:
             stuck = self.fault == 'stuck' and g['d'].get(at, 0) == 0 and g['d'].get(to, 0) > 0
             if self.water_m(at) > 0 or stuck:          # a pawn in the flooded pool, or a stuck one, never gets out
                 return {'success': False, 'arrivedCount': 0, 'movedCount': 1}
+            if to in g['trees']:                       # ordered onto a tree: the pawn stops beside it, short of the cell
+                g['pawns'][pid] = (to[0], to[1] - 1)
+                return {'success': True, 'arrivedCount': 0, 'movedCount': 1}
             g['pawns'][pid] = to
             self.ticks(kw.get('waitTicks', 0))
             return {'success': True, 'arrivedCount': 1, 'movedCount': 1}
+        if tool == 'jawa/destroy_batch':
+            x, z, w, h = (int(v) for v in kw['rects'].split(','))
+            hit = {c for c in g['trees'] if x <= c[0] < x + w and z <= c[1] < z + h} if 'Plant' in kw['categories'] else set()
+            g['trees'] -= set() if self.fault == 'keeptree' else hit
+            return {'success': True, 'destroyed': len(hit)}
         if tool == 'jawa/static_call':
             return {'success': True, 'result': self.static(kw['method'], kw.get('args', ''))}
         raise AssertionError('unexpected tool %s %s' % (tool, kw))
@@ -188,5 +199,9 @@ r, o, _ = run('dryswim')
 check('a pool that holds no water: the swim row UNMEASURED, never PASS', r.get(SWIM) == 'UNMEASURED', r)
 r, o, _ = run('stepsink')
 check('a sink on undug ground: the control FAILs', r.get(CTRL) == 'FAIL', r)
+r, o, _ = run('keeptree')
+ctl = [x for x in o['rows'] if x['id'] == CTRL][0]
+check('the lane tree left standing: the control UNMEASURED, its off-cell reads named (target and where the pawn stood)',
+      r.get(CTRL) == 'UNMEASURED' and ctl['detail'].count('((64, 57), (64, 56))') == 2, (r, ctl['detail'][:200]))
 print('selftest_pawn_height_scene: %s' % ('FAIL' if FAILS else 'ok'))
 sys.exit(1 if FAILS else 0)

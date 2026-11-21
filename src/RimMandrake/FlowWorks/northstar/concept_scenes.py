@@ -736,13 +736,17 @@ def _ph_read(S, pid):
         return None
 
 
-def _ph_walk(S, pid, cells):
-    """Walk pid to each cell in turn; the read there, or None when it did not arrive or the read is vacuous."""
+def _ph_walk(S, pid, cells, miss=None):
+    """Walk pid to each cell in turn; the read there, or None when it did not arrive or the read is vacuous. Each None's
+    target and actual read go on `miss` when given, so a row can say where the pawn really stood."""
     out = []
     for c in cells:
         S.walk(pid, c, PH_WAIT)
         r = _ph_read(S, pid)
-        out.append(r if r and r['cell'] == tuple(c) else None)
+        ok = r and r['cell'] == tuple(c)
+        out.append(r if ok else None)
+        if not ok and miss is not None:
+            miss.append({'to': tuple(c), 'read': r})
     return out
 
 
@@ -758,6 +762,10 @@ def _ph_swim(S, pid, pool):
 def _pawn_height(S):
     x0, z0 = O
     walk_z = z0 + PH_ROWS - 1
+    # The control lane (z0 - 3) crosses the calm site's Drago tree at (64,57) (probed 2026-11-20): a pawn ordered onto a tree
+    # stops beside it, so 2 of 10 control reads came back off-cell and None in visit 2 (RIMMANDRAKE_READ_FLOWWORKS_PAWN_
+    # HEIGHT_CONTROL_SINK_NONE). Clear plants and items off the lane and its start cell; the strict cell check stays.
+    cleared = S.call('jawa/destroy_batch', rects='%d,%d,%d,1' % (x0 - 2, z0 - 3, PH_PADS + 2), categories='Plant,Item')
     for i in range(PH_PADS):
         S.dig([(x0 + i, z0 + j) for j in range(PH_ROWS)], i)       # pad i: D=i half-metre levels (D0 is undug ground)
     pads = [(x0 + i, walk_z) for i in range(PH_PADS)]
@@ -805,11 +813,15 @@ def _pawn_height(S):
 
     lane = [(x0 + i, z0 - 3) for i in range(0, PH_PADS, 4)]           # the same walk, on undug ground south of the pads
     S.walk(col, (x0 - 2, z0 - 3), PH_WAIT)
-    ctl = _ph_walk(S, col, lane) + _ph_walk(S, col, lane[::-1])
+    miss = []
+    ctl = _ph_walk(S, col, lane, miss) + _ph_walk(S, col, lane[::-1], miss)
     sw = S.sc(SWIMP, 'ProofSwim', '%d,%d' % lane[0])
     dry = kv(sw).get('deepCell') == 'False' if sw.startswith('SWIM ' + col + ' ') else None
     S.row('PH_control_undug_no_offset', all(abs(r['sink']) < 1e-3 and r['depth'] == 0 for r in ctl if r) and bool(dry),
-          {'sinks': [None if r is None else r['sink'] for r in ctl], 'swim': sw},
+          {'sinks': [None if r is None else r['sink'] for r in ctl],
+           'offcell': [(m['to'], m['read'] and m['read']['cell']) for m in miss],
+           'lane_cleared': {k: cleared.get(k) for k in ('success', 'destroyed')} if isinstance(cleared, dict) else cleared,
+           'swim': sw},
           unmeasured=None in ctl or dry is None or flat or not seen)
 
 
