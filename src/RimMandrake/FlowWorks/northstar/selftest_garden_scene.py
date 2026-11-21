@@ -9,7 +9,10 @@ map that holds each staging call to its bridge tool's contract and models what s
   - the converters (CompLiquidConverter.CompTickRare's budget, one candidate), the still's sun, the drill's pending charge
     (Building_LiquidDrill.TickRare), the walled yard's sheet, a thirsty colonist drinking at a faucet.
 Planted faults, each must turn its row FAIL (never PASS, never UNMEASURED): CALLER_CONV_DROPS_CLIPPED, CALLER_SPR_SPRAYS_
-WITHOUT_PUMP, DEF_STILL_RATE_TENFOLD, DRILL_CHARGES_WHOLE_LEVEL, SHEET_DRY_ISLAND. Vacuous worlds must read UNMEASURED: no
+WITHOUT_PUMP, DEF_STILL_RATE_TENFOLD, DRILL_CHARGES_WHOLE_LEVEL, SHEET_DRY_ISLAND, SHEET_MOUND (one square 150 dL above the
+level surface), SHEET_DEPTH_LEVEL (equal depths over the relief: the surface is not level). The yard levels by SURFACE on the
+kernel's relief (D8/D9), as the game does (visit 2, 2026-11-19: maxDl 461 over a mean 312); FOIL_BLIND (the read cannot see
+a planted mound) must read UNMEASURED. Vacuous worlds must read UNMEASURED: no
 sun (the still never ran), colonists that starve even fed (the window breaks). Red on the draft at 2b4bffe212, green on the
 fix. The fake proves the scene's logic, never the game; the live half is
 `python.exe src/RimMandrake/FlowWorks/northstar/concept_scenes.py --scene scene_garden --out <json>`.
@@ -38,6 +41,41 @@ CONV = {'RM_DripFilter': ('RM_Liquid_ToxicWater', 4800, 6000, 2000), 'RM_SunPanS
 OP_XZ = re.compile(r'^(\w+):(-?\d+),(-?\d+)(?:,([0-3]))?$')
 OP_RECT = re.compile(r'^(\w+):(-?\d+),(-?\d+),(\d+),(\d+)$')
 NSP, SHEET = 'RimMandrake.FlowWorks.RM_NorthstarProofs', 'RimMandrake.FlowWorks.Sheet.RM_SheetProofs'
+# live 2026-11-20 (sc_garden_20261120T221446): the walled yard read 14552 dL after one 2500-tick chunk, 3695 after 24,
+# about 470 dL a chunk; the fake dries at that rate so the row's read must fall inside the chunks that hold half.
+DRY_DL_PER_CHUNK = 470
+WORLD_SEED, MAP_ID, MAP_W = -2073328273, 0, 250    # the calm site, read live 2026-11-20 (world_info_get, map_info)
+RELIEF, RETAIN, CAP = 200, 200, 10000              # RM_SheetMath.Params: ReliefDl = RetentionDl = DlPerCm, SheetCapDl 50 cm
+
+
+def relief(salt, cell, amp):
+    """RM_SheetMath.Relief, ported (checked live 2026-11-20: Relief(12345, 100, 200) = -137 in game and here)."""
+    M = 0xFFFFFFFF
+    x = ((cell * 0x9E3779B1) & M) ^ (salt & M)
+    x ^= x >> 16
+    x = (x * 0x7FEB352D) & M
+    x ^= x >> 15
+    x = (x * 0x846CA68B) & M
+    x ^= x >> 16
+    return x % (2 * amp + 1) - amp
+
+
+def level(V, rel):
+    """RM_SheetMath.LevelPuddle, ported: the highest surface L0 whose fill fits V, the remainder one dL each to the
+    lowest-relief cells; -> {cell: dl}."""
+    fill = lambda L: sum(max(RETAIN, min(CAP, L - r)) for r in rel.values())        # noqa: E731
+    a, b = min(rel.values()) + RETAIN, max(rel.values()) + CAP
+    while a < b:
+        mid = a + (b - a + 1) // 2
+        a, b = (mid, b) if fill(mid) <= V else (a, mid - 1)
+    out = {c: max(RETAIN, min(CAP, a - r)) for c, r in rel.items()}
+    left = V - sum(out.values())
+    for c in sorted((c for c in rel if RETAIN < a + 1 - rel[c] <= CAP), key=lambda c: (rel[c], c[1] * MAP_W + c[0])):
+        if left <= 0:
+            break
+        out[c] += 1
+        left -= 1
+    return out
 
 
 class GovernorStop(Exception):
@@ -48,7 +86,7 @@ class Fake:
     def __init__(self, fault=None):
         self.fault = fault
         self.g = {'t': 1000, 'b': {}, 'pipes': set(), 'tanks': {}, 'dug': {}, 'pawns': {'Col1': [0.4, 0.9], 'Col2': [0.4, 0.9]},
-                  'set': {}, 'conv': {}, 'drill': None, 'yield': None, 'spill': None, 'heads': {}, 'drinks': 0}
+                  'set': {}, 'conv': {}, 'drill': None, 'yield': None, 'spill': None, 'foil': {}, 'heads': {}, 'drinks': 0}
         self.saves, self.contract = {}, []
 
     def save(self, k):
@@ -240,7 +278,7 @@ class Fake:
             return {'success': True}
         if tool == 'jawa/destroy_batch':
             return {'success': True} if re.match(r'^-?\d+,-?\d+,\d+,\d+$', kw['rects']) else self.bad('destroy rects')
-        if tool in ('jawa/weather_set', 'jawa/gss_stage'):
+        if tool == 'jawa/weather_set':
             return {'success': True}
         if tool == 'jawa/mod_settings_field':
             if kw['action'] == 'set':
@@ -270,11 +308,48 @@ class Fake:
             hits = [k for k, b in g['b'].items() if b['def'] == kw['defName'] and any(
                 x <= c[0] < x + w and z <= c[1] < z + h for c in b['cells'])]
             return {'success': True, 'things': [{'id': k} for k in hits]}
+        if tool == 'jawa/battery_set':                # charged only when the id names a Battery the scene built
+            b = g['b'].get(kw.get('thing'))
+            if not b or b['def'] != 'Battery' or kw.get('mode') != 'setPct':
+                return self.bad('battery_set %r' % kw)
+            return {'success': True, 'storedEnergyPctAfter': 0.0 if self.fault == 'BATTERY_DEAD' else float(kw['value'])}
         if tool == 'jawa/inspect_string':
             return {'success': True, 'things': [{'inspect': [g['heads'].get(kw['thingIds'], 'Idle')]}]}
         if tool == 'jawa/static_call':
             return {'success': True, 'result': self.static(kw['type'], kw['method'], kw['args']), 'ticksGame': g['t']}
+        if tool == 'jawa/world_info_get':
+            return {'success': True, 'info': {'seed': WORLD_SEED}}
+        if tool == 'jawa/map_info':
+            return {'success': True, 'mapId': MAP_ID, 'sizeX': MAP_W, 'sizeZ': MAP_W}
         return self.bad('unmodelled tool %s' % tool)
+
+    def yard(self):
+        """{cell: dl} over the 5x5 yard around the first spill, levelled by surface (D8) on the map's relief; {} dry.
+        Walled (24 wall squares round it) it keeps the spill, open it loses three quarters off the rect."""
+        g = self.g
+        if not g['spill'] or not g['spill'][0]:
+            return {}
+        cx, cz = (int(v) for v in g['spill'][1].split(','))
+        x, z = cx - 2, cz - 2
+        walls = sum(1 for b in g['b'].values() if b['def'] == 'Wall' and (b['at'][0] in (x - 1, x + 5) or b['at'][1] in (z - 1, z + 5)))
+        V = g['spill'][0] if walls >= 24 else g['spill'][0] // 4
+        V = max(0, V - DRY_DL_PER_CHUNK * ((g['t'] - g['spill_t']) // 2500))   # the yard dries through the window
+        h = (WORLD_SEED ^ (MAP_ID + 2654435769 + (WORLD_SEED << 6) + (WORLD_SEED >> 2))) & 0xFFFFFFFF
+        rel = {(x + i, z + j): relief(h, (z + j) * MAP_W + x + i, RELIEF) for i in range(5) for j in range(5)}
+        if self.fault == 'SHEET_DEPTH_LEVEL':           # a kernel that levels depth, not surface
+            y = {c: V // 25 for c in rel}
+        else:
+            y = level(V, rel)
+            for c in y:                                 # Losses after Level: whole dL of soak and evaporation, remainders per cell
+                y[c] -= (c[0] * 7 + c[1] * 3 + g['t'] // 250) % 2 + (c[0] + c[1] * 5 + g['t'] // 250) % 2
+        if self.fault == 'SHEET_DRY_ISLAND':            # one square stays dry, its share heaped on the centre
+            y[(cx, cz)] += y[(x + 1, z + 1)]
+            y[(x + 1, z + 1)] = 0
+        if self.fault == 'SHEET_MOUND':                 # one square heaped 150 dL above the level surface
+            y[(x + 3, z + 3)] += 150
+        for c, d in g['foil'].items():
+            y[c] = y.get(c, 0) + d
+        return y
 
     def static(self, typ, method, arg):
         g = self.g
@@ -307,18 +382,30 @@ class Fake:
         if (typ, method) == (SHEET, 'ProofSheetSpill'):
             ok = g['set'].get('sheetOverflowEnabled') == 'True'
             dl = int(arg.split(';')[1])
-            g['spill'] = (dl if ok else 0, arg.split(';')[0])
+            if g['spill'] and ok:                        # a second spill (the yard read's foil) lands on its one square
+                c = tuple(int(v) for v in arg.split(';')[0].split(','))
+                if self.fault != 'FOIL_BLIND':
+                    g['foil'][c] = g['foil'].get(c, 0) + dl
+                return 'SPILL offered=%d accepted=%d' % (dl, dl)
+            g['spill'], g['spill_t'] = (dl if ok else 0, arg.split(';')[0]), g['t']
             return 'SPILL offered=%d accepted=%d' % (dl, dl if ok else 0)
         if (typ, method) == (SHEET, 'ProofSheetRect'):
-            x, z = (int(v) for v in arg.split(';')[:2])
-            dl = g['spill'][0] if g['spill'] else 0
-            walls = sum(1 for b in g['b'].values() if b['def'] == 'Wall' and (b['at'][0] in (x - 1, x + 5) or b['at'][1] in (z - 1, z + 5)))
-            if not dl:
+            y = self.yard()
+            if not y:
                 return 'SHEETRECT dl=0 wet=0 maxDl=0 edgeMaxDl=0 ice=0 film=0 sheet=0 pool=0'
-            if walls < 24:
-                dl //= 4                                 # an open yard: the sheet runs off the rect
-            wet = 24 if self.fault == 'SHEET_DRY_ISLAND' else 25
-            return 'SHEETRECT dl=%d wet=%d maxDl=%d edgeMaxDl=0 ice=0 film=0 sheet=%d pool=0' % (dl, wet, -(-dl // wet), wet)
+            wet = sum(1 for v in y.values() if v > 0)
+            return 'SHEETRECT dl=%d wet=%d maxDl=%d edgeMaxDl=0 ice=0 film=0 sheet=%d pool=0' % (
+                sum(y.values()), wet, max(y.values()), wet)
+        if (typ, method) == (SHEET, 'ProofSheetCell'):
+            c = tuple(int(v) for v in arg.split(','))
+            return 'SHEETCELL dl=%d tier=Film kind=Open stand=0 fluid=Water burning=False' % (self.yard() or {}).get(c, 0)
+        if (typ, method) == ('Verse.Gen', 'HashCombineInt'):
+            a, b = (int(v) for v in arg.split('|'))
+            h = (a ^ (b + 2654435769 + (a << 6) + (a >> 2))) & 0xFFFFFFFF
+            return str(h - (1 << 32) if h >= 1 << 31 else h)
+        if (typ, method) == ('RimMandrake.FlowWorks.RM_SheetMath', 'Relief'):
+            salt, cell, amp = (int(v) for v in arg.split('|'))
+            return str(relief(salt, cell, amp))
         self.contract.append('unmodelled static %s.%s' % (typ, method))
         return 'REFUSED: unmodelled'
 
@@ -338,7 +425,8 @@ ROWS = ('GARDEN_head_draws_its_net', 'GARDEN_no_pump_no_spray', 'GARDEN_faucet_d
         'GARDEN_drill_charges_what_landed', 'GARDEN_walled_yard_lies_level')
 PLANTS = {'CALLER_CONV_DROPS_CLIPPED': 'GARDEN_filter_keeps_its_rate', 'CALLER_SPR_SPRAYS_WITHOUT_PUMP': 'GARDEN_no_pump_no_spray',
           'DEF_STILL_RATE_TENFOLD': 'GARDEN_still_within_its_def_rate',
-          'DRILL_CHARGES_WHOLE_LEVEL': 'GARDEN_drill_charges_what_landed', 'SHEET_DRY_ISLAND': 'GARDEN_walled_yard_lies_level'}
+          'DRILL_CHARGES_WHOLE_LEVEL': 'GARDEN_drill_charges_what_landed', 'SHEET_DRY_ISLAND': 'GARDEN_walled_yard_lies_level',
+          'SHEET_MOUND': 'GARDEN_walled_yard_lies_level', 'SHEET_DEPTH_LEVEL': 'GARDEN_walled_yard_lies_level'}
 FAILS = []
 
 
@@ -356,6 +444,13 @@ def main():
     for plant, rid in sorted(PLANTS.items()):
         got, _ = run(plant)
         check(got['rows'].get(rid) == 'FAIL', 'planted %s turns %s FAIL (got %s)' % (plant, rid, got['rows'].get(rid)))
+    got, _ = run('FOIL_BLIND')
+    check(got['rows'].get('GARDEN_walled_yard_lies_level') == 'UNMEASURED',
+          'a yard read that cannot see a planted 4 cm mound: the yard row is UNMEASURED, not PASS (got %s)'
+          % got['rows'].get('GARDEN_walled_yard_lies_level'))
+    got, _ = run('BATTERY_DEAD')
+    check(not any(v == 'PASS' for v in got['rows'].values()),
+          'a battery the staging cannot charge: no row PASSes (got %s)' % (got.get('error') or got['rows']))
     got, _ = run('night')
     check(got['rows'].get('GARDEN_still_within_its_def_rate') == 'UNMEASURED', 'no sun: the still row is UNMEASURED, not PASS')
     hungry = Fake()

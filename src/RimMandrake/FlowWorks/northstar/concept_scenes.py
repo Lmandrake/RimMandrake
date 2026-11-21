@@ -2003,7 +2003,12 @@ def _garden(S):
     build(['Wall:%d,%d' % (Y[0] + i, Y[1] + j) for i in range(-1, 6) for j in range(-1, 6) if i in (-1, 5) or j in (-1, 5)],
           stuff='Steel')
     for b in ((W[0] + 3, W[1] - 4), (D[0] - 2, D[1] - 1)):
-        S.call('jawa/gss_stage', ops='kind=gss_charge|x=%d|z=%d' % b)
+        # jawa/battery_set, not jawa/gss_stage: gss_stage resolves Gimme Some Slack types and is refused (TypeLoad) on a list
+        # without it, which left this scene unstaged on 2026-11-20 (owner_review_stage.py carries the same lesson).
+        bat = S.call('jawa/list_things', defName='Battery', rect='%d,%d,1,1' % b, limit=2).get('things') or []
+        require(bool(bat), 'no Battery at %s to charge' % (b,))
+        got = S.call('jawa/battery_set', thing=bat[0].get('id'), mode='setPct', value=1.0)
+        require((got.get('storedEnergyPctAfter') or 0) >= 0.99, 'battery at %s not charged: %s' % (b, str(got)[:160]))
     S.call('jawa/set_plants', ops='Plant_Potato:%d,%d,5,3' % (W[0] + 4, W[1] + 1), density=1.0, growth=0.1)
 
     def tank(at, liquid=None, units=None):
@@ -2058,7 +2063,7 @@ def _garden(S):
                 S.B.call('jawa/pawn_need', pawn=p['id'], action='need', need='RM_Thirst', level=1.0)
 
     log = []                                       # one entry a chunk: tank units, drill read, yard read, head lines
-    stop = None
+    stop, cells_prior = None, None
     for k in range(GARDEN_W // GARDEN_CHUNK):
         feed()
         try:
@@ -2071,6 +2076,13 @@ def _garden(S):
                     'drill': S.sc(NSP, 'ProofDrill', '%d,%d' % D),
                     'yard': S.sc(SHEET, 'ProofSheetRect', '%d;%d;5;5' % Y),
                     'headW': inspect(ids['headW']), 'headP': inspect(ids['headP'])})
+        # the yard's 25 squares, read on every chunk that still holds half the spill: it dries through the window (live
+        # 2026-11-20: 14552 dL after one chunk, 3695 after 24), so an end-of-window read would see a film, not the 3 cm
+        half = _num(spill, 'accepted') if str(spill).startswith('SPILL') else None
+        if half and (_num(log[-1]['yard'], 'dl') or 0) >= half / 2:
+            got, err = _yard_cells(S, Y, cells_prior)
+            log[-1]['cells'], log[-1]['cellsErr'] = got, err
+            cells_prior = got or cells_prior
     S.r['garden_log'] = log
     why = ('the clock stopped: %s; ' % stop) if stop else ''
     _garden_rows(S, fill, log, d0, spill, why, full=stop is None)
@@ -2147,13 +2159,97 @@ def _garden_rows(S, fill, log, d0, spill, why, full):
               {'spent': spent, 'landed': landed, 'pendingGain': gain, 'base': d0[:200], 'read': pick[:200]},
               unmeasured=spent <= 0)
 
-    # Y: the walled yard's 3 cm lies level over all 25 squares (no dry island); the latest read still holding half of it
+    # Y: the walled yard's 3 cm lies level over all 25 squares (no dry island); the latest read still holding half of it.
+    # Level means the SURFACE (depth + the kernel's ±1 cm micro-relief, D8/D9), not equal depths: visit 2 (2026-11-19)
+    # read maxDl 461 over a mean of 312 on every one of 24 reads, the relief's own signature, and the old depth test
+    # failed it (RIMMANDRAKE_PROBE_FLOWWORKS_GARDEN_YARD_MOUND_RELIEF_OR_KERNEL). The read must also see a mound planted
+    # after it, or the row is UNMEASURED.
     took = _num(spill, 'accepted') if str(spill).startswith('SPILL') else None
     good = [e['yard'] for e in log if took and (_num(e['yard'], 'dl') or 0) >= took / 2]
     y = good[-1] if good else (log[-1]['yard'] if log else None)
-    dl, wet, mx = _num(y, 'dl'), _num(y, 'wet'), _num(y, 'maxDl')
-    S.row('GARDEN_walled_yard_lies_level', bool(good) and wet == 25 and mx <= dl / wet + 2,
-          why + str({'spill': spill[:80], 'read': y}), unmeasured=not good)
+    wet, Y = _num(y, 'wet'), (O[0] + 16, O[1] + 10)            # _garden's yard
+    held = [e for e in log if took and (_num(e['yard'], 'dl') or 0) >= took / 2]
+    lvs = [(log.index(e), _yard_level(e['cells'])) for e in held if e.get('cells')]
+    lvs = [(i, lv) for i, lv in lvs if lv]
+    err = next((e.get('cellsErr') for e in held if not e.get('cells')), None) or (None if held else 'no chunk holds half the spill')
+    worst = max(lvs, key=lambda t: t[1]['spread']) if lvs else None
+    lows = [(i, lv['low']) for i, lv in lvs if lv['low']]
+    # the instrument's own foil, after the window: 4 cm more on the corner square, read back before a pulse can level it.
+    # It must rise there by most of the foil and nowhere else, or the per-square read cannot see a mound (UNMEASURED).
+    base = _yard_cells(S, Y, held[-1]['cells'])[0] if held and held[-1].get('cells') else None
+    rise = others = None
+    if base:
+        S.sc(SHEET, 'ProofSheetSpill', '%d,%d;%d;Pump' % (Y[0], Y[1], YARD_MOUND_DL))
+        mound = _yard_cells(S, Y, base)[0]
+        if mound:
+            d = {(a[0], a[1]): b[2] - a[2] for a, b in zip(base, mound)}
+            rise, others = d.pop(Y), max([abs(v) for v in d.values()] or [0])
+    sees = rise is not None and rise >= 0.9 * YARD_MOUND_DL and others <= YARD_LEVEL_DL
+    whole = bool(lvs) and len(lvs) == len(held)
+    S.row('GARDEN_walled_yard_lies_level', bool(good) and wet == 25 and whole and worst[1]['spread'] <= YARD_LEVEL_DL
+          and not lows,
+          why + str({'worstSurfaceSpread': worst and worst[1]['spread'], 'atChunk': worst and worst[0], 'limit': YARD_LEVEL_DL,
+                     'chunksRead': len(lvs), 'chunksHeld': len(held), 'depthSpread': worst and worst[1]['depthSpread'],
+                     'free': worst and worst[1]['free'], 'low': lows[:2], 'foil': {'rise': rise, 'others': others},
+                     'err': err, 'read': y, 'spill': spill[:40]}),
+          unmeasured=not good or not whole or not sees)
+
+
+SHEET_MATH = 'RimMandrake.FlowWorks.RM_SheetMath'
+# RM_SheetMath.Params (read 2026-11-20): ReliefDl = RetentionDl = DlPerCm = 200 dL (1 cm on one square), SheetCapDl = 50 cm.
+SHEET_RELIEF_DL, SHEET_RETENTION_DL, SHEET_CAP_DL = 200, 200, 10000
+# The surface a read can see after a pulse: Pulse runs Level then Losses (RM_SheetMath.cs Pulse); Level sets every free
+# member's surface to L0 or L0 + 1 (1 dL), then Losses takes each wet cell's soak and evaporation as whole dL with its own
+# milli-dL remainder carried, so on one terrain class each loss differs by at most 1 dL between squares: 1 + 1 + 1 = 3 dL
+# (0.015 cm). Live 2026-11-20 (sc_garden_20261120T221816) read 0-3 over 15 chunks. A foil of 4 cm (800 dL) is twice the
+# relief's whole range, so a read that cannot see it cannot see a mound at all.
+YARD_LEVEL_DL, YARD_MOUND_DL = 3, 800
+
+
+def _yard_cells(S, Y, prior=None):
+    """[(x, z, dl, relief)] over the 5x5 yard: dl by ProofSheetCell, relief by the mod's own RM_SheetMath.Relief on the
+    map's salt (Gen.HashCombineInt(world seed, map.uniqueID), RM_MapComponent_Sheet) and cell index z * W + x. `prior`
+    reuses its reliefs. -> (cells, None) or (None, why)."""
+    if prior is None:
+        w, m = S.call('jawa/world_info_get'), S.call('jawa/map_info')
+        seed, uid, W = (w.get('info') or {}).get('seed'), m.get('mapId'), m.get('sizeX')
+        if None in (seed, uid, W):
+            return None, 'no seed / map id / width: %s %s %s' % (seed, uid, W)
+        h = S.sc('Verse.Gen', 'HashCombineInt', '%d|%d' % (seed, uid))
+        try:
+            salt = int(h) & 0xFFFFFFFF
+        except ValueError:
+            return None, 'HashCombineInt: %s' % h[:80]
+        rel = {}
+        for i in range(5):
+            for j in range(5):
+                x, z = Y[0] + i, Y[1] + j
+                r = S.sc(SHEET_MATH, 'Relief', '%d|%d|%d' % (salt, z * W + x, SHEET_RELIEF_DL))
+                try:
+                    rel[(x, z)] = int(r)
+                except ValueError:
+                    return None, 'Relief: %s' % r[:80]
+    else:
+        rel = {(c[0], c[1]): c[3] for c in prior}
+    out = []
+    for (x, z), r in sorted(rel.items()):
+        dl = _num(S.sc(SHEET, 'ProofSheetCell', '%d,%d' % (x, z)), 'dl')
+        if dl is None:
+            return None, 'ProofSheetCell %d,%d unreadable' % (x, z)
+        out.append((x, z, int(dl), r))
+    return out, None
+
+
+def _yard_level(cells):
+    """The surface spread over the free members (R < dl < cap, where LevelPuddle sets dl + relief to L0 or L0 + 1), the
+    depth spread beside it, and the cells held at or below retention whose surface lies under the level (water that should
+    have run to them): {'spread', 'depthSpread', 'free', 'low'}; None when no square is free."""
+    free = [c[2] + c[3] for c in cells if SHEET_RETENTION_DL < c[2] < SHEET_CAP_DL]
+    if not free:
+        return None
+    lo = min(free)
+    return {'spread': max(free) - lo, 'depthSpread': max(c[2] for c in cells) - min(c[2] for c in cells), 'free': len(free),
+            'low': [(c[0], c[1]) for c in cells if c[2] <= SHEET_RETENTION_DL and c[2] + c[3] < lo - 1]}
 
 
 TUB_LABEL = 'RimMandrake.FlowWorks.RM_Patch_MouseoverDepth'
