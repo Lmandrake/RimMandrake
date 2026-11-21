@@ -322,6 +322,26 @@ def t_void_runs_spend_nothing_on_the_loop_ceiling(tmp):
        "the crossing is the real charge that met the ceiling, the void spend shown apart: %r" % ceil)
 
 
+def t_a_done_run_after_the_voids_lifts_the_void_hold(tmp):
+    """queues-20261121133600: Pyrelands met the void limit (3 void_system runs), the cause was repaired, a hand
+    run-now finished done, and still nothing chained it for 4.6 h: the hold lasted to the local midnight."""
+    import role_launch as RL
+    import run_void as RV
+    day = RL.day_of(T0)
+    rs = {"void_faults": [{"day": day, "concept": C1, "unit": "v%d" % i, "cause": "no claude result", "at": T0 + i}
+                          for i in range(RV.SYSTEM_FAULT_LIMIT)]}
+    last = T0 + RV.SYSTEM_FAULT_LIMIT - 1
+    ok(RL.void_held(rs, C1, last + 120), "at the void limit the concept is held")
+    rs["runs"] = [{"unit": "hand", "concept": C1, "state": "done", "at": last + 60}]
+    ok(not RL.void_held(rs, C1, last + 120), "a run launched after the last void that finished done lifts the hold")
+    for run, why in (({"state": "failed", "at": last + 60}, "a run that did not finish done"),
+                     ({"state": "done", "at": last - 60}, "a done run launched before the last void"),
+                     ({"state": "done", "at": last + 60, "concept": "/tmp/concepts/Other"}, "another concept's run"),
+                     ({"state": "done", "at": last + 60, "unit": "v0"}, "a void unit itself")):
+        rs["runs"] = [dict({"unit": "hand", "concept": C1}, **run)]
+        ok(RL.void_held(rs, C1, last + 120), "%s lifts nothing" % why)
+
+
 def main():
     import control as C
     tmp = tempfile.mkdtemp(prefix="selftest_void_counters_")
@@ -349,6 +369,7 @@ def main():
         t_no_sweep_while_the_role_is_off(tmp)
         t_a_concept_no_run_opened_is_not_swept(tmp)
         t_void_runs_spend_nothing_on_the_loop_ceiling(tmp)
+        t_a_done_run_after_the_voids_lifts_the_void_hold(tmp)
         claim_void_mark_that_raises()
     finally:
         for k, v in keep.items():

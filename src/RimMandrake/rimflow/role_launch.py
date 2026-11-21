@@ -2732,11 +2732,19 @@ def give_back_req(rs, req):
 
 def void_held(rs, concept, now):
     """True when `concept` met run_void.SYSTEM_FAULT_LIMIT void_system runs today (void_route): nothing chains it,
-    harvest or sweep, until the day turns."""
+    harvest or sweep, until the day turns, or until a run on it launched after the last of those voids finishes
+    done. That run proves the system cause repaired, so the hold lifts and the chain goes on (queues-20261121133600:
+    Pyrelands sat ready 4.6 h after an accepted hand run-now, held to the local midnight)."""
     import run_void as RV
     day = day_of(now)
-    return sum(1 for f in rs.get("void_faults") or [] if isinstance(f, dict) and f.get("day") == day
-               and f.get("concept") == concept) >= RV.SYSTEM_FAULT_LIMIT
+    voids = [f for f in rs.get("void_faults") or [] if isinstance(f, dict) and f.get("day") == day
+             and f.get("concept") == concept]
+    if len(voids) < RV.SYSTEM_FAULT_LIMIT:
+        return False
+    last = max((f.get("at") or 0) for f in voids)
+    void_units = {f.get("unit") for f in voids}
+    return not any(isinstance(r, dict) and r.get("concept") == concept and r.get("state") == "done"
+                   and r.get("unit") not in void_units and (r.get("at") or 0) > last for r in rs.get("runs") or [])
 
 
 def void_route(name, rs, cfg, run, cause, now, act, obs):

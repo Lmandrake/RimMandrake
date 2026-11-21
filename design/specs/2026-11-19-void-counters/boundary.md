@@ -73,5 +73,11 @@ the void rule is `run_void.py`'s docstring and `design/RimMandrake/pipeline_tria
   ceiling, its crossing or its start: a hand-voided run's or judge's (`voided.spend_refs`), a void_system judge round's
   (with its second reader), and a Designer run whose rejection is marked void_system. The void spend is shown apart in
   the ceiling's line.
+- **a-done-run-after-the-voids-lifts-the-void-hold.** A concept at `run_void.SYSTEM_FAULT_LIMIT` void_system runs in a
+  day is held from every chain (`role_launch.void_held`) until the day turns, or until a run on that concept that was
+  launched after the last of those voids finishes `done`. That run proves the system cause repaired, so the sweep
+  chains the concept again the same day. A failed run, a done run launched before the last void, another concept's
+  run, or a void unit lifts nothing. Added 2026-11-21 for incident queues-20261121133600 (Pyrelands sat ready 4.6 h
+  after an accepted hand run-now).
 
 Later lists beside this page: `polish.md` and `next_version.md` (none yet).
