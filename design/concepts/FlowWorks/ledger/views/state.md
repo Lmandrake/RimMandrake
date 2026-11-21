@@ -1,13 +1,13 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":45405,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"HOLDER.run-1795260677":3322,"HOLDER.run-1795263747":1891,"HOLDER.run-1795268290":4429,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=aa0c2f58536bbe3d24c561808fdb31e43d48b068466270004f3890f5c0166b17 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":45405,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"HOLDER.run-1795260677":3322,"HOLDER.run-1795263747":1891,"HOLDER.run-1795268290":5226,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=d19f27ffb453da99e3e2d76df67c3bb7a3315478f01572820468dd17a59ed093 -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage in_game · 1497 events in 22 shards · reducer 1
-holder lease run-1795268290, token 31, last active 2026-11-21T17:56:00Z
+version 0.1.0 · stage in_game · 1498 events in 22 shards · reducer 1
+holder lease run-1795268290, token 31, last active 2026-11-21T18:25:10Z
 holder session cd47808a-7ad9-4eb2-b764-15f60713913e, context 435897 of ceiling 400000 — ROTATE DUE
 
-## Last checkpoint (HOLDER.run-1795268290, 2026-11-21T16:50:05Z)
-- done: visit 3 game a: 17 PASS, FAIL sc_ice (MOD, filed), sc_islands (SITE), 5 UNMEASURED; garden scene repaired both ways; source_pays check repaired, reads the mod; walk save FLOWWORKS_OWNER_REVIEW_VISIT3_FULL_20261121_0753
-- next: Rerun on the exact flowworks tier list the checks build_match names, after finding why scenes stalled at 08:36
-- ruled out: sc_islands: a lowered leaf that carries no walker; sc_garden: a filter rate fault (one tank drink)
+## Last checkpoint (HOLDER.run-1795268290, 2026-11-21T18:25:10Z)
+- done: visit 3 exact-tier reruns on game a, 5ef7784393: 18 PASS, FAIL sc_ice, sc_source_pays, sc_islands, sc_garden (1 FAIL then PASS, filed RIMMANDRAKE_TRACE_FLOWWORKS_FILTER_SLOWS_ONE_RUN_IN_TWO), OL UNMEASURED; build match 30 of 31
+- next: Steward reads visit_3/SUMMARY.md and sends sc_ice, sc_source_pays and the filter flake down their roads back
+- ruled out: the 08:36 scene stall (it was the driver run_row 160 s bound); a mutant DLL or unset converterRateMultiplier behind the garden filter FAIL
 
 ## Open findings (178)
 (claimed fixes, awaiting a judge, on one line each with the oldest 127 open findings, named without their 'finding:': `modledger.py show --mod FlowWorks finding:<NAME>`)
@@ -499,6 +499,6 @@ spend recorded: USD 78.94, 45401435 tokens
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
 - notes: 11, never printed here (`modledger.py find --mod FlowWorks <words>`)
-- the full history: 1497 events (views/history.md; never read whole)
+- the full history: 1498 events (views/history.md; never read whole)
 
-cursor: t=2026-11-21T17:56:00Z.1795283760043364724 (modledger.py since --mod FlowWorks t=2026-11-21T17:56:00Z.1795283760043364724 prints what changed after this packet)
+cursor: t=2026-11-21T18:25:10Z.1795285510729663884 (modledger.py since --mod FlowWorks t=2026-11-21T18:25:10Z.1795285510729663884 prints what changed after this packet)

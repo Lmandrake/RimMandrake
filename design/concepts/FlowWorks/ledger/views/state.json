@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "234378276b4de2cc7e390f33d76fdc52b52e00751e94b6d73ec8e08eed2d0183",
+  "body_sha256": "ec2ea48924bb30f4c700eff43dec1dbd54d17c571d4efaf99e71da0ddf85bf41",
   "reducer": 1,
   "shards": {
    "BACKFILL": 893183,
@@ -20,7 +20,7 @@
    "HOLDER.run-1795257509": 5815,
    "HOLDER.run-1795260677": 3322,
    "HOLDER.run-1795263747": 1891,
-   "HOLDER.run-1795268290": 4429,
+   "HOLDER.run-1795268290": 5226,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1262,10 +1262,10 @@
   },
   "checkpoint": {
    "by": "HOLDER.run-1795268290",
-   "done": "visit 3 game a: 17 PASS, FAIL sc_ice (MOD, filed), sc_islands (SITE), 5 UNMEASURED; garden scene repaired both ways; source_pays check repaired, reads the mod; walk save FLOWWORKS_OWNER_REVIEW_VISIT3_FULL_20261121_0753",
-   "next": "Rerun on the exact flowworks tier list the checks build_match names, after finding why scenes stalled at 08:36",
-   "ruled_out": "sc_islands: a lowered leaf that carries no walker; sc_garden: a filter rate fault (one tank drink)",
-   "ts": "2026-11-21T16:50:05Z"
+   "done": "visit 3 exact-tier reruns on game a, 5ef7784393: 18 PASS, FAIL sc_ice, sc_source_pays, sc_islands, sc_garden (1 FAIL then PASS, filed RIMMANDRAKE_TRACE_FLOWWORKS_FILTER_SLOWS_ONE_RUN_IN_TWO), OL UNMEASURED; build match 30 of 31",
+   "next": "Steward reads visit_3/SUMMARY.md and sends sc_ice, sc_source_pays and the filter flake down their roads back",
+   "ruled_out": "the 08:36 scene stall (it was the driver run_row 160 s bound); a mutant DLL or unset converterRateMultiplier behind the garden filter FAIL",
+   "ts": "2026-11-21T18:25:10Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1717,7 +1717,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1497,
+  "events": 1498,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7818,7 +7818,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-21T17:56:00Z",
+   "last": "2026-11-21T18:25:10Z",
    "lease": "run-1795268290",
    "released": false,
    "token": 31
