@@ -10199,3 +10199,5 @@
 {"seat":"RUNNER","event":"live","id":"OPS_STEVE_DIAGNOSE_INVALID_MBTX_YAHV","result":"kept","detail":"sweep: running again","ts":"2026-11-21T11:18:26Z","tsn":1795259906501041382}
 {"seat":"RUNNER","event":"live","id":"OPS_STEVE_DIAGNOSE_INVALID_MBTX_YAHV","result":"broken","detail":"Ops alarm STEVE_INVALID: steve.invalid_streak = 3 INVALID results in a row (MEASURED), line >= 3","ts":"2026-11-21T11:19:39Z","tsn":1795259979511536028}
 {"seat":"RUNNER","event":"live","id":"OPS_STEVE_DIAGNOSE_INVALID_MBTX_YAHV","result":"broken","detail":"Ops alarm STEVE_INVALID: steve.invalid_streak = 3 INVALID results in a row (MEASURED), line >= 3","ts":"2026-11-21T11:21:14Z","tsn":1795260074915735974}
+{"seat":"RUNNER","event":"live","id":"OPS_STEVE_DIAGNOSE_INVALID_MBTX_YAHV","result":"broken","detail":"Ops alarm STEVE_INVALID: steve.invalid_streak = 3 INVALID results in a row (MEASURED), line >= 3","ts":"2026-11-21T11:24:05Z","tsn":1795260245271505508}
+{"seat":"RUNNER","event":"raise","id":"STEVE_LANE_UNSTICK_STALLED_UNOWNED_A4B3","reason":"steward-watch: lane unowned 30 min (STALE_HEARTBEAT)","ts":"2026-11-21T11:28:35Z","tsn":1795260515744057407}
