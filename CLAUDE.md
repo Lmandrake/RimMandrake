@@ -356,6 +356,20 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 - Item: `RIMMANDRAKE_REPAIR_AT_THE_REFUSAL_NO_STOP_FOR_UNTIED_SHOES`. Full text:
   `design/RimMandrake/standing_rulings.md` §A fault of form is repaired where it is found.
 
+## After a change, only the checks that the change touches run again
+
+- This rule applies at every stage: the offline certificate, a blind cycle, an in-game visit, the walk build match,
+  the nightly and `./publish`.
+- A check relates to a change when the change touches something that the check reads or exercises. Only those checks
+  run again.
+- A row made on an earlier build still counts when nothing that its check reads or exercises changed. Do not send a
+  whole table back because the build hash moved.
+- When the relation cannot be read for a check, that check runs again. The others still count.
+- Do not add a full rerun as a safety step. A full pass is a named act with its reason, never a default.
+- Never tell the owner that all checks must run again after a small change. Name the checks that the change touches.
+- Item: `RIMMANDRAKE_RERUN_ONLY_CHECKS_THE_CHANGE_TOUCHES_NOT_ALL_203`. Full text:
+  `design/RimMandrake/standing_rulings.md` §After a change, only the checks that the change touches run again.
+
 ## Touching code has a cost; if you see it, do it
 
 - This rule applies to fixers, reviewers and judges. It applies to each pipeline monitor before it files. The rule
