@@ -53,7 +53,7 @@ SCENES = (
      ("RM_FireHawk", "RM_FireHawkSeekBurn", "fireHawkSpreadEnabled", "54")),
     ("sc_ruins", "ruins", False,
      # the vanilla control map left (RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN): RM_FE_Charred is ours alone
-     ("jawa/export_things", "paint", "RM_FE_Charred")),
+     ("jawa/list_things", "jawa/paint_building", "RM_FE_Charred")),
 )
 
 

@@ -68,6 +68,11 @@ def _comp_claim(item):
     return name, []
 
 
+# A component whose subject is a flyer in flight takes no capture: a flyer is read by its Pawn_FlightTracker state,
+# never captured in flight (owner: "For the third time, do not do live testing of flyers without a human present.").
+FLYER_NO_CAPTURE = frozenset(("firehawk_carries_ember",))
+
+
 def claims_without_capture(tree):
     """-> ([component names that claim a bar but take no capture in their block], number of claiming components)."""
     funcs = dict((f.name, f) for f in tree.body if isinstance(f, ast.FunctionDef))
@@ -98,7 +103,7 @@ def claims_without_capture(tree):
             direct = any(_is_capture(x) for x in ast.walk(body))
             via = any(isinstance(x, ast.Call) and isinstance(x.func, ast.Name) and takes(x.func.id, frozenset())
                       for x in ast.walk(body))
-            if not (direct or via):
+            if not (direct or via) and cl[0] not in FLYER_NO_CAPTURE:
                 bad.append("%s (line %d)" % (cl[0], node.lineno))
     return bad, n
 

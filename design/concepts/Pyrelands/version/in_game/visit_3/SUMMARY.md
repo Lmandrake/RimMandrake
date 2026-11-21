@@ -10,6 +10,10 @@ Detached BENCH helper, item RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT
 - 09:10 site NS_Pyrelands_site_1_417df172fdb5_visit3 built (tile 63294, map 1); gate B CLEAN (5 rows). Identity: mod_sha 6ea9314ad1, game 1.6.4871 rev590, tier pyrelands (17).
 - 09:14 runner (`scripts/runner.sh`, site reloaded before every chain) batch 1 started: startup, mapgen_log, animal_census, grass_cover, ambient_ash_drift, plant_census, ruins.
 
+- 09:16-09:20 the concurrency guard refused game-b site loads on game a's live FlowWorks client (second layer of the same cause; fixed in 1d27205b91, guard selftest red on parent), then on the runner's own earlier steps (fixed by a lineage token in runner.sh). Rows run before 09:20 are void (no reload); none is used.
+- 09:20-09:24 batch 1: startup, mapgen_log, animal_census, grass_cover, ambient_ash_drift, plant_census (3/3) PASS; ruins: ruins_scorched PASS, ruin_walls_charred_paint UNMEASURED ("no unowned walls" while the census lists 453 unowned ruin buildings): HARNESS, export_things stops at 2000 rows inside the grass carpet; repaired (unowned Wall cells from the complete census, then a paint census of those cells), to be shown both ways.
+- 09:24 batch 2 started. So far PASS: firehawk (ran without its reload: rerun owed), furnace_warmth, burrowers, heat_dome, fire_tick_effects, sand_shovel, rite_hook_alone, firehawk_first_sighting_letter, firehawk_crestfeather_yield, foreign_arrivals. firefoam_sprayer: sprayer row PASS, control FAIL (the colonist without the sprayer took 3 fruit unburned); diagnosis owed while the game is up.
+
 ## Exit
 
 ```

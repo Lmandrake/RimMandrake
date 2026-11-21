@@ -2348,7 +2348,8 @@ def firehawk(t):
         if _live(t) and FIRE_HAWK_JOB not in [s_[0] for s_ in seen]:
             _fail("no %s job in 100 samples over 6000 ticks beside a live fire (job state read only)"
                   % FIRE_HAWK_JOB)
-        t.screenshot(rect=rect)
+        # no capture here: the hawk was read flying=True during this sortie, and a flyer is never captured in flight
+        # (owner: "For the third time, do not do live testing of flyers without a human present."; Pyrelands visit 3)
     _ten_firehawk(t)
 
 
@@ -3728,10 +3729,42 @@ def _stage_burning_fruit(t, x, z):
     return fruit, fires
 
 
-def _harvest_through_fire(t, cid, fruit, ticks=3000):
+PLANT_CONTROL_HAS_SPRAYER_ENV = "PYRE_PLANT_CONTROL_HAS_SPRAYER"   # planted state for the repaired control row
+HARVEST_SAMPLE_TICKS = 250      # one sample per ring-fire read: a 2-cell grass ring burns out inside the 3000-tick window
+
+
+def _harvest_through_fire(t, cid, fruit, ticks=3000, ring=None):
+    """Order the harvest, then advance `ticks` in HARVEST_SAMPLE_TICKS steps; with `ring` ('x,z,w,h' of the burn) each
+    step reads the fires in it, the fruit left and the colonist's cell and job -> the timeline (list of dicts), [] offline.
+    HARNESS (Pyrelands visit 3, 2026-11-21): the control colonist took 3 fruit unburned after one flat 3000-tick wait, and
+    nothing said whether the ring was still burning when it walked in."""
     for i, fid in enumerate(fruit[:3]):
         t.bridge_call("jawa/ordered_job", pawnId=cid, jobDef="Harvest", targetAId=fid, queue=i > 0, waitTicks=0)
-    _wait(t, ticks)
+    if not ring:
+        _wait(t, ticks)
+        return []
+    x, z = (int(v) for v in ring.split(",")[:2])
+    out, done = [], 0
+    while done < ticks:
+        step = min(HARVEST_SAMPLE_TICKS, ticks - done)
+        _wait(t, step)
+        done += step
+        if not _live(t):
+            continue
+        left = [p.get("id") for p in _things(t, FRUIT_PLANT, "%d,%d,3,3" % (x + 3, z + 3), limit=20)]
+        row = _pawn_row(t, cid, health=True) or {}
+        out.append({"tick": done, "fires": _count(t, "Fire", ring), "fruitLeft": len(left),
+                    "taken": [f for f in fruit[:3] if f not in left], "cell": [row.get("x"), row.get("z")],
+                    "job": row.get("job") or row.get("curJob"), "burns": len(burn_injuries(row))})
+    return out
+
+
+def taken_while_burning(timeline):
+    """The first timeline sample at which a fruit was gone while the ring still held fire, or None. Pure."""
+    for smp in timeline or []:
+        if smp.get("taken") and (smp.get("fires") or 0) > 0:
+            return smp
+    return None
 
 
 @suite.chain("firefoam_sprayer")
@@ -3754,10 +3787,11 @@ def firefoam_sprayer(t):
         gun = [g.get("id") for g in _things(t, SPRAYER, "%d,%d,1,1" % (x - 3, z + 4), limit=5)]
         if gun:
             t.bridge_call("jawa/ordered_job", pawnId=cid, jobDef="Equip", targetAId=gun[0], waitTicks=120)
-        _harvest_through_fire(t, cid, fruit)
+        timeline = _harvest_through_fire(t, cid, fruit, ring="%d,%d,9,9" % (x, z))
         left = set(p.get("id") for p in _things(t, FRUIT_PLANT, "%d,%d,3,3" % (x + 3, z + 3), limit=20))
         row = _pawn_row(t, cid, health=True)
         if _live(t):
+            _note(t, "sprayer run timeline (every %d ticks)" % HARVEST_SAMPLE_TICKS, timeline)
             _note(t, "sprayer run", {"spawned": spr, "gun": gun, "fruit": fruit, "left": sorted(left),
                                      "burns": burn_injuries(row)})
             if not gun:
@@ -3771,17 +3805,32 @@ def firefoam_sprayer(t):
     with _comp(t, "without_sprayer_fire_stops_or_burns"):
         fruit, fires = _stage_burning_fruit(t, x, z)
         cid = _spawn_colonist(t, x - 3, z + 4)
-        _harvest_through_fire(t, cid, fruit)
+        if os.environ.get(PLANT_CONTROL_HAS_SPRAYER_ENV) == "1":
+            # planted state for the repaired control: this colonist is handed the sprayer, so it crosses the burning
+            # ring unburned, which is exactly what the control must catch
+            _note(t, "PLANTED FAULT", "%s=1: the control colonist holds the sprayer" % PLANT_CONTROL_HAS_SPRAYER_ENV)
+            t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d,1" % (SPRAYER, x - 3, z + 4))
+            g2 = [g.get("id") for g in _things(t, SPRAYER, "%d,%d,1,1" % (x - 3, z + 4), limit=5)]
+            if g2:
+                t.bridge_call("jawa/ordered_job", pawnId=cid, jobDef="Equip", targetAId=g2[0], waitTicks=120)
+        timeline = _harvest_through_fire(t, cid, fruit, ring="%d,%d,9,9" % (x, z))
         left = set(p.get("id") for p in _things(t, FRUIT_PLANT, "%d,%d,3,3" % (x + 3, z + 3), limit=20))
         row = _pawn_row(t, cid, health=True)
         if _live(t):
             took = [f for f in fruit if f not in left]
+            _note(t, "control run timeline (every %d ticks)" % HARVEST_SAMPLE_TICKS, timeline)
             _note(t, "control run", {"fruit": fruit, "took": took, "fires": fires, "burns": burn_injuries(row)})
             if not fires:
                 _unmeasured(t, "the control burn did not light")
-            if took and not burn_injuries(row):
-                _fail("without the sprayer the colonist took the fruit unburned: the fruit was reachable without "
-                      "crossing fire, so the sprayer row proves nothing")
+            if not timeline:
+                _unmeasured(t, "the harvest window was not sampled, so when the fruit was taken is unknown")
+            # the fire stops the colonist when no fruit is taken while the ring still burns; a fruit taken from cold
+            # ground after the ring burned out is not a path through fire
+            hot = taken_while_burning(timeline)
+            if hot and not burn_injuries(row):
+                _fail("without the sprayer the colonist took fruit unburned while %d fires still burned in the ring "
+                      "(tick %d): the fruit was reachable without crossing fire, so the sprayer row proves nothing"
+                      % (hot.get("fires"), hot.get("tick")))
 
 
 WALK_DAYS = 7          # each half of the two-week walk
@@ -4933,13 +4982,31 @@ def _ten_firehawk(t):
 
 
 def _ten_ruins_charred_walls(t):
-    """export_things over the current map -> (unowned wall rows, those painted RM_FE_Charred)."""
-    r = t.bridge_call("jawa/export_things", rect=_whole(t), includePawns=False, includeItems=False, limit=2000)
+    """The unowned Wall cells from the complete BuildingArtificial census, then a read-only paint census of those cells
+    (jawa/paint_building with no colorDef) -> (wall count, charred count). Pyrelands visit 3, 2026-11-21: a whole-map
+    export_things stops at its 2000-row limit inside the ember-grass carpet (plants first), never read `truncated`, and
+    reported 'no unowned walls' on a site whose census listed 453 unowned ruin buildings, Walls among them."""
+    r = t.bridge_call("jawa/list_things", group="BuildingArtificial", limit=5000)
     if not _live(t):
-        return [], []
-    _ok(r, "export_things")
-    walls = [w for w in r.get("things") or [] if "Wall" in str(w.get("def")) and w.get("faction") in (None, "", "None")]
-    return walls, [w for w in walls if w.get("paint") == "RM_FE_Charred"]
+        return 0, 0
+    _ok(r, "list_things(group=BuildingArtificial)")
+    if r.get("isCompleteList") is False:
+        _unmeasured(t, "the BuildingArtificial census is truncated (%s rows): unowned walls may be missed"
+                       % len(r.get("things") or []))
+    cells = sorted({(x["x"], x["z"]) for x in r.get("things") or []
+                    if x.get("def") == "Wall" and x.get("x") is not None
+                    and (x.get("factionName") or x.get("faction")) in (None, "", "None")})
+    if not cells:
+        return 0, 0
+    c = t.bridge_call("jawa/paint_building", cells=";".join("%d,%d" % xz for xz in cells))
+    _ok(c, "paint_building census")
+    if c.get("mode") != "census":
+        _unmeasured(t, "paint_building did not answer as a census: %r" % str(c)[:200])
+    rows = [x for x in c.get("census") or [] if x.get("def") == "Wall"]
+    walls = sum(int(x.get("count") or 0) for x in rows)
+    charred = sum(int(x.get("count") or 0) for x in rows if x.get("color") == "RM_FE_Charred")
+    _note(t, "paint census of the unowned wall cells", {"cells": len(cells), "census": rows[:8]})
+    return walls, charred
 
 
 def _ten_ruins(t):
@@ -4951,12 +5018,11 @@ def _ten_ruins(t):
     with _comp(t, "ruin_walls_charred_paint"):
         walls, charred = _ten_ruins_charred_walls(t)
         if _live(t):
-            _note(t, "unowned walls on the site, painted RM_FE_Charred", {"walls": len(walls), "charred": len(charred)})
+            _note(t, "unowned walls on the site, painted RM_FE_Charred", {"walls": walls, "charred": charred})
             if not walls:
                 _unmeasured(t, "this site has no unowned walls (no ruin) to read the paint of")
             if not charred:
-                _fail("none of %d ruin walls carries RM_FE_Charred paint: %r"
-                      % (len(walls), sorted(set(str(w.get("paint")) for w in walls))[:6]))
+                _fail("none of %d ruin walls carries RM_FE_Charred paint" % walls)
 
 
 # ---- RIMMANDRAKE_BUILD_PYRELANDS_ROUND_SIX_PARTS_AFTER_THE_TEN: the owed parts of the round-6 gap scenes ----
@@ -5523,6 +5589,16 @@ def _r6_fresh_burn_bonus(t):
         t.bridge_call("jawa/set_roof_batch", ops="None:%s" % _rs(pads["A"]))
 
 
+def weather_name(w):
+    """jawa/weather_get's `weather` is a dict ({current, last, curWeatherAge, ...}); the def name in force is `current`.
+    HARNESS (Pyrelands visit 3, 2026-11-21): the row compared the dict itself with "RM_FE_BlackRain" and failed on a black
+    rain reading, and its "never Rain an hour later" half could not see Rain at all. Pure."""
+    return w.get("current") if isinstance(w, dict) else w
+
+
+PLANT_NO_RAIN_GATE_OFF_ENV = "PYRE_PLANT_NO_RAIN_GATE_OFF"   # planted state for the repaired row: the mechanics off
+
+
 def _r6_forced_rain_roll(t):
     """Lock Rain (jawa/weather_set lockWeather: a GameCondition_ForceWeather whose weather IS Rain), then make
     WeatherDecider roll now, twice (jawa/weather_roll_next: StartNextWeather -> ChooseNextWeather, the method
@@ -5534,7 +5610,7 @@ def _r6_forced_rain_roll(t):
     Then an hour with the storyteller back. The prior lock (or none) is put back. -> the readings."""
     w0 = t.bridge_call("jawa/weather_get") or {}
     # weather_get's conditions[] names the def, not the forced weather: a lock in force is taken to hold the weather now
-    prior = [w0.get("weather") for c in w0.get("conditions") or [] if c.get("def") == "WeatherController"][:1]
+    prior = [weather_name(w0.get("weather")) for c in w0.get("conditions") or [] if c.get("def") == "WeatherController"][:1]
     teller = ((t.bridge_call("jawa/storyteller_swap") or {}).get("before") or {}).get("storytellerDef")
     out = {"before": w0.get("weather"), "priorLock": prior, "storyteller": teller}
     try:
@@ -5547,9 +5623,9 @@ def _r6_forced_rain_roll(t):
     finally:
         if teller:
             t.bridge_call("jawa/storyteller_swap", storytellerDef=teller)
-    out["now"] = (t.bridge_call("jawa/weather_get") or {}).get("weather")
+    out["now"] = weather_name((t.bridge_call("jawa/weather_get") or {}).get("weather"))
     _wait(t, TEN_HOUR)
-    out["hourLater"] = (t.bridge_call("jawa/weather_get") or {}).get("weather")
+    out["hourLater"] = weather_name((t.bridge_call("jawa/weather_get") or {}).get("weather"))
     if prior and prior[0]:
         t.bridge_call("jawa/weather_set", weather=prior[0], lockWeather=True)
     else:
@@ -5576,7 +5652,16 @@ def _r6_no_ordinary_rain(t):
     (RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN)."""
     _independent(t)
     with _comp(t, "forced_rain_becomes_black_rain"):
-        site = _r6_forced_rain_roll(t)
+        planted = os.environ.get(PLANT_NO_RAIN_GATE_OFF_ENV) == "1"
+        if planted:
+            _note(t, "PLANTED FAULT", "%s=1: pyrelandsEnabled off for this row, so the decider's ordinary Rain stands"
+                  % PLANT_NO_RAIN_GATE_OFF_ENV)
+            _set(t, {"pyrelandsEnabled": False})
+        try:
+            site = _r6_forced_rain_roll(t)
+        finally:
+            if planted:
+                _set(t, {"pyrelandsEnabled": True})
         if _live(t):
             _note(t, "forced Rain on the site, rolled by WeatherDecider", site)
             _r6_forced_rain_blind(t, site)

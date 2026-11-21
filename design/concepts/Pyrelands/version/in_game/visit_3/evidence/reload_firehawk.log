@@ -1,0 +1,21 @@
+Traceback (most recent call last):
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT_THREE.det\src\RimMandrake\Pyrelands\northstar_site.py", line 612, in reload_fixture
+    _GUARD.refuse_if_foreign_activity("rimworld/go_to_main_menu")
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT_THREE.det\src\RimMandrake\Utils\bridge_concurrency_guard.py", line 151, in refuse_if_foreign_activity
+    raise ConcurrentBridgeClient("refusing %s: another bridge client is active -- %s. Take the bridge "
+                                 "(rimflow bridge take) or set RM_ALLOW_CONCURRENT_BRIDGE=1." % (what, d))
+bridge_concurrency_guard.ConcurrentBridgeClient: refusing rimworld/go_to_main_menu: another bridge client is active -- pid 30868 (cli.py) jawa/static_call 2026-11-21T17:23:52Z 6s ago. Take the bridge (rimflow bridge take) or set RM_ALLOW_CONCURRENT_BRIDGE=1.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT_THREE.det\src\RimMandrake\Pyrelands\northstar_site.py", line 772, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT_THREE.det\src\RimMandrake\Pyrelands\northstar_site.py", line 756, in main
+    mi = reload_fixture(s, name, a.tile, map_id=a.map_id)
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT_THREE.det\src\RimMandrake\Pyrelands\northstar_site.py", line 614, in reload_fixture
+    raise SiteError(str(ex))
+SiteError: refusing rimworld/go_to_main_menu: another bridge client is active -- pid 30868 (cli.py) jawa/static_call 2026-11-21T17:23:52Z 6s ago. Take the bridge (rimflow bridge take) or set RM_ALLOW_CONCURRENT_BRIDGE=1.
+[bridge split] 0.4 s wall: load 0.0 / ticks 0.0 / reads 0.0 / other 0.0 / outside calls 0.4 s

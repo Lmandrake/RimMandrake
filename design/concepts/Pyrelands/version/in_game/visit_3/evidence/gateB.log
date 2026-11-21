@@ -1,0 +1,7 @@
+PASS       3.8.8                site: biome, mutators, size, temperature, latitude  tile 63294 lat 0.143773571 biome RM_Pyrelands raw 50.0 cells 57.2..57.2 (median 57.2)
+PASS       3.8.9                weather Clear (locked by the site script), game paused  Clear, paused
+PASS       3.8.10               storyteller quiet, incident queue empty  quiet, queue empty
+PASS       3.8.11               >= 3 living colonists, none downed  3 living colonists, downed []
+PASS       3.8.dialogs-B        no unexpected dialogs  closed 0 benign, 0 open
+GATE B: CLEAN (5 rows)
+[bridge split] 8.7 s wall: load 0.0 / ticks 0.0 / reads 0.3 / other 0.2 / outside calls 8.2 s

@@ -1,0 +1,17 @@
+START batch1 2026-11-21 09:13:59
+DONE startup_and_def_wiring reload_rc=1 rc=1 9s 09:14:08
+DONE mapgen_log reload_rc=1 rc=1 10s 09:14:18
+DONE animal_census reload_rc=1 rc=1 8s 09:14:26
+DONE grass_cover reload_rc=1 rc=1 9s 09:14:35
+START batch1 2026-11-21 09:16:55
+DONE startup_and_def_wiring reload_rc=0 rc=1 20s 09:17:15
+DONE mapgen_log reload_rc=1 rc=1 7s 09:17:22
+DONE animal_census reload_rc=1 rc=1 7s 09:17:29
+DONE grass_cover reload_rc=1 rc=1 8s 09:17:37
+DONE ambient_ash_drift reload_rc=1 rc=1 11s 09:17:48
+START batch1 2026-11-21 09:18:09
+DONE startup_and_def_wiring reload_rc=1 rc=2 12s 09:18:21
+DONE mapgen_log reload_rc=1 rc=2 11s 09:18:32
+DONE animal_census reload_rc=1 rc=2 10s 09:18:42
+DONE grass_cover reload_rc=1 rc=2 11s 09:18:53
+DONE ambient_ash_drift reload_rc=1 rc=2 9s 09:19:02

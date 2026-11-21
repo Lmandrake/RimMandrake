@@ -1,0 +1,14 @@
+PASS       3.8.1                bridge lock held by this seat  BENCH
+PASS       3.8.2                game started after the newest deploy (plan 3.2.5)  Player.log created 2026-11-21 08:47:24; newest deploy 2026-11-21 05:26:09 (FireEcologyHook.dll)
+PASS       3.8.3                running mod set == tier manifest  17 running; equals manifest
+PASS       3.2.1                deploy current: compose biomes + UtinniPatches  --compose biomes rc=0 drift=0; --mod UtinniPatches rc=0 drift=0
+FAIL       3.8.4                .srchash agrees across source, repo and deployed  FireEcologyHook.dll: stamp ABSENT []; RimMandrake.Biomes.dll: stamp ABSENT []; RimMandrake.Utinni.UtinniPatches.dll: stamp ABSENT []
+PASS       3.2.3                loaded assemblies are the deployed ones  FireEcologyHook mvid=0ac1c4c5-a865-45ce-911d-222e0fadf8dd; RimMandrake.Biomes mvid=9cc43136-e4c4-4f0a-b7cb-be6bb3cd7bfc; RimMandrake.Utinni.UtinniPatches mvid=7
+PASS       3.8.5                defs as loaded + def fingerprint  found 29/29 notFound [] fingerprint 417df172fdb5e402
+UNMEASURED 3.3                  Mod Settings at shipped defaults  mod_settings_field get crossBiomeBiomeList: no value
+PASS       3.8.7                log since load is clean  0 refusing line(s); 0 allowed burnedDef lines
+PASS       3.8.12               loadavg < 10  5.82
+PASS       3.8.dialogs          no unexpected dialogs  closed 1 benign, 0 open
+PASS       3.8.snapshot         Mod_* settings snapshot  2 Mod_*.xml snapshotted to Transient/pv3_snapshot
+GATE A: REFUSED -- 3.8.4(FAIL), 3.3(UNMEASURED)
+[bridge split] 208.7 s wall: load 0.0 / ticks 0.0 / reads 0.0 / other 0.4 / outside calls 208.3 s
