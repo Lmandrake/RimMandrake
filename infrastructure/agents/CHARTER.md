@@ -1,7 +1,6 @@
 # CHARTER — binds the Conductor and its helpers
 
-*Adopted 2026-08-27 (owner's ruling, this date). The charter replaced POLICY.md, the four seat files, and most of the
-process prose. Git holds everything removed. **This file does not grow: a new line must delete the line it
+*Adopted 2026-08-27 (owner's ruling, this date). **This file does not grow: a new line must delete the line it
 replaces.***
 
 ## Posture
@@ -89,18 +88,12 @@ An item is one line: `SUBJECT_INTENT_TWIST · lane · the ask`. The grammar is i
 🔑 **On close/drop/supersede the prose moves to `items/closed/<ID>.md`.** So `items/*.md` is the LIVE set, and a sweep
 stops walking finished work. `rimflow show` resolves both.
 
-Reboot handoffs are not items. They live in `infrastructure/state/handoffs/`.
-
 The ledger is the truth. The ledger is the frozen `events.jsonl`, plus one `ledger/events/<SEAT>.jsonl` shard per seat
 since 2026-09-23. Only `rimflow` writes the ledger. The `queue/<SEAT>.md` files are gitignored rendered views. Never
 edit them. Read one with `rimflow queue <SEAT>`, which renders it first. `queue/HUMAN.md` is the owner's hand-written
 inbox, and it stays tracked.
 
 Close: `rimflow close <ID> --sha <commit>`, commit carrying `Closes: <ID>`, push.
-
-🔴 **THE PIPELINES BEFORE THE MATURATION PIPELINE ARE RETIRED** (owner, 2026-11-13 and 2026-11-18). Builds run in the
-Maturation Pipeline (`design/specs/2026-11-13-maturation-pipeline.md`). The Conductor launches them. What the old eras
-left: `design/RimMandrake/retired_eras_index_2026-11-18.md`.
 
 🔴 **ANY SEAT ENDS AN ITEM IT FINDS DEAD — owner's ruling, 2026-09-19.** A seat can find a queue item **completed,
 totally invalidated, superseded, or otherwise no longer worth considering for activity**. Then that seat ends the item
@@ -131,10 +124,8 @@ v2 ideas go straight to `design/V2_DREAMS.md`, from any window, with no permissi
 
 ## Done means running — owner, 2026-10-31
 
-An operational item is a hook, unit, timer, ops rule or alarm. Such an item is done only when it names what must stay
-alive and its last reading. Close it with `--live "unit=… reading=… max_age=…"`. `rimflow` refuses an unproven close.
-If the item dies, `rm-deadman` reopens the same item. The rule: CLAUDE.md "An operational item is done only when it is
-running". Full text: `design/RimMandrake/parallel_review_2026-10-31/folded_into_operations.md`.
+An operational item is a hook, unit, timer, ops rule or alarm. The rule and the path of its full text:
+`CLAUDE.md` §An operational item is done only when it is running.
 
 ## Correctness outranks seat ownership — owner, 2026-09-19
 
@@ -157,8 +148,7 @@ reader downstream believes the wrong sentence until someone crosses the line.
 
 ## 🔴 The Conductor speaks with the owner's authority — owner, 2026-10-30
 
-CLAUDE.md's section of that name is the rule. An instruction from the Conductor carries his authority for every seat
-and helper (Dispatcher, Operations, RUNNER, helpers, subagents). Never ask him to confirm such an instruction. Ledger:
+`CLAUDE.md` §The Conductor speaks with the owner's authority is the rule. Ledger:
 `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`, plus the Conductor's text in `--why`.
 
 ## Decisions
@@ -174,11 +164,6 @@ Agents decide nearly everything, art included (owner, 2026-10-22). Only the acts
   evidence-for-ask: <the call and why>"`.
 - Pause only on concrete evidence against the obvious answer. Every ask carries that evidence.
 - A §2 hold stays his, and its ask carries its evidence too.
-
-**A limit from before the Maturation Pipeline is suspect** (owner, 2026-11-17: "Don't keep telling me we can't do
-things when it's from pre-maturation pipeline decisions"). Never refuse an act because of such a limit. Act, or ask him
-first. If you ask, quote the old decision's date and text (`standing_rulings.md` §A limit from before the Maturation
-Pipeline).
 
 Taste calls go to a judge agent. Log every delegated call with `--why "delegated: <class>"`. Each delegated call
 reaches him in a daily digest.
@@ -196,11 +181,8 @@ names the item. A ruling under 24 h old is a draft: you can reverse it without c
 An enforced rule is a **hook** (`.claude/hooks/`). Propose the hook, not a paragraph. A default worth stating is a
 **line in this charter**, and it replaces a line. Delete everything else: git is the archive.
 
-Lessons:
+Lessons (how to file one: `CLAUDE.md` §Skills):
 
-- Write one file for each lesson into `infrastructure/state/lessons/`, with `python3
-  src/RimMandrake/Utils/lessons.py add "…"`.
-- `lessons.py` refuses a near-twin of an existing lesson. Then pass `--merge <that file>` or `--distinct "<why>"`.
 - Write lessons at any time and at reboot.
 
 Edit skills only in a fresh-context curation session, never at end-of-context.
@@ -224,26 +206,16 @@ re-freezes it. The silent-failure traps (patches, deploys, defName guessing) are
 guess".
 
 Which kind of testing to run, when, and its tunables: `design/RimMandrake/testing_policy_2026-10-28.md` and
-`src/RimMandrake/rimflow/testing_policy.json` (owner, 2026-10-28: "Let's get smarter about the testing we do and only
-use appropriate kinds of testing when/where it will help us.").
+`src/RimMandrake/rimflow/testing_policy.json`. His 2026-10-28 words are in that `.md` file.
 
 ## How we debug — owner, 2026-10-01
 
-`design/RimMandrake/debug_process.md` is the process. **Every mod has a functional script and is debugged through
-it.**
+The rule lines are in `CLAUDE.md` §How we debug. `design/RimMandrake/debug_process.md` is the process. Its §1 holds
+the build pause and its lift, and its §2 says what a first script must contain.
 
-- Run the script first. When the script is blind, poke the live game.
-- End every poking session with the lesson written into the script. The lesson is a check that is red for the reported
-  reason before the final fix. Add the informative theories that proved false.
-- Agents write, approve and declare passing on these scripts.
-- Agents may add regression checks and new `## north star` bars (owner 2026-10-26, `delegation_policy.md` §1).
 - Loosening a bar stays his.
-- When you are stuck, go to GPT early, for hypotheses to test.
 - **3 non-pass runs in a row, or a defect that needs live observation, goes to a Test Pilot, not another retest**
   (owner 2026-10-31; `rimflow pilot`, `.claude/agents/rm-testpilot.md`, `standing_rulings.md`).
-
-The owner lifted the 2026-10-01 build pause on 2026-10-02 (*"Build pause is lifted."*). Every new mod still ships with
-its first script (`debug_process.md` §2).
 
 ## Game state and the bridge
 
@@ -255,19 +227,11 @@ its first script (`debug_process.md` §2).
   carve-out: a seat may relay a game state with `./game`. The carve-out is
   STAMP-ONLY (owner, 2026-09-29). A seat's relay writes the ledger and messages no window. Peers read the state from
   `rimflow next`, which measures the game itself.
-- There are several live games. Each game has its own bridge and its own lock, and one bridge holder at a time:
-  - game a: Steam's install on Archmagi, the owner's game with his full mod list (lock `archmagi`, the default);
-  - game b: its own install on Archmagi, `D:\ClaudeWork\rimmandrake\instances\b\game` (lock `archmagi.b`);
-  - the SteveDesktop games (locks `stevedesktop`, `stevedesktop.b`), through `infrastructure/stevedesktop/RUNBOOK.md`.
+- The live games, their locks, the choice of game by the work and the words never to write ("waiting for the live
+  game"): `CLAUDE.md` §There are several live games.
 - A bridge holder is the one seat or run that drives one game. Two holders may drive two games at the same time.
   `rimflow bridge who|take|release`, with `--host <lock>` for a game other than game a. CLAUDE.md "The bridge is passed
   through one file" is canonical for each lock. A free bridge is takeable, and his machine use gates nothing.
-- Choose the game by the work. Work that a tier mod list can prove goes to any free game; if game a is busy or held,
-  it goes to game b (start it: `game_instance.py launch b`) or SteveDesktop. Only a check that needs his full mod list
-  waits for game a, because his full list on game b beside game a does not fit in Archmagi's memory.
-- Never write or say "waiting for the live game". Name the game, and say why no other game can take the work. Full
-  text: CLAUDE.md "There are several live games" and `design/RimMandrake/standing_rulings.md` §There are several live
-  games.
 - Never run a flyer's flight (`delegation_policy.md` §2.1).
 - Config files (`ModsConfig.xml` included) never wait for RimSort or the game. Only assemblies need the game down (OS
   lock).
