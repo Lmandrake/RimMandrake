@@ -1316,6 +1316,10 @@ def advance(root, mod, to, by, why, steward=None, conductor=None, owner=None, wa
             res["ok"] = False
             res["moved_meanwhile"] = "no validated walk build to record: %s" % ((wid or {}).get("why") or "none read")
             return res
+        taken = pass_tag_taken(root, mod, rec.get("version"))
+        if taken:      # RIMMANDRAKE_TAG_EACH_PASSED_MOD_VERSION_PIPELINE_DOES_IT: refused before any write
+            res["ok"], res["tag_taken"] = False, taken
+            return res
         prp, pr = pass_record(root, mod, rec, owner, res["verdict"].get("sha"), t, wid)
         first = {prp: json.dumps(pr, indent=1, sort_keys=True) + "\n"}
         res["pass_record"] = rel(mod, prp)
@@ -1325,6 +1329,10 @@ def advance(root, mod, to, by, why, steward=None, conductor=None, owner=None, wa
         res["ok"], res["moved_meanwhile"] = False, str(e)
         return res
     ledger_stage_move(root, mod, cur, to, by)
+    if first:
+        # the pass is made and stays made; landing and tagging it can only add res["tag"] or res["untagged"]
+        res.update(tag_pass(root, mod, rec.get("version"), paths=pass_paths(root, mod, list(first),
+                                                                             jtext is not None)))
     return res
 
 
@@ -3655,6 +3663,140 @@ def pass_record(root, mod, rec, owner, sha, t, wid):
         "build": {k: v for k, v in wid.items() if k not in ("why",)}}
 
 
+# ---- the pass tag (owner, 2026-11-20: "Make sure we TAG each finished version of a mod so we can easily come precisely
+# back to it, please. This should become policy."; item RIMMANDRAKE_TAG_EACH_PASSED_MOD_VERSION_PIPELINE_DOES_IT).
+# Boundary: design/specs/2026-11-20-maturation-pass-tag/boundary.md. The pass is written once and never replaced, so a
+# tag that cannot be made or pushed is RETRIED (`tag-pass`), reported as res["untagged"], never a silent success.
+
+PASS_TAG = "mod/%s/v%s"
+
+
+def _g(root, *a, timeout=120):
+    return subprocess.run(["git", "-C", root] + list(a), capture_output=True, text=True, timeout=timeout)
+
+
+def _not_own_repo(root):
+    """-> None when root is itself the top of a git clone, else why not (never a folder inside some other clone; a git
+    that cannot run is named, so the untagged pass says so)."""
+    try:
+        r = _g(root, "rev-parse", "--show-toplevel", timeout=30)
+    except (OSError, subprocess.TimeoutExpired) as e:
+        return "git could not run in %s: %r" % (root, e)
+    if r.returncode:
+        return "%s is not inside a git clone" % root
+    top = os.path.realpath(r.stdout.strip())
+    return None if top == os.path.realpath(root) else "%s is inside the clone %s, not its top" % (root, top)
+
+
+def pass_tag_taken(root, mod, version):
+    """-> the tag name when it already exists in root's clone (the pass is then refused before any write), else None."""
+    name = PASS_TAG % (mod, version)
+    if _not_own_repo(root):
+        return None          # nothing to read: tag_pass then names the cause as untagged, step land
+    return name if _g(root, "rev-parse", "-q", "--verify", "refs/tags/" + name, timeout=30).returncode == 0 else None
+
+
+def pass_paths(root, mod, first, journal):
+    """The repo-relative files one pass move wrote: the pass record(s), the stage record, the journal, and the mod's
+    own ledger/ files that changed (ledger_stage_move)."""
+    base = os.path.join("design", "concepts", mod)
+    out = [os.path.join(base, p) for p in sorted(first)] + [os.path.join(base, RECORD)]
+    if journal:
+        out.append(os.path.join(base, "journal.md"))
+    if not _not_own_repo(root):
+        st = _g(root, "status", "--porcelain", "-z", "--untracked-files=all", "--", os.path.join(base, "ledger"))
+        out += [e[3:] for e in st.stdout.split("\0") if len(e) > 3 and e[3:] not in out] if st.returncode == 0 else []
+    return out
+
+
+def _remote_tag(root, name):
+    """-> (commit the tag peels to on origin or None, error text or None), read with ls-remote."""
+    try:
+        r = _g(root, "ls-remote", "origin", "refs/tags/%s^{}" % name, timeout=120)
+    except (OSError, subprocess.TimeoutExpired) as e:
+        return None, repr(e)
+    if r.returncode:
+        return None, (r.stderr or "").strip()[-300:]
+    return (r.stdout.split()[0] if r.stdout.strip() else None), None
+
+
+def tag_pass(root, mod, version, paths=None):
+    """Land (when paths are given) and tag one passed version: the annotated tag mod/<Mod>/v<version> on the commit
+    that records the pass, pushed to origin and read back with ls-remote. -> {"tag": {name, commit, pushed}} (with
+    "already": True when origin had it), or {"untagged": {name, step, why, retry}}, step land/tag/push/verify."""
+    name = PASS_TAG % (mod, version)
+    retry = "python3 src/RimMandrake/rimflow/maturation.py tag-pass %s --version %s" % (mod, version)
+
+    def fail(step, why):
+        return {"untagged": {"name": name, "step": step, "why": why, "retry": retry}}
+    why = _not_own_repo(root)
+    if why:
+        return fail("land", "%s: nothing is committed, tagged or pushed" % why)
+    prp = os.path.join("design", "concepts", mod, PASS_RECORD_DIR, "%s.json" % version)
+    if paths:
+        pub = os.path.join(root, "publish")
+        if not os.access(pub, os.X_OK):
+            return fail("land", "no executable publish at %s" % pub)
+        add = _g(root, "add", "--", *paths)       # a new pass record must be known to git before publish
+        if add.returncode:
+            return fail("land", "git add: %s" % (add.stderr or "").strip()[-300:])
+        try:
+            r = subprocess.run([pub, "-m", "%s %s PASSED: pass record, stage record and journal (maturation.py)"
+                                % (mod, version)] + list(paths), cwd=root, capture_output=True, text=True, timeout=480)
+        except (OSError, subprocess.TimeoutExpired) as e:
+            return fail("land", "publish: %r" % (e,))
+        m = re.search(r"^PUBLISHED ([0-9a-f]{7,40})", r.stdout or "", re.M)
+        if r.returncode or not m:
+            tail = ((r.stdout or "") + (r.stderr or "")).strip().splitlines()[-3:]
+            return fail("land", "publish exit %d: %s" % (r.returncode, " | ".join(tail)))
+        sha = _g(root, "rev-parse", m.group(1) + "^{commit}").stdout.strip()
+    else:
+        _g(root, "fetch", "-q", "origin", "main", timeout=180)     # best effort: a stale origin/main only misses
+        added = _g(root, "log", "--diff-filter=A", "--format=%H", "origin/main", "--", prp)
+        sha = (added.stdout.split() or [""])[0] if added.returncode == 0 else ""
+        if not sha:
+            return fail("land", "no commit on origin/main adds %s" % prp)
+    if not sha:
+        return fail("land", "the PUBLISHED commit could not be read back")
+    have = _g(root, "rev-parse", "-q", "--verify", "refs/tags/%s^{commit}" % name)
+    made = have.returncode != 0
+    if not made and have.stdout.strip() != sha:
+        return fail("tag", "the clone's tag %s names %s, not the pass commit %s" % (name, have.stdout.strip()[:10],
+                                                                                    sha[:10]))
+    if made:
+        t = _g(root, "tag", "-a", "-m", "%s %s passed: the commit that records the pass (%s)" % (mod, version, prp),
+               name, sha)
+        if t.returncode:
+            return fail("tag", "git tag: %s" % (t.stderr or "").strip()[-300:])
+    on, _ = _remote_tag(root, name)
+    if on == sha:
+        return {"tag": {"name": name, "commit": sha, "pushed": True}, "already": not made}
+    if on:
+        return fail("push", "origin's tag %s names %s, not the pass commit %s" % (name, on[:10], sha[:10]))
+    try:
+        p = _g(root, "push", "origin", "refs/tags/" + name, timeout=240)
+    except (OSError, subprocess.TimeoutExpired) as e:
+        return fail("push", repr(e))
+    if p.returncode:
+        return fail("push", " | ".join((p.stderr or "").strip().splitlines()[-3:]))
+    on, err = _remote_tag(root, name)
+    if on != sha:
+        return fail("verify", "after the push origin shows %s for %s (%s)" % (on, name, err or "read"))
+    return {"tag": {"name": name, "commit": sha, "pushed": True}}
+
+
+def tag_line(res):
+    """One line for a CLI, or None: TAGGED ..., or PASSED BUT NOT TAGGED ... with the retry command."""
+    if res.get("untagged"):
+        u = res["untagged"]
+        return "PASSED BUT NOT TAGGED: %s, step %s: %s. Retry: %s" % (u["name"], u["step"], u["why"], u["retry"])
+    if res.get("tag"):
+        t = res["tag"]
+        return "TAGGED %s on %s, on origin (ls-remote)%s" % (t["name"], t["commit"][:10],
+                                                              ", already there" if res.get("already") else "")
+    return None
+
+
 # ---- a failed or unmeasured line is classed (owner, 2026-11-20, RIMMANDRAKE_ENACT_WRONG_CHECK_FIXED_IN_SITTING_NOT_
 # RETURNED and RIMMANDRAKE_RESUME_WRONG_CHECK_WORKER_WITH_MOD_FIX_EXTENSION; standing_rulings §Touching code has a cost):
 # the mod is wrong (MOD), the check is wrong (HARNESS) or the staged scene is wrong (SITE), the classes of skill
@@ -4591,6 +4733,10 @@ def main(argv=None):
         if c == "next":     # tuning tripwire T1; inside a detached run both default to the run's own diff and item
             p.add_argument("--diff-file", help="a unified diff to read for the tuning tripwire")
             p.add_argument("--item", help="the item whose number-only diffs are counted")
+    tp = sub.add_parser("tag-pass", help="tag a passed version again: mod/<Mod>/v<version> on the commit that "
+                                         "records its pass, pushed (the retry of a PASSED BUT NOT TAGGED)")
+    tp.add_argument("mod")
+    tp.add_argument("--version", help="default: the stage record's version")
     a = sub.add_parser("advance")
     a.add_argument("mod")
     a.add_argument("--to", required=True, choices=WORDS)
@@ -4747,6 +4893,17 @@ def main(argv=None):
         print(ov["line"])
         print(nx["next"])
         return 0
+    if o.cmd == "tag-pass":
+        ver = o.version
+        if not ver:
+            rec = load(root, o.mod)
+            ver = rec.get("version") if rec else None
+        if not ver:
+            print("REFUSED: %s has no stage record and no --version" % o.mod)
+            return 1
+        tr = tag_pass(root, o.mod, ver)
+        print(tag_line(tr).replace("PASSED BUT NOT TAGGED", "NOT TAGGED"))
+        return 5 if tr.get("untagged") else 0
     if o.cmd == "advance":
         if load(root, o.mod) is None:
             print("REFUSED: %s has no stage record; run maturation.py seed %s first" % (o.mod, o.mod))
@@ -4768,15 +4925,24 @@ def main(argv=None):
             v = dict(res["verdict"])
             v["given"] = {"criteria": v["given"]["criteria"], "inputs": sorted(v["given"]["inputs"])}
             print(json.dumps({"ok": res["ok"], "verdict": v, "submit": res.get("submit"),
-                              "submit_error": res.get("submit_error")}, indent=2, ensure_ascii=False))
+                              "submit_error": res.get("submit_error"), "tag": res.get("tag"),
+                              "untagged": res.get("untagged"), "tag_taken": res.get("tag_taken")},
+                             indent=2, ensure_ascii=False))
         elif res["ok"]:
             print("ADVANCED %s: %s to %s; journal and %s written" % (o.mod, label(res["from"]), label(o.to), RECORD))
             if said:
                 print("- refusal contract: %s" % said)
+            if tag_line(res):
+                print(tag_line(res))
         else:
             print_refusal(res)
+            if res.get("tag_taken"):
+                print("- the tag %s already exists, so this pass cannot be tagged; nothing was written"
+                      % res["tag_taken"])
             if said:
                 print("- refusal contract: %s" % said)
+        if res["ok"] and res.get("untagged"):
+            return 5        # passed, but not tagged: never the plain success code
         # a refusal nobody could count is not a refusal counted zero times: its own exit code, above the plain
         # refusal's 1, so a caller in a loop cannot read "not counted yet" as "counted and under the limit"
         if res.get("submit_error") and not res["ok"]:
