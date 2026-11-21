@@ -9,6 +9,7 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import role_launch as RL  # noqa: E402
+import form_fault as FF  # noqa: E402  every launched brief carries FF.BRIEF_LINE (standing_rulings.md §A fault of form)
 
 FAILS = []
 
@@ -164,7 +165,7 @@ def test_launch_argv_shape():
     check("RuntimeMaxSec=1600" in a and "TimeoutStopSec=30" in a, "unit bound is run_max_s + grace")
     check(any(x.startswith("PATH=/bin:") for x in a), "claude's dir leads PATH")
     i = a.index("--")
-    check(a[i + 1].endswith("claude_bounded.sh") and a[i + 2:i + 4] == ["-p", "MSG"]
+    check(a[i + 1].endswith("claude_bounded.sh") and a[i + 2:i + 4] == ["-p", "MSG\n\n" + FF.BRIEF_LINE]
           and a[a.index("--model") + 1] == "opus" and a[-3:] == ["--output-format", "json", "--dangerously-skip-permissions"],
           "claude_bounded argv %r" % a[i:])
     check(RL.scope_bound_s(role) == 1600 and RL.scope_bound_s(None) == 1800 + 600 and RL.scope_bound_s({}) == 2400, "scope bound")

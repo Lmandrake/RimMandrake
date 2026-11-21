@@ -917,6 +917,13 @@ def test_ringed_next_withholds_nothing():
 
 # ---------------------------------------------------------------- role launch (role_launch.py)
 import role_launch as RL  # noqa: E402
+import form_fault as FF  # noqa: E402
+
+
+def briefed(msg):
+    """A launched brief as claude receives it: the message plus the repair line (standing_rulings.md §A fault of form,
+    1e91cc0953)."""
+    return msg.rstrip() + "\n\n" + FF.BRIEF_LINE
 
 DAY0 = time.mktime((2026, 10, 28, 0, 0, 0, 0, 0, -1))          # a local midnight
 
@@ -1250,7 +1257,7 @@ def test_role_execute_and_dry():
     check("--setenv" in argv and "AGENT_SEAT=BENCH" in argv and any(a.startswith("PATH=/opt/bin:") for a in argv),
           "launch: seat env and claude's dir on PATH")
     i = argv.index("--")
-    check(argv[i + 1].endswith("claude_bounded.sh") and argv[i + 2:i + 4] == ["-p", "hello"]
+    check(argv[i + 1].endswith("claude_bounded.sh") and argv[i + 2:i + 4] == ["-p", briefed("hello")]
           and argv[argv.index("--model") + 1] == "sonnet" and "json" in argv, "launch: claude_bounded -p, alias, json")
     check(rec["scope"] == "claude-seat-BENCH-rm-role-conductor-1.scope" and rec["marker"] == "rm-role-conductor-1"
           and len(calls) == 1, "launch: the scope is named by the launcher (claude-seat-<seat>-<unit>), no MainPID query")
@@ -1261,11 +1268,11 @@ def test_role_execute_and_dry():
     pa = RL.launch_argv(pre_role, "u-pre", "it's \"msg\" $HOME", "/o", "/e", "/opt/bin/claude")
     j = pa.index("--")
     check(pa[j + 1:j + 3] == ["/bin/sh", "-c"] and pa[j + 4] == "role-pre-launch"
-          and pa[j + 5].endswith("claude_bounded.sh") and pa[j + 6:j + 8] == ["-p", "it's \"msg\" $HOME"],
+          and pa[j + 5].endswith("claude_bounded.sh") and pa[j + 6:j + 8] == ["-p", briefed("it's \"msg\" $HOME")],
           "pre_launch: sh -c wraps the step, claude's argv stays positional and unquoted")
     with tempfile.TemporaryDirectory() as pd:
         mark, errf = os.path.join(pd, "ran"), os.path.join(pd, "err")
-        for pre, want_rc, want_out in ((["sh", "-c", "echo PRE; touch '%s'" % mark], 0, "ARGS:-p|it's \"msg\" $HOME"),
+        for pre, want_rc, want_out in ((["sh", "-c", "echo PRE; touch '%s'" % mark], 0, "ARGS:-p|" + briefed("it's \"msg\" $HOME")),
                                        (["false"], 1, "")):
             if os.path.exists(mark):
                 os.remove(mark)
@@ -1289,7 +1296,7 @@ def test_role_execute_and_dry():
         log, errf = os.path.join(pd, "log"), os.path.join(pd, "err")
         for steps, want_rc, want_log, want_out in (
                 ([["sh", "-c", "echo one >> '%s'" % log], ["sh", "-c", "echo two >> '%s'" % log]], 0, "one\ntwo\n",
-                 "ARGS:-p|m"),
+                 "ARGS:-p|" + briefed("m")),
                 ([["sh", "-c", "echo one >> '%s'; exit 3" % log], ["sh", "-c", "echo two >> '%s'" % log]], 3,
                  "one\n", "")):
             if os.path.exists(log):
@@ -2977,6 +2984,8 @@ def test_golive_b1_busy_until_ended():
     for pid, env in (("201", b"RM_ROLE_UNIT=uT\0"), ("202", b"RM_ROLE_UNIT=uOther\0")):
         with open(os.path.join(tp, pid, "environ"), "wb") as f:
             f.write(env)
+        with open(os.path.join(tp, pid, "stat"), "wb") as f:   # a live process: scan_marked reads its state, and a pid
+            f.write(b"%s (python3) S 1 1 1 0 -1" % pid.encode())  # with no stat reads as exited (cd73ef1d91)
     if os.getuid() != 0:
         e201 = os.path.join(tp, "201", "environ")
         os.chmod(e201, 0)
