@@ -518,6 +518,56 @@ def test_expected_disturbance():
            "a predicate that raises never resumes a stop")
 
 
+def test_expected_disturbance_repair():
+    """RIMMANDRAKE_SHIELD_PYRE_WALK_FROM_FULL_LIST_EVENTS: an expectation may carry a repair (the Pyrelands walk vanishes a
+    foreign hostile that arrived from his full list, 2026-11-21 'arrived: Human VRESaurids_TownGuard_Saurid'). The repair runs
+    on the stop BEFORE the resume and its evidence is noted; a repair that fails or raises leaves the stop standing."""
+    os.environ["RIMBRIDGE_GOVERNOR_LOG"] = ""
+    saurid = {"kind": "hostile_arrival", "severity": "threat", "subjectId": 77001, "subject": "Saurid", "critical": False,
+              "declared": False, "detail": "arrived: Human VRESaurids_TownGuard_Saurid (humanlike)"}
+
+    class S(object):
+        def __init__(self):
+            self.calls, self.n = [], 0
+
+        def call(self, tool, **p):
+            self.calls.append((tool, p))
+            if tool == "jawa/safe_advance" and not p.get("action"):
+                self.n += 1
+                if self.n == 1:
+                    return {"success": False, "state": "stopped", "requested": p["ticks"], "executed": 300,
+                            "stopBy": saurid, "triggers": [saurid]}
+                return {"success": True, "state": "done", "requested": p["ticks"], "executed": p["ticks"]}
+            return {"success": True, "ticksGame": 1}
+
+    pred = lambda t: t.get("kind") == "hostile_arrival" and t.get("subjectId") == 77001   # noqa: E731
+    seen = []
+
+    def fix(session, r):
+        seen.append(((r.get("stopBy") or {}).get("subjectId"), session.n))
+        return {"ok": True, "removed": [77001]}
+    n0 = len(cg.BENIGN_STOPS)
+    s = S()
+    with cg.expected_disturbance("walk: foreign arrival", pred, repair=fix):
+        got = cg.advance_chunk(s, 1000)
+    ok(got == 1000 and seen == [(77001, 1)] and len(cg.BENIGN_STOPS) == n0 + 1
+       and cg.BENIGN_STOPS[-1].get("repair") == {"ok": True, "removed": [77001]},
+       "a repairing expectation runs its repair once, before the resume, and notes its evidence: %r %r" % (got, seen))
+    for label, bad in (("a repair that reports failure", lambda session, r: {"ok": False, "why": "still there"}),
+                       ("a repair that raises", lambda session, r: 1 / 0)):
+        s = S()
+        with cg.expected_disturbance("walk: foreign arrival", pred, repair=bad):
+            try:
+                cg.advance_chunk(s, 1000)
+                ok(False, "can-fail: %s leaves the stop standing" % label)
+            except cg.GovernorStop as e:
+                ok(s.n == 1 and "repair" in str(e.result.get("abortWhy") or ""),
+                   "can-fail: %s leaves the stop standing, named: %r" % (label, e.result.get("abortWhy")))
+    s = S()
+    with cg.expected_disturbance("walk: foreign arrival", pred):
+        ok(cg.advance_chunk(s, 1000) == 1000, "an expectation without a repair still resumes as before")
+
+
 def test_fixture_arrival_resumes():
     """MODCHECK_SITE_FIX_RAIDS_KILL_THE_RUN (FlowWorks run 2026-10-24T19:13Z): the row's OWN spawned Pirate fixture
     (spawn_pawn id Human16744) latched 'hostile_arrival' on the next safe_advance and killed the row; a declared fixture's
@@ -618,7 +668,7 @@ def test_benign_stops_in_run_json():
 
 
 def main():
-    for t in (test_benign_stops_in_run_json, test_fixture_arrival_resumes, test_expected_disturbance, test_between_call_ticks_charged,
+    for t in (test_benign_stops_in_run_json, test_fixture_arrival_resumes, test_expected_disturbance, test_expected_disturbance_repair, test_between_call_ticks_charged,
               test_step_charges_measured_and_records_overshoot,
               test_truncation_is_looped,
               test_negative_delta_new_epoch,

@@ -68,6 +68,37 @@ namespace JawaBench.BridgeTools
             // --- small health wobble is not hurt; >= 0.05 is
             check(V.Diff(D(P(1, health: 1f)), L(P(1, health: 0.97f)), false, 1).Count == 0, "vitals_health_wobble_ignored");
 
+            // --- RIMMANDRAKE_SHIELD_PYRE_WALK_FROM_FULL_LIST_EVENTS: in vanilla 1.6 only Hediff_Injury and Hediff_MissingPart lower
+            // SummaryHealthPercent (Verse/SummaryHealthHandler.cs); a drop with no new wound is another mod's hediff class (his
+            // 315-mod list, 2026-11-21: 1 -> 0.87 -> 0.73 with SEX_Penis/SEX_Reproduction age 0) and is info, never a stop.
+            var nw0 = P(1, health: 1f); nw0.Wounds = 0f; nw0.Newest = "SEX_Penis/SEX_Reproduction age 0";
+            var nw1 = P(1, health: 0.87f); nw1.Wounds = 0f; nw1.Newest = "SEX_Penis/SEX_Reproduction age 0";
+            var tw = V.Diff(D(nw0), L(nw1), false, 700);
+            check(Has(tw, V.KHurt, V.SInfo) && !Has(tw, V.KHurt, V.SDamage) && tw.Exists(x => x.Detail.Contains("no new wound")),
+                  "vitals_health_drop_without_new_wound_is_info", tw.Count > 0 ? tw[0].Severity + " " + tw[0].Detail : "none");
+            var wd0 = P(1, health: 1f); wd0.Wounds = 0f; wd0.Newest = "SEX_Penis/SEX_Reproduction age 0";
+            var wd1 = P(1, health: 0.87f); wd1.Wounds = 4f; wd1.Newest = "SEX_Penis/SEX_Reproduction age 0"; wd1.NewestWound = "Burn/Torso age 30";
+            var tb = V.Diff(D(wd0), L(wd1), false, 700);
+            check(Has(tb, V.KHurt, V.SDamage) && tb.Exists(x => x.Detail.Contains("newest hediff Burn/Torso")),
+                  "vitals_health_drop_with_new_wound_is_damage_naming_the_wound", tb.Count > 0 ? tb[0].Detail : "none");
+            var mp0 = P(1, health: 1f); mp0.Wounds = 0f;
+            var mp1 = P(1, health: 0.9f); mp1.Wounds = V.WoundScore(0f, 1);
+            check(Has(V.Diff(D(mp0), L(mp1), false, 700), V.KHurt, V.SDamage), "vitals_new_missing_part_is_damage");
+            var un0 = P(1, health: 1f); var un1 = P(1, health: 0.87f);      // Wounds unread (NaN): could not look, the stop stands
+            check(Has(V.Diff(D(un0), L(un1), false, 700), V.KHurt, V.SDamage), "vitals_unread_wounds_keep_the_stop");
+            var hl0 = P(1, health: 0.6f); hl0.Wounds = 9f;                   // a wound healing while health falls elsewhere
+            var hl1 = P(1, health: 0.5f); hl1.Wounds = 8.5f;
+            check(Has(V.Diff(D(hl0), L(hl1), false, 700), V.KHurt, V.SInfo), "vitals_healing_wound_with_other_drop_is_info");
+            // --- a downing names what downed the pawn (cause 1 of the same run was unread: "downed (health 1)")
+            var dn0 = P(1); var dn1 = P(1, downed: true); dn1.Ailments = "Heatstroke 0.82, Malnutrition 0.1";
+            var td = V.Diff(D(dn0), L(dn1), false, 800);
+            check(td.Exists(x => x.Kind == V.KDowned && x.Detail.StartsWith("downed (health 1") && x.Detail.Contains("Heatstroke 0.82")),
+                  "vitals_downed_names_its_ailments", td.Count > 0 ? td[0].Detail : "none");
+            var al = V.AilmentList(new List<V.Ail> { new V.Ail { Def = "A", Sev = 0.1f }, new V.Ail { Def = "B", Part = "Leg", Sev = 0.9f },
+                                                     new V.Ail { Def = "C", Sev = 0.5f } }, 2);
+            check(al == "B/Leg 0.9, C 0.5 (+1 more)", "vitals_ailment_list_worst_first_bounded", al);
+            check(V.AilmentList(new List<V.Ail>(), 6) == null, "vitals_ailment_list_empty_is_null");
+
             // --- colonist turns hostile (berserk)
             var t3 = V.Diff(D(P(1)), L(P(1, hostile: true, mental: "Berserk")), false, 400);
             check(Has(t3, V.KColonistHostile, V.SDamage) && Has(t3, V.KMental, V.SDamage), "vitals_colonist_hostile_latched");

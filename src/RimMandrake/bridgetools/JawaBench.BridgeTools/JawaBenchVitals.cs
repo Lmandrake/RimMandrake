@@ -424,7 +424,7 @@ namespace JawaBench.BridgeTools
             {
                 o.Health = p.health.summaryHealth.SummaryHealthPercent;
                 o.Bleed = p.health.hediffSet.BleedRateTotal;
-                if (o.Colonist || o.Critical) o.Newest = NewestHediff(p);
+                if (o.Colonist || o.Critical) { o.Newest = NewestHediff(p); ReadWounds(p, o); }
             }
             var needs = p.needs;
             if (needs != null)
@@ -452,6 +452,39 @@ namespace JawaBench.BridgeTools
             string src = best.sourceDef != null ? best.sourceDef.defName : best.sourceLabel;
             return best.def?.defName + (best.Part != null ? "/" + best.Part.def?.defName : "") + " age " + best.ageTicks
                    + (string.IsNullOrEmpty(src) ? "" : " from " + src);
+        }
+
+        /// <summary>RIMMANDRAKE_SHIELD_PYRE_WALK_FROM_FULL_LIST_EVENTS: the wound score and youngest wound (Hediff_Injury or
+        /// Hediff_MissingPart: the only vanilla hediffs that lower summary health) and, when downed, the bad hediffs worst first,
+        /// so a 'hurt' with no wound is info and a 'downed' names its cause. A read that throws leaves Wounds NaN (could not look).</summary>
+        private static void ReadWounds(Pawn p, V.PawnObs o)
+        {
+            try
+            {
+                float sev = 0f; int missing = 0; Hediff young = null;
+                var ails = o.Downed ? new List<V.Ail>() : null;
+                var hs = p.health.hediffSet.hediffs;
+                for (int i = 0; i < hs.Count; i++)
+                {
+                    var h = hs[i];
+                    if (h == null) continue;
+                    bool w = false;
+                    if (h is Hediff_MissingPart) { missing++; w = true; }
+                    else if (h is Hediff_Injury) { sev += h.Severity; w = true; }
+                    if (w && (young == null || h.ageTicks < young.ageTicks)) young = h;
+                    if (ails != null && h.def != null && (h.def.isBad || w))
+                        ails.Add(new V.Ail { Def = h.def.defName, Part = h.Part?.def?.defName, Sev = h.Severity });
+                }
+                o.Wounds = V.WoundScore(sev, missing);
+                if (young != null)
+                {
+                    string src = young.sourceDef != null ? young.sourceDef.defName : young.sourceLabel;
+                    o.NewestWound = young.def?.defName + (young.Part != null ? "/" + young.Part.def?.defName : "") + " age " + young.ageTicks
+                                    + (string.IsNullOrEmpty(src) ? "" : " from " + src);
+                }
+                if (ails != null) o.Ailments = V.AilmentList(ails, 6);
+            }
+            catch { o.Wounds = float.NaN; }
         }
 
         internal static List<V.PawnObs> Census()

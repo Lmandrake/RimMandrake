@@ -64,8 +64,11 @@ namespace JawaBench.BridgeTools
         {
             internal int Id, Map, X, Z;
             internal string Label, Def, Kind, Cls, Rel, Mental, Food, Job, Newest;   // Newest: youngest hediff (colonists/critical)
+            internal string NewestWound;   // youngest Hediff_Injury or Hediff_MissingPart (colonists/critical), same format as Newest
+            internal string Ailments;      // a downed colonist's/critical actor's bad hediffs, worst first (AilmentList)
             internal bool Downed, Hostile, Colonist, Critical;
             internal float Health = float.NaN, Bleed, Mood = float.NaN, MoodBreak = float.NaN;
+            internal float Wounds = float.NaN;   // WoundScore of the pawn's wounds; NaN = not read (the hurt stop then stands)
 
             internal string Json()
             {
@@ -160,6 +163,42 @@ namespace JawaBench.BridgeTools
         /// <summary>A pawn whose harm damages the test: a required actor, or (absent any declared actors) any colonist.</summary>
         internal static bool Matters(PawnObs p, bool anyCritical) => p.Critical || (!anyCritical && p.Colonist);
 
+        // ------------------------------------------------------------------ wounds (RIMMANDRAKE_SHIELD_PYRE_WALK_FROM_FULL_LIST_EVENTS)
+        // In vanilla 1.6 only Hediff_Injury and Hediff_MissingPart override SummaryHealthPercentImpact (Verse/SummaryHealthHandler.cs,
+        // RimSage 2026-11-21). A summary-health drop with no new wound is another mod's hediff class: his 315-mod list read
+        // "health 1 -> 0.87; newest hediff SEX_Penis/SEX_Reproduction age 0" and stopped a two-week walk on it.
+        internal const float MissingPartWeight = 100f;   // a part lost outweighs any injury severity sum: either rising is a wound
+        internal const float WoundRiseEps = 0.001f;      // float noise on a severity sum; an injury's smallest severity is far above
+
+        /// <summary>Injury severities summed, plus MissingPartWeight per missing part. Pure.</summary>
+        internal static float WoundScore(float injurySeveritySum, int missingParts) => injurySeveritySum + MissingPartWeight * missingParts;
+
+        /// <summary>True when a new wound came between two samples, or when either sample did not read wounds (could not look:
+        /// the stop stands). Pure.</summary>
+        internal static bool WoundRose(PawnObs prev, PawnObs cur)
+        {
+            if (prev == null || cur == null || float.IsNaN(prev.Wounds) || float.IsNaN(cur.Wounds)) return true;
+            return cur.Wounds > prev.Wounds + WoundRiseEps;
+        }
+
+        internal sealed class Ail { internal string Def, Part; internal float Sev; }
+
+        /// <summary>"B/Leg 0.90, C 0.50 (+1 more)": the worst `max` hediffs by severity; null when there are none. Pure.</summary>
+        internal static string AilmentList(List<Ail> xs, int max)
+        {
+            if (xs == null || xs.Count == 0) return null;
+            var s = new List<Ail>(xs);
+            s.Sort((a, b) => b.Sev.CompareTo(a.Sev));
+            var sb = new StringBuilder();
+            for (int i = 0; i < s.Count && i < max; i++)
+            {
+                if (i > 0) sb.Append(", ");
+                sb.Append(s[i].Def).Append(s[i].Part != null ? "/" + s[i].Part : "").Append(' ').Append(F(s[i].Sev, 2));
+            }
+            if (s.Count > max) sb.Append(" (+").Append(s.Count - max).Append(" more)");
+            return sb.ToString();
+        }
+
         // ------------------------------------------------------------------ diff of two samples (one map)
         /// <summary>prev = null for the baseline sample: hostiles already present are reported once as present-at-arm.</summary>
         internal static List<Trigger> Diff(Dictionary<int, PawnObs> prev, List<PawnObs> cur, bool anyCritical, int tick)
@@ -185,10 +224,18 @@ namespace JawaBench.BridgeTools
                 else if (!p.Hostile && c.Hostile)
                     outT.Add(T(KHostileArrival, SThreat, tick, c, "turned hostile: " + c.Def + " (" + (c.Mental ?? "faction") + ")"));
                 if (!p.Downed && c.Downed)
-                    outT.Add(T(KDowned, matters ? SDamage : (c.Hostile ? SInfo : SThreat), tick, c, "downed (health " + F(c.Health, 2) + ")"));
+                    outT.Add(T(KDowned, matters ? SDamage : (c.Hostile ? SInfo : SThreat), tick, c, "downed (health " + F(c.Health, 2) + ")"
+                                   + (c.Ailments != null ? "; hediffs " + c.Ailments : "")));
                 if (!float.IsNaN(p.Health) && !float.IsNaN(c.Health) && p.Health - c.Health >= HurtDrop)
-                    outT.Add(T(KHurt, matters ? SDamage : SInfo, tick, c, "health " + F(p.Health, 2) + " -> " + F(c.Health, 2)
-                                   + (c.Newest != null ? "; newest hediff " + c.Newest : "")));
+                {
+                    // RIMMANDRAKE_SHIELD_PYRE_WALK_FROM_FULL_LIST_EVENTS: only a new wound is harm (WoundRose); the detail names the
+                    // youngest WOUND when there is one, so "newest hediff" no longer points at an unrelated hediff of age 0.
+                    bool wound = WoundRose(p, c);
+                    string newest = wound && c.NewestWound != null ? c.NewestWound : c.Newest;
+                    outT.Add(T(KHurt, wound && matters ? SDamage : SInfo, tick, c, "health " + F(p.Health, 2) + " -> " + F(c.Health, 2)
+                                   + (wound ? "" : " with no new wound or missing part (a hediff that is not an injury)")
+                                   + (newest != null ? "; newest hediff " + newest : "")));
+                }
                 if (c.Food == "Starving" && p.Food != "Starving")
                     outT.Add(T(KStarving, matters ? SDamage : (c.Colonist ? SThreat : SInfo), tick, c, "food category Starving"));
                 if (c.Mental != null && c.Mental != p.Mental)

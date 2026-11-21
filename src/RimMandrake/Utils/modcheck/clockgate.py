@@ -189,19 +189,22 @@ def is_benign_stop(r):
                and not t.get("critical") and not t.get("declared") for t in (r.get("triggers") or []))
 
 
-EXPECTED = []               # active (label, predicate) pairs; see expected_disturbance()
+EXPECTED = []               # active (label, predicate, repair) items; see expected_disturbance()
 RIDE_ALONG_INFO = ("departed", "hurt", "downed")
 
 
 @contextlib.contextmanager
-def expected_disturbance(label, pred):
+def expected_disturbance(label, pred, repair=None):
     """TESTENV_SWEPT_BRUISE_HARDEN_OWN_HAZARD: inside this block a safe_advance stop is RESUMED (and noted in BENIGN_STOPS
     with `label`) when the stopping trigger and every other damage/threat trigger match `pred` -- a disturbance the row
     DECLARES because the mod under test causes it by design (FlowWorks' current bruises the pawn it sweeps). It never
     widens to anything else: another pawn hurt, a death, a downed actor, a hostile, a modal all still stop the clock.
     Only advance_chunk (suite.wait_ticks, watch.wait, validation_core) reads it; governor.RowGovernor declares its
-    expected transitions in its own RowContract(expected=...), which its verdict also honours."""
-    item = (label, pred)
+    expected transitions in its own RowContract(expected=...), which its verdict also honours.
+    repair (RIMMANDRAKE_SHIELD_PYRE_WALK_FROM_FULL_LIST_EVENTS): optional callable(session, stop) -> {"ok": bool, ...}, run
+    on a matched stop BEFORE the resume (the Pyrelands walk vanishes a hostile that arrived from his full list). Its result is
+    noted beside the stop in BENIGN_STOPS; a repair that is not ok, or that raises, leaves the stop standing (GovernorStop)."""
+    item = (label, pred, repair)
     EXPECTED.append(item)
     try:
         yield
@@ -217,7 +220,8 @@ def expected_stop_label(r, expected=None):
     if not exp or not isinstance(r, dict) or r.get("state") != "stopped":
         return None
     sb = r.get("stopBy") or {}
-    for label, pred in exp:
+    for item in exp:
+        label, pred = item[0], item[1]
         try:
             if not pred(sb):
                 continue
@@ -286,6 +290,42 @@ def resumable_stop(r):
     return ("expected: %s" % lab) if lab else None
 
 
+def _repair_for(label):
+    """The repair of the active expectation `label`, or None."""
+    for item in EXPECTED:
+        if item[0] == label and len(item) > 2:
+            return item[2]
+    return None
+
+
+def _resume(session, r):
+    """-> (why, repair evidence or None): why the stop may resume (resumable_stop), after the matched expectation's repair
+    ran. A repair that is not ok, or raises, -> (None, evidence): the stop stands, and abortWhy names the repair."""
+    why = resumable_stop(r)
+    if not why or not why.startswith("expected: "):
+        return why, None
+    fix = _repair_for(why[len("expected: "):])
+    if fix is None:
+        return why, None
+    try:
+        ev = fix(session, r)
+    except Exception as e:                                   # noqa: BLE001 - a broken repair never resumes a stop
+        ev = {"ok": False, "why": "repair raised %s: %s" % (type(e).__name__, e)}
+    if not isinstance(ev, dict) or not ev.get("ok"):
+        r["abortWhy"] = "%s: its repair failed, so the stop stands: %s" % (why, str(ev)[:300])
+        return None, ev
+    return why, ev
+
+
+def _note_resumed(r, done, why, ev):
+    row = {"detail": (r.get("stopBy") or {}).get("detail"), "executedBeforeStop": done, "why": why,
+           "subjectId": (r.get("stopBy") or {}).get("subjectId"),
+           "utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
+    if ev is not None:
+        row["repair"] = ev
+    BENIGN_STOPS.append(row)
+
+
 def advance_chunk(session, ticks, pause_first=True, stop_on="default", time_exception=False):
     """Move the clock by ONE chunk of `ticks` (WATCH_WAIT_WIRE_SMALL_STEPS): through jawa/safe_advance (paused,
     <=60-tick sub-steps inside a frame budget, stopped by the vitals latch) when the companion has it, else the
@@ -300,25 +340,21 @@ def advance_chunk(session, ticks, pause_first=True, stop_on="default", time_exce
     r = _unwrap(session.call(SAFE_ADVANCE, ticks=ticks, stopOn=stop_on, timeException=bool(time_exception),
                              timeoutMs=max(60000, ticks * 100)))
     done, resumes = 0, 0
-    why = resumable_stop(r)
+    why, ev = _resume(session, r)
     while why and resumes < BENIGN_RESUME_MAX and ticks - done - int(r.get("executed") or 0) > 0:
         resumes += 1
         done += int(r.get("executed") or 0)
-        BENIGN_STOPS.append({"detail": (r.get("stopBy") or {}).get("detail"), "executedBeforeStop": done, "why": why,
-                             "subjectId": (r.get("stopBy") or {}).get("subjectId"),
-                             "utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())})
+        _note_resumed(r, done, why, ev)
         rest = ticks - done
         r = _unwrap(session.call(SAFE_ADVANCE, ticks=rest, stopOn=stop_on, timeException=bool(time_exception),
                                  timeoutMs=max(60000, rest * 100)))
-        why = resumable_stop(r)
+        why, ev = _resume(session, r)
     if why and ticks - done - int(r.get("executed") or 0) <= 0:
         # TESTENV_SWEPT_BRUISE_REPAIR_SLIPS_ITS_PASS (L1 2026-10-15): a resumable stop latched on the chunk's LAST tick
         # ("stopped after 10 of 10") leaves nothing to resume, and used to fall through to GovernorStop although the
         # stop was declared. The chunk is complete: note the stop like any other resumed one and finish.
         done += int(r.get("executed") or 0)
-        BENIGN_STOPS.append({"detail": (r.get("stopBy") or {}).get("detail"), "executedBeforeStop": done, "why": why,
-                             "subjectId": (r.get("stopBy") or {}).get("subjectId"),
-                             "utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())})
+        _note_resumed(r, done, why, ev)
         r = dict(r, state="done", executed=0)
     if done and r.get("state") == "done":
         r = dict(r, executed=done + int(r.get("executed") or 0))

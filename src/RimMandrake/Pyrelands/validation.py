@@ -3695,6 +3695,68 @@ def digests_match(a, b):
     return bool(keys) and all(a[k] == b[k] for k in keys)
 
 
+# ---- the walk's shield (RIMMANDRAKE_SHIELD_PYRE_WALK_FROM_FULL_LIST_EVENTS). On his 315-mod list (visit 2, 2026-11-21) a hostile
+# that ARRIVED from another mod ("arrived: Human VRESaurids_TownGuard_Saurid (humanlike)", quiet storyteller) stopped the
+# two-week walk: 8 of 8 parts UNMEASURED. Two weeks on the full list meet such arrivals; none is Pyrelands's. Inside the walk a
+# foreign arrival is vanished (no death, no corpse: helpers.kill_hostiles' route), read back and noted, and the advance
+# resumes. Everything else still stops the walk: the biome's own cast, a hostile present at arm, a pawn that turned hostile,
+# any harm to a colonist, a removal that cannot be read back. selftest_pyrelands_walk_shield.py holds this.
+WALK_SHIELD = "walk: a foreign hostile arrived from the full list, vanished"
+
+
+def walk_foreign_arrival(trig):
+    """Pure. A vitals trigger the walk's shield may take: a hostile that ARRIVED (detail "arrived: <race> <kind> (<cls>)"),
+    of no def of the biome's own cast, neither critical nor declared."""
+    if not isinstance(trig, dict) or trig.get("kind") != "hostile_arrival" or trig.get("critical") or trig.get("declared"):
+        return False
+    d = str(trig.get("detail") or "")
+    if not d.startswith("arrived: "):
+        return False
+    return not any(w in ANIMAL_MANIFEST for w in d[len("arrived: "):].split()[:2])
+
+
+def _walk_vanish_arrivals(session, r):
+    """clockgate repair: vanish every foreign arrival of the stop `r` by thingIDNumber, then read back that none is left.
+    -> {"ok", "removed", "left", "ids"}; a pawn listing that fails is not ok (could not look: the stop stands)."""
+    import clockgate  # noqa: E402 - on sys.path via the modcheck package
+    want = set(n for n in (clockgate._thing_number(x.get("subjectId"))
+                           for x in [r.get("stopBy") or {}] + list(r.get("triggers") or []) if walk_foreign_arrival(x))
+               if n is not None)
+
+    def alive():
+        q = session.call("jawa/list_pawns", limit=2000) or {}
+        if q.get("success") is False or "pawns" not in q:
+            return None
+        return dict((clockgate._thing_number(p.get("id")), p.get("id")) for p in q["pawns"]
+                    if not p.get("dead") and clockgate._thing_number(p.get("id")) in want)
+    if not want:
+        return {"ok": False, "why": "no subject id on the arrival"}
+    found = alive()
+    if found is None:
+        return {"ok": False, "why": "jawa/list_pawns failed before the removal"}
+    for pid in found.values():
+        session.call("jawa/pawn_force_incapacitate", pawn=pid, action="vanish")
+    left = alive()
+    if left is None:
+        return {"ok": False, "why": "jawa/list_pawns failed after the removal", "removed": sorted(found.values())}
+    return {"ok": not left, "removed": sorted(found.values()), "left": sorted(left.values()), "ids": sorted(want)}
+
+
+@contextlib.contextmanager
+def _walk_shield(t):
+    """Every advance inside resumes past a foreign arrival after its removal (clockgate.expected_disturbance with a repair);
+    each removal is noted on the run's evidence when the walk ends."""
+    import clockgate  # noqa: E402 - on sys.path via the modcheck package
+    n0 = len(clockgate.BENIGN_STOPS)
+    try:
+        with clockgate.expected_disturbance(WALK_SHIELD, walk_foreign_arrival, repair=_walk_vanish_arrivals):
+            yield
+    finally:
+        got = [b for b in clockgate.BENIGN_STOPS[n0:] if b.get("why") == "expected: " + WALK_SHIELD]
+        if got and t.session is not None:
+            _note(t, "walk shield: foreign hostile arrivals vanished", got)
+
+
 @suite.chain("walk_season")
 @_teardown(fire=True)
 def walk_season(t):
@@ -3705,47 +3767,48 @@ def walk_season(t):
     Runs only when PYRE_WALK=1 is in the environment (two game weeks; never in an ordinary suite run). NOT automated:
     the harvest from a scar, the sowing on a fresh burn and on watered ash, and the shelter with a furnace-beast
     through ash fall (the colony's own work over the two weeks; his Stage 8 walk reads them). Every walk save is kept."""
-    with _comp(t, "walk_reload_keeps_the_state"):
-        if os.environ.get("PYRE_WALK") != "1":
-            _unmeasured(t, "the two-week walk runs only with PYRE_WALK=1 (full list, Stage 6)")
-        t.bridge_call("rimworld/save_game", saveName=WALK_SAVE + "_pre")
-        _wait(t, WALK_DAYS * 60000)
-        t.bridge_call("rimworld/save_game", saveName=WALK_SAVE + "_mid")
-        mid = walk_digest(t)
-        _load_site_save(t, WALK_SAVE + "_mid")
-        again = walk_digest(t)
-        _load_site_save(t, WALK_SAVE + "_pre")
-        pre = walk_digest(t)
-        _load_site_save(t, WALK_SAVE + "_mid")
-        if _live(t):
-            _note(t, "walk digests", {"pre": pre, "mid": mid, "midReloaded": again})
-            if digests_match(pre, mid):
-                _unmeasured(t, "the pre-walk and mid-walk digests are equal: the walk changed nothing a reload could lose")
-            if not digests_match(mid, again):
-                _fail("the digest after the reload differs from the one before: %r vs %r" % (mid, again))
-    with _comp(t, "walk_second_pass_and_switches"):
-        _wait(t, WALK_DAYS * 60000)
-        fruit_born = _count(t, FRUIT_PLANT) or 0
-        mark = _log_mark(t)
-        _set(t, {"pyrelandsEnabled": False})
-        _extinguish(t)
-        _wait(t, 2500)
-        fires_off = _count(t, "Fire") or 0
-        _set(t, {"pyrelandsEnabled": True})
-        _wait(t, 2500)
-        errs = [m.get("text", "")[:200] for m in _log_since(t, mark)
-                if str(m.get("type") or m.get("level") or "").lower() in ("error", "exception")]
-        t.bridge_call("rimworld/save_game", saveName=WALK_SAVE + "_end")
-        if _live(t):
-            _note(t, "second half", {"fruitStanding": fruit_born, "firesWithMechanicsOff": fires_off, "errors": errs[:5]})
-            if not fruit_born:
-                _fail("no scorch-fruit stood after the second week: the second pass yielded none")
-            if fires_off:
-                _fail("%d fire cells burned with the mechanics off after an extinguish" % fires_off)
-            if errs:
-                _fail("the log holds %d error line(s) over the switch: %r" % (len(errs), errs[:2]))
-    _ten_walk_season(t)
-    _r6_walk_season(t)
+    with _walk_shield(t):
+        with _comp(t, "walk_reload_keeps_the_state"):
+            if os.environ.get("PYRE_WALK") != "1":
+                _unmeasured(t, "the two-week walk runs only with PYRE_WALK=1 (full list, Stage 6)")
+            t.bridge_call("rimworld/save_game", saveName=WALK_SAVE + "_pre")
+            _wait(t, WALK_DAYS * 60000)
+            t.bridge_call("rimworld/save_game", saveName=WALK_SAVE + "_mid")
+            mid = walk_digest(t)
+            _load_site_save(t, WALK_SAVE + "_mid")
+            again = walk_digest(t)
+            _load_site_save(t, WALK_SAVE + "_pre")
+            pre = walk_digest(t)
+            _load_site_save(t, WALK_SAVE + "_mid")
+            if _live(t):
+                _note(t, "walk digests", {"pre": pre, "mid": mid, "midReloaded": again})
+                if digests_match(pre, mid):
+                    _unmeasured(t, "the pre-walk and mid-walk digests are equal: the walk changed nothing a reload could lose")
+                if not digests_match(mid, again):
+                    _fail("the digest after the reload differs from the one before: %r vs %r" % (mid, again))
+        with _comp(t, "walk_second_pass_and_switches"):
+            _wait(t, WALK_DAYS * 60000)
+            fruit_born = _count(t, FRUIT_PLANT) or 0
+            mark = _log_mark(t)
+            _set(t, {"pyrelandsEnabled": False})
+            _extinguish(t)
+            _wait(t, 2500)
+            fires_off = _count(t, "Fire") or 0
+            _set(t, {"pyrelandsEnabled": True})
+            _wait(t, 2500)
+            errs = [m.get("text", "")[:200] for m in _log_since(t, mark)
+                    if str(m.get("type") or m.get("level") or "").lower() in ("error", "exception")]
+            t.bridge_call("rimworld/save_game", saveName=WALK_SAVE + "_end")
+            if _live(t):
+                _note(t, "second half", {"fruitStanding": fruit_born, "firesWithMechanicsOff": fires_off, "errors": errs[:5]})
+                if not fruit_born:
+                    _fail("no scorch-fruit stood after the second week: the second pass yielded none")
+                if fires_off:
+                    _fail("%d fire cells burned with the mechanics off after an extinguish" % fires_off)
+                if errs:
+                    _fail("the log holds %d error line(s) over the switch: %r" % (len(errs), errs[:2]))
+        _ten_walk_season(t)
+        _r6_walk_season(t)
 
 
 # ---- RIMMANDRAKE_BUILD_PYRELANDS_GAP_SCENE_PARTS_TEN_SCENES_OWED: the owed parts of twelve scenes ----
