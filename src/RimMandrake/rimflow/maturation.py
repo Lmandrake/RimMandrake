@@ -2422,34 +2422,198 @@ def companion_current(game="a"):
 
 
 DEPLOY_PLAN_ENV = "MATURATION_DEPLOY_PLAN"     # a command run in place of deploy_custom_mods.py (selftests)
+# A launch refused for a cause that ends by itself (a held bridge, his hold on the game): the tick waits, counts no
+# fault and spends no try (maturation_autonomy.wait_refusal; design/specs/2026-11-20-launch-refusal-wait-and-deploy)
+WAIT_MARK = "REFUSED (a wait, not a fault):"
+# The parts of a mod folder RimWorld reads at load: About, LoadFolders.xml, and in each load folder these folders.
+# A drift line outside them (a .sh, Source/, a README) cannot change what the game plays.
+LOADED_DIRS = ("about", "assemblies", "defs", "patches", "languages", "textures", "sounds", "assetbundles")
+ASSET_DIRS = ("textures", "sounds")
+REPAIR_STOP_S = 120     # the boundary page's LIMITS: a game that ignores the close is stopped with /F after this
 
 
-def mod_deployed(root, mod, runner=subprocess.run, game="a"):
-    """-> (current, why): does the game's copy of `mod` match the repo? deploy_custom_mods.py's plan (never --apply), for
-    Baroque Biomes when Biomes.compose.json composes the mod; only its "Everything in sync." reads current, and a plan
-    that cannot run is could-not-look. (2026-11-19: GSS visit 2 was owed with the game's DLL and .srchash older than the
-    repo build; the brief told the driver to deploy, and nothing in code checked.) game: whose copy; the plan runs
-    with --instance <game>, so game b's own Mods folder is read, never a's."""
+def _plan_cmd(args):
+    return (os.environ.get(DEPLOY_PLAN_ENV, "").split() or [
+        sys.executable, os.path.join(os.path.dirname(HERE), "Utils", "deploy_custom_mods.py")]) + list(args)
+
+
+def _loaded_part(rel):
+    """-> the loaded folder a plan path lies in ("defs", "textures", ...; "loadfolders" for LoadFolders.xml), or None
+    for a file the game never reads."""
+    parts = [x.lower() for x in rel.replace("\\", "/").split("/") if x]
+    if parts and parts[-1] == "loadfolders.xml":
+        return "loadfolders"
+    return next((x for x in parts[:-1] if x in LOADED_DIRS), None)
+
+
+def _asset_names(rel):
+    """-> the paths a def or C# would name for a texture or sound file: its path under Textures/Sounds without the
+    extension (and without a facing or mask suffix), and its folder (a Graphic_Random's texPath)."""
+    parts = rel.replace("\\", "/").split("/")
+    i = next(i for i, x in enumerate(parts) if x.lower() in ASSET_DIRS)
+    sub = parts[i + 1:]
+    stem = "/".join(sub)[:-len(os.path.splitext(sub[-1])[1]) or None]
+    out = {stem, re.sub(r"_(north|south|east|west|m|northm|southm|eastm|westm)$", "", stem)}
+    if len(sub) > 1:
+        out.add("/".join(sub[:-1]))
+    return sorted(x for x in out if x)
+
+
+def _named_in_repo(names, runner=subprocess.run):
+    """-> (the subset of names some def, patch or C# file in the repo names as a whole path, None) or (None, cause).
+    A path counts as named when it stands between > < or quotes, as a texPath or a C# string does."""
+    if not names:
+        return set(), None
+    pats = []
+    for n in names:
+        pats += ["-e", r"[>\"']%s[<\"']" % re.escape(n)]
+    try:
+        r = runner(["git", "-C", REPO, "grep", "-h", "-o", "-E"] + pats + ["--", "src/*.xml", "src/*.cs"],
+                   capture_output=True, text=True, timeout=120, stdin=subprocess.DEVNULL)
+    except (OSError, subprocess.SubprocessError) as e:
+        return None, "%s: %s" % (type(e).__name__, e)
+    if r.returncode not in (0, 1):
+        return None, "git grep exited %s: %s" % (r.returncode, (r.stderr or "").strip()[:160])
+    hits = r.stdout or ""
+    return {n for n in names if re.search(r"[>\"']%s[<\"']" % re.escape(n), hits)}, None
+
+
+def deploy_state(root, mod, runner=subprocess.run, game="a"):
+    """-> {state, why, loaded, ignored, args, fix}: the deploy plan of the game's copy of `mod` read for what the game
+    LOADS (design/specs/2026-11-20-launch-refusal-wait-and-deploy/boundary.md). deploy_custom_mods.py's plan (never
+    --apply), for Baroque Biomes when Biomes.compose.json composes the mod, with --instance <game> for a named game.
+    state: current (no drift line in a loaded folder; lines outside one, and game-only textures or sounds no repo
+    file names, are `ignored`), drift (loaded drift a plain --apply cures: +, ~, and - lines the repo deleted), stuck
+    (a game-only loaded file the repo never deleted: --pull or --prune is a hand's choice), could_not_look (the plan
+    did not run, printed neither last line, or the name search failed)."""
     args = ["--compose", "biomes"] if BM.composed_into(root, mod) else ["--mod", mod]
     if game and game != "a":
         args += ["--instance", game]
-    fix = "deploy it while the game is down: `python3 src/RimMandrake/Utils/deploy_custom_mods.py %s --apply`" % " ".join(
-        args)
-    cmd = os.environ.get(DEPLOY_PLAN_ENV, "").split() or [
-        sys.executable, os.path.join(os.path.dirname(HERE), "Utils", "deploy_custom_mods.py")]
+    fix = "python3 src/RimMandrake/Utils/deploy_custom_mods.py %s --apply" % " ".join(args)
+    out = {"state": "could_not_look", "loaded": [], "ignored": [], "args": args, "fix": fix}
     try:
-        r = runner(cmd + args, capture_output=True, text=True, timeout=900, stdin=subprocess.DEVNULL)
+        r = runner(_plan_cmd(args), capture_output=True, text=True, timeout=900, stdin=subprocess.DEVNULL)
     except (OSError, subprocess.SubprocessError) as e:
-        return False, "the deploy plan could not read the game copy (%s: %s); %s" % (type(e).__name__, e, fix)
-    out = ((r.stdout or "") + (r.stderr or "")).strip()
-    if r.returncode == 0 and "Everything in sync." in out:
-        return True, "the game's copy of %s matches the repo" % mod
-    if "Drift found." in out:
-        diff = [x.strip() for x in out.splitlines() if x.strip()[:2] in ("~ ", "+ ", "- ")]
-        return False, "the game's copy of %s differs from the repo (%s%s); %s" % (
-            mod, ", ".join(diff[:4]), " and %d more" % (len(diff) - 4) if len(diff) > 4 else "", fix)
-    return False, "the deploy plan could not read the game copy (exit %s: %s); %s" % (
-        r.returncode, (out.splitlines() or ["no output"])[-1][:200], fix)
+        return dict(out, why="the deploy plan could not read the game copy (%s: %s)" % (type(e).__name__, e))
+    text = ((r.stdout or "") + (r.stderr or "")).strip()
+    if r.returncode == 0 and "Everything in sync." in text:
+        return dict(out, state="current", why="the game's copy of %s matches the repo" % mod)
+    if "Drift found." not in text:
+        return dict(out, why="the deploy plan could not read the game copy (exit %s: %s)" % (
+            r.returncode, (text.splitlines() or ["no output"])[-1][:200]))
+    lines = [x.strip() for x in text.splitlines() if x.strip()[:3] in ("~  ", "+  ", "-  ")]
+    loaded, ignored, stuck, assets = [], [], [], {}
+    for ln in lines:
+        sign, rest = ln[0], ln[3:].strip()
+        rel, _, note = rest.partition("   (")
+        rel = rel.strip()
+        part = _loaded_part(rel)
+        if part is None:
+            ignored.append(ln)
+        elif sign == "-" and part in ASSET_DIRS:
+            assets[ln] = (rel, note)
+        else:
+            loaded.append(ln)
+            if sign == "-" and "--apply prunes it" not in note:
+                stuck.append(rel)
+    if assets:
+        names = {ln: _asset_names(rel) for ln, (rel, _) in assets.items()}
+        named, err = _named_in_repo(sorted({n for v in names.values() for n in v}))
+        if named is None:
+            return dict(out, why="game-only textures or sounds (%s) could not be checked against the repo's defs: %s"
+                        % (", ".join(sorted(rel for rel, _ in assets.values()))[:200], err))
+        for ln, (rel, note) in assets.items():
+            if set(names[ln]) & named:
+                loaded.append(ln)
+                if "--apply prunes it" not in note:
+                    stuck.append(rel)
+            else:
+                ignored.append(ln)
+    out.update(loaded=loaded, ignored=ignored)
+    say = lambda xs: "%s%s" % (", ".join(xs[:4]), " and %d more" % (len(xs) - 4) if len(xs) > 4 else "")  # noqa: E731
+    if not loaded:
+        return dict(out, state="current", why="the game's copy of %s matches the repo in every file the game loads "
+                    "(not loaded or named by nothing, so ignored: %s)" % (mod, say(ignored)))
+    if stuck:
+        return dict(out, state="stuck", why="the game's copy of %s holds loaded files the repo does not ship and never "
+                    "deleted (%s): rescue them with `deploy_custom_mods.py --pull <Mod>` or delete them with `%s "
+                    "--prune`, a hand's choice" % (mod, say(stuck), fix))
+    return dict(out, state="drift", why="the game's copy of %s differs from the repo in files the game loads (%s); %s"
+                % (mod, say(loaded), fix))
+
+
+def mod_deployed(root, mod, runner=subprocess.run, game="a"):
+    """-> (current, why): does the game's copy of `mod` match the repo in every file the game loads? (deploy_state.)
+    (2026-11-19: GSS visit 2 was owed with the game's DLL and .srchash older than the repo build; the brief told the
+    driver to deploy, and nothing in code checked. 2026-11-20: Pyrelands visit 2 was refused three times on a dev
+    script of another member mod and nine textures no def names.) game: whose copy; the plan runs with --instance
+    <game>, so game b's own Mods folder is read, never a's."""
+    st = deploy_state(root, mod, runner=runner, game=game)
+    return st["state"] == "current", st["why"]
+
+
+def _game_ops():
+    utils = os.path.join(os.path.dirname(HERE), "Utils")
+    if utils not in sys.path:
+        sys.path.insert(0, utils)
+    import game_instance
+    return game_instance
+
+
+def deploy_repair(root, mod, game, reading, gi, purpose, runner=subprocess.run, sleep=time.sleep, clock=time.time):
+    """-> (state, text): cure a deploy_state reading of `drift` before an in-game visit launches. state: ok (deployed,
+    the plan read again current), wait (his hold on the game: WAIT_MARK, nothing done), fail (the cause named). Game
+    down first when it is up (a DLL cannot be written under a running game, and a def is only read at startup), the
+    plan's --apply for the visit's game, the game up again when it was up, and the plan read again."""
+    held = gi.hold_refusal(game)
+    if held:
+        return "wait", "%s the game copy of %s needs a deploy and %s" % (WAIT_MARK, mod, held.splitlines()[0])
+    try:
+        was_up = gi.running(game)
+    except Exception as e:  # noqa: BLE001  Blind: could not look, nothing is done on a guess
+        return "fail", "could not read whether game %s is running (%s: %s); nothing deployed" % (game, type(e).__name__, e)
+    done = []
+    if was_up:
+        try:
+            rc, txt = gi.stop(name=game, purpose=purpose)
+            t0 = clock()
+            while gi.pids(game) and clock() - t0 < REPAIR_STOP_S:
+                sleep(2)
+            if gi.pids(game):
+                rc, txt = gi.stop(name=game, purpose=purpose, force=True)
+                sleep(3)
+            if gi.pids(game):
+                return "fail", "game %s did not stop for the deploy (%s)" % (game, txt)
+        except Exception as e:  # noqa: BLE001  Refused (a hold or a bridge read) or Blind
+            msg = "%s: %s" % (type(e).__name__, e)
+            if "held" in str(e) or "TAKEABLE" in str(e):
+                return "wait", "%s game %s could not be stopped for the deploy: %s" % (WAIT_MARK, game, msg)
+            return "fail", "game %s could not be stopped for the deploy: %s" % (game, msg)
+        done.append("game %s stopped" % game)
+    try:
+        r = runner(_plan_cmd(reading["args"] + ["--apply"]), capture_output=True, text=True, timeout=1800,
+                   stdin=subprocess.DEVNULL)
+        rc, txt = r.returncode, ((r.stdout or "") + (r.stderr or "")).strip()
+    except (OSError, subprocess.SubprocessError) as e:
+        rc, txt = 1, "%s: %s" % (type(e).__name__, e)
+    if rc:
+        bad = [x.strip() for x in txt.splitlines() if x.strip().startswith(("!", "STILL", "NOTHING", "DEF GUARD"))]
+        return "fail", "the deploy failed (`%s`, exit %s: %s)%s" % (
+            reading["fix"], rc, "; ".join(bad[:3]) or (txt.splitlines() or ["no output"])[-1][:200],
+            "; %s, left down" % done[0] if done else "")
+    done.append("deployed (%s)" % reading["fix"])
+    if was_up:
+        try:
+            rc, txt = gi.launch(name=game, wait=False)
+        except Exception as e:  # noqa: BLE001
+            rc, txt = 1, "%s: %s" % (type(e).__name__, e)
+        if rc:
+            return "fail", "deployed, but game %s did not start again: %s" % (game, txt)
+        done.append("game %s started (%s)" % (game, txt))
+    again = deploy_state(root, mod, runner=runner, game=game)
+    if again["state"] != "current":
+        return "fail", "after the deploy the game copy of %s still differs: %s" % (mod, again["why"])
+    return "ok", "; ".join(done)
 
 
 def game_brief(game, full_list=None):
@@ -2499,7 +2663,7 @@ def _twins_reader(runner, twins):
 
 def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=subprocess.run, bridge=None,
                resume=None, bars=None, preface=None, env=None, session=None, reconcile=None, game=None, companion=None,
-               deployed=None, twins=None):
+               deployed=None, twins=None, game_ops=None):
     """-> (exit code, text, unit or None). Refuses (2) a missing or non-positive cap, a missing item, a mod at neither
     the offline build nor the blind challenge, one with no build work owed, and at the blind challenge a model below
     opus or a cycle already recorded or blocked, and at in-game acceptance a model other than opus, a visit already
@@ -2517,7 +2681,10 @@ def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=s
     that game's. companion: a stand-in for companion_current (an in-game visit refuses a companion not current);
     deployed: a stand-in for mod_deployed (an in-game visit refuses a game copy of the mod that differs from the repo).
     twins: a stand-in for live_twins: a live run on the same mod and stage, or the same item, refuses the launch
-    (RIMMANDRAKE_GUARD_HAND_LAUNCH_AGAINST_DISPATCHER_TWIN_RUN: a hand launch twinned the Dispatch step's cycle 6)."""
+    (RIMMANDRAKE_GUARD_HAND_LAUNCH_AGAINST_DISPATCHER_TWIN_RUN: a hand launch twinned the Dispatch step's cycle 6).
+    game_ops: a stand-in for game_instance (running, hold_refusal, stop, pids, launch) for the deploy before a visit
+    (deploy_repair); with a stand-in deploy plan (MATURATION_DEPLOY_PLAN) and none given, drift refuses as before. A
+    refusal whose cause ends by itself (the bridge not takeable, his hold on the game) starts with WAIT_MARK."""
     if game:
         env = dict(env or {}, RM_GAME_INSTANCE=game)
     game = (env or {}).get("RM_GAME_INSTANCE") or "a"
@@ -2551,14 +2718,29 @@ def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=s
         else:
             go, why = read(purpose, seat) if game == "a" else (False, "this bridge reading cannot name game %s" % game)
         if not go:
-            return 2, "REFUSED: the bridge of game %s is not takeable for %s's in-game visit %s: %s" % (
-                game, mod, f.get("visit"), why), None
+            return 2, "%s the bridge of game %s is not takeable for %s's in-game visit %s: %s" % (
+                WAIT_MARK, game, mod, f.get("visit"), why), None
         cur, cwhy = (companion or companion_current)(game=game)
         if not cur:
             return 2, ("REFUSED: %s's in-game visit %s would drive an old JawaBench companion, so its checks would not be "
                        "the ones committed: %s; %s" % (mod, f.get("visit"), cwhy, COMPANION_FIX)), None
-        cur, dwhy = (deployed(root, mod) if deployed and not _takes_kw(deployed, "game") else
-                     (deployed or mod_deployed)(root, mod, game=game))
+        if deployed:
+            cur, dwhy = deployed(root, mod) if not _takes_kw(deployed, "game") else deployed(root, mod, game=game)
+            reading = None
+        else:
+            reading = deploy_state(root, mod, game=game)
+            cur, dwhy = reading["state"] == "current", reading["why"]
+        if not cur and reading and reading["state"] == "drift" and (game_ops or not os.environ.get(DEPLOY_PLAN_ENV)):
+            # the launch cures what --apply cures, for the game the visit drives (design question 3 of
+            # RIMMANDRAKE_DEPLOY_BEFORE_GAME_VISIT_PYRELANDS_REFUSED_THRICE)
+            state, rwhy = deploy_repair(root, mod, game, reading, game_ops or _game_ops(),
+                                        "deploy %s before its in-game visit %s" % (mod, f.get("visit")))
+            if state == "wait":
+                return 2, rwhy, None
+            if state != "ok":
+                return 2, "REFUSED: %s's in-game visit %s needed a deploy, and it failed: %s" % (
+                    mod, f.get("visit"), rwhy), None
+            cur, dwhy = True, "deployed before the visit: %s" % rwhy
         if not cur:
             return 2, "REFUSED: %s's in-game visit %s would play a game copy not checked against the repo: %s" % (
                 mod, f.get("visit"), dwhy), None

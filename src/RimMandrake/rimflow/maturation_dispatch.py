@@ -1597,6 +1597,8 @@ def retriable(cfg, x, killed=None, mod=None):
         # (RIMMANDRAKE_ENACT_TOKENS_NOT_DOLLARS_NO_LIVE_HOLD, 2026-11-16)
         kills = len(x.get("killed_before") or []) + 1
         return not x.get("failed") and x["unit"] in (killed or {}) and AUT.tries_left(cfg, mod, kills)
+    if x.get("wait") and x.get("failed"):  # a wait refusal (AUT.wait_refusal) spent nothing: always tried again
+        return True
     if not AUT.tries_left(cfg, mod, x.get("tries")):
         return False
     if not (x.get("failed") and x.get("never_started", True)):
@@ -2024,8 +2026,13 @@ def launch_counted(cfg, s, row, now, book, where, new_item, do_file, do_publish,
         rc, text2, unit = launch(item)
         text = "%s; %s" % (text, text2.splitlines()[0] if text2 else rc)
         ok = rc == 0 and bool(unit)
+    wait = not ok and AUT.wait_refusal(text)
+    if wait:        # a wait spends no try: the entry keeps the tries before it
+        tries = int(retry.get("tries") or 0)
     entry = dict(where, unit=unit if ok else None, item=item, at=now, cap=row.get("cap"), failed=None if ok else text,
                  tries=tries, filed=filed, never_started=not unit, tried=None if ok else tried_unit(text))
+    if wait:
+        entry["wait"] = True
     if not ok and cfg.get("_code"):
         entry["code"] = cfg["_code"]        # the pipeline code it failed on: retriable() tries again once it changes
     lst = s.setdefault(book, [])
@@ -2735,6 +2742,9 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
                 row.update(decision="launched", unit=unit, item=item, why=text)
                 known.add(item) if isinstance(known, set) else None
                 done.append(row)
+            elif entry.get("wait"):
+                row.update(decision="launch_wait", why="the in-game launch waits on a cause that ends by itself (no "
+                           "fault, no try spent); the next tick tries it again: %s" % text)
             elif retriable(cfg, entry, mod=mod):
                 row.update(decision="launch_retry", why="the in-game launch never started on a transient fault (try %d "
                            "of %d), the next tick tries it again: %s" % (entry["tries"], AUT.tries_most(cfg, mod),
@@ -3153,6 +3163,8 @@ def still_retried(cfg, book, x, mod=None):
     if book in ("blind_auto", "ingame_auto"):
         return retriable(cfg, x, mod=mod)
     if book in ("steward", "fixers"):
+        if isinstance(x, dict) and x.get("wait") and x.get("failed"):
+            return True
         return bool((AUT.transient(x.get("failed")) or code_changed(cfg, x)) and AUT.tries_left(cfg, mod, x.get("tries")))
     return book != "holder_road_back"    # a holder run that never started is no try at its items
 
@@ -3188,6 +3200,20 @@ def system_fault_stop(cfg, st, rows, launches):
                          RV.ALARM_ID, n, most, last.get("unit") or "a launch", last.get("cause"), r["mod"]))
             launches = [m for m in launches if m != r["mod"]]
     return launches
+
+
+def drain_gate(rows, launches, drain):
+    """While the account drains before a planned switch (detached_helper.drain_refusal's text, or None), nothing
+    launches: each row that would have launched reads account_hold, "waiting: account switch", a wait that counts no
+    fault (RIMMANDRAKE_STOP_COUNTING_DRAIN_REFUSALS_AS_SYSTEM_FAULTS: three drain refusals paused FlowWorks). -> the
+    launches left."""
+    if not drain:
+        return launches
+    for r in rows:
+        if r["mod"] in launches:
+            r.update(decision="account_hold", why="waiting: account switch: %s; it would have launched: %s" % (
+                drain, r.get("why") or "-"))
+    return []
 
 
 def _aut(rows, mod):
@@ -3299,6 +3325,9 @@ def _tick(root, cfg, apply, fx=None, now=None, page=True):
                 r.update(decision="control_off", klass="held", why=why, status=why)
                 launches = [m for m in launches if m != r["mod"]]
     launches = system_fault_stop(cfg, st, rows, launches)
+    # the account drain (drain_gate); a caller that stands in for the account gate (a selftest) stands in for this too
+    launches = drain_gate(rows, launches, fx["drain"](now) if "drain" in fx else
+                          None if "account" in fx else DH.drain_refusal(now))
     if not cfg.get("enabled"):
         for r in rows:
             if r["mod"] in launches:

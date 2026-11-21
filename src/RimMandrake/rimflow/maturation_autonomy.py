@@ -53,7 +53,7 @@ import pipeline_control as PC   # noqa: E402  the one control store (`pipe`)
 UNM = "UNMEASURED"
 EXCLUDE_MARKER = ".maturation-exclude"      # a concept folder holding it is never discovered (test fixtures)
 WAIT = {"live", "settling", "driver_busy", "bridge_held", "slots_full", "slots_unknown", "account_hold", "designer_wait",
-        "queued", "launch_retry", "upstream_wait", "certificate"}
+        "queued", "launch_retry", "upstream_wait", "certificate", "launch_wait"}
 # a launch that never started on one of these is retried (measured 2026-11-15: a git index.lock at publish, then the
 # launcher's "not on origin/main" refusal, read as a spent steward run)
 TRANSIENT = re.compile(r"index\.lock|is not on origin/main|ingest\.lock stayed busy|publish stopped|another "
@@ -62,6 +62,17 @@ TRANSIENT = re.compile(r"index\.lock|is not on origin/main|ingest\.lock stayed b
 # read transient when the filing's own publish line said "publish stopped", and three tries went in two minutes
 # (RIMMANDRAKE_UNSTICK_DISPATCH_CLONE_PUBLISH_LINT_REFUSES_HEAD, 2026-11-16)
 NEVER_TRANSIENT = re.compile(r"finish step never ran")
+
+
+# a refusal whose cause ends by itself: the account drain before a planned switch (detached_helper.drain_refusal) and
+# launch_mod's WAIT_MARK (a held bridge, his hold on the game). It is no system fault and spends no try: the tick
+# waits and launches the same thing again (design/specs/2026-11-20-launch-refusal-wait-and-deploy/boundary.md)
+WAIT_REFUSAL = re.compile(r"is draining \(switching plan notice|%s" % re.escape(M.WAIT_MARK))
+
+
+def wait_refusal(text):
+    """-> True when a launch's refusal text names a cause that ends by itself (WAIT_REFUSAL)."""
+    return bool(text) and bool(WAIT_REFUSAL.search(str(text)))
 
 
 def transient(text):
@@ -1417,6 +1428,8 @@ def _retriable(x, cfg, mod=None):
     cfg = cfg or {}
     if not (isinstance(x, dict) and x.get("failed") and not x.get("unit")):
         return False
+    if x.get("wait"):       # a wait refusal spent nothing: always tried again
+        return True
     fresh_code = bool(x.get("code") and cfg.get("_code") and x["code"] != cfg["_code"])
     return (transient(x["failed"]) or fresh_code) and tries_left(cfg, mod, x.get("tries"))
 
@@ -1987,8 +2000,13 @@ def _execute_one(root, cfg, st, row, now, do_file, do_launch, known, do_publish=
             # (RIMMANDRAKE_KEEP_LAUNCHED_UNIT_WHEN_LEDGER_AFTER_FAILS)
             text = "%s; ledger step after the launch FAILED (%s: %s)" % (text, type(e).__name__, e)
     full = full or text     # no launch was tried: the filing's own text
+    wait = not ok and wait_refusal(full)
+    if wait:        # a wait spends no try: the entry keeps the tries before it
+        tries = int(retry.get("tries") or 0)
     book[key] = {"item": item, "unit": unit, "at": now, "cap": row.get("cap"), "failed": None if ok else full,
                  "tries": tries, "filed": filed, "tried": None if ok else MD.tried_unit(full)}
+    if wait:
+        book[key]["wait"] = True
     if not ok and cfg.get("_code"):
         book[key]["code"] = cfg["_code"]
     if ok and row["aut"] == "steward" and row.get("steward_kind") in ("exit_not_met", "exit_met", "builder_stalled"):
@@ -1996,6 +2014,9 @@ def _execute_one(root, cfg, st, row, now, do_file, do_launch, known, do_publish=
     if ok:
         row.update(decision="launched", unit=unit, item=item, why=text)
         known.add(item) if isinstance(known, set) else None
+    elif wait:
+        row.update(decision="launch_wait", why="the %s launch waits on a cause that ends by itself (no fault, no try "
+                   "spent); the next tick tries it again: %s" % (row["aut"], text))
     elif transient(full) and tries_left(cfg, row["mod"], tries):
         row.update(decision="launch_retry", why="the %s launch failed on a transient fault (try %d of %d), the next "
                    "tick tries it again: %s" % (row["aut"], tries, tries_most(cfg, row["mod"]), text))

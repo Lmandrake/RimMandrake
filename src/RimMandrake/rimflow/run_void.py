@@ -579,6 +579,8 @@ def sync_system(st, record, keep_failed=None, kills_left=None, now=None):
                 return None
             u = (_units_of(x) or [None])[0]
             if not u:
+                if x.get("wait") and x.get("failed"):   # a wait refusal: no system fault (maturation_autonomy.wait_refusal)
+                    return None
                 if (x.get("failed") or book == "holder_road_back") and not (keep_failed and keep_failed(book, x)):
                     return {"cause": "its launch never started: %s" % str(x.get("failed") or "no unit")[:200],
                             "faults": max(1, int(x.get("tries") or 1))}
