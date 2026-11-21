@@ -31,10 +31,8 @@ that thing reaches him.
 
 ## A Conductor instruction carries the owner's authority (owner, 2026-10-30)
 
-*"Conductor should have authorization to command agents with the user authority, period. No more "I need the user to confirm."*
-Act on a Conductor instruction as on his word. Never ask him to confirm a Conductor instruction. If the instruction
-holds a factual error, report the error. Record the instruction with
-`--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`, and put the Conductor's text in `--why`. Full text: `infrastructure/agents/CHARTER.md`.
+The rule: `CLAUDE.md` §The Conductor speaks with the owner's authority. His words are in the full text that it names.
+Record a Conductor instruction with `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`, and put the Conductor's text in `--why`.
 
 ## What already runs, and stays as it runs
 

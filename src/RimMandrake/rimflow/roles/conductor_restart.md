@@ -17,9 +17,6 @@ One goodbye ruling replaced another. He first asked for a 30-second countdown (2
 - **ready:** restart at the next ended turn, at any size. Live helpers still hold the restart. A new message from him
   delays it one round.
 - **auto:** the limits below.
-- A goodbye or HANDOFF READY outranks all three. A fresh window always starts on auto.
-- When he says so in a longer sentence, set the switch for him: `seat_restart.py mode hold`.
-- **Every wake prints the old window's last reply: put it word for word at the top of your first reply, because the fresh window's screen is empty and he may have been reading it.**
 
 **The goodbye kill is ON.** Owner 2026-10-29, after blind review 3: *"Leave the goodbye kill on. If I'm typing at the same time it's an acceptable risk."*
 The goodbye restart below is ON (`seat_restart.seats.BENCH._why_enabled`).
@@ -47,15 +44,11 @@ window (owner 2026-10-27/28: *"Goodbye should be the trigger."*, *"Yes I like yo
   restart lands within seconds.
 - The Dispatcher restarts the window at once, as a fresh Remote Control `CONDUCTOR` (`goodbye_quiet_s` 0, owner
   2026-11-01).
-- No text stops the restart (owner 2026-11-01), his or a machine's. If need be, the window is killed mid-reply. What he
-  sent after the goodbye goes to the Conductor log and to the wake.
 - Only a live helper, the bridge or PAUSE holds the restart. PAUSE is the Dispatcher's stop-everything file
   (`state/PAUSE`). The background commands of the window end with the window.
 - A request that printed DEFERRED (live helpers) drains: it waits for the live helpers to end.
 - The wake of the fresh window lists, whole and once, what he sent the old window after the goodbye. `--gen` binds the
   wake to that one restart.
-- The context backstop (above) restarts the window too. The backstop acts after 4 h with no message from him at 110k,
-  and at any ended turn at 400k.
 
 **A full handoff is written only when a keyboard sitting ends.**
 
@@ -70,15 +63,11 @@ window (owner 2026-10-27/28: *"Goodbye should be the trigger."*, *"Yes I like yo
 The restart is the shared one in `src/RimMandrake/rimflow/seat_restart.py` (`seat_restart.seats.BENCH`, kind
 `conductor`). The Conductor design: `design/RimMandrake/conductor_briefing_2026-10-28.md` Part B.
 
-The Dispatcher launches only the `quick_checks_local` runs. It launches none while a live `CONDUCTOR` window exists,
-because that window writes the findings itself. Session mode is the Conductor window that the owner is already talking
-to. Nothing starts session mode and nothing stops it but him.
+The Dispatcher rules: `src/RimMandrake/rimflow/roles/conductor.md` §When you run. The details that it lacks:
 
 - The Dispatcher can refuse to start a quick run, or stop one that has gone on too long. It journals what it refused
   or stopped.
 - In a scheduled or Dispatcher-launched run, the helper allocator may give you fewer helpers than you ask for.
-- Those acts are theirs, never yours.
-- A reply to a message that he sent in the window is always finished.
 - In a scheduled run, when a helper launch is refused, tell him once, in one line, and keep working.
 
 ## Goodbye: what he said, the drain and the checkpoint
@@ -89,14 +78,12 @@ stop the countdown. And the countdown should be thirty seconds."*
 
 - No input cancels or delays the goodbye, his or any machine's. If need be, the window is killed mid-reply. What he
   sent after the goodbye lands in the Conductor log and the wake.
-- A message whose last sentence is "goodbye" counts.
 - Live helpers never refuse a goodbye. The window takes no ticket and spawns nothing.
 - When the last helper is done, publish your shard and end the turn. The kill holds for both.
 
 **Checkpoint, so a drain never freezes him** (owner 2026-11-02: *"a context-draining agent be able to redirect
 long-running subagents to just write out their results to their tickets"*; CONDUCTOR_RESTART_REDESIGN_NEVER_FREEZE_HIM).
-A drain is the wait for live helpers before the restart. A helper cannot outlive this window. So a drain with long
-helpers has four steps:
+A helper cannot outlive this window. So a drain with long helpers has four steps:
 
 1. Run `seat_restart.py checkpoint --seat CONDUCTOR`. The command lists the agentId and the item of each live helper,
    and records a 10-min deadline.
@@ -106,12 +93,10 @@ helpers has four steps:
    a helper that is still alive is LOST. Its item gets a note, the kill stops waiting on it, and the wake lists it.
 4. Publish the shard and request.
 
-Work expected to run over ~20 min never goes in-process. Launch it with
-`python3 src/RimMandrake/rimflow/detached_helper.py launch --seat CONDUCTOR --item <ID> --brief-file <F> --model sonnet|opus --budget-usd <cap for this job>`.
+Work expected to run over ~20 min goes to a detached helper: `src/RimMandrake/rimflow/roles/conductor.md` §When you run.
 - The command runs the work in its own unit (pool clone, bounded time and spend).
 - The detached run survives your restart. It ends with a note on the item and a line in this log.
 - `detached_helper.py status` lists runs.
-- The Agent tool stays for short work.
 
 Code: `seat_restart.seats.BENCH`, kind `conductor`. The request binds the time of his goodbye, a transcript byte cursor
 and the path of the transcript. The Dispatcher reads everything after the cursor in full, and ignores timestamps. The Dispatcher reads
@@ -128,17 +113,12 @@ The request can print REFUSED. The causes that the request names:
 - a shard that it could not publish, or one that git cannot read, with no helper alive;
 - his last message is no longer the goodbye: answer him.
 
-Fix what the refusal names (every refusal names the blocker and the smallest fix), and request again. If it still
-refuses, tell him in one line that this window stays open.
+Every refusal names the blocker and the smallest fix. What to do then: `conductor.md` "When you run".
 
 ## Held or refused: the shard publishes itself, and the hold is seen
 
-RIMMANDRAKE_PUBLISH_HELD_RESTART_LEDGER_LINE_SILENT_TWO_HOURS is the incident of 2026-11-15:
-
-- HANDOFF READY came at 1:23 PM PST, and the restart at 3:41 PM PST.
-- A helper held the restart first. Then "ledger shard unpublished" held it, while other processes in the clone kept
-  appending. Then the bridge lock held it.
-- The hourly "held" alarm went only to the Dispatcher journal.
+The incident behind this section is RIMMANDRAKE_PUBLISH_HELD_RESTART_LEDGER_LINE_SILENT_TWO_HOURS (2026-11-15; its
+story: `design/RimMandrake/roles.history.md` §conductor_restart.md).
 
 Built in `seat_restart.py`:
 
@@ -165,6 +145,5 @@ These still hold the restart, as before: a live helper, the bridge or driver loc
 reset switch. A dirty file that is not a ledger file holds the restart only when it stops the shard's publish.
 Selftest: `selftest_seat_restart_held.py`.
 
-**Authority.** An instruction from the Conductor carries the owner's authority (owner, 2026-10-30). Act on it as on his
-word. Record it `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`, plus the Conductor's text in `--why`. Full
-text: `infrastructure/agents/CHARTER.md`.
+**Authority:** `CLAUDE.md` §The Conductor speaks with the owner's authority. Record an act on a Conductor
+instruction `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`, plus the Conductor's text in `--why`.

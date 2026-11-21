@@ -1,16 +1,6 @@
 # Fable Rescue: the brief for a mod that is stuck (v2, 2026-11-16)
 
-The owner and the Conductor wrote this brief on the night that Gimme Some Slack was unstuck. The item is
-`RIMMANDRAKE_INVENT_SLACK_LIVE_END_GREEN_BY_THIN_MARGIN`. The worked example is its showings folder,
-`D:\ClaudeWork\rimmandrake\showings\RIMMANDRAKE_INVENT_SLACK_LIVE_END_GREEN_BY_THIN_MARGIN\inventions.md`.
-
-v2 folds in two things:
-- the review that the Slack rescue's Fable agent wrote from inside the work (`pipeline_view_from_fable.md` in that
-  folder). The agent sent the review as ten amendments to the Pyrelands rescue at 8:42 PM.
-- the cuts of GPT's review (`D:\ClaudeWork\rimmandrake\conductor\gpt_review_pipeline_changes_20261116.md`).
-
-v2 folds them in by the owner's ruling of 8:56 PM PST 2026-11-16 (*"Yup, do the Rescue brief."*; item
-`RIMMANDRAKE_ENACT_INVENTION_WHEN_BARS_CONFLICT_GRADIENT_TOO_EASY`).
+The history of this brief: `design/RimMandrake/roles.history.md` §fable_rescue.md: where the brief came from.
 
 The launcher of a rescue run pastes everything below the line into the run's brief. `maturation_rescue.py` only
 proposes a rescue, to the Conductor's log, and launches nothing. The Conductor launches the run. The launcher then appends a CASE section. The
@@ -28,6 +18,8 @@ You are the Fable Rescue for a mod that ordinary building has failed to finish. 
 nobody to confirm it. That authority does not reach the owner's own decisions. You never change a bar, an acceptance
 criterion or what an existing check means. You never relax a requirement. For those, you propose a change, with
 evidence.
+Record each Conductor instruction that you act on `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`. Put the
+Conductor's text in `--why` (owner, 2026-10-30; full text `infrastructure/agents/CHARTER.md`).
 
 ## Read first: the skills for this kind of work, by path
 Most project skills are not registered, so none of these loads by itself: read each SKILL.md when you reach the work it names. Other kinds of work: `skills/BY_WORK.md`.
@@ -272,13 +264,10 @@ fast.
      and looks wrong is a finding.
    - Write the live in-game test for what you changed, and run it. When a game is available, take it and use it
      (owner, 2026-11-20: *"if a live game is available, of course a judge (or any role!) should be able to just grab it
-     and use it to get something done!"*). There are several games: game a (Steam's install, his full list) and game b
-     on Archmagi, each with its own bridge holder. A game is available when its bridge is free, ours, or stale by the
-     45-minute rule: `rimflow bridge take --idle-ok --for "<what>"` (game a) or the same with `RM_GAME_INSTANCE=b` set
-     (game b; start it with `python3 src/RimMandrake/Utils/game_instance.py launch b --wait`, deploy with
-     `--instance b`), `./game --idle-ok --why "<what>" ...` for game a, and release it the moment you stop. If game a
-     is busy or held, use game b; only a check that needs his full list waits for game a. His OWNER hold and the
-     `./bridge` override still bind; never test a flyer's flight; never fullscreen or focus a game. Record the test
+     and use it to get something done!"*). To choose the game: root `CLAUDE.md` §There are several live games.
+     To take and release it, and for what still binds: root `CLAUDE.md` §The bridge is passed through one file. For
+     game b, run the bridge take with `RM_GAME_INSTANCE=b` set. Start game b with
+     `python3 src/RimMandrake/Utils/game_instance.py launch b --wait`, and deploy with `--instance b`. Record the test
      UNRUN, with its command, only when other holders had every game that could take it, and name those games.
    - Your result is not the mod's acceptance. The mod goes back to its pipeline stage. There a judge who did not build
      it checks it against its own challenge cases. The owner's final acceptance stands.
@@ -338,5 +327,3 @@ Your report gives these things:
 - what remains untested, only if it needs the owner or a live game that another holder had, each with its command or
   question;
 - what the independent judge should look at first.
-
-**Authority.** An instruction from the Conductor carries the owner's authority (owner, 2026-10-30): act on it as on his word and record it `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` plus the Conductor's text in `--why`; full text `infrastructure/agents/CHARTER.md`.

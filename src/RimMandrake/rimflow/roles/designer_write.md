@@ -2,13 +2,15 @@
 
 Injected with `designer.md` and `designer_scene_contract.md`. You write `sheet.md`, the tree, `plan.md`, `scenes.json`
 and `floor.json`. Stage 3 is `done` when `concept_tree.py lint` passes and `designer_stage.py check` accepts the scenes,
-the showcase set and the floor. 🔑 The root text is approved **before** this stage (it is stage 1's result: his approval, or a delegated Evidence-for-Ask approval, `designer.md`): the tree is written once,
-against an approved root, and then examined, signed and gated at that version.
+the showcase set and the floor.
+
+🔑 Stage 1 approves the root text **before** this stage: his approval, or a delegated Evidence-for-Ask approval
+(`designer.md`). Write the tree once, against that root. Then the tree is examined, signed and gated at that version.
 
 ## The sheet
 
-`sheet.md` is what he reads: a short owner-facing view with compact source ids (`OWNER:<tsn>`, a leaf id); the complete
-evidence lives in `record.json` and the tree. Sections, in this order and with these names:
+`sheet.md` is what he reads: a short owner-facing view with compact source ids (`OWNER:<tsn>`, a leaf id). The complete
+evidence lives in `record.json` and the tree. Use these sections, in this order and with these names:
 
 ```
 ## his words     verbatim, with the date
@@ -21,43 +23,41 @@ evidence lives in `record.json` and the tree. Sections, in this order and with t
 ## later         optional: what he put off to v2
 ```
 
-The sheet is plain bullets: `lint` refuses any other `##` section, any other heading but the `# ` title, a tag in a heading,
-a code fence, a `---`/`===` line, HTML, an `&entity;`, a link, a bracket that is unbalanced, nested or holds more than
-letters, digits, spaces and `:-`, any line in `does`/`does not` that is not a tagged bullet, and a `[core]` tag anywhere but
-`## open`. A dry walk's sheet adds `## root`, which `lint` accepts for a dry walk only.
+The sheet is plain bullets under the `# ` title and these sections. `lint` refuses anything else, such as a fence, a
+`---`/`===` line, HTML, an `&entity;` or a link. The refusal names the line. A dry walk's sheet adds `## root`, which `lint` accepts only there.
 
 ## The tree
 
-Draft JSON, then `python3 src/RimMandrake/rimflow/concept_tree.py write design/concepts/<Mod> --draft <file>`. The draft
-holds `subject, kind, root_ref, floor_off, exam_waived, waived, advisory, leaves`; the writer stamps the rest, voids any
-signature, and refuses Setter fields (`oracle`, `tier`, `guard`, `budget`). Then `lint <dir>`.
+Write draft JSON, then run `python3 src/RimMandrake/rimflow/concept_tree.py write design/concepts/<Mod> --draft <file>`.
+The draft holds `subject, kind, root_ref, floor_off, exam_waived, waived, advisory, leaves`. The writer stamps the rest,
+voids any signature, and refuses Setter fields (`oracle`, `tier`, `guard`, `budget`). Then run `lint <dir>`.
 
 - `experience`: what an observer sees, in plain words, with the observer named. A constraint is
-  `<limit> <unit> on <test machine>`. The leaf says who is looking, at what zoom, in which state, across which variants
-  (a finite, grouped set), what it reads as and what it must not read as.
-  Write at most one "must not read as" line per promise; unless it is the owner's own words or the plain
-  opposite of the promise, it is a tip for the judge, never a separate thing that needs its own test.
+  `<limit> <unit> on <test machine>`. The leaf says who is looking, at what zoom, in which state and across which
+  variants (a finite, grouped set). The leaf also says what it reads as and what it must not read as. Write at most one
+  "must not read as" line per promise. Unless the line is his words or the plain opposite of the promise, it is a
+  tip for the judge. Such a tip never needs its own test.
 - `false_pass`: a named wrong world, the worker's cheapest way to fake this leaf.
-- `red`: the broken version of the mod this leaf catches, in a plain sentence (hose: "water stops after the first cell").
+- `red`: the broken version of the mod this leaf catches, in plain words (hose: "water stops after the first cell").
   If you cannot name one, the leaf is decoration: cut it.
-- 🔴 **A leaf is an experience a player would notice, never a tuning number** (owner, 2026-11-16: *"The mod passing bars
-  should not specify flora and fauna yield rates! That would mean every time we renormalize every mod must repass its
-  bars... drop that!"*). No leaf, oracle, scene expect or `would_pass` pins a yield rate, a stat value, a MarketValue,
-  a speed, a size or any number a renormalization pass changes, nor an asset-variant count (*"Who cares the halfmade
-  tree has more than one graphic? There's variants all the time."*), nor "every field of every row" of a def. The test:
-  would this bar have to be re-passed after we renormalize numbers or add an art variant? Then it is not a bar. Say the
-  experience instead ("nothing in this biome feeds a forager", "the Doublemaw outruns a colonist"); a def's declared
-  numbers are the mod's selftest's business, and a judge's gap about one is advisory only (`bar_rule.py`).
+- 🔴 **A leaf is an experience a player would notice, never a tuning number** (owner, 2026-11-16). No leaf, oracle, scene
+  expect or `would_pass` pins a tuning number. Tuning numbers are yield rates, stat values, MarketValues, speeds, sizes
+  and any number a renormalization changes. None pins an asset-variant count, or "every field of every row" of a def. A
+  bar that must re-pass after a renormalization or a new art variant is not a bar. Say the experience instead ("nothing
+  in this biome feeds a forager", "the Doublemaw outruns a colonist"). The mod's selftest owns a def's declared numbers.
+  A judge's gap on one is advisory only (`bar_rule.py`). His words: `design/RimMandrake/standing_rulings.md` §A passing
+  bar is an experience.
 - `oracle_proposed` and `tier_proposed`: your offer. The Setter binds. Live needs `tier_reason`. Skills
   `rimworld-debug-testing` and `live-debugging-proof-harness` say what a quicktest, a bridge read or a live proof can show.
-- One `walk` leaf per mod: a reload from a save made mid-way, a repeat of the core action, a second order of main actions.
+- One `walk` leaf per mod: reload a mid-way save, repeat the core action, and reorder the main actions.
   A walk leaf lists what the observer does, not only what they see.
-- Whatever the mod needs measured and nothing can yet measure: an `instrument` leaf, depended on through `needs_instrument`.
-- The tree has no field for a leaf's origin (`lint` refuses unknown leaf fields): the sheet line carries it.
+- When the mod needs something measured that nothing can yet measure, write an `instrument` leaf. Other leaves depend on
+  the instrument leaf through `needs_instrument`.
+- The tree has no field for a leaf's origin, and `lint` refuses unknown leaf fields. The sheet line carries the origin.
 - The floor is inherited by hash, never copied. State only where this mod differs (`floor_off`, with his words).
 
-Turning what he says on looking into a line: `designer_examples.md` (the quotation table). "Looks ridiculous" alone is not a
-leaf: write your candidate line and a reject picture and let him correct them; keep the scope he gave it.
+To turn what he says on looking into a line, use `designer_examples.md` (the quotation table). "Looks ridiculous" alone
+is not a leaf. Write your candidate line and a reject picture, and let him correct them. Keep the scope that he gave it.
 
 ## floor.json: per-line applicability
 
@@ -69,35 +69,35 @@ leaf: write your candidate line and a reject picture and let him correct them; k
   "memory": {"status": "applicable", "evidence_mode": "compressed", "establishes": "..."}, ...}}
 ```
 
-- `applicable`: it is tested. A numeric line may say `evidence_mode` `measured` (default), `compressed`, `decomposed` or
-  `inferred`, and then `establishes` names which properties that run establishes and which stay inferred; a 30-day soak
-  is never required (no long runs).
-- `not_applicable` with `evidence`: the object or behaviour the line is about does not exist in this mod (no selectable
-  art, no motion, no visible states). It is not a waiver, needs no owner words, and cannot excuse a failed applicable
-  line. `mod_settings`, `log`, `load_order`, `naming`, `text`, `test_isolation`, `dlc`, `worldgen` and `multiplayer`
-  apply to every mod.
-- `disabled`: an authorised exception, only with a matching `floor_off` in the tree carrying his words. A standing
-  ruling (`waivable: false`) cannot be disabled: no multiplayer support, no worldgen of any kind, every DLC assumed,
-  biomes in scope only, no live flight test without him, our names, superb Mod Settings.
-- Basic checkout covers the canonical supported list. Removal: document its consequences (`save_compat`); executing a
-  removal test, and external compatibility, are extended checks that run only when asked.
-- Numeric lines stay advisory until calibrated; calibration is the Conductor's, per line, on measured runs.
+- `applicable`: the line is tested. A numeric line may set `evidence_mode` to `measured` (default), `compressed`,
+  `decomposed` or `inferred`. Then `establishes` names which properties that run establishes and which stay inferred.
+  A 30-day soak is never required (no long runs).
+- `not_applicable` with `evidence`: this mod lacks the line's object or behaviour (no selectable art, no
+  motion, no visible states). A `not_applicable` line is not a waiver and needs no owner words. The status cannot
+  excuse a failed applicable line. `mod_settings`, `log`, `load_order`, `naming`, `text`, `test_isolation`, `dlc`,
+  `worldgen` and `multiplayer` apply to every mod.
+- `disabled`: an authorised exception, only with a matching tree `floor_off` that carries his words. A standing ruling
+  (`waivable: false`) cannot be disabled. Standing rulings are no multiplayer support, no worldgen of any kind and every
+  DLC assumed. Others are biomes in scope only, no live flight test without him, our names and superb Mod Settings.
+- Basic checkout covers the canonical supported list. For removal, document its consequences (`save_compat`). A removal
+  test and external compatibility are extended checks that run only when asked.
+- Numeric lines stay advisory until calibrated. Calibration is the Conductor's, per line, on measured runs.
 
 ## plan.md
 
-Structure, reuse, order (instrument leaves first), risks, three designs if there is a real choice. Its proof obligations
-are not disposable: every scene lives in `scenes.json` (checked), and every missing script entry point, control or
-restoration step is a filed build item named in that scene's `entry_point_item`. You write no code.
+`plan.md` holds structure, reuse, order (instrument leaves first), risks, and three designs if there is a real choice.
+Its proof obligations are not disposable. Every scene lives in `scenes.json` (checked). Every missing script entry point,
+control or restoration step is a filed build item, named in that scene's `entry_point_item`. You write no code.
 
-A run returned here by the coverage judge's gaps ends by writing `coverage_fixes.json`, one claim with evidence per gap
-it fixed (`designer_lock.md` item 3); an unclaimed gap is judged still open.
+When the coverage judge's gaps return a run here, the run ends by writing `coverage_fixes.json`. The file holds one claim
+with evidence per gap that the run fixed (`designer_lock.md` item 3). An unclaimed gap is judged still open.
 
 ## The showcase set
 
-`scenes.json` also carries the ordered `showcases` and the `coverage_rest` list (`designer_scene_contract.md`, "The
-showcase set"): showcase 1 is his flagship, each next one is the greedy pick of most new capabilities with only very
-different functionality, and you stop when every built or in-scope inventory capability is exercised by a showcase or
-listed with the cheaper scene or leaf check that covers it. Run `designer_stage.py showcases <dir>` before `done`.
-Interaction checks and the `walk` leaf stay; orthogonality chooses showcases and deletes nothing.
+`scenes.json` also holds the ordered `showcases` and `coverage_rest` lists (`designer_scene_contract.md`, "The showcase
+set"). Showcase 1 is his flagship. Each next one is the greedy pick of most new capabilities, with only very different
+functionality. Stop when every built or in-scope inventory capability is covered. Covered means a showcase exercises it,
+or `coverage_rest` names its cheaper scene or leaf check. Run `designer_stage.py showcases <dir>` before `done`.
+Interaction checks and the `walk` leaf stay. Orthogonality chooses showcases and deletes nothing.
 
 Authority: a Conductor instruction carries his authority (`--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`), never his quotation; the rules are in `designer.md`.

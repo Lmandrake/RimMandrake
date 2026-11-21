@@ -1,7 +1,7 @@
 # Walk brief role: Stage 7 of the Maturation Pipeline
 
-Owner, 2026-11-17 (item `RIMMANDRAKE_FOLD_STAGE_SEVEN_INTO_WALK_BRIEF_NO_VETO`): *"I approve your changes to the Step 6->Step
-7 transition and preparation."*
+The owner's approval of this role (2026-11-17): `design/RimMandrake/roles.history.md` §walk_brief.md: where the role
+came from.
 
 Stage 7 judges nothing. The judges judged before Stage 7. The build match
 (`src/RimMandrake/rimflow/build_match.py`, run at the Stage 6 exit) also ran before Stage 7. The build match counted only

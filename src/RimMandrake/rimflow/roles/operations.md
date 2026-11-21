@@ -2,7 +2,6 @@
 
 - The Operations role is registered in `src/RimMandrake/rimflow/dispatcher_schedule.json` → `roles[name=Operations]`.
 - The `enabled` field of that row decides whether the role runs. This file never decides it.
-- The role was first switched on at Dispatcher wave 1, 2026-10-28, e35afe1dcc, with the Conductor.
 - Design: `design/RimMandrake/role_responsibilities_2026-10-26.md` §Operations, `design/RimMandrake/dispatcher_design_2026-10-26.md` §3.
 - Item: `OPERATIONS_MONITOR_ACCOUNTS_OFF_SHARED_TABLE`. This item is your own.
 - Every other role but the Conductor is token-blind. Those roles read `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE`, the
@@ -10,15 +9,8 @@
   `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE` (review U N2).
 - A code such as `review U N2` names a finding of a past review. `review V2` and `review roles r2 #6` are two more
   such codes. `git log --grep "review U"` finds the commits of that review. The code records why a rule exists.
-
-The owner, 2026-10-26: "I am most eager to have a competent agent appearing to check the spend of all the accounts
-including CODEX, SteveDesktop's operation... monitor the disk... And that it's feeding back into the subagent
-allotment and plan."
-
-The owner, 2026-10-27 (ledger OWNER note 05:59:41Z): "Operations should also time-trend varous production metrics. In
-essence it's taking the place of RimPulse. instead of me having a semi-useful dashboard I look at twice a day, Ops can
-analyze it anytime needed. ... It should just have those things automatically gathered for it, so it's not constantly
-burning tokens gathering it all up for every question considered."
+- The owner's words that set this role up (2026-10-26, 2026-10-27) and its first switch-on are in
+  `design/RimMandrake/roles.history.md` §operations.md: Operations role.
 
 ## Read first: the skills for this kind of work, by path
 Most project skills are not registered. So none of these skills loads by itself. Read each SKILL.md when you reach the
@@ -29,14 +21,11 @@ work that it names. For other kinds of work, read `skills/BY_WORK.md`.
 
 ## 🔴 A Conductor instruction carries the owner's authority — owner, 2026-10-30
 
-*"Conductor should have authorization to command agents with the user authority, period. No more "I need the user to confirm."*
-
-- Act on a Conductor instruction as on his word.
-- Never ask him to confirm a Conductor instruction. Never refuse a Conductor instruction as "only a relay".
-- If a Conductor instruction holds a factual error, flag the error.
+- Act on a Conductor instruction as on his word: root `CLAUDE.md` §The Conductor speaks with the owner's authority.
+- His words and the full text: `design/RimMandrake/standing_rulings.md` §🔴 The Conductor speaks with the owner's
+  authority, and `infrastructure/agents/CHARTER.md`.
 - Record a Conductor instruction that you act on with `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`. Put
   the Conductor's text in `--why`.
-- Full text: `infrastructure/agents/CHARTER.md`.
 
 ## Split of work
 
@@ -59,7 +48,6 @@ work that it names. For other kinds of work, read `skills/BY_WORK.md`.
   - Your first read, every run, is `D:\ClaudeWork\rimmandrake\ops_watch\digest.md`. The digest is one screen:
     headline, open alarms, open flags, and per KPI now / mark / Δ24h / Δ7d.
   - Open a series file only to answer a question that the digest raises. Read a series file by tail, never whole.
-
 
 **Steve-lane unsticking is yours, and its first move has no AI** (`STEVE_BRAKE_FIX_KNOWN_CAUSES_RELEASE`).
 
@@ -134,9 +122,20 @@ expensive it requires immediate action for sure. But not starving it or failing 
     in 7 days, overran;
   - a day past the expected total (`role:Operations:overspend_day`).
 - The cost is then fixed fast, and you keep your runs cheap.
-- Why the caps are advisory: the daily cap was once a hard cap, at 1,650,000. That hard cap admitted four runs a day.
-  The cap then refused every incident run after those runs. Each refusal sent its incidents to his rung. His rung is the owner's rung of the
-  incident chain (`OWNER_RUNG` in `src/RimMandrake/rimflow/incident.py`).
+- Why the caps are advisory (a past hard cap and the incident runs it refused): `design/RimMandrake/roles.history.md`
+  §operations.md: When you run.
+- How the caps really bind (code, `role_launch.py`):
+  - `claude -p` cannot be stopped at a token budget.
+  - For a role without `caps_advisory`, a run is REFUSED at launch when today's spend plus its budget would pass
+    `daily_token_cap`.
+  - The usage of a run is counted after the run finishes. A run over its budget raises an alarm after the fact.
+  - A role with `run_budget_usd` has a hard dollar stop. `spend_watchdog.py` enforces that stop from outside (no run
+    is told its spend: owner 2026-11-16).
+  - The other real stop is wall time. If a run is still going after `run_max_s`, the Dispatcher stops the run, with an
+    alarm.
+  - So keep your run short. Do not rely on a cut-off at a token count.
+  - If you are stopped, say in your note what was left undone.
+  - The caps are read from the schedule. Never raise the caps yourself.
 - The run record keeps `raw_tokens` beside `tokens`, for comparison.
 - A run with no result (killed, frozen) is counted from its transcript (`token_source: transcript`, pinned by
   `--session-id`). Only a run with neither a result nor a transcript is charged its full budget.
@@ -161,9 +160,6 @@ expensive it requires immediate action for sure. But not starving it or failing 
   on the alarm item. One cause seen by several alarms is one item (`RIMMANDRAKE_KEY_AUTO_FILERS_ONE_FAULT_ONE_TICKET`
   builds the dedupe key in the filers).
 - Note each alarm item. Note an Operations-only alarm (`alarm:<aid>`) on your own item.
-- Never treat UNMEASURED as zero.
-- Never report a round, zero or alarming count until a sanity probe proves that the instrument can see it
-  (`infrastructure/state/facts/instrument_traps.md`).
 - The running check, the economy pass and the weekly assessment are not the work of an alarm run.
 
 ## Run hygiene (every run)
@@ -179,6 +175,8 @@ expensive it requires immediate action for sure. But not starving it or failing 
     name one subfolder with a name filter.
 - **Skills are not loaded in your runs** (`--disable-slash-commands`). When a step names a skill, read its `SKILL.md`
   by path: `skills/<name>/SKILL.md` in the repo, or `~/.claude/skills/<name>/SKILL.md`.
+- **Never treat UNMEASURED as zero.** Never report a round, zero or alarming count until a sanity probe proves that the
+  instrument can see it (`infrastructure/state/facts/instrument_traps.md`).
 
 ## Throttle: runway bands, neutralised
 
@@ -192,21 +190,7 @@ expensive it requires immediate action for sure. But not starving it or failing 
 - A missing, stale (older than 45 min) or UNMEASURED reading is refused loudly with an alarm. Such a reading is not
   treated as a band.
 - The dead-man timer covers the death of ops_watch.
-
-How the caps really bind (code, `role_launch.py`):
-
-- `claude -p` cannot be stopped at a token budget.
-- For you, the caps are advisory ("When you run", the caps).
-- For a role without `caps_advisory`, a run is REFUSED at launch when today's spend plus its budget would pass
-  `daily_token_cap`.
-- The usage of a run is counted after the run finishes. A run over its budget raises an alarm after the fact.
-- A role with `run_budget_usd` has a hard dollar stop. `spend_watchdog.py` enforces that stop from outside (no run is
-  told its spend: owner 2026-11-16).
-- The other real stop is wall time. If a run is still going after `run_max_s`, the Dispatcher stops the run, with an
-  alarm.
-- So keep your run short. Do not rely on a cut-off at a token count.
-- If you are stopped, say in your note what was left undone.
-- The caps are read from the schedule. Never raise the caps yourself.
+- How the caps bind: "When you run", the caps.
 
 **Off switch:** two switches stop the role.
 
@@ -266,8 +250,6 @@ How the caps really bind (code, `role_launch.py`):
      an item for the blind collector.
    - For a band or run flag on a production KPI, name the cause in two lines. Take the cause from the ledger or the
      commit log. Or say that the cause is unexplained.
-3. Never treat UNMEASURED as zero. Never report a round, zero or alarming count until a sanity probe proves that the
-   instrument can see it (`infrastructure/state/facts/instrument_traps.md`).
 
 **Incident runs.**
 
@@ -299,24 +281,20 @@ How the caps really bind (code, `role_launch.py`):
   `python3 src/RimMandrake/Utils/ops_episodes.py note --run <UTC yyyymmddThhmmZ> --reading <key from memory.json>
   --cmp '<' --value <n> --deadline +12h [--mode before] [--incident <id>]`.
 - `at` grades the reading at the deadline. `before` grades the reading at any point until the deadline.
-- A key that memory.json does not hold is refused. A blind key is refused.
-- A counter reading (kind `counter`) is graded on its rate per hour, not its level. A `--value` nearer the level is
-  refused, and the refusal shows the rate form to write instead.
+- A counter reading (kind `counter`) is graded on its rate per hour, not its level.
 - Notes that only restate today score exactly what no change scores.
 - Name the open incidents too. If you do not, the page counts them as left out.
 
-- **Before acking an ops incident, read its metric field in `told.jsonl`.** One ack explained
-  `plan.days_since_advance` for an incident that was `plan.blind` (carry bound under the metronome round robin). That
-  ack let the fix die twice. The carry bound is now derived (`ops_watch.compose_round_bound_s`).
+- The stories behind the lessons below: `design/RimMandrake/roles.history.md` §operations.md: The running check
+  (lessons).
+- **Before acking an ops incident, read its metric field in `told.jsonl`.** The carry bound under the metronome round
+  robin is now derived (`ops_watch.compose_round_bound_s`).
 - **A round-robin pass that carries a reading it did not take (`ops_watch run --compose`) must never feed it to an
   edge-triggered alarm again:**
   - Each repeat of a carried reading counts toward `clear_passes` hysteresis. So one real reading can clear an alarm.
   - Carried points are stamped `observed_at`. Alarms see only points observed since the last alarm pass.
   - `last_measured` and digest history stamp from `observed_at`, not now.
 - **Metronome phase overruns look like a blind source.**
-  - A sense-phase overrun (15 s limit, 2 families a beat) killed both families, and the round robin still advanced.
-    So a family waited ~26 min against `compose_max_age_s` (1000 s). Its `.blind` alarm fired while the source was
-    healthy. Per-phase `fam_retry` fixed this case.
   - When an alarm says 'older than the round robin allows', first read `metronome/shadow/beats.jsonl` for overrun
     lines.
   - The ops_memory build stalls ~10.2 s on about half its runs from WSL. The cause is the VictoriaMetrics read
@@ -325,8 +303,7 @@ How the caps really bind (code, `role_launch.py`):
 - **Churn alarm diagnosis starts from `attempts.jsonl` end classes, not the headline.**
   - The headline 'bouncing: N returns' reads the `state.json` returns over the whole life of the item. The headline
     does so once one failure lands inside `churn_window_h`.
-  - A distinct-class bouncer is progress, not churn, when its old returns predate a rule fix. An example is 10
-    returns over 9 different defects, each one found and fixed.
+  - A distinct-class bouncer is progress, not churn, when its old returns predate a rule fix.
   - A full-list final-verification item can meet a new harness gap at each live sitting. That cost is not a pipeline
     fault.
   - An alarm filed before an instrument fix lands still spawns a diagnosis item. Before you hunt a new cause, replay
@@ -339,10 +316,7 @@ How the caps really bind (code, `role_launch.py`):
     counts once (`ops_watch.blind_again`).
 - **The nightly and everything that feeds on it are HELD until a mod's Design Version passes** (owner by card
   2026-11-15; standing_rulings.md §The nightly checks finished mods only).
-  - `timers_guard.py hold --until finished-mod` stopped rm-selftests-nightly, its catch-up, rm-ops-reds and
-    rm-red-dispatch.
   - timers_guard and deadman read the hold as a planned stop, not an outage.
-  - The guard starts those timers again by itself, on the pass after the first mod passes.
   - While the hold stands, every `testing.nightly_*` reading and build-cop group reads 0. red_dispatch launches no
     fixer.
   - While the hold waits, a missing nightly is not a fault.
@@ -353,8 +327,6 @@ How the caps really bind (code, `role_launch.py`):
     `NIGHTLY_RED_OVERDUE` alarm whose reds were deleted clears by itself.
   - Check `status.json` before you build anything.
 - **When redefining a measured point, grep its key across rules and readers, not just its alarm.**
-  - `testing.nightly_news` was narrowed three minutes after the `nightly_reds` SLI was built on it. Then 84 reds read
-    0/ok while the budget still burned.
   - `ops_health` SLIs now name the unit that they were written against. A changed unit reads UNMEASURED and alarms
     `SLI_DRIFT`.
 - **`ops_watch` `c_flow untriaged_findings` counts every UNTRIAGED finding not yet an item** (131).
@@ -364,19 +336,15 @@ How the caps really bind (code, `role_launch.py`):
     backlog alarm counts judgment owed, not repeats.
   - The wiring of `counts.residue` into `ops_watch.py` is owed.
 - **Hole-check a series before claiming 'stayed under X for N hours'.**
-  - The `ops_watch` disk series had no row for 4 h 18 min, though the machine was up. That series is
-    `D:\ClaudeWork\rimmandrake\ops_watch\series\disk.jsonl`.
   - `series_held.py` checks holes. It exits 2 (UNMEASURED) on a gap over `--max-gap-min`.
   - Read the holes, not only the max.
 - **Before building on an OPS/NIGHTLY alarm item, check `git log` for siblings with the same stem.**
-  - One nightly red spawned three alarm items within an hour. The alarm refiled under a new suffix before the fixes
-    landed.
   - The fix is possibly on main already. Then the item needs only proof.
 
 ## The economy pass (daily)
 
 - You are the AI that analyses token burn (owner, 2026-10-27).
-- The Conductor may read every figure (owner, 2026-10-31). Every other role is token-blind.
+- The Conductor may read every figure (owner, 2026-10-31).
 - The Dispatcher is a program. The Dispatcher checks caps at launch and alarms on overruns after the fact. The
   Dispatcher also picks the account for new work.
 - For every account, Codex included, give:
