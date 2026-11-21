@@ -126,6 +126,34 @@ FILED_LOCK = ("publish: add failed (the lines stay in the working tree; the next
               "create '/home/mandrake/rm/dispatch/.git/index.lock': File exists.")
 
 
+def live_steward_checks(root):
+    """RIMMANDRAKE_SEE_LIVE_STEWARD_BEFORE_CALLING_IT_SPENT: a steward run still live on its own state is never read
+    'ended and the state has not moved' (steward_spent, PAUSED). Measured 2026-11-20 4:47 PM PST: GimmeSomeSlack's
+    preflight steward (rm-detached-bench-rimmandrake-steward-gimmesomeslack-prefl-1795220569, systemd active) read
+    PAUSED steward_spent 24 min into its run, with an un-pause line that would launch a second steward beside it."""
+    briefs = lambda w: [x[1] for x in w.launched if x[0] == "brief"]   # noqa: E731
+    for stage, facts in (("in_game", lambda: ingame("A", "exit not met", why=["sc_ruins reads FAIL"])),
+                         ("preflight", lambda: {"mod": "A", "stage": "preflight", "version": "0.1.0", "live_units": [],
+                                                "owed": "steward", "exit": {"state": "not_met", "why": ["-"]}})):
+        fresh_state()
+        w = World({"A": facts()})
+        rd, g = run(w, ["A"], root)
+        first = g("A").get("decision")
+        units = [x for x in briefs(w)]
+        w.facts["A"]["live_units"] = ["rm-fake-%d" % len(w.launched)]
+        rd, g = run(w, ["A"], root, now=CLOCK + 600)
+        ok(g("A").get("decision") != "steward_spent" and g("A").get("klass") == "wait" and len(briefs(w)) == len(units),
+           "live steward (%s): its own unit live a tick later reads wait, never PAUSED steward_spent, no second launch "
+           "(first %s, read %s/%s: %s; briefs %d -> %d)" % (stage, first, g("A").get("klass"), g("A").get("decision"),
+                                                            str(g("A").get("status"))[:100], len(units), len(briefs(w))))
+        w.facts["A"]["live_units"] = []
+        rd, g = run(w, ["A"], root, now=CLOCK + 1200)
+        if units:
+            ok(g("A").get("decision") == "steward_spent",
+               "live steward (%s): once it ended unmoved the state is spent as before (read %s)" % (
+                   stage, g("A").get("decision")))
+
+
 def launch_retry_checks(root):
     """RIMMANDRAKE_RETRY_STEWARD_LAUNCH_GIT_LOCK_COUNTED_AS_SPENT: a steward or fixer that FAILED TO LAUNCH on a
     transient fault (a git index.lock at publish, its item not yet on origin/main) is not a spent run. Measured
@@ -1017,6 +1045,7 @@ def main():
         worked_after_checks(root)
         designer_lock_checks(root)
         launch_retry_checks(root)
+        live_steward_checks(root)
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
     print("%d FAIL" % len(FAILS) if FAILS else "ALL PASS")

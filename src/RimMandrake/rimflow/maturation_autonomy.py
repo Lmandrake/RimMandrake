@@ -874,13 +874,16 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
         # one automatic run per state, then a steward or fixer within the caps
         if row.get("aut"):
             launches = [m for m in launches if m != mod]
-            ok, why = _gate(cfg, s, row, None if base is None else base + len([m for m in launches if m not in acts]), ver)
+            ok, why = _gate(cfg, s, row, None if base is None else base + len([m for m in launches if m not in acts]), ver,
+                            live=f.get("live_units"))
             if ok:
                 launches = launches + [mod]
             else:
                 if why[0] == "slots_full":
                     row["waits_on"] = "a free slot for the %s run on %s" % (
                         row["aut"], row.get("fix_item") or row.get("steward_kind"))
+                elif why[0] == "live":
+                    row["waits_on"] = why[1]
                 row.update(decision=why[0], aut=None, why=why[1] + (
                     "; it was for: %s" % str(row["steward_why"]) if row.get("steward_why") else ""))
     return rows, launches
@@ -1418,14 +1421,18 @@ def _retriable(x, cfg, mod=None):
     return (transient(x["failed"]) or fresh_code) and tries_left(cfg, mod, x.get("tries"))
 
 
-def _gate(cfg, s, row, live_total, ver):
-    """-> (go, (decision, why)) for a steward or fixer launch: once per key, the version's count, the cap, the slots."""
+def _gate(cfg, s, row, live_total, ver, live=None):
+    """-> (go, (decision, why)) for a steward or fixer launch: once per key, the version's count, the cap, the slots.
+    A run of this key whose unit is still among the mod's live units (`live`) is waited on, never read spent
+    (RIMMANDRAKE_SEE_LIVE_STEWARD_BEFORE_CALLING_IT_SPENT: a preflight steward read PAUSED 24 min into its run)."""
     if row.get("aut") == "fixer":
         key, done = row.get("fix_key") or row["fix_item"], s.setdefault("fixers", {})
     else:
         key, done = row["steward_key"], s.setdefault("steward", {})
     if key in done:
         x = done[key]
+        if isinstance(x, dict) and x.get("unit") and isinstance(live, list) and x["unit"] in live:
+            return False, ("live", "%s is live on it (the automatic %s run on this state)" % (x["unit"], row["aut"]))
         tries = int(x.get("tries") or 1)
         # a launch that failed on a defect is tried again once the pipeline's code changed since (the fix may have
         # landed); before this the Conductor cleared it by hand (maturation_dispatch.code_changed)
