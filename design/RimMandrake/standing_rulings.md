@@ -1135,6 +1135,19 @@ The rule is user-level since the same day (*"Semantic Versioning should be a Lod
   delegated record for his digest. It asks him only when it finds evidence against 0.1.0, quoted on the card. His card
   answers above (Polish moves confirmed with him, current-or-next asked at filing) stand; each such ask carries the
   evidence against the obvious answer.
+- **Each passed version is tagged** (owner, 2026-11-20, about 4:10 PM PST: *"Make sure we TAG each finished version
+  of a mod so we can easily come precisely back to it, please. This should become policy."*): every version that passes
+  gets the annotated git tag `mod/<Mod>/v<MAJOR.MINOR.PATCH>` (for example `mod/GimmeSomeSlack/v0.1.0`) on the commit
+  that records its pass, and the tag is pushed to origin. To return to a version, check out its tag
+  (`git checkout mod/<Mod>/v<version>`, read-only, or `git switch -c <branch> mod/<Mod>/v<version>` to work from it).
+  The pipeline does it: `maturation.py advance <Mod> passed` lands the pass files with `./publish`, tags the PUBLISHED
+  commit and pushes the tag. A tag that fails is loud (`PASSED BUT NOT TAGGED`, exit 5) and is retried with
+  `python3 src/RimMandrake/rimflow/maturation.py tag-pass <Mod>`; the pass itself stands. A tag name that is already
+  taken refuses the pass before anything is written. A tag push whose commit is already on origin/main passes the
+  ledger hook (`.claude/hooks/block_ledger_lint.py`). The seat and role clones keep the tags: `./publish` and `./sync`
+  fetch with git's default tag following, and `mirror` fetches `refs/tags/*`. The pool clones and their store
+  (`scratch_clone.py`) fetch with `--no-tags`, so a tag made after a pool clone was cut is not in it: run
+  `git fetch origin tag mod/<Mod>/v<version>` there first. Page: `design/specs/2026-11-20-maturation-pass-tag/boundary.md`.
 His words in full and the build plan (lock, next-version file, pass record), still a draft: `design/specs/2026-11-13-mod-design-versions.md`.
 
 ## Evidence-for-Ask — owner, 2026-11-15

@@ -479,6 +479,8 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 
 - The Design Version rule (Semantic Versioning, Convergent and Divergent changes) is a user-level rule. Here the unit
   is the mod. Each mod has its own current version and status.
+- Each version that passes gets the git tag `mod/<Mod>/v<version>` on its pass commit, and the tag is pushed.
+  To return to a version, check out its tag.
 - Detail: `design/RimMandrake/standing_rulings.md` §Mod Design Versions. Draft build plan:
   `design/specs/2026-11-13-mod-design-versions.md`.
 
