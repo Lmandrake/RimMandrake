@@ -7,13 +7,9 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 ## Read these first
 
 - `PURPOSE.md` says what this repo is. It is an experimental agent software factory, and its product is a game.
-  The owner uses it to test ideas about agents, factories and orchestration. The game domain has low risk and is easy
-  for a person to read. So agent behaviour here is easy to understand and to trust.
 - `infrastructure/agents/CHARTER.md` is the full process rulebook.
 - Read your own window file. The Conductor (the window that the owner talks to) reads
   `infrastructure/agents/CONDUCTOR.md`.
-- The Conductor launches builds directly, as helpers. The earlier pipelines are retired.
-  `design/RimMandrake/retired_eras_index_2026-11-18.md` lists what they left and where git keeps it.
 - The game cycle is in `infrastructure/GAME_STATE_WORKFLOW.md`.
 - The model ladder is in `infrastructure/agents/Agent_Policy.md` and nowhere else. Do not restate it.
 
@@ -31,12 +27,15 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 
 ## How we debug
 
-- Every mod has a functional script. Debug the mod through that script.
+- Every mod has a functional script. Debug the mod through that script. Run the script first. When the script is
+  blind, poke the live game.
 - Each live debug session ends with an update to that script. Write what the session learned, false theories included.
-- Agents write and approve these scripts. Every new mod ships with its first script.
+  The lesson is a check that is red for the reported reason before the final fix.
+- Agents write, approve and declare passing on these scripts. Every new mod ships with its first script.
 - Agents may add regression checks and new north-star bars (`design/RimMandrake/delegation_policy.md` §1).
 - Only the Conductor may loosen a bar, as a mindful act (see "Only five acts stay his" below).
-- Process: `design/RimMandrake/debug_process.md`. The build pause and its end: `infrastructure/agents/CHARTER.md`.
+- When you are stuck, go to GPT early, for hypotheses to test.
+- Process, and the build pause of 2026-10-01 and its lift: `design/RimMandrake/debug_process.md`.
 
 ## There is no worldgen feature, in any version
 
@@ -57,7 +56,6 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 - Do not point our content at a donor def to make it show on today's map.
 - Do not use a tile count as evidence that something is or is not built.
 - The paint list is the item `BIOME_PAINT_ONCE_AT_THE_END_1`.
-- If you are about to report one of our biomes on zero tiles, stop. It is the expected state.
 - `world/ASHKARR_WORLDMAP_tiles.csv` is a record of the planet on its export date. It is not the live planet. Only the
   live game tells you the state now.
 - Full text: `design/RimMandrake/biome_rulings.md`.
@@ -477,7 +475,6 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 - This is a user-level rule. Here, a walkthrough is a zoomed capture of every station and connection, and you examine
   each capture.
 - A naive judge is a fresh Opus that did not make the work. For a big sheet, use `gpt_consult.py`.
-- Sheet tools refuse to run without `<stem>.prereview.json` (`src/RimMandrake/Utils/art/prereview.py`).
 - Full text: `design/RimMandrake/standing_rulings.md` §Nothing reaches the owner unread.
 
 ## An operational item is done only when it is running
@@ -500,9 +497,7 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
   `D:\Luke\dev\RimMandrake` is a read-only mirror.
 - Land with `./publish`. It prints `PUBLISHED <sha>`. Skill: `clone-landing-commits`.
 - Keep file writes and commits in separate Bash calls. Hooks refuse a compound command whole.
-- Commit explicit paths only. The pathspec goes on the commit. Never use `git add -A`, `git add .` or `git commit -a`
-  (`block_blanket_git_stage.py` refuses them).
-- `git worktree` is off (`block_worktrees.py`).
+- Commit explicit paths only. The pathspec goes on the commit.
 - More than 4 writers at one time may use a pool of up to 16 reused clones and 80 GB. `scratch_clone.py` refuses a new clone past
   those limits. Monitor the pool carefully, because clones multiply fast.
 - The pool has one alarm, `disk.pool_breach`. It also fires on a helper clone that holds unlanded work after an idle
