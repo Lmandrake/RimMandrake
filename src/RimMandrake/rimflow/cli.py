@@ -64,10 +64,10 @@ import sys
 import time
 
 try:                                                    # python3 -m rimflow.cli
-    from . import conductor_acts, driver_lock, fulltext, host_guard, lease, model, owner_interaction, priority, priority_list, probe, reconcile, testpilot_route
+    from . import conductor_acts, principal, driver_lock, fulltext, host_guard, lease, model, owner_interaction, priority, priority_list, probe, reconcile, testpilot_route
 except ImportError:                                     # python3 .../rimflow/cli.py
     sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    from rimflow import conductor_acts, driver_lock, fulltext, host_guard, lease, model, owner_interaction, priority, priority_list, probe, reconcile, testpilot_route   # noqa: F401
+    from rimflow import conductor_acts, principal, driver_lock, fulltext, host_guard, lease, model, owner_interaction, priority, priority_list, probe, reconcile, testpilot_route   # noqa: F401
 
 PROSE_BUDGET = 2400          # chars of items/<ID>.md that `next` will print, ~600 tokens
 
@@ -1928,7 +1928,10 @@ def cmd_namecheck(args, seat):
     probs = model.mint_problems(iid, set(w.items))
     if probs:
         print("REFUSED:\n  - " + "\n  - ".join(probs))
-        return 1
+        # advisory: `file` and `spawn` take the name with a NAME NOTE; a script's `namecheck && file` must not stop a
+        # principal on it (RIMMANDRAKE_NEVER_REFUSE_THE_CONDUCTOR_SEVEN_REFUSALS_ONE_NIGHT)
+        return 0 if principal.form("the name breaks the grammar; `file` and `spawn` take it with a NAME NOTE",
+                                   seat=seat) else 1
     print("OK — %d chars. Read it cold: is the subject greppable, the twist true, kind and "
           "specific?" % len(iid))
     return 0
@@ -2959,8 +2962,11 @@ def cmd_close(args, seat):
     # attributable on the screen as well as in the ledger.
     it = w.items.get(args.id)
     holder = getattr(it, "owner", None)
+    form_notes = []     # faults of form waived for a principal (principal.form): they ride on the event
     if it is not None and no_code and _owed().is_owed(it) and not _owed().evidence_ok(no_code):
-        die(_owed().refusal(args.id, no_code))      # an owed act is discharged by evidence, never by "done"
+        # an owed act is discharged by evidence, never by "done"; a principal's free-text evidence goes, noted
+        principal.form("evidence form: free text (no sha, run id, path or `told him at <time>`)",
+                       _owed().refusal(args.id, no_code), seat=seat, die=die, event={"form_notes": form_notes})
     if it is not None:
         args.seat_is_owner = seat == "OWNER"
         _close_gate(args, it, sha, no_code)
@@ -2973,6 +2979,8 @@ def cmd_close(args, seat):
         ev["reason"] = args.reason
     if no_code:
         ev["noCode"] = no_code
+    if form_notes:
+        ev["form_notes"] = form_notes
     try:
         line = _live_gate("close", args, it, None if no_code else sha)
     except SystemExit:
@@ -5001,7 +5009,10 @@ def build_parser():
                      "2026-10-11): it lands as seat OWNER in OWNER.jsonl, so commit that shard; your own note takes "
                      "--why alone.")
     s.add_argument("id")
-    s.add_argument("--text", required=True)
+    # the text either way (`note <ID> "<text>"` or `--text "<text>"`): a usage error for a positional text was a fault
+    # of form that refused the Conductor (RIMMANDRAKE_NEVER_REFUSE_THE_CONDUCTOR_SEVEN_REFUSALS_ONE_NIGHT); _parse joins
+    s.add_argument("text_words", nargs="*", metavar="text", help="the note's text (or --text)")
+    s.add_argument("--text")
 
     s = add("seat", "announce what this seat is doing", cmd_seat)
     s.add_argument("state", choices=("ready", "busy", "idle"))
@@ -5289,6 +5300,10 @@ def main(argv=None):
     if not getattr(args, "cmd", None):
         p.print_help()
         return 1
+    if getattr(args, "cmd", None) == "note":       # the text either way: positional words, --text, or both joined
+        args.text = " ".join(x for x in ([args.text] if args.text else []) + list(args.text_words or []) if x.strip())
+        if not args.text.strip():
+            p.error("note needs its text: rimflow note <ID> \"<text>\" (or --text \"<text>\")")
     return args.fn(args, _resolve_command_seat(args)) or 0
 
 

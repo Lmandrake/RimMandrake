@@ -60,13 +60,8 @@ CLI = os.path.join(HERE, "cli.py")
 def conductor_window(env=None):
     """-> (ok, why): is this process the Conductor window? Seat BENCH (AGENT_SEAT, else RIMFLOW_SEAT) and no
     RM_ROLE_UNIT (every launched run, detached helper or role run, carries one). Anything else is not the Conductor."""
-    env = os.environ if env is None else env
-    if (env.get("RM_ROLE_UNIT") or "").strip():
-        return False, "a launched run (RM_ROLE_UNIT=%s) is not the Conductor window" % env["RM_ROLE_UNIT"]
-    seat = (env.get("AGENT_SEAT") or env.get("RIMFLOW_SEAT") or "").strip().upper()
-    if seat != "BENCH":
-        return False, "seat %s is not the Conductor's (BENCH)" % (seat or "unset")
-    return True, "the Conductor window"
+    import principal            # the one definition (seat BENCH, typed BENCH or CONDUCTOR; no RM_ROLE_UNIT)
+    return principal.conductor_window(env)
 
 
 def _digest_note(mod, why):

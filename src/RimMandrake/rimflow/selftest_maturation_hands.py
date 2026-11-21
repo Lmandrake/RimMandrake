@@ -354,7 +354,10 @@ def acts_main():
         rc, text = MH.fold(root, "rel-hand", census="A row nobody wrote", fx=fx)
         ok(rc == 2 and "REFUSED" in text, "acts 11: fold refuses a census row that no census file holds", text)
         rc, text = MH.fold(root, "no-such-act", item="RIMMANDRAKE_KNOWN_FOLLOW_UP_ITEM", fx=fx)
-        ok(rc == 2, "acts 12: fold refuses an act id that was never recorded", text)
+        # an id the tick has not recorded yet (clear printed it seconds before the tick ran) is kept, never refused
+        # (RIMMANDRAKE_NEVER_REFUSE_THE_CONDUCTOR_SEVEN_REFUSALS_ONE_NIGHT); it applies when the act is recorded
+        ok(rc == 0 and "KEPT" in text and MH.read_folds().get("no-such-act", {}).get("pending_act"),
+           "acts 12: a fold of an act id not yet recorded is kept, marked pending_act", text)
         rc, text = MH.fold(root, "rel-hand", census="A killed run is not a failed run", fx=fx)
         ok(rc == 0 and "rel-hand" in MH.read_folds(), "acts 13: fold accepts a row the census holds", text)
         rd3 = {"needs_conductor": []}

@@ -424,9 +424,10 @@ def census_holds(root, row):
 
 
 def fold(root, act_id, item=None, census=None, why="", by=None, fx=None, now=None):
-    """-> (rc, text). The act must be recorded; --item must be on the ledger; --census must be text a census file holds."""
-    if act_id not in {a["id"] for a in read_acts()}:
-        return 2, "REFUSED: no hand act %s is recorded (`maturation_hands.py list --all` shows every id)" % act_id
+    """-> (rc, text). --item must be on the ledger; --census must be text a census file holds. An act the tick has not
+    recorded yet (`clear` prints its id before the next tick records it) is no refusal: the fold is kept, and read_folds
+    applies it when the act is recorded (RIMMANDRAKE_NEVER_REFUSE_THE_CONDUCTOR_SEVEN_REFUSALS_ONE_NIGHT)."""
+    pending = act_id not in {a["id"] for a in read_acts()}
     if bool(item) == bool(census):
         return 2, "REFUSED: name exactly one of --item ID or --census \"<row>\""
     rec = {"id": act_id, "at": now or time.time(), "by": by or "hand", "why": str(why or "")}
@@ -441,7 +442,12 @@ def fold(root, act_id, item=None, census=None, why="", by=None, fx=None, now=Non
             return 2, ("REFUSED: no %s file holds the row \"%s\" (give the row's name verbatim, 8 characters or more; "
                        "add the row to the census first if the lesson is new)" % (CENSUS_GLOB, census))
         rec["census"] = "%s: %s" % (path, str(census).strip())
+    if pending:
+        rec["pending_act"] = True
     _append(FOLDS, rec)
+    if pending:
+        return 0, ("KEPT: the fold of %s by %s; no hand act %s is recorded yet (the tick records it on its next pass), and "
+                   "the fold applies then" % (act_id, rec.get("item") or rec["census"], act_id))
     return 0, "FOLDED %s by %s" % (act_id, rec.get("item") or rec["census"])
 
 

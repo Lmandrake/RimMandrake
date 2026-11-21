@@ -395,6 +395,10 @@ def scope_of(t, strict=True, unseeded=False):
     kind, _, name = t.partition(":")
     if not name:
         kind, name = None, t
+    if kind == "unit" or (kind is None and name.startswith("rm-")):
+        # a run's unit, as `pipe stop` takes it: `on`/`off` accept every scope `stop` does
+        # (RIMMANDRAKE_NEVER_REFUSE_THE_CONDUCTOR_SEVEN_REFUSALS_ONE_NIGHT: `pipe on unit:<u>` was "no scope kind")
+        return "unit:" + (name[:-len(".service")] if name.endswith(".service") else name)
     if kind == "item" or (kind is None and (name.startswith("RIMMANDRAKE_") or name.startswith("RIMMASTER_"))):
         return "item:" + name
     if kind == "stage" or (kind is None and name in STAGES):
@@ -414,7 +418,7 @@ def scope_of(t, strict=True, unseeded=False):
             raise Refused("no game %r: a game is one letter (a is his game, b the second)" % name)
         return "game:" + g
     if kind not in (None, "mod"):
-        raise Refused("no scope kind %r (all, mod:, stage:, item:, family:, role:, game:)" % kind)
+        raise Refused("no scope kind %r (all, mod:, stage:, item:, family:, role:, game:, unit:)" % kind)
     m = key(name)
     if strict:
         mods = known_mods()
@@ -513,6 +517,31 @@ def _cancel_in_scope(c, scope, why, now):
     return out
 
 
+def _withdraw_stops(c, rows, now):
+    """Withdraw the stop orders in `rows` that their run has not yet obeyed. -> (withdrawn, obeyed): a pending order
+    (not yet delivered) is withdrawn silently; a delivered one ('seen') becomes 'withdrawn_owed', and the run's hook
+    tells it once that the order is withdrawn; an order whose run already ended ('done', 'escalated') is obeyed and is
+    listed, never revived. Item RIMMANDRAKE_NEVER_REFUSE_THE_CONDUCTOR_SEVEN_REFUSALS_ONE_NIGHT."""
+    withdrawn, obeyed = [], []
+    for r in rows:
+        r = dict(r)
+        if r["state"] in ("pending", "seen"):
+            c.execute("UPDATE stops SET state=?, ended_at=? WHERE id=? AND state=?",
+                      ("withdrawn" if r["state"] == "pending" else "withdrawn_owed", now, r["id"], r["state"]))
+            withdrawn.append(r)
+        elif r["state"] in ("done", "escalated"):
+            obeyed.append(r)
+    return withdrawn, obeyed
+
+
+def _stop_rows_in(c, scope):
+    """The stop orders a `pipe on <scope>` lifts: a unit's own, or those of a stop act on exactly that scope."""
+    if scope.startswith("unit:"):
+        return c.execute("SELECT * FROM stops WHERE unit=?", (scope[5:],)).fetchall()
+    return c.execute("SELECT s.* FROM stops s JOIN acts a ON a.id=s.act WHERE a.kind='stop' AND a.scope=?",
+                     (scope,)).fetchall()
+
+
 def switch(scope, off, why, layer="control", until=None, said=None, owner_said=None, per_ruling=None, idem=None,
            p=None, now=None, date=None, extra=None):
     """Write one switch. off=True: the row is written and every unstarted run in scope is cancelled, in ONE
@@ -546,6 +575,17 @@ def _switch(scope, off, why, layer, until, said, owner_said, per_ruling, idem, p
                        a["at_pacific"], a["who"], json.dumps(extra) if extra else None))
             cancelled = _cancel_in_scope(c, scope, why, now)
         else:
+            if layer == "control":      # `on` also withdraws the stop orders on the scope not yet obeyed
+                pend = [r for r in _stop_rows_in(c, scope) if r["state"] in ("pending", "seen")]
+                if pend:
+                    a = _act(c, "on", scope, dict(old) if old else None, {"withdrawn": [r["id"] for r in pend]}, why,
+                             owner_said, per_ruling, idem, now=now)
+                    wd, _ = _withdraw_stops(c, pend, now)
+                    if old:
+                        c.execute("DELETE FROM switches WHERE scope=? AND layer=?", (scope, layer))
+                    still = [describe(r) for r in blocking(c, [scope], now)]
+                    return {"act": a, "before": before, "cancelled": [], "still": still, "replayed": False,
+                            "had": True, "withdrawn": wd}
             if not old:
                 still = [describe(r) for r in blocking(c, [scope], now)]
                 return {"act": None, "before": "ON" if not still else "OFF", "cancelled": [], "still": still,
@@ -1086,7 +1126,9 @@ def undo(act_id, why, owner_said=None, per_ruling=None, p=None, now=None, base=0
     """`pipe undo <act>`: a compensating act (critique 16). A count or limit adjustment stops counting; a grant gets
     its negative (a look already consumed shows as a deficit); an OFF is lifted only while it is still the switch's
     own act. Refused, naming why, when a later act depends on it, when it was already undone, or for an act no undo
-    inverts (stop, void, import, hold: their own commands). -> {"ok", "why", "act", "line", "after"}."""
+    inverts (void, import, hold: their own commands). A stop is withdrawn while its run has not obeyed it; an obeyed one
+    says so and names the resume command; his stop (--owner-said) is withdrawn only by his word. -> {"ok", "why", "act",
+    "line", "after"}."""
     now = time.time() if now is None else now
     r = _undo(act_id, why, owner_said, per_ruling, p, now, base)
     if r["ok"] and r["act"]["scope"] == "all":   # the permit follows an undone all-switch too (permit-never-ghosts)
@@ -1161,6 +1203,38 @@ def _undo(act_id, why, owner_said, per_ruling, p, now, base):
             return {"ok": True, "why": None, "act": u, "after": after, "line": "%s: OFF %s undone; the OFF it replaced "
                     "is back, %s (%s)%s" % (a["scope"], act_id, prior.get("act") or "no act", str(prior.get("why"))[:60],
                                             "" if after == "OFF" else ", lapsed at its until: ON")}
+        if a["kind"] == "stop":     # withdrawn while its run has not obeyed it (RIMMANDRAKE_NEVER_REFUSE_THE_CONDUCTOR_...)
+            if a.get("owner_said") and not owner_said:
+                return no("%s is his stop (--owner-said): it binds; only his word withdraws it" % act_id)
+            rows = c.execute("SELECT * FROM stops WHERE act=?", (act_id,)).fetchall()
+            sw = None if a["scope"].startswith("unit:") else c.execute(
+                "SELECT * FROM switches WHERE scope=? AND layer='control'", (a["scope"],)).fetchone()
+            sw = sw if sw and sw["act"] == act_id else None
+            live = [r for r in rows if r["state"] in ("pending", "seen")]
+            if not live and not sw:
+                ended = [dict(r) for r in rows if r["state"] in ("done", "escalated")]
+                return no("%s was already obeyed (%s): nothing is left to withdraw. Resume the work: `python3 "
+                          "src/RimMandrake/rimflow/detached_helper.py launch <ITEM> --resume <its session>` "
+                          "(`detached_helper.py list` names the session)" % (
+                              act_id, ", ".join("%s %s" % (r["unit"], r["state"]) for r in ended) or "no order is live"))
+            u = _act(c, "undo", a["scope"], {"undoes": act_id}, {"withdrawn": [r["id"] for r in live],
+                                                                 "switch_lifted": bool(sw)},
+                     why, owner_said, per_ruling, undoes=act_id, now=now)
+            wd, ob = _withdraw_stops(c, live, now)
+            if sw:
+                prior = json.loads(a["before"] or "null")
+                if isinstance(prior, dict) and prior.get("layer") == "control" and prior.get("scope") == a["scope"]:
+                    cols = [r[1] for r in c.execute("PRAGMA table_info(switches)").fetchall()]
+                    c.execute("INSERT OR REPLACE INTO switches (%s) VALUES (%s)" % (",".join(cols), ",".join(
+                        "?" * len(cols))), [prior.get(k) for k in cols])
+                else:
+                    c.execute("DELETE FROM switches WHERE scope=? AND layer='control'", (a["scope"],))
+            told = [r["unit"] for r in wd if r["state"] == "seen"]
+            return {"ok": True, "why": None, "act": u, "after": "withdrawn", "line": "%s: stop %s withdrawn: %s%s%s" % (
+                a["scope"], act_id, ", ".join(r["unit"] for r in wd) or "no order was live",
+                "; new starts allowed again" if sw else "",
+                "; %s already read it and is told on its next tool call that it is withdrawn" % ", ".join(told)
+                if told else "")}
         return no("a %s act is not inverted by undo: use its own command (pipe on/off, pipe model, maturation_dispatch.py "
                   "unvoid, mod_owner_hold.py lift)" % a["kind"])
 
@@ -2304,6 +2378,12 @@ def hook(p=None, unit=None, now=None, stdin=None):
             s = c.execute("SELECT * FROM stops WHERE unit=? AND state IN ('pending','seen') ORDER BY id DESC LIMIT 1",
                           (unit,)).fetchone()
             if not s:
+                w = c.execute("SELECT * FROM stops WHERE unit=? AND state='withdrawn_owed' ORDER BY id DESC LIMIT 1",
+                              (unit,)).fetchone()
+                if w and c.execute("UPDATE stops SET state='withdrawn' WHERE id=? AND state='withdrawn_owed'",
+                                   (w["id"],)).rowcount:
+                    return 2, ("STOP ORDER WITHDRAWN (act %s): the stop order you read earlier is taken back. Carry on "
+                               "with your work as before." % w["act"])
                 return 0, ""
             if not c.execute("UPDATE stops SET state='seen', seen_at=COALESCE(seen_at, ?), seen_n=seen_n+1 WHERE id=? "
                              "AND state IN ('pending','seen')", (now, s["id"])).rowcount:
@@ -2725,6 +2805,10 @@ def cmd_switch(o, off):
         if r["still"]:
             return ["%s: no `pipe off` switch to lift; still %s" % (scope, r["still"][0][:160])]
         return ["%s is already ON (the store holds no switch for it)" % scope]
+    if r.get("withdrawn"):
+        lines0 = ["%s: stop order(s) withdrawn: %s" % (scope, ", ".join(x["unit"] for x in r["withdrawn"]))]
+    else:
+        lines0 = []
     after = "OFF" if off else ("still " + r["still"][0][:120] if r["still"] else "ON")
     lines = ["%s %s -> %s%s" % (scope, r["before"], after,
                                 "; cancelled before start: %s" % ", ".join(r["cancelled"]) if r["cancelled"] else "")]
@@ -2742,7 +2826,7 @@ def cmd_switch(o, off):
         t = tick_now()
         lines.append(_who_line(r["act"]) + ("; " + t if t else ""))
     lines.append("undo: pipe %s %s --why \"...\"" % ("on" if off else "off", o.target))
-    return lines
+    return lines0 + lines
 
 
 def cmd_stop(o):
@@ -2767,9 +2851,8 @@ def cmd_stop(o):
     if mode == "kill":
         l2 += "; " + "; ".join(u.get("bookkeeping", "") for u in r["units"])[:300]
     return (FAILED if bad else OK), [head[:400], l2[:400],
-                                                             "undo: pipe on %s --why \"...\" (new starts again)" % (
-                                                                 o.target if not r["scope"].startswith("unit:") else
-                                                                 "<scope>")]
+                                                             "undo: pipe undo %s --why \"...\" (withdraws the order while the run has not obeyed it)" % (
+                                                                 r["act"]["id"] if r["act"] else "<act>")]
 
 
 def parse_dur(s):

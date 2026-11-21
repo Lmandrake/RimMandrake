@@ -898,8 +898,10 @@ def now():
 # a window's claims by it, not by seat: the Conductor's windows and the Relentless supervisor share the BENCH key.
 # `card` (RIMMANDRAKE_RECORD_CARD_OPTION_TEXT_LABEL_LOST_THE_ART): the whole answered card a `--by-card` relays (question,
 # picked label AND description, his words, the other labels), stamped by cli from card_capture; `byCard` stays the summary.
+# `form_notes` (RIMMANDRAKE_NEVER_REFUSE_THE_CONDUCTOR_SEVEN_REFUSALS_ONE_NIGHT): the faults of form a gate waived for the
+# owner or the Conductor window (principal.form), one string each; the act went on and the note says what was missing.
 UNIVERSAL_FIELDS = ("ts", "tsn", "seat", "event", "id", "caused_by", "override", "ownerSaid",
-                    "why", "byCard", "perRuling", "role_unit", "ranBy", "hisHands", "session", "card")
+                    "why", "byCard", "perRuling", "role_unit", "ranBy", "hisHands", "session", "card", "form_notes")
 
 
 def _check_verb(ev):
