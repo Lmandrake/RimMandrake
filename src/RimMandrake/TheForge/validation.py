@@ -2062,10 +2062,17 @@ def sky_pastures(t):
         need("catch (System.NullReferenceException)" in src and "SectionAt(loc) == null" in src,
              "dirtying does not guard the not-yet-built section slots (the MessyConduit first-load trap)")
         need("skyColumnGridEnabled" in src, "the grid is not gated on skyColumnGridEnabled")
+        need("get { return RM_SkyKernel.ColumnVisualsShow(RM_TheForgeSettings.Active(RM_TheForgeSettings.skyColumnGridEnabled), "
+             "Map?.Biome?.defName); }" in src,
+             "the haze is not gated on a Forge map through RM_SkyKernel.ColumnVisualsShow (it draws a pale ring round every "
+             "steam geyser on every biome; owner 2026-11-20: \"It's ugly.\")")
         need('Compile Include="RM_ForgeSkyPastures.cs"' in prj, "the csproj does not compile RM_ForgeSkyPastures.cs (a silent no-op)")
     with _comp(t, "sky_source_spirals_are_cosmetic_flecks", independent=True, toggle="skyAshSpiralsEnabled"):
         need("FleckMaker.ThrowDustPuffThick" in src and "skyAshSpiralsEnabled" in src, "no ash flecks under skyAshSpiralsEnabled")
         need("CurrentViewRect" in src, "spirals are not limited to the camera view")
+        need("if (!RM_SkyKernel.ColumnVisualsShow(RM_TheForgeSettings.Active(RM_TheForgeSettings.skyAshSpiralsEnabled), "
+             "map.Biome?.defName)" in src,
+             "the ash spirals are not gated on a Forge map through RM_SkyKernel.ColumnVisualsShow")
     with _comp(t, "sky_source_hunt_scores_columns", independent=True, toggle="skyColumnHuntEnabled"):
         need("nameof(FoodUtility.GetPreyScoreFor)" in src and "skyColumnHuntEnabled" in src, "no gated prey-score postfix")
         need("InColumn(prey.Position)" in src, "the prey score does not read the column field")

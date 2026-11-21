@@ -33,10 +33,11 @@ namespace RimMandrake.TheForge
             relevantChangeTypes = (ulong)RM_TheForgeDefOf.RM_SkyColumns;
         }
 
-        // The setting only hides the draw, so flipping it back needs no regeneration.
+        // The setting only hides the draw, so flipping it back needs no regeneration. A Forge map only: every vanilla map has
+        // steam geysers, and their haze over a Desert review map was an ugly pale ring of squares (owner, 2026-11-20).
         public override bool Visible
         {
-            get { return RM_TheForgeSettings.Active(RM_TheForgeSettings.skyColumnGridEnabled); }
+            get { return RM_SkyKernel.ColumnVisualsShow(RM_TheForgeSettings.Active(RM_TheForgeSettings.skyColumnGridEnabled), Map?.Biome?.defName); }
         }
 
         private static Material Haze
@@ -211,7 +212,8 @@ namespace RimMandrake.TheForge
         // ---- stage 2: ash spirals --------------------------------------------------------------------------
         private void StepMotes()
         {
-            if (!RM_TheForgeSettings.Active(RM_TheForgeSettings.skyAshSpiralsEnabled) || columnCells.Count == 0
+            if (!RM_SkyKernel.ColumnVisualsShow(RM_TheForgeSettings.Active(RM_TheForgeSettings.skyAshSpiralsEnabled), map.Biome?.defName)
+                || columnCells.Count == 0
                 || Find.CurrentMap != map || Find.CameraDriver == null)
             {
                 if (motes.Count > 0)

@@ -352,9 +352,9 @@ namespace RimMandrake.TheForge
             if (Group(list, "Vapour columns and sky creatures", RimMandrake.Shared.SettingScope.Now, new[] { "skyColumnGridEnabled", "skyAshSpiralsEnabled", "skyColumnHuntEnabled", "jossurStoopEnabled", "skyColumnHighlightEnabled", "skyColumnWanderEnabled" }))
             {
                 list.CheckboxLabeled("Vapour-column haze", ref skyColumnGridEnabled,
-                    "A faint haze, brighter at the rim, marks the ground under each vapour column where the sky creatures graze.");
+                    "A faint haze, brighter at the rim, marks the ground under each vapour column where the sky creatures graze. Forge maps only.");
                 list.CheckboxLabeled("  Ash spirals in the columns", ref skyAshSpiralsEnabled,
-                    "Ash flecks wind upward inside the vapour columns near the camera. Cosmetic only.");
+                    "Ash flecks wind upward inside the vapour columns near the camera. Cosmetic only. Forge maps only.");
                 list.CheckboxLabeled("  Column-aware hunting", ref skyColumnHuntEnabled,
                     "Predators that live in the columns prefer prey inside them and ignore prey far out on the open ash.");
                 list.CheckboxLabeled("  Jossur stoops", ref jossurStoopEnabled,

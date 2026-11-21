@@ -1052,6 +1052,31 @@ def main():
         check("highlight mutant (%s) reddens only the selection-only component" % label,
               set(bad) == {"sky_pastures.sky_source_highlight_is_selection_only"}, bad)
 
+    # Forge maps only (owner 2026-11-20 on a Desert review map: "Why do steam geysers have this pale area surrounding them?
+    # It's ugly."): the haze layer and the ash spirals each decide through RM_SkyKernel.ColumnVisualsShow with the map's
+    # biome; putting back the old setting-only gate reddens only that stage's component
+    grid_gate = "get { return RM_SkyKernel.ColumnVisualsShow(RM_TheForgeSettings.Active(RM_TheForgeSettings.skyColumnGridEnabled), Map?.Biome?.defName); }"
+    spiral_gate = "if (!RM_SkyKernel.ColumnVisualsShow(RM_TheForgeSettings.Active(RM_TheForgeSettings.skyAshSpiralsEnabled), map.Biome?.defName)"
+    biome_mutants = [
+        ("haze shown on every biome (the setting-only gate of 2026-10)", grid_gate,
+         "get { return RM_TheForgeSettings.Active(RM_TheForgeSettings.skyColumnGridEnabled); }",
+         "sky_pastures.sky_source_grid_is_a_dirty_safe_section_layer"),
+        ("haze gate given no biome", grid_gate, grid_gate.replace("Map?.Biome?.defName", "RM_SkyKernel.HomeBiome"),
+         "sky_pastures.sky_source_grid_is_a_dirty_safe_section_layer"),
+        ("spirals on every biome (the setting-only gate of 2026-10)", spiral_gate,
+         "if (!RM_TheForgeSettings.Active(RM_TheForgeSettings.skyAshSpiralsEnabled)",
+         "sky_pastures.sky_source_spirals_are_cosmetic_flecks"),
+    ]
+    for label, old, new, comp in biome_mutants:
+        mutated = sky_src.replace(old, new, 1)
+        check("forge-only mutant applies to the source (%s)" % label, mutated != sky_src)
+        try:
+            V._read_cs = lambda n, m=mutated: m if n == "RM_ForgeSkyPastures.cs" else real(n)
+            bad = reds(run())
+        finally:
+            V._read_cs = real
+        check("forge-only mutant (%s) reddens only %s" % (label, comp), set(bad) == {comp}, bad)
+
     # stage 5b homing (LIVE 2026-11-04: the PreWander insert alone lost to vanilla's sleep/eat nodes): losing the PreMain
     # homing, or deciding it outside the fuzzed kernel, reddens only the wiring component
     rt = V._read_text
