@@ -21,6 +21,8 @@ not_run = {
     "sc_herd_thirst": "started at 20:46, stopped by this run to put the repaired reruns first; seven game days",
     "sc_grass_regreens": "embergrass_regrow (seven game days on the real clock); SteveDesktop's run was UNMEASURED (no site there); not reached here",
     "P_scorchfruit_spoils": "scorchfruit_spoils (up to 270,000 ticks); SteveDesktop's run was UNMEASURED; not reached here",
+    "P_scorchfruit_produces": "started 21:37 on Archmagi; the run was stopped by the spend watchdog before the chain wrote evidence; the resumed run (23:06) found game a's bridge held by another run (FlowWorks judge, active), so it was not rerun",
+    "P_opening_front": "never started: the run was stopped by the spend watchdog first; the resumed run (23:06) found game a's bridge held by another run (FlowWorks judge, active)",
 }
 out = []
 for test, v, cmd, ev, note in ran:
@@ -29,7 +31,8 @@ for test, v, cmd, ev, note in ran:
     r.update(ident)
     out.append(r)
 CHAIN = {"sc_walk": "walk_season", "sc_rite_hook_alone": "rite_hook_alone", "sc_herd_thirst": "herd_thirst",
-         "sc_grass_regreens": "embergrass_regrow", "P_scorchfruit_spoils": "scorchfruit_spoils"}
+         "sc_grass_regreens": "embergrass_regrow", "P_scorchfruit_spoils": "scorchfruit_spoils",
+         "P_scorchfruit_produces": "scorchfruit_produces", "P_opening_front": "opening_front"}
 DRIVER = ("python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan "
           "src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains %s")
 for test, why in not_run.items():
