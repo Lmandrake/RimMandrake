@@ -23,7 +23,8 @@ Static reads of the C# (comments stripped), for every public static bool/float/i
                    first time the settings window draws)
   kernel_gates     the kernel's own gate predicates, evaluated over every input (blind cycle 4: a MechanicsOn that ignored the
                    Baroque Biomes toggle and a BurnStampMay that ignored "Mod enabled" left every check here green):
-                   MechanicsOn is master AND (no shell OR toggle); BurnStampMay is false whenever the gate or its own switch is off
+                   MechanicsOn is master AND (no shell OR toggle); BurnStampMay is false whenever the gate or its own switch is off;
+                   and each of the six gate predicates shuts on its gate argument first (a bare conjunct, or a leading guard)
   gate_args        every caller of a kernel gate predicate hands it PyrelandsMechanicsGate.On at the gate's place (blind cycle 4:
                    BurnStampMay(true, ...) in a postfix that consults the gate elsewhere stayed green)
   wind_reads_pred  the wind carry's one predicate is what the wind patches read: WindCarriedFire.Governs reads WindCarries, and
@@ -218,7 +219,25 @@ def facts(mod):
             if want is not None and got != want:
                 bad.append("%s%s = %s, wants %s" % (meth, combo, got, want))
                 break
-    fact("kernel_gates", bad, "%d kernel gate predicates hold over every input" % len(KERNEL_GATES))
+    # each kernel gate predicate shuts on its own gate argument: a bare conjunct of its one return, or a guard that returns
+    # false / 0 first (blind cycle 4: BlackRainDouseAmount without `!gateOn ||` stayed green here)
+    kernels = {k: v for k, v in code.items() if k.startswith("Kernel" + os.sep)}
+    for meth, pos in GATE_ARGS:
+        src = next((v for v in kernels.values() if re.search(r"\bstatic\s+\w+\s+%s\s*\(" % re.escape(meth), v)), None)
+        m = re.search(r"\bstatic\s+\w+\s+%s\s*\(([^)]*)\)\s*\{" % re.escape(meth), src or "")
+        if not m:
+            bad.append("%s not found in the kernels" % meth)
+            continue
+        params = [x.split()[-1] for x in m.group(1).split(",") if x.strip()]
+        gate = params[pos] if len(params) > pos else None
+        body = re.sub(r"\s+", " ", _block(src, m.end() - 1) or "")
+        conj = re.match(r"^ ?return ([^;]+);", body)
+        ok = bool(conj) and "||" not in conj.group(1) and gate in [t.strip() for t in conj.group(1).split("&&")]
+        g = re.match(r"^ ?if \(([^{};]*?)\) \{? ?return (false|0f?|0\.0f?);", body)
+        ok = ok or bool(g) and ("!" + gate) in [t.strip().replace("! ", "!") for t in g.group(1).split("||")]
+        if not ok:
+            bad.append("%s does not shut on its gate argument %s first" % (meth, gate))
+    fact("kernel_gates", bad, "%d kernel gate predicates hold over every input; %d shut on their gate argument" % (len(KERNEL_GATES), len(GATE_ARGS)))
     bad = []
     for meth, pos in GATE_ARGS:
         calls = 0
@@ -324,6 +343,8 @@ MUTANTS = [
      "return bonusOn && spawned && !attachedToPawn && scorchable;"),
     ("burn stamp caller passes true", S + "FireEcologyHook.cs", "BurnStampMay(PyrelandsMechanicsGate.On,", "BurnStampMay(true,"),
     ("wind patches ignore the wind predicate", S + "FireEcologyHook.cs", "if (burn == null || !burn.WindCarries) return false;", "if (burn == null) return false;"),
+    ("dousing kernel ignores the gate", S + "Kernel/RM_FireEcoKernel.cs", "if (!gateOn || !enabled || !exposed", "if (!enabled || !exposed"),
+    ("hawk letter kernel ignores the gate", S + "Kernel/RM_FireHawkRewardsKernel.cs", "|| !mechanicsOn ||", "||"),
 ]
 
 
