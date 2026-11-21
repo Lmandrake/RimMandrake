@@ -33,6 +33,13 @@ def main():
         check(fn(given) not in DH.MODELS, "%r is not repaired into an allowed tier (got %r)" % (given, fn(given)))
     # the launcher uses it: a full id passes the H4 gate's test
     check(DH.model_tier("claude-fable-5-2") in DH.MODELS, "a full Fable id passes the model gate after repair")
+    # The tier is only the gate's word. The launch line must still carry the FULL Fable 5.2 id: the CLI alias "fable"
+    # resolved to claude-fable-5-1 (measured 2026-11-12). A repaired full id must come out as the same full id.
+    for given in ("claude-fable-5-2", "fable", "Fable"):
+        got = DH.MODEL_IDS.get(DH.model_tier(given), DH.model_tier(given))
+        check(got == "claude-fable-5-2", "%r launches as claude-fable-5-2, never the bare alias (got %r)" % (given, got))
+    rec = {"model": DH.model_tier("claude-fable-5-2"), "item": "X_Y", "seat": "CONDUCTOR"}
+    check(DH.MODEL_IDS.get(rec["model"], rec["model"]) != "fable", "the launch line never passes the bare alias 'fable'")
     print("selftest_detached_helper_model_tier: %s" % ("all PASS" if not FAILS else "%d FAIL" % len(FAILS)))
     return 1 if FAILS else 0
 
