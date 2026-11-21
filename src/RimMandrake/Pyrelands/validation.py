@@ -551,6 +551,78 @@ def _whole(t):
     return "0,0,%d,%d" % (sx, sz)
 
 
+# --------------------------------------------------------------------------- framing a capture on its subject
+# RIMMANDRAKE_FRAME_PYRE_CHAIN_SHOTS_ON_THEIR_SUBJECT: every capture names its rect. A capture with no rect jumps the camera
+# to the anchor at whatever zoom the last call left; every chain below anchors on PAD_PROBE, so on visit 2 (2026-11-20) 20
+# captures were one east-edge frame with no subject in it (no furnace-beast, no herd), and judge_cli.py judges a component's
+# LAST capture as the picture of each bar its shows= claims. selftest_pyrelands_frames_subject.py holds this rule.
+FRAME_PAD = 3       # cells of ground around a subject, so the subject's edge is not the frame's edge (our choice)
+FRAME_MIN = 12      # the smallest side: the 12x12 cell shots of this file (burrow, dome) read one pawn plainly (visit 2)
+FRAME_CLUSTER = 24  # the window a scattered subject (fires, wild animals, ruins) is framed in: one TEST_SIZE pad
+SKY_FRAME = 2 * TEST_SIZE   # a sky capture: a pad and the same again of open ground, so the sky has land to dim (our choice)
+
+
+def frame_rect(cells, map_size, pad=FRAME_PAD, min_side=FRAME_MIN):
+    """Pure. Cells [(x, z), ...] -> (x, z, w, h): their bounding box grown by `pad`, at least `min_side` a side, inside the
+    map. None for no readable cell: a subject that is not on the map is never framed as if it were."""
+    pts = [(int(round(float(c[0]))), int(round(float(c[1])))) for c in cells or ()
+           if c is not None and c[0] is not None and c[1] is not None]
+    if not pts:
+        return None
+    sx, sz = map_size
+    x0, x1 = min(p[0] for p in pts) - pad, max(p[0] for p in pts) + pad + 1
+    z0, z1 = min(p[1] for p in pts) - pad, max(p[1] for p in pts) + pad + 1
+    w, h = x1 - x0, z1 - z0
+    if w < min_side:
+        x0, w = x0 - (min_side - w) // 2, min_side
+    if h < min_side:
+        z0, h = z0 - (min_side - h) // 2, min_side
+    return inside_map((x0, z0, w, h), map_size)
+
+
+def inside_map(rect, map_size):
+    """Pure. (x, z, w, h) -> the same size slid back inside the map; a side longer than the map is the whole map's side."""
+    x, z, w, h = rect
+    sx, sz = map_size
+    w, h = min(w, sx), min(h, sz)
+    return max(0, min(x, sx - w)), max(0, min(z, sz - h)), w, h
+
+
+def densest_cluster(cells, side):
+    """Pure. -> the cells in the busiest side x side window of a grid laid from (0, 0); a tie goes to the lowest window
+    (z, then x). [] for no readable cell."""
+    bins = {}
+    for c in cells or ():
+        if c is None or c[0] is None or c[1] is None:
+            continue
+        x, z = int(round(float(c[0]))), int(round(float(c[1])))
+        bins.setdefault((z // side, x // side), []).append((x, z))
+    if not bins:
+        return []
+    best = min(bins, key=lambda k: (-len(bins[k]), k))
+    return bins[best]
+
+
+def _whole_rect(t):
+    sx, sz = _map_size(t)
+    return 0, 0, sx, sz
+
+
+def _frame(t, cells, cluster=None):
+    """The rect of `cells` (their densest `cluster` window first, when given) on this map; the whole map when none is
+    readable (offline, or a subject the state read already failed on)."""
+    size = _map_size(t)
+    if cluster:
+        cells = densest_cluster(cells, cluster)
+    return frame_rect(cells, size) or (0, 0, size[0], size[1])
+
+
+def _sky_rect(t):
+    """A sky capture: SKY_FRAME square on the anchor, inside the map."""
+    x, z = t.anchor
+    return inside_map((x - SKY_FRAME // 2, z - SKY_FRAME // 2, SKY_FRAME, SKY_FRAME), _map_size(t))
+
+
 def _ok(r, what):
     if not isinstance(r, dict) or r.get("success") is False:
         _fail("%s failed: %r" % (what, r))
@@ -1070,7 +1142,7 @@ def mapgen_log(t):
             if allowed > pf.LOG_ALLOWED_MAX:
                 _fail("%d 'burnedDef is flammable' lines (the allowlist is retired; every burnedDef is non-flammable "
                       "deep ash)" % allowed)
-        t.screenshot()
+        t.screenshot(rect=_whole_rect(t))   # the subject is the fresh map itself
 
 
 @suite.chain("plant_census")
@@ -1116,7 +1188,7 @@ def plant_census(t):
                   {"ember": e, "quickgrass": q, "ratio": (float(e) / q) if q else None})
             if foreign:
                 _fail("foreign plant defs on the site: %r" % foreign)
-        t.screenshot()
+        t.screenshot(rect=_whole_rect(t))   # the subject is the fresh map itself
     _ten_plant_census(t)
 
 
@@ -1129,6 +1201,7 @@ def animal_census(t):
         # 2026-10-12); jawa/biome_probe reads the RESOLVED set (AllWildAnimals + CommonalityOfAnimal) instead.
         probe = t.bridge_call("jawa/biome_probe", biomes="RM_Pyrelands", animals=True, plants=False, topN=200)
         r = t.bridge_call("jawa/list_pawns", limit=1000)
+        wild = []
         if _live(t):
             _ok(r, "list_pawns")
             if r.get("truncated"):
@@ -1162,7 +1235,8 @@ def animal_census(t):
             keys = set(wa)
             if keys != set(ANIMAL_MANIFEST):
                 _fail("live wildAnimals %r differs from the %d-kind manifest" % (sorted(keys), len(ANIMAL_MANIFEST)))
-        t.screenshot()
+        # the subject: the wild animals where they stand thickest (a whole 250-cell map shows no species)
+        t.screenshot(rect=_frame(t, [(p.get("x"), p.get("z")) for p in wild], cluster=FRAME_CLUSTER))
 
 
 @suite.chain("grass_cover")
@@ -1192,7 +1266,7 @@ def grass_cover(t):
                 _unmeasured(t, "plantable cell count is zero / unreadable: %r" % terr)
             if ratio < 0.85:
                 _fail("plant coverage %.3f of %d plantable cells (< 0.85)" % (ratio, plantable))
-        t.screenshot()
+        t.screenshot(rect=_whole_rect(t))   # the subject is the fresh map itself
 
 
 @suite.chain("ruins")
@@ -1206,6 +1280,7 @@ def ruins(t):
     with _comp(t, "ruins_scorched", shows=["pyre_ruins_scorched"]):
         _fresh_site(t)
         r = t.bridge_call("jawa/list_things", group="BuildingArtificial", limit=2000)
+        rows = []
         if _live(t):
             _ok(r, "list_things(group=BuildingArtificial)")
             rows = [x for x in r.get("things") or []
@@ -1245,7 +1320,8 @@ def ruins(t):
             # A fixture built before that change still carries the old 6-10 day gap: rebuild it, do not excuse it.
             if filthy < RUIN_FILTH_MIN * len(picks):
                 _fail("%d of %d sampled ruins carry ash on the ground, want >= %.0f%%" % (filthy, len(picks), 100 * RUIN_FILTH_MIN))
-        t.screenshot()
+        # the subject: one ruin, its walls at their thickest (visit 2's walk save: the densest cluster reads as a ruin)
+        t.screenshot(rect=_frame(t, [(x.get("x"), x.get("z")) for x in rows], cluster=FRAME_CLUSTER))
     _ten_ruins(t)
 
 
@@ -1273,7 +1349,7 @@ def burn_line(t):
         if _live(t) and not fires:
             _fail("burnLineEnabled ON, map extinguished, %d ticks (> StandingBurnQuietTicks %d) and no free-standing "
                   "Fire: the standing burn did not reseed" % (BURN_LINE_WAIT_TICKS, BURN_QUIET_TICKS))
-        t.screenshot()
+        t.screenshot(rect=_frame(t, [(f.get("x"), f.get("z")) for f in fires], cluster=FRAME_CLUSTER))   # the front
         # SITE (visit 2, 2026-11-20): an extinguish here put out the reseeded front, and burn_line_walks_hourly then
         # watched 24 hours with 0 fires (the next reseed needs StandingBurnQuietTicks, longer than its day). The walk
         # starts from this front; _teardown puts the map out at the chain's end.
@@ -1355,7 +1431,7 @@ def opening_front(t):
                 _fail("re-armed, fire clock ON, %d ticks and the opening front did not light: %r" % (OPENING_WAIT_TICKS, kv))
             if not fires:
                 _fail("the opening front reports %s cells lit but no free-standing Fire is on the map" % kv.get("lit"))
-        t.screenshot()
+        t.screenshot(rect=_frame(t, [(f.get("x"), f.get("z")) for f in fires], cluster=FRAME_CLUSTER))   # the front
         _extinguish(t)
 
 
@@ -1374,7 +1450,7 @@ def startup_and_def_wiring(t):
             if "RM_FE_Ground_Soil" not in names:
                 _fail("first terrainPatchMaker (unburned pockets) lacks RM_FE_Ground_Soil: %r" % names)
             every = [th.get("terrain") for m in makers for th in ((m or {}).get("thresholds") or [])]
-        t.screenshot()
+        # no capture: a def read has no subject on the map, and this row claims no bar a judge reads
 
 
 @suite.chain("ground_deep_ash")
@@ -1403,7 +1479,7 @@ def ground_deep_ash(t):
                 _fail("no unburned pocket (soil / gravel / sand) at all: %r" % pockets)
             if ring["WaterShallow"] and not (ring["RM_FE_Ground_SoilRich"] or ring["Mud"]):
                 _fail("standing water with no rich-soil / mud ring: %r" % ring)
-        t.screenshot()
+        t.screenshot(rect=_whole_rect(t))   # the subject is the fresh map itself
     _ten_ground_deep_ash(t)
     _r6_ground_deep_ash(t)
 
@@ -1489,7 +1565,8 @@ def ash_fertility_watered(t):
                 _fail("the cell beside WaterShallow is not watered after a full sweep: %r" % wet)
             if wet["fertility"] - dry["fertility"] < WATERED_MIN_GAIN:
                 _fail("watered %.2f vs dry %.2f: gain < %.2f" % (wet["fertility"], dry["fertility"], WATERED_MIN_GAIN))
-        t.screenshot()
+        # the subject: the deep-ash strip, its watered cell and its dry far cell
+        t.screenshot(rect=frame_rect([(x0, z0), (x0 + ASH_STRIP_W - 1, z0 + ASH_STRIP_H - 1)], _map_size(t)))
     _ten_ash_fertility_watered(t)
 
 
@@ -1568,7 +1645,7 @@ def ambient_ash_drift(t):
                 _fail("the commonest weather is %s (%r), not RM_FE_Weather_AshDrift" % (top, table))
         t.bridge_call("jawa/weather_set", weather="RM_FE_Weather_AshDrift", lockWeather=True)
         _wait(t, 3000)
-        t.screenshot()
+        t.screenshot(rect=_sky_rect(t))
 
 
 # --------------------------------------------------------------------------- toggle floor
@@ -1662,7 +1739,7 @@ def ashfall_weather_accumulation(t):
         if _live(t) and n < 1:
             _fail("expected >=1 NEW ashed cell over the whole map after 2600 ticks "
                   "under RM_FE_Weather_AshFall, got %d (%r)" % (n, got))
-        t.screenshot()
+        t.screenshot(rect=_sky_rect(t))
 
 
 # --------------------------------------------------------------------------- weather
@@ -1686,7 +1763,7 @@ def ashfall_drifts(t):
         if _live(t):
             if any(b < a for a, b in zip(series, series[1:])) or cells[-1] < 20:
                 _fail("ash depth series %r not monotone, or %r ashed cells < 20 at the end" % (series, cells))
-        t.screenshot()
+        t.screenshot(rect=_sky_rect(t))
 
 
 def _weather_pair(t, name, other, fields):
@@ -1700,7 +1777,7 @@ def _weather_pair(t, name, other, fields):
             _fail("%s and %s differ in none of %r" % (name, other, fields))
     t.bridge_call("jawa/weather_set", weather=name, lockWeather=True)   # unlocked by the chain's teardown
     _wait(t, 5000)
-    t.screenshot()
+    t.screenshot(rect=_sky_rect(t))
 
 
 # ---- sc_three_skies clauses (RIMMANDRAKE_ROW_SKY_CLAUSES_ONCE_READ_BY_HAND; visit 1 read them by hand, three_skies.py)
@@ -1970,6 +2047,8 @@ def no_ordinary_rain(t):
             rain = [w for w in table if w.get("weather") in ORDINARY_RAIN and (w.get("commonality") or 0) > 0]
             if rain:
                 _fail("post-patch weather table holds ordinary rain: %r" % rain)
+        # the judge reads this claim's LAST capture; without one the cannot-show bar is UNMEASURED by construction
+        t.screenshot(rect=_sky_rect(t))
     _r6_no_ordinary_rain(t)
 
 
@@ -2143,7 +2222,8 @@ def scorchfruit_spoils(t):
                     _fail("RM_FE_ScorchFruitYield neither rotted nor destroyed by day 4.5: %r" % last["yield"])
             if plant_at_1_5:
                 _fail("%d unharvested ScorchFruit plant(s) still standing at day 1.5" % plant_at_1_5)
-        t.screenshot()
+        t.screenshot(rect=inside_map((x - 5 - FRAME_PAD, z - 3 - FRAME_PAD, 11 + 2 * FRAME_PAD, 9 + 2 * FRAME_PAD),
+                                     _map_size(t)))   # the sealed room: the yield stack and its reference meat
 
 
 def spoil_sampling_done(samples):
@@ -2316,7 +2396,8 @@ def furnace_warmth(t):
                       % enclosed)
             # thing_ambient_temp's delta is recorded, never graded: the sun-heat (CreatureBehaviors), forge-plume and
             # solar-mirror mods postfix the same getter, and the pen is walled while the control stands in the open.
-        t.screenshot()
+        # the subject: the beast and the colonist in the pen, and the control colonist FAR_WARMTH_CELLS off
+        t.screenshot(rect=frame_rect([(x - 1, z - 1), (x + 2, z + 1), (x + FAR_WARMTH_CELLS, z)], _map_size(t)))
 
 
 # Owner card 2026-11-08 01:01 "heat with no cap": a closed pen settles at the weather plus this (PyrelandsTuning.
@@ -3007,7 +3088,8 @@ def herd_follows_drive(t):
                  "within two days; never stepped)" % window, {"start": d, "end": e, "pace": pwhy, "verdict": why})
         if not ok:
             _fail("the herd did not close on the two-day-old burn: " + why)
-        t.screenshot()
+        # the subject: the herd where it stands now, and burn A it walks to
+        t.screenshot(rect=frame_rect(list(_herd_positions(t, ids).values()) + [PAD_HERD_OLD], _map_size(t)))
     finally:
         try:
             _session_call(t, "jawa/weather_set", unlock=True)
@@ -3045,7 +3127,7 @@ def ullai_and_giant(t):
                    for d in ("south", "east", "north") if not os.path.isfile(os.path.join(tex, f % d))]
         if missing:
             _fail("art facings missing: %r" % missing)
-        t.screenshot()
+        # no capture: an XML read has no subject on the map, and this row claims no bar a judge reads
     _independent(t)
     with _comp(t, "giant_furnace_beast", toggle="furnaceBeastGiant"):
         root = ET.parse(os.path.join(here, "Defs", "ThingDefs_Races", "RM_PyrelandsFauna.xml")).getroot()
@@ -3055,7 +3137,8 @@ def ullai_and_giant(t):
         live = _get_defs(t, "ThingDef/RM_Ullai;PawnKindDef/RM_Ullai;ThingDef/RM_FurnaceBeast", "race")
         if _live(t) and len(live) < 2:
             _fail("ullai / furnace-beast defs missing live: %r" % sorted(live))
-        t.screenshot()
+        # no capture: no furnace-beast stands on the map in this row (visit 2: its frame showed none); the giant's look
+        # is sc_furnace_giant's, which spawns one
     _independent(t)
     with _comp(t, "herd_follows_two_day_old_burn"):
         herd_follows_drive(t)
@@ -4244,7 +4327,7 @@ def _ten_cinderfall(t):
             hours[w] = _ten_hour(t)
             if _live(t) and not (hours[w] is not None and 10 <= hours[w] < 14):
                 _fail("the %s capture hour %r is outside 10h-14h" % (w, hours[w]))
-            t.screenshot(name="sky_%s" % w)
+            t.screenshot(name="sky_%s" % w, rect=_sky_rect(t))
         _note(t, "capture hours per sky", hours)
     _independent(t)
     with _comp(t, "blackrain_wash_vs_clear_patch"):
