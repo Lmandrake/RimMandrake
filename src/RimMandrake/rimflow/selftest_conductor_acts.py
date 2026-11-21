@@ -135,7 +135,7 @@ def t_bridge_cut_only_mindful():
     base = {k: v for k, v in os.environ.items() if k not in ("RIMFLOW_SEAT", "AGENT_SEAT", "RM_ROLE_UNIT",
                                                              "RM_DETACHED_UNIT", "RIMFLOW_RAN_BY")}
     base.update(RIMFLOW_LEDGER=os.path.join(T, "events.jsonl"), RIMFLOW_ITEMS=os.path.join(T, "items"),
-                RIMFLOW_PROBE="no-reading", RIMFLOW_DRIVER_LOCK="", RIMFLOW_SHARED_BRIDGE="", RM_HOST="archmagi",
+                RIMFLOW_PROBE="no-reading", RIMFLOW_DRIVER_LOCK="", RM_HOST="archmagi",
                 RIMFLOW_BRIDGE_LOCK=os.path.join(T, "b.lock"), RIMFLOW_SCHEDULE=os.path.join(T, "none.json"))
     cli = os.path.join(HERE, "cli.py")
 

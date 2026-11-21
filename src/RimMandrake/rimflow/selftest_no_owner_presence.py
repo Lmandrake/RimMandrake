@@ -63,7 +63,7 @@ def test_cli_end_to_end():
         os.chmod(fake, 0o755)
         env = {k: v for k, v in os.environ.items() if k not in ("RIMFLOW_SEAT", "AGENT_SEAT", "CLAUDE_SESSION_ID")}
         env.update(RIMFLOW_LEDGER=os.path.join(tmp, "events.jsonl"), RIMFLOW_ITEMS=os.path.join(tmp, "items"),
-                   RIMFLOW_SHARED_BRIDGE=os.path.join(tmp, "shared.json"), RIMFLOW_PROBE="no-reading",
+                   RIMFLOW_PROBE="no-reading",
                    RIMFLOW_SEAT="BENCH", RIMFLOW_POWERSHELL=fake, PATH=tmp + os.pathsep + env.get("PATH", ""))
         os.symlink(fake, os.path.join(tmp, "powershell.exe"))
 
@@ -136,10 +136,9 @@ def test_delegated_reach():
     live = []
     try:
         os.makedirs(os.path.join(tmp, "items"))
-        shared = os.path.join(tmp, "shared.json")
         env = {k: v for k, v in os.environ.items() if k not in ("RIMFLOW_SEAT", "AGENT_SEAT", "CLAUDE_SESSION_ID")}
         env.update(RIMFLOW_LEDGER=os.path.join(tmp, "events.jsonl"), RIMFLOW_ITEMS=os.path.join(tmp, "items"),
-                   RIMFLOW_SHARED_BRIDGE=shared, RIMFLOW_SEAT="BENCH", RIMFLOW_OWNER_CHAT_DIRS="",
+                   RIMFLOW_SEAT="BENCH", RIMFLOW_OWNER_CHAT_DIRS="",
                    RIMFLOW_OWNER_ACT_STAMP=os.path.join(tmp, "OWNER_LAST_ACT.json"))
 
         def rf(*a):

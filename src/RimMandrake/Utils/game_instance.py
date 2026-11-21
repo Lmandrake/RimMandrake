@@ -489,8 +489,8 @@ def bridge_refusal(name, purpose=None, timeout=120, new_run=False, seat=None):
     """None when this seat may stop game `name`, else why not and what would pass. RIMMANDRAKE_GUARD_GAME_STOP_BY_BRIDGE_HOLD
     (GPT review p2.F2: stop used to taskkill with no bridge check). The verdict is rimflow's own, not a second copy:
     `rimflow bridge idle` (the delegated gate) passes a bridge that is free, ours, or stale by the 45-min rule, and his
-    OWNER hold only 45 min after his last interaction (an UNMEASURED reading of him refuses); it also refuses on the
-    shared lock and the driver lock. Only its exit 0 with a TAKEABLE line passes: no answer is no permission. seat: the
+    OWNER hold only 45 min after his last interaction (an UNMEASURED reading of him refuses); it reads the game's
+    driver lock, the one record (game_lock.py). Only its exit 0 with a TAKEABLE line passes: no answer is no permission. seat: the
     caller's seat, passed as `--seat` (the systemd tick names none in its env, and a seatless `rimflow` refuses: "I
     cannot tell which seat I am", RIMMANDRAKE_REPAIR_GIMMESOMESLACK_FORM_REFUSAL_AT_THE_RUN_FIVE); an env seat still
     wins, as in rimflow's own order."""

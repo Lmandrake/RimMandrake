@@ -830,17 +830,18 @@ def helper_names(hs):
 
 
 def bridge_reading(seat):
-    """-> {state: MEASURED|UNMEASURED, holders: [seat...], why, bridge: [seat...], driver: {seat, identity}}. The
-    cross-clone bridge mirror and the driver lock; `bridge` and `driver` keep apart which one a holder came from, so
-    bridge_hold can ask whether a driver lock's holder process is the window's at all."""
+    """-> {state: MEASURED|UNMEASURED, holders: [seat...], why, bridge: [seat...], driver: {seat, identity}}. Game a's
+    driver lock (model.game_a_lock_record, with its taker's clone and unit) and this shell's driver lock (game b's under
+    RM_GAME_INSTANCE=b, else the same file); `bridge` and `driver` keep apart which one a holder came from, so
+    bridge_hold can ask whether a holder process is the window's at all."""
     holders = []
     try:
         from rimflow import model
-        b = model.read_shared_bridge()
+        b = model.game_a_lock_record()       # game a's driver lock (game_lock.py), with its taker's clone and unit
         if b and b.get("holder"):
             holders.append(str(b["holder"]).upper())
     except Exception as e:  # noqa: BLE001 - an unreadable bridge holds the restart
-        return {"state": "UNMEASURED", "holders": [], "why": "shared bridge: %s: %s" % (type(e).__name__, e)}
+        return {"state": "UNMEASURED", "holders": [], "why": "game a's lock: %s: %s" % (type(e).__name__, e)}
     out = {"state": "MEASURED", "holders": holders, "bridge": list(holders)}
     if holders:
         out["shared"] = b                # the record: its taker's identity and role_unit, where the take wrote them
@@ -919,8 +920,8 @@ def bridge_hold(seat, br, window_pid, ppid=None):
     is no reason to hold. The driver lock held by the window or a process under it (in-process subagents share the
     window's pid) still holds; a holder that cannot be placed holds, UNMEASURED.
     RIMMANDRAKE_FREE_GOODBYE_RESTART_HELD_BY_DETACHED_HELPERS_LOCK (measured 2026-11-17: a goodbye held 21 min): the
-    SHARED bridge names a seat too, and a detached run's take wrote it; it is judged the same way, on the identity the
-    take records (cli _bridge_take), or, a record with no pid, on its detached role_unit."""
+    game a reading names a seat too, and a detached run's take wrote it; it is judged the same way, on the identity the
+    lock records, or, a record with no pid, on its detached role_unit. One lock read twice is judged once."""
     if br.get("state") != "MEASURED":
         return "bridge unreadable (%s)" % br.get("why")
     if seat not in (br.get("holders") or []):
@@ -929,10 +930,11 @@ def bridge_hold(seat, br, window_pid, ppid=None):
         return "bridge/driver lock held by %s" % seat
     out = []
     d = br.get("driver") or {}
+    rec = br.get("shared") or {}
+    same = seat in br["bridge"] and d.get("seat") == seat and rec.get("identity") == d.get("identity")
     if seat in br["bridge"]:
-        rec = br.get("shared") or {}
-        out.append(_holder_hold(seat, "shared bridge", rec.get("identity"), rec, window_pid, ppid))
-    if d.get("seat") == seat:
+        out.append(_holder_hold(seat, "game a's lock", rec.get("identity"), rec, window_pid, ppid))
+    if d.get("seat") == seat and not same:
         out.append(_holder_hold(seat, "driver lock", d.get("identity"), d, window_pid, ppid))
     elif seat not in br["bridge"]:
         out.append("bridge/driver lock held by %s" % seat)

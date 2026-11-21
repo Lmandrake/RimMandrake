@@ -41,7 +41,6 @@ sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
 
 TMP = tempfile.mkdtemp(prefix="selftest_wrapup_")
 os.environ["RM_WRAPUP_DIR"] = os.path.join(TMP, "state")
-os.environ["RIMFLOW_SHARED_BRIDGE"] = ""            # the real lock is never read or written here
 os.environ["RM_WRAPUP_PREV_LOG"] = ""               # the real game's relaunch never voids a test debt
 
 import wrapup  # noqa: E402
@@ -82,7 +81,7 @@ class Fake(wrapup.World):
         self.sh, self.release_ok, self.claims, self.claims_raise = sh, release_ok, list(claims), claims_raise
         self.released = []
 
-    def shared_bridge(self):
+    def game_a_hold(self):
         return self.sh
 
     def release_bridge(self, clone, holder):
@@ -260,7 +259,7 @@ try:
     before = sum(1 for _ in open(os.path.join(saved, "runs.jsonl")))
     p = subprocess.run([sys.executable, os.path.join(HERE, "wrapup.py"), "unit", "--unit", "rm-x", "--seat", "BENCH",
                         "--clone", os.path.join(TMP, "never-was")], capture_output=True, text=True,
-                       env=dict(os.environ, RM_WRAPUP_DIR=saved, RIMFLOW_SHARED_BRIDGE=""))
+                       env=dict(os.environ, RM_WRAPUP_DIR=saved, RIMFLOW_DRIVER_LOCK=os.path.join(TMP, "no_lock.json")))
     after = sum(1 for _ in open(os.path.join(saved, "runs.jsonl")))
     check(p.returncode == 0 and after == before + 1, "W10 the unit CLI exits 0 and records one line (%s)" % p.stdout.strip())
 

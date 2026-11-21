@@ -26,7 +26,6 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 TMP = tempfile.mkdtemp(prefix="selftest_wrapup_void_")
 os.environ["RM_WRAPUP_DIR"] = os.path.join(TMP, "state")
-os.environ["RIMFLOW_SHARED_BRIDGE"] = ""
 os.environ["RM_WRAPUP_PREV_LOG"] = ""
 
 import wrapup  # noqa: E402
@@ -44,7 +43,7 @@ class Fake(wrapup.World):
     def __init__(self, relaunched=None, raises=False):
         self.relaunched, self.raises = relaunched, raises
 
-    def shared_bridge(self):
+    def game_a_hold(self):
         return None
 
     def game_relaunched(self):

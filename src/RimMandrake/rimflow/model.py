@@ -1321,103 +1321,55 @@ def bridge_mirror_path():
     return os.path.join(os.path.dirname(led) or ".", "BRIDGE") if led else BRIDGE_FILE
 
 
-# ── the CROSS-CLONE bridge lock (BRIDGE_LOCK_CROSS_CLONE_RACE_1) ──────────────────────
-# Each seat clone has its OWN ledger shard, and a take lives only in that clone until it is
-# pushed. On 2026-10-07 BENCH and FOUNDRY both held the bridge a minute apart and FOUNDRY killed
-# two BENCH loads, because neither take could see the other. This file sits OUTSIDE git, on the
-# drive both clones share, so a take is visible to the other clone the instant it is written.
-# It is a second witness, not a new source of truth: the ledger still records every take.
-# Disabled (None) under a redirected RIMFLOW_LEDGER, so a selftest never writes the real one,
-# and on a machine without the shared drive (the Mac), where there is no second clone to race.
-SHARED_BRIDGE_DEFAULT = rm_str("scratch", "BRIDGE_SHARED.json")
-
-
-def shared_bridge_path():
-    env = os.environ.get("RIMFLOW_SHARED_BRIDGE")
-    if env is not None:
-        return env or None          # set-but-empty switches it off
-    if os.environ.get("RIMFLOW_LEDGER"):
-        return None
-    d = os.path.dirname(SHARED_BRIDGE_DEFAULT)
-    return SHARED_BRIDGE_DEFAULT if os.path.isdir(d) else None
-
-
-def read_shared_bridge_record():
-    """-> the shared lock's dict as written, a release (holder None) included, or None. Unreadable reads as None."""
-    p = shared_bridge_path()
-    if not p:
-        return None
+# ── game a's holder, read from its driver lock (game_lock.py) ─────────────────────────────────────────────────────
+# The cross-clone file BRIDGE_SHARED.json is retired (RIMMANDRAKE_BUILD_ONE_GAME_LOCK_CLAIM_FOUR_RECORDS_DISAGREE): it was
+# a second record of who drives game a, written beside the driver lock, and on 2026-11-21 it named a finished run's hold
+# as live while the lock read free. Its readers now read the lock, the one record. Nothing writes a second copy.
+def _game_lock():
     try:
-        with open(p, encoding="utf-8") as f:
-            d = json.load(f)
-        return d if isinstance(d, dict) else None
-    except (OSError, ValueError):
-        return None
-
-
-def read_shared_bridge():
-    """-> dict {holder, since, touched, purpose, clone} or None. Free or unreadable reads as None (allow)."""
-    d = read_shared_bridge_record()
-    return d if d and d.get("holder") else None
-
-
-def _shared_fence(p):
-    """The driver lock's O_EXCL fence, on the shared file: every write of it is one fenced read-check-write across clones
-    and python.exe (RIMMANDRAKE_HARDEN_BRIDGE_LOCK_OWNER_HOLES: an unfenced heartbeat read the old holder, then wrote it
-    back over a newer one, OWNER included)."""
-    try:
-        from . import driver_lock
+        from . import game_lock
     except ImportError:
-        import driver_lock
-    return driver_lock._fence(p), driver_lock.FenceBusy
+        import game_lock
+    return game_lock
 
 
-def write_shared_bridge(holder, purpose=None, since=None, _check=None, identity=None, role_unit=None, clone=None):
-    """Record (or with holder=None clear) the cross-clone holder. Best effort: a failure prints and allows.
-    _check: called on the record read inside the fence; False skips the write (touch_shared_bridge).
-    identity (driver_lock.my_identity) and role_unit (RM_ROLE_UNIT) say which PROCESS took it, for a seat shared by a
-    window and its detached runs (RIMMANDRAKE_FREE_GOODBYE_RESTART_HELD_BY_DETACHED_HELPERS_LOCK); clone, the taker's."""
-    p = shared_bridge_path()
-    if not p:
-        return
-    fence, busy = _shared_fence(p)
+def _host_guard():
     try:
-        with fence:
-            if _check is not None and not _check(read_shared_bridge()):
-                return
-            _write_shared_bridge(p, holder, purpose, since, identity, role_unit, clone)
-    except busy as e:
-        sys.stderr.write("rimflow: shared bridge lock %s not written, its fence stayed busy: %s\n" % (p, e))
+        from . import host_guard
+    except ImportError:
+        import host_guard
+    return host_guard
 
 
-def _write_shared_bridge(p, holder, purpose, since, identity=None, role_unit=None, clone=None):
-    body = {"holder": holder, "since": since or now(), "touched": now(), "purpose": purpose, "clone": clone or ROOT} if holder else {"holder": None, "touched": now(), "clone": ROOT}
-    if holder and identity:
-        body["identity"] = identity
-    if holder and role_unit:
-        body["role_unit"] = role_unit
-    tmp = p + ".%d.tmp" % os.getpid()
-    try:
-        with open(tmp, "w", encoding="utf-8") as f:
-            json.dump(body, f)
-        os.replace(tmp, p)
-    except OSError as e:
-        sys.stderr.write("rimflow: could not write the shared bridge lock %s: %s\n" % (p, e))
+def game_a_lock_path():
+    """-> Archmagi's game a lock, or None: another game host (SteveDesktop's own lock is its lane's, read there; = cli
+    lock_reading), or no lock path here (a test ledger without RIMFLOW_DRIVER_LOCK, the Mac)."""
+    if _host_guard().local_machine() not in (None, DEFAULT_BRIDGE_HOST):
+        return None
+    return _game_lock().lock_path("a")
 
 
-def touch_shared_bridge(seat):
-    """A holder's every event keeps its cross-clone lock fresh, the way its ledger events keep it alive locally."""
-    d = read_shared_bridge()
-    # only from the taker's own clone (RIMMANDRAKE_KEEP_BRIDGE_HEARTBEAT_TO_HOLDER_CLONE_ONLY): every detached run is
-    # seat BENCH, so another clone's note kept a finished run's hold alive and stamped itself on it
-    if d and d.get("holder") == seat and d.get("clone") in (None, ROOT):
-        # judged again inside the fence: a holder written since the read above is never overwritten by this heartbeat.
-        # Every process of the seat beats it, so the beat keeps the TAKER's clone, pid and unit, never its own
-        write_shared_bridge(seat, d.get("purpose"), d.get("since"), _check=lambda now: now == d,
-                            identity=d.get("identity"), role_unit=d.get("role_unit"), clone=d.get("clone"))
+def game_a_lock_record():
+    """-> game a's holder from its driver lock: {holder, since, touched, purpose, clone, identity, role_unit, alive}, or
+    None when nobody holds it, or when no lock is readable here (a test ledger without RIMFLOW_DRIVER_LOCK, the Mac).
+    holder is the seat of a live holder, or OWNER (his lock holds live or not; game_lock.query). touched is now for a
+    live holder, else its last heartbeat. Raises game_lock.Blind when the lock could not be looked at: never free."""
+    gl = _game_lock()
+    path = game_a_lock_path()
+    if not path:
+        return None
+    r = gl.query("a", pipe=False, path=path)
+    if r.get("state") == "UNKNOWN":
+        raise gl.Blind(r.get("cause") or "could not look at game a's lock")
+    seat = r.get("seat")
+    if not seat or not (r.get("alive") or seat == "OWNER"):
+        return None
+    return {"holder": seat, "since": r.get("since"), "touched": now() if r.get("alive") else r.get("heartbeat"),
+            "purpose": r.get("purpose"), "clone": r.get("clone"), "identity": r.get("holder"),
+            "role_unit": r.get("role_unit"), "alive": bool(r.get("alive"))}
 
 
-def shared_bridge_age_seconds(d):
+def touched_age_seconds(d):
     try:
         return max(0, int(time.time() - calendar.timegm(time.strptime(d["touched"], "%Y-%m-%dT%H:%M:%SZ"))))
     except (KeyError, TypeError, ValueError):
@@ -3217,10 +3169,9 @@ def ambient_window_seat():
 
 
 def bridge_gate(seat, host=None):
-    """-> None if `seat` may touch the game (it holds the bridge here and no other clone holds it live),
-    else the refusal text. seat None (the owner) always passes. `host` names which machine's game
-    (BRIDGE_LOCK_WIDEN_ONE_PER_HOST); another host's game is judged by that host's ledger entry alone - the
-    cross-clone shared file is Archmagi's, and the other host's own driver lock is checked by host_guard there."""
+    """-> None if `seat` may touch the game (it holds that game's bridge), else the refusal text. seat None (the owner) always passes. `host` names which machine's game
+    (BRIDGE_LOCK_WIDEN_ONE_PER_HOST); another host's game is judged by that host's ledger entry alone - its own driver
+    lock is checked by host_guard there. Game a is judged by its driver lock, the one record (game_lock.py)."""
     if not seat:
         return None
     hk = bridge_host_key(host)
@@ -3237,15 +3188,25 @@ def bridge_gate(seat, host=None):
                 seat, hk, ent.get("holder") or "nobody", hk)
         return None
     try:
-        holder = replay(read()).bridge_holder
-    except Exception as e:                               # an unreadable ledger must not wedge the owner's tools
-        return None if os.environ.get("RIMFLOW_GATE_LENIENT") else "could not read the ledger to check the bridge: %s" % e
-    shared = read_shared_bridge()
-    other = shared.get("holder") if shared else None
-    age = shared_bridge_age_seconds(shared) if shared else None
-    if other and other != seat and age is not None and age < BRIDGE_STALE_SECONDS:
-        return "the bridge is held by %s in another clone (%s, %d min ago); this would act on its game." % (
-            other, shared.get("clone") or "?", age // 60)
+        path = game_a_lock_path()
+        rec = game_a_lock_record() if path else None
+    except Exception as e:  # noqa: BLE001  a lock that could not be looked at is never free
+        return None if os.environ.get("RIMFLOW_GATE_LENIENT") else "could not look at game a's lock to check the bridge: %s" % e
+    if path:                                             # the lock is the one record (game_lock.py)
+        holder = rec.get("holder") if rec else None
+        if holder == "OWNER" and not rec.get("alive"):   # his dead lock that he deliberately released is his no longer
+            try:
+                hg = _host_guard()
+                if hg.owner_released({"seat": "OWNER", "acquired": rec.get("since"), "heartbeat": rec.get("touched"),
+                                      "identity": rec.get("identity") or {}}, read()):
+                    holder = None
+            except Exception:  # noqa: BLE001  unreadable: his hold stands
+                pass
+    else:                                                # no lock on this machine (the Mac): the ledger's replay
+        try:
+            holder = replay(read()).bridge_holder
+        except Exception as e:                           # an unreadable ledger must not wedge the owner's tools
+            return None if os.environ.get("RIMFLOW_GATE_LENIENT") else "could not read the ledger to check the bridge: %s" % e
     if holder != seat:
         return "%s does not hold the bridge (holder: %s). Take it first: rimflow bridge take --for \"<what for>\"" % (
             seat, holder or "nobody")

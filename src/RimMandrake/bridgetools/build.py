@@ -393,8 +393,8 @@ def game_running():
 
 
 def bridge_holder():
-    """-> the seat holding the cross-clone bridge lock, or None when free or unreadable (rimflow's own rule). A named
-    game's bridge is its own driver lock: another live driver on it holds it; game a's lock is not b's."""
+    """-> the seat holding game a's driver lock (model.game_a_lock_record), or None when free or unreadable (said aloud,
+    UNMEASURED). A named game's bridge is its own driver lock: another live driver on it holds it; game a's lock is not b's."""
     if GAME != "a":
         try:
             held = _gi().live_holder(GAME)
@@ -405,7 +405,7 @@ def bridge_holder():
     try:
         sys.path.insert(0, os.path.join(REPO_ROOT, "src", "RimMandrake", "rimflow"))
         import model
-        d = model.read_shared_bridge()
+        d = model.game_a_lock_record()       # game a's driver lock, the one record (game_lock.py)
         return d.get("holder") if d else None
     except Exception as e:  # noqa: BLE001
         print("  bridge hold check UNMEASURED (%s: %s)" % (type(e).__name__, e))

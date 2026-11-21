@@ -53,7 +53,7 @@ class Box:
             "RM_HOST_GUARD_GEN", "RM_DRIVER_PID", "RM_ROLE_UNIT", "MATURATION_BRIDGE_IDLE")}
         keep.update(RIMFLOW_DRIVER_LOCK=self.a, RM_INSTANCES_ROOT=os.path.join(self.d, "instances"),
                     RIMFLOW_LEDGER=os.path.join(self.d, "events.jsonl"), RIMFLOW_ITEMS=os.path.join(self.d, "items"),
-                    RM_CONTROL_DB=os.path.join(self.d, "control.db"), RIMFLOW_SHARED_BRIDGE="",
+                    RM_CONTROL_DB=os.path.join(self.d, "control.db"), 
                     RIMFLOW_OWNER_ACT_STAMP=os.path.join(self.d, "stamp.json"), RIMFLOW_PROBE="no-reading",
                     RIMFLOW_BRIDGE_LOCK=os.path.join(self.d, "bridge.lock"), RIMFLOW_SEAT="BENCH",
                     RM_HOST="archmagi")
@@ -456,6 +456,56 @@ def t_the_tick_line_that_named_a_dead_run_as_live():
         os.environ.update(saved)
 
 
+def t_the_old_shared_file_is_neither_written_nor_read():
+    """Every other reader of game a's holder reads the lock (model.game_a_lock_record); a take or a release writes no
+    BRIDGE_SHARED.json, and a planted one names no holder anywhere."""
+    bx = Box()
+    planted = os.path.join(bx.d, "BRIDGE_SHARED.json")
+    now = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    rec = {"holder": "FOUNDRY", "since": now, "touched": now, "purpose": "a planted old record", "clone": bx.d}
+    with open(planted, "w") as f:
+        json.dump(rec, f)
+    s = sleeper()
+    r = bx.rf("bridge", "take", "--for", "readers see it", pid=s.pid, RM_ROLE_UNIT="rm-detached-x-1",
+              RIMFLOW_SHARED_BRIDGE=planted)
+    check(r.returncode == 0, "a take through rimflow", r.stdout + r.stderr)
+    with open(planted) as f:
+        check(json.load(f) == rec, "the take wrote nothing over the planted old file")
+    probe = ("import sys, json; sys.path[:0] = [%r, %r, %r]\n"
+             "from rimflow import model as M, seat_restart as SR, wrapup as W\n"
+             "import testq\n"
+             "rec = M.game_a_lock_record() or {}\n"
+             "print(json.dumps({'rec': [rec.get('holder'), rec.get('role_unit'), rec.get('clone')],\n"
+             " 'gate_bench': M.bridge_gate('BENCH'), 'gate_foundry': M.bridge_gate('FOUNDRY'),\n"
+             " 'testq': testq.bridge_holder(), 'wrapup': (W.World().game_a_hold() or {}).get('holder'),\n"
+             " 'seat_restart': SR.bridge_reading('BENCH').get('bridge')}))"
+             % (os.path.dirname(HERE), HERE, os.path.join(os.path.dirname(HERE), "Utils", "testq")))
+
+    def readers():
+        p = subprocess.run([sys.executable, "-c", probe], env=dict(bx.env, RIMFLOW_SHARED_BRIDGE=planted),
+                           capture_output=True, text=True, timeout=60)
+        try:
+            return json.loads(p.stdout.strip().splitlines()[-1])
+        except (ValueError, IndexError):
+            return {"error": (p.stdout + p.stderr)[-600:]}
+    got = readers()
+    import model as M
+    check(got.get("rec") == ["BENCH", "rm-detached-x-1", M.ROOT],
+          "game_a_lock_record names the lock's holder, its unit and its clone", got)
+    check(got.get("gate_bench") is None and "BENCH" in (got.get("gate_foundry") or ""),
+          "model.bridge_gate decides from the lock: the holder passes, another seat is refused naming it", got)
+    check("BENCH" in (got.get("testq") or "") and got.get("wrapup") == "BENCH" and got.get("seat_restart") == ["BENCH"],
+          "testq, wrapup and seat_restart name the lock's holder, never the planted FOUNDRY", got)
+    kill(s)
+    got = readers()
+    check(got.get("rec") == [None, None, None] and got.get("testq") is None and got.get("wrapup") is None
+          and got.get("seat_restart") == [] and "nobody" in (got.get("gate_bench") or ""),
+          "its holder gone, every reader reads game a free at once (the planted file names FOUNDRY still)", got)
+    r = bx.rf("bridge", "release", RIMFLOW_SHARED_BRIDGE=planted)
+    with open(planted) as f:
+        check(json.load(f) == rec, "a release wrote nothing over the planted old file")
+
+
 def main():
     t_a_query_answers_under_100_ms()        # first: the cases below spawn and kill dozens of processes
     t_one_record_per_game()
@@ -470,6 +520,7 @@ def main():
     t_the_243_am_game_b_record_that_named_the_ended_run()
     t_the_335_am_ledger_free_while_the_lock_was_held()
     t_the_tick_line_that_named_a_dead_run_as_live()
+    t_the_old_shared_file_is_neither_written_nor_read()
     for p in SLEEPERS:
         if p.poll() is None:
             p.kill()

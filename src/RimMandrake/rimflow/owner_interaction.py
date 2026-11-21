@@ -12,7 +12,7 @@ What counts as an interaction (the Conductor's reading of "interaction", BRIDGE_
            AUTHORITY, not his activity: an agent under --owner-said/--by-card/--per-ruling, or an agent's `./game
            --why`, wears that seat and never resets his clock (OWNER_CLOCK_FIX_RELAYED_ORDERS_WEAR_HAT). Gathered by
            cli.py from the replay.
-  hold     the OWNER hold's own events (its `since`; the shared cross-clone lock's `touched`). Gathered by cli.py.
+  hold     the OWNER hold's own events (its `since`; his driver lock's heartbeat). Gathered by cli.py.
   bridge   a bare `./bridge` (`bridge who --seat OWNER`, which writes no event): the stamp file written here; its
            mtime counts too (touch_stamp, when the stamp cannot be rewritten).
   terminal a relay flag (--why, --owner-said, ...) he types at his own terminal is still his act: with no agent hands
@@ -31,7 +31,7 @@ seat schedule or a missing Claude projects dir is not "he was quiet" — the tak
 
 Test ledgers: under a redirected RIMFLOW_LEDGER the chat scan is off (no seat windows belong to a throwaway ledger)
 unless RIMFLOW_OWNER_CHAT_DIRS names the transcript dirs to read (os.pathsep-separated; set-but-empty = none). The
-stamp sits beside the shared bridge lock when there is one (both clones see it), else beside the ledger's lock;
+stamp sits in the data root's scratch beside game a's lock (every clone sees it), else beside the ledger's lock;
 RIMFLOW_OWNER_ACT_STAMP overrides it.
 """
 import calendar
@@ -134,8 +134,10 @@ def stamp_path():
     if env:
         return env
     from rimflow import lease, model
-    shared = model.shared_bridge_path()
-    base = os.path.dirname(shared) if shared else os.path.dirname(lease.lock_path())
+    # the data root's scratch, shared by every clone (beside game a's lock); a test ledger's own dir under RIMFLOW_LEDGER
+    scratch = os.path.dirname(model.rm_str("scratch", "OWNER_LAST_ACT.json"))
+    base = scratch if not os.environ.get("RIMFLOW_LEDGER") and os.path.isdir(scratch) else \
+        os.path.dirname(lease.lock_path())
     return os.path.join(base, "OWNER_LAST_ACT.json")
 
 

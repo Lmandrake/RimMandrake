@@ -226,7 +226,7 @@ def acquire(seat, purpose, force=None, identity=None, path=None, owner_cleared=N
     inherited = _reentrant(path) if identity is None else None
     if inherited is not None:
         return {"ok": True, "reentrant": True, "generation": inherited, "why": "inherited take", "path": path}
-    seat = _model().bridge_identity(seat)   # the name its `bridge take` wrote into the shared file
+    seat = _model().bridge_identity(seat)   # the name its `bridge take` writes into the lock
     identity = identity or self_identity()
     cur, _problem = driver_lock._read(path)
     refusal, owner_cleared, measured_hb = _owner_gate(cur, seat, identity, owner_cleared)

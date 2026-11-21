@@ -63,6 +63,11 @@ def lock_path():
     return DEFAULT if os.path.isdir(os.path.dirname(DEFAULT)) else None
 
 
+# the clone whose code took the lock: wrapup releases a hold its ending agent left from its own clone (= model.ROOT)
+TAKER_CLONE = os.environ.get("CLAUDE_PROJECT_DIR") or os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+
+
 def _now():
     return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
 
@@ -445,7 +450,9 @@ def _acquire(path, seat, purpose, identity, force, spare_owner, owner_heartbeat,
                 continue
             broke = True
         body = {"seat": seat, "purpose": purpose, "identity": identity, "acquired": _now(), "heartbeat": _now(),
-                "generation": _last_gen(path, prev) + 1}
+                "generation": _last_gen(path, prev) + 1, "clone": TAKER_CLONE}
+        if os.environ.get("RM_ROLE_UNIT"):            # which launched unit took it (seat_restart, wrapup attribute by it)
+            body["role_unit"] = os.environ["RM_ROLE_UNIT"]
         if force and (broke or problem):
             body["override"] = force
         if broke and prev is not None:

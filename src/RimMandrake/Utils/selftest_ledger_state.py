@@ -38,7 +38,7 @@ def check(ok, what):
 def env(seat):
     e = {k: v for k, v in os.environ.items() if k not in ("RIMFLOW_SEAT", "AGENT_SEAT") and not k.startswith("GIT_")}
     e.update(RIMFLOW_LEDGER=LED, RIMFLOW_ITEMS=os.path.join(TMP, "items"), RIMFLOW_PROBE="no-reading",
-             RIMFLOW_SCHEDULE=os.path.join(TMP, "no_schedule.json"), RIMFLOW_DRIVER_LOCK="", RIMFLOW_SHARED_BRIDGE="",
+             RIMFLOW_SCHEDULE=os.path.join(TMP, "no_schedule.json"), RIMFLOW_DRIVER_LOCK="", 
              RIMFLOW_BRIDGE_LOCK=os.path.join(TMP, "bridge.lock"), RM_HOST="archmagi", RIMFLOW_SEAT=seat)
     return e
 

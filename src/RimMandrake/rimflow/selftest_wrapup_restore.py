@@ -34,7 +34,6 @@ sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils", "modcheck")
 
 TMP = tempfile.mkdtemp(prefix="selftest_wrapup_restore_")
 os.environ["RM_WRAPUP_DIR"] = os.path.join(TMP, "state")
-os.environ["RIMFLOW_SHARED_BRIDGE"] = ""            # the real lock is never read or written here
 os.environ["RM_WRAPUP_PREV_LOG"] = ""               # the real game's relaunch never voids a test debt
 
 import wrapup  # noqa: E402
@@ -54,7 +53,7 @@ class World(wrapup.World):
     def __init__(self, relaunched=None):
         self.relaunched = relaunched
 
-    def shared_bridge(self):
+    def game_a_hold(self):
         return None
 
     def release_bridge(self, clone, holder):

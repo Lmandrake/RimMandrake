@@ -32,7 +32,7 @@ os.makedirs(os.path.join(T, "chat"))
 LEDGER = os.path.join(T, "events.jsonl")
 open(LEDGER, "w").close()
 os.environ.update(RIMFLOW_LEDGER=LEDGER, RIMFLOW_ITEMS=os.path.join(T, "items"),
-                  RIMFLOW_SHARED_BRIDGE=os.path.join(T, "shared.json"), RIMFLOW_SEAT="BENCH",
+                  RIMFLOW_SEAT="BENCH",
                   RIMFLOW_OWNER_CHAT_DIRS=os.path.join(T, "chat"), RIMFLOW_OWNER_TERMINAL="0",
                   RIMFLOW_OWNER_ACT_STAMP=os.path.join(T, "OWNER_LAST_ACT.json"),
                   RIMFLOW_DISPATCH_LOCK=os.path.join(T, "dispatch.lock"),
@@ -61,7 +61,7 @@ def iso(age_s):
 
 
 def clean():
-    for p in (LOCK, LOCK + ".op", LOCK + ".gen", os.environ["RIMFLOW_SHARED_BRIDGE"], STAMP):
+    for p in (LOCK, LOCK + ".op", LOCK + ".gen", STAMP):
         if os.path.exists(p):
             os.remove(p)
     for f in os.listdir(CHAT):

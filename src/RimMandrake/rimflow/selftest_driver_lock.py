@@ -290,7 +290,7 @@ def cli_cases():
     b = subprocess.Popen(["sleep", "120"])
     base = {k: v for k, v in os.environ.items() if k not in ("RIMFLOW_SEAT", "AGENT_SEAT", "CLAUDE_SESSION_ID")}
     base.update(RIMFLOW_LEDGER=os.path.join(tmp, "events.jsonl"), RIMFLOW_ITEMS=os.path.join(tmp, "items"),
-                RIMFLOW_SHARED_BRIDGE=os.path.join(tmp, "shared.json"), RIMFLOW_PROBE="no-reading",
+                RIMFLOW_PROBE="no-reading",
                 RIMFLOW_DRIVER_LOCK=os.path.join(tmp, "DRIVER_LOCK.json"))
 
     def rf(seat, pid, *args):

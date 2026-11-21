@@ -65,9 +65,9 @@ One tick, under a non-blocking lock (a second tick while one runs exits at once)
      archmagi_phases.py as the phases: it never deploys (drift -> REFUSED/DEPLOY), never launches or stops the
      owner's game (none running -> REFUSED/LOAD), and its attempt holds Archmagi's host guard (the driver lock that
      `rimflow bridge take` takes), so a seat's take is refused while it runs, never raced.
-     One job is admitted only when every gate holds (archmagi_gate): this machine is Archmagi; no window holds the
-     bridge (shared bridge file AND the BRIDGE mirror); the driver lock is FREE or STALE; the bridge was silent for
-     TESTQ_ARCHMAGI_SILENT_S (600 s: the bridge call log and the last bridge take/release); no back-off or pause.
+     One job is admitted only when every gate holds (archmagi_gate): this machine is Archmagi; no window holds
+     game a's driver lock (a live holder other than the worker's RUNNER); the driver lock is FREE or STALE; the bridge
+     was silent for TESTQ_ARCHMAGI_SILENT_S (600 s, by the bridge call log); no back-off or pause.
      Candidates: lane=archmagi, and lane=any only while SteveDesktop is down or busy; profile in
      TESTQ_ARCHMAGI_PROFILES (default full-list: a targeted job wants modcheck's minimal-list load). A REFUSED
      DEPLOY/LOAD/GUARD_HELD attempt hands the job back to pending (DEPLOY: never again on Archmagi; LOAD: the lane
@@ -583,24 +583,15 @@ def _rimflow():
 
 
 def bridge_holder():
-    """-> who holds Archmagi's bridge per the shared bridge file or the BRIDGE mirror, else None. Unreadable files
-    read as free here; the driver lock (taken by the worker) is what actually refuses a second driver."""
+    """-> who holds Archmagi's game a per its driver lock (the one record, game_lock.py), less the testq worker's own
+    RUNNER hold, else None. A lock that could not be looked at reads "unknown (...)", never free."""
     try:
         model, _hg = _rimflow()
+        d = model.game_a_lock_record()
     except Exception as e:      # noqa: BLE001
-        return "unknown (rimflow not importable: %s)" % e
-    sh = model.read_shared_bridge()
-    if sh and sh.get("holder"):
-        return "%s (shared bridge file, for: %s)" % (sh["holder"], sh.get("purpose"))
-    try:
-        with open(model.bridge_mirror_path(), encoding="utf-8") as f:
-            for line in f:
-                if line.startswith("HELD"):
-                    return "%s (BRIDGE mirror)" % " ".join(line.split()[1:2])
-                if line.startswith("FREE"):
-                    break
-    except OSError:
-        pass
+        return "unknown (game a's lock could not be read: %s: %s)" % (type(e).__name__, e)
+    if d and d.get("holder") and d["holder"] != "RUNNER":
+        return "%s (driver lock, for: %s)" % (d["holder"], d.get("purpose"))
     return None
 
 
@@ -614,21 +605,15 @@ def bridge_log_path():
 
 
 def bridge_silence_s(now=None):
-    """-> (seconds since the bridge was last used, or None when that cannot be shown). Used = the bridge call log
-    (every rimbridge_client call appends to it) and the shared bridge file's last take/release/touch."""
+    """-> (seconds since the bridge was last used, or None when that cannot be shown). Used = the bridge call log (every
+    rimbridge_client call appends to it). A live holder of game a's lock closes the gate on its own (bridge_holder); the
+    lock's own mtime is not read, because the worker's RUNNER take writes it for every attempt."""
     now = now or time.time()
     p = bridge_log_path()
     try:
         last = os.path.getmtime(p)
     except OSError:
         return None
-    try:
-        model, _hg = _rimflow()
-        sh_path = model.shared_bridge_path()
-        if sh_path and os.path.exists(sh_path):
-            last = max(last, os.path.getmtime(sh_path))
-    except Exception:       # noqa: BLE001 - the call log alone still bounds it
-        pass
     return max(0, int(now - last))
 
 

@@ -52,6 +52,10 @@ def _host_guard():
     return host_guard
 
 EX_FREE, EX_HELD, EX_HIS, EX_BLIND = 0, 75, 3, 2
+
+
+class Blind(Exception):
+    """A lock that could not be looked at (exit 2's cause), raised by a reader that has no "could not look" return."""
 GAME_A = "a"                            # today's game: Steam's install, his
 GEN_ENV = "RM_HOST_GUARD_GEN"           # a holder's children drive under its take (host_guard.export_take)
 REMOTE_GAMES = ("stevedesktop", "stevedesktop.b")   # through their test lane, never read from here
@@ -217,7 +221,8 @@ def query(g, pipe=True, path=None):
         since, age = _local(cur.get("acquired"))
         r.update(seat=cur.get("seat"), purpose=cur.get("purpose"), since=cur.get("acquired"), since_local=since,
                  held_s=age, heartbeat=cur.get("heartbeat"), generation=cur.get("generation"),
-                 holder=cur.get("identity"), how=how, alive=alive, mine=bool(alive) and in_my_tree(cur.get("identity")))
+                 holder=cur.get("identity"), how=how, alive=alive, mine=bool(alive) and in_my_tree(cur.get("identity")),
+                 clone=cur.get("clone"), role_unit=cur.get("role_unit"))
         if cur.get("seat") == "OWNER":
             # his rule is 45 min after his last INTERACTION, which a lock cannot see: his lock, live or not, is never
             # free from here (driver_lock.owner_held is only the floor of his rule)

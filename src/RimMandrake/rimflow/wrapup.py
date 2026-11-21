@@ -15,7 +15,7 @@ WHERE IT RUNS (no agent has to remember anything):
             the seat's bridge and claims; what is the helper's own is the clones it worked in.
 
 WHAT IT CENSUSES (one row each; act = cleaned | filed | carried | covered | ok | unmeasured):
-  bridge    the shared bridge lock (BRIDGE_SHARED.json) held by this agent's holder from this agent's clone. A unit or
+  bridge    game a's driver lock (game_lock.py) held live by this agent's holder from this agent's clone. A unit or
             a session that left it held is RELEASED (`rimflow bridge release` run in that clone); a release that fails,
             a subagent's hold, or one we cannot attribute is filed. His OWNER hold is never touched.
   debt      forced game settings and staged scenes: a tool that forces a setting or stages a scene calls owe() (or
@@ -60,7 +60,6 @@ import uuid
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_DIR = "/mnt/d/ClaudeWork/rimmandrake/wrapup"
-SHARED_BRIDGE_DEFAULT = "/mnt/d/ClaudeWork/rimmandrake/scratch/BRIDGE_SHARED.json"   # model.SHARED_BRIDGE_DEFAULT
 GIT_TIMEOUT_S = 30
 STANDING = ("filed",)
 
@@ -88,9 +87,9 @@ PREV_LOG_WIN = "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld
 
 # WRAPUP_DEBRIS_FIX_BLAMES_THE_WHOLE_HOUSE: role_launch.stoppost_handoff hands these on with `systemd-run -E NAME`, and
 # systemd 259 sets an UNSET name to '' (measured 2026-11-06), never skips it. RM_WRAPUP_SEAT_CLONES='' read as "no seat
-# clones" filed /home/mandrake/rm/bench as every role unit's debris; RIMFLOW_SHARED_BRIDGE='' read as "no lock" and a
-# unit's hold was never released. An empty one is dropped before anything reads it. = role_launch.HANDOFF_ENV
-HANDOFF_ENV = ("PATH", "AGENT_SEAT", "RIMFLOW_SEAT", "RIMFLOW_BRIDGE_SEAT", "RIMFLOW_SHARED_BRIDGE", "RM_ROLE_UNIT",
+# clones" filed /home/mandrake/rm/bench as every role unit's debris. An empty one is dropped before anything reads it.
+# = role_launch.HANDOFF_ENV
+HANDOFF_ENV = ("PATH", "AGENT_SEAT", "RIMFLOW_SEAT", "RIMFLOW_BRIDGE_SEAT", "RM_ROLE_UNIT",
                "RM_WRAPUP_DIR", "RM_WRAPUP_SEAT_CLONES", "RM_UNDER_SELFTEST", "RM_DATA_ROOT")
 
 
@@ -292,12 +291,13 @@ class World(object):
         except (OSError, subprocess.SubprocessError):
             return None, ""
 
-    def shared_bridge(self):
-        p = os.environ.get("RIMFLOW_SHARED_BRIDGE", SHARED_BRIDGE_DEFAULT)
-        if not p:
-            return None
-        d = _read_json(p)
-        return d if isinstance(d, dict) and d.get("holder") else None
+    def game_a_hold(self):
+        """-> game a's live holder {holder, clone, purpose, ...} from its driver lock (model.game_a_lock_record), or
+        None. A lock that could not be looked at raises: the census files it, never reads it as free."""
+        if HERE not in sys.path:
+            sys.path.insert(0, HERE)
+        import model
+        return model.game_a_lock_record()
 
     def release_bridge(self, clone, holder):
         cli = os.path.join(clone, "src", "RimMandrake", "rimflow", "cli.py")
@@ -462,12 +462,12 @@ def check_clone(world, clone, carried):
 
 
 def check_bridge(world, ctx):
-    sh = world.shared_bridge()
+    sh = world.game_a_hold()
     if not sh:
-        return {"kind": "bridge", "what": "shared lock", "act": "ok", "why": "free"}
+        return {"kind": "bridge", "what": "game a's lock", "act": "ok", "why": "free"}
     holder, clone = sh.get("holder"), sh.get("clone")
     if holder == "OWNER" or holder != ctx["holder"] or clone not in ctx["clones"]:
-        return {"kind": "bridge", "what": "shared lock", "act": "ok",
+        return {"kind": "bridge", "what": "game a's lock", "act": "ok",
                 "why": "held by %s from %s: not this agent's" % (holder, clone)}
     what = "%s hold from %s (for: %s)" % (holder, clone, sh.get("purpose") or "?")
     if ctx["kind"] == "subagent" or ctx.get("report_only"):
@@ -483,7 +483,7 @@ def census(world, ctx):
     try:
         rows.append(check_bridge(world, ctx))
     except Exception as e:  # noqa: BLE001  one check's failure is a row, never the wrap-up's end
-        rows.append({"kind": "bridge", "what": "shared lock", "act": "filed",     # doubt files
+        rows.append({"kind": "bridge", "what": "game a's lock", "act": "filed",     # doubt files
                      "why": "the bridge check failed: %s: %s" % (type(e).__name__, e)})
     for d in debts_of(ctx["owner"]):
         rows.append({"kind": "debt", "what": "%s: %s" % (d.get("kind"), d.get("what")), "act": "filed",
@@ -572,7 +572,10 @@ def row_standing(world, row, rec):
         except Exception:  # noqa: BLE001  unreadable: still standing
             return True
     if k == "bridge":
-        sh = world.shared_bridge()
+        try:
+            sh = world.game_a_hold()
+        except Exception:  # noqa: BLE001  unreadable: still standing (never clear on ignorance)
+            return True
         ctx = rec.get("ctx") or {}
         return bool(sh) and sh.get("holder") == ctx.get("holder") and sh.get("clone") in (rec.get("clones") or [])
     if k == "claims":

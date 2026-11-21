@@ -144,7 +144,7 @@ def env():
          if k not in ("RIMFLOW_SEAT", "AGENT_SEAT", "CLAUDE_SESSION_ID") and not k.startswith("GIT_")}
     e.update(RIMFLOW_LEDGER=os.path.join(TMP, "events.jsonl"), RIMFLOW_ITEMS=os.path.join(TMP, "items"),
              RIMFLOW_PROBE="no-reading", RIMFLOW_SCHEDULE=os.path.join(TMP, "no_schedule.json"),
-             RIMFLOW_DRIVER_LOCK="", RM_HOST="archmagi", RIMFLOW_SHARED_BRIDGE="",
+             RIMFLOW_DRIVER_LOCK="", RM_HOST="archmagi", 
              RIMFLOW_BRIDGE_LOCK=os.path.join(TMP, "bridge.lock"), RIMFLOW_SEAT="BUILD")
     return e
 

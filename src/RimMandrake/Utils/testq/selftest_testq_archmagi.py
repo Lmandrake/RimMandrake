@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """selftest_testq_archmagi.py - the testq Archmagi backfill (TESTQ_ARCHMAGI_LANE_BUILD_BACKFILL), offline.
 
-Everything runs on temp files: the queue, the worker home, the driver lock (RIMFLOW_DRIVER_LOCK), the shared bridge
-file (RIMFLOW_SHARED_BRIDGE), the BRIDGE mirror (beside a throwaway RIMFLOW_LEDGER), the bridge call log
+Everything runs on temp files: the queue, the worker home, game a's driver lock (RIMFLOW_DRIVER_LOCK, the one record
+of who drives the game), the BRIDGE mirror (beside a throwaway RIMFLOW_LEDGER; a print, never read), the bridge call log
 (TESTQ_BRIDGE_LOG) and the game pid (TESTQ_ARCHMAGI_PID). SteveDesktop is a fake ssh that is down unless a test
 brings it up. Proves:
-  gate: off unless TESTQ_ARCHMAGI=1; a stop file, a pause, a back-off, another host, no runner clone, a shared
-        bridge holder, a HELD mirror, a held driver lock, a bridge used < 600 s ago, and a missing call log each
+  gate: off unless TESTQ_ARCHMAGI=1; a stop file, a pause, a back-off, another host, no runner clone, a live
+        holder of game a's lock, a held driver lock, a bridge used < 600 s ago, and a missing call log each
         close it; all clear opens it.
   candidates: lane archmagi only; lane any only while SteveDesktop is down or busy; never lane stevedesktop;
         full-list profile only by default; a job Archmagi refused to deploy is skipped.
@@ -89,7 +89,7 @@ class Rig:
             TESTQ_MODS_DIR=p("mods"), TESTQ_SKIP_PULL="1", TESTQ_NO_SYSTEMD="1",
             TESTQ_CMD_DEPLOY="true", TESTQ_CMD_LOAD="true", TESTQ_CMD_DOWN="true", TESTQ_CMD_RUN=mock,
             TESTQ_CMD_STATUS="echo 'running pid=4242'",
-            RIMFLOW_DRIVER_LOCK=p("DRIVER_LOCK.json"), RIMFLOW_SHARED_BRIDGE=p("BRIDGE_SHARED.json"),
+            RIMFLOW_DRIVER_LOCK=p("DRIVER_LOCK.json"), 
             RIMFLOW_LEDGER=p("ledger", "events.jsonl"), RM_HOST="archmagi", RM_GAME_USERDATA=self.tmp,
             TESTQ_ARCHMAGI="1", TESTQ_ARCHMAGI_RUNNER=REPO, TESTQ_ARCHMAGI_HOME=p("arch_home"),
             TESTQ_ARCHMAGI_MODS_DIR=p("mods"), TESTQ_ARCHMAGI_CMD_RUN=mock, TESTQ_ARCHMAGI_CMD_DEPLOY="true",
@@ -108,6 +108,29 @@ class Rig:
 
     def p(self, *parts):
         return os.path.join(self.tmp, *parts)
+
+    def plant_hold(self, seat, purpose, age_s=0):
+        """A window's take of game a, as the lock records it: `seat` held by a live process (a sleeper), since age_s."""
+        self.drop_hold()
+        self._sleeper = subprocess.Popen(["sleep", "600"])
+        time.sleep(0.05)
+        with open("/proc/%d/stat" % self._sleeper.pid) as f:
+            start = round(int(f.read().rsplit(")", 1)[1].split()[19]) / os.sysconf("SC_CLK_TCK"), 2)
+        t = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time() - age_s))
+        with open(self.p("DRIVER_LOCK.json"), "w") as f:
+            json.dump({"seat": seat, "purpose": purpose, "acquired": t, "heartbeat": t, "generation": 1,
+                       "identity": {"pid": self._sleeper.pid, "start": start, "platform": "wsl",
+                                    "host": __import__("socket").gethostname(),
+                                    "boot_id": open("/proc/sys/kernel/random/boot_id").read().strip()}}, f)
+
+    def drop_hold(self):
+        sl = getattr(self, "_sleeper", None)
+        if sl is not None and sl.poll() is None:
+            sl.kill()
+            sl.wait()
+        self._sleeper = None
+        if os.path.exists(self.p("DRIVER_LOCK.json")):
+            os.remove(self.p("DRIVER_LOCK.json"))
 
     def log_old(self, age=3600):
         f = self.p("bridge_calls.jsonl")
@@ -208,18 +231,14 @@ def t_gate(r):
     g = r.call("testq.archmagi_gate()")
     check(g[0] is False and "backing off" in g[1], "back-off -> closed: %s" % g[1])
     os.remove(r.p("queue", "archmagi_state.json"))
-    now = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time() - 7200))
-    json.dump({"holder": "FOUNDRY", "since": now, "touched": now, "purpose": "proof"},
-              open(r.p("BRIDGE_SHARED.json"), "w"))
+    r.plant_hold("FOUNDRY", "proof", age_s=7200)
     g = r.call("testq.archmagi_gate()")
-    check(g[0] is False and "FOUNDRY" in g[1], "a shared bridge holder (even a 2 h old one) -> closed: %s" % g[1])
-    os.remove(r.p("BRIDGE_SHARED.json"))
-    open(r.p("ledger", "BRIDGE"), "w").write("HELD BENCH since x\n")
+    check(g[0] is False and "FOUNDRY" in g[1], "a live holder of game a's lock (even a 2 h old one) -> closed: %s" % g[1])
+    r.drop_hold()
+    open(r.p("ledger", "BRIDGE"), "w").write("HELD BENCH since x\n")    # the mirror is a print of the lock: never read
     g = r.call("testq.archmagi_gate()")
-    check(g[0] is False and "BENCH" in g[1] and "mirror" in g[1], "a HELD BRIDGE mirror -> closed: %s" % g[1])
-    open(r.p("ledger", "BRIDGE"), "w").write("FREE\n")
-    g = r.call("testq.archmagi_gate()")
-    check(g[0] is True, "a FREE BRIDGE mirror -> open: %s" % g)
+    check(g[0] is True, "a HELD BRIDGE mirror over a free lock -> open (the lock decides): %s" % g)
+    os.remove(r.p("ledger", "BRIDGE"))
     hold = subprocess.Popen([sys.executable, os.path.join(REPO, "src", "RimMandrake", "rimflow", "host_guard.py"),
                              "run", "--seat", "BENCH", "--for", "test", "--", "sleep", "20"],
                             env=r.envx({}), stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
@@ -228,7 +247,7 @@ def t_gate(r):
         while time.time() - t < 15 and r.call("testq._rimflow()[1].status()").get("state") != "HELD":
             time.sleep(0.3)
         g = r.call("testq.archmagi_gate()")
-        check(g[0] is False and "driver lock HELD" in g[1], "a held driver lock -> closed: %s" % g[1])
+        check(g[0] is False and "BENCH" in g[1], "a held driver lock -> closed, naming its holder: %s" % g[1])
     finally:
         hold.terminate()
         hold.wait(timeout=30)
@@ -342,9 +361,7 @@ def t_tick(r):
     r.tq("tick", MOCK_SLEEP="30")
     aid, _h = admitted(r, j)
     time.sleep(2)
-    now = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
-    json.dump({"holder": "FOUNDRY", "since": now, "touched": now, "purpose": "forced take"},
-              open(r.p("BRIDGE_SHARED.json"), "w"))
+    r.plant_hold("FOUNDRY", "forced take")             # a forced take writes game a's lock over the worker's
     r.tq("tick")
     check(r.rec(j).get("yield"), "a bridge holder mid-run marks the job yielded")
     res = r.wait_result("arch_home", aid, limit=40)
@@ -353,7 +370,7 @@ def t_tick(r):
     check(r.state(j) == "pending", "the yielded job is back in pending")
     check(r.state(j) == "pending" and not glob.glob(r.p("queue", "running", "*.json")),
           "and nothing is admitted while the window holds the bridge")
-    os.remove(r.p("BRIDGE_SHARED.json"))
+    r.drop_hold()
 
 
 def t_steve_and_any(r):

@@ -71,7 +71,7 @@ def main():
             "RIMFLOW_BRIDGE_SEAT", "RIMFLOW_BRIDGE_SEAT_IN_TEST", "RELENTLESS_SUPERVISOR", "RM_HOST_GUARD_GEN")}
         ledger = os.path.join(tmp, "events.jsonl")
         base.update(RIMFLOW_LEDGER=ledger, RIMFLOW_ITEMS=os.path.join(tmp, "items"), RIMFLOW_PROBE="no-reading",
-                    RIMFLOW_SHARED_BRIDGE=os.path.join(tmp, "shared.json"),
+                    
                     RIMFLOW_DISPATCH_LOCK=os.path.join(tmp, "dispatch.lock"),
                     RIMFLOW_BRIDGE_LOCK=os.path.join(tmp, "bridge.lock"),
                     RIMFLOW_OWNER_ACT_STAMP=os.path.join(tmp, "act.json"), RIMFLOW_DRIVER_LOCK="")

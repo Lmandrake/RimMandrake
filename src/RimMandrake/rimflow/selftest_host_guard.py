@@ -55,7 +55,7 @@ def main():
         env = {k: v for k, v in os.environ.items()
                if k not in ("RIMFLOW_SEAT", "AGENT_SEAT", "CLAUDE_SESSION_ID", "RM_HOST_GUARD_GEN")}
         env.update(RIMFLOW_LEDGER=os.path.join(tmp, "events.jsonl"), RIMFLOW_ITEMS=os.path.join(tmp, "items"),
-                   RIMFLOW_SHARED_BRIDGE=os.path.join(tmp, "shared.json"), RIMFLOW_PROBE="no-reading",
+                   RIMFLOW_PROBE="no-reading",
                    RIMFLOW_DRIVER_LOCK=lock, RM_HOST="stevedesktop")
         saved = dict(os.environ)
         os.environ.clear()

@@ -135,7 +135,7 @@ def _seat_restart():
 
 
 def read_bridge(me):
-    """The shared bridge and driver lock, read as the restart gate reads them (seat_restart.bridge_reading)."""
+    """Game a's lock and this shell's driver lock, read as the restart gate reads them (seat_restart.bridge_reading)."""
     return _seat_restart().bridge_reading(me)
 
 

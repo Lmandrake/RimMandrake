@@ -109,7 +109,6 @@ def env(seat="BUILD", **over):
     e["RIMFLOW_SCHEDULE"] = os.path.join(TMP_ROOT, "no_schedule.json")
     e["RIMFLOW_DRIVER_LOCK"] = ""
     e["RM_HOST"] = "archmagi"       # the default bridge's lock is only used on its own host: pin it, not the machine's
-    e["RIMFLOW_SHARED_BRIDGE"] = ""
     e["RIMFLOW_BRIDGE_LOCK"] = os.path.join(TMP_ROOT, "bridge.lock")
     e["RM_COMPANION_PROFILE"] = GRANT_FIXTURE
     if seat:

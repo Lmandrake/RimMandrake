@@ -6,7 +6,7 @@ killed or launched, nothing outside the temp dir is written. Covered:
   off by default        the schedule key `seat_restart` disabled -> nothing is decided, a request is left alone
   helper alive          a request is HELD while any helper of the window is alive (its subagent transcript is not
                         ended); a stale one holds too and alarms; the seat-side `request` refuses outright
-  bridge / game hold    the shared bridge or the driver lock held by the seat, an unreadable bridge, or a transitional
+  bridge / game hold    game a's lock or this shell's driver lock held by the seat, an unreadable bridge, or a transitional
                         game event by the seat -> HELD, never killed
   grace cancel          new input in the window's transcript after the request -> cancelled, never killed
   relaunch argv         the in-tile relaunch line is the WT profile's own LAUNCH + a first prompt: --remote-control and
@@ -632,14 +632,14 @@ def test_driver_lock_detached_holder():
     # bridge_reading itself carries the provenance bridge_hold needs
     import driver_lock as DL
     from rimflow import model as M
-    saved = (DL.lock_path, DL.status, M.read_shared_bridge)
+    saved = (DL.lock_path, DL.status, M.game_a_lock_record)
     ident = {"pid": 9001, "start": 1, "platform": "wsl", "host": host}
     try:
-        DL.lock_path, M.read_shared_bridge = (lambda: "/nonexistent/DRIVER_LOCK.json"), (lambda: None)
+        DL.lock_path, M.game_a_lock_record = (lambda: "/nonexistent/DRIVER_LOCK.json"), (lambda: None)
         DL.status = lambda p: {"state": "HELD", "seat": "foundry", "identity": ident}
         r = SR.bridge_reading("FOUNDRY")
     finally:
-        DL.lock_path, DL.status, M.read_shared_bridge = saved
+        DL.lock_path, DL.status, M.game_a_lock_record = saved
     check(r.get("holders") == ["FOUNDRY"] and r.get("bridge") == [] and (r.get("driver") or {}).get("identity") == ident,
           "bridge_reading names the driver lock's holder identity apart from the shared bridge (%s)" % r)
 
@@ -716,37 +716,34 @@ def test_goodbye_not_held_by_a_detached_runs_bridge_or_game():
           "the held restart's RAISE FIRST line names the real holder (%s)" % rf)
 
 
-def test_shared_bridge_record_keeps_its_takers_identity():
-    """The shared record is the only cross-clone trace of WHO took the bridge: the take writes the taker's process
-    identity and role unit; a heartbeat from the taker's clone keeps them, and one from another clone of the same seat
-    leaves the record as it was (RIMMANDRAKE_KEEP_BRIDGE_HEARTBEAT_TO_HOLDER_CLONE_ONLY)."""
+def test_game_a_lock_record_keeps_its_takers_identity():
+    """Game a's driver lock is the one trace of WHO took the bridge (the shared file is retired,
+    RIMMANDRAKE_BUILD_ONE_GAME_LOCK_CLAIM_FOUR_RECORDS_DISAGREE): the take writes the taker's process identity, its
+    role unit and its clone, and model.game_a_lock_record reads them back; a holder that is gone reads as free."""
     from rimflow import model as M
-    p = os.path.join(TMP, "BRIDGE_SHARED.json")
-    old = os.environ.get("RIMFLOW_SHARED_BRIDGE")
-    os.environ["RIMFLOW_SHARED_BRIDGE"] = p
+    import driver_lock as DL
+    p = os.path.join(TMP, "DRIVER_LOCK_a.json")
+    saved = {k: os.environ.get(k) for k in ("RIMFLOW_DRIVER_LOCK", "RM_ROLE_UNIT", "RM_GAME_INSTANCE")}
+    os.environ.update(RIMFLOW_DRIVER_LOCK=p, RM_ROLE_UNIT="rm-detached-x-1")
+    os.environ.pop("RM_GAME_INSTANCE", None)
     try:
-        me = {"pid": 9001, "start": 1, "platform": "wsl", "host": "h"}
-        M.write_shared_bridge("FOUNDRY", "launch both games", identity=me, role_unit="rm-detached-x-1")
-        rec = M.read_shared_bridge_record()
-        with open(p, "w") as f:
-            json.dump(dict(rec, touched="2000-01-01T00:00:00Z"), f)
-        M.touch_shared_bridge("FOUNDRY")
-        rec = M.read_shared_bridge_record()
-        with open(p, "w") as f:      # as if taken from another clone
-            json.dump(dict(rec, clone="/the/takers/clone", touched="2000-01-01T00:00:00Z"), f)
-        M.touch_shared_bridge("FOUNDRY")
-        other = M.read_shared_bridge_record()
+        me = DL.my_identity()
+        got = DL.acquire(p, "FOUNDRY", "launch both games", me)
+        rec = M.game_a_lock_record()
+        dead = dict(me, pid=999999, start=1.0)
+        DL.release(p, "FOUNDRY", me)
+        DL.acquire(p, "FOUNDRY", "launch both games", dead)
+        gone = M.game_a_lock_record()
     finally:
-        if old is None:
-            os.environ.pop("RIMFLOW_SHARED_BRIDGE", None)
-        else:
-            os.environ["RIMFLOW_SHARED_BRIDGE"] = old
-    check(rec.get("identity") == me and rec.get("role_unit") == "rm-detached-x-1",
-          "a heartbeat keeps the taker's identity and role unit (%s)" % rec)
-    check(rec.get("clone") == M.ROOT and rec.get("touched") != "2000-01-01T00:00:00Z",
-          "a heartbeat from the taker's clone refreshes touched (%s)" % rec)
-    check(other.get("clone") == "/the/takers/clone" and other.get("touched") == "2000-01-01T00:00:00Z",
-          "a heartbeat from another clone leaves the record as it was (%s)" % other)
+        for k, v in saved.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+    check(got.get("ok") and rec and rec.get("holder") == "FOUNDRY" and rec.get("identity") == me
+          and rec.get("role_unit") == "rm-detached-x-1" and rec.get("clone") == M.ROOT,
+          "the lock's record carries the taker's identity, role unit and clone (%s)" % rec)
+    check(gone is None, "a holder whose process is gone reads as free (%s)" % gone)
 
 
 def at_kill(sch, st, now=None):

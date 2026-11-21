@@ -181,7 +181,7 @@ def next_e2e(hours_left):
         env = {k: v for k, v in os.environ.items() if k not in ("RIMFLOW_SEAT", "AGENT_SEAT", "CLAUDE_SESSION_ID",
                                                                 "RM_PRIORITY_LIST")}
         env.update(RIMFLOW_LEDGER=os.path.join(t, "events.jsonl"), RIMFLOW_ITEMS=os.path.join(t, "items"),
-                   RIMFLOW_SHARED_BRIDGE=os.path.join(t, "shared.json"), RIMFLOW_PROBE="no-reading",
+                   RIMFLOW_PROBE="no-reading",
                    RIMFLOW_DISPATCH_LOCK=os.path.join(t, "dispatch.lock"), RIMFLOW_SCHEDULE=os.path.join(t, "schedule.json"),
                    RIMFLOW_SEAT="BENCH", RM_COMPANION_PROFILE=prof)
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """RIMMANDRAKE_HARDEN_BRIDGE_LOCK_OWNER_HOLES: the holes the GPT bridge review (2026-11-15) found in the lock, each
-staged on throwaway state only (temp ledger, lock, fence, shared file, transcripts, stamp). Every case below FAILED on
+staged on throwaway state only (temp ledger, lock, fence, transcripts, stamp). Every case below FAILED on
 the base commit ba67ffeb5d except those marked control.
 
   fence    p2.F1: a live holder's fence is never broken by age; a dead holder's is broken at once; an uninspectable one
@@ -9,7 +9,6 @@ the base commit ba67ffeb5d except those marked control.
            (his chat 5 min ago, an UNMEASURED stamp) and ignores a free-string owner_cleared; elsewhere the heartbeat
            rule passes it, said on stderr
   fenced   p2.F4: a forced release judges the OWNER rule on the lock inside the fence, not on an earlier read
-  shared   p2.F8: a heartbeat of the shared file never writes an old holder back over a newer one
   release  p2.F10: a guard or driver release that failed exits nonzero and writes no `released` event
 """
 import contextlib
@@ -32,7 +31,7 @@ os.makedirs(os.path.join(T, "items"))
 os.makedirs(os.path.join(T, "chat"))
 open(os.path.join(T, "events.jsonl"), "w").close()
 os.environ.update(RIMFLOW_LEDGER=os.path.join(T, "events.jsonl"), RIMFLOW_ITEMS=os.path.join(T, "items"),
-                  RIMFLOW_SHARED_BRIDGE=os.path.join(T, "shared.json"), RIMFLOW_SEAT="BENCH",
+                  RIMFLOW_SEAT="BENCH",
                   RIMFLOW_OWNER_CHAT_DIRS=os.path.join(T, "chat"), RIMFLOW_OWNER_TERMINAL="0",
                   RIMFLOW_OWNER_ACT_STAMP=os.path.join(T, "OWNER_LAST_ACT.json"),
                   RIMFLOW_DISPATCH_LOCK=os.path.join(T, "dispatch.lock"),
@@ -62,7 +61,7 @@ def iso(age_s):
 
 
 def clean():
-    for p in (LOCK, OP, LOCK + ".gen", os.environ["RIMFLOW_SHARED_BRIDGE"]):
+    for p in (LOCK, OP, LOCK + ".gen"):
         if os.path.isdir(p):
             shutil.rmtree(p)
         elif os.path.exists(p):
@@ -227,37 +226,6 @@ def test_fenced_release():
           "fenced: a forced release judges his rule on the lock inside the fence, not on an earlier read", r)
 
 
-def test_shared():
-    clean()
-    p = os.environ["RIMFLOW_SHARED_BRIDGE"]
-    model.write_shared_bridge("BENCH", "x", since=iso(600))
-    real = model.read_shared_bridge
-
-    def racing(_fired=[]):
-        d = real()
-        if not _fired:
-            _fired.append(1)                             # the other clone writes his hold after our heartbeat read
-            with open(p, "w") as f:
-                json.dump({"holder": "OWNER", "since": iso(0), "touched": iso(0), "purpose": "playing",
-                           "clone": "other"}, f)
-        return d
-    model.read_shared_bridge = racing
-    try:
-        model.touch_shared_bridge("BENCH")
-    finally:
-        model.read_shared_bridge = real
-    check((real() or {}).get("holder") == "OWNER",
-          "shared: a delayed heartbeat never writes an old holder back over a newer one", real())
-    model.write_shared_bridge("BENCH", "x", since=iso(600))
-    with open(p) as f:
-        before = json.load(f)
-    time.sleep(1.1)
-    model.touch_shared_bridge("BENCH")
-    after = real() or {}
-    check(after.get("holder") == "BENCH" and after.get("touched") != before.get("touched"),
-          "control: an unraced heartbeat refreshes the shared file", after)
-
-
 def released():
     return [e for e in model.read() if e.get("event") == "bridge" and e.get("state") == "released"]
 
@@ -304,7 +272,7 @@ def test_release_exit():
 def main():
     sleeper = subprocess.Popen(["sleep", "120"])
     try:
-        for t in (test_fence, test_owner, test_fenced_release, test_shared, test_release_exit):
+        for t in (test_fence, test_owner, test_fenced_release, test_release_exit):
             try:
                 t(sleeper) if t is test_fence else t()
             except Exception as e:                       # a crash is a failure of that group, never a pass

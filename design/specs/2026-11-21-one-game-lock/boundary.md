@@ -1,6 +1,9 @@
 # BOUNDARY: one record of who drives each game, Design Version 0.1.0
 
-Code: `src/RimMandrake/rimflow/game_lock.py` (all of it), `src/RimMandrake/rimflow/cli.py` (`lock_reading`, `lock_holder`, `_mirror_bridge`, `_who_lines`, `_bridge_who`, `_lock_view`, `_live_other`, the take, idle and release decisions of `bridge` for game a and for `--host`), `src/RimMandrake/rimflow/host_guard.py` (`acquire`), `src/RimMandrake/rimflow/maturation.py` (`bridge_idle`), `src/RimMandrake/rimflow/maturation_dispatch.py` (`lock_says`, the driven-game line of `pick_game`), `src/RimMandrake/Utils/game_instance.py` (`status_lines`, `_driver`), `src/RimMandrake/rimflow/control.py` (`game_lines`, the game lines of `show` and `why`), `src/RimMandrake/Utils/rmpaths.py` (the data-root cache).
+Code: `src/RimMandrake/rimflow/game_lock.py` (all of it), `src/RimMandrake/rimflow/cli.py` (`lock_reading`, `lock_holder`, `_mirror_bridge`, `_who_lines`, `_bridge_who`, `_lock_view`, `_live_other`, the take, idle and release decisions of `bridge` for game a and for `--host`), `src/RimMandrake/rimflow/host_guard.py` (`acquire`), `src/RimMandrake/rimflow/maturation.py` (`bridge_idle`), `src/RimMandrake/rimflow/maturation_dispatch.py` (`lock_says`, the driven-game line of `pick_game`), `src/RimMandrake/Utils/game_instance.py` (`status_lines`, `_driver`), `src/RimMandrake/rimflow/control.py` (`game_lines`, the game lines of `show` and `why`), `src/RimMandrake/Utils/rmpaths.py` (the data-root cache), `src/RimMandrake/rimflow/model.py` (`game_a_lock_path`,
+`game_a_lock_record`, `bridge_gate`), `src/RimMandrake/rimflow/driver_lock.py` (the `clone` and `role_unit` a take
+records), and the game a readers `testq.bridge_holder`, `bridgetools/build.py` `bridge_holder`,
+`seat_restart.bridge_reading` and `wrapup.World.game_a_hold`.
 Item: `RIMMANDRAKE_BUILD_ONE_GAME_LOCK_CLAIM_FOUR_RECORDS_DISAGREE`, written 2026-11-21. The owner, about 3:35 AM PST:
 *"We need a lightning responsive deterministic python way of taking and releasing game A or B as well as determining if
 it's available or not. Seems like right now it's the Wild West. ... A single point of reference and truth? And most
@@ -27,7 +30,8 @@ Before: `rimflow bridge who` 5.0 s for game a, 1.8 s for game b.
 
 - **a-game-letter.** `a`, or a named game (`b`, ...) of `game_instance.instances()`. `all` for a query.
 - **a-lock-in-driver-locks-shape.** `{seat, purpose, identity: {pid, start, boot_id, platform, host}, acquired,
-  heartbeat, generation}`, as `driver_lock.acquire` writes it. Every old door writes this shape.
+  heartbeat, generation, clone, role_unit}`, as `driver_lock.acquire` writes it (`clone` and `role_unit` since
+  2026-11-21; a lock without them reads the same, with no clone to attribute). Every old door writes this shape.
 - **a-process-tree.** The holder of a `claim` is the nearest `claude` or `codex` ancestor (the window or the run), or
   `RM_DRIVER_PID`; of a `run`, the `game_lock.py` process itself. "This process tree" is the caller and its ancestors.
 - **the-control-store.** `control.py`'s store, for `pipe off game:<g>`. A store that does not exist holds nothing.
@@ -46,9 +50,6 @@ Before: `rimflow bridge who` 5.0 s for game a, 1.8 s for game b.
   runs (every mutating `rimbridge_client` call).
 - **a-machine-with-no-lock-readable.** Another machine's game (SteveDesktop's, from Archmagi) is read through its guard
   over ssh, or its test lane. A clone with no lock path (a test ledger) prints the ledger's history, said to be history.
-- **the-shared-file-and-its-older-readers.** `BRIDGE_SHARED.json` is still written by `bridge take` and `release`, and read
-  by `testq`, `bridgetools/build.py`, `seat_restart`, `wrapup` and `model.bridge_gate`. No door named on this page decides
-  from it. Its retirement is open on the item.
 
 ## PROMISES (each one is owed a test of the same name)
 
@@ -86,5 +87,9 @@ Before: `rimflow bridge who` 5.0 s for game a, 1.8 s for game b.
 - **the-tick-line-that-named-a-dead-run-as-live.** The tick's line about a game a run record names carries the lock's
   reading at that moment; its free-game reading (`maturation.bridge_idle`) is the lock's: HELD while a holder lives,
   free the moment it is gone, never for a flyer's flight.
+
+- **the-old-shared-file-is-neither-written-nor-read.** A take or release writes no `BRIDGE_SHARED.json`, and one left
+  on disk names no holder anywhere. `model.bridge_gate`, `testq`, `seat_restart` and `wrapup` name game a's holder from
+  its lock, with the unit and clone that took it, and read it free the moment its process is gone.
 
 Later lists beside this page: `polish.md`, `next_version.md`.

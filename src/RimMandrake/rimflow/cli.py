@@ -430,8 +430,6 @@ def _write_one(ev):
         wrote = card_capture.append_prose(model.ITEMS, ev["id"], ev["card"], ev["event"], ev.get("seat", "?"))
         if wrote:
             print("items/%s.md: added \"%s\" (commit it with the shard)" % (ev["id"], card_capture.HEADING[3:]))
-    if ev.get("event") != "bridge":     # here, not in `_emit`: a lease group's writes are the holder working too
-        model.touch_shared_bridge(ev.get("seat"))
     return ev
 
 
@@ -3594,7 +3592,6 @@ def _bridge_give(args, seat, w, holder):
                "override": "the OWNER cleared the bridge%s"
                            % (" off %s" % holder if holder else "")}, w, quiet=True)
         _mirror_bridge("OWNER", note="cleared by the owner")
-        model.write_shared_bridge(None)
         _driver_release(seat, force="the OWNER cleared the bridge")
         print("bridge FREE — the owner cleared it")
         return 0
@@ -3607,7 +3604,6 @@ def _bridge_give(args, seat, w, holder):
         ev["purpose"] = args.purpose
     _emit(ev, w, quiet=True)
     _mirror_bridge("OWNER", note="handed over by the owner")
-    model.write_shared_bridge(to, args.purpose)
     _driver_release(seat, force="the OWNER handed the bridge to %s; %s takes the driver lock on its next take" % (to, to))
     print("bridge -> %s (the owner said so)" % to)
     return 0
@@ -3839,9 +3835,6 @@ def _bridge_release_write(seat, w, holder, r=None, force=False):
             "shows %s holding it; retry  rimflow bridge release" % (failed, holder or "nobody"))
     _emit(ev, w, quiet=True)
     _mirror_bridge(seat)
-    sh = model.read_shared_bridge()
-    if sh is None or sh.get("holder") in (seat, holder):
-        model.write_shared_bridge(None)
     if crossed:
         print("bridge released by %s — it was held by %s, and that is on the event"
               % (seat, holder or r.get("seat")))
@@ -3936,7 +3929,7 @@ def _delegated_gate(holder, seat, holder_idle, purpose, flyer, owner=None):
 
 def _driver_owner_gate(seat, evs):
     """His rule on the Archmagi driver lock: -> (refusal, cleared), cleared being {text, heartbeat} when his lock may be
-    cut. The lock shows a hold the ledger and shared lock may not (his take in the other clone, unpushed), and his
+    cut. The lock shows a hold the ledger may not (his take in the other clone, unpushed), and his
     `bridge take` process exits at once, so a dead process proves nothing (owner, by card 2026-10-30, --force
     included). A lock nobody can read may be his: UNMEASURED refuses while he is not measured quiet."""
     dl = _archmagi_lock_path()
@@ -3968,7 +3961,7 @@ def _bridge_take(args, seat, w, holder, purpose):
     "stale". Now the holder, its liveness, his OWNER-hold verdict and the delegated gate are all re-derived after the
     lock is held, so the decision and the append are atomic against every other take and `release --mine` in this
     clone. `w`, `holder` and `purpose` (the command's first read) are not used for the decision. The other clone is
-    not under this lock: the shared lock below is what it can see at once."""
+    not under this lock: game a's driver lock, taken below, is what it can see at once."""
     if getattr(args, "idle_ok", False) and args.force:
         die("--idle-ok and --force exclude each other: --idle-ok is the delegated take of a FREE bridge")
     with _bridge_lock():
@@ -4057,9 +4050,6 @@ def _bridge_take_locked(args, seat, evs, w):
     _emit(ev, w, quiet=True)
     won = _mirror_bridge(
         seat, note=("taken from %s: %s" % (holder, why)) if why else None)
-    if won == seat:
-        model.write_shared_bridge(seat, args.purpose, identity=driver_lock.my_identity(),
-                                  role_unit=os.environ.get("RM_ROLE_UNIT") or None)
     if won != seat:
         # Another clone's ledger write cannot race this lock, but a write that bypasses it can (a hand-run
         # `_emit`, an older rimflow). Both events are in the ledger, the later one holds, and the mirror says so.

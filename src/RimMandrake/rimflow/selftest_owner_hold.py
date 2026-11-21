@@ -124,7 +124,7 @@ def test_chat():
 
 
 class World:
-    """A throwaway ledger + transcripts + stamp + shared lock, driven through the real cli.py."""
+    """A throwaway ledger + transcripts + stamp + game a's lock, driven through the real cli.py."""
 
     def __init__(self, events, shared=None):
         self.tmp = tempfile.mkdtemp(prefix="rf_ownerhold_")
@@ -135,7 +135,6 @@ class World:
         with open(self.led, "w") as f:
             for i, e in enumerate(events):
                 f.write(json.dumps(dict(e, tsn=1_700_000_000_000_000_000 + i)) + "\n")
-        self.shared = os.path.join(self.tmp, "shared.json")
         self.lock = None
         if shared:          # another clone's hold of his: game a's lock (game_lock.py), his take's process long gone
             done = subprocess.Popen(["true"])
@@ -151,7 +150,7 @@ class World:
                     if k not in ("RIMFLOW_SEAT", "AGENT_SEAT", "CLAUDE_SESSION_ID", "CLAUDECODE", "RIMFLOW_RAN_BY",
                                  "RIMFLOW_BRIDGE_SEAT", "RM_ROLE_UNIT")}   # a Conductor window's takes, even when a Relentless worker runs this
         self.env.update(RIMFLOW_LEDGER=self.led, RIMFLOW_ITEMS=os.path.join(self.tmp, "items"),
-                        RIMFLOW_SHARED_BRIDGE=self.shared, RIMFLOW_SEAT="BENCH",
+                        RIMFLOW_SEAT="BENCH",
                         RIMFLOW_OWNER_CHAT_DIRS=self.chat,
                         RIMFLOW_OWNER_TERMINAL="0",     # no terminal: the same answer from a shell, a worker or a timer
                         RIMFLOW_OWNER_ACT_STAMP=os.path.join(self.tmp, "OWNER_LAST_ACT.json"),

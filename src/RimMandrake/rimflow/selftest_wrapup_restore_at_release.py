@@ -26,7 +26,6 @@ FAILS = []
 TMP = tempfile.mkdtemp(prefix="st_wrapup_release_")
 os.environ["RM_WRAPUP_DIR"] = os.path.join(TMP, "wrapup")
 os.environ["RM_WRAPUP_PREV_LOG"] = ""           # the real game's relaunch never voids a test debt
-os.environ["RIMFLOW_SHARED_BRIDGE"] = os.path.join(TMP, "shared.json")
 sys.path[:0] = [HERE, os.path.join(RIM, "Utils")]
 import wrapup  # noqa: E402
 
@@ -80,7 +79,7 @@ class Rig:
             "RIMFLOW_SEAT", "AGENT_SEAT", "CLAUDE_SESSION_ID", "CLAUDECODE", "RIMFLOW_RAN_BY", "RM_DRIVER_PID",
             "RIMFLOW_BRIDGE_SEAT", "RELENTLESS_SUPERVISOR", "RM_HOST_GUARD_GEN", "RM_UNDER_SELFTEST")}
         self.base.update(RIMFLOW_LEDGER=os.path.join(self.tmp, "events.jsonl"), RIMFLOW_ITEMS=os.path.join(self.tmp, "items"),
-                         RIMFLOW_SHARED_BRIDGE=os.path.join(self.tmp, "shared.json"), RIMFLOW_PROBE="no-reading",
+                         RIMFLOW_PROBE="no-reading",
                          RIMFLOW_DISPATCH_LOCK=os.path.join(self.tmp, "dispatch.lock"),
                          RIMFLOW_BRIDGE_LOCK=os.path.join(self.tmp, "bridge.lock"),
                          RIMFLOW_OWNER_ACT_STAMP=os.path.join(self.tmp, "act.json"),

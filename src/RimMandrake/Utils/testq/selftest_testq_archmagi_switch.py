@@ -202,9 +202,7 @@ def t_tick(r):
                                                                                  o[-200:]))
     # a take mid-run: the attempt yields at its next row boundary
     time.sleep(2)
-    stamp = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
-    json.dump({"holder": "CONDUCTOR", "since": stamp, "touched": stamp, "purpose": "debugging"},
-              open(r.p("BRIDGE_SHARED.json"), "w"))
+    r.plant_hold("CONDUCTOR", "debugging")            # a forced take writes game a's lock over the worker's
     r.tq("tick", **env)
     check(os.path.exists(r.p("yield.json")) and r.rec(j).get("yield") and not r.rec(j).get("stop_sent"),
           "a take mid-run: yield requested, no stop sent inside the grace")
@@ -227,7 +225,7 @@ def t_tick(r):
     arch = json.load(open(r.p("queue", "archmagi_state.json")))
     check(arch.get("takes") and arch["takes"][-1]["holder"].startswith("CONDUCTOR") and arch["takes"][-1]["released"],
           "the take is recorded and closed when the attempt handed back: %s" % (arch.get("takes") or [None])[-1])
-    os.remove(r.p("BRIDGE_SHARED.json"))
+    r.drop_hold()
     r.tq("tick", TESTQ_ARCHMAGI_SWITCH="force")
     st = sw_state(r)
     check(not st.get("on") and "cooling down" in (st.get("closed_why") or ""),

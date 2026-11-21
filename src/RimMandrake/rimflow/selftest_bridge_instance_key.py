@@ -35,7 +35,7 @@ def main():
                 if k not in ("RIMFLOW_SEAT", "AGENT_SEAT", "CLAUDE_SESSION_ID", "RM_HOST_GUARD_GEN", "RM_GAME_INSTANCE",
                              "GABP_SERVER_PORT", "GABP_TOKEN", "RIMFLOW_DRIVER_LOCK")}
         base.update(RIMFLOW_LEDGER=os.path.join(tmp, "events.jsonl"), RIMFLOW_ITEMS=os.path.join(tmp, "items"),
-                    RIMFLOW_SHARED_BRIDGE=os.path.join(tmp, "shared.json"), RIMFLOW_PROBE="no-reading",
+                    RIMFLOW_PROBE="no-reading",
                     RM_HOST="stevedesktop", RM_INSTANCES_ROOT=root, RIMFLOW_DRIVER_LOCK=a_lock, PYTHONDONTWRITEBYTECODE="1")
         saved = dict(os.environ)
         os.environ.clear()

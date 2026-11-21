@@ -252,7 +252,7 @@ class World:
         for k in ("AGENT_SEAT", "CLAUDE_SESSION_ID", "CLAUDECODE", "RM_ROLE_UNIT"):
             self.env.pop(k, None)
         self.env.update(RIMFLOW_LEDGER=os.path.join(self.rf, "events.jsonl"), RIMFLOW_ITEMS=os.path.join(self.rf, "items"),
-                        RIMFLOW_SHARED_BRIDGE=os.path.join(self.rf, "shared.json"), RIMFLOW_SEAT="BENCH",
+                        RIMFLOW_SEAT="BENCH",
                         RIMFLOW_OWNER_CHAT_DIRS=os.path.join(self.rf, "chat"), RIMFLOW_OWNER_TERMINAL="0",
                         RIMFLOW_OWNER_ACT_STAMP=os.path.join(self.rf, "OWNER_LAST_ACT.json"),
                         RIMFLOW_DISPATCH_LOCK=os.path.join(self.rf, "dispatch.lock"),
@@ -332,7 +332,7 @@ class World:
                       "ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(t)), "tsn": int(t * 1e9)}
                 ev.update({"host": host[0]} if host else {})
                 f.write(json.dumps(ev) + "\n")
-        for p in (self.env["RIMFLOW_SHARED_BRIDGE"], self.env["RIMFLOW_DRIVER_LOCK"], self.env["RIMFLOW_OWNER_ACT_STAMP"],
+        for p in (self.env["RIMFLOW_DRIVER_LOCK"], self.env["RIMFLOW_OWNER_ACT_STAMP"],
                   os.path.join(self.rf, "events"), os.path.join(self.rf, "BRIDGE"),       # a take's shard and mirror
                   os.path.join(self.b_dir, "DRIVER_LOCK.json")):
             if os.path.isdir(p):
