@@ -71,9 +71,30 @@ def writer_alive(row):
         return True
 
 
-def foreign_activity(log=None, now=None, own_pid=None, window_s=WINDOW_S, alive=None, lineage=None):
+def own_endpoint():
+    """The "host:port" of the game this process drives, as rimbridge_client resolves it from the environment
+    (RIMBRIDGE_HOST / GABP_SERVER_PORT; game b's env sets the port), else the default game's."""
+    host = os.environ.get("RIMBRIDGE_HOST") or "127.0.0.1"
+    port = os.environ.get("GABP_SERVER_PORT") or "5174"
+    return "%s:%s" % (host, port)
+
+
+def _other_game(row_endpoint, endpoint):
+    """True only when the row names an endpoint and it is provably another game's (fail closed otherwise)."""
+    if not row_endpoint or not endpoint:
+        return False
+    try:
+        import rimbridge_client
+        return not rimbridge_client._same_endpoint(row_endpoint, endpoint)
+    except Exception:                                  # noqa: BLE001 -- a broken probe must not unblock a live call
+        return False
+
+
+def foreign_activity(log=None, now=None, own_pid=None, window_s=WINDOW_S, alive=None, lineage=None, endpoint=None):
     """Return a description of recent foreign-pid activity, or None. lineage: the caller's driver token (default
-    LINEAGE_ENV); a row carrying the same non-empty token is the caller's own."""
+    LINEAGE_ENV); a row carrying the same non-empty token is the caller's own. endpoint: the game the caller drives
+    (default own_endpoint()); RIMMANDRAKE_SCOPE_BRIDGE_MARKER_TO_ITS_GAME_A_STOPS_B: a row whose call went to another
+    game is not a second client on this one (game a's FlowWorks run refused every game-b site load, 2026-11-21)."""
     log = default_log() if log is None else log
     if not log or not os.path.exists(log):
         return None
@@ -81,6 +102,7 @@ def foreign_activity(log=None, now=None, own_pid=None, window_s=WINDOW_S, alive=
     own_pid = os.getpid() if own_pid is None else own_pid
     alive = writer_alive if alive is None else alive
     lineage = os.environ.get(LINEAGE_ENV, "") if lineage is None else lineage
+    endpoint = own_endpoint() if endpoint is None else endpoint
     try:
         with open(log, "rb") as fh:
             fh.seek(0, 2)
@@ -104,6 +126,8 @@ def foreign_activity(log=None, now=None, own_pid=None, window_s=WINDOW_S, alive=
                 ended[r.get("cid")] = now
     for cid, r in starts.items():
         if r.get("pid") in (None, own_pid) or (lineage and r.get("lineage") == lineage):
+            continue
+        if _other_game(r.get("endpoint"), endpoint):
             continue
         try:
             age = now - _ts(r["t"])

@@ -244,7 +244,7 @@ class Env(object):
     def stamp_status(self, repo_dll):
         """dll_source_stamp recompute at HEAD for one DLL: 'MATCH' or the failure.
 
-        Under Windows python.exe on a WSL clone (\\wsl.localhost\...), Windows git refuses the repo ("dubious
+        Under Windows python.exe on a WSL clone (a wsl.localhost UNC path), Windows git refuses the repo ("dubious
         ownership") and every stamp read ABSENT (Pyrelands visit 3, 2026-11-21), so there it runs under WSL python3."""
         if os.name == "nt":
             code = ("import json,sys; sys.path.insert(0,'src/RimMandrake/Utils'); import dll_source_stamp as ds; "

@@ -84,6 +84,15 @@ write([dict(ping("ca88"), mutating=True), en("i")]); check("another lineage's fi
 write([ping("ca88")]); check("an unended read from a live writer refuses", G.foreign_activity(p, now, 33880, alive=LIVE, lineage="f9bf") is not None)
 child = subprocess.Popen([sys.executable, "-c", "pass"]); child.wait()
 write([dict(ping("ca88"), pid=child.pid, os=os.name), en("i")]); check("real exited one-shot read proceeds (writer_alive)", G.foreign_activity(p, now, 33880, lineage="f9bf") is None)
+# RIMMANDRAKE_SCOPE_BRIDGE_MARKER_TO_ITS_GAME_A_STOPS_B: a client driving ANOTHER game (its start row's endpoint) is not a
+# second client on this one; a row with no endpoint, or this game's endpoint, still refuses
+A, B = "127.0.0.1:5174", "127.0.0.1:5175"
+write([dict(st("a", 111, 20), endpoint=A)]); check("game a's unended call does not refuse a game-b caller", G.foreign_activity(p, now, 222, alive=LIVE, endpoint=B) is None)
+write([dict(st("a", 111, 20), endpoint=A), en("a")]); check("game a's just-ended call does not refuse a game-b caller", G.foreign_activity(p, now, 222, alive=LIVE, endpoint=B) is None)
+write([dict(st("a", 111, 20), endpoint=B)]); check("same game's unended call still refuses", G.foreign_activity(p, now, 222, alive=LIVE, endpoint=B) is not None)
+write([dict(st("a", 111, 20), endpoint="localhost:5175")]); check("same game by another local host name still refuses", G.foreign_activity(p, now, 222, alive=LIVE, endpoint=B) is not None)
+write([st("a", 111, 20)]); check("a row with no endpoint still refuses (fail closed)", G.foreign_activity(p, now, 222, alive=LIVE, endpoint=B) is not None)
+write([dict(st("a", 111, 20), endpoint=A)]); check("no caller endpoint: the default port's caller is refused by game a's call", G.foreign_activity(p, now, 222, alive=LIVE) is not None or os.environ.get("GABP_SERVER_PORT"))
 os.environ["RM_ALLOW_CONCURRENT_BRIDGE"] = "1"
 G.refuse_if_foreign_activity("go_to_main_menu", log=p, now=now, own_pid=222, alive=LIVE); check("env override allows", True)
 print("FAIL" if F else "PASS", len(F), "failure(s)")
