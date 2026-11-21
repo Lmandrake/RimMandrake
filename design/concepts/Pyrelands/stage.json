@@ -769,10 +769,17 @@
     "ref": "run rm-role-designer-1794947616",
     "stage": 5,
     "tokens": 489755
+   },
+   {
+    "at": "2026-11-21T10:01:06Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1795255099",
+    "stage": 3,
+    "tokens": 232619
    }
   ],
   "reserve": 60000,
-  "spent": 20445121
+  "spent": 20677740
  },
  "coverage_releases": [
   {
@@ -1877,10 +1884,520 @@
    "stage": 3,
    "what": "pending_decision",
    "why": "restamp clause dropped: done at 47e044e556 (RIMMANDRAKE_RESIGN_PYRELANDS_COVERAGE_AFTER_RESTAMP_VOIDED_IT)"
+  },
+  {
+   "at": "2026-11-21T08:02:46Z",
+   "stage": 3,
+   "what": "park_lifted",
+   "why": "his word on BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS lifts the ceiling park"
+  },
+  {
+   "at": "2026-11-21T08:02:46Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "20445121 of 4000000 spent; run rm-role-designer-1795248151 goes on with 400000 (advisory)"
+  },
+  {
+   "at": "2026-11-21T08:02:46Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1795248151, stage 3, budget 400000"
+  },
+  {
+   "at": "2026-11-21T08:02:46Z",
+   "stage": 3,
+   "what": "abort",
+   "why": "run rm-role-designer-1795248151 never launched; nothing charged"
+  },
+  {
+   "at": "2026-11-21T08:05:28Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "20445121 of 4000000 spent; run rm-role-designer-1795248321 goes on with 400000 (advisory)"
+  },
+  {
+   "at": "2026-11-21T08:05:28Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1795248321, stage 3, budget 400000"
+  },
+  {
+   "at": "2026-11-21T08:05:29Z",
+   "stage": 3,
+   "what": "abort",
+   "why": "run rm-role-designer-1795248321 never launched; nothing charged"
+  },
+  {
+   "at": "2026-11-21T08:10:51Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "20445121 of 4000000 spent; run rm-role-designer-1795248644 goes on with 400000 (advisory)"
+  },
+  {
+   "at": "2026-11-21T08:10:51Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1795248644, stage 3, budget 400000"
+  },
+  {
+   "at": "2026-11-21T08:10:51Z",
+   "stage": 3,
+   "what": "abort",
+   "why": "run rm-role-designer-1795248644 never launched; nothing charged"
+  },
+  {
+   "at": "2026-11-21T08:13:22Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "20445121 of 4000000 spent; run rm-role-designer-1795248795 goes on with 400000 (advisory)"
+  },
+  {
+   "at": "2026-11-21T08:13:22Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1795248795, stage 3, budget 400000"
+  },
+  {
+   "at": "2026-11-21T08:13:23Z",
+   "stage": 3,
+   "what": "abort",
+   "why": "run rm-role-designer-1795248795 never launched; nothing charged"
+  },
+  {
+   "at": "2026-11-21T08:15:50Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "20445121 of 4000000 spent; run rm-role-designer-1795248938 goes on with 400000 (advisory)"
+  },
+  {
+   "at": "2026-11-21T08:15:50Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1795248938, stage 3, budget 400000"
+  },
+  {
+   "at": "2026-11-21T08:15:50Z",
+   "stage": 3,
+   "what": "abort",
+   "why": "run rm-role-designer-1795248938 never launched; nothing charged"
+  },
+  {
+   "at": "2026-11-21T08:18:25Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "20445121 of 4000000 spent; run rm-role-designer-1795249091 goes on with 400000 (advisory)"
+  },
+  {
+   "at": "2026-11-21T08:18:25Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1795249091, stage 3, budget 400000"
+  },
+  {
+   "at": "2026-11-21T08:18:25Z",
+   "stage": 3,
+   "what": "abort",
+   "why": "run rm-role-designer-1795249091 never launched; nothing charged"
+  },
+  {
+   "at": "2026-11-21T08:20:48Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "20445121 of 4000000 spent; run rm-role-designer-1795249234 goes on with 400000 (advisory)"
+  },
+  {
+   "at": "2026-11-21T08:20:48Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1795249234, stage 3, budget 400000"
+  },
+  {
+   "at": "2026-11-21T08:20:49Z",
+   "stage": 3,
+   "what": "abort",
+   "why": "run rm-role-designer-1795249234 never launched; nothing charged"
+  },
+  {
+   "at": "2026-11-21T08:23:34Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "20445121 of 4000000 spent; run rm-role-designer-1795249405 goes on with 400000 (advisory)"
+  },
+  {
+   "at": "2026-11-21T08:23:34Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1795249405, stage 3, budget 400000"
+  },
+  {
+   "at": "2026-11-21T08:23:34Z",
+   "stage": 3,
+   "what": "abort",
+   "why": "run rm-role-designer-1795249405 never launched; nothing charged"
+  },
+  {
+   "at": "2026-11-21T08:26:10Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "20445121 of 4000000 spent; run rm-role-designer-1795249562 goes on with 400000 (advisory)"
+  },
+  {
+   "at": "2026-11-21T08:26:10Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1795249562, stage 3, budget 400000"
+  },
+  {
+   "at": "2026-11-21T08:26:10Z",
+   "stage": 3,
+   "what": "abort",
+   "why": "run rm-role-designer-1795249562 never launched; nothing charged"
+  },
+  {
+   "at": "2026-11-21T08:28:47Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "20445121 of 4000000 spent; run rm-role-designer-1795249720 goes on with 400000 (advisory)"
+  },
+  {
+   "at": "2026-11-21T08:28:47Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1795249720, stage 3, budget 400000"
+  },
+  {
+   "at": "2026-11-21T08:28:47Z",
+   "stage": 3,
+   "what": "abort",
+   "why": "run rm-role-designer-1795249720 never launched; nothing charged"
+  },
+  {
+   "at": "2026-11-21T08:31:46Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "20445121 of 4000000 spent; run rm-role-designer-1795249896 goes on with 400000 (advisory)"
+  },
+  {
+   "at": "2026-11-21T08:31:46Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1795249896, stage 3, budget 400000"
+  },
+  {
+   "at": "2026-11-21T08:31:46Z",
+   "stage": 3,
+   "what": "abort",
+   "why": "run rm-role-designer-1795249896 never launched; nothing charged"
+  },
+  {
+   "at": "2026-11-21T08:34:26Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "20445121 of 4000000 spent; run rm-role-designer-1795250058 goes on with 400000 (advisory)"
+  },
+  {
+   "at": "2026-11-21T08:34:26Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1795250058, stage 3, budget 400000"
+  },
+  {
+   "at": "2026-11-21T08:34:27Z",
+   "stage": 3,
+   "what": "abort",
+   "why": "run rm-role-designer-1795250058 never launched; nothing charged"
+  },
+  {
+   "at": "2026-11-21T08:37:16Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "20445121 of 4000000 spent; run rm-role-designer-1795250222 goes on with 400000 (advisory)"
+  },
+  {
+   "at": "2026-11-21T08:37:16Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1795250222, stage 3, budget 400000"
+  },
+  {
+   "at": "2026-11-21T08:37:16Z",
+   "stage": 3,
+   "what": "abort",
+   "why": "run rm-role-designer-1795250222 never launched; nothing charged"
+  },
+  {
+   "at": "2026-11-21T08:40:00Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "20445121 of 4000000 spent; run rm-role-designer-1795250392 goes on with 400000 (advisory)"
+  },
+  {
+   "at": "2026-11-21T08:40:00Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1795250392, stage 3, budget 400000"
+  },
+  {
+   "at": "2026-11-21T08:40:00Z",
+   "stage": 3,
+   "what": "abort",
+   "why": "run rm-role-designer-1795250392 never launched; nothing charged"
+  },
+  {
+   "at": "2026-11-21T08:42:54Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "20445121 of 4000000 spent; run rm-role-designer-1795250565 goes on with 400000 (advisory)"
+  },
+  {
+   "at": "2026-11-21T08:42:54Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1795250565, stage 3, budget 400000"
+  },
+  {
+   "at": "2026-11-21T08:42:54Z",
+   "stage": 3,
+   "what": "abort",
+   "why": "run rm-role-designer-1795250565 never launched; nothing charged"
+  },
+  {
+   "at": "2026-11-21T08:43:35Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "20445121 of 4000000 spent; run rm-role-designer-1795250600 goes on with 400000 (advisory)"
+  },
+  {
+   "at": "2026-11-21T08:43:36Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1795250600, stage 3, budget 400000"
+  },
+  {
+   "at": "2026-11-21T08:43:36Z",
+   "stage": 3,
+   "what": "abort",
+   "why": "run rm-role-designer-1795250600 never launched; nothing charged"
+  },
+  {
+   "at": "2026-11-21T08:48:20Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "20445121 of 4000000 spent; run rm-role-designer-1795250887 goes on with 400000 (advisory)"
+  },
+  {
+   "at": "2026-11-21T08:48:21Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1795250887, stage 3, budget 400000"
+  },
+  {
+   "at": "2026-11-21T08:48:21Z",
+   "stage": 3,
+   "what": "abort",
+   "why": "run rm-role-designer-1795250887 never launched; nothing charged"
+  },
+  {
+   "at": "2026-11-21T08:51:05Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "20445121 of 4000000 spent; run rm-role-designer-1795251056 goes on with 400000 (advisory)"
+  },
+  {
+   "at": "2026-11-21T08:51:05Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1795251056, stage 3, budget 400000"
+  },
+  {
+   "at": "2026-11-21T08:51:05Z",
+   "stage": 3,
+   "what": "abort",
+   "why": "run rm-role-designer-1795251056 never launched; nothing charged"
+  },
+  {
+   "at": "2026-11-21T09:10:44Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "20445121 of 4000000 spent; run rm-role-designer-1795252237 goes on with 400000 (advisory)"
+  },
+  {
+   "at": "2026-11-21T09:10:44Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1795252237, stage 3, budget 400000"
+  },
+  {
+   "at": "2026-11-21T09:10:44Z",
+   "stage": 3,
+   "what": "abort",
+   "why": "run rm-role-designer-1795252237 never launched; nothing charged"
+  },
+  {
+   "at": "2026-11-21T09:12:50Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "20445121 of 4000000 spent; run rm-role-designer-1795252351 goes on with 400000 (advisory)"
+  },
+  {
+   "at": "2026-11-21T09:12:51Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1795252351, stage 3, budget 400000"
+  },
+  {
+   "at": "2026-11-21T09:12:51Z",
+   "stage": 3,
+   "what": "abort",
+   "why": "run rm-role-designer-1795252351 never launched; nothing charged"
+  },
+  {
+   "at": "2026-11-21T09:13:25Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "20445121 of 4000000 spent; run rm-role-designer-1795252390 goes on with 400000 (advisory)"
+  },
+  {
+   "at": "2026-11-21T09:13:25Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1795252390, stage 3, budget 400000"
+  },
+  {
+   "at": "2026-11-21T09:13:26Z",
+   "stage": 3,
+   "what": "abort",
+   "why": "run rm-role-designer-1795252390 never launched; nothing charged"
+  },
+  {
+   "at": "2026-11-21T09:13:46Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "20445121 of 4000000 spent; run rm-role-designer-1795252419 goes on with 400000 (advisory)"
+  },
+  {
+   "at": "2026-11-21T09:13:47Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1795252419, stage 3, budget 400000"
+  },
+  {
+   "at": "2026-11-21T09:13:47Z",
+   "stage": 3,
+   "what": "abort",
+   "why": "run rm-role-designer-1795252419 never launched; nothing charged"
+  },
+  {
+   "at": "2026-11-21T09:16:01Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "20445121 of 4000000 spent; run rm-role-designer-1795252553 goes on with 400000 (advisory)"
+  },
+  {
+   "at": "2026-11-21T09:16:01Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1795252553, stage 3, budget 400000"
+  },
+  {
+   "at": "2026-11-21T09:16:02Z",
+   "stage": 3,
+   "what": "abort",
+   "why": "run rm-role-designer-1795252553 never launched; nothing charged"
+  },
+  {
+   "at": "2026-11-21T09:18:45Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "20445121 of 4000000 spent; run rm-role-designer-1795252717 goes on with 400000 (advisory)"
+  },
+  {
+   "at": "2026-11-21T09:18:45Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1795252717, stage 3, budget 400000"
+  },
+  {
+   "at": "2026-11-21T09:18:46Z",
+   "stage": 3,
+   "what": "abort",
+   "why": "run rm-role-designer-1795252717 never launched; nothing charged"
+  },
+  {
+   "at": "2026-11-21T09:27:28Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "20445121 of 4000000 spent; run rm-role-designer-1795253237 goes on with 400000 (advisory)"
+  },
+  {
+   "at": "2026-11-21T09:27:28Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1795253237, stage 3, budget 400000"
+  },
+  {
+   "at": "2026-11-21T09:27:29Z",
+   "stage": 3,
+   "what": "abort",
+   "why": "run rm-role-designer-1795253237 never launched; nothing charged"
+  },
+  {
+   "at": "2026-11-21T09:38:38Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "20445121 of 4000000 spent; run rm-role-designer-1795253910 goes on with 400000 (advisory)"
+  },
+  {
+   "at": "2026-11-21T09:38:38Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1795253910, stage 3, budget 400000"
+  },
+  {
+   "at": "2026-11-21T09:38:39Z",
+   "stage": 3,
+   "what": "abort",
+   "why": "run rm-role-designer-1795253910 never launched; nothing charged"
+  },
+  {
+   "at": "2026-11-21T09:41:20Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "20445121 of 4000000 spent; run rm-role-designer-1795254070 goes on with 400000 (advisory)"
+  },
+  {
+   "at": "2026-11-21T09:41:21Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1795254070, stage 3, budget 400000"
+  },
+  {
+   "at": "2026-11-21T09:41:21Z",
+   "stage": 3,
+   "what": "abort",
+   "why": "run rm-role-designer-1795254070 never launched; nothing charged"
+  },
+  {
+   "at": "2026-11-21T09:58:27Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "20445121 of 4000000 spent; run rm-role-designer-1795255099 goes on with 400000 (advisory)"
+  },
+  {
+   "at": "2026-11-21T09:58:27Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1795255099, stage 3, budget 400000"
+  },
+  {
+   "at": "2026-11-21T10:01:07Z",
+   "stage": 4,
+   "what": "close",
+   "why": "run rm-role-designer-1795255099: stage 3 done"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
- "loop_since": "2026-11-15T06:01:06Z",
+ "loop_since": "2026-11-21T08:02:46Z",
  "mod": "RimMandrake/Pyrelands",
  "must_cite": [
   "1794774895716093173",
@@ -1903,9 +2420,15 @@
    "quick_look": true,
    "summary": "park_summary.md",
    "why": "the judge-and-rework loop has spent 11220115 tokens since 2026-11-15T06:01:06Z, past its ceiling of 8000000 (2x the cap)"
+  },
+  {
+   "at": "2026-11-17T20:35:08Z",
+   "by": "lift_park: OWNER:1795222813980581690 after the crossing",
+   "kind": "ceiling",
+   "lifted_at": "2026-11-21T08:02:46Z",
+   "why": "the judge-and-rework loop has spent 8496108 tokens since 2026-11-15T06:01:06Z, past its ceiling of 8000000 (2x the cap)"
   }
  ],
- "pending_decision": "root hash restamp DONE at 47e044e556 (root_hash 1a7028c5 -> 6ad3da0a, 24 leaves equal, lint PASS): stage 3 has nothing left to do. Owed, not stage 3's: (a) the coverage signature, voided by the restamp: the Conductor window certifies past judge rm-coverage-judge-1794947629 (covered, 0 gaps) with its own --per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS note on BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS, then concept_tree.py certify --owner-event OWNER:<tsn>; a judge look is refused while the loop is past its ceiling. (b) exam.json is frozen against the pre-restamp tree 2151214485d8 (EXAM_FROZEN: a repin never re-pins it) and has no read map (exam_reads.json), so stage 4 retakes the exam whole on the next designer visit.",
  "recovery": [],
  "results": [
   {
@@ -2437,12 +2960,47 @@
    "stage": 5,
    "summary": "Coverage is covered and the showcase set is accepted, but the gate refuses one thing: a stale root hash after the 2026-11-16 re-validation. Not rewritten here (the lock packet forbids changing frozen artifacts). Filed and fixed the pipeline hole that let exam and judge pass an ungateable tree: lint now checks the root hash (RIMMANDRAKE_LINT_STALE_ROOT_HASH_BEFORE_THE_JUDGE_SIGNS). The same check finds FlowWorks, Graffiti and PyrelandsMechanics stale too.",
    "to": 3
+  },
+  {
+   "at": "2026-11-21T10:01:06Z",
+   "inputs": {
+    "exam": "4de0b1a14538602f7719b948f67e1c2d15b461d23592c9cc45d55a35051d2e15",
+    "floor": "bd9d7fd896359814f8ad5c820b6b23ee1d61a06a6d4a33cbe92595cc4771b32d",
+    "owner": "79abe4290fa077e9fd73b85d4c6d6e47ee49c99ed1608b827f1afbe5f8895520",
+    "root": "ae26d34f7fa9f55c5bb0ea115379238907576a0151185aabfad9d1f495425fab",
+    "scenes": "b08126e2f6529eba85ebc5a0ad8aa8cad5da44f3c4744986affd96371a3eb245",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54"
+   },
+   "manifest": {
+    "designer.md": "311493e8980d351a9204dac50b507be22a3dcba6191c6c39f4c7609c01105747",
+    "designer_scene_contract.md": "4c85571580f2ae54de94219ec74edf463f8ae8749abcdaa0314be65e387fc29f",
+    "designer_write.md": "60d594e1c393ded4d79979774a68490c90fca810dac391e54cd50240dcef6d3e"
+   },
+   "outcome": "done",
+   "owner_uncited": [
+    "1793766816609436834",
+    "1794611171307640419",
+    "1794790810777772480",
+    "1794790871101885625"
+   ],
+   "pinned_at": {
+    "exam": "436f439b2af6927aed5e71c3c5fdc1a29dbdf935",
+    "floor": "436f439b2af6927aed5e71c3c5fdc1a29dbdf935",
+    "root": "436f439b2af6927aed5e71c3c5fdc1a29dbdf935",
+    "scenes": "436f439b2af6927aed5e71c3c5fdc1a29dbdf935",
+    "sheet": "436f439b2af6927aed5e71c3c5fdc1a29dbdf935",
+    "tree": "436f439b2af6927aed5e71c3c5fdc1a29dbdf935"
+   },
+   "run": "rm-role-designer-1795255099",
+   "stage": 3,
+   "summary": "Stage 3 has nothing left to write: the root_hash restamp landed at 47e044e556 (tree root_hash 6ad3da0a6e44 = the walk's validated hash), concept_tree.py lint (Gate A) PASS, and designer_stage.py showcases accepts the set (burn_line 6 new, fire_cast 3, sky_and_shelter 3, fire_solace 3 at overlap 0.25). No leaf, sheet, scene or floor line changed in this run. Owed next, not stage 3's: stage 4 retakes the exam whole (exam.json is frozen against the pre-restamp tree and has no exam_reads.json), then the coverage signature voided by the restamp is the Conductor window's certification of judge rm-coverage-judge-1794947629 (covered, 0 gaps; one-entry delta: root_hash only)."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 3,
+ "stage": 4,
  "status": "ready",
  "waiting_owner_feed": "79abe4290fa077e9fd73b85d4c6d6e47ee49c99ed1608b827f1afbe5f8895520"
 }
