@@ -173,6 +173,32 @@ def main() -> int:
         r = land(s3, "-m", "from a topic-only clone", "t.txt", env={"LAND_SYNC": "0"})
         check(r.returncode == 0 and git(o2, "rev-parse", "main^") == tip2,
               f"-m mode: a clone with no origin/main lands on the fetched tip (rc {r.returncode}: {r.stderr.strip()[-120:]})")
+        # RIMMANDRAKE_TRACE_DESIGNER_ROLE_CLONE_VANISHED_OPERATIONS_FAILS: origin changed the commit's file after it was
+        # made; land.sh replayed it (PUBLISHED), but seat_sync could not prove the twin (its bytes differ from the
+        # commit's), so the clone stayed "ahead 1" and role_clones.level refused every Operations launch STRANDED
+        o5, s5, p5 = f"{td}/o5.git", f"{td}/s5", f"{td}/p5"
+        git(td, "init", "-q", "--bare", "-b", "main", o5)
+        git(td, "clone", "-q", o5, s5)
+        # the commit also appends to a merge=union ledger shard, as a role run's fix commit does: the shard's context
+        # differs between clone and origin, so `git cherry` reads it '+' and only landed_twin could prove it landed
+        Path(s5, ".gitattributes").write_text("*.jsonl merge=union\n")
+        Path(s5, "m.py").write_text("".join(f"line {i}\n" for i in range(30)))
+        Path(s5, "S.jsonl").write_text('{"e": 0}\n')
+        git(s5, "add", "--", ".gitattributes", "m.py", "S.jsonl"); git(s5, "commit", "-q", "-m", "init")
+        git(s5, "push", "-q", "origin", "HEAD:main")
+        git(td, "clone", "-q", o5, p5)
+        Path(s5, "m.py").write_text(Path(s5, "m.py").read_text().replace("line 25\n", "line 25 MINE\n"))
+        Path(s5, "S.jsonl").write_text(Path(s5, "S.jsonl").read_text() + '{"e": "mine"}\n')
+        git(s5, "commit", "-q", "-m", "mine", "--", "m.py", "S.jsonl")
+        Path(p5, "m.py").write_text(Path(p5, "m.py").read_text().replace("line 2\n", "line 2 THEIRS\n"))
+        Path(p5, "S.jsonl").write_text(Path(p5, "S.jsonl").read_text() + '{"e": "theirs"}\n')
+        git(p5, "commit", "-q", "-m", "theirs", "--", "m.py", "S.jsonl"); git(p5, "push", "-q", "origin", "HEAD:main")
+        r = land(s5, git(s5, "rev-parse", "HEAD"), "m.py", "S.jsonl")
+        new5 = r.stdout.strip().split()[-1] if r.stdout.strip() else ""
+        check(r.returncode == 0 and git(o5, "rev-parse", "main") == new5, "sha mode onto an origin that changed the same file lands")
+        check(git(s5, "rev-parse", "HEAD") == new5 and "SYNCED" in r.stderr,
+              f"... and the clone realigns: land.sh tells seat_sync the commit it just landed "
+              f"(HEAD {git(s5, 'rev-parse', '--short', 'HEAD')}, stderr {r.stderr.strip()[-160:]!r})")
     print(f"{'ALL PASS' if not FAILS else f'{len(FAILS)} FAIL'}")
     return 1 if FAILS else 0
 

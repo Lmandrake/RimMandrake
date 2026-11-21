@@ -126,6 +126,130 @@ def t_a_stranded_code_commit_refuses_with_the_exact_fix():
           "%s untouched=%s fix rc=%s" % (got.get("state"), untouched, ran and ran.returncode))
 
 
+def t_a_stranded_code_commit_fix_holds_when_origin_moved_the_same_files():
+    """RIMMANDRAKE_TRACE_DESIGNER_ROLE_CLONE_VANISHED_OPERATIONS_FAILS (2026-11-21): the Operations run's fix commit
+    (fedb182ffd: maturation_autonomy.py + its BENCH shard) was stranded; origin then changed both files. The printed
+    fix landed it (80f584b4cc) but its seat_sync refused, "NOT on origin/main": landed_twin cannot prove a twin whose
+    file origin changed since, so every Operations launch stayed refused STRANDED."""
+    RC, RL = mods()
+    level = getattr(RC, "level", None)
+    clone, peer, origin = fixture()
+    with open(os.path.join(peer, "long.txt"), "w") as f:
+        f.write("".join("line %d\n" % i for i in range(30)))
+    git(peer, "add", "--", "long.txt")
+    git(peer, "commit", "-q", "-m", "long file", "--", "long.txt")
+    git(peer, "push", "-q", "origin", "main")
+    git(clone, "pull", "-q", "--ff-only", "origin", "main")
+    with open(os.path.join(clone, "long.txt"), "w") as f:
+        f.write("".join("line %d%s\n" % (i, " MINE" if i == 25 else "") for i in range(30)))
+    with open(os.path.join(clone, SHARD), "a") as f:
+        f.write('{"n":"mine"}\n')
+    git(clone, "commit", "-q", "-m", "code fix and its ledger line", "--", "long.txt", SHARD)
+    code = git(clone, "rev-parse", "HEAD")
+    git(peer, "pull", "-q", "--ff-only", "origin", "main")
+    with open(os.path.join(peer, "long.txt"), "w") as f:
+        f.write("".join("line %d%s\n" % (i, " THEIRS" if i == 2 else "") for i in range(30)))
+    with open(os.path.join(peer, SHARD), "a") as f:
+        f.write('{"n":"peer"}\n')
+    git(peer, "commit", "-q", "-m", "origin moves the same files", "--", "long.txt", SHARD)
+    git(peer, "push", "-q", "origin", "main")
+    got = level(clone) if level else {}
+    fix = got.get("fix") or ""
+    ran = subprocess.run(["sh", "-c", fix], capture_output=True, text=True) if fix else None
+    body = origin_file(origin, "long.txt")
+    check(got.get("state") == "stranded" and code[:10] in fix and ran is not None and ran.returncode == 0
+          and "MINE" in body and "THEIRS" in body and level_after(clone),
+          "a-stranded-code-commit-refuses-with-the-exact-fix",
+          "origin moved the same files: %s fix rc=%s %s" % (got.get("state"), ran and ran.returncode,
+                                                             ((ran.stderr if ran else "") or "").strip()[-200:]))
+
+
+def _role(RC, name="Designer"):
+    return {"name": name, "seat": "BENCH", "clone": RC.clone_of(name), "model": "opus", "run_max_s": 1000}
+
+
+def t_a_missing_clone_is_made_in_its_own_unit_and_the_launch_waits():
+    """RIMMANDRAKE_TRACE_DESIGNER_ROLE_CLONE_VANISHED_OPERATIONS_FAILS: the clones of the six disabled roles were removed
+    by hand 2026-11-18; the Pyrelands chain ran the Designer by run-now, refused "role clone ... is missing" every beat
+    08:02Z-09:41Z 2026-11-21. A clone takes 26-153 s (measured 2026-11-18), past any beat: its own unit makes it."""
+    RC, RL = mods()
+    r = _role(RC)
+    calls = []
+
+    def started(argv, **kw):
+        calls.append(argv)
+        return subprocess.CompletedProcess(argv, 0, "", "")
+
+    def already(argv, **kw):
+        calls.append(argv)
+        return subprocess.CompletedProcess(argv, 1, "", "Failed to start transient service unit: Unit %s.service was "
+                                           "already loaded or has a fragment file." % RC.maker_unit("Designer"))
+
+    def nobus(argv, **kw):
+        return subprocess.CompletedProcess(argv, 1, "", "Failed to connect to bus")
+    ok, out, _ = RL.launch(r, "u1", "m", TMP, "/bin/claude", runner=started)
+    maker = calls[0] if len(calls) == 1 else []
+    first = (not ok and out.startswith(RC.MAKING) and maker[:1] == ["systemd-run"] and RC.maker_unit("Designer") in maker
+             and maker[-2:] == ["ensure", "Designer"])
+    calls.clear()
+    ok2, out2, _ = RL.launch(r, "u2", "m", TMP, "/bin/claude", runner=already)
+    with open(RC.maker_log("Designer"), "w") as f:
+        f.write("OK earlier\nFAILED scratch_clone failed (exit 1): disk full\n")
+    calls.clear()
+    ok3, out3, _ = RL.launch(r, "u3", "m", TMP, "/bin/claude", runner=started)
+    os.remove(RC.maker_log("Designer"))
+    ok4, out4, _ = RL.launch(r, "u4", "m", TMP, "/bin/claude", runner=nobus)
+    os.makedirs(RC.clone_of("Designer"))
+    calls.clear()
+    ok5, out5, _ = RL.launch(r, "u5", "m", TMP, "/bin/claude", runner=started)
+    no_unit5 = not calls
+    os.rmdir(RC.clone_of("Designer"))
+    check(first and not ok2 and out2.startswith(RC.MAKING) and not ok3 and not out3.startswith(RC.MAKING)
+          and "disk full" in out3 and len(calls) == 0 and not ok4 and "bus" in out4 and not out4.startswith(RC.MAKING)
+          and not ok5 and no_unit5 and "not a git clone" in out5,
+          "a-missing-clone-is-made-in-its-own-unit-and-the-launch-waits",
+          "made: %s | running: %s | last FAILED: %s | no bus: %s | not a clone: %s" % (
+              out[:60], out2[:40], out3[:60], out4[:60], out5[:60]))
+
+
+def t_a_clone_is_made_under_a_hidden_name_and_renamed():
+    RC, RL = mods()
+    import shutil
+    seen = []
+
+    def fake_scratch(argv, env=None, **kw):
+        dest = os.path.join(env["RM_SCRATCH_ROOT"], env["RM_SEAT"], argv[argv.index("--name") + 1])
+        seen.append((dest, os.path.exists(RC.clone_of("Artist"))))
+        os.makedirs(os.path.join(dest, ".git"))
+        return subprocess.CompletedProcess(argv, 0, dest + "\n", "")
+
+    def half(argv, env=None, **kw):
+        os.makedirs(os.path.join(env["RM_SCRATCH_ROOT"], env["RM_SEAT"], argv[argv.index("--name") + 1], ".git"))
+        return subprocess.CompletedProcess(argv, 1, "", "fetch failed")
+    ok, said = RC.ensure("Artist", runner=fake_scratch)
+    made = (ok and os.path.isdir(os.path.join(RC.clone_of("Artist"), ".git")) and len(seen) == 1
+            and not RC.is_role_clone(seen[0][0]) and not seen[0][1] and not os.path.exists(seen[0][0]))
+    shutil.rmtree(RC.clone_of("Artist"))
+    os.makedirs(os.path.join(RC.part_of("Artist"), ".git"))      # a make killed half-way
+    ok2, said2 = RC.ensure("Artist", runner=half)
+    check(made and not ok2 and not os.path.exists(RC.clone_of("Artist")) and not os.path.exists(RC.part_of("Artist")),
+          "a-clone-is-made-under-a-hidden-name-and-renamed", "%s | %s | %s" % (seen, said, said2))
+
+
+def t_the_launch_takes_the_prep_done_before_its_run_record():
+    RC, RL = mods()
+    r = _role(RC, "Producer")
+    os.makedirs(os.path.join(RC.clone_of("Producer"), ".git"), exist_ok=True)
+    lv = []
+    ok_runner = lambda argv, **kw: subprocess.CompletedProcess(argv, 0, "", "")   # noqa: E731
+    RL.launch(dict(r, _prepared={"refused": None, "lv": None}), "u6", "m", TMP, "/bin/claude", runner=ok_runner,
+              level=lambda c: lv.append(c) or {"state": "level"})
+    p = RL.prepare_clone(r, runner=ok_runner, level=lambda c: {"state": "stranded", "why": "1 commit", "fix": "F"})
+    ok, out, _ = RL.launch(dict(r, _prepared=p), "u7", "m", TMP, "/bin/claude", runner=ok_runner)
+    check(not lv and p["refused"].startswith(RC.STRANDED) and not ok and out == p["refused"],
+          "the-launch-takes-the-prep-done-before-its-run-record", "levelled again: %s; prep %s" % (lv, p))
+
+
 def t_a_mixed_strand_lands_the_ledger_and_refuses_the_rest():
     RC, RL = mods()
     level = getattr(RC, "level", None)
@@ -214,11 +338,15 @@ def main():
     t_a_level_clone_launches_without_a_fetch()
     t_a_stranded_ledger_commit_is_landed_and_the_clone_levelled()
     t_a_stranded_code_commit_refuses_with_the_exact_fix()
+    t_a_stranded_code_commit_fix_holds_when_origin_moved_the_same_files()
     t_a_mixed_strand_lands_the_ledger_and_refuses_the_rest()
     t_could_not_look_is_unmeasured_not_level()
     t_the_launch_refuses_a_stranded_clone_before_systemd_run()
     t_the_stop_post_land_lands_a_committed_shard()
     t_a_stranded_launch_raises_one_not_running_alarm()
+    t_a_missing_clone_is_made_in_its_own_unit_and_the_launch_waits()
+    t_a_clone_is_made_under_a_hidden_name_and_renamed()
+    t_the_launch_takes_the_prep_done_before_its_run_record()
     print("%d check(s) failed" % len(FAILS) if FAILS else "all checks passed")
     return 1 if FAILS else 0
 

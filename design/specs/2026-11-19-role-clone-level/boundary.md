@@ -1,7 +1,11 @@
 # BOUNDARY: levelling a role clone that holds a stranded commit, Design Version 0.1.0
 
-Code: `src/RimMandrake/rimflow/role_clones.py` (`level`, and `land` at the unit's ExecStopPost), `seat_sync.unlanded`
-(`src/RimMandrake/Utils/seat_sync.py`), the gate in `role_launch.launch`, and `dispatcher.launch_failed_action`.
+Code: `src/RimMandrake/rimflow/role_clones.py` (`level`, `land` at the unit's ExecStopPost, `ensure` and
+`make_in_background`), `seat_sync.unlanded` (`src/RimMandrake/Utils/seat_sync.py`), `src/RimMandrake/Utils/land.sh`'s
+levelling call, `role_launch.prepare_clone` and the gate in `role_launch.launch`, and `dispatcher.launch_failed_action`.
+Widened 2026-11-21 by `RIMMANDRAKE_TRACE_DESIGNER_ROLE_CLONE_VANISHED_OPERATIONS_FAILS`: six role clones were removed by
+hand on 2026-11-18 and the Designer, still run by run-now, was refused every beat; a stranded fix commit's printed fix
+landed it but could not level the clone, so Operations stayed refused.
 Item: `RIMMANDRAKE_LAND_STRANDED_ROLE_COMMIT_OPERATIONS_DEAD_FOUR_HOURS`, written 2026-11-19. An Operations run
 (07:40 PST) ran a bare `git commit` of its ledger shard and ended; ExecStopPost's `land` read the shard as clean (it
 looked only at working-tree dirt) and published nothing; the unit's first step, `./sync`, then refused every later
@@ -32,7 +36,7 @@ PST. Each promise has a test of its name in `src/RimMandrake/rimflow/selftest_ro
   and the clone's HEAD is origin/main. State `landed`, the published sha named.
 - **a-stranded-code-commit-refuses-with-the-exact-fix.** A stranded commit that is not ledger-only is not landed and
   nothing is pushed; the state is `stranded` and `fix` is one shell line that, run as printed, lands it and levels the
-  clone.
+  clone, also when origin changed the commit's files (its shard included) after it was made.
 - **a-mixed-strand-lands-the-ledger-and-refuses-the-rest.** With both kinds stranded, the ledger-only commits are
   landed and only the others are named in `fix`.
 - **could-not-look-is-unmeasured-not-level.** When a commit is ahead and the fetch (or any git read) fails, the state is
@@ -45,5 +49,19 @@ PST. Each promise has a test of its name in `src/RimMandrake/rimflow/selftest_ro
 - **a-stranded-launch-raises-one-not-running-alarm.** A launch refused `STRANDED:` becomes one alarm of the fixed kind
   `role:<name>:not_running` (rate-limited per kind like every alarm), told to the Conductor with a RAISE FIRST line;
   any other launch failure keeps `role:<name>:launch_failed`.
+
+- **a-missing-clone-is-made-in-its-own-unit-and-the-launch-waits.** A launch whose role clone is missing starts the
+  transient unit `rm-role-clone-<name>` (`role_clones.py ensure <name>`, output appended to `ROOT/.<name>.making.log`)
+  and returns not ok with text starting `MAKING:`, which the dispatcher holds like a control OFF (no alarm, the slot
+  stays due); a maker already running is the same hold. It is a launch failure, its cause named, when the maker
+  cannot start, when the log's last line says the previous make FAILED (a new make is started all the same), or when
+  the path stands but holds no clone (then nothing is started).
+- **a-clone-is-made-under-a-hidden-name-and-renamed.** `ensure` builds the clone at `ROOT/.making-<name>` (never a
+  role clone by name) and renames it into place, so no launch sees a half-made clone; a failed make leaves neither
+  the clone nor the part, and a part left by a killed make is removed first.
+- **the-launch-takes-the-prep-done-before-its-run-record.** `role_launch.prepare_clone` gives the clone's readiness
+  (`refused` text or none, and `level`'s result); `launch` handed it as `_prepared` uses it and does not make or level
+  again. The dispatcher runs it before it records the run, so a beat cut there tracks no run and gives the slot back
+  (`selftest_dispatcher_beat.py`, `test_cut_in_clone_prep_tracks_no_run`).
 
 Later lists beside this page: `polish.md` and `next_version.md` (none yet).

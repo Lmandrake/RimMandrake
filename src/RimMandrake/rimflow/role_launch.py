@@ -3672,6 +3672,25 @@ def tmp_setenv(tmpdir):
     return sum((["--setenv", "%s=%s" % kv] for kv in run_tmp.env(tmpdir).items()), []) if tmpdir else []
 
 
+def prepare_clone(role, runner=subprocess.run, level=None):
+    """A role clone's readiness, before any run record exists -> {"refused": text or None, "lv": level's result}.
+    Never raises on a missing clone: its maker unit is started (role_clones.make_in_background) and the refusal starts
+    MAKING: (a planned hold). A stranded clone is refused STRANDED: with its fix line. The dispatcher runs this before
+    it records the run, so a beat cut here (a fetch in level: 09:07Z and 09:35Z on 2026-11-21) gives the slot back
+    instead of tracking a run that never started (RIMMANDRAKE_TRACE_DESIGNER_ROLE_CLONE_VANISHED_OPERATIONS_FAILS)."""
+    if not role_clones.is_role_clone(role.get("clone")):
+        return {"refused": None, "lv": None}
+    kind, said = role_clones.make_in_background(os.path.basename(os.path.normpath(role["clone"])), runner=runner)
+    if kind != "ready":
+        return {"refused": said, "lv": None}
+    level = level or (role_clones.level if runner is subprocess.run else None)
+    lv = level(role["clone"]) if level else None
+    if lv and lv.get("state") == "stranded":
+        return {"refused": "%s role %s is NOT RUNNING: its clone %s holds %s. To pass, run: %s" % (
+            role_clones.STRANDED, role.get("name"), role["clone"], lv.get("why"), lv.get("fix")), "lv": lv}
+    return {"refused": None, "lv": lv}
+
+
 def launch(role, unit, msg, root, claude, runner=subprocess.run, level=None):
     """-> (ok, out, run-record fields). Starts the transient unit and returns at once. ok False only when
     systemd-run itself said no; a raise (a timeout) leaves the caller's run record in place, since the unit may be up.
@@ -3680,16 +3699,10 @@ def launch(role, unit, msg, root, claude, runner=subprocess.run, level=None):
     stranded ledger-only commit is landed and the launch goes on; any other is refused `STRANDED:` with its fix line,
     before a unit or a run record exists (RIMMANDRAKE_LAND_STRANDED_ROLE_COMMIT_OPERATIONS_DEAD_FOUR_HOURS)."""
     out, err = run_paths(root, unit)
-    lv = None
-    if role_clones.is_role_clone(role.get("clone")):
-        gone = role_clones.missing_why(role["clone"])
-        if gone:
-            return False, gone, {}
-        level = level or (role_clones.level if runner is subprocess.run else None)
-        lv = level(role["clone"]) if level else None
-        if lv and lv.get("state") == "stranded":
-            return False, "%s role %s is NOT RUNNING: its clone %s holds %s. To pass, run: %s" % (
-                role_clones.STRANDED, role.get("name"), role["clone"], lv.get("why"), lv.get("fix")), {}
+    prep = role.get("_prepared") or prepare_clone(role, runner=runner, level=level)
+    if prep.get("refused"):
+        return False, prep["refused"], {}
+    lv = prep.get("lv")
     if role.get("runner", "claude") == "codex":
         sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "Utils"))
         import agent_runner

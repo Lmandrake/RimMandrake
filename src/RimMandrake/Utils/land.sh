@@ -98,6 +98,10 @@ while :; do
 done
 git update-ref "refs/remotes/$REM/$BR" "$N" 2>/dev/null || true
 if [ "${LAND_SYNC:-1}" != 0 ] && [ "$REM" = origin ] && [ "$BR" = main ] && [ -f "$HERE/seat_sync.py" ]; then
-  python3 "$HERE/seat_sync.py" --no-fetch --repo "$REPO" >&2 || echo "land.sh: clone left as is (see above); ./sync once it is safe" >&2
+  # sha mode: $C is the commit this run just published as $N, a proof seat_sync's landed_twin cannot always rebuild (a
+  # union shard plus a file origin changed since: RIMMANDRAKE_TRACE_DESIGNER_ROLE_CLONE_VANISHED_OPERATIONS_FAILS)
+  SUP=; [ "$MODE" = sha ] && SUP="--superseded $C"
+  # shellcheck disable=SC2086
+  python3 "$HERE/seat_sync.py" --no-fetch --repo "$REPO" $SUP >&2 || echo "land.sh: clone left as is (see above); ./sync once it is safe" >&2
 fi
 echo "PUBLISHED $N"

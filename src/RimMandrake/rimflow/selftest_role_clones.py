@@ -64,11 +64,7 @@ def main():
     check("role_clones.py" not in " ".join(plain) and "./sync" not in " ".join(plain),
           "a clone that is not a role clone (Relentless, a fixture) gets neither step")
 
-    # a missing role clone is refused before systemd-run, naming the command that makes it
-    called = []
-    ok, out, rec = RL.launch(dict(role, clone=RC.clone_of("SelftestNoSuchRole")), "u3", "m", "/tmp",
-                             "/bin/claude", runner=lambda *a, **k: called.append(a))
-    check(not ok and not called and "role_clones.py ensure" in out, "a missing role clone is refused, not launched")
+    # a missing role clone: selftest_role_clone_level.py (made in its own unit, the launch waits)
 
     # wrap-up: a role clone lives on, like the seat clone
     row = wrapup.check_clone(None, rc, False)

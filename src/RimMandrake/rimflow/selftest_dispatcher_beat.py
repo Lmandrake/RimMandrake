@@ -31,6 +31,7 @@ sys.path.insert(0, HERE)
 sys.path.insert(0, os.path.dirname(HERE))
 import dispatcher as D  # noqa: E402
 import schedule_fixture as SF  # noqa: E402
+import role_clones as RC  # noqa: E402
 
 FAILS = []
 
@@ -584,8 +585,103 @@ def test_cut_harvest_acts_are_carried():
           "a carried alarm is delivered, never swallowed by its own interrupted stamp: %s" % acts[0].get("result"))
 
 
+def _ops_launch_decide(name):
+    def decide(sch, st, o, now, apply, out=None):
+        sch["roles"] = [{"name": name, "enabled": True, "seat": "BENCH", "model": "opus"}]
+        st.setdefault("roles", {})[name] = {"pending_launch": {"unit": "u-" + name, "mode": "slot", "had_done": False,
+                                                               "key": "d1", "event_cursor": None, "events_seen": None},
+                                            "runs": [], "done": {"d1": 5}}
+        out.append({"do": "role_launch", "role": name, "unit": "u-" + name, "budget": 1, "slot": "s", "band": "b",
+                    "mode": "slot", "message": "m", "why": "w", "ticket": None})
+        return out
+    return decide
+
+
+def test_cut_in_clone_prep_tracks_no_run():
+    """RIMMANDRAKE_TRACE_DESIGNER_ROLE_CLONE_VANISHED_OPERATIONS_FAILS: at 09:07:39Z and 09:35:37Z on 2026-11-21 the beat
+    cut execute inside role_launch.launch > role_clones.level (a git fetch, ~4 s) AFTER the run was recorded: each
+    launch that never started stayed tracked "in case it started", then read failed "no result file", counted at its
+    budget, alarmed role:Operations:launch_failed and role:Operations:failed. The clone prep now runs before the run
+    record, so a cut there gives the slot back and tracks nothing."""
+    saved = D.claude_exe
+    D.claude_exe = lambda: "claude"
+    try:
+        slow = lambda *a, **k: time.sleep(6) or {"refused": None, "lv": None}   # noqa: E731
+        out, took, end, root = _cut_tick("prep", _ops_launch_decide("Operations"), fx_extra={
+            "role_prepare": slow, "off": lambda p: None, "paused": lambda: None,
+            "role_launch": lambda role, unit, msg, root, exe: time.sleep(6) or (True, "unit", {})})
+    finally:
+        D.claude_exe = saved
+    st = D.load_state(root)
+    rs = (st.get("roles") or {}).get("Operations") or {}
+    j = journal(root)
+    check(any(x.get("do") == "step_cut" and x.get("step") == "execute" for x in j), "prep: the beat cut execute")
+    check(not rs.get("runs") and "pending_launch" not in rs,
+          "prep: a cut in the clone prep tracks no run and gives the slot back: runs %s, pending %s"
+          % (rs.get("runs"), rs.get("pending_launch")))
+    check(not any(str(x.get("kind") or "").endswith(":launch_failed") for x in j + (st.get("acts_carry") or [])),
+          "prep: no launch_failed alarm for a launch that never started")
+
+
+def test_making_clone_is_a_planned_hold():
+    """A missing role clone being made (role_clones.MAKING) holds the launch like a control OFF: no alarm, slot due."""
+    sch, root = sched(), os.path.join(TMP, "making")
+    os.makedirs(root, exist_ok=True)
+    sch["roles"] = [{"name": "Designer", "enabled": True, "seat": "BENCH", "model": "opus"}]
+    st = {"seats": {}, "alarms": {}, "roles": {"Designer": {
+        "pending_launch": {"unit": "u1", "mode": "slot", "had_done": False, "key": "d1", "event_cursor": None,
+                           "events_seen": None}, "done": {"d1": 5}}}}
+    launched = []
+
+    def fake_launch(role, unit, msg, root, exe):
+        refused = (role.get("_prepared") or {}).get("refused")
+        if refused:
+            return False, refused, {}
+        launched.append(unit)
+        return True, "unit u1", {}
+    fx = {"lock": Lock, "note": lambda i, t: (True, "ok"), "publish": lambda n: "pushed", "off": lambda p: None,
+          "paused": lambda: None, "role_launch": fake_launch,
+          "role_prepare": lambda role: {"refused": RC.MAKING + " role clone /x is missing: unit u is making it",
+                                        "lv": None}}
+    a = {"do": "role_launch", "role": "Designer", "unit": "u1", "budget": 1, "slot": "s", "band": "b", "mode": "slot",
+         "message": "m", "why": "w", "ticket": None}
+    acts = [a]
+    saved = D.claude_exe
+    D.claude_exe = lambda: "claude"
+    try:
+        D.execute(acts, sch, st, root, True, 100.0, fx, deadline=time.time() + 30)
+    finally:
+        D.claude_exe = saved
+    rs = st["roles"]["Designer"]
+    check(not launched and not rs.get("runs") and "pending_launch" not in rs and str(a.get("result")).startswith(
+        "held at launch: " + RC.MAKING), "making: the launch is held, nothing tracked, the slot is due again (%s)"
+          % a.get("result"))
+    check(not any(str(x.get("kind") or "").endswith(":launch_failed") for x in acts),
+          "making: no launch_failed alarm while the clone is being made: %s" % [x.get("kind") for x in acts])
+
+
+def test_cut_gives_back_unsent_stops():
+    """08:53:43Z and 08:56:34Z on 2026-11-21: supervise decided stops #1 and #2 of rm-role-operations-1795249405 in the
+    observe step, the beat cut that step both times, so neither stop was sent; stop_tries still read 2 and the next
+    ticks alarmed role:Operations:stop_failed "still active after 1 stop(s)" (none sent). A cut gives an unsent stop's
+    count back, as it gives back an unexecuted launch."""
+    def stop_then_slow(sch, st, o, now, apply, out=None):
+        run = {"unit": "u-ops", "state": "running", "stop_tries": 1}
+        st.setdefault("roles", {})["Operations"] = {"runs": [run]}
+        out.append({"do": "role_stop", "role": "Operations", "unit": "u-ops", "why": "stop #1"})
+        time.sleep(6)
+        return out
+    out, took, end, root = _cut_tick("stops", stop_then_slow)
+    run = D.load_state(root)["roles"]["Operations"]["runs"][0]
+    check(not run.get("stop_tries"), "stops: a stop the cut tick never sent is not counted (stop_tries %s)"
+          % run.get("stop_tries"))
+    check(any("role_stop u-ops" in str(x.get("why")) for x in journal(root) if x.get("do") == "step_cut"),
+          "stops: the step_cut line names the stop it gave back")
+
+
 def main():
-    for t in (test_beat_deadline_defers, test_deferred_launch_is_given_back, test_deferred_ring_is_given_back, test_fence_stops_the_tick,
+    for t in (test_cut_in_clone_prep_tracks_no_run, test_making_clone_is_a_planned_hold, test_cut_gives_back_unsent_stops,
+              test_beat_deadline_defers, test_deferred_launch_is_given_back, test_deferred_ring_is_given_back, test_fence_stops_the_tick,
               test_tick_fenced_and_beat_end, test_apply_without_generation_refuses_when_owned, test_step_limit, test_cut_publish_child_dies,
               test_slow_observe_is_cut, test_cut_names_where_it_was, test_slow_execute_is_cut, test_slow_helper_budget_is_cut,
               test_killed_publish_leaves_the_helper_budget_its_slot, test_note_that_cannot_fit_is_not_started,

@@ -1955,9 +1955,17 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                             # the slot/event stays due: decide gave it up for a launch that did not happen (U, N6)
                             RL.unlaunch(st.setdefault("roles", {}).setdefault(a["role"], {}), a["unit"])
                         else:
+                            # the role clone's prep (made if missing, levelled) runs BEFORE the run record: a beat cut
+                            # in it (a fetch in role_clones.level: 2026-11-21 09:07Z, 09:35Z) is a launch that never
+                            # started, given back by unreserve, never a tracked run read "no result file" later
+                            # (RIMMANDRAKE_TRACE_DESIGNER_ROLE_CLONE_VANISHED_OPERATIONS_FAILS). A selftest's fake
+                            # role_launch gets no real prep unless it passes its own role_prepare.
+                            if "role_prepare" in fx or "role_launch" not in fx:
+                                role = dict(role, _prepared=fx.get("role_prepare", RL.prepare_clone)(role))
+                            refused_early = bool((role.get("_prepared") or {}).get("refused"))
                             # the run is recorded BEFORE systemd-run: a raise after the unit started (a timeout, a
                             # failed MainPID query) must not leave a launched role untracked (review round Q 4)
-                            if a.get("concept"):
+                            if a.get("concept") and not refused_early:
                                 # the stage machine opens the run now (decide only previewed it): the packet hashes
                                 # and the budget reservation are written before the run exists, so a refusal here is
                                 # a launch that never happened (the except below gives the slot back)
@@ -1995,7 +2003,9 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                                 # a deliberate control OFF (pipe off|stop, a pause) refused it: a planned hold like
                                 # the off switch above, never a failure or an alarm
                                 # (RIMMANDRAKE_SEPARATE_CONTROL_OFF_FROM_LAUNCH_FAILED_180_ALARMS)
-                                planned = not ok and str(out).startswith("REFUSED by control:")
+                                # a missing role clone being made (role_clones.MAKING) is the same planned hold
+                                planned = not ok and (str(out).startswith("REFUSED by control:")
+                                                      or str(out).startswith(role_clones.MAKING))
                                 res = ("launched: " if ok else "held at launch: " if planned else "failed: ") + out
                                 if ok:
                                     # the scope and marker recorded above stay authoritative
@@ -2254,6 +2264,24 @@ def carry_acts(st, acts, now):
 def take_carry(st):
     """The acts an earlier tick carried (carry_acts), for this tick to execute first; the state no longer holds them."""
     return [a for a in st.pop("acts_carry", None) or [] if isinstance(a, dict)]
+
+
+def unsent_stops(st, acts):
+    """A cut or raised tick: every role_stop supervise decided (and counted in the run's stop_tries) that never ran is
+    given back, so stop_failed and the KILL escalation count only stops that were sent (2026-11-21: two cut observe
+    steps counted two stops that never ran; stop_failed said "after 1 stop(s)" with none sent). -> what."""
+    back = []
+    for a in acts or []:
+        if a.get("do") != "role_stop" or "result" in a or a.get("stop_given_back"):
+            continue
+        rs = (st.get("roles") or {}).get(a.get("role"))
+        for run in (rs.get("runs") or []) if isinstance(rs, dict) else []:
+            if isinstance(run, dict) and run.get("unit") == a.get("unit") and run.get("stop_tries"):
+                run["stop_tries"] -= 1
+                a["stop_given_back"] = True
+                back.append("role_stop %s" % a.get("unit"))
+                break
+    return back
 
 
 def unreleased(st, acts, now):
@@ -2632,7 +2660,7 @@ def tick(sch, apply, obs=None, now=None, fx=None, still_owner=None, beat_end=Non
         def cut(e):
             # a step past its end: given back as a killed tick gives back, but the tick goes on and ends by itself
             steps[e.step] = "cut"
-            back = unreserve(st) + unreleased(st, acts, now)
+            back = unreserve(st) + unreleased(st, acts, now) + unsent_stops(st, acts)
             kept = carry_acts(st, acts, now)
             rec = {"at": iso(now), "do": "step_cut", "step": e.step, "where": cut_where(e),
                    "why": "%s ran past its end in the beat (%.1f s before the kill) and was cut; the next beat runs it "
@@ -2706,7 +2734,7 @@ def tick(sch, apply, obs=None, now=None, fx=None, still_owner=None, beat_end=Non
                 st["last_ok_tick"] = iso(now)
         except Fenced as e:
             # not a fault: the metronome moved on. Give back what was not started; no alarm (the metronome journals it)
-            back = unreserve(st) + unreleased(st, acts, now)
+            back = unreserve(st) + unreleased(st, acts, now) + unsent_stops(st, acts)
             carry_acts(st, acts, now)       # a harvest's acts (and any carried ones not yet run) wait for the next tick
             journal(root, {"at": iso(now), "do": "fenced", "why": "%s; given back: %s" % (e, ", ".join(back) or "none")})
             raise
@@ -2715,7 +2743,7 @@ def tick(sch, apply, obs=None, now=None, fx=None, still_owner=None, beat_end=Non
             # reached systemd-run is in `runs` and keeps its mark). Journalled: a raised tick is never silent
             # (review dispatcher-full #5)
             back = unreserve(st)
-            rings = unreleased(st, acts, now)    # rings/recovers given back, withdraws kept pending
+            rings = unreleased(st, acts, now) + unsent_stops(st, acts)    # rings/recovers given back, withdraws kept pending
             carry_acts(st, acts, now)            # what a harvest already did is said by the next tick
             st["alarm_carry"] = ("tick raised %s: %s; launches given back: %s; rings/recovers/withdraws undone: %s" % (
                 type(e).__name__, str(e), ", ".join(back) or "none", ", ".join(rings) or "none"))

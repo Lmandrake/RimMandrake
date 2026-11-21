@@ -9,7 +9,11 @@ harvest and stage chain read a run's concept files from the role's clone after i
 the stage machine continues there.
 
   made     `role_clones.py ensure <name>...` (scratch_clone.py clone --dissociate: an independent copy, outside the
-           pool and its cap). role_launch.launch refuses a launch whose clone is missing, naming this command.
+           pool and its cap), built under ROOT/.making-<name> and renamed into place, so no launch sees a half clone.
+           A launch whose clone is missing starts that in a unit of its own (make_in_background: a clone takes
+           26-153 s, past any beat) and waits as a planned hold (MAKING:), never an alarm; a make that FAILED is a
+           launch failure naming it (RIMMANDRAKE_TRACE_DESIGNER_ROLE_CLONE_VANISHED_OPERATIONS_FAILS: the six disabled
+           roles' clones were removed by hand 2026-11-18, and the Designer still runs by run-now).
   level    before systemd-run, role_launch.launch runs `level`: a commit the clone holds that is not on origin/main
            is landed with land.sh when it is ledger-only, and otherwise the launch is refused `STRANDED:` with the
            one fix line (dispatcher: ONE role:<name>:not_running alarm). Then the unit's first step is `./sync` in its
@@ -28,10 +32,12 @@ the stage machine continues there.
     role_clones.py list                    one JSON line per role clone on disk
 """
 import argparse
+import fcntl
 import json
 import os
 import re
 import shlex
+import shutil
 import subprocess
 import sys
 
@@ -42,6 +48,9 @@ LAND_SH = os.path.join(UTILS, "land.sh")
 SHARD_RE = re.compile(r"^infrastructure/state/ledger/events/[^/]+\.jsonl$")
 STRANDED = "STRANDED:"      # a launch refused by level starts with it; the dispatcher alarms role:<name>:not_running
 SYNC_FAILED_EXIT = 75       # EX_TEMPFAIL: the clone could not be levelled; nothing ran (a system failure, not a trial)
+MAKING = "MAKING:"          # a launch held while its missing clone is made (make_in_background): a planned hold
+MAKER_PREFIX = "rm-role-clone-"
+PART_PREFIX = ".making-"    # NAME_RE refuses the dot: a clone being made is never a role clone (is_role_clone, existing)
 NAME_RE = re.compile(r"^[A-Za-z][A-Za-z0-9_-]*$")
 
 
@@ -68,20 +77,92 @@ def missing_why(path):
             % (path, os.path.basename(os.path.normpath(path))))
 
 
+def part_of(name):
+    """Where ensure builds the clone of `name` before it renames it into place."""
+    clone_of(name)
+    return os.path.join(ROOT, PART_PREFIX + name)
+
+
+def maker_unit(name):
+    """The systemd unit that makes the clone of `name`: one at a time per role (systemd refuses a second)."""
+    clone_of(name)
+    return MAKER_PREFIX + name.lower()
+
+
+def maker_log(name):
+    return os.path.join(ROOT, ".%s.making.log" % name)
+
+
 def ensure(name, runner=subprocess.run):
-    """-> (ok, path or why). Makes ROOT/<name> when absent; an existing clone is left as it is (the unit syncs it)."""
+    """-> (ok, path or why). Makes ROOT/<name> when absent; an existing clone is left as it is (the unit syncs it).
+    Built at part_of(name), then renamed: a make killed half-way leaves only the part, which the next make removes
+    (only ensure writes there, under its lock)."""
     dest = clone_of(name)
     if os.path.isdir(os.path.join(dest, ".git")):
         return True, dest
     if os.path.exists(dest):
         return False, "%s exists but is not a git clone: look at it before removing it" % dest
-    env = dict(os.environ, RM_SCRATCH_ROOT=os.path.dirname(ROOT), RM_SEAT=os.path.basename(ROOT))
-    r = runner(["python3", os.path.join(UTILS, "scratch_clone.py"), "clone", "role clone for " + name, "--name", name,
-                "--checkout", "--fetch", "--dissociate"], env=env, capture_output=True, text=True, timeout=1800,
-               stdin=subprocess.DEVNULL)
-    if r.returncode or not os.path.isdir(os.path.join(dest, ".git")):
-        return False, "scratch_clone failed (exit %d): %s" % (r.returncode, ((r.stdout or "") + (r.stderr or "")).strip()[-400:])
+    os.makedirs(ROOT, exist_ok=True)
+    part = part_of(name)
+    with open(part + ".lock", "w") as lk:
+        try:
+            fcntl.flock(lk, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            return False, "another make of %s is running (lock %s.lock)" % (name, part)
+        if os.path.isdir(os.path.join(dest, ".git")):
+            return True, dest
+        shutil.rmtree(part, ignore_errors=True)
+        env = dict(os.environ, RM_SCRATCH_ROOT=os.path.dirname(ROOT), RM_SEAT=os.path.basename(ROOT))
+        r = runner(["python3", os.path.join(UTILS, "scratch_clone.py"), "clone", "role clone for " + name, "--name",
+                    os.path.basename(part), "--checkout", "--fetch", "--dissociate"], env=env, capture_output=True,
+                   text=True, timeout=1800, stdin=subprocess.DEVNULL)
+        if r.returncode or not os.path.isdir(os.path.join(part, ".git")):
+            shutil.rmtree(part, ignore_errors=True)
+            return False, "scratch_clone failed (exit %d): %s" % (
+                r.returncode, ((r.stdout or "") + (r.stderr or "")).strip()[-400:])
+        os.rename(part, dest)
     return True, dest
+
+
+def _last_line(path):
+    """The maker log's last line; None only when there is no log (no make has run). Any other read error raises: an
+    unreadable log is never "no failed make" (the dispatcher's launch failure names it)."""
+    if not os.path.lexists(path):
+        return None
+    with open(path, encoding="utf-8", errors="replace") as f:
+        lines = [ln.strip() for ln in f if ln.strip()]
+    return lines[-1] if lines else None
+
+
+def make_in_background(name, runner=subprocess.run):
+    """-> (kind, text): "ready" (the clone stands; text = its path), "making" (its maker unit was started or is already
+    running: text starts MAKING:, a planned hold), or "failed" (a launch failure, its cause named: the path stands but
+    is no clone, the maker unit could not start, or the last make FAILED; a new make is started all the same)."""
+    dest = clone_of(name)
+    if missing_why(dest) is None:
+        return "ready", dest
+    if os.path.exists(dest):
+        return "failed", "role clone %s exists but is not a git clone: look at it before removing it" % dest
+    os.makedirs(ROOT, exist_ok=True)
+    log, unit = maker_log(name), maker_unit(name)
+    last = _last_line(log)
+    argv = ["systemd-run", "--user", "--quiet", "--collect", "--unit", unit,
+            "-p", "StandardOutput=append:" + log, "-p", "StandardError=append:" + log,
+            "--", "/usr/bin/python3", os.path.abspath(__file__), "ensure", name]
+    try:
+        r = runner(argv, capture_output=True, text=True, timeout=30, stdin=subprocess.DEVNULL)
+    except Exception as e:  # noqa: BLE001 - one answer, its cause named
+        return "failed", "role clone %s is missing and its maker unit %s did not start: %s: %s" % (
+            dest, unit, type(e).__name__, str(e)[:200])
+    said = ((r.stdout or "") + (r.stderr or "")).strip()
+    if r.returncode and "already" not in said:
+        return "failed", "role clone %s is missing and its maker unit %s did not start (systemd-run exit %d: %s)" % (
+            dest, unit, r.returncode, said[-300:])
+    if last and last.startswith("FAILED"):
+        return "failed", "role clone %s is missing: its last make said %s (log %s); unit %s makes it again" % (
+            dest, last[:300], log, unit)
+    return "making", "%s role clone %s is missing: unit %s is making it (log %s); the launch waits for it" % (
+        MAKING, dest, unit, log)
 
 
 def _tidy(clone, settle_min):
@@ -96,12 +177,15 @@ def _git(clone, *a, timeout=300):
 
 
 def fix_line(clone, rows):
-    """The one shell line that lands each stranded commit (in order) and then levels the clone."""
+    """The one shell line that lands each stranded commit (in order) and then levels the clone. --superseded names each
+    commit the line just landed: seat_sync cannot always prove a twin by its bytes (a union shard plus a file origin
+    changed since), and then refused the levelling (Operations, 2026-11-21)."""
     env = "LAND_REPO=%s" % shlex.quote(clone)
     lands = ["%s sh %s %s %s" % (env, shlex.quote(LAND_SH), r["sha"][:12], " ".join(shlex.quote(t) for t in r["touched"]))
              for r in rows]
-    return " && ".join(lands + ["python3 %s --repo %s" % (shlex.quote(os.path.join(UTILS, "seat_sync.py")),
-                                                          shlex.quote(clone))])
+    return " && ".join(lands + ["python3 %s --repo %s%s" % (
+        shlex.quote(os.path.join(UTILS, "seat_sync.py")), shlex.quote(clone),
+        "".join(" --superseded %s" % r["sha"][:12] for r in rows))])
 
 
 def level(clone, land_sh=None):
@@ -124,7 +208,7 @@ def level(clone, land_sh=None):
         sys.path.insert(0, UTILS)
         import seat_sync
         g = seat_sync.Git(clone)
-        refused = {}
+        refused, done = {}, []
         for row in seat_sync.unlanded(g):
             if len(row["parents"]) != 1 or not row["touched"] or not all(SHARD_RE.match(t) for t in row["touched"]):
                 continue
@@ -135,11 +219,12 @@ def level(clone, land_sh=None):
                 refused[row["sha"]] = "land.sh exit %d: %s" % (p.returncode, ((p.stdout or "") + (p.stderr or "")).strip()[-200:])
             else:
                 out["landed"].append(m.group(1))
+                done.append(row["sha"])
         if out["landed"]:
             _git(clone, "fetch", "-q", "origin")
             sync = os.path.join(UTILS, "seat_sync.py")
-            subprocess.run(["python3", sync, "--no-fetch", "--repo", clone], capture_output=True, text=True,
-                           timeout=600, stdin=subprocess.DEVNULL)
+            subprocess.run(["python3", sync, "--no-fetch", "--repo", clone] + sum((["--superseded", c] for c in done), []),
+                           capture_output=True, text=True, timeout=600, stdin=subprocess.DEVNULL)
         left = seat_sync.unlanded(seat_sync.Git(clone))
     except Exception as e:  # noqa: BLE001 - one JSON answer, its cause named
         return dict(out, state="UNMEASURED", why="%s: %s" % (type(e).__name__, str(e)[:200]))
