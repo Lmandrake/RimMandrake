@@ -1274,7 +1274,9 @@ def burn_line(t):
             _fail("burnLineEnabled ON, map extinguished, %d ticks (> StandingBurnQuietTicks %d) and no free-standing "
                   "Fire: the standing burn did not reseed" % (BURN_LINE_WAIT_TICKS, BURN_QUIET_TICKS))
         t.screenshot()
-        _extinguish(t)
+        # SITE (visit 2, 2026-11-20): an extinguish here put out the reseeded front, and burn_line_walks_hourly then
+        # watched 24 hours with 0 fires (the next reseed needs StandingBurnQuietTicks, longer than its day). The walk
+        # starts from this front; _teardown puts the map out at the chain's end.
     _r6_burn_line(t)
 
 
@@ -4454,9 +4456,12 @@ def _ten_firehawk(t):
     SightRange 180) takes RM_FireHawkSeekBurn and closes; control: fireHawkSpreadEnabled off, a third hawk at the same
     offset never seeks. The giver reads distance only (no line-of-sight test), so 'visible' is the distance band."""
     def watch(hawk, plot):
+        # HARNESS (visit 2, 2026-11-20): a flyer closes 49 cells inside one 250-tick gap, so a seek that starts and hands
+        # over to the carry within it was never sampled (dist 60 -> 11 at the first read). 25 polls 10 ticks apart first,
+        # then the same 60 polls 250 apart as before.
         seq, dist = [], []
-        for _ in range(60):
-            _wait(t, 250)
+        for i in range(85):
+            _wait(t, 10 if i < 25 else 250)
             if not _count(t, "Fire", _rs(plot)):
                 _plants(t, "RM_FE_Plant_EmberGrass", plot)
                 t.bridge_call("jawa/map_fire", action="start", rect=_rs(plot), fireSize=1.2)

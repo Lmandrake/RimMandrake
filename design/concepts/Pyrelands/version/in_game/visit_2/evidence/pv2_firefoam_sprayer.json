@@ -1,7 +1,7 @@
 {
   "mod": "Pyrelands",
   "mode": "live",
-  "started_utc": "2026-11-21T04:16:51Z",
+  "started_utc": "2026-11-21T04:53:20Z",
   "expected": [
     "pyre_plant_distribution_correct",
     "pyre_animal_distribution_correct",
@@ -246,10 +246,10 @@
     },
     {
       "id": "firefoam_sprayer.without_sprayer_fire_stops_or_burns",
-      "status": "FAIL",
+      "status": "PASS",
       "functional": true,
-      "evidence": "ExpectationFailed: without the sprayer the colonist took the fruit unburned: the fruit was reachable without crossing fire, so the sprayer row proves nothing",
-      "evidenceFull": "ExpectationFailed: without the sprayer the colonist took the fruit unburned: the fruit was reachable without crossing fire, so the sprayer row proves nothing"
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
     },
     {
       "id": "plant_census.skipped#1",
@@ -1105,8 +1105,8 @@
     {
       "chain": "firefoam_sprayer",
       "name": "without_sprayer_fire_stops_or_burns",
-      "verdict": "FAIL",
-      "evidenceFull": "ExpectationFailed: without the sprayer the colonist took the fruit unburned: the fruit was reachable without crossing fire, so the sprayer row proves nothing",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
       "shows": [],
       "screenshots": []
     },
@@ -2082,175 +2082,175 @@
     }
   ],
   "summary": {
-    "PASS": 1,
-    "FAIL": 1,
+    "PASS": 2,
+    "FAIL": 0,
     "UNMEASURED": 116
   },
   "all_green": false,
   "timing": {
-    "n": 211,
-    "total_ms": 33534.962,
-    "mean_ms": 158.9335,
-    "p50_ms": 49.8764,
-    "p95_ms": 83.4144,
+    "n": 217,
+    "total_ms": 26763.923,
+    "mean_ms": 123.336,
+    "p50_ms": 20.9737,
+    "p95_ms": 77.5223,
     "by_tool": {
       "jawa/static_call": {
         "n": 1,
-        "mean_ms": 186.6063,
+        "mean_ms": 162.3531,
         "errors": 0
       },
       "rimworld/get_game_info": {
         "n": 14,
-        "mean_ms": 16.3731,
+        "mean_ms": 2.7702,
         "errors": 0
       },
       "jawa/map_info": {
         "n": 12,
-        "mean_ms": 48.6065,
+        "mean_ms": 9.1694,
         "errors": 0
       },
       "rimworld/get_ui_state": {
         "n": 1,
-        "mean_ms": 16.7007,
+        "mean_ms": 2.5387,
         "errors": 0
       },
       "jawa/prefs": {
         "n": 1,
-        "mean_ms": 50.125,
+        "mean_ms": 24.9534,
         "errors": 0
       },
       "jawa/world_mutators_get": {
         "n": 1,
-        "mean_ms": 50.1229,
+        "mean_ms": 31.6902,
         "errors": 0
       },
       "jawa/list_things": {
         "n": 8,
-        "mean_ms": 50.0243,
+        "mean_ms": 19.6838,
         "errors": 0
       },
       "jawa/get_roof_batch": {
         "n": 20,
-        "mean_ms": 49.8548,
+        "mean_ms": 8.1297,
         "errors": 0
       },
       "rimworld/get_cell_info": {
         "n": 20,
-        "mean_ms": 16.9314,
+        "mean_ms": 2.933,
         "errors": 0
       },
       "jawa/cell_temperature": {
         "n": 20,
-        "mean_ms": 49.8018,
+        "mean_ms": 22.3498,
         "errors": 0
       },
       "jawa/world_tile_get": {
         "n": 1,
-        "mean_ms": 50.304,
+        "mean_ms": 22.4621,
         "errors": 0
       },
       "jawa/weather_get": {
         "n": 2,
-        "mean_ms": 49.9743,
+        "mean_ms": 23.256,
         "errors": 0
       },
       "jawa/time_clock": {
         "n": 1,
-        "mean_ms": 49.6144,
+        "mean_ms": 21.576,
         "errors": 0
       },
       "jawa/incident_queue_clear": {
         "n": 1,
-        "mean_ms": 50.137,
+        "mean_ms": 21.8357,
         "errors": 0
       },
       "jawa/list_pawns": {
         "n": 18,
-        "mean_ms": 49.8167,
+        "mean_ms": 10.6496,
         "errors": 0
       },
       "jawa/window_list_close": {
         "n": 2,
-        "mean_ms": 49.3863,
+        "mean_ms": 21.0195,
         "errors": 0
       },
       "jawa/drain_log": {
         "n": 1,
-        "mean_ms": 51.6919,
+        "mean_ms": 25.9646,
         "errors": 0
       },
       "jawa/name_colony": {
         "n": 1,
-        "mean_ms": 48.1122,
+        "mean_ms": 21.606,
         "errors": 0
       },
       "jawa/pawn_need": {
         "n": 41,
-        "mean_ms": 49.9806,
+        "mean_ms": 23.4385,
         "errors": 0
       },
       "jawa/pawn_health": {
         "n": 7,
-        "mean_ms": 49.9392,
+        "mean_ms": 23.6698,
         "errors": 0
       },
       "jawa/research_finish_project": {
         "n": 1,
-        "mean_ms": 56.3433,
+        "mean_ms": 22.2065,
         "errors": 0
       },
       "jawa/weather_set": {
         "n": 5,
-        "mean_ms": 51.8134,
+        "mean_ms": 26.1763,
         "errors": 0
       },
       "jawa/set_plants": {
         "n": 4,
-        "mean_ms": 70.3467,
+        "mean_ms": 45.4026,
         "errors": 0
       },
       "jawa/map_fire": {
-        "n": 4,
-        "mean_ms": 63.2492,
+        "n": 10,
+        "mean_ms": 34.2924,
         "errors": 0
       },
       "jawa/safe_advance": {
         "n": 6,
-        "mean_ms": 1161.9584,
+        "mean_ms": 1266.212,
         "errors": 0
       },
       "jawa/spawn_pawn": {
         "n": 2,
-        "mean_ms": 50.0686,
+        "mean_ms": 28.6944,
         "errors": 0
       },
       "jawa/spawn_batch": {
         "n": 1,
-        "mean_ms": 47.4184,
+        "mean_ms": 20.9737,
         "errors": 0
       },
       "jawa/ordered_job": {
         "n": 7,
-        "mean_ms": 2528.2837,
+        "mean_ms": 2223.0333,
         "errors": 0
       },
       "rimworld/list_colonists": {
         "n": 4,
-        "mean_ms": 16.6398,
+        "mean_ms": 4.1809,
         "errors": 0
       },
       "jawa/pawn_force_incapacitate": {
         "n": 2,
-        "mean_ms": 54.6971,
+        "mean_ms": 30.9511,
         "errors": 0
       },
       "jawa/destroy_batch": {
         "n": 2,
-        "mean_ms": 49.9256,
+        "mean_ms": 27.1899,
         "errors": 0
       }
     }
   },
   "partial": false,
-  "mod_hash": "1cf4d5f2862428d3e16c7261ea92549d869440942839e2d4b95e342bbbd7e7de"
+  "mod_hash": "5105ea536bf181f74361e4f9f2bb6eaf63bcc27edfa27a5d49a1634526f1689b"
 }

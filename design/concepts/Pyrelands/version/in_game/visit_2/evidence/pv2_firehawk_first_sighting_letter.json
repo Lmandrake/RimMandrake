@@ -1,7 +1,7 @@
 {
   "mod": "Pyrelands",
   "mode": "live",
-  "started_utc": "2026-11-21T04:31:16Z",
+  "started_utc": "2026-11-21T04:54:11Z",
   "expected": [
     "pyre_plant_distribution_correct",
     "pyre_animal_distribution_correct",
@@ -239,24 +239,24 @@
     },
     {
       "id": "firehawk_first_sighting_letter.firehawk_first_sighting_letter_once",
-      "status": "PASS",
+      "status": "FAIL",
       "functional": true,
-      "evidence": "PASS",
-      "evidenceFull": "PASS"
+      "evidence": "ExpectationFailed: the letter does not point at hawk RM_FireHawk95275: ['RM_FireHawk92656']",
+      "evidenceFull": "ExpectationFailed: the letter does not point at hawk RM_FireHawk95275: ['RM_FireHawk92656']"
     },
     {
       "id": "firehawk_first_sighting_letter.firehawk_first_sighting_letter_toggle_off",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "upstream failed -- this chain's state is meaningless",
+      "evidenceFull": "upstream failed -- this chain's state is meaningless"
+    },
+    {
+      "id": "firehawk_first_sighting_letter.firehawk_letter_words",
       "status": "PASS",
       "functional": true,
       "evidence": "PASS",
       "evidenceFull": "PASS"
-    },
-    {
-      "id": "firehawk_first_sighting_letter.firehawk_letter_words",
-      "status": "FAIL",
-      "functional": true,
-      "evidence": "ExpectationFailed: the letter text names no ember ('a burning twig' or 'a burning sprig of '...)",
-      "evidenceFull": "ExpectationFailed: the letter text names no ember ('a burning twig' or 'a burning sprig of '...)"
     },
     {
       "id": "plant_census.skipped#1",
@@ -1097,24 +1097,24 @@
     {
       "chain": "firehawk_first_sighting_letter",
       "name": "firehawk_first_sighting_letter_once",
-      "verdict": "PASS",
-      "evidenceFull": "PASS",
+      "verdict": "FAIL",
+      "evidenceFull": "ExpectationFailed: the letter does not point at hawk RM_FireHawk95275: ['RM_FireHawk92656']",
       "shows": [],
       "screenshots": []
     },
     {
       "chain": "firehawk_first_sighting_letter",
       "name": "firehawk_first_sighting_letter_toggle_off",
-      "verdict": "PASS",
-      "evidenceFull": "PASS",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "upstream failed -- this chain's state is meaningless",
       "shows": [],
       "screenshots": []
     },
     {
       "chain": "firehawk_first_sighting_letter",
       "name": "firehawk_letter_words",
-      "verdict": "FAIL",
-      "evidenceFull": "ExpectationFailed: the letter text names no ember ('a burning twig' or 'a burning sprig of '...)",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
       "shows": [],
       "screenshots": []
     },
@@ -2082,190 +2082,200 @@
     }
   ],
   "summary": {
-    "PASS": 2,
+    "PASS": 1,
     "FAIL": 1,
-    "UNMEASURED": 115
+    "UNMEASURED": 116
   },
   "all_green": false,
   "timing": {
-    "n": 309,
-    "total_ms": 10324.72,
-    "mean_ms": 33.4133,
-    "p50_ms": 20.2941,
-    "p95_ms": 125.9377,
+    "n": 191,
+    "total_ms": 5816.36,
+    "mean_ms": 30.4521,
+    "p50_ms": 20.8964,
+    "p95_ms": 51.2629,
     "by_tool": {
       "jawa/static_call": {
-        "n": 5,
-        "mean_ms": 58.2314,
+        "n": 3,
+        "mean_ms": 77.3315,
         "errors": 0
       },
       "rimworld/get_game_info": {
-        "n": 30,
-        "mean_ms": 2.5148,
+        "n": 12,
+        "mean_ms": 2.861,
         "errors": 0
       },
       "jawa/map_info": {
-        "n": 22,
-        "mean_ms": 8.717,
+        "n": 13,
+        "mean_ms": 8.3497,
         "errors": 0
       },
       "rimworld/get_ui_state": {
         "n": 1,
-        "mean_ms": 2.5,
+        "mean_ms": 2.138,
         "errors": 0
       },
       "jawa/prefs": {
         "n": 1,
-        "mean_ms": 24.1334,
+        "mean_ms": 23.1106,
         "errors": 0
       },
       "jawa/world_mutators_get": {
         "n": 1,
-        "mean_ms": 21.9898,
+        "mean_ms": 22.9004,
         "errors": 0
       },
       "jawa/list_things": {
         "n": 1,
-        "mean_ms": 19.5299,
+        "mean_ms": 17.8827,
         "errors": 0
       },
       "jawa/get_roof_batch": {
         "n": 20,
-        "mean_ms": 7.811,
+        "mean_ms": 7.7082,
         "errors": 0
       },
       "rimworld/get_cell_info": {
         "n": 20,
-        "mean_ms": 2.8075,
+        "mean_ms": 2.9162,
         "errors": 0
       },
       "jawa/cell_temperature": {
         "n": 20,
-        "mean_ms": 23.7015,
+        "mean_ms": 23.5937,
         "errors": 0
       },
       "jawa/world_tile_get": {
         "n": 1,
-        "mean_ms": 19.9443,
+        "mean_ms": 23.5941,
         "errors": 0
       },
       "jawa/weather_get": {
         "n": 2,
-        "mean_ms": 22.2704,
+        "mean_ms": 23.8374,
         "errors": 0
       },
       "jawa/time_clock": {
         "n": 1,
-        "mean_ms": 23.4561,
+        "mean_ms": 24.2359,
         "errors": 0
       },
       "jawa/incident_queue_clear": {
         "n": 1,
-        "mean_ms": 21.7414,
+        "mean_ms": 25.3026,
         "errors": 0
       },
       "jawa/list_pawns": {
-        "n": 29,
-        "mean_ms": 10.6984,
+        "n": 15,
+        "mean_ms": 9.3355,
         "errors": 0
       },
       "jawa/window_list_close": {
         "n": 2,
-        "mean_ms": 20.3007,
+        "mean_ms": 23.2591,
         "errors": 0
       },
       "jawa/drain_log": {
         "n": 1,
-        "mean_ms": 22.6998,
+        "mean_ms": 29.5536,
         "errors": 0
       },
       "jawa/name_colony": {
         "n": 1,
-        "mean_ms": 22.5968,
+        "mean_ms": 24.031,
         "errors": 0
       },
       "jawa/destroy_batch": {
-        "n": 4,
-        "mean_ms": 179.4995,
+        "n": 2,
+        "mean_ms": 268.0338,
         "errors": 0
       },
       "jawa/pawn_need": {
-        "n": 57,
-        "mean_ms": 25.137,
+        "n": 24,
+        "mean_ms": 22.3463,
         "errors": 0
       },
       "jawa/pawn_health": {
-        "n": 9,
-        "mean_ms": 31.0147,
+        "n": 6,
+        "mean_ms": 22.8462,
         "errors": 0
       },
       "jawa/mod_settings_field": {
-        "n": 20,
-        "mean_ms": 36.2273,
+        "n": 18,
+        "mean_ms": 26.2996,
         "errors": 0
       },
       "jawa/set_fog": {
-        "n": 3,
-        "mean_ms": 23.2975,
+        "n": 1,
+        "mean_ms": 27.1192,
         "errors": 0
       },
       "jawa/set_terrain_batch": {
-        "n": 3,
-        "mean_ms": 440.1603,
+        "n": 1,
+        "mean_ms": 512.9268,
         "errors": 0
       },
       "jawa/set_plants": {
-        "n": 6,
-        "mean_ms": 84.1329,
+        "n": 2,
+        "mean_ms": 25.452,
         "errors": 0
       },
       "jawa/set_terrain": {
-        "n": 3,
-        "mean_ms": 23.1339,
+        "n": 1,
+        "mean_ms": 27.2798,
         "errors": 0
       },
       "jawa/letter_list": {
-        "n": 5,
-        "mean_ms": 29.2675,
+        "n": 2,
+        "mean_ms": 23.1183,
         "errors": 0
       },
       "jawa/map_fire": {
-        "n": 4,
-        "mean_ms": 57.6085,
+        "n": 2,
+        "mean_ms": 39.4161,
         "errors": 0
       },
       "jawa/spawn_pawn": {
-        "n": 3,
-        "mean_ms": 20.6191,
+        "n": 1,
+        "mean_ms": 22.4673,
         "errors": 0
       },
       "jawa/safe_advance": {
-        "n": 13,
-        "mean_ms": 187.2769,
+        "n": 4,
+        "mean_ms": 200.3726,
         "errors": 0
       },
       "jawa/comp_read": {
-        "n": 10,
-        "mean_ms": 30.1392,
+        "n": 3,
+        "mean_ms": 28.1933,
         "errors": 0
       },
       "rimworld/list_colonists": {
-        "n": 6,
-        "mean_ms": 3.2411,
+        "n": 4,
+        "mean_ms": 2.7633,
         "errors": 0
       },
       "rimworld/list_letters": {
         "n": 1,
-        "mean_ms": 44.3269,
+        "mean_ms": 3.3062,
+        "errors": 0
+      },
+      "jawa/clear_ui": {
+        "n": 1,
+        "mean_ms": 23.4431,
+        "errors": 0
+      },
+      "rimworld/screenshot_cell_rect": {
+        "n": 1,
+        "mean_ms": 934.6758,
         "errors": 0
       },
       "jawa/pawn_force_incapacitate": {
-        "n": 3,
-        "mean_ms": 49.5017,
+        "n": 1,
+        "mean_ms": 22.989,
         "errors": 0
       }
     }
   },
   "partial": false,
-  "mod_hash": "1cf4d5f2862428d3e16c7261ea92549d869440942839e2d4b95e342bbbd7e7de"
+  "mod_hash": "5105ea536bf181f74361e4f9f2bb6eaf63bcc27edfa27a5d49a1634526f1689b"
 }

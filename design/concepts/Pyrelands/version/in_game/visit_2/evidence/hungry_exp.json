@@ -1,0 +1,58 @@
+{
+ "no_fire": {
+  "pawn": "Human94682",
+  "set": {
+   "success": true
+  },
+  "food_after_set": [
+   0.08
+  ],
+  "meal_cell": [
+   {
+    "defName": "RM_FE_Plant_EmberGrass"
+   },
+   {
+    "defName": "MealSimple"
+   }
+  ],
+  "jobs": [
+   "Ingest",
+   "GotoWander"
+  ],
+  "food_end": [
+   0.9119998
+  ]
+ },
+ "fire": {
+  "pawn": "Human94705",
+  "set": {
+   "success": true
+  },
+  "food_after_set": [
+   0.08
+  ],
+  "meal_cell": [
+   {
+    "defName": "RM_FE_Plant_EmberGrass"
+   },
+   {
+    "defName": "MealSimple"
+   }
+  ],
+  "jobs": [
+   "Ingest",
+   "BeatFire",
+   "RM_PyreStepAwayFromFire",
+   "BeatFire",
+   "Wait_MaintainPosture",
+   "BeatFire",
+   "GotoWander",
+   "Wait_Wander",
+   "GotoWander",
+   "Wait_Wander"
+  ],
+  "food_end": [
+   0.914999843
+  ]
+ }
+}

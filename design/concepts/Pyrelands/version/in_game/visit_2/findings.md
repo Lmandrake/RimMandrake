@@ -24,11 +24,13 @@ All 46 live commands fail under judge_certificate.red_seen's shell (backslash pa
 and validation.py has no `--live`). Filed RIMMANDRAKE_REPAIR_PYRE_TABLE_LIVE_COMMANDS_THAT_NEVER_START with a script
 seen red (scripts/table_commands_start.py: "46 live command(s) never start").
 
-## F5 the far fire-hawk carried an ember from a stray fire (SITE, repaired)
-`far_hawk_seeks_the_burn` (sc_firehawk): the hawk 60 cells off first took RM_FireHawkCarryEmber, then wandered (sortie
-cooldown). CarryEmber needs a fire inside scanRadius 54 and the lit plot was 60 cells off, so another fire, left by the
-chain's earlier rows, was nearer. The control row extinguishes the map first; this row did not. Repair: `_extinguish(t)`
-before the plot is lit.
+## F5 the far fire-hawk's seek was never sampled (HARNESS, repaired)
+`far_hawk_seeks_the_burn` (sc_firehawk) FAIL twice: the job list starts at RM_FireHawkCarryEmber, never
+RM_FireHawkSeekBurn. A first theory (a stray fire within scanRadius 54 gave the carry) was tested by an extinguish before
+the plot: the rerun failed the same way, so it is ruled out (the extinguish stays: the plot must be the only fire). The
+distance series settles it: 60 cells at spawn, 11 at the first read 250 ticks later, then about 180 as it carried the
+ember away. The flyer sought and closed inside one sample gap. Repair: 25 polls 10 ticks apart, then the old 60 polls
+250 apart. Known-bad reading: the spread-off control (the seek giver off) shows no seek on the same sampler.
 
 ## F6 the ashwallow sprints for shade beside a fire and never dives (MOD, suspected)
 `burrowers_dive` (sc_ashwallow): job samples RM_ShadeDash x3, then Wait x12; never RM_Burrowed over 1500 ticks beside the
@@ -46,3 +48,34 @@ The open-scene reading (FAIL, evidence/pv2_firefoam_sprayer.json) is the known-b
 Rows that are UNMEASURED by construction, on every visit: plant_census `same_seed_gate_off_map`, ground_deep_ash
 `ash_ground_gate_off_regeneration`, ullai_and_giant `giant_classic_restore_control` (a private static), ash_fertility
 `growth_rate_factor_temperature` (an instance property). Each leaves its check UNMEASURED.
+
+## F9 the hungry colonist beat fire before eating, once (cause unknown, rerun)
+`fire_sense_hungry_eats_first` (sc_fire_sense) FAIL: H's jobs BeatFire, RM_PyreStepAwayFromFire, BeatFire, ...,
+Skygaze; no Ingest. Experiment on a clean reload (scripts/hungry_exp.py, evidence/hungry_exp.json), same placement:
+food set to 0.08 held, the meal lay on its cell, and H ate first in both arms (no fire: Ingest; fire: Ingest then
+BeatFire), food 0.08 -> 0.91. The mod's insert works in a clean scene. Not reproduced, so the chain is rerun unchanged.
+
+## F10 the sighting letter: ember test case-sensitive (HARNESS, repaired); four blank slots (MOD, filed)
+`firehawk_letter_words` FAIL: "A burning sprig of ember grass" (the game capitalises the clause) against the row's
+"a burning sprig of ". Repair: firehawk_rewards_live.letter_names_ember, case-insensitive, with
+selftest_pyrelands_letter_words.py (red on the parent: the predicate absent; green on the fix); the rerun reads PASS.
+The same text shows a MOD defect no row checks: "snatched from the fire cells to the ." and "cells to the .": the
+four named arguments carry '_' and GrammarResolverSimple reads `{SOURCE_DIST}` as argument SOURCE, sub-symbol DIST.
+Filed RIMMANDRAKE_FIX_PYRE_HAWK_LETTER_BLANKS_FOUR_NAMED_SLOTS, its test scripts/named_args_resolve.py red (4).
+Rerun: `firehawk_first_sighting_letter_once` FAIL: the letter pointed at native hawk RM_FireHawk92656, which carried
+first (SITE). Repair: the native hawks are removed before staging.
+
+## F11 SteveDesktop's lane ran nothing (lane HARNESS, not a mod verdict)
+testq J20261121T040348Z-49ee40 (8 long chains at e02accbb59): DONE with FAIL 1, UNMEASURED 8, NOT_RUN 16. Every chain
+was "could not make a Pyrelands site current" / "could not hold the site quiet". The lane has no Pyrelands site
+fixture. The 8 chains ran here instead.
+
+## F12 the ashwallow does not dive at night either (MOD, prior pass now fails)
+Night experiment (advance to 0.1h, skyGlow 0.0; evidence/pv2_burrowers_night.json): burrowers_dive FAIL again, the
+samples Wait x15, no RM_ShadeDash. RULED OUT: the noon sun dash as the whole cause. Visit 1 passed this row on
+090cd707f5, so this is a regression on the walk build; the giver of the Wait job is unread (jawa/pawn_get has no job).
+
+## F13 roofed patch lost at once with the gate off (SITE presumed, filed)
+`gate_off_kills_nothing` (sc_roof_withers) FAIL: with the gate off patch A kept 700 HP and no wither line, then 25 -> 0
+between two hourly reads near hour 41. Not the mod's wither (gate on: HP falls hourly with the line shown). Filed
+RIMMANDRAKE_TRACE_PYRE_ROOFED_PATCH_GONE_AT_ONCE.

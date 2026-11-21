@@ -1,7 +1,7 @@
 {
   "mod": "Pyrelands",
   "mode": "live",
-  "started_utc": "2026-11-21T04:11:21Z",
+  "started_utc": "2026-11-21T04:51:59Z",
   "expected": [
     "pyre_plant_distribution_correct",
     "pyre_animal_distribution_correct",
@@ -241,8 +241,8 @@
       "id": "firehawk.far_hawk_seeks_the_burn",
       "status": "FAIL",
       "functional": true,
-      "evidence": "ExpectationFailed: the hawk 60 cells off never took RM_FireHawkSeekBurn: ['RM_FireHawkCarryEmber', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander'",
-      "evidenceFull": "ExpectationFailed: the hawk 60 cells off never took RM_FireHawkSeekBurn: ['RM_FireHawkCarryEmber', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'Wait_MaintainPosture', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'Wait_MaintainPosture', 'Wait_Wander', 'GotoWander', 'Wait_MaintainPosture', 'GotoWander', 'Wait_Wander']"
+      "evidence": "ExpectationFailed: the hawk 60 cells off never took RM_FireHawkSeekBurn: ['RM_FireHawkCarryEmber', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'Wait_MaintainPosture', 'GotoWander', 'Wait_Wander', 'Wait_MaintainPosture', 'Wait_Wander', 'GotoWander', 'Wait_Wa",
+      "evidenceFull": "ExpectationFailed: the hawk 60 cells off never took RM_FireHawkSeekBurn: ['RM_FireHawkCarryEmber', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'Wait_MaintainPosture', 'GotoWander', 'Wait_Wander', 'Wait_MaintainPosture', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander']"
     },
     {
       "id": "firehawk.far_hawk_spread_off_control",
@@ -1104,9 +1104,9 @@
       ],
       "screenshots": [
         {
-          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\firehawk_carries_ember_1795234289162_1__cell_rect.png",
-          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\firehawk_carries_ember_1795234289162_1__cell_rect.png",
-          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/firehawk_carries_ember_1795234289162_1__cell_rect.png"
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\firehawk_carries_ember_1795236723538_1__cell_rect.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\firehawk_carries_ember_1795236723538_1__cell_rect.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/firehawk_carries_ember_1795236723538_1__cell_rect.png"
         }
       ]
     },
@@ -1114,7 +1114,7 @@
       "chain": "firehawk",
       "name": "far_hawk_seeks_the_burn",
       "verdict": "FAIL",
-      "evidenceFull": "ExpectationFailed: the hawk 60 cells off never took RM_FireHawkSeekBurn: ['RM_FireHawkCarryEmber', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'Wait_MaintainPosture', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'Wait_MaintainPosture', 'Wait_Wander', 'GotoWander', 'Wait_MaintainPosture', 'GotoWander', 'Wait_Wander']",
+      "evidenceFull": "ExpectationFailed: the hawk 60 cells off never took RM_FireHawkSeekBurn: ['RM_FireHawkCarryEmber', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'Wait_MaintainPosture', 'GotoWander', 'Wait_Wander', 'Wait_MaintainPosture', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander']",
       "shows": [],
       "screenshots": []
     },
@@ -2094,184 +2094,184 @@
   },
   "all_green": false,
   "timing": {
-    "n": 1556,
-    "total_ms": 110997.265,
-    "mean_ms": 71.335,
-    "p50_ms": 50.0077,
-    "p95_ms": 374.0605,
+    "n": 1557,
+    "total_ms": 60756.255,
+    "mean_ms": 39.0214,
+    "p50_ms": 18.9659,
+    "p95_ms": 322.9761,
     "by_tool": {
       "jawa/static_call": {
-        "n": 4,
-        "mean_ms": 82.0937,
+        "n": 3,
+        "mean_ms": 87.7635,
         "errors": 0
       },
       "rimworld/get_game_info": {
         "n": 246,
-        "mean_ms": 15.7957,
+        "mean_ms": 2.7049,
         "errors": 0
       },
       "jawa/map_info": {
-        "n": 131,
-        "mean_ms": 50.1771,
+        "n": 132,
+        "mean_ms": 7.8581,
         "errors": 0
       },
       "rimworld/get_ui_state": {
         "n": 1,
-        "mean_ms": 16.6086,
+        "mean_ms": 3.592,
         "errors": 0
       },
       "jawa/prefs": {
         "n": 1,
-        "mean_ms": 50.5774,
+        "mean_ms": 26.4541,
         "errors": 0
       },
       "jawa/world_mutators_get": {
         "n": 1,
-        "mean_ms": 50.3487,
+        "mean_ms": 24.8805,
         "errors": 0
       },
       "jawa/list_things": {
         "n": 122,
-        "mean_ms": 49.6781,
+        "mean_ms": 18.4704,
         "errors": 0
       },
       "jawa/get_roof_batch": {
         "n": 20,
-        "mean_ms": 49.8935,
+        "mean_ms": 8.5672,
         "errors": 0
       },
       "rimworld/get_cell_info": {
         "n": 20,
-        "mean_ms": 16.7204,
+        "mean_ms": 3.2189,
         "errors": 0
       },
       "jawa/cell_temperature": {
         "n": 20,
-        "mean_ms": 55.8725,
+        "mean_ms": 23.8808,
         "errors": 0
       },
       "jawa/world_tile_get": {
         "n": 1,
-        "mean_ms": 65.7919,
+        "mean_ms": 22.7072,
         "errors": 0
       },
       "jawa/weather_get": {
         "n": 2,
-        "mean_ms": 66.5694,
+        "mean_ms": 25.153,
         "errors": 0
       },
       "jawa/time_clock": {
         "n": 1,
-        "mean_ms": 67.4174,
+        "mean_ms": 25.6523,
         "errors": 0
       },
       "jawa/incident_queue_clear": {
         "n": 1,
-        "mean_ms": 65.8573,
+        "mean_ms": 22.2137,
         "errors": 0
       },
       "jawa/list_pawns": {
         "n": 260,
-        "mean_ms": 50.6345,
+        "mean_ms": 9.4933,
         "errors": 0
       },
       "jawa/window_list_close": {
         "n": 2,
-        "mean_ms": 66.247,
+        "mean_ms": 23.9699,
         "errors": 0
       },
       "jawa/drain_log": {
         "n": 1,
-        "mean_ms": 68.2171,
+        "mean_ms": 27.3514,
         "errors": 0
       },
       "jawa/name_colony": {
         "n": 1,
-        "mean_ms": 64.5077,
+        "mean_ms": 25.57,
         "errors": 0
       },
       "jawa/destroy_batch": {
         "n": 4,
-        "mean_ms": 223.1635,
+        "mean_ms": 161.5061,
         "errors": 0
       },
       "jawa/pawn_need": {
         "n": 387,
-        "mean_ms": 50.3189,
+        "mean_ms": 21.9395,
         "errors": 0
       },
       "jawa/pawn_health": {
         "n": 19,
-        "mean_ms": 50.6971,
+        "mean_ms": 24.513,
         "errors": 0
       },
       "jawa/mod_settings_field": {
         "n": 20,
-        "mean_ms": 59.9318,
+        "mean_ms": 25.6958,
         "errors": 0
       },
       "jawa/set_terrain_batch": {
         "n": 3,
-        "mean_ms": 316.8899,
+        "mean_ms": 262.8149,
         "errors": 0
       },
       "jawa/set_plants": {
         "n": 14,
-        "mean_ms": 59.1104,
+        "mean_ms": 36.0555,
         "errors": 0
       },
       "jawa/set_terrain": {
         "n": 3,
-        "mean_ms": 55.8431,
+        "mean_ms": 23.6791,
         "errors": 0
       },
       "jawa/map_fire": {
-        "n": 14,
-        "mean_ms": 60.8242,
+        "n": 15,
+        "mean_ms": 35.4404,
         "errors": 0
       },
       "jawa/spawn_pawn": {
         "n": 3,
-        "mean_ms": 55.2716,
+        "mean_ms": 22.9023,
         "errors": 0
       },
       "jawa/safe_advance": {
         "n": 121,
-        "mean_ms": 370.5829,
+        "mean_ms": 305.9126,
         "errors": 0
       },
       "jawa/site_state": {
         "n": 121,
-        "mean_ms": 51.5154,
+        "mean_ms": 24.1271,
         "errors": 0
       },
       "jawa/clear_ui": {
         "n": 1,
-        "mean_ms": 63.2588,
+        "mean_ms": 21.9487,
         "errors": 0
       },
       "rimworld/screenshot_cell_rect": {
         "n": 1,
-        "mean_ms": 887.9156,
+        "mean_ms": 926.1664,
         "errors": 0
       },
       "rimworld/list_colonists": {
         "n": 6,
-        "mean_ms": 16.6115,
+        "mean_ms": 2.946,
         "errors": 0
       },
       "jawa/weather_set": {
         "n": 1,
-        "mean_ms": 50.5293,
+        "mean_ms": 18.3103,
         "errors": 0
       },
       "jawa/pawn_force_incapacitate": {
         "n": 3,
-        "mean_ms": 51.0867,
+        "mean_ms": 26.2977,
         "errors": 0
       }
     }
   },
   "partial": false,
-  "mod_hash": "1cf4d5f2862428d3e16c7261ea92549d869440942839e2d4b95e342bbbd7e7de"
+  "mod_hash": "5105ea536bf181f74361e4f9f2bb6eaf63bcc27edfa27a5d49a1634526f1689b"
 }

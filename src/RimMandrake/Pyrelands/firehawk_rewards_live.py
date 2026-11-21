@@ -232,6 +232,13 @@ def register(suite, V):
             t.bridge_call("jawa/set_fog", action="unfog", rect=V._whole(t))
             V._firebreak(t, rect)
             V._soil(t, rect)
+            # SITE (visit 2, 2026-11-20): a native fire-hawk carried an ember first and took the once-a-game letter
+            # (lookTargets RM_FireHawk92656, not the staged hawk); the staged hawks are the only hawks on the map
+            natives = [q.get("id") for q in (t.bridge_call("jawa/list_pawns", limit=500) or {}).get("pawns") or []
+                       if q.get("kindDef") == "RM_FireHawk" and not q.get("dead")]
+            for nid in natives:
+                t.bridge_call("jawa/damage", thingId=nid, damageDef="Bomb", amount=9999)
+            V._note(t, "native fire-hawks removed before staging", natives)
             V._note(t, "rearm", static(t, SIGHT, "ProbeRearmForLiveTest"))
             base = len(letters(t, label))
             stage_fire(t, rect)

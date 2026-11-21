@@ -13,14 +13,13 @@ with RimBridge(h, p, tk) as rb:
         return rb.call(tool, kw)
     def need(pid):
         r = call("jawa/pawn_need", pawn=pid, action="list")
-        return [(n.get("def") or n.get("defName"), n.get("curLevel"), n.get("category") or n.get("curCategory"))
-                for n in (r.get("needs") or []) if "Food" in str(n)]
+        return [n.get("level") for n in (r.get("needs") or []) if n.get("need") == "Food"]
     def jobs(pid, polls, step):
         seq = []
         for _ in range(polls):
             call("jawa/safe_advance", ticks=step, timeException=False)
-            r = call("jawa/list_pawns", faction="player", limit=100)
-            j = next((q.get("job") or q.get("curJob") for q in r.get("pawns") or [] if q.get("id") == pid), None)
+            r = call("jawa/site_state")
+            j = next((q.get("job") for q in r.get("pawns") or [] if q.get("id") == pid), None)
             if j and (not seq or seq[-1] != j):
                 seq.append(j)
         return seq
@@ -34,8 +33,8 @@ with RimBridge(h, p, tk) as rb:
         a = {"pawn": pid, "set": {k: s.get(k) for k in ("success", "before", "after", "level", "message") if k in s},
              "food_after_set": need(pid)}
         cell = call("rimworld/get_cell_info", x=x + 2, z=z + 6 + (0 if arm == "no_fire" else 4))
-        a["meal_cell"] = [{k: th.get(k) for k in ("defName", "forbidden", "id", "stackCount") if k in th}
-                          for th in (cell.get("things") or [])]
+        a["meal_cell"] = [{k: th.get(k) for k in ("defName", "forbidden", "isForbidden", "id", "stackCount") if k in th}
+                          for th in ((cell.get("cell") or {}).get("things") or [])]
         if arm == "fire":
             call("jawa/map_fire", action="start", rect="%d,%d,2,2" % (x + 6, z + 9), fireSize=1.2)
         a["jobs"] = jobs(pid, 50, 60)
