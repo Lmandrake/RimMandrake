@@ -27,7 +27,7 @@ The goodbye restart below is ON (`seat_restart.seats.BENCH._why_enabled`).
 **The context backstop for this window is ON** (owner by card 2026-11-01: "Should the Conductor restart itself like Foundry? → Same limits as Foundry"; `seat_restart.seats.BENCH._why_backstop`).
 
 - Over 110k, idle 30 min, no message from him for 4 h, no helper alive: the backstop restarts the window.
-- Over 200k: the backstop restarts the window at the next ended turn plus 20 s of quiet, **even mid-conversation**. The
+- Over 400k: the backstop restarts the window at the next ended turn plus 20 s of quiet, **even mid-conversation**. The
   reason: this limit copies the hard limit of the retired FOUNDRY seat. That hard limit did not wait for him. His typing
   cancels the restart, and the next tick re-arms it.
 - A goodbye outranks all of the backstop. A goodbye is instant and uninterruptible, and it joins any pending backstop.
@@ -55,7 +55,7 @@ window (owner 2026-10-27/28: *"Goodbye should be the trigger."*, *"Yes I like yo
 - The wake of the fresh window lists, whole and once, what he sent the old window after the goodbye. `--gen` binds the
   wake to that one restart.
 - The context backstop (above) restarts the window too. The backstop acts after 4 h with no message from him at 110k,
-  and at any ended turn at 200k.
+  and at any ended turn at 400k.
 
 **A full handoff is written only when a keyboard sitting ends.**
 
