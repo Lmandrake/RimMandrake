@@ -3543,7 +3543,10 @@ def blind_brief_text(root, mod, cap_usd=None):
                  "`--only` globs." % ", ".join("`%s`" % t for t in slow))
     L += ["- Write `lane2/reruns.jsonl` with `test`, `result`, `recorded_result`, `last`, `recorded_last` and `match`. "
           "Compare verdicts first, and accept a prefix of the last line (the recorded one may be cut short or come "
-          "from stderr).", "",
+          "from stderr). After a fix of yours, run again only the deciders the fix touches (`python3 "
+          "src/RimMandrake/rimflow/rerun_relation.py --mod %s --tests all --old <the fix's parent>` names them) and "
+          "write those rows to `lane2/reruns_after_fix.jsonl`; every other decider keeps its `reruns.jsonl` row (root "
+          "CLAUDE.md, After a change, only the checks that the change touches run again)." % mod, "",
           "**Planted faults.** List them in `lane2/planted_faults.json` (`id`, `file`, `old`, `new`, `bars`): at least "
           "two per offline bar's kernel and at least four in game-side callers or patches%s. Run them with "
           "`lane2/plant_faults.py`, with `WINBUILD_ROOT=/mnt/d/ClaudeWork/rimmandrake/scratch/%s_blind_c%d_mut/`; "
@@ -5063,8 +5066,11 @@ def main(argv=None):
     c.add_argument("mod")
     c.add_argument("--to", default="blind_challenge", choices=WORDS)
     c.add_argument("--run", action="store_true", help="rerun the offline deciders first and stamp their build (no tokens)")
-    c.add_argument("--resume", action="store_true", help="with --run: keep a decider already green on its current build "
-                   "and command (a rerun killed part way picks up where it stopped)")
+    c.add_argument("--resume", action="store_true", help="with --run: the default since 2026-11-21, kept so old "
+                   "callers still parse (a decider already green on its current build and command is kept, unrun)")
+    c.add_argument("--all", metavar="WHY", help="with --run: a full pass, every offline test, as a named act with its "
+                   "reason (owner, 2026-11-21: only the checks a change touches run again; a full pass is never a "
+                   "default)")
     c.add_argument("--json", action="store_true")
     c.add_argument("--grandfather", action="store_true", help="write the mod's red_seen grandfather list once (every test "
                    "as it is now owes no red proof until edited); a list already written is never widened")
@@ -5262,7 +5268,11 @@ def main(argv=None):
             print("GRANDFATHER %s: %s" % (o.mod, g["why"]))
         if o.run:
             t0 = time.time()
-            ran = JC.run_offline(root, o.mod, resume=o.resume)
+            # only the tests whose reads or file changed (or that are red or unstamped) run; --all is a named full pass
+            ran = JC.run_offline(root, o.mod, resume=not o.all)
+            if o.all:
+                ran["full_pass_why"] = o.all
+                print("FULL PASS (named act): %s" % o.all)
             ran["wall_s"] = round(time.time() - t0, 1)
         cv = certificate(root, o.mod, o.to)
         if o.json:

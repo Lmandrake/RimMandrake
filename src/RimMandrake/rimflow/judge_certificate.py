@@ -22,8 +22,9 @@ Before an in-game visit (to="in_game") every in-game scene that decides a bar is
                      (RIMMANDRAKE_DRYRUN_SCENES_ON_EMPTY_GAME_THREE_PASSED). Two harnesses have an adapter: FlowWorks'
                      concept_scenes.py STAGE3_SCENES and a file with a module-level modcheck suite whose chain the test
                      names as its entry (suite_vacuous); a scene in any other harness is did_not_run.
-No model is called anywhere. `run_offline` is the path to pass for a stale table: it reruns the offline tests and stamps
-each with its build (`maturation.py certificate <Mod> --run`, zero tokens). A table that cannot be read is "did not run":
+No model is called anywhere. `run_offline` is the path to pass for a stale table: it reruns the offline tests that are
+stale, red or unstamped and stamps each with its build (`maturation.py certificate <Mod> --run`, zero tokens; a full
+pass is `--all "<why>"`, a named act: owner, 2026-11-21, only the checks a change touches run again). A table that cannot be read is "did not run":
 the guard lets the mod through and says so.
 
 Contract: the docstring of acceptance/guard_judge_certificate_accept.py (the filing seat's; the builder does not edit it).
@@ -433,8 +434,8 @@ def certify(root, mod, to="blind_challenge"):
         out["did_not_run"].append("the certificate did not run: %s; the mod goes through on this guard" % err)
         return out
     tests, rows = tt["tests"], out["rows"]
-    run_fix = "python3 src/RimMandrake/rimflow/maturation.py certificate %s --run (reruns the offline deciders and " \
-              "stamps each with its build; no tokens)" % mod
+    run_fix = "python3 src/RimMandrake/rimflow/maturation.py certificate %s --run (reruns only the offline deciders " \
+              "that are stale, red or unstamped, and stamps each with its build; no tokens)" % mod
     builds = {}
     reds, gf = _read_evidence(root, mod, RED_SEEN), _read_evidence(root, mod, GRANDFATHER)
     blind = [n for n, v in ((RED_SEEN, reds), (GRANDFATHER, gf)) if v is None]

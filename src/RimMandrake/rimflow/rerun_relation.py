@@ -8,7 +8,7 @@ One question, asked by every stage (the in-game build match, the Stage 6 exit, t
 build): a check's last row was made on commit OLD; the commit now is NEW; does the change OLD..NEW touch what the check
 reads or exercises?
 
-  python3 src/RimMandrake/rimflow/rerun_relation.py --mod M [--old SHA] [--new SHA]
+  python3 src/RimMandrake/rimflow/rerun_relation.py --mod M [--old SHA] [--new SHA] [--tests ingame|all]
       one line per check that the change touches, then the checks with no readable relation, then the changed files
       that no check declares; --old defaults to each check's last in-game row's mod_sha
 
@@ -565,6 +565,8 @@ def main(argv=None):
     ap.add_argument("--mod", required=True)
     ap.add_argument("--old", help="one commit for every check (default: each check's last in-game row's mod_sha)")
     ap.add_argument("--new", default="HEAD")
+    ap.add_argument("--tests", choices=("ingame", "all"), default="ingame",
+                    help="which checks: the stage-6 in-game ones (default) or every test of the table, offline included")
     ap.add_argument("--root", default=REPO)
     a = ap.parse_args(argv)
     sys.path.insert(0, HERE) if HERE not in sys.path else None
@@ -573,7 +575,9 @@ def main(argv=None):
     if tt is None:
         print("UNREADABLE: test_table.json: %s" % err)
         return 3
-    tests = dict(M.ingame_tests(tt))
+    tests = dict(M.ingame_tests(tt)) if a.tests == "ingame" else {
+        k: v for k, v in ((tt.get("tests") or {}).items() if isinstance(tt.get("tests"), dict) else
+                          ((x.get("id"), x) for x in tt.get("tests") or [])) if isinstance(v, dict)}
     if a.old:
         last = {t: {"mod_sha": a.old} for t in tests}
     else:
