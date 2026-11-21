@@ -1,0 +1,3 @@
+Disabling a vendor service does not unload its System-start kernel driver. The 2026-11-04 SteveDesktop driver A/B stopped only the caller services; AsIO2, ene, GLCKIO2 and MsIo64 stayed loaded, and it concluded 'hardware is the lead'. On 2026-11-21 the drivers' own registry Start was set to 4 and the machine rebooted; driverquery showed them gone, and the fault stopped. To test a driver, set the driver's Start to 4, reboot, and check driverquery before you read the result.
+item: RIMMANDRAKE_BOOT_STEVE_NO_LIGHTING_DRIVERS_LAST_SUSPECT_BUT_CPU
+home: infrastructure/state/facts/steve_fault_diagnosis.md

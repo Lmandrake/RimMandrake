@@ -171,10 +171,35 @@ the samples are too few and workload, detection cadence and settings were uncont
 
 Not excluded: the System-start drivers `AsIO2`, `GLCKIO2`, `ene` and `MsIo64` stayed loaded, with no known caller
 running. `iCUE.exe`, the user-mode app, kept running, but it reaches hardware only through the disabled services.
-Heat at onset is ordinary (56–61 °C), so thermal runaway is not the trigger. **Hardware is the lead: the CPU or the
-board/VRM.** Next discriminators: run at stock settings with XMP/MCE (multicore enhancement) off and a small negative
-ratio or a fixed vcore, or swap the CPU.
+Heat at onset is ordinary (56–61 °C), so thermal runaway is not the trigger. The drivers left loaded here are the
+ones the 2026-11-21 boot below unloaded; with them unloaded, the fault did not come.
 
 Reverted 2026-11-04T10:00:58Z: original start modes restored, services running again
 (`D:\ClaudeWork\rimmandrake\steve_diag\driver_ab\revert_g3b.out`). 🔴 `C:\SteveDesktop\diag\driver_ab_revert.ps1`
 does nothing on Windows PowerShell 5 (the JSON array arrives as one object). Use `driver_ab\revert2.ps1` instead.
+
+## 🔴 With the vendor kernel drivers unloaded, the fault did not come (MEASURED 2026-11-21, one boot, A-B-A)
+
+Item `RIMMANDRAKE_BOOT_STEVE_NO_LIGHTING_DRIVERS_LAST_SUSPECT_BUT_CPU`. Record and raw evidence:
+`D:\ClaudeWork\rimmandrake\conductor\night_20261120\steve_driver_unload.md` and its `drvtest\` folder.
+
+- **The set (16), each set to registry `Start=4` and the machine rebooted:** kernel drivers `Asusgio2` (AsIO2.sys),
+  `EneTechIo` (ene.sys), `GLCKIO2`, `MSIO` (MsIo64.sys), `CorsairLLAccess64`, `cpuz154` (CPUID), `PawnIO` (our own
+  stevetemp sensor driver), `CorsairVBusDriver`, `CorsairVHidDriver`, `AVoluteSS3Vad` (ASUS Sonic Studio Virtual Mixer:
+  the default speaker endpoint, so the game's audio passes through it); and their six caller services. Measured after the
+  boot: none of the 10 drivers loaded, and no other driver was added (no WinRing0 fallback). NVIDIA, Intel, Realtek and
+  the file-system drivers stayed.
+- **A, drivers loaded:** 6 of 6 boots on 2026-11-21 between 00:40Z and 03:30Z faulted, with a first fault 10–15 min after
+  boot (regprobe.log; whether a game ran in each boot was not checked).
+- **B, drivers unloaded (boot 11:44:18Z):** RPCONTROL ok=1; RimWorld (the same 315-mod list, started natively at 11:45:29Z);
+  10 probe cycles with the game up, 4 to 49 min after the start, **all clean**, 18/18 CPUs each, 0 RPFAULT lines.
+  Before tonight, 7 of 7 boots faulted 3–14 min after a game start, with the hypervisor on or off.
+- **A again, drivers restored (boot 12:41:17Z):** the same native launcher at 12:43:42Z; **fault** at 12:46:35Z, CPU 2,
+  `upper_half_loss`, 2.9 min after the start.
+- **What this means:** a driver in the set is needed for the fault [guess ~90%]. This is one clean boot; it is evidence,
+  not proof. The CPU is not excluded as a contributor (the fault could need both), but a CPU defect alone does not explain a
+  clean 49 min. The set mixes two kinds: the lighting/monitoring drivers (port and MSR access) and one kernel audio
+  driver. Each kind can explain a game-start trigger (the game opens an audio stream, and iCUE and Aura react to a game).
+  Which one it is is UNMEASURED.
+- 🔑 **Disabling a vendor service does not unload a System-start driver.** The 2026-11-04 A/B above stopped the callers
+  only. Set the driver's own `Start` to 4 and reboot, then check `driverquery`.
