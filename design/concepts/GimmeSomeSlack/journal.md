@@ -13,12 +13,12 @@ mods read alike.
 - **Design Version 0.1.0, locked** on his word 2026-11-13 ~3:40 PM PST (`version/VERSION.json`); the lock record pins the text
   at that word, `bf33322d77` (re-pinned 2026-11-14, steward's decision). Code: `src/RimMandrake/GimmeSomeSlack/` (C#, 62
   sources; C# SelfTest 4515 checks; `validation.py`; `northstar/proof_all.py`, the one dense live proof).
-- **Stage now:** Stage 3, offline build, since 2026-11-20 4:59 PM PST (`version/stage_record.json`).
+- **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-20 7:23 PM PST (`version/stage_record.json`).
 - **Bars:** 48 (23 inventory rows of `record.json` + 26 leaves of `tree.json`; `shock_reach_setting` is both, so 49 rows
   name 48 ids; `cords_draw_under_things` added by his card 2026-11-14). The test-and-stage table is
   `version/test_table.json` (read view `version/test_table.md`), made by the throwaway `version/make_test_table.py`. Of 48
   bars: 48 have a deciding test runnable today (counts as of now: "Waiting on").
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-20 4:59 PM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-20 7:23 PM PST).
 - **Open questions for him:** "Questions for him", the last part of this top section.
 
 ### The vision (his root paragraph, `record.json` root, OWNER:1793895896496551063)
@@ -458,3 +458,13 @@ row 2; Stage 3 about $10.3 and 50 minutes (12:15 to 13:05 PST). No helpers, no g
   scene_no_roof_over_pole` (rows in `northstar/scene_rows.py`; probe verbs `flick:`, `icons`, `drawlayer:`, `roofgate:`, `roofpaint:`). A
   fake-bridge run reads each PASS on a good game and FAIL on a bad one; the bridge calls themselves are untested.
 - Bars not runnable: 4 before, 0 (every_bar_has_a_check_that_runs passes; the judge certificate still wants `maturation.py certificate GimmeSomeSlack --run`, the steward's step) after (`maturation.py next`).
+
+### 2026-11-20 7:23 PM PST, stage change: Offline build (Stage 3) to Blind challenge, tests first (Stages 4 and 5) (by BENCH)
+
+- Why: steward run RIMMANDRAKE_CONFIRM_GIMMESOMESLACK_OFFLINE_BUILD_HAND: only hand step walk_bars_confirmed left; read its deciders
+- Checks passed: order, by, version, hold, every_bar_has_a_check_that_runs, walk_bars_confirmed, table_version, fourth_cycle, judge_certificate.
+- Steward confirms: walk_scavenger_base: deciders sc_walk + LOOK_STAGE8. sc_walk is live_full, entry exists (src/RimMandrake/GimmeSomeSlack/northstar/gss_playtest_runner.py::scene_walk, line 240; scenes.json sc_walk present; its build item GSS_SCENES_BUILD_EVERY_CORD_A_FOIL closed), UNRUN with its command as a Stage 6 scene. LOOK_STAGE8 is his stage-8 walk, no entry by nature. Support T_H_PLAYTEST_RUNNER PASS 43/43 re-run now. Verdict: the scene entry exists and only his look waits; confirmed.
+- Blind cycle 1 of this visit (1 in all).
+- Was, "Stage now": - **Stage now:** Stage 3, offline build, since 2026-11-20 4:59 PM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-20 4:59 PM PST).
+- Record: `version/stage_record.json`.
