@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "3b4f9d6840b5df1409994137854c7094f2aa678dbb8cbebf80a54b79c028f12d",
+  "body_sha256": "390a5414fe64ac5796da4257bd74404ec49b2f5176a7f278ad2141858904e166",
   "reducer": 1,
   "shards": {
    "BACKFILL": 893183,
@@ -22,7 +22,7 @@
    "HOLDER.run-1795263747": 1891,
    "HOLDER.run-1795268290": 5226,
    "HOLDER.run-1795285878": 924,
-   "HOLDER.run-1795297113": 2709,
+   "HOLDER.run-1795297113": 3434,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1719,7 +1719,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1517,
+  "events": 1518,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7820,7 +7820,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-21T22:08:43Z",
+   "last": "2026-11-21T22:23:10Z",
    "lease": "run-1795297113",
    "released": false,
    "token": 34
@@ -9878,6 +9878,14 @@
     "ts": "2026-11-16T11:41:51Z",
     "version": "0.1.0",
     "where": "RM_FluidResidue.cs, RM_HotLiquid.cs"
+   },
+   "trap:the-garden-filter-base-rate-fail-did-not-reproduce-on-game-b": {
+    "by": "HOLDER.run-1795297113",
+    "status": "noted",
+    "text": "sc_garden GARDEN_filter_keeps_its_rate failed once on game a (08:58, base rate after chunk 3) and passed 6 of 6 measured runs on game b after cb0bc0086e (32 batches each). A steady 1-in-2 fault passes 6 of 6 about 1.6% of the time. The game-a cause is not found.",
+    "ts": "2026-11-21T22:23:10Z",
+    "version": "0.1.0",
+    "where": "design/concepts/FlowWorks/version/in_game/visit_3/evidence/exp/sc_garden_gameb_20261121_seven_runs.json"
    },
    "trap:the-gss-hose-selftests-that-moved-to-flowworks": {
     "by": "BACKFILL",
