@@ -3,7 +3,7 @@
  "examiner": "rm-judge Examiner aa81345c846acbccb (fresh Opus, not the author; steward run bench-pyre-exam-st4-r9-20261117)",
  "challenger": "rm-judge Challenger a38265bfec3640110 (fresh Opus, not the author)",
  "inputs": {
-  "tree": "2151214485d8553d2b830b2b86104a8d54ce19017d8b8a0fc8eefd556cc6b8c1",
+  "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54",
   "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c"
  },
  "scenarios": [
@@ -291,8 +291,8 @@
  "scenarios_hash": "28f4a86525c0a76c6c8d15506a8dbc9129cb37dfdf3753032f7c1750309e07de",
  "frozen_at": "2026-11-17T20:02:40Z",
  "readers": [
-  "rm-judge Reader A a8df6ea0288f94114 (fresh Opus; sheet, tree, scenario text only)",
-  "rm-judge Reader B a682832acb7f2183e (fresh Opus; sheet, tree, scenario text only)"
+  "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)",
+  "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)"
  ],
  "control": {
   "broken_leaf": "fire_walks_with_wind",
@@ -301,8 +301,8 @@
    "e5",
    "c3"
   ],
-  "reader": "rm-judge control a68e1a33a4f8efa28",
-  "note": "Control Reader got exam_control/ (designer_stage.py exam-control --leaf fire_walks_with_wind); no other leaf or sheet line paraphrases the wind rule (grep wind/gust/bearing/evenly/direction: none). It accepted two wind rejects both real Readers caught, so the scenarios discriminate."
+  "reader": "rm-judge control a5ff83454d8821e5a",
+  "note": "Control Reader got exam_control/ (designer_stage.py exam-control --leaf fire_walks_with_wind, regenerated 2026-11-21 on tree 78f3df67); read the whole 40-scenario set"
  },
  "score": {
   "right": 40,
@@ -310,7 +310,7 @@
  },
  "accept_where_reject_core": 0,
  "challenger_misses": [],
- "audit": "each Reader worked in a folder holding only sheet.md, tree.json and reader_scenarios.md (no expect text); each reports opening only those three",
+ "audit": "whole retake by run rm-role-designer-1795255597 on the 2026-11-17 frozen scenario set (scenarios_hash unchanged; examiner and challenger as frozen); each Reader read only /tmp copies of sheet.md, tree.json and scenarios.json (id + text, no expect)",
  "verdicts": {
   "reader_a": {
    "e1": "accept",
@@ -438,5 +438,332 @@
    "c7": "reject",
    "c8": "reject"
   }
- }
+ },
+ "reader_verdicts": {
+  "rm-judge Reader A ac10c42c043e9a170 (fresh Opus; sheet, tree, scenario text only)": {
+   "e1": {
+    "verdict": "accept",
+    "leaf": "burn_line_walks"
+   },
+   "e2": {
+    "verdict": "reject",
+    "leaf": "burn_line_walks"
+   },
+   "e3": {
+    "verdict": "reject",
+    "leaf": "burn_line_walks"
+   },
+   "e4": {
+    "verdict": "accept",
+    "leaf": "fire_walks_with_wind"
+   },
+   "e5": {
+    "verdict": "reject",
+    "leaf": "fire_walks_with_wind"
+   },
+   "e6": {
+    "verdict": "accept",
+    "leaf": "fire_walks_with_wind"
+   },
+   "e7": {
+    "verdict": "reject",
+    "leaf": "ash_ground_and_blowing_ash"
+   },
+   "e8": {
+    "verdict": "accept",
+    "leaf": "ash_fertile_when_watered"
+   },
+   "e9": {
+    "verdict": "reject",
+    "leaf": "ash_fertile_when_watered"
+   },
+   "e10": {
+    "verdict": "accept",
+    "leaf": "fresh_burn_compounds_with_black_rain"
+   },
+   "e11": {
+    "verdict": "reject",
+    "leaf": "fresh_burn_compounds_with_black_rain"
+   },
+   "e12": {
+    "verdict": "accept",
+    "leaf": "grass_carpets_and_regreens"
+   },
+   "e13": {
+    "verdict": "reject",
+    "leaf": "grass_carpets_and_regreens"
+   },
+   "e14": {
+    "verdict": "reject",
+    "leaf": "grass_carpets_and_regreens"
+   },
+   "e15": {
+    "verdict": "reject",
+    "leaf": "scorchfruit_born_of_fire"
+   },
+   "e16": {
+    "verdict": "accept",
+    "leaf": "populations_are_the_biomes_own"
+   },
+   "e17": {
+    "verdict": "accept",
+    "leaf": "ruins_stand_blackened"
+   },
+   "e18": {
+    "verdict": "accept",
+    "leaf": "firehawk_lights_ahead"
+   },
+   "e19": {
+    "verdict": "reject",
+    "leaf": "furnacebeast_warms"
+   },
+   "e20": {
+    "verdict": "accept",
+    "leaf": "ashwallow_dives_unharmed"
+   },
+   "e21": {
+    "verdict": "reject",
+    "leaf": "ullai_graze_old_burns"
+   },
+   "e22": {
+    "verdict": "reject",
+    "leaf": "three_skies"
+   },
+   "e23": {
+    "verdict": "accept",
+    "leaf": "no_ordinary_rain"
+   },
+   "e24": {
+    "verdict": "accept",
+    "leaf": "ash_fertility_probe"
+   },
+   "e25": {
+    "verdict": "reject",
+    "leaf": "walk_season_on_the_pyre"
+   },
+   "e26": {
+    "verdict": "accept",
+    "leaf": "firefoam_sprayer_reaches_the_fruit"
+   },
+   "e27": {
+    "verdict": "accept",
+    "leaf": "sand_shovel_yields_glass_sand"
+   },
+   "e28": {
+    "verdict": "reject",
+    "leaf": "fire_rite_hook_silent_alone"
+   },
+   "e29": {
+    "verdict": "accept",
+    "leaf": "biome_text_says_engineered"
+   },
+   "e30": {
+    "verdict": "accept",
+    "leaf": "flamefang_bite_carries_venom"
+   },
+   "e31": {
+    "verdict": "reject",
+    "leaf": "firehawk_hunt_rewards"
+   },
+   "e32": {
+    "verdict": "accept",
+    "leaf": "ullai_cross_the_map_as_vanilla_herds"
+   },
+   "c1": {
+    "verdict": "reject",
+    "leaf": "burn_line_walks"
+   },
+   "c2": {
+    "verdict": "reject",
+    "leaf": "burn_line_walks"
+   },
+   "c3": {
+    "verdict": "reject",
+    "leaf": "fire_walks_with_wind"
+   },
+   "c4": {
+    "verdict": "reject",
+    "leaf": "ash_fertile_when_watered"
+   },
+   "c5": {
+    "verdict": "reject",
+    "leaf": "grass_carpets_and_regreens"
+   },
+   "c6": {
+    "verdict": "reject",
+    "leaf": "grass_carpets_and_regreens"
+   },
+   "c7": {
+    "verdict": "reject",
+    "leaf": "scorchfruit_born_of_fire"
+   },
+   "c8": {
+    "verdict": "reject",
+    "leaf": "fresh_burn_compounds_with_black_rain"
+   }
+  },
+  "rm-judge Reader B ae132c2288f7538ea (fresh Opus; sheet, tree, scenario text only)": {
+   "e1": {
+    "verdict": "accept",
+    "leaf": "burn_line_walks"
+   },
+   "e2": {
+    "verdict": "reject",
+    "leaf": "burn_line_walks"
+   },
+   "e3": {
+    "verdict": "reject",
+    "leaf": "burn_line_walks"
+   },
+   "e4": {
+    "verdict": "accept",
+    "leaf": "fire_walks_with_wind"
+   },
+   "e5": {
+    "verdict": "reject",
+    "leaf": "fire_walks_with_wind"
+   },
+   "e6": {
+    "verdict": "accept",
+    "leaf": "fire_walks_with_wind"
+   },
+   "e7": {
+    "verdict": "reject",
+    "leaf": "ash_ground_and_blowing_ash"
+   },
+   "e8": {
+    "verdict": "accept",
+    "leaf": "ash_fertile_when_watered"
+   },
+   "e9": {
+    "verdict": "reject",
+    "leaf": "ash_fertile_when_watered"
+   },
+   "e10": {
+    "verdict": "accept",
+    "leaf": "fresh_burn_compounds_with_black_rain"
+   },
+   "e11": {
+    "verdict": "reject",
+    "leaf": "fresh_burn_compounds_with_black_rain"
+   },
+   "e12": {
+    "verdict": "accept",
+    "leaf": "grass_carpets_and_regreens"
+   },
+   "e13": {
+    "verdict": "reject",
+    "leaf": "grass_carpets_and_regreens"
+   },
+   "e14": {
+    "verdict": "reject",
+    "leaf": "grass_carpets_and_regreens"
+   },
+   "e15": {
+    "verdict": "reject",
+    "leaf": "scorchfruit_born_of_fire"
+   },
+   "e16": {
+    "verdict": "accept",
+    "leaf": "populations_are_the_biomes_own"
+   },
+   "e17": {
+    "verdict": "accept",
+    "leaf": "ruins_stand_blackened"
+   },
+   "e18": {
+    "verdict": "accept",
+    "leaf": "firehawk_lights_ahead"
+   },
+   "e19": {
+    "verdict": "reject",
+    "leaf": "furnacebeast_warms"
+   },
+   "e20": {
+    "verdict": "accept",
+    "leaf": "ashwallow_dives_unharmed"
+   },
+   "e21": {
+    "verdict": "reject",
+    "leaf": "ullai_graze_old_burns"
+   },
+   "e22": {
+    "verdict": "reject",
+    "leaf": "three_skies"
+   },
+   "e23": {
+    "verdict": "accept",
+    "leaf": "no_ordinary_rain"
+   },
+   "e24": {
+    "verdict": "accept",
+    "leaf": "ash_fertility_probe"
+   },
+   "e25": {
+    "verdict": "reject",
+    "leaf": "walk_season_on_the_pyre"
+   },
+   "e26": {
+    "verdict": "accept",
+    "leaf": "firefoam_sprayer_reaches_the_fruit"
+   },
+   "e27": {
+    "verdict": "accept",
+    "leaf": "sand_shovel_yields_glass_sand"
+   },
+   "e28": {
+    "verdict": "reject",
+    "leaf": "fire_rite_hook_silent_alone"
+   },
+   "e29": {
+    "verdict": "accept",
+    "leaf": "biome_text_says_engineered"
+   },
+   "e30": {
+    "verdict": "accept",
+    "leaf": "flamefang_bite_carries_venom"
+   },
+   "e31": {
+    "verdict": "reject",
+    "leaf": "firehawk_hunt_rewards"
+   },
+   "e32": {
+    "verdict": "accept",
+    "leaf": "ullai_cross_the_map_as_vanilla_herds"
+   },
+   "c1": {
+    "verdict": "reject",
+    "leaf": "burn_line_walks"
+   },
+   "c2": {
+    "verdict": "reject",
+    "leaf": "burn_line_walks"
+   },
+   "c3": {
+    "verdict": "reject",
+    "leaf": "fire_walks_with_wind"
+   },
+   "c4": {
+    "verdict": "reject",
+    "leaf": "ash_fertile_when_watered"
+   },
+   "c5": {
+    "verdict": "reject",
+    "leaf": "grass_carpets_and_regreens"
+   },
+   "c6": {
+    "verdict": "reject",
+    "leaf": "grass_carpets_and_regreens"
+   },
+   "c7": {
+    "verdict": "reject",
+    "leaf": "scorchfruit_born_of_fire"
+   },
+   "c8": {
+    "verdict": "reject",
+    "leaf": "fresh_burn_compounds_with_black_rain"
+   }
+  }
+ },
+ "retaken_at": "2026-11-21T10:09:17Z"
 }

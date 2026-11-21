@@ -1,6 +1,8 @@
 {
  "leaf": "fire_walks_with_wind",
- "base_tree": "2151214485d8553d2b830b2b86104a8d54ce19017d8b8a0fc8eefd556cc6b8c1",
+ "base_tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54",
+ "base_sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
  "by": "designer_stage.py exam-control",
- "at": "2026-11-17T19:59:45Z"
+ "strip": [],
+ "at": "2026-11-21T10:07:54Z"
 }
