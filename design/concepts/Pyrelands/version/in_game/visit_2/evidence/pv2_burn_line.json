@@ -1,7 +1,7 @@
 {
   "mod": "Pyrelands",
   "mode": "live",
-  "started_utc": "2026-11-21T04:55:30Z",
+  "started_utc": "2026-11-21T05:26:25Z",
   "expected": [
     "pyre_plant_distribution_correct",
     "pyre_animal_distribution_correct",
@@ -248,15 +248,15 @@
       "id": "burn_line.burn_line_burned_share",
       "status": "UNMEASURED",
       "functional": true,
-      "evidence": "surprise: safe_advance stopped after 1320 of 2000 tick(s): hostile_arrival: turned hostile: RM_FireHawk (Manhunter)",
-      "evidenceFull": "surprise: safe_advance stopped after 1320 of 2000 tick(s): hostile_arrival: turned hostile: RM_FireHawk (Manhunter)"
+      "evidence": "surprise: safe_advance aborted after 1860 of 2000 tick(s): monitor disarmed mid-advance (coverage lost)",
+      "evidenceFull": "surprise: safe_advance aborted after 1860 of 2000 tick(s): monitor disarmed mid-advance (coverage lost)"
     },
     {
       "id": "burn_line.burn_line_off_control",
       "status": "UNMEASURED",
       "functional": true,
-      "evidence": "a surprise ended this chain earlier: surprise: safe_advance stopped after 1320 of 2000 tick(s): hostile_arrival: turned hostile: RM_FireHawk (Manhunter)",
-      "evidenceFull": "a surprise ended this chain earlier: surprise: safe_advance stopped after 1320 of 2000 tick(s): hostile_arrival: turned hostile: RM_FireHawk (Manhunter)"
+      "evidence": "a surprise ended this chain earlier: surprise: safe_advance aborted after 1860 of 2000 tick(s): monitor disarmed mid-advance (coverage lost)",
+      "evidenceFull": "a surprise ended this chain earlier: surprise: safe_advance aborted after 1860 of 2000 tick(s): monitor disarmed mid-advance (coverage lost)"
     },
     {
       "id": "plant_census.skipped#1",
@@ -1104,9 +1104,9 @@
       ],
       "screenshots": [
         {
-          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\burn_line_present_1795237034.png",
-          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\burn_line_present_1795237034.png",
-          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/burn_line_present_1795237034.png"
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\burn_line_present_1795238919.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\burn_line_present_1795238919.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/burn_line_present_1795238919.png"
         }
       ]
     },
@@ -1122,33 +1122,28 @@
       "chain": "burn_line",
       "name": "burn_line_burned_share",
       "verdict": "UNMEASURED",
-      "evidenceFull": "surprise: safe_advance stopped after 1320 of 2000 tick(s): hostile_arrival: turned hostile: RM_FireHawk (Manhunter)",
+      "evidenceFull": "surprise: safe_advance aborted after 1860 of 2000 tick(s): monitor disarmed mid-advance (coverage lost)",
       "shows": [],
       "screenshots": [
         {
-          "path": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_VISIT_TWO_RUN_TWO.det\\src\\RimMandrake\\Utils\\..\\..\\..\\Transient\\modcheck\\burn_share_on_day_1_fallback_1795237102.bmp",
-          "win": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_VISIT_TWO_RUN_TWO.det\\src\\RimMandrake\\Utils\\..\\..\\..\\Transient\\modcheck\\burn_share_on_day_1_fallback_1795237102.bmp",
-          "wsl": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_VISIT_TWO_RUN_TWO.det\\src\\RimMandrake\\Utils\\..\\..\\..\\Transient\\modcheck\\burn_share_on_day_1_fallback_1795237102.bmp"
+          "path": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_VISIT_TWO_RUN_TWO.det\\src\\RimMandrake\\Utils\\..\\..\\..\\Transient\\modcheck\\burn_share_on_day_1_fallback_1795239009.bmp",
+          "win": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_VISIT_TWO_RUN_TWO.det\\src\\RimMandrake\\Utils\\..\\..\\..\\Transient\\modcheck\\burn_share_on_day_1_fallback_1795239009.bmp",
+          "wsl": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_VISIT_TWO_RUN_TWO.det\\src\\RimMandrake\\Utils\\..\\..\\..\\Transient\\modcheck\\burn_share_on_day_1_fallback_1795239009.bmp"
         },
         {
-          "path": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_VISIT_TWO_RUN_TWO.det\\src\\RimMandrake\\Utils\\..\\..\\..\\Transient\\modcheck\\burn_share_on_day_2_fallback_1795237170.bmp",
-          "win": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_VISIT_TWO_RUN_TWO.det\\src\\RimMandrake\\Utils\\..\\..\\..\\Transient\\modcheck\\burn_share_on_day_2_fallback_1795237170.bmp",
-          "wsl": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_VISIT_TWO_RUN_TWO.det\\src\\RimMandrake\\Utils\\..\\..\\..\\Transient\\modcheck\\burn_share_on_day_2_fallback_1795237170.bmp"
+          "path": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_VISIT_TWO_RUN_TWO.det\\src\\RimMandrake\\Utils\\..\\..\\..\\Transient\\modcheck\\burn_share_on_day_2_fallback_1795239087.bmp",
+          "win": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_VISIT_TWO_RUN_TWO.det\\src\\RimMandrake\\Utils\\..\\..\\..\\Transient\\modcheck\\burn_share_on_day_2_fallback_1795239087.bmp",
+          "wsl": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_VISIT_TWO_RUN_TWO.det\\src\\RimMandrake\\Utils\\..\\..\\..\\Transient\\modcheck\\burn_share_on_day_2_fallback_1795239087.bmp"
         },
         {
-          "path": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_VISIT_TWO_RUN_TWO.det\\src\\RimMandrake\\Utils\\..\\..\\..\\Transient\\modcheck\\burn_share_on_day_3_fallback_1795237237.bmp",
-          "win": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_VISIT_TWO_RUN_TWO.det\\src\\RimMandrake\\Utils\\..\\..\\..\\Transient\\modcheck\\burn_share_on_day_3_fallback_1795237237.bmp",
-          "wsl": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_VISIT_TWO_RUN_TWO.det\\src\\RimMandrake\\Utils\\..\\..\\..\\Transient\\modcheck\\burn_share_on_day_3_fallback_1795237237.bmp"
+          "path": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_VISIT_TWO_RUN_TWO.det\\src\\RimMandrake\\Utils\\..\\..\\..\\Transient\\modcheck\\burn_share_on_day_3_fallback_1795239164.bmp",
+          "win": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_VISIT_TWO_RUN_TWO.det\\src\\RimMandrake\\Utils\\..\\..\\..\\Transient\\modcheck\\burn_share_on_day_3_fallback_1795239164.bmp",
+          "wsl": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_VISIT_TWO_RUN_TWO.det\\src\\RimMandrake\\Utils\\..\\..\\..\\Transient\\modcheck\\burn_share_on_day_3_fallback_1795239164.bmp"
         },
         {
-          "path": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_VISIT_TWO_RUN_TWO.det\\src\\RimMandrake\\Utils\\..\\..\\..\\Transient\\modcheck\\burn_share_on_day_4_fallback_1795237303.bmp",
-          "win": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_VISIT_TWO_RUN_TWO.det\\src\\RimMandrake\\Utils\\..\\..\\..\\Transient\\modcheck\\burn_share_on_day_4_fallback_1795237303.bmp",
-          "wsl": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_VISIT_TWO_RUN_TWO.det\\src\\RimMandrake\\Utils\\..\\..\\..\\Transient\\modcheck\\burn_share_on_day_4_fallback_1795237303.bmp"
-        },
-        {
-          "path": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_VISIT_TWO_RUN_TWO.det\\src\\RimMandrake\\Utils\\..\\..\\..\\Transient\\modcheck\\burn_share_off_day_1_fallback_1795237455.bmp",
-          "win": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_VISIT_TWO_RUN_TWO.det\\src\\RimMandrake\\Utils\\..\\..\\..\\Transient\\modcheck\\burn_share_off_day_1_fallback_1795237455.bmp",
-          "wsl": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_VISIT_TWO_RUN_TWO.det\\src\\RimMandrake\\Utils\\..\\..\\..\\Transient\\modcheck\\burn_share_off_day_1_fallback_1795237455.bmp"
+          "path": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_VISIT_TWO_RUN_TWO.det\\src\\RimMandrake\\Utils\\..\\..\\..\\Transient\\modcheck\\burn_share_on_day_4_fallback_1795239239.bmp",
+          "win": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_VISIT_TWO_RUN_TWO.det\\src\\RimMandrake\\Utils\\..\\..\\..\\Transient\\modcheck\\burn_share_on_day_4_fallback_1795239239.bmp",
+          "wsl": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_VISIT_TWO_RUN_TWO.det\\src\\RimMandrake\\Utils\\..\\..\\..\\Transient\\modcheck\\burn_share_on_day_4_fallback_1795239239.bmp"
         }
       ]
     },
@@ -1156,7 +1151,7 @@
       "chain": "burn_line",
       "name": "burn_line_off_control",
       "verdict": "UNMEASURED",
-      "evidenceFull": "a surprise ended this chain earlier: surprise: safe_advance stopped after 1320 of 2000 tick(s): hostile_arrival: turned hostile: RM_FireHawk (Manhunter)",
+      "evidenceFull": "a surprise ended this chain earlier: surprise: safe_advance aborted after 1860 of 2000 tick(s): monitor disarmed mid-advance (coverage lost)",
       "shows": [],
       "screenshots": []
     },
@@ -2120,215 +2115,215 @@
   },
   "all_green": false,
   "timing": {
-    "n": 2275,
-    "total_ms": 665512.989,
-    "mean_ms": 292.5332,
-    "p50_ms": 19.3403,
-    "p95_ms": 2026.4353,
+    "n": 1904,
+    "total_ms": 482362.967,
+    "mean_ms": 253.3419,
+    "p50_ms": 49.9995,
+    "p95_ms": 2080.9114,
     "by_tool": {
       "jawa/static_call": {
-        "n": 25,
-        "mean_ms": 28.625,
+        "n": 20,
+        "mean_ms": 56.4402,
         "errors": 0
       },
       "rimworld/get_game_info": {
-        "n": 368,
-        "mean_ms": 6.3234,
+        "n": 305,
+        "mean_ms": 20.9557,
         "errors": 0
       },
       "jawa/map_info": {
-        "n": 118,
-        "mean_ms": 8.9938,
+        "n": 101,
+        "mean_ms": 50.0351,
         "errors": 0
       },
       "rimworld/get_ui_state": {
         "n": 13,
-        "mean_ms": 322.6839,
+        "mean_ms": 208.9628,
         "errors": 0
       },
       "jawa/prefs": {
         "n": 1,
-        "mean_ms": 20.4948,
+        "mean_ms": 50.2198,
         "errors": 0
       },
       "jawa/world_mutators_get": {
         "n": 1,
-        "mean_ms": 20.044,
+        "mean_ms": 50.0738,
         "errors": 0
       },
       "jawa/list_things": {
         "n": 27,
-        "mean_ms": 18.0298,
+        "mean_ms": 49.7506,
         "errors": 0
       },
       "jawa/get_roof_batch": {
         "n": 20,
-        "mean_ms": 7.2347,
+        "mean_ms": 49.8931,
         "errors": 0
       },
       "rimworld/get_cell_info": {
         "n": 20,
-        "mean_ms": 2.592,
+        "mean_ms": 16.7999,
         "errors": 0
       },
       "jawa/cell_temperature": {
         "n": 20,
-        "mean_ms": 20.1238,
+        "mean_ms": 49.0847,
         "errors": 0
       },
       "jawa/world_tile_get": {
         "n": 1,
-        "mean_ms": 26.9679,
+        "mean_ms": 49.9282,
         "errors": 0
       },
       "jawa/weather_get": {
         "n": 3,
-        "mean_ms": 22.7197,
+        "mean_ms": 49.5256,
         "errors": 0
       },
       "jawa/time_clock": {
         "n": 4,
-        "mean_ms": 19.3517,
+        "mean_ms": 51.8134,
         "errors": 0
       },
       "jawa/incident_queue_clear": {
         "n": 3,
-        "mean_ms": 20.517,
+        "mean_ms": 51.7626,
         "errors": 0
       },
       "jawa/list_pawns": {
-        "n": 344,
-        "mean_ms": 11.1499,
+        "n": 282,
+        "mean_ms": 50.922,
         "errors": 0
       },
       "jawa/window_list_close": {
         "n": 3,
-        "mean_ms": 24.1071,
+        "mean_ms": 49.7875,
         "errors": 0
       },
       "jawa/drain_log": {
         "n": 1,
-        "mean_ms": 25.3444,
+        "mean_ms": 55.2837,
         "errors": 0
       },
       "jawa/name_colony": {
         "n": 2,
-        "mean_ms": 20.082,
+        "mean_ms": 55.4792,
         "errors": 0
       },
       "jawa/pawn_need": {
-        "n": 830,
-        "mean_ms": 22.2156,
+        "n": 681,
+        "mean_ms": 52.0103,
         "errors": 0
       },
       "jawa/pawn_health": {
-        "n": 124,
-        "mean_ms": 22.4922,
+        "n": 98,
+        "mean_ms": 50.851,
         "errors": 0
       },
       "jawa/mod_settings_field": {
         "n": 17,
-        "mean_ms": 25.3884,
+        "mean_ms": 55.8634,
         "errors": 0
       },
       "jawa/map_fire": {
-        "n": 3,
-        "mean_ms": 198.818,
+        "n": 2,
+        "mean_ms": 323.4219,
         "errors": 0
       },
       "jawa/safe_advance": {
-        "n": 251,
-        "mean_ms": 2497.2866,
+        "n": 205,
+        "mean_ms": 1949.2834,
         "errors": 0
       },
       "jawa/clear_ui": {
-        "n": 6,
-        "mean_ms": 21.3445,
+        "n": 5,
+        "mean_ms": 49.8748,
         "errors": 0
       },
       "rimworld/jump_camera_to_cell": {
         "n": 1,
-        "mean_ms": 16.2346,
+        "mean_ms": 16.3167,
         "errors": 0
       },
       "rimworld/take_screenshot": {
         "n": 1,
-        "mean_ms": 540.1035,
+        "mean_ms": 525.0043,
         "errors": 0
       },
       "rimworld/list_colonists": {
         "n": 6,
-        "mean_ms": 3.1693,
+        "mean_ms": 16.5566,
         "errors": 0
       },
       "jawa/incident_queue_peek": {
         "n": 5,
-        "mean_ms": 18.26,
+        "mean_ms": 49.9024,
         "errors": 0
       },
       "jawa/get_terrain_batch": {
         "n": 4,
-        "mean_ms": 11.5884,
+        "mean_ms": 51.151,
         "errors": 0
       },
       "jawa/get_defs": {
         "n": 1,
-        "mean_ms": 5.2625,
+        "mean_ms": 50.4421,
         "errors": 0
       },
       "rimworld/save_game": {
         "n": 1,
-        "mean_ms": 740.412,
+        "mean_ms": 1174.2258,
         "errors": 0
       },
       "jawa/glow_at": {
         "n": 25,
-        "mean_ms": 21.3282,
+        "mean_ms": 52.5851,
         "errors": 0
       },
       "rimworld/screenshot_cell_rect": {
-        "n": 5,
-        "mean_ms": 54.1816,
+        "n": 4,
+        "mean_ms": 69.9325,
         "errors": 0
       },
       "rimworld/go_to_main_menu": {
         "n": 1,
-        "mean_ms": 22.8962,
+        "mean_ms": 23.5154,
         "errors": 0
       },
       "rimworld/load_game": {
         "n": 1,
-        "mean_ms": 15.8199,
+        "mean_ms": 1378.2365,
         "errors": 0
       },
       "rimbridge/get_bridge_status": {
         "n": 2,
-        "mean_ms": 5.9461,
+        "mean_ms": 13.1193,
         "errors": 0
       },
       "jawa/debug_settings": {
         "n": 10,
-        "mean_ms": 21.8552,
+        "mean_ms": 52.5855,
         "errors": 0
       },
       "jawa/difficulty_tune": {
         "n": 3,
-        "mean_ms": 21.356,
+        "mean_ms": 52.958,
         "errors": 0
       },
       "jawa/wild_spawner_block": {
         "n": 2,
-        "mean_ms": 18.6681,
+        "mean_ms": 49.4929,
         "errors": 0
       },
       "jawa/quiet_site": {
         "n": 1,
-        "mean_ms": 23.1103,
+        "mean_ms": 49.6003,
         "errors": 0
       },
       "jawa/set_gas": {
         "n": 1,
-        "mean_ms": 20.868,
+        "mean_ms": 50.3534,
         "errors": 0
       }
     }

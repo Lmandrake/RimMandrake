@@ -79,3 +79,10 @@ samples Wait x15, no RM_ShadeDash. RULED OUT: the noon sun dash as the whole cau
 `gate_off_kills_nothing` (sc_roof_withers) FAIL: with the gate off patch A kept 700 HP and no wither line, then 25 -> 0
 between two hourly reads near hour 41. Not the mod's wither (gate on: HP falls hourly with the line shown). Filed
 RIMMANDRAKE_TRACE_PYRE_ROOFED_PATCH_GONE_AT_ONCE.
+
+## F14 the burn walk watches a map with no front (HARNESS presumed, filed)
+`burn_line_walks_hourly` (sc_burn_line_walks): 0 fires at all 24 hourly reads, 2 of 2 runs, so no walking save. It runs
+after burn_line_present's 120k-tick quiet window, on a fixture whose opening front (lit at map birth) is long out; the 12
+fires the standing burn reseeded were gone by the first hourly read. Removing the extinguish at the end of
+burn_line_present (a7d25d9f33) did not cure it. Filed RIMMANDRAKE_REORDER_PYRE_BURN_WALK_BEFORE_ITS_FRONT_DIES (a MOD
+cause, a reseed that dies within the hour, is not ruled out).

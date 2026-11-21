@@ -9,7 +9,7 @@ of the same check is a later row.
 import json, os, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 V2 = os.path.dirname(HERE)
-ROOT = os.path.abspath(os.path.join(V2, *[".."] * 5))
+ROOT = os.path.abspath(os.path.join(V2, *[".."] * 6))
 REL = os.path.relpath(V2, ROOT)
 DRIVER = ("python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan "
           "src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains %s")

@@ -1,18 +1,182 @@
 {
- "sc_ash_ground": {"*": {"class": "HARNESS", "unrepaired": "ash_fall_vs_clear_by_hour reads CurSkyGlow, which ash fall never lowers (it dims through skyColorsDay); no bridge tool reads the sky colour. shore_ring repaired (396d73530c) and now UNMEASURED SITE: the site has 0 standing-water cells (GenStep census). Two controls no tool can run.", "owner": "RIMMANDRAKE_MEASURE_PYRE_ASHFALL_DIMMING_BY_SKY_NOT_GLOW", "filed": ["RIMMANDRAKE_MEASURE_PYRE_ASHFALL_DIMMING_BY_SKY_NOT_GLOW", "RIMMANDRAKE_TRACE_PYRE_SITE_WITH_NO_STANDING_WATER_LEFT", "RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN"], "repair": {"class": "HARNESS", "commit": "e02accbb59 396d73530c", "what": "site saves load from the menu and wait for the map (F1); the shore ring counts standing water only (F3)", "planted": {"plant": "the parent's is_water_family on a mud relic with no water", "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_round6_parts.py", "verdict": "FAIL", "evidence": "the 'shore ring:' checks red on the parent, green on 396d73530c (findings F3)"}}}},
- "sc_ash_watered": {"*": {"class": "HARNESS", "unrepaired": "growth_rate_factor_temperature: Plant.GrowthRateFactor_Temperature is an instance property no bridge tool reads", "owner": "RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN"}},
- "sc_populations": {"*": {"class": "HARNESS", "unrepaired": "same_seed_gate_off_map and wild_plant_allowlist_day: no tool regenerates the tile with its seed, and no donor plant is in the tile's pass", "owner": "RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN"}},
- "sc_ruins": {"*": {"class": "SITE", "unrepaired": "vanilla_ruins_unpainted: the scratch world has no free flat TemperateForest tile for the control map", "owner": "RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN"}},
- "sc_firehawk": {"*": {"class": "HARNESS"}},
- "sc_ashwallow": {"*": {"class": "MOD", "unfixed": "the fix is not known: the dive loses to a Wait job by day and by night (the sun dash ruled out as the whole cause), the giver of that Wait is unread, and a fix may sit in CreatureBehaviors (another mod). A regression: visit 1 passed this row.", "filed": "RIMMANDRAKE_FIX_PYRE_ASHWALLOW_SHADE_DASH_BEATS_FIRE_DIVE"}},
- "sc_ullai": {"*": {"class": "HARNESS", "unrepaired": "giant_classic_restore_control: RestoreClassicFurnaceBeast is private; static_call reaches public statics only", "owner": "RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN"}},
- "sc_furnace_giant": {"*": {"class": "HARNESS", "unrepaired": "giant_classic_restore_control: RestoreClassicFurnaceBeast is private; static_call reaches public statics only", "owner": "RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN"}},
- "sc_three_skies": {"*": {"class": "HARNESS", "unrepaired": "cinderfall_lightning counts every new Fire; one came in ash fall's first window though AshFall carries no lightning maker (the row's def leg PASS); cause not traced (presumed, unproven)", "owner": "RIMMANDRAKE_TRACE_PYRE_ASHFALL_FIRE_IN_FIRST_LIGHTNING_WINDOW"}},
- "sc_no_rain": {"*": {"class": "HARNESS", "unrepaired": "forced_rain_becomes_black_rain: no tool sets GameCondition_ForceWeather.weather (visit 1's weather_roll_next route is the candidate); the vanilla control has no TemperateForest tile", "owner": "RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN"}},
- "sc_fire_sense": {"*": {"class": "HARNESS", "unrepaired": "fire_sense_hungry_eats_first FAIL in 2 of 2 chain runs, PASS in 2 of 2 clean-scene runs (scripts/hungry_exp.py); the difference is not found (presumed, unproven). roster_toggle_off: no setter.", "owner": "RIMMANDRAKE_TRACE_PYRE_HUNGRY_COLONIST_EATS_ONLY_OUTSIDE_CHAIN"}},
- "sc_roof_withers": {"*": {"class": "SITE", "unrepaired": "gate_off_kills_nothing: the gate-off roofed patch kept 700 HP and no wither line, then lost all 25 plants at once near hour 41; not the mod's wither; cause not traced (presumed, unproven)", "owner": "RIMMANDRAKE_TRACE_PYRE_ROOFED_PATCH_GONE_AT_ONCE"}},
- "sc_furnace_hide_bank": {"*": {"class": "SITE", "unrepaired": "the scratch world has no free flat Tundra tile for the vanilla control map, so the whole row is UNMEASURED", "owner": "RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN"}},
- "sc_flamefang_venom": {"*": {"class": "SITE", "unrepaired": "the untended patient was never bitten, and a wait-out colonist was mauled to death (BloodLoss); immunity has no read", "owner": "RIMMANDRAKE_STAGE_PYRE_FLAMEFANG_BITES_LAND_ONCE_NOT_MAUL"}},
- "sc_furnace_bed": {"*": {"class": "SITE", "unrepaired": "bed_fire_beast_vs_muffalo: the control muffalo was gone before ProbeSleep read it (no thing Muffalo94797 on any map)", "owner": "RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN"}},
- "sc_firefoam_sprayer": {"*": {"repair": {"class": "SITE", "commit": "9b4ad4ab14", "what": "the burning-fruit ring lit on all four sides (F7)", "planted": {"plant": "the parent's one-side fire (a state known bad)", "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains firefoam_sprayer", "verdict": "FAIL", "evidence": "git show 9b4ad4ab14:design/concepts/Pyrelands/version/in_game/visit_2/evidence/pv2_firefoam_sprayer.json (without_sprayer_fire_stops_or_burns FAIL: took the fruit unburned)"}}}}
+ "sc_ash_ground": {
+  "*": {
+   "class": "HARNESS",
+   "unrepaired": "ash_fall_vs_clear_by_hour reads CurSkyGlow, which ash fall never lowers (it dims through skyColorsDay); no bridge tool reads the sky colour. shore_ring repaired (396d73530c) and now UNMEASURED SITE: the site has 0 standing-water cells (GenStep census). Two controls no tool can run.",
+   "owner": "RIMMANDRAKE_MEASURE_PYRE_ASHFALL_DIMMING_BY_SKY_NOT_GLOW",
+   "filed": [
+    "RIMMANDRAKE_MEASURE_PYRE_ASHFALL_DIMMING_BY_SKY_NOT_GLOW",
+    "RIMMANDRAKE_TRACE_PYRE_SITE_WITH_NO_STANDING_WATER_LEFT",
+    "RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN"
+   ],
+   "repair": {
+    "class": "HARNESS",
+    "commit": "e02accbb59 396d73530c",
+    "what": "site saves load from the menu and wait for the map (F1); the shore ring counts standing water only (F3)",
+    "planted": {
+     "plant": "the parent's is_water_family on a mud relic with no water",
+     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_round6_parts.py",
+     "verdict": "FAIL",
+     "evidence": "the 'shore ring:' checks red on the parent, green on 396d73530c (findings F3)"
+    }
+   }
+  }
+ },
+ "sc_ash_watered": {
+  "*": {
+   "class": "HARNESS",
+   "unrepaired": "growth_rate_factor_temperature: Plant.GrowthRateFactor_Temperature is an instance property no bridge tool reads",
+   "owner": "RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN"
+  }
+ },
+ "sc_populations": {
+  "*": {
+   "class": "HARNESS",
+   "unrepaired": "same_seed_gate_off_map and wild_plant_allowlist_day: no tool regenerates the tile with its seed, and no donor plant is in the tile's pass",
+   "owner": "RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN"
+  }
+ },
+ "sc_ruins": {
+  "*": {
+   "class": "SITE",
+   "unrepaired": "vanilla_ruins_unpainted: the scratch world has no free flat TemperateForest tile for the control map",
+   "owner": "RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN"
+  }
+ },
+ "sc_firehawk": {
+  "*": {
+   "repair": {
+    "class": "HARNESS",
+    "commit": "9b4ad4ab14 a7d25d9f33",
+    "what": "the far hawk is sampled every 10 ticks for its first 250 ticks, then every 250 as before (F5; the extinguish before the plot stays)",
+    "planted": {
+     "plant": "a state known bad: fireHawkSpreadEnabled off (the seek giver gated off), the same repaired sampler, far_hawk_spread_off_control in the same run",
+     "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains firehawk",
+     "verdict": "FAIL",
+     "evidence": "design/concepts/Pyrelands/version/in_game/visit_2/evidence/pv2_firehawk.json (far_hawk_spread_off_control: no RM_FireHawkSeekBurn, so the main row's predicate fails on it); the old sampler's FAIL on the real build: git show 9b4ad4ab14:design/concepts/Pyrelands/version/in_game/visit_2/evidence/pv2_firehawk.json"
+    }
+   }
+  }
+ },
+ "sc_ashwallow": {
+  "*": {
+   "class": "MOD",
+   "unfixed": "the fix is not known: the dive loses to a Wait job by day and by night (the sun dash ruled out as the whole cause), the giver of that Wait is unread, and a fix may sit in CreatureBehaviors (another mod). A regression: visit 1 passed this row.",
+   "filed": "RIMMANDRAKE_FIX_PYRE_ASHWALLOW_SHADE_DASH_BEATS_FIRE_DIVE"
+  }
+ },
+ "sc_furnace_giant": {
+  "*": {
+   "class": "HARNESS",
+   "unrepaired": "giant_classic_restore_control: RestoreClassicFurnaceBeast is private; static_call reaches public statics only",
+   "owner": "RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN"
+  }
+ },
+ "sc_three_skies": {
+  "*": {
+   "class": "HARNESS",
+   "unrepaired": "cinderfall_lightning counts every new Fire; one came in ash fall's first window though AshFall carries no lightning maker (the row's def leg PASS); cause not traced (presumed, unproven)",
+   "owner": "RIMMANDRAKE_TRACE_PYRE_ASHFALL_FIRE_IN_FIRST_LIGHTNING_WINDOW"
+  }
+ },
+ "sc_no_rain": {
+  "*": {
+   "class": "HARNESS",
+   "unrepaired": "forced_rain_becomes_black_rain: no tool sets GameCondition_ForceWeather.weather (visit 1's weather_roll_next route is the candidate); the vanilla control has no TemperateForest tile",
+   "owner": "RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN"
+  }
+ },
+ "sc_fire_sense": {
+  "*": {
+   "class": "HARNESS",
+   "unrepaired": "fire_sense_hungry_eats_first FAIL in 2 of 2 chain runs, PASS in 2 of 2 clean-scene runs (scripts/hungry_exp.py); the difference is not found (presumed, unproven). roster_toggle_off: no setter.",
+   "owner": "RIMMANDRAKE_TRACE_PYRE_HUNGRY_COLONIST_EATS_ONLY_OUTSIDE_CHAIN"
+  }
+ },
+ "sc_roof_withers": {
+  "*": {
+   "class": "SITE",
+   "unrepaired": "gate_off_kills_nothing: the gate-off roofed patch kept 700 HP and no wither line, then lost all 25 plants at once near hour 41; not the mod's wither; cause not traced (presumed, unproven)",
+   "owner": "RIMMANDRAKE_TRACE_PYRE_ROOFED_PATCH_GONE_AT_ONCE"
+  }
+ },
+ "sc_furnace_hide_bank": {
+  "*": {
+   "class": "SITE",
+   "unrepaired": "the scratch world has no free flat Tundra tile for the vanilla control map, so the whole row is UNMEASURED",
+   "owner": "RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN"
+  }
+ },
+ "sc_flamefang_venom": {
+  "*": {
+   "class": "SITE",
+   "unrepaired": "the untended patient was never bitten, and a wait-out colonist was mauled to death (BloodLoss); immunity has no read",
+   "owner": "RIMMANDRAKE_STAGE_PYRE_FLAMEFANG_BITES_LAND_ONCE_NOT_MAUL"
+  }
+ },
+ "sc_furnace_bed": {
+  "*": {
+   "class": "SITE",
+   "unrepaired": "bed_fire_beast_vs_muffalo: the control muffalo was gone before ProbeSleep read it (no thing Muffalo94797 on any map)",
+   "owner": "RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN"
+  }
+ },
+ "sc_firefoam_sprayer": {
+  "*": {
+   "repair": {
+    "class": "SITE",
+    "commit": "9b4ad4ab14",
+    "what": "the burning-fruit ring lit on all four sides (F7)",
+    "planted": {
+     "plant": "the parent's one-side fire (a state known bad)",
+     "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains firefoam_sprayer",
+     "verdict": "FAIL",
+     "evidence": "git show 9b4ad4ab14:design/concepts/Pyrelands/version/in_game/visit_2/evidence/pv2_firefoam_sprayer.json (without_sprayer_fire_stops_or_burns FAIL: took the fruit unburned)"
+    }
+   }
+  }
+ },
+ "sc_firehawk_rewards": {
+  "*": {
+   "repair": {
+    "class": "HARNESS",
+    "commit": "9b4ad4ab14 a7d25d9f33",
+    "what": "letter_names_ember compares case-insensitively (F10, HARNESS); native fire-hawks removed before staging (F10, SITE)",
+    "planted": {
+     "plant": "a letter text with no ember phrase (selftest_pyrelands_letter_words.py) and, live, the native hawks left on the map (a state known bad)",
+     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_letter_words.py; python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains firehawk_first_sighting_letter",
+     "verdict": "FAIL",
+     "evidence": "selftest: 'a letter with no ember phrase does not' holds; live with natives: git show a7d25d9f33:design/concepts/Pyrelands/version/in_game/visit_2/evidence/pv2_firehawk_first_sighting_letter.json (the letter pointed at native RM_FireHawk92656)"
+    }
+   },
+   "note": "the letter text also shows MOD defect RIMMANDRAKE_FIX_PYRE_HAWK_LETTER_BLANKS_FOUR_NAMED_SLOTS (blank distances and bearings), which no row of this check reads"
+  }
+ },
+ "firehawk_first_sighting_letter": {
+  "*": {
+   "repair": {
+    "class": "HARNESS",
+    "commit": "9b4ad4ab14 a7d25d9f33",
+    "what": "letter_names_ember compares case-insensitively (F10, HARNESS); native fire-hawks removed before staging (F10, SITE)",
+    "planted": {
+     "plant": "a letter text with no ember phrase (selftest_pyrelands_letter_words.py) and, live, the native hawks left on the map (a state known bad)",
+     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_letter_words.py; python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains firehawk_first_sighting_letter",
+     "verdict": "FAIL",
+     "evidence": "selftest: 'a letter with no ember phrase does not' holds; live with natives: git show a7d25d9f33:design/concepts/Pyrelands/version/in_game/visit_2/evidence/pv2_firehawk_first_sighting_letter.json (the letter pointed at native RM_FireHawk92656)"
+    }
+   },
+   "note": "the letter text also shows MOD defect RIMMANDRAKE_FIX_PYRE_HAWK_LETTER_BLANKS_FOUR_NAMED_SLOTS (blank distances and bearings), which no row of this check reads"
+  }
+ },
+ "sc_burn_line_walks": {
+  "*": {
+   "class": "HARNESS",
+   "unrepaired": "burn_line_walks_hourly reads 0 fires at all 24 hours in 2 of 2 runs: the chain runs it after a 120k-tick quiet window on an aged fixture (the opening front lit at map birth is long out; the 12 reseeded fires are out within an hour). Keeping the reseeded front (a7d25d9f33) did not cure it. burned_share UNMEASURED both runs (a Manhunter hawk; then the monitor disarmed). Presumed HARNESS; a MOD cause (a reseed that dies within the hour) is not ruled out.",
+   "owner": "RIMMANDRAKE_REORDER_PYRE_BURN_WALK_BEFORE_ITS_FRONT_DIES",
+   "filed": [
+    "RIMMANDRAKE_REORDER_PYRE_BURN_WALK_BEFORE_ITS_FRONT_DIES",
+    "RIMMANDRAKE_TRACE_PYRE_FIREHAWK_TURNS_MANHUNTER_IN_BURN_WALK"
+   ]
+  }
+ }
 }
