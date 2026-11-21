@@ -2159,7 +2159,10 @@ SCENE_EXTRA_ROWS = {   # scenes with no requirement leaf, or rows the leaf map d
     "sc_removal_consequence": ["M9*"],
 }
 # scenes decided by their own rows only, not every row of their requirement leaf (a northstar/scene_rows list name)
-SCENE_OWN_ROWS = {"sc_cords_under_items": "UNDER_ROWS"}
+SCENE_OWN_ROWS = {"sc_cords_under_items": "UNDER_ROWS",
+                  # 0.1.1 PATCH (his walk of 2026-11-20): each new scene is decided by its own rows in northstar/scene_rows.py
+                  "sc_switch_off_ends": "SWITCH_OFF_ROWS", "sc_pole_icons_loaded": "POLE_ICON_ROWS",
+                  "sc_pole_south_of_tree": "POLE_SOUTH_ROWS", "sc_no_roof_over_pole": "NO_ROOF_ROWS"}
 
 
 def scene_rows_for(sid, scenes=None, row_leaves=None):
@@ -2316,6 +2319,54 @@ def scene_removal_consequence(B, V, rows):
 
 
 
+# 0.1.1 PATCH live halves (his walk of 2026-11-20). Each builds its own site and reads it: run one with
+#   python.exe src\RimMandrake\GimmeSomeSlack\validation.py --scene <entry>   (game up, minimal gimmesomeslack tier, bridge held)
+# UNRUN until Stage 6. sc_pole_icons_loaded reads the Player.log of the load: run it first after a cold load.
+def _own_scene(sid, fn, B, V, rows, *extra):
+    sys.path.insert(0, os.path.join(HERE, "northstar"))
+    import scene_rows
+    getattr(scene_rows, fn)(B, V, rows, *extra)
+    return _scene_row(sid, B, V, rows)
+
+def scene_switch_off_ends(B, V, rows):
+    """scenes.json sc_switch_off_ends (bar switch_off_cords_stay_connected): scene_rows.switch_off_ends, decided by SWITCH_OFF_ROWS."""
+    return _own_scene("sc_switch_off_ends", "switch_off_ends", B, V, rows)
+
+def scene_pole_icons_loaded(B, V, rows):
+    """scenes.json sc_pole_icons_loaded (bar pole_buttons_show_icons): scene_rows.pole_icons_loaded over Player.log, decided by POLE_ICON_ROWS."""
+    return _own_scene("sc_pole_icons_loaded", "pole_icons_loaded", B, V, rows, PLAYER_LOG)
+
+def scene_pole_south_of_tree(B, V, rows):
+    """scenes.json sc_pole_south_of_tree (bar poles_draw_in_front_when_south): scene_rows.pole_south_of_tree, decided by POLE_SOUTH_ROWS
+    (its shot row stays UNMEASURED until a judge reads the capture)."""
+    log = []
+    st = _own_scene("sc_pole_south_of_tree", "pole_south_of_tree", B, V, rows, log)
+    return st
+
+def scene_no_roof_over_pole(B, V, rows):
+    """scenes.json sc_no_roof_over_pole (bar no_roof_over_pole): scene_rows.no_roof_over_pole, decided by NO_ROOF_ROWS."""
+    return _own_scene("sc_no_roof_over_pole", "no_roof_over_pole", B, V, rows)
+
+ONE_SCENES = ("scene_switch_off_ends", "scene_pole_icons_loaded", "scene_pole_south_of_tree", "scene_no_roof_over_pole")
+
+
+def run_one_scene(name, out=None):
+    """--scene NAME: run one scene that builds its own site, on the live game; rows to northstar/validation_scene_<name>_<stamp>.json."""
+    if name not in ONE_SCENES:
+        print("no such self-built scene %r; one of %s" % (name, ", ".join(ONE_SCENES)))
+        return 2
+    import validation_aerial as VA
+    import validation as V_self
+    rows = []
+    status = globals()[name](VA.A(), V_self, rows)
+    os.makedirs(os.path.join(HERE, "northstar"), exist_ok=True)
+    out = out or os.path.join(HERE, "northstar", "validation_scene_%s_%s.json" % (name, time.strftime("%Y%m%dT%H%M%S")))
+    with open(out, "w", encoding="utf-8") as f:
+        json.dump({"scene": name, "status": status, "rows": rows}, f, indent=1, default=str)
+    print("%s: %s, %d rows -> %s" % (name, status, len(rows), out))
+    return 0 if status == "PASS" else 1
+
+
 def scenes_from(path):
     """Every scene's verdict over a saved proof result (its "rows"): one line each, the scene rows appended to nothing."""
     import json as _json
@@ -2354,7 +2405,10 @@ def main(argv=None):
                     help="lane C: on the current map (after --live and validation_aerial --live) screenshot every style, same rects")
     ap.add_argument("--rows-json", default=None, metavar="-",
                     help="offline tier, then print its rows as one 'ROWS_JSON <json>' line (the suite's WSL hop)")
+    ap.add_argument("--scene", default=None, metavar="ENTRY", help="run one self-built 0.1.1 scene live (%s)" % ", ".join(ONE_SCENES))
     a = ap.parse_args(argv)
+    if a.scene:
+        return run_one_scene(a.scene, a.out)
     if a.scenes_from:
         return scenes_from(a.scenes_from)
     if a.rows_json:

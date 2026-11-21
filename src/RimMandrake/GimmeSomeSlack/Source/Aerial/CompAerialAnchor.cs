@@ -112,8 +112,12 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public List<SpanLink> links = new List<SpanLink>();
         public List<FallenCord> fallen = new List<FallenCord>();
 
-        private static readonly Texture2D IconLink = ContentFinder<Texture2D>.Get("UI/Commands/TryReconnect", false);
-        private static readonly Texture2D IconUnlink = ContentFinder<Texture2D>.Get("UI/Designators/Cancel", false);
+        // fetched on first use, on the main thread (gizmos): a static initializer ran on the loading thread, where ContentFinder answers
+        // null ("Tried to get a resource ... from a different thread"), and the buttons drew the missing-texture square (his walk of
+        // 2026-11-20, row 9; selftest_gss_main_thread_textures.py refuses a texture in a static initializer)
+        private static Texture2D iconLink, iconUnlink;
+        internal static Texture2D IconLink => iconLink ??= ContentFinder<Texture2D>.Get("UI/Commands/TryReconnect", false);
+        internal static Texture2D IconUnlink => iconUnlink ??= ContentFinder<Texture2D>.Get("UI/Designators/Cancel", false);
 
         public AerialAnchorExtension Ext => def.GetModExtension<AerialAnchorExtension>() ?? DefaultExt;
         private static readonly AerialAnchorExtension DefaultExt = new AerialAnchorExtension();
@@ -191,6 +195,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             Map map = parent.Map;
             RM_MapComponent_Aerial comp = map.GetComponent<RM_MapComponent_Aerial>();
             comp?.Register(this);
+            RoofOverMast.ClearUnder(parent);   // no roof over a standing pole (his walk of 2026-11-20, row 14)
             // GPT source read 2026-10-06 A6: an auto-link still queued when the game was saved (built while paused) is re-queued
             if ((!respawningAfterLoad || autoLinkPendingSaved) && AerialLineProfiles.KindBehaviour(Kind, AerialSettings.autoLink)) comp?.QueueAutoLink(this);
             autoLinkPendingSaved = false;

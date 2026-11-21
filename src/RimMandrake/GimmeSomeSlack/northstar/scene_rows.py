@@ -791,3 +791,128 @@ def statics_new_game(B, V, rows):
     else:
         ok = after.get("resets", 0) > before.get("resets", 0) and not after.get("conduitPick") and after.get("taps") == 0 and after.get("skipReseed") is False
         V.row(rows, "SC_statics_clear_between_games", "PASS" if ok else "FAIL", "MOD", {"before": before, "after": after})
+
+
+# ---------------------------------------------------------------- 0.1.1 PATCH live halves (his walk of 2026-11-20; UNRUN until Stage 6)
+SWITCH_OFF_ROWS = ["SC_switch_off_cords_connected", "SC_switch_off_on_differs_only_in_power"]
+POLE_ICON_ROWS = ["SC_pole_icons_main_thread_log", "SC_pole_icons_loaded"]
+POLE_SOUTH_ROWS = ["SC_pole_prints_on_common_layer", "SC_pole_south_of_tree_shot"]
+NO_ROOF_ROWS = ["SC_roof_designator_refuses_pole_cell", "SC_auto_roof_skips_pole_cell", "SC_forced_roof_still_cuts_spans"]
+
+
+def switch_off_ends(B, V, rows):
+    """sc_switch_off_ends (bar switch_off_cords_stay_connected; row 1): battery, conduit, an in-line power switch, conduit, a lamp. With the switch
+    flicked off, no strand end within 1.5 cells of the switch (GSS probe ends:), and endkind: over the site finds no cut end there; the strands
+    at the switch are the same pieces on and off. Rows: SWITCH_OFF_ROWS."""
+    x, z = SC0
+    _site(B, V)
+    sw = (x + 10, z + 5)
+    B.call("jawa/build_batch", ops="Battery:%d,%d,0" % (x + 2, z + 4), faction="player", wipeExisting=False)
+    B.call("jawa/build_batch", ops="PowerSwitch:%d,%d,0" % sw, faction="player", wipeExisting=False)
+    B.call("jawa/build_batch", ops="StandingLamp:%d,%d" % (x + 18, z + 6), faction="player", wipeExisting=False)
+    run = _line(x + 3, z + 5, x + 9, z + 5) + _line(x + 11, z + 5, x + 18, z + 5)
+    B.call("jawa/build_batch", ops=V.ops("PowerConduit", run), faction="player", wipeExisting=False)
+    B.ticks(3)
+    _fill(B, (x, z, 20, 10))
+    near = "%d.5,%d.5,1.5" % sw
+
+    def read():
+        B.ticks(3)
+        B.probe("poll")
+        B.probe("rebuild")
+        e = B.probe("ends:" + near)
+        k = B.probe("endkind:%d,%d,%d,%d" % (x - 1, z - 1, 22, 12))
+        return e, k
+    on_e, on_k = read()
+    fl = B.probe("flick:%d,%d=off" % sw)
+    off_e, off_k = read()
+    B.probe("flick:%d,%d=on" % sw)
+    if not fl.get("success") or fl.get("on") is not False:
+        V.row(rows, "SC_switch_off_cords_connected", "UNMEASURED", "HARNESS", {"flick": fl})
+        V.row(rows, "SC_switch_off_on_differs_only_in_power", "UNMEASURED", "HARNESS", {"flick": fl})
+        return
+    at_switch = [r for r in off_e.get("rows") or []]
+    cut = [r for r in at_switch if r.get("a") and r.get("b")]   # every strand end near the switch, both tips listed
+    ok = bool(off_e.get("success")) and bool(off_k.get("success")) and off_k.get("both") == 0 and off_k.get("none") == 0 \
+        and len(cut) >= 2 and (off_k.get("ends") or 0) == (on_k.get("ends") or 0)
+    V.row(rows, "SC_switch_off_cords_connected", "PASS" if ok else "FAIL", "MOD",
+          {"near": near, "stranded_tips_near": len(cut), "endsOn": on_k.get("ends"), "endsOff": off_k.get("ends"),
+           "both": off_k.get("both"), "none": off_k.get("none"), "bad": off_k.get("bad")})
+    same = sorted(r.get("piece") for r in on_e.get("rows") or []) == sorted(r.get("piece") for r in at_switch)
+    V.row(rows, "SC_switch_off_on_differs_only_in_power", "PASS" if same else "FAIL", "MOD",
+          {"on": sorted(r.get("piece") for r in on_e.get("rows") or []), "off": sorted(r.get("piece") for r in at_switch)})
+
+
+def pole_icons_loaded(B, V, rows, player_log):
+    """sc_pole_icons_loaded (bar pole_buttons_show_icons; row 9): after a cold load Player.log holds no 'Tried to get a resource ... from a different
+    thread' line for UI/Commands/TryReconnect, UI/Designators/Cancel or a Gimme Some Slack path, and AerialProbe icons reads both button icons
+    non-null. Run it on the first map after a cold load (the log line is written at load). Rows: POLE_ICON_ROWS."""
+    try:
+        txt = open(player_log, "r", encoding="utf-8", errors="replace").read()
+    except OSError as ex:
+        V.row(rows, "SC_pole_icons_main_thread_log", "UNMEASURED", "HARNESS", {"log": player_log, "error": repr(ex)})
+        txt = None
+    if txt is not None:
+        bad = [l for l in txt.splitlines() if "from a different thread" in l and
+               ("UI/Commands/TryReconnect" in l or "UI/Designators/Cancel" in l or "GimmeSomeSlack" in l)]
+        loaded = "GimmeSomeSlack" in txt
+        V.row(rows, "SC_pole_icons_main_thread_log", "UNMEASURED" if not loaded else ("PASS" if not bad else "FAIL"),
+              "HARNESS" if not loaded else "MOD", {"log": player_log, "lines": bad[:4], "modInLog": loaded})
+    x, z = SC0
+    _site(B, V)
+    B.call("jawa/build_batch", ops="RM_AerialMast:%d,%d" % (x + 4, z + 4), faction="player", wipeExisting=False)
+    B.ticks(2)
+    r = B.ap("icons")
+    ok = bool(r.get("success")) and r.get("link") is True and r.get("unlink") is True
+    V.row(rows, "SC_pole_icons_loaded", "PASS" if ok else "FAIL", "MOD", r)
+
+
+def pole_south_of_tree(B, V, rows, log):
+    """sc_pole_south_of_tree (bar poles_draw_in_front_when_south; row 13): a mast with a grown tree one cell north and another mast with one
+    a cell south. The mast prints on the common layer (AerialProbe drawlayer: BuildingOnTop), and a capture at play zoom is kept for the judge:
+    the first mast drawn over the northern tree's trunk, the second behind the southern tree's canopy. Rows: POLE_SOUTH_ROWS."""
+    x, z = SC0
+    _site(B, V)
+    m1, m2 = (x + 6, z + 4), (x + 14, z + 6)
+    B.call("jawa/build_batch", ops="RM_AerialMast:%d,%d;RM_AerialMast:%d,%d" % (m1 + m2), faction="player", wipeExisting=False)
+    B.call("jawa/set_plants", ops="Plant_TreeOak:%d,%d,1,1;Plant_TreeOak:%d,%d,1,1" % (m1[0], m1[1] + 1, m2[0], m2[1] - 1), growth=1.0, density=1.0)
+    B.ticks(2)
+    lay = [B.ap("drawlayer:%d,%d" % m) for m in (m1, m2)]
+    ok = all(r.get("success") and r.get("layer") == "BuildingOnTop" for r in lay)
+    V.row(rows, "SC_pole_prints_on_common_layer", "PASS" if ok else "FAIL", "MOD", {"reads": lay})
+    V.frame_fit(B, (x, z, 20, 12))
+    dst = V.shot(B, "sc_pole_south_of_tree", (x + 3, z + 2, 15, 10), log)
+    V.row(rows, "SC_pole_south_of_tree_shot", "UNMEASURED", "LOOK",
+          {"shot": dst, "judge": "mast at %s in front of the tree north of it; mast at %s behind the tree south of it" % (m1, m2)})
+
+
+def no_roof_over_pole(B, V, rows):
+    """sc_no_roof_over_pole (bar no_roof_over_pole; row 14): a mast inside a closed steel room. The build-roof designator refuses the mast's cell
+    with a reason naming the pole (AerialProbe roofgate:), the build-roof area write auto-roof makes is refused there (roofpaint:), every other
+    room cell takes the area, and a roof forced over the cell (jawa/set_roof_batch, as a debug action) still cuts the mast's span (Roofed).
+    Rows: NO_ROOF_ROWS."""
+    x, z = SC0
+    _site(B, V)
+    room = (x + 4, z + 2, x + 12, z + 9)
+    mast, out = (x + 8, z + 5), (x + 20, z + 5)
+    B.call("jawa/build_batch", ops=V.ops("Wall", V.perimeter(*room)), stuff="Steel", faction="player", wipeExisting=False)
+    B.call("jawa/build_batch", ops="RM_AerialMast:%d,%d;RM_AerialMast:%d,%d" % (mast + out), faction="player", wipeExisting=False)
+    B.ticks(3)
+    g = B.ap("roofgate:%d,%d" % mast)
+    named = bool(g.get("mast")) and g.get("mast", "").lower() in (g.get("reason") or "").lower()
+    V.row(rows, "SC_roof_designator_refuses_pole_cell", "PASS" if g.get("success") and g.get("accepted") is False and named else "FAIL", "MOD", g)
+    p = B.ap("roofpaint:%d,%d" % mast)
+    q = B.ap("roofpaint:%d,%d" % (mast[0] + 1, mast[1]))
+    ok = p.get("success") and p.get("buildRoof") is False and q.get("success") and q.get("buildRoof") is True
+    V.row(rows, "SC_auto_roof_skips_pole_cell", "PASS" if ok else "FAIL", "MOD", {"poleCell": p, "neighbour": q})
+    c0 = B.ap("census")
+    B.call("jawa/set_roof_batch", ops="RoofConstructed:%d,%d,1,1" % mast)
+    B.ticks(3)
+    c1 = B.ap("census")
+    def links(c):
+        return [l for a in c.get("anchors") or [] for l in a.get("links") or []]
+    up0 = sum(l.get("state") == "Up" for l in links(c0))
+    cut1 = [l for l in links(c1) if l.get("state") != "Up"]
+    V.row(rows, "SC_forced_roof_still_cuts_spans", "PASS" if up0 >= 1 and cut1 else ("UNMEASURED" if up0 == 0 else "FAIL"),
+          "MOD" if up0 else "SITE", {"upBefore": up0, "afterForcedRoof": cut1[:4]})
+    B.call("jawa/set_roof_batch", ops="None:%d,%d,%d,%d" % SITE)

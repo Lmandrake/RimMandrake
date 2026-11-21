@@ -179,6 +179,12 @@ namespace RimMandrake.GimmeSomeSlack
                 foreach (CompPower c in net.connectors)
                     if (c?.parent != null && c.parent.Spawned) connectors.Add(c);
             }
+            // an off power switch is in no power net, yet stays a node: its cords end on its stubs, unpowered, never cut
+            // (his walk of 2026-11-20, row 1; Core/SwitchNode.cs decides, SelfTest/SwitchOffChecks.cs proves the lay)
+            foreach (Thing th in map.listerThings.ThingsInGroup(ThingRequestGroup.BuildingArtificial))
+                if (th is Building_PowerSwitch sw && sw.Spawned && !sw.TransmitsPowerNow && sw.PowerComp != null
+                    && Core.SwitchNode.JoinsGraph(false, true))
+                    transmitterBuildings.Add(sw.PowerComp);
             // transmitter buildings (batteries, switches, generators): nodes hooked to the conduit around their footprint, one cord a run
             Dictionary<Cell, int> conduitRuns = null;
             var touching = new List<Cell>();

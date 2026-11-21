@@ -58,6 +58,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             int slc = Array.IndexOf(args, "--slope-census");
             if (slc >= 0) return SceneDump.Census(args[slc + 1], slc + 2 < args.Length && int.TryParse(args[slc + 2], out int scn) ? scn : 120);
             if (args.Contains("--live-sweep-only")) { LiveEndSweepChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (live end sweep only)"); return fails == 0 ? 0 : 1; }
+            if (args.Contains("--switchoff-only")) { SwitchOffChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (switch off only)"); return fails == 0 ? 0 : 1; }
             if (args.Contains("--joins-only")) { StubJoinChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (stub joins only)"); return fails == 0 ? 0 : 1; }
             if (args.Contains("--endkind-only")) { CordEndKindChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (end kind + slope only)"); return fails == 0 ? 0 : 1; }
             if (args.Contains("--shape-diag")) { CordShapeChecks.Diag(); return 0; }
@@ -139,6 +140,7 @@ TexPathChecks.Run();           // RIMMANDRAKE_TRACE_GSS_ILLEGAL_PATH_ONLY_ON_FIR
             CordSlideUnderChecks.Run();    // CORD_PLUG_FIX_FINDS_THE_PIPE_SLOT (owner walk 2026-10-23): CordSlideUnderChecks.cs
             CordShapeChecks.Run();         // cords_never_repeat instrument: CordShapeChecks.cs + ../Core/CordShape.cs
             SittingChecks.Run();           // owner live sitting 2026-11-08 12:20 PM (Modern hooks, heap density, pole foot, pole-top kinks): SittingChecks.cs
+            SwitchOffChecks.Run();         // T_SWITCH_OFF_NODE_OFFLINE (his walk 2026-11-20 row 1): an off switch stays a node: SwitchOffChecks.cs
             StubJoinChecks.Run();          // RIMMANDRAKE_BIND_SLACK_STUB_ANGLE_RULE_FOURTH_ASK (owner 2026-11-16): position AND slope at every stub
             LiveEndSweepChecks.Run();      // RIMMANDRAKE_INVENT_SLACK_LIVE_END_GREEN_BY_THIN_MARGIN: every live cut end the game can lay, by the three bars, with margin
             CordEndKindChecks.Run(scenes); // RIMMANDRAKE_FIX_SLACK_CORD_ENDS_OWNER_CAUGHT_TWO (owner look 2026-11-16): CordEndKindChecks.cs

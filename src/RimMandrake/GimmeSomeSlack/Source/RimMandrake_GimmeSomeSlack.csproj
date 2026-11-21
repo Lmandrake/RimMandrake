@@ -61,6 +61,7 @@
     <Compile Include="Core\CordMotion.cs" />
     <Compile Include="Core\ConduitTargets.cs" />
     <Compile Include="Core\HookupPick.cs" />
+    <Compile Include="Core\SwitchNode.cs" />
     <Compile Include="Core\WallMount.cs" />
     <Compile Include="Core\SettingsPrint.cs" />
     <Compile Include="..\..\_Shared\SlackGeometry\DrawOrder.cs" Link="Shared\SlackGeometry\DrawOrder.cs" />
@@ -112,6 +113,7 @@
     <Compile Include="Aerial\CompPowerTap.cs" />
     <Compile Include="Aerial\PowerTheftConsequences.cs" />
     <Compile Include="Aerial\PlaceWorkers_Aerial.cs" />
+    <Compile Include="Aerial\RoofOverMast.cs" />
     <Compile Include="Aerial\RM_MapComponent_Aerial.cs" />
     <Compile Include="Aerial\RM_FallenWireShock.cs" />
     <Compile Include="Aerial\RM_LiveWirePathCost.cs" />

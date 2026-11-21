@@ -15,7 +15,10 @@
     <!-- plain Building: the anchor logic is a comp so a save never names a C# class of ours (walk M9b) -->
     <thingClass>Building</thingClass>
     <category>Building</category>
-    <altitudeLayer>Building</altitudeLayer>
+    <!-- BuildingOnTop, the common layer of MandrakePatches' SouthDrawsFront rule: a mast's 2x4 picture reaches 3 cells north of its
+         foot, so it must order by south with the plants and tall things printed there (his walk of 2026-11-20, row 13;
+         selftest_gss_pole_south_draws_front.py). The wall bracket sets the same layer for itself. -->
+    <altitudeLayer>BuildingOnTop</altitudeLayer>
     <passability>PassThroughOnly</passability>
     <pathCost>14</pathCost>
     <fillPercent>0.15</fillPercent>

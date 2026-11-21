@@ -104,6 +104,7 @@ namespace RimMandrake.GimmeSomeSlack
             if (cmd == "doorstrays") return "{\"success\":true,\"cmd\":\"doorstrays\",\"strands\":" + comp.Pieces.Sum(p => p.Strands.Count) + ",\"strays\":" + comp.Pieces.Sum(p => p.Strands.Sum(q => q.DoorStrays)) + "}";
             if (cmd == "slack") return SlackTable(comp);
             if (cmd == "statics") return Statics();
+            if (cmd.StartsWith("flick:")) return Flick(map, cmd.Substring(6));   // sc_switch_off_ends (his walk of 2026-11-20, row 1)
             if (cmd.StartsWith("ends:")) return EndsNear(comp, cmd.Substring(5));
             if (cmd.StartsWith("endkind:")) return EndKind(comp, cmd.Substring(8));   // RIMMANDRAKE_FIX_SLACK_CORD_ENDS_OWNER_CAUGHT_TWO
             if (cmd.StartsWith("joins:")) return Joins(comp, cmd.Substring(6));       // RIMMANDRAKE_BIND_SLACK_STUB_ANGLE_RULE_FOURTH_ASK
@@ -656,6 +657,22 @@ namespace RimMandrake.GimmeSomeSlack
         }
 
         /// <summary>ends:x,z,r -- every strand with an end within r cells of a point: what it is and where its two ends lie.</summary>
+        /// <summary>flick:x,z=on|off -- set the flick switch of the building at a cell (a power switch) as a colonist's flick would leave it,
+        /// at once (CompFlickable.SwitchIsOn sends FlickedOn/FlickedOff, so vanilla rebuilds the nets and the cords re-lay).</summary>
+        private static string Flick(Map map, string args)
+        {
+            var inv = CultureInfo.InvariantCulture;
+            string[] kv = args.Split('=');
+            string[] a = kv[0].Split(',');
+            var c = new IntVec3(int.Parse(a[0], inv), 0, int.Parse(a[1], inv));
+            bool on = kv.Length > 1 && kv[1].Trim() == "on";
+            if (!c.InBounds(map)) return "{\"success\":false,\"cmd\":\"flick\",\"error\":\"out of bounds\"}";
+            CompFlickable fl = map.thingGrid.ThingsListAt(c).Select(t => (t as ThingWithComps)?.GetComp<CompFlickable>()).FirstOrDefault(f => f != null);
+            if (fl == null) return "{\"success\":false,\"cmd\":\"flick\",\"error\":\"no flick switch at the cell\"}";
+            fl.SwitchIsOn = on;
+            return "{\"success\":true,\"cmd\":\"flick\",\"on\":" + (fl.SwitchIsOn ? "true" : "false") + ",\"thing\":" + J.S(fl.parent.def.defName) + "}";
+        }
+
         private static string EndsNear(RM_MapComponent_CordGraph comp, string args)
         {
             var inv = CultureInfo.InvariantCulture;

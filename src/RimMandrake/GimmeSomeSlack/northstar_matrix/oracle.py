@@ -45,11 +45,14 @@ def _is_tx(d):
     return S.DEVICE_DEFS[d["role"]]["transmitter"]
 
 
-def _active_devices(sc, with_aerial):
+def _active_devices(sc, with_aerial, graph=False):
+    """graph=True: the cord graph's nodes, where an off switch stays (its cords end on its stubs, unpowered; his walk of
+    2026-11-20 row 1, Core/SwitchNode.cs). graph=False: the power side (liveness, nets, bridges), where an off switch
+    transmits nothing."""
     out = []
     for d in sc["devices"]:
-        if d["role"] == "switch" and not d.get("on", True):
-            continue                          # a switch flicked off transmits nothing: no node, no bridge
+        if d["role"] == "switch" and not d.get("on", True) and not graph:
+            continue                          # a switch flicked off transmits nothing: no bridge
         out.append(d)
     if with_aerial and sc.get("aerial"):
         dead = set(sc["aerial"].get("killed", []))
@@ -119,7 +122,7 @@ def to_nodal(sc, with_aerial=False, own_liveness=False, real_footprints=False):
     liveness itself (used only by nodal_reference). real_footprints: keep device sizes (for the mock-up RENDERER,
     which draws machines; never for the graph, where it would wrongly bury conduit under walkable devices)."""
     machines, lamps = [], []
-    for d in _active_devices(sc, with_aerial):
+    for d in _active_devices(sc, with_aerial, graph=True):
         hk = _hookups(sc, d)
         role = d["role"]
         kind = "battery" if role == "battery" else "lamp" if role == "lamp" else role

@@ -597,8 +597,9 @@ def stations_round2(mk):
         "floor cords never cross on top of a device's art; the tangle sits in the open between the stoves and the TV",
         "the middle pole stands inside the (unroofed) room and joins both the overhead line and the floor run",
         "the east pole lights the lamp outside the room through the air"],
-       ["unlink the east span: only the outside lamp goes dark", "roof the room (Architect > Structure > Build roof, god mode): "
-        "the middle pole is now under a roof - its spans should be cut (roof cut) and drop",
+       ["unlink the east span: only the outside lamp goes dark", "build roof over the room (Architect > Structure > Build roof): "
+        "every cell roofs except the middle pole's, which is refused with a message naming the pole; force a roof there with a "
+        "debug action and its spans are cut (roof cut) and drop",
         "switch looks (--style): the whole room changes at once"],
        conduit=[(x, 10) for x in range(5, 30) if x != 17] + [(10, z) for z in range(11, 15)] + [(22, z) for z in range(5, 10)] +
        rect_cells(13, 7, 3, 3) + [(29, 11), (29, 12), (29, 13)],
@@ -953,7 +954,7 @@ CARD = {
          "the clamp sits ON their cord (v3 pose), not on the node; their net and ours stay two nets; a seen clamp must send 'Power theft discovered' and cost goodwill each day"),
     15: ("build another lamp right beside the pole",
          "more hookups than insulators: do two pile onto one tip? a cord must meet a big device's edge, not stop short"),
-    16: ("roof the room (god mode): the middle pole's spans must drop",
+    16: ("build roof over the room: the middle pole's cell is refused, with a message naming the pole; a roof forced there by a debug action still cuts its spans",
          "noise: does it still read as a room? any cord drawn ON TOP of a device's art"),
     17: ("mine into the block from the west",
          "any wire or shadow drawn ON the fog is a leak of the unknown"),

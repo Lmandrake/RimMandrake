@@ -345,7 +345,7 @@ one power pole with a wide mix of devices: some right beside it (lamp, heater, s
 
 a walled workshop crammed with powered devices joined by messy conduit (with a tangle), and three power poles carrying a line OVER it: west pole outside, middle pole inside the room, east pole outside
 
-**Poke it:** roof the room (god mode): the middle pole's spans must drop
+**Poke it:** build roof over the room: the middle pole's cell is refused, with a message naming the pole; a roof forced there by a debug action still cuts its spans
 
 **Look for / suspected weak spot:** noise: does it still read as a room? any cord drawn ON TOP of a device's art
 
@@ -360,7 +360,7 @@ a walled workshop crammed with powered devices joined by messy conduit (with a t
 **Try**
 
 - unlink the east span: only the outside lamp goes dark
-- roof the room (Architect > Structure > Build roof, god mode): the middle pole is now under a roof - its spans should be cut (roof cut) and drop
+- build roof over the room (Architect > Structure > Build roof): every cell roofs except the middle pole's, which is refused with a message naming the pole; force a roof there with a debug action and its spans are cut (roof cut) and drop
 - switch looks (--style): the whole room changes at once
 
 ### 17. OVER THE UNKNOWN

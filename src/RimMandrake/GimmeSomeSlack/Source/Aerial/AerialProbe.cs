@@ -67,6 +67,24 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
         private static string Run(Map map, RM_MapComponent_Aerial comp, string cmd)
         {
+            // 0.1.1 live rows (his walk of 2026-11-20): pole button icons (row 9), the mast's print layer (row 13), roofs over a pole (row 14)
+            if (cmd == "icons")
+                return Ok(cmd, "\"link\":" + B(CompAerialAnchor.IconLink != null) + ",\"unlink\":" + B(CompAerialAnchor.IconUnlink != null) +
+                               ",\"linkName\":" + S(CompAerialAnchor.IconLink?.name ?? "") + ",\"unlinkName\":" + S(CompAerialAnchor.IconUnlink?.name ?? ""));
+            if (cmd.StartsWith("drawlayer:") || cmd.StartsWith("roofgate:") || cmd.StartsWith("roofpaint:"))
+            {
+                string arg = cmd.Substring(cmd.IndexOf(':') + 1);
+                int[] a = arg.Split(',').Select(t => int.Parse(t.Trim(), CultureInfo.InvariantCulture)).ToArray();
+                var c = new IntVec3(a[0], 0, a[1]);
+                if (!c.InBounds(map)) return "{\"success\":false,\"cmd\":" + S(cmd) + ",\"error\":\"out of bounds\"}";
+                Thing mast = RoofOverMast.MastAt(map, c);
+                if (cmd.StartsWith("drawlayer:"))
+                    return Ok(cmd, "\"mast\":" + S(mast?.def.defName ?? "") + ",\"layer\":" + S(mast?.def.altitudeLayer.ToString() ?? ""));
+                if (cmd.StartsWith("roofpaint:")) map.areaManager.BuildRoof[c] = true;   // the write auto-roof makes (AutoBuildRoofAreaSetter)
+                AcceptanceReport r = new Designator_AreaBuildRoof().CanDesignateCell(c);
+                return Ok(cmd, "\"mast\":" + S(mast?.LabelNoCount ?? "") + ",\"accepted\":" + B(r.Accepted) + ",\"reason\":" + S(r.Reason ?? "") +
+                               ",\"buildRoof\":" + B(map.areaManager.BuildRoof[c]) + ",\"roofed\":" + B(map.roofGrid.Roofed(c)));
+            }
             if (cmd == "census") return Census(map, comp);
             if (cmd.StartsWith("c") && ConduitStyleProbe.Run(map, cmd) is string cres) return cres;   // stage 2: conduit runs
             if (cmd == "styles") return StyleProbeAerial.Styles(map, comp);

@@ -129,6 +129,24 @@ def main(argv=None):
                    w is (brk == "live_gap") and ee is False))
     for nm, ok in kp:
         check("O2 " + nm, ok)
+    # his walk of 2026-11-20 row 1 (Core/SwitchNode.cs): an off switch stays a transmitter node, no terminal beside it
+    _, c = first("device_attached")
+    sc_off = copy.deepcopy(scs[c["case"]])
+    sw = next(d for d in sc_off["devices"] if d["role"] == "switch")
+    sw["on"] = False
+    e_off = O.expect(sc_off)
+    beside = [t for t in e_off["terminals"] if abs(t[0] - sw["x"]) + abs(t[1] - sw["y"]) <= 1]
+    check("O2 device_attached, switch off: still 1 transmitter node, no terminal beside it",
+          e_off["node_types"].get("transmitter") == 1 and not beside, (e_off["node_types"], beside))
+    # negative control: the pre-fix oracle (an off switch dropped from the graph) shows terminals beside it
+    real = O._active_devices
+    O._active_devices = lambda s, a, graph=False: real(s, a, graph=False)
+    try:
+        e_old = O.expect(sc_off)
+    finally:
+        O._active_devices = real
+    check("O2n an off switch dropped from the graph leaves terminals beside it",
+          any(abs(t[0] - sw["x"]) + abs(t[1] - sw["y"]) <= 1 for t in e_old["terminals"]), e_old["terminals"])
     e, _ = first("multinet")
     check("O2 multinet: 3 nets -> second battery and its heater dead",
           e["devices_live"].get("bat2") is False and e["devices_live"].get("h2") is False and e["devices_live"].get("h1") in (True, False))

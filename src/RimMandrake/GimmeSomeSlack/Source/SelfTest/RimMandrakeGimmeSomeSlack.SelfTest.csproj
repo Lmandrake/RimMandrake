@@ -42,6 +42,7 @@
     <Compile Include="JunctionStripChecks.cs" />
     <Compile Include="CordEndKindChecks.cs" />
     <Compile Include="StubJoinChecks.cs" />
+    <Compile Include="SwitchOffChecks.cs" />
     <Compile Include="CordShapeChecks.cs" />
     <Compile Include="..\Core\CordShape.cs" />
     <Compile Include="..\..\..\_Shared\SlackGeometry\CordPlanner.cs" Link="Shared\SlackGeometry\CordPlanner.cs" />
@@ -57,6 +58,7 @@
     <Compile Include="..\Core\CordMotion.cs" />
     <Compile Include="..\Core\ConduitTargets.cs" />
     <Compile Include="..\Core\HookupPick.cs" />
+    <Compile Include="..\Core\SwitchNode.cs" />
     <Compile Include="PhantomSparkChecks.cs" />
     <Compile Include="LoopLassoChecks.cs" />
     <Compile Include="EndHeapBudgetChecks.cs" />
