@@ -1954,7 +1954,7 @@ def dispatch_overlay(mod, nxt, rd, path, now):
     return out
 
 
-def next_step(root, mod):
+def next_step(root, mod, _reread=False):
     rec = load(root, mod)
     if rec is None:
         return {"mod": mod, "stage": UNM, "next": "NEXT (automatic: the Dispatch tick seeds a Designer concept's record): maturation.py seed %s" % mod, "refusals": []}
@@ -1969,6 +1969,13 @@ def next_step(root, mod):
     hand = [r for r in res["verdict"]["refusals"] if r["clause"] in res["hand_steps"]]
     blind = blind_facts(root, mod) if cur == "blind_challenge" else None
     ing = ingame_facts(root, mod) if cur == "in_game" else None
+    moved = [f["stage"] for f in (blind, ing) if f is not None and f.get("stage") != cur]
+    if moved:   # a move landed between the two loads (design/specs/2026-11-21-next-step-stage-moved/boundary.md)
+        if not _reread:
+            return next_step(root, mod, _reread=True)
+        return {"mod": mod, "stage": UNM, "refusals": [], "hand_steps": [],
+                "next": "NEXT (read again): the stage record moved during the read twice (%s, then %s); "
+                        "maturation.py next %s reads it again" % (cur, moved[0], mod)}
     if ing and ing.get("owed") == "blocked":
         nxt = "NEXT (PAUSED, OPS_MATURATION_MOD_PAUSED): in-game acceptance is blocked: %s" % "; ".join(ing["blocked"])
     elif ing and ing.get("owed") == "run":
