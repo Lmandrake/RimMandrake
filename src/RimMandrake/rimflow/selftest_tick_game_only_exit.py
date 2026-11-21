@@ -73,7 +73,25 @@ def t_spent_version_bug_holds_the_exit():
 
 def t_unreadable_version_bugs_take_no_exit():
     row, _ = road_back(ALL_LIVE, bugs=None)
-    return row.get("decision") == "blind" and not row.get("aut"), row
+    # the real reader on a ledger that raises: a could-not-look answer (probe_result), read blind with its cause
+    real = A.ledger_items
+
+    def broken():
+        raise OSError("ledger locked")
+    A.ledger_items = broken
+    try:
+        ans = A.read_version_bugs(PILOT, VER)
+        row2 = {"mod": PILOT, "stage": "offline_build"}
+        A._road_back({"road_back": {"caused_by": ROUTE}}, row2, lambda ids: ALL_LIVE, 100, ver=VER,
+                     version_bugs=A.read_version_bugs)
+    finally:
+        A.ledger_items = real
+    noversion = A.read_version_bugs(PILOT, None)
+    good = (row.get("decision") == "blind" and not row.get("aut")
+            and getattr(ans, "kind", None) == "could_not_look" and "ledger locked" in str(ans.cause)
+            and row2.get("decision") == "blind" and not row2.get("aut") and "ledger locked" in row2.get("why", "")
+            and getattr(noversion, "kind", None) == "could_not_look")
+    return good, {"row": row, "answer": repr(ans), "row2": row2, "noversion": repr(noversion)}
 
 
 def t_version_bugs_read_by_title_kind_and_needs():

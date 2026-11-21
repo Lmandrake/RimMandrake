@@ -472,11 +472,14 @@ def version_bugs(mod, ver, items):
 
 
 def read_version_bugs(mod, ver):
-    """version_bugs over the whole ledger; None when it cannot be read."""
+    """version_bugs over the whole ledger, or a could-not-look answer (probe_result) naming why it cannot be read."""
+    import probe_result as PR
+    if not ver:
+        return PR.could_not_look("%s has no version to read its Problems by" % mod)
     try:
         return version_bugs(mod, ver, ledger_items())
-    except Exception:       # noqa: BLE001  an unreadable ledger is no exit, never a guess
-        return None
+    except Exception as e:  # noqa: BLE001  an unreadable ledger is no exit, never a guess
+        return PR.could_not_look("the ledger cannot be read: %s: %s" % (type(e).__name__, e))
 
 
 def gameonly_key(ver, stage, ids):
@@ -1109,10 +1112,11 @@ def _road_back(s, row, open_items, now=None, moved=False, endings=None, cfg=None
             ids6 = [x["id"] for x in game]
             mod, stage = row.get("mod"), row.get("stage")
             vb = (version_bugs or read_version_bugs)(mod, ver)
-            if vb is None:
-                row.update(decision="blind", aut=None, why="every open road-back item (%s) needs the live game, and the "
-                           "ledger cannot be read for %s %s's own open Problems: no game-only exit on a guess" % (
-                               ", ".join(ids6), mod, ver or "(version unknown)"))
+            if vb is None or getattr(vb, "ok", True) is False:
+                row.update(decision="blind", aut=None, why="every open road-back item (%s) needs the live game, and "
+                           "%s %s's own open Problems cannot be read (%s): no game-only exit on a guess" % (
+                               ", ".join(ids6), mod, ver or "(version unknown)",
+                               getattr(vb, "cause", None) or "no answer"))
                 return True
             if not vb:
                 row.update(aut="autogameonly", decision="autogameonly", steward_key=gameonly_key(ver, stage, ids6),
