@@ -45,7 +45,7 @@ one compact floor build in the Scrapper look: full battery, a 3x3 tangle, a run 
 
 **Note**
 
-- U_motion_look (moved off the live proof 2026-10-05): UNPAUSE and judge the LOOK of motion here: the cord's whip, the live end's drip / spark rhythm (wind moves no ground cord, owner 2026-11-16; only pole wires sway, stations 6 and 21). Motion is not a Northstar bar; state proxies cover the state, so only your eye judges this.
+- U_motion_look (moved off the live proof 2026-10-05): UNPAUSE and judge the LOOK of motion here: the cord's whip, the live end's drip / spark rhythm, the sway in the wind. Motion is not a Northstar bar; state proxies cover the state, so only your eye judges this.
 
 ### 2. GROUND CORDS: INDUSTRIAL
 
@@ -701,6 +701,7 @@ Global settings change every station at once, so they are never faked side by si
 | `gss.sparksOnlyOverlay` | False | sparks only while the power overlay is open | 13, 29 |
 | `gss.maxSparkingEnds` | 24 | most sparking ends per map | no station (needs 24+ live ends on one map) |
 | `gss.highlight` | True | selecting a powered building highlights its net's cords | 23 |
+| `gss.switchLight` | True | power switch lamp: green closed and powered, red open and powered, dark unpowered | every station with a power switch |
 | `gss.excludedConduits` | [] | which conduits become cords (a list: Mod Settings window only) | 24, 25 |
 | `gss.lod` | True | far zoom: one thin strand, no pieces | any: zoom out |
 | `gss.debugDraw` | False | draw the node graph | any |
@@ -888,9 +889,9 @@ Owner 2026-10-05: *"reduce the number of north Star verifications and verificati
   "swept 2 hostile/non-colonist pawn(s) off the review map"
  ],
  "pawns_in_region": [
-  "Human1082",
-  "Human1085",
-  "Human1087"
+  "Human825",
+  "Human828",
+  "Human831"
  ],
  "peaceful": true,
  "station_roofs": true,
@@ -951,7 +952,7 @@ Owner 2026-10-05: *"reduce the number of north Star verifications and verificati
      "PowerConduit_Modern_Mix": 18
     },
     {
-     "PowerConduit_Modern_Yellow": 12
+     "PowerConduit_Modern_Blue": 12
     },
     {
      "PowerConduit_Modern_Orange": 12
@@ -1230,8 +1231,8 @@ Owner 2026-10-05: *"reduce the number of north Star verifications and verificati
      "WaterproofConduit_Futuristic": 6
     },
     {
-     "PowerConduit_Modern_Green": 7,
-     "WaterproofConduit_Modern_Green": 6
+     "PowerConduit_Modern_Orange": 7,
+     "WaterproofConduit_Modern_Orange": 6
     },
     {
      "PowerConduit_Industrial": 7,
@@ -1248,6 +1249,6 @@ Owner 2026-10-05: *"reduce the number of north Star verifications and verificati
   }
  },
  "styled_refused": [],
- "wall_s": 58.1
+ "wall_s": 184.1
 }
 ```
