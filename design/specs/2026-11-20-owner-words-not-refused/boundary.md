@@ -34,8 +34,10 @@ in `src/RimMandrake/rimflow/selftest_owner_words_not_refused.py`.
   per-prompt hook prints it as a note (`NOTE, nothing blocked: …`), never as a demand to file or to answer.
 - **close-conductor-act.** A close from the Conductor window with `--per-ruling
   RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS`, or with his `--owner-said` or `--by-card`, is not refused for a
-  missing level-tagged pass; the close event records `uncheckedLifted: true`. Still refused (planted in the test): the
-  same close from a launched run, a close citing any other ruling, and a seat's own close without a pass.
+  missing level-tagged pass; the close event records `uncheckedLifted: true`. Since 2026-11-21 no closer is refused
+  for it (a fault of form: design/specs/2026-11-21-repair-at-the-refusal/boundary.md): a seat's own close and a close
+  citing another ruling go too, recorded the same way. Still refused (planted in the test): a launched run citing the
+  Conductor's ruling (that ruling's own gate).
 - **his-question-is-recorded.** `rimflow … --owner-said "<his words>"` records his words as typed, a quote ending in
   "?" and a bare assent ("yes") included; neither is refused. An assent with no `--why` prints one note line.
 - **either-conductor-ruling.** `conductor_authority.carried` takes `CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` or

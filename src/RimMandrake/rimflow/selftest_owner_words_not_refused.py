@@ -149,14 +149,18 @@ def t_close_conductor_act():
     rc, out = cli("close", names["HELPER"], "--sha", sha, "--per-ruling", RULING, "--why", why, unit="rm-helper-x")
     check("kept: a launched run citing the Conductor's ruling is refused",
           rc != 0 and state(names["HELPER"]).state != "done", "%d %s" % (rc, out))
+    # 2026-11-21 (form_fault): a missing level-tagged pass refuses no closer; each close goes, recorded uncheckedLifted
     rc, out = cli("close", names["OTHER"], "--sha", sha, "--per-ruling", names["PLAIN"], "--why", why)
-    check("kept: a close citing another ruling is still refused unchecked",
-          rc != 0 and "unchecked" in out and state(names["OTHER"]).state != "done", "%d %s" % (rc, out))
+    check("close-conductor-act: a close citing another ruling goes, recorded uncheckedLifted",
+          rc == 0 and state(names["OTHER"]).state == "done", "%d %s" % (rc, out))
     rc, out = cli("close", names["PLAIN"], "--sha", sha, "--why", "done")
-    check("kept: a seat's own close is still refused unchecked",
-          rc != 0 and "unchecked" in out and state(names["PLAIN"]).state != "done", "%d %s" % (rc, out))
-    check("close-conductor-act: the refusal names the Conductor's act as the way through",
-          RULING in out and "Only the owner's word" not in out, out)
+    evs = [json.loads(l) for l in open(ledger, encoding="utf-8")] if os.path.exists(ledger) else []
+    for fn in (os.listdir(shard_dir) if os.path.isdir(shard_dir) else []):
+        evs += [json.loads(l) for l in open(os.path.join(shard_dir, fn), encoding="utf-8") if l.strip()]
+    closes = [e for e in evs if e.get("event") == "close" and e.get("id") == names["PLAIN"]]
+    check("close-conductor-act: a seat's own close goes, recorded uncheckedLifted",
+          rc == 0 and state(names["PLAIN"]).state == "done" and closes and closes[-1].get("uncheckedLifted") is True,
+          "%d %s" % (rc, out))
 
 
 def t_his_question_is_recorded():
