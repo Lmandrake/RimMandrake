@@ -109,6 +109,13 @@ def in_rect(cell, rect):
     return cell is not None and x <= cell[0] < x + w and z <= cell[1] < z + h
 
 
+def letter_names_ember(text, burn, plant):
+    """Pure. True when the letter text holds the burn ember phrase or the plant ember's lead-in, case-insensitive: the
+    phrase can open a clause and the game capitalises it there (visit 2, 2026-11-20: "...in its beak: A burning sprig")."""
+    low = str(text or "").lower()
+    return bool(low) and ((bool(burn) and burn.lower() in low) or (bool(plant) and plant.lower() in low))
+
+
 def register(suite, V):
     """Adds the three chains to the Pyrelands suite. V is validation.py's namespace (its helpers and constants)."""
 
@@ -190,7 +197,7 @@ def register(suite, V):
                 V._unmeasured(t, "rimworld/list_letters gives no letter text: %r" % sorted((rows[0] or {}).keys()))
             if not name or str(name).lower() not in str(body[0]).lower():
                 V._fail("the letter text does not name the hawk (LabelShortCap %r)" % name)
-            if burn not in body[0] and not (plant and plant in body[0]):
+            if not letter_names_ember(body[0], burn, plant):
                 V._fail("the letter text names no ember (%r or %r...)" % (burn, plant))
 
     def _r6_trophy_worth(t):

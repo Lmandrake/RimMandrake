@@ -3493,7 +3493,10 @@ def _stage_burning_fruit(t, x, z):
     t.bridge_call("jawa/weather_set", weather="Clear", lockWeather=True)
     _plants(t, "RM_FE_Plant_EmberGrass", (x, z, 9, 9))
     _plants(t, FRUIT_PLANT, (x + 3, z + 3, 3, 3))
-    _fire(t, (x, z, 9, 2))
+    # the ring: all four edges. SITE (visit 2, 2026-11-20): only the bottom strip (x, z, 9, 2) was lit, and the control
+    # colonist walked in from the open side and took the fruit unburned
+    for edge in ((x, z, 9, 2), (x, z + 7, 9, 2), (x, z + 2, 2, 5), (x + 7, z + 2, 2, 5)):
+        _fire(t, edge)
     _wait(t, 250)
     fruit = [p.get("id") for p in _things(t, FRUIT_PLANT, "%d,%d,3,3" % (x + 3, z + 3), limit=20)]
     fires = _count(t, "Fire", rect)
@@ -4469,6 +4472,9 @@ def _ten_firehawk(t):
     plot = (fx - 2, fz - 2, 5, 5)
     _independent(t)
     with _comp(t, "far_hawk_seeks_the_burn"):
+        # SITE (visit 2, 2026-11-20): the chain's earlier rows leave fires burning, and one within the hawk's scanRadius
+        # gave it RM_FireHawkCarryEmber (then the sortie cooldown) instead of the seek; the plot must be the only fire
+        _extinguish(t)
         _set(t, {"burnLineEnabled": True, "fireHawkSpreadEnabled": True})
         t.bridge_call("jawa/weather_set", weather="Clear", lockWeather=True)
         _ten_lit_plot(t, plot)
