@@ -113,12 +113,9 @@ blesses a small change" above.
   regex reads None for 50 of 78. `DETERMINISM_ASSESSMENT.md` §11a is the account; the walk-model
   ruling landed 2026-09-18 (owner card): **per-feature walks are first-class via a `feature:`
   key** (`WALK_FEATURE_KEY_1`, done). ✅ **The "modcheck status reads a stored field" bug is
-  FIXED** (`fa27e1cab`, `status.check_or_orphaned` + `doctor.py`, same day as the claim above was
-  first written) — live-checked 2026-09-17: `modcheck status` now correctly prints `FlowWorks
-  STALE   [stored: GREEN]` and `Pits ORPHANED (no such mod folder)   [stored: GREEN]`, re-deriving
-  every row rather than trusting the stored field. The dead `FluidCanals` key is gone too
-  (`b110a7a2d`, `rename-key`/`forget-key`). Don't re-open this as a live defect without
-  re-measuring; the stored field only ever appears now as a `[stored: ...]` drift annotation.
+  FIXED** (`fa27e1cab`, live-checked 2026-09-17; the account is in `design/RimMandrake/CLAUDE.history.md`). Don't
+  re-open this as a live defect without re-measuring; the stored field only ever appears now as a `[stored: ...]`
+  drift annotation.
 - ⛔ Do not casually edit their
   `## north star` sections: the hash
   covers the **whole section including explanatory prose**, so correcting a stale caveat
@@ -194,10 +191,8 @@ C# namespaces nested `RimMandrake[.StarWars|.Utinni].<Mod>` (never bare
 `NAMING_SCHEME_EXECUTION_1` closed **2026-08-31** at `54a8e28d` on the owner's
 own word (*"Deploy the full rename."*), which is why the mod set already carries
 `mandrake.rm.*` / `mandrake.rsw.*`. So when a mod is RENAMED after that date, the
-rename is simply owed work — execute it, do not defer it to a closed item. Three
-live docs were still citing that item as a reason to wait 16 days after it
-closed, which is how `FlowWorks` (named by ruling 20, 2026-09-16) kept shipping
-as `fluidcanals`. If you find another such citation, delete it.
+rename is simply owed work — execute it, do not defer it to a closed item. If a doc
+cites that item as a reason to wait, delete the citation.
 
 ## Every mod ships superb Mod Settings — owner, 2026-09-12
 
@@ -271,9 +266,8 @@ What this means, and how to check it was applied:
 
 ## Every DLC is assumed — owner, 2026-09-19/25/26
 
-🔑 **Design assumes every DLC is present** — owner, 2026-09-25, verbatim: *"Always assume all
-the dlcs."* No standalone-without-expansion fallback tier is owed (asked about the free mods'
-deluxe gear without Odyssey). `MayRequire` guards stay for load safety, not as a design axis.
+🔑 **Design assumes every DLC is present** — owner, 2026-09-25, verbatim: *"Always assume all the dlcs."* No
+standalone-without-expansion fallback tier is owed (asked about the free mods' deluxe gear without Odyssey).
 
 🔴 **And that assumption covers the PLAYER, not just us** — owner, 2026-09-26: *"it is assumed
 that future players will have all the Rimworld DLC's currently installed."* ⇒ **Every DLC is a
@@ -287,13 +281,10 @@ biome roster, a quest, a scenario.
 - ✅ `MayRequire` still goes on **mod** guards for load safety. On a DLC it is harmless but
   decides nothing, so never read one as evidence that a DLC-absent case is supported.
 
-🔑 **ALL TEST MOD LISTS include ALL FIVE EXPANSIONS — no exceptions right
-now.** Owner ruling, 2026-09-19, verbatim: *"Was Odyssey even loaded for this
-test? ALL TEST MOD LISTS should include ALL THE EXPANSIONS; we're not trying
-to ablate expansions out of our list at this time."* `modset_builder.py`'s
-`bridge`/`pits`/`graffiti`/`oracle` tiers built Core-only before this ruling;
-all tiers now set `dlc: True`. A tier's `want` list may still narrow which
-*mods* load for isolation — it may no longer narrow which *DLC* loads.
+🔑 **ALL TEST MOD LISTS include ALL FIVE EXPANSIONS — no exceptions right now.** Owner ruling, 2026-09-19, verbatim:
+*"Was Odyssey even loaded for this test? ALL TEST MOD LISTS should include ALL THE EXPANSIONS; we're not trying to
+ablate expansions out of our list at this time."* All `modset_builder.py` tiers set `dlc: True`. A tier's `want` list
+may still narrow which *mods* load for isolation. That list may no longer narrow which *DLC* loads.
 
 ## Biome art never blocks — owner, 2026-10-18
 
@@ -313,20 +304,10 @@ things draw in front"); its measured limits: `infrastructure/state/items/RIMMAST
 *"It is WORSE to leave incorrect information that belongs to another seat than it is
 to violate seats... ok? I keep saying this. MAKE IT SO EVERYWHERE."*
 
-🔴 **A false statement in another seat's file is yours to fix, on sight.** Item prose,
-spec, design doc — no correction ticket, no note, no waiting. A wrong sentence left
-standing is believed by everyone who reads it next; the seat boundary was never
-supposed to protect one.
-
-- **Commit it at once, explicit paths.** The danger was always the UNCOMMITTED fix in
-  an uncommitted change is erased by the next checkout, nobody told. Committing is
-  the safeguard, not the risk.
-- **The commit says what was WRONG**, not merely what changed.
-- ⛔ **Correcting is not redirecting.** Their scope, priorities and open decisions stay
-  theirs — fix what is false, `rimflow file --for <them>` anything that is a judgement.
-- Enforced, not exhorted: `.claude/hooks/queue_lint.py` WARNS on a cross-seat item
-  edit and never blocks it. Pair with the deletion rule directly below — remove wrong
-  content, don't annotate it.
+🔴 **A false statement in another seat's file is yours to fix, on sight.** The full rule is in
+`infrastructure/agents/CHARTER.md` §Correctness outranks seat ownership. `.claude/hooks/queue_lint.py` WARNS on a
+cross-seat item edit and never blocks it. Pair it with the deletion rule directly below: remove wrong content, do not
+annotate it.
 
 ## Inaccurate material is DELETED, not superseded-in-place — owner, 2026-09-09
 
@@ -427,15 +408,8 @@ and 9 of 15 later claims pointed at lines the last fix had just written.
   code in a sweep. For pipeline machinery, Decision 1 of §A boundary page before pipeline code also says when a page
   is owed.
 
-```
-python3 src/RimMandrake/Utils/code_review_status.py check <path>...           CLEAN / DIRTY / UNREADABLE / NO PAGE
-python3 src/RimMandrake/Utils/code_review_status.py check --record <path>...  READ-CLEAN: did a cold read of these bytes find nothing significant
-python3 src/RimMandrake/Utils/code_review_status.py mark-clean <path>         record READ-CLEAN on these bytes (refused on a FLAGGED file)
-python3 src/RimMandrake/Utils/code_review_status.py flag <path> --why "…"    the blind reread also fixed a significant finding
-python3 src/RimMandrake/Utils/code_review_status.py list --flagged            the weekly examination's list (exit 3: a flag shard is unreadable)
-python3 src/RimMandrake/Utils/code_review_status.py unflag <path> --why "…"  the weekly examination's answer
-```
-
+The commands (`check`, `check --record`, `mark-clean`, `flag`, `list --flagged`, `unflag`) and what each answers:
+`python3 src/RimMandrake/Utils/code_review_status.py --help`.
 `check` exits 0 CLEAN, 1 DIRTY (a promise has no test, or its tests file fails), 3 UNREADABLE (a page or tests file
 could not be read or run, or a page is not registered in `boundary_check.py` `PAGES`), 4 NO PAGE; over several paths
 the worst answer sets the exit. It runs each naming page's tests file once per call. Its own page:
@@ -626,24 +600,10 @@ says so. Since 2026-10-04 art goes through the art ledger and its `art install` 
 (`design/RimMandrake/art_ledger_design_2026-10-04.md`), and his rulings live in
 `infrastructure/state/art_rulings/`, never only in `Transient/`.
 
-```
-src/                    mods, defs, C#, art            built by helpers the Conductor launches
-design/                 campaign specs (Utinni)        the owner's, via the Conductor
-skills/                 tooling + how-to               curated in fresh-context passes
-infrastructure/state/   ledger, items, facts/, V1.md   written only through rimflow
-  items/<ID>.md         LIVE item prose only — this glob is the live set
-  items/closed/         prose of done/dropped/superseded items (moved on close)
-  handoffs/             reboot handoffs — NOT queue items, never greppable queue state
-Transient/              output to LOOK AT, then bin    UNTRACKED (pins only), ~14 days
-```
-
-**Transient rule**: a human reads it once → `Transient/`; a program reads it →
-`/tmp`, never the repo; anyone-later → the repo, committed outside `Transient/`.
-Untracked since 2026-10-18 (owner, by card: *"Stop tracking; pin to keep"*): an unpinned
-file lives only in the clone that wrote it; pin with `transient_pin.py add <path>`
-(`*.decisions.json` always stay tracked). Shelf life ~14 days: never the
-only copy of anything, and never a committed doc citing a file inside it.
-`rimflow sweep --transient` lists by age; it never deletes.
+The folder tree is in `CLAUDE.md` §What is where, and the Transient rule is in `CLAUDE.md` §Transient. Two facts
+are only here. `Transient/` is untracked since 2026-10-18 (owner, by card: *"Stop tracking; pin to keep"*); pin a
+file with `transient_pin.py add <path>` (`*.decisions.json` always stay tracked). `rimflow sweep --transient` lists by
+age; it never deletes.
 
 ## Nothing reaches the owner unread — owner, 2026-10-22
 
@@ -693,11 +653,10 @@ gear on a pawn — **build them and save the game.**
 
 ## Check for existing regenerated art before queuing more — owner, 2026-09-20
 
-Before filing any `fill_queue.py` job (or otherwise deciding art is "owed"),
-check whether art for that subject was **already generated and already ruled
-on** — the artpipe daemon runs continuously and its output regularly sits
-unused for days because the def/roster work that would wire it in hasn't
-happened yet.
+Before you file a `fill_queue.py` job, check whether art for that subject was **already generated and already ruled
+on**. Do the same whenever a def or item is "missing art" or "owed new art". Generate only what the search does not
+find. The artpipe daemon runs all the time, and its output often sits unused for days. The def or roster
+work that would wire it in often has not happened yet.
 
 - **Search the artpipe state dir by subject/defName first** —
   `python3 src/RimMandrake/Utils/artpipe/artpipe_state.py find <term>…` covers `done/`, `_artsrc/`,
@@ -717,8 +676,6 @@ happened yet.
   actually already saw beautiful art for giant leaf somewhere in a review
   sheet"* and asked for a check across the rest of the missing set. Nothing
   in the workflow up to that point had prompted the check on its own.
-- **How to apply:** whenever a def/item is "missing art" or "owed new art",
-  search first, generate only what the search comes up empty on.
 
 ## Live runs are TARGETED; the full suite is a scheduled sweep — owner, 2026-10-25
 
@@ -1703,9 +1660,6 @@ Reset as a mod deliverable."*
   scene is reset.
 - **Why:** reset is the same for every scene and every mod, so it belongs once in the harness; judging it per mod spends
   rewrite, exam and judge rounds on work no player ever sees.
-- **Superseded:** the polish entry `RIMMANDRAKE_RESTORE_PYRE_WIND_SCENE_GROUND` (deleted from
-  `design/concepts/Pyrelands/version/polish.md`; it was never filed); "restoration" as a judged part of the proof-scene
-  contract (`coverage_judge.py` prompt, `roles/designer_scene_contract.md`, `roles/designer_lock.md` step 5).
 - **What it does not change:** a scene still writes a `restore` line and the runner still records recovery
   (`designer_stage.py scene-begin` / `scene-end`), so an interrupted run is still put back before the next one; the
   asserted start and the control are still judged; a mod effect that persists in a real game (a scar that never fades,
@@ -1726,9 +1680,7 @@ task."*).
 - Until the new alert route is built, **no alarm reaches his phone**; each alarm still goes to its own log, alarms
   file and ledger. Which route replaces it is his open choice on `RIMMASTER_DESIGN_PHONE_ALERTS_THAT_ACTUALLY_RING`,
   with the Todoist backup rung struck from every option.
-- The 173 alarm tasks our senders had left open in the Inbox he shares with Steve were completed 2026-11-19
-  (`D:\ClaudeWork\rimmandrake\conductor\todoist_alarm_tasks_closed_20261119.md`). To-do lists synced into Todoist
-  (Lodestar Burning, Hestia) are unaffected.
+- To-do lists synced into Todoist (Lodestar Burning, Hestia) are unaffected.
 
 ## The root CLAUDE.md holds rule lines and pointers only — owner, 2026-11-19
 
@@ -1745,8 +1697,6 @@ entries please. No more oracular oddities. No provenance either, that's for git.
 - **Superseded:** the 2026-09-23 spring-cleaning ruling for `CLAUDE.md`, "regroup, cut nothing". It no longer binds the
   root `CLAUDE.md`. What still holds from it: evidence moves to a home, it never vanishes (the Crystallize merge gate,
   `checkable.py compare`).
-- The drain itself: item `RIMMANDRAKE_DRAIN_CLAUDE_MD_RULE_LINES_OLD_RULING_OBSOLETE`; report
-  `D:\ClaudeWork\rimmandrake\conductor\crystallize_2026W47\claude_md_drain.md`.
 
 ## 🔴 There is no worldgen feature, in any version — owner, 2026-08-15
 

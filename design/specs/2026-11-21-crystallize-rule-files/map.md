@@ -4,7 +4,11 @@ Item `RIMMANDRAKE_CRYSTALLIZE_RULE_FILES_DOUBLED_IN_EIGHT_DAYS`. One row per sec
 `design/RimMandrake/standing_rulings.md`, `infrastructure/agents/CHARTER.md` and
 `src/RimMandrake/rimflow/roles/*.md`. The rows are in `map_parts/` beside this file while the work runs.
 
-base: `542106e6411d83befeb08e26f7f2c791e341b160`
+base: `f5c8bd66e998bc5fa2afd6797770e95c431946a4`
+
+The run started at `542106e641`. Commit `f5c8bd66e9` (another run: one lock per game) then changed 93 lines of the
+root `CLAUDE.md`, `standing_rulings.md` and `roles/conductor.md` before any of this run's rule-file commits. So the
+check reads that commit as the base: it holds the start text plus that run's change, and no section title changed.
 
 The check that reads this map: `python3 src/RimMandrake/Utils/selftest_rule_files_lose_nothing.py check`.
 

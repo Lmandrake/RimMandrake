@@ -86,3 +86,72 @@ appear word for word in their home are not repeated here.
 
 ### 🔴 A refusal carries its path to pass — owner, 2026-11-12
 - "ANY refusals must be as detailed as the evidence they are rejecting and include the fixes and paths towards passing that are attainable and reasonable."
+
+### From `design/RimMandrake/standing_rulings.md` §Resetting a test scene is harness housekeeping — what the 2026-11-17 ruling superseded
+
+- **Superseded:** the polish entry `RIMMANDRAKE_RESTORE_PYRE_WIND_SCENE_GROUND` (deleted from
+  `design/concepts/Pyrelands/version/polish.md`; it was never filed); "restoration" as a judged part of the proof-scene
+  contract (`coverage_judge.py` prompt, `roles/designer_scene_contract.md`, `roles/designer_lock.md` step 5).
+
+### From `design/RimMandrake/standing_rulings.md` §Todoist is for to-do lists only — the old alarm tasks, closed 2026-11-19
+
+- The 173 alarm tasks our senders had left open in the Inbox he shares with Steve were completed 2026-11-19
+  (`D:\ClaudeWork\rimmandrake\conductor\todoist_alarm_tasks_closed_20261119.md`).
+
+### From `design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds rule lines and pointers only — the drain of 2026-11-19
+
+- The drain itself: item `RIMMANDRAKE_DRAIN_CLAUDE_MD_RULE_LINES_OLD_RULING_OBSOLETE`; report
+  `D:\ClaudeWork\rimmandrake\conductor\crystallize_2026W47\claude_md_drain.md`.
+
+### From `design/RimMandrake/standing_rulings.md` §The bridge is passed through one file — the old RELENTLESS holder
+
+**RELENTLESS** was the retired Relentless Pipeline's bridge holder (`model.bridge_identity`), not a seat: only old `bridge` events carry it.
+
+### From `design/RimMandrake/standing_rulings.md` §Every DLC is assumed — the Core-only tiers before 2026-09-19
+
+`modset_builder.py`'s `bridge`/`pits`/`graffiti`/`oracle` tiers built Core-only before the owner's ruling of 2026-09-19 that all test mod lists include all five expansions.
+
+### From `design/RimMandrake/standing_rulings.md` §Shipping names are three-tier — the stale citations of 2026-09
+
+Three live docs were still citing `NAMING_SCHEME_EXECUTION_1` as a reason to wait 16 days after it
+closed, which is how `FlowWorks` (named by ruling 20, 2026-09-16) kept shipping
+as `fluidcanals`.
+
+### From `design/RimMandrake/standing_rulings.md` §North-star validation state — the stored-field fix of 2026-09-17
+
+The "modcheck status reads a stored field" bug was
+FIXED (`fa27e1cab`, `status.check_or_orphaned` + `doctor.py`, the same day as the walk claim of that section was
+first written) — live-checked 2026-09-17: `modcheck status` now correctly prints `FlowWorks
+STALE   [stored: GREEN]` and `Pits ORPHANED (no such mod folder)   [stored: GREEN]`, re-deriving
+every row rather than trusting the stored field. The dead `FluidCanals` key is gone too
+(`b110a7a2d`, `rename-key`/`forget-key`).
+
+### From `infrastructure/agents/CHARTER.md` §CHARTER — binds the Conductor and its helpers — what the charter replaced, 2026-08-27
+*Adopted 2026-08-27 (owner's ruling, this date). The charter replaced POLICY.md, the four seat files, and most of the
+process prose. Git holds everything removed.*
+
+### From `infrastructure/agents/CHARTER.md` §Decisions — a limit from before the Maturation Pipeline is suspect, owner 2026-11-17
+**A limit from before the Maturation Pipeline is suspect** (owner, 2026-11-17: "Don't keep telling me we can't do
+things when it's from pre-maturation pipeline decisions"). Never refuse an act because of such a limit. Act, or ask him
+first. If you ask, quote the old decision's date and text (`standing_rulings.md` §A limit from before the Maturation
+Pipeline).
+
+### From `infrastructure/agents/CHARTER.md` §How we debug — owner, 2026-10-01 — the lines that root `CLAUDE.md` §How we debug now holds
+`design/RimMandrake/debug_process.md` is the process. **Every mod has a functional script and is debugged through
+it.**
+
+- Run the script first. When the script is blind, poke the live game.
+- End every poking session with the lesson written into the script. The lesson is a check that is red for the reported
+  reason before the final fix. Add the informative theories that proved false.
+- Agents write, approve and declare passing on these scripts.
+- Agents may add regression checks and new `## north star` bars (owner 2026-10-26, `delegation_policy.md` §1).
+- When you are stuck, go to GPT early, for hypotheses to test.
+
+The owner lifted the 2026-10-01 build pause on 2026-10-02 (*"Build pause is lifted."*). Every new mod still ships with
+its first script (`debug_process.md` §2).
+
+### From `infrastructure/agents/CHARTER.md` §Instruments, in order — the owner's testing words, 2026-10-28
+
+Which kind of testing to run, when, and its tunables: `design/RimMandrake/testing_policy_2026-10-28.md` and
+`src/RimMandrake/rimflow/testing_policy.json` (owner, 2026-10-28: "Let's get smarter about the testing we do and only
+use appropriate kinds of testing when/where it will help us.").
