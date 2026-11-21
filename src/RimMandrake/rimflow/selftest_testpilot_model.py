@@ -88,6 +88,26 @@ def t_policy_records_the_exception_once():
     assert "| `rm-testpilot` |" in p and "fable (the exception in the Fable row)" in p, "the helper table row"
 
 
+def t_tick_pilot_model_passes_the_launch_gate():
+    """RIMMANDRAKE_PASS_PILOT_ALIAS_TO_THE_LAUNCH_GATE (2026-11-21 12:43 AM PST): the tick's Test Pilot sitting on
+    FlowWorks was refused at detached_helper's H4 gate, "model 'claude-fable-5-2' is not one of fable, opus, sonnet",
+    and the mod paused. The tick must hand the helper the alias, and the helper must launch it as Fable 5.2."""
+    import maturation_autonomy as AUT
+    for env in ({}, {"ANTHROPIC_DEFAULT_FABLE_MODEL": "claude-fable-5-2"}):
+        was = {k: os.environ.pop(k) for k in list(os.environ) if k.startswith("ANTHROPIC_DEFAULT_")}
+        os.environ.update(env)
+        try:
+            got = AUT.pilot_run_model(ROOT, "opus")
+        finally:
+            for k in env:
+                os.environ.pop(k, None)
+            os.environ.update(was)
+        assert got in detached_helper.MODELS, "the tick hands the helper %r, which its H4 gate refuses (env %s)" % (
+            got, sorted(env))
+        assert detached_helper.MODEL_IDS.get(got, got) == "claude-fable-5-2", "the helper launches %r, not Fable 5.2" % (
+            detached_helper.MODEL_IDS.get(got, got))
+
+
 CASES = [v for k, v in sorted(globals().items()) if k.startswith("t_") and callable(v)]
 
 if __name__ == "__main__":

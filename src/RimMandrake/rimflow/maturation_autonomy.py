@@ -1105,9 +1105,13 @@ def pilot_brief(root, item, mod, why):
 
 def pilot_run_model(root, default):
     """-> the model a sitting runs on: run_store.pilot_model, the agent file's own `model:` line (Fable 5.2, owner
-    2026-11-16)."""
+    2026-11-16), as the alias detached_helper's H4 gate takes (it maps the alias to the full id at launch). The full id
+    itself was refused, "model 'claude-fable-5-2' is not one of fable, opus, sonnet", and FlowWorks paused
+    (RIMMANDRAKE_PASS_PILOT_ALIAS_TO_THE_LAUNCH_GATE, 2026-11-21)."""
+    import detached_helper as DH
     import run_store as RL
-    return RL.pilot_model(root, "rm-testpilot", default)
+    mid = RL.pilot_model(root, "rm-testpilot", default)
+    return {v: k for k, v in DH.MODEL_IDS.items()}.get(mid, mid)
 
 
 def _road_back(s, row, open_items, now=None, moved=False, endings=None, cfg=None, ver=None, version_bugs=None):
