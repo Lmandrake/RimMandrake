@@ -1481,6 +1481,7 @@ LINES_CASES = [
     # owner cards 2026-10-22: PIT_COVER_WIDEN_PLANKS_BEAR_BOOTS, DRILL_PLACEMENT_ENFORCE_NO_DRY_HOLES
     "CoverFloor_planked_squares_are_ground_open_squares_the_pit", "CoverFloor_laying_or_lifting_a_lid_invalidates_path_and_reach",
     "DrillSurvey_empty_survey_refuses_unsurveyed_allows", "DrillSurvey_placeworker_wired_on_drill_and_bleed_well",
+    "DrillSurvey_caller_charges_what_landed_and_returns_what_it_holds",
     "DrillWhyNot_each_condition_names_its_reason"]
 LINES_LIVE = [
     ("ROPE_DECK_RIGID_REFUSED_FLEX_OK", None, "on a rope deck square the placement gate refuses a pipe and a conduit and accepts "

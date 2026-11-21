@@ -2234,6 +2234,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             LadderClimbSpanChecks.Run(Case);   // RIMMANDRAKE_FIX_CLIMB_SLOW_OUTLASTS_LADDER: the climb is slow only across the ladder's art (LadderClimbSpanChecks.cs)
             SpikeDrawChecks.Run(Case);         // PIT_SPIKES_FIX_OVER_WALL_AND_SUBMERGE: stakes on the floor, never the walls; gone under 1 m (SpikeDrawChecks.cs)
             UnderLiquidParityChecks.Run(Case);  // RIMMANDRAKE_FIX_BIG_PIT_SCENE_BUILDINGS_STAY_DRY: C# law = model/underliquid.py
+            PitReliefParityChecks.Run(Case);    // RIMMANDRAKE_REBUILD_FLOWWORKS_PITS_AS_RELATIVE_TERRAIN: RM_PitReliefMath = model/pitdraw.py
             PitFloorGroundChecks.Run(Case);     // RIMMANDRAKE_ALLOW_MEDIUM_FURNITURE_ON_PIT_FLOOR: a dry dug floor carries its ground's load
             SubmergeDrawChecks.Run(Case);      // RIMMANDRAKE_SUBMERGE_PIT_FITTINGS_BY_LEVEL: liquid covers ladders, ramp, stakes by level
             CoverFloorSurveyChecks.Run(Case);   // PIT_COVER_WIDEN_PLANKS_BEAR_BOOTS + DRILL_PLACEMENT_ENFORCE_NO_DRY_HOLES (owner cards 2026-10-22)

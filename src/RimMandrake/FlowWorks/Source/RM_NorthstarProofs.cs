@@ -2,6 +2,7 @@ using System.Reflection;
 using HarmonyLib;
 using RimMandrake.FlowWorks.LiquidTypes;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace RimMandrake.FlowWorks
@@ -824,6 +825,56 @@ namespace RimMandrake.FlowWorks
 				verts += sm.verts.Count;
 			}
 			return "WALLS visible=" + layer.Visible + " verts=" + verts;
+		}
+
+		/// <summary>RIMMANDRAKE_REBUILD_FLOWWORKS_PITS_AS_RELATIVE_TERRAIN carrier. arg "x,z": is the walls mesh now drawn on the cell's
+		/// section the one a fresh build makes, or at least marked for re-mesh? Reads the built geometry's fingerprint and whether
+		/// the section is dirty for this layer, THEN regenerates and reads again.
+		/// "WALLSTALE built=fp fresh=fp stale=b dirty=b verts=n" (stale: built != fresh; a stale mesh not marked dirty is the bug:
+		/// a cut past 2 m that never re-meshed).</summary>
+		public static string ProofWallFacesStale(string arg)
+		{
+			Map map = Find.CurrentMap;
+			if (map == null || !Cell(arg, out IntVec3 c) || !c.InBounds(map))
+			{
+				return "REFUSED: arg must be x,z";
+			}
+			Section s = map.mapDrawer.SectionAt(c);
+			SectionLayer layer = s?.GetLayer(typeof(SectionLayer_RMExcavationWalls));
+			if (layer == null)
+			{
+				return "REFUSED: no SectionLayer_RMExcavationWalls on the section at " + c;
+			}
+			// 1.6: a section's flag bits are handed to its layers' Dirty each frame (Verse.Section); pending = either
+			bool dirty = layer.Dirty || (s.dirtyFlags & layer.relevantChangeTypes) != 0;
+			string built = MeshPrint(layer, out int _);
+			layer.Regenerate();
+			layer.Dirty = false;   // this read rebuilt it: a later read must not see this cut's mark as the next cut's
+			string fresh = MeshPrint(layer, out int verts);
+			return "WALLSTALE built=" + built + " fresh=" + fresh + " stale=" + (built != fresh) + " dirty=" + dirty + " verts=" + verts;
+		}
+
+		/// <summary>A fingerprint of a layer's built geometry: every sub-mesh's vertices (to a thousandth of a cell) and colours.</summary>
+		private static string MeshPrint(SectionLayer layer, out int verts)
+		{
+			ulong h = 1469598103934665603UL;
+			verts = 0;
+			foreach (LayerSubMesh sm in layer.subMeshes)
+			{
+				for (int i = 0; i < sm.verts.Count; i++)
+				{
+					Vector3 v = sm.verts[i];
+					h = (h ^ (ulong)(long)Mathf.RoundToInt(v.x * 1000f)) * 1099511628211UL;
+					h = (h ^ (ulong)(long)Mathf.RoundToInt(v.z * 1000f)) * 1099511628211UL;
+					if (i < sm.colors.Count)
+					{
+						Color32 k = sm.colors[i];
+						h = (h ^ (ulong)(k.r | k.g << 8 | k.b << 16 | k.a << 24)) * 1099511628211UL;
+					}
+				}
+				verts += sm.verts.Count;
+			}
+			return h.ToString("x16");
 		}
 
 		/// <summary>WRITES. arg "x;z;w;h": every excavated cell in the rect is drained (fill 0) and filled back in to the

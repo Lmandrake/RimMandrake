@@ -116,7 +116,7 @@ Yes, in everything that decides shape: one depth grid (`RM_MapComponent_Excavati
   (owner 2026-09-17: *"I'm not really sure a pit is any different than a deep canal."*; a pit is depth 4 on the one depth grid) both
   point to one height-field draw; that section names no "pit or no pit" art and no height-field ruling [measured: section and a
   search of the file for height field, relative height, geometry offline].
-- **Acceptance test, watched red:** `src/RimMandrake/FlowWorks/acceptance_pit_relative_terrain.py` reads 1 of 3 PASS on the base
+- **Acceptance test, watched red:** `src/RimMandrake/FlowWorks/acceptance_pit_relative_terrain.py` (renamed `selftest_flowworks_pit_relative_terrain.py` once green, now 5 cases) reads 1 of 3 PASS on the base
   (planner keys on the drop: PASS; deepening redraws: FAIL; floor shade past 2 m: FAIL); 3 of 3 on a planted fix; case 1 turns red when
   the planner is broken to "pit or no pit" [measured].
 - **Part-1 faults the rebuild absorbs** (noted on each item): the walls under the concealed cover (#17; same layer, never asks about a

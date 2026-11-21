@@ -1727,6 +1727,9 @@ namespace RimMandrake.FlowWorks
 			// P14: ONE base write picks the square's picture: its dry floor by depth, or its water's ladder rung when wet
 			// (a wet cell cut deeper is redrawn now rather than at the next pulse, forever with the depth engine off).
 			ApplyFillTerrain(c, FluidAt(c) ?? ActiveFluid);
+			// RIMMANDRAKE_REBUILD_FLOWWORKS_PITS_AS_RELATIVE_TERRAIN: the square and its 8 neighbours re-mesh on every cut, past 2 m too
+			// (a cut that leaves the floor terrain unchanged used to keep the old faces: his stepped pit drew as one flat floor)
+			SectionLayer_RMExcavationWalls.RedrawStep(map, c);
 			// PHASE 5, ruling 26. The cut that CROSSES 2 m makes the cell a pit (SUPERDEEP_HOLDER_RETIRE_1: the trap is the grid
 			// byte itself, RM_SuperdeepTrap; no Thing is created by digging). PIT_DEPTH_WIDEN: only the crossing counts; a pit
 			// cut deeper is still one pit (the count used to rise on every cut past 2 m).
@@ -1827,6 +1830,8 @@ namespace RimMandrake.FlowWorks
 			depthGrid[i] = newD;
 			SetWaterDl(i, kept);
 			BumpClimbGeneration(GenFill);
+			// RIMMANDRAKE_REBUILD_FLOWWORKS_PITS_AS_RELATIVE_TERRAIN: a fill-in re-meshes the square and its neighbours at every depth
+			SectionLayer_RMExcavationWalls.RedrawStep(map, c);
 			// PHASE 5. A cell raised out of SUPERDEEP stops being a trap: the
 			// grid byte drops and the trap rule stops applying on the next read.
 			// Nobody is in a container, so nobody needs dropping out. PIT_DEPTH_WIDEN: only the fill that crosses back above

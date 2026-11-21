@@ -373,6 +373,7 @@
     <Compile Include="Machinery\RM_LiquidWorksRuins.cs" />
     <Compile Include="RM_PumpMath.cs" />
     <Compile Include="RM_WallFaceMath.cs" />
+    <Compile Include="RM_PitReliefMath.cs" />
     <Compile Include="RM_LiquidSurface.cs" />
     <Compile Include="RM_LiquidLooks.cs" />
     <Compile Include="Superdeep\RM_FaceMaterial.cs" />

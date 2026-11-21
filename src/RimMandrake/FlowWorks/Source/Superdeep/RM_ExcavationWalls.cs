@@ -64,7 +64,7 @@ namespace RimMandrake.FlowWorks
 				float sc = scorch != null ? scorch.StrengthAt(c) : 0f;
 				if (d == 0)
 				{
-					if (material && BordersCut(map, eng, c))
+					if (material && BordersOpenCut(map, eng, c))
 					{
 						Collar(map, c, y - 0.001f);
 					}
@@ -72,6 +72,12 @@ namespace RimMandrake.FlowWorks
 					{
 						ScorchHalo(map, scorch, c, y);
 					}
+					continue;
+				}
+				// RIMMANDRAKE_HIDE_FLOWWORKS_PIT_WALLS_UNDER_CONCEALED_COVER: a lid printing the ground hides its square; the faces draw
+				// at render queues after that print, so a concealed square draws no pit art at all
+				if (!DrawsPitArt(map, eng, c, d))
+				{
 					continue;
 				}
 				// the TRUE level (quarter-notch note, RM_UnderLiquid.LevelNote), noted so a stale one re-meshes the cell
@@ -82,14 +88,23 @@ namespace RimMandrake.FlowWorks
 				int west = NeighbourLevel(map, eng, c + IntVec3.West, d);
 				int east = NeighbourLevel(map, eng, c + IntVec3.East, d);
 				int south = NeighbourLevel(map, eng, c + IntVec3.South, d);
+				// RIMMANDRAKE_REBUILD_FLOWWORKS_PITS_AS_RELATIVE_TERRAIN: the diagonals, for the corners of a shallower block inside a
+				// deeper area (RM_PitReliefMath.ClosesCorner / CornerPiece)
+				int nw = NeighbourLevel(map, eng, c + IntVec3.North + IntVec3.West, d);
+				int ne = NeighbourLevel(map, eng, c + IntVec3.North + IntVec3.East, d);
+				int sw = NeighbourLevel(map, eng, c + IntVec3.South + IntVec3.West, d);
+				int se = NeighbourLevel(map, eng, c + IntVec3.South + IntVec3.East, d);
 				if (RimMandrakeFlowWorksSettings.pitOutlineEnabled)
 				{
 					Outline(c, d, north, south, west, east, y + 0.0009f);
+					CornerLines(c, d, north, south, west, east, nw, ne, sw, se, y + 0.0009f);
 				}
 				float nd = RM_UnderLiquid.Exposed(d, north, lv);
 				float wd = RM_UnderLiquid.Exposed(d, west, lv);
 				float ed = RM_UnderLiquid.Exposed(d, east, lv);
 				float h = RM_UnderLiquid.NorthFace(nd);
+				RM_PitReliefMath.CornerPiece(d, north, west, nw, lv, out float wnw, out float hnw);
+				RM_PitReliefMath.CornerPiece(d, north, east, ne, lv, out float wne, out float hne);
 				if (sc > 0f && note == 0)
 				{
 					// principle 5: the SAME empty pit, burned — grey ash over the floor, char at the walls and in patches
@@ -98,7 +113,7 @@ namespace RimMandrake.FlowWorks
 				}
 				if (note > 0 && material && RimMandrakeFlowWorksSettings.liquidSeeThroughEnabled)
 				{
-					SeeThrough(map, eng, c, d, lv, north, west, east, y - 0.0008f);
+					SeeThrough(map, eng, c, d, lv, north, west, east, wnw, hnw, wne, hne, y - 0.0008f);
 				}
 				if (!material)
 				{
@@ -122,7 +137,7 @@ namespace RimMandrake.FlowWorks
 				float ew = RM_UnderLiquid.SideFace(ed);
 				if (nd > 0f)
 				{
-					NorthFace(map, eng, c, d, h, ww, ew, y, sc);
+					NorthFace(map, eng, c, d, h, ww, ew, y, sc, RM_PitReliefMath.FaceFootShade(nd));
 				}
 				if (wd > 0f)
 				{
@@ -132,14 +147,123 @@ namespace RimMandrake.FlowWorks
 				{
 					SideFace(map, eng, c, c + IntVec3.East, d, ew, h, true, y + 0.001f, sc);
 				}
+				if (wnw > 0f)
+				{
+					CornerFace(map, eng, c, c + IntVec3.North + IntVec3.West, false, wnw, hnw, y + 0.001f);
+				}
+				if (wne > 0f)
+				{
+					CornerFace(map, eng, c, c + IntVec3.North + IntVec3.East, true, wne, hne, y + 0.001f);
+				}
+				if (note == 0)
+				{
+					// every dry floor shaded by its own depth (a wet one is shaded under its sheet, SeeThrough)
+					FloorShade(c, d, ww, ew, h, wnw, hnw, wne, hne, y + 0.0012f);
+				}
 			}
 			FinalizeMesh(MeshParts.All);
+		}
+
+		/// <summary>RIMMANDRAKE_REBUILD_FLOWWORKS_PITS_AS_RELATIVE_TERRAIN: a square's height (or the deck on it) changed; it and its 8
+		/// neighbours re-mesh at once (their faces read its height; whether a lid conceals reads its neighbours). The layer re-meshed
+		/// only on a floor TERRAIN change, and every floor past 2 m is one terrain, so a pit cut deeper past 2 m kept its old
+		/// faces until something else re-meshed the section.</summary>
+		public static void RedrawStep(Map map, IntVec3 c)
+		{
+			if (map?.mapDrawer == null || !c.InBounds(map))
+			{
+				return;
+			}
+			ulong flag = RM_WaterLookDraw.LookFlag;
+			// the 4-argument form: the 2-argument MapMeshDirty dirties the 8 neighbours' sections only for FogOfWar, Buildings or
+			// Roofs (Verse.MapDrawer, 1.6, read in RimSage 2026-11-21), so a neighbour across a section edge kept its old faces
+			map.mapDrawer.MapMeshDirty(c, flag != 0 ? flag : (ulong)MapMeshFlagDefOf.Terrain, regenAdjacentCells: true, regenAdjacentSections: false);
+		}
+
+		/// <summary>Does this dug square draw pit art? Not under a cover that prints the ground (RM_PitReliefMath.DrawsPitArt).</summary>
+		internal static bool DrawsPitArt(Map map, RM_MapComponent_Excavation eng, IntVec3 c, int hollow)
+		{
+			if (hollow <= 0)
+			{
+				return false;
+			}
+			bool covered = Pits.RM_PitCoverUtility.CoverAt(map, c) != null;
+			return RM_PitReliefMath.DrawsPitArt(hollow, covered, covered && Pits.RM_PitCoverUtility.LidShowsArt(map, c));
+		}
+
+		private readonly float[] floorRects = new float[8];
+		private readonly float[] cornerXz = new float[8];
+		private static readonly Color32 ShadeBlack = new Color32(10, 8, 7, 0);
+
+		/// <summary>The floor's depth shade: black at RM_PitReliefMath.FloorShade(d) over the floor between the faces
+		/// (RM_PitReliefMath.FloorRects, never over a face), so every depth draws apart, past 2 m too.</summary>
+		private void FloorShade(IntVec3 c, int d, float ww, float ew, float h, float wnw, float hnw, float wne, float hne, float y)
+		{
+			float a = RM_PitReliefMath.FloorShade(d);
+			if (!(a > 0f))
+			{
+				return;
+			}
+			Color32 k = ShadeBlack;
+			k.a = Alpha(a);
+			int n = RM_PitReliefMath.FloorRects(ww, ew, h, wnw, hnw, wne, hne, floorRects);
+			for (int i = 0; i < n; i++)
+			{
+				float x0 = floorRects[4 * i], z0 = floorRects[4 * i + 1], x1 = floorRects[4 * i + 2], z1 = floorRects[4 * i + 3];
+				QuadVMat(RM_FaceMaterial.TintMat, c.x + x0, c.z + z0, x1 - x0, z1 - z0, y, k, k);
+			}
+		}
+
+		/// <summary>The side face of a shallower block continued down beside it into a north corner of this square (the convex
+		/// corner the camera sees), in the block's ground, lit as a side bevel, its foot mitred (RM_PitReliefMath.CornerPoly).</summary>
+		private void CornerFace(Map map, RM_MapComponent_Excavation eng, IntVec3 c, IntVec3 diag, bool east, float w, float h, float y)
+		{
+			RM_PitReliefMath.CornerPoly(east, w, h, cornerXz);
+			Vector3[] q = new Vector3[4];
+			for (int i = 0; i < 4; i++)
+			{
+				q[i] = new Vector3(c.x + cornerXz[2 * i], y, c.z + cornerXz[2 * i + 1]);
+			}
+			TerrainDef ground = RM_FaceMaterial.GroundBeside(map, eng, c, diag, out bool _);
+			Material face = RM_FaceMaterial.FaceMat(ground);
+			if (face != null)
+			{
+				Poly(face, q, White, White, false, h);
+			}
+			byte a = (byte)(255f * LightAlpha(RM_WallFaceMath.WallSideLight));
+			Poly(RM_FaceMaterial.ShadeMat, Lift(q, 0.0002f), new Color32(255, 248, 232, a), new Color32(255, 248, 232, a), false, h);
+		}
+
+		/// <summary>The outline's corner quadrants: where a diagonal neighbour is shallower and neither square beside it is, no line
+		/// of this square's reaches that corner, so the block's outline would break there (RM_PitReliefMath.ClosesCorner).</summary>
+		private void CornerLines(IntVec3 c, int d, int north, int south, int west, int east, int nw, int ne, int sw, int se, float y)
+		{
+			Material m = RM_FaceMaterial.OutlineMat;
+			Color32 k = new Color32(0, 0, 0, 255);
+			float sl = RM_WallFaceMath.SideLine, r = RM_WallFaceMath.RimLine;
+			if (RM_PitReliefMath.ClosesCorner(d, north, west, nw))
+			{
+				QuadVMat(m, c.x, c.z + 1f - r, sl, r, y, k, k);
+			}
+			if (RM_PitReliefMath.ClosesCorner(d, north, east, ne))
+			{
+				QuadVMat(m, c.x + 1f - sl, c.z + 1f - r, sl, r, y, k, k);
+			}
+			if (RM_PitReliefMath.ClosesCorner(d, south, west, sw))
+			{
+				QuadVMat(m, c.x, c.z, sl, RM_WallFaceMath.SouthLining(d - sw), y, k, k);
+			}
+			if (RM_PitReliefMath.ClosesCorner(d, south, east, se))
+			{
+				QuadVMat(m, c.x + 1f - sl, c.z, sl, RM_WallFaceMath.SouthLining(d - se), y, k, k);
+			}
 		}
 
 		/// <summary>The far (north) bank's face, drawn as vanilla draws a wall's south bevel (MEASURED from the owner's
 		/// steel-wall shot): a flat band the ground's own material, lit x1.85 against the ground, hanging directly from
 		/// the rim, with 45-degree mitred lower corners where a side bevel meets it.</summary>
-		private void NorthFace(Map map, RM_MapComponent_Excavation eng, IntVec3 c, int d, float h, float ww, float ew, float y, float scorch)
+		private void NorthFace(Map map, RM_MapComponent_Excavation eng, IntVec3 c, int d, float h, float ww, float ew, float y, float scorch,
+			float foot)
 		{
 			float top = c.z + 1f;
 			float bot = top - h;
@@ -158,6 +282,13 @@ namespace RimMandrake.FlowWorks
 			byte aFoot = (byte)(Mathf.Max(0f, aTop - 12f * d));
 			Poly(RM_FaceMaterial.ShadeMat, Lift(q, 0.0002f), new Color32(255, 248, 232, aFoot), new Color32(255, 248, 232, aTop), false, h);
 			Poly(stone ? RM_FaceMaterial.JointMat : RM_FaceMaterial.StrataMat, Lift(q, 0.0004f), White, White, true, h);
+			// RIMMANDRAKE_REBUILD_FLOWWORKS_PITS_AS_RELATIVE_TERRAIN: past the tallest face (2.5 m) a dark foot keeps telling drops apart
+			if (foot > 0f)
+			{
+				Color32 kf = ShadeBlack, kt = ShadeBlack;
+				kf.a = Alpha(foot);
+				Poly(RM_FaceMaterial.TintMat, Lift(q, 0.0006f), kf, kt, false, h);
+			}
 			if (scorch > 0f)
 			{
 				SootFace(c, xl + il, xr - ir, bot, top, scorch, y + 0.0007f);
@@ -238,13 +369,13 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
-		/// <summary>True when an undug cell touches (8-way) a dug cell.</summary>
-		private static bool BordersCut(Map map, RM_MapComponent_Excavation eng, IntVec3 c)
+		/// <summary>True when an undug cell touches (8-way) a dug cell that draws as a hole (not one under a concealing lid).</summary>
+		private static bool BordersOpenCut(Map map, RM_MapComponent_Excavation eng, IntVec3 c)
 		{
 			for (int i = 0; i < 8; i++)
 			{
 				IntVec3 n = c + GenAdj.AdjacentCells[i];
-				if (n.InBounds(map) && eng.HollowDepthAt(n) > 0)
+				if (n.InBounds(map) && DrawsPitArt(map, eng, n, eng.HollowDepthAt(n)))
 				{
 					return true;
 				}
@@ -472,7 +603,8 @@ namespace RimMandrake.FlowWorks
 		/// vanilla water terrain showed through, and its ripple texture read as patches), and the liquid is ONE even sheet of
 		/// its body colour over them (RM_FaceMaterial.SheetMat, alpha 1 - Seen at each point's depth), under everything that
 		/// stands in the pit.</summary>
-		private void SeeThrough(Map map, RM_MapComponent_Excavation eng, IntVec3 c, int d, float lv, int north, int west, int east, float y)
+		private void SeeThrough(Map map, RM_MapComponent_Excavation eng, IntVec3 c, int d, float lv, int north, int west, int east,
+			float wnw, float hnw, float wne, float hne, float y)
 		{
 			RM_LiquidSurfaceLook look = RM_SubmergeDraw.LookAt(map, eng, c);
 			float clarity = look != null ? look.seeThrough : 0f;
@@ -490,9 +622,22 @@ namespace RimMandrake.FlowWorks
 			// over it at the one depth the whole floor lies at: even over every cell at that level
 			float wW = RM_UnderLiquid.SideFace(RM_UnderLiquid.Exposed(d, west, 0f));
 			float wE = RM_UnderLiquid.SideFace(RM_UnderLiquid.Exposed(d, east, 0f));
-			Quad(RM_FaceMaterial.FaceMat(floor), c.x + wW, c.z, 1f - wW - wE, floorTop, y, Opaque, Opaque, UvWorld);
+			// RIMMANDRAKE_REBUILD_FLOWWORKS_PITS_AS_RELATIVE_TERRAIN: the floor between the faces (RM_PitReliefMath.FloorRects: never
+			// under a dry corner piece), its depth shade, then the sheet
 			Color32 fs = SheetTint(body, RM_UnderLiquid.Seen(clarity, levelM));
-			QuadVMat(RM_FaceMaterial.SheetMat, c.x + wW, c.z, 1f - wW - wE, floorTop, y + 0.0005f, fs, fs);
+			Color32 shade = ShadeBlack;
+			shade.a = Alpha(RM_PitReliefMath.FloorShade(d));
+			int nr = RM_PitReliefMath.FloorRects(wW, wE, hFull, wnw, hnw, wne, hne, floorRects);
+			for (int i = 0; i < nr; i++)
+			{
+				float x0 = floorRects[4 * i], z0 = floorRects[4 * i + 1], x1 = floorRects[4 * i + 2], z1 = floorRects[4 * i + 3];
+				Quad(RM_FaceMaterial.FaceMat(floor), c.x + x0, c.z + z0, x1 - x0, z1 - z0, y, Opaque, Opaque, UvWorld);
+				if (shade.a > 0)
+				{
+					QuadVMat(RM_FaceMaterial.TintMat, c.x + x0, c.z + z0, x1 - x0, z1 - z0, y + 0.0001f, shade, shade);
+				}
+				QuadVMat(RM_FaceMaterial.SheetMat, c.x + x0, c.z + z0, x1 - x0, z1 - z0, y + 0.0005f, fs, fs);
+			}
 			// the drowned band of the far wall, foot (levelM under) to its waterline (0 under), or to its rim if it is drowned
 			// whole; banded so the fade follows the law, not a straight ramp
 			float drowned = hFull - hDry;
@@ -502,13 +647,16 @@ namespace RimMandrake.FlowWorks
 				float rimM = Mathf.Max(0f, levelM - (d - north) * RM_UnderLiquid.Notch);
 				float lineM = hDry > 0f ? 0f : rimM;
 				float lit = LightAlpha(RM_WallFaceMath.WallFaceLight);
+				// RIMMANDRAKE_DIM_FLOWWORKS_DROWNED_WALLS_PALE_FRAME_IN_WATER: the band spans only between the side walls' full feet; across
+				// the side strips its light lay twice (a pale frame)
+				RM_PitReliefMath.DrownedBandX(wW, wE, out float bx0, out float bx1);
 				for (int b = 0; b < RM_UnderLiquid.Bands; b++)
 				{
 					float z0 = floorTop + drowned * b / RM_UnderLiquid.Bands, z1 = floorTop + drowned * (b + 1) / RM_UnderLiquid.Bands;
 					float s0 = RM_UnderLiquid.Seen(clarity, RM_UnderLiquid.MetresAt(z0, floorTop + drowned, floorTop, lineM, levelM));
 					float s1 = RM_UnderLiquid.Seen(clarity, RM_UnderLiquid.MetresAt(z1, floorTop + drowned, floorTop, lineM, levelM));
-					Quad(RM_FaceMaterial.FaceMat(faceGround), c.x, c.z + z0, 1f, z1 - z0, y + 0.0002f, Opaque, Opaque, UvFace);
-					QuadVMat(RM_FaceMaterial.ShadeMat, c.x, c.z + z0, 1f, z1 - z0, y + 0.0003f,
+					Quad(RM_FaceMaterial.FaceMat(faceGround), c.x + bx0, c.z + z0, bx1 - bx0, z1 - z0, y + 0.0002f, Opaque, Opaque, UvFace);
+					QuadVMat(RM_FaceMaterial.ShadeMat, c.x + bx0, c.z + z0, bx1 - bx0, z1 - z0, y + 0.0003f,
 						new Color32(255, 248, 232, (byte)(lit * 255f)), new Color32(255, 248, 232, (byte)(lit * 255f)));
 					// the sheet between the side walls' feet; each strip carries its own (never twice over a corner)
 					QuadVMat(RM_FaceMaterial.SheetMat, c.x + wW, c.z + z0, 1f - wW - wE, z1 - z0, y + 0.0005f, SheetTint(body, s0),
@@ -537,6 +685,9 @@ namespace RimMandrake.FlowWorks
 			float rimM = Mathf.Max(0f, levelM - (d - nb) * RM_UnderLiquid.Notch);
 			float lineM = wDry > 0f ? 0f : rimM;
 			float lit = LightAlpha(RM_WallFaceMath.WallSideLight);
+			// RIMMANDRAKE_DIM_FLOWWORKS_DROWNED_WALLS_PALE_FRAME_IN_WATER: the strip stops at the far wall's waterline; above it the dry
+			// north face is drawn, and the strip's light lay twice there (the pale north corners)
+			float stripTop = RM_PitReliefMath.SideUnderTop(wetTop);
 			for (int b = 0; b < RM_UnderLiquid.Bands; b++)
 			{
 				// distance from the bank edge: wDry (the line) .. wFull (the foot)
@@ -544,8 +695,8 @@ namespace RimMandrake.FlowWorks
 				float mid = (e0 + e1) * 0.5f;
 				Color32 st = SheetTint(body, RM_UnderLiquid.Seen(clarity, RM_UnderLiquid.MetresAt(mid, wDry, wFull, lineM, levelM)));
 				float x0 = east ? c.x + 1f - e1 : c.x + e0;
-				Quad(face, x0, c.z, e1 - e0, 1f, y, Opaque, Opaque, UvWorld);
-				QuadVMat(RM_FaceMaterial.ShadeMat, x0, c.z, e1 - e0, 1f, y + 0.0001f, new Color32(255, 248, 232, (byte)(lit * 255f)),
+				Quad(face, x0, c.z, e1 - e0, stripTop, y, Opaque, Opaque, UvWorld);
+				QuadVMat(RM_FaceMaterial.ShadeMat, x0, c.z, e1 - e0, stripTop, y + 0.0001f, new Color32(255, 248, 232, (byte)(lit * 255f)),
 					new Color32(255, 248, 232, (byte)(lit * 255f)));
 				QuadVMat(RM_FaceMaterial.SheetMat, x0, c.z, e1 - e0, wetTop, y + 0.0001f, st, st);
 			}

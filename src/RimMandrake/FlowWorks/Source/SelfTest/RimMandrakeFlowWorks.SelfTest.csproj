@@ -78,6 +78,7 @@
     <Compile Include="SpikeDrawChecks.cs" />
     <Compile Include="SubmergeDrawChecks.cs" />
     <Compile Include="UnderLiquidParityChecks.cs" />
+    <Compile Include="PitReliefParityChecks.cs" />
     <Compile Include="..\Superdeep\RM_UnderLiquid.cs" />
     <Compile Include="..\Superdeep\RM_PitAccessMath.cs" />
     <Compile Include="PitAccessChecks.cs" />
@@ -175,6 +176,7 @@
     <Compile Include="..\Machinery\RM_ConversionMath.cs" />
     <Compile Include="..\Machinery\Kits\RM_LiquidBathMath.cs" />
     <Compile Include="..\RM_WallFaceMath.cs" />
+    <Compile Include="..\RM_PitReliefMath.cs" />
     <Compile Include="..\RM_FlowKernel.cs" />
     <Compile Include="..\RM_TerrainWriteBudget.cs" />
     <Compile Include="..\RM_LevelSolve.cs" />

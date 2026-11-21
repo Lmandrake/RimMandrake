@@ -15,3 +15,5 @@ Source rows: `blind_challenge/cycle_4/lane2/faults.json` (class Polish, status N
 - `RIMMANDRAKE_NOTE_FLOWWORKS_GLOW_ROOM_RECT_UNPINNED` (inv_looks): `selftest_glow_tank_live.py` does not pin the scene room's size (planted `CHANGED_GLOW_ROOM_SHORT`, rc 0).
 
 - Pawn shadows reach outside a pit (his walk 2026-11-20: "Nice to have if easy, don't go crazy trying for it."): the pawn ground shadow is already skipped for a pawn drawn sunk in a cut (`RM_Patch_PitHidesShadow`, `Source/Superdeep/RM_PitDepthDraw.cs:417-436`); which shadow he saw is unread; no cheap fix found offline. No ticket.
+
+- Pit relief corner pieces (RIMMANDRAKE_REBUILD_FLOWWORKS_PITS_AS_RELATIVE_TERRAIN): under clear water only the dry part of a north corner piece is drawn; its drowned part shows the floor under the sheet (the far wall and side strips have drowned redraws, the corner has none). A scorched corner piece carries no soot. The old flat-look fallback (`excavationWallMaterialEnabled` off) draws no floor shade, corner or face foot.
