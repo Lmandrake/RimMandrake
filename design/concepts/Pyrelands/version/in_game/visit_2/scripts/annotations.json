@@ -197,5 +197,15 @@
     "RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN"
    ]
   }
+ },
+ "sc_walk": {
+  "*": {
+   "class": "SITE",
+   "unrepaired": "his 315-mod list stops the two-week walk with other mods' events: a colonist downed at health 1 (cause unread), a VRESaurids town guard arrival, a SEX_* body-part hediff read as hurt; 8 of 8 parts UNMEASURED. Run on NS_Pyrelands_site_1_bf7f9e1fe4_visit2full (tile 38) after gate B was repaired to ignore Dubs Mint Minimap's tab",
+   "owner": "RIMMANDRAKE_SHIELD_PYRE_WALK_FROM_FULL_LIST_EVENTS",
+   "filed": [
+    "RIMMANDRAKE_SHIELD_PYRE_WALK_FROM_FULL_LIST_EVENTS"
+   ]
+  }
  }
 }

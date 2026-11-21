@@ -15,43 +15,43 @@
  ],
  "windows": [
   [
-   56,
+   20,
    20
   ],
   [
-   98,
-   26
+   80,
+   20
   ],
   [
-   170,
-   44
+   122,
+   32
   ],
   [
-   224,
-   50
+   176,
+   38
   ],
   [
-   20,
+   218,
+   38
+  ],
+  [
+   80,
    62
   ],
   [
-   110,
-   80
+   32,
+   74
   ],
   [
-   152,
-   86
-  ],
-  [
-   20,
-   104
+   122,
+   74
   ]
  ],
- "exportCount": 55206,
+ "exportCount": 56563,
  "exportTruncated": false,
- "ruinCluster": 54,
+ "ruinCluster": 37,
  "fire": 32,
- "ruinWalls": 284,
+ "ruinWalls": 337,
  "labels": true,
  "save": {
   "success": true,
@@ -60,6 +60,6 @@
   "changed": [
    "PYRELANDS_0.1.0_VISIT2_WALK.rws"
   ],
-  "bytes": 27261645
+  "bytes": 36810352
  }
 }

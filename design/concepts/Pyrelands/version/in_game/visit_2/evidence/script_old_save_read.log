@@ -1,0 +1,18 @@
+{
+ "save": "NS_Pyrelands_site_1_417df172fdb5_calm",
+ "menu": true,
+ "load": {
+  "success": false,
+  "message": "Save 'NS_Pyrelands_site_1_417df172fdb5_calm' cannot be loaded because 5 mod(s) recorded by the save are not currently active: Vanilla Expanded Framework (oskarpotocki.vanillafactionsexpanded.core), Vanilla Factions Expanded - Insectoids 2 (oskarpotocki.vfe.insectoid2), Alpha Animals (sarg.alphaanimals), Alpha Biomes (sarg.alphabiomes), RimMandrake: Gimme Some Slack (mandrake.rm.gimmesomeslack)."
+ },
+ "ready": false,
+ "map": {},
+ "before": "error=no burn-line component on the current map",
+ "after": "error=no burn-line component on the current map",
+ "fires": {
+  "countMatched": null,
+  "scanned": null
+ }
+}
+[bridge split] 603.6 s wall: load 0.2 / ticks 0.1 / reads 10.0 / other 0.1 / outside calls 593.3 s
+[bridge split] WARN 594 calls of rimworld/get_ui_state (9.9 s): batch them

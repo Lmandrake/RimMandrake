@@ -195,6 +195,19 @@ def io_checks(tmp):
     write(os.path.join(mods2, "Solo", "About", "About.xml"), ABOUT % "mandrake.rm.solo")
     check(B._mod_folder(root2, "Solo", mods2)[1] == os.path.join(mods2, "Solo"),
           "a mod the composition does not name is read from its own folder")
+    # Pyrelands visit 2 (2026-11-21): a composed member's DLL stamp is deployed at Biomes/<key>/Assemblies; the shell's
+    # own Assemblies holds only the shell's stamp, so reading there owed a deploy forever
+    biomes = os.path.join(mods2, "RimMandrake.Biomes")
+    write(os.path.join(biomes, "About", "About.xml"), ABOUT % "mandrake.rm.biomes")
+    write(os.path.join(biomes, "Assemblies", "RimMandrake.Biomes.dll.srchash"), "# project: shell\n# dll: aa\n")
+    write(os.path.join(root2, "src", "RimMandrake", "Comp", "Assemblies", "Comp.dll.srchash"), "# project: comp\n# dll: bb\n")
+    write(os.path.join(biomes, "Biomes", "Comp", "Assemblies", "Comp.dll.srchash"), "# project: comp\n# dll: bb\n")
+    walk_c = {"deployed_folder": biomes}
+    check(B.walk_source(root2, "Comp", walk_c)[0] is None,
+          "a composed member whose deployed stamp (Biomes/<key>/Assemblies) equals its source owes no deploy")
+    write(os.path.join(biomes, "Biomes", "Comp", "Assemblies", "Comp.dll.srchash"), "# project: comp\n# dll: cc\n")
+    owed = B.walk_source(root2, "Comp", walk_c)[0]
+    check(bool(owed) and "deploy" in owed, "a composed member whose deployed stamp differs owes a deploy: %r" % (owed,))
     # fourth GPT review (D:\ClaudeWork\rimmandrake\conductor\bm_gpt_review4.log, the job's own probes): a composition
     # file that is there but cannot be read must not send a composed mod to its stale standalone copy
     for bad_json in ("{not json", json.dumps({"compose_wave": 1, "entries": ["Comp"]})):

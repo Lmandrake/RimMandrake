@@ -24,7 +24,7 @@
  ],
  "deployed_folder": "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/RimMandrake.Biomes",
  "unit": "rm-detached-bench-rimmandrake-drive-pyrelands-in-game-visi-1795245285",
- "tier": "pyrelands",
+ "tier": "pyrelands_rite",
  "modlist": "pyrelands tier minus mandrake.rut.pyrelandsmechanics (17 mods, 5 DLC): infrastructure/state/modlists/ModsConfig.PRESWAP.20261121_012039.xml minus that one",
  "site": "NS_Pyrelands_site_1_bf7f9e1fe4_visit2rite (tile 398), built on this list 2026-11-21 01:24"
 }

@@ -1,0 +1,6 @@
+UNDECLARED  src/RimMandrake/Pyrelands/preflight_pyrelands.py: changed, and no check declares it
+UNDECLARED  src/RimMandrake/Pyrelands/selftest_pyrelands_letter_words.py: changed, and no check declares it
+UNDECLARED  src/RimMandrake/Pyrelands/selftest_pyrelands_round6_parts.py: changed, and no check declares it
+UNDECLARED  src/RimMandrake/Pyrelands/selftest_pyrelands_site.py: changed, and no check declares it
+UNDECLARED  src/RimMandrake/Pyrelands/selftest_pyrelands_ten_scenes_parts.py: changed, and no check declares it
+build match: read 46 case(s), 46 count, 0 to run (none); 5 changed file(s) no check declares (src/RimMandrake/Pyrelands/preflight_pyrelands.py, src/RimMandrake/Pyrelands/selftest_pyrelands_letter_words.py, src/RimMandrake/Pyrelands/selftest_pyrelands_round6_parts.py, src/RimMandrake/Pyrelands/selftest_pyrelands_site.py, src/RimMandrake/Pyrelands/selftest_pyrelands_ten_scenes_parts.py); limit: every check counts: its game build equals the walk's, its list equals its reference list, and its mod hash equals the walk's or the change since its commit touches nothing it reads or exercises; worst: none (every one counts)

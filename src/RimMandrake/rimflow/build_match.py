@@ -578,6 +578,11 @@ def walk_source(root, mod, walk):
     folder = walk.get("deployed_folder")
     if not folder:
         return None, sha
+    comp = composed_into(root, mod)
+    if comp and comp != COMPOSE_UNREADABLE:
+        # a composed member's DLL stamp is deployed at Biomes/<key>/Assemblies; the shell's own Assemblies holds only
+        # the shell's stamp (Pyrelands visit 2, 2026-11-21: read there, a deploy was owed forever)
+        folder = os.path.join(folder, "Biomes", mod)
     dep = srchash_files(folder)
     src = srchash_files(os.path.join(root, "src", "RimMandrake", mod))
     if dep is None or src is None:

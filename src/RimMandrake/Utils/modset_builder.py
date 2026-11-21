@@ -621,6 +621,16 @@ TIERS["pyrelands"] = {
     "dlc": True,
 }
 
+# sc_rite_hook_alone (bar fire_rite_hook_silent_alone) runs on a list WITHOUT the Tribes mechanics, so the rite hook is
+# null. Visits 1 and 2 built this list by hand from the pyrelands tier, so build_match could never count its row.
+TIERS["pyrelands_rite"] = {
+    "why": "sc_rite_hook_alone: the pyrelands tier without mandrake.rut.pyrelandsmechanics, so the fire rite hook is "
+           "left null and its silence can be read (Pyrelands visit 2, 2026-11-21).",
+    "want": [w for w in TIERS["pyrelands"]["want"] if w != "mandrake.rut.pyrelandsmechanics"],
+    "forbid": TIERS["pyrelands"]["forbid"] + ["mandrake.rut.pyrelandsmechanics"],
+    "dlc": True,
+}
+
 TIERS["ratchet_pilot"] = {
     "why": "RATCHET_PILOT_PROVE_THREE_MODS_ONE_LOOP (owner 2026-10-11: the pilot is Pyrelands + FlowWorks + "
            "GimmeSomeSlack loaded TOGETHER): the `pyrelands` tier plus FlowWorks and Gimme Some Slack, with the "

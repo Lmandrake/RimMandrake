@@ -1,0 +1,8 @@
+{
+ "save": "NS_Pyrelands_site_1_417df172fdb5_calm",
+ "menu": true,
+ "load": {
+  "success": false,
+  "message": "Save 'NS_Pyrelands_site_1_417df172fdb5_calm' cannot be loaded because 4 mod(s) recorded by the save are not currently active: Vanilla Factions Expanded - Insectoids 2 (oskarpotocki.vfe.insectoid2), SimpleCameraSetting (ray1203.simplecamerasetting), Alpha Animals (sarg.alphaanimals), Alpha Biomes (sarg.alphabiomes)."
+ }
+}
