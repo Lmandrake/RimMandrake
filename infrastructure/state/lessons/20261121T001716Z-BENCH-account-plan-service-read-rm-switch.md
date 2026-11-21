@@ -1,0 +1,1 @@
+account-plan.service read RM_SWITCH_PLAN from a stale drop-in (week.conf -> switching_plan_week_2026-11-05.json) for two weeks: every switching_plan.json ruling had no effect on the live timer, and a live run at the line crashed the pass (KeyError hard_pct_left). Check systemctl --user show -p Environment -p DropInPaths before trusting a plan edit; ops_clocks check now flags it.

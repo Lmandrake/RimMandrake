@@ -1,0 +1,1 @@
+system's hard line equals its line (1%): max(hard_pct_left 1, line 1 - drain 2) = 1, so at system's floor a switch kills live detached runs with no drain; only the soft notice at 3% (no new launches) protects them. Raising system's leave line to 3 would give a 2-point drain; that is a leave-line change for the Conductor.
