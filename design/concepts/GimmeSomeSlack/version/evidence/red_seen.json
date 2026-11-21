@@ -1,16 +1,16 @@
 {
  "T_CORE": {
-  "at": "2026-11-21T03:12:42Z",
+  "at": "2026-11-21T08:49:32Z",
   "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py",
   "file": "src/RimMandrake/Utils/selftest_gimmesomeslack.py",
-  "last": "4605/4606 checks passed",
+  "last": "5653/5654 checks passed",
   "patch": "diff --git a/src/RimMandrake/GimmeSomeSlack/Source/Core/ProbeRead.cs b/src/RimMandrake/GimmeSomeSlack/Source/Core/ProbeRead.cs\nindex 58b4a3237f..7e08df0b53 100644\n--- a/src/RimMandrake/GimmeSomeSlack/Source/Core/ProbeRead.cs\n+++ b/src/RimMandrake/GimmeSomeSlack/Source/Core/ProbeRead.cs\n@@ -34,6 +34,6 @@ namespace RimMandrake.GimmeSomeSlack.Core\n         /// dirty event marked the cords stale and the next frame's rebuild has not run (<paramref name=\"staleOffscreen\"/>). A\n         /// change no event announced is NOT owed: a probe read must still see that bug (D2_fresh_builder_same, live_flip_fresh.py).</summary>\n         public static bool OwesBuild(bool enabled, int lastPending, bool staleOffscreen) =>\n-            enabled && (lastPending > 0 || staleOffscreen);\n+            enabled && (lastPending > 99999 || staleOffscreen);\n     }\n }\n",
   "patch_files": [
    "src/RimMandrake/GimmeSomeSlack/Source/Core/ProbeRead.cs"
   ],
   "patch_sha": "253794eb853b5092",
   "rc": 1,
-  "test_blob": "7f920d65fccca862eac6a6f9ff1676068fbfee71"
+  "test_blob": "b0059be60534e300037a6e3985b55480fd996b7e"
  },
  "T_H_PLAYTEST_RUNNER": {
   "at": "2026-11-20T15:51:20Z",
@@ -52,7 +52,7 @@
   "test_blob": "48276a5f028eb349aad77f8f80c3c4bbc1b22cc0"
  },
  "T_STUB_JOINS": {
-  "at": "2026-11-21T03:07:20Z",
+  "at": "2026-11-21T08:43:30Z",
   "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --no-export --joins-only",
   "file": "src/RimMandrake/Utils/selftest_gimmesomeslack.py",
   "last": "8/9 checks passed (stub joins only)",
@@ -62,7 +62,20 @@
   ],
   "patch_sha": "0b073eaaa42e5284",
   "rc": 1,
-  "test_blob": "7f920d65fccca862eac6a6f9ff1676068fbfee71"
+  "test_blob": "b0059be60534e300037a6e3985b55480fd996b7e"
+ },
+ "T_SWITCH_LIGHT_OFFLINE": {
+  "at": "2026-11-21T08:43:01Z",
+  "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --no-export --switchlight-only",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SwitchLightChecks.cs",
+  "last": "693/1056 checks passed (switch light only)",
+  "patch": "diff --git a/src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchLight.cs b/src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchLight.cs\n--- a/src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchLight.cs\n+++ b/src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchLight.cs\n@@ -31,7 +31,7 @@\n         public static SwitchLamp Of(bool settingOn, bool closed, bool powered)\n         {\n             if (!settingOn || !powered) return SwitchLamp.Dark;\n-            return closed ? SwitchLamp.Green : SwitchLamp.Red;\n+            return closed ? SwitchLamp.Red : SwitchLamp.Green;\n         }\n     }\n }\n",
+  "patch_files": [
+   "src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchLight.cs"
+  ],
+  "patch_sha": "c4bb17ac45ef3cd0",
+  "rc": 1,
+  "test_blob": "85f813540b2e1c28a1d4c5311362260c07738a40"
  },
  "T_SWITCH_OFF_NODE_OFFLINE": {
   "at": "2026-11-21T01:45:07Z",

@@ -17,7 +17,8 @@ namespace RimMandrake.GimmeSomeSlack
         private static Material[] lens, halo;
         private static bool artFailed;
         private static List<ThingDef> switchDefs;
-        private static readonly Dictionary<PowerNet, bool> liveThisFrame = new Dictionary<PowerNet, bool>();
+        /// <summary>One frame's net reads; emptied every frame and by GssSessionReset (it holds the last game's PowerNets).</summary>
+        internal static readonly Dictionary<PowerNet, bool> liveThisFrame = new Dictionary<PowerNet, bool>();
         private static readonly bool[] sides = new bool[4];
 
         /// <summary>Lamps drawn last frame, by state (the probe's switchlights read reports them).</summary>

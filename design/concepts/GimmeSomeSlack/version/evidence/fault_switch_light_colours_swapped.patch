@@ -1,0 +1,12 @@
+diff --git a/src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchLight.cs b/src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchLight.cs
+--- a/src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchLight.cs
++++ b/src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchLight.cs
+@@ -31,7 +31,7 @@
+         public static SwitchLamp Of(bool settingOn, bool closed, bool powered)
+         {
+             if (!settingOn || !powered) return SwitchLamp.Dark;
+-            return closed ? SwitchLamp.Green : SwitchLamp.Red;
++            return closed ? SwitchLamp.Red : SwitchLamp.Green;
+         }
+     }
+ }

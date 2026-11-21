@@ -1011,6 +1011,7 @@ SETTINGS = [
     ("gss", "sparksOnlyOverlay", "False", "sparks only while the power overlay is open", "13, 29"),
     ("gss", "maxSparkingEnds", "24", "most sparking ends per map", "no station (needs 24+ live ends on one map)"),
     ("gss", "highlight", "True", "selecting a powered building highlights its net's cords", "23"),
+    ("gss", "switchLight", "True", "power switch lamp: green closed and powered, red open and powered, dark unpowered", "every station with a power switch"),
     ("gss", "excludedConduits", "[]", "which conduits become cords (a list: Mod Settings window only)", "24, 25"),
     ("gss", "lod", "True", "far zoom: one thin strand, no pieces", "any: zoom out"),
     ("gss", "debugDraw", "False", "draw the node graph", "any"),

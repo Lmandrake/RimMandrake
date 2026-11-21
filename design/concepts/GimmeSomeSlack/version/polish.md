@@ -11,3 +11,9 @@ Polish improves play but is not part of passing 0.1.0. Each entry is moved here 
 - **RIMMANDRAKE_NOTE_SLACK_DLL_HOSE_NAMES_ONLY_ALTITUDES** (HARNESS): five hose-named altitude constants from `_Shared/SlackGeometry/DrawOrder.cs` are compiled into the GSS DLL; no hose def, texture, class or drawing ships.
 - **RIMMANDRAKE_SHARE_SLACK_TAP_SURPLUS_UNTESTED_IN_CALLER** (HARNESS): no check puts two taps on one victim; the shipped code shares the surplus and no bar names several taps.
 - **RIMMANDRAKE_MISS_SLACK_PIPE_KIND_IN_BLIND_LANE_ONE** (HARNESS): the blind lane-1 scanner missed a `lineKind` pipe plant; repaired in the sitting and shown both ways.
+
+The switch lamp (RIMMANDRAKE_LIGHT_SLACK_SWITCH_GREEN_RED_DARK_WHEN_UNPOWERED, 2026-11-20), the art judge's polish notes (`version/evidence/switch_light/judge_v1.json`, `judge_v2.json`); nobody fixes these:
+- **Futuristic baked cyan** (ART): the Futuristic look's closed art carries its own cyan glow, which still shows on an unpowered switch beside the dark lamp.
+- **Modern two reds** (ART): on the Modern look the red lever sits beside the red lamp when the switch is open; still readable.
+- **Dark lamp at far zoom** (ART): at 36 px per cell the unlit lamp is nearly invisible on the dark bodies (Industrial, Futuristic); the lit states still read.
+- **Scrapper halo cast** (ART): the green halo takes a yellow cast over the Scrapper look's copper bar at 112 px per cell.

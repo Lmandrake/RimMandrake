@@ -57,6 +57,8 @@ SITES = {
     "FlowWorks/Source/Pits/Suspension/RM_MapComponent_SuspensionBridges.cs": "LISTED: a suspension bridge spans the pit at "
         "bank height (dry)",
     "GimmeSomeSlack/Source/Aerial/RM_MapComponent_Aerial.cs": "LISTED: overhead span cables, above everything (OverheadQueue > DrownedQueue)",
+    "GimmeSomeSlack/Source/SwitchLightDraw.cs": "LISTED gap: the power switch lamp, a per-frame dot over the switch at BuildingOnTop; a "
+        "switch standing under liquid keeps its lamp unfaded (player information: the switch state)",
     "Stillsand/Source/RM_StillsandWater.cs": "LISTED: a biome's own water surface, not a thing in a pit",
     "BiomesShell/Source/RM_WorldDecals.cs": "LISTED: the world map, not a local map",
     "CreatureBehaviors/Source/RM_Mirage.cs": "LISTED: an air effect (mirage), not a thing standing on a floor",

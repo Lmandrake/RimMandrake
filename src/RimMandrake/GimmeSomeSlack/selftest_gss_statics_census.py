@@ -34,6 +34,7 @@ RESET = {
     "Aerial/ConduitStylePicker.cs::lastPicked": "Aerial.ConduitStylePicker.ClearPicks();",
     "Aerial/StylePicker.cs::Core": "Aerial.StylePicker.ClearPicks();",
     "Aerial/RM_LiveWirePathCost.cs::byMap": "Aerial.RM_LiveWirePathCost.Clear();",
+    "SwitchLightDraw.cs::liveThisFrame": "SwitchLightDraw.liveThisFrame.Clear();",
     "GimmeSomeSlackProbe.cs::sameFrameWall": "GimmeSomeSlackProbe.ResetSameFrame();",
     "GimmeSomeSlackProbe.cs::sameFrameMap": "GimmeSomeSlackProbe.ResetSameFrame();",
     "GimmeSomeSlackProbe.cs::request": 'GimmeSomeSlackProbe.request = "";',
