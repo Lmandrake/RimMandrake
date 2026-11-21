@@ -13,8 +13,9 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 ROOTS = ("Transient", "infrastructure", "design", "src")
-# In a hashed mod folder: fixing it would stale that mod's recorded run for a dev-only --out flag.
-KNOWN = {"src/RimMandrake/GimmeSomeSlack/shader_sway_look.py"}
+# A file in a hashed mod folder that may keep the old cwd default (fixing it would stale that mod's recorded run for a
+# dev-only --out flag). Empty since GimmeSomeSlack's shader_sway_look.py was deleted (b560ff91e8).
+KNOWN = set()
 FAILS = []
 
 
