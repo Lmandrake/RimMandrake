@@ -10067,3 +10067,4 @@
 {"seat":"RUNNER","event":"live","id":"OPS_WORKER_CLONE_POOL_RESTORE_HMOQ_PBAL","result":"broken","detail":"Ops alarm CLONE_POOL_BREACH: disk.pool_breach = 1 pool breaches: over count, over bytes, stranded unpushed clones (MEASURED), line > 0","ts":"2026-11-21T08:06:43Z","tsn":1795248403545166823}
 {"seat":"RUNNER","event":"live","id":"OPS_WORKER_CLONE_POOL_RESTORE_HMOQ_PBAL","result":"kept","detail":"sweep: running again","ts":"2026-11-21T08:18:12Z","tsn":1795249092893316047}
 {"seat":"RUNNER","event":"note","id":"OPS_MATURATION_MOD_PAUSED_FYEB","text":"ops_watch: cleared at 2026-11-21T08:21:51Z (maturation.paused now 0)","ts":"2026-11-21T08:22:00Z","tsn":1795249320727048271}
+{"seat":"RUNNER","event":"live","id":"OPS_MATURATION_MOD_STALLED_KHOT","result":"broken","detail":"Ops alarm MATURATION_STALLED: maturation.stalled = 1 mods (MEASURED), line > 0","ts":"2026-11-21T08:23:18Z","tsn":1795249398109871607}
