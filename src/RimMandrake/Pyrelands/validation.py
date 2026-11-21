@@ -3504,8 +3504,13 @@ BITE_STOP_ON = "death,colonist_hostile,hostile_arrival,threat_structure,modal_st
                "clock_discontinuity,specimen_lost,coverage,cancel"
 
 
-def _bite_wait(t, n):
-    """_wait for the bite rows: governed safe_advance chunks with BITE_STOP_ON, then the site re-asserted."""
+# The venom wait-out's ten days: a venom death is what that row measures (its subject's) or expects (the earlier rows'
+# untended patients, visit 3: one died 660 ticks into day 1 and stopped the advance), so death leaves the list too.
+WAIT_OUT_STOP_ON = BITE_STOP_ON.replace("death,", "")
+
+
+def _bite_wait(t, n, stop_on=None):
+    """_wait for the bite rows: governed safe_advance chunks with BITE_STOP_ON (or `stop_on`), then the site re-asserted."""
     if not _live(t) or t.upstream_failed:
         return _wait(t, n)
     import clockgate  # noqa: E402 - on sys.path via the modcheck package
@@ -3514,7 +3519,7 @@ def _bite_wait(t, n):
     left = n
     while left > 0:
         step = min(left, clockgate.SAFE_CHUNK_MAX)
-        clockgate.advance_chunk(t.session, step, stop_on=BITE_STOP_ON)
+        clockgate.advance_chunk(t.session, step, stop_on=stop_on or BITE_STOP_ON)
         left -= step
     _on_site(t)
 
@@ -4850,7 +4855,7 @@ def _ten_flamefang_venom(t):
             fed = _vitals(t, force=True) if _live(t) and hasattr(t.session, "call") else None   # ten days on the site: the bystanders are fed each day (visit 3: one starved)
             if fed:
                 _top_up(t, fed)
-            _bite_wait(t, TEN_DAY)
+            _bite_wait(t, TEN_DAY, stop_on=WAIT_OUT_STOP_ON)
         if _live(t):
             _note(t, "untended venom severity each day until it goes (immunity unread)", {"days": days, "diedOnDay": died})
             if not _has_hediff(row, VENOM):

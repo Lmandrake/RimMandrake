@@ -74,3 +74,12 @@ DONE script:design/concepts/Pyrelands/version/in_game/visit_3/scripts/walk_save.
 DONE fresh_burn_bonus reload_rc=0 rc=1 246s 10:27:35
 DONE burn_line reload_rc=0 rc=1 1127s 10:46:22
 DONE scorchfruit_spoils reload_rc=0 rc=1 237s 10:50:19
+DONE embergrass_regrow reload_rc=0 rc=1 1487s 11:15:06
+END batch6 2026-11-21 11:15:06
+START batch7 2026-11-21 11:15:07
+DONE flamefang_venom@flamefang_venom_repaired3 reload_rc=0 rc=1 162s 11:17:49
+END batch7 2026-11-21 11:17:49
+START batch8 2026-11-21 11:17:50
+DONE fresh_burn_bonus@fresh_burn_bonus_rerun reload_rc=0 rc=1 900s 11:32:51
+END batch8 2026-11-21 11:32:51
+START batch9a 2026-11-21 11:32:54

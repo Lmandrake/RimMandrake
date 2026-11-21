@@ -300,10 +300,10 @@ def run_scene(V, game):
             res[name] = "FAIL"
         t.upstream_failed = False
 
-    def wait(t, n, fast=None):
+    def wait(t, n, fast=None, stop_on=None):
         dead = len(game.deaths)
         game.advance(n)
-        if len(game.deaths) > dead:   # the governor's death stop: the row is RESTART, never a verdict
+        if len(game.deaths) > dead and (stop_on is None or "death" in stop_on.split(",")):   # the governor's death stop
             V._unmeasured(t, "RESTART (damage to the test, not a verdict): %s died" % (game.deaths[-1],))
 
     def note(t, label, data):
