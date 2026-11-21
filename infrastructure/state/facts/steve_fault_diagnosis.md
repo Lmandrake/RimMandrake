@@ -200,6 +200,26 @@ Item `RIMMANDRAKE_BOOT_STEVE_NO_LIGHTING_DRIVERS_LAST_SUSPECT_BUT_CPU`. Record a
   not proof. The CPU is not excluded as a contributor (the fault could need both), but a CPU defect alone does not explain a
   clean 49 min. The set mixes two kinds: the lighting/monitoring drivers (port and MSR access) and one kernel audio
   driver. Each kind can explain a game-start trigger (the game opens an audio stream, and iCUE and Aura react to a game).
-  Which one it is is UNMEASURED.
+  The split below names the audio driver.
 - 🔑 **Disabling a vendor service does not unload a System-start driver.** The 2026-11-04 A/B above stopped the callers
   only. Set the driver's own `Start` to 4 and reboot, then check `driverquery`.
+
+## 🔴 The ASUS Sonic Studio kernel audio driver `AVoluteSS3Vad` is needed for the fault (MEASURED 2026-11-21, both-ways pair)
+
+Item `RIMMANDRAKE_SPLIT_STEVE_DRIVER_SET_AUDIO_DRIVER_ALONE_FIRST`. Record and raw evidence:
+`D:\ClaudeWork\rimmandrake\conductor\night_20261120\steve_driver_split.md` and its `drvsplit\` folder. Same method as the unload test
+(same 315-mod native game launch, register probe with RPCONTROL ok=1 in every boot, `driverquery /v` checked after each boot).
+
+| boot (UTC) | Start=4 | game start | probe after game start | reading |
+|---|---|---|---|---|
+| 13:10:20Z | `AVoluteSS3Vad` only (the other nine drivers loaded) | 13:11:53Z | 10 cycles, 3.8 to 48.8 min, all clean | CLEAN |
+| 14:09:10Z | the other nine drivers and the six callers (`AVoluteSS3Vad` loaded) | 14:10:28Z | fault at 14:14:28Z, 4.0 min, CPU 0 `upper_half_loss` | FAULT |
+
+- With the unload test: `AVoluteSS3Vad` off gave a clean boot 2 of 2 times; loaded gave a fault in 2 of 2 test boots. The nine lighting and
+  monitoring drivers are neither needed (boot 2) nor sufficient (boot 1).
+- The driver: `AVoluteSS3Vad.sys`, "A-Volute Sonic Suite VAD" 10.0.10011.16384, file date 2021-10-14; PnP "Sonic Studio Virtual Mixer" 1.0.2.0.
+  It is the default speaker endpoint over Realtek HD Audio 6.0.8960.1. With it off, the only working audio endpoint was "Realtek Digital Output".
+- The shape (upper YMM halves lost on a user thread) fits a kernel driver that uses AVX without saving the extended state [guess ~70%].
+- UNMEASURED: a fault with the driver loaded but no stream through it; a newer Sonic Studio build.
+- Nothing was left disabled (end state measured 14:22Z: 16/16 at original Start, 10/10 drivers loaded, HV on, WSL answering, lane resumed).
+  What to do about the driver is the owner's and Steve's choice; the options and their costs are in the record.
