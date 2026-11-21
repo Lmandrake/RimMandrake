@@ -10392,3 +10392,4 @@
 {"seat":"RUNNER","event":"raise","id":"MIRROR_PACK_REPAIR_STILL_GRUMBLING","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-21T16:18:16Z","tsn":1795277896011673739}
 {"seat":"RUNNER","event":"live","id":"OPS_DESIGNER_UNSTICK_READY_AND_WAITING_GZKV","result":"kept","detail":"sweep: running again","ts":"2026-11-21T16:18:22Z","tsn":1795277902363425983}
 {"seat":"RUNNER","event":"live","id":"OPS_STEVE_DIAGNOSE_INVALID_MBTX_YAHV","result":"kept","detail":"sweep: running again","ts":"2026-11-21T16:18:28Z","tsn":1795277908874915568}
+{"seat":"RUNNER","event":"live","id":"OPS_STEVE_DIAGNOSE_INVALID_MBTX_YAHV","result":"broken","detail":"Ops alarm STEVE_INVALID: steve.invalid_streak = 3 INVALID results in a row (MEASURED), line >= 3","ts":"2026-11-21T16:20:20Z","tsn":1795278020251348573}
