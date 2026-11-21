@@ -83,6 +83,11 @@ def add(a):
         k, v = o.split("=", 1)
         st, why = v.split(":", 1)
         over[k] = (st, why)
+    klass = {}
+    for o in a.class_of or []:
+        k, v = o.split("=", 1)
+        c, why = v.split(":", 1)
+        klass[k] = (c, why)
     rows = []
     for r in res.get("rows") or []:
         r2 = {"id": r["id"], "status": r["status"], "class": r.get("class"), "detail": str(r.get("detail"))[:600]}
@@ -140,6 +145,8 @@ def add(a):
         if rid not in by_id or (only and rid not in only):
             continue
         r = by_id[rid]
+        if rid in klass:        # --class-of: names the class of a failed row and why; the verdict stays the proof's
+            r = dict(r, **{"class": klass[rid][0], "override_why": klass[rid][1]})
         append({"test": tid, "verdict": r["status"], "site_checked": tier_ok, "game": "archmagi", "mod_sha": sha,
                 "command": cmd, "evidence": rel_ev, "run": a.label, "class": r.get("class"),
                 "why": r.get("override_why") or (r["detail"][:300] if r["status"] != "PASS" else None)})
@@ -181,6 +188,7 @@ def main():
     p.add_argument("--only")
     p.add_argument("--command")
     p.add_argument("--override", action="append")
+    p.add_argument("--class-of", dest="class_of", action="append", help="id=CLASS:why -- the class of a failed row, verdict unchanged")
     p.add_argument("--final", action="store_true", help="write scene rows even where an input row is MISSING (the visit's last add)")
     p.add_argument("--sha", help="the deployed source's sha, for a result that records no run_identity")
     p.add_argument("--env", help="JSON {running: [...], tier: {active_equals_running: bool}} for a result that records no env")

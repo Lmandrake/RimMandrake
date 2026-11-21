@@ -1,0 +1,1 @@
+- sc_tap_theft stages one tap per victim net, so the blind challenge's PF_G_TAPS_DOUBLE_CLAIM_SURPLUS (two taps each claiming the whole surplus) is seen by no in-game check: a second tap on the same victim net would cover it (visit 1 of 0.1.1, 2026-11-20).
