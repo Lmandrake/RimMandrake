@@ -356,6 +356,26 @@ def _fold_named(fx, h, fresh, now):
                             "why": "its reason names the item"})
 
 
+def _fold_tick_own(st, now):
+    """Fold every open hand_run act whose unit the tick's current books hold: it was recorded as a hand run before a
+    tick_units fix taught the books to see it (voided 11-18, cleared 11-20), and collect never looks at a recorded act
+    again, so it stayed open and overdue for good (RIMMANDRAKE_FOLD_HAND_RUNS_THE_BOOKS_NOW_OWN: seven such acts at his
+    rung, 11-21). Reads only state.json, so it cannot be blind the way a ledger read can."""
+    folds = read_folds()
+    mods = st.get("mods") or {}
+    units = {}
+    for a in read_acts():
+        if a["id"] in folds or a.get("kind") != "hand_run" or not str(a["id"]).startswith("run-"):
+            continue
+        mod = a.get("mod")
+        if mod not in units:
+            units[mod] = tick_units(mods.get(mod) or {})[0]
+        if a["id"][len("run-"):] in units[mod]:
+            _append(FOLDS, {"id": a["id"], "at": now, "by": "maturation_hands",
+                            "why": "the tick's own run by its current books (recorded as a hand run before a "
+                                   "tick_units fix)"})
+
+
 def observe(root, cfg, st, facts, now, rd, fx=None):
     """One pass: record the new acts, fold what folds by itself, write rd['hand_acts'] and a Needs Conductor line per
     overdue act. -> rd. A failure in here must never cost the tick: the caller guards it."""
@@ -372,6 +392,7 @@ def observe(root, cfg, st, facts, now, rd, fx=None):
         if a["at"] <= BASELINE_TS:
             _append(FOLDS, {"id": a["id"], "at": now, "census": BASELINE_FOLD, "by": "maturation_hands"})
     _fold_named(fx, h, seen, now)
+    _fold_tick_own(st, now)
     acts, folds = read_acts(), read_folds()
     open_ = [a for a in acts if a["id"] not in folds]
     over = [a for a in open_ if now - a["at"] >= DAY_S]

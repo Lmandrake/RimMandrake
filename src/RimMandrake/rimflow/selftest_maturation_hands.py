@@ -769,9 +769,55 @@ def fold_later_main():
         shutil.rmtree(root, ignore_errors=True)
 
 
+def reclass_main():
+    """RIMMANDRAKE_FOLD_HAND_RUNS_THE_BOOKS_NOW_OWN: an act recorded as a hand run before a tick_units fix (voided
+    11-18, cleared 11-20) stayed open for good, although the current books class its unit as the tick's own. Seven
+    such acts held maturation.hand_acts_overdue over 0 at his rung on 11-21. Written before the fix and watched
+    failing on the base."""
+    if MH is None:
+        ok(False, "reclass: maturation_hands.py exists")
+        return
+    root = tempfile.mkdtemp(prefix="mat_hands_reclass_")
+    was = os.environ.get("RM_MATURATION_DISPATCH_DIR")
+    os.environ["RM_MATURATION_DISPATCH_DIR"] = os.path.join(root, "state")
+    try:
+        MD.sdir()
+        os.makedirs(os.path.join(root, "design", "concepts", "F", "version"))
+        t0 = NOW - 2 * 86400
+        for u in ("rm-detached-own-1", "rm-detached-hand-2"):
+            MH._append(MH.ACTS, MH._act("run-" + u, t0, "hand_run", "F", "an in-game driver launched by hand: " + u)
+                       | {"recorded": t0 + 60})
+        st = {"hands": {"since": t0 - 10, "last_tick": NOW - 60, "fold_at": NOW - 10},
+              "mods": {"F": {"cleared": [{"at": t0 + 30, "released": {
+                  "ingame_auto": [{"unit": "rm-detached-own-1", "item": "RIMMANDRAKE_DRIVE_F_VISIT_TWO"}]}}]}}}
+        rd = {"needs_conductor": []}
+        MH.observe(root, dict(CFG, advancing=["F"]), st, {}, NOW, rd,
+                   {"events": lambda: [], "known": lambda: {"RIMMANDRAKE_DRIVE_F_VISIT_TWO"}})
+        folds = MH.read_folds()
+        f = folds.get("run-rm-detached-own-1")
+        ok(bool(f) and f.get("by") == "maturation_hands",
+           "reclass 1: an open hand-run act whose unit the current books hold is folded as the tick's own", f)
+        ok("run-rm-detached-hand-2" not in folds,
+           "reclass 2: an open hand-run act whose unit no book holds stays open", folds.get("run-rm-detached-hand-2"))
+        h = rd.get("hand_acts") or {}
+        ok(h.get("overdue") == 1 and h.get("ids") == ["run-rm-detached-hand-2"],
+           "reclass 3: the overdue count and its ids carry only the real hand run", h)
+        rd2 = {"needs_conductor": []}
+        MH.observe(root, dict(CFG, advancing=["F"]), st, {}, NOW + 60, rd2,
+                   {"events": lambda: [], "known": lambda: {"RIMMANDRAKE_DRIVE_F_VISIT_TWO"}})
+        n = sum(1 for line in open(os.path.join(MD.sdir(), MH.FOLDS)) if "rm-detached-own-1" in line)
+        ok(n == 1, "reclass 4: a second tick folds the act no second time", n)
+    finally:
+        if was is None:
+            os.environ.pop("RM_MATURATION_DISPATCH_DIR", None)
+        else:
+            os.environ["RM_MATURATION_DISPATCH_DIR"] = was
+        shutil.rmtree(root, ignore_errors=True)
+
+
 SECTIONS = (("stalled", stalled_main), ("stop", stop_main), ("retry", retry_main), ("refund", refund_main), ("briefs", briefs_main),
             ("acts", acts_main), ("chores", chores_main), ("false_hands", false_hands_main),
-            ("road_back", road_back_main), ("fold_later", fold_later_main))
+            ("road_back", road_back_main), ("fold_later", fold_later_main), ("reclass", reclass_main))
 
 if __name__ == "__main__":
     only = sys.argv[sys.argv.index("--only") + 1] if "--only" in sys.argv else None

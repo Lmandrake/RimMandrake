@@ -79,13 +79,34 @@ def t_unreadable_run_record_spend_is_unmeasured():
     check(got == (1.5, ["u-blind"]), "the unreadable unit is UNMEASURED, the readable one counts", got)
 
 
+def t_hand_run_the_books_now_own_is_folded():
+    """_fold_tick_own: an open hand_run act whose unit the current books hold folds once; one no book holds stays."""
+    root = tempfile.mkdtemp(prefix="fbr_reclass_")
+    was = os.environ.get("RM_MATURATION_DISPATCH_DIR")
+    os.environ["RM_MATURATION_DISPATCH_DIR"] = root
+    try:
+        for u in ("own-1", "hand-2"):
+            MH._append(MH.ACTS, MH._act("run-" + u, 1.0, "hand_run", "F", "launched by hand: " + u))
+        st = {"mods": {"F": {"cleared": [{"at": 2, "released": {"fixers": {"X": {"unit": "own-1", "item": "X"}}}}]}}}
+        MH._fold_tick_own(st, 10.0)
+        MH._fold_tick_own(st, 20.0)
+        folds = [r for r in MH._lines(MH.FOLDS)]
+        check([r["id"] for r in folds] == ["run-own-1"], "only the run the books hold folds, once", folds)
+    finally:
+        if was is None:
+            os.environ.pop("RM_MATURATION_DISPATCH_DIR", None)
+        else:
+            os.environ["RM_MATURATION_DISPATCH_DIR"] = was
+        shutil.rmtree(root, ignore_errors=True)
+
+
 def main(argv=None):
     argv = sys.argv[1:] if argv is None else argv
     only = set(argv[argv.index("--only") + 1:]) if "--only" in argv else None
     del FAILS[:]
     for t in (t_unreadable_concept_stage_holds_the_designer_lane, t_unparseable_stage_time_is_no_time,
               t_blind_ledger_on_road_back_is_named, t_unreadable_prior_verdict_is_no_baseline,
-              t_unreadable_run_record_spend_is_unmeasured):
+              t_unreadable_run_record_spend_is_unmeasured, t_hand_run_the_books_now_own_is_folded):
         if only is not None and t.__name__ not in only:
             continue
         print("== %s" % t.__name__)
