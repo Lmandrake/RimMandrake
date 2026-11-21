@@ -1,0 +1,1 @@
+A shell that exports RM_GAME_INSTANCE=b does not reach python.exe: name it in WSLENV, bare. On Archmagi 2026-11-20, WSLENV=NAME and NAME/p reached python.exe and NAME/u did not (it read None). Without it the bridge client falls back to game a's port 5174 and a game-b run drives game a. In a shell, take the whole env from game_instance.env('b') (it writes WSLENV for you).

@@ -857,6 +857,23 @@ def _control_settings(rec):
     return C.claude_settings(clone=rec.get("clone"))
 
 
+def game_env(env):
+    """-> the run's RM_ variables, plus the whole environment of the game it names (game_instance.env: its port, token,
+    folders and the WSLENV that carries them into python.exe) when RM_GAME_INSTANCE names a game other than a. Without
+    WSLENV a python.exe child never sees the name, its bridge client falls back to game a's port 5174, and a game-b run
+    drives game a (2026-11-20, RIMMANDRAKE_CARRY_WSLENV_INTO_B_RUNS_PROOF_HIT_A). A bad name raises
+    ValueError (game_instance.InstanceError)."""
+    env = dict(env or {})
+    name = (env.get("RM_GAME_INSTANCE") or "").strip().lower()
+    if name in ("", "a"):
+        return env
+    utils = os.path.join(REPO, "src", "RimMandrake", "Utils")
+    if utils not in sys.path:
+        sys.path.insert(0, utils)
+    import game_instance
+    return dict(env, **game_instance.env(name))
+
+
 def launch_argv(rec, msg, claude):
     """role_launch.launch_argv's shape, plus ExecStopPost=finish so the outcome is recorded even on a kill."""
     clone, unit, seat = rec["clone"], rec["unit"], rec["seat"]
@@ -898,7 +915,7 @@ def launch_argv(rec, msg, claude):
             "--setenv", "CLAUDE_SCOPE_UNIT=" + scope_name(seat, unit)[:-len(".scope")],
             "--setenv", "RM_ROLE_UNIT=" + unit, "--setenv", "RM_DETACHED_UNIT=" + unit,
             "--setenv", "RM_DISPATCHER_STATE=" + rec["state"],
-            *sum((["--setenv", "%s=%s" % kv] for kv in sorted((rec.get("env") or {}).items())), []),
+            *sum((["--setenv", "%s=%s" % kv] for kv in sorted(game_env(rec.get("env")).items())), []),
             *(["--setenv", "CLAUDE_SCOPE_RUNTIME_MAX=%d" % bound, "-p", "RuntimeMaxSec=%d" % bound] if bound else []),
             # the ExecStopPost steps run inside this bound: finish's note (120 s) and publish (300 s), wrapup and the
             # return start; 30 s killed ten finishes in a week, measured 2026-11-15 (RIMMANDRAKE_COVER_FINISH_IN_TIMEOUTSTOPSEC_TEN_KILLED)

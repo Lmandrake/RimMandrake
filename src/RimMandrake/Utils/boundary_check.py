@@ -47,6 +47,7 @@ PAGES = {
     "design/specs/2026-11-19-brief-skill-paths/boundary.md": "src/RimMandrake/rimflow/selftest_detached_helper.py",
     "design/specs/2026-11-20-per-game-hold-own-install/boundary.md": "src/RimMandrake/rimflow/selftest_game_hold_split_install.py",
     "design/specs/2026-11-19-launch-unpublished-item/boundary.md": "src/RimMandrake/rimflow/selftest_detached_helper.py",
+    "design/specs/2026-11-20-detached-game-env/boundary.md": "src/RimMandrake/rimflow/selftest_detached_game_env.py",
     "design/specs/2026-11-19-launch-spend-cap/boundary.md": "src/RimMandrake/rimflow/selftest_detached_helper.py",
     "design/specs/2026-11-19-seat-restart-reads/boundary.md": "src/RimMandrake/rimflow/selftest_seat_restart_reads.py",
     "design/specs/2026-11-19-designer-stage-reads/boundary.md": "src/RimMandrake/rimflow/selftest_designer_stage_reads.py",
