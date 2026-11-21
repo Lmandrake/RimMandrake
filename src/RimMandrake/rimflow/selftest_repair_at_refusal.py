@@ -270,13 +270,24 @@ def t_a_refused_repair_launch_reuses_its_filed_item():
           "a-refused-repair-launch-reuses-its-filed-item: the retry launches the item the first try filed (%s)" % calls)
 
 
+def t_repairing_is_a_named_wait_never_paused():
+    # measured live 2026-11-21 02:28-02:38 PST: GimmeSomeSlack read `repairing` with class `paused` (a pause alarm's
+    # class) while the tick's own repair run worked on it
+    st = {"mods": {"FakeFlow": {}}}
+    row = {"mod": "FakeFlow", "decision": "repairing", "why": "repairing: x (repair run rm-detached-repair-x)",
+           "repairing": "repairing: x (repair run rm-detached-repair-x)"}
+    AUT.classify({}, st, [row], NOW)
+    check(row.get("klass") == "wait" and "repairing" in str(row.get("waits_on")),
+          "repairing-is-a-named-wait-never-paused: class %s, waits_on %s" % (row.get("klass"), row.get("waits_on")))
+
+
 def main():
     for t in (t_form_note_repairs_and_continues, t_form_refusal_names_its_repair, t_every_brief_carries_the_repair_line,
               t_a_launch_that_never_started_is_form, t_a_repair_launch_refused_names_the_conductor,
               t_the_launch_refusals_count_no_fault, t_a_dead_run_still_counts_one,
               t_form_refusal_is_repaired_not_resent, t_a_repair_that_did_not_hold_counts_once,
               t_the_trip_starts_a_repair, t_a_tick_with_stand_ins_launches_nothing_real,
-              t_a_refused_repair_launch_reuses_its_filed_item):
+              t_a_refused_repair_launch_reuses_its_filed_item, t_repairing_is_a_named_wait_never_paused):
         try:
             t()
         except Exception as e:      # noqa: BLE001  one test's crash is that test's FAIL

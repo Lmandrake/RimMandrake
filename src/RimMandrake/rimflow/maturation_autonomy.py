@@ -53,7 +53,8 @@ import pipeline_control as PC   # noqa: E402  the one control store (`pipe`)
 UNM = "UNMEASURED"
 EXCLUDE_MARKER = ".maturation-exclude"      # a concept folder holding it is never discovered (test fixtures)
 WAIT = {"live", "settling", "driver_busy", "bridge_held", "slots_full", "slots_unknown", "account_hold", "designer_wait",
-        "queued", "launch_retry", "upstream_wait", "certificate", "launch_wait", "no_game_free"}
+        "queued", "launch_retry", "upstream_wait", "certificate", "launch_wait", "no_game_free",
+        "repairing"}     # the tick's own repair run on a fault of form (form_fault): a named wait, never a pause
 # a launch that never started on one of these is retried (measured 2026-11-15: a git index.lock at publish, then the
 # launcher's "not on origin/main" refusal, read as a spent steward run)
 TRANSIENT = re.compile(r"index\.lock|is not on origin/main|ingest\.lock stayed busy|publish stopped|another "
@@ -1558,6 +1559,8 @@ def _klass(cfg, s, row, now, queue):
             on = dec.replace("_", " ")
         if dec == "launch_retry":
             on = "a retry next tick (%s)" % row.get("why")
+        if dec == "repairing":
+            on = row.get("repairing") or row.get("why")
         row["waits_on"] = on
         k, txt = "wait", "waiting on %s" % (on or "nothing running (%s)" % dec)
     elif dec == "owner":

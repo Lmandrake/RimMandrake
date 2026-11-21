@@ -69,6 +69,9 @@ for the Conductor's hand. The refusal texts of that night are in the dispatch st
   a launch) is retried on that same item, never a new one (2026-11-21 02:08 PST: GimmeSomeSlack's first repair launch
   left `..._RUN_FOUR` filed and unused).
 
+- **repairing-is-a-named-wait-never-paused.** A row that reads `repairing` is class `wait`, its `waits_on` the repair,
+  never `paused` (no pause alarm, no stall).
+
 ## LIMITS
 
 - **One open repair per mod.** Danger: two repair runs editing the same pipeline path at once. Evidence: tonight's
