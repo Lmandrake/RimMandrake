@@ -92,6 +92,14 @@ crit = FINGER()
 crit["stopBy"] = dict(crit["stopBy"], critical=True)
 ok(V.classify_site_stop(crit) is None, "classify: a critical actor is a REAL stop")
 ok(V.classify_site_stop({"state": "done"}) is None, "classify: a finished chunk is nothing")
+# RIMMANDRAKE_TRACE_FLOWWORKS_FILTER_SLOWS_ONE_RUN_IN_TWO (game b, 2026-11-21 2:13 PM PST): sc_garden run 3 stopped at the
+# START of a social fight ("mental: mental state SocialFighting", nobody hurt yet), read as a REAL stop, and voided the run
+SOCIAL = lambda: stop("mental", "mental state SocialFighting", "damage", 5,   # noqa: E731
+                      extra=[{"seq": 2, "kind": "mental", "severity": "damage", "tick": 100, "subjectId": 6, "critical": False,
+                              "declared": False, "detail": "mental state SocialFighting"}])
+c = V.classify_site_stop(SOCIAL())
+ok(c and c["kind"] == "fight" and c["hurt"] == [], "classify: a social fight caught at its start (both fighters) is a fight")
+ok(V.classify_site_stop(stop("mental", "mental state Berserk")) is None, "classify: any other mental state is a REAL stop")
 
 # ---- mock: a wild Fingerspike arrives mid-prepare -> the block continues and records SITE
 fresh()
@@ -112,6 +120,14 @@ r = B.ticks(30)
 ok(r["advanced"] == 30 and 5 not in B.mental and B.hediffs[5] == [], "mock: fight ended, bruise healed, 30 ticks run")
 ok(any(x["id"] == "SITE_DISTURBANCE_FIGHT" and x["detail"]["healed"] == [(5, "Bruise", "Leg", True)] for x in V.SITE_NOTES),
    "mock: fight recorded with the heal read back")
+
+# ---- mock: a social fight caught at its start -> fight ended, nothing to heal, run continues
+fresh()
+B = Fake([SOCIAL()])
+B.pawns.pop(77)
+B.mental.add(5) if isinstance(B.mental, set) else B.mental.__setitem__(5, "SocialFighting")
+r = B.ticks(30)
+ok(r["advanced"] == 30 and 5 not in B.mental, "mock: social fight at its start ended, 30 ticks run")
 
 # ---- must still stop: a real stop propagates; a recovery that does not read back propagates
 fresh()

@@ -495,8 +495,8 @@ _RIDE_ALONG = ("departed", "hurt", "downed")
 def classify_site_stop(r):
     """-> None (a REAL stop: the clock stays stopped) or {"kind": "intruder"|"fight", "hurt": [(pawnId, hediff, part)]}
     for a safe_advance stop whose every trigger is a non-mod disturbance. Pure.
-    Recoverable: stopBy is a hostile_arrival (a wild animal / entity), or a `hurt` of damage severity whose newest hediff names
-    a pawn source ("... Bruise/Leg age 0 from Human": a colonist fight -- the mod's own damage, e.g. a current's bruise, names
+    Recoverable: stopBy is a hostile_arrival (a wild animal / entity), a `mental` SocialFighting (a fight caught before
+    anyone is hurt), or a `hurt` of damage severity whose newest hediff names a pawn source ("... Bruise/Leg age 0 from Human": a colonist fight -- the mod's own damage, e.g. a current's bruise, names
     none). Every other trigger must be one of those or an info-severity departed/hurt/downed of nobody critical or declared.
     A death, a downed colonist, a critical or declared actor, a modal, a clock jump are never recoverable."""
     if not isinstance(r, dict) or r.get("state") != "stopped" or not r.get("stopBy"):
@@ -509,18 +509,23 @@ def classify_site_stop(r):
         m = _HURT_BY_PAWN.search(str(t.get("detail") or ""))
         return m if (t.get("kind") == "hurt" and t.get("severity") == "damage" and m) else None
 
+    def social_fight(t):
+        # RIMMANDRAKE_TRACE_FLOWWORKS_FILTER_SLOWS_ONE_RUN_IN_TWO: a fight caught at its START, before anyone is hurt
+        # (sc_garden on game b, 2026-11-21, voided 1 run of 7). Only SocialFighting: any other mental state stays real.
+        return t.get("kind") == "mental" and str(t.get("detail") or "").strip() == "mental state SocialFighting"
+
     for t in [sb] + trig:
         if t.get("critical") or t.get("declared"):
             return None
     m = pawn_hurt(sb)
     if sb.get("kind") == "hostile_arrival":
         out["kind"] = "intruder"
-    elif m:
+    elif m or social_fight(sb):
         out["kind"] = "fight"
     else:
         return None
     for t in trig:
-        if t.get("kind") == "hostile_arrival":
+        if t.get("kind") == "hostile_arrival" or social_fight(t):
             continue
         mt = pawn_hurt(t)
         if mt:

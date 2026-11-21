@@ -1,0 +1,376 @@
+{
+ "what": "scene_garden on game b, flowworks tier (13 mods, all 5 DLC), after client fix cb0bc0086e, 2026-11-21 ~2:10-2:19 PM PST; full JSON in D:/ClaudeWork/scratch/dig_call_profile/garden_N.json",
+ "runs": {
+  "1": {
+   "error": null,
+   "rows": [
+    {
+     "id": "GARDEN_head_draws_its_net",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "{'drop': 125, 'cells': 25, 'head': 'Spraying fresh water \u00b7 12.5 L/h \u00b7 25 cells'}"
+    },
+    {
+     "id": "GARDEN_no_pump_no_spray",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "{'filled': 100000, 'end': 100000, 'head': 'No pressure: no pump on this network', 'pumpedHeadSprayed': True}"
+    },
+    {
+     "id": "GARDEN_faucet_drinks_from_its_tank",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "{'filled': 100000, 'end': 99985}"
+    },
+    {
+     "id": "GARDEN_filter_keeps_its_rate",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "{'batches': 32.0, 'window': [32, 33], 'made': 64000, 'ticks': 60000}"
+    },
+    {
+     "id": "GARDEN_still_within_its_def_rate",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "{'drops': [8000, 12000, 8000, 12000, 12000, 8000, 12000, 8000, 12000, 8000, 12000, 12000, 4000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4000], 'bad': [], 'made': 66000}"
+    },
+    {
+     "id": "GARDEN_drill_pours_its_yield",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "DRILL yield=RM_Liquid_FreshWater reserve=191.999924 pending=0 outletUnits=8 outlet=76,62 block=OutletBrimming"
+    },
+    {
+     "id": "GARDEN_drill_charges_what_landed",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "{'spent': 3.0000339999999994, 'landed': 3.0, 'pendingGain': 0.0, 'base': 'DRILL yield=RM_Liquid_FreshWater reserve=199.7 pending=0 outletUnits=0.3 outlet=76,62 block=None', 'read': 'DRILL yield=RM_Liquid_FreshWater reserve=196.699966 pending=0 outletUnits=3.3 outlet=76,62 block=None'}"
+    },
+    {
+     "id": "GARDEN_walled_yard_lies_level",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "{'worstSurfaceSpread': 3, 'atChunk': 4, 'limit': 3, 'chunksRead': 15, 'chunksHeld': 15, 'depthSpread': 347, 'free': 25, 'low': [], 'foil': {'rise': 800, 'others': 0}, 'err': None, 'read': 'SHEETRECT dl=7787 wet=25 maxDl=461 edgeMaxDl=0 ice=0 film=21 sheet=4 pool=0', 'spill': 'SPILL offered=15000 accepted=15000'}"
+    }
+   ]
+  },
+  "2": {
+   "error": null,
+   "rows": [
+    {
+     "id": "GARDEN_head_draws_its_net",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "{'drop': 125, 'cells': 25, 'head': 'Spraying fresh water \u00b7 12.5 L/h \u00b7 25 cells'}"
+    },
+    {
+     "id": "GARDEN_no_pump_no_spray",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "{'filled': 100000, 'end': 100000, 'head': 'No pressure: no pump on this network', 'pumpedHeadSprayed': True}"
+    },
+    {
+     "id": "GARDEN_faucet_drinks_from_its_tank",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "{'filled': 100000, 'end': 99985}"
+    },
+    {
+     "id": "GARDEN_filter_keeps_its_rate",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "{'batches': 32.0, 'window': [32, 33], 'made': 64000, 'ticks': 60000}"
+    },
+    {
+     "id": "GARDEN_still_within_its_def_rate",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "{'drops': [8000, 12000, 8000, 12000, 12000, 8000, 12000, 8000, 12000, 8000, 12000, 12000, 4000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4000], 'bad': [], 'made': 66000}"
+    },
+    {
+     "id": "GARDEN_drill_pours_its_yield",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "DRILL yield=RM_Liquid_FreshWater reserve=191.999924 pending=0 outletUnits=8 outlet=76,62 block=OutletBrimming"
+    },
+    {
+     "id": "GARDEN_drill_charges_what_landed",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "{'spent': 3.0000339999999994, 'landed': 3.0, 'pendingGain': 0.0, 'base': 'DRILL yield=RM_Liquid_FreshWater reserve=199.7 pending=0 outletUnits=0.3 outlet=76,62 block=None', 'read': 'DRILL yield=RM_Liquid_FreshWater reserve=196.699966 pending=0 outletUnits=3.3 outlet=76,62 block=None'}"
+    },
+    {
+     "id": "GARDEN_walled_yard_lies_level",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "{'worstSurfaceSpread': 3, 'atChunk': 4, 'limit': 3, 'chunksRead': 15, 'chunksHeld': 15, 'depthSpread': 347, 'free': 25, 'low': [], 'foil': {'rise': 800, 'others': 0}, 'err': None, 'read': 'SHEETRECT dl=7787 wet=25 maxDl=461 edgeMaxDl=0 ice=0 film=21 sheet=4 pool=0', 'spill': 'SPILL offered=15000 accepted=15000'}"
+    }
+   ]
+  },
+  "3": {
+   "error": "AssertionError(\"rows not all PASS: [('GARDEN_head_draws_its_net', 'PASS'), ('GARDEN_no_pump_no_spray', 'UNMEASURED'), ('GARDEN_faucet_drinks_from_its_tank', 'UNMEASURED'), ('GARDEN_filter_keeps_its_rate', 'UNMEASURED'), ('GARDEN_still_within_its_def_rate', 'PASS'), ('GARDEN_drill_pours_its_yield', 'PASS'), ('GARDEN_drill_charges_what_landed', 'PASS'), ('GARDEN_walled_yard_lies_level', 'PASS')]\")",
+   "rows": [
+    {
+     "id": "GARDEN_head_draws_its_net",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "{'drop': 125, 'cells': 25, 'head': 'Spraying fresh water \u00b7 12.5 L/h \u00b7 25 cells'}"
+    },
+    {
+     "id": "GARDEN_no_pump_no_spray",
+     "status": "UNMEASURED",
+     "verdict": null,
+     "detail": "the clock stopped: GovernorStop('safe_advance stopped after 2160 of 2500 tick(s): mental: mental state SocialFighting'); {'filled': 100000, 'end': 100000, 'head': 'No pressure: no pump on this network', 'pumpedHeadSprayed': True}"
+    },
+    {
+     "id": "GARDEN_faucet_drinks_from_its_tank",
+     "status": "UNMEASURED",
+     "verdict": null,
+     "detail": "the clock stopped: GovernorStop('safe_advance stopped after 2160 of 2500 tick(s): mental: mental state SocialFighting'); {'filled': 100000, 'end': 99985}"
+    },
+    {
+     "id": "GARDEN_filter_keeps_its_rate",
+     "status": "UNMEASURED",
+     "verdict": null,
+     "detail": "the clock stopped: GovernorStop('safe_advance stopped after 2160 of 2500 tick(s): mental: mental state SocialFighting'); unreadable [214000, 12000]"
+    },
+    {
+     "id": "GARDEN_still_within_its_def_rate",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "the clock stopped: GovernorStop('safe_advance stopped after 2160 of 2500 tick(s): mental: mental state SocialFighting'); {'drops': [8000, 12000, 8000, 12000, 12000], 'bad': [], 'made': 26000}"
+    },
+    {
+     "id": "GARDEN_drill_pours_its_yield",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "the clock stopped: GovernorStop('safe_advance stopped after 2160 of 2500 tick(s): mental: mental state SocialFighting'); DRILL yield=RM_Liquid_FreshWater reserve=191.999924 pending=0 outletUnits=8 outlet=76,62 block=OutletBrimming"
+    },
+    {
+     "id": "GARDEN_drill_charges_what_landed",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "{'spent': 3.0000339999999994, 'landed': 3.0, 'pendingGain': 0.0, 'base': 'DRILL yield=RM_Liquid_FreshWater reserve=199.7 pending=0 outletUnits=0.3 outlet=76,62 block=None', 'read': 'DRILL yield=RM_Liquid_FreshWater reserve=196.699966 pending=0 outletUnits=3.3 outlet=76,62 block=None'}"
+    },
+    {
+     "id": "GARDEN_walled_yard_lies_level",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "the clock stopped: GovernorStop('safe_advance stopped after 2160 of 2500 tick(s): mental: mental state SocialFighting'); {'worstSurfaceSpread': 3, 'atChunk': 1, 'limit': 3, 'chunksRead': 5, 'chunksHeld': 5, 'depthSpread': 347, 'free': 25, 'low': [], 'foil': {'rise': 800, 'others': 0}, 'err': None, 'read': 'SHEETRECT dl=12692 wet=25 maxDl=657 edgeMaxDl=0 ice=0 film=5 sheet=20 pool=0', 'spill': 'SPI"
+    }
+   ]
+  },
+  "4": {
+   "error": null,
+   "rows": [
+    {
+     "id": "GARDEN_head_draws_its_net",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "{'drop': 125, 'cells': 25, 'head': 'Spraying fresh water \u00b7 12.5 L/h \u00b7 25 cells'}"
+    },
+    {
+     "id": "GARDEN_no_pump_no_spray",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "{'filled': 100000, 'end': 100000, 'head': 'No pressure: no pump on this network', 'pumpedHeadSprayed': True}"
+    },
+    {
+     "id": "GARDEN_faucet_drinks_from_its_tank",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "{'filled': 100000, 'end': 99985}"
+    },
+    {
+     "id": "GARDEN_filter_keeps_its_rate",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "{'batches': 32.0, 'window': [32, 33], 'made': 64000, 'ticks': 60000}"
+    },
+    {
+     "id": "GARDEN_still_within_its_def_rate",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "{'drops': [8000, 12000, 8000, 12000, 12000, 8000, 12000, 8000, 12000, 8000, 12000, 12000, 4000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4000], 'bad': [], 'made': 66000}"
+    },
+    {
+     "id": "GARDEN_drill_pours_its_yield",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "DRILL yield=RM_Liquid_FreshWater reserve=191.999924 pending=0 outletUnits=8 outlet=76,62 block=OutletBrimming"
+    },
+    {
+     "id": "GARDEN_drill_charges_what_landed",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "{'spent': 3.0000339999999994, 'landed': 3.0, 'pendingGain': 0.0, 'base': 'DRILL yield=RM_Liquid_FreshWater reserve=199.7 pending=0 outletUnits=0.3 outlet=76,62 block=None', 'read': 'DRILL yield=RM_Liquid_FreshWater reserve=196.699966 pending=0 outletUnits=3.3 outlet=76,62 block=None'}"
+    },
+    {
+     "id": "GARDEN_walled_yard_lies_level",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "{'worstSurfaceSpread': 3, 'atChunk': 0, 'limit': 3, 'chunksRead': 15, 'chunksHeld': 15, 'depthSpread': 347, 'free': 25, 'low': [], 'foil': {'rise': 800, 'others': 0}, 'err': None, 'read': 'SHEETRECT dl=7794 wet=25 maxDl=461 edgeMaxDl=0 ice=0 film=21 sheet=4 pool=0', 'spill': 'SPILL offered=15000 accepted=15000'}"
+    }
+   ]
+  },
+  "5": {
+   "error": null,
+   "rows": [
+    {
+     "id": "GARDEN_head_draws_its_net",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "{'drop': 125, 'cells': 25, 'head': 'Spraying fresh water \u00b7 12.5 L/h \u00b7 25 cells'}"
+    },
+    {
+     "id": "GARDEN_no_pump_no_spray",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "{'filled': 100000, 'end': 100000, 'head': 'No pressure: no pump on this network', 'pumpedHeadSprayed': True}"
+    },
+    {
+     "id": "GARDEN_faucet_drinks_from_its_tank",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "{'filled': 100000, 'end': 99985}"
+    },
+    {
+     "id": "GARDEN_filter_keeps_its_rate",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "{'batches': 32.0, 'window': [32, 33], 'made': 64000, 'ticks': 60000}"
+    },
+    {
+     "id": "GARDEN_still_within_its_def_rate",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "{'drops': [8000, 12000, 8000, 12000, 12000, 8000, 12000, 8000, 12000, 8000, 12000, 12000, 4000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4000], 'bad': [], 'made': 66000}"
+    },
+    {
+     "id": "GARDEN_drill_pours_its_yield",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "DRILL yield=RM_Liquid_FreshWater reserve=191.999924 pending=0 outletUnits=8 outlet=76,62 block=OutletBrimming"
+    },
+    {
+     "id": "GARDEN_drill_charges_what_landed",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "{'spent': 3.0000339999999994, 'landed': 3.0, 'pendingGain': 0.0, 'base': 'DRILL yield=RM_Liquid_FreshWater reserve=199.7 pending=0 outletUnits=0.3 outlet=76,62 block=None', 'read': 'DRILL yield=RM_Liquid_FreshWater reserve=196.699966 pending=0 outletUnits=3.3 outlet=76,62 block=None'}"
+    },
+    {
+     "id": "GARDEN_walled_yard_lies_level",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "{'worstSurfaceSpread': 3, 'atChunk': 4, 'limit': 3, 'chunksRead': 15, 'chunksHeld': 15, 'depthSpread': 347, 'free': 25, 'low': [], 'foil': {'rise': 800, 'others': 0}, 'err': None, 'read': 'SHEETRECT dl=7787 wet=25 maxDl=461 edgeMaxDl=0 ice=0 film=21 sheet=4 pool=0', 'spill': 'SPILL offered=15000 accepted=15000'}"
+    }
+   ]
+  },
+  "6": {
+   "error": null,
+   "rows": [
+    {
+     "id": "GARDEN_head_draws_its_net",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "{'drop': 125, 'cells': 25, 'head': 'Spraying fresh water \u00b7 12.5 L/h \u00b7 25 cells'}"
+    },
+    {
+     "id": "GARDEN_no_pump_no_spray",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "{'filled': 100000, 'end': 100000, 'head': 'No pressure: no pump on this network', 'pumpedHeadSprayed': True}"
+    },
+    {
+     "id": "GARDEN_faucet_drinks_from_its_tank",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "{'filled': 100000, 'end': 99985}"
+    },
+    {
+     "id": "GARDEN_filter_keeps_its_rate",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "{'batches': 32.0, 'window': [32, 33], 'made': 64000, 'ticks': 60000}"
+    },
+    {
+     "id": "GARDEN_still_within_its_def_rate",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "{'drops': [8000, 12000, 8000, 12000, 12000, 8000, 12000, 8000, 12000, 8000, 12000, 12000, 4000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4000], 'bad': [], 'made': 66000}"
+    },
+    {
+     "id": "GARDEN_drill_pours_its_yield",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "DRILL yield=RM_Liquid_FreshWater reserve=191.999924 pending=0 outletUnits=8 outlet=76,62 block=OutletBrimming"
+    },
+    {
+     "id": "GARDEN_drill_charges_what_landed",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "{'spent': 3.0000339999999994, 'landed': 3.0, 'pendingGain': 0.0, 'base': 'DRILL yield=RM_Liquid_FreshWater reserve=199.7 pending=0 outletUnits=0.3 outlet=76,62 block=None', 'read': 'DRILL yield=RM_Liquid_FreshWater reserve=196.699966 pending=0 outletUnits=3.3 outlet=76,62 block=None'}"
+    },
+    {
+     "id": "GARDEN_walled_yard_lies_level",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "{'worstSurfaceSpread': 3, 'atChunk': 4, 'limit': 3, 'chunksRead': 15, 'chunksHeld': 15, 'depthSpread': 347, 'free': 25, 'low': [], 'foil': {'rise': 800, 'others': 0}, 'err': None, 'read': 'SHEETRECT dl=7787 wet=25 maxDl=461 edgeMaxDl=0 ice=0 film=21 sheet=4 pool=0', 'spill': 'SPILL offered=15000 accepted=15000'}"
+    }
+   ]
+  },
+  "7": {
+   "error": null,
+   "rows": [
+    {
+     "id": "GARDEN_head_draws_its_net",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "{'drop': 125, 'cells': 25, 'head': 'Spraying fresh water \u00b7 12.5 L/h \u00b7 25 cells'}"
+    },
+    {
+     "id": "GARDEN_no_pump_no_spray",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "{'filled': 100000, 'end': 100000, 'head': 'No pressure: no pump on this network', 'pumpedHeadSprayed': True}"
+    },
+    {
+     "id": "GARDEN_faucet_drinks_from_its_tank",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "{'filled': 100000, 'end': 99985}"
+    },
+    {
+     "id": "GARDEN_filter_keeps_its_rate",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "{'batches': 32.0, 'window': [32, 33], 'made': 64000, 'ticks': 60000}"
+    },
+    {
+     "id": "GARDEN_still_within_its_def_rate",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "{'drops': [8000, 12000, 8000, 12000, 12000, 8000, 12000, 8000, 12000, 8000, 12000, 12000, 4000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4000], 'bad': [], 'made': 66000}"
+    },
+    {
+     "id": "GARDEN_drill_pours_its_yield",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "DRILL yield=RM_Liquid_FreshWater reserve=191.999924 pending=0 outletUnits=8 outlet=76,62 block=OutletBrimming"
+    },
+    {
+     "id": "GARDEN_drill_charges_what_landed",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "{'spent': 3.0000339999999994, 'landed': 3.0, 'pendingGain': 0.0, 'base': 'DRILL yield=RM_Liquid_FreshWater reserve=199.7 pending=0 outletUnits=0.3 outlet=76,62 block=None', 'read': 'DRILL yield=RM_Liquid_FreshWater reserve=196.699966 pending=0 outletUnits=3.3 outlet=76,62 block=None'}"
+    },
+    {
+     "id": "GARDEN_walled_yard_lies_level",
+     "status": "PASS",
+     "verdict": null,
+     "detail": "{'worstSurfaceSpread': 3, 'atChunk': 1, 'limit': 3, 'chunksRead': 15, 'chunksHeld': 15, 'depthSpread': 347, 'free': 25, 'low': [], 'foil': {'rise': 800, 'others': 0}, 'err': None, 'read': 'SHEETRECT dl=7795 wet=25 maxDl=461 edgeMaxDl=0 ice=0 film=21 sheet=4 pool=0', 'spill': 'SPILL offered=15000 accepted=15000'}"
+    }
+   ]
+  }
+ }
+}
