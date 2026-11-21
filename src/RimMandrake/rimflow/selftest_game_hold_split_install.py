@@ -122,6 +122,25 @@ def t_a_game_hold_is_a_scope_that_refuses_runs_on_that_game_only(X):
     _hold(X, "a", False, "walk over")
 
 
+def t_a_run_names_a_game_only_when_it_drives_one(X):
+    import control as C
+    import detached_helper as DH
+    stage = {"RM_CONTROL_MOD": "Pyrelands", "RM_CONTROL_STAGE": "in_game"}
+    steward, visit = "RIMMANDRAKE_ROUTE_PYRELANDS_VISIT_THREE_FAILURES_BACK", "RIMMANDRAKE_RUN_PYRELANDS_IN_GAME_VISIT_FOUR"
+    game = lambda item, env: _safe(lambda: DH.run_game(item, env), "base")  # noqa: E731
+    chk(lambda: game(steward, stage) is None, "names: a steward run at stage in_game names no game")
+    chk(lambda: game(visit, stage) == "a", "names: an in-game visit naming no game drives game a")
+    chk(lambda: game(visit, dict(stage, RM_GAME_INSTANCE="b")) == "b", "names: RM_GAME_INSTANCE=b names game b")
+    chk(lambda: game(steward, dict(stage, RM_GAME_INSTANCE="b")) == "b", "names: a steward run told game b names it")
+    _hold(X, "a", True, "his walk")
+    spec = {"family": "detached", "unit": "rm-x", "stage": "in_game", "mod": "Pyrelands"}
+    chk(lambda: C.blocked(dict(spec, item=steward, game=game(steward, stage)), X.db) is None,
+        "names: his hold on game a does not refuse the steward run")
+    chk(lambda: C.blocked(dict(spec, item=visit, game=game(visit, stage)), X.db) is not None,
+        "names: his hold on game a refuses the in-game visit")
+    _hold(X, "a", False, "walk over")
+
+
 def t_a_held_game_is_never_picked_and_game_b_takes_the_run(X):
     import maturation_dispatch as MD
     cfg = {"game_instances": ["a", "b"], "seat": "BENCH"}
@@ -343,6 +362,7 @@ def main():
         C.init(X.db)
         driver_lock.acquire(X.lock, "CONDUCTOR", "his walk", driver_lock.my_identity())
         for t in (t_a_game_hold_is_a_scope_that_refuses_runs_on_that_game_only,
+                  t_a_run_names_a_game_only_when_it_drives_one,
                   t_a_held_game_is_never_picked_and_game_b_takes_the_run,
                   t_a_full_list_only_visit_waits_for_game_a_and_says_so_by_name,
                   t_the_askers_own_hold_is_a_hold_for_a_new_run,

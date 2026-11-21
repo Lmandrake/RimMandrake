@@ -512,8 +512,10 @@ def tried_unit(text):
 def ran(r):
     """False for a run record whose launch failed (systemd-run never started a unit): it worked on nothing, so it is
     neither an in-game or blind run of the visit nor a dead run whose finish never ran (2026-11-16: Gimme Some Slack
-    paused hand_run_seen on its own failed launch)."""
-    return r.get("state") != "launch_failed"
+    paused hand_run_seen on its own failed launch). Nor did one control refused at launch: no unit was started
+    (2026-11-21: slow_chores reaped refused records as "killed: unknown", and their returns bundled the clone the next
+    launch had reused; RIMMANDRAKE_FIX_OFFLINE_STEWARD_REFUSED_BY_GAME_A_WALK_HOLD)."""
+    return r.get("state") not in ("launch_failed", "refused")
 
 
 def add_ingame(root, mod, f, runs):

@@ -1,6 +1,6 @@
 # BOUNDARY: the per-game hold and game b's own install, Design Version 0.1.0
 
-Code: `src/RimMandrake/rimflow/control.py` (the `game:` scope, `game_held`, `game_holds`), `src/RimMandrake/rimflow/maturation_dispatch.py` (`game_hold`, `full_list_only`, `pick_game`), `src/RimMandrake/rimflow/host_guard.py` (`crossing` with `new_run`), `src/RimMandrake/Utils/game_instance.py` (`install`, `game_dir`, `hold_refusal`, `held_by_anyone`, `leftovers`, `stop`, `brief`), `src/RimMandrake/Utils/game_paths.py` (`GAME_DIR`, `LOCAL_MODS`, `GAME_DATA`, `A_GAME_DIR`), `src/RimMandrake/Utils/deploy_custom_mods.py` (`--instance`, the hold on `--apply`), `src/RimMandrake/bridgetools/build.py` (`aim`, `--instance`), `src/RimMandrake/Utils/modset_builder.py` (`owned_backups`).
+Code: `src/RimMandrake/rimflow/control.py` (the `game:` scope, `game_held`, `game_holds`), `src/RimMandrake/rimflow/maturation_dispatch.py` (`game_hold`, `full_list_only`, `pick_game`), `src/RimMandrake/rimflow/host_guard.py` (`crossing` with `new_run`), `src/RimMandrake/rimflow/detached_helper.py` (`run_game`), `src/RimMandrake/Utils/game_instance.py` (`install`, `game_dir`, `hold_refusal`, `held_by_anyone`, `leftovers`, `stop`, `brief`), `src/RimMandrake/Utils/game_paths.py` (`GAME_DIR`, `LOCAL_MODS`, `GAME_DATA`, `A_GAME_DIR`), `src/RimMandrake/Utils/deploy_custom_mods.py` (`--instance`, the hold on `--apply`), `src/RimMandrake/bridgetools/build.py` (`aim`, `--instance`), `src/RimMandrake/Utils/modset_builder.py` (`owned_backups`).
 Item: `RIMMANDRAKE_SPLIT_SECOND_GAME_MODS_FOLDER_SHARED_WITH_FIRST`, written 2026-11-20. The owner walked game a twice
 that day while every in-game run waited, although game b existed. His words at 6:20 AM PST: *"We can run two games you
 know..."*; at 3:40 PM PST: *"You should not have been waiting for the game. there are two games"*. Each promise has a
@@ -34,6 +34,11 @@ the files named; the rest of each file has its own page or none.
 - **a-game-hold-is-a-scope-that-refuses-runs-on-that-game-only.** `pipe off game:a` writes a switch on scope `game:a`;
   a run whose spec names game a is refused at admission and at its start; a run on game b, or one that names no game,
   is not.
+- **a-run-names-a-game-only-when-it-drives-one.** `detached_helper.run_game` gives a run's game as its
+  `RM_GAME_INSTANCE`, else game a for an in-game run (an item that names `IN_GAME_ACCEPTANCE` or `IN_GAME_VISIT`), else
+  no game. A steward run at stage `in_game` names no game, so `pipe off game:a` does not refuse it; if it needs a game
+  later, `game_lock` refuses the held one.
+  (2026-11-21: his walk hold on game a refused Pyrelands' offline steward run eight times in 51 minutes.)
 - **a-held-game-is-never-picked-and-game-b-takes-the-run.** `pick_game` never returns a held game, whatever its bridge
   reading says, so his walk is kept when the Conductor's bridge hold lapses; the next free game takes the run. A store
   that cannot be read holds the game.
@@ -65,4 +70,4 @@ the files named; the rest of each file has its own page or none.
 - **game-bs-brief-names-its-own-install-and-its-unmeasured-full-list-checks.** A run brief for game b says that game b has
   its own install, and names each full-list check the visit holds as UNMEASURED on b.
 
-Later lists beside this page: `polish.md` (two lines) and `next_version.md` (none yet).
+Later lists beside this page: `polish.md` (three lines) and `next_version.md` (none yet).

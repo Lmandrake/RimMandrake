@@ -1920,10 +1920,17 @@ def item_names_main():
         runs = [{"unit": "u-failed", "item": "RIMMANDRAKE_DRIVE_X_IN_GAME_VISIT_ONE", "at": t0 + 60, "end": None,
                  "live": False, "state": "launch_failed"},
                 {"unit": "u-ran", "item": "RIMMANDRAKE_DRIVE_X_IN_GAME_VISIT_ONE_RUN_TWO", "at": t0 + 120, "end": t0 + 900,
-                 "live": False, "state": "finished"}]
+                 "live": False, "state": "finished"},
+                # RIMMANDRAKE_FIX_OFFLINE_STEWARD_REFUSED_BY_GAME_A_WALK_HOLD (2026-11-21 12:27 PM PST): a launch control
+                # refused started no unit; slow_chores read it as a dead run, finished it "killed: unknown" and its
+                # return bundled the clone the next launch had just reused
+                {"unit": "u-refused", "item": "RIMMANDRAKE_DRIVE_X_IN_GAME_VISIT_ONE_RUN_THREE", "at": t0 + 180,
+                 "end": None, "live": False, "state": "refused"}]
         f = MD.add_ingame(".", "X", {"stage": "in_game"}, runs)
-        ok(f.get("ingame_runs") == ["u-ran"], "never ran: a launch_failed record is not an in-game run that worked (%s)"
-           % f.get("ingame_runs"))
+        ok(f.get("ingame_runs") == ["u-ran"], "never ran: a launch_failed or refused record is not an in-game run that "
+           "worked (%s)" % f.get("ingame_runs"))
+        ok(not MD.ran({"state": "refused"}) and not MD.ran({"state": "launch_failed"}) and MD.ran({"state": "dead"})
+           and MD.ran({"state": "running"}), "never ran: a refused launch is no dead run for slow_chores to reap")
     finally:
         MD.M.ingame_facts, MD.M.certificate = saved
         shutil.rmtree(scratch, ignore_errors=True)

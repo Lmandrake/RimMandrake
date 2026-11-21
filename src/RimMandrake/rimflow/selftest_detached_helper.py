@@ -1435,6 +1435,45 @@ def t_a_resume_whose_earlier_cap_cannot_be_read_is_refused():
               % (why, rc, text[:160]))
 
 
+def t_an_offline_run_at_the_in_game_stage_names_no_game():
+    """RIMMANDRAKE_FIX_OFFLINE_STEWARD_REFUSED_BY_GAME_A_WALK_HOLD (2026-11-21, 12:27 PM to 1:18 PM PST: eight launches of
+    Pyrelands' offline steward run were refused by his walk hold on game a). Game a is stamped on an in-game run only:
+    its RM_GAME_INSTANCE, else an item that names IN_GAME_ACCEPTANCE or IN_GAME_VISIT. A steward run at stage in_game
+    names no game, so `pipe off game:a` does not refuse it; an in-game visit naming no game is still refused."""
+    import control as C
+    saved = os.environ.get("RM_CONTROL_DB")
+    db = os.path.join(TMP, "control-game-stamp.db")
+    os.environ["RM_CONTROL_DB"] = db
+    try:
+        C.init(db)
+        C.switch("game:a", True, "his walk (test)", p=db)
+        stage = {"RM_CONTROL_MOD": "Pyrelands", "RM_CONTROL_STAGE": "in_game"}
+        for item, env, refused, what in (
+                ("RIMMANDRAKE_ROUTE_PYRELANDS_VISIT_THREE_FAILURES_BACK", stage, False,
+                 "a steward run at stage in_game, no game named"),
+                ("RIMMANDRAKE_RUN_PYRELANDS_IN_GAME_VISIT_FOUR", stage, True,
+                 "an in-game visit naming no game drives game a"),
+                ("RIMMANDRAKE_RUN_PYRELANDS_IN_GAME_VISIT_FIVE", dict(stage, RM_GAME_INSTANCE="b"), False,
+                 "an in-game visit on game b"),
+                ("RIMMANDRAKE_RUN_PYRELANDS_IN_GAME_VISIT_SIX", dict(stage, RM_GAME_INSTANCE="a"), True,
+                 "an in-game visit on game a")):
+            KNOWN.add(item)     # filed on the fake origin/main
+            calls, run = recorder()
+            rc, text = DH.launch("BENCH", item, "Do the work.", "opus", None, 5, now=T0, runner=run, known={item},
+                                 clone=CLONE, env=env)
+            started = any(c[0][:1] == ["systemd-run"] for c in calls)
+            ok = (rc == 2 and "game:a" in text and not started) if refused else (rc == 0 and started)
+            check(ok, "game stamp: %s is %s while game a is held (rc %s: %s)" % (
+                what, "refused" if refused else "launched", rc, " ".join(text.split())[:140]))
+        C.switch("game:a", False, "walk over (test)", p=db)
+    finally:
+        KNOWN.intersection_update({"SOME_ITEM_TO_BUILD"})
+        if saved is None:
+            os.environ.pop("RM_CONTROL_DB", None)
+        else:
+            os.environ["RM_CONTROL_DB"] = saved
+
+
 def main():
     test_refuse()
     test_launch_and_finish()
@@ -1465,6 +1504,7 @@ def main():
     t_a_resume_carries_the_earlier_cap()
     t_a_resume_with_a_cap_takes_the_stated_cap()
     t_a_resume_whose_earlier_cap_cannot_be_read_is_refused()
+    t_an_offline_run_at_the_in_game_stage_names_no_game()
     print("%s: %d failure(s)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
     return 1 if FAILS else 0
 

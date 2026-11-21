@@ -512,6 +512,20 @@ def claude_bin():
     return os.environ.get("RM_DISPATCHER_CLAUDE") or shutil.which("claude") or os.path.expanduser("~/.local/bin/claude")
 
 
+INGAME_ITEM = re.compile(r"IN_GAME_(ACCEPTANCE|VISIT)", re.I)     # maturation_dispatch._is_ingame_item's names
+
+
+def run_game(item, env):
+    """-> the game a run drives, for admission (`pipe off game:<g>`): its RM_GAME_INSTANCE, else game a for an in-game
+    run (its item names IN_GAME_ACCEPTANCE or IN_GAME_VISIT), else None. The stage is not the test: a steward run at
+    stage in_game works offline, and one that needs a game later takes a free one through game_lock, which refuses a
+    held game (RIMMANDRAKE_FIX_OFFLINE_STEWARD_REFUSED_BY_GAME_A_WALK_HOLD)."""
+    g = ((env or {}).get("RM_GAME_INSTANCE") or "").strip().lower()
+    if g:
+        return g
+    return "a" if INGAME_ITEM.search(str(item or "")) else None
+
+
 def scope_name(seat, unit):
     """The claude_bounded scope this run's claude lives in (named by CLAUDE_SCOPE_UNIT at launch; role_launch's form)."""
     import role_launch as RL
@@ -1349,8 +1363,8 @@ def _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, 
     cenv = rec.get("env") or {}
     cspec = {"family": "detached", "unit": unit, "item": item, "model": model, "mod": cenv.get("RM_CONTROL_MOD"),
              "stage": cenv.get("RM_CONTROL_STAGE"), "extra_units": [scope_name(seat, unit)],
-             # the game it drives (`pipe off game:a` keeps every run off his game); an in-game run naming none drives a
-             "game": cenv.get("RM_GAME_INSTANCE") or ("a" if cenv.get("RM_CONTROL_STAGE") == "in_game" else None)}
+             # the game it drives (`pipe off game:a` keeps every run off his game)
+             "game": run_game(item, cenv)}
     try:
         r = C.launch_unit(launch_argv(rec, msg, claude_bin()), cspec, runner=runner, clone=rec.get("clone"),
                           capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
