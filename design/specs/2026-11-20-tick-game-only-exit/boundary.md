@@ -69,7 +69,7 @@ is a separate page. Each promise has a test of its name in `src/RimMandrake/rimf
   that ends by itself when a game frees, with no Needs Conductor line. Its why and its `waits_on` name each game and
   the reason it cannot take the run. They never say "the live game".
 - **the-offline-holder-run-drives-its-named-game.** `road_back_holder` with a `game` at an offline stage starts the run
-  on that game: the live brief, the game's own section (`game_instance.brief`) and `RM_GAME_INSTANCE` for that game. It
-  does not refuse the game-only items.
+  on that game: the live brief, the game's own section (`game_instance.brief`) and `RM_GAME_INSTANCE` for that game, and
+  its launch line names the game. It does not refuse the game-only items.
 
 Later lists beside this page: `polish.md` (two lines); `next_version.md` (none yet).

@@ -288,6 +288,7 @@ def t_the_offline_holder_run_drives_its_named_game():
         M.ledger_needs, L.resume_plan, MD.ledger_open, MD.ledger_after = saved
     txt = seen[0][1] if seen else ""
     return (rc == 0 and unit == "u" and seen and seen[0][2].get("RM_GAME_INSTANCE") == "b" and "## Your game: b" in txt
+            and "on game b" in str(text)
             and "The bridge and the game" in txt and "Not yours" not in txt), (rc, text, txt[-900:])
 
 

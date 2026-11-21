@@ -2477,7 +2477,7 @@ def road_back_holder(root, cfg, st, mod, stage, opened, item, cap, now, fx, game
         item, led["brief"], MM.for_mod(cfg, mod).get("steward_model", "opus"), cap, cfg.get("seat", "BENCH"),
         env=dict(led["env"], **({"RM_GAME_INSTANCE": game} if game else {})), **rkw)
     unit = unit if rc == 0 else None
-    text = "%s%s%s; %s" % ("live holder (bridge and game allowed): " if live else "",
+    text = "%s%s%s; %s" % ("live holder on game %s (bridge and game allowed): " % game if live else "",
                            "%s; " % plan["why"] if rkw else "",
                            (text or "").splitlines()[0] if text else rc,
                            ledger_after(root, st, mod, led, unit, item, now, fx))
