@@ -145,6 +145,30 @@ def t_repair_without_planted_not_pass():
     return all(s == "not_met" and c == "not_counted" and u == ["b_one"] for _, s, c, u in outs), outs
 
 
+def t_repair_in_two_commits_counts():
+    # RIMMANDRAKE_ACCEPT_REPAIR_RECORD_NAMING_TWO_COMMITS_NOT_ONE: a repair made in two commits names both, space- or
+    # comma-separated (Pyrelands visit 2, sc_firehawk: "9b4ad4ab14 a7d25d9f33"); each word must still be a commit hash
+    two = ingame(repaired(commit="abc1234def 1234abcdef0") + [row("c2"), row("c3")], name="two")
+    comma = ingame(repaired(commit="abc1234def, 1234abcdef0") + [row("c2"), row("c3")], name="comma")
+    bad = ingame(repaired(commit="abc1234def notacommit", owner="RIMMANDRAKE_MEND_WMOD_FLOW_CHECK_NO_PLANT_YET")
+                 + [row("c2"), row("c3")], claims={"c1": "unmeasured"}, name="bad")
+    return (two["lines"]["c1"]["count"] == "pass" and comma["lines"]["c1"]["count"] == "pass"
+            and bad["lines"]["c1"]["count"] == "not_counted"), (two["why"], comma["why"], bad["lines"]["c1"])
+
+
+def t_strange_explained_as_status_settles():
+    # RIMMANDRAKE_ACCEPT_STRANGE_EXPLAINED_AS_STATUS_THREE_MODS_WROTE: drivers of three mods wrote {"status":
+    # "explained", "why"|"note": ...}; the word floor still binds, and a bare status explains nothing
+    long_ = "the 50 C site kills them before the control window ends"
+    cases = [({"what": "w", "explained": long_}, True), ({"what": "w", "status": "explained", "why": long_}, True),
+             ({"what": "w", "status": "explained", "note": long_}, True),
+             ({"what": "w", "status": "explained", "why": "ok"}, False), ({"what": "w", "status": "explained"}, False),
+             ({"what": "w", "why": long_}, False), ({"what": "w", "status": "filed"}, False),
+             ({"what": "w", "explained": "ok"}, False)]
+    got = [(c, M._strange_settled(c)) for c, _ in cases]
+    return all(g == want for (_, g), (_, want) in zip(got, cases)), [c for (c, g), (_, w) in zip(got, cases) if g != w]
+
+
 def t_needless_check_is_removed():
     needless = [row("c1"), row("c2"), row("c3", "FAIL", **{"class": "HARNESS", "set_aside":
                                                           "c3 reads the wrong cell; c2 decides b_two on its own"})]
@@ -386,7 +410,7 @@ def missed_mutants(tests):
 
 def main():
     tests = [t_all_pass_met, t_mod_wrong_not_met, t_check_wrong_repaired_counts, t_repair_without_planted_not_pass,
-             t_needless_check_is_removed, t_not_counted_needs_owner, t_mod_fixed_in_sitting_counts,
+             t_repair_in_two_commits_counts, t_strange_explained_as_status_settles, t_needless_check_is_removed, t_not_counted_needs_owner, t_mod_fixed_in_sitting_counts,
              t_one_build_is_the_last_rows, t_scene_wrong_same_as_check, t_unclassed_not_silent,
              t_wrong_unhandled_not_silent, t_mix_reads_each_line, t_blind_check_repair_owes_no_judge,
              t_blind_mod_fix_owes_one_fresh_reader, t_briefs_carry_the_rule]

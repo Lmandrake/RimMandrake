@@ -2,9 +2,9 @@
   "schema": 1,
   "mod": "Pyrelands",
   "version": "0.1.0",
-  "stage": "in_game",
-  "stage_label": "In-game acceptance (Stage 6)",
-  "since": "2026-11-20T18:01:00-08:00",
+  "stage": "offline_build",
+  "stage_label": "Offline build (Stage 3)",
+  "since": "2026-11-21T03:04:25-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -146,6 +146,23 @@
         "steward_confirms",
         "exit_met",
         "judge_certificate"
+      ]
+    },
+    {
+      "from": "in_game",
+      "to": "offline_build",
+      "at": "2026-11-21T03:04:25-08:00",
+      "by": "BENCH",
+      "why": "visit 2 not met: one MOD line not fixed in the sitting (sc_ashwallow, RIMMANDRAKE_FIX_PYRE_ASHWALLOW_SHADE_DASH_BEATS_FIRE_DIVE, game-up), one MOD fault no row caught (RIMMANDRAKE_FIX_PYRE_HAWK_LETTER_BLANKS_FOUR_NAMED_SLOTS, offline), and 16 bars undecided whose checks each keep an open owner item; a mix, so offline_build for the offline line, the game-only one waits for in_game",
+      "unit": "rm-detached-bench-rimmandrake-route-pyrelands-visit-two-fa-1795258031",
+      "confirmed": {
+        "steward_confirms": "read visit_2 SUMMARY.md, rows.jsonl, strange.jsonl and read_ingame_exit: 2 reader faults of form repaired (two-commit repair record; status-explained strange rows), 8 needless checks removed (polish.md), sc_ashwallow MOD stands, 16 undecided bars owned by 7 open items; verdict: road back to offline_build"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold"
       ]
     }
   ],

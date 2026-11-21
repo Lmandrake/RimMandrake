@@ -16,8 +16,8 @@ Generated 2026-11-16T21:27:29-08:00 from `test_table.json` (the record; this is 
 
 | bar | from | proves at | decides | supports | runnable today |
 |---|---|---|---|---|---|
-| `burn_line_walks` | tree | 6 | sc_burn_line_walks | T_FUZZ, T_BURN_ECOLOGY, P_opening_front, LOOK_STAGE8 | all |
-| `ash_ground_and_blowing_ash` | tree | 6 | sc_ash_ground, sc_fire_dusts_ash | T_LINT, T_FUZZ, T_TRACKS, P_ambient_ash_drift | all |
+| `burn_line_walks` | tree | 6 | sc_burn_line_walks | T_FUZZ, T_BURN_ECOLOGY, LOOK_STAGE8 | all |
+| `ash_ground_and_blowing_ash` | tree | 6 | sc_fire_dusts_ash | T_LINT, T_FUZZ, T_TRACKS, P_ambient_ash_drift | all |
 | `ash_fertile_when_watered` | tree | 6 | sc_ash_watered | T_FUZZ | all |
 | `fresh_burn_compounds_with_black_rain` | tree | 6 | sc_burn_compounds | T_FUZZ, T_ASH_PROBE_OFFLINE | all |
 | `grass_carpets_and_regreens` | tree | 6 | sc_grass_regreens | T_LINT, T_BURN_ECOLOGY, P_grass_cover, LOOK_STAGE8 | all |
@@ -25,7 +25,7 @@ Generated 2026-11-16T21:27:29-08:00 from `test_table.json` (the record; this is 
 | `populations_are_the_biomes_own` | tree | 6 | sc_populations, T_ALLOWLIST | T_LINT, T_SITE, P_animal_census, P_mapgen_log | all |
 | `ruins_stand_blackened` | tree | 6 | sc_ruins | - | all |
 | `firehawk_lights_ahead` | tree | 6 | sc_firehawk | T_FUZZ | all |
-| `furnacebeast_warms` | tree | 6 | sc_furnace, sc_furnace_bed, sc_furnace_giant, T_FURNACE_WARMTH | T_FUZZ, T_DEFS_OFFLINE, P_furnace_room | all |
+| `furnacebeast_warms` | tree | 6 | sc_furnace, T_FURNACE_WARMTH | T_FUZZ, T_DEFS_OFFLINE, P_furnace_room | all |
 | `ashwallow_dives_unharmed` | tree | 6 | sc_ashwallow, sc_heat_dome | T_BURN_COST | all |
 | `ullai_graze_old_burns` | tree | 6 | sc_ullai | T_LINT | all |
 | `three_skies` | tree | 6 | sc_three_skies | T_BURN_ECOLOGY, P_ashfall_weather_accumulation, P_ashfall_drifts, P_blackrain | all |
@@ -41,14 +41,14 @@ Generated 2026-11-16T21:27:29-08:00 from `test_table.json` (the record; this is 
 | `inv_plant_roster` | record | 6 | sc_populations, T_ALLOWLIST, T_LINT | P_grass_cover | all |
 | `inv_embergrass_regrow` | record | 6 | sc_grass_regreens | T_LINT | all |
 | `inv_animal_roster` | record | 6 | sc_populations | P_animal_census, sc_flamefang_venom, T_DEFS_OFFLINE | all |
-| `inv_ash_field` | record | 6 | sc_ash_ground, sc_ash_watered, sc_burn_compounds | T_FUZZ, T_LINT, T_TRACKS, sc_fire_dusts_ash, P_ambient_ash_drift | all |
-| `inv_burn_line_fire_clock` | record | 6 | sc_burn_line_walks, T_FUZZ | T_BURN_ECOLOGY, P_opening_front, sc_fire_dusts_ash, T_BURN_COST | all |
+| `inv_ash_field` | record | 6 | sc_ash_watered, sc_burn_compounds | T_FUZZ, T_LINT, T_TRACKS, sc_fire_dusts_ash, P_ambient_ash_drift | all |
+| `inv_burn_line_fire_clock` | record | 6 | sc_burn_line_walks, T_FUZZ | T_BURN_ECOLOGY, sc_fire_dusts_ash, T_BURN_COST | all |
 | `inv_scorchfruit` | record | 6 | sc_scorchfruit | T_FRUIT_CLEAR, P_scorchfruit_produces, P_scorchfruit_spoils | all |
 | `inv_ruins_scorched` | record | 6 | sc_ruins | - | all |
 | `inv_firehawk_ember` | record | 6 | sc_firehawk | T_FUZZ | all |
-| `inv_furnacebeast` | record | 6 | sc_furnace, sc_furnace_bed, T_FURNACE_WARMTH | T_FUZZ, T_DEFS_OFFLINE, P_furnace_room | all |
+| `inv_furnacebeast` | record | 6 | sc_furnace, T_FURNACE_WARMTH | T_FUZZ, T_DEFS_OFFLINE, P_furnace_room | all |
 | `inv_burrowers_heat_dome` | record | 6 | sc_ashwallow, sc_heat_dome | T_BURN_COST | all |
-| `inv_ullai_herd_giant` | record | 6 | sc_ullai, sc_furnace_giant | T_CUT_STAYS_CUT, T_ULLAI_HERD_MIGRATES | all |
+| `inv_ullai_herd_giant` | record | 6 | sc_ullai | T_CUT_STAYS_CUT, T_ULLAI_HERD_MIGRATES | all |
 | `inv_weather` | record | 6 | sc_three_skies, sc_no_rain, T_DEFS_OFFLINE | P_ashfall_weather_accumulation, P_ashfall_drifts, P_blackrain | all |
 | `inv_firebreak_firefoam` | record | 4-5 | T_CUT_STAYS_CUT | - | all |
 | `inv_firefoam_sprayer` | record | 6 | sc_firefoam_sprayer | P_firefoam_aim | all |
@@ -88,14 +88,11 @@ Generated 2026-11-16T21:27:29-08:00 from `test_table.json` (the record; this is 
 | `T_ULLAI_HERD_MIGRATES` | offline | 4-5 | `src/RimMandrake/Pyrelands/selftest_pyrelands_ullai_herd_migration.py` | PASS 7.5s |
 | `T_ASH_PROBE_OFFLINE` | offline | 4-5 | `src/RimMandrake/Pyrelands/selftest_pyrelands_ash_probe.py` | PASS 1.9s |
 | `sc_burn_line_walks` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: burn_line | live: this run is offline only; entry exists in validation.py |
-| `sc_ash_ground` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: ground_deep_ash | live: this run is offline only; entry exists in validation.py |
 | `sc_ash_watered` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: ash_fertility_watered | live: this run is offline only; entry exists in validation.py |
 | `sc_burn_compounds` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: fresh_burn_bonus | live: this run is offline only; entry exists in validation.py |
 | `sc_grass_regreens` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: embergrass_regrow | live: this run is offline only; entry exists in validation.py |
-| `sc_roof_withers` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: roof_withers | live: this run is offline only; entry exists in validation.py |
 | `sc_scorchfruit` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: scorchfruit_fire_born | live: this run is offline only; entry exists in validation.py |
 | `sc_populations` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: plant_census | live: this run is offline only; entry exists in validation.py |
-| `sc_herd_thirst` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: herd_thirst | live: this run is offline only; entry exists in validation.py |
 | `sc_ruins` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: ruins | live: this run is offline only; entry exists in validation.py |
 | `sc_firehawk` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: firehawk | live: this run is offline only; entry exists in validation.py |
 | `sc_furnace` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: furnace_warmth | live: this run is offline only; entry exists in validation.py |
@@ -104,16 +101,12 @@ Generated 2026-11-16T21:27:29-08:00 from `test_table.json` (the record; this is 
 | `sc_three_skies` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: cinderfall | live: this run is offline only; entry exists in validation.py |
 | `sc_no_rain` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: no_ordinary_rain | live: this run is offline only; entry exists in validation.py |
 | `sc_walk` | live_full | 6 | `src/RimMandrake/Pyrelands/validation.py` :: walk_season | live: this run is offline only; entry exists in validation.py |
-| `sc_fire_sense` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: fire_sense | live: this run is offline only; entry exists in validation.py |
 | `sc_firefoam_sprayer` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: firefoam_sprayer | live: this run is offline only; entry exists in validation.py |
 | `sc_sand_shovel` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: sand_shovel | live: this run is offline only; entry exists in validation.py |
 | `sc_rite_hook_alone` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: rite_hook_alone | live: this run is offline only; entry exists in validation.py |
-| `sc_furnace_bed` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: furnace_sleep | live: this run is offline only; entry exists in validation.py |
-| `sc_furnace_hide_bank` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: furnace_hide_bank | live: this run is offline only; entry exists in validation.py |
 | `sc_heat_dome` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: heat_dome | live: this run is offline only; entry exists in validation.py |
 | `sc_fire_dusts_ash` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: fire_tick_effects | live: this run is offline only; entry exists in validation.py |
 | `sc_flamefang_venom` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: flamefang_venom | live: this run is offline only; entry exists in validation.py |
-| `sc_furnace_giant` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: ullai_and_giant | live: this run is offline only; entry exists in validation.py |
 | `sc_foreign_arrivals` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: foreign_arrivals | live: this run is offline only; entry exists in validation.py |
 | `sc_firehawk_rewards` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: firehawk_first_sighting_letter | live: this run is offline only; entry ABSENT in validation.py |
 | `P_startup_and_def_wiring` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: startup_and_def_wiring | live: this run is offline only; entry exists in validation.py |
@@ -121,7 +114,6 @@ Generated 2026-11-16T21:27:29-08:00 from `test_table.json` (the record; this is 
 | `P_grass_cover` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: grass_cover | live: this run is offline only; entry exists in validation.py |
 | `P_animal_census` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: animal_census | live: this run is offline only; entry exists in validation.py |
 | `P_ambient_ash_drift` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: ambient_ash_drift | live: this run is offline only; entry exists in validation.py |
-| `P_opening_front` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: opening_front | live: this run is offline only; entry exists in validation.py |
 | `P_scorchfruit_produces` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: scorchfruit_produces | live: this run is offline only; entry exists in validation.py |
 | `P_scorchfruit_spoils` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: scorchfruit_spoils | live: this run is offline only; entry exists in validation.py |
 | `P_furnace_room` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: furnace_room | live: this run is offline only; entry exists in validation.py |

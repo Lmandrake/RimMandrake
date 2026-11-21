@@ -38,3 +38,14 @@ exit 0. Live after the fix: the firehawk_letter_words note's text holds no "cell
 
 file: src/RimMandrake/Pyrelands/Source/FireHawkRewards.cs
 file: src/RimMandrake/Pyrelands/Languages/English/Keyed/Pyrelands.xml
+
+## launch-checks
+
+must-fail: python3 design/concepts/Pyrelands/version/in_game/visit_2/scripts/named_args_resolve.py
+
+## Stage 6
+
+Needs offline. The in-game check is `firehawk_first_sighting_letter`. Its live command:
+`python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains firehawk_first_sighting_letter`.
+The fixer records it UNRUN for Stage 6 with `maturation.py unrun` when it closes this item on the offline test.
+(Added by the visit-2 steward run, RIMMANDRAKE_ROUTE_PYRELANDS_VISIT_TWO_FAILURES_BACK.)

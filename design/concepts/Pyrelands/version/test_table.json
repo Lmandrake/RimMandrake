@@ -551,33 +551,6 @@
     "why": "live: this run is offline only; entry exists in validation.py"
    }
   },
-  "sc_ash_ground": {
-   "id": "sc_ash_ground",
-   "kind": "live_minimal",
-   "stage": "6",
-   "file": "src/RimMandrake/Pyrelands/validation.py",
-   "entry": "ground_deep_ash",
-   "observes": "deep ash on at least 0.85 of open-land cells (validation.py DEEP_ASH_MIN, bar pyre_ground_deep_ash), soil and gravel only in pockets, and every standing-water body ringed: the land cells next to its shore read mud or rich soil (GenStep_PyrelandsStandingWater's ring); ash blowing in clear weather; at every matched hour the ash-fall light is clearly below the clear-weather light, and the ash-fall ProbeAsh depth gain is clearly above the clear-weather gain; in the capture pair, the as-they-lie capture shows the ash cover on the ground (PyrelandsAshCover, SectionLayer_PyrelandsAsh) and the ash dust on the plants (PyrelandsAshDust), and a judge shown the pair unlabelled names which is which",
-   "reads": [
-    "src/RimMandrake/Pyrelands/validation.py",
-    "design/concepts/Pyrelands/scenes.json"
-   ],
-   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live ground_deep_ash   (minimal list + mandrake.rm.biomes)",
-   "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
-   "why_full_list": null,
-   "entry_exists": true,
-   "item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL",
-   "testq": {
-    "chains": [
-     "ground_deep_ash"
-    ],
-    "by": "testq_blocks.py"
-   },
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   }
-  },
   "sc_ash_watered": {
    "id": "sc_ash_watered",
    "kind": "live_minimal",
@@ -659,27 +632,6 @@
     "why": "live: this run is offline only; entry exists in validation.py"
    }
   },
-  "sc_roof_withers": {
-   "id": "sc_roof_withers",
-   "kind": "live_minimal",
-   "stage": "6",
-   "file": "src/RimMandrake/Pyrelands/validation.py",
-   "entry": "roof_withers",
-   "observes": "the roofed ember grass withers under the roof (CompWithersUnderRoof): its plants lose hit points each hour, show the RM_WithersUnderRoof inspect line and are gone within about a day (all gone by hour 36); the unroofed patch keeps every plant; no fire touched either patch at any read; log clean",
-   "reads": [
-    "src/RimMandrake/Pyrelands/validation.py",
-    "design/concepts/Pyrelands/scenes.json"
-   ],
-   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live roof_withers   (minimal list + mandrake.rm.biomes)",
-   "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
-   "why_full_list": null,
-   "entry_exists": true,
-   "item": "RIMMANDRAKE_BUILD_PYRELANDS_ROUND_SIX_PARTS_AFTER_THE_TEN",
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   }
-  },
   "sc_scorchfruit": {
    "id": "sc_scorchfruit",
    "kind": "live_minimal",
@@ -729,27 +681,6 @@
     ],
     "by": "testq_blocks.py"
    },
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   }
-  },
-  "sc_herd_thirst": {
-   "id": "sc_herd_thirst",
-   "kind": "live_minimal",
-   "stage": "6",
-   "file": "src/RimMandrake/Pyrelands/validation.py",
-   "entry": "herd_thirst",
-   "observes": "the ullai's RM_Thirst falls at most a third as fast as the muffalo's under the same water access (the patch sets about 0.05 a day); the wild herds start at different RM_Thirst levels herd by herd, near-equal within a herd; no two herds are at the water in the same hour over the seven days (a window with no arrival reads UNMEASURED, never PASS); no native dehydrates; vitals and incidents unchanged; log clean",
-   "reads": [
-    "src/RimMandrake/Pyrelands/validation.py",
-    "design/concepts/Pyrelands/scenes.json"
-   ],
-   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live herd_thirst   (minimal list + mandrake.rm.biomes)",
-   "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
-   "why_full_list": null,
-   "entry_exists": true,
-   "item": "RIMMANDRAKE_BUILD_PYRELANDS_ROUND_SIX_PARTS_AFTER_THE_TEN",
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
@@ -959,27 +890,6 @@
     "why": "live: this run is offline only; entry exists in validation.py"
    }
   },
-  "sc_fire_sense": {
-   "id": "sc_fire_sense",
-   "kind": "live_minimal",
-   "stage": "6",
-   "file": "src/RimMandrake/Pyrelands/validation.py",
-   "entry": "fire_sense",
-   "observes": "P's job turns RM_PyreStepAwayFromFire within the window and P ends on a cell at least 3 cells (PyrelandsFireSense.SafeClear) from every fire, with no Fire attached to P at any poll; H's first job is Ingest of the meal (RM_PyreEatBeforeFireDuty) and only after it a firefight job (BeatFire); log clean",
-   "reads": [
-    "src/RimMandrake/Pyrelands/validation.py",
-    "design/concepts/Pyrelands/scenes.json"
-   ],
-   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live fire_sense   (minimal list + mandrake.rm.biomes)",
-   "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
-   "why_full_list": null,
-   "entry_exists": true,
-   "item": "RIMMANDRAKE_BUILD_PYRELANDS_GAP_SCENE_PARTS_TEN_SCENES_OWED",
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   }
-  },
   "sc_firefoam_sprayer": {
    "id": "sc_firefoam_sprayer",
    "kind": "live_minimal",
@@ -1061,54 +971,6 @@
     "why": "live: this run is offline only; entry exists in validation.py"
    }
   },
-  "sc_furnace_bed": {
-   "id": "sc_furnace_bed",
-   "kind": "live_minimal",
-   "stage": "6",
-   "file": "src/RimMandrake/Pyrelands/validation.py",
-   "entry": "furnace_sleep",
-   "observes": "A's grass is alight after about two hours of sleep on average, never at once; at least one poll shows a Fire on A's own cell while A occupies it (exposure asserted), and A gains no Burn hediff over the whole fire (immune to its own heat)",
-   "reads": [
-    "src/RimMandrake/Pyrelands/validation.py",
-    "design/concepts/Pyrelands/scenes.json"
-   ],
-   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live furnace_sleep   (minimal list + mandrake.rm.biomes)",
-   "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
-   "why_full_list": null,
-   "entry_exists": true,
-   "item": null,
-   "testq": {
-    "chains": [
-     "furnace_sleep"
-    ],
-    "by": "testq_blocks.py"
-   },
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   }
-  },
-  "sc_furnace_hide_bank": {
-   "id": "sc_furnace_hide_bank",
-   "kind": "live_minimal",
-   "stage": "6",
-   "file": "src/RimMandrake/Pyrelands/validation.py",
-   "entry": "furnace_hide_bank",
-   "observes": "butchering the furnace-beast yields RM_FurnaceHide (count above 0); the RM_FurnaceHideBank stands built from it with no fuel and no power connected; room A warms over the hours and reads clearly warmer than room B at every hourly read from hour 6; log clean",
-   "reads": [
-    "src/RimMandrake/Pyrelands/validation.py",
-    "design/concepts/Pyrelands/scenes.json"
-   ],
-   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live furnace_hide_bank   (minimal list + mandrake.rm.biomes)",
-   "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
-   "why_full_list": null,
-   "entry_exists": true,
-   "item": "RIMMANDRAKE_BUILD_PYRELANDS_ROUND_SIX_PARTS_AFTER_THE_TEN",
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   }
-  },
   "sc_heat_dome": {
    "id": "sc_heat_dome",
    "kind": "live_minimal",
@@ -1182,33 +1044,6 @@
    "testq": {
     "chains": [
      "flamefang_venom"
-    ],
-    "by": "testq_blocks.py"
-   },
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   }
-  },
-  "sc_furnace_giant": {
-   "id": "sc_furnace_giant",
-   "kind": "live_minimal",
-   "stage": "6",
-   "file": "src/RimMandrake/Pyrelands/validation.py",
-   "entry": "ullai_and_giant",
-   "observes": "live body size 9 and the giant draw sizes (3.3, 5.2, 7.5 by life stage); the furnace-beast's live body size at least twice every other RM_Pyrelands roster kind's, and its adult draw size above each of theirs; the beast more than three times the ullai's 1.8",
-   "reads": [
-    "src/RimMandrake/Pyrelands/validation.py",
-    "design/concepts/Pyrelands/scenes.json"
-   ],
-   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live ullai_and_giant   (minimal list + mandrake.rm.biomes)",
-   "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
-   "why_full_list": null,
-   "entry_exists": true,
-   "item": "PYRELANDS_SCENES_BUILD_VENOM_GIANT_DUST_DOME",
-   "testq": {
-    "chains": [
-     "ullai_and_giant"
     ],
     "by": "testq_blocks.py"
    },
@@ -1376,31 +1211,6 @@
    "testq": {
     "chains": [
      "ambient_ash_drift"
-    ],
-    "by": "testq_blocks.py"
-   },
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   }
-  },
-  "P_opening_front": {
-   "id": "P_opening_front",
-   "kind": "live_minimal",
-   "stage": "6",
-   "file": "src/RimMandrake/Pyrelands/validation.py",
-   "entry": "opening_front",
-   "observes": "older north-star proof function cited by record.json proof_evidence",
-   "reads": [
-    "src/RimMandrake/Pyrelands/validation.py"
-   ],
-   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live opening_front",
-   "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
-   "why_full_list": null,
-   "entry_exists": true,
-   "testq": {
-    "chains": [
-     "opening_front"
     ],
     "by": "testq_blocks.py"
    },
@@ -1783,7 +1593,6 @@
    "supports": [
     "T_FUZZ",
     "T_BURN_ECOLOGY",
-    "P_opening_front",
     "LOOK_STAGE8"
    ],
    "held": [],
@@ -1817,7 +1626,6 @@
    "kind": "experience",
    "proves_at": "6",
    "decides": [
-    "sc_ash_ground",
     "sc_fire_dusts_ash"
    ],
    "supports": [
@@ -1978,8 +1786,6 @@
    "proves_at": "6",
    "decides": [
     "sc_furnace",
-    "sc_furnace_bed",
-    "sc_furnace_giant",
     "T_FURNACE_WARMTH"
    ],
    "supports": [
@@ -2292,7 +2098,6 @@
    "kind": "inventory",
    "proves_at": "6",
    "decides": [
-    "sc_ash_ground",
     "sc_ash_watered",
     "sc_burn_compounds"
    ],
@@ -2321,7 +2126,6 @@
    ],
    "supports": [
     "T_BURN_ECOLOGY",
-    "P_opening_front",
     "sc_fire_dusts_ash",
     "T_BURN_COST"
    ],
@@ -2395,7 +2199,6 @@
    "proves_at": "6",
    "decides": [
     "sc_furnace",
-    "sc_furnace_bed",
     "T_FURNACE_WARMTH"
    ],
    "supports": [
@@ -2438,8 +2241,7 @@
    "kind": "inventory",
    "proves_at": "6",
    "decides": [
-    "sc_ullai",
-    "sc_furnace_giant"
+    "sc_ullai"
    ],
    "supports": [
     "T_CUT_STAYS_CUT",

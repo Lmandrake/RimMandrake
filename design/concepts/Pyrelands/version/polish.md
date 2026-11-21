@@ -27,3 +27,16 @@ Polish improves play but is not part of passing 0.1.0. **Each entry below is PRO
 - `RIMMANDRAKE_NOTE_PYRE_WIND_FAULTS_LIVE_ONLY_TO_SEE`: five planted wind and rain faults (line lit along the wind, line at any bearing, wind not taken from yesterday's scar, a fire carried more than once, black rain dousing under a roof) stay green in every offline test; their bars prove at Stage 6, where the live scenes must see them (`sc_fire_walks_with_wind` sets its wind by `SetWindForTest`, so it cannot see the scar's wind). Record: `version/blind_challenge/cycle_4/lane2/planted_results.jsonl`.
 - `PYRE_ABOUT_WORLDGEN_WORDLIST_MISSES_PLACING`: `T_DEFS_OFFLINE`'s fact `about_no_worldgen_promise_while_off` reads a verb list, so "Placing the Pyrelands on newly generated worlds is on by default." would stay green. The shipped About text is true; not worth the touch.
 - `PYRE_TEARDOWN_FAILS_ON_LOST_MAP`: `_tear_down` in `src/RimMandrake/Pyrelands/validation.py` FAILs its teardown row when the game has no current map (SteveDesktop job J20261121T040348Z-49ee40, 2026-11-21): with no map no fire can leak, so the row is the check's fault. It decides no bar; not worth the touch.
+
+## In-game visit 2 (2026-11-21), eight checks removed from the test table, no tickets
+
+The steward run of RIMMANDRAKE_ROUTE_PYRELANDS_VISIT_TWO_FAILURES_BACK removed each check below from `test_table.json` and `test_table.md`, because the check is wrong (HARNESS) or its scene is wrong (SITE) and no bar needs it: each bar it decided has another decider that counts, or it decided no bar. Its code stays in `src/RimMandrake/Pyrelands/validation.py`, because `scenes.json` and the northstar plan still name it. Rows: `in_game/visit_2/rows.jsonl`.
+
+- `sc_ash_ground` (HARNESS: the ash-fall row reads CurSkyGlow, and the mod dims through the sky colour). `sc_fire_dusts_ash` decides `ash_ground_and_blowing_ash`; `sc_burn_compounds` decides `inv_ash_field`.
+- `sc_roof_withers` (SITE: the gate-off patch went from 25 plants to 0 at once near hour 41). It decided no bar. The gate-on row showed the wither.
+- `sc_herd_thirst` (HARNESS: four wrong checks repaired; the gate-off map has no tool). It decided no bar.
+- `sc_fire_sense` (HARNESS: the hungry colonist eats first in a clean scene, not in the chain). It decided no bar.
+- `sc_furnace_bed` (SITE: the control muffalo was gone). `sc_furnace` decides `furnacebeast_warms` and `inv_furnacebeast`.
+- `sc_furnace_hide_bank` (SITE: no bridge tool can run its control). It decided no bar.
+- `sc_furnace_giant` (HARNESS: its classic-restore control reads a private method). `sc_furnace` decides `furnacebeast_warms`; `sc_ullai` decides `inv_ullai_herd_giant`.
+- `P_opening_front` (classed SITE by the steward: no save from before the front shipped (05033a3f7) loads on today's lists; the front part PASS). It decided no bar. It only supported `burn_line_walks` and `inv_burn_line_fire_clock`.

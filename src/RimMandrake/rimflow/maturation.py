@@ -3792,7 +3792,12 @@ def _strange_settled(x):
         return False
     if ITEM_RE.match(str(x.get("filed") or "").strip()):
         return True
-    return len(str(x.get("explained") or "").split()) >= EXPLAIN_WORDS
+    text = x.get("explained")
+    if not text and str(x.get("status") or "").strip().lower() == "explained":
+        # the shape drivers of three mods wrote: {"status": "explained", "why"|"note": ...}; the word floor still binds
+        # (RIMMANDRAKE_ACCEPT_STRANGE_EXPLAINED_AS_STATUS_THREE_MODS_WROTE)
+        text = x.get("why") or x.get("note")
+    return len(str(text or "").split()) >= EXPLAIN_WORDS
 
 
 def _site_shown(root, r):
@@ -4037,6 +4042,13 @@ WRONG_CLASSES = ("HARNESS", "SITE")
 FIX_REVIEWS = "fix_reviews.jsonl"
 
 
+def _commit_words(v):
+    """-> the commit hashes in v (one, or several space- or comma-separated); [] when v is empty or any word is not a
+    commit hash."""
+    words = str(v or "").replace(",", " ").split()
+    return words if words and all(SHA_RE.match(w) for w in words) else []
+
+
 def repair_shown(r):
     """-> None when row r's `repair` shows the repaired check both ways: the repair commit, and a planted reading (what
     was planted, its command, verdict FAIL). The row's own verdict is the real-build reading. Else -> why not."""
@@ -4046,7 +4058,9 @@ def repair_shown(r):
     pl = rp.get("planted") if isinstance(rp.get("planted"), dict) else {}
     miss = [w for w, bad in (
         ("class HARNESS (check wrong) or SITE (scene wrong)", str(rp.get("class", "")).upper() not in WRONG_CLASSES),
-        ("repair commit", not SHA_RE.match(str(rp.get("commit") or ""))),
+        # a repair made in two commits names both (RIMMANDRAKE_ACCEPT_REPAIR_RECORD_NAMING_TWO_COMMITS_NOT_ONE); every
+        # word must still be a commit hash
+        ("repair commit", not _commit_words(rp.get("commit"))),
         ("planted reading", not pl),
         ("plant (what was planted)", pl and not str(pl.get("plant") or "").strip()),
         ("command for the planted reading", pl and not str(pl.get("command") or "").strip()),
