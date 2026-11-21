@@ -1,0 +1,1 @@
+Filtering rimflow file output through grep for 'filed for' hides a refusal: on 2026-11-20 two files were silently refused (a 10-word name; an --owner-said quote ending in his question, refused as 'asking is not authorizing') and read as done. Print the tool's last lines, or check with rimflow show.

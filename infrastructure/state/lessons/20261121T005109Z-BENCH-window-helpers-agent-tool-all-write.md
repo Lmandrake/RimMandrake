@@ -1,0 +1,1 @@
+In-window helpers (Agent tool) all write in the seat clone: on 2026-11-20 seven of them at once made ./publish of an unrelated one-line settings change refuse on another helper's half-edited judge brief (maturation_advance read UNTESTED). Send night work out as detached runs in their own clones; keep the Agent tool for short reads.

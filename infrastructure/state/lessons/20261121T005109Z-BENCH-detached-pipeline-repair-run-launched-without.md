@@ -1,0 +1,1 @@
+A detached pipeline-repair run launched without --env RM_CONTROL_MOD=none is counted as a live run on a mod and takes one max_live slot: on 2026-11-20 the second-game split run held a slot as GimmeSomeSlack, so with max_live 3 only two mods ran and FlowWorks read slots_full.
