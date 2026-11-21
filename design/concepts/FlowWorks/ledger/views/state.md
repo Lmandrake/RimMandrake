@@ -1,7 +1,7 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":37400,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=828da7f390ad7b237ac0b96c78f0d3ea45c82a1c1ee0599589f7e324cd15eaf8 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":38044,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=8593db493315d06e8f8ca341af3330b0eb186c9aecea6717f9f5d3ce741c6116 -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage in_game · 1441 events in 18 shards · reducer 1
-holder lease run-1795251607, token 25, last active 2026-11-21T09:01:22Z
+version 0.1.0 · stage in_game · 1443 events in 18 shards · reducer 1
+holder lease run-1795254018, token 26, last active 2026-11-21T09:41:31Z
 holder session 11dd44df-5878-4b03-8c62-0138bf5bb892, context 295668 of ceiling 400000
 
 ## Last checkpoint (HOLDER.run-1795244678, 2026-11-21T08:32:17Z)
@@ -493,6 +493,6 @@ spend recorded: USD 78.94, 45401435 tokens
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
 - notes: 11, never printed here (`modledger.py find --mod FlowWorks <words>`)
-- the full history: 1441 events (views/history.md; never read whole)
+- the full history: 1443 events (views/history.md; never read whole)
 
-cursor: t=2026-11-21T09:38:03Z.1795253883255372173 (modledger.py since --mod FlowWorks t=2026-11-21T09:38:03Z.1795253883255372173 prints what changed after this packet)
+cursor: t=2026-11-21T09:41:42Z.1795254102891171983 (modledger.py since --mod FlowWorks t=2026-11-21T09:41:42Z.1795254102891171983 prints what changed after this packet)
