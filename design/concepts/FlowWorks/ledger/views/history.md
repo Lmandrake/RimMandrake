@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":40099,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=d1e932803de26ada50a2177e11d83c2b033df9e7f4339546f02d3b5e46c6c585 -->
-# FlowWorks — mod ledger history (1458 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":40743,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=8154dd73f1e908d38dc4cd54f0c24837a0b6b301e4bb8683eb19d4bc83367b95 -->
+# FlowWorks — mod ledger history (1460 events, merged across shards)
 
 - 2026-11-16T07:16:23Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 55 of 57 bars met at the lock
 - 2026-11-16T07:16:23Z BACKFILL#2 decision version v0.1.0: 
@@ -1459,3 +1459,5 @@
 - 2026-11-21T11:23:05Z HOLDER.run-1795257509#9 finding.claimed_fixed finding:RIMMANDRAKE_TRACE_FLOWWORKS_HELD_WINCH_FELL_IN_THE_CONTROL v0.1.0: Control holds winches by ProofWinchHold; selftest_islands_scene red on base, green on fix; scene_islands 5 rows PASS live on game b.
 - 2026-11-21T11:26:33Z DISPATCH#119 run.end run v0.1.0: 
 - 2026-11-21T11:26:33Z DISPATCH#120 session.id session v0.1.0: 
+- 2026-11-21T11:34:11Z DISPATCH#121 lease.grant lease v0.1.0: 
+- 2026-11-21T11:34:20Z DISPATCH#122 run.start run v0.1.0: 
