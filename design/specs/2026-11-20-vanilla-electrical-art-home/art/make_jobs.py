@@ -152,6 +152,43 @@ def wave2():
     return out
 
 
+# Judge REDOs of 2026-11-20 (infrastructure/state/delegated/2026-11-20/Battery.json, WallLamp.json), both C2: the north
+# facing came out a different size or shape from its look's other facings. v2 restates the size; same master image.
+REDO = {
+    "vea_battery_v2_modern_north": ("vea_battery_v1_modern_east", "Battery",
+        "Redraw this same battery cabinet turned a quarter turn so its long axis runs UP-DOWN the image, seen from the same "
+        "camera. It is the SAME full-size enclosure: exactly as long, as wide and as tall as in this image, so its long "
+        "side spans nearly the whole height of the canvas and it is about twice as long as it is wide. Keep the vent "
+        "slots, the green status LED, the cable gland and the dark gauge window across its short width at its middle."),
+    "vea_walllamp_v2_modern_north": ("vea_walllamp_v1_modern_south", "WallLamp",
+        "Turn this same broad rectangular wall light so its flat back plate is flush against the BOTTOM edge of the image "
+        "and it faces away from the viewer: we see the top and back of the SAME broad horizontal housing, just as wide "
+        "as in this image, its frosted lens hidden underneath. Keep the materials, colours, width and scale identical."),
+    # second reader (same date): battery north's front face drawn too tall; Modern wall lamp east thinner than south
+    "vea_battery_v3_modern_north": ("vea_battery_v1_modern_east", "Battery",
+        "Redraw this same LOW battery cabinet turned a quarter turn so its long axis runs UP-DOWN the image, seen from the "
+        "same camera: we look down on its long flat top, which fills most of the picture, and see only its SHORT end "
+        "face along the bottom edge, a low strip exactly as tall as the front face in this image (about one third of "
+        "the cabinet's width). Same length, width, height, vents, green LED, cable gland and dark gauge window."),
+    "vea_walllamp_v2_modern_east": ("vea_walllamp_v1_modern_south", "WallLamp",
+        "Turn this same broad rectangular wall light so its flat back plate is flush against the LEFT edge of the image and "
+        "it projects to the right, seen from the same high camera: the SAME housing, just as thick and as deep as in "
+        "this image, its frosted lens on its underside. Keep the materials, colours and scale identical."),
+}
+
+
+def redo():
+    out = []
+    for rid, (master, kind, p) in REDO.items():
+        out.append({"id": rid, "rimflow_item_id": ITEM, "priority": 20,
+                    "prompt": p + " Real transparent background (alpha channel). " + LOOK["Modern"],
+                    "canvas_w": 512 if kind == "Battery" else 256, "canvas_h": 512 if kind == "Battery" else 256,
+                    "facings": [], "derive_from": master, "no_subject": NO_SUBJECT % ("Modern", kind),
+                    "target_texpath": "RimMandrake/GimmeSomeSlack/Styles/Modern/%s" % kind, "biome_neutral": True})
+    return out
+
+
 if __name__ == "__main__":
     import sys
-    print(json.dumps(wave2() if sys.argv[1:] == ["wave2"] else rows(), indent=1))
+    w = sys.argv[1:]
+    print(json.dumps(wave2() if w == ["wave2"] else redo() if w == ["redo"] else rows(), indent=1))

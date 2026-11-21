@@ -1,0 +1,45 @@
+{
+ "judge_model": "gpt-6",
+ "subject": "VEA_Icons",
+ "verdicts": [
+  {
+   "picture": "vea_lookicon_v1_scrapper",
+   "verdict": "KEEP",
+   "notes": "Rusty dented scrap, mismatched fasteners, copper twists and frayed tape clearly convey Scrapper. The scrap plaque remains recognisable at 32 px; transparent surroundings are clean."
+  },
+  {
+   "picture": "vea_lookicon_v1_industrial",
+   "verdict": "KEEP",
+   "notes": "Angular charcoal steel, heavy chamfers, bolts and restrained hazard stripes clearly convey Industrial. Bold panel silhouette survives at 32 px; no visible backdrop or halo."
+  },
+  {
+   "picture": "vea_lookicon_v1_modern",
+   "verdict": "KEEP",
+   "notes": "An ordinary contemporary wall outlet clearly conveys Modern through familiar hardware and materials, satisfying B6. Recognisable at 32 px, with clean transparent surroundings."
+  },
+  {
+   "picture": "vea_lookicon_v1_futuristic",
+   "verdict": "KEEP",
+   "notes": "Rounded silver-white housing, graphite recesses and a thin cyan strip clearly convey Futuristic. The main shapes and cyan accent remain distinct at 32 px; transparency appears clean."
+  },
+  {
+   "picture": "vea_poleicon_v1_linkwire",
+   "verdict": "KEEP",
+   "notes": "Two insulators joined by a wire and a prominent green plus communicate adding a span. Hardware remains recognisable at 32 px; no visible backdrop, halo or drawn black keyline."
+  },
+  {
+   "picture": "vea_poleicon_v1_unlinkwire",
+   "verdict": "KEEP",
+   "notes": "Red-handled cutters acting on a single wire span communicate removing one connection. The cutters and span remain recognisable at 32 px; transparent surroundings are clean."
+  },
+  {
+   "picture": "vea_poleicon_v1_unlinkall",
+   "verdict": "KEEP",
+   "notes": "A pole with several disconnected wire ends and a prominent prohibition badge communicates removing all spans. Distinct from the single-span cutter icon at 32 px; no visible alpha flaw."
+  }
+ ],
+ "proposals": [],
+ "brief": "design/RimMandrake/art_judge_brief.md@0d4d48310c",
+ "item": "RIMMANDRAKE_DESIGN_HOME_FOR_VANILLA_ELECTRICAL_ART",
+ "route": "gpt_consult.py (GPT via Codex) on the judge sheet; judge did not make the art (Codex image tool made it); prompt design/specs/2026-11-20-vanilla-electrical-art-home/art/judge_prompt.md"
+}

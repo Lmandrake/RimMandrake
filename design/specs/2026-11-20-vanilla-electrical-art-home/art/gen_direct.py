@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """gen_direct.py — render make_jobs.py's rows with codex_image.py on the SHARED Codex home, one at a time.
 
-    python3 design/specs/2026-11-20-vanilla-electrical-art-home/art/gen_direct.py wave1|wave2 [--only SUBSTR ...]
+    python3 design/specs/2026-11-20-vanilla-electrical-art-home/art/gen_direct.py wave1|wave2|redo [--only SUBSTR ...]
 
 Why not the artpipe daemon: on 2026-11-20 at 15:53 PST every one of this item's 15 queued jobs failed in ~3 s
 (worker homes ~/.codex_workers/artpipe/w0..w4 hold an auth.json last refreshed 2026-11-10 whose refresh token is
@@ -38,7 +38,7 @@ def prompt_of(row):
 def main():
     wave = sys.argv[1]
     only = sys.argv[sys.argv.index("--only") + 1:] if "--only" in sys.argv else []
-    rows = make_jobs.wave2() if wave == "wave2" else make_jobs.rows()
+    rows = {"wave2": make_jobs.wave2, "redo": make_jobs.redo}.get(wave, make_jobs.rows)()
     RAW.mkdir(parents=True, exist_ok=True)
     bad = 0
     for r in rows:

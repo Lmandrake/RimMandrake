@@ -1,0 +1,191 @@
+{
+ "vea_battery_v1_scrapper_east": {
+  "sha": "5e83d9d23b7f30feeaa99bc60a86358e5af45752694f647ffe5babb97cb6f408",
+  "conformed": "Transient/vea_20261120/conf/MachineLooks/Scrapper/Battery_east.png",
+  "planned_textures": [
+   "MachineLooks/Scrapper/Battery_east.png"
+  ]
+ },
+ "vea_battery_v1_scrapper_north": {
+  "sha": "99f88c5a7bc5542469c4359c38474bb083a47358b0ecb3e60191fb366cae3312",
+  "conformed": "Transient/vea_20261120/conf/MachineLooks/Scrapper/Battery_north.png",
+  "planned_textures": [
+   "MachineLooks/Scrapper/Battery_north.png",
+   "MachineLooks/Scrapper/Battery_south.png"
+  ]
+ },
+ "vea_walllamp_v1_scrapper_east": {
+  "sha": "4f189c16429762d8adb76787a343f0f6627bc6c4b75b783cbab5640edead0802",
+  "conformed": "Transient/vea_20261120/conf/src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Scrapper/WallLamp_east.png",
+  "planned_textures": [
+   "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Scrapper/WallLamp_east.png"
+  ]
+ },
+ "vea_walllamp_v1_scrapper_north": {
+  "sha": "2c3cacfa706e81a5c13c6c96693b88f390bcd15f3222e60bda21cbff5e33b010",
+  "conformed": "Transient/vea_20261120/conf/src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Scrapper/WallLamp_north.png",
+  "planned_textures": [
+   "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Scrapper/WallLamp_north.png"
+  ]
+ },
+ "vea_walllamp_v1_scrapper_south": {
+  "sha": "bc9cd66f84c85f9227146a9669393f8342dc1467dcbf835ee3ea146d0681890b",
+  "conformed": "Transient/vea_20261120/conf/src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Scrapper/WallLamp_south.png",
+  "planned_textures": [
+   "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Scrapper/WallLamp_south.png"
+  ]
+ },
+ "vea_lookicon_v1_scrapper": {
+  "sha": "5a1ea13a670ce18ba93f17583ae89ffa7d87390cc0fa6f6c7900fe936908a007",
+  "conformed": "Transient/vea_20261120/conf/src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/UI/Looks/Scrapper.png",
+  "planned_textures": [
+   "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/UI/Looks/Scrapper.png",
+   "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/UI/Looks/Scrapper.png"
+  ]
+ },
+ "vea_battery_v1_industrial_east": {
+  "sha": "4c2fdad52e7a39690e66c454d90a5b5f1a92627ee938be3756d63a9002a50fa9",
+  "conformed": "Transient/vea_20261120/conf/MachineLooks/Industrial/Battery_east.png",
+  "planned_textures": [
+   "MachineLooks/Industrial/Battery_east.png"
+  ]
+ },
+ "vea_battery_v1_industrial_north": {
+  "sha": "293eeb6a8df1294e43b5c0bb68d1ea56107c10f50d98d2b44216d12f7117a18a",
+  "conformed": "Transient/vea_20261120/conf/MachineLooks/Industrial/Battery_north.png",
+  "planned_textures": [
+   "MachineLooks/Industrial/Battery_north.png",
+   "MachineLooks/Industrial/Battery_south.png"
+  ]
+ },
+ "vea_walllamp_v1_industrial_east": {
+  "sha": "7dbee957e179e20b2fdbcffe2da845685a2e2d49ec1d22ffecc7117761b5fbc5",
+  "conformed": "Transient/vea_20261120/conf/src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Industrial/WallLamp_east.png",
+  "planned_textures": [
+   "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Industrial/WallLamp_east.png"
+  ]
+ },
+ "vea_walllamp_v1_industrial_north": {
+  "sha": "fa249dfec8e91cf28eaa03e483b9f7cdd2dc17208de915cd35205e12638173d9",
+  "conformed": "Transient/vea_20261120/conf/src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Industrial/WallLamp_north.png",
+  "planned_textures": [
+   "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Industrial/WallLamp_north.png"
+  ]
+ },
+ "vea_walllamp_v1_industrial_south": {
+  "sha": "3ae8a0b1d30e35c2c889e6f9f21232c0218303a4d1270825198697e08545babe",
+  "conformed": "Transient/vea_20261120/conf/src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Industrial/WallLamp_south.png",
+  "planned_textures": [
+   "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Industrial/WallLamp_south.png"
+  ]
+ },
+ "vea_lookicon_v1_industrial": {
+  "sha": "89aa6a69326b45c504ef3a0e8a5d20879f9b3df893fd2734da7f1f05c120da02",
+  "conformed": "Transient/vea_20261120/conf/src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/UI/Looks/Industrial.png",
+  "planned_textures": [
+   "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/UI/Looks/Industrial.png",
+   "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/UI/Looks/Industrial.png"
+  ]
+ },
+ "vea_battery_v1_modern_east": {
+  "sha": "27fc4e01430e976ae8a8227268664825643fa0cbb9df574d87eb1c1db6d2f5dc",
+  "conformed": "Transient/vea_20261120/conf/MachineLooks/Modern/Battery_east.png",
+  "planned_textures": [
+   "MachineLooks/Modern/Battery_east.png"
+  ]
+ },
+ "vea_walllamp_v2_modern_east": {
+  "sha": "ba68226e0e8aab82634b65e783f065dac0b7704cf402120de2bd727b68d73eae",
+  "conformed": "Transient/vea_20261120/conf/src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Modern/WallLamp_east.png",
+  "planned_textures": [
+   "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Modern/WallLamp_east.png"
+  ]
+ },
+ "vea_walllamp_v2_modern_north": {
+  "sha": "2fe5febd8e8c5339aaf664b81b0cb619dc09e9d8f96a931e85e21b058c547b23",
+  "conformed": "Transient/vea_20261120/conf/src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Modern/WallLamp_north.png",
+  "planned_textures": [
+   "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Modern/WallLamp_north.png"
+  ]
+ },
+ "vea_walllamp_v1_modern_south": {
+  "sha": "6f9b46c482de4e10e3b010355936311e98f0909f0b2b7ffadbee20db3e347816",
+  "conformed": "Transient/vea_20261120/conf/src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Modern/WallLamp_south.png",
+  "planned_textures": [
+   "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Modern/WallLamp_south.png"
+  ]
+ },
+ "vea_lookicon_v1_modern": {
+  "sha": "42fd8952fe2955b06fabd9866f43246e24f74f9cc5ce4cc941642f59f6bd163d",
+  "conformed": "Transient/vea_20261120/conf/src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/UI/Looks/Modern.png",
+  "planned_textures": [
+   "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/UI/Looks/Modern.png",
+   "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/UI/Looks/Modern.png"
+  ]
+ },
+ "vea_battery_v1_futuristic_east": {
+  "sha": "23eb88a4aba903936c59f8248c20c79af257c2b3d126627b095dff7c44eb6da1",
+  "conformed": "Transient/vea_20261120/conf/MachineLooks/Futuristic/Battery_east.png",
+  "planned_textures": [
+   "MachineLooks/Futuristic/Battery_east.png"
+  ]
+ },
+ "vea_battery_v1_futuristic_north": {
+  "sha": "700ef80546e91ba4708334c0f2326fea084dd006dc07db92e0d28294539a5738",
+  "conformed": "Transient/vea_20261120/conf/MachineLooks/Futuristic/Battery_north.png",
+  "planned_textures": [
+   "MachineLooks/Futuristic/Battery_north.png",
+   "MachineLooks/Futuristic/Battery_south.png"
+  ]
+ },
+ "vea_walllamp_v1_futuristic_east": {
+  "sha": "c04677cdfc6340034133098e2b90a333da7cf3fe573d1b34a5cab3c092e41bae",
+  "conformed": "Transient/vea_20261120/conf/src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Futuristic/WallLamp_east.png",
+  "planned_textures": [
+   "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Futuristic/WallLamp_east.png"
+  ]
+ },
+ "vea_walllamp_v1_futuristic_north": {
+  "sha": "22ca7073777021ee80b1ff8153c536854c5b038459066f4b25616f1a53febd08",
+  "conformed": "Transient/vea_20261120/conf/src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Futuristic/WallLamp_north.png",
+  "planned_textures": [
+   "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Futuristic/WallLamp_north.png"
+  ]
+ },
+ "vea_walllamp_v1_futuristic_south": {
+  "sha": "6802ff0d6e7c8e1ff1f31df89254e34802f0af5365caeb8a6c4d5872b3fb0261",
+  "conformed": "Transient/vea_20261120/conf/src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Futuristic/WallLamp_south.png",
+  "planned_textures": [
+   "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Futuristic/WallLamp_south.png"
+  ]
+ },
+ "vea_lookicon_v1_futuristic": {
+  "sha": "9b6e9ea89bf6b0663cc9f210958188508eb05f65b428fb8e65d42f8fd0182537",
+  "conformed": "Transient/vea_20261120/conf/src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/UI/Looks/Futuristic.png",
+  "planned_textures": [
+   "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/UI/Looks/Futuristic.png",
+   "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/UI/Looks/Futuristic.png"
+  ]
+ },
+ "vea_poleicon_v1_linkwire": {
+  "sha": "b8184421f71c9670d9effa62355d74b70a94045738b6c73f9a30b32c310900da",
+  "conformed": "Transient/vea_20261120/conf/src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/UI/Commands/LinkWire.png",
+  "planned_textures": [
+   "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/UI/Commands/LinkWire.png"
+  ]
+ },
+ "vea_poleicon_v1_unlinkwire": {
+  "sha": "f5d9e3102d27ea0dfa9e674f69dccae5721fc109ec8e8ddde9256ec6ab46f47d",
+  "conformed": "Transient/vea_20261120/conf/src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/UI/Commands/UnlinkWire.png",
+  "planned_textures": [
+   "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/UI/Commands/UnlinkWire.png"
+  ]
+ },
+ "vea_poleicon_v1_unlinkall": {
+  "sha": "be84850d3f097733deeb1046fd393901a5525fb83f9a30f3dc1cfa6bf97148c7",
+  "conformed": "Transient/vea_20261120/conf/src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/UI/Commands/UnlinkAll.png",
+  "planned_textures": [
+   "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/UI/Commands/UnlinkAll.png"
+  ]
+ }
+}

@@ -1,0 +1,177 @@
+{
+ "judge_model": "gpt-6",
+ "brief": "design/RimMandrake/art_judge_brief.md@0d4d48310c",
+ "subject": "Battery",
+ "item": "RIMMANDRAKE_DESIGN_HOME_FOR_VANILLA_ELECTRICAL_ART",
+ "route": "gpt_consult.py (GPT via Codex) on a judge sheet with a vanilla colonist at the same 128 px per cell; the judge did not make the art. Round 1 (all pictures; an earlier round without the scale panel returned UNSURE on every picture and decided nothing), rounds 2-3 a fresh read of the Modern set after each redraw. Stopped after round 3: a picture still REDO is not installed.",
+ "verdicts": [
+  {
+   "picture": "vea_battery_v1_scrapper_east",
+   "verdict": "KEEP",
+   "notes": "Horizontal battery bank reads at play zoom. Rusted casing, mismatched cells, straps and exposed wiring establish Scrapper. Visible casing depth, footprint and transparent edges pass; no drawn black keyline.",
+   "round": 1
+  },
+  {
+   "picture": "vea_battery_v1_scrapper_north",
+   "verdict": "KEEP",
+   "notes": "Vertical bank retains the east facing's salvaged cells, rusty tray, palette and apparent size. Raised casing remains readable beside the colonist and at play zoom. No visible alpha defect.",
+   "round": 1
+  },
+  {
+   "picture": "vea_battery_v1_industrial_east",
+   "verdict": "KEEP",
+   "notes": "Horizontal storage unit has readable terminals, heavy chamfered steel, ribs and restrained hazard markings. Industrial look is recognisable at play zoom. Casing depth, scale and transparent silhouette pass.",
+   "round": 1
+  },
+  {
+   "picture": "vea_battery_v1_industrial_north",
+   "verdict": "KEEP",
+   "notes": "Vertical unit preserves the paired panels, terminals, ribs, material palette and substantial size of its east partner. Recognisable at play zoom, with visible casing thickness and clean transparent edges.",
+   "round": 1
+  },
+  {
+   "picture": "vea_battery_v1_modern_east",
+   "verdict": "KEEP",
+   "notes": "Recognisable Modern utility hardware with a horizontal long axis, plausible building perspective, clean transparency and a readable silhouette at play zoom.",
+   "round": 3
+  },
+  {
+   "picture": "vea_battery_v1_modern_north",
+   "verdict": "REDO",
+   "notes": "Modern materials, vertical orientation and clean transparency pass. The facing pair fails the same-object size requirement.",
+   "violated": "C2",
+   "quote": "Facings agree on size, proportions and palette; one facing looking huge or small is REDO.",
+   "seen": "At the same displayed cell scale, the north enclosure is conspicuously narrower and smaller than its east partner: its long silhouette is approximately 110 sheet pixels versus approximately 180 for east. Its narrow top and tall front also change the enclosure's proportions, making it read as a smaller cabinet.",
+   "redo_brief": "Redraw north as the same full-size enclosure shown in east, preserving its physical length, width, height and hardware while projecting the long axis up-down with the specified building camera.",
+   "round": 1
+  },
+  {
+   "picture": "vea_battery_v1_futuristic_east",
+   "verdict": "KEEP",
+   "notes": "Horizontal silver-white body, graphite end caps and thin cyan strips clearly establish Futuristic. Battery silhouette and central inset survive play zoom. Rounded housing has visible depth, clean transparency and no drawn black keyline.",
+   "round": 1
+  },
+  {
+   "picture": "vea_battery_v1_futuristic_north",
+   "verdict": "KEEP",
+   "notes": "Vertical housing retains the east partner's rounded alloy body, graphite caps, cyan strips and central inset at a comparable apparent size. Readable beside the colonist and at play zoom; no visible alpha or orientation defect.",
+   "round": 1
+  },
+  {
+   "picture": "vea_battery_v2_modern_north",
+   "verdict": "REDO",
+   "notes": "Modern materials, vertical orientation, central gauge window and play-zoom readability pass. The enclosure height disagrees visibly with east.",
+   "violated": "C2",
+   "quote": "Facings agree on size, proportions and palette; one facing looking huge or small is REDO.",
+   "seen": "The north enclosure\u2019s vented vertical end wall is approximately 110 pixels tall; east\u2019s vertical wall is approximately 65 pixels tall at the same shipping scale. North therefore depicts a substantially taller enclosure, beyond the expected change from turning its long axis.",
+   "redo_brief": "Redraw north as the same enclosure rotated onto its north axis, matching east\u2019s approximately 65-pixel vertical wall height and preserving its physical dimensions, modern materials and central gauge window.",
+   "round": 2
+  },
+  {
+   "picture": "vea_battery_v3_modern_north",
+   "verdict": "REDO",
+   "notes": "Modern materials, orientation, transparency and play-zoom readability pass. C2 is applicable and attainable: rotating this casing should preserve its physical height and proportions.",
+   "violated": "C2",
+   "quote": "Facings agree on size, proportions and palette; one facing looking huge or small is REDO.",
+   "seen": "At the same scale, north has a visibly shallower casing: its front wall is approximately 35\u201340 pixels tall versus 60\u201365 pixels in east. Its top is also substantially more exposed, making the battery change proportions between facings.",
+   "redo_brief": "Render the east battery turned lengthwise north, preserving its casing height, physical dimensions and Modern materials under the same orthographic building camera.",
+   "round": 3
+  }
+ ],
+ "rounds": [
+  {
+   "judge_model": "gpt-6",
+   "subject": "Battery",
+   "verdicts": [
+    {
+     "picture": "vea_battery_v1_scrapper_east",
+     "verdict": "KEEP",
+     "notes": "Horizontal battery bank reads at play zoom. Rusted casing, mismatched cells, straps and exposed wiring establish Scrapper. Visible casing depth, footprint and transparent edges pass; no drawn black keyline."
+    },
+    {
+     "picture": "vea_battery_v1_scrapper_north",
+     "verdict": "KEEP",
+     "notes": "Vertical bank retains the east facing's salvaged cells, rusty tray, palette and apparent size. Raised casing remains readable beside the colonist and at play zoom. No visible alpha defect."
+    },
+    {
+     "picture": "vea_battery_v1_industrial_east",
+     "verdict": "KEEP",
+     "notes": "Horizontal storage unit has readable terminals, heavy chamfered steel, ribs and restrained hazard markings. Industrial look is recognisable at play zoom. Casing depth, scale and transparent silhouette pass."
+    },
+    {
+     "picture": "vea_battery_v1_industrial_north",
+     "verdict": "KEEP",
+     "notes": "Vertical unit preserves the paired panels, terminals, ribs, material palette and substantial size of its east partner. Recognisable at play zoom, with visible casing thickness and clean transparent edges."
+    },
+    {
+     "picture": "vea_battery_v1_modern_east",
+     "verdict": "KEEP",
+     "notes": "Light grey metal enclosure, vents, indicator and connection hardware read as present-day utility equipment. Horizontal orientation, visible top and front, true-scale presence and play-zoom silhouette pass. No red tier marking or visible alpha defect."
+    },
+    {
+     "picture": "vea_battery_v1_modern_north",
+     "verdict": "REDO",
+     "notes": "Modern materials, vertical orientation and clean transparency pass. The facing pair fails the same-object size requirement.",
+     "violated": "C2",
+     "quote": "Facings agree on size, proportions and palette; one facing looking huge or small is REDO.",
+     "seen": "At the same displayed cell scale, the north enclosure is conspicuously narrower and smaller than its east partner: its long silhouette is approximately 110 sheet pixels versus approximately 180 for east. Its narrow top and tall front also change the enclosure's proportions, making it read as a smaller cabinet.",
+     "redo_brief": "Redraw north as the same full-size enclosure shown in east, preserving its physical length, width, height and hardware while projecting the long axis up-down with the specified building camera."
+    },
+    {
+     "picture": "vea_battery_v1_futuristic_east",
+     "verdict": "KEEP",
+     "notes": "Horizontal silver-white body, graphite end caps and thin cyan strips clearly establish Futuristic. Battery silhouette and central inset survive play zoom. Rounded housing has visible depth, clean transparency and no drawn black keyline."
+    },
+    {
+     "picture": "vea_battery_v1_futuristic_north",
+     "verdict": "KEEP",
+     "notes": "Vertical housing retains the east partner's rounded alloy body, graphite caps, cyan strips and central inset at a comparable apparent size. Readable beside the colonist and at play zoom; no visible alpha or orientation defect."
+    }
+   ],
+   "proposals": []
+  },
+  {
+   "judge_model": "gpt-6",
+   "subject": "Battery",
+   "verdicts": [
+    {
+     "picture": "vea_battery_v1_modern_east",
+     "verdict": "KEEP",
+     "notes": "Recognisable present-day metal battery enclosure, correct horizontal orientation, flat central gauge window, readable play-zoom silhouette, and no visible backdrop or heavy outline. The shallow top and vertical wall support the building camera."
+    },
+    {
+     "picture": "vea_battery_v2_modern_north",
+     "verdict": "REDO",
+     "notes": "Modern materials, vertical orientation, central gauge window and play-zoom readability pass. The enclosure height disagrees visibly with east.",
+     "violated": "C2",
+     "quote": "Facings agree on size, proportions and palette; one facing looking huge or small is REDO.",
+     "seen": "The north enclosure\u2019s vented vertical end wall is approximately 110 pixels tall; east\u2019s vertical wall is approximately 65 pixels tall at the same shipping scale. North therefore depicts a substantially taller enclosure, beyond the expected change from turning its long axis.",
+     "redo_brief": "Redraw north as the same enclosure rotated onto its north axis, matching east\u2019s approximately 65-pixel vertical wall height and preserving its physical dimensions, modern materials and central gauge window."
+    }
+   ],
+   "proposals": []
+  },
+  {
+   "judge_model": "gpt-6",
+   "subject": "Battery",
+   "verdicts": [
+    {
+     "picture": "vea_battery_v1_modern_east",
+     "verdict": "KEEP",
+     "notes": "Recognisable Modern utility hardware with a horizontal long axis, plausible building perspective, clean transparency and a readable silhouette at play zoom."
+    },
+    {
+     "picture": "vea_battery_v3_modern_north",
+     "verdict": "REDO",
+     "notes": "Modern materials, orientation, transparency and play-zoom readability pass. C2 is applicable and attainable: rotating this casing should preserve its physical height and proportions.",
+     "violated": "C2",
+     "quote": "Facings agree on size, proportions and palette; one facing looking huge or small is REDO.",
+     "seen": "At the same scale, north has a visibly shallower casing: its front wall is approximately 35\u201340 pixels tall versus 60\u201365 pixels in east. Its top is also substantially more exposed, making the battery change proportions between facings.",
+     "redo_brief": "Render the east battery turned lengthwise north, preserving its casing height, physical dimensions and Modern materials under the same orthographic building camera."
+    }
+   ],
+   "proposals": []
+  }
+ ],
+ "proposals": []
+}

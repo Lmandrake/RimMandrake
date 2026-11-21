@@ -5,7 +5,7 @@
     python3 design/specs/2026-11-20-vanilla-electrical-art-home/art/install_vea_art.py judgesheet <out.png> [kind]
     python3 design/specs/2026-11-20-vanilla-electrical-art-home/art/install_vea_art.py install --verdicts V.json [--dry]
 
-conform: raw renders (gen_direct.py) -> <scratch>/vea_20261120/conf/<dest rel path>, at the shipping size:
+conform: raw renders (gen_direct.py) -> Transient/vea_20261120/conf/<dest rel path> (in the clone; art.py needs that), at the shipping size:
   Battery    north/south 256x384, east 384x256 (drawSize (2,3) x 128 px per cell). The subject is fitted, aspect kept,
              into vanilla's own alpha box scaled to our canvas (Battery_north x 0.24-0.76, y 0.16-0.88; Battery_east
              x 0.16-0.84, y 0.24-0.82), so it covers the same ground as vanilla. South = the north picture (vanilla
@@ -19,9 +19,8 @@ Downscale: premultiplied alpha (PIL "RGBa") with LANCZOS, then alpha < 8 cleared
 Look icons: ONE picture per look, shipped by every mod that offers the looks, each at its own texPath root
 (RimMandrake/<Mod>/UI/Looks/<Look>, design/NAMING_SCHEME_PLAN.md: texPaths move with their mod) with the same bytes.
 
-install: only pictures whose verdict in V.json is KEEP, through `art.py install` (the art ledger) with
-`--reason script:<this file>`. The battery is NOT installed into any mod: its home, "Machine Looks", does not exist
-yet (design.md); its pictures go into the art store with `art.py put` and wait there.
+install: only pictures whose verdict is KEEP go into the art store (`art.py put`); see cmd_install for why none is
+written into a mod's Textures folder yet. put_record.json (this folder) maps each to its sha and planned texture paths.
 """
 import json, os, subprocess, sys
 from pathlib import Path
@@ -35,7 +34,8 @@ sys.path.insert(0, str(REPO / "src" / "RimMandrake" / "Utils"))
 from rmpaths import rm_str  # noqa: E402
 
 ROOT = Path(rm_str("scratch", "vea_20261120"))
-RAW, CONF = ROOT / "raw", ROOT / "conf"
+RAW = ROOT / "raw"
+CONF = REPO / "Transient" / "vea_20261120" / "conf"   # inside the clone: art.py put/install take only files in the clone
 LOOKS = ("Scrapper", "Industrial", "Modern", "Futuristic")
 ART = REPO / "src" / "RimMandrake" / "Utils" / "art" / "art.py"
 REASON = "script:design/specs/2026-11-20-vanilla-electrical-art-home/art/install_vea_art.py"
@@ -93,10 +93,10 @@ def plan():
     for L in LOOKS:
         l = L.lower()
         P.append(("vea_battery_v1_%s_east" % l, "battery", "east", ["MachineLooks/%s/Battery_east.png" % L]))
-        P.append(("vea_battery_v1_%s_north" % l, "battery", "north",
+        P.append(("vea_battery_v%d_%s_north" % (3 if L == "Modern" else 1, l), "battery", "north",
                   ["MachineLooks/%s/Battery_north.png" % L, "MachineLooks/%s/Battery_south.png" % L]))
         for f in ("east", "north", "south"):
-            P.append(("vea_walllamp_v1_%s_%s" % (l, f), "walllamp", f,
+            P.append(("vea_walllamp_v%d_%s_%s" % (2 if (L == "Modern" and f != "south") else 1, l, f), "walllamp", f,
                       ["%s/Textures/RimMandrake/GimmeSomeSlack/Styles/%s/WallLamp_%s.png" % (GSS, L, f)]))
         P.append(("vea_lookicon_v1_%s" % l, "icon", None,
                   ["%s/Textures/RimMandrake/%s/UI/Looks/%s.png" % (m, m.rsplit("/", 1)[1], L) for m in (GSS, FW)]))
@@ -148,11 +148,21 @@ def cmd_judgesheet(out, kind=None):
         return
     pad = 12
     tiles = []
+    human = None
+    if kind != "icon":   # D1: a vanilla colonist at the same 128 px per cell (scale_panel.human_sprite, the sheet's own)
+        sys.path.insert(0, str(REPO / "src" / "RimMandrake" / "Utils" / "art"))
+        import scale_panel
+        human = scale_panel.human_sprite(128)[0]
     for rid, im in rows:
         small = resize(im, max(1, im.width // 4), max(1, im.height // 4))  # 128 -> 32 px per cell
-        t = checker(im.width + small.width + pad * 3, max(im.height, small.height) + pad * 2)
-        t.alpha_composite(im, (pad, pad))
-        t.alpha_composite(small, (im.width + pad * 2, pad))
+        hw = human.width + pad if human else 0
+        hh = human.height if human else 0
+        t = checker(im.width + hw + small.width + pad * 3, max(im.height, small.height, hh) + pad * 2)
+        base = pad + max(im.height, hh)   # both stand on one ground line
+        t.alpha_composite(im, (pad, base - im.height))
+        if human:
+            t.alpha_composite(human, (pad + im.width + pad // 2, base - human.height))
+        t.alpha_composite(small, (im.width + hw + pad * 2, pad))
         tiles.append((rid, t))
     W = max(t.width for _, t in tiles)
     H = sum(t.height + 18 for _, t in tiles)
@@ -169,31 +179,100 @@ def cmd_judgesheet(out, kind=None):
 
 
 def cmd_install(verdicts, dry):
-    V = json.load(open(verdicts))
-    keep = {v["picture"] for v in V["verdicts"] if v["verdict"] == "KEEP"}
+    """KEEP pictures go into the art store (`art.py put`), each with its planned texture path recorded in
+    commissions.md. Nothing is written into a mod's Textures folder by this item: a new PNG under GSS's Textures fails
+    selftest_gss_stub_art_census.py until a row is added to Source/Core/StubJoinAudit.cs, i.e. a GSS code change and
+    DLL rebuild, which belongs to the GSS version that wires the art (icons: 0.1.1; wall lamp: 0.2.0), and the battery's
+    mod does not exist yet."""
+    keep = {v["picture"] for f in verdicts for v in json.load(open(f))["verdicts"] if v["verdict"] == "KEEP"}
+    out = {}
     for rid, kind, facing, dests in plan():
         if rid not in keep:
-            print("NOT INSTALLED %s (verdict not KEEP)" % rid)
+            print("NOT PUT %s (verdict not KEEP)" % rid)
             continue
-        for d in dests:
-            src = conf_path(d)
-            if d.startswith("MachineLooks/"):
-                cmd = [sys.executable, str(ART), "put", str(src)]
-            else:
-                rel = d.split("/Textures/", 1)[1]
-                mod = d.split("/Textures/", 1)[0]
-                dst = REPO / d
-                dst.parent.mkdir(parents=True, exist_ok=True)
-                cmd = [sys.executable, str(ART), "install", mod, "Textures/" + rel, "--file", str(src),
-                       "--reason", REASON, "--why", "delegated: art %s" % verdicts]
-                if dry:
-                    cmd.append("--dry-run")
-            if dry and cmd[2] == "put":
-                print("DRY put", src)
-                continue
-            p = subprocess.run(cmd, capture_output=True, text=True, cwd=str(REPO))
-            print(("OK " if p.returncode == 0 else "FAIL %d " % p.returncode) + d + " " +
-                  (p.stdout + p.stderr).strip().replace("\n", " | ")[-240:])
+        src = conf_path(dests[0])
+        if dry:
+            print("DRY put", src)
+            continue
+        p = subprocess.run([sys.executable, str(ART), "put", str(src)], capture_output=True, text=True, cwd=str(REPO))
+        sha = (p.stdout.strip().split() or ["?"])[0] if p.returncode == 0 else None
+        out[rid] = {"sha": sha, "conformed": str(src.relative_to(REPO)), "planned_textures": dests}
+        print(("OK %s %s" % (rid, sha)) if sha else ("FAIL %s %s" % (rid, (p.stdout + p.stderr)[-200:])))
+    if not dry:
+        json.dump(out, open(HERE / "put_record.json", "w"), indent=1)
+
+
+VAN = Path("/mnt/d/Luke/dev/RimMandrake/observed/inventory/bundle_textures/ludeon.rimworld.core")
+
+
+def cmd_manifest(out, verdicts=None):
+    """The --textures manifest for ONE review sheet (art_sheet.py): a row per look for the wall lamp (installed in GSS),
+    the battery (installed nowhere yet: its pictures are read-only reference_textures at true scale) and the icons.
+    Only pictures the judge kept are shown when a verdicts file is given."""
+    keep = None
+    if verdicts:
+        keep = {v["picture"] for f in verdicts for v in json.load(open(f))["verdicts"] if v["verdict"] == "KEEP"}
+    rows = []
+    ui = {"drawSize": [1, 1], "footprint": [1, 1],
+          "source": "UI command icon, drawn 75 px square in the command bar at UI scale 1; it has no world size, the "
+                    "1-cell panel only shows it beside a person for comparison"}
+    def ref(dest, ds, fp, src):
+        return {"path": str(conf_path(dest).relative_to(REPO)), "size": {"drawSize": ds, "footprint": fp, "source": src}}
+
+    for L in LOOKS:
+        l = L.lower()
+        ids = ["vea_walllamp_v%d_%s_%s" % (2 if (L == "Modern" and f != "south") else 1, l, f) for f in ("east", "north", "south")]
+        if keep is None or all(i in keep for i in ids):
+            refs = [ref("%s/Textures/RimMandrake/GimmeSomeSlack/Styles/%s/WallLamp_%s.png" % (GSS, L, f), [1, 1], [1, 1],
+                        "Core WallLamp drawSize 1x1 on a 1x1 footprint; %s facing" % f) for f in ("north", "east", "south")]
+            rows.append({"key": "VEA_WallLamp_%s" % L, "part": "WallLamp", "look": L, "variant": "", "section": "GSS",
+                         "label": "wall lamp - %s look (new; the IN GAME column is vanilla's)" % L,
+                         "resources": ["Things/Building/Furniture/WallLamp/WallLamp"], "former": [], "reopen": True,
+                         "standin": {"res": "Things/Building/Furniture/WallLamp/WallLamp", "label": "vanilla wall lamp (Core)",
+                                     "source": "Core resources.assets, extracted: " + str(VAN),
+                                     "faces": {f: str(VAN / ("WallLamp_%s.png" % f)) for f in ("north", "east", "south")}},
+                         "reference_textures": refs,
+                         "size": {"drawSize": [1, 1], "footprint": [1, 1],
+                                  "source": "Core WallLamp: graphicData drawSize default 1x1 on a 1x1 footprint"}})
+        bids = ["vea_battery_v1_%s_east" % l, "vea_battery_v%d_%s_north" % (3 if L == "Modern" else 1, l)]
+        if keep is None or all(i in keep for i in bids):
+            refs = [ref("MachineLooks/%s/Battery_%s.png" % (L, f), [3, 2] if f == "east" else [2, 3],
+                        [2, 1] if f == "east" else [1, 2],
+                        "Core Battery drawSize (2,3) on a 1x2 footprint (Buildings_Power.xml); %s facing" % f)
+                    for f in ("north", "east", "south")]
+            rows.append({"key": "VEA_Battery_%s" % L, "part": "Battery", "look": L, "variant": "", "section": "MachineLooks",
+                         "label": "battery - %s look (new, for the future Machine Looks mod; the IN GAME column is vanilla's)" % L,
+                         "resources": ["Things/Building/Power/Battery"], "former": [], "reopen": True,
+                         "standin": {"res": "Things/Building/Power/Battery", "label": "vanilla battery (Core)",
+                                     "source": "Core resources.assets, extracted: " + str(VAN),
+                                     "faces": {"north": str(VAN / "Battery_north.png"), "east": str(VAN / "Battery_east.png"),
+                                               "south": str(VAN / "Battery_north.png")}},
+                         "reference_textures": refs,
+                         "size": {"drawSize": [2, 3], "footprint": [1, 2], "source": "Core Battery drawSize (2,3), footprint 1x2"}})
+        if keep is None or ("vea_lookicon_v1_%s" % l) in keep:
+            rows.append({"key": "VEA_LookIcon_%s" % L, "part": "LookIcon", "look": L, "variant": "", "section": "Icons",
+                         "label": "style-menu icon for the %s look (one picture, shipped by Gimme Some Slack and FlowWorks)" % L,
+                         "resources": [], "former": [], "reopen": True,
+                         "reference_textures": [ref("%s/Textures/RimMandrake/GimmeSomeSlack/UI/Looks/%s.png" % (GSS, L),
+                                                    [1, 1], [1, 1], ui["source"])], "size": ui})
+    for k, n in POLE.items():
+        if keep is None or ("vea_poleicon_v1_%s" % k) in keep:
+            rows.append({"key": "VEA_PoleIcon_%s" % n, "part": "PoleIcon", "look": "", "variant": n, "section": "Icons",
+                         "label": "power pole button icon: %s (today a red X)" % {"LinkWire": "Link wire", "UnlinkWire": "Unlink wire",
+                                                                                "UnlinkAll": "Unlink all"}[n],
+                         "resources": [], "former": [], "reopen": True,
+                         "reference_textures": [ref("%s/Textures/RimMandrake/GimmeSomeSlack/UI/Commands/%s.png" % (GSS, n),
+                                                    [1, 1], [1, 1], ui["source"])], "size": ui})
+    lead = ("<div style='border:2px solid #c9a227;padding:10px 14px;margin:0 0 12px;font-size:15px;line-height:1.5'>"
+            "<b>1. What this is:</b> the new art you ordered on 2026-11-20: the wall lamp and the battery in each of the "
+            "four looks, an icon per look for every style menu, and the three power-pole buttons that showed a red X. "
+            "Every picture here was judged by an art judge that did not make it; only the ones it kept are shown.<br>"
+            "<b>2. What you rule on:</b> keep or redo each picture (say why in the note). The looks are not rivals: "
+            "accept all four together when they are right.<br><b>3. Not wired yet:</b> nothing here shows in the game "
+            "until the code that uses it is built (Gimme Some Slack's next version; the battery waits for the new "
+            "Machine Looks mod).</div>")
+    json.dump({"schema": 1, "rows": rows, "lead_html": lead}, open(out, "w"), indent=1)
+    print("manifest", out, len(rows), "rows")
 
 
 if __name__ == "__main__":
@@ -202,5 +281,7 @@ if __name__ == "__main__":
         cmd_conform()
     elif a[0] == "judgesheet":
         cmd_judgesheet(a[1], a[2] if len(a) > 2 else None)
+    elif a[0] == "manifest":
+        cmd_manifest(a[1], a[a.index("--verdicts") + 1:] if "--verdicts" in a else None)
     elif a[0] == "install":
-        cmd_install(a[a.index("--verdicts") + 1], "--dry" in a)
+        cmd_install([x for x in a[a.index("--verdicts") + 1:] if x != "--dry"], "--dry" in a)

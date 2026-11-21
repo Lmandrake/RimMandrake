@@ -1,0 +1,223 @@
+{
+ "judge_model": "gpt-6",
+ "brief": "design/RimMandrake/art_judge_brief.md@0d4d48310c",
+ "subject": "WallLamp",
+ "item": "RIMMANDRAKE_DESIGN_HOME_FOR_VANILLA_ELECTRICAL_ART",
+ "route": "gpt_consult.py (GPT via Codex) on a judge sheet with a vanilla colonist at the same 128 px per cell; the judge did not make the art. Round 1 (all pictures; an earlier round without the scale panel returned UNSURE on every picture and decided nothing), rounds 2-3 a fresh read of the Modern set after each redraw. Stopped after round 3: a picture still REDO is not installed.",
+ "verdicts": [
+  {
+   "picture": "vea_walllamp_v1_scrapper_east",
+   "verdict": "KEEP",
+   "notes": "Rusty, irregular scrap fixture reads clearly; left wall mount projects right. Scale, alpha and play-zoom silhouette pass.",
+   "round": 1
+  },
+  {
+   "picture": "vea_walllamp_v1_scrapper_north",
+   "verdict": "KEEP",
+   "notes": "Lower wall attachment and visible upper surfaces support the away-facing view. Scrap materials and shade size agree with the other facings.",
+   "round": 1
+  },
+  {
+   "picture": "vea_walllamp_v1_scrapper_south",
+   "verdict": "KEEP",
+   "notes": "Top attachment and forward shade read as a wall lamp. Elliptical shade supports the building camera; scrap appearance and scale remain consistent.",
+   "round": 1
+  },
+  {
+   "picture": "vea_walllamp_v1_industrial_east",
+   "verdict": "KEEP",
+   "notes": "Heavy dark bracket and caged light read as industrial hardware. Correct left attachment and right projection; clear at play zoom.",
+   "round": 1
+  },
+  {
+   "picture": "vea_walllamp_v1_industrial_north",
+   "verdict": "KEEP",
+   "notes": "Lower mounting plate and upper housing establish the rear/top view. Cage, materials and dimensions agree with the other facings.",
+   "round": 1
+  },
+  {
+   "picture": "vea_walllamp_v1_industrial_south",
+   "verdict": "KEEP",
+   "notes": "Upper mounting plate and projecting caged housing read correctly. Industrial materials, perspective, scale and alpha pass.",
+   "round": 1
+  },
+  {
+   "picture": "vea_walllamp_v1_modern_east",
+   "verdict": "REDO",
+   "notes": "Modern hardware materials, transparent background and left-wall attachment read correctly. The housing does not retain the other facings' size and proportions.",
+   "violated": "C2",
+   "quote": "Facings agree on size, proportions and palette; one facing looking huge or small is REDO.",
+   "seen": "Beside the same-scale colonist, the east fixture has a substantially thinner dark housing and diffuser than the south fixture. It reads as a smaller bar lamp, while north and south show a larger box housing.",
+   "redo_brief": "Redraw east as the side view of the north/south fixture, matching its housing thickness and diffuser proportions while preserving left-wall attachment and rightward projection.",
+   "round": 2
+  },
+  {
+   "picture": "vea_walllamp_v1_modern_north",
+   "verdict": "REDO",
+   "notes": "Contemporary materials, lower wall attachment and alpha pass; the housing does not retain the south facing's width and proportions.",
+   "violated": "C2",
+   "quote": "Facings agree on size, proportions and palette; one facing looking huge or small is REDO.",
+   "seen": "The north housing is a narrow upright shape, less than half the width of the broad horizontal south housing. It reads as a differently proportioned fixture.",
+   "redo_brief": "Draw the rear/top of the same broad rectangular modern fixture, retaining the south housing's horizontal width and materials, anchored to the lower wall edge.",
+   "round": 1
+  },
+  {
+   "picture": "vea_walllamp_v1_modern_south",
+   "verdict": "KEEP",
+   "notes": "Broad housing and visible diffuser read as a viewer-facing modern wall lamp. Perspective is compatible with the building camera, and dimensions agree with the other views. Readable at both scales, with no visible backdrop, halo or ground shadow.",
+   "round": 3
+  },
+  {
+   "picture": "vea_walllamp_v1_futuristic_east",
+   "verdict": "KEEP",
+   "notes": "Slim pale housing and cyan strip establish the futuristic look. Left mount projects right; the light remains visible at play zoom.",
+   "round": 1
+  },
+  {
+   "picture": "vea_walllamp_v1_futuristic_north",
+   "verdict": "KEEP",
+   "notes": "Lower attachment and receding slim housing support the north orientation. Materials, proportions and cyan accent agree with the other facings.",
+   "round": 1
+  },
+  {
+   "picture": "vea_walllamp_v1_futuristic_south",
+   "verdict": "KEEP",
+   "notes": "Upper attachment and forward-projecting light read clearly. Slim alloy housing, cyan strip, scale and alpha pass.",
+   "round": 1
+  },
+  {
+   "picture": "vea_walllamp_v2_modern_north",
+   "verdict": "KEEP",
+   "notes": "Lower placement and unlit back/top view match north. Housing width and palette agree with south; the different visible surfaces plausibly represent the same fixture. Silhouette remains readable at play zoom.",
+   "round": 3
+  },
+  {
+   "picture": "vea_walllamp_v2_modern_east",
+   "verdict": "KEEP",
+   "notes": "Left mounting bracket and rightward projection match east. Grey housing and pale diffuser read as modern utility hardware at both scales. No visible alpha defect or heavy outline; proportions are compatible with the other facings.",
+   "round": 3
+  }
+ ],
+ "rounds": [
+  {
+   "judge_model": "gpt-6",
+   "subject": "WallLamp",
+   "verdicts": [
+    {
+     "picture": "vea_walllamp_v1_scrapper_east",
+     "verdict": "KEEP",
+     "notes": "Rusty, irregular scrap fixture reads clearly; left wall mount projects right. Scale, alpha and play-zoom silhouette pass."
+    },
+    {
+     "picture": "vea_walllamp_v1_scrapper_north",
+     "verdict": "KEEP",
+     "notes": "Lower wall attachment and visible upper surfaces support the away-facing view. Scrap materials and shade size agree with the other facings."
+    },
+    {
+     "picture": "vea_walllamp_v1_scrapper_south",
+     "verdict": "KEEP",
+     "notes": "Top attachment and forward shade read as a wall lamp. Elliptical shade supports the building camera; scrap appearance and scale remain consistent."
+    },
+    {
+     "picture": "vea_walllamp_v1_industrial_east",
+     "verdict": "KEEP",
+     "notes": "Heavy dark bracket and caged light read as industrial hardware. Correct left attachment and right projection; clear at play zoom."
+    },
+    {
+     "picture": "vea_walllamp_v1_industrial_north",
+     "verdict": "KEEP",
+     "notes": "Lower mounting plate and upper housing establish the rear/top view. Cage, materials and dimensions agree with the other facings."
+    },
+    {
+     "picture": "vea_walllamp_v1_industrial_south",
+     "verdict": "KEEP",
+     "notes": "Upper mounting plate and projecting caged housing read correctly. Industrial materials, perspective, scale and alpha pass."
+    },
+    {
+     "picture": "vea_walllamp_v1_modern_east",
+     "verdict": "KEEP",
+     "notes": "Recognisable contemporary rectangular wall light with an underside diffuser. Correct wall attachment, readable silhouette and clean alpha."
+    },
+    {
+     "picture": "vea_walllamp_v1_modern_north",
+     "verdict": "REDO",
+     "notes": "Contemporary materials, lower wall attachment and alpha pass; the housing does not retain the south facing's width and proportions.",
+     "violated": "C2",
+     "quote": "Facings agree on size, proportions and palette; one facing looking huge or small is REDO.",
+     "seen": "The north housing is a narrow upright shape, less than half the width of the broad horizontal south housing. It reads as a differently proportioned fixture.",
+     "redo_brief": "Draw the rear/top of the same broad rectangular modern fixture, retaining the south housing's horizontal width and materials, anchored to the lower wall edge."
+    },
+    {
+     "picture": "vea_walllamp_v1_modern_south",
+     "verdict": "KEEP",
+     "notes": "Broad rectangular housing and pale underside diffuser read as present-day hardware. Upper wall attachment and building perspective pass; width and projection depth can differ."
+    },
+    {
+     "picture": "vea_walllamp_v1_futuristic_east",
+     "verdict": "KEEP",
+     "notes": "Slim pale housing and cyan strip establish the futuristic look. Left mount projects right; the light remains visible at play zoom."
+    },
+    {
+     "picture": "vea_walllamp_v1_futuristic_north",
+     "verdict": "KEEP",
+     "notes": "Lower attachment and receding slim housing support the north orientation. Materials, proportions and cyan accent agree with the other facings."
+    },
+    {
+     "picture": "vea_walllamp_v1_futuristic_south",
+     "verdict": "KEEP",
+     "notes": "Upper attachment and forward-projecting light read clearly. Slim alloy housing, cyan strip, scale and alpha pass."
+    }
+   ],
+   "proposals": []
+  },
+  {
+   "judge_model": "gpt-6",
+   "subject": "WallLamp",
+   "verdicts": [
+    {
+     "picture": "vea_walllamp_v1_modern_east",
+     "verdict": "REDO",
+     "notes": "Modern hardware materials, transparent background and left-wall attachment read correctly. The housing does not retain the other facings' size and proportions.",
+     "violated": "C2",
+     "quote": "Facings agree on size, proportions and palette; one facing looking huge or small is REDO.",
+     "seen": "Beside the same-scale colonist, the east fixture has a substantially thinner dark housing and diffuser than the south fixture. It reads as a smaller bar lamp, while north and south show a larger box housing.",
+     "redo_brief": "Redraw east as the side view of the north/south fixture, matching its housing thickness and diffuser proportions while preserving left-wall attachment and rightward projection."
+    },
+    {
+     "picture": "vea_walllamp_v2_modern_north",
+     "verdict": "KEEP",
+     "notes": "Recognisable Modern wall fixture; back/top faces the viewer, positioned low for the south wall. Size and palette agree with south. Silhouette remains readable at play zoom; no visible backdrop, halo or heavy outline."
+    },
+    {
+     "picture": "vea_walllamp_v1_modern_south",
+     "verdict": "KEEP",
+     "notes": "Recognisable present-day wall light with a dark housing and pale diffuser. Faces the viewer, anchors at the upper wall edge and shows a shallow top consistent with the building camera. Matches north in scale and palette; readable at play zoom with clean transparency."
+    }
+   ],
+   "proposals": []
+  },
+  {
+   "judge_model": "gpt-6",
+   "subject": "WallLamp",
+   "verdicts": [
+    {
+     "picture": "vea_walllamp_v2_modern_east",
+     "verdict": "KEEP",
+     "notes": "Left mounting bracket and rightward projection match east. Grey housing and pale diffuser read as modern utility hardware at both scales. No visible alpha defect or heavy outline; proportions are compatible with the other facings."
+    },
+    {
+     "picture": "vea_walllamp_v2_modern_north",
+     "verdict": "KEEP",
+     "notes": "Lower placement and unlit back/top view match north. Housing width and palette agree with south; the different visible surfaces plausibly represent the same fixture. Silhouette remains readable at play zoom."
+    },
+    {
+     "picture": "vea_walllamp_v1_modern_south",
+     "verdict": "KEEP",
+     "notes": "Broad housing and visible diffuser read as a viewer-facing modern wall lamp. Perspective is compatible with the building camera, and dimensions agree with the other views. Readable at both scales, with no visible backdrop, halo or ground shadow."
+    }
+   ],
+   "proposals": []
+  }
+ ],
+ "proposals": []
+}
