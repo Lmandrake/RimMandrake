@@ -64,5 +64,18 @@
   "patch_sha": "bce6fbba1ee4a095",
   "rc": 1,
   "test_blob": "d84bad651d4f5f12d13fb754af19899ef959f25d"
+ },
+ "T_VENOM_STAGING": {
+  "at": "2026-11-21T14:59:42Z",
+  "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_venom_staging.py",
+  "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_venom_staging.py",
+  "last": "selftest_pyrelands_venom_staging: 4 of 20 checks failed",
+  "patch": "--- a/src/RimMandrake/Pyrelands/validation.py\t2026-11-21 06:59:29.022586126 -0800\n+++ b/src/RimMandrake/Pyrelands/validation.py\t2026-11-21 06:59:29.023762320 -0800\n@@ -3418,7 +3418,7 @@\n # RM_PyrelandsPortedFauna.xml), so the window in which the first venom bite lands holds no second attack, and the biter\n # is gone before the clock moves again: ONE bite per patient. At 250 (visit 2) two or three bites stacked 0.2 venom each\n # (RM_FlamefangVenomBite severityPerDamageDealt 0.02 x power 10) unequally on the two patients of one comparison.\n-BITE_POLL_TICKS = 90\n+BITE_POLL_TICKS = 250\n \n \n def _hediff_defs(row):\n",
+  "patch_files": [
+   "src/RimMandrake/Pyrelands/validation.py"
+  ],
+  "patch_sha": "5144e384a4a27e1f",
+  "rc": 1,
+  "test_blob": "1aa5a82fcf111ec615335e83832f1f7f4f049df5"
  }
 }

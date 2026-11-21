@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/Pyrelands/validation.py	2026-11-21 06:59:29.022586126 -0800
++++ b/src/RimMandrake/Pyrelands/validation.py	2026-11-21 06:59:29.023762320 -0800
+@@ -3418,7 +3418,7 @@
+ # RM_PyrelandsPortedFauna.xml), so the window in which the first venom bite lands holds no second attack, and the biter
+ # is gone before the clock moves again: ONE bite per patient. At 250 (visit 2) two or three bites stacked 0.2 venom each
+ # (RM_FlamefangVenomBite severityPerDamageDealt 0.02 x power 10) unequally on the two patients of one comparison.
+-BITE_POLL_TICKS = 90
++BITE_POLL_TICKS = 250
+ 
+ 
+ def _hediff_defs(row):

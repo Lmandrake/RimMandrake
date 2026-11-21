@@ -1050,7 +1050,7 @@
    "stage": "6",
    "file": "src/RimMandrake/Pyrelands/validation.py",
    "entry": "flamefang_venom",
-   "observes": "RM_FlamefangVenom present after each bite, its severity rising over the hours; the tended colonist's RM_FlamefangVenom severity rises more slowly than the untended colonist's at every hourly read from the tend onwards and stays below it (the def's TendDuration severityPerDayTended -0.4, scaled by tend quality, against Immunizable severityPerDayNotImmune +0.35); once immunity completes the severity falls and the hediff goes",
+   "observes": "RM_FlamefangVenom present after each bite, its severity rising over the hours; the tended colonist's RM_FlamefangVenom severity rises less than the untended colonist's in every hour from the tend onwards (the hourly rise is compared, not the level: no two bites carry one dose, and the two patients are bitten at different ticks) (the def's TendDuration severityPerDayTended -0.4, scaled by tend quality, against Immunizable severityPerDayNotImmune +0.35); once immunity completes the severity falls and the hediff goes",
    "reads": [
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
@@ -1604,6 +1604,19 @@
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_furnace_beast_art.py",
     "margins": []
    }
+  },
+  "T_VENOM_STAGING": {
+   "id": "T_VENOM_STAGING",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_venom_staging.py",
+   "observes": "the sc_flamefang_venom scene code (flamefang_venom, _ten_flamefang_venom) run against a scripted game over 480 situations (colonists' weapons, the biter's attack phase, seed, bleed rate, biter health, bite dose): one venom bite per patient, every biter removed for certain, no colonist dead, every venom row PASS; planted mod faults (no venom, a tend that does nothing, immunity that never lowers the venom) read FAIL; tended_rises_less compares hourly rises; every tool and argument sent is declared",
+   "reads": [
+    "src/RimMandrake/Pyrelands/validation.py",
+    "src/RimMandrake/Utils/northstar_driver/tool_schemas.json"
+   ],
+   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_venom_staging.py",
+   "item": "RIMMANDRAKE_STAGE_PYRE_FLAMEFANG_BITES_LAND_ONCE_NOT_MAUL"
   }
  },
  "bars": [
@@ -2023,7 +2036,8 @@
     "sc_flamefang_venom"
    ],
    "supports": [
-    "T_DEFS_OFFLINE"
+    "T_DEFS_OFFLINE",
+    "T_VENOM_STAGING"
    ],
    "held": [],
    "offline_decides": [],

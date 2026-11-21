@@ -3414,23 +3414,88 @@ def _bite_wait(t, n):
     _on_site(t)
 
 
-def _bite_until(t, victim, biter_kind, x, z, hediff=None, max_ticks=6000):
+# The latch's poll: below RM_Flamefang's melee cooldown (venom-fangs and head both 1.65 s = 99 ticks,
+# RM_PyrelandsPortedFauna.xml), so the window in which the first venom bite lands holds no second attack, and the biter
+# is gone before the clock moves again: ONE bite per patient. At 250 (visit 2) two or three bites stacked 0.2 venom each
+# (RM_FlamefangVenomBite severityPerDamageDealt 0.02 x power 10) unequally on the two patients of one comparison.
+BITE_POLL_TICKS = 90
+
+
+def _hediff_defs(row):
+    return [h.get("def") for h in (((row or {}).get("health") or {}).get("hediffs") or []) if isinstance(h, dict)]
+
+
+def _new_wounds(before, row, keep):
+    """Hediff defs in `row` beyond the multiset `before`, `keep` excluded -> [def, ...] (one entry per extra copy)."""
+    left = list(before)
+    out = []
+    for d in _hediff_defs(row):
+        if d in left:
+            left.remove(d)
+        elif d != keep:
+            out.append(d)
+    return out
+
+
+def _bite_until(t, victim, biter_kind, x, z, hediff=None, max_ticks=6000, clear_wounds=False):
     """Spawn `biter_kind` beside `victim`, manhunter, and run ticks until the victim carries `hediff` (or any injury
-    when hediff is None). Kills the biter at once after, so later readings are not more bites. -> victim row or None.
-    The victim is DRAFTED first: undrafted, a fresh colonist FleeAndCowers at the flamefang's own pace to the map edge and
-    is never bitten (visit 1, 2026-11-15: 6000 ticks, no injury at all, read as a venom FAIL; drafted, bitten in 60)."""
-    if _live(t):
-        _ok(t.bridge_call("jawa/set_draft", pawnId=victim, drafted=True), "set_draft(%s)" % victim)
-    bid = _spawn_wild(t, biter_kind, x + 1, z)
-    t.bridge_call("jawa/pawn_mental", pawn=bid, action="start", state="ManhunterPermanent")
-    row = None
-    for _ in range(max_ticks // 250):
-        _bite_wait(t, 250)
-        row = _pawn_row(t, victim, health=True)
+    when hediff is None). -> the victim row read at the bite (before any wound is cleared), or None.
+    - The victim is DRAFTED with fire-at-will OFF: undrafted, a fresh colonist FleeAndCowers to the map edge and is never
+      bitten (visit 1, 2026-11-15); drafted with a gun and fire-at-will on, it shoots the biter dead first.
+    - A drafted pawn still melees an adjacent hostile (JobDriver_Wait.CheckForAutoAttack: fire-at-will gates only the
+      ranged branch), so a biter that dies before the bite is replaced at once, inside the same max_ticks.
+    - The biter is removed by jawa/kill_hostiles (Pawn.Kill, certain) the moment the bite reads, and its absence is read
+      back. The old `jawa/damage Cut 500` hit one random part, left the flamefang alive and manhunting when that part was
+      not vital, and it kept attacking: visit 2's wait-out colonist died of BloodLoss (2026-11-21).
+    - clear_wounds: after the bite, every hediff the bite added except `hediff` is removed (the bite wound, its bleeding),
+      so a long untended venom read is not a blood-loss read, and no earlier patient bleeds out on the map during the
+      ten-day wait-out (the governor stops the clock on any colonist's death). The venom is left exactly as the bite
+      gave it; the returned row is read before the clearing, so a row that asks "was there a wound" still sees it.
+      Offline: selftest_pyrelands_venom_staging.py."""
+    if not _live(t):   # the declaration probe: the same tools, no clock
+        t.bridge_call("jawa/set_draft", pawnId=victim, drafted=True, fireAtWill=False)
+        bid = _spawn_wild(t, biter_kind, x + 1, z)
+        t.bridge_call("jawa/pawn_mental", pawn=bid, action="start", state="ManhunterPermanent")
+        t.bridge_call("jawa/kill_hostiles", pawnDef=biter_kind, destroyCorpses=True)
+        return None
+    _ok(t.bridge_call("jawa/set_draft", pawnId=victim, drafted=True, fireAtWill=False), "set_draft(%s)" % victim)
+    before = _hediff_defs(_pawn_row(t, victim, health=True))
+    biters, bid, row, landed, ran = [], None, None, False, 0
+    while ran < max_ticks:
+        if bid is None:
+            bid = _spawn_wild(t, biter_kind, x + 1, z)
+            biters.append(bid)
+            m = t.bridge_call("jawa/pawn_mental", pawn=bid, action="start", state="ManhunterPermanent")
+            if not (m or {}).get("success"):
+                _unmeasured(t, "pawn_mental refused ManhunterPermanent on the %s %s: %r" % (biter_kind, bid, m))
+        _bite_wait(t, BITE_POLL_TICKS)
+        ran += BITE_POLL_TICKS
+        rows = dict((p.get("id"), p) for p in (_ok(t.bridge_call("jawa/list_pawns", limit=500, includeHealth=True),
+                                                    "list_pawns").get("pawns") or []))
+        row = rows.get(victim)
         hs = ((row or {}).get("health") or {}).get("hediffs") or []
         if (hediff and _has_hediff(row, hediff)) or (not hediff and hs):
+            landed = True
             break
-    t.bridge_call("jawa/damage", damageDef="Cut", amount=500.0, thingId=bid)
+        b = rows.get(bid)
+        if b is None or b.get("dead"):
+            bid = None          # the victim killed it before a bite landed: a fresh biter, same clock
+    k = t.bridge_call("jawa/kill_hostiles", pawnDef=biter_kind, destroyCorpses=True)
+    left = [p.get("id") for p in (_ok(t.bridge_call("jawa/list_pawns", limit=500), "list_pawns").get("pawns") or [])
+            if p.get("id") in biters and not p.get("dead")]
+    _note(t, "biters of %s" % victim, {"spawned": biters, "landed": landed, "ticks": ran, "killed": (k or {}).get("killed"),
+                                       "left": left})
+    if left:
+        _unmeasured(t, "the %s biter(s) %r survived jawa/kill_hostiles: %r" % (biter_kind, left, k))
+    if clear_wounds and landed:
+        for d in _new_wounds(before, row, hediff):
+            t.bridge_call("jawa/pawn_health", pawn=victim, action="remove", hediff=d)
+        after = _pawn_row(t, victim, health=True)
+        rest = _new_wounds(before, after, hediff)
+        if rest:
+            _unmeasured(t, "the bite's wounds %r could not be cleared from %s" % (rest, victim))
+        if hediff and not _has_hediff(after, hediff):
+            _unmeasured(t, "clearing the bite's wounds took %s off %s too" % (hediff, victim))
     return row
 
 
@@ -3447,7 +3512,7 @@ def flamefang_venom(t):
         row = _pawn_row(t, cid, health=True)
         if _live(t) and (_has_hediff(row, VENOM) or _has_hediff(row, "ToxicBuildup")):
             _unmeasured(t, "the test colonist already carries venom or toxic buildup: %r" % row.get("health"))
-        row = _bite_until(t, cid, "RM_Flamefang", x, z, hediff=VENOM)
+        row = _bite_until(t, cid, "RM_Flamefang", x, z, hediff=VENOM, clear_wounds=True)
         if _live(t):
             _note(t, "colonist health after the flamefang", (row or {}).get("health"))
             if not any(h for h in (((row or {}).get("health") or {}).get("hediffs") or []) if "Heatstroke" not in str(h)):
@@ -3467,7 +3532,7 @@ def flamefang_venom(t):
     _independent(t)
     with _comp(t, "plain_bite_carries_no_venom"):
         cid2 = _spawn_colonist(t, x + 6, z)
-        row = _bite_until(t, cid2, PLAIN_BITER, x + 6, z)
+        row = _bite_until(t, cid2, PLAIN_BITER, x + 6, z, clear_wounds=True)
         if _live(t):
             hs = ((row or {}).get("health") or {}).get("hediffs") or []
             _note(t, "control colonist health", hs)
@@ -4538,9 +4603,28 @@ def _ten_furnace_sleep(t):
                 _fail("the Muffalo in a like bed fire took no burns (the control did not bite)")
 
 
+def tended_rises_less(tended, untended):
+    """Hourly venom severities of the tended and the untended patient, read 0 at the tend order -> (ok, why). Pure.
+    In every hour after the tend order the tended venom rose less than the untended venom did in the same hour: "rises
+    more slowly at every hourly read". The hourly rise, not the level: two bites never carry one dose (armour and a part's
+    hit points cap the damage that RM_FlamefangVenomBite scales) and the patients are bitten at different ticks, so the
+    levels differ by the bite, not by the tend. Per hour, not since read 0: a tend that stopped working after its first
+    hour would keep a cumulative lead. Scripted
+    (selftest_pyrelands_venom_staging.py): the level comparison FAILED a working tend and PASSED a tend that did nothing,
+    on unequal doses."""
+    if len(tended) < 2 or len(tended) != len(untended):
+        return False, "fewer than 2 paired reads: %r / %r" % (tended, untended)
+    rises = [(tended[i] - tended[i - 1], untended[i] - untended[i - 1]) for i in range(1, len(tended))]
+    bad = [i + 1 for i, (a, b) in enumerate(rises) if not a < b]
+    if bad:
+        return False, "the tended venom rose no less than the untended in hour(s) %r: hourly rises %r (tended %r, " \
+                      "untended %r)" % (bad, [(round(a, 4), round(b, 4)) for a, b in rises], tended, untended)
+    return True, "smallest margin %.4f" % min(b - a for a, b in rises)
+
+
 def _ten_flamefang_venom(t):
-    """sc_flamefang_venom: two colonists bitten (VENOM); a doctor tends one (TendPatient); severity every hour for six
-    hours, tended below untended at every read after the first; the untended venom read daily until the hediff goes. The
+    """sc_flamefang_venom: two colonists bitten once each (VENOM); a doctor tends one (TendPatient); severity every hour
+    for six hours, the tended venom's rise in each hour below the untended's (tended_rises_less); the untended venom read daily until the hediff goes. The
     immunity read is removed (RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN, polish.md): the bar reads the venom
     hediff and its severity, not immunity."""
     x, z = PAD_VENOM
@@ -4548,7 +4632,8 @@ def _ten_flamefang_venom(t):
     with _comp(t, "venom_tended_vs_untended"):
         pts = {"tended": _spawn_colonist(t, x + 10, z), "untended": _spawn_colonist(t, x + 10, z - 8)}
         for k, pid in pts.items():
-            row = _bite_until(t, pid, "RM_Flamefang", x + 10, z if k == "tended" else z - 8, hediff=VENOM)
+            row = _bite_until(t, pid, "RM_Flamefang", x + 10, z if k == "tended" else z - 8, hediff=VENOM,
+                              clear_wounds=True)
             if _live(t) and not _has_hediff(row, VENOM):
                 _unmeasured(t, "the %s patient was never envenomed: %r" % (k, (row or {}).get("health")))
         doc = _spawn_colonist(t, x + 12, z)
@@ -4562,16 +4647,15 @@ def _ten_flamefang_venom(t):
             _note(t, "venom severity each hour, tended vs untended", {"order": r, "series": series})
             if not (r or {}).get("success"):
                 _unmeasured(t, "the TendPatient order was refused: %r" % r)
-            pairs = list(zip(series["tended"], series["untended"]))[1:]
-            if any(a is None or b is None for a, b in pairs):
+            if any(v is None for k in series for v in series[k]):
                 _unmeasured(t, "venom severity unread: %r" % series)
-            low = [a < b for a, b in pairs]
-            if not all(low):
-                _fail("tended venom was not below untended at every read: %r" % series)
+            ok, why = tended_rises_less(series["tended"], series["untended"])
+            if not ok:
+                _fail(why)
     _independent(t)
     with _comp(t, "venom_wait_out"):
         cid = _spawn_colonist(t, x + 10, z + 8)
-        row = _bite_until(t, cid, "RM_Flamefang", x + 10, z + 8, hediff=VENOM)
+        row = _bite_until(t, cid, "RM_Flamefang", x + 10, z + 8, hediff=VENOM, clear_wounds=True)
         days = []
         for _ in range(10):
             s = hediff_severity(_pawn_row(t, cid, health=True), VENOM)
