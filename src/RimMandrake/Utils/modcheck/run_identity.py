@@ -131,6 +131,7 @@ def run_start(mod, job, dm=None):
     live_queue job. Write it into the result at once; run_end adds deploy_end. judge_checkout reads the same shape."""
     ident = new_identity(job, time.strftime("%Y%m%dT%H%M%S"))
     ident["deploy_start"] = mod_fingerprint(mod, dm)
+    ident["settings_files"] = _keep_take(mod)
     return ident
 
 
@@ -138,7 +139,42 @@ def run_end(ident, mod, dm=None):
     """Add the END fingerprint. Called on an aborted run too: its rows are still a record of that code."""
     if isinstance(ident, dict):
         ident["deploy_end"] = mod_fingerprint(mod, dm)
+    put = _keep_put_back(mod)
+    if isinstance(ident, dict) and isinstance(ident.get("settings_files"), dict):
+        ident["settings_files"].update(put)
     return ident
+
+
+# ------------------------------------------------------------------ settings files (settings_keep.py)
+#: None = this game's Config folder (game_paths); a selftest points it at a temp folder, never a real game's.
+SETTINGS_CONFIG_DIR = None
+_KEEPS = {}
+
+
+def _keep_take(mod):
+    """run_start keeps the mod's Config/Mod_<mod>_*.xml as found (RIMMANDRAKE_RESTORE_SLACK_LOOK_FILE_AFTER_PROOF_LEFT_EXTCORD)."""
+    try:
+        import settings_keep
+        k = settings_keep.Keep(mod, SETTINGS_CONFIG_DIR)
+        rec = k.take()
+        if k.found is not None:
+            _KEEPS[mod] = k
+        print("settings files found: %s" % rec.get("found", rec.get("unmeasured")), file=sys.stderr, flush=True)
+        return rec
+    except Exception as ex:  # noqa: BLE001 -- recorded: an identity record never sinks a run
+        return {"keep_error": repr(ex)}
+
+
+def _keep_put_back(mod):
+    k = _KEEPS.pop(mod, None)
+    if k is None:
+        return {"put_back": "nothing taken"}
+    try:
+        rec = k.put_back()
+    except Exception as ex:  # noqa: BLE001 -- the sidecar stays, so the next run on this game puts the files back
+        rec = {"put_back_error": repr(ex)}
+    print("settings files put back: %s" % rec, file=sys.stderr, flush=True)
+    return rec
 
 
 def run_situational(call, bland, companion):

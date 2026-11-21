@@ -153,6 +153,7 @@ def proven(res, mod, tmp, tag):
 def main():
     tmp = tempfile.mkdtemp(prefix="selftest_checkout_identity_")
     real_fp = RI.mod_fingerprint
+    RI.SETTINGS_CONFIG_DIR = os.path.join(tmp, "Config")   # never a real game's Config folder (settings_keep.py)
     try:
         # ---- validation_v2
         V2 = load("_cv2", os.path.join(RM, "FlowWorks", "northstar", "validation_v2.py"))
