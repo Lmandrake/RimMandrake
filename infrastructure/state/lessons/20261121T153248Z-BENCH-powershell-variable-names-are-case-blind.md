@@ -1,0 +1,1 @@
+PowerShell variable names are case-blind: a loop variable $l overwrites a log-path variable $L, so the log writes go to a file named after each line and the log stays silent. A guard test of a restore script caught it only because it checked the log for the restore lines; name variables distinctly.

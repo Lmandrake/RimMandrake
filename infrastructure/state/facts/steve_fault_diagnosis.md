@@ -220,6 +220,30 @@ Item `RIMMANDRAKE_SPLIT_STEVE_DRIVER_SET_AUDIO_DRIVER_ALONE_FIRST`. Record and r
 - The driver: `AVoluteSS3Vad.sys`, "A-Volute Sonic Suite VAD" 10.0.10011.16384, file date 2021-10-14; PnP "Sonic Studio Virtual Mixer" 1.0.2.0.
   It is the default speaker endpoint over Realtek HD Audio 6.0.8960.1. With it off, the only working audio endpoint was "Realtek Digital Output".
 - The shape (upper YMM halves lost on a user thread) fits a kernel driver that uses AVX without saving the extended state [guess ~70%].
-- UNMEASURED: a fault with the driver loaded but no stream through it; a newer Sonic Studio build.
+- UNMEASURED: a newer Sonic Studio build. (Driver loaded, no stream through it: measured below.)
 - Nothing was left disabled (end state measured 14:22Z: 16/16 at original Start, 10/10 drivers loaded, HV on, WSL answering, lane resumed).
   What to do about the driver is the owner's and Steve's choice; the options and their costs are in the record.
+
+## 🔴 With `AVoluteSS3Vad` loaded but the game's audio on Realtek, the fault did not come (MEASURED 2026-11-21, one boot)
+
+Item `RIMMANDRAKE_TEST_STEVE_AUDIO_DEFAULT_ON_REALTEK_DRIVER_STILL_LOADED`. Record and raw evidence:
+`D:\ClaudeWork\rimmandrake\conductor\night_20261120\steve_audio_default_test.md` and its `audiodef\` folder. Same method as the split
+(same 315-mod native game launch, register probe with RPCONTROL ok=1, `driverquery /v` after the boot). No driver was changed.
+
+- **The boot (14:40:04Z):** all 10 drivers loaded, `AVoluteSS3Vad` Running and its endpoints active. All 6 default devices (playback and
+  recording, each for Console, Multimedia and Communications) moved off Sonic Studio and read back: playback to "Realtek Digital Output", recording
+  to Realtek "Stereo Mix" (enabled for the test; no Realtek microphone input was active). The defaults survived the reboot.
+- **Where the game's audio went** [measured 2.1 and 22.3 min after start, from the desktop session]: `RimWorldWin64` held an ACTIVE session on
+  Realtek Digital Output; the Sonic Studio speaker endpoint held only the idle system session. Over ssh the session list shows only the
+  system sessions, so read it from the desktop session (a scheduled task with an Interactive principal).
+- **Reading: CLEAN.** 10 probe cycles with the game up, 2.9 to 47.9 min after the start, all clean, 18/18 CPUs, 0 RPFAULT lines.
+  With the defaults on Sonic Studio and the same driver set, the same method faulted at 2.9 and 4.0 min (and 13 of 13 boots before).
+- **What this means:** the fault needs the game's audio to pass through the Sonic Studio virtual mixer; the driver loaded with no game stream
+  through it is not enough [guess ~80%: one boot, evidence, not confirmed]. Playback and recording defaults moved together, so this boot does not
+  split them.
+- The only active Realtek playback endpoint is the S/PDIF "Realtek Digital Output"; the analog Realtek "Speakers" endpoint reads unplugged. So
+  this workaround may leave analog speakers silent [guess ~60%]. Nothing was left changed: defaults restored and read back, Stereo Mix disabled
+  again, the full endpoint list identical to before.
+- 🔑 **The Windows default audio device can be read and set with no install:** inline C# over the Core Audio COM interfaces
+  (`IMMDeviceEnumerator`, `IPolicyConfig.SetDefaultEndpoint`); script `C:\SteveDesktop\diag\audiodef\audiodef.ps1`. A default set to an
+  unplugged endpoint returns success but does not take effect; read it back.

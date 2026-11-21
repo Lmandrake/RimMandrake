@@ -1,0 +1,1 @@
+On Windows, IPolicyConfig.SetDefaultEndpoint on an unplugged audio endpoint returns S_OK but the effective default does not change; and an ssh logon on SteveDesktop sees only the pid-0 system audio sessions. Read the default back after setting it, and list a game's audio sessions from a scheduled task with an Interactive principal.
