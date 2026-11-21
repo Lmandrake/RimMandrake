@@ -778,36 +778,15 @@
     "tokens": 232619
    },
    {
-    "at": "2026-11-21T10:09:04Z",
-    "kind": "helper",
-    "ref": "rm-judge Reader A ac10c42c043e9a170 (stage-4 whole retake)",
+    "at": "2026-11-21T10:46:28Z",
+    "kind": "unmeasured",
+    "ref": "run rm-role-designer-1795257816",
     "stage": 4,
-    "tokens": 57155
-   },
-   {
-    "at": "2026-11-21T10:09:08Z",
-    "kind": "helper",
-    "ref": "rm-judge Reader B ae132c2288f7538ea (stage-4 whole retake)",
-    "stage": 4,
-    "tokens": 57301
-   },
-   {
-    "at": "2026-11-21T10:09:17Z",
-    "kind": "helper",
-    "ref": "rm-judge control a5ff83454d8821e5a (stage-4 whole retake)",
-    "stage": 4,
-    "tokens": 55830
-   },
-   {
-    "at": "2026-11-21T10:12:16Z",
-    "kind": "stage",
-    "ref": "run rm-role-designer-1795255597",
-    "stage": 4,
-    "tokens": 753003
+    "tokens": 400000
    }
   ],
   "reserve": 60000,
-  "spent": 21601029
+  "spent": 21077740
  },
  "coverage_releases": [
   {
@@ -2424,28 +2403,29 @@
    "why": "run rm-role-designer-1795255099: stage 3 done"
   },
   {
-   "at": "2026-11-21T10:06:48Z",
+   "at": "2026-11-21T10:43:46Z",
    "stage": 4,
    "what": "over_budget",
-   "why": "20677740 of 4000000 spent; run rm-role-designer-1795255597 goes on with 400000 (advisory)"
+   "why": "20677740 of 4000000 spent; run rm-role-designer-1795257816 goes on with 400000 (advisory)"
   },
   {
-   "at": "2026-11-21T10:06:48Z",
+   "at": "2026-11-21T10:43:46Z",
    "stage": 4,
    "what": "open",
-   "why": "run rm-role-designer-1795255597, stage 4, budget 400000"
+   "why": "run rm-role-designer-1795257816, stage 4, budget 400000"
   },
   {
-   "at": "2026-11-21T10:12:17Z",
-   "stage": 5,
-   "what": "close",
-   "why": "run rm-role-designer-1795255597: stage 4 done"
+   "at": "2026-11-21T10:46:28Z",
+   "stage": 4,
+   "void_system": "the unit ended with no claude result of its own",
+   "what": "retry",
+   "why": "run rm-role-designer-1795257816 result rejected: no result.json (a closing message is not a result)"
   },
   {
-   "at": "2026-11-21T10:12:17Z",
-   "stage": 5,
-   "what": "exam_map",
-   "why": "read map recorded for 40 scenarios"
+   "at": "2026-11-21T10:46:28Z",
+   "stage": 4,
+   "what": "void_system",
+   "why": "run rm-role-designer-1795257816: the unit ended with no claude result of its own; its rejection spends no retry"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -3049,44 +3029,20 @@
    "summary": "Stage 3 has nothing left to write: the root_hash restamp landed at 47e044e556 (tree root_hash 6ad3da0a6e44 = the walk's validated hash), concept_tree.py lint (Gate A) PASS, and designer_stage.py showcases accepts the set (burn_line 6 new, fire_cast 3, sky_and_shelter 3, fire_solace 3 at overlap 0.25). No leaf, sheet, scene or floor line changed in this run. Owed next, not stage 3's: stage 4 retakes the exam whole (exam.json is frozen against the pre-restamp tree and has no exam_reads.json), then the coverage signature voided by the restamp is the Conductor window's certification of judge rm-coverage-judge-1794947629 (covered, 0 gaps; one-entry delta: root_hash only)."
   },
   {
-   "at": "2026-11-21T10:12:16Z",
-   "inputs": {
-    "exam": "338a753e0135511be4e514478f371c0a3547c93863777a56ed02a61e1824c3f6",
-    "floor": "bd9d7fd896359814f8ad5c820b6b23ee1d61a06a6d4a33cbe92595cc4771b32d",
-    "owner": "79abe4290fa077e9fd73b85d4c6d6e47ee49c99ed1608b827f1afbe5f8895520",
-    "root": "ae26d34f7fa9f55c5bb0ea115379238907576a0151185aabfad9d1f495425fab",
-    "scenes": "b08126e2f6529eba85ebc5a0ad8aa8cad5da44f3c4744986affd96371a3eb245",
-    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
-    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54"
-   },
-   "manifest": {
-    "designer.md": "311493e8980d351a9204dac50b507be22a3dcba6191c6c39f4c7609c01105747",
-    "designer_exam.md": "fcf9e077af73f6d526f7720d8e9cf0f593b10a4766d459aa013693ef575eee45"
-   },
-   "outcome": "done",
-   "owner_uncited": [
-    "1793766816609436834",
-    "1794611171307640419",
-    "1794790810777772480",
-    "1794790871101885625"
-   ],
-   "pinned_at": {
-    "exam": "80f584b4cc8f975b43e89dd335c96db98e32b14f",
-    "floor": "80f584b4cc8f975b43e89dd335c96db98e32b14f",
-    "root": "80f584b4cc8f975b43e89dd335c96db98e32b14f",
-    "scenes": "80f584b4cc8f975b43e89dd335c96db98e32b14f",
-    "sheet": "80f584b4cc8f975b43e89dd335c96db98e32b14f",
-    "tree": "80f584b4cc8f975b43e89dd335c96db98e32b14f"
-   },
-   "run": "rm-role-designer-1795255597",
+   "at": "2026-11-21T10:46:28Z",
+   "outcome": "rejected",
+   "run": "rm-role-designer-1795257816",
    "stage": 4,
-   "summary": "Stage 4 exam retaken whole (exam_retake.py plan: WHOLE, no read map; root_hash restamp moved the shared unit) on the 2026-11-17 frozen 40-scenario set (scenarios_hash 28f4a865 unchanged, examiner and challenger as frozen). Two fresh Opus Readers (ac10c42c043e9a170, ae132c2288f7538ea) on sheet, tree and scenario text only: 40/40 right, accept_where_reject_core 0, no challenger miss. Control Reader (a5ff83454d8821e5a) on a fresh exam-control copy without fire_walks_with_wind missed e5 and c3, both sourced on that leaf. exam.json restamped to tree 78f3df67 / sheet 628feeb2; exam_reads.json recorded (40 scenarios over 24 leaves), so later retakes can be partial."
+   "void_system": "the unit ended with no claude result of its own",
+   "why": [
+    "no result.json (a closing message is not a result)"
+   ]
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 5,
+ "stage": 4,
  "status": "ready",
  "waiting_owner_feed": "79abe4290fa077e9fd73b85d4c6d6e47ee49c99ed1608b827f1afbe5f8895520"
 }
