@@ -96,6 +96,17 @@ The nine-line version vision (shock rule, Wire down, the tap, four looks, switch
 3. ~~Two scenes need FlowWorks~~: answered by the steward, tier `gimmesomeslack_flowworks` (2026-11-14). Question 1 is
    answered the same way (re-pinned).
 
+4. **(to the Conductor, 2026-11-20, bar `poles_draw_in_front_when_south`) Two draw-order regions the mast's own layer cannot reach.**
+   Picture: `version/evidence/pole_draw_order_question_2026-11-20.png`; counts: `selftest_gss_pole_south_draws_front.py` (APART lines).
+   (a) BUILDING_LAYER_REACH: a picture on the Building or 16 layer, standing south of a mast and reaching into it, draws behind the
+   mast (the SouthDrawsFront rule keeps such buildings on their own layer, under the common layer). Limit tag: "our own rule"
+   (MandrakePatches' kernel). Fix offered: in the rule's home, a building whose picture reaches north of its footprint prints on the
+   common layer, as plants do; that changes MandrakePatches for every mod, so it is not this helper's to make.
+   (b) HEAD_OVER_SOUTHERN_PICTURE: the mast head overlay draws above pawns (as the wires do), so a plant over 4 cells tall south of a
+   mast shows behind the head. Limit tag: "our own rule" (the head on PawnState, so wires never pass behind it); vanilla's
+   pawn-over-tree order is the same kind of exception. Pick: accept both as out of the bar's range, or open the fix (a) as its own
+   item and (b) as a Divergent change for the next version.
+
 ## History (dated, added to only)
 
 ### Conductor interventions (one line each, added to only; the form is in the spec §5, "The steward and the journal")
@@ -420,3 +431,30 @@ row 2; Stage 3 about $10.3 and 50 minutes (12:15 to 13:05 PST). No helpers, no g
 - Was, "Stage now": - **Stage now:** Stage 2, preflight, since 2026-11-20 4:09 PM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-20 3:33 PM PST).
 - Record: `version/stage_record.json`.
+
+### 2026-11-20 6:29 PM PST, Stage 3 offline build of 0.1.1: the four walk faults fixed, their checks built (helper RIMMANDRAKE_AUTOBUILD_GIMMESOMESLACK_FOUR_BARS_LEFT, offline only)
+
+- **Off switch stays a node** (`switch_off_cords_stay_connected`): `Core/SwitchNode.JoinsGraph` decides; `CordWorldAdapter.AddPower` adds
+  an off `Building_PowerSwitch` (in no power net) as a transmitter node. `SelfTest/SwitchOffChecks.cs` (`T_SWITCH_OFF_NODE_OFFLINE`, run by
+  `T_CORE`, alone with `--switchoff-only`): 644 off/on pairs (every arm subset x every powered-piece subset x 4 looks x 2 seeds, plus two
+  switches side by side), 0 cut ends and 0 frays within 1.5 cells of a switch, 0 short, 0 shape differences; red under
+  `evidence/fault_switch_off_dropped_from_graph.patch` (3296 cut ends). The oracle (`northstar_matrix/oracle.py`) keeps an off switch in the
+  graph and out of the power side; `northstar_matrix/selftest.py` O2 and its negative control O2n. [measured]
+- **Pole icons on the main thread** (`pole_buttons_show_icons`): `CompAerialAnchor.IconLink`/`IconUnlink` are lazy getters.
+  `selftest_gss_main_thread_textures.py` (`T_MAIN_THREAD_TEXTURES_OFFLINE`, supports the bar): 71 files, 193 static initializers, 0 refused; red under `evidence/fault_pole_icons_static_initializer.patch`;
+  three plants red, three keeps green. The live log read decides the bar.
+- **Masts on the common layer** (`poles_draw_in_front_when_south`): `RM_AerialAnchorBase` prints on `BuildingOnTop`.
+  `selftest_gss_pole_south_draws_front.py` reads the def, the kernel's constants and every look's art outline: 59301 overlapping pairs,
+  0 refused; red under `evidence/fault_mast_on_building_layer.patch` (14868 refused). Two regions the mast's own layer cannot reach are
+  counted apart and asked of the Conductor (`evidence/pole_draw_order_question_2026-11-20.png`): BUILDING_LAYER_REACH (1170 pairs: a
+  Building- or 16-layer picture south of a mast reaching into it; 18 of them a plain 2x2 building beside the mast, which the old layer drew
+  right) and HEAD_OVER_SOUTHERN_PICTURE (the head overlay draws above pawns, so a southern tree over 4 cells tall shows behind it; no vanilla
+  plant is that tall, greatbole-class plants are). [measured]
+- **No roof over a standing pole** (`no_roof_over_pole`): `Aerial/RoofOverMast.cs`, gated on the aerial master switch (`T_SETTINGS_SWEEP_OFFLINE` caught the first version ungated). The build-roof designator refuses the cell with a
+  message naming the pole; every write of the build-roof area there is refused (auto-roof writes it directly; the item's `allowAutoroof`
+  idea does not reach it: vanilla reads that flag only on the room's border holders, `AutoBuildRoofAreaSetter.cs:55`); a pole clears the
+  mark under itself when it spawns. The Roofed cut stays. Station 16's poke text changed to "a roof is refused".
+- **Live halves written, UNRUN**: `validation.py --scene scene_switch_off_ends | scene_pole_icons_loaded | scene_pole_south_of_tree |
+  scene_no_roof_over_pole` (rows in `northstar/scene_rows.py`; probe verbs `flick:`, `icons`, `drawlayer:`, `roofgate:`, `roofpaint:`). A
+  fake-bridge run reads each PASS on a good game and FAIL on a bad one; the bridge calls themselves are untested.
+- Bars not runnable: 4 before, 0 (every_bar_has_a_check_that_runs passes; the judge certificate still wants `maturation.py certificate GimmeSomeSlack --run`, the steward's step) after (`maturation.py next`).

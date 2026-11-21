@@ -1,7 +1,7 @@
 {
  "mod": "GimmeSomeSlack",
  "version": "0.1.1",
- "made": "2026-11-20T16:47:17-08:00",
+ "made": "2026-11-20T18:07:09-08:00",
  "made_by": "rm-builder, Maturation hand run beside the pilot, row 2 (throwaway version/make_test_table.py)",
  "stages": {
   "2": "preflight (a program)",
@@ -295,6 +295,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotBlock.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotPool.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/StubJoinAudit.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchNode.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/TexPath.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/WallMount.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialDefOf.cs",
@@ -321,6 +322,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RM_MapComponent_Aerial.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RM_MapComponent_ConduitRuns.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RestringJob.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RoofOverMast.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/SectionLayer_RM_AerialGround.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/ShockRule.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/StylePicker.cs",
@@ -373,6 +375,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/StyledFreshChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/StyledWinnerLegacyBridgeChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SwitchFlipChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SwitchOffChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/TapClampPoseChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/TapWindowChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/TexPathChecks.cs",
@@ -386,9 +389,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 310.6,
-    "last": "4600/4600 checks passed",
-    "at": "2026-11-20T16:28:22-08:00",
+    "seconds": 315.16,
+    "last": "4606/4606 checks passed",
+    "at": "2026-11-20T18:07:09-08:00",
     "result": "PASS"
    }
   },
@@ -407,9 +410,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 21.04,
+    "seconds": 21.05,
     "last": "9/9 checks passed (stub joins only)",
-    "at": "2026-11-20T16:28:22-08:00",
+    "at": "2026-11-20T18:07:09-08:00",
     "result": "PASS"
    }
   },
@@ -427,9 +430,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.34,
+    "seconds": 0.46,
     "last": "PASS",
-    "at": "2026-11-20T16:28:22-08:00",
+    "at": "2026-11-20T18:07:09-08:00",
     "result": "PASS"
    }
   },
@@ -448,9 +451,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 361.01,
+    "seconds": 343.08,
     "last": "O4_python_oracle             PASS      44/44 checks passed",
-    "at": "2026-11-20T16:28:22-08:00",
+    "at": "2026-11-20T18:07:09-08:00",
     "result": "PASS"
    }
   },
@@ -477,9 +480,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 11.54,
-    "last": "61/61 checks passed (18 negative controls among them)",
-    "at": "2026-11-20T16:28:22-08:00",
+    "seconds": 7.56,
+    "last": "63/63 checks passed (19 negative controls among them)",
+    "at": "2026-11-20T18:07:09-08:00",
     "result": "PASS"
    }
   },
@@ -498,9 +501,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 3.92,
+    "seconds": 2.4,
     "last": "PASS  G0_clean_copy  want=green got=[]",
-    "at": "2026-11-20T16:28:22-08:00",
+    "at": "2026-11-20T18:07:09-08:00",
     "result": "PASS"
    }
   },
@@ -535,6 +538,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RM_MapComponent_Aerial.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RM_MapComponent_ConduitRuns.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RestringJob.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RoofOverMast.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/SectionLayer_RM_AerialGround.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/ShockRule.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/StylePicker.cs",
@@ -546,9 +550,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.13,
+    "seconds": 0.07,
     "last": "ALL PASS",
-    "at": "2026-11-20T16:28:22-08:00",
+    "at": "2026-11-20T18:07:09-08:00",
     "result": "PASS"
    }
   },
@@ -583,6 +587,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RM_MapComponent_Aerial.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RM_MapComponent_ConduitRuns.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RestringJob.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RoofOverMast.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/SectionLayer_RM_AerialGround.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/ShockRule.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/StylePicker.cs",
@@ -594,9 +599,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 11.68,
+    "seconds": 7.66,
     "last": "ALL PASS",
-    "at": "2026-11-20T16:28:22-08:00",
+    "at": "2026-11-20T18:07:09-08:00",
     "result": "PASS"
    }
   },
@@ -631,6 +636,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RM_MapComponent_Aerial.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RM_MapComponent_ConduitRuns.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RestringJob.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RoofOverMast.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/SectionLayer_RM_AerialGround.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/ShockRule.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/StylePicker.cs",
@@ -642,9 +648,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.46,
+    "seconds": 0.39,
     "last": "ALL PASS",
-    "at": "2026-11-20T16:28:22-08:00",
+    "at": "2026-11-20T18:07:09-08:00",
     "result": "PASS"
    }
   },
@@ -678,6 +684,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotBlock.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotPool.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/StubJoinAudit.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchNode.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/TexPath.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/WallMount.cs"
    ],
@@ -685,9 +692,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.02,
+    "seconds": 0.01,
     "last": "gss end-heap budget: ok",
-    "at": "2026-11-20T16:28:22-08:00",
+    "at": "2026-11-20T18:07:09-08:00",
     "result": "PASS"
    }
   },
@@ -831,9 +838,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.22,
+    "seconds": 0.13,
     "last": "12/12 junction PNGs pass",
-    "at": "2026-11-20T16:28:22-08:00",
+    "at": "2026-11-20T18:07:09-08:00",
     "result": "PASS"
    }
   },
@@ -851,9 +858,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.08,
+    "seconds": 0.04,
     "last": "PASS",
-    "at": "2026-11-20T16:28:22-08:00",
+    "at": "2026-11-20T18:07:09-08:00",
     "result": "PASS"
    }
   },
@@ -872,9 +879,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.9,
+    "seconds": 0.2,
     "last": "  bright = max((max(p[:3]) for p in im.getdata() if p[3] > 10), default=0)",
-    "at": "2026-11-20T16:28:22-08:00",
+    "at": "2026-11-20T18:07:09-08:00",
     "result": "PASS"
    }
   },
@@ -892,9 +899,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.12,
+    "seconds": 0.08,
     "last": "GREEN: every row cites a leaf, every leaf has a row or a live item owing it (0 owed)",
-    "at": "2026-11-20T16:28:22-08:00",
+    "at": "2026-11-20T18:07:09-08:00",
     "result": "PASS"
    }
   },
@@ -912,9 +919,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.24,
+    "seconds": 0.15,
     "last": "OK",
-    "at": "2026-11-20T16:28:22-08:00",
+    "at": "2026-11-20T18:07:09-08:00",
     "result": "PASS"
    }
   },
@@ -932,9 +939,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.61,
+    "seconds": 0.39,
     "last": "OK",
-    "at": "2026-11-20T16:28:22-08:00",
+    "at": "2026-11-20T18:07:09-08:00",
     "result": "PASS"
    }
   },
@@ -952,9 +959,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.67,
+    "seconds": 0.62,
     "last": "PASS: 0 failed",
-    "at": "2026-11-20T16:28:22-08:00",
+    "at": "2026-11-20T18:07:09-08:00",
     "result": "PASS"
    }
   },
@@ -972,9 +979,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 3.47,
+    "seconds": 1.28,
     "last": "failures=0",
-    "at": "2026-11-20T16:28:22-08:00",
+    "at": "2026-11-20T18:07:09-08:00",
     "result": "PASS"
    }
   },
@@ -994,7 +1001,7 @@
     "rc": 0,
     "seconds": 0.02,
     "last": "GREEN: 5 cases",
-    "at": "2026-11-20T16:28:22-08:00",
+    "at": "2026-11-20T18:07:09-08:00",
     "result": "PASS"
    }
   },
@@ -1012,9 +1019,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.09,
+    "seconds": 0.05,
     "last": "43/43 passed",
-    "at": "2026-11-20T16:28:22-08:00",
+    "at": "2026-11-20T18:07:09-08:00",
     "result": "PASS"
    }
   },
@@ -1032,9 +1039,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.23,
+    "seconds": 0.16,
     "last": "gss proof drivers: all ok",
-    "at": "2026-11-20T16:28:22-08:00",
+    "at": "2026-11-20T18:07:09-08:00",
     "result": "PASS"
    }
   },
@@ -1052,9 +1059,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.35,
+    "seconds": 0.24,
     "last": "OK",
-    "at": "2026-11-20T16:28:22-08:00",
+    "at": "2026-11-20T18:07:09-08:00",
     "result": "PASS"
    }
   },
@@ -1072,9 +1079,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.03,
+    "seconds": 0.01,
     "last": "selftest_gss_weakclose_guards: PASS",
-    "at": "2026-11-20T16:28:22-08:00",
+    "at": "2026-11-20T18:07:09-08:00",
     "result": "PASS"
    }
   },
@@ -1092,9 +1099,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.06,
+    "seconds": 0.04,
     "last": "41/41 checks passed",
-    "at": "2026-11-20T16:28:22-08:00",
+    "at": "2026-11-20T18:07:09-08:00",
     "result": "PASS"
    }
   },
@@ -1112,9 +1119,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 35.01,
+    "seconds": 20.03,
     "last": "ALL PASS",
-    "at": "2026-11-20T16:28:22-08:00",
+    "at": "2026-11-20T18:07:09-08:00",
     "result": "PASS"
    }
   },
@@ -1150,9 +1157,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.96,
+    "seconds": 2.5,
     "last": "PASS",
-    "at": "2026-11-20T16:28:22-08:00",
+    "at": "2026-11-20T18:07:09-08:00",
     "result": "PASS"
    }
   },
@@ -1188,6 +1195,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RM_MapComponent_Aerial.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RM_MapComponent_ConduitRuns.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RestringJob.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RoofOverMast.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/SectionLayer_RM_AerialGround.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/ShockRule.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/StylePicker.cs",
@@ -1201,9 +1209,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 310.6,
-    "last": "4600/4600 checks passed",
-    "at": "2026-11-20T16:28:22-08:00",
+    "seconds": 315.16,
+    "last": "4606/4606 checks passed",
+    "at": "2026-11-20T18:07:09-08:00",
     "result": "PASS",
     "via": "T_CORE"
    }
@@ -1238,6 +1246,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotBlock.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotPool.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/StubJoinAudit.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchNode.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/TexPath.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/WallMount.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/LabWorld.cs",
@@ -1249,20 +1258,19 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 309.87,
-    "last": "4609/4609 checks passed",
-    "at": "2026-11-20T16:28:22-08:00",
+    "seconds": 312.02,
+    "last": "4615/4615 checks passed",
+    "at": "2026-11-20T18:07:09-08:00",
     "result": "PASS"
    }
   },
-  "T_STATICS_CENSUS": {
-   "id": "T_STATICS_CENSUS",
+  "T_MAIN_THREAD_TEXTURES_OFFLINE": {
+   "id": "T_MAIN_THREAD_TEXTURES_OFFLINE",
    "kind": "offline",
    "stage": "4-5",
-   "file": "src/RimMandrake/GimmeSomeSlack/selftest_gss_statics_census.py",
-   "observes": "every mutable static field in Source (outside SelfTest) is cleared in GssSessionReset.cs or listed immutable with a reason; planted: a new static collection not reset goes red",
+   "file": "src/RimMandrake/GimmeSomeSlack/selftest_gss_main_thread_textures.py",
+   "observes": "no texture, material or graphic is fetched in a static field initializer, or in the static constructor of a class without [StaticConstructorOnStartup], anywhere in Source (outside SelfTest); planted: the pre-fix icon fields go red",
    "reads": [
-    "src/RimMandrake/GimmeSomeSlack/Source/GssSessionReset.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialDefOf.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialLineProfiles.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMaterials.cs",
@@ -1287,6 +1295,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RM_MapComponent_Aerial.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RM_MapComponent_ConduitRuns.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RestringJob.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RoofOverMast.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/SectionLayer_RM_AerialGround.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/ShockRule.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/StylePicker.cs",
@@ -1320,6 +1329,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotBlock.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotPool.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/StubJoinAudit.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchNode.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/TexPath.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/WallMount.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/GimmeSomeSlackDefOf.cs",
@@ -1376,6 +1386,153 @@
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/StyledFreshChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/StyledWinnerLegacyBridgeChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SwitchFlipChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SwitchOffChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/TapClampPoseChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/TapWindowChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/TexPathChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/TheftChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/UnityShim.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/UnroutableCensus.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/WaterStubChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/StyleProbe.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/TipSparks.cs"
+   ],
+   "new": true,
+   "built_in_stage": "3",
+   "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_main_thread_textures.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.2,
+    "last": "PASS",
+    "at": "2026-11-20T18:07:09-08:00",
+    "result": "PASS"
+   }
+  },
+  "T_STATICS_CENSUS": {
+   "id": "T_STATICS_CENSUS",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/GimmeSomeSlack/selftest_gss_statics_census.py",
+   "observes": "every mutable static field in Source (outside SelfTest) is cleared in GssSessionReset.cs or listed immutable with a reason; planted: a new static collection not reset goes red",
+   "reads": [
+    "src/RimMandrake/GimmeSomeSlack/Source/GssSessionReset.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialDefOf.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialLineProfiles.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMaterials.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialPowerPatch.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialProbe.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialSettings.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialStyles.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/Alert_WireDown.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/BracketGeometryTable.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/CompAerialAnchor.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/CompPowerTap.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStylePicker.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyleProbe.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/FloorEndShock.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/PlaceWorkers_Aerial.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/PoleGeometryTable.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/PowerTheftConsequences.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RM_FallenWireShock.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RM_LiveWirePathCost.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RM_MapComponent_Aerial.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RM_MapComponent_ConduitRuns.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RestringJob.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RoofOverMast.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/SectionLayer_RM_AerialGround.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/ShockRule.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/StylePicker.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/StyleProbeAerial.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/TapLedger.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/TapWindow.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/ConduitVisuals.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/CordMaterials.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/CordUnderLiquid.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/CordWorldAdapter.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/ConduitPlacementGate.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/ConduitTargets.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordAudit.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordEndAudit.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordGraph.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordLiveEnd.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordMotion.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordPlugExit.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordReach.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordShape.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordShapeAudit.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordSlacken.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/HookupPick.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/LegacyName.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/ProbeRead.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/RebuildGate.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/RebuildTail.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SettingsPrint.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SliceWindow.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotBlock.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotPool.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/StubJoinAudit.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchNode.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/TexPath.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/WallMount.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/GimmeSomeSlackDefOf.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/GimmeSomeSlackMod.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/GimmeSomeSlackProbe.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/GssSessionReset.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/RM_MapComponent_CordGraph.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/RuinHookupProof.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SafeTex.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SectionLayer_RM_MessyCords.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/AStarHeapChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/AerialSelfTest.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/BatchedLinkStyleMergeChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/CordEndKindChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/CordGeometryChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/CordScaleBench.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/CordShapeChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/CordSlideUnderChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/DeterminismChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/DoorLoopChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/EndHeapBudgetChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/ExplodeProbeChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/GptPreReleaseChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/GptReadFixChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/GssFuzz.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/HiddenConduitSeedChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/JunctionStripChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/LabWorld.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/LaneAChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/LegacyNameChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/LiveEndCensus.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/LiveEndSweepChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/LoopLassoChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/MotionBucketChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/PhantomSparkChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/PileLookChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/ProbeReadChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/Program.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/RebuildPerDigChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/RebuildTailChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/ReviewRound1Checks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/ReviewRound3Checks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/ReviewRound4Checks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/ReviewRound5Checks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/ReviewRound6Checks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SceneDump.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/ShockRuleChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SittingChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SliceGateChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SnapshotPoolChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/StubJoinChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/StyleStage1Checks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/StyleStage2Checks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/StyledFreshChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/StyledWinnerLegacyBridgeChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SwitchFlipChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SwitchOffChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/TapClampPoseChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/TapWindowChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/TexPathChecks.cs",
@@ -1392,9 +1549,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.14,
+    "seconds": 0.12,
     "last": "PASS",
-    "at": "2026-11-20T16:28:22-08:00",
+    "at": "2026-11-20T18:07:09-08:00",
     "result": "PASS"
    }
   },
@@ -1429,6 +1586,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotBlock.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotPool.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/StubJoinAudit.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchNode.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/TexPath.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/WallMount.cs"
    ],
@@ -1436,8 +1594,12 @@
    "built_in_stage": "3",
    "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py",
    "runs_today": {
-    "ran": false,
-    "why": "specified, not built: Stage 3 builds it failing first"
+    "ran": true,
+    "rc": 0,
+    "seconds": 304.75,
+    "last": "4606/4606 checks passed",
+    "at": "2026-11-20T18:07:09-08:00",
+    "result": "PASS"
    }
   },
   "T_POLE_SOUTH_DRAWS_FRONT_OFFLINE": {
@@ -1448,15 +1610,31 @@
    "observes": "over the SouthDrawsFront rule (MandrakePatches) and the mast def: the mast is drawn above every plant or building north of it within its picture height and below one south of it; planted: the mast on its old Building layer goes red (bar poles_draw_in_front_when_south)",
    "reads": [
     "src/RimMandrake/GimmeSomeSlack/Defs/Aerial/RM_AerialAnchors.xml",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/PoleGeometryTable.cs",
     "src/RimMandrake/MandrakePatches/Source/SouthDrawsFront/SouthDrawsFrontKernel.cs",
-    "src/RimMandrake/MandrakePatches/Source/SouthDrawsFront/SouthDrawsFrontPatches.cs"
+    "src/RimMandrake/MandrakePatches/Source/SouthDrawsFront/SouthDrawsFrontPatches.cs",
+    "src/RimMandrake/MandrakePatches/selftest_south_draws_front.py",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Aerial/AerialLampMast.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Aerial/AerialMast.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Aerial/Styles/Futuristic/AerialLampMast.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Aerial/Styles/Futuristic/AerialMast.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Aerial/Styles/Industrial/AerialLampMast.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Aerial/Styles/Industrial/AerialMast.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Aerial/Styles/Modern/AerialLampMast.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Aerial/Styles/Modern/AerialMast.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialLampMast.png",
+    "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialMast.png"
    ],
    "new": true,
    "built_in_stage": "3",
    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_pole_south_draws_front.py",
    "runs_today": {
-    "ran": false,
-    "why": "specified, not built: Stage 3 builds it failing first"
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.58,
+    "last": "PASS",
+    "at": "2026-11-20T18:07:09-08:00",
+    "result": "PASS"
    }
   },
   "sc_conduit_invisible": {
@@ -2056,7 +2234,7 @@
    "tier": "gimmesomeslack",
    "file": "src/RimMandrake/GimmeSomeSlack/validation.py",
    "entry": "scene_switch_off_ends",
-   "entry_exists": false,
+   "entry_exists": true,
    "new": true,
    "observes": "the AerialProbe ends:/endkind: probe on an off power switch finds no live or dead cut end within 1.5 cells of it",
    "reads": [
@@ -2065,10 +2243,10 @@
    ],
    "why_game": "the cord pieces at a switch come from the running map's graph and its live power state",
    "for_bar": "switch_off_cords_stay_connected",
-   "command": "python.exe src\\RimMandrake\\GimmeSomeSlack\\validation.py --scene scene_switch_off_ends   (minimal list; entry ABSENT)",
+   "command": "python.exe src\\RimMandrake\\GimmeSomeSlack\\validation.py --scene scene_switch_off_ends   (minimal list; entry exists)",
    "runs_today": {
     "ran": false,
-    "why": "live: offline-only run; entry ABSENT in the code"
+    "why": "live: offline-only run; entry exists in the code"
    }
   },
   "sc_pole_icons_loaded": {
@@ -2078,7 +2256,7 @@
    "tier": "gimmesomeslack",
    "file": "src/RimMandrake/GimmeSomeSlack/validation.py",
    "entry": "scene_pole_icons_loaded",
-   "entry_exists": false,
+   "entry_exists": true,
    "new": true,
    "observes": "after a cold load Player.log holds no 'Tried to get a resource ... from a different thread' line for UI/Commands/TryReconnect, UI/Designators/Cancel or any Gimme Some Slack path, and the three pole button icons (Link wire, Unlink wire, Unlink all) are non-null",
    "reads": [
@@ -2086,10 +2264,10 @@
    ],
    "why_game": "the thread a texture loads on and the icon it yields exist only in the running game's load; Player.log after a cold load is the instrument",
    "for_bar": "pole_buttons_show_icons",
-   "command": "python.exe src\\RimMandrake\\GimmeSomeSlack\\validation.py --scene scene_pole_icons_loaded   (minimal list; entry ABSENT)",
+   "command": "python.exe src\\RimMandrake\\GimmeSomeSlack\\validation.py --scene scene_pole_icons_loaded   (minimal list; entry exists)",
    "runs_today": {
     "ran": false,
-    "why": "live: offline-only run; entry ABSENT in the code"
+    "why": "live: offline-only run; entry exists in the code"
    }
   },
   "sc_pole_south_of_tree": {
@@ -2099,7 +2277,7 @@
    "tier": "gimmesomeslack",
    "file": "src/RimMandrake/GimmeSomeSlack/validation.py",
    "entry": "scene_pole_south_of_tree",
-   "entry_exists": false,
+   "entry_exists": true,
    "new": true,
    "observes": "a capture of a pole south of a tree and one north of it: the south pole is drawn in front, the north one behind",
    "reads": [
@@ -2107,10 +2285,10 @@
    ],
    "why_game": "draw order is a property of the running renderer; the offline read proves the layer, not the drawn result",
    "for_bar": "poles_draw_in_front_when_south",
-   "command": "python.exe src\\RimMandrake\\GimmeSomeSlack\\validation.py --scene scene_pole_south_of_tree   (minimal list; entry ABSENT)",
+   "command": "python.exe src\\RimMandrake\\GimmeSomeSlack\\validation.py --scene scene_pole_south_of_tree   (minimal list; entry exists)",
    "runs_today": {
     "ran": false,
-    "why": "live: offline-only run; entry ABSENT in the code"
+    "why": "live: offline-only run; entry exists in the code"
    }
   },
   "sc_no_roof_over_pole": {
@@ -2120,7 +2298,7 @@
    "tier": "gimmesomeslack",
    "file": "src/RimMandrake/GimmeSomeSlack/validation.py",
    "entry": "scene_no_roof_over_pole",
-   "entry_exists": false,
+   "entry_exists": true,
    "new": true,
    "observes": "auto-roof and a build-roof designation over a mast cell form no roof and the refusal names the pole; a god-mode roof still cuts the spans",
    "reads": [
@@ -2129,10 +2307,10 @@
    ],
    "why_game": "auto-roof, the roof designator and a god-mode roof run in the live game's roof systems",
    "for_bar": "no_roof_over_pole",
-   "command": "python.exe src\\RimMandrake\\GimmeSomeSlack\\validation.py --scene scene_no_roof_over_pole   (minimal list; entry ABSENT)",
+   "command": "python.exe src\\RimMandrake\\GimmeSomeSlack\\validation.py --scene scene_no_roof_over_pole   (minimal list; entry exists)",
    "runs_today": {
     "ran": false,
-    "why": "live: offline-only run; entry ABSENT in the code"
+    "why": "live: offline-only run; entry exists in the code"
    }
   },
   "LOOK_STAGE8": {
@@ -7381,10 +7559,10 @@
    "offline_decides": [
     "T_SWITCH_OFF_NODE_OFFLINE"
    ],
-   "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false,
-   "any_decider_runnable_today": false
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true,
+   "any_decider_runnable_today": true
   },
   {
    "id": "pole_buttons_show_icons",
@@ -7394,15 +7572,17 @@
    "decides": [
     "sc_pole_icons_loaded"
    ],
-   "supports": [],
+   "supports": [
+    "T_MAIN_THREAD_TEXTURES_OFFLINE"
+   ],
    "held": [
     "gss_walk_20261120.md#9"
    ],
    "offline_decides": [],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false,
-   "any_decider_runnable_today": false
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true,
+   "any_decider_runnable_today": true
   },
   {
    "id": "poles_draw_in_front_when_south",
@@ -7420,10 +7600,10 @@
    "offline_decides": [
     "T_POLE_SOUTH_DRAWS_FRONT_OFFLINE"
    ],
-   "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false,
-   "any_decider_runnable_today": false
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true,
+   "any_decider_runnable_today": true
   },
   {
    "id": "no_roof_over_pole",
@@ -7439,9 +7619,9 @@
    ],
    "offline_decides": [],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false,
-   "any_decider_runnable_today": false
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true,
+   "any_decider_runnable_today": true
   },
   {
    "id": "conduit_invisible",

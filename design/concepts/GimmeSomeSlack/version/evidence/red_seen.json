@@ -25,6 +25,19 @@
   "rc": 1,
   "test_blob": "130d8579e10c3a3de37bae17294cbd7944651256"
  },
+ "T_MAIN_THREAD_TEXTURES_OFFLINE": {
+  "at": "2026-11-21T02:29:36Z",
+  "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_main_thread_textures.py",
+  "file": "src/RimMandrake/GimmeSomeSlack/selftest_gss_main_thread_textures.py",
+  "last": "FAIL",
+  "patch": "--- a/src/RimMandrake/GimmeSomeSlack/Source/Aerial/CompAerialAnchor.cs\t2026-11-20 17:39:37.555373245 -0800\n+++ b/src/RimMandrake/GimmeSomeSlack/Source/Aerial/CompAerialAnchor.cs\t2026-11-20 17:39:37.562172571 -0800\n@@ -116,8 +116,8 @@\n         // null (\"Tried to get a resource ... from a different thread\"), and the buttons drew the missing-texture square (his walk of\n         // 2026-11-20, row 9; selftest_gss_main_thread_textures.py refuses a texture in a static initializer)\n         private static Texture2D iconLink, iconUnlink;\n-        internal static Texture2D IconLink => iconLink ??= ContentFinder<Texture2D>.Get(\"UI/Commands/TryReconnect\", false);\n-        internal static Texture2D IconUnlink => iconUnlink ??= ContentFinder<Texture2D>.Get(\"UI/Designators/Cancel\", false);\n+        internal static readonly Texture2D IconLink = ContentFinder<Texture2D>.Get(\"UI/Commands/TryReconnect\", false);\n+        internal static readonly Texture2D IconUnlink = ContentFinder<Texture2D>.Get(\"UI/Designators/Cancel\", false);\n \n         public AerialAnchorExtension Ext => def.GetModExtension<AerialAnchorExtension>() ?? DefaultExt;\n         private static readonly AerialAnchorExtension DefaultExt = new AerialAnchorExtension();\n",
+  "patch_files": [
+   "src/RimMandrake/GimmeSomeSlack/Source/Aerial/CompAerialAnchor.cs"
+  ],
+  "patch_sha": "5e5f404148f290fa",
+  "rc": 1,
+  "test_blob": "68d00c2344f59aed4346d5af77107411a8c78506"
+ },
  "T_POLE_SOUTH_DRAWS_FRONT_OFFLINE": {
   "at": "2026-11-21T01:39:45Z",
   "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_pole_south_draws_front.py",
