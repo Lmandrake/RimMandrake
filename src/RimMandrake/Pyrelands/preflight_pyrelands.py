@@ -242,7 +242,20 @@ class Env(object):
         return ordered, missing, banned
 
     def stamp_status(self, repo_dll):
-        """dll_source_stamp recompute at HEAD for one DLL: 'MATCH' or the failure."""
+        """dll_source_stamp recompute at HEAD for one DLL: 'MATCH' or the failure.
+
+        Under Windows python.exe on a WSL clone (\\wsl.localhost\...), Windows git refuses the repo ("dubious
+        ownership") and every stamp read ABSENT (Pyrelands visit 3, 2026-11-21), so there it runs under WSL python3."""
+        if os.name == "nt":
+            code = ("import json,sys; sys.path.insert(0,'src/RimMandrake/Utils'); import dll_source_stamp as ds; "
+                    "c=ds.BatchCat('.'); r=ds.recompute_stamp(c,'HEAD',sys.argv[1]+'.srchash','.'); c.close(); "
+                    "print('STAMP '+json.dumps([r.status,list(r.detail)]))")
+            rc, out = self.run_wsl(["python3", "-c", code, repo_dll.replace(os.sep, "/")], timeout=300)
+            line = [ln for ln in (out or "").splitlines() if ln.startswith("STAMP ")]
+            if rc != 0 or not line:
+                raise Unmeasured("stamp recompute under WSL did not answer (rc %s): %s" % (rc, (out or "")[-300:]))
+            st, detail = json.loads(line[-1][6:])
+            return st, detail
         import dll_source_stamp as ds
         cat = ds.BatchCat(self.root)
         try:
@@ -500,6 +513,10 @@ def a6_settings(s, env):
         bad = {}
         for field, want in sorted(DEFAULTS.items()):
             r = _call(s, "jawa/mod_settings_field", typeName=SETTINGS, action="get", field=field)
+            if "value" not in r and r.get("success") is True and want == "":
+                # the bridge drops an empty string from its reply (crossBiomeBiomeList, live 2026-11-21: success,
+                # fieldKind static, no value key); a non-empty value would be returned, so absent equals the default
+                r = dict(r, value="")
             if "value" not in r:
                 raise Unmeasured("mod_settings_field get %s: no value" % field)
             if _norm_val(r["value"]) != _norm_val(want):
