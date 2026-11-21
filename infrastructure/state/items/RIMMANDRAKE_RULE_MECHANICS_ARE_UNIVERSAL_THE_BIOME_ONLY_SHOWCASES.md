@@ -26,3 +26,30 @@
 **Picked:** New work now; old mods as they advance (Recommended)
 **Its description:** Why: no mod pays twice. The principle binds all new design and code from today; each existing mod converts when it next advances, as a planned change for its next version. Buys steady progress and keeps Pyrelands's first version on course. Costs months of mixed state. Recommended: least disruption for the same end.
 **Other options:** Pyrelands converts now · One campaign across all mods now
+
+## What the card said
+
+<!-- answered 2026-11-21T22:35:31Z; recorded by `note` (OWNER); written by rimflow, never by hand -->
+
+**Question:** You ruled today that a mechanic reads only physical conditions, never which biome it is in. Six mods have a Mod Settings switch named 'Enable outside this biome', off by default and labelled unsupported. Under your ruling the mechanic already works anywhere, so the switch has no job as written. Our Mod Settings rule also says each major feature has an on/off switch. (Hard to read? Type STE, Binding or Both for a rewrite.) What becomes of the six 'Enable outside this biome' switches?
+**Picked:** Turn each into a plain on/off (Recommended)
+**Its description:** Why: one switch per mechanic, no biome in it. When a mod converts, its switch becomes 'this mechanic: on/off', default on. Buys a player escape from any mechanic. Costs a settings change in six mods at their next version. Recommended: it fits both rulings.
+**Other options:** Delete the switches · Keep them, flip the default to on
+
+## What the card said
+
+<!-- answered 2026-11-21T22:35:31Z; recorded by `note` (OWNER); written by rimflow, never by hand -->
+
+**Question:** Some mechanics hurt a colony: Pyrelands fire walks across dry grass, and the Rot spreads. Written as conditions, they will act on any map where the conditions hold (dry grass, heat, no rain), not only at home. You chose to test in game only on the home biome, so behaviour on other maps is untested. Are dangerous mechanics on by default on every map?
+**Picked:** On everywhere; conditions decide (Recommended)
+**Its description:** Why: this is the ruling taken at its word. Fire walks wherever the grass is dry. Buys one consistent world. Costs surprise deaths on maps we never tested, and a heavier load of threats on every map. Recommended: a default-off list would be a biome check under a new name.
+**Other options:** On everywhere, with a danger dial · On at home, off elsewhere until tested
+
+## What the card said
+
+<!-- answered 2026-11-21T22:35:31Z; recorded by `note` (OWNER); written by rimflow, never by hand -->
+
+**Question:** The Scald is the hot-spring biome. Today it is our one written heat exception: it keeps its own steam clock, and its water harms faster than its steam. Every other biome uses one sun-heat rule. Under 'conditions, never the place', is the Scald's hot water still an exception?
+**Picked:** Physics: hot water scalds anywhere (Recommended)
+**Its description:** Why: the harm comes from the water's heat, not the map. Any water that hot, on any map, harms the same way; the Scald is simply where it is common. Buys a rule with no exception. Costs a rewrite of the Scald's clock at its next version. Recommended: it removes the last named exception.
+**Other options:** Keep it as the one exception · Decide when the Scald next advances
