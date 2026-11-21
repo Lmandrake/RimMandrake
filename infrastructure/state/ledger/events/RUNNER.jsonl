@@ -9989,3 +9989,4 @@
 {"seat":"RUNNER","event":"raise","id":"STEVE_LANE_UNSTICK_BRAKED_UNOWNED_9A40","reason":"steward: lane unowned 50 min (BRAKED)","ts":"2026-11-21T05:54:55Z","tsn":1795240495103114504}
 {"seat":"RUNNER","event":"note","id":"OPS_WRAPUP_DRAIN_DEBRIS_PILES_UP_RWZN","text":"ops_watch: WORSE at 2026-11-21T06:01:21Z: 1 -> 2 filed wrap-up rows still standing, the rule's step is {\"factor\": 2}","ts":"2026-11-21T06:01:29Z","tsn":1795240889118575853}
 {"seat":"RUNNER","event":"live","id":"OPS_WRAPUP_DRAIN_DEBRIS_PILES_UP_RWZN","result":"kept","detail":"sweep: running again","ts":"2026-11-21T06:03:09Z","tsn":1795240989865255216}
+{"seat":"RUNNER","event":"note","id":"OPS_FINDINGS_DIAGNOSE_XZLM","text":"ops_watch: cleared at 2026-11-21T06:03:41Z (flow.untriaged_findings now 0)","ts":"2026-11-21T06:03:50Z","tsn":1795241030557545334}
