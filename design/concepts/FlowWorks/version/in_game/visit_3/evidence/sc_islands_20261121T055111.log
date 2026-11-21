@@ -1,0 +1,7 @@
+FAIL \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_VISIT_THREE_RUN_TWO.det\design\concepts\FlowWorks\version\in_game\visit_3\evidence\sc_islands_20261121T055111.json AssertionError("rows not all PASS: [('ISL_trapped_while_winches_stand', 'PASS'), ('ISL_raiders_destroy_a_winch', 'PASS'), ('ISL_lost_winch_drops_its_leaf', 'PASS'), ('ISL_raiders_escape', 'FAIL'), ('ISL_control_unbreakable_winches_stay_trapped', 'PASS')]")
+[bridge split] 83.7 s wall: load 0.4 / ticks 20.2 / reads 14.5 / other 24.6 / outside calls 24.0 s
+[bridge split] WARN 272 calls of jawa/flowworks_excavation_drive (11.1 s): batch them
+[bridge split] WARN 250 calls of jawa/static_call (10.2 s): batch them
+[bridge split] WARN 114 calls of jawa/list_pawns (5.6 s): batch them
+[bridge split] WARN 112 calls of jawa/list_things (5.5 s): batch them
+[bridge split] WARN 105 calls of jawa/safe_advance (20.2 s): batch them

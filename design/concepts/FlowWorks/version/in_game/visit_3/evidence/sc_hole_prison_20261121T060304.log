@@ -1,0 +1,4 @@
+PASS \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_VISIT_THREE_RUN_TWO.det\design\concepts\FlowWorks\version\in_game\visit_3\evidence\sc_hole_prison_20261121T060304.json 
+[bridge split] 165.3 s wall: load 0.8 / ticks 28.6 / reads 3.6 / other 101.8 / outside calls 30.4 s
+[bridge split] WARN 114 calls of jawa/static_call (4.9 s): batch them
+[bridge split] WARN 94 calls of jawa/site_state (3.7 s): batch them

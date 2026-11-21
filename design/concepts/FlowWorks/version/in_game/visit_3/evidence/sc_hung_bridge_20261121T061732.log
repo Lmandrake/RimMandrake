@@ -1,0 +1,30 @@
+== section posts
+SB_drag_6_timber_builds            PASS       {"read": "BUILD ok=True anchors=2 decks=6 blueprints=0 records=1 reason=-"}
+SB_path_crosses_on_deck            PASS       {"read": "PATH found=True cells=10 decked=6", "walls": true}
+SB_load_over_rating_whole_span_falls FAIL       {"empty": "SPAN tier=timber load=0.0 rating=600 state=Ok decks=6 railings=False deckNotches=0 span=1/1 line=Load 0 / 600 kg", "before": "SPAN tier=timber load=623.3 rating=600 state=Over decks=6 railings=False deckNotches=0 span=1/1 line=Load 623 / 600 kg", "inspect_line": "Load", "after": "SPAN tie
+[rimbridge_client] auto-reconciled 6ac2712558ed42fa jawa/safe_advance as moot: its writer (pid 45668, suspension_bridge_proof.py) is gone and jawa/safe_advance is repeat-safe: advances the clock: a later caller reads the clock it finds, it never relied on this one
+Traceback (most recent call last):
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_VISIT_THREE_RUN_TWO.det\src\RimMandrake\FlowWorks\northstar\suspension_bridge_proof.py", line 1070, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_VISIT_THREE_RUN_TWO.det\src\RimMandrake\FlowWorks\northstar\suspension_bridge_proof.py", line 227, in main
+    SECTIONS[name](ctx) if name != "posts" else posts(ctx)
+                                                ~~~~~^^^^^
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_VISIT_THREE_RUN_TWO.det\src\RimMandrake\FlowWorks\northstar\suspension_bridge_proof.py", line 306, in posts
+    row("SB_load_over_rating_whole_span_falls", st,
+    ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        {"empty": empty_txt, "before": txt, "inspect_line": line, "after": txt2, "riders": len(riders), "fell": fell, "hurt": hurt,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+         "originZ": oz, "ballast": ballast.get("success"),
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+         "afterSpans": [proof("ProofSpan", xz(P(c, 0)), answer=True)[1][:120] for c in (1, 6)]})
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_VISIT_THREE_RUN_TWO.det\src\RimMandrake\FlowWorks\northstar\suspension_bridge_proof.py", line 158, in row
+    save()
+    ~~~~^^
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_VISIT_THREE_RUN_TWO.det\src\RimMandrake\FlowWorks\northstar\suspension_bridge_proof.py", line 149, in save
+    os.replace(out + ".tmp", out)
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+PermissionError: [WinError 5] Access is denied: '\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_VISIT_THREE_RUN_TWO.det\\design\\concepts\\FlowWorks\\version\\in_game\\visit_3\\evidence\\sc_hung_bridge_20261121T061732.json.tmp' -> '\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_VISIT_THREE_RUN_TWO.det\\design\\concepts\\FlowWorks\\version\\in_game\\visit_3\\evidence\\sc_hung_bridge_20261121T061732.json'
+[bridge split] 37.7 s wall: load 0.0 / ticks 1.0 / reads 1.1 / other 4.8 / outside calls 30.9 s

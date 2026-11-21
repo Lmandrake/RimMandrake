@@ -1,0 +1,66 @@
+{
+ "script": "pit_relief_live.py",
+ "started": "2026-11-21T07:33:42",
+ "rows": [
+  {
+   "id": "RELIEF_CUT_REDRAWS_ITS_SQUARE",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "RIMMANDRAKE_REBUILD_FLOWWORKS_PITS_AS_RELATIVE_TERRAIN",
+   "detail": {
+    "before": {
+     "built": "d576a4c7d2db0caf",
+     "fresh": "d576a4c7d2db0caf",
+     "stale": "False",
+     "dirty": "False",
+     "verts": "76"
+    },
+    "after": {
+     "built": "d576a4c7d2db0caf",
+     "fresh": "54dc5a5c5476ff17",
+     "stale": "True",
+     "dirty": "True",
+     "verts": "124"
+    },
+    "why": "re-meshed or marked dirty (stale=True dirty=True)"
+   }
+  },
+  {
+   "id": "RELIEF_CUT_REDRAWS_ACROSS_SECTION_EDGE",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "RIMMANDRAKE_REBUILD_FLOWWORKS_PITS_AS_RELATIVE_TERRAIN",
+   "detail": {
+    "before": {
+     "built": "54dc5a5c5476ff17",
+     "fresh": "54dc5a5c5476ff17",
+     "stale": "False",
+     "dirty": "False",
+     "verts": "124"
+    },
+    "after": {
+     "built": "54dc5a5c5476ff17",
+     "fresh": "95d5cd748edb0caf",
+     "stale": "True",
+     "dirty": "True",
+     "verts": "76"
+    },
+    "why": "re-meshed or marked dirty (stale=True dirty=True)"
+   }
+  }
+ ],
+ "args": {
+  "out": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_VISIT_THREE_RUN_TWO.det\\design\\concepts\\FlowWorks\\version\\in_game\\visit_3\\evidence\\OL_OWNER_LOOK_READS__pit_relief_20261121T073341.json",
+  "origin": "60,67",
+  "mock": false,
+  "mock_faults": ""
+ },
+ "control": {
+  "built": "d576a4c7d2db0caf",
+  "fresh": "d576a4c7d2db0caf",
+  "stale": "False",
+  "dirty": "False",
+  "verts": "76"
+ },
+ "finished": "2026-11-21T07:33:43"
+}

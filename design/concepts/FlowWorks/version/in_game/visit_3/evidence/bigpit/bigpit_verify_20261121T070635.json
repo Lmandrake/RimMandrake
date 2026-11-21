@@ -1,0 +1,130 @@
+{
+ "log": [
+  {
+   "open_sky_before_verify": {
+    "ok": true,
+    "rect": [
+     2,
+     2,
+     89,
+     55
+    ],
+    "roofCells": [],
+    "rockCells": [],
+    "why": [],
+    "cleared": null
+   }
+  },
+  {
+   "UNMEASURED": {
+    "row": "BP0_dry_things_read",
+    "verdict": "UNMEASURED",
+    "got": "{'success': True, 'things': [], 'scanned': 33800, 'countReturned': 0, 'countMatched': 0, 'isCompleteList': True, 'truncated': 0, 'pawnsSkipped': 4, 'perDef': {}, 'ticksGame': 21920, 'message': 'NOTHIN"
+   }
+  },
+  {
+   "UNMEASURED": {
+    "row": "BP1_0.5m_things_read",
+    "verdict": "UNMEASURED",
+    "got": "{'success': True, 'things': [], 'scanned': 33800, 'countReturned': 0, 'countMatched': 0, 'isCompleteList': True, 'truncated': 0, 'pawnsSkipped': 4, 'perDef': {}, 'ticksGame': 21920, 'message': 'NOTHIN"
+   }
+  },
+  {
+   "UNMEASURED": {
+    "row": "BP2_1m_things_read",
+    "verdict": "UNMEASURED",
+    "got": "{'success': True, 'things': [], 'scanned': 33800, 'countReturned': 0, 'countMatched': 0, 'isCompleteList': True, 'truncated': 0, 'pawnsSkipped': 4, 'perDef': {}, 'ticksGame': 21920, 'message': 'NOTHIN"
+   }
+  },
+  {
+   "UNMEASURED": {
+    "row": "BP3_2m_things_read",
+    "verdict": "UNMEASURED",
+    "got": "{'success': True, 'things': [], 'scanned': 33800, 'countReturned': 0, 'countMatched': 0, 'isCompleteList': True, 'truncated': 0, 'pawnsSkipped': 4, 'perDef': {}, 'ticksGame': 21920, 'message': 'NOTHIN"
+   }
+  },
+  {
+   "UNMEASURED": {
+    "row": "BP4_3m_things_read",
+    "verdict": "UNMEASURED",
+    "got": "{'success': True, 'things': [], 'scanned': 33800, 'countReturned': 0, 'countMatched': 0, 'isCompleteList': True, 'truncated': 0, 'pawnsSkipped': 4, 'perDef': {}, 'ticksGame': 21920, 'message': 'NOTHIN"
+   }
+  },
+  {
+   "UNMEASURED": {
+    "row": "BP5_brim_things_read",
+    "verdict": "UNMEASURED",
+    "got": "{'success': True, 'things': [], 'scanned': 33800, 'countReturned': 0, 'countMatched': 0, 'isCompleteList': True, 'truncated': 0, 'pawnsSkipped': 4, 'perDef': {}, 'ticksGame': 21920, 'message': 'NOTHIN"
+   }
+  },
+  {
+   "UNMEASURED": {
+    "row": "BP6_tar1.5m_things_read",
+    "verdict": "UNMEASURED",
+    "got": "{'success': True, 'things': [], 'scanned': 33800, 'countReturned': 0, 'countMatched': 0, 'isCompleteList': True, 'truncated': 0, 'pawnsSkipped': 4, 'perDef': {}, 'ticksGame': 21920, 'message': 'NOTHIN"
+   }
+  },
+  {
+   "UNMEASURED": {
+    "row": "label_onscreen_text",
+    "verdict": "UNMEASURED",
+    "got": "no bridge reader for RM_MapComponent_Excavation.PitLabelAt (instance method; mouseover only): expected text recorded, actual text owed (item RIMMANDRAKE_ADD_PIT_LABEL_STATE_READER_MOUSEOVER_HAS_NONE)"
+   }
+  },
+  {
+   "elapsed_s": 0.7
+  }
+ ],
+ "rows": [
+  {
+   "row": "site_no_geyser",
+   "verdict": "PASS",
+   "got": "no SteamGeyser within 3 of the site"
+  },
+  {
+   "row": "wildlife_none_on_map",
+   "verdict": "PASS",
+   "got": "no non-player pawn on the map"
+  },
+  {
+   "row": "BP0_dry_things_read",
+   "verdict": "UNMEASURED",
+   "got": "{'success': True, 'things': [], 'scanned': 33800, 'countReturned': 0, 'countMatched': 0, 'isCompleteList': True, 'truncated': 0, 'pawnsSkipped': 4, 'perDef': {}, 'ticksGame': 21920, 'message': 'NOTHIN"
+  },
+  {
+   "row": "BP1_0.5m_things_read",
+   "verdict": "UNMEASURED",
+   "got": "{'success': True, 'things': [], 'scanned': 33800, 'countReturned': 0, 'countMatched': 0, 'isCompleteList': True, 'truncated': 0, 'pawnsSkipped': 4, 'perDef': {}, 'ticksGame': 21920, 'message': 'NOTHIN"
+  },
+  {
+   "row": "BP2_1m_things_read",
+   "verdict": "UNMEASURED",
+   "got": "{'success': True, 'things': [], 'scanned': 33800, 'countReturned': 0, 'countMatched': 0, 'isCompleteList': True, 'truncated': 0, 'pawnsSkipped': 4, 'perDef': {}, 'ticksGame': 21920, 'message': 'NOTHIN"
+  },
+  {
+   "row": "BP3_2m_things_read",
+   "verdict": "UNMEASURED",
+   "got": "{'success': True, 'things': [], 'scanned': 33800, 'countReturned': 0, 'countMatched': 0, 'isCompleteList': True, 'truncated': 0, 'pawnsSkipped': 4, 'perDef': {}, 'ticksGame': 21920, 'message': 'NOTHIN"
+  },
+  {
+   "row": "BP4_3m_things_read",
+   "verdict": "UNMEASURED",
+   "got": "{'success': True, 'things': [], 'scanned': 33800, 'countReturned': 0, 'countMatched': 0, 'isCompleteList': True, 'truncated': 0, 'pawnsSkipped': 4, 'perDef': {}, 'ticksGame': 21920, 'message': 'NOTHIN"
+  },
+  {
+   "row": "BP5_brim_things_read",
+   "verdict": "UNMEASURED",
+   "got": "{'success': True, 'things': [], 'scanned': 33800, 'countReturned': 0, 'countMatched': 0, 'isCompleteList': True, 'truncated': 0, 'pawnsSkipped': 4, 'perDef': {}, 'ticksGame': 21920, 'message': 'NOTHIN"
+  },
+  {
+   "row": "BP6_tar1.5m_things_read",
+   "verdict": "UNMEASURED",
+   "got": "{'success': True, 'things': [], 'scanned': 33800, 'countReturned': 0, 'countMatched': 0, 'isCompleteList': True, 'truncated': 0, 'pawnsSkipped': 4, 'perDef': {}, 'ticksGame': 21920, 'message': 'NOTHIN"
+  },
+  {
+   "row": "label_onscreen_text",
+   "verdict": "UNMEASURED",
+   "got": "no bridge reader for RM_MapComponent_Excavation.PitLabelAt (instance method; mouseover only): expected text recorded, actual text owed (item RIMMANDRAKE_ADD_PIT_LABEL_STATE_READER_MOUSEOVER_HAS_NONE)"
+  }
+ ]
+}

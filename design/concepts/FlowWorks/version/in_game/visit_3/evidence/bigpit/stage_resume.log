@@ -1,0 +1,8 @@
+dig_failed_calls 0
+routes {"SculptureGrand": ["spawn_batch ok"], "DoubleBed": ["spawn_batch ok"], "RM_GlowTank": ["spawn_batch ok"], "RM_HoseReel": ["spawn_batch ok"], "Table2x2c": ["spawn_batch ok"], "TableButcher": ["spawn_batch ok"], "HandTailoringBench": ["spawn_batch ok"], "SculptureLarge": ["spawn_batch ok"], "Bed": ["
+labels {"success": false, "added": 7}
+elapsed_s 185.9
+TOTALS Counter({'PASS': 1})
+[bridge split] 185.8 s wall: load 0.0 / ticks 0.5 / reads 1.9 / other 26.7 / outside calls 156.7 s
+[bridge split] WARN 448 calls of jawa/spawn_batch (19.3 s): batch them
+[bridge split] WARN 97 calls of jawa/flowworks_excavation_drive (4.2 s): batch them

@@ -1,0 +1,4 @@
+reset "RESET cells=1718 levels=13744 rolled=0 released=0 bodies=0 swim=0 left=0"
+open_sky_before_stage {"ok": true, "rect": [2, 2, 89, 55], "roofCells": [], "rockCells": [], "why": [], "cleared": {"roofOp": {"success": true, "cellsChanged": 0, "cellsFailedVerify": 0}}}
+cleared {"success": true, "destroyed": 0}
+open_sky_after_clear {"ok": true, "rect": [2, 2, 89, 55], "roofCells": [], "rockCells": [], "why": [], "cleared": null}

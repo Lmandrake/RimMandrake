@@ -1,0 +1,542 @@
+{
+ "site": {
+  "site": "calm",
+  "save": "RM_TestSite_calm_v3",
+  "utc": "2026-11-21T14:54:40Z",
+  "problems": [],
+  "load_s": 4.1,
+  "quietMap": {
+   "profile": "quiet_site",
+   "suite": "isolated",
+   "row": "test_site_saves_load_calm",
+   "topic": null,
+   "controls": [
+    {
+     "name": "threat_structures_cleared",
+     "what": "hostile threat structures vanished at setup (vitals classifier: turret, spawner, dormant, condition causer, non-humanlike faction); keep_defs spared",
+     "hides": "hive/infestation/mech-cluster interactions; insect-faction behaviour on the site",
+     "readBack": {
+      "removed": [],
+      "threatsAfter": 0,
+      "kept": 0,
+      "errors": []
+     }
+    },
+    {
+     "name": "hostiles_removed",
+     "what": "hostile pawns present at setup removed by Vanish (no death action, no corpse)",
+     "hides": "combat interactions with the mod's things",
+     "readBack": {
+      "acted": 0,
+      "residue": []
+     }
+    },
+    {
+     "name": "proximity_letters_sent",
+     "what": "every CompProximityLetter marked sent (the mapgen void monolith's 'Fallen monolith')",
+     "hides": "the Anomaly monolith discovery letter and any mod building's proximity letter",
+     "readBack": {
+      "letters": [
+       [
+        "VoidMonolith",
+        "Fallen monolith",
+        true
+       ]
+      ],
+      "unsentAfter": 0
+     }
+    },
+    {
+     "name": "modal_broker",
+     "what": "explicit window handlers only (MODAL_HANDLERS); an unknown force-pause window is CAPTURED and blocks the row, never closed blindly; the same window still open after its handler escalates",
+     "hides": "the handled dialog's other choices (VEF new-faction: 'Do nothing' means the faction is not spawned)",
+     "readBack": {
+      "handled": [],
+      "unknown": []
+     }
+    }
+   ],
+   "notSuppressed": [
+    "active quests and their parts (never ended by default: ending a quest changes the world)",
+    "scenario parts (ScenPart_CreateIncident ticks outside the storyteller)",
+    "existing game conditions, map/world/game components and mod tickers",
+    "hives and other pawn-spawning structures, births, egg hatching, breeders",
+    "pending drop pods / shuttles / transporters, caravans and world pawns arriving",
+    "weather transitions, fires, existing hostile behaviour"
+   ],
+   "keepDefs": [],
+   "events": [],
+   "problems": [],
+   "verify": null,
+   "arrivals": [],
+   "note": "enableStoryteller is not saved with the game: re-apply after any load"
+  },
+  "sky": {
+   "weather": [
+    {
+     "after": "Clear",
+     "ok": true
+    },
+    {
+     "after": "Clear",
+     "ok": true
+    }
+   ],
+   "extinguished": 0,
+   "strayFires": 0,
+   "verified": true,
+   "error": null
+  },
+  "check": {
+   "site": "calm",
+   "utc": "2026-11-21T14:54:45Z",
+   "problems": [],
+   "map": {
+    "tile": 112579,
+    "mapId": 0,
+    "sizeX": 250,
+    "sizeZ": 250,
+    "mapBiome": "AridShrubland",
+    "outdoorTempNow": 13.9428368
+   },
+   "foggedCells": 0,
+   "triggers": 0,
+   "danger": [],
+   "ruins": 0,
+   "hostiles": [],
+   "threatStructures": [],
+   "fires": 0,
+   "weather": {
+    "current": "Clear",
+    "rainRate": 0.0
+   },
+   "colonists": [
+    [
+     "Human475",
+     false
+    ],
+    [
+     "Human478",
+     false
+    ],
+    [
+     "Human483",
+     false
+    ]
+   ],
+   "verified": true
+  },
+  "ready_s": 6.0,
+  "verified": true
+ },
+ "raiders": [
+  "Human21199",
+  "Human21206",
+  "Human21213",
+  "Human21220",
+  "Human21228",
+  "Human21235"
+ ],
+ "destroyed": [
+  1,
+  1
+ ],
+ "leaves": [
+  {
+   "leaf": "1/1",
+   "progress": "0",
+   "full": "720",
+   "target": "lowered",
+   "raised": "0/3",
+   "frozen": "False",
+   "winch": "False",
+   "powered": "False",
+   "hold": "False",
+   "auto": "False",
+   "pending": "none",
+   "tip": "False",
+   "hinge": "A",
+   "version": "1"
+  },
+  {
+   "leaf": "1/1",
+   "progress": "0",
+   "full": "720",
+   "target": "lowered",
+   "raised": "0/3",
+   "frozen": "False",
+   "winch": "False",
+   "powered": "False",
+   "hold": "False",
+   "auto": "False",
+   "pending": "none",
+   "tip": "False",
+   "hinge": "B",
+   "version": "1"
+  }
+ ],
+ "row_cells": [
+  [
+   59,
+   60,
+   "Gravel",
+   true,
+   []
+  ],
+  [
+   60,
+   60,
+   "Gravel",
+   true,
+   [
+    "RM_SuspensionAnchor_Timber"
+   ]
+  ],
+  [
+   61,
+   60,
+   "RM_Channel_Superdeep",
+   true,
+   [
+    "Filth_RubbleRock",
+    "RM_SuspensionDeck_Timber"
+   ]
+  ],
+  [
+   62,
+   60,
+   "RM_Channel_Superdeep",
+   true,
+   [
+    "RM_SuspensionDeck_Timber"
+   ]
+  ],
+  [
+   63,
+   60,
+   "RM_Channel_Superdeep",
+   true,
+   [
+    "Filth_RubbleRock",
+    "RM_SuspensionDeck_Timber"
+   ]
+  ],
+  [
+   64,
+   60,
+   "Soil",
+   true,
+   [
+    "RM_SuspensionAnchor_Timber"
+   ]
+  ],
+  [
+   65,
+   60,
+   "Soil",
+   true,
+   [
+    "RM_SuspensionAnchor_Steel"
+   ]
+  ],
+  [
+   66,
+   60,
+   "RM_Channel_Superdeep",
+   true,
+   [
+    "RM_SuspensionDeck_Steel"
+   ]
+  ],
+  [
+   67,
+   60,
+   "RM_Channel_Superdeep",
+   true,
+   [
+    "RM_SuspensionDeck_Steel",
+    "Human"
+   ]
+  ],
+  [
+   68,
+   60,
+   "RM_Channel_Superdeep",
+   true,
+   [
+    "RM_SuspensionDeck_Steel",
+    "Human"
+   ]
+  ],
+  [
+   69,
+   60,
+   "RM_Channel_Superdeep",
+   true,
+   [
+    "RM_SuspensionDeck_Steel",
+    "Human"
+   ]
+  ],
+  [
+   70,
+   60,
+   "RM_Channel_Superdeep",
+   true,
+   [
+    "RM_SuspensionDeck_Steel",
+    "Human"
+   ]
+  ],
+  [
+   71,
+   60,
+   "RM_Channel_Superdeep",
+   true,
+   [
+    "RM_SuspensionDeck_Steel",
+    "Human"
+   ]
+  ],
+  [
+   72,
+   60,
+   "RM_Channel_Superdeep",
+   true,
+   [
+    "RM_SuspensionDeck_Steel",
+    "Human"
+   ]
+  ],
+  [
+   73,
+   60,
+   "RM_Channel_Superdeep",
+   true,
+   [
+    "RM_SuspensionDeck_Steel"
+   ]
+  ],
+  [
+   74,
+   60,
+   "RM_Channel_Superdeep",
+   true,
+   [
+    "RM_SuspensionDeck_Steel"
+   ]
+  ],
+  [
+   75,
+   60,
+   "RM_Channel_Superdeep",
+   true,
+   [
+    "RM_SuspensionDeck_Steel"
+   ]
+  ],
+  [
+   76,
+   60,
+   "Sand",
+   true,
+   [
+    "RM_SuspensionAnchor_Steel"
+   ]
+  ],
+  [
+   77,
+   60,
+   "Sand",
+   true,
+   [
+    "RM_SuspensionAnchor_Timber"
+   ]
+  ],
+  [
+   78,
+   60,
+   "RM_Channel_Superdeep",
+   true,
+   [
+    "RM_SuspensionDeck_Timber"
+   ]
+  ],
+  [
+   79,
+   60,
+   "RM_Channel_Superdeep",
+   true,
+   [
+    "RM_SuspensionDeck_Timber"
+   ]
+  ],
+  [
+   80,
+   60,
+   "RM_Channel_Superdeep",
+   true,
+   [
+    "RM_SuspensionDeck_Timber"
+   ]
+  ],
+  [
+   81,
+   60,
+   "Soil",
+   true,
+   [
+    "RM_SuspensionAnchor_Timber"
+   ]
+  ]
+ ],
+ "walk_west": {
+  "success": true,
+  "message": "1/1 pawn(s) standing on (58,60) after 1504 tick(s); 1 moved at all.",
+  "arrivedCount": 1,
+  "movedCount": 1,
+  "pawnCount": 1,
+  "destination": {
+   "x": 58,
+   "z": 60
+  },
+  "pathEndMode": "OnCell",
+  "ticksElapsed": 1504,
+  "ticksRequested": 1500,
+  "timedOut": false,
+  "polls": 218,
+  "waitedSeconds": 21.8,
+  "speedBefore": "Paused",
+  "speedRestored": true,
+  "leftDrafted": [],
+  "noDrafter": [],
+  "pawns": [
+   {
+    "id": "Human21242",
+    "name": "Whitaker",
+    "kind": "Colonist",
+    "drafted": false,
+    "hasDrafter": true,
+    "requested": {
+     "x": 58,
+     "z": 60
+    },
+    "start": {
+     "x": 70,
+     "z": 60
+    },
+    "end": {
+     "x": 58,
+     "z": 60
+    },
+    "arrived": true,
+    "moved": true,
+    "distanceBefore": 12.0,
+    "distanceAfter": 0.0,
+    "canReach": true,
+    "orderAccepted": true,
+    "stillMoving": false,
+    "curJob": "Wait_Downed",
+    "downed": true
+   }
+  ],
+  "ticksGame": 1517,
+  "operation": {
+   "OperationId": "op_4a3066dbb3da452d8560f66bae3017b9",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 25102
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 1517
+  }
+ },
+ "walk_east": {
+  "success": false,
+  "message": "0/1 pawn(s) standing on (83,60) after 1500 tick(s); 0 moved at all. \u26a0\ufe0f LEFT DRAFTED: Human21242. Pass undraftAfter=true or undraft them yourself.",
+  "arrivedCount": 0,
+  "movedCount": 0,
+  "pawnCount": 1,
+  "destination": {
+   "x": 83,
+   "z": 60
+  },
+  "pathEndMode": "OnCell",
+  "ticksElapsed": 1500,
+  "ticksRequested": 1500,
+  "timedOut": false,
+  "polls": 219,
+  "waitedSeconds": 21.9,
+  "speedBefore": "Paused",
+  "speedRestored": true,
+  "leftDrafted": [
+   "Human21242"
+  ],
+  "noDrafter": [],
+  "pawns": [
+   {
+    "id": "Human21242",
+    "name": "Whitaker",
+    "kind": "Colonist",
+    "drafted": true,
+    "hasDrafter": true,
+    "requested": {
+     "x": 83,
+     "z": 60
+    },
+    "start": {
+     "x": 58,
+     "z": 60
+    },
+    "end": {
+     "x": 58,
+     "z": 60
+    },
+    "arrived": false,
+    "moved": false,
+    "distanceBefore": 25.0,
+    "distanceAfter": 25.0,
+    "canReach": true,
+    "orderAccepted": true,
+    "stillMoving": false,
+    "curJob": "Wait_Downed",
+    "downed": true,
+    "note": "Pawn is downed; it cannot walk."
+   }
+  ],
+  "ticksGame": 3018,
+  "operation": {
+   "OperationId": "op_930ba43c0ac64cd4b249d22943aaa136",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 25056
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 3018
+  }
+ },
+ "raider_track": [
+  [
+   [
+    "Human21213",
+    59,
+    13,
+    false
+   ]
+  ],
+  [],
+  [],
+  [],
+  [],
+  []
+ ],
+ "reload": true
+}

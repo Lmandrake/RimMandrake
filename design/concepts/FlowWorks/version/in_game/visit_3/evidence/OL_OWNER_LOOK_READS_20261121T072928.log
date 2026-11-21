@@ -1,0 +1,6 @@
+BLOCKED OL_no_surface_shadow_under_sheet ProofSubmerge reports no shadowQueue: a shadow drawn over the sheet is invisible to this read
+BLOCKED OL_label_text_true_depth no reader for the on-screen pit label (RIMMANDRAKE_ADD_PIT_LABEL_STATE_READER_MOUSEOVER_HAS_NONE); expected text is pinned offline by PitLabelChecks
+BLOCKED OL_overlays_hidden overlay drawers (power icon, battery bar, cooler arrow, torch flame, GSS rope and connector) do not report to the law (RIMMANDRAKE_ADD_OVERLAY_PROOF_HOOK_LAW_CANNOT_SEE_ICONS)
+owner_look_regressions {"PASS": 1174, "FAIL": 0, "UNMEASURED": 0, "BLOCKED": 3}
+[bridge split] 136.3 s wall: load 0.0 / ticks 0.0 / reads 0.0 / other 20.1 / outside calls 116.3 s
+[bridge split] WARN 469 calls of jawa/static_call (19.9 s): batch them

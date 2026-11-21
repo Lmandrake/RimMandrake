@@ -1,0 +1,4 @@
+RELIEF_CUT_REDRAWS_ITS_SQUARE              PASS       MOD      re-meshed or marked dirty (stale=True dirty=True)
+RELIEF_CUT_REDRAWS_ACROSS_SECTION_EDGE     PASS       MOD      re-meshed or marked dirty (stale=True dirty=True)
+pit relief: 2 rows, 0 FAIL, 0 not PASS -> \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_VISIT_THREE_RUN_TWO.det\design\concepts\FlowWorks\version\in_game\visit_3\evidence\OL_OWNER_LOOK_READS__pit_relief_20261121T073341.json
+[bridge split] 0.8 s wall: load 0.0 / ticks 0.2 / reads 0.0 / other 0.4 / outside calls 0.3 s
