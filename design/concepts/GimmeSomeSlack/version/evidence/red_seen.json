@@ -25,6 +25,19 @@
   "rc": 1,
   "test_blob": "130d8579e10c3a3de37bae17294cbd7944651256"
  },
+ "T_POLE_SOUTH_DRAWS_FRONT_OFFLINE": {
+  "at": "2026-11-21T01:39:45Z",
+  "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_pole_south_draws_front.py",
+  "file": "src/RimMandrake/GimmeSomeSlack/selftest_gss_pole_south_draws_front.py",
+  "last": "FAIL",
+  "patch": "--- a/src/RimMandrake/GimmeSomeSlack/Defs/Aerial/RM_AerialAnchors.xml\t2026-11-20 17:39:37.536064829 -0800\n+++ b/src/RimMandrake/GimmeSomeSlack/Defs/Aerial/RM_AerialAnchors.xml\t2026-11-20 17:39:37.542611301 -0800\n@@ -18,7 +18,7 @@\n     <!-- BuildingOnTop, the common layer of MandrakePatches' SouthDrawsFront rule: a mast's 2x4 picture reaches 3 cells north of its\n          foot, so it must order by south with the plants and tall things printed there (his walk of 2026-11-20, row 13;\n          selftest_gss_pole_south_draws_front.py). The wall bracket sets the same layer for itself. -->\n-    <altitudeLayer>BuildingOnTop</altitudeLayer>\n+    <altitudeLayer>Building</altitudeLayer>\n     <passability>PassThroughOnly</passability>\n     <pathCost>14</pathCost>\n     <fillPercent>0.15</fillPercent>\n",
+  "patch_files": [
+   "src/RimMandrake/GimmeSomeSlack/Defs/Aerial/RM_AerialAnchors.xml"
+  ],
+  "patch_sha": "3aca93aae801795a",
+  "rc": 1,
+  "test_blob": "48276a5f028eb349aad77f8f80c3c4bbc1b22cc0"
+ },
  "T_STUB_JOINS": {
   "at": "2026-11-20T12:45:10Z",
   "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --no-export --joins-only",
@@ -37,5 +50,18 @@
   "patch_sha": "0b073eaaa42e5284",
   "rc": 1,
   "test_blob": "0c06e38e23803a48d87a43cf71b919091c075b2b"
+ },
+ "T_SWITCH_OFF_NODE_OFFLINE": {
+  "at": "2026-11-21T01:45:07Z",
+  "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SwitchOffChecks.cs",
+  "last": "4602/4606 checks passed",
+  "patch": "--- a/src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchNode.cs\t2026-11-20 17:39:37.512647199 -0800\n+++ b/src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchNode.cs\t2026-11-20 17:39:37.519961569 -0800\n@@ -10,6 +10,6 @@\n     {\n         /// <summary>True when a spawned transmitter building is a node of the cord graph: every building in a power net, and a power\n         /// switch whatever its state (off, it is in no net, but its cords still end on its stubs, drawn unpowered).</summary>\n-        public static bool JoinsGraph(bool inPowerNet, bool isPowerSwitch) => inPowerNet || isPowerSwitch;\n+        public static bool JoinsGraph(bool inPowerNet, bool isPowerSwitch) => inPowerNet;\n     }\n }\n",
+  "patch_files": [
+   "src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchNode.cs"
+  ],
+  "patch_sha": "d6469d41f9042537",
+  "rc": 1,
+  "test_blob": "dbff180e81fa0b0d9b38923ff827322a96db85b3"
  }
 }

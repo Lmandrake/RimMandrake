@@ -1,0 +1,10 @@
+--- a/src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchNode.cs	2026-11-20 17:39:37.512647199 -0800
++++ b/src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchNode.cs	2026-11-20 17:39:37.519961569 -0800
+@@ -10,6 +10,6 @@
+     {
+         /// <summary>True when a spawned transmitter building is a node of the cord graph: every building in a power net, and a power
+         /// switch whatever its state (off, it is in no net, but its cords still end on its stubs, drawn unpowered).</summary>
+-        public static bool JoinsGraph(bool inPowerNet, bool isPowerSwitch) => inPowerNet || isPowerSwitch;
++        public static bool JoinsGraph(bool inPowerNet, bool isPowerSwitch) => inPowerNet;
+     }
+ }

@@ -32,28 +32,30 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public static void ClearUnder(Thing pole)
         {
             Map map = pole?.Map;
-            if (map?.areaManager?.BuildRoof == null || (pole.def.building?.isAttachment ?? false)) return;
+            if (!AerialSettings.enabled || map?.areaManager?.BuildRoof == null || (pole.def.building?.isAttachment ?? false)) return;
             if (map.areaManager.BuildRoof[pole.Position]) map.areaManager.BuildRoof[pole.Position] = false;
         }
     }
 
     [HarmonyPatch(typeof(Designator_AreaBuildRoof), nameof(Designator_AreaBuildRoof.CanDesignateCell))]
+    [RimMandrake.Shared.PatchFeature("Aerial lines: no roof over a pole", typeof(AerialSettings), "enabled")]
     internal static class Patch_BuildRoofDesignator_RefuseOverMast
     {
         private static void Postfix(IntVec3 c, ref AcceptanceReport __result)
         {
-            if (!__result.Accepted) return;
+            if (!__result.Accepted || !AerialSettings.enabled) return;
             Thing mast = RoofOverMast.MastAt(Find.CurrentMap, c);
             if (mast != null) __result = new AcceptanceReport(string.Format(RoofOverMast.Refusal, mast.LabelNoCount));
         }
     }
 
     [HarmonyPatch(typeof(Area), "Set")]
+    [RimMandrake.Shared.PatchFeature("Aerial lines: no roof over a pole", typeof(AerialSettings), "enabled")]
     internal static class Patch_AreaBuildRoof_RefuseOverMast
     {
         private static bool Prefix(Area __instance, IntVec3 c, bool val)
         {
-            if (!val || !(__instance is Area_BuildRoof)) return true;
+            if (!val || !AerialSettings.enabled || !(__instance is Area_BuildRoof)) return true;
             return RoofOverMast.MastAt(__instance.Map, c) == null;
         }
     }

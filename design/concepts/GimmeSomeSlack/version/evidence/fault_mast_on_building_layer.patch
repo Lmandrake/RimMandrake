@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/GimmeSomeSlack/Defs/Aerial/RM_AerialAnchors.xml	2026-11-20 17:39:37.536064829 -0800
++++ b/src/RimMandrake/GimmeSomeSlack/Defs/Aerial/RM_AerialAnchors.xml	2026-11-20 17:39:37.542611301 -0800
+@@ -18,7 +18,7 @@
+     <!-- BuildingOnTop, the common layer of MandrakePatches' SouthDrawsFront rule: a mast's 2x4 picture reaches 3 cells north of its
+          foot, so it must order by south with the plants and tall things printed there (his walk of 2026-11-20, row 13;
+          selftest_gss_pole_south_draws_front.py). The wall bracket sets the same layer for itself. -->
+-    <altitudeLayer>BuildingOnTop</altitudeLayer>
++    <altitudeLayer>Building</altitudeLayer>
+     <passability>PassThroughOnly</passability>
+     <pathCost>14</pathCost>
+     <fillPercent>0.15</fillPercent>

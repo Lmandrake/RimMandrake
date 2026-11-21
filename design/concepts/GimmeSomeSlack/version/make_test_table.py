@@ -130,6 +130,12 @@ NEW = {  # specified at this lock; Stage 3 builds each and shows it red first
                  "least 1.4 times its chord, every edge over four cells has an excursion of a cell or more, and no vertex turns "
                  "sharper than the bar unless a wall, building or socket forces it; a planted taut builder goes red; run by T_CORE",
         reads=CORE + [G + "Source/SelfTest/LabWorld.cs", G + "Source/SelfTest/oracle_scenes.json"]),
+    # 0.1.1 (RIMMANDRAKE_LOAD_SLACK_POLE_ICONS_ON_MAIN_THREAD): supports pole_buttons_show_icons, whose decider is the live log read
+    "T_MAIN_THREAD_TEXTURES_OFFLINE": dict(
+        stage="4-5", file=G + "selftest_gss_main_thread_textures.py",
+        observes="no texture, material or graphic is fetched in a static field initializer, or in the static constructor of a class "
+                 "without [StaticConstructorOnStartup], anywhere in Source (outside SelfTest); planted: the pre-fix icon fields go red",
+        reads=sorted(glob.glob(G + "Source/**/*.cs", recursive=True))),
     "T_STATICS_CENSUS": dict(
         stage="4-5", file=G + "selftest_gss_statics_census.py",
         observes="every mutable static field in Source (outside SelfTest) is cleared in GssSessionReset.cs or listed immutable "
@@ -147,9 +153,11 @@ NEW = {  # specified at this lock; Stage 3 builds each and shows it red first
         observes="over the SouthDrawsFront rule (MandrakePatches) and the mast def: the mast is drawn above every plant or "
                  "building north of it within its picture height and below one south of it; planted: the mast on its old "
                  "Building layer goes red (bar poles_draw_in_front_when_south)",
-        reads=[G + "Defs/Aerial/RM_AerialAnchors.xml",
+        reads=[G + "Defs/Aerial/RM_AerialAnchors.xml", G + "Source/Aerial/PoleGeometryTable.cs",
                "src/RimMandrake/MandrakePatches/Source/SouthDrawsFront/SouthDrawsFrontKernel.cs",
-               "src/RimMandrake/MandrakePatches/Source/SouthDrawsFront/SouthDrawsFrontPatches.cs"]),
+               "src/RimMandrake/MandrakePatches/Source/SouthDrawsFront/SouthDrawsFrontPatches.cs",
+               "src/RimMandrake/MandrakePatches/selftest_south_draws_front.py"]
+              + sorted(glob.glob(G + "Textures/RimMandrake/GimmeSomeSlack/Aerial/**/Aerial*Mast.png", recursive=True))),
 }
 
 # ---- the judgment: which offline tests decide (or support) each bar ----
@@ -186,6 +194,7 @@ OFF_SUPPORTS = {
     "fallen_wire_shock": ["T_SHOCK_OUTLIVES", "T_SHOCK_OUTLIVES_BINDING", "T_SHOCK_BITES_BINDING", "T_SHOCK_RULE_OFFLINE"],
     "mod_settings": ["T_CORE", "T_GATE"], "four_styles": ["T_GATE", "T_JUNCTION_ART"], "shock_reach_setting": [],
     "cords_draw_under_things": ["T_FW_PIT_DRAW_CENSUS"],
+    "pole_buttons_show_icons": ["T_MAIN_THREAD_TEXTURES_OFFLINE"],
 }
 for k, (_f, _o, bars) in HARNESS.items():
     for b in bars:

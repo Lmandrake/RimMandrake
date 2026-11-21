@@ -1,0 +1,13 @@
+--- a/src/RimMandrake/GimmeSomeSlack/Source/Aerial/CompAerialAnchor.cs	2026-11-20 17:39:37.555373245 -0800
++++ b/src/RimMandrake/GimmeSomeSlack/Source/Aerial/CompAerialAnchor.cs	2026-11-20 17:39:37.562172571 -0800
+@@ -116,8 +116,8 @@
+         // null ("Tried to get a resource ... from a different thread"), and the buttons drew the missing-texture square (his walk of
+         // 2026-11-20, row 9; selftest_gss_main_thread_textures.py refuses a texture in a static initializer)
+         private static Texture2D iconLink, iconUnlink;
+-        internal static Texture2D IconLink => iconLink ??= ContentFinder<Texture2D>.Get("UI/Commands/TryReconnect", false);
+-        internal static Texture2D IconUnlink => iconUnlink ??= ContentFinder<Texture2D>.Get("UI/Designators/Cancel", false);
++        internal static readonly Texture2D IconLink = ContentFinder<Texture2D>.Get("UI/Commands/TryReconnect", false);
++        internal static readonly Texture2D IconUnlink = ContentFinder<Texture2D>.Get("UI/Designators/Cancel", false);
+ 
+         public AerialAnchorExtension Ext => def.GetModExtension<AerialAnchorExtension>() ?? DefaultExt;
+         private static readonly AerialAnchorExtension DefaultExt = new AerialAnchorExtension();
