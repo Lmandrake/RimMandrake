@@ -661,9 +661,14 @@ def _source_pays(S):
     if tid is None:
         S.row('SRC_flow_stops_when_empty', False, ('the unlimited sink was not placed', rep), unmeasured=True)
     else:
-        for _ in range(5):
-            S.pulse(100)
-            if all(v is not None and v <= wet_dl for v in S.dl(pond)):
+        # Draw to the wet line first, followed while the sink still drains (visit 3, 2026-11-21: after a flat 500 pulses the
+        # pond held 208 L and the sink was still drawing, 502.6 -> 514.3, so the row read a pond not yet empty as one that
+        # never stops: HARNESS). Same bound as the film follow: a pond not dry by then never empties (FAIL, the endless_pond case).
+        wet_pulses = 0
+        while wet_pulses < SRC_FILM_PULSES:
+            before = _src_drained(S, tid)
+            S.pulse(100); wet_pulses += 100
+            if all(v is not None and v <= wet_dl for v in S.dl(pond)) or before is None or _src_drained(S, tid) == before:
                 break
         dry = all(v is not None and v <= wet_dl for v in S.dl(pond))
         # His ruling POND_PUMP_FIX_LAST_DROP_COUNTS ('ponds pump to last dL'): under the wet line the sink still draws the
@@ -682,7 +687,7 @@ def _source_pays(S):
         S.pulse(50)
         dr2, empty = _src_drained(S, tid), read()
         why = ('pond dry', dry, 'drained', dr1, dr2, 'litres', empty, 'max dL', max(dp) if None not in dp else dp,
-               'film pulses', film)
+               'film pulses', film, 'wet-line pulses', wet_pulses)
         if dr1 is None or dr2 is None or not dr1 > 0 or blind or empty is None or None in dp:
             S.row('SRC_flow_stops_when_empty', False, ('no drained total, no litres, the sink drained nothing (the draw never '
                                                        'happened) or the pond squares read empty when full', rep, why, blind),
@@ -2380,12 +2385,16 @@ def _garden(S):
     d0 = S.sc(NSP, 'ProofDrill', '%d,%d' % D)
 
     def feed():
+        # the drinker stays thirsty only until the faucet's tank has paid its drink: after that a thirsty drinker took a
+        # second drink from the filter's fresh output tank (visit 3, 2026-11-21: C2 63985 = 32 x 2000 - 15, one tank drink
+        # at tick ~40000), so the filter row read a drink as a lost batch (SITE)
+        drank = bool(log) and log[-1]['t'].get('F') and log[-1]['t']['F'][0] < fill['F'][0]
         for p in S.call('jawa/list_pawns', faction='player').get('pawns') or []:
             needs = dict((x.get('need'), x.get('level')) for x in
                          (S.B.call('jawa/pawn_need', pawn=p['id'], action='list') or {}).get('needs') or [])
             if needs.get('Food', 1.0) < 0.5:
                 S.B.call('jawa/pawn_need', pawn=p['id'], action='need', need='Food', level=1.0)
-            if p['id'] != drinker and needs.get('RM_Thirst', 1.0) < 0.3:
+            if (p['id'] != drinker or drank) and needs.get('RM_Thirst', 1.0) < 0.3:
                 S.B.call('jawa/pawn_need', pawn=p['id'], action='need', need='RM_Thirst', level=1.0)
 
     log = []                                       # one entry a chunk: tank units, drill read, yard read, head lines
