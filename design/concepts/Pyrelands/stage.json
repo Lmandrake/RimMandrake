@@ -790,10 +790,17 @@
     "ref": "run rm-role-designer-1795258152",
     "stage": 4,
     "tokens": 429730
+   },
+   {
+    "at": "2026-11-21T11:05:34Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1795258632",
+    "stage": 5,
+    "tokens": 619287
    }
   ],
   "reserve": 60000,
-  "spent": 21507470
+  "spent": 22126757
  },
  "coverage_releases": [
   {
@@ -2457,6 +2464,24 @@
    "stage": 5,
    "what": "exam_map",
    "why": "read map recorded for 40 scenarios"
+  },
+  {
+   "at": "2026-11-21T10:57:21Z",
+   "stage": 5,
+   "what": "over_budget",
+   "why": "21507470 of 4000000 spent; run rm-role-designer-1795258632 goes on with 400000 (advisory)"
+  },
+  {
+   "at": "2026-11-21T10:57:21Z",
+   "stage": 5,
+   "what": "open",
+   "why": "run rm-role-designer-1795258632, stage 5, budget 400000"
+  },
+  {
+   "at": "2026-11-21T11:05:35Z",
+   "stage": 5,
+   "what": "close",
+   "why": "run rm-role-designer-1795258632: stage 5 done"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -3102,12 +3127,41 @@
    "run": "rm-role-designer-1795258152",
    "stage": 4,
    "summary": "No new exam needed: exam.json from run rm-role-designer-1795255597 (40/40 right, accept_where_reject_core 0, no challenger miss, control without fire_walks_with_wind missed e5 and c3) is frozen against the current inputs (tree 78f3df67, sheet 628feeb2; unchanged since), and exam_reads.json is recorded. That run's accepted stage-4 close (commit 939119ba74, stage 5 ready) was lost: run rm-role-designer-1795257816 opened at stage 4 on a stage.json from before the harvest landed, and its void harvest (0a3974a3de) wrote stage 4 back. This result re-records the same exam so the concept reaches stage 5 again; no tree, sheet, scene or floor changed."
+  },
+  {
+   "at": "2026-11-21T11:05:35Z",
+   "inputs": {
+    "exam": "338a753e0135511be4e514478f371c0a3547c93863777a56ed02a61e1824c3f6",
+    "floor": "bd9d7fd896359814f8ad5c820b6b23ee1d61a06a6d4a33cbe92595cc4771b32d",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "ae26d34f7fa9f55c5bb0ea115379238907576a0151185aabfad9d1f495425fab",
+    "scenes": "b08126e2f6529eba85ebc5a0ad8aa8cad5da44f3c4744986affd96371a3eb245",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54"
+   },
+   "manifest": {
+    "designer.md": "311493e8980d351a9204dac50b507be22a3dcba6191c6c39f4c7609c01105747",
+    "designer_lock.md": "1b5ed575515e1d457a58f40441351d8648100897f199a152f50b31b2948ad315"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "pinned_at": {
+    "exam": "5dc4b8cfb71293a4f359d743b942cdb14fd25058",
+    "floor": "5dc4b8cfb71293a4f359d743b942cdb14fd25058",
+    "root": "5dc4b8cfb71293a4f359d743b942cdb14fd25058",
+    "scenes": "5dc4b8cfb71293a4f359d743b942cdb14fd25058",
+    "sheet": "5dc4b8cfb71293a4f359d743b942cdb14fd25058",
+    "tree": "5dc4b8cfb71293a4f359d743b942cdb14fd25058"
+   },
+   "run": "rm-role-designer-1795258632",
+   "stage": 5,
+   "summary": "Lock: concept_tree.py gate PASS on tree 78f3df67 / sheet 628feeb2 (coverage judge rm-coverage-judge-1794947629 covered with 0 gaps, certified past the root_hash-only restamp 47e044e556 by the Conductor's act OWNER:1795222813980581690); designer_stage.py showcases accepts the set (burn_line 6, fire_cast 3, sky_and_shelter 3, fire_solace 3 new). No tree, sheet, scene or floor changed. record.json now cites all 50 binding owner words given since the concept began (owner_elsewhere_reviewed: each one mapped to the decision, leaf or inventory line that carries it, or named as budget/process); none needs a new bar in the locked 0.1.0. Open fixes stay on their own items, not bars: ash footprints and the 'Windswept sand' hover label (RIMMASTER_FIX_ASH_FOOTPRINTS_AND_SAND_LABEL_AFTER_CLOSE); smoke weather is next version. The mod item RIMMANDRAKE_FINISH_PYRELANDS_AGAINST_TREE_FURNACE_GREW_TO_NINE (kind mod) now verifies against tree 78f3df67; published cf0946792f."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
  "stage": 5,
- "status": "ready",
+ "status": "locked",
  "waiting_owner_feed": "79abe4290fa077e9fd73b85d4c6d6e47ee49c99ed1608b827f1afbe5f8895520"
 }
