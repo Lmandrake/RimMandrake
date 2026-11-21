@@ -1,0 +1,14 @@
+{
+ "check": "sc_pole_south_of_tree",
+ "row": "SC_pole_south_of_tree_shot",
+ "reader": "rm-detached-bench-rimmandrake-drive-gimmesomeslack-in-game-1795239179 (the visit driver; did not make the mod or its 0.1.1 fix, 90660c8ae3)",
+ "question": "mast at (20,169) drawn in front of the oak one cell north of it; mast at (28,171) drawn behind the oak one cell south of it",
+ "real": {"build": "deployed sha256:b9ae88196d35 (source 934b35e053, mast layer BuildingOnTop)", "capture": "design/concepts/GimmeSomeSlack/version/in_game/visit_1/screenshots/pole_rect_REAL_bot_layer.jpg",
+          "seen": "left mast: its pole and crossarm drawn over the oak's canopy and trunk (in front). Right mast: the oak's canopy and trunk drawn over the mast's lower pole (behind).", "verdict": "PASS"},
+ "planted": {"build": "fault_mast_on_building_layer.patch deployed (mast layer Building), game b cold-loaded", "capture": "design/concepts/GimmeSomeSlack/version/in_game/visit_1/screenshots/pole_rect_PLANTED_building_layer.jpg",
+             "seen": "left mast: the oak's canopy and trunk drawn over the mast's pole (behind): the fault shows.", "verdict": "FAIL"},
+ "difference": "27544 pixels differ by more than 30 (RGB sum) between the two renders, all at the left mast; the right mast is the same in both",
+ "method": "rimworld/screenshot_cell_rect x=16 z=166 w=16 h=10 rootSize 7, same rect, both after scene_pole_south_of_tree on the calm site; a fresh file name per shot (Transient/gss_shot_rect.py)",
+ "instrument_trap": "a first try reused one file name and copied the existing file when the new one was not yet written: the 'real' copy was the planted image (0 pixels differ). Caught by the pixel diff; retaken with a fresh name and an mtime check.",
+ "earlier_capture": "the scene's own shot at 10:03 PM (session 1, Scrapper look) showed the same as the real read: south mast in front"
+}

@@ -1,0 +1,1 @@
+rimworld/screenshot_cell_rect with a fileName used before: a script that waits only until the path exists copies the OLD image at once (game b, 2026-11-20: a 'real build' render was byte-identical to the planted one taken before a restart). Give every shot a fresh fileName and require the file's mtime to be after the call.

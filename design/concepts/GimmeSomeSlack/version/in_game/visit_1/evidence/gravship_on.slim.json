@@ -1,0 +1,58 @@
+{
+ "label": "gravship_on",
+ "order": 3,
+ "source": "/mnt/d/ClaudeWork/scratch/gss_011_v1/gravship_on.json",
+ "mode": "live",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "owlchemist.cherrypicker",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.patches"
+  ],
+  "running_sha256": "8df273a92998c0f56b1814631b132c7a4eb749a638a0c53f18a3ffc84d77d414",
+  "assembly_matches": 1,
+  "assembly_sha256": "7157d9f1356296e4379998551e0e5401d3a75f9430c151b031cb96cfa602135a",
+  "tier": {
+   "name": "gimmesomeslack",
+   "written_for": "gimmesomeslack",
+   "source": "ModsConfig.xml activeMods",
+   "active": 12,
+   "active_equals_running": true,
+   "matched_list": "gimmesomeslack"
+  }
+ },
+ "active_mods": [
+  "brrainz.harmony",
+  "ludeon.rimworld",
+  "ludeon.rimworld.royalty",
+  "ludeon.rimworld.ideology",
+  "ludeon.rimworld.biotech",
+  "ludeon.rimworld.anomaly",
+  "ludeon.rimworld.odyssey",
+  "brrainz.rimbridgeserver",
+  "owlchemist.cherrypicker",
+  "ray1203.simplecamerasetting",
+  "mandrake.rm.gimmesomeslack",
+  "mandrake.rm.patches"
+ ],
+ "game_build": "1.6.4871 rev590",
+ "run_identity": null,
+ "mod_hash": null,
+ "rows": [
+  {
+   "id": "GS1_keep_wires_on_gravship_on_aboard_span_flies",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": "{'setting': 'keepWiresOnGravship', 'value': True, 'mode': 'on', 'before': {'spansUp': 2}, 'after': {'spansUp': 1, 'spansCut': 0}, 'aboardSpanUp': True, 'groundLinkKept': False, 'cords': {'cordEdges': 1, 'cordsAcrossNets': 0, 'verticesInUnwalkable': 0, 'conduitCells': 7}, 'links': [[19586, 19587, 'Up'], [19587, 19586, 'Up']], 'ids': [19586, 19587, 19588], 'verdict': 'PASS'}"
+  }
+ ]
+}
