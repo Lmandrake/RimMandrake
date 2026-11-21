@@ -1,8 +1,8 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":21949,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=f58e9ab25099f273166cc8ac69f0785ee85a900c992af7b3593e4d5873ea8ed2 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":22662,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=0e49b5990714bb57253c1a7688effb2c518bbc136581d9ba097724b89484bc57 -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage offline_build · 1377 events in 15 shards · reducer 1
+version 0.1.0 · stage offline_build · 1379 events in 15 shards · reducer 1
 holder lease run-1795223527, token 14, last active 2026-11-21T01:12:15Z
-holder session 8d994c9a-44f3-40c7-a45d-6b0d022018b6, context 161204 of ceiling 400000
+holder session 12bf7f47-91a3-4798-a535-5d111c4b1347, context 340673 of ceiling 400000
 
 ## Last checkpoint (HOLDER.run-1795165115, 2026-11-20T09:04:26Z)
 - done: RIMMANDRAKE_DIG_OL_SPARE_PIT_ONLY_IN_OLD_SAVE at d1052da8ddf0: big_pit_scene plans and digs a 6x6 dry spare (plan key spare, SE of the site, >=8 cells off every copy); OL --acts reads it from --plan; a plan without one reads UNMEASURED naming it; accept 6/6 red 5 at base; OL_OWNER_LOOK_READS UNRUN
@@ -492,6 +492,6 @@ spend recorded: USD 78.94, 45401435 tokens
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
 - notes: 11, never printed here (`modledger.py find --mod FlowWorks <words>`)
-- the full history: 1377 events (views/history.md; never read whole)
+- the full history: 1379 events (views/history.md; never read whole)
 
-cursor: t=2026-11-21T01:12:21Z.1795223541340060721 (modledger.py since --mod FlowWorks t=2026-11-21T01:12:21Z.1795223541340060721 prints what changed after this packet)
+cursor: t=2026-11-21T01:55:18Z.1795226118396527050 (modledger.py since --mod FlowWorks t=2026-11-21T01:55:18Z.1795226118396527050 prints what changed after this packet)
