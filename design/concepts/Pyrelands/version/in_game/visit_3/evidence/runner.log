@@ -83,3 +83,12 @@ START batch8 2026-11-21 11:17:50
 DONE fresh_burn_bonus@fresh_burn_bonus_rerun reload_rc=0 rc=1 900s 11:32:51
 END batch8 2026-11-21 11:32:51
 START batch9a 2026-11-21 11:32:54
+DONE burn_line_off_control@burn_line_off_control_planted reload_rc=0 rc=1 158s 11:35:32
+END batch9a 2026-11-21 11:35:32
+START batch9b 2026-11-21 11:35:32
+DONE burn_line@burn_line_rerun reload_rc=0 rc=1 1233s 11:56:05
+DONE scorchfruit_spoils@scorchfruit_spoils_rerun reload_rc=0 rc=1 588s 12:05:53
+END batch9b 2026-11-21 12:05:53
+START batch10 2026-11-21 12:05:56
+DONE flamefang_venom@flamefang_venom_repaired4 reload_rc=0 rc=1 235s 12:09:51
+END batch10 2026-11-21 12:09:51

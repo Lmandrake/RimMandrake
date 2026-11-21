@@ -1,0 +1,140 @@
+[modcheck] chain burn_line START 19:35:52Z
+[pyre-note] burned cells outside the suite's fire pads: 0
+[pyre-note] burn line quiet-arm (free-standing Fire after the quiet window): {"fixtureBurnLineEnabled": "True", "firesBeforeArm": 10, "waitTicks": 120360, "freeStandingFires": 10}
+[pyre-note] colony vitals after burn_line_present: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 11:38:08 burn_line_present PASS 
+[pyre-note] front by the hour (captures at 64 px/cell): {"opening": {"done": "True", "lit": "31", "litTick": "494399", "origin": "84,204", "mapAge": "122221", "now": "494721", "scarLaid": "True", "scarCentre": "77,249", "scarSide": "north", "scarRadius": "36.6", "scarCells": "2044", "bare": "1996", "sprouts": "42", "pods": "6", "ash": "502", "arcCandidates": "63", "arcLit": "True"}, "startHour": 12.888401, "rows": [{"hour": 13.8883991, "fires": 62, "cx": 79.11290322580645, "cz": 216.59677419354838}, {"hour": 14.8884, "fires": 61, "cx": 78.73770491803279, "cz": 214.39344262295083}, {"hour": 15.888401, "fires": 62, "cx": 80.7741935483871, "cz": 209.3709677419355}, {"hour": 16.8884, "fires": 56, "cx": 80.5, "cz": 206.875}, {"hour": 17.888401, "fires": 46, "cx": 80.23913043478261, "cz": 203.97826086956522}, {"hour": 18.888401, "fires": 73, "cx": 105.82191780821918, "cz": 162.21917808219177}, {"hour": 19.8884, "fires": 90, "cx": 118.88888888888889, "cz": 136.87777777777777}, {"hour": 20.888401, "fires": 89, "cx": 121.73033707865169, "cz": 134.4943820224719}, {"hour": 21.888401, "fires": 82, "cx": 123.3780487804878, "cz": 131.5609756097561}, {"hour": 22.8884, "fires": 89, "cx": 121.58426966292134, "cz": 135.2921348314607}, {"hour": 23.888401, "fires": 112, "cx": 112.89285714285714, "cz": 145.80357142857142}, {"hour": 0.8884, "fires": 112, "cx": 112.95535714285714, "cz": 143.75892857142858}, {"hour": 1.8884, "fires": 107, "cx": 111.13084112149532, "cz": 144.84112149532712}, {"hour": 2.8884, "fires": 101, "cx": 108.53465346534654, "cz": 1
+[pyre-note] colony vitals after burn_line_walks_hourly: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 11:40:20 burn_line_walks_hourly PASS 
+Saved 3840x2160 to \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT_THREE.det\src\RimMandrake\Utils\..\..\..\Transient\modcheck\burn_share_on_day_1_fallback_1795290020.bmp
+Saved 3840x2160 to \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT_THREE.det\src\RimMandrake\Utils\..\..\..\Transient\modcheck\burn_share_on_day_2_fallback_1795290124.bmp
+Saved 3840x2160 to \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT_THREE.det\src\RimMandrake\Utils\..\..\..\Transient\modcheck\burn_share_on_day_3_fallback_1795290203.bmp
+Saved 3840x2160 to \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT_THREE.det\src\RimMandrake\Utils\..\..\..\Transient\modcheck\burn_share_on_day_4_fallback_1795290279.bmp
+Saved 3840x2160 to \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT_THREE.det\src\RimMandrake\Utils\..\..\..\Transient\modcheck\burn_share_off_day_1_fallback_1795290432.bmp
+Saved 3840x2160 to \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT_THREE.det\src\RimMandrake\Utils\..\..\..\Transient\modcheck\burn_share_off_day_2_fallback_1795290577.bmp
+Saved 3840x2160 to \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT_THREE.det\src\RimMandrake\Utils\..\..\..\Transient\modcheck\burn_share_off_day_3_fallback_1795290713.bmp
+Saved 3840x2160 to \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT_THREE.det\src\RimMandrake\Utils\..\..\..\Transient\modcheck\burn_share_off_day_4_fallback_1795290829.bmp
+[pyre-note] burned share of open plantable ground by day end (wind on, then the same start wind off): {"groundCells": 43144, "days": 4, "limit": 0.5, "on": [0.0534489152605229, 0.09220285555349528, 0.12437418876321157, 0.13482755423697385, 0.15151585388466532], "off": [0.0534489152605229, 0.2782078620433896, 0.5121917300203969, 0.7323845725941035, 0.9421008715000927], "worstOn": 0.15151585388466532, "casesRead": 10, "startSave": {"success": true, "saveName": "burn_line_share_start", "path": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\Saves\\burn_line_share_start.rws", "exists": true, "sizeBytes": 26504120, "operation": {"OperationId": "op_c30cdd338a8d4ff0ae5c8f14d3618e1b", "Status": "Completed", "Success": true, "DurationMs": 771}, "state": {"programState": "Playing", "hasCurrentGame": true, "paused": true, "timeSpeed": "Paused", "tick": 494721}}, "captures": {"on": ["\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT_THREE.det\\src\\RimMandrake\\Utils\\..\\..\\..\\Transient\\modcheck\\burn_share_on_day_1_fallback_1795290020.bmp", "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT_THREE.det\\src\\RimMandrake\\Utils\\..\\..\\..\\Transient\\modcheck\\burn_share_on_day_2_fallback_1795290124.bmp", "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT_THREE.det\\src\\RimMandrake\\Utils\\..\\..\\..\\Transient\\modcheck\\burn_share_on_day_3_fallback_1795290203.bmp", "\\\\wsl.local
+[pyre-note] colony vitals after burn_line_burned_share: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 11:53:50 burn_line_burned_share PASS 
+[pyre-note] burnLineEnabled False, fire clock and hawk spread held off, weather Clear, map extinguished: free-standing Fire after the window: 0
+[pyre-note] colony vitals after burn_line_off_control: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 11:56:04 burn_line_off_control PASS 
+[modcheck] chain burn_line END 1212s PASS=4 FAIL=0 UNMEASURED=0 NOT_RUN=0 hold=0.0s body=1212.4s teardown=0.0s
+component mapgen_log/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_mapgen_log_clean"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component plant_census/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_plant_distribution_correct"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component plant_census/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component plant_census/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component animal_census/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_animal_distribution_correct"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component grass_cover/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_grass_chokes_ground"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component ruins/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_ruins_scorched"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component ruins/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component opening_front/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component opening_front/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component startup_and_def_wiring/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "biomeGenerationEnabled", "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component ground_deep_ash/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_ground_deep_ash"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component ground_deep_ash/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component ground_deep_ash/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component ground_deep_ash/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component ground_deep_ash/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component ground_deep_ash/skipped#5: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component ground_deep_ash/skipped#6: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component ground_deep_ash/skipped#7: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component ash_fertility_watered/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_ash_fertile_when_watered"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component ash_fertility_watered/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component ash_fertility_watered/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component fresh_burn_bonus/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_fresh_burn_feeds_the_field"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component fresh_burn_bonus/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component ambient_ash_drift/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "ambientAshEnabled", "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component fire_tick_effects/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "ashDustingEnabled", "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component fire_tick_effects/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "scorchFruitEnabled", "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component ashfall_weather_accumulation/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "ashfallAccumulationEnabled", "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component ashfall_drifts/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_ashfall_darkens_drifts"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component cinderfall/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_cinderfall_distinct"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component cinderfall/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component cinderfall/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component cinderfall/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component blackrain/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_blackrain_reads"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component blackrain/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component blackrain/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "blackRainDousingEnabled", "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component soaked_map_stays_smooth/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component no_ordinary_rain/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_cannot_ordinary_rain"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component no_ordinary_rain/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component no_ordinary_rain/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component scorchfruit_fire_born/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_scorchfruit_fire_born"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component scorchfruit_fire_born/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component scorchfruit_produces/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_scorchfruit_produces"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component scorchfruit_spoils/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_scorchfruit_spoils_fast"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component firehawk/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_firehawk_carries_ember"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component firehawk/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component firehawk/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component furnace_warmth/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_furnacebeast_warmth"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component furnace_room/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_furnacebeast_heats_room"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component furnace_sleep/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component furnace_sleep/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component burrowers/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_burrowers_dive"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component heat_dome/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "burrowDomeOnHeatHit", "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component heat_dome/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "burrowDomeOnHeatHit", "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component heat_dome/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component embergrass_regrow/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_embergrass_regrows"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component embergrass_regrow/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component embergrass_regrow/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component embergrass_regrow/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component ullai_and_giant/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "ullaiEnabled", "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component ullai_and_giant/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "furnaceBeastGiant", "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component ullai_and_giant/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component ullai_and_giant/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component gpt_hunt_plausible/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component gpt_hunt_plausible/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component gpt_hunt_plausible/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component gpt_hunt_plausible/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component gpt_hunt_plausible/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": "sandShovelEnabled", "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component gpt_hunt_plausible/skipped#5: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component gpt_hunt_plausible/skipped#6: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component gpt_hunt_plausible/skipped#7: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component gpt_hunt_plausible/skipped#8: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component sand_shovel/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "sandShovelEnabled", "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component flamefang_venom/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component flamefang_venom/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component flamefang_venom/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component flamefang_venom/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component flamefang_venom/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component rite_hook_alone/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "fireClockEnabled", "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component rite_hook_alone/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "fireClockEnabled", "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component firefoam_sprayer/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component firefoam_sprayer/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component walk_season/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component walk_season/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component walk_season/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component walk_season/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component walk_season/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component walk_season/skipped#5: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component walk_season/skipped#6: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component walk_season/skipped#7: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component foreign_arrivals/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component foreign_arrivals/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component foreign_arrivals/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component fire_sense/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component fire_sense/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component fire_sense/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component fire_sense/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component fire_sense/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component burn_line_off_control/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component furnace_hide_bank/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component roof_withers/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component roof_withers/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component roof_withers/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component herd_thirst/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component firehawk_first_sighting_letter/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component firehawk_first_sighting_letter/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "fireHawkSightingLetterEnabled", "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component firehawk_first_sighting_letter/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component firehawk_crestfeather_yield/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+component firehawk_mapwide_carry/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains burn_line)"}
+Pyrelands: NOT GREEN  PASS=3 FAIL=0 UNMEASURED=110  calls=3279 mean=360.557ms  -> design/concepts/Pyrelands/version/in_game/visit_3/evidence/pv3_burn_line_rerun.json
+[bridge split] 1217.3 s wall: load 1.8 / ticks 1071.1 / reads 15.4 / other 47.8 / outside calls 81.2 s
+[bridge split] WARN 1260 calls of jawa/pawn_need (14.9 s): batch them
+[bridge split] WARN 552 calls of rimworld/get_game_info (2.7 s): batch them
+[bridge split] WARN 524 calls of jawa/list_pawns (7.3 s): batch them
+[bridge split] WARN 385 calls of jawa/safe_advance (1071.1 s): batch them
+[bridge split] WARN 191 calls of jawa/map_info (2.1 s): batch them
+[bridge split] WARN 58 calls of rimworld/screenshot_cell_rect (26.9 s): batch them

@@ -1,25 +1,170 @@
 {
- "sc_walk": {"verdict_fixed": "UNMEASURED", "site_checked": false, "held": [],
-             "detail": "game b: tier list only beside game a (his full list does not fit in Archmagi's memory beside game a, which another run holds); game a runs it later"},
- "sc_ruins": {"label": "ruins_repaired",
-   "prior": [{"label": "ruins", "class": "HARNESS", "note": "ruin_walls_charred_paint read 'no unowned walls': a whole-map export_things stops at 2000 rows inside the grass carpet and the check never read truncated; the same chain's census lists 453 unowned ruin buildings"}],
-   "repair": {"class": "HARNESS", "commit": "f779129ade86681ef74e19090ff35b935663c99a",
-              "planted": {"plant": "every unowned ruin Wall's RM_FE_Charred paint removed (327 of 327, scripts/plant_ruins_unpaint.py, census read back)", "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains ruins", "verdict": "FAIL", "evidence": "design/concepts/Pyrelands/version/in_game/visit_3/evidence/run_ruins_planted.log"}}},
- "sc_no_rain": {"label": "no_ordinary_rain_repaired",
-   "prior": [{"label": "no_ordinary_rain", "class": "HARNESS", "note": "forced_rain_becomes_black_rain compared jawa/weather_get's weather dict with the def name and failed on a black-rain reading; its hour-later half could not see Rain"}],
-   "repair": {"class": "HARNESS", "commit": "f779129ade86681ef74e19090ff35b935663c99a",
-              "planted": {"plant": "PYRE_PLANT_NO_RAIN_GATE_OFF=1: pyrelandsEnabled off for the row, so the decider's ordinary Rain stands", "command": "PYRE_PLANT_NO_RAIN_GATE_OFF=1 (through WSLENV) python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains no_ordinary_rain", "verdict": "FAIL", "evidence": "design/concepts/Pyrelands/version/in_game/visit_3/evidence/run_no_ordinary_rain_planted.log"}}},
- "sc_firehawk": {"label": "firehawk_rerun",
-   "prior": [{"label": "firehawk", "class": "SITE", "note": "ran without its site reload (the runner's lineage refused it); re-run on a reloaded site. The verdict reads flight as state; the end-of-sortie capture of the flying hawk is removed (owner's flyer rule)"}]},
- "sc_scorchfruit": {"label": "scorchfruit_fire_born_with_census",
-   "prior": [{"label": "scorchfruit_fire_born", "class": "HARNESS", "note": "run alone, its 'never on unburned land' half needs plant_census's fresh-site census in the same driver run; re-run with it (no code change)"}]},
- "sc_three_skies": {"note": "owed RIMMANDRAKE_TRACE_PYRE_ASHFALL_FIRE_IN_FIRST_LIGHTNING_WINDOW: real run cinderfall_lightning PASS, the ash-fall window-1 fire named 'not lightning'; planted PYRE_PLANT_ASHFALL_STRIKE=DryThunderstorm: FAIL, 8 strikes under ash fall (evidence/run_cinderfall_planted_strike.log). blackrain chain 3/3 PASS (evidence/pv3_blackrain.json)"},
- "sc_firefoam_sprayer": {"label": "firefoam_sprayer_s4",
-   "prior": [{"label": "firefoam_sprayer", "class": "HARNESS", "note": "the control read a fruit plant gone from the 3x3 as taken; a burned plant is gone too"},
-             {"label": "firefoam_sprayer_sampled", "class": "HARNESS", "note": "the advance monitor stopped the window on the sprayer colonist's burn, which is what the row measures"},
-             {"label": "firefoam_sprayer_sampled2", "class": "HARNESS", "note": "timeline: the control colonist never left its cell while a fruit burned; the sprayer colonist never entered"},
-             {"label": "firefoam_sprayer_s3", "class": "MOD", "note": "0 Filth_FireFoam on the burn: the carrier never foams; the control colonist crossed the 2-cell ring unburned and took 3 fruit (SITE)"}],
-   "class": "MOD", "filed": "RIMMANDRAKE_DESIGN_PYRE_SPRAYER_CARRIER_NEVER_FOAMS_ITS_PATH",
-   "unfixed": "the fix is not known: when a carrier foams (automatically on a job's path, or player-ordered) is undesigned; the sprayer is a Verb_Shoot gun and no mod code makes a carrier use it on the fire in its way. 0 foam in 3 of 3 sprayer runs (s3, s4, gap_planted)",
-   "note": "control without_sprayer_fire_stops_or_burns (repaired: a harvest is the colonist inside the ring or a yield stack): planted ring gap FAIL (evidence/run_firefoam_sprayer_gap_planted.log), s4 PASS, s3 FAIL: SITE, unrepaired (a 2-cell grass ring does not stop a bare colonist), owner RIMMANDRAKE_DESIGN_PYRE_SPRAYER_CARRIER_NEVER_FOAMS_ITS_PATH"}
+ "sc_walk": {
+  "verdict_fixed": "UNMEASURED",
+  "site_checked": false,
+  "held": [],
+  "detail": "game b: tier list only beside game a (his full list does not fit in Archmagi's memory beside game a; this run drives game b only); game a runs it later",
+  "class": "SITE",
+  "unrepaired": "needs his full list (why_full_list: the walk is ordinary play on his list); game b holds a tier list only beside game a",
+  "owner": "game a, a later visit (this item's LEFT OPEN note)"
+ },
+ "sc_ruins": {
+  "label": "ruins_repaired",
+  "prior": [
+   {
+    "label": "ruins",
+    "class": "HARNESS",
+    "note": "ruin_walls_charred_paint read 'no unowned walls': a whole-map export_things stops at 2000 rows inside the grass carpet and the check never read truncated; the same chain's census lists 453 unowned ruin buildings"
+   }
+  ],
+  "repair": {
+   "class": "HARNESS",
+   "commit": "f779129ade86681ef74e19090ff35b935663c99a",
+   "planted": {
+    "plant": "every unowned ruin Wall's RM_FE_Charred paint removed (327 of 327, scripts/plant_ruins_unpaint.py, census read back)",
+    "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains ruins",
+    "verdict": "FAIL",
+    "evidence": "design/concepts/Pyrelands/version/in_game/visit_3/evidence/run_ruins_planted.log"
+   }
+  }
+ },
+ "sc_no_rain": {
+  "label": "no_ordinary_rain_repaired",
+  "prior": [
+   {
+    "label": "no_ordinary_rain",
+    "class": "HARNESS",
+    "note": "forced_rain_becomes_black_rain compared jawa/weather_get's weather dict with the def name and failed on a black-rain reading; its hour-later half could not see Rain"
+   }
+  ],
+  "repair": {
+   "class": "HARNESS",
+   "commit": "f779129ade86681ef74e19090ff35b935663c99a",
+   "planted": {
+    "plant": "PYRE_PLANT_NO_RAIN_GATE_OFF=1: pyrelandsEnabled off for the row, so the decider's ordinary Rain stands",
+    "command": "PYRE_PLANT_NO_RAIN_GATE_OFF=1 (through WSLENV) python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains no_ordinary_rain",
+    "verdict": "FAIL",
+    "evidence": "design/concepts/Pyrelands/version/in_game/visit_3/evidence/run_no_ordinary_rain_planted.log"
+   }
+  }
+ },
+ "sc_firehawk": {
+  "label": "firehawk_rerun",
+  "prior": [
+   {
+    "label": "firehawk",
+    "class": "SITE",
+    "note": "ran without its site reload (the runner's lineage refused it); re-run on a reloaded site. The verdict reads flight as state; the end-of-sortie capture of the flying hawk is removed (owner's flyer rule)"
+   }
+  ]
+ },
+ "sc_scorchfruit": {
+  "label": "scorchfruit_fire_born_with_census",
+  "prior": [
+   {
+    "label": "scorchfruit_fire_born",
+    "class": "HARNESS",
+    "note": "run alone, its 'never on unburned land' half needs plant_census's fresh-site census in the same driver run; re-run with it (no code change)"
+   }
+  ]
+ },
+ "sc_three_skies": {
+  "note": "owed RIMMANDRAKE_TRACE_PYRE_ASHFALL_FIRE_IN_FIRST_LIGHTNING_WINDOW: real run cinderfall_lightning PASS, the ash-fall window-1 fire named 'not lightning'; planted PYRE_PLANT_ASHFALL_STRIKE=DryThunderstorm: FAIL, 8 strikes under ash fall (evidence/run_cinderfall_planted_strike.log). blackrain chain 3/3 PASS (evidence/pv3_blackrain.json)"
+ },
+ "sc_firefoam_sprayer": {
+  "label": "firefoam_sprayer_s4",
+  "prior": [
+   {
+    "label": "firefoam_sprayer",
+    "class": "HARNESS",
+    "note": "the control read a fruit plant gone from the 3x3 as taken; a burned plant is gone too"
+   },
+   {
+    "label": "firefoam_sprayer_sampled",
+    "class": "HARNESS",
+    "note": "the advance monitor stopped the window on the sprayer colonist's burn, which is what the row measures"
+   },
+   {
+    "label": "firefoam_sprayer_sampled2",
+    "class": "HARNESS",
+    "note": "timeline: the control colonist never left its cell while a fruit burned; the sprayer colonist never entered"
+   },
+   {
+    "label": "firefoam_sprayer_s3",
+    "class": "MOD",
+    "note": "0 Filth_FireFoam on the burn: the carrier never foams; the control colonist crossed the 2-cell ring unburned and took 3 fruit (SITE)"
+   }
+  ],
+  "class": "MOD",
+  "filed": "RIMMANDRAKE_DESIGN_PYRE_SPRAYER_CARRIER_NEVER_FOAMS_ITS_PATH",
+  "unfixed": "the fix is not known: when a carrier foams (automatically on a job's path, or player-ordered) is undesigned; the sprayer is a Verb_Shoot gun and no mod code makes a carrier use it on the fire in its way. 0 foam in 3 of 3 sprayer runs (s3, s4, gap_planted)",
+  "note": "control without_sprayer_fire_stops_or_burns (repaired: a harvest is the colonist inside the ring or a yield stack): planted ring gap FAIL (evidence/run_firefoam_sprayer_gap_planted.log), s4 PASS, s3 FAIL: SITE, unrepaired (a 2-cell grass ring does not stop a bare colonist), owner RIMMANDRAKE_DESIGN_PYRE_SPRAYER_CARRIER_NEVER_FOAMS_ITS_PATH"
+ },
+ "sc_burn_compounds": {
+  "label": "fresh_burn_bonus_rerun",
+  "prior": [
+   {
+    "label": "fresh_burn_bonus",
+    "class": "SITE",
+    "note": "a world-pawn colonist (Randall, id 760, map -1) died of a heart attack and the advance stopped: a disturbance, not a verdict (filed RIMMANDRAKE_IGNORE_OFFMAP_COLONIST_DEATH_HEART_ATTACK_TWICE)"
+   }
+  ]
+ },
+ "P_scorchfruit_spoils": {
+  "label": "scorchfruit_spoils_rerun",
+  "prior": [
+   {
+    "label": "scorchfruit_spoils",
+    "class": "SITE",
+    "note": "the same world-pawn heart attack (Randall, map -1) stopped the advance (filed RIMMANDRAKE_IGNORE_OFFMAP_COLONIST_DEATH_HEART_ATTACK_TWICE)"
+   }
+  ]
+ },
+ "sc_grass_regreens": {
+  "class": "HARNESS",
+  "unrepaired": "regrow_dry_watered_vanilla read no growth for any patch on any of 6 days (jawa/inspect_string 'Growth: N%' None); cause not found in the sitting (the run log truncates the component's evidence) and a 25-minute rerun past the bound; grass_census_first needs grass_cover in the same run; plant_density_one_control_map has no bridge tool. embergrass_regrows PASS",
+  "owner": "RIMMANDRAKE_READ_PYRE_REGROW_GROWTH_NONE_ON_ALL_SIX_DAYS"
+ },
+ "sc_burn_line_walks": {
+  "label": "burn_line_rerun",
+  "prior": [
+   {
+    "label": "burn_line",
+    "class": "HARNESS",
+    "note": "burn_line_walks_hourly: hour 23's capture asked x=-1 (padding at the map edge), clamped since (padded_inside), and the rerun's hourly row PASS; burn_line_off_control counted the fire clock's fronts (its own switch) as the burn line's (161 fires)"
+   }
+  ],
+  "class": "HARNESS",
+  "unrepaired": "burn_line_off_control, repaired to hold the fire clock, hawk spread and weather, read PASS on its planted state too (burnLineEnabled left on: 0 fires, evidence/run_burn_line_off_control_planted.log), so it cannot fail and is not counted",
+  "owner": "RIMMANDRAKE_FIND_PYRE_BURNLINE_OFF_CONTROL_THAT_CAN_FAIL"
+ },
+ "sc_flamefang_venom": {
+  "label": "flamefang_venom_repaired4",
+  "prior": [
+   {
+    "label": "flamefang_venom",
+    "class": "SITE",
+    "note": "venom_wait_out RESTART: the first row's untended patient died of the venom during the ten days and two were downed; the row also read a dead subject as 'venom gone'"
+   },
+   {
+    "label": "flamefang_venom_repaired",
+    "class": "SITE",
+    "note": "a site colonist starved over the ten days; a retire shot downed a patient instead of killing it"
+   },
+   {
+    "label": "flamefang_venom_repaired2",
+    "class": "SITE",
+    "note": "after the retire shots the wait-out's own bite never landed in 6030 ticks"
+   },
+   {
+    "label": "flamefang_venom_repaired3",
+    "class": "HARNESS",
+    "note": "a venom death 660 ticks into day 1 stopped the advance (death on the bite rows' stop list)"
+   }
+  ],
+  "class": "MOD",
+  "filed": "RIMMANDRAKE_TUNE_PYRE_FLAMEFANG_BITE_KILLS_BEFORE_IMMUNITY",
+  "unfixed": "the fix is not known: which number moves (dose per bite, severityPerDamageDealt 0.02 giving ~0.44 live, or the immunity rate) is a tuning call for the Designer; a fix also needs a redeploy and every check rerun on the new build",
+  "note": "venom_wait_out repaired in this visit (a dead subject read as 'venom gone' would have PASSED it; earlier patients and bystander food no longer void it; a venom death no longer stops its advance). It reads FAIL on this build, whose lethality follows from the def numbers independently of the check; its PASS half waits for the mod fix (owner the filed item)"
+ }
 }

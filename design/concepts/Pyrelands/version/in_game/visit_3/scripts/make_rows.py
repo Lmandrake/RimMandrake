@@ -102,6 +102,9 @@ for tid, e in sorted(T.items()):
     for k in ("class", "repair", "unrepaired", "owner", "filed", "mod_fix", "unfixed", "planted_faults", "note"):
         if k in o:
             row[k] = o[k]
+    if "unrepaired" in o and row["verdict"] == "PASS":   # a needed check not shown both ways is not counted, never PASS
+        row["verdict"] = "UNMEASURED"
+        row["detail"] = "not counted (unrepaired, see `unrepaired`); its components read: " + row["detail"]
     row.update({k: IDENT[k] for k in ("mod_hash", "game_build", "active_mods", "tier", "unit") if k in IDENT})
     rows.append(row)
 with open(os.path.join(VD, "rows.jsonl"), "w") as fh:
