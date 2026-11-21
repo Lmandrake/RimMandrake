@@ -61,7 +61,7 @@ def main(argv):
                "components": n}
         if bad:
             row["not_pass"] = bad
-        row.update({k: v2 for k, v2 in ident.items() if k not in row or k in ("mod_sha", "game")})
+        row.update({k: v2 for k, v2 in ident.items() if k not in row or k in ("mod_sha", "game", "site")})
         row.update(annot.get(test, {}).get(paths[0], annot.get(test, {}).get("*", {})))
         out.append(row)
     with open(os.path.join(V2, "rows.jsonl"), "a", encoding="utf-8") as f:

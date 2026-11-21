@@ -111,7 +111,10 @@ LOG_ALLOWED = "burnedDef is flammable"
 # RM_FE_Ash_Deep, so vanilla's "burnedDef is flammable" config error has nothing to flag. Any such line is a regression.
 LOG_ALLOWED_MAX = 0
 BENIGN_WINDOWS = ("EditWindow_Log", "LudeonTK.EditWindow_Log")   # auto-closed; anything else refuses (plan §3.8)
-IGNORED_WINDOWS = ("Verse.ImmediateWindow", "LudeonTK.Dialog_DevPalette")   # the dev overlay: cannot be closed, blocks nothing
+# the dev overlay, and on his full list Dubs Mint Minimap's tab (it reopens itself the instant it is closed: the driver's
+# own preflight lists it benign, northstar_driver/preflight.py _BENIGN_WINDOWS); neither can be closed, neither blocks
+# anything. Visit 2 (2026-11-21): gate B refused the full-list walk site on the minimap alone.
+IGNORED_WINDOWS = ("Verse.ImmediateWindow", "LudeonTK.Dialog_DevPalette", "DubsMintMinimap.MainTabWindow_MiniMap")
 QUIET_STORYTELLER = "Tutor"                 # UNMEASURED that it fires nothing; gate B also
                                             # requires the incident queue to be empty.
 LAT_MAX = 25.0                              # plan §3.5

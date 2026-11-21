@@ -8,12 +8,17 @@ cd /home/mandrake/rm/relentless/clones/RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_VISIT
 V=design/concepts/Pyrelands/version/in_game/visit_2; E=$V/evidence; P=Transient/pv2/runner.progress
 say() { echo "$(date +%T) FULL $*" >> $P; }
 say begin
+if [ -z "$SKIP_LAUNCH" ]; then   # SKIP_LAUNCH=1: the full list is already loaded (a rerun of the later steps)
 python3 src/RimMandrake/Utils/modlist_swap.py --restore --apply > Transient/pv2/full_swap.log 2>&1; say "swap rc=$?"
 ./game --why "Pyrelands visit 2: sc_walk needs his full list (restored)" down > /dev/null 2>&1
 pid=$(python3 src/RimMandrake/Utils/game_instance.py pid a 2>/dev/null | tail -1)
 [ -n "$pid" ] && python3 src/RimMandrake/Utils/game_instance.py stop "$pid" --instance a --for "Pyrelands visit 2 full list" > /dev/null 2>&1
 for i in $(seq 60); do python3 src/RimMandrake/Utils/game_instance.py pid a 2>/dev/null | grep -q -E '^[0-9]+$' || break; sleep 3; done
 python3 src/RimMandrake/Utils/game_instance.py launch a --wait > Transient/pv2/full_launch.log 2>&1; rc=$?; say "launch rc=$rc $(tail -1 Transient/pv2/full_launch.log | cut -c1-160)"
+fi
+# launch --wait gives up at 600 s; his full list loads for longer (2026-11-21: no port line at 600 s), so wait for the bridge
+for i in $(seq 180); do ./game 2>/dev/null | head -1 | grep -q "bridge answers" && break; sleep 10; done
+say "bridge $(./game 2>/dev/null | head -1 | cut -c1-80)"
 ./game --why "Pyrelands visit 2: game a relaunched on his full list" up > /dev/null 2>&1
 python3 src/RimMandrake/rimflow/build_match.py identity --mod Pyrelands --full --mod-sha 01853a05a6 > $E/identity_full.json 2> Transient/pv2/identity_full.err; say "identity rc=$?"
 python.exe $V/scripts/old_save_read.py > $E/script_old_save_read_full.log 2>&1; say "old_save_read rc=$?"

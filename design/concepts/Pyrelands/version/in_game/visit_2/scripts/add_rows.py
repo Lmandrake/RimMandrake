@@ -15,16 +15,41 @@ ran = [
     ("sc_fire_walks_with_wind", "PASS", "python.exe src/RimMandrake/Pyrelands/wind_burn_live.py",
      REL + "/evidence/script_wind_burn_live.log", "PASS (9 of 9 rows): downwind 8 vs upwind 0; reversed wind runs west 11 vs 0; no fire beside the lanes; control even spread (42 in the outer lanes); black rain puts the line out (9 -> 0)"),
 ]
-not_run = {
-    "sc_walk": "the full-list walk (his 315-mod list, a ~15 min cold load, then two game weeks) did not fit the 3-hour bound after the minimal-list checks",
-    "sc_rite_hook_alone": "needs the pyrelands tier without mandrake.rut.pyrelandsmechanics (a second load); not reached",
-    "sc_herd_thirst": "started at 20:46, stopped by this run to put the repaired reruns first; seven game days",
-    "sc_grass_regreens": "embergrass_regrow (seven game days on the real clock); SteveDesktop's run was UNMEASURED (no site there); not reached here",
-    "P_scorchfruit_spoils": "scorchfruit_spoils (up to 270,000 ticks); SteveDesktop's run was UNMEASURED; not reached here",
-    "P_scorchfruit_produces": "started 21:37 on Archmagi; the run was stopped by the spend watchdog before the chain wrote evidence; the resumed run (23:06) found game a's bridge held by another run (FlowWorks judge, active), so it was not rerun",
-    "P_opening_front": "never started: the run was stopped by the spend watchdog first; the resumed run (23:06) found game a's bridge held by another run (FlowWorks judge, active)",
-}
+not_run = {}
+if not os.path.exists(os.path.join(V2, "evidence", "pv2_walk_season.json")):
+    not_run["sc_walk"] = ("the full-list walk_season chain wrote no evidence in run 3 (see Transient/pv2/runner.progress "
+                          "FULL lines and SUMMARY's run-3 notes)")
 out = []
+def _opening_front_row():
+    """P_opening_front = the driver's opening_front part (re-arm, front lit) + the old-save part. The site was born after
+    the front shipped, so the driver's own old-save read is UNMEASURED (SITE); scripts/old_save_read.py reads a save made
+    before 05033a3f7 instead, judged by validation.old_save_opening_verdict."""
+    import sys
+    root = os.path.abspath(os.path.join(V2, *[".."] * 6))
+    sys.path[:0] = [os.path.join(root, "src/RimMandrake/Utils"), os.path.join(root, "src/RimMandrake/Pyrelands")]
+    import validation as VAL
+    d = json.load(open(os.path.join(V2, "evidence", "pv2_opening_front.json")))
+    front = [c for c in d["components"] if c.get("name") == "opening_front"]
+    fv = front[0]["verdict"] if front else "UNMEASURED"
+    osr_p = os.path.join(V2, "evidence", "old_save_read.json")
+    osr = json.load(open(osr_p)) if os.path.exists(osr_p) else {}
+    kv = VAL.parse_kv(str(osr.get("before") or "")) if osr.get("ready") else {}
+    kv_after = VAL.parse_kv(str(osr.get("after") or "")) if osr.get("ready") else {}
+    if kv:
+        ov, why = VAL.old_save_opening_verdict(kv)
+        if ov == "PASS" and kv_after:
+            ov2, why2 = VAL.old_save_opening_verdict(kv_after)
+            ov, why = (ov2, "after one window: " + why2) if ov2 != "PASS" else (ov, why + "; after one window: " + why2)
+    else:
+        ov, why = "UNMEASURED", "old-save read: %s" % (osr.get("load") or "not run")
+    v = "FAIL" if "FAIL" in (fv, ov) else "UNMEASURED" if "UNMEASURED" in (fv, ov) else "PASS"
+    return ("P_opening_front", v,
+            "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan "
+            "src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains opening_front; python.exe " + REL +
+            "/scripts/old_save_read.py",
+            [REL + "/evidence/pv2_opening_front.json", REL + "/evidence/old_save_read.json"],
+            "front part %s; old-save part on %s: %s %s" % (fv, osr.get("save"), ov, why))
+ran.append(_opening_front_row())
 for test, v, cmd, ev, note in ran:
     r = {"test": test, "verdict": v, "site_checked": True, "game": "archmagi", "command": cmd, "evidence": ev,
          "held": [], "site": SITE, "note": note}

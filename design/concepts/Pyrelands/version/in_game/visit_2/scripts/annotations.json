@@ -178,5 +178,24 @@
     "RIMMANDRAKE_TRACE_PYRE_FIREHAWK_TURNS_MANHUNTER_IN_BURN_WALK"
    ]
   }
+ },
+ "sc_herd_thirst": {
+  "*": {
+   "class": "HARNESS",
+   "repair": "three wrong checks repaired, the mod untouched: map_comp_read is given the short type name (both ways: evidence/herd_probe.json); extension types are read from get_def extra.modExtensions (RM_Ullai has RM_ThirstGrassWateredExtension, Muffalo none); thirst fall per live pawn-hour (thirst_fall_rates), since the control muffalo die by game hour 5 on the site (evidence/herd_control_probe.json); the stagger is read on the spawned ullai herd (one_herd_level). Pure checks red then green in selftest_pyrelands_round6_parts (79/79); live: natives_thirst_slow_and_staggered PASS",
+   "unrepaired": "herd_thirst_gate_off_map: no tool regenerates the tile with the gate held off through generation",
+   "owner": "RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN"
+  }
+ },
+ "sc_grass_regreens": {
+  "*": {
+   "class": "HARNESS",
+   "unrepaired": "embergrass_regrows PASS; regrow_dry_watered_vanilla and grass_census_first lost coverage (safe_advance aborted: the auto-armed vitals monitor's 60 min TTL ran out mid-advance); plant_density_one_control_map: no tool regenerates the tile with plantDensity 1.0",
+   "owner": "RIMMANDRAKE_RENEW_SAFE_ADVANCE_AUTO_ARM_HOURLY",
+   "filed": [
+    "RIMMANDRAKE_RENEW_SAFE_ADVANCE_AUTO_ARM_HOURLY",
+    "RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN"
+   ]
+  }
  }
 }

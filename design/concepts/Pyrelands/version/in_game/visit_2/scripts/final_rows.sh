@@ -41,6 +41,11 @@ python3 $V2/scripts/make_rows.py \
   "sc_burn_compounds=$E/pv2_fresh_burn_bonus.json#fresh_burn_bonus" \
   "P_ashfall_weather_accumulation=$E/pv2_ashfall_weather_accumulation.json#ashfall_weather_accumulation" \
   "P_ashfall_drifts=$E/pv2_ashfall_drifts.json#ashfall_drifts" \
-  "sc_burn_line_walks=$E/pv2_burn_line.json#burn_line"
-for x in burn_line scorchfruit_produces opening_front; do :; done
+  "sc_burn_line_walks=$E/pv2_burn_line.json#burn_line" \
+  "sc_herd_thirst=$E/pv2_herd_thirst.json#herd_thirst" \
+  "sc_grass_regreens=$E/pv2_embergrass_regrow.json#embergrass_regrow" \
+  "P_scorchfruit_spoils=$E/pv2_scorchfruit_spoils.json#scorchfruit_spoils" \
+  "P_scorchfruit_produces=$E/pv2_scorchfruit_produces.json#scorchfruit_produces" \
+  "sc_rite_hook_alone=$E/pv2_rite_hook_alone.json#rite_hook_alone@pyrelands_rite"
+[ -f $E/pv2_walk_season.json ] && python3 $V2/scripts/make_rows.py "sc_walk=$E/pv2_walk_season.json#walk_season@full"
 python3 $V2/scripts/add_rows.py

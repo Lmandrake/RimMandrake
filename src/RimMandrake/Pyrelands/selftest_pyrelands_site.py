@@ -123,6 +123,8 @@ class FakeGame(object):
             self.windows.append({"type": "Dialog_NodeTree", "optionalTitle": "a letter"})
         if "logwin" in self.faults:
             self.windows.append({"type": "EditWindow_Log", "optionalTitle": None})
+        if "minimap" in self.faults:   # his full list: Dubs Mint Minimap's tab reopens itself, cannot be cleared
+            self.windows.append({"type": "DubsMintMinimap.MainTabWindow_MiniMap", "optionalTitle": None})
 
     # --- helpers
     def _map(self):
@@ -686,6 +688,13 @@ def test_gate_b():
         by, rows, _o, _g, _e = run_gate("B", [fault])
         check("gate B %-12s -> %s FAIL, run refused" % (fault, rid),
               by[rid].status == P.FAIL and not P.verdict(rows)[0], (by[rid].status, by[rid].observed))
+    # visit 2 (2026-11-21): gate B refused the full-list walk site on the minimap tab alone
+    by, rows, _o, _g, _e = run_gate("B", ["minimap"])
+    check("gate B passes with only the full list's minimap tab open", by["3.8.dialogs-B"].status == P.PASS,
+          (by["3.8.dialogs-B"].status, by["3.8.dialogs-B"].observed))
+    by, rows, _o, _g, _e = run_gate("B", ["minimap", "modal"])
+    check("gate B still refuses a modal beside the minimap tab", by["3.8.dialogs-B"].status == P.FAIL,
+          (by["3.8.dialogs-B"].status, by["3.8.dialogs-B"].observed))
 
 
 def test_gate_c():
