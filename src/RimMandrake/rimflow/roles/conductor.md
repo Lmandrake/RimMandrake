@@ -468,6 +468,15 @@ python3 src/RimMandrake/rimflow/mod_owner_hold.py lift <Mod> --per-ruling RIMMAN
                                              in his daily digest; this window only, never a helper; a lifted mod still waits
                                              for its readiness list to read READY
 ```
+- There are several live games (owner, 2026-11-20: "There are two live games. ... Please stop saying waiting for the
+  live game."). Game a is Steam's install on Archmagi, his game with his full list (lock `archmagi`). Game b is its own
+  install on Archmagi (lock `archmagi.b`). The SteveDesktop games take work through
+  `infrastructure/stevedesktop/RUNBOOK.md`. Each game has one bridge holder at a time; two holders may drive two games.
+  - Never tell him that work waits for "the live game". Name the game, and say why no other game can take the work.
+  - Read `python3 src/RimMandrake/Utils/game_instance.py status` and `rimflow bridge who --host archmagi.b` before you
+    say that any work waits for a game.
+  - A tick line that says work needs a game while a game is free, or that game b could take, is a pipeline defect. Fix
+    it with a helper at once (CLAUDE.md "There are several live games").
 - When he sits down to walk game a, run `./pipe off game:a --why "his walk"`. When he is done, run `./pipe on game:a
   --why "walk over"`. Do not switch off `stage:in_game` for a walk.
   - While the hold stands, no pipeline run starts on game a, and no tool deploys to, launches or stops game a without
@@ -538,7 +547,8 @@ You are being too passive."*).
   (`python3 src/RimMandrake/rimflow/detached_helper.py status --all`).
 - Once a mod has a passed Design Version, also read the nightly selftest result. Until then the nightly is held:
   `nightly_scope.py show` says "nothing finished yet" (standing_rulings.md §The nightly checks finished mods only).
-- If the live game sits idle with work waiting, that is the headline. Fix what keeps it idle at once, with helpers, on
+- If any game (game a, game b or a SteveDesktop game) sits idle or down with work waiting that it could take, that is
+  the headline. Fix what keeps it idle at once, with helpers, on
   your authority. Do not only file it. The same holds for any pipeline defect (Builds, above).
 - An idle game is never licence to run a mod whose readiness list is not READY. Then the work is the BLOCKS tickets of
   the pipeline (Builds, above).

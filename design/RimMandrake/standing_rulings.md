@@ -772,18 +772,69 @@ Please make that true everywhere."* About 6 AM PST: *"Agreed for 1% at the momen
 - The numbers live in `src/RimMandrake/Utils/switching_plan.json` and nowhere else; the page is
   `design/specs/2026-11-20-account-drain/boundary.md`.
 
+## There are several live games; a busy game is not a reason to wait — owner, 2026-11-14 to 2026-11-20
+
+His words, with their dates (Pacific):
+
+- 2026-11-14 8:25 PM, by card on the in-game acceptance stage: "Which game gives scripted verdicts" → "Whichever game
+  is free".
+- 2026-11-16: *"don't forget we have two Rimworld games, so I don't want to hear any 'waiting for game'"*.
+- 2026-11-20 6:20 AM: *"We can run two games you know..."*
+- 2026-11-20 3:40 PM: *"You should not have been waiting for the game. there are two games"*.
+- 2026-11-20 8:24 PM: *"There are two live games. Clearly some basic document needs to be changed. You keep getting that
+  wrong. Find that top document and define both games as options. Ensure the bridge holder is well defined and the
+  policies for using them. My god. Please stop saying waiting for the live game."*
+
+The games. Each game has its own install, its own bridge and its own lock:
+
+| game | where | lock (`--host`) | what it is for |
+|---|---|---|---|
+| game a | Steam's install on Archmagi, `C:\Program Files (x86)\Steam\steamapps\common\RimWorld` | `archmagi` (the default) | his game: his walks and every check that needs his full mod list |
+| game b | its own install on Archmagi, `D:\ClaudeWork\rimmandrake\instances\b\game` (own Mods, BridgeTools, Saves) | `archmagi.b` | any work that a tier mod list can prove |
+| the SteveDesktop games | SteveDesktop, through `infrastructure/stevedesktop/RUNBOOK.md` | `stevedesktop`, `stevedesktop.b` | queued pipeline tests |
+
+The bridge holder:
+
+- A bridge holder is the one seat or run that drives one game. Each game has one holder at a time. Two holders may
+  drive two games at the same time, and one holder never drives two games.
+- `rimflow bridge who|take|release --host <lock>` acts on one game's lock; with no `--host` it acts on game a.
+  `RM_GAME_INSTANCE=b` points a tool, the bridge client and `rimflow bridge` at game b. `infrastructure/state/BRIDGE` is
+  the mirror of game a's lock only.
+- Every rule of "The bridge is passed through one file" (below) applies to each lock: the 45-minute stale rule,
+  `take --force`, his OWNER hold, `./bridge conductor|free`, the idle take.
+
+The policies:
+
+- Choose the game by the work. Work that a tier mod list can prove goes to any free game. If game a is busy or held,
+  the work goes to game b or to SteveDesktop. A seat that needs game b starts it
+  (`python3 src/RimMandrake/Utils/game_instance.py launch b --wait`) and does not ask.
+- Only a check that needs his full mod list must use game a. His full list on game b beside game a does not fit in
+  Archmagi's memory (about 17.5 GB needed against 19.6 GB of headroom over a 12 GB floor, measured 2026-11-20). A wait
+  for game a names those checks.
+- His walk holds game a only (`./pipe off game:a`). In-game runs then go to game b.
+- Never write or say "waiting for the live game", "needs the live game" or "the game is busy". Name the game. Say why no
+  other game can take the work.
+- A tick line, brief, refusal or status page that says work needs a game while a game is free, or while game b could
+  take it, is a pipeline defect. Fix it in the same run (§The pipeline fixes its own defects).
+- The pipeline picks the game with `pick_game` (`src/RimMandrake/rimflow/maturation_dispatch.py`): the in-game visit,
+  the Stage 6 holder, and the holder on a spent offline road back of game-only items. Detail:
+  `design/specs/2026-11-20-per-game-hold-own-install/boundary.md`,
+  `design/specs/2026-11-20-tick-game-only-exit/boundary.md` and `design/RimMandrake/two_rimworld_instances_2026-11-07.md`.
+
 ## The bridge is passed through one file
 
 **RELENTLESS** was the retired Relentless Pipeline's bridge holder (`model.bridge_identity`), not a seat: only old `bridge` events carry it.
 
-One window drives the live game at a time — not for ownership, for attributability.
-Who holds it is in **`infrastructure/state/BRIDGE`**, one glanceable line written by
+One window drives each game at a time, not for ownership but for attributability. The rules below hold for each
+game's lock (§There are several live games, above).
+Who holds game a is in **`infrastructure/state/BRIDGE`**, one glanceable line written by
 `rimflow bridge` and never by hand. It mirrors the ledger; `bridge who` re-derives it.
 
 ```
 rimflow bridge who                        is it free? (also repairs the mirror)
 rimflow bridge take --for "<what for>"    request it — say what for, the other window reads it
 rimflow bridge release                    the moment you stop. Not at the end of the session
+rimflow bridge who --host archmagi.b      the same for game b (every verb takes --host <lock>)
 ```
 
 🔑 **It errs toward ALLOWING, never toward mutual lockout** (owner, 2026-09-02).

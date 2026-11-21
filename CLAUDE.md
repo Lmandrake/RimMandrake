@@ -635,8 +635,8 @@ python3 src/RimMandrake/Utils/system_click.py <x> <y>          OS-level click fo
     Archmagi's memory. Such a wait names the checks and game a.
   - Game a is his. His OWNER hold and `./pipe off game:a` stop work on game a only. Work then goes to game b.
 - A pipeline stage or tick line that reads "needs the live game" while a game is free is a pipeline defect. Fix it.
-- Full text: `design/specs/2026-11-20-per-game-hold-own-install/boundary.md` and
-  `design/RimMandrake/two_rimworld_instances_2026-11-07.md`.
+- Full text: `design/RimMandrake/standing_rulings.md` §There are several live games. Code:
+  `design/specs/2026-11-20-per-game-hold-own-install/boundary.md`.
 
 ## The bridge is passed through one file
 

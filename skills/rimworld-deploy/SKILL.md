@@ -13,6 +13,11 @@ description: Writing a file is not deploying it — RimWorld loads C:\Program Fi
 C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\<ModName>   ← what loads
 ```
 
+That is game a, Steam's install. Game b on Archmagi has its own install and its own `Mods`
+(`D:\ClaudeWork\rimmandrake\instances\b\game\Mods`): deploy to it with `deploy_custom_mods.py --mod <name>
+--instance b` (or `RM_GAME_INSTANCE=b`), which writes only under game b. A deploy with no game named writes game a's
+folder. Deploy to the game that your run drives, never to another run's game.
+
 The game names its own copy on every launch:
 `Adding mandrake.jawa.patches(C:\...\RimWorld\Mods\Jawa_Patches)`.
 

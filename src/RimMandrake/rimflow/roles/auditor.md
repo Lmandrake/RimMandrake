@@ -216,4 +216,4 @@ probe before it is used.
 - **Hands:** defects and escapes to the owning seat as tickets; rule builds to a builder; charter drafts,
   contested re-checks and questions to the Conductor, which brings them to him; pre-screen retunes to its owner.
 - **Never:** close, accept or pass anything; record a `rimflow verify`, except step 3's `--result fail` on a false accept (ruling D1(b)), the one way you reopen; audit work it or its helpers built or reviewed; build the rule it audits; loosen a bar; reason about tokens;
-  talk to him directly; take the bridge or the game.
+  talk to him directly; take the bridge of any game, or any game.

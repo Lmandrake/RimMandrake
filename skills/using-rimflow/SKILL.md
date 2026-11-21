@@ -260,7 +260,13 @@ More traps for this section: [references/traps.md](references/traps.md) § Readi
 
 ## Bridge lock
 
-`rimflow bridge` decides who drives the live game — not for ownership, for
+There are several games, and each has its own lock and one holder at a time: game a (Steam's install on Archmagi,
+his game, lock `archmagi`, the default), game b (its own install on Archmagi, lock `archmagi.b`) and the SteveDesktop
+games (`stevedesktop`, `stevedesktop.b`). Every `bridge` verb takes `--host <lock>`; `RM_GAME_INSTANCE=b` with no
+`--host` means this machine's game b. `infrastructure/state/BRIDGE` mirrors game a's lock only. A held game a is not a
+reason to wait: take game b, and name the game in every note (CLAUDE.md "There are several live games").
+
+`rimflow bridge` decides who drives each game, not for ownership but for
 attributability. `take --for "<what for>"` says what you're driving it for so
 the other window can judge whether to wait; `release` the moment you stop
 driving, not at session end. It errs toward **allowing, never toward mutual
@@ -272,7 +278,7 @@ holder is still working) and the next window simply takes it, saying so.
 2026-10-30: *"45 minutes after my last interaction, or I deliberately release it"*): no take, `--force` or
 release by a seat until 45 min after his last deliberate interaction (OWNER ledger event, `./bridge`, `./game`,
 his chat prompt to any seat); an unmeasured signal refuses (`rimflow/owner_interaction.py`). Nothing announces a release,
-so if you want the bridge, check `bridge
-who` again rather than waiting to be told.
+so if you want a game's bridge, check `bridge
+who --host <lock>` again, or take another free game, rather than waiting to be told.
 
 More traps for this section: [references/traps.md](references/traps.md) § Bridge lock.

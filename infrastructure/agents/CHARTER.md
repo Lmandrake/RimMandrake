@@ -42,7 +42,8 @@ policy."*).
   removal). It never sends the mod back, and neither "independent verdict" nor "work would not finish" excuses its
   repair. A mod fault the judge or driver can fix is fixed in the sitting with a before/after test, and one fresh
   reader checks that fix once; only a fault it could not fix goes down the road back, with the evidence why. A fix
-  that needs the live game takes it when it is free (`rimflow bridge take --idle-ok`).
+  that needs a game takes any free game (`rimflow bridge take --idle-ok`, with `--host` or `RM_GAME_INSTANCE` for a
+  game other than game a; "Game state and the bridge" below).
 - The pipeline never "blesses" a small change (owner, 2026-11-05). For a small change, the agent does a quick manual
   validation on the spot. Then the agent closes the item with that evidence. Never queue a small change for a Judge
   (`standing_rulings.md`).
@@ -254,9 +255,20 @@ its first script (`debug_process.md` §2).
   carve-out: a seat may relay a game state with `./game`. The carve-out is
   STAMP-ONLY (owner, 2026-09-29). A seat's relay writes the ledger and messages no window. Peers read the state from
   `rimflow next`, which measures the game itself.
-- The bridge has one driver at a time: `rimflow bridge take` / `release`. CLAUDE.md's "The bridge is passed through one
-  file" is canonical. A free bridge is takeable, and his machine use gates nothing. Never run a flyer's flight
-  (`delegation_policy.md` §2.1).
+- There are several live games. Each game has its own bridge and its own lock, and one bridge holder at a time:
+  - game a: Steam's install on Archmagi, the owner's game with his full mod list (lock `archmagi`, the default);
+  - game b: its own install on Archmagi, `D:\ClaudeWork\rimmandrake\instances\b\game` (lock `archmagi.b`);
+  - the SteveDesktop games (locks `stevedesktop`, `stevedesktop.b`), through `infrastructure/stevedesktop/RUNBOOK.md`.
+- A bridge holder is the one seat or run that drives one game. Two holders may drive two games at the same time.
+  `rimflow bridge who|take|release`, with `--host <lock>` for a game other than game a. CLAUDE.md "The bridge is passed
+  through one file" is canonical for each lock. A free bridge is takeable, and his machine use gates nothing.
+- Choose the game by the work. Work that a tier mod list can prove goes to any free game; if game a is busy or held,
+  it goes to game b (start it: `game_instance.py launch b`) or SteveDesktop. Only a check that needs his full mod list
+  waits for game a, because his full list on game b beside game a does not fit in Archmagi's memory.
+- Never write or say "waiting for the live game". Name the game, and say why no other game can take the work. Full
+  text: CLAUDE.md "There are several live games" and `design/RimMandrake/standing_rulings.md` §There are several live
+  games.
+- Never run a flyer's flight (`delegation_policy.md` §2.1).
 - Config files (`ModsConfig.xml` included) never wait for RimSort or the game. Only assemblies need the game down (OS
   lock).
 

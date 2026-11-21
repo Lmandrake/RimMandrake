@@ -56,14 +56,23 @@ python3 src/RimMandrake/rimflow/cli.py bridge take
 python3 src/RimMandrake/rimflow/cli.py bridge release
 ```
 
+🔴 **There are several games, and each has its own bridge, lock and holder.** Game a is Steam's install on Archmagi
+(his game, his full list; bridge port 5174, lock `archmagi`, the default). Game b is its own install on Archmagi
+(`D:\ClaudeWork\rimmandrake\instances\b\game`; port 5175, lock `archmagi.b`). The SteveDesktop games take work through
+`infrastructure/stevedesktop/RUNBOOK.md`. To drive game b, set `RM_GAME_INSTANCE=b` on every command: the bridge client,
+`game_paths`, `rimflow bridge take|release` and the driver lock all follow it (or pass `--host archmagi.b` to `rimflow
+bridge`). `python3 src/RimMandrake/Utils/game_instance.py status` lists the games that run; `launch b --wait` starts
+game b. If game a is busy or held, drive game b; only a check that needs his full list waits for game a. Never write
+"waiting for the live game": name the game and why no other game can take the work.
+
 - 🔴 **The 45-minute staleness rule measures EVENT SILENCE, not game activity.** Emit a periodic note while driving a long
   session; before restarting on a "stale" hold, cross-check `rimworld/get_game_info` and `Player.log`'s mtime.
 - ⚠️ **And `Player.log`'s mtime can read hours stale against a just-recorded `bridge take`:** `stat` the log and check
   `tasklist.exe` before trusting its content as this session.
 - 🔴 **A subagent dispatched to start or wait on a cold load must be told up front to block in a foreground loop**, never to
   end its turn "to wait for the monitor's notification": no background notification reaches a subagent.
-- ⭐ **Two drivers at once leave the bridge STUCK, not crashed:** it comes back when the other call finishes. Find out who else
-  is on it and wait; do not restart the game.
+- ⭐ **Two drivers at once on one game leave its bridge STUCK, not crashed:** it comes back when the other call finishes.
+  Find out who else is on it; do not restart that game. Take another free game for your work instead of waiting.
 
 Detail and the incidents behind each: [references/connect-and-claim.md](references/connect-and-claim.md).
 

@@ -5,18 +5,29 @@
 `infrastructure/agents/CHARTER.md`). Where this file and a window file disagree
 about the cycle, this file wins; fix the window file in the same commit.
 
-## The two things that are always true
+## The three things that are always true
 
 1. 🔴 **The OWNER announces every game-state change — and any window MEASURES it.**
    A window never *infers* a state, but bare `./game` looks and corrects the ledger
    on the spot, from anywhere. Never write a sentence comparing a recorded state to
    a measured one — run the probe and the disagreement is gone.
-2. 🔴 **One bridge driver at a time.** `rimflow bridge take` / `release`; release
-   the instant you stop driving. **Superseded 2026-09-02 — CLAUDE.md's "The bridge
-   is passed through one file" is now canonical**: it errs toward ALLOWING, not
-   mutual lockout. A stale (45-minute-idle) hold is simply taken, saying so;
-   `take --force` always works and is recorded; `infrastructure/state/BRIDGE` is
-   the one-glance mirror; `./bridge conductor|free` is the owner's override.
+2. 🔴 **One bridge driver per game.** There are several live games: game a
+   (Steam's install on Archmagi, his game, lock `archmagi`), game b (its own
+   install on Archmagi, lock `archmagi.b`) and the SteveDesktop games (locks
+   `stevedesktop`, `stevedesktop.b`). Each game has one bridge holder at a time,
+   and two holders may drive two games at once. `rimflow bridge take` / `release`
+   (`--host <lock>` for a game other than game a); release the instant you stop
+   driving. CLAUDE.md's "The bridge is passed through one file" is canonical for
+   each lock: it errs toward ALLOWING, not mutual lockout. A stale (45-minute-idle)
+   hold is simply taken, saying so; `take --force` always works and is recorded;
+   `infrastructure/state/BRIDGE` is the one-glance mirror of game a's lock;
+   `./bridge conductor|free` is the owner's override. A busy game is never a reason
+   to wait: name the game, and say why no other game can take the work (CLAUDE.md
+   "There are several live games").
+3. **The states below are game a's.** `./game` announces and measures game a, the
+   game that he plays. Game b and the other games have no announced state: a seat
+   starts, measures and stops one with `python3 src/RimMandrake/Utils/game_instance.py
+   launch|status|stop`.
 
 ## The states
 

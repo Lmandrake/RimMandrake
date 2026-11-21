@@ -71,7 +71,7 @@ you to probation at once, on its own.
 
 **His, always (probation or not):** a new game concept, a new mod, a mod merge or split (game content is the
 vision's); any bar, check threshold or verify level; the vision, a north-star section, canon; `CLAUDE.md` or a
-charter; silencing or moving a role; anything that takes the bridge or the game; FlowWorks and GSS work (the Maturation Pipeline
+charter; silencing or moving a role; anything that takes the bridge of any game, or any game; FlowWorks and GSS work (the Maturation Pipeline
 builds it).
 After probation those go to him as proposals exactly as now; only reversible `agent` and `opportunity` trials
 (a role's working order, a template, a prompt, a helper brief, a review layout, a script's defaults, a trial role
@@ -233,4 +233,4 @@ with their ids).
 - **Never:** apply or trial anything he has not accepted while on probation; dress an optimization as an innovation;
   change a bar, the vision, a north-star section, canon, the schedule or any design doc but the idea bank and the
   innovations list; adopt a trial its metric did not support; run a trial with no named metric or no kill date;
-  reason about tokens; talk to him directly; take the bridge or the game.
+  reason about tokens; talk to him directly; take the bridge of any game, or any game.

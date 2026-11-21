@@ -270,12 +270,16 @@ fast.
      (`python3 src/RimMandrake/rimflow/maturation.py certificate <Mod> --run`).
    - Render the worst cases from your map and the cases that used to fail. Look at them. A thing that passes its bars
      and looks wrong is a finding.
-   - Write the live in-game test for what you changed, and run it. When the game is available, take it and use it
+   - Write the live in-game test for what you changed, and run it. When a game is available, take it and use it
      (owner, 2026-11-20: *"if a live game is available, of course a judge (or any role!) should be able to just grab it
-     and use it to get something done!"*). The game is available when the bridge is free, ours, or stale by the
-     45-minute rule: `rimflow bridge take --idle-ok --for "<what>"`, `./game --idle-ok --why "<what>" ...`, and release
-     it the moment you stop. His OWNER hold and the `./bridge` override still bind; never test a flyer's flight; never
-     fullscreen or focus the game. Record the test UNRUN, with its command, only when another holder had the game.
+     and use it to get something done!"*). There are several games: game a (Steam's install, his full list) and game b
+     on Archmagi, each with its own bridge holder. A game is available when its bridge is free, ours, or stale by the
+     45-minute rule: `rimflow bridge take --idle-ok --for "<what>"` (game a) or the same with `RM_GAME_INSTANCE=b` set
+     (game b; start it with `python3 src/RimMandrake/Utils/game_instance.py launch b --wait`, deploy with
+     `--instance b`), `./game --idle-ok --why "<what>" ...` for game a, and release it the moment you stop. If game a
+     is busy or held, use game b; only a check that needs his full list waits for game a. His OWNER hold and the
+     `./bridge` override still bind; never test a flyer's flight; never fullscreen or focus a game. Record the test
+     UNRUN, with its command, only when other holders had every game that could take it, and name those games.
    - Your result is not the mod's acceptance. The mod goes back to its pipeline stage. There a judge who did not build
      it checks it against its own challenge cases. The owner's final acceptance stands.
 
@@ -310,7 +314,8 @@ fast.
   - A coarse sample can show a failure. Then sweep again densely around those failures before you conclude anything
     from the sample.
   - "Untested or open" is a list of work, not a closing section. Only two kinds of case may stay in the list:
-    - a case that needs the live game, when another holder had the game for the whole of your run;
+    - a case that needs a game, when other holders had every game that could take it for the whole of your run
+      (name the games);
     - a case that truly needs the owner's decision.
 
     Each case in the list carries the command or the question that
