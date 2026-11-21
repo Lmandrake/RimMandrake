@@ -8,6 +8,7 @@ rule-text checks of item RIMMANDRAKE_RULE_MECHANICS_ARE_UNIVERSAL_THE_BIOME_ONLY
 """
 import json
 import os
+import re
 import shutil
 import sys
 import tempfile
@@ -92,6 +93,9 @@ def t_owed_at_next_version():
     p = packet_text(d, st("Alpha"))
     check("Owed input: the universal-mechanics conversion" in p and LIST in p and "Dive.cs:76" in p,
           "the packet names the list, the heading and the rows", p[-600:])
+    check("offline test" not in p and "home biome" in p and "plain on/off" in p,
+          "the packet demands no offline test, tests on the home biome, and turns the switch into a plain on/off",
+          p[-600:])
     d = concept("Beta", "0.1.0")
     check(DS.conversion_owed(TMP, d, st("Beta"))[0] == "owed", "a list version `none` is owed at any version")
     d = concept("Alpha2", "0.1.1")
@@ -175,15 +179,33 @@ def t_rule_texts_corrected():
     check("biomes in scope only" not in read("src/RimMandrake/rimflow/roles/designer_write.md"),
           "designer_write no longer confines a mechanic to its biome")
     root = read("CLAUDE.md")
-    check("only inside our own biomes" not in root and "## A mechanic reads conditions, never the biome" in root,
+    check("only inside our own biomes" not in root and "## A mechanic works by its physical conditions" in root,
           "root CLAUDE.md: the confinement line is gone and the principle section is in")
+    # His ruling of 2026-11-21 (card two): no offline test is owed; the rule is a default, not a ban; a stated load
+    # exception is allowed; the Scald's hot water is physics, not a biome exception.
+    texts = {rel: read(rel) for rel in ("CLAUDE.md", "GUIDING_PRINCIPLES.md", "design/RimMandrake/standing_rulings.md",
+                                       "design/RimMandrake/biome_rulings.md",
+                                       "src/RimMandrake/rimflow/roles/designer_write.md",
+                                       "src/RimMandrake/rimflow/roles/designer.md",
+                                       "src/RimMandrake/rimflow/concept_floor.json",
+                                       "design/specs/2026-11-21-guiding-principles/conversion_list.md")}
+    for rel, t in texts.items():
+        flat = re.sub(r'\*"[^*]*"\*', "", " ".join(t.split()))   # his words and card text quoted *"…"* are records
+        check("only the biome name changed" not in flat and "change only the biome name" not in flat
+              and "changes only the biome name" not in flat, "%s demands no offline name-swap test" % rel)
+        check("Do not build a new biome check" not in flat and "never which biome it is in" not in flat
+              and "It never reads which biome" not in flat, "%s states the rule as a default, not a ban" % rel)
+    check("except one: the Scald" not in " ".join(root.split()), "root CLAUDE.md: the Scald is not a heat exception")
+    check("heavy load even where it is not active" in " ".join(texts["GUIDING_PRINCIPLES.md"].split()),
+          "GUIDING_PRINCIPLES.md keeps the stated load exception")
     sr = read("design/RimMandrake/standing_rulings.md")
     check("Biome mechanics are promised inside our own biomes only" not in sr
-          and "## Biome mechanics are universal" in sr
+          and "## Biome mechanics work by their conditions" in sr
           and "we're not going to validate\nthat at this time" in sr, "standing_rulings: his 2026-10-15 words stay")
     gp = read("GUIDING_PRINCIPLES.md")
-    check("(RULED 2026-11-21)" in gp and "## Proposed, not ruled" in gp, "GUIDING_PRINCIPLES.md has its ruled and "
-          "proposed parts")
+    entries = [ln for ln in gp.splitlines() if ln.startswith("## ") and "(RULED " in ln]
+    check(1 <= len(entries) <= 7, "GUIDING_PRINCIPLES.md has 1 to 7 ruled entries", len(entries))
+    check("## Proposed, not ruled" in gp, "GUIDING_PRINCIPLES.md keeps a place for proposals")
 
 
 def main(argv):

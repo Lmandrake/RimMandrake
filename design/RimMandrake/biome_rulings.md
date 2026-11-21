@@ -2,9 +2,9 @@
 
 Moved from the project `CLAUDE.md` on 2026-10-11 (weekly cleaning), text unchanged except heading levels. CLAUDE.md keeps a one-line rule and points here. Entries state what IS: delete a line the moment it turns false, never annotate it.
 
-## 🔴 A biome's mechanics are universal: conditions, never the place — owner, 2026-11-21
+## 🔴 A biome's mechanics work by their conditions — owner, 2026-11-21
 
-Before you design, build or audit a biome's mechanic, read `GUIDING_PRINCIPLES.md` entry 1. The code of a mechanic reads only physical conditions (sun angle, heat, water, fire, ground, roof, food), never which biome it is in. A biome keeps only its data: plants, animals, terrain, weather odds and map generation; the roster rulings below are biome data. A biome depends on a mechanic, showcases it, or holds its materials or sources. In game, a mechanic is tested on its home biome only. His words and the three card answers: `design/RimMandrake/standing_rulings.md` §Biome mechanics are universal. What each existing mod converts at its next version: `design/specs/2026-11-21-guiding-principles/conversion_list.md`.
+Before you design, build or audit a biome's mechanic, read `GUIDING_PRINCIPLES.md` entry 1. By default, a mechanic works by the physical conditions where it acts (sun angle, heat, water, fire, ground, roof, food), not by which biome it is in. This is a default, not a prohibition: many mechanics will in effect appear in one biome only, because only that biome has the conditions. A mechanic that is a heavy load even where it is not active may stay unloaded outside its parent biome, as an exception written in the mod's design with its reason. A biome holds its data: plants, animals, terrain, weather odds and map generation; the roster rulings below are biome data. A biome depends on a mechanic, showcases it, or holds its materials or sources. Vanilla and third-party biomes follow the same rule. A mechanic is tested where it matters, in game on its home biome. His words and card answers: `design/RimMandrake/standing_rulings.md` §Biome mechanics work by their conditions. What each existing mod converts at its next version: `design/specs/2026-11-21-guiding-principles/conversion_list.md`.
 
 ## 🔴 A BIOME WITH ZERO TILES IS NOT A DEFECT — owner, 2026-09-20, said repeatedly
 
@@ -211,10 +211,12 @@ planet-wide, not only on Pyrelands. Intentional Utinni placement is undesigned. 
 BiomeDef never declares a heat kind, a sun-heat number or a shade rule. Its sun is its tile's
 position; its hot air is its temperature. Full text: `standing_rulings.md` §Direct Sun.
 
-**One written exception, the Scald, by his card of 2026-11-20:** *"yes keep the clock, AND it should be even worse
-in the Scald water itself (hot water is not the same as hot air"*. The Scald's steam keeps its exposure clock on the
-beach, answered by ordinary heat armour, and the Scald's water harms faster than the steam. The sun, air heat and
-heatstroke stay one kind there too. Detail: `standing_rulings.md` §Direct Sun.
+**Hot water is physics, not a Scald exception** (his card of 2026-11-21): *"the harm comes from the water's heat,
+not the map. Any water that hot, on any map, harms the same way; the Scald is simply where it is common."* His card of
+2026-11-20 says how it harms: *"yes keep the clock, AND it should be even worse in the Scald water itself (hot water is
+not the same as hot air"*. Steam from hot water keeps its exposure clock and the water harms faster than that steam,
+on any map where such water is. The Scald's clock is rewritten to read those conditions at its next version. Detail:
+`standing_rulings.md` §Direct Sun.
 
 ## Natives drink their own environmental water — owner, 2026-11-01
 
@@ -352,4 +354,5 @@ section, with the option's description word for word.
   bubble. The built dose reads only what is overhead, so the build owes a change to a built default; no build ticket
   is filed while the mod is held.
 - **The Scald's steam clock: keep.** His words: *"yes keep the clock, AND it should be even worse in the Scald water
-  itself (hot water is not the same as hot air"*. The exception is written under §No biome-specific sun or heat.
+  itself (hot water is not the same as hot air"*. On 2026-11-21 he ruled that hot water is physics on any map, not a
+  Scald exception (§No biome-specific sun or heat).

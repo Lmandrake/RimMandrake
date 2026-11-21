@@ -2,7 +2,7 @@
 
 Code: `src/RimMandrake/rimflow/designer_stage.py`, the functions `conversion_owed` and `conversion_section`, and the one
 line of `packet` that adds the section. **This page covers only that hand-over.** The owner's ruling of 2026-11-21
-(`GUIDING_PRINCIPLES.md` entry 1; `design/RimMandrake/standing_rulings.md` §Biome mechanics are universal): each
+(`GUIDING_PRINCIPLES.md` entry 1; `design/RimMandrake/standing_rulings.md` §Biome mechanics work by their conditions): each
 existing mod converts its biome-confined mechanics when it next advances, as a planned change for its next version, and
 no current version's bars move. The list of what each mod converts is
 `design/specs/2026-11-21-guiding-principles/conversion_list.md`. Each promise has a test of its name in
@@ -28,7 +28,9 @@ no current version's bars move. The list of what each mod converts is
 - **owed-at-next-version.** When the mod's section exists and the concept's version is newer than the section's
   version (or the section's version is `none`), `conversion_owed` returns `owed`, and the packet carries the section
   "Owed input: the universal-mechanics conversion" with the list's path, the mod's heading and the section's rows in
-  full.
+  full. The packet demands no offline test for the conversion (his ruling of 2026-11-21: "No offline testing, we test
+  only where the mechanics matter"), says that in-game tests run on the home biome, and says that a switch "Enable
+  outside this biome" becomes a plain on/off for its mechanic, default on.
 - **current-version-not-owed.** When the concept's version is the section's version (a concept with no VERSION.json
   reads `0.1.0`), `conversion_owed` returns `not_yet`, and the packet says the rows convert at the next version, never
   in this one.

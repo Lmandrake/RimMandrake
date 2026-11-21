@@ -37,9 +37,9 @@ voids any signature, and refuses Setter fields (`oracle`, `tier`, `guard`, `budg
   variants (a finite, grouped set). The leaf also says what it reads as and what it must not read as. Write at most one
   "must not read as" line per promise. Unless the line is his words or the plain opposite of the promise, it is a
   tip for the judge. Such a tip never needs its own test.
-- A mechanic in a leaf is written as conditions, never as a place: "the mat dies in Direct Sun", never "on Rot maps
-  only" (`GUIDING_PRINCIPLES.md` entry 1). A converted mechanic has an offline leaf: the same conditions, only the
-  biome name changed, the same result. In-game leaves run on the home biome only.
+- A mechanic in a leaf is written as the conditions it reads: "the mat dies in Direct Sun", not "on Rot maps only"
+  (`GUIDING_PRINCIPLES.md` entry 1). A mechanic left unloaded outside its parent biome for load says so, with its
+  reason. In-game leaves run on the home biome. No leaf is owed off the home biome.
 - `false_pass`: a named wrong world, the worker's cheapest way to fake this leaf.
 - `red`: the broken version of the mod this leaf catches, in plain words (hose: "water stops after the first cell").
   If you cannot name one, the leaf is decoration: cut it.

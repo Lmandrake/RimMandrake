@@ -12,7 +12,8 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
   `infrastructure/agents/CONDUCTOR.md`.
 - The game cycle is in `infrastructure/GAME_STATE_WORKFLOW.md`.
 - The model ladder is in `infrastructure/agents/Agent_Policy.md` and nowhere else. Do not restate it.
-- `GUIDING_PRINCIPLES.md` says what is always true of the game, above any one mod or biome. Read it before you design.
+- `GUIDING_PRINCIPLES.md` says what is always true of the game, above any one mod or biome. It binds. Read it before
+  you design or judge.
 
 ## Where the full text lives
 
@@ -182,8 +183,8 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 
 - Before you design or build heat, sun, shade or a biome's climate, read `design/RimMandrake/standing_rulings.md`
   §Direct Sun. Design and migration: `design/RimMandrake/unified_direct_sun_heat_2026-10-19.md`.
-- No biome has its own heat kind, number or exception, except one: the Scald keeps its steam clock, and its water
-  harms faster than its steam (§Direct Sun).
+- No biome has its own heat kind, number or exception. Hot water is physics: water that hot scalds the same way on
+  any map, and it harms faster than its steam. The Scald is where such water is common (§Direct Sun).
 - No animal or pawn ever vanishes without a sign that the player can read.
 
 ## Every DLC is assumed
@@ -209,18 +210,24 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 - Every mod list for a sitting with the owner includes the advanced-zoom mod. He uses it to zoom in and study things.
 - Full text: `design/RimMandrake/standing_rulings.md` §Sittings with the owner keep the advanced-zoom mod.
 
-## A mechanic reads conditions, never the biome
+## A mechanic works by its physical conditions
 
-- A biome's mechanics are universal. The code of a mechanic reads only physical conditions (sun angle, heat, water,
-  fire, ground, roof, food, and the like). It never reads which biome it is in.
-- A biome keeps only its data: its plants, animals, terrain, weather odds and map generation. A biome depends on a
-  mechanic, showcases it, or holds the materials or sources for it.
-- This binds all new design and code from 2026-11-21. An existing mod converts when it next advances, as a planned change
-  for its next version. No current version's bars move. The list: `design/specs/2026-11-21-guiding-principles/conversion_list.md`.
-- Test a mechanic in game only on its home biome. No foreign-map check is owed. A converted mechanic has one offline
-  test: the same conditions, only the biome name changed, the same result.
+- By default, a mechanic works by the physical conditions where it acts (sun angle, heat, water, fire, ground, roof,
+  food, and the like), not by which biome it is in. A biome holds its data: its plants, animals, terrain, weather odds
+  and map generation.
+- Many mechanics will in effect appear in one biome only, because only that biome has the conditions. That is
+  correct.
+- A mechanic that is a heavy load even where it is not active may stay unloaded outside its parent biome. This is an
+  exception. Write it in the mod's design with its reason.
+- A dangerous mechanic is on by default on every map. Its conditions decide where it acts. Vanilla and third-party
+  biomes follow the same rule.
+- This applies to all new design and code from 2026-11-21. An existing mod converts when it next advances, as a planned
+  change for its next version. No current version's bars move. The list:
+  `design/specs/2026-11-21-guiding-principles/conversion_list.md`.
+- Test a mechanic in game, on its home biome. No foreign-map check and no offline test is owed for this rule.
 - Remove a visible effect that has no meaning. Do not confine it to one biome. Decorative atmosphere stays.
-- Full text: `GUIDING_PRINCIPLES.md` entries 1 and 2; `design/RimMandrake/standing_rulings.md` §Biome mechanics are universal.
+- Full text: `GUIDING_PRINCIPLES.md` entries 1 and 2; `design/RimMandrake/standing_rulings.md` §Biome mechanics work by
+  their conditions.
 
 ## Every mod ships superb Mod Settings
 
@@ -230,8 +237,8 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
   - defaults that equal the shipped behaviour;
   - a game that still works when every switch is off;
   - a label on each toggle that affects worldgen.
-- Do not build a new biome check or a new cross-biome switch (§A mechanic reads conditions, never the biome). The
-  existing cross-biome switches wait for his ruling. Until then they stay off, with an "unsupported" label.
+- The switch for a mechanic is a plain on/off, default on, with no biome in it. When a mod with an "Enable outside
+  this biome" switch converts, that switch becomes this plain on/off (§A mechanic works by its physical conditions).
 - Full text: `design/RimMandrake/standing_rulings.md` §Every mod ships superb Mod Settings.
 
 ## If it flies in the fiction, it flies in the game

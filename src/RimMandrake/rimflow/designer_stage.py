@@ -408,9 +408,11 @@ def conversion_section(repo, d, st):
         return out + ["- %s lists this mod's biome-confined mechanics. They convert at its next version, never in this "
                       "one: no current bar moves." % why]
     return out + ["This version converts the rows below (%s). A code gate becomes a physical condition; a design or bar "
-                  "line is reworded as a condition; each converted mechanic gets an offline test: the same conditions, "
-                  "only the biome name changed, the same result. Rows under \"Not ruled yet\" wait for his card: do "
-                  "not convert them." % why, sec]
+                  "line is reworded as a condition; a switch \"Enable outside this biome\" becomes a plain on/off for "
+                  "its mechanic, default on, with no biome in it. In-game tests run on the home biome; no other test is "
+                  "owed for the conversion. A mechanic that is a heavy load where it is not active may stay unloaded "
+                  "outside its parent biome, as an exception written in the design with its reason. Rows under \"Not "
+                  "ruled yet\" wait for his card: do not convert them." % why, sec]
 
 
 def _ledger_meta(repos, ids):

@@ -1,5 +1,13 @@
 # Results: the universal-mechanics ruling written into the rule texts (2026-11-21)
 
+**Run two, 2026-11-21 (item `RIMMANDRAKE_ENACT_PRINCIPLES_CARDS_RULE_IS_DEFAULT_NOT_A_BAN`), corrected what run one
+wrote below, by his cards and typed words of that day:** the rule is a default, not a ban (every "never" and "do not
+build a new biome check" is gone, and the section titles say "works by its conditions"); no offline name-swap test is
+owed (removed from every rule text, the Designer packet, `designer_write.md`, the floor line and the two example
+tickets); a stated load exception is written; the six switches, the dangerous mechanics, the Scald and third-party
+biomes are ruled; `GUIDING_PRINCIPLES.md` has five RULED entries and binds. The "Not ruled" lists below are history.
+
+
 Item `RIMMANDRAKE_RULE_MECHANICS_ARE_UNIVERSAL_THE_BIOME_ONLY_SHOWCASES`. Detached BENCH run. The item stays open: the
 Conductor closes it after his next cards.
 

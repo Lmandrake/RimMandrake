@@ -2,8 +2,9 @@
 
 This file lists, per mod, the places that confine a mechanic to a biome. The rows come from two censuses: `design/specs/2026-11-21-guiding-principles/census_rulings.md` and `design/specs/2026-11-21-guiding-principles/census_code_gates.md`.
 A row is a pointer, not a ruling. Nothing here moves a current version's bars. The run that opens a mod's next version converts each row: a code gate becomes a physical condition, and a design or bar line is reworded as a condition.
-For a converted mechanic, an OFFLINE test that holds the conditions constant and changes only the biome name shows it obeys the rule.
-The switches "Enable outside this biome" and the open questions are NOT ruled. They wait for his card. They are listed here and not converted.
+In-game tests of a converted mechanic run on its home biome. No offline test and no foreign-map check is owed for the conversion (his words, 2026-11-21: "No offline testing, we test only where the mechanics matter").
+A mechanic that is a heavy load even where it is not active may stay unloaded outside its parent biome. That is an exception: the design states it with its reason.
+His cards of 2026-11-21 (`design/RimMandrake/standing_rulings.md` §Biome mechanics work by their conditions) settle most open rows. Each section has a line "Ruled 2026-11-21 (convert at the next version)" for those, and a line "Not ruled yet (wait for his card)" for the rest, which are not converted.
 
 A program reads each section's `Version on 2026-11-21` line (`designer_stage.py` `conversion_owed`). The Designer's
 packet names the section as owed input when the mod's version is newer than that line. `none` means the mod had no
@@ -45,7 +46,8 @@ Not ruled yet (wait for his card): none.
 | code 55 | `src/RimMandrake/Cauldron/Source/RM_VentBloomExposure.cs:75`<br>`src/RimMandrake/Cauldron/Source/RM_AcidAir.cs:64` | Animals native to the biome are exempt (read from the biome's animal list, CommonalityOfAnimal). | UNCLEAR |
 | code 56 | `src/RimMandrake/Cauldron/Source/RM_CauldronRuinKit.cs:127`<br>`src/RimMandrake/Cauldron/Source/RM_CauldronVents.cs:320` | Ruin kit and vents are placed only in the Cauldron. | BIOME-DATA (map gen) |
 
-Not ruled yet (wait for his card): rulings A5 (open question).
+Ruled 2026-11-21 (convert at the next version): A5: the bar line becomes "each mechanic's switch is a plain on/off, default on, with no biome in it".
+Not ruled yet (wait for his card): none.
 
 ## Contagion
 
@@ -62,7 +64,8 @@ Not ruled yet (wait for his card): rulings A5 (open question).
 | code 57 | `src/RimMandrake/Contagion/Source/CompZhoolHaze.cs:119-141` | Zhool haze converts only on a map whose biome comes from a mandrake.* mod (OurBiome, package-id prefix). | MECHANIC-GATE |
 | code 58 | `src/RimMandrake/Contagion/Source/RM_ContagionSkyExtension.cs:77`<br>`src/RimMandrake/Contagion/Source/RM_GameCondition_ContagionBurn.cs:58` | Contagion sky and burn need the biome's extension; natives are exempt. | UNCLEAR |
 
-Not ruled yet (wait for his card): rulings A5 (open question); rulings A8 (open question); rulings A9 (open question).
+Ruled 2026-11-21 (convert at the next version): A5: the bar line becomes "each mechanic's switch is a plain on/off, default on, with no biome in it"; A8: the exposure reads its conditions on any map; in-game tests stay on the home biome; A9: the Burn reads its condition (the Bloom cloud), not the map, unless the design states the load exception.
+Not ruled yet (wait for his card): none.
 
 ## CrackedLands
 
@@ -77,7 +80,8 @@ Not ruled yet (wait for his card): rulings A5 (open question); rulings A8 (open 
 | switch | `src/RimMandrake/CrackedLands/Source/RM_CrackedLandsMod.cs:155`<br>`src/RimMandrake/CrackedLands/Source/RM_CrackedLandsMod.cs:227` | featureInOtherBiomes "Run the flood cycle in other biomes too" (default false). | SWITCH (not ruled) |
 | switch | `src/RimMandrake/CrackedLands/Source/RM_CrackedLandsMod.cs:164`<br>`src/RimMandrake/CrackedLands/Source/RM_CrackedLandsMod.cs:282` | fossilSeamsInOtherBiomes "Fossil seams in other biomes too (worldgen)" (default false). | SWITCH (not ruled) |
 
-Not ruled yet (wait for his card): switch: featureInOtherBiomes "Run the flood cycle in other biomes too"; switch: fossilSeamsInOtherBiomes "Fossil seams in other biomes too (worldgen)"; rulings A5 (open question); rulings A12 (open question).
+Ruled 2026-11-21 (convert at the next version): A5: the bar line becomes "each mechanic's switch is a plain on/off, default on, with no biome in it".
+Not ruled yet (wait for his card): switch: featureInOtherBiomes "Run the flood cycle in other biomes too"; switch: fossilSeamsInOtherBiomes "Fossil seams in other biomes too (worldgen)"; rulings A12 (open question).
 
 ## FeverWood
 
@@ -89,7 +93,8 @@ Not ruled yet (wait for his card): switch: featureInOtherBiomes "Run the flood c
 | rulings A5 | `design/concepts/FeverWood/cleanse/bars.json` | R13: "Existing unsupported cross-biome switches stay off". Under the universal rule these switches have nothing to switch. (also in Cauldron, Contagion, CrackedLands, GelatinousSlime, LeaningScrub, LongShade, Miasma, RustCathedral, Stillsand, TerminalBiomes, TheRot, TheSump) | AMBIGUOUS |
 | code 59 | `src/RimMandrake/FeverWood/Source/RM_OilBoil.cs:82` | Oil boil needs the weather to be in the biome's weather table at its temperature (baseWeatherCommonalities). Census did not read the context. | UNCLEAR |
 
-Not ruled yet (wait for his card): rulings A5 (open question).
+Ruled 2026-11-21 (convert at the next version): A5: the bar line becomes "each mechanic's switch is a plain on/off, default on, with no biome in it".
+Not ruled yet (wait for his card): none.
 
 ## GelatinousSlime
 
@@ -103,7 +108,8 @@ Not ruled yet (wait for his card): rulings A5 (open question).
 | code 62 | `src/RimMandrake/GelatinousSlime/Source/GeneSeeker.cs:112`<br>`src/RimMandrake/GelatinousSlime/Source/GeneSeeker.cs:279`<br>`src/RimMandrake/GelatinousSlime/Source/FarmRuins.cs:52`<br>`src/RimMandrake/GelatinousSlime/Source/SlimeVisitors.cs:55`<br>`src/RimMandrake/GelatinousSlime/Source/SlimeVisitors.cs:231` | Gene extraction ("Not on a gelatinous slime map."), farm ruins and slime visitors run only on the slime biome. | MECHANIC-GATE |
 | code 63 | `src/RimMandrake/GelatinousSlime/Source/SlimeExposure.cs:114` | Slime exposure runs only if the biome lays slime grass (BiomeLaysSlimeGrass). Census did not read the context. | UNCLEAR |
 
-Not ruled yet (wait for his card): rulings A5 (open question); rulings A16 (open question).
+Ruled 2026-11-21 (convert at the next version): A5: the bar line becomes "each mechanic's switch is a plain on/off, default on, with no biome in it"; A16: vanilla and third-party biomes follow the same rule; no retrofit list is owed.
+Not ruled yet (wait for his card): none.
 
 ## Greentide
 
@@ -116,9 +122,10 @@ Not ruled yet (wait for his card): rulings A5 (open question); rulings A16 (open
 | rulings C3 | `design/concepts/Greentide/design.md:468`<br>`design/RimMandrake/special_mechanics_review_2026-10-22.md:303` | Churnmud seeded on other biomes kept off and labelled unsupported. Terrain seeding is biome data. | WORDING |
 | code 21 | `src/RimMandrake/EnvironmentalHazards/Source/RM_IncidentWorker_SteamDevil.cs:27`<br>`src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_RoilVortexSpawner.cs:75` | Steam devils and roil vortices appear only in Greentide (defName). (also in EnvironmentalHazards) | MECHANIC-GATE |
 | code 64 | `src/RimMandrake/Greentide/Source/RM_MapComponent_CrossBiomeChurnmud.cs:59`<br>`src/RimMandrake/Greentide/Source/Kernel/RM_RulesKernel.cs:36-40`<br>`src/RimMandrake/Greentide/Source/RM_StellockLace.cs:53` | Churnmud conversion on foreign maps (setting-driven); Stellock lace branches drop only if felled in Greentide. | MECHANIC-GATE |
-| switch | `src/RimMandrake/Greentide/Source/RM_GreentideMod.cs:177`<br>`src/RimMandrake/Greentide/Source/RM_GreentideMod.cs:325` | "Enable outside the Greentide biome" (default false) plus same three sub-settings: crossBiomeEverywhere, crossBiomeBiomeList, crossBiomeCoverage. | SWITCH (not ruled) |
+| switch | `src/RimMandrake/Greentide/Source/RM_GreentideMod.cs:177`<br>`src/RimMandrake/Greentide/Source/RM_GreentideMod.cs:325` | "Enable outside the Greentide biome" (default false) plus same three sub-settings: crossBiomeEverywhere, crossBiomeBiomeList, crossBiomeCoverage. | SWITCH (RULED 2026-11-21: plain on/off, default on) |
 
-Not ruled yet (wait for his card): switch: "Enable outside the Greentide biome".
+Ruled 2026-11-21 (convert at the next version): switch "Enable outside the Greentide biome": the six-switch ruling: this switch becomes a plain on/off for its mechanic, default on, with no biome in it.
+Not ruled yet (wait for his card): none.
 
 ## LanternDeeps
 
@@ -144,7 +151,8 @@ Not ruled yet (wait for his card): switch: entranceBiomes list.
 | code 60 | `src/RimMandrake/LeaningScrub/Source/RM_TheLean.cs:114`<br>`src/RimMandrake/LeaningScrub/Source/RM_TheLean.cs:143`<br>`src/RimMandrake/LeaningScrub/Source/RM_PlantLean.cs:144`<br>`src/RimMandrake/LeaningScrub/Source/RM_PlantLean.cs:244-247` | Plants lean only if the biome carries RM_LeanExtension ("needs a Leaning Scrub map"). | MECHANIC-GATE |
 | code 61 | `src/RimMandrake/LeaningScrub/Source/RM_VenomvineIslands.cs:57` | Venomvine islands need the extension. | UNCLEAR |
 
-Not ruled yet (wait for his card): rulings A5 (open question).
+Ruled 2026-11-21 (convert at the next version): A5: the bar line becomes "each mechanic's switch is a plain on/off, default on, with no biome in it".
+Not ruled yet (wait for his card): none.
 
 ## LongShade
 
@@ -160,7 +168,8 @@ Not ruled yet (wait for his card): rulings A5 (open question).
 | code 32 | `src/RimMandrake/LongShade/Defs/IncidentDefs/RM_SmokeHaze.xml:48`<br>`src/RimMandrake/LongShade/Defs/IncidentDefs/RM_ShadeStampede.xml:13` | Smoke haze and shade stampede allowed only in RM_LongShade (allowedBiomes). | UNCLEAR |
 | code 33 | `src/RimMandrake/LongShade/Source/RM_ShipfallCommons.cs:129` | Shipfall commons need the biome's extension. | UNCLEAR |
 
-Not ruled yet (wait for his card): rulings A5 (open question).
+Ruled 2026-11-21 (convert at the next version): A5: the bar line becomes "each mechanic's switch is a plain on/off, default on, with no biome in it".
+Not ruled yet (wait for his card): none.
 
 ## Miasma
 
@@ -174,7 +183,8 @@ Not ruled yet (wait for his card): rulings A5 (open question).
 | code 51 | `src/RimMandrake/Miasma/Source/RM_DecayCells.cs:128`<br>`src/RimMandrake/Miasma/Source/RM_MapComponent_FlotsamYard.cs:32`<br>`src/RimMandrake/Miasma/Source/RM_MapComponent_YoungCall.cs:27` | Decay cells, flotsam yard and young call run only in Miasma. | MECHANIC-GATE |
 | code 52 | `src/RimMandrake/Miasma/Defs/IncidentDefs/RM_Surge.xml:71` | Surge is limited to its biome (allowedBiomes). (also in BlueDesert, TheSump) | UNCLEAR |
 
-Not ruled yet (wait for his card): rulings A5 (open question).
+Ruled 2026-11-21 (convert at the next version): A5: the bar line becomes "each mechanic's switch is a plain on/off, default on, with no biome in it".
+Not ruled yet (wait for his card): none.
 
 ## Pyrelands
 
@@ -198,10 +208,11 @@ Not ruled yet (wait for his card): rulings A5 (open question).
 | code 11 | `src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs:209-210` | The cross-biome opt-in switch (see switch table). | MECHANIC-GATE |
 | code 12 | `src/RimMandrake/Pyrelands/Source/PyrelandsAshField.cs:161` | Ash-field scan shortcuts to true on a Pyrelands biome; also detects by terrain extension. | UNCLEAR |
 | code 13 | `src/RimMandrake/Pyrelands/Source/PyrelandsForeignArrivals.cs:43-53`<br>`src/RimMandrake/Pyrelands/Patches/RM_Pyrelands_NoForeignArrivals.xml:15-70` | Foreign herds and aggressive animals kept out of Pyrelands (6 incident patches with disallowedBiomes). | UNCLEAR |
-| switch | `src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs:176`<br>`src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs:610` | crossBiomeEnabled "Enable outside the Pyrelands biome" (default false) plus same three sub-settings: crossBiomeEverywhere, crossBiomeBiomeList, crossBiomeCoverage (false, empty, 1.0). | SWITCH (not ruled) |
+| switch | `src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs:176`<br>`src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs:610` | crossBiomeEnabled "Enable outside the Pyrelands biome" (default false) plus same three sub-settings: crossBiomeEverywhere, crossBiomeBiomeList, crossBiomeCoverage (false, empty, 1.0). | SWITCH (RULED 2026-11-21: plain on/off, default on) |
 | switch | `src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs:46` | pyrelandsEnabled "Mod enabled" (default true). | SWITCH (not ruled) |
 
-Not ruled yet (wait for his card): switch: crossBiomeEnabled "Enable outside the Pyrelands biome"; switch: pyrelandsEnabled "Mod enabled"; rulings A13 (open question).
+Ruled 2026-11-21 (convert at the next version): switch crossBiomeEnabled "Enable outside the Pyrelands biome": the six-switch ruling: this switch becomes a plain on/off for its mechanic, default on, with no biome in it; A13: dangerous mechanics are on by default on every map; conditions decide.
+Not ruled yet (wait for his card): switch: pyrelandsEnabled "Mod enabled".
 
 ## PyrelandsMechanics
 
@@ -224,9 +235,10 @@ Not ruled yet (wait for his card): rulings A14 (open question).
 | rulings A5 | `design/concepts/RustCathedral/cleanse/bars.json` | R6: "Existing unsupported cross-biome switches stay off". Under the universal rule these switches have nothing to switch. (also in Cauldron, Contagion, CrackedLands, FeverWood, GelatinousSlime, LeaningScrub, LongShade, Miasma, Stillsand, TerminalBiomes, TheRot, TheSump) | AMBIGUOUS |
 | rulings C8 | `infrastructure/state/items/RUST_CATHEDRAL_MECHANICS_1.md:360`<br>`infrastructure/state/items/RUSTCATHEDRAL_BOREHULK_GIANT_BUILD_1.md:70`<br>`infrastructure/state/items/FORGE_MECHANICS_1.md:449` | Infestation "on Cathedral maps only"; borehulk "on any other biome's map: none"; a hard-coded Forge biome check. Incident and placement odds are data. (also in TheForge) | WORDING |
 | code 66 | `src/RimMandrake/RustCathedral/Source/Hum/RM_MapComponent_BiomeAttitude.cs:409-424`<br>`src/RimMandrake/RustCathedral/Source/Hum/RM_HumReading.cs:111`<br>`src/RimMandrake/RustCathedral/Source/Hum/RM_HumReading.cs:204`<br>`src/RimMandrake/RustCathedral/Source/Hum/RM_HullBolts.cs:83`<br>`src/RimMandrake/RustCathedral/Source/Hum/RM_HullBolts.cs:237`<br>`src/RimMandrake/RustCathedral/Source/Hum/RM_LineCycle.cs:60`<br>`src/RimMandrake/RustCathedral/Source/Hum/RM_LineCycle.cs:180`<br>`src/RimMandrake/RustCathedral/Source/Hum/RM_IncidentWorker_CathedralResponse.cs:96`<br>`src/RimMandrake/RustCathedral/Source/Walls/HarmonyPatch_GateLivePatternMetal.cs:46` | The whole Cathedral hum and attitude system, hull bolts, line cycle, Cathedral response, live-pattern metal (defName / targetBiome / ext). (also in Minerals, SleepingIce, Wastes, Webwork, WeepingStones) | MECHANIC-GATE |
-| switch | `src/RimMandrake/RustCathedral/Source/RustCathedral/RM_RustCathedralMod.cs:151`<br>`src/RimMandrake/RustCathedral/Source/RustCathedral/RM_RustCathedralMod.cs:361` | "Allow this mod's mechanics on other biomes" (default false) plus same three sub-settings: crossBiomeEverywhere, crossBiomeBiomeList, crossBiomeCoverage. | SWITCH (not ruled) |
+| switch | `src/RimMandrake/RustCathedral/Source/RustCathedral/RM_RustCathedralMod.cs:151`<br>`src/RimMandrake/RustCathedral/Source/RustCathedral/RM_RustCathedralMod.cs:361` | "Allow this mod's mechanics on other biomes" (default false) plus same three sub-settings: crossBiomeEverywhere, crossBiomeBiomeList, crossBiomeCoverage. | SWITCH (RULED 2026-11-21: plain on/off, default on) |
 
-Not ruled yet (wait for his card): switch: "Allow this mod's mechanics on other biomes"; rulings A5 (open question).
+Ruled 2026-11-21 (convert at the next version): switch "Allow this mod's mechanics on other biomes": the six-switch ruling: this switch becomes a plain on/off for its mechanic, default on, with no biome in it; A5: the bar line becomes "each mechanic's switch is a plain on/off, default on, with no biome in it".
+Not ruled yet (wait for his card): none.
 
 ## SleepingIce
 
@@ -238,7 +250,8 @@ Not ruled yet (wait for his card): switch: "Allow this mod's mechanics on other 
 | rulings A15 | `design/concepts/SleepingIce/design.md:44` | "The law of the place ... which no other biome has: Sensing is thermal". Open: heat-sensing physics everywhere, with this biome as showcase? | AMBIGUOUS |
 | code 66 | `src/RimMandrake/SleepingIce/Source/RM_HeatDial.cs:45` | The Sleeping Ice heat dial runs only on its biome. (also in Minerals, RustCathedral, Wastes, Webwork, WeepingStones) | MECHANIC-GATE |
 
-Not ruled yet (wait for his card): rulings A15 (open question).
+Ruled 2026-11-21 (convert at the next version): A15: thermal sensing reads heat, on any map ("all of the biome specifics mechanics so far stated are per condition").
+Not ruled yet (wait for his card): none.
 
 ## Stillsand
 
@@ -258,7 +271,8 @@ Not ruled yet (wait for his card): rulings A15 (open question).
 | code 38 | `src/RimMandrake/Stillsand/Source/RM_StillsandWater.cs:132`<br>`src/RimMandrake/Stillsand/Source/RM_GiantSkeletons.cs:320`<br>`src/RimMandrake/Stillsand/Source/RM_GiantSkeletons.cs:448`<br>`src/RimMandrake/Stillsand/Source/RM_HorizonWarning.cs:190`<br>`src/RimMandrake/Stillsand/Source/RM_PreciousCaves.cs:657` | Sand remembers water, giant skeletons, horizon warning and precious caves need the extension. | UNCLEAR |
 | code 39 | `src/RimMandrake/Stillsand/Defs/IncidentDefs/RM_SandBusterEruption.xml:42`<br>`src/RimMandrake/Stillsand/Defs/IncidentDefs/RM_SandLeviathanIncidents.xml:34`<br>`src/RimMandrake/Stillsand/Defs/WeatherDefs/RM_DuneGale.xml:247` | Sand buster, leviathan and dune gale tied to biomes (allowedBiomes / biomes). | UNCLEAR |
 
-Not ruled yet (wait for his card): rulings A5 (open question).
+Ruled 2026-11-21 (convert at the next version): A5: the bar line becomes "each mechanic's switch is a plain on/off, default on, with no biome in it".
+Not ruled yet (wait for his card): none.
 
 ## TerminalBiomes
 
@@ -281,9 +295,10 @@ Not ruled yet (wait for his card): rulings A5 (open question).
 | code 45 | `src/RimMandrake/TerminalBiomes/Source/RM_MapComponent_VeilFall.cs:60`<br>`src/RimMandrake/TerminalBiomes/Source/RM_MapComponent_WellLedger.cs:130-131`<br>`src/RimMandrake/TerminalBiomes/Source/RM_TwilightFloraBehaviour.cs:50` | Veil fall, well ledger and twilight flora behaviour run only on Twilight Sea maps. | MECHANIC-GATE |
 | code 46 | `src/RimMandrake/TerminalBiomes/Source/RM_JobGiver_SeekGlow.cs:36`<br>`src/RimMandrake/TerminalBiomes/Source/RM_GreyLampResponse.cs:484` | Seek-glow gated by ext.onlyBiome; the Grey lamp response refuses non-Grey maps. | MECHANIC-GATE |
 | code 47 | `src/RimMandrake/TerminalBiomes/Defs/IncidentDefs/RM_SuulkArrival.xml:40`<br>`src/RimMandrake/TerminalBiomes/Defs/IncidentDefs/RM_VeilFallPaneStrike.xml:39`<br>`src/RimMandrake/TerminalBiomes/Source/RM_IncidentWorker_SuulkArrival.cs:36` | Suulk arrival and veil-fall pane strike limited to biomes (allowedBiomes). | UNCLEAR |
-| switch | `src/RimMandrake/TerminalBiomes/Source/RM_TerminalBiomesMod.cs:276`<br>`src/RimMandrake/TerminalBiomes/Source/RM_TerminalBiomesMod.cs:687` | "Enable outside the Scald biome" (default false) plus same three sub-settings: crossBiomeEverywhere, crossBiomeBiomeList, crossBiomeCoverage. | SWITCH (not ruled) |
+| switch | `src/RimMandrake/TerminalBiomes/Source/RM_TerminalBiomesMod.cs:276`<br>`src/RimMandrake/TerminalBiomes/Source/RM_TerminalBiomesMod.cs:687` | "Enable outside the Scald biome" (default false) plus same three sub-settings: crossBiomeEverywhere, crossBiomeBiomeList, crossBiomeCoverage. | SWITCH (RULED 2026-11-21: plain on/off, default on) |
 
-Not ruled yet (wait for his card): switch: "Enable outside the Scald biome"; rulings A4 (open question); rulings A5 (open question); rulings A6 (open question); rulings A7 (open question).
+Ruled 2026-11-21 (convert at the next version): switch "Enable outside the Scald biome": the six-switch ruling: this switch becomes a plain on/off for its mechanic, default on, with no biome in it; A4: hot water is physics, not a Scald exception; the Scald's clock is rewritten to read hot water and its steam on any map; A5: the bar line becomes "each mechanic's switch is a plain on/off, default on, with no biome in it"; A6: no switch reads a biome; each "Enable outside this biome" switch becomes a plain on/off, default on, and the "Unsupported" label goes; A7: the cross-biome switches are not dropped; each becomes a plain on/off, default on.
+Not ruled yet (wait for his card): none.
 
 ## TheForge
 
@@ -318,9 +333,10 @@ Not ruled yet (wait for his card): none.
 | code 17 | `src/RimMandrake/TheRot/Defs/GameConditionDefs/RM_RotSporeKit_SporeCloud.xml:80` | The spore-cloud condition names disallowedBiomes. | UNCLEAR |
 | code 18 | `src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_WarmGround.cs:93-94` | Warm ground (floor heat) runs only where the biome carries RM_WarmGroundExtension and Enabled. Serves The Rot. (also in EnvironmentalHazards) | MECHANIC-GATE |
 | code 20 | `src/RimMandrake/EnvironmentalHazards/Source/RM_IncidentWorker_SporeCloud.cs:25`<br>`src/RimMandrake/EnvironmentalHazards/Source/RM_SporeAllergyIncidents.cs:11`<br>`src/RimMandrake/EnvironmentalHazards/Source/RM_SporeAllergyIncidents.cs:29`<br>`src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_LivingProduce.cs:35`<br>`src/RimMandrake/EnvironmentalHazards/Source/RM_Patch_LivePrepViability.cs:68`<br>`src/RimMandrake/EnvironmentalHazards/Source/RM_HediffComp_SheenExposure.cs:43` | Spore cloud, spore allergy, live-produce heat, strict live prep, sheen exposure: per-biome switch RM_KitFronts.Enabled(key, biome). Serves The Rot kit. (also in EnvironmentalHazards) | MECHANIC-GATE |
-| switch | `src/RimMandrake/TheRot/Source/RM_TheRotMod.cs:158`<br>`src/RimMandrake/TheRot/Source/RM_TheRotMod.cs:417` | crossBiomeEnabled "Enable outside The Rot biome" (default false) plus same three sub-settings: crossBiomeEverywhere, crossBiomeBiomeList, crossBiomeCoverage. | SWITCH (not ruled) |
+| switch | `src/RimMandrake/TheRot/Source/RM_TheRotMod.cs:158`<br>`src/RimMandrake/TheRot/Source/RM_TheRotMod.cs:417` | crossBiomeEnabled "Enable outside The Rot biome" (default false) plus same three sub-settings: crossBiomeEverywhere, crossBiomeBiomeList, crossBiomeCoverage. | SWITCH (RULED 2026-11-21: plain on/off, default on) |
 
-Not ruled yet (wait for his card): switch: crossBiomeEnabled "Enable outside The Rot biome"; rulings A5 (open question); rulings A17 (open question).
+Ruled 2026-11-21 (convert at the next version): switch crossBiomeEnabled "Enable outside The Rot biome": the six-switch ruling: this switch becomes a plain on/off for its mechanic, default on, with no biome in it; A5: the bar line becomes "each mechanic's switch is a plain on/off, default on, with no biome in it"; A17: the ticket is `RIMMANDRAKE_CONVERT_ROT_MAT_TO_CONDITIONS_AND_SUN_DEATH`.
+Not ruled yet (wait for his card): none.
 
 ## TheSump
 
@@ -333,7 +349,8 @@ Not ruled yet (wait for his card): switch: crossBiomeEnabled "Enable outside The
 | code 28 | `src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_SumpLivingMap.cs:87` | Sump living map (census did not read the context). Biome read. (also in EnvironmentalHazards) | UNCLEAR |
 | code 52 | `src/RimMandrake/TheSump/Defs/IncidentDefs/RM_TarPitBelch.xml:51` | Tar-pit belch is limited to its biome (allowedBiomes). (also in BlueDesert, Miasma) | UNCLEAR |
 
-Not ruled yet (wait for his card): rulings A5 (open question).
+Ruled 2026-11-21 (convert at the next version): A5: the bar line becomes "each mechanic's switch is a plain on/off, default on, with no biome in it".
+Not ruled yet (wait for his card): none.
 
 ## Warscar
 
@@ -348,9 +365,10 @@ Not ruled yet (wait for his card): rulings A5 (open question).
 | code 48 | `src/RimMandrake/Scarlands/Source/RM_WarscarMark.cs:193`<br>`src/RimMandrake/Scarlands/Source/RM_ChatrakSnap.cs:305` | Warscar mark and chatrak snap run only in the Warscar (map.Biome != Warscar). | MECHANIC-GATE |
 | code 49 | `src/RimMandrake/Scarlands/Source/RM_Settling.cs:225`<br>`src/RimMandrake/Scarlands/Source/MapComponent_WreckLichen.cs:45`<br>`src/RimMandrake/Scarlands/Source/RM_WarscarMod.cs:183-196` | Settling and wreck lichen run on the Warscar or an opted-in map (lichen strength by slider). | MECHANIC-GATE |
 | code 50 | `src/RimMandrake/Scarlands/Source/RM_WarscarPatches.cs:19` | The Warscar rarity patch applies only to RM_Warscar. | UNCLEAR |
-| switch | `src/RimMandrake/Scarlands/Source/RM_WarscarMod.cs:292`<br>`src/RimMandrake/Scarlands/Source/RM_WarscarMod.cs:728` | "Enable outside the Warscar" (default false) plus same three sub-settings: crossBiomeEverywhere, crossBiomeBiomeList, crossBiomeCoverage. | SWITCH (not ruled) |
+| switch | `src/RimMandrake/Scarlands/Source/RM_WarscarMod.cs:292`<br>`src/RimMandrake/Scarlands/Source/RM_WarscarMod.cs:728` | "Enable outside the Warscar" (default false) plus same three sub-settings: crossBiomeEverywhere, crossBiomeBiomeList, crossBiomeCoverage. | SWITCH (RULED 2026-11-21: plain on/off, default on) |
 
-Not ruled yet (wait for his card): switch: "Enable outside the Warscar".
+Ruled 2026-11-21 (convert at the next version): switch "Enable outside the Warscar": the six-switch ruling: this switch becomes a plain on/off for its mechanic, default on, with no biome in it.
+Not ruled yet (wait for his card): none.
 
 ## Wastes
 
@@ -362,7 +380,8 @@ Not ruled yet (wait for his card): switch: "Enable outside the Warscar".
 | rulings A10 | `design/concepts/Wastes/design.md:379` | "The same food on another biome's map at the same temperature rots." No physical reason is given. | AMBIGUOUS |
 | code 66 | `src/RimMandrake/Wastes/Source/RM_Middenshell.cs:861`<br>`src/RimMandrake/Wastes/Source/RM_MapComponent_WastesStorms.cs:46` | Middenshell and Wastes storms run on their own biome (storms: UNCLEAR). (also in Minerals, RustCathedral, SleepingIce, Webwork, WeepingStones) | MECHANIC-GATE (UNCLEAR for Wastes storms and Minerals quarry) |
 
-Not ruled yet (wait for his card): rulings A10 (open question).
+Ruled 2026-11-21 (convert at the next version): A10: food rots by its conditions (temperature and the like), the same on every map.
+Not ruled yet (wait for his card): none.
 
 ## Webwork
 
@@ -410,7 +429,8 @@ Not ruled yet (wait for his card): none.
 | code 29 | `src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_ShadeGrid.cs:172-175` | Every map-wide sun-heat effect needs the biome to carry RM_SunHeatExtension (the "Stillshade" sun-exposure mechanic; census could not tell Long Shade from Stillsand). (also in LongShade, Stillsand) | MECHANIC-GATE |
 | code 30 | `src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_PinnedSun.cs:63`<br>`src/RimMandrake/CreatureBehaviors/Source/RM_HeatSoundscape.cs:127`<br>`src/RimMandrake/CreatureBehaviors/Source/RM_HeatSoundscape.cs:175`<br>`src/RimMandrake/CreatureBehaviors/Source/RM_TrackGridPatches.cs:106`<br>`src/RimMandrake/CreatureBehaviors/Source/RM_TrackSurfaceExtension.cs:84` | Pinned sun, heat soundscape and track surface run only on biomes with the extension or listed in biomes. Pinned sun serves Stillsand. | MECHANIC-GATE |
 
-Not ruled yet (wait for his card): rulings A6 (open question).
+Ruled 2026-11-21 (convert at the next version): A6: no switch reads a biome; each "Enable outside this biome" switch becomes a plain on/off, default on, and the "Unsupported" label goes.
+Not ruled yet (wait for his card): none.
 
 ## DivingInteraction
 
@@ -424,7 +444,8 @@ Not ruled yet (wait for his card): rulings A6 (open question).
 | code 41 | `src/RimMandrake/DivingInteraction/Source/RM_ChillFireGate.cs:30`<br>`src/RimMandrake/DivingInteraction/Source/RM_MapComponent_ChillBoilShroud.cs:106` | The Chill boil shroud runs only on Chill seabed maps (defName plus pocket-map flag). (also in TerminalBiomes) | MECHANIC-GATE |
 | code 42 | `src/RimMandrake/DivingInteraction/Source/RM_SeaDiveHatch.cs:44-45`<br>`src/RimMandrake/DivingInteraction/Source/RM_SeaDiveHatch.cs:68-69` | The sea-dive hatch accepts only biomes in SeaGenerators (defName table). | UNCLEAR |
 
-Not ruled yet (wait for his card): rulings A4 (open question).
+Ruled 2026-11-21 (convert at the next version): A4: hot water is physics, not a Scald exception; the Scald's clock is rewritten to read hot water and its steam on any map.
+Not ruled yet (wait for his card): none.
 
 ## EnvironmentalHazards
 
@@ -530,3 +551,5 @@ These records cite the 2026-10-15 ruling as a confinement. That ruling now gover
 - `design/RimMandrake/designer_brief_for_gpt_2026-11-02.md:104`
 - `design/RimMandrake/designer_codex_2026-11-09/GelatinousSlime/record.json:43`
 - `design/RimMandrake/designer_codex_2026-11-09/Stillsand/record.json:85`
+- `design/RimMandrake/fluff_cuts_2026-10-23.md:186` (the switches "stay, off and labelled": by his card of 2026-11-21 each becomes a plain on/off, default on)
+- `design/RimMandrake/webworks_open_questions_2026-10-22.md:48`, `design/RimMandrake/webworks_open_questions_2026-10-22.md:71` (the same switch sentence)
