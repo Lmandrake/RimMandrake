@@ -1,8 +1,8 @@
 {
  "schema": 1,
  "mod": "GimmeSomeSlack",
- "version": "0.1.0",
- "locked_from_commit": "bf33322d7754bb3a9e504924bc062dc7fb65fea3",
+ "version": "0.1.1",
+ "locked_from_commit": "e7dffd0052d505badc09ed501cbd2cef2dec874e",
  "ids": [
   "invisible_conduit",
   "cord_slack_lay",
@@ -26,6 +26,12 @@
   "no_hose",
   "floor_end_shock",
   "shock_reach_setting",
+  "cords_draw_under_things",
+  "cords_join_stubs_on_position_and_slope",
+  "switch_off_cords_stay_connected",
+  "pole_buttons_show_icons",
+  "poles_draw_in_front_when_south",
+  "no_roof_over_pole",
   "conduit_invisible",
   "cords_lie_slack",
   "no_unforced_sharp_turn",
@@ -50,9 +56,7 @@
   "owner_change_coils_wires",
   "statics_clear_between_games",
   "no_hose_in_gss",
-  "walk_scavenger_base",
-  "cords_draw_under_things",
-  "cords_join_stubs_on_position_and_slope"
+  "walk_scavenger_base"
  ],
  "history": [
   {
@@ -78,6 +82,16 @@
    ],
    "removed": [],
    "count": 49
+  },
+  {
+   "at": "2026-11-21T00:09:39Z",
+   "by": "BENCH",
+   "why": "record the 53 bars of the 0.1.1 lock: the 49 of 0.1.0 kept plus the four walk-fault bars",
+   "how": "required_ids at locked_from_commit e7dffd0052d505badc09ed501cbd2cef2dec874e (53), less bars_moved_to_next_version (0), plus bars_added_after_lock (0)",
+   "source": null,
+   "added": [],
+   "removed": [],
+   "count": 53
   }
  ]
 }

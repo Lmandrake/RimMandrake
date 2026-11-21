@@ -13,7 +13,7 @@ mods read alike.
 - **Design Version 0.1.0, locked** on his word 2026-11-13 ~3:40 PM PST (`version/VERSION.json`); the lock record pins the text
   at that word, `bf33322d77` (re-pinned 2026-11-14, steward's decision). Code: `src/RimMandrake/GimmeSomeSlack/` (C#, 62
   sources; C# SelfTest 4515 checks; `validation.py`; `northstar/proof_all.py`, the one dense live proof).
-- **Stage now:** Version passed on his word, since 2026-11-20 3:33 PM PST (`version/stage_record.json`).
+- **Stage now:** Stage 2, preflight, since 2026-11-20 4:09 PM PST (`version/stage_record.json`).
 - **Bars:** 48 (23 inventory rows of `record.json` + 26 leaves of `tree.json`; `shock_reach_setting` is both, so 49 rows
   name 48 ids; `cords_draw_under_things` added by his card 2026-11-14). The test-and-stage table is
   `version/test_table.json` (read view `version/test_table.md`), made by the throwaway `version/make_test_table.py`. Of 48
@@ -402,4 +402,12 @@ row 2; Stage 3 about $10.3 and 50 minutes (12:15 to 13:05 PST). No helpers, no g
 - Owner said: OWNER:1795217553611770372
 - Was, "Stage now": - **Stage now:** Stage 8, his live walk, since 2026-11-20 9:13 AM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-20 9:13 AM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-20 4:09 PM PST, version change: 0.1.0 to 0.1.1 (by BENCH)
+
+- Why: Conductor act under RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS: he passed 0.1.0 with fixes as 0.1.1 by card OWNER:1795217553611770372 and picked Gimme Some Slack 0.1.1 for the pipeline; 0.1.1 is locked (conductor_event OWNER:1795219726240521449) with the four walk faults as scope
+- The 0.1.0 record (at Version passed (Passed)) is kept as `version/stage_record_0.1.0.json`.
+- Its numbered evidence (10 cycle, visit and arrival paths) is set aside in `version/previous/0.1.0`.
+- Was, "Stage now": - **Stage now:** Version passed on his word, since 2026-11-20 3:33 PM PST (`version/stage_record.json`).
 - Record: `version/stage_record.json`.
