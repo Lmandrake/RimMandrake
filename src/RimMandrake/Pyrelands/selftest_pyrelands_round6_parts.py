@@ -59,7 +59,7 @@ SCENES = (
       "front_walks(", "burnLineEnabled", "_r6_guard(",
       # RIMMANDRAKE_MEASURE_PYRE_BURNED_SHARE_FLOOD_ALSO_MOVES: the burned share of open plantable ground at each day end
       # over R6_SHARE_DAYS, and the same start save reloaded with windCarriesFireEnabled off as the flood control
-      "CountBurnedOutside", "open_ground_outside(", "R6_SHARE_DAYS", "R6_SHARE_SAVE", "rimworld/load_game",
+      "CountBurnedOutside", "open_ground_outside(", "R6_SHARE_DAYS", "R6_SHARE_SAVE", "_load_site_save(",
       "windCarriesFireEnabled", "burned_share_verdict(")),
     ("sc_burn_compounds", "fresh_burn_bonus", False,
      ("_r6_guard(", "_r6_incidents(", "RM_FE_BlackRain", "freshBurnBonusEnabled", "R6_COMPOUND_DAYS", "_probe(",

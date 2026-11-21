@@ -483,6 +483,49 @@ def _load_registered_site(t):
     return mi.get("mapId"), None
 
 
+SAVE_LOAD_BUDGET_S = 420    # a site save's load on the 18-mod tier lands in about 10 s; the ceiling is reload_fixture's own
+
+
+def _load_site_save(t, name):
+    """Load a save this run took on the site (ashground_noon, skies_noon, ...) and wait until its map is current.
+
+    A raw rimworld/load_game answers "queued": the old map stays Playing for seconds, and loading over a live game can
+    NRE in the teardown (northstar_site.reload_fixture). MEASURED 2026-11-20 visit 2: ash_fall_vs_clear_by_hour read
+    its three colonists "died during the row" and the next chain found loadedMaps [] after two raw loads. So: main
+    menu, load, await map_ready (await_lifecycle), name the colony, make the site current, clear the queue and re-apply
+    the quiet profile (a load resets the storyteller). No settle ticks: the saved clock hour is what the rows compare."""
+    if t.session is None or t.upstream_failed or not callable(getattr(t.session, "call", None)):
+        # offline declaration, a failed chain (bridge_call is then a no-op) or a selftest's fake session
+        return t.bridge_call("rimworld/load_game", saveName=name)
+    utils = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "Utils")
+    if utils not in sys.path:
+        sys.path.append(utils)
+    from await_lifecycle import await_lifecycle  # noqa: E402
+    s = t.session
+    if await_lifecycle(s.call, "menu", 1.0).ok is False:
+        try:
+            s.call("rimworld/go_to_main_menu")
+        except Exception:  # noqa: BLE001 - the menu wait below judges it
+            pass
+        lc = await_lifecycle(s.call, "menu", 180.0)
+        if not lc.ok:
+            _unmeasured(t, "could not reach the main menu to load %s: %s" % (name, lc.reason))
+    r = t.bridge_call("rimworld/load_game", saveName=name) or {}
+    if r.get("success") is False:
+        _unmeasured(t, "rimworld/load_game %s refused: %s" % (name, str(r)[:200]))
+    lc = await_lifecycle(s.call, "map_ready", SAVE_LOAD_BUDGET_S, settle=True)
+    if not lc.ok:
+        _unmeasured(t, "load of %s did not land within %ds: %s" % (name, SAVE_LOAD_BUDGET_S, lc.reason))
+    _GEN["named"] = None
+    _on_site(t)
+    s.call("jawa/incident_queue_clear")
+    try:
+        _northstar_site()._QS().site_profile_receipt(s, "pyrelands_load_%s" % name)
+    except Exception as ex:  # noqa: BLE001 - the profile is housekeeping; its failure is recorded, never a verdict
+        t._record("quiet profile after load of %s raised %s" % (name, type(ex).__name__), str(ex)[:200])
+    t._record("loaded %s and its map is current" % name, s.call("jawa/map_info"))
+
+
 def _pad(t, xz):
     _on_site(t)
     t.anchor = xz
@@ -3581,11 +3624,11 @@ def walk_season(t):
         _wait(t, WALK_DAYS * 60000)
         t.bridge_call("rimworld/save_game", saveName=WALK_SAVE + "_mid")
         mid = walk_digest(t)
-        t.bridge_call("rimworld/load_game", saveName=WALK_SAVE + "_mid")
+        _load_site_save(t, WALK_SAVE + "_mid")
         again = walk_digest(t)
-        t.bridge_call("rimworld/load_game", saveName=WALK_SAVE + "_pre")
+        _load_site_save(t, WALK_SAVE + "_pre")
         pre = walk_digest(t)
-        t.bridge_call("rimworld/load_game", saveName=WALK_SAVE + "_mid")
+        _load_site_save(t, WALK_SAVE + "_mid")
         if _live(t):
             _note(t, "walk digests", {"pre": pre, "mid": mid, "midReloaded": again})
             if digests_match(pre, mid):
@@ -4069,7 +4112,7 @@ def _ten_ground_deep_ash(t):
         t.bridge_call("rimworld/save_game", saveName="ashground_noon")
         runs = {}
         for w in (ASHFALL, "Clear"):
-            t.bridge_call("rimworld/load_game", saveName="ashground_noon")
+            _load_site_save(t, "ashground_noon")
             _on_site(t)
             t.bridge_call("jawa/weather_set", weather=w, lockWeather=True)
             rows = []
@@ -4107,7 +4150,9 @@ def _ten_ground_deep_ash(t):
                 for cx in range(ox, ox + ow):
                     for cz in range(oz, oz + oh):
                         cells[(cx, cz)] = d
-            water = set(c for c, d in cells.items() if is_water_family(d))
+            # standing water only: is_water_family also holds Mud (the ash sweep's radius), and a mud relic with no water
+            # beside it rings nothing (MEASURED 2026-11-20 visit 2: 0 water cells, 8 'shore' cells beside mud failed)
+            water = set(c for c, d in cells.items() if d and ("Water" in d or "Marsh" in d))
             if not water:
                 _unmeasured(t, "this map rolled no standing water, so there is no shore ring to read")
             ring = {}
@@ -4136,7 +4181,7 @@ def _ten_cinderfall(t):
         t.bridge_call("rimworld/save_game", saveName="skies_noon")
         hours = {}
         for w in (ASHFALL, CINDERFALL, BLACKRAIN, "Rain"):
-            t.bridge_call("rimworld/load_game", saveName="skies_noon")
+            _load_site_save(t, "skies_noon")
             _on_site(t)
             _ten_noon_hour(t)
             _sky(t, w)
@@ -4150,7 +4195,7 @@ def _ten_cinderfall(t):
         rect = _rs(_rect(t, size=12))
         got = {}
         for w in ("Clear", BLACKRAIN):
-            t.bridge_call("rimworld/load_game", saveName="skies_noon")
+            _load_site_save(t, "skies_noon")
             _on_site(t)
             _sky(t, w)
             t.bridge_call("jawa/static_call", type=ASH_SAND, method="LayAsh", args="%s|%s" % (rect, WASH_DEPTH))
@@ -4769,7 +4814,7 @@ def _r6_burn_line(t):
         # day 1 is the hourly watch above; the day ends are counted from the start save's clock
         on_rest, on_shots = _r6_share_days(t, ground, "on", st.get("tick0"))
         on = [st.get("share0")] + on_rest
-        t.bridge_call("rimworld/load_game", saveName=R6_SHARE_SAVE)
+        _load_site_save(t, R6_SHARE_SAVE)
         _on_site(t)
         _set(t, {"windCarriesFireEnabled": False})
         try:
@@ -4840,7 +4885,7 @@ def _r6_shore_ring(cells):
 
 def _r6_ash_run(t, weather, hours, settings):
     """From ashground_noon: `settings` flipped, `weather` locked, ProbeAsh depthSum gain each hour -> [gain]."""
-    t.bridge_call("rimworld/load_game", saveName="ashground_noon")
+    _load_site_save(t, "ashground_noon")
     _on_site(t)
     _set(t, settings)
     t.bridge_call("jawa/weather_set", weather=weather, lockWeather=True)
@@ -4925,7 +4970,7 @@ def _r6_ground_deep_ash(t):
                 _fail("with ambientAshEnabled off a clear half-day banked %.3f ash" % off[-1])
     _independent(t)
     with _comp(t, "ash_drawing_capture_pair"):
-        t.bridge_call("rimworld/load_game", saveName="ashground_noon")
+        _load_site_save(t, "ashground_noon")
         _on_site(t)
         _pad(t, R6_PAD_ASH_DRAW)
         x, z = t.anchor
