@@ -1,0 +1,125 @@
+[modcheck] chain firefoam_sprayer START 18:14:35Z
+[pyre-note] sprayer run timeline (every 250 ticks): [{"tick": 250, "fires": 56, "fruitLeft": 9, "taken": [], "cell": [227, 33], "inside": true, "yield": 0, "job": "Harvest", "burns": 0}, {"tick": 500, "fires": 56, "fruitLeft": 9, "taken": [], "cell": [227, 33], "inside": true, "yield": 0, "job": "Harvest", "burns": 0}, {"tick": 750, "fires": 56, "fruitLeft": 9, "taken": [], "cell": [227, 33], "inside": true, "yield": 0, "job": "Harvest", "burns": 0}, {"tick": 1000, "fires": 66, "fruitLeft": 9, "taken": [], "cell": [227, 33], "inside": true, "yield": 0, "job": "Harvest", "burns": 0}, {"tick": 1250, "fires": 66, "fruitLeft": 9, "taken": [], "cell": [227, 33], "inside": true, "yield": 0, "job": "Harvest", "burns": 0}, {"tick": 1500, "fires": 25, "fruitLeft": 9, "taken": [], "cell": [230, 33], "inside": true, "yield": 0, "job": "GotoWander", "burns": 1}, {"tick": 1750, "fires": 10, "fruitLeft": 9, "taken": [], "cell": [227, 41], "inside": false, "yield": 0, "job": "GotoWander", "burns": 2}, {"tick": 2000, "fires": 10, "fruitLeft": 9, "taken": [], "cell": [229, 46], "inside": false, "yield": 0, "job": "ExtinguishSelf", "burns": 2}, {"tick": 2250, "fires": 14, "fruitLeft": 9, "taken": [], "cell": [218, 46], "inside": false, "yield": 0, "job": "GoSwimming", "burns": 3}, {"tick": 2500, "fires": 14, "fruitLeft": 9, "taken": [], "cell": [204, 46], "inside": false, "yield": 0, "job": "GoSwimming", "burns": 3}, {"tick": 2750, "fires": 13, "fruitLeft": 9, "taken": [], "cell": [189, 46], "inside": false, "yield": 0, "job": "GoSwimming", "bu
+[pyre-note] firefoam on the burn after the sprayer run (Filth_FireFoam cells): 0
+[pyre-note] colony vitals after sprayer_reaches_the_fruit: {"colonists": 4, "offsite": 0, "damage": []}
+[pyre] 10:14:58 sprayer_reaches_the_fruit FAIL ExpectationFailed: the colonist carrying the sprayer laid no firefoam on the burn (Filth_FireFoam 0 in the 9x9): it did not foam a way through; jobs seen ['ExtinguishSelf', 'GoSwimming', 'GotoWander', 'Harvest']
+[pyre-note] heat guard (row start, row without_sprayer_fire_stops_or_burns): {"cleared": [["Human98551", 0.0254]], "failed": [], "read": true}
+[pyre-note] control run timeline (every 250 ticks): [{"tick": 250, "fires": 65, "fruitLeft": 9, "taken": [], "cell": [227, 34], "inside": true, "yield": 0, "job": "Harvest", "burns": 0}, {"tick": 500, "fires": 65, "fruitLeft": 9, "taken": [], "cell": [227, 34], "inside": true, "yield": 0, "job": "Harvest", "burns": 0}, {"tick": 750, "fires": 65, "fruitLeft": 9, "taken": [], "cell": [227, 34], "inside": true, "yield": 0, "job": "Harvest", "burns": 0}, {"tick": 1000, "fires": 72, "fruitLeft": 9, "taken": [], "cell": [227, 34], "inside": true, "yield": 0, "job": "Harvest", "burns": 0}, {"tick": 1250, "fires": 72, "fruitLeft": 9, "taken": [], "cell": [227, 34], "inside": true, "yield": 0, "job": "Harvest", "burns": 0}, {"tick": 1500, "fires": 19, "fruitLeft": 9, "taken": [], "cell": [223, 37], "inside": false, "yield": 0, "job": "GotoWander", "burns": 1}, {"tick": 1750, "fires": 9, "fruitLeft": 9, "taken": [], "cell": [219, 41], "inside": false, "yield": 0, "job": "GotoWander", "burns": 1}, {"tick": 2000, "fires": 9, "fruitLeft": 9, "taken": [], "cell": [212, 50], "inside": false, "yield": 0, "job": "Wait_Wander", "burns": 3}, {"tick": 2250, "fires": 7, "fruitLeft": 9, "taken": [], "cell": [210, 49], "inside": false, "yield": 0, "job": "Wait_MaintainPosture", "burns": 4}, {"tick": 2500, "fires": 7, "fruitLeft": 9, "taken": [], "cell": [210, 45], "inside": false, "yield": 0, "job": "Skygaze", "burns": 4}, {"tick": 2750, "fires": 7, "fruitLeft": 9, "taken": [], "cell": [213, 33], "inside": false, "yield": 0, "job": "Skygaze", "burns
+[pyre-note] control run: {"fruit": ["RM_FE_Plant_ScorchFruit98741", "RM_FE_Plant_ScorchFruit98742", "RM_FE_Plant_ScorchFruit98743", "RM_FE_Plant_ScorchFruit98744", "RM_FE_Plant_ScorchFruit98745", "RM_FE_Plant_ScorchFruit98746", "RM_FE_Plant_ScorchFruit98747", "RM_FE_Plant_ScorchFruit98748", "RM_FE_Plant_ScorchFruit98749"], "took": [], "fires": 63, "burns": [{"def": "Burn", "label": "burn", "severity": 5.8, "part": "Torso", "partLabel": "torso"}, {"def": "Burn", "label": "burn", "severity": 1.92, "part": "Arm", "partLabel": "left arm"}, {"def": "Burn", "label": "burn", "severity": 5.0, "part": "Leg", "partLabel": "left leg"}, {"def": "Burn", "label": "burn", "severity": 2.0, "part": "Finger", "partLabel": "left pinky"}]}
+[pyre-note] colony vitals after without_sprayer_fire_stops_or_burns: {"colonists": 5, "offsite": 0, "damage": []}
+[pyre] 10:15:07 without_sprayer_fire_stops_or_burns PASS 
+[modcheck] chain firefoam_sprayer END 32s PASS=1 FAIL=1 UNMEASURED=0 NOT_RUN=0 hold=0.0s body=31.9s teardown=0.1s
+component firefoam_sprayer/sprayer_reaches_the_fruit: {"toggle": null, "beyond_toggle": false, "verdict": "FAIL", "execution": "ran", "detail": "ExpectationFailed: the colonist carrying the sprayer laid no firefoam on the burn (Filth_FireFoam 0 in the 9x9): it did not foam a way through; jobs seen ['ExtinguishSelf', 'GoSwimming', 'GotoWander', 'Harvest']", "evidence": [{"call": "bridge_call jawa/research_finish_project", "result": {"success": true, "wasAlreadyFinished": false, "prerequisitesTouched": [], "reapplyUnlocksCalled": true, "doCompletionDialog": false, "doCompletionLetter": true, "result": {"defName": "Firefoam", "label": "Firefoam", "c
+component mapgen_log/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_mapgen_log_clean"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component plant_census/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_plant_distribution_correct"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component plant_census/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component plant_census/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component animal_census/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_animal_distribution_correct"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component grass_cover/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_grass_chokes_ground"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component ruins/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_ruins_scorched"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component ruins/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component burn_line/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_burn_line_present"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component burn_line/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component burn_line/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component burn_line/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component opening_front/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component opening_front/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component startup_and_def_wiring/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "biomeGenerationEnabled", "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component ground_deep_ash/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_ground_deep_ash"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component ground_deep_ash/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component ground_deep_ash/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component ground_deep_ash/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component ground_deep_ash/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component ground_deep_ash/skipped#5: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component ground_deep_ash/skipped#6: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component ground_deep_ash/skipped#7: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component ash_fertility_watered/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_ash_fertile_when_watered"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component ash_fertility_watered/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component ash_fertility_watered/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component fresh_burn_bonus/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_fresh_burn_feeds_the_field"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component fresh_burn_bonus/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component ambient_ash_drift/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "ambientAshEnabled", "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component fire_tick_effects/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "ashDustingEnabled", "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component fire_tick_effects/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "scorchFruitEnabled", "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component ashfall_weather_accumulation/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "ashfallAccumulationEnabled", "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component ashfall_drifts/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_ashfall_darkens_drifts"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component cinderfall/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_cinderfall_distinct"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component cinderfall/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component cinderfall/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component cinderfall/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component blackrain/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_blackrain_reads"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component blackrain/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component blackrain/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "blackRainDousingEnabled", "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component soaked_map_stays_smooth/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component no_ordinary_rain/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_cannot_ordinary_rain"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component no_ordinary_rain/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component no_ordinary_rain/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component scorchfruit_fire_born/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_scorchfruit_fire_born"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component scorchfruit_fire_born/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component scorchfruit_produces/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_scorchfruit_produces"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component scorchfruit_spoils/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_scorchfruit_spoils_fast"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component firehawk/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_firehawk_carries_ember"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component firehawk/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component firehawk/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component furnace_warmth/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_furnacebeast_warmth"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component furnace_room/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_furnacebeast_heats_room"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component furnace_sleep/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component furnace_sleep/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component burrowers/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_burrowers_dive"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component heat_dome/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "burrowDomeOnHeatHit", "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component heat_dome/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "burrowDomeOnHeatHit", "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component heat_dome/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component embergrass_regrow/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_embergrass_regrows"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component embergrass_regrow/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component embergrass_regrow/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component embergrass_regrow/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component ullai_and_giant/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "ullaiEnabled", "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component ullai_and_giant/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "furnaceBeastGiant", "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component ullai_and_giant/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component ullai_and_giant/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component gpt_hunt_plausible/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component gpt_hunt_plausible/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component gpt_hunt_plausible/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component gpt_hunt_plausible/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component gpt_hunt_plausible/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": "sandShovelEnabled", "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component gpt_hunt_plausible/skipped#5: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component gpt_hunt_plausible/skipped#6: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component gpt_hunt_plausible/skipped#7: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component gpt_hunt_plausible/skipped#8: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component sand_shovel/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "sandShovelEnabled", "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component flamefang_venom/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component flamefang_venom/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component flamefang_venom/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component flamefang_venom/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component flamefang_venom/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component rite_hook_alone/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "fireClockEnabled", "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component rite_hook_alone/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "fireClockEnabled", "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component walk_season/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component walk_season/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component walk_season/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component walk_season/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component walk_season/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component walk_season/skipped#5: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component walk_season/skipped#6: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component walk_season/skipped#7: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component foreign_arrivals/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component foreign_arrivals/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component foreign_arrivals/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component fire_sense/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component fire_sense/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component fire_sense/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component fire_sense/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component fire_sense/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component furnace_hide_bank/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component roof_withers/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component roof_withers/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component roof_withers/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component herd_thirst/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component firehawk_first_sighting_letter/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component firehawk_first_sighting_letter/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "fireHawkSightingLetterEnabled", "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component firehawk_first_sighting_letter/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component firehawk_crestfeather_yield/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+component firehawk_mapwide_carry/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firefoam_sprayer)"}
+Pyrelands: NOT GREEN  PASS=1 FAIL=1 UNMEASURED=110  calls=345 mean=96.259ms  -> design/concepts/Pyrelands/version/in_game/visit_3/evidence/pv3_firefoam_sprayer_s4.json
+[bridge split] 36.5 s wall: load 0.0 / ticks 10.7 / reads 2.6 / other 16.8 / outside calls 6.4 s
+[bridge split] WARN 81 calls of jawa/list_things (1.7 s): batch them

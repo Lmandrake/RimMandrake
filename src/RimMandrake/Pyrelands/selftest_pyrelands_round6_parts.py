@@ -228,6 +228,8 @@ class _FakeGame(object):
             return {"success": True, "sizeX": 100, "sizeZ": 100, "mapBiome": "RM_Pyrelands"}
         if tool == "jawa/static_call" and kw.get("method") == "RearmOpeningFront":
             return {"success": True, "result": "1"}
+        if tool == "jawa/mod_settings_field" and kw.get("action") == "get":   # the off-control reads what it holds
+            return {"success": True, "value": str(self.settings.get(kw.get("field"), True))}
         return {"success": True}
 
 

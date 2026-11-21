@@ -277,17 +277,14 @@ def _subject_row(t, pid):
 
 
 def _retire_venom_patients(t):
-    """Kill every living colonist that carries the venom (the earlier rows' patients). -> their ids."""
+    """The ids of every living colonist that carries the venom (the earlier rows' patients). They stay where they are:
+    killing them first (visit 3, a 5000-damage shot) downed one instead, and the wait-out's own bite then never landed
+    in 6030 ticks. The wait-out reads them as no subjects of its own (_GEN["not_subjects"])."""
     r = t.bridge_call("jawa/list_pawns", includeHealth=True, limit=500)
     if not _live(t):
         return []
-    out = []
-    for p in (_ok(r, "list_pawns").get("pawns") or []):
-        if p.get("isPlayer") and not p.get("dead") and _has_hediff(p, VENOM):
-            _ok(t.bridge_call("jawa/damage", damageDef="Bullet", amount=5000, thingId=p["id"], allowColonists=True),
-                "damage(retire %s)" % p["id"])
-            out.append(p["id"])
-    return out
+    return [p["id"] for p in (_ok(r, "list_pawns").get("pawns") or [])
+            if p.get("isPlayer") and not p.get("dead") and _has_hediff(p, VENOM)]
 
 
 @contextlib.contextmanager
@@ -316,6 +313,8 @@ def _comp(t, name, **kw):
         measured = _GEN.pop("measured_death", None)
         if measured:   # the row's own subject: its death or fall is what the row measures, not damage to the test
             damage = [d for d in damage if not d.startswith(measured + " ")]
+        for other in _GEN.pop("not_subjects", None) or []:   # pawns retired before the row, not part of it
+            damage = [d for d in damage if not d.startswith(other + " ")]
         off = _offsite(t)
         if off:     # PYRE_SITE_VITALS_REPAIR_HALF_THE_COLONY: colonists the current-map reads cannot see are unwatched
             damage = damage + ["%d colonist(s) live OFF the site map, unfed and unwatched (retire_offsite_colonies)" % off]
@@ -4826,13 +4825,14 @@ def _ten_flamefang_venom(t):
             if not ok:
                 _fail(why)
     _independent(t)
-    # SITE (Pyrelands visit 3, 2026-11-21): the earlier rows' envenomed patients stayed on the map untended through this
+    # SITE (Pyrelands visit 3, 2026-11-21): the earlier rows' envenomed patients stay on the map untended through this
     # row's ten days; one died of the venom and two were downed, which voided the row (RESTART). They are not its
-    # subject, so they leave the map before it starts.
+    # subject, so their fate is left out of its damage reading.
     retired = _retire_venom_patients(t)
+    _GEN["not_subjects"] = list(retired)
     with _comp(t, "venom_wait_out"):
         if _live(t):
-            _note(t, "earlier venom patients retired before the wait-out", retired)
+            _note(t, "earlier venom patients on the map, not this row's subjects", retired)
         cid = _spawn_colonist(t, x + 10, z + 8)
         row = _bite_until(t, cid, "RM_Flamefang", x + 10, z + 8, hediff=VENOM, clear_wounds=True)
         # the subject's own death by the venom is this row's answer (a FAIL), not damage to the test
@@ -4847,6 +4847,9 @@ def _ten_flamefang_venom(t):
             days.append(s)
             if _live(t) and s is None:
                 break
+            fed = _vitals(t, force=True) if _live(t) and hasattr(t.session, "call") else None   # ten days on the site: the bystanders are fed each day (visit 3: one starved)
+            if fed:
+                _top_up(t, fed)
             _bite_wait(t, TEN_DAY)
         if _live(t):
             _note(t, "untended venom severity each day until it goes (immunity unread)", {"days": days, "diedOnDay": died})
@@ -5171,8 +5174,17 @@ def _r6_guard_changes(before, after):
     return why
 
 
+def padded_inside(rect, map_size, pad=1):
+    """Pure. (x, z, w, h) moved so that it, grown by `pad` cells each side, lies inside the map. HARNESS (visit 3): the
+    burn front reached the map's west edge, the capture's 1-cell padding asked for x = -1 and the hour read UNMEASURED."""
+    x, z, w, h = inside_map((rect[0] - pad, rect[1] - pad, rect[2] + 2 * pad, rect[3] + 2 * pad), map_size)
+    return x + pad, z + pad, max(1, w - 2 * pad), max(1, h - 2 * pad)
+
+
 def _r6_shot(t, rect, name):
     """A capture of `rect` at play zoom; its path, None offline."""
+    if _live(t):
+        rect = padded_inside(rect, _map_size(t))
     return t.screenshot(name=name, rect=tuple(rect), ppc=R6_PLAY_PPC)
 
 
@@ -5423,17 +5435,45 @@ def _r6_burn_line(t):
                 _unmeasured(t, why)
             if ok is False:
                 _fail(why)
+    _burn_line_off_control(t)
+
+
+PLANT_BURNLINE_TOGGLE_IGNORED_ENV = "PYRE_PLANT_BURNLINE_TOGGLE_IGNORED"   # planted state: the toggle left on
+# the other fire sources this control holds off, so that a fire after the window can only be the burn line's own relight
+# (KeepTheBurnAlive). burnLineEnabled and fireClockEnabled are independent switches (MapComponent_BurnLine, MOD_OPTIONS_
+# RETROFIT_1): visit 3's control switched off the burn line alone, the fire clock lit its fronts, and 161 fires read FAIL.
+OFF_CONTROL_HOLDS = ("fireClockEnabled", "fireHawkSpreadEnabled")
+
+
+def _burn_line_off_control(t):
     _independent(t)
     with _comp(t, "burn_line_off_control"):
-        _set(t, {"burnLineEnabled": False})
-        _extinguish(t)
-        _wait(t, BURN_LINE_WAIT_TICKS)
-        n = len(_r6_fires(t))
-        _set(t, {"burnLineEnabled": True})
+        planted = os.environ.get(PLANT_BURNLINE_TOGGLE_IGNORED_ENV) == "1"
+        if planted:
+            _note(t, "PLANTED FAULT", "%s=1: burnLineEnabled is left on, as if the switch did nothing"
+                  % PLANT_BURNLINE_TOGGLE_IGNORED_ENV)
+        prior = dict((k, _live_setting(t, k)) for k in OFF_CONTROL_HOLDS) if _live(t) else {}
+        _set(t, dict([("burnLineEnabled", planted)] + [(k, False) for k in OFF_CONTROL_HOLDS]))
+        t.bridge_call("jawa/weather_set", weather="Clear", lockWeather=True)
+        try:
+            _extinguish(t)
+            _wait(t, BURN_LINE_WAIT_TICKS)
+            n = len(_r6_fires(t))
+        finally:
+            _set(t, dict([("burnLineEnabled", True)] + [(k, str(v) == "True") for k, v in prior.items()]))
+            t.bridge_call("jawa/weather_set", unlock=True)
         if _live(t):
-            _note(t, "burnLineEnabled off, map extinguished: free-standing Fire after the window", n)
+            _note(t, "burnLineEnabled %s, fire clock and hawk spread held off, weather Clear, map extinguished: "
+                  "free-standing Fire after the window" % planted, n)
             if n:
-                _fail("%d free-standing fires with burnLineEnabled off" % n)
+                _fail("%d free-standing fires after the window with burnLineEnabled %s and every other fire source held "
+                      "off: the burn line relit what was put out" % (n, planted))
+
+
+@suite.chain("burn_line_off_control")
+def burn_line_off_control_alone(t):
+    """The burn line's off-control alone (its planted reading without the 24-hour walk; the burn_line chain runs it too)."""
+    _burn_line_off_control(t)
 
 
 def _r6_terrain_cells(t, rect):

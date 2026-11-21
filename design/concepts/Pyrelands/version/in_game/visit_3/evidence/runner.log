@@ -53,3 +53,24 @@ DONE firefoam_sprayer@firefoam_sprayer_planted2 reload_rc=0 rc=1 65s 09:57:54
 END batch4b 2026-11-21 09:57:54
 START batch4c 2026-11-21 09:57:54
 DONE flamefang_venom reload_rc=0 rc=1 150s 10:00:24
+DONE ash_fertility_watered (batch4c child, runner stopped to put firefoam first) 10:10:24
+START batch5a 2026-11-21 10:10:36
+DONE firefoam_sprayer@firefoam_sprayer_s3 reload_rc=0 rc=1 52s 10:11:28
+DONE flamefang_venom@flamefang_venom_repaired reload_rc=0 rc=1 169s 10:14:17
+DONE firefoam_sprayer@firefoam_sprayer_s4 reload_rc=0 rc=1 50s 10:15:07
+END batch5a 2026-11-21 10:15:07
+START batch5b 2026-11-21 10:15:07
+DONE firefoam_sprayer@firefoam_sprayer_gap_planted reload_rc=0 rc=1 52s 10:15:59
+END batch5b 2026-11-21 10:15:59
+START batch5c 2026-11-21 10:15:59
+STOPPED batch5c at its first reload (venom put first) 10:16:13
+START batch6 2026-11-21 10:16:30
+DONE flamefang_venom@flamefang_venom_repaired2 reload_rc=0 rc=1 97s 10:18:07
+DONE plant_census,scorchfruit_fire_born@scorchfruit_fire_born_with_census reload_rc=0 rc=1 145s 10:20:32
+DONE script:src/RimMandrake/Pyrelands/firefoam_aim_live_proof.py reload_rc=0 rc=0 15s 10:20:47
+DONE script:src/RimMandrake/Pyrelands/gate_live_proof.py reload_rc=0 rc=0 15s 10:21:02
+DONE script:src/RimMandrake/Pyrelands/wind_burn_live.py reload_rc=0 rc=0 118s 10:23:00
+DONE script:design/concepts/Pyrelands/version/in_game/visit_3/scripts/walk_save.py reload_rc=0 rc=0 29s 10:23:29
+DONE fresh_burn_bonus reload_rc=0 rc=1 246s 10:27:35
+DONE burn_line reload_rc=0 rc=1 1127s 10:46:22
+DONE scorchfruit_spoils reload_rc=0 rc=1 237s 10:50:19

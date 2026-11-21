@@ -53,9 +53,31 @@ def read_script(label):
         return "UNMEASURED", "not run: no %s" % os.path.relpath(p, ROOT), None
     txt = open(p, encoding="utf-8", errors="replace").read()
     rc = OV.get("_script_rc", {}).get(label)
+    if rc is None and os.path.exists(os.path.join(E, "runner.log")):
+        for ln in open(os.path.join(E, "runner.log")):   # the last run of this script names its exit code
+            m = re.match(r"DONE \+?script:\S*?([^/@\s]+?)(?:\.py)?(?:@(\S+))? reload_rc=\S+ rc=(\d+)", ln)
+            if m and (m.group(2) or m.group(1)) == label:
+                rc = int(m.group(3))
     tail = [ln for ln in txt.splitlines() if ln.strip() and not ln.startswith("[bridge split]")][-3:]
     v = {0: "PASS", 1: "FAIL", 2: "UNMEASURED"}.get(rc, "UNMEASURED")
     return v, " | ".join(tail)[:400], p
+
+
+def prior_rows(tid, e, o):
+    """The earlier runs of a repaired or re-run check, each with its class: one row per run, before the counted one."""
+    out = []
+    for pr in o.get("prior") or []:
+        ch = chain_of(e.get("command"))
+        v, detail, ev, site = read_chain(pr["label"], ch, e.get("entry") or ch)
+        r = {"test": tid, "verdict": v, "site_checked": bool(site), "game": "archmagi", "mod_sha": IDENT["mod_sha"],
+             "command": e.get("command"), "evidence": os.path.relpath(ev, ROOT) if ev else None,
+             "held": pr.get("held", HELD), "detail": detail, "run": pr["label"]}
+        for k in ("class", "note"):
+            if k in pr:
+                r[k] = pr[k]
+        r.update({k: IDENT[k] for k in ("mod_hash", "game_build", "active_mods", "tier", "unit") if k in IDENT})
+        out.append(r)
+    return out
 
 
 rows = []
@@ -63,6 +85,7 @@ for tid, e in sorted(T.items()):
     if str(e.get("stage")) != "6":
         continue
     o = OV.get(tid, {})
+    rows.extend(prior_rows(tid, e, o))
     cmd = e.get("command")
     if o.get("verdict_fixed"):
         v, detail, ev, site = o["verdict_fixed"], o.get("detail", ""), o.get("evidence"), o.get("site_checked", False)
@@ -75,7 +98,7 @@ for tid, e in sorted(T.items()):
         site = ev is not None
     row = {"test": tid, "verdict": v, "site_checked": bool(site), "game": "archmagi", "mod_sha": IDENT["mod_sha"],
            "command": cmd, "evidence": os.path.relpath(ev, ROOT) if ev else None, "held": o.get("held", HELD),
-           "detail": o.get("detail_prefix", "") + detail}
+           "detail": o.get("detail_prefix", "") + detail, "run": o.get("label") or "(table command)"}
     for k in ("class", "repair", "unrepaired", "owner", "filed", "mod_fix", "unfixed", "planted_faults", "note"):
         if k in o:
             row[k] = o[k]
@@ -85,7 +108,31 @@ with open(os.path.join(VD, "rows.jsonl"), "w") as fh:
     for r in rows:
         fh.write(json.dumps(r) + "\n")
 from collections import Counter
-print(len(rows), dict(Counter(r["verdict"] for r in rows)))
+last = {}
 for r in rows:
+    last[r["test"]] = r
+print(len(rows), "rows;", len(last), "checks; last rows:", dict(Counter(r["verdict"] for r in last.values())))
+for r in last.values():
     if r["verdict"] != "PASS":
         print("%-11s %-32s %s %s" % (r["verdict"], r["test"], r.get("class", "-"), r["detail"][:150]))
+
+
+# the Exit block: each check's last row; a check counts pass only when its last row is PASS with the site checked
+def exit_block():
+    strange = [json.loads(x) for x in open(os.path.join(VD, "strange.jsonl")) if x.strip()]
+    open_n = sum(1 for x in strange if x.get("status") not in ("explained", "filed"))
+    ing = ", ".join("%s: %s" % (k, ("pass" if (r["verdict"] == "PASS" and r["site_checked"]) else
+                                    "fail" if r["verdict"] == "FAIL" else "unmeasured"))
+                    for k, r in sorted(last.items()))
+    met = all(r["verdict"] == "PASS" and r["site_checked"] for r in last.values()) and open_n == 0
+    return ("## Exit\n\n```\ningame_rows: {%s}\nstrange_open: %d\nsavegame: %s\nexit_met: %s\n```\n"
+            % (ing, open_n, SAVE, "true" if met else "false"))
+
+
+SAVE = r"D:\ClaudeWork\rimmandrake\instances\b\Saves\PYRELANDS_0.1.0_VISIT3_WALK.rws"
+if "--exit" in sys.argv:
+    p = os.path.join(VD, "SUMMARY.md")
+    s = open(p).read()
+    i = s.index("## Exit")
+    open(p, "w").write(s[:i] + exit_block())
+    print("Exit block written")
