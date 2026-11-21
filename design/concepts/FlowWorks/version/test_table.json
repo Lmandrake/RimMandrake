@@ -1128,8 +1128,8 @@
    "bars": [
     "inv_looks"
    ],
-   "test": "T_PIT_LOOK_1114 (PitLook1114_drowned_body_cover_is_the_pawns_own_picture) + PIT_LOOK_1114_LIVE",
-   "stage": "4-5 and 6",
+   "test": "T_PIT_LOOK_1114 (PitLook1114_drowned_body_cover_is_the_pawns_own_picture) + LOOK_STAGE8 (the cover is a picture: his walk 2026-11-20 judged it FAIL; RIMMANDRAKE_REDRAW_FLOWWORKS_SUNK_PAWN_NOT_TWO_BLUE_PATCHES)",
+   "stage": "4-5 and 8",
    "kind": "defect, fixed 3f774eb730"
   },
   {

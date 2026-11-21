@@ -1,10 +1,11 @@
 """Live bridge test for the owner's 2026-11-14 pit look fixes (RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE).
 
-    python.exe pit_look_1114_live.py [section ...]     sections: pour_labels pit_walk hot_tub pit_edge pit_floor body_cover (default: all;
+    python.exe pit_look_1114_live.py [section ...]     sections: pour_labels pit_walk hot_tub pit_edge pit_floor (default: all;
                                                        pit_floor WRITES to station B2)
 
 Read-only against the loaded save SITTING_20261114_PIT_FIXES (or any map with the same stations); each section prints
-PASS/FAIL/UNMEASURED rows. Status: UNRUN (written 2026-11-14 offline while the owner was in the game; run it with the bridge
+PASS/FAIL/UNMEASURED rows. The drowned-body cover (his 7b) is a picture with no state reader: it is decided by
+his walk (LOOK_STAGE8), not here (RIMMANDRAKE_JUDGE_FLOWWORKS_DROWNED_BODY_COVER_BY_EYE). Status: UNRUN (written 2026-11-14 offline while the owner was in the game; run it with the bridge
 held, after FlowWorks is deployed and the game restarted on the new DLL).
 """
 import sys
@@ -93,14 +94,7 @@ def pit_floor():
     row("pit_floor_back_after_drain", isinstance(l2, str) and "Sandstone tile" in l2 and "under" not in l2, [r, l2])
 
 
-def body_cover():
-    """His 7: a drowned body's cover is its own picture. A draw: no state reader can see it. Stage a corpse or downed pawn
-    in a pit with 2 m of clear water, zoom in, capture, and have a judge that did not make it compare body, head and hands
-    against the surrounding water (no bare skin or hair above the tint). Recorded UNMEASURED here by design."""
-    row("body_cover_is_a_look", None, "needs a zoomed capture judged by eye (see docstring)")
-
-
-SECTIONS = {"body_cover": body_cover, "pour_labels": pour_labels, "pit_walk": pit_walk, "hot_tub": hot_tub, "pit_edge": pit_edge, "pit_floor": pit_floor}
+SECTIONS = {"pour_labels": pour_labels, "pit_walk": pit_walk, "hot_tub": hot_tub, "pit_edge": pit_edge, "pit_floor": pit_floor}
 
 if __name__ == "__main__":
     for name in (sys.argv[1:] or list(SECTIONS)):

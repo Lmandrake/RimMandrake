@@ -292,7 +292,7 @@ Generated 2026-11-14T22:07:03-08:00 from `test_table.json` (the record; this is 
 | 2026-11-14#5 | inv_dig_depth | specified offline: a dig in sand, mud or loose snow is refused on every path (RIMMANDRAKE_REFUSE_PITS_IN_LOOSE_GROUND_EVEN_BY_BRIDGE) | 4-5 | defect, owed; the dig scenario's sand pad (tree.json canal_reads_as_dug) now contradicts his row: question |
 | 2026-11-14#6 | - | none: staging | - | harness: the staged pits lost their water at the save-format change (diagnosed on RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE) |
 | 2026-11-14#7 | inv_looks, fill_level_legible | T_UNDERLIQUID (Submerge_overlays_follow_their_thing, Submerge_murk_keeps_rising_to_the_plateau) + LOOK_STAGE8 | 4-5 and 8 | approval kept for re-check |
-| 2026-11-14#7b | inv_looks | T_PIT_LOOK_1114 (PitLook1114_drowned_body_cover_is_the_pawns_own_picture) + PIT_LOOK_1114_LIVE | 4-5 and 6 | defect, fixed 3f774eb730 |
+| 2026-11-14#7b | inv_looks | T_PIT_LOOK_1114 (PitLook1114_drowned_body_cover_is_the_pawns_own_picture) + LOOK_STAGE8 (a picture; his walk 2026-11-20 judged it FAIL) | 4-5 and 8 | defect, fixed 3f774eb730 |
 | 2026-11-14#8 | - | none: next version | - | next version (FlowWorks 0.2.0 Divergent): RIMMANDRAKE_SHORT_DROWNED_ELECTRONICS_LIKE_RAIN_DOES, his own words |
 | 2026-11-14#9 | - | none: dev tooling | - | harness: approval of the debug Pour menu layout (dev tooling, no player bar) |
 | 2026-11-14#9b | - | T_PIT_LOOK_1114 (PitLook1114_pour_steps_each_show_metres_on_one_tile, PitLook1114_no_fill_n_wording_in_visible_text) | 4-5 | harness: debug Pour menu wording (dev tooling), fixed 7acbbf887b |
