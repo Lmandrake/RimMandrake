@@ -65,6 +65,10 @@ for the Conductor's hand. The refusal texts of that night are in the dispatch st
 - **a-tick-with-stand-ins-launches-nothing-real.** A tick given fixtures (`fx` not empty) and no `repair_launch`
   starts no repair run; only the live tick (no fixtures) uses the real `repair_launch`.
 
+- **a-refused-repair-launch-reuses-its-filed-item.** A repair launch that filed its item and then failed (a publish,
+  a launch) is retried on that same item, never a new one (2026-11-21 02:08 PST: GimmeSomeSlack's first repair launch
+  left `..._RUN_FOUR` filed and unused).
+
 ## LIMITS
 
 - **One open repair per mod.** Danger: two repair runs editing the same pipeline path at once. Evidence: tonight's

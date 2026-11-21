@@ -3292,18 +3292,21 @@ REPAIR_LAUNCH_MOST = 3      # a repair launcher refused this many times names th
 FAULT_REPAIRS_MOST = 2      # boundary page LIMITS: two repair runs that did not hold mean the fix is unknown
 
 
-def repair_launch(root, cfg, mod, records, kind="form"):
+def repair_launch(root, cfg, mod, records, kind="form", item=None):
     """The tick's repair run: file one item for it (fit_name), publish, and launch form_fault.repair_brief on it through
     detached_helper (opus, fix_cap_usd). -> (ok, text, unit). A launcher that repaired the input in place returns
     (True, how, None): the repair is done at once and the mod goes on in the same tick."""
-    known = known_items()
-    item = fit_name(["RIMMANDRAKE", "REPAIR", "@" + mod, "FORM" if kind == "form" else "FAULT",
-                     "REFUSAL" if kind == "form" else "LOOP", "?AT", "?THE", "?GATE"], known)
-    if not item:
-        return False, "no free item name", None
     what = FF.what_of(records[0].get("text") or records[0].get("cause") or "", 120)
-    ok, text = file_and_publish(item, "Repair %s's %s refusal where it was found: %s" % (
-        mod, "form" if kind == "form" else "fault-loop", what), "the tick's repair run (form_fault): %s" % what)
+    if item:        # a try that filed its item and then failed: the same item again, published, never a new one
+        ok, text = publish_filed(item)
+        text = "retry of %s, filed earlier; %s" % (item, text)
+    else:
+        item = fit_name(["RIMMANDRAKE", "REPAIR", "@" + mod, "FORM" if kind == "form" else "FAULT",
+                         "REFUSAL" if kind == "form" else "LOOP", "?AT", "?THE", "?GATE"], known_items())
+        if not item:
+            return False, "no free item name", None
+        ok, text = file_and_publish(item, "Repair %s's %s refusal where it was found: %s" % (
+            mod, "form" if kind == "form" else "fault-loop", what), "the tick's repair run (form_fault): %s" % what)
     if not ok:
         return False, text, None
     cap = cfg.get("fix_cap_usd") or 10
@@ -3347,11 +3350,16 @@ def form_repair_step(root, cfg, st, rows, launches, now, apply, fx=None):
                 r["need"] = ("%s: the repair run for %s was refused %d times (the last: %s); the Conductor reads it" % (
                     r["mod"], rep["what"], rep["repair_tries"], FF.what_of(rep.get("launch_failed"))))
             else:
+                filed = next((x.get("item") for x in owed if x.get("item")), None)
                 try:
-                    ok, text, unit = do(root, cfg, r["mod"], owed, kind="form")
+                    ok, text, unit = do(root, cfg, r["mod"], owed, kind="form",
+                                        **({"item": filed} if filed and _takes(do, "item") else {}))
                 except Exception as e:      # noqa: BLE001  the repair launcher failing is that row's line, never a crash
                     ok, text, unit = False, "%s: %s" % (type(e).__name__, e), None
+                m = re.search(r"\bfiled (RIMMANDRAKE_[A-Z0-9_]+)", str(text)) if not ok else None
                 for x in owed:
+                    if m:
+                        x["item"] = m.group(1)
                     if ok and not unit:     # the launcher repaired it in place (route 1): done, the mod goes on now
                         x.update(state="done", started_at=now, ended_at=now, how=text)
                     elif ok:
