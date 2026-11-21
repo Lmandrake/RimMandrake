@@ -91,6 +91,35 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_GroundClassMath.CrushedIceUnits == 10000 && RM_GroundClassMath.CrushedIceUnits == RM_Volume.UnitsPerLevel, "one crushed ice melts to the notch its cut removed (1,000 L), not a 1x1 tank");
                 Assert(RM_GroundClassMath.MeltUnits(25) == 250000L && RM_GroundClassMath.MeltUnits(0) == 0L, "a stack melts to count x a notch");
             });
+            Case("IceDig_frozen_pond_crust_cut_leaves_crushed_ice (RIMMANDRAKE_FIX_FLOWWORKS_FROZEN_POND_CUT_LEAVES_NO_CRUSHED_ICE)", () =>
+            {
+                // bar ice_cuts_and_melts: "The player whose colonist digs into frozen water sees the cut make crushed ice".
+                // Vanilla FreezeManager freezes water by laying ThinIce on the TEMP layer; a dug pond's ground is the soil it
+                // was cut from (OriginalTerrainAt), so the ground class alone never saw the ice (visit 3: crushed 0, 0).
+                // The range: every ground class x the temp layer (none, the frozen crust, a flood, any other temp def).
+                string[] temps = { null, "ThinIce", "ShallowFloodwater", "SomeModTempTerrain", "" };
+                int read = 0;
+                foreach (RM_GroundClass g in (RM_GroundClass[])Enum.GetValues(typeof(RM_GroundClass)))
+                {
+                    foreach (string t in temps)
+                    {
+                        RM_CutSpoil want = t == "ThinIce" && g != RM_GroundClass.Ice ? RM_CutSpoil.CrushedIce : RM_CutSpoil.None;
+                        Assert(RM_GroundClassMath.CrustYield(t, g) == want, "crust yield " + g + " under '" + (t ?? "null") + "' = " + RM_GroundClassMath.CrustYield(t, g) + ", want " + want);
+                        // the ground's own spoil is untouched by the crust (a frozen pond on rock still leaves its gravel)
+                        Assert(RM_GroundClassMath.CutYield(g, false) == (g == RM_GroundClass.Rock || g == RM_GroundClass.Rubble ? RM_CutSpoil.Gravel : g == RM_GroundClass.Ice ? RM_CutSpoil.CrushedIce : RM_CutSpoil.None), "ground yield unchanged: " + g);
+                        read++;
+                    }
+                }
+                Assert(read == 8 * 5, "cases read " + read);
+                Assert(RM_GroundClassMath.CrustYield("ThinIce", RM_GroundClass.Soil) == RM_CutSpoil.CrushedIce, "the visit-3 case: a frozen pond dug from Soil gives crushed ice");
+                Assert(RM_GroundClassMath.CrustYield("ThinIce", RM_GroundClass.Ice) == RM_CutSpoil.None, "ice ground already gives its one crushed ice: never two");
+                Assert(!RM_GroundClassMath.IceTerrains.Contains("ThinIce"), "ThinIce is a crust, not ice GROUND: an undug frozen lake does not become diggable, and dig speed is the bed's");
+                // wiring: the shipped cut reads the temp layer and places the crust's ice before the ground's spoil
+                string disc = Src("RM_DigDiscovery.cs");
+                Assert(disc.Contains("RM_GroundClassMath.CrustYield(map.terrainGrid.TempTerrainAt(c)?.defName, RM_DigSpoil.ClassAt(map, c))"), "the cut reads the frozen crust off the temp layer");
+                int crust = disc.IndexOf("CrustYield(", StringComparison.Ordinal), ground = disc.IndexOf("if (RimMandrakeFlowWorksSettings.iceDigEnabled && IceCut(map, c, newDepth)", StringComparison.Ordinal);
+                Assert(crust > 0 && ground > crust, "the crust's ice is placed before (and beside) the ground's own yield");
+            });
             Case("IceMelt_one_pile_at_a_time_cools_the_room (ICE_MELT_TAME_STACK_FLOOD owner card 2026-10-25)", () =>
             {
                 // "Melt one pile at a time" + "it lowers the temperature of the room substantially"

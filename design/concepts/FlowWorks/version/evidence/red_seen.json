@@ -77,6 +77,19 @@
   "rc": 1,
   "test_blob": "ecdb632246123de160f342b464f55bcbb9ce7ca5"
  },
+ "T_ICE": {
+  "at": "2026-11-21T19:00:44Z",
+  "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only IceDig*,IceMelt*",
+  "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+  "last": "the cut reads the frozen crust off the temp layer",
+  "patch": "diff --git a/src/RimMandrake/FlowWorks/Source/RM_DigDiscovery.cs b/src/RimMandrake/FlowWorks/Source/RM_DigDiscovery.cs\n--- a/src/RimMandrake/FlowWorks/Source/RM_DigDiscovery.cs\n+++ b/src/RimMandrake/FlowWorks/Source/RM_DigDiscovery.cs\n@@ -200,7 +200,7 @@\n \t\t\t// RIMMANDRAKE_FIX_FLOWWORKS_FROZEN_POND_CUT_LEAVES_NO_CRUSHED_ICE: a cut into frozen water breaks its crust (vanilla\n \t\t\t// ThinIce on the temp layer), whatever ground the pond was dug from: one crushed ice, then the bed's own spoil below.\n \t\t\tif (RimMandrakeFlowWorksSettings.iceDigEnabled\n-\t\t\t\t&& RM_GroundClassMath.CrustYield(map.terrainGrid.TempTerrainAt(c)?.defName, RM_DigSpoil.ClassAt(map, c)) == RM_CutSpoil.CrushedIce\n+\t\t\t\t&& RM_GroundClassMath.CrustYield(map.terrainGrid.TopTerrainAt(c)?.defName, RM_DigSpoil.ClassAt(map, c)) == RM_CutSpoil.CrushedIce\n \t\t\t\t&& RM_DigSpoil.PlaceSpoil(map, RimMandrakeFlowWorks_DefOf.RM_CrushedIce, RM_DigDiscovery.LipCellNear(map, c), false))\n \t\t\t{\n \t\t\t\tCrushedIce++;\n",
+  "patch_files": [
+   "src/RimMandrake/FlowWorks/Source/RM_DigDiscovery.cs"
+  ],
+  "patch_sha": "99e9f318766c96fe",
+  "rc": 1,
+  "test_blob": "ecdb632246123de160f342b464f55bcbb9ce7ca5"
+ },
  "T_LIQUID_COATING_OFFLINE": {
   "at": "2026-11-21T13:00:50Z",
   "command": "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only coating",

@@ -129,6 +129,20 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
+		/// <summary>RIMMANDRAKE_FIX_FLOWWORKS_FROZEN_POND_CUT_LEAVES_NO_CRUSHED_ICE (bar ice_cuts_and_melts: "digs into frozen
+		/// water sees the cut make crushed ice"): the TEMP-layer terrains that are a frozen crust. Vanilla FreezeManager freezes
+		/// water by laying ThinIce on the temp layer over it. A crust, not ice GROUND: it is not on <see cref="IceTerrains"/>, so
+		/// it changes neither what may be dug nor how fast.</summary>
+		public static readonly HashSet<string> FrozenCrustTerrains = new HashSet<string> { "ThinIce" };
+
+		/// <summary>What a cut through a frozen crust adds to the ground's own spoil: one crushed ice when the square's temp
+		/// layer is a crust, except over ice ground (its cut already gives its one crushed ice).</summary>
+		public static RM_CutSpoil CrustYield(string tempTerrainDefName, RM_GroundClass ground)
+		{
+			return tempTerrainDefName != null && FrozenCrustTerrains.Contains(tempTerrainDefName) && ground != RM_GroundClass.Ice
+				? RM_CutSpoil.CrushedIce : RM_CutSpoil.None;
+		}
+
 		/// <summary>Owner: "it takes 1 gravel or 2 chunks to put it all back in again". Credit per notch filled.</summary>
 		public const int CreditPerNotch = 2;
 

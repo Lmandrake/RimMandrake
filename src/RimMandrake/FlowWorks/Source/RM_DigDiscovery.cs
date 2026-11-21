@@ -197,6 +197,14 @@ namespace RimMandrake.FlowWorks
 			// DIG_SPOIL_BUILD_GRAVEL_PAYS_ITS_WAY (owner 2026-10-25): with spoil on, a cut through rock leaves a chunk or else a
 			// gravel, rubble leaves gravel only, soil leaves nothing.
 			bool spoil = RimMandrakeFlowWorksSettings.digSpoilEnabled;
+			// RIMMANDRAKE_FIX_FLOWWORKS_FROZEN_POND_CUT_LEAVES_NO_CRUSHED_ICE: a cut into frozen water breaks its crust (vanilla
+			// ThinIce on the temp layer), whatever ground the pond was dug from: one crushed ice, then the bed's own spoil below.
+			if (RimMandrakeFlowWorksSettings.iceDigEnabled
+				&& RM_GroundClassMath.CrustYield(map.terrainGrid.TempTerrainAt(c)?.defName, RM_DigSpoil.ClassAt(map, c)) == RM_CutSpoil.CrushedIce
+				&& RM_DigSpoil.PlaceSpoil(map, RimMandrakeFlowWorks_DefOf.RM_CrushedIce, RM_DigDiscovery.LipCellNear(map, c), false))
+			{
+				CrushedIce++;
+			}
 			// ICE_DIG_BUILD_CRUSHED_ICE_MELTS_DOWN (owner card 2026-10-25): "Cutting into packed snow or ice should give crushed
 			// ice." Every cut through ice above the deep stone leaves one, whatever the gravel toggle says.
 			if (RimMandrakeFlowWorksSettings.iceDigEnabled && IceCut(map, c, newDepth)
