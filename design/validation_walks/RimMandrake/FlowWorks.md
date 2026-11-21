@@ -553,6 +553,28 @@ Three causes were stacked; each one alone gives the same picture.
   51e9d9ce4a), and the old trench lay across the path, so two on the deck at once was chance (the passage staging fixes it).
 - STILL TRUE BY DESIGN: raiders set no ladder into a 4 m pit. `ProofFetchPlan` prints `slots=null` there.
 
+### sc_pit_trap_raid: nobody fell into the covered pit (game b and game a, 2026-11-21, `RIMMANDRAKE_STAGE_FLOWWORKS_PIT_TRAP_RAID_NONE_FELL`)
+
+Class SITE (the fall) and HARNESS (the capture). Evidence: `D:\ClaudeWork\rimmandrake\testpilot_pit_trap_raid\PROGRESS.md`.
+The staging fix landed in `58cfa254e8`.
+
+- CAUSE (none fell): the lidded trench is one deck. A lone raider walked over it and every lid stayed. Two raiders on lids
+  at once, and in the next 30-tick read every lid was gone and both were held (game b, `exp2_a.json`). The old trench lay
+  across the raid's path, one square deep, so two on the deck at once was chance: 9 raiders, 200 polls, nobody fell
+  (`exp1_observe.json`). The mod does what it is built to do; the scene did not make the fall certain.
+- FIX (SITE): the pit-trap PASSAGE. A wall line with a gap, and the lidded spiked pit runs north from the gap along the
+  path. Two held in 4 of 4 staged raids on game b, and in 2 of 2 full scene runs on game a at main `93880e9d78`
+  (`main_gamea_run1.json`, `main_gamea_run2.json`).
+- CAUSE (second captive gone): the one warden finished his first capture and hit the second held raider beside his lip;
+  one blow killed the spike-wounded man (`dmg_21315.json`: kill, instigator the warden, t=422). FIX (HARNESS): the raiders
+  the pit does not hold leave the map first, and each captive gets his own warden, both ordered at once.
+- PLANTED FAULT: the main run with no lid (as the control). `PTR_two_fall` reads FAIL (11 raiders, 200 polls, fallen 0)
+  and the capture row reads UNMEASURED (`plant_nolid_gamea.json`). On the real build all three rows PASS.
+- RULED OUT: the raid never reached the trench (raiders seen on the deck every run).
+- OPEN (`RIMMANDRAKE_TRACE_FLOWWORKS_HELD_RAIDER_LEFT_4M_TRENCH_ONCE`), old staging only: on the 1-wide trench at `51e9d9ce4a` one held raider read NotHeld one square south
+  within 900 ticks. On the passage staging two held raiders stayed held for 1,200 ticks with nobody capturing
+  (`exp4_a.json`), and no run since has seen it.
+
 ### sc_islands control: a winch "held" by a hit-point reset fell (Test Pilot sitting, game b, 2026-11-21)
 
 Item `RIMMANDRAKE_TRACE_FLOWWORKS_HELD_WINCH_FELL_IN_THE_CONTROL`. Class HARNESS. Evidence:

@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "b6538a0bbf435a8e9098cff94b6f98782d5608fd8cff39b3b9f67b650ec63763",
+  "body_sha256": "2923ca6a866214d5fe3c2f6dc333b0599897654bb7b2dbc66a0272a44ac8604f",
   "reducer": 1,
   "shards": {
    "BACKFILL": 893183,
@@ -19,6 +19,7 @@
    "HOLDER.run-1795244678": 3570,
    "HOLDER.run-1795257509": 5815,
    "HOLDER.run-1795260677": 3322,
+   "HOLDER.run-1795263747": 1279,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1715,7 +1716,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1469,
+  "events": 1472,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7816,7 +7817,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-21T12:24:55Z",
+   "last": "2026-11-21T12:41:06Z",
    "lease": "run-1795263747",
    "released": false,
    "token": 29
@@ -7915,6 +7916,7 @@
    "HOLDER.run-1795244678",
    "HOLDER.run-1795257509",
    "HOLDER.run-1795260677",
+   "HOLDER.run-1795263747",
    "JUDGE.judge-1794833810",
    "JUDGE.judge-1794849236",
    "JUDGE.judge-1795134433",
@@ -8446,6 +8448,14 @@
     "ts": "2026-11-21T12:11:01Z",
     "version": "0.1.0",
     "where": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py _moat_stage; design/validation_walks/RimMandrake/FlowWorks.md anti-guessing notes"
+   },
+   "trap:a-lidded-trench-is-one-deck-a-lone-raider-crosses": {
+    "by": "HOLDER.run-1795263747",
+    "status": "noted",
+    "text": "A lidded trench is one deck: a lone raider walks over it and every lid stays; two on it at once and every lid gives way. A trench across the path made two-at-once chance (9 raiders, 200 polls, nobody fell). Stage the pit along the path (the passage).",
+    "ts": "2026-11-21T12:41:06Z",
+    "version": "0.1.0",
+    "where": "concept_scenes.py _pit_trap; design/validation_walks/RimMandrake/FlowWorks.md sc_pit_trap_raid"
    },
    "trap:a-live-capture-of-all-five-rules-has": {
     "by": "BACKFILL",

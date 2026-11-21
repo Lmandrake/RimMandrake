@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":42100,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"HOLDER.run-1795260677":3322,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=254242c5193ffe17f94d071d76632a2bab1e4a3ea9280842fc182c6d803c33a6 -->
-# FlowWorks — mod ledger history (1469 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":42100,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"HOLDER.run-1795260677":3322,"HOLDER.run-1795263747":1279,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=17ed760e7a6da0e1c65ab7dfbcd047ff62ec449579993ab1431c14429ae7e2af -->
+# FlowWorks — mod ledger history (1472 events, merged across shards)
 
 - 2026-11-16T07:16:23Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 55 of 57 bars met at the lock
 - 2026-11-16T07:16:23Z BACKFILL#2 decision version v0.1.0: 
@@ -1470,3 +1470,6 @@
 - 2026-11-21T12:13:07Z HOLDER.run-1795260677#5 session.checkpoint session v0.1.0: 
 - 2026-11-21T12:24:55Z DISPATCH#125 lease.grant lease v0.1.0: 
 - 2026-11-21T12:25:02Z DISPATCH#126 run.start run v0.1.0: 
+- 2026-11-21T12:25:42Z HOLDER.run-1795263747#1 lease.renew lease v0.1.0: 
+- 2026-11-21T12:32:07Z HOLDER.run-1795263747#2 lease.renew lease v0.1.0: 
+- 2026-11-21T12:41:06Z HOLDER.run-1795263747#3 trap.noted trap:a-lidded-trench-is-one-deck-a-lone-raider-crosses v0.1.0: A lidded trench is one deck: a lone raider walks over it and every lid stays; two on it at once and every lid gives way. A trench across the path made two-at-once chance (9 raiders, 200 polls, nobody fell). Stage the pit along the path (the passage).
