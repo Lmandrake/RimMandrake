@@ -4503,6 +4503,13 @@ def carry_last_measured(lastm, saved, points, now):
     return merged, keep
 
 
+def health_unmeasured(why):
+    """Every health.* point UNMEASURED with `why`: a pass with no verdict must still carry each key, or dead_targets reads
+    the health targets (health.spent_slis ...) as dead rules and files bad_rule flags."""
+    return {k: U(why) for k in ("health.state", "health.spent_slis", "health.drifted_slis",
+                                "health.incident_slis", "health.unmeasured")}
+
+
 def publish_health(points, prev, ctx, rules, now):
     """Operations' one verdict (ops_health.py, health.json) from this pass's points and the series. -> its points:
     health.state, health.spent_slis (the OPS_ERROR_BUDGET_DIAGNOSE target) and health.drifted_slis. A failure is UNMEASURED and flagged;
@@ -4517,8 +4524,7 @@ def publish_health(points, prev, ctx, rules, now):
                                stamp={"ledger": ops_health.ledger_mark(ctx.get("events"))})
     except Exception as e:  # noqa: BLE001  the pass outlives its verdict, and says so
         why = "health verdict not written: %s: %s" % (type(e).__name__, str(e))
-        return {"health.state": U(why), "health.spent_slis": U(why), "health.drifted_slis": U(why),
-                "health.incident_slis": U(why), "health.unmeasured": U(why)}
+        return health_unmeasured(why)
     x = {"spent": v["spent"], "system_items": len(v["system_items"] or []), "why": v["why"]}
     guardless = v.get("recurring_unguarded")
     inc = v.get("incident") or {}
@@ -4791,9 +4797,9 @@ def run(now=None, rules=None, filer=None, families=None, compose=False, still_ow
     health_flag = None
     if compose and COMPOSE_ALARM_FAMILY not in families:
         # the verdict needs the ledger, which only the alarm pass reads: carry that pass's, never make one without it
-        points.update(held_health(now, max_age) or {"health.state": U(
+        points.update(held_health(now, max_age) or health_unmeasured(
             "the health verdict is made on the beat that measures %s; none within %d min" % (
-                COMPOSE_ALARM_FAMILY, max_age / 60))})
+                COMPOSE_ALARM_FAMILY, max_age / 60)))
     elif whole:      # a limited pass has not measured every SLI: it never overwrites the verdict
         points.update(publish_health(points, prev, ctx, rules, now))
         if points["health.state"].get("m") != "MEASURED":
