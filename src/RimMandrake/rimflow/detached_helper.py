@@ -73,6 +73,7 @@ if HERE not in sys.path:
     sys.path.insert(0, HERE)
 import run_tmp  # noqa: E402  (its own TMPDIR: TMP_SCRATCH_ENFORCE_MUTANTS_CLEAN_UP)
 import principal  # noqa: E402  a gate of form never refuses the owner or the Conductor window (principal.form)
+import form_fault as FF  # noqa: E402  the brief line: a refusal that names its repair is an instruction
 try:                                    # whole text, never a silent cut (RIMMANDRAKE_STORE_TEXT_WHOLE_NO_CUTS)
     from . import fulltext
 except ImportError:
@@ -142,7 +143,7 @@ Ledger item: {item}. Seat: {seat}. {bound_text}.
   is lost. Run helpers and long commands in the foreground and take their results before your last message; never end
   "waiting" for anything.
 - Nobody reads your stdout until you end; the note is what the Conductor sees. End with a 5-line summary.
-""" + RULE_HOMES
+""" + RULE_HOMES + FF.BRIEF_LINE
 
 
 def dirty_shards(clone, seat, runner=subprocess.run):

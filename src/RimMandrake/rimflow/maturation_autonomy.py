@@ -67,7 +67,8 @@ NEVER_TRANSIENT = re.compile(r"finish step never ran")
 # a refusal whose cause ends by itself: the account drain before a planned switch (detached_helper.drain_refusal) and
 # launch_mod's WAIT_MARK (a held bridge, his hold on the game). It is no system fault and spends no try: the tick
 # waits and launches the same thing again (design/specs/2026-11-20-launch-refusal-wait-and-deploy/boundary.md)
-WAIT_REFUSAL = re.compile(r"is draining \(switching plan notice|%s" % re.escape(M.WAIT_MARK))
+# ... and control's admission refusal (a `./pipe` stop or limit someone chose: it ends when they lift it)
+WAIT_REFUSAL = re.compile(r"is draining \(switching plan notice|REFUSED \S+ by control:|%s" % re.escape(M.WAIT_MARK))
 
 
 def wait_refusal(text):

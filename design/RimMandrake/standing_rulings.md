@@ -1300,6 +1300,56 @@ a judge, a fixer, a builder, the Designer's runs, a Conductor helper):
   `infrastructure/state/items/RIMMANDRAKE_HARDEN_PIPELINE_WHERE_HANDS_CLEANED_UP.md`. In the spec:
   `design/specs/2026-11-13-maturation-pipeline.md` §5 "The pipeline fixes its own defects".
 
+## A fault of form is repaired where it is found; it never stops the work — owner, 2026-11-20
+
+*"That is a categorical error. A mod generating a too long name, even if that were a problem, should be given the chance
+to just fix it right there and continue without loss of context or really any time at all. Confusing "errors" and
+"refusals" of naming conventions with mod errors is stupendously unacceptable. The ultimate pedantry. "We are here to
+judge whether you killed someone or not, but since your shoes aren't properly tied, I'm forced to render a mistrial and
+say inconclusive." I really really need you to stand back and look at how we do things now. Any agent doing "something
+wrong" should be given the chance to fix it and redo it right now without any delay. Period. No more large
+consequences for trivialities. What is going so wrong here?"* (Fri 2026-11-20 about 11:50 PM PST; on the ledger as the
+file event of item `RIMMANDRAKE_REPAIR_AT_THE_REFUSAL_NO_STOP_FOR_UNTIED_SHOES`, 2026-11-21T08:28:51Z.)
+
+The incident: in one night (2026-11-20) eleven gates refused work for a fault of form, and the tick turned each set of
+three refusals into a paused mod (`OPS_MATURATION_SYSTEM_FAULT_LOOP`) or a line that waited for a hand: a launch during
+a planned account drain, a game folder with another mod's developer script, an item name without its visit number, a
+commit of an ignored lock file, a 66-character item name, a by-card brief without the card text, a helper-slot count
+that included the Conductor window's slots, a stale certificate left as a hand command, a capped visit left
+unfinished, a close that wanted a level-L0 `verify` first, and a test table whose live commands could not start under
+`red-seen`. Each one was repaired as one instance. This section repairs the class.
+
+Definitions:
+- **A fault of form** is a fault in how work is presented: a name, a flag, a missing paste, a missing section, a stale
+  stamp, a file that a tool can make, a format, a count of the wrong slots.
+- **A fault of substance** is a fault in the work: the mod is wrong, the test is wrong, the run died, the machine or an
+  account failed without a plan. Waits that end by themselves (a planned account drain, a held bridge, his hold on a
+  game) are neither: they wait, and count nothing.
+
+The two repair routes, in this order:
+1. **Repair and continue.** The tool repairs the input itself, prints one `NOTE (form, repaired): <what> -> <how>`
+   line, records the note on its event, and the act goes on (exit 0).
+2. **Return to the agent.** When only the agent can repair it, the refusal reads `REFUSED (form): <what>` with a
+   `REPAIR: <the command, or the text to add>` line. The agent's run does the repair and repeats the act at once, with
+   its context. Every launched brief carries the line: "A refusal that names its repair is an instruction: do the
+   repair and repeat the act; never stop or hand off for it."
+
+For a program caller (the tick): it never sends a refused input again unchanged. It applies the named repair itself,
+or it launches one small repair run with the refusal as its brief, and the mod's line reads `repairing: <what>`. A
+refusal of form never counts as a system fault, pauses a mod, voids a run, spends a trial or waits for a hand. The same
+refusal again after a finished repair run is the repair's fault of substance, and counts once.
+
+The fault loop counts substance only. Every refusal that reaches it carries a class; an unclassed one counts as form
+and is logged for the census, so a new gate cannot bring the old behaviour back unseen. When the loop trips on
+substance, it starts the repair itself (a detached repair run with the evidence as its brief) and says so.
+
+What still refuses, because it is substance by his standing rulings: his five acts, his holds, his OWNER bridge hold,
+a `./pipe` stop, the per-run spend stop he ordered, the account order and leave lines, and the machine-safety brakes.
+
+Mechanism: `src/RimMandrake/rimflow/form_fault.py`. Promises and their tests:
+`design/specs/2026-11-21-repair-at-the-refusal/boundary.md`. The census of refusal sites:
+`design/specs/2026-11-21-repair-at-the-refusal/census.md`.
+
 ## No mod runs forward on a broken pipeline — owner, 2026-11-19
 
 His words (Thu 2026-11-19 ~6:05 AM PST, item `RIMMANDRAKE_ENACT_NO_MOD_RUNS_ON_BROKEN_PIPELINE_RULING`): *"Ok:

@@ -321,11 +321,13 @@ def t_drain_refusals_count_no_fault():
           "(faults %d, decision %s, tries %s)" % (RV.faults(s), rows[-1].get("decision"), x.get("tries")))
 
 
-def t_a_real_launch_fault_still_counts():
-    s, rows = fixer_ticks("refused: the item RIMMANDRAKE_X is not filed", n=1)
-    check(RV.faults(s) == 1 and rows[-1].get("decision") == "launch_failed",
-          "a-real-launch-fault-still-counts: one launch refused for another reason counts 1 fault (faults %d, %s)" % (
-              RV.faults(s), rows[-1].get("decision")))
+def t_a_never_started_launch_owes_a_repair():
+    # a launch that never started, for any reason, is a fault of form: no fault, one repair owed (form_fault;
+    # selftest_repair_at_refusal.py). Before 2026-11-21 this check read "a real launch fault still counts".
+    s, rows = fixer_ticks("LAUNCH FAILED rm-detached-x: Failed to start transient service unit", n=1)
+    owed = [r for r in s.get("form_repairs") or [] if r.get("state") == "owed"]
+    check(RV.faults(s) == 0 and len(owed) == 1,
+          "a-never-started-launch-owes-a-repair: faults %d, repairs owed %d" % (RV.faults(s), len(owed)))
 
 
 def t_the_tick_waits_on_a_drain():
@@ -359,7 +361,7 @@ def main():
             safe(lambda: t(fx) is None, t.__name__[2:] + " ran")
     finally:
         fx.close()
-    for t in (t_drain_refusals_count_no_fault, t_a_real_launch_fault_still_counts, t_the_tick_waits_on_a_drain,
+    for t in (t_drain_refusals_count_no_fault, t_a_never_started_launch_owes_a_repair, t_the_tick_waits_on_a_drain,
               t_a_visit_item_name_passes_the_spawn_guard):
         safe(lambda: t() is None, t.__name__[2:] + " ran")
     print("%d failed" % len(FAILS))

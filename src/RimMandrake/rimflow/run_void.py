@@ -39,6 +39,7 @@ import time
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 sys.path.insert(0, HERE)
+import form_fault as FF  # noqa: E402
 
 ALARM_ID = "OPS_MATURATION_SYSTEM_FAULT_LOOP"
 SYSTEM_FAULT_LIMIT = 3
@@ -582,8 +583,15 @@ def sync_system(st, record, keep_failed=None, kills_left=None, now=None):
                 if x.get("wait") and x.get("failed"):   # a wait refusal: no system fault (maturation_autonomy.wait_refusal)
                     return None
                 if (x.get("failed") or book == "holder_road_back") and not (keep_failed and keep_failed(book, x)):
-                    return {"cause": "its launch never started: %s" % str(x.get("failed") or "no unit")[:200],
-                            "faults": max(1, int(x.get("tries") or 1))}
+                    text = str(x.get("failed") or "no unit")
+                    # a launch that never started is a fault of form: repaired, never counted (form_fault; standing
+                    # rulings §A fault of form is repaired where it is found); one repair is owed, and the same refusal
+                    # after a finished repair counts once, as that repair's fault
+                    if FF.fault_class(text) == "wait":
+                        return None
+                    held = FF.owe_repair(s, text, "%s %s" % (mod, book), now, book=book)
+                    return {"cause": held or "its launch never started (form, repairing): %s" % text[:200],
+                            "faults": 1 if held else 0, "class": "void_system" if held else "void_form"}
                 return None
             if seen.get(u) == "counted":
                 return None
@@ -610,14 +618,14 @@ def sync_system(st, record, keep_failed=None, kills_left=None, now=None):
                     v = judge(x, b)
                     if v:
                         moved.append(dict({"book": b, "key": k, "entry": book.pop(k)},
-                                          **{"class": "void_system", "void": None, "why": v["cause"],
+                                          **{"class": v.get("class", "void_system"), "void": None, "why": v["cause"],
                                              "unit": (_units_of(x) or [None])[0], "faults": v["faults"]}))
             elif isinstance(book, list):
                 keep = []
                 for x in book:
                     v = judge(x, b)
                     if v:
-                        moved.append({"book": b, "key": None, "entry": x, "class": "void_system", "void": None,
+                        moved.append({"book": b, "key": None, "entry": x, "class": v.get("class", "void_system"), "void": None,
                                       "why": v["cause"], "unit": (_units_of(x) or [None])[0], "faults": v["faults"]})
                     else:
                         keep.append(x)
@@ -657,14 +665,16 @@ def sync_system(st, record, keep_failed=None, kills_left=None, now=None):
                     s.setdefault("system_faults", []).append({"at": now, "book": m["book"], "key": m["key"],
                                                               "unit": m["unit"], "cause": m["why"], "n": m["faults"]})
                 if m["unit"]:
-                    seen[m["unit"]] = "void_system"
+                    seen[m["unit"]] = m.get("class") or "void_system"
             seen_out[mod] = moved
     return seen_out
 
 
 def faults(s):
-    """-> system faults on a mod since its last `clear` (a sum of kills and launch tries)."""
-    cl = [c.get("at") for c in s.get("cleared") or [] if isinstance(c, dict) and isinstance(c.get("at"), (int, float))]
+    """-> system faults on a mod since its last `clear` (a sum of kills and launch tries). The tick's own reset after a
+    repair run on the fault loop ended (auto_cleared, form_fault.sync_repairs) counts as a clear."""
+    cl = [c.get("at") for c in (s.get("cleared") or []) + (s.get("auto_cleared") or [])
+          if isinstance(c, dict) and isinstance(c.get("at"), (int, float))]
     t0 = max(cl) if cl else 0
     return sum(int(f.get("n") or 1) for f in s.get("system_faults") or [] if isinstance(f, dict)
                and (f.get("at") or 0) > t0)

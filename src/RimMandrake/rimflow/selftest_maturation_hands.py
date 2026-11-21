@@ -155,9 +155,12 @@ def retry_main():
                fx={"file": lambda *a, **k: (False, "REFUSED: a rule said no"), "known": lambda: set(),
                    "launch": lambda *a, **k: (0, "DETACHED rm-x", "rm-x"), "publish": lambda it: (True, "published")})
     sa = st["mods"]["A"]
-    ok(not sa.get("stopped") and [x.get("book") for x in sa.get("system_faults") or []] == ["launches"]
-       and "a rule said no" in sa["system_faults"][0]["cause"],
-       "retry 8: a failed Stage 3 launch writes no stop: a system fault naming its cause", sa.get("system_faults"))
+    # a launch that never started is a fault of form (form_fault, 2026-11-21): no stop, no fault, one repair owed
+    ok(not sa.get("stopped") and not sa.get("system_faults")
+       and [r.get("what") for r in sa.get("form_repairs") or []] == ["REFUSED: a rule said no"]
+       and row_of(rows)["decision"] == "repairing",
+       "retry 8: a failed Stage 3 launch writes no stop and no fault: it owes a repair naming its cause",
+       sa.get("form_repairs"))
     rows, launches = MD.decide(dict(CFG, _code="code-A"), st, f, NOW + 60)
     ok(row_of(rows)["decision"] == "launch", "retry 9: on the same code the next tick launches (no turn spent)",
        row_of(rows)["decision"])

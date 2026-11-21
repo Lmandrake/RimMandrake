@@ -1,0 +1,269 @@
+#!/usr/bin/env python3
+"""selftest_repair_at_refusal.py — a fault of form is repaired where it is found; the fault loop counts substance only.
+
+    python3 src/RimMandrake/rimflow/selftest_repair_at_refusal.py
+
+Page: design/specs/2026-11-21-repair-at-the-refusal/boundary.md (each promise is a t_<name> below).
+Item RIMMANDRAKE_REPAIR_AT_THE_REFUSAL_NO_STOP_FOR_UNTIED_SHOES. The refusal texts below are the night of 2026-11-20's,
+as the dispatch state recorded them (mods.<Mod>.system_faults).
+Exit 0 when every check passes; 1 otherwise (each failure named).
+"""
+import io
+import json
+import os
+import sys
+import tempfile
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+
+import form_fault as FF             # noqa: E402
+import maturation_autonomy as AUT   # noqa: E402
+import maturation_dispatch as MD    # noqa: E402
+import run_void as RV               # noqa: E402
+
+FAILS = []
+NOW = 1795300000.0
+
+
+def check(ok, line):
+    print("%s  %s" % ("PASS" if ok else "FAIL", line))
+    if not ok:
+        FAILS.append(line)
+
+
+# ---- the night's refusals (2026-11-20), as recorded ---------------------------------------------------------------
+DRAIN = ("refused: the account system is draining (switching plan notice since 2026-11-20T18:00:00-08:00): live runs "
+         "finish on it and no new run starts until the switch. Launch again after it (`python3 "
+         "src/RimMandrake/Utils/switching_plan.py status` shows it). Why: system at 3.0% is at or under its 3% line")
+VISIT_CHECK = ("filed RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_VISIT_TWO; publish: pushed; REFUSED: Pyrelands's in-game visit 2 "
+               "would play a game copy not checked against the repo: the game's copy of Pyrelands differs from the "
+               "repo's (1 developer script of another mod, 9 unused textures)")
+VISIT_NAME = ("spawn refused: RUNNER spawns only for BENCH or FOUNDRY with needs offline or for OWNER with needs owner "
+              "(the steward's escalations), or the maturation dispatch's in-game visit for BENCH with needs game "
+              "(RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_VISIT is not such a name)")
+LOCK_FILE = ("RuntimeError: land.sh exited 1: The following paths are ignored by one of your .gitignore files:\n"
+             "design/concepts/FlowWorks/.stage_move.lock\nhint: Use -f if you really want to add them.")
+LONG_NAME = ("spawn refused: RIMMANDRAKE_ROUTE_GIMMESOMESLACK_VISIT_ONE_FAILURES_BACK_RUN_THREE is not a new-style item "
+             "name:\n  - 66 chars; too long, the cap is 64\n\nNew items are PROJECT_VERB_INTENTION_TWIST (owner")
+CARD_PASTE = ("road-back item filed by the steward; refused: RIMMANDRAKE_REBUILD_FLOWWORKS_PITS_AS_RELATIVE_TERRAIN was "
+              "decided by card, and the brief does not carry the picked option's description verbatim: |   «What")
+LAUNCH_REFUSALS = {"1-drain": ("fixers", DRAIN), "2-visit-check": ("ingame_auto", VISIT_CHECK),
+                   "3-visit-name": ("ingame_auto", VISIT_NAME), "4-lock-file": ("steward", LOCK_FILE),
+                   "5-long-name": ("steward", LONG_NAME), "6-card-paste": ("fixers", CARD_PASTE)}
+
+
+def never_started(book, text, tries=3):
+    x = {"item": "RIMMANDRAKE_SOME_ITEM", "unit": None, "at": NOW - 60, "failed": text, "tries": tries}
+    if AUT.wait_refusal(text):
+        x["wait"] = True
+    return x
+
+
+def state_with(book, x):
+    s = {}
+    if book in ("steward", "fixers"):
+        s[book] = {"k1": x}
+    else:
+        s[book] = [x]
+    return {"mods": {"FakeFlow": s}}, s
+
+
+def sync(st):
+    cfg = {"launch_tries": 3, "_code": "c1", "seat": "BENCH"}
+    RV.sync_system(st, lambda u: None, keep_failed=lambda b, x: MD.still_retried(cfg, b, x, "FakeFlow"), now=NOW)
+
+
+# ---- the mechanism ------------------------------------------------------------------------------------------------
+
+def t_form_note_repairs_and_continues():
+    buf, ev = io.StringIO(), {}
+    n = FF.repaired("the item name was 66 chars", "cut to RIMMANDRAKE_X_Y_Z", event=ev, stream=buf)
+    line = buf.getvalue()
+    check(line.startswith(FF.NOTE_HEAD) and line.count("\n") == 1 and ev.get("form_notes") == [n]
+          and n == {"what": "the item name was 66 chars", "how": "cut to RIMMANDRAKE_X_Y_Z"},
+          "form-note-repairs-and-continues: one NOTE line (%r), the note on the event (%s)" % (line[:60], ev))
+
+
+def t_form_refusal_names_its_repair():
+    t = FF.refusal("the brief does not carry the card text", "add the card's words: card_capture.py show X")
+    try:
+        FF.refusal("no repair given", "  ")
+        raised = False
+    except ValueError:
+        raised = True
+    check(FF.FORM_HEAD + "the brief" in t and FF.repair_of(t) == "add the card's words: card_capture.py show X"
+          and raised and FF.fault_class(t) == "form",
+          "form-refusal-names-its-repair: head, REPAIR line read back, an empty repair raises (%s)" % raised)
+
+
+def t_every_brief_carries_the_repair_line():
+    import detached_helper as DH
+    import role_launch as RL
+    foot = DH.FOOTER.format(clone="/c", item="SOME_ITEM_X", seat="BENCH", bound_text="no wall-time bound")
+    role = {"clone": "/nonexistent/clone", "model": "opus", "name": "designer", "seat": "BENCH"}
+    try:
+        argv = RL.launch_argv(role, "rm-role-x", "do the work", "/tmp/o", "/tmp/e", "/usr/bin/claude")
+        msg = argv[argv.index("-p", argv.index("--")) + 1] if "-p" in argv[argv.index("--"):] else ""
+    except Exception as e:      # noqa: BLE001
+        msg = "launch_argv raised %s" % e
+    check(FF.BRIEF_LINE in foot and FF.BRIEF_LINE.strip() in msg,
+          "every-brief-carries-the-repair-line: the detached footer %s, a role run's message %s" % (
+              FF.BRIEF_LINE in foot, FF.BRIEF_LINE.strip() in msg))
+
+
+def t_a_launch_that_never_started_is_form():
+    texts = {"machine": "LAUNCH FAILED rm-detached-x: pool full",
+             "lock-outlasted": "refused: X is not on origin/main; publish infrastructure/state/ledger/events/RUNNER.jsonl",
+             "anything": "REFUSED: a rule said no", "no-text-holder": None}
+    out = {}
+    for k, text in texts.items():
+        book = "holder_road_back" if text is None else "steward"
+        st, s = state_with(book, never_started(book, text))
+        sync(st)
+        out[k] = (RV.faults(s), len([r for r in s.get("form_repairs") or [] if r.get("state") == "owed"]))
+    ctl = FF.fault_class("REFUSED rm-detached-x by control: pipe off FlowWorks")
+    check(out == {k: (0, 1) for k in texts} and ctl == "wait" and FF.fault_class(DRAIN) == "wait",
+          "a-launch-that-never-started-is-form: (faults, repairs owed) %s; a control stop %s" % (out, ctl))
+
+
+def t_a_repair_launch_refused_names_the_conductor():
+    st, s = state_with("steward", never_started("steward", LOCK_FILE))
+    sync(st)
+    fx = {"repair_launch": lambda *a, **k: (False, "LAUNCH FAILED rm-x: pool full", None),
+          "record": lambda u: None, "live": lambda r: "running"}
+    rows = None
+    for _ in range(MD.REPAIR_LAUNCH_MOST + 1):
+        rows = [{"mod": "FakeFlow", "decision": "launch", "why": "owed"}]
+        MD.form_repair_step("/nonexistent", {}, st, rows, ["FakeFlow"], NOW, True, fx)
+    check(rows[0]["decision"] == "repairing" and "Conductor" in (rows[0].get("need") or "") and RV.faults(s) == 0,
+          "a-repair-launch-refused-names-the-conductor: after %d refused repair launches: %s / %s" % (
+              MD.REPAIR_LAUNCH_MOST, rows[0]["decision"], (rows[0].get("need") or "-")[:90]))
+
+
+def t_the_launch_refusals_count_no_fault():
+    out = {}
+    for case, (book, text) in sorted(LAUNCH_REFUSALS.items()):
+        st, s = state_with(book, never_started(book, text))
+        sync(st)
+        st2 = json.loads(json.dumps(st))
+        rows = [{"mod": "FakeFlow", "decision": "launch", "why": "owed"}]
+        la = MD.system_fault_stop({}, st2, rows, ["FakeFlow"])
+        owed = [r for r in s.get("form_repairs") or [] if r.get("state") == "owed"]
+        out[case] = (RV.faults(s), rows[0]["decision"], len(owed))
+    # the drain is a wait; the tick's own bad name is re-made by the tick's namer on the next tick (a wait), so neither
+    # owes a repair run
+    want = {c: (0, "launch", 0 if c in ("1-drain", "5-long-name") else 1) for c in LAUNCH_REFUSALS}
+    check(out == want, "the-launch-refusals-count-no-fault: (faults, decision, repairs owed) per case: %s" % out)
+
+
+def t_a_dead_run_still_counts_one():
+    st = {"mods": {"FakeFlow": {"ingame_auto": [{"item": "I", "unit": "rm-detached-x", "at": NOW - 600}]}}}
+    s = st["mods"]["FakeFlow"]
+    rec = {"status": "finished", "result": "killed", "exit_status": "KILL", "rc": None}
+    RV.sync_system(st, lambda u: rec if u == "rm-detached-x" else None, now=NOW)
+    check(RV.faults(s) == 1 and not s.get("form_repairs"),
+          "a-dead-run-still-counts-one: a killed run counts %d fault(s), owes %d repair(s)" % (
+              RV.faults(s), len(s.get("form_repairs") or [])))
+
+
+def _tick_repair(st, rows, launches, apply=True, record=None, launched=None):
+    calls = launched if launched is not None else []
+
+    def rl(root, cfg, mod, recs, kind="form"):
+        calls.append((mod, kind, [r.get("what") for r in recs]))
+        return True, "DETACHED rm-detached-repair-%d" % len(calls), "rm-detached-repair-%d" % len(calls)
+    fx = {"repair_launch": rl, "record": record or (lambda u: {"status": "running"}), "live": lambda rec: "running"}
+    MD.repair_sync(st, NOW, fx)
+    la = MD.form_repair_step("/nonexistent", {}, st, rows, launches, NOW, apply, fx)
+    return la, calls
+
+
+def t_form_refusal_is_repaired_not_resent():
+    st, s = state_with("steward", never_started("steward", LOCK_FILE))
+    sync(st)
+    rows = [{"mod": "FakeFlow", "decision": "launch", "why": "steward owed"}]
+    la, calls = _tick_repair(st, rows, ["FakeFlow"])
+    first = (la, rows[0]["decision"], rows[0].get("why", "")[:40], len(calls))
+    rows = [{"mod": "FakeFlow", "decision": "launch", "why": "steward owed"}]
+    la2, _ = _tick_repair(st, rows, ["FakeFlow"], launched=calls)
+    second = (la2, rows[0]["decision"], len(calls))
+    rows = [{"mod": "FakeFlow", "decision": "launch", "why": "steward owed"}]
+    la3, _ = _tick_repair(st, rows, ["FakeFlow"], record=lambda u: {"status": "finished"}, launched=calls)
+    third = (la3, rows[0]["decision"], len(calls))
+    check(first[0] == [] and first[1] == "repairing" and first[2].startswith("repairing: ") and first[3] == 1
+          and second == ([], "repairing", 1) and third == (["FakeFlow"], "launch", 1),
+          "form-refusal-is-repaired-not-resent: tick 1 %s; tick 2 (repair live) %s; tick 3 (repair ended) %s" % (
+              first, second, third))
+
+
+def t_a_repair_that_did_not_hold_counts_once():
+    st, s = state_with("steward", never_started("steward", LOCK_FILE))
+    sync(st)
+    _tick_repair(st, [{"mod": "FakeFlow", "decision": "launch"}], ["FakeFlow"])
+    _tick_repair(st, [{"mod": "FakeFlow", "decision": "launch"}], ["FakeFlow"], record=lambda u: {"status": "finished"})
+    s["steward"] = {"k1": never_started("steward", LOCK_FILE.replace("stage_move", "stage_move"))}
+    sync(st)
+    causes = [f.get("cause") for f in s.get("system_faults") or []]
+    check(RV.faults(s) == 1 and causes and "did not hold" in causes[-1],
+          "a-repair-that-did-not-hold-counts-once: faults %d, cause %s" % (RV.faults(s), (causes or ["-"])[-1][:80]))
+
+
+def t_the_trip_starts_a_repair():
+    s = {"system_faults": [{"at": NOW - 30 * i, "book": "launches", "unit": "rm-u%d" % i, "cause": "it timed out",
+                            "n": 1} for i in range(3)]}
+    st = {"mods": {"FakeFlow": s}}
+    calls = []
+
+    def rl(root, cfg, mod, recs, kind="form"):
+        calls.append(kind)
+        return True, "DETACHED rm-fix-%d" % len(calls), "rm-fix-%d" % len(calls)
+
+    def tick(rec):
+        fx = {"repair_launch": rl, "record": rec, "live": lambda r: "running"}
+        MD.repair_sync(st, NOW, fx)
+        rows = [{"mod": "FakeFlow", "decision": "launch", "why": "owed"}]
+        la = MD.system_fault_stop({}, st, rows, ["FakeFlow"])
+        MD.fault_repair_step("/nonexistent", {}, st, rows, NOW, True, fx)
+        return la, rows[0]
+    la1, r1 = tick(lambda u: {"status": "running"})
+    la2, r2 = tick(lambda u: {"status": "finished"})     # the repair run ended: the count resets by itself
+    a = (la1, r1["decision"], "repairing" in r1.get("why", ""), calls[:], RV.faults(s))
+    s["system_faults"] += [{"at": NOW + 10 + i, "book": "launches", "unit": "rm-v%d" % i, "cause": "it timed out",
+                            "n": 1} for i in range(3)]
+    la3, r3 = tick(lambda u: {"status": "finished"})
+    la4, r4 = tick(lambda u: {"status": "finished"})
+    b = (la3, r3["decision"], calls[:], "Conductor" in (r4.get("need") or ""), len(calls))
+    check(a == ([], "system_fault", True, ["fault"], 0) and b[0] == [] and b[1] == "system_fault"
+          and b[2] == ["fault", "fault"] and b[3] and b[4] == 2,
+          "the-trip-starts-a-repair: first trip %s; second trip %s" % (a, b))
+
+
+def t_a_tick_with_stand_ins_launches_nothing_real():
+    st, s = state_with("steward", never_started("steward", LOCK_FILE))
+    sync(st)
+    rows = [{"mod": "FakeFlow", "decision": "launch", "why": "owed"}]
+    fx = {"record": lambda u: None, "live": lambda r: "running", "file": lambda *a, **k: (False, "stand-in")}
+    la = MD.form_repair_step("/nonexistent", {}, st, rows, ["FakeFlow"], NOW, True, fx)
+    check(MD.repair_launcher(fx) is None and MD.repair_launcher({}) is MD.repair_launch and la == []
+          and rows[0]["decision"] == "repairing" and FF.open_repair(s).get("state") == "owed",
+          "a-tick-with-stand-ins-launches-nothing-real: no repair launcher in the fixtures means none is run (%s)" % (
+              rows[0].get("why", "")[:80]))
+
+
+def main():
+    for t in (t_form_note_repairs_and_continues, t_form_refusal_names_its_repair, t_every_brief_carries_the_repair_line,
+              t_a_launch_that_never_started_is_form, t_a_repair_launch_refused_names_the_conductor,
+              t_the_launch_refusals_count_no_fault, t_a_dead_run_still_counts_one,
+              t_form_refusal_is_repaired_not_resent, t_a_repair_that_did_not_hold_counts_once,
+              t_the_trip_starts_a_repair, t_a_tick_with_stand_ins_launches_nothing_real):
+        try:
+            t()
+        except Exception as e:      # noqa: BLE001  one test's crash is that test's FAIL
+            check(False, "%s crashed: %s: %s" % (t.__name__, type(e).__name__, e))
+    print("%d failed" % len(FAILS))
+    return 1 if FAILS else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

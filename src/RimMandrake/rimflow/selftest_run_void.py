@@ -580,8 +580,13 @@ def main():
         st2 = {"mods": {"Fake": {"steward": {"k": {"item": "X", "unit": None, "failed": "LAUNCH FAILED pool full",
                                                    "tries": 3}}}}}
         RV.sync_system(st2, record, keep_failed=lambda b, x: False, now=T0)
-        ok(not st2["mods"]["Fake"]["steward"] and RV.faults(st2["mods"]["Fake"]) == 3,
-           "a launch that never started is void_system, its three tries three faults")
+        # a launch that never started is a fault of form (form_fault, 2026-11-21): out of its book, no fault, one
+        # repair owed. Before, it was void_system and its three tries three faults.
+        f2 = st2["mods"]["Fake"]
+        ok(not f2["steward"] and RV.faults(f2) == 0 and [r.get("state") for r in f2.get("form_repairs") or []] == ["owed"],
+           "a launch that never started is void_form: no fault, one repair owed")
+        f2["system_faults"] = [{"at": T0, "book": "steward", "unit": "u-dead-%d" % i, "cause": "it timed out", "n": 1}
+                               for i in range(3)]
         rows = [{"mod": "Fake", "decision": "launch"}]
         la = MD.system_fault_stop({"system_fault_limit": 3}, st2, rows, ["Fake"])
         ok(la == [] and rows[0]["decision"] == "system_fault" and RV.ALARM_ID in rows[0]["why"]

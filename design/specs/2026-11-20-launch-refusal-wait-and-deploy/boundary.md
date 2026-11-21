@@ -73,7 +73,8 @@ because the composed Baroque Biomes copy differed from the repo, by one dev scri
   lines on loaded files deploys.
 - **drain-refusals-count-no-fault.** Three launches refused in a row by the account drain leave the mod's fault count
   0, spend no try, and read as a wait.
-- **a-real-launch-fault-still-counts.** A launch that never started for any other reason still counts one fault.
+- **a-never-started-launch-owes-a-repair.** A launch that never started for any other reason counts no fault and
+  owes one repair run (design/specs/2026-11-21-repair-at-the-refusal/boundary.md).
 - **a-visit-item-name-passes-the-spawn-guard.** `maturation_dispatch.ingame_item_id` names only items the RUNNER spawn
   guard (`model.RUNNER_INGAME_NAME`) takes, also when the visit's two names are taken: after the 7:10 PM clear the bare
   `RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_VISIT` was refused at its spawn.

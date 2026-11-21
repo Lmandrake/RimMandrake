@@ -24,7 +24,8 @@ sys.path.insert(0, HERE)
 sys.path.insert(0, os.path.join(HERE, "..", "Utils"))
 if os.environ.get("MAT_AUT_BASE_DIR"):      # watch it fail: a folder holding the base maturation_dispatch.py
     sys.path.insert(0, os.environ["MAT_AUT_BASE_DIR"])
-import maturation_dispatch as MD    # noqa: E402
+import maturation_dispatch as MD
+import run_void as RV    # noqa: E402
 
 CLOCK = 1794750000.0
 FAILS = []
@@ -105,7 +106,9 @@ class World:
                 "designer_chain": lambda m: self.dchain.get(m), "version_locked": lambda m: self.locked,
                 "version_evidence": lambda m: self.evidence.get(m, []), "autolock": autolock,
                 "discovered": lambda: self.found, "seed": seed, "card": self.cards.append,
-                "page": lambda: type("R", (), {"returncode": 0})()}
+                "page": lambda: type("R", (), {"returncode": 0})(),
+                # the tick's repair launcher: it repairs a form refusal in place (form_fault route 1)
+                "repair_launch": lambda *a, **k: (True, "fixture: repaired in place", None)}
 
 
 def run(world, mods, root, now=CLOCK, cfg=None):
@@ -186,10 +189,11 @@ def launch_retry_checks(root):
     st = str(g("A").get("status"))
     # RIMMANDRAKE_VOID_SYSTEM_KILLED_RUNS_NO_TRIAL_SPENT: the three tries are system faults, never the steward's run
     sa = json.load(open(os.path.join(os.environ["RM_MATURATION_DISPATCH_DIR"], "state.json")))["mods"]["A"]
-    ok(g("A").get("decision") == "system_fault" and len(briefs(w)) == 3 and "3 system faults" in st
-       and "not on origin/main" in st and not sa.get("steward"),
-       "retry 2: three transient failures, then system_fault naming the count and the real reason, no fourth try, the "
-       "steward key unspent (read %d launches, %s)" % (len(briefs(w)), st[:160]))
+    # 2026-11-21 (form_fault): past its retries the launch owes a repair naming the real reason, never system_fault
+    ok(g("A").get("decision") == "repairing" and "not on origin/main" in st
+       and not any(x.get("unit") for x in (sa.get("steward") or {}).values()),
+       "retry 2: three transient failures, then a repair naming the real reason, the steward key unspent (read %d "
+       "launches, %s)" % (len(briefs(w)), st[:160]))
     # a filing whose own publish hit the lock, then the launcher refused: the same, its item reused
     fresh_state()
     w = World({"A": offline("A", "hand step", hand=["walk_bars_confirmed"])})
@@ -215,8 +219,8 @@ def launch_retry_checks(root):
     rd, g = run(w, ["A"], root, now=CLOCK + 60)
     # RIMMANDRAKE_VOID_SYSTEM_KILLED_RUNS_NO_TRIAL_SPENT: this read "a non-transient launch failure is PAUSED" (spent
     # until a hand clear), the rule the owner forbade 2026-11-18; a launch that never started is void_system
-    ok(g("A").get("decision") == "launch_failed" and len(briefs(w)) == 2,
-       "clear 1: a non-transient launch failure is void_system: the next tick launches it again with no clear (read "
+    ok(g("A").get("decision") == "repairing" and len(briefs(w)) == 2,
+       "clear 1: a non-transient launch failure is a fault of form: the next tick launches it again with no clear (read "
        "%s, %d launches)" % (g("A").get("decision"), len(briefs(w))))
     MD2.main(["clear", "A", "--why", "selftest"])
     w.fail_launch = False
@@ -957,10 +961,14 @@ def main():
         for i in range(4):
             rd, g = run(w, ["A"], root, now=CLOCK + 60 * i)
         sa = json.load(open(os.path.join(os.environ["RM_MATURATION_DISPATCH_DIR"], "state.json")))["mods"]["A"]
-        ok(g("A").get("decision") == "system_fault" and g("A").get("klass") == "paused" and len(w.launched) == 3
-           and not sa.get("steward") and len(sa.get("voided") or []) == 3,
-           "a failed steward launch: void_system, relaunched; three faults stop it (system_fault), no steward run "
-           "spent (read %s, %d launches)" % (g("A").get("decision"), len(w.launched)))
+        # 2026-11-21 (form_fault): a never-started launch is a fault of form: repaired (here in place) and relaunched
+        # each tick, never a steward run spent; a repair that did not hold counts once, so three repeats bring the
+        # fault loop (and its own repair run)
+        ok(g("A").get("decision") == "repairing" and len(w.launched) == 4
+           and not any(x.get("unit") for x in (sa.get("steward") or {}).values()) and RV.faults(sa) == 3,
+           "a failed steward launch: a fault of form, repaired and relaunched; each repair that did not hold counts "
+           "once, no steward run spent (read %s, %d launches, faults %d)" % (
+               g("A").get("decision"), len(w.launched), RV.faults(sa)))
         # full slots: wait
         fresh_state()
         f = offline("A", "ready to advance")

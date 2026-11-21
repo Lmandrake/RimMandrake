@@ -3549,6 +3549,9 @@ def launch_argv(role, unit, msg, out, err, claude, session=None, tmpdir=None):
     (the Designer's coverage_judge.py, the Auditor's pre-screen); PRE_DONE_EXIT ends the unit 0 (stage5_program)."""
     bounded = os.path.join(role["clone"], "src", "RimMandrake", "Utils", "claude_bounded.sh")
     path = os.path.dirname(claude) + ":" + os.environ.get("PATH", "/usr/bin:/bin")
+    import form_fault as FF     # every launched brief carries the repair line (standing_rulings.md §A fault of form)
+    if FF.BRIEF_LINE.strip() not in msg:
+        msg = msg.rstrip() + "\n\n" + FF.BRIEF_LINE
     cmd = [bounded, "-p", msg, "--model", role["model"], "--name", "ROLE %s %s" % (role["name"], unit)] \
         + ["--settings", _control_settings(role)] \
         + list(role.get("launch_args") or []) + ["--output-format", "json", "--dangerously-skip-permissions"] \

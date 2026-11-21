@@ -57,6 +57,9 @@ COPY = ("journal.md", "stage.json", "version/VERSION.json", "version/test_table.
         "version/stage_record.json")
 CLOCK = 1794718800.0            # 2026-11-14 9:00 PM PST, pinned
 FAILS = []
+# the tick's repair launcher in these fixtures: it repairs a form refusal in place (form_fault route 1), so the next
+# tick launches the same work again; selftest_repair_at_refusal.py proves the repair run itself
+REPAIRED_IN_PLACE = lambda *a, **k: (True, "fixture: repaired in place", None)     # noqa: E731
 FAKE_DH = """#!/usr/bin/env python3
 import json, os, sys
 with open(os.environ["FAKE_DH_LOG"], "a") as f:
@@ -186,7 +189,7 @@ def main():
                 out[mod] = f
             return out
 
-        fx = {"autonomy": False, "convergence": no_convergence, "facts": facts, "account": lambda: world["account"], "known": lambda: set(),
+        fx = {"autonomy": False, "convergence": no_convergence, "repair_launch": REPAIRED_IN_PLACE, "facts": facts, "account": lambda: world["account"], "known": lambda: set(),
               "clone": lambda: world.get("clone", (0, 0)),
               "file": lambda item, title, why: (filed.append((item, title, why)) or True, "filed %s" % item),
               "launch": lambda mod, cap, item, **kw: M.launch_mod(root, mod, cap, item, model=cfg["model"],
@@ -530,10 +533,12 @@ def main():
         rd2 = MD.tick(root, one, True, fx=dict(fx, facts=lambda: facts_for(one)), now=CLOCK + 600, page=False)
         # RIMMANDRAKE_VOID_SYSTEM_KILLED_RUNS_NO_TRIAL_SPENT: this read "a failed launch gets ... no automatic retry"
         # (`stopped`), which spent the mod's turn on a system fault, the rule the owner forbade 2026-11-18
-        ok(len(launches()) == 2 and rd["mods"]["FlowWorks"]["decision"] == "launch_failed"
-           and rd2["mods"]["FlowWorks"]["decision"] == "launched" and rd["needs_conductor"]
-           and any("void_system" in x for x in rd["needs_conductor"]),
-           "a failed Stage 3 launch is void_system: a Needs Conductor line naming it, and the next tick launches")
+        # 2026-11-21 (form_fault): a launch that never started is a fault of form: the row reads repairing, no fault,
+        # and the next tick (the fixture's repair done in place) launches. It read void_system, a Needs Conductor line.
+        sfw = json.load(open(os.path.join(sd, "state.json")))["mods"]["FlowWorks"]
+        ok(len(launches()) == 2 and rd["mods"]["FlowWorks"]["decision"] == "repairing"
+           and rd2["mods"]["FlowWorks"]["decision"] == "launched" and RV.faults(sfw) == 0,
+           "a failed Stage 3 launch is a fault of form: it reads repairing, counts no fault, and the next tick launches")
 
         # ---- a Stage 3 launch that never started on a transient fault retries itself (owner, 2026-11-15: the pipeline
         # fixes its own defects; item RIMMANDRAKE_RETRY_STAGE_THREE_LAUNCH_TRANSIENT_FAULT_NOT_STOPPED). Before, a git
@@ -582,10 +587,11 @@ def main():
         reset()
         f9, _ = file_flaky(99)
         rs = [t3(dict(fx, file=f9), at=600 * i) for i in range(4)]
-        ok([d3(x) for x in rs] == ["launch_retry", "launch_retry", "launch_failed", "system_fault"] and not launches()
-           and nc3(rs[2]) and RV.ALARM_ID in rs[3]["mods"]["FlowWorks"]["why"],
-           "a transient fault that outlasts launch_tries: a Needs Conductor line, then system_fault (%s), no turn spent "
-           "(%s)" % (RV.ALARM_ID, [d3(x) for x in rs]))
+        # 2026-11-21 (form_fault): past its retries the never-started launch is repaired, never a system_fault
+        ok([d3(x) for x in rs][:3] == ["launch_retry", "launch_retry", "repairing"] and not launches()
+           and "system_fault" not in [d3(x) for x in rs],
+           "a transient fault that outlasts launch_tries: a repair, never a system fault, no turn spent (%s)" % (
+               [d3(x) for x in rs]))
 
         # ---- a steward or fixer run is not a builder (RIMMANDRAKE_EXEMPT_STEWARD_RUNS_FROM_BUILDER_PROGRESS_STOP).
         # Graffiti 2026-11-15: its preflight steward moved it into the offline build and was still live, so the tick
@@ -869,7 +875,7 @@ def blind_main():
                 out[mod] = MD.add_blind(root, mod, f, world["runs"].get(mod, []))
             return out
 
-        fx = {"autonomy": False, "convergence": no_convergence, "account": lambda: world["account"], "known": lambda: set(),
+        fx = {"autonomy": False, "convergence": no_convergence, "repair_launch": REPAIRED_IN_PLACE, "account": lambda: world["account"], "known": lambda: set(),
               "file": lambda item, title, why: (filed.append((item, title, why)) or True, "filed %s" % item),
               "launch": lambda mod, cap, item, **kw: M.launch_mod(root, mod, cap, item, model="opus", seat="BENCH",
                                                                   **kw),
@@ -1114,11 +1120,12 @@ def blind_main():
         # blind launch spends the visit's one automatic cycle: never retried", the rule he forbids. A launch that never
         # started judged nothing: it is void_system, counted on the mod's system faults, never on its cycles.
         stv = json.load(open(os.path.join(sd, "state.json")))["mods"]["GimmeSomeSlack"]
-        ok(len(launches()) == 2 and rd["mods"]["GimmeSomeSlack"]["decision"] == "launch_failed"
+        # 2026-11-21 (form_fault): a launch that never started is void_form, a repair and no fault
+        ok(len(launches()) == 2 and rd["mods"]["GimmeSomeSlack"]["decision"] == "repairing"
            and rd2["mods"]["GimmeSomeSlack"]["decision"] == "launched"
            and [x.get("unit") is not None for x in stv.get("blind_auto") or []] == [True]
-           and [m["class"] for m in stv.get("voided") or []] == ["void_system"] and RV.faults(stv) == 1,
-           "a failed blind launch is void_system: no cycle spent, the next tick launches it (%s, %s; faults %d)" % (
+           and [m["class"] for m in stv.get("voided") or []] == ["void_form"] and RV.faults(stv) == 0,
+           "a failed blind launch is void_form: no cycle spent, no fault, the next tick launches it (%s, %s; faults %d)" % (
                rd["mods"]["GimmeSomeSlack"]["decision"], rd2["mods"]["GimmeSomeSlack"]["decision"], RV.faults(stv)))
 
         # ---- RIMMANDRAKE_RETRY_JUDGE_LAUNCH_GIT_LOCK_SPENT_THE_CYCLE: a launch that never started on a transient
@@ -1182,18 +1189,19 @@ def blind_main():
         rs = [rtick(f3, at=60 * k) for k in range(4)]
         b = bk()
         vb = json.load(open(os.path.join(sd, "state.json")))["mods"]["GimmeSomeSlack"].get("voided") or []
-        ok([g(x)["decision"] for x in rs] == ["launch_retry", "launch_retry", "launch_failed", "system_fault"]
-           and RV.ALARM_ID in g(rs[3])["why"] and "no trial is spent" in g(rs[3])["why"] and len(calls) == 3
-           and not launches() and len(filed) == 1 and not b and [m["entry"].get("tries") for m in vb] == [3],
-           "three transient faults in a row: system_fault (%s) naming the count, no fourth try, and the cycle unspent "
-           "(the book is empty, the entry void_system) (%s; %s)" % (RV.ALARM_ID, [g(x)["decision"] for x in rs],
-                                                                   g(rs[3])["why"][:90]))
+        # 2026-11-21 (form_fault): the third never-started try owes a repair (void_form, no fault), never system_fault
+        ok([g(x)["decision"] for x in rs][:3] == ["launch_retry", "launch_retry", "repairing"]
+           and "system_fault" not in [g(x)["decision"] for x in rs] and not launches()
+           and [m["class"] for m in vb][:1] == ["void_form"] and [m["entry"].get("tries") for m in vb][:1] == [3],
+           "three transient faults in a row: a repair, no system fault, the cycle unspent (the entry void_form) (%s; "
+           "filed %d, voided %s)" % ([g(x)["decision"] for x in rs], len(filed),
+                                     [(m["class"], m["entry"].get("tries")) for m in vb]))
 
         reset()
         calls, fl = flaky([refuse, "LAUNCH FAILED rm-detached-bench-fake: pool full"])
         f4 = fxr(fl)
         rs = [rtick(f4, at=60 * k) for k in range(3)]
-        ok([g(x)["decision"] for x in rs] == ["launch_retry", "launch_failed", "launched"] and len(launches()) == 1
+        ok([g(x)["decision"] for x in rs] == ["launch_retry", "repairing", "launched"] and len(launches()) == 1
            and len(calls) == 3, "a transient fault, then a launch failure: neither spends the cycle, the third tick "
            "launches it (%s)" % [g(x)["decision"] for x in rs])
 
@@ -1429,7 +1437,7 @@ def ingame_main():
             asked.append(p)
             return world["bridge"]
 
-        fx = {"autonomy": False, "convergence": no_convergence, "account": lambda: world["account"], "known": lambda: set(), "bridge": bridge,
+        fx = {"autonomy": False, "convergence": no_convergence, "repair_launch": REPAIRED_IN_PLACE, "account": lambda: world["account"], "known": lambda: set(), "bridge": bridge,
               # the zero-token certificate rerun at the visit gate, never a real systemd-run from a selftest
               "cert_rerun": lambda mod, key: (1, "selftest: no real certificate rerun", None),
               "file": lambda item, title, why, **kw: (filed.append((item, title, why, kw)) or True, "filed %s" % item),
@@ -1513,11 +1521,12 @@ def ingame_main():
             world["companion"] = (False, "STALE (stand-in: deployed DLL holds older companion sources)")
             try:
                 r = tick(on)
-                return (dec(r) == "launch_failed" and "old JawaBench companion" in (r["mods"]["Pyrelands"]["why"] or "")
+                # 2026-11-21 (form_fault): the refusal owes a repair: the row reads repairing, naming it
+                return (dec(r) == "repairing" and "old JawaBench companion" in (r["mods"]["Pyrelands"]["why"] or "")
                         and not [x for x in launches() if "--brief-file" in x])
             finally:
                 reset()
-        chk(t_companion_stale, "a stale companion refuses the visit: launch_failed naming it, no driver started "
+        chk(t_companion_stale, "a stale companion refuses the visit: repairing naming it, no driver started "
                                "(the stand-in can say no, so it is not a bypass)")
 
         # ---- on: one launch, then never a second automatic try -------------------------------------------------------
@@ -1653,8 +1662,8 @@ def ingame_main():
             r1 = tick(on)
             os.environ.pop("FAKE_DH_FAIL")
             r2 = tick(on, at=600)
-            return dec(r1) == "launch_failed" and dec(r2) == "launched" and len(launches()) == 2
-        chk(t_fail, "a failed in-game launch is void_system: it spends no run of the visit, the next tick launches it")
+            return dec(r1) == "repairing" and dec(r2) == "launched" and len(launches()) == 2
+        chk(t_fail, "a failed in-game launch is a fault of form: it spends no run of the visit, the next tick launches it")
 
         # RIMMANDRAKE_ADMIT_INGAME_SPAWN_RUNNER_REFUSES_GAME_UP: a launch refused at the spawn never started; the
         # Conductor's clear releases it and the next tick launches the visit; a run that started is never released
@@ -1670,9 +1679,9 @@ def ingame_main():
             b = json.load(open(p))["mods"]["Pyrelands"]["ingame_auto"]
             MD.main(["clear", "Pyrelands", "--why", "selftest"])
             kept = json.load(open(p))["mods"]["Pyrelands"]["ingame_auto"]
-            return (dec(r1) == "launch_failed" and dec(r2) == "launched" and c == 0 and len(launches()) == 1
+            return (dec(r1) == "repairing" and dec(r2) == "launched" and c == 0 and len(launches()) == 1
                     and len(b) == 1 and b[0].get("unit") and kept == b)
-        chk(t_clear, "an in-game launch refused at the spawn is void_system: the next tick launches with no clear; "
+        chk(t_clear, "an in-game launch refused at the spawn is a fault of form: the next tick launches with no clear; "
                      "a started run survives a clear")
 
         # RIMMANDRAKE_RETRY_JUDGE_LAUNCH_GIT_LOCK_SPENT_THE_CYCLE: a launch that never started on a transient publish
@@ -1711,11 +1720,12 @@ def ingame_main():
             reset()
             calls, f3 = fxr(9)
             rs = [rtick(f3, at=60 * k) for k in range(4)]
-            return ([dec(x) for x in rs] == ["launch_retry", "launch_retry", "launch_failed", "system_fault"]
-                    and RV.ALARM_ID in rs[3]["mods"]["Pyrelands"]["why"] and len(calls) == 3 and not launches()
-                    and len(filed) == 1)
-        chk(t_retry_spent, "three transient in-game launch faults in a row: system_fault naming the count, no fourth "
-                           "try, the visit's run unspent")
+            # 2026-11-21 (form_fault): past its retries the never-started launch is repaired, never a system fault
+            ds = [dec(x) for x in rs]
+            return (ds[:3] == ["launch_retry", "launch_retry", "repairing"] and "system_fault" not in ds
+                    and not launches())
+        chk(t_retry_spent, "three transient in-game launch faults in a row: a repair, never a system fault, the visit's "
+                           "run unspent")
     finally:
         for k, v in env_was.items():
             if v is None:

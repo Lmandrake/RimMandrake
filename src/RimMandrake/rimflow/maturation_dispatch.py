@@ -155,6 +155,7 @@ import pipeline_control as PC       # noqa: E402  the one control store (`pipe`)
 import mod_owner_hold as OH          # noqa: E402  the owner's hold: a held mod is never decided (mod_owner_hold.json)
 import run_void as RV            # noqa: E402  a VOID run spends no trial (RIMMANDRAKE_VOID_SYSTEM_KILLED_RUNS_NO_TRIAL_SPENT)
 import mod_model as MM           # noqa: E402  one mod's builders on a pinned model, caps scaled (`pipe model`)
+import form_fault as FF          # noqa: E402  a fault of form is repaired where it is found, never counted
 
 UNM = "UNMEASURED"
 RELEASE_STAGES = ("offline_build", "blind_challenge", "in_game")
@@ -2890,18 +2891,19 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
             row.update(decision="launch_retry", why="the Stage 3 launch never started on a transient fault (try %d of "
                        "%d), the next tick tries it again: %s" % (tries, AUT.tries_most(cfg, mod), text))
         else:
-            # a launch that never started is void_system (RIMMANDRAKE_VOID_SYSTEM_KILLED_RUNS_NO_TRIAL_SPENT; this
-            # wrote `stopped`, spending the mod's turn on a system fault): its tries go on the mod's system faults and
-            # the next tick launches again, until system_fault_stop stops the loop at the limit
+            # a launch that never started is a fault of form (form_fault): never counted, never `stopped`; the tick
+            # starts a repair run on it; the same refusal after a finished repair counts once
             s.pop("launch_retry", None)
-            spent = (" %d times on a transient fault, the last" % tries) if tries > 1 and AUT.transient(text) else ""
-            s.setdefault("system_faults", []).append({"at": now, "book": "launches", "key": item, "unit": None,
-                                                      "cause": "the Stage 3 launch never started%s: %s" % (spent, text),
-                                                      "n": max(1, tries)})
-            row.update(decision="launch_failed", why=text,
-                       need="%s: the Stage 3 launch failed%s (%s): void_system, no turn spent; the next tick tries "
-                            "again (system faults %d of %d)" % (mod, spent, text, RV.faults(s),
-                                                               int(cfg.get("system_fault_limit", RV.SYSTEM_FAULT_LIMIT))))
+            if FF.fault_class(text) == "wait":
+                row.update(decision="launch_wait", why="the Stage 3 launch waits on a cause that ends by itself (no "
+                           "fault): %s" % text)
+                continue
+            held = FF.owe_repair(s, text, "%s stage 3 launch" % mod, now, book="launches", key=item)
+            if held:
+                s.setdefault("system_faults", []).append({"at": now, "book": "launches", "key": item,
+                                                          "unit": None, "cause": held, "n": 1})
+            row.update(decision="repairing", why="repairing: %s (the Stage 3 launch never started; a repair run "
+                       "starts)" % FF.what_of(text))
     return done
 
 
@@ -3266,6 +3268,161 @@ def system_fault_stop(cfg, st, rows, launches):
     return launches
 
 
+# rows the repair gate leaves as they are: a run live on the mod, or a stop someone chose
+REPAIR_KEEP = {"live", "owner_hold", "pipeline_paused", "control_off", "disabled", "stale_clone", "system_fault"}
+REPAIR_LAUNCH_MOST = 3      # a repair launcher refused this many times names the Conductor (danger: the repair launch
+                            # itself refused forever, each tick re-sending it; evidence: the night of 2026-11-20, where
+                            # every refused launch was re-sent until a hand came)
+FAULT_REPAIRS_MOST = 2      # boundary page LIMITS: two repair runs that did not hold mean the fix is unknown
+
+
+def repair_launch(root, cfg, mod, records, kind="form"):
+    """The tick's repair run: file one item for it (fit_name), publish, and launch form_fault.repair_brief on it through
+    detached_helper (opus, fix_cap_usd). -> (ok, text, unit). A launcher that repaired the input in place returns
+    (True, how, None): the repair is done at once and the mod goes on in the same tick."""
+    known = known_items()
+    item = fit_name(["RIMMANDRAKE", "REPAIR", "@" + mod, "FORM" if kind == "form" else "FAULT",
+                     "REFUSAL" if kind == "form" else "LOOP", "?AT", "?THE", "?GATE"], known)
+    if not item:
+        return False, "no free item name", None
+    what = FF.what_of(records[0].get("text") or records[0].get("cause") or "", 120)
+    ok, text = file_and_publish(item, "Repair %s's %s refusal where it was found: %s" % (
+        mod, "form" if kind == "form" else "fault-loop", what), "the tick's repair run (form_fault): %s" % what)
+    if not ok:
+        return False, text, None
+    cap = cfg.get("fix_cap_usd") or 10
+    rc, out, unit = AUT.launch_brief(item, FF.repair_brief(mod, records, kind), "opus", cap)
+    return bool(rc == 0 and unit), "%s; %s" % (text, (out or "").splitlines()[0] if out else rc), unit
+
+
+def repair_launcher(fx):
+    """-> the repair launcher for this tick: fx["repair_launch"]; the real repair_launch ONLY when the tick runs with no
+    fixtures at all (fx empty: the live tick). A tick with stand-ins (a selftest) and no repair launcher gets None and
+    launches nothing real (2026-11-21 12:48 AM PST: the first draft fell back to the real launcher inside selftests,
+    which filed 4 real items and started 3 real runs)."""
+    if "repair_launch" in (fx or {}):
+        return fx["repair_launch"]
+    return None if fx else repair_launch
+
+
+def repair_sync(st, now, fx=None):
+    """At the tick's start, before the fault loop reads its count: each running repair run (form and fault-loop) whose
+    run ended is marked done (form_fault.sync_repairs); an ended fault-loop repair resets the count."""
+    fx = fx or {}
+    return FF.sync_repairs(st, fx.get("record") or DH.read_record, now, live=fx.get("live", DH.live_status))
+
+
+def form_repair_step(root, cfg, st, rows, launches, now, apply, fx=None):
+    """A mod that owes a form repair (form_fault.owe_repair) launches nothing of its own: the tick never re-sends a
+    refused input unchanged. It starts ONE repair run with the refusals as its brief (apply only), and the mod's row
+    reads `repairing: <what>`. A running repair whose run ended is marked done first; the mod then launches again.
+    -> the launches left."""
+    fx = fx or {}
+    do = repair_launcher(fx)
+    mods = st.get("mods") or {}
+    for r in rows:
+        s = mods.get(r["mod"])
+        rep = FF.open_repair(s) if isinstance(s, dict) else None
+        if not rep:
+            continue
+        owed = [x for x in s.get("form_repairs") or [] if isinstance(x, dict) and x.get("state") == "owed"]
+        if apply and do and owed and not any(x.get("state") == "running" for x in s.get("form_repairs") or []):
+            if int(rep.get("repair_tries") or 0) >= REPAIR_LAUNCH_MOST:
+                r["need"] = ("%s: the repair run for %s was refused %d times (the last: %s); the Conductor reads it" % (
+                    r["mod"], rep["what"], rep["repair_tries"], FF.what_of(rep.get("launch_failed"))))
+            else:
+                try:
+                    ok, text, unit = do(root, cfg, r["mod"], owed, kind="form")
+                except Exception as e:      # noqa: BLE001  the repair launcher failing is that row's line, never a crash
+                    ok, text, unit = False, "%s: %s" % (type(e).__name__, e), None
+                for x in owed:
+                    if ok and not unit:     # the launcher repaired it in place (route 1): done, the mod goes on now
+                        x.update(state="done", started_at=now, ended_at=now, how=text)
+                    elif ok:
+                        x.update(state="running", unit=unit, started_at=now)
+                    else:
+                        x.update(launch_failed=text, repair_tries=int(x.get("repair_tries") or 0) + 1)
+        rep = FF.open_repair(s)
+        if not rep:
+            continue
+        how = ("repair run %s" % rep["unit"]) if rep.get("unit") else (
+            "the repair launch was refused: %s" % FF.what_of(rep.get("launch_failed")) if rep.get("launch_failed")
+            else "a repair run starts" if apply and do else "would start a repair run")
+        line = "repairing: %s (%s)" % (rep["what"], how)
+        r["repairing"] = line
+        if r["mod"] in launches:
+            launches = [m for m in launches if m != r["mod"]]
+            r.update(decision="repairing", why="%s; it would have launched: %s" % (line, r.get("why") or "-"))
+        elif r.get("decision") not in REPAIR_KEEP:
+            r.update(decision="repairing", why=line)
+    return launches
+
+
+def fault_repair_step(root, cfg, st, rows, now, apply, fx=None):
+    """When the fault loop trips (a row reads system_fault), the tick starts the repair itself: ONE repair run with the
+    faults' causes as its brief, said on the row. When it ends, form_fault.sync_repairs resets the count (auto_cleared).
+    A trip after FAULT_REPAIRS_MOST repair runs since the last hand clear names the Conductor and starts none."""
+    fx = fx or {}
+    do = repair_launcher(fx)
+    mods = st.get("mods") or {}
+    for r in rows:
+        s = mods.get(r["mod"])
+        if r.get("decision") != "system_fault" or not isinstance(s, dict):
+            continue
+        hand = max([c.get("at") or 0 for c in s.get("cleared") or [] if isinstance(c, dict)] or [0])
+        reps = [x for x in s.get("fault_repairs") or [] if isinstance(x, dict) and (x.get("at") or 0) > hand]
+        live = next((x for x in reps if x.get("state") == "running"), None)
+        if live:
+            r["why"] += "; repairing: repair run %s is on it" % live.get("unit")
+            continue
+        if len(reps) >= FAULT_REPAIRS_MOST:
+            r["need"] = ("%s: the fault loop tripped again after %d repair runs (%s): the fix is unknown; the Conductor "
+                         "reads it" % (r["mod"], len(reps), ", ".join(str(x.get("unit")) for x in reps)))
+            r["why"] += "; " + r["need"]
+            continue
+        if not (apply and do):
+            r["why"] += "; would start a repair run"
+            continue
+        t0 = max([hand] + [x.get("at") or 0 for x in s.get("auto_cleared") or [] if isinstance(x, dict)])
+        causes = [{"where": "%s %s" % (f.get("book"), f.get("unit") or f.get("key") or ""), "text": f.get("cause")}
+                  for f in s.get("system_faults") or [] if isinstance(f, dict) and (f.get("at") or 0) > t0]
+        try:
+            ok, text, unit = do(root, cfg, r["mod"], causes or [{"text": r.get("why")}], kind="fault")
+        except Exception as e:      # noqa: BLE001
+            ok, text, unit = False, "%s: %s" % (type(e).__name__, e), None
+        if ok and not unit:     # repaired in place: the count resets now
+            s.setdefault("fault_repairs", []).append({"at": now, "unit": None, "state": "done", "n": RV.faults(s),
+                                                      "ended_at": now, "how": text})
+            s.setdefault("auto_cleared", []).append({"at": now, "why": "the tick's repair on the fault loop: %s" % text})
+            r["why"] += "; repaired in place: %s" % text
+        elif ok:
+            s.setdefault("fault_repairs", []).append({"at": now, "unit": unit, "state": "running", "n": RV.faults(s)})
+            r["why"] += "; repairing: the tick started repair run %s on it" % unit
+        else:
+            r["why"] += "; the repair run did not start (%s): the next tick tries again" % FF.what_of(text)
+    return rows
+
+
+def form_repair_rows(st, rows, now):
+    """After execute: a launch this tick refused for a fault of form owes its repair now (form_fault.owe_repair) and its
+    row reads `repairing:`, never launch_failed (a launch_failed row has no retry left); a wait keeps its wait."""
+    for r in rows:
+        if r.get("decision") != "launch_failed":
+            continue
+        text = str(r.get("why") or "")
+        if FF.fault_class(text) != "form":
+            continue
+        s = (st.get("mods") or {}).get(r["mod"])
+        if not isinstance(s, dict):
+            continue
+        held = FF.owe_repair(s, text, "%s %s" % (r["mod"], r.get("stage") or "launch"), now)
+        if held:
+            s.setdefault("system_faults", []).append({"at": now, "book": "launch", "key": r.get("item"), "unit": None,
+                                                      "cause": held, "n": 1})
+        r.update(decision="repairing", why="repairing: %s (refused for a fault of form; the next tick starts a repair "
+                 "run)" % FF.what_of(text), need=None)
+
+
 def drain_gate(rows, launches, drain):
     """While the account drains before a planned switch (detached_helper.drain_refusal's text, or None), nothing
     launches: each row that would have launched reads account_hold, "waiting: account switch", a wait that counts no
@@ -3327,6 +3484,7 @@ def _tick(root, cfg, apply, fx=None, now=None, page=True):
     mod_of = entry_mods(st)     # sync_system's callbacks name no mod: each entry's own, for its launch_tries account
     RV.sync_system(st, record, keep_failed=lambda b, x: still_retried(cfg, b, x, mod_of.get(id(x))),
                    kills_left=lambda b, x, why: kill_resumed(cfg, b, x, why, mod_of.get(id(x))), now=now)
+    repair_sync(st, now, fx)
     aut = fx.get("autonomy", True)      # False: the per-stage decision alone (selftest_maturation_dispatch's layer)
     shipped = cfg                       # the file's own values, before widen adds discovered mods (maturation_hands)
     cfg = AUT.widen(root, cfg, st, apply, fx) if aut else cfg   # Designer concepts seen and seeded; the game queue
@@ -3392,6 +3550,9 @@ def _tick(root, cfg, apply, fx=None, now=None, page=True):
     # the account drain (drain_gate); a caller that stands in for the account gate (a selftest) stands in for this too
     launches = drain_gate(rows, launches, fx["drain"](now) if "drain" in fx else
                           None if "account" in fx else DH.drain_refusal(now))
+    # the fault loop's own repair, and the form repairs owed: the tick never re-sends a refused input unchanged
+    fault_repair_step(root, cfg, st, rows, now, apply, fx)
+    launches = form_repair_step(root, cfg, st, rows, launches, now, apply, fx)
     if not cfg.get("enabled"):
         for r in rows:
             if r["mod"] in launches:
@@ -3425,6 +3586,8 @@ def _tick(root, cfg, apply, fx=None, now=None, page=True):
             r["why"] += "; " + ((fx.get("reap") or reap_run)(r["reap"]) if apply else "would reap %s" % r["reap"])
     execute(root, cfg, st, rows, [m for m in launches if not _aut(rows, m)], now, fx)
     AUT.execute(root, cfg, st, rows, [m for m in launches if _aut(rows, m)], now, fx)
+    if apply:
+        form_repair_rows(st, rows, now)
     for r in rows:      # a release lets one launch: the launch spends it
         if r.get("release") and r.get("decision") == "launched":
             st["mods"][r["mod"]].setdefault("releases_used", {})[r["release"]] = {
