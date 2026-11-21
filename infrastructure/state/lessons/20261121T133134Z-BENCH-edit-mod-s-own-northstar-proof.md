@@ -1,0 +1,1 @@
+An edit to a mod's own northstar/proof_all.py main moves that mod's walk build: build_match reads the symbol change as touching every check main reaches (82 of 203 for GSS, measured 2026-11-21). Put a mod-neutral harness fix in Utils (e.g. modcheck/run_identity hooks), then run build_match check on a local commit before ./publish.
