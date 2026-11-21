@@ -61,6 +61,22 @@ namespace RimMandrake.FlowWorks.Pits
 			}
 		}
 
+		/// <summary>The functional script's unbreakable hold (RM_DrawbridgeProofs.ProofWinchHold): while set, no damage reaches
+		/// this winch house, so a control can ask "the winches stand: are the raiders still trapped?" with the raiders still
+		/// attacking. Not saved, never set in play. (A hit-point reset between tick chunks cannot hold: two frag grenades,
+		/// 100 each on 200 hit points, land inside one 120-tick chunk.)</summary>
+		public bool proofUnbreakable;
+
+		public override void PreApplyDamage(ref DamageInfo dinfo, out bool absorbed)
+		{
+			if (proofUnbreakable)
+			{
+				absorbed = true;
+				return;
+			}
+			base.PreApplyDamage(ref dinfo, out absorbed);
+		}
+
 		public override void ExposeData()
 		{
 			base.ExposeData();

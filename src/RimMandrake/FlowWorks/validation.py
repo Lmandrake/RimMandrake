@@ -1749,6 +1749,9 @@ TOGGLES_NOT_ON_FLOOR = ["rainPocketApproxEnabled", "blastsBreakPitCovers", "pitS
                         "raiderTrenchEnabled", "raiderJumpsEnabled", "raiderLaddersEnabled", "raiderFillEnabled",
                         # FLOWWORKS_RAIDERS_BUILD_LADDER_FOR_FALLEN (2026-11-16): its live row is sc_fetch_fallen, not a toggle chain
                         "raiderFetchFallenEnabled",
+                        # the water look's wet ground and ripple light (registered in site_spec 2026-11-21): looks, read by the
+                        # water look checks and by eye; no live toggle chain
+                        "pitWaterWetGroundEnabled", "pitWaterRippleLightEnabled",
                         "deepSwimEnabled", "swimOpenWaterEnabled", "humanlikesSwim", "mechanoidsSink", "animalsAvoidDeepWater",
                         "tiredSwimmersHeadForShore", "deepSwimJoyEnabled", "shallowWaterDrowningEnabled",
                         "waterBodyMendsEnabled", "fishRollOnGrowth", "fishReturnOnRefill", "fishingZoneReturnOnRefill",

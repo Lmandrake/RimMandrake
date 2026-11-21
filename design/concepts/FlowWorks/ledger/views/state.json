@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "a86bddbf4626e00ede1bfeb97291c53f2d23a571b39c12a75e8cfd71d761079c",
+  "body_sha256": "48f7c3b77787dfc488474df15055f52d4b70b2fd33f6dc3f0b00f4f7cc18c4b5",
   "reducer": 1,
   "shards": {
    "BACKFILL": 893183,
@@ -17,6 +17,7 @@
    "HOLDER.run-1795223527": 1482,
    "HOLDER.run-1795235568": 2438,
    "HOLDER.run-1795244678": 3570,
+   "HOLDER.run-1795257509": 2475,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1693,7 +1694,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1447,
+  "events": 1452,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7794,7 +7795,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-21T10:41:21Z",
+   "last": "2026-11-21T11:20:31Z",
    "lease": "run-1795257509",
    "released": false,
    "token": 27
@@ -7891,6 +7892,7 @@
    "HOLDER.run-1795223527",
    "HOLDER.run-1795235568",
    "HOLDER.run-1795244678",
+   "HOLDER.run-1795257509",
    "JUDGE.judge-1794833810",
    "JUDGE.judge-1794849236",
    "JUDGE.judge-1795134433",
@@ -8647,12 +8649,12 @@
     "where": "src/RimMandrake/Utils/selftest_settings_screens.py"
    },
    "trap:control-row-isl-control-unbreakable-winches-stay-trapped": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "Control row ISL_control_unbreakable_winches_stay_trapped cannot make winches indestructible (no tool does). It resets winch HP to max each 120-tick poll, and a winch lost anyway reads UNMEASURED.",
-    "ts": "2026-11-16T11:41:59Z",
+    "by": "HOLDER.run-1795257509",
+    "status": "cleared",
+    "text": "The control now makes both winches unbreakable with RM_DrawbridgeProofs.ProofWinchHold (no damage reaches a held winch) and reads their hit points each poll. The 120-tick hit-point reset is gone: two frag grenades (100 each on 200 hit points) land inside one chunk.",
+    "ts": "2026-11-21T11:16:32Z",
     "version": "0.1.0",
-    "where": "concept_scenes.py _islands, ISL_control_unbreakable_winches_stay_trapped"
+    "where": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py _isl_watch"
    },
    "trap:core-live-rows-j-workgiver-selection-fail-rm": {
     "by": "BACKFILL",
@@ -8805,6 +8807,14 @@
     "ts": "2026-11-16T11:41:24Z",
     "version": "0.1.0",
     "where": "GREEN_FULL_1 full mod list"
+   },
+   "trap:grenades-that-take-a-winch-can-wreck-its-leaf-deck": {
+    "by": "HOLDER.run-1795257509",
+    "status": "noted",
+    "text": "Grenades that take a winch can also wreck its fallen leaf's deck: the raiders then stay on the span and shell the next raised winch. Seen in 1 of 3 live runs (game b, 2026-11-21); with decks intact a raider is off the leaf 120 ticks after the winch falls. Not a defect.",
+    "ts": "2026-11-21T11:16:33Z",
+    "version": "0.1.0",
+    "where": "sc_islands, ISL_raiders_escape; src/RimMandrake/FlowWorks/northstar/concept_scenes.py _isl_watch"
    },
    "trap:gss-power-cords-passing-under-the-battery-d12": {
     "by": "BACKFILL",

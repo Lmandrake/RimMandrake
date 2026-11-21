@@ -552,3 +552,27 @@ Three causes were stacked; each one alone gives the same picture.
 - RULED OUT: visit 2's "one fell, not two" was the mod. The 300-tick read missed a raider who died on the spikes (fixed at
   51e9d9ce4a), and the old trench lay across the path, so two on the deck at once was chance (the passage staging fixes it).
 - STILL TRUE BY DESIGN: raiders set no ladder into a 4 m pit. `ProofFetchPlan` prints `slots=null` there.
+
+### sc_islands control: a winch "held" by a hit-point reset fell (Test Pilot sitting, game b, 2026-11-21)
+
+Item `RIMMANDRAKE_TRACE_FLOWWORKS_HELD_WINCH_FELL_IN_THE_CONTROL`. Class HARNESS. Evidence:
+`D:\ClaudeWork\rimmandrake\testpilot_held_winch\` (`exp1_hold120.json`, `exp3.json`, `sc_islands_run1.json`).
+
+- CAUSE: the control put each winch house back to full hit points before every 120-tick chunk. A frag grenade does 100 to
+  the winch house (200 hit points), and two landed inside one chunk. Read every 20 ticks: 200, 100, gone. So a "held" winch
+  fell between two resets, and its leaf dropped as the mod intends.
+- FIX: `jawa/static_call RimMandrake.FlowWorks.Pits.RM_DrawbridgeProofs ProofWinchHold "x,z;on|off"` (a deck square of the
+  leaf). While a winch house is held, no damage reaches it. The hold is not saved and is never set in play. The control
+  sets it on both winches and reads each winch's hit points every poll. A held winch that is hurt or lost reads UNMEASURED.
+- The hold was seen both ways live: the held east winch stayed at 200 for 2400 ticks under fire while the west winch fell;
+  released, the east winch read 100 after 60 ticks and was gone after 240.
+- Check: `selftest_islands_scene.py`. Its fake now does the live damage (nothing for two polls, then 200 a poll). The old
+  control reads UNMEASURED "a held winch fell anyway [2, 19]" on that fake; the new control reads PASS, and a hold that
+  leaks (`softhold`) reads UNMEASURED.
+- RULED OUT: the mod drops a leaf whose winch still stands. The winch left `jawa/list_things` on the same read where its
+  leaf first said `winch=False`; the other leaf stayed at 720 with its winch standing.
+- RULED OUT: the control reset stale winch ids after its restage. Every reset answered `success` on the fresh ids.
+- RULED OUT: a fallen leaf of one hinge side is not walkable. With one winch destroyed and no hold, raiders were off the
+  west leaf in 120 ticks and off the east leaf in 180.
+- KNOWN, NOT A DEFECT: grenades that take a winch can also wreck its leaf's deck. Then the raiders stay on the span and
+  shell the next raised winch (`JobGiver_RM_DrawbridgeWinch`: the colony is still unreachable). Seen once in three runs.

@@ -1836,8 +1836,14 @@ def _pit_trap_raid(S):
 # ProofBuild, RM_DrawbridgeProofs.ProofMakeDrawbridge with its winch houses), read back lowered, six sappers stand on the
 # long span, both leaves go up, and each row needs its event: no raider on the span, no winch lost, no leaf down reads
 # UNMEASURED, never PASS. If the sappers never take a winch in the window that row FAILs and the harness destroys the west
-# winch itself (staged=True in the detail) so the drop and the escape are still asked. The control holds both winches at
-# full hit points every poll (no tool makes a building indestructible; a winch lost anyway leaves the control UNMEASURED).
+# winch itself (staged=True in the detail) so the drop and the escape are still asked. The control makes both winches
+# unbreakable with RM_DrawbridgeProofs.ProofWinchHold (no damage reaches a held winch) and reads their hit points every
+# poll; a held winch damaged or lost leaves the control UNMEASURED.
+# RIMMANDRAKE_TRACE_FLOWWORKS_HELD_WINCH_FELL_IN_THE_CONTROL (Test Pilot, game b, 2026-11-21), HARNESS: the control used
+# to put each winch back to full hit points before every 120-tick chunk. A frag grenade does 100 to the 200 hit point winch
+# house, and two landed inside one chunk (read every 20 ticks: 200 -> 100 -> gone), so "held" winches fell (visit 2).
+# RULED OUT: the mod dropping a leaf whose winch still stands (the winch left list_things on the read its leaf first said
+# winch=False; the other leaf stayed up); stale winch ids after the restage (every reset answered success on fresh ids).
 #   x: west island <= O0 | drawbridge O0..O0+4 (hole +1..+3) | pillar +4,+5 | steel span +5..+16 (hole +6..+15)
 #      | pillar +16,+17 | drawbridge +17..+21 (hole +18..+20) | east island >= +21; channel dug 4 m at z = O1-3..O1+3
 DPROOF = 'RimMandrake.FlowWorks.Pits.RM_DrawbridgeProofs'
@@ -1939,18 +1945,24 @@ def _isl_counter(S):
 def _isl_watch(S, st, until='loss', hold=False):
     """ISL_POLL chunks on the narrowed governor (a raid hurts, downs and kills by design). Each poll: our raiders still alive,
     those on the span (inside the channel) and those on an island, and which winch still stands. `until`: 'loss' stops at
-    the first winch lost, 'escape' at the first raider on an island, None runs every poll. `hold` puts each winch back to
-    full hit points before every chunk (the control's unbreakable winches)."""
+    the first winch lost, 'escape' at the first raider on an island, None runs every poll. `hold` makes both winches
+    unbreakable first (ProofWinchHold: the control) and reads each winch's hit points every poll: `held` is the hold's own
+    answer, `hurt` the leaves whose held winch read below its full hit points."""
     prior, S.B.stop_on = S.B.stop_on, RAID_STOP_ON
-    seen = {'polls': 0, 'on_span': 0, 'live': 0, 'escaped': [], 'lost': [], 'resets': 0, 'last': []}
+    seen = {'polls': 0, 'on_span': 0, 'live': 0, 'escaped': [], 'lost': [], 'held': None, 'hurt': [], 'last': []}
     mine = set(st['raiders'])
     try:
+        if hold:
+            got = [kv(S.sc(DPROOF, 'ProofWinchHold', '%d,%d;on' % _isl_xz(dx))) for dx in ISL_LEAVES]
+            seen['held'] = all(g.get('held') == 'True' and g.get('winch') == 'True' for g in got)
         for _ in range(ISL_POLLS):
-            if hold:
-                for wid, hp in st['winch_ids']:
-                    S.B.call('jawa/set_thing_props', _answer=True, thing=wid, hitPoints=int(hp))
-                    seen['resets'] += 1
             S.ticks(ISL_POLL)
+            if hold:
+                for dx, c, (_, full) in zip(ISL_LEAVES, st['winch'], st['winch_ids']):
+                    t = S.B.call('jawa/list_things', _answer=True, defName=ISL_WINCH_DEF, rect='%d,%d,1,1' % c) or {}
+                    hp = [x.get('hitPoints') for x in t.get('things') or []]
+                    if hp != [full] and dx not in seen['hurt']:
+                        seen['hurt'].append(dx)
             seen['polls'] += 1
             live = [p for p in S.call('jawa/list_pawns', faction='hostile').get('pawns') or []
                     if p.get('id') in mine and not p.get('dead') and p.get('x') is not None]
@@ -2002,14 +2014,19 @@ def _islands(S):
           unmeasured=not dropped or not (out and (out['live'] or out['escaped'])))
     S.again()                                            # control: the same span, both winches held at full hit points
     st = _isl_stage(S)
+    c0 = _isl_counter(S)
     ctl = _isl_watch(S, st, until=None, hold=True)
+    c1 = _isl_counter(S)
     up = [_isl_leaf(S, dx) for dx in ISL_LEAVES]
     raised = all(l.get('target') == 'raised' and l.get('progress', '0') != '0' for l in up)
+    leaky = bool(ctl['lost']) or bool(ctl['hurt']) or not ctl['held']
     S.row('ISL_control_unbreakable_winches_stay_trapped', not ctl['escaped'] and raised,
           ('no raider of ours stood on the span; ' if not ctl['on_span'] else '') +
-          ('a held winch fell anyway %s; ' % ctl['lost'] if ctl['lost'] else '') +
-          'on an island %s, leaves %s, resets %d' % (ctl['escaped'], [l.get('progress') for l in up], ctl['resets']),
-          unmeasured=not ctl['on_span'] or bool(ctl['lost']))
+          ('the hold did not hold (lost %s, hurt %s); ' % (ctl['lost'], ctl['hurt']) if leaky else '') +
+          'held winches %s, on an island %s, leaves %s, WinchJobs +%s, polls %d' % (
+              ctl['held'], ctl['escaped'], [l.get('progress') for l in up],
+              None if c0 is None or c1 is None else c1 - c0, ctl['polls']),
+          unmeasured=not ctl['on_span'] or leaky)
 
 
 def _vacuous(v):

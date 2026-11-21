@@ -1,0 +1,4105 @@
+{
+ "biome": "{'success': False, 'message': 'No public static ProofBiome with 0 params.', 'details': {'available': []}, 'operation': {'OperationId': 'op_6000d4732cb2411c8a7a136e9b8b335c', 'Status': 'Completed', 'Su",
+ "vitals_arm": "{'success': True, 'armed': True, 'by': 'jawa/vitals', 'armedUtc': '2026-11-21T10:13:32.430Z', 'ttlLeftS': 1800.0, 'timeException': False, 'budgetTicks': 0, 'critical': [], 'specimens': [], 'specimensU",
+ "scene": "exp1",
+ "rows": [],
+ "st": {
+  "winch": [
+   [
+    59,
+    60
+   ],
+   [
+    82,
+    60
+   ]
+  ],
+  "winch_ids": [
+   [
+    "RM_DrawbridgeWinch_Timber21174",
+    200
+   ],
+   [
+    "RM_DrawbridgeWinch_Timber21180",
+    200
+   ]
+  ],
+  "raiders": [
+   "Human21200",
+   "Human21207",
+   "Human21212",
+   "Human21219",
+   "Human21228",
+   "Human21237"
+  ],
+  "sappers": [
+   "Human21200",
+   "Human21207",
+   "Human21219",
+   "Human21228",
+   "Human21237"
+  ]
+ },
+ "pawn_shape": "{\"id\": \"Human21200\", \"name\": \"Lips\", \"kind\": \"Grenadier_Destructive\", \"kindDef\": \"Grenadier_Destructive\", \"def\": \"Human\", \"hasGenes\": true, \"xenotype\": \"Baseliner\", \"xenotypeLabel\": \"baseliner\", \"uniqueXenotype\": false, \"faction\": \"PirateYttakin\", \"factionName\": \"Howosh\", \"isPlayer\": false, \"hostile\": true, \"x\": 67, \"z\": 60, \"spawned\": true, \"dead\": false, \"downed\": false, \"stunned\": false, \"stunTicksLeft\": 0, \"fleshType\": \"Normal\", \"isMechanoid\": false, \"isFlesh\": true, \"intelligence\": \"Humanlike\", \"bodySize\": 1.0}",
+ "track": [
+  {
+   "i": 0,
+   "t": 0,
+   "reset": [
+    "{'success': True, 'thing': 'Timber drawbridge winch house', 'changed': ['hitPoints'], 'skipped': [], 'hitPointsAfter': 200, 'maxHitPoints': 200, 'factionAfter':",
+    "{'success': True, 'thing': 'Timber drawbridge winch house', 'changed': ['hitPoints'], 'skipped': [], 'hitPointsAfter': 200, 'maxHitPoints': 200, 'factionAfter':"
+   ],
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     67,
+     60,
+     null
+    ],
+    [
+     "Human21207",
+     68,
+     60,
+     null
+    ],
+    [
+     "Human21212",
+     68,
+     60,
+     null
+    ],
+    [
+     "Human21219",
+     70,
+     60,
+     null
+    ],
+    [
+     "Human21228",
+     71,
+     60,
+     null
+    ],
+    [
+     "Human21237",
+     72,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 1,
+   "t": 20,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     67,
+     60,
+     null
+    ],
+    [
+     "Human21207",
+     66,
+     60,
+     null
+    ],
+    [
+     "Human21212",
+     67,
+     60,
+     null
+    ],
+    [
+     "Human21219",
+     70,
+     60,
+     null
+    ],
+    [
+     "Human21228",
+     71,
+     60,
+     null
+    ],
+    [
+     "Human21237",
+     73,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 2,
+   "t": 40,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     67,
+     60,
+     null
+    ],
+    [
+     "Human21207",
+     65,
+     60,
+     null
+    ],
+    [
+     "Human21212",
+     66,
+     60,
+     null
+    ],
+    [
+     "Human21219",
+     70,
+     60,
+     null
+    ],
+    [
+     "Human21228",
+     71,
+     60,
+     null
+    ],
+    [
+     "Human21237",
+     73,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 3,
+   "t": 60,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     67,
+     60,
+     null
+    ],
+    [
+     "Human21207",
+     65,
+     60,
+     null
+    ],
+    [
+     "Human21212",
+     66,
+     60,
+     null
+    ],
+    [
+     "Human21219",
+     70,
+     60,
+     null
+    ],
+    [
+     "Human21228",
+     71,
+     60,
+     null
+    ],
+    [
+     "Human21237",
+     73,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 4,
+   "t": 80,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     67,
+     60,
+     null
+    ],
+    [
+     "Human21207",
+     65,
+     60,
+     null
+    ],
+    [
+     "Human21212",
+     66,
+     60,
+     null
+    ],
+    [
+     "Human21219",
+     70,
+     60,
+     null
+    ],
+    [
+     "Human21228",
+     71,
+     60,
+     null
+    ],
+    [
+     "Human21237",
+     73,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 5,
+   "t": 100,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     67,
+     60,
+     null
+    ],
+    [
+     "Human21207",
+     65,
+     60,
+     null
+    ],
+    [
+     "Human21212",
+     66,
+     60,
+     null
+    ],
+    [
+     "Human21219",
+     70,
+     60,
+     null
+    ],
+    [
+     "Human21228",
+     71,
+     60,
+     null
+    ],
+    [
+     "Human21237",
+     73,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 6,
+   "t": 120,
+   "reset": [
+    "{'success': True, 'thing': 'Timber drawbridge winch house', 'changed': ['hitPoints'], 'skipped': [], 'hitPointsAfter': 200, 'maxHitPoints': 200, 'factionAfter':",
+    "{'success': True, 'thing': 'Timber drawbridge winch house', 'changed': ['hitPoints'], 'skipped': [], 'hitPointsAfter': 200, 'maxHitPoints': 200, 'factionAfter':"
+   ],
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     67,
+     60,
+     null
+    ],
+    [
+     "Human21207",
+     65,
+     60,
+     null
+    ],
+    [
+     "Human21212",
+     66,
+     60,
+     null
+    ],
+    [
+     "Human21219",
+     70,
+     60,
+     null
+    ],
+    [
+     "Human21228",
+     71,
+     60,
+     null
+    ],
+    [
+     "Human21237",
+     73,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 7,
+   "t": 140,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     67,
+     60,
+     null
+    ],
+    [
+     "Human21207",
+     65,
+     60,
+     null
+    ],
+    [
+     "Human21212",
+     66,
+     60,
+     null
+    ],
+    [
+     "Human21219",
+     70,
+     60,
+     null
+    ],
+    [
+     "Human21228",
+     71,
+     60,
+     null
+    ],
+    [
+     "Human21237",
+     73,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 8,
+   "t": 160,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     67,
+     60,
+     null
+    ],
+    [
+     "Human21207",
+     65,
+     60,
+     null
+    ],
+    [
+     "Human21212",
+     66,
+     60,
+     null
+    ],
+    [
+     "Human21219",
+     70,
+     60,
+     null
+    ],
+    [
+     "Human21228",
+     71,
+     60,
+     null
+    ],
+    [
+     "Human21237",
+     73,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 9,
+   "t": 180,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     67,
+     60,
+     null
+    ],
+    [
+     "Human21207",
+     65,
+     60,
+     null
+    ],
+    [
+     "Human21212",
+     66,
+     60,
+     null
+    ],
+    [
+     "Human21219",
+     70,
+     60,
+     null
+    ],
+    [
+     "Human21228",
+     71,
+     60,
+     null
+    ],
+    [
+     "Human21237",
+     73,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 10,
+   "t": 200,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     67,
+     60,
+     null
+    ],
+    [
+     "Human21207",
+     65,
+     60,
+     null
+    ],
+    [
+     "Human21212",
+     66,
+     60,
+     null
+    ],
+    [
+     "Human21219",
+     70,
+     60,
+     null
+    ],
+    [
+     "Human21228",
+     71,
+     60,
+     null
+    ],
+    [
+     "Human21237",
+     72,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 11,
+   "t": 220,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     67,
+     60,
+     null
+    ],
+    [
+     "Human21207",
+     65,
+     60,
+     null
+    ],
+    [
+     "Human21212",
+     66,
+     60,
+     null
+    ],
+    [
+     "Human21219",
+     70,
+     60,
+     null
+    ],
+    [
+     "Human21228",
+     71,
+     60,
+     null
+    ],
+    [
+     "Human21237",
+     72,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 12,
+   "t": 240,
+   "reset": [
+    "{'success': True, 'thing': 'Timber drawbridge winch house', 'changed': ['hitPoints'], 'skipped': [], 'hitPointsAfter': 200, 'maxHitPoints': 200, 'factionAfter':",
+    "{'success': True, 'thing': 'Timber drawbridge winch house', 'changed': ['hitPoints'], 'skipped': [], 'hitPointsAfter': 200, 'maxHitPoints': 200, 'factionAfter':"
+   ],
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     67,
+     60,
+     null
+    ],
+    [
+     "Human21207",
+     65,
+     60,
+     null
+    ],
+    [
+     "Human21212",
+     66,
+     60,
+     null
+    ],
+    [
+     "Human21219",
+     70,
+     60,
+     null
+    ],
+    [
+     "Human21228",
+     71,
+     60,
+     null
+    ],
+    [
+     "Human21237",
+     72,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 13,
+   "t": 260,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     67,
+     60,
+     null
+    ],
+    [
+     "Human21207",
+     65,
+     60,
+     null
+    ],
+    [
+     "Human21212",
+     66,
+     60,
+     null
+    ],
+    [
+     "Human21219",
+     70,
+     60,
+     null
+    ],
+    [
+     "Human21228",
+     71,
+     60,
+     null
+    ],
+    [
+     "Human21237",
+     72,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 14,
+   "t": 280,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     67,
+     60,
+     null
+    ],
+    [
+     "Human21207",
+     65,
+     60,
+     null
+    ],
+    [
+     "Human21212",
+     66,
+     60,
+     null
+    ],
+    [
+     "Human21219",
+     70,
+     60,
+     null
+    ],
+    [
+     "Human21228",
+     71,
+     60,
+     null
+    ],
+    [
+     "Human21237",
+     72,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 15,
+   "t": 300,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      100,
+      200
+     ]
+    ],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     67,
+     60,
+     null
+    ],
+    [
+     "Human21207",
+     65,
+     60,
+     null
+    ],
+    [
+     "Human21212",
+     66,
+     60,
+     null
+    ],
+    [
+     "Human21219",
+     70,
+     60,
+     null
+    ],
+    [
+     "Human21228",
+     71,
+     60,
+     null
+    ],
+    [
+     "Human21237",
+     72,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 16,
+   "t": 320,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      100,
+      200
+     ]
+    ],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      100,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     67,
+     60,
+     null
+    ],
+    [
+     "Human21207",
+     65,
+     60,
+     null
+    ],
+    [
+     "Human21212",
+     66,
+     60,
+     null
+    ],
+    [
+     "Human21219",
+     70,
+     60,
+     null
+    ],
+    [
+     "Human21228",
+     71,
+     60,
+     null
+    ],
+    [
+     "Human21237",
+     72,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 17,
+   "t": 340,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      100,
+      200
+     ]
+    ],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      100,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     67,
+     60,
+     null
+    ],
+    [
+     "Human21207",
+     65,
+     60,
+     null
+    ],
+    [
+     "Human21212",
+     66,
+     60,
+     null
+    ],
+    [
+     "Human21219",
+     70,
+     60,
+     null
+    ],
+    [
+     "Human21228",
+     71,
+     60,
+     null
+    ],
+    [
+     "Human21237",
+     72,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 18,
+   "t": 360,
+   "reset": [
+    "{'success': True, 'thing': 'Timber drawbridge winch house', 'changed': ['hitPoints'], 'skipped': [], 'hitPointsAfter': 200, 'maxHitPoints': 200, 'factionAfter':",
+    "{'success': True, 'thing': 'Timber drawbridge winch house', 'changed': ['hitPoints'], 'skipped': [], 'hitPointsAfter': 200, 'maxHitPoints': 200, 'factionAfter':"
+   ],
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     67,
+     60,
+     null
+    ],
+    [
+     "Human21207",
+     65,
+     60,
+     null
+    ],
+    [
+     "Human21212",
+     66,
+     60,
+     null
+    ],
+    [
+     "Human21219",
+     70,
+     60,
+     null
+    ],
+    [
+     "Human21228",
+     71,
+     60,
+     null
+    ],
+    [
+     "Human21237",
+     72,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 19,
+   "t": 380,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     67,
+     60,
+     null
+    ],
+    [
+     "Human21207",
+     65,
+     60,
+     null
+    ],
+    [
+     "Human21212",
+     66,
+     60,
+     null
+    ],
+    [
+     "Human21219",
+     70,
+     60,
+     null
+    ],
+    [
+     "Human21228",
+     71,
+     60,
+     null
+    ],
+    [
+     "Human21237",
+     72,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 20,
+   "t": 400,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      100,
+      200
+     ]
+    ],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     67,
+     60,
+     null
+    ],
+    [
+     "Human21207",
+     65,
+     60,
+     null
+    ],
+    [
+     "Human21212",
+     66,
+     60,
+     null
+    ],
+    [
+     "Human21219",
+     70,
+     60,
+     null
+    ],
+    [
+     "Human21228",
+     71,
+     60,
+     null
+    ],
+    [
+     "Human21237",
+     72,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 21,
+   "t": 420,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      100,
+      200
+     ]
+    ],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     67,
+     60,
+     null
+    ],
+    [
+     "Human21207",
+     65,
+     60,
+     null
+    ],
+    [
+     "Human21212",
+     66,
+     60,
+     null
+    ],
+    [
+     "Human21219",
+     70,
+     60,
+     null
+    ],
+    [
+     "Human21228",
+     71,
+     60,
+     null
+    ],
+    [
+     "Human21237",
+     72,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 22,
+   "t": 440,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      100,
+      200
+     ]
+    ],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     67,
+     60,
+     null
+    ],
+    [
+     "Human21207",
+     65,
+     60,
+     null
+    ],
+    [
+     "Human21212",
+     66,
+     60,
+     null
+    ],
+    [
+     "Human21219",
+     70,
+     60,
+     null
+    ],
+    [
+     "Human21228",
+     71,
+     60,
+     null
+    ],
+    [
+     "Human21237",
+     72,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 23,
+   "t": 460,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      100,
+      200
+     ]
+    ],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     67,
+     60,
+     null
+    ],
+    [
+     "Human21207",
+     65,
+     60,
+     null
+    ],
+    [
+     "Human21212",
+     66,
+     60,
+     null
+    ],
+    [
+     "Human21219",
+     70,
+     60,
+     null
+    ],
+    [
+     "Human21228",
+     71,
+     60,
+     null
+    ],
+    [
+     "Human21237",
+     72,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 24,
+   "t": 480,
+   "reset": [
+    "{'success': True, 'thing': 'Timber drawbridge winch house', 'changed': ['hitPoints'], 'skipped': [], 'hitPointsAfter': 200, 'maxHitPoints': 200, 'factionAfter':",
+    "{'success': True, 'thing': 'Timber drawbridge winch house', 'changed': ['hitPoints'], 'skipped': [], 'hitPointsAfter': 200, 'maxHitPoints': 200, 'factionAfter':"
+   ],
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     67,
+     60,
+     null
+    ],
+    [
+     "Human21207",
+     65,
+     60,
+     null
+    ],
+    [
+     "Human21212",
+     66,
+     60,
+     null
+    ],
+    [
+     "Human21219",
+     70,
+     60,
+     null
+    ],
+    [
+     "Human21228",
+     71,
+     60,
+     null
+    ],
+    [
+     "Human21237",
+     72,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 25,
+   "t": 500,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      100,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     67,
+     60,
+     null
+    ],
+    [
+     "Human21207",
+     65,
+     60,
+     null
+    ],
+    [
+     "Human21212",
+     66,
+     60,
+     null
+    ],
+    [
+     "Human21219",
+     70,
+     60,
+     null
+    ],
+    [
+     "Human21228",
+     71,
+     60,
+     null
+    ],
+    [
+     "Human21237",
+     72,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 26,
+   "t": 520,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      100,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     67,
+     60,
+     null
+    ],
+    [
+     "Human21207",
+     65,
+     60,
+     null
+    ],
+    [
+     "Human21212",
+     66,
+     60,
+     null
+    ],
+    [
+     "Human21219",
+     70,
+     60,
+     null
+    ],
+    [
+     "Human21228",
+     71,
+     60,
+     null
+    ],
+    [
+     "Human21237",
+     72,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 27,
+   "t": 540,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      100,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     67,
+     60,
+     null
+    ],
+    [
+     "Human21207",
+     65,
+     60,
+     null
+    ],
+    [
+     "Human21212",
+     66,
+     60,
+     null
+    ],
+    [
+     "Human21219",
+     70,
+     60,
+     null
+    ],
+    [
+     "Human21228",
+     71,
+     60,
+     null
+    ],
+    [
+     "Human21237",
+     72,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 28,
+   "t": 560,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      100,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     67,
+     60,
+     null
+    ],
+    [
+     "Human21207",
+     65,
+     60,
+     null
+    ],
+    [
+     "Human21212",
+     66,
+     60,
+     null
+    ],
+    [
+     "Human21219",
+     70,
+     60,
+     null
+    ],
+    [
+     "Human21228",
+     71,
+     60,
+     null
+    ],
+    [
+     "Human21237",
+     72,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 29,
+   "t": 580,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    []
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     67,
+     60,
+     null
+    ],
+    [
+     "Human21207",
+     65,
+     60,
+     null
+    ],
+    [
+     "Human21212",
+     66,
+     60,
+     null
+    ],
+    [
+     "Human21219",
+     70,
+     60,
+     null
+    ],
+    [
+     "Human21228",
+     71,
+     60,
+     null
+    ],
+    [
+     "Human21237",
+     72,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 30,
+   "t": 600,
+   "reset": [
+    "{'success': True, 'thing': 'Timber drawbridge winch house', 'changed': ['hitPoints'], 'skipped': [], 'hitPointsAfter': 200, 'maxHitPoints': 200, 'factionAfter':",
+    "{'success': False, 'message': \"No live thing with id 'RM_DrawbridgeWinch_Timber21180' on any loaded map, or in any pawn's equipment, apparel or inventory.\", 'op"
+   ],
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    []
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     67,
+     60,
+     null
+    ],
+    [
+     "Human21207",
+     65,
+     60,
+     null
+    ],
+    [
+     "Human21212",
+     66,
+     60,
+     null
+    ],
+    [
+     "Human21219",
+     70,
+     60,
+     null
+    ],
+    [
+     "Human21228",
+     71,
+     60,
+     null
+    ],
+    [
+     "Human21237",
+     72,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 31,
+   "t": 620,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    []
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     67,
+     60,
+     null
+    ],
+    [
+     "Human21207",
+     65,
+     60,
+     null
+    ],
+    [
+     "Human21212",
+     66,
+     60,
+     null
+    ],
+    [
+     "Human21219",
+     70,
+     60,
+     null
+    ],
+    [
+     "Human21228",
+     72,
+     60,
+     null
+    ],
+    [
+     "Human21237",
+     72,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 32,
+   "t": 640,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      100,
+      200
+     ]
+    ],
+    []
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     67,
+     60,
+     null
+    ],
+    [
+     "Human21207",
+     65,
+     60,
+     null
+    ],
+    [
+     "Human21212",
+     66,
+     60,
+     null
+    ],
+    [
+     "Human21219",
+     70,
+     60,
+     null
+    ],
+    [
+     "Human21228",
+     73,
+     60,
+     null
+    ],
+    [
+     "Human21237",
+     72,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 33,
+   "t": 660,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      100,
+      200
+     ]
+    ],
+    []
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     68,
+     60,
+     null
+    ],
+    [
+     "Human21207",
+     66,
+     60,
+     null
+    ],
+    [
+     "Human21212",
+     68,
+     60,
+     null
+    ],
+    [
+     "Human21219",
+     71,
+     60,
+     null
+    ],
+    [
+     "Human21228",
+     74,
+     60,
+     null
+    ],
+    [
+     "Human21237",
+     72,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 34,
+   "t": 680,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      100,
+      200
+     ]
+    ],
+    []
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     69,
+     60,
+     null
+    ],
+    [
+     "Human21207",
+     67,
+     60,
+     null
+    ],
+    [
+     "Human21212",
+     69,
+     60,
+     null
+    ],
+    [
+     "Human21219",
+     73,
+     60,
+     null
+    ],
+    [
+     "Human21228",
+     75,
+     60,
+     null
+    ],
+    [
+     "Human21237",
+     72,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 35,
+   "t": 700,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      100,
+      200
+     ]
+    ],
+    []
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     71,
+     60,
+     null
+    ],
+    [
+     "Human21207",
+     68,
+     60,
+     null
+    ],
+    [
+     "Human21212",
+     70,
+     60,
+     null
+    ],
+    [
+     "Human21219",
+     75,
+     60,
+     null
+    ],
+    [
+     "Human21228",
+     76,
+     60,
+     null
+    ],
+    [
+     "Human21237",
+     72,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 36,
+   "t": 720,
+   "reset": [
+    "{'success': True, 'thing': 'Timber drawbridge winch house', 'changed': ['hitPoints'], 'skipped': [], 'hitPointsAfter': 200, 'maxHitPoints': 200, 'factionAfter':",
+    "{'success': False, 'message': \"No live thing with id 'RM_DrawbridgeWinch_Timber21180' on any loaded map, or in any pawn's equipment, apparel or inventory.\", 'op"
+   ],
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    []
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     72,
+     60,
+     null
+    ],
+    [
+     "Human21207",
+     70,
+     60,
+     null
+    ],
+    [
+     "Human21212",
+     72,
+     60,
+     null
+    ],
+    [
+     "Human21219",
+     76,
+     60,
+     null
+    ],
+    [
+     "Human21228",
+     78,
+     60,
+     null
+    ],
+    [
+     "Human21237",
+     74,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 37,
+   "t": 740,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    []
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     73,
+     60,
+     null
+    ],
+    [
+     "Human21207",
+     71,
+     60,
+     null
+    ],
+    [
+     "Human21212",
+     73,
+     60,
+     null
+    ],
+    [
+     "Human21219",
+     78,
+     60,
+     null
+    ],
+    [
+     "Human21228",
+     79,
+     60,
+     null
+    ],
+    [
+     "Human21237",
+     75,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 38,
+   "t": 760,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    []
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     75,
+     60,
+     null
+    ],
+    [
+     "Human21207",
+     72,
+     60,
+     null
+    ],
+    [
+     "Human21212",
+     74,
+     60,
+     null
+    ],
+    [
+     "Human21219",
+     79,
+     60,
+     null
+    ],
+    [
+     "Human21228",
+     80,
+     60,
+     null
+    ],
+    [
+     "Human21237",
+     75,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 39,
+   "t": 780,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    []
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     76,
+     60,
+     null
+    ],
+    [
+     "Human21207",
+     74,
+     60,
+     null
+    ],
+    [
+     "Human21212",
+     75,
+     60,
+     null
+    ],
+    [
+     "Human21219",
+     81,
+     60,
+     null
+    ],
+    [
+     "Human21228",
+     81,
+     60,
+     null
+    ],
+    [
+     "Human21237",
+     75,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 40,
+   "t": 800,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    []
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     77,
+     60,
+     null
+    ],
+    [
+     "Human21207",
+     75,
+     60,
+     null
+    ],
+    [
+     "Human21212",
+     76,
+     60,
+     null
+    ],
+    [
+     "Human21219",
+     81,
+     59,
+     null
+    ],
+    [
+     "Human21228",
+     81,
+     59,
+     null
+    ],
+    [
+     "Human21237",
+     75,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 41,
+   "t": 820,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    []
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     78,
+     60,
+     null
+    ],
+    [
+     "Human21207",
+     76,
+     60,
+     null
+    ],
+    [
+     "Human21212",
+     78,
+     60,
+     null
+    ],
+    [
+     "Human21219",
+     81,
+     57,
+     null
+    ],
+    [
+     "Human21228",
+     81,
+     58,
+     null
+    ],
+    [
+     "Human21237",
+     75,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 42,
+   "t": 840,
+   "reset": [
+    "{'success': True, 'thing': 'Timber drawbridge winch house', 'changed': ['hitPoints'], 'skipped': [], 'hitPointsAfter': 200, 'maxHitPoints': 200, 'factionAfter':",
+    "{'success': False, 'message': \"No live thing with id 'RM_DrawbridgeWinch_Timber21180' on any loaded map, or in any pawn's equipment, apparel or inventory.\", 'op"
+   ],
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    []
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     79,
+     60,
+     null
+    ],
+    [
+     "Human21207",
+     77,
+     60,
+     null
+    ],
+    [
+     "Human21212",
+     79,
+     60,
+     null
+    ],
+    [
+     "Human21219",
+     81,
+     56,
+     null
+    ],
+    [
+     "Human21228",
+     81,
+     56,
+     null
+    ],
+    [
+     "Human21237",
+     75,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 43,
+   "t": 860,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    []
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     80,
+     60,
+     null
+    ],
+    [
+     "Human21207",
+     78,
+     60,
+     null
+    ],
+    [
+     "Human21212",
+     80,
+     60,
+     null
+    ],
+    [
+     "Human21219",
+     80,
+     55,
+     null
+    ],
+    [
+     "Human21228",
+     81,
+     56,
+     null
+    ],
+    [
+     "Human21237",
+     75,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 44,
+   "t": 880,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    []
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     81,
+     60,
+     null
+    ],
+    [
+     "Human21207",
+     79,
+     60,
+     null
+    ],
+    [
+     "Human21212",
+     81,
+     60,
+     null
+    ],
+    [
+     "Human21219",
+     78,
+     53,
+     null
+    ],
+    [
+     "Human21228",
+     80,
+     54,
+     null
+    ],
+    [
+     "Human21237",
+     75,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 45,
+   "t": 900,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    []
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     81,
+     59,
+     null
+    ],
+    [
+     "Human21207",
+     80,
+     60,
+     null
+    ],
+    [
+     "Human21212",
+     81,
+     59,
+     null
+    ],
+    [
+     "Human21219",
+     78,
+     52,
+     null
+    ],
+    [
+     "Human21228",
+     80,
+     53,
+     null
+    ],
+    [
+     "Human21237",
+     75,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 46,
+   "t": 920,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    []
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     81,
+     58,
+     null
+    ],
+    [
+     "Human21207",
+     81,
+     60,
+     null
+    ],
+    [
+     "Human21212",
+     81,
+     58,
+     null
+    ],
+    [
+     "Human21219",
+     78,
+     50,
+     null
+    ],
+    [
+     "Human21228",
+     80,
+     52,
+     null
+    ],
+    [
+     "Human21237",
+     75,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 47,
+   "t": 940,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    []
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     81,
+     56,
+     null
+    ],
+    [
+     "Human21207",
+     81,
+     58,
+     null
+    ],
+    [
+     "Human21212",
+     81,
+     56,
+     null
+    ],
+    [
+     "Human21219",
+     77,
+     49,
+     null
+    ],
+    [
+     "Human21228",
+     80,
+     51,
+     null
+    ],
+    [
+     "Human21237",
+     75,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 48,
+   "t": 960,
+   "reset": [
+    "{'success': True, 'thing': 'Timber drawbridge winch house', 'changed': ['hitPoints'], 'skipped': [], 'hitPointsAfter': 200, 'maxHitPoints': 200, 'factionAfter':",
+    "{'success': False, 'message': \"No live thing with id 'RM_DrawbridgeWinch_Timber21180' on any loaded map, or in any pawn's equipment, apparel or inventory.\", 'op"
+   ],
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    []
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     81,
+     56,
+     null
+    ],
+    [
+     "Human21207",
+     81,
+     57,
+     null
+    ],
+    [
+     "Human21212",
+     81,
+     56,
+     null
+    ],
+    [
+     "Human21219",
+     76,
+     48,
+     null
+    ],
+    [
+     "Human21228",
+     80,
+     50,
+     null
+    ],
+    [
+     "Human21237",
+     75,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 49,
+   "t": 980,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    []
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     80,
+     55,
+     null
+    ],
+    [
+     "Human21207",
+     81,
+     56,
+     null
+    ],
+    [
+     "Human21212",
+     80,
+     55,
+     null
+    ],
+    [
+     "Human21219",
+     75,
+     47,
+     null
+    ],
+    [
+     "Human21228",
+     80,
+     48,
+     null
+    ],
+    [
+     "Human21237",
+     75,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 50,
+   "t": 1000,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    []
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     79,
+     54,
+     null
+    ],
+    [
+     "Human21207",
+     81,
+     55,
+     null
+    ],
+    [
+     "Human21212",
+     79,
+     54,
+     null
+    ],
+    [
+     "Human21219",
+     73,
+     45,
+     null
+    ],
+    [
+     "Human21228",
+     80,
+     47,
+     null
+    ],
+    [
+     "Human21237",
+     75,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 51,
+   "t": 1020,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    []
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     78,
+     53,
+     null
+    ],
+    [
+     "Human21207",
+     81,
+     54,
+     null
+    ],
+    [
+     "Human21212",
+     78,
+     53,
+     null
+    ],
+    [
+     "Human21219",
+     72,
+     44,
+     null
+    ],
+    [
+     "Human21228",
+     80,
+     46,
+     null
+    ],
+    [
+     "Human21237",
+     75,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 52,
+   "t": 1040,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    []
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     78,
+     52,
+     null
+    ],
+    [
+     "Human21207",
+     81,
+     53,
+     null
+    ],
+    [
+     "Human21212",
+     78,
+     51,
+     null
+    ],
+    [
+     "Human21219",
+     71,
+     42,
+     null
+    ],
+    [
+     "Human21228",
+     80,
+     45,
+     null
+    ],
+    [
+     "Human21237",
+     75,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 53,
+   "t": 1060,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    []
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     78,
+     51,
+     null
+    ],
+    [
+     "Human21207",
+     80,
+     52,
+     null
+    ],
+    [
+     "Human21212",
+     78,
+     50,
+     null
+    ],
+    [
+     "Human21219",
+     70,
+     41,
+     null
+    ],
+    [
+     "Human21228",
+     80,
+     44,
+     null
+    ],
+    [
+     "Human21237",
+     75,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 54,
+   "t": 1080,
+   "reset": [
+    "{'success': True, 'thing': 'Timber drawbridge winch house', 'changed': ['hitPoints'], 'skipped': [], 'hitPointsAfter': 200, 'maxHitPoints': 200, 'factionAfter':",
+    "{'success': False, 'message': \"No live thing with id 'RM_DrawbridgeWinch_Timber21180' on any loaded map, or in any pawn's equipment, apparel or inventory.\", 'op"
+   ],
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    []
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     78,
+     50,
+     null
+    ],
+    [
+     "Human21207",
+     79,
+     51,
+     null
+    ],
+    [
+     "Human21212",
+     77,
+     49,
+     null
+    ],
+    [
+     "Human21219",
+     70,
+     39,
+     null
+    ],
+    [
+     "Human21228",
+     80,
+     43,
+     null
+    ],
+    [
+     "Human21237",
+     75,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 55,
+   "t": 1100,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    []
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     77,
+     49,
+     null
+    ],
+    [
+     "Human21207",
+     78,
+     50,
+     null
+    ],
+    [
+     "Human21212",
+     77,
+     49,
+     null
+    ],
+    [
+     "Human21219",
+     70,
+     37,
+     null
+    ],
+    [
+     "Human21228",
+     80,
+     41,
+     null
+    ],
+    [
+     "Human21237",
+     75,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 56,
+   "t": 1120,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    []
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     76,
+     48,
+     null
+    ],
+    [
+     "Human21207",
+     77,
+     49,
+     null
+    ],
+    [
+     "Human21212",
+     76,
+     48,
+     null
+    ],
+    [
+     "Human21219",
+     70,
+     35,
+     null
+    ],
+    [
+     "Human21228",
+     80,
+     40,
+     null
+    ],
+    [
+     "Human21237",
+     76,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 57,
+   "t": 1140,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    []
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     75,
+     47,
+     null
+    ],
+    [
+     "Human21207",
+     76,
+     48,
+     null
+    ],
+    [
+     "Human21212",
+     75,
+     47,
+     null
+    ],
+    [
+     "Human21219",
+     70,
+     34,
+     null
+    ],
+    [
+     "Human21228",
+     80,
+     39,
+     null
+    ],
+    [
+     "Human21237",
+     77,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 58,
+   "t": 1160,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    []
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     74,
+     46,
+     null
+    ],
+    [
+     "Human21207",
+     76,
+     48,
+     null
+    ],
+    [
+     "Human21212",
+     74,
+     46,
+     null
+    ],
+    [
+     "Human21219",
+     70,
+     32,
+     null
+    ],
+    [
+     "Human21228",
+     80,
+     38,
+     null
+    ],
+    [
+     "Human21237",
+     78,
+     60,
+     null
+    ]
+   ]
+  },
+  {
+   "i": 59,
+   "t": 1180,
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    []
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    }
+   ],
+   "r": [
+    [
+     "Human21200",
+     73,
+     45,
+     null
+    ],
+    [
+     "Human21207",
+     75,
+     47,
+     null
+    ],
+    [
+     "Human21212",
+     73,
+     45,
+     null
+    ],
+    [
+     "Human21219",
+     70,
+     30,
+     null
+    ],
+    [
+     "Human21228",
+     80,
+     37,
+     null
+    ],
+    [
+     "Human21237",
+     79,
+     60,
+     null
+    ]
+   ]
+  }
+ ],
+ "damage_log": "{\"success\": true, \"action\": \"read\", \"installed\": {\"damage\": true, \"kill\": true}, \"installErrors\": [], \"recorderInstalledUtc\": \"2026-11-21T10:12:53.3403235Z\", \"capacity\": 4096, \"totalRecorded\": 643, \"overwritten\": 0, \"oldestRetainedSeq\": 0, \"oldestRetainedTick\": 123, \"completeSinceSeq\": true, \"recordErrors\": 0, \"coverage\": \"ok\", \"hookCoverage\": [{\"hook\": \"recorder.damage\", \"coverage\": \"ok\", \"entered\": 842, \"foreignRejected\": 0, \"orphanExits\": 0, \"originalSkipped\": 0, \"originalThrew\": 0, \"faults\": 0}, {\"hook\": \"recorder.kill\", \"coverage\": \"ok\", \"entered\": 4, \"foreignRejected\": 0, \"orphanExits\": 0, \"originalSkipped\": 0, \"originalThrew\": 0, \"faults\": 0}, {\"hook\": \"recorder.absorb\", \"coverage\": \"ok\", \"entered\": 0, \"foreignRejected\": 0, \"orphanExits\": 0, \"originalSkipped\": 0, \"originalThrew\": 0, \"faults\": 0}, {\"hook\": \"recorder.split\", \"coverage\": \"ok\", \"entered\": 60, \"foreignRejected\": 0, \"orphanExits\": 0, \"originalSkipped\": 0, \"originalThrew\": 0, \"faults\": 0}, {\"hook\": \"recorder.ingest\", \"coverage\": \"ok\", \"entered\": 12, \"foreignRejected\": 0, \"orphanExits\": 0, \"originalSkipped\": 0, \"originalThrew\": 0, \"faults\": 0}, {\"hook\": \"recorder.destroy\", \"coverage\": \"ok\", \"entered\": 1276, \"foreignRejected\": 0, \"orphanExits\": 0, \"originalSkipped\": 0, \"originalThrew\": 0, \"faults\": 0}], \"matchedCount\": 209, \"returned\": 209, \"truncated\": 0, \"nextSeq\": 643, \"events\": [{\"seq\": 3, \"tick\": 183, \"kind\": \"damage\", \"victimId\": \"Human21301\", \"victimDef\": \"Human\", \"victimIsPawn\": true, \"victimFaction\": \"PirateWaster\", \"victimColonist\": false, \"victimDeadAfter\": false, \"damageDef\": \"Blunt\", \"amount\": 9.196797, \"totalDealt\": 11.5770168, \"deflected\": false, \"origin\": \"DynamicMethodDefinition.Verse.Thing.TakeDamage_Patch5 < RM_SuperdeepTrap.OnDescent < RM_SuperdeepTrap.OnForcedDescent < Building_SpanDeck.Collapse < Building_PitCover.Spring < CompPitCoverTrigger.RunScan < CompPitCoverTrigger.CompTick\", \"hediffsAdded\": [\"Bruise\", \"Crack\"], \"mapUniqueId\": 0, \"x\": 59, \"z\": 60}, {\"seq\": 5, \"tick\": 183, \"kind\": \"damage\", \"victimId\": \"Human21301\", \"victimDef\": \"Human\", \"victimIsPawn\": true, \"victimFaction\": \"PirateWaster\", \"victimColonist\": false, \"victimDeadAfter\": false, \"damageDef\": \"Stab\", \"amount\": 13.333333, \"totalDealt\": 15.333334, \"deflected\": false, \"origin\": \"DynamicMethodDefinition.Verse.Thing.TakeDamage_Patch5 < RM_SpikeUtility.ApplyDescent < RM_SpikeUtility.ApplyDescent < <>c.<.cctor>b__0_0 < RM_SuperdeepTrap.OnDescent < RM_SuperdeepTrap.OnForcedDescent < Building_SpanDeck.Collapse\", \"hediffsAdded\": [\"Stab\", \"Stab\"], \"mapUniqueId\": 0, \"x\": 59, \"z\": 60}, {\"seq\": 7, \"tick\": 183, \"kind\": \"damage\", \"victimId\": \"Human21301\", \"victimDef\": \"Human\", \"victimIsPawn\": true, \"victimFaction\": \"PirateWaster\", \"victimColonist\": false, \"victimDeadAfter\": false, \"damageDef\": \"Stab\", \"amount\": 13.333333, \"totalDealt\": 15.333334, \"deflected\": false, \"origin\": \"DynamicMethodDefinition.Verse.Thing.TakeDamage_Patch5 < RM_SpikeUtility.ApplyDescent < RM_SpikeUtility.ApplyDescent < <>c.<.cctor>b__",
+ "vitals": "{\"success\": true, \"armed\": true, \"by\": \"jawa/vitals\", \"armedUtc\": \"2026-11-21T10:13:32.430Z\", \"ttlLeftS\": 1778.0, \"timeException\": false, \"budgetTicks\": 0, \"critical\": [], \"specimens\": [], \"specimensUnresolved\": [], \"latched\": {\"first\": {\"seq\": 1, \"kind\": \"letter\", \"severity\": \"threat\", \"tick\": 2, \"map\": -1, \"subjectId\": -1, \"subject\": \"Raid: Decay Packers\", \"critical\": false, \"declared\": false, \"detail\": \"ThreatBig letter: Raid: Decay Packers\"}, \"count\": 373, \"seq\": 373, \"overflow\": 0}, \"clock\": {\"processed\": 63464, \"discontinuities\": 0, \"declared\": 0}, \"rollup\": \"\\\"pawns\\\":11,\\\"colonistsAlive\\\":5,\\\"colonistsDowned\\\":1,\\\"colonistsHostile\\\":0,\\\"hostiles\\\":6,\\\"critical\\\":0,\\\"criticalAvailable\\\":0,\\\"minColonistHealth\\\":0.323,\\\"minColonistMoodMargin\\\":0.208,\\\"groups\\\":{\\\"humanlike|hostile\\\":{\\\"alive\\\":6,\\\"downed\\\":0,\\\"bleeding\\\":0,\\\"mental\\\":0},\\\"humanlike|player\\\":{\\\"alive\\\":5,\\\"downed\\\":1,\\\"bleeding\\\":1,\\\"mental\\\":0}}\", \"lastSampleTick\": 1202, \"samples\": 1878, \"threats\": {\"structures\": 0, \"turrets\": 0, \"spawners\": 0, \"dormant\": 0}, \"modalMaxAgeS\": 0.0, \"gameEnding\": false, \"populated\": true, \"epoch\": 14, \"channels\": {\"pawns\": {\"on\": true, \"calls\": 1878, \"cost\": \"measured\", \"meanUs\": 143.75, \"maxUs\": 6489.3, \"totalMs\": 269.968}, \"threats\": {\"on\": true, \"calls\": 1029, \"cost\": \"measured\", \"meanUs\": 3.14, \"maxUs\": 345.3, \"totalMs\": 3.227}, \"clock\": {\"on\": true, \"calls\": 70488, \"cost\": \"measured\", \"meanUs\": 2.11, \"maxUs\": 660.3, \"totalMs\": 148.526}, \"ui\": {\"on\": true, \"calls\": 8081",
+ "windows": "{'success': True, 'action': 'list', 'count': 7, 'windows': [{'index': 0, 'type': 'Verse.ImmediateWindow', 'layer': 'GameUI', 'id': -1593759361, 'isDebug': False, 'forcePause': False}, {'index': 1, 'type': 'LudeonTK.Dialog_DevPalette', 'layer': 'Dialog', 'id': 260, 'isDebug': True, 'forcePause': Fals",
+ "status": "OK",
+ "ncalls": 294
+}

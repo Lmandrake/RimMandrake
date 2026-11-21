@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":39401,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=12708a48a9c80620c8513b9c14cc65334e71ba72c8e61e2ed7b3ead2e97ae6be -->
-# FlowWorks — mod ledger history (1447 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":39401,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":2475,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=3a310116dfae178afd7654e040423cb56ad715b422c86a22b542697a48fc785c -->
+# FlowWorks — mod ledger history (1452 events, merged across shards)
 
 - 2026-11-16T07:16:23Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 55 of 57 bars met at the lock
 - 2026-11-16T07:16:23Z BACKFILL#2 decision version v0.1.0: 
@@ -1448,3 +1448,8 @@
 - 2026-11-21T10:41:27Z DISPATCH#116 run.start run v0.1.0: 
 - 2026-11-21T10:47:29Z DISPATCH#117 run.end run v0.1.0: 
 - 2026-11-21T10:47:29Z DISPATCH#118 session.id session v0.1.0: 
+- 2026-11-21T10:49:58Z HOLDER.run-1795257509#1 lease.renew lease v0.1.0: 
+- 2026-11-21T11:05:47Z HOLDER.run-1795257509#2 lease.renew lease v0.1.0: 
+- 2026-11-21T11:16:32Z HOLDER.run-1795257509#3 trap.cleared trap:control-row-isl-control-unbreakable-winches-stay-trapped v0.1.0: The control now makes both winches unbreakable with RM_DrawbridgeProofs.ProofWinchHold (no damage reaches a held winch) and reads their hit points each poll. The 120-tick hit-point reset is gone: two frag grenades (100 each on 200 hit points) land inside one chunk.
+- 2026-11-21T11:16:33Z HOLDER.run-1795257509#4 trap.noted trap:grenades-that-take-a-winch-can-wreck-its-leaf-deck v0.1.0: Grenades that take a winch can also wreck its fallen leaf's deck: the raiders then stay on the span and shell the next raised winch. Seen in 1 of 3 live runs (game b, 2026-11-21); with decks intact a raider is off the leaf 120 ticks after the winch falls. Not a defect.
+- 2026-11-21T11:20:31Z HOLDER.run-1795257509#5 lease.renew lease v0.1.0: 

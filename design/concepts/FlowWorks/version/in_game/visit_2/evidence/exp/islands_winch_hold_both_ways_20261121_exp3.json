@@ -1,0 +1,2791 @@
+{
+ "biome": "{\"success\": true, \"readErrors\": [], \"weather\": {\"current\": \"Clear\", \"last\": \"Clear\", \"curWeatherAge\": 0, \"rainRate\": 0.0, \"snowRate\": 0.0}, \"activeConditionCount\": 2, \"conditions\": [{\"def\": \"WeatherController\", \"label\": \"Forced weather\", \"scope\": \"map\", \"affectsThisMap\": true, \"permanent\": false, \"ticksPassed\": 1, \"ticksLeft\": 0}, {\"def\": \"WeatherController\", \"label\": \"Forced weather\", \"scope\": \"map\", \"affectsThisMap\": true, \"permanent\": true, \"ticksPassed\": 0, \"ticksLeft\": -1}], \"threatPoints\": 57.2634964, \"wealth\": {\"total\": 18201.46, \"items\": 12653.1064, \"buildings\": 3258.35547, \"pawns\": 22",
+ "vitals_arm": "{'success': True, 'armed': True, 'by': 'jawa/vitals', 'armedUtc': '2026-11-21T11:00:06.445Z', 'ttlLeftS': 1800.0, 'timeException': False, 'budgetTicks': 0, 'critical': [], 'specimens': [], 'specimensU",
+ "scene": "exp1",
+ "rows": [],
+ "st": {
+  "winch": [
+   [
+    59,
+    60
+   ],
+   [
+    82,
+    60
+   ]
+  ],
+  "winch_ids": [
+   [
+    "RM_DrawbridgeWinch_Timber21174",
+    200
+   ],
+   [
+    "RM_DrawbridgeWinch_Timber21180",
+    200
+   ]
+  ],
+  "raiders": [
+   "Human21199",
+   "Human21202",
+   "Human21209",
+   "Human21215",
+   "Human21222",
+   "Human21228"
+  ],
+  "sappers": [
+   "Human21199",
+   "Human21202",
+   "Human21215",
+   "Human21222",
+   "Human21228"
+  ]
+ },
+ "hold_on": "HOLD held=True winch=True hp=200/200",
+ "windows_pre": "{'success': True, 'action': 'list', 'count': 6, 'windows': [{'index': 0, 'type': 'Verse.ImmediateWindow', 'layer': 'GameUI', 'id': -1593759361, 'isDebug': False, 'forcePause': False}, {'index': 1, 'type': 'LudeonTK.Dialog_DevPalette', 'layer': 'Dialog', 'id': 57, 'isDebug': True, 'forcePause': False}, {'index': 2, 'type': 'Verse.ImmediateWindow', 'layer': 'Super', 'id': -1594957120, 'isDebug': Fal",
+ "hold_off": "HOLD held=False winch=True hp=200/200",
+ "track": [
+  {
+   "i": 0,
+   "t": 0,
+   "phase": "east_held",
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21199",
+     67,
+     60
+    ],
+    [
+     "Human21202",
+     66,
+     60
+    ],
+    [
+     "Human21209",
+     66,
+     60
+    ],
+    [
+     "Human21215",
+     71,
+     60
+    ],
+    [
+     "Human21222",
+     71,
+     60
+    ],
+    [
+     "Human21228",
+     72,
+     60
+    ]
+   ]
+  },
+  {
+   "i": 1,
+   "t": 60,
+   "phase": "east_held",
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21199",
+     67,
+     60
+    ],
+    [
+     "Human21202",
+     66,
+     60
+    ],
+    [
+     "Human21209",
+     65,
+     60
+    ],
+    [
+     "Human21215",
+     71,
+     60
+    ],
+    [
+     "Human21222",
+     71,
+     60
+    ],
+    [
+     "Human21228",
+     72,
+     60
+    ]
+   ]
+  },
+  {
+   "i": 2,
+   "t": 120,
+   "phase": "east_held",
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21199",
+     67,
+     60
+    ],
+    [
+     "Human21202",
+     66,
+     60
+    ],
+    [
+     "Human21209",
+     65,
+     60
+    ],
+    [
+     "Human21215",
+     71,
+     60
+    ],
+    [
+     "Human21222",
+     71,
+     60
+    ],
+    [
+     "Human21228",
+     72,
+     60
+    ]
+   ]
+  },
+  {
+   "i": 3,
+   "t": 180,
+   "phase": "east_held",
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      200,
+      200
+     ]
+    ],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21199",
+     67,
+     60
+    ],
+    [
+     "Human21202",
+     66,
+     60
+    ],
+    [
+     "Human21209",
+     65,
+     60
+    ],
+    [
+     "Human21215",
+     70,
+     60
+    ],
+    [
+     "Human21222",
+     71,
+     60
+    ],
+    [
+     "Human21228",
+     72,
+     60
+    ]
+   ]
+  },
+  {
+   "i": 4,
+   "t": 240,
+   "phase": "east_held",
+   "winch": [
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21174",
+      100,
+      200
+     ]
+    ],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21199",
+     69,
+     60
+    ],
+    [
+     "Human21202",
+     66,
+     60
+    ],
+    [
+     "Human21209",
+     65,
+     60
+    ],
+    [
+     "Human21215",
+     70,
+     60
+    ],
+    [
+     "Human21222",
+     71,
+     60
+    ],
+    [
+     "Human21228",
+     72,
+     60
+    ]
+   ]
+  },
+  {
+   "i": 5,
+   "t": 300,
+   "phase": "east_held",
+   "winch": [
+    [],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21199",
+     69,
+     60
+    ],
+    [
+     "Human21202",
+     66,
+     60
+    ],
+    [
+     "Human21209",
+     67,
+     60
+    ],
+    [
+     "Human21215",
+     70,
+     60
+    ],
+    [
+     "Human21222",
+     71,
+     60
+    ],
+    [
+     "Human21228",
+     72,
+     60
+    ]
+   ]
+  },
+  {
+   "i": 6,
+   "t": 360,
+   "phase": "east_held",
+   "winch": [
+    [],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21199",
+     71,
+     60
+    ],
+    [
+     "Human21202",
+     66,
+     60
+    ],
+    [
+     "Human21209",
+     69,
+     60
+    ],
+    [
+     "Human21215",
+     70,
+     60
+    ],
+    [
+     "Human21222",
+     71,
+     61
+    ],
+    [
+     "Human21228",
+     72,
+     60
+    ]
+   ]
+  },
+  {
+   "i": 7,
+   "t": 420,
+   "phase": "east_held",
+   "winch": [
+    [],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21199",
+     71,
+     60
+    ],
+    [
+     "Human21202",
+     66,
+     60
+    ],
+    [
+     "Human21209",
+     70,
+     60
+    ],
+    [
+     "Human21215",
+     70,
+     60
+    ],
+    [
+     "Human21222",
+     72,
+     60
+    ],
+    [
+     "Human21228",
+     72,
+     61
+    ]
+   ]
+  },
+  {
+   "i": 8,
+   "t": 480,
+   "phase": "east_held",
+   "winch": [
+    [],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21199",
+     71,
+     60
+    ],
+    [
+     "Human21202",
+     66,
+     60
+    ],
+    [
+     "Human21209",
+     71,
+     60
+    ],
+    [
+     "Human21215",
+     70,
+     60
+    ],
+    [
+     "Human21222",
+     72,
+     60
+    ],
+    [
+     "Human21228",
+     72,
+     61
+    ]
+   ]
+  },
+  {
+   "i": 9,
+   "t": 540,
+   "phase": "east_held",
+   "winch": [
+    [],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21199",
+     71,
+     60
+    ],
+    [
+     "Human21202",
+     66,
+     60
+    ],
+    [
+     "Human21209",
+     72,
+     60
+    ],
+    [
+     "Human21215",
+     70,
+     60
+    ],
+    [
+     "Human21222",
+     72,
+     60
+    ],
+    [
+     "Human21228",
+     73,
+     60
+    ]
+   ]
+  },
+  {
+   "i": 10,
+   "t": 600,
+   "phase": "east_held",
+   "winch": [
+    [],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21199",
+     71,
+     60
+    ],
+    [
+     "Human21202",
+     66,
+     60
+    ],
+    [
+     "Human21209",
+     73,
+     60
+    ],
+    [
+     "Human21215",
+     70,
+     60
+    ],
+    [
+     "Human21222",
+     72,
+     60
+    ],
+    [
+     "Human21228",
+     73,
+     60
+    ]
+   ]
+  },
+  {
+   "i": 11,
+   "t": 660,
+   "phase": "east_held",
+   "winch": [
+    [],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21199",
+     71,
+     60
+    ],
+    [
+     "Human21202",
+     66,
+     60
+    ],
+    [
+     "Human21209",
+     75,
+     60
+    ],
+    [
+     "Human21215",
+     70,
+     60
+    ],
+    [
+     "Human21222",
+     72,
+     60
+    ],
+    [
+     "Human21228",
+     73,
+     60
+    ]
+   ]
+  },
+  {
+   "i": 12,
+   "t": 720,
+   "phase": "east_held",
+   "winch": [
+    [],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21199",
+     71,
+     60
+    ],
+    [
+     "Human21202",
+     66,
+     60
+    ],
+    [
+     "Human21209",
+     76,
+     60
+    ],
+    [
+     "Human21215",
+     70,
+     60
+    ],
+    [
+     "Human21222",
+     72,
+     60
+    ],
+    [
+     "Human21228",
+     73,
+     60
+    ]
+   ]
+  },
+  {
+   "i": 13,
+   "t": 780,
+   "phase": "east_held",
+   "winch": [
+    [],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21199",
+     71,
+     60
+    ],
+    [
+     "Human21202",
+     70,
+     60
+    ],
+    [
+     "Human21209",
+     76,
+     60
+    ],
+    [
+     "Human21215",
+     70,
+     60
+    ],
+    [
+     "Human21222",
+     72,
+     60
+    ],
+    [
+     "Human21228",
+     73,
+     58
+    ]
+   ]
+  },
+  {
+   "i": 14,
+   "t": 840,
+   "phase": "east_held",
+   "winch": [
+    [],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21199",
+     71,
+     60
+    ],
+    [
+     "Human21202",
+     73,
+     60
+    ],
+    [
+     "Human21209",
+     76,
+     60
+    ],
+    [
+     "Human21215",
+     70,
+     60
+    ],
+    [
+     "Human21222",
+     72,
+     60
+    ],
+    [
+     "Human21228",
+     73,
+     57
+    ]
+   ]
+  },
+  {
+   "i": 15,
+   "t": 900,
+   "phase": "east_held",
+   "winch": [
+    [],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21199",
+     71,
+     60
+    ],
+    [
+     "Human21202",
+     73,
+     60
+    ],
+    [
+     "Human21209",
+     76,
+     60
+    ],
+    [
+     "Human21215",
+     70,
+     60
+    ],
+    [
+     "Human21222",
+     72,
+     60
+    ],
+    [
+     "Human21228",
+     73,
+     57
+    ]
+   ]
+  },
+  {
+   "i": 16,
+   "t": 960,
+   "phase": "east_held",
+   "winch": [
+    [],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21199",
+     71,
+     60
+    ],
+    [
+     "Human21202",
+     73,
+     60
+    ],
+    [
+     "Human21209",
+     75,
+     60
+    ],
+    [
+     "Human21215",
+     70,
+     60
+    ],
+    [
+     "Human21222",
+     72,
+     60
+    ],
+    [
+     "Human21228",
+     73,
+     57
+    ]
+   ]
+  },
+  {
+   "i": 17,
+   "t": 1020,
+   "phase": "east_held",
+   "winch": [
+    [],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21199",
+     71,
+     60
+    ],
+    [
+     "Human21202",
+     73,
+     60
+    ],
+    [
+     "Human21209",
+     74,
+     60
+    ],
+    [
+     "Human21215",
+     70,
+     60
+    ],
+    [
+     "Human21222",
+     72,
+     60
+    ],
+    [
+     "Human21228",
+     73,
+     57
+    ]
+   ]
+  },
+  {
+   "i": 18,
+   "t": 1080,
+   "phase": "east_held",
+   "winch": [
+    [],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21199",
+     71,
+     60
+    ],
+    [
+     "Human21202",
+     73,
+     60
+    ],
+    [
+     "Human21209",
+     73,
+     60
+    ],
+    [
+     "Human21215",
+     70,
+     60
+    ],
+    [
+     "Human21222",
+     72,
+     60
+    ],
+    [
+     "Human21228",
+     73,
+     58
+    ]
+   ]
+  },
+  {
+   "i": 19,
+   "t": 1140,
+   "phase": "east_held",
+   "winch": [
+    [],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21199",
+     71,
+     60
+    ],
+    [
+     "Human21202",
+     73,
+     60
+    ],
+    [
+     "Human21209",
+     71,
+     60
+    ],
+    [
+     "Human21215",
+     70,
+     60
+    ],
+    [
+     "Human21222",
+     72,
+     60
+    ],
+    [
+     "Human21228",
+     74,
+     60
+    ]
+   ]
+  },
+  {
+   "i": 20,
+   "t": 1200,
+   "phase": "east_held",
+   "winch": [
+    [],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21199",
+     71,
+     60
+    ],
+    [
+     "Human21202",
+     73,
+     60
+    ],
+    [
+     "Human21209",
+     70,
+     60
+    ],
+    [
+     "Human21215",
+     70,
+     60
+    ],
+    [
+     "Human21222",
+     72,
+     60
+    ],
+    [
+     "Human21228",
+     74,
+     60
+    ]
+   ]
+  },
+  {
+   "i": 21,
+   "t": 1260,
+   "phase": "east_held",
+   "winch": [
+    [],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21199",
+     71,
+     60
+    ],
+    [
+     "Human21202",
+     73,
+     60
+    ],
+    [
+     "Human21209",
+     69,
+     60
+    ],
+    [
+     "Human21215",
+     70,
+     60
+    ],
+    [
+     "Human21222",
+     72,
+     60
+    ],
+    [
+     "Human21228",
+     74,
+     60
+    ]
+   ]
+  },
+  {
+   "i": 22,
+   "t": 1320,
+   "phase": "east_held",
+   "winch": [
+    [],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21199",
+     71,
+     60
+    ],
+    [
+     "Human21202",
+     73,
+     60
+    ],
+    [
+     "Human21209",
+     68,
+     60
+    ],
+    [
+     "Human21215",
+     70,
+     60
+    ],
+    [
+     "Human21222",
+     72,
+     60
+    ],
+    [
+     "Human21228",
+     74,
+     60
+    ]
+   ]
+  },
+  {
+   "i": 23,
+   "t": 1380,
+   "phase": "east_held",
+   "winch": [
+    [],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21199",
+     71,
+     60
+    ],
+    [
+     "Human21202",
+     73,
+     60
+    ],
+    [
+     "Human21209",
+     67,
+     60
+    ],
+    [
+     "Human21215",
+     70,
+     60
+    ],
+    [
+     "Human21222",
+     72,
+     60
+    ],
+    [
+     "Human21228",
+     74,
+     60
+    ]
+   ]
+  },
+  {
+   "i": 24,
+   "t": 1440,
+   "phase": "east_held",
+   "winch": [
+    [],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21199",
+     71,
+     60
+    ],
+    [
+     "Human21202",
+     73,
+     60
+    ],
+    [
+     "Human21209",
+     67,
+     60
+    ],
+    [
+     "Human21215",
+     70,
+     60
+    ],
+    [
+     "Human21222",
+     72,
+     60
+    ],
+    [
+     "Human21228",
+     74,
+     60
+    ]
+   ]
+  },
+  {
+   "i": 25,
+   "t": 1500,
+   "phase": "east_held",
+   "winch": [
+    [],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21199",
+     71,
+     60
+    ],
+    [
+     "Human21202",
+     73,
+     60
+    ],
+    [
+     "Human21209",
+     67,
+     60
+    ],
+    [
+     "Human21215",
+     70,
+     60
+    ],
+    [
+     "Human21222",
+     72,
+     60
+    ],
+    [
+     "Human21228",
+     74,
+     60
+    ]
+   ]
+  },
+  {
+   "i": 26,
+   "t": 1560,
+   "phase": "east_held",
+   "winch": [
+    [],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21199",
+     71,
+     60
+    ],
+    [
+     "Human21202",
+     73,
+     60
+    ],
+    [
+     "Human21209",
+     67,
+     60
+    ],
+    [
+     "Human21215",
+     70,
+     60
+    ],
+    [
+     "Human21222",
+     72,
+     60
+    ],
+    [
+     "Human21228",
+     74,
+     60
+    ]
+   ]
+  },
+  {
+   "i": 27,
+   "t": 1620,
+   "phase": "east_held",
+   "winch": [
+    [],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21199",
+     71,
+     60
+    ],
+    [
+     "Human21202",
+     73,
+     60
+    ],
+    [
+     "Human21209",
+     67,
+     60
+    ],
+    [
+     "Human21215",
+     70,
+     60
+    ],
+    [
+     "Human21222",
+     72,
+     60
+    ],
+    [
+     "Human21228",
+     74,
+     60
+    ]
+   ]
+  },
+  {
+   "i": 28,
+   "t": 1680,
+   "phase": "east_held",
+   "winch": [
+    [],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21199",
+     71,
+     60
+    ],
+    [
+     "Human21202",
+     73,
+     60
+    ],
+    [
+     "Human21209",
+     67,
+     60
+    ],
+    [
+     "Human21215",
+     70,
+     60
+    ],
+    [
+     "Human21222",
+     72,
+     60
+    ],
+    [
+     "Human21228",
+     74,
+     60
+    ]
+   ]
+  },
+  {
+   "i": 29,
+   "t": 1740,
+   "phase": "east_held",
+   "winch": [
+    [],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21199",
+     71,
+     60
+    ],
+    [
+     "Human21202",
+     73,
+     60
+    ],
+    [
+     "Human21209",
+     67,
+     60
+    ],
+    [
+     "Human21215",
+     70,
+     60
+    ],
+    [
+     "Human21222",
+     72,
+     60
+    ],
+    [
+     "Human21228",
+     74,
+     60
+    ]
+   ]
+  },
+  {
+   "i": 30,
+   "t": 1800,
+   "phase": "east_held",
+   "winch": [
+    [],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21199",
+     71,
+     60
+    ],
+    [
+     "Human21202",
+     73,
+     60
+    ],
+    [
+     "Human21209",
+     65,
+     60
+    ],
+    [
+     "Human21215",
+     70,
+     60
+    ],
+    [
+     "Human21222",
+     72,
+     60
+    ],
+    [
+     "Human21228",
+     74,
+     60
+    ]
+   ]
+  },
+  {
+   "i": 31,
+   "t": 1860,
+   "phase": "east_held",
+   "winch": [
+    [],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21199",
+     71,
+     60
+    ],
+    [
+     "Human21202",
+     73,
+     60
+    ],
+    [
+     "Human21209",
+     65,
+     60
+    ],
+    [
+     "Human21215",
+     70,
+     60
+    ],
+    [
+     "Human21222",
+     72,
+     60
+    ],
+    [
+     "Human21228",
+     74,
+     60
+    ]
+   ]
+  },
+  {
+   "i": 32,
+   "t": 1920,
+   "phase": "east_held",
+   "winch": [
+    [],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21199",
+     71,
+     60
+    ],
+    [
+     "Human21202",
+     73,
+     60
+    ],
+    [
+     "Human21209",
+     65,
+     60
+    ],
+    [
+     "Human21215",
+     70,
+     60
+    ],
+    [
+     "Human21222",
+     72,
+     60
+    ],
+    [
+     "Human21228",
+     74,
+     60
+    ]
+   ]
+  },
+  {
+   "i": 33,
+   "t": 1980,
+   "phase": "east_held",
+   "winch": [
+    [],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21199",
+     71,
+     60
+    ],
+    [
+     "Human21202",
+     73,
+     60
+    ],
+    [
+     "Human21209",
+     65,
+     60
+    ],
+    [
+     "Human21215",
+     70,
+     60
+    ],
+    [
+     "Human21222",
+     72,
+     60
+    ],
+    [
+     "Human21228",
+     74,
+     60
+    ]
+   ]
+  },
+  {
+   "i": 34,
+   "t": 2040,
+   "phase": "east_held",
+   "winch": [
+    [],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21199",
+     71,
+     60
+    ],
+    [
+     "Human21202",
+     73,
+     60
+    ],
+    [
+     "Human21209",
+     65,
+     60
+    ],
+    [
+     "Human21215",
+     70,
+     60
+    ],
+    [
+     "Human21222",
+     72,
+     60
+    ],
+    [
+     "Human21228",
+     74,
+     60
+    ]
+   ]
+  },
+  {
+   "i": 35,
+   "t": 2100,
+   "phase": "east_held",
+   "winch": [
+    [],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21199",
+     71,
+     60
+    ],
+    [
+     "Human21202",
+     73,
+     60
+    ],
+    [
+     "Human21209",
+     67,
+     60
+    ],
+    [
+     "Human21215",
+     70,
+     60
+    ],
+    [
+     "Human21222",
+     72,
+     60
+    ],
+    [
+     "Human21228",
+     74,
+     60
+    ]
+   ]
+  },
+  {
+   "i": 36,
+   "t": 2160,
+   "phase": "east_held",
+   "winch": [
+    [],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21199",
+     71,
+     60
+    ],
+    [
+     "Human21202",
+     73,
+     60
+    ],
+    [
+     "Human21209",
+     68,
+     60
+    ],
+    [
+     "Human21215",
+     70,
+     60
+    ],
+    [
+     "Human21222",
+     72,
+     60
+    ],
+    [
+     "Human21228",
+     74,
+     60
+    ]
+   ]
+  },
+  {
+   "i": 37,
+   "t": 2220,
+   "phase": "east_held",
+   "winch": [
+    [],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21199",
+     71,
+     60
+    ],
+    [
+     "Human21202",
+     73,
+     60
+    ],
+    [
+     "Human21209",
+     69,
+     60
+    ],
+    [
+     "Human21215",
+     70,
+     60
+    ],
+    [
+     "Human21222",
+     72,
+     60
+    ],
+    [
+     "Human21228",
+     74,
+     60
+    ]
+   ]
+  },
+  {
+   "i": 38,
+   "t": 2280,
+   "phase": "east_held",
+   "winch": [
+    [],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21199",
+     71,
+     60
+    ],
+    [
+     "Human21202",
+     73,
+     60
+    ],
+    [
+     "Human21209",
+     70,
+     60
+    ],
+    [
+     "Human21215",
+     72,
+     60
+    ],
+    [
+     "Human21222",
+     72,
+     60
+    ],
+    [
+     "Human21228",
+     74,
+     60
+    ]
+   ]
+  },
+  {
+   "i": 39,
+   "t": 2340,
+   "phase": "east_held",
+   "winch": [
+    [],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21199",
+     71,
+     60
+    ],
+    [
+     "Human21202",
+     73,
+     60
+    ],
+    [
+     "Human21209",
+     70,
+     60
+    ],
+    [
+     "Human21215",
+     75,
+     60
+    ],
+    [
+     "Human21222",
+     72,
+     60
+    ],
+    [
+     "Human21228",
+     74,
+     60
+    ]
+   ]
+  },
+  {
+   "i": 40,
+   "t": 2400,
+   "phase": "east_held",
+   "winch": [
+    [],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21199",
+     71,
+     60
+    ],
+    [
+     "Human21202",
+     73,
+     60
+    ],
+    [
+     "Human21209",
+     70,
+     60
+    ],
+    [
+     "Human21215",
+     75,
+     60
+    ],
+    [
+     "Human21222",
+     72,
+     60
+    ],
+    [
+     "Human21228",
+     74,
+     60
+    ]
+   ]
+  },
+  {
+   "i": 41,
+   "t": 2460,
+   "phase": "east_released",
+   "winch": [
+    [],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      200,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21199",
+     71,
+     60
+    ],
+    [
+     "Human21202",
+     73,
+     60
+    ],
+    [
+     "Human21209",
+     70,
+     60
+    ],
+    [
+     "Human21215",
+     75,
+     60
+    ],
+    [
+     "Human21222",
+     72,
+     60
+    ],
+    [
+     "Human21228",
+     74,
+     60
+    ]
+   ]
+  },
+  {
+   "i": 42,
+   "t": 2520,
+   "phase": "east_released",
+   "winch": [
+    [],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      100,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21199",
+     71,
+     60
+    ],
+    [
+     "Human21202",
+     73,
+     60
+    ],
+    [
+     "Human21209",
+     70,
+     60
+    ],
+    [
+     "Human21215",
+     75,
+     60
+    ],
+    [
+     "Human21222",
+     72,
+     60
+    ],
+    [
+     "Human21228",
+     74,
+     60
+    ]
+   ]
+  },
+  {
+   "i": 43,
+   "t": 2580,
+   "phase": "east_released",
+   "winch": [
+    [],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      100,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21199",
+     71,
+     60
+    ],
+    [
+     "Human21202",
+     73,
+     60
+    ],
+    [
+     "Human21209",
+     70,
+     60
+    ],
+    [
+     "Human21215",
+     75,
+     60
+    ],
+    [
+     "Human21222",
+     72,
+     60
+    ],
+    [
+     "Human21228",
+     74,
+     60
+    ]
+   ]
+  },
+  {
+   "i": 44,
+   "t": 2640,
+   "phase": "east_released",
+   "winch": [
+    [],
+    [
+     [
+      "RM_DrawbridgeWinch_Timber21180",
+      100,
+      200
+     ]
+    ]
+   ],
+   "leaf": [
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    },
+    {
+     "progress": "720",
+     "target": "raised",
+     "winch": "True"
+    }
+   ],
+   "r": [
+    [
+     "Human21199",
+     71,
+     60
+    ],
+    [
+     "Human21202",
+     73,
+     60
+    ],
+    [
+     "Human21209",
+     70,
+     60
+    ],
+    [
+     "Human21215",
+     75,
+     60
+    ],
+    [
+     "Human21222",
+     72,
+     60
+    ],
+    [
+     "Human21228",
+     74,
+     60
+    ]
+   ]
+  },
+  {
+   "i": 45,
+   "t": 2700,
+   "phase": "east_released",
+   "winch": [
+    [],
+    []
+   ],
+   "leaf": [
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    },
+    {
+     "progress": "0",
+     "target": "lowered",
+     "winch": "False"
+    }
+   ],
+   "r": [
+    [
+     "Human21199",
+     70,
+     60
+    ],
+    [
+     "Human21202",
+     72,
+     60
+    ],
+    [
+     "Human21209",
+     70,
+     60
+    ],
+    [
+     "Human21215",
+     74,
+     60
+    ],
+    [
+     "Human21222",
+     71,
+     60
+    ],
+    [
+     "Human21228",
+     74,
+     61
+    ]
+   ]
+  }
+ ],
+ "damage_log": "{\"success\": true, \"action\": \"read\", \"installed\": {\"damage\": true, \"kill\": true}, \"installErrors\": [], \"recorderInstalledUtc\": \"2026-11-21T10:59:12.6883072Z\", \"capacity\": 4096, \"totalRecorded\": 207, \"overwritten\": 0, \"oldestRetainedSeq\": 0, \"oldestRetainedTick\": 307, \"completeSinceSeq\": true, \"recordErrors\": 0, \"coverage\": \"ok\", \"hookCoverage\": [{\"hook\": \"recorder.damage\", \"coverage\": \"ok\", \"entered\": 419, \"foreignRejected\": 0, \"orphanExits\": 0, \"originalSkipped\": 0, \"originalThrew\": 0, \"faults\": 0}, {\"hook\": \"recorder.kill\", \"coverage\": \"ok\", \"entered\": 0, \"foreignRejected\": 0, \"orphanExits\": 0, \"originalSkipped\": 0, \"originalThrew\": 0, \"faults\": 0}, {\"hook\": \"recorder.absorb\", \"coverage\": \"ok\", \"entered\": 0, \"foreignRejected\": 0, \"orphanExits\": 0, \"originalSkipped\": 0, \"originalThrew\": 0, \"faults\": 0}, {\"hook\": \"recorder.split\", \"coverage\": \"ok\", \"entered\": 5, \"foreignRejected\": 0, \"orphanExits\": 0, \"originalSkipped\": 0, \"originalThrew\": 0, \"faults\": 0}, {\"hook\": \"recorder.ingest\", \"coverage\": \"ok\", \"entered\": 5, \"foreignRejected\": 0, \"orphanExits\": 0, \"originalSkipped\": 0, \"originalThrew\": 0, \"faults\": 0}, {\"hook\": \"recorder.destroy\", \"coverage\": \"ok\", \"entered\": 346, \"foreignRejected\": 0, \"orphanExits\": 0, \"originalSkipped\": 0, \"originalThrew\": 0, \"faults\": 0}], \"matchedCount\": 11, \"returned\": 11, \"truncated\": 0, \"nextSeq\": 207, \"events\": [{\"seq\": 14, \"tick\": 483, \"kind\": \"damage\", \"victimId\": \"Human24629\", \"victimDef\": \"Human\", \"victimIsPawn\": true, \"victimFaction\": \"PirateYttakin\", \"victimColonist\": false, \"victimDeadAfter\": false, \"damageDef\": \"Blunt\", \"amount\": 10.9919968, \"totalDealt\": 10.9919968, \"deflected\": false, \"origin\": \"DynamicMethodDefinition.Verse.Thing.TakeDamage_Patch5 < RM_SuperdeepTrap.OnDescent < RM_SuperdeepTrap.OnForcedDescent < RM_SuperdeepTrapState.Tick < RM_MapComponent_Excavation.MapComponentTick < DynamicMethodDefinition.Verse.MapComponentUtility.MapComponentTick_Patch1 < DynamicMethodDefinition.Verse.Map.MapPostTick_Patch1\", \"hediffsAdded\": [\"Bruise\"], \"mapUniqueId\": 0, \"x\": 69, \"z\": 61}, {\"seq\": 88, \"tick\": 3241, \"kind\": \"damage\", \"victimId\": \"Human24629\", \"victimDef\": \"Human\", \"victimIsPawn\": true, \"victimFaction\": \"PirateYttakin\", \"victimColonist\": false, \"victimDeadAfter\": false, \"damageDef\": \"Blunt\", \"amount\": 10.9919968, \"totalDealt\": 10.9919968, \"deflected\": false, \"origin\": \"DynamicMethodDefinition.Verse.Thing.TakeDamage_Patch5 < RM_SuperdeepTrap.OnDescent < RM_SuperdeepTrapState.Tick < RM_MapComponent_Excavation.MapComponentTick < DynamicMethodDefinition.Verse.MapComponentUtility.MapComponentTick_Patch1 < DynamicMethodDefinition.Verse.Map.MapPostTick_Patch1 < DynamicMethodDefinition.Verse.TickManager.DoSingleTick_Patch4\", \"hediffsAdded\": [\"Bruise\"], \"mapUniqueId\": 0, \"x\": 67, \"z\": 59}, {\"seq\": 94, \"tick\": 3536, \"kind\": \"damage\", \"victimId\": \"Human24629\", \"victimDef\": \"Human\", \"victimIsPawn\": true, \"victimFaction\": \"PirateYttakin\", \"victimColonist\": false, \"victimDeadAfter\": false, \"damageDef\": \"Blunt\", \"amo",
+ "vitals": "{\"success\": true, \"armed\": true, \"by\": \"jawa/vitals\", \"armedUtc\": \"2026-11-21T11:00:06.445Z\", \"ttlLeftS\": 1767.0, \"timeException\": false, \"budgetTicks\": 0, \"critical\": [], \"specimens\": [], \"specimensUnresolved\": [], \"latched\": {\"first\": {\"seq\": 1, \"kind\": \"hostile_arrival\", \"severity\": \"threat\", \"tick\": 2, \"map\": 0, \"subjectId\": 21199, \"subject\": \"Sale\", \"critical\": false, \"declared\": false, \"detail\": \"present at arm: Human Grenadier_Destructive (humanlike)\"}, \"count\": 29, \"seq\": 29, \"overflow\": 0}, \"clock\": {\"processed\": 9373, \"discontinuities\": 0, \"declared\": 0}, \"rollup\": \"\\\"pawns\\\":11,\\\"colonistsAlive\\\":5,\\\"colonistsDowned\\\":0,\\\"colonistsHostile\\\":0,\\\"hostiles\\\":6,\\\"critical\\\":0,\\\"criticalAvailable\\\":0,\\\"minColonistHealth\\\":1,\\\"minColonistMoodMargin\\\":0.24,\\\"groups\\\":{\\\"humanlike|hostile\\\":{\\\"alive\\\":6,\\\"downed\\\":0,\\\"bleeding\\\":0,\\\"mental\\\":0},\\\"humanlike|player\\\":{\\\"alive\\\":5,\\\"downed\\\":0,\\\"bleeding\\\":0,\\\"mental\\\":0}}\", \"lastSampleTick\": 2762, \"samples\": 192, \"threats\": {\"structures\": 0, \"turrets\": 0, \"spawners\": 0, \"dormant\": 0}, \"modalMaxAgeS\": 0.0, \"gameEnding\": false, \"populated\": true, \"epoch\": 3, \"channels\": {\"pawns\": {\"on\": true, \"calls\": 192, \"cost\": \"measured\", \"meanUs\": 180.86, \"maxUs\": 7101.7, \"totalMs\": 34.725}, \"threats\": {\"on\": true, \"calls\": 66, \"cost\": \"measured\", \"meanUs\": 5.98, \"maxUs\": 257.9, \"totalMs\": 0.395}, \"clock\": {\"on\": true, \"calls\": 9887, \"cost\": \"measured\", \"meanUs\": 1.25, \"maxUs\": 528.1, \"totalMs\": 12.327}, \"ui\": {\"on\": true, \"calls\": 670, \"",
+ "windows": "{'success': True, 'action': 'list', 'count': 4, 'windows': [{'index': 0, 'type': 'Verse.ImmediateWindow', 'layer': 'GameUI', 'id': -1593759361, 'isDebug': False, 'forcePause': False}, {'index': 1, 'type': 'LudeonTK.Dialog_DevPalette', 'layer': 'Dialog', 'id': 57, 'isDebug': True, 'forcePause': False",
+ "status": "OK",
+ "ncalls": 268
+}

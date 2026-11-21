@@ -348,6 +348,29 @@ namespace RimMandrake.FlowWorks.Pits
 			return "POWER powered=" + w.Powered + " winch=True";
 		}
 
+		/// <summary>"x,z;on|off": the leaf's winch house made unbreakable (no damage reaches it) or breakable again, for a
+		/// control. → "HOLD held=b winch=b hp=n/max"</summary>
+		public static string ProofWinchHold(string arg)
+		{
+			Map map = Find.CurrentMap;
+			string[] a = (arg ?? "").Split(';');
+			if (map == null || a.Length != 2 || !Cell(a[0], out IntVec3 c) || (a[1] != "on" && a[1] != "off"))
+			{
+				return "REFUSED: arg must be x,z;on|off";
+			}
+			if (!LeafAt(map, c, out _, out DrawbridgeLeaf l))
+			{
+				return "REFUSED: not a drawbridge leaf square";
+			}
+			Building_DrawbridgeWinch w = l.winch != null && l.winch.Spawned ? l.winch : null;
+			if (w == null)
+			{
+				return "HOLD held=False winch=False hp=0/0";
+			}
+			w.proofUnbreakable = a[1] == "on";
+			return "HOLD held=" + w.proofUnbreakable + " winch=True hp=" + w.HitPoints + "/" + w.MaxHitPoints;
+		}
+
 		/// <summary>"x,z" (a winch house's square): despawn it WITHOUT destroying, as GravshipUtility.GenerateGravship does to
 		/// every ship thing (DestroyMode.WillReplace), then discard it (it flew away). The production loss hook is the winch's
 		/// own DeSpawn. → "DESPAWN ok=T|F linkedBefore=T|F linkedAfter=T|F"</summary>

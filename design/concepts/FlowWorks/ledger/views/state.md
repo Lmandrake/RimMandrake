@@ -1,7 +1,7 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":39401,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=9b3851a657c5826f6db87e477b7dbd0b6ea904ba85f180f8a4c097828945e5f9 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":39401,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":2475,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=80c8a65732fdf9c60d347b967b42227bd27898b910fd3a4ad42369e8476ecc29 -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage in_game · 1447 events in 18 shards · reducer 1
-holder lease run-1795257509, token 27, last active 2026-11-21T10:41:21Z
+version 0.1.0 · stage in_game · 1452 events in 19 shards · reducer 1
+holder lease run-1795257509, token 27, last active 2026-11-21T11:20:31Z
 holder session 82ebad1e-0f23-455d-8747-6fc2bff2bded, context 287789 of ceiling 400000
 
 ## Last checkpoint (HOLDER.run-1795244678, 2026-11-21T08:32:17Z)
@@ -313,7 +313,8 @@ holder session 82ebad1e-0f23-455d-8747-6fc2bff2bded, context 287789 of ceiling 4
 - trap:a-per-square-rounded-fake-hands-back-every-small-take
 - trap:proofsubmerge-nothing-drawn-means-drawn-whole-or-absent
 - trap:water-look-checks-held-old-law-margins
-- 145 traps on closed or claimed findings (verified, withdrawn, claimed_fixed), not listed: `modledger.py find --mod FlowWorks --class trap <words>`
+- trap:grenades-that-take-a-winch-can-wreck-its-leaf-deck
+- 144 traps on closed or claimed findings (verified, withdrawn, claimed_fixed), not listed: `modledger.py find --mod FlowWorks --class trap <words>`
 
 ## Causes refuted (46) — do not chase these again
 - cause:285-shows-lake-floor-1-5184-squares-plains: Mod regression in deep beds: ruled out as SITE. Player_s2_river_load.log:285 sh… (on f518e7c1987b)
@@ -486,13 +487,13 @@ spend recorded: USD 78.94, 45401435 tokens
 
 ## Left out
 - closed findings: 181, oldest first (`modledger.py show --mod FlowWorks <subject>`)
-- closed traps: 1, oldest first (`modledger.py show --mod FlowWorks <subject>`)
+- closed traps: 2, oldest first (`modledger.py show --mod FlowWorks <subject>`)
 - tests: 47, oldest first (`modledger.py show --mod FlowWorks <subject>`)
 - claimed fixes in brief: 51 on one line (name and sha), their claim, test and fix by `show`
 - open findings in brief: the oldest 127 on one line, their fix and accept by `modledger.py show --mod FlowWorks <subject>`
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
 - notes: 11, never printed here (`modledger.py find --mod FlowWorks <words>`)
-- the full history: 1447 events (views/history.md; never read whole)
+- the full history: 1452 events (views/history.md; never read whole)
 
-cursor: t=2026-11-21T10:47:29Z.1795258049551618031 (modledger.py since --mod FlowWorks t=2026-11-21T10:47:29Z.1795258049551618031 prints what changed after this packet)
+cursor: t=2026-11-21T11:20:31Z.1795260031831061711 (modledger.py since --mod FlowWorks t=2026-11-21T11:20:31Z.1795260031831061711 prints what changed after this packet)

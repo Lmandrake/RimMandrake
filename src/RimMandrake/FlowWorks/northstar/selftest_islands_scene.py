@@ -38,13 +38,17 @@ THINGDEFS = {d.text.strip() for f in (HERE.parent / 'Defs').rglob('*.xml') for t
 HOSTILE = 'Pirate'
 MAX_LEAF_TIMBER = 4         # RM_DrawbridgeSettings.maxLeafTimber
 FULL = 100                  # a leaf's full progress (any positive number: the scene reads 0 / not 0)
+AIM = 2                     # polls of sapper work before the first grenades land (live: first hit at tick 300)
 WINCH_HP = 200              # RM_DrawbridgeWinch_Timber MaxHitPoints
-SHELL = 70                  # damage one poll of sapper fire does to a raised leaf's winch
+SHELL = 200                 # damage one 120-tick poll of sapper fire does to a raised leaf's winch: two frag grenades, 100
+                            # each on a building (live, game b 2026-11-21: 200 -> 100 -> gone inside one chunk). It was 70,
+                            # and on that model a hit-point reset each poll held; the game's winches fell (visit 2)
 
 
 class Fake:
     """mod: 'healthy', 'nowinch' (sappers never take a winch), 'nodrop' (a leaf stays up when its winch falls).
-    fault: 'leaky' (raiders walk off over raised leaves), 'gone' (the raid is dead or gone at the first poll)."""
+    fault: 'leaky' (raiders walk off over raised leaves), 'gone' (the raid is dead or gone at the first poll), 'softhold'
+    (ProofWinchHold answers held=True and the winch takes damage anyway)."""
 
     def __init__(self, mod='healthy', fault=None):
         self.mod, self.fault = mod, fault
@@ -83,6 +87,10 @@ class Fake:
                 leaf = g['leaves'][w['leaf']]
                 if leaf['progress'] > 0:
                     g['jobs'] += 1
+                    if g['jobs'] <= AIM:
+                        break                           # walking up and the first warm-up: nothing lands yet
+                    if w.get('held') and self.fault != 'softhold':
+                        continue                        # Building_DrawbridgeWinch.PreApplyDamage absorbs every hit
                     w['hp'] -= SHELL
                     if w['hp'] <= 0:
                         self.lose(cell)
@@ -141,7 +149,8 @@ class Fake:
                                                for k, p in g['pawns'].items() if p['hostile'] == hostile]}
         if tool == 'jawa/list_things':
             x, z, w, h = (int(v) for v in kw['rect'].split(','))
-            return {'success': True, 'things': [{'id': 'Thing_W%d_%d' % c, 'def': 'RM_DrawbridgeWinch_Timber', 'maxHitPoints': WINCH_HP}
+            return {'success': True, 'things': [{'id': 'Thing_W%d_%d' % c, 'def': 'RM_DrawbridgeWinch_Timber', 'maxHitPoints': WINCH_HP,
+                                                 'hitPoints': g['winches'][c]['hp']}
                                                 for c in g['winches'] if kw.get('defName') == 'RM_DrawbridgeWinch_Timber'
                                                 and x <= c[0] < x + w and z <= c[1] < z + h]}
         if tool == 'jawa/destroy_batch':
@@ -152,11 +161,6 @@ class Fake:
             for c in hit:
                 self.lose(c)
             return {'success': True, 'destroyed': len(hit)}
-        if tool == 'jawa/set_thing_props':
-            for c, w in g['winches'].items():
-                if kw['thing'] == 'Thing_W%d_%d' % c:
-                    w['hp'] = min(kw['hitPoints'], WINCH_HP)
-            return {'success': True}
         if tool == 'jawa/mod_settings_field':
             if kw.get('field') == 'WinchJobs':
                 return {'success': True, 'value': g['jobs']}
@@ -218,6 +222,20 @@ class Fake:
             g['leaves'][x1 + 2 - O[0]] = {'cells': range(x1 + 1, x2), 'z': z, 'progress': 0, 'target': 'lowered'}
             return 'DRAW ok=True leaves=%d tier=%s hinges=%s winchAt=%s firstAt=%d,%d reason=-' % (
                 leaves, a[2], a[3], '|'.join(at) or '-', x1, z)
+        if method == 'ProofWinchHold':
+            a = arg.split(';')
+            if len(a) != 2 or not re.fullmatch(XZ, a[0]) or a[1] not in ('on', 'off'):
+                self.bad('ProofWinchHold given %r' % arg)
+                return 'REFUSED: arg must be x,z;on|off'
+            x, z = (int(v) for v in a[0].split(','))
+            dx = next((k for k, l in g['leaves'].items() if x in l['cells'] and z == l['z']), None)
+            if dx is None:
+                return 'REFUSED: not a drawbridge leaf square'
+            w = next((w for w in g['winches'].values() if w['leaf'] == dx), None)
+            if w is None:
+                return 'HOLD held=False winch=False hp=0/0'
+            w['held'] = a[1] == 'on'
+            return 'HOLD held=%s winch=True hp=%d/%d' % (w['held'], w['hp'], WINCH_HP)
         if method in ('ProofLeaf', 'ProofDevSet'):
             a = arg.split(';')
             if not re.fullmatch(XZ, a[0]) or (method == 'ProofLeaf' and len(a) != 1) or \
@@ -279,6 +297,12 @@ check('a leaf that stays up after its winch falls: the drop FAILs, the escape UN
 r, o, _ = run(fault='leaky')
 check('raiders that walk off over raised leaves: the trap and the control FAIL',
       r.get('ISL_trapped_while_winches_stand') == 'FAIL' and r.get('ISL_control_unbreakable_winches_stay_trapped') == 'FAIL', r)
+r, o, _ = run(fault='softhold')
+check('a hold that does not hold (a held winch damaged or lost): the control reads UNMEASURED, never PASS',
+      r.get('ISL_control_unbreakable_winches_stay_trapped') == 'UNMEASURED', (r, o['rows'][-1]['detail']))
+r, o, F = run()
+check('the control holds its winches by ProofWinchHold, never by a hit-point reset between chunks, and they are still shelled',
+      'held winches True' in o['rows'][-1]['detail'] and "WinchJobs +0" not in o['rows'][-1]['detail'], o['rows'][-1]['detail'])
 r, o, _ = run(fault='gone')
 check('a raid that is gone at the first poll: every row UNMEASURED, none PASS',
       all(r.get(x) == 'UNMEASURED' for x in ROWS) and 'PASS' not in r.values(), r)
