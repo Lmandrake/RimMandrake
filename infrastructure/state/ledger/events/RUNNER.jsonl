@@ -10192,3 +10192,4 @@
 {"seat":"RUNNER","event":"live","id":"OPS_STEVE_DIAGNOSE_INVALID_MBTX_YAHV","result":"broken","detail":"Ops alarm STEVE_INVALID: steve.invalid_streak = 3 INVALID results in a row (MEASURED), line >= 3","ts":"2026-11-21T10:58:35Z","tsn":1795258715097917624}
 {"seat":"RUNNER","event":"live","id":"OPS_SCRATCH_OUTSIDE_READING_RESTORE_WLTC","result":"kept","detail":"sweep: running again","ts":"2026-11-21T11:03:38Z","tsn":1795259018844681935}
 {"seat":"RUNNER","event":"live","id":"OPS_STEVE_DIAGNOSE_INVALID_MBTX_YAHV","result":"kept","detail":"sweep: running again","ts":"2026-11-21T11:04:03Z","tsn":1795259043231956507}
+{"seat":"RUNNER","event":"live","id":"OPS_STEVE_DIAGNOSE_INVALID_MBTX_YAHV","result":"broken","detail":"Ops alarm STEVE_INVALID: steve.invalid_streak = 3 INVALID results in a row (MEASURED), line >= 3","ts":"2026-11-21T11:05:23Z","tsn":1795259123434325697}
