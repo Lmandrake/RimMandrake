@@ -36,9 +36,11 @@ Each promise has a check of its name in `src/RimMandrake/rimflow/selftest_left_o
   `continue_kind` `owed`.
 - **an-owed-continuation-that-ends-owed-again-is-an-alarm.** A continuation of kind `owed` that itself ends owed is
   the `DETACHED_CONTINUE_LIMIT_REACHED` alarm, and nothing launches.
-- **a-left-open-in-the-result-counts-as-the-note.** A run whose result text holds `LEFT OPEN:` is read as if it wrote
-  that note: `owed_close` returns "" for it, and the continuation header quotes the paragraph from `LEFT OPEN:` on,
-  with every sentence that states spend, tokens, a budget or an account level taken out.
+- **a-left-open-in-the-result-counts-as-the-note.** A run whose result text holds a line that starts `LEFT OPEN:`
+  (after optional `*` or `_` emphasis) is read as if it wrote that note: `owed_close` returns "" for it, and the
+  continuation header quotes that paragraph, to the next blank line, with every sentence that states spend, tokens, a
+  budget or an account level taken out. A mention of `LEFT OPEN:` inside a sentence ("no `LEFT OPEN:` note") is not a
+  note: the run is owed, and gets the owed-close brief, not the carry-on brief.
 - **a-lane-ticket-under-a-running-wait-is-skipped.** A lane hand-off goes to the first open lane ticket whose own dated
   wait is not still running; when every open lane ticket waits, nothing launches and the why names the wait.
 - **the-step-rereads-the-target-before-launch.** The continuation step reads its target's state and wait again just

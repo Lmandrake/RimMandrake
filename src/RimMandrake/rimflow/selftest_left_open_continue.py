@@ -429,6 +429,28 @@ def t_a_left_open_in_the_result_counts_as_the_note():
               "$" not in head and "weighted tokens" not in head and "Did step one" not in head, head)
 
 
+def t_a_left_open_mention_inside_a_sentence_is_not_a_note():
+    """RIMMANDRAKE_FIX_LEFT_OPEN_PARSE_READS_ITS_OWN_DENIAL: run ...-1795144073 wrote "(no `LEFT OPEN:` note; ...)" and
+    was continued with the carry-on brief, quoting its own denial. Red on db268445c0 (3 of 6)."""
+    cases = [
+        ("stays `doing` (no `LEFT OPEN:` note; its summary is below).", ""),
+        ("LEFT OPEN: rerun mutants\nstill owed\n\nbye", "LEFT OPEN: rerun mutants\nstill owed"),
+        ("Done.\n\nLEFT OPEN: two tickets\n\nend", "LEFT OPEN: two tickets"),
+        ("Done.\n**LEFT OPEN:** two tickets", "**LEFT OPEN:** two tickets"),
+        ("mentions no `LEFT OPEN:` note.\n\nLEFT OPEN: real one", "LEFT OPEN: real one"),
+        ("", ""),
+    ]
+    for text, want in cases:
+        rec = make_run(item=OWED_ITEM + "_DENY", at=T0 + 42900, out={"result": text, "usage": {}})
+        got = DH.result_left_open(rec)
+        check("a-left-open-in-the-result-counts-as-the-note: %r -> %r" % (text[:30], want[:30]), got == want,
+              repr(got[:80]))
+    rec = make_run(item=OWED_ITEM + "_DENY", at=T0 + 42900,
+                   out={"result": "Item stays `doing` (no `LEFT OPEN:` note; its summary is below).", "usage": {}})
+    check("a-left-open-in-the-result-counts-as-the-note: a denial leaves the run owed",
+          DH.owed_close(rec, "claimed", []) != "", "owed_close said nothing")
+
+
 def t_a_lane_ticket_under_a_running_wait_is_skipped():
     future, past = DH.iso(T0 + 9 * 86400), DH.iso(T0 - 600)
     rec = make_run(item=LANE[0], brief=LANE_BRIEF, at=T0 + 43000)
@@ -685,7 +707,8 @@ def main():
     for t in (test_open_with_note, test_closed, test_lane, test_limit, test_capped, test_killed_voided, test_gates,
               test_finish_kicks, test_launch_records_opt_in, test_waiting,
               t_an_owed_run_is_continued_to_close_or_say, t_an_owed_continuation_that_ends_owed_again_is_an_alarm,
-              t_a_left_open_in_the_result_counts_as_the_note, t_a_lane_ticket_under_a_running_wait_is_skipped,
+              t_a_left_open_in_the_result_counts_as_the_note, t_a_left_open_mention_inside_a_sentence_is_not_a_note,
+              t_a_lane_ticket_under_a_running_wait_is_skipped,
               t_the_step_rereads_the_target_before_launch, t_launch_checks_are_skipped_only_for_the_same_item,
               t_an_open_lane_item_is_its_own_target, t_a_refused_continuation_spends_no_daily_slot,
               t_an_alarm_whose_log_write_failed_is_retried, t_the_alarm_honours_the_run_root,

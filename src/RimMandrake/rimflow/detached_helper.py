@@ -1287,8 +1287,15 @@ def result_left_open(rec):
     import role_launch as RL
     res = RL.read_result({"out": rec.get("out") or "", "err": rec.get("err") or ""})
     t = str(res.get("result") or "") if isinstance(res, dict) else ""
-    i = t.upper().find(LEFT_OPEN)
-    return re.split(r"\n\s*\n", t[i:], maxsplit=1)[0] if i >= 0 else ""
+    # A note starts a line or a sentence (optional */_ emphasis). A mention inside a sentence, such as "no `LEFT OPEN:`
+    # note", is not one: read as a note it sent an owed run the carry-on brief (2026-11-19 8:01 PM PST,
+    # RIMMANDRAKE_FIX_LEFT_OPEN_PARSE_READS_ITS_OWN_DENIAL).
+    m = _LEFT_OPEN_AT.search(t)
+    return re.split(r"\n\s*\n", t[m.start(1):], maxsplit=1)[0] if m else ""
+
+
+_LEFT_OPEN_AT = re.compile(r"(?:^|(?<=[.!?]) )[ \t]*([*_]{0,3}" + re.escape(LEFT_OPEN) + ")",
+                           re.IGNORECASE | re.MULTILINE)
 
 
 def owed_close(rec, state, notes):
