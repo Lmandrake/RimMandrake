@@ -242,7 +242,10 @@ class World:
                         RM_STEAMAPPS=self.steamapps, RM_GAME_USERDATA=self.a_dir, RM_GAME_LOGDIR=self.a_dir,
                         FAKE_GAME_SCRIPT=self.game_script, FAKE_KILL_LOG=self.kill_log, PYTHONDONTWRITEBYTECODE="1",
                         FAKE_A_LOGDIR=self.a_dir,
-                        RM_DATA_ROOT=os.path.join(self.tmp, "data"))
+                        RM_DATA_ROOT=os.path.join(self.tmp, "data"),
+                        # a fake machine has no audio devices: rw_game.sh's audio route step (game_audio_route.ps1) is off;
+                        # selftest_rw_game_audio_route.py tests that step
+                        RW_GAME_AUDIO_TO="")
         # rimflow's bridge on throwaway state: game_instance.stop asks `rimflow bridge idle` before any signal, and a
         # fake machine must never read (or let a live visit decide) the clone's own ledger, lock or BRIDGE mirror
         self.rf = os.path.join(self.tmp, "rimflow")

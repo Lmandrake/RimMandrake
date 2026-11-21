@@ -61,6 +61,44 @@ status() {
     return 3
 }
 
+# RIMMANDRAKE_KEEP_STEVE_LANE_GAME_SOUND_OFF_SONIC_STUDIO_AT_LAUNCH. On SteveDesktop the register fault follows the game's
+# sound through the Sonic Studio virtual mixer (infrastructure/state/facts/steve_fault_diagnosis.md). Nobody plays the lane's
+# game, and neither Unity 2022.3 nor RimWorld has a switch for no audio device. So `up` starts game_audio_route.ps1 BEFORE the
+# game: it waits for the game's own audio session and moves that live stream to RW_GAME_AUDIO_TO with the per-app route
+# (a route saved before the start is ignored by a fresh game). No system default device is touched.
+# To remove the step: set RW_GAME_AUDIO_TO= (empty) in testcentre_env.sh, or delete audio_arm/audio_report and their calls.
+AUDIO_TO=${RW_GAME_AUDIO_TO-Realtek Digital Output}
+AUDIO_LOG="$RM_GAME_LOGDIR/audio_route.log"
+AUDIO_PS1="$RM_GAME_LOGDIR/rimmandrake_audio_route.ps1"   # a Windows-side copy: no \\wsl.localhost path for a hidden PowerShell
+# audio_arm <exe as Windows path> -> 0 armed (the watcher printed READY), 1 off by setting, 2 could not arm.
+# LIMIT RW_AUDIO_READY_S 30: the watcher compiles its C# in about 3 s (measured 2026-11-21); 30 s guards a game started
+# on a watcher that never came up, with no line saying so.
+audio_arm() {
+    [ -n "$AUDIO_TO" ] || { echo "audio route: off (RW_GAME_AUDIO_TO is empty)"; return 1; }
+    cp "$HERE/game_audio_route.ps1" "$AUDIO_PS1" 2>/dev/null || { echo "audio route: NOT ARMED (could not copy the watcher to $AUDIO_PS1)"; return 2; }
+    rm -f "$AUDIO_LOG"
+    ps_q "Start-Process -WindowStyle Hidden -FilePath powershell.exe -ArgumentList '-NoProfile','-ExecutionPolicy','Bypass','-File','\"$(winpath "$AUDIO_PS1")\"','-Exe','\"$1\"','-Log','\"$(winpath "$AUDIO_LOG")\"','-Endpoint','\"$AUDIO_TO\"'" >/dev/null
+    local w=0 line
+    while [ "$w" -lt "${RW_AUDIO_READY_S:-30}" ]; do
+        line=$(grep -m1 ' RESULT ' "$AUDIO_LOG" 2>/dev/null) && { echo "audio route: NOT ARMED: ${line#* RESULT }"; return 2; }
+        grep -q ' READY ' "$AUDIO_LOG" 2>/dev/null && return 0
+        sleep 1; w=$(( w + 1 ))
+    done
+    echo "audio route: NOT ARMED (no READY in $AUDIO_LOG after ${RW_AUDIO_READY_S:-30} s)"; return 2
+}
+# audio_report: print the watcher's verdict line. A failure never fails `up`: the lane still runs, on the old risk.
+# LIMIT RW_AUDIO_RESULT_S 330: the watcher's own longest path (300 s for a session, plus its pid wait) with margin; it
+# guards an `up` blocked by a watcher that died without its RESULT line.
+audio_report() {
+    local w=0 line
+    while [ "$w" -lt "${RW_AUDIO_RESULT_S:-330}" ]; do
+        line=$(grep -m1 ' RESULT ' "$AUDIO_LOG" 2>/dev/null) && { echo "audio route: ${line#* RESULT }"; return 0; }
+        sleep 1; w=$(( w + 1 ))
+    done
+    echo "audio route: UNMEASURED (no RESULT in $AUDIO_LOG after ${RW_AUDIO_RESULT_S:-330} s)"
+}
+named_exe_win() { python3 -c "import sys; sys.path.insert(0, sys.argv[1]); import game_instance as g; print(g.win_path(g.game_dir()) + '\\\\' + g.GAME_EXE)" "$(dirname "$GI")"; }
+
 steam_pid() { ps_q "(Get-Process steam -ErrorAction SilentlyContinue | Select-Object -First 1).Id"; }
 # Steam normally runs from the autologon (Run Steam when my computer starts). If it is not
 # running, start it: with a remembered login it signs in by itself. The Steam install is
@@ -92,13 +130,21 @@ up() {
     local pid; pid=$(pid_of) || { echo "REFUSED: the game list could not be read; not starting a game on a guess"; return 2; }
     if [ -n "$pid" ]; then echo "already running (pid $pid)"; status; return 0; fi
     steam_up || return 2
-    if [ -n "$NAMED" ]; then python3 "$GI" launch ${1:+"$1"}; return $?; fi
+    local armed=1
+    if [ -n "$NAMED" ]; then
+        audio_arm "$(named_exe_win)" && armed=0
+        python3 "$GI" launch ${1:+"$1"}; local lrc=$?
+        [ "$armed" -eq 0 ] && audio_report
+        return $lrc
+    fi
+    audio_arm "$EXE_WIN" && armed=0
     local t0; t0=$(date +%s)
     ps_q "Start-Process -FilePath '$EXE_WIN' -WorkingDirectory '$DIR_WIN'"
     pid=$(wait_for_pid); local rc=$?
     [ "$rc" -ne 2 ] || { echo "FAILED: the game list could not be read after Start-Process"; return 2; }
     [ "$rc" -eq 0 ] || { echo "FAILED: no RimWorldWin64 process ${RW_START_WAIT_S:-60} s after Start-Process (polled every ${RW_START_POLL_S:-2} s)"; return 1; }
     echo "started pid $pid"
+    [ "$armed" -eq 0 ] && audio_report
     [ "${1:-}" = --wait ] || return 0
     while [ $(( $(date +%s) - t0 )) -lt 600 ]; do
         if [ -f "$LOG" ] && [ "$(stat -c %Y "$LOG")" -ge "$t0" ] && port_in_log >/dev/null; then
