@@ -35,7 +35,7 @@ SCENES = (
     ("sc_scorchfruit", "scorchfruit_fire_born", False,
      ("scorchFruitEnabled", "FRUIT_PLANT", "_fire(")),
     ("sc_ash_ground", "ground_deep_ash", False,
-     ("ashfallAccumulationEnabled", "ambientAshEnabled", "ashground_noon", "R6_HALF_DAY", "is_water_family(",
+     ("ashfallAccumulationEnabled", "ambientAshEnabled", "ashground_noon", "R6_HALF_DAY", "is_standing_water(",
       "AridShrubland", "_ten_control_map(", "ClearAsh", "LayAsh", "_ten_noon_hour(", "ppc=", "PyrelandsMechanicsGate",
       "_unmeasured(")),
     ("sc_roof_withers", "roof_withers", True,
@@ -142,6 +142,13 @@ def pure_checks():
                     V.burned_share_verdict(flood, flood)[0] is False))
         out.append(("burned_share: a trail that never grows fails",
                     V.burned_share_verdict([0.02, 0.02, 0.02, 0.02, 0.02], flood)[0] is False))
+        # _r6_shore_ring: standing water only (visit 2, 2026-11-20: a mud relic with no water passed the water assert)
+        relic = {(0, 0): "Mud", (1, 0): "RM_FE_Ground_Soil", (2, 0): "RM_FE_Ash_Deep"}
+        out.append(("shore ring: mud with no water beside it is no water", V._r6_shore_ring(relic)[0] == set()))
+        pond = {(0, 0): "WaterShallow", (1, 0): "Mud", (2, 0): "RM_FE_Ground_SoilRich", (0, 1): "Marsh"}
+        w, ring = V._r6_shore_ring(pond)
+        out.append(("shore ring: shallow water and marsh are water, mud is their ring",
+                    w == {(0, 0), (0, 1)} and ring.get((1, 0)) == "Mud" and (2, 0) not in ring))
         out.append(("burned_share: an unread day is not judged", V.burned_share_verdict([0.01, None, 0.02, 0.03, 0.05], flood)[0] is None))
         out.append(("burned_share: arms of different lengths are not judged", V.burned_share_verdict(line, flood[:3])[0] is None))
         out.append(("burned_share: no reads is not judged", V.burned_share_verdict([], [])[0] is None))

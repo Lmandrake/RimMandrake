@@ -4152,7 +4152,7 @@ def _ten_ground_deep_ash(t):
                         cells[(cx, cz)] = d
             # standing water only: is_water_family also holds Mud (the ash sweep's radius), and a mud relic with no water
             # beside it rings nothing (MEASURED 2026-11-20 visit 2: 0 water cells, 8 'shore' cells beside mud failed)
-            water = set(c for c, d in cells.items() if d and ("Water" in d or "Marsh" in d))
+            water = set(c for c, d in cells.items() if is_standing_water(d))
             if not water:
                 _unmeasured(t, "this map rolled no standing water, so there is no shore ring to read")
             ring = {}
@@ -4870,9 +4870,16 @@ def _r6_ops_cells(ops):
     return cells
 
 
+def is_standing_water(name):
+    """A shore's water: any def named *Water* / *Marsh*. Not is_water_family: that also holds Mud and Riverbank (the ash
+    sweep's radius), and a mud relic with no water beside it rings nothing (MEASURED 2026-11-20 visit 2: 0 water cells,
+    the water assert passed on 372 mud cells)."""
+    return bool(name) and ("Water" in name or "Marsh" in name)
+
+
 def _r6_shore_ring(cells):
-    """Pure. {(x, z): terrain} -> (water cells, {land cell next to water: terrain})."""
-    water = set(c for c, d in cells.items() if is_water_family(d))
+    """Pure. {(x, z): terrain} -> (standing-water cells, {land cell next to water: terrain})."""
+    water = set(c for c, d in cells.items() if is_standing_water(d))
     ring = {}
     for (cx, cz) in water:
         for dx in (-1, 0, 1):
