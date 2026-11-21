@@ -20,8 +20,8 @@ a minute.
 
 What a row can and cannot see: RM_SubmergeDraw.ProofSubmerge reports what the ONE under-liquid law decides for the first
 thing at a cell (share under, seenLine, seenFoot, shadow, label alpha). It reads the law each drawer is handed, not the
-pixels: a drawer that ignores the law (overlays, ropes, flames, the corpse cover's rotation) is invisible to it. Those rows
-are BLOCKED ON HOOK (item RIMMANDRAKE_ADD_OVERLAY_PROOF_HOOK_LAW_CANNOT_SEE_ICONS), never faked.
+pixels. The overlays, flames and ropes are read by their own reader, RM_SubmergeDraw.ProofOverlays (676c5cd131), and the
+pit label by RM_Patch_MouseoverDepth.ProofPitLabel; a build without a reader reads that row BLOCKED, never faked.
 
 Rows (one family per owner sentence; the pure judges below are selftested by selftest_owner_look_regressions.py):
   OL_buildings_covered      18:15 "It's easy to see which items are not going under water" -> every installed building in
@@ -44,17 +44,22 @@ Rows (one family per owner sentence; the pure judges below are selftested by sel
                             (--acts only) -> a pour into a brim-full pit replies OK and never "no room".
   OL_screenshot_mode_off    18:15 "The game is no longer allowing me to select objects at all..." (cause: screenshot mode
                             left on) -> at the end of the run screenshot mode is off, and it was not left on before.
-  OL_label_text_true_depth  17:57 "It's supposed to show the precise depth no matter what" -> BLOCKED ON HOOK
-                            (RIMMANDRAKE_ADD_PIT_LABEL_STATE_READER_MOUSEOVER_HAS_NONE); the expected text is offline in
-                            PitLabelChecks.
+  OL_label_text_true_depth  17:57 "It's supposed to show the precise depth no matter what" -> per copy, 16 cells (every
+                            LABEL_STRIDE): ProofPitLabel's line starts with the text RM_Volume.PitLabel gives the true grid
+                            (jawa/flowworks_excavation_rect d, dl, fluid): "Pit, 8.0 m deep" / "Pit, 2.5 m water in 8.0 m".
+                            Left out: what LineAt appends after it (floor, walk speed, readout, sunk geyser).
   OL_overlays_hidden        20:30/20:55 connector over the battery, wires over furniture, battery bar, cooler arrow, torch
-                            flame, power icon -> BLOCKED ON HOOK (RIMMANDRAKE_ADD_OVERLAY_PROOF_HOOK_LAW_CANNOT_SEE_ICONS).
+                            flame, power icon -> per planned building, item, minified good: ProofOverlays carries the alpha
+                            RM_UnderLiquid.OverlayAlpha is due (1 middle dry, 0 once 0.5 m over the top, else seen; an icon
+                            drawn whole where it is due less is FAIL), the realtime verdict, a flame out under the line, and
+                            cords seen as the floor. Left out: corpses (two readers, two heights), pawns (none planned).
 UNTESTED LIVE as committed (2026-11-12): the judges are selftested offline against a fake bridge; the bridge replies are
 the shapes pit_fittings_matrix.py and the 20:11 live run read (ProofSubmerge text, list_things rows, screenshot_mode).
 """
 import json
 import os
 import sys
+from decimal import Decimal, ROUND_HALF_UP
 
 SUB = "RimMandrake.FlowWorks.RM_SubmergeDraw"
 GL = "RimMandrake.FlowWorks.RM_GodLiquid"
@@ -66,6 +71,16 @@ NOTCH_M = 0.5                   # RM_Volume.MetresPerNotch: ProofSubmerge's leve
 LINE_TOL = 0.006                # level= and height= are printed F2
 EPS = 1e-6
 OVERLAY_HOOK = "RIMMANDRAKE_ADD_OVERLAY_PROOF_HOOK_LAW_CANNOT_SEE_ICONS"
+LABEL_T = "RimMandrake.FlowWorks.RM_Patch_MouseoverDepth"   # ProofPitLabel lives here (RM_MouseoverDepth.cs)
+FLUID_LABEL = {"RM_Fluid_Water": "water", "RM_Fluid_Tar": "tar"}   # FluidDef labels, Defs/Canals/FluidDefs/FlowWorks_Fluids.xml
+UNITS_PER_LEVEL = 10000         # RM_Volume.UnitsPerLevel (dl per notch): PitLabel prints dl * 0.5 / 10000 m
+LABEL_STRIDE = 5                # label cells read per copy: i, j in 0, 5, 10, 15 (16 of 256: walls' feet and middle)
+LABEL_TAILS = (" (", " \u2014 ", " \u00b7 ")   # what LineAt appends: walk speed, depth readout, floor phrase or sunk geyser
+OV_TOL = 0.002                  # overlay=, share=, cords= (ProofOverlays) and seenFoot=, share= (ProofSubmerge) are F3: 2 x 0.0005, doubled
+OV_EDGE = 0.008                 # a band edge cannot be placed closer: level= F2 in notches (x 0.5 m: 0.0025) + height= F2 (0.005)
+SEEN_EDGE = 0.001               # LABEL_HIDDEN against a seenFoot printed F3 (0.0005, doubled)
+LABEL_HIDDEN = 0.05             # RM_UnderLiquid.LabelHidden
+OVERLAY_HIDE_M = 0.5            # RM_UnderLiquid.OverlayHideMetres
 LABEL_HOOK = "RIMMANDRAKE_ADD_PIT_LABEL_STATE_READER_MOUSEOVER_HAS_NONE"
 ROWS = []
 B = None
@@ -310,11 +325,204 @@ def spare_of(plan, at=None):
     return tuple(sp) if sp else None
 
 
+def hook_missing(reply):
+    """The bridge's static_call answer when the build has no such reader (JawaBenchCompanionProbeTools: "Type not found: ..."
+    or "No public static <method> with N params.")."""
+    t = str(reply or "")
+    return "No public static" in t or "Type not found" in t
+
+
+def exact_metres(m):
+    """RM_Volume.FormatExactMetres: "0.00" under 0.05 m (above 0), else "0.0", then " m". Mono formats a double to 15
+    significant digits and rounds the pattern half away from zero (0.15 -> "0.2"; Python's "%.1f" gives "0.1")."""
+    m = max(0.0, float(m))
+    q = Decimal("0.01") if 0.0 < m < 0.05 else Decimal("0.1")
+    return str(Decimal("%.15g" % m).quantize(q, rounding=ROUND_HALF_UP)) + " m"
+
+
+def pit_label_want(d, dl, fluid, plan_fluid):
+    """RM_Volume.PitLabel from the true grid (RM_MapComponent_Excavation.PitLabelAt): d notches dug, dl decilitres standing,
+    fluid the recorded FluidDef (null when unrecorded: the label then names the active fluid, which this script cannot
+    read, so the plan's poured fluid stands in; None in the plan = water). -> the expected text, or None when the cell is
+    not dug or its fluid has no label known here."""
+    if d is None or d <= 0:
+        return None
+    hole = exact_metres(d * NOTCH_M)
+    if not dl or dl <= 0:
+        return "Pit, %s deep" % hole
+    word = FLUID_LABEL.get(fluid or plan_fluid or "RM_Fluid_Water")
+    if word is None:
+        return None
+    return "Pit, %s %s in %s" % (exact_metres(dl * NOTCH_M / UNITS_PER_LEVEL), word, hole)
+
+
+def judge_pit_label(reply, want):
+    """reply: ProofPitLabel's answer ("line=<the mouseover line>" | "line=vanilla" | "fogged" | "REFUSED: ..."). The line
+    starts with the true-depth label; what LineAt puts after it (a floor " · ", the walk speed " (", the depth readout
+    " — ", a sunk geyser " · ") is not judged here."""
+    t = str(reply or "")
+    if not t.startswith("line="):
+        return "UNMEASURED", "label unread: " + t[:100]
+    line = t[5:]
+    if line == "vanilla":
+        return "FAIL", "a dug square shows vanilla's line, not %r" % want
+    if line == want or any(line.startswith(want + tail) for tail in LABEL_TAILS):
+        return "PASS", line[:120]
+    return "FAIL", "shows %r, want %r" % (line[:120], want)
+
+
+def judge_labels(plan, label_read, rect_read):
+    """OL_label_text_true_depth, one row per copy: LABEL_STRIDE-spaced cells (16 of 256) read by ProofPitLabel against the
+    label the true grid names (jawa/flowworks_excavation_rect d, dl, fluid). Any wrong cell FAILs the copy; a cell that
+    cannot be judged (fogged, refused, not dug, unread) makes it UNMEASURED; a reader missing from the build is BLOCKED.
+    label_read(x, z) -> reply; rect_read(x0, z0) -> the copy's rows or None."""
+    rows = []
+    for key, x0, z0, _f, fl in plan.get("copies") or []:
+        name = "OL_label_text_true_depth_" + key
+        cells = rect_read(x0, z0)
+        if cells is None:
+            rows.append((name, "UNMEASURED", "excavation_rect unreadable: no true depth to hold the label to"))
+            continue
+        at = {(c.get("x"), c.get("z")): c for c in cells}
+        n, bad, unj, last = 0, [], [], ""
+        for i in range(0, PW, LABEL_STRIDE):
+            for j in range(0, PW, LABEL_STRIDE):
+                x, z = x0 + i, z0 + j
+                c = at.get((x, z))
+                try:
+                    d, dl = int(c.get("d")), float(c.get("dl") or 0)
+                except (AttributeError, TypeError, ValueError):
+                    unj.append("%d,%d: no excavation row" % (x, z))
+                    continue
+                want = pit_label_want(d, dl, c.get("fluid"), fl)
+                if want is None:
+                    unj.append("%d,%d: d=%d fluid=%s (not dug, or a fluid with no known label)" % (x, z, d, c.get("fluid")))
+                    continue
+                reply = label_read(x, z)
+                if hook_missing(reply):
+                    return [blocked_rows()[0]]
+                v, why = judge_pit_label(reply, want)
+                if v == "UNMEASURED":
+                    unj.append("%d,%d: %s" % (x, z, why))
+                    continue
+                n += 1
+                last = why
+                if v == "FAIL":
+                    bad.append("%d,%d: %s" % (x, z, why))
+        if bad:
+            rows.append((name, "FAIL", "%d of %d cells wrong (limit 0); first %s" % (len(bad), n, bad[0])))
+        elif unj or not n:
+            rows.append((name, "UNMEASURED", "%d cells read, %d unjudged; first %s" % (n, len(unj), unj[0] if unj else "-")))
+        else:
+            rows.append((name, "PASS", "%d cells read, 0 wrong (limit 0); last %r" % (n, last[:80])))
+    return rows or [("OL_label_text_true_depth", "UNMEASURED", "the plan has no copies")]
+
+
+def overlay_lines(text):
+    """ProofOverlays text -> ([kv of each thing line], cords float or None)."""
+    things, cords = [], None
+    for ln in str(text or "").split("\n"):
+        ln = ln.strip()
+        if ln.startswith("cords="):
+            cords = num({"c": ln[6:]}, "c")
+        elif ln.startswith("def="):
+            things.append(kv_of(ln))
+    return things, cords
+
+
+def overlay_wants(lv, h, seen):
+    """RM_UnderLiquid.OverlayAlpha(clarity, lv, h) with Seen(clarity, lv) = seen: 1 while the middle is above the line, 0
+    once OVERLAY_HIDE_M stands over the top, else seen (0 under LABEL_HIDDEN). Within OV_EDGE of a band edge (or SEEN_EDGE
+    of LABEL_HIDDEN) both neighbours are due: the printed values cannot place it. -> (set of due alphas, at an edge)."""
+    if lv <= 0:
+        return {1.0}, False
+    mids = {lv >= h * 0.5} | ({True, False} if abs(lv - h * 0.5) <= OV_EDGE else set())
+    hides = {lv - h >= OVERLAY_HIDE_M - 1e-4} | ({True, False} if abs(lv - h - OVERLAY_HIDE_M) <= OV_EDGE else set())
+    fades = {0.0 if seen < LABEL_HIDDEN else seen} | ({0.0, seen} if abs(seen - LABEL_HIDDEN) <= SEEN_EDGE else set())
+    out = set()
+    for m in mids:
+        for hd in hides:
+            out |= {1.0} if not m else {0.0} if hd else fades
+    return out, len(out) > 1
+
+
+def judge_overlay(kv, ov_text, want_def):
+    """kv: ProofSubmerge's read of the thing (level notches, height, share, seenFoot, label = the law); ov_text: ProofOverlays
+    at its cell. The thing's line must carry the overlay alpha the law is due (an icon drawn whole where the law hides or
+    fades it is FAIL), the realtime verdict (whole dry, hidden once its label is gone, else split at the same share), a flame
+    out once its top is under the line, and cords (a rope on the floor) seen as the floor is (seenFoot wet, 1 dry)."""
+    t = str(ov_text or "")
+    if not t.strip() or t.startswith("REFUSED") or "cords=" not in t:
+        return "UNMEASURED", "overlay read unusable: " + t[:100]
+    things, cords = overlay_lines(t)
+    mine = [k for k in things if k.get("def") == want_def]
+    if not mine:
+        return "UNMEASURED", "ProofOverlays lists no %s at the cell (%s)" % (want_def, [k.get("def") for k in things][:4])
+    o = mine[0]
+    a, osh, flame, rt = num(o, "overlay"), num(o, "share"), o.get("flame"), o.get("realtime")
+    if None in (a, osh, cords) or flame not in ("none", "shows", "out") or rt not in ("whole", "hidden", "bodycover", "split"):
+        return "UNMEASURED", "overlay line garbled: %s cords=%s" % (sorted(o.items())[:6], cords)
+    lvn, h, sh, foot, lab = (num(kv, k) for k in ("level", "height", "share", "seenFoot", "label"))
+    if None in (lvn, h, sh, foot, lab):
+        return "UNMEASURED", "the law's read lacks level/height/share/seenFoot/label: %s" % sorted(kv)[:8]
+    lv = lvn * NOTCH_M
+    wants, edge = overlay_wants(lv, h, foot)
+    wet = lv > 0 and sh > 0
+    top_edge = abs(lv - h) <= OV_EDGE
+    fails = []
+    if not any(abs(a - w) <= OV_TOL for w in wants):
+        fails.append("overlay %s, law %s%s" % (o.get("overlay"), "/".join("%.3f" % w for w in sorted(wants)),
+                                               " (drawn whole)" if a >= 1 - EPS else " (hidden)" if a <= EPS else ""))
+    rts = {"whole"} if not wet else ({"hidden"} if lab <= EPS else {"split"}) | ({"hidden", "split"} if top_edge else set())
+    if rt not in rts:
+        fails.append("realtime=%s, law %s" % (rt, "/".join(sorted(rts))))
+    elif rt == "split" and abs(osh - sh) > OV_TOL:
+        fails.append("realtime share %s, law share %s" % (o.get("share"), kv.get("share")))
+    if flame != "none":
+        outs = {False} if not wet else {True, False} if top_edge else {lab <= EPS or sh >= 1 - EPS}
+        if (flame == "out") not in outs:
+            fails.append("flame %s with its top %s the line" % (flame, "under" if True in outs else "above"))
+    cw = foot if lv > 0 else 1.0
+    if abs(cords - cw) > OV_TOL:
+        fails.append("cords %.3f, the floor seen %.3f" % (cords, cw))
+    got = "overlay %s (law %s%s) realtime %s flame %s cords %.3f" % (
+        o.get("overlay"), "/".join("%.3f" % w for w in sorted(wants)), ", band edge" if edge else "", rt, flame, cords)
+    return ("FAIL", "; ".join(fails) + " | " + got) if fails else ("PASS", got)
+
+
+def judge_overlays(plan, proof, overlays_read):
+    """OL_overlays_hidden, one row per planned building, item and minified good in every copy: judge_overlay of
+    ProofOverlays(x, z) against ProofSubmerge(x, z). Left out: corpses (OverlayAlpha stands a corpse at the item height,
+    ProofSubmerge at its pawn's: one read cannot give the other's law) and pawns (none planned). A reader missing from
+    the build is one BLOCKED row. proof(x, z) / overlays_read(x, z) -> reply text."""
+    rows = []
+    for key, x0, z0, f, fl, kind, dn, x, z in plan_rows(plan):
+        if kind == "corpse":
+            continue
+        name = "OL_overlays_hidden_%s_%s_%s" % (key, kind, dn)
+        ov = overlays_read(x, z)
+        if hook_missing(ov):
+            return [blocked_rows()[1]]
+        text = proof(x, z)
+        kv = kv_of(text)
+        vac = vacuous(text, kv)
+        want_def = "MinifiedThing" if kind == "mini" else dn
+        if vac or not kv:
+            rows.append((name, "UNMEASURED", vac or "the law's read refused (%s): the overlay's due alpha is unknown" % text[:80]))
+        elif kv.get("def") != want_def:
+            rows.append((name, "UNMEASURED", "first thing at the cell is %s, not %s" % (kv.get("def"), want_def)))
+        else:
+            rows.append((name,) + judge_overlay(kv, ov, want_def))
+    return rows or [("OL_overlays_hidden", "UNMEASURED", "the plan has no building, item or minified good")]
+
+
 def blocked_rows():
-    return [("OL_label_text_true_depth", "BLOCKED", "no reader for the on-screen pit label (" + LABEL_HOOK + "); "
-             "expected text is pinned offline by PitLabelChecks"),
-            ("OL_overlays_hidden", "BLOCKED", "overlay drawers (power icon, battery bar, cooler arrow, torch flame, GSS "
-             "rope and connector) do not report to the law (" + OVERLAY_HOOK + ")")]
+    """The two reader rows when the build lacks the reader (the bridge says the method or type is missing): BLOCKED, so the
+    run never reads PASS over a reader that is not there."""
+    return [("OL_label_text_true_depth", "BLOCKED", "the build has no pit label reader (" + LABEL_T + ".ProofPitLabel, "
+             "676c5cd131; " + LABEL_HOOK + ")"),
+            ("OL_overlays_hidden", "BLOCKED", "the build has no overlay reader (" + SUB + ".ProofOverlays, 676c5cd131; "
+             + OVERLAY_HOOK + "): power icon, cooler arrow, torch flame and GSS cords cannot be read")]
 
 
 def exit_code(rows):
@@ -391,14 +599,27 @@ def main(argv):
             r = call("jawa/list_things", rect="%d,%d,%d,%d" % (x0, z0, PW, PW), limit=2000)
             seen[(x0, z0)] = r.get("things") if r.get("success") is not False and isinstance(r.get("things"), list) else None
         return seen[(x0, z0)]
-    rows = judge_scene(plan, lambda x, z: static(SUB, "ProofSubmerge", "%d,%d" % (x, z)), here)
+    proofs = {}
+
+    def sub(x, z):
+        """ProofSubmerge, read once a cell: judge_scene and judge_overlays share it."""
+        if (x, z) not in proofs:
+            proofs[(x, z)] = static(SUB, "ProofSubmerge", "%d,%d" % (x, z))
+        return proofs[(x, z)]
+
+    def rect(x0, z0):
+        """The copy's true depth grid (one excavation_rect read), or None when unreadable."""
+        r = call("jawa/flowworks_excavation_rect", x=x0, z=z0, w=PW, h=PW, includeTerrain=False)
+        return r.get("rows") if r.get("success") is not False and isinstance(r.get("rows"), list) else None
+    rows = judge_scene(plan, sub, here)
+    rows += judge_overlays(plan, sub, lambda x, z: static(SUB, "ProofOverlays", "%d,%d" % (x, z)))
+    rows += judge_labels(plan, lambda x, z: static(LABEL_T, "ProofPitLabel", "%d,%d" % (x, z)), rect)
     if spare:
         rows += acts(spare)
     else:
         rows.append(("OL_pour_never_no_room", "UNMEASURED", "acts off (pass --acts to pour on the spare pit)" if not act else
                      "the plan names no spare pit (a scene_plan.json older than big_pit_scene's spare): re-run big_pit_scene.py "
                      "plan and stage, or pass --acts x,z for a save whose spare is known"))
-    rows += blocked_rows()
     call("jawa/screenshot_mode", enabled=False)
     rows.append(("OL_screenshot_mode_off",) + judge_screenshot(sm0, call("jawa/screenshot_mode")))
     for r in rows:
