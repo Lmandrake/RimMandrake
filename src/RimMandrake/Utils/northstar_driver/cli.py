@@ -22,7 +22,7 @@ Never touches ModsConfig.xml (read-only fingerprint), never launches the game, n
 bridge lock (you hold it: `rimflow bridge who`). Output is JSON (LF) at --out, default
 Transient/northstar/<Mod>_<utc>.json, shaped for modcheck: {mod, mode, preflight[], bars[], summary,
 expected, all_green, timing, mod_hash}. A LIVE run is then recorded through
-modcheck.status.record_run (`modcheck status` shows it); --no-record skips that. Exit 0 = ran and all_green, 1 = ran not green, 2 = refused (dirty site).
+modcheck.status.record_run (`modcheck status` shows it); --no-record skips that. Exit 0 = ran and all_green, 1 = ran not green, 2 = refused (dirty site, or the bridge could not be reached).
 A suite plan runs one chain at a time and REWRITES --out after every chain with `partial: true` (chains_done,
 chains_pending), so a killed run still leaves its finished rows; the final write sets `partial: false`.
 --chains a,b runs only those chains, --skip-chains a,b drops them (a long-wait chain split into its own run);
@@ -181,6 +181,34 @@ def cmd_needs_mods(args):
     return exit_code(c.status)
 
 
+class _Opened(object):
+    """`with` over a session open_or_refuse already opened: closes it, never opens it again."""
+
+    def __init__(self, s):
+        self.s = s
+
+    def __enter__(self):
+        return self.s
+
+    def __exit__(self, *a):
+        return self.s.__exit__(*a)
+
+
+def open_or_refuse(s):
+    """Open session `s` -> None, or the reason the bridge could not be reached (no token, refused, timed out).
+    A run that cannot reach the game is REFUSED (exit 2), never NOT GREEN (1): it measured nothing about the mod.
+    An uncaught RimBridgeError escaped main as exit 1 with a traceback (measured 2026-11-21, game down), so
+    judge_certificate.red_seen and every Stage 6 reader saw "no game" as a failed bar. Errors after the open still
+    raise: those are a run that started and broke, not a game that was never reached."""
+    try:
+        s.__enter__()
+        return None
+    except Exception as ex:   # noqa: BLE001 - only the bridge's own connect errors are a refusal; the rest re-raise
+        if type(ex).__name__ in ("RimBridgeError", "SessionError") or isinstance(ex, OSError):
+            return "%s: %s" % (type(ex).__name__, str(ex).strip().splitlines()[0][:300] if str(ex).strip() else "")
+        raise
+
+
 def cmd_run(args):
     plan = load_plan(args.plan) if args.plan else None
     s, game = open_session(args, plan)
@@ -192,7 +220,11 @@ def cmd_run(args):
            "config": args.config, "config_list": running_list_for(args)}
     out = args.out or _rel("Transient", "northstar", "%s%s_%s.json" % (
         mod, "_full" if args.config == "full" else "", time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())))
-    with s:
+    unreachable = open_or_refuse(s)
+    if unreachable:
+        print("%s: REFUSED  cannot reach the bridge, nothing ran, no results written: %s" % (mod, unreachable))
+        return 2
+    with _Opened(s):
         cs = pf.run_preflight(s, mod_dirs=[] if args.mock else mod_dirs_for(mod),
                               expect_ids=getattr(plan, "EXPECT_MODS", ()) or args.expect_id or (),
                               need_god=args.god or getattr(plan, "NEED_GOD", False),

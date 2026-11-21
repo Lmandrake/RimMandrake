@@ -535,7 +535,7 @@
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live burn_line   (minimal list + mandrake.rm.biomes)",
+   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains burn_line",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
@@ -549,7 +549,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
-   }
+   },
+   "command_note": "minimal list + mandrake.rm.biomes"
   },
   "sc_ash_watered": {
    "id": "sc_ash_watered",
@@ -562,7 +563,7 @@
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live ash_fertility_watered   (minimal list + mandrake.rm.biomes)",
+   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains ash_fertility_watered",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
@@ -576,7 +577,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
-   }
+   },
+   "command_note": "minimal list + mandrake.rm.biomes"
   },
   "sc_burn_compounds": {
    "id": "sc_burn_compounds",
@@ -589,7 +591,7 @@
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live fresh_burn_bonus   (minimal list + mandrake.rm.biomes)",
+   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains fresh_burn_bonus",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
@@ -603,7 +605,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
-   }
+   },
+   "command_note": "minimal list + mandrake.rm.biomes"
   },
   "sc_grass_regreens": {
    "id": "sc_grass_regreens",
@@ -616,7 +619,7 @@
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live embergrass_regrow   (minimal list + mandrake.rm.biomes)",
+   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains embergrass_regrow",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
@@ -630,7 +633,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
-   }
+   },
+   "command_note": "minimal list + mandrake.rm.biomes"
   },
   "sc_scorchfruit": {
    "id": "sc_scorchfruit",
@@ -643,7 +647,7 @@
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live scorchfruit_fire_born   (minimal list + mandrake.rm.biomes)",
+   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains scorchfruit_fire_born",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
@@ -657,7 +661,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
-   }
+   },
+   "command_note": "minimal list + mandrake.rm.biomes"
   },
   "sc_populations": {
    "id": "sc_populations",
@@ -670,7 +675,7 @@
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live plant_census   (minimal list + mandrake.rm.biomes)",
+   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains plant_census",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
@@ -684,7 +689,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
-   }
+   },
+   "command_note": "minimal list + mandrake.rm.biomes"
   },
   "sc_ruins": {
    "id": "sc_ruins",
@@ -697,7 +703,7 @@
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live ruins   (minimal list + mandrake.rm.biomes)",
+   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains ruins",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
@@ -711,7 +717,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
-   }
+   },
+   "command_note": "minimal list + mandrake.rm.biomes"
   },
   "sc_firehawk": {
    "id": "sc_firehawk",
@@ -724,7 +731,7 @@
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live firehawk   (minimal list + mandrake.rm.biomes)",
+   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains firehawk",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
@@ -738,7 +745,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
-   }
+   },
+   "command_note": "minimal list + mandrake.rm.biomes"
   },
   "sc_furnace": {
    "id": "sc_furnace",
@@ -751,7 +759,7 @@
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live furnace_warmth   (minimal list + mandrake.rm.biomes)",
+   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains furnace_warmth",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
@@ -765,7 +773,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
-   }
+   },
+   "command_note": "minimal list + mandrake.rm.biomes"
   },
   "sc_ashwallow": {
    "id": "sc_ashwallow",
@@ -778,7 +787,7 @@
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live burrowers   (minimal list + mandrake.rm.biomes)",
+   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains burrowers",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
@@ -792,7 +801,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
-   }
+   },
+   "command_note": "minimal list + mandrake.rm.biomes"
   },
   "sc_ullai": {
    "id": "sc_ullai",
@@ -805,7 +815,7 @@
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live herd_follows_drive   (minimal list + mandrake.rm.biomes)",
+   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains ullai_and_giant",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
@@ -813,7 +823,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
-   }
+   },
+   "command_note": "minimal list + mandrake.rm.biomes"
   },
   "sc_three_skies": {
    "id": "sc_three_skies",
@@ -826,7 +837,7 @@
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live cinderfall   (minimal list + mandrake.rm.biomes)",
+   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains cinderfall",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
@@ -840,7 +851,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
-   }
+   },
+   "command_note": "minimal list + mandrake.rm.biomes"
   },
   "sc_no_rain": {
    "id": "sc_no_rain",
@@ -853,7 +865,7 @@
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live no_ordinary_rain   (minimal list + mandrake.rm.biomes)",
+   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains no_ordinary_rain",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
@@ -867,7 +879,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
-   }
+   },
+   "command_note": "minimal list + mandrake.rm.biomes"
   },
   "sc_walk": {
    "id": "sc_walk",
@@ -880,7 +893,7 @@
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live walk_season   (full list)",
+   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains walk_season",
    "why_game": "two weeks of ordinary play with a mid-way reload: clocks, saves and the whole list together",
    "why_full_list": "the walk is ordinary play on his list (leaf walk_season_on_the_pyre, tier live_full)",
    "entry_exists": true,
@@ -888,7 +901,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
-   }
+   },
+   "command_note": "full list"
   },
   "sc_firefoam_sprayer": {
    "id": "sc_firefoam_sprayer",
@@ -901,7 +915,7 @@
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live firefoam_sprayer   (minimal list + mandrake.rm.biomes)",
+   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains firefoam_sprayer",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
@@ -915,7 +929,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
-   }
+   },
+   "command_note": "minimal list + mandrake.rm.biomes"
   },
   "sc_sand_shovel": {
    "id": "sc_sand_shovel",
@@ -928,7 +943,7 @@
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live sand_shovel   (minimal list + mandrake.rm.biomes)",
+   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains sand_shovel",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
@@ -942,7 +957,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
-   }
+   },
+   "command_note": "minimal list + mandrake.rm.biomes"
   },
   "sc_rite_hook_alone": {
    "id": "sc_rite_hook_alone",
@@ -955,7 +971,7 @@
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live rite_hook_alone   (minimal list + mandrake.rm.biomes)",
+   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains rite_hook_alone",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
@@ -969,7 +985,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
-   }
+   },
+   "command_note": "minimal list + mandrake.rm.biomes"
   },
   "sc_heat_dome": {
    "id": "sc_heat_dome",
@@ -982,7 +999,7 @@
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live heat_dome   (minimal list + mandrake.rm.biomes)",
+   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains heat_dome",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
@@ -996,7 +1013,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
-   }
+   },
+   "command_note": "minimal list + mandrake.rm.biomes"
   },
   "sc_fire_dusts_ash": {
    "id": "sc_fire_dusts_ash",
@@ -1009,7 +1027,7 @@
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live fire_tick_effects   (minimal list + mandrake.rm.biomes)",
+   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains fire_tick_effects",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
@@ -1023,7 +1041,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
-   }
+   },
+   "command_note": "minimal list + mandrake.rm.biomes"
   },
   "sc_flamefang_venom": {
    "id": "sc_flamefang_venom",
@@ -1036,7 +1055,7 @@
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live flamefang_venom   (minimal list + mandrake.rm.biomes)",
+   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains flamefang_venom",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
@@ -1050,7 +1069,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
-   }
+   },
+   "command_note": "minimal list + mandrake.rm.biomes"
   },
   "sc_foreign_arrivals": {
    "id": "sc_foreign_arrivals",
@@ -1063,7 +1083,7 @@
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live foreign_arrivals   (minimal list + mandrake.rm.biomes)",
+   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains foreign_arrivals",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
@@ -1071,7 +1091,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
-   }
+   },
+   "command_note": "minimal list + mandrake.rm.biomes"
   },
   "sc_firehawk_rewards": {
    "id": "sc_firehawk_rewards",
@@ -1084,7 +1105,7 @@
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live firehawk_first_sighting_letter   (minimal list + mandrake.rm.biomes)",
+   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains firehawk_first_sighting_letter",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": false,
@@ -1092,7 +1113,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry ABSENT in validation.py"
-   }
+   },
+   "command_note": "minimal list + mandrake.rm.biomes"
   },
   "P_startup_and_def_wiring": {
    "id": "P_startup_and_def_wiring",
@@ -1104,7 +1126,7 @@
    "reads": [
     "src/RimMandrake/Pyrelands/validation.py"
    ],
-   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live startup_and_def_wiring",
+   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains startup_and_def_wiring",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
@@ -1129,7 +1151,7 @@
    "reads": [
     "src/RimMandrake/Pyrelands/validation.py"
    ],
-   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live mapgen_log",
+   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains mapgen_log",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
@@ -1154,7 +1176,7 @@
    "reads": [
     "src/RimMandrake/Pyrelands/validation.py"
    ],
-   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live grass_cover",
+   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains grass_cover",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
@@ -1179,7 +1201,7 @@
    "reads": [
     "src/RimMandrake/Pyrelands/validation.py"
    ],
-   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live animal_census",
+   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains animal_census",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
@@ -1204,7 +1226,7 @@
    "reads": [
     "src/RimMandrake/Pyrelands/validation.py"
    ],
-   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live ambient_ash_drift",
+   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains ambient_ash_drift",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
@@ -1229,7 +1251,7 @@
    "reads": [
     "src/RimMandrake/Pyrelands/validation.py"
    ],
-   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live scorchfruit_produces",
+   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains scorchfruit_produces",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
@@ -1254,7 +1276,7 @@
    "reads": [
     "src/RimMandrake/Pyrelands/validation.py"
    ],
-   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live scorchfruit_spoils",
+   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains scorchfruit_spoils",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
@@ -1279,7 +1301,7 @@
    "reads": [
     "src/RimMandrake/Pyrelands/validation.py"
    ],
-   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live furnace_room",
+   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains furnace_room",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
@@ -1304,7 +1326,7 @@
    "reads": [
     "src/RimMandrake/Pyrelands/validation.py"
    ],
-   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live ashfall_weather_accumulation",
+   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains ashfall_weather_accumulation",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
@@ -1329,7 +1351,7 @@
    "reads": [
     "src/RimMandrake/Pyrelands/validation.py"
    ],
-   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live ashfall_drifts",
+   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains ashfall_drifts",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
@@ -1354,7 +1376,7 @@
    "reads": [
     "src/RimMandrake/Pyrelands/validation.py"
    ],
-   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live blackrain",
+   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains blackrain",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
@@ -1378,7 +1400,7 @@
    "reads": [
     "src/RimMandrake/Pyrelands/firefoam_aim_live_proof.py"
    ],
-   "command": "python.exe src\\RimMandrake\\Pyrelands\\firefoam_aim_live_proof.py",
+   "command": "python.exe src/RimMandrake/Pyrelands/firefoam_aim_live_proof.py",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
@@ -1396,7 +1418,7 @@
    "reads": [
     "src/RimMandrake/Pyrelands/gate_live_proof.py"
    ],
-   "command": "python.exe src\\RimMandrake\\Pyrelands\\gate_live_proof.py",
+   "command": "python.exe src/RimMandrake/Pyrelands/gate_live_proof.py",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
@@ -1415,7 +1437,7 @@
    "reads": [
     "src/RimMandrake/Pyrelands/firehawk_rewards_live.py"
    ],
-   "command": "modcheck run Pyrelands --chains firehawk_first_sighting_letter   (minimal list + mandrake.rm.biomes; state reads only, flight never watched)",
+   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains firehawk_first_sighting_letter",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
@@ -1428,7 +1450,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in firehawk_rewards_live.py"
-   }
+   },
+   "command_note": "minimal list + mandrake.rm.biomes; state reads only, flight never watched"
   },
   "firehawk_crestfeather_yield": {
    "id": "firehawk_crestfeather_yield",
@@ -1440,7 +1463,7 @@
    "reads": [
     "src/RimMandrake/Pyrelands/firehawk_rewards_live.py"
    ],
-   "command": "modcheck run Pyrelands --chains firehawk_crestfeather_yield   (minimal list + mandrake.rm.biomes; state reads only, flight never watched)",
+   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains firehawk_crestfeather_yield",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
@@ -1453,7 +1476,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in firehawk_rewards_live.py"
-   }
+   },
+   "command_note": "minimal list + mandrake.rm.biomes; state reads only, flight never watched"
   },
   "RECORD_ART_SHEET": {
    "id": "RECORD_ART_SHEET",
@@ -1549,7 +1573,7 @@
     "src/RimMandrake/Pyrelands/wind_burn_live.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src\\RimMandrake\\Pyrelands\\wind_burn_live.py   (pyrelands tier, a Pyrelands map current, bridge held)",
+   "command": "python.exe src/RimMandrake/Pyrelands/wind_burn_live.py",
    "why_game": "a running Pyrelands map with the biome's clocks and the bridge (tier_reason of the leaf)",
    "why_full_list": null,
    "entry_exists": true,
@@ -1557,7 +1581,8 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in wind_burn_live.py (5 of 5 PASS live on 2026-11-16, before this bar existed)"
-   }
+   },
+   "command_note": "pyrelands tier, a Pyrelands map current, bridge held"
   },
   "T_FURNACE_ART_OFFLINE": {
    "stage": "4-5",
