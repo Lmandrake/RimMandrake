@@ -12,8 +12,17 @@ spec design/specs/2026-11-13-maturation-pipeline.md, Stage 6 exit and Stage 7):
       one JSON line, the identity fields a live driver merges into each rows.jsonl row it writes (run it on the game
       machine, after the deploy and the list swap, before the check)
   python3 src/RimMandrake/rimflow/build_match.py check --mod M [--visit N]
-      reads visit N's rows against the walk build (the labelled savegame its Exit block names, read on Archmagi):
-      one line per check, then cases read, how many count, the limit and the worst; exit 0 only when every one counts
+      reads each check's last row (visit N's, else the latest earlier visit's) against the walk build (the labelled
+      savegame its Exit block names, read on Archmagi): one line per check, then cases read, how many count, the checks
+      to run by name, and the worst; exit 0 only when every one counts and the walk folder is the current source
+
+Owner, 2026-11-21 (item RIMMANDRAKE_RERUN_ONLY_CHECKS_THE_CHANGE_TOUCHES_NOT_ALL_203), narrowing the 2026-11-17 ruling
+to the checks a change touches: "No all 203 checks should NOT have to be rerun it should only be the ones pertaining to
+the switch." A row made on an earlier build still counts when the change since its commit (`mod_sha`) touches nothing
+its check reads or exercises (rerun_relation.py, one relation for every stage); a touched check, or one whose relation
+cannot be read, runs again, and only those. A game build that differs still re-runs the row: the game itself changed.
+When the deployed walk folder is not the current source (its .srchash differs), that is one act, a deploy, never a
+rerun of checks.
 
 Where each piece comes from:
   mod hash     sha256 over the deployed folder's files (posix relative path, size, bytes; sorted), so a redeploy of the
@@ -40,17 +49,19 @@ import subprocess
 import sys
 import xml.etree.ElementTree as ET
 
+import rerun_relation as RR
+
 HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE) if HERE not in sys.path else None
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 UTILS = os.path.join(REPO, "src", "RimMandrake", "Utils")
 
 WALK_HOST = "archmagi"                       # he walks on Archmagi (spec Stage 8; GAMES in maturation.py)
 STANDIN_ENV = "MATURATION_WALK_BUILD"
 CACHE_DIR = "/mnt/d/ClaudeWork/rimmandrake/build_match"
-CHECKED = ("mod_hash", "game_build")         # must equal the walk's
 REQUIRED = ("mod_hash", "game_build", "active_mods")
-WORDS = {"mod_hash": "mod hash", "game_build": "game build"}
-LIMIT = "every check counts: its mod hash and game build equal the walk's, its list equals its reference list"
+LIMIT = ("every check counts: its game build equals the walk's, its list equals its reference list, and its mod hash "
+         "equals the walk's or the change since its commit touches nothing it reads or exercises")
 
 
 # ---- reading the machine ---------------------------------------------------------------------------------------------
@@ -357,6 +368,7 @@ def walk_build(root, mod, savegame, host=None, mods_dir=None, version_txt=None, 
         m, _, v = _paths()
         mods_dir, version_txt = mods_dir or m, version_txt or v
     _, folder = _mod_folder(root, mod, mods_dir)
+    out["deployed_folder"] = folder
     out["mod_hash"] = deployed_hash(folder, cache_dir=cache_dir)
     out["game_build"] = game_build(version_txt)
     if not out["mod_hash"]:
@@ -431,8 +443,9 @@ def _first_diff(a, b):
     return "none"
 
 
-def judge_row(test, spec, r, walk, tiers):
-    """-> (counts, why) for one check's last row."""
+def judge_row(test, spec, r, walk, tiers, relation=None):
+    """-> (counts, why) for one check's last row. relation: rerun_relation.relate's reading; a row whose mod hash
+    differs from the walk's counts only when it reads this check untouched."""
     if walk.get("why"):
         return False, "the walk build is unreadable, so nothing counts yet: %s" % "; ".join(walk["why"])
     if not r:
@@ -440,14 +453,25 @@ def judge_row(test, spec, r, walk, tiers):
     for f in REQUIRED:
         if not r.get(f):
             return False, "the row records no %s (run `build_match.py identity` and merge it into the row)" % f
-    for f in CHECKED:
-        if r.get(f) != walk.get(f):
-            return False, "the %s differs: the row ran on %s, he walks %s" % (WORDS[f], r.get(f), walk.get(f))
+    carried = ""
+    if r.get("game_build") != walk.get("game_build"):
+        return False, "the game build differs: the row ran on %s, he walks %s" % (r.get("game_build"),
+                                                                                  walk.get("game_build"))
+    if r.get("mod_hash") != walk.get("mod_hash"):
+        rel = ((relation or {}).get("rows") or {}).get(test)
+        if not rel:
+            return False, "the mod hash differs (the row ran on %s, he walks %s) and no change relation was read" % (
+                r.get("mod_hash"), walk.get("mod_hash"))
+        if rel["state"] == "touched":
+            return False, "the change since %s touches it: %s" % (rel.get("old"), rel["why"])
+        if rel["state"] == "unreadable":
+            return False, "no readable change relation (%s): declare what it exercises" % rel["why"]
+        carried = "; made on %s, and the change since touches nothing it reads or exercises" % rel.get("old")
     if is_full(spec):
         if not same_list(r.get("active_mods"), walk.get("active_mods")):
             return False, "a full-list test whose list is not his walk's: %s" % _first_diff(
                 r.get("active_mods"), walk.get("active_mods"))
-        return True, "mod hash, game build and his walk's full list (%d mods)" % len(walk["active_mods"])
+        return True, "game build and his walk's full list (%d mods)%s" % (len(walk["active_mods"]), carried)
     tier = spec.get("tier") or r.get("tier")
     if not tier:
         return False, "a minimal-list test whose row names no tier"
@@ -459,17 +483,20 @@ def judge_row(test, spec, r, walk, tiers):
     if not same_list(r.get("active_mods"), ref):
         return False, "a minimal-list test whose list is not tier %s's: %s" % (tier, _first_diff(
             r.get("active_mods"), ref))
-    return True, "mod hash, game build and tier %s's list (%d mods)%s" % (
-        tier, len(ref), "" if spec.get("tier") else "; tier named by the row, the test table names none")
+    return True, "game build and tier %s's list (%d mods)%s%s" % (
+        tier, len(ref), "" if spec.get("tier") else "; tier named by the row, the test table names none", carried)
 
 
-def compare(tests, last_rows, walk, tiers):
-    """tests: [(id, spec)]; last_rows: {id: the last row or None}. -> {rows: {id: {counts, why, full}}, read, count,
-    rerun, worst}."""
+def compare(tests, last_rows, walk, tiers, relation=None, deploy=None):
+    """tests: [(id, spec)]; last_rows: {id: the last row or None}; relation: rerun_relation.relate's reading; deploy:
+    the one act owed when the walk folder is not the current source (None when it is). -> {rows: {id: {counts, why,
+    full}}, read, count, rerun, worst, deploy, undeclared, unreadable}."""
     out = {"rows": {}, "rerun": [], "worst": None, "standin": walk.get("standin"), "walk_why": list(walk.get("why") or []),
-           "walk": {k: walk.get(k) for k in ("game", "mod_hash", "game_build", "active_mods", "standin")}}
+           "walk": {k: walk.get(k) for k in ("game", "mod_hash", "game_build", "active_mods", "standin")},
+           "deploy": deploy, "undeclared": list((relation or {}).get("undeclared") or []),
+           "unreadable": list((relation or {}).get("unreadable") or []), "new": (relation or {}).get("new")}
     for t, spec in tests:
-        ok, why = judge_row(t, spec, last_rows.get(t), walk, tiers)
+        ok, why = judge_row(t, spec, last_rows.get(t), walk, tiers, relation)
         out["rows"][t] = {"counts": ok, "why": why, "full": is_full(spec)}
         if not ok:
             out["rerun"].append(t)
@@ -482,8 +509,14 @@ def compare(tests, last_rows, walk, tiers):
 
 
 def summary(res):
-    return "build match: read %d case(s), %d count, %d to re-run; limit: %s; worst: %s%s%s" % (
-        res["read"], res["count"], len(res["rerun"]), LIMIT, res["worst"] or "none (every one counts)",
+    names = res["rerun"][:24]
+    return "build match: read %d case(s), %d count, %d to run (%s)%s%s; limit: %s; worst: %s%s%s" % (
+        res["read"], res["count"], len(res["rerun"]), ", ".join(names) + (
+            " and %d more" % (len(res["rerun"]) - len(names)) if len(res["rerun"]) > len(names) else "") or "none",
+        "; owed first: %s" % res["deploy"] if res.get("deploy") else "",
+        "; %d changed file(s) no check declares (%s)" % (len(res["undeclared"]), ", ".join(res["undeclared"][:6]))
+        if res.get("undeclared") else "",
+        LIMIT, res["worst"] or "none (every one counts)",
         "; %d row(s) name no check in the test table (read, not counted)" % res["unmatched"]
         if res.get("unmatched") else "",
         "; walk from stand-in %s" % res["standin"] if res.get("standin") else "")
@@ -501,13 +534,76 @@ def last_rows(rows):
     return out
 
 
-def check_visit(root, mod, n, tt, savegame, cache_dir=CACHE_DIR):
-    """The reading maturation.py's Stage 6 exit makes: the visit's last rows against the walk build."""
-    sys.path.insert(0, HERE) if HERE not in sys.path else None
+def carried_rows(root, mod, n=None):
+    """{check id: its last row}: visit n's last row for each check it ran, else the last row of the latest earlier
+    visit that ran it (a row is carried with `_visit` naming its visit). n None: the latest visit on disk. Rows naming
+    no check are kept as a list under "" (visit n's only)."""
     import maturation as M
-    rows = M._jsonl(os.path.join(M.mod_dir(root, mod), M.INGAME_DIR, "visit_%d" % n, "rows.jsonl")) or []
+    have = M.visit_numbers(root, mod) or []
+    n = n or (have[-1] if have else 1)
+    out = {}
+    for k in sorted(v for v in have if v <= n):
+        rows = M._jsonl(os.path.join(M.mod_dir(root, mod), M.INGAME_DIR, "visit_%d" % k, "rows.jsonl")) or []
+        for t, r in last_rows(rows).items():
+            if t == "":
+                if k == n:
+                    out[""] = r
+                continue
+            out[t] = dict(r, _visit=k)
+    return out
+
+
+def srchash_files(folder):
+    """{name: text} of every Assemblies/*.srchash under a mod folder; {} when there is none; None unreadable."""
+    a = os.path.join(folder or "", "Assemblies")
+    if not folder or not os.path.isdir(a):
+        return {}
+    try:
+        out = {}
+        for nm in sorted(os.listdir(a)):
+            if nm.endswith(".srchash"):
+                with open(os.path.join(a, nm), encoding="utf-8", errors="replace") as f:
+                    out[nm] = f.read()
+        return out
+    except OSError:
+        return None
+
+
+def walk_source(root, mod, walk):
+    """-> (deploy, source): deploy None when the deployed walk folder's .srchash files equal the source's at HEAD (or
+    the mod has none), else the one act owed: a deploy, named; source: the source commit the relation reads to."""
+    sha = source_sha(root, mod)
+    if walk.get("standin"):
+        return walk.get("deploy"), walk.get("source_sha") or sha
+    folder = walk.get("deployed_folder")
+    if not folder:
+        return None, sha
+    dep = srchash_files(folder)
+    src = srchash_files(os.path.join(root, "src", "RimMandrake", mod))
+    if dep is None or src is None:
+        return ("the walk folder's .srchash cannot be read (%s): deploy %s from the source at %s and read again" % (
+            folder, mod, sha)), sha
+    if src and dep != src:
+        return ("the deployed walk folder %s is not the source at %s (its .srchash differs): deploy it "
+                "(`python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod %s --apply`); no check reruns for this"
+                % (folder, sha, mod)), sha
+    return None, sha
+
+
+def check_visit(root, mod, n, tt, savegame, cache_dir=CACHE_DIR, runner=None):
+    """The reading maturation.py's Stage 6 exit makes: each check's last row (visit n's, else an earlier visit's)
+    against the walk build, through the change relation."""
+    import maturation as M
+    last = carried_rows(root, mod, n)
     walk = walk_build(root, mod, savegame, cache_dir=cache_dir)
-    return compare(M.ingame_tests(tt), last_rows(rows), walk, tier_lister(walk, cache_dir))
+    tests = M.ingame_tests(tt)
+    deploy, _ = walk_source(root, mod, walk) if not walk.get("why") else (None, None)
+    kw = {"runner": runner} if runner else {}
+    try:
+        rel = RR.relate(root, mod, dict(tests), {t: r for t, r in last.items() if t}, **kw)
+    except Exception as e:      # a relation that cannot be read relates nothing: each changed row runs again
+        rel = {"rows": {}, "undeclared": [], "unreadable": [], "error": "%s: %s" % (type(e).__name__, e)}
+    return compare(tests, last, walk, tier_lister(walk, cache_dir), relation=rel, deploy=deploy)
 
 
 def main(argv=None):
@@ -536,9 +632,14 @@ def main(argv=None):
     blk = M.ingame_exit_block(M.read_text(args.root, args.mod, "%s/visit_%d/SUMMARY.md" % (M.INGAME_DIR, n))) or {}
     res = check_visit(args.root, args.mod, n, tt, blk.get("savegame"))
     for t, x in res["rows"].items():
-        print("%s  %s%s: %s" % ("ok  " if x["counts"] else "RERUN", t, " (full list)" if x["full"] else "", x["why"]))
+        if not x["counts"]:
+            print("RERUN  %s%s: %s" % (t, " (full list)" if x["full"] else "", x["why"]))
+    for f in res.get("undeclared") or []:
+        print("UNDECLARED  %s: changed, and no check declares it" % f)
+    if res.get("deploy"):
+        print("DEPLOY  %s" % res["deploy"])
     print(summary(res))
-    return 0 if not res["rerun"] and res["read"] else 1
+    return 0 if not res["rerun"] and res["read"] and not res.get("deploy") else 1
 
 
 if __name__ == "__main__":

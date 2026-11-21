@@ -1,0 +1,9 @@
+{
+  "what": "What each in-game check exercises beyond its test-table reads and file (rerun_relation.py; root CLAUDE.md, After a change, only the checks that the change touches run again). \"*\" is the whole mod: the check reruns on any change under the mod.",
+  "checks": {
+    "P_Z_log_budget": ["*"]
+  },
+  "why": {
+    "P_Z_log_budget": "a log budget reads every line the whole mod writes to Player.log, so any change can move it"
+  }
+}

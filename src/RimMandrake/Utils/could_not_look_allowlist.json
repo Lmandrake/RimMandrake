@@ -244,7 +244,15 @@
   "src/RimMandrake/rimflow/seat_restart.py::tx_summary::except-returns-empty": 1,
   "src/RimMandrake/rimflow/seat_restart.py::unanswered::except-returns-empty": 1,
   "src/RimMandrake/rimflow/seat_restart.py::work_since::except-returns-empty": 3,
-  "src/RimMandrake/rimflow/spend_watchdog.py::run::or-empty": 1
+  "src/RimMandrake/rimflow/spend_watchdog.py::run::or-empty": 1,
+  "src/RimMandrake/rimflow/build_match.py::carried_rows::or-empty": 2,
+  "src/RimMandrake/rimflow/build_match.py::srchash_files::except-returns-empty": 1,
+  "src/RimMandrake/rimflow/rerun_relation.py::Git._git::except-returns-empty": 1,
+  "src/RimMandrake/rimflow/rerun_relation.py::py_symbols::except-returns-empty": 1,
+  "src/RimMandrake/rimflow/rerun_relation.py::json_touches::except-returns-empty": 1,
+  "src/RimMandrake/rimflow/rerun_relation.py::scope::or-empty": 1,
+  "src/RimMandrake/rimflow/rerun_relation.py::Relation._table_at::except-returns-empty": 1,
+  "src/RimMandrake/rimflow/rerun_relation.py::Relation.undeclared::or-empty": 1
  },
  "reasons": {
   "src/RimMandrake/rimflow/detached_helper.py::drain_refusal::except-returns-empty": [
@@ -1033,6 +1041,31 @@
   ],
   "src/RimMandrake/rimflow/spend_watchdog.py::run::or-empty": [
    "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/rimflow/build_match.py::carried_rows::or-empty": [
+   "NOT A COLLAPSE: no visit folders or an unreadable rows.jsonl gives a check no row, and a check with no row runs (it never counts)",
+   "NOT A COLLAPSE: no visit folders or an unreadable rows.jsonl gives a check no row, and a check with no row runs (it never counts)"
+  ],
+  "src/RimMandrake/rimflow/build_match.py::srchash_files::except-returns-empty": [
+   "NOT A COLLAPSE: returns None, which walk_source reads as unreadable and names the deploy act; {} only when there is no Assemblies folder (a mod with no DLL)"
+  ],
+  "src/RimMandrake/rimflow/rerun_relation.py::Git._git::except-returns-empty": [
+   "NOT A COLLAPSE: returns None, which every caller reads as git-cannot-say: the check is unreadable and runs"
+  ],
+  "src/RimMandrake/rimflow/rerun_relation.py::py_symbols::except-returns-empty": [
+   "NOT A COLLAPSE: returns None for a file that does not parse, which relates the file whole (the check runs if the file changed)"
+  ],
+  "src/RimMandrake/rimflow/rerun_relation.py::json_touches::except-returns-empty": [
+   "NOT A COLLAPSE: returns None for JSON that does not parse, which relates the file whole"
+  ],
+  "src/RimMandrake/rimflow/rerun_relation.py::scope::or-empty": [
+   "NOT A COLLAPSE: git show of Assemblies/ fails only when the commit has no Assemblies folder, so there is no .srchash and no compiled source outside the mod to add"
+  ],
+  "src/RimMandrake/rimflow/rerun_relation.py::Relation._table_at::except-returns-empty": [
+   "NOT A COLLAPSE: returns None, which touches() reads as unreadable (the check runs)"
+  ],
+  "src/RimMandrake/rimflow/rerun_relation.py::Relation.undeclared::or-empty": [
+   "NOT A COLLAPSE: a change git cannot list makes every check of that commit unreadable in touches(); the undeclared list is advice for declaring"
   ]
  }
 }
