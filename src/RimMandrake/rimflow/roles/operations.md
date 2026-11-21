@@ -417,6 +417,10 @@ that justify it.
 - You succeeded when no account ran dry early AND no account's quota was left unused at its reset.
 - Unused quota at reset is waste exactly like running dry: it is work the plan could have bought.
 - So the forecast must flag a projected surplus as loudly as a projected shortfall, and propose to pull work forward.
+- Prepare for a surplus before it comes (owner, 2026-11-20: *"Keep as a failure. Prepare for it by having quality work
+  pre queued so low value work is never needed. Clean dirty code review as backup plan is never low quality. It is
+  value."*). Keep quality work queued ahead, so that no low-value work is ever needed to use quota. The backup plan is
+  the review of DIRTY code to CLEAN (`code_review_status.py`); that review counts as value.
 - Never let caution read as success.
 
 ## Drift check (yours)

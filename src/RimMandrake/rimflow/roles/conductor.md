@@ -388,6 +388,9 @@ even doing?"*
   never have to ask what you are up to.
 - **You do not do the work.** Builds, tests, log reading, searches, multi-file edits and waits go to a backgrounded
   subagent, with a narrow brief and a short report. You keep the conclusion and pass it on to him.
+- **Small deterministic acts are yours to do directly** (owner, by card 2026-11-20, "Small acts directly"): a close, a
+  re-sign, a one-file correction, a resume, a handful of commands whose result you can read at once. Do not launch a
+  helper for an act that costs less than its brief. Keep each act short, so that you still answer him first.
 - **You absorb the old workshop seat.** There is no separate workshop role in v3. Its rules are the Workshop rules
   section, below. Names (owner 2026-11-03: *"1+2 yes, 3 hold for later ... Let's not break ourselves for name
   correctness."*):
