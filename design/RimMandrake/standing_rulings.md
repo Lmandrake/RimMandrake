@@ -1350,6 +1350,53 @@ Mechanism: `src/RimMandrake/rimflow/form_fault.py`. Promises and their tests:
 `design/specs/2026-11-21-repair-at-the-refusal/boundary.md`. The census of refusal sites:
 `design/specs/2026-11-21-repair-at-the-refusal/census.md`.
 
+
+## After a change, only the checks that the change touches run again — owner, 2026-11-21
+
+His words, 2026-11-21 about 1:00 AM PST (item `RIMMANDRAKE_RERUN_ONLY_CHECKS_THE_CHANGE_TOUCHES_NOT_ALL_203`), when the
+steward wrote that all 203 in-game checks of Gimme Some Slack 0.1.1 had to run again after one feature (the power
+switch lamp) landed: *"No all 203 checks should NOT have to be rerun it should only be the ones pertaining to the
+switch. This is so stupid! We've already agreed that when you change code only the tests that relate get run. Extend
+that logic everywhere! Please get efficient! No more ceremony and over completeness!"*
+
+The earlier agreements he cites: his card of 2026-11-12 (rule 2d, `design/specs/2026-11-13-maturation-pipeline.md`):
+*"Piecemeal revalidation of specific touched line items is crucial"*; §Live runs are TARGETED (2026-10-25); and
+`run_selftests.py --only <tests>` with `pipeline_tests.json` (only the tests for what you changed).
+
+**What it narrows.** His build-match ruling of 2026-11-17 (item `RIMMANDRAKE_FOLD_STAGE_SEVEN_INTO_WALK_BRIEF_NO_VETO`,
+as `build_match.py` records it): *"A verdict whose mod hash or game build differs from the build he walks does not
+count; its check is re-run."* This ruling narrows it to the checks the change touches. A game build that differs still
+re-runs the row (the game itself changed). A mod hash that differs re-runs the row only when the change touches its
+check.
+
+**The rule.**
+- It applies at every stage: the offline certificate, a blind cycle, an in-game visit, the walk build match, the
+  nightly and `./publish`.
+- A check relates to a change when the change touches something that the check reads or exercises. One program answers
+  that for every stage: `src/RimMandrake/rimflow/rerun_relation.py` (page
+  `design/specs/2026-11-21-rerun-only-related/boundary.md`). A check declares its `exercises`, `reads` and `file`; a
+  declaration beside a locked table goes in `version/exercises.json`. A Python file relates by top-level name, a JSON
+  file by the check's own entry, a C# change by source file (the DLL is derived), every other file by file. A full-list
+  check, or one that declares `"*"` (a log budget, a load-without-errors check), relates to the whole mod.
+- A row made on an earlier build still counts when nothing that its check reads or exercises changed. A whole table is
+  never sent back because the build hash moved.
+- When the relation cannot be read for a check, that check runs again, and it is listed so that someone can declare it.
+  The others still count.
+- A full pass is a named act with its reason, never a default: `maturation.py certificate <Mod> --run --all "<why>"`;
+  `--run` alone runs only the stale, red or unstamped deciders. The blind judge's reproduction of the recorded offline
+  runs is the blind stage's own independent check, not a rerun after a change; after a fix of its own it reruns only
+  the deciders the fix touches.
+- Never tell the owner that all checks must run again after a small change. Name the checks that the change touches
+  (`maturation.py next <Mod>`, `build_match.py check --mod <Mod>`).
+
+**Where it is in force.** The in-game build match and Stage 6 exit (`build_match.py`, `maturation.py`), the visit brief
+and `next` (they name only the checks to run), the walk identity, the offline certificate (`ran_on_this_build` hashes
+each test's own reads; `--run` keeps green-on-this-build tests), `./publish` (it runs only the pipeline tests whose
+inputs the change touches; every test only when the change set cannot be read), and the nightly (finished mods only).
+
+**Risk, stated once.** A change can break a check that no declaration connects to it. The guards are the whole-mod
+checks, the next visit of the related checks, and his walk. No full rerun is added to cover it.
+
 ## No mod runs forward on a broken pipeline — owner, 2026-11-19
 
 His words (Thu 2026-11-19 ~6:05 AM PST, item `RIMMANDRAKE_ENACT_NO_MOD_RUNS_ON_BROKEN_PIPELINE_RULING`): *"Ok:

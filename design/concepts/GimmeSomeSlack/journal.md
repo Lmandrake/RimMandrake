@@ -18,7 +18,7 @@ mods read alike.
   name 48 ids; `cords_draw_under_things` added by his card 2026-11-14). The test-and-stage table is
   `version/test_table.json` (read view `version/test_table.md`), made by the throwaway `version/make_test_table.py`. Of 48
   bars: 48 have a deciding test runnable today (counts as of now: "Waiting on").
-- **Waiting on:** visit 2, after its certificate is green on the new build (refuses now: red_seen owed on T_CORE, T_STUB_JOINS, T_SWITCH_LIGHT_OFFLINE, edited by the switch-lamp item RIMMANDRAKE_LIGHT_SLACK_SWITCH_GREEN_RED_DARK_WHEN_UNPOWERED whose run is still live; ran_on_this_build on 5 deciders). Visit 2 re-runs all 203 checks on the walk build incl. sc_switch_light, and sc_walk on game a (his full list).
+- **Waiting on:** visit 2, after its certificate is green on the new build (refuses now: red_seen owed on T_CORE, T_STUB_JOINS, T_SWITCH_LIGHT_OFFLINE, edited by the switch-lamp item RIMMANDRAKE_LIGHT_SLACK_SWITCH_GREEN_RED_DARK_WHEN_UNPOWERED whose run is still live; ran_on_this_build on 5 deciders). Visit 2 runs only the checks the switch-lamp change touches (6 of 203 on 2026-11-21: sc_switch_light, sc_switch_off_ends, sc_stub_joins, sc_no_roof_over_pole, P_Z_log_budget, and sc_walk on game a, his full list); `maturation.py next GimmeSomeSlack` names them.
 - **Open questions for him:** "Questions for him", the last part of this top section.
 
 ### The vision (his root paragraph, `record.json` root, OWNER:1793895896496551063)

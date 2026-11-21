@@ -5,7 +5,8 @@ Owner, 2026-11-17 (item `RIMMANDRAKE_FOLD_STAGE_SEVEN_INTO_WALK_BRIEF_NO_VETO`):
 
 Stage 7 judges nothing. The judges judged before Stage 7. The build match
 (`src/RimMandrake/rimflow/build_match.py`, run at the Stage 6 exit) also ran before Stage 7. The build match counted only
-the in-game verdicts made on the build that he walks. Stage 7 has one task left: one fresh read that writes his walk
+the in-game verdicts made on the build that he walks, or on an earlier build when the change since touches nothing the
+check reads or exercises (owner, 2026-11-21: only the checks a change touches run again). Stage 7 has one task left: one fresh read that writes his walk
 brief. Spec: `design/specs/2026-11-13-maturation-pipeline.md` Stage 7.
 
 ## Read first: the skills for this kind of work, by path
@@ -36,8 +37,8 @@ the end of "What you write".
 - the record `version/stage_record.json` (its `moves`, `pre_human_arrivals`)
 - the newest in-game visit: `version/in_game/visit_<N>/SUMMARY.md` (its Exit block names the labelled walk savegame),
   `rows.jsonl`, `strange.jsonl`
-- `python3 src/RimMandrake/rimflow/build_match.py check --mod <Mod>`: the walk build on which each counted verdict was
-  made
+- `python3 src/RimMandrake/rimflow/build_match.py check --mod <Mod>`: the walk build, and for each verdict made on an
+  earlier build, why the change since does not touch it
 - the journal `design/concepts/<Mod>/journal.md`, and `git log` on `src/RimMandrake/<Mod>` since his last look. His
   last look is the last `his_walk` move in the record. If the record has no `his_walk` move, use the version's first
   move.
