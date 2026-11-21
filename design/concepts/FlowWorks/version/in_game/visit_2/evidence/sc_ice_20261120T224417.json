@@ -1,0 +1,6948 @@
+{
+  "script": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_JUDGE_FLOWWORKS_DROWNED_BODY_COVER_BY_EYE.det\\src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py",
+  "started": 1795243457.7155268,
+  "mode": "live",
+  "calls": [
+    {
+      "tool": "jawa/get_terrain_batch",
+      "args": {
+        "rects": "60,60,5,5"
+      },
+      "result": {
+        "success": true,
+        "message": "Read 25 cell(s) as 2 distinct terrain(s) in 10 run(s).",
+        "layer": "top",
+        "ops": "Gravel:60,60,2,1;Soil:62,60,3,1;Gravel:60,61,2,1;Soil:62,61,3,1;Gravel:60,62,1,1;Soil:61,62,4,1;Gravel:60,63,1,1;Soil:61,63,3,1;Gravel:64,63,1,1;Gravel:60,64,5,1",
+        "cellsRequested": 25,
+        "cellsRead": 25,
+        "cellsOutOfBounds": 0,
+        "cellsNullTerrain": 0,
+        "distinctTerrains": [
+          "Gravel",
+          "Soil"
+        ],
+        "mapSize": {
+          "x": 250,
+          "z": 250
+        },
+        "mapId": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_aa0d7d16ba9c4b61b0e349a4d454b631",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/set_terrain_batch",
+      "args": {
+        "ops": "Soil:60,60,5,5"
+      },
+      "result": {
+        "success": true,
+        "message": "Applied 1/1 op(s): 12 cell(s) changed, 13 already correct.",
+        "layer": "top",
+        "opsRequested": 1,
+        "opsApplied": 1,
+        "cellsRequested": 25,
+        "cellsChanged": 12,
+        "cellsAlreadyCorrect": 13,
+        "cellsOutOfBounds": 0,
+        "cellsFailedVerify": 0,
+        "refreshed": true,
+        "cellsRefreshed": 12,
+        "errors": [],
+        "samples": [
+          {
+            "x": 60,
+            "z": 60,
+            "before": "Gravel",
+            "after": "Soil",
+            "applied": true
+          },
+          {
+            "x": 60,
+            "z": 61,
+            "before": "Gravel",
+            "after": "Soil",
+            "applied": true
+          },
+          {
+            "x": 60,
+            "z": 62,
+            "before": "Gravel",
+            "after": "Soil",
+            "applied": true
+          },
+          {
+            "x": 60,
+            "z": 63,
+            "before": "Gravel",
+            "after": "Soil",
+            "applied": true
+          },
+          {
+            "x": 60,
+            "z": 64,
+            "before": "Gravel",
+            "after": "Soil",
+            "applied": true
+          },
+          {
+            "x": 61,
+            "z": 60,
+            "before": "Gravel",
+            "after": "Soil",
+            "applied": true
+          },
+          {
+            "x": 61,
+            "z": 61,
+            "before": "Gravel",
+            "after": "Soil",
+            "applied": true
+          },
+          {
+            "x": 61,
+            "z": 62,
+            "before": "Soil",
+            "after": "Soil",
+            "applied": true
+          }
+        ],
+        "mapSize": {
+          "x": 250,
+          "z": 250
+        },
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_1e1bec0e4172483781ccc27e9c875791",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 60,
+        "z": 60,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 60
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_b924bbc0c09247a6982ee613c24d6112",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 60,
+        "z": 61,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 61
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_87fbd312f9d34f11b037c86e60cc00a3",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 60,
+        "z": 62,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 62
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_d98857aaa2bf4943b8543fbccb1bfa41",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 60,
+        "z": 63,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 63
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_0c2655332c994e5d9bdeecc675db162f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 60,
+        "z": 64,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 64
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_ffa4a1d3eaf94ed49f479d692d0a3442",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 61,
+        "z": 60,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 61,
+          "z": 60
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_a3aa8a9b4e914d13b0e1443702067774",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 61,
+        "z": 61,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 61,
+          "z": 61
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_2d2bd9ff05e04c3eb2792dc3380bff54",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 61,
+        "z": 62,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 61,
+          "z": 62
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_0e7be34eb5254b8ebd10b57617e98a8d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 61,
+        "z": 63,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 61,
+          "z": 63
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_edf117c9f81c4e3eb3e331631cb5e6cd",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 61,
+        "z": 64,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 61,
+          "z": 64
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_3df483c40ba04e12a178c1e32be32b20",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 62,
+        "z": 60,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 62,
+          "z": 60
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_fe1fea14a4904e01b65c22ec817a8d9a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 62,
+        "z": 61,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 62,
+          "z": 61
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_e66af1c186fc4a80ae9003882a364079",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 62,
+        "z": 62,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 62,
+          "z": 62
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_69151457a1114dd2b7ae5412a392fb09",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 62,
+        "z": 63,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 62,
+          "z": 63
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_0442e96ec4744f9b853549e91774cfb6",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 62,
+        "z": 64,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 62,
+          "z": 64
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_79d03481d4324364a9d65c9e04f1ab34",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 63,
+        "z": 60,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 63,
+          "z": 60
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_36ca131c3b2b4891945ccace073354e6",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 63,
+        "z": 61,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 63,
+          "z": 61
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_4073d224e8474980a72ff49e783ac519",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 63,
+        "z": 62,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 63,
+          "z": 62
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_5c00382ae6c34e89aa96015fadadd42b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 63,
+        "z": 63,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 63,
+          "z": 63
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_441b238709ae42b3a1b7ab58681f8e5b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 63,
+        "z": 64,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 63,
+          "z": 64
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_c2cb463c0482414f948b154622e28b15",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 64,
+        "z": 60,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 64,
+          "z": 60
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_95dd646edfb7420aaca8b6ef4fc97f47",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 64,
+        "z": 61,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 64,
+          "z": 61
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_d586b6001f4e446bb9aa1604f2898d35",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 64,
+        "z": 62,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 64,
+          "z": 62
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_8aa980f8c50646e59a8fd67561b6e194",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 64,
+        "z": 63,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 64,
+          "z": 63
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_b080f9c23fcd4ede9ba273fd8dc00caf",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 64,
+        "z": 64,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 64,
+          "z": 64
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_83025e6ecfec4e989815d2be6ccb6ad4",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "60,60,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (60, 0, 60) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_77a370f038934dbdbdb4fc8c9328b99d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "60,61,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (60, 0, 61) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_77b52c4f084a486eba83fd1743adc68d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "60,62,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (60, 0, 62) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_d3748243c4c64b3086788d48ca1a2c0a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 33
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "60,63,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (60, 0, 63) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_c800d1b45f9b4e029c2b855f4633d6cb",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 34
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "60,64,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (60, 0, 64) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_23bc6a39824944599eef9695cbcb0df8",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 38
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "61,60,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (61, 0, 60) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_c3f65816350f42faba15fa6521b4f4b6",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 34
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "61,61,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (61, 0, 61) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_e1acbf27ab4646919ae36db466dd48db",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 38
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "61,62,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (61, 0, 62) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_3382a69ead804b79aa5dca3b546a15d1",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "61,63,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (61, 0, 63) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_f755a241ef1744f89c2c28da7a15431e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "61,64,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (61, 0, 64) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_97bc8b2fca704c4fb5a108257c257b13",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "62,60,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (62, 0, 60) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_e0fd793f3b52484f81b080eb594238d2",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "62,61,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (62, 0, 61) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_61e570a7b97546cc8cae6ce548aa9524",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "62,62,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (62, 0, 62) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_308c2553f5fe413e9e53e3f6cbe9e3f9",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "62,63,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (62, 0, 63) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_dbbc1e139743432680f20fcbb3da67ee",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "62,64,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (62, 0, 64) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_1d3e9062c4634f13b5d4ff53a6139e63",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "63,60,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (63, 0, 60) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_bc1128d08d8f408384f7e2af17f3aa20",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "63,61,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (63, 0, 61) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_6a49b8dfcdf247239b738722fcbae070",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "63,62,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (63, 0, 62) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_afdbb8d3fad04408b40fca72c7339f2c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "63,63,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (63, 0, 63) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_17fb7672764b44799585d729c695f983",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "63,64,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (63, 0, 64) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_81426da1522e41c0a584fd86b783a20b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "64,60,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (64, 0, 60) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_aa77be79f4e649928a9e281d38770819",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "64,61,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (64, 0, 61) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_226f2ac778794653822e8fe76838d319",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "64,62,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (64, 0, 62) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_12a1f415b7824494be13ca4500587b9f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "64,63,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (64, 0, 63) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_d0d274e8f1994fb6983ae9c365858ee2",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "64,64,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (64, 0, 64) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_dbf3b44060ed45078c4e7ea1c10ade59",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/get_terrain_batch",
+      "args": {
+        "rects": "72,60,5,5"
+      },
+      "result": {
+        "success": true,
+        "message": "Read 25 cell(s) as 1 distinct terrain(s) in 5 run(s).",
+        "layer": "top",
+        "ops": "Sand:72,60,5,1;Sand:72,61,5,1;Sand:72,62,5,1;Sand:72,63,5,1;Sand:72,64,5,1",
+        "cellsRequested": 25,
+        "cellsRead": 25,
+        "cellsOutOfBounds": 0,
+        "cellsNullTerrain": 0,
+        "distinctTerrains": [
+          "Sand"
+        ],
+        "mapSize": {
+          "x": 250,
+          "z": 250
+        },
+        "mapId": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_349be9b7262e42f9989a1924c7471c8f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/set_terrain_batch",
+      "args": {
+        "ops": "Soil:72,60,5,5"
+      },
+      "result": {
+        "success": true,
+        "message": "Applied 1/1 op(s): 25 cell(s) changed, 0 already correct.",
+        "layer": "top",
+        "opsRequested": 1,
+        "opsApplied": 1,
+        "cellsRequested": 25,
+        "cellsChanged": 25,
+        "cellsAlreadyCorrect": 0,
+        "cellsOutOfBounds": 0,
+        "cellsFailedVerify": 0,
+        "refreshed": true,
+        "cellsRefreshed": 25,
+        "errors": [],
+        "samples": [
+          {
+            "x": 72,
+            "z": 60,
+            "before": "Sand",
+            "after": "Soil",
+            "applied": true
+          },
+          {
+            "x": 72,
+            "z": 61,
+            "before": "Sand",
+            "after": "Soil",
+            "applied": true
+          },
+          {
+            "x": 72,
+            "z": 62,
+            "before": "Sand",
+            "after": "Soil",
+            "applied": true
+          },
+          {
+            "x": 72,
+            "z": 63,
+            "before": "Sand",
+            "after": "Soil",
+            "applied": true
+          },
+          {
+            "x": 72,
+            "z": 64,
+            "before": "Sand",
+            "after": "Soil",
+            "applied": true
+          },
+          {
+            "x": 73,
+            "z": 60,
+            "before": "Sand",
+            "after": "Soil",
+            "applied": true
+          },
+          {
+            "x": 73,
+            "z": 61,
+            "before": "Sand",
+            "after": "Soil",
+            "applied": true
+          },
+          {
+            "x": 73,
+            "z": 62,
+            "before": "Sand",
+            "after": "Soil",
+            "applied": true
+          }
+        ],
+        "mapSize": {
+          "x": 250,
+          "z": 250
+        },
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_ba73ad66c4854c479f2667351ed50f44",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 72,
+        "z": 60,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 72,
+          "z": 60
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_6553e389f6af4ab2b42c973b1081aee4",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 72,
+        "z": 61,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 72,
+          "z": 61
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_bd79f76673b548a6827b5cb5181c3bd2",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 72,
+        "z": 62,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 72,
+          "z": 62
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_b197179c9dde44e1a0712ddd2b546a6a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 72,
+        "z": 63,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 72,
+          "z": 63
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_b1c961037f6a4c3ba849f02dfef87a3f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 72,
+        "z": 64,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 72,
+          "z": 64
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_98c4124ca1f448229ec30287c6ed1094",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 73,
+        "z": 60,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 73,
+          "z": 60
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_0f924bce318a4f71ae9474c53d5e6210",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 73,
+        "z": 61,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 73,
+          "z": 61
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_b64be9e39c994bfa9bbf6c92bf18fb24",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 73,
+        "z": 62,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 73,
+          "z": 62
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_141734d658fa4bb3989ea704bde0f856",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 73,
+        "z": 63,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 73,
+          "z": 63
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_24b7d21d5f634bd891bfe3f7b660791c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 73,
+        "z": 64,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 73,
+          "z": 64
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_d3a9f210a17f48f69573c6f927494367",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 74,
+        "z": 60,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 74,
+          "z": 60
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_8b1e58f4a85d4959a7a17b2fbb344aa9",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 74,
+        "z": 61,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 74,
+          "z": 61
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_9519fd00f49841dfac84c3380aa86502",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 74,
+        "z": 62,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 74,
+          "z": 62
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_41385508e53b439e8c9b17a1c93b8e1a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 74,
+        "z": 63,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 74,
+          "z": 63
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_90e19a9bf39b4722828161b61cbb9ef8",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 74,
+        "z": 64,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 74,
+          "z": 64
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_5d7af046c6114b5c845c405526ce0a79",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 38
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 75,
+        "z": 60,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 75,
+          "z": 60
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_acd0bcf6da5c425db3397e133116e0da",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 75,
+        "z": 61,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 75,
+          "z": 61
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_b993d9fc4cea4e86bd5124156859e480",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 75,
+        "z": 62,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 75,
+          "z": 62
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_58bce5ce75f44d2dbd53c1014551a715",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 75,
+        "z": 63,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 75,
+          "z": 63
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_7ca88cf91f6f4851b0a977d83d9de144",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 75,
+        "z": 64,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 75,
+          "z": 64
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_2ecb360204604c3b8235b3ab8a805c41",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 76,
+        "z": 60,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 76,
+          "z": 60
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_8cabe79685fd4600bcac612d09720b4d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 76,
+        "z": 61,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 76,
+          "z": 61
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_630b95b27e9044769f9d52237587d072",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 76,
+        "z": 62,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 76,
+          "z": 62
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_7c26418d272249bb96ce4a7505cb7bdc",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 76,
+        "z": 63,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 76,
+          "z": 63
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_e5a4424b31de45bb80b1316a28bf3bdc",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 76,
+        "z": 64,
+        "deepenLevels": 2,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 76,
+          "z": 64
+        },
+        "depth": 2,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_a78bc608e5db406f87abe031dad98d8d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "72,60,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (72, 0, 60) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_e24001eb7ba04a2fbdae28b7a9069dc6",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "72,61,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (72, 0, 61) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_e69d18e5ea3349caa86276834ecaa8e2",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "72,62,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (72, 0, 62) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_379318756f1a4a358f7a46626724fac1",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "72,63,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (72, 0, 63) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_86d40717db4b4de08f661e602e0f33a0",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "72,64,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (72, 0, 64) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_55a25e8844ad4afa93881d4d4a2ca4e3",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "73,60,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (73, 0, 60) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_119165e817d14b53994072fc7b06a39f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "73,61,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (73, 0, 61) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_b233e27012ca4d339634afd741399139",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "73,62,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (73, 0, 62) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_a48a9369f7384bde8a97a824387bb7be",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "73,63,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (73, 0, 63) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_640bd177b75b4e7bba0e11e2cf67de4c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "73,64,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (73, 0, 64) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_52eefa2718e043dfb6a86c1c26537d25",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "74,60,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (74, 0, 60) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_9bf875eeaf8f4c6e9a29ed7d04fd52e9",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "74,61,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (74, 0, 61) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_9620a940c6374698b51ace852b7750c5",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "74,62,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (74, 0, 62) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_fecf96ceee9943a09b80283264636dd2",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "74,63,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (74, 0, 63) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_b3c9d104ce7b4722b280505c83a48529",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "74,64,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (74, 0, 64) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_8d2fc148b9014ed0860be732bf0cb1b0",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "75,60,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (75, 0, 60) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_3749f8f8f1104c0e82b76b9a07284267",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "75,61,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (75, 0, 61) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_25a8e6f55d0b4a1780ba932a9ca8adc1",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "75,62,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (75, 0, 62) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_ff34cea61ad54f1fbf9af9bf1a0cb746",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "75,63,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (75, 0, 63) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_02d8d7727c094736a1ca5cc25b8e0524",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "75,64,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (75, 0, 64) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_4bf19a1d625b4f098c1b20af6f3f33d7",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "76,60,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (76, 0, 60) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_3bfb2d6ec05e43e982bf8ca8325fff47",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 34
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "76,61,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (76, 0, 61) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_3c4c12db543b40a28744f2e82c53c856",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 44
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "76,62,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (76, 0, 62) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_577d42d6813c495291151dff90e80e5e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "76,63,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (76, 0, 63) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_d073eac2ce9e4f97b694f2d819552e91",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 34
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_FluidIdentityProof",
+        "ProofFillWithFluid",
+        "76,64,1,RM_Fluid_Water"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofFillWithFluid(System.String)",
+        "result": "FILLED (76, 0, 64) W=20000dL fluid=RM_Fluid_Water",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_21af8d5c6bc341a5ac889500865e8772",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/spawn_pawn",
+      "args": {
+        "kindDef": "Colonist",
+        "x": 58,
+        "z": 62,
+        "faction": "player",
+        "count": 1,
+        "xenotype": "Baseliner"
+      },
+      "result": {
+        "success": true,
+        "message": "Spawned 1/1 Colonist in faction PlayerColony as Baseliner.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "xenotypeRequested": "Baseliner",
+        "pawns": [
+          {
+            "ok": true,
+            "id": "Human21169",
+            "name": "Element",
+            "kindRequested": "Colonist",
+            "kindActual": "Colonist",
+            "kindSubstituted": false,
+            "faction": "PlayerColony",
+            "hostile": false,
+            "x": 58,
+            "z": 62,
+            "spawned": true,
+            "xenotype": "Baseliner",
+            "xenotypeRequested": "Baseliner",
+            "xenotypeApplied": true
+          }
+        ],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_a404ad6e7398400fba48c5dda63297cd",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 46
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/pawn_gear",
+      "args": {
+        "pawn": "Human21169",
+        "action": "inventory",
+        "def": "RM_Shovel",
+        "stuff": "WoodLog",
+        "count": 1
+      },
+      "result": {
+        "success": true,
+        "action": "inventory",
+        "displaced": [],
+        "notes": [
+          "inventory transferred 1 of 1"
+        ],
+        "pawn": {
+          "thingId": "Human21169",
+          "thingIdNumber": 21169,
+          "name": "Elissa 'Element' Book",
+          "nameShort": "Element",
+          "title": "blacksmith",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "gender": "Female",
+          "ageBiologicalYears": 52,
+          "ageChronologicalYears": 143,
+          "developmentalStage": "Adult",
+          "xenotype": "Baseliner",
+          "ideo": "Cell of Faith",
+          "childhood": "ConventChild16",
+          "adulthood": "Blacksmith72",
+          "headType": "Female_NarrowPointy",
+          "bodyType": "Female",
+          "hair": "Victoria",
+          "beard": "NoBeard",
+          "position": {
+            "x": 58,
+            "z": 62
+          },
+          "traits": [
+            {
+              "def": "Beauty",
+              "degree": 2,
+              "label": "Beautiful",
+              "forced": false
+            },
+            {
+              "def": "Greedy",
+              "degree": 0,
+              "label": "Greedy",
+              "forced": false
+            },
+            {
+              "def": "SpeedOffset",
+              "degree": 1,
+              "label": "Fast walker",
+              "forced": false
+            }
+          ],
+          "skills": [
+            {
+              "skill": "Shooting",
+              "levelRaw": 0,
+              "levelEffective": 0,
+              "passion": "None",
+              "xpSinceLastLevel": 0.0,
+              "disabled": true
+            },
+            {
+              "skill": "Melee",
+              "levelRaw": 0,
+              "levelEffective": 0,
+              "passion": "None",
+              "xpSinceLastLevel": 0.0,
+              "disabled": true
+            },
+            {
+              "skill": "Construction",
+              "levelRaw": 9,
+              "levelEffective": 9,
+              "passion": "Major",
+              "xpSinceLastLevel": 0.0,
+              "disabled": false
+            },
+            {
+              "skill": "Mining",
+              "levelRaw": 2,
+              "levelEffective": 2,
+              "passion": "None",
+              "xpSinceLastLevel": 0.0,
+              "disabled": false
+            },
+            {
+              "skill": "Cooking",
+              "levelRaw": 3,
+              "levelEffective": 3,
+              "passion": "None",
+              "xpSinceLastLevel": 0.0,
+              "disabled": false
+            },
+            {
+              "skill": "Plants",
+              "levelRaw": 7,
+              "levelEffective": 7,
+              "passion": "Major",
+              "xpSinceLastLevel": 0.0,
+              "disabled": false
+            },
+            {
+              "skill": "Animals",
+              "levelRaw": 1,
+              "levelEffective": 1,
+              "passion": "None",
+              "xpSinceLastLevel": 0.0,
+              "disabled": false
+            },
+            {
+              "skill": "Crafting",
+              "levelRaw": 10,
+              "levelEffective": 10,
+              "passion": "Major",
+              "xpSinceLastLevel": 0.0,
+              "disabled": false
+            },
+            {
+              "skill": "Artistic",
+              "levelRaw": 2,
+              "levelEffective": 2,
+              "passion": "None",
+              "xpSinceLastLevel": 0.0,
+              "disabled": false
+            },
+            {
+              "skill": "Medicine",
+              "levelRaw": 3,
+              "levelEffective": 3,
+              "passion": "None",
+              "xpSinceLastLevel": 0.0,
+              "disabled": false
+            },
+            {
+              "skill": "Social",
+              "levelRaw": 4,
+              "levelEffective": 4,
+              "passion": "Minor",
+              "xpSinceLastLevel": 0.0,
+              "disabled": false
+            },
+            {
+              "skill": "Intellectual",
+              "levelRaw": 0,
+              "levelEffective": 0,
+              "passion": "None",
+              "xpSinceLastLevel": 0.0,
+              "disabled": true
+            }
+          ],
+          "apparel": [
+            {
+              "def": "Apparel_Pants",
+              "defName": "Apparel_Pants",
+              "stuff": "Synthread",
+              "hp": 130
+            },
+            {
+              "def": "Apparel_BasicShirt",
+              "defName": "Apparel_BasicShirt",
+              "stuff": "Synthread",
+              "hp": 130
+            }
+          ],
+          "equipment": [],
+          "hediffs": [
+            {
+              "def": "Bite",
+              "part": "Leg",
+              "severity": 3.0
+            },
+            {
+              "def": "Scarification",
+              "part": "Arm",
+              "severity": 0.5
+            },
+            {
+              "def": "Scarification",
+              "part": "Arm",
+              "severity": 0.5
+            }
+          ],
+          "needs": [
+            {
+              "need": "Mood",
+              "level": 0.5,
+              "pct": 0.5
+            },
+            {
+              "need": "Food",
+              "level": 0.8,
+              "pct": 0.8
+            },
+            {
+              "need": "Rest",
+              "level": 0.979340553,
+              "pct": 0.979340553
+            },
+            {
+              "need": "Joy",
+              "level": 0.564429,
+              "pct": 0.564429
+            },
+            {
+              "need": "Beauty",
+              "level": 0.5,
+              "pct": 0.5
+            },
+            {
+              "need": "Outdoors",
+              "level": 1.0,
+              "pct": 1.0
+            },
+            {
+              "need": "DrugDesire",
+              "level": 0.5,
+              "pct": 0.5
+            },
+            {
+              "need": "RoomSize",
+              "level": 0.5,
+              "pct": 0.5
+            },
+            {
+              "need": "RM_Thirst",
+              "level": 0.8,
+              "pct": 0.8
+            }
+          ]
+        },
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_7f25eb677edb45b386fb0075b5802d49",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/set_pawn_skill",
+      "args": {
+        "pawn": "Human21169",
+        "skill": "Mining",
+        "level": 10
+      },
+      "result": {
+        "success": true,
+        "skill": "Mining",
+        "before": {
+          "levelRaw": 2,
+          "levelEffective": 2,
+          "passion": "None",
+          "xp": 0.0,
+          "disabled": false
+        },
+        "after": {
+          "levelRaw": 10,
+          "levelEffective": 10,
+          "passion": "None",
+          "xp": 0.0
+        },
+        "wroteLevel": 10,
+        "readBackMatches": true,
+        "note": "levelEffective includes aptitudes; levelRaw is what was written. Compare against levelRaw.",
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_81d73da8176d44748f537168a47d3a15",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/pawn_gear",
+      "args": {
+        "pawn": "Human21169",
+        "action": "wear",
+        "def": "Apparel_Parka"
+      },
+      "result": {
+        "success": true,
+        "action": "wear",
+        "displaced": [],
+        "notes": [],
+        "pawn": {
+          "thingId": "Human21169",
+          "thingIdNumber": 21169,
+          "name": "Elissa 'Element' Book",
+          "nameShort": "Element",
+          "title": "blacksmith",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "gender": "Female",
+          "ageBiologicalYears": 52,
+          "ageChronologicalYears": 143,
+          "developmentalStage": "Adult",
+          "xenotype": "Baseliner",
+          "ideo": "Cell of Faith",
+          "childhood": "ConventChild16",
+          "adulthood": "Blacksmith72",
+          "headType": "Female_NarrowPointy",
+          "bodyType": "Female",
+          "hair": "Victoria",
+          "beard": "NoBeard",
+          "position": {
+            "x": 58,
+            "z": 62
+          },
+          "traits": [
+            {
+              "def": "Beauty",
+              "degree": 2,
+              "label": "Beautiful",
+              "forced": false
+            },
+            {
+              "def": "Greedy",
+              "degree": 0,
+              "label": "Greedy",
+              "forced": false
+            },
+            {
+              "def": "SpeedOffset",
+              "degree": 1,
+              "label": "Fast walker",
+              "forced": false
+            }
+          ],
+          "skills": [
+            {
+              "skill": "Shooting",
+              "levelRaw": 0,
+              "levelEffective": 0,
+              "passion": "None",
+              "xpSinceLastLevel": 0.0,
+              "disabled": true
+            },
+            {
+              "skill": "Melee",
+              "levelRaw": 0,
+              "levelEffective": 0,
+              "passion": "None",
+              "xpSinceLastLevel": 0.0,
+              "disabled": true
+            },
+            {
+              "skill": "Construction",
+              "levelRaw": 9,
+              "levelEffective": 9,
+              "passion": "Major",
+              "xpSinceLastLevel": 0.0,
+              "disabled": false
+            },
+            {
+              "skill": "Mining",
+              "levelRaw": 10,
+              "levelEffective": 10,
+              "passion": "None",
+              "xpSinceLastLevel": 0.0,
+              "disabled": false
+            },
+            {
+              "skill": "Cooking",
+              "levelRaw": 3,
+              "levelEffective": 3,
+              "passion": "None",
+              "xpSinceLastLevel": 0.0,
+              "disabled": false
+            },
+            {
+              "skill": "Plants",
+              "levelRaw": 7,
+              "levelEffective": 7,
+              "passion": "Major",
+              "xpSinceLastLevel": 0.0,
+              "disabled": false
+            },
+            {
+              "skill": "Animals",
+              "levelRaw": 1,
+              "levelEffective": 1,
+              "passion": "None",
+              "xpSinceLastLevel": 0.0,
+              "disabled": false
+            },
+            {
+              "skill": "Crafting",
+              "levelRaw": 10,
+              "levelEffective": 10,
+              "passion": "Major",
+              "xpSinceLastLevel": 0.0,
+              "disabled": false
+            },
+            {
+              "skill": "Artistic",
+              "levelRaw": 2,
+              "levelEffective": 2,
+              "passion": "None",
+              "xpSinceLastLevel": 0.0,
+              "disabled": false
+            },
+            {
+              "skill": "Medicine",
+              "levelRaw": 3,
+              "levelEffective": 3,
+              "passion": "None",
+              "xpSinceLastLevel": 0.0,
+              "disabled": false
+            },
+            {
+              "skill": "Social",
+              "levelRaw": 4,
+              "levelEffective": 4,
+              "passion": "Minor",
+              "xpSinceLastLevel": 0.0,
+              "disabled": false
+            },
+            {
+              "skill": "Intellectual",
+              "levelRaw": 0,
+              "levelEffective": 0,
+              "passion": "None",
+              "xpSinceLastLevel": 0.0,
+              "disabled": true
+            }
+          ],
+          "apparel": [
+            {
+              "def": "Apparel_Pants",
+              "defName": "Apparel_Pants",
+              "stuff": "Synthread",
+              "hp": 130
+            },
+            {
+              "def": "Apparel_BasicShirt",
+              "defName": "Apparel_BasicShirt",
+              "stuff": "Synthread",
+              "hp": 130
+            },
+            {
+              "def": "Apparel_Parka",
+              "defName": "Apparel_Parka",
+              "stuff": "Synthread",
+              "hp": 235
+            }
+          ],
+          "equipment": [],
+          "hediffs": [
+            {
+              "def": "Bite",
+              "part": "Leg",
+              "severity": 3.0
+            },
+            {
+              "def": "Scarification",
+              "part": "Arm",
+              "severity": 0.5
+            },
+            {
+              "def": "Scarification",
+              "part": "Arm",
+              "severity": 0.5
+            }
+          ],
+          "needs": [
+            {
+              "need": "Mood",
+              "level": 0.5,
+              "pct": 0.5
+            },
+            {
+              "need": "Food",
+              "level": 0.8,
+              "pct": 0.8
+            },
+            {
+              "need": "Rest",
+              "level": 0.979340553,
+              "pct": 0.979340553
+            },
+            {
+              "need": "Joy",
+              "level": 0.564429,
+              "pct": 0.564429
+            },
+            {
+              "need": "Beauty",
+              "level": 0.5,
+              "pct": 0.5
+            },
+            {
+              "need": "Outdoors",
+              "level": 1.0,
+              "pct": 1.0
+            },
+            {
+              "need": "DrugDesire",
+              "level": 0.5,
+              "pct": 0.5
+            },
+            {
+              "need": "RoomSize",
+              "level": 0.5,
+              "pct": 0.5
+            },
+            {
+              "need": "RM_Thirst",
+              "level": 0.8,
+              "pct": 0.8
+            }
+          ]
+        },
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_e13b1f8d516a439392244da3e543be35",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 39
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_things",
+      "args": {
+        "defName": "RM_CrushedIce",
+        "rect": "69,59,7,7"
+      },
+      "result": {
+        "success": true,
+        "things": [],
+        "scanned": 15099,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 4,
+        "perDef": {},
+        "ticksGame": 2,
+        "message": "NOTHING MATCHED. 15099 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+          "OperationId": "op_f9737dd3e21a49e9a64186e3ed3eb3cd",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_rect",
+      "args": {
+        "x": 72,
+        "z": 62,
+        "w": 1,
+        "h": 1
+      },
+      "result": {
+        "success": true,
+        "mapId": 0,
+        "rect": {
+          "x": 72,
+          "z": 62,
+          "w": 1,
+          "h": 1
+        },
+        "cellCount": 1,
+        "cellsScanned": 1,
+        "rows": [
+          {
+            "x": 72,
+            "z": 62,
+            "d": 2,
+            "dEff": 2,
+            "dl": 20000,
+            "waterM": 1.0,
+            "fluid": "RM_Fluid_Water",
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "WaterShallow"
+          }
+        ],
+        "sumDl": 20000,
+        "excavatedInRect": 1,
+        "sourceInRect": 0,
+        "sinkInRect": 0,
+        "getterDisagreements": 0,
+        "excavatedCellCount": 50,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_c0533133c4194a318227cfde065cded5",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_job_probe",
+      "args": {
+        "pawnId": "Human21169",
+        "kind": "dig",
+        "x": 72,
+        "z": 62
+      },
+      "result": {
+        "success": true,
+        "kind": "dig",
+        "cell": {
+          "x": 72,
+          "z": 62
+        },
+        "fogged": false,
+        "terrain": "WaterShallow",
+        "designationPresent": false,
+        "designator": {
+          "accepted": true
+        },
+        "workGiver": {
+          "def": "RM_DigCanalWorkGiver",
+          "shouldSkip": true,
+          "cellInPotentialWorkCells": false,
+          "hasJobOnCell": false,
+          "designationDeletedByWorkGiver": false,
+          "designationRestored": false
+        },
+        "pawn": {
+          "id": "Human21169",
+          "workType": "Mining",
+          "workTypeDisabled": false,
+          "workActive": false,
+          "priority": 0,
+          "giverInNormalList": false,
+          "canReach": true
+        },
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_d7e9777c1954433589cc15b0ba405718",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/designate_batch",
+      "args": {
+        "action": "add",
+        "designation": "RM_DigCanal",
+        "rect": "72,62,1,1"
+      },
+      "result": {
+        "success": true,
+        "action": "add",
+        "designation": "RM_DigCanal",
+        "added": 1,
+        "removed": 0,
+        "alreadyPresent": 0,
+        "alreadyAbsent": 0,
+        "skippedWrongType": 0,
+        "targetType": "Cell",
+        "targetedThings": false,
+        "note": "'RM_DigCanal' is a CELL designation - the rect's cells are designated directly.",
+        "onThings": false,
+        "problemCount": 0,
+        "problemListTruncated": false,
+        "problems": [],
+        "totalNow": 1,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_b495a2bb3c4741a2a3efc375e1c1ee75",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_job_probe",
+      "args": {
+        "pawnId": "Human21169",
+        "kind": "dig",
+        "x": 72,
+        "z": 62
+      },
+      "result": {
+        "success": true,
+        "kind": "dig",
+        "cell": {
+          "x": 72,
+          "z": 62
+        },
+        "fogged": false,
+        "terrain": "WaterShallow",
+        "designationPresent": true,
+        "designator": {
+          "accepted": false,
+          "reason": "Already being dug."
+        },
+        "workGiver": {
+          "def": "RM_DigCanalWorkGiver",
+          "shouldSkip": false,
+          "cellInPotentialWorkCells": true,
+          "hasJobOnCell": true,
+          "jobDef": "RM_DigCanalJob",
+          "designationDeletedByWorkGiver": false,
+          "designationRestored": false
+        },
+        "pawn": {
+          "id": "Human21169",
+          "workType": "Mining",
+          "workTypeDisabled": false,
+          "workActive": false,
+          "priority": 0,
+          "giverInNormalList": false,
+          "canReach": true
+        },
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_99b80941d17d4469b8f7db59f53a8675",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 46
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/ordered_job",
+      "args": {
+        "pawnId": "Human21169",
+        "jobDef": "RM_DigCanalJob",
+        "targetAX": 72,
+        "targetAZ": 62,
+        "waitTicks": 0
+      },
+      "result": {
+        "success": true,
+        "accepted": true,
+        "interruptibleBefore": true,
+        "requestedJobDef": "RM_DigCanalJob",
+        "afterJobDef": "RM_DigCanalJob",
+        "nowRunningRequested": true,
+        "ticksElapsed": 0,
+        "pausedDuringWait": true,
+        "queueLength": 0,
+        "operation": {
+          "OperationId": "op_b9e4b0983d29432898984e0706c8e4f8",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 70
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_rect",
+      "args": {
+        "x": 72,
+        "z": 62,
+        "w": 1,
+        "h": 1
+      },
+      "result": {
+        "success": true,
+        "mapId": 0,
+        "rect": {
+          "x": 72,
+          "z": 62,
+          "w": 1,
+          "h": 1
+        },
+        "cellCount": 1,
+        "cellsScanned": 1,
+        "rows": [
+          {
+            "x": 72,
+            "z": 62,
+            "d": 2,
+            "dEff": 2,
+            "dl": 20000,
+            "waterM": 1.0,
+            "fluid": "RM_Fluid_Water",
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "WaterShallow"
+          }
+        ],
+        "sumDl": 20000,
+        "excavatedInRect": 1,
+        "sourceInRect": 0,
+        "sinkInRect": 0,
+        "getterDisagreements": 0,
+        "excavatedCellCount": 50,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "ticksGame": 252,
+        "operation": {
+          "OperationId": "op_bd6b9b6b818b401bbfe95226f773c564",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 252
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_rect",
+      "args": {
+        "x": 72,
+        "z": 62,
+        "w": 1,
+        "h": 1
+      },
+      "result": {
+        "success": true,
+        "mapId": 0,
+        "rect": {
+          "x": 72,
+          "z": 62,
+          "w": 1,
+          "h": 1
+        },
+        "cellCount": 1,
+        "cellsScanned": 1,
+        "rows": [
+          {
+            "x": 72,
+            "z": 62,
+            "d": 2,
+            "dEff": 2,
+            "dl": 20000,
+            "waterM": 1.0,
+            "fluid": "RM_Fluid_Water",
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "WaterShallow"
+          }
+        ],
+        "sumDl": 20000,
+        "excavatedInRect": 1,
+        "sourceInRect": 0,
+        "sinkInRect": 0,
+        "getterDisagreements": 0,
+        "excavatedCellCount": 50,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "ticksGame": 502,
+        "operation": {
+          "OperationId": "op_391fda3bc84f4e6a9337826a01780597",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 502
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_rect",
+      "args": {
+        "x": 72,
+        "z": 62,
+        "w": 1,
+        "h": 1
+      },
+      "result": {
+        "success": true,
+        "mapId": 0,
+        "rect": {
+          "x": 72,
+          "z": 62,
+          "w": 1,
+          "h": 1
+        },
+        "cellCount": 1,
+        "cellsScanned": 1,
+        "rows": [
+          {
+            "x": 72,
+            "z": 62,
+            "d": 2,
+            "dEff": 2,
+            "dl": 20000,
+            "waterM": 1.0,
+            "fluid": "RM_Fluid_Water",
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "WaterShallow"
+          }
+        ],
+        "sumDl": 20000,
+        "excavatedInRect": 1,
+        "sourceInRect": 0,
+        "sinkInRect": 0,
+        "getterDisagreements": 0,
+        "excavatedCellCount": 50,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "ticksGame": 752,
+        "operation": {
+          "OperationId": "op_7626dc501f5849629d4b5f9240f0e715",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 752
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_rect",
+      "args": {
+        "x": 72,
+        "z": 62,
+        "w": 1,
+        "h": 1
+      },
+      "result": {
+        "success": true,
+        "mapId": 0,
+        "rect": {
+          "x": 72,
+          "z": 62,
+          "w": 1,
+          "h": 1
+        },
+        "cellCount": 1,
+        "cellsScanned": 1,
+        "rows": [
+          {
+            "x": 72,
+            "z": 62,
+            "d": 2,
+            "dEff": 2,
+            "dl": 20000,
+            "waterM": 1.0,
+            "fluid": "RM_Fluid_Water",
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "WaterShallow"
+          }
+        ],
+        "sumDl": 20000,
+        "excavatedInRect": 1,
+        "sourceInRect": 0,
+        "sinkInRect": 0,
+        "getterDisagreements": 0,
+        "excavatedCellCount": 50,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "ticksGame": 1002,
+        "operation": {
+          "OperationId": "op_66cde7e3961a4903b9af939bc1ec0ab1",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1002
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_rect",
+      "args": {
+        "x": 72,
+        "z": 62,
+        "w": 1,
+        "h": 1
+      },
+      "result": {
+        "success": true,
+        "mapId": 0,
+        "rect": {
+          "x": 72,
+          "z": 62,
+          "w": 1,
+          "h": 1
+        },
+        "cellCount": 1,
+        "cellsScanned": 1,
+        "rows": [
+          {
+            "x": 72,
+            "z": 62,
+            "d": 2,
+            "dEff": 2,
+            "dl": 20000,
+            "waterM": 1.0,
+            "fluid": "RM_Fluid_Water",
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "WaterShallow"
+          }
+        ],
+        "sumDl": 20000,
+        "excavatedInRect": 1,
+        "sourceInRect": 0,
+        "sinkInRect": 0,
+        "getterDisagreements": 0,
+        "excavatedCellCount": 50,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "ticksGame": 1252,
+        "operation": {
+          "OperationId": "op_abe2bdc474a94d698e7ab9ae8fe1f538",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1252
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_rect",
+      "args": {
+        "x": 72,
+        "z": 62,
+        "w": 1,
+        "h": 1
+      },
+      "result": {
+        "success": true,
+        "mapId": 0,
+        "rect": {
+          "x": 72,
+          "z": 62,
+          "w": 1,
+          "h": 1
+        },
+        "cellCount": 1,
+        "cellsScanned": 1,
+        "rows": [
+          {
+            "x": 72,
+            "z": 62,
+            "d": 3,
+            "dEff": 3,
+            "dl": 29600,
+            "waterM": 1.48,
+            "fluid": "RM_Fluid_Water",
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "RM_WaterChestDeepStill"
+          }
+        ],
+        "sumDl": 29600,
+        "excavatedInRect": 1,
+        "sourceInRect": 0,
+        "sinkInRect": 0,
+        "getterDisagreements": 0,
+        "excavatedCellCount": 50,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "ticksGame": 1502,
+        "operation": {
+          "OperationId": "op_d6c79c8fe7b744e9aca8067bb5a5d26b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1502
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_things",
+      "args": {
+        "defName": "RM_CrushedIce",
+        "rect": "69,59,7,7"
+      },
+      "result": {
+        "success": true,
+        "things": [],
+        "scanned": 15100,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 4,
+        "perDef": {},
+        "ticksGame": 1502,
+        "message": "NOTHING MATCHED. 15100 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+          "OperationId": "op_8bd45aa2e4524b07b47c6caefe491962",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1502
+        }
+      }
+    },
+    {
+      "tool": "jawa/destroy_batch",
+      "args": {
+        "rects": "69,59,7,7",
+        "categories": "Item"
+      },
+      "result": {
+        "success": true,
+        "message": "Destroyed 0 thing(s) across 49 cell(s); 1 pawn(s) left alone.",
+        "cellsExamined": 49,
+        "outOfBounds": 0,
+        "destroyed": 0,
+        "pawnsSkipped": 1,
+        "undestroyableSkipped": 0,
+        "perCategory": {},
+        "samples": [],
+        "ticksGame": 1502,
+        "operation": {
+          "OperationId": "op_be664e00decd4ac790409846a54c557a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1502
+        }
+      }
+    },
+    {
+      "tool": "jawa/game_condition",
+      "args": {
+        "action": "start",
+        "condition": "ColdSnap",
+        "durationTicks": 26000
+      },
+      "result": {
+        "success": true,
+        "action": "start",
+        "scope": "map",
+        "notes": [
+          "registered ColdSnap for 26000 ticks"
+        ],
+        "endsNextTick": false,
+        "gamePaused": true,
+        "activeConditions": [
+          {
+            "def": "WeatherController",
+            "permanent": true,
+            "ticksLeft": -1
+          },
+          {
+            "def": "ColdSnap",
+            "permanent": false,
+            "ticksLeft": 26000
+          }
+        ],
+        "ticksGame": 1502,
+        "operation": {
+          "OperationId": "op_20972bdfd2c74c2b8a7c3f379b8fdfeb",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1502
+        }
+      }
+    },
+    {
+      "tool": "jawa/game_condition",
+      "args": {
+        "action": "start",
+        "condition": "DeepFreeze",
+        "durationTicks": 26000
+      },
+      "result": {
+        "success": true,
+        "action": "start",
+        "scope": "map",
+        "notes": [
+          "registered DeepFreeze for 26000 ticks"
+        ],
+        "endsNextTick": false,
+        "gamePaused": true,
+        "activeConditions": [
+          {
+            "def": "WeatherController",
+            "permanent": true,
+            "ticksLeft": -1
+          },
+          {
+            "def": "ColdSnap",
+            "permanent": false,
+            "ticksLeft": 26000
+          },
+          {
+            "def": "DeepFreeze",
+            "permanent": false,
+            "ticksLeft": 26000
+          }
+        ],
+        "ticksGame": 1502,
+        "operation": {
+          "OperationId": "op_184aeff499a5449986e42d5062038d74",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 44
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1502
+        }
+      }
+    },
+    {
+      "tool": "jawa/cell_temperature",
+      "args": {
+        "cell": "60,62"
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 62
+        },
+        "ok": true,
+        "temperature": 14.3495579,
+        "outdoorTemp": 14.3700886,
+        "seasonalTemp": 22.4702263,
+        "ticksGame": 1502,
+        "operation": {
+          "OperationId": "op_b33ebc297d1c4fe18af3cf7817002616",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1502
+        }
+      }
+    },
+    {
+      "tool": "jawa/cell_temperature",
+      "args": {
+        "cell": "60,62"
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 62
+        },
+        "ok": true,
+        "temperature": 13.2474089,
+        "outdoorTemp": 13.069912,
+        "seasonalTemp": 22.47655,
+        "ticksGame": 2002,
+        "operation": {
+          "OperationId": "op_f632cf34729d454badcd5e29c2647dac",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2002
+        }
+      }
+    },
+    {
+      "tool": "jawa/cell_temperature",
+      "args": {
+        "cell": "60,62"
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 62
+        },
+        "ok": true,
+        "temperature": 11.8341293,
+        "outdoorTemp": 11.4831762,
+        "seasonalTemp": 22.4836674,
+        "ticksGame": 2502,
+        "operation": {
+          "OperationId": "op_2595cd3e7f6a411793206abd366f841d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 38
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2502
+        }
+      }
+    },
+    {
+      "tool": "jawa/cell_temperature",
+      "args": {
+        "cell": "60,62"
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 62
+        },
+        "ok": true,
+        "temperature": 10.4358406,
+        "outdoorTemp": 10.0885487,
+        "seasonalTemp": 22.4899979,
+        "ticksGame": 3002,
+        "operation": {
+          "OperationId": "op_b3c7487f79ef4b0c9bcc51d31fbe097c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3002
+        }
+      }
+    },
+    {
+      "tool": "jawa/cell_temperature",
+      "args": {
+        "cell": "60,62"
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 62
+        },
+        "ok": true,
+        "temperature": 8.708178,
+        "outdoorTemp": 8.708178,
+        "seasonalTemp": 22.4963264,
+        "ticksGame": 3502,
+        "operation": {
+          "OperationId": "op_78cad05f33a543d8a77c1336670e1ff0",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3502
+        }
+      }
+    },
+    {
+      "tool": "jawa/cell_temperature",
+      "args": {
+        "cell": "60,62"
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 62
+        },
+        "ok": true,
+        "temperature": 7.341447,
+        "outdoorTemp": 7.17153358,
+        "seasonalTemp": 22.5034542,
+        "ticksGame": 4002,
+        "operation": {
+          "OperationId": "op_08255e2237854ec79535a3d45ba0e4f5",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 4002
+        }
+      }
+    },
+    {
+      "tool": "jawa/cell_temperature",
+      "args": {
+        "cell": "60,62"
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 62
+        },
+        "ok": true,
+        "temperature": 5.98770142,
+        "outdoorTemp": 5.81936359,
+        "seasonalTemp": 22.5097923,
+        "ticksGame": 4502,
+        "operation": {
+          "OperationId": "op_48a6fd01daa6472faca383795ed0d844",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 38
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 4502
+        }
+      }
+    },
+    {
+      "tool": "jawa/cell_temperature",
+      "args": {
+        "cell": "60,62"
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 62
+        },
+        "ok": true,
+        "temperature": 4.64625072,
+        "outdoorTemp": 4.47940063,
+        "seasonalTemp": 22.5161343,
+        "ticksGame": 5002,
+        "operation": {
+          "OperationId": "op_6be74121ff314f9684e43768f8edecfa",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 5002
+        }
+      }
+    },
+    {
+      "tool": "jawa/cell_temperature",
+      "args": {
+        "cell": "60,62"
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 62
+        },
+        "ok": true,
+        "temperature": 3.31637859,
+        "outdoorTemp": 2.9856348,
+        "seasonalTemp": 22.5232677,
+        "ticksGame": 5502,
+        "operation": {
+          "OperationId": "op_3665ff66e005438dac1d80b921fa8990",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 5502
+        }
+      }
+    },
+    {
+      "tool": "jawa/cell_temperature",
+      "args": {
+        "cell": "60,62"
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 62
+        },
+        "ok": true,
+        "temperature": 1.99734688,
+        "outdoorTemp": 1.66919327,
+        "seasonalTemp": 22.5296154,
+        "ticksGame": 6002,
+        "operation": {
+          "OperationId": "op_f41979bed70d47f989a6ae1b5c50cce9",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 33
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 6002
+        }
+      }
+    },
+    {
+      "tool": "jawa/cell_temperature",
+      "args": {
+        "cell": "60,62"
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 62
+        },
+        "ok": true,
+        "temperature": 0.3626194,
+        "outdoorTemp": 0.3626194,
+        "seasonalTemp": 22.535965,
+        "ticksGame": 6502,
+        "operation": {
+          "OperationId": "op_935f19ad854c4083a9aef6049557dedb",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 6502
+        }
+      }
+    },
+    {
+      "tool": "jawa/cell_temperature",
+      "args": {
+        "cell": "60,62"
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 62
+        },
+        "ok": true,
+        "temperature": -0.9348793,
+        "outdoorTemp": -1.096468,
+        "seasonalTemp": 22.5431137,
+        "ticksGame": 7002,
+        "operation": {
+          "OperationId": "op_343d51a30e6d4eeca5feb42998edf7df",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 7002
+        }
+      }
+    },
+    {
+      "tool": "jawa/set_terrain_batch",
+      "args": {
+        "ops": "ThinIce:60,60,5,5"
+      },
+      "result": {
+        "success": true,
+        "message": "Applied 1/1 op(s): 25 cell(s) changed, 0 already correct.",
+        "layer": "top",
+        "opsRequested": 1,
+        "opsApplied": 1,
+        "cellsRequested": 25,
+        "cellsChanged": 25,
+        "cellsAlreadyCorrect": 0,
+        "cellsOutOfBounds": 0,
+        "cellsFailedVerify": 0,
+        "refreshed": true,
+        "cellsRefreshed": 25,
+        "errors": [],
+        "samples": [
+          {
+            "x": 60,
+            "z": 60,
+            "before": "WaterShallow",
+            "after": "ThinIce",
+            "applied": true
+          },
+          {
+            "x": 60,
+            "z": 61,
+            "before": "WaterShallow",
+            "after": "ThinIce",
+            "applied": true
+          },
+          {
+            "x": 60,
+            "z": 62,
+            "before": "WaterShallow",
+            "after": "ThinIce",
+            "applied": true
+          },
+          {
+            "x": 60,
+            "z": 63,
+            "before": "WaterShallow",
+            "after": "ThinIce",
+            "applied": true
+          },
+          {
+            "x": 60,
+            "z": 64,
+            "before": "WaterShallow",
+            "after": "ThinIce",
+            "applied": true
+          },
+          {
+            "x": 61,
+            "z": 60,
+            "before": "WaterShallow",
+            "after": "ThinIce",
+            "applied": true
+          },
+          {
+            "x": 61,
+            "z": 61,
+            "before": "WaterShallow",
+            "after": "ThinIce",
+            "applied": true
+          },
+          {
+            "x": 61,
+            "z": 62,
+            "before": "WaterShallow",
+            "after": "ThinIce",
+            "applied": true
+          }
+        ],
+        "mapSize": {
+          "x": 250,
+          "z": 250
+        },
+        "ticksGame": 7002,
+        "operation": {
+          "OperationId": "op_8becafb3bb234716a4379738f599b36e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 7002
+        }
+      }
+    },
+    {
+      "tool": "jawa/get_terrain_batch",
+      "args": {
+        "rects": "60,60,5,5"
+      },
+      "result": {
+        "success": true,
+        "message": "Read 25 cell(s) as 1 distinct terrain(s) in 5 run(s).",
+        "layer": "top",
+        "ops": "ThinIce:60,60,5,1;ThinIce:60,61,5,1;ThinIce:60,62,5,1;ThinIce:60,63,5,1;ThinIce:60,64,5,1",
+        "cellsRequested": 25,
+        "cellsRead": 25,
+        "cellsOutOfBounds": 0,
+        "cellsNullTerrain": 0,
+        "distinctTerrains": [
+          "ThinIce"
+        ],
+        "mapSize": {
+          "x": 250,
+          "z": 250
+        },
+        "mapId": 0,
+        "ticksGame": 7002,
+        "operation": {
+          "OperationId": "op_667a40c0adb44996ad1f0ca8c2e821cd",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 7002
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_things",
+      "args": {
+        "defName": "RM_CrushedIce",
+        "rect": "57,59,7,7"
+      },
+      "result": {
+        "success": true,
+        "things": [],
+        "scanned": 15107,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 8,
+        "perDef": {},
+        "ticksGame": 7002,
+        "message": "NOTHING MATCHED. 15107 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+          "OperationId": "op_db2302a20db44c5a9b549240b78155f7",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 7002
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_rect",
+      "args": {
+        "x": 60,
+        "z": 62,
+        "w": 1,
+        "h": 1
+      },
+      "result": {
+        "success": true,
+        "mapId": 0,
+        "rect": {
+          "x": 60,
+          "z": 62,
+          "w": 1,
+          "h": 1
+        },
+        "cellCount": 1,
+        "cellsScanned": 1,
+        "rows": [
+          {
+            "x": 60,
+            "z": 62,
+            "d": 2,
+            "dEff": 2,
+            "dl": 20000,
+            "waterM": 1.0,
+            "fluid": "RM_Fluid_Water",
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "ThinIce"
+          }
+        ],
+        "sumDl": 20000,
+        "excavatedInRect": 1,
+        "sourceInRect": 0,
+        "sinkInRect": 0,
+        "getterDisagreements": 0,
+        "excavatedCellCount": 50,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "ticksGame": 7002,
+        "operation": {
+          "OperationId": "op_48ff582e6ff643bd997dec2bec549f34",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 7002
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_job_probe",
+      "args": {
+        "pawnId": "Human21169",
+        "kind": "dig",
+        "x": 60,
+        "z": 62
+      },
+      "result": {
+        "success": true,
+        "kind": "dig",
+        "cell": {
+          "x": 60,
+          "z": 62
+        },
+        "fogged": false,
+        "terrain": "ThinIce",
+        "designationPresent": false,
+        "designator": {
+          "accepted": true
+        },
+        "workGiver": {
+          "def": "RM_DigCanalWorkGiver",
+          "shouldSkip": true,
+          "cellInPotentialWorkCells": false,
+          "hasJobOnCell": false,
+          "designationDeletedByWorkGiver": false,
+          "designationRestored": false
+        },
+        "pawn": {
+          "id": "Human21169",
+          "workType": "Mining",
+          "workTypeDisabled": false,
+          "workActive": false,
+          "priority": 0,
+          "giverInNormalList": false,
+          "canReach": true
+        },
+        "ticksGame": 7002,
+        "operation": {
+          "OperationId": "op_d2e9a216371247218dd5383c12a707b6",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 7002
+        }
+      }
+    },
+    {
+      "tool": "jawa/designate_batch",
+      "args": {
+        "action": "add",
+        "designation": "RM_DigCanal",
+        "rect": "60,62,1,1"
+      },
+      "result": {
+        "success": true,
+        "action": "add",
+        "designation": "RM_DigCanal",
+        "added": 1,
+        "removed": 0,
+        "alreadyPresent": 0,
+        "alreadyAbsent": 0,
+        "skippedWrongType": 0,
+        "targetType": "Cell",
+        "targetedThings": false,
+        "note": "'RM_DigCanal' is a CELL designation - the rect's cells are designated directly.",
+        "onThings": false,
+        "problemCount": 0,
+        "problemListTruncated": false,
+        "problems": [],
+        "totalNow": 1,
+        "ticksGame": 7002,
+        "operation": {
+          "OperationId": "op_f7f111197d47441b8d0eaca1370c52a3",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 7002
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_job_probe",
+      "args": {
+        "pawnId": "Human21169",
+        "kind": "dig",
+        "x": 60,
+        "z": 62
+      },
+      "result": {
+        "success": true,
+        "kind": "dig",
+        "cell": {
+          "x": 60,
+          "z": 62
+        },
+        "fogged": false,
+        "terrain": "ThinIce",
+        "designationPresent": true,
+        "designator": {
+          "accepted": false,
+          "reason": "Already being dug."
+        },
+        "workGiver": {
+          "def": "RM_DigCanalWorkGiver",
+          "shouldSkip": false,
+          "cellInPotentialWorkCells": true,
+          "hasJobOnCell": true,
+          "jobDef": "RM_DigCanalJob",
+          "designationDeletedByWorkGiver": false,
+          "designationRestored": false
+        },
+        "pawn": {
+          "id": "Human21169",
+          "workType": "Mining",
+          "workTypeDisabled": false,
+          "workActive": false,
+          "priority": 0,
+          "giverInNormalList": false,
+          "canReach": true
+        },
+        "ticksGame": 7002,
+        "operation": {
+          "OperationId": "op_b189e7ee26334a9eb9db7e65152906a6",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 7002
+        }
+      }
+    },
+    {
+      "tool": "jawa/ordered_job",
+      "args": {
+        "pawnId": "Human21169",
+        "jobDef": "RM_DigCanalJob",
+        "targetAX": 60,
+        "targetAZ": 62,
+        "waitTicks": 0
+      },
+      "result": {
+        "success": true,
+        "accepted": true,
+        "interruptibleBefore": true,
+        "beforeJobDef": "GotoWander",
+        "requestedJobDef": "RM_DigCanalJob",
+        "afterJobDef": "RM_DigCanalJob",
+        "nowRunningRequested": true,
+        "ticksElapsed": 0,
+        "pausedDuringWait": true,
+        "queueLength": 0,
+        "operation": {
+          "OperationId": "op_383df41fa3334d40b39bc9255d7deafd",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 70
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 7002
+        }
+      }
+    },
+    {
+      "tool": "jawa/get_terrain_batch",
+      "args": {
+        "rects": "60,62,1,1"
+      },
+      "result": {
+        "success": true,
+        "message": "Read 1 cell(s) as 1 distinct terrain(s) in 1 run(s).",
+        "layer": "top",
+        "ops": "ThinIce:60,62,1,1",
+        "cellsRequested": 1,
+        "cellsRead": 1,
+        "cellsOutOfBounds": 0,
+        "cellsNullTerrain": 0,
+        "distinctTerrains": [
+          "ThinIce"
+        ],
+        "mapSize": {
+          "x": 250,
+          "z": 250
+        },
+        "mapId": 0,
+        "ticksGame": 7002,
+        "operation": {
+          "OperationId": "op_989f9cb0e71a4954b8b20089438a78f8",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 7002
+        }
+      }
+    },
+    {
+      "tool": "jawa/cell_temperature",
+      "args": {
+        "cell": "60,62"
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 62
+        },
+        "ok": true,
+        "temperature": -0.9348793,
+        "outdoorTemp": -1.096468,
+        "seasonalTemp": 22.5431137,
+        "ticksGame": 7002,
+        "operation": {
+          "OperationId": "op_9c32b6b492a248d180d48722ea7ff887",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 7002
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_rect",
+      "args": {
+        "x": 60,
+        "z": 62,
+        "w": 1,
+        "h": 1
+      },
+      "result": {
+        "success": true,
+        "mapId": 0,
+        "rect": {
+          "x": 60,
+          "z": 62,
+          "w": 1,
+          "h": 1
+        },
+        "cellCount": 1,
+        "cellsScanned": 1,
+        "rows": [
+          {
+            "x": 60,
+            "z": 62,
+            "d": 2,
+            "dEff": 2,
+            "dl": 20000,
+            "waterM": 1.0,
+            "fluid": "RM_Fluid_Water",
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "ThinIce"
+          }
+        ],
+        "sumDl": 20000,
+        "excavatedInRect": 1,
+        "sourceInRect": 0,
+        "sinkInRect": 0,
+        "getterDisagreements": 0,
+        "excavatedCellCount": 50,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "ticksGame": 7252,
+        "operation": {
+          "OperationId": "op_e2c393777a514203bb6071046db756d3",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 7252
+        }
+      }
+    },
+    {
+      "tool": "jawa/get_terrain_batch",
+      "args": {
+        "rects": "60,62,1,1"
+      },
+      "result": {
+        "success": true,
+        "message": "Read 1 cell(s) as 1 distinct terrain(s) in 1 run(s).",
+        "layer": "top",
+        "ops": "ThinIce:60,62,1,1",
+        "cellsRequested": 1,
+        "cellsRead": 1,
+        "cellsOutOfBounds": 0,
+        "cellsNullTerrain": 0,
+        "distinctTerrains": [
+          "ThinIce"
+        ],
+        "mapSize": {
+          "x": 250,
+          "z": 250
+        },
+        "mapId": 0,
+        "ticksGame": 7252,
+        "operation": {
+          "OperationId": "op_48b38720c7274b36a0930cfdcbc49a75",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 7252
+        }
+      }
+    },
+    {
+      "tool": "jawa/cell_temperature",
+      "args": {
+        "cell": "60,62"
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 62
+        },
+        "ok": true,
+        "temperature": -1.5804863,
+        "outdoorTemp": -1.74157333,
+        "seasonalTemp": 22.54629,
+        "ticksGame": 7252,
+        "operation": {
+          "OperationId": "op_632fd9cdca6c443dad5b52c4faad4240",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 34
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 7252
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_rect",
+      "args": {
+        "x": 60,
+        "z": 62,
+        "w": 1,
+        "h": 1
+      },
+      "result": {
+        "success": true,
+        "mapId": 0,
+        "rect": {
+          "x": 60,
+          "z": 62,
+          "w": 1,
+          "h": 1
+        },
+        "cellCount": 1,
+        "cellsScanned": 1,
+        "rows": [
+          {
+            "x": 60,
+            "z": 62,
+            "d": 2,
+            "dEff": 2,
+            "dl": 20000,
+            "waterM": 1.0,
+            "fluid": "RM_Fluid_Water",
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "ThinIce"
+          }
+        ],
+        "sumDl": 20000,
+        "excavatedInRect": 1,
+        "sourceInRect": 0,
+        "sinkInRect": 0,
+        "getterDisagreements": 0,
+        "excavatedCellCount": 50,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "ticksGame": 7502,
+        "operation": {
+          "OperationId": "op_a8b81564ef9b482ca860e6ca5a1aeea0",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 7502
+        }
+      }
+    },
+    {
+      "tool": "jawa/get_terrain_batch",
+      "args": {
+        "rects": "60,62,1,1"
+      },
+      "result": {
+        "success": true,
+        "message": "Read 1 cell(s) as 1 distinct terrain(s) in 1 run(s).",
+        "layer": "top",
+        "ops": "ThinIce:60,62,1,1",
+        "cellsRequested": 1,
+        "cellsRead": 1,
+        "cellsOutOfBounds": 0,
+        "cellsNullTerrain": 0,
+        "distinctTerrains": [
+          "ThinIce"
+        ],
+        "mapSize": {
+          "x": 250,
+          "z": 250
+        },
+        "mapId": 0,
+        "ticksGame": 7502,
+        "operation": {
+          "OperationId": "op_36118639f26a482ea23ecf9e0897d19b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 7502
+        }
+      }
+    },
+    {
+      "tool": "jawa/cell_temperature",
+      "args": {
+        "cell": "60,62"
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 62
+        },
+        "ok": true,
+        "temperature": -2.224123,
+        "outdoorTemp": -2.38474274,
+        "seasonalTemp": 22.549469,
+        "ticksGame": 7502,
+        "operation": {
+          "OperationId": "op_05dad85c25cd42fcbe073519497e9849",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 7502
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_rect",
+      "args": {
+        "x": 60,
+        "z": 62,
+        "w": 1,
+        "h": 1
+      },
+      "result": {
+        "success": true,
+        "mapId": 0,
+        "rect": {
+          "x": 60,
+          "z": 62,
+          "w": 1,
+          "h": 1
+        },
+        "cellCount": 1,
+        "cellsScanned": 1,
+        "rows": [
+          {
+            "x": 60,
+            "z": 62,
+            "d": 2,
+            "dEff": 2,
+            "dl": 20000,
+            "waterM": 1.0,
+            "fluid": "RM_Fluid_Water",
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "ThinIce"
+          }
+        ],
+        "sumDl": 20000,
+        "excavatedInRect": 1,
+        "sourceInRect": 0,
+        "sinkInRect": 0,
+        "getterDisagreements": 0,
+        "excavatedCellCount": 50,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "ticksGame": 7752,
+        "operation": {
+          "OperationId": "op_a9792023090c48728f9594422cc4aaec",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 7752
+        }
+      }
+    },
+    {
+      "tool": "jawa/get_terrain_batch",
+      "args": {
+        "rects": "60,62,1,1"
+      },
+      "result": {
+        "success": true,
+        "message": "Read 1 cell(s) as 1 distinct terrain(s) in 1 run(s).",
+        "layer": "top",
+        "ops": "ThinIce:60,62,1,1",
+        "cellsRequested": 1,
+        "cellsRead": 1,
+        "cellsOutOfBounds": 0,
+        "cellsNullTerrain": 0,
+        "distinctTerrains": [
+          "ThinIce"
+        ],
+        "mapSize": {
+          "x": 250,
+          "z": 250
+        },
+        "mapId": 0,
+        "ticksGame": 7752,
+        "operation": {
+          "OperationId": "op_805b2e041ac64c1fb56e579b051e1099",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 7752
+        }
+      }
+    },
+    {
+      "tool": "jawa/cell_temperature",
+      "args": {
+        "cell": "60,62"
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 62
+        },
+        "ok": true,
+        "temperature": -2.86591721,
+        "outdoorTemp": -3.026085,
+        "seasonalTemp": 22.5526466,
+        "ticksGame": 7752,
+        "operation": {
+          "OperationId": "op_87707cdb38da4feb81e04b23eec3e1cb",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 7752
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_rect",
+      "args": {
+        "x": 60,
+        "z": 62,
+        "w": 1,
+        "h": 1
+      },
+      "result": {
+        "success": true,
+        "mapId": 0,
+        "rect": {
+          "x": 60,
+          "z": 62,
+          "w": 1,
+          "h": 1
+        },
+        "cellCount": 1,
+        "cellsScanned": 1,
+        "rows": [
+          {
+            "x": 60,
+            "z": 62,
+            "d": 2,
+            "dEff": 2,
+            "dl": 20000,
+            "waterM": 1.0,
+            "fluid": "RM_Fluid_Water",
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "ThinIce"
+          }
+        ],
+        "sumDl": 20000,
+        "excavatedInRect": 1,
+        "sourceInRect": 0,
+        "sinkInRect": 0,
+        "getterDisagreements": 0,
+        "excavatedCellCount": 50,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "ticksGame": 8002,
+        "operation": {
+          "OperationId": "op_fa9175bd3822498daf4b71183a58aed0",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 8002
+        }
+      }
+    },
+    {
+      "tool": "jawa/get_terrain_batch",
+      "args": {
+        "rects": "60,62,1,1"
+      },
+      "result": {
+        "success": true,
+        "message": "Read 1 cell(s) as 1 distinct terrain(s) in 1 run(s).",
+        "layer": "top",
+        "ops": "ThinIce:60,62,1,1",
+        "cellsRequested": 1,
+        "cellsRead": 1,
+        "cellsOutOfBounds": 0,
+        "cellsNullTerrain": 0,
+        "distinctTerrains": [
+          "ThinIce"
+        ],
+        "mapSize": {
+          "x": 250,
+          "z": 250
+        },
+        "mapId": 0,
+        "ticksGame": 8002,
+        "operation": {
+          "OperationId": "op_91f3284695934b90bd741bb74782476c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 8002
+        }
+      }
+    },
+    {
+      "tool": "jawa/cell_temperature",
+      "args": {
+        "cell": "60,62"
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 62
+        },
+        "ok": true,
+        "temperature": -3.50596046,
+        "outdoorTemp": -3.66571236,
+        "seasonalTemp": 22.5558243,
+        "ticksGame": 8002,
+        "operation": {
+          "OperationId": "op_825bb13e0313461aa593b8e69cb72031",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 8002
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_rect",
+      "args": {
+        "x": 60,
+        "z": 62,
+        "w": 1,
+        "h": 1
+      },
+      "result": {
+        "success": true,
+        "mapId": 0,
+        "rect": {
+          "x": 60,
+          "z": 62,
+          "w": 1,
+          "h": 1
+        },
+        "cellCount": 1,
+        "cellsScanned": 1,
+        "rows": [
+          {
+            "x": 60,
+            "z": 62,
+            "d": 2,
+            "dEff": 2,
+            "dl": 20000,
+            "waterM": 1.0,
+            "fluid": "RM_Fluid_Water",
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "ThinIce"
+          }
+        ],
+        "sumDl": 20000,
+        "excavatedInRect": 1,
+        "sourceInRect": 0,
+        "sinkInRect": 0,
+        "getterDisagreements": 0,
+        "excavatedCellCount": 50,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "ticksGame": 8252,
+        "operation": {
+          "OperationId": "op_7a138896f3e945e4ac3006a4b0abef56",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 8252
+        }
+      }
+    },
+    {
+      "tool": "jawa/get_terrain_batch",
+      "args": {
+        "rects": "60,62,1,1"
+      },
+      "result": {
+        "success": true,
+        "message": "Read 1 cell(s) as 1 distinct terrain(s) in 1 run(s).",
+        "layer": "top",
+        "ops": "ThinIce:60,62,1,1",
+        "cellsRequested": 1,
+        "cellsRead": 1,
+        "cellsOutOfBounds": 0,
+        "cellsNullTerrain": 0,
+        "distinctTerrains": [
+          "ThinIce"
+        ],
+        "mapSize": {
+          "x": 250,
+          "z": 250
+        },
+        "mapId": 0,
+        "ticksGame": 8252,
+        "operation": {
+          "OperationId": "op_00085daa5b6146e4a37469eaebe3e582",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 8252
+        }
+      }
+    },
+    {
+      "tool": "jawa/cell_temperature",
+      "args": {
+        "cell": "60,62"
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 62
+        },
+        "ok": true,
+        "temperature": -4.144367,
+        "outdoorTemp": -4.462986,
+        "seasonalTemp": 22.5598,
+        "ticksGame": 8252,
+        "operation": {
+          "OperationId": "op_9fe09b430a914c4ea6198999a78a0cf8",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 8252
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_rect",
+      "args": {
+        "x": 60,
+        "z": 62,
+        "w": 1,
+        "h": 1
+      },
+      "result": {
+        "success": true,
+        "mapId": 0,
+        "rect": {
+          "x": 60,
+          "z": 62,
+          "w": 1,
+          "h": 1
+        },
+        "cellCount": 1,
+        "cellsScanned": 1,
+        "rows": [
+          {
+            "x": 60,
+            "z": 62,
+            "d": 2,
+            "dEff": 2,
+            "dl": 20000,
+            "waterM": 1.0,
+            "fluid": "RM_Fluid_Water",
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "ThinIce"
+          }
+        ],
+        "sumDl": 20000,
+        "excavatedInRect": 1,
+        "sourceInRect": 0,
+        "sinkInRect": 0,
+        "getterDisagreements": 0,
+        "excavatedCellCount": 50,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "ticksGame": 8502,
+        "operation": {
+          "OperationId": "op_8d8b5dbd7918435c9c25e695a843dd15",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 8502
+        }
+      }
+    },
+    {
+      "tool": "jawa/get_terrain_batch",
+      "args": {
+        "rects": "60,62,1,1"
+      },
+      "result": {
+        "success": true,
+        "message": "Read 1 cell(s) as 1 distinct terrain(s) in 1 run(s).",
+        "layer": "top",
+        "ops": "ThinIce:60,62,1,1",
+        "cellsRequested": 1,
+        "cellsRead": 1,
+        "cellsOutOfBounds": 0,
+        "cellsNullTerrain": 0,
+        "distinctTerrains": [
+          "ThinIce"
+        ],
+        "mapSize": {
+          "x": 250,
+          "z": 250
+        },
+        "mapId": 0,
+        "ticksGame": 8502,
+        "operation": {
+          "OperationId": "op_76a540c052a4428189bb7b90346ae8e0",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 8502
+        }
+      }
+    },
+    {
+      "tool": "jawa/cell_temperature",
+      "args": {
+        "cell": "60,62"
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 62
+        },
+        "ok": true,
+        "temperature": -4.78123856,
+        "outdoorTemp": -5.09913635,
+        "seasonalTemp": 22.56298,
+        "ticksGame": 8502,
+        "operation": {
+          "OperationId": "op_8f3b361137a04308bd740c306662e34a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 8502
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_rect",
+      "args": {
+        "x": 60,
+        "z": 62,
+        "w": 1,
+        "h": 1
+      },
+      "result": {
+        "success": true,
+        "mapId": 0,
+        "rect": {
+          "x": 60,
+          "z": 62,
+          "w": 1,
+          "h": 1
+        },
+        "cellCount": 1,
+        "cellsScanned": 1,
+        "rows": [
+          {
+            "x": 60,
+            "z": 62,
+            "d": 2,
+            "dEff": 2,
+            "dl": 20000,
+            "waterM": 1.0,
+            "fluid": "RM_Fluid_Water",
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "ThinIce"
+          }
+        ],
+        "sumDl": 20000,
+        "excavatedInRect": 1,
+        "sourceInRect": 0,
+        "sinkInRect": 0,
+        "getterDisagreements": 0,
+        "excavatedCellCount": 50,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "ticksGame": 8752,
+        "operation": {
+          "OperationId": "op_a3048f90d1634b1aa09d44f4e936b7ef",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 8752
+        }
+      }
+    },
+    {
+      "tool": "jawa/get_terrain_batch",
+      "args": {
+        "rects": "60,62,1,1"
+      },
+      "result": {
+        "success": true,
+        "message": "Read 1 cell(s) as 1 distinct terrain(s) in 1 run(s).",
+        "layer": "top",
+        "ops": "ThinIce:60,62,1,1",
+        "cellsRequested": 1,
+        "cellsRead": 1,
+        "cellsOutOfBounds": 0,
+        "cellsNullTerrain": 0,
+        "distinctTerrains": [
+          "ThinIce"
+        ],
+        "mapSize": {
+          "x": 250,
+          "z": 250
+        },
+        "mapId": 0,
+        "ticksGame": 8752,
+        "operation": {
+          "OperationId": "op_312c7847eec74582a8d9e7969f9e39da",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 8752
+        }
+      }
+    },
+    {
+      "tool": "jawa/cell_temperature",
+      "args": {
+        "cell": "60,62"
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 62
+        },
+        "ok": true,
+        "temperature": -5.416691,
+        "outdoorTemp": -5.733919,
+        "seasonalTemp": 22.5661621,
+        "ticksGame": 8752,
+        "operation": {
+          "OperationId": "op_03a3344d1e124ec48234fdecb53d4dd9",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 8752
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_rect",
+      "args": {
+        "x": 60,
+        "z": 62,
+        "w": 1,
+        "h": 1
+      },
+      "result": {
+        "success": true,
+        "mapId": 0,
+        "rect": {
+          "x": 60,
+          "z": 62,
+          "w": 1,
+          "h": 1
+        },
+        "cellCount": 1,
+        "cellsScanned": 1,
+        "rows": [
+          {
+            "x": 60,
+            "z": 62,
+            "d": 3,
+            "dEff": 3,
+            "dl": 29600,
+            "waterM": 1.48,
+            "fluid": "RM_Fluid_Water",
+            "isExcavated": true,
+            "isSource": false,
+            "isSink": false,
+            "terrain": "ThinIce"
+          }
+        ],
+        "sumDl": 29600,
+        "excavatedInRect": 1,
+        "sourceInRect": 0,
+        "sinkInRect": 0,
+        "getterDisagreements": 0,
+        "excavatedCellCount": 50,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "ticksGame": 9002,
+        "operation": {
+          "OperationId": "op_8523b6e334b14954bc5a58770f273b6c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 9002
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_things",
+      "args": {
+        "defName": "RM_CrushedIce",
+        "rect": "57,59,7,7"
+      },
+      "result": {
+        "success": true,
+        "things": [],
+        "scanned": 15108,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 8,
+        "perDef": {},
+        "ticksGame": 9002,
+        "message": "NOTHING MATCHED. 15108 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+          "OperationId": "op_29dcd3d670d84b4887b27c629168286f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 9002
+        }
+      }
+    },
+    {
+      "tool": "jawa/game_condition",
+      "args": {
+        "action": "end",
+        "condition": "ColdSnap"
+      },
+      "result": {
+        "success": true,
+        "action": "end",
+        "scope": "map",
+        "notes": [
+          "Duration = TicksPassed - it expires next tick. GameCondition has no EndNow()."
+        ],
+        "endsNextTick": true,
+        "gamePaused": true,
+        "listCaveat": "Still listed below because Duration=TicksPassed expires on the NEXT TICK and the game is PAUSED.",
+        "activeConditions": [
+          {
+            "def": "WeatherController",
+            "permanent": true,
+            "ticksLeft": -1
+          },
+          {
+            "def": "ColdSnap",
+            "permanent": false,
+            "ticksLeft": 0
+          },
+          {
+            "def": "DeepFreeze",
+            "permanent": false,
+            "ticksLeft": 18500
+          }
+        ],
+        "ticksGame": 9002,
+        "operation": {
+          "OperationId": "op_1cfa29d41c6a458d823896edf4e8d566",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 9002
+        }
+      }
+    },
+    {
+      "tool": "jawa/game_condition",
+      "args": {
+        "action": "end",
+        "condition": "DeepFreeze"
+      },
+      "result": {
+        "success": true,
+        "action": "end",
+        "scope": "map",
+        "notes": [
+          "Duration = TicksPassed - it expires next tick. GameCondition has no EndNow()."
+        ],
+        "endsNextTick": true,
+        "gamePaused": true,
+        "listCaveat": "Still listed below because Duration=TicksPassed expires on the NEXT TICK and the game is PAUSED.",
+        "activeConditions": [
+          {
+            "def": "WeatherController",
+            "permanent": true,
+            "ticksLeft": -1
+          },
+          {
+            "def": "ColdSnap",
+            "permanent": false,
+            "ticksLeft": 0
+          },
+          {
+            "def": "DeepFreeze",
+            "permanent": false,
+            "ticksLeft": 0
+          }
+        ],
+        "ticksGame": 9002,
+        "operation": {
+          "OperationId": "op_f0b9a92c81234f59ac4b951156caf501",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 9002
+        }
+      }
+    }
+  ],
+  "site": {
+    "site": "calm",
+    "save": "RM_TestSite_calm_v3",
+    "utc": "2026-11-21T06:44:17Z",
+    "problems": [],
+    "load_s": 5.5,
+    "quietMap": {
+      "profile": "quiet_site",
+      "suite": "isolated",
+      "row": "test_site_saves_load_calm",
+      "topic": null,
+      "controls": [
+        {
+          "name": "threat_structures_cleared",
+          "what": "hostile threat structures vanished at setup (vitals classifier: turret, spawner, dormant, condition causer, non-humanlike faction); keep_defs spared",
+          "hides": "hive/infestation/mech-cluster interactions; insect-faction behaviour on the site",
+          "readBack": {
+            "removed": [],
+            "threatsAfter": 0,
+            "kept": 0,
+            "errors": []
+          }
+        },
+        {
+          "name": "hostiles_removed",
+          "what": "hostile pawns present at setup removed by Vanish (no death action, no corpse)",
+          "hides": "combat interactions with the mod's things",
+          "readBack": {
+            "acted": 0,
+            "residue": []
+          }
+        },
+        {
+          "name": "proximity_letters_sent",
+          "what": "every CompProximityLetter marked sent (the mapgen void monolith's 'Fallen monolith')",
+          "hides": "the Anomaly monolith discovery letter and any mod building's proximity letter",
+          "readBack": {
+            "letters": [
+              [
+                "VoidMonolith",
+                "Fallen monolith",
+                true
+              ]
+            ],
+            "unsentAfter": 0
+          }
+        },
+        {
+          "name": "modal_broker",
+          "what": "explicit window handlers only (MODAL_HANDLERS); an unknown force-pause window is CAPTURED and blocks the row, never closed blindly; the same window still open after its handler escalates",
+          "hides": "the handled dialog's other choices (VEF new-faction: 'Do nothing' means the faction is not spawned)",
+          "readBack": {
+            "handled": [],
+            "unknown": []
+          }
+        }
+      ],
+      "notSuppressed": [
+        "active quests and their parts (never ended by default: ending a quest changes the world)",
+        "scenario parts (ScenPart_CreateIncident ticks outside the storyteller)",
+        "existing game conditions, map/world/game components and mod tickers",
+        "hives and other pawn-spawning structures, births, egg hatching, breeders",
+        "pending drop pods / shuttles / transporters, caravans and world pawns arriving",
+        "weather transitions, fires, existing hostile behaviour"
+      ],
+      "keepDefs": [],
+      "events": [],
+      "problems": [],
+      "verify": null,
+      "arrivals": [],
+      "note": "enableStoryteller is not saved with the game: re-apply after any load"
+    },
+    "sky": {
+      "weather": [
+        {
+          "after": "Clear",
+          "ok": true
+        },
+        {
+          "after": "Clear",
+          "ok": true
+        }
+      ],
+      "extinguished": 0,
+      "strayFires": 0,
+      "verified": true,
+      "error": null
+    },
+    "check": {
+      "site": "calm",
+      "utc": "2026-11-21T06:44:24Z",
+      "problems": [],
+      "map": {
+        "tile": 112579,
+        "mapId": 0,
+        "sizeX": 250,
+        "sizeZ": 250,
+        "mapBiome": "AridShrubland",
+        "outdoorTempNow": 13.9428368
+      },
+      "foggedCells": 0,
+      "triggers": 0,
+      "danger": [],
+      "ruins": 0,
+      "hostiles": [],
+      "threatStructures": [],
+      "fires": 0,
+      "weather": {
+        "current": "Clear",
+        "rainRate": 0.0
+      },
+      "colonists": [
+        [
+          "Human475",
+          false
+        ],
+        [
+          "Human478",
+          false
+        ],
+        [
+          "Human483",
+          false
+        ]
+      ],
+      "verified": true
+    },
+    "ready_s": 7.4,
+    "verified": true
+  },
+  "scene": "scene_ice",
+  "rows": [
+    {
+      "id": "ICE_control_unfrozen_cut_no_crushed_ice",
+      "status": "PASS",
+      "kind": "MOD",
+      "detail": "{'why': 'landed', 'crushed': (0, 0), 'groundBefore': 'Sand:72,60,5,1;Sand:72,61,5,1;Sand:72,62,5,1;Sand:72,63,5,1;', 'd0': 2, 'terrain': 'WaterShallow', 'designator': {'accepted': True}, 'workGiver': {'def': 'RM_DigCanalWorkGiver', 'shouldSkip': False, 'cellInPotentialWorkCells': True, 'hasJobOnCell': True, 'jobDef': 'RM_DigCanalJob', 'designationDeletedByWorkGiver': False, 'designationRestored': "
+    },
+    {
+      "id": "ICE_cut_leaves_crushed_ice",
+      "status": "FAIL",
+      "kind": "MOD",
+      "detail": "{'why': 'landed', 'crushed': (0, 0), 'cold': {'conditions': [True, True], 'cooledTicks': 5500, 'tempsC': [1.99734688, 0.3626194, -0.9348793]}, 'groundBefore': 'Gravel:60,60,2,1;Soil:62,60,3,1;Gravel:60,61,2,1;Soil:62,61,', 'd0': 2, 'terrain': 'ThinIce', 'designator': {'accepted': True}, 'workGiver': {'def': 'RM_DigCanalWorkGiver', 'shouldSkip': False, 'cellInPotentialWorkCells': True, 'hasJobOnCel"
+    },
+    {
+      "id": "ICE_melts_back_into_pond",
+      "status": "UNMEASURED",
+      "kind": "HARNESS",
+      "detail": "no crushed ice from the cut, so nothing to melt (landed)"
+    }
+  ],
+  "status": "FAIL",
+  "error": "AssertionError(\"rows not all PASS: [('ICE_control_unfrozen_cut_no_crushed_ice', 'PASS'), ('ICE_cut_leaves_crushed_ice', 'FAIL'), ('ICE_melts_back_into_pond', 'UNMEASURED')]\")",
+  "finished": 1795243498.9182591
+}

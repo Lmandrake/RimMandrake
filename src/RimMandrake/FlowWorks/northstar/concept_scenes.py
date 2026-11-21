@@ -1042,11 +1042,26 @@ def _trench_cover(S):
 # (FreezeManager lays ThinIce on the temp grid; set_terrain_batch routes a temporary def to SetTempTerrain), read back square by
 # square; the cut is designated and ordered (gravel_live.cut_once's idiom) and the cut square must still read ThinIce at the
 # last poll before it lands; the melt is judged on the melt ledger (RM_IceMelter.ProofMeltLedger) once the site is above 0 C.
-# The control is an unfrozen twin pond, cut first. No ColdSnap: it ramps over 12,000 ticks and the governor raises on a
-# frostbitten colonist (a hurt with no pawn source); a site above 2 C may thaw the painted ice, which reads UNMEASURED, never PASS.
+# The control is an unfrozen twin pond, cut first.
+# RIMMANDRAKE_STAGE_FLOWWORKS_ICE_CUT_SHOVEL_KEEP_FROZEN (visit 2, 2026-11-20): no cut ever landed. The colonist had no shovel
+# (SHOVELS_BUILD_NO_DIGGING_BARE_HANDED: no job, designation kept); the probe re-ran the designator on the square the scene had
+# just designated and read its 'Already being dug.' as a refusal; the cut costs WorkToCut(3) = 9,600 work x digLabourMultiplier
+# 4.0 (shipped) = 38,400 work, about 22,600 ticks at mining speed 1 (1.7 work a tick), against a 6,000-tick wait; and the 13.9 C
+# calm site melts painted ThinIce within that wait (iceAtLastPoll 0). Now: a shovel in the pack, Mining 10, a parka (the cold
+# below must not frostbite the colonist: the governor raises on a hurt with no pawn source), labour 0.25 (the rows judge the
+# yield, not the cut's time), the designator read BEFORE the scene designates, and the frozen pond is cut under ColdSnap +
+# DeepFreeze (sheet_overflow_proof's cold) once the cut square reads below 0 C; the conditions end before the melt is judged.
+# Both ponds sit on staged Soil (the ground read before is in the rows): a slumping original ground (sand, mud) makes the
+# work giver delete a deepening order on a dug square (RM_DigSpoil.DigRefusal, PIT_DIG_FIX_SAND_SLIDES_BACK_IN).
 ICE_TEMP, CRUSHED, MELT_DL = 'ThinIce', 'RM_CrushedIce', 10000   # one notch melts to 1,000 L (ICE_YIELD_DECIDE_ONE_CUT_FOUR_NOTCHES)
 MELTER = 'RimMandrake.FlowWorks.RM_IceMelter'
-ICE_CUT_TICKS, ICE_MELT_TICKS = 6000, 40000                       # a pile melts after 10,000 ticks above 0 C, one at a time
+ICE_COLD = ('ColdSnap', 'DeepFreeze')   # sheet_overflow_proof COLD: measured 7.5 -> -2.4 C in 4,500 ticks (r5K, 2026-11-01)
+ICE_COLD_TICKS = 20000   # 13.9 C at that ~1.4 C per 500 ticks is ~5,000 ticks to 0 C; four times that before UNMEASURED
+ICE_CUT_TICKS = 6000     # 9,600 x 0.25 = 2,400 work; Mining 10 (speed ~1.2) x 1.7 work a tick is ~1,200 ticks; five times that
+ICE_WARM_TICKS = 20000   # after the cold ends, the same budget back above 0 C
+MELT_TICKS_PER_UNIT = 10000   # RM_CrushedIce.xml: a stack melts one crushed ice per 4 hours (10,000 ticks) above 0 C
+ICE_LABOUR = 0.25        # RM_DigDepthMath.MinLabourMultiplier, as droid_dig_live stages it
+ICE_GROUND = 'Soil'
 
 
 def _ice_squares(S, x, z, w, h):
@@ -1072,98 +1087,165 @@ def _melt_ledger(S):
         return None
 
 
+def _soft(S, tool, **kw):
+    """One recorded bridge call whose refusal is a reading (the caller decides), never a staging raise."""
+    r = S.B.call(tool, **kw)
+    S.r['calls'].append({'tool': tool, 'args': kw, 'result': r})
+    return r if isinstance(r, dict) else {'success': False, 'raw': r}
+
+
+def _why(det, why, **more):
+    """The row's reason and its newest readings first: S.row keeps 400 characters of the detail."""
+    out = dict(why=why, **more)
+    out.update((k, v) for k, v in det.items() if k not in out)
+    return out
+
+
+def _below_zero(t):
+    """sheet_overflow_proof.below_zero: strictly below 0 C on the kernel's 1/16 C grid (D10); None is not below anything."""
+    return isinstance(t, (int, float)) and int(t * 16) < 0
+
+
 def _ice_cut(S, pid, c, frozen):
     """Designate and order one cut at c; tick until its depth changes. -> (verdict_kind, detail): 'landed' | 'mod' (the mod's
-    designator or work giver refused the square) | 'site' (a pawn-side gate, or the ice gone before the cut landed) | 'harness'."""
+    designator or work giver refused the square) | 'site' (a pawn-side gate, or the ice gone before the cut landed) | 'harness'.
+    The designator is read on the square BEFORE the scene designates it: read after, it answers 'Already being dug.' about the
+    scene's own order (visit 2)."""
     d0 = S.cells([c])[0].get('d')
+    pre = S.call('jawa/flowworks_job_probe', pawnId=pid, kind='dig', x=c[0], z=c[1])
     S.call('jawa/designate_batch', action='add', designation='RM_DigCanal', rect='%d,%d,1,1' % c)
     pr = S.call('jawa/flowworks_job_probe', pawnId=pid, kind='dig', x=c[0], z=c[1])
-    wg, pw = pr.get('workGiver') or {}, pr.get('pawn') or {}
-    det = {'d0': d0, 'terrain': pr.get('terrain'), 'designator': pr.get('designator'), 'workGiver': wg}
-    if not pr.get('success') or d0 is None:
-        return 'harness', dict(det, why='job probe or depth read unavailable: %s' % str(pr.get('message') or pr)[:160])
+    wg, pw, dz = pr.get('workGiver') or {}, pr.get('pawn') or {}, pre.get('designator') or {}
+    det = {'d0': d0, 'terrain': pr.get('terrain'), 'designator': dz, 'workGiver': wg}
+    if not pre.get('success') or not pr.get('success') or d0 is None:
+        return 'harness', _why(det, 'job probe or depth read unavailable: %s' % str(pr.get('message') or pr)[:160])
     if pw.get('workTypeDisabled') or pw.get('missingCapacity') or pw.get('canReach') is False:
-        return 'site', dict(det, why='the colonist cannot do the cut: %s' % pw)
-    if not (pr.get('designator') or {}).get('accepted') or pr.get('designationPresent') is not True:
-        return 'mod', dict(det, why='the dig designator refused the square: %s' % pr.get('designator'))
+        return 'site', _why(det, 'the colonist cannot do the cut: %s' % pw)
+    if not dz.get('accepted'):
+        return 'mod', _why(det, 'the dig designator refused the square: %s' % dz)
     if wg.get('hasJobOnCell') is not True or wg.get('jobDef') != 'RM_DigCanalJob':
-        return 'mod', dict(det, why='the work giver hands no RM_DigCanalJob here (shouldSkip=%s failReason=%s)' % (
-            wg.get('shouldSkip'), wg.get('failReason')))
+        return 'mod', _why(det, 'the work giver hands no RM_DigCanalJob here (shouldSkip=%s failReason=%s deleted=%s)' % (
+            wg.get('shouldSkip'), wg.get('failReason'), wg.get('designationDeletedByWorkGiver')))
     od = S.call('jawa/ordered_job', pawnId=pid, jobDef='RM_DigCanalJob', targetAX=c[0], targetAZ=c[1], waitTicks=0)
     if od.get('success') is False or od.get('accepted') is False:
-        return 'harness', dict(det, why='ordered_job refused: %s' % str(od)[:160])
-    iced, t = None, 0
+        return 'harness', _why(det, 'ordered_job refused: %s' % str(od)[:160])
+    iced, t, temps = None, 0, []
     while t < ICE_CUT_TICKS:
         if frozen:
             iced = _ice_squares(S, c[0], c[1], 1, 1)
+            temps.append(S.call('jawa/cell_temperature', cell='%d,%d' % c).get('temperature'))
         S.ticks(250)
         t += 250
         d = S.cells([c])[0].get('d')
         if d not in (None, d0):
-            det.update(d1=d, cutAt=t, iceAtLastPoll=iced)
+            det.update(d1=d, cutAt=t, iceAtLastPoll=iced, cutTempsC=temps[-3:])
             if frozen and not iced:
-                return 'site', dict(det, why='the cut square no longer read ThinIce before the cut landed (%s)' % iced)
+                return 'site', _why(det, 'the cut square no longer read ThinIce before the cut landed (%s)' % iced)
             return 'landed', det
-    return 'harness', dict(det, why='the ordered cut did not land in %d ticks' % ICE_CUT_TICKS, iceAtLastPoll=iced)
+    return 'harness', _why(det, 'the ordered cut did not land in %d ticks' % ICE_CUT_TICKS, iceAtLastPoll=iced,
+                           cutTempsC=temps[-3:])
+
+
+ICE_ROWS = ('ICE_control_unfrozen_cut_no_crushed_ice', 'ICE_cut_leaves_crushed_ice', 'ICE_melts_back_into_pond')
 
 
 def _ice(S):
+    import shovel_stage
     pond, twin = (O[0], O[1]), (O[0] + 12, O[1])                  # two 5x5 ponds, 7 squares of dry ground between
+    ground = {}
     for p in (pond, twin):
+        ground[p] = S.call('jawa/get_terrain_batch', rects='%d,%d,5,5' % p).get('ops')
+        S.call('jawa/set_terrain_batch', ops='%s:%d,%d,5,5' % ((ICE_GROUND,) + p))
         sq = [(p[0] + i, p[1] + j) for i in range(5) for j in range(5)]
         S.dig(sq, 2); S.fill(sq, 1.0, WATER)
     S.setting('iceDigEnabled', True)
     S.setting('digRockWorkMultiplier', 1.0)                        # the rows judge the yield, not the cut's time
+    S.setting('digLabourMultiplier', ICE_LABOUR)
     cut, twin_cut = (pond[0], pond[1] + 2), (twin[0], twin[1] + 2)  # west-edge middles, reachable from the bank
     col = S.pawn('Colonist', (pond[0] - 2, pond[1] + 2), 'player')
+    staged = [shovel_stage.give_shovel(lambda tool, **kw: _soft(S, tool, **kw), col)]
+    sk = _soft(S, 'jawa/set_pawn_skill', pawn=col, skill='Mining', level=10)
+    staged.append((sk.get('success') is not False, 'Mining 10: %s' % str(sk)[:120]))
+    pk = _soft(S, 'jawa/pawn_gear', pawn=col, action='wear', **{'def': 'Apparel_Parka'})
+    staged.append((pk.get('success') is not False, 'parka: %s' % str(pk)[:120]))
+    if not all(ok for ok, _ in staged):
+        for rid in ICE_ROWS:
+            S.row(rid, False, 'the cutter was not staged: %s' % [w for ok, w in staged if not ok], unmeasured=True)
+        return
 
     # control first, on the unfrozen twin: a cut through open water leaves no crushed ice
     n0 = _crushed_near(S, twin_cut)
     kind, det = _ice_cut(S, col, twin_cut, frozen=False)
     n1 = _crushed_near(S, twin_cut)
-    S.row('ICE_control_unfrozen_cut_no_crushed_ice', kind == 'landed' and n1 == n0, dict(det, crushed=(n0, n1)),
-          unmeasured=kind != 'landed' or None in (n0, n1))
+    S.row(ICE_ROWS[0], kind == 'landed' and n1 == n0, _why(det, det.get('why', kind), crushed=(n0, n1),
+                                                          groundBefore=str(ground[twin])[:60]),
+          unmeasured=kind not in ('landed', 'mod') or (kind == 'landed' and None in (n0, n1)))   # a refusal is the mod's
     S.call('jawa/destroy_batch', rects='%d,%d,7,7' % (twin_cut[0] - 3, twin_cut[1] - 3), categories='Item')  # no pile of
     # the twin's may thaw into the melt ledger the frozen pond's row reads
 
-    # the frozen pond (asserted ice), then the cut
-    S.call('jawa/set_terrain_batch', ops='%s:%d,%d,5,5' % ((ICE_TEMP,) + pond))
-    iced = _ice_squares(S, pond[0], pond[1], 5, 5)
-    temp = S.call('jawa/cell_temperature', cell='%d,%d' % cut).get('temperature')
-    if iced != 25:
-        S.row('ICE_cut_leaves_crushed_ice', False, 'the pond did not read frozen: %s/25 ThinIce squares' % iced, unmeasured=True)
-        S.row('ICE_melts_back_into_pond', False, 'no frozen pond, so no cut and no melt', unmeasured=True)
-        return
-    c0 = _crushed_near(S, cut)
-    kind, det = _ice_cut(S, col, cut, frozen=True)
-    c1 = _crushed_near(S, cut)
+    # the cold, then the frozen pond (asserted ice), then the cut while the conditions still hold
+    gcs = [_soft(S, 'jawa/game_condition', action='start', condition=n, durationTicks=ICE_COLD_TICKS + ICE_CUT_TICKS)
+           for n in ICE_COLD]
+    try:
+        temps, t = [], 0
+        while t < ICE_COLD_TICKS:
+            temps.append(S.call('jawa/cell_temperature', cell='%d,%d' % cut).get('temperature'))
+            if _below_zero(temps[-1]):
+                break
+            S.ticks(500)
+            t += 500
+        cold = {'conditions': [g.get('success') for g in gcs], 'cooledTicks': t, 'tempsC': temps[-3:]}
+        if not _below_zero(temps[-1]):
+            S.row(ICE_ROWS[1], False, _why(cold, 'the cut square never read below 0 C'), unmeasured=True)
+            S.row(ICE_ROWS[2], False, 'no frozen pond, so no cut and no melt', unmeasured=True)
+            return
+        S.call('jawa/set_terrain_batch', ops='%s:%d,%d,5,5' % ((ICE_TEMP,) + pond))
+        iced = _ice_squares(S, pond[0], pond[1], 5, 5)
+        if iced != 25:
+            S.row(ICE_ROWS[1], False, _why(cold, 'the pond did not read frozen: %s/25 ThinIce squares' % iced),
+                  unmeasured=True)
+            S.row(ICE_ROWS[2], False, 'no frozen pond, so no cut and no melt', unmeasured=True)
+            return
+        c0 = _crushed_near(S, cut)
+        kind, det = _ice_cut(S, col, cut, frozen=True)
+        c1 = _crushed_near(S, cut)
+    finally:
+        for n in ICE_COLD:
+            _soft(S, 'jawa/game_condition', action='end', condition=n)
     made = (c1 - c0) if None not in (c0, c1) else None
-    det.update(crushed=(c0, c1), siteTempC=temp)
+    det = _why(det, det.get('why', kind), crushed=(c0, c1), cold=cold, groundBefore=str(ground[pond])[:60])
     if kind in ('landed', 'mod'):
-        S.row('ICE_cut_leaves_crushed_ice', kind == 'landed' and bool(made and made >= 1), det, unmeasured=made is None)
+        S.row(ICE_ROWS[1], kind == 'landed' and bool(made and made >= 1), det, unmeasured=made is None)
     else:
-        S.row('ICE_cut_leaves_crushed_ice', False, det, unmeasured=True)
+        S.row(ICE_ROWS[1], False, det, unmeasured=True)
     if not made or made < 1:
-        S.row('ICE_melts_back_into_pond', False, 'no crushed ice from the cut, so nothing to melt (%s)' % det.get('why', made),
-              unmeasured=True)
+        S.row(ICE_ROWS[2], False, 'no crushed ice from the cut, so nothing to melt (%s)' % det.get('why', made), unmeasured=True)
         return
 
-    # warm: every pile melts into the water its cut removed, and the world takes exactly that much
-    lg0, t, left, warm = _melt_ledger(S), 0, c1, []
-    while t < ICE_MELT_TICKS and left:
+    # warm: back above 0 C, then every pile melts into the water its cut removed, and the world takes exactly that much
+    lg0, t, warm = _melt_ledger(S), 0, []
+    while t < ICE_WARM_TICKS:
+        warm.append(S.call('jawa/cell_temperature', cell='%d,%d' % cut).get('temperature'))
+        if isinstance(warm[-1], (int, float)) and warm[-1] > 0:
+            break
+        S.ticks(500)
+        t += 500
+    t_warm, left, budget = t, c1, made * MELT_TICKS_PER_UNIT + 2000   # one poll step past the last unit's melt
+    while t - t_warm < budget and left:
         S.ticks(2000)
         t += 2000
         left = _crushed_near(S, cut)
         warm.append(S.call('jawa/cell_temperature', cell='%d,%d' % cut).get('temperature'))
     lg1 = _melt_ledger(S)
-    mdet = {'crushedLeft': left, 'ticks': t, 'ledger': (lg0, lg1), 'want': made * MELT_DL, 'tempsC': warm[-4:]}
+    mdet = {'crushedLeft': left, 'ticks': t, 'warmAfterTicks': t_warm, 'budget': budget, 'ledger': (lg0, lg1),
+            'want': made * MELT_DL, 'tempsC': warm[-4:]}
     known = [w for w in warm if isinstance(w, (int, float))]
     if None in (lg0, lg1, left):
-        S.row('ICE_melts_back_into_pond', False, dict(mdet, why='a melt-ledger or crushed-ice read came back empty'), unmeasured=True)
+        S.row(ICE_ROWS[2], False, _why(mdet, 'a melt-ledger or crushed-ice read came back empty'), unmeasured=True)
     elif left and (not known or max(known) <= 0):
-        S.row('ICE_melts_back_into_pond', False, dict(mdet, why='the site never got above 0 C: no thaw to judge'), unmeasured=True)
+        S.row(ICE_ROWS[2], False, _why(mdet, 'the site never got above 0 C: no thaw to judge'), unmeasured=True)
     else:
-        S.row('ICE_melts_back_into_pond', not left and lg1 - lg0 == made * MELT_DL, mdet)
+        S.row(ICE_ROWS[2], not left and lg1 - lg0 == made * MELT_DL, mdet)
 
 
 # RIMMANDRAKE_REBUILD_FLOWWORKS_MOAT_SCENE_PASSED_ON_REFUSED (visit 1, 2026-11-15): the draft dug a 20-square ditch anyone

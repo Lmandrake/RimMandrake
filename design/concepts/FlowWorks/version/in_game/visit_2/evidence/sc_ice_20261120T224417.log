@@ -1,0 +1,2 @@
+FAIL design\concepts\FlowWorks\version\in_game\visit_2\evidence\sc_ice_20261120T224417.json AssertionError("rows not all PASS: [('ICE_control_unfrozen_cut_no_crushed_ice', 'PASS'), ('ICE_cut_leaves_crushed_ice', 'FAIL'), ('ICE_melts_back_into_pond', 'UNMEASURED')]")
+[bridge split] 41.2 s wall: load 0.6 / ticks 13.6 / reads 4.4 / other 6.9 / outside calls 15.8 s

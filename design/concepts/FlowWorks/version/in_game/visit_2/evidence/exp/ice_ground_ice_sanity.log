@@ -1,0 +1,3 @@
+FAIL design\concepts\FlowWorks\version\in_game\visit_2\evidence\exp\ice_ground_ice_sanity.json AssertionError("rows not all PASS: [('ICE_control_unfrozen_cut_no_crushed_ice', 'FAIL'), ('ICE_cut_leaves_crushed_ice', 'PASS'), ('ICE_melts_back_into_pond', 'PASS')]")
+[bridge split] 53.9 s wall: load 0.5 / ticks 25.8 / reads 4.3 / other 7.2 / outside calls 16.1 s
+[bridge split] WARN 52 calls of jawa/static_call (2.0 s): batch them

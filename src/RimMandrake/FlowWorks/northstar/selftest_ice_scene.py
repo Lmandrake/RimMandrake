@@ -13,7 +13,16 @@ square only when a designated cut is ORDERED, and melts a crushed-ice pile 10,00
   fault='cold' the site never gets above 0 C -> the melt row UNMEASURED
   fault='nomelt' warm, the pile never melts -> the melt row FAILs
   fault='refuse' the work giver refuses the frozen square -> the cut row FAILs (MOD), the melt UNMEASURED
-Red on the draft at 2b4bffe212, green on the fix. The fake proves the scene's logic, never the game; the live half is
+Visit 2 (RIMMANDRAKE_STAGE_FLOWWORKS_ICE_CUT_SHOVEL_KEEP_FROZEN, 2026-11-20): no cut ever landed. The fake now also holds the
+game to what visit 2 measured: no job without a shovel in reach (designation kept); the designator answers 'Already being dug.'
+on a square already designated; a cut costs 9,600 x digLabourMultiplier (4.0 shipped) work at 1.7 x (0.04 + 0.12 x Mining) a tick;
+painted ThinIce thaws above 0 C (the calm site reads 13.9 C) and the site cools only under ColdSnap/DeepFreeze (~1.4 C a 500
+ticks, sheet_overflow_proof r5K); the twin's original ground is Sand, which slumps (the work giver deletes a deepening order)
+unless the scene stages Soil.
+  fault='nocold'   the cold conditions are refused -> the cut and melt UNMEASURED, never PASS
+  fault='noshovel' pawn_gear refuses the shovel -> every row UNMEASURED
+  fault='slump'    the Soil staging does not take: the twin slumps -> the control FAILs (MOD refusal, decided)
+Red on the draft at 2b4bffe212 and on the visit-2 scene (HEAD before the fix), green on the fix. The fake proves the scene's logic, never the game; the live half is
 `python.exe src/RimMandrake/FlowWorks/northstar/concept_scenes.py --scene scene_ice --out <json>`.
     python3 selftest_ice_scene.py [path/to/concept_scenes.py]
 """
@@ -49,7 +58,8 @@ class Fake:
         self.mod, self.fault = mod, fault
         self.stop_on = 'default'
         self.g = {'d': {}, 'dl': {}, 'ice': set(), 'desig': set(), 'orders': [], 'piles': {}, 'ledger': [0, 0, 0, 0, 0],
-                  'tick': 0, 'n': 0, 'temp': -5.0 if fault == 'cold' else 12.0}
+                  'tick': 0, 'n': 0, 'temp': -5.0 if fault == 'cold' else 13.9, 'conds': set(), 'soil': set(),
+                  'labour': 4.0, 'mining': 4, 'shovel': False, 'parka': False}
         self.saves, self.contract = {}, []
 
     def save(self, k):
@@ -60,11 +70,17 @@ class Fake:
 
     def ticks(self, n):
         g = self.g
+        if g['temp'] < -5 and not g['parka']:
+            raise AssertionError('governor: Frostbite on the colonist (no pawn source)')
         g['tick'] += n
-        if self.fault == 'thaw':
-            g['ice'].clear()
+        if self.fault != 'cold':                                # ~1.4 C a 500 ticks toward -10 C cold, 13.9 C calm
+            goal, step = (-10.0, 1.4 * n / 500) if g['conds'] else (13.9, 1.4 * n / 500)
+            g['temp'] = max(goal, g['temp'] - step) if g['temp'] > goal else min(goal, g['temp'] + step)
+        if self.fault == 'thaw' or g['temp'] > 0:
+            g['ice'].clear()                                    # painted ThinIce thaws above 0 C
+        speed = 1.7 * (0.04 + 0.12 * g['mining'])
         for o in list(g['orders']):
-            if g['tick'] - o['at'] >= 500:                      # the ordered cut lands
+            if g['tick'] - o['at'] >= 9600 * g['labour'] / speed:   # the ordered cut lands
                 g['orders'].remove(o)
                 c = o['cell']
                 g['d'][c] = g['d'].get(c, 0) + 1
@@ -96,7 +112,33 @@ class Fake:
                     for (x, z) in cells_of('%d,%d,%d,%d' % (kw['x'], kw['z'], kw['w'], kw['h']))]
             return {'success': True, 'rows': rows}
         if tool == 'jawa/mod_settings_field':
+            if kw.get('field') == 'digLabourMultiplier':
+                if kw.get('action') == 'set':
+                    g['labour'] = float(kw['value'])
+                return {'success': True, 'value': g['labour']}
             return {'success': True, 'value': None}
+        if tool == 'jawa/game_condition':
+            if kw.get('condition') not in ('ColdSnap', 'DeepFreeze'):
+                self.contract.append('game_condition %s' % kw)
+            if self.fault == 'nocold':
+                return {'success': False, 'error': 'refused'}
+            (g['conds'].add if kw.get('action') == 'start' else g['conds'].discard)(kw.get('condition'))
+            return {'success': True}
+        if tool == 'jawa/set_pawn_skill':
+            if kw.get('skill') == 'Mining':
+                g['mining'] = int(kw['level'])
+            return {'success': True}
+        if tool == 'jawa/pawn_gear':
+            if kw.get('action') == 'inventory' and kw.get('def') == 'RM_Shovel':
+                if self.fault == 'noshovel':
+                    return {'success': False, 'error': 'no such def'}
+                g['shovel'] = True
+            elif kw.get('action') == 'wear' and kw.get('def') == 'Apparel_Parka':
+                g['parka'] = True
+            else:
+                self.contract.append('pawn_gear %s' % kw)
+                return {'success': False}
+            return {'success': True}
         if tool == 'jawa/spawn_pawn':
             g['n'] += 1
             return {'success': True, 'pawns': [{'id': 'Human%d' % (900 + g['n'])}]}
@@ -108,7 +150,9 @@ class Fake:
                     self.contract.append('set_terrain_batch op %r' % op)
                     return {'success': False}
                 if d == 'ThinIce':
-                    g['ice'].update(c for c in cs if g['dl'].get(c))   # thin ice lies on water only
+                    g['ice'].update(c for c in cs if g['dl'].get(c) and g['temp'] <= 0)   # on water, and only in the cold
+                if d == 'Soil' and self.fault != 'slump':
+                    g['soil'].update(cs)
             return {'success': True}
         if tool == 'jawa/get_terrain_batch':
             cs = cells_of(kw['rects'])
@@ -129,18 +173,24 @@ class Fake:
         if tool == 'jawa/flowworks_job_probe':
             c = (kw['x'], kw['z'])
             refuse = self.fault == 'refuse' and c in g['ice']
+            slump = c[0] >= 70 and c not in g['soil']           # the twin's original ground is Sand
+            if c in g['desig'] and slump:
+                g['desig'].discard(c)                           # the work giver deletes the order (DigRefusal)
             present = c in g['desig']
+            job = present and not refuse and g['shovel']
+            dz = {'accepted': False, 'reason': 'Already being dug.'} if present else {'accepted': not refuse}
             return {'success': True, 'terrain': 'ThinIce' if c in g['ice'] else 'WaterShallow', 'designationPresent': present,
-                    'designator': {'accepted': not refuse},
-                    'workGiver': {'shouldSkip': not present, 'hasJobOnCell': present and not refuse,
-                                  'jobDef': 'RM_DigCanalJob' if present and not refuse else None},
+                    'designator': dz,
+                    'workGiver': {'shouldSkip': not present, 'hasJobOnCell': job, 'designationDeletedByWorkGiver': slump,
+                                  'jobDef': 'RM_DigCanalJob' if job else None},
                     'pawn': {'workTypeDisabled': False, 'canReach': True}}
         if tool == 'jawa/ordered_job':
             c = (kw['targetAX'], kw['targetAZ'])
             if kw.get('jobDef') != 'RM_DigCanalJob' or c not in g['desig']:
                 self.contract.append('ordered_job %s without a designation' % kw)
                 return {'success': True, 'accepted': False}
-            g['orders'].append({'cell': c, 'at': g['tick']})
+            if g['shovel']:
+                g['orders'].append({'cell': c, 'at': g['tick']})
             return {'success': True, 'accepted': True}
         if tool == 'jawa/list_things':
             cs = set(cells_of(kw['rect']) or [])
@@ -211,5 +261,15 @@ check('warm, the pile never melts: the melt FAILs', r.get(MELT) == 'FAIL', r)
 r, o, _ = run(fault='refuse')
 check('the work giver refuses the frozen square: the cut FAILs (MOD), the melt UNMEASURED',
       r.get(CUT) == 'FAIL' and [x for x in o['rows'] if x['id'] == CUT][0]['kind'] == 'MOD' and r.get(MELT) == 'UNMEASURED', r)
+r, o, _ = run(fault='nocold')
+check('the cold refused: the cut and the melt UNMEASURED, none PASS', r.get(CUT) == 'UNMEASURED' and r.get(MELT) == 'UNMEASURED', r)
+r, o, _ = run(fault='noshovel')
+check('no shovel staged: every row UNMEASURED', all(r.get(x) == 'UNMEASURED' for x in (CUT, MELT, CTRL)), r)
+r, o, _ = run(fault='slump')
+check('the twin slumps (Soil staging did not take): the control FAILs as a MOD refusal, the frozen rows still PASS',
+      r.get(CTRL) == 'FAIL' and [x for x in o['rows'] if x['id'] == CTRL][0]['kind'] == 'MOD' and r.get(CUT) == 'PASS', r)
+r, o, F = run()
+check('the frozen cut lands while the cold holds and the conditions are ended after', not F.g['conds']
+      and any(c['tool'] == 'jawa/game_condition' and c['args'].get('action') == 'end' for c in o['calls']), F.g['conds'])
 print('selftest_ice_scene: %s' % ('FAIL' if FAILS else 'ok'))
 sys.exit(1 if FAILS else 0)
