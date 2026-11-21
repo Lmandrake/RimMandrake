@@ -53,3 +53,42 @@
 **Picked:** Physics: hot water scalds anywhere (Recommended)
 **Its description:** Why: the harm comes from the water's heat, not the map. Any water that hot, on any map, harms the same way; the Scald is simply where it is common. Buys a rule with no exception. Costs a rewrite of the Scald's clock at its next version. Recommended: it removes the last named exception.
 **Other options:** Keep it as the one exception · Decide when the Scald next advances
+
+## What the card said
+
+<!-- answered 2026-11-21T23:23:52Z; recorded by `note` (OWNER); written by rimflow, never by hand -->
+
+**Question:** This is the second card on your new principles file, which says what is always true of the game. Two entries are ruled: a mechanic reads conditions and never the biome; a visible effect with no meaning is removed. These four lines are proposed, and I think each is worth adopting. An adopted line binds every designer and judge agent from today. (Hard to read? Type STE, Binding or Both for a rewrite.) Which of these four proposed lines do you adopt as principles?
+**Picked:** A limit lives in the world
+**Its description:** Why: a mechanic is held back by things the player can fight (a roof beats sunlight, farming feeds the Rot), never by a hidden code limit. Buys limits that are gameplay. Costs design work: each spreading mechanic needs a real in-world brake, and a thriving transplant counts as good play.
+**His words:** A limit lives in the world, An effect that implies harm is true, Mechanics justify their combined load, "No offline testing, we test only where the mechanics matter. And many mechanics WILL effectively only be in a single biome (e.g. tar mechanics don't matter where there are no tar pits... unless the players bring tar somewhere of course). We don't test outside the source biome at this time. Perhaps in future versions, but not now. I also don't want to say it is FORBIDDEN to have a specific biome mechanic, that is not how the rule should be written. I mean to say all of the biome specifics mechanics so far stated are per condition, not by some magic in a specific biome. The Abyss is a good example. There are no tiny particulates on other maps for the mechanic to engage with, so it will never be seen there. If we made a creature with those tiny particulates present, it should still work as in the Abyss... but we're not doing that right now. Make sense? If a mechanic is a heavy load even when not \"active\" in all other biomes, we may make the call to simply not load it outside the parent biome... I want to preserve that capability. But that should be the exception, not the rule, and stated. "
+**Other options:** An effect that implies harm is true · New mechanics owe the offline test · Mechanics justify their combined load
+
+**Owed by this card** (the close names where each was done or filed): needs a real in-world brake
+
+## What the card said
+
+<!-- answered 2026-11-21T23:23:52Z; recorded by `note` (OWNER); written by rimflow, never by hand -->
+
+**Question:** Three more lines were proposed for the principles file. The independent GPT review objected to each, and I agree with it. One: 'a biome states how it earns a mechanic: it depends on it, showcases it, or is its source.' Two: 'a biome owns its data, not its laws.' Three: 'every visible effect is something the player can act on.' Do you adopt any of these three weaker lines?
+**Picked:** Adopt none of the three (Recommended)
+**Its description:** Why: each restates a ruled entry or overreaches. Buys a short file of rules that decide real cases. Costs nothing built; the lines stay in the draft for later. Recommended: the review's advice is 3 to 7 entries, and the four above plus your two make six.
+**Other options:** Adopt 'a biome states how it earns a mechanic' · Adopt 'a biome owns data, not laws' · Adopt 'every effect is actionable'
+
+## What the card said
+
+<!-- answered 2026-11-21T23:23:52Z; recorded by `note` (OWNER); written by rimflow, never by hand -->
+
+**Question:** Our planet is one fixed, hand-made world, but players run other mods, and vanilla has its own biomes. A mechanic written as conditions will act on any map where the conditions hold, including a vanilla or third-party biome we never designed for. How do our mechanics treat biomes that are not ours?
+**Picked:** Same rule: conditions decide (Recommended)
+**Its description:** Why: no special case. Fire walks on dry vanilla grass exactly as on ours. Buys the ruling with no exception and no list to maintain. Costs untested behaviour on maps we never saw. Recommended: any other answer needs the code to ask which biome it is in.
+**Other options:** Act only on biomes we tagged · Conditions decide, plus one master switch
+
+## What the card said
+
+<!-- answered 2026-11-21T23:23:52Z; recorded by `note` (OWNER); written by rimflow, never by hand -->
+
+**Question:** The principles file now exists at the top of the project. The review warns that such a file can turn into a second, stale rulebook, and that agents told a file must have entries will invent some. How much authority does the principles file have?
+**Picked:** Binding, short, only your rulings (Recommended)
+**Its description:** Why: a principle that does not bind is decoration. At most 7 entries, each with your words, one example that honours it and one that breaks it. Only your ruling adds an entry; agents may only propose. Buys a small file agents can obey. Costs your time for each new entry.
+**Other options:** Advisory reading for designers · No separate file; fold into the rulings
