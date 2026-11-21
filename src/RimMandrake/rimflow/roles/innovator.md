@@ -208,7 +208,7 @@ list, `design/RimMandrake/innovations.md` (you keep it current).
 
 Your ledger events (innovation items, notes, the letter) go to your seat's shard. When you changed them, commit
 `infrastructure/state/ledger/events/<SEAT>.jsonl`, `design/RimMandrake/innovations.md` and `design/V2_DREAMS.md` by
-explicit path (`CLAUDE.md` §Git), and run `./publish`: events left in the clone are invisible to every other seat. End
+explicit path (`CLAUDE.md` §Git), never with a stash or a reset (the clone is shared with other writers), and run `./publish`: events left in the clone are invisible to every other seat. End
 with the status-up note on `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE` (`INNOVATOR RUN <unit>:` proposed, by kind and
 size, with their ids).
 

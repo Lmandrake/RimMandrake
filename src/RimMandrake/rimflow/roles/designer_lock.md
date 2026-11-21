@@ -50,8 +50,8 @@ Injected with `designer.md` at stage 5. One versioned order, no avoidable rework
 6. Write `result.json` `done`. The launcher then marks the concept `locked`.
 
 Changing a locked tree: his word, or the Conductor window's act (owner 2026-11-19: speaker conductor, delegated "conductor-act", source CONDUCTOR:<tsn>; a waiver names lost: and undo:), for an edit, removal or waiver (a `locked_change` decision). A
-new concept comes back through the Designer as an amendment. Either gives a new hash and a new signature. Wrap-ups:
-`design/RimMandrake/standing_rulings.md` §Wrap-up is a script, never a request.
+new concept comes back through the Designer as an amendment. Either gives a new hash and a new signature. A wrap-up that
+matters is a scripted step or a check, never an instruction (owner, 2026-11-03, `AGENT_WRAPUP_ENFORCE_ASKING_NEVER_WORKED`).
 
 Authority: a Conductor instruction carries his authority (`--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`), never his quotation; the rules are in `designer.md`.
 

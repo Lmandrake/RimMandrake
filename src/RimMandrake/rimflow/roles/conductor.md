@@ -164,7 +164,9 @@ How this window ends and comes back. The mechanics, hooks, settings and his word
     cap of the earlier run.
 - **Every brief that can touch code, file a ticket or judge carries the two tests** (owner, 2026-11-19,
   `standing_rulings.md` §Touching code has a cost; if you see it, do it). Group tickets of one cause, or in the same
-  files, into one brief. A count in a brief names the danger it guards. The stopping level: "Review briefs", below.
+  files, into one brief. A count in a brief names the danger it guards. A brief that judges, reviews, audits or files
+  findings also states the level that is enough, when to stop looking, and the polish route that files no ticket
+  ("Review briefs", below).
 - **Every brief names the SKILL.md paths for its kind of work, taken from `skills/BY_WORK.md`** (owner, 2026-11-19).
   Most project skills are not registered. So a helper sees only the skills that its brief names by path.
   `detached_helper.py launch` prints a WARNING for a brief that names no skill.

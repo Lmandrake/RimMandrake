@@ -234,8 +234,8 @@ path that does not exist.
   `delegated: "evidence-for-ask"`, source `CONDUCTOR:<tsn>`. A root adds `answers: <ask id>`. A flagship decision adds
   `flagship: <showcase id>`. An ask whose `evidence_against` is filled still waits for him. In `evidence_against`, write
   the concrete evidence against the obvious answer. Every ask that you send carries that evidence. Since 2026-11-19, the
-  Lock stage's first-touch certification is also the Conductor window's act (`delegation_policy.md` §2). Record it like
-  the other Conductor-window acts: speaker `conductor`, source `CONDUCTOR:<tsn>`.
+  Lock stage's first-touch certification is also the Conductor window's act (`delegation_policy.md` §2). It is
+  recorded as above.
 - Record his reply with `rimflow note <ITEM> ... --owner-said "<his words>"` first, then cite its `tsn`.
 
 ## His answers

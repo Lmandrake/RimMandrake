@@ -95,8 +95,8 @@ flags that put the row there. Then the checker's passes since your last run (the
 and your own carried picks.
 
 A round, zero or alarming number is a query bug until a sanity probe proves the instrument can see
-(`infrastructure/state/facts/instrument_traps.md`). The rule holds in every step and in the weekly pass: probe each
-count that you or a program report before you use the count. If the pre-screen file is missing, or older than its last
+(`infrastructure/state/facts/instrument_traps.md`). The rule holds in every step and in the weekly pass: any count that
+you or a program report that is round, zero or alarming gets a sanity probe before you use it. If the pre-screen file is missing, or older than its last
 close, the pre-screen is UNMEASURED. Then say so in your run note, do the mandatory queue and the rule work, and
 sample nothing by hand-picked guesses.
 
@@ -167,7 +167,7 @@ independent of the work. The ticket says so, as the evidence for setting the fix
 
 **Before you stop.** Your ledger events (tickets, notes) are written to your seat's shard. Commit
 `infrastructure/state/ledger/events/<SEAT>.jsonl` and any repo file that you wrote, by explicit path (`CLAUDE.md` §Git).
-Then run `./publish`: events left in the clone are invisible to every other seat. End with a run note on
+Never a stash or a reset: the clone is shared with other writers. Then run `./publish`: events left in the clone are invisible to every other seat. End with a run note on
 `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE` (`AUDITOR RUN <unit>:` picks by reason, verdicts, tickets and rules filed, what carried).
 
 ## Rules from repeat errors

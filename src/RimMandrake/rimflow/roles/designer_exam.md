@@ -2,7 +2,7 @@
 
 Injected with `designer.md` whenever the concept is at stage 4, resumed or not. Design of record:
 `design/RimMandrake/concept_agent_design_2026-11-01.md` §5. Skill `evaluation-independence` for the readers and judges.
-`designer_stage.py check` refuses an exam that breaks a rule below, and its message names the fault.
+`designer_stage.py check` refuses many breaks of the rules below and names the fault. Each rule binds with or without it.
 
 ## Procedure
 
@@ -40,8 +40,8 @@ Injected with `designer.md` whenever the concept is at stage 4, resumed or not. 
    `broken_leaf` (a leaf of the tree), `missed` true and `missed_ids`. The `missed_ids` are the scenarios that the
    control Reader got wrong. At least one is sourced on the removed leaf.
 6. **Score**: a scenario is right when both Readers match `expect`. `accept_where_reject_core` counts any Reader
-   accepting where a core line rejects. The exam passes when right ≥ 9/10 of the total and `accept_where_reject_core`
-   = 0. Also account for every Challenger miss: fix the leaf, or show that the miss is not the tree's.
+   accepting where a core line rejects. Pass: right ≥ 9/10 of the total, `accept_where_reject_core` = 0, every Challenger miss
+   accounted for (the leaf fixed, or the miss shown not to be the tree's).
 7. **On failure, mend it now, in this same run** (owner, 2026-11-20: *"allow it a chance to mend it during judgement
    while the context is fresh, even if it then gets blind judged again"*; `standing_rulings.md` §Touching code has a
    cost; if you see it, do it). The misses name the leaves to rewrite. You hold the tree, the misses and the reasons
@@ -62,7 +62,7 @@ Injected with `designer.md` whenever the concept is at stage 4, resumed or not. 
      `missed_ids` can still include a scenario sourced on the removed leaf. Write their answers to one file. The file
      holds `readers`, `reader_verdicts` (step 4's shape), `scenarios_hash`, `control` and `accept_where_reject_core`.
      Add `inputs` {tree, sheet} from `status` now. Add `challenger_misses` for each retaken Challenger scenario that a
-     Reader got wrong. Drop the old entry for a retaken scenario. Then `exam_retake.py carry design/concepts/<Mod>
+     Reader got wrong (the old entry for a retaken scenario is dropped). Then `exam_retake.py carry design/concepts/<Mod>
      --fresh <file>` writes exam.json. Every other answer is carried forward and marked with the exam that it came from.
    - **NONE_TOUCHED**: nothing that any scenario read changed. Retake nothing, but run `exam_retake.py carry
      design/concepts/<Mod> --fresh <file>` on a file holding `{}`. The carry restamps the inputs of exam.json. A sheet
@@ -76,8 +76,8 @@ Injected with `designer.md` whenever the concept is at stage 4, resumed or not. 
    Once the exam passes, `exam_retake.py record design/concepts/<Mod>` writes `exam_reads.json`. Land it with exam.json.
 
 Charge every Examiner, Challenger, Reader and Control run: `designer_stage.py charge --kind helper`. The helpers run on
-your own session, under this Designer run's own allowance (`slot_rules.json` `role_runs`, five). They never use the
-Conductor's budget. When a spawn is refused `slots_full`, wait for one of your helpers to finish, then spawn again.
+your own session, under this Designer run's own allowance (`slot_rules.json` `role_runs`, five), never the Conductor's
+budget. A spawn refused `slots_full` is a wait, never a reason to end the run blocked: wait for a helper to finish, then spawn.
 
 ## exam.json
 

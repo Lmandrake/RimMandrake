@@ -67,7 +67,7 @@ Every ask is an entry in `record.json` `asks` before it goes anywhere:
   `askcheck` prints `HISTORY_NOT_CHECKED`: read `record.json` and `log.md` for repeats yourself.
 - **Review** is a fresh agent that did not write the turn. The reviewer gets his words with their sources and the
   inventory with its evidence paths, never your interpretation. The reviewer returns `pass` or `struck`, with why. The
-  reviewer strikes an ask that is already built, already answered, or changes nothing built. When evidence is missing,
+  reviewer strikes an ask that is already built, already answered, or would not change what gets built. When evidence is missing,
   the reviewer says so instead of calling the ask bad. Charge the review (`designer_stage.py charge --kind review`).
 - Only `pass` asks reach him, with one line on what was struck. Each carries its `evidence_against` (`designer.md`
   §Authority and provenance). Send none without one: take your own recommended answer, and log it delegated. Set them
@@ -87,7 +87,7 @@ Every ask is an entry in `record.json` `asks` before it goes anywhere:
 - **Walk him through the decision unasked**: how many decisions, each option's look and problem, your recommendation and
   its grounds. Name the costs the picture hides and what he is not deciding. Offer no decision on what he has not seen.
 - **Say the assumption under each cost, as yours**, and apply the world's-logic test before he has to. List each ruling
-  and the picture that produced it. A ruling against one bad picture keeps that scope until he makes it general.
+  a picture depends on, with the picture that produced it. A ruling against one bad picture keeps that scope until he makes it general.
 - **A reply is the start of a burst.** Read everything he sent before you write. When he closes with a check (*"Make
   sense?"*), say what you took from each point. Name any earlier ruling it narrows, and where you push back.
 - **Ask the form per surface; never infer it.** The reader's job decides prose versus snapshot.

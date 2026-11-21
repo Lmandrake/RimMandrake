@@ -41,8 +41,8 @@ If you are the reader of a FLAGGED file, stop: `mark-clean` refuses it, and the 
 
 ## A Problem: a significant finding, for one of three reasons, with the page quoted
 
-A finding is significant when it breaks a stated promise or causes a failure, and the break is measured or predicted
-with a concrete case (this input, this wrong result). A prediction with no concrete case is not significant. A
+A finding is significant when it is measured, or predicted with a concrete case (this input, this wrong result), to
+break a stated promise or cause a failure. A prediction with no concrete case is not significant. A
 significant finding is a **Problem** only for one of these three reasons. Quote the page entry by its name and words.
 
 1. **A promise is not kept in ordinary operation.** Name the promise (or the LIFE CYCLES move). Name the ordinary

@@ -38,7 +38,7 @@ are Stuck items that seem to beg a little more"*, and wrote a page of requiremen
 *"Much less Prose, this is intended to be a snapshot of what's running, not a narrative walk."* The first drawbridge
 sheet drew *"always show a little "still open" look"*. Make a mock with skill `generating-images`, over our real art.
 Never ship a mock. Keep it in `D:\ClaudeWork\rimmandrake\designer\` and link it from `log.md`. An exploration scene that
-the Conductor stages for you never accepts a leaf. A mock passes the same pre-review as an ask. Cheapest form first:
+the Conductor stages for you never accepts a leaf. The Picture (mock or scene) passes the same pre-review as an ask. Cheapest form first:
 *"We should prototype in markdowns first so I don't have you chasing design all over the place in the meantime."*
 (2026-11-02). First sight changes the definition (*"it needs to be much more streamlined"*, *"Try again."*). First sight
 also draws demands that nobody asked about (*"OMG we should do an audit to ensure that we need all these timers."*).
