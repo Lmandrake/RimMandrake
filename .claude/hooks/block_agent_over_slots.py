@@ -113,7 +113,9 @@ def role_allowance(rules):
     prefix), else None. A non-integer N is ignored (the Conductor budget then applies, as before)."""
     unit = (os.environ.get("RM_ROLE_UNIT") or "").strip()
     rr = rules.get("role_runs") or {}
-    for prefix, n in rr.items():
+    # the longest matching prefix wins: `rm-detached-` gives every detached run its own allowance, and a named kind
+    # (the rewrite batch's one reader) keeps its own number
+    for prefix, n in sorted(rr.items(), key=lambda kv: -len(kv[0])):
         if unit and not prefix.startswith("_") and unit.startswith(prefix) and isinstance(n, int) \
                 and not isinstance(n, bool) and n >= 0:
             return n, prefix

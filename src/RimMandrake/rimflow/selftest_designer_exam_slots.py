@@ -123,9 +123,21 @@ def hook_checks():
     dec, why = hook("rm-detached-bench-rimmandrake-retake-contagion-exam-failin-1794848893", "steward1")
     ok(dec is None, "hook: CONDUCTOR N=0, three window helpers running, a steward's exam retake asks for its control "
        "reader -> allowed under its own allowance (read %s: %s)" % (dec, why[:160]))
-    dec, why = hook("rm-detached-bench-rimmandrake-fix-contagion-sheet-1794848893", "steward2")
-    ok(dec == "deny" and "N=0" in why, "hook: any other detached run is still gated by the Conductor budget (N=0 -> "
-       "deny; read %s: %s)" % (dec, why[:160]))
+    # RIMMANDRAKE_COUNT_DETACHED_SUBRUNS_APART_FROM_CONDUCTOR_SLOTS: a detached run's own sub-runs are counted on its
+    # own session, never against the Conductor window's slots (2026-11-20 11:05 PM PST: a FlowWorks holder's sub-run
+    # was refused at CONDUCTOR 0 free, and the holder stopped with 6 of 10 game items open)
+    holder = "rm-detached-bench-rimmandrake-drive-flowworks-in-game-visit-1795240000"
+    n_det = rr.get("rm-detached-")
+    helpers("holder1", 0)
+    dec, why = hook(holder, "holder1")
+    ok(dec is None, "hook: CONDUCTOR N=0, three window helpers running, a detached holder asks for its sub-run -> "
+       "allowed under its own allowance (read %s: %s)" % (dec, why[:160]))
+    helpers("holder1", n_det if isinstance(n_det, int) else 99)
+    dec, why = hook(holder, "holder1")
+    ok(isinstance(n_det, int) and dec == "deny" and why.startswith("slots_full") and "CONDUCTOR" not in why,
+       "hook: a detached run's own allowance full -> it waits, slots_full, never the Conductor's budget (N %r; read "
+       "%s: %s)" % (n_det, dec, why[:160]))
+    helpers("holder1", 0)
     # RIMMANDRAKE_ALLOW_REWRITE_BATCH_ITS_ONE_MEANING_READER: a plain-English rewrite batch (unit named for
     # RIMMANDRAKE_REWRITE_*) must start one fresh Opus meaning reader per file (batch_plan.md step 6), one at a time
     rw = "rm-detached-bench-rimmandrake-rewrite-subagent-files-share-1795131536"
