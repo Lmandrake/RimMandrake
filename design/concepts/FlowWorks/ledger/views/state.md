@@ -1,8 +1,8 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":36687,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=530143a999eed3c3e35fc377ab7b5542064264d043ed5847641c6c3868833891 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":37400,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=828da7f390ad7b237ac0b96c78f0d3ea45c82a1c1ee0599589f7e324cd15eaf8 -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage in_game · 1439 events in 18 shards · reducer 1
+version 0.1.0 · stage in_game · 1441 events in 18 shards · reducer 1
 holder lease run-1795251607, token 25, last active 2026-11-21T09:01:22Z
-holder session ff15b029-4df8-495c-acec-5406c94c8b7b, context 402977 of ceiling 400000 — ROTATE DUE
+holder session 11dd44df-5878-4b03-8c62-0138bf5bb892, context 295668 of ceiling 400000
 
 ## Last checkpoint (HOLDER.run-1795244678, 2026-11-21T08:32:17Z)
 - done: body cover closed 5940b27979 (PIT_LOOK_1114_LIVE 19/19 game b); UNDERLIQUID_PARITY red run c09d51e332; raid staging fixed 51e9d9ce4a (named faction, walk-in south of trench, 60-tick reads, corpses count, fresh warden); trench item closed; game-b python.exe trap fixed e400c1b366
@@ -493,6 +493,6 @@ spend recorded: USD 78.94, 45401435 tokens
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
 - notes: 11, never printed here (`modledger.py find --mod FlowWorks <words>`)
-- the full history: 1439 events (views/history.md; never read whole)
+- the full history: 1441 events (views/history.md; never read whole)
 
-cursor: t=2026-11-21T09:01:32Z.1795251692895270403 (modledger.py since --mod FlowWorks t=2026-11-21T09:01:32Z.1795251692895270403 prints what changed after this packet)
+cursor: t=2026-11-21T09:38:03Z.1795253883255372173 (modledger.py since --mod FlowWorks t=2026-11-21T09:38:03Z.1795253883255372173 prints what changed after this packet)
