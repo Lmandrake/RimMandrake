@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "ad27dace13f7307d884fd5efc89629dbcf7dcabaf901910e632d2191faa5d625",
+  "body_sha256": "b1b0350382577dfaec77db0159b9680184f8172e7e727ee8eab849f932c4d22e",
   "reducer": 1,
   "shards": {
    "BACKFILL": 893183,
@@ -18,6 +18,7 @@
    "HOLDER.run-1795235568": 2438,
    "HOLDER.run-1795244678": 3570,
    "HOLDER.run-1795257509": 5815,
+   "HOLDER.run-1795260677": 2559,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -948,6 +949,16 @@
     "text": "L5_colonists_clean_spill UNMEASURED on run 20261018T233414 was a harness fault: the precondition demanded Cleaning priority readBack 1 but vanilla stores 3 with manual priorities off; filth went 9 -> 0 in 750 ticks.",
     "ts": "2026-11-16T11:41:28Z"
    },
+   "cause:moat-raiders-idle-is-the-mod-not-choosing-the-swim-path": {
+    "code_sha": "eb15c22de9cd",
+    "depends_on": [
+     "src/RimMandrake/FlowWorks/Source/RM_MapComponent_Excavation.cs",
+     "src/RimMandrake/FlowWorks/Source/Superdeep/RM_WallReach.cs"
+    ],
+    "status": "refuted",
+    "text": "sc_moat_raid nobody-swam was not the mod refusing the swim path: the scene moat was half full (2 m in 4 m), a walled pit by the mod rule; brim-full, all six swam. The control swimmers stood on a deck the raiders wrecked after the colonist was down.",
+    "ts": "2026-11-21T12:11:02Z"
+   },
    "cause:nightly-red-attributed-to-a-real-flowworks-failure": {
     "code_sha": "3a1334ca93c6",
     "depends_on": [
@@ -1704,7 +1715,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1462,
+  "events": 1466,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7805,7 +7816,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-21T11:34:11Z",
+   "last": "2026-11-21T12:11:02Z",
    "lease": "run-1795260677",
    "released": false,
    "token": 28
@@ -7903,6 +7914,7 @@
    "HOLDER.run-1795235568",
    "HOLDER.run-1795244678",
    "HOLDER.run-1795257509",
+   "HOLDER.run-1795260677",
    "JUDGE.judge-1794833810",
    "JUDGE.judge-1794849236",
    "JUDGE.judge-1795134433",
@@ -8379,6 +8391,14 @@
     "version": "0.1.0",
     "where": "thirst live driver T23 (draft()/ticks())"
    },
+   "trap:a-drained-moat-is-a-prison-only-from-3-m-down": {
+    "by": "HOLDER.run-1795260677",
+    "status": "noted",
+    "text": "A drained 2 m (4-notch) moat reads held=True and VERDICT NotHeld: the capture order is refused. A pit room holds a person only from pitRoomMinDepthMetres (3 m) down (RM_PitRooms.HoldsBySize).",
+    "ts": "2026-11-21T12:11:01Z",
+    "version": "0.1.0",
+    "where": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py _moat_stage; design/validation_walks/RimMandrake/FlowWorks.md anti-guessing notes"
+   },
    "trap:a-drill-fault-survived-its-bar-s-own": {
     "by": "BACKFILL",
     "status": "noted",
@@ -8418,6 +8438,14 @@
     "ts": "2026-11-16T11:41:22Z",
     "version": "0.1.0",
     "where": "status.step4_live; modcheck floor --all step4 column"
+   },
+   "trap:a-half-full-moat-is-a-walled-pit-nobody-swims": {
+    "by": "HOLDER.run-1795260677",
+    "status": "noted",
+    "text": "A dug moat whose water stands over 1 m below the rim is a pit, not a swim: raiders take AttackMelee, then Wait, and never enter. Reach across a 4 m ring: 2.5 m of water False, 3.0 m True (ProofReachPair, game b). Dig a test moat to its water line.",
+    "ts": "2026-11-21T12:11:01Z",
+    "version": "0.1.0",
+    "where": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py _moat_stage; design/validation_walks/RimMandrake/FlowWorks.md anti-guessing notes"
    },
    "trap:a-live-capture-of-all-five-rules-has": {
     "by": "BACKFILL",

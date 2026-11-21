@@ -1531,7 +1531,7 @@ def _moat_rows(S, G):
         c['wardenAbleAfter'] = _able(S, c['warden'])
     # Fewer than two prisoners where every unfinished capture lost its warden (downed) or its captive (no longer read)
     # did not ask the mod: UNMEASURED, never FAIL. A held raider beside the lip can down the warden before the capture
-    # pins it (RIMMANDRAKE_PROBE_FLOWWORKS_HELD_RAIDER_STABS_WARDEN_ON_THE_RIM); 'wardensDowned' counts them on the row.
+    # pins it (RIMMANDRAKE_PROBE_FLOWWORKS_WARDEN_DOWNED_BESIDE_HELD_RAIDER); 'wardensDowned' counts them on the row.
     made = [c for c in caught if 'prisoner=True' in c['after']]
     lost = [c for c in caught if c not in made and (c['wardenAbleAfter'] is False or not c['after'].startswith('VERDICT'))]
     S.row('MOAT_two_held_and_captured', len(made) >= 2,

@@ -576,3 +576,30 @@ Item `RIMMANDRAKE_TRACE_FLOWWORKS_HELD_WINCH_FELL_IN_THE_CONTROL`. Class HARNESS
   west leaf in 120 ticks and off the east leaf in 180.
 - KNOWN, NOT A DEFECT: grenades that take a winch can also wreck its leaf's deck. Then the raiders stay on the span and
   shell the next raised winch (`JobGiver_RM_DrawbridgeWinch`: the colony is still unreachable). Seen once in three runs.
+- 🔑 **CAUSE, sc_moat_raid "nobody swam with the bridge raised" (`RIMMANDRAKE_TRACE_FLOWWORKS_MOAT_SWIMMERS_ONLY_IN_THE_CONTROL`,
+  Test Pilot sitting on game b, 2026-11-21): SITE.** The scene dug its moat 8 notches (4 m) and filled it 2 m. The mod
+  judges a dug swim square at its water surface, so 2 m of wall stood above the water and the moat was a pit nobody
+  enters: all six raiders took `AttackMelee` on the colonist, then `Wait`, on their spawn squares. Measured with
+  `RM_WallReach.ProofReachPair` (raider to the colonist's square), water raised in steps with 70 ticks between: 2.0 m
+  False, 2.5 m False, 3.0 m True, 3.5 m True, 4.0 m True; at 4.0 m all six swam and tired. A moat is swum only when
+  its water stands within the climb limit of the rim (1 m for a person); a test moat is dug to its water line.
+  Check: `_moat_stage` reads the brim back and refuses a moat that is not brim-full (planted 8 notches / 2 m: red).
+- 🔑 **CAUSE, sc_moat_raid "two raiders swam in the bridge-down control": HARNESS.** The control watched 3,000 ticks. The
+  raiders crossed the leaf in under 240 ticks and downed the colonist; after that they attacked the winch and the leaf's
+  anchors from the deck (job targets read live: `RM_DrawbridgeWinch_Timber`, `RM_SuspensionAnchor_Timber`), and in the
+  2026-11-19 record the deck squares under two of them turned to deep water at tick 1445. The control now ends once two
+  raiders stand in the plot, and it counts a swimmer only while the leaf reads lowered (planted: leaf raised under the
+  watch, the row reads UNMEASURED).
+- RULED OUT (same sitting): the raid's job giver picks no target with the bridge raised (it picks the colonist at tick
+  0; the path is what fails). RULED OUT: the assault lord holds the raiders (the same lord moves in under 120 ticks in
+  the control). RULED OUT: the leaf raises itself in the control (`target=lowered` on all 16 polls).
+- 🔑 **A drained moat is a prison only from 3 m down** (`pitRoomMinDepthMetres`, `RM_PitRooms.HoldsBySize`). A drained 2 m
+  (4-notch) moat reads `held=True` and `VERDICT NotHeld`: the capture order is refused. The scene's moat is 6 notches.
+  The bar's scenario text says "D4"; the Designer decides whether that text changes.
+- 🔑 **Swim exhaustion is added every 250 ticks**, so a read on the first poll a raider is in the water is 0.000. Read on
+  until one reads above 0; exhaustion stays on the pawn for a time after it leaves the water.
+- 🔑 **The colonist a raid comes for is no warden.** In the moat scene he fled (`FleeAndCower`), swam into the full moat,
+  and was downed on the drained floor among the held raiders. The capture uses the pit-trap scene's idiom: free raiders
+  leave the map, one fresh warden per captive on a plot square. A warden sent to a lip on the outer bank cannot get there.
+- OPEN (`RIMMANDRAKE_PROBE_FLOWWORKS_WARDEN_DOWNED_BESIDE_HELD_RAIDER`): once in four runs a warden on the rim was downed
+  with his held captive on the next square, and that capture never finished. What downed him is UNMEASURED.

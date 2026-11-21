@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":41456,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=f2503e23cd373999e787881fa39dd8046800a7a5e203377cf6f406bbd42fa062 -->
-# FlowWorks — mod ledger history (1462 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":41456,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"HOLDER.run-1795260677":2559,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=34d9ec2f36e3683f11778278bc3628adb823309dea7487ae6c0c3bdcfd9abc3f -->
+# FlowWorks — mod ledger history (1466 events, merged across shards)
 
 - 2026-11-16T07:16:23Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 55 of 57 bars met at the lock
 - 2026-11-16T07:16:23Z BACKFILL#2 decision version v0.1.0: 
@@ -1463,3 +1463,7 @@
 - 2026-11-21T11:34:20Z DISPATCH#122 run.start run v0.1.0: 
 - 2026-11-21T12:02:25Z DISPATCH#123 run.end run v0.1.0: 
 - 2026-11-21T12:02:25Z DISPATCH#124 session.id session v0.1.0: 
+- 2026-11-21T12:03:43Z HOLDER.run-1795260677#1 lease.renew lease v0.1.0: 
+- 2026-11-21T12:11:01Z HOLDER.run-1795260677#2 trap.noted trap:a-half-full-moat-is-a-walled-pit-nobody-swims v0.1.0: A dug moat whose water stands over 1 m below the rim is a pit, not a swim: raiders take AttackMelee, then Wait, and never enter. Reach across a 4 m ring: 2.5 m of water False, 3.0 m True (ProofReachPair, game b). Dig a test moat to its water line.
+- 2026-11-21T12:11:01Z HOLDER.run-1795260677#3 trap.noted trap:a-drained-moat-is-a-prison-only-from-3-m-down v0.1.0: A drained 2 m (4-notch) moat reads held=True and VERDICT NotHeld: the capture order is refused. A pit room holds a person only from pitRoomMinDepthMetres (3 m) down (RM_PitRooms.HoldsBySize).
+- 2026-11-21T12:11:02Z HOLDER.run-1795260677#4 cause.refuted cause:moat-raiders-idle-is-the-mod-not-choosing-the-swim-path v0.1.0: sc_moat_raid nobody-swam was not the mod refusing the swim path: the scene moat was half full (2 m in 4 m), a walled pit by the mod rule; brim-full, all six swam. The control swimmers stood on a deck the raiders wrecked after the colonist was down.
