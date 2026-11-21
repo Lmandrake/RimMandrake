@@ -2572,11 +2572,13 @@ def _game_ops():
     return game_instance
 
 
-def deploy_repair(root, mod, game, reading, gi, purpose, runner=subprocess.run, sleep=time.sleep, clock=time.time):
+def deploy_repair(root, mod, game, reading, gi, purpose, runner=subprocess.run, sleep=time.sleep, clock=time.time,
+                  seat="BENCH"):
     """-> (state, text): cure a deploy_state reading of `drift` before an in-game visit launches. state: ok (deployed,
     the plan read again current), wait (his hold on the game: WAIT_MARK, nothing done), fail (the cause named). Game
     down first when it is up (a DLL cannot be written under a running game, and a def is only read at startup), the
-    plan's --apply for the visit's game, the game up again when it was up, and the plan read again."""
+    plan's --apply for the visit's game, the game up again when it was up, and the plan read again. seat: the launch's,
+    handed to the stop's bridge reading (the tick's env names none)."""
     held = gi.hold_refusal(game)
     if held:
         return "wait", "%s the game copy of %s needs a deploy and %s" % (WAIT_MARK, mod, held.splitlines()[0])
@@ -2587,12 +2589,12 @@ def deploy_repair(root, mod, game, reading, gi, purpose, runner=subprocess.run, 
     done = []
     if was_up:
         try:
-            rc, txt = gi.stop(name=game, purpose=purpose)
+            rc, txt = gi.stop(name=game, purpose=purpose, seat=seat)
             t0 = clock()
             while gi.pids(game) and clock() - t0 < REPAIR_STOP_S:
                 sleep(2)
             if gi.pids(game):
-                rc, txt = gi.stop(name=game, purpose=purpose, force=True)
+                rc, txt = gi.stop(name=game, purpose=purpose, force=True, seat=seat)
                 sleep(3)
             if gi.pids(game):
                 return "fail", "game %s did not stop for the deploy (%s)" % (game, txt)
@@ -2746,7 +2748,7 @@ def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=s
             # the launch cures what --apply cures, for the game the visit drives (design question 3 of
             # RIMMANDRAKE_DEPLOY_BEFORE_GAME_VISIT_PYRELANDS_REFUSED_THRICE)
             state, rwhy = deploy_repair(root, mod, game, reading, game_ops or _game_ops(),
-                                        "deploy %s before its in-game visit %s" % (mod, f.get("visit")))
+                                        "deploy %s before its in-game visit %s" % (mod, f.get("visit")), seat=seat)
             if state == "wait":
                 return 2, rwhy, None
             if state != "ok":

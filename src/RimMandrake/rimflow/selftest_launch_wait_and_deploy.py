@@ -76,7 +76,7 @@ class FakeGame:
     def pids(self, name=None):
         return [4242] if self.up else []
 
-    def stop(self, pid_=None, force=False, name=None, purpose=None, despite=None):
+    def stop(self, pid_=None, force=False, name=None, purpose=None, despite=None, seat=None):
         self.log.append(("stop", name, force))
         if not self.stop_rc:
             self.up = False
@@ -352,12 +352,62 @@ def t_a_visit_item_name_passes_the_spawn_guard():
           "the next name still passes the RUNNER spawn guard (%s)" % names)
 
 
+STUB_IDLE = r"""import os, sys
+a = sys.argv[1:]
+seat = os.environ.get("RIMFLOW_SEAT") or (a[a.index("--seat") + 1] if "--seat" in a else None)
+if not seat:
+    sys.stderr.write("REFUSED: I cannot tell which seat I am, and I will not guess.\n")
+    sys.exit(2)
+print("TAKEABLE  free (stub, seat %s)" % seat)
+"""
+
+
+class SeatGame(FakeGame):
+    """FakeGame whose stop records the seat it was handed."""
+
+    def stop(self, pid_=None, force=False, name=None, purpose=None, despite=None, seat=None):
+        self.log.append(("seat", seat))
+        return FakeGame.stop(self, pid_, force, name, purpose, despite, seat)
+
+
+def t_a_seatless_tick_stops_its_game(fx):
+    """RIMMANDRAKE_REPAIR_GIMMESOMESLACK_FORM_REFUSAL_AT_THE_RUN_FIVE: the systemd tick names no seat in its env, so the
+    deploy's game stop ran `rimflow bridge idle` seatless and got "I cannot tell which seat I am" (exit 2)."""
+    fx.plan(drift("~  Biomes/Pyrelands/Assemblies/FireEcologyHook.dll"), after=SYNC)
+    g = SeatGame(up=True)
+    r = M.launch_mod(fx.root, P, 20, ST.ITEM, seat="BENCH", bridge=lambda p, s, game="a": (True, "free"),
+                     companion=lambda game="a": (True, "fresh"), game="a", game_ops=g)
+    seats = [x[1] for x in g.log if x[0] == "seat"]
+    check(r[0] == 0 and seats and all(x == "BENCH" for x in seats),
+          "a-seatless-tick-stops-its-game: the deploy's game stop is handed the launch's seat (seats %s, rc %s %s)"
+          % (seats, r[0], (r[1] or "")[:200]))
+    utils = os.path.join(REPO, "src", "RimMandrake", "Utils")
+    if utils not in sys.path:
+        sys.path.insert(0, utils)
+    import game_instance as GI
+    stub = os.path.join(fx.root, "stub_idle.py")
+    with open(stub, "w") as f:
+        f.write(STUB_IDLE)
+    was = {k: os.environ.pop(k, None) for k in ("RIMFLOW_SEAT", "AGENT_SEAT")}
+    cli, holder = GI.RIMFLOW_CLI, GI.live_holder
+    GI.RIMFLOW_CLI, GI.live_holder = stub, (lambda name, new_run=False: None)
+    try:
+        bare = GI.bridge_refusal("a", "probe")
+        seated = GI.bridge_refusal("a", "probe", seat="BENCH")
+    finally:
+        GI.RIMFLOW_CLI, GI.live_holder = cli, holder
+        os.environ.update({k: v for k, v in was.items() if v})
+    check(seated is None and bare and "which seat" in bare,
+          "a-seatless-tick-stops-its-game: bridge_refusal with seat=BENCH reads the stub's TAKEABLE in a seatless env "
+          "(seated %r; bare %r)" % (seated, (bare or "")[:120]))
+
+
 def main():
     fx = Fixture()
     try:
         for t in (t_non_game_drift_launches, t_loaded_drift_deploys_then_launches, t_a_dll_deploys_with_the_game_down,
                   t_a_failed_deploy_is_a_fault, t_a_blind_plan_is_could_not_look, t_a_held_bridge_or_game_waits,
-                  t_a_game_only_def_refuses, t_an_empty_or_add_only_plan):
+                  t_a_game_only_def_refuses, t_an_empty_or_add_only_plan, t_a_seatless_tick_stops_its_game):
             safe(lambda: t(fx) is None, t.__name__[2:] + " ran")
     finally:
         fx.close()

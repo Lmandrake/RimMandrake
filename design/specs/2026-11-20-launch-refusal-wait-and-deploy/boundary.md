@@ -62,6 +62,9 @@ because the composed Baroque Biomes copy differed from the repo, by one dev scri
   with `--apply` for the visit's game, reads the plan again, and launches.
 - **a-dll-deploys-with-the-game-down.** A `~` on a DLL with the game up: the game is stopped before the deploy and
   started after it, then the plan is read again, then the visit launches.
+- **a-seatless-tick-stops-its-game.** The deploy's game stop hands the launch's seat to `game_instance.stop`, which
+  passes it to `rimflow bridge idle` as `--seat`: the systemd tick names no seat in its env, and a seatless reading
+  refused "I cannot tell which seat I am" (GimmeSomeSlack visit 2, 2026-11-21).
 - **a-failed-deploy-is-a-fault.** A deploy that exits non-zero: REFUSED, naming the deploy failure; not a wait.
 - **a-blind-plan-is-could-not-look.** A plan that cannot run, or prints neither last line: REFUSED as could-not-look,
   never read as current, and no deploy is tried.

@@ -466,12 +466,15 @@ def bridge_host_args(name):
     return ["--host", machine] if machine in model.BRIDGE_HOSTS and machine != model.DEFAULT_BRIDGE_HOST else []
 
 
-def bridge_refusal(name, purpose=None, timeout=120, new_run=False):
+def bridge_refusal(name, purpose=None, timeout=120, new_run=False, seat=None):
     """None when this seat may stop game `name`, else why not and what would pass. RIMMANDRAKE_GUARD_GAME_STOP_BY_BRIDGE_HOLD
     (GPT review p2.F2: stop used to taskkill with no bridge check). The verdict is rimflow's own, not a second copy:
     `rimflow bridge idle` (the delegated gate) passes a bridge that is free, ours, or stale by the 45-min rule, and his
     OWNER hold only 45 min after his last interaction (an UNMEASURED reading of him refuses); it also refuses on the
-    shared lock and the driver lock. Only its exit 0 with a TAKEABLE line passes: no answer is no permission."""
+    shared lock and the driver lock. Only its exit 0 with a TAKEABLE line passes: no answer is no permission. seat: the
+    caller's seat, passed as `--seat` (the systemd tick names none in its env, and a seatless `rimflow` refuses: "I
+    cannot tell which seat I am", RIMMANDRAKE_REPAIR_GIMMESOMESLACK_FORM_REFUSAL_AT_THE_RUN_FIVE); an env seat still
+    wins, as in rimflow's own order."""
     purpose = purpose or "stop game %s (game_instance.py stop)" % name
     held = live_holder(name, new_run)
     if held:
@@ -484,7 +487,8 @@ def bridge_refusal(name, purpose=None, timeout=120, new_run=False):
         env[INSTANCE_ENV] = name            # the bridge of the game being stopped, whatever this shell drives
     host = bridge_host_args(name)
     try:
-        r = subprocess.run([sys.executable, RIMFLOW_CLI, "bridge", "idle"] + host + ["--for", purpose], env=env,
+        r = subprocess.run([sys.executable, RIMFLOW_CLI, "bridge", "idle"] + host + ["--for", purpose]
+                           + (["--seat", seat] if seat else []), env=env,
                            capture_output=True, text=True, timeout=timeout, encoding="utf-8", errors="replace")
         rc, out, text = r.returncode, r.stdout or "", ((r.stdout or "") + (r.stderr or "")).strip()
     except (OSError, subprocess.SubprocessError) as e:
@@ -499,7 +503,7 @@ def bridge_refusal(name, purpose=None, timeout=120, new_run=False):
             % (name, text, " --host " + host[1] if host else "" if name == DEFAULT else " --host <machine>.%s" % name, purpose))
 
 
-def stop(pid_=None, force=False, name=None, purpose=None, despite=None):
+def stop(pid_=None, force=False, name=None, purpose=None, despite=None, seat=None):
     """taskkill by process id -> (exit code, text). With no pid, every game of this instance; a pid must be this
     instance's, or Refused. Raises Blind when ownership cannot be read: nothing is signalled on a guess. Refused too
     while the bridge is not this seat's to act on (bridge_refusal): a stop is a reboot, the agent's to call only when
@@ -514,7 +518,7 @@ def stop(pid_=None, force=False, name=None, purpose=None, despite=None):
     held = hold_refusal(name, despite)
     if held:
         raise Refused(held)
-    why = bridge_refusal(name, purpose)
+    why = bridge_refusal(name, purpose, seat=seat)
     if why:
         raise Refused(why)
     rc, out = 0, []
