@@ -3,8 +3,8 @@
 
 Owner, 2026-11-21 about 1:25 AM PST: "Great. So conductor is being refused by the pipeline. This will not stand." and,
 the same night: "I don't want this pipeline turning into a complex expert system or tree of descriptions and specific
-rules. Fix the principles. Generalize." Rules: root CLAUDE.md §His word and the Conductor's act are not refused, §A fault
-of form is repaired where it is found. Item RIMMANDRAKE_NEVER_REFUSE_THE_CONDUCTOR_SEVEN_REFUSALS_ONE_NIGHT. Page:
+rules. Fix the principles. Generalize." Rules: root CLAUDE.md §A fault of form is repaired where it
+is found (its case "His word and the Conductor's act are not refused"). Item RIMMANDRAKE_NEVER_REFUSE_THE_CONDUCTOR_SEVEN_REFUSALS_ONE_NIGHT. Page:
 design/specs/2026-11-21-never-refuse-the-conductor/boundary.md (selftest_never_refuse_conductor.py).
 
 One rule, one place. A gate that is about to refuse an act for FORM (a name, a flag, a text shape, a missing paste, a

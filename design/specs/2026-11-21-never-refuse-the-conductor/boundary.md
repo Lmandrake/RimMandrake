@@ -2,8 +2,8 @@
 
 Code: `src/RimMandrake/rimflow/principal.py` (the one helper), and the gates that ask it: `rimflow/cli.py` (`close`
 evidence, `namecheck`), `rimflow/control.py` (`pipe undo` of a stop, `pipe on|off unit:`), `rimflow/maturation_hands.py`
-(`fold`), `rimflow/detached_helper.py` (launch origin check, resume clone). Rules: root `CLAUDE.md` §His word and the
-Conductor's act are not refused, §A fault of form is repaired where it is found. Owner, 2026-11-21 about 1:25 AM PST:
+(`fold`), `rimflow/detached_helper.py` (launch origin check, resume clone). Rules: root `CLAUDE.md` §A fault of form is repaired
+where it is found (its case "His word and the Conductor's act are not refused"). Owner, 2026-11-21 about 1:25 AM PST:
 "Great. So conductor is being refused by the pipeline. This will not stand." Item
 `RIMMANDRAKE_NEVER_REFUSE_THE_CONDUCTOR_SEVEN_REFUSALS_ONE_NIGHT`. Each promise has a test of its own name (`t_` +
 the name, dashes as underscores) in `src/RimMandrake/rimflow/selftest_never_refuse_conductor.py`.

@@ -54,11 +54,9 @@ DUPLICATE 52, MOVE 51, MERGE 37, TOOL DOES IT 14. 163 rows read "unchanged" `[me
 
 ## What was not cut, and why
 
-- **The sections of principles 1 and 3 (a stop the work did not cause; a fault of form).** The run
-  `RIMMANDRAKE_REPAIR_AT_THE_REFUSAL_NO_STOP_FOR_UNTIED_SHOES` is still live `[measured: its unit runs]`. Untouched:
-  6 root sections (65 lines) plus the fix-in-the-sitting half of "Touching code has a cost", and 6 sections of
-  `standing_rulings.md` (191 lines). **This is the next step:** when that run ends, merge these into one section per
-  principle. It is the largest cut left, about 150 lines `[guess ~50%]`.
+- **The sections of principles 1 and 3 (a stop the work did not cause; a fault of form).** This run left them while
+  `RIMMANDRAKE_REPAIR_AT_THE_REFUSAL_NO_STOP_FOR_UNTIED_SHOES` was live. A second run merged them after it closed: see
+  "The second run" below.
 - **The section of principle 6 ("After a change, only the checks that the change touches run again").** Its run has
   ended and `rerun_relation.py` is on origin/main. The helper read the module and kept the section: each bullet names
   a stage or a case that the module does not print. The nightly and blind-cycle bullets were not traced: UNMEASURED.
@@ -179,3 +177,52 @@ history file; or cut as many lines elsewhere in that file. The history files hav
 - Moved evidence: `design/RimMandrake/roles.history.md`, `design/RimMandrake/CLAUDE.history.md`.
 - Commits: map and check `0c159d7cfd`; role files `2ef5cf2273`; `standing_rulings.md` `19fd1ffcb1`; `CHARTER.md`
   `3b5575f82f`; root `46b285bb7a`; the restored meanings, the folded map and this report in the commit after.
+
+## The second run: the twelve sections of principles 1 and 3, merged (2026-11-21)
+
+Item `RIMMANDRAKE_MERGE_TWELVE_REFUSAL_RULE_SECTIONS_THAT_WAITED`, after the refusal run closed at `78ebf9918d`.
+
+| file | lines before | lines after |
+|---|---|---|
+| root `CLAUDE.md` | 720 | 705 |
+| `design/RimMandrake/standing_rulings.md` | 1,777 | 1,762 |
+
+Both `[measured]` with `wc -l`, base `cea8d0bae6`. The sum went from 2,497 to 2,467.
+
+- **What changed.** Each file now has one section per principle. "Stops that the work did not cause: system failures,
+  pipeline defects and asks for the owner" holds No trial is spent, The pipeline fixes its own defects and
+  Evidence-for-Ask. "A fault of form is repaired where it is found" holds His word and the Conductor's act are not
+  refused, and A refusal carries its path to pass. In `standing_rulings.md` the six old headings stay word for word as
+  `###` cases, because 3 to 28 files cite each one. In the root the cases are bold lines.
+- **Moved word for word** to `design/RimMandrake/CLAUDE.history.md`: three incident paragraphs.
+- **Deleted after the tool was watched:** four lines of §His word and two sentences of §A fault of form. The readings
+  are in `D:\ClaudeWork\rimmandrake\merge12_watch\` and in the "Tools watched (merge_twelve)" table of `map.md`.
+- **The cut is 30 lines, not the 150 that was guessed** `[guess ~50%]` above. On reading, the six cases do not repeat
+  one another: each holds rules that the others lack. His quotes stay in `standing_rulings.md`, the home of his words,
+  as the first run kept them.
+- **Kept, and why.** The fix-in-the-sitting half of "Touching code has a cost": each bullet changes what a judge or a
+  driver does, `selftest_touching_code_cost_rule.py` pins six of its sentences, and a move would cut no line. The
+  rules for the tick and the fault loop: 26 of the 48 gates in the census are not converted, so their rule lines stay.
+  The five acts, the holds, the stops, the spend and the account lines: full text, unchanged in all three places.
+- **The meaning read.** One fresh Opus that made no edit compared every merged sentence with its sources. It found 2
+  changed meanings, 1 new rule and 1 lost sentence `[measured: its report]`. All four are restored:
+  1. The root's first line gave the pipeline-only scope of the self-fix case to all three cases. Each case has its own
+     scope again.
+  2. The intro of the new `standing_rulings.md` section stated the self-fix case without its conditions. The intro now
+     only names its cases.
+  3. The first heading, "...and starts its own repair", promised a repair that no case promises. The heading now names
+     the three kinds of stop and states no rule.
+  4. "It applies the named repair itself" (the tick) was lost behind a pointer whose page does not say it. It is back,
+     word for word.
+  One of its five wording notes was a false statement (the owner-words page lists promises, not gates). It is fixed.
+- **Checks.** The acceptance test was red before (2,497 lines, exit 1) and is green after (2,467; the lose-nothing
+  check PASS with 0 losses at base `cea8d0bae6`; its `planted` mode caught every planted loss). The crystallize
+  instrument `checkable.py compare` found 0 of 84 (root) and 0 of 544 (`standing_rulings.md`) checkable items
+  unfindable. The 19 tests that read both files give the same results as before: 18 pass, and
+  `acceptance/code_review_brief_accept.py` fails before and after. Two tests changed in the same commit, because they
+  read only `##` headings: `selftest_self_fix_rule.py` and `selftest_rule_homes_in_briefs.py`. Each was seen to fail
+  on a planted loss and pass on the real files.
+- **A conflict, not decided here.** The root self-fix case says "Hand off only when the fix is unknown, is outside your
+  tools, or would change a north-star bar". Its home in `standing_rulings.md` also allows "touches files another live
+  run holds", and test 2 of §Touching code has a cost lists more. The difference was there before this run.
+

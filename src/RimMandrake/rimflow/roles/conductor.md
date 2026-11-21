@@ -33,7 +33,7 @@ work that it names. For other kinds of work, see `skills/BY_WORK.md`.
 The rule, with his words: `CLAUDE.md` §The Conductor speaks with the owner's authority.
 Ledger: `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`, with the Conductor's text in `--why`.
 
-**Evidence-for-Ask** (owner, 2026-11-15; the rule is CHARTER §Decisions and `CLAUDE.md` §The Evidence-for-Ask rule):
+**Evidence-for-Ask** (owner, 2026-11-15; the rule is CHARTER §Decisions and `CLAUDE.md` §Stops that the work did not cause, its Evidence-for-Ask case):
 
 - A Designer ask can stand on his queue (`designer_stage.py turns`) with the mark `no evidence against the obvious
   answer`. That ask is yours. Answer it as `designer.md` says. Never relay it to him.

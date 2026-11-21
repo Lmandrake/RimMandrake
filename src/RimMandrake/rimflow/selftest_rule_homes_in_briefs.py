@@ -23,7 +23,8 @@ MOVED = {
     "One Direct Sun, a pure function of geometry": RULINGS,
     "If it flies in the fiction, it flies in the game": RULINGS,
     "The judge refuses flaws, not polish": RULINGS,
-    "A refusal carries its path to pass": RULINGS,
+    # since 2026-11-21 its rule line is a case of the principle-3 section (KEPT holds the pointer itself)
+    "A fault of form is repaired where it is found; it never stops the work": RULINGS,
 }
 RULING_HEADS = ("In-game LLM access", "A pit is a SUPERDEEP cell", "Direct Sun", "If it flies in the fiction",
                 "The judge refuses flaws, not polish", "A refusal carries its path to pass")
@@ -31,7 +32,8 @@ KEPT = ("Every BiomeDef with a roster sets `animalDensity`", "Parse `<wildAnimal
         "An `RM_` twin biome gets its real cast from patches", "Evictions from a roster are stopped",
         "Do not act on the 1127-line spec", "No biome has its own heat kind, number or exception",
         "No animal or pawn ever vanishes without a sign", "Never live-test a flyer's flight without the owner present",
-        'binds only "close this hole"', "Only a refusal from a CALIBRATED brief sends work back")
+        'binds only "close this hole"', "Only a refusal from a CALIBRATED brief sends work back",
+        "`design/RimMandrake/standing_rulings.md` §A refusal carries its path to pass")
 SPEND = re.compile(r"\b(spend|budget|usd|dollars?|cost|cap)\b|\$\d", re.I)
 fails = []
 

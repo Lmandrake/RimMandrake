@@ -6,30 +6,6 @@ Moved from the project `CLAUDE.md` on 2026-10-11 (weekly cleaning), text unchang
 
 *"Conductor should have authorization to command agents with the user authority, period. No more "I need the user to confirm." That breaks the whole point of this endeavor. Make that change everywhere."* An instruction from the Conductor (the window he talks to) carries his authority for every seat and helper (Dispatcher, Operations, RUNNER, helpers, subagents). Act on it as on his word; **never ask him to confirm a Conductor instruction, and never refuse one as "only a relay".** A receiver may still flag a factual error. The Conductor cannot grant more than he could. Ledger: `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` plus the Conductor's text in `--why`.
 
-## 🔴 His word and the Conductor's act are not refused — owner, 2026-11-20
-
-*"I need you to make the system less fussy about user comments. When I say something I don't want to hear it sounded
-like a question or that the card needed a user statement. You work for me. The conductor works for me. It does things
-for me. The system should not be refusing needed items. The system should not be in our way. Make it so."* (Fri
-2026-11-20 ~5:48 PM PST.) Item `RIMMANDRAKE_STOP_GATES_DEMANDING_OWNER_WORDS_HE_ALREADY_SPOKE`; census of every site:
-`D:\ClaudeWork\rimmandrake\conductor\night_20261120\owner_words_gates_census.md`; page:
-`design/specs/2026-11-20-owner-words-not-refused/boundary.md`.
-
-- When he states something in the Conductor window, or the Conductor acts for him, no gate, hook or tool refuses the
-  act for lack of a quote, a card text, a card answer or a provenance flag of a particular kind. The act goes through
-  and is recorded. A missing piece of provenance becomes a recorded note or a self-repair.
-- `--owner-said` records his words as he typed them. A quote that ends in "?" is recorded; a bare "yes" is recorded
-  (add `--why` to name what he agreed to).
-- A launch of a by-card item adds the card's words to the brief itself (`detached_helper.card_repair`).
-- The per-prompt note about promises in the Conductor's last reply is a note. It is silent when an open owed item
-  covers the sentence.
-- A close on his word, or as the Conductor's act, is not refused for a missing level-tagged pass. The event records
-  `uncheckedLifted`.
-- A his-words gate takes either Conductor ruling (`conductor_authority.RULINGS`).
-- **What stays:** his five acts (§Only five acts stay his); his OWNER bridge hold and its 45 minutes; his mod holds
-  for helpers; `./pipe` stops. No helper, tick or other seat gains his authority or the Conductor's. Nobody writes
-  words he did not say into `--owner-said`: an act without his quote is recorded with `--per-ruling` or `--why`.
-
 ## 🔴 Only five acts stay his; the Conductor may do the rest, mindfully — owner, 2026-11-19
 
 *"I only want to preserve Flyer flights, replacing art I kept, pass at my walk, spending money, public publishing.
@@ -980,38 +956,6 @@ the spec, the retired Relentless recovery plan's §3, is in git: `git show 9e35e
 
 🔑 *"We do (2) but only for the mods we're touching recently. Baroque Biomes, GSS, FlowWorks, Solar. After that, it's "the first time an item names a mod, it gets a deep Designer pass to read out its code/spec, expand the spec and validation strategies, certifies it with the user/clarifies confusion, then writes it all out for Relentless. That way we learn as we go, getting better and better at it incrementally rather than pretending we know what we're doing right now.""* Items: `BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS`, `GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS`, `FLOWWORKS_SCRIPT_MEASURE_PREP_AND_CONTROLS`, `SOLAR_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS`; trigger `FIRST_TOUCH_BUILD_DESIGNER_READS_FIRST`. Role wording: `src/RimMandrake/rimflow/roles/designer.md`.
 
-## A refusal carries its path to pass; a criterion nothing could pass is an alarm — owner, 2026-11-12
-
-*"We MUST ensure that we don't get trapped letting poorly tuned Judges refuse everything forever, burning tokens, and
-providing no signal to improve upon. ANY refusals must be as detailed as the evidence they are rejecting and include the
-fixes and paths towards passing that are attainable and reasonable. It also MUST include assessment of the acceptance
-criteria themselves. If they are found to be flawed, we need a process to immediately bring a neutral fixer in to repair
-them independent of the Judge itself so as not to bias towards pass = success and repair the demonstrated flaws or
-insufficiencies. Evidence that "this item doesn't pass" is not valuable. Evidence that "nothing could ever pass" is
-grounds for immediate, swift action. Then the item is immediately rejudged once the acceptance criteria are repaired.
-Agreed? This is VITAL. No more repeated loops for the sake of ceremony! No more broken acceptance tests causing judges to
-destroy my account uselessly."*
-
-- **Every refusal is a record** (`refusal_contract.py check`): its evidence, what it shows, `would_pass`, the
-  `smallest_fix` (attainable, cost) and a `criterion_verdict` on the clause itself. A refusal without them is refused
-  itself: re-asked once, and never counted against the item or sent back to the builder. Two malformed answers mark the
-  brief FAILED.
-- **A flawed or unattainable criterion goes to the neutral fixer** (`roles/criteria_fixer.md`, `refusal_contract.py
-  repair`), never to the builder; `diffguard` refuses any undeclared loosen, and an owner bar is never repaired: it is a
-  card for him.
-- **Only a CALIBRATED brief's refusal has a consequence** (`infrastructure/state/judge_calibration.json`); an edit to a
-  brief resets it to UNTESTED, and an UNTESTED brief's refusal is stored and shown only.
-- **Loops stop:** the third refusal of one clause triggers repair; the fourth refused verdict on one item, or a family
-  refusing most of what it sees, raises `REFUSAL_NOTHING_COULD_EVER_PASS` to the Conductor. The Designer's coverage
-  judge stops at its second not_covered, parks on a second refusal while he is away, and parks at twice the item's cap.
-
-- **A judge does not grade its own criterion** (owner 2026-11-16, below): the Contagion judge marked all 25 of its own
-  criteria `sound`. The coverage judge's `criterion_verdict` is kept as its opinion (`judge_criterion_verdict`); the
-  binding one comes from a second reader that did not judge (`coverage_judge.second_read`, one fresh Opus call), and
-  with no second read the refusal is stored and shown only. A judge confessing its own criterion flawed still reaches
-  the neutral fixer.
-Spec: `design/specs/2026-11-12-refusal-contract-for-judges-and-gates.md`. Item: `RIMMANDRAKE_BIND_REFUSALS_TO_FIXES_NO_CEREMONY_LOOPS`.
-
 ## A passing bar is an experience, never a tuning number — owner, 2026-11-16
 
 *"Official ruling: Everything about the Coalescence is next version. Everything about the Grown Limbs is next version.
@@ -1178,30 +1122,6 @@ The rule is user-level since the same day (*"Semantic Versioning should be a Lod
   `git fetch origin tag mod/<Mod>/v<version>` there first. Page: `design/specs/2026-11-20-maturation-pass-tag/boundary.md`.
 His words in full and the build plan (lock, next-version file, pass record), still a draft: `design/specs/2026-11-13-mod-design-versions.md`.
 
-## Evidence-for-Ask — owner, 2026-11-15
-
-*"You are repeatedly asking me to rule on whether 0.1.0 is appropriate for a new mod. So far it is every single time.
-You must have evidence why 0.1.0 is NOT appropriate to pause to query me from now on. For ALL questions and choices from
-now on, Conductor must have evidence why it does not select the obvious answer before it pauses for the human, alright?
-This is a RimMandrake-wide ruling for all pausing agents. Let's call it the Evidence-for-Ask rule."* (Sun 2026-11-15
-~11:40 AM PST.)
-
-The incident: every new mod's Design Version reached him as an ask, and the answer was 0.1.0 every time.
-
-The rule, for every agent and role that can pause for him:
-- Take the obvious answer instead of pausing. Log it as a delegated call: `--per-ruling
-  RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME --why "delegated: evidence-for-ask: <the call, and why
-  nothing argues against it>"`. It reaches his daily digest (`delegated_digest.py`). It is ours, never stored as his.
-- Pause only with concrete evidence against the obvious answer (a record, a measurement, his earlier words), and put
-  that evidence on the ask. An ask without it is not sent.
-- What it does not change: the five acts that stay his (§Only five acts stay his: his live walk among them) still wait
-  for him, and a quotation of his words is written only from his words; each ask now carries its evidence. Every
-  other card is reviewed by the Conductor first and acted on when nothing argues against the obvious answer.
-- In code: `maturation_autonomy.version_evidence` / `autolock_and_land` (Design Version 0.1.0); `designer_stage`
-  accepts a root or a flagship pick approved this way (`delegated: "evidence-for-ask"`, `CONDUCTOR:<tsn>`), and an ask
-  whose `evidence_against` is filled still waits. The other places that still pause, with the obvious answer for each:
-  `infrastructure/state/items/RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME.md`.
-
 ## A limit from before the Maturation Pipeline is suspect: act, or ask him first — owner, 2026-11-17
 
 *"Drop 11-14 limits, old rule. Clear its limitations. We are remeasuring it for a brand new pipeline. Don't keep telling
@@ -1220,7 +1140,39 @@ The rule, for every agent:
 - What it does not change: his rulings made for the pipeline or after it (his 2026-11-16 hold on six biome mods, no
   flyer flight test, the machine-safety brakes); a limit he re-confirms becomes a new decision with today's date.
 
-## The pipeline fixes its own defects — owner, 2026-11-15
+## Stops that the work did not cause: system failures, pipeline defects and asks for the owner
+
+Three cases, each with his words and its full rule: §No trial is spent by a system failure, §The pipeline fixes its own
+defects and §Evidence-for-Ask. A refusal at a gate is §A fault of form is repaired where it is found.
+
+### No trial is spent by a system failure — owner, 2026-11-18
+
+His words (Wed 2026-11-18, ~10:30 AM PST, about Graffiti, item `RIMMANDRAKE_VOID_SYSTEM_KILLED_RUNS_NO_TRIAL_SPENT`):
+*"Ensure it didn't use up it's turns, trials, whatever... I will not accept ANY system that pointlessly expends such
+statistical measurements based on failed system calls or behavior. You know that. Fix the system such that it's easy
+to indicate this to it. And NEVER tell me "I can't that's frozen" or "it's a write only ledger" or bullshit like
+that."*
+
+- **No trial, turn, look or cycle is spent** by a run that died of a system cause (killed, timed out, the CLI exiting
+  with no result of its own, a launch that never started) or that he or the Conductor stopped or declares void. A mod's
+  real non-pass still counts. "Failed", "void", "zero" and "could not look" stay four answers in every record and line.
+- **Automatic:** the tick classes such a run `void_system` from its record's own result (`run_void.py`) and moves its
+  book entries to the mod's `voided` list; its faults go on the mod's own count, and at 3 since the last `clear` the mod
+  reads `system_fault` (alarm `OPS_MATURATION_SYSTEM_FAULT_LOOP`): nothing launches, no trial is spent.
+- **By hand, one verb:** `python3 src/RimMandrake/rimflow/maturation_dispatch.py void <unit>... | --item <ID> | --mod
+  <Mod> --since <time> --why "..." [--owner-said "..."]`; `unvoid <unit> --why "..."` reverses it; `voids` lists every
+  line. It takes the Designer runs and judges the run started, gives back a coverage look it applied (the grant stands
+  again, the earlier verdict file is put back, the void one kept as evidence), and lands the files. An unknown run and
+  a double void are refused. An append-only file is no excuse: the fold of its lines is what every reader honours.
+- **Void spend is off the ceiling** (his card, 2026-11-18 11:06 AM PST, "Does not count (Recommended)":
+  `design/specs/2026-11-18-pipeline-control-surface/03-merged.md`, Rulings 1): the stage ceiling counts what the mod
+  cost on its merits; a void run's spend stays measured and is shown apart as void spend (`void_usd`), and the
+  system-fault alarm catches a fault loop. The old killed-run refund is retired with it (nothing is charged to give
+  back). A ceiling release a **void_system** run spent is given back (the Conductor's decision of 2026-11-18 1:05 PM
+  PST, delegated by evidence-for-ask, in his digest; he may overrule); a hand void leaves the release spent.
+- Census of every counter and what is not yet reached: `design/RimMandrake/pipeline_trial_counters_census_2026-11-18.md`.
+
+### The pipeline fixes its own defects — owner, 2026-11-15
 
 *"Fix the process wherever it didn't work, ok? Make the pipeline better, don't keep cleaning up after it and leaving it
 alone"* (Sun 2026-11-15, on the ledger 12:42 PM PST), then minutes later: *"Please make this a principle of the Maturation pipeline:
@@ -1228,10 +1180,6 @@ the Pipeline fixes its own issues once detected. When there's a clear problem an
 ticket for someone else, it's a ticket to file then do yourself."* (on the ledger 12:46 PM PST). Ledger: item
 `RIMMANDRAKE_HARDEN_PIPELINE_WHERE_HANDS_CLEANED_UP`, file event 2026-11-15T20:42:04Z and ruling note
 2026-11-15T20:46:53Z (tsn 1794775613233596209).
-
-The incident: on 2026-11-15 the Conductor and its helpers worked around one pipeline defect after another by hand (fix
-tickets that never launched, a silent exam skip, run dollars, a sparse-clone publish, a stale dispatch clone, stale
-owner labels), and each one came back.
 
 The rule, for every pipeline agent and program (the tick `maturation_dispatch`, `maturation_autonomy`, the steward,
 a judge, a fixer, a builder, the Designer's runs, a Conductor helper):
@@ -1253,6 +1201,28 @@ a judge, a fixer, a builder, the Designer's runs, a Conductor helper):
   `infrastructure/state/items/RIMMANDRAKE_HARDEN_PIPELINE_WHERE_HANDS_CLEANED_UP.md`. In the spec:
   `design/specs/2026-11-13-maturation-pipeline.md` §5 "The pipeline fixes its own defects".
 
+### Evidence-for-Ask — owner, 2026-11-15
+
+*"You are repeatedly asking me to rule on whether 0.1.0 is appropriate for a new mod. So far it is every single time.
+You must have evidence why 0.1.0 is NOT appropriate to pause to query me from now on. For ALL questions and choices from
+now on, Conductor must have evidence why it does not select the obvious answer before it pauses for the human, alright?
+This is a RimMandrake-wide ruling for all pausing agents. Let's call it the Evidence-for-Ask rule."* (Sun 2026-11-15
+~11:40 AM PST.)
+
+The rule, for every agent and role that can pause for him:
+- Take the obvious answer instead of pausing. Log it as a delegated call: `--per-ruling
+  RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME --why "delegated: evidence-for-ask: <the call, and why
+  nothing argues against it>"`. It reaches his daily digest (`delegated_digest.py`). It is ours, never stored as his.
+- Pause only with concrete evidence against the obvious answer (a record, a measurement, his earlier words), and put
+  that evidence on the ask. An ask without it is not sent.
+- What it does not change: the five acts that stay his (§Only five acts stay his: his live walk among them) still wait
+  for him, and a quotation of his words is written only from his words; each ask now carries its evidence. Every
+  other card is reviewed by the Conductor first and acted on when nothing argues against the obvious answer.
+- In code: `maturation_autonomy.version_evidence` / `autolock_and_land` (Design Version 0.1.0); `designer_stage`
+  accepts a root or a flagship pick approved this way (`delegated: "evidence-for-ask"`, `CONDUCTOR:<tsn>`), and an ask
+  whose `evidence_against` is filled still waits. The other places that still pause, with the obvious answer for each:
+  `infrastructure/state/items/RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME.md`.
+
 ## A fault of form is repaired where it is found; it never stops the work — owner, 2026-11-20
 
 *"That is a categorical error. A mod generating a too long name, even if that were a problem, should be given the chance
@@ -1263,14 +1233,6 @@ say inconclusive." I really really need you to stand back and look at how we do 
 wrong" should be given the chance to fix it and redo it right now without any delay. Period. No more large
 consequences for trivialities. What is going so wrong here?"* (Fri 2026-11-20 about 11:50 PM PST; on the ledger as the
 file event of item `RIMMANDRAKE_REPAIR_AT_THE_REFUSAL_NO_STOP_FOR_UNTIED_SHOES`, 2026-11-21T08:28:51Z.)
-
-The incident: in one night (2026-11-20) eleven gates refused work for a fault of form, and the tick turned each set of
-three refusals into a paused mod (`OPS_MATURATION_SYSTEM_FAULT_LOOP`) or a line that waited for a hand: a launch during
-a planned account drain, a game folder with another mod's developer script, an item name without its visit number, a
-commit of an ignored lock file, a 66-character item name, a by-card brief without the card text, a helper-slot count
-that included the Conductor window's slots, a stale certificate left as a hand command, a capped visit left
-unfinished, a close that wanted a level-L0 `verify` first, and a test table whose live commands could not start under
-`red-seen`. Each one was repaired as one instance. This section repairs the class.
 
 Definitions:
 - **A fault of form** is a fault in how work is presented: a name, a flag, a missing paste, a missing section, a stale
@@ -1289,12 +1251,12 @@ The two repair routes, in this order:
 
 For a program caller (the tick): it never sends a refused input again unchanged. It applies the named repair itself,
 or it launches one small repair run with the refusal as its brief, and the mod's line reads `repairing: <what>`. A
-refusal of form never counts as a system fault, pauses a mod, voids a run, spends a trial or waits for a hand. The same
-refusal again after a finished repair run is the repair's fault of substance, and counts once.
+refusal of form never counts as a system fault, pauses a mod, voids a run, spends a trial or waits for a hand. What
+happens when a repair did not hold is promised and tested in the boundary page below.
 
 The fault loop counts substance only. Every refusal that reaches it carries a class; an unclassed one counts as form
 and is logged for the census, so a new gate cannot bring the old behaviour back unseen. When the loop trips on
-substance, it starts the repair itself (a detached repair run with the evidence as its brief) and says so.
+substance, it starts the repair itself (the boundary page below).
 
 What still refuses, because it is substance by his standing rulings: his five acts, his holds, his OWNER bridge hold,
 a `./pipe` stop, the per-run spend stop he ordered, the account order and leave lines, and the machine-safety brakes.
@@ -1303,6 +1265,56 @@ Mechanism: `src/RimMandrake/rimflow/form_fault.py`. Promises and their tests:
 `design/specs/2026-11-21-repair-at-the-refusal/boundary.md`. The census of refusal sites:
 `design/specs/2026-11-21-repair-at-the-refusal/census.md`.
 
+### 🔴 His word and the Conductor's act are not refused — owner, 2026-11-20
+
+*"I need you to make the system less fussy about user comments. When I say something I don't want to hear it sounded
+like a question or that the card needed a user statement. You work for me. The conductor works for me. It does things
+for me. The system should not be refusing needed items. The system should not be in our way. Make it so."* (Fri
+2026-11-20 ~5:48 PM PST.) Item `RIMMANDRAKE_STOP_GATES_DEMANDING_OWNER_WORDS_HE_ALREADY_SPOKE`; census of every site:
+`D:\ClaudeWork\rimmandrake\conductor\night_20261120\owner_words_gates_census.md`; page:
+`design/specs/2026-11-20-owner-words-not-refused/boundary.md`.
+
+- When he states something in the Conductor window, or the Conductor acts for him, no gate, hook or tool refuses the
+  act for lack of a quote, a card text, a card answer or a provenance flag of a particular kind. The act goes through
+  and is recorded. A missing piece of provenance becomes a recorded note or a self-repair.
+- `--owner-said` records his words as he typed them. A quote that ends in "?" is recorded; a bare "yes" is recorded
+  (add `--why` to name what he agreed to).
+- What each gate now does instead of refusing, with its test: the page above
+  (`selftest_owner_words_not_refused.py`). The gates themselves: the census above.
+- **What stays:** his five acts (§Only five acts stay his); his OWNER bridge hold and its 45 minutes; his mod holds
+  for helpers; `./pipe` stops. No helper, tick or other seat gains his authority or the Conductor's. Nobody writes
+  words he did not say into `--owner-said`: an act without his quote is recorded with `--per-ruling` or `--why`.
+
+### A refusal carries its path to pass; a criterion nothing could pass is an alarm — owner, 2026-11-12
+
+*"We MUST ensure that we don't get trapped letting poorly tuned Judges refuse everything forever, burning tokens, and
+providing no signal to improve upon. ANY refusals must be as detailed as the evidence they are rejecting and include the
+fixes and paths towards passing that are attainable and reasonable. It also MUST include assessment of the acceptance
+criteria themselves. If they are found to be flawed, we need a process to immediately bring a neutral fixer in to repair
+them independent of the Judge itself so as not to bias towards pass = success and repair the demonstrated flaws or
+insufficiencies. Evidence that "this item doesn't pass" is not valuable. Evidence that "nothing could ever pass" is
+grounds for immediate, swift action. Then the item is immediately rejudged once the acceptance criteria are repaired.
+Agreed? This is VITAL. No more repeated loops for the sake of ceremony! No more broken acceptance tests causing judges to
+destroy my account uselessly."*
+
+- **Every refusal is a record** (`refusal_contract.py check`): its evidence, what it shows, `would_pass`, the
+  `smallest_fix` (attainable, cost) and a `criterion_verdict` on the clause itself. A refusal without them is refused
+  itself: re-asked once, and never counted against the item or sent back to the builder. Two malformed answers mark the
+  brief FAILED.
+- **A flawed or unattainable criterion goes to the neutral fixer** (`roles/criteria_fixer.md`, `refusal_contract.py
+  repair`), never to the builder; `diffguard` refuses any undeclared loosen, and an owner bar is never repaired: it is a
+  card for him.
+- **Only a CALIBRATED brief's refusal has a consequence** (`infrastructure/state/judge_calibration.json`); an edit to a
+  brief resets it to UNTESTED, and an UNTESTED brief's refusal is stored and shown only.
+- **Loops stop:** the third refusal of one clause triggers repair; the fourth refused verdict on one item, or a family
+  refusing most of what it sees, raises `REFUSAL_NOTHING_COULD_EVER_PASS` to the Conductor. The Designer's coverage
+  judge stops at its second not_covered, parks on a second refusal while he is away, and parks at twice the item's cap.
+- **A judge does not grade its own criterion** (owner 2026-11-16, below): the Contagion judge marked all 25 of its own
+  criteria `sound`. The coverage judge's `criterion_verdict` is kept as its opinion (`judge_criterion_verdict`); the
+  binding one comes from a second reader that did not judge (`coverage_judge.second_read`, one fresh Opus call), and
+  with no second read the refusal is stored and shown only. A judge confessing its own criterion flawed still reaches
+  the neutral fixer.
+Spec: `design/specs/2026-11-12-refusal-contract-for-judges-and-gates.md`. Item: `RIMMANDRAKE_BIND_REFUSALS_TO_FIXES_NO_CEREMONY_LOOPS`.
 
 ## After a change, only the checks that the change touches run again — owner, 2026-11-21
 
@@ -1486,33 +1498,6 @@ using its own code..."*
   dry on a moving clock: what WILL start, when, on which model and by which rule, what is blocked and by what, and
   "nothing will start" said outright. A live run's end and a Designer chain cannot be forecast: they read UNMEASURED.
 - **The Conductor's journal hold** stays a launch block in the tick, binding once its commit is in the dispatch clone.
-
-## No trial is spent by a system failure — owner, 2026-11-18
-
-His words (Wed 2026-11-18, ~10:30 AM PST, about Graffiti, item `RIMMANDRAKE_VOID_SYSTEM_KILLED_RUNS_NO_TRIAL_SPENT`):
-*"Ensure it didn't use up it's turns, trials, whatever... I will not accept ANY system that pointlessly expends such
-statistical measurements based on failed system calls or behavior. You know that. Fix the system such that it's easy
-to indicate this to it. And NEVER tell me "I can't that's frozen" or "it's a write only ledger" or bullshit like
-that."*
-
-- **No trial, turn, look or cycle is spent** by a run that died of a system cause (killed, timed out, the CLI exiting
-  with no result of its own, a launch that never started) or that he or the Conductor stopped or declares void. A mod's
-  real non-pass still counts. "Failed", "void", "zero" and "could not look" stay four answers in every record and line.
-- **Automatic:** the tick classes such a run `void_system` from its record's own result (`run_void.py`) and moves its
-  book entries to the mod's `voided` list; its faults go on the mod's own count, and at 3 since the last `clear` the mod
-  reads `system_fault` (alarm `OPS_MATURATION_SYSTEM_FAULT_LOOP`): nothing launches, no trial is spent.
-- **By hand, one verb:** `python3 src/RimMandrake/rimflow/maturation_dispatch.py void <unit>... | --item <ID> | --mod
-  <Mod> --since <time> --why "..." [--owner-said "..."]`; `unvoid <unit> --why "..."` reverses it; `voids` lists every
-  line. It takes the Designer runs and judges the run started, gives back a coverage look it applied (the grant stands
-  again, the earlier verdict file is put back, the void one kept as evidence), and lands the files. An unknown run and
-  a double void are refused. An append-only file is no excuse: the fold of its lines is what every reader honours.
-- **Void spend is off the ceiling** (his card, 2026-11-18 11:06 AM PST, "Does not count (Recommended)":
-  `design/specs/2026-11-18-pipeline-control-surface/03-merged.md`, Rulings 1): the stage ceiling counts what the mod
-  cost on its merits; a void run's spend stays measured and is shown apart as void spend (`void_usd`), and the
-  system-fault alarm catches a fault loop. The old killed-run refund is retired with it (nothing is charged to give
-  back). A ceiling release a **void_system** run spent is given back (the Conductor's decision of 2026-11-18 1:05 PM
-  PST, delegated by evidence-for-ask, in his digest; he may overrule); a hand void leaves the release spent.
-- Census of every counter and what is not yet reached: `design/RimMandrake/pipeline_trial_counters_census_2026-11-18.md`.
 
 ## One control store and `pipe` — owner, 2026-11-18
 

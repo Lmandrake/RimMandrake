@@ -27,3 +27,7 @@
 - Meaning read, left as is: `producer.md`, `auditor.md` and `innovator.md` once said "flag a factual error" beside the Conductor-authority rule; the pointer's home says "A receiver may still report a factual error". Whether the old words were a duty or a permission is not decided.
 - Meaning read, left as is: `auditor.md` weekly pass says "at least three" retire decisions and "three program merges"; the old sentence could be read as "at least three" for both.
 - Meaning read, kept on purpose: `designer_lock.md` Known holes no longer says "until `RA_S05_INTAKE_ENFORCE_TREE_FIRST`"; that item was dropped on 2026-11-18, so the hole has no fix coming.
+- Second run, meaning read, left as is: §His word and the Conductor's act are not refused was a 🔴 section near the top of `standing_rulings.md`; it is now a `###` case of §A fault of form, about 1,270 lines down. Its meaning is unchanged; its prominence is not.
+- Second run, meaning read, left as is: the moved incident paragraph in `CLAUDE.history.md` still says "This section repairs the class."; it was moved word for word, so "this section" now reads as the history entry.
+- Second run, meaning read, left as is: root §A fault of form has one Full text pointer at its end for its own rules and the His-word case, and a second pointer inside the refusal case.
+

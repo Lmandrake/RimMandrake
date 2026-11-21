@@ -9,6 +9,7 @@ reaches every run the pipeline launches, and is written once.
 """
 import inspect
 import os
+import re
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -33,7 +34,9 @@ def read(rel):
 
 
 rulings = read("design/RimMandrake/standing_rulings.md")
-check(("\n## %s — owner, 2026-11-15\n" % HEAD) in rulings, "standing_rulings.md has no section '%s'" % HEAD)
+# since 2026-11-21 the section is a "###" case under the principle "A stop that the work did not cause"
+check(re.search(r"\n#{2,3} %s — owner, 2026-11-15\n" % re.escape(HEAD), rulings) is not None,
+      "standing_rulings.md has no section '%s'" % HEAD)
 check("ticket to file then do yourself" in rulings, "standing_rulings.md section lacks his words")
 spec = read("design/specs/2026-11-13-maturation-pipeline.md")
 check(("\n### %s\n" % HEAD) in spec, "spec has no section-5 heading '%s'" % HEAD)

@@ -155,3 +155,23 @@ its first script (`debug_process.md` §2).
 Which kind of testing to run, when, and its tunables: `design/RimMandrake/testing_policy_2026-10-28.md` and
 `src/RimMandrake/rimflow/testing_policy.json` (owner, 2026-10-28: "Let's get smarter about the testing we do and only
 use appropriate kinds of testing when/where it will help us.").
+
+### From `design/RimMandrake/standing_rulings.md` §The pipeline fixes its own defects — the incident of 2026-11-15
+
+The incident: on 2026-11-15 the Conductor and its helpers worked around one pipeline defect after another by hand (fix
+tickets that never launched, a silent exam skip, run dollars, a sparse-clone publish, a stale dispatch clone, stale
+owner labels), and each one came back.
+
+### From `design/RimMandrake/standing_rulings.md` §Evidence-for-Ask — the incident of 2026-11-15
+
+The incident: every new mod's Design Version reached him as an ask, and the answer was 0.1.0 every time.
+
+### From `design/RimMandrake/standing_rulings.md` §A fault of form is repaired where it is found — the eleven refusals of 2026-11-20
+
+The incident: in one night (2026-11-20) eleven gates refused work for a fault of form, and the tick turned each set of
+three refusals into a paused mod (`OPS_MATURATION_SYSTEM_FAULT_LOOP`) or a line that waited for a hand: a launch during
+a planned account drain, a game folder with another mod's developer script, an item name without its visit number, a
+commit of an ignored lock file, a 66-character item name, a by-card brief without the card text, a helper-slot count
+that included the Conductor window's slots, a stale certificate left as a hand command, a capped visit left
+unfinished, a close that wanted a level-L0 `verify` first, and a test table whose live commands could not start under
+`red-seen`. Each one was repaired as one instance. This section repairs the class.

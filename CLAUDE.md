@@ -284,14 +284,6 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 - Ledger: `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`, with the Conductor's text in `--why`.
 - Full text: `design/RimMandrake/standing_rulings.md` §The Conductor speaks with the owner's authority.
 
-## His word and the Conductor's act are not refused
-
-- No gate, hook or tool refuses an act of the owner or the Conductor for lack of a quote, a card text, a card answer
-  or a provenance flag of a particular kind. Record the act. Write a missing piece as a note, or let the tool add it.
-- `--owner-said` records his words as he typed them, a question included.
-- His five acts, his holds, his OWNER bridge hold and `./pipe` stops still bind. No helper gains this.
-- Full text: `design/RimMandrake/standing_rulings.md` §His word and the Conductor's act are not refused.
-
 ## Owner authority on the ledger: one field per kind of authority
 
 - `--owner-said`: his words. You may fix typos and join his own sentences. Do not change the meaning.
@@ -303,32 +295,32 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 - No transcript proof runs. Nothing checks a quote except its shape.
 - Full text: `design/RimMandrake/standing_rulings.md` §Owner authority on the ledger; the `using-rimflow` skill.
 
-## The Evidence-for-Ask rule
+## Stops that the work did not cause: system failures, pipeline defects and asks for the owner
 
-- This rule applies to every agent that would pause for the owner, for every question and choice.
-- Take the obvious answer instead of the pause. Log it with `--per-ruling
-  RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME --why "delegated: evidence-for-ask: <the call and why>"`.
-  It reaches his daily digest.
-- Pause only with concrete evidence against the obvious answer. Put that evidence in the question.
-- His five acts (above) still wait for him. Each question about one of them also carries its evidence.
-- The pipeline locks a new mod at Design Version 0.1.0. Do not ask him for that version.
-- Full text: `design/RimMandrake/standing_rulings.md` §Evidence-for-Ask.
-
-## The pipeline fixes its own defects
-
-- This rule applies to any agent or program in the Maturation Pipeline. It covers defects in the pipeline's own
-  machinery: code, tools, records, tests and the status page.
-- When the fix is known, file the ticket with its acceptance test. Do the fix in the same run, tests first. Then
-  publish, and say so.
-- Hand off only when the fix is unknown, is outside your tools, or would change a north-star bar. Put the evidence on
-  the ticket.
-- A hand workaround without the permanent fix is not allowed.
-- A mod's gaps still go through the stages.
-- Full text: `design/RimMandrake/standing_rulings.md` §The pipeline fixes its own defects.
+- Full text of each case: `design/RimMandrake/standing_rulings.md` §Stops that the work did not cause.
+- **No trial is spent by a system failure.** A run spends no trial, turn, look or cycle if it was killed, timed out or
+  never started. The same applies when the owner or the Conductor stopped it.
+  - The pipeline tick (`maturation_dispatch.py tick`, a timed run) classes such a run `void_system`. To void any run
+    by hand, use `maturation_dispatch.py void <unit> --why "..."`. `unvoid` reverses a void.
+  - Do not refuse to void a run because the record is frozen or append-only.
+- **The pipeline fixes its own defects.** This rule applies to any agent or program in the Maturation Pipeline. It
+  covers defects in the pipeline's own machinery: code, tools, records, tests and the status page. Full text: `design/RimMandrake/standing_rulings.md` §The pipeline fixes its own defects.
+  - When the fix is known, file the ticket with its acceptance test. Do the fix in the same run, tests first. Then
+    publish, and say so.
+  - Hand off only when the fix is unknown, is outside your tools, or would change a north-star bar. Put the evidence
+    on the ticket.
+  - A hand workaround without the permanent fix is not allowed. A mod's gaps still go through the stages.
+- **The Evidence-for-Ask rule** applies to every agent that would pause for the owner, for every question and choice.
+  - Take the obvious answer instead of the pause. Log it with `--per-ruling
+    RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME --why "delegated: evidence-for-ask: <the call and
+    why>"`. It reaches his daily digest.
+  - Pause only with concrete evidence against the obvious answer. Put that evidence in the question.
+  - His five acts (above) still wait for him. Each question about one of them also carries its evidence.
+  - The pipeline locks a new mod at Design Version 0.1.0. Do not ask him for that version.
 
 ## A fault of form is repaired where it is found; it never stops the work
 
-- This rule applies to every gate, hook, tool, tick and brief, and to every agent and program that they check.
+- This applies to every gate, hook, tool, tick and brief, and to every agent and program that they check.
 - A fault of form is a fault in how work is presented: a name, a flag, a missing paste, a missing section, a stale
   stamp, a file that a tool can make, a format.
 - A fault of substance is a fault in the work: the mod is wrong, the test is wrong, the run died, the machine failed.
@@ -342,6 +334,14 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
   run's result unknown.
 - Only a fault of substance may stop work. The stop names the fault and who repairs it, and starts that repair.
 - If you find a gate that breaks this rule on a pipeline path, repair the gate in the same run.
+- **His word and the Conductor's act are not refused.** No gate, hook or tool refuses an act of the owner or the
+  Conductor for lack of a quote, a card text, a card answer or a provenance flag of a particular kind. Record the act.
+  Write a missing piece as a note, or let the tool add it.
+  - `--owner-said` records his words as he typed them, a question included.
+  - His five acts, his holds, his OWNER bridge hold and `./pipe` stops still bind. No helper gains this.
+- **A refusal carries its path to pass.** Before you write or run a judge or a gate, read
+  `design/RimMandrake/standing_rulings.md` §A refusal carries its path to pass. Only a refusal from a CALIBRATED brief
+  sends work back.
 - Item: `RIMMANDRAKE_REPAIR_AT_THE_REFUSAL_NO_STOP_FOR_UNTIED_SHOES`. Full text:
   `design/RimMandrake/standing_rulings.md` §A fault of form is repaired where it is found.
 
@@ -409,15 +409,6 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
   - when to stop looking;
   - the polish route, which files no ticket.
 - Full text: `design/RimMandrake/standing_rulings.md` §Touching code has a cost; if you see it, do it.
-
-## No trial is spent by a system failure
-
-- A run spends no trial, turn, look or cycle if it was killed, timed out or never started. The same applies when the
-  owner or the Conductor stopped it.
-- The pipeline tick (`maturation_dispatch.py tick`, a timed run) classes such a run `void_system`. To void any run by
-  hand, use `maturation_dispatch.py void <unit> --why "..."`. `unvoid` reverses a void.
-- Do not refuse to void a run because the record is frozen or append-only.
-- Full text: `design/RimMandrake/standing_rulings.md` §No trial is spent by a system failure.
 
 ## No limit without the danger it guards
 
@@ -522,12 +513,6 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
   tests.
 - If the live test did not run, record it as UNRUN, with its command.
 - Full text: `design/RimMandrake/standing_rulings.md` §The test is built with the item.
-
-## A refusal carries its path to pass
-
-- Before you write or run a judge or a gate, read `design/RimMandrake/standing_rulings.md` §A refusal carries its
-  path to pass.
-- Only a refusal from a CALIBRATED brief sends work back.
 
 ## Code is clean when its promises are tested
 
