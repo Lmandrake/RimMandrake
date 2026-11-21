@@ -151,6 +151,19 @@ def tick_units(s):
         if isinstance(x, dict):
             units.update([m.get("unit"), x.get("unit"), x.get("tried")] + list(x.get("killed_before") or []))
             items.add(x.get("item")) if x.get("unit") else None
+    # `maturation_dispatch.py clear` moves ended entries to cleared[*].released: still the tick's own
+    # (RIMMANDRAKE_OWN_CLEARED_TICK_RUNS_ALARM_CRIED_FIVE)
+    for c in s.get("cleared") or []:
+        rel = c.get("released") if isinstance(c, dict) else None
+        if not isinstance(rel, dict):
+            continue
+        for book in ("blind_auto", "ingame_auto", "steward", "fixers"):
+            b = rel.get(book)
+            xs = b if isinstance(b, list) else list(b.values()) if isinstance(b, dict) else []
+            for x in xs:
+                if isinstance(x, dict):
+                    units.update([x.get("unit"), x.get("tried")] + list(x.get("killed_before") or []))
+                    items.add(x.get("item")) if x.get("unit") else None
     units.discard(None)
     items.discard(None)
     return units, items

@@ -606,6 +606,15 @@ def false_hands_main():
         ok([a["id"] for a in MH.read_acts()][n_v:] == ["run-rm-v-hand-fix"],
            "false hands 3d: a later hand fix on a fixer ticket whose entry was voided is still one hand act",
            [a["id"] for a in MH.read_acts()][n_v:])
+        # RIMMANDRAKE_OWN_CLEARED_TICK_RUNS_ALARM_CRIED_FIVE: `clear` moves ended entries to cleared[*].released
+        u_c, i_c = MH.tick_units({"blind_auto": [], "cleared": [{"at": 1, "released": {
+            "blind_auto": [{"unit": "U1", "item": "I1"}], "ingame_auto": [{"unit": "U3", "item": "I3"}],
+            "steward": {"k": {"unit": "U2", "item": "I2"}}, "fixers": {"f": {"tried": "U4"}}}}]})
+        ok({"U1", "U2", "U3", "U4"} <= u_c and {"I1", "I2", "I3"} <= i_c,
+           "false hands 3e: a tick run whose entry sits in cleared[*].released is the tick's own", (u_c, i_c))
+        e_c, _ = MH.tick_units({"cleared": [{"at": 1, "released": {}}, {"at": 2}, "x", {"released": []},
+                                            {"released": {"blind_auto": None, "steward": [1], "fixers": {"a": 3}}}]})
+        ok(e_c == set(), "false hands 3f: an empty or malformed `cleared` adds nothing", e_c)
         os.remove(os.path.join(MD.sdir(), MH.ACTS)) if os.path.exists(os.path.join(MD.sdir(), MH.ACTS)) else None
         late = "rm-detached-bench-rimmandrake-drive-g-in-game-1794834319"
         st["mods"]["G"]["ingame_auto"].append(
