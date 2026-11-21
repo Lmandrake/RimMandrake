@@ -247,3 +247,22 @@ Item `RIMMANDRAKE_TEST_STEVE_AUDIO_DEFAULT_ON_REALTEK_DRIVER_STILL_LOADED`. Reco
 - 🔑 **The Windows default audio device can be read and set with no install:** inline C# over the Core Audio COM interfaces
   (`IMMDeviceEnumerator`, `IPolicyConfig.SetDefaultEndpoint`); script `C:\SteveDesktop\diag\audiodef\audiodef.ps1`. A default set to an
   unplugged endpoint returns success but does not take effect; read it back.
+
+## 🔴 Windows per-app audio routing does not move a fresh RimWorld start off Sonic Studio; with the game on Sonic Studio the fault came (MEASURED 2026-11-21, one boot)
+
+Item `RIMMANDRAKE_ROUTE_STEVE_RIMWORLD_AUDIO_TO_REALTEK_ONLY_THE_GAME`. Record and raw evidence:
+`D:\ClaudeWork\rimmandrake\conductor\night_20261120\steve_audio_per_app_test.md` and its `perapp\` folder. Same method as the default test (same native
+launch, register probe with RPCONTROL ok=1, `driverquery /v` after the boot). No driver and no system default was changed.
+
+- **The route:** RimWorldWin64.exe (D:\SteamLibrary path) Render -> "Realtek Digital Output", set by script with the per-app mechanism of Settings > App volume
+  and device preferences (WinRT factory `Windows.Media.Internal.AudioPolicyConfig`, downlevel IID `{2a59116d-...}` on 19045; script
+  `C:\SteveDesktop\diag\perapp\perapp.ps1`, run as sjlewis in the desktop session). Windows keeps it in
+  `HKCU\Software\Microsoft\Multimedia\Audio\DefaultEndpoint\<hash>`. Set on a running game, it moved the live stream to Realtek; the 6 system defaults stayed
+  on Sonic Studio, and a second app's stream stayed on Sonic Studio.
+- **After a reboot (boot 15:52:46Z):** the route was still in the registry and read back for the new game process, but a fresh start opened its audio on
+  Sonic Studio anyway, both with the native task and with the lane's `rw_game.sh up` (2 of 2 launches). **Per-app reading: UNMEASURED; the route was removed.**
+- **The same boot as a control:** all drivers loaded, defaults on Sonic Studio, the game's session measured ACTIVE on Sonic Studio: **fault at 4.1 min**
+  (15:58:13Z, CPU 5, `upper_half_loss`). With the default test above (game on Realtek: clean 48 min), the fault follows the game's audio through the Sonic
+  Studio mixer [guess ~88%: one boot each side].
+- 🔑 sjlewis's `PolicyConfig\PropertyStore` holds about 700 per-app VOLUME records (not routes). The API's `ClearAllPersistedApplicationDefaultEndpoints`
+  would also clear every other app's route: reset one app with `SetPersistedDefaultAudioEndpoint(pid, flow, role, NULL)` instead.
