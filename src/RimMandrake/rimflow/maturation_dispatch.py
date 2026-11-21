@@ -1250,6 +1250,9 @@ def cert_rerun_decide(cfg, s, f, row, put, now, to="blind_challenge", what="the 
         # still running, on this build or an older one: never a second worker beside it in the one pool clone
         put("live", "certificate rerun %s (zero tokens) started %d s ago on %s" % (
             prior["unit"], age, "this build" if prior.get("key") == key else "an older build; this build reruns after it"))
+        # the rerun is the named wait: unnamed, the classifier read 'waiting on nothing running' and called the mod
+        # stalled while the rerun worked (RIMMANDRAKE_NAME_CERT_RERUN_AS_THE_WAIT_NOT_A_STALL)
+        row["waits_on"] = "%s (zero-token certificate rerun)" % prior["unit"]
         return "decided"
     void = None
     if prior and prior.get("key") == key:

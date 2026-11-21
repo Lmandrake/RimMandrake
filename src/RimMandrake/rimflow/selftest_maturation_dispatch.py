@@ -2140,6 +2140,17 @@ def cert_rerun_gates_main():
         ok(not la and rows[0].get("decision") == "live" and "rm-cert-rerun-1" in str(rows[0].get("why")),
            "cert rerun gates (%s): the next tick, the unit still running, launches nothing (%s: %s)" % (
                stage, rows[0].get("decision"), rows[0].get("why")))
+        # RIMMANDRAKE_NAME_CERT_RERUN_AS_THE_WAIT_NOT_A_STALL (2026-11-21 12:20 AM PST): GimmeSomeSlack read
+        # maturation.stalled 1 at his rung while its zero-token rerun ran selftests for 45 min: the live row named no
+        # wait, so the classifier read 'waiting on nothing running'
+        import maturation_autonomy as AUT
+        ks = {}
+        for dt_min in (0, 30):
+            r = dict(rows[0])
+            AUT._klass(cfg, ks, r, now + 60 + dt_min * 60, {})
+        ok("rm-cert-rerun-1" in str(r.get("waits_on")) and not r.get("stalled"),
+           "cert rerun gates (%s): a live rerun is the named wait, 30 min on is no stall (waits_on %s, stalled %s, %s)"
+           % (stage, r.get("waits_on"), r.get("stalled"), r.get("status")))
         # a new build lands while that rerun runs (the stale key moves): never a second worker beside it, since both
         # would run in one pool clone and one build dir (measured 2026-11-17 11:56 AM PST: two GSS reruns overlapped)
         rows6 = stale([r["test"] for r in rows5], build="b2")
