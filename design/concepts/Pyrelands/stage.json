@@ -860,10 +860,17 @@
     "ref": "run rm-role-designer-1795291088",
     "stage": 4,
     "tokens": 220880
+   },
+   {
+    "at": "2026-11-21T20:06:32Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1795291426",
+    "stage": 5,
+    "tokens": 303009
    }
   ],
   "reserve": 60000,
-  "spent": 24872418
+  "spent": 25175427
  },
  "coverage_releases": [
   {
@@ -2773,6 +2780,24 @@
    "stage": 5,
    "what": "exam_map",
    "why": "read map recorded for 40 scenarios"
+  },
+  {
+   "at": "2026-11-21T20:03:52Z",
+   "stage": 5,
+   "what": "over_budget",
+   "why": "24872418 of 4000000 spent; run rm-role-designer-1795291426 goes on with 400000 (advisory)"
+  },
+  {
+   "at": "2026-11-21T20:03:53Z",
+   "stage": 5,
+   "what": "open",
+   "why": "run rm-role-designer-1795291426, stage 5, budget 400000"
+  },
+  {
+   "at": "2026-11-21T20:06:33Z",
+   "stage": 5,
+   "what": "close",
+   "why": "run rm-role-designer-1795291426: stage 5 done"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -3397,12 +3422,45 @@
    "run": "rm-role-designer-1795291088",
    "stage": 4,
    "summary": "Stage 4 re-passed by carry. The only input that moved since the last passed exam (rm-role-designer-1795290438) is scenes.json, by fcfdc7c0e1 (sc_flamefang_venom re-staged: one bite per patient, biter removed; stage 3 re-accepted by rm-role-designer-1795290683). exam_retake.py plan read NONE_TOUCHED: no scenario reads scenes, and tree and sheet are as examined for all 40 scenarios. carry on an empty fresh file restamped exam.json's inputs and carried the 40 answers (32 examiner, 8 challenger); exam_reads.json re-recorded (40 scenarios over 24 leaves). No leaf, bar, sheet line or record decision changed; Design Version 0.1.0 bars untouched."
+  },
+  {
+   "at": "2026-11-21T20:06:33Z",
+   "inputs": {
+    "exam": "5b3cb12d89732bdcbcf05c350c4967aa8744ddb5e70612026a201d0e8e0c0b1c",
+    "floor": "bd9d7fd896359814f8ad5c820b6b23ee1d61a06a6d4a33cbe92595cc4771b32d",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "ae26d34f7fa9f55c5bb0ea115379238907576a0151185aabfad9d1f495425fab",
+    "scenes": "f5f4b24fd63ae93e674492b1a84d0ce327c1c1a8daaf14192955f981f30bef71",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "tree": "78f3df67824adcf0582354112cf09be797e1d601c22baef269474afb8ced2f54"
+   },
+   "manifest": {
+    "designer.md": "c20433fca1ae2c7f68faa3efeb0867fa676a6141a174e657112a6959a890866a",
+    "designer_lock.md": "5863a7707e383d39124f8696ab3424561b329a7b863ea0081e9ce4aa55e23f74"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "pinned_at": {
+    "exam": "b7da87b970c6d34c0b83bbea156e1aa94b591fed",
+    "floor": "b7da87b970c6d34c0b83bbea156e1aa94b591fed",
+    "root": "b7da87b970c6d34c0b83bbea156e1aa94b591fed",
+    "scenes": "b7da87b970c6d34c0b83bbea156e1aa94b591fed",
+    "sheet": "b7da87b970c6d34c0b83bbea156e1aa94b591fed",
+    "tree": "b7da87b970c6d34c0b83bbea156e1aa94b591fed"
+   },
+   "quick_look": {
+    "offer": false,
+    "why": "nothing is asked at the lock; the locked bars go to the Maturation Pipeline, whose stages walk the running mod"
+   },
+   "run": "rm-role-designer-1795291426",
+   "stage": 5,
+   "summary": "Lock. Root VALIDATED and tree root_hash current (lint passes). Artifacts are as stage 3 wrote and stage 4 examined (tree 78f3df67, sheet 628feeb2). Coverage: judge rm-coverage-judge-1794947629 covered, 0 gaps, certified past the root_hash restamp by the Conductor's act (OWNER:1795222813980581690). concept_tree.py gate PASS; designer_stage.py showcases accepts burn_line, fire_cast, sky_and_shelter, fire_solace. Mod item RIMMANDRAKE_FINISH_PYRELANDS_AGAINST_TREE_FURNACE_GREW_TO_NINE (kind mod) already cites tree.json and hash 78f3df67 in its ## verify; its spec's stale signer and scene count (29, now 30) corrected. Its build items for scene entry points are filed before it. Design Version 0.1.0 bars untouched."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
  "stage": 5,
- "status": "ready",
+ "status": "locked",
  "waiting_owner_feed": "79abe4290fa077e9fd73b85d4c6d6e47ee49c99ed1608b827f1afbe5f8895520"
 }
