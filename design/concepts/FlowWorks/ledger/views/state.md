@@ -1,13 +1,13 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":32194,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":2381,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=5bc47e183e73d6f423a1e05afd410bb9a3292488f7d4f4b14872bd1ebc63163b -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":32194,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=287acf469d478fec08e1dad6b9c80fc644448051d9304bca80f36be49bb1c335 -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage in_game · 1423 events in 18 shards · reducer 1
-holder lease run-1795244678, token 21, last active 2026-11-21T08:22:14Z
+version 0.1.0 · stage in_game · 1425 events in 18 shards · reducer 1
+holder lease run-1795244678, token 21, last active 2026-11-21T08:32:17Z
 holder session ff15b029-4df8-495c-acec-5406c94c8b7b, context 402977 of ceiling 400000 — ROTATE DUE
 
-## Last checkpoint (HOLDER.run-1795244678, 2026-11-21T07:11:39Z)
-- done: holder run: pawn height, garden yard, ice closed (earlier sub-run); island restore re-pinned aa7e4cd91f and closed e1006ea437 on a live PASS
-- next: Relaunch the holder run for the 6 LEFT OPEN items; start with the shared raid staging (pit trap, trench, fetch fallen, moat)
-- ruled out: the island restore row was not a mod fault: the lone mid square is out of reach by the climb rule
+## Last checkpoint (HOLDER.run-1795244678, 2026-11-21T08:32:17Z)
+- done: body cover closed 5940b27979 (PIT_LOOK_1114_LIVE 19/19 game b); UNDERLIQUID_PARITY red run c09d51e332; raid staging fixed 51e9d9ce4a (named faction, walk-in south of trench, 60-tick reads, corpses count, fresh warden); trench item closed; game-b python.exe trap fixed e400c1b366
+- next: Stage sc_pit_trap_raid capture after the free raiders are gone; hide sc_fetch_fallen defenders behind a wall so the raid crosses the lids
+- ruled out: visit 2 trap/trench/fetch misses came from a worker-picked faction, 300-tick reads and a spawn centre 4 squares off; pits did not vanish on load (that run read game a)
 
 ## Open findings (178)
 (claimed fixes, awaiting a judge, on one line each with the oldest 127 open findings, named without their 'finding:': `modledger.py show --mod FlowWorks finding:<NAME>`)
@@ -493,6 +493,6 @@ spend recorded: USD 78.94, 45401435 tokens
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
 - notes: 11, never printed here (`modledger.py find --mod FlowWorks <words>`)
-- the full history: 1423 events (views/history.md; never read whole)
+- the full history: 1425 events (views/history.md; never read whole)
 
-cursor: t=2026-11-21T08:22:14Z.1795249334624646394 (modledger.py since --mod FlowWorks t=2026-11-21T08:22:14Z.1795249334624646394 prints what changed after this packet)
+cursor: t=2026-11-21T08:32:17Z.1795249937839410065 (modledger.py since --mod FlowWorks t=2026-11-21T08:32:17Z.1795249937839410065 prints what changed after this packet)

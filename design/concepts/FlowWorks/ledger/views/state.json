@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "a3b4e2c4ea42da9d2667e5cc0ca819ea06b6b16e2c6d3e1b1b32c6516d3b215d",
+  "body_sha256": "74367fc796953121ebd93d803c70b3a7ff29f6c9a34d782241f6e58cb9f8763a",
   "reducer": 1,
   "shards": {
    "BACKFILL": 893183,
@@ -16,7 +16,7 @@
    "HOLDER.run-1795165115": 1137,
    "HOLDER.run-1795223527": 1482,
    "HOLDER.run-1795235568": 2438,
-   "HOLDER.run-1795244678": 2381,
+   "HOLDER.run-1795244678": 3570,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1238,10 +1238,10 @@
   },
   "checkpoint": {
    "by": "HOLDER.run-1795244678",
-   "done": "holder run: pawn height, garden yard, ice closed (earlier sub-run); island restore re-pinned aa7e4cd91f and closed e1006ea437 on a live PASS",
-   "next": "Relaunch the holder run for the 6 LEFT OPEN items; start with the shared raid staging (pit trap, trench, fetch fallen, moat)",
-   "ruled_out": "the island restore row was not a mod fault: the lone mid square is out of reach by the climb rule",
-   "ts": "2026-11-21T07:11:39Z"
+   "done": "body cover closed 5940b27979 (PIT_LOOK_1114_LIVE 19/19 game b); UNDERLIQUID_PARITY red run c09d51e332; raid staging fixed 51e9d9ce4a (named faction, walk-in south of trench, 60-tick reads, corpses count, fresh warden); trench item closed; game-b python.exe trap fixed e400c1b366",
+   "next": "Stage sc_pit_trap_raid capture after the free raiders are gone; hide sc_fetch_fallen defenders behind a wall so the raid crosses the lids",
+   "ruled_out": "visit 2 trap/trench/fetch misses came from a worker-picked faction, 300-tick reads and a spawn centre 4 squares off; pits did not vanish on load (that run read game a)",
+   "ts": "2026-11-21T08:32:17Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1693,7 +1693,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1423,
+  "events": 1425,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7794,7 +7794,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-21T08:22:14Z",
+   "last": "2026-11-21T08:32:17Z",
    "lease": "run-1795244678",
    "released": false,
    "token": 21
