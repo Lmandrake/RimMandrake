@@ -171,13 +171,16 @@ def t_a_certificate_rerun_left_no_result_is_tried_again(tmp):
                              {"cert_rerun": lambda m, k: (called.append(k), (0, "STARTED", "rm-cert-rerun-fake-2"))[1]})
     ok(called == [key] and s["cert_rerun"]["tries"] == 2 and s["cert_rerun"]["unit"] == "rm-cert-rerun-fake-2",
        "the retry is counted on its build key's tries: %r" % s["cert_rerun"])
-    got, _, row = decide({"key": key, "unit": U, "at": T0, "failed": None, "tries": 3})
-    ok(got == "decided" and "left no result" in str(row.get("need")),
-       "at launch_tries it waits for a hand, saying so (%r)" % row.get("need"))
-    got, _, row = decide({"key": key, "unit": U, "at": T0, "failed": None, "tries": 1},
+    # 2026-11-21 (form_fault): at launch_tries the tick never waits for a hand: it owes a repair run with the evidence
+    def owed(s):
+        return " ".join(x["text"] for x in s.get("form_repairs") or [] if x.get("state") == "owed")
+    got, s, row = decide({"key": key, "unit": U, "at": T0, "failed": None, "tries": 3})
+    ok(got == "decided" and "left no result" in owed(s) and not row.get("need"),
+       "at launch_tries it owes a repair, saying so, no hand line (%r)" % owed(s)[:120])
+    got, s, row = decide({"key": key, "unit": U, "at": T0, "failed": None, "tries": 1},
                          res={"unit": U, "ok": False, "key_after": None, "published": None, "error": None})
-    ok(got == "decided" and "ended" in str(row.get("need")),
-       "a rerun that wrote its own result counts: the same build never reruns (%r)" % row.get("need"))
+    ok(got == "decided" and "ended" in owed(s),
+       "a rerun that wrote its own result counts: the same build never reruns (%r)" % owed(s)[:120])
     got, _, _ = decide({"key": key, "unit": U, "at": T0, "failed": None, "tries": 1}, now=T0 + 60)
     ok(got == "decided" and puts and puts[-1][0] == "live", "within its bound it still reads live: %r" % puts[-1:])
 

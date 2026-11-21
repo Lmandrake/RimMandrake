@@ -51,7 +51,7 @@ the void rule is `run_void.py`'s docstring and `design/RimMandrake/pipeline_tria
   `run.end`, and its ceiling release is still given back.
 - **a-certificate-rerun-left-no-result-is-tried-again.** A rerun that left no result of its own by `RERUN_MAX_S` after
   its start (killed or timed out) spends no rerun of its build key: it is started again, within `launch_tries`, and
-  only then waits for a hand.
+  only then owes one repair run with the evidence (form_fault; never a wait for a hand).
 - **a-run-now-never-launched-gives-its-chain-back.** A chained run-now consumed without a launch because it expired,
   the pipeline is paused, the owner holds the concept, or the role's off switch is set, gives its chain back: the
   day's count less one and its stage off the day's list.

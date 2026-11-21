@@ -1240,11 +1240,19 @@ def cert_rerun_decide(cfg, s, f, row, put, now, to="blind_challenge", what="the 
     prior = s.get("cert_rerun") if isinstance(s.get("cert_rerun"), dict) else None
     res = f.get("cert_rerun_result") if isinstance(f.get("cert_rerun_result"), dict) else None
     mine = res if res and prior and prior.get("unit") and res.get("unit") == prior["unit"] else None
-    lift = "`maturation_dispatch.py clear %s --why ...` lets it run once more" % mod
 
     def wait(said):
+        # never a wait for a hand (form_fault; RIMMANDRAKE_FILE_FLOWWORKS_TICK_NEVER_RERAN_ITS_OWN_CERTIFICATE: FlowWorks
+        # sat on this line 80 min, 2026-11-20): the rerun is not repeated on this build, and one repair run is owed
+        # with the evidence (form_repair_step starts it; the same evidence after a finished repair counts once)
         cert_put(put, mod, to, why or f.get("certificate_why"), fix or f.get("certificate_fix"), what)
-        row["need"] = "%s; %s, and the step never reruns the same build (%s)" % (row.get("need"), said, lift)
+        text = "%s; %s; the step never reruns the same build" % (row.pop("need", None) or "%s: certificate at %s" % (
+            mod, what), said)
+        held = FF.owe_repair(s, text, "%s certificate" % mod, now, book="cert_rerun", key=key)
+        if held:
+            s.setdefault("system_faults", []).append({"at": now, "book": "cert_rerun", "key": key, "unit": None,
+                                                      "cause": held, "n": 1})
+        row["why"] = "%s; repairing: %s" % (row.get("why") or "", FF.what_of(text))
         return "decided"
     age = now - float((prior or {}).get("at") or 0)
     if prior and prior.get("unit") and not mine and 0 <= age < RERUN_MAX_S:

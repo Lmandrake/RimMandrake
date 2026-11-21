@@ -1982,9 +1982,13 @@ def cert_rerun_main():
     done = {"unit": "rm-cert-rerun-1", "key": key, "key_after": key, "ok": False, "published": None,
             "error": "publish refused: hook", "end": now + 600}
     rows, la = MD.decide(cfg, st, facts(two, result=done), now + 900, (True, "ok"), releases=[], bridge=FREE_BRIDGE)
-    ok(not la and rows[0].get("decision") == "certificate" and "rm-cert-rerun-1" in str(rows[0].get("need")),
-       "cert rerun: it ended and the same build is still stale: never a second run, a Needs Conductor line naming it "
-       "(%s: %s)" % (rows[0].get("decision"), rows[0].get("need")))
+    # RIMMANDRAKE_FILE_FLOWWORKS_TICK_NEVER_RERAN_ITS_OWN_CERTIFICATE (2026-11-21, form_fault): the tick never waits for
+    # a hand here; it owes a repair run with the evidence, and no Needs Conductor line asks for a `clear`
+    reps = [x for x in (st["mods"]["ExplosiveKnockback"].get("form_repairs") or []) if x.get("state") == "owed"]
+    ok(not la and rows[0].get("decision") == "certificate" and not rows[0].get("need") and len(reps) == 1
+       and "rm-cert-rerun-1" in reps[0]["text"],
+       "cert rerun: it ended and the same build is still stale: never a second rerun, and a repair is owed naming it, "
+       "no hand line (%s: need %s; repairs %d)" % (rows[0].get("decision"), rows[0].get("need"), len(reps)))
     rows, la = MD.decide(cfg, st, facts(two, result=done), now + 7200, (True, "ok"), releases=[], bridge=FREE_BRIDGE)
     ok(not la, "cert rerun: still none two hours later on that build (%s)" % rows[0].get("decision"))
     new = stale(["PY_KNOCK_A", "PY_KNOCK_B"], build="b2")
@@ -1995,9 +1999,10 @@ def cert_rerun_main():
            "ok": False, "published": "abc1234", "end": now + 7000}
     st2 = {"mods": {"ExplosiveKnockback": {"cert_rerun": {"key": "kprev", "unit": "rm-cert-rerun-2", "at": now + 6000}}}}
     rows, la = MD.decide(cfg, st2, facts(new, result=own), now + 7300, (True, "ok"), releases=[], bridge=FREE_BRIDGE)
-    ok(not la and rows[0].get("need") and "stale" in str(rows[0].get("need")),
-       "cert rerun: the rerun itself left this build stale (a decider rewrites what it reads): no loop, a Needs "
-       "Conductor line (%s: %s)" % (rows[0].get("decision"), rows[0].get("need")))
+    reps2 = [x for x in (st2["mods"]["ExplosiveKnockback"].get("form_repairs") or []) if x.get("state") == "owed"]
+    ok(not la and not rows[0].get("need") and reps2 and "stale" in reps2[0]["text"],
+       "cert rerun: the rerun itself left this build stale (a decider rewrites what it reads): no loop, a repair owed "
+       "with the evidence, no hand line (%s: %s)" % (rows[0].get("decision"), [x["what"] for x in reps2]))
     red = two + [{"bar": "bar_t", "test": "T_RED", "clause": "green", "status": "REFUSED", "observed": "rc 1",
                   "smallest_fix": "fix"}]
     rows, la = MD.decide(dict(cfg, max_live=4), {"mods": {}}, facts(red), now, (True, "ok"), releases=[], bridge=FREE_BRIDGE)
@@ -2013,8 +2018,9 @@ def cert_rerun_main():
     failed = {"mods": {"ExplosiveKnockback": {"cert_rerun": {"key": key, "unit": None, "at": now, "tries": 1,
                                                              "failed": "systemd-run exit 1: bad unit", "code": "t1"}}}}
     rows, la = MD.decide(dict(cfg, _code="t1"), failed, facts(two), now + 120, (True, "ok"), releases=[], bridge=FREE_BRIDGE)
-    ok(not la and rows[0].get("need"), "cert rerun: a start refused on a defect is not retried on the same code (%s)"
-       % rows[0].get("decision"))
+    reps = [x for x in failed["mods"]["ExplosiveKnockback"].get("form_repairs") or [] if x.get("state") == "owed"]
+    ok(not la and not rows[0].get("need") and len(reps) == 1, "cert rerun: a start refused on a defect is not retried "
+       "on the same code; a repair is owed (%s, repairs %d)" % (rows[0].get("decision"), len(reps)))
     rows, la = MD.decide(dict(cfg, _code="t2"), failed, facts(two), now + 120, (True, "ok"), releases=[], bridge=FREE_BRIDGE)
     ok(la == ["ExplosiveKnockback"], "cert rerun: it is retried once the pipeline's code changed (%s)" % rows[0].get("decision"))
     if not has:
@@ -2180,11 +2186,13 @@ def cert_rerun_gates_main():
         done = {"unit": "rm-cert-rerun-1", "key": key, "key_after": key, "ok": False, "published": None,
                 "error": "publish refused: hook", "end": now + 600}
         rows, la = MD.decide(cfg, st, facts(stage, rows5, result=done), now + 900, (True, "ok"), releases=[], bridge=FREE_BRIDGE)
-        need = str(rows[0].get("need"))
-        ok(not la and rows[0].get("decision") == "certificate" and "rm-cert-rerun-1" in need and word in need
-           and gate in need,
-           "cert rerun gates (%s): it ended and the build is still stale: never a second run, a Needs Conductor line "
-           "naming the unit and the %s gate (%s: %s)" % (stage, gate, rows[0].get("decision"), need[:300]))
+        # 2026-11-21 (form_fault): a repair owed with the evidence (the unit and the gate), never a hand line
+        need = " ".join(x["text"] for x in (st["mods"][rows[0]["mod"]].get("form_repairs") or [])
+                        if x.get("state") == "owed")
+        ok(not la and rows[0].get("decision") == "certificate" and not rows[0].get("need") and "rm-cert-rerun-1" in need
+           and word in need and gate in need,
+           "cert rerun gates (%s): it ended and the build is still stale: never a second run, a repair owed naming "
+           "the unit and the %s gate (%s: %s)" % (stage, gate, rows[0].get("decision"), need[:300]))
         red = rows5 + [{"bar": "bar_t", "test": "T_RED", "clause": "green", "status": "REFUSED", "observed": "rc 1",
                         "smallest_fix": "fix"}]
         rows, la = MD.decide(cfg, {"mods": {}}, facts(stage, red), now, (True, "ok"), releases=[], bridge=FREE_BRIDGE)
