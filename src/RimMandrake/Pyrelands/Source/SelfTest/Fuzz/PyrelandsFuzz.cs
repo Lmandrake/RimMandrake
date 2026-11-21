@@ -988,6 +988,16 @@ namespace RimMandrake.Pyrelands.Fuzz
                 Check(!RM_FireEcoKernel.BurrowNudgeDue(true, true, false, true, 5100, 5000, 250), "BurrowNudgeDue: inside the gap refuses");
                 Check(RM_FireEcoKernel.BurrowNudgeDue(true, true, false, true, 5250, 5000, 250), "BurrowNudgeDue: gap elapsed");
                 Check(RM_FireEcoKernel.BurrowNudgeDue(true, true, false, true, 10, 90000, 250), "BurrowNudgeDue: a record from another game is expired");
+                // RIMMANDRAKE_FIX_PYRE_ASHWALLOW_SHADE_DASH_BEATS_FIRE_DIVE: a shade dash and a drink are moves the pawn finishes out
+                // of range, so the dive starts over them outright, as over grazing and sleep; idle jobs re-ask the tree; a flee is left
+                // to RM_BurrowHeatReaction; an unknown or empty job is left alone.
+                string[] diveOver = { "Ingest", "LayDown", "RM_ShadeDash", "RM_DrinkFromTerrain" };
+                string[] reaskOver = { "GotoWander", "Wait_Wander", "Wait_MaintainPosture", "Wait" };
+                string[] leftAlone = { "Flee", "FleeAndCower", "RM_Burrow", "Goto", "AttackMelee", "", "rm_shadedash", "Ingest " };
+                foreach (string j in diveOver) Check(RM_FireEcoKernel.BurrowerNudgeKind(j) == RM_FireEcoKernel.NudgeDiveOutright, "BurrowerNudgeKind dives over " + j);
+                foreach (string j in reaskOver) Check(RM_FireEcoKernel.BurrowerNudgeKind(j) == RM_FireEcoKernel.NudgeReask, "BurrowerNudgeKind re-asks over " + j);
+                foreach (string j in leftAlone) Check(RM_FireEcoKernel.BurrowerNudgeKind(j) == RM_FireEcoKernel.NudgeNone, "BurrowerNudgeKind leaves '" + j + "' alone");
+                Check(RM_FireEcoKernel.BurrowerNudgeKind(null) == RM_FireEcoKernel.NudgeNone, "BurrowerNudgeKind: null job name");
                 for (int m = 0; m < 32; m++)
                 {
                     bool en = (m & 1) != 0, hasB = (m & 2) != 0, nat = (m & 4) != 0, every = (m & 8) != 0, listed = (m & 16) != 0;

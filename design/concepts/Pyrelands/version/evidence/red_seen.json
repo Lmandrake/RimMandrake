@@ -26,6 +26,19 @@
   "rc": 1,
   "test_blob": "58fcb05e761cb4ec6ce26d118950c7cc784b950e"
  },
+ "T_FUZZ": {
+  "at": "2026-11-21T13:17:18Z",
+  "command": "python3 src/RimMandrake/Utils/selftest_pyrelands_fuzz.py",
+  "file": "src/RimMandrake/Utils/selftest_pyrelands_fuzz.py",
+  "last": "pyrelands fuzz: 8396 cases, 1079207098 steps, 10.30s total -> FAILED",
+  "patch": "--- a/src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs\n+++ b/src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs\n@@ -358,7 +358,7 @@\n             {\n                 case \"Ingest\":\n                 case \"LayDown\":\n-                case \"RM_ShadeDash\":\n+                case \"RM_ShadeDash_PLANTED\":\n                 case \"RM_DrinkFromTerrain\":\n                     return true;\n                 default:\n",
+  "patch_files": [
+   "src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs"
+  ],
+  "patch_sha": "d9873c97a8636678",
+  "rc": 1,
+  "test_blob": "4926cbe9f5fafdd649f4fe2bccfe8a5a069d5a61"
+ },
  "T_SETTINGS_SWEEP_OFFLINE": {
   "at": "2026-11-21T01:42:41Z",
   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_settings_sweep.py",

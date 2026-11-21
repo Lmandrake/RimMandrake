@@ -398,8 +398,9 @@ namespace RimMandrake.Pyrelands
                 Job cur = pawn.CurJob;
                 bool diving = cur != null && cur.def == PyrelandsMechanicsDefOf.RM_Burrow;
                 bool idle = cur == null || IsIdleJob(cur.def);
-                // Grazing or asleep, the think tree hands the meal or the bed straight back, so the dive is started outright.
-                // At the 6-cell dive radius (RM_Ashwallow, 2026-11-07; was 15) a grazer left to finish its meal is caught.
+                // Grazing, asleep, drinking or mid shade dash, the pawn finishes a move or a meal before its tree is asked, so the
+                // dive is started outright. At the 6-cell dive radius (RM_Ashwallow, 2026-11-07; was 15) a grazer left to finish
+                // its meal is caught, and a dash or a walk to water carries it out of range (visit 2: RM_ShadeDash, no dive).
                 bool yields = !idle && cur != null && !pawn.Downed && YieldsToFire(cur.def);
                 // Cheap gates first: WouldDive scans the map's fires, so it runs only for an idling or yielding, non-diving burrower.
                 if (diving || !(idle || yields))
@@ -424,17 +425,16 @@ namespace RimMandrake.Pyrelands
             }
         }
 
-        /// <summary>Grazing and sleep: jobs a burrower drops for a fire within its dive radius.</summary>
+        /// <summary>The jobs a burrower drops outright for a fire within its dive radius (RM_FireEcoKernel.BurrowerDivesOver).</summary>
         private static bool YieldsToFire(JobDef def)
         {
-            return def == JobDefOf.Ingest || def == JobDefOf.LayDown;
+            return RM_FireEcoKernel.BurrowerNudgeKind(def.defName) == RM_FireEcoKernel.NudgeDiveOutright;
         }
 
-        /// <summary>The jobs a grazer idles in between think passes: the ones the cold-burn samples sat in before diving.</summary>
+        /// <summary>The jobs a grazer idles in between think passes: its tree is re-asked (RM_FireEcoKernel.BurrowerReasksOver).</summary>
         private static bool IsIdleJob(JobDef def)
         {
-            return def == JobDefOf.GotoWander || def == JobDefOf.Wait_Wander || def == JobDefOf.Wait_MaintainPosture
-                || def == JobDefOf.Wait;
+            return RM_FireEcoKernel.BurrowerNudgeKind(def.defName) == RM_FireEcoKernel.NudgeReask;
         }
 
         // Owner 2026-11-07: a waterless Pyrelands map is allowed ("you would walk away to another map as your first option"), but

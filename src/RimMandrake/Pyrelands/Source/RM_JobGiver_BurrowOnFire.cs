@@ -12,10 +12,10 @@ namespace RimMandrake.Pyrelands
     ///
     /// Hooks the biome's EXISTING fire-tracking rather than re-deriving it:
     /// MapComponent_BurnLine already re-measures every free-standing Fire on
-    /// the map each watch interval (PyrelandsFireFront.cs's clock feeds it),
-    /// and AnyBurn is a free early-out for the ~every-other-biome case — only
-    /// a map that is ACTUALLY burning pays for the per-pawn distance scan
-    /// below.
+    /// the map each watch interval (PyrelandsFireFront.cs's clock feeds it).
+    /// The dive gate's early-out is the live fire list (an empty list costs
+    /// nothing), not the burn line's interval-measured AnyBurn: only a map
+    /// that is ACTUALLY burning pays for the per-pawn distance scan below.
     ///
     /// Same insertion shape as CreatureBehaviors' RM_JobGiver_FollowShadowCaster
     /// (built for DESERT_GLITTER_BIRDS_COMMENSALS_1, checked before writing
@@ -65,8 +65,18 @@ namespace RimMandrake.Pyrelands
                 return false;
             }
 
+            // The live fire list, never MapComponent_BurnLine.AnyBurn: that flag is measured every BurnWatchIntervalTicks, so on
+            // a map's first fire the first think pass saw no burn, took a shade hop, and the ashwallow was out of its radius
+            // before the flag turned on (RIMMANDRAKE_FIX_PYRE_ASHWALLOW_SHADE_DASH_BEATS_FIRE_DIVE). An empty list is as cheap.
+            if (map.listerThings.ThingsOfDef(ThingDefOf.Fire).Count == 0)
+            {
+                return false;
+            }
+
+            // A Pyrelands mechanic, so only on a Pyrelands map (the old AnyBurn gate also scoped it: the burn line never measures
+            // another biome's map, so a tamed ashwallow in a colony elsewhere never dived, and must not now).
             MapComponent_BurnLine burnLine = MapComponent_BurnLine.For(map);
-            if (burnLine == null || !burnLine.AnyBurn)
+            if (burnLine == null || !burnLine.IsPyrelandsMap)
             {
                 return false;
             }

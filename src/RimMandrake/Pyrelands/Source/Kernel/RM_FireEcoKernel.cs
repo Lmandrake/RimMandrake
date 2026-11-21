@@ -333,6 +333,54 @@ namespace RimMandrake.Pyrelands
             return radialCellCount > 0 && fireCount > radialCellCount;
         }
 
+        public const int NudgeNone = 0;
+        public const int NudgeReask = 1;
+        public const int NudgeDiveOutright = 2;
+
+        /// <summary>What the burn line's dive nudge does to a would-dive burrower in this job: NudgeReask (an idle job: its think
+        /// tree is asked again, so a higher node keeps its priority), NudgeDiveOutright (a job the pawn would finish first while
+        /// the fire closes or it walks out of range: grazing, sleep, a drink, a shade dash), or NudgeNone (any other job, e.g. a
+        /// flee, which RM_BurrowHeatReaction answers). RIMMANDRAKE_FIX_PYRE_ASHWALLOW_SHADE_DASH_BEATS_FIRE_DIVE added the shade
+        /// dash and the drink: a burrower mid RM_ShadeDash finished its dash out of its 6-cell radius and never dived.</summary>
+        public static int BurrowerNudgeKind(string jobDefName)
+        {
+            if (BurrowerDivesOver(jobDefName))
+            {
+                return NudgeDiveOutright;
+            }
+            return BurrowerReasksOver(jobDefName) ? NudgeReask : NudgeNone;
+        }
+
+        /// <summary>Jobs the dive starts over outright (defNames: vanilla, CreatureBehaviors' RM_ShadeDash, FlowWorks' drink).</summary>
+        public static bool BurrowerDivesOver(string jobDefName)
+        {
+            switch (jobDefName)
+            {
+                case "Ingest":
+                case "LayDown":
+                case "RM_ShadeDash":
+                case "RM_DrinkFromTerrain":
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        /// <summary>The jobs a grazer idles in between think passes (vanilla defNames).</summary>
+        public static bool BurrowerReasksOver(string jobDefName)
+        {
+            switch (jobDefName)
+            {
+                case "GotoWander":
+                case "Wait_Wander":
+                case "Wait_MaintainPosture":
+                case "Wait":
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
         /// <summary>PYRE_BURROWERS_DIAGNOSE_FLEE_BEFORE_DIVE: the burn-line's dive nudge. The burrow giver sits at Animal_PreWander and
         /// is only asked at a job boundary, so on a cold first burn a grazer mid-GotoWander dived 120-380 ticks late (once never).
         /// While anything burns, a burrower whose own giver WOULD dive now, idling in a wander/wait job, not already burrowed, and
