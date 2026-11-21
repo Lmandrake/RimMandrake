@@ -389,10 +389,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 315.16,
+    "seconds": 311.15,
     "last": "4606/4606 checks passed",
-    "at": "2026-11-20T18:07:09-08:00",
-    "result": "PASS"
+    "at": "2026-11-21T02:40:44Z",
+    "result": "PASS",
+    "build": "a7c0115f61c18a91bed8",
+    "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py",
+    "margins": []
    }
   },
   "T_STUB_JOINS": {
@@ -410,10 +413,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 21.05,
+    "seconds": 20.42,
     "last": "9/9 checks passed (stub joins only)",
-    "at": "2026-11-20T18:07:09-08:00",
-    "result": "PASS"
+    "at": "2026-11-21T02:41:05Z",
+    "result": "PASS",
+    "build": "007e5bbde75c8f81bd18",
+    "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --no-export --joins-only",
+    "margins": []
    }
   },
   "T_STUB_ART_CENSUS": {
@@ -430,10 +436,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.46,
+    "seconds": 0.28,
     "last": "PASS",
-    "at": "2026-11-20T18:07:09-08:00",
-    "result": "PASS"
+    "at": "2026-11-21T02:41:05Z",
+    "result": "PASS",
+    "build": "c618649769b72815266f",
+    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_stub_art_census.py",
+    "margins": []
    }
   },
   "T_GATE": {
@@ -451,10 +460,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 343.08,
-    "last": "O4_python_oracle             PASS      44/44 checks passed",
-    "at": "2026-11-20T18:07:09-08:00",
-    "result": "PASS"
+    "seconds": 348.44,
+    "last": "GATE_JSON {\"red\": [], \"steps\": {\"validation_offline\": {\"rows\": 9, \"not_pass\": [], \"statuses\": {\"O8_lamp_mast_vanilla_register\": \"PASS\", \"O7_gpt_read_fixes\": \"PASS\", \"O1_mod_files\": \"PASS\", \"O2_settings_defaults\": \"PASS\", \"O5_style_art_sane\": \"PASS\", \"O6_review_round1\": \"PASS\", \"O3_core_selftest\": \"PASS\", \"O3n_selftest_can_fail\": \"PASS\", \"O4_python_oracle\": \"PASS\"}, \"wall_s\": 315.7}, \"matrix_selftest\": {\"exit\": 0, \"fail\": [], \"summary\": [\"63/63 checks passed (19 negative controls among them)\"], \"wall_s\": 8.4}, \"human_review_plan\": {\"exit\": 0, \"tail\": [\"layout ok: 31 stations (1-11 style gallery) + art board M + free area; key sheet -> /home/mandrake/rm/relentless/clones/RIMMANDRAKE_RERUN_GIMMESOMESLACK_CERTIFICATE.det/Transient/mc_human_review\"], \"wall_s\": 0.1}, \"selftest_human_review\": {\"exit\": 0, \"tail\": [\"41/41 checks passed\"], \"wall_s\": 0.1}, \"selftest_proof_all\": {\"exit\": 0, \"tail\": [\"ALL PASS\"], \"wall_s\": 23.1}, \"selftest_gss_stub_art_census\": {\"exit\": 0, \"tail\": [\"PASS\"], \"wall_s\": 0.3}, \"selftest_gss_statics_census\": {\"exit\": 0, \"tail\": [\"PASS\"], \"wall_s\": 0.1}, \"design_spec\": {\"exit\": 0, \"tail\": [\"wrote /mnt/d/ClaudeWork/rimmandrake/scratch/gss_proof/scenes_design.json\"], \"wall_s\": 0.4}}, \"spec_posix\": \"/mnt/d/ClaudeWork/rimmandrake/scratch/gss_proof/scenes_design.json\", \"spec_win\": \"D:\\\\ClaudeWork\\\\rimmandrake\\\\scratch\\\\gss_proof\\\\scenes_design.json\"}",
+    "at": "2026-11-21T02:46:53Z",
+    "result": "PASS",
+    "build": "2b16d6c289c5fd24c252",
+    "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py --offline-gate",
+    "margins": []
    }
   },
   "T_MATRIX": {
@@ -480,10 +492,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 7.56,
+    "seconds": 7.68,
     "last": "63/63 checks passed (19 negative controls among them)",
-    "at": "2026-11-20T18:07:09-08:00",
-    "result": "PASS"
+    "at": "2026-11-21T02:47:01Z",
+    "result": "PASS",
+    "build": "ea8db5ffee7a1846626d",
+    "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar_matrix/selftest.py",
+    "margins": []
    }
   },
   "T_NO_HOSE": {
@@ -501,10 +516,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.4,
+    "seconds": 2.44,
     "last": "PASS  G0_clean_copy  want=green got=[]",
-    "at": "2026-11-20T18:07:09-08:00",
-    "result": "PASS"
+    "at": "2026-11-21T02:47:04Z",
+    "result": "PASS",
+    "build": "d726e4fd3526496612d3",
+    "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_no_hose.py",
+    "margins": []
    }
   },
   "T_SHOCK_OUTLIVES": {
@@ -550,10 +568,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.07,
+    "seconds": 0.12,
     "last": "ALL PASS",
-    "at": "2026-11-20T18:07:09-08:00",
-    "result": "PASS"
+    "at": "2026-11-21T02:47:04Z",
+    "result": "PASS",
+    "build": "2d732c722fea9d013ba4",
+    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_shock_outlives_wire.py",
+    "margins": []
    }
   },
   "T_SHOCK_OUTLIVES_BINDING": {
@@ -599,10 +620,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 7.66,
+    "seconds": 7.8,
     "last": "ALL PASS",
-    "at": "2026-11-20T18:07:09-08:00",
-    "result": "PASS"
+    "at": "2026-11-21T02:47:11Z",
+    "result": "PASS",
+    "build": "29dd8bc5d4e73d51e00f",
+    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_shock_outlives_wire_binding.py",
+    "margins": []
    }
   },
   "T_SHOCK_BITES_BINDING": {
@@ -648,10 +672,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.39,
+    "seconds": 0.42,
     "last": "ALL PASS",
-    "at": "2026-11-20T18:07:09-08:00",
-    "result": "PASS"
+    "at": "2026-11-21T02:47:12Z",
+    "result": "PASS",
+    "build": "21bfb4128a8811c09de1",
+    "command": "python3 src/RimMandrake/Utils/selftest_gss_shock_still_bites_binding.py",
+    "margins": []
    }
   },
   "T_END_HEAP": {
@@ -694,8 +721,11 @@
     "rc": 0,
     "seconds": 0.01,
     "last": "gss end-heap budget: ok",
-    "at": "2026-11-20T18:07:09-08:00",
-    "result": "PASS"
+    "at": "2026-11-21T02:47:12Z",
+    "result": "PASS",
+    "build": "c3a378a4cc43a3d15cd1",
+    "command": "python3 src/RimMandrake/Utils/selftest_gss_end_heap_budget.py",
+    "margins": []
    }
   },
   "T_JUNCTION_ART": {
@@ -840,8 +870,11 @@
     "rc": 0,
     "seconds": 0.13,
     "last": "12/12 junction PNGs pass",
-    "at": "2026-11-20T18:07:09-08:00",
-    "result": "PASS"
+    "at": "2026-11-21T02:47:12Z",
+    "result": "PASS",
+    "build": "422a5b2b288f86f35293",
+    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_junction_necks.py",
+    "margins": []
    }
   },
   "T_STRIP_ART": {
@@ -858,10 +891,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.04,
+    "seconds": 0.05,
     "last": "PASS",
-    "at": "2026-11-20T18:07:09-08:00",
-    "result": "PASS"
+    "at": "2026-11-21T02:47:12Z",
+    "result": "PASS",
+    "build": "652afb30042fdfc3686e",
+    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_strip_art.py",
+    "margins": []
    }
   },
   "T_FW_PIT_DRAW_CENSUS": {
@@ -879,10 +915,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.2,
-    "last": "  bright = max((max(p[:3]) for p in im.getdata() if p[3] > 10), default=0)",
-    "at": "2026-11-20T18:07:09-08:00",
-    "result": "PASS"
+    "seconds": 0.71,
+    "last": "PASS",
+    "at": "2026-11-21T02:47:13Z",
+    "result": "PASS",
+    "build": "f112aa121a2e97896b13",
+    "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_pit_draw_census.py",
+    "margins": []
    }
   },
   "T_PROOF_LEAVES": {
@@ -901,8 +940,11 @@
     "rc": 0,
     "seconds": 0.08,
     "last": "GREEN: every row cites a leaf, every leaf has a row or a live item owing it (0 owed)",
-    "at": "2026-11-20T18:07:09-08:00",
-    "result": "PASS"
+    "at": "2026-11-21T02:47:13Z",
+    "result": "PASS",
+    "build": "dcf713114573e9fdb341",
+    "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_proof_leaves.py",
+    "margins": []
    }
   },
   "T_H_RESTRING_PROOF": {
@@ -919,10 +961,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.15,
-    "last": "OK",
-    "at": "2026-11-20T18:07:09-08:00",
-    "result": "PASS"
+    "seconds": 0.18,
+    "last": "{\"fault\": null, \"row\": {\"id\": \"M15f_restring_joined_run_one_look\", \"status\": \"PASS\", \"class\": \"MOD\", \"detail\": {\"schema\": 1, \"jobDef\": \"RM_RestringSpan\", \"readings\": [{\"cmd\": \"colonists\", \"reply\": {\"success\": true, \"cmd\": \"colonists\", \"pawns\": [{\"id\": 7, \"pos\": [80, 180], \"drafted\": true, \"downed\": false, \"job\": null}]}}, {\"cmd\": \"cstyles\", \"reply\": {\"success\": true, \"cmd\": \"cstyles\", \"defaultKey\": \"Scrapper\", \"members\": [{\"id\": 2, \"x\": 104, \"z\": 185, \"look\": \"Scrapper\", \"rawStyle\": \"Style_Scrapper\", \"colour\": null, \"run\": 2}, {\"id\": 3, \"x\": 116, \"z\": 185, \"look\": \"Scrapper\", \"rawStyle\": \"Style_Scrapper\", \"colour\": null, \"run\": 3}]}}, {\"cmd\": \"cut:2,3\", \"reply\": {\"success\": true, \"cmd\": \"cut:2,3\", \"done\": true}}, {\"cmd\": \"cprocess\", \"reply\": {\"success\": true, \"cmd\": \"cprocess\"}}, {\"cmd\": \"census\", \"reply\": {\"success\": true, \"cmd\": \"census\", \"anchors\": [{\"id\": 2, \"x\": 104, \"z\": 185, \"net\": 11, \"links\": [{\"other\": 3, \"state\": \"Cut\"}]}, {\"id\": 3, \"x\": 116, \"z\": 185, \"net\": 22, \"links\": [{\"other\": 2, \"state\": \"Cut\"}]}]}}, {\"cmd\": \"crestyle:104,185:Modern_Orange\", \"reply\": {\"success\": true, \"cmd\": \"crestyle:104,185:Modern_Orange\"}}, {\"cmd\": \"crestyle:116,185:Industrial\", \"reply\": {\"success\": true, \"cmd\": \"crestyle:116,185:Industrial\"}}, {\"cmd\": \"cstyles\", \"reply\": {\"success\": true, \"cmd\": \"cstyles\", \"defaultKey\": \"Scrapper\", \"members\": [{\"id\": 2, \"x\": 104, \"z\": 185, \"look\": \"Modern\", \"rawStyle\": \"Style_Modern\", \"colour\": null, \"run\": 2}, {\"id\": 3, \"x\": 116, \"z\": 185, \"look\": \"Industrial\", \"rawStyle\": \"Style_Industrial\", \"colour\": null, \"run\": 3}]}}, {\"cmd\": \"restringorder:2\", \"reply\": {\"success\": true, \"cmd\": \"restringorder:2\", \"cut\": 1, \"designated\": true, \"jobsDone\": 0, \"spansRestrung\": 0}}, {\"cmd\": \"pawn:7=undraft\", \"reply\": {\"success\": true, \"cmd\": \"pawn:7=undraft\", \"pawn\": {\"id\": 7, \"pos\": [80, 180], \"drafted\": false, \"downed\": false, \"job\": null}}}, {\"cmd\": \"restringjob:2\", \"reply\": {\"success\": true, \"cmd\": \"restringjob:2\", \"cut\": 1, \"designated\": true, \"jobsDone\": 0, \"spansRestrung\": 0, \"by\": \"Human7\"}}, {\"cmd\": \"colonists\", \"reply\": {\"success\": true, \"cmd\": \"colonists\", \"pawns\": [{\"id\": 7, \"pos\": [80, 180], \"drafted\": false, \"downed\": false, \"job\": \"RM_RestringSpan\"}]}}, {\"cmd\": \"restringstate:2\", \"reply\": {\"success\": true, \"cmd\": \"restringstate:2\", \"cut\": 0, \"designated\": false, \"jobsDone\": 1, \"spansRestrung\": 1}}, {\"cmd\": \"cprocess\", \"reply\": {\"success\": true, \"cmd\": \"cprocess\"}}, {\"cmd\": \"census\", \"reply\": {\"success\": true, \"cmd\": \"census\", \"anchors\": [{\"id\": 2, \"x\": 104, \"z\": 185, \"net\": 11, \"links\": [{\"other\": 3, \"state\": \"Up\"}]}, {\"id\": 3, \"x\": 116, \"z\": 185, \"net\": 11, \"links\": [{\"other\": 2, \"state\": \"Up\"}]}]}}, {\"cmd\": \"cstyles\", \"reply\": {\"success\": true, \"cmd\": \"cstyles\", \"defaultKey\": \"Scrapper\", \"members\": [{\"id\": 2, \"x\": 104, \"z\": 185, \"look\": \"Industrial\", \"rawStyle\": \"Style_Industrial\", \"colour\": null, \"run\": 2}, {\"id\": 3, \"x\": 116, \"z\": 185, \"look\": \"Industrial\", \"rawStyle\": \"Style_Industrial\", \"colour\": null, \"run\": 2}]}}, {\"cmd\": \"crestyle:104,185:Scrapper\", \"reply\": {\"success\": true, \"cmd\": \"crestyle:104,185:Scrapper\"}}, {\"cmd\": \"crestyle:116,185:Scrapper\", \"reply\": {\"success\": true, \"cmd\": \"crestyle:116,185:Scrapper\"}}, {\"cmd\": \"cprocess\", \"reply\": {\"success\": true, \"cmd\": \"cprocess\"}}], \"cleanup\": [{\"colonists\": [{\"success\": true, \"cmd\": \"pawn:7=draft\", \"pawn\": {\"id\": 7, \"pos\": [110, 185], \"drafted\": true, \"downed\": false, \"job\": null}}, {\"success\": true, \"cmd\": \"pawn:7=tp:80,180\", \"pawn\": {\"id\": 7, \"pos\": [80, 180], \"drafted\": true, \"downed\": false, \"job\": null}}, {\"success\": true, \"cmd\": \"colonists\", \"pawns\": [{\"id\": 7, \"pos\": [80, 180], \"drafted\": true, \"downed\": false, \"job\": null}]}]}], \"parkBeforeCut\": [{\"success\": true, \"cmd\": \"pawn:7=draft\", \"pawn\": {\"id\": 7, \"pos\": [80, 180], \"drafted\": true, \"downed\": false, \"job\": null}}, {\"success\": true, \"cmd\": \"pawn:7=tp:80,180\", \"pawn\": {\"id\": 7, \"pos\": [80, 180], \"drafted\": true, \"downed\": false, \"job\": null}}, {\"success\": true, \"cmd\": \"colonists\", \"pawns\": [{\"id\": 7, \"pos\": [80, 180], \"drafted\": true, \"downed\": false, \"job\": null}]}], \"splitNets\": [11, 22], \"before\": [[\"Modern\", null, \"Style_Modern\"], [\"Industrial\", null, \"Style_Industrial\"]], \"splitRuns\": [2, 3], \"order\": {\"success\": true, \"cmd\": \"restringorder:2\", \"cut\": 1, \"designated\": true, \"jobsDone\": 0, \"spansRestrung\": 0}, \"job\": {\"success\": true, \"cmd\": \"restringjob:2\", \"cut\": 1, \"designated\": true, \"jobsDone\": 0, \"spansRestrung\": 0, \"by\": \"Human7\"}, \"worker\": {\"success\": true, \"pawns\": [{\"thingId\": \"Human7\", \"thingIdNumber\": 7}]}, \"completion\": {\"success\": true, \"cmd\": \"restringstate:2\", \"cut\": 0, \"designated\": false, \"jobsDone\": 1, \"spansRestrung\": 1}, \"joinedNets\": [11, 11], \"after\": [[\"Industrial\", null, \"Style_Industrial\"], [\"Industrial\", null, \"Style_Industrial\"]], \"joinedRuns\": [2, 2]}}, \"calls\": [\"colonists\", \"pawn:7=draft\", \"pawn:7=tp:80,180\", \"colonists\", \"cstyles\", \"cut:2,3\", [\"ticks\", 2], \"cprocess\", \"census\", \"crestyle:104,185:Modern_Orange\", \"crestyle:116,185:Industrial\", \"cstyles\", \"restringorder:2\", \"pawn:7=undraft\", \"restringjob:2\", [\"jawa/pawn_get\", {\"pawn\": \"Human7\"}], \"colonists\", [\"ticks\", 250], \"restringstate:2\", [\"ticks\", 3], \"cprocess\", \"census\", \"cstyles\", \"pawn:7=draft\", \"pawn:7=tp:80,180\", \"colonists\", \"crestyle:104,185:Scrapper\", \"crestyle:116,185:Scrapper\", \"cprocess\"]}",
+    "at": "2026-11-21T02:47:13Z",
+    "result": "PASS",
+    "build": "cf30cff164913cc6c4e3",
+    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_restring_proof.py",
+    "margins": []
    }
   },
   "T_H_KINETIC_SWAY": {
@@ -939,10 +984,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.39,
-    "last": "OK",
-    "at": "2026-11-20T18:07:09-08:00",
-    "result": "PASS"
+    "seconds": 0.44,
+    "last": "M22b_kinetic_sway_off_does_nothing FAIL      {'schema': 1, 'setting': 'kineticSway', 'enabled': False, 'damageSelector': 'RM_Repulse_Palm', 'damageDef': 'RM_Repulse_Palm', 'readings': [{'cmd': 'set:kineticSway=False', 'reply': {'success': True, 'cmd': 'set:kineticSway=False', '_probeSerial': 5, 'value': 'False'}}, {'cmd': 'census', 'reply': {'success': True, 'cmd': 'census', '_probeSerial': 6, 'kineticSways': 8, 'explosionCuts': 4, 'settings': {'kineticSway': 'False', 'dripLoops': 'True', 'cutWiresOnOwnerChange': 'True', 'keepWiresOnGravship': 'True'}, 'anchors': [{'id': 4, 'x': 92, 'z': 135, 'net': 11, 'links': [{'other': 5, 'state': 'Up', 'hp': 30.0}]}, {'id': 5, 'x': 104, 'z': 135, 'net': 11, 'links': [{'other': 4, 'state': 'Up', 'hp': 30.0}]}]}}, {'cmd': 'explode:98,135,2.5,50,RM_Repulse_Palm', 'reply': {'success': True, 'cmd': 'explode:98,135,2.5,50,RM_Repulse_Palm', '_probeSerial': 7, 'cuts': 0, 'sways': 0, 'damageDef': 'RM_Repulse_Palm', 'synthetic': False, 'kinetic': True, 'harmsHealth': True, 'spansReached': 1}}, {'cmd': 'census', 'reply': {'success': True, 'cmd': 'census', '_probeSerial': 8, 'kineticSways': 9, 'explosionCuts': 4, 'settings': {'kineticSway': 'False', 'dripLoops': 'True', 'cutWiresOnOwnerChange': 'True', 'keepWiresOnGravship': 'True'}, 'anchors': [{'id': 4, 'x': 92, 'z': 135, 'net': 11, 'links': [{'other': 5, 'state': 'Up', 'hp': 30.0}]}, {'id': 5, 'x': 104, 'z': 135, 'net': 11, 'links': [{'other': 4, 'state': 'Up', 'hp': 30.0}]}]}}], 'anchors': [4, 5], 'censusSwayDelta': 1, 'censusCutDelta': 0, 'spanStillUp': True, 'synthetic': False, 'kinetic': True, 'harmsHealth': True, 'spansReached': 1, 'settingBefore': 'False', 'settingAfter': 'False', 'hpBefore': [30.0, 30.0], 'hpAfter': [30.0, 30.0], 'error': 'ValueError: wrong kineticSways delta'}",
+    "at": "2026-11-21T02:47:14Z",
+    "result": "PASS",
+    "build": "176063f4698c6b04a97b",
+    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_kinetic_sway.py",
+    "margins": []
    }
   },
   "T_H_AERIAL_PROBE_BATCH": {
@@ -959,10 +1007,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.62,
+    "seconds": 0.68,
     "last": "PASS: 0 failed",
-    "at": "2026-11-20T18:07:09-08:00",
-    "result": "PASS"
+    "at": "2026-11-21T02:47:14Z",
+    "result": "PASS",
+    "build": "63a6c9fbde3afe925f38",
+    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_aerial_probe_batch.py",
+    "margins": []
    }
   },
   "T_H_EXPLODE_PARSE": {
@@ -979,10 +1030,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.28,
+    "seconds": 2.41,
     "last": "failures=0",
-    "at": "2026-11-20T18:07:09-08:00",
-    "result": "PASS"
+    "at": "2026-11-21T02:47:17Z",
+    "result": "PASS",
+    "build": "46d5a4fab57770a5eb8c",
+    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_explode_parse.py",
+    "margins": []
    }
   },
   "T_H_NO_TWO_ALIKE_SHORT": {
@@ -1001,8 +1055,11 @@
     "rc": 0,
     "seconds": 0.02,
     "last": "GREEN: 5 cases",
-    "at": "2026-11-20T18:07:09-08:00",
-    "result": "PASS"
+    "at": "2026-11-21T02:47:17Z",
+    "result": "PASS",
+    "build": "2cf36faaca54b76e0284",
+    "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_no_two_alike_short.py",
+    "margins": []
    }
   },
   "T_H_PLAYTEST_RUNNER": {
@@ -1019,10 +1076,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.05,
+    "seconds": 0.06,
     "last": "43/43 passed",
-    "at": "2026-11-20T18:07:09-08:00",
-    "result": "PASS"
+    "at": "2026-11-21T02:47:17Z",
+    "result": "PASS",
+    "build": "45165f87aea126486805",
+    "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_playtest_runner.py",
+    "margins": []
    }
   },
   "T_H_PROOF_DRIVERS": {
@@ -1039,10 +1099,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.16,
+    "seconds": 0.2,
     "last": "gss proof drivers: all ok",
-    "at": "2026-11-20T18:07:09-08:00",
-    "result": "PASS"
+    "at": "2026-11-21T02:47:17Z",
+    "result": "PASS",
+    "build": "cf23db6f421fbd6e55ca",
+    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_proof_drivers.py",
+    "margins": []
    }
   },
   "T_H_REVIEW_LEFTOVERS": {
@@ -1059,10 +1122,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.24,
-    "last": "OK",
-    "at": "2026-11-20T18:07:09-08:00",
-    "result": "PASS"
+    "seconds": 0.34,
+    "last": "PT_A3_goodwill_day           UNMEASURED UNFINISHED: phase 'day' stopped before its row; rerun the same command with the same --out",
+    "at": "2026-11-21T02:47:17Z",
+    "result": "PASS",
+    "build": "21fd023550c5fd3e1eb0",
+    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_review_leftovers.py",
+    "margins": []
    }
   },
   "T_H_WEAKCLOSE_GUARDS": {
@@ -1081,8 +1147,11 @@
     "rc": 0,
     "seconds": 0.01,
     "last": "selftest_gss_weakclose_guards: PASS",
-    "at": "2026-11-20T18:07:09-08:00",
-    "result": "PASS"
+    "at": "2026-11-21T02:47:17Z",
+    "result": "PASS",
+    "build": "3ebfc1edd23065f1d7b5",
+    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_weakclose_guards.py",
+    "margins": []
    }
   },
   "T_H_HUMAN_REVIEW": {
@@ -1099,10 +1168,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.04,
+    "seconds": 0.06,
     "last": "41/41 checks passed",
-    "at": "2026-11-20T18:07:09-08:00",
-    "result": "PASS"
+    "at": "2026-11-21T02:47:17Z",
+    "result": "PASS",
+    "build": "17792a8c0a98e8c5fcf8",
+    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_human_review.py",
+    "margins": []
    }
   },
   "T_H_PROOF_ALL": {
@@ -1119,10 +1191,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 20.03,
+    "seconds": 19.47,
     "last": "ALL PASS",
-    "at": "2026-11-20T18:07:09-08:00",
-    "result": "PASS"
+    "at": "2026-11-21T02:47:37Z",
+    "result": "PASS",
+    "build": "2ce8f03b2ddfd22ebd1b",
+    "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/selftest_proof_all.py",
+    "margins": []
    }
   },
   "T_SETTINGS_SWEEP_OFFLINE": {
@@ -1157,10 +1232,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.5,
+    "seconds": 2.42,
     "last": "PASS",
-    "at": "2026-11-20T18:07:09-08:00",
-    "result": "PASS"
+    "at": "2026-11-21T02:47:39Z",
+    "result": "PASS",
+    "build": "28706f6f49ab842745c6",
+    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_settings_sweep.py",
+    "margins": []
    }
   },
   "T_SHOCK_RULE_OFFLINE": {
@@ -1209,11 +1287,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 315.16,
+    "seconds": 310.41,
     "last": "4606/4606 checks passed",
-    "at": "2026-11-20T18:07:09-08:00",
+    "at": "2026-11-21T02:52:50Z",
     "result": "PASS",
-    "via": "T_CORE"
+    "build": "ecde48213525696cd791",
+    "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py",
+    "margins": []
    }
   },
   "T_CORD_GEOMETRY_OFFLINE": {
@@ -1258,10 +1338,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 312.02,
+    "seconds": 315.72,
     "last": "4615/4615 checks passed",
-    "at": "2026-11-20T18:07:09-08:00",
-    "result": "PASS"
+    "at": "2026-11-21T02:58:05Z",
+    "result": "PASS",
+    "build": "c40b6ce52fda4c635330",
+    "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --geometry",
+    "margins": []
    }
   },
   "T_MAIN_THREAD_TEXTURES_OFFLINE": {
@@ -1403,10 +1486,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.2,
+    "seconds": 0.18,
     "last": "PASS",
-    "at": "2026-11-20T18:07:09-08:00",
-    "result": "PASS"
+    "at": "2026-11-21T02:58:06Z",
+    "result": "PASS",
+    "build": "d3aba357742a060d870d",
+    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_main_thread_textures.py",
+    "margins": []
    }
   },
   "T_STATICS_CENSUS": {
@@ -1549,10 +1635,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.12,
+    "seconds": 0.11,
     "last": "PASS",
-    "at": "2026-11-20T18:07:09-08:00",
-    "result": "PASS"
+    "at": "2026-11-21T02:58:06Z",
+    "result": "PASS",
+    "build": "a55bad1549c48063a6b5",
+    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_statics_census.py",
+    "margins": []
    }
   },
   "T_SWITCH_OFF_NODE_OFFLINE": {
@@ -1596,10 +1685,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 304.75,
+    "seconds": 308.26,
     "last": "4606/4606 checks passed",
-    "at": "2026-11-20T18:07:09-08:00",
-    "result": "PASS"
+    "at": "2026-11-21T03:03:14Z",
+    "result": "PASS",
+    "build": "ca7a1b9a3a9079e583c0",
+    "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py",
+    "margins": []
    }
   },
   "T_POLE_SOUTH_DRAWS_FRONT_OFFLINE": {
@@ -1631,10 +1723,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.58,
+    "seconds": 0.64,
     "last": "PASS",
-    "at": "2026-11-20T18:07:09-08:00",
-    "result": "PASS"
+    "at": "2026-11-21T03:03:15Z",
+    "result": "PASS",
+    "build": "1dda93014555a727a0d4",
+    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_pole_south_draws_front.py",
+    "margins": []
    }
   },
   "sc_conduit_invisible": {
@@ -6590,11 +6685,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.16,
+    "seconds": 0.28,
     "last": "PASS",
-    "at": "2026-11-20T12:40:49Z",
+    "at": "2026-11-21T03:03:15Z",
     "result": "PASS",
-    "build": "c17221a52174454cb6f2",
+    "build": "49fa40fb07cc1930ab81",
     "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_cords_under_items.py",
     "margins": []
    }
