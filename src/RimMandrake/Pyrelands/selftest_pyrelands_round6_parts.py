@@ -114,6 +114,20 @@ def pure_checks():
                     V.arrival_overlaps({"h1": [3, 9], "h2": [9]}) == [9]))
         out.append(("arrival_overlaps: apart is no overlap", V.arrival_overlaps({"h1": [3], "h2": [4]}) == []))
         out.append(("arrival_overlaps: no arrival at all reads None", V.arrival_overlaps({"h1": [], "h2": []}) is None))
+        # visit 2 (2026-11-21): the control muffalo died by game hour 5 on the 50 C site; a 72 h SUM of falls compared the
+        # ullai's three days with the muffalo's few hours. The rate per live hour is the measure.
+        live = [[0.80, 0.80], [0.745, 0.745], [None, None], [None, None]]          # muffalo: one live hour, then gone
+        slow = [[0.2697, 0.2698], [0.2685, 0.2686], [0.2673, 0.2674], [0.2662, 0.2663]]  # ullai: 0.0012 an hour
+        r = V.thirst_fall_rates({"Muffalo": live, "RM_Ullai": slow})
+        out.append(("thirst_fall_rates: a control that dies early is judged on its live hours",
+                    r["Muffalo"] is not None and r["RM_Ullai"] < V.R6_THIRST_RATIO * r["Muffalo"]))
+        r = V.thirst_fall_rates({"Muffalo": slow, "RM_Ullai": live})
+        out.append(("thirst_fall_rates: ullai falling as fast as the control is over the ratio",
+                    r["RM_Ullai"] > V.R6_THIRST_RATIO * r["Muffalo"]))
+        r = V.thirst_fall_rates({"Muffalo": [[None], [None]], "RM_Ullai": slow})
+        out.append(("thirst_fall_rates: a control with no live hour reads None", r["Muffalo"] is None))
+        r = V.thirst_fall_rates({"Muffalo": [[0.5, 0.4], [0.6, 0.3]], "RM_Ullai": slow})
+        out.append(("thirst_fall_rates: a drink (a rise) is not a fall", abs(r["Muffalo"] - 0.05) < 1e-9))
         ok, _ = V.giant_margin({"RM_FurnaceBeast": (9.0, 7.5), "RM_Ullai": (1.8, 3.0), "RM_Flamefang": (2.0, 2.5)})
         out.append(("giant_margin passes bs 9 over every kind", ok))
         bad, _ = V.giant_margin({"RM_FurnaceBeast": (9.0, 7.5), "RM_Ullai": (4.6, 3.0)})

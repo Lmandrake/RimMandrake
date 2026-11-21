@@ -1,0 +1,25 @@
+{
+ "map_comp_read MapComponent_PyrelandsHerdThirst": {
+  "success": true,
+  "message": "None"
+ },
+ "map_comp_read RimMandrake.Pyrelands.MapComponent_PyrelandsHerdThirst": {
+  "success": false,
+  "message": "No map component matches 'RimMandrake.Pyrelands.MapComponent_PyrelandsHerdThirst'."
+ },
+ "map_comp_read MapComponent_PyrelandsHerdThirstPLANTED": {
+  "success": false,
+  "message": "No map component matches 'MapComponent_PyrelandsHerdThirstPLANTED'."
+ },
+ "get_def RM_Ullai": {
+  "success": true,
+  "modExtensions": [
+   "RM_FollowBurnExtension",
+   "RM_ThirstGrassWateredExtension"
+  ]
+ },
+ "get_def Muffalo": {
+  "success": true,
+  "modExtensions": null
+ }
+}

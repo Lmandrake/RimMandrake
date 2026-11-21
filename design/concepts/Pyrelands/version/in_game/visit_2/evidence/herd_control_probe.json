@@ -1,0 +1,757 @@
+{
+ "hours": [
+  {
+   "hour": 1,
+   "Muffalo94685": {
+    "thirst": 0.745257556,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   },
+   "Muffalo94686": {
+    "thirst": 0.745207131,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   },
+   "RM_Ullai94687": {
+    "thirst": 0.269682169,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   },
+   "RM_Ullai94688": {
+    "thirst": 0.269762158,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   }
+  },
+  {
+   "hour": 2,
+   "Muffalo94685": {
+    "thirst": 0.6880478,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   },
+   "Muffalo94686": {
+    "thirst": 0.691369653,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   },
+   "RM_Ullai94687": {
+    "thirst": 0.268322349,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   },
+   "RM_Ullai94688": {
+    "thirst": 0.268402338,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   }
+  },
+  {
+   "hour": 3,
+   "Muffalo94685": {
+    "thirst": 0.6674945,
+    "dead": null,
+    "downed": null,
+    "listed": false,
+    "hediffs": []
+   },
+   "Muffalo94686": {
+    "thirst": 0.667392,
+    "dead": null,
+    "downed": null,
+    "listed": false,
+    "hediffs": []
+   },
+   "RM_Ullai94687": {
+    "thirst": 0.267042518,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   },
+   "RM_Ullai94688": {
+    "thirst": 0.267042518,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   }
+  },
+  {
+   "hour": 4,
+   "Muffalo94685": {
+    "thirst": null,
+    "dead": null,
+    "downed": null,
+    "listed": false,
+    "hediffs": []
+   },
+   "Muffalo94686": {
+    "thirst": null,
+    "dead": null,
+    "downed": null,
+    "listed": false,
+    "hediffs": []
+   },
+   "RM_Ullai94687": {
+    "thirst": 0.2656827,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   },
+   "RM_Ullai94688": {
+    "thirst": 0.2657627,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   }
+  },
+  {
+   "hour": 5,
+   "Muffalo94685": {
+    "thirst": null,
+    "dead": null,
+    "downed": null,
+    "listed": false,
+    "hediffs": []
+   },
+   "Muffalo94686": {
+    "thirst": null,
+    "dead": null,
+    "downed": null,
+    "listed": false,
+    "hediffs": []
+   },
+   "RM_Ullai94687": {
+    "thirst": 0.264322877,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   },
+   "RM_Ullai94688": {
+    "thirst": 0.264722824,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   }
+  },
+  {
+   "hour": 6,
+   "Muffalo94685": {
+    "thirst": null,
+    "dead": null,
+    "downed": null,
+    "listed": false,
+    "hediffs": []
+   },
+   "Muffalo94686": {
+    "thirst": null,
+    "dead": null,
+    "downed": null,
+    "listed": false,
+    "hediffs": []
+   },
+   "RM_Ullai94687": {
+    "thirst": 0.263043046,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   },
+   "RM_Ullai94688": {
+    "thirst": 0.263682961,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   }
+  },
+  {
+   "hour": 7,
+   "Muffalo94685": {
+    "thirst": null,
+    "dead": null,
+    "downed": null,
+    "listed": false,
+    "hediffs": []
+   },
+   "Muffalo94686": {
+    "thirst": null,
+    "dead": null,
+    "downed": null,
+    "listed": false,
+    "hediffs": []
+   },
+   "RM_Ullai94687": {
+    "thirst": 0.26172322,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   },
+   "RM_Ullai94688": {
+    "thirst": 0.262403131,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   }
+  },
+  {
+   "hour": 8,
+   "Muffalo94685": {
+    "thirst": null,
+    "dead": null,
+    "downed": null,
+    "listed": false,
+    "hediffs": []
+   },
+   "Muffalo94686": {
+    "thirst": null,
+    "dead": null,
+    "downed": null,
+    "listed": false,
+    "hediffs": []
+   },
+   "RM_Ullai94687": {
+    "thirst": 0.260563374,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   },
+   "RM_Ullai94688": {
+    "thirst": 0.261563241,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   }
+  },
+  {
+   "hour": 9,
+   "Muffalo94685": {
+    "thirst": null,
+    "dead": null,
+    "downed": null,
+    "listed": false,
+    "hediffs": []
+   },
+   "Muffalo94686": {
+    "thirst": null,
+    "dead": null,
+    "downed": null,
+    "listed": false,
+    "hediffs": []
+   },
+   "RM_Ullai94687": {
+    "thirst": 0.2596035,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   },
+   "RM_Ullai94688": {
+    "thirst": 0.260203421,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   }
+  },
+  {
+   "hour": 10,
+   "Muffalo94685": {
+    "thirst": null,
+    "dead": null,
+    "downed": null,
+    "listed": false,
+    "hediffs": []
+   },
+   "Muffalo94686": {
+    "thirst": null,
+    "dead": null,
+    "downed": null,
+    "listed": false,
+    "hediffs": []
+   },
+   "RM_Ullai94687": {
+    "thirst": 0.258683622,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   },
+   "RM_Ullai94688": {
+    "thirst": 0.259363532,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   }
+  },
+  {
+   "hour": 11,
+   "Muffalo94685": {
+    "thirst": null,
+    "dead": null,
+    "downed": null,
+    "listed": false,
+    "hediffs": []
+   },
+   "Muffalo94686": {
+    "thirst": null,
+    "dead": null,
+    "downed": null,
+    "listed": false,
+    "hediffs": []
+   },
+   "RM_Ullai94687": {
+    "thirst": 0.2573238,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   },
+   "RM_Ullai94688": {
+    "thirst": 0.2580037,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   }
+  },
+  {
+   "hour": 12,
+   "Muffalo94685": {
+    "thirst": null,
+    "dead": null,
+    "downed": null,
+    "listed": false,
+    "hediffs": []
+   },
+   "Muffalo94686": {
+    "thirst": null,
+    "dead": null,
+    "downed": null,
+    "listed": false,
+    "hediffs": []
+   },
+   "RM_Ullai94687": {
+    "thirst": 0.2566439,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   },
+   "RM_Ullai94688": {
+    "thirst": 0.257043839,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   }
+  },
+  {
+   "hour": 13,
+   "Muffalo94685": {
+    "thirst": null,
+    "dead": null,
+    "downed": null,
+    "listed": false,
+    "hediffs": []
+   },
+   "Muffalo94686": {
+    "thirst": null,
+    "dead": null,
+    "downed": null,
+    "listed": false,
+    "hediffs": []
+   },
+   "RM_Ullai94687": {
+    "thirst": 0.255963981,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   },
+   "RM_Ullai94688": {
+    "thirst": 0.256403923,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   }
+  },
+  {
+   "hour": 14,
+   "Muffalo94685": {
+    "thirst": null,
+    "dead": null,
+    "downed": null,
+    "listed": false,
+    "hediffs": []
+   },
+   "Muffalo94686": {
+    "thirst": null,
+    "dead": null,
+    "downed": null,
+    "listed": false,
+    "hediffs": []
+   },
+   "RM_Ullai94687": {
+    "thirst": 0.255284071,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   },
+   "RM_Ullai94688": {
+    "thirst": 0.255724,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   }
+  },
+  {
+   "hour": 15,
+   "Muffalo94685": {
+    "thirst": null,
+    "dead": null,
+    "downed": null,
+    "listed": false,
+    "hediffs": []
+   },
+   "Muffalo94686": {
+    "thirst": null,
+    "dead": null,
+    "downed": null,
+    "listed": false,
+    "hediffs": []
+   },
+   "RM_Ullai94687": {
+    "thirst": 0.2543242,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   },
+   "RM_Ullai94688": {
+    "thirst": 0.2549641,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   }
+  },
+  {
+   "hour": 16,
+   "Muffalo94685": {
+    "thirst": null,
+    "dead": null,
+    "downed": null,
+    "listed": false,
+    "hediffs": []
+   },
+   "Muffalo94686": {
+    "thirst": null,
+    "dead": null,
+    "downed": null,
+    "listed": false,
+    "hediffs": []
+   },
+   "RM_Ullai94687": {
+    "thirst": 0.252964377,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   },
+   "RM_Ullai94688": {
+    "thirst": 0.253684282,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   }
+  },
+  {
+   "hour": 17,
+   "Muffalo94685": {
+    "thirst": null,
+    "dead": null,
+    "downed": null,
+    "listed": false,
+    "hediffs": []
+   },
+   "Muffalo94686": {
+    "thirst": null,
+    "dead": null,
+    "downed": null,
+    "listed": false,
+    "hediffs": []
+   },
+   "RM_Ullai94687": {
+    "thirst": 0.251604557,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   },
+   "RM_Ullai94688": {
+    "thirst": 0.252324462,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   }
+  },
+  {
+   "hour": 18,
+   "Muffalo94685": {
+    "thirst": null,
+    "dead": null,
+    "downed": null,
+    "listed": false,
+    "hediffs": []
+   },
+   "Muffalo94686": {
+    "thirst": null,
+    "dead": null,
+    "downed": null,
+    "listed": false,
+    "hediffs": []
+   },
+   "RM_Ullai94687": {
+    "thirst": 0.250324726,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   },
+   "RM_Ullai94688": {
+    "thirst": 0.250964642,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   }
+  },
+  {
+   "hour": 19,
+   "Muffalo94685": {
+    "thirst": null,
+    "dead": null,
+    "downed": null,
+    "listed": false,
+    "hediffs": []
+   },
+   "Muffalo94686": {
+    "thirst": null,
+    "dead": null,
+    "downed": null,
+    "listed": false,
+    "hediffs": []
+   },
+   "RM_Ullai94687": {
+    "thirst": 0.248964712,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   },
+   "RM_Ullai94688": {
+    "thirst": 0.249684751,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   }
+  },
+  {
+   "hour": 20,
+   "Muffalo94685": {
+    "thirst": null,
+    "dead": null,
+    "downed": null,
+    "listed": false,
+    "hediffs": []
+   },
+   "Muffalo94686": {
+    "thirst": null,
+    "dead": null,
+    "downed": null,
+    "listed": false,
+    "hediffs": []
+   },
+   "RM_Ullai94687": {
+    "thirst": 0.247604638,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   },
+   "RM_Ullai94688": {
+    "thirst": 0.248324677,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   }
+  },
+  {
+   "hour": 21,
+   "Muffalo94685": {
+    "thirst": null,
+    "dead": null,
+    "downed": null,
+    "listed": false,
+    "hediffs": []
+   },
+   "Muffalo94686": {
+    "thirst": null,
+    "dead": null,
+    "downed": null,
+    "listed": false,
+    "hediffs": []
+   },
+   "RM_Ullai94687": {
+    "thirst": 0.246324569,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   },
+   "RM_Ullai94688": {
+    "thirst": 0.2469646,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   }
+  },
+  {
+   "hour": 22,
+   "Muffalo94685": {
+    "thirst": null,
+    "dead": null,
+    "downed": null,
+    "listed": false,
+    "hediffs": []
+   },
+   "Muffalo94686": {
+    "thirst": null,
+    "dead": null,
+    "downed": null,
+    "listed": false,
+    "hediffs": []
+   },
+   "RM_Ullai94687": {
+    "thirst": 0.24548462,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   },
+   "RM_Ullai94688": {
+    "thirst": 0.245804563,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   }
+  },
+  {
+   "hour": 23,
+   "Muffalo94685": {
+    "thirst": null,
+    "dead": null,
+    "downed": null,
+    "listed": false,
+    "hediffs": []
+   },
+   "Muffalo94686": {
+    "thirst": null,
+    "dead": null,
+    "downed": null,
+    "listed": false,
+    "hediffs": []
+   },
+   "RM_Ullai94687": {
+    "thirst": 0.244124547,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   },
+   "RM_Ullai94688": {
+    "thirst": 0.244684547,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   }
+  },
+  {
+   "hour": 24,
+   "Muffalo94685": {
+    "thirst": null,
+    "dead": null,
+    "downed": null,
+    "listed": false,
+    "hediffs": []
+   },
+   "Muffalo94686": {
+    "thirst": null,
+    "dead": null,
+    "downed": null,
+    "listed": false,
+    "hediffs": []
+   },
+   "RM_Ullai94687": {
+    "thirst": 0.243004516,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   },
+   "RM_Ullai94688": {
+    "thirst": 0.2438446,
+    "dead": false,
+    "downed": false,
+    "listed": true,
+    "hediffs": []
+   }
+  }
+ ],
+ "ids": {
+  "Muffalo94685": "Muffalo",
+  "Muffalo94686": "Muffalo",
+  "RM_Ullai94687": "RM_Ullai",
+  "RM_Ullai94688": "RM_Ullai"
+ },
+ "temp": {
+  "outdoorTempNow": 51.2470779
+ }
+}

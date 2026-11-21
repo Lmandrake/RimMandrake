@@ -4580,7 +4580,7 @@ R6_THIRST_RATIO = 1.0 / 3        # the ullai's fall at most a third of the muffa
 R6_DRINK_CELLS = 2
 R6_HERD_RADIUS = 10              # MapComponent_PyrelandsHerdThirst.HerdRadius
 R6_HERD_STAGGER_TICKS = 2600     # one CheckIntervalTicks (2500) and a little: spawned animals are staggered first
-R6_HERD_THIRST = "RimMandrake.Pyrelands.MapComponent_PyrelandsHerdThirst"
+R6_HERD_THIRST = "MapComponent_PyrelandsHerdThirst"   # jawa/map_comp_read matches a substring of the SHORT type name; a namespaced name never matches (visit 2)
 R6_ROSTER_MIN = 9                # inv_animal_roster's nine native kinds: fewer is a blind read
 R6_CENSUS_MUTATORS = ("jawa/set_plants", "jawa/spawn_pawn", "jawa/spawn_batch", "jawa/set_terrain",
                       "jawa/set_terrain_batch", "jawa/spawn_fill_area", "rimworld/spawn_thing")
@@ -5559,6 +5559,23 @@ def arrival_overlaps(arrivals):
     return sorted(h for h, n in seen.items() if n > 1)
 
 
+def thirst_fall_rates(series):
+    """Pure. {kind: [[level per pawn] per hour]} -> {kind: mean RM_Thirst fall per live pawn-hour, None with no live
+    pair}. A pair counts only when both readings exist (a dead or despawned pawn reads None); a rise (a drink) adds a
+    zero fall. Visit 2, 2026-11-21: the control muffalo died by game hour 5 on the 50 C site, so a 72 h SUM compared
+    the ullai's three days with the muffalo's few hours and failed a correct mod."""
+    out = {}
+    for kind, rows in series.items():
+        total, pairs = 0.0, 0
+        for prev, cur in zip(rows, rows[1:]):
+            for a, b in zip(prev, cur):
+                if a is not None and b is not None:
+                    total += max(0.0, a - b)
+                    pairs += 1
+        out[kind] = total / pairs if pairs else None
+    return out
+
+
 @suite.chain("herd_thirst")
 @_teardown(fire=True)
 def herd_thirst(t):
@@ -5573,7 +5590,10 @@ def herd_thirst(t):
         need = t.bridge_call("jawa/get_defs", defs="NeedDef/RM_Thirst", fields="label")
         on = _ten_gate_on(t)
         mc = t.bridge_call("jawa/map_comp_read", comp=R6_HERD_THIRST)
-        ext = _get_defs(t, "ThingDef/RM_Ullai;ThingDef/Muffalo", "modExtensions", deep=True)
+        # jawa/get_def lists modExtension TYPE names (extra.modExtensions); get_defs' deep field dump carries only the
+        # fields, so a class-name search in it never matched (visit 2, 2026-11-21: FAIL on a ullai that had it)
+        ext = dict((d, ((t.bridge_call("jawa/get_def", defName=d) or {}).get("extra") or {}).get("modExtensions") or [])
+                   for d in ("RM_Ullai", "Muffalo"))
         if _live(t):
             if (need or {}).get("notFound") or not (need or {}).get("defs"):
                 _unmeasured(t, "RM_Thirst does not resolve: FlowWorks is not on this list")
@@ -5581,9 +5601,9 @@ def herd_thirst(t):
                 _unmeasured(t, "PyrelandsMechanicsGate.get_On reads %r" % on)
             if not (mc or {}).get("success", False):
                 _fail("MapComponent_PyrelandsHerdThirst is not on the site: %r" % mc)
-            u, m = (json.dumps(ext.get(k) or {}, default=str) for k in ("RM_Ullai", "Muffalo"))
+            u, m = ext.get("RM_Ullai") or [], ext.get("Muffalo") or []
             if "RM_ThirstGrassWateredExtension" not in u or "RM_ThirstGrassWateredExtension" in m:
-                _fail("the extension is not on RM_Ullai alone: ullai %s / muffalo %s" % (u[:200], m[:200]))
+                _fail("the extension is not on RM_Ullai alone: ullai %r / muffalo %r" % (u, m))
         guard0 = _r6_guard(t)
         cells = _r6_terrain_cells(t, _whole(t))
         water = sorted(c for c, d in cells.items() if is_water_family(d))
@@ -5624,19 +5644,19 @@ def herd_thirst(t):
                         break
         guard1 = _r6_guard(t)
         if _live(t):
-            def fall(rows):
-                return sum(max(0.0, a - b) for prev, cur in zip(rows, rows[1:]) for a, b in zip(prev, cur)
-                           if a is not None and b is not None)
-            falls = dict((k, fall(v)) for k, v in series.items())
+            falls = thirst_fall_rates(series)   # per live pawn-hour: the control herd may die on the site
             overlap = arrival_overlaps(arrivals)
             _note(t, "herd thirst", {"herds": len(herds), "startLevels": start, "falls": falls,
                                      "arrivalHours": arrivals, "overlap": overlap, "dehydrated": sorted(dehydrated),
                                      "guard": [guard0, guard1]})
             if not falls["Muffalo"]:
-                _unmeasured(t, "the muffalo's RM_Thirst never fell: the test herd was never thirsty")
+                _unmeasured(t, "the muffalo's RM_Thirst never fell over a live hour (dead before the first read, or "
+                               "never thirsty): %r" % (falls,))
+            if falls["RM_Ullai"] is None:
+                _unmeasured(t, "no ullai lived through an hour of the watch")
             if falls["RM_Ullai"] > R6_THIRST_RATIO * falls["Muffalo"]:
-                _fail("the ullai's RM_Thirst fell %.3f, over a third of the muffalo's %.3f" % (falls["RM_Ullai"],
-                                                                                            falls["Muffalo"]))
+                _fail("the ullai's RM_Thirst fell %.5f an hour, over a third of the muffalo's %.5f" % (
+                    falls["RM_Ullai"], falls["Muffalo"]))
             levels = [round(sum(v) / len(v), 2) for v in start.values() if v and None not in v]
             if len(herds) > 1 and len(set(levels)) < 2:
                 _fail("the wild herds start at one shared RM_Thirst level: %r" % levels)

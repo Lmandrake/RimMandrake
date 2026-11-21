@@ -58,8 +58,11 @@ with RimBridge(h, p, tk) as rb:
     walls = [w for w in ex.get("things") or [] if "Wall" in str(w.get("def")) and w.get("paint") == "RM_FE_Charred"]
     ruin = None
     if walls:
-        xs = sorted(int(w.get("x", 0)) for w in walls); zs = sorted(int(w.get("z", 0)) for w in walls)
-        ruin = (xs[len(xs) // 2], zs[len(zs) // 2])
+        # the wall with the most charred walls within 8 cells: a per-axis median of scattered ruins lands on open
+        # ground or rock (the first save framed a rock outcrop this way)
+        pts = [(int(w.get("x", 0)), int(w.get("z", 0))) for w in walls]
+        ruin = max(pts, key=lambda a: sum(abs(a[0] - b[0]) <= 8 and abs(a[1] - b[1]) <= 8 for b in pts))
+        out["ruinCluster"] = sum(abs(ruin[0] - b[0]) <= 8 and abs(ruin[1] - b[1]) <= 8 for b in pts)
     stations = [(fx + 10, fz + 17, "VISIT2: LIVE burn front in fresh ember grass - unpause and watch it walk", (fx, fz, 20, 16)),
                 (cx_ + 10, cz_ + 17, "VISIT2: creatures - ullai herd, furnace-beast giant, ashwallows", (cx_, cz_, 20, 16)),
                 (sx + 10, sz + 12, "VISIT2: scorch-fruit standing in ash", (sx + 4, sz + 2, 12, 12)),
