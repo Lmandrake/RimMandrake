@@ -23,6 +23,11 @@ Most project skills are not registered, so none of these loads by itself: read e
 
 ## Read first: the rules that live outside CLAUDE.md
 `CLAUDE.md` keeps only a pointer for these rules. Read the home file before the work it names.
+- Any mechanic, or what a biome does with one: `GUIDING_PRINCIPLES.md` entry 1. Write each new mechanic as the
+  conditions it reads, never the place. For each biome, name whether it depends on it, showcases it or is its source
+  (the Conductor's instruction of 2026-11-21; the principle "a biome earns a mechanic" is not ruled).
+- What a mod's next version converts (a mechanic confined to its biome today): its section of
+  `design/specs/2026-11-21-guiding-principles/conversion_list.md`. The packet names it when it is owed.
 - A biome, a roster, a sea or a creature: `design/RimMandrake/biome_rulings.md`.
 - A creature, plant or roster name, its tier (`RM_` or the Utinni patch layer), or a canon claim:
   `design/RimMandrake/biome_rulings.md` §"Star Wars style" naming is NOT Star Wars IP.

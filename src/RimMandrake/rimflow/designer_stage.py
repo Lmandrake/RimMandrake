@@ -317,6 +317,102 @@ def elsewhere_section(repo, d, st, cap=40):
     return out
 
 
+# ---------------------------------------------------------------- the universal-mechanics conversion, owed at next version
+# Owner 2026-11-21 (GUIDING_PRINCIPLES.md entry 1; item RIMMANDRAKE_RULE_MECHANICS_ARE_UNIVERSAL_THE_BIOME_ONLY_SHOWCASES):
+# each existing mod converts its biome-confined mechanics when it next advances, as a planned change for its next
+# version; no current version's bars move. Page: design/specs/2026-11-21-guiding-principles/boundary.md.
+CONVERSION_LIST = "design/specs/2026-11-21-guiding-principles/conversion_list.md"
+CONVERSION_BASE = re.compile(r"^- Version on 2026-11-21: `([^`]+)`", re.M)
+
+
+def conversion_sections(text):
+    """-> {heading: body} for each `## ` section of the list (a heading inside a code fence is not one)."""
+    out, cur, buf, fenced = {}, None, [], False
+    for ln in text.split("\n"):
+        if ln.lstrip().startswith("```"):
+            fenced = not fenced
+        if not fenced and ln.startswith("## "):
+            if cur is not None:
+                out[cur] = "\n".join(buf)
+            cur, buf = ln[3:].strip(), []
+        elif cur is not None:
+            buf.append(ln)
+    if cur is not None:
+        out[cur] = "\n".join(buf)
+    return out
+
+
+def _semver3(v):
+    m = re.fullmatch(r"\s*(\d+)\.(\d+)\.(\d+)(?:[-+][0-9A-Za-z.+-]*)?\s*", str(v))
+    return tuple(int(x) for x in m.groups()) if m else None
+
+
+def conversion_base(body):
+    """-> (base, why): base is "none" or a (major, minor, patch) tuple; (None, cause) when no single readable line."""
+    found = CONVERSION_BASE.findall(body or "")
+    if len(found) != 1:
+        return None, "%d version line(s), not one" % len(found)
+    if found[0].strip() == "none":
+        return "none", None
+    b = _semver3(found[0])
+    return (b, None) if b else (None, "version line %r is not MAJOR.MINOR.PATCH" % found[0])
+
+
+def conversion_owed(repo, d, st):
+    """-> (state, why, section): state is owed | not_yet | none | unmeasured. owed: the concept's version is newer than
+    the mod's version on 2026-11-21 (or that was `none`); not_yet: it is the same version, whose bars do not move."""
+    path = os.path.join(repo, CONVERSION_LIST)
+    try:
+        with open(path, encoding="utf-8") as f:
+            text = f.read()
+    except FileNotFoundError:
+        return "unmeasured", "%s is absent" % CONVERSION_LIST, None
+    except (OSError, UnicodeDecodeError) as e:
+        return "unmeasured", "%s could not be read: %s" % (CONVERSION_LIST, e), None
+    st = st if isinstance(st, dict) else {}
+    names = [n for n in [st.get("mod") or (os.path.basename(os.path.abspath(d)) if d else None)]
+             + list(st.get("aliases") or []) if CT.txt(n)]
+    secs = conversion_sections(text)
+    head = next((n for n in names if n in secs), None)
+    if head is None:
+        return "none", "%s names no section for %s" % (CONVERSION_LIST, " or ".join(names) or "this mod"), None
+    body = secs[head]
+    base, why = conversion_base(body)
+    if base is None:
+        return "unmeasured", "%s §%s: %s" % (CONVERSION_LIST, head, why), None
+    vp = os.path.join(d, "version", "VERSION.json") if d else None
+    try:
+        v = read_json(vp) if vp else None
+    except Refused as e:
+        return "unmeasured", "VERSION.json does not parse: %s" % e, None
+    cur = _semver3((v or {}).get("version")) if v is not None else (0, 1, 0)
+    if cur is None:
+        return "unmeasured", "VERSION.json names no MAJOR.MINOR.PATCH version (%r)" % (v or {}).get("version"), None
+    label = "%s §%s (version on 2026-11-21: %s; this version: %s)" % (
+        CONVERSION_LIST, head, base if base == "none" else ".".join(map(str, base)), ".".join(map(str, cur)))
+    if base == "none" or cur > base:
+        return "owed", label, "## %s\n%s" % (head, body)
+    return "not_yet", label, "## %s\n%s" % (head, body)
+
+
+def conversion_section(repo, d, st):
+    """The packet's section for the conversion list: the rows in full when this version owes them."""
+    state, why, sec = conversion_owed(repo, d, st)
+    out = ["", "## Owed input: the universal-mechanics conversion (GUIDING_PRINCIPLES.md entry 1)"]
+    if state == "unmeasured":
+        return out + ["UNMEASURED: %s. Whether this version owes a conversion is unknown, not absent." % why]
+    if state == "none":
+        return out + ["- none: %s names no row for this mod. Each new mechanic is still written as conditions." % (
+            CONVERSION_LIST)]
+    if state == "not_yet":
+        return out + ["- %s lists this mod's biome-confined mechanics. They convert at its next version, never in this "
+                      "one: no current bar moves." % why]
+    return out + ["This version converts the rows below (%s). A code gate becomes a physical condition; a design or bar "
+                  "line is reworded as a condition; each converted mechanic gets an offline test: the same conditions, "
+                  "only the biome name changed, the same result. Rows under \"Not ruled yet\" wait for his card: do "
+                  "not convert them." % why, sec]
+
+
 def _ledger_meta(repos, ids):
     """-> ({item: its cause}, {item: its filed title for `ids`}) over every ledger shard of each clone in `repos`
     (concept_tree.ledger_causes' rule: a file event's caused_by, a spawn's from, `ITEM/run-N` is ITEM), or False when a
@@ -3325,6 +3421,7 @@ def packet(d, st, hashes, budget, why=None, retries=0, manifest=MANIFEST, repo=N
     if s in (0,) + DIALOGUE:
         body += built_section(REPO if repo is None else repo, st)
     body += elsewhere_section(REPO if repo is None else repo, d, st)
+    body += conversion_section(REPO if repo is None else repo, d, st)
     for name, h in hashes.items():
         with open(os.path.join(os.path.dirname(manifest), name), encoding="utf-8") as f:
             body += ["", "=== %s (sha256 %s) ===" % (name, h[:12]), f.read()]

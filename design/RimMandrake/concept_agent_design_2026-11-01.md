@@ -209,7 +209,7 @@ not been calibrated on any mod yet**, so numeric lines are **advisory, reported 
 | **Sound** | Not a gate (spec §12) | |
 | **DLC** | All assumed. No gating work, no degraded mode | Standing ruling |
 | **Worldgen** | None, of any kind | Standing ruling; the concept is refused if it needs it |
-| **Biome scope** | Promised inside our biomes only; a biome of ours on 0 tiles is expected | Standing rulings |
+| **Biome scope** | Mechanics written universal: a mechanic reads physical conditions, never which biome it is in; a biome keeps only its data; tested in game on its home biome only; a biome of ours on 0 tiles is expected | Standing rulings (`GUIDING_PRINCIPLES.md` entry 1, 2026-11-21) |
 | **Flight** | Never live-tested without him; verified by state read | `tier` refuses it |
 | **Naming** | `mandrake.<tier>.<mod>`, `RM_` / `RSW_` / `RUT_`, `NAMING_SCHEME_PLAN.md` | Lint |
 | **Test isolation** | Minimal list plus the mod; clean build-up and tear-down; cross-mod is playtest's | Runner spec rulings |

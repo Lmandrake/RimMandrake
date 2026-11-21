@@ -2,6 +2,10 @@
 
 Moved from the project `CLAUDE.md` on 2026-10-11 (weekly cleaning), text unchanged except heading levels. CLAUDE.md keeps a one-line rule and points here. Entries state what IS: delete a line the moment it turns false, never annotate it.
 
+## 🔴 A biome's mechanics are universal: conditions, never the place — owner, 2026-11-21
+
+Before you design, build or audit a biome's mechanic, read `GUIDING_PRINCIPLES.md` entry 1. The code of a mechanic reads only physical conditions (sun angle, heat, water, fire, ground, roof, food), never which biome it is in. A biome keeps only its data: plants, animals, terrain, weather odds and map generation; the roster rulings below are biome data. A biome depends on a mechanic, showcases it, or holds its materials or sources. In game, a mechanic is tested on its home biome only. His words and the three card answers: `design/RimMandrake/standing_rulings.md` §Biome mechanics are universal. What each existing mod converts at its next version: `design/specs/2026-11-21-guiding-principles/conversion_list.md`.
+
 ## 🔴 A BIOME WITH ZERO TILES IS NOT A DEFECT — owner, 2026-09-20, said repeatedly
 
 > *"Correct we will repaint the whole world when all the biomes are in. **You don't need

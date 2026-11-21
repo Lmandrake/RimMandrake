@@ -362,7 +362,9 @@ def shape_errors(tree, root_ids, floor, floor_hash):
     if fl.get("ref") != FLOOR_FILE:
         errs.append("floor.ref %r" % fl.get("ref"))
     if fl.get("hash") != floor_hash:
-        errs.append("floor.hash is not the current floor's")
+        errs.append("floor.hash is not the current floor's: the floor changed after this tree was written (a stale stamp); "
+                    "repair: write the tree again with `concept_tree.py write <dir> --draft <draft>`, which pins the "
+                    "current floor, and read the changed floor lines (`git log -p -- src/RimMandrake/rimflow/%s`)" % FLOOR_FILE)
     by_id = {ln["id"]: ln for ln in floor["lines"]}
     dry = tree.get("dry_walk") is True
     for o in lst(fl.get("off")):

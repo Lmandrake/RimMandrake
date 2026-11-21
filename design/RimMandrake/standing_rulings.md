@@ -175,14 +175,29 @@ cites that item as a reason to wait, delete the citation.
 Every mod we ship carries a real settings screen: on/off per major
 feature/mechanic, tuning where a number is the experience, defaults = shipped
 behavior, all-off degrades gracefully, and worldgen-affecting toggles labeled
-as such. Biome mechanics are promised inside our own biomes only (owner,
-2026-10-15: *"I would like to release the … requirement that the biome mechanics
+as such. The ruling on TESTING a biome mechanic away from its home biome: it is tested
+in game only on its home biome (owner, 2026-10-15, kept by his card of 2026-11-21:
+*"I would like to release the … requirement that the biome mechanics
 work in other biomes. That's too much of a lift. … We can't guarantee they will work
 in other biomes beyond our framework. They should… but we're not going to validate
-that at this time."*). No new mod builds a cross-biome switch; the existing ones stay,
-default off, labelled "Unsupported: may work outside our biomes, not tested" (owner
-card 2026-10-15). Spec + retrofit of existing mods:
+that at this time."*). The code itself is written universal (§Biome mechanics are universal). No new mod builds a
+cross-biome switch; the existing ones stay, default off, labelled "Unsupported: may work outside our biomes, not
+tested" (owner card 2026-10-15), until he rules on them. Spec + retrofit of existing mods:
 `MOD_OPTIONS_RETROFIT_1`. Applies to every future mod, no exceptions.
+
+## Biome mechanics are universal: conditions, never the place — owner, 2026-11-21
+
+The ruling (item `RIMMANDRAKE_RULE_MECHANICS_ARE_UNIVERSAL_THE_BIOME_ONLY_SHOWCASES`; the principle as an entry: `GUIDING_PRINCIPLES.md` entries 1 and 2; what each existing mod converts: `design/specs/2026-11-21-guiding-principles/conversion_list.md`):
+1. A biome's mechanics are universal. "Universal" is a rule for the code: a mechanic reads only physical conditions (sun angle, heat, water, fire, ground, roof, food, and the like) and never which biome it is in. A biome keeps only its data: its plants, animals, terrain, weather odds and map generation. A biome depends on a mechanic, showcases it, or holds the materials or sources to make it or make it shine.
+2. Testing is unchanged from his ruling of 2026-10-15 (§Every mod ships superb Mod Settings): the code is written universal; only the home biome is tested in game. No foreign-map in-game check is owed. A converted mechanic shows that it obeys point 1 with an OFFLINE test that holds the conditions constant and changes only the biome name.
+3. The principle binds all new design and code from 2026-11-21. Each existing mod converts when it next advances, as a planned change for its next version. No current version's bars move. Pyrelands 0.1.0 is not reworked.
+4. A visible effect with no meaning is removed, not confined: his case is the constant pale marked region round a steam geyser. The swirling steam stays.
+
+NOT ruled yet (each waits for his card; write none of them as a rule): the fate of the six "Enable outside this biome" switches; whether a dangerous mechanic is on by default on every map; the Scald exception (§Direct Sun); the wording of the draft's principles 2 to 5; third-party biomes; the format and authority of `GUIDING_PRINCIPLES.md`.
+
+His words, 2026-11-21 (the ledger's `file` event of the item holds the whole message): *"the white hazy blocks inside the pit I do not think were "TheForge" but yes the geysers were. I didn't mind the steam so much, but the meaningless pale region around steamgeysers I definitely did. And Biome mechanics in general do NOT stay confined to the biome of origin: they are universal, but that biome depends on them, showcases them, or has the materials or sources to make them or make them shine. For example, the Stillshade has nothing "special" about its long shadows and intense sun exposure effects: those should be planet-wide. But the Stillshade showcases them with a unique biome adaptation to them. Make sense? The Rot features a living floor covering that heats rooms and keeps life alive in the cold through food consumption. It works anywhere, but it's native to the Rot and must be tended and carried elsewhere. We should also make it die in direct Sun exposure to explain why the Rot hasn't spread over the whole surface. Please take the GENERAL lessons in this message as guiding principles for the whole game, Baroque Biomes, etc. But then take my specific examples and enact them as well in specific tickets. If there are conflicting rulings, please let's review them right now and correct them to avoid ambiguity. If there are specific conflicts (current mechanics that don't honor these principles) let's also rule on them. But remember: Form first, Specifics later, ok?"*
+
+His three card answers, 2026-11-21 (the item's "What the card said"): (a) What should "universal" mean as a rule for the code? → **Conditions, never the place**: *"A mechanic reads only physical conditions (sun angle, heat, water, fire, ground, roof) and never which biome it is in; a biome keeps only its data."* (Not picked: universal unless a reason is written; only the elements are universal.) (b) How much do we test a mechanic away from its home biome? → **Home only, as ruled in October**: *"The code is written universal; only the home biome is tested."* (Not picked: home plus one foreign map; every mechanic on every biome.) (c) When should existing mods be converted? → **New work now; old mods as they advance**: *"The principle binds all new design and code from today; each existing mod converts when it next advances, as a planned change for its next version."* (Not picked: Pyrelands converts now; one campaign across all mods now.)
 
 ## Direct Sun — one model, a pure function of geometry — owner, 2026-09-29 and 2026-10-19
 
