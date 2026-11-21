@@ -559,7 +559,7 @@ VERBS = {
     # `reason` on `close` carries WHY, and is what a cross-seat close writes instead of
     # a shrug. ⛔ The BAR is unchanged: done means proven, dead means probed. This
     # removes the seat boundary, never the evidence requirement.
-    "close":     {"who": "any",   "req": ("sha",), "opt": ("reason", "live", "noCode")},
+    "close":     {"who": "any",   "req": ("sha",), "opt": ("reason", "live", "noCode", "uncheckedLifted")},
     # `live` on close and implemented is the promise (LIVE_PROOF_ENFORCE_DONE_MEANS_RUNNING, live_line.py). The verb
     # `live` is the no-AI sweep's reading of it, RUNNER only: `broken` takes a done item back to ready, ONE OF THE TWO PATHS
     # OUT OF `done` (the other is a `fail` verify on the closed work, `_earned_run`), because the record of the close stands in the log and the same id must count the repeat; `kept`
@@ -2578,22 +2578,49 @@ def marker_lock(item, sha, no_code=False):
         str(newest.sha)[:12], newest.name, (": " + str(newest.evidence)) if newest.evidence else "")
 
 
-def close_refusals(item, sha, no_code=False, owner=False):
+CONDUCTOR_RULING = "RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS"     # conductor_acts.RULING (no import: a cycle)
+
+
+def his_or_conductor(ev):
+    """-> True when a recorded event is his own word (--owner-said, --by-card, seat OWNER) or the Conductor window's
+    act (conductor_acts.is_conductor_event). Such a close is never refused for a missing level-tagged pass (owner
+    2026-11-20: "The system should not be refusing needed items."; RIMMANDRAKE_STOP_GATES_DEMANDING_OWNER_WORDS_HE_
+    ALREADY_SPOKE). A bare --per-ruling from a helper is neither."""
+    if ev.get("ownerSaid") or ev.get("byCard"):
+        return True
+    if not ev.get("perRuling"):
+        return ev.get("seat") == "OWNER"        # his own terminal; a --per-ruling also stamps OWNER, and is not his word
+    if str(ev.get("perRuling")) != CONDUCTOR_RULING:
+        return False
+    try:
+        try:
+            from . import conductor_acts
+        except ImportError:
+            import conductor_acts
+        return conductor_acts.is_conductor_event(ev)[0]
+    except Exception:  # noqa: BLE001  the cli checked the window at write; a fold that cannot load the check trusts it
+        return not str(ev.get("role_unit") or "").strip()
+
+
+def close_refusals(item, sha, no_code=False, owner=False, word=False):
     """-> [(kind, why)], what stands between `item` and a close at `sha`, empty when it has earned one. Pure.
 
     owed      a criterion is still owed, or passed on another sha
     unchecked no level-tagged pass on that sha (the AU4 test); `--no-code` says there was nothing to check
     fail      the newest deciding run is a fail
     guard     this fix already died once and no class guard test is shown failing on the instance (`guard_owed`), --no-code too
-    `owner`: his word on the close lifts fail and guard, which are judgements. Owed and unchecked are facts."""
+    `owner`: his word on the close lifts fail and guard, which are judgements. Owed is a fact.
+    `word`: his own words or the Conductor window's act also lift unchecked (it closes, and the event records
+    `uncheckedLifted`; owner 2026-11-20)."""
     owed = [c for c in item.criteria if c["id"] in item.outstanding]
     out = []
     if owed:
         out.append(("owed", "still owes " + ", ".join("%s %s" % (c["id"], c["level"]) for c in owed)))
     elif item.passed and not no_code and not same_sha(sha, item.built_sha):
         out.append(("owed", "its criteria passed on %s, not on %s" % (str(item.built_sha)[:12], str(sha)[:12])))
+    owner = owner or word
     out += [(k, why) for k, why in run_refusals(item, sha, no_code) if not (k == "fail" and owner)
-            and not (k == "unchecked" and owed)]
+            and not (k == "unchecked" and (owed or word))]
     if not owner and guard_owed(item):
         out.append(("guard", guard_why(item)))
     return out
@@ -2603,13 +2630,16 @@ def _fold_close_gate(ev, item):
     """Raise if this `close` has not earned done, whichever clone's cli wrote it. The event stays on the ledger, in `world.errors`.
 
     `cmd_close` refuses first; this is for the writer that lacks that code (KNOWN_RESULTS_BUILD_MEASURED_DEPENDENCIES,
-    closed from a clone behind the gate). His word on the event lifts a fail, as on the cli; `unchecked` is a fact."""
+    closed from a clone behind the gate). His word on the event lifts a fail, as on the cli; his own words or the
+    Conductor's act (his_or_conductor) also lift `unchecked`."""
     if _guard_holds(ev, item):
         raise TransitionError("%s: close at %s has not earned done: %s" % (item.id, str(ev["sha"])[:12], guard_why(item)))
     if str(ev["ts"]) < CLOSE_FOLD_FROM or ev.get("noCode"):
         return
     said = _owner_word(ev)
-    found = [why for k, why in run_refusals(item, ev["sha"]) if not (k == "fail" and said)]
+    word = his_or_conductor(ev)
+    found = [why for k, why in run_refusals(item, ev["sha"]) if not (k == "fail" and said)
+             and not (k == "unchecked" and word)]
     if found:
         raise TransitionError("%s: close at %s has not earned done: %s" % (item.id, str(ev["sha"])[:12], "; ".join(found)))
 

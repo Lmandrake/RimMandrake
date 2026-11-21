@@ -135,9 +135,10 @@ Each element names the loss it stops:
 - **E2 — untracked promises are shown, then filed at a kill; advisory first** (stops the launch, decision, question,
   page and resume losses: rows 1, 9, 16, 19, 20, 22). `promise_scan.py` finds promise sentences in a reply. A promise is
   a future or unfinished act of the Conductor's own, or a question to him that ends the reply. A sentence counts as
-  tracked only if it names an open owed id. A target item's id alone does not: T16 named its item and was lost. The
-  per-prompt notice prints the last reply's untracked promises, `UNTRACKED in your last reply: …`, so the window files
-  them on its next turn. Nothing blocks a turn in this version. At a backstop kill, where no next turn exists,
+  tracked if it names an open owed id, names the item an open owed item acts on, or holds most of an open owed item's
+  title words. A target item's id alone, with no owed item on it, does not: T16 named its item and was lost. The
+  per-prompt notice prints the last reply's untracked promises as a note (`NOTE, nothing blocked: …`), so the window
+  can file a real one on its next turn. Nothing blocks a turn in this version. At a backstop kill, where no next turn exists,
   `seat_restart.py` files each one as `owed` titled `UNTRACKED promise: <sentence>`, before the shard-publish path runs.
   Blocking at the Stop hook is a later decision, taken only after a week's false-positive count.
 - **E3 — explicit Conductor hand steps become owed items at their source** (stops M3: row 26). The Dispatcher tick runs

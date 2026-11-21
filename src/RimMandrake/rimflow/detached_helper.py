@@ -950,7 +950,8 @@ def drain_refusal(now, extra=None, resume_session=None, path=None):
 
 
 def card_refusal(item, brief, events_dir=None):
-    """-> None, or the refusal for a brief on a by-card item that lacks a picked option's description verbatim
+    """-> None, or the text naming what a brief on a by-card item lacks: a picked option's description verbatim. The launch
+    no longer refuses on it (card_repair adds the text);
     (RIMMANDRAKE_RECORD_CARD_OPTION_TEXT_LABEL_LOST_THE_ART: "needs bigger art" was retold from memory as "check if the
     sprite is blurry", and no art was made). Whitespace and quote style aside, the description must be in the brief."""
     import card_capture
@@ -962,6 +963,25 @@ def card_refusal(item, brief, events_dir=None):
             "Smallest fix: paste it into the brief, word for word (e.g. under \"What the card said\"); the card's whole "
             "text: python3 src/RimMandrake/rimflow/card_capture.py show %s"
             % (item, "\n".join("  \u00ab%s\u00bb" % d for d in missing), item))
+
+
+def card_repair(item, brief, events_dir=None):
+    """-> (brief, added): the brief with "## What the card said" and each of the item's cards (as a launched agent may
+    read them) appended when a picked option's description is not in it, else unchanged. The launch adds the card's
+    words itself and never refuses for their lack, for every caller, a hand launch included (owner 2026-11-20: "The
+    system should not be refusing needed items."; RIMMANDRAKE_STOP_GATES_DEMANDING_OWNER_WORDS_HE_ALREADY_SPOKE).
+    A card store that cannot be read leaves the brief as it was: the launch goes on."""
+    try:
+        import card_capture as CC
+        cards = CC.item_cards(item, events_dir=events_dir or os.path.join(REPO, EVENTS_REL))
+        if not CC.brief_missing(brief, cards):
+            return brief, False
+        return ("%s\n\n%s\n\nThe owner decided this item by card; its whole text, word for word:\n\n%s\n" % (
+            brief.rstrip("\n"), CC.HEADING, "\n\n".join(CC.flatten(c, brief=True) for c in cards))), True
+    except Exception as e:  # noqa: BLE001
+        print("launch: %s: the card text could not be read (%s: %s); the brief goes as written"
+              % (item, type(e).__name__, e), file=sys.stderr)
+        return brief, False
 
 
 def card_footer(item, events_dir=None):
@@ -1054,6 +1074,7 @@ def launch(seat, item, brief, model, max_s, budget, now=None, runner=subprocess.
            events_dir=None, skip_launch_checks=None, env=None, resume_session=None, projects=None, extra=None):
     """-> (exit code, text). extra: fields the run's record carries from creation (`continue_on_cap`, a
     continuation's chain: left_open_continue.py). Refuses an unknown item, one not filed on origin/main, a bad model or seat, an empty brief, and
+    (a by-card brief missing its card's words is completed by card_repair, never refused)
     a clone another run still holds (after waiting for one that is being given back).
     The ticket preflight runs here IN SHADOW (RIMMANDRAKE_BACKTEST_PREFLIGHT_OVER_REAL_PAST_TICKETS): its new checks in
     the run's clone once there is one, and this door's own checks observed in place; it refuses nothing, and its lines
@@ -1092,9 +1113,8 @@ def _launch(seat, item, brief, model, max_s, budget, now, runner, known, clone, 
         return 2, bad
     if not (brief or "").strip():
         return 2, "refused: empty brief"
-    carded = pf.gate("I3", card_refusal, item, brief, events_dir, judge=_refusal)     # a by-card brief carries the card's words
-    if carded:
-        return 2, carded
+    brief, carded = card_repair(item, brief, events_dir)     # a by-card brief carries the card's words: added, never refused
+    pf.gate("I3", lambda: None, judge=_refusal)
     max_s = parse_max_s(max_s)
     if max_s is not None and max_s < MIN_MAX_S:
         return 2, "refused: --max-s %d is under %d (use none for no limit)" % (max_s, MIN_MAX_S)

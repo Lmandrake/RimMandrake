@@ -149,6 +149,7 @@
     {"test": "src/RimMandrake/rimflow/acceptance/guard_pilot_launch_live_run_accept.py", "seconds": 0.5},
     {"test": "src/RimMandrake/rimflow/selftest_card_capture.py", "seconds": 2.2},
     {"test": "src/RimMandrake/rimflow/selftest_card_brief_spend.py", "seconds": 0.3},
+    {"test": "src/RimMandrake/rimflow/selftest_owner_words_not_refused.py", "seconds": 6},
     {"test": "src/RimMandrake/rimflow/selftest_detached_reap.py", "seconds": 1.5},
     {"test": "src/RimMandrake/rimflow/selftest_answered_asks.py", "seconds": 1.4},
     {"test": "src/RimMandrake/rimflow/selftest_maturation.py", "seconds": 1.2},

@@ -2887,7 +2887,13 @@ def _close_gate(args, it, sha, no_code):
     """DONE IS EARNED (CLOSE_GATE_ENFORCE_DONE_IS_EARNED): RO3 and ruling D1(b). -> nothing, or `die` with every reason.
     The item's own half is `model.close_refusals`; what needs git is here."""
     said = bool(model.OWNER_SAID or model.BY_CARD or model.PER_RULING or args.seat_is_owner)
-    found = model.close_refusals(it, sha, no_code, owner=said)
+    # his own words, or the Conductor window's act (`--per-ruling` RULING passed conductor_acts.cli_gate in _seat), are
+    # never refused for a missing level-tagged pass: the close goes, recorded `uncheckedLifted` (owner 2026-11-20)
+    word = bool(model.OWNER_SAID or model.BY_CARD or (args.seat_is_owner and not model.PER_RULING)
+                or getattr(model, "PER_RULING", "") == conductor_acts.RULING)   # any --per-ruling stamps OWNER
+    found = model.close_refusals(it, sha, no_code, owner=said, word=word)
+    args.unchecked_lifted = bool(word and not no_code and any(
+        k == "unchecked" for k, _ in model.run_refusals(it, sha, no_code)))
     if not no_code:
         found += _sha_refusals(args.id, sha, said or model.AGENT_WHY)
     if not said and not model.guard_owed(it) and it.live_repeats and it.guard:
@@ -2898,10 +2904,10 @@ def _close_gate(args, it, sha, no_code):
         die("close: %s has not earned its close at %s:\n%s\n\nA criterion passes with `rimflow verify %s --criterion <C> "
             "--result pass --config <cfg> --evidence <path>`; a hand close first records a level-tagged pass on that sha "
             "(`rimflow verify %s --sha %s --level L0 --result pass --config <what ran> --evidence <path>`); a fail needs a "
-            "pass after it. Only the owner's word on this close (--owner-said, --by-card, --per-ruling) lifts a fail or a "
-            "guard. "
+            "pass after it. His word on this close (--owner-said, --by-card), or the Conductor window's act "
+            "(--per-ruling %s --why \"<the act and reason>\"), closes it as it is, recorded. "
             "Nothing changed: the item is as it was."
-            % (args.id, sha, "\n".join("  %-9s %s" % f for f in found), args.id, args.id, sha))
+            % (args.id, sha, "\n".join("  %-9s %s" % f for f in found), args.id, args.id, sha, conductor_acts.RULING))
     marker = None if model.MARKER_FAIL_LOCKS else model.marker_lock(it, sha, no_code)
     if marker:      # MARKER_FAIL_WIRE_INTO_CLOSE_LOCK: seen, not yet locking (operations_design_2026-11-01 §9 step 2)
         print("close: %s: marker  %s. The lock is off until a trust rerun meets the owner's bar (operations_design_2026-11-01 "
@@ -2947,6 +2953,10 @@ def cmd_close(args, seat):
         args.seat_is_owner = seat == "OWNER"
         _close_gate(args, it, sha, no_code)
     ev = {"seat": seat, "event": "close", "id": args.id, "sha": sha}
+    if getattr(args, "unchecked_lifted", False):
+        ev["uncheckedLifted"] = True
+        print("close: %s: no level-tagged pass on %s; closed on %s, recorded (uncheckedLifted)"
+              % (args.id, str(sha)[:12], "his word" if not model.PER_RULING else "the Conductor's act"), file=sys.stderr)
     if args.reason:
         ev["reason"] = args.reason
     if no_code:

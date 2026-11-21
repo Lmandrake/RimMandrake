@@ -11,7 +11,9 @@ WHY. 6 of the 9 debts a restarting Conductor lost or paid late were promises wri
 A promise is a sentence in which the Conductor commits itself to a future act or leaves one of its own acts unfinished
 ("I will / I'll …", "The next window will / should …", "This one is mine", "… not launched / never written / still
 owed / I have not ruled"), or a question that ends the reply. It is tracked, and not reported, only when the sentence
-names an open owed id; a target item's id alone does not track it (the T16 loss named its item and was still lost).
+names an open owed id, names the item an open owed item acts on (its caused_by), or holds most of an open owed
+item's title words (`covered`). A target item's id alone, with no owed item on it, does not track it (the T16 loss
+named its item and was still lost).
 Quoted text is not the Conductor's: a `>` block and the wake's `<<< … >>>` reprint of the old reply are dropped first.
 
 Readers: .claude/hooks/conductor_goodbye.py prints the last reply's hits on the next prompt; seat_restart.py queues a
@@ -79,16 +81,45 @@ def sentences(text):
     return out
 
 
-def scan(text, owed_ids=()):
-    """-> [sentence]: the promises in `text` that name no id in `owed_ids`, in order. Pure."""
-    owed = set(owed_ids or ())
+WORD = re.compile(r"[a-z0-9]+")
+STOP = frozenset("a an and are as at be by for from has have i in is it its me my of on or our that the this to was we "
+                 "will with you your".split())
+COVER_SHARE = 0.6       # a sentence holding this share of an owed title's content words is that act
+COVER_MIN = 3           # ... and at least this many of them (a two-word title would match any sentence)
+
+
+def _content(text):
+    return {w for w in WORD.findall(str(text or "").lower()) if w not in STOP and len(w) > 2}
+
+
+def covered(sentence, owed_items):
+    """-> the open owed id that covers `sentence`, or None. owed_items: {owed id: (title, caused_by)}. A sentence is
+    covered when it names an owed item's caused_by item, or holds most of an owed title's content words: an open owed
+    item already tracks that act, and saying so again is noise (owner 2026-11-20: "The system should not be in our
+    way."; RIMMANDRAKE_STOP_GATES_DEMANDING_OWNER_WORDS_HE_ALREADY_SPOKE). Pure."""
+    ids = set(ID.findall(sentence))
+    words = _content(sentence)
+    for oid, (title, caused_by) in sorted((owed_items or {}).items()):
+        if caused_by and caused_by in ids:
+            return oid
+        t = _content(title)
+        shared = len(t & words)
+        if t and shared >= COVER_MIN and shared >= COVER_SHARE * len(t):
+            return oid
+    return None
+
+
+def scan(text, owed_ids=(), owed_items=None):
+    """-> [sentence]: the promises in `text` that name no id in `owed_ids` and that no open owed item covers
+    (`covered`, owed_items {id: (title, caused_by)}), in order. Pure."""
+    owed = set(owed_ids or ()) | set(owed_items or ())
     ss = sentences(text)
     hits = []
     for i, s in enumerate(ss):
         closing_question = i == len(ss) - 1 and s.rstrip("*_`)\"'” ").endswith("?")
         if not (PROMISE.search(s) or closing_question):
             continue
-        if owed & set(ID.findall(s)):
+        if owed & set(ID.findall(s)) or covered(s, owed_items):
             continue
         hits.append(s)
     return hits

@@ -32,6 +32,7 @@ Owner 2026-11-16: no launched agent is told its spend. Each promise has a test o
 - **every-needs-x-reaches-the-brief.** Each "needs X" a picked description states reaches the `show` text and the
   `with_card_text` brief, even when it stands in a spend sentence.
 - **the-launch-asks-only-for-spend-free-text.** `detached_helper.card_refusal` passes a brief that carries the
-  spend-free description, and a refusal quotes only spend-free text as the paste it asks for.
+  spend-free description, and the text it names as missing is only spend-free text. The launch itself never refuses
+  for it: `card_repair` adds the text (design/specs/2026-11-20-owner-words-not-refused/boundary.md).
 
 Later lists beside this page: `polish.md` (none yet).

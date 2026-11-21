@@ -167,10 +167,10 @@ def owed_line():
 
 
 def owed_reading():
-    """-> (the owed view's first line, the open owed ids or None): one ledger replay for both."""
+    """-> (the owed view's first line, {open owed id: (title, caused_by)} or None): one ledger replay for both."""
     try:
         import owed
-        return owed.safe_banner_and_ids(SEAT)
+        return owed.safe_banner_and_items(SEAT)
     except Exception as e:  # noqa: BLE001 - never block his message
         return "OWED view did not run (%s): run `rimflow queue CONDUCTOR --owed`" % type(e).__name__, None
 
@@ -189,13 +189,15 @@ def untracked_lines(transcript, owed_ids):
         text = SR.last_assistant_text(transcript, tail_bytes=8 << 20, skip=SR.REPLY_SKIP) if transcript else ""
         if not text.strip():
             return []                # no reply yet (a fresh window) is no promise
-        hits = promise_scan.scan(text, owed_ids)
+        hits = promise_scan.scan(text, owed_items=owed_ids if isinstance(owed_ids, dict) else None,
+                                 owed_ids=() if isinstance(owed_ids, dict) else owed_ids)
     except Exception as e:  # noqa: BLE001 - never block his message
         return ["UNTRACKED promises: UNMEASURED (%s)" % type(e).__name__]
     if not hits:
         return []
-    out = ["UNTRACKED in your last reply (%d): file each act as owed (`rimflow file <ID> --for BENCH --kind owed "
-           "--title \"<the act>\"`) and cite its id, or say it is not a promise:" % len(hits)]
+    out = ["NOTE, nothing blocked: %d sentence(s) in your last reply read as an act no open owed item covers. If one "
+           "is a real act, file it (`rimflow file <ID> --for BENCH --kind owed --title \"<the act>\"`); otherwise "
+           "ignore this note:" % len(hits)]
     out += ["  - %s" % (" ".join(h.split())[:220]) for h in hits[:UNTRACKED_MAX]]
     if len(hits) > UNTRACKED_MAX:
         out.append("  … %d more" % (len(hits) - UNTRACKED_MAX))

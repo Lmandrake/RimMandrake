@@ -318,13 +318,20 @@ def main():
         shards = os.path.join(tmp, "events")
         why = DH.card_refusal(A, bad, events_dir=shards)
         check(bool(why) and "needs bigger art" in why and "paste" in why.lower() and "card_capture.py show" in why,
-              "launch: a brief missing the description is refused, naming the text and the fix (%r)" % (why or "")[:120])
+              "card_refusal: a brief missing the description is named, with the text and the fix (%r)" % (why or "")[:120])
         check(DH.card_refusal(A, good, events_dir=shards) is None, "launch: a brief holding the description verbatim passes")
         check(DH.card_refusal(A, good.replace(". Costs", ".   Costs").replace("'", "’"), events_dir=shards) is None,
               "launch: whitespace and curly quotes do not refuse a verbatim paste")
-        rc, text = DH.launch("BENCH", A, bad, "opus", None, 1, known={A}, runner=lambda *a, **k: None,
-                             events_dir=shards)
-        check(rc == 2 and "needs bigger art" in text, "launch: launch() itself refuses the short brief before any clone")
+        try:
+            rc, text = DH.launch("BENCH", A, bad, "opus", None, 1, known={A},
+                                 runner=lambda *a, **k: subprocess.CompletedProcess(a, 1, "", "fake runner"),
+                                 events_dir=shards)
+        except Exception as e:  # noqa: BLE001  the fake runner stops it later; only the card refusal matters here
+            rc, text = 1, "%s: %s" % (type(e).__name__, e)
+        check(not (rc == 2 and "decided by card" in text), "launch: launch() never refuses a short brief for its card "
+              "text (owner 2026-11-20); card_repair adds it (%d %s)" % (rc, text[-120:]))
+        fixed, added = DH.card_repair(A, bad, events_dir=shards)
+        check(added and DH.card_refusal(A, fixed, events_dir=shards) is None, "launch: card_repair adds the card's words")
         check("needs bigger art" in DH.card_footer(A, events_dir=shards),
               "launch: the footer tells the builder each consequence is work owed at close")
 

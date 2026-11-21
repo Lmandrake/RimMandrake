@@ -153,6 +153,20 @@ def safe_banner_and_ids(seat="BENCH"):
         return "OWED view did not run (%s: %s): run `rimflow queue CONDUCTOR --owed`" % (type(e).__name__, e), None
 
 
+def safe_banner_and_items(seat="BENCH"):
+    """-> (first line, {open owed id: (title, caused_by)} or None when the ledger could not be read): what
+    promise_scan.covered reads, so a promise an open owed item already tracks is not said again."""
+    try:
+        led = os.path.dirname(model.EVENTS)
+        if not (os.path.exists(model.EVENTS) or os.path.isdir(os.path.join(led, model.SHARD_DIR))):
+            raise FileNotFoundError("no ledger at %s" % led)
+        w = model.replay()
+        act, wait = split(w, seat)
+        return banner(w, seat), {i.id: (i.title or "", i.caused_by or "") for i in act + wait}
+    except Exception as e:                      # noqa: BLE001 - said, never silent
+        return "OWED view did not run (%s: %s): run `rimflow queue CONDUCTOR --owed`" % (type(e).__name__, e), None
+
+
 WAKE_HEAD = "== what the Conductor OWES (rimflow queue CONDUCTOR --owed): act on these before anything else"
 
 
