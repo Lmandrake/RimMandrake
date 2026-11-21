@@ -45,7 +45,7 @@ one compact floor build in the Scrapper look: full battery, a 3x3 tangle, a run 
 
 **Note**
 
-- U_motion_look (moved off the live proof 2026-10-05): UNPAUSE and judge the LOOK of motion here: the cord's whip, the live end's drip / spark rhythm, the sway in the wind. Motion is not a Northstar bar; state proxies cover the state, so only your eye judges this.
+- U_motion_look (moved off the live proof 2026-10-05): UNPAUSE and judge the LOOK of motion here: the cord's whip, the live end's drip / spark rhythm (wind moves no ground cord, owner 2026-11-16; only pole wires sway, stations 6 and 21). Motion is not a Northstar bar; state proxies cover the state, so only your eye judges this.
 
 ### 2. GROUND CORDS: INDUSTRIAL
 

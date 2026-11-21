@@ -2,10 +2,10 @@
   "schema": 1,
   "mod": "GimmeSomeSlack",
   "version": "0.1.1",
-  "stage": "pre_human",
-  "stage_label": "Walk brief (Stage 7)",
-  "since": "2026-11-21T04:32:13-08:00",
-  "since_from": "advance by CONDUCTOR",
+  "stage": "his_walk",
+  "stage_label": "His live walk (Stage 8)",
+  "since": "2026-11-21T04:58:12-08:00",
+  "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
     "at": "2026-11-20T16:09:35-08:00",
@@ -126,6 +126,22 @@
         "steward_confirms",
         "exit_met",
         "build_match"
+      ]
+    },
+    {
+      "from": "pre_human",
+      "to": "his_walk",
+      "at": "2026-11-21T04:58:12-08:00",
+      "by": "BENCH",
+      "why": "walk brief arrival_1 written",
+      "unit": "rm-detached-bench-rimmandrake-steward-gimmesomeslack-pre-h-1795265290",
+      "confirmed": {},
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "walk_brief"
       ]
     }
   ]
