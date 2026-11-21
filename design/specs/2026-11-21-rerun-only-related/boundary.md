@@ -59,4 +59,4 @@ stage (the in-game build match, the Stage 6 exit, the visit brief, `./pipe why`,
 - **walk-not-the-source-is-one-deploy.** When the deployed walk folder is not the current source (its `.srchash`
   differs from the source's), the build match names one act, a deploy, and reruns no check for it.
 
-Later lists beside this page: `polish.md` (none yet).
+Later lists beside this page: `polish.md`.
