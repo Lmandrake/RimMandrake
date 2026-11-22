@@ -2,7 +2,7 @@
 
 Item `RIMMANDRAKE_GENERALIZE_PIPELINE_REPAIRS_INTO_FEW_PRINCIPLES`. Principle numbers are those of `review.md`.
 
-State at 2026-11-21 2:20 AM PST.
+State at 2026-11-21 2:20 AM PST, carried on 2026-11-22 3:15 AM PST (section "The second run" at the end).
 
 ### Principle 4, a test makes no live effect: fixed, commit `fa04fa200c`
 
@@ -93,3 +93,87 @@ By the owner's measure (fewer and more general rules than on 2026-11-20), this r
 
 - `selftest_tick_names.py` makes its temp folder inside the repo root (`.rimflow_selftest_tick_names/`) and leaves it when the run is killed. Seen once in this run's sweep.
 - Commit `fa04fa200c` carries its body paragraph as its subject (`./publish` took the last `-m`). The intended subject: a test makes no live effect.
+
+## The second run, 2026-11-22
+
+The two runs that held the files had ended. Each step below: page first, a test red on the base, the fix, the test
+green, planted faults red.
+
+### Principle 9, the merge of the root sections of principles 1, 3 and 6: already done by another item
+
+- `RIMMANDRAKE_MERGE_TWELVE_REFUSAL_RULE_SECTIONS_THAT_WAITED` (`ac9cca02b4`, 2026-11-21) made the nine sections into
+  three: "Stops that the work did not cause", "A fault of form is repaired where it is found", "After a change, only
+  the checks that the change touches run again". It cut 15 root lines and found that the cases do not repeat one
+  another (`design/specs/2026-11-21-crystallize-rule-files/results.md`, "The second run").
+- This run cut what was left that no reader needs: two `Item:` lines (provenance; the root holds none) and a second
+  pointer to the same section. 2 lines `[measured]`. No rule line went.
+- The lose-nothing check (`selftest_rule_files_lose_nothing.py check`) reads FAIL with 6 losses. None is this run's: all
+  six are the Scald exception, which the run on mechanics by their conditions deleted on purpose (`cba242eda8`). The
+  check's base is fixed at `cea8d0bae6`, so it reads every later deliberate change as a loss.
+
+### Principle 7, a limit names its danger: fixed for test deadlines, commit `4b996a6a74`
+
+- The form: a deadline on a call or a test is a hang guard, never a speed bar. Its danger is named once for the class.
+  Speed has its own signal (`selftest.slow_test_flag_s`).
+- The change: `run_selftests.py` has one default of 600 s, and a `# selftest-timeout:` tag can only raise it. Page:
+  `design/specs/2026-11-22-selftest-deadline/boundary.md`, with the danger, the evidence and the value under LIMITS.
+- Retired: 136 per-test tags `[measured]`. They were 136 per-case repairs of one limit: 107 at exactly 600 s, 14
+  between 241 and 599 s, and 15 at 240 s or less, which named no danger. 14 tags above 600 s stay. Each one marks a
+  test that really is slower.
+- Test: `selftest_selftest_deadline.py`. Red on the base: 3 of 4 FAIL, 136 dead tags found. Green after: 4 of 4. A
+  planted dead tag in a temp repo reads red. With the `max()` removed, `t_a_tag_only_raises` reads red. `./publish`
+  ran 117 pipeline checks green.
+- Root `CLAUDE.md`: one clause names the class ("a call or test deadline is a hang guard"). This replaces the
+  per-site duty for the 766 inline call timeouts. Each of them is the same class, and `call_deadline_lint.py` names
+  its danger and evidence.
+- Not built, with the reason: a `deadline.run` helper that takes the number out of 766 call sites. It would change
+  about 400 files that other runs edit, and no behaviour would change. The class clause does the work of the helper.
+
+### Principle 2, one home for a fact: fixed for "the mod an item names", commit `1f5dd16429`
+
+- Found: three readers each had their own rule for which mod an item names (`maturation_now.item_mod`,
+  `rimflow_metrics.item_mod` with its own alias table, `fleet_mods.mod_by_name`). On the ledger of 2026-11-22 they
+  gave different mods for 1,288 and 2,736 of 9,649 items `[measured]`.
+- The change: `rimflow/item_identity.py` is the one rule and the one alias table. The three readers import it. Page:
+  `design/specs/2026-11-22-item-identity/boundary.md`. A title names a mod only by its whole name, its initials or an
+  alias. Before, a title word such as "Mandrake" or "patches" placed 43 items on MandrakePatches.
+- Retired: 2 parser functions and 1 alias table. The 3 readers' item-to-mod code went from 78 lines to 10 lines
+  `[measured, git diff --stat]`. The new module has 51 lines.
+- Test: `selftest_item_identity.py`. Red on the base: 4 of 4 FAIL. Green after. Planted faults, each red: a tie that
+  guesses, a lost alias, the title before the id, the initials removed. The unchanged copy stays green. The three
+  readers' own selftests pass.
+- Run on the real ledger: in the metrics' mod heat, unmapped items went from 2,023 to 1,799 of 3,088. I read 12 of the
+  858 changed answers. About 9 are right and 2 are wrong (a prose word that is also a mod's name: "wreckage", "atlas").
+  The old rules also placed some items wrongly `[guess ~80% precision on changed answers]`.
+- Not done (next step): write the mod as a field when the item is filed (`cli.py file` stamps `item_identity.item_mod`,
+  or the filer names it), and write the stage on every launch record. Today 139 of 395 detached runs in the control
+  store carry a mod and 80 carry a stage `[measured]`. Then the readers read the field, and the guess is only for
+  items that are older than the field.
+
+### A short look for forms the review missed
+
+Candidates, not built. Each count is what it would retire.
+
+1. **Identity is written once, when an item is filed and when a run is launched** (principle 2 carried through). It
+   retires the other name parsers: `owed.py` (2 sites), `ops_health.py` (1), `modledger_backfill.py` (4 matching
+   sites), `testing_census.py`'s `MOD_ALIASES`, and in `maturation_now.py` the guessing of a run's stage from journal
+   headings and note text (`stages_named` and 3 placement branches). About 11 special cases `[guess ~60%]`.
+2. **The selftest runner takes a test's lane from what it measured.** It records memory peaks already, and `winbuild`
+   has a machine-wide build lock (`a8b7f15b91`). It would retire 25 per-test names in `run_selftests.py`:
+   `DOTNET_LANE` 21, `MEMORY_HEAVY` 3, `SEQUENTIAL_ISOLATED` 1 `[measured count; feasibility guess ~50%]`.
+3. Looked at and rejected: 54 item ids written into pipeline code. Most are ruling ids that mark authority
+   (`--per-ruling`), not branches on one item's name.
+
+### Before and after, second run
+
+| measure | start of the second run | end |
+|---|---|---|
+| root `CLAUDE.md` lines | 726 | 725 (−2 pointer lines, +1 class clause) |
+| per-test deadline tags | 150 | 14 |
+| rules for the mod an item names | 3 | 1 |
+| alias tables for mod names among those readers | 1 | 1 (now the only one) |
+
+By the owner's measure: 136 per-case limits and 2 duplicate rules are retired. The root `CLAUDE.md` is still 87
+lines longer than on 2026-11-20 (638). Most of that growth is new rulings from 2026-11-21 (mechanics by their
+conditions; the guiding principles), not repairs.
+
