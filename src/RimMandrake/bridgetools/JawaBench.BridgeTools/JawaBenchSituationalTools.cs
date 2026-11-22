@@ -165,7 +165,7 @@ namespace JawaBench.BridgeTools
                 DamageInstalled = TryPatch(harmony, typeof(Thing), "TakeDamage", new[] { typeof(DamageInfo) },
                     null, nameof(TakeDamagePostfix), nameof(TakeDamageFin));
                 KillInstalled = TryPatch(harmony, typeof(Pawn), "Kill", new[] { typeof(DamageInfo?), typeof(Hediff) },
-                    null, nameof(KillPostfix), nameof(KillFin));
+                    nameof(KillPrefix), nameof(KillPostfix), nameof(KillFin));
                 bool a = TryPatch(harmony, typeof(Thing), "TryAbsorbStack", new[] { typeof(Thing), typeof(bool) },
                     nameof(AbsorbPrefix), nameof(AbsorbPostfix), nameof(AbsorbFin));
                 bool s = TryPatch(harmony, typeof(Thing), "SplitOff", new[] { typeof(int) },
@@ -371,7 +371,34 @@ namespace JawaBench.BridgeTools
 
         private static void TakeDamageFin(Exception __exception) => Threw(GDamage, __exception);
 
-        private static void KillPostfix(Pawn __instance, DamageInfo? dinfo, Hediff exactCulprit, bool __runOriginal)
+        /// <summary>Records where the pawn is as Kill begins: Kill removes it from its caravan before the postfix runs.
+        /// __state = true when it is off every map: not spawned or held on a map, in no caravan, transporter or other world
+        /// object (a world pawn). Any fault reads false, the old placement-blind behaviour.</summary>
+        private static void KillPrefix(Pawn __instance, out bool __state)
+        {
+            __state = false;
+            try { __state = __instance != null && JawaBenchVitals.Armed && OnMain() && KillPlacementOffMap(__instance); }
+            catch (Exception ex) { NoteError(GKill, "kill-pre", ex); }
+        }
+
+        internal static bool KillPlacementOffMap(Pawn p)
+        {
+            if (p.SpawnedOrAnyParentSpawned || p.MapHeld != null || p.GetCaravan() != null) return false;
+            int guard = 0;
+            for (IThingHolder h = p.ParentHolder; h != null; h = h.ParentHolder)
+            {
+                if (h is Map || h is WorldObject) return false;   // a caravan, a travelling transporter
+                if (++guard >= 32) return false;                  // a cycle: unknown placement keeps the old behaviour
+            }
+            // A Gravship in flight is a WorldObject but no IThingHolder: its pawns sit in its own table (Gravship.ContainsPawn).
+            var wos = Find.WorldObjects;
+            if (wos != null)
+                foreach (var wo in wos.AllWorldObjects)
+                    if (wo is Gravship g && g.ContainsPawn(p)) return false;
+            return true;
+        }
+
+        private static void KillPostfix(Pawn __instance, DamageInfo? dinfo, Hediff exactCulprit, bool __runOriginal, bool __state)
         {
             if (!GKill.Admit(OnMain(), out var sc) || !GKill.Commit(sc, __runOriginal)) return;
             try
@@ -400,7 +427,7 @@ namespace JawaBench.BridgeTools
             catch (Exception ex) { NoteError(GKill, "kill", ex); }
             // test-state monitor tombstone (TELEMETRY_COLONY_VITALS_BUILD_SPEC_SAID_SO): only real deaths, only while armed.
             // Contained here too: a throw out of a postfix would surface as Pawn.Kill's own exception.
-            try { if (__instance != null && __instance.Dead) JawaBenchVitals.OnKill(__instance, dinfo, exactCulprit); }
+            try { if (__instance != null && __instance.Dead) JawaBenchVitals.OnKill(__instance, dinfo, exactCulprit, __state); }
             catch (Exception ex) { NoteError(GKill, "kill-vitals", ex); }
         }
 

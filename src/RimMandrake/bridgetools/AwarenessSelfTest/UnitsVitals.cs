@@ -111,6 +111,28 @@ namespace JawaBench.BridgeTools
             var t5 = V.Diff(D(P(1), P(4, critical: true)), L(P(1)), true, 600);
             check(t5.Count == 1 && t5[0].Kind == V.KDeparted && t5[0].Severity == V.SDamage && !Has(t5, V.KDeath, V.SDamage), "vitals_departure_is_not_death");
 
+            // --- a death's severity by where the pawn was (RIMMANDRAKE_IGNORE_OFFMAP_COLONIST_DEATH_HEART_ATTACK_TWICE: Randall, a
+            // world-pawn colonist of the abandoned quicktest colony, map -1, died of a heart attack and stopped two Pyrelands rows).
+            // The range: {colonist, not} x {spawned, caravan/transporter (Map -1, not off-map), world pawn (off-map)} x
+            // {actors declared, none} x {critical, not}. Left out: Verse placement itself (KillPlacementOffMap reads Verse; live).
+            V.PawnObs Dead(int id, bool colonist = true, bool offMap = false, bool critical = false, int map = 0)
+            { var d = P(id, colonist: colonist, critical: critical); d.OffMap = offMap; d.Map = map; d.Health = float.NaN; return d; }
+            var worldPawn = Dead(760, offMap: true, map: -1);
+            check(V.DeathSeverity(worldPawn, false) == V.SInfo, "vitals_offmap_colonist_death_is_info", V.DeathSeverity(worldPawn, false));
+            check(V.DeathSeverity(worldPawn, true) == V.SInfo, "vitals_offmap_colonist_death_is_info_with_actors", V.DeathSeverity(worldPawn, true));
+            check(V.DeathSeverity(Dead(1), false) == V.SDamage, "vitals_spawned_colonist_death_is_damage", V.DeathSeverity(Dead(1), false));
+            check(V.DeathSeverity(Dead(1), true) == V.SThreat, "vitals_spawned_noncritical_colonist_death_is_threat_with_actors");
+            check(V.DeathSeverity(Dead(2, map: -1), false) == V.SDamage, "vitals_caravan_colonist_death_is_damage");
+            check(V.DeathSeverity(Dead(3, offMap: true, map: -1, critical: true), true) == V.SDamage, "vitals_offmap_critical_actor_death_is_damage");
+            check(V.DeathSeverity(Dead(4, colonist: false), false) == V.SInfo && V.DeathSeverity(Dead(5, colonist: false, offMap: true), false) == V.SInfo,
+                  "vitals_noncolonist_death_is_info");
+            var stopKindsDefault = V.ParseKinds("default", out var _bd);
+            var worldDeath = V.T(V.KDeath, V.DeathSeverity(worldPawn, false), 900, worldPawn, "died: HeartAttack");
+            var siteDeath = V.T(V.KDeath, V.DeathSeverity(Dead(1), false), 901, Dead(1), "died: Burn");
+            check(V.FirstStop(new List<V.Trigger> { worldDeath }, stopKindsDefault) == null, "vitals_offmap_colonist_death_stops_no_advance");
+            check(V.FirstStop(new List<V.Trigger> { worldDeath, siteDeath }, stopKindsDefault) == siteDeath, "vitals_site_colonist_death_still_stops");
+            check(!V.Matters(worldPawn, false) && V.Matters(Dead(1), false), "vitals_offmap_colonist_does_not_matter");
+
             // --- latch keeps the FIRST non-info trigger; info and declared ones never become first
             var latch = new V.Latch();
             latch.Add(new V.Trigger { Kind = V.KDeparted, Severity = V.SInfo });

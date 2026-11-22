@@ -282,9 +282,9 @@ MUTANTS = [
     ("uncontained GameCompTimer.Fin", "JawaBenchGameCompTiming.cs",
      'catch (Exception e) { Fault("fin", e); }', ""),
     ("KillPostfix calls Vitals.OnKill bare (outside a try)", "JawaBenchSituationalTools.cs",
-     "try { if (__instance != null && __instance.Dead) JawaBenchVitals.OnKill(__instance, dinfo, exactCulprit); }\n"
+     "try { if (__instance != null && __instance.Dead) JawaBenchVitals.OnKill(__instance, dinfo, exactCulprit, __state); }\n"
      "            catch (Exception ex) { NoteError(GKill, \"kill-vitals\", ex); }",
-     "if (__instance != null && __instance.Dead) JawaBenchVitals.OnKill(__instance, dinfo, exactCulprit);"),
+     "if (__instance != null && __instance.Dead) JawaBenchVitals.OnKill(__instance, dinfo, exactCulprit, __state);"),
     ("TakeDamagePostfix commits true, ignoring __runOriginal", "JawaBenchSituationalTools.cs",
      "GDamage.Commit(sc, __runOriginal)", "GDamage.Commit(sc, true)"),
     ("AbsorbPostfix commits true, ignoring __runOriginal", "JawaBenchSituationalTools.cs",

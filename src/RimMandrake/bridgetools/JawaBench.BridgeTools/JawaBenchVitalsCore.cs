@@ -67,6 +67,10 @@ namespace JawaBench.BridgeTools
             internal string NewestWound;   // youngest Hediff_Injury or Hediff_MissingPart (colonists/critical), same format as Newest
             internal string Ailments;      // a downed colonist's/critical actor's bad hediffs, worst first (AilmentList)
             internal bool Downed, Hostile, Colonist, Critical;
+            // OffMap: at death, on no map, in no caravan and in no transporter: a world pawn (an abandoned colony's colonist,
+            // a pawn away on a quest). Its harm cannot touch the test (RIMMANDRAKE_IGNORE_OFFMAP_COLONIST_DEATH_HEART_ATTACK_TWICE:
+            // Randall, map -1, a heart attack, stopped two Pyrelands rows). Set only by the Kill hook; a sampled pawn is spawned.
+            internal bool OffMap;
             internal float Health = float.NaN, Bleed, Mood = float.NaN, MoodBreak = float.NaN;
             internal float Wounds = float.NaN;   // WoundScore of the pawn's wounds; NaN = not read (the hurt stop then stands)
 
@@ -161,7 +165,13 @@ namespace JawaBench.BridgeTools
         }
 
         /// <summary>A pawn whose harm damages the test: a required actor, or (absent any declared actors) any colonist.</summary>
-        internal static bool Matters(PawnObs p, bool anyCritical) => p.Critical || (!anyCritical && p.Colonist);
+        /// A colonist off every map (OffMap) does not matter unless it is a declared actor.
+        internal static bool Matters(PawnObs p, bool anyCritical) => p.Critical || (!anyCritical && p.Colonist && !p.OffMap);
+
+        /// <summary>A death's severity: damage when the pawn matters, threat for another colonist on a map or journey, else
+        /// info. An off-map colonist's death is info: it never stops an advance.</summary>
+        internal static string DeathSeverity(PawnObs p, bool anyCritical) =>
+            Matters(p, anyCritical) ? SDamage : (p.Colonist && !p.OffMap ? SThreat : SInfo);
 
         // ------------------------------------------------------------------ wounds (RIMMANDRAKE_SHIELD_PYRE_WALK_FROM_FULL_LIST_EVENTS)
         // In vanilla 1.6 only Hediff_Injury and Hediff_MissingPart override SummaryHealthPercentImpact (Verse/SummaryHealthHandler.cs,

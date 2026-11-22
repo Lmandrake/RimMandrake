@@ -279,14 +279,17 @@ namespace JawaBench.BridgeTools
         }
 
         /// <summary>From JawaBenchEventRecorder.KillPostfix (only real deaths reach it). The tombstone outlives the corpse.</summary>
-        internal static void OnKill(Pawn p, DamageInfo? dinfo, Hediff culprit)
+        /// <param name="offMap">from the Kill prefix (KillPlacement): on no map, caravan or transporter as Kill began.
+        /// Kill clears the caravan before the postfix, so the postfix cannot read it.</param>
+        internal static void OnKill(Pawn p, DamageInfo? dinfo, Hediff culprit, bool offMap)
         {
             if (!Armed || p == null) return;
             try
             {
                 var o = Observe(p);
+                o.OffMap = offMap;
                 bool anyCrit = Critical.Count > 0;
-                string sev = V.Matters(o, anyCrit) ? V.SDamage : (o.Colonist ? V.SThreat : V.SInfo);
+                string sev = V.DeathSeverity(o, anyCrit);
                 string cause = dinfo.HasValue && dinfo.Value.Def != null ? dinfo.Value.Def.defName : (culprit != null ? culprit.def?.defName : null);
                 string inst = dinfo.HasValue && dinfo.Value.Instigator != null ? dinfo.Value.Instigator.ThingID : null;
                 var t = V.T(V.KDeath, sev, Find.TickManager.TicksGame, o, "died: " + (cause ?? "unknown cause") + (inst != null ? " by " + inst : ""));
