@@ -12,7 +12,7 @@ Pyrelands is not the pilot. It advances beside the pilot (Explosive Knockback), 
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`). Scope: the biome alone; the Deep
   Desert Tribes are a separate mod (`design/concepts/PyrelandsMechanics`), started only after this version passes.
   Code exists: `src/RimMandrake/Pyrelands/` (packageId `mandrake.rm.pyrelands`, ships composed in `mandrake.rm.biomes`).
-- **Stage now:** Stage 6, in-game acceptance, since 2026-11-22 1:47 AM PST (`version/stage_record.json`).
+- **Stage now:** Stage 6, in-game acceptance, since 2026-11-22 8:54 AM PST (`version/stage_record.json`).
 - **Bars:** 42 (21 inventory rows of `record.json` + 21 leaves of `tree.json`), as `version/bars.md` counts them; 41 at
   the lock, `inv_firehawk_hunt_rewards` added by his card 2026-11-14.
   Two inventory rows (`inv_firebreak_firefoam`, `inv_lightning_breaker`) are scope `out`: cut, kept only as absence checks.
@@ -29,7 +29,7 @@ Pyrelands is not the pilot. It advances beside the pilot (Explosive Knockback), 
   14 PROBLEM, 3 CORRECTION, 1 POLISH (g3). By his card 2026-11-15 12:22 PM PST the 17 are fixed in one locked change
   (`RIMMANDRAKE_FIX_PYRELANDS_ROUND_SIX_SEVENTEEN_GAPS`); g3 stays in `version/polish.md`, out of passing.
 - **Held look statements for this mod:** 0 (measured).
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-22 1:47 AM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-22 8:54 AM PST).
 
 ### The vision (his root paragraph, approved by card 2026-11-06, OWNER:1793950669508519029)
 
@@ -489,4 +489,13 @@ the tree, record and test-table edits, the re-pin and the lock-bars add are queu
 - Steward confirms: read visit_4/SUMMARY.md, rows and maturation.py next (4 not-met reasons). Judge-the-judge sort: sc_grass_regreens FAIL = REAL MISS (MOD presumed: ember grass +0.054/day vs vanilla +0.118 on the same ground, growDays 0.8 vs 2.5; the run laid soil, a SITE fault repaired 4fff1aa5e7 but not rerun; reader and census-log repairs 897516fc92, aa441a608f also unrun), item RIMMANDRAKE_TRACE_PYRE_EMBERGRASS_GROWS_TENTH_OF_ITS_RATE, game-up; sc_firefoam_sprayer FAIL = REAL MISS (MOD, carrier lays 0 foam, undesigned, Designer first), item RIMMANDRAKE_DESIGN_PYRE_SPRAYER_CARRIER_NEVER_FOAMS_ITS_PATH, game-up; bar flamefang_bite_carries_venom undecided = REAL MISS (SITE unrepaired, starving bystander stopped the wait-out; planted run voided by a death), item RIMMANDRAKE_FEED_PYRE_VENOM_FIXTURES_HUNGER_STOPS_WAITOUT, game-up; bar walk_season_on_the_pyre undecided = REAL MISS (rerun not done, sc_walk not run at the bound, his full list on game a), owed to the next visit. No RECORD GAP, no CRITERION FLAW (the vanilla-rate expectation follows the def's growDays; the description says a day or two). No mod file changed in the visit, so no fix reader owed. Test edits read: round6_parts re-pins the off-control wait constant, venom_staging adds the doctor-job fake, growth_lines is new: none weakened. Verdict: road back to in_game (next visit) when the three items close; plant_density_one_control_map stays owned by RIMMANDRAKE_BUILD_PYRE_GRASS_FOIL_SAME_SEED_DENSITY_ONE.
 - Was, "Stage now": - **Stage now:** Stage 6, in-game acceptance, since 2026-11-21 9:49 PM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-21 9:49 PM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-22 8:54 AM PST, stage change: In-game acceptance (Stage 6) to In-game acceptance (Stage 6) (by BENCH)
+
+- Why: steward visit 5: no mod-wrong line; 5 undecided bars rest on 3 game-only check/scene lines already filed by the driver (sprayer ring scene SITE, grass density-1.0 foil HARNESS, burn-history probe HARNESS for sc_walk); fixers at Stage 6, then visit 6
+- Checks passed: order, by, version, hold.
+- Steward confirms: read visit_5 SUMMARY.md, rows (32 PASS 0 FAIL 3 UNMEASURED), exit.lines and the counted repairs' diffs (2613e2e96a, e8cb081456, 15431f983f: none weakens what its check observes, each shown planted FAIL / real PASS); verdict: not met, road back in_game on RIMMANDRAKE_SEAL_PYRE_SPRAYER_RING_BOTH_COLONISTS_WAIT_IT_OUT, RIMMANDRAKE_BUILD_PYRE_GRASS_FOIL_SAME_SEED_DENSITY_ONE, RIMMANDRAKE_FIX_PYRE_BURN_HISTORY_PROBE_COUNTS_BEFORE_IT_PRUNES
+- Was, "Stage now": - **Stage now:** Stage 6, in-game acceptance, since 2026-11-22 1:47 AM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-22 1:47 AM PST).
 - Record: `version/stage_record.json`.

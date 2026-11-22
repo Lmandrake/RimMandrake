@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "stage": "in_game",
   "stage_label": "In-game acceptance (Stage 6)",
-  "since": "2026-11-22T01:47:37-08:00",
+  "since": "2026-11-22T08:54:05-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -250,6 +250,23 @@
       "unit": "rm-detached-bench-rimmandrake-route-pyrelands-visit-four-f-1795340473",
       "confirmed": {
         "steward_confirms": "read visit_4/SUMMARY.md, rows and maturation.py next (4 not-met reasons). Judge-the-judge sort: sc_grass_regreens FAIL = REAL MISS (MOD presumed: ember grass +0.054/day vs vanilla +0.118 on the same ground, growDays 0.8 vs 2.5; the run laid soil, a SITE fault repaired 4fff1aa5e7 but not rerun; reader and census-log repairs 897516fc92, aa441a608f also unrun), item RIMMANDRAKE_TRACE_PYRE_EMBERGRASS_GROWS_TENTH_OF_ITS_RATE, game-up; sc_firefoam_sprayer FAIL = REAL MISS (MOD, carrier lays 0 foam, undesigned, Designer first), item RIMMANDRAKE_DESIGN_PYRE_SPRAYER_CARRIER_NEVER_FOAMS_ITS_PATH, game-up; bar flamefang_bite_carries_venom undecided = REAL MISS (SITE unrepaired, starving bystander stopped the wait-out; planted run voided by a death), item RIMMANDRAKE_FEED_PYRE_VENOM_FIXTURES_HUNGER_STOPS_WAITOUT, game-up; bar walk_season_on_the_pyre undecided = REAL MISS (rerun not done, sc_walk not run at the bound, his full list on game a), owed to the next visit. No RECORD GAP, no CRITERION FLAW (the vanilla-rate expectation follows the def's growDays; the description says a day or two). No mod file changed in the visit, so no fix reader owed. Test edits read: round6_parts re-pins the off-control wait constant, venom_staging adds the doctor-job fake, growth_lines is new: none weakened. Verdict: road back to in_game (next visit) when the three items close; plant_density_one_control_map stays owned by RIMMANDRAKE_BUILD_PYRE_GRASS_FOIL_SAME_SEED_DENSITY_ONE."
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold"
+      ]
+    },
+    {
+      "from": "in_game",
+      "to": "in_game",
+      "at": "2026-11-22T08:54:05-08:00",
+      "by": "BENCH",
+      "why": "steward visit 5: no mod-wrong line; 5 undecided bars rest on 3 game-only check/scene lines already filed by the driver (sprayer ring scene SITE, grass density-1.0 foil HARNESS, burn-history probe HARNESS for sc_walk); fixers at Stage 6, then visit 6",
+      "unit": "rm-detached-bench-rimmandrake-route-pyrelands-visit-five-f-1795365974",
+      "confirmed": {
+        "steward_confirms": "read visit_5 SUMMARY.md, rows (32 PASS 0 FAIL 3 UNMEASURED), exit.lines and the counted repairs' diffs (2613e2e96a, e8cb081456, 15431f983f: none weakens what its check observes, each shown planted FAIL / real PASS); verdict: not met, road back in_game on RIMMANDRAKE_SEAL_PYRE_SPRAYER_RING_BOTH_COLONISTS_WAIT_IT_OUT, RIMMANDRAKE_BUILD_PYRE_GRASS_FOIL_SAME_SEED_DENSITY_ONE, RIMMANDRAKE_FIX_PYRE_BURN_HISTORY_PROBE_COUNTS_BEFORE_IT_PRUNES"
       },
       "checks_passed": [
         "order",
