@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "9a2a90465ae5ac56af5e1ff4a95cd0cba9cee54ee3c6dc69150db53eabdeea1b",
+  "body_sha256": "aefb1d6223612e8c9ba8f7038089bad66b74fad903cf10cbb4b333dc02b8db02",
   "reducer": 1,
   "shards": {
    "BACKFILL": 893183,
@@ -29,6 +29,7 @@
    "HOLDER.run-1795315124": 1540,
    "HOLDER.run-1795321038": 846,
    "HOLDER.run-1795325268": 1929,
+   "HOLDER.run-1795329869": 754,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1269,11 +1270,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795325268",
-   "done": "65c45b6e98: inferno deck rule (solid deck 0.35 shields, grate 0.9 passes, capped fire spares the rim) and standing pit prisoner gets food brought; grate scene puts out fires per tier; T_FIRE and T_PRISON red-seen; sc_hung_bridge and sc_hole_prison UNRUN",
+   "by": "HOLDER.run-1795329869",
+   "done": "0995cb276c: red runs recorded for T_FETCH_FALLEN, T_LIQUID_COATING, T_PRISON_CARE and T_TOSS_FLAME (planted faults, each went red); reads of FETCH, COATING and TOSS widened to Source, Defs and Patches (they were blind to edits of RM_RaiderFetchFallen.cs, RM_LiquidCoating.cs and the XML); certificate --to in_game OK",
    "next": "Run sc_hung_bridge and sc_hole_prison three times each at Stage 6, and record sc_hung_bridge red-seen live",
-   "ruled_out": "harness-only cause for sc_hole_prison: the ShouldBeFed postfix hand-fed standing healing prisoners, so DeliverFood refused",
-   "ts": "2026-11-22T06:26:22Z"
+   "ruled_out": "none new",
+   "ts": "2026-11-22T06:51:41Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1725,7 +1726,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1578,
+  "events": 1579,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7826,7 +7827,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-22T06:46:50Z",
+   "last": "2026-11-22T06:51:41Z",
    "lease": "run-1795329869",
    "released": false,
    "token": 42
@@ -7935,6 +7936,7 @@
    "HOLDER.run-1795315124",
    "HOLDER.run-1795321038",
    "HOLDER.run-1795325268",
+   "HOLDER.run-1795329869",
    "JUDGE.judge-1794833810",
    "JUDGE.judge-1794849236",
    "JUDGE.judge-1795134433",

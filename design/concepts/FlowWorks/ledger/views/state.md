@@ -1,13 +1,13 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":59831,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"HOLDER.run-1795260677":3322,"HOLDER.run-1795263747":1891,"HOLDER.run-1795268290":5226,"HOLDER.run-1795285878":924,"HOLDER.run-1795297113":4566,"HOLDER.run-1795304573":2662,"HOLDER.run-1795312089":1009,"HOLDER.run-1795312923":2298,"HOLDER.run-1795315124":1540,"HOLDER.run-1795321038":846,"HOLDER.run-1795325268":1929,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=7515331ce321183ca958afcd343af42fe05e0787cf3b14adf89d690d530a453b -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":59831,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"HOLDER.run-1795260677":3322,"HOLDER.run-1795263747":1891,"HOLDER.run-1795268290":5226,"HOLDER.run-1795285878":924,"HOLDER.run-1795297113":4566,"HOLDER.run-1795304573":2662,"HOLDER.run-1795312089":1009,"HOLDER.run-1795312923":2298,"HOLDER.run-1795315124":1540,"HOLDER.run-1795321038":846,"HOLDER.run-1795325268":1929,"HOLDER.run-1795329869":754,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=7e30df9ea0ffe87ddb07be619ba69edb20ba972c1c3d76b1119689e60c0381a3 -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage in_game · 1578 events in 30 shards · reducer 1
-holder lease run-1795329869, token 42, last active 2026-11-22T06:46:50Z
+version 0.1.0 · stage in_game · 1579 events in 31 shards · reducer 1
+holder lease run-1795329869, token 42, last active 2026-11-22T06:51:41Z
 holder session 9105258d-ded4-478e-838f-6ff01c12ade3, context 342476 of ceiling 400000
 
-## Last checkpoint (HOLDER.run-1795325268, 2026-11-22T06:26:22Z)
-- done: 65c45b6e98: inferno deck rule (solid deck 0.35 shields, grate 0.9 passes, capped fire spares the rim) and standing pit prisoner gets food brought; grate scene puts out fires per tier; T_FIRE and T_PRISON red-seen; sc_hung_bridge and sc_hole_prison UNRUN
+## Last checkpoint (HOLDER.run-1795329869, 2026-11-22T06:51:41Z)
+- done: 0995cb276c: red runs recorded for T_FETCH_FALLEN, T_LIQUID_COATING, T_PRISON_CARE and T_TOSS_FLAME (planted faults, each went red); reads of FETCH, COATING and TOSS widened to Source, Defs and Patches (they were blind to edits of RM_RaiderFetchFallen.cs, RM_LiquidCoating.cs and the XML); certificate --to in_game OK
 - next: Run sc_hung_bridge and sc_hole_prison three times each at Stage 6, and record sc_hung_bridge red-seen live
-- ruled out: harness-only cause for sc_hole_prison: the ShouldBeFed postfix hand-fed standing healing prisoners, so DeliverFood refused
+- ruled out: none new
 
 ## Open findings (178)
 (claimed fixes, awaiting a judge, on one line each with the oldest 127 open findings, named without their 'finding:': `modledger.py show --mod FlowWorks finding:<NAME>`)
@@ -502,6 +502,6 @@ spend recorded: USD 78.94, 45401435 tokens
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
 - notes: 11, never printed here (`modledger.py find --mod FlowWorks <words>`)
-- the full history: 1578 events (views/history.md; never read whole)
+- the full history: 1579 events (views/history.md; never read whole)
 
-cursor: t=2026-11-22T06:46:57Z.1795330017930304206 (modledger.py since --mod FlowWorks t=2026-11-22T06:46:57Z.1795330017930304206 prints what changed after this packet)
+cursor: t=2026-11-22T06:51:41Z.1795330301636077181 (modledger.py since --mod FlowWorks t=2026-11-22T06:51:41Z.1795330301636077181 prints what changed after this packet)
