@@ -587,17 +587,17 @@
    "why_full_list": null,
    "entry_exists": true,
    "item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "command_note": "minimal list + mandrake.rm.biomes",
    "testq": {
     "chains": [
      "burn_line"
     ],
     "by": "testq_blocks.py"
-   },
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
-   "command_note": "minimal list + mandrake.rm.biomes"
+   }
   },
   "sc_ash_watered": {
    "id": "sc_ash_watered",
@@ -615,17 +615,17 @@
    "why_full_list": null,
    "entry_exists": true,
    "item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "command_note": "minimal list + mandrake.rm.biomes",
    "testq": {
     "chains": [
      "ash_fertility_watered"
     ],
     "by": "testq_blocks.py"
-   },
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
-   "command_note": "minimal list + mandrake.rm.biomes"
+   }
   },
   "sc_burn_compounds": {
    "id": "sc_burn_compounds",
@@ -643,17 +643,17 @@
    "why_full_list": null,
    "entry_exists": true,
    "item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "command_note": "minimal list + mandrake.rm.biomes",
    "testq": {
     "chains": [
      "fresh_burn_bonus"
     ],
     "by": "testq_blocks.py"
-   },
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
-   "command_note": "minimal list + mandrake.rm.biomes"
+   }
   },
   "sc_grass_regreens": {
    "id": "sc_grass_regreens",
@@ -671,18 +671,17 @@
    "why_full_list": null,
    "entry_exists": true,
    "item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL",
-   "testq": {
-    "chains": [
-     "grass_cover",
-     "embergrass_regrow"
-    ],
-    "by": "testq_blocks.py"
-   },
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
    },
-   "command_note": "minimal list + mandrake.rm.biomes"
+   "command_note": "minimal list + mandrake.rm.biomes",
+   "testq": {
+    "chains": [
+     "embergrass_regrow"
+    ],
+    "by": "testq_blocks.py"
+   }
   },
   "sc_scorchfruit": {
    "id": "sc_scorchfruit",
@@ -700,17 +699,17 @@
    "why_full_list": null,
    "entry_exists": true,
    "item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "command_note": "minimal list + mandrake.rm.biomes",
    "testq": {
     "chains": [
      "scorchfruit_fire_born"
     ],
     "by": "testq_blocks.py"
-   },
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
-   "command_note": "minimal list + mandrake.rm.biomes"
+   }
   },
   "sc_populations": {
    "id": "sc_populations",
@@ -728,17 +727,17 @@
    "why_full_list": null,
    "entry_exists": true,
    "item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "command_note": "minimal list + mandrake.rm.biomes",
    "testq": {
     "chains": [
      "plant_census"
     ],
     "by": "testq_blocks.py"
-   },
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
-   "command_note": "minimal list + mandrake.rm.biomes"
+   }
   },
   "sc_ruins": {
    "id": "sc_ruins",
@@ -756,17 +755,17 @@
    "why_full_list": null,
    "entry_exists": true,
    "item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "command_note": "minimal list + mandrake.rm.biomes",
    "testq": {
     "chains": [
      "ruins"
     ],
     "by": "testq_blocks.py"
-   },
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
-   "command_note": "minimal list + mandrake.rm.biomes"
+   }
   },
   "sc_firehawk": {
    "id": "sc_firehawk",
@@ -784,17 +783,17 @@
    "why_full_list": null,
    "entry_exists": true,
    "item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "command_note": "minimal list + mandrake.rm.biomes",
    "testq": {
     "chains": [
      "firehawk"
     ],
     "by": "testq_blocks.py"
-   },
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
-   "command_note": "minimal list + mandrake.rm.biomes"
+   }
   },
   "sc_furnace": {
    "id": "sc_furnace",
@@ -812,17 +811,17 @@
    "why_full_list": null,
    "entry_exists": true,
    "item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "command_note": "minimal list + mandrake.rm.biomes",
    "testq": {
     "chains": [
      "furnace_warmth"
     ],
     "by": "testq_blocks.py"
-   },
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
-   "command_note": "minimal list + mandrake.rm.biomes"
+   }
   },
   "sc_ashwallow": {
    "id": "sc_ashwallow",
@@ -840,17 +839,17 @@
    "why_full_list": null,
    "entry_exists": true,
    "item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "command_note": "minimal list + mandrake.rm.biomes",
    "testq": {
     "chains": [
      "burrowers"
     ],
     "by": "testq_blocks.py"
-   },
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
-   "command_note": "minimal list + mandrake.rm.biomes"
+   }
   },
   "sc_ullai": {
    "id": "sc_ullai",
@@ -890,17 +889,17 @@
    "why_full_list": null,
    "entry_exists": true,
    "item": "PYRELANDS_SCENES_BUILD_EIGHT_JUDGE_GAPS",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "command_note": "minimal list + mandrake.rm.biomes",
    "testq": {
     "chains": [
      "cinderfall"
     ],
     "by": "testq_blocks.py"
-   },
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
-   "command_note": "minimal list + mandrake.rm.biomes"
+   }
   },
   "sc_no_rain": {
    "id": "sc_no_rain",
@@ -918,17 +917,17 @@
    "why_full_list": null,
    "entry_exists": true,
    "item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "command_note": "minimal list + mandrake.rm.biomes",
    "testq": {
     "chains": [
      "no_ordinary_rain"
     ],
     "by": "testq_blocks.py"
-   },
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
-   "command_note": "minimal list + mandrake.rm.biomes"
+   }
   },
   "sc_walk": {
    "id": "sc_walk",
@@ -968,17 +967,17 @@
    "why_full_list": null,
    "entry_exists": true,
    "item": "PYRELANDS_SCENES_BUILD_EIGHT_JUDGE_GAPS",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "command_note": "minimal list + mandrake.rm.biomes",
    "testq": {
     "chains": [
      "firefoam_sprayer"
     ],
     "by": "testq_blocks.py"
-   },
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
-   "command_note": "minimal list + mandrake.rm.biomes"
+   }
   },
   "sc_sand_shovel": {
    "id": "sc_sand_shovel",
@@ -996,17 +995,17 @@
    "why_full_list": null,
    "entry_exists": true,
    "item": "PYRELANDS_SCENES_BUILD_EIGHT_JUDGE_GAPS",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "command_note": "minimal list + mandrake.rm.biomes",
    "testq": {
     "chains": [
      "sand_shovel"
     ],
     "by": "testq_blocks.py"
-   },
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
-   "command_note": "minimal list + mandrake.rm.biomes"
+   }
   },
   "sc_rite_hook_alone": {
    "id": "sc_rite_hook_alone",
@@ -1024,17 +1023,17 @@
    "why_full_list": null,
    "entry_exists": true,
    "item": "PYRELANDS_SCENES_BUILD_EIGHT_JUDGE_GAPS",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "command_note": "minimal list + mandrake.rm.biomes",
    "testq": {
     "chains": [
      "rite_hook_alone"
     ],
     "by": "testq_blocks.py"
-   },
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
-   "command_note": "minimal list + mandrake.rm.biomes"
+   }
   },
   "sc_heat_dome": {
    "id": "sc_heat_dome",
@@ -1052,17 +1051,17 @@
    "why_full_list": null,
    "entry_exists": true,
    "item": "PYRELANDS_SCENES_BUILD_VENOM_GIANT_DUST_DOME",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "command_note": "minimal list + mandrake.rm.biomes",
    "testq": {
     "chains": [
      "heat_dome"
     ],
     "by": "testq_blocks.py"
-   },
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
-   "command_note": "minimal list + mandrake.rm.biomes"
+   }
   },
   "sc_fire_dusts_ash": {
    "id": "sc_fire_dusts_ash",
@@ -1080,17 +1079,17 @@
    "why_full_list": null,
    "entry_exists": true,
    "item": "PYRELANDS_SCENES_BUILD_VENOM_GIANT_DUST_DOME",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "command_note": "minimal list + mandrake.rm.biomes",
    "testq": {
     "chains": [
      "fire_tick_effects"
     ],
     "by": "testq_blocks.py"
-   },
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
-   "command_note": "minimal list + mandrake.rm.biomes"
+   }
   },
   "sc_flamefang_venom": {
    "id": "sc_flamefang_venom",
@@ -1108,17 +1107,17 @@
    "why_full_list": null,
    "entry_exists": true,
    "item": "PYRELANDS_SCENES_BUILD_VENOM_GIANT_DUST_DOME",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
+   },
+   "command_note": "minimal list + mandrake.rm.biomes",
    "testq": {
     "chains": [
      "flamefang_venom"
     ],
     "by": "testq_blocks.py"
-   },
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
-   "command_note": "minimal list + mandrake.rm.biomes"
+   }
   },
   "sc_foreign_arrivals": {
    "id": "sc_foreign_arrivals",
@@ -1140,7 +1139,13 @@
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
    },
-   "command_note": "minimal list + mandrake.rm.biomes"
+   "command_note": "minimal list + mandrake.rm.biomes",
+   "testq": {
+    "chains": [
+     "foreign_arrivals"
+    ],
+    "by": "testq_blocks.py"
+   }
   },
   "sc_firehawk_rewards": {
    "id": "sc_firehawk_rewards",
@@ -1162,7 +1167,13 @@
     "ran": false,
     "why": "live: this run is offline only; entry ABSENT in validation.py"
    },
-   "command_note": "minimal list + mandrake.rm.biomes"
+   "command_note": "minimal list + mandrake.rm.biomes",
+   "testq": {
+    "chains": [
+     "firehawk_first_sighting_letter"
+    ],
+    "by": "testq_blocks.py"
+   }
   },
   "P_startup_and_def_wiring": {
    "id": "P_startup_and_def_wiring",
@@ -1178,15 +1189,15 @@
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
+   },
    "testq": {
     "chains": [
      "startup_and_def_wiring"
     ],
     "by": "testq_blocks.py"
-   },
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
    }
   },
   "P_mapgen_log": {
@@ -1203,15 +1214,15 @@
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
+   },
    "testq": {
     "chains": [
      "mapgen_log"
     ],
     "by": "testq_blocks.py"
-   },
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
    }
   },
   "P_grass_cover": {
@@ -1228,15 +1239,15 @@
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
+   },
    "testq": {
     "chains": [
      "grass_cover"
     ],
     "by": "testq_blocks.py"
-   },
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
    }
   },
   "P_animal_census": {
@@ -1253,15 +1264,15 @@
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
+   },
    "testq": {
     "chains": [
      "animal_census"
     ],
     "by": "testq_blocks.py"
-   },
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
    }
   },
   "P_ambient_ash_drift": {
@@ -1278,15 +1289,15 @@
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
+   },
    "testq": {
     "chains": [
      "ambient_ash_drift"
     ],
     "by": "testq_blocks.py"
-   },
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
    }
   },
   "P_scorchfruit_produces": {
@@ -1303,15 +1314,15 @@
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
+   },
    "testq": {
     "chains": [
      "scorchfruit_produces"
     ],
     "by": "testq_blocks.py"
-   },
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
    }
   },
   "P_scorchfruit_spoils": {
@@ -1328,15 +1339,15 @@
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
+   },
    "testq": {
     "chains": [
      "scorchfruit_spoils"
     ],
     "by": "testq_blocks.py"
-   },
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
    }
   },
   "P_furnace_room": {
@@ -1353,15 +1364,15 @@
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
+   },
    "testq": {
     "chains": [
      "furnace_room"
     ],
     "by": "testq_blocks.py"
-   },
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
    }
   },
   "P_ashfall_weather_accumulation": {
@@ -1378,15 +1389,15 @@
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
+   },
    "testq": {
     "chains": [
      "ashfall_weather_accumulation"
     ],
     "by": "testq_blocks.py"
-   },
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
    }
   },
   "P_ashfall_drifts": {
@@ -1403,15 +1414,15 @@
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
+   },
    "testq": {
     "chains": [
      "ashfall_drifts"
     ],
     "by": "testq_blocks.py"
-   },
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
    }
   },
   "P_blackrain": {
@@ -1428,15 +1439,15 @@
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
+   },
    "testq": {
     "chains": [
      "blackrain"
     ],
     "by": "testq_blocks.py"
-   },
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
    }
   },
   "P_firefoam_aim": {
@@ -1489,17 +1500,17 @@
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in firehawk_rewards_live.py"
+   },
+   "command_note": "minimal list + mandrake.rm.biomes; state reads only, flight never watched",
    "testq": {
     "chains": [
      "firehawk_first_sighting_letter"
     ],
     "by": "testq_blocks.py"
-   },
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in firehawk_rewards_live.py"
-   },
-   "command_note": "minimal list + mandrake.rm.biomes; state reads only, flight never watched"
+   }
   },
   "firehawk_crestfeather_yield": {
    "id": "firehawk_crestfeather_yield",
@@ -1515,17 +1526,17 @@
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in firehawk_rewards_live.py"
+   },
+   "command_note": "minimal list + mandrake.rm.biomes; state reads only, flight never watched",
    "testq": {
     "chains": [
      "firehawk_crestfeather_yield"
     ],
     "by": "testq_blocks.py"
-   },
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in firehawk_rewards_live.py"
-   },
-   "command_note": "minimal list + mandrake.rm.biomes; state reads only, flight never watched"
+   }
   },
   "RECORD_ART_SHEET": {
    "id": "RECORD_ART_SHEET",
