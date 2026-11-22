@@ -10881,3 +10881,4 @@
 {"seat":"RUNNER","event":"live","id":"OPS_FINDINGS_DIAGNOSE_XZLM","result":"broken","detail":"Ops alarm UNTRIAGED: flow.untriaged_findings = 3 findings with no outcome yet (MEASURED), line > 0","ts":"2026-11-22T03:29:13Z","tsn":1795318153230615295}
 {"seat":"RUNNER","event":"raise","id":"OPS_FINDINGS_DIAGNOSE_XZLM","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-22T03:29:21Z","tsn":1795318161984352132}
 {"seat":"RUNNER","event":"live","id":"OPS_FINDINGS_DIAGNOSE_XZLM","result":"broken","detail":"Ops alarm UNTRIAGED: flow.untriaged_findings = 3 findings with no outcome yet (MEASURED), line > 0","ts":"2026-11-22T03:30:31Z","tsn":1795318231822642220}
+{"seat":"RUNNER","event":"live","id":"OPS_FINDINGS_DIAGNOSE_XZLM","result":"broken","detail":"Ops alarm UNTRIAGED: flow.untriaged_findings = 3 findings with no outcome yet (MEASURED), line > 0","ts":"2026-11-22T03:32:13Z","tsn":1795318333511680514}
