@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "stage": "in_game",
   "stage_label": "In-game acceptance (Stage 6)",
-  "since": "2026-11-21T21:49:35-08:00",
+  "since": "2026-11-22T01:47:37-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -239,6 +239,23 @@
         "steward_confirms",
         "exit_met",
         "judge_certificate"
+      ]
+    },
+    {
+      "from": "in_game",
+      "to": "in_game",
+      "at": "2026-11-22T01:47:37-08:00",
+      "by": "BENCH",
+      "why": "steward, visit 4 not met: every line that goes back is game-only and already filed by the driver (needs game-up); road back is the next visit, never offline_build",
+      "unit": "rm-detached-bench-rimmandrake-route-pyrelands-visit-four-f-1795340473",
+      "confirmed": {
+        "steward_confirms": "read visit_4/SUMMARY.md, rows and maturation.py next (4 not-met reasons). Judge-the-judge sort: sc_grass_regreens FAIL = REAL MISS (MOD presumed: ember grass +0.054/day vs vanilla +0.118 on the same ground, growDays 0.8 vs 2.5; the run laid soil, a SITE fault repaired 4fff1aa5e7 but not rerun; reader and census-log repairs 897516fc92, aa441a608f also unrun), item RIMMANDRAKE_TRACE_PYRE_EMBERGRASS_GROWS_TENTH_OF_ITS_RATE, game-up; sc_firefoam_sprayer FAIL = REAL MISS (MOD, carrier lays 0 foam, undesigned, Designer first), item RIMMANDRAKE_DESIGN_PYRE_SPRAYER_CARRIER_NEVER_FOAMS_ITS_PATH, game-up; bar flamefang_bite_carries_venom undecided = REAL MISS (SITE unrepaired, starving bystander stopped the wait-out; planted run voided by a death), item RIMMANDRAKE_FEED_PYRE_VENOM_FIXTURES_HUNGER_STOPS_WAITOUT, game-up; bar walk_season_on_the_pyre undecided = REAL MISS (rerun not done, sc_walk not run at the bound, his full list on game a), owed to the next visit. No RECORD GAP, no CRITERION FLAW (the vanilla-rate expectation follows the def's growDays; the description says a day or two). No mod file changed in the visit, so no fix reader owed. Test edits read: round6_parts re-pins the off-control wait constant, venom_staging adds the doctor-job fake, growth_lines is new: none weakened. Verdict: road back to in_game (next visit) when the three items close; plant_density_one_control_map stays owned by RIMMANDRAKE_BUILD_PYRE_GRASS_FOIL_SAME_SEED_DENSITY_ONE."
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold"
       ]
     }
   ],
