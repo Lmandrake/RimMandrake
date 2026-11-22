@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "a21b5d0f1e815c703204d16f97f86e163f66e0a93c3efd1f896e8fd06e7abda2",
+  "body_sha256": "75b01ccf547b0d49a6cc868a8107d3fe576d2ae925e3a7e6b6dc78688b9ed765",
   "reducer": 1,
   "shards": {
    "BACKFILL": 893183,
@@ -32,7 +32,7 @@
    "HOLDER.run-1795329869": 754,
    "HOLDER.run-1795330730": 1090,
    "HOLDER.run-1795335550": 748,
-   "HOLDER.run-1795338340": 562,
+   "HOLDER.run-1795338340": 3967,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -925,6 +925,16 @@
     "text": "Mod paths ruled out as cause: drain refuses unordered brine, StandingOrders is Fill-only, and pour fails on switch. Fault was in the harness, not the mod.",
     "ts": "2026-11-16T11:42:04Z"
    },
+   "cause:fill-job-goto-never-completes-from-a-diagonal-stand": {
+    "code_sha": "647bc9b0db3baf748e3d1b6f04397892ba63fed5",
+    "depends_on": [
+     "src/RimMandrake/FlowWorks/Source/JobDriver_FillInCanal.cs",
+     "src/RimMandrake/FlowWorks/Source/RM_JobDriver_ShovelFloor.cs"
+    ],
+    "status": "refuted",
+    "text": "The island-restore fill stall was not JobDriver_FillInCanal's GotoCell(A, Touch) failing to finish from the diagonal stand square (172,225). That stand square worked in 6 of 6 runs with a known-skill worker. The stall was a slow random worker: MiningSpeed 0.1 at Mining 0 lays no notch in the 15000-tick wait.",
+    "ts": "2026-11-22T09:34:25Z"
+   },
    "cause:flowworks-rm-patch-liquidheatterrainchanged-was-not-the-cause": {
     "code_sha": "6db8549c513a",
     "depends_on": [
@@ -1273,11 +1283,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795335550",
-   "done": "steward visit 6: both sc_hung_bridge MOD lines filed by driver; solid-deck design call taken (delegated: low chance per burn <= 0.4); advanced in_game -> offline_build",
-   "next": "Fix the solid-deck chance offline, red selftest first (RIMMANDRAKE_DECIDE_FLOWWORKS_SOLID_DECK_LOW_CHANCE_SATURATES_IN_ONE_BURN)",
-   "ruled_out": "the driver edit to suspension_bridge_proof.py weakens no assertion; sc_walk UNMEASURED is a rerun owed on game a, not a send-back",
-   "ts": "2026-11-22T08:30:26Z"
+   "by": "HOLDER.run-1795338340",
+   "done": "fill stall classed SITE (random worker at MiningSpeed 0.1); reach row stages Mining 8, asserts speed; 5/5 live PASS on game b; item closed at 647bc9b0db",
+   "next": "Run the next in-game visit: rerun sc_hung_bridge on the walk build (both road-back items closed)",
+   "ruled_out": "GotoCell(A, Touch) from the diagonal stand square never completing: the same stand square worked 6 of 6 with a known-skill worker",
+   "ts": "2026-11-22T09:35:16Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1729,7 +1739,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1596,
+  "events": 1600,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7830,7 +7840,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-22T09:23:17Z",
+   "last": "2026-11-22T09:35:16Z",
    "lease": "run-1795338340",
    "released": false,
    "token": 45
@@ -8434,6 +8444,14 @@
     "ts": "2026-11-16T11:41:55Z",
     "version": "0.1.0",
     "where": "cycle_1/lane2/faults.json"
+   },
+   "trap:a-fill-stall-is-a-mining-zero-worker-not-a-stuck-job": {
+    "by": "HOLDER.run-1795338340",
+    "status": "noted",
+    "text": "A dig or fill job that holds its gravel beside the square, with no depth change, can be a slow worker, not a stuck job: MiningSpeed is 0.1 at Mining 0 and 1.0 at Mining 8. Read jawa/pawn_stats MiningSpeed first. A proof that spawns a random Colonist for timed work sets Mining and asserts the speed.",
+    "ts": "2026-11-22T09:34:01Z",
+    "version": "0.1.0",
+    "where": "src/RimMandrake/FlowWorks/northstar/suspension_bridge_proof.py reach()"
    },
    "trap:a-forced-entry-proof-that-launches-plain-pawnflyer": {
     "by": "BACKFILL",
