@@ -1481,27 +1481,15 @@ def collect_fuel(env, now):
     return rows
 
 
-CLAUDE_ACCOUNT = "/home/mandrake/.local/bin/claude-account"
-
-
 def collect_inuse(env):
-    """Which account this machine uses RIGHT NOW, from `claude-account --json status` only (never from the fuel readings).
-    -> {"live": name, "interrupted": bool}; raises Unmeasured with the reason. The email is dropped here, it never reaches the page."""
-    try:
-        rc, out = env.run([CLAUDE_ACCOUNT, "--json", "status"], timeout=10)
-    except subprocess.TimeoutExpired:
-        raise Unmeasured("claude-account timed out after 10 s")
-    except FileNotFoundError:
-        raise Unmeasured("claude-account not found")
-    try:
-        d = json.loads(out)
-    except ValueError:
-        raise Unmeasured("claude-account exited %s with no JSON" % rc)
-    if rc != 0 or not isinstance(d, dict) or not d.get("ok"):
-        raise Unmeasured("claude-account reports not ok")
-    if not d.get("live"):
-        raise Unmeasured("claude-account names no live account")
-    return {"live": str(d["live"]), "interrupted": bool(d.get("interrupted_switch"))}
+    """Which account this machine uses RIGHT NOW, from the switcher's status only (account_live, the one reader; never
+    from the fuel readings). -> {"live": name, "interrupted": bool}; raises Unmeasured with the reason. The email is
+    dropped here, it never reaches the page."""
+    import account_live as AL
+    a = AL.read(run=env.run)
+    if a.kind != "value":
+        raise Unmeasured(AL.why_of(a))
+    return {"live": AL.name_of(a), "interrupted": bool(AL.status_of(a).get("interrupted_switch"))}
 
 
 def inuse_text(p):

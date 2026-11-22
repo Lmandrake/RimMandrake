@@ -372,13 +372,12 @@ def _ssh(target: str, script: str, timeout: int = 120) -> tuple[int, str]:
 
 
 def remote_live(target: str) -> tuple[str | None, str | None]:
-    """(machine name, live account name) on a remote, from its switcher's status (non-secret)."""
-    rc, out = _ssh(target, "claude-account status --json", 40)
-    try:
-        st = json.loads(out)
-    except ValueError:
-        return None, None
-    return st.get("machine"), st.get("live")
+    """(machine name, live account name) on a remote, from its switcher's status (non-secret; account_live, the one
+    reader). (None, None) when the remote cannot be read or names no live account."""
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import account_live as AL
+    a = AL.read(target=target)
+    return AL.status_of(a).get("machine"), AL.name_of(a)
 
 
 def probe_remote(target: str, want_email: str, now: float) -> tuple[dict | None, str]:

@@ -28,7 +28,7 @@ Sibling docs: `arms.md` (arm design), `handoff_context.md` (concurrency, worktre
 - ESTIMATE, 6 helpers for 8 h at 0.31%/h: about 15% of system. At the 1.9%/h pessimistic rate, spread across the night: about 15% to 40% with the arms.
 - ESTIMATE, arms: power card says 174 to 261M ITE, about one normal day's spend at the 270M/day census. No %-per-ITE calibration exists, so that is not a percentage.
 - Only one arm has a measured burn (v3 first build pass: 19 messages, 13.9k output, 824k cache read). Trio and ralph_a were not found in transcripts.
-- Pool left is about 159 points over 93 h, or 1.7%/h (ESTIMATE). `account_failover.py` already moves to lukas near 0%, so tonight's budget does not need a login switch. A switch closes every Claude window, so **do not switch by hand during the arms.**
+- Pool left is about 159 points over 93 h, or 1.7%/h (ESTIMATE). A switch closes every Claude window, so **do not switch by hand during the arms.**
 - **Blind spot:** the `session_pct_used` series for system last has a value at 00:37. The 90% five-hour brake may be working from a stale reading. I did not trace how it handles that. Treat it as possibly off, and go by the weekly slope and any throttle errors.
 
 **Stop lines for the night.** Trial first. Drop to 3 helpers if system burns over 3%/h for an hour, if `memory.events oom` moves on `rm-harness.slice`, if a new `oom_kill` lands in an arm unit, or if host available falls under 3 GB. Do not restart them until the cause is known.

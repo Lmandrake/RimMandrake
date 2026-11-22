@@ -1243,7 +1243,7 @@ def relaunch_argv(seat, cfg, why="ticket ended", gen=None):
 
 
 def fallback_argv(seat, machine=None):
-    """machine.json's fleet relaunch (account_failover's launcher) narrowed to `-Seats <SEAT>`, or None."""
+    """machine.json's fleet relaunch (the switcher's fleet launcher) narrowed to `-Seats <SEAT>`, or None."""
     if machine is None:
         machine = _read_json(MACHINE) or {}
     r = machine.get("relaunch")

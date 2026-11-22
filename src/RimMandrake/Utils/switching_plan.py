@@ -847,19 +847,10 @@ def run(argv, full=False, timeout=600):
 
 
 def switcher_status() -> dict:
-    rc, out = run([CA, "--json", "status"], full=True, timeout=120)
-    if rc != 0:
-        return {}
-    dec, i = json.JSONDecoder(), out.find("{")
-    while i >= 0:
-        try:
-            obj, _ = dec.raw_decode(out[i:])
-            if isinstance(obj, dict) and "live" in obj:
-                return obj
-        except ValueError:
-            pass
-        i = out.find("{", i + 1)
-    return {}
+    """The switcher's whole status when it names the live account, else {} (account_live, the one reader)."""
+    sys.path.insert(0, str(HERE))
+    import account_live as AL
+    return AL.status_of(AL.read(exe_path=CA))
 
 
 def meter_now() -> dict:

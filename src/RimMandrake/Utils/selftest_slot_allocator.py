@@ -19,6 +19,8 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import slot_allocator as SA  # noqa: E402
+import account_live as AL  # noqa: E402
+_CA = tempfile.mkdtemp(prefix="slotalloc_ca_")  # fake switchers: the live login, never the real claude-account
 
 FAILS = []
 H = 3600.0
@@ -402,7 +404,7 @@ owner = tmp / "OWNER.jsonl"
 owner.write_text(json.dumps({"seat": "OWNER", "event": "note", "byCard": "Q -> A", "ts": SA.iso_z(real_now - 20 * 60)}) + "\n")
 env = dict(os.environ, RM_OPS_WATCH_DIR=str(tmp / "ops_watch"), RM_ACCOUNT_USAGE_DIR=str(au), RM_STREAMS_DIR=str(streams), RM_SLOT_PROJECTS=str(tmp / "projects"),
            RM_SLOT_OWNER_LEDGER=str(owner), RM_SLOT_MACHINE="testhost", AGENT_SEAT="BENCH",
-           RM_SLOT_LIVE_LOGIN="system")  # hermetic: the fixture machine's live login, never the real claude-account's
+           RM_CLAUDE_ACCOUNT=AL.fake_switcher(_CA, "system"))  # hermetic: never the real claude-account
 cli = [sys.executable, str(HERE / "slot_allocator.py")]
 p = subprocess.run(cli + ["now", "--json"], env=env, capture_output=True, text=True, timeout=60)
 try:
@@ -438,7 +440,7 @@ p2 = subprocess.run(cli + ["now"], env=env, capture_output=True, text=True, time
 check("clear drops the owner's word", "N=5 BENCH" in p2.stdout, p2.stdout)
 # finding 1 (b), Codex review: just switched to a login not yet measured here, `set` without --hours must not borrow the
 # previous account's persisted reset (allocation.json state is system's) as the new word's expiry
-_envsw = dict(env, RM_SLOT_LIVE_LOGIN="lukas")
+_envsw = dict(env, RM_CLAUDE_ACCOUNT=AL.fake_switcher(_CA, "lukas"))
 check("fixture: the persisted allocation state is the previous account's (system)",
       (al.get("state") or {}).get("account") == "system" and (al.get("state") or {}).get("reset_at"), al.get("state"))
 p = subprocess.run(cli + ["set", "--n", "2", "--owner-said", "two"], env=_envsw, capture_output=True, text=True, timeout=60)
@@ -978,16 +980,16 @@ for args in (["--n", "-1"], ["--n", "2", "--hours", "-3"], ["--n", "2", "--hours
 def _acc(name, method="live login"):
     return {"account": name, "machine": "archmagi", "source": "MEASURED", "method": method, "measured_at": "2026-10-28T10:00:00-07:00"}
 _accs = {"lukas": _acc("lukas", "estimate from last poll"), "steven": _acc("steven"), "system": _acc("system")}
-os.environ["RM_SLOT_LIVE_LOGIN"] = "system"
+os.environ["RM_CLAUDE_ACCOUNT"] = AL.fake_switcher(_CA, "system")
 check("burn account: a tie on measured_at picks the live login (system), not the first key (lukas)",
       SA.pick_burn_account(_accs, {"burn_account": "auto"}, "archmagi")[0] == "system", SA.pick_burn_account(_accs, {"burn_account": "auto"}, "archmagi"))
-os.environ["RM_SLOT_LIVE_LOGIN"] = ""
+os.environ["RM_CLAUDE_ACCOUNT"] = AL.fake_switcher(_CA, None)
 check("burn account: claude-account unreadable -> tie goes to a 'live login' method, not the first key",
       SA.pick_burn_account(_accs, {"burn_account": "auto"}, "archmagi")[0] == "steven", SA.pick_burn_account(_accs, {"burn_account": "auto"}, "archmagi"))
 # RIMMANDRAKE_FIX_SLOT_ALLOCATOR_OVERRIDE_AND_BURN_PICK finding 1, the Conductor's option (b): right after a switch the
 # named live login has no MEASURED reading here yet -> UNKNOWN, never paced on the previous account's quota
 _old = {"steven": _acc("steven"), "system": _acc("system")}
-os.environ["RM_SLOT_LIVE_LOGIN"] = "lukas"
+os.environ["RM_CLAUDE_ACCOUNT"] = AL.fake_switcher(_CA, "lukas")
 _pk = SA.pick_burn_account(_old, {"burn_account": "auto"}, "archmagi")
 check("burn account: a named live login with no reading here is UNKNOWN (None), not the previous account", _pk[0] is None, _pk)
 check("burn account: its reason names the login and says it is unmeasured here", "lukas" in _pk[1] and "no MEASURED reading" in _pk[1], _pk)
@@ -1000,11 +1002,10 @@ _dk = SA.decide(inp(source="UNMEASURED", account=None, account_how=_pk[1], week_
                      week_pct_used=None, hours_to_week_reset=None), {}, R, NOW)
 check("burn account UNKNOWN: the allocator holds blind and its why says the login is unmeasured",
       "UNMEASURED" in _dk["why"] and "UNKNOWN until the meter reads it" in _dk["why"], _dk["why"][:300])
-os.environ["RM_SLOT_LIVE_LOGIN"] = ""
+os.environ["RM_CLAUDE_ACCOUNT"] = AL.fake_switcher(_CA, None)
 _pk = SA.pick_burn_account(_old, {"burn_account": "auto"}, "archmagi")
 check("burn account: claude-account unreadable still falls to the newest reading, and says it was unavailable",
       _pk[0] in ("steven", "system") and "unavailable" in _pk[1], _pk)
-os.environ.pop("RM_SLOT_LIVE_LOGIN")
 _fake = tempfile.mkdtemp() + "/ca"
 Path(_fake).write_text("#!/bin/sh\nhead -c 5000 /dev/zero | tr '\\0' ' '\necho '{\"live\": \"system\", \"x\": \"'$(head -c 4000 /dev/zero | tr '\\0' a)'\"}'\n")
 os.chmod(_fake, 0o755)

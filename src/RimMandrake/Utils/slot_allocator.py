@@ -57,7 +57,6 @@ import glob
 import json
 import math
 import os
-import subprocess
 import sys
 import tempfile
 import time
@@ -389,17 +388,9 @@ def machine():
 
 
 def live_login_name():
-    """The account this machine is logged into now, from `claude-account --json status` (the whole stdout is parsed);
-    None when the tool is absent, slow, or its answer is not JSON naming a live account."""
-    if "RM_SLOT_LIVE_LOGIN" in os.environ:  # selftest seam
-        return os.environ["RM_SLOT_LIVE_LOGIN"] or None
-    exe = os.environ.get("RM_CLAUDE_ACCOUNT") or os.path.expanduser("~/.local/bin/claude-account")
-    try:
-        out = subprocess.run([exe, "--json", "status"], capture_output=True, text=True, timeout=20).stdout
-        live = json.loads(out).get("live")
-        return live if isinstance(live, str) and live else None
-    except Exception:  # noqa: BLE001
-        return None
+    """The account this machine is logged into now (account_live, the one reader); None when it cannot be read."""
+    import account_live as AL
+    return AL.name_of(AL.read())
 
 
 _ASK = object()

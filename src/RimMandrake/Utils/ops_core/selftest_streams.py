@@ -174,6 +174,7 @@ check("backfill skips an hour a real record already covers", len({int(r["t"] // 
 
 # ---- the 15-min re-check: pacing() runs the allocator, writes allocation.json, returns the tile record
 import slot_allocator as SA  # noqa: E402
+import account_live as AL  # noqa: E402
 fx = Path(tempfile.mkdtemp(prefix="ss_pace_"))
 (fx / "projects" / "-home-mandrake-rm-bench").mkdir(parents=True)
 (fx / "projects" / "-home-mandrake-rm-foundry").mkdir(parents=True)
@@ -186,7 +187,7 @@ tn = time.time()
 (fx / "au" / "series.jsonl").write_text("")
 os.environ.update(RM_SLOT_PROJECTS=str(fx / "projects"), RM_ACCOUNT_USAGE_DIR=str(fx / "au"), RM_SLOT_MACHINE="testhost",
                   RM_SLOT_OWNER_LEDGER=str(fx / "none.jsonl"),
-                  RM_SLOT_LIVE_LOGIN="system")  # hermetic: the fixture machine's live login, never the real claude-account's
+                  RM_CLAUDE_ACCOUNT=AL.fake_switcher(fx, "system"))  # hermetic: never the real claude-account
 pc_ = S.pacing(tn)
 al = json.loads((Path(os.environ["RM_STREAMS_DIR"]) / "allocation.json").read_text()) \
     if (Path(os.environ["RM_STREAMS_DIR"]) / "allocation.json").exists() else {}

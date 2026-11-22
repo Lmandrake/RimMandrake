@@ -1,0 +1,478 @@
+{
+ "built_by": "design/specs/2026-11-22-live-account/build_fixtures.py",
+ "cases": [
+  {
+   "name": "archmagi-real",
+   "source": "recorded: Archmagi status 2026-11-22",
+   "rc": 0,
+   "out": "{\n  \"ok\": true,\n  \"machine\": \"archmagi\",\n  \"live\": \"lukas\",\n  \"live_email\": \"lukas@x.test\",\n  \"armed\": false,\n  \"disarmed_note\": \"disarmed 2026-11-21T17:45:13-08:00; arm with: claude-account arm --confirm archmagi\",\n  \"interrupted_switch\": false,\n  \"claude_processes\": 9,\n  \"subscription_mode_problems\": [],\n  \"accounts\": [\n    {\n      \"name\": \"lukas\",\n      \"email\": \"lukas@x.test\",\n      \"where\": \"live\",\n      \"state\": \"ok\",\n      \"vault_note\": \"backed up 2026-11-22T11:20:45-08:00\",\n      \"refresh_days_left\": 29.3,\n      \"last_renewed\": \"2026-11-21T10:56:51-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-21T10:56:51-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795356400.911,\n        \"refresh_expires_after\": 1795356400.686,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"steven\",\n      \"email\": \"steven@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"expiring\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 4.2,\n      \"last_renewed\": \"2026-11-22T11:42:13-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-22T11:42:13-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795740369.846,\n        \"refresh_expires_after\": 1795740369.846,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"system\",\n      \"email\": \"the@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"ok\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 20.1,\n      \"last_renewed\": \"2026-10-28T04:41:02-07:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-10-28T04:41:02-07:00\",\n        \"result\": \"renewed-by-use\"\n      },\n      \"staged\": false\n    }\n  ],\n  \"capture\": {\n    \"result\": \"current\",\n    \"account\": \"lukas\",\n    \"email\": \"lukas@x.test\",\n    \"rt_hash\": \"8abc773b\"\n  },\n  \"note\": \"days left and health are LAST OBSERVED from the credential files; a failed warm is the real signal\"\n}\n",
+   "raises": null,
+   "want": {
+    "kind": "value",
+    "live": "lukas"
+   }
+  },
+  {
+   "name": "stevedesktop-real-over-ssh",
+   "source": "recorded: SteveDesktop status over ssh 2026-11-22",
+   "rc": 0,
+   "out": "{\n  \"ok\": true,\n  \"machine\": \"stevedesktop\",\n  \"live\": \"system\",\n  \"live_email\": \"the@x.test\",\n  \"armed\": true,\n  \"disarmed_note\": null,\n  \"interrupted_switch\": false,\n  \"claude_processes\": 3,\n  \"subscription_mode_problems\": [],\n  \"accounts\": [\n    {\n      \"name\": \"lukas\",\n      \"email\": \"lukas@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"expiring\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 1.6,\n      \"last_renewed\": \"2026-11-22T04:44:31-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-22T04:44:31-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795512262.576,\n        \"refresh_expires_after\": 1795512262.576,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"steven\",\n      \"email\": \"steven@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"expiring\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 0.9,\n      \"last_renewed\": \"2026-11-22T04:44:36-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-22T04:44:36-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795452859.573,\n        \"refresh_expires_after\": 1795452859.573,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"system\",\n      \"email\": \"the@x.test\",\n      \"where\": \"live\",\n      \"state\": \"expiring\",\n      \"vault_note\": \"backed up 2026-11-22T08:30:24-08:00\",\n      \"refresh_days_left\": 0.6,\n      \"last_renewed\": \"2026-11-22T04:44:36-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-22T04:44:36-08:00\",\n        \"result\": \"renewed-by-use\"\n      },\n      \"staged\": false\n    }\n  ],\n  \"capture\": {\n    \"result\": \"current\",\n    \"account\": \"system\",\n    \"email\": \"the@x.test\",\n    \"rt_hash\": \"e1dd3aa0\"\n  },\n  \"note\": \"days left and health are LAST OBSERVED from the credential files; a failed warm is the real signal\"\n}\n",
+   "raises": null,
+   "want": {
+    "kind": "value",
+    "live": "system"
+   }
+  },
+  {
+   "name": "switch-to-lukas-2026-10-28T12:45:15-07:00",
+   "source": "recorded: log.jsonl use row 2026-10-28T12:45:15-07:00",
+   "rc": 0,
+   "out": "{\n  \"ok\": true,\n  \"machine\": \"archmagi\",\n  \"live\": \"lukas\",\n  \"live_email\": \"lukas@x.test\",\n  \"armed\": false,\n  \"disarmed_note\": \"disarmed 2026-11-21T17:45:13-08:00; arm with: claude-account arm --confirm archmagi\",\n  \"interrupted_switch\": false,\n  \"claude_processes\": 9,\n  \"subscription_mode_problems\": [],\n  \"accounts\": [\n    {\n      \"name\": \"lukas\",\n      \"email\": \"lukas@x.test\",\n      \"where\": \"live\",\n      \"state\": \"ok\",\n      \"vault_note\": \"backed up 2026-11-22T11:20:45-08:00\",\n      \"refresh_days_left\": 29.3,\n      \"last_renewed\": \"2026-11-21T10:56:51-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-21T10:56:51-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795356400.911,\n        \"refresh_expires_after\": 1795356400.686,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"steven\",\n      \"email\": \"steven@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"expiring\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 4.2,\n      \"last_renewed\": \"2026-11-22T11:42:13-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-22T11:42:13-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795740369.846,\n        \"refresh_expires_after\": 1795740369.846,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"system\",\n      \"email\": \"the@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"ok\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 20.1,\n      \"last_renewed\": \"2026-10-28T04:41:02-07:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-10-28T04:41:02-07:00\",\n        \"result\": \"renewed-by-use\"\n      },\n      \"staged\": false\n    }\n  ],\n  \"capture\": {\n    \"result\": \"current\",\n    \"account\": \"lukas\",\n    \"email\": \"lukas@x.test\",\n    \"rt_hash\": \"8abc773b\"\n  },\n  \"note\": \"days left and health are LAST OBSERVED from the credential files; a failed warm is the real signal\"\n}\n",
+   "raises": null,
+   "want": {
+    "kind": "value",
+    "live": "lukas"
+   }
+  },
+  {
+   "name": "switch-to-system-2026-10-28T14:10:27-07:00",
+   "source": "recorded: log.jsonl use row 2026-10-28T14:10:27-07:00",
+   "rc": 0,
+   "out": "{\n  \"ok\": true,\n  \"machine\": \"archmagi\",\n  \"live\": \"system\",\n  \"live_email\": \"lukas@x.test\",\n  \"armed\": false,\n  \"disarmed_note\": \"disarmed 2026-11-21T17:45:13-08:00; arm with: claude-account arm --confirm archmagi\",\n  \"interrupted_switch\": false,\n  \"claude_processes\": 9,\n  \"subscription_mode_problems\": [],\n  \"accounts\": [\n    {\n      \"name\": \"lukas\",\n      \"email\": \"lukas@x.test\",\n      \"where\": \"live\",\n      \"state\": \"ok\",\n      \"vault_note\": \"backed up 2026-11-22T11:20:45-08:00\",\n      \"refresh_days_left\": 29.3,\n      \"last_renewed\": \"2026-11-21T10:56:51-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-21T10:56:51-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795356400.911,\n        \"refresh_expires_after\": 1795356400.686,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"steven\",\n      \"email\": \"steven@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"expiring\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 4.2,\n      \"last_renewed\": \"2026-11-22T11:42:13-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-22T11:42:13-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795740369.846,\n        \"refresh_expires_after\": 1795740369.846,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"system\",\n      \"email\": \"the@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"ok\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 20.1,\n      \"last_renewed\": \"2026-10-28T04:41:02-07:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-10-28T04:41:02-07:00\",\n        \"result\": \"renewed-by-use\"\n      },\n      \"staged\": false\n    }\n  ],\n  \"capture\": {\n    \"result\": \"current\",\n    \"account\": \"lukas\",\n    \"email\": \"lukas@x.test\",\n    \"rt_hash\": \"8abc773b\"\n  },\n  \"note\": \"days left and health are LAST OBSERVED from the credential files; a failed warm is the real signal\"\n}\n",
+   "raises": null,
+   "want": {
+    "kind": "value",
+    "live": "system"
+   }
+  },
+  {
+   "name": "switch-to-steven-2026-10-28T18:36:17-07:00",
+   "source": "recorded: log.jsonl use row 2026-10-28T18:36:17-07:00",
+   "rc": 0,
+   "out": "{\n  \"ok\": true,\n  \"machine\": \"archmagi\",\n  \"live\": \"steven\",\n  \"live_email\": \"lukas@x.test\",\n  \"armed\": false,\n  \"disarmed_note\": \"disarmed 2026-11-21T17:45:13-08:00; arm with: claude-account arm --confirm archmagi\",\n  \"interrupted_switch\": false,\n  \"claude_processes\": 9,\n  \"subscription_mode_problems\": [],\n  \"accounts\": [\n    {\n      \"name\": \"lukas\",\n      \"email\": \"lukas@x.test\",\n      \"where\": \"live\",\n      \"state\": \"ok\",\n      \"vault_note\": \"backed up 2026-11-22T11:20:45-08:00\",\n      \"refresh_days_left\": 29.3,\n      \"last_renewed\": \"2026-11-21T10:56:51-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-21T10:56:51-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795356400.911,\n        \"refresh_expires_after\": 1795356400.686,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"steven\",\n      \"email\": \"steven@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"expiring\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 4.2,\n      \"last_renewed\": \"2026-11-22T11:42:13-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-22T11:42:13-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795740369.846,\n        \"refresh_expires_after\": 1795740369.846,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"system\",\n      \"email\": \"the@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"ok\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 20.1,\n      \"last_renewed\": \"2026-10-28T04:41:02-07:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-10-28T04:41:02-07:00\",\n        \"result\": \"renewed-by-use\"\n      },\n      \"staged\": false\n    }\n  ],\n  \"capture\": {\n    \"result\": \"current\",\n    \"account\": \"lukas\",\n    \"email\": \"lukas@x.test\",\n    \"rt_hash\": \"8abc773b\"\n  },\n  \"note\": \"days left and health are LAST OBSERVED from the credential files; a failed warm is the real signal\"\n}\n",
+   "raises": null,
+   "want": {
+    "kind": "value",
+    "live": "steven"
+   }
+  },
+  {
+   "name": "switch-to-system-2026-10-30T15:31:43-07:00",
+   "source": "recorded: log.jsonl use row 2026-10-30T15:31:43-07:00",
+   "rc": 0,
+   "out": "{\n  \"ok\": true,\n  \"machine\": \"archmagi\",\n  \"live\": \"system\",\n  \"live_email\": \"lukas@x.test\",\n  \"armed\": false,\n  \"disarmed_note\": \"disarmed 2026-11-21T17:45:13-08:00; arm with: claude-account arm --confirm archmagi\",\n  \"interrupted_switch\": false,\n  \"claude_processes\": 9,\n  \"subscription_mode_problems\": [],\n  \"accounts\": [\n    {\n      \"name\": \"lukas\",\n      \"email\": \"lukas@x.test\",\n      \"where\": \"live\",\n      \"state\": \"ok\",\n      \"vault_note\": \"backed up 2026-11-22T11:20:45-08:00\",\n      \"refresh_days_left\": 29.3,\n      \"last_renewed\": \"2026-11-21T10:56:51-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-21T10:56:51-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795356400.911,\n        \"refresh_expires_after\": 1795356400.686,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"steven\",\n      \"email\": \"steven@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"expiring\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 4.2,\n      \"last_renewed\": \"2026-11-22T11:42:13-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-22T11:42:13-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795740369.846,\n        \"refresh_expires_after\": 1795740369.846,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"system\",\n      \"email\": \"the@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"ok\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 20.1,\n      \"last_renewed\": \"2026-10-28T04:41:02-07:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-10-28T04:41:02-07:00\",\n        \"result\": \"renewed-by-use\"\n      },\n      \"staged\": false\n    }\n  ],\n  \"capture\": {\n    \"result\": \"current\",\n    \"account\": \"lukas\",\n    \"email\": \"lukas@x.test\",\n    \"rt_hash\": \"8abc773b\"\n  },\n  \"note\": \"days left and health are LAST OBSERVED from the credential files; a failed warm is the real signal\"\n}\n",
+   "raises": null,
+   "want": {
+    "kind": "value",
+    "live": "system"
+   }
+  },
+  {
+   "name": "switch-to-lukas-2026-11-01T17:37:52-08:00",
+   "source": "recorded: log.jsonl use row 2026-11-01T17:37:52-08:00",
+   "rc": 0,
+   "out": "{\n  \"ok\": true,\n  \"machine\": \"archmagi\",\n  \"live\": \"lukas\",\n  \"live_email\": \"lukas@x.test\",\n  \"armed\": false,\n  \"disarmed_note\": \"disarmed 2026-11-21T17:45:13-08:00; arm with: claude-account arm --confirm archmagi\",\n  \"interrupted_switch\": false,\n  \"claude_processes\": 9,\n  \"subscription_mode_problems\": [],\n  \"accounts\": [\n    {\n      \"name\": \"lukas\",\n      \"email\": \"lukas@x.test\",\n      \"where\": \"live\",\n      \"state\": \"ok\",\n      \"vault_note\": \"backed up 2026-11-22T11:20:45-08:00\",\n      \"refresh_days_left\": 29.3,\n      \"last_renewed\": \"2026-11-21T10:56:51-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-21T10:56:51-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795356400.911,\n        \"refresh_expires_after\": 1795356400.686,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"steven\",\n      \"email\": \"steven@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"expiring\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 4.2,\n      \"last_renewed\": \"2026-11-22T11:42:13-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-22T11:42:13-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795740369.846,\n        \"refresh_expires_after\": 1795740369.846,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"system\",\n      \"email\": \"the@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"ok\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 20.1,\n      \"last_renewed\": \"2026-10-28T04:41:02-07:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-10-28T04:41:02-07:00\",\n        \"result\": \"renewed-by-use\"\n      },\n      \"staged\": false\n    }\n  ],\n  \"capture\": {\n    \"result\": \"current\",\n    \"account\": \"lukas\",\n    \"email\": \"lukas@x.test\",\n    \"rt_hash\": \"8abc773b\"\n  },\n  \"note\": \"days left and health are LAST OBSERVED from the credential files; a failed warm is the real signal\"\n}\n",
+   "raises": null,
+   "want": {
+    "kind": "value",
+    "live": "lukas"
+   }
+  },
+  {
+   "name": "switch-to-steven-2026-11-03T18:54:23-08:00",
+   "source": "recorded: log.jsonl use row 2026-11-03T18:54:23-08:00",
+   "rc": 0,
+   "out": "{\n  \"ok\": true,\n  \"machine\": \"archmagi\",\n  \"live\": \"steven\",\n  \"live_email\": \"lukas@x.test\",\n  \"armed\": false,\n  \"disarmed_note\": \"disarmed 2026-11-21T17:45:13-08:00; arm with: claude-account arm --confirm archmagi\",\n  \"interrupted_switch\": false,\n  \"claude_processes\": 9,\n  \"subscription_mode_problems\": [],\n  \"accounts\": [\n    {\n      \"name\": \"lukas\",\n      \"email\": \"lukas@x.test\",\n      \"where\": \"live\",\n      \"state\": \"ok\",\n      \"vault_note\": \"backed up 2026-11-22T11:20:45-08:00\",\n      \"refresh_days_left\": 29.3,\n      \"last_renewed\": \"2026-11-21T10:56:51-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-21T10:56:51-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795356400.911,\n        \"refresh_expires_after\": 1795356400.686,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"steven\",\n      \"email\": \"steven@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"expiring\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 4.2,\n      \"last_renewed\": \"2026-11-22T11:42:13-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-22T11:42:13-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795740369.846,\n        \"refresh_expires_after\": 1795740369.846,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"system\",\n      \"email\": \"the@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"ok\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 20.1,\n      \"last_renewed\": \"2026-10-28T04:41:02-07:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-10-28T04:41:02-07:00\",\n        \"result\": \"renewed-by-use\"\n      },\n      \"staged\": false\n    }\n  ],\n  \"capture\": {\n    \"result\": \"current\",\n    \"account\": \"lukas\",\n    \"email\": \"lukas@x.test\",\n    \"rt_hash\": \"8abc773b\"\n  },\n  \"note\": \"days left and health are LAST OBSERVED from the credential files; a failed warm is the real signal\"\n}\n",
+   "raises": null,
+   "want": {
+    "kind": "value",
+    "live": "steven"
+   }
+  },
+  {
+   "name": "switch-to-system-2026-11-04T01:26:38-08:00",
+   "source": "recorded: log.jsonl use row 2026-11-04T01:26:38-08:00",
+   "rc": 0,
+   "out": "{\n  \"ok\": true,\n  \"machine\": \"archmagi\",\n  \"live\": \"system\",\n  \"live_email\": \"lukas@x.test\",\n  \"armed\": false,\n  \"disarmed_note\": \"disarmed 2026-11-21T17:45:13-08:00; arm with: claude-account arm --confirm archmagi\",\n  \"interrupted_switch\": false,\n  \"claude_processes\": 9,\n  \"subscription_mode_problems\": [],\n  \"accounts\": [\n    {\n      \"name\": \"lukas\",\n      \"email\": \"lukas@x.test\",\n      \"where\": \"live\",\n      \"state\": \"ok\",\n      \"vault_note\": \"backed up 2026-11-22T11:20:45-08:00\",\n      \"refresh_days_left\": 29.3,\n      \"last_renewed\": \"2026-11-21T10:56:51-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-21T10:56:51-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795356400.911,\n        \"refresh_expires_after\": 1795356400.686,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"steven\",\n      \"email\": \"steven@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"expiring\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 4.2,\n      \"last_renewed\": \"2026-11-22T11:42:13-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-22T11:42:13-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795740369.846,\n        \"refresh_expires_after\": 1795740369.846,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"system\",\n      \"email\": \"the@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"ok\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 20.1,\n      \"last_renewed\": \"2026-10-28T04:41:02-07:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-10-28T04:41:02-07:00\",\n        \"result\": \"renewed-by-use\"\n      },\n      \"staged\": false\n    }\n  ],\n  \"capture\": {\n    \"result\": \"current\",\n    \"account\": \"lukas\",\n    \"email\": \"lukas@x.test\",\n    \"rt_hash\": \"8abc773b\"\n  },\n  \"note\": \"days left and health are LAST OBSERVED from the credential files; a failed warm is the real signal\"\n}\n",
+   "raises": null,
+   "want": {
+    "kind": "value",
+    "live": "system"
+   }
+  },
+  {
+   "name": "switch-to-steven-2026-11-06T00:30:28-08:00",
+   "source": "recorded: log.jsonl use row 2026-11-06T00:30:28-08:00",
+   "rc": 0,
+   "out": "{\n  \"ok\": true,\n  \"machine\": \"archmagi\",\n  \"live\": \"steven\",\n  \"live_email\": \"lukas@x.test\",\n  \"armed\": false,\n  \"disarmed_note\": \"disarmed 2026-11-21T17:45:13-08:00; arm with: claude-account arm --confirm archmagi\",\n  \"interrupted_switch\": false,\n  \"claude_processes\": 9,\n  \"subscription_mode_problems\": [],\n  \"accounts\": [\n    {\n      \"name\": \"lukas\",\n      \"email\": \"lukas@x.test\",\n      \"where\": \"live\",\n      \"state\": \"ok\",\n      \"vault_note\": \"backed up 2026-11-22T11:20:45-08:00\",\n      \"refresh_days_left\": 29.3,\n      \"last_renewed\": \"2026-11-21T10:56:51-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-21T10:56:51-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795356400.911,\n        \"refresh_expires_after\": 1795356400.686,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"steven\",\n      \"email\": \"steven@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"expiring\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 4.2,\n      \"last_renewed\": \"2026-11-22T11:42:13-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-22T11:42:13-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795740369.846,\n        \"refresh_expires_after\": 1795740369.846,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"system\",\n      \"email\": \"the@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"ok\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 20.1,\n      \"last_renewed\": \"2026-10-28T04:41:02-07:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-10-28T04:41:02-07:00\",\n        \"result\": \"renewed-by-use\"\n      },\n      \"staged\": false\n    }\n  ],\n  \"capture\": {\n    \"result\": \"current\",\n    \"account\": \"lukas\",\n    \"email\": \"lukas@x.test\",\n    \"rt_hash\": \"8abc773b\"\n  },\n  \"note\": \"days left and health are LAST OBSERVED from the credential files; a failed warm is the real signal\"\n}\n",
+   "raises": null,
+   "want": {
+    "kind": "value",
+    "live": "steven"
+   }
+  },
+  {
+   "name": "switch-to-lukas-2026-11-06T11:26:26-08:00",
+   "source": "recorded: log.jsonl use row 2026-11-06T11:26:26-08:00",
+   "rc": 0,
+   "out": "{\n  \"ok\": true,\n  \"machine\": \"archmagi\",\n  \"live\": \"lukas\",\n  \"live_email\": \"lukas@x.test\",\n  \"armed\": false,\n  \"disarmed_note\": \"disarmed 2026-11-21T17:45:13-08:00; arm with: claude-account arm --confirm archmagi\",\n  \"interrupted_switch\": false,\n  \"claude_processes\": 9,\n  \"subscription_mode_problems\": [],\n  \"accounts\": [\n    {\n      \"name\": \"lukas\",\n      \"email\": \"lukas@x.test\",\n      \"where\": \"live\",\n      \"state\": \"ok\",\n      \"vault_note\": \"backed up 2026-11-22T11:20:45-08:00\",\n      \"refresh_days_left\": 29.3,\n      \"last_renewed\": \"2026-11-21T10:56:51-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-21T10:56:51-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795356400.911,\n        \"refresh_expires_after\": 1795356400.686,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"steven\",\n      \"email\": \"steven@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"expiring\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 4.2,\n      \"last_renewed\": \"2026-11-22T11:42:13-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-22T11:42:13-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795740369.846,\n        \"refresh_expires_after\": 1795740369.846,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"system\",\n      \"email\": \"the@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"ok\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 20.1,\n      \"last_renewed\": \"2026-10-28T04:41:02-07:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-10-28T04:41:02-07:00\",\n        \"result\": \"renewed-by-use\"\n      },\n      \"staged\": false\n    }\n  ],\n  \"capture\": {\n    \"result\": \"current\",\n    \"account\": \"lukas\",\n    \"email\": \"lukas@x.test\",\n    \"rt_hash\": \"8abc773b\"\n  },\n  \"note\": \"days left and health are LAST OBSERVED from the credential files; a failed warm is the real signal\"\n}\n",
+   "raises": null,
+   "want": {
+    "kind": "value",
+    "live": "lukas"
+   }
+  },
+  {
+   "name": "switch-to-steven-2026-11-06T11:30:11-08:00",
+   "source": "recorded: log.jsonl use row 2026-11-06T11:30:11-08:00",
+   "rc": 0,
+   "out": "{\n  \"ok\": true,\n  \"machine\": \"archmagi\",\n  \"live\": \"steven\",\n  \"live_email\": \"lukas@x.test\",\n  \"armed\": false,\n  \"disarmed_note\": \"disarmed 2026-11-21T17:45:13-08:00; arm with: claude-account arm --confirm archmagi\",\n  \"interrupted_switch\": false,\n  \"claude_processes\": 9,\n  \"subscription_mode_problems\": [],\n  \"accounts\": [\n    {\n      \"name\": \"lukas\",\n      \"email\": \"lukas@x.test\",\n      \"where\": \"live\",\n      \"state\": \"ok\",\n      \"vault_note\": \"backed up 2026-11-22T11:20:45-08:00\",\n      \"refresh_days_left\": 29.3,\n      \"last_renewed\": \"2026-11-21T10:56:51-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-21T10:56:51-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795356400.911,\n        \"refresh_expires_after\": 1795356400.686,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"steven\",\n      \"email\": \"steven@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"expiring\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 4.2,\n      \"last_renewed\": \"2026-11-22T11:42:13-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-22T11:42:13-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795740369.846,\n        \"refresh_expires_after\": 1795740369.846,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"system\",\n      \"email\": \"the@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"ok\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 20.1,\n      \"last_renewed\": \"2026-10-28T04:41:02-07:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-10-28T04:41:02-07:00\",\n        \"result\": \"renewed-by-use\"\n      },\n      \"staged\": false\n    }\n  ],\n  \"capture\": {\n    \"result\": \"current\",\n    \"account\": \"lukas\",\n    \"email\": \"lukas@x.test\",\n    \"rt_hash\": \"8abc773b\"\n  },\n  \"note\": \"days left and health are LAST OBSERVED from the credential files; a failed warm is the real signal\"\n}\n",
+   "raises": null,
+   "want": {
+    "kind": "value",
+    "live": "steven"
+   }
+  },
+  {
+   "name": "switch-to-lukas-2026-11-06T12:27:44-08:00",
+   "source": "recorded: log.jsonl use row 2026-11-06T12:27:44-08:00",
+   "rc": 0,
+   "out": "{\n  \"ok\": true,\n  \"machine\": \"archmagi\",\n  \"live\": \"lukas\",\n  \"live_email\": \"lukas@x.test\",\n  \"armed\": false,\n  \"disarmed_note\": \"disarmed 2026-11-21T17:45:13-08:00; arm with: claude-account arm --confirm archmagi\",\n  \"interrupted_switch\": false,\n  \"claude_processes\": 9,\n  \"subscription_mode_problems\": [],\n  \"accounts\": [\n    {\n      \"name\": \"lukas\",\n      \"email\": \"lukas@x.test\",\n      \"where\": \"live\",\n      \"state\": \"ok\",\n      \"vault_note\": \"backed up 2026-11-22T11:20:45-08:00\",\n      \"refresh_days_left\": 29.3,\n      \"last_renewed\": \"2026-11-21T10:56:51-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-21T10:56:51-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795356400.911,\n        \"refresh_expires_after\": 1795356400.686,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"steven\",\n      \"email\": \"steven@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"expiring\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 4.2,\n      \"last_renewed\": \"2026-11-22T11:42:13-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-22T11:42:13-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795740369.846,\n        \"refresh_expires_after\": 1795740369.846,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"system\",\n      \"email\": \"the@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"ok\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 20.1,\n      \"last_renewed\": \"2026-10-28T04:41:02-07:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-10-28T04:41:02-07:00\",\n        \"result\": \"renewed-by-use\"\n      },\n      \"staged\": false\n    }\n  ],\n  \"capture\": {\n    \"result\": \"current\",\n    \"account\": \"lukas\",\n    \"email\": \"lukas@x.test\",\n    \"rt_hash\": \"8abc773b\"\n  },\n  \"note\": \"days left and health are LAST OBSERVED from the credential files; a failed warm is the real signal\"\n}\n",
+   "raises": null,
+   "want": {
+    "kind": "value",
+    "live": "lukas"
+   }
+  },
+  {
+   "name": "switch-to-system-2026-11-11T11:57:07-08:00",
+   "source": "recorded: log.jsonl use row 2026-11-11T11:57:07-08:00",
+   "rc": 0,
+   "out": "{\n  \"ok\": true,\n  \"machine\": \"archmagi\",\n  \"live\": \"system\",\n  \"live_email\": \"lukas@x.test\",\n  \"armed\": false,\n  \"disarmed_note\": \"disarmed 2026-11-21T17:45:13-08:00; arm with: claude-account arm --confirm archmagi\",\n  \"interrupted_switch\": false,\n  \"claude_processes\": 9,\n  \"subscription_mode_problems\": [],\n  \"accounts\": [\n    {\n      \"name\": \"lukas\",\n      \"email\": \"lukas@x.test\",\n      \"where\": \"live\",\n      \"state\": \"ok\",\n      \"vault_note\": \"backed up 2026-11-22T11:20:45-08:00\",\n      \"refresh_days_left\": 29.3,\n      \"last_renewed\": \"2026-11-21T10:56:51-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-21T10:56:51-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795356400.911,\n        \"refresh_expires_after\": 1795356400.686,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"steven\",\n      \"email\": \"steven@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"expiring\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 4.2,\n      \"last_renewed\": \"2026-11-22T11:42:13-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-22T11:42:13-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795740369.846,\n        \"refresh_expires_after\": 1795740369.846,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"system\",\n      \"email\": \"the@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"ok\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 20.1,\n      \"last_renewed\": \"2026-10-28T04:41:02-07:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-10-28T04:41:02-07:00\",\n        \"result\": \"renewed-by-use\"\n      },\n      \"staged\": false\n    }\n  ],\n  \"capture\": {\n    \"result\": \"current\",\n    \"account\": \"lukas\",\n    \"email\": \"lukas@x.test\",\n    \"rt_hash\": \"8abc773b\"\n  },\n  \"note\": \"days left and health are LAST OBSERVED from the credential files; a failed warm is the real signal\"\n}\n",
+   "raises": null,
+   "want": {
+    "kind": "value",
+    "live": "system"
+   }
+  },
+  {
+   "name": "switch-to-steven-2026-11-11T16:52:53-08:00",
+   "source": "recorded: log.jsonl use row 2026-11-11T16:52:53-08:00",
+   "rc": 0,
+   "out": "{\n  \"ok\": true,\n  \"machine\": \"archmagi\",\n  \"live\": \"steven\",\n  \"live_email\": \"lukas@x.test\",\n  \"armed\": false,\n  \"disarmed_note\": \"disarmed 2026-11-21T17:45:13-08:00; arm with: claude-account arm --confirm archmagi\",\n  \"interrupted_switch\": false,\n  \"claude_processes\": 9,\n  \"subscription_mode_problems\": [],\n  \"accounts\": [\n    {\n      \"name\": \"lukas\",\n      \"email\": \"lukas@x.test\",\n      \"where\": \"live\",\n      \"state\": \"ok\",\n      \"vault_note\": \"backed up 2026-11-22T11:20:45-08:00\",\n      \"refresh_days_left\": 29.3,\n      \"last_renewed\": \"2026-11-21T10:56:51-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-21T10:56:51-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795356400.911,\n        \"refresh_expires_after\": 1795356400.686,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"steven\",\n      \"email\": \"steven@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"expiring\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 4.2,\n      \"last_renewed\": \"2026-11-22T11:42:13-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-22T11:42:13-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795740369.846,\n        \"refresh_expires_after\": 1795740369.846,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"system\",\n      \"email\": \"the@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"ok\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 20.1,\n      \"last_renewed\": \"2026-10-28T04:41:02-07:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-10-28T04:41:02-07:00\",\n        \"result\": \"renewed-by-use\"\n      },\n      \"staged\": false\n    }\n  ],\n  \"capture\": {\n    \"result\": \"current\",\n    \"account\": \"lukas\",\n    \"email\": \"lukas@x.test\",\n    \"rt_hash\": \"8abc773b\"\n  },\n  \"note\": \"days left and health are LAST OBSERVED from the credential files; a failed warm is the real signal\"\n}\n",
+   "raises": null,
+   "want": {
+    "kind": "value",
+    "live": "steven"
+   }
+  },
+  {
+   "name": "switch-to-system-2026-11-12T13:50:50-08:00",
+   "source": "recorded: log.jsonl use row 2026-11-12T13:50:50-08:00",
+   "rc": 0,
+   "out": "{\n  \"ok\": true,\n  \"machine\": \"archmagi\",\n  \"live\": \"system\",\n  \"live_email\": \"lukas@x.test\",\n  \"armed\": false,\n  \"disarmed_note\": \"disarmed 2026-11-21T17:45:13-08:00; arm with: claude-account arm --confirm archmagi\",\n  \"interrupted_switch\": false,\n  \"claude_processes\": 9,\n  \"subscription_mode_problems\": [],\n  \"accounts\": [\n    {\n      \"name\": \"lukas\",\n      \"email\": \"lukas@x.test\",\n      \"where\": \"live\",\n      \"state\": \"ok\",\n      \"vault_note\": \"backed up 2026-11-22T11:20:45-08:00\",\n      \"refresh_days_left\": 29.3,\n      \"last_renewed\": \"2026-11-21T10:56:51-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-21T10:56:51-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795356400.911,\n        \"refresh_expires_after\": 1795356400.686,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"steven\",\n      \"email\": \"steven@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"expiring\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 4.2,\n      \"last_renewed\": \"2026-11-22T11:42:13-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-22T11:42:13-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795740369.846,\n        \"refresh_expires_after\": 1795740369.846,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"system\",\n      \"email\": \"the@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"ok\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 20.1,\n      \"last_renewed\": \"2026-10-28T04:41:02-07:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-10-28T04:41:02-07:00\",\n        \"result\": \"renewed-by-use\"\n      },\n      \"staged\": false\n    }\n  ],\n  \"capture\": {\n    \"result\": \"current\",\n    \"account\": \"lukas\",\n    \"email\": \"lukas@x.test\",\n    \"rt_hash\": \"8abc773b\"\n  },\n  \"note\": \"days left and health are LAST OBSERVED from the credential files; a failed warm is the real signal\"\n}\n",
+   "raises": null,
+   "want": {
+    "kind": "value",
+    "live": "system"
+   }
+  },
+  {
+   "name": "switch-to-lukas-2026-11-15T12:05:20-08:00",
+   "source": "recorded: log.jsonl use row 2026-11-15T12:05:20-08:00",
+   "rc": 0,
+   "out": "{\n  \"ok\": true,\n  \"machine\": \"archmagi\",\n  \"live\": \"lukas\",\n  \"live_email\": \"lukas@x.test\",\n  \"armed\": false,\n  \"disarmed_note\": \"disarmed 2026-11-21T17:45:13-08:00; arm with: claude-account arm --confirm archmagi\",\n  \"interrupted_switch\": false,\n  \"claude_processes\": 9,\n  \"subscription_mode_problems\": [],\n  \"accounts\": [\n    {\n      \"name\": \"lukas\",\n      \"email\": \"lukas@x.test\",\n      \"where\": \"live\",\n      \"state\": \"ok\",\n      \"vault_note\": \"backed up 2026-11-22T11:20:45-08:00\",\n      \"refresh_days_left\": 29.3,\n      \"last_renewed\": \"2026-11-21T10:56:51-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-21T10:56:51-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795356400.911,\n        \"refresh_expires_after\": 1795356400.686,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"steven\",\n      \"email\": \"steven@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"expiring\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 4.2,\n      \"last_renewed\": \"2026-11-22T11:42:13-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-22T11:42:13-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795740369.846,\n        \"refresh_expires_after\": 1795740369.846,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"system\",\n      \"email\": \"the@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"ok\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 20.1,\n      \"last_renewed\": \"2026-10-28T04:41:02-07:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-10-28T04:41:02-07:00\",\n        \"result\": \"renewed-by-use\"\n      },\n      \"staged\": false\n    }\n  ],\n  \"capture\": {\n    \"result\": \"current\",\n    \"account\": \"lukas\",\n    \"email\": \"lukas@x.test\",\n    \"rt_hash\": \"8abc773b\"\n  },\n  \"note\": \"days left and health are LAST OBSERVED from the credential files; a failed warm is the real signal\"\n}\n",
+   "raises": null,
+   "want": {
+    "kind": "value",
+    "live": "lukas"
+   }
+  },
+  {
+   "name": "switch-to-steven-2026-11-17T05:46:13-08:00",
+   "source": "recorded: log.jsonl use row 2026-11-17T05:46:13-08:00",
+   "rc": 0,
+   "out": "{\n  \"ok\": true,\n  \"machine\": \"archmagi\",\n  \"live\": \"steven\",\n  \"live_email\": \"lukas@x.test\",\n  \"armed\": false,\n  \"disarmed_note\": \"disarmed 2026-11-21T17:45:13-08:00; arm with: claude-account arm --confirm archmagi\",\n  \"interrupted_switch\": false,\n  \"claude_processes\": 9,\n  \"subscription_mode_problems\": [],\n  \"accounts\": [\n    {\n      \"name\": \"lukas\",\n      \"email\": \"lukas@x.test\",\n      \"where\": \"live\",\n      \"state\": \"ok\",\n      \"vault_note\": \"backed up 2026-11-22T11:20:45-08:00\",\n      \"refresh_days_left\": 29.3,\n      \"last_renewed\": \"2026-11-21T10:56:51-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-21T10:56:51-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795356400.911,\n        \"refresh_expires_after\": 1795356400.686,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"steven\",\n      \"email\": \"steven@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"expiring\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 4.2,\n      \"last_renewed\": \"2026-11-22T11:42:13-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-22T11:42:13-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795740369.846,\n        \"refresh_expires_after\": 1795740369.846,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"system\",\n      \"email\": \"the@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"ok\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 20.1,\n      \"last_renewed\": \"2026-10-28T04:41:02-07:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-10-28T04:41:02-07:00\",\n        \"result\": \"renewed-by-use\"\n      },\n      \"staged\": false\n    }\n  ],\n  \"capture\": {\n    \"result\": \"current\",\n    \"account\": \"lukas\",\n    \"email\": \"lukas@x.test\",\n    \"rt_hash\": \"8abc773b\"\n  },\n  \"note\": \"days left and health are LAST OBSERVED from the credential files; a failed warm is the real signal\"\n}\n",
+   "raises": null,
+   "want": {
+    "kind": "value",
+    "live": "steven"
+   }
+  },
+  {
+   "name": "switch-to-lukas-2026-11-17T05:54:00-08:00",
+   "source": "recorded: log.jsonl use row 2026-11-17T05:54:00-08:00",
+   "rc": 0,
+   "out": "{\n  \"ok\": true,\n  \"machine\": \"archmagi\",\n  \"live\": \"lukas\",\n  \"live_email\": \"lukas@x.test\",\n  \"armed\": false,\n  \"disarmed_note\": \"disarmed 2026-11-21T17:45:13-08:00; arm with: claude-account arm --confirm archmagi\",\n  \"interrupted_switch\": false,\n  \"claude_processes\": 9,\n  \"subscription_mode_problems\": [],\n  \"accounts\": [\n    {\n      \"name\": \"lukas\",\n      \"email\": \"lukas@x.test\",\n      \"where\": \"live\",\n      \"state\": \"ok\",\n      \"vault_note\": \"backed up 2026-11-22T11:20:45-08:00\",\n      \"refresh_days_left\": 29.3,\n      \"last_renewed\": \"2026-11-21T10:56:51-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-21T10:56:51-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795356400.911,\n        \"refresh_expires_after\": 1795356400.686,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"steven\",\n      \"email\": \"steven@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"expiring\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 4.2,\n      \"last_renewed\": \"2026-11-22T11:42:13-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-22T11:42:13-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795740369.846,\n        \"refresh_expires_after\": 1795740369.846,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"system\",\n      \"email\": \"the@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"ok\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 20.1,\n      \"last_renewed\": \"2026-10-28T04:41:02-07:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-10-28T04:41:02-07:00\",\n        \"result\": \"renewed-by-use\"\n      },\n      \"staged\": false\n    }\n  ],\n  \"capture\": {\n    \"result\": \"current\",\n    \"account\": \"lukas\",\n    \"email\": \"lukas@x.test\",\n    \"rt_hash\": \"8abc773b\"\n  },\n  \"note\": \"days left and health are LAST OBSERVED from the credential files; a failed warm is the real signal\"\n}\n",
+   "raises": null,
+   "want": {
+    "kind": "value",
+    "live": "lukas"
+   }
+  },
+  {
+   "name": "switch-to-system-2026-11-17T05:58:49-08:00",
+   "source": "recorded: log.jsonl use row 2026-11-17T05:58:49-08:00",
+   "rc": 0,
+   "out": "{\n  \"ok\": true,\n  \"machine\": \"archmagi\",\n  \"live\": \"system\",\n  \"live_email\": \"lukas@x.test\",\n  \"armed\": false,\n  \"disarmed_note\": \"disarmed 2026-11-21T17:45:13-08:00; arm with: claude-account arm --confirm archmagi\",\n  \"interrupted_switch\": false,\n  \"claude_processes\": 9,\n  \"subscription_mode_problems\": [],\n  \"accounts\": [\n    {\n      \"name\": \"lukas\",\n      \"email\": \"lukas@x.test\",\n      \"where\": \"live\",\n      \"state\": \"ok\",\n      \"vault_note\": \"backed up 2026-11-22T11:20:45-08:00\",\n      \"refresh_days_left\": 29.3,\n      \"last_renewed\": \"2026-11-21T10:56:51-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-21T10:56:51-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795356400.911,\n        \"refresh_expires_after\": 1795356400.686,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"steven\",\n      \"email\": \"steven@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"expiring\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 4.2,\n      \"last_renewed\": \"2026-11-22T11:42:13-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-22T11:42:13-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795740369.846,\n        \"refresh_expires_after\": 1795740369.846,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"system\",\n      \"email\": \"the@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"ok\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 20.1,\n      \"last_renewed\": \"2026-10-28T04:41:02-07:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-10-28T04:41:02-07:00\",\n        \"result\": \"renewed-by-use\"\n      },\n      \"staged\": false\n    }\n  ],\n  \"capture\": {\n    \"result\": \"current\",\n    \"account\": \"lukas\",\n    \"email\": \"lukas@x.test\",\n    \"rt_hash\": \"8abc773b\"\n  },\n  \"note\": \"days left and health are LAST OBSERVED from the credential files; a failed warm is the real signal\"\n}\n",
+   "raises": null,
+   "want": {
+    "kind": "value",
+    "live": "system"
+   }
+  },
+  {
+   "name": "switch-to-steven-2026-11-17T21:33:12-08:00",
+   "source": "recorded: log.jsonl use row 2026-11-17T21:33:12-08:00",
+   "rc": 0,
+   "out": "{\n  \"ok\": true,\n  \"machine\": \"archmagi\",\n  \"live\": \"steven\",\n  \"live_email\": \"lukas@x.test\",\n  \"armed\": false,\n  \"disarmed_note\": \"disarmed 2026-11-21T17:45:13-08:00; arm with: claude-account arm --confirm archmagi\",\n  \"interrupted_switch\": false,\n  \"claude_processes\": 9,\n  \"subscription_mode_problems\": [],\n  \"accounts\": [\n    {\n      \"name\": \"lukas\",\n      \"email\": \"lukas@x.test\",\n      \"where\": \"live\",\n      \"state\": \"ok\",\n      \"vault_note\": \"backed up 2026-11-22T11:20:45-08:00\",\n      \"refresh_days_left\": 29.3,\n      \"last_renewed\": \"2026-11-21T10:56:51-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-21T10:56:51-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795356400.911,\n        \"refresh_expires_after\": 1795356400.686,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"steven\",\n      \"email\": \"steven@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"expiring\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 4.2,\n      \"last_renewed\": \"2026-11-22T11:42:13-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-22T11:42:13-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795740369.846,\n        \"refresh_expires_after\": 1795740369.846,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"system\",\n      \"email\": \"the@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"ok\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 20.1,\n      \"last_renewed\": \"2026-10-28T04:41:02-07:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-10-28T04:41:02-07:00\",\n        \"result\": \"renewed-by-use\"\n      },\n      \"staged\": false\n    }\n  ],\n  \"capture\": {\n    \"result\": \"current\",\n    \"account\": \"lukas\",\n    \"email\": \"lukas@x.test\",\n    \"rt_hash\": \"8abc773b\"\n  },\n  \"note\": \"days left and health are LAST OBSERVED from the credential files; a failed warm is the real signal\"\n}\n",
+   "raises": null,
+   "want": {
+    "kind": "value",
+    "live": "steven"
+   }
+  },
+  {
+   "name": "switch-to-system-2026-11-18T18:59:06-08:00",
+   "source": "recorded: log.jsonl use row 2026-11-18T18:59:06-08:00",
+   "rc": 0,
+   "out": "{\n  \"ok\": true,\n  \"machine\": \"archmagi\",\n  \"live\": \"system\",\n  \"live_email\": \"lukas@x.test\",\n  \"armed\": false,\n  \"disarmed_note\": \"disarmed 2026-11-21T17:45:13-08:00; arm with: claude-account arm --confirm archmagi\",\n  \"interrupted_switch\": false,\n  \"claude_processes\": 9,\n  \"subscription_mode_problems\": [],\n  \"accounts\": [\n    {\n      \"name\": \"lukas\",\n      \"email\": \"lukas@x.test\",\n      \"where\": \"live\",\n      \"state\": \"ok\",\n      \"vault_note\": \"backed up 2026-11-22T11:20:45-08:00\",\n      \"refresh_days_left\": 29.3,\n      \"last_renewed\": \"2026-11-21T10:56:51-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-21T10:56:51-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795356400.911,\n        \"refresh_expires_after\": 1795356400.686,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"steven\",\n      \"email\": \"steven@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"expiring\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 4.2,\n      \"last_renewed\": \"2026-11-22T11:42:13-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-22T11:42:13-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795740369.846,\n        \"refresh_expires_after\": 1795740369.846,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"system\",\n      \"email\": \"the@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"ok\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 20.1,\n      \"last_renewed\": \"2026-10-28T04:41:02-07:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-10-28T04:41:02-07:00\",\n        \"result\": \"renewed-by-use\"\n      },\n      \"staged\": false\n    }\n  ],\n  \"capture\": {\n    \"result\": \"current\",\n    \"account\": \"lukas\",\n    \"email\": \"lukas@x.test\",\n    \"rt_hash\": \"8abc773b\"\n  },\n  \"note\": \"days left and health are LAST OBSERVED from the credential files; a failed warm is the real signal\"\n}\n",
+   "raises": null,
+   "want": {
+    "kind": "value",
+    "live": "system"
+   }
+  },
+  {
+   "name": "switch-to-steven-2026-11-20T18:40:21-08:00",
+   "source": "recorded: log.jsonl use row 2026-11-20T18:40:21-08:00",
+   "rc": 0,
+   "out": "{\n  \"ok\": true,\n  \"machine\": \"archmagi\",\n  \"live\": \"steven\",\n  \"live_email\": \"lukas@x.test\",\n  \"armed\": false,\n  \"disarmed_note\": \"disarmed 2026-11-21T17:45:13-08:00; arm with: claude-account arm --confirm archmagi\",\n  \"interrupted_switch\": false,\n  \"claude_processes\": 9,\n  \"subscription_mode_problems\": [],\n  \"accounts\": [\n    {\n      \"name\": \"lukas\",\n      \"email\": \"lukas@x.test\",\n      \"where\": \"live\",\n      \"state\": \"ok\",\n      \"vault_note\": \"backed up 2026-11-22T11:20:45-08:00\",\n      \"refresh_days_left\": 29.3,\n      \"last_renewed\": \"2026-11-21T10:56:51-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-21T10:56:51-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795356400.911,\n        \"refresh_expires_after\": 1795356400.686,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"steven\",\n      \"email\": \"steven@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"expiring\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 4.2,\n      \"last_renewed\": \"2026-11-22T11:42:13-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-22T11:42:13-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795740369.846,\n        \"refresh_expires_after\": 1795740369.846,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"system\",\n      \"email\": \"the@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"ok\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 20.1,\n      \"last_renewed\": \"2026-10-28T04:41:02-07:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-10-28T04:41:02-07:00\",\n        \"result\": \"renewed-by-use\"\n      },\n      \"staged\": false\n    }\n  ],\n  \"capture\": {\n    \"result\": \"current\",\n    \"account\": \"lukas\",\n    \"email\": \"lukas@x.test\",\n    \"rt_hash\": \"8abc773b\"\n  },\n  \"note\": \"days left and health are LAST OBSERVED from the credential files; a failed warm is the real signal\"\n}\n",
+   "raises": null,
+   "want": {
+    "kind": "value",
+    "live": "steven"
+   }
+  },
+  {
+   "name": "switch-to-lukas-2026-11-21T17:45:13-08:00",
+   "source": "recorded: log.jsonl use row 2026-11-21T17:45:13-08:00",
+   "rc": 0,
+   "out": "{\n  \"ok\": true,\n  \"machine\": \"archmagi\",\n  \"live\": \"lukas\",\n  \"live_email\": \"lukas@x.test\",\n  \"armed\": false,\n  \"disarmed_note\": \"disarmed 2026-11-21T17:45:13-08:00; arm with: claude-account arm --confirm archmagi\",\n  \"interrupted_switch\": false,\n  \"claude_processes\": 9,\n  \"subscription_mode_problems\": [],\n  \"accounts\": [\n    {\n      \"name\": \"lukas\",\n      \"email\": \"lukas@x.test\",\n      \"where\": \"live\",\n      \"state\": \"ok\",\n      \"vault_note\": \"backed up 2026-11-22T11:20:45-08:00\",\n      \"refresh_days_left\": 29.3,\n      \"last_renewed\": \"2026-11-21T10:56:51-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-21T10:56:51-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795356400.911,\n        \"refresh_expires_after\": 1795356400.686,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"steven\",\n      \"email\": \"steven@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"expiring\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 4.2,\n      \"last_renewed\": \"2026-11-22T11:42:13-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-22T11:42:13-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795740369.846,\n        \"refresh_expires_after\": 1795740369.846,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"system\",\n      \"email\": \"the@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"ok\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 20.1,\n      \"last_renewed\": \"2026-10-28T04:41:02-07:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-10-28T04:41:02-07:00\",\n        \"result\": \"renewed-by-use\"\n      },\n      \"staged\": false\n    }\n  ],\n  \"capture\": {\n    \"result\": \"current\",\n    \"account\": \"lukas\",\n    \"email\": \"lukas@x.test\",\n    \"rt_hash\": \"8abc773b\"\n  },\n  \"note\": \"days left and health are LAST OBSERVED from the credential files; a failed warm is the real signal\"\n}\n",
+   "raises": null,
+   "want": {
+    "kind": "value",
+    "live": "lukas"
+   }
+  },
+  {
+   "name": "warning-line-before",
+   "source": "fixture",
+   "rc": 0,
+   "out": "warning: refreshed token\n{\n  \"ok\": true,\n  \"machine\": \"archmagi\",\n  \"live\": \"lukas\",\n  \"live_email\": \"lukas@x.test\",\n  \"armed\": false,\n  \"disarmed_note\": \"disarmed 2026-11-21T17:45:13-08:00; arm with: claude-account arm --confirm archmagi\",\n  \"interrupted_switch\": false,\n  \"claude_processes\": 9,\n  \"subscription_mode_problems\": [],\n  \"accounts\": [\n    {\n      \"name\": \"lukas\",\n      \"email\": \"lukas@x.test\",\n      \"where\": \"live\",\n      \"state\": \"ok\",\n      \"vault_note\": \"backed up 2026-11-22T11:20:45-08:00\",\n      \"refresh_days_left\": 29.3,\n      \"last_renewed\": \"2026-11-21T10:56:51-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-21T10:56:51-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795356400.911,\n        \"refresh_expires_after\": 1795356400.686,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"steven\",\n      \"email\": \"steven@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"expiring\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 4.2,\n      \"last_renewed\": \"2026-11-22T11:42:13-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-22T11:42:13-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795740369.846,\n        \"refresh_expires_after\": 1795740369.846,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"system\",\n      \"email\": \"the@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"ok\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 20.1,\n      \"last_renewed\": \"2026-10-28T04:41:02-07:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-10-28T04:41:02-07:00\",\n        \"result\": \"renewed-by-use\"\n      },\n      \"staged\": false\n    }\n  ],\n  \"capture\": {\n    \"result\": \"current\",\n    \"account\": \"lukas\",\n    \"email\": \"lukas@x.test\",\n    \"rt_hash\": \"8abc773b\"\n  },\n  \"note\": \"days left and health are LAST OBSERVED from the credential files; a failed warm is the real signal\"\n}\n",
+   "raises": null,
+   "want": {
+    "kind": "value",
+    "live": "lukas"
+   }
+  },
+  {
+   "name": "login-banner-before-and-note-after",
+   "source": "fixture",
+   "rc": 0,
+   "out": "Welcome {user}\n{\n  \"ok\": true,\n  \"machine\": \"archmagi\",\n  \"live\": \"lukas\",\n  \"live_email\": \"lukas@x.test\",\n  \"armed\": false,\n  \"disarmed_note\": \"disarmed 2026-11-21T17:45:13-08:00; arm with: claude-account arm --confirm archmagi\",\n  \"interrupted_switch\": false,\n  \"claude_processes\": 9,\n  \"subscription_mode_problems\": [],\n  \"accounts\": [\n    {\n      \"name\": \"lukas\",\n      \"email\": \"lukas@x.test\",\n      \"where\": \"live\",\n      \"state\": \"ok\",\n      \"vault_note\": \"backed up 2026-11-22T11:20:45-08:00\",\n      \"refresh_days_left\": 29.3,\n      \"last_renewed\": \"2026-11-21T10:56:51-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-21T10:56:51-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795356400.911,\n        \"refresh_expires_after\": 1795356400.686,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"steven\",\n      \"email\": \"steven@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"expiring\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 4.2,\n      \"last_renewed\": \"2026-11-22T11:42:13-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-22T11:42:13-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795740369.846,\n        \"refresh_expires_after\": 1795740369.846,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"system\",\n      \"email\": \"the@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"ok\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 20.1,\n      \"last_renewed\": \"2026-10-28T04:41:02-07:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-10-28T04:41:02-07:00\",\n        \"result\": \"renewed-by-use\"\n      },\n      \"staged\": false\n    }\n  ],\n  \"capture\": {\n    \"result\": \"current\",\n    \"account\": \"lukas\",\n    \"email\": \"lukas@x.test\",\n    \"rt_hash\": \"8abc773b\"\n  },\n  \"note\": \"days left and health are LAST OBSERVED from the credential files; a failed warm is the real signal\"\n}\n\n(note) done {x}\n",
+   "raises": null,
+   "want": {
+    "kind": "value",
+    "live": "lukas"
+   }
+  },
+  {
+   "name": "acceptance-fake",
+   "source": "fixture: acceptance.sh ACCOUNT",
+   "rc": 0,
+   "out": "warning: refreshed token\n{\"ok\": true, \"live\": \"lukas\"}\n",
+   "raises": null,
+   "want": {
+    "kind": "value",
+    "live": "lukas"
+   }
+  },
+  {
+   "name": "long-padding-before",
+   "source": "fixture: selftest_slot_allocator's long answer",
+   "rc": 0,
+   "out": "                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        {\"live\": \"system\", \"x\": \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"}\n",
+   "raises": null,
+   "want": {
+    "kind": "value",
+    "live": "system"
+   }
+  },
+  {
+   "name": "no-ok-key",
+   "source": "fixture: switching_plan's fake",
+   "rc": 0,
+   "out": "{\"machine\": \"testbox\", \"live\": \"system\", \"armed\": false}\n",
+   "raises": null,
+   "want": {
+    "kind": "value",
+    "live": "system"
+   }
+  },
+  {
+   "name": "cut-at-1000-chars",
+   "source": "fixture",
+   "rc": 0,
+   "out": "{\n  \"ok\": true,\n  \"machine\": \"archmagi\",\n  \"live\": \"lukas\",\n  \"live_email\": \"lukas@x.test\",\n  \"armed\": false,\n  \"disarmed_note\": \"disarmed 2026-11-21T17:45:13-08:00; arm with: claude-account arm --confirm archmagi\",\n  \"interrupted_switch\": false,\n  \"claude_processes\": 9,\n  \"subscription_mode_problems\": [],\n  \"accounts\": [\n    {\n      \"name\": \"lukas\",\n      \"email\": \"lukas@x.test\",\n      \"where\": \"live\",\n      \"state\": \"ok\",\n      \"vault_note\": \"backed up 2026-11-22T11:20:45-08:00\",\n      \"refresh_days_left\": 29.3,\n      \"last_renewed\": \"2026-11-21T10:56:51-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-21T10:56:51-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795356400.911,\n        \"refresh_expires_after\": 1795356400.686,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"steven\",\n      \"email\": \"steven@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"expiring\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 4.2,\n    ",
+   "raises": null,
+   "want": {
+    "kind": "failed",
+    "live": null
+   }
+  },
+  {
+   "name": "cut-at-2000-chars-of-a-long-status",
+   "source": "fixture",
+   "rc": 0,
+   "out": "{\n  \"ok\": true,\n  \"machine\": \"archmagi\",\n  \"live\": \"lukas\",\n  \"live_email\": \"lukas@x.test\",\n  \"armed\": false,\n  \"disarmed_note\": \"disarmed 2026-11-21T17:45:13-08:00; arm with: claude-account arm --confirm archmagi\",\n  \"interrupted_switch\": false,\n  \"claude_processes\": 9,\n  \"subscription_mode_problems\": [],\n  \"accounts\": [\n    {\n      \"name\": \"lukas\",\n      \"email\": \"lukas@x.test\",\n      \"where\": \"live\",\n      \"state\": \"ok\",\n      \"vault_note\": \"backed up 2026-11-22T11:20:45-08:00\",\n      \"refresh_days_left\": 29.3,\n      \"last_renewed\": \"2026-11-21T10:56:51-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-21T10:56:51-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795356400.911,\n        \"refresh_expires_after\": 1795356400.686,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"steven\",\n      \"email\": \"steven@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"expiring\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 4.2,\n      \"last_renewed\": \"2026-11-22T11:42:13-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-22T11:42:13-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795740369.846,\n        \"refresh_expires_after\": 1795740369.846,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"system\",\n      \"email\": \"the@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"ok\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 20.1,\n      \"last_renewed\": \"2026-10-28T04:41:02-07:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-10-28T04:41:02-07:00\",\n        \"result\": \"renewed-by-use\"\n      },\n      \"staged\": false\n    }\n  ],\n  \"capture\": {\n    \"result\": \"current\",\n    \"account\": \"lukas\",\n    \"email\": \"lukas@x.test\",\n    \"rt_hash\": \"8abc773b\"\n  },\n  \"note\": \"days left and health are LAST OBSERVED from the credential files; a failed warm is the real signal\",\n  \"pad\": \"pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp",
+   "raises": null,
+   "want": {
+    "kind": "failed",
+    "live": null
+   }
+  },
+  {
+   "name": "live-empty-string",
+   "source": "fixture",
+   "rc": 0,
+   "out": "{\"ok\": true, \"machine\": \"archmagi\", \"live\": \"\", \"live_email\": \"lukas@x.test\", \"armed\": false, \"disarmed_note\": \"disarmed 2026-11-21T17:45:13-08:00; arm with: claude-account arm --confirm archmagi\", \"interrupted_switch\": false, \"claude_processes\": 9, \"subscription_mode_problems\": [], \"accounts\": [{\"name\": \"lukas\", \"email\": \"lukas@x.test\", \"where\": \"live\", \"state\": \"ok\", \"vault_note\": \"backed up 2026-11-22T11:20:45-08:00\", \"refresh_days_left\": 29.3, \"last_renewed\": \"2026-11-21T10:56:51-08:00\", \"last_warm\": {\"ts\": \"2026-11-21T10:56:51-08:00\", \"result\": \"renewed\", \"refresh_expires_before\": 1795356400.911, \"refresh_expires_after\": 1795356400.686, \"rotated\": true}, \"staged\": false}, {\"name\": \"steven\", \"email\": \"steven@x.test\", \"where\": \"vault\", \"state\": \"expiring\", \"vault_note\": null, \"refresh_days_left\": 4.2, \"last_renewed\": \"2026-11-22T11:42:13-08:00\", \"last_warm\": {\"ts\": \"2026-11-22T11:42:13-08:00\", \"result\": \"renewed\", \"refresh_expires_before\": 1795740369.846, \"refresh_expires_after\": 1795740369.846, \"rotated\": true}, \"staged\": false}, {\"name\": \"system\", \"email\": \"the@x.test\", \"where\": \"vault\", \"state\": \"ok\", \"vault_note\": null, \"refresh_days_left\": 20.1, \"last_renewed\": \"2026-10-28T04:41:02-07:00\", \"last_warm\": {\"ts\": \"2026-10-28T04:41:02-07:00\", \"result\": \"renewed-by-use\"}, \"staged\": false}], \"capture\": {\"result\": \"current\", \"account\": \"lukas\", \"email\": \"lukas@x.test\", \"rt_hash\": \"8abc773b\"}, \"note\": \"days left and health are LAST OBSERVED from the credential files; a failed warm is the real signal\"}",
+   "raises": null,
+   "want": {
+    "kind": "empty",
+    "live": null
+   }
+  },
+  {
+   "name": "live-null",
+   "source": "fixture",
+   "rc": 0,
+   "out": "{\"ok\": true, \"machine\": \"archmagi\", \"live\": null, \"live_email\": \"lukas@x.test\", \"armed\": false, \"disarmed_note\": \"disarmed 2026-11-21T17:45:13-08:00; arm with: claude-account arm --confirm archmagi\", \"interrupted_switch\": false, \"claude_processes\": 9, \"subscription_mode_problems\": [], \"accounts\": [{\"name\": \"lukas\", \"email\": \"lukas@x.test\", \"where\": \"live\", \"state\": \"ok\", \"vault_note\": \"backed up 2026-11-22T11:20:45-08:00\", \"refresh_days_left\": 29.3, \"last_renewed\": \"2026-11-21T10:56:51-08:00\", \"last_warm\": {\"ts\": \"2026-11-21T10:56:51-08:00\", \"result\": \"renewed\", \"refresh_expires_before\": 1795356400.911, \"refresh_expires_after\": 1795356400.686, \"rotated\": true}, \"staged\": false}, {\"name\": \"steven\", \"email\": \"steven@x.test\", \"where\": \"vault\", \"state\": \"expiring\", \"vault_note\": null, \"refresh_days_left\": 4.2, \"last_renewed\": \"2026-11-22T11:42:13-08:00\", \"last_warm\": {\"ts\": \"2026-11-22T11:42:13-08:00\", \"result\": \"renewed\", \"refresh_expires_before\": 1795740369.846, \"refresh_expires_after\": 1795740369.846, \"rotated\": true}, \"staged\": false}, {\"name\": \"system\", \"email\": \"the@x.test\", \"where\": \"vault\", \"state\": \"ok\", \"vault_note\": null, \"refresh_days_left\": 20.1, \"last_renewed\": \"2026-10-28T04:41:02-07:00\", \"last_warm\": {\"ts\": \"2026-10-28T04:41:02-07:00\", \"result\": \"renewed-by-use\"}, \"staged\": false}], \"capture\": {\"result\": \"current\", \"account\": \"lukas\", \"email\": \"lukas@x.test\", \"rt_hash\": \"8abc773b\"}, \"note\": \"days left and health are LAST OBSERVED from the credential files; a failed warm is the real signal\"}",
+   "raises": null,
+   "want": {
+    "kind": "empty",
+    "live": null
+   }
+  },
+  {
+   "name": "live-not-a-string",
+   "source": "fixture",
+   "rc": 0,
+   "out": "{\"ok\": true, \"machine\": \"archmagi\", \"live\": 3, \"live_email\": \"lukas@x.test\", \"armed\": false, \"disarmed_note\": \"disarmed 2026-11-21T17:45:13-08:00; arm with: claude-account arm --confirm archmagi\", \"interrupted_switch\": false, \"claude_processes\": 9, \"subscription_mode_problems\": [], \"accounts\": [{\"name\": \"lukas\", \"email\": \"lukas@x.test\", \"where\": \"live\", \"state\": \"ok\", \"vault_note\": \"backed up 2026-11-22T11:20:45-08:00\", \"refresh_days_left\": 29.3, \"last_renewed\": \"2026-11-21T10:56:51-08:00\", \"last_warm\": {\"ts\": \"2026-11-21T10:56:51-08:00\", \"result\": \"renewed\", \"refresh_expires_before\": 1795356400.911, \"refresh_expires_after\": 1795356400.686, \"rotated\": true}, \"staged\": false}, {\"name\": \"steven\", \"email\": \"steven@x.test\", \"where\": \"vault\", \"state\": \"expiring\", \"vault_note\": null, \"refresh_days_left\": 4.2, \"last_renewed\": \"2026-11-22T11:42:13-08:00\", \"last_warm\": {\"ts\": \"2026-11-22T11:42:13-08:00\", \"result\": \"renewed\", \"refresh_expires_before\": 1795740369.846, \"refresh_expires_after\": 1795740369.846, \"rotated\": true}, \"staged\": false}, {\"name\": \"system\", \"email\": \"the@x.test\", \"where\": \"vault\", \"state\": \"ok\", \"vault_note\": null, \"refresh_days_left\": 20.1, \"last_renewed\": \"2026-10-28T04:41:02-07:00\", \"last_warm\": {\"ts\": \"2026-10-28T04:41:02-07:00\", \"result\": \"renewed-by-use\"}, \"staged\": false}], \"capture\": {\"result\": \"current\", \"account\": \"lukas\", \"email\": \"lukas@x.test\", \"rt_hash\": \"8abc773b\"}, \"note\": \"days left and health are LAST OBSERVED from the credential files; a failed warm is the real signal\"}",
+   "raises": null,
+   "want": {
+    "kind": "empty",
+    "live": null
+   }
+  },
+  {
+   "name": "refused-rc1",
+   "source": "fixture: the switcher's refusal shape",
+   "rc": 1,
+   "out": "{\"ok\": false, \"refused\": \"refused: this machine is DISARMED\"}\n",
+   "raises": null,
+   "want": {
+    "kind": "failed",
+    "live": null
+   }
+  },
+  {
+   "name": "not-ok-rc0",
+   "source": "fixture",
+   "rc": 0,
+   "out": "{\"ok\": false, \"live\": \"beta\"}",
+   "raises": null,
+   "want": {
+    "kind": "failed",
+    "live": null
+   }
+  },
+  {
+   "name": "rc3-with-a-live-name",
+   "source": "fixture",
+   "rc": 3,
+   "out": "{\n  \"ok\": true,\n  \"machine\": \"archmagi\",\n  \"live\": \"lukas\",\n  \"live_email\": \"lukas@x.test\",\n  \"armed\": false,\n  \"disarmed_note\": \"disarmed 2026-11-21T17:45:13-08:00; arm with: claude-account arm --confirm archmagi\",\n  \"interrupted_switch\": false,\n  \"claude_processes\": 9,\n  \"subscription_mode_problems\": [],\n  \"accounts\": [\n    {\n      \"name\": \"lukas\",\n      \"email\": \"lukas@x.test\",\n      \"where\": \"live\",\n      \"state\": \"ok\",\n      \"vault_note\": \"backed up 2026-11-22T11:20:45-08:00\",\n      \"refresh_days_left\": 29.3,\n      \"last_renewed\": \"2026-11-21T10:56:51-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-21T10:56:51-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795356400.911,\n        \"refresh_expires_after\": 1795356400.686,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"steven\",\n      \"email\": \"steven@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"expiring\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 4.2,\n      \"last_renewed\": \"2026-11-22T11:42:13-08:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-11-22T11:42:13-08:00\",\n        \"result\": \"renewed\",\n        \"refresh_expires_before\": 1795740369.846,\n        \"refresh_expires_after\": 1795740369.846,\n        \"rotated\": true\n      },\n      \"staged\": false\n    },\n    {\n      \"name\": \"system\",\n      \"email\": \"the@x.test\",\n      \"where\": \"vault\",\n      \"state\": \"ok\",\n      \"vault_note\": null,\n      \"refresh_days_left\": 20.1,\n      \"last_renewed\": \"2026-10-28T04:41:02-07:00\",\n      \"last_warm\": {\n        \"ts\": \"2026-10-28T04:41:02-07:00\",\n        \"result\": \"renewed-by-use\"\n      },\n      \"staged\": false\n    }\n  ],\n  \"capture\": {\n    \"result\": \"current\",\n    \"account\": \"lukas\",\n    \"email\": \"lukas@x.test\",\n    \"rt_hash\": \"8abc773b\"\n  },\n  \"note\": \"days left and health are LAST OBSERVED from the credential files; a failed warm is the real signal\"\n}\n",
+   "raises": null,
+   "want": {
+    "kind": "failed",
+    "live": null
+   }
+  },
+  {
+   "name": "empty-stdout",
+   "source": "fixture",
+   "rc": 0,
+   "out": "",
+   "raises": null,
+   "want": {
+    "kind": "failed",
+    "live": null
+   }
+  },
+  {
+   "name": "garbage",
+   "source": "fixture",
+   "rc": 0,
+   "out": "Traceback (most recent call last):\n  oops\n",
+   "raises": null,
+   "want": {
+    "kind": "failed",
+    "live": null
+   }
+  },
+  {
+   "name": "json-list",
+   "source": "fixture",
+   "rc": 0,
+   "out": "[{\"x\": 1}]",
+   "raises": null,
+   "want": {
+    "kind": "failed",
+    "live": null
+   }
+  },
+  {
+   "name": "timeout",
+   "source": "fixture",
+   "rc": null,
+   "out": null,
+   "raises": "timeout",
+   "want": {
+    "kind": "could_not_look",
+    "live": null
+   }
+  },
+  {
+   "name": "not-found",
+   "source": "fixture",
+   "rc": null,
+   "out": null,
+   "raises": "notfound",
+   "want": {
+    "kind": "could_not_look",
+    "live": null
+   }
+  },
+  {
+   "name": "permission-denied",
+   "source": "fixture",
+   "rc": null,
+   "out": null,
+   "raises": "oserror",
+   "want": {
+    "kind": "could_not_look",
+    "live": null
+   }
+  }
+ ]
+}

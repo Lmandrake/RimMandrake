@@ -23,7 +23,6 @@ os.environ["RM_LIVE_CLAUDE_JSON"] = str(ROOT / "live.claude.json")
 os.environ["RM_PULSE_STATE"] = str(ROOT / "pulse")
 os.environ["RM_CLAUDE_ACCOUNT"] = str(ROOT / "no-such-claude-account")
 os.environ["RM_SLOT_MACHINE"] = "testhost"
-os.environ["RM_SLOT_LIVE_LOGIN"] = "steven"
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent / "rimflow"))
@@ -134,6 +133,8 @@ rn = RL.ops_reading(status, "steven", NOW)
 check("no model: the launch reading is unchanged (61)", rn.get("week_left") == 61.0, rn)
 
 # ---------------------------------------------------------------- the slot allocator and the switching plan
+import account_live as AL  # noqa: E402
+os.environ["RM_CLAUDE_ACCOUNT"] = AL.fake_switcher(ROOT, "steven")  # account_usage already holds its no-such path
 import slot_allocator as SA  # noqa: E402
 gf = SA.gather(NOW, model="fable")
 check("allocator for a Fable run: the level is 40% of its Fable limit",

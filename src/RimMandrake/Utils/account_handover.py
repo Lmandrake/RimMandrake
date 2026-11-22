@@ -101,7 +101,10 @@ def main():
     marker = os.path.join(OUT, "%s_to_%s.done" % (a.frm, a.to))
     if os.path.exists(marker):
         return 0
-    live = json.loads(sh(CLAUDE_ACCOUNT, "--json", "status").stdout)["live"]
+    sys.path.insert(0, HERE)
+    import account_live as AL
+    ans = AL.read()
+    live = AL.name_of(ans)   # None (unreadable) is never FROM: decide() then idles and the row says why
     rows = meter()
     row = rows.get(a.frm)
     if live == a.frm and row and row.get("week_pct_left") is not None and row["week_pct_left"] <= a.at + 2 * NEAR and not a.dry_run:
@@ -117,6 +120,8 @@ def main():
         os.makedirs(OUT, exist_ok=True)
         json.dump({"left": last_good}, open(good_path, "w", encoding="utf-8"))
     act, why = decide(live, row, last_good, a.frm, a.at)
+    if live is None:
+        why = "%s; live account UNMEASURED: %s" % (why, AL.why_of(ans))
     log(dict(ts=(row or {}).get("ts"), act=act, **link, why=why, dry_run=a.dry_run))
     if act != "switch" or a.dry_run:
         return 0
