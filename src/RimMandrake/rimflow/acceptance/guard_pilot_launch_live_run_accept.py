@@ -37,6 +37,10 @@ ready = {"ready": lambda r, m: (True, "PASS 7/7"), "land_ledger": lambda paths: 
          # a stand-in game reading: the real one reads the live driver lock, so a helper holding a game turned this
          # offline test red (RIMMANDRAKE_SEAL_PILOT_GUARD_TEST_FROM_THE_LIVE_GAME)
          "bridge": lambda p, game="a": (True, "free (test stand-in)")}
+# the per-game hold too: pick_game's default reads the live control store, so `./pipe off game:ArchBig` for his walk
+# turned this offline test red on 2026-11-22 (RIMMANDRAKE_SEAL_PILOT_GUARD_TEST_FROM_THE_LIVE_GAME, reopened).
+# RM_ACCEPT_PLANT_HOLD plants a held game, to show the stand-in is what the in_game launch reads.
+D.game_hold = lambda g: (os.environ.get("RM_ACCEPT_PLANT_HOLD") or None)
 
 for stage, owed in (("blind_challenge", "cycle"), ("in_game", "run")):
     M.brief_text = lambda r, m, cap, _s=stage, _o=owed, **k: ("", {"stage": _s, "owed": _o})
