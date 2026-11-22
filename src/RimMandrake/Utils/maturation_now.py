@@ -64,6 +64,9 @@ import sys
 import xml.etree.ElementTree as ET
 from zoneinfo import ZoneInfo
 
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "rimflow"))
+from item_identity import item_mod  # noqa: E402  the one rule for the mod an item names
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 OUT_DIR = os.environ.get("MATURATION_NOW_OUT", "/mnt/d/ClaudeWork/rimmandrake/conductor")
@@ -497,46 +500,6 @@ def parse_interventions(text, source):
     return good, bad
 
 
-def mod_tokens(folder):
-    """-> {token: score}: the squashed name scores highest, then initials (3+ letters) and 7+ letter words by length."""
-    words = re.findall(r"[A-Z][a-z0-9]*|[a-z0-9]+", folder)
-    out = {folder.upper().replace("_", ""): 100 + len(folder)}
-    ini = "".join(w[0] for w in words).upper()
-    if len(ini) >= 3:
-        out.setdefault(ini, len(ini))
-    for w in words:
-        if len(w) >= 7:
-            out.setdefault(w.upper(), len(w))
-    return out
-
-
-def _named_mod(words, folders):
-    """-> (named, mod): whether the words name any mod, and the one they name best (None on a tie)."""
-    cands = {"".join(words[i:i + n]) for i in range(len(words)) for n in (1, 2, 3) if i + n <= len(words)}
-    score = {}
-    for f in folders:
-        s = max([v for k, v in mod_tokens(f).items() if k in cands] or [0])
-        if s:
-            score[f] = s
-    if not score:
-        return False, None
-    top = max(score.values())
-    win = [f for f, s in score.items() if s == top]
-    return True, (win[0] if len(win) == 1 else None)
-
-
-def item_mod(item, folders, titles=None):
-    """The mod an item id names, else the one its title names, else None. The title step:
-    RIMMANDRAKE_LAY_SLACK_CLOSE_FITTINGS_TWENTY_ONE_UNLAID (title "Gimme Some Slack: ...") names GSS by a 5-letter word
-    only (RIMMANDRAKE_SEE_RESCUE_RUN_ON_ITS_MOD). Never the mod its notes cite by concept path: helpers on pipeline code
-    cite one and read live on it, filling max_live (RIMMANDRAKE_UNPLACE_MACHINERY_HELPERS_FROM_MODS_SLOT_TAKEN)."""
-    named, mod = _named_mod([w for w in str(item).upper().split("_") if w], folders)
-    if named:
-        return mod
-    named, mod = _named_mod(re.findall(r"[A-Z0-9]+", str((titles or {}).get(item) or "").upper()), folders)
-    return mod if named else None
-
-
 def stages_named(s):
     """The stage columns a heading or note names ("Stage 1 finished", "Stages 4 and 5"); never one it is "before"."""
     s = re.sub(r"(?i)\b(before|until|ahead of|door of|stopped before)\s+stages?\s*\d", "", str(s))
@@ -630,7 +593,7 @@ def runs_for_mods(folders, records, notes, journals, now, spend=read_spend, titl
         item = str(rec.get("item") or "")
         said = (rec.get("env") or {}).get("RM_CONTROL_MOD")
         if not said and item not in cache:
-            cache[item] = item_mod(item, folders, titles)
+            cache[item] = item_mod(item, folders, (titles or {}).get(item))
         f = (said if said in out else None) if said else cache[item]
         if not f:
             continue
@@ -926,7 +889,7 @@ def gather(root, live=True):
         m["runs"] = UNM if runs is None else runs.get(m["name"], [])
         for e in lf["notes"] or []:        # the same line form in a ledger note on one of the mod's items
             if "CONDUCTOR INTERVENED" in str(e.get("text") or "").upper() and \
-                    item_mod(e.get("id"), versioned, lf.get("titles")) == m["name"]:
+                    item_mod(e.get("id"), versioned, (lf.get("titles") or {}).get(e.get("id"))) == m["name"]:
                 g, b = parse_interventions(e.get("text"), "ledger note on %s" % e.get("id"))
                 m["ivs"] += g
                 m["iv_bad"] += b

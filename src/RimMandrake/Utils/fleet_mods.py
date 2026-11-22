@@ -33,6 +33,8 @@ import time
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import owner_queue  # noqa: E402
+sys.path.insert(0, os.path.join(HERE, "..", "rimflow"))
+from item_identity import item_mod  # noqa: E402  the one rule for the mod an item names
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 DETACHED = "/mnt/d/ClaudeWork/rimmandrake/dispatcher/detached"
@@ -213,17 +215,6 @@ def mod_of_path(path, mods):
 def item_ids(subject, known):
     """Item ids named in a commit subject that the ledger knows."""
     return [t for t in dict.fromkeys(re.findall(r"\b[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)+\b", subject)) if t in known]
-
-
-def mod_by_name(item, mods_upper):
-    """An item id whose leading segments spell a mod folder (LEANINGSCRUB_STALL_1 -> LeaningScrub; longest wins)."""
-    segs = item.split("_")
-    best = None
-    for k in range(1, len(segs)):
-        name = "".join(segs[:k])
-        if name in mods_upper:
-            best = mods_upper[name]
-    return best
 
 
 def plain_subject(subject):
@@ -589,7 +580,6 @@ def mods(now, log, world, evs, rel, mc, folders, days=DAYS):
     page sorts by `waits_you`, `closed`, `last_at` (a stored position would rewrite every doc when one moves)."""
     known = world.items
     by_item, item_mods, mod_last, item_last = attribute(log, known, folders)
-    upper = {k.upper(): k for k in folders}
     window = now - days * 86400
     cross = split_cross(item_mods)
     groups = {}
@@ -603,7 +593,7 @@ def mods(now, log, world, evs, rel, mc, folders, days=DAYS):
     for iid, it in known.items():
         if not it.open or iid in cross:
             continue
-        m = mod_by_name(iid, upper)
+        m = item_mod(iid, folders, it.title)
         if m and m in mod_last:
             named_open.setdefault(m, set()).add(iid)
     closed_at = {i: close_at(known[i], evs) for i in item_mods if known[i].state in CLOSED_STATES}

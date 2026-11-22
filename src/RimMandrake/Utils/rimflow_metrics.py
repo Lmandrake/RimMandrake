@@ -32,9 +32,7 @@ import model  # noqa: E402
 
 DAY = 86400.0
 TIERS = ("RimMandrake", "RimStarWars", "RimUtinni")
-# Subjects that name a mod without spelling it. Kept tiny and explicit; everything else must spell the
-# mod's folder name. The unmapped share is reported, because the ledger has no `mod` field (§0).
-ALIASES = {"FW": "FlowWorks", "HOSE": "FlowWorks", "FLOWWORKS": "FlowWorks"}
+from item_identity import item_mod  # noqa: E402  the one rule; the unmapped share is reported
 
 
 # ------------------------------------------------------------------ timelines
@@ -108,25 +106,6 @@ def mod_names(repo=REPO):
             if os.path.isfile(os.path.join(d, m, "About", "About.xml")):
                 out[m] = tier
     return out
-
-
-def item_mod(iid, title, mods):
-    """-> mod folder name or None. Id tokens first (alias or exact), then the mod's name in the title."""
-    norm = {m.upper(): m for m in mods}
-    for tok in iid.split("_"):
-        if tok in ALIASES and ALIASES[tok] in mods:
-            return ALIASES[tok]
-        if len(tok) >= 4 and tok in norm:
-            return norm[tok]
-    flat = iid.replace("_", "")
-    for up, m in sorted(norm.items(), key=lambda kv: -len(kv[0])):
-        if len(up) >= 6 and up in flat:
-            return m
-    t = title or ""
-    for m in sorted(mods, key=len, reverse=True):
-        if len(m) >= 5 and re.search(r"\b%s\b" % re.escape(m), t):
-            return m
-    return None
 
 
 def git_heat(since_epoch, mods, repo=REPO):
@@ -354,7 +333,7 @@ def compute(events, now=None, window_days=14, mods=None, heat=None):
         if not iid or iid in seen or iid not in items:
             continue
         seen.add(iid)
-        m = item_mod(iid, items[iid].title, mods)
+        m = item_mod(iid, mods, items[iid].title)
         if m:
             lh[m] += 1
         else:

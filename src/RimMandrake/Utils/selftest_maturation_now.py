@@ -452,7 +452,7 @@ def p9_cycles():
     check("9 an item its id does not name is the mod its title names, else none (never its notes' citations)",
           M.item_mod("RIMMANDRAKE_LAY_SLACK_X", ["GimmeSomeSlack", "FlowWorks"]) is None
           and M.item_mod("RIMMANDRAKE_LAY_SLACK_X", ["GimmeSomeSlack", "FlowWorks"],
-                         {"RIMMANDRAKE_LAY_SLACK_X": "Gimme Some Slack: the 21 close-fitting poses"}) == "GimmeSomeSlack")
+                         "Gimme Some Slack: the 21 close-fitting poses") == "GimmeSomeSlack")
     # RIMMANDRAKE_UNPLACE_MACHINERY_HELPERS_FROM_MODS_SLOT_TAKEN: a helper on pipeline code whose notes cite a mod's
     # concept path is no run on that mod; a launch's recorded RM_CONTROL_MOD places it with no inference
     mach = [dict(r, item="RIMMANDRAKE_ADD_PAUSE_ALL_X") for r in fake_recs(now)]

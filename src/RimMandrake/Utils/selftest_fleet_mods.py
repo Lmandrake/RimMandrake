@@ -2,7 +2,7 @@
 """selftest_fleet_mods.py — RELENTLESS_NOW's mods/receipts derivations, offline (no git, no ledger, no store).
 
 Covers: title_short (prefixes, tags, ids, word cut), real_count (ledger-only commits excluded), mod grouping
-(mod_of_path, attribute dropping infra when a mod was touched, mod_by_name longest match), outcome (main commit, marks
+(mod_of_path, attribute dropping infra when a mod was touched, item_mod longest match), outcome (main commit, marks
 skipped), receipts (today only, PASS/FAIL), detached_done (finished detached helpers only), and the retirement of
 Fleet Watch (FLEETWATCH_CODE_RETIRE_NOBODY_WAS_WATCHING): its files are gone and nothing live names them.
 """
@@ -48,7 +48,7 @@ by_item, item_mods, mod_last, item_last = M.attribute(glog, {"A_ONE", "B_TWO"}, 
 check("attribute: mod item not also infra", item_mods["A_ONE"] == {"Stillsand"})
 check("attribute: tooling item is infra", item_mods["B_TWO"] == {M.INFRA})
 check("attribute: ledger-only commit ignored", item_last["A_ONE"] == 100 and len(by_item["A_ONE"]) == 1)
-check("mod_by_name longest match", M.mod_by_name("FLOW_WORKS_PUMP_1", {"FLOW": "Flow", "FLOWWORKS": "FlowWorks"}) == "FlowWorks")
+check("item_mod longest match", M.item_mod("FLOW_WORKS_PUMP_1", ["Flow", "FlowWorks"]) == "FlowWorks")
 
 # outcome
 cs = [{"subject": "X_Y: review marks", "files": ["a", "b", "c"]},
