@@ -106,6 +106,10 @@ The nine-line version vision (shock rule, Wire down, the tap, four looks, switch
    mast shows behind the head. Limit tag: "our own rule" (the head on PawnState, so wires never pass behind it); vanilla's
    pawn-over-tree order is the same kind of exception. Pick: accept both as out of the bar's range, or open the fix (a) as its own
    item and (b) as a Divergent change for the next version.
+   **Answered 2026-11-22 by the ticket sweep (Evidence-for-Ask, the obvious answer):** both are out of the range of bar
+   `poles_draw_in_front_when_south` (the bar is a pole south of something; `sc_pole_south_of_tree` PASS in visit 1). (a) is next
+   version, ticket `RIMMANDRAKE_ORDER_SLACK_MAST_BEHIND_TALL_SOUTHERN_PICTURES` (1170 pairs today). (b) is a polish line only: no
+   vanilla plant reaches the head (the smallest that does is 4.0 cells; vanilla's tallest is 3.0).
 
 ## History (dated, added to only)
 

@@ -16,3 +16,9 @@ Verdict on the criterion: the oracle is sound; the bar words overreach. Verdict 
 Status at filing: NOTED_FOR_CONDUCTOR. Record: `design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_1/lane2/faults.json` (this id).
 
 Acceptance test: none, a bar-wording decision for the neutral fixer
+
+## ticket sweep 2026-11-22: version
+
+Next version. The 0.1.1 bars are locked and this run edits no locked bar. When the next version's bars are locked, the
+`no_hose_in_gss` text says what its oracle checks: no hose or reel; FlowWorks pipe-pole spans are drawn on purpose, under their own
+switch. Acceptance test: none, a bar-wording act at the next lock.
