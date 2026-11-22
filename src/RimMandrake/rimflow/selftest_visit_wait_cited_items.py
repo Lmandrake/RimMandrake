@@ -123,6 +123,21 @@ def t_only_failed_lines_are_cited():
         shutil.rmtree(root, ignore_errors=True)
 
 
+def t_owner_named_item_is_cited():
+    """Pyrelands visit 5 (2026-11-22): a failed row named its old item only in `owner`, never in `filed`, and the road
+    back left it out. A failed row's `owner` is cited like its `filed`; a PASS row's `owner` is not."""
+    rows = [{"test": "a", "verdict": "PASS", "owner": PASSED},
+            {"test": "b", "verdict": "UNMEASURED", "class": "HARNESS", "owner": OLD},
+            {"test": "c", "verdict": "UNMEASURED", "owner": "BENCH", "filed": OWN}]
+    root = site(rows, [])
+    try:
+        got = M.visit_cited_items(root, MOD, 5)
+        check(got == [OLD, OWN], "owner-named-item-is-cited: a failed row's owner is cited, a PASS row's is not, "
+              "a seat name is not an item", got)
+    finally:
+        shutil.rmtree(root, ignore_errors=True)
+
+
 def t_unreadable_visit_record_is_said():
     """No rows.jsonl at the steward's launch: the road back records why it cites nothing (never a silent [])."""
     root = site(None, EVENTS)
@@ -140,7 +155,7 @@ def main(argv=None):
     argv = sys.argv[1:] if argv is None else argv
     only = set(argv[argv.index("--only") + 1:]) if "--only" in argv else None
     for t in (t_failed_line_on_old_item_holds_the_next_visit, t_closed_cited_item_holds_nothing,
-              t_only_failed_lines_are_cited, t_unreadable_visit_record_is_said):
+              t_only_failed_lines_are_cited, t_owner_named_item_is_cited, t_unreadable_visit_record_is_said):
         if only is not None and t.__name__ not in only:
             continue
         print("== %s" % t.__name__)

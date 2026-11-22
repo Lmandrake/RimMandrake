@@ -13,8 +13,8 @@ by hand.
 
 ## ACCEPTS
 
-- **rows-with-filed.** A visit's `rows.jsonl` row names its item in `filed`, as one rimflow item name or a list of
-  them. A name that is not a rimflow item name is ignored.
+- **rows-with-filed.** A visit's `rows.jsonl` row names its item in `filed` or in `owner`, as one rimflow item name or
+  a list of them. A name that is not a rimflow item name is ignored.
 - **road-back-opened-at-a-steward-launch.** The tick opens the road back when it launches a steward after an in-game
   visit; the row carries `stage: in_game` and `visit: N`, and the visit's `rows.jsonl` is in the tick's clone.
 
@@ -37,5 +37,8 @@ by hand.
   closes.
 - **only-failed-lines-are-cited.** `visit_cited_items` takes `filed` from rows whose verdict is not PASS, as a name or a
   list of names, rimflow item names only.
+- **owner-named-item-is-cited.** A failed row that names an item only in `owner` cites it, like `filed`; a PASS row's
+  `owner` cites nothing (Pyrelands visit 5, 2026-11-22: `sc_grass_regreens` named its old item only as `owner`, and the
+  road back left it out).
 - **unreadable-visit-record-is-said.** When the visit's `rows.jsonl` cannot be read, the road back opens on the
   steward item and records `cited_unread` naming `rows.jsonl`; it never records an empty cited list.

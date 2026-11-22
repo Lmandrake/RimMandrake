@@ -3801,8 +3801,10 @@ def visit_numbers(root, mod):
 
 
 def visit_cited_items(root, mod, n):
-    """-> [item ids] that the failed lines (verdict not PASS) of visit n's rows.jsonl name in `filed` (a name or a list
-    of names; only rimflow item names count), in order, once each; None when rows.jsonl cannot be read. A driver may
+    """-> [item ids] that the failed lines (verdict not PASS) of visit n's rows.jsonl name in `owner` or `filed` (a name
+    or a list of names; only rimflow item names count), in order, once each; None when rows.jsonl cannot be read. A
+    row that names its old item only as `owner` is cited too (RIMMANDRAKE_FIX_VISIT_CITE_SKIPS_OWNER_GRASS_FOIL_MISSED:
+    Pyrelands visit 5, sc_grass_regreens on RIMMANDRAKE_BUILD_PYRE_GRASS_FOIL_SAME_SEED_DENSITY_ONE). A driver may
     put a failed line on an item filed long before the visit, so caused_by does not find it; the road back waits on
     these too (RIMMANDRAKE_FIX_VISIT_WAIT_MISSES_FAILURE_CITED_ON_OLD_ITEM: FlowWorks visit 5, sc_hung_bridge on
     GRATE_FIRE_FIX_SOLID_DECK_BURNS_TOO)."""
@@ -3813,8 +3815,10 @@ def visit_cited_items(root, mod, n):
     for r in rows:
         if not isinstance(r, dict) or str(r.get("verdict") or "").upper() == "PASS":
             continue
-        f = r.get("filed")
-        for x in f if isinstance(f, list) else [f]:
+        names = []
+        for f in (r.get("owner"), r.get("filed")):
+            names += f if isinstance(f, list) else [f]
+        for x in names:
             x = str(x or "").strip()
             if ITEM_RE.match(x) and x not in out:
                 out.append(x)
