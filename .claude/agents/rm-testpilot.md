@@ -174,15 +174,20 @@ Most project skills are not registered. So none of the skills below loads by its
 - `skills/rimworld-live-review/SKILL.md`
 - `skills/telemetry/SKILL.md`
 
-## Context discipline (why: every call re-sends your whole conversation — cost grows with every line you let in)
+## This sitting's context (rm-testpilot only; the shared block below is the same in every agent file)
+
 - When you run as a subagent, your context auto-compacts at 150k tokens. A detached sitting (your brief says "You are this sitting") does not compact: on 2026-11-21 three detached sittings grew to 288k–409k tokens. Compaction keeps a summary, not the details. A stopped sitting is resumed or started again from your notes. So your PROGRESS FILE is your memory.
-  - Write the progress file as a skeleton first.
-  - After each step, record in the progress file your decisions, your pending operations, your evidence paths and your next action.
-  - After any compaction, read the progress file again.
-  - After each experiment, also write your progress record on the item: `rimflow note <ID> --text "PROGRESS: theory: ... | experiment: ... | reading: ... | next: ..."`. One line per experiment. A stopped sitting whose context is large is carried on by a FRESH session that has only your brief and these notes (`left_open_continue.whole_or_fresh`); with no such note it is resumed whole, at the price of its whole context.
+- After each experiment, also write your progress record on the item: `rimflow note <ID> --text "PROGRESS: theory: ... | experiment: ... | reading: ... | next: ..."`. One line per experiment. A stopped sitting whose context is large is carried on by a FRESH session that has only your brief and these notes (`left_open_continue.whole_or_fresh`); with no such note it is resumed whole, at the price of its whole context.
 - What a sitting spends. The spend stop ended three sittings on 2026-11-21 (`design/specs/2026-11-21-live-sitting-context-burn/results.md`). In each one, the start context was 25–29% of the spend, tool results were 27–35%, and your own output (thinking and the commands that you write) was 33–42%. Bridge and game-driver output was only 3–7%. Every call reads your whole context again, so a token that enters early is paid for by every later call.
 - Keep each tool result under 8,000 characters. In those sittings, 5–8 results over that size cost 10.5–12.5% of each sitting. Before you read a file, `grep -n` for the symbol. Then read at most 80 lines around it. Do not Read a whole source file. Do not `sed -n` a range of more than 100 lines.
 - Keep your commands short. Those sittings wrote 62k–77k characters of commands each, and heredoc scripts were 23k–64k of them. Write a script that you will run more than once to a file in your sitting folder, once. Then run it with arguments.
+- A subagent does not load CLAUDE.md; a detached sitting loads it, and can skip the "Project rules" section of the shared block below.
+
+## Context discipline (why: every call re-sends your whole conversation — cost grows with every line you let in)
+- Your context auto-compacts at 150k tokens. Compaction keeps a summary, not the details. So your PROGRESS FILE is your memory.
+  - Write the progress file as a skeleton first.
+  - After each step, record in the progress file your decisions, your pending operations, your evidence paths and your next action.
+  - After any compaction, read the progress file again.
 - Never let bulk output into your context.
   - Send long command output to a file (`cmd > out.txt 2>&1; rc=$?; tail -n 30 out.txt`, then report `$rc`). Then grep that file.
   - When you pipe, use `set -o pipefail`.
@@ -194,7 +199,7 @@ Most project skills are not registered. So none of the skills below loads by its
 - Before you stop, leave the tree clean: commit, or write a clear handoff note that lists your uncommitted paths.
 - Return ≤10 lines: verdict, ids, shas, evidence paths, and what is owed. Put a big result in a file, and return its path.
 
-## Project rules you would otherwise get from CLAUDE.md (a subagent does not load CLAUDE.md; a detached sitting loads it, and can skip this section)
+## Project rules you would otherwise get from CLAUDE.md (it is NOT loaded — it cost ~23k tokens per call)
 Before you act in an area, run `grep -n -i '<topic>' /home/mandrake/rm/bench/CLAUDE.md`. Read only the matching lines and the file that they point at. The essentials:
 - Clones: work in the clone that your parent names (the seat clone /home/mandrake/rm/bench, or a pool clone).
   - FOUNDRY and its clone are retired.

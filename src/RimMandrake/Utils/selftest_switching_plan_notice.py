@@ -36,8 +36,10 @@ with tempfile.TemporaryDirectory() as d:
         if verb == 'use':
             live[0] = argv[2]  # real claude-account use relaunches by default; no second fleet-start
         return 0, '{}'
+    # the live account comes through switcher_status (account_live, 3395b45329), never this machine's real one
     with patch.object(SP, 'OUT', out), patch.object(SP, 'SWITCH_LOG', Path(d)/'no-log'), \
             patch.object(SP, 'run', side_effect=run), patch.object(SP, 'clock', return_value=NOW), \
+            patch.object(SP, 'switcher_status', side_effect=lambda: {'machine': 'fixture', 'live': live[0], 'armed': True}), \
             patch.object(PP, 'STATE', Path(d)/'phone.json'), \
             patch.object(PP, 'todoist_transport', side_effect=lambda title, body: sent.append((title, body))):
         def go(dry=False, now=NOW):

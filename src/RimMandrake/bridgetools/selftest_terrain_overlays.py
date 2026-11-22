@@ -44,7 +44,8 @@ def body_of(src, name):
 def t_csharp():
     src = open(CS, encoding="utf-8").read()
     b = body_of(src, "SetTerrainBatch")
-    check(re.search(r"bool\s+clearOverlays\s*=\s*false\)", b) is not None, "C#: set_terrain_batch takes clearOverlays (default false)")
+    # a parameter follows it since bd2815adcd (mapId), so it ends in "," as well as ")"
+    check(re.search(r"bool\s+clearOverlays\s*=\s*false\s*[,)]", b) is not None, "C#: set_terrain_batch takes clearOverlays (default false)")
     w = b.find("WriteLayer(grid, cell, def, layer);")
     f = b.find("grid.RemoveFoundation(cell, false)")
     t = b.find("grid.RemoveTempTerrain(cell, false, true)")

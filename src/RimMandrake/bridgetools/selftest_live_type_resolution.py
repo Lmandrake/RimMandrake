@@ -72,7 +72,9 @@ def check(files):
         if OLD_SHAPE.search(text):
             bad.append("%s resolves a type by the first FullName match in the AppDomain (a pre-Prepatcher twin)" % fn)
     for action in ("list", "get", "set"):
-        if not re.search(r'action = "%s".{0,400}?typeIdentity' % action, msf, re.S):
+        # every reply of the action, not the first: f3b1999757 added a second "get" (the key= entry read)
+        replies = [m.end() for m in re.finditer(r'action = "%s"' % action, msf)]
+        if not replies or any("typeIdentity" not in msf[i:msf.find("}", i)] for i in replies):
             bad.append("mod_settings_field '%s' reply does not carry typeIdentity" % action)
     return bad
 
