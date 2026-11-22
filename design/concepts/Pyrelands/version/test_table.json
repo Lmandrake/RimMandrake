@@ -297,6 +297,17 @@
     "margins": []
    }
   },
+  "T_FIREFOAM_SCENE": {
+   "id": "T_FIREFOAM_SCENE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_firefoam_scene.py",
+   "observes": "the sc_firefoam_sprayer harness: every cell beside the fruit burns or the row is UNMEASURED, the planted gap holds no fuel, and the sprayer row needs a fruit taken while the ring burns (harness, not mod)",
+   "reads": [
+    "src/RimMandrake/Pyrelands/validation.py"
+   ],
+   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_firefoam_scene.py"
+  },
   "T_SETTINGS_SCREENS": {
    "id": "T_SETTINGS_SCREENS",
    "kind": "offline",
@@ -2018,6 +2029,7 @@
     "sc_firefoam_sprayer"
    ],
    "supports": [
+    "T_FIREFOAM_SCENE",
     "P_firefoam_aim"
    ],
    "held": [],
@@ -2397,6 +2409,7 @@
     "sc_firefoam_sprayer"
    ],
    "supports": [
+    "T_FIREFOAM_SCENE",
     "P_firefoam_aim"
    ],
    "held": [],

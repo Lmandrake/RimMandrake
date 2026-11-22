@@ -3884,50 +3884,173 @@ def burn_injuries(row):
 
 
 FRUIT_RING = 3   # the fire ring's thickness round the 3x3 fruit in the 9x9 burn: nothing clear is left beside the fruit
+# The harvester's Plants level, the same in both rows. PlantWorkSpeed is 0.08 + 0.115 per Plants level, floor 0.1
+# (StatDef PlantWorkSpeed), so one pod's 150 harvestWork (ScorchFruit.xml) takes 1500 ticks at level 0 and about 120 at
+# level 10. SITE (visit 5, 2026-11-22, all five firefoam runs): the spawned colonists took one pod per 750 to 1500 ticks,
+# fire or no fire (run_firefoam_sprayer.log: the control took a pod at tick 1250 with 52 ring fires, the sprayer colonist
+# at 2000 with 9). The grass ring's fires fall at 1250 to 1500 ticks (the same five logs), so an unpinned slow harvester
+# picks from cold ground and reads as "waited the fire out". At level 10 three pods take about 370 ticks of work after
+# the walk in, inside the ring's measured life. The number is a fact of the stat, not a bar.
+FRUIT_HARVESTER_PLANTS = 10
+
+
+def fruit_cells(x, z):
+    """The 3x3 scorch-fruit square of the 9x9 burn at (x, z) -> set of (x, z). Pure."""
+    return set((x + 3 + i, z + 3 + j) for i in range(3) for j in range(3))
+
+
+def ring_cells(x, z, k=FRUIT_RING):
+    """The ring's cells: its four edges, as _stage_burning_fruit lights them -> set of (x, z). Pure."""
+    out = set()
+    for ex, ez, w, h in ring_edges(x, z, k):
+        out.update((ex + i, ez + j) for i in range(w) for j in range(h))
+    return out
+
+
+def ring_edges(x, z, k=FRUIT_RING):
+    """The ring's four edge rects (x, z, w, h): bottom, top, west, east. Pure."""
+    return ((x, z, 9, k), (x, z + 9 - k, 9, k), (x, z + k, k, 9 - 2 * k), (x + 9 - k, z + k, k, 9 - 2 * k))
+
+
+def beside_fruit(x, z):
+    """The 16 cells one step (8-way) from the fruit square: the only cells a harvester can stand on to reach the fruit
+    from outside, since every path from outside into the fruit passes through one of them. Pure."""
+    f = fruit_cells(x, z)
+    box = set((x + 2 + i, z + 2 + j) for i in range(5) for j in range(5))
+    return box - f
+
+
+def cold_beside(fires, x, z):
+    """Cells beside the fruit that hold no free-standing fire -> sorted list. fires: (x, z) cells (fire_cells). Pure.
+    The pathfinder prices a burning cell +1000 (PathGrid.CalculatedCostAt), so a harvester always picks a cold one."""
+    lit = set(tuple(c) for c in fires or ())
+    return sorted(beside_fruit(x, z) - lit)
+
+
+def west_gap_cells(x, z, k=FRUIT_RING):
+    """The cells beside the fruit that the planted west gap leaves cold: those inside the west edge rect. Pure."""
+    ex, ez, w, h = ring_edges(x, z, k)[2]
+    return set(c for c in beside_fruit(x, z) if ex <= c[0] < ex + w and ez <= c[1] < ez + h)
+
+
+def ring_staging_verdict(cold, x, z, west_gap=False, k=FRUIT_RING):
+    """-> (ok, why) for the staged burn, from the cold cells beside the fruit after the relight. The scene's start
+    (scenes.json sc_firefoam_sprayer) asserts fire on every path to the fruit; a cell beside it with no fire breaks that.
+    Planted (west_gap): the west edge's cells beside the fruit must be cold and every other one lit. Pure."""
+    cold = set(tuple(c) for c in cold or ())
+    west = west_gap_cells(x, z, k)
+    want = west if west_gap else set()
+    if cold == want:
+        return True, ("the west gap is open as planted: %s" % sorted(want)) if west_gap else \
+            "all %d cells beside the fruit burn" % len(beside_fruit(x, z))
+    if west_gap and not want <= cold:
+        return False, "the planted west gap did not take: %s beside the fruit still burn" % sorted(want - cold)
+    return False, "%d cell(s) beside the fruit hold no fire after the relight: %s" % (len(cold - want),
+                                                                                     sorted(cold - want))
+
+
+def _fire_cells_in(t, rect):
+    """Free-standing Fire cells in `rect` -> [(x, z)]; UNMEASURED when a row has no cell (a blind count is not 0)."""
+    cells, unplaced = fire_cells(_things(t, "Fire", rect, limit=500))
+    if unplaced:
+        _unmeasured(t, "list_things gave %d Fire row(s) with no cell in %s: %r" % (len(unplaced), rect, unplaced[:2]))
+    return cells
 
 
 def _stage_burning_fruit(t, x, z, west_gap=False):
-    """A 9x9 grass burn, ripe scorch-fruit in its 3x3 centre, a fire ring on every path in. -> (fruit ids, ring rect).
-    west_gap: the planted state of the control (PLANT_RING_GAP_ENV): the west edge, the colonist's side, is left unlit,
-    as the visit-2 site was, so the fruit is reachable without crossing fire."""
+    """A 9x9 grass burn, ripe scorch-fruit in its 3x3 centre, a fire ring on every path in.
+    -> (fruit ids, fire count in the 9x9, staging record {cold, relit, verdict, why}).
+    west_gap: the planted state of the control (PLANT_RING_GAP_ENV): the west edge, the colonist's side, has its fuel
+    cut and is never lit, so the fruit is reachable without crossing fire and no fire can spread into that edge.
+    The caller reads record["verdict"]: False means the scene failed its own start, and the row is UNMEASURED."""
     rect = "%d,%d,9,9" % (x, z)
     t.bridge_call("jawa/weather_set", weather="Clear", lockWeather=True)
+    # Filth that refuses fire (firefoam: ChanceToStartFireIn returns 0 on filth whose allowsFire is false) or an earlier
+    # run's leavings would leave cold cells. SITE (visit 5, 2026-11-22): the sprayer row's foam lay on the control's west
+    # ring. Both rows start on clean ground.
+    t.bridge_call("jawa/destroy_batch", rects="%d,%d,11,11" % (x - 1, z - 1), categories="Filth")
+    left_foam = _count(t, FOAM_FILTH, rect)
+    if _live(t) and left_foam:
+        _unmeasured(t, "%d %s cells still on the burn after the filth clear" % (left_foam, FOAM_FILTH))
     _plants(t, "RM_FE_Plant_EmberGrass", (x, z, 9, 9))
     _plants(t, FRUIT_PLANT, (x + 3, z + 3, 3, 3))
+    k = FRUIT_RING
+    west = ring_edges(x, z, k)[2]
+    if west_gap:
+        # planted: no fuel on the west edge, so a fire cannot spread in (visit 5 planted run: an unlit grass edge took
+        # the fire 1250 ticks later and burned the colonist standing in it, so the planted control read PASS by chance)
+        t.bridge_call("jawa/destroy_batch", rects=_rs(west), categories="Plant")
     # the ring: all four edges. SITE (visit 2, 2026-11-20): only the bottom strip (x, z, 9, 2) was lit, and the control
     # colonist walked in from the open side and took the fruit unburned.
     # SITE (visit 5, 2026-11-22, ArchBig; visits 3 and 4 the same): a 2-cell ring is crossed in about 25 ticks, and vanilla
     # Fire tries to ignite a pawn in its cell only at its 150-tick DoComplexCalcs, so a bare colonist crossed it unburned and
     # harvested from the clear interior beside it. The ring is FRUIT_RING cells thick, so the only cells beside the fruit
     # are burning ring cells: to harvest, the colonist must stand in fire through the harvest work.
-    k = FRUIT_RING
-    west = (x, z + k, k, 9 - 2 * k)
-    for edge in ((x, z, 9, k), (x, z + 9 - k, 9, k), west, (x + 9 - k, z + k, k, 9 - 2 * k)):
+    for edge in ring_edges(x, z, k):
         if west_gap and edge == west:
             continue
         _fire(t, edge)
+    # SITE (visit 5, 2026-11-22): one map_fire per edge lit only 41 to 54 of the 72 ring cells, and every harvester stood
+    # on an unlit cell beside the fruit. FireUtility.TryStartFireIn has no random roll: a refused cell has
+    # ChanceToStartFireIn 0 (nothing flammable on it, or fire-refusing filth), so lighting it again changes nothing.
+    # Each cold cell beside the fruit gets its fuel again and one more light; what still refuses is named, with the
+    # planting reply that says why.
+    rec = {"relit": [], "cold": []}
+    if _live(t):
+        gap_cells = west_gap_cells(x, z, k) if west_gap else set()
+        for cx, cz in cold_beside(_fire_cells_in(t, rect), x, z):
+            if (cx, cz) in gap_cells:
+                continue
+            cell = (cx, cz, 1, 1)
+            pr = _plants(t, "RM_FE_Plant_EmberGrass", cell)
+            fr = t.bridge_call("jawa/map_fire", action="start", rect=_rs(cell), fireSize=1.2)
+            rec["relit"].append({"cell": [cx, cz], "planting": _GEN.get("last_plants", {}).get("reply"),
+                                 "firesStarted": (fr or {}).get("firesStarted"), "plantReply": bool(pr)})
     _wait(t, 250)
     fruit = [p.get("id") for p in _things(t, FRUIT_PLANT, "%d,%d,3,3" % (x + 3, z + 3), limit=20)]
-    fires = _count(t, "Fire", rect)
-    return fruit, fires
+    if not _live(t):
+        return fruit, 0, dict(rec, verdict=True, why="offline")
+    fires = _fire_cells_in(t, rect)
+    rec["cold"] = [list(c) for c in cold_beside(fires, x, z)]
+    rec["verdict"], rec["why"] = ring_staging_verdict(rec["cold"], x, z, west_gap=west_gap)
+    return fruit, len(fires), rec
 
 
 PLANT_RING_GAP_ENV = "PYRE_PLANT_RING_GAP"   # planted state for the repaired control row: the ring open on one side
 HARVEST_SAMPLE_TICKS = 250      # one sample per ring-fire read: a 2-cell grass ring burns out inside the 3000-tick window
 
 
+def _harvest_sample(t, cid, fruit, x, z, ring, tick):
+    """One timeline sample of the harvest window at `tick`: fires in the ring and beside the fruit, the fruit left and
+    taken, the colonist's cell, job and burns, the yield stacks by the burn."""
+    left = [p.get("id") for p in _things(t, FRUIT_PLANT, "%d,%d,3,3" % (x + 3, z + 3), limit=20)]
+    row = _pawn_row(t, cid, health=True) or {}
+    cx, cz = row.get("x"), row.get("z")
+    # "taken" is only "gone from the 3x3". "atFruit" is the colonist beside the fruit or on it (x+2..x+6: with a 3-cell
+    # ring the cells beside the fruit are the ring's inner cells, which is where a harvester stands). A harvest is a
+    # fruit taken with the colonist at the fruit, or a yield stack appearing by the burn.
+    at_fruit = isinstance(cx, int) and isinstance(cz, int) and x + 2 <= cx <= x + 6 and z + 2 <= cz <= z + 6
+    fires = _fire_cells_in(t, ring)
+    return {"tick": tick, "fires": len(fires), "besideFires": len(beside_fruit(x, z) & set(fires)),
+            "fruitLeft": len(left), "taken": [f for f in fruit[:3] if f not in left], "cell": [cx, cz],
+            "atFruit": at_fruit, "yield": _count(t, "RM_FE_ScorchFruitYield", "%d,%d,15,15" % (x - 3, z - 3)),
+            "job": _job_of(t, cid), "burns": len(burn_injuries(row))}
+
+
 def _harvest_through_fire(t, cid, fruit, ticks=3000, ring=None):
-    """Order the harvest, then advance `ticks` in HARVEST_SAMPLE_TICKS steps; with `ring` ('x,z,w,h' of the burn) each
-    step reads the fires in it, the fruit left and the colonist's cell and job -> the timeline (list of dicts), [] offline.
+    """Order the harvest, then advance `ticks` in HARVEST_SAMPLE_TICKS steps; with `ring` ('x,z,w,h' of the burn) a
+    sample at tick 0, before the order, then one per step (_harvest_sample) -> the timeline (list of dicts), [] offline.
+    The tick-0 sample is the yield baseline: the sprayer row's own yield stacks lie in the same 15x15 for the control.
     HARNESS (Pyrelands visit 3, 2026-11-21): the control colonist took 3 fruit unburned after one flat 3000-tick wait, and
     nothing said whether the ring was still burning when it walked in."""
+    x, z = (int(v) for v in ring.split(",")[:2]) if ring else (0, 0)
+    out = [_harvest_sample(t, cid, fruit, x, z, ring, 0)] if ring and _live(t) else []
     for i, fid in enumerate(fruit[:3]):
         t.bridge_call("jawa/ordered_job", pawnId=cid, jobDef="Harvest", targetAId=fid, queue=i > 0, waitTicks=0)
     if not ring:
         _wait(t, ticks)
         return []
-    x, z = (int(v) for v in ring.split(",")[:2])
-    out, done = [], 0
+    done = 0
     while done < ticks:
         step = min(HARVEST_SAMPLE_TICKS, ticks - done)
         # a burn is what this row measures (the sprayer row's "no burn injury", the control's "or comes back burned"),
@@ -3935,32 +4058,51 @@ def _harvest_through_fire(t, cid, fruit, ticks=3000, ring=None):
         # default latch stopped both sampled runs at tick 240 on the sprayer colonist's hand burn, reading UNMEASURED.
         _bite_wait(t, step)
         done += step
-        if not _live(t):
-            continue
-        left = [p.get("id") for p in _things(t, FRUIT_PLANT, "%d,%d,3,3" % (x + 3, z + 3), limit=20)]
-        row = _pawn_row(t, cid, health=True) or {}
-        cx, cz = row.get("x"), row.get("z")
-        # "taken" is only "gone from the 3x3": a fruit plant the fire burns is gone too (visit 3: the control colonist
-        # never left its cell and a fruit still went at tick 2000). A harvest is the colonist inside the ring's interior,
-        # or a yield stack appearing by the burn.
-        inside = isinstance(cx, int) and isinstance(cz, int) and x + 2 <= cx <= x + 6 and z + 2 <= cz <= z + 6
-        out.append({"tick": done, "fires": _count(t, "Fire", ring), "fruitLeft": len(left),
-                    "taken": [f for f in fruit[:3] if f not in left], "cell": [cx, cz], "inside": inside,
-                    "yield": _count(t, "RM_FE_ScorchFruitYield", "%d,%d,15,15" % (x - 3, z - 3)),
-                    "job": _job_of(t, cid), "burns": len(burn_injuries(row))})
+        if _live(t):
+            out.append(_harvest_sample(t, cid, fruit, x, z, ring, done))
     return out
+
+
+def _pin_harvester(t, cid):
+    """Set the harvester's Plants to FRUIT_HARVESTER_PLANTS, so both rows harvest at one known speed. -> the
+    set_pawn_skill reply (its `before` is the colonist's own level, kept as evidence); UNMEASURED when it cannot."""
+    r = t.bridge_call("jawa/set_pawn_skill", pawn=cid, skill="Plants", level=FRUIT_HARVESTER_PLANTS)
+    if _live(t) and not ((r or {}).get("success") and (r or {}).get("readBackMatches", True)):
+        _unmeasured(t, "the harvester's Plants could not be set to %d, so its harvest speed is unknown: %r"
+                    % (FRUIT_HARVESTER_PLANTS, r))
+    return r
 
 
 FOAM_FILTH = "Filth_FireFoam"   # what RM_FE_Bullet_FirefoamSplash leaves (vanilla firefoam filth)
 
 
 def harvested_while_burning(timeline):
-    """The first sample at which the colonist was inside the ring's interior, or a yield stack had appeared beside the
-    burn, while the ring still held fire; or None. Pure."""
+    """The first sample at which the colonist was at the fruit (beside it or on it), or a yield stack had appeared
+    beside the burn, while the ring still held fire; or None. The control's test: reaching the fruit unburned through a
+    burning ring means the fire did not stop it. Pure."""
     y0 = (timeline[0].get("yield") or 0) if timeline else 0
     for smp in timeline or []:
-        if (smp.get("fires") or 0) > 0 and (smp.get("inside") or (smp.get("yield") or 0) > y0):
+        at = smp.get("atFruit", smp.get("inside"))   # "inside" is the field's name in visit-5 and older timelines
+        if (smp.get("fires") or 0) > 0 and (at or (smp.get("yield") or 0) > y0):
             return smp
+    return None
+
+
+def taken_while_burning(timeline):
+    """The first sample at which a fruit was harvested while the ring still held fire, or None. Harvested: a fruit gone
+    from the 3x3 with the colonist at the fruit, or a yield stack more than at the first sample. The sprayer row's test:
+    the bar is a harvest from inside a live burn, so a fruit taken from cold ground after the ring burned out is not it
+    (visit 5, 2026-11-22: the sprayer colonist's first fruit went at tick 2000 with 0 fires left, and the row read PASS).
+    Pure."""
+    y_prev = (timeline[0].get("yield") or 0) if timeline else 0
+    n_prev = 0
+    for smp in timeline or []:
+        at = smp.get("atFruit", smp.get("inside"))
+        n, y = len(smp.get("taken") or ()), smp.get("yield") or 0
+        # a harvest is judged at the sample where it is first seen: "taken" and "yield" only grow
+        if (smp.get("fires") or 0) > 0 and ((n > n_prev and at) or y > y_prev):
+            return smp
+        n_prev, y_prev = max(n_prev, n), max(y_prev, y)
     return None
 
 
@@ -3976,10 +4118,15 @@ def firefoam_sprayer(t):
     _pad(t, PAD_SPRAY)
     with _comp(t, "sprayer_reaches_the_fruit"):
         t.bridge_call("jawa/research_finish_project", project="Firefoam")
-        fruit, fires = _stage_burning_fruit(t, x, z)
-        if _live(t) and (not fruit or not fires):
-            _unmeasured(t, "staging failed: %d fruit, %d fire cells" % (len(fruit), fires or 0))
+        fruit, fires, staged = _stage_burning_fruit(t, x, z)
+        if _live(t):
+            _note(t, "sprayer burn staging", staged)
+            if not fruit or not fires:
+                _unmeasured(t, "staging failed: %d fruit, %d fire cells" % (len(fruit), fires or 0))
+            if not staged.get("verdict"):
+                _unmeasured(t, "staging failed: %s; relit %r" % (staged.get("why"), staged.get("relit")))
         cid = _spawn_colonist(t, x - 3, z + 4)
+        _note(t, "sprayer harvester Plants", (_pin_harvester(t, cid) or {}).get("before"))
         spr = t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d,1" % (SPRAYER, x - 3, z + 4))
         gun = [g.get("id") for g in _things(t, SPRAYER, "%d,%d,1,1" % (x - 3, z + 4), limit=5)]
         if gun:
@@ -4002,21 +4149,27 @@ def firefoam_sprayer(t):
                 _fail("the colonist with the sprayer took none of the burning fruit")
             if burn_injuries(row):
                 _fail("the colonist with the sprayer came back burned: %r" % burn_injuries(row))
+            if not taken_while_burning(timeline):
+                last = (timeline or [{}])[-1]
+                _fail("the colonist with the sprayer took no fruit while the ring still burned (fires per sample %r): a "
+                      "fruit taken from cold ground is not a harvest from inside a live burn"
+                      % [(s_.get("tick"), s_.get("fires"), len(s_.get("taken") or ())) for s_ in timeline][:14]
+                      if timeline else "no samples, last %r" % last)
         _extinguish(t)
     _independent(t)
     with _comp(t, "without_sprayer_fire_stops_or_burns"):
         gap = os.environ.get(PLANT_RING_GAP_ENV) == "1"
         if gap:
-            _note(t, "PLANTED FAULT", "%s=1: the control's ring is left open on the west, the colonist's side"
+            _note(t, "PLANTED FAULT", "%s=1: the control's ring is open on the west, the colonist's side: that edge's fuel is cut and it is never lit"
                   % PLANT_RING_GAP_ENV)
-        # SITE (visit 5, 2026-11-22, ArchBig): the sprayer row's firefoam lay on the control's west ring (9 of 9 cells
-        # Filth_FireFoam), so map_fire refused it as wet; the control's ground starts with no foam on it
-        t.bridge_call("jawa/destroy_batch", rects="%d,%d,11,11" % (x - 1, z - 1), categories="Filth")
-        left_foam = _count(t, FOAM_FILTH, "%d,%d,9,9" % (x, z))
-        if _live(t) and left_foam:
-            _unmeasured(t, "%d %s cells still on the control's burn after the clear" % (left_foam, FOAM_FILTH))
-        fruit, fires = _stage_burning_fruit(t, x, z, west_gap=gap)
+        # the sprayer row's foam is cleared by the staging (both rows start on clean ground)
+        fruit, fires, staged = _stage_burning_fruit(t, x, z, west_gap=gap)
+        if _live(t):
+            _note(t, "control burn staging", staged)
+            if not staged.get("verdict"):
+                _unmeasured(t, "staging failed: %s; relit %r" % (staged.get("why"), staged.get("relit")))
         cid = _spawn_colonist(t, x - 3, z + 4)
+        _note(t, "control harvester Plants", (_pin_harvester(t, cid) or {}).get("before"))
         timeline = _harvest_through_fire(t, cid, fruit, ring="%d,%d,9,9" % (x, z))
         left = set(p.get("id") for p in _things(t, FRUIT_PLANT, "%d,%d,3,3" % (x + 3, z + 3), limit=20))
         row = _pawn_row(t, cid, health=True)

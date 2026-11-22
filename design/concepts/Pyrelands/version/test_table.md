@@ -32,7 +32,7 @@ Generated 2026-11-16T21:27:29-08:00 from `test_table.json` (the record; this is 
 | `no_ordinary_rain` | tree | 6 | T_DEFS_OFFLINE, sc_no_rain | - | all |
 | `ash_fertility_probe` | tree | 4-5 | T_ASH_PROBE_OFFLINE | T_FUZZ, sc_burn_compounds | all |
 | `walk_season_on_the_pyre` | tree | 6 | sc_walk | LOOK_STAGE8 | all |
-| `firefoam_sprayer_reaches_the_fruit` | tree | 6 | sc_firefoam_sprayer | P_firefoam_aim | all |
+| `firefoam_sprayer_reaches_the_fruit` | tree | 6 | sc_firefoam_sprayer | T_FIREFOAM_SCENE, P_firefoam_aim | all |
 | `sand_shovel_yields_glass_sand` | tree | 6 | sc_sand_shovel | T_DEFS_OFFLINE | all |
 | `fire_rite_hook_silent_alone` | tree | 6 | sc_rite_hook_alone | - | all |
 | `biome_text_says_engineered` | tree | 4-5 | T_DEFS_OFFLINE | - | all |
@@ -51,7 +51,7 @@ Generated 2026-11-16T21:27:29-08:00 from `test_table.json` (the record; this is 
 | `inv_ullai_herd_giant` | record | 6 | sc_ullai | T_CUT_STAYS_CUT, T_ULLAI_HERD_MIGRATES | all |
 | `inv_weather` | record | 6 | sc_three_skies, sc_no_rain, T_DEFS_OFFLINE | P_ashfall_weather_accumulation, P_ashfall_drifts, P_blackrain | all |
 | `inv_firebreak_firefoam` | record | 4-5 | T_CUT_STAYS_CUT | - | all |
-| `inv_firefoam_sprayer` | record | 6 | sc_firefoam_sprayer | P_firefoam_aim | all |
+| `inv_firefoam_sprayer` | record | 6 | sc_firefoam_sprayer | T_FIREFOAM_SCENE, P_firefoam_aim | all |
 | `inv_sand_shovel` | record | 6 | sc_sand_shovel | T_DEFS_OFFLINE | all |
 | `inv_lightning_breaker` | record | 4-5 | T_CUT_STAYS_CUT | - | all |
 | `inv_fire_rite_hook` | record | 6 | sc_rite_hook_alone | - | all |
@@ -77,6 +77,7 @@ Generated 2026-11-16T21:27:29-08:00 from `test_table.json` (the record; this is 
 | `T_FURNACE_WARMTH` | offline | 4-5 | `src/RimMandrake/Utils/selftest_furnace_warmth.py` | PASS 2.2s |
 | `T_SITE` | offline | 4-5 | `src/RimMandrake/Pyrelands/selftest_pyrelands_site.py` | PASS 4.7s |
 | `T_FRUIT_CLEAR` | offline | 4-5 | `src/RimMandrake/Pyrelands/selftest_pyrelands_fruit_clear.py` | PASS 0.0s |
+| `T_FIREFOAM_SCENE` | offline | 4-5 | `src/RimMandrake/Pyrelands/selftest_pyrelands_firefoam_scene.py` | PASS 0.3s |
 | `T_SETTINGS_SCREENS` | offline | 4-5 | `src/RimMandrake/Utils/selftest_settings_screens.py --mod Pyrelands` | PASS 2.4s |
 | `T_BARBSLINGER` | offline | 4-5 | `src/RimMandrake/Utils/selftest_barbslinger_two_tails.py` | PASS 0.0s |
 | `T_REVIEW_MAP` | offline | 4-5 | `src/RimMandrake/Pyrelands/review/selftest_pyre_review_map.py` | PASS 0.2s |
