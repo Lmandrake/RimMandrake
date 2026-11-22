@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "eb94da5a6900479f8c7619532cd6f0eaa53fd9352e117a109f82b28781700248",
+  "body_sha256": "763a1125f5b48e0ed478e08423d937cddcf6466357941b595b6e79bdd0f07955",
   "reducer": 1,
   "shards": {
    "BACKFILL": 893183,
@@ -28,7 +28,7 @@
    "HOLDER.run-1795312923": 2298,
    "HOLDER.run-1795315124": 1540,
    "HOLDER.run-1795321038": 846,
-   "HOLDER.run-1795325268": 1124,
+   "HOLDER.run-1795325268": 1929,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1269,11 +1269,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795321038",
-   "done": "visit 5 steward: back to in_game on 2 game-only MOD items: RIMMANDRAKE_GATE_INFERNO_DECK_CHANCE_SOLID_OUTBURNS_GRATE (replaces GRATE_FIRE_FIX_SOLID_DECK_BURNS_TOO; design 4.1 rules, block cleared) and RIMMANDRAKE_TRACE_FLOWWORKS_AWAKE_PRISONER_MEAL_SKIPPED_ONE_RUN_IN_TWO",
-   "next": "Fix ApplyInfernoEffects so solid-deck riders get the design low chance (grated > solid); prove sc_hung_bridge three PASS in a row",
-   "ruled_out": "a design card for the grate (design 4.1 already rules); removing OL_OWNER_LOOK_READS (it carries his held look statements)",
-   "ts": "2026-11-22T04:32:06Z"
+   "by": "HOLDER.run-1795325268",
+   "done": "65c45b6e98: inferno deck rule (solid deck 0.35 shields, grate 0.9 passes, capped fire spares the rim) and standing pit prisoner gets food brought; grate scene puts out fires per tier; T_FIRE and T_PRISON red-seen; sc_hung_bridge and sc_hole_prison UNRUN",
+   "next": "Run sc_hung_bridge and sc_hole_prison three times each at Stage 6, and record sc_hung_bridge red-seen live",
+   "ruled_out": "harness-only cause for sc_hole_prison: the ShouldBeFed postfix hand-fed standing healing prisoners, so DeliverFood refused",
+   "ts": "2026-11-22T06:26:22Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1725,7 +1725,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1573,
+  "events": 1574,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7826,7 +7826,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-22T06:25:10Z",
+   "last": "2026-11-22T06:26:22Z",
    "lease": "run-1795325268",
    "released": false,
    "token": 41
