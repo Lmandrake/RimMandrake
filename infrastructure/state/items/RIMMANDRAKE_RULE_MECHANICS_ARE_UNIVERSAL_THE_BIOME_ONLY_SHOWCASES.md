@@ -92,3 +92,21 @@
 **Picked:** Binding, short, only your rulings (Recommended)
 **Its description:** Why: a principle that does not bind is decoration. At most 7 entries, each with your words, one example that honours it and one that breaks it. Only your ruling adds an entry; agents may only propose. Buys a small file agents can obey. Costs your time for each new entry.
 **Other options:** Advisory reading for designers · No separate file; fold into the rulings
+
+## What the card said
+
+<!-- answered 2026-11-22T01:34:26Z; recorded by `note` (OWNER); written by rimflow, never by hand -->
+
+**Question:** Your typed answer began 'No offline testing, we test only where the mechanics matter.' We have a standing rule that every built item gets an offline test (a code test that runs without the game) plus a live test. I read your words narrowly: only the special test 'same conditions, biome name swapped, same result' is gone, and it is now removed from every rule file. The ordinary offline tests of each mechanic stay. (Hard to read? Type STE, Binding or Both for a rewrite.) Which did you mean by 'no offline testing'?
+**Picked:** Narrow: only the biome-swap test goes (Recommended)
+**Its description:** Why: your sentence was about testing outside the source biome. Each mechanic keeps its normal offline tests; nothing proves it on other biomes. Buys the fast, game-free checks that catch most faults. Costs nothing new. Recommended: it is what the files say now.
+**Other options:** Broad: mechanics get no offline tests · Keep the swap test for new mechanics only
+
+## What the card said
+
+<!-- answered 2026-11-22T01:34:26Z; recorded by `note` (OWNER); written by rimflow, never by hand -->
+
+**Question:** The plant-growth mod has a setting you ruled in October, in your words: 'Vanilla crops may function normally, or (default) they simply don't grow unless there's water nearby.' It is written as 'vanilla crops in our biomes'. Under today's ruling the code reads conditions, not biomes. Our planet is all our own biomes, so on it the two are the same; they differ only on a vanilla or third-party map. Where do vanilla crops need water nearby?
+**Picked:** Wherever the ground is dry and hot (Recommended)
+**Its description:** Why: the condition is the cause. Crops stall at one tenth speed without a water source within 2 cells, on any map with our dry-heat conditions; temperate vanilla maps are untouched. Buys the ruling with a physical reason. Costs defining 'dry and hot' as a measurable condition. Recommended: fits today's rule.
+**Other options:** Everywhere, on every map · Only our biomes: a stated exception
