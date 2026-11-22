@@ -134,6 +134,32 @@ namespace RimMandrake.FlowWorks
 			return AttachChance(inPit, onIntactDeck, false);
 		}
 
+		/// <summary>RIMMANDRAKE_DECIDE_FLOWWORKS_SOLID_DECK_LOW_CHANCE_SATURATES_IN_ONE_BURN (bridges design §4.1, steward's ruling
+		/// 2026-11-22): a SOLID deck's low chance (the onCover chance, at most 0.4) is had once per EXPOSURE, not once per effects
+		/// check. 0.35 every 60 ticks is near certain over one burn, so "low" was lost. An exposure is one pawn's continuous stay on
+		/// burning squares under an intact solid deck: it goes on while each effects check finds the pawn there again within
+		/// <see cref="DeckExposureGapTicks"/>. A grate, open fuel and a pawn held in the hole keep their chance per check.</summary>
+		/// <remarks>The gap: effects checks are 60 ticks apart (<see cref="FireCheckIntervalTicks"/> x 2), and the check parity is
+		/// not saved, so across a load two effects checks can be 90 ticks apart. 120 (two effects intervals) holds both, and a pawn
+		/// missing from one check (a step off and back) stays in the same exposure. The danger it guards is a fresh roll inside one
+		/// stay: measured, visit 6 (2026-11-22) solid-deck riders burned 0..9 times with a roll every check.</remarks>
+		public const int DeckExposureGapTicks = 4 * FireCheckIntervalTicks;
+
+		/// <summary>Does a pawn on a burning square under an intact solid deck roll its chance at this effects check? Yes at the
+		/// start of an exposure (never seen: <paramref name="lastExposedTick"/> &lt; 0; last seen more than
+		/// <see cref="DeckExposureGapTicks"/> ago; or a clock that ran back), no while the same exposure goes on.</summary>
+		public static bool DeckExposureRolls(int lastExposedTick, int now)
+		{
+			return lastExposedTick < 0 || now < lastExposedTick || now - lastExposedTick > DeckExposureGapTicks;
+		}
+
+		/// <summary>May an exposure record of a pawn last seen at <paramref name="lastExposedTick"/> be forgotten now? Yes when the
+		/// next sighting would start a new exposure anyway, so forgetting it changes no roll.</summary>
+		public static bool DeckExposureExpired(int lastExposedTick, int now)
+		{
+			return DeckExposureRolls(lastExposedTick, now);
+		}
+
 		/// <summary>SUMP_TAR_FIRE_NETWORK_1 (SUMP_TAR_HYDROLOGY_1 ruling 5: "a lit canal burns to its gate"): does a square
 		/// carry the fire front? Only when burnable liquid stands in it AND no shut sluice stands on it. A shut sluice is the
 		/// firebreak: its square neither catches nor passes the front, and a square alight when its gate drops goes out (the

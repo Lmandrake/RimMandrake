@@ -101,6 +101,13 @@ namespace RimMandrake.FlowWorks
 		private float detonatedCells;
 		private bool largeInfernoAnnounced;
 		private int checkCount;
+		// RIMMANDRAKE_DECIDE_FLOWWORKS_SOLID_DECK_LOW_CHANCE_SATURATES_IN_ONE_BURN: pawn thingIDNumber -> the tick an effects check last
+		// found it on burning squares under an intact solid deck. One exposure, one roll (RM_FireMath.DeckExposureRolls). Saved,
+		// so a load in the middle of a burn gives no fresh roll.
+		private Dictionary<int, int> deckExposedTick = new Dictionary<int, int>();
+		private List<int> deckExposedKeys;
+		private List<int> deckExposedValues;
+		private readonly List<int> deckExpiredScratch = new List<int>();
 
 		private List<int> burningKeys;
 		private List<int> burningValues;
@@ -164,6 +171,11 @@ namespace RimMandrake.FlowWorks
 			Scribe_Values.Look(ref detonationsStarted, "detonationsStarted", 0);
 			Scribe_Values.Look(ref detonatedCells, "detonatedCells", 0f);
 			Scribe_Values.Look(ref largeInfernoAnnounced, "largeInfernoAnnounced", false);
+			Scribe_Collections.Look(ref deckExposedTick, "deckExposedTick", LookMode.Value, LookMode.Value, ref deckExposedKeys, ref deckExposedValues);
+			if (Scribe.mode == LoadSaveMode.PostLoadInit && deckExposedTick == null)
+			{
+				deckExposedTick = new Dictionary<int, int>();
+			}
 			if (Scribe.mode == LoadSaveMode.PostLoadInit)
 			{
 				if (detTick == null || detCell == null || detKind == null || detRadius == null || detTick.Count != detCell.Count
@@ -443,6 +455,10 @@ namespace RimMandrake.FlowWorks
 			int now = Find.TickManager.TicksGame;
 			int infernoCells = 0;
 			haloTries = 0;
+			if (effects)
+			{
+				ForgetEndedDeckExposures(now);
+			}
 			// D5 "fire crosses both ways" (review 2026-10-22): a burning channel square lights the burnable spill beside it. The
 			// channel's flame is not a vanilla Fire, so the Fire.SpawnSetup hook never saw it and an ordinary fuel canal never lit
 			// its own spill.
@@ -547,7 +563,7 @@ namespace RimMandrake.FlowWorks
 				if (!p.Dead && !p.Flying)
 				{
 					bool held = heldInPit || Pits.RM_GrateEffects.UnderDeck(p);
-					if (Rand.Chance(RM_FuelFireMath.InfernoAttachChance(false, held, onDeck && !held, grated)))
+					if (SolidDeckRolls(p, onDeck && !held && !grated) && Rand.Chance(RM_FuelFireMath.InfernoAttachChance(false, held, onDeck && !held, grated)))
 					{
 						p.TryAttachFire(RM_FuelFireMath.InfernoAttachSize(held, onDeck && !held, grated), null);
 					}
@@ -593,6 +609,43 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
+		/// <summary>RIMMANDRAKE_DECIDE_FLOWWORKS_SOLID_DECK_LOW_CHANCE_SATURATES_IN_ONE_BURN (bridges design §4.1): does this pawn roll its
+		/// fire chance at this effects check? Always, unless it stands on burning squares under an intact solid deck: then once
+		/// per exposure (RM_FireMath.DeckExposureRolls), so a solid deck's low chance stays low over a whole burn.</summary>
+		private bool SolidDeckRolls(Pawn p, bool onSolidDeck)
+		{
+			if (!onSolidDeck)
+			{
+				return true;
+			}
+			int now = Find.TickManager.TicksGame;
+			bool rolls = RM_FireMath.DeckExposureRolls(deckExposedTick.TryGetValue(p.thingIDNumber, out int last) ? last : -1, now);
+			deckExposedTick[p.thingIDNumber] = now;
+			return rolls;
+		}
+
+		/// <summary>Drop the exposure records whose next sighting would start a new exposure anyway, so the record stays the size
+		/// of the riders over a fire now.</summary>
+		private void ForgetEndedDeckExposures(int now)
+		{
+			if (deckExposedTick.Count == 0)
+			{
+				return;
+			}
+			deckExpiredScratch.Clear();
+			foreach (KeyValuePair<int, int> kv in deckExposedTick)
+			{
+				if (RM_FireMath.DeckExposureExpired(kv.Value, now))
+				{
+					deckExpiredScratch.Add(kv.Key);
+				}
+			}
+			for (int k = 0; k < deckExpiredScratch.Count; k++)
+			{
+				deckExposedTick.Remove(deckExpiredScratch[k]);
+			}
+		}
+
 		private readonly List<Pawn> effectPawns = new List<Pawn>();
 
 		/// <summary>The pawns on a burning square, copied: a Scorch can kill one (despawn, corpse spawned) and an attached fire
@@ -631,7 +684,7 @@ namespace RimMandrake.FlowWorks
 					continue;
 				}
 				bool held = heldInPit || Pits.RM_GrateEffects.UnderDeck(p);
-				if (Rand.Chance(RM_FireMath.AttachChance(held, onDeck && !held, p.Flying, grated)))
+				if (SolidDeckRolls(p, onDeck && !held && !grated && !p.Flying) && Rand.Chance(RM_FireMath.AttachChance(held, onDeck && !held, p.Flying, grated)))
 				{
 					p.TryAttachFire(held ? 1f : grated ? 0.6f : 0.4f, null);
 				}

@@ -27,6 +27,22 @@ namespace RimMandrake.FlowWorks.SelfTest
             return due;
         }
 
+        // A rider on burning squares under an intact solid deck through one burn of `checks` effects checks `gap` ticks apart,
+        // driven through the shipped RM_FireMath.DeckExposureRolls: the chance it catches at least once, and how many rolls it had.
+        private static double SolidBurnChance(float p, int checks, int gap, out int rolls)
+        {
+            int last = -1, t = 0;
+            double miss = 1;
+            rolls = 0;
+            for (int k = 0; k < checks; k++)
+            {
+                t += gap;
+                if (RM_FireMath.DeckExposureRolls(last, t)) { rolls++; miss *= 1 - p; }
+                last = t;
+            }
+            return 1 - miss;
+        }
+
         // A body walked breadth-first from (ox,oz) over a w x h rectangle: the BFS order and rings the Verse side builds.
         private static void Body(int w, int h, int ox, int oz, out int[] ring, out int[] x, out int[] z)
         {
@@ -217,6 +233,58 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "ApplyInfernoEffects reads the deck rule in the cell");
                 RiverSwitchFlipChecks.Has(f, @"Rand\.Chance\(RM_FuelFireMath\.InfernoBesideChance\(false, besideHeld, capped\)\)",
                     "ApplyInfernoEffects reads the deck rule beside");
+            });
+
+            // RIMMANDRAKE_DECIDE_FLOWWORKS_SOLID_DECK_LOW_CHANCE_SATURATES_IN_ONE_BURN (bridges design §4.1 "low (today's onCover
+            // chance: 0.4 / 0.6)"; steward's ruling 2026-11-22): the chance that a rider on an intact SOLID deck catches over ONE
+            // burn stays at or below 0.4. Red on the parent: it rolled 0.35 at every effects check, 1-(0.65)^41 = 1.0 over the
+            // GRATE scene's 2500 ticks. Range read, through the shipped DeckExposureRolls: burns of 1, 2, 41 (the scene), 1000
+            // (a day) and 5000 effects checks; checks 30, 60 (normal), 90 (the check parity shifts across a load) and 120 ticks
+            // apart (one missed check); the inferno and the ordinary liquid-fire chance. Also read: a first sighting rolls, a
+            // stay broken for longer than the gap is a new exposure (each exposure keeps the same bound), a clock that ran back
+            // rolls. Left out: the vanilla halo fires (no deck read), what a fire attached once does to the rider after.
+            Case("FuelFire_inferno_solid_deck_low_chance_per_burn", () =>
+            {
+                const double bound = 0.4;            // design §4.1: today's onCover chance, 0.4
+                float pInferno = RM_FuelFireMath.InfernoAttachChance(false, false, true, false);
+                float pLiquid = RM_FireMath.AttachChance(false, true, false, false);
+                int cases = 0;
+                double worst = 0;
+                string worstAt = "";
+                foreach (float p in new[] { pInferno, pLiquid })
+                foreach (int checks in new[] { 1, 2, 41, 1000, 5000 })
+                foreach (int gap in new[] { 30, 60, 90, 120 })
+                {
+                    cases++;
+                    double ch = SolidBurnChance(p, checks, gap, out int rolls);
+                    if (ch > worst) { worst = ch; worstAt = "p " + p + ", " + checks + " checks " + gap + " ticks apart, " + rolls + " roll(s)"; }
+                    Assert(ch <= bound + 1e-9, "a solid-deck rider's chance over one burn of " + checks + " checks " + gap
+                        + " ticks apart is " + ch.ToString("0.000") + " (" + rolls + " rolls of " + p + "), above the bound " + bound);
+                    Assert(rolls == 1, "one continuous stay is one exposure: " + rolls + " rolls over " + checks + " checks " + gap + " apart");
+                }
+                Console.WriteLine("      solid deck per burn: " + cases + " cases, worst " + worst.ToString("0.000") + " (limit " + bound + ") at " + worstAt);
+                Assert(RM_FireMath.DeckExposureRolls(-1, 0) && RM_FireMath.DeckExposureRolls(-1, 600000), "a first sighting rolls");
+                int g = RM_FireMath.DeckExposureGapTicks;
+                Assert(!RM_FireMath.DeckExposureRolls(1000, 1000 + g), "seen again within the gap: the same exposure");
+                Assert(RM_FireMath.DeckExposureRolls(1000, 1000 + g + 1), "a stay broken past the gap is a new exposure");
+                Assert(RM_FireMath.DeckExposureRolls(5000, 4000), "a clock that ran back starts a new exposure");
+                Assert(RM_FireMath.DeckExposureExpired(1000, 1000 + g + 1) && !RM_FireMath.DeckExposureExpired(1000, 1000 + g),
+                    "a record is forgotten only when forgetting it changes no roll");
+                // the grate keeps its chance per check: over the scene's burn its rider is near certain, far above the solid deck
+                float pGrate = RM_FuelFireMath.InfernoAttachChance(false, false, true, true);
+                double grateBurn = 1 - Math.Pow(1 - pGrate, 41);
+                Assert(grateBurn >= 0.99 && grateBurn > worst, "grate per burn " + grateBurn + " vs solid " + worst);
+                Console.WriteLine("      grate per burn (41 checks): " + grateBurn.ToString("0.000000") + " vs solid " + worst.ToString("0.000"));
+                // the shipped effects gate the solid-deck roll on this rule, in the inferno and in ordinary liquid fire, and save it
+                string f = RiverSwitchFlipChecks.Src("RM_LiquidFire.cs");
+                RiverSwitchFlipChecks.Has(f, @"if \(SolidDeckRolls\(p, onDeck && !held && !grated\) && Rand\.Chance\(RM_FuelFireMath\.InfernoAttachChance\(false, held, onDeck && !held, grated\)\)\)",
+                    "ApplyInfernoEffects gates the solid-deck roll per exposure");
+                RiverSwitchFlipChecks.Has(f, @"if \(SolidDeckRolls\(p, onDeck && !held && !grated && !p\.Flying\) && Rand\.Chance\(RM_FireMath\.AttachChance\(held, onDeck && !held, p\.Flying, grated\)\)\)",
+                    "ApplyEffects gates the solid-deck roll per exposure");
+                RiverSwitchFlipChecks.Has(f, @"RM_FireMath\.DeckExposureRolls\(deckExposedTick\.TryGetValue\(p\.thingIDNumber, out int last\) \? last : -1, now\)",
+                    "SolidDeckRolls reads the shipped rule");
+                RiverSwitchFlipChecks.Has(f, @"Scribe_Collections\.Look\(ref deckExposedTick, ""deckExposedTick""",
+                    "the exposures are saved (a load mid-burn gives no fresh roll)");
             });
 
             Case("FuelFire_detonation_budgets_hold_on_big_bodies", () =>
