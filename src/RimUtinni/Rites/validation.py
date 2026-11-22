@@ -41,10 +41,10 @@ unfinishedPrereqs.Add(...)` loop) -- `RUT_Antiq_Language` is a
 `[RUT_Rites_ScrapShrine]` alone), and the tool has NO field at all for
 hidden prerequisites -- neither a name list nor a completion flag. So
 `unfinishedPrerequisites` is empty the entire time this suite runs,
-regardless of whether `RUT_Antiq_Language` is finished; only `canStartNow`
-itself (which DOES fold `hiddenPrerequisites` in, per vanilla
-`ResearchProjectDef.CanStartNow` -- confirmed by this mod's own header
-comment, not re-derived here) moves. `conduit_choir_gated_by_hidden_
+regardless of whether `RUT_Antiq_Language` is finished; `canStartNow` and
+`prerequisitesCompleted` move (vanilla `ResearchProjectDef.PrerequisitesCompleted`
+walks `hiddenPrerequisites` too, so both read False until Language is
+finished -- measured live, Steve filler J20261122T144744Z-003ce9). `conduit_choir_gated_by_hidden_
 prerequisite` below asserts what the tool actually returns, and calls this
 out explicitly rather than silently reproducing the walk's claim.
 
@@ -168,10 +168,12 @@ def conduit_choir_gated_by_hidden_prerequisite(t):
             if not (avail or {}).get("success"):
                 raise ExpectationFailed(
                     "jawa/research_availability(RUT_Rites_ConduitChoir) failed: %r" % avail)
-            if not avail.get("prerequisitesCompleted"):
+            # Vanilla PrerequisitesCompleted walks hiddenPrerequisites too, so it reads False until
+            # RUT_Antiq_Language is finished (measured live, Steve filler J20261122T144744Z-003ce9).
+            if avail.get("prerequisitesCompleted"):
                 raise ExpectationFailed(
-                    "prerequisitesCompleted should be True once ScrapShrine is finished "
-                    "(ConduitChoir's only ORDINARY prerequisite): %r" % avail)
+                    "prerequisitesCompleted is True with RUT_Antiq_Language (ConduitChoir's "
+                    "hiddenPrerequisites entry) unfinished -- the hidden prerequisite is not counted: %r" % avail)
             if avail.get("canStartNow"):
                 raise ExpectationFailed(
                     "canStartNow is True before RUT_Antiq_Language (ConduitChoir's "
@@ -764,9 +766,13 @@ def worn_bit_gods(t):
         _devmode_on(t)
     for keep in (True, False):
         word = "keep" if keep else "free"
+        made = _live(t) and wb_gods_problem(_wb_gods_call(t, "ProofDeltas", keep), keep)
         with _independent(t, "exactly_the_branch_gods_signed_and_tagged_" + word):
-            _wb_gods_judged(t, _live(t) and wb_gods_problem(_wb_gods_call(t, "ProofDeltas", keep), keep))
+            _wb_gods_judged(t, made)
         with _independent(t, "ninefold_log_carries_the_tag_" + word):
+            # The log row reads the lines ProofDeltas makes: a proof that made none leaves the log nothing to carry.
+            if made and made.startswith("UNMEASURED"):
+                _unmeasured(t, "the log row reads ProofDeltas' own lines, and " + made[len("UNMEASURED: "):])
             r = t.bridge_call("jawa/drain_log", limit=200, contains="(%s)" % _wb_reason(keep))
             if _live(t) and not isinstance(r, dict):
                 _unmeasured(t, "jawa/drain_log gave no reading: %r" % (r,))

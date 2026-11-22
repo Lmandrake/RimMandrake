@@ -241,6 +241,12 @@ def gods_chain(v):
     red("the log tags an extra god", logs={"keep": _logs(True) + ["[Ninefold] Ishko satiation +8.0 (The Worn Bit: keep) -> 8.0 [Calm]"]}, row=log)
     red("the log lacks a god", logs={"keep": _logs(True)[:2]}, row=log)
     red("the log has the wrong sign", logs={"keep": [x.replace("Ozzik satiation -", "Ozzik satiation +") for x in _logs(True)]}, row=log)
+    # Steve filler J20261122T144744Z-003ce9: the seam was not loaded, ProofDeltas refused, so no delta was logged; the
+    # log row read the empty log as a FAIL. With no deltas made, the log can say nothing: UNMEASURED, like its producer.
+    refused = "DELTAS refused: the Rust Cathedral seam is not loaded"
+    red("a refused seam leaves the log row unmeasured", {key: refused}, logs={"keep": []}, row=log, verdict="UNMEASURED")
+    red("a refused seam on free leaves its log row unmeasured", {"ProofDeltasfalse": refused}, logs={"free": []},
+        row="ninefold_log_carries_the_tag_free", verdict="UNMEASURED")
 
 
 def main():
