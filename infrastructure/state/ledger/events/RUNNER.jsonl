@@ -10857,3 +10857,4 @@
 {"seat":"RUNNER","event":"live","id":"OPS_FINDINGS_DIAGNOSE_XZLM","result":"broken","detail":"Ops alarm UNTRIAGED: flow.untriaged_findings = 3 findings with no outcome yet (MEASURED), line > 0","ts":"2026-11-22T02:46:45Z","tsn":1795315605547518748}
 {"seat":"RUNNER","event":"live","id":"OPS_FINDINGS_DIAGNOSE_XZLM","result":"kept","detail":"sweep: running again","ts":"2026-11-22T02:48:17Z","tsn":1795315697627552891}
 {"seat":"RUNNER","event":"note","id":"OPS_MATURATION_MOD_PAUSED_FYEB","text":"ops_watch: cleared at 2026-11-22T02:49:04Z (maturation.paused now 0)","ts":"2026-11-22T02:49:11Z","tsn":1795315751616268300}
+{"seat":"RUNNER","event":"live","id":"OPS_FINDINGS_DIAGNOSE_XZLM","result":"broken","detail":"Ops alarm UNTRIAGED: flow.untriaged_findings = 3 findings with no outcome yet (MEASURED), line > 0","ts":"2026-11-22T02:51:40Z","tsn":1795315900607077179}
