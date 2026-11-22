@@ -141,13 +141,31 @@
   "owner": "RIMMANDRAKE_BUILD_PYRE_GRASS_FOIL_SAME_SEED_DENSITY_ONE"
  },
  "sc_walk": {
-  "label": "walk_season",
+  "label": "walk_season2",
   "identity": "identity_full.json",
   "held": [
    "weather: Clear locked at the site's start",
    "storyteller quiet, incident queue cleared",
    "walk shield: foreign hostile arrivals of his full list removed (RIMMANDRAKE_SHIELD_PYRE_WALK_FROM_FULL_LIST_EVENTS)"
   ],
-  "note": "his full list (315 mods) on ArchBig, full-list site NS_Pyrelands_site_1_417df172fdb5_visit5full (tile 178), gate B CLEAN; PYRE_WALK=1"
+  "note": "his full list (315 mods) on ArchBig, full-list site NS_Pyrelands_site_1_417df172fdb5_visit5full (tile 178), gate B CLEAN; PYRE_WALK=1",
+  "prior": [
+   {
+    "label": "walk_season",
+    "class": "HARNESS",
+    "note": "first walk on his full list: walk_reload_keeps_the_state, the second pass, the roster toggle, the roofed grass, the thirst and master parts UNMEASURED: safe_advance stopped on a wild nuna downed by a predator (with a colonist's PanicFleeFire), a visiting OutlanderCivil villager downed (bitten, dehydrated, starving) and a fire-wasp downed; walk_gate_off_then_on FAIL '928 fires burning after a day with the gate off': the day began with the walk's own 30 fires burning, which spread by vanilla on the grass carpet"
+   }
+  ],
+  "repair": {
+   "class": "HARNESS",
+   "commit": "baf24e662774a415ff433d36de93bbf699945d02",
+   "what": "inside the walk, a stop on harm to a pawn not the player's (wildlife, the cast, visitors) or on a colonist's PanicFlee/PanicFleeFire resumes after list_pawns reads each subject back (bd8963f26d, baf24e6627; selftest_pyrelands_walk_shield.py 35/35, its can-fail cases: a colonist's harm, another mental state, an unlisted subject, a failed listing); the gate-off and roster-off days start from an extinguished map; planted switch PYRE_PLANT_GATE_IGNORED",
+   "planted": {
+    "plant": "PYRE_PLANT_GATE_IGNORED=1: pyrelandsEnabled left on for the gate-off day",
+    "command": "PYRE_WALK=1 PYRE_PLANT_GATE_IGNORED=1 (through WSLENV) python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains walk_season",
+    "verdict": "PENDING",
+    "evidence": "design/concepts/Pyrelands/version/in_game/visit_5/evidence/pv5_walk_season_planted_gate.json"
+   }
+  }
  }
 }
