@@ -21,6 +21,12 @@ import time
 TMP = tempfile.mkdtemp(prefix="st_game_lock_")
 atexit.register(shutil.rmtree, TMP, True)
 os.environ["TMPDIR"] = TMP
+# The caller's game is not the test's: a detached game-b helper carries RM_GAME_INSTANCE=b and its live hold, and the
+# in-process checks (os.environ.update(bx.env) adds, never removes) then read game b and fail; ./publish refused it
+# (GSS in-game visit 3, 2026-11-21: 3 FAIL with RM_GAME_INSTANCE=b, 0 without).
+for _k in ("RM_GAME_INSTANCE", "RM_GAME_USERDATA", "RM_GAME_LOGDIR", "RM_HOST_GUARD_GEN", "RM_DRIVER_PID", "RM_ROLE_UNIT",
+           "GABP_SERVER_PORT", "GABP_TOKEN"):
+    os.environ.pop(_k, None)
 HERE = os.path.dirname(os.path.abspath(__file__))
 GL = os.path.join(HERE, "game_lock.py")
 CLI = os.path.join(HERE, "cli.py")
