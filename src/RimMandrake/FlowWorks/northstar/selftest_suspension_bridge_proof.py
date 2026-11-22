@@ -120,9 +120,26 @@ def main():
         got = verdicts("jetstays", "jetty", static=lambda self, m, a: ostat(self, m, a).replace("SPAN none", "SPAN tier=steel load=1 rating=120 state=Over decks=2") if m == "ProofSpan" else ostat(self, m, a))
         if got.get("JET_overload_drops_whole_at_root") != "FAIL":
             fails.append("over-correction: jetty Over but decks stand reads %s, want FAIL" % got.get("JET_overload_drops_whole_at_root"))
+    # UND_crush reads harm by (def, part), count and severity, never by the hediff count (visit 7: 6 before, 6 after)
+    H = lambda d, p, s=0.5: {"def": d, "part": p, "severity": s}  # noqa: E731
+    base = [H("Scratch", "Finger"), H("Cut", "Finger"), H("Scar", "Torso"), H("Bruise", "Leg"), H("Cut", "Arm"), H("Gunshot", "Hand")]
+    harm_cases = [
+        ("a part destroyed: two injuries on it become one missing part, count level", base,
+         [h for h in base if h["part"] != "Finger"] + [H("MissingBodyPart", "Finger", 0), H("Crush", "Leg", 4)], True),
+        ("a second crush on one part merges: count level, severity up", base,
+         [h if h["part"] != "Leg" else H("Bruise", "Leg", 6) for h in base], True),
+        ("a new crush on a new part", base, base + [H("Crush", "Torso", 9)], True),
+        ("nothing changed", base, list(base), False),
+        ("an injury healed a little and nothing new", base, [h if h["part"] != "Arm" else H("Cut", "Arm", 0.2) for h in base], False),
+        ("mock reads with no part or severity: a crush added", [{"def": "Bruise"}], [{"def": "Bruise"}, {"def": "Crush"}], True),
+    ]
+    for name, b, a, want in harm_cases:
+        got = bool(SBP.new_harm(b, a))
+        if got != want:
+            fails.append("new_harm: %s -> %s, want %s" % (name, got, want))
     for f in fails:
         print("FAIL " + f)
-    print("suspension bridge proof mock: %d rows, %d sections, %s" % (len(ids), len(SBP.SECTIONS), "ok" if not fails else "FAIL"))
+    print("suspension bridge proof mock: %d rows, %d sections, %d harm cases, %s" % (len(ids), len(SBP.SECTIONS), len(harm_cases), "ok" if not fails else "FAIL"))
     return 1 if fails else 0
 
 

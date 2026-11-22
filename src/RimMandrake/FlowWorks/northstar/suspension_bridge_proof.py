@@ -538,9 +538,10 @@ def underpass(ctx):
         ha = hediffs_of(pawns_of(B).get(e_) or {})
         V.require(ha is not None and hb is not None, "pawn health read", "no health block in list_pawns")
         hb, ha = hb or [], ha or []
-        good = int(kv.get("crushed", "0")) > int(kv0.get("crushed", "0")) and len(ha) > len(hb)
+        hurt = new_harm(hb, ha)
+        good = int(kv.get("crushed", "0")) > int(kv0.get("crushed", "0")) and bool(hurt)
         row("UND_crush_below_and_wreck", "PASS" if good else "FAIL",
-            {"before": kv0, "after": txt, "hediffs": [len(hb), len(ha)],
+            {"before": kv0, "after": txt, "hediffs": [len(hb), len(ha)], "newHarm": hurt[:8],
              "owed": "wreck blocks the floor until a clear job runs: read RM_SuspensionWreck on (4,40) and its deconstruct"})
     with V.scope("UND_sunken"):
         for zz in range(56, 60):
@@ -721,6 +722,23 @@ def hediffs_of(p):
     if not isinstance(h, dict):
         return None
     return h.get("hediffs") or []
+
+
+def new_harm(before, after):
+    """The harm a pawn took between two hediff reads: each (def, part) whose count or summed severity rose, as
+    [def, part]. A count alone misses harm (FlowWorks visit 7, 2026-11-22: a crushed colonist read 6 hediffs before and 6
+    after; a part destroyed outright drops the injuries on it for one MissingBodyPart, and a second injury of one kind on
+    one part merges into the first and raises only its severity). Empty when nothing new or worse is read."""
+    def tally(hs):
+        t = {}
+        for h in hs or []:
+            k = (h.get("def"), h.get("part"))
+            n, sv = t.get(k, (0, 0.0))
+            t[k] = (n + 1, sv + float(h.get("severity") or 0.0))
+        return t
+    b, a = tally(before), tally(after)
+    return [list(k) for k, (n, sv) in sorted(a.items(), key=lambda kv: str(kv[0]))
+            if n > b.get(k, (0, 0.0))[0] or sv > b.get(k, (0, 0.0))[1] + 1e-6]
 
 
 def health_seen(rows):
