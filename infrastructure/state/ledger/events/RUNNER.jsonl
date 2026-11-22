@@ -11287,3 +11287,4 @@
 {"seat":"RUNNER","event":"raise","id":"OPS_SCRATCH_OUTSIDE_READING_RESTORE_WLTC","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-22T19:09:23Z","tsn":1795374563876778263}
 {"seat":"RUNNER","event":"live","id":"OPS_SCRATCH_OUTSIDE_READING_RESTORE_WLTC","result":"broken","detail":"Ops alarm SCRATCH_OUTSIDE_BLIND: last measured 2026-11-22T17:52:47Z, 74 min ago: older than the round robin allows (60 min) -- disk.scratch_outside_blind = 1 so","ts":"2026-11-22T19:10:33Z","tsn":1795374633911399343}
 {"seat":"RUNNER","event":"raise","id":"OPS_SCRATCH_OUTSIDE_READING_RESTORE_WLTC","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-22T19:10:40Z","tsn":1795374640734803589}
+{"seat":"RUNNER","event":"live","id":"OPS_SCRATCH_OUTSIDE_READING_RESTORE_WLTC","result":"kept","detail":"sweep: running again","ts":"2026-11-22T19:18:11Z","tsn":1795375091837461156}
