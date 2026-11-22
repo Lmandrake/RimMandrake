@@ -296,40 +296,15 @@ def cmd_arm():
     ensure_paused("CPU_RETEST_PROVE_MASKED_PAIR_AFTER_FLASH: drain for unmask reboot (current job finishes, none admitted)")
 
 
-UNIT = """[Unit]
-Description=Steve CPU 18/19 unmask retest controller (CPU_RETEST_PROVE_MASKED_PAIR_AFTER_FLASH)
-
-[Service]
-Type=oneshot
-ExecStart=/usr/bin/python3 {path} tick
-TimeoutStartSec=300
-"""
-TIMER = """[Unit]
-Description=Steve CPU retest tick
-
-[Timer]
-OnBootSec=60
-OnUnitActiveSec=60
-AccuracySec=5s
-
-[Install]
-WantedBy=timers.target
-"""
-
-
 def cmd_install():
-    ud = os.path.expanduser("~/.config/systemd/user")
-    os.makedirs(ud, exist_ok=True)
-    dst = os.path.join(HOME, "steve_cpu_retest.py")
+    """Copy this script to HOME (the unit runs that copy), then install its units from the one home
+    (src/RimMandrake/Utils/systemd/steve-cpu-retest.{service,timer}) through the only installer."""
     os.makedirs(HOME, exist_ok=True)
-    src = open(os.path.abspath(__file__)).read()
-    open(dst, "w").write(src)
-    # the installed copy finds testq next to the repo copy
-    open(os.path.join(ud, "steve-cpu-retest.service"), "w").write(UNIT.format(path=dst))
-    open(os.path.join(ud, "steve-cpu-retest.timer"), "w").write(TIMER)
-    for a in (["daemon-reload"], ["enable", "--now", "steve-cpu-retest.timer"]):
-        r = subprocess.run(["systemctl", "--user"] + a, capture_output=True, text=True)
-        print("systemctl --user", " ".join(a), r.returncode, r.stderr.strip()[-150:])
+    with open(os.path.abspath(__file__)) as f, open(os.path.join(HOME, "steve_cpu_retest.py"), "w") as g:
+        g.write(f.read())
+    sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    import ops_clocks
+    return ops_clocks.install(["steve-cpu-retest"], apply=True, enable=True)
 
 
 def main():

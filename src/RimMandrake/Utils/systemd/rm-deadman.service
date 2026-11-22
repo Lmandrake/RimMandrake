@@ -1,0 +1,10 @@
+# rm-deadman: the no-AI sweep of every live promise, with the outside dead-man for the Dispatcher and ops_watch (LIVE_PROOF_ENFORCE_DONE_MEANS_RUNNING).
+[Unit]
+Description=Recheck every live promise, and the Dispatcher and ops_watch stamps
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/mandrake/rm/dispatch
+ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/deadman_check.py run --file-alarms
+TimeoutStartSec=300s
+Nice=10

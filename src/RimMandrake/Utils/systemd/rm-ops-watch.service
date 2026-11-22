@@ -1,0 +1,14 @@
+# rm-ops-watch: ops_watch.py, the Dispatcher's deterministic measurement arm for Operations
+# (V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE; listed in src/RimMandrake/rimflow/dispatcher_schedule.json "measure").
+# Runs from the one Operations deploy (src/RimMandrake/Utils/systemd/ops_clocks.json). No AI.
+[Unit]
+Description=Ops watch (accounts, Codex, Steve lane, disk, timers, KPIs; Andon flags; alarms)
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/ops_watch.py run --file-alarms
+# ops_memory reads this pass back from VictoriaMetrics once telemetryd has ingested it; "-": its failure never fails
+# the pass (a missing or blind generation is what ops_memory.py check reports)
+ExecStartPost=-/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/ops_memory.py build --wait-ingest 120
+TimeoutStartSec=420s
+Nice=10

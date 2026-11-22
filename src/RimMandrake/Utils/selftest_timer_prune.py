@@ -23,7 +23,7 @@ FAILS = []
 RETIRED = ("rm-arena-anchor", "rm-replay-watch", "rm-v3-vs-v2", "claude-account-warm")
 SLOWED = {  # unit -> (repo file, timer key, value systemd reports)
     "rm-mirror": (HERE / "systemd/rm-mirror.timer", "OnUnitInactiveSec=15min", "OnUnitInactiveUSec=15min"),
-    "rm-telemetry-export": (HERE / "telemetry/systemd/rm-telemetry-export.timer", "OnUnitActiveSec=5min",
+    "rm-telemetry-export": (HERE / "systemd/rm-telemetry-export.timer", "OnUnitActiveSec=5min",
                             "OnUnitActiveUSec=5min"),
     "rm-arteval-autojudge": (HERE / "systemd/rm-arteval-autojudge.timer", "OnUnitActiveSec=2h", "OnUnitActiveUSec=2h"),
 }
@@ -72,11 +72,10 @@ for unit, (path, key, _live) in SLOWED.items():
     check(key in lines, "%s ships %s" % (unit, key), [l for l in lines if l.startswith("OnUnit")])
 
 # --- repo: what the re-read kept is unchanged
-tq_text = (HERE / "testq/testq.py").read_text(encoding="utf-8")
-tick = re.search(r'"testq-tick\.timer": """(.*?)"""', tq_text, re.S)
-watch = re.search(r'"testq-steward-watch\.timer": """(.*?)"""', tq_text, re.S)
-check(bool(tick) and "OnUnitInactiveSec=60s" in tick.group(1), "testq-tick template still ticks every 60 s")
-check(bool(watch) and "OnUnitInactiveSec=60s" in watch.group(1), "testq-steward-watch keeps its own 60 s timer")
+tick = (HERE / "systemd/testq-tick.timer").read_text(encoding="utf-8")
+watch = (HERE / "systemd/testq-steward-watch.timer").read_text(encoding="utf-8")
+check("OnUnitInactiveSec=60s" in tick, "testq-tick timer still ticks every 60 s")
+check("OnUnitInactiveSec=60s" in watch, "testq-steward-watch keeps its own 60 s timer")
 check(re.search(r"^STALE_S = 300\b", (HERE / "testq/steward.py").read_text(encoding="utf-8"), re.M) is not None,
       "steward.py STALE_S is 300 s, which a 60 s tick satisfies")
 

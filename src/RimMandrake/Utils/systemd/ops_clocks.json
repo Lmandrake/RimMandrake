@@ -1,15 +1,13 @@
 {
-  "_doc": "Operations clocks and the ONE deploy they run code from (OPS_CLOCKS_DEPLOY_ONE_PINNED_COPY; design/RimMandrake/operations_metronome_strategy_2026-11-02.md §8 step 0). Checked by src/RimMandrake/Utils/ops_clocks.py check. The deploy is the dispatch clone: nobody edits code there, it only fast-forwards to origin/main, and the ledger-writing clocks (dispatcher, restart, deadman) find their repo from their own file path, so their code and their data clone must be the same tree. Every rm-*, testq-*, timer-guard and account-plan unit systemd has loaded is either a clock here or named in outside with its reason; an unclassified one fails the check. A clock's trigger must exist; whether it is enabled is not judged here (account-plan.timer was off on the owner's order 2026-10-29, removed here 2026-11-04 by TIMERS_PRUNE_AUDIT_FINALLY_READ, and running again since 2026-11-06 06:52Z; its 2026-11-05 week-plan drop-in was removed 2026-11-20, and `check` flags any RM_SWITCH_PLAN in a clock's unit, so the plan reads the standard switching_plan.json where his rulings land; timers_guard watches enabled timers).",
+  "_doc": "Operations clocks and the ONE deploy they run code from (OPS_CLOCKS_DEPLOY_ONE_PINNED_COPY; design/RimMandrake/operations_metronome_strategy_2026-11-02.md §8 step 0). Checked by src/RimMandrake/Utils/ops_clocks.py check. The deploy is the dispatch clone: nobody edits code there, it only fast-forwards to origin/main, and the ledger-writing clocks (dispatcher, restart, deadman) find their repo from their own file path, so their code and their data clone must be the same tree. Every rm-*, testq-*, timer-guard and account-plan unit systemd has loaded is a clock here, an old timer a metronome phase owns (metronome_phases.json `owns`: rm-ops-watch and rm-restart-reconcile, disabled since their cutover; their units stay in this folder as the way back), or named in outside with its reason; an unclassified one fails the check. rm-dispatcher stays a clock although the dispatch phase owns its timer: seat_restart.py still starts rm-dispatcher.service, so where its code runs from is still judged. Every unit text is a file in this folder, the one home, installed only by `ops_clocks.py install` (design/specs/2026-11-22-units-one-folder/boundary.md). A clock's trigger must exist; whether it is enabled is not judged here (account-plan.timer was off on the owner's order 2026-10-29, removed here 2026-11-04 by TIMERS_PRUNE_AUDIT_FINALLY_READ, and running again since 2026-11-06 06:52Z; its 2026-11-05 week-plan drop-in was removed 2026-11-20, and `check` flags any RM_SWITCH_PLAN in a clock's unit, so the plan reads the standard switching_plan.json where his rulings land; timers_guard watches enabled timers).",
   "deploy": "/home/mandrake/rm/dispatch",
   "clocks": {
-    "rm-ops-watch": "rm-ops-watch.timer",
     "rm-vv-matrix": "rm-vv-matrix.timer",
     "timer-guard": "timer-guard.timer",
     "rm-account-usage": "rm-account-usage.timer",
     "account-plan": "account-plan.timer",
     "rm-dispatcher": "rm-dispatcher.timer",
     "rm-deadman": "rm-deadman.timer",
-    "rm-restart-reconcile": "rm-restart-reconcile.timer",
     "rm-restart-now": "rm-restart-now.path",
     "rm-scratch-pressure": "rm-scratch-pressure.timer",
     "rm-scratch-reap": "rm-scratch-reap.timer",
@@ -19,7 +17,12 @@
     "rm-metronome": "rm-metronome.timer",
     "rm-ops-reds": "rm-ops-reds.timer",
     "rm-canon-sweep": "rm-canon-sweep.timer",
-    "rm-order7": "rm-order7.timer"
+    "rm-order7": "rm-order7.timer",
+    "rm-codebase-now": "rm-codebase-now.timer",
+    "rm-control-acts-export": "rm-control-acts-export.timer",
+    "rm-fleet-now": "rm-fleet-now.timer",
+    "rm-maturation-dispatch": "rm-maturation-dispatch.timer",
+    "rm-red-dispatch": "rm-red-dispatch.timer"
   },
   "outside": {
     "rm-relentless": "the Relentless tick: retired by the owner 2026-11-13, unit masked (design/RimMandrake/retired_loops_2026-11-13.md)",
@@ -47,6 +50,7 @@
     "rm-harness": "slice",
     "rm-restart-now-*": "transient restart runs",
     "rm-role-*": "transient role runs (rm-role-<role>-<ts>: Conductor, Operations, ...), launched by systemd-run; ops_watch reads their result files",
-    "rm-sheet-*": "review-sheet servers an agent starts with systemd-run (src/RimMandrake/Utils/art/serve_gated.py): a page for the owner, not a clock"
+    "rm-sheet-*": "review-sheet servers an agent starts with systemd-run (src/RimMandrake/Utils/art/serve_gated.py): a page for the owner, not a clock",
+    "rm-detached-*": "transient detached helper runs (rm-detached-<seat>-<item>-<n>), launched by systemd-run from detached_helper.py: not a clock"
   }
 }

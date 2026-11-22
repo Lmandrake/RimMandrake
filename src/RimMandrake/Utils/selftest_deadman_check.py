@@ -466,11 +466,6 @@ def main():
     DM.read_items()
     pc.read_ledger, pc.CLONES, DM.HERE = keep_rl, keep_cl, keep_here
     check(seen == [Path("/a"), Path("/d")], "a sweep reads its own clone's shards as well: %r" % seen)
-    # install plan writes nothing
-    home = TMP / "home"
-    os.environ["HOME"] = str(home)
-    DM.install(False, "/x")
-    check(not home.exists(), "install plan writes nothing")
     print("%d failure(s)" % len(FAILS))
     return 1 if FAILS else 0
 

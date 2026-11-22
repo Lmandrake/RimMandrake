@@ -1,0 +1,8 @@
+[Unit]
+Description=testq steward heartbeat watcher (STEVE_STEWARD_BUILD_NO_LLM_OWNER)
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/mandrake/rm/dispatch
+ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/testq/testq.py steward-watch
+TimeoutStartSec=300

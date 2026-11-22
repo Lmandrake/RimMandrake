@@ -77,12 +77,15 @@ check(OC.judge(plan_unit + "[Service]\nEnvironment=RM_SWITCH_PLAN_DIR=/tmp/out\n
 
 # --- classify
 units = {"rm-ops-watch", "rm-relentless-work-abc-g1", "testq-tick", "rm-new-thing", "rm-account-handover-x"}
-check(OC.classify(units, conf) == ["rm-new-thing"], "an unclassified rm-* unit is named; globs in outside match")
+check(OC.classify(units, conf, set(OC.owned_timers())) == ["rm-new-thing"],
+      "an unclassified rm-* unit is named; globs in outside match; an owned old timer is classified")
 
 # --- cut-over clocks (OPS_METRONOME_MIGRATE_CLOCKS_FENCED): the old timer a phase owns has no second life
 owned = OC.owned_timers()
 check(owned.get("rm-restart-reconcile.timer") == "raise", "the shipped table: raise owns rm-restart-reconcile.timer")
-check(all(conf["clocks"].get(t[:-len(".timer")]) == t for t in owned), "every owned timer is a known Operations clock")
+check(OC.classify({t[:-len(".timer")] for t in owned}, conf, set(owned)) == [], "every owned timer is classified by its phase")
+check(OC.classify({"rm-x"}, conf, {"rm-x.timer"}) == [] and OC.classify({"rm-x"}, conf) == ["rm-x"],
+      "an old timer a phase owns is classified only through that ownership")
 check(OC.judge_owned(owned, lambda t: ("disabled", "inactive")) == [], "an owned timer disabled and stopped is clean")
 two = OC.judge_owned({"rm-x.timer": "raise"}, lambda t: ("enabled", "inactive"))
 check(len(two) == 1 and "two owners" in two[0] and "disable --now rm-x.timer" in two[0],
@@ -90,24 +93,13 @@ check(len(two) == 1 and "two owners" in two[0] and "disable --now rm-x.timer" in
 check(len(OC.judge_owned({"rm-x.timer": "raise"}, lambda t: ("disabled", "active"))) == 1,
       "an owned timer disabled but still running is two owners")
 
-# --- shipped unit files and installer templates point at the deploy
+# --- the shipped unit files of the one folder point at the deploy (every-folder-clock-runs-from-the-deploy is tested
+# in selftest_units_one_folder.py; this keeps the old per-clock line)
 for name in conf["clocks"]:
-    for d in (HERE / "systemd", HERE.parent / "rimflow" / "systemd"):
-        p = d / (name + ".service")
-        if p.exists():
-            check(OC.judge(p.read_text(encoding="utf-8"), DEP) == [], "shipped %s runs from the deploy" % p.name)
-import ops_watch as OW  # noqa: E402
-import timers_guard as TG  # noqa: E402
-check(OC.judge(OW.UNIT.format(deploy=DEP), DEP) == [], "ops_watch's unit template is clean on the deploy")
-check(OC.judge(TG.UNIT.format(deploy=DEP), DEP) == [], "timers_guard's unit template is clean on the deploy")
-for mod in ("ops_watch", "timers_guard", "account_usage", "switching_plan"):
-    src = (HERE / (mod + ".py")).read_text(encoding="utf-8")
-    check(OC.deploy_default_ok(src),   # judged on the call: ops_watch READS pulse-deploy's age (DEPLOY_STALE); class guard selftest_ops_clocks_deploy_default.py
-          "%s install defaults --deploy to the Operations deploy" % mod)
-check(not OC.deploy_default_ok('p.add_argument("-d", "--deploy", default="/x")\np.add_argument("--deploy", default=ops_clocks.deploy())\n'),
-      "deploy_default_ok: a bad --deploy default behind a short flag is seen")
-check(not OC.deploy_default_ok('p.add_argument("--deploy", default=ops_clocks.deploy())\np.set_defaults(deploy="/x")\n'),
-      "deploy_default_ok: set_defaults(deploy=...) overriding the default is seen")
+    p = OC.UNIT_DIR / (name + ".service")
+    check(p.exists(), "clock %s has its unit in the one folder" % name)
+    if p.exists():
+        check(OC.judge(p.read_text(encoding="utf-8"), DEP) == [], "shipped %s runs from the deploy" % p.name)
 check(OC.effective("ExecStart=/usr/bin/python3 \\\n  /x/src/RimMandrake/a.py\n")["ExecStart"][0].endswith("/x/src/RimMandrake/a.py"),
       "effective: a backslash-continued ExecStart keeps its continuation")
 

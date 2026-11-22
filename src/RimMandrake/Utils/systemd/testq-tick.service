@@ -1,0 +1,15 @@
+[Unit]
+Description=testq dispatch tick (TESTQ_DISPATCHER_BUILD_SSH_NO_LLM)
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/mandrake/rm/dispatch
+Environment=GIT_CONFIG_COUNT=2 GIT_CONFIG_KEY_0=gc.autoDetach GIT_CONFIG_VALUE_0=false GIT_CONFIG_KEY_1=maintenance.autoDetach GIT_CONFIG_VALUE_1=false
+ExecStartPre=-/usr/bin/git -C /home/mandrake/rm/dispatch pull -q --ff-only origin main
+ExecStart=-/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/testq/companion_stage.py run
+ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/testq/testq.py tick
+ExecStart=-/bin/bash -c 'for m in $(/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/testq/coverage.py wired); do /usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/testq/testq.py fill "$m"; done'
+ExecStart=-/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/testq/testq.py steward
+ExecStart=-/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/testq/ingest.py
+ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/findings_fold.py run
+TimeoutStartSec=900

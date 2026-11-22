@@ -7,10 +7,19 @@ src/RimMandrake/Utils/systemd/ops_clocks.json; `RM_OPS_DEPLOY` overrides the dep
 
     ops_clocks.py check      exit 0 when every clock, as systemd has it loaded, runs only from the deploy, its trigger
                              exists, the deploy holds no local edits under src/, and every loaded rm-*/testq-*/
-                             timer-guard/account-plan unit is a clock or named in "outside", and every old timer the
-                             metronome's phase table says a phase `owns` (cut over, OPS_METRONOME_MIGRATE_CLOCKS_FENCED)
-                             is neither enabled nor active (two owners); else exit 1, one line each
-    ops_clocks.py deploy     print the deploy path (installers default their --deploy to it)
+                             timer-guard/account-plan unit is a clock, an old timer a metronome phase `owns`, or named
+                             in "outside", every such owned timer (cut over, OPS_METRONOME_MIGRATE_CLOCKS_FENCED) is
+                             neither enabled nor active (two owners), and `units` below holds; else exit 1, one line each
+    ops_clocks.py units      exit 0 when every unit text of ours has its one home, src/RimMandrake/Utils/systemd/: each
+                             installed rm-*/testq-*/timer-guard/account-plan/steve-cpu-retest/claude-seats unit and
+                             drop-in equals the folder file of its name, every folder file is installed, and no non-test
+                             Python source holds unit text (design/specs/2026-11-22-units-one-folder/boundary.md)
+    ops_clocks.py install [UNIT ...] [--apply] [--enable]
+                             the only unit installer: write the named units (a bare name takes its service, timer and
+                             drop-ins; none = every folder file that differs) into ~/.config/systemd/user, then one
+                             daemon-reload; --enable also enables and starts the named timers and paths. Plan unless
+                             --apply. Refuses a masked (retired) name.
+    ops_clocks.py deploy     print the deploy path
     ops_clocks.py snapshot   record the deploy's HEAD and `git status --porcelain -- src` in SNAPSHOT (commit it), for
                              a checker that cannot read the deploy: there `check` judges the pinned clause from that
                              reading (younger than SNAPSHOT_MAX_H hours, HEAD on the deploy's origin/main as measured
@@ -46,37 +55,172 @@ def deploy(conf=None):
     return os.environ.get("RM_OPS_DEPLOY") or (conf or load_conf())["deploy"]
 
 
-def _is_deploy_call(node):
-    """`__import__("ops_clocks").deploy()` or `ops_clocks.deploy()`, called with no arguments."""
-    if not (isinstance(node, ast.Call) and not node.args and not node.keywords and isinstance(node.func, ast.Attribute)
-            and node.func.attr == "deploy"):
-        return False
-    owner = node.func.value
-    if isinstance(owner, ast.Name):
-        return owner.id == "ops_clocks"
-    return (isinstance(owner, ast.Call) and isinstance(owner.func, ast.Name) and owner.func.id == "__import__"
-            and len(owner.args) == 1 and isinstance(owner.args[0], ast.Constant) and owner.args[0].value == "ops_clocks")
+# ------------------------------------------------------------------ unit texts: one home
+# Every unit text of ours is one file in UNIT_DIR with its installed name; `install` is the only installer
+# (design/specs/2026-11-22-units-one-folder/boundary.md).
+UNIT_DIR = HERE / "systemd"
+UNIT_SUFFIXES = (".service", ".timer", ".path", ".slice", ".socket", ".target")
+INSTALL_GLOBS = UNIT_GLOBS + ("steve-cpu-retest*", "claude-seats*")
+THROWAWAY = ("testq-selftestthrow-*", "rm-probe-*")   # selftests make and remove these in the real install dir
+MASK = object()                                       # an installed name that is a symlink to /dev/null
+SECTION = re.compile(r"^\[(Service|Timer|Path|Slice|Socket)\]\s*$", re.M)
 
 
-def deploy_default_ok(src):
-    """installer source -> True when it has an add_argument(..., "--deploy", ...) call, every one defaults to this
-    module's deploy(), and no set_defaults(deploy=...) overrides it. Judged on the call, never the text: a file may READ
-    RM_PULSE_DEPLOY elsewhere (ops_watch's DEPLOY_STALE), and wrapping the call over lines changes nothing
-    (NIGHTLY_COP_FIX_RED_YZWCJJ_JDSB). Unparseable source is False."""
+def install_dir():
+    return Path(os.environ.get("RM_UNIT_INSTALL_DIR") or Path.home() / ".config/systemd/user")
+
+
+def _is_unit(name):
+    return name.endswith(UNIT_SUFFIXES)
+
+
+def _scoped(name, globs):
+    base = name.split("/")[0]
+    return (any(fnmatch.fnmatchcase(base, g) for g in globs)
+            and not any(fnmatch.fnmatchcase(base, g) for g in THROWAWAY))
+
+
+def _units_in(d, globs=None):
+    """-> {name: Path} for unit files and `<unit>.d/*.conf` drop-ins directly under d (globs: names in scope only)."""
+    out = {}
+    for p in sorted(Path(d).iterdir()):
+        if p.is_dir() and _is_unit(p.name[:-2]) and p.name.endswith(".d"):
+            out.update(("%s/%s" % (p.name, c.name), c) for c in sorted(p.iterdir()) if c.name.endswith(".conf"))
+        elif _is_unit(p.name):
+            out[p.name] = p
+    return {n: p for n, p in out.items() if globs is None or _scoped(n, globs)}
+
+
+def folder_units(d=None):
+    """-> {installed name: text} of the one home."""
+    return {n: p.read_text(encoding="utf-8") for n, p in _units_in(d or UNIT_DIR).items()}
+
+
+def installed_units(d=None, globs=INSTALL_GLOBS):
+    """-> {name: text | MASK} of what is installed, in scope; None when the install dir cannot be read."""
+    d = Path(d or install_dir())
+    try:
+        found = _units_in(d, globs)
+    except OSError:
+        return None
+    out = {}
+    for n, p in found.items():
+        if p.is_symlink() and os.path.realpath(p) == "/dev/null":
+            out[n] = MASK
+            continue
+        try:
+            out[n] = p.read_text(encoding="utf-8")
+        except OSError as e:
+            out[n] = e
+    return out
+
+
+def judge_units(folder, installed, where="the install dir"):
+    """Pure: folder {name: text}, installed {name: text | MASK | OSError} or None -> problems ([] = one home holds all)."""
+    if installed is None:
+        return ["units: could not read %s, so no installed unit was compared with the folder" % where]
+    probs = []
+    for n in sorted(set(folder) | set(installed)):
+        f, i = folder.get(n), installed.get(n, None)
+        if n not in installed:
+            probs.append("%s: in the folder, not installed: ops_clocks.py install %s --apply" % (n, n))
+        elif i is MASK:
+            if f is not None:
+                probs.append("%s: masked here (retired), but the folder still holds its text: delete the folder file" % n)
+        elif isinstance(i, OSError):
+            probs.append("%s: installed copy could not be read (%s)" % (n, i))
+        elif f is None:
+            probs.append("%s: installed only on this machine: its text belongs in %s" % (n, UNIT_DIR.relative_to(REPO)))
+        elif f != i:
+            probs.append("%s: installed text differs from the folder: ops_clocks.py install %s --apply" % (n, n))
+    return probs
+
+
+def embedded_units(src):
+    """Python source -> line numbers of string constants that hold a unit section line ([] = none)."""
+    if not any("[%s]" % k in src for k in ("Service", "Timer", "Path", "Slice", "Socket")):
+        return []                                         # cheap: most sources name no section at all
     try:
         tree = ast.parse(src)
     except SyntaxError:
-        return False
-    found = []
-    for n in ast.walk(tree):
-        if not (isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute)):
+        return []
+    return sorted({n.lineno for n in ast.walk(tree)
+                   if isinstance(n, ast.Constant) and isinstance(n.value, str) and SECTION.search(n.value)})
+
+
+def _is_test(path):
+    return path.name.startswith(("selftest_", "test_")) or "tests" in path.parts
+
+
+def embedded_in_tree(root=None):
+    """-> problems: every non-test .py under src/RimMandrake that holds unit text."""
+    root = Path(root or HERE.parent)
+    probs = []
+    for p in sorted(root.rglob("*.py")):
+        if _is_test(p.relative_to(root)):
             continue
-        if n.func.attr == "add_argument" and any(isinstance(a, ast.Constant) and a.value == "--deploy" for a in n.args):
-            dflt = [k.value for k in n.keywords if k.arg == "default"]
-            found.append(len(dflt) == 1 and _is_deploy_call(dflt[0]))
-        elif n.func.attr == "set_defaults" and any(k.arg in ("deploy", None) for k in n.keywords):
-            found.append(False)   # overrides the add_argument default (or might, through **kwargs)
-    return bool(found) and all(found)
+        try:
+            lines = embedded_units(p.read_text(encoding="utf-8"))
+        except (OSError, UnicodeDecodeError):
+            continue
+        probs += ["%s:%d: unit text in code: move it to %s and install with ops_clocks.py install"
+                  % (p.relative_to(root.parent.parent), ln, UNIT_DIR.relative_to(REPO)) for ln in lines]
+    return probs
+
+
+def units_problems(folder_dir=None, inst_dir=None, src_root=None):
+    d = Path(inst_dir or install_dir())
+    return (judge_units(folder_units(folder_dir), installed_units(d), str(d)) + embedded_in_tree(src_root))
+
+
+def _unit_of(name):
+    """"rm-x.service.d/a.conf" -> "rm-x.service"; a unit file name is itself."""
+    u = name.split("/")[0]
+    return u[:-2] if u.endswith(".d") else u
+
+
+def _expand(names, folder):
+    """`rm-deadman` -> every folder file of that unit (service, timer, drop-ins); a full name stays itself."""
+    out = []
+    for n in names:
+        hits = sorted(k for k in folder if n in (k, _unit_of(k), _unit_of(k).rsplit(".", 1)[0]))
+        if not hits:
+            raise SystemExit("install: %s is not in %s" % (n, UNIT_DIR))
+        out += [h for h in hits if h not in out]
+    return out
+
+
+def install(names=(), apply=False, enable=False, folder_dir=None, dest=None, sc=None, out=print):
+    """Write folder files into the install dir. names: units or files (none = every file that differs). -> exit code."""
+    sc = sc or (lambda *a: _sc(*a))
+    folder = folder_units(folder_dir)
+    dest = Path(dest or install_dir())
+    inst = installed_units(dest, globs=("*",)) or {}
+    todo = _expand(names, folder) if names else sorted(n for n in folder if inst.get(n) != folder[n])
+    wrote = []
+    for n in todo:
+        if inst.get(n) is MASK:
+            out("refused %s: masked here (a retired unit); unmask by hand only on a ruling" % n)
+            return 2
+        same = inst.get(n) == folder[n]
+        out("%s %s" % ("unchanged" if same else ("write" if apply else "would write"), dest / n))
+        if apply and not same:
+            (dest / n).parent.mkdir(parents=True, exist_ok=True)
+            tmp = dest / (n + ".tmp")
+            tmp.write_text(folder[n], encoding="utf-8")
+            os.replace(tmp, dest / n)
+            wrote.append(n)
+    if not apply:
+        out("plan only: pass --apply to write")
+        return 0
+    steps = ([["daemon-reload"]] if wrote else []) + [["enable", "--now", n] for n in todo
+                                                      if enable and n.endswith((".timer", ".path"))]
+    for argv in steps:
+        r = sc(*argv)
+        out("systemctl --user %s: exit %d %s" % (" ".join(argv), r.returncode, (r.stderr or "").strip()))
+        if r.returncode:
+            return 1
+    return 0
 
 
 def effective(unit_text):
@@ -122,9 +266,11 @@ def judge(unit_text, dep):
     return probs
 
 
-def classify(units, conf):
-    """Loaded unit names (no suffix) that are neither a clock nor matched by an "outside" pattern."""
-    return sorted(u for u in units if u not in conf["clocks"]
+def classify(units, conf, owned=()):
+    """Loaded unit names (no suffix) that are neither a clock, nor an old timer a metronome phase owns, nor matched by
+    an "outside" pattern."""
+    owned = {t.rsplit(".", 1)[0] for t in owned}
+    return sorted(u for u in units if u not in conf["clocks"] and u not in owned
                   and not any(fnmatch.fnmatchcase(u, pat) for pat in conf["outside"]))
 
 
@@ -266,7 +412,8 @@ def check(conf, notes=None):
     probs += judge_owned(owned_timers(), lambda tm: (_sc("is-enabled", tm).stdout.strip(),
                                                      _sc("is-active", tm).stdout.strip()))
     probs += ["%s: loaded but not classified in %s (a clock, or outside with a reason)" % (u, CONF.name)
-              for u in classify(loaded_units(), conf)]
+              for u in classify(loaded_units(), conf, set(owned_timers()))]
+    probs += units_problems()
     return probs
 
 
@@ -277,6 +424,17 @@ def main(argv=None):
     if cmd == "deploy":
         print(deploy(conf))
         return 0
+    if cmd == "units":
+        probs = units_problems()
+        for p in probs:
+            print("FAIL " + p)
+        print("%s: %d unit files in %s, %d problem(s)" % ("OK" if not probs else "FAIL", len(folder_units()),
+                                                         UNIT_DIR.relative_to(REPO), len(probs)))
+        return 1 if probs else 0
+    if cmd == "install":
+        rest = argv[1:]
+        flags = {"--apply", "--enable"}
+        return install([a for a in rest if a not in flags], apply="--apply" in rest, enable="--enable" in rest)
     if cmd == "snapshot":
         snap = take_snapshot(deploy(conf))
         print("snapshot %s: deploy %s at %s, %d local edit(s) under src/"

@@ -1,0 +1,7 @@
+[Unit]
+Description=Steve CPU 18/19 unmask retest controller (CPU_RETEST_PROVE_MASKED_PAIR_AFTER_FLASH)
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /mnt/d/ClaudeWork/rimmandrake/steve_diag/retest/steve_cpu_retest.py tick
+TimeoutStartSec=300

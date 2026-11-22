@@ -58,7 +58,6 @@ rimflow/dispatcher_schedule.json "measure"):
            a --family pass without --compose is a sample: refused on the live store and refused --file-alarms
     python3 src/RimMandrake/Utils/ops_watch.py digest                 print digest.md
     python3 src/RimMandrake/Utils/ops_watch.py backfill               seed production from rm-streams-collect' history
-    python3 src/RimMandrake/Utils/ops_watch.py install [--apply]      the systemd user timer (plan unless --apply)
 """
 import argparse
 import calendar
@@ -4965,54 +4964,6 @@ def backfill_production(now=None, rules=None):
     return n
 
 
-# =================================================================================================== install
-UNIT = """# rm-ops-watch: ops_watch.py, the Dispatcher's deterministic measurement arm for Operations
-# (V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE; listed in src/RimMandrake/rimflow/dispatcher_schedule.json "measure").
-# Runs from the one Operations deploy (src/RimMandrake/Utils/systemd/ops_clocks.json). No AI.
-[Unit]
-Description=Ops watch (accounts, Codex, Steve lane, disk, timers, KPIs; Andon flags; alarms)
-
-[Service]
-Type=oneshot
-ExecStart=/usr/bin/python3 {deploy}/src/RimMandrake/Utils/ops_watch.py run --file-alarms
-# ops_memory reads this pass back from VictoriaMetrics once telemetryd has ingested it; "-": its failure never fails
-# the pass (a missing or blind generation is what ops_memory.py check reports)
-ExecStartPost=-/usr/bin/python3 {deploy}/src/RimMandrake/Utils/ops_memory.py build --wait-ingest 120
-TimeoutStartSec=420s
-Nice=10
-"""
-TIMER = """[Unit]
-Description=Ops watch every 15 min
-
-[Timer]
-OnCalendar=*:07/15
-Persistent=true
-
-[Install]
-WantedBy=timers.target
-"""
-
-
-def install(apply, deploy):
-    d = Path.home() / ".config/systemd/user"
-    files = {d / "rm-ops-watch.service": UNIT.format(deploy=deploy), d / "rm-ops-watch.timer": TIMER}
-    for p, body in files.items():
-        old = p.read_text() if p.exists() else None
-        print(("unchanged " if old == body else "write ") + str(p))
-        if apply and old != body:
-            p.parent.mkdir(parents=True, exist_ok=True)
-            p.write_text(body)
-    if apply:
-        for cmd in (["daemon-reload"], ["enable", "--now", "rm-ops-watch.timer"]):
-            r = subprocess.run(["systemctl", "--user"] + cmd, capture_output=True, text=True, timeout=60)
-            print("systemctl --user %s: exit %d %s" % (" ".join(cmd), r.returncode, r.stderr.strip()))
-            if r.returncode:
-                return 1
-    else:
-        print("plan only: pass --apply to write and enable")
-    return 0
-
-
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -5028,10 +4979,6 @@ def main(argv=None):
     sub.add_parser("rerun-reds", help="rerun the night's new red groups at origin/main (out of the metronome's beat)")
     ln = sub.add_parser("lint", help="refuse a ranges block with a metric short of owner, class, age, ack or why")
     ln.add_argument("--rules", help="the rules file, default the shipped one")
-    i = sub.add_parser("install")
-    i.add_argument("--apply", action="store_true")
-    i.add_argument("--deploy", default=__import__("ops_clocks").deploy(),
-                   help="the one Operations deploy (systemd/ops_clocks.json)")
     a = ap.parse_args(argv)
     if a.cmd == "run":
         global SEAT_TIDY
@@ -5088,7 +5035,7 @@ def main(argv=None):
         p = ops_dir() / ("digest_blind.md" if a.blind else "digest.md")
         print(p.read_text(encoding="utf-8") if p.exists() else "no digest yet: run ops_watch.py run")
         return 0
-    return install(a.apply, a.deploy)
+    return 2
 
 
 if __name__ == "__main__":

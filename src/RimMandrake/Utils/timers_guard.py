@@ -11,7 +11,6 @@ timer armed by hand, hand_armed) is tolerated while that restart is pending; if 
 inactive, that is the alarm.
 
     timers_guard.py run [--file-alarms]
-    timers_guard.py install [--apply]
     timers_guard.py pause --hours H TIMER [TIMER...]     arm restart (systemd-run --on-calendar) THEN stop, one step
     timers_guard.py pause --hours H --all                every enabled watched timer
     timers_guard.py hold --until COND --per-ruling ID --why "..." TIMER...   an indefinite planned stop: record it THEN
@@ -343,57 +342,11 @@ def pause(names, hours, runner=subprocess.run):
     return {"unit": unit + ".timer", "names": names, "resume_in_s": secs}
 
 
-UNIT = """# timer-guard: alarm on stopped rm-/testq- timers; deliberately NOT named rm-*/testq-* so a glob stop cannot take it. No AI.
-[Unit]
-Description=Alarm when enabled rm-/testq- timers are inactive
-
-[Service]
-Type=oneshot
-ExecStart=/usr/bin/python3 {deploy}/src/RimMandrake/Utils/timers_guard.py run --file-alarms
-TimeoutStartSec=300s
-Nice=10
-"""
-TIMER = """[Unit]
-Description=Timer guard every 10 min
-
-[Timer]
-OnCalendar=*:08/10
-Persistent=true
-
-[Install]
-WantedBy=timers.target
-"""
-
-
-def install(apply, deploy):
-    d = Path.home() / ".config/systemd/user"
-    files = {d / (GUARD_NAME + ".service"): UNIT.format(deploy=deploy), d / (GUARD_NAME + ".timer"): TIMER}
-    for p, body in files.items():
-        old = p.read_text() if p.exists() else None
-        print(("unchanged " if old == body else "write ") + str(p))
-        if apply and old != body:
-            p.parent.mkdir(parents=True, exist_ok=True)
-            p.write_text(body)
-    if not apply:
-        print("plan only: pass --apply to write and enable")
-        return 0
-    for cmd in (["daemon-reload"], ["enable", "--now", GUARD_NAME + ".timer"]):
-        r = _sc(cmd)
-        print("systemctl --user %s: exit %d %s" % (" ".join(cmd), r.returncode, r.stderr.strip()))
-        if r.returncode:
-            return 1
-    return 0
-
-
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
     r = sub.add_parser("run")
     r.add_argument("--file-alarms", action="store_true")
-    i = sub.add_parser("install")
-    i.add_argument("--apply", action="store_true")
-    i.add_argument("--deploy", default=__import__("ops_clocks").deploy(),
-                   help="the one Operations deploy (systemd/ops_clocks.json)")
     pp = sub.add_parser("pause")
     pp.add_argument("--hours", type=float, required=True)
     pp.add_argument("--all", action="store_true")
@@ -409,8 +362,6 @@ def main(argv=None):
         print("held %d timers until %s (%s); `run` starts them again when it no longer waits"
               % (len(res["names"]), res["until"], ", ".join(res["names"])))
         return 0
-    if a.cmd == "install":
-        return install(a.apply, a.deploy)
     if a.cmd == "pause":
         names = a.timers or []
         if a.all:

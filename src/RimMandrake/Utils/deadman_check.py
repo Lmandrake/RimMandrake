@@ -5,7 +5,8 @@ A separate no-AI program on its own systemd timer (rm-deadman.timer, every 15 mi
 pass rechecks (1) every `live` line on the ledger, (2) rimflow/live_baseline.txt, the running system's own promises,
 (3) each arm's LAST-RUN STAMP (DISPATCHER_BUILD_OUTSIDE_DEADMAN_HEARTBEAT: an arm cannot report its own death),
 (4) that the retired Relentless/Artisan/Whittle loops stay off (retired_loops_check.py; arm `retired_loops`, item
-LIVE_RESTORE_RETIRED_LOOPS; Archmagi only).
+LIVE_RESTORE_RETIRED_LOOPS; Archmagi only), (5) that every unit text of ours has its one home and is what systemd has
+installed (ops_clocks.units_problems; arm `units`, item LIVE_RESTORE_UNITS; reading ops_watch/units.json).
 
 On failure it reopens the SAME item (`rimflow live --result broken`), filing LIVE_RESTORE_<NAME> first if the promise
 has no item. One outage files one ticket (hosts_of; page design/specs/2026-11-19-one-fault-one-ticket/boundary.md): one
@@ -31,7 +32,7 @@ a Todoist task, is retired (owner, 2026-11-19) and off unless RM_TODOIST_ALARM_P
     after a mass stop this pass restarts beside the arm and would otherwise read the outage as a death (17EC, 129E).
 
     python3 src/RimMandrake/Utils/deadman_check.py run [--file-alarms]
-    python3 src/RimMandrake/Utils/deadman_check.py install [--apply]    systemd user timer (plan unless --apply)
+    its units: src/RimMandrake/Utils/systemd/rm-deadman.{service,timer}; install: ops_clocks.py install rm-deadman --apply --enable
     python3 src/RimMandrake/Utils/deadman_check.py baseline [--write]   generate the baseline from what runs today
 """
 import argparse
@@ -193,6 +194,30 @@ def retired_loops_arm(measurer=None, now=None):
     except OSError:
         pass          # the reading is a witness; the alarm does not depend on it
     return {"retired_loops": RL.arm_reason(res)}
+
+
+def units_arm(measurer=None, now=None):
+    """Every unit text of ours has its one home (ops_clocks.units_problems; page
+    design/specs/2026-11-22-units-one-folder/boundary.md): -> {"units": None | reason}. A broken arm files the one fixed
+    item LIVE_RESTORE_UNITS. The reading (ops_watch/units.json) is rewritten every pass; the item's `live` promise
+    watches it. A measurer that raises is a broken arm with its cause, never a clean one."""
+    import ops_clocks as OC
+    try:
+        probs = (measurer or OC.units_problems)()
+    except Exception as e:  # noqa: BLE001 - any failure to look is reported, not swallowed
+        probs = ["units: could not look (%s: %s)" % (type(e).__name__, e)]
+    line = ("%d unit text(s) out of their one home: %s" % (len(probs), "; ".join(probs[:3])
+                                                          + (" ..." if len(probs) > 3 else ""))) if probs else None
+    try:
+        path = ops_dir() / "units.json"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        tmp = Path(str(path) + ".tmp")
+        tmp.write_text(json.dumps({"t": now or time.time(), "status": "alarm" if probs else "ok",
+                                   "problems": probs}, indent=1), encoding="utf-8")
+        os.replace(tmp, path)
+    except OSError:
+        pass          # the reading is a witness; the alarm does not depend on it
+    return {"units": line}
 
 
 def item_id(line):
@@ -636,62 +661,14 @@ def generate_baseline(runner=subprocess.run):
     return lines
 
 
-UNIT = """# rm-deadman: the no-AI sweep of every live promise, with the outside dead-man for the Dispatcher and ops_watch (LIVE_PROOF_ENFORCE_DONE_MEANS_RUNNING).
-[Unit]
-Description=Recheck every live promise, and the Dispatcher and ops_watch stamps
-
-[Service]
-Type=oneshot
-WorkingDirectory={deploy}
-ExecStart=/usr/bin/python3 {deploy}/src/RimMandrake/Utils/deadman_check.py run --file-alarms
-TimeoutStartSec=300s
-Nice=10
-"""
-TIMER = """[Unit]
-Description=Live promise sweep every 15 min
-
-[Timer]
-OnCalendar=*:03/15
-Persistent=true
-
-[Install]
-WantedBy=timers.target
-"""
-
-
-def install(apply, deploy):
-    d = Path.home() / ".config/systemd/user"
-    files = {d / "rm-deadman.service": UNIT.format(deploy=deploy), d / "rm-deadman.timer": TIMER}
-    for p, body in files.items():
-        old = p.read_text() if p.exists() else None
-        print(("unchanged " if old == body else "write ") + str(p))
-        if apply and old != body:
-            p.parent.mkdir(parents=True, exist_ok=True)
-            p.write_text(body)
-    if apply:
-        for cmd in (["daemon-reload"], ["enable", "--now", "rm-deadman.timer"]):
-            r = subprocess.run(["systemctl", "--user"] + cmd, capture_output=True, text=True, timeout=60)
-            print("systemctl --user %s: exit %d %s" % (" ".join(cmd), r.returncode, r.stderr.strip()))
-            if r.returncode:
-                return 1
-    else:
-        print("plan only: pass --apply to write and enable")
-    return 0
-
-
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
     r = sub.add_parser("run")
     r.add_argument("--file-alarms", action="store_true")
-    i = sub.add_parser("install")
-    i.add_argument("--apply", action="store_true")
-    i.add_argument("--deploy", default="/home/mandrake/rm/dispatch")
     b = sub.add_parser("baseline")
     b.add_argument("--write", action="store_true")
     a = ap.parse_args(argv)
-    if a.cmd == "install":
-        return install(a.apply, a.deploy)
     if a.cmd == "baseline":
         gone = load_retired()
         lines = [x for x in generate_baseline() if subject(x) not in gone]
@@ -706,6 +683,7 @@ def main(argv=None):
     import live_line
     arms = arm_faults(stamps(), time.time())
     arms.update(retired_loops_arm())
+    arms.update(units_arm())
     report = sweep(time.time(), live_filer if a.file_alarms else None, read_items(), load_baseline(),
                    arms, sees=live_line.can_see(),
                    pusher=real_pusher() if a.file_alarms else None, retired=load_retired())

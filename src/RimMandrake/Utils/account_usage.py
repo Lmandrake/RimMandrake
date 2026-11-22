@@ -46,7 +46,7 @@ run of that model (the lower of all-models and the model's own; RIMMANDRAKE_READ
 
   account_usage.py poll                 read every account once, append the series (the timer runs this)
   account_usage.py now [--json]         the newest reading per account (no polling); text mode adds codex and jpl-genai lines (all as LEFT)
-  account_usage.py install [--deploy D] write + enable the systemd user timer rm-account-usage.timer
+  its timer: src/RimMandrake/Utils/systemd/rm-account-usage.{service,timer} (ops_clocks.py install rm-account-usage --apply --enable)
 """
 from __future__ import annotations
 
@@ -658,41 +658,6 @@ def week_left_for(d: dict, model=None) -> tuple[float | None, str, float | None]
     return left, "all models", h
 
 
-# ------------------------------------------------------------------ timer
-SERVICE = """[Unit]
-Description=Claude account usage poll (claude /usage per account; account_usage.py)
-
-[Service]
-Type=oneshot
-ExecStart=/usr/bin/python3 {script} poll
-TimeoutStartSec=420s
-"""
-TIMER = """[Unit]
-Description=Claude account usage poll, every 15 min
-
-[Timer]
-OnBootSec=3min
-OnUnitActiveSec=15min
-Persistent=true
-
-[Install]
-WantedBy=timers.target
-"""
-
-
-def install(deploy: str) -> str:
-    script = Path(deploy) / "src/RimMandrake/Utils/account_usage.py"
-    if not script.exists():
-        raise SystemExit(f"install: {script} does not exist (pass --deploy <checkout>)")
-    units = Path.home() / ".config/systemd/user"
-    units.mkdir(parents=True, exist_ok=True)
-    (units / f"{UNIT}.service").write_text(SERVICE.format(script=script))
-    (units / f"{UNIT}.timer").write_text(TIMER)
-    for argv in (["daemon-reload"], ["enable", "--now", f"{UNIT}.timer"]):
-        subprocess.run(["systemctl", "--user", *argv], check=True)
-    return f"{UNIT}.timer -> {script}"
-
-
 def _fmt(d: dict) -> str:
     def f(k):
         p, h = d.get(f"{k}_pct_left"), d.get(f"hours_to_{k}_reset")
@@ -792,9 +757,6 @@ def main(argv=None) -> int:
     sub.add_parser("poll")
     p = sub.add_parser("now")
     p.add_argument("--json", action="store_true")
-    p = sub.add_parser("install")
-    p.add_argument("--deploy", default=__import__("ops_clocks").deploy(),
-                   help="the one Operations deploy (systemd/ops_clocks.json)")
     a = ap.parse_args(argv)
     if a.cmd == "poll":
         try:
@@ -805,9 +767,6 @@ def main(argv=None) -> int:
             return 3
         print(" ".join(f"{n}={r['source']}" for n, r in recs.items()))
         return 0 if recs else 1
-    if a.cmd == "install":
-        print(install(a.deploy))
-        return 0
     st = read_now()
     if a.json:
         print(json.dumps(st, indent=1, sort_keys=True))

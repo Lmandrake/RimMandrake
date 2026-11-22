@@ -8,7 +8,7 @@ Windows side (no elevation needed):
   E:\\telemetry\\grafana\\custom.ini                            (rendered from grafana/custom.ini.template)
   scheduled task "RimMandrake\\Telemetry"  every minute: pythonw supervise.py (from the MIRROR)
 WSL side:
-  ~/.config/systemd/user/rm-telemetry-{export,health}.{service,timer}  (copied from ./systemd)
+  ~/.config/systemd/user/rm-telemetry-{export,health}.{service,timer}  (ops_clocks.py install, from ../systemd)
   ~/.local/bin/telemetry -> this directory's `telemetry` wrapper
 
 Pinned versions are below; bump them here, re-run, commit.
@@ -37,8 +37,6 @@ GRAFANA_URL = f"https://dl.grafana.com/oss/release/{GRAFANA_ZIP}"
 SQLITE_PLUGIN_URL = ("https://grafana.com/api/plugins/frser-sqlite-datasource/versions/latest/download"
                      "?os=windows&arch=amd64")
 TASK = "RimMandrake\\Telemetry"
-UNITS = ["rm-telemetry-export.service", "rm-telemetry-export.timer",
-         "rm-telemetry-health.service", "rm-telemetry-health.timer"]
 
 
 def sh(cmd, **kw):
@@ -117,12 +115,12 @@ def main(argv=None) -> int:
             "/TR", f'"{pyw}" "{MIRROR_CODE_W}\\supervise.py"'])
     print(f"  scheduled task {TASK}: {'ok' if r.returncode == 0 else 'FAILED ' + r.stderr.strip()}")
     # WSL units + CLI
-    ud = os.path.expanduser("~/.config/systemd/user")
-    for u in UNITS:
-        shutil.copy(os.path.join(HERE, "systemd", u), os.path.join(ud, u))
-    sh(["systemctl", "--user", "daemon-reload"])
-    r = sh(["systemctl", "--user", "enable", "--now", "rm-telemetry-export.timer", "rm-telemetry-health.timer"])
-    print(f"  systemd timers: {'ok' if r.returncode == 0 else 'FAILED ' + r.stderr.strip()}")
+    # the units' one home is src/RimMandrake/Utils/systemd/; ops_clocks.install is the only installer
+    sys.path.insert(0, os.path.dirname(HERE))
+    import ops_clocks
+    rc = ops_clocks.install(["rm-telemetry-export", "rm-telemetry-health"], apply=True, enable=True,
+                            out=lambda line: print("  " + line))
+    print(f"  systemd timers: {'ok' if rc == 0 else 'FAILED (exit %d)' % rc}")
     binp = os.path.expanduser("~/.local/bin/telemetry")
     if os.path.islink(binp) or os.path.exists(binp):
         os.remove(binp)

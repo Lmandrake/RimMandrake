@@ -1,0 +1,13 @@
+CAUGHT  a differing text is never named
+CAUGHT  a mask is judged as text
+CAUGHT  throwaways are judged
+CAUGHT  every source counts as a test
+CAUGHT  an unreadable dir reads as empty
+CAUGHT  a plan writes
+CAUGHT  install writes over a mask
+CAUGHT  a machine-only unit is not named
+CAUGHT  a folder unit not installed is not named
+CAUGHT  a failed look is clean
+CAUGHT  the arm is not called
+11 of 11 mutants caught
+unmutated: 0 failure(s)

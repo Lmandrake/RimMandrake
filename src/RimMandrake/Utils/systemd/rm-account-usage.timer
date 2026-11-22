@@ -1,0 +1,10 @@
+[Unit]
+Description=Claude account usage poll, every 15 min
+
+[Timer]
+OnBootSec=3min
+OnUnitActiveSec=15min
+Persistent=true
+
+[Install]
+WantedBy=timers.target

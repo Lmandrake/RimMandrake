@@ -1,0 +1,10 @@
+[Unit]
+Description=testq steward heartbeat watcher every 60 s
+
+[Timer]
+OnBootSec=3min
+OnUnitInactiveSec=60s
+AccuracySec=5s
+
+[Install]
+WantedBy=timers.target

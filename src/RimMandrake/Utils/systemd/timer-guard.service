@@ -1,0 +1,9 @@
+# timer-guard: alarm on stopped rm-/testq- timers; deliberately NOT named rm-*/testq-* so a glob stop cannot take it. No AI.
+[Unit]
+Description=Alarm when enabled rm-/testq- timers are inactive
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/timers_guard.py run --file-alarms
+TimeoutStartSec=300s
+Nice=10

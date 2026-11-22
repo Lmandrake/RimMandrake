@@ -1,0 +1,7 @@
+[Unit]
+Description=Claude account usage poll (claude /usage per account; account_usage.py)
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/account_usage.py poll
+TimeoutStartSec=420s

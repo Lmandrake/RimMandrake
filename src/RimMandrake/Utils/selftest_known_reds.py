@@ -355,7 +355,7 @@ def wire_pass(argv):
     return rc, [json.loads(ln) for ln in STUB.read_text(encoding="utf-8").splitlines()] if STUB.exists() else []
 
 
-m = re.search(r"^ExecStart=\S+ \S*ops_watch\.py (.*)$", OW.UNIT, re.M)
+m = re.search(r"^ExecStart=\S+ \S*ops_watch\.py (.*)$", (HERE / "systemd" / "rm-ops-watch.service").read_text(encoding="utf-8"), re.M)
 ARGV = shlex.split(m.group(1)) if m else []
 check("WIRE: the timer's unit files alarms on every family", ARGV == ["run", "--file-alarms"], ARGV)
 WNOW = time.time()

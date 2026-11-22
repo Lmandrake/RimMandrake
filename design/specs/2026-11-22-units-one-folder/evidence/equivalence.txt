@@ -1,0 +1,23 @@
+old embedded text (f038039e5f) vs installed vs folder
+  deadman_check.py       rm-deadman.service           installed:same    folder:same
+  deadman_check.py       rm-deadman.timer             installed:same    folder:same
+  timers_guard.py        timer-guard.service          installed:same    folder:same
+  timers_guard.py        timer-guard.timer            installed:same    folder:same
+  ops_watch.py           rm-ops-watch.service         installed:same    folder:same
+  ops_watch.py           rm-ops-watch.timer           installed:same    folder:same
+  account_usage.py       rm-account-usage.service     installed:same    folder:same
+  account_usage.py       rm-account-usage.timer       installed:same    folder:same
+  switching_plan.py      account-plan.service         installed:same    folder:same
+  switching_plan.py      account-plan.timer           installed:same    folder:same
+  testq/testq.py         testq-tick.service           installed:same    folder:same
+  testq/testq.py         testq-sweep.service          installed:same    folder:same
+  testq/testq.py         testq-sweep.timer            installed:same    folder:same
+  testq/testq.py         testq-steward-watch.service  installed:same    folder:same
+  testq/testq.py         testq-steward-watch.timer    installed:same    folder:same
+  testq/testq.py         testq-tick.timer             installed:same    folder:same
+  steve_cpu_retest.py    steve-cpu-retest.service     installed:same    folder:same
+  steve_cpu_retest.py    steve-cpu-retest.timer       installed:same    folder:same
+installed files in scope: 110 (96 unit or drop-in texts, 14 masks); folder files: 96
+units verdict over them: 1 problem(s)
+  rm-running.service: installed text differs from the folder: ops_clocks.py install rm-running.service --apply
+OK: 0 of 18 old texts differ from their folder file

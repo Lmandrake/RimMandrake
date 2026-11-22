@@ -422,7 +422,7 @@ def _split_marker(err: str):
 
 
 def _install_slice() -> None:
-    src = Path(__file__).resolve().with_name(HARNESS_SLICE)
+    src = Path(__file__).resolve().parent / "systemd" / HARNESS_SLICE   # the one home of unit texts
     dst = Path(os.environ.get("XDG_CONFIG_HOME", Path.home() / ".config")) / "systemd/user" / HARNESS_SLICE
     try:
         if src.is_file() and (not dst.is_file() or dst.read_bytes() != src.read_bytes()):

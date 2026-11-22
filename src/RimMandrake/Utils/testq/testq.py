@@ -26,7 +26,9 @@ Plan: design/RimMandrake/test_orchestration_two_machines_2026-10-25.md sections 
                                      clock, escalation to BENCH at 10/30 min and the owner at 120 min; the tick runs it
   testq.py steward-watch             its heartbeat watcher (testq-steward-watch.timer, every 60 s)
   testq.py tick                      one dispatch pass (a systemd user timer runs it every 60 s)
-  testq.py install-timer [--apply]   that timer: testq-tick.{service,timer} in the user manager, ticking from the
+  its units: src/RimMandrake/Utils/systemd/testq-{tick,sweep,steward-watch}.{service,timer}, the one home; installed by
+                                     `ops_clocks.py install testq-tick testq-sweep testq-steward-watch --apply --enable`.
+                                     The tick runs from the
                                      dispatch clone (~/rm/dispatch, pulled before every tick, never an agent's clone),
                                      then ingest.py (results -> RUNNER ledger events, committed from that clone), then
                                      findings_fold.py run (the no-AI findings sorter; its exit 2 fails the unit).
@@ -1962,84 +1964,6 @@ def cmd_show(a):
 
 
 DISPATCH = os.path.expanduser("~/rm/dispatch")
-# git's auto gc/maintenance DETACHES by default; a oneshot tick's pull/ingest then left a background repack in the unit's
-# cgroup, killed or orphaned at unit end (463 "Found left-over process (git)" lines on 2026-10-26, four tmp_pack_* files,
-# 8,972 loose objects that never shrank, so every tick started another). Foreground auto gc finishes inside the tick.
-GIT_ENV = ("Environment=GIT_CONFIG_COUNT=2 GIT_CONFIG_KEY_0=gc.autoDetach GIT_CONFIG_VALUE_0=false "
-           "GIT_CONFIG_KEY_1=maintenance.autoDetach GIT_CONFIG_VALUE_1=false\n")
-UNITS = {
-    "testq-tick.service": """[Unit]
-Description=testq dispatch tick (TESTQ_DISPATCHER_BUILD_SSH_NO_LLM)
-
-[Service]
-Type=oneshot
-WorkingDirectory={clone}
-{git_env}ExecStartPre=-/usr/bin/git -C {clone} pull -q --ff-only origin main
-ExecStart=-/usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/companion_stage.py run
-ExecStart=/usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/testq.py tick
-ExecStart=-/bin/bash -c 'for m in $(/usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/coverage.py wired); do /usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/testq.py fill "$m"; done'
-ExecStart=-/usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/testq.py steward
-ExecStart=-/usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/ingest.py
-ExecStart=/usr/bin/python3 {clone}/src/RimMandrake/Utils/findings_fold.py run
-TimeoutStartSec=900
-""",
-    "testq-sweep.service": """[Unit]
-Description=testq daily full sweep request (design: at most one --full per mod per day, overnight)
-
-[Service]
-Type=oneshot
-WorkingDirectory={clone}
-{git_env}ExecStartPre=-/usr/bin/git -C {clone} pull -q --ff-only origin main
-ExecStart=/bin/bash -c 'for m in ${{TESTQ_SWEEP_MODS:-FlowWorks}}; do /usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/testq.py sweep "$m"; done'
-# No start timeout (RIMMANDRAKE_UNCAP_TESTQ_SWEEP_KILLED_AT_FIVE_MINUTES): the old 300 s named no danger, and on 11-21
-# it killed the sweep mid-run (gaps.settled alone took 134 s), so nothing was queued. A hung sweep only delays the next
-# night: the timer starts no second copy while one runs.
-TimeoutStartSec=infinity
-""",
-    "testq-sweep.timer": """[Unit]
-Description=testq daily full sweep at 01:30 local
-
-[Timer]
-OnCalendar=*-*-* 01:30:00
-Persistent=true
-
-[Install]
-WantedBy=timers.target
-""",
-    # the steward cannot see its own tick stop (design 2026-10-26 section 6.1): this watcher has its own timer and
-    # never pulls, so a bad pull that kills the tick does not take the watcher with it
-    "testq-steward-watch.service": """[Unit]
-Description=testq steward heartbeat watcher (STEVE_STEWARD_BUILD_NO_LLM_OWNER)
-
-[Service]
-Type=oneshot
-WorkingDirectory={clone}
-ExecStart=/usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/testq.py steward-watch
-TimeoutStartSec=300
-""",
-    "testq-steward-watch.timer": """[Unit]
-Description=testq steward heartbeat watcher every 60 s
-
-[Timer]
-OnBootSec=3min
-OnUnitInactiveSec=60s
-AccuracySec=5s
-
-[Install]
-WantedBy=timers.target
-""",
-    "testq-tick.timer": """[Unit]
-Description=testq dispatch tick every 60 s
-
-[Timer]
-OnBootSec=2min
-OnUnitInactiveSec=60s
-AccuracySec=5s
-
-[Install]
-WantedBy=timers.target
-""",
-}
 
 
 def cmd_pause(a):
@@ -2084,26 +2008,6 @@ def cmd_steward(a):
 def cmd_steward_watch(a):
     import steward
     return steward.cmd_watch(a)
-
-
-def cmd_install_timer(a):
-    if not os.path.isdir(os.path.join(DISPATCH, ".git")):
-        print("REFUSED: no dispatch clone at %s (git clone the repo there first)" % DISPATCH)
-        return 2
-    unit_dir = os.path.expanduser("~/.config/systemd/user")
-    for name, text in UNITS.items():
-        path = os.path.join(unit_dir, name)
-        print("%s %s" % ("write" if a.apply else "would write", path))
-        if a.apply:
-            os.makedirs(unit_dir, exist_ok=True)
-            with open(path, "w", encoding="utf-8") as f:
-                f.write(text.format(clone=DISPATCH, git_env=GIT_ENV))
-    if a.apply:
-        for argv in (["daemon-reload"], ["enable", "--now", "testq-tick.timer"],
-                     ["enable", "--now", "testq-sweep.timer"], ["enable", "--now", "testq-steward-watch.timer"]):
-            r = subprocess.run(["systemctl", "--user"] + argv, capture_output=True, text=True, timeout=60)
-            print("systemctl --user %s: exit %d %s" % (" ".join(argv), r.returncode, r.stderr.strip()[-200:]))
-    return 0
 
 
 def forward_submit(a, argv):
@@ -2218,8 +2122,6 @@ def main(argv=None):
     s.add_argument("--until", help="ISO UTC end, default now")
     sub.add_parser("steward", help="the lane steward pass (the tick runs it)")
     sub.add_parser("steward-watch", help="the steward's heartbeat watcher (its own timer)")
-    s = sub.add_parser("install-timer")
-    s.add_argument("--apply", action="store_true")
     a = ap.parse_args(argv)
     if getattr(a, "job", None) and not S.JOB_ID_RE.match(a.job):
         print("REFUSED: %r is not a job id" % a.job)
@@ -2231,7 +2133,7 @@ def main(argv=None):
     return {"submit": cmd_submit, "list": cmd_list, "show": cmd_show, "cancel": cmd_cancel, "resume": cmd_resume,
             "sweep": cmd_sweep, "fill": cmd_fill,
             "tick": cmd_tick, "pause": cmd_pause, "maintenance": cmd_maintenance, "steward": cmd_steward, "steward-watch": cmd_steward_watch,
-            "install-timer": cmd_install_timer, "archmagi-report": cmd_archmagi_report}[a.cmd](a)
+            "archmagi-report": cmd_archmagi_report}[a.cmd](a)
 
 
 if __name__ == "__main__":

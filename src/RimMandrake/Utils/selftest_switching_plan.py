@@ -313,7 +313,7 @@ def main():
           f"hard-stopped in the soft zone and lukas refilled: switch to lukas, never sit stopped (got {d['do']} {d['to']})")
     d = D({**off, "system": R(2, 24), "lukas": R(1, 160)}, "system", state={"stopped": {"account": "system"}})
     check(d["do"] == "stopped", f"hard-stopped and nothing else has budget: stay stopped (got {d['do']})")
-    sv = SP.SERVICE
+    sv = (Path(SP.__file__).resolve().parent / "systemd" / "account-plan.service").read_text(encoding="utf-8")
     tmo = int(sv.split("TimeoutStartSec=")[1].split("s")[0])
     check(tmo >= 120 + 420 + 120 + 3 * 600, f"the unit outlives a full pass (status, poll, status, arm, use, disarm): {tmo}")
     # GPT review round 3 (2026-10-28 12:10)

@@ -1,0 +1,61 @@
+FAIL account-plan.service: installed only on this machine: its text belongs in src/RimMandrake/Utils/systemd
+FAIL account-plan.timer: installed only on this machine: its text belongs in src/RimMandrake/Utils/systemd
+FAIL claude-seats.slice: installed only on this machine: its text belongs in src/RimMandrake/Utils/systemd
+FAIL rm-account-usage.service: installed only on this machine: its text belongs in src/RimMandrake/Utils/systemd
+FAIL rm-account-usage.timer: installed only on this machine: its text belongs in src/RimMandrake/Utils/systemd
+FAIL rm-artpiped.service.d/codex-model.conf: installed only on this machine: its text belongs in src/RimMandrake/Utils/systemd
+FAIL rm-artpiped.service.d/workers5.conf: installed only on this machine: its text belongs in src/RimMandrake/Utils/systemd
+FAIL rm-codebase-health.service.d/rm-data-root.conf: installed only on this machine: its text belongs in src/RimMandrake/Utils/systemd
+FAIL rm-deadman.service: installed only on this machine: its text belongs in src/RimMandrake/Utils/systemd
+FAIL rm-deadman.timer: installed only on this machine: its text belongs in src/RimMandrake/Utils/systemd
+FAIL rm-detached-.service.d/50-rm-control-permit.conf: installed only on this machine: its text belongs in src/RimMandrake/Utils/systemd
+FAIL rm-dispatcher.service: installed only on this machine: its text belongs in src/RimMandrake/Utils/systemd
+FAIL rm-dispatcher.timer: installed only on this machine: its text belongs in src/RimMandrake/Utils/systemd
+FAIL rm-harness.slice: installed only on this machine: its text belongs in src/RimMandrake/Utils/systemd
+FAIL rm-memwatch.service.d/rm-data-root.conf: installed only on this machine: its text belongs in src/RimMandrake/Utils/systemd
+FAIL rm-mirror.service.d/rm-data-root.conf: installed only on this machine: its text belongs in src/RimMandrake/Utils/systemd
+FAIL rm-objstore.service.d/rm-data-root.conf: installed only on this machine: its text belongs in src/RimMandrake/Utils/systemd
+FAIL rm-ops-watch.service: installed only on this machine: its text belongs in src/RimMandrake/Utils/systemd
+FAIL rm-ops-watch.timer: installed only on this machine: its text belongs in src/RimMandrake/Utils/systemd
+FAIL rm-restart-now.path: installed only on this machine: its text belongs in src/RimMandrake/Utils/systemd
+FAIL rm-restart-now.service: installed only on this machine: its text belongs in src/RimMandrake/Utils/systemd
+FAIL rm-role-.service.d/50-rm-control-permit.conf: installed only on this machine: its text belongs in src/RimMandrake/Utils/systemd
+FAIL rm-running.service: installed text differs from the folder: ops_clocks.py install rm-running.service --apply
+FAIL rm-scratch-pressure.service.d/rm-data-root.conf: installed only on this machine: its text belongs in src/RimMandrake/Utils/systemd
+FAIL rm-scratch-reap.service.d/rm-data-root.conf: installed only on this machine: its text belongs in src/RimMandrake/Utils/systemd
+FAIL rm-selftests-nightly.service.d/rm-data-root.conf: installed only on this machine: its text belongs in src/RimMandrake/Utils/systemd
+FAIL rm-telemetry-export.service: installed only on this machine: its text belongs in src/RimMandrake/Utils/systemd
+FAIL rm-telemetry-export.service.d/rm-data-root.conf: installed only on this machine: its text belongs in src/RimMandrake/Utils/systemd
+FAIL rm-telemetry-export.timer: installed only on this machine: its text belongs in src/RimMandrake/Utils/systemd
+FAIL rm-telemetry-health.service: installed only on this machine: its text belongs in src/RimMandrake/Utils/systemd
+FAIL rm-telemetry-health.service.d/rm-data-root.conf: installed only on this machine: its text belongs in src/RimMandrake/Utils/systemd
+FAIL rm-telemetry-health.timer: installed only on this machine: its text belongs in src/RimMandrake/Utils/systemd
+FAIL steve-cpu-retest.service: installed only on this machine: its text belongs in src/RimMandrake/Utils/systemd
+FAIL steve-cpu-retest.timer: installed only on this machine: its text belongs in src/RimMandrake/Utils/systemd
+FAIL testq-steward-watch.service: installed only on this machine: its text belongs in src/RimMandrake/Utils/systemd
+FAIL testq-steward-watch.timer: installed only on this machine: its text belongs in src/RimMandrake/Utils/systemd
+FAIL testq-sweep.service: installed only on this machine: its text belongs in src/RimMandrake/Utils/systemd
+FAIL testq-sweep.timer: installed only on this machine: its text belongs in src/RimMandrake/Utils/systemd
+FAIL testq-tick.service: installed only on this machine: its text belongs in src/RimMandrake/Utils/systemd
+FAIL testq-tick.timer: installed only on this machine: its text belongs in src/RimMandrake/Utils/systemd
+FAIL timer-guard.service: installed only on this machine: its text belongs in src/RimMandrake/Utils/systemd
+FAIL timer-guard.timer: installed only on this machine: its text belongs in src/RimMandrake/Utils/systemd
+FAIL src/RimMandrake/Utils/account_usage.py:662: unit text in code: move it to src/RimMandrake/Utils/systemd and install with ops_clocks.py install
+FAIL src/RimMandrake/Utils/account_usage.py:670: unit text in code: move it to src/RimMandrake/Utils/systemd and install with ops_clocks.py install
+FAIL src/RimMandrake/Utils/deadman_check.py:639: unit text in code: move it to src/RimMandrake/Utils/systemd and install with ops_clocks.py install
+FAIL src/RimMandrake/Utils/deadman_check.py:650: unit text in code: move it to src/RimMandrake/Utils/systemd and install with ops_clocks.py install
+FAIL src/RimMandrake/Utils/ops_watch.py:4969: unit text in code: move it to src/RimMandrake/Utils/systemd and install with ops_clocks.py install
+FAIL src/RimMandrake/Utils/ops_watch.py:4984: unit text in code: move it to src/RimMandrake/Utils/systemd and install with ops_clocks.py install
+FAIL src/RimMandrake/Utils/steve_cpu_retest/steve_cpu_retest.py:299: unit text in code: move it to src/RimMandrake/Utils/systemd and install with ops_clocks.py install
+FAIL src/RimMandrake/Utils/steve_cpu_retest/steve_cpu_retest.py:307: unit text in code: move it to src/RimMandrake/Utils/systemd and install with ops_clocks.py install
+FAIL src/RimMandrake/Utils/switching_plan.py:1186: unit text in code: move it to src/RimMandrake/Utils/systemd and install with ops_clocks.py install
+FAIL src/RimMandrake/Utils/switching_plan.py:1194: unit text in code: move it to src/RimMandrake/Utils/systemd and install with ops_clocks.py install
+FAIL src/RimMandrake/Utils/testq/testq.py:1971: unit text in code: move it to src/RimMandrake/Utils/systemd and install with ops_clocks.py install
+FAIL src/RimMandrake/Utils/testq/testq.py:1986: unit text in code: move it to src/RimMandrake/Utils/systemd and install with ops_clocks.py install
+FAIL src/RimMandrake/Utils/testq/testq.py:1999: unit text in code: move it to src/RimMandrake/Utils/systemd and install with ops_clocks.py install
+FAIL src/RimMandrake/Utils/testq/testq.py:2011: unit text in code: move it to src/RimMandrake/Utils/systemd and install with ops_clocks.py install
+FAIL src/RimMandrake/Utils/testq/testq.py:2020: unit text in code: move it to src/RimMandrake/Utils/systemd and install with ops_clocks.py install
+FAIL src/RimMandrake/Utils/testq/testq.py:2031: unit text in code: move it to src/RimMandrake/Utils/systemd and install with ops_clocks.py install
+FAIL src/RimMandrake/Utils/timers_guard.py:346: unit text in code: move it to src/RimMandrake/Utils/systemd and install with ops_clocks.py install
+FAIL src/RimMandrake/Utils/timers_guard.py:356: unit text in code: move it to src/RimMandrake/Utils/systemd and install with ops_clocks.py install
+FAIL: 55 unit files in src/RimMandrake/Utils/systemd, 60 problem(s)

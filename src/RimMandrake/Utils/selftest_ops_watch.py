@@ -523,12 +523,6 @@ OW.COLLECTORS.update(saved)
 fl1 = json.loads((TMP / "ops" / "flags.json").read_text())["flags"]
 check("flags: flags.json written", isinstance(fl1, list))
 
-# ---------------------------------------------------------------- CLI: install plans only
-env = dict(os.environ, HOME=str(TMP / "home"))
-r = subprocess.run([sys.executable, str(HERE / "ops_watch.py"), "install"], capture_output=True, text=True, env=env, timeout=60)
-check("cli: install without --apply prints a plan and writes nothing",
-      r.returncode == 0 and "plan only" in r.stdout and not (TMP / "home").exists(), r.stdout + r.stderr)
-
 # ---------------------------------------------------------------- GPT review fixes (2026-10-27)
 check("runway: an unknown burn rate is None, not 'no burn'", OW.runway(50, None, 100) is None)
 check("runway: a spent quota is 0 whatever the rate, even with no rate yet", OW.runway(0, 0, 100) == 0.0

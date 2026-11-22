@@ -3,7 +3,6 @@
  "burn_down_by": "2027-01-31",
  "calls": {
   "src/RimMandrake/Utils/acceptance_map.py::real_verify::run": 1,
-  "src/RimMandrake/Utils/account_usage.py::install::run": 1,
   "src/RimMandrake/Utils/alpha_biomes_census.py::tracked::run": 1,
   "src/RimMandrake/Utils/art/art.py::cmd_doctor::run": 1,
   "src/RimMandrake/Utils/art/art_sheet.py::main::run": 1,
@@ -142,8 +141,6 @@
   "src/RimMandrake/Utils/sekkulaath_rising_note_check.py::in_src::run": 1,
   "src/RimMandrake/Utils/settings_audit.py::main::check_output": 1,
   "src/RimMandrake/Utils/settings_audit.py::stamp_status::run": 1,
-  "src/RimMandrake/Utils/steve_cpu_retest/steve_cpu_retest.py::cmd_install::run": 1,
-  "src/RimMandrake/Utils/switching_plan.py::install::run": 1,
   "src/RimMandrake/Utils/telemetry/supervise.py::_kill::run": 1,
   "src/RimMandrake/Utils/testq/testq.py::git_head::run": 1,
   "src/RimMandrake/Utils/testq/testq.py::published::run": 1,

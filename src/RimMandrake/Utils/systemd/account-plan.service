@@ -1,0 +1,7 @@
+[Unit]
+Description=Claude account standard switching plan (switching_plan.py check)
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/switching_plan.py check
+TimeoutStartSec=2700s

@@ -772,23 +772,23 @@ def main():
         rc, o = tq("sweep", "Mock")
         check(rc == 0 and "already" in o and njobs() == n0,
               "a second sweep the same day queues nothing: %s" % o[-200:])
-        rc, o = tq("install-timer")
-        check(rc != 0 or "testq-sweep.timer" in o, "install-timer also installs the daily sweep timer: %s" % o[-200:])
         # every git-pulling unit runs git's auto gc in the FOREGROUND (2026-10-26: detached repacks were left over in the
         # tick's cgroup every minute, 463 times, and never finished). Can-fail: the env must really reach git's config.
-        import testq as _TQ  # noqa: E402
+        units_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "systemd")   # one home
         for un in ("testq-tick.service", "testq-sweep.service"):
-            body = _TQ.UNITS[un].format(clone="/c", git_env=_TQ.GIT_ENV).splitlines()
+            body = open(os.path.join(units_dir, un), encoding="utf-8").read().splitlines()
             envl = [l for l in body if l.startswith("Environment=GIT_CONFIG_COUNT=")]
             pre = [i for i, l in enumerate(body) if l.startswith("ExecStartPre=") and " pull " in l]
             check(envl and pre and body.index(envl[0]) < pre[0], "%s sets the git env before its pull: %s" % (un, body[:8]))
         # the sweep has no start timeout (RIMMANDRAKE_UNCAP_TESTQ_SWEEP_KILLED_AT_FIVE_MINUTES): 11-21 01:35 PST systemd killed
         # it at TimeoutStartSec=300 while gaps.settled alone took 134 s, so it queued nothing. The cap named no danger.
-        swb = _TQ.UNITS["testq-sweep.service"].format(clone="/c", git_env=_TQ.GIT_ENV).splitlines()
+        swb = open(os.path.join(units_dir, "testq-sweep.service"), encoding="utf-8").read().splitlines()
         tos = [l.split("=", 1)[1].strip() for l in swb if l.startswith("TimeoutStartSec=")]
         check(tos == ["infinity"], "testq-sweep.service sets no start timeout (TimeoutStartSec=infinity): %s" % tos)
         genv = dict(os.environ)
-        genv.update(kv.split("=", 1) for kv in _TQ.GIT_ENV.strip()[len("Environment="):].split())
+        git_env = [l for l in open(os.path.join(units_dir, "testq-tick.service"), encoding="utf-8").read().splitlines()
+                   if l.startswith("Environment=GIT_CONFIG_COUNT=")][0]
+        genv.update(kv.split("=", 1) for kv in git_env[len("Environment="):].split())
         got = [subprocess.run(["git", "config", "--get", k], env=genv, capture_output=True, text=True).stdout.strip()
                for k in ("gc.autoDetach", "maintenance.autoDetach")]
         check(got == ["false", "false"], "GIT_ENV turns off git's detached auto gc and maintenance: %s" % got)
@@ -830,9 +830,9 @@ def main():
             json.dump(rec, open(os.path.join(queue, "done", rec["job"]["id"] + ".json"), "w"))
         rc, o = tq("fill", "Mock")
         check(o.startswith("brake"), "two non-DONE filler jobs in a row brake the filler: %s" % o)
-        unit = open(TESTQ).read()
+        unit = open(os.path.join(units_dir, "testq-tick.service"), encoding="utf-8").read()   # the one home
         check("testq.py fill" in unit and "coverage.py wired" in unit, "the tick unit runs the filler over the wired mods")
-        check("ExecStart=-/usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/ingest.py" in unit,
+        check("ExecStart=-/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/testq/ingest.py" in unit,
               "a failing ingest does not skip the fill line after it (ExecStart=-)")
 
         rc, o = tq("show", "../../x")

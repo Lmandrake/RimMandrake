@@ -38,7 +38,7 @@ gate (the account_failover cutover gate was removed 2026-10-28: that script is r
     switching_plan.py check [--dry-run]   one pass (the timer runs this every 5 min)
     switching_plan.py status [--rate R] [--model M]   what the next pass would do (as a run of M sees each level), the pool, the notice and the week ahead
                                           (simulate() at R %/h, default the pool's pace); acts on nothing
-    switching_plan.py install [--deploy D] the durable systemd user timer account-plan.timer
+    its timer: src/RimMandrake/Utils/systemd/account-plan.{service,timer} (ops_clocks.py install account-plan --apply --enable)
 
 Env seams (selftests): RM_SWITCH_PLAN (plan json), RM_SWITCH_PLAN_DIR (output dir), RM_CLAUDE_ACCOUNT (switcher),
 RM_ACCOUNTS_DIR (the switcher's folder, whose log.jsonl names the last switch).
@@ -1182,40 +1182,7 @@ def _check(dry, now, meter_fn, poll_fn, runs_fn=default_runs) -> int:
     return rc
 
 
-# ------------------------------------------------------------------ status / install
-SERVICE = """[Unit]
-Description=Claude account standard switching plan (switching_plan.py check)
-
-[Service]
-Type=oneshot
-ExecStart=/usr/bin/python3 {script} check
-TimeoutStartSec=2700s
-"""
-TIMER = """[Unit]
-Description=Claude account standard switching plan, every 5 min
-
-[Timer]
-OnCalendar=*:0/5
-Persistent=true
-
-[Install]
-WantedBy=timers.target
-"""
-
-
-def install(deploy: str) -> str:
-    script = Path(deploy) / "src/RimMandrake/Utils/switching_plan.py"
-    if not script.exists():
-        raise SystemExit(f"install: {script} does not exist (pass --deploy <checkout>)")
-    units = Path.home() / ".config/systemd/user"
-    units.mkdir(parents=True, exist_ok=True)
-    (units / f"{UNIT}.service").write_text(SERVICE.format(script=script))
-    (units / f"{UNIT}.timer").write_text(TIMER)
-    for argv in (["daemon-reload"], ["enable", "--now", f"{UNIT}.timer"]):
-        subprocess.run(["systemctl", "--user", *argv], check=True)
-    return f"{UNIT}.timer -> {script}"
-
-
+# ------------------------------------------------------------------ status
 def status(rate=None, model=None) -> int:
     plan, state, now = load_plan(), load_state(), time.time()
     meter = levelled(meter_now(), model or plan.get("level_model"))
@@ -1251,15 +1218,9 @@ def main(argv=None) -> int:
     p.add_argument("--rate", type=float, default=None, help="burn %%/h for the week ahead (default: the pool's pace)")
     p.add_argument("--model", default=None, help="read each account's level as a run of this model sees it (the "
                    "lower of all-models and its own weekly limit); acts on nothing")
-    p = sub.add_parser("install")
-    p.add_argument("--deploy", default=__import__("ops_clocks").deploy(),
-                   help="the one Operations deploy (systemd/ops_clocks.json)")
     a = ap.parse_args(argv)
     if a.cmd == "check":
         return check(dry=a.dry_run)
-    if a.cmd == "install":
-        print(install(a.deploy))
-        return 0
     return status(a.rate, a.model)
 
 
