@@ -52,3 +52,10 @@ DONE PYRE_PLANT_VENOM_TEND_WRONG_PATIENT=1:flamefang_venom@flamefang_venom_plant
 DONE ullai_and_giant@ullai_look reload_rc=0 rc=1 48s 06:42:06
 DONE +script:design/concepts/Pyrelands/version/in_game/visit_5/scripts/herd_look.py@herd_look reload_rc=skipped rc=0 2s 06:42:08
 DONE script:design/concepts/Pyrelands/version/in_game/visit_5/scripts/patch_probe.py@patch_probe reload_rc=0 rc=0 16s 06:42:24
+DONE grass_cover,embergrass_regrow@embergrass_regrow2 reload_rc=0 rc=1 1330s 07:04:34
+DONE script:src/RimMandrake/Pyrelands/wind_burn_live.py@wind_burn_live reload_rc=0 rc=0 166s 07:07:20
+DONE script:src/RimMandrake/Pyrelands/gate_live_proof.py@gate_live_proof reload_rc=0 rc=0 17s 07:07:37
+END b3 2026-11-22 07:07:37
+START b4 2026-11-22 07:07:53
+DONE script:design/concepts/Pyrelands/version/in_game/visit_5/scripts/walk_save.py@walk_save reload_rc=0 rc=0 32s 07:08:25
+END b4 2026-11-22 07:08:25

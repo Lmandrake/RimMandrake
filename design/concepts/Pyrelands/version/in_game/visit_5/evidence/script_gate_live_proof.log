@@ -1,0 +1,2 @@
+A1 ShellPresent=True On=True
+[bridge split] 0.3 s wall: load 0.0 / ticks 0.0 / reads 0.2 / other 0.0 / outside calls 0.1 s

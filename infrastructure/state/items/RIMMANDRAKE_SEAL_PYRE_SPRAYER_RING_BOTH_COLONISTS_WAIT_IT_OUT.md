@@ -13,6 +13,9 @@ What was measured (design/concepts/Pyrelands/version/in_game/visit_5/evidence/ru
   ring's fires fall from about 45 to under 10; the fruit is taken only then (control at tick 1750 with 4 fires left; the
   sprayer colonist at tick 2000 with 0). So the sprayer row's PASS does not show that the sprayer was needed, and the
   control cannot show that fire stops a bare colonist.
+- The planted run (PYRE_PLANT_RING_GAP=1, west edge unlit, evidence/run_firefoam_planted_ring_gap2.log) read the
+  control PASS: the colonist stood at (227,34) for 1250 ticks, then the fire spread into its cell and burned it (3 burns).
+  So the control reads chance, not the ring: it passed with the gap and failed without it.
 - The `inside` box of `_harvest_through_fire` (x+2..x+6) counts the ring's inner column once the ring is 3 cells thick.
 
 Why the fix is not known: a solid ring needs every ring cell burning at once (relight the refused cells until all burn, or

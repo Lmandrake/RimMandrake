@@ -81,9 +81,10 @@ def prior_rows(tid, e, o):
     return out
 
 
+EXTRA = set(OV.get("_extra_tests", []))   # untouched checks an owed case asked this visit to run (a row each)
 rows = []
 for tid, e in sorted(T.items()):
-    if str(e.get("stage")) != "6" or tid not in TOUCHED:
+    if str(e.get("stage")) != "6" or (tid not in TOUCHED and tid not in EXTRA):
         continue
     o = OV.get(tid, {})
     rows.extend(prior_rows(tid, e, o))
@@ -103,9 +104,9 @@ for tid, e in sorted(T.items()):
     for k in ("class", "repair", "unrepaired", "owner", "filed", "mod_fix", "unfixed", "planted_faults", "note"):
         if k in o:
             row[k] = o[k]
-    if "unrepaired" in o and row["verdict"] == "PASS":   # a needed check not shown both ways is not counted, never PASS
+    if "unrepaired" in o and row["verdict"] != "UNMEASURED":   # a needed check not shown both ways is not counted
+        row["detail"] = "not counted (unrepaired, see `unrepaired`); its components read %s: %s" % (row["verdict"], row["detail"])
         row["verdict"] = "UNMEASURED"
-        row["detail"] = "not counted (unrepaired, see `unrepaired`); its components read: " + row["detail"]
     row.update({k: IDENT[k] for k in ("mod_hash", "game_build", "active_mods", "tier", "unit") if k in IDENT})
     rows.append(row)
 with open(os.path.join(VD, "rows.jsonl"), "w") as fh:

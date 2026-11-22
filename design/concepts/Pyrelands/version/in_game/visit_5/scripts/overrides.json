@@ -74,5 +74,70 @@
    }
   ],
   "note": "real run: cinderfall_lightning PASS, 10 strikes under cinderfall, 0 under ash fall; the ash-fall window-1 fire (16 new fires) named 'not lightning'"
+ },
+ "sc_firefoam_sprayer": {
+  "label": "firefoam_repaired2",
+  "prior": [
+   {
+    "label": "firefoam_sprayer",
+    "class": "SITE",
+    "note": "control FAIL: a bare colonist crossed the 2-cell ring to (227,33) inside 250 ticks, unburned (vanilla Fire tries to ignite a pawn only each 150 ticks); the sprayer row PASSed (13 Filth_FireFoam cells)"
+   },
+   {
+    "label": "firefoam_repaired",
+    "class": "SITE",
+    "note": "3-cell ring (15431f983f): the control ring's west edge refused fire, 9 of 9 cells under the sprayer row's Filth_FireFoam"
+   },
+   {
+    "label": "firefoam_planted_ring_gap",
+    "class": "SITE",
+    "note": "planted ring gap, run on the foamed ground: not a reading"
+   },
+   {
+    "label": "firefoam_planted_ring_gap2",
+    "class": "SITE",
+    "note": "planted ring gap on the cleared ground: control PASS (the fire spread into the waiting colonist's cell and burned it), the opposite of the planted fault's want: the control reads chance, not the ring"
+   }
+  ],
+  "class": "SITE",
+  "unrepaired": "the ring cannot be made solid by the repairs tried in the sitting (2-cell ring, 3-cell ring 15431f983f, foam cleared ab3a14c6f5): one map_fire start lights 41-54 of 72 ring cells, and both colonists, with and without the sprayer, walk through the gaps to (227,32)/(227,33) and wait about 1500 ticks unburned until the ring burns down, then take the fruit; the scene that shows the sprayer is needed is a design call (fix not known)",
+  "owner": "RIMMANDRAKE_SEAL_PYRE_SPRAYER_RING_BOTH_COLONISTS_WAIT_IT_OUT",
+  "filed": "RIMMANDRAKE_SEAL_PYRE_SPRAYER_RING_BOTH_COLONISTS_WAIT_IT_OUT",
+  "note": "owed case RIMMANDRAKE_DESIGN_PYRE_SPRAYER_CARRIER_NEVER_FOAMS_ITS_PATH: sprayer_reaches_the_fruit PASS with Filth_FireFoam 13 (the mod fix 3acf1ad82b works live); the control row stays SITE"
+ },
+ "sc_flamefang_venom": {
+  "planted_faults": [
+   {
+    "plant": "PYRE_PLANT_VENOM_TEND_WRONG_PATIENT=1 (through WSLENV)",
+    "owed_by": "RIMMANDRAKE_FEED_PYRE_VENOM_FIXTURES_HUNGER_STOPS_WAITOUT",
+    "verdict": "FAIL",
+    "evidence": "design/concepts/Pyrelands/version/in_game/visit_5/evidence/pv5_flamefang_venom_planted_wrong_tend2.json",
+    "reading": "venom_tended_vs_untended FAIL: the tended venom rose no less than the untended in hours [1, 2, 3, 5]"
+   },
+   {
+    "plant": "the same, first try",
+    "verdict": "UNMEASURED",
+    "evidence": "design/concepts/Pyrelands/version/in_game/visit_5/evidence/pv5_flamefang_venom_planted_wrong_tend.json",
+    "reading": "RESTART: a patient was downed during the row (damage to the test); rerun above"
+   }
+  ],
+  "note": "real run (batch 1): all five venom rows PASS"
+ },
+ "_extra_tests": [
+  "sc_fire_walks_with_wind",
+  "P_gate"
+ ],
+ "sc_grass_regreens": {
+  "label": "embergrass_regrow2",
+  "prior": [
+   {
+    "label": "embergrass_regrow",
+    "class": "SITE",
+    "note": "RESTART (damage to the test): site colonist Human75831 downed, then died of Plague 0.9 at 1140 ticks into a 2000-tick step; every regrow row voided, rerun on a reloaded site"
+   }
+  ],
+  "class": "HARNESS",
+  "unrepaired": "plant_density_one_control_map stays UNMEASURED by construction (no bridge tool regenerates the site's seed and tile with plantDensity 1.0 before generation); every other component PASS on the fixed build: embergrass_regrows, regrow_dry_watered_vanilla (the e63595716c ember-grass rate fix, owed case RIMMANDRAKE_TRACE_PYRE_EMBERGRASS_GROWS_TENTH_OF_ITS_RATE), grass_census_first, grass_chokes_ground",
+  "owner": "RIMMANDRAKE_BUILD_PYRE_GRASS_FOIL_SAME_SEED_DENSITY_ONE"
  }
 }
