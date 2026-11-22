@@ -519,6 +519,10 @@ def underpass(ctx):
             V.adopt(deck)                   # the deck the shot should cross
             g = B.call("jawa/spawn_pawn", kindDef="Mercenary_Gunner", x=P(3, z)[0], z=P(3, z)[1], faction="player", count=1) or {}
             gid = ((g.get("pawns") or [{}])[0]).get("id")
+            # a gun in hand: a Mercenary_Gunner once spawned with none (visit 7, 2026-11-22: ranged=False, its melee verb
+            # "hit" the next square, can=True over a solid deck); the row asks what a deck does to a SHOT
+            if gid:
+                B.call("jawa/pawn_gear", **{"pawn": str(gid), "action": "equip", "def": "Gun_Revolver", "stuff": ""})
             tgt = spawn(P(5, z))                                       # ON the deck square beside the one the gunner is under
             proof("ProofPutUnder", "%s;%s" % (gid, xz(P(4, z))))
             kvb, txtb = proof("ProofBand", tgt) if tgt else ({}, "no pawn")
@@ -526,6 +530,7 @@ def underpass(ctx):
             # the target not on a deck or the gunner not under one: no deck between them (SITE)
             V.require(kvb.get("onDeck") == "True" and kv.get("shooterUnder") == "True", "a deck between gunner and target",
                       {"band": txtb, "shot": txt})
+            V.require(kv.get("ranged") == "True", "the gunner holds a ranged weapon", txt, cls="SITE")
             row("UND_shot_%s_deck" % tag, "PASS" if kv.get("can") == want else "FAIL", {"want": want, "read": txt, "target": txtb})
     with V.scope("UND_crush"):
         V.adopt(u1)                         # no deck over the pawn: nothing could fall on it
@@ -816,6 +821,7 @@ LABOUR_REACH = 0.25   # digLabourMultiplier for this row only (restored after): 
 # (speed 0.1) laid no notch in the 15000-tick wait, the job held beside the square exactly as visit 6 read (diag_skill_m0);
 # Mining 10 (speed 0.98) laid each notch in at most 4 reads of 500 ticks (diag_skill_m10).
 REACH_WORKER_MINING = 8
+REACH_WORKER_TRIES = 5        # spawns tried for a worker whose Mining is not disabled (see reach())
 REACH_WORKER_MIN_SPEED = 0.5   # half the level-8 speed; the measured 2000-tick notch at 0.98 still fits 15000 ticks at 0.5
 
 
@@ -913,10 +919,22 @@ def reach(ctx):
                   and depth(P(4, 87)) == DEEP, "the channel is dug around the middle square", "mid depth %s" % d0, cls="SITE")
         kv, txt = proof("ProofRestore", "%s;%s" % (xz(edge), xz(mid)))
         V.require(kv.get("accepted") == "2" and kv.get("fillOrders") == "2", "Restore ground ordered on the causeway", txt)
-        pid = ctx["spawn"](bank)
+        # the row asks reach and grounding, not one random colonist's shovel speed: a worker of known Mining, read back.
+        # A backstory can disable Mining outright (visit 7, 2026-11-22: set_pawn_skill refused, "TOTALLY DISABLED"): such a
+        # colonist is drafted where it stands (a drafted pawn takes no fill job) and another is spawned, up to
+        # REACH_WORKER_TRIES (measured 2026-11-22: 1 of 13 reach workers spawned on games a and b had Mining disabled; five
+        # tries leave about (1/13)^5, under one run in 300000)
+        pid, sk = None, {}
+        for _try in range(REACH_WORKER_TRIES):
+            pid = ctx["spawn"](bank)
+            if not pid:
+                break
+            # _answer: a refusal here is a read of this colonist (Mining disabled), not a fault; the require below judges it
+            sk = B.call("jawa/set_pawn_skill", True, pawn=str(pid), skill="Mining", level=REACH_WORKER_MINING) or {}
+            if sk.get("success") or "DISABLED" not in str(sk.get("message") or sk.get("error") or ""):
+                break
+            B.call("jawa/set_draft", pawnId=pid, drafted=True)
         V.require(pid, "a colonist on the bank", str(pid), cls="HARNESS")
-        # the row asks reach and grounding, not one random colonist's shovel speed: a worker of known Mining, read back
-        sk = B.call("jawa/set_pawn_skill", pawn=str(pid), skill="Mining", level=REACH_WORKER_MINING) or {}
         V.require(sk.get("success"), "the worker's Mining set to %d" % REACH_WORKER_MINING, str(sk)[:160], cls="SITE")
         ms = [s.get("value") for s in ((B.call("jawa/pawn_stats", pawn=str(pid), stats="MiningSpeed") or {}).get("stats") or [])
               if s.get("defName") == "MiningSpeed"]
@@ -989,6 +1007,9 @@ class FakeBridge(object):
         if method == "jawa/pawn_gear":
             return {"success": True}
         if method == "jawa/set_pawn_skill":                                 # the reach worker's Mining (real: JawaBenchPawnTools)
+            if FakeBridge.skill_disabled > 0:                               # planted: this colonist's Mining is disabled
+                FakeBridge.skill_disabled -= 1
+                return {"success": False, "message": "Skill 'Mining' is TOTALLY DISABLED on this pawn by backstory"}
             return {"success": True, "after": {"levelRaw": kw.get("level"), "levelEffective": kw.get("level")}}
         if method == "jawa/pawn_stats":                                     # real shape: stats[{defName, value}] (JawaBenchStatTools)
             return {"success": True, "stats": [{"defName": n, "value": FakeBridge.worker_speed}
@@ -1027,6 +1048,7 @@ class FakeBridge(object):
     ox, floor_z = 140, 140
     reach_fault = None       # selftest_suspension_bridge_reach plants "yes" / "no"
     worker_speed = 1.0       # the reach worker's MiningSpeed read; selftest_suspension_bridge_reach plants 0.1 (Mining 0)
+    skill_disabled = 0       # colonists in a row whose Mining is disabled; selftest_suspension_bridge_reach plants 1 and 99
     tier_decks = {"timber": 6}
 
     def static(self, m, arg):

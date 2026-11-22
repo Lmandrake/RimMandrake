@@ -108,6 +108,12 @@ def main():
         got = verdicts("noput", "underpass", static=lambda self, m, a: "REFUSED: x" if m == "ProofPutUnder" else ostat(self, m, a))
         if got.get("UND_crush_below_and_wreck") == "FAIL":
             fails.append("a pawn never put under the deck scored a mod FAIL on the crush row")
+        # visit 7: a gunner with no gun (melee verb, can=True on the next square) is staging, never a deck verdict
+        got = verdicts("unarmed", "underpass", static=lambda self, m, a: (ostat(self, m, a).replace("ranged=True", "ranged=False")
+                                                                         .replace("can=False", "can=True") if m == "ProofShot"
+                                                                         else ostat(self, m, a)))
+        if got.get("UND_shot_solid_deck") != "UNMEASURED":
+            fails.append("an unarmed gunner reads UND_shot_solid_deck %s, want UNMEASURED" % got.get("UND_shot_solid_deck"))
         # over-correction guard: a real mod fault (rails off, open edge, nobody falls) must still be FAIL
         got = verdicts("realfail", "posts", static=lambda self, m, a: ("KNOCK trials=20 fell=0 railed=False edge=True" if m == "ProofKnock"
                                                                         else ostat(self, m, a)))

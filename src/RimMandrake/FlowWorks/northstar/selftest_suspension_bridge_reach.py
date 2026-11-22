@@ -73,10 +73,21 @@ def main():
     if det.get("mock") == "PASS" or "MiningSpeed" not in why:
         fails.append("mock reach with a slow worker (MiningSpeed 0.1) -> %r, unmeasuredBecause %s; want withheld on the "
                      "worker's MiningSpeed" % (det.get("mock"), why[:200]))
+    # a colonist whose Mining is disabled is drafted and another spawned (visit 7); every one disabled withholds the row
+    for planted, want_pass in ((1, True), (99, False)):
+        SBP.FakeBridge.skill_disabled = planted
+        try:
+            rc, rows = _mock(None)
+        finally:
+            SBP.FakeBridge.skill_disabled = 0
+        det = rows[0]["detail"] if rows else {}
+        if (det.get("mock") == "PASS") != want_pass:
+            fails.append("mock reach with %d Mining-disabled colonist(s) first -> %r, want %s" % (
+                planted, det.get("mock"), "PASS" if want_pass else "withheld"))
     for f in fails:
         print("FAIL:", f)
-    print("suspension bridge reach row: %d verdict cases + 4 mock runs (1 healthy, 2 planted lying reach, 1 planted slow "
-          "worker), worst=%s limit=0 "
+    print("suspension bridge reach row: %d verdict cases + 6 mock runs (1 healthy, 2 planted lying reach, 1 planted slow "
+          "worker, 2 planted Mining-disabled), worst=%s limit=0 "
           "fails, %s" % (len(cases), len(fails), "ok" if not fails else "FAIL"))
     return 1 if fails else 0
 
