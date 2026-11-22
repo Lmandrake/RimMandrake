@@ -10,6 +10,8 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from mutate_explosivegrowth_fuzz import run_mutations  # noqa: E402
 
+# Dropped 2026-11-22: "budget never resets" and "budget allows cap + 1" planted faults in the per-tick throw budget, which 0808c55303
+# removed by design (all-fly, no throw caps); their target lines are gone, so they only printed MUTATION TARGET NOT FOUND.
 # Dropped as equivalent: the early-out `force <= 0 || globalMultiplier <= 0` is redundant with the rounding below it (a zero or negative
 # product rounds to < 1 and returns 0), so removing either half of it cannot change a result.
 MUTATIONS = [
@@ -40,11 +42,12 @@ MUTATIONS = [
     ("corner cut allowed", "if (Solid(grid.At(x, pz)) || Solid(grid.At(px, z)))", "if (Solid(grid.At(x, pz)) && Solid(grid.At(px, z)))"),
     ("doors do not stop", "if (c == KbCell.Door)\n                {\n                    stop = KbStop.Door;", "if (c == KbCell.Door && false)\n                {\n                    stop = KbStop.Door;"),
     ("water does not stop", "if (c == KbCell.Water)\n                {", "if (c == KbCell.Water && false)\n                {"),
-    ("pits ignore the setting", "if (c == KbCell.Pit && !s.intoPits)", "if (c == KbCell.Pit && false)"),
+    ("pits ignore the setting", "if (pit && !s.intoPits)", "if (pit && false)"),
+    ("a covered pit is not a pit (K-08's old rule)", "bool pit = c == KbCell.Pit || c == KbCell.CoveredPit;", "bool pit = c == KbCell.Pit;"),
     ("sandbags stop items too", "if (c == KbCell.Partial && pawn && s.sandbagsStop)", "if (c == KbCell.Partial && s.sandbagsStop)"),
     ("sandbag setting ignored", "if (c == KbCell.Partial && pawn && s.sandbagsStop)", "if (c == KbCell.Partial && pawn)"),
     ("items stop on pawns", "if (c == KbCell.Pawn && pawn)", "if (c == KbCell.Pawn)"),
-    ("pit does not stop the throw", "if (c == KbCell.Pit)\n                {\n                    stop = KbStop.Pit;", "if (c == KbCell.Pit && false)\n                {\n                    stop = KbStop.Pit;"),
+    ("pit does not stop the throw", "if (pit)\n                {\n                    // stops IN the first pit cell", "if (pit && false)\n                {\n                    // stops IN the first pit cell"),
     ("no back-off from sandbags", "if (travelled > 0 && grid.At(px, pz) == KbCell.Partial)", "if (false)"),
     ("back-off keeps the sandbag count", "travelled = lastNonPartialN;", "travelled = travelled;"),
     ("impact split not halved", "r.impact = imp * 0.5f;\n                    r.otherImpact = imp * 0.5f;", "r.impact = imp;\n                    r.otherImpact = imp;"),
@@ -72,8 +75,6 @@ MUTATIONS = [
     ("ledger keeps stale entries after a long idle", "else    // two or more generations on, or the clock went backwards: nothing remembered is live\n            {\n                seenCur.Clear(); seenPrev.Clear(); launchedCur.Clear(); launchedPrev.Clear();\n            }", "else\n            {\n                seenPrev = seenCur; seenCur = new HashSet<long>();\n            }"),
     ("ledger launch count not added", "launchedCur[explosionId] = n + 1;", "launchedCur[explosionId] = 1;"),
     ("ledger window zero", "this.window = Math.Max(1, window);", "this.window = window;"),
-    ("budget never resets", "if (now != tick)", "if (now < tick)"),
-    ("budget allows cap + 1", "if (used >= cap)", "if (used > cap)"),
     ("epicentre direction not unit", "dz = (float)Math.Sin(a);", "dz = (float)Math.Sin(a) * 2;"),
     ("epicentre ignores the explosion", "h = (h ^ (uint)explosionId) * 16777619u;", "h = h * 16777619u;"),
 ]
