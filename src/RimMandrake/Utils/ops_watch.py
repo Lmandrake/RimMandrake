@@ -1872,7 +1872,7 @@ def seat_dirt_reading():
             tag = "" if clone == seat_dirt.SEAT_CLONE else os.path.basename(clone) + ":"
             if SEAT_TIDY and os.path.isdir(clone):
                 try:
-                    landed[clone] = seat_dirt.tidy(clone)
+                    landed[clone] = seat_dirt.tidy(clone, fetch_timeout=seat_dirt.FETCH_DEADLINE_S)
                 except Exception as e:  # noqa: BLE001 - said in the reading; the count below still measures
                     landed[clone] = "tidy failed: %s" % str(e)[:200]
             try:

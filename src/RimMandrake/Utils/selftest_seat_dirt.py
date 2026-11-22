@@ -41,6 +41,50 @@ def write(repo, rel, text, age_s=None):
         os.utime(p, (t, t))
 
 
+def fetch_cost():
+    """RIMMANDRAKE_SKIP_SEAT_DIRT_FETCH_IN_CLEAN_CLONE (2026-11-22): tidy runs inside ops_watch's disk sense
+    phase, which the metronome kills at its limit. An unconditional `git fetch` in each of five clones (20-24 s for
+    two role clones behind origin) overran that phase on every beat from 10:00Z and blinded every disk.* reading for
+    4 h; the kill aborted each fetch, so the clones never caught up. A clean clone must not fetch, and a fetch past its
+    deadline must land nothing and return, never raise or hang."""
+    with tempfile.TemporaryDirectory() as td:
+        o, c = os.path.join(td, "origin.git"), os.path.join(td, "clone")
+        git(td, "init", "-q", "--bare", "-b", "main", o)
+        git(td, "clone", "-q", o, c)
+        for k, v in (("user.name", "t"), ("user.email", "t@t")):
+            git(c, "config", k, v)
+        write(c, "tracked.txt", "one\n")
+        git(c, "add", "-A")
+        git(c, "commit", "-q", "-m", "base")
+        git(c, "push", "-q", "origin", "main")
+        calls, real = [], seat_dirt.git
+
+        def spy(clone, *a, **kw):
+            calls.append(a[0])
+            return real(clone, *a, **kw)
+        seat_dirt.git = spy
+        try:
+            r = seat_dirt.tidy(c)
+            check(r == "nothing to land" and "fetch" not in calls,
+                  "a clean clone's tidy never fetches (%s, git calls %s)" % (r, calls))
+
+            def slow(clone, *a, **kw):
+                if a[0] == "fetch":
+                    raise subprocess.TimeoutExpired(["git", "fetch"], seat_dirt.FETCH_DEADLINE_S)
+                return real(clone, *a, **kw)
+            seat_dirt.git = slow
+            write(c, "conversations/2026-11-22-0000-x.md", "record\n", age_s=2 * 3600)
+            try:
+                r = seat_dirt.tidy(c)
+            except Exception as e:  # noqa: BLE001 - the failure under test
+                r = "raised %r" % e
+            head = subprocess.run(["git", "-C", o, "rev-list", "--count", "main"], capture_output=True, text=True).stdout
+            check(r.startswith("not landed") and head.strip() == "1",
+                  "a fetch past its deadline lands nothing and returns (%s; origin commits %s)" % (r, head.strip()))
+        finally:
+            seat_dirt.git = real
+
+
 def main():
     old = 2 * 3600
     with tempfile.TemporaryDirectory() as td:
@@ -200,6 +244,7 @@ def main():
               % (r, show("design/concepts/Lagged/ledger/DISPATCH.jsonl")))
         check(show("conversations/2026-11-22-0000-older.md").startswith("record v3"),
               "after tidy origin keeps its newer conversation record")
+    fetch_cost()
     if FAILS:
         print("FAIL %d" % len(FAILS))
         return 1

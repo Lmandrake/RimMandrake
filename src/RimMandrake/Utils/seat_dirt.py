@@ -45,8 +45,14 @@ CONCEPT_RE = re.compile(r"^design/concepts/([^/]+)/")
 CONCEPT_SETTLE_MIN = 30  # a concept folder lands only this long after its last change, and only with no run open
 
 
-def git(clone, *a, check=True):
-    r = subprocess.run(["git", "-C", clone] + list(a), capture_output=True, text=True, timeout=120)
+# Hang guard on tidy's fetch when ops_watch calls it (fetch_timeout). Danger: tidy runs inside ops_watch's disk sense phase, which the metronome kills at its
+# 15 s limit; a kill blinds every disk.* reading and aborts the fetch, so a clone behind origin never catches up.
+# Evidence: beats.jsonl 2026-11-22 10:00-14:00Z, every disk sense overran (fetches of 20-24 s in two role clones).
+FETCH_DEADLINE_S = 6
+
+
+def git(clone, *a, check=True, timeout=120):
+    r = subprocess.run(["git", "-C", clone] + list(a), capture_output=True, text=True, timeout=timeout)
     if check and r.returncode != 0:
         raise RuntimeError("git %s: %s" % (" ".join(a[:2]), r.stderr.strip()[:300]))
     return r.stdout
@@ -199,10 +205,15 @@ def reading(clone=SEAT_CLONE, now=None):
             "stale_paths": c["stale"][:12]}
 
 
-def tidy(clone=SEAT_CLONE, now=None, land=LAND, settle_min=SETTLE_MIN):
+def tidy(clone=SEAT_CLONE, now=None, land=LAND, settle_min=SETTLE_MIN, fetch_timeout=120):
     """Land the safe classes in one land.sh -m commit (a temp index from origin/main: the clone's index, HEAD and a
-    peer's edits are never touched). -> "PUBLISHED <sha>" | "nothing to land" | raises RuntimeError on a refusal."""
-    git(clone, "fetch", "-q", "origin", check=False)   # classify against the origin land.sh will build on
+    peer's edits are never touched). -> "PUBLISHED <sha>" | "nothing to land" | "not landed: fetch past ..." | raises RuntimeError on a refusal."""
+    if not dirty(clone):   # a clean clone has nothing to classify, so it costs no network
+        return "nothing to land"
+    try:   # classify against the origin land.sh will build on
+        git(clone, "fetch", "-q", "origin", check=False, timeout=fetch_timeout)
+    except subprocess.TimeoutExpired:
+        return "not landed: fetch past %d s (the reading still counts the dirt)" % fetch_timeout
     paths = classify(clone, now, settle_min)["landable"]
     if not paths:
         return "nothing to land"

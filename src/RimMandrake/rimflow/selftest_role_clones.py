@@ -105,7 +105,9 @@ def main():
         seat_dirt.git = lambda clone, *a, **k: "R  conversations/new.md\0conversations/old.md\0?? x.txt\0"
         got = seat_dirt.dirty("/nowhere")
         check(got == [("R ", "conversations/new.md"), ("??", "x.txt")], "a rename record is one entry (%s)" % got)
-        seat_dirt.git = lambda clone, *a, **k: "D  conversations/a.md\0UU conversations/b.md\0?? conversations/c.md\0"
+        # only `status` answers; every origin probe (rev-parse, log) reads empty: origin holds no copy of these paths
+        seat_dirt.git = lambda clone, *a, **k: ("D  conversations/a.md\0UU conversations/b.md\0?? conversations/c.md\0"
+                                                if a[0] == "status" else "")
         c = seat_dirt.classify("/nowhere", now=10 ** 10, settle_min=0)
         check(c["landable"] == ["conversations/c.md"] and sorted(c["stale"]) == ["conversations/a.md", "conversations/b.md"],
               "a staged deletion and an unmerged conversation are dirt, not landable (%s)" % c)
