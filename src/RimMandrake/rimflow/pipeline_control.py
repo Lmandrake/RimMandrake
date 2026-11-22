@@ -667,7 +667,7 @@ RESOURCES = {
     "blind_cycles_visit": ("blind-auto", "automatic blind cycles this visit (blind_auto_cycles_per_visit)",
                            m_blind_visit, [("maturation_dispatch", "decide_blind")]),
     "blind_cycles_total": ("cycles", "blind cycles in this visit; past the limit the Conductor decides (CYCLE_LIMIT)",
-                           m_blind_total, [("maturation", "evaluate"), ("maturation", "next_step"),
+                           m_blind_total, [("maturation", "evaluate"), ("maturation", "gate_step"),
                                            ("maturation_autonomy", "_route")]),
     "ingame_runs_visit": ("ingame-auto", "automatic in-game runs this visit (ingame_auto_runs_per_visit)",
                           m_ingame_visit, [("maturation_dispatch", "decide_ingame")]),

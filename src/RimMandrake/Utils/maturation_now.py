@@ -19,11 +19,13 @@ Writes D:\\ClaudeWork\\rimmandrake\\conductor\\MATURATION_NOW.md (read in Typora
 WHAT IT READS, per mod (a mod is a design/concepts/<Folder>/ holding version/VERSION.json; folders starting "_" skip):
   version/VERSION.json   Design Version, its state, bars total and met by the last judge, judge rounds, tokens
   stage.json             the Designer record: its inner step (0 Read .. 5 Lock), status, budget charges, history times
-  journal.md             the steward's journal (spec §5): "**Stage now:**", "**Waiting on:**", "**Next:**",
-                         "**Open questions for him:**" lines in "The mod as it stands", and the dated "### " history
+  journal.md             the steward's journal (spec §5): "**Stage now:**" and "**Open questions for him:**" lines in
+                         "The mod as it stands", and the dated "### " history
+  version/stage_record.json  the stage. "Waits on" and "Next" are mod_next.next_for's answer (no exit tests run here):
+                         may it run now (an owner hold, a `pipe off`, a pause, the Dispatch tick's row), and the next act
   version/test_table.json  the bars-to-tests table (pilot row 2): runnable and green counts, the stage each bar proves at
   src/RimMandrake/<Folder>/About/About.xml   the display name (else the folder name split at its capitals)
-Pipeline stage: the journal's "Stage now" line when there is one; else a locked VERSION.json places the mod at the door
+Pipeline stage: the stage record when there is one; else the journal's "Stage now" line; else a locked VERSION.json places the mod at the door
 of Stage 2 (Stage 1's exit is the lock) and a "not started" one holds it at intake; else UNMEASURED. The page says which.
 Live reads (off with --no-live): owner_queue.needs_you() for the intake count (its first-touch rows) and for his open
 questions, a question counting for a mod when its item id or its first word names the mod; detached_helper's run
@@ -159,7 +161,7 @@ def tokens_word(n):
 
 # ---- the journal -------------------------------------------------------------------------------------------------
 
-FIELD = {"stage": "Stage now", "waits_on": "Waiting on", "next": "Next", "questions": "Open questions for him",
+FIELD = {"stage": "Stage now", "questions": "Open questions for him",
          "version": "Design Version"}
 HIST = re.compile(r"^###\s+(\d{4}-\d{2}-\d{2})\s+(\d{1,2}):(\d{2})\s*(AM|PM)?\s*(PST|PDT)?\s*[,:]?\s*(.*)$", re.M)
 
@@ -222,7 +224,30 @@ def designer_names():
         return dict(DESIGNER_STEPS)
 
 
-def read_mod(root, folder, names):
+_READERS = {}
+
+
+def mod_next_text(root, folder, held_state=None, live=True):
+    """-> ("Waits on", "Next") for one mod: mod_next.next_for without the exit tests (the one home; one read of each
+    store per page). A mod held at intake ("not started") waits on that. A reading that fails says UNMEASURED."""
+    if not live:        # --no-live: the holds, switches, pause and tick reading are live stores, not read
+        why = "UNMEASURED (--no-live: the holds, switches and the Dispatch tick's reading are not read)"
+        return (held_state or why), why
+    try:
+        import mod_next as MN   # noqa: E402
+        if "src" not in _READERS:
+            _READERS["src"] = MN.readers()
+        r = MN.next_for(root, folder, gate=False, src=_READERS["src"])
+    except Exception as e:      # noqa: BLE001  the page still builds; the box says why it is blind
+        why = "UNMEASURED (mod_next: %s: %s)" % (type(e).__name__, e)
+        return (held_state or why), why
+    mr = r["may_run"]
+    wait = held_state or ("nothing: it may run (%s)" % mr["why"] if mr["result"] == "yes" else
+                          "%s: %s" % (mr["result"], mr["why"]))
+    return wait, r["next"]
+
+
+def read_mod(root, folder, names, live=True):
     c = os.path.join(root, "design", "concepts", folder)
     v, verr = read_json(os.path.join(c, "version", "VERSION.json"))
     v = v or {}
@@ -307,11 +332,10 @@ def read_mod(root, folder, names):
     if m["state"].lower().startswith("not started"):
         m["held"] = True
     m["owner_lock"] = bool(m["versionless"] and str(m["designer_status"]).lower().startswith("locked"))
-    m["waits_on"] = j.get("waits_on") or (m["state"] if m["held"] else UNM)
-    if m["versionless"]:
+    m["waits_on"], m["next"] = mod_next_text(root, folder, m["state"] if m["held"] else None, live)
+    if m["versionless"] and not re.match(r"(held|off|paused|UNMEASURED)\b", m["waits_on"]):   # a hold outranks the Designer
         m["waits_on"] = ("the owner's lock: the Designer tree is locked, no Design Version is named yet" if m["owner_lock"]
                          else (m["designer_why"] or "the Designer; no Design Version named yet"))
-    m["next"] = j.get("next") or UNM
     m["questions"] = j.get("questions") or ""
     m["journal_version"] = j.get("version") or ""
     # last movement: the newest dated thing in the journal or the Designer record
@@ -943,7 +967,7 @@ def gather(root, live=True):
     versioned = [f for f in folders if os.path.exists(os.path.join(croot, f, "version", "VERSION.json"))
                  or read_json(os.path.join(croot, f, "stage.json"))[0] is not None]
     others = [f for f in folders if f not in versioned]
-    mods = [read_mod(root, f, names) for f in versioned]
+    mods = [read_mod(root, f, names, live) for f in versioned]
     held = held_statements(root, versioned)
     lf = live_facts(versioned) if live else {"intake": UNM, "questions": None, "records": None, "notes": None,
                                              "errors": ["live reads off (--no-live)"]}
@@ -1115,7 +1139,7 @@ def picture(d):
     for m in mods:
         p.append(mod_row(m, y, row_h))
         y += row_h
-    p.append(t_(LBL_X, h - 14, "Stage from each mod's journal (\"Stage now\"); with no journal, a locked version waits "
+    p.append(t_(LBL_X, h - 14, "Stage from each mod's stage record, else its journal (\"Stage now\"); with neither, a locked version waits "
                 "at Stage 2's door. Designer step is stage.json's own inner step inside Stage 1.", 10.5, FAINT))
     p.append("</svg>")
     return "".join(p)
@@ -1196,8 +1220,8 @@ def mod_row(m, y, row_h):
             for word, col in notes:
                 p.append(t_(tx, y + 44, word, 10, col, 700))
                 tx += len(word) * 6 + 6
-    line = "waits on: " + (m["waits_on"] if m["waits_on"] != UNM else "UNMEASURED (no journal line)")
-    p.append(t_(COL_X0 + 6, y + 64, clip(line, 128), 10.5, DIM if m["waits_on"] != UNM else ALERT))
+    line = "waits on: " + m["waits_on"]
+    p.append(t_(COL_X0 + 6, y + 64, clip(line, 128), 10.5, ALERT if str(m["waits_on"]).startswith(UNM) else DIM))
     return "".join(p)
 
 
@@ -1528,7 +1552,7 @@ def unread_lines(d):
                       "is" if len(h["uncounted"]) == 1 else "are"))
     for m in d["mods"]:
         miss = [k for k in ("waits_on", "next", "bars_met", "judge_rounds", "tokens", "last_move", "held_statements")
-                if m.get(k) == UNM]
+                if str(m.get(k)).startswith(UNM)]
         if miss:
             out.append("%s: %s." % (m["label"], ", ".join(k.replace("_", " ") for k in miss)))
     for e in d["errors"]:

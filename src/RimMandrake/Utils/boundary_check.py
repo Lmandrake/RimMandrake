@@ -69,6 +69,7 @@ PAGES = {
     "design/specs/2026-11-21-guiding-principles/boundary.md": "src/RimMandrake/rimflow/selftest_conversion_owed.py",
     "design/specs/2026-11-19-maturation-reads/boundary.md": "src/RimMandrake/rimflow/selftest_maturation_reads.py",
     "design/specs/2026-11-21-next-step-stage-moved/boundary.md": "src/RimMandrake/rimflow/selftest_next_step_stage_moved.py",
+    "design/specs/2026-11-22-mod-next/boundary.md": "src/RimMandrake/rimflow/selftest_mod_next.py",
     "design/specs/2026-11-21-visit-wait-cited-items/boundary.md": "src/RimMandrake/rimflow/selftest_visit_wait_cited_items.py",
     "design/specs/2026-11-19-maturation-record/boundary.md": "src/RimMandrake/rimflow/selftest_maturation_record.py",
     "design/specs/2026-11-19-maturation-launch-twin/boundary.md":

@@ -62,7 +62,7 @@ def holds_on_every_path():
     rows = [{"mod": "Graffiti"}, {"mod": "Pyrelands"}]
     recs = [{"item": "RIMMANDRAKE_AUTOBUILD_GRAFFITI_THIRTY_THINGS"}, {"item": "RIMMANDRAKE_JUDGE_PYRELANDS_BLIND"},
             {"item": "RIMMANDRAKE_FIX_GRAFFITIPAINT_OTHER"}]
-    r2, c2 = owed.not_held(rows, recs, {"GRAFFITI"})
+    r2, c2 = owed.held_filter(rows, recs, {"Graffiti": {"mod": "Graffiti", "said": "stop", "date": "2026-11-18"}})
     check([r["mod"] for r in r2] == ["Pyrelands"], "a held mod's row is dropped, the other kept")
     check([r["item"] for r in c2] == ["RIMMANDRAKE_JUDGE_PYRELANDS_BLIND", "RIMMANDRAKE_FIX_GRAFFITIPAINT_OTHER"],
           "a held mod's run is dropped by its word, a longer word is not that mod")

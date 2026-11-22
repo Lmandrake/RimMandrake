@@ -158,7 +158,7 @@ def p4_unmeasured():
             return
         for k in ("state", "designer_step", "bars_total", "bars_met", "judge_rounds", "tokens", "waits_on", "next",
                   "last_move", "held_statements"):
-            check("4 BareMod %s prints UNMEASURED" % k, m.get(k) == "UNMEASURED", "got %r" % (m.get(k),))
+            check("4 BareMod %s prints UNMEASURED" % k, str(m.get(k)).startswith("UNMEASURED"), "got %r" % (m.get(k),))
         card = card_of(page_of(t), m["label"])
         check("4 BareMod card says UNMEASURED and shows no zero",
               card.count("UNMEASURED") >= 8 and not re.search(r">\s*0\s*<|\b0 bars|\b0 tokens|\b0 rounds", card),

@@ -77,9 +77,8 @@ def t_tripwire_counts_the_item_history():
 
 
 def _next(argv, nx):
-    real = (M.next_step, M.dispatch_reading)
+    real = M.next_step
     M.next_step = lambda root, mod: dict(nx)
-    M.dispatch_reading = lambda: (None, "/nonexistent/reading.json")
     buf = io.StringIO()
     try:
         with contextlib.redirect_stdout(buf), contextlib.redirect_stderr(io.StringIO()):
@@ -87,14 +86,15 @@ def _next(argv, nx):
     except SystemExit as e:     # argparse refusing an option is a failed check, not a dead test run
         rc = "SystemExit %s" % e.code
     finally:
-        M.next_step, M.dispatch_reading = real
+        M.next_step = real
     return rc, buf.getvalue()
 
 
 def t_next_prints_the_tripwire_and_never_refuses():
     nx = {"mod": "TMod", "version": "0.1.0", "stage": "offline_build", "stage_label": "Offline build", "to":
           "blind_challenge", "passed": [], "refusals": [], "hand_steps": [], "cycles": {}, "spend": {},
-          "launch": "none", "next": "NEXT (hand): nothing"}
+          "launch": "none", "next": "NEXT (hand): nothing", "may_run": {"result": "hand", "why": "fixture"},
+          "tick": {"line": "dispatch tick: fixture"}}
     files = {}
     for name, d in (("num", NUM_A), ("num2", NUM_A2), ("logic", LOGIC)):
         files[name] = os.path.join(TMP, name + ".diff")

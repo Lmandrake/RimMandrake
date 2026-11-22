@@ -425,7 +425,8 @@ def t_clones():
         d = os.path.join(TMP, "clone-" + n, "src", "RimMandrake", "rimflow")
         os.makedirs(d)
         shutil.copy(TOOL, d)
-        shutil.copy(os.path.join(os.path.dirname(TOOL), "probe_result.py"), d)     # a clone holds control.py's sibling
+        for sib in ("probe_result.py", "mod_next.py"):     # a clone holds control.py's siblings
+            shutil.copy(os.path.join(os.path.dirname(TOOL), sib), d)
         r = subprocess.run([PY, os.path.join(d, "control.py"), "show"], capture_output=True, text=True, timeout=30)
         outs.append((r.returncode, r.stdout))
     check(outs[0] == outs[1] and outs[0][0] == 0 and "HELD BY OWNER" in outs[0][1],

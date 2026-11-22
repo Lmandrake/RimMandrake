@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Offline selftest of maturation.next_step when the stage record moves between its two loads: one test per promise on
+"""Offline selftest of maturation.gate_step (the stage-record part of next_step) when the stage record moves between its two loads: one test per promise on
 design/specs/2026-11-21-next-step-stage-moved/boundary.md, each named after it.
 
     python3 src/RimMandrake/rimflow/selftest_next_step_stage_moved.py                 every test; exit 0 PASS, 1 FAILED
@@ -46,7 +46,7 @@ def restore():
 def run(stages):
     stub(stages)
     try:
-        return M.next_step("/nonexistent_root", "M"), None
+        return M.gate_step("/nonexistent_root", "M"), None
     except Exception as e:      # noqa: BLE001
         return None, "%s: %s" % (type(e).__name__, e)
     finally:

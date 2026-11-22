@@ -1903,58 +1903,16 @@ def run_diff(root, mod):
 
 # ---- next ------------------------------------------------------------------------------------------------------------
 
-DISPATCH_READING_MAX_AGE_S = 1800   # ops_watch's MATURATION_READING_MAX_AGE_S: the tick runs every 60 s; 30 missed is dead
+def next_step(root, mod, now=None, src=None):
+    """-> what MOD does next and whether it may run now: mod_next.next_for, the one home
+    (design/specs/2026-11-22-mod-next/boundary.md). gate_step below is its stage-record part."""
+    import mod_next     # imported late: it imports us
+    return mod_next.next_for(root, mod, now=now, src=src)
 
 
-def dispatch_reading():
-    """-> (the Dispatch tick's last reading, or None; its path). maturation_dispatch.sdir(), imported late (it imports us)."""
-    import maturation_dispatch as MD
-    p = os.path.join(MD.sdir(), "reading.json")
-    try:
-        with open(p, encoding="utf-8") as f:
-            return json.load(f), p
-    except (OSError, ValueError):
-        return None, p
-
-
-def dispatch_overlay(mod, nxt, rd, path, now):
-    """-> {"line", "next"}: what the Dispatch tick's own reading says of MOD, and the NEXT line to print. Item
-    RIMMANDRAKE_UNSTICK_DISPATCH_BLIND_CYCLES_WAITED_SIX_HOURS: next_step reads the stage record alone, so it printed
-    "automatic: the Dispatch tick launches it" for six hours while the tick had paused the mod at the ceiling. An
-    "automatic" claim is the tick's: a paused or held decision replaces it with the tick's why (its release command
-    included), a stale, unreadable or silent reading makes it UNMEASURED; a waiting decision keeps it."""
-    auto = nxt.startswith("NEXT (automatic")
-    rest = nxt.split("): ", 1)[1] if "): " in nxt else nxt
-    if not isinstance(rd, dict):
-        why = "no readable Dispatch tick reading at %s" % path
-        return {"line": "  dispatch tick: %s" % why, "decision": UNM,
-                "next": "NEXT (UNMEASURED whether the Dispatch tick launches it: %s): %s" % (why, rest) if auto else nxt}
-    try:
-        age = now - float(rd.get("at"))
-    except (TypeError, ValueError):
-        age = None
-    if age is None or age > DISPATCH_READING_MAX_AGE_S:
-        why = ("the Dispatch tick's reading is %d min old (the step is not ticking)" % (age / 60) if age is not None
-               else "the Dispatch tick's reading has no time")
-        return {"line": "  dispatch tick: %s" % why, "decision": UNM,
-                "next": "NEXT (UNMEASURED whether the Dispatch tick launches it: %s): %s" % (why, rest) if auto else nxt}
-    row = (rd.get("mods") or {}).get(mod)
-    at = rd.get("at_pac", UNM)
-    if not isinstance(row, dict):
-        why = "%s is not on the Dispatch tick's list at %s (maturation_dispatch.json advancing): nothing launches it" % (mod, at)
-        return {"line": "  dispatch tick: %s" % why, "decision": None,
-                "next": "NEXT (a hand step: %s): %s" % (why, rest) if auto else nxt}
-    dec, klass, why = row.get("decision", UNM), row.get("klass"), row.get("why") or row.get("status") or ""
-    since = (" for %s min" % row["for_min"]) if isinstance(row.get("for_min"), int) else ""
-    out = {"line": "  dispatch tick (%s): %s (%s)%s: %s" % (at, dec, klass, since, why), "decision": dec, "klass": klass,
-           "why": why, "for_min": row.get("for_min"), "at_pac": at, "next": nxt}
-    if auto and klass in ("paused", "held"):
-        out["next"] = "NEXT (%s by the Dispatch tick: %s%s, at %s): %s; the record's step, once it launches: %s" % (
-            "PAUSED" if klass == "paused" else "HELD", dec, since, at, why, rest)
-    return out
-
-
-def next_step(root, mod, _reread=False):
+def gate_step(root, mod, _reread=False):
+    """-> the stage record's next step alone (its exit tests): no hold, switch, pause or tick reading. Read through
+    next_step (mod_next.next_for) for what may run."""
     rec = load(root, mod)
     if rec is None:
         return {"mod": mod, "stage": UNM, "next": "NEXT (automatic: the Dispatch tick seeds a Designer concept's record): maturation.py seed %s" % mod, "refusals": []}
@@ -1972,7 +1930,7 @@ def next_step(root, mod, _reread=False):
     moved = [f["stage"] for f in (blind, ing) if f is not None and f.get("stage") != cur]
     if moved:   # a move landed between the two loads (design/specs/2026-11-21-next-step-stage-moved/boundary.md)
         if not _reread:
-            return next_step(root, mod, _reread=True)
+            return gate_step(root, mod, _reread=True)
         return {"mod": mod, "stage": UNM, "refusals": [], "hand_steps": [],
                 "next": "NEXT (read again): the stage record moved during the read twice (%s, then %s); "
                         "maturation.py next %s reads it again" % (cur, moved[0], mod)}
@@ -5251,10 +5209,6 @@ def main(argv=None):
         return 0
     if o.cmd == "next":
         nx = next_step(root, o.mod)
-        rd, rp = dispatch_reading()
-        ov = dispatch_overlay(o.mod, nx["next"], rd, rp, time.time())
-        nx["next"] = ov.pop("next")
-        nx["dispatch"] = ov
         # tuning tripwire T1: a note, never a refusal; the exit code stays next's own
         if o.diff_file:
             try:
@@ -5302,7 +5256,8 @@ def main(argv=None):
             print("  tuning tripwire: %s (%s)" % (tw["note"], ", ".join(tw["constants"])))
         elif tw.get("read") is False:
             print("  tuning tripwire: diff UNMEASURED (%s)" % tw.get("why"))
-        print(ov["line"])
+        print("  may run: %s (%s)" % (nx["may_run"]["result"], nx["may_run"]["why"]))
+        print("  " + nx["tick"]["line"])
         print(nx["next"])
         return 0
     if o.cmd == "tag-pass":

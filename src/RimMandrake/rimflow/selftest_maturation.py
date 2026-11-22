@@ -834,10 +834,10 @@ def main():
         ok(tot["tokens"] == 1500 and tot["usd"] == 1.5 and tot["estimates"] == 1, "spend totals per stage (%s)" % tot)
 
         # ---- next ---------------------------------------------------------------------------------------------
-        nx = M.next_step(root, "ExplosiveKnockback")
+        nx = M.gate_step(root, "ExplosiveKnockback")
         ok(nx["stage"] == "offline_build" and nx["next"].startswith("NEXT") and "every_bar_has_a_check_that_runs"
            in json.dumps(nx["refusals"]), "next on Explosive Knockback names the failing exit test")
-        nx = M.next_step(root, "SpineTestMod")
+        nx = M.gate_step(root, "SpineTestMod")
         ok("advance" in nx["next"] or "hand step" in nx["next"], "next on an offline-build mod says the move")
         # RIMMANDRAKE_REFUSE_EXIT_ON_OWED_SCENE_PARTS_STALE_FLAG: a deciding scene whose scenes.json entry still owes
         # script parts to an open ledger item is no check that runs, whatever the table's stored flag says
@@ -854,7 +854,7 @@ def main():
             f.write(json.dumps({"seat": "BENCH", "event": "file", "id": owed, "title": "selftest"}) + "\n")
 
         def owed_refusal():
-            return [r for r in M.next_step(root, "FlowWorks")["refusals"]
+            return [r for r in M.gate_step(root, "FlowWorks")["refusals"]
                     if r["clause"] == "every_bar_has_a_check_that_runs"]
         cl = owed_refusal()
         ok(cl and owed in json.dumps(cl) and bar["id"] in json.dumps(cl),
@@ -991,7 +991,7 @@ def next_version_main(root):
     try:
         rec = M.load(root, mod)
         own = sum(x["tokens"] for x in rec.get("spend") or [] if isinstance(x.get("tokens"), (int, float)))
-        nx = M.next_step(root, mod)["spend"]
+        nx = M.gate_step(root, mod)["spend"]
         got = sum(t["tokens"] for t in nx.values())
         ok(got == own + 70, "next: this version's spend leaves out the earlier version's run row (%s, want %s)"
            % (got, own + 70))
@@ -1360,7 +1360,7 @@ def blind_main():
         g = M.blind_facts(root, "GimmeSomeSlack")
         ok(g.get("owed") == "cycle" and g.get("cycle") == 1 and (g.get("exit") or {}).get("state") == "absent",
            "no cycle folder: cycle 1 is owed, the exit reads absent (%s)" % {k: g.get(k) for k in ("owed", "cycle")})
-        nx = M.next_step(root, "GimmeSomeSlack")
+        nx = M.gate_step(root, "GimmeSomeSlack")
         ok("maturation.py launch GimmeSomeSlack" in nx["launch"] and "steward_confirms" in nx["hand_steps"],
            "next names the launch, and steward_confirms stays a hand step (%s)" % nx["launch"])
         text, _ = M.brief_text(root, "GimmeSomeSlack")
@@ -1410,7 +1410,7 @@ def blind_main():
         ex = f.get("exit") or {}
         ok(f.get("owed") == "exit met" and ex.get("state") == "met" and ex.get("cycle") == 1,
            "a complete record whose block says exit_met true and whose files agree reads met (%s)" % ex.get("why"))
-        nx = M.next_step(root, "FlowWorks")
+        nx = M.gate_step(root, "FlowWorks")
         ok("steward_confirms" in nx["hand_steps"] and nx["launch"].startswith("none") and "exit met" in nx["next"],
            "next: exit met is a program reading, the steward still confirms, nothing to launch (%s)" % nx["next"][:90])
         rc, out, _ = M.launch_mod(root, "FlowWorks", 20, ITEM)
@@ -1553,7 +1553,7 @@ def blind_main():
         f = M.blind_facts(root, "FlowWorks")
         ok(f.get("owed") == "no exit block" and (f.get("exit") or {}).get("state") == "no_exit_block",
            "a cycle folder whose Exit still reads (pending) has no exit block (%s)" % f.get("owed"))
-        nx = M.next_step(root, "FlowWorks")
+        nx = M.gate_step(root, "FlowWorks")
         ok(nx["launch"].startswith("none"), "next launches nothing on a cycle in progress")
 
         # ---- cycle 2 reads what changed since cycle 1 opened: Explosive Knockback ---------------------------------
@@ -1581,7 +1581,7 @@ def blind_main():
         with open(os.path.join(root, "design/concepts/FlowWorks/version/test_table.json"), "wb") as fh:
             fh.write(tt_old)
         text, f = M.brief_text(root, "FlowWorks")
-        nx = M.next_step(root, "FlowWorks")
+        nx = M.gate_step(root, "FlowWorks")
         ok(rec["stage"] == "offline_build" and text.startswith("# Offline build (Stage 3)") and f.get("owed") == "build"
            and nx["launch"].startswith("maturation.py launch FlowWorks --budget-usd"),
            "a mod at the offline build gets the same Stage 3 brief and launch line as before")
@@ -1803,7 +1803,7 @@ def ingame_main():
             % len(live6))
         chk(lambda: (lambda nx: nx["launch"].startswith("maturation.py launch Pyrelands --budget-usd")
                      and "in-game visit 1" in nx["launch"] and "steward_confirms" in nx["hand_steps"]
-                     and "version/in_game/visit_1" in nx["next"])(M.next_step(root, P)),
+                     and "version/in_game/visit_1" in nx["next"])(M.gate_step(root, P)),
             "next names the launch (not \"none at this stage\"), its record folder, and the steward stays a hand step")
         text = [""]
 
@@ -1921,7 +1921,7 @@ def ingame_main():
             return ex["state"] == state and (word is None or word in " ".join(ex["why"]))
         chk(lambda: reads({}, "met"), "a complete visit record whose block and files agree reads met")
         chk(lambda: (lambda nx: "exit met" in nx["next"] and "--to pre_human" in nx["next"]
-                     and nx["launch"].startswith("none") and "steward_confirms" in nx["hand_steps"])(M.next_step(root, P)),
+                     and nx["launch"].startswith("none") and "steward_confirms" in nx["hand_steps"])(M.gate_step(root, P)),
             "next: exit met is a program reading, the steward confirms the move to pre_human, nothing to launch")
         chk(lambda: M.launch_mod(root, P, 20, ITEM, bridge=lambda p, s: (True, "free"))[0] == 2 and len(calls()) == 1,
             "launch refuses a visit already recorded")
@@ -1967,7 +1967,7 @@ def ingame_main():
         for kw, what, word in broken:
             chk(lambda kw=kw, word=word: reads(kw, "not_met", word), "%s: not met, and the reading says why" % what)
         chk(lambda: reads(dict(block=False), "no_exit_block") and M.ingame_facts(root, P)["owed"] == "no exit block"
-            and M.next_step(root, P)["launch"].startswith("none"),
+            and M.gate_step(root, P)["launch"].startswith("none"),
             "a visit folder whose Exit reads (pending) has no exit block, and next launches nothing")
         chk(lambda: M.native_to_here("C:\\Users\\Mandrake\\Saves\\a.rws") == "/mnt/c/Users/Mandrake/Saves/a.rws",
             "a Windows savegame path is read as this machine reads it")

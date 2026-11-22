@@ -276,8 +276,8 @@ def _token(key):
     import hashlib
     h = int(hashlib.sha1(key.encode()).hexdigest(), 16)
     return "".join("ABCDEFGHIJKLMNOPQRSTUVWXYZ"[(h >> (5 * i)) % 26] for i in range(5))
-DECIDES = "the Conductor decides"               # maturation.next_step: "PAUSED: three cycles, the Conductor decides"
-CARD = "a card in the Conductor log"            # maturation.next_step: "OWNER, a card in the Conductor log"
+DECIDES = "the Conductor decides"               # maturation.gate_step: "PAUSED: three cycles, the Conductor decides"
+CARD = "a card in the Conductor log"            # maturation.gate_step: "OWNER, a card in the Conductor log"
 # A program seat may not `file` (model: "`file` is a window's verb"); RUNNER spawns instead, from the run's item or, for a
 # maturation row, from the Maturation Dispatch's own item (the cause maturation_dispatch.file_and_publish names).
 MATURATION_PARENT = "RIMMANDRAKE_WIRE_DISPATCH_TO_LAUNCH_BUILDERS_MODS_SAT_IDLE"
@@ -295,7 +295,7 @@ def maturation_sources(rows):
     """-> [(key, name bases, title, caused_by)] for each status row whose NEXT names a Conductor hand step. Pure."""
     out = []
     for r in rows or []:
-        nxt, mod = str(r.get("next") or ""), str(r.get("mod") or "")
+        nxt, mod = str(r.get("gate_next") or r.get("next") or ""), str(r.get("mod") or "")   # the record's own step
         head = nxt.split("):", 1)[0]                # the NEXT's tag, never a later sentence quoting the words
         if not mod or (DECIDES not in head and CARD not in head):
             continue
@@ -443,23 +443,20 @@ def sync_sources(rows, recs, seat="BENCH", repo=None, timeout=120, sources_err=N
 
 
 def live_rows(root=None):
-    """-> [next_step row] for every versioned mod not held by the owner (mod_owner_hold.json: nothing alarms on one)."""
+    """-> [next_step row] for every versioned mod, held ones included (main drops those with held_filter)."""
     import maturation as M
     root = root or M.REPO
     return [M.next_step(root, m) for m in M.versioned(root)]
 
 
-def held_names():
-    """-> {MODNAME}: every owner-held mod, upper-cased as item ids spell it (mod_owner_hold.json)."""
+def held_filter(rows, recs, holds):
+    """-> (rows, recs) without a mod that mod_owner_hold holds (his hold or a `pipe off <Mod>` row): a row by its mod, a
+    run by its record's mod, else the mod its item names (item_identity.item_mod). Nothing alarms on a held mod."""
     import mod_owner_hold as H
-    return {re.sub(r"[^A-Z0-9]", "", str(k).upper()) for k in H.load()} - {""}
-
-
-def not_held(rows, recs, names):
-    """-> (rows, recs) without an owner-held mod: a row by its mod, a run by a word of its item id (the pipeline's names
-    spell the mod as one word, RIMMANDRAKE_AUTOBUILD_GRAFFITI_…). Nothing alarms on a held mod."""
-    rows = [r for r in rows if re.sub(r"[^A-Z0-9]", "", str(r.get("mod") or "").upper()) not in names]
-    recs = [r for r in recs if not names & set(str(r.get("item") or "").split("_"))]
+    import item_identity as II
+    names = sorted(holds)
+    rows = [r for r in rows if not H.held(r.get("mod"), holds)]
+    recs = [r for r in recs if not H.held(r.get("mod") or II.item_mod(r.get("item"), names) or "", holds)]
     return rows, recs
 
 
@@ -539,8 +536,8 @@ def sync_sources_main(argv):
     except Exception as e:                      # noqa: BLE001
         errs.append("could not look at the promise queue (%s: %s)" % (type(e).__name__, e))
     try:
-        names = held_names()
-        kept_rows, kept_recs = not_held(rows or [], recs or [], names)
+        import mod_owner_hold as H
+        kept_rows, kept_recs = held_filter(rows or [], recs or [], H.load())
         rows, recs = (None if rows is None else kept_rows), (None if recs is None else kept_recs)   # unread stays unread
     except Exception as e:                      # noqa: BLE001 - a hold unread is never "nothing held"
         errs.append("could not read the owner holds (%s: %s): nothing filed" % (type(e).__name__, e))

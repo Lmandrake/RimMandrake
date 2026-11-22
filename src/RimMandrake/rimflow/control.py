@@ -2604,30 +2604,6 @@ def _concepts():
 
 # ---------------------------------------------------------------- reads for people
 
-def tick_reading():
-    """-> (the live tick's last reading, or None, why not)."""
-    try:
-        d = os.environ.get("RM_MATURATION_DISPATCH_DIR")
-        if not d:
-            sys.path.insert(0, HERE) if HERE not in sys.path else None
-            import doorbell
-            d = os.path.join(doorbell.state_dir(), "maturation")
-        with open(os.path.join(d, "reading.json"), encoding="utf-8") as f:
-            return json.load(f), None
-    except FileNotFoundError:
-        return None, "no reading.json yet"
-    except (OSError, ValueError) as e:
-        return None, "%s: %s" % (type(e).__name__, e)
-
-
-def tick_rows(rd):
-    """-> {mod: the tick's last row} from a reading (its `mods` is a dict by mod; an older one a list of rows)."""
-    ms = (rd or {}).get("mods") or (rd or {}).get("rows") or {}
-    if isinstance(ms, dict):
-        return {key(m): r for m, r in ms.items() if isinstance(r, dict)}
-    return {key(r.get("mod")): r for r in ms if isinstance(r, dict) and r.get("mod")}
-
-
 def _stage_advanced_on_voided(c, mods=None):
     """-> lines: a voided run named in its concept's history after which the stage moved. The void never moves the
     stage back; the flag asks for the explicit decision (critique 17)."""
@@ -2691,8 +2667,9 @@ def show(mod=None, p=None, now=None, as_json=False):
         raise Unreadable(_err(e))
     finally:
         c.close()
-    rd, rd_why = tick_reading()
-    tickmods = tick_rows(rd)
+    import mod_next as MN       # the one reader of the tick's reading
+    rd, _, rd_why = MN.tick_reading()
+    tickmods = MN.tick_rows(rd)
     if mod:
         mods = [key(mod)]
     else:   # the pipeline's mods: the tick's, the shipped advancing list, then any mod a switch names
@@ -2775,16 +2752,15 @@ def game_lines(short=False):
 
 
 def why(mod, p=None, now=None):
-    """-> one line: what blocks this mod now, or what the tick last decided for it."""
+    """-> one line: may the pipeline run this mod now, and why (mod_next.next_for, the one home, without the stage
+    record's exit tests), then the tick's row, the game holds and drivers, and the checks owed at Stage 6."""
     m = key(mod)
-    b = blocked({"family": "detached", "unit": "-", "mod": m}, p, now)
-    rd, rd_why = tick_reading()
-    tr = tick_rows(rd).get(m) or {}
-    # the whole why, never cut: a cut hid which game a wait was for (RIMMANDRAKE_DEFINE_BOTH_GAMES_EVERYWHERE_WAITING_SAID_AGAIN)
-    waits = tr.get("waits_on")
-    tick = ("tick %s: %s %s%s" % (rd.get("at_pac", UNM), tr.get("decision") or "-", str(tr.get("why") or ""),
-                                  " | waits on: %s" % waits if waits else "")
-            if rd else "tick reading UNMEASURED (%s)" % rd_why)
+    sys.path.insert(0, HERE) if HERE not in sys.path else None
+    import mod_next as MN
+    import maturation as M
+    r = MN.next_for(M.REPO, m, now=now, gate=False, src={"blocked": lambda spec: blocked(spec, p, now)})
+    res, rwhy = r["may_run"]["result"], r["may_run"]["why"]
+    head = ("BLOCKED " + rwhy) if res in ("held", "off", "paused") else "may run: %s (%s)" % (res, rwhy)
     try:
         gh = game_holds(p, now)
         games = " | games held: %s" % "; ".join("%s %s" % kv for kv in sorted(gh.items())) if gh else ""
@@ -2792,8 +2768,8 @@ def why(mod, p=None, now=None):
         games = " | game holds UNMEASURED (%s)" % e
     drivers = game_lines(short=True)
     games += " | drivers now: %s" % "; ".join(drivers) if drivers else ""
-    return "%s: %s | %s%s%s" % (m, ("BLOCKED " + b) if b else "nothing in control blocks it", tick, games,
-                                to_run_text(mod))
+    # the whole why, never cut: a cut hid which game a wait was for (RIMMANDRAKE_DEFINE_BOTH_GAMES_EVERYWHERE_WAITING_SAID_AGAIN)
+    return "%s: %s | %s%s%s" % (m, head, r["tick"]["line"], games, to_run_text(mod))
 
 
 def to_run_text(mod, root=None):
