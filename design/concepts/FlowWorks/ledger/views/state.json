@@ -1,10 +1,10 @@
 {
  "_view": {
-  "body_sha256": "77b1dab690c01772ef57d66d534bc510a119b954dbcf31086fd3a13e7ba16f97",
+  "body_sha256": "8921900ee868f3ab1919c49f59deb827a1a4491ffdabc59f0867317c4a5a175b",
   "reducer": 1,
   "shards": {
    "BACKFILL": 893183,
-   "DISPATCH": 50729,
+   "DISPATCH": 51022,
    "HOLDER.run-1794816885": 928,
    "HOLDER.run-1794848129": 1121,
    "HOLDER.run-1794861652": 2822,
@@ -24,6 +24,7 @@
    "HOLDER.run-1795285878": 924,
    "HOLDER.run-1795297113": 4566,
    "HOLDER.run-1795304573": 2662,
+   "HOLDER.run-1795312089": 1009,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1264,11 +1265,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795304573",
-   "done": "visit 4 exit met (ca7707f9b5): 6 checks + sc_ways_out PASS except OL (not counted, owned); sc_source_pays lake row repaired, shown both ways; walk save VISIT4_FULL_20261121_1727",
-   "next": "Steward reads in_game/visit_4/SUMMARY.md and advances FlowWorks to pre_human",
-   "ruled_out": "TryDebit is not the edge-lake draw path (LevelBodyOf is); review-map trench cover 0 was the colonist in the pit centre",
-   "ts": "2026-11-22T01:43:04Z"
+   "by": "HOLDER.run-1795312089",
+   "done": "steward read visit 4 (SUMMARY, 8 rows one mod hash, 7 strange all explained/filed, next: fix_readers_owed [], undecided_bars []) and advanced FlowWorks in_game -> pre_human",
+   "next": "Walk brief (Stage 7) run writes the walk brief on save FLOWWORKS_OWNER_REVIEW_VISIT4_FULL_20261121_1727",
+   "ruled_out": "no not-met reason to sort; 1c65a6e664 exit-reader change is stricter, not a loosening; 9da1303401 adds a reading, weakens nothing",
+   "ts": "2026-11-22T01:59:46Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1720,7 +1721,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1534,
+  "events": 1537,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7821,7 +7822,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-22T01:51:00Z",
+   "last": "2026-11-22T01:59:46Z",
    "lease": "run-1795312089",
    "released": false,
    "token": 36
@@ -7925,6 +7926,7 @@
    "HOLDER.run-1795285878",
    "HOLDER.run-1795297113",
    "HOLDER.run-1795304573",
+   "HOLDER.run-1795312089",
    "JUDGE.judge-1794833810",
    "JUDGE.judge-1794849236",
    "JUDGE.judge-1795134433",
@@ -7932,7 +7934,7 @@
   ],
   "spend_tokens": 45401435,
   "spend_usd": 78.9355,
-  "stage": "in_game",
+  "stage": "pre_human",
   "superseded": [],
   "tests": [
    {

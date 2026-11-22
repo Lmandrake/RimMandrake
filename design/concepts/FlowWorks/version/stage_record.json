@@ -2,10 +2,10 @@
   "schema": 1,
   "mod": "FlowWorks",
   "version": "0.1.0",
-  "stage": "in_game",
-  "stage_label": "In-game acceptance (Stage 6)",
-  "since": "2026-11-21T12:16:07-08:00",
-  "since_from": "advance by DISPATCH",
+  "stage": "pre_human",
+  "stage_label": "Walk brief (Stage 7)",
+  "since": "2026-11-21T17:59:29-08:00",
+  "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
     "at": "2026-11-14T16:02:19-08:00",
@@ -18,7 +18,7 @@
     "visit": 3,
     "total": 4
   },
-  "pre_human_arrivals": 0,
+  "pre_human_arrivals": 1,
   "moves": [
     {
       "from": "offline_build",
@@ -222,6 +222,26 @@
         "by",
         "version",
         "hold"
+      ]
+    },
+    {
+      "from": "in_game",
+      "to": "pre_human",
+      "at": "2026-11-21T17:59:29-08:00",
+      "by": "BENCH",
+      "why": "steward run RIMMANDRAKE_CONFIRM_FLOWWORKS_VISIT_FOUR_EXIT_MET: visit 4 exit met, read and confirmed",
+      "unit": "rm-detached-bench-rimmandrake-confirm-flowworks-visit-four-1795312272",
+      "confirmed": {
+        "steward_confirms": "Read visit_4/SUMMARY.md, rows.jsonl (8 rows, one mod hash sha256:33f817434c71), strange.jsonl (7, all explained or filed) and maturation.py next (fix_readers_owed [], undecided_bars [], only refusal steward_confirms). Verdict: exit met. 30/31 PASS; sc_source_pays HARNESS repair 9da1303401 shown both ways on the row (mutant LIMITLESS_BODY_RUNS_DOWN FAIL 11790->11784.415, real PASS 11790->11790), diff adds a reading and weakens nothing; OL_OWNER_LOOK_READS UNMEASURED (1629 PASS, 1 BLOCKED: shadow-queue reader is mod C#), HARNESS, decides no bar, owned by RIMMANDRAKE_REPORT_SUBMERGE_SHADOW_QUEUE_JUDGE_CANNOT_SEE_ORDER. No mod code changed in the visit, so no fix reader owed. Judge-the-judge: no not-met reason to sort; exit-reader change 1c65a6e664 keeps a held-statement check rather than removing it, a stricter reading, not a loosening. Walk save FLOWWORKS_OWNER_REVIEW_VISIT4_FULL_20261121_1727.rws present (13.6 MB, 5:29 PM)."
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "steward_confirms",
+        "exit_met",
+        "build_match"
       ]
     }
   ],
