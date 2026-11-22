@@ -717,9 +717,10 @@ def _conductor_lock_problem(root, v):
     return CA.lock_problem(v, CT.owner_events(root, REPO))
 
 
-def owner_event(root, owner):
+def owner_event(root, owner, may_refuse_pass=False):
     """RIMMANDRAKE_REQUIRE_OWNER_EVENT_TO_PASS: --owner-said for a pass is OWNER:<tsn>, an event of his on the OWNER
-    shard carrying byCard or ownerSaid that does not refuse the pass. -> (event, observed) or (None, why not)."""
+    shard carrying byCard or ownerSaid that does not refuse the pass. -> (event, observed) or (None, why not).
+    may_refuse_pass: the event ends a walk that did not pass (walk_result), so words refusing the pass are his answer."""
     import concept_tree as CT
     m = re.match(r"^OWNER:(\d+)$", str(owner or "").strip())
     if not m:
@@ -730,7 +731,7 @@ def owner_event(root, owner):
     words = str(ev.get("ownerSaid") or ev.get("byCard") or "").strip()
     if not words:
         return None, "OWNER:%s carries no byCard or ownerSaid" % m.group(1)
-    if PASS_REFUSED.search(words):
+    if PASS_REFUSED.search(words) and not may_refuse_pass:
         return None, "OWNER:%s's words refuse the pass: %r" % (m.group(1), words[:80])
     return ev, "OWNER:%s: %s" % (m.group(1), words[:80])
 
@@ -1093,6 +1094,18 @@ def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, w
                    fix="a fresh reader writes it per src/RimMandrake/rimflow/roles/walk_brief.md", cost="rerun",
                    why_sound="his ruling of 2026-11-17 (RIMMANDRAKE_FOLD_STAGE_SEVEN_INTO_WALK_BRIEF_NO_VETO): one "
                              "fresh read writes the walk brief; it has no veto, so this is the stage's only exit check")
+            # RIMMANDRAKE_ROUTE_FLOWWORKS_WALK_TWO_FINDINGS_BACK_ELEVEN_FILED: his last walk's findings close first
+            wo = walk_items_open(root, mod)
+            wref = wo["path"] or rel(mod, WALK_BRIEF_DIR)
+            inputs[wref] = json.dumps(wo, sort_keys=True)
+            clause("walk_items_closed", "every item his last walk sent back (its walk result's fix, pick and scene "
+                   "lists) is closed, dropped or superseded before he walks again", not wo["why"] and not wo["open"],
+                   [wref, rec_ref],
+                   observed="; ".join(wo["why"]) or "open from %s: %s" % (wo["path"], ", ".join(wo["open"])),
+                   would_pass="each item of %s's fix, pick and scene lists closed on the ledger" % wref,
+                   fix="the road back's fixers close the fix and scene items; a pick item closes on his pick",
+                   cost="rerun", why_sound="spec Stage 8 road back: his objection stays in this version until fixed; "
+                   "the walk of 2026-11-22 came back to him with his 2026-11-20 findings unfixed")
         elif cur == "his_walk":
             hand.append("owner_said")
             oe, owhy = owner_event(root, owner)
@@ -1225,7 +1238,15 @@ def submit_line(res):
     return "SUBMITTED BUT NOT COUNTED (%s)" % why
 
 
-def advance(root, mod, to, by, why, steward=None, conductor=None, owner=None, waits_on=None, game_only=None):
+def advance(root, mod, to, by, why, steward=None, conductor=None, owner=None, waits_on=None, game_only=None,
+            first_files=None, confirmed_extra=None, expect_stage=None):
+    """first_files {path: text}: NEW files written once in the move's locked write (a walk result); confirmed_extra:
+    more fields for the move's `confirmed`; expect_stage: refuse unless the record stands there (walk_result)."""
+    if expect_stage is not None:
+        here = load(root, mod)
+        if here is None or here.get("stage") != expect_stage:
+            return {"ok": False, "why": "the record stands at %s, not %s" % (
+                "no stage record" if here is None else here.get("stage"), expect_stage), "verdict": {"refusals": []}}
     res = evaluate(root, mod, to, steward=steward, conductor=conductor, owner=owner, by=by, why=why, check_by=True,
                    game_only=game_only)
     res["submit"], res["submit_error"], prior, errs = None, None, 0, []
@@ -1280,6 +1301,7 @@ def advance(root, mod, to, by, why, steward=None, conductor=None, owner=None, wa
             "confirmed": {k: v for k, v in (("steward_confirms", steward), ("conductor_decision", conductor),
                                             ("owner_said", owner), ("game_only", ", ".join(game_only or ()))) if v},
             "checks_passed": [p["clause"] for p in res["verdict"]["passed"]]}
+    move["confirmed"].update(confirmed_extra or {})
     if uncounted:
         move["cycle_not_counted"] = uncounted
         res["cycle_not_counted"] = uncounted
@@ -1325,7 +1347,11 @@ def advance(root, mod, to, by, why, steward=None, conductor=None, owner=None, wa
         first = {prp: json.dumps(pr, indent=1, sort_keys=True) + "\n"}
         res["pass_record"] = rel(mod, prp)
     try:
-        commit_move(root, mod, rec, jtext, first=first, expect=res["revision"])
+        new_files = {}
+        for part in (first, first_files):
+            if part:
+                new_files.update(part)
+        commit_move(root, mod, rec, jtext, first=new_files if new_files else None, expect=res["revision"])
     except MovedMeanwhile as e:
         res["ok"], res["moved_meanwhile"] = False, str(e)
         return res
@@ -4379,6 +4405,156 @@ WALK_BRIEF_HEADINGS = ("What to open", "What changed since his last look",
                        "Known, not fixed: you need not report these", "What I noticed first")
 
 
+# ---- a Stage 8 walk that did not pass (design/specs/2026-11-22-walk-result/boundary.md) ----------------------------
+WALK_RESULT_RX = re.compile(r"^walk_(\d+)_result\.json$")
+WALK_LISTS = ("fix", "pick", "scene", "next_version")
+WALK_HOLDS = ("fix", "pick", "scene")       # the lists that hold his next walk; next_version items never do
+
+
+def walk_result_rel(n, ext="json"):
+    """-> the mod-relative path of walk N's result (N = the walk brief arrival he walked)."""
+    return "%s/walk_%d_result.%s" % (WALK_BRIEF_DIR, n, ext)
+
+
+def read_walk_result(root, mod):
+    """-> {path, data, why[]}: the newest version/walk_brief/walk_<N>_result.json. data None and why [] when no walk
+    result exists (no walk sent this version back); why names the file when it cannot be listed, read or parsed, which
+    is never read as no items."""
+    d = os.path.join(mod_dir(root, mod), WALK_BRIEF_DIR)
+    try:
+        names = os.listdir(d)
+    except FileNotFoundError:
+        return {"path": None, "data": None, "why": []}
+    except OSError as e:
+        return {"path": rel(mod, WALK_BRIEF_DIR), "data": None,
+                "why": ["%s cannot be listed (%s)" % (rel(mod, WALK_BRIEF_DIR), e)]}
+    ns = sorted(int(m.group(1)) for m in (WALK_RESULT_RX.match(n) for n in names) if m)
+    if not ns:
+        return {"path": None, "data": None, "why": []}
+    p = walk_result_rel(ns[-1])
+    data, err = read_json(root, mod, p)
+    if err or not isinstance(data, dict):
+        return {"path": rel(mod, p), "data": None, "why": ["%s: %s" % (rel(mod, p), err or "not a JSON object")]}
+    return {"path": rel(mod, p), "data": data, "why": []}
+
+
+def walk_items_open(root, mod):
+    """-> {path, open[], why[]}: the items of the newest walk result's fix, pick and scene lists still open on the
+    ledger. why is non-empty when the result or the ledger cannot be read (could not look, never no items)."""
+    wr = read_walk_result(root, mod)
+    out = {"path": wr["path"], "open": [], "why": list(wr["why"])}
+    if wr["why"] or not wr["data"]:
+        return out
+    ids = [str(i) for k in WALK_HOLDS for i in wr["data"].get(k) or []]
+    try:
+        live = {x["id"] for x in ledger_items_caused_by(root, [], named=ids)}
+    except Exception as e:      # noqa: BLE001  a ledger that cannot be read is a refusal that says so
+        out["why"].append("the ledger cannot be read (%s: %s)" % (type(e).__name__, e))
+        return out
+    out["open"] = [i for i in dict.fromkeys(ids) if i in live]
+    return out
+
+
+def _owner_words_by_item(root, ids):
+    """-> {item: [his words, in ledger order]} from the OWNER shard; {} when it cannot be read."""
+    import concept_tree as CT
+    out = {i: [] for i in ids}
+    evs = CT.owner_events(root, REPO)
+    for _tsn, ev in sorted(evs.items(), key=lambda kv: int(kv[0]) if str(kv[0]).isdigit() else 0):
+        w = str(ev.get("ownerSaid") or ev.get("byCard") or "").strip()
+        if ev.get("id") in out and w and w not in out[ev["id"]]:
+            out[ev["id"]].append(w)
+    return out
+
+
+def walk_result_md(mod, ver, n, data, titles, words):
+    """-> the plain record of walk N for him and the next reader: the verdict, his passes, each list with each item's
+    title and his own words quoted, and the fixer groups."""
+    head = {"fix": "Code defects: fixers run on the road back", "scene": "Scene defects: fixers run on the road back",
+            "pick": "Waiting for his pick: no fixer runs; each holds his next walk",
+            "next_version": "Next version: not this one; holds nothing"}
+    L = ["# %s %s: walk %d result, NOT PASSED" % (mod, ver, n), "",
+         "- Walked: %s." % data.get("walked", "not written"),
+         "- His words ending the walk: \"%s\" (OWNER:%s)." % (data["owner_said"].get("words"),
+                                                             data["owner_said"].get("tsn"))
+         if data.get("owner_said") else "- Ended by a Conductor decision: %s." % data.get("conductor_decision"),
+         "- Road back: Stage %s to %s, recorded %s by %s (`maturation.py walk-result`)." % (
+             NUM["his_walk"], label(data["to"]), data["at"], data["by"]),
+         "- Route item: `%s`." % data.get("item"), "- Why: %s" % data.get("why"), ""]
+    if data.get("passes"):
+        L += ["## Passes he stated", ""] + ["- %s" % p for p in data["passes"]] + [""]
+    for k in ("fix", "scene", "pick", "next_version"):
+        if not data.get(k):
+            continue
+        L += ["## %s" % head[k], ""]
+        for i in data[k]:
+            L.append("- `%s`: %s" % (i, (titles.get(i) or "").strip()[:400]))
+            for w in words.get(i) or []:
+                L.append("  - He said: \"%s\"" % w.replace("\n", " "))
+        L.append("")
+    if data.get("groups"):
+        L += ["## Fixer groups (one run fixes and closes every item of its group)", ""]
+        L += ["- %s" % " + ".join("`%s`" % i for i in g) for g in data["groups"]] + [""]
+    return "\n".join(L)
+
+
+def walk_result(root, mod, to, by, why, owner=None, conductor=None, item=None, fix=(), pick=(), scene=(),
+                next_version=(), groups=(), passes=(), walked=None):
+    """Record a Stage 8 walk that did NOT pass and take the road back in one locked write: writes
+    version/walk_brief/walk_<N>_result.json and .md once (N = pre_human_arrivals) and moves the record his_walk -> to.
+    -> {ok, why, path, move result}. Refuses, writing nothing, off his_walk, on an id with no ledger event, on a
+    result already written, or with neither his event nor a Conductor decision."""
+    rec = load(root, mod)
+    if rec is None or rec.get("stage") != "his_walk":
+        return {"ok": False, "why": "%s stands at %s, not his_walk: only a Stage 8 walk has a walk result" % (
+            mod, "no stage record" if rec is None else rec.get("stage"))}
+    n = int(rec.get("pre_human_arrivals") or 0)
+    lists = {"fix": list(fix or ()), "pick": list(pick or ()), "scene": list(scene or ()),
+             "next_version": list(next_version or ())}
+    ids = list(dict.fromkeys([i for k in WALK_LISTS for i in lists[k]] + [i for g in groups or () for i in g]))
+    if not [i for k in WALK_HOLDS for i in lists[k]]:
+        return {"ok": False, "why": "a walk that did not pass names at least one fix, pick or scene item"}
+    stray = [i for g in groups or () for i in g if i not in lists["fix"] + lists["scene"]]
+    if stray:
+        return {"ok": False, "why": "a fixer group takes only fix or scene items: %s" % ", ".join(stray)}
+    try:
+        known = {x["id"]: x for x in ledger_items_caused_by(root, [], ended_too=True, named=ids + ([item] if item
+                                                                                                    else []))}
+    except Exception as e:      # noqa: BLE001
+        return {"ok": False, "why": "the ledger cannot be read (%s: %s): nothing written" % (type(e).__name__, e)}
+    unknown = [i for i in ids + ([item] if item else []) if i not in known]
+    if unknown:
+        return {"ok": False, "why": "no ledger event names %s: file each item first" % ", ".join(unknown)}
+    ev = None
+    if owner:
+        ev, owhy = owner_event(root, owner, may_refuse_pass=True)
+        if ev is None:
+            return {"ok": False, "why": "his walk ends on his event: %s" % owhy}
+    elif not conductor:
+        return {"ok": False, "why": "a walk result needs --owner-said OWNER:<tsn> (his words ending the walk) or "
+                                    "--conductor-decision"}
+    p = walk_result_rel(n)
+    if not _absent(os.path.join(mod_dir(root, mod), p)):
+        return {"ok": False, "why": "%s already exists: a walk result is written once" % rel(mod, p)}
+    t = now_ts()
+    data = dict(lists, schema=1, mod=mod, version=rec.get("version"), arrival=n, verdict="not_passed", at=iso(t),
+                by=by, why=why, to=to, item=item, walked=walked, passes=list(passes or ()),
+                groups=[list(g) for g in groups or ()], conductor_decision=conductor,
+                owner_said={"tsn": str(owner).split(":", 1)[-1], "words": str(ev.get("ownerSaid") or ev.get("byCard"))}
+                if ev else None)
+    md = walk_result_md(mod, rec.get("version"), n, data, {i: known[i].get("title") for i in known},
+                        _owner_words_by_item(root, ids))
+    res = advance(root, mod, to, by=by, why="walk %d not passed: %s" % (n, why), conductor=conductor, owner=owner,
+                  first_files={p: json.dumps(data, indent=1, sort_keys=True) + "\n", walk_result_rel(n, "md"): md},
+                  confirmed_extra={"walk_result": rel(mod, p)}, expect_stage="his_walk")
+    res["path"] = rel(mod, p)
+    if not res.get("ok"):
+        res.setdefault("why", "; ".join("%s: %s" % (r.get("clause"), r.get("observed"))
+                                        for r in (res.get("verdict") or {}).get("refusals") or []) or
+                       res.get("moved_meanwhile") or "the move was refused")
+    return res
+
+
 def evidence_writers(root, mod, rec):
     """The units (and, for a move no unit made, the seat) that wrote this version's evidence: every move's, and every
     in-game row's `unit`."""
@@ -5094,6 +5270,20 @@ def main(argv=None):
     a.add_argument("--game-only", help="ID[,ID...]: back to in_game from an offline stage; every named road-back item "
                                        "is open and needs the live game")
     a.add_argument("--json", action="store_true")
+    w = sub.add_parser("walk-result", help="record a Stage 8 walk that did NOT pass and take its road back "
+                                           "(design/specs/2026-11-22-walk-result/boundary.md)")
+    w.add_argument("mod")
+    w.add_argument("--to", required=True, choices=ROADS_BACK["his_walk"])
+    w.add_argument("--by", required=True)
+    w.add_argument("--why", required=True)
+    w.add_argument("--owner-said", help="OWNER:<tsn>, his event ending the walk")
+    w.add_argument("--conductor-decision")
+    w.add_argument("--item", help="the route item that records the walk (the tick's road back is caused by it)")
+    for k in ("fix", "pick", "scene", "next"):
+        w.add_argument("--" + k, default="", help="ID[,ID...]")
+    w.add_argument("--group", action="append", default=[], help="A+B[+C]: one fixer run for these fix/scene items")
+    w.add_argument("--pass", dest="passes", action="append", default=[], help="a pass he stated (repeatable)")
+    w.add_argument("--walked", help="when and where he walked")
     u = sub.add_parser("unrun", help="record a road-back item's in-game check UNRUN for Stage 6 (it closed offline)")
     u.add_argument("mod")
     u.add_argument("--item", required=True)
@@ -5298,6 +5488,18 @@ def main(argv=None):
         if res.get("submit_error") and not res["ok"]:
             return 4
         return 0 if res["ok"] else 1
+    if o.cmd == "walk-result":
+        sp = lambda v: [x.strip() for x in (v or "").split(",") if x.strip()]    # noqa: E731
+        res = walk_result(root, o.mod, o.to, o.by, o.why, owner=o.owner_said, conductor=o.conductor_decision,
+                          item=o.item, fix=sp(o.fix), pick=sp(o.pick), scene=sp(o.scene), next_version=sp(o.next),
+                          groups=[[x.strip() for x in g.split("+") if x.strip()] for g in o.group],
+                          passes=o.passes, walked=o.walked)
+        if res.get("ok"):
+            print("WALK RECORDED %s: not passed; %s written; %s to %s" % (o.mod, res["path"], label("his_walk"),
+                                                                       label(o.to)))
+            return 0
+        print("REFUSED: %s" % res.get("why"))
+        return 1
     if o.cmd == "unrun":
         try:
             r = record_unrun(root, o.mod, o.item, o.check, o.command, o.offline, o.sha, by=o.by)

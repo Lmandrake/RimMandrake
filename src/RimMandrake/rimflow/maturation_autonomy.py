@@ -839,6 +839,9 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
         s = mods.setdefault(mod, {})
         dec = row.get("decision")
         ver = f.get("version") or (M.load(root, mod) or {}).get("version")
+        if row.get("stage") in ROAD_BACK_STAGES:
+            # a Stage 8 walk that did not pass sends its findings down a road no tick steward opened
+            fx.get("adopt_walk", adopt_walk_road_back)(root, mod, s)
         # the in-game queue: a visit owed waits its turn by first-seen time
         if row.get("stage") == "in_game" and f.get("owed") == "run" and dec not in LAUNCH:
             queue.setdefault(mod, now)
@@ -1149,6 +1152,45 @@ def open_road_back(root, row, item, now):
     return rb
 
 
+def adopt_walk_road_back(root, mod, s, rec=None):
+    """Stage 8 has no tick steward, so the tick learns a walk's road back here
+    (design/specs/2026-11-22-walk-result/boundary.md): when the record's newest move carrying `confirmed.walk_result`
+    is newer than the tick's road back (or none is open), s["road_back"] becomes {caused_by: the result's item, at: the
+    move's time, from: his_walk, cited: its fix and scene ids, walk_result, groups}. Each result is adopted once
+    (s["walk_road_backs"]); pick and next-version items are never cited, so no fixer runs on them. -> True when
+    adopted."""
+    rec = M.load(root, mod) if rec is None else rec
+    mv = next((m for m in reversed((rec or {}).get("moves") or []) if isinstance(m, dict)
+               and (m.get("confirmed") or {}).get("walk_result")), None)
+    if not mv:
+        return False
+    path = mv["confirmed"]["walk_result"]
+    done = s.setdefault("walk_road_backs", [])
+    if path in done:
+        return False
+    at = M._instant(mv.get("at"))
+    rb = s.get("road_back")
+    if isinstance(rb, dict) and isinstance(rb.get("at"), (int, float)) and at is not None and rb["at"] >= at:
+        return False        # a newer road back decides first; this walk's is adopted when that one closes
+    wr = M.read_walk_result(root, mod)
+    data = wr.get("data") if wr.get("path") == path else None
+    if not data:
+        return False        # unreadable or replaced: the walk gate at Stage 7 refuses on it and says so
+    s["road_back"] = {"caused_by": data.get("item") or path, "at": at, "from": "his_walk", "walk_result": path,
+                      "cited": list(dict.fromkeys(list(data.get("fix") or []) + list(data.get("scene") or []))),
+                      "groups": [list(g) for g in data.get("groups") or []]}
+    done.append(path)
+    return True
+
+
+def walk_group(rb, item):
+    """-> the fixer group of a walk road back that holds item (item first), or [item]."""
+    for g in (rb or {}).get("groups") or []:
+        if item in g:
+            return [item] + [x for x in g if x != item]
+    return [item]
+
+
 def road_back_open(s, rb, open_items):
     """-> open_items over the road back's caused_by ids (_road_back_ids), and the items its visit's failed lines cite
     (rb["cited"]) as well; open_items is called without `named` when nothing is cited (the readers the selftests fake)."""
@@ -1245,6 +1287,8 @@ def _road_back(s, row, open_items, now=None, moved=False, endings=None, cfg=None
             row.update(aut="fixer", fix_item=todo[0]["id"], decision="fixer",
                        why="road-back item %s (of %d open, caused by %s) gets one fixer run" % (
                            todo[0]["id"], len(items), " or ".join(ids)))
+            if rb.get("from") == "his_walk":    # his finding: never dropped as a wrong check (walk-result page)
+                row.update(fix_for="walk", walk_result=rb.get("walk_result"), walk_group=walk_group(rb, todo[0]["id"]))
             return True
         # a spent item whose window is `owner` waits for his act, not a pipeline one: it holds the next cycle or visit
         # only when a failed line of the visit cites it (a bar rests on it) or the visit record was not read
@@ -1864,7 +1908,25 @@ OFFLINE_CLOSE = (
     "Stage 6 work, and the record goes back there. Never take the bridge or a game.")
 
 
-def fixer_brief(item, mod, cap, fix_for=None, live=False):
+def fixer_brief(item, mod, cap, fix_for=None, live=False, walk_result=None, group=None):
+    if fix_for == "walk":
+        # design/specs/2026-11-22-walk-result/boundary.md: a finding of his Stage 8 walk, not a failed check line
+        others = [x for x in group or [] if x != item]
+        return ("# Walk finding fix: %s (%s)\n\nItem: %s. Seat BENCH.\n\nRead `python3 "
+                "src/RimMandrake/rimflow/cli.py show %s` to its end, and the walk result `%s`: this item is his finding "
+                "from his Stage 8 walk, his words on the item, and %s cannot reach his walk again until it closes. It is "
+                "never a wrong check: never drop it as \"not worth the touch\", and never close it without the fix. "
+                "%sFind the cause by experiment where the item says so, write a test that fails on the base first, fix "
+                "it, see the test pass, land with `./publish -m ... <paths>`, and close the item with the published "
+                "sha. His objection closes for good only on his own later look: say in the close what he will see. If "
+                "the fix is his (a pick, a ruling) or needs more than this run, do every part that is yours, then write "
+                "a note starting LEFT OPEN: that says what landed and what is owed, and by whom.\n%s\n\n%s\n\n%s\n" % (
+                    item, mod, item, item, walk_result or "version/walk_brief/", mod,
+                    ("It shares one cause or the same files with %s: fix them in this run and close each one. " %
+                     ", ".join(others)) if others else "",
+                    ("Its acceptance test needs a game: use it as the section below says." if live else
+                     OFFLINE_CLOSE % {"mod": mod, "item": item}), M.SELF_FIX_RULE, M.OFFLINE_MODEL)
+                + (live_rules("%s walk fix on %s" % (mod, item), mod) if live else ""))
     if fix_for == "blocked":
         return ("# Pipeline-defect fix: %s (%s)\n\nItem: %s. Seat BENCH.\n\nRead `python3 "
                 "src/RimMandrake/rimflow/cli.py show %s` to its end: %s's Designer ended blocked on it, a defect in the "
@@ -2051,7 +2113,8 @@ def _execute_one(root, cfg, st, row, now, do_file, do_launch, known, do_publish=
         # a pilot's fixer on an item that needs the game is given the game (RIMMANDRAKE_LET_HOLDER_TAKE_BRIDGE_ALL_ITEMS_NEED_GAME)
         live = (row.get("fix_for") != "blocked" and M.game_takeable(row.get("stage")) and MD.pilot_ledger(root, mod)
                 and live_only([{"needs": M.ledger_needs(root, [item]).get(item)}]))
-        brief = fixer_brief(item, mod, row["cap"], row.get("fix_for"), live=live)
+        brief = fixer_brief(item, mod, row["cap"], row.get("fix_for"), live=live, walk_result=row.get("walk_result"),
+                            group=row.get("walk_group"))
         if row.get("pilot"):        # the Test Pilot step (_pilot_step): an rm-testpilot sitting on the pilot model
             brief, model = pilot_brief(root, item, mod, row.get("why")), pilot_run_model(root, model)
         book = s.setdefault("fixers", {})
