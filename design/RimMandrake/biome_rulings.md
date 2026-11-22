@@ -367,13 +367,16 @@ OWNER notes of 2026-11-22T10:19:27Z to 10:25:22Z). The enact item is
 `RIMMANDRAKE_ENACT_SIX_BIOME_ANSWERS_SLIME_GETS_BOTH_DRAWS`. Each design carries its answer in its `Answered on
 2026-11-22` section.
 
-- **The Twilight Sea's signature: the light-wells, with coloured light from the panes everywhere else.** He took none
+- **The Twilight Sea's signature: the light-wells, with glowing colourful shafts of light under the panes.** He took none
   of the three candidates and typed: *"The light well but in the places away from the light well there are regions of
-  colored ambiance from the colored panes above. It the bare spots are so much brighter! That."* Away from a well the
-  floor lies in regions of coloured ambient light from the panes above; the bare spots (the wells) are far brighter.
+  colored ambiance from the colored panes above. It the bare spots are so much brighter! That."* He answered later
+  the same night, about 3:05 AM PST: *"the dark between the wells can be pitch, that's fine. But there should still be beautiful glowing colorful shafts of light portrayed somehow that don't quite reach the floor, just an artistic portrayal somehow"* The bare spots (the
+  wells) are bright, and the floor between the wells may be pitch dark. The colour of the panes is glowing colourful
+  shafts of light that hang under the panes and do not quite reach the floor: an artistic portrayal that lights
+  nothing on the floor and changes no darkness. How the shafts are drawn is open.
   The falling panes stay the Twilight's hull wear, not its signature. The wells move in 0.1.0: a well closes
-  and another opens elsewhere. His ruling of 2026-11-22: *"Yes light well first version."* The coloured ambient
-  light is owed.
+  and another opens elsewhere. His ruling of 2026-11-22: *"Yes light well first version."* The drawing of the
+  shafts is owed.
 - **Rivers: "Twilight now, others 0.2.0".** The Twilight keeps its built river in 0.1.0; the Grey Sea, the Chill and
   the Scald get the river at 0.2.0.
 - **The Long Shade's 0.1.0 draw: "Chitin and shade mast".** Black chitin and the long-shade mast. The mast is not

@@ -6,7 +6,7 @@ Visit alien sea floors by gravship: the Scald boils, the Grey grows salt, the Ch
 
 **Life:** existing native rosters, forage, prey, predators, moving light and environmental survival; no evictions.
 
-**Signature.** Replaced by the owner's cards of 2026-11-20 and 2026-11-22: each sea has its own signature, and the Twilight's is the light-wells, with coloured ambient light from the panes away from them. The bank, current, surge and sink are shared by all four seas: in the Twilight's 0.1.0, in the other three seas' 0.2.0. Detail: `design/concepts/TerminalBiomes/TwilightSea_design.md` §Scope.
+**Signature.** Replaced by the owner's cards of 2026-11-20 and 2026-11-22: each sea has its own signature, and the Twilight's is the light-wells, with glowing colourful shafts of light under the panes that fade before the floor (the floor between the wells stays dark). The bank, current, surge and sink are shared by all four seas: in the Twilight's 0.1.0, in the other three seas' 0.2.0. Detail: `design/concepts/TerminalBiomes/TwilightSea_design.md` §Scope.
 
 My delegated choice: keep the ruled sea bundle with that current chain as its signature. The cultivated-light economy loses as runner-up because it adds another progression system. Natural temporary wells and the living protected gardener stay under the frozen roof laws. Campaign inhabitants move: removing the reveal defeats neither land, native life nor the signature.
 

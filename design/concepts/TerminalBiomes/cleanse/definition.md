@@ -20,7 +20,7 @@ Land: distinct material, floor, visibility, ordinary weather and building ground
 
 Life: preserve the present rosters, normal native growth/harvest, movement, hunting, ordinary taming and environmental viability; no species eviction.
 
-**Signature.** Replaced by the owner's cards of 2026-11-20 and 2026-11-22: each sea has its own signature, and the Twilight's is the light-wells, with coloured ambient light from the panes away from them. The bank, current, surge and sink are shared by all four seas: in the Twilight's 0.1.0, in the other three seas' 0.2.0. Detail: `design/concepts/TerminalBiomes/TwilightSea_design.md` §Scope.
+**Signature.** Replaced by the owner's cards of 2026-11-20 and 2026-11-22: each sea has its own signature, and the Twilight's is the light-wells, with glowing colourful shafts of light under the panes that fade before the floor (the floor between the wells stays dark). The bank, current, surge and sink are shared by all four seas: in the Twilight's 0.1.0, in the other three seas' 0.2.0. Detail: `design/concepts/TerminalBiomes/TwilightSea_design.md` §Scope.
 
 Runner-up: the cultivated-light/tenancy economy. It loses because it adds portable growers, culture, ownership, predators of light and ship maintenance alongside the bank/current chain. Minimal natural well drift and keeper support remain necessary land under the frozen lid laws; they are not a licence to retain that economy. Ordinary hot water, cold fuel and mineral pools use shared environmental rules rather than becoming additional bespoke progression systems.
 

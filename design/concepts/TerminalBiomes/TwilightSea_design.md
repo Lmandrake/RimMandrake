@@ -53,9 +53,9 @@ And: *"Colors should be lustrous green and blue-green. It's a pretty ocean."*
 
 Along the bottom run **rivers that look dry**: *"mud-bedded channels where heavier water flows invisibly, carving
 banks like any river anywhere."* The sheet's map of the place is one sentence: *"The banks are the wealth; the
-columns are the light; the dark between is the predator's."* Since his answer of 2026-11-22 the ground between the
-wells is not dark: it lies in coloured ambient light from the panes above (the coloured dim), and the wells read far
-brighter (Scope, the one signature).
+columns are the light; the dark between is the predator's."* Above that dark, glowing colourful shafts of light hang
+under the coloured panes and fade before they reach the floor. They light nothing there (his words of 2026-11-22;
+Scope, the one signature).
 
 A design pass named how this sea hurts people, and the line holds: *"The Grey kills you with chemistry and the Scald
 with physics; the Twilight kills you with biology — with the abundance itself."* Nothing here is hostile the way a
@@ -127,27 +127,24 @@ Before the first hour is out the player should have seen four things without goi
 - **The cargo goes too.** Anything loose left on the bed drifts, more slowly than a person. Jawa pile salvage
   wherever there is room; here some of the room is a river.
 - **The lost-property office.** The sink is *"floored in everything the river ever took: litter, panes, shells,
-  stakes."* It is the one heap of free stuff on the whole floor, and it is in the predator's ground.
+  stakes."* It is the one heap of free stuff on the whole floor, and it is in the predator's dark.
 - **The first food is picked up by hand.** There is no fishing down here. His correction, typed 2026-09-26: *"you
   don't fish at the bottom of the ocean, I had meant the shoreline fishing."* On the floor the fish are hunted and
   the beds are gathered. The channel eel is *"so slow that bank-harvesters pick them up by hand."* The fat grazers
   move *"through the fall like cattle through a snowfall."*
 - **Light you can carry.** The lamp-bladder weed hangs in *"a hanging curtain of soft lamps"*. A cut bladder glows
   for days and then rots: *"the torch you chase the light with."*
-- **The coloured dim between the wells.** Away from the wells the floor lies in coloured ambient light from the
-  panes above, dim beside a well. Soot-black strings grow where no well has stood for a long time, and one long
-  patient shape waits there. The loohn *"waits far more than it hunts"*, and its only colour is a single bright
-  mark. The sheet wrote the loohn for the dark; its ground is now the coloured dim, not dark (owed: how the loohn
-  and its single bright mark read in coloured light; `UNSETTLED and UNMEASURED`). The safe roads are lit turf:
-  *"walk on the alms."*
+- **The dark between the wells.** Soot-black strings that only grow where nothing has been bright for a long
+  time, and one long patient shape. The loohn *"waits far more than it hunts"*,
+  and its only colour is a single bright mark. The safe roads are lit turf: *"walk on the alms."*
 - **Nothing to dig.** *"A player who wants to mine the Twilight finds nothing."* The stripped hull is
   *"worth 0 silver and it is the most eloquent object on the floor."*
 
 ## The first week
 
 - **The light leaves.** His words, 2026-09-26: *"the light can move around slowly over a week."* A well's rim
-  thickens and dulls overhead, the column narrows and cools off gold, the shoals thin out, and then that ground lies
-  in the coloured dim and another column is standing somewhere else. *"So the map always has light — just never where it was."*
+  thickens and dulls overhead, the column narrows and cools off gold, the shoals thin out, and then that ground is
+  dark and another column is standing somewhere else. *"So the map always has light — just never where it was."*
   Anyone who looks up gets a day or so of warning for nothing. A well is never owned: *"A well belongs to whoever
   is standing under it."*
 - **The floor forecasts it.** A stand of the soot-black strings browning means a well is about to open there. The
@@ -197,7 +194,7 @@ already talk about this."* This sea's wear was his own, typed seven weeks earlie
   no field helps, so the answer is always the crew on the hull with whatever was in the hold.
 - *It never traps.* The gate can only delay, and it fails open. *"Never a stranding."* It does not fire during a
   launch already under way.
-- *The warning is on the floor from the first minute.* The stripped hull out in the coloured dim has a second reading:
+- *The warning is on the floor from the first minute.* The stripped hull out in the dark has a second reading:
   *"a ship nobody cleared, generations on."*
 - *Where it sits in the code.* The shared hull-wear frame is `src/RimUtinni/ShipShields/` (his shield rulings of
   2026-09-02): a tracker that wears a landed ship in a hazard its shield does not cover, and an advisory letter on
@@ -244,7 +241,7 @@ Each can happen inside the visit. Each says what is on screen.
    passing them down the ramp into the hold. *Why it lands:* they are being paid to dig their own ship out.
 4. **The piece of sky that leaves.** *On screen:* a Jawa bends to pick up a torn scrap of fallen lid and the scrap
    swims off. The lunoowa is *"indistinguishable from a torn piece of roof until it moves."*
-5. **Somebody got here first.** *On screen:* the whole crew converging on a wrecked hull in the coloured dim, and standing
+5. **Somebody got here first.** *On screen:* the whole crew converging on a wrecked hull in the dark, and standing
    around it. A painted Compact mark, shells growing on the ribs, *"nothing inside."* *Why it is funny:* they are
    scavengers, and this is what being scavenged looks like from the other side.
 6. **The gold dust.** *On screen:* a well closes and its floor glitters. A Jawa tries to scoop it up. It is not a
@@ -255,7 +252,7 @@ Each can happen inside the visit. Each says what is on screen.
    music nobody else can hear."* A Jawa walks into them. *"The frills sting, mildly."*
 9. **The drop.** *On screen:* something soft and wide-armed lets go of a kelp crown above a hooded head. The oobo
    *"hunts by letting go."*
-10. **The heap in the dim.** *On screen:* a salvage party at the sink, picking through everything the river ever
+10. **The heap in the dark.** *On screen:* a salvage party at the sink, picking through everything the river ever
     took by the light of a few cut bladders, and one point of colour appearing at the edge of the light. *"You hold
     a small circle of gold and things move at its edge."*
 11. **The whole floor dims.** *On screen:* a slow darkening, a boom through the roof, every shoal turning at once.
@@ -264,7 +261,7 @@ Each can happen inside the visit. Each says what is on screen.
     animals freak out... and then it starts raining detritus, parasites, barnacle analogs with glowing bits in them
     like gems. and the whole ecosystem goes into overdrive and starts eating them at great speed."* *On screen:*
     glowing shells falling through the wells, Jawa snatching them up, and every animal on the floor racing them for
-    it. For that hour the patient shape in the coloured dim hunts things it never would.
+    it. For that hour the patient shape in the dark hunts things it never would.
 13. *(0.2.0)* **The lamp that does not breathe.** *On screen:* a warm gold glow between two wells, steady where
     every real lamp pulses. *"A lamp with no piip around it is not a lamp."* The vaulisk; one to a map at most, and
     its tell can always be read. Killed, its lure is a trophy a Jawa would certainly keep.
@@ -287,8 +284,8 @@ wait at the beach (`Answered on 2026-11-19` 1). What the place does to anyone wh
   anyone, and what they drop goes after them, to the heap the crew already knows the way to.
 - **The sky lands on them.** A siege that sits under a shedding sky is strung out across the pane's strike zone, and
   its camp gets a laden roof.
-- **The light walks off and leaves them in the coloured dim.** A camp pitched in a well is in the predator's ground
-  a week later.
+- **The light walks off and leaves them in the dark.** A camp pitched in a well is in the predator's ground a week
+  later.
 - **A surge moves the line.** Whoever holds the inner bank when the combs blaze does not hold it for long.
 - **The gardener ignores all of it.**
 - *On the beach* there is nothing to hide behind and nowhere to fall back to but the ship. It is the worst ground on
@@ -298,7 +295,7 @@ wait at the beach (`Answered on 2026-11-19` 1). What the place does to anyone wh
 
 - **Nobody raids.** *"no hostile faction or raid-analog of any kind"* (the danger pass's own limit). *"The Deepwater
   do not raid"*, and their holdings *"never become a war camp."*
-- **The animals, ordinarily.** The loohn in the coloured dim. The kelp squid and the drop-hunter among the towers. In 0.2.0
+- **The animals, ordinarily.** The loohn in the dark. The kelp squid and the drop-hunter among the towers. In 0.2.0
   the liar, a frenzied hour after the gardener passes, and the big ones: his line says *"most of them are so big,
   hungry, and quick"*, and his review notes of 2026-09 placed the famous ones here by name (the opee sea killer,
   *"make it 5 squares long"*; the crimson opee, *"9 squares long"*; the colo; the sando). Those are campaign-tier
@@ -317,7 +314,7 @@ wait at the beach (`Answered on 2026-11-19` 1). What the place does to anyone wh
 **Out, before the Empire:**
 - The deck filling faster than a small crew clears it.
 - The well beside the ship closing, and the next one standing across a river.
-- A crew member in the sink, and the rescue party's trip into the coloured dim.
+- A crew member in the sink, and the rescue party's trip into the dark.
 - A surge that took the stock off the bank.
 - Nothing left to want: there is no salvage here, and a Jawa crew that has filled the hold with glowing weed has to
   sell it before it rots.
@@ -364,14 +361,14 @@ comfortable"*; there is no cover from orbit; water arrives as fog, *"a cupful at
 | the player sees | the scene | what rules out a fake |
 |---|---|---|
 | The ship lands on the Twilight's own floor, clear of the river's reach, with a way from the ramp to a bank, and can leave again. | A landing and a launch on a floor with a live channel. | A generic empty floor fails. A landing astride a channel fails. So does a floor reached any way but the ship. |
-| Under a living lid, gold light-wells stand in dim green water with kelp in them and shoals working them; between the wells the floor lies in coloured ambient light from the panes above, and the wells read far brighter; every lit thing is lit by something alive, by a well or by the panes. | A walk from the ramp to a well, across the coloured ground between, to a second well. | A cold reader sorts unlabelled views of this floor from the other three seas'. A floor lit evenly everywhere fails. Ground between the wells as bright as a well fails. |
-| Away from the wells the floor lies in regions of coloured light from the panes above, more than one colour on one floor; a crew member, a plant or a crate standing in a region takes its colour, and a step into a well turns it gold and far brighter. | A crew member walked from one coloured region into a second, and then into a well. | One flat tint over the whole floor fails. A colour painted on the ground alone, with crew, plants and things left uncoloured, fails. A region as bright as a well fails. |
+| Under a living lid, gold light-wells stand in dim green water with kelp in them, shoals working them, and dark between; every lit thing is lit by something alive or by a well. | A walk from the ramp to a well, across dark ground, to a second well. | A cold reader sorts unlabelled views of this floor from the other three seas'. A floor lit evenly everywhere fails. |
+| The player sees glowing colourful shafts of light hanging under the panes that fade before the floor, while the floor between the wells stays dark and the wells are bright. | A walk from the ramp under the panes, across the dark between the wells, to a well. | A shaft that reaches the floor fails. A shaft that lights the floor, a crew member or a thing fails. Colour shown only as a tint on the ground fails. |
 | The bed of a bottom river can be told from its bank without labels, and carries off whoever walks into its middle; the edge lets a walker back out. | A cold reader marks bed, stakes and bank on unlabelled views; then a worker walks the edge and the middle. | Views with the bed blended into the bank, or the stakes misplaced, are rejected even when the warning fires. A pawn that crosses the middle unharmed fails. |
 | A carried worker ends at the sink, stays findable and worsening, and recovers once carried out of the water into the hull. | A worker past the stakes; a rescuer; a second rescuer after the first is lost; a save and reload while carried. | A roof built over the sink saves nobody. A full sink never loses the victim or drops them through a wall. |
 | Loose things on the bed drift to the sink and can be fetched back. | A crate on the bed, a crate on the bank. | The crate at the sink is the crate that went in. |
 | A surge is warned by the floor itself, widens the reach past the stakes, and passes; a way from the ship to a bank stays outside it. | Work at the stakes through one surge. | The same bank on a calm day: nothing is taken. |
 | A light-well wanes, closes and another opens elsewhere within the visit; the closing can be read from the floor before it happens; a new well never opens in the river's reach or on the ship. | A stay long enough for one well to turn over. | A well whose shown remaining life never moves fails. A new well standing in surge reach fails. |
-| A closed well's ground lights itself for a while afterwards and then fades to the coloured dim. | The ground under a well before and after it closes. | The same sponges under a standing well stay unlit. |
+| A closed well's ground lights itself for a while afterwards and then goes dark. | The ground under a well before and after it closes. | The same sponges under a standing well stay dark. |
 | Panes fall with a shadow first, can kill, lie where they land and can be harvested; they pile on a parked ship, and a launch waits until the deck is cleared. | A pawn and a crate under a shadow; a ship parked through several falls; a launch with a laden deck. | Launch is delayed, never locked: clearing always works, and a launch already under way is not stopped. The same ship on the beach gathers none. |
 | Food can be gathered and hunted by hand on the floor; nothing can be fished there; the same kinds are fished from the beach. | A crew with no supplies for a day on the floor; a line on the beach. | A fishing zone on the floor does nothing. |
 | Nothing rains under the sea; weather changes only the light. | A full visit's weather. | His words: *"Twilight Sea is a sea floor... no rain."* |
@@ -425,11 +422,15 @@ sea (his redirect of 2026-09-26).
 
 Every feature is in one bucket. "Built" is source presence, not a pass.
 
-**The one signature: the light-wells, with coloured light from the panes everywhere else** (his write-in on the
+**The one signature: the light-wells, with glowing colourful shafts of light under the panes** (his write-in on the
 card of 2026-11-22, about 2:16 AM PST; `Answered on 2026-11-22`, entry 6). His words: *"The light well but in the
 places away from the light well there are regions of colored ambiance from the colored panes above. It the bare
-spots are so much brighter! That."* The Conductor's reading, not his words: the bare spots are the wells, the holes in the lid; away from them the floor lies
-in regions of coloured light cast by the panes overhead, and against that the wells read far brighter. The falling
+spots are so much brighter! That."* His later words of the same night, about 3:05 AM PST
+(`Answered on 2026-11-22`, entry 10): *"the dark between the wells can be pitch, that's fine. But there should still be beautiful glowing colorful shafts of light portrayed somehow that don't quite reach the floor, just an artistic portrayal somehow"* The Conductor's reading, not his words: the bare spots
+are the wells, the holes in the lid, and they are bright. The floor between the wells may be pitch dark. The colour
+of the panes is shown as beautiful, glowing, colourful shafts of light that hang under the panes and do not quite
+reach the floor. The shafts are an artistic portrayal: they light nothing on the floor and change no darkness. How
+they are drawn is open. The falling
 panes are not the signature: they stay this sea's hull wear (below). The wells move in 0.1.0: a well closes and
 another opens elsewhere. His ruling of 2026-11-22: *"Yes light well first version."* (`Answered on 2026-11-22`, entry 9). The lid's keeper passing overhead is in 0.2.0: it
 harms nothing and a stop can miss it. *Runner-up of the cleanse:* the cultivated light and tenancy economy, 0.2.0.
@@ -442,9 +443,10 @@ it at 0.2.0 (his card of 2026-11-22, `Answered on 2026-11-22`, entry 8).
 **0.1.0, the stop**
 - The floor as a real place on the ship's layer: the lid as a sky, gold wells, no rain, mild water.
   (flora and animals built; the floor on the ship's layer unproven)
-- **The signature:** away from the wells, regions of coloured ambient light cast by the panes above, so the wells
-  read far brighter. (unbuilt: owed; no source paints coloured light from the panes [measured, grep of
-  `src/RimMandrake/TerminalBiomes/Source/`, 2026-11-22])
+- **The signature:** glowing colourful shafts of light hanging under the panes, fading before the floor; they light
+  nothing, so the dark between the wells stays dark and the wells read bright. (unbuilt: owed. Owed: the drawing of
+  the shafts, with no method chosen. No source draws them [measured, grep of `src/RimMandrake/TerminalBiomes/Source/`
+  for shaft and god-ray, 2026-11-22: the only hits are a well's own column])
 - The wells on the week's clock: opening, standing, waning, closed; the sky-read; free ground; never in the river's
   reach. (built; avoiding the surge's reach, not just the calm lane, is owed)
 - The lit understorey: lamp-bladder weed, sea-lantern, giving turf, bank combs, soot-black strings, afterglow
@@ -529,9 +531,6 @@ see); each line goes back by one move:*
   measured it.
 - **Whether the Compact would give a ship away to the Empire, or hide it.**
 - **Whether the heavy field stops a pane** (above).
-- **How the loohn stands in the coloured dim (owed).** The sheet wrote the loohn as the predator of the dark between
-  the wells, its only colour a single bright mark. By his answer of 2026-11-22 that ground lies in dim coloured
-  light, not dark. Whether the loohn, its mark and the soot-black strings need a change for that is not decided.
 
 ## NEEDS HIM
 
@@ -585,14 +584,18 @@ enact item is `RIMMANDRAKE_ENACT_SIX_BIOME_ANSWERS_SLIME_GETS_BOTH_DRAWS`). Each
 6. **What is the Twilight's one 0.1.0 signature?** The candidates were the falling sky, the light that moves and the
    dark between the wells. He took none of them and typed, about 2:16 AM PST: *"The light well but in the places
    away from the light well there are regions of colored ambiance from the colored panes above. It the bare spots
-   are so much brighter! That."* So the signature is the light-wells, with regions of coloured ambient light from
-   the panes away from them, and the wells far brighter. The falling panes stay this sea's hull wear. That answer did not
+   are so much brighter! That."* So the signature is the light-wells, far brighter than the
+   ground away from them; entry 10 says how the panes' colour is shown. The falling panes stay this sea's hull wear. That answer did not
    say whether a well moves; he ruled it later the same day (entry 9).
 8. **Do the other three seas get the river in 0.1.0 or at 0.2.0?** *His card, about 2:19 AM PST:* "Twilight now,
    others 0.2.0". The Twilight keeps its built river in 0.1.0; the Grey Sea, the Chill and the Scald get it at
    0.2.0.
 9. **Does a light-well move in the first version?** *His ruling of 2026-11-22:* *"Yes light well first version."*
    So in 0.1.0 a well closes and another opens elsewhere, on the built moving-wells system and its promise row.
-   The same day the Conductor reworded the second 0.1.0 promise row to his signature answer (entry 6): between the
-   wells the floor lies in coloured ambient light from the panes above, and the wells read far brighter. Was: *"and
-   dark between"*. *Delegated call* (`RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS`).
+10. **Is the ground between the wells dark, and how is the panes' colour shown?** He answered the Conductor's report
+   that the second 0.1.0 promise row and the design's lines had been reworded to coloured ambient light between the
+   wells. He typed, about 3:05 AM PST: *"the dark between the wells can be pitch, that's fine. But there should still be beautiful glowing colorful shafts of light portrayed somehow that don't quite reach the floor, just an artistic portrayal somehow"* So the
+   dark between the wells stays, and may be pitch dark; the second promise row says "and dark between" again. The
+   colour is glowing colourful shafts of light under the panes that fade before the floor: an artistic portrayal
+   that lights nothing on the floor. The third 0.1.0 promise row is the shafts. How they are drawn is owed, with no
+   method chosen (item `RIMMANDRAKE_CORRECT_TWILIGHT_DARK_STAYS_PITCH_COLOUR_SHAFTS_ARE_ART`).
