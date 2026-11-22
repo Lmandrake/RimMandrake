@@ -1,0 +1,2 @@
+A network call (git fetch, land.sh) inside an ops_watch collector runs under the metronome's 15 s sense kill. A kill blinds the whole family and aborts the call, so a slow fetch never catches up and every beat overruns. Do the network work only when there is something to land, and give it a deadline under the phase limit (seat_dirt.tidy, 6c735d2660; disk blind 4 h on 2026-11-22). After a collector change, read the next beats.jsonl sense line for that family.
+home: skills/rimflow-operations/SKILL.md
