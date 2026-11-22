@@ -673,7 +673,7 @@ RESOURCES = {
                           m_ingame_visit, [("maturation_dispatch", "decide_ingame")]),
     "steward_runs": ("stewards", "automatic steward runs at this version (steward_max_per_version)",
                      m_steward, [("maturation_autonomy", "_gate")]),
-    "fixer_runs": ("fixers", "automatic road-back fixer runs on the mod (steward_max_per_version)",
+    "fixer_runs": ("fixers", "automatic road-back fixer runs on the mod, every version (steward_max_per_version)",
                    m_fixer, [("maturation_autonomy", "_gate")]),
     "launch_tries": ("tries", "tries of a booked launch that failed, each launch its own count (launch_tries)",
                      m_launch_tries, [("maturation_autonomy", "tries_left")]),

@@ -368,6 +368,17 @@ def main():
         rowf = {"aut": "fixer", "mod": "Fake", "fix_item": "RIMMANDRAKE_SETTLE_FAKE"}
         gof, whyf = AUT._gate(dict(cfg, fix_cap_usd=10), s, rowf, 0, "0.1.0")
         ok(gof, "fixer once-per-item: the void fixer's item is free again (%s)" % (whyf,))
+        # the fixer count is the mod's, over every version (only stewards are version-filtered): its refusal says so,
+        # never "at this version" (RIMMANDRAKE_UNSTICK_PYRELANDS_FIXER_COUNT_TWELVE_FOUR_REFUSED: Pyrelands' 12/12)
+        sx = {"fixers": {"OLD_0_0_9_FIX": {"item": "OLD_0_0_9_FIX", "unit": "u-old"},
+                         "NEW_FIX": {"item": "NEW_FIX", "unit": "u-new"}}}
+        gox, whyx = AUT._gate(dict(cfg, fix_cap_usd=10), sx, {"aut": "fixer", "mod": "Fake", "fix_item": "THIRD"},
+                              0, "0.1.0")
+        ok(not gox and "at this version" not in whyx[1] and "every version" in whyx[1],
+           "the fixer cap counts the mod's fixer runs over every version and says so (%s)" % (whyx,))
+        gos, whys = AUT._gate(cfg, {"steward": {"0.1.0|a": {"item": "A", "unit": "ua"}, "0.1.0|b": {"item": "B",
+                              "unit": "ub"}}}, {"aut": "steward", "mod": "Fake", "steward_key": "0.1.0|c"}, 0, "0.1.0")
+        ok(not gos and "at this version" in whys[1], "the steward cap still says at this version (%s)" % (whys,))
         ok(not s.get("road_back"), "the road back the void route steward opened goes with it")
         ok(MD.holder_spent(dict(s, road_back={"at": T0}), ["RB_1"]) is None,
            "holder one-run-per-set: the void holder run on RB_1 is no try at it")

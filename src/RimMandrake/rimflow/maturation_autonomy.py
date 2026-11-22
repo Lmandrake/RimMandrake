@@ -1504,8 +1504,9 @@ def _gate(cfg, s, row, live_total, ver, live=None):
         n, most = PC.used(row["mod"], "fixer_runs", n), PC.limit(row["mod"], "fixer_runs",
                                                                 int(cfg.get("steward_max_per_version", 12)))
     if n >= most:
-        return False, ("steward_spent", "%d automatic %s runs on %s at this version, the most is %d" % (
-            n, row["aut"], row["mod"], most))
+        # stewards are counted at this version; fixers over every version of the mod (the count above)
+        return False, ("steward_spent", "%d automatic %s runs on %s %s, the most is %d" % (
+            n, row["aut"], row["mod"], "at this version" if row["aut"] == "steward" else "over every version", most))
     import mod_model as MM
     try:        # a pinned mod's steward and fixer caps are scaled to its builders' model (mod_model.for_mod)
         cap = MM.for_mod(cfg, row["mod"]).get("fix_cap_usd" if row["aut"] == "fixer" else "steward_cap_usd")
