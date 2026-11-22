@@ -51,8 +51,10 @@ namespace RimMandrake.FlowWorks
         [HarmonyPostfix]
         public static void Postfix(Pawn p, ref bool __result)
         {
-            if (!__result && RM_PitPrisonCare.LipCare(p) && p.guest.CanBeBroughtFood
-                && (p.Downed || HealthAIUtility.ShouldSeekMedicalRest(p))) __result = true;
+            // RIMMANDRAKE_TRACE_FLOWWORKS_AWAKE_PRISONER_MEAL_SKIPPED_ONE_RUN_IN_TWO: never a standing prisoner (vanilla's first
+            // rule), who then gets food brought; LipCare first, so a pawn with no guest tracker never reads it
+            if (!__result && RM_PitPrisonCare.LipCare(p) && RM_PitRoomMath.HandFedInPit(true, p.guest.CanBeBroughtFood, p.Downed,
+                p.GetPosture() == PawnPosture.Standing, HealthAIUtility.ShouldSeekMedicalRest(p))) __result = true;
         }
     }
 

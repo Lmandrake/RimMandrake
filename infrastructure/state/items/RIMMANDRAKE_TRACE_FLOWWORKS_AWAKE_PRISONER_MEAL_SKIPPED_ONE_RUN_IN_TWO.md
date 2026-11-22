@@ -25,3 +25,18 @@ tier). Seen red: 1 of 2 runs on 2026-11-21.
 ## refs
 
 file: src/RimMandrake/FlowWorks/northstar/concept_scenes.py
+
+## cause (2026-11-21, holder run run-1795325268)
+Class MOD, found by reading the two evidence files and vanilla's source. In the FAIL run the prisoner got up by itself
+(`fixture_healed` false, job GotoWander, `tended` 4). In the PASS run it was still downed and the scene healed it
+(`healAll`, `tended` 0). `RM_Patch_PitPrisonFeed` (ShouldBeFed postfix) said "hand-fed" for a pit prisoner who is downed
+OR `HealthAIUtility.ShouldSeekMedicalRest`. That is true for any tended, healing injury, standing or not. Vanilla's
+`WorkGiver_Warden_DeliverFood.JobOnThing` returns null when `WardenFeedUtility.ShouldBeFed` is true, and vanilla
+`FeedPatientUtility.ShouldBeFed` never hand-feeds a standing pawn. So a walking, healing pit prisoner got no food brought.
+The scene's natural recovery made it one run in two.
+Fix: `RM_PitRoomMath.HandFedInPit` (Verse-free): hand-fed only when downed or lying in medical rest, never standing.
+
+## criteria
+- A1 L0: `python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only PitRoom_standing_prisoner_gets_food_brought_not_hand_fed`
+  is red on the parent (call site) and green on the fix; 32 cases.
+- A2 L2: `sc_hole_prison` PASS three runs in a row on the fixed build (Stage 6, recorded UNRUN).

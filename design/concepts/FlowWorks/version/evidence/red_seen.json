@@ -64,6 +64,19 @@
   "rc": 1,
   "test_blob": "93adac986daf8b950a0f22fbbbf07d57b7e9b02b"
  },
+ "T_FIRE": {
+  "at": "2026-11-22T06:02:45Z",
+  "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only FuelFire*,GateFirebreak*",
+  "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+  "last": "call site: ApplyInfernoEffects reads the deck rule in the cell  (pattern Rand\\.Chance\\(RM_FuelFireMath\\.InfernoAttachChance\\(false, held, onDeck && !held, grated\\)\\))",
+  "patch": "diff --git b/src/RimMandrake/FlowWorks/Source/RM_LiquidFire.cs a/src/RimMandrake/FlowWorks/Source/RM_LiquidFire.cs\nindex 4474fa071c..45057b30ef 100644\n--- b/src/RimMandrake/FlowWorks/Source/RM_LiquidFire.cs\n+++ a/src/RimMandrake/FlowWorks/Source/RM_LiquidFire.cs\n@@ -536,20 +536,17 @@ namespace RimMandrake.FlowWorks\n \t\t\t// PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE: trapped in the burning pit = down a pit (RM_PitRooms.IsPitFloor: a person-band\n \t\t\t// pocket at any depth), never \"dug 2 m\"; an intact cover is ground, so its occupant is never trapped\n \t\t\tbool heldInPit = RM_PitRooms.IsPitFloor(map, ex, c);\n-\t\t\t// SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP: a grated deck over the inferno passes it to the people on it.\n-\t\t\t// RIMMANDRAKE_GATE_INFERNO_DECK_CHANCE_SOLID_OUTBURNS_GRATE (bridges design \u00a74.1): a SOLID deck shields them (the low\n-\t\t\t// onCover chance), and the fire under it is shut in, so it reaches no one beside it but those down in the hole.\n+\t\t\t// SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP: a grated deck over the inferno passes it to the people on it\n \t\t\tbool grated = Pits.RM_GrateEffects.GratePassesFire(map, c);\n-\t\t\tbool onDeck = Pits.RM_SpanUtility.DeckedAt(map, c);\n-\t\t\tbool capped = onDeck && !grated;\n \t\t\tforeach (Pawn p in PawnsAt(map, c))\n \t\t\t{\n \t\t\t\tif (!p.Dead && !p.Flying)\n \t\t\t\t{\n \t\t\t\t\tbool held = heldInPit || Pits.RM_GrateEffects.UnderDeck(p);\n-\t\t\t\t\tif (Rand.Chance(RM_FuelFireMath.InfernoAttachChance(false, held, onDeck && !held, grated)))\n+\t\t\t\t\tif (Rand.Chance(held ? 1f : grated ? System.Math.Max(RM_FuelFireMath.InfernoAttachInCell, RM_FireMath.AttachChance(false, true, false, true))\n+\t\t\t\t\t\t: RM_FuelFireMath.InfernoAttachInCell))\n \t\t\t\t\t{\n-\t\t\t\t\t\tp.TryAttachFire(RM_FuelFireMath.InfernoAttachSize(held, onDeck && !held, grated), null);\n+\t\t\t\t\t\tp.TryAttachFire(held ? 1f : 0.6f, null);\n \t\t\t\t\t}\n \t\t\t\t\tif (grated && !held)\n \t\t\t\t\t{\n@@ -567,12 +564,7 @@ namespace RimMandrake.FlowWorks\n \t\t\t\tList<Thing> beside = map.thingGrid.ThingsListAt(n);\n \t\t\t\tfor (int t = beside.Count - 1; t >= 0; t--)\n \t\t\t\t{\n-\t\t\t\t\tif (!(beside[t] is Pawn p) || p.Dead || p.Flying)\n-\t\t\t\t\t{\n-\t\t\t\t\t\tcontinue;\n-\t\t\t\t\t}\n-\t\t\t\t\tbool besideHeld = RM_PitRooms.IsPitFloor(map, ex, n) || Pits.RM_GrateEffects.UnderDeck(p);\n-\t\t\t\t\tif (Rand.Chance(RM_FuelFireMath.InfernoBesideChance(false, besideHeld, capped)))\n+\t\t\t\t\tif (beside[t] is Pawn p && !p.Dead && !p.Flying && Rand.Chance(RM_FuelFireMath.InfernoAttachBeside))\n \t\t\t\t\t{\n \t\t\t\t\t\tp.TryAttachFire(0.3f, null);\n \t\t\t\t\t}\n",
+  "patch_files": [
+   "src/RimMandrake/FlowWorks/Source/RM_LiquidFire.cs"
+  ],
+  "patch_sha": "fa6fe915a612db88",
+  "rc": 1,
+  "test_blob": "ecdb632246123de160f342b464f55bcbb9ce7ca5"
+ },
  "T_GEYSER_TUB": {
   "at": "2026-11-21T05:14:29Z",
   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only GeyserTub*",
@@ -113,6 +126,19 @@
    "src/RimMandrake/FlowWorks/Source/RM_FlowKernel.cs"
   ],
   "patch_sha": "fffcd56ccbcb177f",
+  "rc": 1,
+  "test_blob": "ecdb632246123de160f342b464f55bcbb9ce7ca5"
+ },
+ "T_PRISON": {
+  "at": "2026-11-22T06:13:07Z",
+  "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only PitCapture*,PitRoom*,PitRooms*,SWEEP*,TAKEN*",
+  "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+  "last": "call site: the ShouldBeFed postfix reads the hand-fed rule with the pawn's posture  (pattern RM_PitPrisonCare\\.LipCare\\(p\\) && RM_PitRoomMath\\.HandFedInPit\\(true, p\\.guest\\.CanBeBroughtFood, p\\.Downed, p\\.GetPosture\\(\\) == PawnPosture\\.Standing, HealthAIUtility\\.ShouldSeekMedicalRest\\(p\\)\\))",
+  "patch": "diff --git b/src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPrisonCare.cs a/src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPrisonCare.cs\nindex 0fbd6ba6c3..74fa59fdb0 100644\n--- b/src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPrisonCare.cs\n+++ a/src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPrisonCare.cs\n@@ -51,10 +51,8 @@ namespace RimMandrake.FlowWorks\n         [HarmonyPostfix]\n         public static void Postfix(Pawn p, ref bool __result)\n         {\n-            // RIMMANDRAKE_TRACE_FLOWWORKS_AWAKE_PRISONER_MEAL_SKIPPED_ONE_RUN_IN_TWO: never a standing prisoner (vanilla's first\n-            // rule), who then gets food brought; LipCare first, so a pawn with no guest tracker never reads it\n-            if (!__result && RM_PitPrisonCare.LipCare(p) && RM_PitRoomMath.HandFedInPit(true, p.guest.CanBeBroughtFood, p.Downed,\n-                p.GetPosture() == PawnPosture.Standing, HealthAIUtility.ShouldSeekMedicalRest(p))) __result = true;\n+            if (!__result && RM_PitPrisonCare.LipCare(p) && p.guest.CanBeBroughtFood\n+                && (p.Downed || HealthAIUtility.ShouldSeekMedicalRest(p))) __result = true;\n         }\n     }\n \n",
+  "patch_files": [
+   "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPrisonCare.cs"
+  ],
+  "patch_sha": "5c1365dd6b32fe6e",
   "rc": 1,
   "test_blob": "ecdb632246123de160f342b464f55bcbb9ce7ca5"
  },

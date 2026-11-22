@@ -191,5 +191,13 @@ namespace RimMandrake.FlowWorks
 		{
 			return repaths <= 0 ? 0 : CaptureRepathPauseTicks;
 		}
+
+		/// <summary>RIMMANDRAKE_TRACE_FLOWWORKS_AWAKE_PRISONER_MEAL_SKIPPED_ONE_RUN_IN_TWO: is a bedless pit prisoner hand-fed (a
+		/// warden's FeedPatient from the lip) rather than brought food? Downed, or lying in medical rest, as vanilla feeds a
+		/// patient in bed; never a prisoner standing, who gets food brought (vanilla's DeliverFood refuses anyone fed by hand).</summary>
+		public static bool HandFedInPit(bool lipCare, bool canBeBroughtFood, bool downed, bool standing, bool seeksMedicalRest)
+		{
+			return lipCare && canBeBroughtFood && (downed || (!standing && seeksMedicalRest));
+		}
 	}
 }

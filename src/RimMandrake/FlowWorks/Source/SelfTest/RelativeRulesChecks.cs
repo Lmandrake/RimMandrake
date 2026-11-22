@@ -54,6 +54,32 @@ namespace RimMandrake.FlowWorks.SelfTest
         {
             const int Person = 2;
 
+            // RIMMANDRAKE_TRACE_FLOWWORKS_AWAKE_PRISONER_MEAL_SKIPPED_ONE_RUN_IN_TWO: vanilla never hand-feeds a STANDING pawn
+            // (FeedPatientUtility.ShouldBeFed's first rule), and DeliverFood refuses anyone ShouldBeFed says yes to. A pit prisoner
+            // who got up with tended, healing wounds (ShouldSeekMedicalRest) was told "hand-fed" while walking, so no warden
+            // brought food (visit 5, sc_hole_prison run 1: tended 4, GotoWander). Range: every lip care, food allowed, downed,
+            // standing and medical-rest combination (32 cases).
+            Case("PitRoom_standing_prisoner_gets_food_brought_not_hand_fed", () =>
+            {
+                int cases = 0;
+                foreach (bool lip in new[] { false, true })
+                foreach (bool food in new[] { false, true })
+                foreach (bool downed in new[] { false, true })
+                foreach (bool standing in new[] { false, true })
+                foreach (bool rest in new[] { false, true })
+                {
+                    cases++;
+                    bool v = RM_PitRoomMath.HandFedInPit(lip, food, downed, standing, rest);
+                    bool want = lip && food && (downed || (!standing && rest));
+                    Assert(v == want, "lip " + lip + " food " + food + " downed " + downed + " standing " + standing + " rest " + rest + ": " + v);
+                }
+                Assert(!RM_PitRoomMath.HandFedInPit(true, true, false, true, true), "the visit-5 prisoner: standing, healing, gets food brought");
+                Console.WriteLine("      hand-fed rule: " + cases + " cases");
+                string care = RiverSwitchFlipChecks.Src("Superdeep/RM_PitPrisonCare.cs");
+                RiverSwitchFlipChecks.Has(care, @"RM_PitPrisonCare\.LipCare\(p\) && RM_PitRoomMath\.HandFedInPit\(true, p\.guest\.CanBeBroughtFood, p\.Downed, p\.GetPosture\(\) == PawnPosture\.Standing, HealthAIUtility\.ShouldSeekMedicalRest\(p\)\)",
+                    "the ShouldBeFed postfix reads the hand-fed rule with the pawn's posture");
+            });
+
             Case("PitRoom_depth_three_metres_scaled_by_body_height", () =>
             {
                 // PIT_ROOM_TUNE_TALL_FOLK_DIG_DEEPER (owner card 2026-10-18): 3.0 m for a person, scaled by height

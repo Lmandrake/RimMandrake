@@ -62,7 +62,7 @@ def prison_care(cs, xml):
         ("a bed elsewhere does not move him: TakeToBed returns no job for a kept pawn",
          "WorkGiver_Warden_TakeToBed" in t and re.search(r"if \(!RM_PitPrisonCare\.Kept\(t as Pawn\)\) return true;\s*__result = null;\s*return false;", t)),
         ("fed without a bed: ShouldBeFed postfix for lip care",
-         "WardenFeedUtility.ShouldBeFed" in t and re.search(r"RM_PitPrisonCare\.LipCare\(p\) && p\.guest\.CanBeBroughtFood", t)),
+         "WardenFeedUtility.ShouldBeFed" in t and re.search(r"RM_PitPrisonCare\.LipCare\(p\) && RM_PitRoomMath\.HandFedInPit\(true, p\.guest\.CanBeBroughtFood", t)),
         ("tended without a bed: GoodLayingStatusForTend postfix for lip care",
          "GoodLayingStatusForTend" in t and re.search(r"RM_PitPrisonCare\.LipCare\(patient\) && patient\.Downed\) __result = true;", t)),
         ("food lands in the hole, not outside it",
@@ -254,7 +254,7 @@ PRISON_MUTANTS = {
     "room patch gone": ("if (!__result && RM_PitPrisonCare.PrisonRoom(__instance)) __result = true;", ""),
     "stay lets the bed win": ("__result = null;\n            return false;", "return true;"),
     "kept forgets the hold": ("&& RM_SuperdeepTrap.IsHeld(p)", ""),
-    "feed patch gone": ("RM_PitPrisonCare.LipCare(p) && p.guest.CanBeBroughtFood", "false"),
+    "feed patch gone": ("RM_PitPrisonCare.LipCare(p) && RM_PitRoomMath.HandFedInPit(true, p.guest.CanBeBroughtFood", "false"),
     "food drops outside": ("__result.targetC = t.Position;", ""),
 }
 

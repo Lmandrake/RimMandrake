@@ -50,3 +50,15 @@ file: src/RimMandrake/FlowWorks/Source/RM_LiquidFire.cs
 file: src/RimMandrake/FlowWorks/Source/RM_FuelFireMath.cs
 file: src/RimMandrake/FlowWorks/Source/RM_FireMath.cs
 file: src/RimMandrake/FlowWorks/northstar/suspension_bridge_proof.py
+
+## fix (2026-11-21, holder run run-1795325268)
+- MOD: `RM_FuelFireMath.InfernoAttachChance / InfernoAttachSize / InfernoBesideChance` (Verse-free). `ApplyInfernoEffects`
+  reads them: solid deck 0.35 (the design's onCover chance), size 0.4; grate 0.9, size 0.6; a fire under a solid deck
+  reaches no one beside it but those in the hole. Offline: `FuelFire_inferno_solid_deck_shields_grate_passes` (20 cases),
+  red on the parent at the call site, green on the fix.
+- SITE: `suspension_bridge_proof.py` `grate()` puts out every fire in both plots and their halo before each scene. The
+  2026-10-29 diag read solid 3 when it ran alone, and 5 to 13 when it ran after the grate scene. The scene repair is not yet
+  shown both ways live. Its red-seen (`maturation.py red-seen FlowWorks sc_hung_bridge`) needs the game; it is owed at
+  Stage 6, with the parent's inferno rule as the planted fault.
+- Not explained offline: the size of solid > grate (13 vs 5). The two parts above remove both known sources. The live
+  rerun decides it.

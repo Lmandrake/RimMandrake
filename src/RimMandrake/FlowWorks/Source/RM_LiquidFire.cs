@@ -536,17 +536,20 @@ namespace RimMandrake.FlowWorks
 			// PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE: trapped in the burning pit = down a pit (RM_PitRooms.IsPitFloor: a person-band
 			// pocket at any depth), never "dug 2 m"; an intact cover is ground, so its occupant is never trapped
 			bool heldInPit = RM_PitRooms.IsPitFloor(map, ex, c);
-			// SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP: a grated deck over the inferno passes it to the people on it
+			// SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP: a grated deck over the inferno passes it to the people on it.
+			// RIMMANDRAKE_GATE_INFERNO_DECK_CHANCE_SOLID_OUTBURNS_GRATE (bridges design §4.1): a SOLID deck shields them (the low
+			// onCover chance), and the fire under it is shut in, so it reaches no one beside it but those down in the hole.
 			bool grated = Pits.RM_GrateEffects.GratePassesFire(map, c);
+			bool onDeck = Pits.RM_SpanUtility.DeckedAt(map, c);
+			bool capped = onDeck && !grated;
 			foreach (Pawn p in PawnsAt(map, c))
 			{
 				if (!p.Dead && !p.Flying)
 				{
 					bool held = heldInPit || Pits.RM_GrateEffects.UnderDeck(p);
-					if (Rand.Chance(held ? 1f : grated ? System.Math.Max(RM_FuelFireMath.InfernoAttachInCell, RM_FireMath.AttachChance(false, true, false, true))
-						: RM_FuelFireMath.InfernoAttachInCell))
+					if (Rand.Chance(RM_FuelFireMath.InfernoAttachChance(false, held, onDeck && !held, grated)))
 					{
-						p.TryAttachFire(held ? 1f : 0.6f, null);
+						p.TryAttachFire(RM_FuelFireMath.InfernoAttachSize(held, onDeck && !held, grated), null);
 					}
 					if (grated && !held)
 					{
@@ -564,7 +567,12 @@ namespace RimMandrake.FlowWorks
 				List<Thing> beside = map.thingGrid.ThingsListAt(n);
 				for (int t = beside.Count - 1; t >= 0; t--)
 				{
-					if (beside[t] is Pawn p && !p.Dead && !p.Flying && Rand.Chance(RM_FuelFireMath.InfernoAttachBeside))
+					if (!(beside[t] is Pawn p) || p.Dead || p.Flying)
+					{
+						continue;
+					}
+					bool besideHeld = RM_PitRooms.IsPitFloor(map, ex, n) || Pits.RM_GrateEffects.UnderDeck(p);
+					if (Rand.Chance(RM_FuelFireMath.InfernoBesideChance(false, besideHeld, capped)))
 					{
 						p.TryAttachFire(0.3f, null);
 					}

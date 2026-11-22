@@ -90,6 +90,47 @@ namespace RimMandrake.FlowWorks
 		public const float InfernoAttachInCell = 0.9f;
 		public const float InfernoAttachBeside = 0.3f;
 
+		/// <summary>RIMMANDRAKE_GATE_INFERNO_DECK_CHANCE_SOLID_OUTBURNS_GRATE (flowworks_bridges_design_2026-10-17 §4.1): the chance a
+		/// pawn on a burning chemfuel square catches, per effects check. A flyer is above the fire; a pawn held down in the hole
+		/// (pit floor, under a deck or lid) is certain; a pawn on an intact GRATE gets the fire passed up (at least the in-cell
+		/// chance); a pawn on an intact SOLID deck gets the design's low onCover chance (<see cref="RM_FireMath.AttachChance(bool,
+		/// bool, bool, bool)"/> on a deck, not grated); anyone else stands in the burning fuel.</summary>
+		public static float InfernoAttachChance(bool flying, bool held, bool onIntactDeck, bool grated)
+		{
+			if (flying)
+			{
+				return 0f;
+			}
+			if (held)
+			{
+				return 1f;
+			}
+			if (onIntactDeck)
+			{
+				return grated ? Math.Max(InfernoAttachInCell, RM_FireMath.AttachChance(false, true, false, true))
+					: RM_FireMath.AttachChance(true, true, false, false);
+			}
+			return InfernoAttachInCell;
+		}
+
+		/// <summary>The size of the fire attached by <see cref="InfernoAttachChance"/>: the same sizes as the ordinary liquid fire
+		/// (RM_LiquidFire.ApplyEffects): held 1, a grate 0.6, a solid deck 0.4; open fuel keeps the inferno's 0.6.</summary>
+		public static float InfernoAttachSize(bool held, bool onIntactDeck, bool grated)
+		{
+			return held ? 1f : onIntactDeck && !grated ? 0.4f : 0.6f;
+		}
+
+		/// <summary>The chance a pawn on a square BESIDE a burning chemfuel square catches. A burning square under an intact
+		/// solid deck (capped) is shut in: its flames reach only a pawn down in the hole, never one on the deck or the rim.</summary>
+		public static float InfernoBesideChance(bool flying, bool held, bool sourceCapped)
+		{
+			if (flying || (sourceCapped && !held))
+			{
+				return 0f;
+			}
+			return InfernoAttachBeside;
+		}
+
 		/// <summary>Lit cells at which an inferno counts as a LARGE fire (the Utinni layer's "come and look" signal).</summary>
 		public const int LargeInfernoCells = 40;
 

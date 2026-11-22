@@ -401,11 +401,19 @@ def grate(ctx):
     def pit(dz):
         for i in range(1, 5):
             dig(P(i, dz), 4)                                     # 2 m
-    counts, fills, builds = {}, {}, {}
+    counts, fills, builds, cleared = {}, {}, {}, {}
+    # RIMMANDRAKE_GATE_INFERNO_DECK_CHANCE_SOLID_OUTBURNS_GRATE: the two scenes run one after the other 4 squares apart, and the
+    # first inferno's halo sets the ground around it alight; those fires spread onto the control's riders (diag 2026-10-29:
+    # solid alone 3 burns, after the grate scene 5 to 13). Every fire in both plots and their halo is put out before each
+    # scene, so each deck's riders read only their own pit's fire.
+    fire_rect = "%d,%d,%d,%d" % (P(-10, 10)[0], P(-10, 10)[1], 26, 24)
     with V.scope("GRATE_fire"):
         pit(20)                                                  # each scope digs its own pits: a refused dig of one
         pit(24)                                                  # scene never withholds the other's row
         for dz, tier in ((20, "steelgrated"), (24, "steel")):
+            out_r = B.call("jawa/map_fire", action="extinguish", rect=fire_rect) or {}
+            cleared[tier] = {k: out_r.get(k) for k in ("success", "firesExtinguished", "message", "error") if k in out_r}
+            V.require(out_r.get("success") is not False, "%s scene's ground fires put out" % tier, cleared[tier], cls="HARNESS")
             # every fill reply is kept: live 2026-10-19 (run c, same map as runs a/b) the solid-deck CONTROL pit read "REFUSED:
             # fire off or nothing burnable" cut at 60 chars, the "(fluid X, F=n)" cause lost and the fill replies discarded
             fills[tier] = []
@@ -434,7 +442,8 @@ def grate(ctx):
         g, s_ = counts["steelgrated"][0], counts["steel"][0]
         # intent: BOTH pits burn; the solid deck is the control whose riders stay unburnt
         row("GRATE_fire_burns_people_above", "PASS" if g >= 1 and g > s_ else "FAIL",
-            {"grateBurns": g, "solidBurns": s_, "reads": counts, "builds": {t: b[1] for t, b in builds.items()}, "fills": fills})
+            {"grateBurns": g, "solidBurns": s_, "reads": counts, "builds": {t: b[1] for t, b in builds.items()}, "fills": fills,
+             "fires_cleared": cleared})
     with V.scope("GRATE_pour_item"):
         pit(28)
         for i in range(1, 5):                                         # 1 m of water in the 2 m canal: room for the pour

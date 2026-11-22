@@ -171,6 +171,54 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(ring[ring.Length - 1] * RM_FuelFireMath.DetonationTicksPerRing <= 150, "a 60-cell channel takes over 2.5 s");
             });
 
+            // RIMMANDRAKE_GATE_INFERNO_DECK_CHANCE_SOLID_OUTBURNS_GRATE (flowworks_bridges_design_2026-10-17 §4.1): over a chemfuel
+            // inferno a SOLID deck gives the people on it the low onCover chance; a GRATE passes the fire up. Range read: every
+            // combination of flying, held (down in the hole), on an intact deck and grated, in the cell and beside it with the
+            // source cell open, grated or under a solid deck. Left out: the halo (vanilla fires on dry ground, no deck read).
+            Case("FuelFire_inferno_solid_deck_shields_grate_passes", () =>
+            {
+                int cases = 0;
+                float worstGap = float.MaxValue;
+                foreach (bool flying in new[] { false, true })
+                foreach (bool held in new[] { false, true })
+                foreach (bool deck in new[] { false, true })
+                foreach (bool grated in new[] { false, true })
+                {
+                    cases++;
+                    float ch = RM_FuelFireMath.InfernoAttachChance(flying, held, deck, grated);
+                    float sz = RM_FuelFireMath.InfernoAttachSize(held, deck, grated);
+                    Assert(ch >= 0f && ch <= 1f && sz > 0f && sz <= 1f, "chance and size are in range: " + ch + ", " + sz);
+                    if (flying) { Assert(ch == 0f, "a flyer is never lit"); continue; }
+                    if (held) { Assert(ch == 1f && sz == 1f, "trapped in the burning hole: certain, full size"); continue; }
+                    if (deck && !grated)
+                        Assert(ch == RM_FireMath.AttachChance(true, true, false, false), "solid deck: the design's onCover chance");
+                    else
+                        Assert(ch >= RM_FuelFireMath.InfernoAttachInCell, "open fuel or a grate: the inferno's in-cell chance");
+                }
+                float solid = RM_FuelFireMath.InfernoAttachChance(false, false, true, false);
+                float grate = RM_FuelFireMath.InfernoAttachChance(false, false, true, true);
+                worstGap = grate - solid;
+                Assert(grate > solid, "a grate passes more fire than a solid deck: " + grate + " vs " + solid);
+                Assert(RM_FuelFireMath.InfernoAttachSize(false, true, true) > RM_FuelFireMath.InfernoAttachSize(false, true, false),
+                    "a grate's attached fire is bigger than a solid deck's");
+                foreach (bool held in new[] { false, true })
+                foreach (bool capped in new[] { false, true })
+                {
+                    cases++;
+                    float b = RM_FuelFireMath.InfernoBesideChance(false, held, capped);
+                    Assert(b == (capped && !held ? 0f : RM_FuelFireMath.InfernoAttachBeside),
+                        "beside: a fire under a solid deck reaches only the hole (held " + held + ", capped " + capped + "): " + b);
+                    Assert(RM_FuelFireMath.InfernoBesideChance(true, held, capped) == 0f, "a flyer is never lit beside");
+                }
+                Console.WriteLine("      inferno deck rule: " + cases + " cases, grate " + grate + " vs solid " + solid + " (gap " + worstGap + ")");
+                // the shipped effects read this rule, not their own copy (red on the parent: it inlined 0.9 for every deck)
+                string f = RiverSwitchFlipChecks.Src("RM_LiquidFire.cs");
+                RiverSwitchFlipChecks.Has(f, @"Rand\.Chance\(RM_FuelFireMath\.InfernoAttachChance\(false, held, onDeck && !held, grated\)\)",
+                    "ApplyInfernoEffects reads the deck rule in the cell");
+                RiverSwitchFlipChecks.Has(f, @"Rand\.Chance\(RM_FuelFireMath\.InfernoBesideChance\(false, besideHeld, capped\)\)",
+                    "ApplyInfernoEffects reads the deck rule beside");
+            });
+
             Case("FuelFire_detonation_budgets_hold_on_big_bodies", () =>
             {
                 Console.WriteLine("      " + CheckPlan(30, 30, 15, 15, out _));
