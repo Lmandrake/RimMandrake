@@ -1,0 +1,13 @@
+diff --git a/src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs b/src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs
+index b486caa201..4e2facf71c 100644
+--- a/src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs
++++ b/src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs
+@@ -345,7 +345,7 @@ namespace RimMandrake.Pyrelands
+                 list.GapLine();
+             }
+ 
+-            if (Group(list, "Fire's ash and scorch-fruit", RimMandrake.Shared.SettingScope.Now, new[] { "ashDustingEnabled", "ashDustingChance", "scorchFruitEnabled", "scorchFruitChance", "scorchFruitMapCap" }))
++            if (Group(list, "Fire's ash and scorch-fruit", RimMandrake.Shared.SettingScope.Now, new[] { "ashDustingEnabled", "ashDustingChance", "scorchFruitEnabled", "scorchFruitChance" }))
+             {
+                 using (Dependent(list, "ashDustingEnabled", "ashDustingChance", "scorchFruitEnabled", "scorchFruitChance", "scorchFruitMapCap"))
+                 {

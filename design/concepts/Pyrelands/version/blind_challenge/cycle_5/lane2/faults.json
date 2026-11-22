@@ -1,0 +1,90 @@
+{
+ "faults": [
+  {
+   "id": "RIMMANDRAKE_SCOPE_SETTINGS_SCREENS_DECIDER_TO_ITS_OWN_MOD",
+   "class": "Problem",
+   "against": "check",
+   "bar": "inv_settings_gate",
+   "criterion": "T_SETTINGS_SCREENS decides inv_settings_gate on 'the real Mod Settings screen ... (Pyrelands rows only)' (test_table observes, mod_rows 'Pyrelands:')",
+   "evidence": [
+    "lane2/reruns.jsonl: T_SETTINGS_SCREENS FAIL rc 1, 'settings screens selftest: 855/856 ok' against recorded 856/856",
+    "the one failing row is FlowWorks#Main (underLiquidShallowOpacity in no section), not a Pyrelands row; all 14 Pyrelands rows ok",
+    "no program reads the table's mod_rows field (grep over src and design: only the table makers write it)"
+   ],
+   "would_pass": "the decider is judged on Pyrelands' rows only: selftest_settings_screens.py --mod Pyrelands rc 0 on the build, rc 1 on a planted Pyrelands screen fault",
+   "smallest_fix": "a --mod filter in selftest_settings_screens.py and the table command 'python3 src/RimMandrake/Utils/selftest_settings_screens.py --mod Pyrelands'",
+   "verdict_on_criterion": "criterion right; the command did not apply it",
+   "status": "FIXED fa0f590a354b02d37eb718e53149494e9b487018",
+   "miss_of": 4,
+   "note": "pipeline defect, filed and closed as the same id; the FlowWorks fault itself is RIMMANDRAKE_LIST_FLOWWORKS_SHALLOW_OPACITY_SO_SECTION_RESET_REACHES_IT (filed earlier by another run)"
+  },
+  {
+   "id": "RIMMANDRAKE_PIN_PYRE_DESCRIPTIONS_FURNACE_CARD_COULD_READ_BLANK",
+   "class": "Problem",
+   "against": "check",
+   "bar": "inv_art_and_text",
+   "criterion": "inv_art_and_text: the shipped art set and descriptions (decided by RECORD_ART_SHEET and T_DEFS_OFFLINE)",
+   "evidence": [
+    "lane2/planted_results.jsonl TEXT_FURNACE_DESC_GONE: the furnace-beast's <description> deleted, every suite green (16 suites)",
+    "RM_FurnaceBeast's parent is vanilla AnimalThingBase, which carries no description: the info card would read blank",
+    "lane 1's text_labels_and_descriptions skipped parented defs, so it was blind too"
+   ],
+   "would_pass": "a T_DEFS_OFFLINE fact that every inspected Pyrelands def resolves a description, red when one is deleted",
+   "smallest_fix": "fact descriptions_present plus the mutant 'furnace-beast description gone' in selftest_pyrelands_defs_offline.py",
+   "verdict_on_criterion": "criterion right; the check did not observe it",
+   "status": "FIXED ca2accf04541ada5a325a2668d4c9c17cffce81e",
+   "miss_of": 4
+  },
+  {
+   "id": "RIMMANDRAKE_NOTE_PYRE_CUT_CHECK_SEES_DEFS_NOT_DEAD_CONSTANTS",
+   "class": "Polish",
+   "against": "check",
+   "bar": "inv_firebreak_firefoam, inv_lightning_breaker",
+   "criterion": "the firebreak floor and the lightning breaker stay excised",
+   "evidence": [
+    "lane2/planted_results.jsonl FIREBREAK_CODE_BACK and FULGURITE_CODE_BACK: a re-added C# constant is caught by lane 1 only, not by T_CUT_STAYS_CUT",
+    "the def plants (FIREBREAK_DEF_BACK, BREAKER_DEF_BACK) are caught by T_CUT_STAYS_CUT"
+   ],
+   "would_pass": "n/a: a constant no def names gives the player no floor and no breaker",
+   "smallest_fix": "none owed",
+   "verdict_on_criterion": "right",
+   "status": "PENDING",
+   "miss_of": 4,
+   "note": "Polish, one line on version/polish.md; not part of passing"
+  },
+  {
+   "id": "RIMMANDRAKE_NOTE_PYRE_BURROW_ORDER_TEST_OUTSIDE_THE_TABLE",
+   "class": "Polish",
+   "against": "check",
+   "bar": "ashwallow_dives_unharmed",
+   "criterion": "the ashwallow dives as the front reaches it (decided live: sc_ashwallow, sc_heat_dome)",
+   "evidence": [
+    "selftest_pyrelands_burrow_beats_dash.py is the only offline catch of the think-tree plants (THINKTREE_BACK_TO_PREWANDER, THINKTREE_PRIORITY_LOW, GIVER_ANY_BIOME) and is not in test_table.json",
+    "the game-side caller plants CALLER_YIELDS_READS_REASK, CALLER_IDLE_NONE and GIVER_FIRE_LIST_GATE_FLIPPED survive every offline suite; the bar proves at stage 6, so the live scenes are their deciders"
+   ],
+   "would_pass": "n/a at stage 4-5",
+   "smallest_fix": "list it as support of the ashwallow bar when the table is next made",
+   "verdict_on_criterion": "right",
+   "status": "PENDING",
+   "miss_of": 0,
+   "note": "Polish; the three survivors are named for the Stage 6 visit in SUMMARY.md"
+  },
+  {
+   "id": "RIMMANDRAKE_NOTE_PYRE_FERTILITY_CAP_FLATTENS_SLIDER_CORNERS",
+   "class": "Polish",
+   "against": "mod",
+   "bar": "fresh_burn_compounds_with_black_rain",
+   "criterion": "a wet fresh scar out-grows wet old ash while black rain lasts",
+   "evidence": [
+    "lane1 compound_slider_corners (INFO): with the sliders past the shipped values (watered 2.0, or watered + bonus over 2.0) the FertilityCap 2.0 makes a wet fresh scar equal wet old ash; ashWateredFertility can be set below ashDryFertility",
+    "at the shipped values the compound holds (lane1 compound_shipped_defaults PASS: 1.9 > 1.4 > 1.2 > 0.7)"
+   ],
+   "would_pass": "n/a: shipped behaviour passes",
+   "smallest_fix": "none owed (player tuning)",
+   "verdict_on_criterion": "right",
+   "status": "PENDING",
+   "miss_of": 4,
+   "note": "Polish, one line on version/polish.md"
+  }
+ ]
+}

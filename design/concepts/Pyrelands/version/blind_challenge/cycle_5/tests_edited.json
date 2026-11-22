@@ -1,0 +1,64 @@
+{
+ "edited": [
+  {
+   "path": "src/RimMandrake/Utils/selftest_settings_screens.py",
+   "why": "added --mod NAME (repeatable): runs only that mod's rows; the bare run is unchanged. Nothing removed or loosened: the Pyrelands rows and their 13 plants all still run under --mod Pyrelands.",
+   "before_on": "c8ef19b61023d4237af85de13a1ca5c18bddb804",
+   "after_on": "fa0f590a354b02d37eb718e53149494e9b487018",
+   "before_sha256": "b92f7f2499cc20688ca8b4b4a38a2791862187980cf6a2ecada94af1a044aefb",
+   "after_sha256": "e75ebd2fec816330a84b1b63fc5f4750be2445a22576dc01144fc977cf5275ce"
+  },
+  {
+   "path": "design/concepts/Pyrelands/version/test_table.json",
+   "why": "T_SETTINGS_SCREENS command gains --mod Pyrelands (its observes already said 'Pyrelands rows only'); test_table.md and pilot_throwaway/make_test_table.py say the same",
+   "before_on": "c8ef19b61023d4237af85de13a1ca5c18bddb804",
+   "after_on": "fa0f590a354b02d37eb718e53149494e9b487018",
+   "before_sha256": "4944636d2d29657e0760a72c94afabdbca1746a24aa9eed7a572dd8fe298bb87",
+   "after_sha256": "789ef03afffef9cb3375339d25a1864d54cbfd1788cc93cea219098be2a9bfc0"
+  },
+  {
+   "path": "src/RimMandrake/Pyrelands/selftest_pyrelands_defs_offline.py",
+   "why": "added fact descriptions_present and the mutant 'furnace-beast description gone'. Nothing removed or loosened.",
+   "before_on": "fa0f590a354b02d37eb718e53149494e9b487018",
+   "after_on": "ca2accf04541ada5a325a2668d4c9c17cffce81e",
+   "before_sha256": "f574d1468e16ae345ba79bbe7fc024cbcdba8a95ce7a6754db7fb133e8b2f227",
+   "after_sha256": "98952b7cf83746de459f07fc6cba3b2c402f8ea6d0bfde82bdc7572eb5ab6a84"
+  },
+  {
+   "path": "src/RimMandrake/rimflow/selftest_rerun_relation.py",
+   "why": "pipeline test: added a-path-outside-the-repo-is-not-in-the-change (RIMMANDRAKE_KEEP_RERUN_RELATION_READABLE_PAST_THE_STEAM_FOLDER). Decides no Pyrelands bar.",
+   "before_on": "ca2accf04541ada5a325a2668d4c9c17cffce81e",
+   "after_on": "697e3eb8ad6ed0c2de81ba36d4ea7dd01e21bc93",
+   "before_sha256": "953271d1858a2f1f2f680f2cae71bfcbc96d8a837417011573f5e9eba8362872",
+   "after_sha256": "2c7a1d0e871e260043c01542add41daf7d38541290d7d92ad12fc399c039fb74"
+  },
+  {
+   "path": "design/concepts/Pyrelands/version/test_table.md",
+   "why": "the table's readable copy: T_SETTINGS_SCREENS command gains --mod Pyrelands, as in test_table.json",
+   "before_on": "c8ef19b61023d4237af85de13a1ca5c18bddb804",
+   "after_on": "fa0f590a354b02d37eb718e53149494e9b487018",
+   "before_sha256": "20e0567156dcd490bf3612086eaa8642c4fa81c2f5b174ae252a78f7a06fa27a",
+   "after_sha256": "e357c89b6e220799bf00930e26f01af8c58f51577085bbe52b77bb3671530427"
+  },
+  {
+   "path": "design/concepts/Pyrelands/version/pilot_throwaway/make_test_table.py",
+   "why": "the table maker: T_SETTINGS_SCREENS gets cmd ... --mod Pyrelands, so a remade table keeps the scoped command",
+   "before_on": "c8ef19b61023d4237af85de13a1ca5c18bddb804",
+   "after_on": "fa0f590a354b02d37eb718e53149494e9b487018",
+   "before_sha256": "bd072979e6de50cefe2fbefc822e5711b4fac2a780c15a4334731a382274aea9",
+   "after_sha256": "da6f54c2033bfa6a810ff528cfbb34fe75daa6fa9b41ea3fbe6e782124cc3534"
+  },
+  {
+   "path": "infrastructure/state/ledger/events/BENCH.jsonl",
+   "why": "not a test: the ledger events filing RIMMANDRAKE_SCOPE_SETTINGS_SCREENS_DECIDER_TO_ITS_OWN_MOD (and its dropped FlowWorks duplicate), carried in the same commit",
+   "before_on": "c8ef19b61023d4237af85de13a1ca5c18bddb804",
+   "after_on": "fa0f590a354b02d37eb718e53149494e9b487018",
+   "before_sha256": "4b9a08fbfcc789d8025859957b477f846b7f8e2812a8a42204271cb05dc14dcc",
+   "after_sha256": "af327db31abd2ab717c3a832a890b58836331b563c9b15ced45441e9f3220ea3"
+  }
+ ],
+ "also_edited_not_a_test": [
+  "src/RimMandrake/rimflow/rerun_relation.py (pipeline tool, fix of RIMMANDRAKE_KEEP_RERUN_RELATION_READABLE_PAST_THE_STEAM_FOLDER)",
+  "design/specs/2026-11-21-rerun-only-related/boundary.md (its promise)"
+ ]
+}

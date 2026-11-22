@@ -51,28 +51,85 @@ Rows: **49; 45 PASS, 3 INFO, 1 UNSETTLED, 0 FAIL** [measured].
   step is sqrt 2 long. It now asks every probe downwind and the mean carry within 10 degrees at every bearing (worst 5.0).
 
 ## Lane 2 reruns
-(not started)
+`lane2/rerun_offline.py` with each test's recorded command, a private WINBUILD_ROOT per test.
+- `reruns.jsonl`: **25 tests** (the 7 deciders of the offline bars, then the 18 other offline/record tests); verdict equal
+  to the recorded one on **24 of 25** [measured]. The one difference: `T_SETTINGS_SCREENS` FAIL 855/856 against a recorded
+  856/856; its failing row is FlowWorks#Main (a FlowWorks setting in no section), not Pyrelands (all 14 Pyrelands rows ok).
+  `T_FUZZ`'s `match` is false only on its timing digits (11.99 s against 11.46 s); `T_ROUND6_GAPS` is red as recorded
+  (5 of 18) and decides no offline bar.
+- `reruns_after_fix.jsonl` (at 697e3eb8ad; `rerun_relation.py --old c8ef19b610`, once repaired, names 5 touched checks:
+  T_SETTINGS_SCREENS, T_DEFS_OFFLINE, RECORD_ART_SHEET, T_ROUND6_GAPS and the live sc_walk): T_SETTINGS_SCREENS PASS 14/14,
+  T_DEFS_OFFLINE PASS (11 facts, 22 of 22 mutants), RECORD_ART_SHEET PASS, T_ROUND6_GAPS FAIL as recorded. Their `match`
+  reads false where the last line legitimately changed (the scoped command, the new fact). sc_walk is a Stage 6 scene.
 
 ## Planted
-(not started)
+`lane2/planted_faults.json` (37, written by `make_planted.py`, each `old` checked to occur once), run by `plant_faults.py`
+with WINBUILD_ROOT under `D:\ClaudeWork\rimmandrake\scratch\pyrelands_blind_c5_mut\`: per fault, lane 1 and 15 offline suites
+in parallel, restore on SIGTERM/SIGINT/SIGHUP (one batch was killed at its bound and the tree came back clean), `git diff
+--quiet` after. Caught means a new failing row against the baseline, never an rc alone.
+- **33 of 37 caught** [measured] (34 after the T_DEFS_OFFLINE repair). Every fault in an offline bar's kernel or files is
+  caught: the probe (4 kernel, 2 caller), the biome text (2), firebreak and breaker (4; the two C# constants by lane 1
+  only, Polish), the settings gate (8: kernel, gate, field and Scribe defaults, screen group, worldgen, preflight), art and
+  text (4), plus the venom (2), the hawk letter (2) and the think tree (3, by `selftest_pyrelands_burrow_beats_dash.py`).
+- Not caught: `TEXT_FURNACE_DESC_GONE` (fixed, below) and three game-side caller faults of the stage-6 ashwallow bar:
+  `CALLER_YIELDS_READS_REASK` and `CALLER_IDLE_NONE` (MapComponent_BurnLine's nudge reads the wrong kind) and
+  `GIVER_FIRE_LIST_GATE_FLIPPED` (RM_JobGiver_BurrowOnFire's fire-list early-out inverted). That bar is decided live
+  (sc_ashwallow, sc_heat_dome), so these are named for the Stage 6 visit, not faults of an offline decider.
+- A first description plant (`TEXT_FURNACE_DESC_EMPTY`) broke the XML instead of blanking the text; it was caught for that
+  reason only, and `TEXT_FURNACE_DESC_GONE` replaced it as the real case.
+- Lane 1 caught 19 faults, T_SETTINGS_SWEEP_OFFLINE 7, T_ASH_PROBE_OFFLINE 6, T_SITE 6, T_LINT 5.
 
 ## Faults
-(not started)
+`lane2/faults.json`: **2 Problems, both against a check, both FIXED, both `miss_of: 4`; 3 Polish** [measured].
+- Problem `RIMMANDRAKE_SCOPE_SETTINGS_SCREENS_DECIDER_TO_ITS_OWN_MOD` (inv_settings_gate): the decider ran every mod's screen
+  rows; the table's `mod_rows: 'Pyrelands:'` is read by nothing, so FlowWorks' row made it red.
+- Problem `RIMMANDRAKE_PIN_PYRE_DESCRIPTIONS_FURNACE_CARD_COULD_READ_BLANK` (inv_art_and_text): deleting the furnace-beast's
+  description left every suite green; its vanilla parent holds none, so its info card would read blank.
+- Polish (version/polish.md): the cut check sees defs, not dead C# constants; the burrow-order selftest is outside the
+  table; the fertility cap flattens the compound at slider corners past the shipped values.
+- No mod fault was found.
 
 ## Fixes
-(not started)
+`lane2/fixes.jsonl`: two check repairs, each red on its plant and green on the build at 697e3eb8ad [measured]; no mod
+code changed, so no fresh reader is owed (`check_repairs`).
+- fa0f590a35: `selftest_settings_screens.py --mod`; T_SETTINGS_SCREENS runs `--mod Pyrelands` (plant SETTING_SCREEN_GROUP_DROP:
+  rc 1, 13/14; build: rc 0, 14/14).
+- ca2accf045: T_DEFS_OFFLINE fact `descriptions_present` and its mutant (plant TEXT_FURNACE_DESC_GONE: rc 1; build: rc 0,
+  11 facts, 22 of 22 mutants).
+- `maturation.py red-seen` recorded for T_DEFS_OFFLINE and T_SETTINGS_SCREENS (version/evidence/red_seen.json).
+
+Pipeline defects found, filed and fixed in this run:
+- `RIMMANDRAKE_SCOPE_SETTINGS_SCREENS_DECIDER_TO_ITS_OWN_MOD`, fa0f590a35 (above).
+- `RIMMANDRAKE_KEEP_RERUN_RELATION_READABLE_PAST_THE_STEAM_FOLDER`, 697e3eb8ad: `rerun_relation.py` passed test-table paths
+  outside the repo (`/mnt/c/Program Files`) to `git diff`, git exited 128, and all 64 Pyrelands checks read "no readable
+  relation". Test first (red: every check unreadable; green: 0 of 20 failed), boundary page promise added. Live reading
+  went from 64 unreadable to 5 touched and 59 untouched.
+Filed, not fixed: `RIMMANDRAKE_STEADY_GAME_LOCK_TIMING_TEST_UNDER_LOAD_TWENTY` (selftest_game_lock.py's 50 ms rows red at load
+17-20, read as new by the door; the 697e3eb8ad landing used the recorded door skip). The FlowWorks fault already had its
+item, `RIMMANDRAKE_LIST_FLOWWORKS_SHALLOW_OPACITY_SO_SECTION_RESET_REACHES_IT`; my duplicate was dropped onto it.
 
 ## Steward's decisions enacted
-(sealed until lane 1 is committed)
+None were written for this cycle (read after lane 1 was committed): every bar judged as locked, no bar or criterion
+written up as NOTED_FOR_CONDUCTOR, nothing recorded under CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM.
 
 ## Tests edited
-(not started)
+`tests_edited.json`: `selftest_settings_screens.py` (added `--mod`), `test_table.json` (T_SETTINGS_SCREENS command),
+`selftest_pyrelands_defs_offline.py` (one fact, one mutant), `selftest_rerun_relation.py` (one pipeline row). Nothing was
+removed or loosened; before/after hashes are in the file.
 
 ## Unsettled
-(not started)
+- Lane 1 `game_side_bars`: 17 bars, all proving at stage 6, have no game-free kernel; each settles by its Stage 6 scene.
+- The three surviving ashwallow caller faults above: settle by sc_ashwallow and sc_heat_dome on the live game.
+- No offline bar is unsettled.
 
 ## Exit
-(not written)
+offline_bars: {ash_fertility_probe: green, biome_text_says_engineered: green, inv_firebreak_firefoam: green, inv_lightning_breaker: green, inv_settings_gate: green, inv_art_and_text: green}
+problems_open: 0
+exit_met: true
 
 ## Owed
-(in progress)
+- Stage 6: the 17 game-side bars, and a live read of the three ashwallow caller faults that no offline test can see.
+- `RIMMANDRAKE_STEADY_GAME_LOCK_TIMING_TEST_UNDER_LOAD_TWENTY` (the owner of that limit decides its danger).
+- `RIMMANDRAKE_LIST_FLOWWORKS_SHALLOW_OPACITY_SO_SECTION_RESET_REACHES_IT` (FlowWorks' run).
+- `code_review_status.py check selftest_pyrelands_defs_offline.py` reads UNREADABLE because the table's runs_today rows are
+  on older builds; the next certificate run (`maturation.py certificate Pyrelands --run`) refreshes them.

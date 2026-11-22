@@ -1,16 +1,16 @@
 {
  "T_DEFS_OFFLINE": {
-  "at": "2026-11-21T01:56:09Z",
+  "at": "2026-11-22T05:34:49Z",
   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_defs_offline.py",
   "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_defs_offline.py",
   "last": "FAIL: the unchanged copy is not green (the copy misses a file facts() reads)",
-  "patch": "diff --git a/src/RimMandrake/Pyrelands/Patches/RM_ShovelSand_Orders.xml b/src/RimMandrake/Pyrelands/Patches/RM_ShovelSand_Orders.xml\nindex f6dc22bdc0..c0c2182b87 100644\n--- a/src/RimMandrake/Pyrelands/Patches/RM_ShovelSand_Orders.xml\n+++ b/src/RimMandrake/Pyrelands/Patches/RM_ShovelSand_Orders.xml\n@@ -4,7 +4,7 @@\n   <Operation Class=\"PatchOperationAdd\">\n     <xpath>/Defs/DesignationCategoryDef[defName=\"Orders\"]/specialDesignatorClasses</xpath>\n     <value>\n-      <li>RimMandrake.Pyrelands.Designator_RM_ShovelTerrain</li>\n+      <li>RimMandrake.Pyrelands.Designator_RM_NoSuchDesignator</li>\n     </value>\n   </Operation>\n </Patch>\n",
+  "patch": "diff --git a/src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_PyrelandsFauna.xml b/src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_PyrelandsFauna.xml\nindex dc0abf0ea8..7de77597dc 100644\n--- a/src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_PyrelandsFauna.xml\n+++ b/src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_PyrelandsFauna.xml\n@@ -221,7 +221,7 @@\n   <ThingDef ParentName=\"AnimalThingBase\">\n     <defName>RM_FurnaceBeast</defName>\n     <label>furnace-beast</label>\n-    <description>A giant whose banded mineral hide stores the heat of the burns and glows between the plates. It walks into the flames to bank that heat, and carries it long after. A kept furnace-beast can heat a barn for weeks, but may also set the floor alight.</description>\n+    \n     <statBases>\n       <MoveSpeed>3.6</MoveSpeed>\n       <!-- PYRELANDS_ULLAI_GIANT_BUILD_1: the giant (bs 9: twice the Zeer's 4.5, the largest other Pyrelands animal;\n",
   "patch_files": [
-   "src/RimMandrake/Pyrelands/Patches/RM_ShovelSand_Orders.xml"
+   "src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_PyrelandsFauna.xml"
   ],
-  "patch_sha": "f6b67b23e7a33422",
+  "patch_sha": "dfb701b20d318fd0",
   "rc": 1,
-  "test_blob": "4f7ba0444c9b52b398ecffe2b0184f6af59b789f"
+  "test_blob": "6f3c72c49fc0af980c0f84f993ed6e2098f95ea0"
  },
  "T_FH_LETTER": {
   "at": "2026-11-21T11:45:31Z",
@@ -38,6 +38,19 @@
   "patch_sha": "d9873c97a8636678",
   "rc": 1,
   "test_blob": "4926cbe9f5fafdd649f4fe2bccfe8a5a069d5a61"
+ },
+ "T_SETTINGS_SCREENS": {
+  "at": "2026-11-22T05:34:55Z",
+  "command": "python3 src/RimMandrake/Utils/selftest_settings_screens.py --mod Pyrelands",
+  "file": "src/RimMandrake/Utils/selftest_settings_screens.py",
+  "last": "settings screens selftest: 13/14 ok (mods: Pyrelands)",
+  "patch": "diff --git a/src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs b/src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs\nindex b486caa201..4e2facf71c 100644\n--- a/src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs\n+++ b/src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs\n@@ -345,7 +345,7 @@ namespace RimMandrake.Pyrelands\n                 list.GapLine();\n             }\n \n-            if (Group(list, \"Fire's ash and scorch-fruit\", RimMandrake.Shared.SettingScope.Now, new[] { \"ashDustingEnabled\", \"ashDustingChance\", \"scorchFruitEnabled\", \"scorchFruitChance\", \"scorchFruitMapCap\" }))\n+            if (Group(list, \"Fire's ash and scorch-fruit\", RimMandrake.Shared.SettingScope.Now, new[] { \"ashDustingEnabled\", \"ashDustingChance\", \"scorchFruitEnabled\", \"scorchFruitChance\" }))\n             {\n                 using (Dependent(list, \"ashDustingEnabled\", \"ashDustingChance\", \"scorchFruitEnabled\", \"scorchFruitChance\", \"scorchFruitMapCap\"))\n                 {\n",
+  "patch_files": [
+   "src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs"
+  ],
+  "patch_sha": "321c14d39cf8e613",
+  "rc": 1,
+  "test_blob": "8c23a5a8c3a7abeaae509e7eb6f9006b7a52c078"
  },
  "T_SETTINGS_SWEEP_OFFLINE": {
   "at": "2026-11-21T01:42:41Z",

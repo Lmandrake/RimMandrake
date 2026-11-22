@@ -1,0 +1,343 @@
+{
+ "faults": [
+  {
+   "id": "PROBE_NO_REFUSE_ASH_FIELD_OFF",
+   "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs",
+   "old": "!waterOn ? \"the ash field is off (ashWaterFertilityEnabled)\" : null",
+   "new": "null",
+   "bars": [
+    "ash_fertility_probe"
+   ]
+  },
+  {
+   "id": "PROBE_LIFT_ALWAYS_ZERO",
+   "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs",
+   "old": "float lift = wetNow ? wateredFertility - baseFertility : 0f;",
+   "new": "float lift = 0f;",
+   "bars": [
+    "ash_fertility_probe"
+   ]
+  },
+  {
+   "id": "PROBE_CONSISTENT_ALWAYS_TRUE",
+   "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs",
+   "old": "(Math.Abs(fertility - expected) < 0.001f ? \"True\" : \"False\")",
+   "new": "\"True\"",
+   "bars": [
+    "ash_fertility_probe"
+   ]
+  },
+  {
+   "id": "ASHFERT_BONUS_DROPPED",
+   "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs",
+   "old": "float v = (waterOn && isWatered ? watered : dry) + (bonus > 0f ? bonus : 0f);",
+   "new": "float v = (waterOn && isWatered ? watered : dry);",
+   "bars": [
+    "ash_fertility_probe",
+    "fresh_burn_compounds_with_black_rain"
+   ]
+  },
+  {
+   "id": "CALLER_PROBECELL_NO_BONUS",
+   "file": "src/RimMandrake/Pyrelands/Source/PyrelandsAshField.cs",
+   "old": "comp?.BonusAt(c, now) ?? 0f,",
+   "new": "0f,",
+   "bars": [
+    "ash_fertility_probe"
+   ]
+  },
+  {
+   "id": "CALLER_PROBECELL_GATE_TRUE",
+   "file": "src/RimMandrake/Pyrelands/Source/PyrelandsAshField.cs",
+   "old": "RM_PyrelandsSettings.ashWaterFertilityEnabled,\n                PyrelandsMechanicsGate.On, FertilityCap);",
+   "new": "RM_PyrelandsSettings.ashWaterFertilityEnabled,\n                true, FertilityCap);",
+   "bars": [
+    "ash_fertility_probe",
+    "inv_settings_gate"
+   ]
+  },
+  {
+   "id": "BIOME_DESC_NOT_ENGINEERED",
+   "file": "src/RimMandrake/Pyrelands/Defs/BiomeDefs/Pyrelands.xml",
+   "old": "genetically engineered in a forgotten age",
+   "new": "grown wild in a forgotten age",
+   "bars": [
+    "biome_text_says_engineered"
+   ]
+  },
+  {
+   "id": "BIOME_DESC_NO_MILLENNIA",
+   "file": "src/RimMandrake/Pyrelands/Defs/BiomeDefs/Pyrelands.xml",
+   "old": "for millennia.",
+   "new": "for a season.",
+   "bars": [
+    "biome_text_says_engineered"
+   ]
+  },
+  {
+   "id": "HEATIMMUNITY_GATE_IGNORED",
+   "file": "src/RimMandrake/Pyrelands/Source/Patch_FurnaceBeastHeatImmunity.cs",
+   "old": "if (!PyrelandsMechanicsGate.On || !RM_PyrelandsSettings.furnaceThermalEnabled)",
+   "new": "if (!RM_PyrelandsSettings.furnaceThermalEnabled)",
+   "bars": [
+    "inv_furnacebeast",
+    "inv_settings_gate"
+   ]
+  },
+  {
+   "id": "SHOVEL_YIELD_IGNORES_MULTIPLIER",
+   "file": "src/RimMandrake/Pyrelands/Source/RM_TerrainDig.cs",
+   "old": "Mathf.RoundToInt(ext.count * RM_PyrelandsSettings.sandShovelYieldMultiplier)",
+   "new": "Mathf.RoundToInt(ext.count)",
+   "bars": [
+    "inv_sand_shovel",
+    "inv_settings_gate"
+   ]
+  },
+  {
+   "id": "FIREBREAK_DEF_BACK",
+   "file": "src/RimMandrake/Pyrelands/Defs/TerrainDefs/AshField.xml",
+   "old": "</Defs>",
+   "new": "  <TerrainDef ParentName=\"FloorBase\"><defName>RM_FE_Firebreak</defName><label>firebreak line</label><description>Fire will not cross it.</description><texturePath>Terrain/Surfaces/Gravel</texturePath></TerrainDef>\n</Defs>",
+   "bars": [
+    "inv_firebreak_firefoam"
+   ]
+  },
+  {
+   "id": "FIREBREAK_CODE_BACK",
+   "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs",
+   "old": "public const string DeepAshDefName = \"RM_FE_Ash_Deep\";",
+   "new": "public const string DeepAshDefName = \"RM_FE_Ash_Deep\";\n        public const string FirebreakDefName = \"RM_FE_Firebreak\";",
+   "bars": [
+    "inv_firebreak_firefoam"
+   ]
+  },
+  {
+   "id": "BREAKER_DEF_BACK",
+   "file": "src/RimMandrake/Pyrelands/Defs/ThingDefs_Buildings/RM_FurnaceHideBank.xml",
+   "old": "</Defs>",
+   "new": "  <ThingDef ParentName=\"BuildingBase\"><defName>RM_LightningBreaker</defName><label>lightning breaker</label><description>Draws the cinderfall's strikes.</description></ThingDef>\n</Defs>",
+   "bars": [
+    "inv_lightning_breaker"
+   ]
+  },
+  {
+   "id": "FULGURITE_CODE_BACK",
+   "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs",
+   "old": "public const string BlackRainDefName = \"RM_FE_BlackRain\";",
+   "new": "public const string BlackRainDefName = \"RM_FE_BlackRain\";\n        public const string FulguriteDefName = \"RM_Fulgurite\";",
+   "bars": [
+    "inv_lightning_breaker"
+   ]
+  },
+  {
+   "id": "GATE_ROSTER_TOGGLE_IGNORED",
+   "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs",
+   "old": "return modMaster && (!shellPresent || shellOn);",
+   "new": "return modMaster;",
+   "bars": [
+    "inv_settings_gate"
+   ]
+  },
+  {
+   "id": "GATE_ON_IGNORES_MASTER",
+   "file": "src/RimMandrake/Pyrelands/Source/PyrelandsMechanicsGate.cs",
+   "old": "RM_FireEcoKernel.MechanicsOn(RM_PyrelandsSettings.pyrelandsEnabled, ShellPresent, ShellOn)",
+   "new": "RM_FireEcoKernel.MechanicsOn(true, ShellPresent, ShellOn)",
+   "bars": [
+    "inv_settings_gate"
+   ]
+  },
+  {
+   "id": "SETTING_DEFAULT_BURNLINE_OFF",
+   "file": "src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs",
+   "old": "public static bool burnLineEnabled = true;",
+   "new": "public static bool burnLineEnabled = false;",
+   "bars": [
+    "inv_settings_gate"
+   ]
+  },
+  {
+   "id": "SETTING_SCRIBE_DEFAULT_DRIFT",
+   "file": "src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs",
+   "old": "Scribe_Values.Look(ref freshBurnDays, \"freshBurnDays\", 6f);",
+   "new": "Scribe_Values.Look(ref freshBurnDays, \"freshBurnDays\", 8f);",
+   "bars": [
+    "inv_settings_gate"
+   ]
+  },
+  {
+   "id": "SETTING_SCREEN_GROUP_DROP",
+   "file": "src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs",
+   "old": "\"scorchFruitChance\", \"scorchFruitMapCap\" }",
+   "new": "\"scorchFruitChance\" }",
+   "bars": [
+    "inv_settings_gate"
+   ]
+  },
+  {
+   "id": "SETTING_WORLDGEN_ON",
+   "file": "src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs",
+   "old": "public static bool biomeGenerationEnabled = false;",
+   "new": "public static bool biomeGenerationEnabled = true;",
+   "bars": [
+    "inv_settings_gate"
+   ]
+  },
+  {
+   "id": "PREFLIGHT_DEFAULT_DRIFT",
+   "file": "src/RimMandrake/Pyrelands/preflight_pyrelands.py",
+   "old": "\"freshBurnDays\": 6.0,",
+   "new": "\"freshBurnDays\": 8.0,",
+   "bars": [
+    "inv_settings_gate"
+   ]
+  },
+  {
+   "id": "PREFLIGHT_LOG_ALLOWED",
+   "file": "src/RimMandrake/Pyrelands/preflight_pyrelands.py",
+   "old": "LOG_ALLOWED_MAX = 0",
+   "new": "LOG_ALLOWED_MAX = 5",
+   "bars": [
+    "inv_settings_gate"
+   ]
+  },
+  {
+   "id": "KEYED_SLOT_UNDERSCORE",
+   "file": "src/RimMandrake/Pyrelands/Languages/English/Keyed/Pyrelands.xml",
+   "old": "{SOURCEDIST} cells to the {SOURCEDIR}",
+   "new": "{SOURCE_DIST} cells to the {SOURCE_DIR}",
+   "bars": [
+    "inv_art_and_text",
+    "inv_firehawk_hunt_rewards"
+   ]
+  },
+  {
+   "id": "LETTER_NAMED_UNDERSCORE",
+   "file": "src/RimMandrake/Pyrelands/Source/FireHawkRewards.cs",
+   "old": "Named(\"TARGETDIST\")",
+   "new": "Named(\"TARGET_DIST\")",
+   "bars": [
+    "inv_firehawk_hunt_rewards",
+    "inv_art_and_text"
+   ]
+  },
+  {
+   "id": "ART_TEXPATH_MISSING",
+   "file": "src/RimMandrake/Pyrelands/Defs/ThingDefs_ScorchFruit/ScorchFruit.xml",
+   "old": "<texPath>Things/Item/Resource/RM_FE_ScorchFruit</texPath>",
+   "new": "<texPath>Things/Item/Resource/RM_FE_ScorchFruitGone</texPath>",
+   "bars": [
+    "inv_art_and_text"
+   ]
+  },
+  {
+   "id": "TEXT_FURNACE_DESC_EMPTY",
+   "file": "src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_PyrelandsFauna.xml",
+   "old": "<description>A giant whose banded mineral hide stores the heat of the burns",
+   "new": "<label_x>A giant whose banded mineral hide stores the heat of the burns",
+   "bars": [
+    "inv_art_and_text"
+   ]
+  },
+  {
+   "id": "TEXT_FURNACE_DESC_GONE",
+   "file": "src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_PyrelandsFauna.xml",
+   "old": "<description>A giant whose banded mineral hide stores the heat of the burns and glows between the plates. It walks into the flames to bank that heat, and carries it long after. A kept furnace-beast can heat a barn for weeks, but may also set the floor alight.</description>",
+   "new": "",
+   "bars": [
+    "inv_art_and_text"
+   ]
+  },
+  {
+   "id": "NUDGE_SHADE_DASH_DROPPED",
+   "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs",
+   "old": "                case \"RM_ShadeDash\":\n",
+   "new": "",
+   "bars": [
+    "ashwallow_dives_unharmed"
+   ]
+  },
+  {
+   "id": "NUDGE_DRINK_REASKS",
+   "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs",
+   "old": "                case \"RM_DrinkFromTerrain\":\n                    return true;",
+   "new": "                    return true;\n                case \"RM_DrinkFromTerrain\":\n                    return false;",
+   "bars": [
+    "ashwallow_dives_unharmed"
+   ]
+  },
+  {
+   "id": "CALLER_YIELDS_READS_REASK",
+   "file": "src/RimMandrake/Pyrelands/Source/MapComponent_BurnLine.cs",
+   "old": "return RM_FireEcoKernel.BurrowerNudgeKind(def.defName) == RM_FireEcoKernel.NudgeDiveOutright;",
+   "new": "return RM_FireEcoKernel.BurrowerNudgeKind(def.defName) == RM_FireEcoKernel.NudgeReask;",
+   "bars": [
+    "ashwallow_dives_unharmed"
+   ]
+  },
+  {
+   "id": "CALLER_IDLE_NONE",
+   "file": "src/RimMandrake/Pyrelands/Source/MapComponent_BurnLine.cs",
+   "old": "return RM_FireEcoKernel.BurrowerNudgeKind(def.defName) == RM_FireEcoKernel.NudgeReask;",
+   "new": "return RM_FireEcoKernel.BurrowerNudgeKind(def.defName) == RM_FireEcoKernel.NudgeNone;",
+   "bars": [
+    "ashwallow_dives_unharmed"
+   ]
+  },
+  {
+   "id": "GIVER_FIRE_LIST_GATE_FLIPPED",
+   "file": "src/RimMandrake/Pyrelands/Source/RM_JobGiver_BurrowOnFire.cs",
+   "old": "if (map.listerThings.ThingsOfDef(ThingDefOf.Fire).Count == 0)",
+   "new": "if (map.listerThings.ThingsOfDef(ThingDefOf.Fire).Count > 0)",
+   "bars": [
+    "ashwallow_dives_unharmed"
+   ]
+  },
+  {
+   "id": "GIVER_ANY_BIOME",
+   "file": "src/RimMandrake/Pyrelands/Source/RM_JobGiver_BurrowOnFire.cs",
+   "old": "if (burnLine == null || !burnLine.IsPyrelandsMap)",
+   "new": "if (burnLine == null)",
+   "bars": [
+    "ashwallow_dives_unharmed"
+   ]
+  },
+  {
+   "id": "THINKTREE_BACK_TO_PREWANDER",
+   "file": "src/RimMandrake/Pyrelands/Defs/ThinkTreeDefs/RM_BurrowOnFireThinkTree.xml",
+   "old": "<insertTag>Animal_PreMain</insertTag>\n    <insertPriority>120",
+   "new": "<insertTag>Animal_PreWander</insertTag>\n    <insertPriority>120",
+   "bars": [
+    "ashwallow_dives_unharmed"
+   ]
+  },
+  {
+   "id": "THINKTREE_PRIORITY_LOW",
+   "file": "src/RimMandrake/Pyrelands/Defs/ThinkTreeDefs/RM_BurrowOnFireThinkTree.xml",
+   "old": "<insertPriority>120</insertPriority>",
+   "new": "<insertPriority>5</insertPriority>",
+   "bars": [
+    "ashwallow_dives_unharmed"
+   ]
+  },
+  {
+   "id": "VENOM_DOSE_OLD",
+   "file": "src/RimMandrake/Pyrelands/Defs/DamageDefs/RM_FlamefangVenomBite.xml",
+   "old": "<severityPerDamageDealt>0.009</severityPerDamageDealt>",
+   "new": "<severityPerDamageDealt>0.02</severityPerDamageDealt>",
+   "bars": [
+    "flamefang_bite_carries_venom"
+   ]
+  },
+  {
+   "id": "VENOM_IMMUNITY_OLD",
+   "file": "src/RimMandrake/Pyrelands/Defs/HediffDefs/RM_FlamefangVenom.xml",
+   "old": "<immunityPerDaySick>0.8</immunityPerDaySick>",
+   "new": "<immunityPerDaySick>0.5</immunityPerDaySick>",
+   "bars": [
+    "flamefang_bite_carries_venom"
+   ]
+  }
+ ]
+}
