@@ -4002,6 +4002,12 @@ def firefoam_sprayer(t):
         if gap:
             _note(t, "PLANTED FAULT", "%s=1: the control's ring is left open on the west, the colonist's side"
                   % PLANT_RING_GAP_ENV)
+        # SITE (visit 5, 2026-11-22, ArchBig): the sprayer row's firefoam lay on the control's west ring (9 of 9 cells
+        # Filth_FireFoam), so map_fire refused it as wet; the control's ground starts with no foam on it
+        t.bridge_call("jawa/destroy_batch", rects="%d,%d,11,11" % (x - 1, z - 1), categories="Filth")
+        left_foam = _count(t, FOAM_FILTH, "%d,%d,9,9" % (x, z))
+        if _live(t) and left_foam:
+            _unmeasured(t, "%d %s cells still on the control's burn after the clear" % (left_foam, FOAM_FILTH))
         fruit, fires = _stage_burning_fruit(t, x, z, west_gap=gap)
         cid = _spawn_colonist(t, x - 3, z + 4)
         timeline = _harvest_through_fire(t, cid, fruit, ring="%d,%d,9,9" % (x, z))
