@@ -11322,3 +11322,4 @@
 {"seat":"RUNNER","event":"live","id":"OPS_DISPATCH_CLONE_BEHIND_UNSTICK_YUYW","result":"broken","detail":"Ops alarm DISPATCH_CLONE_BEHIND: maturation.clone_behind_min = 7.0 min (MEASURED), line > 5","ts":"2026-11-22T23:12:02Z","tsn":1795389122161432597}
 {"seat":"RUNNER","event":"live","id":"OPS_DISPATCH_CLONE_BEHIND_UNSTICK_YUYW","result":"broken","detail":"Ops alarm DISPATCH_CLONE_BEHIND: maturation.clone_behind_min = 7.0 min (MEASURED), line > 5","ts":"2026-11-22T23:13:20Z","tsn":1795389200526330628}
 {"seat":"RUNNER","event":"live","id":"OPS_DISPATCH_CLONE_BEHIND_UNSTICK_YUYW","result":"kept","detail":"sweep: running again","ts":"2026-11-22T23:18:22Z","tsn":1795389502386867668}
+{"seat":"RUNNER","event":"live","id":"OPS_DISPATCH_CLONE_BEHIND_UNSTICK_YUYW","result":"broken","detail":"Ops alarm DISPATCH_CLONE_BEHIND: maturation.clone_behind_min = 7.0 min (MEASURED), line > 5","ts":"2026-11-22T23:19:04Z","tsn":1795389544453847753}
