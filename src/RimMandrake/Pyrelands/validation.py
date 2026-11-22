@@ -833,10 +833,28 @@ def _terrain(t, rect):
     if not _live(t):
         return {}
     _ok(r, "get_terrain_batch(%s)" % rect)
-    if r.get("cellsRead") != r.get("cellsRequested"):
-        _fail("get_terrain_batch(%s) read %r of %r cells" % (rect, r.get("cellsRead"),
-                                                            r.get("cellsRequested")))
+    want = _rect_union_cells(rect)
+    if r.get("cellsRead") != (want if want is not None else r.get("cellsRequested")):
+        _fail("get_terrain_batch(%s) read %r of %r distinct cells (%r requested)" % (rect, r.get("cellsRead"), want,
+                                                                                   r.get("cellsRequested")))
     return _ops_counts(r.get("ops"))
+
+
+def _rect_union_cells(rects):
+    """Distinct cells in 'x,z,w,h;...' (out-of-map cells included, so a rect off the map still reads short), or None
+    when a part does not parse. get_terrain_batch reads a cell twice-requested once (overlapping rects are legal), so its
+    cellsRead is the union, never the summed areas (HARNESS, Pyrelands visit 5, 2026-11-22: two ruin samples 1 cell apart
+    overlapped by 2 cells and sc_ruins failed 'read 88 of 90 cells' on a site where every cell was read)."""
+    cells = set()
+    for part in str(rects or "").split(";"):
+        if not part.strip():
+            continue
+        try:
+            x, z, w, h = [int(v) for v in part.split(",")]
+        except ValueError:
+            return None
+        cells.update((x + i, z + j) for i in range(w) for j in range(h))
+    return len(cells)
 
 
 def _get_defs(t, defs, fields, deep=True):
@@ -1297,6 +1315,9 @@ def grass_cover(t):
         t.screenshot(rect=_whole_rect(t))   # the subject is the fresh map itself
 
 
+PLANT_RUIN_SOIL_ENV = "PYRE_PLANT_RUIN_FOOTPRINT_SOIL"   # planted state for sc_ruins: the sampled footprints laid unburned soil
+
+
 @suite.chain("ruins")
 def ruins(t):
     """Ruins are found as what they ARE on the map -- unowned artificial buildings (walls, doors,
@@ -1329,6 +1350,10 @@ def ruins(t):
             _note(t, "ruin samples (def @ cell): junk from other gensteps vs ScatterRuinsSimple walls",
                   [(x.get("def"), x["x"], x["z"]) for x in picks])
             rects = ["%d,%d,3,3" % (x["x"] - 1, x["z"] - 1) for x in picks]
+            if os.environ.get(PLANT_RUIN_SOIL_ENV) == "1":   # planted state: the sampled footprints re-laid as unburned soil
+                t.bridge_call("jawa/set_terrain_batch", ops=";".join("%s:%s" % (SOIL, rc) for rc in rects), layer="top")
+                _note(t, "PLANTED FAULT: %s=1, the %d sampled ruin footprints re-laid %s" % (PLANT_RUIN_SOIL_ENV, len(rects),
+                                                                                          SOIL), rects)
             got = _terrain(t, ";".join(rects))
             floors = [_charred(t, rc) for rc in rects]
             charred = sum(f.get("charred", 0) for f in floors)
