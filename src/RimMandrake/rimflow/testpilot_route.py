@@ -56,7 +56,7 @@ EXPLAIN = "EXPLAIN-AWAY"          # one attempt to prove an ODD/ALARMING observa
 # Owner 2026-11-16 10:13 PM: "Test Pilot should also run as Fable 5.2 when it's called. For obvious reasons. And it should
 # get that same inspirational prompting we worked out, just with a live game flare". The builders' steps
 # (maturation.HOW_A_BAR_HOLDS; the positive steps verbatim) with the game as the instrument. The agent file carries the
-# same section; selftest_testpilot_route pins both. The model: the agent file's `model:` line, which relentless.pilot_model reads.
+# same section; selftest_testpilot_route pins both. The model: the agent file's `model:` line, which run_store.pilot_tier reads.
 HOLDS = "HOW A SITTING HOLDS"     # the brief's marker for these steps (selftest pins it)
 POSITIVE_STEPS = ("The owner's positive steps: Get inventive. Innovate; do not just tune, and do not just diagnose: "
                   "provide or repair what is broken. Provide bars where they are missing: that is not cheating, it is making "

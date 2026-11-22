@@ -30,7 +30,8 @@
       "usd": "UNMEASURED",
       "wall_s": "UNMEASURED",
       "source": "design/concepts/PyrelandsMechanics/version/VERSION.json tokens_spent",
-      "kind": "mixed: measured and estimated charges, see VERSION.json measured_from"
+      "kind": "mixed: measured and estimated charges, see VERSION.json measured_from",
+      "token_unit": "weighted_v1"
     }
   ]
 }

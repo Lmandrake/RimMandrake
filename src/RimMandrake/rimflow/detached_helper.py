@@ -92,20 +92,8 @@ GRACE_S = 120          # finish + publish time on top of the run's own bound
 # The per-run stop guards a runaway unattended burn (owner 2026-11-12: "not burn 90M tokens overnight by itself"), and
 # has NO default level: a $15 default named no danger and stopped 4 real runs (3 lessons), so a launch states its cap,
 # and --resume carries the earlier run's (boundary design/specs/2026-11-19-launch-spend-cap/boundary.md).
-MODELS = ("fable", "opus", "sonnet")  # owner ladder 2026-11-12: Fable for blank-page design; Haiku is banned
-
-
-def model_tier(model):
-    """The tier a model name means: 'claude-fable-5-2', 'Opus' and 'us.anthropic.claude-opus-5-5-v1:0' are faults of
-    form, repaired to 'fable' / 'opus' / 'opus'. A name that holds no allowed tier comes back as given, so the model
-    gate still refuses it (Haiku is banned). Seen 2026-11-21: the tick passed a full id, three refusals paused a mod."""
-    if not isinstance(model, str):
-        return model
-    low = model.strip().lower()
-    hits = [t for t in MODELS if t in low]
-    return hits[0] if len(hits) == 1 else model
-# The CLI alias "fable" resolved to claude-fable-5-1 (measured 2026-11-12); the ladder means Fable 5.2, so pass the full id.
-MODEL_IDS = {"fable": "claude-fable-5-2"}
+# The model tiers, their repair from a full id and the id each launches as: role_launch.TIERS, tier and launch_model,
+# the one alias table (design/specs/2026-11-22-run-spend-and-model-alias/boundary.md).
 SEATS = ("BENCH", "STEVE", "RUNNER")   # FOUNDRY retired (owner by card 2026-11-02)
 REAL_LOG = "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md"
 ORIGIN_REF = "origin/main"
@@ -1066,7 +1054,7 @@ def launch_argv(rec, msg, claude):
     back = "-" + shlex.join(return_argv(rec))
     via_file = rec.get("brief_file")    # a long brief: claude -p reads it from stdin (StandardInput=file:)
     cmd = [bounded, "-p"] + ([] if via_file else [msg]) + [
-           "--model", MODEL_IDS.get(rec["model"], rec["model"]), "--name", "DETACHED %s %s" % (seat, rec["item"]),
+           "--model", _RL().launch_model(rec["model"]), "--name", "DETACHED %s %s" % (seat, rec["item"]),
            "--output-format", "json", "--dangerously-skip-permissions",
            "--settings", _control_settings(rec)]     # its PostToolUse hook: the stop channel (`pipe stop --write-now`)
     if rec.get("resume_session"):       # a mod's holder session (modledger.resume_plan), carried into this clone
@@ -1297,6 +1285,11 @@ def launch(seat, item, brief, model, max_s, budget, now=None, runner=subprocess.
     return code, (text + "\n" + warn) if warn else text
 
 
+def _RL():
+    import role_launch
+    return role_launch
+
+
 def _launch(seat, item, brief, model, max_s, budget, now, runner, known, clone, sleep, events_dir, skip_launch_checks, pf,
             env=None, resume=(None, None), extra=None):
     now = now or time.time()
@@ -1304,9 +1297,18 @@ def _launch(seat, item, brief, model, max_s, budget, now, runner, known, clone, 
                   judge=_refusal)
     if bad:
         return 2, bad
-    model = model_tier(model)   # a full model id is a fault of form: repaired here, never refused
-    bad = pf.gate("H4", lambda: None if model in MODELS else "refused: model %r is not one of %s" % (model, ", ".join(MODELS)),
-                  judge=_refusal)
+    RL = _RL()
+    model = RL.tier(model)   # a full model id is a fault of form: repaired here, never refused
+
+    def h4():
+        if model not in RL.TIERS:
+            return "refused: model %r is not one of %s" % (model, ", ".join(RL.TIERS))
+        try:
+            RL.launch_model(model)
+        except RL.UnknownModel as e:
+            return "refused: %s" % e
+        return None
+    bad = pf.gate("H4", h4, judge=_refusal)
     if bad:
         return 2, bad
     if not (brief or "").strip():

@@ -596,7 +596,8 @@ def run_view(rec, now, spend=read_spend):
             "at": at if num_at else None, "end": end if isinstance(end, (int, float)) else None,
             "start": pac_time(at, now) if num_at else UNM, "stop": pac_time(end, now) if isinstance(end, (int, float)) else "",
             "live": live, "state": st or UNM, "outcome": outcome, "ok": ok, "wall_s": wall, "wall": minutes(wall),
-            "tokens": tok if isinstance(tok, int) else UNM, "usd": usd, "said_usd": said,
+            "tokens": tok if isinstance(tok, int) else UNM, "token_unit": rec.get("token_unit"), "usd": usd,
+            "said_usd": said,
             "cap": rec.get("budget_usd") if isinstance(rec.get("budget_usd"), (int, float)) else UNM, "over_cap": over,
             "stages": [], "placed": ""}
 

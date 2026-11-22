@@ -192,7 +192,9 @@ SERVER_CMD = ("MEM_MAX=16G " + SHARED_BOUNDED + " "
 # REP's amber — the owner's choice, so the colours he knows survive the rename.
 #
 # The model is per-seat and rides the commandline (owner, 2026-08-28: "Do it").
-# Per Agent_Policy.md's ladder (owner, 2026-11-12/13): BENCH, the Conductor's window, runs Fable 5.2 (full id `claude-fable-5-2`: the alias `fable` launched 5.1 on CLI 2.1.311, measured 2026-11-13;
+# Per Agent_Policy.md's ladder (owner, 2026-11-12/13): BENCH, the Conductor's window, runs Fable 5.2 (the field holds the
+# tier; seat_model turns it into its id through role_launch.launch_model, read from the environment: the alias `fable`
+# launched 5.1 on CLI 2.1.311, measured 2026-11-13;
 # it orchestrates and backgrounds work to Opus/Sonnet subagents); the other Claude tiles keep their own rung. The `--model` FLAG outranks every settings
 # file including a /model saved default, which is the point: opening the tab is
 # the whole startup, and a seat never inherits whatever model the last session
@@ -210,7 +212,7 @@ SERVER_CMD = ("MEM_MAX=16G " + SHARED_BOUNDED + " "
 # that is NOT a Claude seat: bare capitalised name, no AGENT_SEAT export, no
 # LAUNCH. `{label}` is interpolated. The model field is ignored for those.
 SEATS = {
-    "BENCH":   ("#7BC96F", "claude-fable-5-2", "green — with the owner, permanent bench", None, None),
+    "BENCH":   ("#7BC96F", "fable", "green — with the owner, permanent bench", None, None),
     # ⭐ ARTIST IS NOT A CLAUDE SEAT. The override routes build() to the daemon
     # commandline: the tile is the artpipe daemon's live console
     # (ART_PIPELINE_DAEMON_1: "dumb local Python daemon, no LLM"), so it gets no
@@ -320,8 +322,24 @@ def restart_seats(path=None):
 SHELL_TAIL = "; [ $? -eq 143 ] && exit 0; exec $SHELL -l"
 
 
+def seat_model(seat):
+    """-> the `--model` argument of a Claude seat's tile: its tier's id from the environment (role_launch.launch_model,
+    the one alias table; it raises naming the variable when a Fable seat's is unset), or None for a non-Claude tile."""
+    model = SEATS[seat][1]
+    if model is None:
+        return None
+    if _RL_DIR not in sys.path:
+        sys.path.insert(0, _RL_DIR)
+    import role_launch
+    return role_launch.launch_model(model)
+
+
+_RL_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "rimflow")
+
+
 def build(seat):
-    colour, model, _, home, cmd = SEATS[seat]
+    colour, _, _, home, cmd = SEATS[seat]
+    model = seat_model(seat)
     home_wsl, home_win = home if home else SEAT_CLONES[seat]
     # A seat runs its own clone's wrapper; every other Claude tile runs BENCH's.
     script = BOUNDED.format(home=home_wsl) if not home else SHARED_BOUNDED
@@ -448,7 +466,7 @@ def main():
         if only and seat not in only:
             continue
         label = tile_name_for(seat)
-        shown = "none (daemon)" if cmd is not None else model
+        shown = "none (daemon)" if cmd is not None else seat_model(seat)
         print(f"  {label:<14} {colour}  model {shown:<15} tab+text  {why}")
         if home:
             print(f"  {'':<14}opens in {home[1]}, and does NOT export AGENT_SEAT")

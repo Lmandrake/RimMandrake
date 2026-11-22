@@ -272,7 +272,6 @@ MODEL_PRICES = {m: dict(zip(PRICE_FIELDS, (Fraction(x) for x in p))) for m, p in
 # weighted_v1, for converting records stamped with it (tokens_v2) and nothing else.
 TOKEN_WEIGHTS = {"input_tokens": Fraction(1), "cache_write_5m": Fraction(5, 4), "cache_write_1h": Fraction(2),
                  "cache_read_input_tokens": Fraction(1, 10), "output_tokens": Fraction(5)}
-# genai_env.py (~/dev/Lodestar/bin/lib/genai_env.py) MODEL_VARS: the env var that names each alias's model id.
 # A role whose pre-step screens "since my last finished run" (AUDITOR_PRESCREEN_FIX_WINDOW_SINCE_LAST_RUN): a run that
 # ends `done` gets a role_stamp action (dispatcher.execute writes it through AP.write_stamp, so a dry run writes
 # nothing) carrying the run's launch time, which is at or before its pre-screen's `now`: the next window overlaps by the
@@ -283,8 +282,15 @@ FINISH_STAMP = {"Auditor": AP.STAMP}
 # ticks could not launch for this long (busy, account hold) expires, said; refusals (off, ops, band, cap) consume it.
 RUN_NOW_TTL_S = 3600
 RUN_NOW_MODES = ("run", "quick", "weekly", "economy")
-MODEL_VARS = {"opus": "ANTHROPIC_DEFAULT_OPUS_MODEL", "sonnet": "ANTHROPIC_DEFAULT_SONNET_MODEL",
-              "haiku": "ANTHROPIC_DEFAULT_HAIKU_MODEL"}
+# The one alias table (design/specs/2026-11-22-run-spend-and-model-alias/boundary.md): the variable that names each
+# alias's model id, as genai_env.py's MODEL_VARS (~/dev/Lodestar/bin/lib/genai_env.py) names it. resolve_model prices an alias through it; launch_model gives the id a tier launches as.
+MODEL_VARS = {"fable": "ANTHROPIC_DEFAULT_FABLE_MODEL", "opus": "ANTHROPIC_DEFAULT_OPUS_MODEL",
+              "sonnet": "ANTHROPIC_DEFAULT_SONNET_MODEL", "haiku": "ANTHROPIC_DEFAULT_HAIKU_MODEL"}
+TIERS = ("fable", "opus", "sonnet")   # the owner's ladder 2026-11-12: Sonnet is the floor; Haiku is banned (2026-10-31)
+# With no variable set (a subscription), the CLI resolves these aliases itself. It resolved "fable" to claude-fable-5-1
+# (measured 2026-11-12 and 2026-11-16), and the ladder means Fable 5.2, so a Fable launch needs its variable.
+CLI_ALIASES = ("opus", "sonnet")
+SETTINGS = os.path.expanduser("~/.claude/settings.json")
 
 
 # ---------------------------------------------------------------- paths and readings
@@ -783,6 +789,35 @@ def resolve_model(model):
     return mid
 
 
+def tier(model):
+    """The ladder tier a model name means: 'claude-fable-5-2', 'Opus' and 'us.anthropic.claude-opus-5-5-v1:0' are
+    faults of form, repaired to 'fable' / 'opus' / 'opus'. A name that holds no tier, or two, comes back as given, so a
+    gate on TIERS still refuses it (Haiku is banned). Seen 2026-11-21: a full id was refused three times and a mod
+    paused."""
+    if not isinstance(model, str):
+        return model
+    low = model.strip().lower()
+    hits = [t for t in TIERS if t in low]
+    return hits[0] if len(hits) == 1 else model
+
+
+def launch_model(model, env=None):
+    """-> the `claude --model` argument for `model`: its tier's id from the environment (model_id); with no variable,
+    the bare alias for a tier the CLI resolves itself (CLI_ALIASES). A Fable launch with no variable raises
+    UnknownModel naming it: the CLI's own "fable" launched claude-fable-5-1. A name that is no tier comes back as
+    given, for the caller's gate to refuse."""
+    t = tier(model)
+    if t not in TIERS:
+        return model
+    v = model_id(t, env)
+    if v:
+        return v
+    if t in CLI_ALIASES:
+        return t
+    raise UnknownModel("model %r: its env var %s is unset in the environment and in %s, so the id it launches as is "
+                       "unknown (the CLI's own alias %r launched claude-fable-5-1)" % (model, MODEL_VARS[t], SETTINGS, t))
+
+
 def model_weights(model):
     """-> {PRICE_FIELDS: Fraction}: `model`'s list price per field / REF_MODEL's input price (weighted_v2)."""
     ref = MODEL_PRICES[REF_MODEL]["input_tokens"]
@@ -868,17 +903,35 @@ def model_usage_of(result):
     return {m: {k: x[k] for k in keep if k in x} for m, x in mu.items() if isinstance(x, dict)}
 
 
+V1_UNIT = "weighted_v1"
+
+
+def stored_unit(rec):
+    """-> the unit of a stored spend figure (a detached or role run record, a RUN_SPEND line, a stage record's spend
+    row): its token_unit, else weighted_v1. Every writer stamps its unit; a record with none was written before the
+    weighted_v2 switch (2026-11-16 23:05 PST): 0 of 405 unstamped detached records with tokens ended after it, and the
+    committed rows with none were stamped from their run records (measured 2026-11-22,
+    design/specs/2026-11-22-run-spend-and-model-alias/equivalence.md). The one reader of a figure's unit."""
+    u = rec.get("token_unit") if isinstance(rec, dict) else None
+    return u if isinstance(u, str) and u.strip() else V1_UNIT
+
+
 def tokens_v2(rec):
     """A stored spend record ({tokens, token_unit, model, model_usage?}) -> (weighted_v2 tokens or None, basis).
     basis "v2": already weighted_v2, returned as it is (never weighted twice). "v1_usage": a weighted_v1 record that
     kept its per-model usage, recomputed from it. "v1_bound": a weighted_v1 record with only its figure, times its
     model's input weight -- an UPPER bound (v1 weighed cache reads at 0.1, and no model's read price is above 0.1x its
-    input price), marked so. "unmeasured": no figure. A record with no token_unit predates the weighting (raw)."""
-    t = rec.get("tokens") if isinstance(rec, dict) else None
-    unit = rec.get("token_unit") if isinstance(rec, dict) else None
+    input price), marked so. "unmeasured": no figure. "unit <name>": a unit this cannot convert (None). The unit is
+    stored_unit's. A model MODEL_PRICES cannot price raises UnknownModel by name."""
+    if not isinstance(rec, dict):
+        return None, "unmeasured"
+    t = rec.get("tokens")
+    unit = stored_unit(rec)
     if unit == TOKEN_UNIT:
         return (None if t is None else int(t)), ("v2" if t is not None else "unmeasured")
-    mu = rec.get("model_usage") if isinstance(rec, dict) else None
+    if unit != V1_UNIT:
+        return None, "unit %s" % unit
+    mu = rec.get("model_usage")
     if isinstance(mu, dict) and mu:
         tot = _model_usage_tokens(mu)
         if tot is not None:
@@ -991,18 +1044,14 @@ def transcript_result(tu):
 
 
 def run_spend(r):
-    """A run record's spend in TOKEN_UNIT for a cap: its tokens when stamped weighted_v2; a weighted_v1 record (before
-    2026-11-16's switch) converted by tokens_v2, or, when its model is not known, its v1 figure as it stands (a v1 Opus
-    figure is at or above its v2 one); UNMEASURED counts its budget."""
-    if r.get("tokens") is None:
-        return r.get("budget", 0)
-    if r.get("token_unit") in (None, TOKEN_UNIT):
-        return r["tokens"]
+    """A run record's spend in TOKEN_UNIT for a cap: tokens_v2's figure (a weighted_v1 record converted, the model read
+    from model_id, else model). UNMEASURED counts its budget: no figure, a unit it cannot convert, or a model
+    MODEL_PRICES cannot price. Never 0 for a figure it could not weigh."""
     try:
         t, _basis = tokens_v2(dict(r, model=r.get("model_id") or r.get("model")))
     except UnknownModel:
-        return r["tokens"]
-    return r["tokens"] if t is None else t
+        t = None
+    return r.get("budget", 0) if t is None else t
 
 
 def spent_today(rs, now):
@@ -3417,13 +3466,13 @@ def mark(rs, job, how):
 # ---------------------------------------------------------------- side effects (dispatcher.execute calls these)
 
 def model_id(alias, env=None):
-    """The id the GenAI route names for alias (genai_env.py's reading), or None when this machine has no route
-    var (subscription: claude resolves the alias itself). Recorded, never passed: claude gets the alias."""
+    """The id the environment names for alias (MODEL_VARS: the env, then SETTINGS' `env`), or None when no variable
+    names it."""
     env = os.environ if env is None else env
     v = (env.get(MODEL_VARS.get(alias, "")) or "").strip()
     if not v:
         try:
-            with open(os.path.expanduser("~/.claude/settings.json"), encoding="utf-8") as f:
+            with open(SETTINGS, encoding="utf-8") as f:
                 v = ((json.load(f).get("env") or {}).get(MODEL_VARS.get(alias, "")) or "").strip()
         except (OSError, ValueError, AttributeError):
             v = ""

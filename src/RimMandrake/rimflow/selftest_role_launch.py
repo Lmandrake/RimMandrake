@@ -188,6 +188,8 @@ def test_model_id():
     with open(os.path.join(h, ".claude", "settings.json"), "w") as f:
         f.write('{"env": {"ANTHROPIC_DEFAULT_SONNET_MODEL": " from-settings "}}')
     os.environ["HOME"] = h
+    was = RL.SETTINGS
+    RL.SETTINGS = os.path.join(h, ".claude", "settings.json")
     try:
         check(RL.model_id("sonnet", {}) == "from-settings", "falls back to ~/.claude/settings.json env")
         check(RL.model_id("haiku", {}) is None, "no var anywhere -> None")
@@ -195,6 +197,7 @@ def test_model_id():
         check(RL.model_id("sonnet", {"ANTHROPIC_DEFAULT_SONNET_MODEL": "env-wins"}) == "env-wins", "env beats settings")
     finally:
         os.environ["HOME"] = home
+        RL.SETTINGS = was
 
 
 # ---------------------------------------------------------------- ops_reading

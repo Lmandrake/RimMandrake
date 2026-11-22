@@ -2579,10 +2579,10 @@ def test_pilot_main():
             return 0, "DETACHED rm-fake-sit", "rm-fake-sit"
         A.execute(tmp, cfg, st, [r], la, CLOCK, {"launch_brief": launch, "known": lambda: set(),
                                                   "file": lambda *a, **k: (False, "no filing")})
-        want = RL.pilot_model(REPO, rules.get("pilot_agent", "rm-testpilot"), cfg.get("steward_model", "opus"))
+        want = RL.pilot_tier(REPO, rules.get("pilot_agent", "rm-testpilot"), cfg.get("steward_model", "opus"))
         it, brief, model, cap = seen[0] if seen else (None, "", None, None)
-        import detached_helper as DH    # the launch gate (H4) takes an alias and maps it to the full id itself
-        ok(it == "FIX_ME" and model in ("fable", "opus", "sonnet") and DH.MODEL_IDS.get(model, model) == want
+        import role_launch    # the launch gate (H4) takes a tier and launches it as its id (role_launch.launch_model)
+        ok(it == "FIX_ME" and model in role_launch.TIERS and model == role_launch.tier(want)
            and model != cfg.get("steward_model"),
            "the sitting launches on the item with the pilot model %s, as the gate's alias (read %s, %s)"
            % (want, it, model))

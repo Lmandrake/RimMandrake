@@ -104,6 +104,8 @@ PAGES = {
     "design/specs/2026-11-19-card-capture-reads/boundary.md": "src/RimMandrake/rimflow/selftest_card_capture_reads.py",
     "design/specs/2026-11-19-failed-before-reads/boundary.md": "src/RimMandrake/rimflow/selftest_failed_before_reads.py",
     "design/specs/2026-11-19-mod-model-pin/boundary.md": "src/RimMandrake/rimflow/selftest_mod_model_pin.py",
+    "design/specs/2026-11-22-run-spend-and-model-alias/boundary.md":
+        "src/RimMandrake/rimflow/selftest_run_spend_and_model_alias.py",
     "design/specs/2026-11-19-closeout-matcher/boundary.md": "src/RimMandrake/rimflow/selftest_conductor_closeout.py",
     "design/specs/2026-11-19-role-clone-level/boundary.md": "src/RimMandrake/rimflow/selftest_role_clone_level.py",
     "design/specs/2026-11-19-run-end-continue/boundary.md": "src/RimMandrake/rimflow/selftest_left_open_continue.py",

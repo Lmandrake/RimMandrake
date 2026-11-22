@@ -3,8 +3,9 @@
 called. For obvious reasons. And it should get that same inspirational prompting we worked out, just with a live game flare").
 
 The tier is the `model:` line of .claude/agents/rm-testpilot.md. `--model` beats that line, so a launcher must pass the
-pilot's own model (run_store.pilot_model), and the bare CLI alias "fable" resolves to Fable 5.1, so the tier becomes an id
-through the environment first, then detached_helper.MODEL_IDS. A builder keeps run_rules.json's model.
+pilot's own tier (run_store.pilot_tier), and the bare CLI alias "fable" resolves to Fable 5.1, so the tier becomes an id
+through the environment (role_launch.launch_model, the one alias table). A builder keeps run_rules.json's model. Fixtures
+only: role_launch.SETTINGS points at a temp file that names Fable 5.2.
 
     python3 src/RimMandrake/rimflow/selftest_testpilot_model.py
 """
@@ -18,11 +19,18 @@ ROOT = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 sys.path.insert(0, os.path.dirname(HERE))
 sys.path.insert(0, HERE)
 
-import detached_helper                                  # noqa: E402
+import role_launch as RL                                # noqa: E402
 import run_store                                        # noqa: E402
 from rimflow import testpilot_route as TR               # noqa: E402
 
 PASS, FAIL = [], []
+_SET = tempfile.mkdtemp(prefix="st_tp_model_")
+RL.SETTINGS = os.path.join(_SET, "settings.json")       # the machine's settings decide nothing here
+with open(RL.SETTINGS, "w") as _f:
+    _f.write('{"env": {"ANTHROPIC_DEFAULT_FABLE_MODEL": "claude-fable-5-2"}}')
+for _k in list(os.environ):
+    if _k.startswith("ANTHROPIC_DEFAULT_"):
+        os.environ.pop(_k)
 AGENT = os.path.join(ROOT, ".claude", "agents", "rm-testpilot.md")
 POLICY = os.path.join(ROOT, "infrastructure", "agents", "Agent_Policy.md")
 
@@ -35,17 +43,17 @@ def _agent():
 def t_agent_file_is_fable():
     head = _agent().split("\n---", 1)[0]
     assert "\nmodel: fable\n" in head + "\n", "rm-testpilot.md frontmatter must say `model: fable`"
-    assert detached_helper.MODEL_IDS.get("fable") == "claude-fable-5-2", "the fable tier no longer maps to Fable 5.2"
+    assert RL.launch_model("fable", {}) == "claude-fable-5-2", "the fable tier no longer launches as Fable 5.2"
 
 
-def t_pilot_model_reads_the_tier_and_maps_it():
-    got = run_store.pilot_model(ROOT, "rm-testpilot", "opus", env={})
-    assert got == "claude-fable-5-2", "pilot_model gave %r, not Fable 5.2" % got
+def t_pilot_tier_reads_the_tier_and_launch_maps_it():
+    got = RL.launch_model(run_store.pilot_tier(ROOT, "rm-testpilot", "opus"), {})
+    assert got == "claude-fable-5-2", "the pilot launches as %r, not Fable 5.2" % got
 
 
 def t_environment_names_the_id_first():
     env = {"ANTHROPIC_DEFAULT_FABLE_MODEL": "fable-from-env[1m]"}
-    got = run_store.pilot_model(ROOT, "rm-testpilot", "opus", env=env)
+    got = RL.launch_model(run_store.pilot_tier(ROOT, "rm-testpilot", "opus"), env)
     assert got == "fable-from-env", "the environment's id (less [1m]) must win, got %r" % got
 
 
@@ -55,8 +63,8 @@ def t_no_agent_file_or_line_keeps_the_default():
         os.makedirs(os.path.join(d, ".claude", "agents"))
         with open(os.path.join(d, ".claude", "agents", "x_nomodel.md"), "w") as f:
             f.write("---\nname: x_nomodel\ndescription: none\n---\nbody model: fable\n")
-        assert run_store.pilot_model(d, "x_nomodel", "opus", env={}) == "opus", "a body line is not the frontmatter"
-        assert run_store.pilot_model(d, "x_absent_agent", "opus", env={}) == "opus", "no file anywhere: the default"
+        assert run_store.pilot_tier(d, "x_nomodel", "opus") == "opus", "a body line is not the frontmatter"
+        assert run_store.pilot_tier(d, "x_absent_agent", "opus") == "opus", "no file anywhere: the default"
     finally:
         shutil.rmtree(d)
 
@@ -102,10 +110,10 @@ def t_tick_pilot_model_passes_the_launch_gate():
             for k in env:
                 os.environ.pop(k, None)
             os.environ.update(was)
-        assert got in detached_helper.MODELS, "the tick hands the helper %r, which its H4 gate refuses (env %s)" % (
+        assert got in RL.TIERS, "the tick hands the helper %r, which its H4 gate refuses (env %s)" % (
             got, sorted(env))
-        assert detached_helper.MODEL_IDS.get(got, got) == "claude-fable-5-2", "the helper launches %r, not Fable 5.2" % (
-            detached_helper.MODEL_IDS.get(got, got))
+        assert RL.launch_model(got, env) == "claude-fable-5-2", "the helper launches %r, not Fable 5.2" % (
+            RL.launch_model(got, env))
 
 
 CASES = [v for k, v in sorted(globals().items()) if k.startswith("t_") and callable(v)]

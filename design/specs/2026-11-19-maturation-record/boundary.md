@@ -13,8 +13,9 @@ this one, `design/specs/2026-11-19-maturation-reads/boundary.md`; the record's o
   file, then `os.replace`), by processes on one machine that all take `_mod_lock` (an `flock` on
   `.stage_move.lock` in the mod's folder) before writing it.
 - **spend-rows-may-lack-a-field.** A spend row (the record's `spend` list, or a RUN_SPEND line) may carry `tokens`,
-  `usd` or `wall_s` as the string UNMEASURED: a run that could not read its own meter is ordinary. A row written before
-  2026-11-19 carries no `token_unit`.
+  `usd` or `wall_s` as the string UNMEASURED: a run that could not read its own meter is ordinary. Every committed row
+  carries a `token_unit` (the rows written before 2026-11-19 were stamped from their run records on 2026-11-22,
+  `design/specs/2026-11-22-run-spend-and-model-alias/equivalence.md`).
 - **numbered-evidence-belongs-to-one-version.** `version/blind_challenge/cycle_<N>/`, `version/in_game/visit_<N>/`
   and `version/walk_brief/arrival_<N>.md` are numbered by the record's counters (`cycles.total`, the in-game moves,
   `pre_human_arrivals`), which `next_version` starts again at 0.
@@ -47,16 +48,15 @@ this one, `design/specs/2026-11-19-maturation-reads/boundary.md`; the record's o
   archive path already taken refuses the move before anything moves. The new version's cycle 1, visit 1 and arrival 1
   start empty, and the old version's evidence is kept (`modledger.py` still reads its fault ids).
 
-- **spend-rows-carry-their-unit.** Every spend row a writer adds names its `token_unit`: a run row (`_spend_row`,
-  so the seed and `record_run_spend`) takes its run's own unit, else weighted_v1 when the run ended before the
-  weighted_v2 switch and weighted_v2 after (2026-11-16 23:05 PST; measured over 629 finished run records: the last
-  unstamped one ended 23:00:13, the first weighted_v2 one 23:10:17), else `unstated`; `add_spend` stamps weighted_v2;
-  the seed's VERSION.json row takes the unit VERSION.json names, else `unstated`. A run row names its run's model.
+- **spend-rows-carry-their-unit.** Every spend row a writer adds names its `token_unit`. A run row (`_spend_row`, so
+  the seed and `record_run_spend`) takes its run record's unit, which the maturation_now run view carries
+  (`role_launch.stored_unit`: the stamp, else weighted_v1). `add_spend` stamps weighted_v2. The seed's VERSION.json
+  row takes the unit that VERSION.json names, else `unstated`. A run row names its run's model.
 - **stage-spend-sums-one-unit.** `spend_by_stage`, `pass_cost` and `show` add weighted_v2 rows only into `tokens`
-  (`weighted_tokens`); every other unit is summed apart, by unit, in `tokens_other`, never converted or mixed in, and
-  `show` prints each under its own name. A row written before rows were stamped reads weighted_v1 when its `at` is
-  before the switch or it has no `at` (only the seed wrote such rows, and every record was seeded before the switch,
-  measured 2026-11-19), weighted_v2 when its `at` is after (`row_unit`). Items RIMMANDRAKE_STAMP_STAGE_SPEND_ROWS_ONE_UNIT
-  and RIMMANDRAKE_RELABEL_SPEND_PRINTERS_STILL_V1; both tests watched failing on 9c3ad408cd.
+  (`weighted_tokens`). Every other unit is summed apart, by unit, in `tokens_other`. It is never converted or mixed
+  in, and `show` prints each unit under its own name. A row's unit is `row_unit`, which is
+  `role_launch.stored_unit` (design/specs/2026-11-22-run-spend-and-model-alias/boundary.md). Items
+  RIMMANDRAKE_STAMP_STAGE_SPEND_ROWS_ONE_UNIT and RIMMANDRAKE_RELABEL_SPEND_PRINTERS_STILL_V1; both tests were watched
+  failing on 9c3ad408cd.
 
 Later lists beside this page: `polish.md`; `next_version.md` (none yet).

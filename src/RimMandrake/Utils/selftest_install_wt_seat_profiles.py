@@ -77,7 +77,7 @@ def test_plain_path_has_first_prompt():
         check(f"infrastructure/agents/{ident}.md" in prompt, f"{seat} plain: the prompt points at its Start of turn")
         check(SAFE.fullmatch(prompt) is not None, f"{seat} plain: the prompt is shell/JSON-safe ({prompt!r})")
         check(argv[:-1] == shlex.split(W.LAUNCH.format(script=W.BOUNDED.format(home=W.SEAT_CLONES[seat][0]),
-                                                        label=want, model=W.SEATS[seat][1])),
+                                                        label=want, model=W.seat_model(seat))),
               f"{seat} plain: the argv is LAUNCH unchanged + the prompt")
     b = launch_argv(inner_of(build_with((), "BENCH")), False)[-1]
     check("next --seat" not in b and "report" in b.lower(), "BENCH plain: wakes and reports, does not pull the queue")

@@ -34,6 +34,15 @@ import maturation_dispatch as MD    # noqa: E402
 import detached_helper as DH        # noqa: E402
 import role_launch as RL            # noqa: E402
 
+# The model variables are fixtures (design/specs/2026-11-22-run-spend-and-model-alias/boundary.md): Fable's names its
+# id, Opus's and Sonnet's are unset, in the environment and in the settings file this process reads.
+for _k in RL.MODEL_VARS.values():
+    os.environ.pop(_k, None)
+os.environ["ANTHROPIC_DEFAULT_FABLE_MODEL"] = "claude-fable-5-2"
+RL.SETTINGS = os.path.join(TMP, "settings.json")
+with open(RL.SETTINGS, "w") as _f:
+    json.dump({"env": {}}, _f)
+
 PIN, OTHER = "WreckedMachines", "Graffiti"
 PINS_KEY = "_pins"      # mod_model.PINS_KEY, spelled here so the base commit runs these checks (and reads opus)
 UNPINNED_CONCEPT = "SelftestUnpinned"     # an invented concept: the Designer fixture reads no real one
@@ -251,7 +260,7 @@ def t_a_pin_is_set_and_lifted_in_the_store():
 
 def t_an_unknown_pin_is_refused_by_name():
     p = fresh_store()
-    for bad in ("haiku", "opus", "fabel"):
+    for bad in ("haiku", "opus", "fabel"):    # opus: a tier whose variable is unset (the fixture above)
         n0 = len(C.log(500, p))
         try:
             C.set_model(PIN, bad, "selftest", p=p)

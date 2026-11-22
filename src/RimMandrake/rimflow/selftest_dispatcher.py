@@ -1062,7 +1062,7 @@ def test_role_gates():
     a = role_acts(rdecide([conductor()], st, robs(ops_status(now, week_left=5)), now))
     check([x["do"] for x in a] == ["role_hold"] and "FLOOR" in a[0]["why"], "FLOOR: no scheduled check")
     st = fresh()
-    st["roles"] = {"Conductor": {"done": {}, "runs": [{"day": RL.day_of(now), "tokens": 190000, "state": "done",
+    st["roles"] = {"Conductor": {"done": {}, "runs": [{"day": RL.day_of(now), "tokens": 190000, "token_unit": RL.TOKEN_UNIT, "state": "done",
                                                         "at": now - 3600, "unit": "u0", "budget": 30000}]}}
     a = role_acts(rdecide([conductor()], st, robs(ops_status(now)), now))
     check([x["do"] for x in a] == ["alarm"] and "daily_token_cap" in a[0]["why"], "daily cap would be passed: refused")
@@ -1971,7 +1971,7 @@ def test_role_event_cap_refusal_keeps_quota():
     fail = dict(BASE_EV, event="verify", id="PLAN_A", result="fail", ts=lts(t - 200))
     st = fresh()
     st["roles"] = {"Producer": {"done": {"%s 09:00" % RL.day_of(t): "launch"}, "event_cursor": t - 3600,
-                                "runs": [{"day": RL.day_of(t), "tokens": 200000, "state": "done",
+                                "runs": [{"day": RL.day_of(t), "tokens": 200000, "token_unit": RL.TOKEN_UNIT, "state": "done",
                                           "at": t - 3600, "unit": "u0", "budget": 100000}]}}
     p = producer(after_role=None)
     a = role_acts(rdecide([p], st, lrobs(ops_status(t), lread([BASE_EV, fail], items)), t))
@@ -2074,7 +2074,7 @@ def test_role_plan_failure_events():
     t2 = t + 3600
     blk2 = dict(BASE_EV, event="block", id="PLAN_A", ts=lts(t2 - 60))
     st["roles"]["Producer"]["runs"] = [{"unit": "u", "at": t, "day": RL.day_of(t), "budget": 100000, "mode": "event",
-                                        "state": "done", "tokens": 50000, "item": "ROLES_ITEM_X"}]
+                                        "state": "done", "tokens": 50000, "token_unit": RL.TOKEN_UNIT, "item": "ROLES_ITEM_X"}]
     a = role_acts(rdecide([p], st, lrobs(ops_status(t2), lread(evs + [fail, blk, blk2], items)), t2))
     check(not [x for x in a if x["do"] == "role_launch"] and any("event_runs_per_day" in x.get("why", "") for x in a),
           "a second failure the same day: no second event run (per-day count), journaled once")
@@ -2214,7 +2214,7 @@ def test_review_t():
     st = fresh()
     st["roles"] = {"Operations": {"done": {"%s 19:30" % yday: "launch", "%s 07:30" % RL.day_of(t9): "band AMBER"},
                                   "runs": [{"unit": "u", "at": t9 - 50000, "day": yday, "slot": "%s 19:30" % yday,
-                                            "mode": "run", "state": "done", "tokens": 1, "budget": 1}]}}
+                                            "mode": "run", "state": "done", "tokens": 1, "token_unit": RL.TOKEN_UNIT, "budget": 1}]}}
     a = role_acts(rdecide([ops, p], st, robs(ops_status(t9)), t9))
     check([x for x in a if x["do"] == "role_launch" and x["role"] == "Producer"],
           "F4: AMBER, Operations 07:30 band-skipped: the Producer's 09:00 follows yesterday's 19:30 run")
@@ -2777,7 +2777,7 @@ def test_review_x_alarm_flap():
                 if x["do"] == "role_launch":
                     got.append((x["mode"], RL.local_hhmm(now) if hasattr(RL, "local_hhmm") else i))
                     rs["runs"].append({"day": RL.day_of(now), "budget": x["budget"], "at": now, "state": "done",
-                                       "mode": x["mode"], "tokens": x["budget"]})
+                                       "mode": x["mode"], "tokens": x["budget"], "token_unit": RL.TOKEN_UNIT})
                     rs.pop("pending_launch", None)
                 elif x["do"] == "alarm" and ":cap" in str(x.get("kind")):
                     refused.append(x["why"])

@@ -9,8 +9,10 @@ launcher is a fake that records the argv it was given.
 
 ## ACCEPTS (the only inputs the route is built for)
 
-- **a-pin-is-an-alias-with-a-full-id.** A pin names an alias of `detached_helper.MODEL_IDS` (today only `fable`, which
-  launches as `claude-fable-5-2`), and that id has a row in `role_launch.MODEL_PRICES`.
+- **a-pin-is-an-alias-with-a-full-id.** A pin names a tier of `role_launch.TIERS` (`fable`, `opus`, `sonnet`). The
+  environment names the tier's id (`role_launch.resolve_model`, the one alias table:
+  `design/specs/2026-11-22-run-spend-and-model-alias/boundary.md`), and that id has a row in
+  `role_launch.MODEL_PRICES`.
 - **one-pin-per-mod.** A pin is per mod, keyed as the control store keys a mod (the concept folder's name).
 - **caps-priced-for-opus.** Every cap a pin scales was set from Opus 5.5 runs (`mod_model.CAPS_PRICED_FOR`).
 
@@ -19,7 +21,7 @@ launcher is a fake that records the argv it was given.
 - **a-pin-set-inside-one-tick.** The Dispatch tick reads the pins once; a pin set after that read binds at the next
   tick. A run already live keeps the model it started on.
 - **a-codex-runner.** A Designer run on the codex runner is not a Claude model; a pin does not change it.
-- **the-test-pilot.** An rm-testpilot sitting runs on its own pilot model (`run_store.pilot_model`), pinned or not.
+- **the-test-pilot.** An rm-testpilot sitting runs on its own pilot tier (`run_store.pilot_tier`), pinned or not.
 - **limits-not-priced-here.** `stage_ceiling_usd` (a ceiling, the Conductor's) and the Designer's advisory weighted-token
   budget are not scaled; at Fable's price both fill twice as fast. Filed:
   `RIMMANDRAKE_PRICE_CEILING_AND_DESIGNER_TOKENS_FOR_PINNED_MODEL`.
@@ -28,8 +30,8 @@ launcher is a fake that records the argv it was given.
 
 - **a-pin-is-set-and-lifted-in-the-store.** `pipe model <Mod> fable --why ...` writes one act and the pin reads back at
   once, with no publish; `pipe model <Mod> default --why ...` lifts it.
-- **an-unknown-pin-is-refused-by-name.** A model that is not pinnable (`haiku`, `opus`, a typo) is refused naming it,
-  and nothing is written.
+- **an-unknown-pin-is-refused-by-name.** A model that is not pinnable (`haiku`, a typo), or a tier whose variable
+  is unset, is refused with its name, and nothing is written.
 - **no-pin-reads-empty-not-unreadable.** A store with no pin reads `{}`; a store that cannot be read raises
   Unreadable, never `{}`.
 - **pinned-offline-build-launches-on-the-pin.** For a pinned mod the offline build's launch is given model `fable`,

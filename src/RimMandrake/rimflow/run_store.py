@@ -1,4 +1,4 @@
-"""run_store.py -- the run store (Store: items, journal, locks under /home/mandrake/rm/relentless/store), the clone effects detached helpers use (Effects: bundle_clone, remove_clone, restore_bundle), rules() and pilot_model.
+"""run_store.py -- the run store (Store: items, journal, locks under /home/mandrake/rm/relentless/store), the clone effects detached helpers use (Effects: bundle_clone, remove_clone, restore_bundle), rules() and pilot_tier.
 
 Moved verbatim from rimflow/relentless.py (RIMMANDRAKE_SPLIT_LIVE_CODE_OUT_OF_RELENTLESS_NAMED_MODULES):
 only the functions live code reaches (design/RimMandrake/retired_eras_index_2026-11-18.md).
@@ -140,28 +140,20 @@ def bundle_bytes(d):
     return n
 
 
-def pilot_model(clone, agent, default, env=None):
-    """-> the model id a Test Pilot sitting runs on. Owner 2026-11-16 10:13 PM: "Test Pilot should also run as Fable 5.2
-    when it's called." The tier is the agent file's own `model:` line (.claude/agents/<agent>.md in `clone`, else this
-    repo's), so the file stays the one place it is set; `--model` beats that line, so it must be passed here. The tier
-    becomes an id by the environment first (ANTHROPIC_DEFAULT_<TIER>_MODEL, Agent_Policy.md), then detached_helper.MODEL_IDS:
-    the bare CLI alias "fable" resolves to Fable 5.1 (measured 2026-11-12 and 2026-11-16). No agent file or no line:
-    `default`."""
-    env = os.environ if env is None else env
-    tier = None
+def pilot_tier(clone, agent, default):
+    """-> the model tier a Test Pilot sitting runs on. Owner 2026-11-16 10:13 PM: "Test Pilot should also run as Fable
+    5.2 when it's called." The tier is the agent file's own `model:` line (.claude/agents/<agent>.md in `clone`, else
+    this repo's), so the file stays the one place it is set; `--model` beats that line, so it must be passed. The
+    launch turns the tier into its id (role_launch.launch_model: the bare CLI alias "fable" resolved to Fable 5.1,
+    measured 2026-11-12 and 2026-11-16). No agent file or no line: `default`."""
     for base in (clone, os.path.dirname(os.path.dirname(os.path.dirname(HERE)))):
         try:
             with open(os.path.join(base or "", ".claude", "agents", "%s.md" % agent), encoding="utf-8") as f:
                 head = f.read().split("\n---", 1)[0]
         except (OSError, TypeError):
             continue
-        tier = next((ln.split(":", 1)[1].strip() for ln in head.splitlines() if ln.startswith("model:")), None)
-        break
-    if not tier:
-        return default
-    import detached_helper
-    return (env.get("ANTHROPIC_DEFAULT_%s_MODEL" % tier.upper()) or "").replace("[1m]", "").strip() \
-        or detached_helper.MODEL_IDS.get(tier, tier)
+        return next((ln.split(":", 1)[1].strip() for ln in head.splitlines() if ln.startswith("model:")), None) or default
+    return default
 
 
 def root():

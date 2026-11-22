@@ -985,9 +985,9 @@ def next_version_main(root):
     os.makedirs(os.path.dirname(rsp), exist_ok=True)
     with open(rsp, "a") as f:
         f.write(json.dumps({"stage": "designer", "stages": ["designer"], "tokens": 50, "unit": "rm-old-version-run",
-                            "at": "2000-01-01T00:00:00Z"}) + "\n")
+                            "token_unit": "weighted_v2", "at": "2000-01-01T00:00:00Z"}) + "\n")
         f.write(json.dumps({"stage": "designer", "stages": ["designer"], "tokens": 70, "unit": "rm-new-version-run",
-                            "at": "2999-01-01T00:00:00Z"}) + "\n")
+                            "token_unit": "weighted_v2", "at": "2999-01-01T00:00:00Z"}) + "\n")
     try:
         rec = M.load(root, mod)
         own = sum(x["tokens"] for x in rec.get("spend") or [] if isinstance(x.get("tokens"), (int, float)))

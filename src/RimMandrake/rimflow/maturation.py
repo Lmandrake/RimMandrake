@@ -225,40 +225,23 @@ def _since(hist, col):
     return UNM, "no dated journal heading names it"
 
 
-# The token unit of a spend row (RIMMANDRAKE_STAMP_STAGE_SPEND_ROWS_ONE_UNIT). Detached run records carry token_unit
-# weighted_v2 from role_launch's switch (381db58f59, 2026-11-16 23:00 PST); records before it carry none and are
-# weighted_v1. Measured 2026-11-19 over the 629 finished records: every unstamped one ended at or before
-# 2026-11-16T23:00:13-08:00, every weighted_v2 one at or after 23:10:17. The switch instant lies between.
+# The token unit of a spend row is role_launch.stored_unit's, the one reader of a stored figure's unit
+# (design/specs/2026-11-22-run-spend-and-model-alias/boundary.md).
 TOKEN_UNIT = "weighted_v2"
-V1_UNIT = "weighted_v1"
 UNSTATED = "unstated"
-V2_SWITCH = dt.datetime(2026, 11, 16, 23, 5, tzinfo=dt.timezone(dt.timedelta(hours=-8))).timestamp()
-
-
-def _unit_by_time(t):
-    return UNSTATED if not isinstance(t, (int, float)) else V1_UNIT if t < V2_SWITCH else TOKEN_UNIT
 
 
 def row_unit(row):
-    """-> the token unit of a spend row: its token_unit; else, for a row written before rows were stamped, weighted_v1
-    when its `at` is before the switch, weighted_v2 after, and weighted_v1 when it has no `at` (only the seed wrote such
-    rows, and every record was seeded before the switch, measured 2026-11-19)."""
-    u = row.get("token_unit")
-    if isinstance(u, str) and u.strip():
-        return u
-    if row.get("at") is None:
-        return V1_UNIT
-    t = _instant(row.get("at"))
-    return _unit_by_time(t) if t is not None else UNSTATED
+    """-> the token unit of a spend row: its token_unit, else weighted_v1 (role_launch.stored_unit)."""
+    import role_launch as RL
+    return RL.stored_unit(row)
 
 
 def _spend_row(r, stages):
-    """One detached run (a maturation_now run view) -> its spend entry, under the stage words it worked in. Its
-    token_unit is the run's own when the view carries one, else read from when the run ended (or began)."""
+    """One detached run (a maturation_now run view, which carries its record's token_unit) -> its spend entry, under
+    the stage words it worked in, in its run's own unit (row_unit)."""
     usd = r.get("usd") if isinstance(r.get("usd"), (int, float)) else r.get("said_usd")
-    when = r.get("end") if isinstance(r.get("end"), (int, float)) else r.get("at")
-    own = r.get("token_unit") if isinstance(r.get("token_unit"), str) and r.get("token_unit") else None
-    return {"stage": stages[0], "stages": stages, "token_unit": own or _unit_by_time(when),
+    return {"stage": stages[0], "stages": stages, "token_unit": row_unit(r),
             "model": r.get("model") or UNM, "tokens": r.get("tokens") if isinstance(
         r.get("tokens"), int) else UNM, "usd": usd if isinstance(usd, (int, float)) else UNM,
         "usd_from": "run record" if isinstance(r.get("usd"), (int, float)) else

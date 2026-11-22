@@ -247,7 +247,8 @@
       "usd": "UNMEASURED",
       "wall_s": "UNMEASURED",
       "source": "design/concepts/ExplosiveKnockback/version/VERSION.json tokens_spent",
-      "kind": "mixed: measured and estimated charges, see VERSION.json measured_from"
+      "kind": "mixed: measured and estimated charges, see VERSION.json measured_from",
+      "token_unit": "weighted_v1"
     },
     {
       "stage": "designer",
@@ -260,7 +261,8 @@
       "wall_s": 1565,
       "cap_usd": 15.0,
       "source": "detached run rm-detached-bench-rimmandrake-design-knockback-first-touch-1794558096 (item RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH)",
-      "kind": "measured"
+      "kind": "measured",
+      "token_unit": "weighted_v1"
     },
     {
       "stage": "designer",
@@ -273,7 +275,8 @@
       "wall_s": 1995,
       "cap_usd": 15.0,
       "source": "detached run rm-detached-bench-rimmandrake-design-knockback-first-touch-1794592461 (item RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH)",
-      "kind": "measured"
+      "kind": "measured",
+      "token_unit": "weighted_v1"
     },
     {
       "stage": "designer",
@@ -286,7 +289,8 @@
       "wall_s": 720,
       "cap_usd": 20.0,
       "source": "detached run rm-detached-bench-rimmandrake-design-knockback-first-touch-1794599583 (item RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH)",
-      "kind": "measured"
+      "kind": "measured",
+      "token_unit": "weighted_v1"
     },
     {
       "stage": "designer",
@@ -300,7 +304,8 @@
       "wall_s": 1214,
       "cap_usd": 15.0,
       "source": "detached run rm-detached-bench-rimmandrake-design-maturation-pipeline-w-1794683669 (item RIMMANDRAKE_DESIGN_MATURATION_PIPELINE_WHOLE_MOD_IS_THE_UNIT)",
-      "kind": "measured"
+      "kind": "measured",
+      "token_unit": "weighted_v1"
     },
     {
       "stage": "offline_build",
@@ -313,7 +318,8 @@
       "wall_s": 1881,
       "cap_usd": 15.0,
       "source": "detached run rm-detached-bench-rimmandrake-design-maturation-pipeline-w-1794687322 (item RIMMANDRAKE_DESIGN_MATURATION_PIPELINE_WHOLE_MOD_IS_THE_UNIT)",
-      "kind": "measured"
+      "kind": "measured",
+      "token_unit": "weighted_v1"
     }
   ]
 }

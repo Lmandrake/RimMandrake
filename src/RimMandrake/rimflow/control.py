@@ -3053,7 +3053,7 @@ def main(argv=None):
     p.add_argument("n")
     p = w(sub.add_parser("model"))
     p.add_argument("mod")
-    p.add_argument("model", help="a pinnable alias (mod_model.pinnable: fable), or default to lift the pin")
+    p.add_argument("model", help="a pinnable tier (mod_model.pinnable: fable, opus, sonnet), or default to lift the pin")
     p = sub.add_parser("next")
     p.add_argument("within", nargs="?", default="30m")
     p.add_argument("--full", action="store_true", help="every reason in full (default: under 1,500 characters)")

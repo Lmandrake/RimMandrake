@@ -156,7 +156,7 @@
     {"test": ".claude/hooks/selftest_role_result_before_stop.py", "seconds": 0.2},
     {"test": "src/RimMandrake/rimflow/selftest_detached_helper.py", "seconds": 2.6},
     {"test": "src/RimMandrake/rimflow/selftest_ledger_landing.py", "seconds": 6.0, "inputs": ["src/RimMandrake/rimflow/ledger_landing.py", "src/RimMandrake/rimflow/selftest_ledger_landing_recorded.jsonl", "src/RimMandrake/rimflow/cli.py", "src/RimMandrake/rimflow/model.py", "src/RimMandrake/Utils/publish.py", "design/specs/2026-11-22-ledger-write-lands-its-shard/boundary.md"]},
-    {"test": "src/RimMandrake/rimflow/selftest_detached_helper_model_tier.py", "seconds": 0.5},
+    {"test": "src/RimMandrake/rimflow/selftest_run_spend_and_model_alias.py", "seconds": 3, "inputs": ["src/RimMandrake/rimflow/role_launch.py", "src/RimMandrake/rimflow/maturation.py", "src/RimMandrake/Utils/maturation_now.py", "src/RimMandrake/rimflow/detached_helper.py", "src/RimMandrake/rimflow/mod_model.py", "src/RimMandrake/rimflow/run_store.py", "src/RimMandrake/rimflow/maturation_autonomy.py", "src/RimMandrake/Utils/install_wt_seat_profiles.py", "design/specs/2026-11-22-run-spend-and-model-alias/boundary.md"]},
     {"test": "src/RimMandrake/rimflow/selftest_detached_game_env.py", "seconds": 0.5},
     {"test": "src/RimMandrake/rimflow/selftest_left_open_continue.py", "seconds": 1.5},
     {"test": "src/RimMandrake/rimflow/selftest_continuation_progress.py", "seconds": 5},

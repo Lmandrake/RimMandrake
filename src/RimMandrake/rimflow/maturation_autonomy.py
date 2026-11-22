@@ -1126,14 +1126,13 @@ def pilot_env(env):
 
 
 def pilot_run_model(root, default):
-    """-> the model a sitting runs on: run_store.pilot_model, the agent file's own `model:` line (Fable 5.2, owner
-    2026-11-16), as the alias detached_helper's H4 gate takes (it maps the alias to the full id at launch). The full id
-    itself was refused, "model 'claude-fable-5-2' is not one of fable, opus, sonnet", and FlowWorks paused
+    """-> the tier a sitting runs on: run_store.pilot_tier, the agent file's own `model:` line (Fable 5.2, owner
+    2026-11-16), repaired to its tier (role_launch.tier), which detached_helper's H4 gate takes and launches as its id.
+    A full id was refused, "model 'claude-fable-5-2' is not one of fable, opus, sonnet", and FlowWorks paused
     (RIMMANDRAKE_PASS_PILOT_ALIAS_TO_THE_LAUNCH_GATE, 2026-11-21)."""
-    import detached_helper as DH
-    import run_store as RL
-    mid = RL.pilot_model(root, "rm-testpilot", default)
-    return {v: k for k, v in DH.MODEL_IDS.items()}.get(mid, mid)
+    import role_launch
+    import run_store
+    return role_launch.tier(run_store.pilot_tier(root, "rm-testpilot", default))
 
 
 def open_road_back(root, row, item, now):

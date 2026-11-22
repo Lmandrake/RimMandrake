@@ -218,24 +218,25 @@ def _epoch(s):
 
 
 def t_spend_rows_carry_their_unit():
-    """Every spend row a writer adds names its token unit: a run row its run's own token_unit, else weighted_v1 when
-    the run ended before the weighted_v2 switch and weighted_v2 after; add_spend weighted_v2; the seed's VERSION.json
-    row the unit VERSION.json names, else "unstated". The row names the run's model too."""
+    """Every spend row a writer adds names its token unit: a run row its run's own token_unit, else weighted_v1
+    (role_launch.stored_unit: a run record with no unit predates the weighting), whatever its end time; add_spend
+    weighted_v2; the seed's VERSION.json row the unit VERSION.json names, else "unstated". The row names the run's
+    model too."""
     old = {"unit": "u-old", "item": "I", "tokens": 100, "end": _epoch(SWITCH_LAST_V1), "model": "opus"}
     new = {"unit": "u-new", "item": "I", "tokens": 100, "end": _epoch(SWITCH_FIRST_V2), "model": "sonnet"}
     own = dict(old, unit="u-own", token_unit="weighted_v2")
     got = [M._spend_row(r, ["blind_challenge"]).get("token_unit") for r in (old, new, own)]
-    check(got == ["weighted_v1", "weighted_v2", "weighted_v2"],
-          "a run row is stamped from its own unit, else by its end against the switch", got)
+    check(got == ["weighted_v1", "weighted_v1", "weighted_v2"],
+          "a run row is stamped from its own unit, else weighted_v1, never by its end time", got)
     check(M._spend_row(new, ["blind_challenge"]).get("model") == "sonnet", "a run row names its run's model")
     nowhen = {"unit": "u-x", "item": "I", "tokens": 5}
-    check(M._spend_row(nowhen, ["designer"]).get("token_unit") == "unstated",
-          "a run row with no end, start or unit reads unstated, never guessed", M._spend_row(nowhen, ["designer"]))
+    check(M._spend_row(nowhen, ["designer"]).get("token_unit") == "weighted_v1",
+          "a run row with no end, start or unit reads its record's unit: weighted_v1", M._spend_row(nowhen, ["designer"]))
     root = fresh("unit_add")
     rec = M.add_spend(root, MOD, "offline_build", 1234, source="hand")
     check(rec["spend"][-1].get("token_unit") == "weighted_v2", "add_spend stamps weighted_v2", rec["spend"][-1])
     root = fresh("unit_runspend")
-    M.record_run_spend(root, MOD, [new], lambda r: ["blind_challenge"])
+    M.record_run_spend(root, MOD, [dict(new, token_unit="weighted_v2")], lambda r: ["blind_challenge"])
     rows = M.read_run_spend(root, MOD)
     check([x.get("token_unit") for x in rows] == ["weighted_v2"], "record_run_spend's rows carry their unit", rows)
     d = M._designer_seed_row({"tokens_spent": 900}, MOD)
@@ -246,8 +247,7 @@ def t_spend_rows_carry_their_unit():
 
 def t_stage_spend_sums_one_unit():
     """spend_by_stage, pass_cost and show sum weighted_v2 rows only; every other unit is summed apart, by unit, and
-    printed under its own name. An unstamped row reads weighted_v1 when its `at` is before the switch or it has no
-    `at` (only the seed wrote such rows, and every record was seeded before the switch), weighted_v2 after."""
+    printed under its own name. An unstamped row reads weighted_v1, whatever its `at` (role_launch.stored_unit)."""
     U = M.UNM
     rows = [{"stage": "blind_challenge", "tokens": 100, "token_unit": "weighted_v2"},
             {"stage": "blind_challenge", "tokens": 50, "at": SWITCH_LAST_V1},
@@ -256,17 +256,17 @@ def t_stage_spend_sums_one_unit():
             {"stage": "designer", "tokens": 7},
             {"stage": "designer", "tokens": 9, "token_unit": "unstated"},
             {"stage": "designer", "tokens": U, "token_unit": "weighted_v2"}]
-    check([M.row_unit(r) for r in rows] == ["weighted_v2", "weighted_v1", "weighted_v2", "weighted_v1", "weighted_v1",
+    check([M.row_unit(r) for r in rows] == ["weighted_v2", "weighted_v1", "weighted_v1", "weighted_v1", "weighted_v1",
                                             "unstated", "weighted_v2"], "row_unit reads each row's unit",
           [M.row_unit(r) for r in rows])
     by = M.spend_by_stage({"spend": rows})
     b, d = by.get("blind_challenge") or {}, by.get("designer") or {}
-    check(b.get("tokens") == 130 and b.get("tokens_other") == {"weighted_v1": 55},
+    check(b.get("tokens") == 100 and b.get("tokens_other") == {"weighted_v1": 85},
           "a stage sums its weighted_v2 rows and holds the weighted_v1 rows apart", b)
     check(d.get("tokens") == U and d.get("tokens_other") == {"weighted_v1": 7, "unstated": 9},
           "a stage with no measured weighted_v2 row reads UNMEASURED, its other units apart", d)
     cost = M.pass_cost(TMP, MOD, {"spend": rows})
-    check(cost.get("weighted_tokens") == 130 and cost.get("tokens_other") == {"weighted_v1": 62, "unstated": 9}
+    check(cost.get("weighted_tokens") == 100 and cost.get("tokens_other") == {"weighted_v1": 92, "unstated": 9}
           and cost.get("unit") == "weighted_v2", "pass_cost sums weighted_v2 only and names its unit", cost)
     root = fresh("unit_show", spend=rows)
     import contextlib
@@ -277,7 +277,7 @@ def t_stage_spend_sums_one_unit():
     lines = {x.split(":")[0].strip(): x for x in buf.getvalue().splitlines() if x.strip().startswith("spend ")}
     bl = [v for k, v in lines.items() if "Blind" in k or "blind" in k]
     dl = [v for k, v in lines.items() if "esign" in k]
-    check(rc == 0 and bl and "130 weighted tokens" in bl[0] and "55 weighted_v1" in bl[0] and "185" not in bl[0],
+    check(rc == 0 and bl and "100 weighted tokens" in bl[0] and "85 weighted_v1" in bl[0] and "185" not in bl[0],
           "show prints the weighted_v2 sum and labels the weighted_v1 history apart", (rc, bl))
     check(dl and "UNMEASURED weighted tokens" in dl[0] and "7 weighted_v1" in dl[0] and "9 unstated" in dl[0],
           "show labels every other unit by name", dl)

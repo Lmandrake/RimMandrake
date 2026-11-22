@@ -34,20 +34,18 @@ PINS_KEY = "_pins"      # the tick's one read of the store, carried on its setti
 
 
 def pinnable():
-    """-> {alias: full model id} a mod may be pinned to: detached_helper.MODEL_IDS, the one alias table (the CLI alias
-    "fable" resolved to claude-fable-5-1, measured 2026-11-12; the ladder means Fable 5.2, so the full id is passed)."""
-    import detached_helper as DH
-    return dict(DH.MODEL_IDS)
+    """-> the tiers a mod may be pinned to: role_launch.TIERS, the owner's ladder (Haiku is banned)."""
+    return RL.TIERS
 
 
 def pin_id(alias):
-    """-> the full model id `alias` launches as. Raises RL.UnknownModel naming it when it is not pinnable or its id has
-    no row in role_launch.MODEL_PRICES (no fallback price: a cap could not be scaled)."""
-    ids = pinnable()
-    if alias not in ids:
-        raise RL.UnknownModel("model %r cannot pin a mod: pinnable are %s (detached_helper.MODEL_IDS)" % (
-            alias, ", ".join(sorted(ids)) or "none"))
-    return RL.resolve_model(ids[alias])
+    """-> the MODEL_PRICES key `alias` launches as, read from the environment (role_launch.resolve_model, the one alias
+    table). Raises RL.UnknownModel naming it when it is not pinnable, when its variable is unset, or when its id has no
+    row in role_launch.MODEL_PRICES (no fallback price: a cap could not be scaled)."""
+    if alias not in pinnable():
+        raise RL.UnknownModel("model %r cannot pin a mod: pinnable are %s (role_launch.TIERS)" % (
+            alias, ", ".join(pinnable())))
+    return RL.resolve_model(alias)
 
 
 def cap_scale(alias, base=CAPS_PRICED_FOR):
