@@ -4703,8 +4703,11 @@ def _ten_embergrass_regrow(t):
         x, z = t.anchor
         patches = {"dry": (x - 9, z - 2, 4, 4), "watered": (x - 2, z - 2, 4, 4), "vanilla": (x + 5, z - 2, 4, 4)}
         _firebreak(t, (x - 9, z - 2, 18, 4))
+        # SITE (Pyrelands visit 4, 2026-11-21): the patches were laid as RM_FE_Ground_Soil, where the ash field never acts
+        # (cells read ashField False, fertility 0.7 on all three, visit 3 and 4), so the watered patch could not outgrow
+        # the dry one; the scene (scenes.json sc_grass_regreens) asks for dry and watered DEEP ASH.
         for k, r in patches.items():
-            _soil(t, r)
+            t.bridge_call("jawa/set_terrain", x=r[0], z=r[1], terrainDef=DEEP_ASH, width=r[2], height=r[3], layer="top")
             _plants(t, "RM_FE_Plant_EmberGrass", r)
             _fire(t, r)
         _wait(t, 2 * TEN_HOUR)
@@ -4731,6 +4734,8 @@ def _ten_embergrass_regrow(t):
             _note(t, "patch cells after 7 days (burnTick, watered, bonus)", cells)
             if cells["dry"].get("watered") or cells["vanilla"].get("watered") or not cells["watered"].get("watered"):
                 _unmeasured(t, "the patches are not dry/watered as staged: %r" % cells)
+            if any(str(c.get("ashField")) != "True" for c in cells.values()):
+                _unmeasured(t, "a patch is not ash-field ground (the scene asks for deep ash): %r" % cells)
             if any(float(c.get("bonus") or 0) > 0 for c in cells.values()):
                 _unmeasured(t, "a patch still carries the fresh-burn bonus after 7 days: %r" % cells)
             if any(str(c.get("burnTick")) in ("-1", "None") for c in cells.values()):

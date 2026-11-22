@@ -58,3 +58,15 @@ START batch6 2026-11-21 23:45:32
 DONE fresh_burn_bonus reload_rc=0 rc=1 969s 00:01:41
 DONE scorchfruit_spoils reload_rc=0 rc=1 660s 00:12:41
 DONE grass_cover,embergrass_regrow@embergrass_regrow reload_rc=0 rc=1 1495s 00:37:36
+DONE burn_line reload_rc=0 rc=1 1456s 01:01:52
+END batch6 2026-11-22 01:01:52
+START batch7 2026-11-22 01:01:52
+SKIPPED grass_cover,embergrass_regrow@embergrass_regrow_planted_wet_off (the real run already reads FAIL on the growth comparisons, so a planted FAIL cannot show the repaired reader both ways) 01:01:52
+END batch7 2026-11-22 01:01:52
+START batch8 2026-11-22 01:01:53
+DONE burn_line_off_control@burn_line_off_control_real reload_rc=0 rc=1 182s 01:04:55
+END batch8 2026-11-22 01:04:55
+START batch9 2026-11-22 01:04:55
+DONE burn_line_off_control@burn_line_off_control_planted reload_rc=0 rc=1 182s 01:07:57
+END batch9 2026-11-22 01:07:57
+START batch10 2026-11-22 01:08:01
