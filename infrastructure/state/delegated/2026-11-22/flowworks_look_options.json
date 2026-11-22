@@ -1,0 +1,171 @@
+{
+ "judge_model": "claude-opus-5-5",
+ "brief": "design/RimMandrake/art_judge_brief.md@0d5794d8e3; design/specs/2026-11-22-flowworks-look-briefs/looks.md@0d5794d8e3",
+ "subject": "FlowWorks look options 2026-11-22 (RM_LiquidTank Industrial/Modern, UniversalPipe Modern, RM_SprinklerHead Modern)",
+ "item": "RIMMANDRAKE_REDRAW_FLOWWORKS_TANKS_THREE_STYLES_ONLY_SCRAPPER_READS_RIGHT",
+ "looked_at": [
+  "each candidate at full resolution beside its shipped original on a dirt-tone ground",
+  "each panel at true scale (64 px/cell, vanilla human, Scrapper reference)",
+  "32 px/cell downscales of the tanks (drawSize (2,2), RM_LiquidTankStyles.xml) and of the three pipe runs"
+ ],
+ "inputs_missing": "No north/east facings given; defs are Graphic_Single (one facing), per the launching brief, so C1/C2 do not apply. No 128-256 px/cell panel given; judged from full-res (256 px/cell for the tanks) and 64 px/cell panels instead.",
+ "verdicts": [
+  {
+   "picture": "D:\\ClaudeWork\\rimmandrake\\showings\\RIMMANDRAKE_REDRAW_FLOWWORKS_TANKS_THREE_STYLES_ONLY_SCRAPPER_READS_RIGHT\\work\\tank_industrial_A_rust_cleaned.png",
+   "sha256_12": "ce2847901f2b",
+   "asset": "tank_industrial",
+   "facing": "south (Graphic_Single)",
+   "verdict": "KEEP",
+   "notes": "Gunmetal paint over steel, mostly whole; rust confined to small weeps at bolts and seams; hazard bands kept but scuffed. Meets looks.md Industrial wear ('a few rust weeps at bolts and seams ... paint is mostly whole') and colour range ('dark gunmetal, slate grey'). Clearly apart from the Scrapper reference at 64 and 32 px/cell. B2 body value apart from ground: yes. D3/D4 unchanged (alpha identical to shipped)."
+  },
+  {
+   "picture": "D:\\ClaudeWork\\rimmandrake\\showings\\RIMMANDRAKE_REDRAW_FLOWWORKS_TANKS_THREE_STYLES_ONLY_SCRAPPER_READS_RIGHT\\work\\tank_industrial_B_sand_grey_paint.png",
+   "sha256_12": "e562d65f9323",
+   "asset": "tank_industrial",
+   "facing": "south (Graphic_Single)",
+   "verdict": "KEEP",
+   "notes": "Dull sand-grey paint (in looks.md Industrial range), scattered small rust spots, faded hazard bands. Not abandoned, not a wreck. Lighter value reads strongly against dirt at 32 px/cell. Less 'brutalist' than A but within the brief."
+  },
+  {
+   "picture": "D:\\ClaudeWork\\rimmandrake\\showings\\RIMMANDRAKE_REDRAW_FLOWWORKS_TANKS_THREE_STYLES_ONLY_SCRAPPER_READS_RIGHT\\work\\tank_modern_A_weathered_leg_tank.png",
+   "sha256_12": "b40d192e6b77",
+   "asset": "tank_modern",
+   "facing": "south (Graphic_Single)",
+   "verdict": "KEEP",
+   "notes": "UV-yellowed off-white poly, gloss toned down, faint vertical water streaks, speckle grain, dirt-tinted feet and a dulled valve body: the looks.md Modern wear list (smudges, water stains, sun-fading). At 64 and 32 px/cell the change reads mostly as 'aged cream' and the streaks barely show; shown as an option, but the owner should know the wear is subtle at play zoom (see polish and proposals)."
+  },
+  {
+   "picture": "D:\\ClaudeWork\\rimmandrake\\showings\\RIMMANDRAKE_REDRAW_FLOWWORKS_TANKS_THREE_STYLES_ONLY_SCRAPPER_READS_RIGHT\\work\\pipe_modern_A_touchup_patches.png",
+   "sha256_12": "e3083ea12efc",
+   "asset": "pipe_modern",
+   "facing": "4x4 link atlas",
+   "verdict": "KEEP",
+   "notes": "Faded waterworks blue with darker-blue, green and tan touch-up patches, matte, no glossy plastic highlight; at 32 px/cell (panel pipe_modern_A_touchup_patches__run.png downscaled) the run reads as dull grey-blue painted metal with faint patching. Meets the owner's 'patches of differently colored paint'. Atlas joins seamless in the assembled run."
+  },
+  {
+   "picture": "D:\\ClaudeWork\\rimmandrake\\showings\\RIMMANDRAKE_REDRAW_FLOWWORKS_TANKS_THREE_STYLES_ONLY_SCRAPPER_READS_RIGHT\\work\\pipe_modern_B_field_worn.png",
+   "sha256_12": "ef9ea45f7272",
+   "asset": "pipe_modern",
+   "facing": "4x4 link atlas",
+   "verdict": "REDO",
+   "violated": "looks.md Modern 'Must NOT look like'; E4 (owner note 2026-11-22)",
+   "quote": "Must NOT look like: cartoonish, plastic or toy-like ... / owner 2026-11-22: \"some patches of differently colored paint or other non-cartoonishness added\"",
+   "seen": "The red-oxide patches sit at the same spot in every straight atlas cell, so in the assembled run (panel pipe_modern_B_field_worn__run.png, and at 32 px/cell) every horizontal run reads as an evenly dashed red-and-pale-grey candy stripe, and vertical runs carry evenly spaced red diamond marks. It reads as a decorative pattern, not wear: a new cartoonishness in place of the old one. The blue is also nearly gone (pale grey).",
+   "redo_brief": "Keep the field-worn faded blue-grey base, but cut the red primer to one or two small, irregular, lower-saturation (oxide-brown) patches on only some link tiles, varied between tiles and absent on others, so a 10-cell straight run at 32 px/cell shows no regular rhythm; keep more of the waterworks blue."
+  },
+  {
+   "picture": "D:\\ClaudeWork\\rimmandrake\\showings\\RIMMANDRAKE_REDRAW_FLOWWORKS_TANKS_THREE_STYLES_ONLY_SCRAPPER_READS_RIGHT\\work\\sprinkler_modern_A_touchup_patches.png",
+   "sha256_12": "6aa5ac6266e2",
+   "asset": "sprinkler_modern",
+   "facing": "Graphic_Single",
+   "verdict": "KEEP",
+   "notes": "Desaturated speckled blue with navy, green and tan patches; no glossy plastic look. At full size the patches are spread evenly over the face and read a little like camouflage (polish); at 64 px/cell seated on the run they read as worn paint. Pairs with pipe A."
+  },
+  {
+   "picture": "D:\\ClaudeWork\\rimmandrake\\showings\\RIMMANDRAKE_REDRAW_FLOWWORKS_TANKS_THREE_STYLES_ONLY_SCRAPPER_READS_RIGHT\\work\\sprinkler_modern_B_field_worn.png",
+   "sha256_12": "11a35dc30bef",
+   "asset": "sprinkler_modern",
+   "facing": "Graphic_Single",
+   "verdict": "KEEP",
+   "notes": "Faded grey-blue painted metal, fine speckle, one red-primer scuff across the face and a few flecks; reads as worn painted metal, not plastic. A single scuff is not a pattern, so the pipe-B stripe flaw does not apply here. Pairs with pipe B (which is REDO); it also sits fine on pipe A's blue-grey."
+  }
+ ],
+ "improves_on_shipped": {
+  "tank_industrial": {
+   "A_rust_cleaned": "yes: the orange rust coat is gone; gunmetal paint with rust only at bolts and seams answers 'rusty and abandoned looking'.",
+   "B_sand_grey_paint": "yes: sand-grey paint with small rust spots; no longer abandoned-looking."
+  },
+  "tank_modern": {
+   "A_weathered_leg_tank": "yes, modestly: less bright and less glossy, with water streaks and dirt at the feet at full size; at 32 px/cell it mostly reads as aged cream, so 'smudges and normal wear' are only faintly visible in play."
+  },
+  "pipe_modern": {
+   "A_touchup_patches": "yes: the saturated glossy plastic blue is now matte faded blue with touch-up patches.",
+   "B_field_worn": "partly: the plastic look is gone, but the evenly repeating red patches add a candy-stripe look (REDO)."
+  },
+  "sprinkler_modern": {
+   "A_touchup_patches": "yes: no longer glossy plastic; patched, speckled paint.",
+   "B_field_worn": "yes: faded worn grey-blue with a primer scuff reads as painted metal."
+  }
+ },
+ "polish": [
+  "tank_modern A: base dirt splash and smudges could be stronger so the wear reads at 32 px/cell; the bright blue valve handle still looks new (polish).",
+  "pipe_modern A: the vertical straight tile is mostly tan/grey with blue bands, the horizontal tile mostly blue, so up-down and left-right runs differ in hue at 64 px/cell (polish; at 32 px/cell both read grey-blue).",
+  "pipe_modern A: the patches also repeat once per cell, but at low contrast, so the rhythm is only just visible (polish).",
+  "sprinkler_modern A: at full size the evenly spread navy/green/tan blotches read a little like camouflage; patches gathered at edges and bolt heads would read more like touch-up (polish).",
+  "tank_industrial B: the hazard bands are very washed out; slightly more yellow would keep the Industrial accent (polish).",
+  "All tanks, including the accepted Scrapper reference, keep the thin dark edge from the shipped art; it is inherited and not a heavy keyline, so it is not judged under B1a here (polish)."
+ ],
+ "proposals": [
+  "For linked atlases, add a judge-brief line: wear or patch marks on a link tile must not form a regular rhythm along a 10-cell run at 32 px/cell (evidence: pipe_modern_B run panel reads as a candy stripe).",
+  "For a recolour that answers a wear complaint, add a check that the wear is visible at 32 px/cell, where the owner made the complaint (evidence: tank_modern_A wear is faint at play zoom)."
+ ],
+ "contract": {
+  "item": "RIMMANDRAKE_REDRAW_FLOWWORKS_TANKS_THREE_STYLES_ONLY_SCRAPPER_READS_RIGHT",
+  "family": "art_judge_brief",
+  "sha": "ef9ea45f7272 (pipe_modern_B_field_worn.png sha256 prefix)",
+  "passed": [
+   {
+    "clause": "B2",
+    "evidence": [
+     "pipe_modern_B_field_worn__run.png"
+    ]
+   },
+   {
+    "clause": "B5",
+    "evidence": [
+     "pipe_modern_B_field_worn.png"
+    ]
+   },
+   {
+    "clause": "B6",
+    "evidence": [
+     "pipe_modern_B_field_worn.png"
+    ]
+   },
+   {
+    "clause": "C6",
+    "evidence": [
+     "pipe_modern_B_field_worn__run.png"
+    ]
+   },
+   {
+    "clause": "D1",
+    "evidence": [
+     "pipe_modern_B_field_worn__run.png"
+    ]
+   },
+   {
+    "clause": "D3",
+    "evidence": [
+     "pipe_modern_B_field_worn.png"
+    ]
+   },
+   {
+    "clause": "D4",
+    "evidence": [
+     "pipe_modern_B_field_worn.png"
+    ]
+   }
+  ],
+  "refusals": [
+   {
+    "clause": "E4",
+    "criterion_hash": "9e31010824b25a7e",
+    "evidence": [
+     "pipe_modern_B_field_worn.png",
+     "pipe_modern_B_field_worn__run.png"
+    ],
+    "observed": "The red-oxide patches repeat at the same place in every straight link tile, so each horizontal run reads at 64 and 32 px/cell as an even red-and-grey candy stripe, and each vertical run as evenly spaced red diamonds.",
+    "would_pass": "A run of 10 straight cells at 32 px/cell reads as one worn, faded waterworks-blue pipe with a few irregular patches of other paint and no regular rhythm.",
+    "smallest_fix": {
+     "what": "Recolour the atlas again: keep the faded blue-grey base, reduce the red primer to one or two small, irregular, desaturated oxide patches on only some link tiles, varied per tile and absent on others.",
+     "attainable": "yes",
+     "cost": "rerun"
+    },
+    "criterion_verdict": "sound",
+    "criterion_why": "The owner asked for realism without cartoonishness in his own words on 2026-11-22; a regular decorative stripe is a visible way to fail that, and a varied patch layout is drawable within the same alpha.",
+    "new_since": "first"
+   }
+  ]
+ }
+}

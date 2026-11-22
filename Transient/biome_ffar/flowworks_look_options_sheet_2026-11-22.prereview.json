@@ -1,0 +1,40 @@
+{
+ "sheet": "flowworks_look_options_sheet_2026-11-22.html",
+ "looked_by": "seat:BENCH",
+ "when": "2026-11-22T15:27:59-0800",
+ "caught": "the first build drew every look at a 1-cell fallback size (a look is a ThingStyleDef, not a ThingDef); rebuilt with the real sizes. The judge refused Modern pipe B (a candy stripe of repeating red patches); redrawn duller and sparser, passed a fresh judge. No Futuristic options: every image generator was signed out or refused today.",
+ "criteria": [
+  "renders, and is recognisable as the named thing",
+  "every candidate in a question depicts the same object",
+  "coupled states are offered as sets",
+  "does not repeat a ruling he already made"
+ ],
+ "rows": {
+  "RM_LiquidTank": {
+   "fp": "6ab8b7e78acbeca5",
+   "verdict": "OK",
+   "note": "Scrapper tank, the accepted look, shown for comparison at 2x2 true scale; question prefilled 'keep what ships'"
+  },
+  "RM_UniversalPipe_Modern": {
+   "fp": "a554ca95ec6da7f9",
+   "verdict": "OK",
+   "note": "renders as the link atlas at 1 cell per piece; A and B are the same atlas repainted, seams 0 failures (check_pipe_atlas.py); judge KEEP on A; B refused once as a candy stripe, redone, KEEP by a fresh judge (flowworks_look_options_redo_pipeB.json); laid-run views in the showings folder"
+  },
+  "RM_SprinklerHead_Modern": {
+   "fp": "4123a1e52c8c1967",
+   "verdict": "OK",
+   "note": "renders at 1x1 true scale; A and B are the shipped head repainted (same object); judge KEEP on both; history columns show earlier side-view heads"
+  },
+  "RM_LiquidTank_Industrial": {
+   "fp": "75335787f3c58a6f",
+   "verdict": "FIXED",
+   "note": "renders at 2x2 true scale beside the human (size from the ThingStyleDef via the texture manifest; the first build fell back to 1 cell and was rebuilt); options A rust cleaned and B sand-grey are the same tank drawing as ships; naive judge (Opus, infrastructure/state/delegated/2026-11-22/flowworks_look_options.json) KEEP on both"
+  },
+  "RM_LiquidTank_Modern": {
+   "fp": "c5566c1760b03f41",
+   "verdict": "OK",
+   "note": "renders at 2x2 true scale; option A is the shipped white leg tank weathered (same object); judge KEEP but the change is small at 32 px/cell; history columns show the retired red and rust versions"
+  }
+ },
+ "dropped": []
+}

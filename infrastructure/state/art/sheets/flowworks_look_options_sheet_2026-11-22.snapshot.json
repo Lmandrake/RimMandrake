@@ -1,0 +1,239 @@
+{
+ "biome": "SUBJECTS_flowworks_look_options",
+ "built": "2026-11-22T15:27:16-0800",
+ "census": "Transient/biome_ffar/flowworks_look_options.subjects.json",
+ "census_git_head": null,
+ "droppedAllRuled": [],
+ "loadOrder": "live ModsConfig.xml: 315 active",
+ "noncanonOptions": {},
+ "rows": {
+  "RM_LiquidTank": {
+   "columns": {
+    "A": {
+     "single": "3d3fafcf6593c1389f5f7d8ada05135ef4451e7dc275faef276280791dd8fdb6"
+    },
+    "B": {
+     "single": "fb55c29d75ea66814bf2a4c7ca593fa0a847af77110f8239a050917872b081f9"
+    },
+    "C": {
+     "single": "bbf01b3a3cbb699887d0b97ac0a8035459c73fc1214ea70ac6a0775b86ff1263"
+    },
+    "D": {
+     "single": "692f5e7c0c76b3818db5dd6f3a0c6e443e6ebe4e5de65dc774a7c0a5dcebddaa"
+    },
+    "E": {
+     "single": "a8ef89a150f7f8959822bbde0ef3cff6a1416e848373647a3da8e25f8385ed1d"
+    },
+    "F": {
+     "single": "d50afe05066204faba1e4e2dad82245754b7faf4b8185344b26baa19b8174aa0"
+    },
+    "G": {
+     "single": "2fc581ef4b806cd375df80336371b3081640848c47eaf9b02755145d1f2a2ebc"
+    },
+    "H": {
+     "single": "a7dd4a39e686b749c46438b1c7d6531fb193d968848c461fd0018eae3f4c50b3"
+    },
+    "I": {
+     "single": "4735456ab540ba7657350f37e3f7645509185e791eeb40a66330a6288eda5d65"
+    },
+    "J": {
+     "single": "71ae75c9b61371ce19eefa1e2f5e3e7a40ec3761638bb91e8cc26ff6e0fa3aba"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Tank/Scrapper/RM_LiquidTank",
+    "B": "RimMandrake/FlowWorks/Tank/Scrapper/RM_LiquidTank",
+    "C": "RimMandrake/FlowWorks/Tank/Scrapper/RM_LiquidTank",
+    "D": "RimMandrake/FlowWorks/Tank/Futuristic/RM_LiquidTank",
+    "E": "RimMandrake/FlowWorks/Tank/Futuristic/RM_LiquidTank",
+    "F": "RimMandrake/FlowWorks/Tank/Industrial/RM_LiquidTank",
+    "G": "RimMandrake/FlowWorks/Tank/Industrial/RM_LiquidTank",
+    "H": "RimMandrake/FlowWorks/Tank/Modern/RM_LiquidTank",
+    "I": "RimMandrake/FlowWorks/Tank/Modern/RM_LiquidTank",
+    "J": "RimMandrake/FlowWorks/Tank/Modern/RM_LiquidTank"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "render RM_LiquidTank_ports_Scrapper",
+    "C": "render fwart_RM_LiquidTank",
+    "D": "IN GAME \u2014 FlowWorks",
+    "E": "render RM_LiquidTank_ports_Futuristic",
+    "F": "IN GAME \u2014 FlowWorks",
+    "G": "render RM_LiquidTank_ports_Industrial",
+    "H": "IN GAME \u2014 FlowWorks",
+    "I": "render RM_LiquidTank_lj_Modern",
+    "J": "render RM_LiquidTank_ports_Modern"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Tank/Scrapper/RM_LiquidTank",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J"
+   ],
+   "shownBase": [],
+   "subject_key": "liquidtank"
+  },
+  "RM_LiquidTank_Industrial": {
+   "columns": {
+    "A": {
+     "single": "d50afe05066204faba1e4e2dad82245754b7faf4b8185344b26baa19b8174aa0"
+    },
+    "B": {
+     "single": "2fc581ef4b806cd375df80336371b3081640848c47eaf9b02755145d1f2a2ebc"
+    },
+    "C": {
+     "single": "bbf01b3a3cbb699887d0b97ac0a8035459c73fc1214ea70ac6a0775b86ff1263"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Tank/Industrial/RM_LiquidTank",
+    "B": "RimMandrake/FlowWorks/Tank/Industrial/RM_LiquidTank",
+    "C": "RimMandrake/FlowWorks/Tank/Industrial/RM_LiquidTank"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "render RM_LiquidTank_ports_Industrial",
+    "C": "render fwart_RM_LiquidTank"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Tank/Industrial/RM_LiquidTank",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "liquidtank_industrial"
+  },
+  "RM_LiquidTank_Modern": {
+   "columns": {
+    "A": {
+     "single": "a7dd4a39e686b749c46438b1c7d6531fb193d968848c461fd0018eae3f4c50b3"
+    },
+    "B": {
+     "single": "4735456ab540ba7657350f37e3f7645509185e791eeb40a66330a6288eda5d65"
+    },
+    "C": {
+     "single": "71ae75c9b61371ce19eefa1e2f5e3e7a40ec3761638bb91e8cc26ff6e0fa3aba"
+    },
+    "D": {
+     "single": "bbf01b3a3cbb699887d0b97ac0a8035459c73fc1214ea70ac6a0775b86ff1263"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Tank/Modern/RM_LiquidTank",
+    "B": "RimMandrake/FlowWorks/Tank/Modern/RM_LiquidTank",
+    "C": "RimMandrake/FlowWorks/Tank/Modern/RM_LiquidTank",
+    "D": "RimMandrake/FlowWorks/Tank/Modern/RM_LiquidTank"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "render RM_LiquidTank_lj_Modern",
+    "C": "render RM_LiquidTank_ports_Modern",
+    "D": "render fwart_RM_LiquidTank"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Tank/Modern/RM_LiquidTank",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "liquidtank_modern"
+  },
+  "RM_SprinklerHead_Modern": {
+   "columns": {
+    "A": {
+     "single": "5e10abb11c8854669b3234f6a9179ad2101b296839c2ce2c2ca64d1eed12b1dc"
+    },
+    "B": {
+     "single": "5606ed1de5f05765ce645c065136ab795c51536c68ab9b70b2a59fd8b1e73fcb"
+    },
+    "C": {
+     "single": "26bab38490eed9e70e57419ab6f9edef543f7932a0e9f09ba7ec5e9e62109b39"
+    },
+    "D": {
+     "single": "ad610d596da82a0375f42cf96c9eec9c14f66d11999b2be083e6f7274850b788"
+    },
+    "E": {
+     "single": "c234b730bf924ec0b70ab4f5ae4afba7a02d8a5717db914ffd7f8737c40c3372"
+    },
+    "F": {
+     "single": "38b066dfad920986302082b9b15a8825cdf88d176fcc0dde7c9328d9eef3cba5"
+    },
+    "G": {
+     "single": "6b63f2ceaad01087cf9f6077308aefc3dfb45b78421bd59d428049ad7b575c2d"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead",
+    "B": "RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead",
+    "C": "RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead",
+    "D": "RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead",
+    "E": "RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead",
+    "F": "RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead",
+    "G": "RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "shipped, not loaded \u2014 ModernFittingsCandidates",
+    "C": "render modernsprinkler_a_v1",
+    "D": "render modernsprinkler_b_v1",
+    "E": "render modernsprinkler_c_v1",
+    "F": "render RM_SprinklerHead_lj_Modern",
+    "G": "render RM_SprinklerHead_lj2_Modern"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G"
+   ],
+   "shownBase": [],
+   "subject_key": "sprinklerhead_modern"
+  },
+  "RM_UniversalPipe_Modern": {
+   "columns": {
+    "A": {
+     "single": "44d13266d18c1cb6bbb405434df35822cac1f9c36403017275bd96627660b54b"
+    },
+    "B": {
+     "single": "108a075bcff456dcb64b7e40247ad02babe84282a571d7ac9e51d17d78ca8205"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Pipe/Modern/UniversalPipe_Atlas",
+    "B": "RimMandrake/FlowWorks/Pipe/Modern/UniversalPipe_Atlas"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "render pipefit_atlas_modern_v1"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Pipe/Modern/UniversalPipe_Atlas",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "universalpipe_modern"
+  }
+ },
+ "sheetId": "flowworks_look_options_sheet_2026-11-22",
+ "snapshotId": "505985f053b0a008"
+}

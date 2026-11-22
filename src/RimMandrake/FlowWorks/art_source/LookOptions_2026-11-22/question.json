@@ -1,0 +1,50 @@
+{
+ "key": "look_option",
+ "label": "Which picture should this look use?",
+ "explain": "The options are the reference pictures on this row, named A and B in their file names. Nothing is installed until you pick.",
+ "options": [
+  [
+   "A",
+   "use option A"
+  ],
+  [
+   "B",
+   "use option B"
+  ],
+  [
+   "ship",
+   "keep what ships now"
+  ],
+  [
+   "redraw",
+   "none of these: redraw it"
+  ]
+ ],
+ "rows": {
+  "RM_LiquidTank_Industrial": {
+   "prefill": "A",
+   "why": "judge KEEP on both; A is exactly what you asked (rust cleaned, else unchanged)",
+   "context": "A: the shipped tank with the rust painted over in gunmetal, a few rust weeps kept. B: the same drawing in sand-grey equipment paint (the Star Wars standard side of Industrial). New Industrial redraws with an analog dial wait for the image generator (Codex sign-in)."
+  },
+  "RM_LiquidTank_Modern": {
+   "prefill": "",
+   "why": "",
+   "context": "A: the shipped white leg tank weathered: UV yellowing, matte, dust from the feet, grime streaks, smudges. The judge kept it but found the change small at play zoom. Only option A exists: realistic redraws (other real tank types, an analog dial) wait for the image generator (Codex sign-in)."
+  },
+  "RM_UniversalPipe_Modern": {
+   "prefill": "",
+   "why": "",
+   "context": "A: touch-up patches of other paint (older darker blue, a greener batch, grey primer) on a duller, matte blue. B: sun-faded blue-grey with sparse red-oxide primer scuffs and bare-steel chips. Seams checked: 0 failures. The paint repeats once per cell (a link atlas cannot vary per cell)."
+  },
+  "RM_SprinklerHead_Modern": {
+   "prefill": "",
+   "why": "",
+   "context": "A and B match pipe A and pipe B. Either sits on either pipe."
+  },
+  "RM_LiquidTank": {
+   "prefill": "ship",
+   "why": "the Scrapper tank is the look you accept",
+   "context": "The Scrapper tank: the look you said reads right. Shown for comparison at the same true scale; nothing is asked here."
+  }
+ }
+}

@@ -1,0 +1,357 @@
+{
+ "schema": 1,
+ "generated": "2026-11-22T15:18:27-0800",
+ "git_head": null,
+ "biome_order": [
+  "SUBJECTS_flowworks_look_options"
+ ],
+ "biomes": {
+  "SUBJECTS_flowworks_look_options": {
+   "label": "FlowWorks looks: tank, pipe and sprinkler options (2026-11-22 walk)",
+   "slug": "flowworks_look_options",
+   "subjects": true,
+   "ground_terrain": "Soil",
+   "title": "FlowWorks looks: tank, pipe and sprinkler options (2026-11-22 walk) \u2014 game art",
+   "lead_html": "<p>Your walk, stations 24-27: the Industrial tank is too rusty; the Modern tank, pipe and sprinkler read cartoonish and plastic. Each row shows what ships now and the new options (the reference pictures named A and B) at true scale beside a vanilla human. The first row is the Scrapper tank, the look that reads right, for comparison. Pick one answer per row. Nothing is installed until you pick. The four look briefs: design/specs/2026-11-22-flowworks-look-briefs/looks.md. Not here yet: Futuristic tank options and redrawn Industrial and Modern tanks. Every image generator was signed out or refused today; those options follow once Codex is signed in again.</p>",
+   "rows": [
+    {
+     "key": "RM_LiquidTank",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "liquid tank",
+     "defNames": [
+      "RM_LiquidTank"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Tank/Scrapper/RM_LiquidTank",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_LiquidTank"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_LiquidTank found"
+     }
+    },
+    {
+     "key": "RM_LiquidTank_Industrial",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "Liquid tank (2x2), Industrial look: which paint? A rust cleaned, B sand-grey",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "RM_LiquidTank_Modern",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [],
+     "render_match": null,
+     "standin": null,
+     "reopen": false,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/options/tank_industrial_A_rust_cleaned.png",
+      "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/options/tank_industrial_B_sand_grey_paint.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       2,
+       2
+      ],
+      "footprint": [
+       2,
+       2
+      ],
+      "source": "src/RimMandrake/FlowWorks/Defs/LiquidTypes/ThingDefs/RM_LiquidTankStyles.xml ThingStyleDef drawSize (2,2) on RM_LiquidTank size (2,2)"
+     },
+     "runtimeDesc": {
+      "def": "RM_LiquidTank_Industrial",
+      "label": "Liquid tank (2x2), Industrial look: which paint? A rust cleaned, B sand-grey",
+      "description": "LiquidTank \u00b7 look Industrial \u00b7 texture RimMandrake/FlowWorks/Tank/Industrial/RM_LiquidTank \u00b7 drawn at 2\u00d72 cells",
+      "source": "texture manifest looks_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Tank/Industrial/RM_LiquidTank",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "RM_LiquidTank_Industrial"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Tank/Industrial/RM_LiquidTank"
+     }
+    },
+    {
+     "key": "RM_LiquidTank_Modern",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "Liquid tank (2x2), Modern look: A the white leg tank weathered",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "RM_LiquidTank_Industrial",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [],
+     "render_match": null,
+     "standin": null,
+     "reopen": false,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/options/tank_modern_A_weathered_leg_tank.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       2,
+       2
+      ],
+      "footprint": [
+       2,
+       2
+      ],
+      "source": "src/RimMandrake/FlowWorks/Defs/LiquidTypes/ThingDefs/RM_LiquidTankStyles.xml ThingStyleDef drawSize (2,2) on RM_LiquidTank size (2,2)"
+     },
+     "runtimeDesc": {
+      "def": "RM_LiquidTank_Modern",
+      "label": "Liquid tank (2x2), Modern look: A the white leg tank weathered",
+      "description": "LiquidTank \u00b7 look Modern \u00b7 texture RimMandrake/FlowWorks/Tank/Modern/RM_LiquidTank \u00b7 drawn at 2\u00d72 cells",
+      "source": "texture manifest looks_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Tank/Modern/RM_LiquidTank",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "RM_LiquidTank_Modern"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Tank/Modern/RM_LiquidTank"
+     }
+    },
+    {
+     "key": "RM_UniversalPipe_Modern",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "Pipe (link atlas, every joint), Modern look: A touch-up patches, B field-worn",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "render_match": null,
+     "standin": null,
+     "reopen": false,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/options/pipe_modern_A_touchup_patches.png",
+      "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/options/pipe_modern_B_field_worn.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       5.333,
+       5.333
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "vanilla Basic link atlas: 4x4 tiles of 176 px, each shows its inner 132 px as one cell, so the 704 px atlas spans 5.33 cells (art_source/pipe/build_pipe_atlas.py)"
+     },
+     "runtimeDesc": {
+      "def": "RM_UniversalPipe_Modern",
+      "label": "Pipe (link atlas, every joint), Modern look: A touch-up patches, B field-worn",
+      "description": "Pipe \u00b7 look Modern \u00b7 texture RimMandrake/FlowWorks/Pipe/Modern/UniversalPipe_Atlas \u00b7 drawn at 5.333\u00d75.333 cells",
+      "source": "texture manifest looks_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Pipe/Modern/UniversalPipe_Atlas",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "RM_UniversalPipe_Modern"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Pipe/Modern/UniversalPipe_Atlas"
+     }
+    },
+    {
+     "key": "RM_SprinklerHead_Modern",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "Sprinkler head (1x1, seen from above), Modern look: A touch-up patches, B field-worn",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "render_match": null,
+     "standin": null,
+     "reopen": false,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/options/sprinkler_modern_A_touchup_patches.png",
+      "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/options/sprinkler_modern_B_field_worn.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       1
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "src/RimMandrake/FlowWorks/Defs/Sprinklers/RM_Sprinklers.xml ThingStyleDef drawSize (1,1)"
+     },
+     "runtimeDesc": {
+      "def": "RM_SprinklerHead_Modern",
+      "label": "Sprinkler head (1x1, seen from above), Modern look: A touch-up patches, B field-worn",
+      "description": "SprinklerHead \u00b7 look Modern \u00b7 texture RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead \u00b7 drawn at 1\u00d71 cells",
+      "source": "texture manifest looks_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "RM_SprinklerHead_Modern"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead"
+     }
+    }
+   ],
+   "question": {
+    "key": "look_option",
+    "label": "Which picture should this look use?",
+    "explain": "The options are the reference pictures on this row, named A and B in their file names. Nothing is installed until you pick.",
+    "options": [
+     [
+      "A",
+      "use option A"
+     ],
+     [
+      "B",
+      "use option B"
+     ],
+     [
+      "ship",
+      "keep what ships now"
+     ],
+     [
+      "redraw",
+      "none of these: redraw it"
+     ]
+    ],
+    "rows": {
+     "RM_LiquidTank_Industrial": {
+      "prefill": "A",
+      "why": "judge KEEP on both; A is exactly what you asked (rust cleaned, else unchanged)",
+      "context": "A: the shipped tank with the rust painted over in gunmetal, a few rust weeps kept. B: the same drawing in sand-grey equipment paint (the Star Wars standard side of Industrial). New Industrial redraws with an analog dial wait for the image generator (Codex sign-in)."
+     },
+     "RM_LiquidTank_Modern": {
+      "prefill": "",
+      "why": "",
+      "context": "A: the shipped white leg tank weathered: UV yellowing, matte, dust from the feet, grime streaks, smudges. The judge kept it but found the change small at play zoom. Only option A exists: realistic redraws (other real tank types, an analog dial) wait for the image generator (Codex sign-in)."
+     },
+     "RM_UniversalPipe_Modern": {
+      "prefill": "",
+      "why": "",
+      "context": "A: touch-up patches of other paint (older darker blue, a greener batch, grey primer) on a duller, matte blue. B: sun-faded blue-grey with sparse red-oxide primer scuffs and bare-steel chips. Seams checked: 0 failures. The paint repeats once per cell (a link atlas cannot vary per cell)."
+     },
+     "RM_SprinklerHead_Modern": {
+      "prefill": "",
+      "why": "",
+      "context": "A and B match pipe A and pipe B. Either sits on either pipe."
+     },
+     "RM_LiquidTank": {
+      "prefill": "ship",
+      "why": "the Scrapper tank is the look you accept",
+      "context": "The Scrapper tank: the look you said reads right. Shown for comparison at the same true scale; nothing is asked here."
+     }
+    }
+   },
+   "textures_manifest": "/home/mandrake/rm/relentless/clones/RIMMANDRAKE_REDRAW_FLOWWORKS_TANKS_THREE_STYLES_ONLY_SCRAPPER_READS_RIGHT.det/src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/looks_manifest.json"
+  }
+ }
+}

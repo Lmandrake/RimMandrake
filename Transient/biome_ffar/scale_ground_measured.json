@@ -47,6 +47,14 @@
   ],
   "source": "Soil -> Terrain/Surfaces/Soil (Soil.png, mean of 1048576 opaque px)"
  },
+ "SUBJECTS_flowworks_look_options": {
+  "rgb": [
+   93,
+   76,
+   62
+  ],
+  "source": "Soil -> Terrain/Surfaces/Soil (Soil.png, mean of 1048576 opaque px)"
+ },
  "SUBJECTS_picks_dessicated": {
   "rgb": [
    93,

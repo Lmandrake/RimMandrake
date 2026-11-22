@@ -1,0 +1,112 @@
+{
+ "schema": 1,
+ "rows": [
+  {
+   "key": "RM_LiquidTank_Industrial",
+   "part": "LiquidTank",
+   "look": "Industrial",
+   "variant": "",
+   "section": "Tanks",
+   "label": "Liquid tank (2x2), Industrial look: which paint? A rust cleaned, B sand-grey",
+   "resources": [
+    "RimMandrake/FlowWorks/Tank/Industrial/RM_LiquidTank"
+   ],
+   "size": {
+    "drawSize": [
+     2,
+     2
+    ],
+    "footprint": [
+     2,
+     2
+    ],
+    "source": "src/RimMandrake/FlowWorks/Defs/LiquidTypes/ThingDefs/RM_LiquidTankStyles.xml ThingStyleDef drawSize (2,2) on RM_LiquidTank size (2,2)"
+   },
+   "former": [],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/options/tank_industrial_A_rust_cleaned.png",
+    "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/options/tank_industrial_B_sand_grey_paint.png"
+   ]
+  },
+  {
+   "key": "RM_LiquidTank_Modern",
+   "part": "LiquidTank",
+   "look": "Modern",
+   "variant": "",
+   "section": "Tanks",
+   "label": "Liquid tank (2x2), Modern look: A the white leg tank weathered",
+   "resources": [
+    "RimMandrake/FlowWorks/Tank/Modern/RM_LiquidTank"
+   ],
+   "size": {
+    "drawSize": [
+     2,
+     2
+    ],
+    "footprint": [
+     2,
+     2
+    ],
+    "source": "src/RimMandrake/FlowWorks/Defs/LiquidTypes/ThingDefs/RM_LiquidTankStyles.xml ThingStyleDef drawSize (2,2) on RM_LiquidTank size (2,2)"
+   },
+   "former": [],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/options/tank_modern_A_weathered_leg_tank.png"
+   ]
+  },
+  {
+   "key": "RM_UniversalPipe_Modern",
+   "part": "Pipe",
+   "look": "Modern",
+   "variant": "",
+   "section": "Pipes",
+   "label": "Pipe (link atlas, every joint), Modern look: A touch-up patches, B field-worn",
+   "resources": [
+    "RimMandrake/FlowWorks/Pipe/Modern/UniversalPipe_Atlas"
+   ],
+   "size": {
+    "drawSize": [
+     5.333,
+     5.333
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "vanilla Basic link atlas: 4x4 tiles of 176 px, each shows its inner 132 px as one cell, so the 704 px atlas spans 5.33 cells (art_source/pipe/build_pipe_atlas.py)"
+   },
+   "former": [],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/options/pipe_modern_A_touchup_patches.png",
+    "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/options/pipe_modern_B_field_worn.png"
+   ]
+  },
+  {
+   "key": "RM_SprinklerHead_Modern",
+   "part": "SprinklerHead",
+   "look": "Modern",
+   "variant": "",
+   "section": "Pipes",
+   "label": "Sprinkler head (1x1, seen from above), Modern look: A touch-up patches, B field-worn",
+   "resources": [
+    "RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "src/RimMandrake/FlowWorks/Defs/Sprinklers/RM_Sprinklers.xml ThingStyleDef drawSize (1,1)"
+   },
+   "former": [],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/options/sprinkler_modern_A_touchup_patches.png",
+    "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/options/sprinkler_modern_B_field_worn.png"
+   ]
+  }
+ ]
+}
