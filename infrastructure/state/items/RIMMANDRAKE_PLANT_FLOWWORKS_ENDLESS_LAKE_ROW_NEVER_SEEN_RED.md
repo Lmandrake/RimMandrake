@@ -19,3 +19,8 @@ Offline: python3 src/RimMandrake/FlowWorks/northstar/selftest_source_pays_scene.
 file: src/RimMandrake/FlowWorks/northstar/concept_scenes.py
 file: src/RimMandrake/FlowWorks/Source/RM_LiquidStock.cs
 file: design/concepts/FlowWorks/version/in_game/visit_4/evidence/plant/sc_source_pays_MUTANT_limitless_debited.json
+
+## outcome (visit 4, 2026-11-21 ~5:00 PM PST)
+Answered in the same sitting: the first plant (TryDebit) was off the path; the exact kernel reads a body through
+RM_LiquidStock.LevelBodyOf. The plant LIMITLESS_BODY_RUNS_DOWN (LevelBodyOf returns a limitless body's id) reads
+SRC_lake_reads_endless FAIL (stock 11790 -> 11784.415), the real build PASS (11790 -> 11790). The row's stock criterion is not blind.

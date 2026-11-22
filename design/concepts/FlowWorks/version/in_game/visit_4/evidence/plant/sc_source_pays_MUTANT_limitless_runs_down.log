@@ -1,0 +1,4 @@
+FAIL design\concepts\FlowWorks\version\in_game\visit_4\evidence\plant\sc_source_pays_MUTANT_limitless_runs_down.json AssertionError("rows not all PASS: [('SRC_pond_drops', 'PASS'), ('SRC_shore_recedes', 'PASS'), ('SRC_control_tap_zero', 'PASS'), ('SRC_flow_stops_when_empty', 'PASS'), ('SRC_refill_visible', 'PASS'), ('SRC_lake_reads_endless', 'FAIL')]")
+[bridge split] 87.0 s wall: load 0.7 / ticks 13.4 / reads 7.4 / other 32.8 / outside calls 32.7 s
+[bridge split] WARN 282 calls of jawa/static_call (12.8 s): batch them
+[bridge split] WARN 270 calls of jawa/flowworks_excavation_drive (12.8 s): batch them
