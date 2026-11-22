@@ -72,12 +72,23 @@ NEVER_TRANSIENT = re.compile(r"finish step never ran")
 WAIT_REFUSAL = re.compile(r"is draining \(switching plan notice|REFUSED \S+ by control:|%s" % re.escape(M.WAIT_MARK))
 
 
+# detached_helper.clone_holders' refusal of a clone a LIVE run holds ("run U is running in it ... launch again after
+# that") ends by itself when that run returns the clone: a wait, never a fault of form
+# (RIMMANDRAKE_REPAIR_FLOWWORKS_FORM_REFUSAL_AT_THE_RUN_FIVE). A holder that never ends by itself (a dead run, a return
+# that kept the clone) beside it keeps the whole refusal a fault of form, with its own repair.
+CLONE_LIVE = re.compile(r"refused: clone \S+ is held: run \S+ is (?:launching|running) in it")
+CLONE_STUCK = re.compile(r"is recorded running but its unit is gone|finished but its return did not give the clone back")
+
+
 def wait_refusal(text):
-    """-> True when a launch's refusal text names a cause that ends by itself (WAIT_REFUSAL), or rimflow refused the
+    """-> True when a launch's refusal text names a cause that ends by itself (WAIT_REFUSAL; a clone only a live run
+    holds, CLONE_LIVE), or rimflow refused the
     tick's own item name (name_refusal): that is the namer's defect, not a system fault, and the next tick names the item
     again against a fresh known set (RIMMANDRAKE_FIX_TICK_NAMER_RUN_THREE_NAME_TOO_LONG: three such refusals paused
     GimmeSomeSlack, 2026-11-20 about 11 PM PST)."""
-    return bool(text) and bool(WAIT_REFUSAL.search(str(text)) or name_refusal(text))
+    t = str(text or "")
+    return bool(text) and bool(WAIT_REFUSAL.search(t) or name_refusal(text)
+                               or (CLONE_LIVE.search(t) and not CLONE_STUCK.search(t)))
 
 
 NAME_REFUSAL = re.compile(r"spawn refused: .*is not a new-style item name")     # cli._mint_or_die's refusal head

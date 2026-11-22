@@ -108,5 +108,8 @@ Before: `rimflow bridge who` 5.0 s for game a, 1.8 s for game b.
   client's own steps for one mutating call (the lock check, the in-flight marker and evidence rows, with no game) take
   under 50 ms a call on average. The client reads its own Windows start time once per process, never once per call.
   The test runs the real `python.exe` (`selftest_game_lock_windows_python.py timed`) and reads UNMEASURED where there is none.
+  The timed calls start no process (counted at `subprocess.Popen`; a per-call spawn was the 233 ms defect), on every
+  run. When the load average passes half the cores, a wall reading over 50 ms is printed UNMEASURED and the spawn count
+  decides (measured 2026-11-21: 36-43 ms quiet; 109-130 ms inside `./publish`'s side-by-side door tests).
 
 Later lists beside this page: `polish.md`, `next_version.md`.

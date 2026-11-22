@@ -80,9 +80,90 @@ def t_non_pilot_unchanged():
     return rs[0].get("decision") == "fixer" and rs[0].get("aut") == "fixer", rs[0]
 
 
+# the holder never takes an item a live run is working (RIMMANDRAKE_REPAIR_FLOWWORKS_FORM_REFUSAL_AT_THE_RUN_FIVE: the
+# FlowWorks holder was launched under its first road-back item while that item's own fixer ran in <ITEM>.det; the
+# launcher refused "clone ... is held: run ... is running in it", and the tick owed a form repair for a wait)
+LIVE_HELD = ("refused: clone /pool/clones/%s.det is held: run rm-detached-bench-x-1 is running in it; it ends with a "
+             "line in the Conductor log, then its return step gives the clone back: launch again after that"
+             % ITEMS[0]["id"])
+DEAD_HELD = ("refused: clone /c/X.det is held: run u is recorded running but its unit is gone, so its finish step "
+             "never ran; to pass: x finish --unit u, then x return --unit u, then launch again")
+
+
+class _Patch:
+    def __init__(self, *trips):
+        self.trips, self.old = trips, []
+
+    def __enter__(self):
+        for obj, name, val in self.trips:
+            self.old.append((obj, name, getattr(obj, name)))
+            setattr(obj, name, val)
+
+    def __exit__(self, *a):
+        for obj, name, val in reversed(self.old):
+            setattr(obj, name, val)
+
+
+def _holder(busy, answer=None):
+    """road_back_holder on ITEMS with `busy` {item: unit} live elsewhere; -> (rc, text, unit, item, launched, st)."""
+    import maturation as M
+    import modledger
+    launched = []
+
+    def brief(item, text, model, cap, seat="BENCH", env=None, **k):
+        launched.append({"item": item, "text": text})
+        return answer or (0, "DETACHED rm-holder", "rm-holder")
+    st = {"mods": {PILOT: {}}}
+    with _Patch((M, "game_takeable", lambda stage: False),
+                (modledger, "resume_plan", lambda root, mod: {"action": "packet", "reconcile": False, "why": "-"}),
+                (MD, "ledger_open", lambda *a, **k: {"brief": a[3], "env": {}, "run": "r1", "packet": ""}),
+                (MD, "ledger_after", lambda *a, **k: "ledger ok")):
+        rc, text, unit, item = MD.road_back_holder(TMP, CFG, st, PILOT, "offline_build", list(ITEMS), None, 15, NOW,
+                                                   {"launch_brief": brief, "item_live": lambda i: busy.get(i)})
+    return rc, text, unit, item, launched, st
+
+
+def t_busy_item_left_to_its_run():
+    rc, text, unit, item, launched, st = _holder({ITEMS[0]["id"]: "rm-detached-bench-x-1"})
+    booked = (st["mods"][PILOT].get("holder_road_back") or [{}])[-1]
+    rest = sorted(x["id"] for x in ITEMS[1:])
+    import probe_result as PR
+    rc2, text2, _, item2, launched2, st2 = _holder({ITEMS[0]["id"]: PR.could_not_look("records unreadable")})
+    booked2 = (st2["mods"][PILOT].get("holder_road_back") or [{}])[-1]
+    return (rc == 0 and len(launched) == 1 and launched[0]["item"] != ITEMS[0]["id"] and item != ITEMS[0]["id"]
+            and ITEMS[0]["id"] in launched[0]["text"] and "rm-detached-bench-x-1" in launched[0]["text"]
+            and booked.get("ids") == rest
+            and rc2 == 0 and item2 == ITEMS[0]["id"] and "UNMEASURED" in text2 and ITEMS[0]["id"] in text2
+            and len(booked2.get("ids") or []) == len(ITEMS)), (rc, item, booked, launched, text2)
+
+
+def t_all_items_busy_is_a_wait():
+    import maturation as M
+    rc, text, unit, item, launched, st = _holder({x["id"]: "rm-u-%d" % i for i, x in enumerate(ITEMS)})
+    return (rc is None and not launched and M.WAIT_MARK in (text or "") and AUT.wait_refusal(text)
+            and not st["mods"][PILOT].get("holder_road_back")), (rc, text, launched, st)
+
+
+def t_a_clone_held_by_a_live_run_is_a_wait():
+    import form_fault as FF
+    rc, text, unit, item, launched, st = _holder({}, answer=(2, LIVE_HELD, None))
+    return (AUT.wait_refusal(LIVE_HELD) and FF.fault_class(LIVE_HELD) == "wait" and FF.fault_class(DEAD_HELD) == "form"
+            and FF.fault_class(LIVE_HELD + " | " + DEAD_HELD.split("is held: ", 1)[1]) == "form"
+            and unit is None and not st["mods"][PILOT].get("holder_road_back")), (rc, text, st)
+
+
+def t_a_wait_row_is_launch_wait():
+    row = {"mod": PILOT, "stage": "offline_build", "holder_items": list(ITEMS), "cap": 15}
+    st = {"mods": {PILOT: {}}}
+    with _Patch((MD, "road_back_holder", lambda *a, **k: (2, LIVE_HELD, None, ITEMS[1]["id"]))):
+        MD.execute(TMP, CFG, st, [row], [PILOT], NOW, {"known": lambda: set()})
+    return row.get("decision") == "launch_wait" and not row.get("need"), row
+
+
 def main():
     tests = [t_driver_filed_items_are_read, t_pilot_holder_goes_first, t_holder_spent_hands_to_fixers,
-             t_non_pilot_unchanged]
+             t_non_pilot_unchanged, t_busy_item_left_to_its_run, t_all_items_busy_is_a_wait,
+             t_a_clone_held_by_a_live_run_is_a_wait, t_a_wait_row_is_launch_wait]
     fails = []
     for fn in tests:
         try:

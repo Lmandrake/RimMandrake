@@ -2561,7 +2561,17 @@ def road_back_holder(root, cfg, st, mod, stage, opened, item, cap, now, fx, game
                    "game: no offline run can close one, and no game was picked for them. They are Stage 6 "
                    "work; return the record there: %s" % (mod, stage, ", ".join(game6),
                                                           M.game_only_cmd(mod, game6))), None, item
-    item = item if item and item not in game6 else ids[0]
+    # an item a live run is working in its own <ITEM>.det is that run's: the holder neither takes its clone nor works
+    # it (RIMMANDRAKE_REPAIR_FLOWWORKS_FORM_REFUSAL_AT_THE_RUN_FIVE); every item busy is a wait, nothing booked
+    live_on = fx.get("item_live", item_live_run)
+    seen = {i: live_on(i) for i in ids}
+    busy = {i: u for i, u in seen.items() if isinstance(u, str) and u}
+    blind = ["%s (%s)" % (i, u) for i, u in sorted(seen.items()) if u is not None and not isinstance(u, str)]
+    ids = [i for i in ids if i not in busy]
+    if not ids:
+        return None, ("%s every open road-back item of %s has its own live run (%s); the holder runs once they end"
+                      % (M.WAIT_MARK, mod, ", ".join("%s: %s" % kv for kv in sorted(busy.items())))), None, item
+    item = item if item and item not in game6 and item not in busy else ids[0]
     # at Stage 6, every open item needs the live game: the holder takes the bridge and the game, one holder at a
     # time (RIMMANDRAKE_LET_HOLDER_TAKE_BRIDGE_ALL_ITEMS_NEED_GAME)
     live = (M.game_takeable(stage) or bool(given)) and AUT.live_only(opened)
@@ -2580,19 +2590,36 @@ def road_back_holder(root, cfg, st, mod, stage, opened, item, cap, now, fx, game
         % ("live " if live else "", ", ".join(ids)) + (
         "Not yours: %s need%s a game, Stage 6 work; work none of them here.\n" % (
             ", ".join(game6), "s" if len(game6) == 1 else "") if game6 else "") + (
-        "\n" + M.game_brief(game) if game else "")), stage=stage, now=now, fx=fx)
+        "\n" + M.game_brief(game) if game else "") + (
+        "Not yours: %s, each worked by its own live run; work none of them here.\n" % ", ".join(
+            "%s (%s)" % kv for kv in sorted(busy.items())) if busy else "")), stage=stage, now=now, fx=fx)
     rc, text, unit = (fx.get("launch_brief") or AUT.launch_brief)(
         item, led["brief"], MM.for_mod(cfg, mod).get("steward_model", "opus"), cap, cfg.get("seat", "BENCH"),
         env=dict(led["env"], **({"RM_GAME_INSTANCE": game} if game else {})), **rkw)
     unit = unit if rc == 0 else None
-    text = "%s%s%s; %s" % ("live holder on game %s (bridge and game allowed): " % game if live else "",
-                           "%s; " % plan["why"] if rkw else "",
-                           (text or "").splitlines()[0] if text else rc,
-                           ledger_after(root, st, mod, led, unit, item, now, fx))
+    text = "%s%s%s; %s%s" % ("live holder on game %s (bridge and game allowed): " % game if live else "",
+                             "%s; " % plan["why"] if rkw else "",
+                             (text or "").splitlines()[0] if text else rc,
+                             ledger_after(root, st, mod, led, unit, item, now, fx),
+                             "; live run UNMEASURED on %s: worked as free, the launcher's clone gate decides" % (
+                                 ", ".join(blind)) if blind else "")
+    if not unit and AUT.wait_refusal(text):     # a wait is no try at the items: nothing booked, the next tick decides
+        return rc, text, unit, item
     st.setdefault("mods", {}).setdefault(mod, {}).setdefault("holder_road_back", []).append(
-        {"at": now, "ids": sorted(ids), "item": item, "unit": unit, "stage": stage,
-         "tried": None if unit else tried_unit(text)})
+        dict({"at": now, "ids": sorted(ids), "item": item, "unit": unit, "stage": stage,
+              "tried": None if unit else tried_unit(text)}, **({} if unit else {"failed": str(text)[:600]})))
     return rc, text, unit, item
+
+
+def item_live_run(item):
+    """-> the unit of a live run (launching or running) in <ITEM>.det; None when it looked and none is live; a
+    probe_result could_not_look(cause) when the run records cannot be read (road_back_holder says it, and the launcher's
+    own clone gate, detached_helper.hold_until_returned, still refuses a held clone, as a wait)."""
+    import probe_result as PR
+    try:
+        return (DH.live_holders(os.path.join(DH.pool_root(), "clones", item + ".det")) or [None])[0]
+    except Exception as e:  # noqa: BLE001
+        return PR.could_not_look("run records of %s.det: %s: %s" % (item, type(e).__name__, e))
 
 
 def holder_spent(s, open_ids):
@@ -2846,6 +2873,9 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
                                                      "stage": row.get("stage"), "holder": True})
                 row.update(decision="launched", unit=unit, item=item, why=text)
                 done.append(row)
+            elif AUT.wait_refusal(text):     # a cause that ends by itself: no try spent, the next tick decides again
+                row.update(decision="launch_wait", why="the holder run waits on a cause that ends by itself (no fault, "
+                           "no try spent); the next tick tries it again: %s" % text)
             else:
                 row.update(decision="launch_failed", why=text, need="%s: the holder run on its road-back items did not "
                            "start (%s); never retried on its own" % (mod, text))

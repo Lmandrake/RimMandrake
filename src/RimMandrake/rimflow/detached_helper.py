@@ -394,6 +394,13 @@ def clone_holders(dest, runner=subprocess.run, now=None, root=None, kept_ok=Fals
     return out
 
 
+def live_holders(dest, runner=subprocess.run, now=None, root=None):
+    """-> the units of the runs launching or running in the clone at `dest` (clone_holders' live ones; [] = none). A run
+    that is giving the clone back, or dead, is not listed: the launcher's own gate says what passes for those."""
+    return [u for u, wait, why in clone_holders(dest, runner, now, root)
+            if not wait and why.startswith("run %s is " % u) and " in it; " in why]
+
+
 CLONE_RETURNER = None   # a test's stand-in for return_clone; None = return_clone
 
 

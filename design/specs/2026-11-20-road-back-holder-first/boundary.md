@@ -18,6 +18,10 @@ promise has a test of its name in `src/RimMandrake/rimflow/selftest_road_back_ho
 
 ## DOES NOT SURVIVE (not handled)
 
+- **a-run-record-not-readable.** When the run records cannot be read, `item_live_run` answers could-not-look; the
+  holder works that item as free and its launch line says `live run UNMEASURED` (tested in
+  busy-item-left-to-its-run); the launcher's own clone gate still refuses a held clone, as a wait.
+
 - **an-item-filed-under-another-cause.** An item the driver filed `--caused-by` something other than its own item, or
   the steward's, is not read as the road back's.
 
@@ -30,5 +34,16 @@ promise has a test of its name in `src/RimMandrake/rimflow/selftest_road_back_ho
 - **holder-spent-hands-to-fixers.** When the holder already ran on the same open set, the per-item `fixer` row stays
   as it was (the next fixer runs); a `fixer_spent` row still reads `holder_spent`, as before.
 - **non-pilot-unchanged.** A mod that is not a pilot keeps its per-item `fixer` row.
+- **busy-item-left-to-its-run.** `road_back_holder` leaves out an open item that a live run works in its own
+  `<ITEM>.det` clone: the holder is launched under another item, its brief names the busy item and its run as not
+  yours, and the booking's `ids` hold only the items it works (item
+  `RIMMANDRAKE_REPAIR_FLOWWORKS_FORM_REFUSAL_AT_THE_RUN_FIVE`: the FlowWorks holder took the clone of an item whose own
+  fixer was running, and the launcher refused it).
+- **all-items-busy-is-a-wait.** When every open item has its own live run, `road_back_holder` launches nothing, books
+  nothing and returns a `WAIT_MARK` refusal.
+- **a-clone-held-by-a-live-run-is-a-wait.** The launcher's refusal of a clone that only a launching or running run
+  holds is a wait (`maturation_autonomy.wait_refusal`, `form_fault.fault_class`), never a fault of form; a dead holder,
+  or a return that kept the clone, beside it keeps it a fault of form. A holder launch refused for a wait is not booked.
+- **a-wait-row-is-launch-wait.** `execute` reads a holder launch refused for a wait as `launch_wait`, with no `need`.
 
 Later lists beside this page: `polish.md` (none yet); `next_version.md` (none yet).

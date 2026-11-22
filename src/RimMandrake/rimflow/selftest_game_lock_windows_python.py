@@ -56,11 +56,20 @@ RC.RimBridge._request = lambda self, method, params=None: REPLY     # no game: o
 b = RC.RimBridge(host="127.0.0.1", port=5175)
 tool, params = "jawa/flowworks_excavation_drive", {"x": 10, "z": 10, "deepenLevels": 8}
 b._call_one(tool, params, check=False)                              # warm: imports, first identity read
+import subprocess
+spawns = []
+_init = subprocess.Popen.__init__
+def _count(self, *a, **k):
+    spawns.append(str(a[0] if a else k.get("args"))[:80])
+    return _init(self, *a, **k)
+subprocess.Popen.__init__ = _count                                  # every process a timed call starts is counted
 n = int(sys.argv[3]); t0 = time.perf_counter()
 for _ in range(n):
     b._call_one(tool, params, check=False)
-print(json.dumps({"os": os.name, "mutating": not b.looks_read_only(tool, params), "n": n,
-                  "ms": (time.perf_counter() - t0) / n * 1000}))
+ms = (time.perf_counter() - t0) / n * 1000
+subprocess.Popen.__init__ = _init
+print(json.dumps({"os": os.name, "mutating": not b.looks_read_only(tool, params), "n": n, "ms": ms,
+                  "spawns": len(spawns), "spawned": spawns[:3]}))
 """
 
 
@@ -173,9 +182,22 @@ def main_timed():
     # 255 ms mutating call went to a powershell.exe spawn reading this process's own start time in
     # driver_lock.my_identity (host_guard._reentrant), so a 2,000-cell dig took 11 min. 50 ms a call is the item's bar.
     r = probe(plant("timed", holder.pid, CLONE), timed=20)
-    check(r.get("os") == "nt" and r.get("mutating") is True and r.get("ms") is not None and r["ms"] < 50,
-          "a mutating call's client-side steps take under 50 ms under a live WSL holder (worst mean %s ms of %s "
-          "calls, limit 50)" % (None if r.get("ms") is None else round(r["ms"], 1), r.get("n")), r)
+    # The danger is a process spawned per call (233 ms each); its count does not move with the machine's load, so it
+    # decides every run. The wall bound measures the machine as well: inside ./publish's side-by-side door tests it read
+    # 109-130 ms against 36-43 ms quiet (2026-11-21, the same code), and refused publishes that touched no lock code.
+    # So when the load average passes half the cores, a wall reading over the bound is printed UNMEASURED, not red.
+    check(r.get("os") == "nt" and r.get("mutating") is True and r.get("spawns") == 0,
+          "a mutating call starts no process (%s spawned over %s calls: %s)" % (r.get("spawns"), r.get("n"),
+                                                                                r.get("spawned")), r)
+    ms = r.get("ms")
+    load, cores = os.getloadavg()[0], os.cpu_count() or 2
+    if ms is not None and ms >= 50 and load > cores / 2:
+        print("     UNMEASURED: the 50 ms wall bound, worst mean %.1f ms of %s calls at load %.1f on %d cores; the "
+              "spawn count decides" % (ms, r.get("n"), load, cores))
+    else:
+        check(ms is not None and ms < 50, "a mutating call's client-side steps take under 50 ms under a live WSL "
+              "holder (worst mean %s ms of %s calls, limit 50, load %.1f on %d cores)" % (
+                  None if ms is None else round(ms, 1), r.get("n"), load, cores), r)
 
 
     print("\n%s: %d failed" % ("FAIL" if FAILS else "PASS", len(FAILS)))
