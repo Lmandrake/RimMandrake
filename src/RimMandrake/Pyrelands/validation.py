@@ -3524,6 +3524,72 @@ def _bite_wait(t, n, stop_on=None):
     _on_site(t)
 
 
+# ---- the venom chain's feeding (RIMMANDRAKE_FEED_PYRE_VENOM_FIXTURES_HUNGER_STOPS_WAITOUT). Every venom patient is drafted
+# by _bite_until and stays drafted, and a drafted pawn never eats. Pyrelands visit 4 (2026-11-22, game a): the wait-out's
+# own subject reached Food category Starving inside its second day and the governor stopped the row (UNMEASURED), though
+# it was topped up each day: a day (60000 ticks) is longer than a full human lasts without eating. Vanilla Need_Food (read
+# in RimSage): the fall is BaseHungerRate 2.6666667e-05 x hungerRateFactor x baseHungerRate per tick, times
+# HungerMultiplier 1 while Fed, 0.5 while Hungry (below FoodLevelPercentageWantEat 0.3 x 0.8 = 0.24) and 0.25 while
+# UrgentlyHungry (below 0.3 x 0.4 = 0.12); Starving is level 0. Times a pawn factor: traits, hediffs, Biotech metabolism
+# (GeneTuning: x2.25 at -5) and MaxNutrition. A human spawns at 0.8 (Need_Food.SetInitialLevel).
+FOOD_FALL_PER_TICK = 2.6666667e-05
+FOOD_HUNGRY, FOOD_URGENT = 0.24, 0.12
+
+
+def ticks_to_starving(level, factor=1.0):
+    """Pure. Ticks for a human that does not eat to fall from Food `level` to Starving (0), its hunger rate x `factor`.
+    ticks_to_starving(1.0) = 55500: below one 60000-tick day."""
+    r = FOOD_FALL_PER_TICK * factor
+    lv, ticks = max(0.0, float(level)), 0.0
+    for floor, mult in ((FOOD_HUNGRY, 1.0), (FOOD_URGENT, 0.5), (0.0, 0.25)):
+        if lv > floor:
+            ticks += (lv - floor) / (r * mult)
+            lv = floor
+    return ticks
+
+
+# Each venom-chain wait feeds every player pawn to 1.0 at least once per FEED_EVERY ticks. 15000 (6 h) holds for a pawn
+# factor up to ticks_to_starving(1.0) / 15000 = 3.7, and from the spawn level 0.8 up to 3.2; metabolism -5 alone is 2.25.
+# The cost: one list_pawns and two pawn_need calls a pawn per feed, 40 feeds in the ten-day wait-out.
+FEED_EVERY = 15000
+FEED_TO = 1.0
+
+
+def _feed_all(t):
+    """Every living player pawn whose Food reads below FEED_TO is set to FEED_TO. -> the ids fed (offline: [])."""
+    v = _vitals(t, force=True) if _live(t) and hasattr(t.session, "call") else None
+    fed = []
+    for pid, row in sorted((v or {}).items()):
+        if not row["dead"] and row["food"] is not None and row["food"] < FEED_TO:
+            t.session.call("jawa/pawn_need", pawn=pid, action="need", need="Food", level=FEED_TO)
+            row["food"] = FEED_TO
+            fed.append(pid)
+    return fed
+
+
+def _venom_wait(t, n, stop_on=None):
+    """_bite_wait for the venom chain, with every player pawn fed at least once per FEED_EVERY ticks of the clock (the
+    count carries across calls in _GEN["venom_unfed"], so a 90-tick poll costs no extra call). Feeding reads no row of
+    this chain: each reads the venom hediff, never a need."""
+    left = n
+    while left > 0:
+        if _GEN.get("venom_unfed", FEED_EVERY) >= FEED_EVERY:
+            _feed_all(t)
+            _GEN["venom_unfed"] = 0
+        step = min(left, FEED_EVERY - _GEN["venom_unfed"])
+        _bite_wait(t, step, stop_on=stop_on)
+        _GEN["venom_unfed"] += step
+        left -= step
+
+
+def _beside(row, x, z):
+    """Pure. The cell beside the pawn's live position in its list_pawns row; (x + 1, z) when the row has none."""
+    px, pz = (row or {}).get("x"), (row or {}).get("z")
+    if isinstance(px, int) and isinstance(pz, int) and px >= 0 and pz >= 0:
+        return px + 1, pz
+    return x + 1, z
+
+
 # The latch's poll: below RM_Flamefang's melee cooldown (venom-fangs and head both 1.65 s = 99 ticks,
 # RM_PyrelandsPortedFauna.xml), so the window in which the first venom bite lands holds no second attack, and the biter
 # is gone before the clock moves again: ONE bite per patient. At 250 (visit 2) two or three bites stacked 0.2 venom each
@@ -3569,16 +3635,20 @@ def _bite_until(t, victim, biter_kind, x, z, hediff=None, max_ticks=6000, clear_
         t.bridge_call("jawa/kill_hostiles", pawnDef=biter_kind, destroyCorpses=True)
         return None
     _ok(t.bridge_call("jawa/set_draft", pawnId=victim, drafted=True, fireAtWill=False), "set_draft(%s)" % victim)
-    before = _hediff_defs(_pawn_row(t, victim, health=True))
-    biters, bid, row, landed, ran = [], None, None, False, 0
+    row = _pawn_row(t, victim, health=True)
+    before = _hediff_defs(row)
+    biters, bid, landed, ran = [], None, False, 0
     while ran < max_ticks:
         if bid is None:
-            bid = _spawn_wild(t, biter_kind, x + 1, z)
+            # beside the victim where it STANDS (visit 4: an undrafted patient had fled from the last row's biter, and its
+            # own biter, spawned on its planned cell, went for the nearer drafted patient and bit it again and again)
+            bx, bz = _beside(row, x, z)
+            bid = _spawn_wild(t, biter_kind, bx, bz)
             biters.append(bid)
             m = t.bridge_call("jawa/pawn_mental", pawn=bid, action="start", state="ManhunterPermanent")
             if not (m or {}).get("success"):
                 _unmeasured(t, "pawn_mental refused ManhunterPermanent on the %s %s: %r" % (biter_kind, bid, m))
-        _bite_wait(t, BITE_POLL_TICKS)
+        _venom_wait(t, BITE_POLL_TICKS)
         ran += BITE_POLL_TICKS
         rows = dict((p.get("id"), p) for p in (_ok(t.bridge_call("jawa/list_pawns", limit=500, includeHealth=True),
                                                     "list_pawns").get("pawns") or []))
@@ -3617,6 +3687,7 @@ def flamefang_venom(t):
     The tended half (severity falls when tended) is decided offline by selftest_pyrelands_defs_offline.py."""
     _pad(t, PAD_VENOM)
     x, z = PAD_VENOM
+    _GEN["venom_unfed"] = FEED_EVERY    # the chain's first wait feeds every pawn (_venom_wait)
     with _comp(t, "flamefang_bite_injects_venom"):
         cid = _spawn_colonist(t, x, z)
         row = _pawn_row(t, cid, health=True)
@@ -3633,7 +3704,7 @@ def flamefang_venom(t):
         series = []
         for _ in range(VENOM_HOURS + 1):
             series.append(hediff_severity(_pawn_row(t, cid, health=True), VENOM))
-            _bite_wait(t, 2500)
+            _venom_wait(t, 2500)
         if _live(t):
             _note(t, "venom severity each hour", series)
             ok, why = venom_rises(series)
@@ -4846,10 +4917,14 @@ def _ten_flamefang_venom(t):
     x, z = PAD_VENOM
     _independent(t)
     with _comp(t, "venom_tended_vs_untended"):
-        pts = {"tended": _spawn_colonist(t, x + 10, z), "untended": _spawn_colonist(t, x + 10, z - 8)}
-        for k, pid in pts.items():
-            row = _bite_until(t, pid, "RM_Flamefang", x + 10, z if k == "tended" else z - 8, hediff=VENOM,
-                              clear_wounds=True)
+        # SITE (visit 4, 2026-11-22): both patients were spawned before either bite, so the second, undrafted, fled from
+        # the first one's biter, and the first (drafted, standing) took the second one's biter again and again: venom 0.67
+        # at the tend against one bite's ~0.1, and in the planted run it bled out of the untended bites (RESTART). Each
+        # patient is now spawned just before its own bite, and drafted at once by _bite_until.
+        pts = {}
+        for k, pz in (("tended", z), ("untended", z - 8)):
+            pts[k] = pid = _spawn_colonist(t, x + 10, pz)
+            row = _bite_until(t, pid, "RM_Flamefang", x + 10, pz, hediff=VENOM, clear_wounds=True)
             if _live(t) and not _has_hediff(row, VENOM):
                 _unmeasured(t, "the %s patient was never envenomed: %r" % (k, (row or {}).get("health")))
         doc = _spawn_colonist(t, x + 12, z)
@@ -4870,13 +4945,13 @@ def _ten_flamefang_venom(t):
                 tend_seen = True
             elif tend_seen:
                 break
-            _bite_wait(t, 30)
+            _venom_wait(t, 30)
             tend_wait += 30
         series = {"tended": [], "untended": []}
         for _ in range(VENOM_HOURS + 1):
             for k, pid in pts.items():
                 series[k].append(hediff_severity(_pawn_row(t, pid, health=True), VENOM))
-            _bite_wait(t, TEN_HOUR)
+            _venom_wait(t, TEN_HOUR)
         if _live(t):
             _note(t, "venom severity each hour, tended vs untended", {"order": r, "series": series,
                                                                          "tendSeen": tend_seen, "tendEndedAfterTicks": tend_wait})
@@ -4916,10 +4991,9 @@ def _ten_flamefang_venom(t):
             days.append(s)
             if _live(t) and s is None:
                 break
-            fed = _vitals(t, force=True) if _live(t) and hasattr(t.session, "call") else None   # ten days on the site: the bystanders are fed each day (visit 3: one starved)
-            if fed:
-                _top_up(t, fed)
-            _bite_wait(t, TEN_DAY, stop_on=WAIT_OUT_STOP_ON)
+            # ten days on the site: every pawn, the drafted subject included, is fed each FEED_EVERY ticks (visit 3: a
+            # bystander starved; visit 4: the subject itself, fed only once a day, reached Starving inside day 2)
+            _venom_wait(t, TEN_DAY, stop_on=WAIT_OUT_STOP_ON)
         if _live(t):
             _note(t, "untended venom severity each day until it goes (immunity unread)", {"days": days, "diedOnDay": died})
             if not _has_hediff(row, VENOM):

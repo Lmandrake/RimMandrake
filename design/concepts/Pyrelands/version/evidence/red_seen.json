@@ -79,16 +79,16 @@
   "test_blob": "b2cd8f0affca4773c9a65ac338fc430bc1227065"
  },
  "T_VENOM_STAGING": {
-  "at": "2026-11-21T14:59:42Z",
+  "at": "2026-11-22T10:40:32Z",
   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_venom_staging.py",
   "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_venom_staging.py",
-  "last": "selftest_pyrelands_venom_staging: 4 of 20 checks failed",
-  "patch": "--- a/src/RimMandrake/Pyrelands/validation.py\t2026-11-21 06:59:29.022586126 -0800\n+++ b/src/RimMandrake/Pyrelands/validation.py\t2026-11-21 06:59:29.023762320 -0800\n@@ -3418,7 +3418,7 @@\n # RM_PyrelandsPortedFauna.xml), so the window in which the first venom bite lands holds no second attack, and the biter\n # is gone before the clock moves again: ONE bite per patient. At 250 (visit 2) two or three bites stacked 0.2 venom each\n # (RM_FlamefangVenomBite severityPerDamageDealt 0.02 x power 10) unequally on the two patients of one comparison.\n-BITE_POLL_TICKS = 90\n+BITE_POLL_TICKS = 250\n \n \n def _hediff_defs(row):\n",
+  "last": "selftest_pyrelands_venom_staging: 4 of 36 checks failed",
+  "patch": "--- a/src/RimMandrake/Pyrelands/validation.py\n+++ b/src/RimMandrake/Pyrelands/validation.py\n@@ -3551,7 +3551,7 @@\n # Each venom-chain wait feeds every player pawn to 1.0 at least once per FEED_EVERY ticks. 15000 (6 h) holds for a pawn\n # factor up to ticks_to_starving(1.0) / 15000 = 3.7, and from the spawn level 0.8 up to 3.2; metabolism -5 alone is 2.25.\n # The cost: one list_pawns and two pawn_need calls a pawn per feed, 40 feeds in the ten-day wait-out.\n-FEED_EVERY = 15000\n+FEED_EVERY = 60000\n FEED_TO = 1.0\n \n \n",
   "patch_files": [
    "src/RimMandrake/Pyrelands/validation.py"
   ],
-  "patch_sha": "5144e384a4a27e1f",
+  "patch_sha": "e35a8216e09599a3",
   "rc": 1,
-  "test_blob": "1aa5a82fcf111ec615335e83832f1f7f4f049df5"
+  "test_blob": "c48c88b2b535333a792d08bc02c3093990f6a0d8"
  }
 }

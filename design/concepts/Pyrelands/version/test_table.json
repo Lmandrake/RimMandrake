@@ -1623,7 +1623,7 @@
    "kind": "offline",
    "stage": "4-5",
    "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_venom_staging.py",
-   "observes": "the sc_flamefang_venom scene code (flamefang_venom, _ten_flamefang_venom) run against a scripted game over 480 situations (colonists' weapons, the biter's attack phase, seed, bleed rate, biter health, bite dose): one venom bite per patient, every biter removed for certain, no colonist dead, every venom row PASS; planted mod faults (no venom, a tend that does nothing, immunity that never lowers the venom) read FAIL; tended_rises_less compares hourly rises; every tool and argument sent is declared",
+   "observes": "the sc_flamefang_venom scene code (flamefang_venom, _ten_flamefang_venom) run against a scripted game over 960 situations (colonists' weapons, the biter's attack phase, seed, bleed rate, biter health, bite dose, hunger factor 1 or 2.25), with vanilla hunger (no colonist eats) and undrafted colonists fleeing a manhunter: one venom bite per patient, every biter removed for certain, no colonist dead, none Starving, every venom row PASS; planted mod faults (no venom, a tend that does nothing, immunity that never lowers the venom) and the planted wrong-patient tend read FAIL; the feeding cadence holds against vanilla's hunger (ticks_to_starving); the biter spawns beside the victim's live cell (_beside); tended_rises_less compares hourly rises; every tool and argument sent is declared",
    "reads": [
     "src/RimMandrake/Pyrelands/Defs/",
     "src/RimMandrake/Pyrelands/validation.py",

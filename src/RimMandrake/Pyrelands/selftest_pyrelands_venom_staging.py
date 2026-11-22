@@ -20,12 +20,24 @@ immunityPerDaySick, severityPerDayImmune, severityPerDayTended x quality for 12 
 untended Bite wound bleeds `bleed` BloodLoss per day, lethal at 1. A death inside the clock stops the row as the governor
 does (RESTART, UNMEASURED).
 
+Hunger and flight (RIMMANDRAKE_FEED_PYRE_VENOM_FIXTURES_HUNGER_STOPS_WAITOUT, visit 4, 2026-11-22). No colonist eats: a
+drafted pawn never does, and the site's food is not modelled (the worst case). Food falls by vanilla Need_Food (read in
+RimSage): 2.6666667e-05 a tick x the pawn's hunger factor, x 0.5 below 0.24 and x 0.25 below 0.12; a colonist spawns at
+0.8 (SetInitialLevel); `jawa/pawn_need` reads and sets it. A colonist at 0 stops the clock as the governor does
+("starving", in BITE_STOP_ON and WAIT_OUT_STOP_ON). The scene's row start tops up as the real _comp does. An undrafted
+colonist that a live manhunter is nearest to, or that stands within 12 cells of one, flees: it walks 40 cells straight
+away at vanilla's 13 ticks a cell (MoveSpeed 4.6) and keeps walking after the biter dies, until it is drafted (visit 1:
+an undrafted fresh colonist FleeAndCowers to the map edge). The 40 cells and the 12 are model choices, not measurements.
+`jawa/list_pawns` rows carry x and z, as the bridge's do.
+
 The range it declares (the grid): the colonists' weapons in spawn order (none, melee, gun, and mixes), the biter's attack
 phase against the poll (0, 45, 98 ticks), the seed (tool choice, hits, the Cut's part), the bleed rate (0, 0.15/day), the
-biter's health (20, 60: a fast or a slow kill by the victim), and the bite's dose (the shipped dose, or armour and part
+biter's health (20, 60: a fast or a slow kill by the victim), the hunger factor (1.0, and 2.25 = Biotech metabolism -5,
+GeneTuning), and the bite's dose (the shipped dose, or armour and part
 caps scaling it by 0.5, 0.8 or 1.0, seeded). The one-bite course over vanilla's damage roll and immunity factor is
 selftest_pyrelands_venom_dose.py's. Planted mod faults: the bite carries no venom; a tend does
-nothing; immunity never lowers the venom. Left out: the live pathing, real armour and part coverage, real bleed rates and
+nothing; immunity never lowers the venom. Planted scene fault: PYRE_PLANT_VENOM_TEND_WRONG_PATIENT=1 (the doctor tends
+the untended patient) reads FAIL, never UNMEASURED. Left out: the live pathing, real armour and part coverage, real bleed rates and
 blood regrowth, the doctor's walk and medicine (Stage 6 runs the scene; its command is in unrun.jsonl).
 
   python3 <this file> [--validation PATH] [--schemas PATH] [--defs PATH]   exit 0 = every check PASS, 1 = any FAIL
@@ -52,6 +64,10 @@ VITAL = ("Torso", "Head", "Neck")
 PARTS = ("Torso", "Head", "Neck", "Tail", "Jaw", "Eye", "Tongue")
 ROWS = ("venom_tended_vs_untended", "venom_wait_out")
 FIRST = ("flamefang_bite_injects_venom", "venom_rises_untreated", "plain_bite_carries_no_venom")
+FOOD_FALL = 2.6666667e-05          # vanilla Need_Food.BaseHungerRate for an adult human, a tick (RimSage)
+FOOD_HUNGRY, FOOD_URGENT = 0.3 * 0.8, 0.3 * 0.4   # FoodLevelPercentageWantEat 0.3 (omnivore) x 0.8 and x 0.4
+MAP = 250
+FLEE_CELLS, FLEE_SEES, FLEE_TICKS_PER_CELL = 40, 12, 13   # model choices; 13 = 60 / MoveSpeed 4.6
 VD = None        # the shipped venom numbers (venom_dose.read), set in main
 RESULTS = []
 SENT = {}       # tool -> every argument the scene sent it, over the whole grid
@@ -96,6 +112,7 @@ class Pawn(object):
         self.immunity, self.tended_until, self.tend_q = 0.0, -1, 0.0
         self.next_attack = None
         self.next_melee = None
+        self.food, self.flee = 0.8, None    # vanilla SetInitialLevel; flee = (dx, dz) cell to walk to, or None
 
     def sev(self, d):
         return sum(h["severity"] for h in self.hediffs if h["def"] == d)
@@ -103,8 +120,9 @@ class Pawn(object):
 
 class Game(object):
     def __init__(self, weapons=("melee",), phase=0, seed=1, bleed=0.0, biter_hp=20.0, doses=(1.0,), venom=True,
-                 tend=True, immune_falls=True):
+                 tend=True, immune_falls=True, hunger=1.0):
         self.weapons, self.phase, self.rng, self.bleed, self.biter_hp = weapons, phase, random.Random(seed), bleed, biter_hp
+        self.hunger, self.starved, self.last_food, self.low = hunger, [], 0, 1.0
         self.venom, self.tend, self.immune_falls, self.doses = venom, tend, immune_falls, doses
         self.tick, self.pawns, self.n, self.ncol, self.deaths, self.bites = 0, {}, 0, 0, [], {}
         self.next_health, self.last_health = HOUR, 0
@@ -139,7 +157,45 @@ class Game(object):
         if b.hp <= 0:
             self.die(b, "killed")
 
+    def food_step(self):
+        dt = self.tick - self.last_food
+        self.last_food = self.tick
+        for p in self.colonists():
+            left = float(dt)
+            while left > 0 and p.food > 0:
+                mult, floor = (1.0, FOOD_HUNGRY) if p.food > FOOD_HUNGRY else \
+                    ((0.5, FOOD_URGENT) if p.food > FOOD_URGENT else (0.25, 0.0))
+                r = FOOD_FALL * self.hunger * mult
+                need = (p.food - floor) / r
+                if need > left:
+                    p.food -= r * left
+                    left = 0
+                else:
+                    p.food, left = floor, left - need
+            self.low = min(self.low, p.food)
+            if p.food <= 0 and p.id not in [s_[0] for s_ in self.starved]:
+                self.starved.append((p.id, self.tick))
+
+    def flee_tick(self):
+        bs = self.biters()
+        for c in self.colonists():
+            if c.drafted:
+                c.flee = None
+                continue
+            if c.flee is None and bs:
+                b = min(bs, key=lambda q: max(abs(q.x - c.x), abs(q.z - c.z)))
+                near = max(abs(b.x - c.x), abs(b.z - c.z)) <= FLEE_SEES
+                aimed = min(self.colonists(), key=lambda q: max(abs(q.x - b.x), abs(q.z - b.z))) is c
+                if near or aimed:
+                    dx = (c.x > b.x) - (c.x < b.x) or 0
+                    dz = (c.z > b.z) - (c.z < b.z) or (-1 if dx == 0 else 0)
+                    c.flee = (min(MAP - 1, max(0, c.x + FLEE_CELLS * dx)), min(MAP - 1, max(0, c.z + FLEE_CELLS * dz)))
+            if c.flee and (self.tick - c.born) % FLEE_TICKS_PER_CELL == 0:
+                c.x += (c.flee[0] > c.x) - (c.flee[0] < c.x)
+                c.z += (c.flee[1] > c.z) - (c.flee[1] < c.z)
+
     def combat_tick(self):
+        self.flee_tick()
         for b in self.biters():
             cols = self.colonists()
             if not cols:
@@ -221,6 +277,10 @@ class Game(object):
                 self.combat_tick()
             else:
                 self.tick = min(end, self.next_health)
+                for c in self.colonists():        # a flight in progress ends at its cell (no biter left to flee)
+                    if c.flee and not c.drafted:
+                        c.x, c.z = c.flee
+            self.food_step()
             if self.tick >= self.next_health:
                 self.next_health += HOUR
                 self.health_step()
@@ -228,7 +288,8 @@ class Game(object):
 
     # ------------------------------------------------------------ the bridge
     def row(self, p, health):
-        r = {"id": p.id, "kind": p.kind, "dead": False}
+        r = {"id": p.id, "kind": p.kind, "dead": False, "downed": False, "x": p.x, "z": p.z,
+             "isPlayer": p.faction == "player"}
         if health:
             r["health"] = {"hediffs": [{"def": h["def"], "severity": h["severity"], "part": h["part"]}
                                        for h in p.hediffs]}
@@ -241,8 +302,15 @@ class Game(object):
             return {"success": True, "pawns": [{"id": p.id}]}
         if tool == "jawa/list_pawns":
             return {"success": True, "pawns": [self.row(p, kw.get("includeHealth")) for p in self.pawns.values()
-                                               if p.alive]}
+                                               if p.alive and (kw.get("faction") != "player" or p.faction == "player")]}
         p = self.pawns.get(kw.get("pawnId") or kw.get("pawn") or kw.get("thingId") or kw.get("targetAId"))
+        if tool == "jawa/pawn_need":
+            if kw.get("action") == "list":
+                return {"success": True, "needs": [{"need": "Food", "level": p.food}]}
+            if kw.get("action") == "need" and kw.get("need") == "Food":
+                p.food = float(kw["level"])
+                return {"success": True}
+            return {"success": False}
         if tool == "jawa/set_draft":
             p.drafted = bool(kw.get("drafted"))
             if kw.get("fireAtWill") is not None:
@@ -292,6 +360,9 @@ def run_scene(V, game):
         def track(self, *a, **k):
             pass
 
+        def call(self, tool, **kw):
+            return game.call(tool, **kw)
+
     class T(object):
         upstream_failed = False
         session = Session()
@@ -304,6 +375,9 @@ def run_scene(V, game):
 
     @contextlib.contextmanager
     def comp(t, name, **kw):
+        pre = V._vitals(t)                       # the real _comp's row-start top-up
+        if pre is not None and name not in V.NEEDS_ROWS:
+            V._top_up(t, pre)
         try:
             yield t
             res[name] = "PASS"
@@ -314,10 +388,13 @@ def run_scene(V, game):
         t.upstream_failed = False
 
     def wait(t, n, fast=None, stop_on=None):
-        dead = len(game.deaths)
+        dead, starved = len(game.deaths), len(game.starved)
         game.advance(n)
-        if len(game.deaths) > dead and (stop_on is None or "death" in stop_on.split(",")):   # the governor's death stop
+        stops = (stop_on or V.BITE_STOP_ON).split(",")
+        if len(game.deaths) > dead and "death" in stops:   # the governor's death stop
             V._unmeasured(t, "RESTART (damage to the test, not a verdict): %s died" % (game.deaths[-1],))
+        if len(game.starved) > starved and "starving" in stops:   # the governor's starving stop
+            V._unmeasured(t, "governor stop: starving: %s" % (game.starved[-1],))
 
     def note(t, label, data):
         ser = (data or {}).get("series") if isinstance(data, dict) else None
@@ -341,7 +418,7 @@ def run_scene(V, game):
 
 GRID = dict(weapons=(("none",), ("melee",), ("gun",), ("melee", "gun"), ("gun", "melee", "none")),
             phase=(0, 45, 98), seed=(1, 2, 3, 4), bleed=(0.0, 0.15), biter_hp=(20.0, 60.0),
-            doses=((1.0,), (0.5, 0.8, 1.0)))
+            doses=((1.0,), (0.5, 0.8, 1.0)), hunger=(1.0, 2.25))
 
 
 def main():
@@ -355,7 +432,7 @@ def main():
     V = load_validation(a.validation)
     keys = sorted(GRID)
     cases = [dict(zip(keys, vals)) for vals in itertools.product(*(GRID[k] for k in keys))]
-    bad_rows, deaths, multi, gaps, peaks = [], [], [], [], []
+    bad_rows, deaths, multi, gaps, peaks, starved, lows = [], [], [], [], [], [], []
     for kw in cases:
         g = Game(**kw)
         try:
@@ -366,6 +443,9 @@ def main():
             bad_rows.append((kw, got))
         if g.deaths:
             deaths.append((kw, g.deaths))
+        if g.starved:
+            starved.append((kw, g.starved))
+        lows.append(g.low)
         gaps.extend(g.gaps)
         peaks.append(g.peak)
         stacked = dict((k, n) for k, n in g.bites.items() if n > 1)
@@ -385,6 +465,9 @@ def main():
           "first: %r" % (deaths[:2],))
     check("real build: no patient takes a second venom bite (%d cases; %d with stacked bites)" % (n, len(multi)),
           not multi, "first: %r" % (multi[:2],))
+    print("margin: lowest Food any colonist reached: %.3f (limit > 0, Starving; %d cases)" % (min(lows), n))
+    check("real build: no colonist reaches Starving over the grid (%d cases; %d with a starving colonist)"
+          % (n, len(starved)), not starved, "first: %r" % (starved[:2],))
     # planted mod faults: the repaired scene must read them, never PASS them
     base = dict(weapons=("melee", "gun"), phase=45, seed=2, bleed=0.15, biter_hp=20.0, doses=(0.5, 0.8, 1.0))
     for what, fault, part in (("the bite carries no venom", dict(venom=False), "flamefang_bite_injects_venom"),
@@ -392,6 +475,41 @@ def main():
                               ("immunity never lowers the venom", dict(immune_falls=False), "venom_wait_out")):
         got = run_scene(V, Game(**dict(base, **fault)))
         check("planted: %s -> %s FAIL" % (what, part), got.get(part) == "FAIL", got)
+    env = getattr(V, "PLANT_VENOM_TEND_WRONG_ENV", "PYRE_PLANT_VENOM_TEND_WRONG_PATIENT")
+    for case in (base, dict(base, weapons=("none",), phase=0, seed=1), dict(base, hunger=2.25, biter_hp=60.0, seed=3)):
+        os.environ[env] = "1"
+        try:
+            got = run_scene(V, Game(**case))
+        finally:
+            os.environ.pop(env, None)
+        check("planted: %s=1 (the doctor tends the wrong patient) -> venom_tended_vs_untended FAIL, never UNMEASURED "
+              "(weapons %r, seed %d, hunger %.2f)" % (env, case["weapons"], case["seed"], case.get("hunger", 1.0)),
+              got.get("venom_tended_vs_untended") == "FAIL", got)
+    # the feeding cadence against vanilla's hunger (pure)
+    tts = getattr(V, "ticks_to_starving", None)
+    check("ticks_to_starving exists", tts is not None)
+    if tts is not None:
+        full = (1.0 - FOOD_HUNGRY) / FOOD_FALL + (FOOD_HUNGRY - FOOD_URGENT) / (FOOD_FALL * 0.5) + FOOD_URGENT / (FOOD_FALL * 0.25)
+        check("ticks_to_starving(1.0) = %.0f by vanilla's three rates (read %.0f)" % (full, tts(1.0)), abs(tts(1.0) - full) < 1)
+        check("ticks_to_starving(1.0) < one day: a once-a-day top-up cannot carry a drafted pawn (%.0f < %d)"
+              % (tts(1.0), DAY), tts(1.0) < DAY)
+        g = Game(hunger=2.25)
+        q = g.spawn("Colonist", "player", 0, 0)
+        q.food = 0.8
+        g.advance(int(tts(0.8, 2.25)) - 2)
+        alive_fed = q.food > 0
+        g.advance(4)
+        check("the scripted game's hunger agrees with ticks_to_starving (0.8 at x2.25: %.0f ticks)" % tts(0.8, 2.25),
+              alive_fed and q.food <= 0, "food %.4f" % q.food)
+        fe = getattr(V, "FEED_EVERY", None)
+        check("FEED_EVERY %r < ticks_to_starving(0.8, 3.0) = %.0f (a spawned pawn fed late, factor 3)"
+              % (fe, tts(0.8, 3.0)), isinstance(fe, int) and 0 < fe < tts(0.8, 3.0))
+    bes = getattr(V, "_beside", None)
+    check("_beside exists", bes is not None)
+    if bes is not None:
+        for what, row, want in (("a live position", {"x": 30, "z": 40}, (31, 40)), ("no position", {}, (11, 20)),
+                                ("an unplaced pawn (-1)", {"x": -1, "z": -1}, (11, 20)), ("no row", None, (11, 20))):
+            check("_beside: %s -> %r" % (what, want), bes(row, 10, 20) == want, bes(row, 10, 20))
     tools = json.load(open(a.schemas))["tools"]
     for tool, args in sorted(SENT.items()):
         have = set((tools.get(tool) or {}).get("parameters") or [])

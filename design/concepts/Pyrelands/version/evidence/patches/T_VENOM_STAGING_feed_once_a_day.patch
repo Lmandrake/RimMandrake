@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/Pyrelands/validation.py
++++ b/src/RimMandrake/Pyrelands/validation.py
+@@ -3551,7 +3551,7 @@
+ # Each venom-chain wait feeds every player pawn to 1.0 at least once per FEED_EVERY ticks. 15000 (6 h) holds for a pawn
+ # factor up to ticks_to_starving(1.0) / 15000 = 3.7, and from the spawn level 0.8 up to 3.2; metabolism -5 alone is 2.25.
+ # The cost: one list_pawns and two pawn_need calls a pawn per feed, 40 feeds in the ten-day wait-out.
+-FEED_EVERY = 15000
++FEED_EVERY = 60000
+ FEED_TO = 1.0
+ 
+ 
