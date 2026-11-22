@@ -2,9 +2,9 @@
   "schema": 1,
   "mod": "Pyrelands",
   "version": "0.1.0",
-  "stage": "blind_challenge",
-  "stage_label": "Blind challenge, tests first (Stages 4 and 5)",
-  "since": "2026-11-21T17:53:12-08:00",
+  "stage": "in_game",
+  "stage_label": "In-game acceptance (Stage 6)",
+  "since": "2026-11-21T21:49:35-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -218,6 +218,26 @@
         "every_bar_has_a_check_that_runs",
         "table_version",
         "fourth_cycle",
+        "judge_certificate"
+      ]
+    },
+    {
+      "from": "blind_challenge",
+      "to": "in_game",
+      "at": "2026-11-21T21:49:35-08:00",
+      "by": "BENCH",
+      "why": "steward run RIMMANDRAKE_CONFIRM_PYRELANDS_CYCLE_FIVE_EXIT_MET: blind cycle 5 exit met, read and confirmed; certificate refusal was a RECORD GAP (stale build stamps after the judge's own decider edits), repaired by certificate --run (OK)",
+      "unit": "rm-detached-bench-rimmandrake-confirm-pyrelands-cycle-five-1795326359",
+      "confirmed": {
+        "steward_confirms": "read cycle_5/SUMMARY.md and its rows (judge unit RIMMANDRAKE_JUDGE_PYRELANDS_BLIND_CYCLE_FIVE_TESTS_FIRST): lane1 49 rows 45 PASS 3 INFO 1 UNSETTLED (game_side_bars, Stage 6) 0 FAIL; 6 offline bars green; planted 33/37 caught (34 after repair; 3 misses are Stage-6 ashwallow caller faults, owed live); 2 Problems both check repairs shown red on plant and green on build, red_seen recorded; no mod fault, no fix reader owed; tests_edited: nothing weakened; certificate --run to in_game OK. Verdict: exit met, advance to in_game."
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "steward_confirms",
+        "exit_met",
         "judge_certificate"
       ]
     }

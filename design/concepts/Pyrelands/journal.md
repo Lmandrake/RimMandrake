@@ -12,7 +12,7 @@ Pyrelands is not the pilot. It advances beside the pilot (Explosive Knockback), 
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`). Scope: the biome alone; the Deep
   Desert Tribes are a separate mod (`design/concepts/PyrelandsMechanics`), started only after this version passes.
   Code exists: `src/RimMandrake/Pyrelands/` (packageId `mandrake.rm.pyrelands`, ships composed in `mandrake.rm.biomes`).
-- **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-21 5:53 PM PST (`version/stage_record.json`).
+- **Stage now:** Stage 6, in-game acceptance, since 2026-11-21 9:49 PM PST (`version/stage_record.json`).
 - **Bars:** 42 (21 inventory rows of `record.json` + 21 leaves of `tree.json`), as `version/bars.md` counts them; 41 at
   the lock, `inv_firehawk_hunt_rewards` added by his card 2026-11-14.
   Two inventory rows (`inv_firebreak_firefoam`, `inv_lightning_breaker`) are scope `out`: cut, kept only as absence checks.
@@ -29,7 +29,7 @@ Pyrelands is not the pilot. It advances beside the pilot (Explosive Knockback), 
   14 PROBLEM, 3 CORRECTION, 1 POLISH (g3). By his card 2026-11-15 12:22 PM PST the 17 are fixed in one locked change
   (`RIMMANDRAKE_FIX_PYRELANDS_ROUND_SIX_SEVENTEEN_GAPS`); g3 stays in `version/polish.md`, out of passing.
 - **Held look statements for this mod:** 0 (measured).
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-21 5:53 PM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-21 9:49 PM PST).
 
 ### The vision (his root paragraph, approved by card 2026-11-06, OWNER:1793950669508519029)
 
@@ -471,4 +471,13 @@ the tree, record and test-table edits, the re-pin and the lock-bars add are queu
 - Blind cycle 1 of this visit (5 in all).
 - Was, "Stage now": - **Stage now:** Stage 3, offline build, since 2026-11-21 2:30 PM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-21 2:30 PM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-21 9:49 PM PST, stage change: Blind challenge, tests first (Stages 4 and 5) to In-game acceptance (Stage 6) (by BENCH)
+
+- Why: steward run RIMMANDRAKE_CONFIRM_PYRELANDS_CYCLE_FIVE_EXIT_MET: blind cycle 5 exit met, read and confirmed; certificate refusal was a RECORD GAP (stale build stamps after the judge's own decider edits), repaired by certificate --run (OK)
+- Checks passed: order, by, version, hold, steward_confirms, exit_met, judge_certificate.
+- Steward confirms: read cycle_5/SUMMARY.md and its rows (judge unit RIMMANDRAKE_JUDGE_PYRELANDS_BLIND_CYCLE_FIVE_TESTS_FIRST): lane1 49 rows 45 PASS 3 INFO 1 UNSETTLED (game_side_bars, Stage 6) 0 FAIL; 6 offline bars green; planted 33/37 caught (34 after repair; 3 misses are Stage-6 ashwallow caller faults, owed live); 2 Problems both check repairs shown red on plant and green on build, red_seen recorded; no mod fault, no fix reader owed; tests_edited: nothing weakened; certificate --run to in_game OK. Verdict: exit met, advance to in_game.
+- Was, "Stage now": - **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-21 5:53 PM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-21 5:53 PM PST).
 - Record: `version/stage_record.json`.

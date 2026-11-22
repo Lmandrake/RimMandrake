@@ -311,12 +311,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.75,
-    "last": "settings screens selftest: 856/856 ok",
-    "at": "2026-11-17T20:30:16Z",
+    "seconds": 0.13,
+    "last": "settings screens selftest: 14/14 ok (mods: Pyrelands)",
+    "at": "2026-11-22T05:46:52Z",
     "result": "PASS",
-    "build": "69cf2acb3dfbb66352b9",
-    "command": "python3 src/RimMandrake/Utils/selftest_settings_screens.py"
+    "build": "02b7c8df791f8f072ce8",
+    "command": "python3 src/RimMandrake/Utils/selftest_settings_screens.py --mod Pyrelands",
+    "margins": []
    }
   },
   "T_BARBSLINGER": {
@@ -451,11 +452,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 59.52,
-    "last": "PASS: 10 def facts hold, 21 of 21 mutants red, the clean copy green",
-    "at": "2026-11-22T02:59:07Z",
+    "seconds": 131.1,
+    "last": "PASS: 11 def facts hold, 22 of 22 mutants red, the clean copy green",
+    "at": "2026-11-22T05:49:04Z",
     "result": "PASS",
-    "build": "1812ae9c184dd5a3b31c",
+    "build": "6e839c62446dc51f3b30",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_defs_offline.py",
     "margins": []
    }
@@ -1564,11 +1565,11 @@
    "runs_today": {
     "ran": true,
     "rc": 1,
-    "seconds": 2.81,
+    "seconds": 3.73,
     "last": "FAIL: 5 of 18 checks failed",
-    "at": "2026-11-22T02:59:11Z",
+    "at": "2026-11-22T05:49:07Z",
     "result": "FAIL",
-    "build": "2267ac289b43a330984a",
+    "build": "f28398ef5821de19264c",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_round6_gaps.py",
     "margins": []
    }
