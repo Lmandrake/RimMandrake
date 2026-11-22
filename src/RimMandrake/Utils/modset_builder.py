@@ -878,6 +878,16 @@ TIERS["gizkastowaway"] = {
     "modcheck_closure": True,    # modcheck/runner.py closure_ids: `modcheck run GizkaStowaway` composes this list
 }
 
+TIERS["unfinishedline"] = {
+    "why": "RIMMANDRAKE_COMPOSE_UNFINISHEDLINE_WITH_UTINNI_PATCHES_FACTIONS: the chain needs the Free Droid Enclaves "
+           "and Geonosian Foundry Hive FactionDefs, which live in mandrake.rut.patches. The mod names that only as a "
+           "loadAfter (it refuses the chain gracefully without them), so modcheck composed no patches and "
+           "J20261122T020721Z-3f70a7 read defs/all_defs_resolve FAIL and both chain rows FAIL on a missing faction.",
+    "want": [BRIDGE, "mandrake.rut.patches", "mandrake.rut.unfinishedline"],
+    "dlc": True,
+    "modcheck_closure": True,    # modcheck/runner.py closure_ids: `modcheck run UnfinishedLine` composes this list
+}
+
 
 def mod_env(rel):
     """(EXTRA_IDS, FORBID) of a mod's `modcheck_env.py`, the per-mod test environment kept beside its validation.py.

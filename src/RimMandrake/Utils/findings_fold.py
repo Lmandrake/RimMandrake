@@ -627,6 +627,10 @@ def cmd_decide(a):
 
 def decide(a, seat, rules):
     t = read_prev(os.path.join(out_dir(a.out, rules), REPORT))[0]
+    named = ((t or {}).get("raw") or {}).get(a.sig) or {}
+    if t and a.sig not in t["signatures"] and named.get("sig") in t["signatures"]:
+        print("note: %s is a finding name; deciding its signature %s" % (a.sig, named["sig"]))   # a fault of form
+        a.sig = named["sig"]
     if not t or a.sig not in t["signatures"]:
         print("REFUSED: %s is not in the report's table (run `findings_fold.py run` first)" % a.sig)
         return 2

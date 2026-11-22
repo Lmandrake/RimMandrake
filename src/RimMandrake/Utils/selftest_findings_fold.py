@@ -415,6 +415,14 @@ try:
     lines = open(decf).read().splitlines()
     check(r.returncode == 0 and len(lines) == 2 and all(json.loads(x)["sig"] == sig0 for x in lines),
           "G8 decide never fuses onto a last line with no newline (got %d: %r)" % (r.returncode, lines))
+    # a finding NAME is a fault of form: decide maps it to its signature (it once refused with "run first", which
+    # was no repair: Operations 2026-11-22, UNFINISHEDLINE_PARENT_OFFERS_AND_ACCEPTS_FAILS_3F70A7)
+    raw0 = json.loads(snap().decode().rpartition(FF.TABLE_FENCE)[2][:-len(FF.TABLE_END)])["raw"]
+    name0, sign = next((n, v["sig"]) for n, v in raw0.items() if v.get("sig"))
+    r = run("decide", name0, "--as", "retire", "--why", "w", "--seat", "FOUNDRY")
+    last = json.loads(open(decf).read().splitlines()[-1])
+    check(r.returncode == 0 and last["sig"] == sign and sign in r.stdout,
+          "G8 decide by a finding name records that finding's signature (got %d: %r)" % (r.returncode, r.stdout))
     with open(decf, "w") as f:
         f.write("not json\n")
     r = run("decide", sig0, "--as", "retire", "--why", "w", "--seat", "FOUNDRY")

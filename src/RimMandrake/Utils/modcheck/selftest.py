@@ -805,6 +805,11 @@ def t_dependency_closure_and_composed_folders():
     # GIZKA_STOWAWAY_UNMEASURED_ROWS_1: an ordinary mod's tier is composed only when it opts in
     g = runner.closure_ids("GizkaStowaway", None)
     check("closure: GizkaStowaway's opted-in tier brings SWBestiary", "mandrake.rsw.swbestiary" in g, g)
+    # RIMMANDRAKE_COMPOSE_UNFINISHEDLINE_WITH_UTINNI_PATCHES_FACTIONS: its Enclave and Hive FactionDefs live in
+    # mandrake.rut.patches, a loadAfter only, so J20261122T020721Z-3f70a7 read defs/all_defs_resolve FAIL
+    u = runner.composed_ids("UnfinishedLine")
+    check("closure: UnfinishedLine composes mandrake.rut.patches (its Enclave and Hive factions)",
+          "mandrake.rut.patches" in u and "mandrake.rut.unfinishedline" in u, u)
     check("closure: an ordinary mod whose tier does not opt in composes nothing extra",
           runner.closure_ids("Bacta", None) == [] and runner.tier_package_ids("Bacta") != [], runner.closure_ids("Bacta", None))
     check("closure: a folded mod still gets its tier", runner.closure_ids("Pyrelands", ("biomes", "x")) == t)
