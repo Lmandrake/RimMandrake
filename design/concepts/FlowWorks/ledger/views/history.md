@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":52353,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"HOLDER.run-1795260677":3322,"HOLDER.run-1795263747":1891,"HOLDER.run-1795268290":5226,"HOLDER.run-1795285878":924,"HOLDER.run-1795297113":4566,"HOLDER.run-1795304573":2662,"HOLDER.run-1795312089":1009,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=8491b8ca72cfce491357ea3115a9ba57dd51a64b0b78d385e776e7d373ca0d17 -->
-# FlowWorks — mod ledger history (1541 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":52647,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"HOLDER.run-1795260677":3322,"HOLDER.run-1795263747":1891,"HOLDER.run-1795268290":5226,"HOLDER.run-1795285878":924,"HOLDER.run-1795297113":4566,"HOLDER.run-1795304573":2662,"HOLDER.run-1795312089":1009,"HOLDER.run-1795312923":2298,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=0657fa84a99fe2c550fb6ff944d45eb27ce3f8057679e3ed7361a2a988f58bbd -->
+# FlowWorks — mod ledger history (1546 events, merged across shards)
 
 - 2026-11-16T07:16:23Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 55 of 57 bars met at the lock
 - 2026-11-16T07:16:23Z BACKFILL#2 decision version v0.1.0: 
@@ -1542,3 +1542,8 @@
 - 2026-11-22T02:02:47Z DISPATCH#155 run.start run v0.1.0: 
 - 2026-11-22T02:03:10Z DISPATCH#156 run.end run v0.1.0: 
 - 2026-11-22T02:03:10Z DISPATCH#157 session.id session v0.1.0: 
+- 2026-11-22T02:03:35Z HOLDER.run-1795312923#1 lease.renew lease v0.1.0: 
+- 2026-11-22T02:11:38Z HOLDER.run-1795312923#2 lease.renew lease v0.1.0: 
+- 2026-11-22T02:14:56Z DISPATCH#158 stage.accepted stage v0.1.0: 
+- 2026-11-22T02:15:09Z HOLDER.run-1795312923#3 session.checkpoint session v0.1.0: 
+- 2026-11-22T02:15:18Z HOLDER.run-1795312923#4 trap.noted trap:no-flowworks-scene-declares-a-csharp-file-so-the-build-match v0.1.0: No FlowWorks in-game check declares a C# file (31 of 31 have no exercises), so build_match relates no C# change to any check but sc_walk: sc_pit_reads and sc_covered_pit count from 65926ef481, before the pit rebuild e2288f4c84. Item RIMMANDRAKE_DECLARE_FLOWWORKS_SCENE_CSHARP_PIT_REDRAW_UNSEEN.

@@ -12,7 +12,7 @@ now, offline only"). Its table matches the pilot's columns (`design/concepts/Exp
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`: "Yes, lock the other four mods").
   Code exists and is large: `src/RimMandrake/FlowWorks/` (C# mod, a 325+ case C# SelfTest, about 168 Python selftests,
   a northstar proof harness).
-- **Stage now:** Stage 7, the walk brief, since 2026-11-21 5:59 PM PST (`version/stage_record.json`).
+- **Stage now:** Stage 8, his live walk, since 2026-11-21 6:14 PM PST (`version/stage_record.json`).
 - **Bars:** 57 = 29 inventory rows of `record.json` + 28 leaves of `tree.json` (`coverage_judge.required_ids()`); 59 at the
   lock, his card of 2026-11-14 added `inv_geyser_tub` and `inv_liquid_coating` (61), and his card of 2026-11-14 ~9:43 PM
   PST moved the four wetting bars to 0.2.0 (interventions below; `version/next_version/README.md`).
@@ -22,7 +22,7 @@ now, offline only"). Its table matches the pilot's columns (`design/concepts/Exp
 - **Held look statements for this mod:** 103 rows in five files of `design/RimMandrake/validation_holding/` (2026-11-12:
   56 rows; 2026-11-13 morning: 18; 2026-11-13 dig interface: 2; 2026-11-13 evening: 5; 2026-11-14: 22); 83 are placed
   in `version/test_table.json`, all 103 placed. [measured, preflight C8, 2:40 PM PST]
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-21 5:59 PM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-21 6:14 PM PST).
 
 ### The vision (his root paragraph, approved 2026-11-04, OWNER:1793794915205594887; eight lines in `version/vision.md`)
 
@@ -417,4 +417,12 @@ None open; question 3 (the dig speed) is answered in the history entry of 2026-1
 - Steward confirms: Read visit_4/SUMMARY.md, rows.jsonl (8 rows, one mod hash sha256:33f817434c71), strange.jsonl (7, all explained or filed) and maturation.py next (fix_readers_owed [], undecided_bars [], only refusal steward_confirms). Verdict: exit met. 30/31 PASS; sc_source_pays HARNESS repair 9da1303401 shown both ways on the row (mutant LIMITLESS_BODY_RUNS_DOWN FAIL 11790->11784.415, real PASS 11790->11790), diff adds a reading and weakens nothing; OL_OWNER_LOOK_READS UNMEASURED (1629 PASS, 1 BLOCKED: shadow-queue reader is mod C#), HARNESS, decides no bar, owned by RIMMANDRAKE_REPORT_SUBMERGE_SHADOW_QUEUE_JUDGE_CANNOT_SEE_ORDER. No mod code changed in the visit, so no fix reader owed. Judge-the-judge: no not-met reason to sort; exit-reader change 1c65a6e664 keeps a held-statement check rather than removing it, a stricter reading, not a loosening. Walk save FLOWWORKS_OWNER_REVIEW_VISIT4_FULL_20261121_1727.rws present (13.6 MB, 5:29 PM).
 - Was, "Stage now": - **Stage now:** Stage 6, in-game acceptance, since 2026-11-21 12:16 PM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-21 12:16 PM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-21 6:14 PM PST, stage change: Walk brief (Stage 7) to His live walk (Stage 8) (by BENCH)
+
+- Why: walk brief arrival_1 written
+- Checks passed: order, by, version, hold, walk_brief.
+- Was, "Stage now": - **Stage now:** Stage 7, the walk brief, since 2026-11-21 5:59 PM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-21 5:59 PM PST).
 - Record: `version/stage_record.json`.

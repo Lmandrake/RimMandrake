@@ -1,10 +1,10 @@
 {
  "_view": {
-  "body_sha256": "a10e19870789afb1b5f8664d6d76158b1950ce8fe7df77dfb641b93f533d0286",
+  "body_sha256": "a9ab9f1b2fc159d3a481294699b37bc3b9fc693829ae7985bc70c709aaedbd76",
   "reducer": 1,
   "shards": {
    "BACKFILL": 893183,
-   "DISPATCH": 52353,
+   "DISPATCH": 52647,
    "HOLDER.run-1794816885": 928,
    "HOLDER.run-1794848129": 1121,
    "HOLDER.run-1794861652": 2822,
@@ -25,6 +25,7 @@
    "HOLDER.run-1795297113": 4566,
    "HOLDER.run-1795304573": 2662,
    "HOLDER.run-1795312089": 1009,
+   "HOLDER.run-1795312923": 2298,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1265,11 +1266,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795312089",
-   "done": "steward read visit 4 (SUMMARY, 8 rows one mod hash, 7 strange all explained/filed, next: fix_readers_owed [], undecided_bars []) and advanced FlowWorks in_game -> pre_human",
-   "next": "Walk brief (Stage 7) run writes the walk brief on save FLOWWORKS_OWNER_REVIEW_VISIT4_FULL_20261121_1727",
-   "ruled_out": "no not-met reason to sort; 1c65a6e664 exit-reader change is stricter, not a loosening; 9da1303401 adds a reading, weakens nothing",
-   "ts": "2026-11-22T01:59:46Z"
+   "by": "HOLDER.run-1795312923",
+   "done": "walk brief arrival_1 written (design/concepts/FlowWorks/version/walk_brief/arrival_1.md) and FlowWorks advanced pre_human -> his_walk; filed RIMMANDRAKE_DECLARE_FLOWWORKS_SCENE_CSHARP_PIT_REDRAW_UNSEEN (no scene declares C#, pit-look verdicts predate the pit rebuild)",
+   "next": "Owner walks FLOWWORKS_OWNER_REVIEW_VISIT4_FULL_20261121_1727 on his full list (live ModsConfig is the 13-mod tier now)",
+   "ruled_out": "station 17 0.5 m is not a water-from-nothing leak: set_fill sets the whole body level (setBodyWaterM) to 0.5 m, a scene fault already in RIMMANDRAKE_RESTAGE_FLOWWORKS_REVIEW_SIGNS_OVER_UNBUILT_SCENES; the kernel change since visit 3 is gated on a drawing sink (drawCell != null)",
+   "ts": "2026-11-22T02:15:09Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1721,7 +1722,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1541,
+  "events": 1546,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7822,7 +7823,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-22T02:02:39Z",
+   "last": "2026-11-22T02:15:18Z",
    "lease": "run-1795312923",
    "released": false,
    "token": 37
@@ -7927,6 +7928,7 @@
    "HOLDER.run-1795297113",
    "HOLDER.run-1795304573",
    "HOLDER.run-1795312089",
+   "HOLDER.run-1795312923",
    "JUDGE.judge-1794833810",
    "JUDGE.judge-1794849236",
    "JUDGE.judge-1795134433",
@@ -7934,7 +7936,7 @@
   ],
   "spend_tokens": 45401435,
   "spend_usd": 78.9355,
-  "stage": "pre_human",
+  "stage": "his_walk",
   "superseded": [],
   "tests": [
    {
@@ -9034,6 +9036,14 @@
     "ts": "2026-11-16T11:41:49Z",
     "version": "0.1.0",
     "where": "RM_PitTravelExtension; PIT_TRAVEL_TAGS_VET_LORE_FIRST_GUESS"
+   },
+   "trap:no-flowworks-scene-declares-a-csharp-file-so-the-build-match": {
+    "by": "HOLDER.run-1795312923",
+    "status": "noted",
+    "text": "No FlowWorks in-game check declares a C# file (31 of 31 have no exercises), so build_match relates no C# change to any check but sc_walk: sc_pit_reads and sc_covered_pit count from 65926ef481, before the pit rebuild e2288f4c84. Item RIMMANDRAKE_DECLARE_FLOWWORKS_SCENE_CSHARP_PIT_REDRAW_UNSEEN.",
+    "ts": "2026-11-22T02:15:18Z",
+    "version": "0.1.0",
+    "where": "design/concepts/FlowWorks/version/test_table.json; src/RimMandrake/rimflow/build_match.py check"
    },
    "trap:no-live-d3-check-was-run-the-test": {
     "by": "BACKFILL",
