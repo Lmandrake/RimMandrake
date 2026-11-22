@@ -266,11 +266,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 5.18,
+    "seconds": 5.36,
     "last": "PASS: 0 failure(s)",
-    "at": "2026-11-21T16:21:46Z",
+    "at": "2026-11-22T01:51:47Z",
     "result": "PASS",
-    "build": "9df31748a333af35b327",
+    "build": "7015ef7c8aee35e715c3",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_site.py",
     "margins": []
    }
@@ -288,11 +288,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.09,
+    "seconds": 0.1,
     "last": "selftest_pyrelands_fruit_clear: PASS",
-    "at": "2026-11-21T16:21:46Z",
+    "at": "2026-11-22T01:51:48Z",
     "result": "PASS",
-    "build": "9f4995dde0edb146ac7a",
+    "build": "8f26788c08d2b4708396",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_fruit_clear.py",
     "margins": []
    }
@@ -1564,11 +1564,11 @@
    "runs_today": {
     "ran": true,
     "rc": 1,
-    "seconds": 5.3,
-    "last": "FAIL: 4 of 18 checks failed",
-    "at": "2026-11-21T16:23:04Z",
+    "seconds": 6.99,
+    "last": "FAIL: 5 of 18 checks failed",
+    "at": "2026-11-22T01:51:55Z",
     "result": "FAIL",
-    "build": "8050e89d94c743a57bfe",
+    "build": "a8739588acc46ebe57bb",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_round6_gaps.py",
     "margins": []
    }
@@ -1631,11 +1631,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.05,
+    "seconds": 1.04,
     "last": "selftest_pyrelands_venom_staging: 0 of 20 checks failed",
-    "at": "2026-11-21T16:23:05Z",
+    "at": "2026-11-22T01:51:56Z",
     "result": "PASS",
-    "build": "13e9e31d13e9b07be6ef",
+    "build": "68205df024ca0aec0538",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_venom_staging.py",
     "margins": []
    }
