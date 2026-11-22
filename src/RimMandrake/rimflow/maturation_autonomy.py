@@ -1245,9 +1245,21 @@ def _road_back(s, row, open_items, now=None, moved=False, endings=None, cfg=None
             row.update(aut="fixer", fix_item=todo[0]["id"], decision="fixer",
                        why="road-back item %s (of %d open, caused by %s) gets one fixer run" % (
                            todo[0]["id"], len(items), " or ".join(ids)))
-        else:
-            row.update(decision="fixer_spent", why="every open road-back item (%s) has had its one fixer run and "
-                       "is still open" % ", ".join(x["id"] for x in items))
+            return True
+        # a spent item whose window is `owner` waits for his act, not a pipeline one: it holds the next cycle or visit
+        # only when a failed line of the visit cites it (a bar rests on it) or the visit record was not read
+        # (RIMMANDRAKE_UNBLOCK_PYRE_VISIT_SIX_HELD_BY_AN_ART_PICK_THAT_IS_HIS; design/specs/2026-11-21-visit-wait-
+        # cited-items/boundary.md §The rule for an item that waits for him)
+        cited = set(c for c in rb.get("cited") or [] if c)
+        his = [x for x in items if (x or {}).get("needs") == "owner" and x["id"] not in cited
+               and not rb.get("cited_unread")]
+        if his:
+            row["owner_items"] = [x["id"] for x in his]
+        rest = [x for x in items if x not in his]
+        if not rest:
+            return False
+        row.update(decision="fixer_spent", why="every open road-back item (%s) has had its one fixer run and "
+                   "is still open" % ", ".join(x["id"] for x in rest))
         return True
     if not (rb.get("had_items") or moved):
         return False

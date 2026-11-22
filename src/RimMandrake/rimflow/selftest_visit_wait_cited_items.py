@@ -151,11 +151,84 @@ def t_unreadable_visit_record_is_said():
         shutil.rmtree(root, ignore_errors=True)
 
 
+HIS = "RIMMANDRAKE_JUDGE_PYRE_ULLAI_HERD_READS_AS_GREY_RUBBLE"
+MINE = "RIMMANDRAKE_FIX_A_PLAIN_ITEM_STILL_OPEN_AFTER_ITS_FIXER"
+HIS_EVENTS = [
+    {"event": "file", "id": DRIVER, "title": "drive visit 5", "ts": "2026-11-22T10:00:00Z"},
+    {"event": "file", "id": STEWARD, "title": "route visit 5 back", "ts": "2026-11-22T12:30:00Z"},
+    {"event": "file", "id": HIS, "title": "ullai herd reads as grey rubble", "caused_by": DRIVER, "needs": "owner",
+     "ts": "2026-11-22T14:44:26Z"},
+    {"event": "needs", "id": HIS, "to": "owner", "ts": "2026-11-22T23:07:51Z"},
+]
+HIS_ROWS = [{"test": "sc_ullai", "verdict": "PASS"}, {"test": "sc_sprayer", "verdict": "FAIL", "class": "SITE"}]
+
+
+def his_wait(rows, events, fixed, cited_unread=False):
+    """-> (_road_back's answer, row, state) on the Pyrelands visit-5 shape: FIXED holds the items whose fixer ran."""
+    root = site(rows, events)
+    try:
+        rb = opened(root)
+        if cited_unread:
+            rb.pop("cited", None)
+            rb["cited_unread"] = "rows.jsonl cannot be read"
+        s = {"road_back": rb, "ingame_auto": [{"item": DRIVER, "at": 50}],
+             "fixers": {i: {"item": i, "unit": "u-" + i} for i in fixed}}
+        row = {"mod": MOD, "stage": "in_game", "visit": 5, "decision": "launch"}
+        open_items = lambda ids, **kw: M.ledger_items_caused_by(root, ids, **kw)    # noqa: E731
+        return A._road_back(s, row, open_items, 200, moved=True), row, s
+    finally:
+        shutil.rmtree(root, ignore_errors=True)
+
+
+def t_spent_owner_item_does_not_hold_the_visit():
+    """Pyrelands visit 5 (2026-11-22): the one open item waits for his art pick, its fixer ran, no failed line cites it:
+    the next visit is not held, the road back stays open, and the row names the item as his."""
+    got, row, s = his_wait(HIS_ROWS, HIS_EVENTS, [HIS])
+    check(got is False and row.get("decision") == "launch",
+          "spent-owner-item-does-not-hold-the-visit: the row is not decided (no fixer_spent)", (got, row.get("decision")))
+    check("road_back" in s, "spent-owner-item-does-not-hold-the-visit: the road back stays open")
+    check(row.get("owner_items") == [HIS], "spent-owner-item-does-not-hold-the-visit: owner_items lists it",
+          row.get("owner_items"))
+
+
+def t_cited_owner_item_still_holds():
+    """The planted fault: the same owner item, cited by a failed line (a bar the visit decides rests on it), or a visit
+    record that could not be read, still holds the next visit."""
+    rows = HIS_ROWS + [{"test": "sc_ullai_look", "verdict": "FAIL", "class": "MOD", "filed": HIS}]
+    got, row, s = his_wait(rows, HIS_EVENTS, [HIS])
+    check(got is True and row.get("decision") == "fixer_spent",
+          "cited-owner-item-still-holds: a cited owner item holds as fixer_spent", (got, row.get("decision")))
+    got, row, s = his_wait(HIS_ROWS, HIS_EVENTS, [HIS], cited_unread=True)
+    check(got is True and row.get("decision") == "fixer_spent",
+          "cited-owner-item-still-holds: an unread visit record holds", (got, row.get("decision")))
+
+
+def t_owner_item_gets_its_fixer_first():
+    """An owner item that has not had its fixer run gets it (the judge's look comes before his pick)."""
+    got, row, s = his_wait(HIS_ROWS, HIS_EVENTS, [])
+    check(got is True and row.get("fix_item") == HIS and row.get("aut") == "fixer",
+          "owner-item-gets-its-fixer-first: the fixer goes to the owner item", (got, row.get("fix_item")))
+
+
+def t_other_spent_item_still_holds():
+    """A spent item that is not his still holds; its why names it alone, and the owner item is listed apart."""
+    ev = HIS_EVENTS + [{"event": "file", "id": MINE, "title": "a plain item", "caused_by": DRIVER,
+                        "ts": "2026-11-22T15:00:00Z"}]
+    got, row, s = his_wait(HIS_ROWS, ev, [HIS, MINE])
+    check(got is True and row.get("decision") == "fixer_spent", "other-spent-item-still-holds: fixer_spent",
+          (got, row.get("decision")))
+    check(MINE in str(row.get("why")) and HIS not in str(row.get("why")) and row.get("owner_items") == [HIS],
+          "other-spent-item-still-holds: the why names only the plain item, owner_items the owner item",
+          (row.get("why"), row.get("owner_items")))
+
+
 def main(argv=None):
     argv = sys.argv[1:] if argv is None else argv
     only = set(argv[argv.index("--only") + 1:]) if "--only" in argv else None
     for t in (t_failed_line_on_old_item_holds_the_next_visit, t_closed_cited_item_holds_nothing,
-              t_only_failed_lines_are_cited, t_owner_named_item_is_cited, t_unreadable_visit_record_is_said):
+              t_only_failed_lines_are_cited, t_owner_named_item_is_cited, t_unreadable_visit_record_is_said,
+              t_spent_owner_item_does_not_hold_the_visit, t_cited_owner_item_still_holds,
+              t_owner_item_gets_its_fixer_first, t_other_spent_item_still_holds):
         if only is not None and t.__name__ not in only:
             continue
         print("== %s" % t.__name__)

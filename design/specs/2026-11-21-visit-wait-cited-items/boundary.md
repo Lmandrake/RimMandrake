@@ -11,6 +11,20 @@ The case (2026-11-21, FlowWorks visit 5): the driver put its `sc_hung_bridge` FA
 items caused by the driver or the steward run, so visit 6 would have launched without the fix. The steward run caught it
 by hand.
 
+The second case (2026-11-22, Pyrelands visit 5): the only open road-back item was
+`RIMMANDRAKE_JUDGE_PYRE_ULLAI_HERD_READS_AS_GREY_RUBBLE`. Its one fixer run (an art judge) ended with the item open and
+stamped `needs owner`, because replacing art he kept is one of his five acts. No failed line of the visit cited it. The
+tick read `fixer_spent` and held visit 6 while ArchSmall sat free, on a step that only he can take (item
+`RIMMANDRAKE_UNBLOCK_PYRE_VISIT_SIX_HELD_BY_AN_ART_PICK_THAT_IS_HIS`).
+
+## The rule for an item that waits for him
+
+An open road-back item whose window is `owner` (`needs owner`) does not hold the next cycle or visit after its one
+fixer run, unless a failed line of the visit cites it. A failed line that cites it is a check, and so a bar, that the
+item decides: then the item holds, and the Conductor brings him the pick first. A visit record that could not be read
+(`cited_unread`) holds as well: a bar that could not be looked at is never free. The item stays open and stays on his
+Needs Mandrake list (`owner_queue.needs_you` lists every open `needs owner` item). The row names it in `owner_items`.
+
 ## ACCEPTS
 
 - **rows-with-filed.** A visit's `rows.jsonl` row names its item in `filed` or in `owner`, as one rimflow item name or
@@ -40,5 +54,13 @@ by hand.
 - **owner-named-item-is-cited.** A failed row that names an item only in `owner` cites it, like `filed`; a PASS row's
   `owner` cites nothing (Pyrelands visit 5, 2026-11-22: `sc_grass_regreens` named its old item only as `owner`, and the
   road back left it out).
+- **spent-owner-item-does-not-hold-the-visit.** When every open road-back item has had its fixer run, and each one
+  still open has the window `owner` and is cited by no failed line, `_road_back` returns False: the row is not
+  `fixer_spent`, the road back stays open, and `row["owner_items"]` lists those items.
+- **cited-owner-item-still-holds.** An open `owner` item that a failed line of the visit cites holds the row as
+  `fixer_spent`, as before. So does every `owner` item of a road back whose visit record was not read (`cited_unread`).
+- **owner-item-gets-its-fixer-first.** An open `owner` item whose fixer has not run gets its one fixer run first.
+- **other-spent-item-still-holds.** A spent open item whose window is not `owner` holds the row as `fixer_spent`. Its
+  why names only the items that are not his; the `owner` items are listed apart in `owner_items`.
 - **unreadable-visit-record-is-said.** When the visit's `rows.jsonl` cannot be read, the road back opens on the
   steward item and records `cited_unread` naming `rows.jsonl`; it never records an empty cited list.
