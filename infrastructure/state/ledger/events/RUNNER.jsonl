@@ -10900,3 +10900,4 @@
 {"seat":"RUNNER","event":"raise","id":"OPS_FINDINGS_DIAGNOSE_XZLM","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-22T03:51:21Z","tsn":1795319481117836557}
 {"seat":"RUNNER","event":"live","id":"OPS_FINDINGS_DIAGNOSE_XZLM","result":"broken","detail":"Ops alarm UNTRIAGED: flow.untriaged_findings = 3 findings with no outcome yet (MEASURED), line > 0","ts":"2026-11-22T03:52:29Z","tsn":1795319549700467863}
 {"seat":"RUNNER","event":"raise","id":"OPS_FINDINGS_DIAGNOSE_XZLM","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-22T03:52:35Z","tsn":1795319555874032542}
+{"seat":"RUNNER","event":"live","id":"OPS_FINDINGS_DIAGNOSE_XZLM","result":"kept","detail":"sweep: running again","ts":"2026-11-22T04:03:17Z","tsn":1795320197920448496}
