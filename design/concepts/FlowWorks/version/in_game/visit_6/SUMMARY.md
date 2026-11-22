@@ -1,7 +1,7 @@
 # FlowWorks 0.1.0 — in-game acceptance, visit 6
 
 Driver: detached helper, seat BENCH, item RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_SIX, game b on Archmagi.
-Ran 2026-11-21 11:05 PM to 2026-11-22 12:30 AM PST (bound 2:05 AM).
+Ran 2026-11-21 11:05 PM to 2026-11-22 12:13 AM PST (bound 2:05 AM).
 
 Why this visit: commit 65c45b6e98 changed the inferno deck rule (RM_LiquidFire, RM_FuelFireMath) and the pit prisoner's
 food (RM_PitRoomMath, RM_PitPrisonCare). `rerun_relation.py` named 8 of 31 checks as touched [measured]; the brief adds
