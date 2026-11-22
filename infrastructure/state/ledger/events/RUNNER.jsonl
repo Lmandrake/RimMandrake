@@ -11250,3 +11250,4 @@
 {"seat":"RUNNER","event":"raise","id":"OPS_FINDINGS_DIAGNOSE_XZLM","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-22T17:02:54Z","tsn":1795366974141066426}
 {"seat":"RUNNER","event":"live","id":"OPS_FINDINGS_DIAGNOSE_XZLM","result":"kept","detail":"sweep: running again","ts":"2026-11-22T17:03:10Z","tsn":1795366990593689962}
 {"seat":"RUNNER","event":"live","id":"OPS_FINDINGS_DIAGNOSE_XZLM","result":"broken","detail":"Ops alarm UNTRIAGED: flow.untriaged_findings = 1 findings with no outcome yet (MEASURED), line > 0","ts":"2026-11-22T17:04:05Z","tsn":1795367045795812600}
+{"seat":"RUNNER","event":"live","id":"OPS_FINDINGS_DIAGNOSE_XZLM","result":"broken","detail":"Ops alarm UNTRIAGED: flow.untriaged_findings = 1 findings with no outcome yet (MEASURED), line > 0","ts":"2026-11-22T17:06:51Z","tsn":1795367211242113670}
