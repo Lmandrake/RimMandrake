@@ -4072,16 +4072,44 @@ def walk_digest(t):
             _fail("walk digest creature census truncated: %r" % r.get("message"))
         d.update(pawn_kind_counts(r.get("pawns"), WALK_CREATURES))
     r = t.bridge_call("jawa/static_call", type=ASH_FIELD, method="ProbeRegrowth")
-    d["regrowth"] = strip_probe_fields((r or {}).get("result", ""))[:400]
+    raw = str((r or {}).get("result", ""))
+    d["regrowth"] = strip_probe_fields(raw)[:400]
+    # the bins are whole days since each cell's burn stamp at the probe's `now`: read at another tick, a stamp near a day
+    # boundary moves to the next bin with no state lost (visit 5, his full list: '2=234' and '3=274' before the reload,
+    # '2=233' and '3=275' after, every other bin and column equal). `now` is kept beside the digest, never compared.
+    d["_regrowthNow"] = dict(kv.split("=", 1) for kv in raw.split(";") if "=" in kv).get("now")
     r = t.bridge_call("jawa/static_call", type=BURN_LINE, method="ProbeBurnHistory", args="0")
     d["burnHistory"] = strip_probe_fields((r or {}).get("result", ""))[:400]
     return d if _live(t) else {}
 
 
+def regrowth_totals(line):
+    """'d=cells/grassy/half;...' -> (cells, grassy, half) summed over every day bin, or None when no bin parses. Pure."""
+    tot, seen = [0, 0, 0], False
+    for part in str(line or "").split(";"):
+        k, _, v = part.partition("=")
+        nums = v.split("/")
+        if k.strip().isdigit() and len(nums) == 3 and all(n.strip().isdigit() for n in nums):
+            tot = [a + int(n) for a, n in zip(tot, nums)]
+            seen = True
+    return tuple(tot) if seen else None
+
+
 def digests_match(a, b):
-    """Two walk digests equal on every key both carry, and both non-empty. Pure."""
-    keys = set(a) & set(b)
-    return bool(keys) and all(a[k] == b[k] for k in keys)
+    """Two walk digests equal on every key both carry (keys starting '_' are context, never compared), and both non-empty.
+    The regrowth day bins are compared bin by bin when both were read at the same tick; read at different ticks, their
+    totals (cells, grassy, half grown) must be equal instead, since the bins shift with the clock alone. Pure."""
+    keys = set(k for k in set(a) & set(b) if not str(k).startswith("_"))
+    if not keys:
+        return False
+    for k in keys:
+        if k == "regrowth" and a.get("_regrowthNow") != b.get("_regrowthNow"):
+            ta, tb = regrowth_totals(a[k]), regrowth_totals(b[k])
+            if ta is None or ta != tb:
+                return False
+        elif a[k] != b[k]:
+            return False
+    return True
 
 
 # ---- the walk's shield (RIMMANDRAKE_SHIELD_PYRE_WALK_FROM_FULL_LIST_EVENTS). On his 315-mod list (visit 2, 2026-11-21) a hostile

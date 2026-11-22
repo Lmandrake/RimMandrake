@@ -85,6 +85,19 @@ def main():
     if V.digests_match(mid, V.walk_digest(FakeT(dict(STATES["again"], regrowth=STATES["again"]["regrowth"]
                                                     .replace("6=6960/4380/2203", "6=6960/4380/2202"))))):
         probs.append("a reload that lost a regrowth cell still matches")
+    # visit 5 (2026-11-22, his full list): the regrowth bins move with the clock alone; read at two ticks, the totals decide
+    m5 = {"Fire": 3, "regrowth": "0=142/12/12;2=234/76/75;3=274/112/102", "_regrowthNow": "1045919"}
+    a5 = {"Fire": 3, "regrowth": "0=142/12/12;2=233/76/75;3=275/112/102", "_regrowthNow": "1045979"}
+    if not V.digests_match(m5, a5):
+        probs.append("a regrowth bin shift read at another tick (totals equal) does not match")
+    if V.digests_match(m5, dict(a5, _regrowthNow="1045919")):
+        probs.append("a regrowth bin shift read at the SAME tick still matches")
+    if V.digests_match(m5, dict(a5, regrowth="0=142/12/12;2=233/76/75;3=270/112/102")):
+        probs.append("a reload that lost regrowth cells, read at another tick, still matches")
+    if V.digests_match(m5, dict(a5, regrowth="")):
+        probs.append("a reload that lost the regrowth grid, read at another tick, still matches")
+    if V.digests_match({"_regrowthNow": "1"}, {"_regrowthNow": "1"}):
+        probs.append("two digests with only context keys match")
     # input kinds of the pure helpers
     strip = getattr(V, "strip_probe_fields", None)
     if strip is None:
