@@ -92,6 +92,28 @@ namespace RimMandrake.Pyrelands
             return -1;
         }
 
+        /// <summary>BurnCenterAgo's read: prune samples older than keepTicks, then the index of the newest sample at least ticksAgo
+        /// old in what is left, else -1 (BURN_HISTORY_FIX_ANCHOR_NEVER_AGES and HistoryIndexAgo above).</summary>
+        public static int IndexAgoPruned<T>(IList<int> ticks, IList<T> cells, int now, int keepTicks, int ticksAgo)
+        {
+            PruneHistory(ticks, cells, now, keepTicks);
+            return HistoryIndexAgo(ticks, now, ticksAgo);
+        }
+
+        /// <summary>ProbeBurnHistory's read: IndexAgoPruned, then the summary of what is left. Every count and index is read AFTER
+        /// the prune (RIMMANDRAKE_FIX_PYRE_BURN_HISTORY_PROBE_COUNTS_BEFORE_IT_PRUNES: the probe read the count first and indexed
+        /// [n - 1] past the end once the prune had shortened the lists). Empty: samples 0, ticks -1, newestAt -1. Returns agoAt.</summary>
+        public static int ProbeHistory<T>(IList<int> ticks, IList<T> cells, int now, int keepTicks, int ticksAgo,
+            out int samples, out int oldestTick, out int newestTick, out int newestAt)
+        {
+            int agoAt = IndexAgoPruned(ticks, cells, now, keepTicks, ticksAgo);
+            samples = ticks.Count;
+            newestAt = samples - 1;
+            oldestTick = samples > 0 ? ticks[0] : -1;
+            newestTick = samples > 0 ? ticks[newestAt] : -1;
+            return agoAt;
+        }
+
         /// <summary>RM_JobGiver_FollowBurn's decision once its chance roll has passed (PYRE_HERD_DRIVE_BUILD_TWO_DAYS_LATER): with a burn
         /// record (the anchor = HistoryIndexAgo's sample about lagDays old) a herd member on ash within settle+radius of it stays, any
         /// other walks to the anchor; with no record it stays on ash or drifts to the nearest ash. distToAnchor is horizontal distance

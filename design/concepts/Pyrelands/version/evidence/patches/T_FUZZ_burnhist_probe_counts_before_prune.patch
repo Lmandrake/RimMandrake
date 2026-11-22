@@ -1,0 +1,14 @@
+diff --git a/src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs b/src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs
+--- a/src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs
++++ b/src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs
+@@ -106,9 +106,9 @@
+         public static int ProbeHistory<T>(IList<int> ticks, IList<T> cells, int now, int keepTicks, int ticksAgo,
+             out int samples, out int oldestTick, out int newestTick, out int newestAt)
+         {
+-            int agoAt = IndexAgoPruned(ticks, cells, now, keepTicks, ticksAgo);
+             samples = ticks.Count;
+             newestAt = samples - 1;
++            int agoAt = IndexAgoPruned(ticks, cells, now, keepTicks, ticksAgo);
+             oldestTick = samples > 0 ? ticks[0] : -1;
+             newestTick = samples > 0 ? ticks[newestAt] : -1;
+             return agoAt;

@@ -27,15 +27,15 @@
   "test_blob": "58fcb05e761cb4ec6ce26d118950c7cc784b950e"
  },
  "T_FUZZ": {
-  "at": "2026-11-22T11:35:30Z",
+  "at": "2026-11-22T17:48:29Z",
   "command": "python3 src/RimMandrake/Utils/selftest_pyrelands_fuzz.py",
   "file": "src/RimMandrake/Utils/selftest_pyrelands_fuzz.py",
-  "last": "pyrelands fuzz: 15075 cases, 12328338 steps, 5.26s total -> FAILED",
-  "patch": "diff --git a/src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs b/src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs\nindex 95390cc4cf..af4b6fc87c 100644\n--- a/src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs\n+++ b/src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs\n@@ -212,7 +212,7 @@ namespace RimMandrake.Pyrelands\n                 nextFrontTick = now + schedule();\n                 return RM_FrontAction.Armed;\n             }\n-            if (now < nextFrontTick)\n+            if (now < nextFrontTick - 2500)\n             {\n                 return RM_FrontAction.Wait;\n             }\n",
+  "last": "pyrelands fuzz: 16269 cases, 1080805098 steps, 14.86s total -> FAILED",
+  "patch": "diff --git a/src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs b/src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs\n--- a/src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs\n+++ b/src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs\n@@ -106,9 +106,9 @@\n         public static int ProbeHistory<T>(IList<int> ticks, IList<T> cells, int now, int keepTicks, int ticksAgo,\n             out int samples, out int oldestTick, out int newestTick, out int newestAt)\n         {\n-            int agoAt = IndexAgoPruned(ticks, cells, now, keepTicks, ticksAgo);\n             samples = ticks.Count;\n             newestAt = samples - 1;\n+            int agoAt = IndexAgoPruned(ticks, cells, now, keepTicks, ticksAgo);\n             oldestTick = samples > 0 ? ticks[0] : -1;\n             newestTick = samples > 0 ? ticks[newestAt] : -1;\n             return agoAt;\n",
   "patch_files": [
    "src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs"
   ],
-  "patch_sha": "3a8418a9489866fe",
+  "patch_sha": "85d19104dce53b69",
   "rc": 1,
   "test_blob": "9f77d082fb433d4e86a3b19b744edbbaa340d383"
  },
@@ -66,17 +66,17 @@
   "test_blob": "de6276dffc1c6364bfa5707523f6c90815e728ee"
  },
  "T_SITE": {
-  "at": "2026-11-21T15:52:30Z",
+  "at": "2026-11-22T17:48:38Z",
   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_site.py",
   "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_site.py",
   "last": "FAIL: 4 failure(s)",
-  "patch": "diff --git a/src/RimMandrake/Utils/modset_builder.py b/src/RimMandrake/Utils/modset_builder.py\n--- a/src/RimMandrake/Utils/modset_builder.py\n+++ b/src/RimMandrake/Utils/modset_builder.py\n@@ -617,7 +617,7 @@\n            \"biome transitions, Map Designer, flora injectors and the Tribes mod kept off the list. mandrake.rm.patches \"\n            \"rides along so metal, stone and gem walls do not burn (owner 2026-11-08, ca4586309b).\",\n     \"want\": [BRIDGE, \"mandrake.rm.biomes\", \"mandrake.rut.patches\",\n-             \"mandrake.rsw.swbestiary\", \"mandrake.rm.patches\"],\n+             \"mandrake.rsw.swbestiary\", TRIBES, \"mandrake.rm.patches\"],\n     \"forbid\": [\"m00nl1ght.geologicallandforms\",\n                \"m00nl1ght.geologicallandforms.biometransitions\",\n                \"zylle.mapdesigner\",\n",
+  "patch": "diff --git b/src/RimMandrake/Pyrelands/Source/MapComponent_BurnLine.cs a/src/RimMandrake/Pyrelands/Source/MapComponent_BurnLine.cs\nindex 89b942c80c..9ca7093484 100644\n--- b/src/RimMandrake/Pyrelands/Source/MapComponent_BurnLine.cs\n+++ a/src/RimMandrake/Pyrelands/Source/MapComponent_BurnLine.cs\n@@ -188,7 +188,9 @@ namespace RimMandrake.Pyrelands\n         /// BurnHistoryKeepTicks are pruned first (BURN_HISTORY_FIX_ANCHOR_NEVER_AGES), so a long-fireless map answers Invalid.</summary>\n         public IntVec3 BurnCenterAgo(int ticksAgo)\n         {\n-            int at = RM_BurnKernel.IndexAgoPruned(burnHistTicks, burnHistCells, Find.TickManager.TicksGame, BurnHistoryKeepTicks, ticksAgo);\n+            int now = Find.TickManager.TicksGame;\n+            RM_BurnKernel.PruneHistory(burnHistTicks, burnHistCells, now, BurnHistoryKeepTicks);\n+            int at = RM_BurnKernel.HistoryIndexAgo(burnHistTicks, now, ticksAgo);\n             return at >= 0 ? burnHistCells[at] : IntVec3.Invalid;\n         }\n \n@@ -201,17 +203,13 @@ namespace RimMandrake.Pyrelands\n             {\n                 return \"error=no burn-line component on the current map\";\n             }\n-            // One kernel read, pruned first: a count read before BurnCenterAgo's prune went stale and threw past two game weeks\n-            // (RIMMANDRAKE_FIX_PYRE_BURN_HISTORY_PROBE_COUNTS_BEFORE_IT_PRUNES). IndexAgoPruned inside is BurnCenterAgo's own read.\n-            int now = Find.TickManager.TicksGame;\n-            int samples, oldestTick, newestTick, newestAt;\n-            int agoAt = RM_BurnKernel.ProbeHistory(c.burnHistTicks, c.burnHistCells, now, BurnHistoryKeepTicks, ticksAgo,\n-                out samples, out oldestTick, out newestTick, out newestAt);\n+            int n = c.burnHistTicks.Count;\n+            IntVec3 ago = c.BurnCenterAgo(ticksAgo);\n             return string.Format(System.Globalization.CultureInfo.InvariantCulture,\n                 \"now={0};samples={1};oldestTick={2};newestTick={3};newest={4};ago={5};burning={6};center={7}\",\n-                now, samples, oldestTick, newestTick,\n-                newestAt >= 0 ? c.burnHistCells[newestAt].x + \",\" + c.burnHistCells[newestAt].z : \"none\",\n-                agoAt >= 0 ? c.burnHistCells[agoAt].x + \",\" + c.burnHistCells[agoAt].z : \"invalid\", c.fireCount,\n+                Find.TickManager.TicksGame, n, n > 0 ? c.burnHistTicks[0] : -1, n > 0 ? c.burnHistTicks[n - 1] : -1,\n+                n > 0 ? c.burnHistCells[n - 1].x + \",\" + c.burnHistCells[n - 1].z : \"none\",\n+                ago.IsValid ? ago.x + \",\" + ago.z : \"invalid\", c.fireCount,\n                 c.burnCenter.IsValid ? c.burnCenter.x + \",\" + c.burnCenter.z : \"invalid\");\n         }\n \n",
   "patch_files": [
-   "src/RimMandrake/Utils/modset_builder.py"
+   "src/RimMandrake/Pyrelands/Source/MapComponent_BurnLine.cs"
   ],
-  "patch_sha": "c4757383b07513be",
+  "patch_sha": "f0d23ab3a5323849",
   "rc": 1,
-  "test_blob": "b2cd8f0affca4773c9a65ac338fc430bc1227065"
+  "test_blob": "a2db853aca26cabcb82fc6e4d3df9586ee47e704"
  },
  "T_VENOM_STAGING": {
   "at": "2026-11-22T10:40:32Z",

@@ -188,9 +188,7 @@ namespace RimMandrake.Pyrelands
         /// BurnHistoryKeepTicks are pruned first (BURN_HISTORY_FIX_ANCHOR_NEVER_AGES), so a long-fireless map answers Invalid.</summary>
         public IntVec3 BurnCenterAgo(int ticksAgo)
         {
-            int now = Find.TickManager.TicksGame;
-            RM_BurnKernel.PruneHistory(burnHistTicks, burnHistCells, now, BurnHistoryKeepTicks);
-            int at = RM_BurnKernel.HistoryIndexAgo(burnHistTicks, now, ticksAgo);
+            int at = RM_BurnKernel.IndexAgoPruned(burnHistTicks, burnHistCells, Find.TickManager.TicksGame, BurnHistoryKeepTicks, ticksAgo);
             return at >= 0 ? burnHistCells[at] : IntVec3.Invalid;
         }
 
@@ -203,13 +201,17 @@ namespace RimMandrake.Pyrelands
             {
                 return "error=no burn-line component on the current map";
             }
-            int n = c.burnHistTicks.Count;
-            IntVec3 ago = c.BurnCenterAgo(ticksAgo);
+            // One kernel read, pruned first: a count read before BurnCenterAgo's prune went stale and threw past two game weeks
+            // (RIMMANDRAKE_FIX_PYRE_BURN_HISTORY_PROBE_COUNTS_BEFORE_IT_PRUNES). IndexAgoPruned inside is BurnCenterAgo's own read.
+            int now = Find.TickManager.TicksGame;
+            int samples, oldestTick, newestTick, newestAt;
+            int agoAt = RM_BurnKernel.ProbeHistory(c.burnHistTicks, c.burnHistCells, now, BurnHistoryKeepTicks, ticksAgo,
+                out samples, out oldestTick, out newestTick, out newestAt);
             return string.Format(System.Globalization.CultureInfo.InvariantCulture,
                 "now={0};samples={1};oldestTick={2};newestTick={3};newest={4};ago={5};burning={6};center={7}",
-                Find.TickManager.TicksGame, n, n > 0 ? c.burnHistTicks[0] : -1, n > 0 ? c.burnHistTicks[n - 1] : -1,
-                n > 0 ? c.burnHistCells[n - 1].x + "," + c.burnHistCells[n - 1].z : "none",
-                ago.IsValid ? ago.x + "," + ago.z : "invalid", c.fireCount,
+                now, samples, oldestTick, newestTick,
+                newestAt >= 0 ? c.burnHistCells[newestAt].x + "," + c.burnHistCells[newestAt].z : "none",
+                agoAt >= 0 ? c.burnHistCells[agoAt].x + "," + c.burnHistCells[agoAt].z : "invalid", c.fireCount,
                 c.burnCenter.IsValid ? c.burnCenter.x + "," + c.burnCenter.z : "invalid");
         }
 

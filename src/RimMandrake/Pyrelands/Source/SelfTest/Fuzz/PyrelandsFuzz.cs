@@ -59,6 +59,69 @@ namespace RimMandrake.Pyrelands.Fuzz
         private static Tun T;
         private static void Check(bool ok, string msg) { if (!ok) throw new Exception(msg); }
 
+        /// <summary>RIMMANDRAKE_FIX_PYRE_BURN_HISTORY_PROBE_COUNTS_BEFORE_IT_PRUNES: ProbeHistory (ProbeBurnHistory's read) over the
+        /// whole range a map's history can be in when the probe runs. Varies: ring length 0..240 (BurnHistoryKeepTicks /
+        /// BurnHistoryIntervalTicks = 600000 / 2500, the longest ring RecordHistory keeps), spacing 2500..5500 (RecordHistory adds
+        /// at most one sample per interval), age of the newest sample 0..1.4M ticks (a fresh burn to three weeks fireless, dense
+        /// within 2 interval of every prune edge), now up to 60M (16 game years), ticksAgo in {-1, 0, 1, the herd lag 120000,
+        /// keep - 1, keep, keep + 1, random}. Regimes: empty before, nothing pruned, part pruned, all pruned. Left out: a record
+        /// during the probe (one thread). Invariants: never throws; the summary is the pruned lists'; agoAt is the newest sample
+        /// at least ticksAgo old and equals IndexAgoPruned (BurnCenterAgo's read) on the same history.</summary>
+        internal static void ProbeHistorySweep()
+        {
+            const int keep = 600000, interval = 2500;
+            var r = new Random(1122);
+            long cases = 0, empty0 = 0, none = 0, part = 0, all = 0, agoHits = 0;
+            int[] agos = { -1, 0, 1, 120000, keep - 1, keep, keep + 1 };
+            for (int c = 0; c < 40000; c++)
+            {
+                int len = c % 7 == 0 ? 0 : (c % 5 == 0 ? keep / interval : r.Next(1, keep / interval + 1));
+                var ticks = new List<int>(); var cells = new List<int>();
+                int t = r.Next(0, 60000000 - 4 * keep);
+                for (int k = 0; k < len; k++) { ticks.Add(t); cells.Add(k); t += interval + (c % 3 == 0 ? 0 : r.Next(0, 3001)); }
+                int span = len > 0 ? ticks[len - 1] - ticks[0] : 0;
+                int newestAge;
+                switch (c % 4)
+                {
+                    case 0: newestAge = r.Next(0, 1400001); break;
+                    case 1: newestAge = Math.Max(0, keep - span + r.Next(-2 * interval, 2 * interval + 1)); break;   // edge: oldest at keep
+                    case 2: newestAge = keep + r.Next(-2 * interval, 2 * interval + 1); break;                          // edge: newest at keep
+                    default: newestAge = 700000; break;                                                                   // the visit-5 case
+                }
+                int now = (len > 0 ? ticks[len - 1] : t) + newestAge;
+                int ticksAgo = c % 8 < agos.Length ? agos[c % 8] : r.Next(-5, keep + 2 * interval);
+                var expect = new List<int>();
+                foreach (int x in ticks) if (now - x <= keep) expect.Add(x);
+                var tk2 = new List<int>(ticks); var cl2 = new List<int>(cells);
+                int samples, oldest, newest, newestAt, agoAt;
+                try { agoAt = RM_BurnKernel.ProbeHistory(ticks, cells, now, keep, ticksAgo, out samples, out oldest, out newest, out newestAt); }
+                catch (Exception ex) { throw new Exception($"ProbeHistory threw {ex.GetType().Name} (len {len}, newest age {newestAge}, ticksAgo {ticksAgo})"); }
+                string at = $" (case {c}: len {len}, newest age {newestAge}, ticksAgo {ticksAgo})";
+                Check(samples == expect.Count && ticks.Count == samples && cells.Count == samples, "ProbeHistory samples is not the pruned count" + at);
+                Check(newestAt == samples - 1, "ProbeHistory newestAt is not the last pruned index" + at);
+                Check(samples == 0 ? oldest == -1 && newest == -1 : oldest == expect[0] && newest == expect[samples - 1], "ProbeHistory oldest/newest are not the pruned ends" + at);
+                Check(samples == 0 || cells[newestAt] == len - 1, "ProbeHistory's newest cell is not the newest sample's" + at);
+                int cutoff = now - ticksAgo, want = -1;
+                for (int i = expect.Count - 1; i >= 0; i--) if (expect[i] <= cutoff) { want = i; break; }
+                Check(agoAt == want, $"ProbeHistory agoAt {agoAt}, newest sample at least ticksAgo old is {want}" + at);
+                Check(agoAt == RM_BurnKernel.IndexAgoPruned(tk2, cl2, now, keep, ticksAgo), "ProbeHistory disagrees with IndexAgoPruned (BurnCenterAgo's read)" + at);
+                cases++;
+                if (len == 0) empty0++; else if (samples == len) none++; else if (samples == 0) all++; else part++;
+                if (agoAt >= 0) agoHits++;
+            }
+            {   // the visit-5 reading exactly: a full ring, backdated 700000 (BackdateBurnHistory), probed at ticksAgo 0
+                var vt = new List<int>(); var vc = new List<int>();
+                for (int k = 0; k < keep / interval; k++) { vt.Add(1000000 + k * interval); vc.Add(k); }
+                int now = vt[vt.Count - 1] + 1;
+                RM_BurnKernel.BackdateHistory(vt, 700000);
+                int s, o, nw, na;
+                int a = RM_BurnKernel.ProbeHistory(vt, vc, now, keep, 0, out s, out o, out nw, out na);
+                Check(s == 0 && o == -1 && nw == -1 && na == -1 && a == -1, $"visit-5 case: a history backdated past keep reads samples={s} newestAt={na} agoAt={a}, not empty");
+            }
+            Console.WriteLine($"burn history probe sweep: {cases} cases read (empty before {empty0}, none pruned {none}, part pruned {part}, all pruned {all}; an anchor in {agoHits}), worst: 0 throws (limit 0), 0 wrong summaries (limit 0)");
+            Check(empty0 > 0 && none > 0 && part > 0 && all > 0 && agoHits > 0 && agoHits < cases, "burn history probe sweep is blind to a regime");
+        }
+
         internal static List<X> Shrink<X>(List<X> acts, Func<List<X>, bool> fails)
         {
             var cur = new List<X>(acts);
@@ -1446,6 +1509,7 @@ namespace RimMandrake.Pyrelands.Fuzz
                         var bc = new List<int> { 1, 2 };
                         Check(RM_BurnKernel.PruneHistory(bt, bc, 3500 + 600000, 600000) == 1 && bt.Count == 1 && bc[0] == 2, "prune dropped a sample inside the horizon");
                     }
+                    ProbeHistorySweep();
                 }
                 {
                     int rest = 0;

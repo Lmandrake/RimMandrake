@@ -2031,6 +2031,31 @@ def test_lightning_row_counts_strikes_2026_11_21():
           not wrong and sum(counts.values()) == 1024, wrong[:5])
 
 
+def test_burn_history_probe_reads_after_prune_2026_11_22():
+    """RIMMANDRAKE_FIX_PYRE_BURN_HISTORY_PROBE_COUNTS_BEFORE_IT_PRUNES: ProbeBurnHistory read burnHistTicks.Count, then called
+    BurnCenterAgo (which prunes), then indexed [n - 1] with the stale count: ArgumentOutOfRangeException once a history is
+    two game weeks old (visit 5, sc_walk walk_master_off_then_on). The probe and BurnCenterAgo now both read through one
+    kernel call that prunes first (RM_BurnKernel.IndexAgoPruned / ProbeHistory; the regime sweep is in the fuzz, burn family).
+    Red on e63595716c: the probe indexed the lists itself."""
+    bl = open(os.path.join(HERE, "Source", "MapComponent_BurnLine.cs"), encoding="utf-8").read()
+    probe = bl.split("public static string ProbeBurnHistory(int ticksAgo)")[1].split("\n        }\n")[0]
+    ago = bl.split("public IntVec3 BurnCenterAgo(int ticksAgo)")[1].split("\n        }\n")[0]
+    check("ProbeBurnHistory summarises through RM_BurnKernel.ProbeHistory (prune, then read)",
+          "RM_BurnKernel.ProbeHistory(" in probe, probe[:200])
+    raw = re.findall(r"burnHist(?:Ticks|Cells)(?:\.Count|\s*\[)", probe)
+    idx = re.findall(r"burnHistCells\s*\[\s*(\w+)", probe)
+    check("ProbeBurnHistory reads no history count and no tick by index of its own (a count read before the prune goes stale)",
+          not any("Ticks" in r for r in raw), str(raw))
+    check("ProbeBurnHistory reads cells only at indices the kernel returned after its prune",
+          all(i in ("newestAt", "agoAt") for i in idx), str(idx))
+    check("BurnCenterAgo answers through the same kernel call (the probe reports what the play path reads)",
+          "RM_BurnKernel.IndexAgoPruned(" in ago, ago[:200])
+    k = open(os.path.join(HERE, "Source", "Kernel", "RM_BurnKernel.cs"), encoding="utf-8").read()
+    body = k.split("public static int ProbeHistory<T>(")[1].split("\n        }\n")[0] if "public static int ProbeHistory<T>(" in k else ""
+    check("the kernel's ProbeHistory prunes before it counts",
+          "IndexAgoPruned(" in body and body.find("IndexAgoPruned(") < body.find("ticks.Count"), body[:200])
+
+
 def main():
     for t in (test_tier, test_manifests_match_suite, test_defaults_match_source, test_gate_a, test_gate_b,
               test_gate_c, test_site_pure, test_site_build, test_site_offsite_refused, test_naming_dialog_lesson, test_plan_refuses_on_gate_b,
@@ -2041,7 +2066,7 @@ def main():
               test_furnace_heat_and_sleep_2026_11_08, test_on_site_finds_the_site_2026_11_12,
               test_offline_acceptance_2026_11_12, test_ruins_count_charred_floors_2026_11_15,
               test_old_save_row_skips_a_fixture_born_lit_2026_11_15, test_sky_clauses_2026_11_15,
-              test_lightning_row_counts_strikes_2026_11_21):
+              test_lightning_row_counts_strikes_2026_11_21, test_burn_history_probe_reads_after_prune_2026_11_22):
         try:
             t()
         except Exception as ex:
