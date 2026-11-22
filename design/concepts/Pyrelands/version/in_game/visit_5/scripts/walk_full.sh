@@ -5,7 +5,7 @@ cd "$(dirname "$0")/../../../../../../.."
 E=design/concepts/Pyrelands/version/in_game/visit_5/evidence
 LAB=$1; shift
 export RM_GAME_INSTANCE=a RM_HOST_GUARD_GEN=17 RM_BRIDGE_LINEAGE=pv5_visit5 PYRE_WALK=1
-export WSLENV="$WSLENV:RM_GAME_INSTANCE:RM_HOST_GUARD_GEN:RM_BRIDGE_LINEAGE:PYRE_WALK:PYRE_PLANT_GATE_IGNORED"
+export WSLENV="$WSLENV:RM_GAME_INSTANCE:RM_HOST_GUARD_GEN:RM_BRIDGE_LINEAGE:PYRE_WALK:PYRE_PLANT_GATE_IGNORED:PYRE_WALK_PARTS_ONLY"
 for kv in "$@"; do export "$kv"; done
 t0=$(date +%s)
 python.exe src/RimMandrake/Pyrelands/northstar_site.py --site 1 --fingerprint 417df172fdb5e402 --tag visit5full \

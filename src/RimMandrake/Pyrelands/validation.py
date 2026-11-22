@@ -4031,6 +4031,9 @@ def firefoam_sprayer(t):
 
 
 WALK_DAYS = 7          # each half of the two-week walk
+# a planted run of a later walk part (PYRE_PLANT_GATE_IGNORED) needs no two weeks: its verdict reads only that part.
+# Never set on a real run: both week parts then read UNMEASURED, so a real sc_walk can never pass with it.
+WALK_PARTS_ONLY_ENV = "PYRE_WALK_PARTS_ONLY"
 WALK_SAVE = "pyre_walk"
 
 
@@ -4206,6 +4209,8 @@ def walk_season(t):
         with _comp(t, "walk_reload_keeps_the_state"):
             if os.environ.get("PYRE_WALK") != "1":
                 _unmeasured(t, "the two-week walk runs only with PYRE_WALK=1 (full list, Stage 6)")
+            if os.environ.get(WALK_PARTS_ONLY_ENV) == "1":
+                _unmeasured(t, "%s=1: the two weeks are skipped in a planted run of the walk's later parts" % WALK_PARTS_ONLY_ENV)
             t.bridge_call("rimworld/save_game", saveName=WALK_SAVE + "_pre")
             _wait(t, WALK_DAYS * 60000)
             t.bridge_call("rimworld/save_game", saveName=WALK_SAVE + "_mid")
@@ -4222,6 +4227,8 @@ def walk_season(t):
                 if not digests_match(mid, again):
                     _fail("the digest after the reload differs from the one before: %r vs %r" % (mid, again))
         with _comp(t, "walk_second_pass_and_switches"):
+            if os.environ.get(WALK_PARTS_ONLY_ENV) == "1":
+                _unmeasured(t, "%s=1: the two weeks are skipped in a planted run of the walk's later parts" % WALK_PARTS_ONLY_ENV)
             _wait(t, WALK_DAYS * 60000)
             fruit_born = _count(t, FRUIT_PLANT) or 0
             mark = _log_mark(t)
