@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "2befb6917a52bc36e459c03484ccfa2fdc6d3e27d32145d29b6af87d99a45181",
+  "body_sha256": "9a5321a3281065084460480df873443c9e21ff8c000bceb11fc0f79f7d2c02ea",
   "reducer": 1,
   "shards": {
    "BACKFILL": 893183,
@@ -33,7 +33,7 @@
    "HOLDER.run-1795330730": 1090,
    "HOLDER.run-1795335550": 748,
    "HOLDER.run-1795338340": 3967,
-   "HOLDER.run-1795341097": 1405,
+   "HOLDER.run-1795341097": 2076,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1284,11 +1284,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795338340",
-   "done": "fill stall classed SITE (random worker at MiningSpeed 0.1); reach row stages Mining 8, asserts speed; 5/5 live PASS on game b; item closed at 647bc9b0db",
-   "next": "Run the next in-game visit: rerun sc_hung_bridge on the walk build (both road-back items closed)",
-   "ruled_out": "GotoCell(A, Touch) from the diagonal stand square never completing: the same stand square worked 6 of 6 with a known-skill worker",
-   "ts": "2026-11-22T09:35:16Z"
+   "by": "HOLDER.run-1795341097",
+   "done": "visit 7 on game a: 5 of 6 PASS (OL carried, decides no bar); sc_hung_bridge 3 in a row after 3 scene/instrument repairs (581e6f4baf, b1cc65afe2); exit met",
+   "next": "Steward: read visit_7/SUMMARY.md and advance FlowWorks to pre_human",
+   "ruled_out": "a mod fault behind the UND_crush and UND_shot FAILs: the hediff count and an unarmed gunner (both repaired, planted both ways)",
+   "ts": "2026-11-22T11:12:43Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1740,7 +1740,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1609,
+  "events": 1610,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7841,7 +7841,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-22T11:10:53Z",
+   "last": "2026-11-22T11:12:43Z",
    "lease": "run-1795341097",
    "released": false,
    "token": 46
