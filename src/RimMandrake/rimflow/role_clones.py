@@ -32,7 +32,6 @@ the stage machine continues there.
     role_clones.py list                    one JSON line per role clone on disk
 """
 import argparse
-import fcntl
 import json
 import os
 import re
@@ -104,6 +103,7 @@ def ensure(name, runner=subprocess.run):
         return False, "%s exists but is not a git clone: look at it before removing it" % dest
     os.makedirs(ROOT, exist_ok=True)
     part = part_of(name)
+    import fcntl   # here, not at the top: wrapup.py imports this module under Windows python.exe, which has no fcntl
     with open(part + ".lock", "w") as lk:
         try:
             fcntl.flock(lk, fcntl.LOCK_EX | fcntl.LOCK_NB)
