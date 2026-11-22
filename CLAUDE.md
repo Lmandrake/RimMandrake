@@ -125,7 +125,7 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 
 ## Facts you cannot guess
 
-- Game a reads `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods`, and game b reads its own `Mods` folder
+- ArchBig reads `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods`, and ArchSmall reads its own `Mods` folder
   (§There are several live games). No game reads this repo. A file that you write
   here is not deployed.
 - A cold load on the full mod list takes many minutes. A quicktest map takes about 90 s. So never restart the game
@@ -645,23 +645,30 @@ python3 src/RimMandrake/Utils/system_click.py <x> <y>          OS-level click fo
 ## There are several live games; a busy game is not a reason to wait
 
 - Never write or say "waiting for the live game". Name the game. Say why no other game can take the work.
-- The games, each with its own bridge lock:
-  - Game a on Archmagi: Steam's install. It is the owner's game, and it holds his full mod list. Lock `archmagi` (the
-    default).
-  - Game b on Archmagi: its own install, Mods and BridgeTools (`D:\ClaudeWork\rimmandrake\instances\b\game`). Lock
-    `archmagi.b`.
-  - The SteveDesktop games: locks `stevedesktop` and `stevedesktop.b`. Submit work to them through the SteveDesktop
-    test lane (`infrastructure/stevedesktop/RUNBOOK.md`).
+- The games have four names: ArchBig, ArchSmall, Steve1 and Steve2. Each game has its own bridge lock:
+  - ArchBig on Archmagi: Steam's install. It is the owner's game, and it holds his full mod list. Lock key `archmagi`
+    (the default).
+  - ArchSmall on Archmagi: its own install, Mods and BridgeTools (`D:\ClaudeWork\rimmandrake\instances\b\game`). Lock
+    key `archmagi.b`.
+  - Steve1 and Steve2 on SteveDesktop: lock keys `stevedesktop` and `stevedesktop.b`. Submit work to them through the
+    SteveDesktop test lane (`infrastructure/stevedesktop/RUNBOOK.md`). The machine stays SteveDesktop.
+- Name a game by its name in every line that you write. Do not write `game a` or `game b`.
+- Every tool takes a game name in any letter case (`./pipe off game:ArchBig`, `game_lock.py claim archsmall`,
+  `--host Steve2`). The old keys (`a`, `b`, `game:a`, `archmagi`, `archmagi.b`, `stevedesktop`, `stevedesktop.b`) also
+  stay valid. A tool refuses an unknown name by name.
+- The lock keys, the instance letters, the paths and the control-store keys stay as they are. One map,
+  `src/RimMandrake/rimflow/game_names.py`, turns a key into its name.
 - A bridge holder is one process that drives one game. Two holders may drive two games at the same time.
 - `python3 src/RimMandrake/Utils/game_instance.py status` lists the games that run and who drives each. `launch <name>`
-  starts one and `stop` ends one. A seat that needs game b starts it; do not ask.
-- To act on game b: `eval "$(python3 src/RimMandrake/Utils/game_instance.py env b)"` for a tool, `--host archmagi.b` for
-  `rimflow bridge`, `--instance b` for `deploy_custom_mods.py`. A deploy for game b writes only game b's folders.
+  starts one and `stop` ends one. A seat that needs ArchSmall starts it; do not ask.
+- To act on ArchSmall: `eval "$(python3 src/RimMandrake/Utils/game_instance.py env ArchSmall)"` for a tool,
+  `--host ArchSmall` for `rimflow bridge`, `--instance ArchSmall` for `deploy_custom_mods.py`. A deploy for ArchSmall
+  writes only ArchSmall's folders.
 - Choose the game by the work:
-  - Work that a tier mod list can prove goes to any free game. If game a is busy or held, use game b or SteveDesktop.
-  - Only a check that needs his full mod list must use game a. The full list on game b beside game a does not fit in
-    Archmagi's memory. Such a wait names the checks and game a.
-  - Game a is his. His OWNER hold and `./pipe off game:a` stop work on game a only. Work then goes to game b.
+  - Work that a tier mod list can prove goes to any free game. If ArchBig is busy or held, use ArchSmall or SteveDesktop.
+  - Only a check that needs his full mod list must use ArchBig. The full list on ArchSmall beside ArchBig does not fit in
+    Archmagi's memory. Such a wait names the checks and ArchBig.
+  - ArchBig is his. His OWNER hold and `./pipe off game:ArchBig` stop work on ArchBig only. Work then goes to ArchSmall.
 - A pipeline stage or tick line that reads "needs the live game" while a game is free is a pipeline defect. Fix it.
 - Full text: `design/RimMandrake/standing_rulings.md` §There are several live games. Code:
   `design/specs/2026-11-20-per-game-hold-own-install/boundary.md`.
@@ -670,9 +677,10 @@ python3 src/RimMandrake/Utils/system_click.py <x> <y>          OS-level click fo
 
 - Who drives each game has one record: that game's driver lock. Read and write it with
   `python3 src/RimMandrake/rimflow/game_lock.py` (about 50 ms, no tokens):
-  - `query [a|b|all]` says who drives it, since when and for what.
-  - `claim a|b --for "<what for>"` takes it for this process tree. `release a|b` frees it the moment you stop.
-  - `run a|b --for "<what>" -- CMD` holds it for the life of CMD.
+  - `query [ArchBig|ArchSmall|all]` says who drives it, since when and for what.
+  - `claim ArchBig|ArchSmall --for "<what for>"` takes it for this process tree. `release ArchBig|ArchSmall` frees it
+    the moment you stop.
+  - `run ArchBig|ArchSmall --for "<what>" -- CMD` holds it for the life of CMD.
   - Exit 0 is free or done, 75 held, 3 his hold, 2 could not look.
 - A holder is a process. When it ends, the game is free at once. A live holder holds; `--force` cuts it, recorded.
 - `rimflow bridge who|take|release [--host <game>]` and `./bridge` use the same lock and write the ledger's history.

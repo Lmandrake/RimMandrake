@@ -3516,17 +3516,18 @@ def _mirror_bridge(actor, note=None):
 def _who_lines(r, hk=None):
     """Print a lock reading as `bridge who` always has: the reading's own line, then the habitual holder line.
     -> the exit code: 0 for an answer, 2 when the lock could not be looked at (never read as free or held)."""
-    flag = " --host %s" % hk if hk else ""
+    name = game_lock.game_names.show_key(hk) if hk else None    # archmagi.b is the key; people read ArchSmall
+    flag = " --host %s" % name if hk else ""
     print(r["line"])
     if r["state"] == "UNKNOWN":
-        print("bridge UNKNOWN%s — the lock could not be looked at: %s" % (" (%s)" % hk if hk else "", r.get("cause")))
+        print("bridge UNKNOWN%s — the lock could not be looked at: %s" % (" (%s)" % name if hk else "", r.get("cause")))
         return 2
     holder = lock_holder(r)
     if holder:
-        print("%sbridge held by %s since %s%s" % ("%s " % hk if hk else "", holder, r.get("since") or "?",
+        print("%sbridge held by %s since %s%s" % ("%s " % name if hk else "", holder, r.get("since") or "?",
                                                  ("  for: " + r["purpose"]) if r.get("purpose") else ""))
     else:
-        print("%sbridge FREE — take it:  rimflow bridge take%s --for \"<what for>\"" % ("%s " % hk if hk else "", flag))
+        print("%sbridge FREE — take it:  rimflow bridge take%s --for \"<what for>\"" % ("%s " % name if hk else "", flag))
     return 0
 
 
@@ -4133,19 +4134,20 @@ def _bridge_other_host(args, seat, w, hk):
 def _bridge_other_host_locked(args, seat, w, hk):
     # The game's own lock is its one record: read here for this machine's games (lock_reading), through that machine's
     # guard for another's. The ledger's host entry is history; nothing below decides from it.
+    hn = game_lock.game_names.show_key(hk)     # archmagi.b is the key; people read and type ArchSmall
     ident = json.dumps(driver_lock.my_identity())
     if args.action == "give":
-        die("`bridge give` is the Archmagi bridge's owner switch; for %s use take/release (--force is recorded)." % hk)
+        die("`bridge give` is the Archmagi bridge's owner switch; for %s use take/release (--force is recorded)." % hn)
     r = lock_reading(hk)
     if args.action == "who":
         if r is not None:
             return _who_lines(r, hk)
         rc, out = _guard_call(hk, ["status"])
-        print("%s guard: %s" % (hk, out if rc in (0,) else "UNREACHABLE (exit %d) %s" % (rc, out)))
+        print("%s guard: %s" % (hn, out if rc in (0,) else "UNREACHABLE (exit %d) %s" % (rc, out)))
         return 0 if rc == 0 else 2
     if r is not None:
         if r["state"] == "UNKNOWN" and not args.force:
-            die("%s bridge NOT changed: %s" % (hk, r["line"]))
+            die("%s bridge NOT changed: %s" % (hn, r["line"]))
         holder = lock_holder(r)
         ent = {"since": r.get("since"), "purpose": r.get("purpose")}
     else:
@@ -4164,7 +4166,7 @@ def _bridge_other_host_locked(args, seat, w, hk):
             ev["override"] = "released the %s bridge out from under %s" % (hk, holder)
         _refuse_before_lock(ev)
         if r is not None and r.get("alive") and not r.get("mine") and r.get("seat") != "OWNER":
-            die("%s bridge NOT released: %s\n  only its holder process releases it; nothing written" % (hk, r["line"]),
+            die("%s bridge NOT released: %s\n  only its holder process releases it; nothing written" % (hn, r["line"]),
                 code=host_guard.EX_HELD)
         if r is not None and r["state"] == "FREE":
             rc, out = 0, "its lock was already free (%s)" % r["line"]
@@ -4176,13 +4178,13 @@ def _bridge_other_host_locked(args, seat, w, hk):
             # still goes stale by the 45-min rule, and any take may --force it, so this locks nobody out.
             die("%s guard NOT released (exit %d): %s\n  nothing written: the ledger still shows %s holding %s.\n"
                 "  check   rimflow bridge who --host %s\n  retry   rimflow bridge release --host %s"
-                % (hk, rc, out, holder or "nobody", hk, hk, hk))
+                % (hn, rc, out, holder or "nobody", hn, hn, hn))
         _emit(ev, w, quiet=True)
         _mirror_bridge(None)
         if rc != 0:                    # the guard was another process's, never ours: the ledger release is the truth
-            print("%s bridge released by %s (its guard lock is not this window's: %s)" % (hk, seat, out))
+            print("%s bridge released by %s (its guard lock is not this window's: %s)" % (hn, seat, out))
         else:
-            print("%s bridge released by %s" % (hk, seat))
+            print("%s bridge released by %s" % (hn, seat))
         return 0
     holder_idle = (0 if r.get("alive") else None) if r is not None else (
         _idle_seconds(w.last_seen.get(holder)) if holder else None)
@@ -4192,7 +4194,7 @@ def _bridge_other_host_locked(args, seat, w, hk):
             print("NOT TAKEABLE  " + r["line"])
             return 1
         if refusal:
-            die(refusal.replace("rimflow bridge take", "rimflow bridge take --host %s" % hk), code=host_guard.EX_HELD)
+            die(refusal.replace("rimflow bridge take", "rimflow bridge take --host %s" % hn), code=host_guard.EX_HELD)
     # his OWNER hold on this host: takeable only 45 min after his last interaction (owner, by card 2026-10-30)
     holds = [("his %s hold's own event" % hk, ent.get("since"))] if holder == "OWNER" else []
     # 🔴 the guard's lock is shared by both clones; this ledger is not. A take of his from the other clone, unpushed,
@@ -4217,7 +4219,7 @@ def _bridge_other_host_locked(args, seat, w, hk):
             die(refusal)
     why, refusal = _take_decision(holder, seat, holder_idle, args.force, args.purpose, owner=owner)
     if refusal:
-        die(refusal.replace("rimflow bridge take", "rimflow bridge take --host %s" % hk))
+        die(refusal.replace("rimflow bridge take", "rimflow bridge take --host %s" % hn))
     take = ["take", "--seat", seat, "--for", args.purpose or "(no purpose given)", "--identity-json", ident]
     if guard_hold:       # his rule was just run on this very lock: hand the verdict over, the guard cannot measure it
         take += ["--force", "bridge take --host %s by %s: his hold is takeable" % (hk, seat),
@@ -4237,10 +4239,10 @@ def _bridge_other_host_locked(args, seat, w, hk):
     if rc != 0:
         die("%s guard refused (exit %d): %s\n  Its own driver lock is held — the batch lane or another window is "
             "driving that game.\n  check   rimflow bridge who --host %s\n  cut across it (recorded)  "
-            "rimflow bridge take --host %s --force --for \"<what for>\"" % (hk, rc, out, hk, hk))
+            "rimflow bridge take --host %s --force --for \"<what for>\"" % (hn, rc, out, hn, hn))
     _emit(ev, w, quiet=True)
     _mirror_bridge(None)
-    print("%s bridge taken by %s%s" % (hk, seat, ("  (%s)" % why) if why else ""))
+    print("%s bridge taken by %s%s" % (hn, seat, ("  (%s)" % why) if why else ""))
     print("  guard: %s\n  pass RM_HOST_GUARD_GEN to what you run there (rw_game.sh, modcheck) so it drives under "
           "this take; re-run take within 45 min to keep it." % out)
     return 0

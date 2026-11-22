@@ -58,6 +58,15 @@ SSH_TARGETS = {"stevedesktop": os.environ.get("STEVE_WSL", "mandrake@stevedeskto
 RUNNER_DIR = os.environ.get("RM_RUNNER_DIR", "~/rm/runner")
 
 
+def _game_names():
+    """Late import of the one map from a game's key to its name (ArchBig, ArchSmall, Steve1, Steve2)."""
+    if __package__:
+        from . import game_names
+    else:
+        import game_names
+    return game_names
+
+
 def _model():
     """Late import: model pulls the ledger paths, which a bare `status` on the runner does not need."""
     if __package__:
@@ -328,9 +337,9 @@ def remote_argv(host, args):
     env = "infrastructure/stevedesktop/testcentre_env.sh"
     if inst:
         sourced = ('test -f %s || { echo "%s on %s has no %s: update it"; exit 2; }; . %s; '
-                   'test -n "${RM_INSTANCES_ROOT:-}" || { echo "%s on %s: %s sets no RM_INSTANCES_ROOT, so game %s\'s '
+                   'test -n "${RM_INSTANCES_ROOT:-}" || { echo "%s on %s: %s sets no RM_INSTANCES_ROOT, so %s\'s '
                    'lock cannot be found: update it"; exit 2; }; ' % (env, RUNNER_DIR, machine, env, env, RUNNER_DIR,
-                                                                  machine, env, inst))
+                                                                  machine, env, _game_names().show(inst, machine)))
     else:
         sourced = "if test -f %s; then . %s; fi; " % (env, env)
     cmd = "cd %s && unset RM_INSTANCES_ROOT; %s%s%spython3 src/RimMandrake/rimflow/host_guard.py %s" % (

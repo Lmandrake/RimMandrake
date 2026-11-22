@@ -25,6 +25,7 @@ import maturation_autonomy as A     # noqa: E402
 import maturation as M              # noqa: E402
 import maturation_dispatch as MD    # noqa: E402
 import modledger as L               # noqa: E402
+import game_names as _GN             # noqa: E402  (a game reads by its name on this machine: ArchBig, ArchSmall)
 
 PILOT = (L.config().get("pilot_mods") or ["ExplosiveKnockback"])[0]
 VER = "0.1.0"
@@ -256,7 +257,7 @@ def t_a_spent_game_only_set_goes_to_a_free_game():
                                                       "ingame_live": ["rm-pyr"], "ingame_games": {"rm-pyr": "a"}}}
     rs2, _ = MD.pilot_holders(TMP, CFG2, {"mods": {PILOT: _s()}}, facts, _spent_rows(), [], 100, _fx({"a", "b"}))
     return (PILOT in la and r.get("decision") == "launch" and r.get("holder_game") == "b"
-            and [x["id"] for x in r.get("holder_items") or []] == [LIVE_A, LIVE_B] and "game b" in str(r.get("why"))
+            and [x["id"] for x in r.get("holder_items") or []] == [LIVE_A, LIVE_B] and _GN.show("b") in str(r.get("why"))
             and not r.get("need") and rs2[0].get("holder_game") == "b"), (r, rs2[0])
 
 
@@ -265,7 +266,8 @@ def t_no_free_game_names_each_game():
     r = rs[0]
     text = "%s | %s" % (r.get("why"), r.get("waits_on"))
     return (PILOT not in la and r.get("decision") == "no_game_free" and not r.get("holder_items")
-            and "game a:" in text and "game b:" in str(r.get("why")) and "game b:" in str(r.get("waits_on"))
+            and _GN.show("a") + ":" in text and _GN.show("b") + ":" in str(r.get("why"))
+            and _GN.show("b") + ":" in str(r.get("waits_on"))
             and not r.get("need") and "no_game_free" in A.WAIT and "the live game" not in text), r
 
 
@@ -287,8 +289,8 @@ def t_the_offline_holder_run_drives_its_named_game():
     finally:
         M.ledger_needs, L.resume_plan, MD.ledger_open, MD.ledger_after = saved
     txt = seen[0][1] if seen else ""
-    return (rc == 0 and unit == "u" and seen and seen[0][2].get("RM_GAME_INSTANCE") == "b" and "## Your game: b" in txt
-            and "on game b" in str(text)
+    return (rc == 0 and unit == "u" and seen and seen[0][2].get("RM_GAME_INSTANCE") == "b" and "## Your game: %s" % _GN.show("b") in txt
+            and "on %s" % _GN.show("b") in str(text)
             and "The bridge and the game" in txt and "Not yours" not in txt), (rc, text, txt[-900:])
 
 

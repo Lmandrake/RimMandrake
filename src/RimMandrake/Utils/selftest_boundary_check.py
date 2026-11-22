@@ -12,6 +12,7 @@ runs (a test nothing runs is not a cover; a `main()` that picks its tests at run
 change to a boundary page alone selects boundary_check at ./publish, where an untested promise on it is refused.
 """
 import os
+import re
 import subprocess
 import sys
 import tempfile
@@ -125,7 +126,10 @@ def main():
     check(rc == 4 and "NO PROMISES" in out and "covered" not in out, "a page with an empty PROMISES section: exit 4, "
           "its own outcome", (rc, out))
     rc, out = run()
-    check(rc == 0 and "promises covered" in out and "UNREADABLE" not in out, "every page the tool checks by default "
+    # an UNREADABLE verdict opens its line; the word alone can sit in a clone's path (a helper clone is named for its
+    # item, and RIMMANDRAKE_RENAME_GAMES_..._LETTERS_UNREADABLE read as a blind page on every line, 2026-11-22)
+    check(rc == 0 and "promises covered" in out and not re.search(r"^UNREADABLE", out, re.M),
+          "every page the tool checks by default "
           "(what ./publish runs) has a test for each promise", (rc, out[-600:]))
     page_only_change(td, write)
     import shutil

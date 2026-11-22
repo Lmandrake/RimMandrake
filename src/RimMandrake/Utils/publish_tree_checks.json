@@ -5,6 +5,7 @@
   "skip_when_only": ["infrastructure/state/ledger/events/*.jsonl", "infrastructure/state/lessons/*.md"],
   "checks": [
     {"test": "src/RimMandrake/rimflow/selftest_modledger_tree.py", "seconds": 0.3, "fix": "never edit a mod ledger shard or view by hand: append with modledger.py append, then modledger.py views --mod <Mod>; run modledger.py lint --mod <Mod> to see the line"},
+    {"test": "src/RimMandrake/rimflow/selftest_game_names_prose.py", "seconds": 0.1, "fix": "name the game ArchBig, ArchSmall, Steve1 or Steve2; an old key may stay only inside a `code span` (an alias) or an owner quote"},
     {"test": "src/RimMandrake/rimflow/selftest_bench_word_prose.py", "seconds": 1.2, "fix": "say Conductor, or keep BENCH only on a held path or key (the test's ALLOWED)"},
     {"test": "src/RimMandrake/Utils/selftest_biome_twins_retired.py", "seconds": 1.3, "fix": "drop the twin name from src/, or list the tool in TOOLS with why it reads the record"},
     {"test": "src/RimMandrake/rimflow/selftest_retired_era_gone.py", "seconds": 1.1, "fix": "a REMNANT path: delete it (git is the archive) and add its Removed row to design/RimMandrake/retired_eras_index_2026-11-18.md, or allow it there under Phase 2 or Kept on purpose with a reason. An ERA TEXT line: say on that line that the thing is retired (or rewrite it to what runs today); a design doc, skill reference, lesson or fact may instead take the HISTORY head (python3 src/RimMandrake/Utils/era_history_mark.py --apply)"},

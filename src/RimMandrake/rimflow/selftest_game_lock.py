@@ -122,7 +122,7 @@ def t_one_record_per_game():
     check(not os.path.exists(bx.env["RIMFLOW_LEDGER"]) and not os.path.isdir(os.path.join(bx.d, "events")),
           "a claim writes no ledger event (the ledger is history, written by the rimflow door)")
     q = bx.gl("query", "a")
-    check(q.returncode == 0 and "game a: FREE" in q.stdout, "game a reads FREE beside a held game b", q.stdout)
+    check(q.returncode == 0 and "ArchBig: FREE" in q.stdout, "game a reads FREE beside a held game b", q.stdout)
     kill(s)
 
 
@@ -242,7 +242,7 @@ def t_his_hold_refuses_with_exit_3():
     C.switch("game:a", True, "his walk on game a", p=bx.env["RM_CONTROL_DB"])
     for verb in (["query", "a"], ["claim", "a", "--for", "x"]):
         r = bx.gl(*verb)
-        check(r.returncode == 3 and "pipe off game:a" in r.stdout, "pipe off game:a: %s exits 3 naming it" % verb[0],
+        check(r.returncode == 3 and "pipe off game:ArchBig" in r.stdout, "pipe off game:a: %s exits 3 naming it" % verb[0],
               r.stdout + r.stderr)
     r = bx.gl("query", "b")
     check(r.returncode == 0, "pipe off game:a leaves game b free", r.stdout)
@@ -449,7 +449,7 @@ def t_the_tick_line_that_named_a_dead_run_as_live():
         os.environ.pop("MATURATION_BRIDGE_IDLE", None)
         _g, whys = MD.pick_game({"game_instances": ["a"]}, lambda p, game="a": (True, "TAKEABLE"), "visit",
                                 held={"a": "rm-role-dead-run"})
-        check(whys and "the lock now: game a: FREE" in whys[0],
+        check(whys and "the lock now: %s: FREE" % MD._GN.show("a") in whys[0],
               "a game a run record names is shown with the lock's reading of now", whys)
         s = sleeper()
         write_lock(bx.a, "BENCH", s.pid, "a live visit")

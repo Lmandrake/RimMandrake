@@ -76,6 +76,31 @@ import sys
 import time
 import uuid
 
+_RF = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "rimflow")
+if _RF not in sys.path:
+    sys.path.insert(0, _RF)
+import game_names  # noqa: E402  (the one map from a game's letter to its name: ArchBig, ArchSmall, Steve1, Steve2)
+
+
+def _n(name):
+    """-> the name people read for game letter `name` on this machine ('b' -> 'ArchSmall' on Archmagi)."""
+    return game_names.show(name)
+
+
+def _named(fn):
+    """launch and stop build their answers from many format strings: each answer, and each refusal, reads the games
+    by name (game_names.name_text), whoever calls them (the CLI, maturation's deploy restart)."""
+    import functools
+
+    @functools.wraps(fn)
+    def wrap(*a, **k):
+        try:
+            rc, text = fn(*a, **k)
+        except Refused as e:
+            raise Refused(game_names.name_text(str(e)))
+        return rc, game_names.name_text(text)
+    return wrap
+
 GAME_EXE = "RimWorldWin64.exe"
 DEFAULT = "a"
 BASE_PORT = 5174
@@ -130,10 +155,14 @@ class Refused(RuntimeError):
 
 
 def check_name(name):
-    n = (name or "").strip().lower()
-    if not re.fullmatch("[a-z]", n):
-        raise InstanceError("bad game instance %r: one letter, a is today's game" % (name,))
-    return n
+    """A game as typed (ArchSmall, archbig, b, game:b, archmagi.b) -> its letter on this machine. Raises InstanceError
+    naming an unknown name or another machine's game (game_names.letter)."""
+    if name is None or not str(name).strip():
+        raise InstanceError("bad game instance %r: name a game (%s)" % (name, game_names.known()))
+    try:
+        return game_names.letter(name)
+    except game_names.GameNameError as e:
+        raise InstanceError("bad game instance: %s" % e)
 
 
 def current():
@@ -172,7 +201,7 @@ def root():
 def data_dir(name=None):
     name = check_name(name or current())
     if name == DEFAULT:
-        raise InstanceError("game a has no instance folder: it is today's game, in its usual place")
+        raise InstanceError("%s has no instance folder: it is Steam's install, in its usual place" % _n(DEFAULT))
     return os.path.join(root(), name)
 
 
@@ -229,13 +258,13 @@ def install(name=None, refresh=False, copier=None, source=None):
     it (Mods included: /E adds and updates, never deletes)."""
     name = check_name(name or current())
     if name == DEFAULT:
-        raise InstanceError("game a is Steam's own install; only a named game gets a copy")
+        raise InstanceError("%s is Steam's own install; only a named game gets a copy" % _n(DEFAULT))
     src, dst = _native(source or a_game_dir()), game_dir(name)
     if _same_or_inside(dst, src) or _same_or_inside(src, dst):
-        raise Refused("game %s's install %s and game a's %s overlap: a write for one would land in the other" % (
-            name, dst, src))
+        raise Refused("%s's install %s and %s's %s overlap: a write for one would land in the other" % (
+            _n(name), dst, _n(DEFAULT), src))
     if not os.path.exists(os.path.join(src, GAME_EXE)):
-        raise InstanceError("game a's install %s holds no %s" % (src, GAME_EXE))
+        raise InstanceError("%s's install %s holds no %s" % (_n(DEFAULT), src, GAME_EXE))
     copier = copier or _copy_tree
     if os.path.exists(os.path.join(dst, GAME_EXE)) and not refresh:
         # kept as it is (a deploy into it stays), but a top-level file game a has gained since is copied: a
@@ -274,13 +303,13 @@ def hold_refusal(name, despite=None):
             return None
         why = control.game_held(name)
     except control.Unreadable as e:
-        why = "the control store could not be read, so a hold on game %s cannot be ruled out: %s" % (name, e)
+        why = "the control store could not be read, so a hold on %s cannot be ruled out: %s" % (_n(name), e)
     if why and despite:
-        sys.stderr.write("game_instance: game %s is held (%s); acting anyway: %s\n" % (name, why, despite))
+        sys.stderr.write("game_instance: %s is held (%s); acting anyway: %s\n" % (_n(name), why, despite))
         return None
     if why:
-        return ("game %s is held: %s\n  what passes: `./pipe on game:%s --why \"...\"`, or the act on purpose with "
-                "--despite-hold \"<why>\"" % (name, why, name))
+        return ("%s is held: %s\n  what passes: `./pipe on game:%s --why \"...\"`, or the act on purpose with "
+                "--despite-hold \"<why>\"" % (_n(name), why, _n(name)))
     return None
 
 
@@ -494,11 +523,11 @@ def bridge_refusal(name, purpose=None, timeout=120, new_run=False, seat=None):
     caller's seat, passed as `--seat` (the systemd tick names none in its env, and a seatless `rimflow` refuses: "I
     cannot tell which seat I am", RIMMANDRAKE_REPAIR_GIMMESOMESLACK_FORM_REFUSAL_AT_THE_RUN_FIVE); an env seat still
     wins, as in rimflow's own order."""
-    purpose = purpose or "stop game %s (game_instance.py stop)" % name
+    purpose = purpose or "stop %s (game_instance.py stop)" % _n(name)
     held = live_holder(name, new_run)
     if held:
-        return ("game %s is another live driver's: %s\n  what passes: its run ends or releases it (another run's game "
-                "is never stopped or handed out)" % (name, held))
+        return ("%s is another live driver's: %s\n  what passes: its run ends or releases it (another run's game "
+                "is never stopped or handed out)" % (_n(name), held))
     env = child_env(name)                   # the bridge of the game being stopped, whatever this shell drives
     host = bridge_host_args(name)
     try:
@@ -512,12 +541,14 @@ def bridge_refusal(name, purpose=None, timeout=120, new_run=False, seat=None):
         return None
     if rc not in (0, 1):
         text = "UNMEASURED: `rimflow bridge idle` gave no verdict (exit %s): %s" % (rc, text or "no output")
-    return ("the bridge does not let this seat stop game %s: %s\n  what passes: hold it yourself, then stop again  "
+    return ("the bridge does not let this seat stop %s: %s\n  what passes: hold it yourself, then stop again  "
             "rimflow bridge take%s --for \"%s\"  (another seat's live hold needs --force; his OWNER hold is takeable "
             "only 45 min after his last interaction, --force included)"
-            % (name, text, " --host " + host[1] if host else "" if name == DEFAULT else " --host <machine>.%s" % name, purpose))
+            % (_n(name), text, " --host " + _n(host[1]) if host else "" if name == DEFAULT else " --host %s" % _n(name),
+               purpose))
 
 
+@_named
 def stop(pid_=None, force=False, name=None, purpose=None, despite=None, seat=None):
     """taskkill by process id -> (exit code, text). With no pid, every game of this instance; a pid must be this
     instance's, or Refused. Raises Blind when ownership cannot be read: nothing is signalled on a guess. Refused too
@@ -526,10 +557,10 @@ def stop(pid_=None, force=False, name=None, purpose=None, despite=None, seat=Non
     name = check_name(name or current())
     mine = pids(name)
     if pid_ is not None and pid_ not in mine:
-        raise Refused("pid %s is not game %s's (game %s: %s)" % (pid_, name, name, mine or "not running"))
+        raise Refused("pid %s is not %s's (%s: %s)" % (pid_, _n(name), _n(name), mine or "not running"))
     targets = [pid_] if pid_ is not None else mine
     if not targets:
-        return 0, "game %s is not running" % name
+        return 0, "%s is not running" % _n(name)
     held = hold_refusal(name, despite)
     if held:
         raise Refused(held)
@@ -577,7 +608,7 @@ def prepare(name=None):
     if re.search(r"\s", d):
         raise Refused("instance folder %r has whitespace: the launch's -savedatafolder is unquoted, as measured" % d)
     if running(name):
-        raise Refused("game %s is running; it rewrites Prefs.xml on exit. Stop it first" % name)
+        raise Refused("%s is running; it rewrites Prefs.xml on exit. Stop it first" % _n(name))
     for sub in ("Config", "JawaBench"):
         os.makedirs(os.path.join(d, sub), exist_ok=True)
     install(name)
@@ -683,11 +714,11 @@ def fire_a(sleep=time.sleep, clock=time.time):
     said = _steam_answer(start, sleep, clock)
     if said == "working" or (said is None and not others):
         return "steam", "through Steam (%s)" % ("Steam is launching it" if said else "Steam has not said yet; no other game up")
-    _need_appid("game a started directly")
+    _need_appid("%s started directly" % _n(DEFAULT))
     flags = inherited_flags(rows)
     _start_direct_a(flags)
-    return "direct", ("directly (Steam %s while game %s runs), flags %s" % (
-        "answered WaitingPrevProcess" if said else "said nothing", ",".join(others) or "?", " ".join(flags) or "none"))
+    return "direct", ("directly (Steam %s while %s runs), flags %s" % (
+        "answered WaitingPrevProcess" if said else "said nothing", ",".join(_n(o) for o in others) or "?", " ".join(flags) or "none"))
 
 
 def a_player_log():
@@ -739,6 +770,7 @@ def _launch_a(wait, wait_s, sleep, clock):
     return 1, "no port line in %s after %d s; game a pid %d (%s) is left running" % (log, wait_s, up, how)
 
 
+@_named
 def launch(name=None, wait=False, wait_s=WAIT_S, sleep=time.sleep, clock=time.time, despite=None):
     """Start a game -> (exit code, text). Game a through Steam, or directly when Steam will not (fire_a); a named game
     directly. Raises Refused for no Steam, or a direct start with no steam_appid.txt; a game already up is ok, with its
@@ -808,7 +840,7 @@ def free(busy=(), purpose=None, refusal=None):
         if n in busy:
             why[n] = "a live run drives it"
             continue
-        no = hold_refusal(n) or refusal(n, purpose or "take game %s for a live run (game_instance.py free)" % n)
+        no = hold_refusal(n) or refusal(n, purpose or "take %s for a live run (game_instance.py free)" % _n(n))
         if no:
             why[n] = no.splitlines()[0]
             continue
@@ -833,35 +865,36 @@ def leftovers(busy=(), refusal=None, holder=None):
         raise Blind("cannot read a game's command line, so no game can be called nobody's")
     return [{"instance": g["instance"], "pid": g["pid"]} for g in sorted(rows, key=lambda g: (g["instance"], g["pid"]))
             if g["instance"] not in busy and not holder(g["instance"])
-            and not refusal(g["instance"], "is game %s an idle leftover" % g["instance"])]
+            and not refusal(g["instance"], "is %s an idle leftover" % _n(g["instance"]))]
 
 
 def brief(name, full_list=None):
     """A run brief's section naming the game it drives (maturation.game_brief, the Dispatch step's in-game runs).
-    full_list: the visit's full-list checks; on a named game they cannot run (his full list on b beside game a does not
-    fit in memory), so the brief says to record each UNMEASURED with that cause."""
+    full_list: the visit's full-list checks; on a named game they cannot run (his full list on the second game beside
+    the first does not fit in memory), so the brief says to record each UNMEASURED with that cause."""
     name = check_name(name)
+    me, first, second = _n(name), _n(DEFAULT), _n("b")
     extra = []
     if name != DEFAULT and full_list:
-        extra = ["- These checks need his full list, which game %s cannot hold beside game a (memory): %s. Run every "
+        extra = ["- These checks need his full list, which %s cannot hold beside %s (memory): %s. Run every "
                  "other check on a tier list here; give each of these one row with result UNMEASURED and detail "
-                 "`game %s: tier list only beside game a` (an UNMEASURED row spends nothing); game a runs them later."
-                 % (name, ", ".join(full_list), name)]
+                 "`%s: tier list only beside %s` (an UNMEASURED row spends nothing); %s runs them later."
+                 % (me, first, ", ".join(full_list), me, first, first)]
     return "\n".join([
-        "## Your game: %s" % name, "",
-        "This machine runs two RimWorld games, a and b. This run drives game **%s**: `RM_GAME_INSTANCE=%s` is set in "
+        "## Your game: %s" % me, "",
+        "This machine runs two RimWorld games, %s and %s. This run drives **%s**: `RM_GAME_INSTANCE=%s` is set in "
         "your environment, so game_paths, the bridge client (port %d), `rimflow bridge take` and the driver lock all "
         "follow it. The other game is another run's: never stop, restart or deploy over it, and never take its bridge."
-        % (name, name, port(name)),
-        "- Start yours, if it is down: `python3 src/RimMandrake/Utils/game_instance.py launch %s --wait` (game a goes "
-        "through Steam, or directly with Steam's flags when Steam refuses beside the other game; b always directly)."
-        % name,
+        % (first, second, me, name, port(name)),
+        "- Start yours, if it is down: `python3 src/RimMandrake/Utils/game_instance.py launch %s --wait` (%s goes "
+        "through Steam, or directly with Steam's flags when Steam refuses beside the other game; %s always directly)."
+        % (me, first, second),
         "- Stop only yours, by pid: `python3 src/RimMandrake/Utils/game_instance.py stop --instance %s`. "
-        "`game_instance.py status` shows both." % name,
-        ("- Game %s has its own install, Mods and BridgeTools (`%s`): with `RM_GAME_INSTANCE=%s` set, "
+        "`game_instance.py status` shows both." % me,
+        ("- %s has its own install, Mods and BridgeTools (`%s`): with `RM_GAME_INSTANCE=%s` set, "
          "`deploy_custom_mods.py` and `bridgetools/build.py` write only there. Never deploy with another game named."
-         % (name, win_path(game_dir(name)), name)) if name != DEFAULT else
-        "- Game a is Steam's install; game b has its own. Deploy only your own mod's files."] + extra + [""])
+         % (me, win_path(game_dir(name)), name)) if name != DEFAULT else
+        "- %s is Steam's install; %s has its own. Deploy only your own mod's files." % (first, second)] + extra + [""])
 
 
 def _read(path):
@@ -880,7 +913,7 @@ def status_lines():
     out = []
     for n in names:
         mine = [g["pid"] for g in rows if (g["instance"] or "?") == n]
-        out.append("%s  %-22s  port %s%s" % (n, "running pid %s" % ",".join(map(str, mine)) if mine else "stopped",
+        out.append("%-9s  %-22s  port %s%s" % (_n(n), "running pid %s" % ",".join(map(str, mine)) if mine else "stopped",
                                              "?" if n == "?" else port(n), "" if n == "?" else "  | " + _driver(n)))
     return out
 
@@ -893,7 +926,7 @@ def _driver(name):
     try:
         return game_lock.query(name, pipe=False)["line"]
     except Exception as e:  # noqa: BLE001  (could not look is said, never read as free)
-        return "game %s: COULD NOT LOOK (%s: %s)" % (name, type(e).__name__, e)
+        return "%s: COULD NOT LOOK (%s: %s)" % (_n(name), type(e).__name__, e)
 
 
 def main(argv=None):
@@ -932,29 +965,29 @@ def main(argv=None):
             print("prepared %s" % prepare(a.name))
         elif a.cmd == "install":
             where, done = install(a.name, a.refresh)
-            print("game %s install %s: %s" % (check_name(a.name), win_path(where),
+            print("%s install %s: %s" % (_n(check_name(a.name)), win_path(where),
                                               "copied " + ", ".join(done) if done else "already there, left as it is"))
         elif a.cmd == "status":
             print("\n".join(status_lines()))
         elif a.cmd == "free":
             got, why = free([check_name(x) for x in a.busy], a.purpose)
             if not got:
-                raise Refused("no game is free: %s" % "; ".join("game %s: %s" % kv for kv in sorted(why.items())))
-            print(got)
+                raise Refused("no game is free: %s" % "; ".join("%s: %s" % (_n(k), v) for k, v in sorted(why.items())))
+            print(_n(got))
         elif a.cmd == "leftovers":
             for g in leftovers():
                 print("%s  pid %d  up, nobody holds it: may be stopped (game_instance.py stop --instance %s)" % (
-                    g["instance"], g["pid"], g["instance"]))
+                    _n(g["instance"]), g["pid"], _n(g["instance"])))
         else:
             rc, text = (stop(a.pid, a.force, a.instance, a.purpose, a.despite) if a.cmd == "stop" else
                         launch(a.name, a.wait, despite=a.despite))
             print(text)
             return rc
     except Blind as e:
-        print("BLIND: %s" % e, file=sys.stderr)
+        print("BLIND: %s" % game_names.name_text(str(e)), file=sys.stderr)
         return EX_BLIND
     except (Refused, InstanceError) as e:
-        print("REFUSED: %s" % e, file=sys.stderr)
+        print("REFUSED: %s" % game_names.name_text(str(e)), file=sys.stderr)
         return EX_REFUSED
     return 0
 

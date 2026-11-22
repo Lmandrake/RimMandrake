@@ -1,8 +1,8 @@
 # BOUNDARY: one record of who drives each game, Design Version 0.1.0
 
-Code: `src/RimMandrake/rimflow/game_lock.py` (all of it), `src/RimMandrake/rimflow/cli.py` (`lock_reading`, `lock_holder`, `_mirror_bridge`, `_who_lines`, `_bridge_who`, `_lock_view`, `_live_other`, the take, idle and release decisions of `bridge` for game a and for `--host`), `src/RimMandrake/rimflow/host_guard.py` (`acquire`, `crossing`), `src/RimMandrake/rimflow/maturation.py` (`bridge_idle`), `src/RimMandrake/rimflow/maturation_dispatch.py` (`lock_says`, the driven-game line of `pick_game`), `src/RimMandrake/Utils/game_instance.py` (`status_lines`, `_driver`), `src/RimMandrake/rimflow/control.py` (`game_lines`, the game lines of `show` and `why`), `src/RimMandrake/Utils/rmpaths.py` (the data-root cache), `src/RimMandrake/rimflow/model.py` (`game_a_lock_path`,
+Code: `src/RimMandrake/rimflow/game_lock.py` (all of it), `src/RimMandrake/rimflow/cli.py` (`lock_reading`, `lock_holder`, `_mirror_bridge`, `_who_lines`, `_bridge_who`, `_lock_view`, `_live_other`, the take, idle and release decisions of `bridge` for ArchBig and for `--host`), `src/RimMandrake/rimflow/host_guard.py` (`acquire`, `crossing`), `src/RimMandrake/rimflow/maturation.py` (`bridge_idle`), `src/RimMandrake/rimflow/maturation_dispatch.py` (`lock_says`, the driven-game line of `pick_game`), `src/RimMandrake/Utils/game_instance.py` (`status_lines`, `_driver`), `src/RimMandrake/rimflow/control.py` (`game_lines`, the game lines of `show` and `why`), `src/RimMandrake/Utils/rmpaths.py` (the data-root cache), `src/RimMandrake/rimflow/model.py` (`game_a_lock_path`,
 `game_a_lock_record`, `bridge_gate`), `src/RimMandrake/rimflow/driver_lock.py` (`process_alive` of a WSL holder seen from Windows, `my_identity` of a Windows process, `clone_key`, the `clone` and `role_unit` a take
-records), and the game a readers `testq.bridge_holder`, `bridgetools/build.py` `bridge_holder`,
+records), and the ArchBig readers `testq.bridge_holder`, `bridgetools/build.py` `bridge_holder`,
 `seat_restart.bridge_reading` and `wrapup.World.game_a_hold`.
 Item: `RIMMANDRAKE_BUILD_ONE_GAME_LOCK_CLAIM_FOUR_RECORDS_DISAGREE`, written 2026-11-21. The owner, about 3:35 AM PST:
 *"We need a lightning responsive deterministic python way of taking and releasing game A or B as well as determining if
@@ -13,7 +13,7 @@ each file has its own page or none.
 
 ## The one record, and why it is this one
 
-Who drives game X has one record: that game's process-keyed driver lock. Game a's is `<data root>/scratch/
+Who drives game X has one record: that game's process-keyed driver lock. ArchBig's is `<data root>/scratch/
 DRIVER_LOCK.json` (`D:\ClaudeWork\rimmandrake\scratch\DRIVER_LOCK.json`); a named game's is `<instances root>/<g>/
 DRIVER_LOCK.json`. It was already the only record that every clone, every script and the Windows `python.exe` tools
 see at once, and the only one whose holder is a process, so a holder that dies frees the game the moment it dies. The
@@ -24,7 +24,7 @@ Its place stays on the D: drive, by measurement (2026-11-21, Archmagi, WSL, two 
 takes 2 ms. What made a query slow was not the drive: the data root cost about 110 ms per process (a Python subprocess
 of Lodestar's helper, reading `~/dev` on D:), now cached on ext4 (`rmpaths.py`), and `argparse` about 15 ms, which
 `query` does not use. Measured after: `game_lock.py query a` 41 ms, `query b` 48 ms, `query all` 51 ms (median of 9).
-Before: `rimflow bridge who` 5.0 s for game a, 1.8 s for game b.
+Before: `rimflow bridge who` 5.0 s for ArchBig, 1.8 s for ArchSmall.
 
 ## ACCEPTS (the only inputs this is built for)
 
@@ -35,7 +35,7 @@ Before: `rimflow bridge who` 5.0 s for game a, 1.8 s for game b.
 - **a-process-tree.** The holder of a `claim` is the nearest `claude` or `codex` ancestor (the window or the run), or
   `RM_DRIVER_PID`; of a `run`, the `game_lock.py` process itself. "This process tree" is the caller and its ancestors.
 - **the-control-store.** `control.py`'s store, for `pipe off game:<g>`. A store that does not exist holds nothing.
-- **redirected-paths-in-tests.** `RIMFLOW_DRIVER_LOCK` (game a, or the game `RM_GAME_INSTANCE` names),
+- **redirected-paths-in-tests.** `RIMFLOW_DRIVER_LOCK` (ArchBig, or the game `RM_GAME_INSTANCE` names),
   `RM_INSTANCES_ROOT` (named games), `RM_CONTROL_DB`. Under `RIMFLOW_LEDGER` without them there is no lock path.
 
 ## DOES NOT SURVIVE (not promised)
@@ -84,7 +84,7 @@ Before: `rimflow bridge who` 5.0 s for game a, 1.8 s for game b.
 - **the-225-am-release-that-left-bridge-who-saying-held.** When a run's holder process has ended with its take still in
   this clone's ledger, `rimflow bridge who` reads FREE and the next `rimflow bridge take` succeeds without `--force`,
   even with a control store that cannot be read (his pipe hold binds pipeline runs, not a window's take).
-- **the-243-am-game-b-record-that-named-the-ended-run.** `rimflow bridge who --host archmagi.b` names game b's live holder
+- **the-243-am-game-b-record-that-named-the-ended-run.** `rimflow bridge who --host ArchSmall` names ArchSmall's live holder
   from its lock, never a run that has ended.
 - **the-335-am-ledger-free-while-the-lock-was-held.** With this clone's ledger empty and another clone's live hold in the
   lock, `rimflow bridge who` reads HELD, the BRIDGE glance file says HELD, a take from this clone exits 75, and a
@@ -94,7 +94,7 @@ Before: `rimflow bridge who` 5.0 s for game a, 1.8 s for game b.
   free the moment it is gone, never for a flyer's flight.
 
 - **the-old-shared-file-is-neither-written-nor-read.** A take or release writes no `BRIDGE_SHARED.json`, and one left
-  on disk names no holder anywhere. `model.bridge_gate`, `testq`, `seat_restart` and `wrapup` name game a's holder from
+  on disk names no holder anywhere. `model.bridge_gate`, `testq`, `seat_restart` and `wrapup` name ArchBig's holder from
   its lock, with the unit and clone that took it, and read it free the moment its process is gone.
 
 - **a-windows-python-client-obeys-the-lock.** A Windows `python.exe` bridge client (`host_guard.crossing`, which

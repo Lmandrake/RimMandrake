@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
-"""game_lock.py - who drives game a or b. One record per game; a fast, token-free query, claim and release.
+"""game_lock.py - who drives each game (ArchBig, ArchSmall). One record per game; a fast, token-free query, claim and release.
 
-The one record of "who drives game X" is that game's process-keyed driver lock (driver_lock.py): game a's is
-`<data root>/scratch/DRIVER_LOCK.json`, a named game's is `<instances root>/<g>/DRIVER_LOCK.json`. Every door
+The one record of "who drives game X" is that game's process-keyed driver lock (driver_lock.py): ArchBig's (letter a)
+is `<data root>/scratch/DRIVER_LOCK.json`, a named game's is `<instances root>/<letter>/DRIVER_LOCK.json`. A game is
+typed by its name in any letter case (ArchBig, ArchSmall; on SteveDesktop Steve1, Steve2) or by its old letter or bridge
+key; it is shown by its name (game_names.py, the one map). Every door
 (`rimflow bridge who|take|release`, `./bridge`, host_guard, game_instance, the tick, `./pipe show`) reads or writes it
 through this module. The ledger's bridge events are history written after the fact; nothing decides from them.
 
@@ -10,10 +12,10 @@ A holder is a PROCESS (pid + start time + boot). When it is gone, the game is fr
 (`rimflow bridge take`, `host_guard.py take|run`) writes the same file in the same shape, so this module sees it, and
 an old-style release frees it.
 
-    game_lock.py query   [a|b|all] [--json]          who drives it, since when, for what; or FREE
-    game_lock.py claim   a|b --for "<what>" [--seat S] [--force WHY] [--flyer]
-    game_lock.py release a|b [--force WHY]           release what this process tree holds
-    game_lock.py run     a|b --for "<what>" [--seat S] -- CMD [ARGS...]     hold for CMD's life
+    game_lock.py query   [ArchBig|ArchSmall|all] [--json]     who drives it, since when, for what; or FREE
+    game_lock.py claim   ArchBig|ArchSmall --for "<what>" [--seat S] [--force WHY] [--flyer]
+    game_lock.py release ArchBig|ArchSmall [--force WHY]      release what this process tree holds
+    game_lock.py run     ArchBig|ArchSmall --for "<what>" [--seat S] -- CMD [ARGS...]     hold for CMD's life
 
 Exit codes keep four answers apart (every verb):
     0   free (query) / done (claim, release; run: CMD's own exit code)
@@ -42,6 +44,10 @@ try:                                    # imported as rimflow.game_lock (cli.py)
     from . import driver_lock
 except ImportError:
     import driver_lock  # noqa: E402
+try:
+    from . import game_names
+except ImportError:
+    import game_names  # noqa: E402
 
 
 def _host_guard():
@@ -58,7 +64,7 @@ class Blind(Exception):
     """A lock that could not be looked at (exit 2's cause), raised by a reader that has no "could not look" return."""
 GAME_A = "a"                            # today's game: Steam's install, his
 GEN_ENV = "RM_HOST_GUARD_GEN"           # a holder's children drive under its take (host_guard.export_take)
-REMOTE_GAMES = ("stevedesktop", "stevedesktop.b")   # through their test lane, never read from here
+REMOTE_GAMES = ("stevedesktop", "stevedesktop.b")   # bridge keys of Steve1, Steve2: through their test lane, never read here
 WRITING_WAIT_S = 1.0                    # danger: a lock read mid-write is empty for milliseconds (driver_lock
                                         # WRITING_GRACE_S); past this the answer is "could not look", never a guess
 
@@ -89,10 +95,9 @@ def games():
 
 
 def check_game(g):
-    g = str(g or "a").strip().lower()
-    if not re.fullmatch(r"[a-z]", g):
-        raise ValueError("a game is one letter (a, b, ...), got %r" % g)
-    return g
+    """A game as typed (ArchBig, archsmall, b, game:b, archmagi.b) -> its letter on this machine. An unknown name, or a
+    game of another machine, raises ValueError naming it (game_names.letter); nothing typed is today's game."""
+    return game_names.letter("a" if g is None or not str(g).strip() else g)
 
 
 def current_game():
@@ -261,8 +266,9 @@ def line(r):
             r.get("purpose") or "?", r.get("how"))
         if r.get("mine"):
             who += " (this process tree)"
+    n = game_names.show(g)
     if st == "UNKNOWN":
-        out = "game %s: COULD NOT LOOK: %s" % (g, r.get("cause"))
+        out = "%s: COULD NOT LOOK: %s" % (n, r.get("cause"))
     elif st == "HIS_HOLD":
         parts = []
         if r.get("owner_hold"):
@@ -270,12 +276,12 @@ def line(r):
         elif r.get("seat"):
             parts.append("HELD by %s" % who)
         if r.get("pipe_hold"):
-            parts.append("pipe off game:%s: %s" % (g, r["pipe_hold"]))
-        out = "game %s: HIS HOLD: %s" % (g, "; ".join(parts))
+            parts.append("pipe off game:%s: %s" % (n, r["pipe_hold"]))
+        out = "%s: HIS HOLD: %s" % (n, "; ".join(parts))
     elif st == "HELD":
-        out = "game %s: HELD by %s" % (g, who)
+        out = "%s: HELD by %s" % (n, who)
     else:
-        out = "game %s: FREE%s" % (g, " (%s)" % r["note"] if r.get("note") else "")
+        out = "%s: FREE%s" % (n, " (%s)" % r["note"] if r.get("note") else "")
     if r.get("cause") and st != "UNKNOWN":
         out += "; COULD NOT LOOK at his pipe hold: %s" % r["cause"]
     return out
@@ -314,7 +320,7 @@ def claim(g, purpose, seat=None, force=None, flyer=False, identity=None, path=No
         return _res(False, EX_BLIND, g, "COULD NOT LOOK: " + cause)
     if hold:
         return _res(False, EX_HIS, g, "HIS HOLD: pipe off game:%s: %s (what passes: `./pipe on game:%s --why "
-                    "\"...\"`)" % (g, hold, g))
+                    "\"...\"`)" % (game_names.show(g), hold, game_names.show(g)))
     if (flyer or flight_purpose(purpose)) and seat != "OWNER":
         return _res(False, EX_HIS, g, "HIS HOLD: a flyer's flight is his act, never claimed without him present")
     cur, problem = _read_lock(path)
@@ -371,7 +377,7 @@ def release(g, force=None, seat=None, path=None):
 
 
 def _res(ok, code, g, text, **kw):
-    d = {"ok": ok, "code": code, "game": g, "line": "game %s: %s" % (g, text)}
+    d = {"ok": ok, "code": code, "game": g, "line": "%s: %s" % (game_names.show(g), text)}
     d.update(kw)
     return d
 
@@ -402,7 +408,7 @@ def run(g, purpose, cmd, seat=None, force=None, flyer=False):
     wslenv = env.get("WSLENV", "")
     if GEN_ENV not in wslenv.split(":"):
         env["WSLENV"] = (wslenv + ":" if wslenv else "") + GEN_ENV
-    sys.stderr.write("game %s: held for `%s` (gen %s%s)\n" % (g, " ".join(cmd), gen,
+    sys.stderr.write("%s: held for `%s` (gen %s%s)\n" % (game_names.show(g), " ".join(cmd), gen,
                                                               ", inherited" if inherited is not None else ""))
     child = None
     got = []
@@ -420,7 +426,7 @@ def run(g, purpose, cmd, seat=None, force=None, flyer=False):
         try:
             child = subprocess.Popen(cmd, env=env)
         except OSError as e:
-            sys.stderr.write("game %s: could not start %s: %s\n" % (g, cmd[0], e))
+            sys.stderr.write("%s: could not start %s: %s\n" % (game_names.show(g), cmd[0], e))
             return 127
         while True:
             try:
@@ -445,14 +451,20 @@ def _emit(r, as_json):
 
 
 def _query_main(args):
-    """`query [a|b|all] [--json]`, parsed by hand: argparse alone costs ~15 ms of the 100 ms bound (measured)."""
+    """`query [ArchBig|ArchSmall|all] [--json]`, parsed by hand: argparse alone costs ~15 ms of the 100 ms bound (measured)."""
     as_json = "--json" in args
     rest = [x for x in args if x != "--json"]
     if len(rest) > 1 or any(x.startswith("-") for x in rest):
-        sys.stderr.write("usage: game_lock.py query [a|b|all] [--json]\n")
+        sys.stderr.write("usage: game_lock.py query [ArchBig|ArchSmall|all] [--json]\n")
         return EX_BLIND
     game = rest[0] if rest else "all"
-    if game == "all":
+    if game.lower() != "all":
+        try:
+            check_game(game)
+        except ValueError as e:     # an unknown name is refused by name, never read as a default game
+            sys.stderr.write("REFUSED: %s\n" % e)
+            return EX_BLIND
+    if game.lower() == "all":
         rs = [query(g) for g in games()]
         if as_json:
             print(json.dumps({"games": rs, "remote": {h: "through the SteveDesktop test lane "
@@ -461,7 +473,8 @@ def _query_main(args):
         else:
             for r in rs:
                 print(r["line"])
-            print("SteveDesktop games (%s): through the test lane, not read from here" % ", ".join(REMOTE_GAMES))
+            print("SteveDesktop games (%s): through the test lane, not read from here"
+                  % ", ".join(game_names.show_key(h) for h in REMOTE_GAMES))
         return EX_BLIND if any(r["code"] == EX_BLIND for r in rs) else 0
     r = query(game)
     _emit(r, as_json)
@@ -494,6 +507,11 @@ def main(argv=None):
     a = ap.parse_args(argv)
     if a.cmd == "query":
         return _query_main([a.game] + (["--json"] if a.json else []))
+    try:
+        check_game(a.game)
+    except ValueError as e:     # an unknown name is refused by name, never read as a default game
+        sys.stderr.write("REFUSED: %s\n" % e)
+        return EX_BLIND
     if a.cmd == "claim":
         r = claim(a.game, a.purpose, seat=a.seat, force=a.force, flyer=a.flyer)
         _emit(r, a.json)

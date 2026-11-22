@@ -589,7 +589,7 @@ def bridge_holder():
         model, _hg = _rimflow()
         d = model.game_a_lock_record()
     except Exception as e:      # noqa: BLE001
-        return "unknown (game a's lock could not be read: %s: %s)" % (type(e).__name__, e)
+        return "unknown (ArchBig's lock could not be read: %s: %s)" % (type(e).__name__, e)
     if d and d.get("holder") and d["holder"] != "RUNNER":
         return "%s (driver lock, for: %s)" % (d["holder"], d.get("purpose"))
     return None

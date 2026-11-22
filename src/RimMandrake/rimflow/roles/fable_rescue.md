@@ -266,8 +266,8 @@ fast.
      (owner, 2026-11-20: *"if a live game is available, of course a judge (or any role!) should be able to just grab it
      and use it to get something done!"*). To choose the game: root `CLAUDE.md` §There are several live games.
      To take and release it, and for what still binds: root `CLAUDE.md` §The bridge is passed through one file. For
-     game b, run the bridge take with `RM_GAME_INSTANCE=b` set. Start game b with
-     `python3 src/RimMandrake/Utils/game_instance.py launch b --wait`, and deploy with `--instance b`. Record the test
+     ArchSmall, run the bridge take with `RM_GAME_INSTANCE=b` set. Start ArchSmall with
+     `python3 src/RimMandrake/Utils/game_instance.py launch ArchSmall --wait`, and deploy with `--instance ArchSmall`. Record the test
      UNRUN, with its command, only when other holders had every game that could take it, and name those games.
    - Your result is not the mod's acceptance. The mod goes back to its pipeline stage. There a judge who did not build
      it checks it against its own challenge cases. The owner's final acceptance stands.

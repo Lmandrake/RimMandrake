@@ -85,6 +85,15 @@ DEPLOY_DIR = os.path.join(BRIDGETOOLS_ROOT, "JawaBench")
 GAME = "a"      # the game the deploy is for: a is Steam's install above; b has its own (aim)
 
 
+def _game_name():
+    """-> the name people read for GAME on this machine: ArchBig, ArchSmall (rimflow/game_names.py, the one map)."""
+    rf = os.path.join(REPO_ROOT, "src", "RimMandrake", "rimflow")
+    if rf not in sys.path:
+        sys.path.insert(0, rf)
+    import game_names
+    return game_names.show(GAME)
+
+
 def _gi():
     utils = os.path.join(REPO_ROOT, "src", "RimMandrake", "Utils")
     if utils not in sys.path:
@@ -397,7 +406,7 @@ def bridge_holder():
     if GAME != "a":
         try:
             held = _gi().live_holder(GAME)
-            return ("another live driver of game %s (%s)" % (GAME, held)) if held else None
+            return ("another live driver of %s (%s)" % (_game_name(), held)) if held else None
         except Exception as e:  # noqa: BLE001
             print("  bridge hold check UNMEASURED (%s: %s)" % (type(e).__name__, e))
             return None
@@ -419,7 +428,7 @@ DESPITE_HOLD = None     # main --despite-hold: deploy into a game held by `pipe 
 
 
 def plan_deploy(dll, apply_it, allow_removal=False, ignore_hold=False):
-    print("deploy target: game %s, %s" % (GAME, DEPLOY_DIR))
+    print("deploy target: %s, %s" % (_game_name(), DEPLOY_DIR))
     target = os.path.join(DEPLOY_DIR, DLL_NAME)
     exists = os.path.exists(target)
     ours = open(dll, "rb").read()
@@ -525,7 +534,7 @@ def plan_deploy(dll, apply_it, allow_removal=False, ignore_hold=False):
     # RIMMANDRAKE_MAKE_COMPANION_DEPLOY_ATOMIC_HELD (x.B1): the game and the bridge hold are checked BEFORE any write
     held = _gi().hold_refusal(GAME, DESPITE_HOLD) if apply_it else None
     if held:
-        sys.exit("\nREFUSING TO DEPLOY into game %s's %s: %s" % (GAME, DEPLOY_DIR, held))
+        sys.exit("\nREFUSING TO DEPLOY into %s's %s: %s" % (_game_name(), DEPLOY_DIR, held))
     if game_running():
         sys.exit("\nCANNOT DEPLOY WHILE RIMWORLD IS RUNNING (the process list shows it). Nothing was written.")
     holder = bridge_holder()

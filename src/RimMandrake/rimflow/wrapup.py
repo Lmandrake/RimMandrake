@@ -464,10 +464,10 @@ def check_clone(world, clone, carried):
 def check_bridge(world, ctx):
     sh = world.game_a_hold()
     if not sh:
-        return {"kind": "bridge", "what": "game a's lock", "act": "ok", "why": "free"}
+        return {"kind": "bridge", "what": "ArchBig's lock", "act": "ok", "why": "free"}
     holder, clone = sh.get("holder"), sh.get("clone")
     if holder == "OWNER" or holder != ctx["holder"] or clone not in ctx["clones"]:
-        return {"kind": "bridge", "what": "game a's lock", "act": "ok",
+        return {"kind": "bridge", "what": "ArchBig's lock", "act": "ok",
                 "why": "held by %s from %s: not this agent's" % (holder, clone)}
     what = "%s hold from %s (for: %s)" % (holder, clone, sh.get("purpose") or "?")
     if ctx["kind"] == "subagent" or ctx.get("report_only"):
@@ -483,7 +483,7 @@ def census(world, ctx):
     try:
         rows.append(check_bridge(world, ctx))
     except Exception as e:  # noqa: BLE001  one check's failure is a row, never the wrap-up's end
-        rows.append({"kind": "bridge", "what": "game a's lock", "act": "filed",     # doubt files
+        rows.append({"kind": "bridge", "what": "ArchBig's lock", "act": "filed",     # doubt files
                      "why": "the bridge check failed: %s: %s" % (type(e).__name__, e)})
     for d in debts_of(ctx["owner"]):
         rows.append({"kind": "debt", "what": "%s: %s" % (d.get("kind"), d.get("what")), "act": "filed",

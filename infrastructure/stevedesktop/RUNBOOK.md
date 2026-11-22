@@ -8,6 +8,11 @@ from Archmagi (192.168.86.221), and keep itself up to date (git pull, apt, winge
 the unattended part of Phase 2). The principle stands: SteveDesktop is a token-free runner, not a
 second agent farm.
 
+**Its games:** SteveDesktop runs two games, **Steve1** (lock key `stevedesktop`) and **Steve2** (lock key
+`stevedesktop.b`). Name them so in every line you write; the machine is still SteveDesktop. Every tool takes the names
+in any letter case (`--host Steve2`), and the old keys still work. On SteveDesktop itself, the letter `a` is Steve1 and
+`b` is Steve2. The map: `src/RimMandrake/rimflow/game_names.py`.
+
 **Files here:**
 
 | File | Runs on | What it does |

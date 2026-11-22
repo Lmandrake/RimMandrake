@@ -1263,10 +1263,15 @@ def bridge_host_key(host):
     """Normalise a host name to its key ('SteveDesktop' -> 'stevedesktop'); None/'' -> the default host.
     An unknown name raises, so a typo can never open a third, imaginary lock."""
     k = (host or DEFAULT_BRIDGE_HOST).strip().lower()
+    try:                                # a game's name (ArchSmall, steve2, any case) is its key (game_names.py)
+        from . import game_names
+    except ImportError:
+        import game_names
+    k = game_names.name_key(k) or k     # not a name: the old key, read by the one rule below
     machine, dot, inst = k.partition(".")
     if machine not in BRIDGE_HOSTS or (dot and not re.fullmatch("[a-z]", inst)):
-        raise SchemaError("unknown bridge host %r (known: %s, each optionally .<instance letter>)"
-                          % (host, ", ".join(BRIDGE_HOSTS)))
+        raise SchemaError("unknown bridge host %r (games: ArchBig, ArchSmall, Steve1, Steve2; the old keys %s, each "
+                          "optionally .<instance letter>, still work)" % (host, ", ".join(BRIDGE_HOSTS)))
     return machine if inst == "a" else k        # .a is today's game, so the same lock as no suffix
 
 
@@ -1360,7 +1365,7 @@ def game_a_lock_record():
         return None
     r = gl.query("a", pipe=False, path=path)
     if r.get("state") == "UNKNOWN":
-        raise gl.Blind(r.get("cause") or "could not look at game a's lock")
+        raise gl.Blind(r.get("cause") or "could not look at ArchBig's lock")
     seat = r.get("seat")
     if not seat or not (r.get("alive") or seat == "OWNER"):
         return None
@@ -1376,6 +1381,15 @@ def touched_age_seconds(d):
         return None
 
 
+def _game_name(hk):
+    """'stevedesktop.b' -> 'Steve2': the name people read for a bridge key (game_names.py, the one map)."""
+    try:
+        from . import game_names
+    except ImportError:
+        import game_names
+    return game_names.show_key(hk)
+
+
 def bridge_body(holder, actor, purpose=None, since=None, note=None, others=None):
     """The exact bytes the mirror should hold. Pure, so it is testable without a disk."""
     if holder:
@@ -1389,7 +1403,7 @@ def bridge_body(holder, actor, purpose=None, since=None, note=None, others=None)
     if note:
         line += "\nnote    %s" % note
     for key, ent in sorted((others or {}).items()):     # another game's holder, one line each; a free one adds nothing
-        line += "\nother   %s  %s  since %s%s" % (key, ent["holder"], ent.get("since") or "?",
+        line += "\nother   %s  %s  since %s%s" % (_game_name(key), ent["holder"], ent.get("since") or "?",
                                                "  for: %s" % ent["purpose"] if ent.get("purpose") else "")
     return BRIDGE_HEADER + line + "\n"
 
@@ -3191,7 +3205,7 @@ def bridge_gate(seat, host=None):
         path = game_a_lock_path()
         rec = game_a_lock_record() if path else None
     except Exception as e:  # noqa: BLE001  a lock that could not be looked at is never free
-        return None if os.environ.get("RIMFLOW_GATE_LENIENT") else "could not look at game a's lock to check the bridge: %s" % e
+        return None if os.environ.get("RIMFLOW_GATE_LENIENT") else "could not look at ArchBig's lock to check the bridge: %s" % e
     if path:                                             # the lock is the one record (game_lock.py)
         holder = rec.get("holder") if rec else None
         if holder == "OWNER" and not rec.get("alive"):   # his dead lock that he deliberately released is his no longer

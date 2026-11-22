@@ -104,8 +104,8 @@ def stop(w):
     w.clear()
 
     a, b = w.start_a(), w.start_b()
-    r = w.gi("stop", str(a), "--instance", "b")
-    check(r.returncode == G.EX_REFUSED and "not game b's" in r.stderr and F.alive(a), "b cannot stop a's pid: refused, a lives")
+    r = w.gi("stop", str(a), "--instance", "b", RM_HOST="archmagi")
+    check(r.returncode == G.EX_REFUSED and "not ArchSmall's" in r.stderr and F.alive(a), "b cannot stop a's pid: refused, a lives")
     check(w.kills() == [], "the refused stop sent nothing")
     r = w.gi("stop", str(b))
     check(r.returncode == G.EX_REFUSED and F.alive(b), "a cannot stop b's pid: refused, b lives")
@@ -360,8 +360,8 @@ def both_orders(w):
     check(saw.get("argv") == ["-disable-compute-shaders"], "a's command line is Steam's (its flag, no -savedatafolder, no -logfile): %s" % saw)
     check(saw.get("port") is None and saw.get("token") is None, "a b-shell's GABP pair does not reach game a: %s" % saw)
     check(F.alive(b) and w.kills() == [], "game b is untouched by a's launch")
-    r = w.gi("status")
-    check("a  running" in r.stdout and "b  running" in r.stdout, "both games up at once: %s" % r.stdout)
+    r = w.gi("status", RM_HOST="archmagi")
+    check(re.search(r"^ArchBig +running", r.stdout, re.M) and re.search(r"^ArchSmall +running", r.stdout, re.M), "both games up at once: %s" % r.stdout)
     w.clear()
 
     # a then b: nothing else up, so Steam's own launch (his launch options), then b beside it
@@ -410,24 +410,24 @@ def free(w):
     a, b = w.start_a(), w.start_b()
     w.bridge((OTHER, 120))
     r = w.gi("free", RM_HOST="archmagi", timeout=120)
-    check(r.returncode == 0 and stdout(r) == "b", "a held by another seat: b is the free game: %r %s" % (stdout(r), r.stderr[-200:]))
+    check(r.returncode == 0 and stdout(r) == "ArchSmall", "a held by another seat: b is the free game: %r %s" % (stdout(r), r.stderr[-200:]))
     w.bridge((OTHER, 120, "archmagi.b"))
     r = w.gi("free", RM_HOST="archmagi", timeout=120)
-    check(r.returncode == 0 and stdout(r) == "a", "b held: a is free: %r %s" % (stdout(r), r.stderr[-200:]))
+    check(r.returncode == 0 and stdout(r) == "ArchBig", "b held: a is free: %r %s" % (stdout(r), r.stderr[-200:]))
     w.bridge((OTHER, 120), (OTHER, 120, "archmagi.b"))
     r = w.gi("free", RM_HOST="archmagi", timeout=120)
-    check(r.returncode == G.EX_REFUSED and "game a" in r.stderr and "game b" in r.stderr and not stdout(r),
+    check(r.returncode == G.EX_REFUSED and "ArchBig" in r.stderr and "ArchSmall" in r.stderr and not stdout(r),
           "both held: refused, each game's reason said: %s" % r.stderr[-300:])
     w.bridge()
     r = w.gi("free", "--busy", "a", RM_HOST="archmagi", timeout=120)
-    check(r.returncode == 0 and stdout(r) == "b", "a live run on a (--busy a): b: %r" % stdout(r))
+    check(r.returncode == 0 and stdout(r) == "ArchSmall", "a live run on a (--busy a): b: %r" % stdout(r))
     r = w.gi("free", RM_HOST="archmagi", RM_GAME_INSTANCES="b", timeout=120)
-    check(stdout(r) == "b", "RM_GAME_INSTANCES narrows the games: %r" % stdout(r))
+    check(stdout(r) == "ArchSmall", "RM_GAME_INSTANCES narrows the games: %r" % stdout(r))
     check(F.alive(a) and F.alive(b) and w.kills() == [], "choosing a game stops nothing")
 
     w.bridge((OTHER, 120, "archmagi.b"))
     r = w.gi("leftovers", RM_HOST="archmagi", timeout=120)
-    check(r.returncode == 0 and re.search(r"^a\s+pid %d" % a, r.stdout, re.M) and not re.search(r"^b\s", r.stdout, re.M),
+    check(r.returncode == 0 and re.search(r"^ArchBig\s+pid %d" % a, r.stdout, re.M) and not re.search(r"^ArchSmall\s", r.stdout, re.M),
           "leftovers: a is up with nobody on it, b is held so not one: %s" % r.stdout)
     r = w.gi("stop", "--instance", "b", RM_HOST="archmagi", timeout=120)
     check(r.returncode == G.EX_REFUSED and F.alive(b), "the held game b is never stopped")
@@ -436,7 +436,7 @@ def free(w):
     # b held by the asker's own window: `bridge idle` reads it as ours (TAKEABLE), and it is still no leftover
     w.bridge(("BENCH", 120, "archmagi.b"))
     r = w.gi("leftovers", RM_HOST="archmagi", timeout=120)
-    check(r.returncode == 0 and not re.search(r"^b\s", r.stdout, re.M),
+    check(r.returncode == 0 and not re.search(r"^ArchSmall\s", r.stdout, re.M),
           "leftovers: b held by the asker's own window is not one: %s" % r.stdout)
     w.bridge()
 
@@ -457,10 +457,10 @@ def free(w):
                 break
             F.time.sleep(0.05)
         r = w.gi("free", RM_HOST="archmagi", RM_GAME_INSTANCES="b,a", timeout=120)
-        check(stdout(r) == "a", "a live BENCH holder on b: b is not free, though bridge idle calls it ours: %r %s"
+        check(stdout(r) == "ArchBig", "a live BENCH holder on b: b is not free, though bridge idle calls it ours: %r %s"
               % (stdout(r), r.stderr[-200:]))
         r = w.gi("leftovers", RM_HOST="archmagi", timeout=120)
-        check(not re.search(r"^b\s", r.stdout, re.M) and re.search(r"^a\s", r.stdout, re.M),
+        check(not re.search(r"^ArchSmall\s", r.stdout, re.M) and re.search(r"^ArchBig\s", r.stdout, re.M),
               "... and no leftover: %s" % r.stdout)
         r = w.gi("stop", "--instance", "b", RM_HOST="archmagi", timeout=120)
         check(r.returncode == G.EX_REFUSED and F.alive(b) and "driver lock is held" in r.stderr,

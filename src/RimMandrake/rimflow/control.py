@@ -55,7 +55,8 @@ fix. `pipe init --import` is the only thing that creates the production store. `
 unit name when the store cannot be read (emergency stopping never waits on it).
 
   pipe on|off <all|Mod|stage|item|family:F|role:R|game:G> --why ... [--owner-said ...]
-                         game:a holds one game: no run starts on it; in-game runs go to the other game
+                         game:ArchBig holds one game (any game name, any case; game:a still works): no run starts
+                         on it; in-game runs go to the other game
   pipe stop <scope|unit> --write-now|--at-easy-spot|--kill --why ... [--deadline 5m]
   pipe show [Mod] [--json]   pipe why <Mod>   pipe log [-n N]
   pipe void <run> --why ...   pipe grant <Mod> look +N --why ... --owner-said ...|--per-ruling ...
@@ -412,10 +413,11 @@ def scope_of(t, strict=True, unseeded=False):
     if kind == "role":
         return "role:" + name
     if kind == "game":
-        g = name.strip().lower()
-        if len(g) != 1 or not g.isalpha():
-            raise Refused("no game %r: a game is one letter (a is his game, b the second)" % name)
-        return "game:" + g
+        import game_names               # ArchBig, archsmall, b, archmagi.b -> the store's key, game:<letter>
+        try:
+            return "game:" + game_names.letter(name)
+        except game_names.GameNameError as e:
+            raise Refused(str(e))
     if kind not in (None, "mod"):
         raise Refused("no scope kind %r (all, mod:, stage:, item:, family:, role:, game:, unit:)" % kind)
     m = key(name)
@@ -442,7 +444,11 @@ def run_scopes(spec):
     if spec.get("role"):
         out.append("role:" + spec["role"])
     if spec.get("game"):                # the game an in-game run drives: `pipe off game:a` keeps every run off it
-        out.append("game:" + str(spec["game"]).strip().lower())
+        import game_names               # a spec naming ArchSmall lives in the store's scope game:b
+        try:
+            out.append("game:" + game_names.letter(spec["game"]))
+        except game_names.GameNameError:
+            out.append("game:" + str(spec["game"]).strip().lower())     # unknown: its own scope, never another game's
     return out
 
 
@@ -451,7 +457,8 @@ def game_held(game, p=None, now=None):
     be read, so a reader can never take "could not look" for "not held". The per-game hold: the owner walks game a, and
     every run that can use game b goes there (RIMMANDRAKE_SPLIT_SECOND_GAME_MODS_FOLDER_SHARED_WITH_FIRST; his words,
     2026-11-20 3:40 PM PST: "You should not have been waiting for the game. there are two games")."""
-    g = str(game or "a").strip().lower()
+    import game_names
+    g = game_names.letter("a" if game is None or not str(game).strip() else game)
     c = read(p)
     try:
         rows = blocking(c, ["game:" + g], now)
@@ -480,10 +487,12 @@ def blocking(c, scopes, now=None):
 
 
 def describe(r):
+    import game_names                   # a game's scope reads by its name (game:ArchBig); the store keeps game:a
+    sc = game_names.show_scope(r["scope"])
     if r["layer"] == "owner":
-        return "HELD BY OWNER (%s, %s): %s" % (r["scope"], r["date"] or "?", r["said"] or r["why"])
+        return "HELD BY OWNER (%s, %s): %s" % (sc, r["date"] or "?", r["said"] or r["why"])
     until = " until %s" % pac(r["until"]) if r["until"] else ""
-    return "OFF (%s, act %s at %s%s): %s" % (r["scope"], r["act"], r["at_pacific"], until, r["why"])
+    return "OFF (%s, act %s at %s%s): %s" % (sc, r["act"], r["at_pacific"], until, r["why"])
 
 
 def _release(c, where, args, why, now, fault=False):
@@ -2758,7 +2767,7 @@ def game_lines(short=False):
             if not path:
                 continue
             r = GL.query(g, pipe=False, path=path)
-            out.append(("game %s %s%s" % (g, r["state"], " " + r["seat"] if r.get("seat") and r["state"] != "FREE"
+            out.append(("%s %s%s" % (GL.game_names.show(g), r["state"], " " + r["seat"] if r.get("seat") and r["state"] != "FREE"
                                           else "")) if short else r["line"])
     except Exception as e:      # noqa: BLE001
         out.append("games: COULD NOT LOOK (%s: %s)" % (type(e).__name__, e))
@@ -2850,19 +2859,21 @@ def _who_line(a):
 
 def cmd_switch(o, off):
     scope = scope_of(o.target, unseeded=True)
+    import game_names
+    shown = game_names.show_scope(scope)     # game:a is the store's key; people read game:ArchBig
     r = switch(scope, off, o.why, owner_said=o.owner_said, per_ruling=o.per_ruling, idem=o.idem)
     if r["replayed"]:
-        return ["%s: already applied as %s (idempotency key %s): nothing changed" % (scope, r["act"]["id"], o.idem)]
+        return ["%s: already applied as %s (idempotency key %s): nothing changed" % (shown, r["act"]["id"], o.idem)]
     if not off and not r["had"]:
         if r["still"]:
-            return ["%s: no `pipe off` switch to lift; still %s" % (scope, r["still"][0][:160])]
-        return ["%s is already ON (the store holds no switch for it)" % scope]
+            return ["%s: no `pipe off` switch to lift; still %s" % (shown, r["still"][0][:160])]
+        return ["%s is already ON (the store holds no switch for it)" % shown]
     if r.get("withdrawn"):
-        lines0 = ["%s: stop order(s) withdrawn: %s" % (scope, ", ".join(x["unit"] for x in r["withdrawn"]))]
+        lines0 = ["%s: stop order(s) withdrawn: %s" % (shown, ", ".join(x["unit"] for x in r["withdrawn"]))]
     else:
         lines0 = []
     after = "OFF" if off else ("still " + r["still"][0][:120] if r["still"] else "ON")
-    lines = ["%s %s -> %s%s" % (scope, r["before"], after,
+    lines = ["%s %s -> %s%s" % (shown, r["before"], after,
                                 "; cancelled before start: %s" % ", ".join(r["cancelled"]) if r["cancelled"] else "")]
     if off:
         try:

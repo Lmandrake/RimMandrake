@@ -42,7 +42,7 @@ policy."*).
   repair. A mod fault the judge or driver can fix is fixed in the sitting with a before/after test, and one fresh
   reader checks that fix once; only a fault it could not fix goes down the road back, with the evidence why. A fix
   that needs a game takes any free game (`rimflow bridge take --idle-ok`, with `--host` or `RM_GAME_INSTANCE` for a
-  game other than game a; "Game state and the bridge" below).
+  game other than ArchBig; "Game state and the bridge" below).
 - The pipeline never "blesses" a small change (owner, 2026-11-05). For a small change, the agent does a quick manual
   validation on the spot. Then the agent closes the item with that evidence. Never queue a small change for a Judge
   (`standing_rulings.md`).
@@ -230,7 +230,7 @@ the build pause and its lift, and its §2 says what a first script must contain.
 - The live games, their locks, the choice of game by the work and the words never to write ("waiting for the live
   game"): `CLAUDE.md` §There are several live games.
 - A bridge holder is the one seat or run that drives one game. Two holders may drive two games at the same time.
-  `rimflow bridge who|take|release`, with `--host <lock>` for a game other than game a. CLAUDE.md "The bridge is passed
+  `rimflow bridge who|take|release`, with `--host <lock>` for a game other than ArchBig. CLAUDE.md "The bridge is passed
   through one file" is canonical for each lock. A free bridge is takeable, and his machine use gates nothing.
 - Never run a flyer's flight (`delegation_policy.md` §2.1).
 - Config files (`ModsConfig.xml` included) never wait for RimSort or the game. Only assemblies need the game down (OS

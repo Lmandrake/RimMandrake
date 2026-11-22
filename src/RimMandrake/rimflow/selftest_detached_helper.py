@@ -1606,7 +1606,7 @@ def t_an_offline_run_at_the_in_game_stage_names_no_game():
             rc, text = DH.launch("BENCH", item, "Do the work.", "opus", None, 5, now=T0, runner=run, known={item},
                                  clone=CLONE, env=env)
             started = any(c[0][:1] == ["systemd-run"] for c in calls)
-            ok = (rc == 2 and "game:a" in text and not started) if refused else (rc == 0 and started)
+            ok = (rc == 2 and ("game:" + __import__("game_names").show("a")) in text and not started) if refused else (rc == 0 and started)
             check(ok, "game stamp: %s is %s while game a is held (rc %s: %s)" % (
                 what, "refused" if refused else "launched", rc, " ".join(text.split())[:140]))
         C.switch("game:a", False, "walk over (test)", p=db)

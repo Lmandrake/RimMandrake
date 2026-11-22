@@ -4,6 +4,7 @@
   "timeout_s": 180,
   "pipeline_files": [
     "src/RimMandrake/rimflow/game_lock.py",
+    "src/RimMandrake/rimflow/game_names.py",
     "src/RimMandrake/rimflow/maturation*.py",
     "src/RimMandrake/rimflow/maturation*.json",
     "src/RimMandrake/Utils/maturation*.py",
@@ -89,6 +90,7 @@
   ],
   "tests": [
     {"test": "src/RimMandrake/rimflow/selftest_game_lock.py", "seconds": 60},
+    {"test": "src/RimMandrake/rimflow/selftest_game_names.py", "seconds": 0.2},
     {"test": "src/RimMandrake/Utils/selftest_maturation_convergence.py", "seconds": 0.4},
     {"test": "src/RimMandrake/rimflow/selftest_mod_owner_hold.py", "seconds": 0.4},
     {"test": "src/RimMandrake/rimflow/selftest_conductor_acts.py", "seconds": 0.2},

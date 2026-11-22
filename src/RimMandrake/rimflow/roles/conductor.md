@@ -423,7 +423,7 @@ moment that it starts. So an act binds at once, with no publish and no tick wait
 ./pipe why <Mod>                             one line: what blocks it, or what the tick last decided
 ./pipe log -n 20                             the last acts (who, when Pacific, why)
 ./pipe off <all|Mod|stage:S|item:ID|family:F|game:G> --why "..."   new starts stop at once; live runs untouched
-./pipe off game:a --why "his walk"           hold his game only: in-game runs go to game b (see below)
+./pipe off game:ArchBig --why "his walk"           hold his game only: in-game runs go to ArchSmall (see below)
 ./pipe on  <same> --why "..."                lifts a `pipe off` (never his hold) and asks for a tick now
 ./pipe stop <scope|unit> --at-easy-spot --why "..."   finish the unit in hand, write where you are, end (the default)
 ./pipe stop <scope|unit> --write-now [--deadline 5m] --why "..."   stop now, write where you are, end; then --kill
@@ -441,24 +441,24 @@ python3 src/RimMandrake/rimflow/mod_owner_hold.py lift <Mod> --per-ruling RIMMAN
                                              for its readiness list to read READY
 ```
 - There are several live games (owner, 2026-11-20: "There are two live games. ... Please stop saying waiting for the
-  live game."). Game a is Steam's install on Archmagi, his game with his full list (lock `archmagi`). Game b is its own
-  install on Archmagi (lock `archmagi.b`). The SteveDesktop games take work through
+  live game."). ArchBig is Steam's install on Archmagi, his game with his full list (lock `archmagi`). ArchSmall is its own
+  install on Archmagi (lock `archmagi.b`). Steve1 and Steve2 on SteveDesktop take work through
   `infrastructure/stevedesktop/RUNBOOK.md`. Each game has one bridge holder at a time; two holders may drive two games.
   - Never tell him that work waits for "the live game". Name the game, and say why no other game can take the work.
   - Read `python3 src/RimMandrake/rimflow/game_lock.py query all` before you say that any work waits for a game.
-  - A tick line that says work needs a game while a game is free, or that game b could take, is a pipeline defect. Fix
+  - A tick line that says work needs a game while a game is free, or that ArchSmall could take, is a pipeline defect. Fix
     it with a helper at once (CLAUDE.md "There are several live games").
-- When he sits down to walk game a, run `./pipe off game:a --why "his walk"`. When he is done, run `./pipe on game:a
+- When he sits down to walk ArchBig, run `./pipe off game:ArchBig --why "his walk"`. When he is done, run `./pipe on game:ArchBig
   --why "walk over"`. Do not switch off `stage:in_game` for a walk.
-  - While the hold stands, no pipeline run starts on game a, and no tool deploys to, launches or stops game a without
+  - While the hold stands, no pipeline run starts on ArchBig, and no tool deploys to, launches or stops ArchBig without
     `--despite-hold "<why>"`.
   - The hold does not depend on your bridge hold. It stays when your bridge hold lapses.
-  - Every in-game run that can use game b goes to game b. Game b has its own install, Mods and BridgeTools
+  - Every in-game run that can use ArchSmall goes to ArchSmall. ArchSmall has its own install, Mods and BridgeTools
     (`D:\ClaudeWork\rimmandrake\instances\b\game`), so its deploys never touch his game.
-  - A visit whose every check needs his full list waits. `./pipe why <Mod>` names those checks. Game b holds a tier list
-    only beside game a (memory). In a mixed visit on game b, the full-list checks are UNMEASURED.
+  - A visit whose every check needs his full list waits. `./pipe why <Mod>` names those checks. ArchSmall holds a tier list
+    only beside ArchBig (memory). In a mixed visit on ArchSmall, the full-list checks are UNMEASURED.
   - Full text: `design/specs/2026-11-20-per-game-hold-own-install/boundary.md` and
-    `design/RimMandrake/two_rimworld_instances_2026-11-07.md` §Game b's own install.
+    `design/RimMandrake/two_rimworld_instances_2026-11-07.md` `§Game b's own install` (ArchSmall's).
 - Always name the stop mode (owner, by card 2026-11-18: "we shouldn't rely on defaults"). Every brief that you write
   that can stop a run says which stop mode.
 - `maturation_dispatch.py pause|resume` are the same switch as `pipe off|on`.
@@ -508,7 +508,7 @@ Then report in a few lines what is open, what needs him, and what the last quick
   (`python3 src/RimMandrake/rimflow/detached_helper.py status --all`).
 - Once a mod has a passed Design Version, also read the nightly selftest result. Until then the nightly is held:
   `nightly_scope.py show` says "nothing finished yet" (standing_rulings.md §The nightly checks finished mods only).
-- If any game (game a, game b or a SteveDesktop game) sits idle or down with work waiting that it could take, that is
+- If any game (ArchBig, ArchSmall, Steve1 or Steve2) sits idle or down with work waiting that it could take, that is
   the headline. Fix what keeps it idle at once, with helpers, on
   your authority. Do not only file it. The same holds for any pipeline defect (Builds, above).
 - An idle game is never licence to run a mod whose readiness list is not READY. Then the work is the BLOCKS tickets of

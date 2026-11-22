@@ -55,13 +55,13 @@ python3 src/RimMandrake/rimflow/game_lock.py claim a --for "<what for>"   (or ri
 python3 src/RimMandrake/rimflow/game_lock.py release a
 ```
 
-🔴 **There are several games, and each has its own bridge, lock and holder.** Game a is Steam's install on Archmagi
-(his game, his full list; bridge port 5174, lock `archmagi`, the default). Game b is its own install on Archmagi
-(`D:\ClaudeWork\rimmandrake\instances\b\game`; port 5175, lock `archmagi.b`). The SteveDesktop games take work through
-`infrastructure/stevedesktop/RUNBOOK.md`. To drive game b, run `eval "$(python3 src/RimMandrake/Utils/game_instance.py env b)"`
-first: the bridge client, `game_paths` and the driver lock all follow it (`game_lock.py claim b`, or `--host archmagi.b`
+🔴 **There are several games, and each has its own bridge, lock and holder.** ArchBig is Steam's install on Archmagi
+(his game, his full list; bridge port 5174, lock `archmagi`, the default). ArchSmall is its own install on Archmagi
+(`D:\ClaudeWork\rimmandrake\instances\b\game`; port 5175, lock `archmagi.b`). Steve1 and Steve2, the SteveDesktop games, take work through
+`infrastructure/stevedesktop/RUNBOOK.md`. To drive ArchSmall, run `eval "$(python3 src/RimMandrake/Utils/game_instance.py env ArchSmall)"`
+first: the bridge client, `game_paths` and the driver lock all follow it (`game_lock.py claim ArchSmall`, or `--host ArchSmall`
 for `rimflow bridge`). `python3 src/RimMandrake/Utils/game_instance.py status` lists the games and their drivers; `launch b --wait` starts
-game b. If game a is busy or held, drive game b; only a check that needs his full list waits for game a. Never write
+ArchSmall. If ArchBig is busy or held, drive ArchSmall; only a check that needs his full list waits for ArchBig. Never write
 "waiting for the live game": name the game and why no other game can take the work.
 
 - 🔴 **The 45-minute staleness rule measures EVENT SILENCE, not game activity.** Emit a periodic note while driving a long

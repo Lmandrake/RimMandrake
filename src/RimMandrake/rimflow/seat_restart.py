@@ -841,7 +841,7 @@ def bridge_reading(seat):
         if b and b.get("holder"):
             holders.append(str(b["holder"]).upper())
     except Exception as e:  # noqa: BLE001 - an unreadable bridge holds the restart
-        return {"state": "UNMEASURED", "holders": [], "why": "game a's lock: %s: %s" % (type(e).__name__, e)}
+        return {"state": "UNMEASURED", "holders": [], "why": "ArchBig's lock: %s: %s" % (type(e).__name__, e)}
     out = {"state": "MEASURED", "holders": holders, "bridge": list(holders)}
     if holders:
         out["shared"] = b                # the record: its taker's identity and role_unit, where the take wrote them
@@ -933,7 +933,7 @@ def bridge_hold(seat, br, window_pid, ppid=None):
     rec = br.get("shared") or {}
     same = seat in br["bridge"] and d.get("seat") == seat and rec.get("identity") == d.get("identity")
     if seat in br["bridge"]:
-        out.append(_holder_hold(seat, "game a's lock", rec.get("identity"), rec, window_pid, ppid))
+        out.append(_holder_hold(seat, "ArchBig's lock", rec.get("identity"), rec, window_pid, ppid))
     if d.get("seat") == seat and not same:
         out.append(_holder_hold(seat, "driver lock", d.get("identity"), d, window_pid, ppid))
     elif seat not in br["bridge"]:

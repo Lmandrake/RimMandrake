@@ -28,6 +28,7 @@ PAGES = {
     "design/specs/2026-11-22-item-identity/boundary.md": "src/RimMandrake/rimflow/selftest_item_identity.py",
     "design/specs/2026-11-22-selftest-deadline/boundary.md": "src/RimMandrake/Utils/selftest_selftest_deadline.py",
     "design/specs/2026-11-21-one-game-lock/boundary.md": "src/RimMandrake/rimflow/selftest_game_lock.py",
+    "design/specs/2026-11-22-game-names/boundary.md": "src/RimMandrake/rimflow/selftest_game_names.py",
     "design/specs/2026-11-21-rerun-only-related/boundary.md": "src/RimMandrake/rimflow/selftest_rerun_relation.py",
     "design/specs/2026-11-19-codebase-now/boundary.md": "src/RimMandrake/Utils/selftest_codebase_now.py",
     "design/specs/2026-11-19-standing-status-tabs/boundary.md": "src/RimMandrake/Utils/selftest_standing_tabs.py",

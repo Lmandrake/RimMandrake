@@ -11,12 +11,12 @@ could have been read off disk.
 
 ## 0. 🟢 FIRST: does this load have to be expensive at all?
 
-**There are several games; pick the one whose load is cheapest for the work.** Game a is Steam's install on Archmagi
-(his game, his full list). Game b is its own install on Archmagi, with its own `ModsConfig.xml`, `Mods` and Saves:
+**There are several games; pick the one whose load is cheapest for the work.** ArchBig is Steam's install on Archmagi
+(his game, his full list). ArchSmall is its own install on Archmagi, with its own `ModsConfig.xml`, `Mods` and Saves:
 `RM_GAME_INSTANCE=b` points `game_paths`, `modlist_swap.py` and the deploy at it, and `python3
-src/RimMandrake/Utils/game_instance.py launch b --wait` starts it. A tier list on game b loads beside a running game a;
-his full list on game b beside game a does not fit in Archmagi's memory. So work that a tier list can prove never
-waits for game a's load: it goes to game b. Only a check that needs his full list waits for game a, and says so.
+src/RimMandrake/Utils/game_instance.py launch ArchSmall --wait` starts it. A tier list on ArchSmall loads beside a running ArchBig;
+his full list on ArchSmall beside ArchBig does not fit in Archmagi's memory. So work that a tier list can prove never
+waits for ArchBig's load: it goes to ArchSmall. Only a check that needs his full list waits for ArchBig, and says so.
 
 **Measured 2026-08-19 — a cold load on a 13-mod MINIMAL list is 22 SECONDS**, against ~25
 minutes on the owner's full list (576 as of 2026-08-20 — read

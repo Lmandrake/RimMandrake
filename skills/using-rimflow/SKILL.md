@@ -262,10 +262,10 @@ More traps for this section: [references/traps.md](references/traps.md) § Readi
 
 ## Bridge lock
 
-There are several games, and each has its own lock and one holder at a time: game a (Steam's install on Archmagi,
-his game, lock `archmagi`, the default), game b (its own install on Archmagi, lock `archmagi.b`) and the SteveDesktop
-games (`stevedesktop`, `stevedesktop.b`). Every `bridge` verb takes `--host <lock>`; `RM_GAME_INSTANCE=b` with no
-`--host` means this machine's game b. A held game a is not a reason to wait: take game b, and name the game in every
+There are several games, and each has its own lock and one holder at a time: ArchBig (Steam's install on Archmagi,
+his game, lock `archmagi`, the default), ArchSmall (its own install on Archmagi, lock `archmagi.b`) and Steve1 and Steve2
+on SteveDesktop (`stevedesktop`, `stevedesktop.b`). Every `bridge` verb takes `--host <lock>`; `RM_GAME_INSTANCE=b` with no
+`--host` means this machine's ArchSmall. A held ArchBig is not a reason to wait: take ArchSmall, and name the game in every
 note (CLAUDE.md "There are several live games").
 
 Who drives each game is that game's driver lock, read and written by `game_lock.py query|claim|release|run` and by

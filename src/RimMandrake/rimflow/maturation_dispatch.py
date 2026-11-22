@@ -138,6 +138,11 @@ import os
 import re
 import subprocess
 import sys
+
+_HERE_GN = os.path.dirname(os.path.abspath(__file__))
+if _HERE_GN not in sys.path:
+    sys.path.insert(0, _HERE_GN)
+import game_names as _GN  # noqa: E402  (the one map: a game's letter -> ArchBig, ArchSmall, Steve1, Steve2)
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -425,24 +430,25 @@ def pick_game(cfg, bridge, purpose, held=None, hold=None, only=None):
     named = M.takes_game(read)
     games = [g for g in (cfg.get("game_instances") or ["a"])] if named else ["a"]
     whys = []
+    import game_names as GN             # each reason names its game: ArchBig, ArchSmall (the one map)
     hold = hold or game_hold
     for g in games:
         if g in (only or {}):
-            whys.append("game %s: %s" % (g, only[g]))
+            whys.append("%s: %s" % (GN.show(g), GN.name_text(only[g])))
             continue
         if g in (held or {}):
             # the run record says who; the lock, read now, says whether that is still so (the tick named a dead run
             # as live on 2026-11-21, RIMMANDRAKE_BUILD_ONE_GAME_LOCK_CLAIM_FOUR_RECORDS_DISAGREE)
-            whys.append("game %s: driven by %s%s" % (g, held[g], lock_says(g)))
+            whys.append("%s: driven by %s%s" % (GN.show(g), held[g], lock_says(g)))
             continue
         h = hold(g)
         if h:
-            whys.append("game %s: %s" % (g, h))
+            whys.append("%s: %s" % (GN.show(g), h))
             continue
         go, why = read(purpose, game=g) if named else read(purpose)
         if go:
             return g, whys
-        whys.append("game %s: %s" % (g, why))
+        whys.append("%s: %s" % (GN.show(g), GN.name_text(why)))
     return None, whys
 
 
@@ -923,9 +929,10 @@ def decide(cfg, st, facts, now, account=(True, ""), bridge=None, releases=None):
         rows.append(row)
 
         def put(decision, why, need=None):
-            row["decision"], row["why"] = decision, why
+            # every tick line names a game by its name, ArchBig or ArchSmall (game_names.name_text), never "game a"
+            row["decision"], row["why"] = decision, _GN.name_text(why) if isinstance(why, str) else why
             if need:
-                row["need"] = "%s: %s" % (mod, need)
+                row["need"] = "%s: %s" % (mod, _GN.name_text(need))
         put.row = row
 
         try:    # the mod's own settings: a pinned mod's builders on its model, their caps scaled (mod_model.for_mod)
@@ -1964,23 +1971,23 @@ def decide_ingame(cfg, s, f, row, put, now, account, live_total, drivers, bridge
     games = (cfg.get("game_instances") or ["a"]) if (bridge is None or M.takes_game(bridge)) else ["a"]
     if all(g in held for g in games):
         put("driver_busy", "an in-game run is live on every game (%s): one live-game driver per game across all mods"
-            % ", ".join("game %s: %s" % (g, held[g]) for g in games))
+            % ", ".join("%s: %s" % (_GN.show(g), held[g]) for g in games))
         return False
     if no_slot(cfg, live_total, put):
         return False
     full = full_list_only(f)
-    only = {g: "every check of visit %s needs his full list (%s), which game %s cannot hold beside game a" % (
-        n, ", ".join(full), g) for g in games if g != "a"} if full else None
+    only = {g: "every check of visit %s needs his full list (%s), which %s cannot hold beside %s" % (
+        n, ", ".join(full), _GN.show(g), _GN.show("a")) for g in games if g != "a"} if full else None
     game, whys = pick_game(cfg, bridge, "%s in-game acceptance visit %s" % (mod, n), held, only=only)
     if not game:
         put("bridge_held", "%sno game is free: %s" % (
-            "WAITS FOR GAME A, full list (%s): " % ", ".join(full) if full else "", "; ".join(whys)))
+            "WAITS FOR %s, full list (%s): " % (_GN.show("a"), ", ".join(full)) if full else "", "; ".join(whys)))
         return False
     row.update(cap=cap, visit_id=vid, game=game)
     if retry:
         row["retry_of"] = dict(retry)
-    put("launch", "in-game visit %s owed, nothing live or recorded on it, the visit's automatic run%s, on game %s%s (%s)" % (
-        n, retried(cfg, retry, mod), game, " (%s)" % "; ".join(whys) if whys else "", account[1]))
+    put("launch", "in-game visit %s owed, nothing live or recorded on it, the visit's automatic run%s, on %s%s (%s)" % (
+        n, retried(cfg, retry, mod), _GN.show(game), " (%s)" % "; ".join(whys) if whys else "", account[1]))
     return True
 
 
@@ -2597,7 +2604,7 @@ def road_back_holder(root, cfg, st, mod, stage, opened, item, cap, now, fx, game
         item, led["brief"], MM.for_mod(cfg, mod).get("steward_model", "opus"), cap, cfg.get("seat", "BENCH"),
         env=dict(led["env"], **({"RM_GAME_INSTANCE": game} if game else {})), **rkw)
     unit = unit if rc == 0 else None
-    text = "%s%s%s; %s%s" % ("live holder on game %s (bridge and game allowed): " % game if live else "",
+    text = "%s%s%s; %s%s" % ("live holder on %s (bridge and game allowed): " % _GN.show(game) if live else "",
                              "%s; " % plan["why"] if rkw else "",
                              (text or "").splitlines()[0] if text else rc,
                              ledger_after(root, st, mod, led, unit, item, now, fx),
@@ -2684,9 +2691,9 @@ def pilot_holders(root, cfg, st, facts, rows, launches, now, fx=None):
         ids = sorted(x["id"] for x in items)
 
         def put(decision, why, need=None):
-            row.update(decision=decision, why=why, aut=None)
+            row.update(decision=decision, why=_GN.name_text(why) if isinstance(why, str) else why, aut=None)
             if need:
-                row["need"] = "%s: %s" % (mod, need)
+                row["need"] = "%s: %s" % (mod, _GN.name_text(need))
         spent = holder_spent(s, ids)
         if spent and first:
             continue        # the holder ran on this set: the per-item fixers take it from here, as before
@@ -2710,7 +2717,7 @@ def pilot_holders(root, cfg, st, facts, rows, launches, now, fx=None):
                 put("no_game_free", "every open road-back item (%s) needs a game, %s's offline Problems are spent, and "
                     "no game is free: %s" % (", ".join(ids), mod, "; ".join(whys)))
                 row.pop("need", None)   # a wait that ends by itself when a game frees: no hand is asked for
-                row["waits_on"] = "a free game: %s" % "; ".join(whys)
+                row["waits_on"] = _GN.name_text("a free game: %s" % "; ".join(whys))
                 continue
             row.pop("need", None)       # the PAUSED hold of fixer_spent is lifted: the run goes to a game
         row.update(holder_items=items, cap=MM.for_mod(cfg, mod).get("cap_usd"),
@@ -2719,7 +2726,7 @@ def pilot_holders(root, cfg, st, facts, rows, launches, now, fx=None):
             % ("its road back opened (the holder goes first, before any per-item fixer)" if first else
                "its road-back fixers are spent" if not game else
                "every open road-back item needs a game and its offline Problems are spent", len(ids), ", ".join(ids),
-               " on game %s%s" % (game, " (%s)" % "; ".join(whys) if whys else "") if game else "", account[1]))
+               " on %s%s" % (_GN.show(game), " (%s)" % "; ".join(whys) if whys else "") if game else "", account[1]))
         launches = [m for m in launches if m != mod] + [mod]
     return rows, launches
 

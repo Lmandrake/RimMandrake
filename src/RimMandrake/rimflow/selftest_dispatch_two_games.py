@@ -26,6 +26,7 @@ import selftest_maturation_dispatch as SD  # noqa: E402
 import selftest_maturation as SM  # noqa: E402
 import maturation as M  # noqa: E402
 import maturation_dispatch as MD  # noqa: E402
+import game_names as _GN  # noqa: E402  (a game reads by its name on this machine: ArchBig, ArchSmall)
 
 FAILS = []
 
@@ -144,7 +145,7 @@ def main():
 
         def t_brief_names_game():
             ls = launches()
-            return ls and "RM_GAME_INSTANCE=b" in brief_of(ls[1]) and "game_instance.py launch b" in brief_of(ls[1])
+            return ls and "RM_GAME_INSTANCE=b" in brief_of(ls[1]) and "game_instance.py launch %s" % _GN.show("b") in brief_of(ls[1])
         chk(t_brief_names_game, "the run's brief names its game and how to start it")
 
         def t_driver_on_a():
@@ -183,8 +184,8 @@ def main():
             world["held"]["b"] = "bridge held by BENCH for: pyre week run 2"
             rd[0] = tick(two)
             why = rd[0]["mods"]["Pyrelands"]["why"]
-            return (dec(rd[0]) in ("bridge_held", "driver_busy") and not launches() and "game a" in why
-                    and "game b" in why)
+            return (dec(rd[0]) in ("bridge_held", "driver_busy") and not launches() and _GN.show("a") in why
+                    and _GN.show("b") in why)
         chk(t_both_unavailable, "a driven by a live run and b held: nothing launches, and the line says why for each game")
 
         def t_single_game_setting():
@@ -200,7 +201,7 @@ def main():
             world["held"]["b"] = "held by OTHER"
             r = M.launch_mod(root, "Pyrelands", 20, "RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT_ONE",
                              bridge=lbridge, env={"RM_GAME_INSTANCE": "b"})
-            return r[0] == 2 and "game b" in r[1] and not launches()
+            return r[0] == 2 and _GN.show("b") in r[1] and not launches()
         chk(t_launch_mod_reads_its_game, "launch_mod checks the bridge of the run's own game (b held: refused, says b)")
 
         def t_real_companion_never_read():

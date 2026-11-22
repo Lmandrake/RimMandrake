@@ -2094,16 +2094,25 @@ RED_SEEN_RULE = (
 # fixer gets only offline items (a game-only item goes back to Stage 6), so its brief keeps "Never take the bridge".
 FREE_GAME_RULE = (
     "- **A fix that needs the live game takes it when it is free** (owner, 2026-11-20): there are several games, each "
-    "with its own bridge holder: game a (Steam's install, his full list) and game b on Archmagi, and the SteveDesktop "
-    "games. Take any game whose bridge is free, ours, or stale by the 45-minute rule, with `python3 "
+    "with its own bridge holder: ArchBig (Steam's install on Archmagi, his full list), ArchSmall (its own install on "
+    "Archmagi), and Steve1 and Steve2 on SteveDesktop. Take any game whose bridge is free, ours, or stale by the "
+    "45-minute rule, with `python3 "
     "src/RimMandrake/rimflow/cli.py bridge take --idle-ok --for \"<what>\" --seat BENCH` and `./game --idle-ok --why "
-    "\"<what>\" up`; for game b run `eval \"$(python3 src/RimMandrake/Utils/game_instance.py env b)\"` first (a bare `RM_GAME_INSTANCE=b` does not reach a `python.exe` tool, which then drives game a; deploy with `--instance b`) and start it if "
-    "it is down (`python3 src/RimMandrake/Utils/game_instance.py launch b --wait`). If game a is busy or held, use game "
-    "b; only a check that needs his full list waits for game a, and then say so by name. Release it the moment the "
+    "\"<what>\" up`; for ArchSmall run `eval \"$(python3 src/RimMandrake/Utils/game_instance.py env ArchSmall)\"` first (a bare `RM_GAME_INSTANCE=b` does not reach a `python.exe` tool, which then drives ArchBig; deploy with `--instance ArchSmall`) and start it if "
+    "it is down (`python3 src/RimMandrake/Utils/game_instance.py launch ArchSmall --wait`). If ArchBig is busy or held, use "
+    "ArchSmall; only a check that needs his full list waits for ArchBig, and then say so by name. Release it the moment the "
     "work stops (`python3 src/RimMandrake/rimflow/cli.py bridge release --seat BENCH`). His OWNER hold, the `./bridge` "
     "override, no flyer flight, and never fullscreen or focus a game still bind. A mod does not wait a stage for a game "
     "that sits unused, and no line says \"waiting for the live game\": name the game and why no other game can take "
     "the work.")
+
+
+def _gn(game):
+    """-> the name people read for game letter `game` on this machine: ArchBig, ArchSmall (game_names.py, the one map)."""
+    import game_names
+    return game_names.show(game)
+
+
 WRONG_CHECK_RULE = "\n".join([
     "**Class each failed or UNMEASURED line first** (owner, 2026-11-20; `design/RimMandrake/standing_rulings.md` "
     "§Touching code has a cost): mod wrong (`class` MOD: the mod's code, defs or settings), check wrong (`class` HARNESS: "
@@ -2603,7 +2612,7 @@ def deploy_repair(root, mod, game, reading, gi, purpose, runner=subprocess.run, 
     try:
         was_up = gi.running(game)
     except Exception as e:  # noqa: BLE001  Blind: could not look, nothing is done on a guess
-        return "fail", "could not read whether game %s is running (%s: %s); nothing deployed" % (game, type(e).__name__, e)
+        return "fail", "could not read whether %s is running (%s: %s); nothing deployed" % (_gn(game), type(e).__name__, e)
     done = []
     if was_up:
         try:
@@ -2615,13 +2624,13 @@ def deploy_repair(root, mod, game, reading, gi, purpose, runner=subprocess.run, 
                 rc, txt = gi.stop(name=game, purpose=purpose, force=True, seat=seat)
                 sleep(3)
             if gi.pids(game):
-                return "fail", "game %s did not stop for the deploy (%s)" % (game, txt)
+                return "fail", "%s did not stop for the deploy (%s)" % (_gn(game), txt)
         except Exception as e:  # noqa: BLE001  Refused (a hold or a bridge read) or Blind
             msg = "%s: %s" % (type(e).__name__, e)
             if "held" in str(e) or "TAKEABLE" in str(e):
-                return "wait", "%s game %s could not be stopped for the deploy: %s" % (WAIT_MARK, game, msg)
-            return "fail", "game %s could not be stopped for the deploy: %s" % (game, msg)
-        done.append("game %s stopped" % game)
+                return "wait", "%s %s could not be stopped for the deploy: %s" % (WAIT_MARK, _gn(game), msg)
+            return "fail", "%s could not be stopped for the deploy: %s" % (_gn(game), msg)
+        done.append("%s stopped" % _gn(game))
 
     def run(cmd):
         try:
@@ -2653,8 +2662,8 @@ def deploy_repair(root, mod, game, reading, gi, purpose, runner=subprocess.run, 
         except Exception as e:  # noqa: BLE001
             rc, txt = 1, "%s: %s" % (type(e).__name__, e)
         if rc:
-            return "fail", "deployed, but game %s did not start again: %s" % (game, txt)
-        done.append("game %s started (%s)" % (game, txt))
+            return "fail", "deployed, but %s did not start again: %s" % (_gn(game), txt)
+        done.append("%s started (%s)" % (_gn(game), txt))
     if companion:
         cur, cwhy = companion(game=game)
         if not cur:
@@ -2766,10 +2775,10 @@ def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=s
         if takes_game(read):
             go, why = read(purpose, seat, game=game)
         else:
-            go, why = read(purpose, seat) if game == "a" else (False, "this bridge reading cannot name game %s" % game)
+            go, why = read(purpose, seat) if game == "a" else (False, "this bridge reading cannot name %s" % _gn(game))
         if not go:
-            return 2, "%s the bridge of game %s is not takeable for %s's in-game visit %s: %s" % (
-                WAIT_MARK, game, mod, f.get("visit"), why), None
+            return 2, "%s the bridge of %s is not takeable for %s's in-game visit %s: %s" % (
+                WAIT_MARK, _gn(game), mod, f.get("visit"), why), None
         creader = companion or companion_current
         ccur, cwhy = creader(game=game)
         # a stale companion is cured as drift is (RIMMANDRAKE_REPAIR_FLOWWORKS_FORM_REFUSAL_AT_THE_RUN_FOUR): the real
@@ -4851,7 +4860,7 @@ def bridge_idle(purpose, seat="BENCH", runner=subprocess.run, game=None, lock=No
         with host_guard.instance_env(game if game and game != "a" else None):
             held = host_guard.crossing(new_run=True)
         if held:
-            return False, "NOT TAKEABLE  game %s: %s" % (game or "a", held)
+            return False, "NOT TAKEABLE  %s: %s" % (_gn(game or "a"), held)
     return go, line or "no reading (rc %s)" % r.returncode
 
 
