@@ -76,7 +76,10 @@ def prior_rows(tid, e, o):
         for k in ("class", "note"):
             if k in pr:
                 r[k] = pr[k]
-        r.update({k: IDENT[k] for k in ("mod_hash", "game_build", "active_mods", "tier", "unit") if k in IDENT})
+        ident = json.load(open(os.path.join(E, o["identity"]))) if o.get("identity") else IDENT
+        if o.get("identity"):
+            r["mod_sha"] = ident.get("mod_sha", r["mod_sha"])
+        r.update({k: ident[k] for k in ("mod_hash", "game_build", "active_mods", "tier", "full_list", "unit") if k in ident})
         out.append(r)
     return out
 
@@ -137,7 +140,7 @@ def exit_block():
             % (ing, open_n, SAVE, "true" if met else "false"))
 
 
-_ws = os.path.join(E, "walk_save.json")   # the path the game reported for the labelled save (walk_save.py)
+_ws = os.path.join(E, "walk_save_full.json")   # the labelled save on his full list (walk_save.py ..._FULL): sc_walk is a full-list check
 SAVE = ((json.load(open(_ws)).get("save") or {}).get("path") or "").replace("/", "\\") if os.path.exists(_ws) else None
 if "--exit" in sys.argv:
     p = os.path.join(VD, "SUMMARY.md")

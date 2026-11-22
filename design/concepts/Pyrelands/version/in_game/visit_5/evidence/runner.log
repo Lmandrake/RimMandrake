@@ -61,3 +61,4 @@ DONE script:design/concepts/Pyrelands/version/in_game/visit_5/scripts/walk_save.
 END b4 2026-11-22 07:08:25
 START walk_season 2026-11-22 07:32:51
 DONE PYRE_WALK=1:walk_season reload_rc=fullsite rc=1 1138s 07:51:49
+DONE walk_season@walk_season2 (full list) reload_rc=0 rc=1 1680s 08:23:38

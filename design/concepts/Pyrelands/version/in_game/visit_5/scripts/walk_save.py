@@ -9,7 +9,7 @@ sys.path.insert(0, r"src\RimMandrake\Utils")
 from rimbridge_client import RimBridge, resolve_endpoint
 SAVES = os.path.join(os.environ["RM_GAME_USERDATA"], "Saves") if os.environ.get("RM_GAME_USERDATA") else \
     os.path.expandvars(r"%USERPROFILE%\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Saves")
-NAME = "PYRELANDS_0.1.0_VISIT5_WALK"
+NAME = sys.argv[1] if len(sys.argv) > 1 else "PYRELANDS_0.1.0_VISIT5_WALK"   # his full list: ..._VISIT5_WALK_FULL
 SHOTS = r"Transient\pv5\shots"
 TAG = "pyre_visit5"
 h, p, tk = resolve_endpoint()
@@ -97,4 +97,4 @@ with RimBridge(h, p, tk) as rb:
                    "changed": [f for f in before if f in after and after[f] != before[f]],
                    "bytes": os.path.getsize(os.path.join(SAVES, NAME + ".rws")) if os.path.exists(os.path.join(SAVES, NAME + ".rws")) else None}
 print(json.dumps(out, indent=1))
-json.dump(out, open(r"design\concepts\Pyrelands\version\in_game\visit_5\evidence\walk_save.json", "w"), indent=1)
+json.dump(out, open(r"design\concepts\Pyrelands\version\in_game\visit_5\evidence\walk_save%s.json" % ("_full" if NAME.endswith("_FULL") else ""), "w"), indent=1)

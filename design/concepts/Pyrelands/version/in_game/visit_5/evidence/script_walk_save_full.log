@@ -1,0 +1,66 @@
+{
+ "stations": [
+  "VISIT5: LIVE burn front in fresh ember grass - unpause and watch it walk",
+  "VISIT5: creatures - ullai herd, furnace-beast giant, ashwallows",
+  "VISIT5: scorch-fruit standing in ash",
+  "VISIT5: ember grass under a roof (left) withers within a day; open patch (right) stays",
+  "VISIT5: charred ruin on deep ash (walls painted RM_FE_Charred)"
+ ],
+ "shots": [
+  "Transient\\pv5\\shots\\pv5_walk_station_0.png",
+  "Transient\\pv5\\shots\\pv5_walk_station_1.png",
+  "Transient\\pv5\\shots\\pv5_walk_station_2.png",
+  "Transient\\pv5\\shots\\pv5_walk_station_3.png",
+  "Transient\\pv5\\shots\\pv5_walk_station_4.png"
+ ],
+ "windows": [
+  [
+   20,
+   20
+  ],
+  [
+   62,
+   20
+  ],
+  [
+   104,
+   20
+  ],
+  [
+   74,
+   62
+  ],
+  [
+   116,
+   68
+  ],
+  [
+   158,
+   68
+  ],
+  [
+   200,
+   74
+  ],
+  [
+   20,
+   86
+  ]
+ ],
+ "exportCount": 56339,
+ "exportTruncated": false,
+ "ruinCluster": 49,
+ "fire": 32,
+ "ruinWalls": 257,
+ "labels": true,
+ "save": {
+  "success": true,
+  "path": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\Saves\\PYRELANDS_0.1.0_VISIT5_WALK_FULL.rws",
+  "new": [
+   "PYRELANDS_0.1.0_VISIT5_WALK_FULL.rws"
+  ],
+  "changed": [],
+  "bytes": 35272995
+ }
+}
+[bridge split] 14.7 s wall: load 1.7 / ticks 0.0 / reads 0.1 / other 4.7 / outside calls 8.2 s

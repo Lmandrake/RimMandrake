@@ -158,14 +158,12 @@
   ],
   "repair": {
    "class": "HARNESS",
-   "commit": "baf24e662774a415ff433d36de93bbf699945d02",
-   "what": "inside the walk, a stop on harm to a pawn not the player's (wildlife, the cast, visitors) or on a colonist's PanicFlee/PanicFleeFire resumes after list_pawns reads each subject back (bd8963f26d, baf24e6627; selftest_pyrelands_walk_shield.py 35/35, its can-fail cases: a colonist's harm, another mental state, an unlisted subject, a failed listing); the gate-off and roster-off days start from an extinguished map; planted switch PYRE_PLANT_GATE_IGNORED",
-   "planted": {
-    "plant": "PYRE_PLANT_GATE_IGNORED=1: pyrelandsEnabled left on for the gate-off day",
-    "command": "PYRE_WALK=1 PYRE_PLANT_GATE_IGNORED=1 (through WSLENV) python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains walk_season",
-    "verdict": "PENDING",
-    "evidence": "design/concepts/Pyrelands/version/in_game/visit_5/evidence/pv5_walk_season_planted_gate.json"
-   }
-  }
+   "commit": "70e08b2bab1b80cd81005074226ea9d12906e2ec",
+   "what": "inside the walk, a stop on harm to a pawn not the player's (wildlife, the cast, visitors) or on a colonist's PanicFlee/PanicFleeFire resumes after list_pawns reads each subject back (bd8963f26d, baf24e6627; selftest_pyrelands_walk_shield.py 35/35, its can-fail cases: a colonist's harm, another mental state, an unlisted subject, a failed listing); the gate-off and roster-off days start from an extinguished map; planted switch PYRE_PLANT_GATE_IGNORED; the walk digest compares regrowth day bins only when read at one tick, else their totals (43491722c4, selftest_pyrelands_walk_digest.py, red on the parent's rule for the visit-5 pair); a non-player pawn's starving rides along (70e08b2bab)"
+  },
+  "class": "HARNESS",
+  "unrepaired": "walk 2 on his full list (walk_season2): walk_firecast_thirst_and_colonists PASS; walk_gate_off_then_on PASS on the repaired check (its planted PYRE_PLANT_GATE_IGNORED run not made: not shown both ways); walk_reload_keeps_the_state FAIL: the regrowth day bins read one cell older after the reload, every total equal (presumed the read's tick, repaired 43491722c4, not run); walk_second_pass_and_switches UNMEASURED (upstream failed); walk_roster_toggle and walk_roofed_grass_withers UNMEASURED: stopped on 'Latch' downed with three starving fire-wasps riding along (starving taken only from 70e08b2bab; Latch's faction unread, gone from the map after); walk_master_off_then_on FAIL on the probe's own ArgumentOutOfRangeException (ProbeBurnHistory counts before it prunes; red seen live, its repair touches the mod DLL); walk_master_bed_fire_resumes UNMEASURED (no furnace-beast bed lit). A full-list walk (about 30 min of play, 13 min cold load) after the probe fix and deploy settles it",
+  "owner": "RIMMANDRAKE_FIX_PYRE_BURN_HISTORY_PROBE_COUNTS_BEFORE_IT_PRUNES",
+  "filed": "RIMMANDRAKE_FIX_PYRE_BURN_HISTORY_PROBE_COUNTS_BEFORE_IT_PRUNES"
  }
 }

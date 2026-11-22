@@ -7,7 +7,7 @@ sys.path.insert(0, os.path.join(ROOT, "src", "RimMandrake", "Utils"))
 sys.path.insert(0, os.path.join(ROOT, "src", "RimMandrake", "Utils", "modcheck"))
 from rimbridge_client import RimBridge, resolve_endpoint  # noqa: E402
 import clockgate  # noqa: E402
-W = json.load(open(os.path.join(ROOT, "design/concepts/Pyrelands/version/in_game/visit_5/evidence/walk_save.json")))
+W = json.load(open(os.path.join(ROOT, "design/concepts/Pyrelands/version/in_game/visit_5/evidence/walk_save%s.json" % ("_full" if "--full" in sys.argv else ""))))
 (fx, fz), (cx, cz), (sx, sz), (rx, rz) = [tuple(w) for w in W["windows"][:4]]
 rects = [("burn_front", (fx - 2, fz, 24, 16)), ("creatures", (cx, cz, 20, 16)), ("scorchfruit", (sx + 4, sz + 2, 12, 12)),
          ("roof_wither", (rx, rz, 20, 16))]
