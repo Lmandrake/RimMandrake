@@ -44,6 +44,7 @@ from html import escape as hesc
 from xml.sax.saxutils import escape
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.join(os.path.dirname(HERE), "rimflow"))   # game_lock, game_names: who drives each game
 AGENT = "/mnt/d/ClaudeWork/rimmandrake"
 OUT_DIR = AGENT + "/conductor"
 OUT = OUT_DIR + "/RELENTLESS_NOW.md"
@@ -63,7 +64,6 @@ TASKLIST_EVERY = 180        # a tasklist.exe call is ~0.6 s wall: cache it
 PROBE_EVERY = 180           # ssh to SteveDesktop at most this often
 STALE_AFTER = 180           # a page older than this is stale
 FENCE_WIDTH = 84            # Typora wraps a code fence at about 87 columns in a 1600 px window
-BRIDGE_FILES = ["/home/mandrake/rm/dispatch/infrastructure/state/BRIDGE", "/home/mandrake/rm/bench/infrastructure/state/BRIDGE"]
 LEDGER_EVENTS = "/home/mandrake/rm/dispatch/infrastructure/state/ledger/events"
 LIVE_RUNS = "/home/mandrake/rm/relentless/live/runs.jsonl"
 FUEL_TAIL = 512 * 1024      # series.jsonl gains about 470 bytes per account per 15-minute poll: this holds days
@@ -196,6 +196,11 @@ class Env:
     def port_open(self, host, port=22):
         with socket.create_connection((host, port), timeout=1.5):
             return True
+
+    def game_locks(self):
+        """-> game_lock.query_all(): who drives each game of this machine, from each game's driver lock (the one record)."""
+        import game_lock
+        return game_lock.query_all()
 
     def local_stats(self):
         """This machine, read the way the Steve probe reads that one: uptime s, load, cores, RAM used/total MB, free GB."""
@@ -539,27 +544,35 @@ def collect_dispatcher(env):
 
 
 def collect_bridge(env):
-    last = None
-    for p in BRIDGE_FILES:
-        try:
-            txt = env.read_text(p)
-        except OSError:
-            continue
-        body = "\n".join(l for l in txt.splitlines() if not l.startswith("#"))
-        m = re.search(r"^(HELD|FREE)\b[ \t]*(?!since\b)(\S*)[ \t]*(?:since\s+(\S+))?", body, re.M)
-        why = re.search(r"^for\s+(.*)$", body, re.M)
-        if m:
-            mt = env.mtime(p)
-            if last is None or mt > last["mt"]:
-                last = {"state": m.group(1), "who": m.group(2), "since": m.group(3), "for": why.group(1) if why else "", "mt": mt}
-    if not last:
-        raise Unmeasured("no BRIDGE mirror file readable")
-    return last
+    """-> one row per game of this machine: {game, state, who, for, line}, read from its driver lock (game_lock.query,
+    the one record of who drives a game), never from a BRIDGE glance file. state is FREE, HELD, HIS_HOLD (his OWNER
+    lock or `pipe off game:<g>`) or UNKNOWN (that game's lock could not be looked at: its cause is in line)."""
+    rows = [{"game": game_names_show(r.get("game")), "state": r.get("state") or "UNKNOWN", "who": r.get("seat") or "",
+             "for": r.get("purpose") or "", "line": r.get("line") or ""} for r in env.game_locks()]
+    if not rows:
+        raise Unmeasured("game_lock.query_all named no game")
+    return rows
 
 
-def silent_hold(b, now):
-    """Past HOLD_CAP with no write the bridge's own rule calls a hold stale and anyone may take it: say so, it may be nobody's."""
-    return ", silent %s" % ago(now - b["mt"]) if now - b["mt"] > HOLD_CAP else ""
+def game_names_show(g):
+    """A game letter -> its name (game_names.py, the one map); a letter it does not know, as it came."""
+    try:
+        import game_names
+        return game_names.show(g)
+    except Exception:  # noqa: BLE001  (a name is a label: the letter still says which game)
+        return str(g)
+
+
+def game_chip(b):
+    """One game's strip chip: (text, severity)."""
+    st = b["state"]
+    if st == "UNKNOWN":
+        return "%s bridge UNMEASURED" % b["game"], 1
+    if st == "FREE":
+        return "%s bridge FREE" % b["game"], 0
+    if st == "HELD":
+        return "%s bridge HELD by %s" % (b["game"], b["who"] or "?"), -1
+    return "%s bridge HIS HOLD" % b["game"], -1
 
 
 def merged(rows):
@@ -1222,8 +1235,10 @@ def status_strip(p):
     now, chips = p["now"], []
     w = p["win"]
     chips.append(("game UNMEASURED", 1) if not w else (("game UP", 0) if w["game"] else ("game DOWN", -1)))
-    b = p["bridge"]
-    chips.append(("bridge UNMEASURED", 1) if not b else (("bridge FREE", 0) if b["state"] == "FREE" else ("bridge HELD by %s%s" % (b["who"] or "?", silent_hold(b, p["now"])), -1)))
+    if p["bridge"]:
+        chips.extend(game_chip(b) for b in p["bridge"])
+    else:
+        chips.append(("bridge UNMEASURED", 1))
     sv = p["steve"]
     if sv:
         state, idle = steve_headline(sv)
@@ -1787,7 +1802,10 @@ def gather(env, state, hist=(), write=True):
         p["unmeasured"].append("Dispatcher state (%s)" % why)
     p["bridge"], why = guarded(collect_bridge, env)
     if why:
-        p["unmeasured"].append("bridge file (%s)" % why)
+        p["unmeasured"].append("game driver locks (%s)" % why)
+    for b in p["bridge"] or ():
+        if b["state"] == "UNKNOWN":
+            p["unmeasured"].append("%s's driver lock (%s)" % (b["game"], b["line"]))
     p["steve"], p["steve_why"] = guarded(collect_steve, env, state)
     p["local"], p["local_why"] = guarded(env.local_stats)
     p["live_here"], why = guarded(collect_archmagi_live, env, now, hist)
@@ -1826,13 +1844,16 @@ def gather(env, state, hist=(), write=True):
             p["unmeasured"].append("Conductor's in-process helpers (%s)" % why)
     p["steve_cache"], _ = guarded(env.read_json, STEVE_CACHE)
 
-    # who holds the live game: the bridge file first, then the game process
+    # who drives each game: its driver lock; then how many game processes run (tasklist counts every game)
     b, w = p["bridge"], p["win"]
-    if b and b["state"] == "HELD":
-        silent = silent_hold(b, now)
-        p["game_text"], p["game_colour"] = "held by %s%s" % (clip(b["who"] or "?", 16), silent), WARN if silent else LIVE
-    elif b:
-        p["game_text"], p["game_colour"] = ("free, game up" if w and w["game"] else ("free, game down" if w else "free")), GOOD
+    if b:
+        words = {"FREE": "free", "HELD": "held by %s", "HIS_HOLD": "his hold", "UNKNOWN": "UNMEASURED"}
+        parts = ["%s %s" % (g["game"], words[g["state"]] % clip(g["who"] or "?", 16) if g["state"] == "HELD"
+                             else words.get(g["state"], g["state"])) for g in b]
+        up = (", a game up" if w["game"] else ", no game up") if w else ""
+        p["game_text"] = "; ".join(parts) + up
+        p["game_colour"] = WARN if any(g["state"] == "UNKNOWN" for g in b) else (
+            LIVE if any(g["state"] != "FREE" for g in b) else GOOD)
     else:
         p["game_text"], p["game_colour"] = "UNMEASURED", WARN
 

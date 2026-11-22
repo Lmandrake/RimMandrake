@@ -537,6 +537,15 @@ def t_a_windows_python_client_checks_the_lock_in_under_50_ms():
     check(p.returncode == 0, "a Windows python.exe client checks the lock in under 50 ms a call", p.stdout[-900:])
 
 
+def t_the_two_last_glance_file_readers_read_every_game_from_the_lock():
+    """The equivalence run on its fixture cases: the old readers (frozen) and the new on the same locks, every
+    difference classed; the new readers equal `game_lock.py query all` (selftest_game_driver_readers.py)."""
+    p = subprocess.run([sys.executable, os.path.join(HERE, "selftest_game_driver_readers.py")], capture_output=True,
+                       text=True, timeout=300)
+    check(p.returncode == 0, "preflight_bridge and running_now read every game from its lock, never the glance file",
+          p.stdout[-900:] + p.stderr[-300:])
+
+
 def main():
     t_a_query_answers_under_100_ms()        # first: the cases below spawn and kill dozens of processes
     t_one_record_per_game()
@@ -554,6 +563,7 @@ def main():
     t_the_old_shared_file_is_neither_written_nor_read()
     t_a_windows_python_client_obeys_the_lock()
     t_a_windows_python_client_checks_the_lock_in_under_50_ms()
+    t_the_two_last_glance_file_readers_read_every_game_from_the_lock()
     for p in SLEEPERS:
         if p.poll() is None:
             p.kill()

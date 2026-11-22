@@ -34,7 +34,7 @@ complete` reads it.
 | id | check | catches (debugging doc §4 row) |
 |---|---|---|
 | O01 | one-or-zero `RimWorldWin64`; down for a cold launch | #21, #39 |
-| O02 | bridge lease free or ours (`infrastructure/state/BRIDGE`) | #22, #50 |
+| O02 | this game's driver lock free or ours (`game_lock.query`; `RM_GAME_INSTANCE` names the game); free under `pipe off game:<g>` FAILs | #22, #50 |
 | O03 | free disk C: >= 20 GB, D: >= 10 GB | |
 | O04 | live `ModsConfig.xml` == intended list, **ordered**; names a Core-only reset | #19, #47, #54 |
 | O05 | intended list: no composed-member ids, duplicates or uninstalled ids | #58, #80 |

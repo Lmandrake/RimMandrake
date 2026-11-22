@@ -567,7 +567,7 @@ VERBS = {
     # `reason` on `close` carries WHY, and is what a cross-seat close writes instead of
     # a shrug. ⛔ The BAR is unchanged: done means proven, dead means probed. This
     # removes the seat boundary, never the evidence requirement.
-    "close":     {"who": "any",   "req": ("sha",), "opt": ("reason", "live", "noCode", "uncheckedLifted")},
+    "close":     {"who": "any",   "req": ("sha",), "opt": ("reason", "live", "noCode", "uncheckedLifted", "form_notes")},
     # `live` on close and implemented is the promise (LIVE_PROOF_ENFORCE_DONE_MEANS_RUNNING, live_line.py). The verb
     # `live` is the no-AI sweep's reading of it, RUNNER only: `broken` takes a done item back to ready, ONE OF THE TWO PATHS
     # OUT OF `done` (the other is a `fail` verify on the closed work, `_earned_run`), because the record of the close stands in the log and the same id must count the repeat; `kept`
@@ -624,7 +624,7 @@ VERBS = {
     # Either live window may drive; one at a time is enforced by cmd_bridge's holder
     # guard (redesign #4, 2026-08-27 — CHECK's monopoly retired with the seat).
     # `purpose` is what `--for` lands in: one line saying what the holder is driving
-    # it FOR, mirrored into infrastructure/state/BRIDGE so the other window can judge
+    # it FOR, printed into infrastructure/state/BRIDGE so the other window can judge
     # whether to wait or go offline. Optional — a take without one is still a take.
     # `host` (BRIDGE_LOCK_WIDEN_ONE_PER_HOST, 2026-10-25): which machine's game. Absent means Archmagi, so every
     # event written before the widening still reads as the Archmagi bridge it was.
@@ -1308,10 +1308,10 @@ BRIDGE_STALE_SECONDS = 45 * 60
 # complete body by checking exactly where the status line lands.
 BRIDGE_HEADER = (
     "# WHO IS DRIVING THE LIVE RIMWORLD BRIDGE.\n"
-    "# Mirror of the rimflow ledger. Written by `rimflow bridge`, never by hand.\n"
+    "# A print of each game's driver lock (game_lock.py). Written by `rimflow bridge`, never by hand.\n"
     "#   free?  ->  rimflow bridge take --for \"<what for>\"\n"
     "#   held?  ->  do offline work. Nobody will come and tell you it freed; look again.\n"
-    "#   wrong? ->  rimflow bridge who   (re-derives this from the ledger)\n")
+    "#   wrong? ->  rimflow bridge who   (prints this again from the lock)\n")
 
 
 def bridge_mirror_path():
@@ -1457,14 +1457,13 @@ def _write_atomically(target, body):
 
 
 def write_bridge_file(holder, actor, purpose=None, since=None, note=None, others=None):
-    """Mirror the bridge lock into one glanceable line at infrastructure/state/BRIDGE.
+    """Print the game locks into one glanceable file at infrastructure/state/BRIDGE, for a person.
 
-    🔑 A MIRROR, NOT A SECOND TRUTH. The ledger stays the only record; this file exists
-    because the two windows should not have to replay a
-    ledger to answer "is the bridge free yet". `rimflow bridge who` re-derives it, so a
-    stale mirror is always one command from being corrected rather than something to
-    believe. Written here rather than in cli.py because every write in this system goes
-    through the module that owns the 9p lock discipline.
+    🔑 A PRINT, NOT A RECORD. Each game's driver lock is the one record of who drives it
+    (game_lock.py); no program reads this file to decide (preflight_bridge and running_now
+    read the lock). `rimflow bridge who` prints it again, so a stale print is one command
+    from being corrected. Written here rather than in cli.py because every write in this
+    system goes through the module that owns the 9p lock discipline.
     """
     target = bridge_mirror_path()
     body = bridge_body(holder, actor, purpose, since, note, others)

@@ -34,7 +34,17 @@ NOW = 1793741698.0
 WORKER_CG = "0::/user.slice/user-1000.slice/user@1000.service/app.slice/rm-role-builder-1793741600.service\n"
 DISPATCH_STATE = R.AGENT + "/dispatcher/state.json"
 STEWARD = R.TESTQ + "/steward.json"
-BRIDGE = R.BRIDGE_FILES[0]
+
+
+def lockrow(g, state, seat="", purpose=""):
+    """One game's reading in game_lock.query's shape (the fields running_now reads)."""
+    name = {"a": "ArchBig", "b": "ArchSmall"}[g]
+    line = {"FREE": "%s: FREE", "HELD": "%s: HELD by " + seat, "HIS_HOLD": "%s: HIS HOLD: pipe off",
+            "UNKNOWN": "%s: COULD NOT LOOK: the lock is UNREADABLE"}[state] % name
+    return {"game": g, "state": state, "seat": seat or None, "purpose": purpose or None, "line": line}
+
+
+FREE2 = [lockrow("a", "FREE"), lockrow("b", "FREE")]
 
 
 class Fake(R.Env):
@@ -45,6 +55,7 @@ class Fake(R.Env):
         self.dirs = dirs or {}
         self.clock = NOW
         self.bridge, self.fleet, self.mods = None, None, None
+        self.locks = None
         self.calls = []
         self.out = None
         self.names = []
@@ -141,6 +152,11 @@ class Fake(R.Env):
     def conductor_helpers(self, pid):
         raise R.Unmeasured("no transcript in a selftest")
 
+    def game_locks(self):
+        if self.locks is None:
+            raise R.Unmeasured("no driver lock in a selftest")
+        return self.locks
+
     def fleet_gather(self, now):
         if self.fleet is None:
             raise R.Unmeasured("no ledger in a selftest")
@@ -209,11 +225,17 @@ check("the strip raises it", "NOT RECOGNISED" in before_svg(page))
 page = page_of(Fake(files={DISPATCH_STATE: {"last_tick": "2026-11-03T20:00:00Z"}}))
 check("old Dispatcher tick raises DISPATCHER NOT TICKING", "DISPATCHER NOT TICKING" in before_svg(page))
 
-# 7. the bridge mirror file parses both ways
-held = R.collect_bridge(Fake(files={BRIDGE: "# comment\nHELD OPERATIONS since 2026-11-03T20:00:00Z\nfor a proof\n"}))
-free = R.collect_bridge(Fake(files={BRIDGE: "FREE since 2026-11-03T20:00:00Z\n"}))
-check("bridge HELD names who and why", held["state"] == "HELD" and held["who"] == "OPERATIONS" and held["for"] == "a proof")
-check("bridge FREE has no holder (the word since is not a name)", free["state"] == "FREE" and free["who"] == "")
+# 7. who drives each game: one row per game, from its driver lock (game_lock.query_all), never a glance file
+def with_locks(rows, **kw):
+    e = Fake(**kw)
+    e.locks = rows
+    return e
+
+
+rows = R.collect_bridge(with_locks([lockrow("a", "HELD", "OPERATIONS", "a proof"), lockrow("b", "FREE")]))
+check("a held game names who and why", rows[0] == {"game": "ArchBig", "state": "HELD", "who": "OPERATIONS", "for": "a proof",
+                                                   "line": "ArchBig: HELD by OPERATIONS"})
+check("every game of the machine has its row, by name", [r["game"] for r in rows] == ["ArchBig", "ArchSmall"] and rows[1]["who"] == "")
 
 # 8. idle under a brake is the first, red thing on the page
 files = {STEWARD: {"state": "BRAKED", "fault": True, "reason": "two filler jobs failed", "epoch": NOW - 30}}
@@ -603,7 +625,6 @@ def fixture_env(extreme=False):
              R.STEVE_CACHE: {"good_t": NOW - (2000 if extreme else 30), "routes": {"tailscale": True, "lan": not extreme, "wsl": True},
                              "good": {"up": "100" if extreme else "20000", "load": "99.9" if extreme else "0.5", "cores": "18", "ram": "63000 64000" if extreme else "1000 64000", "disk": "50 1000" if extreme else "900 1000",
                                       "gpu": "NVIDIA GeForce RTX 2080 Ti, %s, 4400, 11264" % ("99" if extreme else "27"), "game": "0" if extreme else "1", "cpu_pct": 99 if extreme else 3}}}
-    files[BRIDGE] = "FREE since 2026-11-03T20:00:00Z\n"
     pending = ["p%d.json" % i for i in range(25 if extreme else 1)]
 
     class Full(Fake):
@@ -613,6 +634,7 @@ def fixture_env(extreme=False):
 
     env = Full(ps=PS, cg=WORKER, files=files, dirs={done_dir: [job], R.TESTQ + "/running": ["r%d.json" % i for i in range(per)], R.TESTQ + "/pending": pending})
     env.bridge = [(NOW - 3600, "taken"), (NOW - 1800, "released")]
+    env.locks = FREE2
     return env, [{"t": NOW - 60, "n": 1, "f": {"game": 0 if extreme else 1}}, {"t": NOW - 120, "n": 1, "f": {"game": 1 if not extreme else 0}}]
 
 
@@ -657,11 +679,14 @@ with tempfile.TemporaryDirectory() as d:
     R.STEVE_CACHE = real_cache
 check("Steve's CPU counts neither I/O wait as busy nor guest time twice", got == 10)
 
-hold = {BRIDGE: "HELD OPERATIONS since 2026-11-03T20:00:00Z\nfor a proof\n"}
-check("a live hold reads plainly", "bridge HELD by OPERATIONS" in before_svg(page_of(Fake(files=hold))) and "silent" not in before_svg(page_of(Fake(files=hold))))
-old_hold = Fake(files=hold)
-old_hold.mtime = lambda path: NOW - R.HOLD_CAP - 60
-check("a hold silent past the bridge's own limit says so, on the strip and the panel", "bridge HELD by OPERATIONS, silent" in before_svg(page_of(old_hold)) and "held by OPERATIONS, silent" in page_of(old_hold).split("</svg>")[0])
+hold = [lockrow("a", "HELD", "OPERATIONS", "a proof"), lockrow("b", "HELD", "BENCH", "a visit")]
+pg = page_of(with_locks(hold))
+check("each game's hold reads plainly, on the strip and the panel", "ArchBig bridge HELD by OPERATIONS" in before_svg(pg)
+      and "ArchSmall bridge HELD by BENCH" in before_svg(pg) and "ArchBig held by OPERATIONS; ArchSmall held by BENCH" in pg.split("</svg>")[0])
+pg = page_of(with_locks([lockrow("a", "UNKNOWN"), lockrow("b", "HIS_HOLD")]))
+check("a lock that could not be looked at is UNMEASURED by its cause, never FREE", "ArchBig bridge UNMEASURED" in before_svg(pg)
+      and "ArchBig's driver lock (ArchBig: COULD NOT LOOK" in before_svg(pg) and "ArchBig bridge FREE" not in pg)
+check("his hold on a game reads as his hold", "ArchSmall bridge HIS HOLD" in before_svg(pg) and "ArchSmall his hold" in pg.split("</svg>")[0])
 
 check("a timer with no next run does not claim to be running", "no next run" in R.timers_rows([{"unit": "rm-x.timer", "last": 0, "next": 0}], [], NOW)[0] and "running now" not in R.timers_rows([{"unit": "rm-x.timer"}], [], NOW)[0])
 with tempfile.TemporaryDirectory() as d:

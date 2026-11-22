@@ -250,6 +250,12 @@ def query(g, pipe=True, path=None):
     return _done(r, t0)
 
 
+def query_all(pipe=True):
+    """-> [query(g)] for every game of this machine, ArchBig first: what `query all` prints, and what every reader of
+    "who drives the games" reads (running_now, preflight_bridge). SteveDesktop's games are not read from here."""
+    return [query(g, pipe=pipe) for g in games()]
+
+
 def _done(r, t0):
     r["ms"] = round((time.perf_counter() - t0) * 1000, 1)
     r["line"] = line(r)
@@ -465,7 +471,7 @@ def _query_main(args):
             sys.stderr.write("REFUSED: %s\n" % e)
             return EX_BLIND
     if game.lower() == "all":
-        rs = [query(g) for g in games()]
+        rs = query_all()
         if as_json:
             print(json.dumps({"games": rs, "remote": {h: "through the SteveDesktop test lane "
                                                       "(infrastructure/stevedesktop/RUNBOOK.md)"

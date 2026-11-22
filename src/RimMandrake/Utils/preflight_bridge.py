@@ -46,12 +46,13 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 REPO = os.path.abspath(os.path.join(HERE, '..', '..', '..'))
 import bridge_holder  # noqa: E402
+sys.path.insert(0, os.path.join(os.path.dirname(HERE), 'rimflow'))
+import game_lock  # noqa: E402  (who drives each game: its driver lock, the one record)
 import game_paths as gp  # noqa: E402
 import game_instance  # noqa: E402
 
 MODLISTS = os.path.join(REPO, 'infrastructure', 'state', 'modlists')
 TIER_FILES = {'full': 'ModsConfig.FULL.LATEST.xml', 'minimal': 'ModsConfig.MINIMAL.xml'}
-BRIDGE_FILE = os.path.join(REPO, 'infrastructure', 'state', 'BRIDGE')
 COMPANION_REPO = os.path.join(REPO, 'src', 'RimMandrake', 'bridgetools', 'artifacts', 'BridgeTools', 'JawaBench',
                               'JawaBench.BridgeTools.dll')
 COMPANION_GAME = os.path.join(gp.GAME_DIR, 'BridgeTools', 'JawaBench', 'JawaBench.BridgeTools.dll')
@@ -196,18 +197,27 @@ def c_game_down(ctx):
 
 
 def c_bridge_lease(ctx):
+    """O02, two drivers: the driver lock of this process's game (game_lock.query, the one record of who drives a game;
+    RM_GAME_INSTANCE names the game, ArchBig by default), never a BRIDGE glance file. PASS when the game is free, or
+    when this process tree or this seat holds it. A free game under his `pipe off game:<g>` FAILs: it is his stop."""
     try:
-        line = [ln for ln in open(BRIDGE_FILE, encoding='utf-8') if ln.strip() and not ln.startswith('#')][0].strip()
-    except (OSError, IndexError):
-        return UNM('cannot read %s' % BRIDGE_FILE)
-    if line.startswith('FREE'):
-        return PASS(line + (' -- take it before launching: rimflow bridge take --for "<what>"' if not ctx['live'] else ''))
-    parts = line.split()
-    holder = parts[1] if parts[0].upper() == 'HELD' and len(parts) > 1 else parts[0]
+        r = game_lock.query(game_lock.current_game())
+    except Exception as e:  # noqa: BLE001  (a lock reader that cannot run is an instrument that cannot see)
+        return UNM('the driver lock could not be read: %s: %s' % (type(e).__name__, e))
+    if r['state'] == 'UNKNOWN':
+        return UNM(r['line'])
+    holder = (r.get('seat') or '') if (r.get('alive') or r.get('owner_hold')) else ''
     seat = bridge_holder.identity(ctx['seat'].upper())
-    if holder.upper().startswith(seat):
-        return PASS('held by this seat: ' + line)
-    return FAIL('held by another seat: %s (rimflow bridge who; do offline work)' % line)
+    if holder and (r.get('mine') or holder.upper().startswith(seat)):
+        return PASS('held by this seat: ' + r['line'])
+    if holder:
+        return FAIL('held by another seat: %s (game_lock.py query; do offline work)' % r['line'])
+    if r.get('pipe_hold'):
+        return FAIL('%s (./pipe show; do offline work)' % r['line'])
+    if r['code'] != game_lock.EX_FREE:
+        return UNM(r['line'])
+    take = ' -- take it before launching: game_lock.py claim %s --for "<what>"' % game_lock.game_names.show(r['game'])
+    return PASS(r['line'] + ('' if ctx['live'] else take))
 
 
 def c_disk(ctx):
