@@ -108,7 +108,55 @@ STYLES = {
                           shadow=False, side_from_rim=False),
     "P_pick_A_plus_B": dict(label="Pick  A + B (profile, lip, shadow)", north=ext_north, side=ext_side,
                             floor=floor_working, inner_lines=False, lip=True, shadow=True, side_from_rim=True),
+    # GPT's two strongest new ideas (gpt-6.1-sol, 2026-11-22; its words are in options.md), drawn from its own numbers
+    "G1_drop_marks": dict(label="G1  Drop marks (GPT)", north=lambda e: table(NORTH_BY_DROP, e),
+                          side=lambda e: table(SIDE_BY_DROP, e), floor=floor_working, inner_lines=False, lip=False,
+                          shadow=False, side_from_rim=False, marks=True),
+    "G2_depth_patterns": dict(label="G2  Depth patterns (GPT)", north=lambda e: table(NORTH_BY_DROP, e),
+                              side=lambda e: table(SIDE_BY_DROP, e), floor=floor_working, inner_lines=False, lip=False,
+                              shadow=False, side_from_rim=False, pattern=(0.35, 0.35)),
+    "G3_gpt_pick_G1_G2": dict(label="G3  GPT pick: G1 + G2\n+ value steps", north=lambda e: table(NORTH_BY_DROP, e),
+                              side=lambda e: table(SIDE_BY_DROP, e), floor=floor_working, inner_lines=False, lip=False,
+                              shadow=False, side_from_rim=False, marks=True, pattern=(0.42, 0.27)),
+    "R_pick_G3_plus_A_walls": dict(label="New pick  G3 + A's walls", north=ext_north, side=ext_side,
+                                   floor=floor_working, inner_lines=False, lip=False, shadow=False, side_from_rim=True,
+                                   marks=True, pattern=(0.42, 0.27)),
 }
+
+# G1: per drop grade (0.5, 1, 2, 4, 8 m): triangles on the cell edge and their length into the lower square (GPT's table)
+MARK_COUNT = [1, 2, 3, 4, 5]
+MARK_LEN = [0.13, 0.18, 0.24, 0.30, 0.36]
+MARK_BASE = 0.12
+MARK_PALE = (191.0, 184.0, 168.0)     # pale warm grey, about 75 % value
+MARK_DARK = (40.0, 38.0, 36.0)        # its charcoal copy, offset 0.05 cell
+
+
+def grade(metres):
+    """Doubling grade 0..4 of a drop or depth in metres: 0.5, 1, 2, 4, 8 (boundaries at the geometric midpoints)."""
+    return int(min(4, max(0, math.floor(math.log2(max(metres, 0.25) / 0.5) + 0.5))))
+
+
+def pattern_mask(gx, gy, g):
+    """G2: a world-aligned monochrome mark pattern for an absolute-depth grade (gx, gy in cells)."""
+    fx, fy = gx % 1.0, gy % 1.0
+    if g == 0:
+        return (np.abs(fx - 0.5) < 0.05) & (np.abs(fy - 0.5) < 0.05)
+    if g == 1:
+        return (np.abs(fx - 0.5) < 0.10) & (np.abs(fy - 0.5) < 0.10)
+    u = ((gx + gy) / math.sqrt(2)) % 0.5
+    if g == 2:
+        return u < 0.10
+    v = ((gx - gy) / math.sqrt(2)) % 0.5
+    if g == 3:
+        return (u < 0.10) | (v < 0.10)
+    hx, hy = gx % 0.5, gy % 0.5
+    return (np.abs(hx - 0.25) + np.abs(hy - 0.25)) < 0.16
+
+
+def hsv_value(rgb, value):
+    """The floor's own hue at a given HSV value (max channel / 255)."""
+    c = np.array(rgb, float)
+    return c * (value * 255.0 / c.max())
 
 CASES = {
     "a_his_L_4m_in_8m": [[8, 8, 16], [8, 16, 16], [16, 16, 16]],
@@ -168,6 +216,15 @@ def render(grid, style, tex_dir, ppc=CLOSE_PPC, pad=1):
             sl = (slice(y0, y0 + ppc), slice(x0, x0 + ppc))
             cell = np.empty((ppc, ppc, 3))
             cell[:] = np.array(st["floor"](d))
+            if st.get("pattern"):
+                v0, v1 = st["pattern"]
+                gd = grade(d / 2.0)
+                back = hsv_value(FLOOR_TODAY[2], v0 + (v1 - v0) * gd / 4.0)
+                cell[:] = back
+                gx = (x0 + xs + 0.5) / ppc
+                gy = (y0 + ys + 0.5) / ppc
+                pm = pattern_mask(gx, gy, gd)
+                cell[pm] = hsv_value(FLOOR_TODAY[2], 0.15)
             cell *= floor_grain[sl]
             g = ground[sl]
             n, s, w, e = D(R - 1, C), D(R + 1, C), D(R, C - 1), D(R, C + 1)
@@ -250,7 +307,48 @@ def render(grid, style, tex_dir, ppc=CLOSE_PPC, pad=1):
             if line_ok(e):
                 cell[fx > 1 - RIM] = 0
             img[sl] = cell
-    return Image.fromarray(np.clip(img, 0, 255).astype(np.uint8))
+    out = Image.fromarray(np.clip(img, 0, 255).astype(np.uint8))
+    if st.get("marks"):
+        draw_marks(out, D, st, rows + 2 * pad, cols + 2 * pad, ppc)
+    return out
+
+
+def draw_marks(im, D, st, nr, nc, ppc):
+    """G1: solid triangles along every INNER step, base on the step's visible foot, tip pointing into the deeper square;
+    count and length by the drop's doubling grade; a charcoal copy 0.05 cell under (south-east of) each pale one."""
+    dr = ImageDraw.Draw(im)
+    for R in range(nr):
+        for C in range(nc):
+            d = D(R, C)
+            if d <= 0:
+                continue
+            x0, y0 = C * ppc, R * ppc
+            n, s, w, e = D(R - 1, C), D(R + 1, C), D(R, C - 1), D(R, C + 1)
+            h = st["north"](max(0, d - n))
+            ww, we = st["side"](max(0, d - w)), st["side"](max(0, d - e))
+            for nb, side in ((n, "n"), (s, "s"), (w, "w"), (e, "e")):
+                if not (0 < nb < d):
+                    continue
+                gd = grade((d - nb) / 2.0)
+                k, ln = MARK_COUNT[gd], MARK_LEN[gd]
+                room = {"n": 1 - h, "s": 1 - h, "w": 1 - ww - we, "e": 1 - ww - we}[side] - 0.03
+                ln = min(ln, room)                              # never past the floor left in the cell
+                if ln < 0.06:
+                    continue
+                for i in range(k):
+                    t = (i + 0.5) / k                           # along the edge, 0..1
+                    b = MARK_BASE / 2
+                    if side == "n":                             # base at the foot of the north face, tip south
+                        tri = [(t - b, h), (t + b, h), (t, h + ln)]   # h: the face's foot, in cells below the edge
+                    elif side == "s":
+                        tri = [(t - b, 1.0), (t + b, 1.0), (t, 1.0 - ln)]
+                    elif side == "w":
+                        tri = [(ww, t - b), (ww, t + b), (ww + ln, t)]
+                    else:
+                        tri = [(1 - we, t - b), (1 - we, t + b), (1 - we - ln, t)]
+                    for off, col in ((0.05, MARK_DARK), (0.0, MARK_PALE)):
+                        pts = [(x0 + (x + off) * ppc, y0 + (y + off) * ppc) for x, y in tri]
+                        dr.polygon(pts, fill=tuple(int(c) for c in col))
 
 
 def main():

@@ -198,7 +198,7 @@ A disc in the liquid's colour under the feet, and an icon.
 
 ### What other top-down games do
 
-From memory, not checked [guess ~70% each]. The GPT consult that was to add to this list did not run (§9).
+From memory, not checked [guess ~70% each]. GPT's own list, with its sources, is in §10.
 
 - *The Legend of Zelda: A Link to the Past*, *Stardew Valley*, *Don't Starve*: the lower body is not drawn in shallow
   water, and a ripple sits at the cut. This is concept A.
@@ -235,7 +235,7 @@ the body's height, the whole picture is under.
 | 8 | G. The liquid as a garment | The same result as B, by hand, with 45 or more textures. |
 | 9 | I. A ring on the ground | It does not answer his words. |
 
-**The pick is A + D + C + B together** (mockup `concept_pick.png`, and the last rows of `comparison_sheet.png`). One
+**The pick is A + D + C + B together** (mockup `concept_pick.png`, and the rows named THE PICK in `comparison_sheet.png`). One
 texture of the wet pawn serves A, D and B. In a liquid: her own picture, cut at a body landmark, with the lower part
 seen through a clear surface, and the surface answering round her. On dry ground: the tide mark, with drops and
 prints. E is added for each liquid that can harm.
@@ -290,9 +290,95 @@ path drew his pawn, is answered in §1). I did not find an item named
 - Whether vanilla's `PawnCacheRenderer` can be called for a pawn at close zoom without a side effect is not tried.
 - The mockups show one colonist (female body, shirt, bob hair), facing south and lying. They do not show east or
   north, a child, an animal, a mech, a carried pawn, a held weapon, lava or a slime.
-- **The GPT consult did not run: UNRUN.** `gpt_consult.py` returned `VERDICT=AUTH exit=20` on the WSL Codex and on the
-  Windows Codex (`--codex win`) at 2:43 PM PST: "your refresh token was revoked. Please log out and sign in again."
-  The Codex login is an interactive act. The prompt is saved as `gpt_consult_prompt.md` beside this page. The command
-  to run it after a sign-in:
-  `python3 src/RimMandrake/Utils/gpt_consult.py --prompt-file design/specs/2026-11-22-pawn-in-liquid-look/gpt_consult_prompt.md -i <comparison_sheet.png> -m gpt-6.1-sol --effort high --out design/specs/2026-11-22-pawn-in-liquid-look/gpt_consult_answer.md`
-  So the ranking has had no skeptical second read.
+- The GPT consult ran on 2026-11-22 (§10). Concept J is mocked from GPT's description; GPT did not see the J mockup.
+- J's mockup shows the window in a still frame. The way it opens, its size, and how it acts when many wet pawns are
+  selected at once are not drawn.
+
+## 10. GPT's second opinion (gpt-6.1-sol, effort high, 2026-11-22, about 3:20 PM PST)
+
+Sent with `gpt_consult.py` (Linux Codex), the prompt `gpt_consult_prompt.md` and the comparison sheet as it was before
+row J. The Designer's ranking in §6 stands; GPT's ranking is a second opinion beside it.
+
+### What GPT says, in short
+
+- **GPT's ranking: F, C, B, A, E, D, G, H, I.** It puts the pawn's STATE first: swimming, downed, drowning and dead must
+  look different, and a pose (F) is the cheapest way to show that. Then the surface's answer (C), then the tide mark
+  (B), then the cut (A). It ranks D low: the wobble breaks RimWorld's strong outlines, light lines crawl at a distance,
+  and a floor shadow promises a floor that the player cannot see.
+- **Its warnings against our ranking:** A needs a composite of the pawn's picture that the near draw does not have, or
+  a cut in every node; a horizontal cut across a lying pawn can cut through her face; a carried pawn is not in the
+  water because her carrier is; a body-shaped hump in deep tar says "just under a thin coat"; lava needs its own look
+  (damage, not wetness); drowning needs a clear distress sign that holds at far zoom.
+- **Its cheapest paths:** F through `PawnRenderer.GetDrawParms` and render-node transforms (no extra draws); C through
+  flecks and effecters with shared materials (1 to 2 quads per pawn); B through a pawn shader fed by the existing
+  `MaterialPropertyBlock`s, with coat stages baked into the far-zoom cache. None of the three needs a stencil or a new
+  texture per pawn. [GPT's estimates; not measured here]
+
+### The concept that differs in kind: J, the inspection cutaway (mocked)
+
+GPT offered six concepts that are not variants of A to I: a reflection double, an enclosing volume, the inspection
+cutaway, light from the liquid, temporal echoes, and erosion. It shortlists two: the reflection and the cutaway.
+
+**J. The inspection cutaway** (mockup `concept_cutaway.png`, and the last concept row of `comparison_sheet.png`).
+When the player selects a pawn that is in a liquid, a round window opens through the liquid round her. Inside the
+window the liquid is gone: her whole picture lies on the pit floor, with its shadow, and the window's rim names the
+depth. Unselected, she is drawn as in A. Out of the liquid there is nothing to open.
+
+- Why it is different in kind: it is a view the player asks for, not a look of the body or of the liquid. GPT's
+  precedent is the X-ray scope of *Super Metroid* (a mode that shows what is hidden, not a swimming effect).
+- What it answers: the one case that no other concept answers, a pawn under a deep opaque liquid (§3: "she is there,
+  where she is, and that she is in danger"). In tar the window shows her whole; nothing else on this page does.
+- Cost [guess ~60%]: one masked quad of her picture and a ring, only for a selected wet pawn. It can reuse the picture
+  that A draws.
+- Fails: it shows nothing until she is selected, so it is not the at-a-glance sign; a player who does not know she is
+  under the tar does not select her. Many selected waders open many windows. A window in tar breaks the rule that tar is
+  opaque, so it reads as a UI mode, not as the world.
+
+**The reflection double** (not mocked): a mirrored, broken picture of her beside the point where she meets the
+surface, strongest on still oil. GPT cites Factorio's water reflections. It says "this is a liquid surface" but adds
+nothing about depth or danger, so the cutaway was mocked in its place.
+
+### GPT's answer, word for word
+
+**I’d rank F → C → B → A → E → D → G → H → I.** Your ranking prioritizes optical treatment over recognizing the pawn’s state. In the sheet’s default-size examples, D turns the body into a ragged lump; combining everything makes that worse.
+
+**1. Six additional mechanisms**
+
+These are distinct visual mechanisms; several are transfers from other effects, rather than established swimming treatments.
+
+| Concept | What FlowWorks would draw | Real precedent |
+|---|---|---|
+| **Reflection double** | A recognizable, inverted pawn reflection beside the contact point. Stronger on still oil; broken on moving water. | **Factorio** renders entity reflections into its water system. This establishes a reflective surface without altering the original character. [Developer explanation](https://www.factorio.com/blog/post/fff-323) |
+| **Enclosing volume** | A translucent three-dimensional-looking globule surrounding the pawn, with its own contour and highlights. Useful for engulfing slime. | **Sonic 3 & Knuckles:** Bubble Shield draws a bubble around Sonic and grants underwater breathing. Borrow cautiously: it strongly implies protection. [SEGA manual](https://manuals.sega.com/origins/en/index.html?pid=11) |
+| **Inspection cutaway** | Selecting a submerged pawn opens a local window through opaque liquid, revealing the complete pawn and depth. | **Super Metroid:** the X-Ray Scope reveals hidden passages and block information within its beam. This is a visibility-mode precedent, not a swimming effect. [Nintendo manual](https://www.nintendo.com/es-es/games/oms/snes-classic/manuals/super-metroid/manual.pdf) |
+| **Incident illumination** | Lava lights the pawn’s underside orange; luminous reaction liquor illuminates nearby bodies. The source belongs to the environment. | **Terraria:** lava emits flickering orange light. This differs from E’s particles attached to the pawn. [Lighting reference](https://terraria.wiki.gg/wiki/Light_source) |
+| **Temporal echoes** | One or two fading copies of the actual pawn show resistance or supernatural liquid drag. | **Celeste:** dash afterimages repeat Madeline’s silhouette. A transferable temporal technique; probably misleading for ordinary water because it suggests speed. [Developer-released player code](https://github.com/NoelFB/Celeste/blob/master/Source/Player/Player.cs) |
+| **Destructive erosion** | Acid progressively removes corpse/apparel fragments; lava consumes the silhouette over time. This communicates irreversible destruction. | **Noita:** destructible pixel matter and rigid bodies provide the precedent. **Not sure** whether its living character sprite itself erodes; I would restrict the borrowing to destruction/corpses. [Developer technical talk](https://www.youtube.com/watch?v=prXuyMCgbTc) |
+
+Only reflection and inspection would enter my general-purpose shortlist. Novelty alone does not make the other four appropriate.
+
+**2. Where your ranking breaks**
+
+- **A does not become simple because it uses the pawn’s pixels.** There is no finished “own picture” in the near render path without compositing. Per-node clipping avoids that capture, but requires consistent coordinates across every node.
+- **Landmarks work for upright humanlikes.** Rotating a lying sprite does not produce anatomical elevation. A horizontal screen cut across a sideways pawn can amputate her face. Children need scaled profiles; quadrupeds need different anatomy; mechs need chassis-specific treatment.
+- **Carried pawns expose a fundamental error:** occupying the carrier’s water cell does not mean touching water. Use the carried pawn’s placement and support state. Never inherit the carrier’s immersion automatically.
+- **D is substantially overranked.** Wobble breaks RimWorld’s strong outlines; caustics become crawling noise at distance. Separate node distortion can open seams. A floor shadow falsely promises visible bottom geometry and credible depth.
+- **Opaque liquid needs restraint.** A recognizable body-shaped tar hump implies the body lies immediately beneath a thin coating. At substantial depth, show the surface and an explicit rescue cue.
+- **B is strongest after exposure**, but “highest line reached” mishandles lying and rolling. Track affected body regions or coverage. Water should preserve apparel identity; black tar can erase it.
+- **C is more than polish:** motion and contact sell immersion while preserving identity. However, persistent furrows can resemble trenches, and footprints need strict lifetime/count limits.
+- **Lava needs a separate visual contract.** Ordinary wetness and leisurely swimming imply survivability. Show the actual damage/resistance state.
+- **Swimming, downed, drowning and dead require different signals.** Head-only rendering cannot distinguish them. Give drowning an unmistakable distress animation plus a zoom-stable warning. Decorative bubbles are ambiguous.
+
+I would build **F’s state language first**, **C’s contact response second**, **B’s aftermath third**. Add A for readable upright depth stages; reserve D for restrained close-view enhancement. Judge everything at normal zoom before approving enlarged samples.
+
+**3. Cheapest paths for my top three**
+
+Costs below are architectural estimates, not measured timings. Exact Harmony signatures need checking against your installed 1.6 assembly.
+
+| Rank | Cheapest practical render path | Incremental per-pawn cost |
+|---|---|---|
+| **1 — F: discrete states/poses** | Reuse vanilla swimming and existing facing art. Adjust `PawnDrawParms` through `PawnRenderer.GetDrawParms`; use render-node transforms for head/body relationships. Apply whole-pawn float/bob transforms at the final submission, including the cached quad. Proper new limb poses require authored assets. | **0 extra geometry draws** when replacing existing transforms. Near: work proportional to affected nodes; far: one matrix adjustment. Internal pose changes require cache refresh; continuous internal animation can sacrifice caching. |
+| **2 — C: contact response** | Shared transparent quad materials through Flecks/Effecters: contact ellipse, short wake, bounded drips. Spawn from simulation/state changes; use actual draw placement for attached effects. A custom render node can supply an attached lip. | Budget **1–2 additional quads** per visible pawn, plus a capped trail. Shared materials permit batching; quads do not necessarily equal separate GPU draw calls. No pawn capture or cache invalidation. |
+| **3 — B: persistent coating** | Custom compatible pawn shader; supply coverage, wetness and colour through existing `MaterialPropertyBlock`s at the worker’s `GetMaterialPropertyBlock` stage. Mask using each node’s sampled alpha. For distance, bake discrete coating stages into the pawn cache and refresh only on stage changes. | **0 additional geometry passes** if integrated into existing shaders. Near: parameter writes across affected nodes plus fragment arithmetic; optional one noise sample. Far: ordinary cached draw, with occasional regeneration. Compatibility across custom shaders is the main expense. |
+
+For B, preserve existing shader features and property-block values. MaterialPropertyBlock supplies uniforms; it cannot switch shader keywords or render state. Use shared material variants where necessary. None of these three needs stencil or a new per-pawn render texture. [Unity API documentation](https://docs.unity3d.com/2022.3/Documentation/ScriptReference/MaterialPropertyBlock.html)

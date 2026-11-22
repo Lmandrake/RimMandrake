@@ -259,8 +259,60 @@ def lying(pic):
     return pic.rotate(38, resample=Image.BICUBIC)
 
 
+def brackets(g, box, rgb=(235, 235, 235), arm=34, w=5):
+    """RimWorld-style selection brackets: four corner Ls round a box."""
+    d = ImageDraw.Draw(g)
+    x0, y0, x1, y1 = box
+    for x, y, sx, sy in ((x0, y0, 1, 1), (x1, y0, -1, 1), (x0, y1, 1, -1), (x1, y1, -1, -1)):
+        d.line((x, y, x + sx * arm, y), fill=rgb + (255,), width=w)
+        d.line((x, y, x, y + sy * arm), fill=rgb + (255,), width=w)
+
+
+DEPTH_LABEL = {"stand": "1.2 m", "lie_shallow": "0.2 m", "lie_deep": "2.0 m"}
+
+
+def cutaway(liq, state):
+    """J (GPT, 2026-11-22): the INSPECTION CUTAWAY. Unselected she is drawn as in A. When she is selected, a round
+    window opens through the liquid round her: inside it the liquid is gone, her WHOLE picture lies on the pit floor
+    with its shadow, and the window's rim names the depth. Out of the liquid there is nothing to open."""
+    g = render("cut", liq, state)
+    pic, feet, waist = pawn()
+    cx, cy = P // 2, P // 2 + 10
+    if state == "after":
+        bb = pic.getbbox()
+        ox, oy = cx - pic.size[0] // 2, cy - pic.size[1] // 2
+        brackets(g, (ox + bb[0] - 12, oy + bb[1] - 12, ox + bb[2] + 12, oy + bb[3] + 12))
+        return g
+    body = pic if state == "stand" else lying(pic)
+    r = int(0.80 * S)
+    floor = tuple(int(a * 0.7 + b * 0.3) for a, b in zip((46, 36, 27), LIQ[liq]["rgb"]))
+    inside = Image.new("RGBA", (P, P), floor + (255,))
+    inside.alpha_composite(Image.fromarray((np.dstack([noise(P, P, 30, 21)[..., None].repeat(3, 2) * 30,
+                                                       np.full((P, P), 60.0)])).astype(np.uint8)))
+    place(inside, shadow(body, 10, 12, 0.45), cx, cy)
+    place(inside, body, cx, cy)
+    m = Image.new("L", (P, P), 0)
+    ImageDraw.Draw(m).ellipse((cx - r, cy - r, cx + r, cy + r), fill=255)
+    g.paste(inside, (0, 0), m.filter(ImageFilter.GaussianBlur(1.5)))
+    d = ImageDraw.Draw(g)
+    d.ellipse((cx - r, cy - r, cx + r, cy + r), outline=(206, 218, 232, 255), width=7)
+    d.ellipse((cx - r - 7, cy - r - 7, cx + r + 7, cy + r + 7), outline=(10, 10, 12, 255), width=5)
+    bb = body.getbbox()
+    ox, oy = cx - body.size[0] // 2, cy - body.size[1] // 2
+    brackets(g, (ox + bb[0] - 12, oy + bb[1] - 12, ox + bb[2] + 12, oy + bb[3] + 12))
+    lab = DEPTH_LABEL[state]
+    f = ImageFont.truetype(FONTB, 44)
+    tx, ty = cx + int(r * 0.42), cy + int(r * 0.78)
+    tw = d.textlength(lab, font=f)
+    d.rectangle((tx - 10, ty - 6, tx + tw + 10, ty + 52), fill=(12, 12, 14, 235))
+    d.text((tx, ty), lab, font=f, fill=(236, 232, 222, 255))
+    return g
+
+
 def render(concept, liq, state):
-    """One panel. concept: cut | coat | surface | under | pick. state: stand | lie_shallow | lie_deep | after."""
+    """One panel. concept: cut | coat | surface | under | pick | cutaway. state: stand | lie_shallow | lie_deep | after."""
+    if concept == "cutaway":
+        return cutaway(liq, state)
     L = LIQ[liq]
     pic, feet, waist = pawn()
     g, box = scene(liq, dry=(state == "after"))
@@ -409,6 +461,8 @@ CONCEPTS = [
      "with light lines and a shadow on the floor. In tar: her own shape, draped in tar."),
     ("pick", "THE PICK: A + D + C + B together", "Cut at the line, the body seen under a clear surface, the surface "
      "answering, and the tide mark kept afterwards."),
+    ("cutaway", "J  INSPECTION CUTAWAY (GPT)", "Unselected: as in A. Selected: a round window opens through the liquid; "
+     "inside it her whole picture lies on the floor, and the rim names the depth. GPT's concept, 2026-11-22."),
 ]
 
 
@@ -463,8 +517,8 @@ def comparison():
     H = head + (len(CONCEPTS) + 1) * rowh + fp + 60
     sh = Image.new("RGB", (W, H), (26, 26, 28))
     d = ImageDraw.Draw(sh)
-    text(d, (pad, 8), "A colonist in a FlowWorks liquid: today, four concepts, and the pick", 26, bold=True)
-    text(d, (pad, 42), "Rows 2 to 6 are OFFLINE MOCKUPS from vanilla pawn textures. Row 1 is his capture of 2026-11-22.", 14,
+    text(d, (pad, 8), "A colonist in a FlowWorks liquid: today, four concepts, the pick, and GPT's cutaway", 26, bold=True)
+    text(d, (pad, 42), "Rows 2 to 7 are OFFLINE MOCKUPS from vanilla pawn textures. Row 1 is his capture of 2026-11-22.", 14,
          (160, 160, 160))
     for i, (_, _, lab) in enumerate(cols):
         text(d, (left + i * (cp + pad), head - 20), lab, 15, bold=True)

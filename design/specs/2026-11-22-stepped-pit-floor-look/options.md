@@ -11,8 +11,9 @@ and it does not."*
 ## Where to look
 
 - Comparison sheet (full size): `D:\ClaudeWork\rimmandrake\showings\RIMMANDRAKE_ASK_GPT_HOW_TO_DRAW_STEPPED_PIT_FLOOR_HE_COULD_NOT_READ_IT\comparison.png`
-  (half size in this folder: `img/comparison.png`). A row for each style. The columns are case (a) close, case (a) at
-  default zoom, case (b) close, case (b) at default zoom. The default-zoom shots are shown at 2x so that you can see them.
+  (half size in this folder: `img/comparison.png`). A row for each style: Today, A, B, C, P, then GPT's G1, G2, G3 and
+  the new pick (last row). The columns are case (a) close, case (a) at default zoom, case (b) close, case (b) at default
+  zoom. The default-zoom shots are shown at 2x so that you can see them.
 - Each mockup on its own: the `mockups\` folder beside the sheet, `<style>__<case>__close.png` and `__default_zoom.png`.
 - The game captures: the `captures\` folder beside the sheet. This folder has `img/captures_close_six_pits.png` and
   `img/captures_default_zoom_six_pits.png`.
@@ -111,6 +112,39 @@ checked against the real game frames before any option was judged: its shapes an
   separates the floors at default zoom, where the walls are thin.
 - **Cost.** A + B + the tint fix. All of it is per square, and each square reads only its 3x3.
 
+### G1. Drop marks (GPT's idea, mocked)
+
+- **What it draws.** Solid pale triangles along each inner step. The base is on the step's visible foot, and the tip
+  points into the deeper square. A charcoal copy sits 0.05 cell under each one. The count and the length grow with the
+  drop: 1 triangle of 0.13 cell for 0.5 m, 2 of 0.18 for 1 m, 3 of 0.24 for 2 m, 4 of 0.30 for 4 m, 5 of 0.36 for 8 m.
+  The base is 0.12 cell wide. Outer walls stay as today. Inner steps have no black line.
+- **What the mockup shows.** Close up, each step reads as "down this way", from every direction. At default zoom the
+  triangles are pale ticks: they show WHERE the steps are, but their direction is barely visible. A row of pale teeth
+  can read as a spike trap, which RimWorld has. Where two inner steps meet at a corner, the marks crowd (case (a), the
+  middle square). The mockup shortens a mark to the floor that is left in its cell.
+- **Cost.** Up to 5 triangles on each inner edge, from the 4 neighbours.
+
+### G2. Depth patterns (GPT's idea, mocked)
+
+- **What it draws.** A coarse monochrome pattern on the floor, aligned to the world, with no cell borders. The pattern
+  comes from the floor's absolute depth: sparse small squares at 0.5 m, larger squares at 1 m, diagonal strokes at 2 m,
+  crossed strokes at 4 m, solid diamonds at 8 m. The backing is the floor's hue at 35 % value; the marks are at 15 %.
+- **What the mockup shows.** It is the strongest read at default zoom of all the rows: each depth is a clearly
+  different patch, in both cases, and the patch does not depend on colour. But it does not say which patch is deeper
+  until the player learns the code. The floor reads as tiles or carpet, not as dug earth. The 35 % backing makes the
+  floor brighter than today's floor, so a deep pit looks less deep.
+- **Cost.** One more floor quad per square, from a 5-tile pattern atlas. It needs no neighbours.
+
+### G3. GPT's own pick: G1 + G2 + value steps (mocked)
+
+- The patterns of G2, the marks of G1, and a value step with depth on the pattern's backing (42 % value at 0.5 m to 27 %
+  at 8 m). The patterns separate the floors, the value says which floor is deeper, and the marks show the step.
+
+### The new pick: G3 + A's walls (mocked, last row)
+
+- G3, with A's walls: the outer walls keep growing past 2.5 m, and each square's side strip comes from its own floor.
+  This keeps his words (the east and west walls show the step) in the pick, which G1 to G3 alone do not.
+
 ### Ideas judged and not mocked
 
 - **D. Depth numbers.** A toggle overlay, like the game's beauty overlay, writes the depth on each square. The mouse-over
@@ -132,25 +166,128 @@ checked against the real game frames before any option was judged: its shapes an
 
 ## Recommendation
 
-Pick **P** (A + B with the floor tint fixed). The one change with the most gain for the least cost is **A's side strip
-sized by each square's own floor, with no cap at 2.5 m**: it answers his words directly. Make the tint fix in any case:
-the code already promises it, and today it does not draw.
+Pick **the new pick: G3 + A's walls, with the floor tint fixed** (the last row of the sheet). It replaces P.
 
-Then build the pick and judge it live on stations 34 to 39 and on the six stepped pits of this page. Do not judge it by
-these mockups only.
+- The Conductor judged that A and B are too subtle at default zoom, and that only the colour option reads at a glance.
+  The mockups agree. In the new rows, the depth patterns (G2) are the one cue that read at default zoom in both cases
+  without colour. The value step (from C, in G3) says which floor is deeper. The drop marks (G1) say where the step is
+  and, close up, which way is down. A's walls answer his words about the east and west walls.
+- The one change with the most legibility for the least cost is now **the depth pattern (G2)**: one floor quad per
+  square from a 5-tile atlas, with no neighbour reads.
+- Risks to judge live: the patterns look like tiles, not earth; the pale teeth can read as a spike trap (a different
+  mark shape or a darker mark may be needed); marks crowd at inner corners; A's 0.95 cell face leaves little floor in a
+  narrow deep square.
+- Not mocked: GPT's wall depth register (idea 3), its perimeter collar (idea 4) and its motion cue (idea 5). The hole
+  and island cases (d1, d2), which GPT says the marks will separate, were not mocked [guess ~70% that the marks do
+  separate them, from the geometry].
 
-## GPT's answer: not obtained
+Make the tint fix in any case: the code already promises it, and today it does not draw. Then build the pick and judge
+it live on stations 34 to 39 and on the six stepped pits of this page. Do not judge it by these mockups only.
 
-The brief said to ask GPT (gpt-6.1-sol, high), and that was not possible. On 2026-11-22, at about 3 PM PST, every Codex
-login on Archmagi was revoked: `gpt_consult.py` exited 20 (AUTH, "refresh token was revoked") on the Linux login, on the
-Windows login and on `.codex_arena_judge`. The Chrome route was also down, because Chrome was not running. That is filed as
-`RIMMANDRAKE_RELOGIN_CODEX_CONSULT_EVERY_HOME_REVOKED`. The question is ready in `gpt_prompt.md`, with the eight captures.
-To send it after a login:
+## GPT's answer (gpt-6.1-sol, effort high, 2026-11-22, about 3:20 PM PST)
 
-    python3 src/RimMandrake/Utils/gpt_consult.py --prompt-file design/specs/2026-11-22-stepped-pit-floor-look/gpt_prompt.md \
-      -i <each of the 8 captures named in the prompt> -m gpt-6.1-sol --effort high --out <answer.md>
+Sent with `gpt_consult.py` (Linux Codex): the prompt is `gpt_prompt_sent.md` (the saved `gpt_prompt.md` plus a section
+on the four mockups), with the eight captures and `comparison.png` as it was before the G rows. The answer, word for
+word:
 
-This page has no GPT ideas in it. The options above are this run's own.
+**I would add a deliberate visual language for depth.** Your mockups show why lighting alone is struggling: at default zoom, players see dark compartments and pale dividers before they see height.
+
+The two strongest new approaches are **directional drop marks** and **depth-patterned floors**. One explains the boundary; the other makes whole regions distinguishable.
+
+1. **Directional drop marks: triangles that point onto the lower floor**
+
+   Draw small, solid triangles along each internal height boundary. Their bases touch the boundary; their tips point into the deeper square. Use the same treatment on all four orientations, including the currently almost invisible north-facing step.
+
+   For an artist’s first mockup:
+
+   | Drop | Triangles per cell edge | Length into lower square |
+   |---|---:|---:|
+   | 0.5 m | 1 | 0.13 cell |
+   | 1 m | 2 | 0.18 cell |
+   | 2 m | 3 | 0.24 cell |
+   | 4 m | 4 | 0.30 cell |
+   | 8 m | 5 | 0.36 cell |
+
+   Make each triangle’s base **0.12 cell wide**, evenly distributed along the edge. Use pale warm grey, approximately 75% value, with a charcoal copy offset about **0.05 cell** underneath. These are contrasting geometric marks, not outlined textures.
+
+   At default zoom, their bases are roughly three pixels wide. Direction survives even when counting becomes difficult. More and longer teeth mean a greater drop; this is a compressed scale, not one tooth per metre. Add another grade around 16 m.
+
+   Crucially, the central hole gets arrows pointing **inward**; the raised island gets arrows pointing **outward**. That breaks their current visual ambiguity.
+
+   **Cost:** a small bounded set of triangles per unequal edge, owned by the deeper cell; immediate neighbours suffice. Shorten marks near corners to prevent overlap.
+
+   **Failures:** conspicuously diagrammatic; numerous small steps can look busy. The scale needs learning. Colour blindness is immaterial because shape carries the information. Under opaque liquid, marks must become an explicit overlay rather than submerged decoration.
+
+2. **Depth-patterned floors: give each depth range a recognisable surface signature**
+
+   Keep the earth material, but superimpose a coarse, monochrome pattern. Unlike C, this remains distinguishable when colour and brightness are distorted by water, lighting, or displays.
+
+   Use one world-aligned pattern across equal-depth cells, with **no cell borders**. For the initial mockup, use a medium-dark earth backing, around 35% value, and charcoal marks around 15%:
+
+   | Absolute floor depth | Pattern |
+   |---|---|
+   | 0.5 m | Sparse squares, 0.10 cell across, spaced 1 cell apart |
+   | 1 m | Squares enlarged to 0.20 cell, same spacing |
+   | 2 m | Diagonal strokes, 0.10 cell thick, spaced 0.50 cell apart |
+   | 4 m | The same strokes crossed in both directions |
+   | 8 m | Solid diamonds, 0.32 cell across, on a 0.50-cell lattice |
+
+   These are **absolute-depth samples, not edge-drop sizes**. Map intermediate depths into clearly defined ranges. Extend the vocabulary beyond 8 m rather than squeezing everything deeper into black.
+
+   The L should become an unmistakable patch of one pattern beside another. The staircase becomes three bands of different surface structure. Once learned, the pattern identifies approximate depth even away from a wall.
+
+   **Cost:** one additional floor quad using a small pattern atlas, with world-aligned coordinates; no connectivity search.
+
+   **Failures:** the patterns are an information convention, not natural geology. Fine strokes alias, so judge them at actual 23-pixel scale. Ground clutter and pawns obscure small regions. Under clear water, reduce water-detail competition; under opaque liquids, use the pattern in a depth overlay. Colour blindness does not remove the distinction.
+
+Your existing mockups support this direction:
+
+- **A:** Removing interior black lines helps grouping. But wider strips are still bevels, not a convincing wall profile. The 0.48-cell side strips also consume almost half a boundary cell and can make narrow floors look obstructed.
+- **B:** The lip helps locate a boundary close up. The shadow lands on an already dark floor, so it contributes little at default zoom. Neither reliably communicates magnitude.
+- **C:** The strongest overview treatment. Its cue occupies the entire floor area. Preserve its value separation; the blue shift alone will compete with water and can suggest a different material.
+- **P:** Better close-up construction, but the overview still depends heavily on narrow edges. It needs C’s conspicuous floor separation, or an equally strong area cue.
+
+3. **Wall depth registers: show exposed depth without widening the wall**
+
+   On each outer east/west wall cell, reserve a fixed strip about **0.24 cell wide**. Inside it, draw a vertical stack of alternating pale and charcoal blocks, each about **0.18 cell wide × 0.10 cell long**. Show one through five blocks for the doubling grades above.
+
+   Register each stack to the same northward position within its cell. Where the floor deepens, the next cell’s stack visibly lengthens. A short connector at that boundary makes the change conspicuous.
+
+   This is a **schematic depth register**, not a physical wall profile. It answers the owner’s specific expectation: the side wall visibly changes where the floor changes, without swallowing the floor.
+
+   **Cost:** a few small quads per boundary cell; local height determines the stack.
+
+   **Failures:** needs a learned scale, and wall-only information cannot explain an isolated interior feature. Thin stripes disappear at default zoom, so use broad blocks. Monochrome survives colour blindness; submerged registers need an overlay to remain reliable.
+
+4. **A continuous perimeter collar: establish “one excavation”**
+
+   Give the excavation’s outer boundary a continuous, distinctive ground-level collar: approximately **0.10–0.14 cell wide**, neutral stone, with the usual black outer outline. Keep this collar entirely absent from internal ledges.
+
+   The collar establishes one enclosing shape. Internal divisions then sit inside that shape rather than repeating the complete visual signature of another pit.
+
+   **Cost:** border strips and local corner joins. Distinguishing an undug neighbour from a dug neighbour requires no flood fill.
+
+   **Failures:** this communicates grouping, not magnitude. It cannot fix the hole/island reversal alone. Decks can hide it; retain it around visible openings. It works in monochrome and is independent of deep-value saturation.
+
+5. **A brief downhill motion cue**
+
+   When digging changes a floor, or while the pit is selected, send a short sequence of contrasting dashes across each changed boundary **toward the lower square**, then fade them. Think of a surveying animation rather than continuously falling dirt.
+
+   Motion supplies direction when static shading is ambiguous. It is particularly useful for the reversed central-hole/island pair and submerged steps.
+
+   **Cost:** a narrow animated overlay strip per active unequal edge; shared animation can avoid individual particles.
+
+   **Failures:** screenshots lose it, reduced-motion settings need a static substitute, and permanent motion becomes distracting. Speed is a poor magnitude scale. This is supplementary feedback, not the primary depth treatment.
+
+**For the outer east/west walls**, keep the ground-level rim continuous. If retaining A, make the **inner foot boundary** jog where floor depths change, with a short transverse join. Call that a stylised stepped strip; widening alone will not produce a readable profile. I would favour fixed-width walls plus the depth registers over further expansion.
+
+**For a south-facing internal step**, reserve the complete black-rim-and-wall treatment for the excavation perimeter. Give the ledge a modest material face, downhill marks, and a clearly different lower-floor pattern. Apply the directional marks equally to reverse-facing steps. That distinction matters more than another shadow.
+
+**My ranking:** floor patterns plus directional marks first; C’s restrained value separation alongside them; wall registers next; perimeter collar for grouping; motion last.
+
+**The cheapest high-impact experiment is the directional marks.** Mock them on every orientation, especially the hole and island, at actual default zoom.
+
+For liquid and covers, visibility needs an explicit policy: show physical cues through clear water and deck openings; use an intentional depth overlay where opaque liquid or decking obscures them. Concealed lids show nothing. No physical floor treatment can remain legible through an opaque surface.
 
 ## How it was made
 
@@ -158,5 +295,5 @@ This page has no GPT ideas in it. The options above are this run's own.
   `stage_stepped_pits.py`. Each pit's depths were read back and agree with the request.
 - Captured with `capture_stepped_pits.py`. Close shots were at rootSize 8, the floor of this install, about 73 px a cell.
   Default-zoom shots were at rootSize 24, about 23 px a cell.
-- The mockups were drawn with `mock_stepped_pits.py tex <out>`.
+- The mockups were drawn with `mock_stepped_pits.py tex <out>`. The G rows use GPT's own numbers, from its answer above.
 - ArchBig was not touched (he was walking on it under his hold).
