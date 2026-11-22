@@ -12,7 +12,7 @@ now, offline only"). Its table matches the pilot's columns (`design/concepts/Exp
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`: "Yes, lock the other four mods").
   Code exists and is large: `src/RimMandrake/FlowWorks/` (C# mod, a 325+ case C# SelfTest, about 168 Python selftests,
   a northstar proof harness).
-- **Stage now:** Stage 8, his live walk, since 2026-11-22 3:42 AM PST (`version/stage_record.json`).
+- **Stage now:** Stage 6, in-game acceptance, since 2026-11-22 3:48 PM PST (`version/stage_record.json`).
 - **Bars:** 57 = 29 inventory rows of `record.json` + 28 leaves of `tree.json` (`coverage_judge.required_ids()`); 59 at the
   lock, his card of 2026-11-14 added `inv_geyser_tub` and `inv_liquid_coating` (61), and his card of 2026-11-14 ~9:43 PM
   PST moved the four wetting bars to 0.2.0 (interventions below; `version/next_version/README.md`).
@@ -22,7 +22,7 @@ now, offline only"). Its table matches the pilot's columns (`design/concepts/Exp
 - **Held look statements for this mod:** 103 rows in five files of `design/RimMandrake/validation_holding/` (2026-11-12:
   56 rows; 2026-11-13 morning: 18; 2026-11-13 dig interface: 2; 2026-11-13 evening: 5; 2026-11-14: 22); 83 are placed
   in `version/test_table.json`, all 103 placed. [measured, preflight C8, 2:40 PM PST]
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-22 3:42 AM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-22 3:48 PM PST).
 
 ### The vision (his root paragraph, approved 2026-11-04, OWNER:1793794915205594887; eight lines in `version/vision.md`)
 
@@ -479,4 +479,14 @@ None open; question 3 (the dig speed) is answered in the history entry of 2026-1
 - Checks passed: order, by, version, hold, walk_brief.
 - Was, "Stage now": - **Stage now:** Stage 7, the walk brief, since 2026-11-22 3:29 AM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-22 3:29 AM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-22 3:48 PM PST, stage change: His live walk (Stage 8) to In-game acceptance (Stage 6) (by BENCH)
+
+- Why: walk 2 not passed: every finding is a fault only the game showed, in Verse-bound draw, pathing or UI code (precedent: visit 5 road back, in_game to in_game); at Stage 6 the tick gives each open item one fixer run before visit 8, and visit 8 reruns only the checks the fixes touch
+- Checks passed: order, by, version, hold.
+- Owner said: OWNER:1795388411626379281
+- Walk result: design/concepts/FlowWorks/version/walk_brief/walk_2_result.json
+- Was, "Stage now": - **Stage now:** Stage 8, his live walk, since 2026-11-22 3:42 AM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-22 3:42 AM PST).
 - Record: `version/stage_record.json`.

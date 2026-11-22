@@ -34,6 +34,13 @@ try:
           L.reduce(L.read(root, MOD))["stage"])
     MT.ledger_stage_move(root, MOD, "in_game", "offline_build", "BENCH")
     check("a road back moves it back", L.reduce(L.read(root, MOD))["stage"] == "offline_build")
+    # FlowWorks 2026-11-22: his_walk -> in_game happened on 2026-11-21 too, and the second one was taken as a duplicate
+    # (same idempotency key), so the ledger kept the stage of whatever move came last before it
+    MT.ledger_stage_move(root, MOD, "offline_build", "in_game", "BENCH", move=3, at="2026-11-22T15:00:00-08:00")
+    MT.ledger_stage_move(root, MOD, "in_game", "offline_build", "BENCH", move=4, at="2026-11-22T15:10:00-08:00")
+    MT.ledger_stage_move(root, MOD, "offline_build", "in_game", "BENCH", move=5, at="2026-11-22T15:20:00-08:00")
+    check("a transition made a second time still reaches the ledger", L.reduce(L.read(root, MOD))["stage"] == "in_game",
+          L.reduce(L.read(root, MOD))["stage"])
     check("the ledger still lints clean", not L.lint(root, MOD, None)[0], L.lint(root, MOD, None)[0][:2])
 finally:
     shutil.rmtree(root, ignore_errors=True)

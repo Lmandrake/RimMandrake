@@ -2,9 +2,9 @@
   "schema": 1,
   "mod": "FlowWorks",
   "version": "0.1.0",
-  "stage": "his_walk",
-  "stage_label": "His live walk (Stage 8)",
-  "since": "2026-11-22T03:42:04-08:00",
+  "stage": "in_game",
+  "stage_label": "In-game acceptance (Stage 6)",
+  "since": "2026-11-22T15:48:09-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -363,6 +363,24 @@
         "version",
         "hold",
         "walk_brief"
+      ]
+    },
+    {
+      "from": "his_walk",
+      "to": "in_game",
+      "at": "2026-11-22T15:48:09-08:00",
+      "by": "BENCH",
+      "why": "walk 2 not passed: every finding is a fault only the game showed, in Verse-bound draw, pathing or UI code (precedent: visit 5 road back, in_game to in_game); at Stage 6 the tick gives each open item one fixer run before visit 8, and visit 8 reruns only the checks the fixes touch",
+      "unit": "rm-detached-bench-rimmandrake-route-flowworks-walk-two-fin-1795388428",
+      "confirmed": {
+        "owner_said": "OWNER:1795388411626379281",
+        "walk_result": "design/concepts/FlowWorks/version/walk_brief/walk_2_result.json"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold"
       ]
     }
   ],

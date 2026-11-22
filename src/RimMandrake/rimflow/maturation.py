@@ -1174,15 +1174,19 @@ def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, w
 
 # ---- the move --------------------------------------------------------------------------------------------------------
 
-def ledger_stage_move(root, mod, cur, to, by):
+def ledger_stage_move(root, mod, cur, to, by, move=None, at=None):
     """A mod that has a ledger keeps its stage equal to the stage record's: one DISPATCH stage.accepted per move (a
     backfill alone left ExplosiveKnockback's ledger at offline_build after it moved to in_game). -> the event id, or
     None for a mod with no ledger."""
     import modledger
     if not os.path.isdir(os.path.join(root, "design", "concepts", mod, "ledger")) and not modledger.read(root, mod):
         return None
-    return modledger.append(root, mod, "DISPATCH", "stage.accepted", "stage",
-                            body={"from": cur, "to": to, "by": by}, env_writer=None)
+    # move (its number on the record) and at keep a transition made a second time from reading as a duplicate of the
+    # first: the idempotency key is derived from the body (FlowWorks his_walk -> in_game, 2026-11-21 and 2026-11-22)
+    body = {"from": cur, "to": to, "by": by}
+    if move is not None:
+        body.update(move=move, at=at)
+    return modledger.append(root, mod, "DISPATCH", "stage.accepted", "stage", body=body, env_writer=None)
 
 
 def ledger_version_open(root, mod, new, by, why):
@@ -1355,7 +1359,7 @@ def advance(root, mod, to, by, why, steward=None, conductor=None, owner=None, wa
     except MovedMeanwhile as e:
         res["ok"], res["moved_meanwhile"] = False, str(e)
         return res
-    ledger_stage_move(root, mod, cur, to, by)
+    ledger_stage_move(root, mod, cur, to, by, move=len(rec["moves"]), at=move["at"])
     if first:
         # the pass is made and stays made; landing and tagging it can only add res["tag"] or res["untagged"]
         res.update(tag_pass(root, mod, rec.get("version"), paths=pass_paths(root, mod, list(first),
@@ -4478,8 +4482,8 @@ def walk_result_md(mod, ver, n, data, titles, words):
          "- His words ending the walk: \"%s\" (OWNER:%s)." % (data["owner_said"].get("words"),
                                                              data["owner_said"].get("tsn"))
          if data.get("owner_said") else "- Ended by a Conductor decision: %s." % data.get("conductor_decision"),
-         "- Road back: Stage %s to %s, recorded %s by %s (`maturation.py walk-result`)." % (
-             NUM["his_walk"], label(data["to"]), data["at"], data["by"]),
+         "- Road back: %s to %s, recorded %s by %s (`maturation.py walk-result`)." % (
+             label("his_walk"), label(data["to"]), data["at"], data["by"]),
          "- Route item: `%s`." % data.get("item"), "- Why: %s" % data.get("why"), ""]
     if data.get("passes"):
         L += ["## Passes he stated", ""] + ["- %s" % p for p in data["passes"]] + [""]

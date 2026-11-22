@@ -45,6 +45,9 @@ CLASSED = {
     ("tick", "yes", "paused"): "old wrong: a planned stop (a pipeline pause, the step disabled) or an unclassed row the "
                                "tick's own _klass rule pauses (not_offline, hand_step, ready) printed 'automatic'",
     ("tick", "paused", "ceiling"): "refined: a ceiling is its own result, with its release command",
+    ("why", "none", "off"): "old wrong: a stage switch (`pipe off stage:<stage>`) blocks a mod that stands at that stage; "
+                            "the old why ignored it. Seen 2026-11-22 when FlowWorks went back to in_game (revs 76 and "
+                            "79 hold stage:in_game off): the case reads each mod's live stage record",
     ("owed", "kept", "dropped"): "the identity home's rule (item_identity.item_mod): a held mod named by its initials "
                                  "or a 7+ letter word of its name is that mod; the old word match missed it",
 }
