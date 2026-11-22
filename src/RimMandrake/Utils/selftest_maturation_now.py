@@ -12,7 +12,7 @@
 7 when stage.json and VERSION.json disagree about a mod, the page says so
 Round 2 (the owner, 2026-11-14 ~12:25 PM PST: yellow arrows where the Conductor intervened, cycling, what needs a reaction,
 phone images):
-8 every "CONDUCTOR INTERVENED" journal line is parsed and marked; a malformed one is listed under Needs Conductor
+8 every "CONDUCTOR INTERVENED" journal line is parsed and marked; a malformed one is a page defect, not a need
 9 runs are placed on stages and counted: a stage run twice reads CYCLED x2 with a derived relaunch arrow
 10 the reaction lists hold only real things (open question, answered one dropped, hold and release, long run, failed run)
 11 what cannot be measured reads UNMEASURED (no run records, no tokens, no dollars, no stage.json), never 0 or blank
@@ -384,7 +384,8 @@ def p8_interventions(d, page):
     # the live tree: every journal line is on the page (count measured by grep here, not by the generator)
     want = {}
     for f in glob.glob(os.path.join(REPO, "design", "concepts", "*", "journal.md")):
-        n = sum(1 for ln in open(f, encoding="utf-8") if "CONDUCTOR INTERVENED" in ln)
+        n = sum(1 for ln in open(f, encoding="utf-8")       # a line that starts with it (needs-conductor page)
+                if re.sub(r"^\W*", "", ln.strip()).upper().startswith("CONDUCTOR INTERVENED"))
         if n:
             want[os.path.basename(os.path.dirname(f))] = n
     check("8 the live journals hold intervention lines to test against", sum(want.values()) >= 1, "none")
@@ -401,8 +402,9 @@ def p8_interventions(d, page):
         j = os.path.join(t, "design", "concepts", "FlowWorks", "journal.md")
         open(j, "a").write("\n" + BAD_IV + "\n")
         d2 = data_of(t)
-        check("8 a malformed journal line is listed under Needs Conductor",
-              any("cannot read" in x and "stage three" in x for x in d2["needs"]["conductor"]), "%r" % d2["needs"]["conductor"][-3:])
+        check("8 a malformed journal line is a page defect (Could not read), never under Needs Conductor",
+              any("cannot read" in x and "stage three" in x for x in d2["errors"])
+              and not any("stage three" in x for x in d2["needs"]["conductor"]), "%r" % d2["errors"][-3:])
     finally:
         shutil.rmtree(t, ignore_errors=True)
 
@@ -484,7 +486,13 @@ def p10_reactions():
     check("10 an answered question is in neither list", "Already settled" not in me + co)
     check("10 a hold is listed with what holds it", "HELD" in co and "planted reason" in co, co)
     check("10 a run live over an hour is listed", "has been live" in co, co)
-    check("10 a run that ended non-success is listed", "killed at its time limit" in co, co)
+    # needs-conductor page: a failed run with a later run after it is history; the newest failed run is a need
+    check("10 a run that ended non-success with a later run on the mod is history, not listed",
+          "killed at its time limit" not in co, co)
+    m2 = dict(m, runs=r[:2])
+    m2["boxes"] = M.stage_boxes(m2, r[:2], ivs, "3")
+    co2 = " | ".join(M.reactions([m2], now)["conductor"])
+    check("10 a run that ended non-success, the newest on the mod, is listed", "killed at its time limit" in co2, co2)
     check("10 a successful run is not listed", "finished OK" not in co, co)
     rel = ivs + M.parse_interventions("- CONDUCTOR INTERVENED (stage 3, 2026-11-14 12:30 PST, kind release): go.", "j")[0]
     m["boxes"] = M.stage_boxes(m, r, rel, "3")

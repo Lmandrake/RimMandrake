@@ -39,9 +39,9 @@ I'm moving to the phone now, so communicate with me in phone-friendly ways."):
     stage ran more than once, the Designer's inner loop counts from stage.json, the last result in a few words;
   - a yellow arrow on every stage where the Conductor stepped in: "CONDUCTOR INTERVENED (stage N, <time>, kind K): ..."
     lines in the journal or in a ledger note (the form is the spec's §5), plus one derived relaunch per extra run;
-  - "Needs Mandrake" and "Needs Conductor" at the top: open journal questions, his queue's questions, held stages,
-    a current stage run 3+ times, a run live over an hour, a run that ended badly, a run over its cap, an unreadable
-    intervention line, files that disagree;
+  - "Needs Mandrake" and "Needs Conductor" at the top. Needs Conductor holds only an act the Conductor can do now and
+    has not done; conductor_needs decides it (design/specs/2026-11-22-needs-conductor-list/boundary.md). History,
+    spend and void records go on the mod's card; an unreadable intervention line is a page defect;
   - phone images (PIL, local, no network): MATURATION_NOW_phone/00_overview.png and <Mod>.png, 1080 px wide portrait.
     --no-phone skips them. MATURATION_NOW_CLOCK (a unix time) pins the clock, for the selftest's two-run check.
 
@@ -408,6 +408,7 @@ def live_facts(mods):
         evs, world = fleet_mods.ledger()
         out["notes"] = [e for e in evs if isinstance(e, dict) and e.get("event") == "note"]
         out["titles"] = {k: str(getattr(v, "title", "") or "") for k, v in (world.items or {}).items()}
+        out["closed"] = {k for k, v in (world.items or {}).items() if getattr(v, "state", None) in CLOSED_STATES}
         rel = fleet_mods.relentless_states(strict=True)
         n = owner_queue.needs_you(world.items, rel, evs=evs, turns=owner_queue.designer_turns())
         out["intake"] = len(n["awaiting_designer"])
@@ -474,9 +475,9 @@ def parse_interventions(text, source):
     """-> (interventions, unparsed lines). Each: {stage, at (unix|None), when, kind, what, source}."""
     good, bad = [], []
     for ln in (text or "").splitlines():
-        if "CONDUCTOR INTERVENED" not in ln.upper():
-            continue
         body = re.sub(r"^\W*", "", ln.strip())
+        if not body.upper().startswith("CONDUCTOR INTERVENED"):
+            continue    # a sentence that only mentions the phrase is not an intervention line (needs-conductor page)
         m = IV_RX.search(body)
         kind = (m.group(6) or "decision").lower() if m else None
         if not m or kind not in IV_KINDS:
@@ -689,42 +690,129 @@ def stage_boxes(m, runs, ivs, cur):
     return dict(sorted(box.items(), key=lambda kv: order.get(kv[0], 99)))
 
 
-def reactions(mods, now):
-    """-> {"mandrake": [line], "conductor": [line]}: only things on disk, each with the mod and the stage."""
-    me, co = [], []
-    order = {c: i for i, c in enumerate(COLUMNS)}
+def mandrake_needs(mods):
+    """-> the "Needs Mandrake" lines: his open journal questions and his queue's questions on each mod."""
+    me = []
     for m in mods:
-        L = m["label"]
         for q in m.get("jquestions") or []:
-            if q["answered"]:
-                continue
-            line = "%s: question %d, %s" % (L, q["n"], q["text"])
-            (co if q["who"] == "conductor" else me).append(line)
+            if not q["answered"] and q["who"] != "conductor":
+                me.append("%s: question %d, %s" % (m["label"], q["n"], q["text"]))
         if isinstance(m.get("his"), list):
             for x in m["his"]:
-                me.append("%s: %s on his list: %s" % (L, x["item"], clip(x["q"], 140)))
+                me.append("%s: %s on his list: %s" % (m["label"], x["item"], clip(x["q"], 140)))
+    return me
+
+
+HAND_CMD = "python3 src/RimMandrake/rimflow/maturation_hands.py list"
+CLOSED_STATES = ("done", "dropped", "superseded")
+VOID_UNIT_RX = re.compile(r"\bVOID (?:hand|system) (\S+)")
+
+
+def _collapse(lines):
+    """Equal lines -> one line with "(×N)", in first-seen order."""
+    n, order = {}, []
+    for x in lines:
+        if x not in n:
+            order.append(x)
+        n[x] = n.get(x, 0) + 1
+    return [x if n[x] == 1 else "%s (×%d)" % (x, n[x]) for x in order]
+
+
+def _lead_mod(line, names):
+    """The mod folder a Dispatch line starts with ("Cauldron Stage 3 ...", "Graffiti: VOID ..."), or None."""
+    w = re.match(r"\s*([A-Za-z0-9_]+)", line or "")
+    return w.group(1) if w and w.group(1) in names else None
+
+
+def conductor_needs(mods, rd, now, owed=(), closed=None, stale=()):
+    """The one home of the "Needs Conductor" list (design/specs/2026-11-22-needs-conductor-list/boundary.md).
+    A line is a need only while it names an act the Conductor can do now and has not done. -> {"conductor": [line],
+    "records": {mod folder: [line]} (shown on the mod's card), "defects": [line] (page defects, never needs)}.
+    rd: the Dispatch reading (dict) or None; stale: the line(s) said instead when the reading is missing or old;
+    closed: the closed item ids, or None when unknown (then no run is history because of its item)."""
+    co, defects, records = [], [], {}
+    order = {c: i for i, c in enumerate(COLUMNS)}
+    rd = rd if isinstance(rd, dict) else {}
+    rmods = rd.get("mods") or {}
+    names = {m["name"] for m in mods if m.get("name")} | set(rmods)
+    voided = {u for x in rd.get("voids") or [] for u in VOID_UNIT_RX.findall(str(x))}
+
+    def can_run(name):
+        m = next((x for x in mods if x.get("name") == name), None)
+        return not (m and m.get("held")) and (rmods.get(name) or {}).get("klass") != "held"
+
+    def rec(name, line):
+        records.setdefault(name, []).append(line)
+
+    for m in mods:
+        L, name = m["label"], m.get("name")
+        runnable = can_run(name)
+        for q in m.get("jquestions") or []:
+            if not q["answered"] and q["who"] == "conductor":
+                co.append("%s: question %d, %s" % (L, q["n"], q["text"]))
         cur = order.get(m["column"], -1)
+        held = {}
         for c, x in (m.get("boxes") or {}).items():
             sname = "Stage %s" % c if c not in ("intake", "passed") else c
             if x["held"]:
-                co.append("%s: %s is HELD (since %s): %s" % (L, sname, x["held"]["when"], clip(x["held"]["what"], 160)))
+                held.setdefault((x["held"]["when"], x["held"]["what"]), []).append(sname)
             if x["cycled"] >= CYCLE_ALARM and order.get(c, -1) >= cur:
-                co.append("%s: %s has run %d times" % (L, sname, x["cycled"]))
-        for r in m["runs"] if isinstance(m["runs"], list) else []:
-            if r["placed"] == "before the pipeline":
-                continue
+                (co.append if runnable else (lambda t: rec(name, t)))("%s: %s has run %d times" % (L, sname, x["cycled"]))
+        for (when, what), st in held.items():
+            t = "%s: %s %s HELD (since %s): %s" % (L, ", ".join(st), "is" if len(st) == 1 else "are", when, clip(what, 160))
+            co.append(t) if runnable else rec(name, t)
+        runs = [r for r in m["runs"] if r["placed"] != "before the pipeline"] if isinstance(m["runs"], list) else []
+        for r in runs:
             st = ", ".join("Stage %s" % c for c in r["stages"]) or "no stage recorded at launch"
             if r["live"] and isinstance(r["wall_s"], (int, float)) and r["wall_s"] > LONG_RUN_S:
                 co.append("%s: a run has been live %s (%s, since %s)" % (L, r["wall"], st, r["start"]))
-            if r["ok"] is False:
+            if r["ok"] is not False:
+                continue
+            later = [x for x in runs if (x["at"] or 0) > (r["at"] or 0) and (
+                not r["stages"] or set(x["stages"]) & set(r["stages"]))]
+            history = (later or (r["stages"] and m["column"] not in r["stages"])
+                       or (closed is not None and r["item"] in closed) or r["unit"] in voided or not runnable)
+            if not history:
                 co.append("%s: the run of %s ended %s (%s)" % (L, r["start"], r["outcome"], st))
-            if r["over_cap"] is True:
-                co.append("%s: the run of %s went over its spend cap" % (L, r["start"]))
         for x in m.get("iv_bad") or []:
-            co.append("%s: an intervention line the page cannot read (%s): %s" % (L, x["source"], x["line"]))
-        for x in m["disagree"]:
+            defects.append("%s: an intervention line the page cannot read (%s): %s" % (L, x["source"], x["line"]))
+        for x in m.get("disagree") or []:
             co.append("%s: files disagree: %s" % (L, x))
-    return {"mandrake": me, "conductor": co}
+    co += list(stale)
+    at = rd.get("at_pac")
+    hand = []
+    for x in rd.get("needs_conductor") or []:
+        x = str(x)
+        if x.startswith("hand act "):
+            hand.append(x)
+            continue
+        lead = _lead_mod(x, names)
+        if lead and not can_run(lead):
+            rec(lead, "Dispatch step, %s: %s" % (at, x))
+        else:
+            co.append("Dispatch step, %s: %s" % (at, x))
+    ha = rd.get("hand_acts")
+    n = ha.get("overdue") if isinstance(ha, dict) and isinstance(ha.get("overdue"), int) else len(hand)
+    if n:
+        co.append("%d hand acts on the pipeline have had no follow-up for a day or more%s: `%s`, build each hand's "
+                  "judgement into the pipeline, then `maturation_hands.py fold <id> --item <ID>`" % (
+                      n, " (%d open, the oldest %s h)" % (ha.get("open"), ha.get("oldest_h"))
+                      if isinstance(ha, dict) and "open" in ha else "", HAND_CMD))
+    for x in rd.get("voids") or []:
+        lead = _lead_mod(str(x), names)
+        if lead:
+            rec(lead, str(x))
+        else:
+            defects.append("a void line that names no mod: %s" % x)
+    co += list(owed)
+    return {"conductor": _collapse(co), "records": records, "defects": defects}
+
+
+def reactions(mods, now, rd=None, owed=(), closed=None, stale=()):
+    """-> {"mandrake": [line], "conductor": [line], "records": {mod: [line]}, "defects": [line]}: only things on disk."""
+    out = conductor_needs(mods, rd, now, owed=owed, closed=closed, stale=stale)
+    out["mandrake"] = mandrake_needs(mods)
+    return out
 
 
 def his_questions_for(folder, questions):
@@ -743,25 +831,23 @@ def time_now():
     return float(v) if v else dt.datetime.now(dt.timezone.utc).timestamp()
 
 
-def dispatch_needs(now, errors):
-    """The Dispatch step's "Needs Conductor" lines (rimflow/maturation_dispatch.py's reading, item
-    RIMMANDRAKE_WIRE_DISPATCH_TO_LAUNCH_BUILDERS_MODS_SAT_IDLE): a stop, a hand step, a mod ready to advance. A reading
-    over 30 min old is named as stale, never read as current."""
+def read_dispatch(now, errors):
+    """-> (the Dispatch step's reading, or None; the line said instead when it is missing or over 30 min old)
+    (rimflow/maturation_dispatch.py, item RIMMANDRAKE_WIRE_DISPATCH_TO_LAUNCH_BUILDERS_MODS_SAT_IDLE). A stale reading
+    is named, never read as current. conductor_needs decides which of its lines are needs."""
     try:
         sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "rimflow"))
         import maturation_dispatch as MD  # noqa: E402
         rd, _ = read_json(os.path.join(MD.sdir(), "reading.json"))
     except Exception as e:      # noqa: BLE001
         errors.append("dispatch step reading: %s: %s" % (e.__class__.__name__, str(e)))
-        return []
+        return None, []
     if not isinstance(rd, dict):
-        return ["The Dispatch step (maturation_dispatch.py) has no reading yet: nothing launches offline builders"]
+        return None, ["The Dispatch step (maturation_dispatch.py) has no reading yet: nothing launches offline builders"]
     if now - float(rd.get("at") or 0) > 1800:
-        return ["The Dispatch step's reading is %d min old (rm-maturation-dispatch.timer is not ticking)"
-                % ((now - float(rd.get("at") or 0)) / 60)]
-    # a VOID run (run_void.py: hand or system, with its why) shows here too: it spent no trial
-    return ["Dispatch step, %s: %s" % (rd.get("at_pac"), x) for x in (rd.get("needs_conductor") or [])
-            + (rd.get("voids") or [])]
+        return None, ["The Dispatch step's reading is %d min old (rm-maturation-dispatch.timer is not ticking)"
+                      % ((now - float(rd.get("at") or 0)) / 60)]
+    return rd, []
 
 
 def pipeline_units(path):
@@ -895,9 +981,14 @@ def gather(root, live=True):
     for f in others:
         has = sorted(os.listdir(os.path.join(croot, f)))
         other.append({"name": f, "files": has})
-    needs = reactions(mods, now)
+    rd, stale = read_dispatch(now, lf["errors"]) if live else (None, [])
+    needs = reactions(mods, now, rd, owed=list(lf.get("owed") or []), closed=lf.get("closed"), stale=stale)
+    for m in mods:      # what left the list stays on the mod's card (needs-conductor page)
+        m["records"] = needs["records"].get(m["name"], [])
+        m["unread"] = list(m.get("unread") or []) + [
+            "an intervention line the page cannot read (%s): %s" % (x["source"], x["line"]) for x in m.get("iv_bad") or []]
+    lf["errors"] += needs["defects"]
     if live:
-        needs["conductor"] += dispatch_needs(now, lf["errors"]) + list(lf.get("owed") or [])
         needs["pipeline"] = dispatch_pipeline(now, lf["errors"])
     return {"mods": mods, "others": other, "held": held, "needs": needs, "now": now,
             "intake": {"count": lf["intake"], "questions_total": UNM if lf["questions"] is None else len(lf["questions"])},
@@ -1227,6 +1318,11 @@ def card(m):
     if m["disagree"]:
         rows.append(row("Files disagree", "<br>".join('<span style="color:%s">⚠ %s</span>' % (ALERT, esc(x))
                                                       for x in m["disagree"])))
+    hist = history_rows(m)
+    for head_word in ("Runs on no stage", "Records (not needs)"):
+        mine = [x[len(head_word) + 2:] for x in hist if x.startswith(head_word + ": ")]
+        if mine:
+            rows.append(row(head_word, '<span style="color:%s">%s</span>' % (DIM, "<br>".join(esc(x) for x in mine))))
     if m["unread"]:
         rows.append(row("Could not read", "<br>".join(esc(x) for x in m["unread"])))
     if m["files"]:
@@ -1250,7 +1346,21 @@ def run_line(r, k):
     # stage ceiling reads them); the page says weighted tokens only (RIMMANDRAKE_ENACT_TOKENS_NOT_DOLLARS_NO_LIVE_HOLD)
     tok = (tokens_word(r["tokens"]) + " weighted tokens") if r["tokens"] != UNM else "weighted tokens UNMEASURED"
     wall = r["wall"] + (" so far" if r["live"] else "")
-    return "run %d: %s, %s, %s, %s" % (k, span, wall, r["outcome"], tok)
+    return "run %d: %s, %s, %s, %s%s" % (k, span, wall, r["outcome"], tok,
+                                         ", over its spend cap" if r.get("over_cap") is True else "")
+
+
+def history_rows(m):
+    """-> the card's lines for what is not a need but stays on the page: the ended runs on no stage, then the mod's
+    records (voids, void spend, Dispatch lines on a held mod) (needs-conductor page)."""
+    out = []
+    loose = [r for r in m["runs"] if not r["stages"] and not r["live"] and r["placed"] != "before the pipeline"] \
+        if isinstance(m.get("runs"), list) else []
+    for k, r in enumerate(loose, 1):
+        out.append("Runs on no stage: " + run_line(r, k))
+    for x in m.get("records") or []:
+        out.append("Records (not needs): " + x)
+    return out
 
 
 def box_lines(m, c, x):
