@@ -4157,7 +4157,6 @@ PLANT_FARHAWK_NO_SEEK_ENV = "PYRE_PLANT_FARHAWK_NO_SEEK"   # planted state: fire
 TEN_NATIVE = ("HerdMigration", "ManhunterPack")
 TEN_TILE_SCAN = 60000          # world tiles scanned (200 a read) for a vanilla control tile
 TEN_CONTROL_SIZE = 100
-TEN_BURST = 1.5                # a "burst": a day's gain above 1.5x the plant's vanilla daily rate (no code defines one)
 TEN_WATER_RING = ("Mud", "RM_FE_Ground_SoilRich")   # GenStep_PyrelandsStandingWater's shore ring
 TEN_CROP = "Plant_Potato"
 
@@ -4753,20 +4752,119 @@ def plant_growth_of_lines(lines):
 
 
 def _ten_embergrass_regrow_growth(t, rect):
-    """Mean plant growth (0-1) over `rect` from the inspect strings ('N% grown', 'Mature.'), None when no plant reads."""
+    """Each plant's growth (0-1) over `rect` from the inspect strings ('N% grown', 'Mature.'), sorted; None when no plant
+    reads. Per plant, not the mean: a patch whose plants restart out of step (a cycling carpet) never shows a mean at
+    maturity, so maturity and restarts are read off the plants (regrow_patch_rate)."""
     r = t.bridge_call("jawa/inspect_string", rect=_rs(rect), limit=100)
     if not _live(t):
         return None
-    vals = [g for g in (plant_growth_of_lines(row.get("inspect")) for row in (r or {}).get("things") or [])
-            if g is not None]
-    return sum(vals) / len(vals) if vals else None
+    vals = sorted(g for g in (plant_growth_of_lines(row.get("inspect")) for row in (r or {}).get("things") or [])
+                  if g is not None)
+    return vals or None
+
+
+REGROW_DROP_TOL = 0.01   # inspect reads whole percents: rounding moves a read by at most 0.005, so a fall > 0.01 is real
+REGROW_MATURE = 0.999    # 'Mature.' reads 1.0
+
+
+def _regrow_read(x):
+    """One day's read -> (mean, lowest, highest). A list is the patch's plants; a bare number is a recorded mean (visit 4)."""
+    vals = [x] if isinstance(x, (int, float)) else list(x)
+    return sum(vals) / len(vals), min(vals), max(vals)
+
+
+def _regrow_unread(x):
+    return x is None or (not isinstance(x, (int, float)) and not x)
+
+
+def regrow_patch_rate(s):
+    """Pure. One patch's daily reads (each a list of plant growths, or a mean) -> (rate per day before its first event,
+    censored, event day). An event is the first day a plant reads mature or the patch's lowest plant falls (a matured
+    plant restarted by a burst, or a 5% seedling sown in): after it the reads stop telling the patch's speed, so a mean
+    over the whole window under-reads a fast plant (HARNESS, this item: x1 ember grass matures by day 2, its 5-day mean
+    gain is 0.19, below the 0.369 its own vanilla rate asks). The rate is the mean's gain up to the last read before the
+    event; censored=True when the event came on day 1, and then the rate is only a lower bound (mature - start, in one
+    day). Event day None: no event inside the series."""
+    if not s or len(s) < 2 or any(_regrow_unread(x) for x in s):
+        return None, False, None
+    reads = [_regrow_read(x) for x in s]
+    event = None
+    for i in range(1, len(reads)):
+        if reads[i][2] >= REGROW_MATURE or reads[i][1] < reads[i - 1][1] - REGROW_DROP_TOL:
+            event = i
+            break
+    if event == 1:
+        return REGROW_MATURE - reads[0][0], True, 1
+    k = (event - 1) if event else (len(reads) - 1)
+    return (reads[k][0] - reads[0][0]) / k, False, event
+
+
+def regrow_bursts(s):
+    """Pure. Count the days a patch's lowest plant FELL by more than the reading's rounding. A gentle burst restarts the
+    mature plant at 5% growth where it stands (ExplosiveGrowth RM_TopResolver.EndCycle) and a cycle sows seedlings at 5%
+    (RM_SproutRing.Sow), so a burst drops a plant below the rest. A fast day is not a burst (the parent's proxy, 'a gain
+    above 1.5x the vanilla rate', counted a healthy x1 dry patch's first day as one and could not see a real burst)."""
+    reads = [_regrow_read(x) for x in s if not _regrow_unread(x)]
+    return sum(1 for a, b in zip(reads, reads[1:]) if b[1] < a[1] - REGROW_DROP_TOL)
+
+
+def regrow_rate_verdict(series, gd):
+    """Pure. sc_grass_regreens growth part. series: {"dry", "watered", "vanilla"} -> daily reads (day 0 first), each
+    a list of plant growths or a recorded mean; gd: {defName: growDays}. -> {"rates", "censored", "eventDay", "emberVanillaRate", "bursts", "failures",
+    "unmeasured"}.
+    Dry ember grass grows at least at its own vanilla rate (Plant_Grass's rate on the same dry ash, scaled by growDays),
+    watered ember grass grows faster than dry, and bursts land on watered cells only."""
+    out = {"rates": {}, "censored": {}, "eventDay": {}, "emberVanillaRate": None, "bursts": {}, "failures": [],
+           "unmeasured": []}
+    for k in ("dry", "watered", "vanilla"):
+        r, c, e = regrow_patch_rate((series or {}).get(k))
+        out["rates"][k], out["censored"][k], out["eventDay"][k] = r, c, e
+        out["bursts"][k] = regrow_bursts((series or {}).get(k) or [])
+    eg, vg = (gd or {}).get("RM_FE_Plant_EmberGrass"), (gd or {}).get("Plant_Grass")
+    if not eg or not vg:
+        out["unmeasured"].append("growDays unread: %r" % (gd,))
+        return out
+    if any(out["rates"][k] is None for k in out["rates"]):
+        out["unmeasured"].append("a patch's growth series is short or unread: %r" % (series,))
+        return out
+    if out["censored"]["vanilla"]:
+        out["unmeasured"].append("the vanilla grass matured or fell within a day, so its rate is only a bound: %r" % (series,))
+        return out
+    ember_rate = out["rates"]["vanilla"] * vg / eg
+    out["emberVanillaRate"] = ember_rate
+    rd, rw = out["rates"]["dry"], out["rates"]["watered"]
+    cd, cw = out["censored"]["dry"], out["censored"]["watered"]
+    if rd < ember_rate:
+        if cd:   # matured within a day: rd is a lower bound, so "below" is not shown
+            out["unmeasured"].append("dry ember grass matured within the first day; a daily read bounds its rate only from "
+                                     "below (%.3f), under the %.3f asked: %r" % (rd, ember_rate, series["dry"]))
+        else:
+            out["failures"].append("dry ember grass grew %.3f a day before maturity, below its vanilla daily rate %.3f: %r"
+                                   % (rd, ember_rate, series["dry"]))
+    ed, ew = out["eventDay"]["dry"], out["eventDay"]["watered"]
+    pair = {"dry": series["dry"], "watered": series["watered"]}
+    if ew is not None and (ed is None or ew < ed):
+        pass   # the watered patch matured (or burst) on an earlier day than the dry one: faster
+    elif ed is not None and (ew is None or ed < ew):
+        out["failures"].append("watered ember grass did not outgrow the dry patch: dry matured on day %s, watered %s: %r"
+                               % (ed, ew, pair))
+    elif cd and cw:
+        out["unmeasured"].append("dry and watered both matured within the first day: a daily read cannot order them: %r"
+                                 % (pair,))
+    elif not rw > rd:
+        out["failures"].append("watered ember grass did not outgrow the dry patch: %.3f vs %.3f a day before maturity: %r"
+                               % (rw, rd, pair))
+    if out["bursts"]["dry"] or out["bursts"]["vanilla"]:
+        out["failures"].append("bursts off the watered cells (days the patch's growth fell): %r" % (out["bursts"],))
+    return out
 
 
 def _ten_embergrass_regrow(t):
     """sc_grass_regreens: three patches burned together, aged past 7 days (no fresh-burn bonus); one is then watered
     (WaterShallow beside it); ember grass sown on the dry and the watered patch, Plant_Grass on dry ash; daily growth for
-    5 days and a burst count (a day's gain above 1.5x the plant's vanilla daily rate, read off Plant_Grass on the same
-    dry ash scaled by growDays). Dry ember grass >= its vanilla rate, watered > dry, bursts on watered cells only."""
+    5 days and a burst count (regrow_rate_verdict: rates read before maturity, a burst is a day the patch's growth fell).
+    Dry ember grass >= its vanilla rate (Plant_Grass on the same dry ash scaled by growDays), watered > dry, bursts on
+    watered cells only."""
     _independent(t)
     with _comp(t, "regrow_dry_watered_vanilla"):
         _pad(t, TEN_PAD_GRASS)
@@ -4814,21 +4912,13 @@ def _ten_embergrass_regrow(t):
             if any(v is None for s in series.values() for v in s):
                 _unmeasured(t, "a patch's growth was unread on some day: %r" % series)
             gd = dict((d, float(((f.get("plant") or {}).get("growDays")) or 0)) for d, f in defs.items())
-            gains = dict((k, [b - a for a, b in zip(s, s[1:])]) for k, s in series.items())
-            vanilla_day = sum(gains["vanilla"]) / len(gains["vanilla"])
-            ember_rate = vanilla_day * gd["Plant_Grass"] / gd["RM_FE_Plant_EmberGrass"] if gd.get("RM_FE_Plant_EmberGrass") else None
-            bursts = dict((k, sum(1 for g in gs if ember_rate and g > TEN_BURST * ember_rate)) for k, gs in gains.items())
-            bursts["vanilla"] = sum(1 for g in gains["vanilla"] if g > TEN_BURST * vanilla_day) if vanilla_day else 0
-            _note(t, "daily growth, gains, burst count (burst > %.1fx the vanilla daily rate)" % TEN_BURST,
-                  {"series": series, "growDays": gd, "emberVanillaRate": ember_rate, "bursts": bursts})
-            if ember_rate is None:
-                _unmeasured(t, "growDays unread: %r" % gd)
-            if sum(gains["dry"]) / len(gains["dry"]) < ember_rate:
-                _fail("dry ember grass grew below its vanilla daily rate %.3f: %r" % (ember_rate, gains["dry"]))
-            if not sum(gains["watered"]) > sum(gains["dry"]):
-                _fail("watered ember grass did not outgrow the dry patch: %r vs %r" % (gains["watered"], gains["dry"]))
-            if bursts["dry"] or bursts["vanilla"]:
-                _fail("bursts off the watered cells: %r" % bursts)
+            v = regrow_rate_verdict(series, gd)
+            _note(t, "daily growth, rates before maturity, burst count (a burst: a day the patch's lowest plant fell)",
+                  dict(v, series=series, growDays=gd))
+            if v["failures"]:   # a measured failure stands even beside a sub-claim the reads could not order
+                _fail("; ".join(v["failures"] + ["UNMEASURED beside it: " + u for u in v["unmeasured"]]))
+            if v["unmeasured"]:
+                _unmeasured(t, "; ".join(v["unmeasured"]))
         if planted:
             _set(t, {"ashWaterFertilityEnabled": True})
         t.screenshot(rect=(x - 10, z - 3, 20, 6))

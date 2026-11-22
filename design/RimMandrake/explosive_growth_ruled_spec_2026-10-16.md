@@ -96,7 +96,7 @@ worlds it will cycle."*
 |---|---|---|---|---|
 | dry native | **×10** | **×0.1** (C6) | ×1 | trees ×0.625 of these (§5) |
 | wet native, home biome | **×4, always** (C1), wet or dry | ×4 | ×1 | away from home: unchanged, keeps ×4 (RULED OQ-12) |
-| fire-adapted (Pyrelands natives) | ×10 on WET or ASH-FRESH | ×0.1 | ×1 | a dry native with an ash source |
+| fire-adapted (Pyrelands natives) | ×10 on WET or ASH-FRESH | **×1** on old dry ash (setting `fireDryMultiplier`) | ×1 | owner, 2026-11-13: *"the grasses grow swiftly even on seemingly dry ash due to their very deep roots and underground storage systems. This is specific to the plants in that Biome"* |
 | stunted (terminator biomes) | today's ×0.4, unchanged | ×0.4 | ×1 | the rulings did not touch it; MEASURED setting `ExplosiveGrowthMod.cs:39` |
 | exempt (anima, Gauranlen, ambrosia, growDays < 1, cave plants) | ×1 | ×1 | ×1 | MEASURED `RM_ExplosiveGrowthRegistry.cs:29-32,199-208` |
 | vanilla crop / vanilla plant | ×1 if water nearby, else **×0** growth, ageing ×0.1 (DEFAULT) or ×1 (setting "normal") | | ×1 | §6 setting A |

@@ -539,7 +539,8 @@ namespace RimMandrake.ExplosiveGrowth.SelfTest
             if (a == RM_Archetype.Vanilla) return s.vanillaNeedsWater && !near ? s.vanillaDry : 1f;   // setting A, OQ-16/17
             if (stalled) return s.stunted;
             float r = a == RM_Archetype.WetNative ? s.wetNative                       // C1 x4 always
-                    : (wet || (a == RM_Archetype.FireAdapted && ash)) ? s.dryWet : s.dryDry;   // C6, C5
+                    : (wet || (a == RM_Archetype.FireAdapted && ash)) ? s.dryWet                 // C6, C5
+                    : a == RM_Archetype.FireAdapted ? s.fireDry : s.dryDry;   // owner 2026-11-13: Pyrelands grasses swift on dry ash
             return woody ? r * s.treeRatio : r;          // EC1
         }
 
@@ -554,6 +555,7 @@ namespace RimMandrake.ExplosiveGrowth.SelfTest
                     RM_RateSettings s = k == 0 ? RM_RateSettings.Ruled : new RM_RateSettings
                     {
                         dryWet = 1f + (float)rnd.NextDouble() * 19f, dryDry = 0.01f + (float)rnd.NextDouble(), wetNative = 1f + (float)rnd.NextDouble() * 9f,
+                        fireDry = 0.01f + (float)rnd.NextDouble() * 1.99f,
                         treeRatio = 0.1f + (float)rnd.NextDouble() * 0.9f, stunted = 0.1f + (float)rnd.NextDouble() * 1.9f,
                         vanillaDry = 0.01f + (float)rnd.NextDouble(), vanillaNeedsWater = rnd.Next(2) == 0,
                     };
@@ -575,7 +577,7 @@ namespace RimMandrake.ExplosiveGrowth.SelfTest
                 }
                 // the ruled numbers themselves (W3/C6/C1/EC1/OQ-16)
                 RM_RateSettings d = RM_RateSettings.Ruled;
-                Check(d.dryWet == 10f && d.dryDry == 0.1f && d.wetNative == 4f && d.treeRatio == 0.625f && d.vanillaDry == 0.1f && d.vanillaNeedsWater, "ruled defaults drifted");
+                Check(d.dryWet == 10f && d.dryDry == 0.1f && d.fireDry == 1f && d.wetNative == 4f && d.treeRatio == 0.625f && d.vanillaDry == 0.1f && d.vanillaNeedsWater, "ruled defaults drifted");
                 Check(RM_ExplosiveGrowthKernel.MoistureFactor(RM_Archetype.DryNative, true, false, false, true, false, true, false, d) == 6.25f, "dry tree wet != x6.25");
                 Check(RM_ExplosiveGrowthKernel.MoistureFactor(RM_Archetype.WetNative, true, false, false, false, false, true, false, d) == 2.5f, "wet tree != x2.5");
             }

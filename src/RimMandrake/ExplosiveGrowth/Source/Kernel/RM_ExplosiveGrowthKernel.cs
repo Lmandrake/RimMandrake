@@ -193,7 +193,10 @@ namespace RimMandrake.ExplosiveGrowth
             switch (a)
             {
                 case RM_Archetype.WetNative: return s.wetNative * tree;
-                case RM_Archetype.FireAdapted: return (wet || ashFresh ? s.dryWet : s.dryDry) * tree;
+                // The Pyrelands natives on old dry ash (owner, 2026-11-13): "the grasses grow swiftly even on seemingly dry ash due
+                // to their very deep roots and underground storage systems. This is specific to the plants in that Biome". So their
+                // dry rate is fireDry (x1), not the other dry natives' C6 "tenth speed"; wet or fresh ash keeps the x10.
+                case RM_Archetype.FireAdapted: return (wet || ashFresh ? s.dryWet : s.fireDry) * tree;
                 default: return (wet ? s.dryWet : s.dryDry) * tree;
             }
         }
@@ -357,11 +360,11 @@ namespace RimMandrake.ExplosiveGrowth
     /// <summary>The rate sliders, defaults = the ruled numbers.</summary>
     public struct RM_RateSettings
     {
-        public float dryWet, dryDry, wetNative, treeRatio, stunted, vanillaDry;
+        public float dryWet, dryDry, fireDry, wetNative, treeRatio, stunted, vanillaDry;
         public bool vanillaNeedsWater;
         public static RM_RateSettings Ruled => new RM_RateSettings
         {
-            dryWet = 10f, dryDry = 0.1f, wetNative = 4f, treeRatio = 0.625f, stunted = 0.4f, vanillaDry = 0.1f, vanillaNeedsWater = true,
+            dryWet = 10f, dryDry = 0.1f, fireDry = 1f, wetNative = 4f, treeRatio = 0.625f, stunted = 0.4f, vanillaDry = 0.1f, vanillaNeedsWater = true,
         };
     }
 

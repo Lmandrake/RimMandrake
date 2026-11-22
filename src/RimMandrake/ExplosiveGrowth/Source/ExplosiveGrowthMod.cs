@@ -31,6 +31,7 @@ namespace RimMandrake.ExplosiveGrowth
         // ONE factor per plant, multiplying vanilla's composite growth rate (light included: a dark cell stays dark).
         public static float dryWetMultiplier = 10f;       // C6 / W3: a dry native on wet, lit ground
         public static float dryDryMultiplier = 0.1f;      // C6 "Tenth speed": a dry native on dry ground
+        public static float fireDryMultiplier = 1f;       // owner 2026-11-13: the Pyrelands grasses grow swiftly on dry ash (deep roots)
         public static float wetNativeMultiplier = 4f;     // C1 "x4, always": a wet native, wet or dry
         public static float treeRatio = 0.625f;           // EC1, kept only for the tree-rules-exempt greatbole (§0); trees and fungi never read it
         public static float stuntedMultiplier = 0.4f;     // stalled (terminator) biomes, unchanged by the rulings
@@ -99,7 +100,7 @@ namespace RimMandrake.ExplosiveGrowth
         /// <summary>The rate sliders as the kernel takes them.</summary>
         public static RM_RateSettings Rates => new RM_RateSettings
         {
-            dryWet = dryWetMultiplier, dryDry = dryDryMultiplier, wetNative = wetNativeMultiplier, treeRatio = treeRatio,
+            dryWet = dryWetMultiplier, dryDry = dryDryMultiplier, fireDry = fireDryMultiplier, wetNative = wetNativeMultiplier, treeRatio = treeRatio,
             stunted = stuntedMultiplier, vanillaDry = vanillaDryMultiplier, vanillaNeedsWater = vanillaCropsNeedWater,
         };
 
@@ -113,6 +114,7 @@ namespace RimMandrake.ExplosiveGrowth
             Scribe_Values.Look(ref enabled, "enabled", true);
             Scribe_Values.Look(ref dryWetMultiplier, "dryWetMultiplier", 10f);
             Scribe_Values.Look(ref dryDryMultiplier, "dryDryMultiplier", 0.1f);
+            Scribe_Values.Look(ref fireDryMultiplier, "fireDryMultiplier", 1f);
             Scribe_Values.Look(ref wetNativeMultiplier, "wetNativeMultiplier", 4f);
             Scribe_Values.Look(ref treeRatio, "treeRatio", 0.625f);
             Scribe_Values.Look(ref stuntedMultiplier, "stuntedMultiplier", 0.4f);
@@ -196,12 +198,13 @@ namespace RimMandrake.ExplosiveGrowth
                 list.GapLine();
             }
 
-            if (Group(list, "Growth rates", RimMandrake.Shared.SettingScope.Now, new[] { "dryWetMultiplier", "dryDryMultiplier", "wetNativeMultiplier", "treeRatio", "stuntedMultiplier" }))
+            if (Group(list, "Growth rates", RimMandrake.Shared.SettingScope.Now, new[] { "dryWetMultiplier", "dryDryMultiplier", "fireDryMultiplier", "wetNativeMultiplier", "treeRatio", "stuntedMultiplier" }))
             {
                 list.Label("One rate per plant, by its kind and whether its ground is wet. It multiplies the plant's normal growth, "
                            + "and only while it has light: a dark plant does not grow at all.");
                 Pct(list, "Dry-land natives on wet ground", ref dryWetMultiplier, 1f, 20f, "0.0");
                 Pct(list, "Dry-land natives on dry ground", ref dryDryMultiplier, 0.01f, 1f);
+                Pct(list, "Pyrelands grasses and fire plants on old dry ash (deep roots)", ref fireDryMultiplier, 0.01f, 2f);
                 Pct(list, "Jungle natives (Greentide, Miasma, Fever Wood, Webwork, Contagion), wet or dry", ref wetNativeMultiplier, 1f, 10f, "0.0");
                 Pct(list, "The greatbole grows at this share of its kind's rate (trees follow the Trees section)", ref treeRatio, 0.1f, 1f, "0.000");
                 Pct(list, "Stalled biomes (terminator / poison forest)", ref stuntedMultiplier, 0.1f, 2f);
