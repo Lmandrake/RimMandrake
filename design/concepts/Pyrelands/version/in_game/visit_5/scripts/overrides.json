@@ -62,5 +62,17 @@
     "note": "scorchfruit_fire_born FAIL 'ScorchFruit on unburned land ... [(125, 125)]', the planted fruit; the plant also upset plant_census's own probe cell (plant_distribution_correct FAIL in this planted run only)"
    }
   }
+ },
+ "sc_three_skies": {
+  "planted_faults": [
+   {
+    "plant": "PYRE_PLANT_ASHFALL_STRIKE=DryThunderstorm (through WSLENV)",
+    "owed_by": "RIMMANDRAKE_TRACE_PYRE_ASHFALL_FIRE_IN_FIRST_LIGHTNING_WINDOW",
+    "verdict": "FAIL",
+    "evidence": "design/concepts/Pyrelands/version/in_game/visit_5/evidence/pv5_cinderfall_planted_strike.json",
+    "reading": "cinderfall_lightning FAIL: 5 strikes under ash fall (worst window 2, limit 0)"
+   }
+  ],
+  "note": "real run: cinderfall_lightning PASS, 10 strikes under cinderfall, 0 under ash fall; the ash-fall window-1 fire (16 new fires) named 'not lightning'"
  }
 }
