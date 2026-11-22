@@ -1,0 +1,14 @@
+== section underpass
+UND_floor_path_walks_under         PASS       {"read": "UNDERPATH found=True cells=8 decked=2 view=floor"}
+UND_both_arrive                    PASS       {"a": [148, 180], "b": [144, 182]}
+UND_shallow_trench_is_a_wall       PASS       {"read": "UNDERPATH found=False cells=0 decked=0 view=floor"}
+UND_item_slides_to_open_floor      PASS       {"read": "DROPUNDER under=True at=143,180 underDeck=False slid=4"}
+UND_shot_solid_deck                PASS       {"want": "False", "read": "SHOT can=False shooterUnder=True targetUnder=False ranged=True", "target": "BAND under=False onDeck=True passes=True view=deck deckNotches=0"}
+UND_shot_grate_deck                PASS       {"want": "True", "read": "SHOT can=True shooterUnder=True targetUnder=False ranged=False", "target": "BAND under=False onDeck=True passes=True view=deck deckNotches=0"}
+UND_crush_below_and_wreck          FAIL       {"before": {"crushed": "9", "wrecks": "27", "slid": "4"}, "after": "FELL crushed=9 wrecks=27 slid=4", "hediffs": [2, 2], "newHarm": [], "owed": "wreck blocks the floor until a clear job runs: read RM_SuspensionWreck on (4,40) and its deconstruct"}
+UND_sunken_bridge_crossed          PASS       {"build": "BUILD ok=True anchors=2 decks=2 blueprints=0 records=1 reason=-", "span": "SPAN tier=steel load=0.0 rating=2000 state=Ok decks=2 railings=False deckNotches=8 span=1/1 line=Load 0 / 2,000 kg", "path": "PATH found=True cells=8 decked=2"}
+UND_raiders_walk_under_moat        UNMEASURED {"owed": true, "why": "OWED: a raid into a 4 m moat with a bridge over it, recorded with modcheck (behaviour is the ruling, not a bug)"}
+UND_L4_picture_pawn_under_deck     UNMEASURED {"owed": true, "why": "OWED: one joint screenshot of a pawn passing under a deck"}
+suspension bridge proof: 10 rows, 1 FAIL -> design/concepts/FlowWorks/version/in_game/visit_7/evidence/crush_planted.json
+plant_crush: 1 ProofFell call(s) redirected off-map
+[bridge split] 59.9 s wall: load 0.0 / ticks 0.8 / reads 1.2 / other 31.0 / outside calls 27.0 s

@@ -1,0 +1,1 @@
+parent rule len(after)>len(before): destroyed part -> False ; merged crush -> False
