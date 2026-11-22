@@ -1341,22 +1341,35 @@ def check_scroll_listings():
     return bad, total
 
 
-def main():
+def main(argv=None):
+    """No argument: every mod and the shared checks. `--mod NAME` (repeatable): only that mod's rows, so a mod's test-table
+    decider is judged on its own screen and not turned red by another mod's (RIMMANDRAKE_SCOPE_SETTINGS_SCREENS_DECIDER_TO_
+    ITS_OWN_MOD: Pyrelands' T_SETTINGS_SCREENS read 855/856 on FlowWorks' row). FlowWorks is its #Main screen; an unknown
+    name exits 2 with nothing passed."""
+    argv = sys.argv[1:] if argv is None else argv
+    only = [argv[i + 1] for i, a in enumerate(argv) if a == "--mod" and i + 1 < len(argv)]
+    if "--mod" in argv and not only:
+        print("usage: selftest_settings_screens.py [--mod NAME]...")
+        return 2
+    unknown = [n for n in only if n not in MODS and n != "FlowWorks"]
+    if unknown:
+        print("unknown mod(s): %s (known: the MODS table and FlowWorks)" % unknown)
+        return 2
     bad = total = 0
     for name, (cs_name, pj_name, expected, extra) in MODS.items():
+        if only and name not in only:
+            continue
         b, t = run_mod(name, cs_name, pj_name, expected, extra)
         bad += b
         total += t
-    b, t = run_flowworks_main()
-    bad += b
-    total += t
-    b, t = check_biomes_shell()
-    bad += b
-    total += t
-    b, t = check_scroll_listings()
-    bad += b
-    total += t
-    print(f"settings screens selftest: {total - bad}/{total} ok")
+    steps = [run_flowworks_main] if (not only or "FlowWorks" in only) else []
+    if not only:
+        steps += [check_biomes_shell, check_scroll_listings]
+    for step in steps:
+        b, t = step()
+        bad += b
+        total += t
+    print(f"settings screens selftest: {total - bad}/{total} ok" + (f" (mods: {', '.join(only)})" if only else ""))
     return 1 if bad else 0
 
 

@@ -306,7 +306,7 @@
    "reads": [
     "src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs"
    ],
-   "command": "python3 src/RimMandrake/Utils/selftest_settings_screens.py",
+   "command": "python3 src/RimMandrake/Utils/selftest_settings_screens.py --mod Pyrelands",
    "mod_rows": "Pyrelands:",
    "runs_today": {
     "ran": true,
