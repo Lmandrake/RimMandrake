@@ -229,6 +229,30 @@ def t_whole_mod_check_reruns_on_any_change():
         tr.close()
 
 
+def t_whole_mod_check_skips_hashignored():
+    """A change only to files the mod's .hashignore lists (they never ship; the deployed mod_hash does not move) reruns no
+    whole-mod or full-list check; the same change beside a shipped file still does (GSS in-game visit 3, 2026-11-21:
+    three review/ docs sent his full-list walk back on an unchanged mod_hash)."""
+    tr = Tree()
+    try:
+        tr.write("src/RimMandrake/Planted/.hashignore", "# never ships\nreview\nart_*\n")
+        tr.write("src/RimMandrake/Planted/review/KEYSHEET.md", "v0\n")
+        base = tr.commit("hashignore + review doc")
+        tr.write("src/RimMandrake/Planted/review/KEYSHEET.md", "v1\n")
+        tr.write("src/RimMandrake/Planted/art_source_a.psd", "x\n")
+        tr.commit("review doc and art source only")
+        res = relate(tr, all_rows(base))
+        ok("whole-mod-check-skips-hashignored: a change only under .hashignore paths reruns no whole-mod or full-list "
+           "check", not set(res["touched"]) & {"sc_full", "sc_whole"}, res["touched"])
+        tr.write("src/RimMandrake/Planted/Defs/Loose.xml", "<Defs><!-- shipped --></Defs>\n")
+        tr.commit("a shipped def beside it")
+        res = relate(tr, all_rows(base))
+        ok("whole-mod-check-skips-hashignored: a shipped file beside the ignored ones still reruns both",
+           {"sc_full", "sc_whole"} <= set(res["touched"]), res["touched"])
+    finally:
+        tr.close()
+
+
 def t_csharp_relates_by_source_file():
     tr = Tree()
     try:
@@ -344,7 +368,8 @@ def t_walk_not_the_source_is_one_deploy():
 
 TESTS = [t_declared_paths_are_exercises_reads_and_file, t_untouched_row_counts, t_touched_check_reruns,
          t_undeclared_change_reruns_nothing_and_is_listed, t_unreadable_relation_reruns_alone,
-         t_whole_mod_check_reruns_on_any_change, t_csharp_relates_by_source_file, t_python_relates_by_symbol,
+         t_whole_mod_check_reruns_on_any_change, t_whole_mod_check_skips_hashignored,
+         t_csharp_relates_by_source_file, t_python_relates_by_symbol,
          t_json_relates_by_entry, t_spec_change_reruns, t_rows_from_several_builds, t_walk_not_the_source_is_one_deploy]
 
 
@@ -380,6 +405,7 @@ def main():
     t_undeclared_change_reruns_nothing_and_is_listed()
     t_unreadable_relation_reruns_alone()
     t_whole_mod_check_reruns_on_any_change()
+    t_whole_mod_check_skips_hashignored()
     t_csharp_relates_by_source_file()
     t_python_relates_by_symbol()
     t_json_relates_by_entry()

@@ -44,7 +44,10 @@ stage (the in-game build match, the Stage 6 exit, the visit brief, `./pipe why`,
 - **unreadable-relation-reruns-alone.** A check with no declared path, a row with no commit, or a commit git cannot
   resolve: that check reruns and is listed as unreadable; the other checks keep their own answers.
 - **whole-mod-check-reruns-on-any-change.** A check that declares `"*"`, the mod folder itself, or is a full-list check
-  (`kind` `live_full`), reruns on any change under the mod, the DLL included.
+  (`kind` `live_full`), reruns on any change under the mod, the DLL included, except a file the mod's `.hashignore`
+  lists (it never ships and the mod hash leaves it out; same grammar as `modcheck/status.py` `mod_hash`).
+- **whole-mod-check-skips-hashignored.** A change only to files the mod's `.hashignore` lists reruns no whole-mod or
+  full-list check; the same change beside a shipped file still reruns them.
 - **csharp-relates-by-source-file.** A C# change relates through the changed `.cs` files; the DLL and its `.srchash`
   are derived and relate to nothing by themselves.
 - **python-relates-by-symbol.** In a changed Python file, only the top-level names that changed count, and they

@@ -388,6 +388,19 @@ class Relation:
             return None
         return self.git.changed(o, self.new, self._scope_for(o))
 
+    def unshipped(self, path):
+        """True when the mod's .hashignore at NEW lists the path: a file that never ships and never changes what the mod
+        does, so the mod hash (modcheck/status.py mod_hash, same grammar) leaves it out. A mod without the file: False."""
+        if not hasattr(self, "_ignore"):
+            txt = self.git.show(self.new, mod_root(self.mod) + "/.hashignore") if self.new else None
+            self._ignore = [l.split("#")[0].strip() for l in (txt or "").splitlines() if l.split("#")[0].strip()]
+        root = mod_root(self.mod) + "/"
+        if not path.startswith(root):
+            return False
+        rel = path[len(root):]
+        return any(rel == g or rel.startswith(g.rstrip("/") + "/") or (g.endswith("*") and rel.startswith(g[:-1]))
+                   for g in self._ignore)
+
     def _table_at(self, old):
         if self.old_tests is not None:
             return self.old_tests.get(old)
@@ -473,9 +486,14 @@ class Relation:
             keys = [k for k in RUN_KEYS if run_key(ot[tid], k) != run_key(spec, k)]
             return "touched", "its test-table entry changed (%s)" % ", ".join(keys), ["test_table.json"]
         if whole:
-            hit = [f for f in ch if covers(mod_root(self.mod), f)]
-            return ("touched", "a whole-mod check: %d changed file(s) under the mod" % len(hit), hit) if hit else (
-                "untouched", "a whole-mod check, and nothing under the mod changed", [])
+            under = [f for f in ch if covers(mod_root(self.mod), f)]
+            hit = [f for f in under if not self.unshipped(f)]
+            if hit:
+                return "touched", "a whole-mod check: %d changed file(s) under the mod" % len(hit), hit
+            if under:
+                return ("untouched", "a whole-mod check, and each of the %d changed file(s) under the mod is one its "
+                        ".hashignore lists (never ships; the mod hash does not move)" % len(under), [])
+            return "untouched", "a whole-mod check, and nothing under the mod changed", []
         imported = self.py_closure([p for p in paths if p.endswith(".py")], o)
         mine = [f for f in ch if not derived(f) and (any(covers(p, f) for p in paths) or f in imported)]
         if not mine:
