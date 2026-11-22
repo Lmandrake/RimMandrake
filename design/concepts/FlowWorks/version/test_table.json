@@ -3117,17 +3117,19 @@
    "observes": "the toss-a-flame order: target validation (burnable liquid cell, rim reachable), first fire on the picked cell, a water cell does not light",
    "reads": [
     "src/RimMandrake/FlowWorks/Source",
+    "src/RimMandrake/FlowWorks/Defs",
+    "src/RimMandrake/FlowWorks/Patches",
     "src/RimMandrake/FlowWorks/selftest_stage3_owed.py"
    ],
    "owed_under": "FLOWWORKS_FLAME_BUILD_TOSS_FROM_THE_RIM",
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.32,
+    "seconds": 0.35,
     "last": "PASS",
-    "at": "2026-11-22T06:40:25Z",
+    "at": "2026-11-22T06:49:16Z",
     "result": "PASS",
-    "build": "1f6686115adf6b67be41",
+    "build": "f7f6829a0ba492e89d91",
     "command": "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only toss_flame",
     "margins": []
    },
@@ -3140,18 +3142,20 @@
    "file": "src/RimMandrake/FlowWorks/selftest_stage3_owed.py",
    "observes": "raider rescue plan: comrade in a pit -> chop, carry, place a ladder, climb down; under fire -> retreat leaving the fallen",
    "reads": [
-    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitAccessMath.cs",
+    "src/RimMandrake/FlowWorks/Source",
+    "src/RimMandrake/FlowWorks/Defs",
+    "src/RimMandrake/FlowWorks/Patches",
     "src/RimMandrake/FlowWorks/selftest_stage3_owed.py"
    ],
    "owed_under": "FLOWWORKS_RAIDERS_BUILD_LADDER_FOR_FALLEN",
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.6,
+    "seconds": 0.48,
     "last": "PASS",
-    "at": "2026-11-22T06:40:26Z",
+    "at": "2026-11-22T06:49:16Z",
     "result": "PASS",
-    "build": "6e8488ad51f9673d2a92",
+    "build": "f7f6829a0ba492e89d91",
     "command": "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only fetch_fallen",
     "margins": []
    },
@@ -3876,18 +3880,20 @@
    "file": "src/RimMandrake/FlowWorks/selftest_stage3_owed.py",
    "observes": "a pawn leaving a cell of oil, tar or blood gains that liquid's coating condition; a step into normal water removes it; plain water adds none",
    "reads": [
-    "src/RimMandrake/FlowWorks/Source/RM_PitFillEffects.cs",
+    "src/RimMandrake/FlowWorks/Source",
+    "src/RimMandrake/FlowWorks/Defs",
+    "src/RimMandrake/FlowWorks/Patches",
     "src/RimMandrake/FlowWorks/selftest_stage3_owed.py"
    ],
    "owed_under": "RIMMANDRAKE_DESIGN_LIQUID_DIRT_AS_CONDITION_NOT_GRAPHICS",
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.55,
+    "seconds": 0.5,
     "last": "PASS",
-    "at": "2026-11-22T06:40:27Z",
+    "at": "2026-11-22T06:49:17Z",
     "result": "PASS",
-    "build": "259f94074a0d3075fa46",
+    "build": "f7f6829a0ba492e89d91",
     "command": "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only coating",
     "margins": []
    },
