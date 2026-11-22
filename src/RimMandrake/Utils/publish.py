@@ -261,57 +261,9 @@ def rebase(top):
     up, head = out(top, "rev-parse", track), out(top, "rev-parse", "HEAD")
     if is_ancestor(top, up, head):
         return rebuilt                                   # already on top of origin
-    # Nothing local but behind: still move, carrying dirty files, or an unattended clone (the dispatch clone) whose
-    # publishes find nothing to commit stays behind for good and lints its stale HEAD
-    # (RIMMANDRAKE_UNSTICK_DISPATCH_CLONE_PUBLISH_LINT_REFUSES_HEAD).
-    behind_only = is_ancestor(top, head, up)
-    # git cherry never lists a merge, so a resolution edited inside one would vanish at the reset: ask rev-list
-    merges = [] if behind_only else out(top, "rev-list", "--merges", "%s..%s" % (up, head)).split()
-    if merges:
-        raise Refuse("local commit %s is a merge; publish cannot replay it" % merges[0][:12])
-    todo = [] if behind_only else [ln[2:].strip() for ln in out(top, "cherry", up, head).splitlines()
-                                   if ln.startswith("+")]
+    tip, rebuilt = replay(top, up, head)
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
     import seat_sync
-    # git cherry calls a landed commit unlanded when it touches a union shard (the patch-id context differs), and its
-    # replay re-adds files origin has since moved or deleted (RIMMANDRAKE_SKIP_LANDED_TWINS_PUBLISH_REPLAY_RESURRECTS_FILES)
-    if todo:
-        sg, base = seat_sync.Git(top), out(top, "merge-base", up, head)
-        kept = []
-        for c in todo:
-            try:
-                twin = seat_sync.landed_twin(sg, up, c, base)
-            except seat_sync.Refused:                    # a git error proves nothing: replay it as before
-                twin = None
-            if twin is None:
-                kept.append(c)
-            else:
-                print("%s is already on origin%s; not replaying it" % (c[:12], " as " + twin[:12] if twin else ""))
-        todo = kept
-    tip = up
-    for c in todo:
-        r = run(top, "merge-tree", "--write-tree", "--name-only", "--merge-base=%s^" % c, tip, c, check=False)
-        tree = r.stdout.split("\n", 1)[0].strip()
-        if r.returncode:
-            paths = r.stdout.split("\n\n", 1)[0].splitlines()[1:]
-            if not paths or not all(is_dll_pair_path(p) for p in paths):
-                raise Refuse("replaying %s onto origin/main stopped on a conflict in: %s. Your commit is intact on "
-                             "HEAD; this clone has one owner, so merge it by hand, then re-run ./publish"
-                             % (c[:12], ", ".join(paths) or "(see git merge-tree)"))
-            # Only committed DLL/.srchash pairs conflict: take origin's side; land() rebuilds them from the
-            # committed source once the branch has moved, so neither side's binary is trusted.
-            tree = take_side(top, tree, tip, c, paths)
-            rebuilt.update(dll_of(p) for p in paths)
-            print("replay of %s: DLL conflict in %s; took origin's side, will rebuild from committed source"
-                  % (c[:12], ", ".join(sorted(set(paths)))))
-        tree = dedupe_shards(top, tree, tip, c)
-        if tree == out(top, "rev-parse", tip + "^{tree}"):
-            continue                                     # nothing left of it: a DLL pair, or already on origin
-        meta = out(top, "show", "-s", "--format=%an%x00%ae%x00%aI", c).split("\0")
-        env = git_env(GIT_AUTHOR_NAME=meta[0], GIT_AUTHOR_EMAIL=meta[1], GIT_AUTHOR_DATE=meta[2])
-        body = out(top, "show", "-s", "--format=%B", c) + "\n"
-        tip = subprocess.run(["git", "commit-tree", tree, "-p", tip, "-F", "-"], cwd=top, input=body, env=env,
-                             capture_output=True, text=True, check=True).stdout.strip()
     # seat_sync.reset_keep: a plain --keep would DELETE every file upstream stopped tracking (Transient/,
     # 2026-10-18); it keeps them on disk and otherwise behaves exactly like `git reset --keep`.
     if before_reset:
@@ -336,6 +288,65 @@ def rebase(top):
     if note:
         print("moved the branch: %s" % note)
     return rebuilt
+
+
+def replay(top, up, head, say=print):
+    """-> (tip, rebuilt): HEAD's local commits re-created on `up` by plumbing only (merge-tree + commit-tree; no index,
+    no worktree, no ref moved), and the DLLs whose pairs took origin's side. rebase() moves the branch to `tip`;
+    landing_rev() judges `tip` at the door. Raises Refuse on a merge or a real conflict."""
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import seat_sync
+    rebuilt = set()
+    # Nothing local but behind: still move, carrying dirty files, or an unattended clone (the dispatch clone) whose
+    # publishes find nothing to commit stays behind for good and lints its stale HEAD
+    # (RIMMANDRAKE_UNSTICK_DISPATCH_CLONE_PUBLISH_LINT_REFUSES_HEAD).
+    behind_only = is_ancestor(top, head, up)
+    # git cherry never lists a merge, so a resolution edited inside one would vanish at the reset: ask rev-list
+    merges = [] if behind_only else out(top, "rev-list", "--merges", "%s..%s" % (up, head)).split()
+    if merges:
+        raise Refuse("local commit %s is a merge; publish cannot replay it" % merges[0][:12])
+    todo = [] if behind_only else [ln[2:].strip() for ln in out(top, "cherry", up, head).splitlines()
+                                   if ln.startswith("+")]
+    # git cherry calls a landed commit unlanded when it touches a union shard (the patch-id context differs), and its
+    # replay re-adds files origin has since moved or deleted (RIMMANDRAKE_SKIP_LANDED_TWINS_PUBLISH_REPLAY_RESURRECTS_FILES)
+    if todo:
+        sg, base = seat_sync.Git(top), out(top, "merge-base", up, head)
+        kept = []
+        for c in todo:
+            try:
+                twin = seat_sync.landed_twin(sg, up, c, base)
+            except seat_sync.Refused:                    # a git error proves nothing: replay it as before
+                twin = None
+            if twin is None:
+                kept.append(c)
+            else:
+                say("%s is already on origin%s; not replaying it" % (c[:12], " as " + twin[:12] if twin else ""))
+        todo = kept
+    tip = up
+    for c in todo:
+        r = run(top, "merge-tree", "--write-tree", "--name-only", "--merge-base=%s^" % c, tip, c, check=False)
+        tree = r.stdout.split("\n", 1)[0].strip()
+        if r.returncode:
+            paths = r.stdout.split("\n\n", 1)[0].splitlines()[1:]
+            if not paths or not all(is_dll_pair_path(p) for p in paths):
+                raise Refuse("replaying %s onto origin/main stopped on a conflict in: %s. Your commit is intact on "
+                             "HEAD; this clone has one owner, so merge it by hand, then re-run ./publish"
+                             % (c[:12], ", ".join(paths) or "(see git merge-tree)"))
+            # Only committed DLL/.srchash pairs conflict: take origin's side; land() rebuilds them from the
+            # committed source once the branch has moved, so neither side's binary is trusted.
+            tree = take_side(top, tree, tip, c, paths)
+            rebuilt.update(dll_of(p) for p in paths)
+            say("replay of %s: DLL conflict in %s; took origin's side, will rebuild from committed source"
+                  % (c[:12], ", ".join(sorted(set(paths)))))
+        tree = dedupe_shards(top, tree, tip, c)
+        if tree == out(top, "rev-parse", tip + "^{tree}"):
+            continue                                     # nothing left of it: a DLL pair, or already on origin
+        meta = out(top, "show", "-s", "--format=%an%x00%ae%x00%aI", c).split("\0")
+        env = git_env(GIT_AUTHOR_NAME=meta[0], GIT_AUTHOR_EMAIL=meta[1], GIT_AUTHOR_DATE=meta[2])
+        body = out(top, "show", "-s", "--format=%B", c) + "\n"
+        tip = subprocess.run(["git", "commit-tree", tree, "-p", tip, "-F", "-"], cwd=top, input=body, env=env,
+                             capture_output=True, text=True, check=True, timeout=GIT_TIMEOUT_S).stdout.strip()
+    return tip, rebuilt
 
 
 # ---- committed mod DLLs at landing -------------------------------------------------------------------------
@@ -676,8 +687,8 @@ def tree_checks(top, changed):
     """Owner by card 2026-11-12 ~8:25 PM PST: publish runs the fast whole-tree checks and refuses on red, naming it
     (validation_map_and_rules.md rule 10). The list is TREE_CHECKS; a repo without it (a test fixture) runs nothing.
     `changed`: the paths the local commits touch; only skip_when_only paths -> nothing runs. A check that times out
-    warns: it measured nothing, so it refuses nothing. A clone runs them on a full checkout of HEAD
-    (full_head_tree), so the verdict is the commit's. -> None, or raises Refuse naming each red check and its fix."""
+    warns: it measured nothing, so it refuses nothing. A clone runs them on a full checkout (full_head_tree) of the
+    tree that lands (landing_rev: HEAD, or HEAD replayed onto a fresh origin/main when HEAD is behind it). -> None, or raises Refuse naming each red check and its fix."""
     cfg_path = os.path.join(top, TREE_CHECKS)
     if not os.path.isfile(cfg_path):
         return None
@@ -689,10 +700,33 @@ def tree_checks(top, changed):
     if changed and all(any(fnmatch.fnmatch(p, g) for g in cfg.get("skip_when_only", ())) for p in changed):
         return None
     if is_clone_top(top):
-        with full_head_tree(top) as full:
-            cfg = _committed(full, TREE_CHECKS)         # the commit's own list: its tests are the ones checked out
+        rev, what = landing_rev(top)
+        with full_head_tree(top, rev=rev, what=what, lands=True) as full:
+            cfg = _committed(full, TREE_CHECKS)         # the landing tree's own list: its tests are the ones checked out
             return _run_tree_checks(full, cfg) if cfg else None
     return _run_tree_checks(top, cfg)
+
+
+def landing_rev(top):
+    """-> (rev, what): the commit the whole-tree checks judge. When HEAD is behind a fresh origin/main, HEAD's local
+    commits replayed onto it (replay(), the same plumbing land() uses; nothing moves), so a red origin has since
+    repaired does not refuse sound work, and a red origin brings in is seen before it lands
+    (RIMMANDRAKE_CHECK_PUBLISH_TREE_ON_REBASED_HEAD_NOT_STALE: a clone 19 behind was refused twice for ledger lines
+    origin had restored; the whole-tree checks take no pre-existing excuse). Otherwise HEAD, as before, also when the
+    replay cannot be made (land() then refuses on that conflict itself)."""
+    run(top, "fetch", "-q", REMOTE, check=False)         # unreachable: the last tracking ref is the best known origin
+    _, track, _label = target_ref(top)
+    if not ref_exists(top, track):
+        return "HEAD", "HEAD"
+    up, head = out(top, "rev-parse", track), out(top, "rev-parse", "HEAD")
+    if is_ancestor(top, up, head):
+        return "HEAD", "HEAD"
+    try:
+        tip, _rebuilt = replay(top, up, head, say=lambda *_a: None)
+    except (Refuse, subprocess.SubprocessError) as e:
+        print("tree checks: HEAD cannot be replayed onto origin/main %s (%s); judging HEAD" % (up[:12], e))
+        return "HEAD", "HEAD"
+    return tip, "HEAD replayed onto origin/main %s" % up[:12]
 
 
 PIPELINE_TESTS = os.path.join("src", "RimMandrake", "Utils", "pipeline_tests.json")
@@ -946,7 +980,7 @@ CHECKTREE_STALE_S = 3600
 
 
 @contextlib.contextmanager
-def full_head_tree(top, rev="HEAD", what="HEAD"):
+def full_head_tree(top, rev="HEAD", what="HEAD", lands=None):
     """The checks judge the commit, not the working tree: a sparse clone lacks the files they read (they went red or
     green blind, lessons 2026-11-15 194926Z/195130Z) and a full one holds edits the commit does not (is_clone_top).
     Yield a full checkout of HEAD: a throwaway
@@ -964,15 +998,20 @@ def full_head_tree(top, rev="HEAD", what="HEAD"):
     tmp = tempfile.mkdtemp(prefix=CHECKTREE_PREFIX, dir=gitdir)
     try:
         t0 = time.monotonic()
+        # lands: the checkout is the tree as it lands, so its origin/main is that commit. The clone's own origin/main
+        # there is this clone's local main, and a landing replayed onto a newer origin read every sha origin gained
+        # since as "not on origin/main" (selftest_modledger_tree SHA_NOT_ON_BASE, 2026-11-22)
         for a in (["clone", "-q", "--shared", "--no-checkout", top, tmp],
-                  ["-C", tmp, "checkout", "-q", "--detach", head]):
+                  ["-C", tmp, "checkout", "-q", "--detach", head],
+                  *([["-C", tmp, "update-ref", "refs/remotes/origin/main", head]] if lands else [])):
             r = subprocess.run(["git", "-c", "core.hooksPath=/dev/null", *a], capture_output=True, text=True,
                                timeout=GIT_TIMEOUT_S)
             if r.returncode:
                 raise Refuse("the full checkout of %s for the checks failed: git %s: %s"
                              % (what, a[0] if a[0] != "-C" else a[2], r.stderr.strip()))
         print("tree checks: %s, running them on a full checkout of %s %s (%.1f s)"
-              % ("the commit is what lands" if rev == "HEAD" else "a red test re-run", what, head[:12],
+              % ("the commit is what lands" if (rev == "HEAD" if lands is None else lands) else "a red test re-run",
+                 what, head[:12],
                  time.monotonic() - t0),
               flush=True)
         yield tmp

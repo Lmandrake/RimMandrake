@@ -123,7 +123,6 @@
   "src/RimMandrake/Utils/project_maturity_dashboard.py::refresh_hub_tab::run": 1,
   "src/RimMandrake/Utils/proof_restore_check.py::tracked::run": 1,
   "src/RimMandrake/Utils/publish.py::commit::run": 1,
-  "src/RimMandrake/Utils/publish.py::rebase::run": 1,
   "src/RimMandrake/Utils/publish.py::rebuild_dlls::run": 1,
   "src/RimMandrake/Utils/publish.py::take_side.g::run": 1,
   "src/RimMandrake/Utils/publish.py::toplevel::run": 1,

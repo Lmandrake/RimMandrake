@@ -253,7 +253,170 @@ def door_base_cases(tmp):
     check(not left, "no base tree left in any git dir: %s" % left)
 
 
+# RIMMANDRAKE_CHECK_PUBLISH_TREE_ON_REBASED_HEAD_NOT_STALE (design/specs/2026-11-22-publish-door-judges-landing-tree/
+# boundary.md): a clone 19 behind origin was refused twice by selftest_modledger_tree.py for ledger lines origin had
+# already restored (2026-11-22 ~00:55 PST). The whole-tree checks ran on HEAD before the rebase, and they take no
+# pre-existing excuse (base=None in tree_checks), so origin's old red read as the commit's.
+LEDGER_CHECK = r'''import os, sys
+top = os.path.dirname(os.path.abspath(__file__))
+lines = open(os.path.join(top, "data", "ledger.txt")).read().split()
+if "line2" not in lines:
+    print("FAIL STALE_TOKEN line2 deleted from data/ledger.txt"); sys.exit(1)
+other = os.path.join(top, "src", "other.txt")
+if os.path.isfile(other) and "BAD" in open(other).read():
+    print("FAIL planted fault in src/other.txt"); sys.exit(1)
+print("ok ledger whole")
+'''
+
+
+def landing_repo(tmp, name, origin_repairs=True, commit_body="ok\n"):
+    """-> (work clone, origin sha after the last origin commit). Origin goes red (line2 deleted), the work clone branches
+    there, then origin repairs it (or makes an unrelated commit), and the work clone writes src/other.txt (uncommitted:
+    publish commits it)."""
+    bare = os.path.join(tmp, name + ".git")
+    g("init", "-q", "--bare", bare, cwd=tmp)
+    seed = os.path.join(tmp, name + "_seed")
+    g("clone", "-q", bare, seed, cwd=tmp)
+    os.makedirs(os.path.join(seed, os.path.dirname(P.TREE_CHECKS)))
+    os.makedirs(os.path.join(seed, "data"))
+    json.dump({"timeout_s": 30, "skip_when_only": [], "checks": [{"test": "ledger_check.py", "fix": "fix-ledger"}]},
+              open(os.path.join(seed, P.TREE_CHECKS), "w"))
+    script(seed, "ledger_check.py", LEDGER_CHECK)
+    script(seed, os.path.join("data", "ledger.txt"), "line1\nline2\n")
+    script(seed, os.path.join("src", "keep.txt"), "a\n")
+    g("add", "-A", cwd=seed)
+    g("commit", "-q", "-m", "base", cwd=seed)
+    g("push", "-q", "origin", "HEAD:main", cwd=seed)
+    script(seed, os.path.join("data", "ledger.txt"), "line1\n")
+    g("commit", "-q", "-am", "seat_dirt: line2 deleted", cwd=seed)
+    g("push", "-q", "origin", "HEAD:main", cwd=seed)
+    work = os.path.join(tmp, name)
+    g("clone", "-q", bare, work, cwd=tmp)
+    for k, v in (("user.name", "t"), ("user.email", "t@example.invalid"), ("core.hooksPath", "/dev/null")):
+        g("config", k, v, cwd=work)
+    if origin_repairs:
+        script(seed, os.path.join("data", "ledger.txt"), "line1\nline2\n")
+        g("commit", "-q", "-am", "restore line2", cwd=seed)
+    else:
+        script(seed, os.path.join("src", "keep.txt"), "a\nb\n")
+        g("commit", "-q", "-am", "unrelated", cwd=seed)
+    g("push", "-q", "origin", "HEAD:main", cwd=seed)
+    script(work, os.path.join("src", "other.txt"), commit_body)
+    up = subprocess.run(["git", "-C", seed, "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
+    return work, up
+
+
+def publish_call(work, paths):
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf), contextlib.redirect_stderr(buf):
+        try:
+            sha = P.publish(work, paths, "fixture change\n")
+            return None, buf.getvalue() + ("PUBLISHED %s\n" % sha)
+        except P.Refuse as e:
+            return str(e), buf.getvalue()
+
+
+def head_of(repo, ref="HEAD"):
+    return subprocess.run(["git", "-C", repo, "rev-parse", ref], capture_output=True, text=True).stdout.strip()
+
+
+def t_the_door_judges_the_tree_that_lands(tmp):
+    work, up = landing_repo(tmp, "judge")
+    g("add", "src/other.txt", cwd=work)
+    g("commit", "-q", "-m", "the change", cwd=work)
+    err, out = call(work, ["src/other.txt"])
+    check(err is None and "replayed onto origin/main %s" % up[:12] in out and "1 green" in out,
+          "the-door-judges-the-tree-that-lands: a clone behind origin is judged on HEAD replayed onto the fetched origin "
+          "(%r)" % (err or out)[-300:])
+    g("pull", "-q", "--rebase", cwd=work)
+    err, out = call(work, ["src/other.txt"])
+    check(err is None and "full checkout of HEAD" in out and "replayed" not in out,
+          "the-door-judges-the-tree-that-lands: a clone on top of origin is judged on HEAD (%r)" % (err or out)[-300:])
+
+
+def t_a_red_origin_already_repaired_does_not_refuse(tmp):
+    work, up = landing_repo(tmp, "repaired")
+    err, out = publish_call(work, ["src/other.txt"])
+    landed = head_of(os.path.join(tmp, "repaired.git"), "main")
+    check(err is None and "PUBLISHED" in out and landed != up,
+          "a-red-origin-already-repaired-does-not-refuse: a clone that branched on origin's red lands after origin "
+          "repaired it (%r)" % (err or out)[-400:])
+
+
+def t_a_red_the_commit_makes_is_refused_on_the_landing_tree(tmp):
+    for behind in (True, False):
+        name = "plant_behind" if behind else "plant_level"
+        work, up = landing_repo(tmp, name, commit_body="BAD\n")
+        if not behind:
+            g("pull", "-q", "--rebase", cwd=work)
+        before = head_of(work)
+        err, out = publish_call(work, ["src/other.txt"])
+        check(bool(err) and "planted fault in src/other.txt" in err and "fix-ledger" in err
+              and "line2 deleted" not in err and head_of(work) == before
+              and head_of(os.path.join(tmp, name + ".git"), "main") == up,
+              "a-red-the-commit-makes-is-refused-on-the-landing-tree (%s origin): refused naming the commit's fault only, "
+              "commit undone, nothing pushed (%r)" % ("behind" if behind else "level with", (err or out)[-400:]))
+
+
+def t_a_red_origin_has_not_repaired_is_still_refused(tmp):
+    work, up = landing_repo(tmp, "unrepaired", origin_repairs=False)
+    err, out = publish_call(work, ["src/other.txt"])
+    check(bool(err) and "line2 deleted" in err and "fix-ledger" in err
+          and head_of(os.path.join(tmp, "unrepaired.git"), "main") == up,
+          "a-red-origin-has-not-repaired-is-still-refused: origin's own red refuses a clone behind it (%r)"
+          % (err or out)[-400:])
+
+
+CITE_CHECK = r'''import os, subprocess, sys
+top = os.path.dirname(os.path.abspath(__file__))
+for sha in open(os.path.join(top, "data", "cites.txt")).read().split():
+    if subprocess.run(["git", "-C", top, "merge-base", "--is-ancestor", sha, "origin/main"]).returncode:
+        print("FAIL SHA_NOT_ON_BASE %s does not resolve on origin/main" % sha[:12]); sys.exit(1)
+print("ok every cited sha is on origin/main")
+'''
+
+
+def t_the_landing_tree_sees_origin_main_as_landed(tmp):
+    """The first live run of the fix (2026-11-22 ~01:50 PST): selftest_modledger_tree.py read SHA_NOT_ON_BASE for a
+    HOLDER shard line citing a sha on the real origin, because the throwaway checkout's origin/main was the clone's
+    stale local main."""
+    work, up = landing_repo(tmp, "cites")
+    seed = os.path.join(tmp, "cites_seed")
+    cfg_p = os.path.join(seed, P.TREE_CHECKS)
+    cfg = json.load(open(cfg_p))
+    cfg["checks"] = [{"test": "cite_check.py", "fix": "fix-cite"}]
+    json.dump(cfg, open(cfg_p, "w"))
+    script(seed, "cite_check.py", CITE_CHECK)
+    script(seed, os.path.join("data", "cites.txt"), "")
+    g("add", "-A", cwd=seed)
+    g("commit", "-q", "-m", "a landed fix", cwd=seed)
+    fixed = head_of(seed)
+    script(seed, os.path.join("data", "cites.txt"), fixed + "\n")
+    g("commit", "-q", "-am", "a ledger line cites the landed fix", cwd=seed)
+    g("push", "-q", "origin", "HEAD:main", cwd=seed)
+    err, out = publish_call(work, ["src/other.txt"])
+    check(err is None and "PUBLISHED" in out,
+          "the-landing-tree-sees-origin-main-as-landed: a sha on origin, cited in origin's tree, resolves on origin/main "
+          "in the landing checkout of a clone behind it (%r)" % (err or out)[-400:])
+    work2, _up = landing_repo(tmp, "cites_bad")
+    seed2 = os.path.join(tmp, "cites_bad_seed")
+    json.dump(cfg, open(os.path.join(seed2, P.TREE_CHECKS), "w"))
+    script(seed2, "cite_check.py", CITE_CHECK)
+    script(seed2, os.path.join("data", "cites.txt"), "0123456789abcdef0123456789abcdef01234567\n")
+    g("add", "-A", cwd=seed2)
+    g("commit", "-q", "-m", "a ledger line cites a sha nowhere", cwd=seed2)
+    g("push", "-q", "origin", "HEAD:main", cwd=seed2)
+    err, out = publish_call(work2, ["src/other.txt"])
+    check(bool(err) and "SHA_NOT_ON_BASE" in err,
+          "the-landing-tree-sees-origin-main-as-landed: a cited sha on no branch is still refused (%r)" % (err or out)[-300:])
+
+
 def main():
+    for t in (t_the_door_judges_the_tree_that_lands, t_a_red_origin_already_repaired_does_not_refuse,
+              t_the_landing_tree_sees_origin_main_as_landed,
+              t_a_red_the_commit_makes_is_refused_on_the_landing_tree, t_a_red_origin_has_not_repaired_is_still_refused):
+        with tempfile.TemporaryDirectory() as tmp:
+            t(tmp)
     with tempfile.TemporaryDirectory() as tmp:
         sparse_cases(tmp)
     with tempfile.TemporaryDirectory() as tmp:

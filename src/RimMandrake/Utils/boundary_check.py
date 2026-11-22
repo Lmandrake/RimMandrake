@@ -49,6 +49,8 @@ PAGES = {
     "design/specs/2026-11-19-positive-steps-one-source/boundary.md": "src/RimMandrake/Utils/selftest_positive_steps_one_source.py",
     "design/specs/2026-11-19-rule-homes-in-briefs/boundary.md": "src/RimMandrake/rimflow/selftest_rule_homes_in_briefs.py",
     "design/specs/2026-11-19-brief-skill-paths/boundary.md": "src/RimMandrake/rimflow/selftest_detached_helper.py",
+    "design/specs/2026-11-22-publish-door-judges-landing-tree/boundary.md":
+        "src/RimMandrake/Utils/selftest_publish_tree_checks.py",
     "design/specs/2026-11-20-per-game-hold-own-install/boundary.md": "src/RimMandrake/rimflow/selftest_game_hold_split_install.py",
     "design/specs/2026-11-19-launch-unpublished-item/boundary.md": "src/RimMandrake/rimflow/selftest_detached_helper.py",
     "design/specs/2026-11-21-launch-returns-a-kept-clone/boundary.md": "src/RimMandrake/rimflow/selftest_detached_helper.py",
