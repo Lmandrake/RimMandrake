@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "stage": "in_game",
   "stage_label": "In-game acceptance (Stage 6)",
-  "since": "2026-11-21T18:32:40-08:00",
+  "since": "2026-11-21T20:31:40-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -269,6 +269,23 @@
       "unit": "rm-detached-bench-rimmandrake-declare-flowworks-scene-csha-1795313997",
       "confirmed": {
         "conductor_decision": "In-game checks that count from a build older than the C# they exercise must run again BEFORE his walk, so that his walk is not the first reader of those bars. Sending FlowWorks back to the in-game stage for exactly those checks is decided: do it."
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold"
+      ]
+    },
+    {
+      "from": "in_game",
+      "to": "in_game",
+      "at": "2026-11-21T20:31:40-08:00",
+      "by": "BENCH",
+      "why": "visit 5 exit not met on two game-only MOD lines: sc_hung_bridge (grate 5 vs solid 13; RIMMANDRAKE_GATE_INFERNO_DECK_CHANCE_SOLID_OUTBURNS_GRATE, supersedes GRATE_FIRE_FIX_SOLID_DECK_BURNS_TOO) and sc_hole_prison's earlier FAIL (RIMMANDRAKE_TRACE_FLOWWORKS_AWAKE_PRISONER_MEAL_SKIPPED_ONE_RUN_IN_TWO); both Verse-bound or cause-unknown, so the next visit, not offline_build",
+      "unit": "rm-detached-bench-rimmandrake-route-flowworks-visit-five-f-1795321345",
+      "confirmed": {
+        "steward_confirms": "read visit_5 SUMMARY.md, rows.jsonl and maturation.py next: sc_hung_bridge REAL MISS (MOD, inferno in-cell chance 0.9 for solid and grated riders contradicts flowworks_bridges_design §4.1); sc_hole_prison REAL MISS (an earlier FAIL, cause unknown, a later PASS does not hide it); OL_OWNER_LOOK_READS not counted, HARNESS, carries his held look statements, owned by RIMMANDRAKE_REPORT_SUBMERGE_SHADOW_QUEUE_JUDGE_CANNOT_SEE_ORDER; no tests_edited.json, no fix readers owed, no undecided bar"
       },
       "checks_passed": [
         "order",

@@ -12,7 +12,7 @@ now, offline only"). Its table matches the pilot's columns (`design/concepts/Exp
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`: "Yes, lock the other four mods").
   Code exists and is large: `src/RimMandrake/FlowWorks/` (C# mod, a 325+ case C# SelfTest, about 168 Python selftests,
   a northstar proof harness).
-- **Stage now:** Stage 6, in-game acceptance, since 2026-11-21 6:32 PM PST (`version/stage_record.json`).
+- **Stage now:** Stage 6, in-game acceptance, since 2026-11-21 8:31 PM PST (`version/stage_record.json`).
 - **Bars:** 57 = 29 inventory rows of `record.json` + 28 leaves of `tree.json` (`coverage_judge.required_ids()`); 59 at the
   lock, his card of 2026-11-14 added `inv_geyser_tub` and `inv_liquid_coating` (61), and his card of 2026-11-14 ~9:43 PM
   PST moved the four wetting bars to 0.2.0 (interventions below; `version/next_version/README.md`).
@@ -22,7 +22,7 @@ now, offline only"). Its table matches the pilot's columns (`design/concepts/Exp
 - **Held look statements for this mod:** 103 rows in five files of `design/RimMandrake/validation_holding/` (2026-11-12:
   56 rows; 2026-11-13 morning: 18; 2026-11-13 dig interface: 2; 2026-11-13 evening: 5; 2026-11-14: 22); 83 are placed
   in `version/test_table.json`, all 103 placed. [measured, preflight C8, 2:40 PM PST]
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-21 6:32 PM PST).
+- **Waiting on:** RIMMANDRAKE_GATE_INFERNO_DECK_CHANCE_SOLID_OUTBURNS_GRATE and RIMMANDRAKE_TRACE_FLOWWORKS_AWAKE_PRISONER_MEAL_SKIPPED_ONE_RUN_IN_TWO (both game-only), then visit 6
 
 ### The vision (his root paragraph, approved 2026-11-04, OWNER:1793794915205594887; eight lines in `version/vision.md`)
 
@@ -435,4 +435,13 @@ None open; question 3 (the dig speed) is answered in the history entry of 2026-1
 - Conductor decision: In-game checks that count from a build older than the C# they exercise must run again BEFORE his walk, so that his walk is not the first reader of those bars. Sending FlowWorks back to the in-game stage for exactly those checks is decided: do it.
 - Was, "Stage now": - **Stage now:** Stage 8, his live walk, since 2026-11-21 6:14 PM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-21 6:14 PM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-21 8:31 PM PST, stage change: In-game acceptance (Stage 6) to In-game acceptance (Stage 6) (by BENCH)
+
+- Why: visit 5 exit not met on two game-only MOD lines: sc_hung_bridge (grate 5 vs solid 13; RIMMANDRAKE_GATE_INFERNO_DECK_CHANCE_SOLID_OUTBURNS_GRATE, supersedes GRATE_FIRE_FIX_SOLID_DECK_BURNS_TOO) and sc_hole_prison's earlier FAIL (RIMMANDRAKE_TRACE_FLOWWORKS_AWAKE_PRISONER_MEAL_SKIPPED_ONE_RUN_IN_TWO); both Verse-bound or cause-unknown, so the next visit, not offline_build
+- Checks passed: order, by, version, hold.
+- Steward confirms: read visit_5 SUMMARY.md, rows.jsonl and maturation.py next: sc_hung_bridge REAL MISS (MOD, inferno in-cell chance 0.9 for solid and grated riders contradicts flowworks_bridges_design §4.1); sc_hole_prison REAL MISS (an earlier FAIL, cause unknown, a later PASS does not hide it); OL_OWNER_LOOK_READS not counted, HARNESS, carries his held look statements, owned by RIMMANDRAKE_REPORT_SUBMERGE_SHADOW_QUEUE_JUDGE_CANNOT_SEE_ORDER; no tests_edited.json, no fix readers owed, no undecided bar
+- Was, "Stage now": - **Stage now:** Stage 6, in-game acceptance, since 2026-11-21 6:32 PM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-21 6:32 PM PST).
 - Record: `version/stage_record.json`.

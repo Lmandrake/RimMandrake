@@ -1,10 +1,10 @@
 {
  "_view": {
-  "body_sha256": "6810b456603c427074239887f61bc1f3e1c726bf83165bc4f641d28b3b466e65",
+  "body_sha256": "8a863d33a23812e4e0471714740c5c1759e8dff32e947c6dd38675da1b017f5a",
   "reducer": 1,
   "shards": {
    "BACKFILL": 893183,
-   "DISPATCH": 55601,
+   "DISPATCH": 55892,
    "HOLDER.run-1794816885": 928,
    "HOLDER.run-1794848129": 1121,
    "HOLDER.run-1794861652": 2822,
@@ -27,6 +27,7 @@
    "HOLDER.run-1795312089": 1009,
    "HOLDER.run-1795312923": 2298,
    "HOLDER.run-1795315124": 1540,
+   "HOLDER.run-1795321038": 846,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1267,11 +1268,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795315124",
-   "done": "visit 5: 24 touched checks on bdd56c6ff6, 23 PASS, sc_hung_bridge FAIL (grate fire row, MOD); exit not met; published 6d4c3dc70b",
-   "next": "Fix GRATE_FIRE_FIX_SOLID_DECK_BURNS_TOO with a live proof the row is no longer chance; rerun sc_hung_bridge",
-   "ruled_out": "visit 3 sc_hung_bridge PASS was a coin-flip draw (1 FAIL, 2 PASS); trench run-1 FAIL was my wrapper timeout; moat run-1 was a chance catch",
-   "ts": "2026-11-22T04:10:46Z"
+   "by": "HOLDER.run-1795321038",
+   "done": "visit 5 steward: back to in_game on 2 game-only MOD items: RIMMANDRAKE_GATE_INFERNO_DECK_CHANCE_SOLID_OUTBURNS_GRATE (replaces GRATE_FIRE_FIX_SOLID_DECK_BURNS_TOO; design 4.1 rules, block cleared) and RIMMANDRAKE_TRACE_FLOWWORKS_AWAKE_PRISONER_MEAL_SKIPPED_ONE_RUN_IN_TWO",
+   "next": "Fix ApplyInfernoEffects so solid-deck riders get the design low chance (grated > solid); prove sc_hung_bridge three PASS in a row",
+   "ruled_out": "a design card for the grate (design 4.1 already rules); removing OL_OWNER_LOOK_READS (it carries his held look statements)",
+   "ts": "2026-11-22T04:32:06Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1723,7 +1724,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1559,
+  "events": 1561,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7824,7 +7825,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-22T04:22:10Z",
+   "last": "2026-11-22T04:32:06Z",
    "lease": "run-1795321038",
    "released": false,
    "token": 39
@@ -7931,6 +7932,7 @@
    "HOLDER.run-1795312089",
    "HOLDER.run-1795312923",
    "HOLDER.run-1795315124",
+   "HOLDER.run-1795321038",
    "JUDGE.judge-1794833810",
    "JUDGE.judge-1794849236",
    "JUDGE.judge-1795134433",
