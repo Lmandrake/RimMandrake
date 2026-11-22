@@ -140,7 +140,7 @@ for stage, want in (("offline_build", False), ("blind_challenge", False), ("in_g
 def road_back(items, stage):
     s = {"road_back": {"caused_by": "ROUTE_X"}}
     row = {"mod": PILOT, "stage": stage}
-    A._road_back(s, row, lambda ids: items, 100, ver="0.1.0", version_bugs=lambda m, v: [])
+    row["_rv"] = A._road_back(s, row, lambda ids: items, 100, ver="0.1.0", version_bugs=lambda m, v: [])
     return row
 
 
@@ -151,6 +151,13 @@ row = road_back(ALL_LIVE, "offline_build")
 check("the tick at Stage 3 gives no fixer to game-only items; it takes the game-only exit back to Stage 6 itself",
       row.get("decision") == "autogameonly" and row.get("aut") == "autogameonly" and not row.get("fix_item")
       and row.get("game_only_items") == [LIVE_A, LIVE_B] and not row.get("need"), row)
+# RIMMANDRAKE_REPAIR_PYRELANDS_FORM_REFUSAL_AT_THE_RUN_FIVE: at Stage 4/5 the move to in_game is the FORWARD exit (the
+# blind cycle's exit reading, the steward's confirm, the certificate), so a DISPATCH game-only exit there is refused
+# every time; Pyrelands, sent to blind_challenge by the Conductor, had its cycle 5 replaced by that refused act
+row = road_back(ALL_LIVE, "blind_challenge")
+check("the tick at Stage 4/5, every open item game-only: no game-only exit; the blind cycle or its steward runs",
+      row.get("_rv") is False and row.get("decision") != "autogameonly" and row.get("aut") is None
+      and not row.get("fix_item"), row)
 row = road_back([{"id": LIVE_A, "needs": "game-up"}, {"id": OFF_C, "needs": "offline"}], "offline_build")
 check("the tick at Stage 3 with a mix: the fixer goes to the offline item only", row.get("fix_item") == OFF_C, row)
 row = road_back(ALL_LIVE, "in_game")

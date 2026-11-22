@@ -1152,6 +1152,13 @@ def _road_back(s, row, open_items, now=None, moved=False, endings=None, cfg=None
         game = ([x for x in items if (x or {}).get("needs") in M.LIVE_NEEDS]
                 if row.get("stage") in M.OFFLINE_STAGES else [])
         work = [x for x in items if x not in game]
+        if not work and M.WORDS.index(row.get("stage")) + 1 == M.WORDS.index("in_game"):
+            # at Stages 4/5 the move to in_game is the FORWARD exit (the cycle's exit reading, the steward's confirm,
+            # the certificate): a DISPATCH game-only exit there is refused every time, so the game-only items hold
+            # nothing here; the blind cycle runs and its steward advances (Pyrelands' cycle 5 was replaced by that
+            # refused act, RIMMANDRAKE_REPAIR_PYRELANDS_FORM_REFUSAL_AT_THE_RUN_FIVE)
+            row["game_only_items"] = [x["id"] for x in game]
+            return False
         if not work:
             # the record goes back to Stage 6 by the tick's own act, once the version's offline Problems are built: the
             # game-only items are never tried on a build those fixes then change
