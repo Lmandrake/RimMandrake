@@ -1704,11 +1704,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 207.46,
-    "last": "--only FuelFire*,GateFirebreak*: 14 case(s) and 0 hose suite(s) ran, 1379 filtered out",
-    "at": "2026-11-22T06:36:44Z",
+    "seconds": 308.44,
+    "last": "--only FuelFire*,GateFirebreak*: 15 case(s) and 0 hose suite(s) ran, 1379 filtered out",
+    "at": "2026-11-22T09:48:40Z",
     "result": "PASS",
-    "build": "7eae2e9aaff8d17fdb0b",
+    "build": "19b300f1d1f0eb12b097",
     "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only FuelFire*,GateFirebreak*",
     "margins": []
    }
@@ -3125,11 +3125,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.35,
+    "seconds": 0.34,
     "last": "PASS",
-    "at": "2026-11-22T06:49:16Z",
+    "at": "2026-11-22T09:48:41Z",
     "result": "PASS",
-    "build": "f7f6829a0ba492e89d91",
+    "build": "5ab16983bf85bcf430e7",
     "command": "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only toss_flame",
     "margins": []
    },
@@ -3151,11 +3151,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.48,
+    "seconds": 0.5,
     "last": "PASS",
-    "at": "2026-11-22T06:49:16Z",
+    "at": "2026-11-22T09:48:41Z",
     "result": "PASS",
-    "build": "f7f6829a0ba492e89d91",
+    "build": "5ab16983bf85bcf430e7",
     "command": "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only fetch_fallen",
     "margins": []
    },
@@ -3889,11 +3889,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.5,
+    "seconds": 0.54,
     "last": "PASS",
-    "at": "2026-11-22T06:49:17Z",
+    "at": "2026-11-22T09:48:42Z",
     "result": "PASS",
-    "build": "f7f6829a0ba492e89d91",
+    "build": "5ab16983bf85bcf430e7",
     "command": "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only coating",
     "margins": []
    },
@@ -3932,11 +3932,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 111.64,
-    "last": "--only PitLook1114*: 7 case(s) and 0 hose suite(s) ran, 1386 filtered out",
-    "at": "2026-11-22T06:42:18Z",
+    "seconds": 142.0,
+    "last": "--only PitLook1114*: 7 case(s) and 0 hose suite(s) ran, 1387 filtered out",
+    "at": "2026-11-22T09:51:04Z",
     "result": "PASS",
-    "build": "6743e2764c67c1935b28",
+    "build": "83b4fff5254832250d24",
     "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only PitLook1114*",
     "margins": []
    }
