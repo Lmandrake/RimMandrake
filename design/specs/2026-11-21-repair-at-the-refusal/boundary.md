@@ -25,9 +25,10 @@ for the Conductor's hand. The refusal texts of that night are in the dispatch st
 
 ## DOES NOT SURVIVE (not promised)
 
-- **a-machine-fault-at-launch.** A machine fault that stops a launch (no space, a full clone pool, systemd-run) is
-  not told apart from a gate's refusal: both are "never started", both owe a repair. The repair run's own launch then
-  meets the same fault, and `a-repair-launch-refused-names-the-conductor` hands it on. One principle, no table.
+- **a-machine-fault-at-launch.** A machine fault that stops a launch (no space, systemd-run) is not told apart from a
+  gate's refusal: both are "never started", both owe a repair. The repair run's own launch then meets the same fault,
+  and `a-repair-launch-refused-names-the-conductor` hands it on. One principle, no table. A refused pool clone is the
+  one exception (`a-pool-refusal-is-a-wait`).
 - **a-repair-run-that-lies.** A repair run that ends success and fixed nothing: the next same refusal counts once as
   substance (`a-repair-that-did-not-hold-counts-once`), so at most the loop's limit is spent.
 
@@ -71,6 +72,18 @@ for the Conductor's hand. The refusal texts of that night are in the dispatch st
 
 - **repairing-is-a-named-wait-never-paused.** A row that reads `repairing` is class `wait`, its `waits_on` the repair,
   never `paused` (no pause alarm, no stall).
+
+- **a-pool-refusal-is-a-wait.** `scratch_clone.pool_admit`'s refusal (`POOL REFUSED: pool full` or `pool at <N> GB`)
+  is a wait refusal (`AUT.wait_refusal`; `form_fault.fault_class` gives `wait`). It ends when a run returns its clone,
+  which the next launch reuses without the count or GB check. The pool's own alarm, `disk.pool_breach`, owns a pool
+  that never frees. Pyrelands, 2026-11-22: its certificate rerun and that rerun's form repair were refused a clone 4
+  times, and the repair's third refusal named the Conductor.
+- **a-pool-refused-repair-launch-spends-no-try.** A repair launch refused a pool clone records `launch_failed` and adds
+  no repair try, so it never names the Conductor. The next tick launches it again.
+- **an-owed-pool-refusal-owes-no-repair.** An owed form record whose text is a wait refusal is set to state `wait`
+  (neither open nor done). It starts no repair run, and the mod's own act goes on in the same tick.
+- **a-pool-refused-cert-rerun-starts-again.** A certificate rerun whose own result error is a wait refusal is started
+  again on the same build key. It spends no try (`cert_rerun.tries` is unchanged) and owes no repair.
 
 ## LIMITS
 

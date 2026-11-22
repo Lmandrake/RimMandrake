@@ -69,7 +69,12 @@ NEVER_TRANSIENT = re.compile(r"finish step never ran")
 # launch_mod's WAIT_MARK (a held bridge, his hold on the game). It is no system fault and spends no try: the tick
 # waits and launches the same thing again (design/specs/2026-11-20-launch-refusal-wait-and-deploy/boundary.md)
 # ... and control's admission refusal (a `./pipe` stop or limit someone chose: it ends when they lift it)
-WAIT_REFUSAL = re.compile(r"is draining \(switching plan notice|REFUSED \S+ by control:|%s" % re.escape(M.WAIT_MARK))
+# ... and scratch_clone.pool_admit's refusal (the pool is at its clone count or over its GB line): it ends when a run
+# returns its clone, which the next launch reuses without that check; the pool's own alarm (disk.pool_breach) owns a pool
+# that never frees (RIMMANDRAKE_UNBLOCK_PYRE_VISIT_SIX_HELD_BY_AN_ART_PICK_THAT_IS_HIS: Pyrelands' certificate rerun and
+# its form repair were refused a clone 4 times on 2026-11-22, and the repair's third refusal named the Conductor)
+WAIT_REFUSAL = re.compile(r"is draining \(switching plan notice|REFUSED \S+ by control:|POOL REFUSED: pool (?:full|at )|%s"
+                          % re.escape(M.WAIT_MARK))
 
 
 # detached_helper.clone_holders' refusal of a clone a LIVE run holds ("run U is running in it ... launch again after

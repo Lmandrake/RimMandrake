@@ -281,13 +281,74 @@ def t_repairing_is_a_named_wait_never_paused():
           "repairing-is-a-named-wait-never-paused: class %s, waits_on %s" % (row.get("klass"), row.get("waits_on")))
 
 
+# scratch_clone.pool_admit's two refusals, as a launch or a rerun's result carries them (Pyrelands, 2026-11-22 3:34 PM PST)
+POOL_FULL = ("RuntimeError: scratch_clone failed (exit 1): scratch_clone: FAILED: POOL REFUSED: pool full: 16 clones, "
+             "cap 16 (no idle clone to reuse); finish or push one, then retry")
+POOL_GB = "RuntimeError: scratch_clone failed (exit 1): scratch_clone: FAILED: POOL REFUSED: pool at 106.88 GB, cap 80 GB"
+CERT = {"rows": [{"test": "T_A", "status": "REFUSED", "clause": "ran_on_this_build", "would_pass": "build b"}]}
+
+
+def t_a_pool_refusal_is_a_wait():
+    got = (FF.fault_class(POOL_FULL), FF.fault_class(POOL_GB), FF.fault_class(LOCK_FILE))
+    check(got == ("wait", "wait", "form"), "a-pool-refusal-is-a-wait: full, over its GB line, a lock file: %s" % (got,))
+
+
+def t_a_pool_refused_repair_launch_spends_no_try():
+    st, s = state_with("steward", never_started("steward", LOCK_FILE))
+    sync(st)
+    fx = {"repair_launch": lambda *a, **k: (False, "retry of X, filed earlier; publish: pushed; clone failed: " + POOL_FULL,
+                                            None), "record": lambda u: None, "live": lambda r: "running"}
+    rows = None
+    for _ in range(MD.REPAIR_LAUNCH_MOST + 1):
+        rows = [{"mod": "FakeFlow", "decision": "launch", "why": "owed"}]
+        MD.form_repair_step("/nonexistent", {}, st, rows, ["FakeFlow"], NOW, True, fx)
+    rep = FF.open_repair(s) or {}
+    check(rows[0]["decision"] == "repairing" and not rows[0].get("need") and not rep.get("repair_tries"),
+          "a-pool-refused-repair-launch-spends-no-try: after %d pool refusals: %s, need %s, tries %s" % (
+              MD.REPAIR_LAUNCH_MOST + 1, rows[0]["decision"], rows[0].get("need"), rep.get("repair_tries")))
+
+
+def t_an_owed_pool_refusal_owes_no_repair():
+    text = ("Pyrelands: in-game visit 6: waiting on its certificate; the zero-token certificate rerun rm-cert-rerun-x on "
+            "this build ended (ok None, published nothing, error: %s); the step never reruns the same build" % POOL_FULL)
+    st = {"mods": {"FakeFlow": {}}}
+    FF.owe_repair(st["mods"]["FakeFlow"], text, "FakeFlow certificate", NOW, book="cert_rerun", key="k")
+    calls = []
+    fx = {"repair_launch": lambda *a, **k: (calls.append(a), (True, "DETACHED rm-r", "rm-r"))[1],
+          "record": lambda u: None, "live": lambda r: "running"}
+    rows = [{"mod": "FakeFlow", "decision": "launch", "why": "owed"}]
+    la = MD.form_repair_step("/nonexistent", {}, st, rows, ["FakeFlow"], NOW, True, fx)
+    check(la == ["FakeFlow"] and not calls and FF.open_repair(st["mods"]["FakeFlow"]) is None,
+          "an-owed-pool-refusal-owes-no-repair: launches %s, repair launches %d, open %s" % (
+              la, len(calls), FF.open_repair(st["mods"]["FakeFlow"])))
+
+
+def t_a_pool_refused_cert_rerun_starts_again():
+    key = MD.stale_key(CERT)
+    for err in (POOL_FULL, POOL_GB):
+        s = {"cert_rerun": {"key": key, "unit": "rm-cert-rerun-x", "at": NOW - 60, "failed": None, "tries": 1}}
+        f = {"certificate": CERT, "cert_rerun_result": {"unit": "rm-cert-rerun-x", "ok": None, "published": None,
+                                                         "key_after": None, "error": err}}
+        row, put = {"mod": "FakeFlow"}, []
+        got = MD.cert_rerun_decide({}, s, f, row, lambda d, w, need=None: put.append(d), NOW)
+        st = {"mods": {"FakeFlow": s}}
+        up = MD.cert_rerun_launch({}, st, row, NOW, {"cert_rerun": lambda m, k: (0, "STARTED rm-cert-rerun-y",
+                                                                                "rm-cert-rerun-y")}) if got == "launch" else None
+        check(got == "launch" and row.get("cert_rerun_key") == key and not s.get("form_repairs") and up
+              and s["cert_rerun"].get("tries") == 1,
+              "a-pool-refused-cert-rerun-starts-again: %s -> %s, owed %d, tries %s" % (
+                  err[-40:], got, len(s.get("form_repairs") or []), s["cert_rerun"].get("tries")))
+
+
 def main():
     for t in (t_form_note_repairs_and_continues, t_form_refusal_names_its_repair, t_every_brief_carries_the_repair_line,
               t_a_launch_that_never_started_is_form, t_a_repair_launch_refused_names_the_conductor,
               t_the_launch_refusals_count_no_fault, t_a_dead_run_still_counts_one,
               t_form_refusal_is_repaired_not_resent, t_a_repair_that_did_not_hold_counts_once,
               t_the_trip_starts_a_repair, t_a_tick_with_stand_ins_launches_nothing_real,
-              t_a_refused_repair_launch_reuses_its_filed_item, t_repairing_is_a_named_wait_never_paused):
+              t_a_refused_repair_launch_reuses_its_filed_item, t_repairing_is_a_named_wait_never_paused,
+              t_a_pool_refusal_is_a_wait, t_a_pool_refused_repair_launch_spends_no_try,
+              t_an_owed_pool_refusal_owes_no_repair, t_a_pool_refused_cert_rerun_starts_again):
         try:
             t()
         except Exception as e:      # noqa: BLE001  one test's crash is that test's FAIL

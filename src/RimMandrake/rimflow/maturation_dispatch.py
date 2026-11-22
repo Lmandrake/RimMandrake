@@ -1313,6 +1313,12 @@ def cert_rerun_decide(cfg, s, f, row, put, now, to="blind_challenge", what="the 
             put("live", "certificate rerun %s published %s; this tree has not synced it yet, so the certificate read "
                 "here predates it" % (prior["unit"], mine["published"]))
             return "decided"
+        elif prior.get("unit") and mine and AUT.wait_refusal(str(mine.get("error") or "")):
+            # the rerun was refused a pool clone, a cause that ends by itself: it starts again, no try spent, never a
+            # form repair (RIMMANDRAKE_UNBLOCK_PYRE_VISIT_SIX_HELD_BY_AN_ART_PICK_THAT_IS_HIS)
+            void = "the rerun %s waited on a cause that ends by itself (no try spent): %s" % (
+                prior["unit"], FF.what_of(mine["error"]))
+            row["cert_rerun_wait"] = True
         elif prior.get("unit"):
             return wait("the zero-token certificate rerun %s on this build %s" % (prior["unit"], (
                 "ended (ok %s, published %s%s)" % (mine.get("ok"), mine.get("published") or "nothing",
@@ -1345,7 +1351,8 @@ def cert_rerun_launch(cfg, st, row, now, fx):
         rc, text, unit = 1, "%s: %s" % (type(e).__name__, e), None
     unit = unit if rc == 0 else None
     s["cert_rerun"] = {"key": key, "unit": unit, "at": now, "failed": None if unit else str(text), "code": cfg.get("_code"),
-                       "tries": int(prior.get("tries") or 1) + 1 if prior.get("key") == key and (
+                       "tries": int(prior.get("tries") or 1) if row.get("cert_rerun_wait") and prior.get("key") == key
+                       else int(prior.get("tries") or 1) + 1 if prior.get("key") == key and (
                            not prior.get("unit") or row.get("cert_rerun_void")) else 1}
     if unit:
         row.update(decision="launched", unit=unit, why=text)
@@ -3432,6 +3439,12 @@ def form_repair_step(root, cfg, st, rows, launches, now, apply, fx=None):
     mods = st.get("mods") or {}
     for r in rows:
         s = mods.get(r["mod"])
+        # an owed record whose refusal ends by itself (a pool clone refused: AUT.wait_refusal) is no fault of form: it
+        # owes no repair run, and the mod's act is tried again (RIMMANDRAKE_UNBLOCK_PYRE_VISIT_SIX_HELD_BY_AN_ART_PICK_
+        # THAT_IS_HIS). State "wait" is neither open nor done, so its fingerprint never reads as a repair that did not hold
+        for x in (s.get("form_repairs") or []) if isinstance(s, dict) else []:
+            if isinstance(x, dict) and x.get("state") == "owed" and FF.fault_class(x.get("text")) == "wait":
+                x.update(state="wait", ended_at=now, how="a cause that ends by itself, no repair owed")
         rep = FF.open_repair(s) if isinstance(s, dict) else None
         if not rep:
             continue
@@ -3455,6 +3468,8 @@ def form_repair_step(root, cfg, st, rows, launches, now, apply, fx=None):
                         x.update(state="done", started_at=now, ended_at=now, how=text)
                     elif ok:
                         x.update(state="running", unit=unit, started_at=now)
+                    elif FF.fault_class(text) == "wait":     # a cause that ends by itself: no try spent
+                        x.update(launch_failed=text)
                     else:
                         x.update(launch_failed=text, repair_tries=int(x.get("repair_tries") or 0) + 1)
         rep = FF.open_repair(s)
