@@ -13,12 +13,12 @@ mods read alike.
 - **Design Version 0.1.0, locked** on his word 2026-11-13 ~3:40 PM PST (`version/VERSION.json`); the lock record pins the text
   at that word, `bf33322d77` (re-pinned 2026-11-14, steward's decision). Code: `src/RimMandrake/GimmeSomeSlack/` (C#, 62
   sources; C# SelfTest 4515 checks; `validation.py`; `northstar/proof_all.py`, the one dense live proof).
-- **Stage now:** Stage 6, in-game acceptance, since 2026-11-21 7:02 PM PST (`version/stage_record.json`).
+- **Stage now:** Stage 7, the walk brief, since 2026-11-21 9:40 PM PST (`version/stage_record.json`).
 - **Bars:** 48 (23 inventory rows of `record.json` + 26 leaves of `tree.json`; `shock_reach_setting` is both, so 49 rows
   name 48 ids; `cords_draw_under_things` added by his card 2026-11-14). The test-and-stage table is
   `version/test_table.json` (read view `version/test_table.md`), made by the throwaway `version/make_test_table.py`. Of 48
   bars: 48 have a deciding test runnable today (counts as of now: "Waiting on").
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-21 7:02 PM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-21 9:40 PM PST).
 - **Open questions for him:** "Questions for him", the last part of this top section.
 
 ### The vision (his root paragraph, `record.json` root, OWNER:1793895896496551063)
@@ -514,4 +514,13 @@ row 2; Stage 3 about $10.3 and 50 minutes (12:15 to 13:05 PST). No helpers, no g
 - Conductor decision: In-game checks that count from a build older than the C# they exercise must run again BEFORE his walk, so that his walk is not the first reader of those bars. Sending GimmeSomeSlack back to the in-game stage for exactly those checks is decided: do it.
 - Was, "Stage now": - **Stage now:** Stage 8, his live walk, since 2026-11-21 4:58 AM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-21 4:58 AM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-21 9:40 PM PST, stage change: In-game acceptance (Stage 6) to Walk brief (Stage 7) (by BENCH)
+
+- Why: steward run RIMMANDRAKE_CONFIRM_GIMMESOMESLACK_VISIT_THREE_EXIT_MET_RUN_TWO: in-game visit 3 of 0.1.1 exit met, read and confirmed
+- Checks passed: order, by, version, hold, steward_confirms, exit_met, build_match.
+- Steward confirms: read design/concepts/GimmeSomeSlack/version/in_game/visit_3 (run RIMMANDRAKE_DRIVE_GIMMESOMESLACK_IN_GAME_VISIT_THREE_RUN_TWO, commit 1319d36add): rows.jsonl 364 rows, 196 checks each with a last row PASS, all on deployed hash sha256:e9c2b80d6890; the one FAIL (P_Z_log_budget runE, flowworks tier) is class SITE (FlowWorks RM_PitAccess.cs:277, open item RIMMANDRAKE_TRACE_SLACK_FLOWWORKS_TIER_MINIFIED_LOOKUP_ERROR), PASS on runF/runC/runB. sc_walk keeps its visit 2 full-list PASS: git diff d0b6483f04..HEAD under the mod is only review/KEYSHEET.md, README.md, keysheet.html, all in .hashignore; rerun_relation fix 83fb77dd87 read and sound. maturation.py next: exit tests passing order,version,hold,exit_met,build_match; 0 lines not pass, undecided_bars [], strange_open 0 (7 rows: 4 explained, 3 filed); build_match check: 203 read, 203 count, 0 to run. No mod fix in the sitting (no fix reader owed), no deciding test edited. Judge-the-judge: no not-met reasons to class. Verdict: exit met, confirmed.
+- Was, "Stage now": - **Stage now:** Stage 6, in-game acceptance, since 2026-11-21 7:02 PM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-21 7:02 PM PST).
 - Record: `version/stage_record.json`.
