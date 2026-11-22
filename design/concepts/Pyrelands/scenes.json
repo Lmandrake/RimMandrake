@@ -912,7 +912,7 @@
      "T_SETTINGS_SWEEP_OFFLINE"
     ],
     "wildPlantAllowlistEnabled": [
-     "sc_populations",
+     "T_ALLOWLIST",
      "T_SETTINGS_SWEEP_OFFLINE"
     ],
     "plantGrowthStagesEnabled": [
@@ -973,7 +973,9 @@
      "T_SETTINGS_SWEEP_OFFLINE"
     ],
     "furnaceBeastGiant": [
-     "sc_furnace_giant",
+     "T_SETTINGS_SWEEP_OFFLINE"
+    ],
+    "sprayerFoamsPathEnabled": [
      "T_SETTINGS_SWEEP_OFFLINE"
     ],
     "sandShovelEnabled": [
