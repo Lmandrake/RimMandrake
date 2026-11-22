@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "61ee907c43d5f05bc180345ae2b5f06e78891a0034281f7e12de9c10c435342a",
+  "body_sha256": "c13f6b9f3ad7c132350e69bb948236b7f4775f41f8d085716400051d48b5b20d",
   "reducer": 1,
   "shards": {
    "BACKFILL": 893183,
@@ -31,6 +31,7 @@
    "HOLDER.run-1795325268": 1929,
    "HOLDER.run-1795329869": 754,
    "HOLDER.run-1795330730": 1090,
+   "HOLDER.run-1795335550": 748,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1271,11 +1272,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795330730",
-   "done": "visit 6, game b, 65c45b6e98: 6 checks PASS (sc_hole_prison x3); sc_hung_bridge FAIL 3 of 6, two MOD lines filed; sc_walk UNMEASURED on game b; red-seen refuses a live check planted in C# (1909b51fab)",
-   "next": "Find why an ordered RM_FillInCanalJob holds its gravel beside the square and never works",
-   "ruled_out": "needs as the island-restore FAIL cause: the worker starved yet fills landed (diag_reach_2), and the stall recurred fed and rested",
-   "ts": "2026-11-22T08:10:51Z"
+   "by": "HOLDER.run-1795335550",
+   "done": "steward visit 6: both sc_hung_bridge MOD lines filed by driver; solid-deck design call taken (delegated: low chance per burn <= 0.4); advanced in_game -> offline_build",
+   "next": "Fix the solid-deck chance offline, red selftest first (RIMMANDRAKE_DECIDE_FLOWWORKS_SOLID_DECK_LOW_CHANCE_SATURATES_IN_ONE_BURN)",
+   "ruled_out": "the driver edit to suspension_bridge_proof.py weakens no assertion; sc_walk UNMEASURED is a rerun owed on game a, not a send-back",
+   "ts": "2026-11-22T08:30:26Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1727,7 +1728,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1589,
+  "events": 1590,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7828,7 +7829,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-22T08:23:22Z",
+   "last": "2026-11-22T08:30:26Z",
    "lease": "run-1795335550",
    "released": false,
    "token": 44
@@ -7939,6 +7940,7 @@
    "HOLDER.run-1795325268",
    "HOLDER.run-1795329869",
    "HOLDER.run-1795330730",
+   "HOLDER.run-1795335550",
    "JUDGE.judge-1794833810",
    "JUDGE.judge-1794849236",
    "JUDGE.judge-1795134433",
