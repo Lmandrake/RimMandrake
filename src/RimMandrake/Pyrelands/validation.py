@@ -4128,44 +4128,49 @@ def _walk_vanish_arrivals(session, r):
     return {"ok": not left, "removed": sorted(found.values()), "left": sorted(left.values()), "ids": sorted(want)}
 
 
-WALK_WILDLIFE = "walk: wildlife hurt, downed or killed by wildlife, read back as an unowned animal"
+WALK_WILDLIFE = "walk: harm to a pawn not the player's, or a colonist's panic flight, read back"
 WALK_WILDLIFE_KINDS = ("hurt", "downed", "mental", "death")
+WALK_PANIC_STATES = ("PanicFlee", "PanicFleeFire")   # a colonist running from fire: no harm, the biome's ordinary day
 
 
 def walk_wildlife_harm(trig):
-    """Pure. A vitals trigger the walk may resume past once its subject reads back as a wild animal: harm to a pawn,
-    neither critical nor declared. HARNESS (visit 5, 2026-11-22, ArchBig, his full list): a wild nuna downed by a predator
-    stopped the two-week walk on day one ('downed (health 0.18)', subject 'nuna tom'); two weeks of wildlife always meet
-    such a fight, and none is a colonist's harm. The repair, not this predicate, decides it is wildlife."""
+    """Pure. A vitals trigger the walk may resume past once the repair has read it back: harm to a pawn or a mental state,
+    neither critical nor declared. HARNESS (visit 5, 2026-11-22, ArchBig, his full list): one walk met a wild nuna downed
+    by a predator, a fire-wasp bitten and downed, a visiting OutlanderCivil villager downed (bitten, dehydrated, starving),
+    and colonists in PanicFlee/PanicFleeFire; each stopped two weeks of walk on its first day. None is harm to the player's
+    colonists. The repair, not this predicate, decides."""
     return (isinstance(trig, dict) and trig.get("kind") in WALK_WILDLIFE_KINDS and not trig.get("critical")
             and not trig.get("declared") and trig.get("subjectId") is not None)
 
 
+def walk_ordinary_ok(trig, pawn):
+    """Pure. One matched trigger and its subject's list_pawns row (None when not listed): ok for a pawn that is not the
+    player's (wildlife, the biome's cast, visitors), or a colonist's panic flight; never a colonist's harm, never a subject
+    that cannot be read (a dead pawn is not listed, so a death stop stands)."""
+    if pawn is None or not isinstance(pawn.get("isPlayer"), bool):   # a row that does not say whose pawn it is: refuse
+        return False
+    if trig.get("kind") == "mental" and any(("mental state %s" % m) == str(trig.get("detail") or "").strip()
+                                            for m in WALK_PANIC_STATES):
+        return True
+    return not pawn.get("isPlayer") and (pawn.get("faction") or "") != "PlayerColony"
+
+
 def _walk_wildlife_check(session, r):
-    """clockgate repair: every harm trigger of the stop `r` must name a pawn that reads back unowned (no faction), not the
-    player's and with no gene tracker (an animal); nothing is changed. A dead subject that list_pawns no longer lists is
-    not found, so a death stop stands. -> {"ok", "wild", "notWild"}; a pawn listing that fails, or any subject not found or
-    not wild, is not ok, so the stop stands (a colonist's or a visitor's harm still stops the walk)."""
+    """clockgate repair: every matched trigger of the stop `r` must pass walk_ordinary_ok on its subject's list_pawns row;
+    nothing is changed. -> {"ok", "taken", "refused"}; a failed listing is not ok, so the stop stands."""
     import clockgate  # noqa: E402 - on sys.path via the modcheck package
-    want = set(n for n in (clockgate._thing_number(x.get("subjectId"))
-                           for x in [r.get("stopBy") or {}] + list(r.get("triggers") or []) if walk_wildlife_harm(x))
-               if n is not None)
-    if not want:
+    trigs = [x for x in [r.get("stopBy") or {}] + list(r.get("triggers") or []) if walk_wildlife_harm(x)]
+    if not trigs:
         return {"ok": False, "why": "no subject id on the harm"}
     q = session.call("jawa/list_pawns", limit=2000) or {}
     if q.get("success") is False or "pawns" not in q:
         return {"ok": False, "why": "jawa/list_pawns failed"}
     rows = dict((clockgate._thing_number(p.get("id")), p) for p in q["pawns"])
-    wild, not_wild = [], []
-    for n in sorted(want):
-        p = rows.get(n)
-        # an animal: no faction, not the player's, no gene tracker (every humanlike carries one; list_pawns' hasGenes)
-        if p is not None and (p.get("faction") or p.get("factionName")) in (None, "", "None") \
-                and not p.get("isPlayer") and p.get("hasGenes") is False:
-            wild.append(p.get("id"))
-        else:
-            not_wild.append(n if p is None else p.get("id"))
-    return {"ok": not not_wild, "wild": wild, "notWild": not_wild}
+    taken, refused = [], []
+    for x in trigs:
+        p = rows.get(clockgate._thing_number(x.get("subjectId")))
+        (taken if walk_ordinary_ok(x, p) else refused).append("%s %s: %s" % (x.get("kind"), x.get("subject"), x.get("detail")))
+    return {"ok": not refused, "taken": taken, "refused": refused}
 
 
 @contextlib.contextmanager
@@ -4184,7 +4189,7 @@ def _walk_shield(t):
             _note(t, "walk shield: foreign hostile arrivals vanished", got)
         wl = [b for b in clockgate.BENIGN_STOPS[n0:] if b.get("why") == "expected: " + WALK_WILDLIFE]
         if wl and t.session is not None:
-            _note(t, "walk shield: wildlife harm resumed past (read back unowned animals)", wl)
+            _note(t, "walk shield: harm to pawns not the player's, or colonist panic flight, resumed past", wl)
 
 
 @suite.chain("walk_season")

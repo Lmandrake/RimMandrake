@@ -160,9 +160,12 @@ if w:
           inside and any("_ten_walk_season(t)" in ln for ln in body) and any("_r6_walk_season(t)" in ln for ln in body)
           and any('"walk_reload_keeps_the_state"' in ln for ln in body))
 
-# ---- 4. wildlife harm (visit 5, 2026-11-22): a wild animal's harm resumes only once list_pawns reads its subject as an
-# unowned, gene-less pawn; a colonist's, a visitor's or an unlisted subject's harm still stops the walk
+# ---- 4. ordinary life on his full list (visit 5, 2026-11-22): harm to a pawn not the player's (wildlife, the cast,
+# visitors), or a colonist's panic flight, resumes after list_pawns reads the subject; a colonist's harm, another mental
+# state, an unlisted subject (a death) or a failed listing still stops the walk
 NUNA = trig("downed", "downed (health 0.18)", 100601, "threat")
+PANIC = trig("mental", "mental state PanicFleeFire", 100626, "info")
+BERSERK = trig("mental", "mental state Berserk", 100626, "info")
 
 
 class PawnsSession(object):
@@ -176,19 +179,26 @@ class PawnsSession(object):
 
 
 WILD = {"id": "RSW_Nuna100601", "faction": None, "isPlayer": False, "hasGenes": False}
+VISITOR = {"id": "Human100601", "faction": "OutlanderCivil", "isPlayer": False, "hasGenes": True}
 COLONIST = {"id": "Human100601", "faction": "PlayerColony", "isPlayer": True, "hasGenes": True}
-VISITOR = {"id": "Human100601", "faction": None, "isPlayer": False, "hasGenes": True}
-check("wildlife predicate takes a downed, non-critical subject", V.walk_wildlife_harm(NUNA))
-check("wildlife predicate refuses a critical subject", not V.walk_wildlife_harm(trig("downed", "x", 1, critical=True)))
-check("wildlife predicate refuses an arrival", not V.walk_wildlife_harm(SAURID))
-stop = {"state": "stopped", "stopBy": NUNA, "triggers": [NUNA]}
-check("a wild animal's downing reads ok", V._walk_wildlife_check(PawnsSession([WILD]), stop).get("ok") is True)
-check("can-fail: a colonist's downing is not ok", V._walk_wildlife_check(PawnsSession([COLONIST]), stop).get("ok") is False)
-check("can-fail: an unowned humanlike's downing is not ok",
-      V._walk_wildlife_check(PawnsSession([VISITOR]), stop).get("ok") is False)
-check("can-fail: a subject list_pawns does not list (a dead pawn) is not ok",
-      V._walk_wildlife_check(PawnsSession([]), stop).get("ok") is False)
-check("can-fail: a failed listing is not ok", V._walk_wildlife_check(PawnsSession([WILD], ok=False), stop).get("ok") is False)
+JILL = {"id": "Human100626", "faction": "PlayerColony", "isPlayer": True, "hasGenes": True}
+
+
+def ok_of(pawns, stop_trig, others=(), list_ok=True):
+    return V._walk_wildlife_check(PawnsSession(pawns, list_ok), {"state": "stopped", "stopBy": stop_trig,
+                                                                 "triggers": [stop_trig] + list(others)}).get("ok")
+
+
+check("predicate takes a downed, non-critical subject", V.walk_wildlife_harm(NUNA))
+check("predicate refuses a critical subject", not V.walk_wildlife_harm(trig("downed", "x", 1, critical=True)))
+check("predicate refuses an arrival", not V.walk_wildlife_harm(SAURID))
+check("a wild animal's downing reads ok", ok_of([WILD], NUNA) is True)
+check("a visitor's downing reads ok", ok_of([VISITOR], NUNA) is True)
+check("a wild downing beside a colonist's PanicFleeFire reads ok", ok_of([WILD, JILL], NUNA, [PANIC]) is True)
+check("can-fail: a colonist's downing is not ok", ok_of([COLONIST], NUNA) is False)
+check("can-fail: a colonist's Berserk beside a wild downing is not ok", ok_of([WILD, JILL], NUNA, [BERSERK]) is False)
+check("can-fail: a subject list_pawns does not list (a dead pawn) is not ok", ok_of([], NUNA) is False)
+check("can-fail: a failed listing is not ok", ok_of([WILD], NUNA, list_ok=False) is False)
 
 n = sum(RESULTS)
 print("\n%d/%d passed" % (n, len(RESULTS)))
