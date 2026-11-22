@@ -182,6 +182,22 @@ def t_needless_check_is_removed():
             and gone["state"] == "met"), (left["why"], gone["why"])
 
 
+def t_held_statement_check_is_not_needless():
+    """A check that decides no bar but that a held owner statement names as its test (FlowWorks OL_OWNER_LOOK_READS: 31 held
+    look approvals name it) is needed: classed wrong and owned, it is not counted, never "needless"; an unnamed one is."""
+    tt = json.loads(json.dumps(TT6))
+    tt["tests"]["c4"] = {"kind": "live", "stage": "6", "command": "python3 c4.py"}
+    tt["tests"]["c5"] = {"kind": "live", "stage": "6", "command": "python3 c5.py"}
+    tt["held_statements"] = [{"words": "it should be dark indeed", "bars": ["b_one"], "test": "T_LAW + c4 (c4_row)"},
+                             {"words": "no c5 here", "test": "T_LAW + c45"}]
+    wrong = {"class": "HARNESS", "unrepaired": "the fix is not known: the reader it needs is mod code, which a check repair may not touch", "owner": "RIMMANDRAKE_MEND_WMOD_READER"}
+    got = ingame([row("c1"), row("c2"), row("c3"), row("c4", "UNMEASURED", **wrong), row("c5", "UNMEASURED", **wrong)],
+                 tt=tt, name="v_held")
+    return (got["lines"]["c4"]["count"] == "not_counted" and got["lines"]["c5"]["count"] == "needless"
+            and not any("c4" in w and "remove it from the test table" in w for w in got["why"])), (
+        {k: v["count"] for k, v in got["lines"].items()}, got["why"])
+
+
 def t_not_counted_needs_owner():
     owned = ingame([row("c1", "FAIL", **{"class": "HARNESS", "unrepaired": "the fix is not known: the probe has no "
                                          "hook on the flow sum", "owner": "RIMMANDRAKE_MEND_WMOD_FLOW_PROBE_HOOK"}),
@@ -410,7 +426,7 @@ def missed_mutants(tests):
 
 def main():
     tests = [t_all_pass_met, t_mod_wrong_not_met, t_check_wrong_repaired_counts, t_repair_without_planted_not_pass,
-             t_repair_in_two_commits_counts, t_strange_explained_as_status_settles, t_needless_check_is_removed, t_not_counted_needs_owner, t_mod_fixed_in_sitting_counts,
+             t_repair_in_two_commits_counts, t_strange_explained_as_status_settles, t_needless_check_is_removed, t_held_statement_check_is_not_needless, t_not_counted_needs_owner, t_mod_fixed_in_sitting_counts,
              t_one_build_is_the_last_rows, t_scene_wrong_same_as_check, t_unclassed_not_silent,
              t_wrong_unhandled_not_silent, t_mix_reads_each_line, t_blind_check_repair_owes_no_judge,
              t_blind_mod_fix_owes_one_fresh_reader, t_briefs_carry_the_rule]

@@ -4246,8 +4246,10 @@ def read_ingame_exit(root, mod, n, tt=None):
     # a wrong check or scene that no bar needs (every bar it decides has another decider that reads a counted PASS or a
     # MOD FAIL) is removed from the test table, never kept as not counted (owner, 2026-11-20: "How does that help if
     # there's a needless test present? The next judge will hit it again...")
+    # a check a held owner statement names as its test is needed even when it decides no bar (FlowWorks visit 4,
+    # 2026-11-21: OL_OWNER_LOOK_READS is the test of 31 held look approvals and read "needless")
     for t, ln in lines_.items():
-        if ln["count"] in ("not_counted", "unhandled") and ln["class"] in WRONG_CLASSES and all(
+        if ln["count"] in ("not_counted", "unhandled") and ln["class"] in WRONG_CLASSES and not _held_names(tt, t) and all(
                 any(lines_[k]["count"] in ("pass", "mod") for k, _ in checks if k != t and b in _bars_of(tt, k))
                 for b in ln["bars"]):
             ln["count"] = "needless"
@@ -4437,6 +4439,12 @@ def read_walk_brief(root, mod, rec):
         out["why"].append("written_by %s made evidence writes for this version (a move or an in-game row): the brief "
                           "is a fresh read" % m.group(1))
     return out
+
+
+def _held_names(tt, tid):
+    """-> the held owner statements whose test text names check tid as a whole word ("T_UNDERLIQUID + OL_... (row)")."""
+    pat = re.compile(r"(?<![A-Za-z0-9_])%s(?![A-Za-z0-9_])" % re.escape(tid))
+    return [h for h in (tt or {}).get("held_statements") or [] if isinstance(h, dict) and pat.search(str(h.get("test") or ""))]
 
 
 def _bars_of(tt, tid):
