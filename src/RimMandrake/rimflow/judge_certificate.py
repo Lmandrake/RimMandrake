@@ -45,6 +45,8 @@ RUN_TIMEOUT_S = 1800      # the slowest measured offline decider is FlowWorks' C
 # under 2 s, measured on the 46 Pyrelands live commands, 2026-11-20 (table_commands_start.py)
 START_PROBE_S = 20
 RED_SEEN = "version/evidence/red_seen.json"
+# what a game loads only from a build and a deploy, never from the tree (red_seen refuses an in-game check planted there)
+GAME_LOADED_EXT = (".cs", ".csproj", ".xml", ".dll")
 GRANDFATHER = "version/evidence/red_seen_grandfather.json"
 OFFLINE_STAGES = ("2", "4-5")   # a bar proving at one of these stages is decided offline
 EMPTY_GAME_TIMEOUT_S = 120      # FlowWorks' 17 scenes on an empty game: 0.15 s measured 2026-11-18
@@ -377,6 +379,16 @@ def red_seen(root, mod, test_id, patch=None, runner=subprocess.run, now=None):
     if own and any(os.path.normpath(p) == own or p.startswith(own + os.sep) for p in paths):
         return {"ok": False, "why": "did not run: the fault edits %s itself; a red proof plants a fault in what the test "
                 "reads, never in the test" % own}
+    # RIMMANDRAKE_REFUSE_LIVE_RED_SEEN_ON_A_FAULT_THE_GAME_NEVER_LOADS: an in-game check drives the DEPLOYED build; a fault
+    # in what the game loads from a build or a deploy (C#, a csproj, Defs or Patches XML) planted in this tree never reaches
+    # it, so a red there is the check's own chance and proves nothing (FlowWorks visit 6: sc_hung_bridge reads FAIL about
+    # one run in two on the real build)
+    unloaded = [p for p in paths if os.path.splitext(p)[1].lower() in GAME_LOADED_EXT]
+    if str(t.get("kind") or "").startswith("live") and unloaded:
+        return {"ok": False, "why": "did not run: %s is an in-game check and the fault edits %s, which the game loads only "
+                "from a build and a deploy, never from this tree; plant the fault in code the check runs from the tree, or "
+                "build and deploy the faulted mod first and prove the red by hand; nothing recorded"
+                % (test_id, ", ".join(unloaded[:4]))}
     reds = _read_evidence(root, mod, RED_SEEN)
     if reds is None:
         return {"ok": False, "why": "did not run: %s is there but cannot be read; nothing is overwritten" % RED_SEEN}

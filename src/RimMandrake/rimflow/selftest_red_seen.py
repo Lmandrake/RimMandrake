@@ -35,7 +35,7 @@ class R:
 def fixture(root):
     os.makedirs(os.path.join(root, "design/concepts", MOD, "version"))
     os.makedirs(os.path.join(root, "src"))
-    for name, body in (("kernel.py", "LIMIT = 5\n"), ("café.py", "X = 1\n"),
+    for name, body in (("kernel.py", "LIMIT = 5\n"), ("café.py", "X = 1\n"), ("Deck.cs", "float shield = 0.35f;\n"),
                        ("t_good.py", "import sys\nsys.path.insert(0, 'src')\nimport kernel\n"
                                      "sys.exit(0 if kernel.LIMIT == 5 else 1)\n"),
                        ("t_writer.py", "import sys\nopen('src/kernel.py', 'a').write('# written by the test\\n')\n"
@@ -44,7 +44,8 @@ def fixture(root):
             f.write(body)
     t = lambda f: {"kind": "offline", "stage": "4-5", "file": "src/" + f, "reads": ["src/kernel.py"],  # noqa: E731
                    "command": "%s src/%s" % (sys.executable, f)}
-    tt = {"mod": MOD, "version": "0.1.0", "tests": {"T_GOOD": t("t_good.py"), "T_WRITER": t("t_writer.py")},
+    live = dict(t("t_good.py"), kind="live_minimal", stage="6", reads=["src/Deck.cs", "src/kernel.py"])
+    tt = {"mod": MOD, "version": "0.1.0", "tests": {"T_GOOD": t("t_good.py"), "T_WRITER": t("t_writer.py"), "sc_live": live},
           "bars": [{"id": "b", "decides": ["T_GOOD"], "offline_decides": ["T_GOOD"]}]}
     with open(JC.tpath(root, MOD), "w") as f:
         json.dump(tt, f)
@@ -52,7 +53,8 @@ def fixture(root):
     patches = {}
     for name, path, old, new in (("fault", "src/kernel.py", "LIMIT = 5", "LIMIT = 50"),
                                  ("self", "src/t_good.py", "import kernel", "import kernel  # x"),
-                                 ("accent", "src/café.py", "X = 1", "X = 2")):
+                                 ("accent", "src/café.py", "X = 1", "X = 2"),
+                                 ("cs", "src/Deck.cs", "float shield = 0.35f;", "float shield = 0f;")):
         p = os.path.join(root, name + ".patch")
         with open(p, "w", encoding="utf-8") as f:
             f.write("--- a/%s\n+++ b/%s\n@@ -1 +1 @@\n-%s\n+%s\n" % (path, path, old, new))
@@ -108,6 +110,19 @@ def main():
         r = JC.red_seen(root, MOD, "T_GOOD", patch=P["fault"], runner=lambda *a, **k: R(1, dead))
         ok(r["ok"] is False and "without the fault" in r["why"] and "T_GOOD" not in red_record(root),
            "a command that fails the same way without the fault is no red proof (%s)" % r["why"][:100])
+        # RIMMANDRAKE_REFUSE_LIVE_RED_SEEN_ON_A_FAULT_THE_GAME_NEVER_LOADS (FlowWorks visit 6, 2026-11-22): an in-game check
+        # drives the DEPLOYED build; a C# or XML fault planted in the tree never reaches it, so a red there is the check's
+        # own chance (sc_hung_bridge reads FAIL about one run in two on the real build) and proves nothing about the fault
+        calls = []
+        flip = lambda *a, **k: (calls.append(1), R(1, "FAIL GRATE") if len(calls) == 1 else R(0, "PASS"))[1]  # noqa: E731
+        r = JC.red_seen(root, MOD, "sc_live", patch=P["cs"], runner=flip)
+        ok(r["ok"] is False and r["why"].startswith("did not run") and "Deck.cs" in r["why"] and not calls
+           and "sc_live" not in red_record(root) and open(os.path.join(root, "src/Deck.cs")).read() == "float shield = 0.35f;\n",
+           "an in-game check planted with a C# fault the game never loads is refused before it runs (%s)" % r["why"][:110])
+        calls.clear()
+        r = JC.red_seen(root, MOD, "sc_live", patch=P["fault"], runner=flip)
+        ok(r["ok"] is True and red_record(root).get("sc_live", {}).get("rc") == 1,
+           "control: an in-game check planted in harness Python it runs from the tree is still recorded (%s)" % r["why"][:80])
         r = JC.red_seen(root, MOD, "T_GOOD", patch=P["fault"])
         ok(r["ok"] is True and red_record(root).get("T_GOOD", {}).get("rc") == 1, "control: a real red is recorded")
         JC.run_offline(root, MOD)
