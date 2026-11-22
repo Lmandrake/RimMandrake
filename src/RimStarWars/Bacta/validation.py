@@ -446,7 +446,7 @@ def tank_heals(t):
                 _fail("healing is OFF yet the cut fell %s -> %s in 2500 ticks" % (S["cut0"], cut))
             if _fuel(t, S["tank"]) < S["fuel1"] - 1e-3:
                 _fail("healing OFF yet bacta drained %s -> %s" % (S["fuel1"], _fuel(t, S["tank"])))
-            S["cut_off"] = cut
+            S["cut_off"], S["brain_off"] = cut, _sev(p, "Bruise", "Brain")
 
     with _comp(t, "heals_fresh_wound_at_tuned_rate", toggle="woundHealPerDay"):
         if _live(t):
@@ -474,9 +474,15 @@ def tank_heals(t):
             if _sev(p, "MissingBodyPart", "Kidney") is None:
                 _fail("the missing kidney is gone after healing: bacta regrew a part")
             br = _sev(p, "Bruise", "Brain")
-            if br is None or S["brain0"] - br > 0.3:
-                _fail("brain bruise changed %s -> %s while the cut healed %s -> %s: bacta touched the brain"
-                      % (S["brain0"], br, S["cut_off"], S["cut_on"]))
+            # LIVE 2026-11-22 (SteveDesktop run-30): the brain bruise fell 2.0 -> 1.64 over BOTH 2500-tick windows by the
+            # body's own natural healing, and the old 0.3 limit from brain0 read it as bacta. Vanilla heals ONE random
+            # injury 0.12 per 600 ticks (lying), so the brain can lose at most 5 * 0.12 = 0.6 in the ON window alone; a
+            # tank that touched the brain adds woundHealPerDay=30 -> 1.25 on top. So read the ON window only, limit 0.9.
+            if S.get("brain_off") is None:
+                _unmeasured(t, "no brain reading at the end of the healing-off window: the ON-window guard has no base")
+            elif br is None or S["brain_off"] - br > 0.9:
+                _fail("brain bruise changed %s -> %s in the healing-on window while the cut healed %s -> %s: bacta "
+                      "touched the brain" % (S["brain_off"], br, S["cut_off"], S["cut_on"]))
             if S["cut_off"] - S["cut_on"] < 0.6:
                 _unmeasured(t, "control failed: the tank did not heal the cut in this window, so the brain/part "
                                "guards were not exercised")

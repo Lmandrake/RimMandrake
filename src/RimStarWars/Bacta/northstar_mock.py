@@ -119,6 +119,22 @@ class Model(object):
         elif self.b("autoEjectEnabled") and "no_eject" not in brk:
             self.eject(tk)
 
+    def natural_heal(self):
+        """Vanilla natural healing (Pawn_HealthTracker.HealthTickInterval): every 600 ticks ONE injury that can heal
+        naturally (not permanent, not a missing part) heals 12 * 0.01 = 0.12 for a lying pawn, brain included. The live
+        game does this with the tank OFF (cut 4.0 -> 3.52 in 2500 ticks, 2026-10-03), so the mock must too, or a check
+        that reads natural healing as bacta passes here and fails live. The real game picks the injury at random; the mock
+        takes them in turn, which is deterministic."""
+        self.nat = getattr(self, "nat", 0) + 1
+        for pw in self.pawns.values():
+            hs = [h for h in pw["hediffs"] if h["def"] != "MissingBodyPart" and not h.get("perm")]
+            if pw.get("dead") or not hs:
+                continue
+            h = hs[self.nat % len(hs)]
+            h["severity"] -= 0.12
+            if h["severity"] <= 0.001:
+                pw["hediffs"].remove(h)
+
     def advance(self, n, game):
         brk = _breaks()
         self.resolve_jobs(game, brk)
@@ -127,6 +143,8 @@ class Model(object):
             self.phase += 1
             if self.phase % 250 == 0:
                 self.tank_pass()
+            if self.phase % 600 == 0:
+                self.natural_heal()
             tk = self.tank()
             for pw in self.pawns.values():
                 if pw.get("dead"):
