@@ -4173,7 +4173,9 @@ TEN_PAD_WET = (95, 95)         # ash_fertility_watered's wet and dry potato stri
 TEN_PAD_GRASS = (160, 225)     # embergrass_regrow's three sown patches
 TEN_PAD_HAWK_FIRE = (30, 60)   # firehawk: the far burn; the second hawk starts TEN_HAWK_OFFSET cells east of it
 TEN_HAWK_REACH = 54            # CompFireHawkSpread scanRadius (JobGiver_RUT_FireHawkSeekBurn: seeks only beyond 0.9 * 54)
-TEN_HAWK_OFFSET = 60           # > 0.9 * 54 = 48.6 and <= SightRange 180: the seek band
+TEN_HAWK_OFFSET = 100          # > 0.9 * 54 = 48.6 and <= SightRange 180: the seek band. SITE (visit 5, 2026-11-22, ArchBig):
+                               # at 60 the spawned hawk's first GotoWander walked 58 -> 54 cells toward the plot inside one
+                               # job, so its next think was already in carry reach and the seek never had a decision to take
 TEN_GATE = "RimMandrake.Pyrelands.PyrelandsMechanicsGate"
 TEN_SAFE_CLEAR = 3             # PyrelandsFireSense.SafeClear (a walking pawn)
 TEN_STEP_JOB = "RM_PyreStepAwayFromFire"
@@ -5263,6 +5265,7 @@ def _ten_firehawk(t):
         # RM_FireHawkCarryEmber from one of them and never the seek. Every fire outside the plot is counted at each read,
         # with its nearest distance to the watched hawk: a missing seek beside such a fire is the site's, not the mod's.
         seq, dist, strays = [], [], []
+        acted = False   # the hawk has taken a carry or a seek: a fire after that is its own drop, never a rival to the plot
         for i in range(85):
             _wait(t, 10 if i < 25 else 250)
             if not _count(t, "Fire", _rs(plot)):
@@ -5271,13 +5274,15 @@ def _ten_firehawk(t):
             j = _job_of(t, hawk)
             if j and (not seq or seq[-1] != j):
                 seq.append(j)
+            before = not acted
+            acted = acted or j in (TEN_SEEK_JOB, "RM_FireHawkCarryEmber")
             pos = _ten_pos(t, hawk)
             if pos:
                 dist.append(round(_ten_clear_of(pos, plot), 1))
             px, pz, pw, ph = plot
             out = [c for c in _r6_fires(t) if not (px <= c[0] < px + pw and pz <= c[1] < pz + ph)]
             if out and pos:
-                strays.append({"read": i, "fires": len(out), "nearest": round(min(
+                strays.append({"read": i, "fires": len(out), "beforeAct": before, "nearest": round(min(
                     ((c[0] - pos[0]) ** 2 + (c[1] - pos[1]) ** 2) ** 0.5 for c in out), 1)})
         return seq, dist, strays
 
@@ -5316,7 +5321,9 @@ def _ten_firehawk(t):
                   "fires outside the plot" % (TEN_HAWK_OFFSET, 0.9 * TEN_HAWK_REACH),
                   {"jobs": seq, "dist": dist, "otherHawksKilled": killed, "strays": strays[:20]})
             if TEN_SEEK_JOB not in seq:
-                near = [r_ for r_ in strays if r_["nearest"] <= 0.9 * TEN_HAWK_REACH]
+                # HARNESS (visit 5, 2026-11-22): only a fire seen before the hawk's first carry or seek can have taken
+                # the plot's place; the fires after it were the hawk's own drops and read UNMEASURED in error
+                near = [r_ for r_ in strays if r_["nearest"] <= 0.9 * TEN_HAWK_REACH and r_.get("beforeAct", True)]
                 if near:
                     _unmeasured(t, "the hawk never took %s, but a fire outside the plot burned %.1f cells from it (inside "
                                    "the seek band's floor %.1f), so the plot was not the only fire: %r"
