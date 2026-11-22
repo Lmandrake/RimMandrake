@@ -1063,11 +1063,18 @@ def _restore(t):
     return bad
 
 
+class _NoGame(RuntimeError):
+    """A teardown call refused because no game is loaded (state.hasCurrentGame False): nothing map-bound exists to
+    leak into a later chain (RIMMANDRAKE_CLASS_PYRE_TEARDOWN_NO_GAME_UNMEASURED_FOUR_RINGS)."""
+
+
 def _session_call(t, tool, **kw):
     """A teardown call made on the session itself. t.bridge_call is a no-op once a component has failed
     (TestContext._guard), which is exactly when a fire or a locked weather most needs clearing."""
     r = t.session.call(tool, **kw)
     if not isinstance(r, dict) or r.get("success") is False:
+        if isinstance(r, dict) and (r.get("state") or {}).get("hasCurrentGame") is False:
+            raise _NoGame("%s refused with no game loaded: %r" % (tool, r))
         raise RuntimeError("%s refused: %r" % (tool, r))
     return r
 
@@ -1088,6 +1095,8 @@ def _tear_down(t, fire, weather):
             # 177 fires that the next chain's burn line read as its burn. Two transitions to Clear end the storm outright.
             for _ in range(2):
                 _session_call(t, "jawa/weather_set", weather="Clear")
+        except _NoGame as e:     # no game: no fire and no locked weather can carry into a later chain
+            print("[pyre] teardown weather unlock skipped: %s" % e, file=sys.stderr, flush=True)
         except Exception as e:   # noqa: BLE001 - recorded below as a FAIL
             bad.append("weather unlock: %s" % e)
     if fire:
@@ -1095,6 +1104,8 @@ def _tear_down(t, fire, weather):
             mi = _session_call(t, "jawa/map_info")
             _session_call(t, "jawa/map_fire", action="extinguish",
                           rect="0,0,%d,%d" % (mi.get("sizeX", 250), mi.get("sizeZ", 250)))
+        except _NoGame as e:     # no game: no fire and no locked weather can carry into a later chain
+            print("[pyre] teardown extinguish skipped: %s" % e, file=sys.stderr, flush=True)
         except Exception as e:   # noqa: BLE001 - recorded below as a FAIL
             bad.append("extinguish: %s" % e)
     bad.extend("setting %s not restored: %r" % fb for fb in _restore(t))
