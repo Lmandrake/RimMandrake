@@ -15,6 +15,7 @@ for item in "$@"; do
   t0=$(date +%s)
   c=${item#+}; lab=${c#*@}; c=${c%@*}; [[ $lab == "$item" || $lab == "$c" ]] && lab=${c##*/}
   rl=skipped
+  if [[ -e $E/skip_${lab##*/} ]]; then echo "SKIPPED $item ($(cat $E/skip_${lab##*/})) $(date '+%T')" >> $E/runner.log; continue; fi
   if [[ $item != +* ]]; then
   python.exe src/RimMandrake/Pyrelands/northstar_site.py --site 1 --fingerprint 417df172fdb5e402 --tag visit4 \
       --reload-only --tile 1504 --map-id 1 --out Transient/pv4_site_1_reload.json 2>&1 | tr -d '\r' \

@@ -1,0 +1,40 @@
+{
+ "sc_firehawk": {
+  "label": "firehawk_repaired",
+  "prior": [
+   {
+    "label": "firehawk",
+    "class": "SITE",
+    "note": "far_hawk_seeks_the_burn: the far hawk took RM_FireHawkCarryEmber from a fire that was not the plot and never the seek; the chain's first-row hawk and the map's own fire-hawks stayed alive, carried embers off the plot and lit fires inside the 48.6-cell seek floor"
+   },
+   {
+    "label": "firehawk_rerun",
+    "class": "SITE",
+    "note": "the same on a reloaded site (2 of 2)"
+   }
+  ],
+  "repair": {
+   "class": "SITE",
+   "commit": "897516fc92d0c5aa33da7d05a5e0d5abf9aa8401",
+   "what": "every other RM_FireHawk killed before each far-hawk row (3 killed in the real run); fires outside the plot counted at each read, a missing seek beside one reads UNMEASURED (site), never a mod FAIL",
+   "planted": {
+    "plant": "PYRE_PLANT_FARHAWK_NO_SEEK=1: fireHawkSpreadEnabled off for the seek row, as if the hawk never sought",
+    "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains firehawk  (PYRE_PLANT_FARHAWK_NO_SEEK=1 through WSLENV)",
+    "verdict": "FAIL",
+    "evidence": "design/concepts/Pyrelands/version/in_game/visit_4/evidence/pv4_firehawk_planted_no_seek.json"
+   }
+  }
+ },
+ "sc_firefoam_sprayer": {
+  "class": "MOD",
+  "unfixed": "the fix is not known: when a carrier foams its path (on its own along a job's path, or player-ordered) is undesigned; the Designer rules first. Same fault as visit 3 (Filth_FireFoam 0; jobs Harvest, Meditate, RM_PyreStepAwayFromFire); the control's ring also let a bare colonist reach the fruit unburned (same item)",
+  "filed": "RIMMANDRAKE_DESIGN_PYRE_SPRAYER_CARRIER_NEVER_FOAMS_ITS_PATH"
+ },
+ "sc_scorchfruit": {
+  "label": "scorchfruit_fire_born_with_census",
+  "note": "run with plant_census in the same driver run, as its 'never on unburned land' half needs (no code change)"
+ },
+ "sc_three_skies": {
+  "note": "owed RIMMANDRAKE_TRACE_PYRE_ASHFALL_FIRE_IN_FIRST_LIGHTNING_WINDOW: real cinderfall_lightning PASS (19 strikes under cinderfall, 0 under ash fall; the ash-fall window-1 fire named 'not lightning'); planted PYRE_PLANT_ASHFALL_STRIKE=DryThunderstorm FAIL, 6 strikes under ash fall (design/concepts/Pyrelands/version/in_game/visit_4/evidence/run_cinderfall_planted_strike.log)"
+ }
+}

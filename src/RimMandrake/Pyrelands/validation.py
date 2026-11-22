@@ -5240,7 +5240,9 @@ def _r6_log_calls(t):
     orig = t.bridge_call
 
     def logged(tool, **kw):
-        if tool in R6_CENSUS_MUTATORS:
+        # live calls only (HARNESS, Pyrelands visit 4, 2026-11-21): the driver's offline declaration pass walks every chain
+        # with no session first, and its 338 no-op calls were logged as mutations made before grass_cover's live census
+        if tool in R6_CENSUS_MUTATORS and _live(t):
             _GEN.setdefault("mutations", []).append(tool)
         return orig(tool, **kw)
     t.bridge_call = logged

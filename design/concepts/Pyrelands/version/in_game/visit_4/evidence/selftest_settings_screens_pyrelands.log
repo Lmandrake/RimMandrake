@@ -1,0 +1,15 @@
+ok   Pyrelands: real screen, every setting grouped, resettable, scopes as audited
+ok   Pyrelands: a name dropped from its group array
+ok   Pyrelands: a setting in two groups
+ok   Pyrelands: group names a non-setting
+ok   Pyrelands: a Group's closing brace lost
+ok   Pyrelands: kit dropped from the csproj
+ok   Pyrelands: snapshot removed
+ok   Pyrelands: a scope tag flipped to a dishonest one
+ok   Pyrelands: a next-game-start tag overridden to [now]
+ok   Pyrelands: a dependent dropped from its master declaration (no master, not independent)
+ok   Pyrelands: a dependent drawn outside its Dependent scope
+ok   Pyrelands: a scope mixing keys with different masters
+ok   Pyrelands: Reset-all button removed
+ok   Pyrelands: masters kit dropped from the csproj
+settings screens selftest: 14/14 ok (mods: Pyrelands)

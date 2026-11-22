@@ -133,7 +133,8 @@ def exit_block():
             % (ing, open_n, SAVE, "true" if met else "false"))
 
 
-SAVE = r"D:\ClaudeWork\rimmandrake\instances\b\Saves\PYRELANDS_0.1.0_VISIT3_WALK.rws"
+_ws = os.path.join(E, "walk_save.json")   # the path the game reported for the labelled save (walk_save.py)
+SAVE = (json.load(open(_ws)).get("save") or {}).get("path") if os.path.exists(_ws) else None
 if "--exit" in sys.argv:
     p = os.path.join(VD, "SUMMARY.md")
     s = open(p).read()

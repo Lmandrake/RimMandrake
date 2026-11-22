@@ -461,7 +461,7 @@ def fire_reader_checks():
         g, res = walk("unlit")
         out.append(("walk, real reader: a re-arm that lights nothing is UNMEASURED before the day is spent",
                     res.get("burn_line_walks_hourly") == "UNMEASURED"
-                    and g.tick - g.rearm_tick == V.OPENING_WAIT_TICKS + V.BURN_LINE_WAIT_TICKS))   # the off control's wait only
+                    and g.tick - g.rearm_tick == V.OPENING_WAIT_TICKS + V.OFF_CONTROL_WAIT_TICKS))   # the off control's wait only (four reseed retries past the quiet window, visit 4)
         out.append(("walk, real reader: rows with no cell are UNMEASURED, never 0 fires",
                     walk("noxz")[1].get("burn_line_walks_hourly") == "UNMEASURED"))
         out.append(("off control, real reader: fire with burnLineEnabled off FAILS",

@@ -55,3 +55,6 @@ START batch5 2026-11-21 23:44:43
 DONE script:design/concepts/Pyrelands/version/in_game/visit_4/scripts/fires_probe.py@fires_probe reload_rc=0 rc=0 45s 23:45:28
 END batch5 2026-11-21 23:45:28
 START batch6 2026-11-21 23:45:32
+DONE fresh_burn_bonus reload_rc=0 rc=1 969s 00:01:41
+DONE scorchfruit_spoils reload_rc=0 rc=1 660s 00:12:41
+DONE grass_cover,embergrass_regrow@embergrass_regrow reload_rc=0 rc=1 1495s 00:37:36
