@@ -29,6 +29,13 @@
   cure item) — both RimSage-verified this pass, no invented field names.
   tendable/TendDuration so a colony medic can treat a bite same as any wound
   infection.
+
+  Immunity 0.8 a day: a healthy colonist throws off one untended bite (bar
+  flamefang_bite_carries_venom, "until treated or thrown off"). Vanilla scales
+  immunity by a per-instance 0.8..1.2 factor, so at 0.5 a day the +0.35 rise
+  alone reached 0.875 in the slow case and one bite killed. At 0.8 the worst
+  one-bite case (damage roll 1.2, factor 0.8) peaks at 0.79, under the
+  life-threatening stage: selftest_pyrelands_venom_dose.py.
 -->
 <Defs>
 
@@ -46,7 +53,7 @@
     <comps>
       <li Class="HediffCompProperties_Immunizable">
         <severityPerDayNotImmune>0.35</severityPerDayNotImmune>
-        <immunityPerDaySick>0.5</immunityPerDaySick>
+        <immunityPerDaySick>0.8</immunityPerDaySick>
         <severityPerDayImmune>-0.6</severityPerDayImmune>
         <immunityPerDayNotSick>-0.3</immunityPerDayNotSick>
       </li>

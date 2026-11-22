@@ -11,10 +11,14 @@
   hediffSolid/impactSoundType/workerClass etc. from it unchanged; only the
   label and the venom injection are new.
 
-  Dose: 0.02 severity per point of damage, scaled by inverse body size like
-  vanilla ToxicBite (0.015). A power-10 bite on a human lands ~0.2, so the
-  venom kills through neglect, not through a second bite (review 2026-10-15:
-  the earlier 0.06 put a colonist past lethalSeverity 1 in two bites).
+  Dose: 0.009 severity per point of damage, scaled by inverse body size like
+  vanilla ToxicBite. The fauna normalization (RimUtinni
+  FaunaNorm_Law3_Damage.xml) sets the venom-fangs' power to 22.5, so a bite on
+  a human lands ~0.2 (0.16..0.24 with vanilla's 0.8..1.2 damage roll). At the
+  old 0.02 that patch made the dose 0.45, and one untended bite killed before
+  immunity (Pyrelands visit 3, 2026-11-21). The one-bite course, with the
+  immunity rate in HediffDefs/RM_FlamefangVenom.xml, is tested by
+  selftest_pyrelands_venom_dose.py, which reads the power after the patch.
 
   Reached from RM_Flamefang's own bite tool
   (Defs/ThingDefs_Races/RM_PyrelandsPortedFauna.xml) through the matching
@@ -30,7 +34,7 @@
     <additionalHediffs>
       <li>
         <hediff>RM_FlamefangVenom</hediff>
-        <severityPerDamageDealt>0.02</severityPerDamageDealt>
+        <severityPerDamageDealt>0.009</severityPerDamageDealt>
         <victimSeverityScalingByInvBodySize>true</victimSeverityScalingByInvBodySize>
       </li>
     </additionalHediffs>

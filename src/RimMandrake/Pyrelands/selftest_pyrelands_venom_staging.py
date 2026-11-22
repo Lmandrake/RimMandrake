@@ -10,23 +10,25 @@ two or three bites stack venom. This test runs the SHIPPED scene code (flamefang
 validation.py) against a scripted game and reads the scene's own verdicts.
 
 The scripted game. Combat per tick: the manhunting biter walks to the nearest colonist and attacks every 99 ticks
-(RM_Flamefang's 1.65 s cooldown), venom-fangs or head (seeded), 70 % to hit; a venom bite is a Bite wound plus 0.2
-RM_FlamefangVenom (severityPerDamageDealt 0.02 x power 10), merged into the hediff. A drafted victim melees an adjacent
+(RM_Flamefang's 1.65 s cooldown), venom-fangs or head (seeded), 70 % to hit; a venom bite is a Bite wound plus the
+shipped dose of RM_FlamefangVenom (severityPerDamageDealt x the venom-fangs' power after the fauna normalization patch,
+read by venom_dose.py; visit 3 measured 0.45 where this model had assumed a flat 0.2), merged into the hediff. A drafted victim melees an adjacent
 hostile whatever its fire-at-will (JobDriver_Wait.CheckForAutoAttack) and shoots one at range only with fire-at-will on
 and a gun. `jawa/damage Cut 500` with no part destroys one seeded random part and kills only on a vital one;
-`jawa/kill_hostiles` kills for certain. Health, continuous between reads: the def's numbers (severityPerDayNotImmune 0.35,
-immunityPerDaySick 0.5, severityPerDayImmune -0.6, severityPerDayTended -0.4 x quality for 12 h, lethal 1), and each
+`jawa/kill_hostiles` kills for certain. Health, continuous between reads: the def's numbers, read from the shipped def (severityPerDayNotImmune,
+immunityPerDaySick, severityPerDayImmune, severityPerDayTended x quality for 12 h, lethalSeverity), and each
 untended Bite wound bleeds `bleed` BloodLoss per day, lethal at 1. A death inside the clock stops the row as the governor
 does (RESTART, UNMEASURED).
 
 The range it declares (the grid): the colonists' weapons in spawn order (none, melee, gun, and mixes), the biter's attack
 phase against the poll (0, 45, 98 ticks), the seed (tool choice, hits, the Cut's part), the bleed rate (0, 0.15/day), the
-biter's health (20, 60: a fast or a slow kill by the victim), and the bite's dose (flat 0.2, or armour and part caps
-scaling it by 0.5, 0.8 or 1.0, seeded). Planted mod faults: the bite carries no venom; a tend does
+biter's health (20, 60: a fast or a slow kill by the victim), and the bite's dose (the shipped dose, or armour and part
+caps scaling it by 0.5, 0.8 or 1.0, seeded). The one-bite course over vanilla's damage roll and immunity factor is
+selftest_pyrelands_venom_dose.py's. Planted mod faults: the bite carries no venom; a tend does
 nothing; immunity never lowers the venom. Left out: the live pathing, real armour and part coverage, real bleed rates and
 blood regrowth, the doctor's walk and medicine (Stage 6 runs the scene; its command is in unrun.jsonl).
 
-  python3 <this file> [--validation PATH] [--schemas PATH]     exit 0 = every check PASS, 1 = any FAIL
+  python3 <this file> [--validation PATH] [--schemas PATH] [--defs PATH]   exit 0 = every check PASS, 1 = any FAIL
 """
 import argparse
 import contextlib
@@ -38,6 +40,9 @@ import random
 import sys
 import types
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import venom_dose as vd  # noqa: E402
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 NAME = "selftest_pyrelands_venom_staging"
 VENOM = "RM_FlamefangVenom"
@@ -47,6 +52,7 @@ VITAL = ("Torso", "Head", "Neck")
 PARTS = ("Torso", "Head", "Neck", "Tail", "Jaw", "Eye", "Tongue")
 ROWS = ("venom_tended_vs_untended", "venom_wait_out")
 FIRST = ("flamefang_bite_injects_venom", "venom_rises_untreated", "plain_bite_carries_no_venom")
+VD = None        # the shipped venom numbers (venom_dose.read), set in main
 RESULTS = []
 SENT = {}       # tool -> every argument the scene sent it, over the whole grid
 
@@ -154,7 +160,7 @@ class Game(object):
                     if fangs:
                         v.hediffs.append({"def": "Bite", "severity": 10.0, "part": "Torso", "tended": False})
                         if self.venom and b.kind == "RM_Flamefang":
-                            self.add_venom(v, 0.2 * self.rng.choice(self.doses))
+                            self.add_venom(v, vd.dose(VD) * self.rng.choice(self.doses))
                         self.bites[v.id] = self.bites.get(v.id, 0) + 1
                     else:
                         v.hediffs.append({"def": "Bruise", "severity": 1.0, "part": "Head", "tended": False})
@@ -186,16 +192,16 @@ class Game(object):
                 if h["def"] != VENOM:
                     continue
                 immune = p.immunity >= 1.0
-                d = (0.35 if not immune else (-0.6 if self.immune_falls else 0.0)) * dt
+                d = (VD["rise"] if not immune else (VD["fall"] if self.immune_falls else 0.0)) * dt
                 if tended and self.tend:
-                    d += -0.4 * p.tend_q * dt
+                    d += VD["tended"] * p.tend_q * dt
                 if not immune:
-                    p.immunity = min(1.0, p.immunity + 0.5 * dt)
+                    p.immunity = min(1.0, p.immunity + VD["immunity"] * dt)
                 h["severity"] += d
                 self.peak = max(self.peak, h["severity"])
                 if h["severity"] <= 0:
                     p.hediffs.remove(h)
-                elif h["severity"] >= 1.0:
+                elif h["severity"] >= VD["lethal"]:
                     self.die(p, VENOM)
             open_bites = len([h for h in p.hediffs if h["def"] == "Bite" and not h["tended"]])
             if open_bites and self.bleed:
@@ -335,7 +341,10 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--validation", default=os.path.join(HERE, "validation.py"))
     ap.add_argument("--schemas", default=os.path.join(HERE, "..", "Utils", "northstar_driver", "tool_schemas.json"))
+    ap.add_argument("--defs", default=vd.DEFS, help="the Defs folder the venom numbers come from")
     a = ap.parse_args()
+    global VD
+    VD = vd.read(a.defs)
     V = load_validation(a.validation)
     keys = sorted(GRID)
     cases = [dict(zip(keys, vals)) for vals in itertools.product(*(GRID[k] for k in keys))]
@@ -359,8 +368,10 @@ def main():
     print("margin: smallest untended-minus-tended venom rise in one hour after the tend: %.4f "
           "(limit > 0; %d hours read)"
           % (min(gaps) if gaps else float("nan"), len(gaps)))
-    print("margin: highest venom severity any patient reached: %.3f (lethalSeverity 1; %d cases). One bite: 0.2 + 0.35/day "
-          "x 2 days to immunity = 0.9, by the def's own numbers" % (max(peaks), n))
+    print("margin: highest venom severity any patient reached: %.3f (lethalSeverity %.3g; %d cases). One bite: %.3f + "
+          "%.3g/day x %.2f days to immunity = %.3f, by the shipped defs (power %.4g from %s)"
+          % (max(peaks), VD["lethal"], n, vd.dose(VD), VD["rise"], vd.days_to_immune(VD), vd.peak(VD, vd.dose(VD)),
+             VD["power"], VD["sources"]["power"]))
     check("real build: every venom row PASS over the grid (%d cases read; %d not PASS)" % (n, len(bad_rows)),
           not bad_rows, "first: %r" % (bad_rows[:2],))
     check("real build: no colonist dies over the grid (%d cases; %d with a death)" % (n, len(deaths)), not deaths,

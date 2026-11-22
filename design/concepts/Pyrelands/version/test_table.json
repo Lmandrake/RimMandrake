@@ -1623,8 +1623,11 @@
    "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_venom_staging.py",
    "observes": "the sc_flamefang_venom scene code (flamefang_venom, _ten_flamefang_venom) run against a scripted game over 480 situations (colonists' weapons, the biter's attack phase, seed, bleed rate, biter health, bite dose): one venom bite per patient, every biter removed for certain, no colonist dead, every venom row PASS; planted mod faults (no venom, a tend that does nothing, immunity that never lowers the venom) read FAIL; tended_rises_less compares hourly rises; every tool and argument sent is declared",
    "reads": [
+    "src/RimMandrake/Pyrelands/Defs/",
     "src/RimMandrake/Pyrelands/validation.py",
-    "src/RimMandrake/Utils/northstar_driver/tool_schemas.json"
+    "src/RimMandrake/Pyrelands/venom_dose.py",
+    "src/RimMandrake/Utils/northstar_driver/tool_schemas.json",
+    "src/RimUtinni/UtinniPatches/Patches/FaunaNorm_Law3_Damage.xml"
    ],
    "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_venom_staging.py",
    "item": "RIMMANDRAKE_STAGE_PYRE_FLAMEFANG_BITES_LAND_ONCE_NOT_MAUL",
@@ -1639,6 +1642,20 @@
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_venom_staging.py",
     "margins": []
    }
+  },
+  "T_VENOM_DOSE": {
+   "id": "T_VENOM_DOSE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_venom_dose.py",
+   "observes": "one untended flamefang bite on a healthy colonist is thrown off: the dose (severityPerDamageDealt x the venom-fangs' power after the fauna normalization patch) plus the untended rise until immunity stays below lethalSeverity over vanilla's damage roll 0.8..1.2, immunity factor 0.8..1.2, ImmunityGainSpeed 1..1.2, armour and attacker factor (40344 cases); the venom rises every hour untended and falls once immune; calibrated on visit 3's two fresh-bite readings; planted faults (the visit-3 dose, the visit-3 immunity rate, no rise, no fall) read FAIL",
+   "reads": [
+    "src/RimMandrake/Pyrelands/venom_dose.py",
+    "src/RimMandrake/Pyrelands/Defs/",
+    "src/RimUtinni/UtinniPatches/Patches/FaunaNorm_Law3_Damage.xml"
+   ],
+   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_venom_dose.py",
+   "item": "RIMMANDRAKE_TUNE_PYRE_FLAMEFANG_BITE_KILLS_BEFORE_IMMUNITY"
   }
  },
  "bars": [
@@ -2059,7 +2076,8 @@
    ],
    "supports": [
     "T_DEFS_OFFLINE",
-    "T_VENOM_STAGING"
+    "T_VENOM_STAGING",
+    "T_VENOM_DOSE"
    ],
    "held": [],
    "offline_decides": [],
