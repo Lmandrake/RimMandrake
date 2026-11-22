@@ -825,7 +825,7 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
     base = MD.occupancy(facts)      # the live runs; this tick's planned launches are counted at each gate, so a
     # launch taken back (a road-back fixer replacing a mod's own build) gives its slot back
     # (RIMMANDRAKE_RETURN_SLOT_OF_REPLACED_LAUNCH_FIXER_NEVER_RAN: at max_live 1 the fixer read slots_full for good)
-    open_items = fx.get("open_items", lambda ids: M.ledger_items_caused_by(root, ids))
+    open_items = fx.get("open_items", lambda ids, **kw: M.ledger_items_caused_by(root, ids, **kw))
     endings = fx.get("live_endings", lambda ids: M.ledger_live_endings(root, ids))
     vbugs = fx.get("version_bugs", read_version_bugs)
     dstate = fx.get("designer_state", lambda m: designer_state(root, m))
@@ -1136,6 +1136,28 @@ def pilot_run_model(root, default):
     return {v: k for k, v in DH.MODEL_IDS.items()}.get(mid, mid)
 
 
+def open_road_back(root, row, item, now):
+    """-> the road back a steward launch opens: {caused_by, at, from}, and after an in-game visit `cited`, the items its
+    failed lines name (M.visit_cited_items), or `cited_unread` with the cause when its rows.jsonl cannot be read.
+    design/specs/2026-11-21-visit-wait-cited-items/boundary.md."""
+    rb = {"caused_by": item, "at": now, "from": row.get("stage")}
+    if row.get("stage") == "in_game" and row.get("visit"):
+        got = M.visit_cited_items(root, row["mod"], row["visit"])
+        if got is None:
+            rb["cited_unread"] = "visit_%s/rows.jsonl cannot be read" % row["visit"]
+        elif got:
+            rb["cited"] = got
+    return rb
+
+
+def road_back_open(s, rb, open_items):
+    """-> open_items over the road back's caused_by ids (_road_back_ids), and the items its visit's failed lines cite
+    (rb["cited"]) as well; open_items is called without `named` when nothing is cited (the readers the selftests fake)."""
+    cited = [c for c in rb.get("cited") or [] if c]
+    ids = _road_back_ids(s, rb)
+    return open_items(ids, named=cited) if cited else open_items(ids)
+
+
 def _road_back(s, row, open_items, now=None, moved=False, endings=None, cfg=None, ver=None, version_bugs=None):
     """-> True when the mod's open road back decides the row: a fixer on its next open item, fixers spent, or an
     unreadable ledger. Keyed on the road back being open, never on a stage change: blind_challenge -> blind_challenge
@@ -1152,7 +1174,7 @@ def _road_back(s, row, open_items, now=None, moved=False, endings=None, cfg=None
     if not rb:
         return False
     ids = _road_back_ids(s, rb)
-    items = open_items(ids)
+    items = road_back_open(s, rb, open_items)
     if items is None:
         row.update(decision="blind", why="the ledger cannot be read for the road-back items")
         return True
@@ -2064,7 +2086,7 @@ def _execute_one(root, cfg, st, row, now, do_file, do_launch, known, do_publish=
     if not ok and cfg.get("_code"):
         book[key]["code"] = cfg["_code"]
     if ok and row["aut"] == "steward" and row.get("steward_kind") in ("exit_not_met", "exit_met", "builder_stalled"):
-        s["road_back"] = {"caused_by": item, "at": now, "from": row.get("stage")}
+        s["road_back"] = open_road_back(root, row, item, now)
     if ok:
         row.update(decision="launched", unit=unit, item=item, why=text)
         known.add(item) if isinstance(known, set) else None

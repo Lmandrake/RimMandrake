@@ -185,6 +185,7 @@
     {"test": "src/RimMandrake/rimflow/selftest_game_hold_split_install.py", "seconds": 2.5},
     {"test": "src/RimMandrake/rimflow/selftest_maturation_hands.py", "seconds": 0.1},
     {"test": "src/RimMandrake/rimflow/selftest_next_step_stage_moved.py", "inputs": ["design/specs/2026-11-21-next-step-stage-moved/boundary.md"], "seconds": 0.2},
+    {"test": "src/RimMandrake/rimflow/selftest_visit_wait_cited_items.py", "inputs": ["design/specs/2026-11-21-visit-wait-cited-items/boundary.md"], "seconds": 0.3},
     {"test": "src/RimMandrake/rimflow/selftest_maturation_next_dispatch.py", "seconds": 1.2},
     {"test": "src/RimMandrake/rimflow/selftest_red_dispatch.py", "seconds": 0.3},
     {"test": "src/RimMandrake/rimflow/selftest_pipeline_pause.py", "seconds": 10.1},

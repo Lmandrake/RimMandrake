@@ -2507,8 +2507,8 @@ def pilot_launch(root, cfg, mod, why, item=None, usd=None, fx=None, now=None):
         _, f = M.brief_text(root, mod, cap)
         stage, owed = f.get("stage"), f.get("owed")
         rb = s.get("road_back")
-        opened = (fx.get("open_items") or (lambda ids: M.ledger_items_caused_by(root, ids)))(
-            AUT._road_back_ids(s, rb)) if rb else []
+        opened = AUT.road_back_open(s, rb, fx.get("open_items") or (
+            lambda ids, **kw: M.ledger_items_caused_by(root, ids, **kw))) if rb else []
         if owed == "build" or (stage in ("blind_challenge", "in_game") and owed in ("cycle", "run")):
             if not item:
                 return 2, "REFUSED: %s owes %s at %s; name the filed item it runs under: --item <ID>" % (mod, owed, stage)
@@ -2651,7 +2651,7 @@ def pilot_holders(root, cfg, st, facts, rows, launches, now, fx=None):
     only once the open set has shrunk (holder_spent); within max_live and the account gate; a non-pilot is untouched.
     -> (rows, launches); a launched row carries holder_items and no aut, so execute starts it."""
     fx = fx or {}
-    open_items = fx.get("open_items", lambda ids: M.ledger_items_caused_by(root, ids))
+    open_items = fx.get("open_items", lambda ids, **kw: M.ledger_items_caused_by(root, ids, **kw))
     account = fx["account"]() if "account" in fx else account_gate()
     base = occupancy(facts)
     for row in rows:
@@ -2670,7 +2670,7 @@ def pilot_holders(root, cfg, st, facts, rows, launches, now, fx=None):
         planned = None if base is None else base + slots_ahead(rows, launches, mod)
         if not (fx.get("pilot") or pilot_ledger)(root, mod):
             continue
-        items = open_items(AUT._road_back_ids(s, s["road_back"]))
+        items = AUT.road_back_open(s, s["road_back"], open_items)
         if not items:
             continue
         game_set = not M.game_takeable(row.get("stage")) and all((x or {}).get("needs") in M.LIVE_NEEDS for x in items)

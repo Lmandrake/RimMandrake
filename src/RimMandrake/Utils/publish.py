@@ -757,17 +757,17 @@ def pipeline_checks(top, changed):
     if is_clone_top(top):
         with full_head_tree(top) as full:
             cfg = _committed(full, PIPELINE_TESTS)
-            return _run_pipeline_checks(full, changed, cfg, base) if cfg else 0.0
+            return _run_pipeline_checks(full, changed, cfg, base, committed=True) if cfg else 0.0
     return _run_pipeline_checks(top, changed, cfg, base)
 
 
-def _run_pipeline_checks(top, changed, cfg, base=(None, "not asked")):
+def _run_pipeline_checks(top, changed, cfg, base=(None, "not asked"), committed=False):
     sel = pipeline_selection(top, changed, cfg)
     if not sel:
         print("pipeline checks: a pipeline file changed, no pipeline test reads it")
         return 0.0
     wall = _run_tree_checks(top, {"checks": sel, "timeout_s": cfg.get("timeout_s", 180)}, what="pipeline check",
-                            base=base)
+                            base=base, committed=committed)
     return wall
 
 
@@ -817,7 +817,13 @@ def red_signature(o, tree, rc):
     return keys, raw
 
 
-def split_pre_existing(top, base, red, run_one):
+def _short_head(tree):
+    r = subprocess.run(["git", "-C", tree, "rev-parse", "--short=10", "HEAD"], capture_output=True, text=True,
+                       timeout=GIT_TIMEOUT_S)
+    return r.stdout.strip() or "unknown"
+
+
+def split_pre_existing(top, base, red, run_one, committed=False, flaky=None):
     """RIMMANDRAKE_REPAIR_TWO_GAMES_DOOR_TEST_BLOCKS_EVERY_PUBLISH (A3, A4): re-run each red test on the base commit, in a
     throwaway shared clone, beside a run on HEAD's commit in another (the door's own run read the working tree; the
     comparison is commit to commit). red: [(c, output, rc)]. -> (still_red [(c, o, note)], pre_existing [(c, o, note)]).
@@ -825,7 +831,13 @@ def split_pre_existing(top, base, red, run_one):
     (red_signature); green there, anything new, absent there, green at HEAD's commit, past its time, nothing to compare
     by, or no base to read stays red, its note saying which (a reading that could not be taken proves nothing). Known
     limit: numbers of four or more digits are blanked (pids, timestamps), so a FAIL line that differs only in one reads
-    as the same line."""
+    as the same line.
+    committed: the door's run was on a full checkout of HEAD's commit (is_clone_top), so a red there that is green on the
+    re-run of HEAD's commit is a flaky reading of the commit that lands: it goes into `flaky` (a list the caller
+    passes), warned, not refused. A plain folder's run read the working tree, and the same reading stays red.
+    RIMMANDRAKE_FIX_VISIT_WAIT_MISSES_FAILURE_CITED_ON_OLD_ITEM: selftest_game_lock's timing rows, red at load 14-18 on
+    14 cores and green on the re-run, were refused three times as "uncommitted edits make it red"."""
+    flaky = [] if flaky is None else flaky
     sha, why = base
     if not sha:
         return [(c, o, "origin/main's reading UNMEASURED (%s): not proved pre-existing" % why) for c, o, _rc in red], []
@@ -834,6 +846,7 @@ def split_pre_existing(top, base, red, run_one):
         with full_head_tree(top, rev="HEAD", what="HEAD's commit") as htree, \
                 full_head_tree(top, rev=sha, what="the base") as tree:
             here = [x for x in red if os.path.isfile(os.path.join(tree, x[0]["test"]))]
+            hsha = _short_head(htree)
             with concurrent.futures.ThreadPoolExecutor(max_workers=6) as ex:
                 got = list(ex.map(lambda x: (run_one(x[0], htree), run_one(x[0], tree)), here))
     except (Refuse, OSError, subprocess.SubprocessError) as e:
@@ -848,8 +861,12 @@ def split_pre_existing(top, base, red, run_one):
                 "HEAD's commit" if hrc is None else "origin/main %s" % sha[:10])))
             continue
         if hrc == 0:
-            still.append((c, o, "red in this working tree but green at HEAD's commit: uncommitted edits make it red, so "
-                                "the commit cannot be compared; not proved pre-existing"))
+            if committed:   # the door's run was on HEAD's commit too: the same commit read red, then green
+                flaky.append((c, o, "red at the door, green on a re-run of the same commit (HEAD %s): a flaky "
+                                    "reading; the commit that lands read green" % hsha))
+            else:
+                still.append((c, o, "red in this working tree but green at HEAD's commit: uncommitted edits make it "
+                                    "red, so the commit cannot be compared; not proved pre-existing"))
             continue
         if rc == 0:
             still.append((c, o, "green on origin/main %s: this change turned it red" % sha[:10]))
@@ -974,7 +991,7 @@ GAME_CHOICE = ("RM_GAME_INSTANCE", "RM_GAME_USERDATA", "RM_GAME_LOGDIR", "GABP_S
                "RIMFLOW_DRIVER_LOCK")
 
 
-def _run_tree_checks(top, cfg, what="tree check", base=None):
+def _run_tree_checks(top, cfg, what="tree check", base=None, committed=False):
     """base: (sha, why) from door_base for the pipeline checks, whose reds are re-run on it (split_pre_existing); None
     for the whole-tree checks, which refuse on any red."""
     limit = cfg.get("timeout_s", 60)
@@ -1005,9 +1022,13 @@ def _run_tree_checks(top, cfg, what="tree check", base=None):
     red = [(c, o, rc) for c, rc, o, _t in res if rc not in (0, None) and not c.get("shadow")]
     for t in slow:
         print("WARNING: %s %s ran past %d s: UNMEASURED, not refused" % (what, t, limit))
-    notes, pre = {}, []
+    notes, pre, flaky = {}, [], []
     if red and base is not None:
-        red, pre = split_pre_existing(top, base, red, one)
+        red, pre = split_pre_existing(top, base, red, one, committed=committed, flaky=flaky)
+        for c, o, note in flaky:
+            fails = [ln.strip() for ln in o.splitlines() if FAIL_RX.match(ln)][:3]
+            print("WARNING: FLAKY, not refused: %s %s is %s (%s). A defect of its own to fix and file. rerun: python3 %s"
+                  % (what, c["test"], note, "; ".join(fails) or "no FAIL line", c["test"]))
         for c, o, note in pre:
             fails = [ln.strip() for ln in o.splitlines() if FAIL_RX.match(ln)][:3]
             print("WARNING: PRE-EXISTING RED, not refused: %s %s is %s (%s). Your change did not make it; it is a defect "
@@ -1027,8 +1048,9 @@ def _run_tree_checks(top, cfg, what="tree check", base=None):
                             c.get("fix", "see the test's FAIL line"), c["test"]))
         raise Refuse("%d %s(s) red after your commit (it stays on HEAD; fix, then publish again):\n%s"
                      % (len(red), "whole-tree check" if what == "tree check" else what, "\n".join(lines)))
-    print("%ss: %d green%s in %.1f s" % (what, len(res) - len(slow) - len(pre),
-                                         ", %d PRE-EXISTING red (not refused)" % len(pre) if pre else "", wall))
+    print("%ss: %d green%s%s in %.1f s" % (what, len(res) - len(slow) - len(pre) - len(flaky),
+                                           ", %d PRE-EXISTING red (not refused)" % len(pre) if pre else "",
+                                           ", %d FLAKY (not refused)" % len(flaky) if flaky else "", wall))
     return wall
 
 

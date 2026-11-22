@@ -3787,6 +3787,27 @@ def visit_numbers(root, mod):
     return sorted(out)
 
 
+def visit_cited_items(root, mod, n):
+    """-> [item ids] that the failed lines (verdict not PASS) of visit n's rows.jsonl name in `filed` (a name or a list
+    of names; only rimflow item names count), in order, once each; None when rows.jsonl cannot be read. A driver may
+    put a failed line on an item filed long before the visit, so caused_by does not find it; the road back waits on
+    these too (RIMMANDRAKE_FIX_VISIT_WAIT_MISSES_FAILURE_CITED_ON_OLD_ITEM: FlowWorks visit 5, sc_hung_bridge on
+    GRATE_FIRE_FIX_SOLID_DECK_BURNS_TOO)."""
+    rows = _jsonl(os.path.join(mod_dir(root, mod), INGAME_DIR, "visit_%s" % n, "rows.jsonl"))
+    if rows is None:
+        return None
+    out = []
+    for r in rows:
+        if not isinstance(r, dict) or str(r.get("verdict") or "").upper() == "PASS":
+            continue
+        f = r.get("filed")
+        for x in f if isinstance(f, list) else [f]:
+            x = str(x or "").strip()
+            if ITEM_RE.match(x) and x not in out:
+                out.append(x)
+    return out
+
+
 def ingame_openings(rec):
     """-> {visit number: iso time} for the moves into in-game acceptance (visit k is the k-th)."""
     return {i + 1: m.get("at") for i, m in enumerate(m for m in rec.get("moves") or [] if m.get("to") == "in_game")}
@@ -4506,24 +4527,28 @@ def ledger_ended(root, ids):
     return {i for i, (_, done) in last.items() if done}
 
 
-def ledger_items_caused_by(root, ids, ended_too=False):
+def ledger_items_caused_by(root, ids, ended_too=False, named=()):
     """-> [{id, title, needs}] for the ledger items filed (file or spawn) with caused_by one of ids and not closed,
     dropped or superseded since (ended_too: those as well), read from every shard under
     infrastructure/state/ledger/events/. `needs` is the item's current window (ledger_needs), None when it never had
-    one."""
+    one. named: item ids taken as well, whatever their caused_by, when any ledger event names them (the items a visit's
+    failed lines cite, visit_cited_items; design/specs/2026-11-21-visit-wait-cited-items/boundary.md)."""
     d = os.path.join(root, "infrastructure", "state", "ledger", "events")
-    want, filed, ended = set(ids), {}, set()
-    for f in sorted(os.listdir(d)) if os.path.isdir(d) and want else []:
+    want, filed, ended, named = set(ids), {}, set(), set(named or ())
+    for f in sorted(os.listdir(d)) if os.path.isdir(d) and (want or named) else []:
         if not f.endswith(".jsonl"):
             continue
         with open(os.path.join(d, f), encoding="utf-8") as fh:
             for ln in fh:
-                if '"caused_by"' not in ln and '"close"' not in ln and '"drop"' not in ln and '"supersede"' not in ln:
+                if '"caused_by"' not in ln and '"close"' not in ln and '"drop"' not in ln and '"supersede"' not in ln \
+                        and not (named and any(n in ln for n in named)):
                     continue
                 try:
                     e = json.loads(ln)
                 except ValueError:
                     continue
+                if e.get("id") in named and (e.get("id") not in filed or e.get("event") in ("file", "spawn")):
+                    filed[e.get("id")] = e.get("title") or filed.get(e.get("id")) or ""
                 if e.get("event") in ("file", "spawn") and e.get("caused_by") in want:
                     filed[e.get("id")] = e.get("title") or ""
                 elif e.get("event") in ("close", "drop", "supersede"):

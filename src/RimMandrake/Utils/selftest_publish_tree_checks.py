@@ -135,6 +135,11 @@ def sparse_cases(tmp):
 PIPE_TEST = r'''import os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import pipe
+if "flake" in pipe.FAULTS:     # red on its first run only, green after (the file in $PIPE_FLAKE_FILE counts runs)
+    first = not os.path.exists(os.environ["PIPE_FLAKE_FILE"])
+    open(os.environ["PIPE_FLAKE_FILE"], "a").write("run\n")
+    print("FAIL a timing row under load (run %d)" % (100000 + os.getpid()) if first else "ok the timing row")
+    sys.exit(1 if first else 0)
 for f in pipe.FAULTS:
     if f not in ("crash", "silent"):
         print("FAIL %s fault (run %d)" % (f, 100000 + os.getpid()))
@@ -229,12 +234,21 @@ def door_base_cases(tmp):
     err, out = pcall(work, ch)
     check(err is None, "red only through uncommitted edits (HEAD's commit is green): the door judges the commit, and "
           "passes it (%r)" % err)
+    # RIMMANDRAKE_FIX_VISIT_WAIT_MISSES_FAILURE_CITED_ON_OLD_ITEM: a clone's door run is already on HEAD's commit, so red
+    # there and green on the re-run of that same commit is a flaky reading; the door said "uncommitted edits make it
+    # red" and refused three publishes of one change at load 14-18 on 14 cores (selftest_game_lock's timing rows)
+    os.environ["PIPE_FLAKE_FILE"] = os.path.join(tmp, "flake_runs")
+    work, base = pipe_repo(tmp, "flaky", [], ["flake"])
+    err, out = pcall(work, ch)
+    check(err is None and "FLAKY" in out and "selftest_pipe.py" in out and "uncommitted" not in out,
+          "red at the door, green on a re-run of the same commit: named FLAKY, not refused, no uncommitted-edit story "
+          "(%r)" % (err or out)[-300:])
     work, base = pipe_repo(tmp, "unknown", ["old"], ["old"], remote=False)
     check(P._changed_since_origin(work) is None, "no origin/main: the change set reads unknown (None), not empty")
     err, out = pcall(work, None)
     check(bool(err) and "every pipeline test runs" in out and "selftest_pipe.py" in err,
           "an unknown change set runs every pipeline test (it used to run none) (%r)" % (err or out))
-    left = [n for w in ("pre", "broke", "worse", "newtest", "crashafter", "twice", "silent") for n in os.listdir(os.path.join(tmp, w, ".git"))
+    left = [n for w in ("pre", "broke", "worse", "newtest", "crashafter", "twice", "silent", "flaky") for n in os.listdir(os.path.join(tmp, w, ".git"))
             if n.startswith(P.CHECKTREE_PREFIX)]
     check(not left, "no base tree left in any git dir: %s" % left)
 
