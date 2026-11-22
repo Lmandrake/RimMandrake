@@ -32,8 +32,7 @@ the first read's rows were wrong or stale and are corrected in place; each says 
    nothing here is a fuel.
 
 Also found: his question of 2026-09-24 to every biome (*"how can this biome uniquely add something to the
-ship?"*) and this biome's answer on that register, the long-shade mast, which the design had under "recommended
-for dropping"; the swimmer's road in full (it heads for the largest ring of dew, which is the ship's; hardpan
+ship?"*) and this biome's answer on that register, the long-shade mast (his 0.1.0 draw by card of 2026-11-22); the swimmer's road in full (it heads for the largest ring of dew, which is the ship's; hardpan
 stops it; droids are ignored); the unread three quarters of the shade ideation, with its best lines; the rule
 that crew react to heat and never plan routes applied to one more line the ideation had the other way.
 
@@ -57,7 +56,8 @@ Whether he answered the card that showed him the ship gifts.
 
 **Ship ideas he declined or cut:** none found. The shade awning for the ship drew *"If it's easier than I think
 let's do it. Assess."*, was assessed as already true of any landed ship, and was overtaken by the Shipfall
-Commons, which he picked. The mast is an agent's pick he has not answered (`NEEDS HIM` 4).
+Commons, which he picked. The mast, with black chitin, is his 0.1.0 draw by card of 2026-11-22 (`Answered on
+2026-11-22` 7).
 
 **Measured counts** (script: every table row under "Every idea, row by row"; outcome words counted in the "what
 happened" column; an invented source name is reported missing, which shows the check can see absence): **232
@@ -232,7 +232,7 @@ under `design/Jawa/worldbuilding/`); *cleanse* = `design/concepts/LongShade/clea
 | The shade awning as a ship module | sitting §6, review slate 1 | lost (the hull already casts) | That was the assessment he asked for ("If it's easier than I think let's do it. Assess."), not a refusal; the Shipfall Commons he then picked does the job (corrected by the second reader). The built lure awning is a different thing, admitted by his card of 2026-10-08. | Keep it as a hunting tool: one more building doing a roof's job. |
 | Pavement flooring and the vorrel galley as ship gifts | sitting §6 | kept in "later" | | |
 | The megafauna radiate the crossing's heat once in shade | sheet §4c, sitting §4.1 | kept, quoted; made the hull-wear line | His card of 2026-11-18 asked for wear found in the sources. | |
-| The chitin shade mast | cleanse | kept as the biome's gift to the ship; `NEEDS HIM` 4 (corrected by the second reader; the first read had "lost, recommended for dropping") | It is this biome's entry on the ship register he asked for on 2026-09-24. | Retire it as the cleanse recommends: against parasols-and-roofs. |
+| The chitin shade mast | cleanse | kept: with black chitin, the 0.1.0 draw by his card of 2026-11-22; not retired | It is this biome's entry on the ship register he asked for on 2026-09-24. | |
 | Haze lengthening shadows by its own multiplier | cleanse, sitting §4.2 | lost (recommended for dropping; his to confirm) | Against pure geometry. | |
 | Solar Mirrors | mechanics review | kept as its own mod, not this design | | |
 
@@ -367,7 +367,7 @@ in the row; *owner ledger* = `infrastructure/state/ledger/events/OWNER.jsonl`; *
 | Audio: "vanilla until sound work"; numbers ship as first guesses marked provisional | sitting notes | kept as build rulings | | |
 | His question to every biome, 2026-09-24: "how can this biome uniquely add something to the ship?... What can they take and improve their ships environment with?" | ship register | kept, quoted in the design | No first-read design in this batch cites it. | |
 | "Landing in a biome changes your ship, not just your stores — the gravship becomes a scrapbook of everywhere it has been." | ship register | kept here | | |
-| The long-shade mast as this biome's gift to the ship (an agent's pick of 2026-11-11, carded to him, unanswered) | ship register, source | kept, reshaped: from "recommended for dropping" to the ship's gift, with `NEEDS HIM` 4 | The lens makes the ship the point. | Retire it as the cleanse recommends: the biome gives the ship nothing. |
+| The long-shade mast as this biome's gift to the ship (an agent's pick of 2026-11-11) | ship register, source | kept: with black chitin, the 0.1.0 draw by his card of 2026-11-22 | The lens makes the ship the point. | |
 | Card of 2026-11-17 on the Pyrelands' own smoke weather: "Next version"; his words "the choking smoke that sometimes come as its own weather" | owner ledger | kept as context for the haze (0.2.0) | | |
 | Card of 2026-11-17: a first version holds "Land, life, one signature" | owner ledger | kept as `NEEDS HIM` 5 | | |
 

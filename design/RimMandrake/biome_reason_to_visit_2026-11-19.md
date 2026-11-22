@@ -9,8 +9,8 @@ How to read a row:
 - **The draw** is the one thing, taken from the design's own "What the crew takes away" section (`design/concepts/
   <Biome>/design.md`, or `TerminalBiomes/<Sea>_design.md`). Where the design says it is unique on the planet, the
   design's words are quoted.
-- **Source** is `design` when the design names it, and `UNDECIDED` when nothing left in 0.1.0 is unique to the
-  biome. No row here is invented.
+- **Source** is `design` when the design names it, `his card` when his card picked it, and `UNDECIDED` when nothing
+  left in 0.1.0 is unique to the biome. No row here is invented.
 - **Version** is where the draw sits after his first-version answer of 2026-11-19 moved extras to 0.2.0. A draw in
   0.2.0 means a 0.1.0 stop has no unique reason to come yet.
 - **Fuel** marks the six that lost a richer fuel claim (*lost*), the three richer sources (*richer*) and the replete
@@ -24,17 +24,17 @@ How to read a row:
 | The Contagion | A changed body: *"Whatever changed. It leaves with the crew. 'Including you.'"* Grown organs and Helix samples are 0.2.0. | design | 0.1.0 | |
 | The Cracked Lands | The flood itself, met on the first stop, and the mud it leaves: *"Listen for the chimes and farm the mud it leaves."* | design | 0.1.0 | |
 | The Fever Wood | Seep-oil, the richer fuel, skimmed from under the water's nose; and the bait, the gear of everyone the water ever took. | design | 0.1.0 | richer (seep-oil) |
-| The Gelatinous Slime | UNDECIDED in 0.1.0. The design's draw (a gene, chosen, with its rider and its mark, *"in one crew member for life and in their eggs after"*) moved to 0.2.0 with the gene journey, when his card of 2026-11-20 made the contact film the signature. Left in 0.1.0: food, tanks, pressed block and raw slime's poison cure, none named unique. | UNDECIDED | (0.2.0 for the design's draw) | |
+| The Gelatinous Slime | Two draws, by his write-in on the card of 2026-11-22 (*"Both. We can afford both."*): raw slime as the planet's universal antitoxin, frozen and carried aboard; and the slime pit, which renders toxic and indigestible cargo into safe food. The design's earlier draw, the gene, is in 0.2.0 with the gene journey. | his card | 0.1.0 (the pit moved up from 0.2.0) | |
 | The Greentide | True hardwood: *"only from a felled greatbole. 'The price gap between the two woods tells the biome's story.'"* Food, *"more than any other stop"*, beside it. | design | 0.1.0 | lost |
 | The Lantern Deeps | Lanternstone, *"the trade crystal"*, and the dead's gear, *"the best salvage on the planet."* | design | 0.1.0 | lost |
 | The Leaning Scrub | Free power: *"A full charge, and whatever the crew builds with a week of power nobody had to pay for."* *"It is the power stop."* | design | 0.1.0 | |
-| The Long Shade | UNDECIDED in 0.1.0. The design's draws (meat and hides *"from the ship's own shadow"*, the midden heaps, what the sun graves carried) all moved to 0.2.0 with the ship's shade filling, the heaps and the graves. Left in 0.1.0: tame stock, pavement stone, shadespire wood, none unique. | UNDECIDED | (0.2.0 for the design's draws) | |
+| The Long Shade | Black chitin, and the long-shade mast built from it: a tall vane whose long shadow shades an open deck without a roof (his card of 2026-11-22). The design's other draws (meat and hides *"from the ship's own shadow"*, the midden heaps, what the sun graves carried) are in 0.2.0. | his card | 0.1.0 | |
 | The Miasma | Flotsam after every surge: *"timber, brined frames and tanks, loose goods. The reason to come."* | design | 0.1.0 | |
 | The Rust Cathedral | Live-pattern metal from under the plate, beside steel *"by the hold-full"* and dead smartsteel. | design | 0.1.0 | |
 | The Sleeping Ice | *"Salvage in mint condition, the best on the planet for its weight."* | design | 0.1.0 | |
 | The Stillsand | Biosilica, from the glass nubs and the grotto walls: *"the only natural glass on the planet that is not volcanic."* | design | 0.1.0 | |
 | The Forge | Floatstone: building stone that weighs little in the hold, and, studied, a hull and a door for the ship. | design | 0.1.0 | |
-| The Rot | UNDECIDED in 0.1.0. The design's draws (*"their own scrap, mended"* from the giant's castings, the drive core, the pleasure cup) moved to 0.2.0 with the hwelgrue. Left in 0.1.0: fungal timber, fibre, leather, medicine, milk and silk, none named unique. | UNDECIDED | (0.2.0 for the design's draws) | |
+| The Rot | Native food that warms its own store: carried aboard, a hold that keeps itself warm on the cold side of the world (his card of 2026-11-22). The signature and the draw are one thing. The design's other draws (*"their own scrap, mended"* from the giant's castings, the drive core, the pleasure cup) are in 0.2.0 with the hwelgrue. | his card | 0.1.0 | |
 | The Sump | Fuel cracked from tar at the found refinery, the richer source; with bitumen, pitch and glasswalk for the ship's decks. | design | 0.1.0 | richer (tar) |
 | The Warscar | Chatrak plate, *"the only light-armour leather that turns bullets"*; and sealed salvage. | design | 0.1.0 | |
 | The Wastes | *"War salvage nobody has stripped, and whatever each storm turned up"*; warcasket sarcophagi where the Warcasket mod loads. | design | 0.1.0 | lost |
@@ -49,7 +49,6 @@ How to read a row:
 
 - **All six biomes that lost a richer fuel claim keep a draw of their own in 0.1.0**, named in their designs: blue
   ice, tree metal, hardwood, lanternstone and the dead's gear, unstripped war salvage, thrixweave.
-- **Three biomes have no unique draw left in 0.1.0**: the Long Shade, the Rot and the Gelatinous Slime. The first
-  two lost theirs with the extras his first-version answer of 2026-11-19 moved; the Slime lost its gene when his card
-  of 2026-11-20 made the contact film its signature, a cost the card named. Proposals for each are a question for him
-  on the item `RIMMANDRAKE_PICK_SEVEN_BIOME_SIGNATURES_LISTED_NOT_GUESSED`; this table does not choose one.
+- **Every biome now has a draw in 0.1.0.** The Long Shade, the Rot and the Gelatinous Slime had none left after his
+  first-version answer of 2026-11-19 and his Slime card of 2026-11-20; his cards of 2026-11-22 gave each one (rows
+  above).

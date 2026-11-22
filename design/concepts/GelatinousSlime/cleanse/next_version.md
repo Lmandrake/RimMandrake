@@ -10,13 +10,13 @@ Why outside land, life or signature: The feeder remains a feeder if it stops pav
 
 Delivery: present; switch/spec ticket T1.
 
-### pit_solvent
+### pit_solvent — 0.1.0 (owner card, 2026-11-22)
 
 What: Solvent bills turn toxipotatoes and twisted meat into safe products, and Rot ambrosyx into a lavish dish with drug/addiction effects removed.
 
-Why outside land, life or signature: Rendering toxipotatoes, twisted meat and ambrosyx is a cross-biome cuisine utility. Removing it leaves raw-slime meals and stone intact.
+Why: the slime pit is one of the Slime's two 0.1.0 draws by the owner's write-in of 2026-11-22 ("Both. We can afford both."). It is not a next-version extra and ships on (the built default, `SlimeMod.pitSolvent = true`).
 
-Delivery: present; switch/spec ticket T2.
+Delivery: present; ships on (T2 withdrawn).
 
 ### farm_ruins
 

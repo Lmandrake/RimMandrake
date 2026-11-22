@@ -194,7 +194,7 @@ by moving the line in the design's Scope section.
 - **A colony of forty and the whole-map season:** first version → later.
 - **New, not in any source:** the Jawa feeding the giant their rusty scrap on purpose (a reading of the built
   casting rule: items come back at full condition); the Empire's fallen and their gear going through the same gut;
-  the cold room as the part of the ship this biome wears on; canopy and fog as the Rot's cover from orbit.
+  the cold room as the part of the ship this biome wears on; canopy, fog and dark as the Rot's cover from orbit (three steps, his card of 2026-11-22).
 
 ## Every idea, row by row
 

@@ -339,7 +339,8 @@ the ledger: OWNER notes of 2026-11-20T13:54:57Z and 14:02:58Z to 14:03:23Z). The
 section, with the option's description word for word.
 
 - **Gelatinous Slime: the contact film** (against the recommendation). The gene journey and resistance by gene are
-  in 0.2.0. The card named the cost: the Slime has no unique take-away in 0.1.0 until a draw is chosen.
+  in 0.2.0. The card named the cost: the Slime had no unique take-away in 0.1.0 until his card of 2026-11-22 gave
+  it two draws (§Six biome answers).
 - **The Sump: the tar's burden.** The dig is in 0.2.0, so the "hides all" half of his line waits.
 - **The Warscar: the mark.** The Settling and the shells its film finds are in 0.2.0.
 - **The Weeping Stones: the truce at the water.** The pen, the netting of live stock, the ones that are not fish and
@@ -347,12 +348,38 @@ section, with the option's description word for word.
 - **The four seas: each its own signature, and the river shared by all four.** He took neither offered option and
   typed: *"Actually having underocean rivers should be commonplace in all the oceans, so this isn't even special for Twilight. EACH of them should get an actual special. Perhaps the Twilight should be the falling shards of the ocean's colorful cover"*. This replaces his approval of 2026-11-17 (one signature, the Twilight's river, for the
   four-sea mod). The Grey Sea's is *the sea keeps what it is given*; the Chill's is *the garden answers warmth*; the
-  Scald's is **the herd** (picked on the second card; the vent cycle stays as plain land behaviour). The Twilight's
-  is open: his "Perhaps" is an invitation, not a ruling. Whether the river comes to the other three seas in 0.1.0 or
-  at 0.2.0 is not ruled.
+  Scald's is **the herd** (picked on the second card; the vent cycle stays as plain land behaviour). His "Perhaps"
+  for the Twilight was an invitation, not a ruling; his write-in of 2026-11-22 chose the Twilight's signature, and
+  his card of 2026-11-22 put the river in the other three seas at 0.2.0 (§Six biome answers).
 - **The Contagion: yes, inside the bubble too.** A raised particulate screen keeps the Bloom off crew inside its
   bubble. The built dose reads only what is overhead, so the build owes a change to a built default; no build ticket
   is filed while the mod is held.
 - **The Scald's steam clock: keep.** His words: *"yes keep the clock, AND it should be even worse in the Scald water
   itself (hot water is not the same as hot air"*. On 2026-11-21 he ruled that hot water is physics on any map, not a
   Scald exception (§No biome-specific sun or heat).
+
+## Six biome answers by card — owner, 2026-11-22, about 2:16 to 2:24 AM PST
+
+He answered the questions page `D:\ClaudeWork\rimmandrake\conductor\biome_open_after_picks_20261120.md` on cards, on
+the item `RIMMANDRAKE_PICK_SEVEN_BIOME_SIGNATURES_LISTED_NOT_GUESSED` (the card store: `python3
+src/RimMandrake/rimflow/card_capture.py show RIMMANDRAKE_PICK_SEVEN_BIOME_SIGNATURES_LISTED_NOT_GUESSED`; the ledger:
+OWNER notes of 2026-11-22T10:19:27Z to 10:25:22Z). The enact item is
+`RIMMANDRAKE_ENACT_SIX_BIOME_ANSWERS_SLIME_GETS_BOTH_DRAWS`. Each design carries its answer in its `Answered on
+2026-11-22` section.
+
+- **The Twilight Sea's signature: the light-wells, with coloured light from the panes everywhere else.** He took none
+  of the three candidates and typed: *"The light well but in the places away from the light well there are regions of
+  colored ambiance from the colored panes above. It the bare spots are so much brighter! That."* Away from a well the
+  floor lies in regions of coloured ambient light from the panes above; the bare spots (the wells) are far brighter.
+  The falling panes stay the Twilight's hull wear, not its signature. He did not say whether a well moves: the built
+  moving-wells system stays in 0.1.0 as it is, and that question is not ruled. The coloured ambient light is owed.
+- **Rivers: "Twilight now, others 0.2.0".** The Twilight keeps its built river in 0.1.0; the Grey Sea, the Chill and
+  the Scald get the river at 0.2.0.
+- **The Long Shade's 0.1.0 draw: "Chitin and shade mast".** Black chitin and the long-shade mast. The mast is not
+  retired.
+- **The Rot's 0.1.0 draw: "Food that warms its store".** Native food that warms its own store; the signature and the
+  draw are one thing.
+- **The Rot's cover from orbit: "It counts: three steps".** Canopy, fog and dark. The dark is measured by the sun's
+  angle; the glow of the forest floor does not cancel it.
+- **The Gelatinous Slime's 0.1.0 draw: both.** The options were raw slime as the antitoxin and the slime pit. He
+  typed: *"Both. We can afford both."* Both are in 0.1.0; the slime pit moves up from 0.2.0.

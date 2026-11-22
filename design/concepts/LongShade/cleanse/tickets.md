@@ -159,10 +159,8 @@ Gate the local RM_ShadeClothExtension bonus without removing ordinary Mirrak lea
 Acceptance test: Defaults permit ordinary Mirrak leather but no special shade-depth advantage or study work. On a matched-stuff gear fixture the special depth comparison is present; ordinary roofs and parasols protect in both arms and no heat-kind exception returns. In both arms, read actor/object/job/letter/incident state and the log; absence must not be inferred from silence or a failed prerequisite.
 
 ## T27: Buildable chitin long-shade mast
-Status: present; recommend_retire.
+Status: present; not retired. With black chitin it is the Long Shade's 0.1.0 draw (owner card, 2026-11-22). The retirement recommendation and its acceptance test are deleted.
 Evidence/callers: src/RimMandrake/LongShade/Defs/ThingDefs_Buildings/RM_LongShadeMast.xml; Temperature build menu -> ShadeGear lee mode; ship_contributions.py check.
-Recommendation only: quarantine mast build/trade/generation availability and its lee-mode registration, retaining all directional art. Do not change generic ShadeGear for other consumers. Do not silently retain mast as a bar-required ship gift.
-Acceptance test: Defaults have no available/generated LongShadeMast or mast gear field. A diagnostic opt-in can establish the dormant object as present; it is not a compliant shipping gear option until the owner resolves the standing keep-only-parasols-and-roofs conflict. Protected art remains in the tree in both arms. In both arms, read actor/object/job/letter/incident state and the log; absence must not be inferred from silence or a failed prerequisite.
 
 ## T28: Haze multiplies shadow length independently of sun geometry
 Status: present; recommend_retire.

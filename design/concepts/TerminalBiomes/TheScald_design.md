@@ -427,8 +427,7 @@ and are not the signature: nothing in 0.1.0 teaches them as the thing to learn h
 
 **The river is shared by all four seas, and is no sea's signature** (his write-in on the card of 2026-11-20,
 `Answered`, card of 2026-11-20, entry 6). Bed, banks, lit stakes, the current, the surge and the sink are a system of every sea
-floor. *Its version in the Scald is not ruled:* whether it comes in 0.1.0 or waits for 0.2.0 is one question for him, on
-the item `RIMMANDRAKE_PICK_SEVEN_BIOME_SIGNATURES_LISTED_NOT_GUESSED`. *What it adds here:* the current, the surge
+floor. *It comes to the Scald at 0.2.0* (his card of 2026-11-22, `Answered on 2026-11-22`). *What it adds here:* the current, the surge
 and the sunk condition read no biome (measured 2026-11-20: `RM_MapComponent_ChannelCurrent`, `RM_GameCondition_Undersurge`,
 `RM_HediffComp_Sunk`); the channel generator `RM_GenStep_TwilightChannels` is gated to the Twilight's floor by name
 and registered on that floor's generator alone. So this sea needs the gate opened and one registration patch (small
@@ -458,6 +457,10 @@ clear of the boiling pools, and the rescue clock is the burn's as well as the si
 - Fuel by the slow route.
 
 **0.2.0, the stop with company**
+*Set here by his card of 2026-11-22:*
+- The river: bed, banks, stakes, the current, the surge and the sink, on this floor. (owed: the generator's gate
+  opened and one registration patch, this sea's own look, and the river's promise rows proven here)
+*Already here before that card:*
 - His floor of 2026-09-25, the part not yet built: chimney fields as three heat zones; the guardians (askirath)
   and the swarms (feen) with their nests; the swirl of small glowing life that follows a herd (ullium); walkers
   that lay the mats as well as mow them; nodules, the two crystals, Chimney Iron, Mother-of-Scaldpearl; unbranded
@@ -547,3 +550,11 @@ enact item is `RIMMANDRAKE_ENACT_SIGNATURE_PICKS_INTO_DESIGNS_SLIME_KEEPS_FILM`)
    learn."*
    On the seas he typed: *"Actually having underocean rivers should be commonplace in all the oceans, so this isn't even special for Twilight. EACH of them should get an actual special. Perhaps the Twilight should be the falling shards of the ocean's colorful cover"* So the river is shared by all four seas and is no sea's
    signature; this replaces his approval of 2026-11-17.
+
+## Answered on 2026-11-22
+
+**Answered by his card of 2026-11-22** (item `RIMMANDRAKE_PICK_SEVEN_BIOME_SIGNATURES_LISTED_NOT_GUESSED`; the
+enact item is `RIMMANDRAKE_ENACT_SIX_BIOME_ANSWERS_SLIME_GETS_BOTH_DRAWS`).
+
+- **Does this sea get the river in 0.1.0 or at 0.2.0?** *His card, about 2:19 AM PST:* "Twilight now, others 0.2.0".
+  The river comes to this sea at 0.2.0; the Twilight keeps its built river in 0.1.0.

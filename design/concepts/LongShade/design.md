@@ -273,8 +273,8 @@ too wide for them.
 - **For the ship itself: the long-shade mast.** His question of 2026-09-24 to every biome: *"how can this biome
   uniquely add something to the ship?... What can they take and improve their ships environment with?"* This
   biome's answer on the register is *"a tall black-chitin vane whose lee runs the length of an open deck under a
-  low sun... shade a roof cannot give without closing the deck."* It is built. An agent chose it, not he; the
-  cleanse recommends retiring it (`Answered on 2026-11-19` 4).
+  low sun... shade a roof cannot give without closing the deck."* It is built. By his card of 2026-11-22, black
+  chitin and the mast are this biome's 0.1.0 draw, and the mast is not retired (`Answered on 2026-11-22` 7).
 - *0.2.0:* steel and components off the wreck road, at the cost of the road; a negotiated hull or its price; the
   prepared vorrel, *"a euphoric delicacy that is a controlled near-miss with a lethal parasite"*; mirrak hide,
   which casts deeper shade.
@@ -396,6 +396,9 @@ the ship's shadow, which is how the resting giant warms the hull.
 - The sandstorm as the one hazard the ship-shield frame sees here. (built)
 - The native roster, ordinary forage, taming and stock; fliers that really fly. (built)
 - What the place does to the landed ship, as stated above. (a resting giant's warmth is new, small work)
+- **The draw:** black chitin from the insect animals, and the long-shade mast built from it, whose long shadow
+  shades an open deck without a roof (his card of 2026-11-22). (built: `RM_LongShadeMast`, 50 black chitin; owed:
+  its 0.1.0 promise row and its proof in the game)
 
 **0.2.0, the stop with company**
 *Moved here from 0.1.0 by his first-version answer of 2026-11-19 (one signature a stop is sure to
@@ -453,9 +456,8 @@ see); each line goes back by one move:*
 - Colonists that plan routes by shade (his answer of 2026-11-10: they react; the beasts are the evolved ones).
 - **Recommended for dropping by the cleanse, not his:** haze lengthening shadows by its own multiplier (against
   pure geometry); the tazzok's ash-only schedule (its ash act is gone). The cleanse also recommended retiring the
-  lure awning and the shade mast. This design does not follow it on either: he admitted the lure awning by card
-  on 2026-10-08 (*"the one biome where you can bait with geometry"*) and it is built, so it sits in 0.2.0 with the
-  other admitted extras; and the mast is this biome's gift to the ship (`Answered on 2026-11-19` 4).
+  lure awning. This design does not follow it: he admitted the lure awning by card on 2026-10-08 (*"the one biome
+  where you can bait with geometry"*) and it is built, so it sits in 0.2.0 with the other admitted extras.
 
 ## NEEDS HIM
 
@@ -474,7 +476,7 @@ can undo any one by name.
    0.2.0 (the design's default). *Delegated call.*
 4. **[hull] Does the ship keep its mast?** Keep the mast as the ship's gift (the design's default). The closest call
    of the 83: the rule says shade gear is parasols and roofs, and a sail on a mast is a parasol on a pole. *Delegated
-   call.*
+   call.* His card of 2026-11-22 made the mast part of the 0.1.0 draw (entry 7).
 6. **[other] Should lightning strike here?** Remove the dry thunderstorms. The sheet bans fire that starts here (*"Ash
    and smoke ARRIVE; they do not originate"*). *Delegated call.*
 
@@ -491,3 +493,14 @@ can undo any one by name.
    is sure to see: real and false shade (Scope, top). The ship's shade filling by stages and its console, the
    lee-side heaps and the sun graves move to 0.2.0 with their text; two of them are his card picks of 2026-09-30,
    and the card named that cost. **This changes the design's default.** Was: the three in 0.1.0.
+
+## Answered on 2026-11-22
+
+**Answered by his card of 2026-11-22** (item `RIMMANDRAKE_PICK_SEVEN_BIOME_SIGNATURES_LISTED_NOT_GUESSED`; the
+enact item is `RIMMANDRAKE_ENACT_SIX_BIOME_ANSWERS_SLIME_GETS_BOTH_DRAWS`). It takes the next number.
+
+7. **What is the Long Shade's 0.1.0 draw?** The biome had nothing in 0.1.0 that a crew can get only here. *His card,
+   about 2:24 AM PST:* "Chitin and shade mast". Black chitin and the long-shade mast are the 0.1.0 draw. The option
+   he picked said: *"It is built, it is about shade, and it is the only Long Shade thing a ship carries away. Buys: a
+   unique ship part that fits the biome's signature. Costs: one more feature to prove in 0.1.0, and it reverses the
+   cleanup's advice to retire the mast."* The mast is not retired.

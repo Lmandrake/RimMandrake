@@ -420,8 +420,7 @@ pools and plumes are everywhere on the floor and the statuary shows it from the 
 
 **The river is shared by all four seas, and is no sea's signature** (his write-in on the card of 2026-11-20,
 `Answered`, card of 2026-11-20, entry 5). Bed, banks, lit stakes, the current, the surge and the sink are a system of every sea
-floor. *Its version in the Grey is not ruled:* whether it comes in 0.1.0 or waits for 0.2.0 is one question for him, on
-the item `RIMMANDRAKE_PICK_SEVEN_BIOME_SIGNATURES_LISTED_NOT_GUESSED`. *What it adds here:* the current, the surge
+floor. *It comes to the Grey at 0.2.0* (his card of 2026-11-22, `Answered on 2026-11-22`). *What it adds here:* the current, the surge
 and the sunk condition read no biome (measured 2026-11-20: `RM_MapComponent_ChannelCurrent`, `RM_GameCondition_Undersurge`,
 `RM_HediffComp_Sunk`); the channel generator `RM_GenStep_TwilightChannels` is gated to the Twilight's floor by name
 and registered on that floor's generator alone. So this sea needs the gate opened and one registration patch (small
@@ -446,6 +445,9 @@ carrying centre clear of every pool and plume: a carried worker must never be de
 - The ship's landing advice naming the salt. (unbuilt; campaign layer, on the shared frame)
 
 **0.2.0, the stop with company**
+*Set here by his card of 2026-11-22:*
+- The river: bed, banks, stakes, the current, the surge and the sink, on this floor. (owed: the generator's gate
+  opened and one registration patch, this sea's own look, and the river's promise rows proven here)
 *Moved here from 0.1.0 by his first-version answer of 2026-11-19 (one signature a stop is sure to
 see); each line goes back by one move:*
 - The lamp: light-seekers, the fessk at the rim, scrape-marks, the giant that breaks the lamp. (built; moved in)
@@ -520,6 +522,14 @@ enact item is `RIMMANDRAKE_ENACT_SIGNATURE_PICKS_INTO_DESIGNS_SLIME_KEEPS_FILM`)
    offered and typed, about 6:00 AM PST: *"Actually having underocean rivers should be commonplace in all the oceans, so this isn't even special for Twilight. EACH of them should get an actual special. Perhaps the Twilight should be the falling shards of the ocean's colorful cover"*
    So the river is shared by all four seas and is no sea's signature; this replaces his approval of 2026-11-17.
    The Grey's signature is its own: the sea keeps what it is given.
+
+## Answered on 2026-11-22
+
+**Answered by his card of 2026-11-22** (item `RIMMANDRAKE_PICK_SEVEN_BIOME_SIGNATURES_LISTED_NOT_GUESSED`; the
+enact item is `RIMMANDRAKE_ENACT_SIX_BIOME_ANSWERS_SLIME_GETS_BOTH_DRAWS`).
+
+- **Does this sea get the river in 0.1.0 or at 0.2.0?** *His card, about 2:19 AM PST:* "Twilight now, others 0.2.0".
+  The river comes to this sea at 0.2.0; the Twilight keeps its built river in 0.1.0.
 
 ## Found while reading, for whoever builds
 

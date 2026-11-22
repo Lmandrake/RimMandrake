@@ -75,18 +75,19 @@ The Empire's search restarts at every landing (`src/RimUtinni/EmpirePursuit/`, c
 provisional): a probe droid five to eight days after landing, then scouts with a spotter, a strike team, an ion
 cordon on the ship, a breaching assault, and an orbital bombardment that cannot be fought.
 
-**The outer edge of a stay here: about two months.** By the owner's word of 2026-11-18 the figure a design derives is
-*"the outer edge allowable"*, not the typical stay. If the Empire wins every step, the bombardment is the fourth
-full interval of the ladder: 28 to 45 days at one step quieter than open ground, and about 40 to 64 days at two
-steps, which is what canopy and fog give together (below).
+**The outer edge of a stay here: about two to three months.** By the owner's word of 2026-11-18 the figure a design
+derives is *"the outer edge allowable"*, not the typical stay. If the Empire wins every step, the bombardment is the
+fourth full interval of the ladder: 28 to 45 days at one step quieter than open ground, about 40 to 64 days at two
+steps, and about 56 to 90 days at three, which is what canopy, fog and dark give together (below) [guess ~80% on the
+arithmetic, at about 1.4 per step; the ladder's numbers are provisional].
 
-**Cover from orbit: canopy and fog, two steps.** His ruling of 2026-11-18: *"Canopy, steam and fog slow the search by one
-step; full dark still pauses it."* The Rot is a forest of caps wide enough to stand a camp under, *"dense beyond
-anything dayside"*, in a fog of its own making. That is canopy and fog, one step each, and by his card of
-2026-11-19 they add up: two steps. It is also on the night side under a black sky, and full dark is one more step.
-`UNSETTLED`, for the Conductor: whether the dark's step counts here, where the forest floor glows (*"All useful
-light is biological"*, and there is a lot of it). The card's measure (the sun's angle) says it counts; its reading
-that anything which lights the ship takes the dark away says the glow may cancel it. This design uses two steps.
+**Cover from orbit: canopy, fog and dark, three steps.** His ruling of 2026-11-18: *"Canopy, steam and fog slow the
+search by one step"*. The Rot is a forest of caps wide enough to stand a camp under, *"dense beyond anything
+dayside"*, in a fog of its own making. That is canopy and fog, one step each, and by his card of 2026-11-19 steps
+add up. It is also on the night side under a black sky, and full dark is one more step, measured by the sun's angle.
+By his card of 2026-11-22 the dark counts here although the forest floor glows (*"All useful light is
+biological"*): the glow is on the ground under the caps, not the ship's own lights. Three steps (`Answered on
+2026-11-22` 5).
 
 ---
 
@@ -221,7 +222,7 @@ Each can happen inside the visit. Each says what is on screen.
 **Stay, longer than the Empire would like:**
 - Free warmth, on the cold side of the world.
 - Food everywhere, for a crew that cooks and eats what it cuts.
-- Canopy and fog, two steps slower above.
+- Canopy, fog and dark, three steps slower above.
 - By his answer of 2026-11-10, quiet: *"Understanding the Rot and arranging the base well earns peaceful ordinary
   days and dependable comfort between outings; its hungry character can concentrate in exceptional events."*
 
@@ -291,16 +292,18 @@ source, named beside it.
 
 ## What the crew takes away
 
-- **Their own scrap, mended,** and other people's.
+- **The 0.1.0 draw: native food that warms its own store** (his card of 2026-11-22). Carried aboard, it is a hold
+  that keeps itself warm on the cold side of the world. The signature and the draw are one thing here.
 - **Fungal timber, fibre, mushroom leather, fungal medicine;** food for as long as the cold room holds.
 - **Milk and silk,** and the animals that give them.
 - **Nothing brewed.** *"No stockpilable teas or symbionts."* What the cup gave stays in the drinker.
-- *0.2.0:* **the drive core,** cut out of the one giant that carries it and fitted to the ship, for a quarter more
-  range at full soundness (his card of 2026-10-02); **a dead ship's log** that goes on naming salvage sites across
-  the planet for as long as its carrier lives; **a root of the living mat**, from the log's last camp, that warms
-  a cabin on the cold side for as long as it is fed; a **gut-mother** sac, grown aboard into a vat that returns
-  the implants and gear from any corpse, with starter jars of it to sell (the one living thing he ruled may leave
-  the Rot). *Campaign layer:* **fungal soil**, dug and sold. *Asked:* chemfuel from wild blastpods.
+- *0.2.0:* **their own scrap, mended,** and other people's, out of the giant that swallows the dead; **the drive
+  core,** cut out of the one giant that carries it and fitted to the ship, for a quarter more range at full
+  soundness (his card of 2026-10-02); **a dead ship's log** that goes on naming salvage sites across the planet for
+  as long as its carrier lives; **a root of the living mat**, from the log's last camp, that warms a cabin on the
+  cold side for as long as it is fed; a **gut-mother** sac, grown aboard into a vat that returns the implants and
+  gear from any corpse, with starter jars of it to sell (the one living thing he ruled may leave the Rot). *Campaign
+  layer:* **fungal soil**, dug and sold. *Asked:* chemfuel from wild blastpods.
 
 ## The promises of 0.1.0, and the scene that would show each one broken
 
@@ -362,6 +365,11 @@ brought it into 0.1.0, and it goes back to 0.2.0 whole, as he let the cleanse ma
   Sheen as weather, digested wreckage. (built; milk placement unproven)
 - The metabolism: mat warmth in enclosed rooms; fast decay of exposed organics; living harvest heating storage.
   (built; no produce carries the heat yet)
+- **The draw:** native food that warms its own store, carried aboard as a hold that keeps itself warm (his card of
+  2026-11-22). (owed: produce that carries the warming. A mechanic works by its physical conditions, so the
+  warming goes with the food into the ship's hold off the Rot; that the built code does so is `UNMEASURED`)
+- Canopy, fog and dark as three steps of cover from orbit (his card of 2026-11-22). (unbuilt; campaign layer, the
+  pursuit's partial-cover list)
 - The armed residents: Prime and Skulltop patches. (built; their gas on the ordinary plant tick is unproven)
 - The life: fungal forage, timber, fibre, medicine; the hybrid roster with its ordinary milk, silk, eggs, hunting
   and poison. (built)
@@ -448,3 +456,19 @@ can undo any one by name.
    swallowing and rescue, the castings, the first-sighting letter and the ping, with the core, the log and the vat
    already there. The pleasure cup (his mark) moves with it. **This changes the design's default.** Was: the eating,
    swallowing, rescue, castings and ping in 0.1.0.
+
+## Answered on 2026-11-22
+
+**Answered by his card of 2026-11-22** (item `RIMMANDRAKE_PICK_SEVEN_BIOME_SIGNATURES_LISTED_NOT_GUESSED`; the
+enact item is `RIMMANDRAKE_ENACT_SIX_BIOME_ANSWERS_SLIME_GETS_BOTH_DRAWS`). Each takes the next number.
+
+4. **What is the Rot's 0.1.0 draw?** Its own draw, mended scrap, comes from the giant, which is in 0.2.0. *His card,
+   about 2:24 AM PST:* "Food that warms its store". The option he picked said: *"Signature and draw become one
+   thing, as with your Scald pick: a hold that keeps itself warm on the cold side of the world. Buys: no added
+   scope. Costs: no produce carries the warming yet (already owed), and whether it works in the ship's hold away
+   from the Rot is unsettled."*
+5. **Does the Rot's darkness count as a step of cover from orbit?** *His card, about 2:24 AM PST:* "It counts: three
+   steps". The option he picked said: *"Follows your card's measure, the sun's angle; the glow is on the ground
+   under the caps, not the ship's own lights. Buys: one consistent rule. Costs: the Rot becomes one of the best
+   hideouts on land, about 2.7 times the open-ground wait (my arithmetic, ~80% sure)."* **This changes the design's
+   default.** Was: two steps.

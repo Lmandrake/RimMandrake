@@ -29,7 +29,7 @@ Next version, switched off:
 
 Harrok remains an ordinary scavenger with body shade; Vrekka still feeds. Vorrel’s plant stays visible, but its fruit harvest/ingestion is unavailable at defaults. These decouplings need tests; they are not accomplished by this proposal.
 
-Recommend retiring: the lure awning duplicates ordinary roof shelter; the chitin mast duplicates shelter tools and conflicts with your parasols-and-roofs ruling; haze’s shadow-length multiplier conflicts with pure geometry; Tazzok’s ash-only schedule depends on the already-cut ash act. Their code, defs and kept art stay dormant; retirement is yours.
+Recommend retiring: the lure awning duplicates ordinary roof shelter; haze’s shadow-length multiplier conflicts with pure geometry; Tazzok’s ash-only schedule depends on the already-cut ash act. Their code, defs and kept art stay dormant; retirement is yours. (The chitin mast is not retired: with black chitin it is the 0.1.0 draw, owner card of 2026-11-22.)
 
 Census: capabilities 67 inventoried, 32 kept; 31 next version and 4 recommended retirements. Locked old bars 0 and old live-only bars 0: the CASE has no tree leaves, although scripts exist. Proposed bars 8; live-only bars 2. Supporting work: 12 checks, 8 rules, 5 unknown meetings, 3 models, 45 tickets, 0 questions. The absent shared colonist response adds the capability and build ticket. These counts come from result.json and the proposal files, not a runtime acceptance.
 

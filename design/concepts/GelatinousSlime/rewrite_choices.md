@@ -198,7 +198,7 @@ the line in the design's Scope section.
 - **The harvested piece, its short-lived ground and its shelf life:** locked sheet → 0.2.0 (the cleanse had it
   "next").
 - **A wounded giant shedding gelatids; the greater gappo's channel; the film shown on the body; pit rendering of
-  toxic cargo:** cleanse next → 0.2.0.
+  toxic cargo:** cleanse next → 0.2.0 (the pit then → 0.1.0 as a draw, by his write-in of 2026-11-22).
 - **Return from the last touch:** locked sheet → 0.2.0 (the first read had "later"; moved by the second reader).
 - **The actual vault breach:** locked sheet → later (campaign layer).
 - **Farm conversion as a promise:** cleanse first version → later.
@@ -338,7 +338,7 @@ each named in its row; *owner rulings* = the ledger's record of his words; *buil
 | Stand-in art across the free kit | bedazzle review §3 | kept as owed art | | |
 | His look at the giant's art | locked sheet | kept as owed | | |
 | Roster rows | roster json | kept as build facts | Read row by row by the second reader; rows below. | |
-| The Slime Pit: rendering the toxic and indigestible into cuisine | sheet §7, bedazzle review §8 | moved (cleanse next → 0.2.0) | A ship carries the ingredients. | |
+| The Slime Pit: rendering the toxic and indigestible into cuisine | sheet §7, bedazzle review §8 | moved (cleanse next → 0.2.0; → 0.1.0 as a draw by his write-in of 2026-11-22, "Both. We can afford both.") | A ship carries the ingredients. | |
 | "The gourmet chain now spans three biomes" | sheet §7 | kept as the reason for the pit | | |
 | The farm ruins | sheet §8, bedazzle review §8 | moved (cleanse next → 0.1.0, as places) | | |
 | The Helix presence and survey relics | sheet §8 | kept in "later" | | |
@@ -448,7 +448,7 @@ file actually read is in the "why" cell if it is not obvious.
 | Drinking the living slime: only with no other water; "a massive negative mood impact, a lingering laxative health issue for a day"; "Green is full exposure to the absorption rules from that biome" | owner rulings | kept, quoted | His thirst rulings of 2026-10-17. | |
 | Slime is bottled only by order; slimes can be bathed in, each with a cost | owner rulings | folded into shared machinery (FlowWorks) | Cards of 2026-10-17 and 2026-11-13. | |
 | "Natural slime should also be slippery." | owner rulings | kept, quoted | 2026-10-16. | |
-| The pit's three dishes; the Rot's ambrosyx made lavish with the addiction removed | items | kept at 0.2.0 | His card of 2026-10-11 (`GELATINOUSSLIME_PIT_SOLVENT_1`). | |
+| The pit's three dishes; the Rot's ambrosyx made lavish with the addiction removed | items | kept at 0.1.0 with the pit (his write-in of 2026-11-22) | His card of 2026-10-11 (`GELATINOUSSLIME_PIT_SOLVENT_1`). | |
 | The farm ruins as built: fence lines, dead channels, a collapsed shed, "a lost tool, a last ledger" | items | kept (0.1.0, as places) | `GELATINOUSSLIME_FARM_RUINS_1`. | |
 | A roof alone does not stop contact; the rain stands only on unbuilt, unroofed slime | cleanse | kept | | |
 | The cleanse's first hour: "A worker carries steel, wood, food and antidote from the ship." | cleanse | kept | The only line in the cleanse that sees the ship. | |

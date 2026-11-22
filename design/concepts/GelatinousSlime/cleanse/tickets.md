@@ -20,9 +20,7 @@ Acceptance test: Default greater-gappo grazing leaves no gappo-attributed harden
 
 ## T2: Switch off solvent cuisine, retain raw-slime meals
 
-Source/callers: `SlimeMod.WriteSettings` and static startup -> `PitSolvent.Apply` -> recipeUsers/cache; `SlimePitSolvent.xml` recipes/products. Default pitSolvent OFF/next version; gate acquisition, bill availability and active recipe consumption for toxipotato/twisted-meat/ambrosyx conversions, including cached work/bills. Base RM_Make_SlimeMeal and pit stay available. No kept food loop may call a solvent recipe. Preserve finished legacy meals normally; return reserved inputs on safe cancellation.
-
-Acceptance test: Default fresh map shows no solvent-product acquisition, eligible solvent bill, job, letter or incident and log is clean, while raw-slime meal bill completes. ON shows the same supplied solvent recipes/products and normal work route; OFF mid-bill prevents further solvent work without losing reserved input.
+Withdrawn: the slime pit's solvent cuisine is a 0.1.0 draw by the owner's write-in of 2026-11-22 ("Both. We can afford both."), so it ships on, as built. The switch-off work and its acceptance test are deleted.
 
 ## T3: Switch off farm ruins and their ledger/loot hook
 

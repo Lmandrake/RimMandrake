@@ -270,8 +270,10 @@ It arrives on time. Nothing here hides the ship.
   time they touched the slime. Requires expensive helix tech."* The body files everyone who touches it, so a crew
   that has stood on the Slime once carries its own back-ups away with it.
 - **Pressed block,** stone from a place with no stone.
-- **The antitoxin trick,** for as long as there is antidote to follow it with.
-- **Rendered cargo (0.2.0):** the slime pit makes safe food of the toxic and the indigestible, which is what the
+- **The antitoxin trick (a 0.1.0 draw, his write-in of 2026-11-22):** raw slime clears poison and toxic buildup at
+  once, and starts the film. It rots in days, so a crew freezes it, and carried aboard it is a cure for the
+  Cauldron's and the Rot's poisons. It serves for as long as there is antidote to follow it with.
+- **Rendered cargo (a 0.1.0 draw, his write-in of 2026-11-22):** the slime pit makes safe food of the toxic and the indigestible, which is what the
   hold is full of after the Cauldron and the Rot. By his card of 2026-10-11 it also makes the Rot's ambrosyx into a
   lavish dish with the addiction taken out. *"The gourmet chain now spans three biomes"*, and only a ship visits
   three biomes.
@@ -280,9 +282,6 @@ It arrives on time. Nothing here hides the ship.
   traders not built into the biome.
 - **Not the piece.** Off the body it shrinks; it *"never stockpiles."*
 - **The film,** if they were careless, until the desert dries it out.
-- **Nothing unique in 0.1.0.** With the gene and resistance in 0.2.0 (his card of 2026-11-20 named this cost), the
-  Slime has no take-away of its own in its first version: food, tanks and block are had elsewhere. A 0.1.0 draw is a
-  proposal for him on the item `RIMMANDRAKE_PICK_SEVEN_BIOME_SIGNATURES_LISTED_NOT_GUESSED`.
 
 ## What the place does to the ship
 
@@ -360,12 +359,19 @@ recommendation (the gene journey), with this description: *"Why: every stop sees
 move to 0.2.0, and the Slime has no unique take-away until then."*
 So the gene journey and resistance by gene move to 0.2.0 with their promise rows (above).
 
+**Two draws in 0.1.0 (his write-in on the card of 2026-11-22, `Answered on 2026-11-22` 7):** raw slime as the
+universal antitoxin, and the slime pit. His words: *"Both. We can afford both."* So the Slime has a take-away of its
+own in its first version after all.
+
 **0.1.0, the stop**
 - The land: crust, soft ground, channels, no rock; organism rain, drinkable and draining. (built; the rain's
   drinkable water and drainage are unproven)
 - Contact film, its course, dissolution with belongings left; drying country and the antidote as the ways out.
   (built)
 - Food, pressed block and poison relief from the body. (built)
+- **Draw:** raw slime as the universal antitoxin, frozen and carried aboard. (built: `RM_RawSlime`)
+- **Draw:** the slime pit rendering toxic and indigestible cargo into food. (built; moved here from 0.2.0 by his
+  write-in of 2026-11-22; owed: its 0.1.0 promise row and its proof in the game)
 - The native ecology: gelatid, the gappo family, dwommo, fubbum; part-read visitors; nothing made hostile.
   (built; several still wear stand-in art)
 - The Titanoslime: engulfing, visible rescue time, permanent growth. (built; his look at its art is owed)
@@ -384,7 +390,6 @@ move:*
 - The piece torn from the giant: a thrown weapon that coats friend and foe, on short-lived ground, and does not
   keep. (built)
 - A wounded giant leaking gelatids. (built)
-- The slime pit rendering toxic and indigestible cargo into food. (built)
 - The greater gappo's scoop leaving a clean channel behind it. (built in part)
 - Return from the last touch, by the archive vat on the deck: a dead crew member grown back as they were when they
   last touched the slime, by expensive Helix technology. (built; his look at what carries over is owed)
@@ -457,3 +462,12 @@ can undo any one by name.
    "Kind, generous and slowly eating you." Buys: a smaller first version. Costs: the gene journey and gene resistance
    move to 0.2.0, and the Slime has no unique take-away until then."*
    The gene journey and resistance by gene are in 0.2.0 with their promise rows.
+
+## Answered on 2026-11-22
+
+**Answered by his card of 2026-11-22** (item `RIMMANDRAKE_PICK_SEVEN_BIOME_SIGNATURES_LISTED_NOT_GUESSED`; the
+enact item is `RIMMANDRAKE_ENACT_SIX_BIOME_ANSWERS_SLIME_GETS_BOTH_DRAWS`). It takes the next number.
+
+7. **What is the Slime's 0.1.0 draw?** The contact film cost the Slime its unique take-away in 0.1.0. The options
+   were raw slime as the planet's universal antitoxin, and the slime pit. He took neither alone and typed, about
+   2:24 AM PST: *"Both. We can afford both."* Both are in 0.1.0; the slime pit moves up from 0.2.0.

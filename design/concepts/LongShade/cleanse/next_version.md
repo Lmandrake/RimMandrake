@@ -137,9 +137,9 @@ What: Mirrak hide bespoke shade-depth bonus (ordinary leather stays)
 Why outside land/life/signature: Parasols and roofs already provide player shelter; best-cloth collection is an extra progression reward.
 Ticket: T26; built: present.
 
-### longshade_mast — RECOMMEND RETIRING
+### longshade_mast — 0.1.0 (owner card, 2026-11-22)
 What: Buildable chitin long-shade mast
-Why outside land/life/signature: A special shade device duplicates roofs and fights the later keep-only-parasols-and-roofs ruling. Owner-kept art remains untouched.
+Why: with black chitin it is the Long Shade's 0.1.0 draw by the owner's card of 2026-11-22. It is not retired and not off.
 Ticket: T27; built: present.
 
 ### haze_length — RECOMMEND RETIRING
