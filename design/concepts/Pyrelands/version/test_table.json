@@ -151,11 +151,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 73.98,
+    "seconds": 70.12,
     "last": "Pyrelands lint planted-defect selftest: 30/30 ok",
-    "at": "2026-11-21T16:21:39Z",
+    "at": "2026-11-22T02:58:07Z",
     "result": "PASS",
-    "build": "495c46b7dbc00938d3aa",
+    "build": "f943281db2f13b81d0bb",
     "command": "python3 src/RimMandrake/Utils/selftest_pyrelands_lint.py",
     "margins": []
    }
@@ -220,11 +220,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.34,
+    "seconds": 0.27,
     "last": "PASS",
-    "at": "2026-11-21T16:21:41Z",
+    "at": "2026-11-22T02:58:08Z",
     "result": "PASS",
-    "build": "b47b49aec43904c60339",
+    "build": "c9f4e716208a2ff0c5ee",
     "command": "python3 src/RimMandrake/Utils/selftest_pyrelands_track_contrast.py",
     "margins": []
    }
@@ -451,11 +451,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 64.42,
+    "seconds": 59.52,
     "last": "PASS: 10 def facts hold, 21 of 21 mutants red, the clean copy green",
-    "at": "2026-11-21T16:22:56Z",
+    "at": "2026-11-22T02:59:07Z",
     "result": "PASS",
-    "build": "f722391f3cdc2c852efb",
+    "build": "1812ae9c184dd5a3b31c",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_defs_offline.py",
     "margins": []
    }
@@ -477,11 +477,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.79,
+    "seconds": 0.69,
     "last": "PASS: the three cut legs stay cut, 8 of 8 mutants red, the clean copy green",
-    "at": "2026-11-21T16:22:56Z",
+    "at": "2026-11-22T02:59:08Z",
     "result": "PASS",
-    "build": "68c6246f22b3305cc1da",
+    "build": "5e9d20072342849a990a",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_cut_stays_cut.py",
     "margins": []
    }
@@ -1541,11 +1541,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.62,
+    "seconds": 0.56,
     "last": "PASS: payload FindMod-guarded on its own target, mutator ports mapped, text generic, cross-biome labelled unsupported; 8 of 8 mutants red, the clean copy green",
-    "at": "2026-11-21T16:22:59Z",
+    "at": "2026-11-22T02:59:09Z",
     "result": "PASS",
-    "build": "523c722dc3dfc0f50cf3",
+    "build": "92adfe08195c8f84f2f9",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_self_contained.py",
     "margins": []
    }
@@ -1564,11 +1564,11 @@
    "runs_today": {
     "ran": true,
     "rc": 1,
-    "seconds": 6.99,
+    "seconds": 2.81,
     "last": "FAIL: 5 of 18 checks failed",
-    "at": "2026-11-22T01:51:55Z",
+    "at": "2026-11-22T02:59:11Z",
     "result": "FAIL",
-    "build": "a8739588acc46ebe57bb",
+    "build": "2267ac289b43a330984a",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_round6_gaps.py",
     "margins": []
    }
@@ -1634,11 +1634,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.04,
+    "seconds": 1.06,
     "last": "selftest_pyrelands_venom_staging: 0 of 20 checks failed",
-    "at": "2026-11-22T01:51:56Z",
+    "at": "2026-11-22T02:59:13Z",
     "result": "PASS",
-    "build": "68205df024ca0aec0538",
+    "build": "d790a1d2a249aa358537",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_venom_staging.py",
     "margins": []
    }
@@ -1655,7 +1655,18 @@
     "src/RimUtinni/UtinniPatches/Patches/FaunaNorm_Law3_Damage.xml"
    ],
    "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_venom_dose.py",
-   "item": "RIMMANDRAKE_TUNE_PYRE_FLAMEFANG_BITE_KILLS_BEFORE_IMMUNITY"
+   "item": "RIMMANDRAKE_TUNE_PYRE_FLAMEFANG_BITE_KILLS_BEFORE_IMMUNITY",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.15,
+    "last": "selftest_pyrelands_venom_dose: 0 of 9 checks failed",
+    "at": "2026-11-22T02:59:13Z",
+    "result": "PASS",
+    "build": "ddec0f193ab7b39b3682",
+    "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_venom_dose.py",
+    "margins": []
+   }
   }
  },
  "bars": [
