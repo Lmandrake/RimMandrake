@@ -1,0 +1,4 @@
+PASS \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_FIVE.det\design\concepts\FlowWorks\version\in_game\visit_5\evidence\sc_pawn_height_20261121T185446.json 
+[bridge split] 337.8 s wall: load 0.4 / ticks 0.9 / reads 2.7 / other 319.3 / outside calls 14.4 s
+[bridge split] WARN 60 calls of jawa/flowworks_excavation_drive (2.8 s): batch them
+[bridge split] WARN 59 calls of jawa/static_call (2.7 s): batch them

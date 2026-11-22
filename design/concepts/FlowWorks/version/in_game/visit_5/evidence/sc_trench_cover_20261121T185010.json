@@ -1,0 +1,18 @@
+{
+  "script": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_FIVE.det\\src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py",
+  "started": 1795315811.040815,
+  "mode": "live",
+  "calls": [],
+  "site": {
+    "site": "calm",
+    "save": "RM_TestSite_calm_v3",
+    "utc": "2026-11-22T02:50:11Z",
+    "problems": [
+      "main menu not confirmed within 180 s"
+    ],
+    "verified": false
+  },
+  "status": "FAIL",
+  "error": "AssertionError(\"disposable calm site failed to load: {'site': 'calm', 'save': 'RM_TestSite_calm_v3', 'utc': '2026-11-22T02:50:11Z', 'problems': ['main menu not confirmed within 180 s'], 'verified': False}\")",
+  "finished": 1795315992.4935195
+}

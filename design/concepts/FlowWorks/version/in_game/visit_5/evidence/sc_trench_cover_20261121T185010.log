@@ -1,0 +1,3 @@
+FAIL \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_FIVE.det\design\concepts\FlowWorks\version\in_game\visit_5\evidence\sc_trench_cover_20261121T185010.json AssertionError("disposable calm site failed to load: {'site': 'calm', 'save': 'RM_TestSite_calm_v3', 'utc': '2026-11-22T02:50:11Z', 'problems': ['main menu not confirmed within 180 s'], 'verified': False}")
+[bridge split] 181.5 s wall: load 0.0 / ticks 0.0 / reads 2.7 / other 0.0 / outside calls 178.8 s
+[bridge split] WARN 179 calls of rimworld/get_ui_state (2.7 s): batch them

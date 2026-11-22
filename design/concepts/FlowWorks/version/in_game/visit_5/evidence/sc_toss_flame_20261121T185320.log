@@ -1,0 +1,3 @@
+PASS \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_FIVE.det\design\concepts\FlowWorks\version\in_game\visit_5\evidence\sc_toss_flame_20261121T185320.json 
+[rimbridge_client] reconciled 4be4fb46de3844e3 jawa/order_pawn as applied: journal read (jawa/order_pawn 2026-11-22T02:50:08Z): operation op_c12561bf25694ec686f0f0813aaf5c6f extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/order-pawn Completed, success=True, writer pid 48404 (concept_scenes.py) gone
+[bridge split] 59.1 s wall: load 0.4 / ticks 3.7 / reads 3.8 / other 38.7 / outside calls 12.5 s
