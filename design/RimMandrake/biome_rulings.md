@@ -371,8 +371,9 @@ OWNER notes of 2026-11-22T10:19:27Z to 10:25:22Z). The enact item is
   of the three candidates and typed: *"The light well but in the places away from the light well there are regions of
   colored ambiance from the colored panes above. It the bare spots are so much brighter! That."* Away from a well the
   floor lies in regions of coloured ambient light from the panes above; the bare spots (the wells) are far brighter.
-  The falling panes stay the Twilight's hull wear, not its signature. He did not say whether a well moves: the built
-  moving-wells system stays in 0.1.0 as it is, and that question is not ruled. The coloured ambient light is owed.
+  The falling panes stay the Twilight's hull wear, not its signature. The wells move in 0.1.0: a well closes
+  and another opens elsewhere. His ruling of 2026-11-22: *"Yes light well first version."* The coloured ambient
+  light is owed.
 - **Rivers: "Twilight now, others 0.2.0".** The Twilight keeps its built river in 0.1.0; the Grey Sea, the Chill and
   the Scald get the river at 0.2.0.
 - **The Long Shade's 0.1.0 draw: "Chitin and shade mast".** Black chitin and the long-shade mast. The mast is not

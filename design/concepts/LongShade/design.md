@@ -335,6 +335,7 @@ The rest is company:
 | A mirrak looks like shade and is not: it cools nothing, it can be told from real shade by looking and confirmed by a safe inspection, and what it takes leaves a mark. | A mirrak lying square with the real shadows and one lying across them; an overheated animal; a crew member who inspects first. | A loss with nothing left to read. A mirrak that cannot be told when it happens to lie the right way. |
 | A shadow's holder strikes what arrives and returns to cool; nothing here runs prey down. | A dakkra in a shadow, prey arriving spent, prey passing at a distance. | A chase across the open. |
 | The place wears on the ship only through its company: a resting giant warms the hull's flank and crowds the apron, and clearing the shade answers both. | A gloomcast settled at the hull, then dispersed. | Heat with no visible source. |
+| Black chitin taken from the native insects builds the long-shade mast; its long shadow lies along an open ship deck under the low sun, and crew working in that lee are spared the direct sun while the deck stays open; the mast leaves with the ship. | Chitin butchered from a native insect; the mast built on an open-deck ship; crew working the deck in its lee and outside it; a launch and a landing elsewhere. | A drawn shadow that spares no one, or relief where no shadow is drawn, fails. A shadow that lies another way than the map's other shadows fails. A mast left behind at launch fails. |
 
 **Promises that moved to 0.2.0 with their features** (his first-version answer of 2026-11-19):
 
@@ -398,7 +399,7 @@ the ship's shadow, which is how the resting giant warms the hull.
 - What the place does to the landed ship, as stated above. (a resting giant's warmth is new, small work)
 - **The draw:** black chitin from the insect animals, and the long-shade mast built from it, whose long shadow
   shades an open deck without a roof (his card of 2026-11-22). (built: `RM_LongShadeMast`, 50 black chitin; owed:
-  its 0.1.0 promise row and its proof in the game)
+  its proof in the game)
 
 **0.2.0, the stop with company**
 *Moved here from 0.1.0 by his first-version answer of 2026-11-19 (one signature a stop is sure to

@@ -316,6 +316,7 @@ It arrives on time. Nothing here hides the ship.
 | The natives live as an ecology (herds that pool at night, three sizes of scoop-feeder, a real flier, a hunter of the herds); outsiders arrive part-read; nothing turns hostile from being read. | A week of the map left alone. | Flight is read from state, never watched unattended. |
 | The giant swallows prey whole, shows how long a rescue has, gives up the same person if freed in time, and keeps what it gains from feeding. | A crew member engulfed and cut free; an animal engulfed and digested; a save and reload after. | A giant that shrinks again unseen fails. |
 | The Slime itself leaves a landed ship alone, and the deck counts as built floor. | A ship through several days, crew kept on deck. | A film on someone who never left the deck fails. |
+| The slime pit, worked like any bench, turns toxic and indigestible cargo into food a crew can eat safely, and steeps the Rot's ambrosyx into a feast dish without its craving; the food travels in the hold. | Toxipotatoes, twisted meat and ambrosyx carried in from the hold and rendered; each result eaten; the results loaded and flown out. | Pit food that still poisons or sickens fails. Ambrosyx from the pit that still addicts fails. Food from the pit with nothing fed in fails. |
 
 **Promises that moved to 0.2.0 with their features** (his card of 2026-11-20: the contact film is the signature):
 
@@ -371,7 +372,7 @@ own in its first version after all.
 - Food, pressed block and poison relief from the body. (built)
 - **Draw:** raw slime as the universal antitoxin, frozen and carried aboard. (built: `RM_RawSlime`)
 - **Draw:** the slime pit rendering toxic and indigestible cargo into food. (built; moved here from 0.2.0 by his
-  write-in of 2026-11-22; owed: its 0.1.0 promise row and its proof in the game)
+  write-in of 2026-11-22; owed: its proof in the game)
 - The native ecology: gelatid, the gappo family, dwommo, fubbum; part-read visitors; nothing made hostile.
   (built; several still wear stand-in art)
 - The Titanoslime: engulfing, visible rescue time, permanent growth. (built; his look at its art is owed)
