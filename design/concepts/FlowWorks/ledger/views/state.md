@@ -1,13 +1,13 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":54272,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"HOLDER.run-1795260677":3322,"HOLDER.run-1795263747":1891,"HOLDER.run-1795268290":5226,"HOLDER.run-1795285878":924,"HOLDER.run-1795297113":4566,"HOLDER.run-1795304573":2662,"HOLDER.run-1795312089":1009,"HOLDER.run-1795312923":2298,"HOLDER.run-1795315124":843,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=5d985bfa9655cf350f5c0deae3708be783b4e981a924d27e478c45ee86de9648 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":54272,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"HOLDER.run-1795260677":3322,"HOLDER.run-1795263747":1891,"HOLDER.run-1795268290":5226,"HOLDER.run-1795285878":924,"HOLDER.run-1795297113":4566,"HOLDER.run-1795304573":2662,"HOLDER.run-1795312089":1009,"HOLDER.run-1795312923":2298,"HOLDER.run-1795315124":1540,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=1b091ca7d2e773d2285a30abd831edaa1525518fe8390b46eb04ce79639ad3f9 -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage in_game · 1554 events in 28 shards · reducer 1
-holder lease run-1795315124, token 38, last active 2026-11-22T03:37:03Z
+version 0.1.0 · stage in_game · 1555 events in 28 shards · reducer 1
+holder lease run-1795315124, token 38, last active 2026-11-22T04:10:46Z
 holder session 93560c0a-dacb-4e53-b69e-7e7ef87998d1, context 259454 of ceiling 400000
 
-## Last checkpoint (HOLDER.run-1795312923, 2026-11-22T02:15:09Z)
-- done: walk brief arrival_1 written (design/concepts/FlowWorks/version/walk_brief/arrival_1.md) and FlowWorks advanced pre_human -> his_walk; filed RIMMANDRAKE_DECLARE_FLOWWORKS_SCENE_CSHARP_PIT_REDRAW_UNSEEN (no scene declares C#, pit-look verdicts predate the pit rebuild)
-- next: Owner walks FLOWWORKS_OWNER_REVIEW_VISIT4_FULL_20261121_1727 on his full list (live ModsConfig is the 13-mod tier now)
-- ruled out: station 17 0.5 m is not a water-from-nothing leak: set_fill sets the whole body level (setBodyWaterM) to 0.5 m, a scene fault already in RIMMANDRAKE_RESTAGE_FLOWWORKS_REVIEW_SIGNS_OVER_UNBUILT_SCENES; the kernel change since visit 3 is gated on a drawing sink (drawCell != null)
+## Last checkpoint (HOLDER.run-1795315124, 2026-11-22T04:10:46Z)
+- done: visit 5: 24 touched checks on bdd56c6ff6, 23 PASS, sc_hung_bridge FAIL (grate fire row, MOD); exit not met; published 6d4c3dc70b
+- next: Fix GRATE_FIRE_FIX_SOLID_DECK_BURNS_TOO with a live proof the row is no longer chance; rerun sc_hung_bridge
+- ruled out: visit 3 sc_hung_bridge PASS was a coin-flip draw (1 FAIL, 2 PASS); trench run-1 FAIL was my wrapper timeout; moat run-1 was a chance catch
 
 ## Open findings (178)
 (claimed fixes, awaiting a judge, on one line each with the oldest 127 open findings, named without their 'finding:': `modledger.py show --mod FlowWorks finding:<NAME>`)
@@ -502,6 +502,6 @@ spend recorded: USD 78.94, 45401435 tokens
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
 - notes: 11, never printed here (`modledger.py find --mod FlowWorks <words>`)
-- the full history: 1554 events (views/history.md; never read whole)
+- the full history: 1555 events (views/history.md; never read whole)
 
-cursor: t=2026-11-22T03:37:03Z.1795318623501013431 (modledger.py since --mod FlowWorks t=2026-11-22T03:37:03Z.1795318623501013431 prints what changed after this packet)
+cursor: t=2026-11-22T04:10:46Z.1795320646870103820 (modledger.py since --mod FlowWorks t=2026-11-22T04:10:46Z.1795320646870103820 prints what changed after this packet)

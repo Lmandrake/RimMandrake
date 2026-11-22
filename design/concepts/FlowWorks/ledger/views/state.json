@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "12976561e024f3776e6fa1f63ff5faf76a43945cddcbfafdfc6328d9f448decd",
+  "body_sha256": "fd4d82643103b24a215934390bccc54769ed1bedd9360dd07c77878037ea8e24",
   "reducer": 1,
   "shards": {
    "BACKFILL": 893183,
@@ -26,7 +26,7 @@
    "HOLDER.run-1795304573": 2662,
    "HOLDER.run-1795312089": 1009,
    "HOLDER.run-1795312923": 2298,
-   "HOLDER.run-1795315124": 843,
+   "HOLDER.run-1795315124": 1540,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1267,11 +1267,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795312923",
-   "done": "walk brief arrival_1 written (design/concepts/FlowWorks/version/walk_brief/arrival_1.md) and FlowWorks advanced pre_human -> his_walk; filed RIMMANDRAKE_DECLARE_FLOWWORKS_SCENE_CSHARP_PIT_REDRAW_UNSEEN (no scene declares C#, pit-look verdicts predate the pit rebuild)",
-   "next": "Owner walks FLOWWORKS_OWNER_REVIEW_VISIT4_FULL_20261121_1727 on his full list (live ModsConfig is the 13-mod tier now)",
-   "ruled_out": "station 17 0.5 m is not a water-from-nothing leak: set_fill sets the whole body level (setBodyWaterM) to 0.5 m, a scene fault already in RIMMANDRAKE_RESTAGE_FLOWWORKS_REVIEW_SIGNS_OVER_UNBUILT_SCENES; the kernel change since visit 3 is gated on a drawing sink (drawCell != null)",
-   "ts": "2026-11-22T02:15:09Z"
+   "by": "HOLDER.run-1795315124",
+   "done": "visit 5: 24 touched checks on bdd56c6ff6, 23 PASS, sc_hung_bridge FAIL (grate fire row, MOD); exit not met; published 6d4c3dc70b",
+   "next": "Fix GRATE_FIRE_FIX_SOLID_DECK_BURNS_TOO with a live proof the row is no longer chance; rerun sc_hung_bridge",
+   "ruled_out": "visit 3 sc_hung_bridge PASS was a coin-flip draw (1 FAIL, 2 PASS); trench run-1 FAIL was my wrapper timeout; moat run-1 was a chance catch",
+   "ts": "2026-11-22T04:10:46Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1723,7 +1723,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1554,
+  "events": 1555,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7824,7 +7824,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-22T03:37:03Z",
+   "last": "2026-11-22T04:10:46Z",
    "lease": "run-1795315124",
    "released": false,
    "token": 38
