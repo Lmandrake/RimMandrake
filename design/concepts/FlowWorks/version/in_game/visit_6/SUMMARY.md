@@ -62,7 +62,9 @@ UNMEASURED; visit 4's row carries, unrepaired, with that owner.
 - sc_hung_bridge GRATE three runs in a row (RIMMANDRAKE_GATE_INFERNO_DECK_CHANCE_SOLID_OUTBURNS_GRATE): see above; not met.
 - sc_hung_bridge red run (`maturation.py red-seen FlowWorks sc_hung_bridge`): not recorded. A planted C# fault reaches the
   game only through a build and deploy, and `red-seen` patches the source tree only. The table's command for this check also
-  carries a note in parentheses, so it cannot run as written.
+  carries a note in parentheses, so it cannot run as written. `red-seen` now refuses that case by name
+  (RIMMANDRAKE_REFUSE_LIVE_RED_SEEN_ON_A_FAULT_THE_GAME_NEVER_LOADS, 1909b51fab: selftest_red_seen RED 17/18 on the base,
+  GREEN 18/18). The edited proof's own red: the planted slow fill read FAIL (`evidence/reach_planted.json`).
 - sc_walk: UNMEASURED on game b; owed on game a.
 - The four blind-cycle Problems, the six planted faults and the three lanes (sc_garden, sc_fill_front, sc_one_surface,
   OL, sc_fill_tiers, PIT_LOOK_1114_LIVE): untouched by 65c45b6e98 and not run in this visit; visit 5's readings stand.
@@ -81,6 +83,8 @@ No savegame was made on game b (a tier list; his walk is on his full list). The 
 (13.6 MB, 5:29 PM PST) [measured].
 
 ## Items filed
+
+- RIMMANDRAKE_REFUSE_LIVE_RED_SEEN_ON_A_FAULT_THE_GAME_NEVER_LOADS (pipeline, fixed and closed at 1909b51fab)
 
 - RIMMANDRAKE_UNSTICK_FLOWWORKS_FILL_JOB_HOLDS_GRAVEL_BESIDE_THE_HOLE (MOD, the fill-job stall)
 - RIMMANDRAKE_DECIDE_FLOWWORKS_SOLID_DECK_LOW_CHANCE_SATURATES_IN_ONE_BURN (MOD, needs a design ruling)

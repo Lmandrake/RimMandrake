@@ -1,13 +1,13 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":61164,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"HOLDER.run-1795260677":3322,"HOLDER.run-1795263747":1891,"HOLDER.run-1795268290":5226,"HOLDER.run-1795285878":924,"HOLDER.run-1795297113":4566,"HOLDER.run-1795304573":2662,"HOLDER.run-1795312089":1009,"HOLDER.run-1795312923":2298,"HOLDER.run-1795315124":1540,"HOLDER.run-1795321038":846,"HOLDER.run-1795325268":1929,"HOLDER.run-1795329869":754,"HOLDER.run-1795330730":283,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=2eee0f90aa322b52786d5f0c5be882a5478c16dcc715f3f87ff75c38b57bf067 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":61164,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"HOLDER.run-1795260677":3322,"HOLDER.run-1795263747":1891,"HOLDER.run-1795268290":5226,"HOLDER.run-1795285878":924,"HOLDER.run-1795297113":4566,"HOLDER.run-1795304573":2662,"HOLDER.run-1795312089":1009,"HOLDER.run-1795312923":2298,"HOLDER.run-1795315124":1540,"HOLDER.run-1795321038":846,"HOLDER.run-1795325268":1929,"HOLDER.run-1795329869":754,"HOLDER.run-1795330730":1090,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=9c9ea3cdaae5b8d83e78cbcfcab786d1c565727240f67f5b6ad68317f9f00bd5 -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage in_game · 1584 events in 32 shards · reducer 1
-holder lease run-1795330730, token 43, last active 2026-11-22T07:44:19Z
+version 0.1.0 · stage in_game · 1585 events in 32 shards · reducer 1
+holder lease run-1795330730, token 43, last active 2026-11-22T08:10:51Z
 holder session 13ad1ac0-6247-4a15-961b-abe70d0e7995, context 126830 of ceiling 400000
 
-## Last checkpoint (HOLDER.run-1795329869, 2026-11-22T06:51:41Z)
-- done: 0995cb276c: red runs recorded for T_FETCH_FALLEN, T_LIQUID_COATING, T_PRISON_CARE and T_TOSS_FLAME (planted faults, each went red); reads of FETCH, COATING and TOSS widened to Source, Defs and Patches (they were blind to edits of RM_RaiderFetchFallen.cs, RM_LiquidCoating.cs and the XML); certificate --to in_game OK
-- next: Run sc_hung_bridge and sc_hole_prison three times each at Stage 6, and record sc_hung_bridge red-seen live
-- ruled out: none new
+## Last checkpoint (HOLDER.run-1795330730, 2026-11-22T08:10:51Z)
+- done: visit 6, game b, 65c45b6e98: 6 checks PASS (sc_hole_prison x3); sc_hung_bridge FAIL 3 of 6, two MOD lines filed; sc_walk UNMEASURED on game b; red-seen refuses a live check planted in C# (1909b51fab)
+- next: Find why an ordered RM_FillInCanalJob holds its gravel beside the square and never works
+- ruled out: needs as the island-restore FAIL cause: the worker starved yet fills landed (diag_reach_2), and the stall recurred fed and rested
 
 ## Open findings (178)
 (claimed fixes, awaiting a judge, on one line each with the oldest 127 open findings, named without their 'finding:': `modledger.py show --mod FlowWorks finding:<NAME>`)
@@ -502,6 +502,6 @@ spend recorded: USD 78.94, 45401435 tokens
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
 - notes: 11, never printed here (`modledger.py find --mod FlowWorks <words>`)
-- the full history: 1584 events (views/history.md; never read whole)
+- the full history: 1585 events (views/history.md; never read whole)
 
-cursor: t=2026-11-22T07:44:19Z.1795333459370835754 (modledger.py since --mod FlowWorks t=2026-11-22T07:44:19Z.1795333459370835754 prints what changed after this packet)
+cursor: t=2026-11-22T08:10:51Z.1795335052000086990 (modledger.py since --mod FlowWorks t=2026-11-22T08:10:51Z.1795335052000086990 prints what changed after this packet)

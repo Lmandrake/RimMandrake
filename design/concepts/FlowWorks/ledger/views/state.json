@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "fac6abb3e285d9362e0c9280c62341d47be4f788ff4babc01824dd45888bcf41",
+  "body_sha256": "b8d1ef69eaaf43736e8608641a318d2d069f150a9e985a4c280558059a08d857",
   "reducer": 1,
   "shards": {
    "BACKFILL": 893183,
@@ -30,7 +30,7 @@
    "HOLDER.run-1795321038": 846,
    "HOLDER.run-1795325268": 1929,
    "HOLDER.run-1795329869": 754,
-   "HOLDER.run-1795330730": 283,
+   "HOLDER.run-1795330730": 1090,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1271,11 +1271,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795329869",
-   "done": "0995cb276c: red runs recorded for T_FETCH_FALLEN, T_LIQUID_COATING, T_PRISON_CARE and T_TOSS_FLAME (planted faults, each went red); reads of FETCH, COATING and TOSS widened to Source, Defs and Patches (they were blind to edits of RM_RaiderFetchFallen.cs, RM_LiquidCoating.cs and the XML); certificate --to in_game OK",
-   "next": "Run sc_hung_bridge and sc_hole_prison three times each at Stage 6, and record sc_hung_bridge red-seen live",
-   "ruled_out": "none new",
-   "ts": "2026-11-22T06:51:41Z"
+   "by": "HOLDER.run-1795330730",
+   "done": "visit 6, game b, 65c45b6e98: 6 checks PASS (sc_hole_prison x3); sc_hung_bridge FAIL 3 of 6, two MOD lines filed; sc_walk UNMEASURED on game b; red-seen refuses a live check planted in C# (1909b51fab)",
+   "next": "Find why an ordered RM_FillInCanalJob holds its gravel beside the square and never works",
+   "ruled_out": "needs as the island-restore FAIL cause: the worker starved yet fills landed (diag_reach_2), and the stall recurred fed and rested",
+   "ts": "2026-11-22T08:10:51Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1727,7 +1727,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1584,
+  "events": 1585,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7828,7 +7828,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-22T07:44:19Z",
+   "last": "2026-11-22T08:10:51Z",
    "lease": "run-1795330730",
    "released": false,
    "token": 43
