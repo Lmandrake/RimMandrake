@@ -25,7 +25,8 @@ spend_watchdog.py, from outside the agent, at the cap the launch states (require
 without one carries the newest run record of that session's cap, and refuses when none is readable), never with
 claude --max-budget-usd, which tells the agent its spend every turn:
 owner 2026-11-16, RIMMANDRAKE_HIDE_SPEND_FROM_BUILDERS_CAP_NAGGED_EVERY_TURN); the brief states no spend or cap. The brief gets a footer: work in the clone, land with ./publish, put state, evidence and one
-imperative NEXT on the item as a rimflow note and publish the shard, and a PROGRESS: note after each experiment.
+imperative NEXT on the item as a rimflow note with --publish (the write lands its own shards, ledger_landing.py), and a
+PROGRESS: note after each experiment.
 --resume SESSION follows the one resume rule (left_open_continue.whole_or_fresh): a session whose context is at or over
 RESUME_WHOLE_MAX_TOKENS, when its item holds a progress record, launches FRESH from the brief, that record and the
 previous brief; otherwise it resumes. --agent NAME starts claude as that agent (its .claude/agents file is the system
@@ -131,22 +132,23 @@ FOOTER = """
 You are a DETACHED helper: you run in your own systemd unit, outside any window, in the clone {clone} (your cwd).
 Ledger item: {item}. Seat: {seat}. {bound_text}.
 - Work only in that clone. Land code with `./publish -m "subject" <explicit paths>` (never git add -A, never --force).
-- First, claim your item: `python3 src/RimMandrake/rimflow/cli.py claim {item} --seat {seat} --why "detached run"`.
+- Pass `--publish` on every rimflow write (claim, note, wait, close, file): the write lands exactly the files it wrote,
+  OWNER.jsonl included when the event is the owner's, and prints `PUBLISHED <sha>`. Exit 4 means written but not
+  landed: the line names the cause and the command that passes.
+- First, claim your item: `python3 src/RimMandrake/rimflow/cli.py claim {item} --seat {seat} --why "detached run" --publish`.
 - At the end, close it with the sha ./publish printed: `python3 src/RimMandrake/rimflow/cli.py close {item} --sha <sha>
-  --seat {seat} --why "..."` (an operational item also takes `--live`), or, when anything is left, write a note whose
+  --seat {seat} --why "..." --publish` (an operational item also takes `--live`), or, when anything is left, write a note whose
   text starts `LEFT OPEN:` and says exactly what. A run that ends success with its item open and no such note is
   flagged to the Conductor.
 - A `LEFT OPEN:` note relaunches this brief in a fresh session (left_open_continue.py). When what is left is not a
   helper's to do (the owner's decision, an act of the Conductor's, a date), also put a dated wait on the item, so it
   is not relaunched for nothing: `python3 src/RimMandrake/rimflow/cli.py wait {item} --until <YYYY-MM-DD> --reason
-  "<who acts next and on what>" --seat {seat} --why "detached run"`.
+  "<who acts next and on what>" --seat {seat} --why "detached run" --publish`.
 - Before you stop, and at least every 20 minutes: write your state, evidence paths and one imperative NEXT as
-  `python3 src/RimMandrake/rimflow/cli.py note {item} --text "..." --seat {seat} --why "detached run"`, then publish the
-  shard: `./publish -m "ledger: {item} note" infrastructure/state/ledger/events/{seat}.jsonl`. An event you write with
-  --per-ruling, --owner-said or --by-card (a `file` under a ruling, say) lands in OWNER.jsonl: publish that shard too.
+  `python3 src/RimMandrake/rimflow/cli.py note {item} --text "..." --seat {seat} --why "detached run" --publish`.
 - After each experiment or step that changes what you know, write your progress record as a note whose text starts
   `PROGRESS:` and names the theory, the experiment, the reading and the next action (`cli.py note {item} --text
-  "PROGRESS: theory: ... | experiment: ... | reading: ... | next: ..." --seat {seat} --why "detached run"`). A stopped
+  "PROGRESS: theory: ... | experiment: ... | reading: ... | next: ..." --seat {seat} --why "detached run" --publish`). A stopped
   run with a large context is carried on by a fresh session that has only this brief and those notes.
 - This run ends when your turn ends: a helper or command still running in the background then is killed and its work
   is lost. Run helpers and long commands in the foreground and take their results before your last message; never end
@@ -275,7 +277,8 @@ def local_shards(item, repo=None):
 
 def publish_command(item, shards):
     """The one command that puts `item`'s filing on origin/main (boundary design/specs/2026-11-19-launch-unpublished-item:
-    seven lessons said "publish the shard first" and agents kept meeting the refusal). Printed, never run: no auto-publish."""
+    seven lessons said "publish the shard first" and agents kept meeting the refusal). origin_check prints it; origin_gate
+    runs it for a principal. A write in this clone lands its own shards with `rimflow ... --publish` (ledger_landing.py)."""
     return './publish -m "ledger: %s filed" %s' % (item, " ".join(shards))
 
 

@@ -271,9 +271,8 @@ Red tests and the night's detail lines (Transient/selftests_nightly.last in /hom
 {detail}
 
 Steps:
-0. Start the item and publish the shard, before anything else:
-   python3 src/RimMandrake/rimflow/cli.py start {item} --seat BENCH --why "detached red fix (red_dispatch.py)"
-   ./publish -m "ledger: {item} start" infrastructure/state/ledger/events/BENCH.jsonl
+0. Start the item, before anything else (--publish lands the shard it wrote):
+   python3 src/RimMandrake/rimflow/cli.py start {item} --seat BENCH --why "detached red fix (red_dispatch.py)" --publish
 1. Run the red test(s) here first: python3 src/RimMandrake/Utils/run_selftests.py --only {only}
    (foreground, with a timeout). If it is GREEN at origin/main, the red is gone: say so with the output in a note and close
    the item (step 4) on HEAD's sha.

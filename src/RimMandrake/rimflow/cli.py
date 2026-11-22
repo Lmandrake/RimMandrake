@@ -64,10 +64,10 @@ import sys
 import time
 
 try:                                                    # python3 -m rimflow.cli
-    from . import conductor_acts, principal, driver_lock, fulltext, game_lock, host_guard, lease, model, owner_interaction, priority, priority_list, probe, reconcile, testpilot_route
+    from . import conductor_acts, principal, driver_lock, fulltext, game_lock, host_guard, lease, ledger_landing, model, owner_interaction, priority, priority_list, probe, reconcile, testpilot_route
 except ImportError:                                     # python3 .../rimflow/cli.py
     sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    from rimflow import conductor_acts, principal, driver_lock, fulltext, game_lock, host_guard, lease, model, owner_interaction, priority, priority_list, probe, reconcile, testpilot_route   # noqa: F401
+    from rimflow import conductor_acts, principal, driver_lock, fulltext, game_lock, host_guard, lease, ledger_landing, model, owner_interaction, priority, priority_list, probe, reconcile, testpilot_route   # noqa: F401
 
 PROSE_BUDGET = 2400          # chars of items/<ID>.md that `next` will print, ~600 tokens
 
@@ -429,7 +429,8 @@ def _write_one(ev):
         import card_capture
         wrote = card_capture.append_prose(model.ITEMS, ev["id"], ev["card"], ev["event"], ev.get("seat", "?"))
         if wrote:
-            print("items/%s.md: added \"%s\" (commit it with the shard)" % (ev["id"], card_capture.HEADING[3:]))
+            ledger_landing.wrote(wrote)
+            print("items/%s.md: added \"%s\" (--publish lands it with the shard)" % (ev["id"], card_capture.HEADING[3:]))
     return ev
 
 
@@ -2258,6 +2259,8 @@ def _move_prose_to_closed(iid):
         return None
     os.makedirs(model.CLOSED, exist_ok=True)
     os.rename(live, closed)
+    ledger_landing.wrote(live)
+    ledger_landing.wrote(closed)
     return (os.path.relpath(live, model.ROOT), os.path.relpath(closed, model.ROOT))
 
 
@@ -2618,8 +2621,8 @@ def _simple_run(verb, extra, args, seat, pf):
     print("%s %s -> %s" % (verb, args.id, it.state if it else "?"))
     if seat == "OWNER" and any(getattr(args, f, None) for f in ("owner_said", "by_card", "per_ruling")):
         # owner card 2026-10-11: an owner flag makes the event his; say so at the write, not only in --help
-        print("landed as seat OWNER in infrastructure/state/ledger/events/OWNER.jsonl (an owner flag): publish that "
-              "shard; a helper's own %s takes --why alone." % verb)
+        print("landed as seat OWNER in infrastructure/state/ledger/events/OWNER.jsonl (an owner flag; --publish lands "
+              "it); a helper's own %s takes --why alone." % verb)
     # `drop` and `supersede` end an item just as `close` does, and anything waiting on
     # it is just as stranded — more so, since a dropped blocker will never deliver.
     if verb in ("drop", "supersede"):
@@ -3252,6 +3255,8 @@ def _move_prose_back(iid):
     if not os.path.exists(old) or os.path.exists(new):
         return None
     os.rename(old, new)
+    ledger_landing.wrote(old)
+    ledger_landing.wrote(new)
     return os.path.relpath(old, model.ROOT), os.path.relpath(new, model.ROOT)
 
 
@@ -4753,6 +4758,10 @@ def build_parser():
     common.add_argument("--why", dest="agent_why", metavar="\"…\"",
                         help="the acting agent's own reason, in its own words (e.g. a "
                              "self-initiated restart). Recorded as `why`; grants nothing.")
+    common.add_argument("--publish", action="store_true",
+                        help="after the write, land exactly the paths it wrote (its ledger shard, OWNER.jsonl for an "
+                             "OWNER event, any item prose) with one ./publish, and print PUBLISHED <sha>; exit 4 when "
+                             "the write stands but the landing failed (ledger_landing.py)")
     sub = p.add_subparsers(dest="cmd")
 
     def add(name, help_, fn, parents=(common,)):
@@ -5324,7 +5333,16 @@ def main(argv=None):
         args.text = " ".join(x for x in ([args.text] if args.text else []) + list(args.text_words or []) if x.strip())
         if not args.text.strip():
             p.error("note needs its text: rimflow note <ID> \"<text>\" (or --text \"<text>\")")
-    return args.fn(args, _resolve_command_seat(args)) or 0
+    if not getattr(args, "publish", False):
+        return args.fn(args, _resolve_command_seat(args)) or 0
+    ledger_landing.reset()
+    try:
+        rc = args.fn(args, _resolve_command_seat(args)) or 0
+    except SystemExit as e:             # die(): the verb refused; land nothing, but name what it wrote before it did
+        rc = e.code if isinstance(e.code, int) else 1
+        if isinstance(e.code, str):
+            sys.stderr.write(e.code + "\n")
+    return ledger_landing.land(args.cmd, getattr(args, "id", None), rc)
 
 
 if __name__ == "__main__":

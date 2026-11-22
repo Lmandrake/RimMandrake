@@ -1055,7 +1055,7 @@ def t_every_field_the_cli_emits_is_in_its_schema():
     import ast
     cli_src = os.path.join(HERE, "cli.py")
     tree = ast.parse(open(cli_src, encoding="utf-8").read())
-    universal = {"ts", "seat", "event", "id", "caused_by", "override", "ownerSaid"}
+    universal = set(model.UNIVERSAL_FIELDS)     # the one list `_check_verb` accepts on every verb (a hand copy here went stale)
     checked = 0
     for fn in [n for n in ast.walk(tree) if isinstance(n, ast.FunctionDef)]:
         verb = fn.name[4:] if fn.name.startswith("cmd_") else None

@@ -112,7 +112,8 @@ dec = {k: v["decision"] for k, v in rd["items"].items()}
 check("max_live 2: two launch, the third waits", dec == {"SELFTEST_FIX_ALPHA_AAAA": "launched", "SELFTEST_FIX_BETA_BBBB":
                                                          "launched", "SELFTEST_FIX_GAMMA_CCCC": "slots_full"}, dec)
 check("each brief's first step starts the item as BENCH and publishes the shard (acceptance B's start)",
-      all(c[4].index("cli.py start %s --seat BENCH" % c[0]) < c[4].index("1. Run") and "events/BENCH.jsonl" in c[4]
+      all(c[4].index("cli.py start %s --seat BENCH" % c[0]) < c[4].index("1. Run")
+          and "--publish" in c[4][c[4].index("cli.py start %s" % c[0]):].splitlines()[0]
           for c in CALLS["launch"]), [c[0] for c in CALLS["launch"]])
 check("sonnet at its cap for one test, opus at its cap for a shared cause, seat BENCH",
       [(c[1], c[2], c[3]) for c in CALLS["launch"]] == [("sonnet", 5, "BENCH"), ("opus", 12, "BENCH")], CALLS["launch"])

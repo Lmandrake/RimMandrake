@@ -75,6 +75,10 @@ import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
 _rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[3] / "src" / "RimMandrake" / "Utils"))
 from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import bridge_holder  # noqa: E402
+try:                                    # the one record of the paths this process wrote (ledger_landing.py)
+    from . import ledger_landing as _landing
+except ImportError:
+    import ledger_landing as _landing  # noqa: E402
 import calendar
 import copy
 import fcntl
@@ -1536,10 +1540,12 @@ def append(ev, path=None):
     os.makedirs(os.path.dirname(path) or ".", exist_ok=True)   # see bridge_mirror_path
     dlock = _dir_lock(os.path.dirname(path) or ".")
     try:
-        return _append_locked(path, blob)
+        off = _append_locked(path, blob)
     finally:
         if dlock is not None:
             os.close(dlock)
+    _landing.wrote(path)        # the one record of what this process wrote: `rimflow ... --publish` lands exactly it
+    return off
 
 
 def _dir_lock(d):
