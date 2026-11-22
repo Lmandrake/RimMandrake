@@ -133,6 +133,9 @@ def blind(w):
     check(F.alive(a) and F.alive(b) and w.kills() == [], "nothing was signalled while blind: %s" % w.kills())
     r = w.py("import game_instance as G; print(G.running()); print(G.running('b')); print(G.running('c'))", FAKE_PS_MODE="unreadable")
     check(r.stdout.split() == ["True", "True", "True"], "running() counts an unattributable game as up: %s" % r.stdout.split())
+    r = w.py("import game_instance as G; print(G.alive([%d, %d, 999999]))" % (a, b), FAKE_PS_MODE="unreadable")
+    check(r.stdout.strip() == str(sorted([a, b])), "alive() reads stopped pids by pid, also with the command line "
+          "unreadable (a closing game): %s %s" % (r.stdout.strip(), r.stderr[-200:]))
     w.clear()
     r = w.py("import game_instance as G; print(G.running()); print(G.games())")
     check(r.stdout.split() == ["False", "[]"], "no game at all is a measured no: %s %s" % (r.stdout.split(), r.stderr[-200:]))

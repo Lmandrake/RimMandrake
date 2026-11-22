@@ -438,6 +438,14 @@ def pids(name=None):
     return [p["pid"] for p in procs(name)]
 
 
+def alive(pids_):
+    """-> those of `pids_` still in the game process list, read by pid alone. For the wait after a stop of pids already
+    attributed: a closing RimWorld reads an empty command line before it leaves the list, so pids() raised Blind on our
+    own stopped game (Pyrelands visit 5, pid 15352, 2026-11-22 03:45 PST). Raises Blind when the list did not answer."""
+    want = set(pids_)
+    return sorted(g["pid"] for g in games() if g["pid"] in want)
+
+
 def pid(name=None):
     """The instance's pid, or None. Two games on one instance share a save folder: say so, and answer the lower."""
     mine = pids(name)

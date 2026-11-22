@@ -3,7 +3,8 @@
 Code: `src/RimMandrake/rimflow/maturation.py` (`deploy_state`, `mod_deployed`, `deploy_repair`, the in-game branch of
 `launch_mod`, `WAIT_MARK`, `_companion_cmd`), `src/RimMandrake/rimflow/maturation_autonomy.py` (`wait_refusal`, `_retriable`,
 `_execute_one`), `src/RimMandrake/rimflow/maturation_dispatch.py` (`retriable`, `still_retried`, `launch_counted`,
-`drain_gate` in `_tick`) and `src/RimMandrake/rimflow/run_void.py` (`sync_system`'s never-started branch).
+`drain_gate` in `_tick`), `src/RimMandrake/rimflow/run_void.py` (`sync_system`'s never-started branch) and
+`src/RimMandrake/Utils/game_instance.py` (`alive`, the wait after the deploy's stop).
 Items: `RIMMANDRAKE_DEPLOY_BEFORE_GAME_VISIT_PYRELANDS_REFUSED_THRICE` and
 `RIMMANDRAKE_STOP_COUNTING_DRAIN_REFUSALS_AS_SYSTEM_FAULTS`, written 2026-11-20.
 Each promise has a check of its name in `src/RimMandrake/rimflow/selftest_launch_wait_and_deploy.py`.
@@ -62,6 +63,11 @@ because the composed Baroque Biomes copy differed from the repo, by one dev scri
   with `--apply` for the visit's game, reads the plan again, and launches.
 - **a-dll-deploys-with-the-game-down.** A `~` on a DLL with the game up: the game is stopped before the deploy and
   started after it, then the plan is read again, then the visit launches.
+- **a-closing-game-is-waited-on-by-pid.** After the deploy's own stop, the wait reads the stopped pids by pid
+  (`game_instance.alive`), never by owner: a closing RimWorld reads an empty command line before it leaves the process
+  list, and on 2026-11-22 Pyrelands visit 5 was refused "game a could not be stopped for the deploy: Blind" on its own
+  stopped game (pid 15352; item RIMMANDRAKE_REPAIR_PYRELANDS_FORM_REFUSAL_AT_THE_RUN_SIX). The `/F` stop still goes
+  through `game_instance.stop`, which reads the owner again, so nothing is signalled on a guess.
 - **a-seatless-tick-stops-its-game.** The deploy's game stop hands the launch's seat to `game_instance.stop`, which
   passes it to `rimflow bridge idle` as `--seat`: the systemd tick names no seat in its env, and a seatless reading
   refused "I cannot tell which seat I am" (GimmeSomeSlack visit 2, 2026-11-21).

@@ -62,7 +62,7 @@ KEPT = "   (in game, not in repo; kept — use --prune to delete, or --pull to r
 
 
 class FakeGame:
-    """game_instance's operations, recorded: running, hold_refusal, stop, pids, launch."""
+    """game_instance's operations, recorded: running, hold_refusal, stop, pids, alive, launch."""
 
     def __init__(self, up=False, held=None, stop_rc=0, launch_rc=0):
         self.up, self.held, self.stop_rc, self.launch_rc, self.log = up, held, stop_rc, launch_rc, []
@@ -75,6 +75,9 @@ class FakeGame:
 
     def pids(self, name=None):
         return [4242] if self.up else []
+
+    def alive(self, pids):
+        return [p for p in pids if p == 4242] if self.up else []
 
     def stop(self, pid_=None, force=False, name=None, purpose=None, despite=None, seat=None):
         self.log.append(("stop", name, force))
@@ -200,6 +203,52 @@ def t_a_dll_deploys_with_the_game_down(fx):
     check(r[0] == 0 and r[2] and order == ["stop:1", "up:2"] and len(calls) == 3 and "--apply" in calls[1]
           and g.up, "a-dll-deploys-with-the-game-down: the game is stopped before the deploy and started after it, "
           "then re-read, then launched (order %s, calls %s, rc %s %s)" % (order, calls, r[0], (r[1] or "")[:200]))
+
+
+class ExitingGame(FakeGame):
+    """FakeGame whose stopped process stays in the list for `linger` reads with its command line unreadable, as Windows
+    reports a RimWorld that is closing: game_instance.pids raises Blind for it, and only a read by pid sees it go."""
+
+    def __init__(self, linger=2, **kw):
+        FakeGame.__init__(self, **kw)
+        self.linger, self.stopped = linger, False
+
+    def _gone_yet(self):
+        if self.stopped and self.linger:
+            self.linger -= 1
+            return False
+        return True
+
+    def pids(self, name=None):
+        if self.stopped and not self._gone_yet():
+            raise ExitingGame.Blind("cannot read the command line of game pid [4242], so it cannot be told apart")
+        return FakeGame.pids(self, name)
+
+    def alive(self, pids):
+        return [] if self._gone_yet() else [p for p in pids if p == 4242]
+
+    def stop(self, pid_=None, force=False, name=None, purpose=None, despite=None, seat=None):
+        rc, txt = FakeGame.stop(self, pid_, force, name, purpose, despite, seat)
+        self.stopped = True
+        return rc, txt
+
+    class Blind(RuntimeError):
+        pass
+
+
+def t_a_closing_game_is_waited_on_by_pid(fx):
+    """RIMMANDRAKE_REPAIR_PYRELANDS_FORM_REFUSAL_AT_THE_RUN_SIX: Pyrelands visit 5's deploy stopped game a (its Player.log
+    closed 03:45:42 PST, 2026-11-22), then read the closing game's owner, got an unreadable command line for pid 15352,
+    and refused "game a could not be stopped for the deploy: Blind". The wait after our own stop reads the stopped pids."""
+    fx.plan(drift("~  Biomes/Pyrelands/Assemblies/FireEcologyHook.dll"), after=SYNC)
+    g = ExitingGame(up=True)
+    r = M.launch_mod(fx.root, P, 20, ST.ITEM, seat="BENCH", bridge=lambda p, s, game="a": (True, "free"),
+                     companion=lambda game="a": (True, "fresh"), game="a", game_ops=g)
+    stops = [x for x in g.log if x[0] == "stop"]
+    check(r[0] == 0 and r[2] and len(fx.launched()) == 1 and stops == [("stop", "a", False)] and g.up,
+          "a-closing-game-is-waited-on-by-pid: a stopped game whose command line reads empty while it closes is waited "
+          "on by its pid, not refused as Blind; one plain stop, the deploy, the game up, the visit launched (stops %s, "
+          "rc %s %s)" % (stops, r[0], (r[1] or "")[:200]))
 
 
 def t_a_failed_deploy_is_a_fault(fx):
@@ -506,6 +555,7 @@ def main():
     fx = Fixture()
     try:
         for t in (t_non_game_drift_launches, t_loaded_drift_deploys_then_launches, t_a_dll_deploys_with_the_game_down,
+                  t_a_closing_game_is_waited_on_by_pid,
                   t_a_failed_deploy_is_a_fault, t_a_blind_plan_is_could_not_look, t_a_held_bridge_or_game_waits,
                   t_a_game_only_def_refuses, t_an_empty_or_add_only_plan, t_a_seatless_tick_stops_its_game,
                   t_a_stale_companion_rebuilds_with_the_game_down, t_a_stale_companion_and_drift_share_one_restart,

@@ -2616,14 +2616,18 @@ def deploy_repair(root, mod, game, reading, gi, purpose, runner=subprocess.run, 
     done = []
     if was_up:
         try:
+            # The wait reads the stopped pids by pid: a closing game reads an empty command line, and pids() raised
+            # Blind on our own stopped game (RIMMANDRAKE_REPAIR_PYRELANDS_FORM_REFUSAL_AT_THE_RUN_SIX). The /F stop
+            # still goes through stop(), which attributes again.
+            stopped = gi.pids(game)
             rc, txt = gi.stop(name=game, purpose=purpose, seat=seat)
             t0 = clock()
-            while gi.pids(game) and clock() - t0 < REPAIR_STOP_S:
+            while gi.alive(stopped) and clock() - t0 < REPAIR_STOP_S:
                 sleep(2)
-            if gi.pids(game):
+            if gi.alive(stopped):
                 rc, txt = gi.stop(name=game, purpose=purpose, force=True, seat=seat)
                 sleep(3)
-            if gi.pids(game):
+            if gi.alive(stopped):
                 return "fail", "%s did not stop for the deploy (%s)" % (_gn(game), txt)
         except Exception as e:  # noqa: BLE001  Refused (a hold or a bridge read) or Blind
             msg = "%s: %s" % (type(e).__name__, e)
@@ -2741,7 +2745,7 @@ def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=s
     deployed: a stand-in for mod_deployed (an in-game visit refuses a game copy of the mod that differs from the repo).
     twins: a stand-in for live_twins: a live run on the same mod and stage, or the same item, refuses the launch
     (RIMMANDRAKE_GUARD_HAND_LAUNCH_AGAINST_DISPATCHER_TWIN_RUN: a hand launch twinned the Dispatch step's cycle 6).
-    game_ops: a stand-in for game_instance (running, hold_refusal, stop, pids, launch) for the deploy before a visit
+    game_ops: a stand-in for game_instance (running, hold_refusal, stop, pids, alive, launch) for the deploy before a visit
     (deploy_repair); with a stand-in deploy plan (MATURATION_DEPLOY_PLAN) and none given, drift refuses as before. A
     refusal whose cause ends by itself (the bridge not takeable, his hold on the game) starts with WAIT_MARK."""
     if game:
