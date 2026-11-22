@@ -102,7 +102,7 @@ def test_refusals_consume():
             "GREEN": {"runway_ge": 1.5, "quick_cap_x": 1.0, "slots": "all"},
             "FLOOR": {"week_left_pct_lt": 10, "quick_cap_x": 0.4, "slots": "none"}})
         if kw.get("spent"):
-            st["roles"]["Arbiter"]["runs"] = [{"day": RL.day_of(T), "tokens": kw["spent"], "state": "done",
+            st["roles"]["Arbiter"]["runs"] = [{"day": RL.day_of(T), "tokens": kw["spent"], "token_unit": RL.TOKEN_UNIT, "state": "done",
                                                "unit": "rm-role-arbiter-1", "at": T - 600}]
         acts = decide(st, role=role, status=kw.get("status"), off=kw.get("off"))
         rs = st["roles"]["Arbiter"]

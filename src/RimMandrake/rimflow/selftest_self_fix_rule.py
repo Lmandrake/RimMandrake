@@ -41,7 +41,11 @@ check("ticket to file then do yourself" in rulings, "standing_rulings.md section
 spec = read("design/specs/2026-11-13-maturation-pipeline.md")
 check(("\n### %s\n" % HEAD) in spec, "spec has no section-5 heading '%s'" % HEAD)
 check("ticket to file then do yourself" in spec, "spec section 1 lacks his words")
-check(("standing_rulings.md` §%s" % HEAD) in read("CLAUDE.md"), "CLAUDE.md has no pointer to the section")
+# the root CLAUDE.md names the rule under the one pointer of its group (§Stops that the work did not cause, 2026-11-21)
+claude = read("CLAUDE.md")
+grp = claude.find("standing_rulings.md` §Stops that the work did not cause")
+check(("standing_rulings.md` §%s" % HEAD) in claude
+      or (grp >= 0 and ("**%s.**" % HEAD) in claude[grp:grp + 4000]), "CLAUDE.md has no pointer to the section")
 
 rule = getattr(M, "SELF_FIX_RULE", "")
 check(HEAD in rule and "standing_rulings.md" in rule, "maturation.SELF_FIX_RULE missing or not a pointer")

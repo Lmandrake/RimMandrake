@@ -62,7 +62,7 @@ def launched(acts):
 
 def spent_rs(now, tokens):
     return {"done": {}, "runs": [{"state": "done", "unit": "rm-role-operations-1", "at": now - 7200, "day": RL.day_of(now),
-                                  "tokens": tokens, "budget": 60000, "mode": "run"}]}
+                                  "tokens": tokens, "token_unit": "weighted_v2", "budget": 60000, "mode": "run"}]}   # every writer stamps its unit (343e1663a0)
 
 
 def main():

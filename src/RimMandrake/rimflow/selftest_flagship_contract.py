@@ -50,8 +50,9 @@ def main():
     check("root approval is not a pick" in para, "root approval alone is still not a pick")
     check(re.search(r"ask him at stage 2 only with concrete evidence against it", para) is not None,
           "an ask goes to him only with evidence against the obvious pick")
-    check(re.search(r"first-touch certification stays his and is never delegated", para) is not None,
-          "first-touch certification stays his")
+    # since the five-acts ruling (e2ea372ebf, 2026-11-19) first-touch certification is the Conductor window's act
+    check(re.search(r"first-touch certification is his or the Conductor window's act", para) is not None,
+          "first-touch certification is his or the Conductor window's act, never another agent's")
     check("If he has picked none, ask at stage 2" not in para,
           "no bare 'ask at stage 2' that would re-ask a settled delegated flagship")
     print("%d check(s) failed" % len(FAILS) if FAILS else "all checks passed")
