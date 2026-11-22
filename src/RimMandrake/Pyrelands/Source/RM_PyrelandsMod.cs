@@ -547,9 +547,11 @@ namespace RimMandrake.Pyrelands
                            + (PyrelandsTuning.FurnaceWarmthMaxC * furnaceWarmthStrength).ToString("0") + " C at the beast)");
                 furnaceWarmthStrength = list.Slider(furnaceWarmthStrength, 0f, 2f);
                 }
-                list.CheckboxLabeled("Fire clock (flame harvest / fire raid / fire rite)", ref fireClockEnabled,
-                    "The Deep Desert Tribes' incidents that answer the burn. Off: those incidents never "
-                  + "fire.");
+                list.CheckboxLabeled("Fire clock (the biome's fire fronts, flame harvest, fire raid, fire rite)",
+                    ref fireClockEnabled,
+                    "The Pyrelands' own fire fronts: the burn a new map opens with and the fronts that start on a "
+                  + "schedule after it, and the Deep Desert Tribes' incidents that answer the burn. Off: no fire front "
+                  + "starts on its own and those incidents never fire.");
             }
                 list.GapLine();
             }

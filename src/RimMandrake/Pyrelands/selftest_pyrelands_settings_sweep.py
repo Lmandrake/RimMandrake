@@ -17,6 +17,8 @@ Static reads of the C# (comments stripped), for every public static bool/float/i
                    somewhere in its file (cycle 2: an ungated postfix in a gated file stayed green); blind cycle 3 added the
                    furnace-beast heat-immunity prefix, and the wind carry's one predicate (MapComponent_BurnLine.WindCarries,
                    which both wind patches read) must consult the gate and its own switch in its own expression
+  clock_label      the fire-clock checkbox's label and tooltip name the biome's own fire fronts, which it also stops
+                   (RIMMANDRAKE_FIX_PYRELANDS_FIRE_CLOCK_LABEL_SAYS_TRIBES_ONLY: it read as a Tribes-only switch)
   checkboxes       every bool setting is the `ref` of exactly one checkbox on the settings screen (blind cycle 3: the wind
                    checkbox bound to burnLineEnabled left "The wind carries the fire" toggling the burn line, every check green)
   sliders          every slider's range holds its field's shipped default (a range that excludes it moves the value the
@@ -187,6 +189,10 @@ def facts(mod):
         if "RM_PyrelandsSettings.%s" % setting not in m.group(1):
             bad.append("%s never reads its switch %s" % (prop, setting))
     fact("entry_gated", bad, "%d entry points and %d predicates consult the gate" % (len(ENTRY_POINTS), len(ENTRY_PROPERTIES)))
+    clock = re.findall(r"CheckboxLabeled\(([^;]*?),\s*ref fireClockEnabled\s*,([^;]*)\);", ms)
+    fact("clock_label", ["no fire-clock checkbox"] if not clock else
+         ["the fire-clock %s does not name the biome's fire fronts it stops" % w for w, x in
+          (("label", clock[0][0]), ("tooltip", clock[0][1])) if not re.search(r"fire fronts?", x, re.I)])
     refs = re.findall(r"CheckboxLabeled\([^;]*?,\s*ref (\w+)", ms)
     bools = [n for n, (t, v) in fields.items() if t == "bool"]
     fact("checkboxes", ["%s is the ref of %d checkboxes" % (n, refs.count(n)) for n in bools if refs.count(n) != 1]
@@ -315,6 +321,8 @@ def _call_args(s, i):
 
 S = "Source/"
 MUTANTS = [
+    ("fire clock reads as Tribes-only", "Source/RM_PyrelandsMod.cs", "Fire clock (the biome's fire fronts, flame",
+     "Fire clock (flame"),
     ("Scribe default flipped", S + SETTINGS, 'Look(ref burnLineEnabled, "burnLineEnabled", true)', 'Look(ref burnLineEnabled, "burnLineEnabled", false)'),
     ("initializer flipped", S + SETTINGS, "public static bool burnLineEnabled = true;", "public static bool burnLineEnabled = false;"),
     ("world switch shipped on", S + SETTINGS, "public static bool biomeGenerationEnabled = false;", "public static bool biomeGenerationEnabled = true;"),

@@ -9,6 +9,8 @@
                      About, Languages and Patches) says "migrat"; the shipped DLL holds none of the cut type names.
                      Vanilla map herd migration of ullai is kept (owner by card 2026-11-14, "Yes, let them cross"):
                      herdMigrationAllowed is not a cut leg; T_ULLAI_HERD_MIGRATES checks the ullai can still be picked.
+  "Fire pays."       (inv_art_and_text; his 2026-11-05 reword of the root: "the fire offers some solace") no shipped
+                     text says the fire pays (RIMMANDRAKE_REWORD_ABOUT_FIRE_PAYS_HE_SAID_SOLACE).
 Every planted fault (one per leg part) must go red and the clean copy stay green.
 Run: python3 <this file>      exit 0 = PASS, 1 = FAIL
 """
@@ -64,6 +66,7 @@ def facts(root):
     fact("no_chemfuel_floor", chem_floor)
     fact("no_migration_text", ["%s <%s>" % (f, tag) for f, tag, x in texts if re.search(r"migrat", x, re.I)],
          "%d text elements" % len(texts))
+    fact("no_fire_pays_text", ["%s <%s>" % (f, tag) for f, tag, x in texts if re.search(r"\bfire pays\b", x, re.I)])
     fact("no_breaker_text", ["%s <%s>" % (f, tag) for f, tag, x in texts
                              if re.search(r"lightning ?breaker|fulgurite|firebreak", x, re.I)])
     src = {os.path.relpath(f, root): open(f, errors="replace").read()
@@ -103,6 +106,7 @@ MUTANTS = [
     ("fulgurite in text", MOD + "/Languages/English/Keyed/Pyrelands.xml", "</LanguageData>",
      "<RM_X>Lightning leaves fulgurite here.</RM_X></LanguageData>"),
     ("migration promised in About", MOD + "/About/About.xml", "</description>", " Herds migrate across the world.</description>"),
+    ("fire pays back in About", MOD + "/About/About.xml", "</description>", " Fire pays.</description>"),
     ("world herd class back", MOD + "/Source/WorldObject_RM_FurnaceHerd.cs", None,
      "namespace RimMandrake.Pyrelands { public class WorldObject_RM_FurnaceHerd { } }"),
     ("migration setting back", MOD + "/Source/RM_PyrelandsMod.cs", "public static float sandShovelYieldMultiplier",

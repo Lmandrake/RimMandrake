@@ -9,7 +9,8 @@ Firehawk."; "It is ok that they are common. That is the threat.").
 Static half (this file): the letter's keyed strings exist for every key the code translates, the Mod Settings toggle exists,
 ships ON, is saved, is drawn and is greyed under the hawk's master, and the component feeds it (and the once-only flag it saves)
 to the kernel gate; the trophy def exists with its label, Beauty, MarketValue above the hawk's, a small stack and a marked
-placeholder texture; the hawk's race carries the butcher-trophy extension at 35 %; the postfix that rolls it is on
+placeholder texture; the hawk's race carries the butcher-trophy extension with a chance strictly between 0 and 1
+(read from the def, never pinned: a tuning number is not a bar, RIMMANDRAKE_UNPIN_CRESTFEATHER_CHANCE_THE_TEST_HARDCODES); the postfix that rolls it is on
 Pawn.ButcherProducts and asks the kernel; the art is queued. The gate's logic itself (once only, toggle off = no letter, the
 flat chance) is the fuzz family `rewards` (Source/SelfTest/Fuzz/FireHawkRewardsFuzz.cs, selftest_pyrelands_fuzz.py).
 Live half: Pyrelands/firehawk_rewards_live_proof.py. Run: python3 <this file>
@@ -32,7 +33,6 @@ ART_LIST = os.path.join(HERE, "..", "..", "..", "infrastructure", "artpipe", "ar
                         "pyrelands_firehawk_crestfeather_2026-11-13.csv")
 TROPHY = "RM_PristineFirehawkCrestfeather"
 LABEL = "pristine firehawk crestfeather"
-CHANCE = 0.35
 SETTING = "fireHawkSightingLetterEnabled"
 LETTER_KEYS = ("RM_FireHawkSightedLabel", "RM_FireHawkSightedText", "RM_FireHawkEmberFromPlant", "RM_FireHawkEmberFromBurn",
                "RM_FireHawkTargetPlant", "RM_FireHawkTargetGround")
@@ -96,8 +96,12 @@ def check_trophy(probs):
         e = ext[0]
         if e.findtext("thingDef") != TROPHY:
             probs.append("trophy: the hawk's extension yields %r, not %s" % (e.findtext("thingDef"), TROPHY))
-        if abs(float(e.findtext("chance") or "nan") - CHANCE) > 1e-9:
-            probs.append("trophy: the hawk's chance is %r, accepted %s" % (e.findtext("chance"), CHANCE))
+        try:
+            chance = float(e.findtext("chance"))
+        except (TypeError, ValueError):
+            chance = None
+        if chance is None or not 0.0 < chance < 1.0:
+            probs.append("trophy: the hawk's chance is %r, not a chance strictly between 0 and 1" % e.findtext("chance"))
     code = _read(CODE) if os.path.exists(CODE) else ""
     if not re.search(r"typeof\(Pawn\)\s*,\s*nameof\(Pawn\.ButcherProducts\)", code):
         probs.append("trophy: no Harmony patch on Pawn.ButcherProducts in FireHawkRewards.cs")
