@@ -13,12 +13,12 @@ mods read alike.
 - **Design Version 0.1.0, locked** on his word 2026-11-13 ~3:40 PM PST (`version/VERSION.json`); the lock record pins the text
   at that word, `bf33322d77` (re-pinned 2026-11-14, steward's decision). Code: `src/RimMandrake/GimmeSomeSlack/` (C#, 62
   sources; C# SelfTest 4515 checks; `validation.py`; `northstar/proof_all.py`, the one dense live proof).
-- **Stage now:** Stage 8, his live walk, since 2026-11-21 4:58 AM PST (`version/stage_record.json`).
+- **Stage now:** Stage 6, in-game acceptance, since 2026-11-21 7:02 PM PST (`version/stage_record.json`).
 - **Bars:** 48 (23 inventory rows of `record.json` + 26 leaves of `tree.json`; `shock_reach_setting` is both, so 49 rows
   name 48 ids; `cords_draw_under_things` added by his card 2026-11-14). The test-and-stage table is
   `version/test_table.json` (read view `version/test_table.md`), made by the throwaway `version/make_test_table.py`. Of 48
   bars: 48 have a deciding test runnable today (counts as of now: "Waiting on").
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-21 4:58 AM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-21 7:02 PM PST).
 - **Open questions for him:** "Questions for him", the last part of this top section.
 
 ### The vision (his root paragraph, `record.json` root, OWNER:1793895896496551063)
@@ -121,6 +121,7 @@ The nine-line version vision (shock rule, Wire down, the tap, four looks, switch
 - CONDUCTOR INTERVENED (stage 4+5, 2026-11-16 1:28 AM PST, kind decision): Conductor decision 2026-11-16 1:20 AM PST under his 2026-11-13 three-cycle rule: allow blind cycle 6. Cycle 5 ended not met only because it found and fixed one real Problem (Mod Settings header promised flexible pipes; the no-hose test missed four shipping routes; 396433f04a), and a cycle that fixes a Problem goes to a new blind judge. Its 6 remaining fails are filed Polish; 39 rows are game-side, Stage 6. Cycle 6 confirms that fix and exits met unless it finds a new Problem. Source: maturation.py advance by CONDUCTOR, cycle 6.
 - CONDUCTOR INTERVENED (stage 4+5, 2026-11-16 6:52 AM PST, kind bar-added): bar `cords_join_stubs_on_position_and_slope` added to 0.1.0 (record.json inventory, scope opened_by_owner): every stubbed art piece takes each cord at the stub's position AND along its direction, every look and rotation, no bare stub; stubless art joins at position only; the live end continues its cord; a conduit ending in a wall or rock shows no loose or sparking end. Decided by `T_STUB_JOINS` (selftest_gimmesomeslack.py --joins-only), `T_STUB_ART_CENSUS` and `sc_stub_joins` (stage 6). Source: his words 2026-11-16 ("The position-slope rule should be hard wired into the mod and be part of its acceptance checks.") and 2026-11-09 (OWNER:1794242437721637229), the fourth ask; never a bar before because owner_uncited() read only the concept item's own events (RIMMANDRAKE_BIND_SLACK_STUB_ANGLE_RULE_FOURTH_ASK). Delegated under the lock rule, spec section 4 Stage 1 item 4.
 - CONDUCTOR INTERVENED (stage 6, 2026-11-20 11:45 PM PST, kind bar-added): bar `switch_light_reads_state` added to 0.1.1 (record.json inventory, scope opened_by_owner): "A powered switch glows green when closed and red when open; an unpowered switch is dark." Decided by `T_SWITCH_LIGHT_OFFLINE` (stage 4-5) and `sc_switch_light` (stage 6); record.json re-pinned `efcdcfeff4` in `version/bars.md`; locked_bars.json 54 by `maturation.py lock-bars --add`. Done by detached helper BENCH on the Conductor's brief (RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS); item RIMMANDRAKE_LIGHT_SLACK_SWITCH_GREEN_RED_DARK_WHEN_UNPOWERED. Source: owner by card 2026-11-20 (OWNER:1795244532644873616), "In 0.1.1 (Recommended)"; his words OWNER:1795233641482676326.
+- CONDUCTOR INTERVENED (stage 6, 2026-11-21 7:02 PM PST, kind decision): In-game checks that count from a build older than the C# they exercise must run again BEFORE his walk, so that his walk is not the first reader of those bars. Sending GimmeSomeSlack back to the in-game stage for exactly those checks is decided: do it. Source: maturation.py advance by BENCH, cycle 1.
 
 ### 2026-11-14 11:25 PST, run begins (rm-builder, detached, offline only)
 
@@ -504,4 +505,13 @@ row 2; Stage 3 about $10.3 and 50 minutes (12:15 to 13:05 PST). No helpers, no g
 - Checks passed: order, by, version, hold, walk_brief.
 - Was, "Stage now": - **Stage now:** Stage 7, the walk brief, since 2026-11-21 4:32 AM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-21 4:32 AM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-21 7:02 PM PST, stage change: His live walk (Stage 8) to In-game acceptance (Stage 6) (by BENCH)
+
+- Why: RIMMANDRAKE_DECLARE_GSS_SCENE_CSHARP_SWITCH_LAMP_SETTING_UNSEEN: with each check's exercises declared (a26b6bd232), build_match names 140 of 203 in-game checks to rerun (rows made on 934b35e053, before the switch lamp 2e073c2b60/fdde703a0a/d0b6483f04 changed the settings class, the cord component's frame update, the probe and the session reset). No mod fault: a declaration gap in the change relation. Back to Stage 6 for exactly those 140; 63 still count.
+- Checks passed: order, by, version, hold.
+- Conductor decision: In-game checks that count from a build older than the C# they exercise must run again BEFORE his walk, so that his walk is not the first reader of those bars. Sending GimmeSomeSlack back to the in-game stage for exactly those checks is decided: do it.
+- Was, "Stage now": - **Stage now:** Stage 8, his live walk, since 2026-11-21 4:58 AM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-21 4:58 AM PST).
 - Record: `version/stage_record.json`.

@@ -2,9 +2,9 @@
   "schema": 1,
   "mod": "GimmeSomeSlack",
   "version": "0.1.1",
-  "stage": "his_walk",
-  "stage_label": "His live walk (Stage 8)",
-  "since": "2026-11-21T04:58:12-08:00",
+  "stage": "in_game",
+  "stage_label": "In-game acceptance (Stage 6)",
+  "since": "2026-11-21T19:02:31-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -142,6 +142,23 @@
         "version",
         "hold",
         "walk_brief"
+      ]
+    },
+    {
+      "from": "his_walk",
+      "to": "in_game",
+      "at": "2026-11-21T19:02:31-08:00",
+      "by": "BENCH",
+      "why": "RIMMANDRAKE_DECLARE_GSS_SCENE_CSHARP_SWITCH_LAMP_SETTING_UNSEEN: with each check's exercises declared (a26b6bd232), build_match names 140 of 203 in-game checks to rerun (rows made on 934b35e053, before the switch lamp 2e073c2b60/fdde703a0a/d0b6483f04 changed the settings class, the cord component's frame update, the probe and the session reset). No mod fault: a declaration gap in the change relation. Back to Stage 6 for exactly those 140; 63 still count.",
+      "unit": "rm-detached-bench-rimmandrake-declare-gss-scene-csharp-swi-1795315512",
+      "confirmed": {
+        "conductor_decision": "In-game checks that count from a build older than the C# they exercise must run again BEFORE his walk, so that his walk is not the first reader of those bars. Sending GimmeSomeSlack back to the in-game stage for exactly those checks is decided: do it."
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold"
       ]
     }
   ]
