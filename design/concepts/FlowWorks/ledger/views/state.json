@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "1edb5218cefaa577fab951c9486d3afd7aa796d9b23e14c08821159f8c0271af",
+  "body_sha256": "6d5f317e95dffc7b22fc153a40175eba0139b60e24554c1a45d80602752c52e6",
   "reducer": 1,
   "shards": {
    "BACKFILL": 893183,
@@ -23,6 +23,7 @@
    "HOLDER.run-1795268290": 5226,
    "HOLDER.run-1795285878": 924,
    "HOLDER.run-1795297113": 4566,
+   "HOLDER.run-1795304573": 2662,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1263,11 +1264,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795297113",
-   "done": "dig-cost item closed at cb0bc0086e: python.exe client powershell spawn per mutating call fixed (42.5 ms vs 273.9 ms live, game b); door tests stop inheriting a game-b publisher env (d32f7dc988)",
-   "next": "Work the islands item (CanReachMapEdge read on the stuck raid, then RM_Drawbridges.NotifyToggled region notify) and the filter slowdown item on game b",
-   "ruled_out": "dig call cost grows with the dug body; dig cost is the mod or the main thread",
-   "ts": "2026-11-21T22:08:37Z"
+   "by": "HOLDER.run-1795304573",
+   "done": "visit 4 exit met (ca7707f9b5): 6 checks + sc_ways_out PASS except OL (not counted, owned); sc_source_pays lake row repaired, shown both ways; walk save VISIT4_FULL_20261121_1727",
+   "next": "Steward reads in_game/visit_4/SUMMARY.md and advances FlowWorks to pre_human",
+   "ruled_out": "TryDebit is not the edge-lake draw path (LevelBodyOf is); review-map trench cover 0 was the colonist in the pit centre",
+   "ts": "2026-11-22T01:43:04Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1719,7 +1720,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1524,
+  "events": 1532,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7820,7 +7821,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-21T23:43:29Z",
+   "last": "2026-11-22T01:43:04Z",
    "lease": "run-1795304573",
    "released": false,
    "token": 35
@@ -7923,6 +7924,7 @@
    "HOLDER.run-1795268290",
    "HOLDER.run-1795285878",
    "HOLDER.run-1795297113",
+   "HOLDER.run-1795304573",
    "JUDGE.judge-1794833810",
    "JUDGE.judge-1794849236",
    "JUDGE.judge-1795134433",
