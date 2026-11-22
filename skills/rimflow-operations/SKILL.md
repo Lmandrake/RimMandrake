@@ -93,7 +93,10 @@ More traps for this section: [references/traps.md](references/traps.md) § 4. Re
   `claude-remote-control`).
 - Vault freshness: a stale vault cannot be probed or switched to. `account_usage.py` warms an expired DORMANT login
   itself (at most once per hour per account, under claude-account's own lock, refused if that login is live here or on
-  any remote); `claude-account-warm.timer` (daily) is separate and still warms every account (WARMTIMER_HARDEN_SPARE_LIVE).
+  any remote). `claude-account-warm.timer` is retired on Archmagi (`selftest_timer_prune.py` RETIRED).
+- A warm or a refresh never extends a login. Each sign-in has a fixed deadline (`refreshTokenExpiresAt`, about 30 days),
+  and the CLI keeps the earlier deadline on every refresh. Only a new sign-in moves it. login_watch warns 3 days before
+  (`login:deadline:<account>:<epoch>`, page `design/specs/2026-11-22-login-deadline-forewarning/boundary.md`).
 - The relaunched Fleet comes up on the new account; check `slot_allocator now` before assuming capacity.
 
 More traps for this section: [references/traps.md](references/traps.md) § 5. Stand-down / stand-up costs (why switches are not free).
