@@ -1,0 +1,1 @@
+A Stage 6 visit on game b cannot build the walk savegame its exit block names: build_match reads the walk build's mod list from that save, and a full-list check (sc_walk) refuses a tier save. Name the latest full-list walk save of the same deployed mod hash (game a's Saves), and keep the tier save as a looked-at extra (GSS visit 3, 2026-11-21).

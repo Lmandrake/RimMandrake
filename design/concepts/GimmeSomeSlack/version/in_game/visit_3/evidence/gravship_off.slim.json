@@ -1,0 +1,52 @@
+{
+ "label": "gravship_off",
+ "order": 5,
+ "source": "/home/mandrake/rm/relentless/clones/RIMMANDRAKE_DRIVE_GIMMESOMESLACK_IN_GAME_VISIT_THREE_RUN_TWO.det/Transient/gss3_gravship_off.json",
+ "mode": "live",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "owlchemist.cherrypicker",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.patches"
+  ],
+  "tier": {
+   "name": "gimmesomeslack",
+   "active_equals_running": true,
+   "source": "build_match identity, game b ModsConfig"
+  }
+ },
+ "active_mods": [
+  "brrainz.harmony",
+  "ludeon.rimworld",
+  "ludeon.rimworld.royalty",
+  "ludeon.rimworld.ideology",
+  "ludeon.rimworld.biotech",
+  "ludeon.rimworld.anomaly",
+  "ludeon.rimworld.odyssey",
+  "brrainz.rimbridgeserver",
+  "owlchemist.cherrypicker",
+  "ray1203.simplecamerasetting",
+  "mandrake.rm.gimmesomeslack",
+  "mandrake.rm.patches"
+ ],
+ "game_build": "1.6.4871 rev590",
+ "run_identity": null,
+ "mod_hash": null,
+ "rows": [
+  {
+   "id": "GS1_keep_wires_on_gravship_off_aboard_span_taken_down",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": "{'setting': 'keepWiresOnGravship', 'value': False, 'mode': 'off', 'before': {'spansUp': 2}, 'after': {'spansUp': 0, 'spansCut': 0}, 'aboardSpanUp': False, 'groundLinkKept': False, 'cords': {'cordEdges': 1, 'cordsAcrossNets': 0, 'verticesInUnwalkable': 0, 'conduitCells': 7}, 'links': [], 'ids': [37486, 37487, 37488], 'verdict': 'PASS'}"
+  }
+ ]
+}
