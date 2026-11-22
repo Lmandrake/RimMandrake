@@ -914,11 +914,14 @@ def main():
         check(not inc.get("error") and inc.get("item") and inc.get("level", 0) >= 1,
               "VHRP: a readable ledger again lets the ladder climb and clears the error: %s" % inc)
         # ------------------------------------------------ units
-        units = T.UNITS["testq-tick.service"]
+        # the unit texts live in Utils/systemd/ since 76bd31f806 (testq.UNITS is gone: one home for every unit text)
+        udir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "systemd")
+        UNITS = {n: open(os.path.join(udir, n)).read() for n in os.listdir(udir) if n.startswith("testq-")}
+        units = UNITS.get("testq-tick.service", "")
         order = [units.find(x) for x in ("testq.py tick", "testq.py fill", "testq.py steward", "ingest.py")]
         check(all(o > 0 for o in order) and order == sorted(order), "tick service: tick, fill, steward, ingest")
-        check("testq-steward-watch.timer" in T.UNITS and "steward-watch" in T.UNITS["testq-steward-watch.service"]
-              and "pull" not in T.UNITS["testq-steward-watch.service"], "the watcher has its own timer and never pulls")
+        check("testq-steward-watch.timer" in UNITS and "steward-watch" in UNITS.get("testq-steward-watch.service", "")
+              and "pull" not in UNITS.get("testq-steward-watch.service", "pull"), "the watcher has its own timer and never pulls")
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
     print("ALL PASS" if not FAILS else "%d FAILED" % len(FAILS))

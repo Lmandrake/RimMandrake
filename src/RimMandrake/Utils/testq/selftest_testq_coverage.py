@@ -10,6 +10,7 @@ unheld mods, every one of them selectable by the real probe.
 """
 import json
 import os
+import re
 import sys
 import tempfile
 
@@ -191,8 +192,9 @@ def main():
           % (rc, out.getvalue()[-120:]))
 
     # the unit, and the real committed list (the item's done-when: >= 6 wired, each passing its probe)
-    unit = open(os.path.join(HERE, "testq.py")).read()
-    check("for m in $(/usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/coverage.py wired)" in unit,
+    # the unit text lives in Utils/systemd/ since 76bd31f806 (one home for every unit text), with its clone path literal
+    unit = open(os.path.join(os.path.dirname(HERE), "systemd", "testq-tick.service")).read()
+    check(re.search(r"for m in \$\(/usr/bin/python3 \S+/src/RimMandrake/Utils/testq/coverage\.py wired\)", unit),
           "testq-tick.service's fill loop walks `coverage.py wired`")
     live = C.measure(only_wired=True)
     print(C.g5_line(live))

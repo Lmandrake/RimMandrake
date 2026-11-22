@@ -333,7 +333,7 @@ def test_watcher():
         SR.main(["now-run"])
     check((SR._read_json(SR.now_run_reading()) or {}).get("rc") == 0,
           "a real now-run writes its last-run reading")
-    unit = os.path.join(HERE, "systemd", "rm-restart-now.path")
+    unit = os.path.join(os.path.dirname(HERE), "Utils", "systemd", "rm-restart-now.path")   # one home since 76bd31f806
     with open(unit) as f:
         txt = f.read()
     check("PathExistsGlob=%h/rm/restart-now/*" in txt and "/mnt/" not in txt.split("[Path]")[1],

@@ -511,12 +511,15 @@ def cli_end_to_end():
     a, b = good
     item("WEAK_1_PROBE_FIXTURE", a, "WEAK")
     rc, out = cli("close", "WEAK_1_PROBE_FIXTURE", "--sha", a)
-    check(rc != 0 and "has not earned" in out, "cli: a close with no pass is refused by today's gate")
+    # since 5a7ff497ad (2026-11-21) a missing level-tagged pass is a fault of form: the close goes, noted, uncheckedLifted
+    check(rc == 0 and "closed at" in out and "uncheckedLifted" in out,
+          "cli: a close with no pass goes, noted as a form repair (uncheckedLifted)")
     rows = G.rows(sd)
-    check(len(rows) == 1 and rows[0]["gate"] == "refuse" and rows[0]["predicate"] == "reject",
-          "cli: the refused close is in the shadow log as refuse/reject")
-    check(passed("WEAK_1_PROBE_FIXTURE", a), "cli: a level-tagged pass recorded")
-    rc, out = cli("close", "WEAK_1_PROBE_FIXTURE", "--sha", a)
+    check(len(rows) == 1 and rows[0]["gate"] == "accept" and rows[0]["predicate"] == "reject" and rows[0]["disagree"],
+          "cli: that close is in the shadow log as accept/reject, a disagreement")
+    item("WEAK_2_PROBE_FIXTURE", a, "WEAK")
+    check(passed("WEAK_2_PROBE_FIXTURE", a), "cli: a level-tagged pass recorded")
+    rc, out = cli("close", "WEAK_2_PROBE_FIXTURE", "--sha", a)
     rows = G.rows(sd)
     check(rc == 0 and "closed at" in out, "cli: the gate's close goes through though the record says WEAK")
     check(len(rows) == 2 and rows[-1]["disagree"] and rows[-1]["gate"] == "accept" and "DISAGREES" in out,

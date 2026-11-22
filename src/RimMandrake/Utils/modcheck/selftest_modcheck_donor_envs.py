@@ -100,7 +100,8 @@ def t_closure_on_installed():
         check("%s: tier is not refused" % name, not refusals, refusals)
         extra = [p for p in ordered
                  if not p.startswith("ludeon.") and p not in ids
-                 and p not in (modset_builder.BRIDGE, modset_builder.HARMONY, modset_builder.ZOOM)]
+                 and p not in (modset_builder.BRIDGE, modset_builder.HARMONY, modset_builder.ZOOM,
+                               modset_builder.CHERRY)]     # every tier loads it since a4291f3a9d
         check("%s: the closure adds nothing the env does not name" % name, not extra, extra)
         check("%s: all five DLC in the list" % name,
               sum(1 for p in ordered if p.startswith("ludeon.rimworld.")) == 5, ordered)
