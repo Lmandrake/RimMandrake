@@ -1,17 +1,17 @@
-"""Visit 3 (game b, the pyrelands tier; copied from visit 2's): stage the labelled savegame for his walk on the freshly reloaded visit-3 site, capture each station, save.
+"""Visit 4 (game a, the pyrelands tier; copied from visit 3's): stage the labelled savegame for his walk on the freshly reloaded visit-4 site, capture each station, save.
 
 python.exe, bridge held, the site reloaded first (northstar_site.py --reload-only). Stations sit in open deep-ash windows
 found from the live terrain (no rock, no water, no building), plus the map's own charred ruin. Saves
-PYRELANDS_0.1.0_VISIT3_WALK and stat-diffs the Saves folder (exactly that file new or changed). Captures go to
-Transient/pv3/shots (originals) for looking at; the record keeps copies under 1 MB."""
+PYRELANDS_0.1.0_VISIT4_WALK and stat-diffs the Saves folder (exactly that file new or changed). Captures go to
+Transient/pv4/shots (originals) for looking at; the record keeps copies under 1 MB."""
 import sys, json, os, time, shutil, collections
 sys.path.insert(0, r"src\RimMandrake\Utils")
 from rimbridge_client import RimBridge, resolve_endpoint
 SAVES = os.path.join(os.environ["RM_GAME_USERDATA"], "Saves") if os.environ.get("RM_GAME_USERDATA") else \
     os.path.expandvars(r"%USERPROFILE%\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Saves")
-NAME = "PYRELANDS_0.1.0_VISIT3_WALK"
-SHOTS = r"Transient\pv3\shots"
-TAG = "pyre_visit3"
+NAME = "PYRELANDS_0.1.0_VISIT4_WALK"
+SHOTS = r"Transient\pv4\shots"
+TAG = "pyre_visit4"
 h, p, tk = resolve_endpoint()
 out = {"stations": [], "shots": []}
 with RimBridge(h, p, tk) as rb:
@@ -68,12 +68,12 @@ with RimBridge(h, p, tk) as rb:
         out["ruinCluster"] = sum(abs(ruin[0] - b[0]) <= 8 and abs(ruin[1] - b[1]) <= 8 for b in pts)
         if out["ruinCluster"] < 4:
             ruin = None   # a lone charred wall is not a ruin to walk to; the station is dropped and recorded
-    stations = [(fx + 10, fz + 17, "VISIT3: LIVE burn front in fresh ember grass - unpause and watch it walk", (fx, fz, 20, 16)),
-                (cx_ + 10, cz_ + 17, "VISIT3: creatures - ullai herd, furnace-beast giant, ashwallows", (cx_, cz_, 20, 16)),
-                (sx + 10, sz + 12, "VISIT3: scorch-fruit standing in ash", (sx + 4, sz + 2, 12, 12)),
-                (rx + 10, rz + 12, "VISIT3: ember grass under a roof (left) withers within a day; open patch (right) stays", (rx, rz, 20, 16))]
+    stations = [(fx + 10, fz + 17, "VISIT4: LIVE burn front in fresh ember grass - unpause and watch it walk", (fx, fz, 20, 16)),
+                (cx_ + 10, cz_ + 17, "VISIT4: creatures - ullai herd, furnace-beast giant, ashwallows", (cx_, cz_, 20, 16)),
+                (sx + 10, sz + 12, "VISIT4: scorch-fruit standing in ash", (sx + 4, sz + 2, 12, 12)),
+                (rx + 10, rz + 12, "VISIT4: ember grass under a roof (left) withers within a day; open patch (right) stays", (rx, rz, 20, 16))]
     if ruin:
-        stations.append((ruin[0], ruin[1] + 6, "VISIT3: charred ruin on deep ash (walls painted RM_FE_Charred)",
+        stations.append((ruin[0], ruin[1] + 6, "VISIT4: charred ruin on deep ash (walls painted RM_FE_Charred)",
                          (ruin[0] - 8, ruin[1] - 6, 16, 12)))
     call("jawa/review_label", action="clear", tag=TAG)
     lab = call("jawa/review_label", action="add", tag=TAG, ops="\n".join("%d|%d|%s" % (x, z, s) for x, z, s, _ in stations))
@@ -85,7 +85,7 @@ with RimBridge(h, p, tk) as rb:
         call("jawa/set_fog", action="unfog", rect="%d,%d,%d,%d" % (qx, qz, qw, qh))
         call("jawa/clear_ui"); call("rimworld/jump_camera_to_cell", x=qx + qw // 2, z=qz + qh // 2)
         call("rimworld/frame_cell_rect", x=qx, z=qz, width=qw, height=qh, paddingCells=3); time.sleep(0.4)
-        pth = call("rimworld/take_screenshot", fileName="pv3_walk_station_%d" % i).get("path")
+        pth = call("rimworld/take_screenshot", fileName="pv4_walk_station_%d" % i).get("path")
         if pth:
             shutil.copy(pth, SHOTS); out["shots"].append(os.path.join(SHOTS, os.path.basename(pth)))
     before = {f: os.stat(os.path.join(SAVES, f)).st_mtime for f in os.listdir(SAVES)}
@@ -97,4 +97,4 @@ with RimBridge(h, p, tk) as rb:
                    "changed": [f for f in before if f in after and after[f] != before[f]],
                    "bytes": os.path.getsize(os.path.join(SAVES, NAME + ".rws")) if os.path.exists(os.path.join(SAVES, NAME + ".rws")) else None}
 print(json.dumps(out, indent=1))
-json.dump(out, open(r"design\concepts\Pyrelands\version\in_game\visit_2\evidence\walk_save.json", "w"), indent=1)
+json.dump(out, open(r"design\concepts\Pyrelands\version\in_game\visit_4\evidence\walk_save.json", "w"), indent=1)

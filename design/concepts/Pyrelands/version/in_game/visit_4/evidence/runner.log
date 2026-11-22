@@ -1,2 +1,45 @@
 START batch1 2026-11-21 22:38:41
 DONE startup_and_def_wiring reload_rc=0 rc=1 24s 22:39:05
+DONE mapgen_log reload_rc=0 rc=1 26s 22:39:31
+DONE animal_census reload_rc=0 rc=1 25s 22:39:56
+DONE grass_cover reload_rc=0 rc=1 26s 22:40:22
+DONE ambient_ash_drift reload_rc=0 rc=1 28s 22:40:50
+DONE plant_census reload_rc=0 rc=1 98s 22:42:28
+DONE plant_census,scorchfruit_fire_born@scorchfruit_fire_born_with_census reload_rc=0 rc=1 161s 22:45:09
+DONE ruins reload_rc=0 rc=1 26s 22:45:35
+DONE firehawk reload_rc=0 rc=1 178s 22:48:33
+DONE furnace_warmth reload_rc=0 rc=1 31s 22:49:04
+DONE burrowers reload_rc=0 rc=1 31s 22:49:35
+DONE heat_dome reload_rc=0 rc=1 39s 22:50:14
+DONE fire_tick_effects reload_rc=0 rc=1 67s 22:51:21
+DONE rite_hook_alone reload_rc=0 rc=1 27s 22:51:48
+DONE firehawk_first_sighting_letter reload_rc=0 rc=1 44s 22:52:32
+DONE foreign_arrivals reload_rc=0 rc=1 42s 22:53:14
+DONE furnace_room reload_rc=0 rc=1 49s 22:54:03
+DONE no_ordinary_rain reload_rc=0 rc=1 38s 22:54:41
+END batch1 2026-11-21 22:54:41
+START batch2a 2026-11-21 22:54:44
+DONE script:design/concepts/Pyrelands/version/in_game/visit_4/scripts/inspect_probe.py@inspect_probe reload_rc=0 rc=1 15s 22:54:59
+END batch2a 2026-11-21 22:54:59
+START batch2b 2026-11-21 22:54:59
+DONE script:design/concepts/Pyrelands/version/in_game/visit_4/scripts/offctl_probe.py@offctl_probe_on reload_rc=0 rc=1 15s 22:55:14
+END batch2b 2026-11-21 22:55:14
+START batch2c 2026-11-21 22:55:14
+DONE firehawk@firehawk_rerun reload_rc=0 rc=1 181s 22:58:15
+DONE firefoam_sprayer reload_rc=0 rc=1 67s 22:59:22
+DONE flamefang_venom reload_rc=0 rc=1 97s 23:00:59
+DONE ash_fertility_watered reload_rc=0 rc=1 638s 23:11:37
+DONE cinderfall reload_rc=0 rc=1 467s 23:19:24
+DONE blackrain reload_rc=0 rc=1 144s 23:21:48
+DONE ashfall_weather_accumulation reload_rc=0 rc=1 29s 23:22:17
+DONE ashfall_drifts reload_rc=0 rc=1 57s 23:23:14
+DONE scorchfruit_produces reload_rc=0 rc=1 53s 23:24:07
+END batch2c 2026-11-21 23:24:07
+START batch2d 2026-11-21 23:24:07
+DONE cinderfall@cinderfall_planted_strike reload_rc=0 rc=1 463s 23:31:50
+END batch2d 2026-11-21 23:31:50
+START batch3a 2026-11-21 23:31:50
+DONE script:design/concepts/Pyrelands/version/in_game/visit_4/scripts/inspect_probe.py@inspect_probe reload_rc=0 rc=0 17s 23:32:07
+DONE firehawk@firehawk_repaired reload_rc=0 rc=1 116s 23:34:03
+END batch3a 2026-11-21 23:34:03
+START batch3b 2026-11-21 23:34:03

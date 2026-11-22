@@ -27,7 +27,7 @@ def read_chain(label, chain, entry):
     d = json.load(open(p))
     if d.get("refused"):
         return "UNMEASURED", "driver refused: %s" % d["refused"], p, False
-    comps = [c for c in d.get("components", []) if c.get("chain") == chain]
+    comps = [c for c in d.get("components", []) if c.get("chain") in str(chain).split(",")]   # a command may name two chains
     pick = [c for c in comps if c.get("name") == entry or str(c.get("name")).startswith(entry + "#")] or comps
     if not pick:
         return "UNMEASURED", "chain %s wrote no component rows" % chain, p, True
@@ -35,7 +35,7 @@ def read_chain(label, chain, entry):
         if os.path.exists(os.path.join(E, "run_%s.log" % label)) else ""
     det = {}
     for ln in log.splitlines():
-        m = re.match(r"component (%s/[^:]+): (\{.*)" % re.escape(chain), ln)
+        m = re.match(r"component ((?:%s)/[^:]+): (\{.*)" % "|".join(re.escape(c) for c in str(chain).split(",")), ln)
         if m:
             try:
                 det[m.group(1)] = json.loads(m.group(2)).get("detail")
@@ -43,8 +43,8 @@ def read_chain(label, chain, entry):
                 pass
     vs = [c["verdict"] for c in pick]
     v = "FAIL" if "FAIL" in vs else ("UNMEASURED" if any(x != "PASS" for x in vs) else "PASS")
-    parts = ["%s %s%s" % (c["name"], c["verdict"], (": " + str(det.get("%s/%s" % (chain, c["name"])))[:300])
-                          if c["verdict"] != "PASS" and det.get("%s/%s" % (chain, c["name"])) else "") for c in pick]
+    parts = ["%s %s%s" % (c["name"], c["verdict"], (": " + str(det.get("%s/%s" % (c.get("chain"), c["name"])))[:300])
+                          if c["verdict"] != "PASS" and det.get("%s/%s" % (c.get("chain"), c["name"])) else "") for c in pick]
     return v, "; ".join(parts), p, True
 
 

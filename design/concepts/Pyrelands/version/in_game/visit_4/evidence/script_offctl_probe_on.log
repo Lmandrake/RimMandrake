@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT_FOUR.det\design\concepts\Pyrelands\version\in_game\visit_4\scripts\offctl_probe.py", line 21, in <module>
+    prior = dict((k, get(k)) for k in keys)
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT_FOUR.det\design\concepts\Pyrelands\version\in_game\visit_4\scripts\offctl_probe.py", line 21, in <genexpr>
+    prior = dict((k, get(k)) for k in keys)
+                     ~~~^^^
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT_FOUR.det\design\concepts\Pyrelands\version\in_game\visit_4\scripts\offctl_probe.py", line 17, in get
+    return rb.call("jawa/mod_settings_field", typeName=S, action="get", field=f).get("value")
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: RimBridge.call() got an unexpected keyword argument 'typeName'

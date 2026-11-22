@@ -3640,6 +3640,7 @@ def flamefang_venom(t):
             if not ok:
                 _fail(why)
     _independent(t)
+    cid2 = None
     with _comp(t, "plain_bite_carries_no_venom"):
         cid2 = _spawn_colonist(t, x + 6, z)
         row = _bite_until(t, cid2, PLAIN_BITER, x + 6, z, clear_wounds=True)
@@ -3650,6 +3651,11 @@ def flamefang_venom(t):
                 _unmeasured(t, "the %s never bit in 6000 ticks: the control saw no bite" % PLAIN_BITER)
             if _has_hediff(row, VENOM):
                 _fail("a %s bite carried %s: the venom is not the flamefang's own" % (PLAIN_BITER, VENOM))
+    # SITE (visit 4, 2026-11-21, game a): the control's two fennec scratches (6.17 each, after the fauna normalization)
+    # bled on untended, and it died of blood loss inside the next row, which then read RESTART and stopped the chain. Its
+    # reading is taken above, so it is healed here and is no bystander to bleed out in the rows after it.
+    if _live(t) and cid2:
+        t.bridge_call("jawa/pawn_health", pawn=cid2, action="healAll", confirmDestructive=True)
     _ten_flamefang_venom(t)
 
 
@@ -4071,6 +4077,7 @@ TEN_GATE = "RimMandrake.Pyrelands.PyrelandsMechanicsGate"
 TEN_SAFE_CLEAR = 3             # PyrelandsFireSense.SafeClear (a walking pawn)
 TEN_STEP_JOB = "RM_PyreStepAwayFromFire"
 TEN_SEEK_JOB = "RM_FireHawkSeekBurn"
+PLANT_FARHAWK_NO_SEEK_ENV = "PYRE_PLANT_FARHAWK_NO_SEEK"   # planted state: fireHawkSpreadEnabled off for the seek row
 TEN_NATIVE = ("HerdMigration", "ManhunterPack")
 TEN_TILE_SCAN = 60000          # world tiles scanned (200 a read) for a vanilla control tile
 TEN_CONTROL_SIZE = 100
@@ -4654,17 +4661,28 @@ def _ten_cinderfall(t):
                 _fail(why)
 
 
+def plant_growth_of_lines(lines):
+    """Pure. One plant's inspect-pane lines -> its growth 0-1, or None when no line states it. The game's English key
+    PercentGrowth is '{0} grown' ('70% grown'); a mature plant reads 'Mature.' (1.0). HARNESS, Pyrelands visit 4,
+    2026-11-21: the reader looked for 'Growth: N%', a line the game never writes, and read None for every patch on every
+    day of visit 3 (RIMMANDRAKE_READ_PYRE_REGROW_GROWTH_NONE_ON_ALL_SIX_DAYS; live lines in visit_4/evidence/
+    script_inspect_probe.log)."""
+    for ln in lines or []:
+        m = re.search(r"(\d+(?:\.\d+)?)%\s*grown", str(ln))
+        if m:
+            return float(m.group(1)) / 100.0
+        if str(ln).strip().rstrip(".").lower() == "mature":
+            return 1.0
+    return None
+
+
 def _ten_embergrass_regrow_growth(t, rect):
-    """Mean plant growth (0-1) over `rect` from the inspect strings ('Growth: N%'), None when no plant reads."""
+    """Mean plant growth (0-1) over `rect` from the inspect strings ('N% grown', 'Mature.'), None when no plant reads."""
     r = t.bridge_call("jawa/inspect_string", rect=_rs(rect), limit=100)
     if not _live(t):
         return None
-    vals = []
-    for row in (r or {}).get("things") or []:
-        for ln in row.get("inspect") or []:
-            m = re.search(r"Growth:\s*(\d+)%", str(ln))
-            if m:
-                vals.append(int(m.group(1)) / 100.0)
+    vals = [g for g in (plant_growth_of_lines(row.get("inspect")) for row in (r or {}).get("things") or [])
+            if g is not None]
     return sum(vals) / len(vals) if vals else None
 
 
@@ -4690,6 +4708,11 @@ def _ten_embergrass_regrow(t):
         t.bridge_call("jawa/set_terrain", x=x - 3, z=z - 2, terrainDef="WaterShallow", width=1, height=4, layer="top")
         _wait(t, 2600)                     # a full watering sweep
         cells = dict((k, _probe(t, r[0] + 1, r[1] + 1)) for k, r in patches.items())
+        planted = os.environ.get(PLANT_REGROW_WET_OFF_ENV) == "1"
+        if planted:   # after the staging read, so the patch still reads watered: the field's water then does nothing
+            _note(t, "PLANTED FAULT", "%s=1: ashWaterFertilityEnabled off from the sowing on, as if water did nothing"
+                  % PLANT_REGROW_WET_OFF_ENV)
+            _set(t, {"ashWaterFertilityEnabled": False})
         for k in ("dry", "watered"):
             _plants(t, "RM_FE_Plant_EmberGrass", patches[k], growth=0.05)
         _plants(t, "Plant_Grass", patches["vanilla"], growth=0.05)
@@ -4725,7 +4748,12 @@ def _ten_embergrass_regrow(t):
                 _fail("watered ember grass did not outgrow the dry patch: %r vs %r" % (gains["watered"], gains["dry"]))
             if bursts["dry"] or bursts["vanilla"]:
                 _fail("bursts off the watered cells: %r" % bursts)
+        if planted:
+            _set(t, {"ashWaterFertilityEnabled": True})
         t.screenshot(rect=(x - 10, z - 3, 20, 6))
+
+
+PLANT_REGROW_WET_OFF_ENV = "PYRE_PLANT_REGROW_WET_ROOTS_OFF"   # planted state: the ash field's water switched off at sowing
 
 
 def _ten_furnace_sleep(t):
@@ -5005,7 +5033,11 @@ def _ten_firehawk(t):
         # HARNESS (visit 2, 2026-11-20): a flyer closes 49 cells inside one 250-tick gap, so a seek that starts and hands
         # over to the carry within it was never sampled (dist 60 -> 11 at the first read). 25 polls 10 ticks apart first,
         # then the same 60 polls 250 apart as before.
-        seq, dist = [], []
+        # SITE (visit 4, 2026-11-21, game a, 2 of 2 runs): the fire-hawks the chain's first row and the map itself leave
+        # alive carried embers off the plot and lit fires nearer the far hawk than the seek band, so it took
+        # RM_FireHawkCarryEmber from one of them and never the seek. Every fire outside the plot is counted at each read,
+        # with its nearest distance to the watched hawk: a missing seek beside such a fire is the site's, not the mod's.
+        seq, dist, strays = [], [], []
         for i in range(85):
             _wait(t, 10 if i < 25 else 250)
             if not _count(t, "Fire", _rs(plot)):
@@ -5017,7 +5049,23 @@ def _ten_firehawk(t):
             pos = _ten_pos(t, hawk)
             if pos:
                 dist.append(round(_ten_clear_of(pos, plot), 1))
-        return seq, dist
+            px, pz, pw, ph = plot
+            out = [c for c in _r6_fires(t) if not (px <= c[0] < px + pw and pz <= c[1] < pz + ph)]
+            if out and pos:
+                strays.append({"read": i, "fires": len(out), "nearest": round(min(
+                    ((c[0] - pos[0]) ** 2 + (c[1] - pos[1]) ** 2) ** 0.5 for c in out), 1)})
+        return seq, dist, strays
+
+    def lone_hawks():
+        """Kill every living RM_FireHawk on the map (the first row's and the map's own) before a far-hawk row; -> count."""
+        r = t.bridge_call("jawa/list_pawns", limit=1000)
+        if not _live(t):
+            return 0
+        ids = [q.get("id") for q in (_ok(r, "list_pawns").get("pawns") or [])
+               if q.get("kindDef") == "RM_FireHawk" and not q.get("dead") and q.get("id")]
+        for pid in ids:
+            t.bridge_call("jawa/damage", damageDef="Bullet", amount=5000, thingId=pid, allowColonists=False)
+        return len(ids)
 
     fx, fz = TEN_PAD_HAWK_FIRE
     plot = (fx - 2, fz - 2, 5, 5)
@@ -5025,26 +5073,40 @@ def _ten_firehawk(t):
     with _comp(t, "far_hawk_seeks_the_burn"):
         # SITE (visit 2, 2026-11-20): the chain's earlier rows leave fires burning, and one within the hawk's scanRadius
         # gave it RM_FireHawkCarryEmber (then the sortie cooldown) instead of the seek; the plot must be the only fire
+        planted = os.environ.get(PLANT_FARHAWK_NO_SEEK_ENV) == "1"
+        if planted:
+            _note(t, "PLANTED FAULT", "%s=1: fireHawkSpreadEnabled off for this row, as if the hawk never sought"
+                  % PLANT_FARHAWK_NO_SEEK_ENV)
+        killed = lone_hawks()
         _extinguish(t)
-        _set(t, {"burnLineEnabled": True, "fireHawkSpreadEnabled": True})
+        _set(t, {"burnLineEnabled": True, "fireHawkSpreadEnabled": not planted})
         t.bridge_call("jawa/weather_set", weather="Clear", lockWeather=True)
         _ten_lit_plot(t, plot)
         hawk = _spawn_wild(t, "RM_FireHawk", fx + TEN_HAWK_OFFSET, fz)
-        seq, dist = watch(hawk, plot)
+        seq, dist, strays = watch(hawk, plot)
+        if planted:
+            _set(t, {"fireHawkSpreadEnabled": True})
         if _live(t):
-            _note(t, "far hawk (start %d cells; seek band > %.1f): jobs, distance to the burn"
-                  % (TEN_HAWK_OFFSET, 0.9 * TEN_HAWK_REACH), {"jobs": seq, "dist": dist})
+            _note(t, "far hawk (start %d cells; seek band > %.1f): jobs, distance to the burn; other hawks killed first; "
+                  "fires outside the plot" % (TEN_HAWK_OFFSET, 0.9 * TEN_HAWK_REACH),
+                  {"jobs": seq, "dist": dist, "otherHawksKilled": killed, "strays": strays[:20]})
             if TEN_SEEK_JOB not in seq:
+                near = [r_ for r_ in strays if r_["nearest"] <= 0.9 * TEN_HAWK_REACH]
+                if near:
+                    _unmeasured(t, "the hawk never took %s, but a fire outside the plot burned %.1f cells from it (inside "
+                                   "the seek band's floor %.1f), so the plot was not the only fire: %r"
+                                % (TEN_SEEK_JOB, min(r_["nearest"] for r_ in near), 0.9 * TEN_HAWK_REACH, near[:5]))
                 _fail("the hawk %d cells off never took %s: %r" % (TEN_HAWK_OFFSET, TEN_SEEK_JOB, seq))
             if not dist or min(dist) >= dist[0] - 10:
                 _fail("the seeking hawk did not close on the burn: %r" % dist)
     _independent(t)
     with _comp(t, "far_hawk_spread_off_control"):
+        lone_hawks()
         _extinguish(t)
         _set(t, {"fireHawkSpreadEnabled": False})
         _ten_lit_plot(t, plot)
         hawk = _spawn_wild(t, "RM_FireHawk", fx + TEN_HAWK_OFFSET, fz + 6)
-        seq, dist = watch(hawk, plot)
+        seq, dist, _strays = watch(hawk, plot)
         _extinguish(t)
         _set(t, {"fireHawkSpreadEnabled": True})
         if _live(t):
