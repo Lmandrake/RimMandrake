@@ -2,9 +2,9 @@
   "schema": 1,
   "mod": "FlowWorks",
   "version": "0.1.0",
-  "stage": "his_walk",
-  "stage_label": "His live walk (Stage 8)",
-  "since": "2026-11-21T18:14:56-08:00",
+  "stage": "in_game",
+  "stage_label": "In-game acceptance (Stage 6)",
+  "since": "2026-11-21T18:32:40-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -258,6 +258,23 @@
         "version",
         "hold",
         "walk_brief"
+      ]
+    },
+    {
+      "from": "his_walk",
+      "to": "in_game",
+      "at": "2026-11-21T18:32:40-08:00",
+      "by": "BENCH",
+      "why": "RIMMANDRAKE_DECLARE_FLOWWORKS_SCENE_CSHARP_PIT_REDRAW_UNSEEN: with each check's exercises declared (92c459ca74), build_match names 22 of 31 in-game checks to rerun (rows made before C# they exercise changed: the pit redraw e2288f4c84, the water look b80104f7a7, the sink film 2083f92acb and others). No mod fault: a declaration gap in the change relation. Back to Stage 6 for exactly those 22; 9 still count.",
+      "unit": "rm-detached-bench-rimmandrake-declare-flowworks-scene-csha-1795313997",
+      "confirmed": {
+        "conductor_decision": "In-game checks that count from a build older than the C# they exercise must run again BEFORE his walk, so that his walk is not the first reader of those bars. Sending FlowWorks back to the in-game stage for exactly those checks is decided: do it."
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold"
       ]
     }
   ],
