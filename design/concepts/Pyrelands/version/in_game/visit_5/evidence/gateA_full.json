@@ -1,0 +1,124 @@
+{
+ "extra": {
+  "def_fingerprint": "417df172fdb5e40242b10206e41f3ababbf632875a28fdf7b16a89ec6236618f",
+  "settings_snapshot": "Transient/pv5_snapshot_full",
+  "storyteller_before": null
+ },
+ "gate": "A",
+ "ok": false,
+ "refused_rows": [
+  "3.8.3",
+  "3.2.3"
+ ],
+ "rows": [
+  {
+   "expected": "BENCH",
+   "id": "3.8.1",
+   "name": "bridge lock held by this seat",
+   "observed": "BENCH",
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  },
+  {
+   "expected": "game launched AFTER the newest deploy",
+   "id": "3.8.2",
+   "name": "game started after the newest deploy (plan 3.2.5)",
+   "observed": "Player.log created 2026-11-22 07:11:37; newest deploy 2026-11-22 03:18:10 (RimMandrake.ExplosiveGrowth.dll)",
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  },
+  {
+   "expected": "17 ids in tier order, all 5 DLCs",
+   "id": "3.8.3",
+   "name": "running mod set == tier manifest",
+   "observed": "315 running; extra active ['zetrith.prepatcher', 'aleksey.betterstacktraces', 'mandrake.rm.loadtracer', 'krkr.rule56', 'aoba.framework', 'adaptive.storage.framework', 'redmattis.betterprerequisites', 'smashphil.vehicleframework', 'imranfish.xmlextensions', 'unlimitedhugs.hugslib', 'oskarpotocki.vanillafactionsexpanded.core', 'ebsg.framework', 'dizzy.candlesandmeditation', 'jm.disstynan', 'zal.calltradeships', 'lc.tammybee.selectablesculpturegraphic', 'mingtuwuxiang.spacebasedecorative', 'nals.facialanimation', 'rh2.cpers.arrest.here', 'cp.uncle.boris.used.furniture', 'sr.modrimworld.factionalwarcontinued', 'ali.growodysseyplants', '7f.alienworlds', 'andrewraphaellukasik.allowdeadanimals', 'unlimitedhugs.allowtool', 'duz.almosttherefork', 'sarg.alphamemes', 'xmb.ancientminingindustry.mo', 'automatic.autolinks', 'fuu.autostriponhaul', 'io.github.relvl.rimworld.bestapparel', 'ionfrigate12345.coolandgoodambush', 'nephlite.advexplosions', 'arkymn.bettergrowthmoments', 'madeline.modmismatchformatter', 'mlie.betterprojectileorigin', 'falconne.bwm', 'redmattis.biggergravship', 'biomesteam.coreframework', 'zal.biomeskit', 'bs.mbifvte', 'memegoddess.buildfrominventory', '8z.callforintel', 'brrainz.cameraplus', 'kapitanoczywisty.changemapedge', 'void.charactereditor', 'kearril.choosewheretoland', 'kikohi.coloreddeepresources', 'petetimessix.compacthediffs', 'com.makeitso.configurabletechprints', 'cozyfire.velcroboy333', 'greg.customgastypes', 'costel.customroomnames', 'darkestdungeon.incidentsounds', 'mlie.decorativecliffs', 'gondragon.defensivepositions', 'merthsoft.designatorshapes', 'garwel.destroyitem', 'det.keshig', 'cometopapa.deteriorated', 'lornath.diseaseimmunityprogresstracker', 'jecrell.doorsexpanded', 'dubwise.dubspaintshop', 'dubwise.dubsbadhygiene.lite', 'dubwise.dubsbadhygiene.thirst', 'dubwise.dubsmintmenus', 'dubwise.dubsmintminimap', 'dubwise.dubsrimkit', 'blues.forge', 'yourname.effigys.mod', 'carnysenpai.enableoversizedweapons', 'mandrake.rm.pyrinth', 'keshash.extraexplosioneffects', 'azravos.factioncustomizer', 'kosaro.fahrenheitandcelsius', 'realify.firefoam', 'kathanon.floatsubmenu', 'temeez.floorlights2', 'albion.goexplore', 'arcjc007.gravshipexporter', 'arcjc007.gravshipcrashes', 'sk.gravshipraids', 'imagitama.rimworldgravshiprangeonmap', 'amegakull.scvrole', 'llunak.moreprecepts', 'agentblac.makepawnsprisoners', 'mlie.incidentdisabler', 'koth.isid', 'mandrake.rm.injections', 'mandrake.rm.aftermath', 'mandrake.rm.visibility', 'mandrake.rm.graffiti', 'mandrake.rm.sacredgraffiti', 'mandrake.rm.inhabited', 'mandrake.rut.inhabited', 'haecriver.injuredcarry', 'ferny.easycaravanformation', 'turnovus.biotech.integratedgenes', 'jaxe.bubbles', 'mlie.interactionareasettings', 'mandrake.rsw.jawarules', 'jecrell.jecstools', 'kikohi.jewelry', 'nep.landonanything', 'mlie.justputitoverthere', 'linnun.keepconverting', 'vaguelysexual.modpackageid.goeshere', 'costel.layeredapparel', 'noneobsidiaexpansion.ledlightsstrip', 'mlie.linkablesettings', 'mlie.logafterdeferror', 'nozome.mapmodeframework', 'm00nl1ght.mappreview', 'udon.masslovein', 'sirdarkelf.meaningfulencounters', 'andromeda.milkyway', 'rabiosus.minesight', 'mandrake.rut.scavengerevents', 'hali.modifylandingtile', 'deadmano.moodalerts', 'acutus.moodchainreaction', 'snobi.mutatorworldicons', 'zylle.nightlights', 'dingo.noforcedslowdown', 'mlie.nomissinggeneicons', 'edern.norandomapparelonideoedit', 'jaeger972.nomadfreindlyquests', 'avilmask.nonunopinata', 'planetace.nondestructivegravlaunch', 'mehni.numbers', 'coolzie.oocreboost', 'alleykat.persistentprecepts', 'mlie.perspectivebuildings', 'mlie.preceptsandmemes', 'm00nl1ght.unofficialupdates.preparelanding', 'dawnsglow.qualcolor', 'zal.randomgrowthchoices', 'wemd.realisticdarknesslight', 'mlie.realistichumansounds', 'mlie.relevantstatsindescription', 'petetimessix.researchreinvented', 'scorpio.resourcedictionary', 'alma.tossem', 'dubwise.rimefeller', 'mlie.rimquest', 'depscian.rimtunes', 'mandrake.rut.empirepursuit', 'rwnodetree.rwplanetatmosphere', 'plusblankplus.scenarioamenderfork', 'hellrevenger.searchoption', 'avilmask.selfdyeing', 'sensiblebedownership.1trickpwnyta', 'flyingsloth.scfilthreducer', 'spacemoth.showknowntechprints', 'dark.signs', 'mlie.slaverebellionsimproved', 'astryl.sleepingbuddies', 'weilbyte.snapout', 'krelinos.socialexpfromtrade', 'mlie.spaceworms', 'jpt.speakup', 'elshender.stackablechunks', 'amoruch.rimworldstealingmod', 'karshou.storagememory', 'mandrake.rm.strandedquest', 'kas.strongerscaling', 'moistestwhale.stuffontablesforked', 'mlie.tabsorting', 'propickelz.tinkerbench', 'smashphil.dropspot', 'automatic.traderships', 'kearril.tradingoptionscontinue', 'geojak.tributedemand', 'ferny.triumphantresearch', 'marvinkosh.ughyougotme', 'madarauchiha.undraftaftertucking', 'vanillaexpanded.vanillabackstoriesexpanded', 'vanillaexpanded.vbrewe', 'vanillaexpanded.vcooke', 'vanillaexpanded.vee', 'oskarpotocki.vfe.tribals', 'vanillaexpanded.vfearchitect', 'vanillaexpanded.vfefactory', 'vanillaexpanded.vfepropsanddecor', 'vanillaexpanded.vfesecurity', 'vanillaexpanded.gravship', 'vanillaexpanded.helixiengas', 'vanillaexpanded.vexploratione', 'vanillaexpanded.outposts', 'vanillaquestsexpanded.generator', 'vanillaracesexpanded.genie', 'vanillaracesexpanded.saurid', 'vanillaexpanded.vanillatraitsexpanded', 'ninagoblin.visitsettlements', 'ogliss.g223.wanderingcaravans', 'addvans.wasdedpawn', 'bodlosh.weaponstats', 'revolus.whatsmissing', 'co.uk.epicguru.whatsthatmod', 'fluffy.worktab', 'ferny.worldbuilder', 'funkyshit.mods.worldedit.alpha', 'bs.xenotypespawncontrol', 'mlie.yayoscaravan', 'mlie.yayoscombat3', 'mlie.yayosmeteor', 'lazyfridaystudio.genesexpandedeyes', '7f.alienworlds.tidallylocked', 'neronix17.retexture.charactereditor', 'jaeger972.factionterritories', 'aoba.fortress.industrial', 'gmmp.dungeon', 'mandrake.rsw.jawavoice', 'neku.largepawns', 'lwm.deepstorage', 'andromeda.niceresearchtab', 'mandrake.rm.planetpresetprime', 'memegoddess.replacestuff', 'jaxe.rimhud', 'zal.spaceports', 'co.uk.epicguru.factionloadout', 'kathanon.searchablemenus', 'mlie.showmeyourhands', 'vanillaexpanded.vchemfuele', 'mrhydralisk.voeadditionaloutposts', 'vanillaexpanded.vwel', 'mandrake.rut.weathersuite', 'erdelf.humanoidalienraces', 'mehni.pickupandhaul', 'oskarpotocki.vfe.pirates', 'vanillaexpanded.vmemese', 'opa.allspecialistscanwork', 'broms.deeporbit', 'teiwaz.gtgtradercore', 'keyz182.keyzallowutilities', 'toastyman.moreritualseats', 'sugarcube.puahsharedstorage', 'neronix17.toolbox', 'vanillaexpanded.vgeneticse', 'oskarpotocki.vanillavehiclesexpanded', 'divinederivative.romance', 'brrainz.achtung', 'sarg.alphavehiclesneolithic', 'kem.beardadjustment', 'redmattis.bigsmall.core', 'lovelydovey.sex.witheuterpe', 'mandrake.rut.longhunger', 'neronix17.outerrim.core', 'neronix17.outland.genetics', 'redmattis.optional', 'avilmask.commonsense', 'mandrake.rsw.desertvehiclereskin', 'lovelydovey.sex.withrosaline', 'neronix17.outerrim.galacticempire', 'neronix17.outerrim.rebelalliance', 'frozensnowfox.complexjobs', 'dubwise.dubsbreakmod', 'taranchuk.performanceoptimizer', 'co.uk.epicguru.meleeanimation', 'lordfelix.rimcontrol', 'meathax.showmeyourtools', 'lee.theforce.lightsaber', 'mandrake.rm.mineshaft', 'mandrake.rm.proximityhatch', 'mandrake.rsw.ionweapons', 'mandrake.rut.shipmemory', 'mandrake.rut.antiquities', 'mandrake.rm.wreckedmachines', 'mandrake.rm.gimmesomeslack', 'mandrake.rm.coldstorage', 'mandrake.rsw.starwarsraces', 'mandrake.rsw.bacta', 'mandrake.rsw.patches', 'mandrake.rsw.droidworks', 'mandrake.rut.droidrepairjobs', 'mandrake.rm.explosiveknockback', 'mandrake.rm.kineticarms', 'mandrake.rm.oracle', 'mandrake.rm.property', 'mandrake.rm.rimdefdump', 'mandrake.rut.birthhatchdemo', 'arandomkiwi.rimthemes', 'mandrake.rut.menushell', 'mandrake.rm.gravshiplanding', 'kutte.stairs', 'mandrake.rm.hugethings', 'mandrake.rut.injections', 'mandrake.rsw.cuisine', 'mandrake.rsw.armoury', 'mandrake.rsw.shokk', 'mandrake.rsw.injections', 'mandrake.rut.ashkarrlandmarkart', 'mandrake.rut.doctrine', 'mandrake.rsw.gizkastowaway', 'mandrake.rut.rites', 'mandrake.rm.shipvermin', 'mandrake.rut.researchretag', 'mandrake.rut.pawnflavor', 'mandrake.rut.pyrelandsmechanics']; manifest mods not running ['ray1203.simplecamerasetting']; excluded mods running ['mandrake.rut.pyrelandsmechanics']",
+   "ok": false,
+   "required": true,
+   "status": "FAIL"
+  },
+  {
+   "expected": "0 changes (plan only)",
+   "id": "3.2.1",
+   "name": "deploy current: compose biomes + UtinniPatches",
+   "observed": "--compose biomes rc=0 drift=0; --mod UtinniPatches rc=0 drift=0",
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  },
+  {
+   "expected": "source == repo stamp == deployed stamp, DLL bytes equal",
+   "id": "3.8.4",
+   "name": ".srchash agrees across source, repo and deployed",
+   "observed": "3 DLLs agree",
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  },
+  {
+   "expected": "each assembly loaded once, by its owning mod, from the deployed bytes",
+   "id": "3.2.3",
+   "name": "loaded assemblies are the deployed ones",
+   "observed": "FireEcologyHook: running sha256 != deployed file; RimMandrake.Biomes: running sha256 != deployed file; RimMandrake.Utinni.UtinniPatches: running sha256 != deployed file; FireEcologyHook mvid=273d7a23-1233-4dae-a467-a474453f0d2d; RimMandrake.Biomes mvid=9cc43136-e4c4-4f0a-b7cb-be6bb3cd7bfc; RimMandrake.Utinni.UtinniPatches mvid=7c27b566-4293-4844-ba97-eb86c1e2c586",
+   "ok": false,
+   "required": true,
+   "status": "FAIL"
+  },
+  {
+   "expected": "all 29 defs found",
+   "id": "3.8.5",
+   "name": "defs as loaded + def fingerprint",
+   "observed": "found 29/29 notFound [] fingerprint 417df172fdb5e402",
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  },
+  {
+   "expected": "shipped defaults (plan 3.3)",
+   "id": "3.3",
+   "name": "Mod Settings at shipped defaults",
+   "observed": "all 45 at shipped defaults; no settings file (defaults: ON)",
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  },
+  {
+   "expected": "no CommonalityOfAnimal / roster xref / Pyrelands exception",
+   "id": "3.8.7",
+   "name": "log since load is clean",
+   "observed": "0 refusing line(s); 0 allowed burnedDef lines",
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  },
+  {
+   "expected": "< 10.0",
+   "id": "3.8.12",
+   "name": "loadavg < 10",
+   "observed": 7.28,
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  },
+  {
+   "expected": "0 open dialogs",
+   "id": "3.8.dialogs",
+   "name": "no unexpected dialogs",
+   "observed": "closed 1 benign, 0 open",
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  },
+  {
+   "expected": "snapshot written",
+   "id": "3.8.snapshot",
+   "name": "Mod_* settings snapshot",
+   "observed": "100 Mod_*.xml snapshotted to Transient/pv5_snapshot_full",
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  }
+ ],
+ "utc": "2026-11-22T15:28:20Z"
+}

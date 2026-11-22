@@ -139,5 +139,15 @@
   "class": "HARNESS",
   "unrepaired": "plant_density_one_control_map stays UNMEASURED by construction (no bridge tool regenerates the site's seed and tile with plantDensity 1.0 before generation); every other component PASS on the fixed build: embergrass_regrows, regrow_dry_watered_vanilla (the e63595716c ember-grass rate fix, owed case RIMMANDRAKE_TRACE_PYRE_EMBERGRASS_GROWS_TENTH_OF_ITS_RATE), grass_census_first, grass_chokes_ground",
   "owner": "RIMMANDRAKE_BUILD_PYRE_GRASS_FOIL_SAME_SEED_DENSITY_ONE"
+ },
+ "sc_walk": {
+  "label": "walk_season",
+  "identity": "identity_full.json",
+  "held": [
+   "weather: Clear locked at the site's start",
+   "storyteller quiet, incident queue cleared",
+   "walk shield: foreign hostile arrivals of his full list removed (RIMMANDRAKE_SHIELD_PYRE_WALK_FROM_FULL_LIST_EVENTS)"
+  ],
+  "note": "his full list (315 mods) on ArchBig, full-list site NS_Pyrelands_site_1_417df172fdb5_visit5full (tile 178), gate B CLEAN; PYRE_WALK=1"
  }
 }

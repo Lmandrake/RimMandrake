@@ -107,7 +107,10 @@ for tid, e in sorted(T.items()):
     if "unrepaired" in o and row["verdict"] != "UNMEASURED":   # a needed check not shown both ways is not counted
         row["detail"] = "not counted (unrepaired, see `unrepaired`); its components read %s: %s" % (row["verdict"], row["detail"])
         row["verdict"] = "UNMEASURED"
-    row.update({k: IDENT[k] for k in ("mod_hash", "game_build", "active_mods", "tier", "unit") if k in IDENT})
+    ident = json.load(open(os.path.join(E, o["identity"]))) if o.get("identity") else IDENT   # a full-list row's own line
+    if o.get("identity"):
+        row["mod_sha"] = ident.get("mod_sha", row["mod_sha"])
+    row.update({k: ident[k] for k in ("mod_hash", "game_build", "active_mods", "tier", "full_list", "unit") if k in ident})
     rows.append(row)
 with open(os.path.join(VD, "rows.jsonl"), "w") as fh:
     for r in rows:

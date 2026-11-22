@@ -22,12 +22,13 @@ Mod changes since visit 4's build ca2accf045: e63595716c (ember grass x1 on dry 
 - 06:45 the hourly burn_line captures show the fire's trail as ruler-straight one-cell lanes: filed RIMMANDRAKE_WIDEN_PYRE_FIRE_TRAILS_RUN_AS_RULER_STRAIGHT_LANES (the bar asks a judge for 'natural').
 - 07:08 walk save PYRELANDS_0.1.0_VISIT5_WALK written on the reloaded tier site (stat-diff: that file alone new, 27.9 MB); every station looked at in a tight cell-rect capture (screenshots/walk_station_*.jpg).
 - 07:12 rows built (make_rows.py): 32 PASS, 3 UNMEASURED of 35 checks (33 touched + sc_fire_walks_with_wind and P_gate, owed). Next: sc_walk on his full list (ArchBig restart).
+- 07:11 ArchBig stopped; his full list restored by modset_builder --restore (315 active, md5-verified); launched directly, bridge after 787 s. Gate A on the full list: 3.8.3 (extra mods, the list itself) and 3.2.3 (running sha != file: Prepatcher; the module ids match the tier run's) refused, every other row PASS, def fingerprint 417df172fdb5e402. 07:32 full-list site NS_Pyrelands_site_1_417df172fdb5_visit5full (tile 178) built, gate B CLEAN; identity --full (mod_hash 9c2c8828..., the tier's). walk_season started with PYRE_WALK=1.
 
 ## Exit
 
 ```
-ingame_rows: {}
+ingame_rows: {P_ambient_ash_drift: pass, P_animal_census: pass, P_ashfall_drifts: pass, P_ashfall_weather_accumulation: pass, P_blackrain: pass, P_furnace_room: pass, P_gate: pass, P_grass_cover: pass, P_mapgen_log: pass, P_scorchfruit_produces: pass, P_scorchfruit_spoils: pass, P_startup_and_def_wiring: pass, sc_ash_watered: pass, sc_ashwallow: pass, sc_burn_compounds: pass, sc_burn_line_walks: pass, sc_fire_dusts_ash: pass, sc_fire_walks_with_wind: pass, sc_firefoam_sprayer: unmeasured, sc_firehawk: pass, sc_firehawk_rewards: pass, sc_flamefang_venom: pass, sc_foreign_arrivals: pass, sc_furnace: pass, sc_grass_regreens: unmeasured, sc_heat_dome: pass, sc_no_rain: pass, sc_populations: pass, sc_rite_hook_alone: pass, sc_ruins: pass, sc_sand_shovel: pass, sc_scorchfruit: pass, sc_three_skies: pass, sc_ullai: pass, sc_walk: unmeasured}
 strange_open: 0
-savegame: (not yet written)
+savegame: C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Saves\PYRELANDS_0.1.0_VISIT5_WALK.rws
 exit_met: false
 ```
