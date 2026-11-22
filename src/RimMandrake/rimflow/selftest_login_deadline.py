@@ -1,0 +1,213 @@
+#!/usr/bin/env python3
+"""selftest_login_deadline.py: the forewarning of a login's fixed deadline (login_watch.login_deadlines and its step).
+
+Page: design/specs/2026-11-22-login-deadline-forewarning/boundary.md. Each t_<promise> is that page's promise.
+Why: on 2026-11-22 the lukas login reached its refreshTokenExpiresAt (06:06:40 PST); the last refresh before it gave an
+access token to 10:42 PST, and from then the login was dead until the owner ran /login at 11:20 PST. Nothing warned
+before it died, though the deadline was in the credential file for 30 days.
+"""
+import json
+import os
+import sys
+import tempfile
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+import dispatcher as D  # noqa: E402
+import login_watch as LW  # noqa: E402
+
+FAILS = []
+NOW = 1_800_000_000.0
+DAY = 86400.0
+SECRET = "sk-ant-ort01-PLANTED-SECRET-must-never-appear"
+
+
+def check(name, ok, detail=""):
+    print(("ok   " if ok else "FAIL ") + name + (("  (%s)" % detail) if detail and not ok else ""))
+    if not ok:
+        FAILS.append(name)
+
+
+def vault(d, accts, live="lukas"):
+    """accts: {name: deadline epoch s | None (field absent) | 'junk' (unreadable file)}."""
+    for a, dl in accts.items():
+        os.makedirs(os.path.join(d, a), exist_ok=True)
+        p = os.path.join(d, a, ".credentials.json")
+        with open(p, "w") as f:
+            if dl == "junk":
+                f.write("{not json")
+                continue
+            o = {"accessToken": SECRET, "refreshToken": SECRET, "expiresAt": int((NOW + 3600) * 1000)}
+            if dl is not None:
+                o["refreshTokenExpiresAt"] = int(dl * 1000)
+            json.dump({"claudeAiOauth": o}, f)
+    with open(os.path.join(d, "live.json"), "w") as f:
+        json.dump({"account": live, "rt_hash": "x"}, f)
+    return d
+
+
+def sch():
+    return {"alarm_every_s": 21600, "login_watch": {"enabled": True, "auto_switch": False, "deadline_warn_s": 3 * DAY}}
+
+
+def obs(root, probe=(True, ""), deadlines=None):
+    reader = deadlines or (lambda: LW.login_deadlines(root))
+    return {"paused": None, "agents": {"state": "MISSING"},
+            "login": {"probe": lambda: probe, "account": lambda: ("lukas", ()), "deadlines": reader}}
+
+
+def run(st, o, now=NOW):
+    acts = []
+    hold = LW.step(sch(), st, o, now, lambda **k: acts.append(k), D.iso)
+    return hold, acts
+
+
+def kinds(acts, prefix="login:deadline"):
+    return [a for a in acts if a.get("do") == "alarm" and str(a.get("kind", "")).startswith(prefix)]
+
+
+def have():
+    if not hasattr(LW, "login_deadlines"):
+        check("login_watch.login_deadlines exists", False, "no forewarning code on this tree")
+        return False
+    return True
+
+
+def t_a_login_near_its_deadline_alarms():
+    if not have():
+        return
+    with tempfile.TemporaryDirectory() as d:
+        dl = NOW + 2 * DAY
+        vault(d, {"lukas": NOW + 40 * DAY, "steven": dl})
+        _, a = run({}, obs(d))
+        al = kinds(a)
+        check("a-login-near-its-deadline-alarms: one alarm, for steven only", len(al) == 1 and "steven" in al[0]["kind"],
+              repr([x.get("kind") for x in al]))
+        if al:
+            x = al[0]
+            check("a-login-near-its-deadline-alarms: kind is per account and deadline",
+                  x["kind"] == "login:deadline:steven:%d" % int(dl))
+            check("a-login-near-its-deadline-alarms: into the ledger and the Conductor log",
+                  x.get("note") is True and x.get("conductor_log") is True)
+            check("a-login-near-its-deadline-alarms: names the local deadline", D.iso(dl)[:10] in x["why"] or
+                  LW._local(dl)[:10] in x["why"], x["why"])
+            check("a-login-near-its-deadline-alarms: vault account renews by enroll from a plain terminal",
+                  "claude-account enroll steven" in x["raise_first"], x["raise_first"])
+
+
+def t_the_live_login_renews_from_a_plain_terminal():
+    if not have():
+        return
+    with tempfile.TemporaryDirectory() as d:
+        vault(d, {"lukas": NOW + 1 * DAY}, live="lukas")
+        _, a = run({}, obs(d))
+        al = kinds(a)
+        check("the-live-login-renews-from-a-plain-terminal: alarms", len(al) == 1)
+        if al:
+            rf = al[0]["raise_first"]
+            check("the-live-login-renews-from-a-plain-terminal: says live and `claude auth login`, not /login in a window",
+                  "live" in al[0]["why"] and "claude auth login" in rf and "not /login in a window" in rf, rf)
+
+
+def t_a_past_deadline_says_expired():
+    if not have():
+        return
+    with tempfile.TemporaryDirectory() as d:
+        vault(d, {"system": NOW - 3600})
+        _, a = run({}, obs(d))
+        al = kinds(a)
+        check("a-past-deadline-says-expired", len(al) == 1 and "EXPIRED" in al[0]["raise_first"],
+              repr([(x.get("kind"), x.get("raise_first")) for x in al]))
+
+
+def t_a_login_far_from_its_deadline_is_quiet():
+    if not have():
+        return
+    with tempfile.TemporaryDirectory() as d:
+        vault(d, {"lukas": NOW + 3 * DAY + 60, "steven": NOW + 29 * DAY})
+        h, a = run({}, obs(d))
+        check("a-login-far-from-its-deadline-is-quiet", not kinds(a) and h is None, repr(a))
+
+
+def t_an_unreadable_deadline_is_unmeasured_not_quiet():
+    if not have():
+        return
+    with tempfile.TemporaryDirectory() as d:
+        vault(d, {"lukas": NOW + 20 * DAY, "steven": None, "system": "junk"})
+        r = LW.login_deadlines(d)
+        check("an-unreadable-deadline-is-unmeasured-not-quiet: reader says why for each",
+              r["lukas"]["deadline"] == NOW + 20 * DAY and r["steven"]["deadline"] is None and r["steven"]["why"]
+              and r["system"]["deadline"] is None and r["system"]["why"], repr(r))
+        _, a = run({}, obs(d))
+        al = kinds(a, "login:deadline:unmeasured")
+        check("an-unreadable-deadline-is-unmeasured-not-quiet: one unmeasured alarm per blind account",
+              sorted(x["kind"] for x in al) == ["login:deadline:unmeasured:steven", "login:deadline:unmeasured:system"],
+              repr([x.get("kind") for x in a]))
+    with tempfile.TemporaryDirectory() as d:
+        r = LW.login_deadlines(os.path.join(d, "absent"))
+        check("an-unreadable-deadline-is-unmeasured-not-quiet: a missing vault is no reading, not an empty set",
+              r is None)
+        _, a = run({}, obs(os.path.join(d, "absent")))
+        check("an-unreadable-deadline-is-unmeasured-not-quiet: a missing vault alarms blind",
+              [x["kind"] for x in kinds(a)] == ["login:deadline:blind"], repr([x.get("kind") for x in a]))
+
+
+def t_the_deadline_check_never_reads_a_token():
+    if not have():
+        return
+    with tempfile.TemporaryDirectory() as d:
+        vault(d, {"steven": NOW + DAY, "system": None})
+        r = LW.login_deadlines(d)
+        _, a = run({}, obs(d))
+        blob = json.dumps(r) + json.dumps(a, default=str)
+        check("the-deadline-check-never-reads-a-token", SECRET not in blob and "accessToken" not in blob
+              and "refreshToken\"" not in blob)
+
+
+def t_a_renewed_login_ends_the_warning():
+    if not have():
+        return
+    with tempfile.TemporaryDirectory() as d:
+        vault(d, {"steven": NOW + DAY})
+        st = {}
+        _, a1 = run(st, obs(d))
+        vault(d, {"steven": NOW + 30 * DAY})            # a fresh sign-in moved the deadline
+        _, a2 = run(st, obs(d), NOW + 300)
+        check("a-renewed-login-ends-the-warning", len(kinds(a1)) == 1 and not kinds(a2), repr(a2))
+
+
+def t_a_broken_deadline_check_never_stops_the_login_probe():
+    if not have():
+        return
+    with tempfile.TemporaryDirectory() as d:
+        def boom():
+            raise RuntimeError("planted")
+        st = {}
+        run(st, obs(d, probe=(False, "auth status says not logged in"), deadlines=boom))
+        h, a = run(st, obs(d, probe=(False, "auth status says not logged in"), deadlines=boom), NOW + 120)
+        check("a-broken-deadline-check-never-stops-the-login-probe: still held and alarmed dead",
+              bool(h) and any(x.get("kind", "").startswith("login:expired:") for x in a), repr(a))
+        check("a-broken-deadline-check-never-stops-the-login-probe: the break is itself an alarm",
+              any(x.get("kind") == "login:deadline:watch" for x in a), repr([x.get("kind") for x in a]))
+
+
+def t_the_dispatcher_wires_the_reader():
+    if not have():
+        return
+    o = D.login_obs({"login_watch": {"enabled": True}})
+    check("the-dispatcher-wires-the-reader", isinstance(o, dict) and callable(o.get("deadlines")), repr(o and list(o)))
+
+
+def main():
+    for t in (t_a_login_near_its_deadline_alarms, t_the_live_login_renews_from_a_plain_terminal,
+              t_a_past_deadline_says_expired, t_a_login_far_from_its_deadline_is_quiet,
+              t_an_unreadable_deadline_is_unmeasured_not_quiet, t_the_deadline_check_never_reads_a_token,
+              t_a_renewed_login_ends_the_warning, t_a_broken_deadline_check_never_stops_the_login_probe,
+              t_the_dispatcher_wires_the_reader):
+        t()
+    print("selftest_login_deadline: %s" % ("FAILED %d" % len(FAILS) if FAILS else "OK"))
+    return 1 if FAILS else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

@@ -57,7 +57,11 @@ import session_match as SM
 DEFAULTS = {
     "enabled": False, "confirm_n": 2, "blind_alarm_n": 5, "stranded_after_s": 300, "limit_wait_s": 5 * 3600, "rescue_wait_s": 2 * 3600, "poke_wait_s": 600, "rescues_per_day": 2, "probe_timeout_s": 30,
     "auto_switch": False, "switch_verify_s": 900, "usage_stale_s": 3600, "account_cmd": "claude-account",
-    "hold_file": None, "usage_latest": None, "armed_file": None, "machine_file": None}
+    "hold_file": None, "usage_latest": None, "armed_file": None, "machine_file": None,
+    # deadline_warn_s guards a login that dies mid-session at its fixed refreshTokenExpiresAt: on 2026-11-22 the lukas
+    # login died 10:42 PST with no warning and the owner had to /login in the Conductor window. 3 days gives him several
+    # sittings to renew it at a time he picks (design/specs/2026-11-22-login-deadline-forewarning/boundary.md, LIMITS).
+    "deadline_warn_s": 3 * 86400, "vault_root": "~/.claude-accounts"}
 SCRUB_ENV = ("ANTHROPIC_API_KEY", "ANTHROPIC_AUTH_TOKEN", "ANTHROPIC_BASE_URL", "CLAUDE_CODE_OAUTH_TOKEN",
              "CLAUDE_CONFIG_DIR", "CLAUDE_SECURESTORAGE_CONFIG_DIR")    # the login the windows use, nothing else
 
@@ -302,6 +306,74 @@ def switch_failed(st):
     st.setdefault("login", {})["switch_at"] = 0
 
 
+def _local(ts):
+    return datetime.datetime.fromtimestamp(ts, zoneinfo.ZoneInfo("America/Los_Angeles")).strftime("%Y-%m-%d %H:%M %Z")
+
+
+def login_deadlines(root):
+    """-> {account: {"deadline": epoch s | None, "why": str}} for each vault login under root (claude-account's
+    ~/.claude-accounts/<account>/.credentials.json), plus "_live": the account live.json names (or None); None when the
+    vault cannot be listed at all (no reading, never an empty set). Only refreshTokenExpiresAt is kept: no token leaves
+    this function. That field is the login's fixed deadline: the CLI merges a refresh as min(old, new), so no refresh
+    moves it; only a new sign-in does."""
+    root = os.path.expanduser(root)
+    try:
+        names = sorted(n for n in os.listdir(root) if os.path.isfile(os.path.join(root, n, ".credentials.json")))
+    except OSError:
+        return None
+    out = {}
+    for n in names:
+        try:
+            with open(os.path.join(root, n, ".credentials.json"), encoding="utf-8") as f:
+                o = (json.load(f) or {}).get("claudeAiOauth") or {}
+            v = o.get("refreshTokenExpiresAt")
+            out[n] = ({"deadline": v / 1000.0, "why": ""} if isinstance(v, (int, float)) and not isinstance(v, bool)
+                      else {"deadline": None, "why": "no refreshTokenExpiresAt in the credential"})
+        except (OSError, ValueError, AttributeError) as e:
+            out[n] = {"deadline": None, "why": "credential unreadable: %s" % type(e).__name__}
+    try:
+        with open(os.path.join(root, "live.json"), encoding="utf-8") as f:
+            live = (json.load(f) or {}).get("account")
+    except (OSError, ValueError, AttributeError):
+        live = None
+    out["_live"] = live if isinstance(live, str) else None
+    return out
+
+
+def _deadline_step(cfg, lo, now, act):
+    """Forewarn a login's fixed deadline (RIMMANDRAKE_TRACE_WINDOW_LOGIN_EXPIRED_HE_THOUGHT_IT_FIXED). One alarm kind
+    per account and deadline, so a new sign-in ends the old warning; the Dispatcher repeats a kind every alarm_every_s."""
+    if not lo.get("deadlines"):
+        return
+    r = lo["deadlines"]()
+    if r is None:
+        act(do="alarm", kind="login:deadline:blind", note=True, conductor_log=False,
+            why="the login vault %s cannot be listed: a login near its deadline would go unwarned" % cfg["vault_root"],
+            raise_first="Login deadline check is blind.")
+        return
+    live = r.get("_live")
+    for a in sorted(k for k in r if not k.startswith("_")):
+        dl, why = r[a]["deadline"], r[a]["why"]
+        if dl is None:
+            act(do="alarm", kind="login:deadline:unmeasured:%s" % a, note=True, conductor_log=False,
+                why="%s's login deadline is UNMEASURED: %s" % (a, why),
+                raise_first="Login deadline of %s unknown." % a)
+            continue
+        left = dl - now
+        if left > cfg["deadline_warn_s"]:
+            continue
+        is_live = a == live
+        how = ("`claude auth login` from a plain terminal, not /login in a window" if is_live
+               else "`claude-account enroll %s` from a plain terminal (the account's owner signs in)" % a)
+        when = ("EXPIRED %s" % _local(dl)) if left <= 0 else ("dies %s, in %.1f h" % (_local(dl), left / 3600.0))
+        act(do="alarm", kind="login:deadline:%s:%d" % (a, int(dl)), note=True, conductor_log=True,
+            why="%s login %s %s. A refresh cannot move this deadline (the CLI keeps the earlier one); only a new sign-in"
+                " does.%s" % ("the live" if is_live else "vault", a, when,
+                              " Every window and run on it stops then." if is_live and left > 0 else
+                              " A switch to it is refused." if not is_live else ""),
+            raise_first="LOGIN %s %s. Renew: %s." % (a, when, how))
+
+
 def step(sch, st, obs, now, act, iso):
     """-> the hold reason while the login is dead, else None. Never raises past the caller's guard for a bad reading:
     a probe with no reading leaves the state as it stands."""
@@ -310,6 +382,12 @@ def step(sch, st, obs, now, act, iso):
     if not cfg["enabled"] or not lo:
         return None
     L = st.setdefault("login", {})
+    try:
+        _deadline_step(cfg, lo, now, act)
+    except Exception as e:  # noqa: BLE001 - the deadline check never stops the probe below
+        act(do="alarm", kind="login:deadline:watch", note=True, conductor_log=True,
+            why="the login deadline check raised %s: %s" % (type(e).__name__, e),
+            raise_first="The login deadline check is broken; a login near its deadline would go unwarned.")
     ok, why = lo["probe"]()
     if ok is None:                                    # blind: an outage stays one, a healthy login stays healthy
         L["blind"] = L.get("blind", 0) + 1

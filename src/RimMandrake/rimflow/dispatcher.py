@@ -2421,6 +2421,7 @@ def login_obs(sch):
         except Exception:  # noqa: BLE001 - the alarm says UNMEASURED; nothing may be picked on an unknown reading
             return None, None
     return {"probe": lambda: LW.probe(claude_exe(), cfg["probe_timeout_s"]), "account": account,
+            "deadlines": lambda: LW.login_deadlines(cfg["vault_root"]),
             "stranded": lambda sessions: LW.stranded(sch, cfg, sessions, time.time())}
 
 
