@@ -1307,6 +1307,16 @@ def animal_census(t):
         t.screenshot(rect=_frame(t, [(p.get("x"), p.get("z")) for p in wild], cluster=FRAME_CLUSTER))
 
 
+
+def cover_ratio(census, terr, fert, built):
+    """Pure. The grass cover census of one map -> (covered, plantable, ratio): roster plants (PLANT_MANIFEST) over the
+    cells whose top terrain has fertility > 0, less the artificial buildings. grass_cover and the plantDensity-1.0 foil
+    (density_foil_verdict) both count through this one function, so the foil is read by the same census."""
+    plantable = sum(n for d, n in (terr or {}).items() if ((fert or {}).get(d) or {}).get("fertility", 0) > 0)
+    plantable -= built or 0
+    covered = sum(v for k, v in (census or {}).items() if k in PLANT_MANIFEST)
+    return covered, plantable, (float(covered) / plantable if plantable > 0 else None)
+
 @suite.chain("grass_cover")
 def grass_cover(t):
     _pad(t, PAD_PROBE)
@@ -1317,15 +1327,12 @@ def grass_cover(t):
         if _live(t):
             fert = _get_defs(t, ";".join("TerrainDef/%s" % d for d in sorted(terr)), "fertility",
                              deep=False)
-            plantable = sum(n for d, n in terr.items()
-                            if (fert.get(d) or {}).get("fertility", 0) > 0)
             b = t.bridge_call("jawa/list_things", group="BuildingArtificial", limit=1)
             built = (b or {}).get("countMatched", 0)
-            plantable -= built
-            covered = sum(v for k, v in census.items() if k in PLANT_MANIFEST)
-            ratio = float(covered) / plantable if plantable > 0 else None
+            covered, plantable, ratio = cover_ratio(census, terr, fert, built)
             dens = (_get_defs(t, "BiomeDef/RM_Pyrelands", "plantDensity", deep=False).get("RM_Pyrelands") or {})
             _GEN["grass_census"] = {"mutationsBefore": list(_GEN.get("mutations") or []), "ratio": ratio,
+                                    "covered": covered, "plantable": plantable,
                                     "plantDensity": dens.get("plantDensity")}   # sc_grass_regreens reads it
             _note(t, "coverage", {"covered": covered, "plantableCells": plantable,
                                   "buildingsExcluded": built, "ratio": ratio,
@@ -6351,10 +6358,89 @@ def _r6_ullai_and_giant(t):
                 _fail(why)
 
 
+
+FOIL_BIOME = "RM_Pyrelands"
+FOIL_DENSITY = 1.0   # the value Map Designer caps plantDensity to (RM_PyrelandsDensityEnforcer.cs header, bisected 2026-09-18)
+# planted state for plant_density_one_control_map: the foil is generated at the site's own enforced plantDensity, so it
+# regenerates the site itself (same seed, same density) and its cover share cannot read below the site's: the part must
+# read FAIL. Its reading beside the row also shows whether the same seed reproduces the site.
+PLANT_FOIL_AT_SITE_ENV = "PYRE_PLANT_FOIL_AT_SITE_DENSITY"
+
+
+def foil_override(density):
+    return "BiomeDef/%s.plantDensity=%s" % (FOIL_BIOME, density)
+
+
+def density_foil_verdict(gc, r, fert, density=FOIL_DENSITY):
+    """Pure. sc_grass_regreens' plantDensity-1.0 control. gc: grass_cover's site census record (_GEN["grass_census"]);
+    r: the jawa/map_seed_foil reply; fert: {terrainDef: {"fertility": f}} for the foil's terrain defs ->
+    (ok, why, reading). ok is True when the foil's cover share is strictly below the site's (the bar: the enforced
+    map is thicker than the same seed at plantDensity 1.0), False when it is not, None when the read cannot decide:
+    no site census, a failed or blind foil call, a foil that is not the site's seed, tile biome or generator, an
+    override not held through generation or not restored, a tick or map left behind on the site."""
+    reading = {"site": None, "foil": None}
+    if not isinstance(gc, dict) or not isinstance(gc.get("ratio"), (int, float)):
+        return None, "no site cover census from grass_cover earlier in this run (%r)" % (gc,), reading
+    reading["site"] = {"ratio": gc["ratio"], "covered": gc.get("covered"), "plantable": gc.get("plantable"),
+                       "plantDensity": gc.get("plantDensity")}
+    if not isinstance(r, dict) or r.get("success") is not True:
+        return None, "the foil call failed or the tool is absent: %s" % str(r)[:300], reading
+    foil, site = r.get("foil"), r.get("site") or {}
+    if not isinstance(foil, dict):
+        return None, "the foil reply has no foil record: %s" % str(r)[:300], reading
+    if foil.get("seedEqual") is not True or foil.get("tileHash") != site.get("tileHash"):
+        return None, "the foil is not the site's seed: tileHash %r vs site %r" % (foil.get("tileHash"),
+                                                                                site.get("tileHash")), reading
+    if foil.get("biome") != FOIL_BIOME or site.get("biome") != FOIL_BIOME:
+        return None, "the foil or the site is not %s: %r / %r" % (FOIL_BIOME, foil.get("biome"), site.get("biome")), reading
+    if foil.get("generatorDef") != site.get("generatorDef") or (foil.get("sizeX"), foil.get("sizeZ")) != (
+            site.get("sizeX"), site.get("sizeZ")):
+        return None, "the foil's generator or size differs from the site's: %r" % ({"foil": [foil.get(k) for k in (
+            "generatorDef", "sizeX", "sizeZ")], "site": [site.get(k) for k in ("generatorDef", "sizeX", "sizeZ")]},), reading
+    ovs = [o for o in (r.get("overrides") or []) if isinstance(o, dict) and o.get("target") == "BiomeDef/" + FOIL_BIOME
+           and o.get("field") == "plantDensity"]
+    if len(ovs) != 1:
+        return None, "the reply does not show the plantDensity override: %r" % (r.get("overrides"),), reading
+    o = ovs[0]
+    if not isinstance(o.get("heldAfterGeneration"), (int, float)) or abs(o["heldAfterGeneration"] - density) > 1e-6:
+        return None, "plantDensity was not held at %s through generation: read %r after it" % (
+            density, o.get("heldAfterGeneration")), reading
+    if o.get("restored") != o.get("before") or o.get("before") != gc.get("plantDensity"):
+        return None, "plantDensity not put back, or not the census's value: before %r, restored %r, census %r" % (
+            o.get("before"), o.get("restored"), gc.get("plantDensity")), reading
+    if r.get("mapCountAfter") != r.get("mapCountBefore") or r.get("currentMapRestored") is not True \
+            or r.get("ticksAfter") != r.get("ticksBefore"):
+        return None, "the site was touched: maps %r -> %r, current restored %r, ticks %r -> %r" % (
+            r.get("mapCountBefore"), r.get("mapCountAfter"), r.get("currentMapRestored"), r.get("ticksBefore"),
+            r.get("ticksAfter")), reading
+    per, terr = foil.get("perDef"), foil.get("terrain")
+    if not isinstance(per, dict) or not isinstance(terr, dict) or not terr or sum(per.values()) != foil.get("countMatched"):
+        return None, "the foil census is unreadable or does not add up: countMatched %r, perDef %r" % (
+            foil.get("countMatched"), str(per)[:200]), reading
+    if sum(terr.values()) + (foil.get("terrainNull") or 0) != foil.get("cells"):
+        return None, "the foil terrain read %r of %r cells" % (sum(terr.values()), foil.get("cells")), reading
+    blind = sorted(d for d in terr if not isinstance(((fert or {}).get(d) or {}).get("fertility"), (int, float)))
+    if blind:
+        return None, "fertility unread for the foil's terrain %r" % blind, reading
+    covered, plantable, ratio = cover_ratio(per, terr, fert, foil.get("built"))
+    reading["foil"] = {"ratio": ratio, "covered": covered, "plantable": plantable, "plantDensity": density,
+                       "seed": foil.get("seed"), "pawnsToWorld": foil.get("pawnsToWorld")}
+    if ratio is None:
+        return None, "the foil has no plantable cell (%r)" % plantable, reading
+    reading["margin"] = gc["ratio"] - ratio
+    if ratio < gc["ratio"]:
+        return True, "foil cover %.3f (%d/%d) < site %.3f at plantDensity %r" % (
+            ratio, covered, plantable, gc["ratio"], gc.get("plantDensity")), reading
+    return False, "the plantDensity-%s foil reads cover %.3f (%d/%d), not below the enforced site's %.3f: the density " \
+                  "enforcer's map is not thicker than the same seed at %s" % (density, ratio, covered, plantable,
+                                                                             gc["ratio"], density), reading
+
 def _r6_embergrass_regrow(t):
     """sc_grass_regreens (g15): grass_cover's census ran with no sow, spawn or set_terrain call before it (the script's own
     call log, _r6_log_calls: _GEN["grass_census"]["mutationsBefore"] empty), on at least 0.85 of open plantable cells, and
-    the live RM_Pyrelands plantDensity was read at the census; the same-seed map at plantDensity 1.0 has no tool."""
+    the live RM_Pyrelands plantDensity was read at the census; then the same-seed, same-tile foil generated with
+    plantDensity held at 1.0 (jawa/map_seed_foil, one main-thread call, dropped before it returns) reads a lower cover
+    share by the same census (density_foil_verdict)."""
     _independent(t)
     with _comp(t, "grass_census_first"):
         gc = _GEN.get("grass_census")
@@ -6371,8 +6457,24 @@ def _r6_embergrass_regrow(t):
                 _fail("the census read plants on %r of open plantable cells (< 0.85)" % gc.get("ratio"))
     _independent(t)
     with _comp(t, "plant_density_one_control_map"):
-        _unmeasured(t, "no bridge tool regenerates the site's seed and tile with plantDensity set to 1.0 before "
-                       "generation (no def setter, no same-seed regeneration beside the live site)")
+        gc = _GEN.get("grass_census")
+        density = FOIL_DENSITY
+        if os.environ.get(PLANT_FOIL_AT_SITE_ENV) == "1" and isinstance((gc or {}).get("plantDensity"), (int, float)):
+            density = gc["plantDensity"]   # planted state: the foil at the site's own density
+            _note(t, "PLANTED FAULT: %s=1, the foil generated at the site's plantDensity %r" % (PLANT_FOIL_AT_SITE_ENV,
+                                                                                            density), None)
+        r = t.bridge_call("jawa/map_seed_foil", overrides=foil_override(density), censusGroup="Plant",
+                          builtGroup="BuildingArtificial")
+        if _live(t):
+            terr = (((r or {}).get("foil") or {}).get("terrain")) if isinstance(r, dict) else None
+            fert = (_get_defs(t, ";".join("TerrainDef/%s" % d for d in sorted(terr)), "fertility", deep=False)
+                    if isinstance(terr, dict) and terr else {})
+            ok, why, reading = density_foil_verdict(gc, r, fert, density)
+            _note(t, "plantDensity-1.0 same-seed foil against the enforced site", reading)
+            if ok is None:
+                _unmeasured(t, why)
+            if not ok:
+                _fail(why)
 
 
 def _r6_beds_lit(t):

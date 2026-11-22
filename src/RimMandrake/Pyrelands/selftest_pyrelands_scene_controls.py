@@ -44,7 +44,7 @@ REMOVED = ("same_seed_gate_off_map", "vanilla_ruins_unpainted", "giant_classic_r
            "forced_rain_vanilla_control", "venom_immunity_read", "herd_thirst_gate_off_map",
            "ash_ground_gate_off_regeneration")
 # by construction still, each with the filed item that owns it (--strict ignores this list)
-KNOWN_OPEN = {"plant_density_one_control_map": "RIMMANDRAKE_BUILD_PYRE_GRASS_FOIL_SAME_SEED_DENSITY_ONE"}
+KNOWN_OPEN = {}
 # tool -> the arguments the repaired parts send
 TOOLS = {"jawa/thing_read": ("rect", "defName", "members"),
          "jawa/mod_settings_field": ("typeName", "action", "field", "key", "value"),
@@ -52,7 +52,8 @@ TOOLS = {"jawa/thing_read": ("rect", "defName", "members"),
          "jawa/weather_roll_next": (),
          "jawa/storyteller_swap": ("storytellerDef",),
          "jawa/weather_get": (),
-         "jawa/static_call": ("type", "method", "args")}
+         "jawa/static_call": ("type", "method", "args"),
+         "jawa/map_seed_foil": ("overrides", "censusGroup", "builtGroup")}
 
 RESULTS = []
 
@@ -343,6 +344,112 @@ def roster_checks(V, tools):
     check("roster toggle planted: a companion without key= -> not PASS", got.get("roster") in ("FAIL", "UNMEASURED"), got)
 
 
+
+# the visit-5 site census (design/concepts/Pyrelands/version/in_game/visit_5: 54545 of 54686 open plantable cells)
+SITE_CENSUS = {"mutationsBefore": [], "ratio": 54545.0 / 54686, "covered": 54545, "plantable": 54686, "plantDensity": 16.0}
+FOIL_TERRAIN = {"RM_FE_Ground_SoilRich": 2000, "RM_PyreAshDeep": 50000, "Sand": 5000, "Granite_Rough": 5500}
+FOIL_FERT = {"RM_FE_Ground_SoilRich": 1.4, "RM_PyreAshDeep": 0.25, "Sand": 0.06, "Granite_Rough": 0.0}
+
+
+def foil_reply(covered=20000, tile_hash=77, foil_hash=77, held=1.0, restored=16.0, ticks_after=1000, maps_after=1,
+               biome="RM_Pyrelands", generator="Base_Player", success=True, terrain=None):
+    """A jawa/map_seed_foil reply as the C# tool (JawaBenchSeedFoilTools.cs) shapes it; plantable cells 57000 - 0 built."""
+    per = {"RM_FE_Plant_EmberGrass": covered * 7 // 10, "RM_FE_Plant_Quickgrass": covered - covered * 7 // 10}
+    return {"success": success,
+            "site": {"mapIndex": 0, "tile": 5, "tileHash": tile_hash, "generatorDef": "Base_Player", "biome": "RM_Pyrelands",
+                     "sizeX": 250, "sizeZ": 250},
+            "foil": {"seed": 1, "seedEqual": tile_hash == foil_hash, "tileHash": foil_hash, "generatorDef": generator,
+                     "biome": biome, "sizeX": 250, "sizeZ": 250, "cells": 62500, "scanned": covered,
+                     "countMatched": covered, "perDef": per, "terrain": dict(terrain or FOIL_TERRAIN), "terrainNull": 0,
+                     "built": 0, "pawnsVanished": 30, "pawnsToWorld": 0},
+            "overrides": [{"target": "BiomeDef/RM_Pyrelands", "field": "plantDensity", "value": 1.0, "before": 16.0,
+                           "heldAfterGeneration": held, "restored": restored}],
+            "mapCountBefore": 1, "mapCountAfter": maps_after, "currentMapRestored": True, "ticksBefore": 1000,
+            "ticksAfter": ticks_after}
+
+
+class FoilGame(Game):
+    def __init__(self, tools, reply):
+        Game.__init__(self, tools)
+        self.reply = reply
+        self.sent = None
+
+    def call(self, tool, **kw):
+        if tool == "jawa/map_seed_foil" and tool in self.tools:
+            self.calls.append(tool)
+            self.sent = kw
+            bad = [k for k in kw if k not in set(self.tools[tool].get("parameters") or [])]
+            return {"success": False, "error": "unknown argument %r" % bad} if bad else self.reply
+        if tool == "jawa/get_defs":
+            self.calls.append(tool)
+            names = [d.split("/", 1)[1] for d in kw.get("defs", "").split(";") if "/" in d]
+            return {"success": True, "defs": [{"defName": n, "fields": {"fertility": FOIL_FERT[n]}}
+                                              for n in names if n in FOIL_FERT]}
+        return Game.call(self, tool, **kw)
+
+
+def foil_checks(V, tools):
+    v = getattr(V, "density_foil_verdict", None)
+    check("sc_grass_regreens: density_foil_verdict and cover_ratio exist", v is not None and hasattr(V, "cover_ratio"))
+    if v is None:
+        return
+    # the census function itself: roster plants over fertile cells less buildings, None on no plantable cell
+    c = V.cover_ratio({"RM_FE_Plant_EmberGrass": 3, "Plant_TreeOak": 9}, {"A": 4, "B": 6}, {"A": {"fertility": 1.0},
+                                                                                           "B": {"fertility": 0}}, 1)
+    check("sc_grass_regreens cover_ratio: roster plants only, infertile cells and buildings out -> (3, 3, 1.0)",
+          c == (3, 3, 1.0), c)
+    check("sc_grass_regreens cover_ratio: no plantable cell -> ratio None", V.cover_ratio({}, {}, {}, 0)[2] is None)
+
+    def part(reply, tl=tools, census=SITE_CENSUS):
+        V._GEN.clear()
+        if census is not None:
+            V._GEN["grass_census"] = dict(census)
+        g = FoilGame(tl, reply)
+        got = run_parts(V, g, V._r6_embergrass_regrow).get("plant_density_one_control_map")
+        return got, g
+
+    worst = {}
+    cases = (
+        ("the shipped density's foil: 20000 of 57000 cells at 1.0 under the site's 0.997", foil_reply(), None, "PASS"),
+        ("planted: a foil census thicker than the site's (57000 of 57000)", foil_reply(covered=57000), None, "FAIL"),
+        ("planted: a foil exactly equal to the site's share (54545 of 54686)",
+         foil_reply(covered=54545, terrain={"RM_PyreAshDeep": 54686, "Granite_Rough": 7814}), None, "FAIL"),
+        ("planted: a foil one cell thicker than the site (54546 of 54686)",
+         foil_reply(covered=54546, terrain={"RM_PyreAshDeep": 54686, "Granite_Rough": 7814}), None, "FAIL"),
+        ("a foil one cell thinner than the site (54544 of 54686): strictly below is the bar",
+         foil_reply(covered=54544, terrain={"RM_PyreAshDeep": 54686, "Granite_Rough": 7814}), None, "PASS"),
+        ("a companion without map_seed_foil (a stale DLL)", foil_reply(),
+         dict((k, x) for k, x in tools.items() if k != "jawa/map_seed_foil"), "UNMEASURED"),
+        ("a failed foil call", foil_reply(success=False), None, "UNMEASURED"),
+        ("a foil of another seed", foil_reply(foil_hash=78), None, "UNMEASURED"),
+        ("plantDensity re-asserted to 16 during generation", foil_reply(held=16.0), None, "UNMEASURED"),
+        ("plantDensity left at 1.0 after the call", foil_reply(restored=1.0), None, "UNMEASURED"),
+        ("a tick ran during the call", foil_reply(ticks_after=1001), None, "UNMEASURED"),
+        ("the foil left on the map list", foil_reply(maps_after=2), None, "UNMEASURED"),
+        ("a foil of another biome", foil_reply(biome="AridShrubland"), None, "UNMEASURED"),
+        ("a foil of another generator", foil_reply(generator="Encounter"), None, "UNMEASURED"),
+    )
+    for what, reply, tl, want in cases:
+        got, g = part(reply, tl if tl is not None else tools)
+        check("sc_grass_regreens foil: %s -> %s" % (what, want), got == want, got)
+    got, _ = part(foil_reply(), census=None)
+    check("sc_grass_regreens foil: no site census earlier in the run -> UNMEASURED", got == "UNMEASURED", got)
+    got, g = part(foil_reply())
+    check("sc_grass_regreens foil: the call holds BiomeDef/RM_Pyrelands.plantDensity at 1.0",
+          (g.sent or {}).get("overrides") == "BiomeDef/RM_Pyrelands.plantDensity=1.0", g.sent)
+    os.environ[V.PLANT_FOIL_AT_SITE_ENV] = "1"
+    try:   # the planted state: the foil at the site's own density regenerates the site (54545 of 54686) -> FAIL
+        got, g = part(foil_reply(covered=54545, held=16.0, terrain={"RM_PyreAshDeep": 54686, "Granite_Rough": 7814}))
+    finally:
+        del os.environ[V.PLANT_FOIL_AT_SITE_ENV]
+    check("sc_grass_regreens foil planted %s=1: the foil sent at the site's 16 and, equal to the site, read FAIL"
+          % V.PLANT_FOIL_AT_SITE_ENV, got == "FAIL" and (g.sent or {}).get("overrides")
+          == "BiomeDef/RM_Pyrelands.plantDensity=16.0", (got, g.sent))
+    ok, why, reading = v(SITE_CENSUS, foil_reply(), dict((k, {"fertility": f}) for k, f in FOIL_FERT.items()))
+    print("  foil reading: fixture margin %.3f (site %.3f, foil %.3f, limit: foil strictly below site), %d cases read"
+          % (reading.get("margin") or 0, reading["site"]["ratio"], reading["foil"]["ratio"], len(cases) + 1))
+    V._GEN.clear()
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--validation", default=os.path.join(HERE, "validation.py"))
@@ -354,7 +461,8 @@ def main():
     construction_checks(text, a.strict)
     tools = tool_checks(a.schemas)
     V = load_validation(a.validation)
-    for fn in (lambda: rain_checks(V, tools), lambda: factor_checks(V), lambda: roster_checks(V, tools)):
+    for fn in (lambda: rain_checks(V, tools), lambda: factor_checks(V), lambda: roster_checks(V, tools),
+               lambda: foil_checks(V, tools)):
         try:
             fn()
         except Exception as e:   # a part that cannot run on the base is a FAIL here, never a crash with no verdict
