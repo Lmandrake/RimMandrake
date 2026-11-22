@@ -4128,6 +4128,46 @@ def _walk_vanish_arrivals(session, r):
     return {"ok": not left, "removed": sorted(found.values()), "left": sorted(left.values()), "ids": sorted(want)}
 
 
+WALK_WILDLIFE = "walk: wildlife hurt, downed or killed by wildlife, read back as an unowned animal"
+WALK_WILDLIFE_KINDS = ("hurt", "downed", "mental", "death")
+
+
+def walk_wildlife_harm(trig):
+    """Pure. A vitals trigger the walk may resume past once its subject reads back as a wild animal: harm to a pawn,
+    neither critical nor declared. HARNESS (visit 5, 2026-11-22, ArchBig, his full list): a wild nuna downed by a predator
+    stopped the two-week walk on day one ('downed (health 0.18)', subject 'nuna tom'); two weeks of wildlife always meet
+    such a fight, and none is a colonist's harm. The repair, not this predicate, decides it is wildlife."""
+    return (isinstance(trig, dict) and trig.get("kind") in WALK_WILDLIFE_KINDS and not trig.get("critical")
+            and not trig.get("declared") and trig.get("subjectId") is not None)
+
+
+def _walk_wildlife_check(session, r):
+    """clockgate repair: every harm trigger of the stop `r` must name a pawn that reads back unowned (no faction), not the
+    player's and with no gene tracker (an animal); nothing is changed. A dead subject that list_pawns no longer lists is
+    not found, so a death stop stands. -> {"ok", "wild", "notWild"}; a pawn listing that fails, or any subject not found or
+    not wild, is not ok, so the stop stands (a colonist's or a visitor's harm still stops the walk)."""
+    import clockgate  # noqa: E402 - on sys.path via the modcheck package
+    want = set(n for n in (clockgate._thing_number(x.get("subjectId"))
+                           for x in [r.get("stopBy") or {}] + list(r.get("triggers") or []) if walk_wildlife_harm(x))
+               if n is not None)
+    if not want:
+        return {"ok": False, "why": "no subject id on the harm"}
+    q = session.call("jawa/list_pawns", limit=2000) or {}
+    if q.get("success") is False or "pawns" not in q:
+        return {"ok": False, "why": "jawa/list_pawns failed"}
+    rows = dict((clockgate._thing_number(p.get("id")), p) for p in q["pawns"])
+    wild, not_wild = [], []
+    for n in sorted(want):
+        p = rows.get(n)
+        # an animal: no faction, not the player's, no gene tracker (every humanlike carries one; list_pawns' hasGenes)
+        if p is not None and (p.get("faction") or p.get("factionName")) in (None, "", "None") \
+                and not p.get("isPlayer") and p.get("hasGenes") is False:
+            wild.append(p.get("id"))
+        else:
+            not_wild.append(n if p is None else p.get("id"))
+    return {"ok": not not_wild, "wild": wild, "notWild": not_wild}
+
+
 @contextlib.contextmanager
 def _walk_shield(t):
     """Every advance inside resumes past a foreign arrival after its removal (clockgate.expected_disturbance with a repair);
@@ -4136,11 +4176,15 @@ def _walk_shield(t):
     n0 = len(clockgate.BENIGN_STOPS)
     try:
         with clockgate.expected_disturbance(WALK_SHIELD, walk_foreign_arrival, repair=_walk_vanish_arrivals):
-            yield
+            with clockgate.expected_disturbance(WALK_WILDLIFE, walk_wildlife_harm, repair=_walk_wildlife_check):
+                yield
     finally:
         got = [b for b in clockgate.BENIGN_STOPS[n0:] if b.get("why") == "expected: " + WALK_SHIELD]
         if got and t.session is not None:
             _note(t, "walk shield: foreign hostile arrivals vanished", got)
+        wl = [b for b in clockgate.BENIGN_STOPS[n0:] if b.get("why") == "expected: " + WALK_WILDLIFE]
+        if wl and t.session is not None:
+            _note(t, "walk shield: wildlife harm resumed past (read back unowned animals)", wl)
 
 
 @suite.chain("walk_season")
@@ -4594,6 +4638,9 @@ def _ten_plant_census(t):
                 _fail("with wildPlantAllowlistEnabled on, foreign plants appeared: %r" % foreign)
 
 
+PLANT_GATE_IGNORED_ENV = "PYRE_PLANT_GATE_IGNORED"   # planted state for walk_gate_off_then_on: the master switch left on
+
+
 def _ten_walk_season(t):
     """sc_walk (PYRE_WALK=1 only): the gate off a day then on; a roofed room on ember grass withers; fire-cast thirst
     (RM_Thirst, no RM_Dehydration); no colonist burned (Burn) or starved (Malnutrition)."""
@@ -4602,7 +4649,14 @@ def _ten_walk_season(t):
     with _comp(t, "walk_gate_off_then_on"):
         if not walk:
             _unmeasured(t, "the walk parts run only with PYRE_WALK=1 (full list, Stage 6)")
-        _set(t, {"pyrelandsEnabled": False})
+        planted = os.environ.get(PLANT_GATE_IGNORED_ENV) == "1"
+        if planted:
+            _note(t, "PLANTED FAULT", "%s=1: pyrelandsEnabled is left on, as if the switch did nothing" % PLANT_GATE_IGNORED_ENV)
+        _set(t, {"pyrelandsEnabled": planted})
+        # HARNESS (visit 5, 2026-11-22, his full list): the day started with the walk's own 30 fires still burning, and
+        # vanilla spread on the grass carpet made 928 by the day's end: a fire then cannot tell a new front from spread.
+        # The day starts from an extinguished map, so any fire after it was lit in the day.
+        _extinguish(t)
         off = _ten_gate_on(t)
         a0, f0 = _depth(t, None), _count(t, "Fire")
         _wait(t, TEN_DAY)
@@ -4614,7 +4668,7 @@ def _ten_walk_season(t):
         if _live(t):
             _note(t, "PyrelandsMechanicsGate off a day, then on a day: ash depthSum, fires",
                   {"off": off, "on": on, "ash": [a0, a1, a2], "fires": [f0, f1]})
-            if off is not False or on is not True:
+            if (off is not False and not planted) or on is not True:
                 _fail("PyrelandsMechanicsGate.get_On read %r off / %r on" % (off, on))
             if f1:
                 _fail("%d fires burning after a day with the gate off" % f1)
@@ -4626,6 +4680,7 @@ def _ten_walk_season(t):
             _unmeasured(t, "the walk parts run only with PYRE_WALK=1 (full list, Stage 6)")
         _ten_roster_set(t, False)
         try:
+            _extinguish(t)   # as the gate-off day: a fire after the day was lit in it, never the walk's spread
             roster, off = _ten_roster_on(t), _ten_gate_on(t)
             a0, f0 = _depth(t, None), _count(t, "Fire")
             _wait(t, TEN_DAY)

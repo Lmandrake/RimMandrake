@@ -160,6 +160,36 @@ if w:
           inside and any("_ten_walk_season(t)" in ln for ln in body) and any("_r6_walk_season(t)" in ln for ln in body)
           and any('"walk_reload_keeps_the_state"' in ln for ln in body))
 
+# ---- 4. wildlife harm (visit 5, 2026-11-22): a wild animal's harm resumes only once list_pawns reads its subject as an
+# unowned, gene-less pawn; a colonist's, a visitor's or an unlisted subject's harm still stops the walk
+NUNA = trig("downed", "downed (health 0.18)", 100601, "threat")
+
+
+class PawnsSession(object):
+    def __init__(self, pawns, ok=True):
+        self.pawns, self.ok = pawns, ok
+
+    def call(self, tool, **p):
+        if tool == "jawa/list_pawns":
+            return {"success": True, "pawns": self.pawns} if self.ok else {"success": False}
+        return {}
+
+
+WILD = {"id": "RSW_Nuna100601", "faction": None, "isPlayer": False, "hasGenes": False}
+COLONIST = {"id": "Human100601", "faction": "PlayerColony", "isPlayer": True, "hasGenes": True}
+VISITOR = {"id": "Human100601", "faction": None, "isPlayer": False, "hasGenes": True}
+check("wildlife predicate takes a downed, non-critical subject", V.walk_wildlife_harm(NUNA))
+check("wildlife predicate refuses a critical subject", not V.walk_wildlife_harm(trig("downed", "x", 1, critical=True)))
+check("wildlife predicate refuses an arrival", not V.walk_wildlife_harm(SAURID))
+stop = {"state": "stopped", "stopBy": NUNA, "triggers": [NUNA]}
+check("a wild animal's downing reads ok", V._walk_wildlife_check(PawnsSession([WILD]), stop).get("ok") is True)
+check("can-fail: a colonist's downing is not ok", V._walk_wildlife_check(PawnsSession([COLONIST]), stop).get("ok") is False)
+check("can-fail: an unowned humanlike's downing is not ok",
+      V._walk_wildlife_check(PawnsSession([VISITOR]), stop).get("ok") is False)
+check("can-fail: a subject list_pawns does not list (a dead pawn) is not ok",
+      V._walk_wildlife_check(PawnsSession([]), stop).get("ok") is False)
+check("can-fail: a failed listing is not ok", V._walk_wildlife_check(PawnsSession([WILD], ok=False), stop).get("ok") is False)
+
 n = sum(RESULTS)
 print("\n%d/%d passed" % (n, len(RESULTS)))
 sys.exit(0 if n == len(RESULTS) else 1)
