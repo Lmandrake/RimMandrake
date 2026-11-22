@@ -1,0 +1,1 @@
+A RimWorld that is closing reads an empty CommandLine in Win32_Process before it leaves the list, so game_instance.pids() raises Blind on a game you just stopped. Wait on a stopped game by pid (game_instance.alive), never by owner (Pyrelands visit 5 deploy, pid 15352, 2026-11-22 03:45 PST).
