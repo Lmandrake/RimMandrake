@@ -13,6 +13,10 @@ Reads the repo's XML and C# only (plus the def dump for the rainRate of weathers
                          patch-added rows) and its adult draw size strictly the largest; Patch_FurnaceBeastHeatImmunity
                          names it and absorbs Heat damage
   sand shovel            RM_FE_Ground_Sand digs to 5 RM_GlassSand and leaves RM_FE_Ground_Gravel; the designator joins Orders
+  descriptions_present   every concrete def of this mod a player inspects (things, terrain, the biome, hediffs, weathers,
+                         research, conditions; not projectiles, motes or filth) carries a description, its own or a repo
+                         parent's (bar inv_art_and_text; blind cycle 5: the furnace-beast's deleted stayed green, and its
+                         vanilla parent AnimalThingBase holds none, so its info card would read blank)
 
 Then every planted fault (a mutant copy of the files) must turn at least one fact red, and the clean copy must stay green.
 Run: python3 <this file>      exit 0 = PASS, 1 = a fact or a mutant failed, 2 = UNMEASURED (no def dump)
@@ -258,6 +262,27 @@ def facts(root, dump_rain):
             for li in o.iter("li")]
     fact("sand_shovel_designator_on_orders", "RimMandrake.Pyrelands.Designator_RM_ShovelTerrain" in adds,
          "Orders specialDesignatorClasses adds %s" % (adds or "nothing"))
+    # descriptions: a player-inspected def of this mod with no description reads blank in game (bar inv_art_and_text)
+    blank, seen = [], 0
+    for tag in ("ThingDef", "TerrainDef", "BiomeDef", "HediffDef", "WeatherDef", "ResearchProjectDef", "GameConditionDef"):
+        _, abt = _defs(root, tag)
+        for f in glob.glob(os.path.join(root, MOD, "Defs", "**", "*.xml"), recursive=True):
+            r = _parse(f)
+            if r is None:
+                blank.append("unparseable " + os.path.relpath(f, root))
+                continue
+            for x in r.findall(tag):
+                if (x.get("Abstract") or "").lower() == "true" or not x.findtext("defName"):
+                    continue
+                cat = _field(x, "category", abt) or ""
+                cls = _field(x, "thingClass", abt) or ""
+                if cat in ("Projectile", "Mote", "Filth", "Ethereal") or "Bullet" in (x.get("ParentName") or "") \
+                        or cls.startswith(("Projectile", "Mote", "Filth")):
+                    continue
+                seen += 1
+                if not (_field(x, "description", abt) or "").strip():
+                    blank.append("%s %s" % (tag, x.findtext("defName")))
+    fact("descriptions_present", seen > 0 and not blank, "%d inspected defs; without a description: %s" % (seen, blank or "none"))
     return out
 
 
@@ -295,6 +320,10 @@ MUTANTS = [
     ("heat patch absorbs nothing", MOD + "/Source/Patch_FurnaceBeastHeatImmunity.cs", "absorbed = true", "absorbed = false"),
     ("shovel yields 4", D + "TerrainDefs/ScorchableGround.xml", "<count>5</count>", "<count>4</count>"),
     ("shovel leaves sand", D + "TerrainDefs/ScorchableGround.xml", "<leaves>RM_FE_Ground_Gravel</leaves>", "<leaves>RM_FE_Ground_Sand</leaves>"),
+    ("furnace-beast description gone", D + "ThingDefs_Races/RM_PyrelandsFauna.xml",
+     "<description>A giant whose banded mineral hide stores the heat of the burns and glows between the plates. It walks into the "
+     "flames to bank that heat, and carries it long after. A kept furnace-beast can heat a barn for weeks, but may also set the floor "
+     "alight.</description>", ""),
     ("shovel off the Orders tab", MOD + "/Patches/RM_ShovelSand_Orders.xml", "<li>RimMandrake.Pyrelands.Designator_RM_ShovelTerrain</li>",
      "<li>RimMandrake.Pyrelands.Designator_RM_NoSuchDesignator</li>"),
 ]
