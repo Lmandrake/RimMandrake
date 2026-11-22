@@ -1,0 +1,166 @@
+{
+ "script": "suspension_bridge_proof.py",
+ "started": "2026-11-22T01:20:19",
+ "rows": [
+  {
+   "id": "SB_islands_restore_reach",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "detail": {
+    "outcome": "reached_and_grounded",
+    "why": "lone mid refused; causeway edge 8 -> 0 in 8 jobs, mid 8 -> 0 in 8 jobs, both let go",
+    "depth0": 8,
+    "loneMidCanReach": false,
+    "loneMidHasJobOnCell": true,
+    "edge": {
+     "depths": [
+      7,
+      6,
+      5,
+      4,
+      3,
+      2,
+      1,
+      0
+     ],
+     "jobs": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+     ],
+     "can": true,
+     "tracked": false,
+     "restoreAfter": "RESTORE accepted=0 refused=1 tracked=1 fillOrders=0 first=Someone is down there. Get them out first."
+    },
+    "mid": {
+     "depths": [
+      7,
+      6,
+      5,
+      4,
+      3,
+      2,
+      1,
+      0
+     ],
+     "jobs": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+     ],
+     "can": true,
+     "tracked": false,
+     "restoreAfter": "RESTORE accepted=0 refused=1 tracked=0 fillOrders=0 first=Nothing has been dug here."
+    },
+    "labour": 0.25,
+    "claim": "the lone mid square is refused (climb rule) and a bank colonist grounds the causeway edge then the mid square by Restore",
+    "verdictWithheld": "PASS",
+    "unmeasuredBecause": [
+     {
+      "scope": "SB_islands_restore_reach",
+      "what": "Restore ground ordered on the causeway",
+      "why": "RESTORE accepted=0 refused=2 tracked=2 fillOrders=2 first=Already being restored.",
+      "class": "SITE"
+     }
+    ]
+   }
+  }
+ ],
+ "args": {
+  "out": "design/concepts/FlowWorks/version/in_game/visit_6/evidence/diag_skill_m10.json",
+  "origin": "140,140",
+  "fresh_map": false,
+  "river": "",
+  "lake": "",
+  "sea": "",
+  "only": "reach",
+  "mock": false
+ },
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "d3a7cd299eb61d620ff4f5cc8f7c5473b9a813e9e8bd7241edd6dc04979c1731",
+ "manifest": {
+  "schema": 1,
+  "script": "../../../design/concepts/FlowWorks/version/in_game/visit_6/diag_skill.py",
+  "runtime": "35cd294893662cdaa71e673d989a401de869cac89eed8a2e57e12b34401ea0cb",
+  "test": "8fdbee363c73e7b9373eabecd3c3b7b33fe6460e059bcee0273e9234e3dcde04",
+  "test_files": [
+   "../../design/concepts/FlowWorks/version/in_game/visit_6/diag_skill.py",
+   "Utils/await_lifecycle.py",
+   "Utils/conds.py",
+   "Utils/conds_dsl.py",
+   "Utils/game_instance.py",
+   "Utils/game_paths.py",
+   "Utils/load_policy.json",
+   "Utils/load_policy.py",
+   "Utils/modcheck/bland_world.py",
+   "Utils/modcheck/clockgate.py",
+   "Utils/modcheck/helpers.py",
+   "Utils/modcheck/preconditions.py",
+   "Utils/modcheck/testenv_guards.py",
+   "Utils/northstar_driver/tool_schemas.json",
+   "Utils/rimbridge_client.py",
+   "Utils/rmpaths.py",
+   "Utils/tickburst_step.py",
+   "Utils/validation_core.py",
+   "Utils/wrapup_debt.py"
+  ],
+  "unresolved": []
+ },
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "owlchemist.cherrypicker",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.patches"
+  ],
+  "assembly_sha256": "308ec6cb846ca19fc577aaaabecc25a1519b2dc58b294ef51460b9df7e14806a"
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [],
+   "threatsAfter": 0,
+   "error": null
+  },
+  "fed": [
+   "Human475",
+   "Human478",
+   "Human483",
+   "Human21169"
+  ]
+ },
+ "finished": "2026-11-22T01:21:20"
+}

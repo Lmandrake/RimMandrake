@@ -1,0 +1,5 @@
+== section reach
+SB_islands_restore_reach           FAIL       {"outcome": "reached_not_grounded", "why": "the edge square stopped at depth 8 of 8", "depth0": 8, "loneMidCanReach": false, "loneMidHasJobOnCell": true, "edge": {"depths": [8], "jobs": [true], "can": true}, "mid": {"depths": [], "jobs": [], "can": null}, "labour": 500.0, "claim": "the lone mid squa
+suspension bridge proof: 1 rows, 1 FAIL -> design/concepts/FlowWorks/version/in_game/visit_6/evidence/fix_planted.json
+[bridge split] 42.8 s wall: load 0.0 / ticks 7.3 / reads 0.2 / other 1.6 / outside calls 33.6 s
+[bridge split] WARN 62 calls of jawa/flowworks_excavation_drive (0.6 s): batch them

@@ -792,6 +792,13 @@ def islands(ctx):
 
 LABOUR_REACH = 0.25   # digLabourMultiplier for this row only (restored after): it judges reach and grounding, not the fill's
                       # time; at 1.0 sixteen notches of fill do not fit one 540 s run (holder sub-run 5, 2026-11-20)
+# The worker's Mining level, set after the spawn (RIMMANDRAKE_UNSTICK_FLOWWORKS_FILL_JOB_HOLDS_GRAVEL_BESIDE_THE_HOLE). The fill
+# job's speed is the pawn's MiningSpeed, vanilla 0.04 + 0.12 x Mining (minimum 0.1; Stats_Pawns_WorkGeneral.xml): 1.0 at level
+# 8. A random Colonist ranged 0.1 to about 1 and made the visit 6 "stall" (5 of 9 runs): measured on game b 2026-11-22, Mining 0
+# (speed 0.1) laid no notch in the 15000-tick wait, the job held beside the square exactly as visit 6 read (diag_skill_m0);
+# Mining 10 (speed 0.98) laid each notch in at most 4 reads of 500 ticks (diag_skill_m10).
+REACH_WORKER_MINING = 8
+REACH_WORKER_MIN_SPEED = 0.5   # half the level-8 speed; the measured 2000-tick notch at 0.98 still fits 15000 ticks at 0.5
 
 
 def reach_verdict(depth0, lone_reach, edge, mid):
@@ -890,6 +897,13 @@ def reach(ctx):
         V.require(kv.get("accepted") == "2" and kv.get("fillOrders") == "2", "Restore ground ordered on the causeway", txt)
         pid = ctx["spawn"](bank)
         V.require(pid, "a colonist on the bank", str(pid), cls="HARNESS")
+        # the row asks reach and grounding, not one random colonist's shovel speed: a worker of known Mining, read back
+        sk = B.call("jawa/set_pawn_skill", pawn=str(pid), skill="Mining", level=REACH_WORKER_MINING) or {}
+        V.require(sk.get("success"), "the worker's Mining set to %d" % REACH_WORKER_MINING, str(sk)[:160], cls="SITE")
+        ms = [s.get("value") for s in ((B.call("jawa/pawn_stats", pawn=str(pid), stats="MiningSpeed") or {}).get("stats") or [])
+              if s.get("defName") == "MiningSpeed"]
+        V.require(ms and ms[0] is not None and ms[0] >= REACH_WORKER_MIN_SPEED,
+                  "the worker's MiningSpeed is at least %s" % REACH_WORKER_MIN_SPEED, "MiningSpeed %s" % (ms or None), cls="SITE")
         sh = B.call("jawa/pawn_gear", **{"pawn": str(pid), "action": "inventory", "def": "RM_Shovel", "stuff": "WoodLog",
                                           "count": 1}) or {}
         V.require(sh.get("success"), "shovel in the colonist's pack", str(sh)[:160], cls="HARNESS")
@@ -956,6 +970,11 @@ class FakeBridge(object):
             return {"accepted": True}
         if method == "jawa/pawn_gear":
             return {"success": True}
+        if method == "jawa/set_pawn_skill":                                 # the reach worker's Mining (real: JawaBenchPawnTools)
+            return {"success": True, "after": {"levelRaw": kw.get("level"), "levelEffective": kw.get("level")}}
+        if method == "jawa/pawn_stats":                                     # real shape: stats[{defName, value}] (JawaBenchStatTools)
+            return {"success": True, "stats": [{"defName": n, "value": FakeBridge.worker_speed}
+                                               for n in (kw.get("stats") or "").split(",") if n == "MiningSpeed"]}
         if method == "jawa/order_pawn":
             # the real shape (JawaBenchTerrainTools OrderPawn): the read-back cell under end{x,z}
             return {"pawns": [{"id": kw.get("pawnId"), "end": {"x": kw.get("x"), "z": kw.get("z")}}], "ticksElapsed": kw.get("waitTicks")}
@@ -989,6 +1008,7 @@ class FakeBridge(object):
 
     ox, floor_z = 140, 140
     reach_fault = None       # selftest_suspension_bridge_reach plants "yes" / "no"
+    worker_speed = 1.0       # the reach worker's MiningSpeed read; selftest_suspension_bridge_reach plants 0.1 (Mining 0)
     tier_decks = {"timber": 6}
 
     def static(self, m, arg):

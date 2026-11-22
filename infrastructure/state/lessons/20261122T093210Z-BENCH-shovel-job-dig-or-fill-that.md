@@ -1,0 +1,1 @@
+A shovel job (dig or fill) that seems stuck beside its square can be a slow worker: its speed is the pawn's MiningSpeed, 0.1 at Mining 0 against 1.0 at Mining 8. Before you call the job stuck, read MiningSpeed with jawa/pawn_stats. A live proof that spawns a random Colonist for timed work sets the skill and asserts the stat (FlowWorks SB_islands_restore_reach, 2026-11-22).

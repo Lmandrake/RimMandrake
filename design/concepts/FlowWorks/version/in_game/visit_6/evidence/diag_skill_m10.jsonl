@@ -1,0 +1,56 @@
+{"ev": "spawn", "pid": "Human21197", "before": [null, 0.316799968], "set": {"success": true, "error": null, "after": {"levelRaw": 10, "levelEffective": 10, "passion": "Minor", "xp": 0.0}}, "after": [null, 0.9820799]}
+{"ev": "order", "target": [171, 226], "accepted": true}
+{"ev": "tick500", "x": 172, "z": 225, "job": "GotoWander", "a": {"x": 165, "z": 222}, "speed": 0.9820799}
+{"ev": "order", "target": [171, 226], "accepted": true}
+{"ev": "tick500", "x": 172, "z": 225, "job": "RM_FillInCanalJob", "a": {"x": 171, "z": 226}, "speed": 0.9820799}
+{"ev": "tick500", "x": 172, "z": 225, "job": "RM_FillInCanalJob", "a": {"x": 171, "z": 226}, "speed": 0.9820799}
+{"ev": "tick500", "x": 172, "z": 225, "job": "RM_FillInCanalJob", "a": {"x": 171, "z": 226}, "speed": 0.9820799}
+{"ev": "tick500", "x": 172, "z": 225, "job": "Wait_Wander", "a": null, "speed": 0.9820799}
+{"ev": "order", "target": [171, 226], "accepted": true}
+{"ev": "tick500", "x": 172, "z": 225, "job": "RM_FillInCanalJob", "a": {"x": 171, "z": 226}, "speed": 0.9820799}
+{"ev": "tick500", "x": 172, "z": 225, "job": "RM_FillInCanalJob", "a": {"x": 171, "z": 226}, "speed": 0.9820799}
+{"ev": "tick500", "x": 173, "z": 225, "job": "GotoWander", "a": {"x": 172, "z": 244}, "speed": 0.9820799}
+{"ev": "order", "target": [171, 226], "accepted": true}
+{"ev": "tick500", "x": 172, "z": 225, "job": "RM_FillInCanalJob", "a": {"x": 171, "z": 226}, "speed": 0.9820799}
+{"ev": "tick500", "x": 172, "z": 225, "job": "RM_FillInCanalJob", "a": {"x": 171, "z": 226}, "speed": 0.9820799}
+{"ev": "tick500", "x": 172, "z": 225, "job": "Wait_Wander", "a": null, "speed": 0.9820799}
+{"ev": "order", "target": [171, 226], "accepted": true}
+{"ev": "tick500", "x": 172, "z": 225, "job": "RM_FillInCanalJob", "a": {"x": 171, "z": 226}, "speed": 0.9820799}
+{"ev": "tick500", "x": 173, "z": 225, "job": "GotoWander", "a": {"x": 188, "z": 233}, "speed": 0.9820799}
+{"ev": "order", "target": [171, 226], "accepted": true}
+{"ev": "tick500", "x": 172, "z": 225, "job": "RM_FillInCanalJob", "a": {"x": 171, "z": 226}, "speed": 0.9820799}
+{"ev": "tick500", "x": 173, "z": 224, "job": "RM_FillInCanalJob", "a": {"x": 171, "z": 227}, "speed": 0.9820799}
+{"ev": "order", "target": [171, 226], "accepted": true}
+{"ev": "tick500", "x": 172, "z": 225, "job": "RM_FillInCanalJob", "a": {"x": 171, "z": 226}, "speed": 0.9820799}
+{"ev": "tick500", "x": 171, "z": 226, "job": "RM_FillInCanalJob", "a": {"x": 171, "z": 227}, "speed": 0.9820799}
+{"ev": "order", "target": [171, 226], "accepted": true}
+{"ev": "tick500", "x": 171, "z": 226, "job": "RM_FillInCanalJob", "a": {"x": 171, "z": 227}, "speed": 0.9820799}
+{"ev": "order", "target": [171, 227], "accepted": true}
+{"ev": "tick500", "x": 171, "z": 226, "job": "RM_FillInCanalJob", "a": {"x": 171, "z": 227}, "speed": 0.9820799}
+{"ev": "tick500", "x": 171, "z": 226, "job": "RM_FillInCanalJob", "a": {"x": 171, "z": 227}, "speed": 0.9820799}
+{"ev": "order", "target": [171, 227], "accepted": true}
+{"ev": "tick500", "x": 171, "z": 226, "job": "RM_FillInCanalJob", "a": {"x": 171, "z": 227}, "speed": 0.9820799}
+{"ev": "tick500", "x": 171, "z": 226, "job": "RM_FillInCanalJob", "a": {"x": 171, "z": 227}, "speed": 0.9820799}
+{"ev": "tick500", "x": 172, "z": 225, "job": "GotoWander", "a": {"x": 175, "z": 229}, "speed": 0.9820799}
+{"ev": "order", "target": [171, 227], "accepted": true}
+{"ev": "tick500", "x": 171, "z": 226, "job": "RM_FillInCanalJob", "a": {"x": 171, "z": 227}, "speed": 0.9820799}
+{"ev": "tick500", "x": 171, "z": 226, "job": "RM_FillInCanalJob", "a": {"x": 171, "z": 227}, "speed": 0.9820799}
+{"ev": "tick500", "x": 171, "z": 226, "job": "RM_FillInCanalJob", "a": {"x": 171, "z": 227}, "speed": 0.9820799}
+{"ev": "tick500", "x": 171, "z": 226, "job": "Wait_MaintainPosture", "a": null, "speed": 0.9820799}
+{"ev": "order", "target": [171, 227], "accepted": true}
+{"ev": "tick500", "x": 171, "z": 226, "job": "RM_FillInCanalJob", "a": {"x": 171, "z": 227}, "speed": 0.9820799}
+{"ev": "tick500", "x": 171, "z": 226, "job": "RM_FillInCanalJob", "a": {"x": 171, "z": 227}, "speed": 0.948834}
+{"ev": "tick500", "x": 173, "z": 218, "job": "GotoWander", "a": {"x": 174, "z": 217}, "speed": 0.9024714}
+{"ev": "order", "target": [171, 227], "accepted": true}
+{"ev": "tick500", "x": 171, "z": 226, "job": "RM_FillInCanalJob", "a": {"x": 171, "z": 227}, "speed": 0.827619135}
+{"ev": "tick500", "x": 171, "z": 226, "job": "RM_FillInCanalJob", "a": {"x": 171, "z": 227}, "speed": 0.785663962}
+{"ev": "tick500", "x": 171, "z": 226, "job": "Wait_MaintainPosture", "a": null, "speed": 0.785663962}
+{"ev": "order", "target": [171, 227], "accepted": true}
+{"ev": "tick500", "x": 171, "z": 226, "job": "RM_FillInCanalJob", "a": {"x": 171, "z": 227}, "speed": 0.785663962}
+{"ev": "tick500", "x": 171, "z": 217, "job": "Skygaze", "a": {"x": 173, "z": 212}, "speed": 0.785663962}
+{"ev": "order", "target": [171, 227], "accepted": true}
+{"ev": "tick500", "x": 171, "z": 226, "job": "RM_FillInCanalJob", "a": {"x": 171, "z": 227}, "speed": 0.785663962}
+{"ev": "tick500", "x": 171, "z": 226, "job": "GotoWander", "a": {"x": 166, "z": 226}, "speed": 0.785663962}
+{"ev": "order", "target": [171, 227], "accepted": true}
+{"ev": "tick500", "x": 171, "z": 226, "job": "RM_FillInCanalJob", "a": {"x": 171, "z": 227}, "speed": 0.785663962}
+{"ev": "tick500", "x": 171, "z": 217, "job": "GoForWalk", "a": {"x": 183, "z": 210}, "speed": 0.785663962}

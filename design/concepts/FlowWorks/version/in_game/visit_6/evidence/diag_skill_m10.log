@@ -1,0 +1,6 @@
+== section reach
+SB_islands_restore_reach           UNMEASURED {"outcome": "reached_and_grounded", "why": "lone mid refused; causeway edge 8 -> 0 in 8 jobs, mid 8 -> 0 in 8 jobs, both let go", "depth0": 8, "loneMidCanReach": false, "loneMidHasJobOnCell": true, "edge": {"depths": [7, 6, 5, 4, 3, 2, 1, 0], "jobs": [true, true, true, true, true, true, true, true],
+suspension bridge proof: 1 rows, 0 FAIL -> design/concepts/FlowWorks/version/in_game/visit_6/evidence/diag_skill_m10.json
+[bridge split] 61.0 s wall: load 0.0 / ticks 13.8 / reads 0.6 / other 3.1 / outside calls 43.5 s
+[bridge split] WARN 119 calls of jawa/flowworks_excavation_drive (1.2 s): batch them
+[bridge split] WARN 62 calls of jawa/safe_advance (13.7 s): batch them

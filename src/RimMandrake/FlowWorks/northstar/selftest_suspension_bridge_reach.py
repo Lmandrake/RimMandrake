@@ -61,9 +61,22 @@ def main():
             fails.append("mock reach fault=%s -> %r, want %r (%s)" % (fault, got, want, json.dumps(det)[:200]))
         elif fault is None and (det["mid"]["depths"][-1:] != [0] or det["edge"]["depths"][-1:] != [0]):
             fails.append("mock reach row grounded nothing: %s" % json.dumps(det)[:200])
+    # RIMMANDRAKE_UNSTICK_FLOWWORKS_FILL_JOB_HOLDS_GRAVEL_BESIDE_THE_HOLE: the worker is staged at a known Mining and its
+    # MiningSpeed read back. A planted slow worker (speed 0.1, Mining 0: the visit 6 "stall") must withhold the row, never PASS.
+    SBP.FakeBridge.worker_speed = 0.1
+    try:
+        rc, rows = _mock(None)
+    finally:
+        SBP.FakeBridge.worker_speed = 1.0
+    det = rows[0]["detail"] if rows else {}
+    why = json.dumps(det.get("unmeasuredBecause") or [])
+    if det.get("mock") == "PASS" or "MiningSpeed" not in why:
+        fails.append("mock reach with a slow worker (MiningSpeed 0.1) -> %r, unmeasuredBecause %s; want withheld on the "
+                     "worker's MiningSpeed" % (det.get("mock"), why[:200]))
     for f in fails:
         print("FAIL:", f)
-    print("suspension bridge reach row: %d verdict cases + 3 mock runs (1 healthy, 2 planted lying reach), worst=%s limit=0 "
+    print("suspension bridge reach row: %d verdict cases + 4 mock runs (1 healthy, 2 planted lying reach, 1 planted slow "
+          "worker), worst=%s limit=0 "
           "fails, %s" % (len(cases), len(fails), "ok" if not fails else "FAIL"))
     return 1 if fails else 0
 
