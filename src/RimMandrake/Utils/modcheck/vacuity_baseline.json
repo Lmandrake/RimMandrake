@@ -5,12 +5,17 @@
   "src/RimMandrake/FlowWorks/validation.py|core_offline|offline_tier_ran": "delegates to a measuring module or tier; FlowWorks lane",
   "src/RimMandrake/FlowWorks/validation.py|hose_offline|hose_offline_ran": "delegates to a measuring module or tier; FlowWorks lane",
   "src/RimMandrake/FlowWorks/validation.py|water_level_surface|level_surface_within_1cm": "delegates to a measuring module or tier; FlowWorks lane",
+  "src/RimMandrake/Graffiti/validation.py|beauty_pair|beauty_pair": "visual row: its bar passes only on a judge verdict (the capture of the pair; 730f011ecb)",
   "src/RimMandrake/Graffiti/validation.py|beauty_pair|site_ready_beauty_pair": "site setup row: a failed fixture raises in the verbs",
   "src/RimMandrake/Graffiti/validation.py|forced_paint_job|site_ready_forced_paint": "site setup row: a failed fixture raises in the verbs",
   "src/RimMandrake/Graffiti/validation.py|mental_break_spree|site_ready_mental_break": "site setup row: a failed fixture raises in the verbs",
+  "src/RimMandrake/Graffiti/validation.py|scene_walk_lived_in|restore_delete_runtime_saves": "teardown: deletes the walk's runtime saves, decides no bar",
   "src/RimMandrake/Graffiti/validation.py|spree_wall|site_ready_spree_wall": "site setup row: a failed fixture raises in the verbs",
   "src/RimMandrake/Utils/modcheck/live_queue/abort_proof.py|_c|meets_a_hostile": "harness probe of the watch itself, not a mod claim",
   "src/RimMandrake/Utils/modcheck/live_queue/situational_rerun.py|_q|waits": "harness probe of the watch itself, not a mod claim",
+  "src/RimMandrake/rimflow/acceptance/guard_empty_game_suite_accept.py|off|c_off": "a planted fixture: the acceptance test proves suite_vacuous lists it (840a5e8e64)",
+  "src/RimMandrake/rimflow/acceptance/guard_empty_game_suite_accept.py|parse|c_parse": "a planted fixture: the acceptance test proves suite_vacuous lists it (840a5e8e64)",
+  "src/RimMandrake/rimflow/acceptance/guard_empty_game_suite_accept.py|vac|c_vac": "a planted fixture: the acceptance test proves suite_vacuous lists it (840a5e8e64)",
   "src/RimUtinni/PyrelandsMechanics/validation.py|unproven_bars|name": "honest stub: upstream_failed is set before the row opens"
  }
 }

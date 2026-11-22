@@ -246,6 +246,9 @@ FETCH_MUTANTS = {
 }
 
 
+# wetting and its probe left 0.1.0 for 0.2.0 by his card 2026-11-14 (OWNER:1794721673433243094, 39753a53ff;
+# design/concepts/FlowWorks/version/next_version/wetting_from_0.1.0.json): the default run leaves them out, --only runs them
+NEXT_VERSION = ("wetting", "wetness_probe")
 SECTIONS = {"prison_care": prison_care, "wetting": wetting, "wetness_probe": wetness_probe, "toss_flame": toss_flame,
             "fetch_fallen": fetch_fallen, "coating": coating}
 
@@ -273,7 +276,7 @@ def main():
     a = ap.parse_args()
     cs, xml = cs_all(), xml_all()
     faults = []
-    for name in ([a.only] if a.only else list(SECTIONS)):
+    for name in ([a.only] if a.only else [n for n in SECTIONS if n not in NEXT_VERSION]):
         print(name)
         faults += ["%s: %s" % (name, w) for w in run(name, cs, xml)]
         if name == "prison_care":

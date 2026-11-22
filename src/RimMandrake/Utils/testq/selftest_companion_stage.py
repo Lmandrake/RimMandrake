@@ -4,6 +4,7 @@ the filler holds rather than spend a job while it is not. A temp git repo, the r
 build; no network and no dotnet."""
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -412,10 +413,12 @@ def main():
     check(not C.proof()[0], "proof: a failing stager: FAIL")
 
     # ---------------------------------------------- the unit
-    unit = T.UNITS["testq-tick.service"]
-    a, b, c = unit.index("pull -q"), unit.index("companion_stage.py run"), unit.index("testq.py tick")
-    check(a < b < c and unit.index("testq.py fill") > c, "the tick unit stages after its pull, before admit and fill")
-    check("ExecStart=-/usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/companion_stage.py" in unit,
+    # the unit text lives in Utils/systemd/ since 76bd31f806 (testq.UNITS is gone), its clone path literal
+    unit = open(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "systemd",
+                             "testq-tick.service")).read()
+    pos = [unit.find(x) for x in ("pull -q", "companion_stage.py run", "testq.py tick", "testq.py fill")]
+    check(min(pos) >= 0 and pos == sorted(pos), "the tick unit stages after its pull, before admit and fill")
+    check(re.search(r"ExecStart=-/usr/bin/python3 \S+/src/RimMandrake/Utils/testq/companion_stage\.py", unit),
           "a stager crash does not stop the tick")
 
     shutil.rmtree(tmp, ignore_errors=True)

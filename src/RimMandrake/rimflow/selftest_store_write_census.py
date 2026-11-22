@@ -335,7 +335,8 @@ with open(os.path.join(c, "version", "stage_record.json"), "w") as f:
 os.chmod(os.path.join(c, "archive_pre_ledger", "journal.md"), 0o555)
 rc, out = oracle(rv, args=("Xv",))
 os.chmod(os.path.join(c, "archive_pre_ledger", "journal.md"), 0o755)
-for rel in ("stage.json", "journal.md", "version/stage_record.json"):
+# stage.json left the cutover contract in a0409779a5 (the packet reads the Designer step from it): two stores remain
+for rel in ("journal.md", "version/stage_record.json"):
     ok(("FAIL  Xv: %s is a generated view" % rel) in out, "oracle: %s as a JSON non-object or an archived folder is "
        "no view and no archive (%s)" % (rel, [ln for ln in out.splitlines() if rel in ln][:1]))
 

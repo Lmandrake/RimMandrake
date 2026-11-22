@@ -24,12 +24,17 @@ def body(text, signature):
     return ""
 
 execute, will, gas, cont = body(comp, "private bool Execute("), body(comp, "ItemWillBeThrown("), body(comp, "public static void GasBurst("), body(comp, "private bool ThrowContainer(")
+# ffc3937ee7 (2026-11-17) split decide from apply: the throw is decided in RM_KnockbackPlan.Decide / GoodWillBeThrown from
+# the rules the mod builds (KbRules.wild = GoodsThrowWild); the map component applies it
+plan = read("RM_KnockbackPlan.cs")
+decide, will_plan = body(plan, "public static KbPlan Decide("), body(plan, "public static bool GoodWillBeThrown(")
+rules_wild = re.search(r"\bwild = GoodsThrowWild\b", mod) is not None
 checks = [
     ("kernel has WildCells", "public static int WildCells(" in math),
-    ("Execute throws goods by WildCells with GoodsThrowWild", re.search(r"WildCells\([^;]*GoodsThrowWild", execute) is not None),
-    ("Execute keeps the plain kernel for pawns", re.search(r"kind == KbKind\.Pawn\s*\?\s*kernelCells", execute) is not None),
+    ("Decide throws goods by WildCells with GoodsThrowWild", re.search(r"WildCells\([^;]*q\.wild\)", decide) is not None and rules_wild),
+    ("Decide keeps the plain kernel for pawns", re.search(r"pawn\s*\?\s*p\.kernelCells\s*:", decide) is not None),
     ("Execute journals kernel and wild cells", '"kernelCells"' in execute and '"wildCells"' in execute),
-    ("ItemWillBeThrown decides by WildCells", re.search(r"WildCells\([^;]*GoodsThrowWild", will) is not None),
+    ("GoodWillBeThrown decides by WildCells", re.search(r"WildCells\([^;]*q\.wild\)", will_plan) is not None and rules_wild),
     ("a container is not thrown wild", "WildCells" not in cont and cont != ""),
     ("GoodsThrowWild ships at 1.6", re.search(r"public const float GoodsThrowWild = 1\.6f;", mod) is not None),
     # the plans moved into RM_KnockbackVerdicts.GoodCells (RIMMANDRAKE_LIFT_PROOF_VERDICTS_INTO_TESTED_CODE_NINE_SLIPPED)
