@@ -144,6 +144,62 @@ def main():
             cl = {"landable": [], "crash": repr(e)}
         check("infrastructure/state/items/SPACED_ITEM_Z.md" in cl["landable"],
               "a filing written with spaces is found, and a JSON array line spoils nothing: %s" % cl)
+
+        # RIMMANDRAKE_STOP_SEAT_DIRT_LANDING_STALE_COPY_OVER_NEWER_ORIGIN (2026-11-22): tidy lands a file whole, so a clone
+        # behind origin landed its stale FlowWorks DISPATCH.jsonl over origin's newer one and deleted 4 ledger lines.
+        os.remove(os.path.join(c, "infrastructure/state/items/SPACED_ITEM_Z.md"))
+        git(c, "reset", "-q", "--hard")
+        git(c, "clean", "-qfd")
+        git(c, "pull", "-q", "--rebase")
+        for mod in ("Lagged", "Ahead"):
+            write(c, "design/concepts/%s/stage.json" % mod, '{"stage": 3, "running": null}\n')
+            write(c, "design/concepts/%s/ledger/DISPATCH.jsonl" % mod, '{"n": 1}\n')
+        write(c, "conversations/2026-11-22-0000-older.md", "record v1\n")
+        write(c, "conversations/2026-11-22-0000-newer.md", "record v1\n")
+        git(c, "add", "-A")
+        git(c, "commit", "-q", "-m", "lag base")
+        git(c, "push", "-q", "origin", "main")
+        p = os.path.join(td, "peer")
+        git(td, "clone", "-q", o, p)
+        for k, v in (("user.name", "t"), ("user.email", "t@t")):
+            git(p, "config", k, v)
+        write(p, "design/concepts/Lagged/ledger/DISPATCH.jsonl", '{"n": 1}\n{"n": 2}\n{"n": 3}\n')
+        write(p, "design/concepts/Ahead/ledger/DISPATCH.jsonl", '{"n": 1}\n{"n": 2}\n')
+        write(p, "conversations/2026-11-22-0000-older.md", "record v3, six turns\n")
+        write(p, "conversations/2026-11-22-0000-newer.md", "record v2\n")
+        git(p, "add", "-A")
+        subprocess.run(["git", "-C", p, "commit", "-q", "-m", "peer moves origin"], check=True, capture_output=True,
+                       env=dict(os.environ, GIT_COMMITTER_DATE="@%d +0000" % int(time.time() - 3600)))
+        git(p, "push", "-q", "origin", "main")
+        # the clone does not pull: it writes on its old base, as the seat clone did 42 commits behind
+        write(c, "design/concepts/Lagged/ledger/DISPATCH.jsonl", '{"n": 1}\n{"n": 2}\n', old)
+        write(c, "design/concepts/Ahead/ledger/DISPATCH.jsonl", '{"n": 1}\n{"n": 2}\n{"n": 3}\n', old)
+        write(c, "conversations/2026-11-22-0000-older.md", "record v2, five turns\n", old)
+        write(c, "conversations/2026-11-22-0000-newer.md", "record v3\n", 15 * 60)
+        for mod in ("Lagged", "Ahead"):
+            for d in ("design/concepts/%s/ledger" % mod, "design/concepts/%s" % mod):
+                t = time.time() - old
+                os.utime(os.path.join(c, d), (t, t))
+        git(c, "fetch", "-q")
+        cl = seat_dirt.classify(c)
+        check("design/concepts/Lagged/ledger/DISPATCH.jsonl" not in cl["landable"],
+              "a concept file whose origin copy moved past the clone's base never lands: %s" % cl["landable"])
+        check("design/concepts/Lagged/ledger/DISPATCH.jsonl" in cl["stale"],
+              "the stale-base concept file is counted, so the alarm names it: %s" % cl["stale"])
+        check("design/concepts/Ahead/ledger/DISPATCH.jsonl" in cl["landable"],
+              "an append-only file that extends origin's newer copy still lands: %s" % cl["landable"])
+        check("conversations/2026-11-22-0000-older.md" not in cl["landable"],
+              "a conversation record older than origin's last commit of it never lands: %s" % cl["landable"])
+        check("conversations/2026-11-22-0000-newer.md" in cl["landable"],
+              "a conversation record written after origin's last commit of it lands: %s" % cl["landable"])
+        r = seat_dirt.tidy(c)
+        show = lambda rel: subprocess.run(["git", "-C", o, "show", "main:" + rel], capture_output=True,  # noqa: E731
+                                          text=True).stdout
+        check(show("design/concepts/Lagged/ledger/DISPATCH.jsonl").count("\n") == 3,
+              "after tidy origin keeps all 3 Lagged ledger lines (%s): %r"
+              % (r, show("design/concepts/Lagged/ledger/DISPATCH.jsonl")))
+        check(show("conversations/2026-11-22-0000-older.md").startswith("record v3"),
+              "after tidy origin keeps its newer conversation record")
     if FAILS:
         print("FAIL %d" % len(FAILS))
         return 1

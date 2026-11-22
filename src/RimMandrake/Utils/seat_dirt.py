@@ -99,6 +99,32 @@ def on_origin(clone, path, ref="origin/main"):
                           capture_output=True, timeout=60).returncode == 0
 
 
+def replaces_nothing_newer(clone, st, path, ref="origin/main"):
+    """True when landing the clone's copy of path whole over origin's copy loses nothing that origin holds and the clone
+    does not (RIMMANDRAKE_STOP_SEAT_DIRT_LANDING_STALE_COPY_OVER_NEWER_ORIGIN: a clone 42 commits behind landed its stale
+    FlowWorks DISPATCH.jsonl over origin's newer one and deleted 4 ledger lines). True when origin has no such path;
+    origin's copy is the clone's HEAD copy (the clone's edit is on the current base); origin's copy is a byte prefix of
+    the clone's (an append-only file origin has not passed); or, for a conversation record (rewritten whole from its
+    transcript), the clone's copy changed after origin's last commit of the path. Anything unreadable is False."""
+    o = git(clone, "rev-parse", "-q", "--verify", "%s:%s" % (ref, path), check=False).strip()
+    if not o:
+        return True
+    if st != "??" and git(clone, "rev-parse", "-q", "--verify", "HEAD:%s" % path, check=False).strip() == o:
+        return True
+    try:
+        with open(os.path.join(clone, path), "rb") as f:
+            mine = f.read()
+        r = subprocess.run(["git", "-C", clone, "cat-file", "blob", o], capture_output=True, timeout=60)
+        if r.returncode == 0 and mine.startswith(r.stdout):
+            return True
+        if path.startswith("conversations/"):
+            ct = git(clone, "log", "-1", "--format=%ct", ref, "--", path, check=False).strip()
+            return bool(ct) and os.stat(os.path.join(clone, path)).st_mtime > int(ct)
+    except (OSError, ValueError):
+        pass
+    return False
+
+
 def clones(seat=None, role_root=None):
     """The seat clone, then every role clone on disk (<role_root>/<name> holding a .git), sorted."""
     seat = seat or SEAT_CLONE
@@ -118,12 +144,17 @@ def classify(clone, now=None, settle_min=SETTLE_MIN):
     item_ids = {ITEM_RE.match(p).group(1) for st, p, _ in rows if st == "??" and ITEM_RE.match(p)}
     filed = filed_on_origin(clone, item_ids)
     settled = settled_concepts(clone, rows)
+    # a settled concept lands whole or not at all: one path that would overwrite a newer origin copy holds the folder
+    settled -= {CONCEPT_RE.match(p).group(1) for st, p, _ in rows
+                if CONCEPT_RE.match(p) and CONCEPT_RE.match(p).group(1) in settled
+                and not replaces_nothing_newer(clone, st, p)}
     out = {"landable": [], "fresh": [], "stale": []}
     for st, p, age in rows:
         m = ITEM_RE.match(p)
         c = CONCEPT_RE.match(p)
         # a deletion (staged or not) or an unmerged path is never a safe class
-        safe = (p.startswith("conversations/") and p.endswith(".md") and "D" not in st and "U" not in st) or \
+        safe = (p.startswith("conversations/") and p.endswith(".md") and "D" not in st and "U" not in st
+                and replaces_nothing_newer(clone, st, p)) or \
                (st == "??" and m and m.group(1) in filed and not on_origin(clone, p)) or \
                bool(c and c.group(1) in settled)
         if safe and (age >= settle_min or (c and c.group(1) in settled)):
@@ -171,6 +202,7 @@ def reading(clone=SEAT_CLONE, now=None):
 def tidy(clone=SEAT_CLONE, now=None, land=LAND, settle_min=SETTLE_MIN):
     """Land the safe classes in one land.sh -m commit (a temp index from origin/main: the clone's index, HEAD and a
     peer's edits are never touched). -> "PUBLISHED <sha>" | "nothing to land" | raises RuntimeError on a refusal."""
+    git(clone, "fetch", "-q", "origin", check=False)   # classify against the origin land.sh will build on
     paths = classify(clone, now, settle_min)["landable"]
     if not paths:
         return "nothing to land"
