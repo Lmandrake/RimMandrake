@@ -57,4 +57,4 @@ in `src/RimMandrake/Utils/selftest_pool_floor.py`.
   `.git/rm-treecheck-*` folder and every loose object that a pack holds. A tracked file and a commit stay.
 - **pool-reuse-sheds-the-clone.** `pool_reuse` calls `shed` on the clone it gives.
 
-Later lists beside this page: `polish.md` (none yet).
+Later lists beside this page: `polish.md`.
