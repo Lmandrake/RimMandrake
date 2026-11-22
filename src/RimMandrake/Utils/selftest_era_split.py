@@ -54,7 +54,7 @@ def check(ok, msg):
 
 def main():
     if not os.environ.get("PYFLAKES_PYTHON"):
-        print("UNMEASURED: no PYFLAKES_PYTHON")
+        print("UNMEASURED, not a pass or a fail: no PYFLAKES_PYTHON (a python with pyflakes); era_split.py cannot run")
         return 2
     tmp = Path(tempfile.mkdtemp(prefix="selftest_era_split_"))
     rf = tmp / "src/RimMandrake/rimflow"

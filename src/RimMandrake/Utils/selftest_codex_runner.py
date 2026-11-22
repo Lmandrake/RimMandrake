@@ -160,7 +160,8 @@ class CodexRunnerTests(unittest.TestCase):
         a = RL.launch_argv(role, "unit", "injected", "/out", "/err", "/bin/claude")
         cmd = a[a.index("--")+1:]
         self.assertEqual(cmd[:2], ["python3", "/clone/src/RimMandrake/Utils/agent_runner.py"])
-        self.assertEqual(cmd[cmd.index("--prompt")+1], "injected")
+        import form_fault as FF     # every launched brief carries the repair line (1e91cc0953)
+        self.assertEqual(cmd[cmd.index("--prompt")+1], "injected\n\n" + FF.BRIEF_LINE)
         self.assertNotIn("--output-format", cmd)
         self.assertIn("from-config", cmd)
         self.assertEqual(RL.launch_role(role, {"run_now":{"runner":"codex"}})["runner"], "codex")
@@ -225,7 +226,8 @@ class CodexRunnerTests(unittest.TestCase):
             self.assertEqual(DS.load_state(os.path.join(d, "M"))["runner"], "codex")
             with self.assertRaises(DS.Refused):
                 DS.init(os.path.join(d, "N"), "N", runner="gpt")
-        rows = lambda: [("/c/M", {"status": "ready", "stage": 0, "runner": "codex"}, 0),
+        # an opened concept (its `open` row): a never-opened one is not swept at all (never_opened, ad38a70a3d)
+        rows = lambda: [("/c/M", {"status": "ready", "stage": 0, "runner": "codex", "history": [{"what": "open"}]}, 0),
                         ("/c/G", {"status": "ready", "stage": 1}, 0)]
         base = {"chain_stages": True, "ledger_item": "fixture"}
         codex = RL.chain_sweep("DesignerCodex", {}, dict(base, runner="codex", sweeps_runner="codex"), 10000,

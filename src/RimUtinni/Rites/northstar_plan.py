@@ -104,8 +104,11 @@ def mock_extension(game, tool, p):
         done = game.__dict__.setdefault("_rites_done", set())
         pre, hidden = _RESEARCH.get(p.get("project"), ((), ()))
         pre_ok = all(x in done for x in pre)
-        return {"success": True, "project": p.get("project"), "prerequisitesCompleted": pre_ok,
-                "canStartNow": pre_ok and all(x in done for x in hidden),
+        # vanilla PrerequisitesCompleted walks hiddenPrerequisites too (measured live, Steve filler
+        # J20261122T144744Z-003ce9; 8d996f6c57), so it and canStartNow read the same
+        all_ok = pre_ok and all(x in done for x in hidden)
+        return {"success": True, "project": p.get("project"), "prerequisitesCompleted": all_ok,
+                "canStartNow": all_ok,
                 "unfinishedPrerequisites": [x for x in pre if x not in done]}   # ordinary ones only, like the tool
     if tool == "jawa/get_defs":
         want = [f for f in str(p.get("fields") or "").split(",") if f]

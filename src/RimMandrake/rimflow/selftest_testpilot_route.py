@@ -192,7 +192,7 @@ def t_agent_file_carries_measuring_surprise():
     assert a.index(R.SURPRISE) < a.index("## The sitting"), "the framing leads the agent file"
     for want in ("Measuring surprise.", "jawa/vitals", "jawa/take_screenshot",
                  "system_screenshot.py", "EXPECTED, ODD or ALARMING", "bridge state read that explains or confirms it",
-                 "after every experiment, and at least every ~10 minutes", "`jawa/vitals action=arm`",
+                 "after every experiment;", "at least every ~10 minutes.", "`jawa/vitals action=arm`",
                  "capture, BEFORE any `jawa/clear_ui`", "1500 px or less", "Never take focus or fullscreen",
                  "rule 4 of \"Beyond the checklist\"", "Never capture, stage or test a flyer's flight",
                  "Don't try to capture images of flight. It doesn't work.", "surprises: <n scored, ids filed>"):
@@ -224,9 +224,9 @@ def t_agent_file_carries_the_surprise_book():
         a = f.read()
     assert a.index(R.SURPRISE) < a.index(R.BOOK) < a.index("## The sitting"), "the book follows the framing"
     for want in ("This can be the agent learning.", "surprise_book.py settle", "surprise_book.py start", "SAMPLE",
-                 "EXPLAIN-AWAY", "surprise_book.py explain", "WildAnimals_<Biome>.xml", "reading BiomeDefs alone sees half",
-                 "--outcome explained", "--outcome filed --item", "Never retire by hand", "in one context",
-                 "revives it at once", "explained <n>, retired <keys>", "surprise_book.jsonl` with your paths"):
+                 "EXPLAIN-AWAY", "surprise_book.py explain", "WildAnimals_<Biome>.xml", "Reading BiomeDefs alone sees half",
+                 "--outcome explained", "--outcome filed --item", "Never retire a key by hand", "in one context",
+                 "revives a key at once", "explained <n>, retired <keys>", "surprise_book.jsonl` with your paths"):
         assert want in a, "rm-testpilot.md lacks %r" % want
 
 def t_dispatcher_reads_the_route_and_tells_the_seat():
