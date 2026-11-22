@@ -1,0 +1,1 @@
+./publish runs its whole-tree checks on the clone's own HEAD before it pulls, so a clone behind a broken origin commit stays refused after origin is repaired; land from a synced clone or ./sync first (2026-11-22, seat clone 42 behind, STALE_TOKEN after 4b60b593d6).
