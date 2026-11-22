@@ -2,10 +2,10 @@
   "schema": 1,
   "mod": "FlowWorks",
   "version": "0.1.0",
-  "stage": "in_game",
-  "stage_label": "In-game acceptance (Stage 6)",
-  "since": "2026-11-22T01:05:14-08:00",
-  "since_from": "advance by DISPATCH",
+  "stage": "pre_human",
+  "stage_label": "Walk brief (Stage 7)",
+  "since": "2026-11-22T03:29:45-08:00",
+  "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
     "at": "2026-11-14T16:02:19-08:00",
@@ -18,7 +18,7 @@
     "visit": 3,
     "total": 4
   },
-  "pre_human_arrivals": 1,
+  "pre_human_arrivals": 2,
   "moves": [
     {
       "from": "offline_build",
@@ -327,6 +327,26 @@
         "by",
         "version",
         "hold"
+      ]
+    },
+    {
+      "from": "in_game",
+      "to": "pre_human",
+      "at": "2026-11-22T03:29:45-08:00",
+      "by": "BENCH",
+      "why": "steward: visit 7 exit met, read and confirmed (RIMMANDRAKE_CONFIRM_FLOWWORKS_VISIT_SEVEN_EXIT_MET)",
+      "unit": "rm-detached-bench-rimmandrake-confirm-flowworks-visit-seve-1795346535",
+      "confirmed": {
+        "steward_confirms": "read design/concepts/FlowWorks/version/in_game/visit_7/SUMMARY.md, rows.jsonl (13 rows, one mod hash), evidence/crush_planted.json, unarmed_planted.json, crush_parent_rule.txt and the diffs of 581e6f4baf and b1cc65afe2: 30 of 31 checks PASS on the walk build (sc_hung_bridge last 3 PASS on b1cc65afe2, sc_walk PASS on his full list); the 3 non-PASS sc_hung_bridge lines are HARNESS/SITE/SITE, repaired and shown both ways, no assertion weakened, selftests green at HEAD; OL_OWNER_LOOK_READS decides no bar, owner RIMMANDRAKE_REPORT_SUBMERGE_SHADOW_QUEUE_JUDGE_CANNOT_SEE_ORDER; undecided bars none; fix readers owed none; strange 2 of 2 explained. Verdict: exit met."
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "steward_confirms",
+        "exit_met",
+        "build_match"
       ]
     }
   ],

@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "0033e34b0e51453dff14967456caec008e045046cb16db8005e250eb0c6b0f1f",
+  "body_sha256": "f4a0173fb62843b978a436e01af4a77a64e0da5fe7795d4d12d596942c46c5bd",
   "reducer": 1,
   "shards": {
    "BACKFILL": 893183,
@@ -34,6 +34,7 @@
    "HOLDER.run-1795335550": 748,
    "HOLDER.run-1795338340": 3967,
    "HOLDER.run-1795341097": 2076,
+   "HOLDER.run-1795346318": 1025,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1740,7 +1741,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1614,
+  "events": 1616,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7841,7 +7842,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-22T11:21:57Z",
+   "last": "2026-11-22T11:28:17Z",
    "lease": "run-1795346318",
    "released": false,
    "token": 47
@@ -7955,6 +7956,7 @@
    "HOLDER.run-1795335550",
    "HOLDER.run-1795338340",
    "HOLDER.run-1795341097",
+   "HOLDER.run-1795346318",
    "JUDGE.judge-1794833810",
    "JUDGE.judge-1794849236",
    "JUDGE.judge-1795134433",
@@ -9206,6 +9208,14 @@
     "ts": "2026-11-16T11:41:29Z",
     "version": "0.1.0",
     "where": "src/RimMandrake/FlowWorks/northstar/depth_rebuild_proofs.py:418-421 P7_shoot_between_7m_pits_refused"
+   },
+   "trap:packet-bar-verdicts-are-visit-1-backfill-only": {
+    "by": "HOLDER.run-1795346318",
+    "status": "noted",
+    "text": "The packet's bar verdicts (moat_raid_sequence FAIL, inv_liquid_coating FAIL) are visit 1 backfill only (2026-11-16): visits 2 to 7 write no live.run. Read a bar's state from maturation.py next (exit.lines, undecided_bars), not the packet. Nothing decides from it.",
+    "ts": "2026-11-22T11:28:17Z",
+    "version": "0.1.0",
+    "where": "src/RimMandrake/rimflow/modledger.py reduce (live.run sets bars[].verdict); modledger_backfill.py:1427"
    },
    "trap:patchfeature-diagnostic-names-developer-log-notice-were-deliberately": {
     "by": "BACKFILL",
