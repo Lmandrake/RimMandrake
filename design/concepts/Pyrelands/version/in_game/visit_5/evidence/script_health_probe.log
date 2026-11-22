@@ -1,0 +1,5 @@
+COLONIST Human75828 118 173 []
+COLONIST Human75831 119 174 [["Scratch", 5.0, "Leg"], ["Bite", 3.0, "Arm"], ["Heatstroke", 0.00225000014, null]]
+COLONIST Human75834 140 102 []
+TICKS 379001
+[bridge split] 0.2 s wall: load 0.0 / ticks 0.0 / reads 0.1 / other 0.0 / outside calls 0.2 s

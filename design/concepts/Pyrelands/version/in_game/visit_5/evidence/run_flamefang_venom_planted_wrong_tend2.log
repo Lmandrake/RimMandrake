@@ -1,0 +1,146 @@
+[modcheck] chain flamefang_venom START 14:36:04Z
+[pyre-note] heat guard (row start, row flamefang_bite_injects_venom): {"cleared": [["Human75828", 0.0008], ["Human75831", 0.0004]], "failed": [], "read": true}
+[pyre-note] biters of Human77897: {"spawned": ["RM_Flamefang77900"], "landed": true, "ticks": 90, "killed": 1, "left": []}
+[pyre-note] colonist health after the flamefang: {"hediffs": [{"def": "Heatstroke", "label": "heatstroke (initial)", "severity": 0.00075}, {"def": "Bite", "label": "bite (flamefang venom-fangs)", "severity": 19.40076, "part": "Leg", "partLabel": "left leg"}, {"def": "RM_FlamefangVenom", "label": "flamefang venom (onset)", "severity": 0.21825856}, {"def": "BloodLoss", "label": "blood loss (minor)", "severity": 0.001293384}], "capacities": {"Consciousness": 0.9, "Moving": 0.55, "Manipulation": 0.9, "Talking": 0.9, "Eating": 0.9, "Sight": 1.0, "Hearing": 1.0, "Breathing": 1.0, "BloodFiltration": 1.0, "BloodPumping": 1.0, "Metabolism": 1.0}, "capacityErrors": [], "painTotal": 0.319455028, "bleedRate": 1.293384}
+[pyre-note] colony vitals after flamefang_bite_injects_venom: {"colonists": 4, "offsite": 0, "damage": []}
+[pyre] 06:36:07 flamefang_bite_injects_venom PASS 
+[pyre-note] heat guard (row start, row venom_rises_untreated): {"cleared": [["Human75828", 0.0008], ["Human75831", 0.0004]], "failed": [], "read": true}
+[pyre-note] venom severity each hour: [0.21825856, 0.233425289, 0.247425348, 0.262592077, 0.276592135, 0.291758865, 0.305758923]
+[pyre-note] colony vitals after venom_rises_untreated: {"colonists": 4, "offsite": 0, "damage": []}
+[pyre] 06:36:29 venom_rises_untreated PASS 
+[pyre-note] heat guard (row start, row plain_bite_carries_no_venom): {"cleared": [["Human75828", 0.0372], ["Human75831", 0.0056], ["Human77897", 0.0016]], "failed": [], "read": true}
+[pyre-note] biters of Human78056: {"spawned": ["Fox_Fennec78058"], "landed": true, "ticks": 90, "killed": 1, "left": []}
+[pyre-note] control colonist health: [{"def": "Scratch", "label": "scratch (fennec fox claw)", "severity": 5.196317, "part": "Eye", "partLabel": "left eye"}, {"def": "Scratch", "label": "scratch (fennec fox claw)", "severity": 5.196317, "part": "Ear", "partLabel": "right ear"}, {"def": "BloodLoss", "label": "blood loss (minor)", "severity": 0.000623558066}]
+[pyre-note] colony vitals after plain_bite_carries_no_venom: {"colonists": 5, "offsite": 0, "damage": []}
+[pyre] 06:36:32 plain_bite_carries_no_venom PASS 
+[pyre-note] heat guard (row start, row venom_tended_vs_untended): {"cleared": [["Human75828", 0.0004], ["Human75831", 0.0004], ["Human77897", 0.0008]], "failed": [], "read": true}
+[pyre-note] biters of Human78061: {"spawned": ["RM_Flamefang78064", "RM_Flamefang78072"], "landed": true, "ticks": 270, "killed": 1, "left": []}
+[pyre-note] biters of Human78075: {"spawned": ["RM_Flamefang78078", "RM_Flamefang78084"], "landed": true, "ticks": 360, "killed": 1, "left": []}
+[pyre-note] PLANTED FAULT: "PYRE_PLANT_VENOM_TEND_WRONG_PATIENT=1: the doctor tends the untended patient, as if the tend did nothing for the tended one"
+[pyre-note] venom severity each hour, tended vs untended: {"order": {"success": true, "accepted": true, "interruptibleBefore": true, "requestedJobDef": "TendPatient", "afterJobDef": "TendPatient", "nowRunningRequested": true, "ticksElapsed": 0, "pausedDuringWait": true, "queueLength": 0, "operation": {"OperationId": "op_592f2742426f41e4b7ab56b1932eb609", "Status": "Completed", "Success": true, "DurationMs": 17520}, "state": {"programState": "Playing", "hasCurrentGame": true, "paused": true, "timeSpeed": "Paused", "tick": 397311}}, "series": {"tended": [0.207171977, 0.2223387, 0.236338764, 0.2515055, 0.265505552, 0.280672282, 0.29467234], "untended": [0.08249997, 0.09766661, 0.111666575, 0.126833215, 0.140833274, 0.156, 0.170000061]}, "tendSeen": true, "tendEndedAfterTicks": 1770}
+[pyre-note] colony vitals after venom_tended_vs_untended: {"colonists": 8, "offsite": 0, "damage": []}
+[pyre] 06:37:35 venom_tended_vs_untended FAIL ExpectationFailed: the tended venom rose no less than the untended in hour(s) [1, 2, 3, 5]: hourly rises [(0.0152, 0.0152), (0.014, 0.014), (0.0152, 0.0152), (0.014, 0.014), (0.0152, 0.0152), (0.014, 0.014)] (tended [0.207171977, 0.2223387, 0.236338764, 0.2515055, 0.265505552, 0.280672282, 0.2946723
+[pyre-note] heat guard (row start, row venom_wait_out): {"cleared": [["Human75828", 0.0491], ["Human75831", 0.0491], ["Human77897", 0.0583], ["Human78061", 0.0476]], "failed": [], "read": true}
+[pyre-note] earlier venom patients on the map, not this row's subjects: ["Human77897", "Human78061", "Human78075"]
+[pyre-note] biters of Human78331: {"spawned": ["RM_Flamefang78333"], "landed": true, "ticks": 180, "killed": 1, "left": []}
+[pyre-note] untended venom severity each day until it goes (immunity unread): {"days": [0.237988248, 0.5879874, 0.257153869, null], "diedOnDay": null}
+[pyre-note] colony vitals after venom_wait_out: {"colonists": 8, "offsite": 0, "damage": ["Human75831 died during the row"]}
+[pyre] 06:41:16 venom_wait_out UNMEASURED UNMEASURED: RESTART (damage to the test, not a verdict): Human75831 died during the row
+[modcheck] chain flamefang_venom END 313s PASS=3 FAIL=1 UNMEASURED=1 NOT_RUN=0 hold=0.1s body=311.5s teardown=1.8s
+component flamefang_venom/venom_tended_vs_untended: {"toggle": null, "beyond_toggle": false, "verdict": "FAIL", "execution": "ran", "detail": "ExpectationFailed: the tended venom rose no less than the untended in hour(s) [1, 2, 3, 5]: hourly rises [(0.0152, 0.0152), (0.014, 0.014), (0.0152, 0.0152), (0.014, 0.014), (0.0152, 0.0152), (0.014, 0.014)] (tended [0.207171977, 0.2223387, 0.236338764, 0.2515055, 0.265505552, 0.280672282, 0.29467234], untended [0.08249997, 0.09766661, 0.111666575, 0.126833215, 0.140833274, 0.156, 0.170000061])", "evidence": [{"call": "bridge_call jawa/spawn_pawn", "result": {"success": true, "message": "Spawned 1/1 Colo
+component flamefang_venom/venom_wait_out: {"toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "execution": "ran", "detail": "UNMEASURED: RESTART (damage to the test, not a verdict): Human75831 died during the row", "evidence": [{"call": "earlier venom patients on the map, not this row's subjects", "result": ["Human77897", "Human78061", "Human78075"]}, {"call": "bridge_call jawa/spawn_pawn", "result": {"success": true, "message": "Spawned 1/1 Colonist in faction PlayerColony.", "spawnedCount": 1, "failedCount": 0, "substitutedCount": 0, "pawns": [{"ok": true, "id": "Human78331", "name": "Edge", "kindRequested": "Colonist"
+component mapgen_log/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_mapgen_log_clean"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component plant_census/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_plant_distribution_correct"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component plant_census/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component plant_census/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component animal_census/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_animal_distribution_correct"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component grass_cover/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_grass_chokes_ground"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component ruins/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_ruins_scorched"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component ruins/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component burn_line/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_burn_line_present"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component burn_line/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component burn_line/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component burn_line/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component opening_front/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component opening_front/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component startup_and_def_wiring/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "biomeGenerationEnabled", "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component ground_deep_ash/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_ground_deep_ash"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component ground_deep_ash/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component ground_deep_ash/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component ground_deep_ash/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component ground_deep_ash/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component ground_deep_ash/skipped#5: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component ground_deep_ash/skipped#6: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component ground_deep_ash/skipped#7: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component ash_fertility_watered/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_ash_fertile_when_watered"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component ash_fertility_watered/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component ash_fertility_watered/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component fresh_burn_bonus/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_fresh_burn_feeds_the_field"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component fresh_burn_bonus/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component ambient_ash_drift/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "ambientAshEnabled", "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component fire_tick_effects/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "ashDustingEnabled", "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component fire_tick_effects/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "scorchFruitEnabled", "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component ashfall_weather_accumulation/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "ashfallAccumulationEnabled", "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component ashfall_drifts/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_ashfall_darkens_drifts"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component cinderfall/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_cinderfall_distinct"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component cinderfall/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component cinderfall/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component cinderfall/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component blackrain/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_blackrain_reads"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component blackrain/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component blackrain/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "blackRainDousingEnabled", "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component soaked_map_stays_smooth/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component no_ordinary_rain/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_cannot_ordinary_rain"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component no_ordinary_rain/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component no_ordinary_rain/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component scorchfruit_fire_born/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_scorchfruit_fire_born"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component scorchfruit_fire_born/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component scorchfruit_produces/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_scorchfruit_produces"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component scorchfruit_spoils/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_scorchfruit_spoils_fast"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component firehawk/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_firehawk_carries_ember"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component firehawk/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component firehawk/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component furnace_warmth/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_furnacebeast_warmth"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component furnace_room/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_furnacebeast_heats_room"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component furnace_sleep/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component furnace_sleep/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component burrowers/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_burrowers_dive"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component heat_dome/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "burrowDomeOnHeatHit", "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component heat_dome/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "burrowDomeOnHeatHit", "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component heat_dome/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component embergrass_regrow/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_embergrass_regrows"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component embergrass_regrow/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component embergrass_regrow/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component embergrass_regrow/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component ullai_and_giant/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "ullaiEnabled", "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component ullai_and_giant/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "furnaceBeastGiant", "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component ullai_and_giant/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component ullai_and_giant/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component gpt_hunt_plausible/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component gpt_hunt_plausible/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component gpt_hunt_plausible/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component gpt_hunt_plausible/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component gpt_hunt_plausible/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": "sandShovelEnabled", "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component gpt_hunt_plausible/skipped#5: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component gpt_hunt_plausible/skipped#6: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component gpt_hunt_plausible/skipped#7: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component gpt_hunt_plausible/skipped#8: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component sand_shovel/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "sandShovelEnabled", "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component rite_hook_alone/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "fireClockEnabled", "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component rite_hook_alone/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "fireClockEnabled", "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component firefoam_sprayer/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component firefoam_sprayer/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component walk_season/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component walk_season/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component walk_season/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component walk_season/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component walk_season/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component walk_season/skipped#5: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component walk_season/skipped#6: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component walk_season/skipped#7: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component foreign_arrivals/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component foreign_arrivals/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component foreign_arrivals/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component fire_sense/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component fire_sense/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component fire_sense/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component fire_sense/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component fire_sense/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component burn_line_off_control/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component furnace_hide_bank/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component roof_withers/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component roof_withers/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component roof_withers/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component herd_thirst/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component firehawk_first_sighting_letter/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component firehawk_first_sighting_letter/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "fireHawkSightingLetterEnabled", "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component firehawk_first_sighting_letter/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component firehawk_crestfeather_yield/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+component firehawk_mapwide_carry/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains flamefang_venom)"}
+Pyrelands: NOT GREEN  PASS=3 FAIL=1 UNMEASURED=109  calls=900 mean=352.646ms  -> design/concepts/Pyrelands/version/in_game/visit_5/evidence/pv5_flamefang_venom_planted_wrong_tend2.json
+[bridge split] 320.9 s wall: load 0.0 / ticks 252.8 / reads 11.9 / other 38.8 / outside calls 17.4 s
+[bridge split] WARN 283 calls of jawa/pawn_need (12.9 s): batch them
+[bridge split] WARN 168 calls of jawa/safe_advance (252.8 s): batch them
+[bridge split] WARN 110 calls of jawa/map_info (5.4 s): batch them
+[bridge split] WARN 98 calls of jawa/list_pawns (5.0 s): batch them
+[bridge split] WARN 60 calls of jawa/site_state (2.9 s): batch them

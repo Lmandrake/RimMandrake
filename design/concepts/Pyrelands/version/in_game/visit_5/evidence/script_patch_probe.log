@@ -1,0 +1,9 @@
+COLONISTS [(125, 120), (119, 176), (129, 136)]
+BOX 99,96,50,45
+BuildingArtificial {'AncientShipBeacon': 2}
+BuildingNatural {}
+Filth {}
+GEYSERS [(69, 157), (57, 233), (28, 97), (143, 221)]
+TERRAIN {'RM_FE_Ash_Deep': 1946, 'Granite_Rough': 189, 'AncientConcrete': 105, 'RM_FE_Ground_Soil': 10}
+PLANTS 1955 BARE cells 295 bare bbox (110, 98, 133, 140)
+[bridge split] 0.5 s wall: load 0.0 / ticks 0.0 / reads 0.3 / other 0.0 / outside calls 0.1 s

@@ -42,3 +42,13 @@ DONE ash_fertility_watered reload_rc=0 rc=1 633s 05:44:18
 DONE scorchfruit_spoils reload_rc=0 rc=1 588s 05:54:06
 DONE fresh_burn_bonus reload_rc=0 rc=1 808s 06:07:34
 DONE grass_cover,embergrass_regrow@embergrass_regrow reload_rc=0 rc=1 301s 06:12:35
+DONE burn_line reload_rc=0 rc=1 1215s 06:32:50
+END b2 2026-11-22 06:32:50
+START b3 2026-11-22 06:33:07
+DONE script:design/concepts/Pyrelands/version/in_game/visit_5/scripts/health_probe.py@health_probe reload_rc=0 rc=0 16s 06:33:23
+DONE firefoam_sprayer@firefoam_repaired2 reload_rc=0 rc=1 69s 06:34:32
+DONE PYRE_PLANT_RING_GAP=1:firefoam_sprayer@firefoam_planted_ring_gap2 reload_rc=0 rc=1 68s 06:35:40
+DONE PYRE_PLANT_VENOM_TEND_WRONG_PATIENT=1:flamefang_venom@flamefang_venom_planted_wrong_tend2 reload_rc=0 rc=1 338s 06:41:18
+DONE ullai_and_giant@ullai_look reload_rc=0 rc=1 48s 06:42:06
+DONE +script:design/concepts/Pyrelands/version/in_game/visit_5/scripts/herd_look.py@herd_look reload_rc=skipped rc=0 2s 06:42:08
+DONE script:design/concepts/Pyrelands/version/in_game/visit_5/scripts/patch_probe.py@patch_probe reload_rc=0 rc=0 16s 06:42:24
