@@ -1,0 +1,66 @@
+{
+ "sc_ruins": {
+  "label": "ruins_repaired",
+  "prior": [
+   {
+    "label": "ruins",
+    "class": "HARNESS",
+    "note": "ruins_scorched: 'get_terrain_batch read 88 of 90 cells' -- two ruin samples one cell apart overlap by 2 cells and the tool reads a cell once (JawaBenchTerrainTools.cs keys its result by cell); every cell was read"
+   }
+  ],
+  "repair": {
+   "class": "HARNESS",
+   "commit": "2613e2e96a9f6242a83c111251923b2a19523b70",
+   "what": "_terrain compares cellsRead with the distinct cells of the rect union (out-of-map cells still read short); selftest_pyrelands_terrain_union.py 0/6 on the fix, 2/6 with --old",
+   "planted": {
+    "plant": "PYRE_PLANT_RUIN_FOOTPRINT_SOIL=1: the sampled ruin footprints re-laid RM_FE_Ground_Soil before the read",
+    "command": "PYRE_PLANT_RUIN_FOOTPRINT_SOIL=1 (through WSLENV) python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains ruins",
+    "verdict": "FAIL",
+    "evidence": "design/concepts/Pyrelands/version/in_game/visit_5/evidence/pv5_ruins_planted_soil.json"
+   }
+  }
+ },
+ "sc_firehawk": {
+  "label": "firehawk_repaired",
+  "prior": [
+   {
+    "label": "firehawk",
+    "class": "SITE",
+    "note": "far_hawk_seeks_the_burn UNMEASURED: the hawk spawned 60 cells off wandered 58 -> 54 cells inside its first GotoWander, straight into carry reach (scanRadius 54), and took RM_FireHawkCarryEmber with no think in the seek band; the 'stray' fires were its own drops after the carry, which the guard misread"
+   }
+  ],
+  "repair": {
+   "class": "SITE",
+   "commit": "e8cb081456a8a7e9418bb03158d1cf95df6be196",
+   "what": "the far hawk starts 100 cells off (inside SightRange 180); fires seen after the hawk's first carry or seek no longer void the row (HARNESS part)",
+   "planted": {
+    "plant": "PYRE_PLANT_FARHAWK_NO_SEEK=1: fireHawkSpreadEnabled off for the seek row",
+    "command": "PYRE_PLANT_FARHAWK_NO_SEEK=1 (through WSLENV) python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains firehawk",
+    "verdict": "FAIL",
+    "evidence": "design/concepts/Pyrelands/version/in_game/visit_5/evidence/pv5_firehawk_planted_no_seek.json"
+   }
+  }
+ },
+ "sc_scorchfruit": {
+  "label": "scorchfruit_with_census",
+  "prior": [
+   {
+    "label": "scorchfruit_fire_born",
+    "class": "HARNESS",
+    "note": "scorchfruit_fire_born UNMEASURED by construction: the table command ran the chain without plant_census, whose fresh-site census its 'never on unburned land' half reads (visit 4 ran the pair by hand)"
+   }
+  ],
+  "repair": {
+   "class": "HARNESS",
+   "commit": "15431f983f38fbdda726126f53b286d007b46152",
+   "what": "the table command runs --chains plant_census,scorchfruit_fire_born; planted switch PYRE_PLANT_SCORCHFRUIT_UNBURNED added",
+   "planted": {
+    "plant": "PYRE_PLANT_SCORCHFRUIT_UNBURNED=1: one ScorchFruit set on unburned ground (125,125), outside every fire pad, before the census",
+    "command": "PYRE_PLANT_SCORCHFRUIT_UNBURNED=1 (through WSLENV) python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains plant_census,scorchfruit_fire_born",
+    "verdict": "FAIL",
+    "evidence": "design/concepts/Pyrelands/version/in_game/visit_5/evidence/pv5_scorchfruit_planted_unburned.json",
+    "note": "scorchfruit_fire_born FAIL 'ScorchFruit on unburned land ... [(125, 125)]', the planted fruit; the plant also upset plant_census's own probe cell (plant_distribution_correct FAIL in this planted run only)"
+   }
+  }
+ }
+}

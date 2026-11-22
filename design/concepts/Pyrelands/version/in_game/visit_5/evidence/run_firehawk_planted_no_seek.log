@@ -1,0 +1,140 @@
+[modcheck] chain firehawk START 13:03:43Z
+[pyre-note] heat guard (row start, row firehawk_carries_ember): {"cleared": [["Human75831", 0.0008]], "failed": [], "read": true}
+[pyre-note] fire-hawk job samples: [["RM_FireHawkCarryEmber", 16]]
+[pyre-note] fire-hawk flight state during the ember job: "job=RM_FireHawkCarryEmber jobFlying=True flying=True canEverFly=True cooldown=0"
+[pyre-note] colony vitals after firehawk_carries_ember: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 05:03:48 firehawk_carries_ember PASS 
+[pyre-note] heat guard (row start, row far_hawk_seeks_the_burn): {"cleared": [["Human75828", 0.0004], ["Human75831", 0.0004]], "failed": [], "read": true}
+[pyre-note] PLANTED FAULT: "PYRE_PLANT_FARHAWK_NO_SEEK=1: fireHawkSpreadEnabled off for this row, as if the hawk never sought"
+[pyre-note] heat guard (every 6000 ticks, row far_hawk_seeks_the_burn): {"cleared": [["Human75828", 0.0227], ["Human75831", 0.0239]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row far_hawk_seeks_the_burn): {"cleared": [["Human75828", 0.0466], ["Human75831", 0.0236]], "failed": [], "read": true}
+[pyre-note] far hawk (start 100 cells; seek band > 48.6): jobs, distance to the burn; other hawks killed first; fires outside the plot: {"jobs": ["GotoWander", "Wait_MaintainPosture", "Wait_Wander", "GotoWander", "Wait_Wander", "GotoWander", "Wait_Wander", "GotoWander", "Wait_Wander", "GotoWander", "Wait_Wander", "GotoWander", "Wait_Wander", "GotoWander", "Wait_Wander", "GotoWander", "Wait_Wander", "GotoWander", "Wait_Wander", "GotoWander", "Wait_Wander", "GotoWander", "Wait_Wander", "GotoWander", "Wait_MaintainPosture", "Wait_Wander", "GotoWander", "Wait_Wander", "Wait_MaintainPosture", "GotoWander", "Wait_Wander", "GotoWander", "Wait_MaintainPosture", "Wait_Wander"], "dist": [98.0, 98.0, 98.0, 98.0, 98.0, 97.0, 97.0, 97.0, 97.0, 97.0, 97.0, 97.0, 97.0, 97.0, 97.0, 97.0, 97.0, 97.0, 97.0, 97.0, 97.0, 97.0, 97.0, 97.0, 97.0, 95.0, 91.0, 91.0, 96.1, 93.0, 97.0, 102.0, 107.0, 115.0, 107.2, 107.2, 107.2, 104.4, 102.5, 101.8, 102.0, 102.7, 102.6, 106.8, 101.4, 105.3, 105.5, 113.4, 122.7, 122.6, 124.4, 124.3, 124.4, 125.5, 125.3, 125.1, 127.0, 125.0, 134.3, 138.0, 138.1, 143.5, 150.7, 145.3, 145.2, 148.3, 150.3, 148.1, 148.1, 151.2, 154.2, 154.2, 148.3, 152.2, 158.0, 153.0, 146.0, 147.2, 142.9, 146.2, 148.0, 146.1, 146.1, 149.2, 149.2], "otherHawksKilled": 3, "strays": []}
+[pyre-note] colony vitals after far_hawk_seeks_the_burn: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 05:05:11 far_hawk_seeks_the_burn FAIL ExpectationFailed: the hawk 100 cells off never took RM_FireHawkSeekBurn: ['GotoWander', 'Wait_MaintainPosture', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander'
+[pyre-note] heat guard (row start, row far_hawk_spread_off_control): {"cleared": [["Human75828", 0.0241], ["Human75831", 0.0236]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row far_hawk_spread_off_control): {"cleared": [["Human75828", 0.0019], ["Human75831", 0.0023]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row far_hawk_spread_off_control): {"cleared": [["Human75828", 0.0157], ["Human75831", 0.0248]], "failed": [], "read": true}
+[pyre-note] fireHawkSpreadEnabled off: jobs, distance: {"jobs": ["GotoWander", "Wait_MaintainPosture", "GotoWander", "Wait_Wander", "GotoWander", "Wait_Wander", "GotoWander", "Wait_Wander", "GotoWander", "Wait_Wander", "GotoWander", "Wait_Wander", "GotoWander", "Wait_MaintainPosture", "GotoWander", "Wait_Wander", "Wait_MaintainPosture", "GotoWander", "Wait_Wander", "GotoWander", "Wait_MaintainPosture", "GotoWander", "Wait_Wander", "GotoWander", "Wait_Wander", "GotoWander", "Wait_MaintainPosture", "GotoWander", "Wait_Wander", "GotoWander", "Wait_Wander", "GotoWander", "Wait_Wander", "LayDown"], "dist": [98.1, 98.1, 98.1, 98.0, 98.0, 98.0, 98.0, 98.0, 98.0, 98.0, 98.0, 98.0, 98.0, 99.0, 99.0, 99.0, 99.0, 99.0, 99.0, 99.0, 99.0, 99.0, 99.0, 99.0, 99.0, 100.0, 100.0, 103.0, 103.0, 106.0, 108.0, 109.0, 112.0, 114.0, 115.0, 114.1, 108.2, 109.1, 103.7, 108.1, 105.0, 109.0, 110.0, 109.0, 108.0, 108.0, 108.0, 109.1, 107.0, 111.1, 113.5, 115.3, 124.6, 123.3, 132.5, 141.3, 142.0, 142.0, 136.9, 135.0, 135.2, 131.1, 133.1, 136.2, 137.1, 140.7, 142.1, 143.2, 141.2, 138.2, 136.1, 133.1, 131.1, 131.1, 131.1, 131.1, 131.1, 131.1, 131.1, 131.1, 131.1, 131.1, 131.1, 131.1, 131.1]}
+[pyre-note] colony vitals after far_hawk_spread_off_control: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 05:06:31 far_hawk_spread_off_control PASS 
+[modcheck] chain firehawk END 169s PASS=2 FAIL=1 UNMEASURED=0 NOT_RUN=0 hold=0.1s body=168.2s teardown=0.4s
+component firehawk/far_hawk_seeks_the_burn: {"toggle": null, "beyond_toggle": false, "verdict": "FAIL", "execution": "ran", "detail": "ExpectationFailed: the hawk 100 cells off never took RM_FireHawkSeekBurn: ['GotoWander', 'Wait_MaintainPosture', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_MaintainPosture', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'Wait_Mai
+component mapgen_log/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_mapgen_log_clean"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component plant_census/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_plant_distribution_correct"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component plant_census/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component plant_census/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component animal_census/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_animal_distribution_correct"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component grass_cover/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_grass_chokes_ground"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component ruins/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_ruins_scorched"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component ruins/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component burn_line/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_burn_line_present"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component burn_line/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component burn_line/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component burn_line/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component opening_front/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component opening_front/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component startup_and_def_wiring/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "biomeGenerationEnabled", "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component ground_deep_ash/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_ground_deep_ash"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component ground_deep_ash/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component ground_deep_ash/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component ground_deep_ash/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component ground_deep_ash/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component ground_deep_ash/skipped#5: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component ground_deep_ash/skipped#6: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component ground_deep_ash/skipped#7: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component ash_fertility_watered/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_ash_fertile_when_watered"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component ash_fertility_watered/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component ash_fertility_watered/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component fresh_burn_bonus/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_fresh_burn_feeds_the_field"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component fresh_burn_bonus/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component ambient_ash_drift/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "ambientAshEnabled", "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component fire_tick_effects/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "ashDustingEnabled", "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component fire_tick_effects/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "scorchFruitEnabled", "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component ashfall_weather_accumulation/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "ashfallAccumulationEnabled", "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component ashfall_drifts/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_ashfall_darkens_drifts"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component cinderfall/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_cinderfall_distinct"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component cinderfall/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component cinderfall/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component cinderfall/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component blackrain/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_blackrain_reads"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component blackrain/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component blackrain/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "blackRainDousingEnabled", "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component soaked_map_stays_smooth/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component no_ordinary_rain/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_cannot_ordinary_rain"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component no_ordinary_rain/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component no_ordinary_rain/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component scorchfruit_fire_born/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_scorchfruit_fire_born"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component scorchfruit_fire_born/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component scorchfruit_produces/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_scorchfruit_produces"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component scorchfruit_spoils/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_scorchfruit_spoils_fast"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component furnace_warmth/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_furnacebeast_warmth"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component furnace_room/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_furnacebeast_heats_room"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component furnace_sleep/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component furnace_sleep/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component burrowers/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_burrowers_dive"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component heat_dome/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "burrowDomeOnHeatHit", "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component heat_dome/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "burrowDomeOnHeatHit", "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component heat_dome/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component embergrass_regrow/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_embergrass_regrows"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component embergrass_regrow/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component embergrass_regrow/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component embergrass_regrow/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component ullai_and_giant/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "ullaiEnabled", "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component ullai_and_giant/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "furnaceBeastGiant", "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component ullai_and_giant/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component ullai_and_giant/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component gpt_hunt_plausible/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component gpt_hunt_plausible/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component gpt_hunt_plausible/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component gpt_hunt_plausible/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component gpt_hunt_plausible/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": "sandShovelEnabled", "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component gpt_hunt_plausible/skipped#5: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component gpt_hunt_plausible/skipped#6: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component gpt_hunt_plausible/skipped#7: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component gpt_hunt_plausible/skipped#8: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component sand_shovel/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "sandShovelEnabled", "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component flamefang_venom/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component flamefang_venom/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component flamefang_venom/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component flamefang_venom/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component flamefang_venom/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component rite_hook_alone/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "fireClockEnabled", "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component rite_hook_alone/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "fireClockEnabled", "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component firefoam_sprayer/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component firefoam_sprayer/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component walk_season/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component walk_season/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component walk_season/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component walk_season/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component walk_season/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component walk_season/skipped#5: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component walk_season/skipped#6: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component walk_season/skipped#7: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component foreign_arrivals/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component foreign_arrivals/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component foreign_arrivals/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component fire_sense/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component fire_sense/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component fire_sense/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component fire_sense/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component fire_sense/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component burn_line_off_control/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component furnace_hide_bank/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component roof_withers/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component roof_withers/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component roof_withers/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component herd_thirst/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component firehawk_first_sighting_letter/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component firehawk_first_sighting_letter/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "fireHawkSightingLetterEnabled", "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component firehawk_first_sighting_letter/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component firehawk_crestfeather_yield/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+component firehawk_mapwide_carry/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains firehawk)"}
+Pyrelands: NOT GREEN  PASS=1 FAIL=1 UNMEASURED=111  calls=2282 mean=75.653ms  -> design/concepts/Pyrelands/version/in_game/visit_5/evidence/pv5_firehawk_planted_no_seek.json
+[bridge split] 176.3 s wall: load 0.0 / ticks 59.4 / reads 50.2 / other 39.2 / outside calls 27.5 s
+[bridge split] WARN 537 calls of jawa/pawn_need (23.9 s): batch them
+[bridge split] WARN 362 calls of jawa/list_pawns (18.0 s): batch them
+[bridge split] WARN 346 calls of rimworld/get_game_info (5.3 s): batch them
+[bridge split] WARN 342 calls of jawa/list_things (16.7 s): batch them
+[bridge split] WARN 182 calls of jawa/map_info (8.9 s): batch them
+[bridge split] WARN 172 calls of jawa/safe_advance (59.4 s): batch them
+[bridge split] WARN 171 calls of jawa/site_state (7.8 s): batch them

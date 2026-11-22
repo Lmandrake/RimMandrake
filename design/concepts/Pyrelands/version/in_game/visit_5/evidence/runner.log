@@ -1,1 +1,37 @@
 START b1 2026-11-22 04:30:20
+DONE startup_and_def_wiring reload_rc=0 rc=1 23s 04:30:43
+DONE mapgen_log reload_rc=0 rc=1 25s 04:31:08
+DONE animal_census reload_rc=0 rc=1 23s 04:31:31
+DONE grass_cover reload_rc=0 rc=1 24s 04:31:55
+DONE ambient_ash_drift reload_rc=0 rc=1 27s 04:32:22
+DONE plant_census reload_rc=0 rc=1 96s 04:33:58
+DONE ruins reload_rc=0 rc=1 23s 04:34:21
+DONE firehawk reload_rc=0 rc=1 185s 04:37:26
+DONE furnace_warmth reload_rc=0 rc=1 30s 04:37:56
+DONE burrowers reload_rc=0 rc=1 32s 04:38:28
+DONE heat_dome reload_rc=0 rc=1 38s 04:39:06
+DONE fire_tick_effects reload_rc=0 rc=1 75s 04:40:21
+DONE rite_hook_alone reload_rc=0 rc=1 27s 04:40:48
+DONE firehawk_first_sighting_letter reload_rc=0 rc=1 41s 04:41:29
+DONE foreign_arrivals reload_rc=0 rc=1 42s 04:42:11
+DONE furnace_room reload_rc=0 rc=1 49s 04:43:00
+DONE no_ordinary_rain reload_rc=0 rc=1 41s 04:43:41
+DONE scorchfruit_fire_born reload_rc=0 rc=1 89s 04:45:10
+DONE ullai_and_giant reload_rc=0 rc=1 48s 04:45:58
+DONE sand_shovel reload_rc=0 rc=1 24s 04:46:22
+DONE scorchfruit_produces reload_rc=0 rc=1 59s 04:47:21
+DONE ashfall_weather_accumulation reload_rc=0 rc=1 29s 04:47:50
+DONE ashfall_drifts reload_rc=0 rc=1 51s 04:48:41
+DONE blackrain reload_rc=0 rc=1 132s 04:50:53
+DONE firefoam_sprayer reload_rc=0 rc=1 66s 04:51:59
+DONE flamefang_venom reload_rc=0 rc=1 333s 04:57:32
+END b1 2026-11-22 04:57:32
+START b2 2026-11-22 04:59:16
+DONE ruins@ruins_repaired reload_rc=0 rc=1 26s 04:59:42
+DONE PYRE_PLANT_RUIN_FOOTPRINT_SOIL=1:ruins@ruins_planted_soil reload_rc=0 rc=1 26s 05:00:08
+DONE firehawk@firehawk_repaired reload_rc=0 rc=1 193s 05:03:21
+DONE PYRE_PLANT_FARHAWK_NO_SEEK=1:firehawk@firehawk_planted_no_seek reload_rc=0 rc=1 191s 05:06:32
+DONE plant_census,scorchfruit_fire_born@scorchfruit_with_census reload_rc=0 rc=1 171s 05:09:23
+DONE PYRE_PLANT_SCORCHFRUIT_UNBURNED=1:plant_census,scorchfruit_fire_born@scorchfruit_planted_unburned reload_rc=0 rc=1 171s 05:12:14
+DONE firefoam_sprayer@firefoam_repaired reload_rc=0 rc=1 57s 05:13:11
+DONE PYRE_PLANT_RING_GAP=1:firefoam_sprayer@firefoam_planted_ring_gap reload_rc=0 rc=1 67s 05:14:18

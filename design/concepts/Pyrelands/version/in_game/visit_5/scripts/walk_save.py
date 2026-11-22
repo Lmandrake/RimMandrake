@@ -1,16 +1,16 @@
-"""Visit 5 (game a, the pyrelands tier; copied from visit 3's): stage the labelled savegame for his walk on the freshly reloaded visit-4 site, capture each station, save.
+"""Visit 5 (ArchBig, the pyrelands tier; copied from visit 4): stage the labelled savegame for his walk on the freshly reloaded visit-5 site, capture each station, save.
 
 python.exe, bridge held, the site reloaded first (northstar_site.py --reload-only). Stations sit in open deep-ash windows
 found from the live terrain (no rock, no water, no building), plus the map's own charred ruin. Saves
-PYRELANDS_0.1.0_VISIT4_WALK and stat-diffs the Saves folder (exactly that file new or changed). Captures go to
-Transient/pv4/shots (originals) for looking at; the record keeps copies under 1 MB."""
+PYRELANDS_0.1.0_VISIT5_WALK and stat-diffs the Saves folder (exactly that file new or changed). Captures go to
+Transient/pv5/shots (originals) for looking at; the record keeps copies under 1 MB."""
 import sys, json, os, time, shutil, collections
 sys.path.insert(0, r"src\RimMandrake\Utils")
 from rimbridge_client import RimBridge, resolve_endpoint
 SAVES = os.path.join(os.environ["RM_GAME_USERDATA"], "Saves") if os.environ.get("RM_GAME_USERDATA") else \
     os.path.expandvars(r"%USERPROFILE%\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Saves")
-NAME = "PYRELANDS_0.1.0_VISIT4_WALK"
-SHOTS = r"Transient\pv4\shots"
+NAME = "PYRELANDS_0.1.0_VISIT5_WALK"
+SHOTS = r"Transient\pv5\shots"
 TAG = "pyre_visit5"
 h, p, tk = resolve_endpoint()
 out = {"stations": [], "shots": []}
@@ -68,12 +68,12 @@ with RimBridge(h, p, tk) as rb:
         out["ruinCluster"] = sum(abs(ruin[0] - b[0]) <= 8 and abs(ruin[1] - b[1]) <= 8 for b in pts)
         if out["ruinCluster"] < 4:
             ruin = None   # a lone charred wall is not a ruin to walk to; the station is dropped and recorded
-    stations = [(fx + 10, fz + 17, "VISIT4: LIVE burn front in fresh ember grass - unpause and watch it walk", (fx, fz, 20, 16)),
-                (cx_ + 10, cz_ + 17, "VISIT4: creatures - ullai herd, furnace-beast giant, ashwallows", (cx_, cz_, 20, 16)),
-                (sx + 10, sz + 12, "VISIT4: scorch-fruit standing in ash", (sx + 4, sz + 2, 12, 12)),
-                (rx + 10, rz + 12, "VISIT4: ember grass under a roof (left) withers within a day; open patch (right) stays", (rx, rz, 20, 16))]
+    stations = [(fx + 10, fz + 17, "VISIT5: LIVE burn front in fresh ember grass - unpause and watch it walk", (fx, fz, 20, 16)),
+                (cx_ + 10, cz_ + 17, "VISIT5: creatures - ullai herd, furnace-beast giant, ashwallows", (cx_, cz_, 20, 16)),
+                (sx + 10, sz + 12, "VISIT5: scorch-fruit standing in ash", (sx + 4, sz + 2, 12, 12)),
+                (rx + 10, rz + 12, "VISIT5: ember grass under a roof (left) withers within a day; open patch (right) stays", (rx, rz, 20, 16))]
     if ruin:
-        stations.append((ruin[0], ruin[1] + 6, "VISIT4: charred ruin on deep ash (walls painted RM_FE_Charred)",
+        stations.append((ruin[0], ruin[1] + 6, "VISIT5: charred ruin on deep ash (walls painted RM_FE_Charred)",
                          (ruin[0] - 8, ruin[1] - 6, 16, 12)))
     call("jawa/review_label", action="clear", tag=TAG)
     lab = call("jawa/review_label", action="add", tag=TAG, ops="\n".join("%d|%d|%s" % (x, z, s) for x, z, s, _ in stations))

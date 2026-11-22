@@ -1,0 +1,21 @@
+[modcheck] chain flamefang_venom START 13:14:40Z
+[pyre-note] heat guard (row start, row flamefang_bite_injects_venom): {"cleared": [["Human75828", 0.0023], ["Human75831", 0.0026]], "failed": [], "read": true}
+[pyre-note] biters of Human77894: {"spawned": ["RM_Flamefang77897"], "landed": true, "ticks": 90, "killed": 1, "left": []}
+[pyre-note] colonist health after the flamefang: {"hediffs": [{"def": "Bite", "label": "bite scar (aching)", "severity": 3.0, "part": "Arm", "partLabel": "right arm"}, {"def": "Gunshot", "label": "old gunshot", "severity": 6.0, "part": "Arm", "partLabel": "right arm"}, {"def": "Bite", "label": "bite (flamefang venom-fangs)", "severity": 21.8996239, "part": "Torso", "partLabel": "torso"}, {"def": "RM_FlamefangVenom", "label": "flamefang venom (onset)", "severity": 0.1970966}, {"def": "BloodLoss", "label": "blood loss (minor)", "severity": 0.00131397741}, {"def": "Heatstroke", "label": "heatstroke (initial)", "severity": 0.000375}], "capacities": {"Consciousness": 0.88, "Moving": 0.88, "Manipulation": 0.73, "Talking": 0.88, "Eating": 0.88, "Sight": 1.0, "Hearing": 1.0, "Breathing": 1.0, "BloodFiltration": 1.0, "BloodPumping": 1.0, "Metabolism": 1.0}, "capacityErrors": [], "painTotal": 0.379995316, "bleedRate": 1.31397736}
+[pyre-note] colony vitals after flamefang_bite_injects_venom: {"colonists": 4, "offsite": 0, "damage": []}
+[pyre] 05:14:43 flamefang_bite_injects_venom PASS 
+[pyre-note] heat guard (row start, row venom_rises_untreated): {"cleared": [["Human75828", 0.0008], ["Human75831", 0.0004]], "failed": [], "read": true}
+[pyre-note] venom severity each hour: [0.1970966, 0.212263331, 0.226263389, 0.241430119, 0.255430162, 0.2705969, 0.28459695]
+[pyre-note] colony vitals after venom_rises_untreated: {"colonists": 4, "offsite": 0, "damage": []}
+[pyre] 05:15:05 venom_rises_untreated PASS 
+[pyre-note] heat guard (row start, row plain_bite_carries_no_venom): {"cleared": [["Human75828", 0.0377], ["Human75831", 0.0522], ["Human77894", 0.0004]], "failed": [], "read": true}
+[pyre-note] biters of Human78046: {"spawned": ["Fox_Fennec78049"], "landed": true, "ticks": 90, "killed": 1, "left": []}
+[pyre-note] control colonist health: [{"def": "Heatstroke", "label": "heatstroke (initial)", "severity": 0.00075}, {"def": "Bite", "label": "bite (fennec fox teeth)", "severity": 10.6612158, "part": "Torso", "partLabel": "torso"}, {"def": "BloodLoss", "label": "blood loss (minor)", "severity": 0.000639673}]
+[pyre-note] colony vitals after plain_bite_carries_no_venom: {"colonists": 5, "offsite": 0, "damage": []}
+[pyre] 05:15:08 plain_bite_carries_no_venom PASS 
+[pyre-note] heat guard (row start, row venom_tended_vs_untended): {"cleared": [["Human75828", 0.0004], ["Human75831", 0.0004], ["Human77894", 0.0004]], "failed": [], "read": true}
+[pyre-note] biters of Human78052: {"spawned": ["RM_Flamefang78055"], "landed": true, "ticks": 90, "killed": 1, "left": []}
+[pyre-note] biters of Human78057: {"spawned": ["RM_Flamefang78059"], "landed": true, "ticks": 90, "killed": 1, "left": []}
+[pyre-note] PLANTED FAULT: "PYRE_PLANT_VENOM_TEND_WRONG_PATIENT=1: the doctor tends the untended patient, as if the tend did nothing for the tended one"
+[pyre-note] venom severity each hour, tended vs untended: {"order": {"success": true, "accepted": true, "interruptibleBefore": true, "requestedJobDef": "TendPatient", "afterJobDef": "TendPatient", "nowRunningRequested": true, "ticksElapsed": 0, "pausedDuringWait": true, "queueLength": 0, "operation": {"OperationId": "op_daaac3dce1ea4f43a7fb3c7d6ba0dd40", "Status": "Completed", "Success": true, "DurationMs": 17476}, "state": {"programState": "Playing", "hasCurrentGame": true, "paused": true, "timeSpeed": "Paused", "tick": 396861}}, "series": {"tended": [0.2276667, 0.242833436, 0.2568335, 0.272000223, 0.286000282, 0.301167, 0.315167069], "untended": [0.178054228, 0.187808946, 0.1968133, 0.206568018, 0.215572372, 0.225327089, 0.234331444]}, "tendSeen": true, "tendEndedAfterTicks": 1890}
+[pyre-note] colony vitals after venom_tended_vs_untended: {"colonists": 8, "offsite": 0, "damage": ["Human7
