@@ -366,11 +366,37 @@ def t_walk_not_the_source_is_one_deploy():
         shutil.rmtree(d, ignore_errors=True)
 
 
+def t_a_path_outside_the_repo_is_not_in_the_change():
+    """RIMMANDRAKE_KEEP_RERUN_RELATION_READABLE_PAST_THE_STEAM_FOLDER: Pyrelands' table declared `/mnt/c/Program Files`
+    paths; git diff refused the whole pathspec (exit 128), and all 64 checks read 'git cannot list the change'."""
+    tr = Tree()
+    try:
+        extra = {"sc_out_mixed": {"id": "sc_out_mixed", "kind": "live_minimal", "stage": "6", "tier": "t",
+                                  "reads": ["/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data",
+                                            "src/RimMandrake/Planted/Source/C.cs"]},
+                 "sc_out_only": {"id": "sc_out_only", "kind": "live_minimal", "stage": "6", "tier": "t",
+                                 "reads": ["/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data",
+                                           "C:\\Users\\Someone\\AppData\\ModsConfig.xml"]}}
+        tr.set_table(table(extra))
+        base = tr.commit("table with paths outside the repository")
+        tr.edit("src/RimMandrake/Planted/Source/A.cs", "v = 0", "v = 1")
+        tr.commit("A.cs")
+        res = relate(tr, all_rows(base, table(extra)))
+        ok("a-path-outside-the-repo-is-not-in-the-change: a declared path outside the repository leaves the change "
+           "readable; a check declaring only such paths is unreadable alone",
+           sorted(res["unreadable"]) == ["sc_blank", "sc_out_only"] and res["rows"]["sc_a"]["state"] == "touched"
+           and res["rows"]["sc_out_mixed"]["state"] == "untouched" and res["rows"]["sc_b"]["state"] == "untouched",
+           (res["unreadable"], {k: v["state"] for k, v in res["rows"].items()}))
+    finally:
+        tr.close()
+
+
 TESTS = [t_declared_paths_are_exercises_reads_and_file, t_untouched_row_counts, t_touched_check_reruns,
          t_undeclared_change_reruns_nothing_and_is_listed, t_unreadable_relation_reruns_alone,
          t_whole_mod_check_reruns_on_any_change, t_whole_mod_check_skips_hashignored,
          t_csharp_relates_by_source_file, t_python_relates_by_symbol,
-         t_json_relates_by_entry, t_spec_change_reruns, t_rows_from_several_builds, t_walk_not_the_source_is_one_deploy]
+         t_json_relates_by_entry, t_spec_change_reruns, t_rows_from_several_builds, t_walk_not_the_source_is_one_deploy,
+         t_a_path_outside_the_repo_is_not_in_the_change]
 
 
 def _ledger_digest():
@@ -412,6 +438,7 @@ def main():
     t_spec_change_reruns()
     t_rows_from_several_builds()
     t_walk_not_the_source_is_one_deploy()
+    t_a_path_outside_the_repo_is_not_in_the_change()
     ok("the run left infrastructure/state/ledger/events/ unchanged", _ledger_digest() == before)
     print("%d of %d checks failed" % (len(FAILS), len(SEEN)))
     return 1 if FAILS else 0

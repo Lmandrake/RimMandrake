@@ -59,6 +59,9 @@ stage (the in-game build match, the Stage 6 exit, the visit brief, `./pipe why`,
   (`kind`, `file`, `entry`, `reads`, `exercises`, `command`, `tier`, `why_full_list`) reruns.
 - **rows-from-several-builds.** Each row is related from its own commit: rows made on two earlier commits are judged
   apart.
+- **a-path-outside-the-repo-is-not-in-the-change.** A declared path outside the repository (absolute, a drive path, or
+  with `..`) is left out of the change git lists, so it never makes the relation unreadable; a check that declares only
+  such paths is unreadable alone and reruns.
 - **walk-not-the-source-is-one-deploy.** When the deployed walk folder is not the current source (its `.srchash`
   differs from the source's), the build match names one act, a deploy, and reruns no check for it.
 

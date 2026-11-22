@@ -131,6 +131,14 @@ def mod_root(mod):
     return "src/RimMandrake/%s" % mod
 
 
+def in_repo(p):
+    """A declared path git can diff: repo-relative, not absolute (`/mnt/c/...`), not a drive path (`C:\\...`), no `..`.
+    A path outside the repository never changes in a commit, and git refuses a pathspec holding one (exit 128), which
+    made a whole table's change unreadable (RIMMANDRAKE_KEEP_RERUN_RELATION_READABLE_PAST_THE_STEAM_FOLDER)."""
+    p = str(p or "")
+    return bool(p) and not p.startswith("/") and not re.match(r"^[A-Za-z]:", p) and ".." not in p.split("/")
+
+
 def declared(spec, mod):
     """-> (paths, whole): the paths a check declares (exercises + reads + file), and whether it declares the whole mod
     (exercises "*", the mod folder itself or a parent of it, or a full-list check)."""
@@ -360,7 +368,7 @@ def scope(git, mod, sha, specs):
     for p in (git.show(sha, mod_root(mod) + "/Assemblies") or "").splitlines():
         if p.endswith(".srchash"):
             paths.update(_srchash_sources(git.show(sha, "%s/Assemblies/%s" % (mod_root(mod), p)), mod))
-    return sorted(paths)
+    return sorted(p for p in paths if in_repo(p))
 
 
 class Relation:
@@ -470,6 +478,8 @@ class Relation:
                                 self.mod)
         if not paths and not whole:
             return "unreadable", "the check declares nothing it reads or exercises (no exercises, reads or file)", []
+        if not whole and not any(in_repo(p) for p in paths):
+            return "unreadable", "the check declares only paths outside the repository (%s), which no commit shows" % paths[0], []
         o = self.git.rev(old)
         if not o:
             return "unreadable", "its row names no commit git can resolve (%s)" % (old or "no mod_sha"), []
