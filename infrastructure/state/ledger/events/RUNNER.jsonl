@@ -11214,3 +11214,4 @@
 {"seat":"RUNNER","event":"live","id":"OPS_TIMER_REPAIR_PRXC_XKGA","result":"broken","detail":"Ops alarm TIMER_FAILED: timers.failed_units = 1 failed user units (MEASURED), line > 0","ts":"2026-11-22T16:07:10Z","tsn":1795363630106323750}
 {"seat":"RUNNER","event":"live","id":"OPS_TIMER_REPAIR_PRXC_XKGA","result":"broken","detail":"Ops alarm TIMER_FAILED: timers.failed_units = 1 failed user units (MEASURED), line > 0","ts":"2026-11-22T16:11:25Z","tsn":1795363885097249482}
 {"seat":"RUNNER","event":"live","id":"OPS_TIMER_REPAIR_PRXC_XKGA","result":"broken","detail":"Ops alarm TIMER_FAILED: timers.failed_units = 1 failed user units (MEASURED), line > 0","ts":"2026-11-22T16:12:42Z","tsn":1795363962869552088}
+{"seat":"RUNNER","event":"live","id":"OPS_TIMER_REPAIR_PRXC_XKGA","result":"broken","detail":"Ops alarm TIMER_FAILED: timers.failed_units = 1 failed user units (MEASURED), line > 0","ts":"2026-11-22T16:15:21Z","tsn":1795364121855821490}
