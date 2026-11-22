@@ -812,6 +812,39 @@ def worked_after_checks(root):
        "worked-after: that third steward is spent too: paused, never a fourth without new work")
 
 
+def rearrival_checks(root):
+    """RIMMANDRAKE_SEE_SECOND_ARRIVAL_AT_STEWARD_STAGE_NOT_SPENT: a steward stage's key was `<ver>|<stage>`, so a mod
+    that reached the stage again at the same version read its first arrival's steward as spent. Measured 2026-11-22
+    06:03Z: GimmeSomeSlack 0.1.1 reached the walk brief (Stage 7) at 04:33 PST 11-21, its steward (…-pre-h-1795265290)
+    wrote arrival_1 and advanced it to his walk; it went back to Stage 6 and arrived at Stage 7 again at 21:40 PST, and
+    read PAUSED 'the steward run is spent … ended and the state has not moved'. A steward booked before the mod's latest
+    arrival at the stage worked an earlier arrival, never this one."""
+    for stage in ("pre_human", "preflight"):
+        fresh_state()
+        facts = lambda arrived: {"mod": "S", "stage": stage, "version": "0.1.1", "live_units": [],  # noqa: E731
+                                 "owed": "steward", "exit": {"state": "not_met", "why": ["-"]},
+                                 "arrived": {stage: arrived}}
+        briefs = lambda w: [x for x in w.launched if x[0] == "brief"]  # noqa: E731
+        w = World({"S": facts(CLOCK - 60)})
+        rd, g = run(w, ["S"], root)
+        ok(g("S").get("klass") == "launch" and len(briefs(w)) == 1,
+           "re-arrival (%s): the first arrival gets one steward (read %s/%s)" % (
+               stage, g("S").get("klass"), g("S").get("decision")))
+        rd, g = run(w, ["S"], root, now=CLOCK + 900)
+        ok(g("S").get("decision") == "steward_spent" and len(briefs(w)) == 1,
+           "re-arrival (%s): that steward ended on the same arrival: spent, no second (read %s)" % (
+               stage, g("S").get("decision")))
+        w.facts = {"S": facts(CLOCK + 5000)}
+        rd, g = run(w, ["S"], root, now=CLOCK + 5600)
+        ok(g("S").get("klass") == "launch" and len(briefs(w)) == 2,
+           "re-arrival (%s): a later arrival at the same version is a new state, one steward (read %s/%s: %s)" % (
+               stage, g("S").get("klass"), g("S").get("decision"), str(g("S").get("status"))[:120]))
+        rd, g = run(w, ["S"], root, now=CLOCK + 6600)
+        ok(g("S").get("decision") == "steward_spent" and len(briefs(w)) == 2,
+           "re-arrival (%s): that second steward is spent too on its own arrival, never a third (read %s)" % (
+               stage, g("S").get("decision")))
+
+
 def main():
     if os.environ.get("MAT_AUT_BASE_DIR"):
         print("against the base dispatcher in %s" % os.path.dirname(MD.__file__))
@@ -1051,6 +1084,7 @@ def main():
         repin_wait_checks(root)
         exam_gate_checks(root)
         worked_after_checks(root)
+        rearrival_checks(root)
         designer_lock_checks(root)
         launch_retry_checks(root)
         live_steward_checks(root)

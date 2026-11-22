@@ -1260,6 +1260,19 @@ def _road_back(s, row, open_items, now=None, moved=False, endings=None, cfg=None
     return False
 
 
+def _arrival_key(s, key, arrived):
+    """-> the steward key of a steward stage at this arrival: `key` itself while its booked run (`at`) is not older than
+    the mod's latest arrival at the stage, else `key|arrived:<epoch>`. A run booked before the latest arrival worked an
+    earlier arrival at the same version, never this one: GimmeSomeSlack 0.1.1 reached Stage 7 twice on 2026-11-21 and
+    read its first walk-brief steward (which had advanced it) as spent
+    (RIMMANDRAKE_SEE_SECOND_ARRIVAL_AT_STEWARD_STAGE_NOT_SPENT). A booking with no `at` is read as before."""
+    x = (s.get("steward") or {}).get(key)
+    if (isinstance(x, dict) and isinstance(x.get("at"), (int, float)) and isinstance(arrived, (int, float))
+            and x["at"] < arrived):
+        return "%s|arrived:%d" % (key, int(arrived))
+    return key
+
+
 def _after_road_backs(s, key):
     """-> (key, [items]): a steward key whose run opened a road back now closed names a new state (its fixers ran and
     closed what it filed), so the key grows `|after:<item>` once per closed road back; one whose state another run
@@ -1357,17 +1370,18 @@ def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=desig
                        root=root)
         return
     if stage in STEWARD_STAGES and dec == "not_offline":
+        skey = _arrival_key(s, "%s|%s" % (ver, stage), (f.get("arrived") or {}).get(stage))
         if stage == "pre_human":
             # Stage 7 judges nothing (owner, 2026-11-17, RIMMANDRAKE_FOLD_STAGE_SEVEN_INTO_WALK_BRIEF_NO_VETO): one
             # fresh reader, who made none of the evidence writes, writes his walk brief; it has no veto
-            _steward(row, "stage", "%s|%s" % (ver, stage), "%s: one fresh reader writes it, then advance" % (
+            _steward(row, "stage", skey, "%s: one fresh reader writes it, then advance" % (
                          M.label(stage)),
                      "a fresh reader that made none of %s's evidence writes writes design/concepts/%s/%s/arrival_<N>.md "
                      "(N = the record's pre_human_arrivals) per "
                      "src/RimMandrake/rimflow/roles/walk_brief.md (no veto: findings go into the brief or onto a "
                      "ticket), then maturation.py advance %s --to his_walk" % (mod, mod, M.WALK_BRIEF_DIR, mod))
             return
-        _steward(row, "stage", "%s|%s" % (ver, stage), "%s is the steward's step: run it, then advance" % M.label(stage),
+        _steward(row, "stage", skey, "%s is the steward's step: run it, then advance" % M.label(stage),
                  "do %s as the spec says (design/specs/2026-11-13-maturation-pipeline.md) and advance with "
                  "--steward-confirms naming what you read" % M.label(stage))
         return
