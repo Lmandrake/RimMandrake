@@ -1,0 +1,4 @@
+PASS design\concepts\FlowWorks\version\in_game\visit_4\evidence\plant\sc_source_pays_MUTANT_limitless_debited.json 
+[bridge split] 87.1 s wall: load 0.6 / ticks 13.4 / reads 6.6 / other 32.5 / outside calls 33.9 s
+[bridge split] WARN 282 calls of jawa/static_call (13.0 s): batch them
+[bridge split] WARN 270 calls of jawa/flowworks_excavation_drive (12.3 s): batch them

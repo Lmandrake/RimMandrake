@@ -1,0 +1,2 @@
+186,152;188,152;steel;god -> JETTY ok=True anchors=1 decks=2 blueprints=0 railed=2 reason=-
+194,152;196,152;heavy;god -> JETTY ok=True anchors=1 decks=2 blueprints=0 railed=2 reason=-
