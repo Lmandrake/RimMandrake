@@ -102,11 +102,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 16.23,
-    "last": "pyrelands fuzz: 12391 cases, 1080805098 steps, 11.46s total -> OK",
-    "at": "2026-11-21T16:18:36Z",
+    "seconds": 17.68,
+    "last": "pyrelands fuzz: 16269 cases, 1080805098 steps, 14.80s total -> OK",
+    "at": "2026-11-22T11:25:57Z",
     "result": "PASS",
-    "build": "c05f7803ffef88e1fe77",
+    "build": "36bad7051296ddf52079",
     "command": "python3 src/RimMandrake/Utils/selftest_pyrelands_fuzz.py",
     "margins": []
    }
@@ -127,11 +127,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 109.3,
+    "seconds": 104.06,
     "last": "PASS: 15 of 15 rows hold",
-    "at": "2026-11-21T16:20:25Z",
+    "at": "2026-11-22T11:27:41Z",
     "result": "PASS",
-    "build": "8ad7d03fcf92e434d158",
+    "build": "7ce777518c0ca0f11edd",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_burn_ecology.py",
     "margins": []
    }
@@ -151,11 +151,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 70.12,
+    "seconds": 77.09,
     "last": "Pyrelands lint planted-defect selftest: 30/30 ok",
-    "at": "2026-11-22T02:58:07Z",
+    "at": "2026-11-22T11:28:59Z",
     "result": "PASS",
-    "build": "f943281db2f13b81d0bb",
+    "build": "2f19de067ff1e61b81fb",
     "command": "python3 src/RimMandrake/Utils/selftest_pyrelands_lint.py",
     "margins": []
    }
@@ -266,11 +266,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 5.36,
+    "seconds": 5.28,
     "last": "PASS: 0 failure(s)",
-    "at": "2026-11-22T01:51:47Z",
+    "at": "2026-11-22T11:29:04Z",
     "result": "PASS",
-    "build": "7015ef7c8aee35e715c3",
+    "build": "79276bd1ad2ec2f7b440",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_site.py",
     "margins": []
    }
@@ -290,9 +290,9 @@
     "rc": 0,
     "seconds": 0.1,
     "last": "selftest_pyrelands_fruit_clear: PASS",
-    "at": "2026-11-22T01:51:48Z",
+    "at": "2026-11-22T11:29:04Z",
     "result": "PASS",
-    "build": "8f26788c08d2b4708396",
+    "build": "0d555f73ec10595334e9",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_fruit_clear.py",
     "margins": []
    }
@@ -311,11 +311,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.13,
+    "seconds": 0.15,
     "last": "settings screens selftest: 14/14 ok (mods: Pyrelands)",
-    "at": "2026-11-22T05:46:52Z",
+    "at": "2026-11-22T11:29:04Z",
     "result": "PASS",
-    "build": "02b7c8df791f8f072ce8",
+    "build": "c18559bc2e05c931c708",
     "command": "python3 src/RimMandrake/Utils/selftest_settings_screens.py --mod Pyrelands",
     "margins": []
    }
@@ -380,9 +380,9 @@
     "rc": 0,
     "seconds": 0.02,
     "last": "selftest_pyrelands_firehawk_letter: PASS",
-    "at": "2026-11-21T16:21:46Z",
+    "at": "2026-11-22T11:29:04Z",
     "result": "PASS",
-    "build": "97d1fbb0f1c7e41f1b7c",
+    "build": "953bc763e87f3cf484cd",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_firehawk_letter.py",
     "margins": []
    }
@@ -427,11 +427,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 4.87,
+    "seconds": 4.78,
     "last": "PASS: every Pyrelands setting scribed, shipped as ruled, read and gated; 27 of 27 mutants red, the clean copy green",
-    "at": "2026-11-21T16:21:51Z",
+    "at": "2026-11-22T11:29:09Z",
     "result": "PASS",
-    "build": "57dea694cb6b09908ea4",
+    "build": "921101b7a3bfc48e8bad",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_settings_sweep.py",
     "margins": []
    }
@@ -1543,11 +1543,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.56,
+    "seconds": 0.8,
     "last": "PASS: payload FindMod-guarded on its own target, mutator ports mapped, text generic, cross-biome labelled unsupported; 8 of 8 mutants red, the clean copy green",
-    "at": "2026-11-22T02:59:09Z",
+    "at": "2026-11-22T11:29:10Z",
     "result": "PASS",
-    "build": "92adfe08195c8f84f2f9",
+    "build": "ca145546a0ba7c065175",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_self_contained.py",
     "margins": []
    }
@@ -1566,11 +1566,11 @@
    "runs_today": {
     "ran": true,
     "rc": 1,
-    "seconds": 3.73,
+    "seconds": 4.75,
     "last": "FAIL: 5 of 18 checks failed",
-    "at": "2026-11-22T05:49:07Z",
+    "at": "2026-11-22T11:29:15Z",
     "result": "FAIL",
-    "build": "f28398ef5821de19264c",
+    "build": "58b812a8606e8217a370",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_round6_gaps.py",
     "margins": []
    }
@@ -1636,11 +1636,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.06,
-    "last": "selftest_pyrelands_venom_staging: 0 of 20 checks failed",
-    "at": "2026-11-22T02:59:13Z",
+    "seconds": 4.8,
+    "last": "selftest_pyrelands_venom_staging: 0 of 36 checks failed",
+    "at": "2026-11-22T11:29:20Z",
     "result": "PASS",
-    "build": "d790a1d2a249aa358537",
+    "build": "3e2ab4f12b569dd39c79",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_venom_staging.py",
     "margins": []
    }
