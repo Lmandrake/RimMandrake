@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "f4a0173fb62843b978a436e01af4a77a64e0da5fe7795d4d12d596942c46c5bd",
+  "body_sha256": "e569ea502928bd4f3d2d46d00d48853d9e1c91893f9a54d96aa255ba62f852d1",
   "reducer": 1,
   "shards": {
    "BACKFILL": 893183,
@@ -34,7 +34,7 @@
    "HOLDER.run-1795335550": 748,
    "HOLDER.run-1795338340": 3967,
    "HOLDER.run-1795341097": 2076,
-   "HOLDER.run-1795346318": 1025,
+   "HOLDER.run-1795346318": 1646,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1285,11 +1285,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795341097",
-   "done": "visit 7 on game a: 5 of 6 PASS (OL carried, decides no bar); sc_hung_bridge 3 in a row after 3 scene/instrument repairs (581e6f4baf, b1cc65afe2); exit met",
-   "next": "Steward: read visit_7/SUMMARY.md and advance FlowWorks to pre_human",
-   "ruled_out": "a mod fault behind the UND_crush and UND_shot FAILs: the hediff count and an unarmed gunner (both repaired, planted both ways)",
-   "ts": "2026-11-22T11:12:43Z"
+   "by": "HOLDER.run-1795346318",
+   "done": "steward read visit 7 (SUMMARY, rows, planted evidence, repair diffs) and advanced FlowWorks in_game -> pre_human, 192f9e1085",
+   "next": "Dispatch: run the Stage 7 walk brief for FlowWorks 0.1.0",
+   "ruled_out": "a weakened assertion in 581e6f4baf or b1cc65afe2; the packet bar FAILs as current (visit 1 backfill only, trap filed)",
+   "ts": "2026-11-22T11:31:10Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1741,7 +1741,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1616,
+  "events": 1617,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7842,7 +7842,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-22T11:28:17Z",
+   "last": "2026-11-22T11:31:10Z",
    "lease": "run-1795346318",
    "released": false,
    "token": 47
