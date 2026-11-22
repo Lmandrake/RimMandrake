@@ -1598,6 +1598,7 @@ namespace RimMandrake.Pyrelands.Fuzz
                 ("eco", () => Eco(N(4000), S(1))),
                 ("hawk", () => Hawk(N(300), S(1))),
                 ("rewards", () => FireHawkRewardsFuzz.Run(N(2000), S(1))),
+                ("foam", () => FoamPathFuzz.Run(N(3000), S(1))),
                 ("units", () => Units()),
                 ("ashscenario", () => AshScenario()),
             };

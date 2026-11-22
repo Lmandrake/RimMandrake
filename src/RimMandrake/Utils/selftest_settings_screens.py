@@ -217,6 +217,7 @@ MODS = {
         "Absorbed mechanics (mandrake.rut.pyrelandsmechanics)": "Now",
         "Giants and herds (restart)": "NextGameStart",
         "Burrowers": "Now",
+        "Firefoam sprayer": "Now",        # MapComponent_RM_FoamPath reads sprayerFoamsPathEnabled every tick
         "Sand shovelling": "Now",
         "Cross-biome ash accumulation": "Now",
         "Ash field": "Now",

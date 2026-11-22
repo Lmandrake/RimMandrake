@@ -82,7 +82,7 @@ DEFAULTS = {
     "ullaiEnabled": True, "ullaiHerdSizeMultiplier": 1.0, "furnaceBeastGiant": True,
     "crossBiomeEnabled": False, "crossBiomeEverywhere": False, "crossBiomeBiomeList": "",
     "crossBiomeCoverage": 1.0,
-    "sandShovelEnabled": True, "sandShovelYieldMultiplier": 1.0,
+    "sandShovelEnabled": True, "sandShovelYieldMultiplier": 1.0, "sprayerFoamsPathEnabled": True,
     "ashWaterFertilityEnabled": True, "ashDryFertility": 0.7, "ashWateredFertility": 1.4, "ashNaturalWaterRadius": 2,
     "freshBurnBonusEnabled": True, "freshBurnBonus": 0.5, "freshBurnDays": 6.0,
     "blackRainWaterHours": 24, "blackRainDousingEnabled": True, "blackRainDousing": 40.0, "windCarriesFireEnabled": True,

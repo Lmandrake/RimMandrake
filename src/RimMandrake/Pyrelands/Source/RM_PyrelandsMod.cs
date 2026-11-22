@@ -115,6 +115,9 @@ namespace RimMandrake.Pyrelands
         // PYRELANDS_SAND_TERRAIN_YIELD_1: "Shovel sand" orders on terrain carrying RM_TerrainDigYieldExtension.
         public static bool sandShovelEnabled = true;
         public static float sandShovelYieldMultiplier = 1f;
+        // RIMMANDRAKE_DESIGN_PYRE_SPRAYER_CARRIER_NEVER_FOAMS_ITS_PATH: a colonist holding the firefoam sprayer foams the fire in
+        // its way (MapComponent_RM_FoamPath). Off: the sprayer fires only when the player drafts the colonist and aims it.
+        public static bool sprayerFoamsPathEnabled = true;
 
         // PYRE_ASH_BUILD_EVERY_SCAR_A_SEEDBED (design/RimMandrake/pyrelands_ash_redesign_2026-10-12.md §5, §5a). Every number
         // PROVISIONAL. All off: deep ash reads its XML 0.70 and nothing else changes. None affects worldgen.
@@ -183,6 +186,7 @@ namespace RimMandrake.Pyrelands
             Scribe_Values.Look(ref ullaiHerdSizeMultiplier, "ullaiHerdSizeMultiplier", 1f);
             Scribe_Values.Look(ref furnaceBeastGiant, "furnaceBeastGiant", true);
             Scribe_Values.Look(ref sandShovelEnabled, "sandShovelEnabled", true);
+            Scribe_Values.Look(ref sprayerFoamsPathEnabled, "sprayerFoamsPathEnabled", true);
             Scribe_Values.Look(ref sandShovelYieldMultiplier, "sandShovelYieldMultiplier", 1f);
             Scribe_Values.Look(ref ashWaterFertilityEnabled, "ashWaterFertilityEnabled", true);
             Scribe_Values.Look(ref ashDryFertility, "ashDryFertility", 0.70f);
@@ -222,7 +226,7 @@ namespace RimMandrake.Pyrelands
         /// burrowers, and ash-field watering (its only read sites, FertilityPostfix and the ash-field tick, check the gate).
         /// Independent, as the master's own tooltip says or because the read site does not consult the gate:
         /// dry deep-ash fertility (written into the terrain def at startup), regrowth pace, biome placement, the restart-time
-        /// giants/ullai, sand shovelling, the cross-biome opt-in (its own master). Sub-switches
+        /// giants/ullai, sand shovelling, the sprayer carrier's foam, the cross-biome opt-in (its own master). Sub-switches
         /// replace the old "hide when off" blocks: the controls now stay visible, greyed, values kept.</summary>
         internal static readonly RimMandrake.Shared.SettingDependencies Masters = new RimMandrake.Shared.SettingDependencies()
             .Declare("pyrelandsEnabled", "ashDustingEnabled", "scorchFruitEnabled", "ashfallAccumulationEnabled", "freshBurnBonusEnabled",
@@ -243,7 +247,7 @@ namespace RimMandrake.Pyrelands
             .Declare("ullaiEnabled", "ullaiHerdSizeMultiplier")
             .Declare("sandShovelEnabled", "sandShovelYieldMultiplier")
             .Declare("crossBiomeEnabled", "crossBiomeEverywhere", "crossBiomeBiomeList", "crossBiomeCoverage")
-            .Independent("ashDryFertility", "wildPlantRegrowDaysOverride", "biomeGenerationEnabled", "furnaceBeastGiant")
+            .Independent("ashDryFertility", "wildPlantRegrowDaysOverride", "biomeGenerationEnabled", "furnaceBeastGiant", "sprayerFoamsPathEnabled")
             .Name("pyrelandsEnabled", "Mod enabled")
             .Name("ashDustingEnabled", "Fire leaves ash on the ground").Name("scorchFruitEnabled", "Fire seeds scorch-fruit")
             .Name("ashfallAccumulationEnabled", "Ash fall buries the ground").Name("ashWaterFertilityEnabled", "Water makes deep ash fertile")
@@ -251,6 +255,7 @@ namespace RimMandrake.Pyrelands
             .Name("ambientAshEnabled", "Ash drifts in the air in clear weather").Name("furnaceThermalEnabled", "Furnace-beast thermal circuit")
             .Name("ullaiEnabled", "Ullai herds")
             .Name("sandShovelEnabled", "Shovel sand")
+            .Name("sprayerFoamsPathEnabled", "Sprayer carriers foam the fire in their way")
             .Name("crossBiomeEnabled", "Enable outside the Pyrelands biome");
 
         private static object GetField(string n) => typeof(RM_PyrelandsSettings).GetField(n, BindingFlags.Public | BindingFlags.Static)?.GetValue(null);
@@ -583,6 +588,15 @@ namespace RimMandrake.Pyrelands
                   + "fire on the ground nearby, and it holds a few seconds past the last hit. Off: only a nearby ground "
                   + "fire sends it down.");
             }
+                list.GapLine();
+            }
+
+            if (Group(list, "Firefoam sprayer", RimMandrake.Shared.SettingScope.Now, new[] { "sprayerFoamsPathEnabled" }))
+            {
+    list.CheckboxLabeled("Sprayer carriers foam the fire in their way", ref sprayerFoamsPathEnabled,
+                    "Shipped default: ON. A colonist holding the firefoam sprayer, not drafted, foams any fire on its own cell, on "
+                  + "the path ahead or beside it, on any map, then walks on with its job. Off: the sprayer fires only when you "
+                  + "draft the colonist and aim it.");
                 list.GapLine();
             }
 

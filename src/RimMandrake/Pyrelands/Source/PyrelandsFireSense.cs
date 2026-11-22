@@ -117,6 +117,8 @@ namespace RimMandrake.Pyrelands
             if (cur != null && (cur.def == PyrelandsMechanicsDefOf.RM_PyreStepAwayFromFire || cur.def == JobDefOf.Flee || cur.def == JobDefOf.BeatFire || cur.def == JobDefOf.ExtinguishSelf
                 || cur.playerForced || cur.workGiverDef?.workType == WorkTypeDefOf.Firefighter)) return null;
             if (pawn.carryTracker?.CarriedThing is Pawn || PawnUtility.PlayerForcedJobNowOrSoon(pawn)) return null;
+            // A sprayer carrier aiming at the fire foams it instead (MapComponent_RM_FoamPath): a new job would cancel the aim.
+            if (MapComponent_RM_FoamPath.AimingSprayer(pawn)) return null;
 
             IntVec3 p = pawn.Position;
             Room room = p.GetRoom(map);

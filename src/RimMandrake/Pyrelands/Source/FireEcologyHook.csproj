@@ -55,6 +55,7 @@
     <Compile Include="CompWithersUnderRoof.cs" />
     <Compile Include="ThinkNode_ConditionalPyrelandsColonist.cs" />
     <Compile Include="PyrelandsFireSense.cs" />
+    <Compile Include="PyrelandsFoamPath.cs" />
     <Compile Include="PyrelandsWetRoots.cs" />
     <Compile Include="PyrelandsNoOrdinaryRain.cs" />
     <Compile Include="PyrelandsWeatherOverlays.cs" />
@@ -112,6 +113,7 @@
     <Compile Include="Kernel\RM_FireEcoKernel.cs" />
     <Compile Include="Kernel\RM_FireHawkKernel.cs" />
     <Compile Include="Kernel\RM_FireHawkRewardsKernel.cs" />
+    <Compile Include="Kernel\RM_FoamPathKernel.cs" />
   </ItemGroup>
 
   <ItemGroup>
