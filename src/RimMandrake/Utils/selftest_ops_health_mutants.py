@@ -35,9 +35,10 @@ MUTANTS = [
     (OW, PH, PH.replace('len(v["drifted"])', "0"), "publish_health: count 0"),
     (OW, PH, PH.replace('", ".join(v["drifted"])', '""'), "publish_health: names nobody"),
     (OW, PH, "M(0)", "publish_health: whole point zero"),
-    (OW, '"health.drifted_slis": U(why),\n', "\n", "publish_health: failure branch loses the point"),
-    (OW, '\n                "health.incident_slis": U(why), "health.unmeasured": U(why)}', ' "health.unmeasured": U(why)}', "publish_health: failure branch loses the incident point"),
-    (OW, '"health.spent_slis": U(why), ', "", "publish_health: failure branch loses the spent point"),
+    # the failure branch is health_unmeasured() since 20fd500307: each health.* key it must carry
+    (OW, '"health.state", "health.spent_slis", "health.drifted_slis",', '"health.state", "health.spent_slis",', "publish_health: failure branch loses the point"),
+    (OW, '"health.incident_slis", "health.unmeasured")}', '"health.unmeasured")}', "publish_health: failure branch loses the incident point"),
+    (OW, '"health.state", "health.spent_slis", "health.drifted_slis",', '"health.state", "health.drifted_slis",', "publish_health: failure branch loses the spent point"),
     # was: the record of what the old collector wrote
     (RU, '"unit": "%s"' % OLD_UNIT, '"unit": "a was nobody wrote"', "rules: was unit"),
     (RU, '"was": [', '"was_": [', "rules: was dropped"),
