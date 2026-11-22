@@ -177,3 +177,48 @@ By the owner's measure: 136 per-case limits and 2 duplicate rules are retired. T
 lines longer than on 2026-11-20 (638). Most of that growth is new rulings from 2026-11-21 (mechanics by their
 conditions; the guiding principles), not repairs.
 
+
+## The third run, 2026-11-22: identity from the launch record, carried through
+
+### Principle 2, the stage a run ran: fixed, this commit
+
+- Found: every pipeline launch has recorded its stage since 2026-11-19 (`RM_CONTROL_STAGE`, in `maturation.py` and
+  `maturation_autonomy.py`). But the status page (`maturation_now.runs_for_mods`) never read that field. It guessed the
+  stage from journal headings in the run's time and from the run's own notes. On the 2026-11-22 records the guess
+  matched the recorded stage for 17 of 91 runs. It was wrong for 13, added extra stages for 22, and found none for 39
+  `[measured]`. After the field existed, the guess also put 6 hand launches into stages that they never ran (for
+  example, a ColdStorage admission into Stages 1 and 8) `[measured]`. Each wrong placement changes a box's CYCLED count.
+- The form: a run is on the stage that its launch recorded, and on no other. Prose places nothing.
+- Page: promise `a-run-is-on-its-recorded-stage` on `design/specs/2026-11-22-item-identity/boundary.md`. Test:
+  `t_a_run_is_on_its_recorded_stage` in `selftest_item_identity.py`. Red on the base: 3 FAIL. Green after. Planted
+  faults, each red: the record is ignored (1 FAIL), and the notes guess is put back (2 FAIL).
+- Retired: the two prose placement branches (journal headings, ledger notes) and the special case "a DESIGN item older
+  than the journal is Stage 1". `runs_for_mods` went from 49 to 35 lines, and `maturation_now.py` changed by +16 and −32 lines (net −16) `[measured]`. `stages_named` stays, because
+  `maturation.py` still uses it to date a stage's start from the journal.
+- On real data after the fix, all 91 recorded runs sit on their recorded stage. 278 runs carry no stage, and 51 are
+  before the pipeline. Those 278 were placed by prose before, at 19% agreement where it could be checked.
+
+### Not built, with the reason
+
+- **Stamp `item_identity.item_mod` on the item at `file`.** It would store a guess as a field: a second home for the
+  same fact, which goes stale when the rule improves. That is the fault that principle 2 removes. The real facts at
+  launch (mod, stage) are already recorded by every pipeline launch. A hand launch names a mod with
+  `--env RM_CONTROL_MOD=<Mod>`.
+- **`owed.py` (2 sites).** These sites make new item names from an id's words. They do not read which mod an item is on.
+- **`ops_health.is_system` mod words.** Against the one rule it disagrees on 579 of 9,650 items, but only 4 of the 168
+  open system items would move, and 1 of the 4 would be wrong ("STRANDED" is a prose word). It fails test 1 (polish).
+- **`modledger_backfill.other_mod_words`.** A one-time SHADOW import for each mod. A new rule would change only past
+  imports (polish).
+- **`testing_census.MOD_ALIASES`.** A study tool from 2026-10-27 that no operation runs (polish).
+
+### Polish (no ticket)
+
+- `ops_health.words_of`/`mod_names`: its own "the id names a mod" rule (exact folder name, or two words joined). It
+  misses initials and long words. It moves 4 open system items, 1 of them wrongly.
+- `modledger_backfill.other_mod_words`: a fourth variant of the mod-word rule, in a one-time import.
+- `Utils/sim/testing_census.py` `MOD_ALIASES`: a second alias table, in a study tool that nothing runs.
+
+### Principle 2 (b), the game in the run record: still waits
+
+- This waits for `RIMMANDRAKE_RENAME_GAMES_ARCHBIG_ARCHSMALL_STEVE1_STEVE2_LETTERS_UNREADABLE` to end. That run renames
+  the games.

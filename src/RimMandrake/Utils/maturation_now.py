@@ -431,12 +431,10 @@ def live_facts(mods):
 
 # ---- runs, interventions and what needs a reaction ---------------------------------------------------------------
 #
-# A run (a detached-run record, detached_helper.py) is a mod's when its item id names the mod: the folder name squashed,
-# its initials when 3+ letters (GSS), or one of its CamelCase words of 7+ letters (KNOCKBACK); a longer token wins, a
-# tie names no mod. An item that names no mod is the mod's whose "design/concepts/<Folder>/" its ledger notes cite most.
-# A run's stages: the journal's dated "### " headings inside its time window that name a stage ("row 2 done: Stage 1
-# finished"); else its own ledger notes (role_unit); a run older than the journal is Stage 1 when its item is a DESIGN
-# item, else "before the pipeline". A live run that has written no stage yet sits in the mod's current box, uncounted.
+# A run (a detached-run record, detached_helper.py) is on the mod and the stage its launch recorded (RM_CONTROL_MOD,
+# RM_CONTROL_STAGE); a run with no recorded mod is the mod's its item names (item_identity.item_mod). A run with no
+# recorded stage is on no stage ("before the pipeline" when it is older than the journal); a live one sits in the mod's
+# current box, uncounted.
 # An intervention is a line "CONDUCTOR INTERVENED (stage N, <date time PST>, kind K): what" in the journal or in a ledger
 # note on the mod's items (spec §5); a stage run more than once adds one derived "relaunch" per extra run.
 
@@ -579,9 +577,10 @@ def run_view(rec, now, spend=read_spend):
 
 
 def runs_for_mods(folders, records, notes, journals, now, spend=read_spend, titles=None):
-    """-> {folder: [run]} with each run's stages placed (see the block comment above). titles: {item id: title}.
-    A run is on the mod its launch recorded (env RM_CONTROL_MOD, every pipeline launch), else the one its item's id or
-    title names (item_mod). A hand launch on a mod whose id and title name none passes `--env RM_CONTROL_MOD=<Mod>`."""
+    """-> {folder: [run]}. titles: {item id: title}. A run is on the mod its launch recorded (env RM_CONTROL_MOD, every
+    pipeline launch), else the one its item's id or title names (item_mod). A hand launch on a mod whose id and title
+    name none passes `--env RM_CONTROL_MOD=<Mod>`. A run is on the stage its launch recorded (RM_CONTROL_STAGE) and on
+    no other: prose places none (design/specs/2026-11-22-item-identity/boundary.md, a-run-is-on-its-recorded-stage)."""
     out = {f: [] for f in folders}
     notes = notes or []
     by_unit = {}
@@ -598,30 +597,15 @@ def runs_for_mods(folders, records, notes, journals, now, spend=read_spend, titl
         if not f:
             continue
         r = run_view(rec, now, spend)
+        col = RECORD_COL.get((rec.get("env") or {}).get("RM_CONTROL_STAGE"))
         hist = journals.get(f, {}).get("history") or []
         start = min((t.timestamp() for t, _ in hist), default=None)
-        if r["at"] is not None and start is not None and r["at"] < start - 900:
-            if "DESIGN" in item.upper().split("_"):
-                r["stages"], r["placed"] = ["1"], "a Designer run before the journal"
-            else:
-                r["placed"] = "before the pipeline"
-        elif r["at"] is not None:
-            hi = (r["end"] if r["end"] is not None else float("inf")) + 120
-            for t, h in hist:
-                if r["at"] - 120 <= t.timestamp() <= hi:
-                    for c in stages_named(h):
-                        if c not in r["stages"]:
-                            r["stages"].append(c)
-            if r["stages"]:
-                r["placed"] = "journal headings in its time"
-            else:
-                for e in by_unit.get(r["unit"], []):
-                    for c in stages_named(e.get("text")):
-                        if c not in r["stages"]:
-                            r["stages"].append(c)
-                r["placed"] = "its ledger notes" if r["stages"] else "no stage written yet"
+        if col:
+            r["stages"], r["placed"] = [col], "its launch record"
+        elif r["at"] is not None and start is not None and r["at"] < start - 900:
+            r["placed"] = "before the pipeline"
         else:
-            r["placed"] = "no start time"
+            r["placed"] = "no stage recorded at launch"
         r["notes"] = [str(e.get("text") or "") for e in by_unit.get(r["unit"], [])]
         out[f].append(r)
     for f in out:
@@ -729,7 +713,7 @@ def reactions(mods, now):
         for r in m["runs"] if isinstance(m["runs"], list) else []:
             if r["placed"] == "before the pipeline":
                 continue
-            st = ", ".join("Stage %s" % c for c in r["stages"]) or "stage not yet written"
+            st = ", ".join("Stage %s" % c for c in r["stages"]) or "no stage recorded at launch"
             if r["live"] and isinstance(r["wall_s"], (int, float)) and r["wall_s"] > LONG_RUN_S:
                 co.append("%s: a run has been live %s (%s, since %s)" % (L, r["wall"], st, r["start"]))
             if r["ok"] is False:
@@ -1276,7 +1260,7 @@ def box_lines(m, c, x):
     for r in lives:
         out.append(("live", "LIVE NOW: %s (%s), since %s, %s so far%s" % (
             r["unit"], r["model"], r["start"], r["wall"],
-            "; it has not written its stage yet" if r in x["unplaced_live"] else "")))
+            "; its launch recorded no stage" if r in x["unplaced_live"] else "")))
     if m["runs"] == UNM:
         out.append(("runs", "Runs at this stage: UNMEASURED (the run records were not read)"))
     else:

@@ -430,10 +430,11 @@ def p9_cycles():
     M = MN()
     now = 1_800_000_000.0
     j = M.parse_journal(fake_journal(now))
-    runs = M.runs_for_mods(["FooMod", "BarMod"], fake_recs(now), [], {"FooMod": j}, now, spend=lambda r: ("UNMEASURED", None, "UNMEASURED"))
+    recs = [dict(x, env={"RM_CONTROL_STAGE": st}) for x, st in zip(fake_recs(now), ("designer", "designer", "offline_build"))]
+    runs = M.runs_for_mods(["FooMod", "BarMod"], recs, [], {"FooMod": j}, now, spend=lambda r: ("UNMEASURED", None, "UNMEASURED"))
     r = runs["FooMod"]
     check("9 three runs of a FOOMOD item are FooMod's, none BarMod's", len(r) == 3 and not runs["BarMod"], "%r" % runs)
-    check("9 runs placed by the journal headings in their time", [x["stages"] for x in r] == [["1"], ["1"], ["3"]],
+    check("9 runs placed by the stage their launch recorded", [x["stages"] for x in r] == [["1"], ["1"], ["3"]],
           "%r" % [x["stages"] for x in r])
     m = {"column": "3", "label": "Foo Mod", "runs": r, "disagree": [], "his": [], "jquestions": []}
     box = M.stage_boxes(m, r, [], "3")

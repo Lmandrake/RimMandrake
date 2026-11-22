@@ -1,4 +1,4 @@
-# BOUNDARY: the mod that an item names, Design Version 0.1.0
+# BOUNDARY: the mod that an item names and the stage that a run ran, Design Version 0.1.0
 
 Code: `src/RimMandrake/rimflow/item_identity.py`. Tests: `src/RimMandrake/rimflow/selftest_item_identity.py`. Written
 2026-11-22 for `RIMMANDRAKE_GENERALIZE_PIPELINE_REPAIRS_INTO_FEW_PRINCIPLES` (principle 2, one home for a fact). Before
@@ -19,5 +19,10 @@ it, three readers (`maturation_now.py`, `rimflow_metrics.py`, `fleet_mods.py`) e
 - **one-answer.** `maturation_now`, `rimflow_metrics` and `fleet_mods` ask this module, and so give one answer.
 - **id-before-title.** The id decides when it names a mod. Else the title decides. Else the answer is None.
 - **a-tie-names-none.** When two mods are named equally well, the answer is None, never a guess.
+- **a-run-is-on-its-recorded-stage.** `maturation_now.runs_for_mods` places a run on the stage its launch recorded
+  (`RM_CONTROL_STAGE`, written by every pipeline launch since 2026-11-19), and on no other. A run whose launch recorded
+  no stage is on no stage: no journal heading and no note text place it. Before this, the page guessed the stage from
+  prose, and on the 2026-11-22 records the guess matched the recorded stage for 17 of 91 runs (13 wrong, 22 with extra
+  stages, 39 with none) [measured].
 - **one-alias-table.** A short name that is not in a mod's own name (`HOSE`, `FW` for FlowWorks) is in `ALIASES` here
   and nowhere else among the readers.

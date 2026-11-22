@@ -88,8 +88,35 @@ def t_one_alias_table():
     return bad
 
 
+def t_a_run_is_on_its_recorded_stage():
+    """A recorded stage decides; prose that names other stages (a journal heading in the run's time, its own notes)
+    places nothing. A run with no recorded stage is on no stage."""
+    import datetime as dt
+    mn = importlib.import_module("maturation_now")
+    now = 1_800_000_000.0
+    rec = {"unit": "u1", "item": "RIMMANDRAKE_FIX_FOOMOD_X", "model": "opus", "at": now - 3000, "ended": now - 2000,
+           "status": "finished", "result": "success (exited 0)", "out": "/nonexistent"}
+    staged = dict(rec, unit="u2", env={"RM_CONTROL_MOD": "FooMod", "RM_CONTROL_STAGE": "in_game"})
+    hand = dict(rec, unit="u3")
+    hist = [(dt.datetime.fromtimestamp(now - 4000, dt.timezone.utc), "Stage 1 finished"),
+            (dt.datetime.fromtimestamp(now - 2500, dt.timezone.utc), "Stage 3 begins")]
+    notes = [{"id": "RIMMANDRAKE_FIX_FOOMOD_X", "role_unit": u, "text": "Stages 4 and 5 next"} for u in ("u2", "u3")]
+    got = mn.runs_for_mods(["FooMod"], [staged, hand], notes, {"FooMod": {"history": hist}}, now,
+                           spend=lambda r: ("UNMEASURED", None, "UNMEASURED"))["FooMod"]
+    by = {r["unit"]: r["stages"] for r in got}
+    bad = []
+    if by.get("u2") != ["6"]:
+        bad.append("a run launched at in_game is placed on %r, not ['6']" % by.get("u2"))
+    if by.get("u3") != []:
+        bad.append("a run with no recorded stage is placed on %r from prose, not on none" % by.get("u3"))
+    if hasattr(mn, "stages_named") and "stages_named(" in open(mn.__file__).read().split("def runs_for_mods", 1)[1] \
+            .split("\ndef ", 1)[0]:
+        bad.append("runs_for_mods still reads stages from prose (stages_named)")
+    return bad
+
+
 def main():
-    tests = (t_one_answer, t_id_before_title, t_a_tie_names_none, t_one_alias_table)
+    tests = (t_one_answer, t_id_before_title, t_a_tie_names_none, t_one_alias_table, t_a_run_is_on_its_recorded_stage)
     fails = 0
     for t in tests:
         bad = t()
