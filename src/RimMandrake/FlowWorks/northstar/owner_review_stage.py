@@ -33,6 +33,11 @@ Rows (each gets a labelled picture; the overview picture carries all of them):
             pit cover beside them. Built with RM_SuspensionProofs.ProofBuild "...;god" and ProofRails (the proof script's own calls).
   bars_bridge_kinds (default) the other suspension parts: steel and heavy GRATED decks, steel and heavy JETTIES, and the steel bridge in
             each of the four looks (Scrapper/Industrial/Modern/Futuristic, railings on) via ProofLook. Own lane south of bars_bridges.
+  bars_bridges_ns (default) every bridge and jetty again, laid NORTH/SOUTH (owner 2026-11-22: "please next time draw some
+            North/South bridges for me to study as well"): the four tiers, both grated decks, the steel bridge in the four looks,
+            steel and heavy jetties reaching north and reaching south, and a fire-under-a-deck station (a timber bridge over 1 m of
+            chemfuel, staged UNLIT; its caption names the call that lights it). Stations 65 on, east of stations 61-64, so the
+            numbers 1-64 of the earlier walks do not move. RIMMANDRAKE_REDESIGN_JETTY_AND_BRIDGE_ART_STEEL_ONE_READS_AS_WOOD.
   Bars with NO site (no bridge tool can pose them): wall-climb mid-climb (RM_WallClimb has no pose call; the scale-a-built-wall build
   is in progress), raiders-never-shelter (a raid-run state read), jump-into-pit hurts nobody (state read; live_session g_pit_access).
   Site for all bars_* rows: east of the hoses, rect "bars_rect" (x = origin+150, 62 wide, 76 tall); live_session's owner zone is 216 wide.
@@ -66,7 +71,7 @@ LOOKS = ("Futuristic", "Industrial", "Modern", "Scrapper")
 PULSE = 2500
 NOTCH_M = 0.5                      # one fill notch = 0.5 m of water over a square (RM_LevelSolve.MetresPerUnit * U)
 SHALLOWS = ((0.5, 1), (1.0, 2), (1.5, 3), (2.0, 4), (5.0, 10))   # (metres, notches)
-BARS_ROWS = ("bars_joint", "bars_dry", "bars_trench", "bars_access", "bars_bridges", "bars_bridge_kinds")
+BARS_ROWS = ("bars_joint", "bars_dry", "bars_trench", "bars_access", "bars_bridges", "bars_bridge_kinds", "bars_bridges_ns")
 ALL_ROWS = ("ladders", "spikes", "gates", "shallows", "sprinklers") + BARS_ROWS
 OPT_ROWS = ("hoses", "picks")            # run only when named in --only (own site east of the others; not in the default sweep)
 
@@ -119,7 +124,7 @@ def opposite(r):
 
 
 BARS_Z = dict(bars_joint=(-1, 11), bars_dry=(13, 5), bars_trench=(21, 5), bars_access=(29, 8), bars_bridges=(38, 9),
-              bars_bridge_kinds=(46, 13))     # (z offset from the bars origin, height) of each bars row, from its own staging
+              bars_bridge_kinds=(46, 13), bars_bridges_ns=(45, 25))     # (z offset from the bars origin, height) of each bars row, from its own staging
 
 
 def bars_row_rect(L, row):
@@ -746,6 +751,7 @@ def row_picks(s, L):
 
 # ------------------------------------------------------------------ FlowWorks north-star bars (flowworks_bars_sitting_2026-10-18.md)
 SUSP = "RimMandrake.FlowWorks.Pits.RM_SuspensionProofs"
+FLUIDID = "RimMandrake.FlowWorks.RM_FluidIdentityProof"   # ProofFillWithFluid "x,z,metres,FluidDefName"
 TRENCH = "RimMandrake.FlowWorks.RM_TrenchCover"
 
 
@@ -894,8 +900,72 @@ def row_bars_bridge_kinds(s, L):
     return cap
 
 
+NS_X0, NS_PITCH = 34, 5      # bars_bridges_ns columns: x = bars x + 34, 39, ... 59 (a 3-wide station, DENSE_GAP between)
+NS_LANES_Z = (62, 54, 46)    # bars_bridges_ns lanes, north first: z of each lane's south end (a span is 6 squares, its label 1 more)
+FIRE_FUEL_M = 1.0            # metres of chemfuel under the fire station's deck
+
+
+def span_pit_ns(s, x, z0, depth=8):
+    """span_pit turned north/south: 4 squares long (z0+1..z0+4) under the span, 3 wide (x-1..x+1)."""
+    for z in range(z0 + 1, z0 + 5):
+        for dx in (-1, 0, 1):
+            s.dig((x + dx, z), depth)
+
+
+def ns_slots(L):
+    """[(x, z0, lane)] of the bars_bridges_ns stations, lane by lane, west to east (pure)."""
+    bx, bz = L["bars"]
+    return [(bx + NS_X0 + k * NS_PITCH, bz + dz, lane) for lane, dz in enumerate(NS_LANES_Z) for k in range(6)]
+
+
+def fire_light_call(x, z0):
+    """The one bridge call that lights the fire station's chemfuel (pure): jawa/map_fire over the pit under the deck."""
+    return 'jawa/map_fire action=start rect="%d,%d,1,4" fireSize=1.2' % (x, z0 + 1)
+
+
+def row_bars_bridges_ns(s, L):
+    s.say("ROW bars_bridges_ns: every bridge and jetty laid north/south, and an unlit chemfuel pit under a timber deck")
+    slots = iter(ns_slots(L))
+    cap = []
+
+    def st(x, z0, lane, text, short):
+        cap.append(s.station("bars_bridges_ns", (x - 1, z0, 3, 6), text, lane=lane, short=short))
+
+    for look in ("Scrapper", "Industrial", "Modern", "Futuristic"):
+        x, z0, lane = next(slots)
+        span_pit_ns(s, x, z0)
+        s.proof(SUSP, "ProofLook", "%s;%d,%d;%d,%d" % (look, x, z0, x, z0 + 5))
+        st(x, z0, lane, "steel bridge north/south over a 4 m pit, %s look, railings on" % look, "N-S steel %s" % look)
+    x, z0, lane = next(slots)      # 5th of the north lane; the 6th stays empty so the fire stands 2 squares from the rest
+    span_pit_ns(s, x, z0)
+    for z in range(z0 + 1, z0 + 5):
+        s.proof(FLUIDID, "ProofFillWithFluid", "%d,%d,%g,RM_Fluid_Chemfuel" % (x, z, FIRE_FUEL_M))
+    s.proof(SUSP, "ProofBuild", "%d,%d;%d,%d;timber;god" % (x, z0, x, z0 + 5))
+    st(x, z0, lane, "fire under a deck: timber bridge north/south over %g m of chemfuel in a 4 m pit, UNLIT. To light it: %s "
+       "(or a molotov from the lip); the deck above burns" % (FIRE_FUEL_M, fire_light_call(x, z0)), "fire under deck (unlit)")
+    next(slots)
+    for tier in ("rope", "timber", "steel", "heavy", "steelgrated", "heavygrated"):
+        x, z0, lane = next(slots)
+        span_pit_ns(s, x, z0)
+        s.proof(SUSP, "ProofBuild", "%d,%d;%d,%d;%s;god" % (x, z0, x, z0 + 5, tier))
+        if tier in ("rope", "timber", "steel", "heavy"):
+            s.proof(SUSP, "ProofRails", "%d,%d;on" % (x, z0 + 2))
+        st(x, z0, lane, "%s suspension bridge north/south over a 4 m pit" % tier, "N-S %s" % tier)
+    for tier in ("steel", "heavy"):
+        for way in ("north", "south"):
+            x, z0, lane = next(slots)
+            span_pit_ns(s, x, z0)
+            root, tip = ((x, z0), (x, z0 + 2)) if way == "north" else ((x, z0 + 5), (x, z0 + 3))
+            ok, txt = s.proof(SUSP, "ProofJetty", "%d,%d;%d,%d;%s;god" % (root + tip + (tier,)))
+            if ok and "ok=True" not in txt and not s.dry:
+                s.notes.append("jetty %s %s at %s not built: %s" % (tier, way, root, txt[:160]))
+            st(x, z0, lane, "%s jetty reaching %s from the %s ledge over a 4 m pit" % (
+                tier, way, "south" if way == "north" else "north"), "%s jetty %s" % (tier, way))
+    return cap
+
+
 ROWS = dict(picks=row_picks, bars_joint=row_bars_joint, bars_dry=row_bars_dry, bars_trench=row_bars_trench, bars_access=row_bars_access,
-            bars_bridges=row_bars_bridges, bars_bridge_kinds=row_bars_bridge_kinds, hoses=row_hoses, ladders=row_ladders, spikes=row_spikes, shallows=row_shallows, sprinklers=row_sprinklers)
+            bars_bridges=row_bars_bridges, bars_bridge_kinds=row_bars_bridge_kinds, bars_bridges_ns=row_bars_bridges_ns, hoses=row_hoses, ladders=row_ladders, spikes=row_spikes, shallows=row_shallows, sprinklers=row_sprinklers)
 
 
 # ------------------------------------------------------------------ driver

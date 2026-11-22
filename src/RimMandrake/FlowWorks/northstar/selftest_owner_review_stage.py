@@ -172,5 +172,94 @@ for tier in ("rope", "timber", "steel", "heavy"):
     off_ = [st for st in brs if st["short"] == tier + " rails off"][0]
     ok_lanes = ok_lanes and ("north lane" in on["text"] and "south lane" in off_["text"]) and zof(on) > zof(off_)
 check("railings-on bridges sit NORTH (higher z) of the railings-off ones, as the captions say", ok_lanes, [(st["short"], st["rect"][1]) for st in brs][:4])
+# RIMMANDRAKE_REDESIGN_JETTY_AND_BRIDGE_ART_STEEL_ONE_READS_AS_WOOD: every bridge and jetty kind also stands NORTH/SOUTH
+# (owner 2026-11-22: "please next time draw some North/South bridges for me to study as well"), plus an unlit fire under a deck.
+import re as _re  # noqa: E402
+PROOF_RE = _re.compile(r"proof RM_(?:Suspension|FluidIdentity)Proofs?\.(Proof\w+)\((.*)\)$")
+
+
+def ns_problems(plan):
+    """[str] what the plan's north/south bridges lack (pure): a vertical twin of every kind, each jetty rooted on dry ground
+    with its tip over the pit, and the fire station's chemfuel under its own deck with no fire started."""
+    dug, builds, fills, probs = set(), [], [], []
+    for ln in plan:
+        ln = ln.strip()
+        m = _re.match(r"dig \((\d+), (\d+)\) depth", ln)
+        if m:
+            dug.add((int(m.group(1)), int(m.group(2))))
+            continue
+        m = PROOF_RE.match(ln)
+        if not m:
+            continue
+        meth, arg = m.groups()
+        if meth == "ProofFillWithFluid":
+            x, z, _, fl = arg.split(",")
+            fills.append(((int(x), int(z)), fl))
+            continue
+        if meth not in ("ProofBuild", "ProofLook", "ProofJetty"):
+            continue
+        a = arg.split(";")
+        if meth == "ProofLook":
+            kind, c1, c2 = "look:" + a[0], a[1], a[2]
+        else:
+            c1, c2, kind = a[0], a[1], ("jetty:" if meth == "ProofJetty" else "") + a[2]
+        (x1, z1), (x2, z2) = [tuple(map(int, c.split(","))) for c in (c1, c2)]
+        builds.append((kind, (x1, z1), (x2, z2)))
+    ns = [b for b in builds if b[1][0] == b[2][0] and b[1][1] != b[2][1]]
+    want = {"rope", "timber", "steel", "heavy", "steelgrated", "heavygrated"} | {"look:" + l for l in ("Scrapper", "Industrial", "Modern", "Futuristic")}
+    missing = want - {k for k, _, _ in ns}
+    if missing:
+        probs.append("no north/south twin of %s" % sorted(missing))
+    for tier in ("steel", "heavy"):
+        ways = set()
+        for k, root, tip in ns:
+            if k != "jetty:" + tier:
+                continue
+            if root in dug or tip not in dug:
+                probs.append("%s jetty %s->%s: root must be dry ground and tip over the pit" % (tier, root, tip))
+            ways.add("north" if tip[1] > root[1] else "south")
+        if ways != {"north", "south"}:
+            probs.append("%s jetty reaches only %s north/south" % (tier, sorted(ways)))
+    fuel = [c for c, fl in fills if fl == "RM_Fluid_Chemfuel"]
+    decks = [(r, t) for k, r, t in ns if k == "timber"]
+    if not fuel or not any(all(c[0] == r[0] and min(r[1], t[1]) < c[1] < max(r[1], t[1]) and c in dug for c in fuel) for r, t in decks):
+        probs.append("no chemfuel pit wholly under a north/south timber deck: fuel %s decks %s" % (fuel[:4], decks[:2]))
+    if any("map_fire" in ln and "start" in ln and not ln.strip().startswith("station") for ln in plan):
+        probs.append("the fire station is lit while staging; it must stay unlit")
+    return probs
+
+
+nsp = ns_problems(d.plan)
+check("every bridge kind, look and jetty also stands north/south; jetties root on dry ground both ways; chemfuel under a timber deck",
+      not nsp, nsp)
+fire = [st for st in d.stations if st["row"] == "bars_bridges_ns" and st["text"].startswith("fire under a deck")]
+check("the fire station is staged unlit and its caption names the call that lights it",
+      len(fire) == 1 and "UNLIT" in fire[0]["text"] and "jawa/map_fire action=start" in fire[0]["text"], fire)
+ns_st = [st for st in d.stations if st["row"] == "bars_bridges_ns"]
+check("north/south stations are tall (3 wide, 6 long) and come after the older stations",
+      ns_st and all(st["rect"][2:] == (3, 6) for st in ns_st) and min(st["n"] for st in ns_st) > max(
+          st["n"] for st in d.stations if st["row"] != "bars_bridges_ns"), [(st["n"], st["rect"]) for st in ns_st][:3])
+d0, _, _ = dry_stage(tuple(r for r in ORS.ALL_ROWS if r != "bars_bridges_ns"))
+check("the stations of the earlier walks keep their numbers (1..%d unchanged)" % len(d0.stations),
+      [(st["n"], st["text"]) for st in d0.stations] == [(st["n"], st["text"]) for st in d.stations[:len(d0.stations)]])
+# can-fail: each fault is planted in the real plan and must read red
+_bad_root = list(d.plan)
+_j = [i for i, ln in enumerate(d.plan) if "ProofJetty" in ln and ";heavy;god" in ln][-1]
+_m = PROOF_RE.match(d.plan[_j].strip()).group(2).split(";")
+_bad_root[_j] = d.plan[_j].replace(_m[0] + ";" + _m[1], _m[1] + ";" + _m[0])      # root and tip swapped: root over the pit
+check("can-fail: a jetty rooted over the pit reads red", any("root must be dry ground" in p for p in ns_problems(_bad_root)))
+check("can-fail: a plan without the north/south row reads red", any("no north/south twin" in p for p in ns_problems(d0.plan)))
+check("can-fail: a lit fire station reads red",
+      any("unlit" in p for p in ns_problems(d.plan + ['  call jawa/map_fire action=start rect="1,1,1,4"'])))
+check("can-fail: water, not chemfuel, in the fire pit reads red",
+      any("chemfuel" in p for p in ns_problems([ln.replace(",RM_Fluid_Chemfuel", ",RM_Fluid_Water") for ln in d.plan])))
+
+
+def _shift_fuel(ln):
+    m = _re.search(r"ProofFillWithFluid\((\d+),", ln)
+    return ln.replace(m.group(0), "ProofFillWithFluid(%d," % (int(m.group(1)) + 3)) if m else ln
+
+
+check("can-fail: chemfuel beside, not under, the deck reads red", any("chemfuel" in p for p in ns_problems([_shift_fuel(ln) for ln in d.plan])))
 print("selftest_owner_review_stage: %d failure(s)" % len(FAILS))
 sys.exit(1 if FAILS else 0)

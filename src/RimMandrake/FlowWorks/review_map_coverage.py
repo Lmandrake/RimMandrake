@@ -181,7 +181,7 @@ FEATURES = [
     ("def", r"^ThingDef/RM_ClimbingGear$", "Climbing gear (apparel that speeds a climb)", M + "apparel with no frozen station; proved by PitAccessChecks"),
     # suspension bridges etc.: no review-map station; the owner sees them in owner_review_stage.py (bars_* rows)
     ("def", r"^ThingDef/RM_Suspension(Deck|Anchor)_(Rope|Timber|Steel|Heavy)$|^ThingDef/RM_SuspensionRailing$", "Suspension bridges: four tiers, anchors, railings", M + S + "bars_bridges (rope/timber/steel/heavy, railings on and off)"),
-    ("def", r"^ThingDef/RM_Suspension(Deck_SteelGrated|Deck_HeavyGrated|Jetty_Steel|Jetty_Heavy)$", "Grated decks and jetties", M + S + "bars_bridge_kinds (grated steel/heavy, steel/heavy jetty)"),
+    ("def", r"^ThingDef/RM_Suspension(Deck_SteelGrated|Deck_HeavyGrated|Jetty_Steel|Jetty_Heavy)$", "Grated decks and jetties", M + S + "bars_bridge_kinds (grated steel/heavy, steel/heavy jetty); north/south twins and jetties reaching north and south in bars_bridges_ns"),
     ("def", r"^ThingDef/RM_SuspensionTower$", "Bridge tower", M + S + "bars_bridge_kinds / bars_bridges, drawn where a span needs one; no separate pose"),
     ("def", r"^ThingDef/RM_SuspensionWreck$", "Bridge wreck", M + "appears only when a loaded bridge collapses; state-read by ProofFell, not a staged scene"),
     ("def", r"^DrawStyleCategoryDef/RM_SuspensionBridge$", "Bridge look picker category", M + S + "bars_bridge_kinds (the four looks via ProofLook)"),
