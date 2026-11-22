@@ -33,7 +33,7 @@ see), whichever is first. A switch made above the line (a priority or reset pull
 pull_drain_max_s. Live runs that cannot be read count as live. Page: design/specs/2026-11-20-account-drain/boundary.md.
 
 Brake: a file HOLD in the output dir makes every pass passive (the owner's or an agent's brake); it is the only
-gate (the account_failover cutover gate was removed 2026-10-28: that script is retired and never wrote its marker).
+gate.
 
     switching_plan.py check [--dry-run]   one pass (the timer runs this every 5 min)
     switching_plan.py status [--rate R] [--model M]   what the next pass would do (as a run of M sees each level), the pool, the notice and the week ahead

@@ -120,7 +120,7 @@ def main():
         hg(env_b, "release", "--seat", "RUNNER", "--identity-json", other.replace("4242", "4243"))
         check(not os.path.exists(b_lock), "and b's releases on its own")
 
-        # the CLI: the ledger, the guard and the mirror
+        # the CLI: the ledger and the guard (no BRIDGE glance file: retired)
         def rf(seat, *args, env=base):
             return subprocess.run([sys.executable, CLI] + list(args), env=dict(env, RIMFLOW_SEAT=seat), capture_output=True,
                                   text=True, timeout=120)
@@ -131,8 +131,7 @@ def main():
         check(shards, "the ledger wrote somewhere: %s" % shards)
         last = [e for e in (json.loads(ln) for f in shards for ln in open(f)) if e.get("event") == "bridge"][-1]
         check(last.get("host") == "stevedesktop.b" and last.get("state") == "taken", "the event names the game")
-        text = open(mirror).read() if os.path.exists(mirror) else ""
-        check("other   Steve2  BENCH" in text and "for: loop on b" in text and "".join(text.splitlines()[5:6]).startswith("FREE"), "the mirror grows a line, under the same status line: %r" % text.splitlines()[5:])
+        check(not os.path.exists(mirror), "a take writes no BRIDGE glance file (retired)")
         r = rf("FOUNDRY", "bridge", "take", "--host", "stevedesktop.b", "--for", "second")
         check(r.returncode != 0, "another seat is refused b")
         r = rf("FOUNDRY", "bridge", "take", "--host", "stevedesktop", "--for", "loop on a")
@@ -143,7 +142,7 @@ def main():
         env_b2 = dict(base, RM_GAME_INSTANCE="b", RIMFLOW_DRIVER_LOCK=b_lock)     # as `game_instance.py env b` exports it
         r = rf("BENCH", "bridge", "release", "--mine", env=env_b2)
         check("Steve2 bridge released" in r.stdout and not os.path.exists(b_lock), "RM_GAME_INSTANCE=b with no --host means this machine's b: %s %s" % (r.stdout[-100:], r.stderr[-100:]))
-        check("other   Steve2" not in open(mirror).read(), "a free game's line goes")
+        check(not os.path.exists(mirror), "a release writes no BRIDGE glance file (retired)")
         r = rf("BENCH", "bridge", "take", "--for", "b by name", env=env_b2)
         check(r.returncode == 0 and os.path.exists(b_lock), "a host-less take under b takes b, never Archmagi's: %s" % (r.stdout + r.stderr)[-160:])
         check("Steve2" in r.stdout and rf("BENCH", "bridge", "release", "--mine", env=env_b2).returncode == 0, "and says so")

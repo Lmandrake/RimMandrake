@@ -30,6 +30,19 @@ import modset_builder as M  # noqa: E402
 
 FAILS = []
 TMP = tempfile.mkdtemp(prefix="ns_fw_selftest_")
+os.environ["RM_GAME_INSTANCE"] = "a"     # P-B1 reads the planted lock of ArchBig, whatever game this shell names
+_HOLDER = None
+
+
+def holder_pid():
+    """A live process outside this test's tree: the planted lock's holder (FOUNDRY), so `mine` never decides P-B1."""
+    global _HOLDER
+    if _HOLDER is None:
+        import atexit
+        import subprocess
+        _HOLDER = subprocess.Popen(["sleep", "3600"])
+        atexit.register(_HOLDER.kill)
+    return _HOLDER.pid
 
 
 def check(name, cond, detail=""):
@@ -382,9 +395,7 @@ def fixtures(run):
     log = os.path.join(d, "Player.log")
     with open(log, "w") as f:
         f.write("RimWorld 1.6.4633 rev1261\nLoading mods...\nAll good.\n")
-    bridge = os.path.join(d, "BRIDGE")
-    with open(bridge, "w") as f:
-        f.write("FOUNDRY holds the bridge since 10:00 -- FlowWorks trial\n")
+    lock = PF.plant_lock(os.path.join(d, "DRIVER_LOCK.json"), "FOUNDRY", holder_pid(), "FlowWorks trial")
     tier = ["brrainz.harmony", "ludeon.rimworld"] + list(M.DLC_IDS) + [M.BRIDGE, "mandrake.rm.flowworks"]
     mc = os.path.join(d, "ModsConfig.xml")
     with open(mc, "w") as f:
@@ -394,7 +405,7 @@ def fixtures(run):
     for suf in ("", ".srchash"):
         shutil.copyfile(os.path.join(S.MOD_DIR, S.DLL_REL) + suf, os.path.join(dep, "RimMandrakeFlowWorks.dll" + suf))
     P = PF.Paths(config_dir=d, mods_config=mc, prefs=prefs, player_log=log, saves=saves,
-                 deployed_mod=os.path.dirname(dep), mod_roots=[os.path.join(d, "Mods")], bridge_file=bridge,
+                 deployed_mod=os.path.dirname(dep), mod_roots=[os.path.join(d, "Mods")], driver_lock=lock,
                  sidecar=os.path.join(saves, S.GOLDEN_NAME + ".json"), expected_tier=tier,
                  backup_dir=sub(run + "/bk"))
     return P, saves, shots

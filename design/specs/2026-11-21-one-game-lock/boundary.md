@@ -5,7 +5,8 @@ Code: `src/RimMandrake/rimflow/game_lock.py` (all of it), `src/RimMandrake/rimfl
 records), and the ArchBig readers `testq.bridge_holder`, `bridgetools/build.py` `bridge_holder`,
 `seat_restart.bridge_reading` and `wrapup.World.game_a_hold`; the readers of who drives each game
 `game_lock.query_all`, `preflight_bridge.c_bridge_lease` (check O02) and `running_now.collect_bridge` (with the game lines
-of its strip and its Archmagi panel, item `RIMMANDRAKE_MOVE_GAME_DRIVER_READERS_OFF_BRIDGE_FILE_TWO_LEFT`).
+of its strip and its Archmagi panel, item `RIMMANDRAKE_MOVE_GAME_DRIVER_READERS_OFF_BRIDGE_FILE_TWO_LEFT`), `handoff.bridge_lines`
+and `FlowWorks/northstar/preflight_flowworks.p_b1` (item `RIMMANDRAKE_MOVE_TWO_MORE_GLANCE_READERS_CENSUS_MISSED`).
 Item: `RIMMANDRAKE_BUILD_ONE_GAME_LOCK_CLAIM_FOUR_RECORDS_DISAGREE`, written 2026-11-21. The owner, about 3:35 AM PST:
 *"We need a lightning responsive deterministic python way of taking and releasing game A or B as well as determining if
 it's available or not. Seems like right now it's the Wild West. ... A single point of reference and truth? And most
@@ -20,7 +21,8 @@ DRIVER_LOCK.json` (`D:\ClaudeWork\rimmandrake\scratch\DRIVER_LOCK.json`); a name
 DRIVER_LOCK.json`. It was already the only record that every clone, every script and the Windows `python.exe` tools
 see at once, and the only one whose holder is a process, so a holder that dies frees the game the moment it dies. The
 ledger's bridge events stay, as history written after the act; nothing decides from them where a lock is readable.
-The BRIDGE glance file is printed from the lock.
+The BRIDGE glance file (`infrastructure/state/BRIDGE`) is retired: nothing writes it and nothing reads it. The glance is
+`game_lock.py query all`.
 
 Its place stays on the D: drive, by measurement (2026-11-21, Archmagi, WSL, two games running): reading the lock there
 takes 2 ms. What made a query slow was not the drive: the data root cost about 110 ms per process (a Python subprocess
@@ -89,7 +91,7 @@ Before: `rimflow bridge who` 5.0 s for ArchBig, 1.8 s for ArchSmall.
 - **the-243-am-game-b-record-that-named-the-ended-run.** `rimflow bridge who --host ArchSmall` names ArchSmall's live holder
   from its lock, never a run that has ended.
 - **the-335-am-ledger-free-while-the-lock-was-held.** With this clone's ledger empty and another clone's live hold in the
-  lock, `rimflow bridge who` reads HELD, the BRIDGE glance file says HELD, a take from this clone exits 75, and a
+  lock, `rimflow bridge who` reads HELD, no BRIDGE glance file is written, a take from this clone exits 75, and a
   release from it frees nothing and exits 75.
 - **the-tick-line-that-named-a-dead-run-as-live.** The tick's line about a game a run record names carries the lock's
   reading at that moment; its free-game reading (`maturation.bridge_idle`) is the lock's: HELD while a holder lives,
@@ -120,8 +122,19 @@ Before: `rimflow bridge who` 5.0 s for ArchBig, 1.8 s for ArchSmall.
   a held ArchBig and a free ArchSmall read as `game_lock.py query all` reads them. An unreadable lock reads UNMEASURED
   by its cause, never FREE and never held. A free game under `pipe off game:<g>` is his hold, never FREE. The
   equivalence run `selftest_game_driver_readers.py` compares the old readers (frozen copies, fed the glance file that
-  `rimflow bridge who` prints from the same lock) with the new on fixture cases, and with `--recorded` on every lock
-  kept on this machine. Measured 2026-11-22: 227 kept locks and 4 clone glance files, no unclassed difference;
-  8 planted faults in the new readers, 8 caught.
+  a frozen copy of the retired printer writes from the same lock) with the new on fixture cases, and with `--recorded`
+  on every lock kept on this machine. Measured 2026-11-22: 227 kept locks and 4 clone glance files, no unclassed
+  difference; 8 planted faults in the new readers, 8 caught.
+
+- **the-handoff-and-flowworks-p-b1-read-the-lock-and-nothing-prints-a-glance-file.** The handoff's `- Bridge:` lines
+  (`handoff.bridge_lines`) are `game_lock.query_all`'s lines, one per game; a lock that cannot be read is its game's
+  COULD NOT LOOK line, never `unknown` and never FREE. FlowWorks's P-B1 (`preflight_flowworks.p_b1`) PASSes only when
+  this seat or this process tree holds the lock of its own process's game, read with `game_lock.query(pipe=False)`
+  (his `pipe off` is O02's question, not P-B1's); a holder whose process is gone holds nothing; an unreadable lock is
+  UNMEASURED. Neither opens a BRIDGE glance file, and `rimflow` has no printer of one (`cli._mirror_bridge`,
+  `model.write_bridge_file` are gone). The same equivalence run covers both (item
+  `RIMMANDRAKE_MOVE_TWO_MORE_GLANCE_READERS_CENSUS_MISSED`). Measured 2026-11-22: red on 2d45788d5c (16 FAIL); green
+  after; `--recorded` 227 kept locks, 3719 reader verdicts, no unclassed difference; 9 planted faults in the two new
+  readers, 9 caught (`glance_reader_mutations.py` beside this page).
 
 Later lists beside this page: `polish.md`, `next_version.md`.

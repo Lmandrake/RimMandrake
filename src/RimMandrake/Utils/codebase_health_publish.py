@@ -127,7 +127,7 @@ def fingerprint():
 
 
 def write_atomic(path, text):
-    """Temp beside the target, then `os.replace` — the shape `write_bridge_file` uses.
+    """Temp beside the target, then `os.replace` — the shape `render._write` uses.
 
     Both files this writes are read by something else: the page by whoever publishes
     the artifact, and the state file by the next run of this script, which decides

@@ -158,13 +158,8 @@ def test_take():
     refusal, cleared = gate()
     check(refusal is None and cleared and "released" in cleared.get("text", ""),
           "take: cli gate clears a dead OWNER lock he released (ownerSaid) after it was acquired", (refusal, cleared))
-    real_mirror = cli._mirror_bridge
-    cli._mirror_bridge = lambda *a, **k: "BENCH"
-    try:
-        args = types.SimpleNamespace(purpose="save the review map", force=None, idle_ok=True, flyer=False)
-        rc, out = run(lambda: cli._bridge_take_locked(args, "BENCH", *cli.load()))
-    finally:
-        cli._mirror_bridge = real_mirror
+    args = types.SimpleNamespace(purpose="save the review map", force=None, idle_ok=True, flyer=False)
+    rc, out = run(lambda: cli._bridge_take_locked(args, "BENCH", *cli.load()))
     check(rc in (0, None) and lock_seat() == "BENCH", "take: a delegated `bridge take --idle-ok` then gets the lock",
           (rc, out, lock_seat()))
     stage(gone_identity(), release={"byCard": "Release your hold? -> yes, I'm done"})
@@ -204,8 +199,6 @@ def test_controls(sleeper):
 
 
 def test_release(sleeper):
-    real_mirror = cli._mirror_bridge
-    cli._mirror_bridge = lambda *a, **k: None
     try:
         stage(gone_identity(), release=SAID)
         model.OWNER_SAID = "ok, I'm done"
@@ -221,7 +214,6 @@ def test_release(sleeper):
         rc, out = run(lambda: cli._bridge_release_locked("OWNER", cli.load()[1]))
         check(lock_seat() == "OWNER", "control: his words do not cut a lock whose holder process LIVES", (rc, out))
     finally:
-        cli._mirror_bridge = real_mirror
         clean()
 
 

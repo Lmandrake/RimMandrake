@@ -366,11 +366,9 @@ def main(argv=None):
             from northstar_driver.session import FastSession
             tmp = tempfile.mkdtemp(prefix="ns_fw_prep_")
             g = FakeFlowWorksGame(saves_dir=tmp, shots_dir=tmp, new_tools=not a.fake_without_new_tools)
-            bridge = os.path.join(tmp, "BRIDGE")
-            with open(bridge, "w") as f:
-                f.write("%s holds the bridge (fake)\n" % a.seat)
+            lock = PF.plant_lock(os.path.join(tmp, "DRIVER_LOCK.json"), a.seat, os.getpid(), "prep rehearsal (fake)")
             with FastSession(transport=FakeTransport(g), strict=False) as s:
-                prep(s, tmp, a.seat, repo_copy_dir=None, bridge_paths=PF.Paths(bridge_file=bridge))
+                prep(s, tmp, a.seat, repo_copy_dir=None, bridge_paths=PF.Paths(driver_lock=lock))
             print("fake rehearsal OK -> %s" % tmp)
             return 0
         P = PF.Paths()

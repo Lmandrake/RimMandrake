@@ -31,6 +31,10 @@ if HERE not in sys.path:
     sys.path.insert(0, HERE)
 import site_spec as S  # noqa: E402
 import bridge_holder  # noqa: E402
+_RIMFLOW = os.path.join(S.ROOT, "src", "RimMandrake", "rimflow")
+if _RIMFLOW not in sys.path:
+    sys.path.insert(0, _RIMFLOW)
+import game_lock  # noqa: E402  (who drives each game: its driver lock, the one record)
 from northstar_driver import PASS, FAIL, UNMEASURED  # noqa: E402
 from northstar_driver.preflight import Check, check_paused, check_no_modal, check_dev_god, \
     check_loaded_not_zombie, verdict  # noqa: E402
@@ -44,7 +48,7 @@ ROWS = {
     "P-O6": "no duplicate FlowWorks/Pits copies; ModsConfig + ModSettings backups hashed",
     "P-L1": "live list == tier (ordered); five DLCs; mandrake.rm.pits absent",
     "P-L2": "Player.log: no FlowWorks config/XML error, duplicate RM_ defName, exception",
-    "P-B1": "bridge reachable; BRIDGE held by this seat",
+    "P-B1": "bridge reachable; its game's driver lock held by this seat",
     "P-B2": "game Playing; current map == trial site (id, size, tile)",
     "P-B3": "FlowWorks bridge tools registered",
     "P-B4": "Mod Settings snapshot == shipped defaults",
@@ -102,7 +106,7 @@ class Paths(object):
         self.backup_manifest = None
         self.pre_swap = None
         self.sidecar = None
-        self.bridge_file = os.path.join(S.ROOT, "infrastructure", "state", "BRIDGE")
+        self.driver_lock = None            # None = the lock of this process's game (game_lock.lock_path)
         self.expected_tier = None          # ordered ids; None = compute via modset_builder
         self.run = _run
         for k, v in kw.items():
@@ -436,22 +440,35 @@ def p_l2(s, P, sc):
     return row("P-L2", PASS, "%d log lines scanned, no FlowWorks error" % txt.count("\n"))
 
 
+def plant_lock(path, seat, pid, purpose="FlowWorks rehearsal"):
+    """Write a driver lock in driver_lock's shape at `path`, held by process `pid` as `seat`: the fixture of a fake
+    rehearsal (prep_site --fake) and of the selftest. Never the live lock: the caller names a throwaway path."""
+    import driver_lock
+    t = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    body = {"seat": seat, "purpose": purpose, "acquired": t, "heartbeat": t, "generation": 1,
+            "identity": {"pid": pid, "start": driver_lock._proc_start(pid), "boot_id": driver_lock.current_boot_id(),
+                         "platform": "wsl", "host": __import__("socket").gethostname()}}
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(body, f)
+    return path
+
+
 def p_b1(s, P, sc, seat):
     if not s.tools:
         return row("P-B1", FAIL, "bridge answered with no tools")
-    holder = None
-    if os.path.isfile(P.bridge_file):
-        holder = open(P.bridge_file, encoding="utf-8", errors="replace").read().strip()
-    else:
-        rc, out = P.run([sys.executable, os.path.join(S.ROOT, "src", "RimMandrake", "rimflow", "cli.py"),
-                         "bridge", "who"])
-        holder = out.strip() if rc == 0 else None
-    if holder is None:
-        return row("P-B1", UNMEASURED, "bridge holder unreadable (no BRIDGE file, `rimflow bridge who` failed)")
-    held, mine = bridge_holder.held_by(holder), bridge_holder.identity(seat)
-    if held != mine:
-        return row("P-B1", FAIL, "bridge held by %s, not %s: %s" % (held or "nobody", mine, holder[:120]))
-    return row("P-B1", PASS, "%d tools; bridge held by %s" % (len(s.tools), mine))
+    # The driver lock of this process's game (RM_GAME_INSTANCE, ArchBig by default), never a BRIDGE glance file.
+    # pipe=False: the row asks whether this seat holds the game; his `pipe off` is preflight_bridge O02's question.
+    try:
+        r = game_lock.query(game_lock.current_game(), pipe=False, path=P.driver_lock)
+    except Exception as e:  # noqa: BLE001  (a lock reader that cannot run is an instrument that cannot see)
+        return row("P-B1", UNMEASURED, "the driver lock could not be read: %s: %s" % (type(e).__name__, e))
+    if r["state"] == "UNKNOWN":
+        return row("P-B1", UNMEASURED, r["line"])
+    held = (r.get("seat") or "") if (r.get("alive") or r.get("owner_hold")) else ""
+    mine = bridge_holder.identity(seat)
+    if not (r.get("mine") or (held and held == mine)):
+        return row("P-B1", FAIL, "bridge held by %s, not %s: %s" % (held or "nobody", mine, r["line"][:160]))
+    return row("P-B1", PASS, "%d tools; bridge held by %s" % (len(s.tools), held or mine))
 
 
 def p_b2(s, P, sc):

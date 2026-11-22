@@ -336,7 +336,7 @@ class World:
                 ev.update({"host": host[0]} if host else {})
                 f.write(json.dumps(ev) + "\n")
         for p in (self.env["RIMFLOW_DRIVER_LOCK"], self.env["RIMFLOW_OWNER_ACT_STAMP"],
-                  os.path.join(self.rf, "events"), os.path.join(self.rf, "BRIDGE"),       # a take's shard and mirror
+                  os.path.join(self.rf, "events"),                                         # a take's shard
                   os.path.join(self.b_dir, "DRIVER_LOCK.json")):
             if os.path.isdir(p):
                 shutil.rmtree(p)

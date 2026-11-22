@@ -67,7 +67,7 @@ LEDGER = os.path.join(ROOT, "infrastructure", "state", "ledger", "events.jsonl")
 # habit, where 82 of them (1.9 MB) sat in the directory doctrine tells agents to
 # grep for "what else this settled". Moved out 2026-09-19 on the owner's word.
 HANDOFFS = os.path.join(ROOT, "infrastructure", "state", "handoffs")
-BRIDGE = os.path.join(ROOT, "infrastructure", "state", "BRIDGE")
+RIMFLOW = os.path.join(ROOT, "src", "RimMandrake", "rimflow")
 
 TODO = "<<< WRITE THIS >>>"
 WHOSE = "<<< WHOSE? >>>"
@@ -132,6 +132,20 @@ def _seat_restart():
     sys.path.insert(0, os.path.join(ROOT, "src", "RimMandrake"))
     from rimflow import seat_restart
     return seat_restart
+
+
+def bridge_lines():
+    """-> one line per game of this machine, ArchBig first: who drives it, read from its driver lock (game_lock.query_all,
+    the one record), as `game_lock.py query all` prints it. A lock that cannot be read is its game's COULD NOT LOOK line;
+    a reader that cannot run is one COULD NOT LOOK line. Never a blank, and never FREE for either."""
+    try:
+        if RIMFLOW not in sys.path:
+            sys.path.insert(0, RIMFLOW)
+        import game_lock
+        rows = game_lock.query_all()
+    except Exception as e:  # noqa: BLE001  (a reader that cannot run is an instrument that cannot see)
+        return ["COULD NOT LOOK at the game locks: %s: %s" % (type(e).__name__, e)]
+    return [r["line"] for r in rows] or ["COULD NOT LOOK at the game locks: no game on this machine"]
 
 
 def read_bridge(me):
@@ -1135,11 +1149,7 @@ def build(since_sha, since_ts, prev_name):
     dirty = tree_lines()
 
     game = sh(os.path.join(ROOT, "game"))
-    bridge = ""
-    if os.path.isfile(BRIDGE):
-        bridge = [l for l in io.open(BRIDGE, encoding="utf-8").read().splitlines()
-                  if l and not l.startswith("#")]
-        bridge = bridge[-1] if bridge else ""
+    bridge = bridge_lines()
 
     out = handoff_out(s, HANDOFFS)
     if out is None:
@@ -1215,7 +1225,8 @@ def build(since_sha, since_ts, prev_name):
     L.append("")
     for line in (game or "").splitlines():
         L.append("- %s" % line.strip())
-    L.append("- Bridge: %s" % (bridge or "unknown"))
+    for line in bridge:
+        L.append("- Bridge: %s" % line)
     L.append("")
     if dirty is None:
         L.append(TREE_UNMEASURED)

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """atomic_copy.py — copy a file so the destination is never a prefix of the new one.
 
-🔑 ONE SHAPE, NOT TWO. `model.write_bridge_file` in `src/RimMandrake/rimflow/model.py`
-already solved this for the bridge mirror: per-call unique temp name, exclusive create,
+🔑 ONE SHAPE, NOT TWO. `render._write` in `src/RimMandrake/rimflow/render.py`
+already solved this for the queue views: per-call unique temp name, exclusive create,
 lock, write, `os.replace`. The two profile swappers (`modlist_swap.py`,
 `cherrypicker_swap.py`) overwrite the owner's LIVE game config and needed the same
 guarantee, so it lives here once instead of being reimplemented subtly differently in

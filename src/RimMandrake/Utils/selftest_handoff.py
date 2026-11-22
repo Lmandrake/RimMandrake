@@ -183,8 +183,7 @@ print("handoff: the doing-gate is scoped, and a handoff discharges it")
 # A future timestamp means "nothing was started in this window" — the gate must
 # then be silent about `doing` no matter how much old work is open.
 future = "2999-01-01T00:00:00Z"
-# gates() asks `rimflow bridge who`, which rewrites the real infrastructure/state/BRIDGE mirror (it repairs it on the
-# way); these checks are about the doing-gate, so the bridge reading is stubbed and the test writes nothing tracked
+# gates() asks `rimflow bridge who`; these checks are about the doing-gate, so the bridge reading is stubbed
 _real_sh = handoff.sh
 handoff.sh = lambda *a, **k: "bridge is FREE" if a[-2:] == ("bridge", "who") else _real_sh(*a, **k)
 problems = handoff.gates(future)
@@ -377,7 +376,7 @@ for _pid in (100, 150):
     _r = _gate(_drv(_pid))
     check(len(_r) == 1 and "window" in _r[0], "driver lock held by the window / its child (pid %d) refuses: %s" % (_pid, _r))
 _r = _gate({"state": "MEASURED", "holders": ["BENCH"], "bridge": ["BENCH"], "shared": {"identity": _ident(100)}})
-check(len(_r) == 1 and "shared bridge" in _r[0], "shared bridge held by the window refuses: %s" % _r)
+check(len(_r) == 1 and "ArchBig's lock is the window's" in _r[0], "ArchBig's lock held by the window refuses: %s" % _r)
 _r = _gate(_drv(777))       # 777 has no parent entry: ancestry unreadable
 check(len(_r) == 1 and "UNMEASURED" in _r[0], "an unplaceable holder pid refuses and says UNMEASURED: %s" % _r)
 handoff.sh, handoff.read_bridge, handoff.window_pid, handoff.ppid_of = _real

@@ -287,8 +287,8 @@ world/view/*.svg
 src/**/bin/
 src/**/obj/
 
-# The bridge mirror is DERIVED from the ledger and rewritten on every take/release.
-# `rimflow bridge who` rebuilds it; the history lives in events.jsonl.
+# The BRIDGE glance file is retired (2026-11-22; nothing writes or reads it: game_lock.py query all is the glance).
+# Kept ignored so a stale copy left in an older clone never shows as untracked.
 infrastructure/state/BRIDGE
 infrastructure/state/BRIDGE.tmp
 Transient/codebase_health_hook.log

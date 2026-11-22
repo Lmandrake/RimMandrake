@@ -217,9 +217,9 @@ def manual_switch_cases(calls):
 
 
 def main():
-    # the gate is the HOLD file only (2026-10-28: account_failover retired, its marker never written)
+    # the gate is the HOLD file only (2026-10-28: the one-off failover script's cutover gate was removed)
     check("gate" not in PLAN and "gate_marker_done" not in dir(SP),
-          "no account_failover gate in the plan or the engine: HOLD is the only brake")
+          "no cutover gate in the plan or the engine: HOLD is the only brake")
     out = SP.decide({"system": R(50, 100), "lukas": R(98, 120)}, "system", NOW, PLAN, {}, markers={})
     check(out["do"] != "passive", f"a fresh state (no gate_passed) is not passive (got {out['do']})")
     off = {"steven": R(90, 100)}  # steven 68 h after his reset: outside the 48 h window

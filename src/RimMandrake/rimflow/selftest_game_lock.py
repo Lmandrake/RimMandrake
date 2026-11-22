@@ -414,7 +414,7 @@ def t_the_243_am_game_b_record_that_named_the_ended_run():
 
 
 def t_the_335_am_ledger_free_while_the_lock_was_held():
-    """3:35 AM: the BRIDGE file and this clone's ledger read FREE while another clone's visit held the driver lock.
+    """3:35 AM: the BRIDGE glance file (now retired) and this clone's ledger read FREE while another clone's visit held the driver lock.
     Now `bridge who` reads the lock, so a hold made from any clone is seen at once."""
     bx = Box()
     s = sleeper()
@@ -423,9 +423,7 @@ def t_the_335_am_ledger_free_while_the_lock_was_held():
     check(r.returncode == 0 and "Gimme Some Slack visit (another clone)" in r.stdout and "bridge held by BENCH"
           in r.stdout and "FREE" not in r.stdout, "bridge who reads HELD from the lock while this ledger is empty",
           r.stdout + r.stderr)
-    with open(os.path.join(bx.d, "BRIDGE"), encoding="utf-8") as f:
-        mirror = f.read()
-    check("HELD" in mirror and "BENCH" in mirror, "the BRIDGE glance file is printed from the lock", mirror)
+    check(not os.path.exists(os.path.join(bx.d, "BRIDGE")), "no BRIDGE glance file is written (retired; the lock is read)")
     s2 = sleeper()
     r = bx.rf("bridge", "take", "--for", "a third run", pid=s2.pid)
     check(r.returncode == 75 and "Gimme Some Slack" in r.stderr, "a take from this clone is refused by the lock (75)",
@@ -537,13 +535,38 @@ def t_a_windows_python_client_checks_the_lock_in_under_50_ms():
     check(p.returncode == 0, "a Windows python.exe client checks the lock in under 50 ms a call", p.stdout[-900:])
 
 
+_READERS = []
+
+
+def _readers_run():
+    """The equivalence run on its fixture cases (selftest_game_driver_readers.py), run once for the two promises."""
+    if not _READERS:
+        _READERS.append(subprocess.run([sys.executable, os.path.join(HERE, "selftest_game_driver_readers.py")],
+                                       capture_output=True, text=True, timeout=600))
+    return _READERS[0]
+
+
+def _readers_ok(p, words):
+    """-> the run's verdict on the cases whose line names `words`: each such line is ok, and at least one exists."""
+    lines = [ln for ln in p.stdout.splitlines() if ln.startswith(("ok ", "FAIL ")) and any(w in ln for w in words)]
+    return bool(lines) and all(ln.startswith("ok ") for ln in lines) and "\n0 failed" in p.stdout
+
+
 def t_the_two_last_glance_file_readers_read_every_game_from_the_lock():
     """The equivalence run on its fixture cases: the old readers (frozen) and the new on the same locks, every
     difference classed; the new readers equal `game_lock.py query all` (selftest_game_driver_readers.py)."""
-    p = subprocess.run([sys.executable, os.path.join(HERE, "selftest_game_driver_readers.py")], capture_output=True,
-                       text=True, timeout=300)
-    check(p.returncode == 0, "preflight_bridge and running_now read every game from its lock, never the glance file",
+    p = _readers_run()
+    check(p.returncode == 0 and _readers_ok(p, ("running_now", "preflight")),
+          "preflight_bridge and running_now read every game from its lock, never the glance file",
           p.stdout[-900:] + p.stderr[-300:])
+
+
+def t_the_handoff_and_flowworks_p_b1_read_the_lock_and_nothing_prints_a_glance_file():
+    """The same run: the handoff's Bridge lines are `query all`'s, P-B1 reads its own game's lock, neither opens a
+    glance file, and rimflow has no printer of one."""
+    p = _readers_run()
+    check(p.returncode == 0 and _readers_ok(p, ("handoff", "P-B1", "printer is gone")),
+          "the handoff and P-B1 read the lock; no glance file is printed or read", p.stdout[-900:] + p.stderr[-300:])
 
 
 def main():
@@ -564,6 +587,7 @@ def main():
     t_a_windows_python_client_obeys_the_lock()
     t_a_windows_python_client_checks_the_lock_in_under_50_ms()
     t_the_two_last_glance_file_readers_read_every_game_from_the_lock()
+    t_the_handoff_and_flowworks_p_b1_read_the_lock_and_nothing_prints_a_glance_file()
     for p in SLEEPERS:
         if p.poll() is None:
             p.kill()

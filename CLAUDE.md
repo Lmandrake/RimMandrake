@@ -684,8 +684,7 @@ python3 src/RimMandrake/Utils/system_click.py <x> <y>          OS-level click fo
   - Exit 0 is free or done, 75 held, 3 his hold, 2 could not look.
 - A holder is a process. When it ends, the game is free at once. A live holder holds; `--force` cuts it, recorded.
 - `rimflow bridge who|take|release [--host <game>]` and `./bridge` use the same lock and write the ledger's history.
-  Nothing decides from the ledger or from `infrastructure/state/BRIDGE`. The owner overrides with `./bridge
-  conductor|free`.
+  Nothing decides from the ledger. The owner overrides with `./bridge conductor|free`.
 - His OWNER hold: nobody may take it until 45 min after his last deliberate interaction, `--force` included. If the
   signal is unmeasured, the take is refused (`rimflow/owner_interaction.py`).
 - Only the Conductor window may cut his OWNER hold sooner, as its mindful act:
@@ -726,7 +725,7 @@ When this conversation is compacted (idle or not), the summary MUST keep these s
    often loses the date. After a compaction, take each ruling's date from disk
    (`python3 src/RimMandrake/rimflow/owner_rulings.py --grep <words>`, or the ledger's `--owner-said`/`--by-card`
    events). Never take it from the summary or from today's date.
-4. The bridge holds (who holds `infrastructure/state/BRIDGE`, and for what) and the game state.
+4. The bridge holds (who drives each game and for what, from `game_lock.py query all`) and the game state.
 5. Running subagents: name or ID, task, and what each writes where.
 6. Uncommitted or unpushed paths.
 7. If nobody said **HANDOFF READY** since the last commit, write the line **HANDOFF OWED**. Then the resumed session

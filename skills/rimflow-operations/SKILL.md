@@ -1,6 +1,6 @@
 ---
 name: rimflow-operations
-description: Operate the multi-account Claude quota system - check each account's level (weekly vs 5-hour cap, percent left, reset time, MEASURED/ESTIMATE/UNMEASURED), apply the standard switching plan (owner's fixed priority steven > system > lukas, 1%/2% floors (never 0%), soft line then drain then hard stop, Steven's 52% leave line, pool pacing), switch or recover accounts with claude-account, and stand windows down and up. Use whenever anyone asks how much quota/usage is left, which account is live, when an account resets, whether to switch accounts, why the fleet stopped or went DARK, how to recover a stuck switch, or touches account_usage.py, switching_plan.py, account_failover.py, slot_allocator set/clear, account-plan.timer, or timers_guard pause - even if they just say "are we about to run out".
+description: Operate the multi-account Claude quota system - check each account's level (weekly vs 5-hour cap, percent left, reset time, MEASURED/ESTIMATE/UNMEASURED), apply the standard switching plan (owner's fixed priority steven > system > lukas, 1%/2% floors (never 0%), soft line then drain then hard stop, Steven's 52% leave line, pool pacing), switch or recover accounts with claude-account, and stand windows down and up. Use whenever anyone asks how much quota/usage is left, which account is live, when an account resets, whether to switch accounts, why the fleet stopped or went DARK, how to recover a stuck switch, or touches account_usage.py, account_live.py, switching_plan.py, slot_allocator set/clear, account-plan.timer, or timers_guard pause - even if they just say "are we about to run out".
 ---
 
 # rimflow-operations: accounts, levels and the standard switching plan
@@ -46,7 +46,6 @@ More traps for this section: [references/traps.md](references/traps.md) § 1. Ch
 The engine (`switching_plan.py check`, `account-plan.timer`, every 5 min) polls the meter itself near a line or
 when a reading is old and acts once per transition (markers). Its ONLY brake is a `HOLD` file in its output dir
 (`D:\ClaudeWork\rimmandrake\switching_plan\HOLD`): while it exists every pass logs `passive` and acts on nothing.
-(The old account_failover gate was removed 2026-10-28; that script and its timer are retired.)
 His 2026-10-28 pause (HOLD set, timer stopped) was lifted (`HOLD.lifted-2026-11-05`, `HOLD.lifted-2026-11-06` in that
 dir); the timer runs. Full state machine, markers and the review history: `references/plan.md`.
 

@@ -560,8 +560,8 @@ def t_bridge_who_mirrors_the_ledger_not_its_snapshot():
     r = subprocess.run([sys.executable, "-c", code], env=scratch_env(env("CHECK")), cwd=os.path.dirname(CLI),
                        capture_output=True, text=True, timeout=60)
     assert r.returncode == 0, r.stderr
-    assert _mirror_holder() == "CHECK", _mirror_holder()
     assert "bridge held by CHECK" in r.stdout, r.stdout
+    assert not os.path.exists(os.path.join(_tmp(), "BRIDGE")), "bridge who wrote a BRIDGE glance file (retired)"
 
 
 def _ledger_paths():
@@ -619,17 +619,17 @@ def _bridge_events():
             for e in _ledger_events() if e.get("event") == "bridge"]
 
 
-def _mirror_holder():
-    """Who the BRIDGE mirror names, or None for FREE. The file is beside the ledger."""
-    p = os.path.join(_tmp(), "BRIDGE")
-    if not os.path.exists(p):
-        return None
-    for line in open(p, encoding="utf-8"):
-        if line.startswith("HELD"):
-            return line.split()[1]
-        if line.startswith("FREE"):
+def _who_holder():
+    """Who `rimflow bridge who` names, or None for FREE: the line a window reads at a glance (the BRIDGE glance file
+    that once printed it is retired)."""
+    r = subprocess.run([sys.executable, CLI, "bridge", "who"], env=scratch_env(env("BENCH")), cwd=REPO,
+                       capture_output=True, text=True, timeout=60)
+    for line in r.stdout.splitlines():
+        if line.startswith("bridge held by "):
+            return line.split()[3]
+        if line.startswith("bridge FREE"):
             return None
-    return None
+    raise AssertionError("bridge who gave no holder line: %s" % (r.stdout + r.stderr))
 
 
 def _ledger_holder():
@@ -640,7 +640,7 @@ def _ledger_holder():
     return last["seat"] if last.get("state") == "taken" else None
 
 
-def t_the_bridge_mirror_never_disagrees_with_the_ledger_under_concurrent_takes():
+def t_bridge_who_never_disagrees_with_the_ledger_under_concurrent_takes():
     """🔴 BRIDGE_TAKE_TOCTOU_AND_EPOCH_SENTINEL_1. Every branch used to mirror the holder
     it had just DECIDED on, so a take that lost a race appended its event (harmless —
     the ledger's last event wins) and then wrote its own name into the one line both
@@ -649,7 +649,7 @@ def t_the_bridge_mirror_never_disagrees_with_the_ledger_under_concurrent_takes()
 
     ⭐ ASSERTS THE INVARIANT, NOT THE RACE. Which window wins is timing, and a test that
     demanded a particular winner would be flaky for the wrong reason. What must hold
-    every time, whoever wins, is that the mirror says what the ledger says.
+    every time, whoever wins, is that `bridge who` says what the ledger says.
 
     🔑 It also asserts NOBODY IS LEFT AT A DEAD END: this system errs toward allowing a
     take (owner, 2026-09-02). A loser may be refused — that is the same answer a live
@@ -677,10 +677,10 @@ def t_the_bridge_mirror_never_disagrees_with_the_ledger_under_concurrent_takes()
             assert p.returncode == 0 or "--force" in blob, (
                 "a racing take was refused with no way through — mutual lockout is the "
                 "expensive failure here, not two drivers: %s" % blob)
-        assert _mirror_holder() == _ledger_holder(), (
-            "the BRIDGE mirror says %r and the ledger's last event says %r — the one "
+        assert _who_holder() == _ledger_holder(), (
+            "bridge who says %r and the ledger's last event says %r — the one "
             "glanceable line is exactly the thing that must not lie"
-            % (_mirror_holder(), _ledger_holder()))
+            % (_who_holder(), _ledger_holder()))
 
 
 def t_one_malformed_timestamp_cannot_promote_an_item():
@@ -1364,9 +1364,9 @@ def t_bridge_give_refuses_a_target_that_is_not_a_window():
     assert not _bridge_events(), "a refused give still wrote to the ledger"
     out = ok("bridge", "give", "free", seat="OWNER")
     assert "FREE" in out, out
-    assert _ledger_holder() is None and _mirror_holder() is None, (
-        "clearing an already-free bridge left a holder behind: ledger=%r mirror=%r"
-        % (_ledger_holder(), _mirror_holder()))
+    assert _ledger_holder() is None and _who_holder() is None, (
+        "clearing an already-free bridge left a holder behind: ledger=%r bridge who=%r"
+        % (_ledger_holder(), _who_holder()))
 
 
 def t_the_take_rule_frees_a_silent_holder_and_protects_a_working_one():

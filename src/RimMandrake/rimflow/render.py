@@ -460,20 +460,17 @@ def queue_view(world, seat, events, target="v1", ctx=None, gindex=None):
 # WRITING
 # ---------------------------------------------------------------------------
 def _write(path, text):
-    # Same tmp-name/lock discipline as model.write_bridge_file, and for the
-    # same reason: a shared "<path>.tmp" truncates whatever a concurrent
+    # A per-call unique tmp name and a lock, because a shared "<path>.tmp" truncates whatever a concurrent
     # writer already put there (O_TRUNC fires at open(), before any lock),
     # or its os.replace() can chase a name the other writer already renamed
     # away. _emit() (cli.py) calls this on EVERY ledger write, so any two
     # concurrent `rimflow` invocations from BENCH and FOUNDRY collide here.
     #
-    # Found in the 2026-09-05 code review wave: unlike model._write_atomically
-    # (which exists for exactly this reason - see its own docstring), this
-    # function did not check os.write()'s return against len(blob), and had
-    # no except/unlink around the write. A short write here silently
-    # os.replace()'d a truncated file over the real queue view both windows
-    # read; a write failure left a stray *.tmp.<pid>.<ns> file behind in a
-    # git-tracked directory. Now mirrors model._write_atomically exactly.
+    # Found in the 2026-09-05 code review wave: this function did not check
+    # os.write()'s return against len(blob), and had no except/unlink around
+    # the write. A short write here silently os.replace()'d a truncated file
+    # over the real queue view both windows read; a write failure left a stray
+    # *.tmp.<pid>.<ns> file behind in a git-tracked directory.
     os.makedirs(os.path.dirname(path), exist_ok=True)
     tmp = "%s.tmp.%d.%d" % (path, os.getpid(), time.time_ns())
     try:

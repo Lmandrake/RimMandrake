@@ -20,7 +20,7 @@ about the cycle, this file wins; fix the window file in the same commit.
    driving. CLAUDE.md's "The bridge is passed through one file" is canonical for
    each lock: it errs toward ALLOWING, not mutual lockout. A stale (45-minute-idle)
    hold is simply taken, saying so; `take --force` always works and is recorded;
-   `infrastructure/state/BRIDGE` is the one-glance mirror of game a's lock;
+   `python3 src/RimMandrake/rimflow/game_lock.py query all` is the one-glance answer for every game;
    `./bridge conductor|free` is the owner's override. A busy game is never a reason
    to wait: name the game, and say why no other game can take the work (CLAUDE.md
    "There are several live games").

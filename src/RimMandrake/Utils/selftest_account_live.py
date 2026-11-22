@@ -128,7 +128,6 @@ def t_every_reader_uses_the_one_home():
     for f in ("slot_allocator.py", "switching_plan.py", "running_now.py", "account_handover.py", "account_usage.py"):
         src = open(os.path.join(HERE, f)).read()
         check("account_live" in src and "AL.read(" in src, "%s reads the live account through account_live" % f)
-    check(not os.path.exists(os.path.join(HERE, "account_failover.py")), "the retired account_failover.py is gone")
 
 
 def main():

@@ -119,8 +119,6 @@ MUTANTS = [
     ("key_a_is_a_second_lock", MO, 'return machine if inst == "a" else k ', 'return k ', T_IK, ""),
     ("key_b_is_game_a", MO, 'return machine if inst == "a" else k ', 'return machine ', T_IK, ""),
     ("ambient_ignores_the_name", MO, '    if inst in ("", "a"):\n        return None\n    return "%s.%s"', '    if True:\n        return None\n    return "%s.%s"', T_IK, ""),
-    ("mirror_loses_the_line", CL, 'others=others)', 'others=None)', T_IK, ""),
-    ("mirror_skips_other_host_takes", CL, '    _emit(ev, w, quiet=True)\n    _mirror_bridge(None)\n    print("%s bridge taken', '    _emit(ev, w, quiet=True)\n    print("%s bridge taken', T_IK, ""),
     ("guard_call_ignores_the_game", CL, 'with _cl.redirect_stdout(buf), host_guard.instance_env(inst):', 'with _cl.redirect_stdout(buf):', T_IK, ""),
     ("host_no_instance_suffix", HG_, 'return "%s.%s" % (machine, inst) if machine and inst not in ("", "a") else machine', 'return machine', T_IK, ""),
     ("remote_loses_the_game", HG_, '"RM_GAME_INSTANCE=%s " % inst if inst else ""', '""', T_IK, ""),

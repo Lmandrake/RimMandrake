@@ -814,7 +814,7 @@ python3 src/RimMandrake/rimflow/game_lock.py run ArchSmall --for "<what>" -- CMD
 ```
 
 Exit 0 free or done, 75 held, 3 his hold, 2 could not look. `rimflow bridge who|take|release` and `./bridge` read and
-write the same lock, and write the ledger's history; nothing decides from the ledger or the BRIDGE glance file.
+write the same lock, and write the ledger's history; nothing decides from the ledger.
 
 🔑 **It errs toward ALLOWING, never toward mutual lockout** (owner, 2026-09-02). A holder whose process has ended holds
 nothing. A live holder holds; `--force` cuts it and is recorded.

@@ -235,7 +235,7 @@ def t_gate(r):
     g = r.call("testq.archmagi_gate()")
     check(g[0] is False and "FOUNDRY" in g[1], "a live holder of game a's lock (even a 2 h old one) -> closed: %s" % g[1])
     r.drop_hold()
-    open(r.p("ledger", "BRIDGE"), "w").write("HELD BENCH since x\n")    # the mirror is a print of the lock: never read
+    open(r.p("ledger", "BRIDGE"), "w").write("HELD BENCH since x\n")    # a retired glance file an old clone may keep: never read
     g = r.call("testq.archmagi_gate()")
     check(g[0] is True, "a HELD BRIDGE mirror over a free lock -> open (the lock decides): %s" % g)
     os.remove(r.p("ledger", "BRIDGE"))

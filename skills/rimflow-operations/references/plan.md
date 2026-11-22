@@ -22,5 +22,4 @@ Pool pacing (`pool()`, read by slot_allocator): each account's budget down to it
 reset; steven's at his window end); a lower account's budget is kept only if, at the pace without it, the higher
 accounts finish first; a kept one pulls the higher budgets forward to its expiry.
 
-History: account_failover.py (one-off, 2026-10-28) owned the machine first; it is retired
-(ACCOUNT_FAILOVER_RETIRE_AFTER_DEADLINE done) and the engine no longer gates on it. HOLD is the only brake.
+The engine's only brake is a `HOLD` file in its output dir.

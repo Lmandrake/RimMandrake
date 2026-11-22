@@ -1412,64 +1412,6 @@ def t_check_reports_only_the_candidates_own_override():
         % notices[0])
 
 
-# ---------------------------------------------------------------------------
-# THE BRIDGE MIRROR — pure units, and no litter in a directory that is in git
-# ---------------------------------------------------------------------------
-def t_the_bridge_body_is_a_pure_function_of_its_arguments():
-    """⚠️ The five-line header's COUNT is load-bearing: `selftest_bridge_file_concurrency`
-    proves the final file is one writer's COMPLETE body by checking where the status
-    line lands. A header that grows silently turns that proof into a green no-op."""
-    held = model.bridge_body("BENCH", None, purpose="driving the map",
-                             since="2026-09-02T00:00:00Z")
-    lines = held.splitlines()
-    assert len(lines) == 7, held
-    assert lines[5] == "HELD    BENCH    since 2026-09-02T00:00:00Z", held
-    assert lines[6] == "for     driving the map", held
-    free = model.bridge_body(None, "FOUNDRY", since="2026-09-02T00:00:00Z")
-    assert free.splitlines()[5] == \
-        "FREE    since 2026-09-02T00:00:00Z    (released by FOUNDRY)", free
-    noted = model.bridge_body("BENCH", None, since="x", note="handed over by the owner")
-    assert noted.splitlines()[-1] == "note    handed over by the owner", noted
-    assert noted.endswith("\n"), "the mirror must end in a newline"
-
-
-def t_the_mirror_follows_the_ledger_in_use():
-    """🔴 A mirror bound to the module constant wrote a synthetic test holder over the
-    REAL BRIDGE file — the tests would have kept lying to two live windows."""
-    saved = os.environ.pop("RIMFLOW_LEDGER", None)
-    try:
-        assert model.bridge_mirror_path() == model.BRIDGE_FILE
-        os.environ["RIMFLOW_LEDGER"] = os.path.join(TMP, "ledger", "events.jsonl")
-        assert model.bridge_mirror_path() == os.path.join(TMP, "ledger", "BRIDGE"), (
-            "a redirected ledger still mirrored to the real BRIDGE file")
-    finally:
-        os.environ.pop("RIMFLOW_LEDGER", None)
-        if saved is not None:
-            os.environ["RIMFLOW_LEDGER"] = saved
-
-
-def t_a_failed_mirror_write_leaves_no_tmp_and_no_damage():
-    """⚠️ The per-call-unique tmp name that fixed the concurrent-truncation race left
-    every FAILED write behind as `BRIDGE.tmp.<pid>.<ns>` — in infrastructure/state,
-    which is in git, as untracked state nobody can attribute. And the good mirror must
-    survive a failed rewrite: a half-written answer to "who is driving" is worse than
-    the previous one."""
-    d = os.path.join(TMP, "mirror")
-    os.makedirs(d, exist_ok=True)
-    target = os.path.join(d, "BRIDGE")
-    model._write_atomically(target, "HELD    BENCH\n")
-    try:
-        model._write_atomically(target, "\ud800")       # cannot be encoded as UTF-8
-    except Exception:                                    # noqa: BLE001
-        pass
-    else:
-        raise AssertionError("an unencodable body was reported as written")
-    strays = sorted(n for n in os.listdir(d) if ".tmp." in n)
-    assert not strays, "a failed write left %r behind, in a directory that is in git" % strays
-    with open(target, encoding="utf-8") as fh:
-        assert fh.read() == "HELD    BENCH\n", "the failed write damaged the good mirror"
-
-
 CASES = [(k[2:], v) for k, v in sorted(globals().items()) if k.startswith("t_")]
 
 if __name__ == "__main__":

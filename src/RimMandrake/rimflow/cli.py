@@ -186,10 +186,6 @@ def _state_root(events_path):
     views into `<repo>/queue/` and `<repo>/derived/queue_preview/` — untracked, not
     gitignored, sitting at the top of the repo where a careless `git add` would sweep
     them in. Measured 2026-09-03: four such files, rewritten on every run.
-
-    🔑 `model.write_bridge_file` derives its own mirror target as `dirname(led)` when
-    the ledger is redirected, so testing the SHAPE is also what keeps the BRIDGE mirror
-    and the queue views in the same root instead of two different ones.
     """
     d = os.path.dirname(os.path.abspath(events_path))
     return os.path.dirname(d) if os.path.basename(d) == "ledger" else d
@@ -3494,28 +3490,14 @@ def lock_holder(r, evs=None):
     return r["seat"] if (r.get("alive") or r.get("seat") == "OWNER") else None
 
 
-def _mirror_bridge(actor, note=None):
-    """Rewrite the BRIDGE glance file from game a's lock (the ledger's replay only where no lock is readable here), and
-    -> the holder it names. It is a print of the lock for a glance, never a record anything decides from."""
-    _, w3 = load()
+def _bridge_holder_now():
+    """-> the seat that holds game a now: its driver lock's holder (lock_holder), or the ledger's replay where no lock
+    is readable here (another machine, a test ledger without one)."""
     r = lock_reading()
-    others = {}
-    for k in sorted(set(model.BRIDGE_HOSTS) | set(w3.bridge_hosts)):
-        if k == model.DEFAULT_BRIDGE_HOST:
-            continue
-        rk = lock_reading(k)
-        if rk is not None:
-            if lock_holder(rk):
-                others[k] = {"holder": lock_holder(rk), "since": rk.get("since"), "purpose": rk.get("purpose")}
-        elif (w3.bridge_hosts.get(k) or {}).get("holder"):
-            others[k] = w3.bridge_hosts[k]
     if r is None:
-        holder, purpose, since = w3.bridge_holder, w3.bridge_purpose, w3.bridge_since
-    else:
-        holder, purpose, since = lock_holder(r), r.get("purpose"), r.get("since")
-    model.write_bridge_file(holder, actor, purpose if holder else None, since if holder else None, note=note,
-                            others=others)
-    return holder
+        _, w3 = load()
+        return w3.bridge_holder
+    return lock_holder(r)
 
 
 def _who_lines(r, hk=None):
@@ -3540,7 +3522,6 @@ def _bridge_who():
     """`bridge who` — game a's driver lock, the one record (game_lock.py). Where no lock is readable here (another
     machine, a test ledger without one) the ledger's history is printed, and said to be history."""
     r = lock_reading()
-    _mirror_bridge(None)
     if r is not None:
         return _who_lines(r)
     _, w = load()
@@ -3562,13 +3543,12 @@ def _bridge_give(args, seat, w, holder):
 
     🔴 THE OWNER'S OWN SWITCH. He is not a seat and does not queue behind one:
     `bridge give FOUNDRY` moves it, `bridge give free` clears it, and both windows see
-    the answer in the same file they already read.
+    the answer in `rimflow bridge who`.
 
-    🔑 THE EVENT CARRIES WHO DID IT, not just the mirror. A `give` is emitted under the
+    🔑 THE EVENT CARRIES WHO DID IT. A `give` is emitted under the
     TARGET window's seat, because `_apply` reads `seat` as the new holder and the owner
     is not a window — which made an owner handover byte-identical to that window taking
-    the bridge itself, with the real story only in `write_bridge_file(note=)`, a file
-    the next bridge call overwrites. `override` is the field this system already uses
+    the bridge itself. `override` is the field this system already uses
     for "a rule was crossed on purpose, and here is which one" (see `_emit` and
     `model._may`), so it is the field used here too rather than a third shape.
     `--owner-said` still stamps `ownerSaid` alongside it, from `_emit`, unchanged.
@@ -3597,7 +3577,6 @@ def _bridge_give(args, seat, w, holder):
         _emit({"seat": holder or seat, "event": "bridge", "state": "released",
                "override": "the OWNER cleared the bridge%s"
                            % (" off %s" % holder if holder else "")}, w, quiet=True)
-        _mirror_bridge("OWNER", note="cleared by the owner")
         _driver_release(seat, force="the OWNER cleared the bridge")
         print("bridge FREE — the owner cleared it")
         return 0
@@ -3609,7 +3588,6 @@ def _bridge_give(args, seat, w, holder):
     if args.purpose:
         ev["purpose"] = args.purpose
     _emit(ev, w, quiet=True)
-    _mirror_bridge("OWNER", note="handed over by the owner")
     _driver_release(seat, force="the OWNER handed the bridge to %s; %s takes the driver lock on its next take" % (to, to))
     print("bridge -> %s (the owner said so)" % to)
     return 0
@@ -3840,7 +3818,6 @@ def _bridge_release_write(seat, w, holder, r=None, force=False):
         die("bridge NOT released: the driver lock did not come free (%s).\n  nothing written: the ledger still "
             "shows %s holding it; retry  rimflow bridge release" % (failed, holder or "nobody"))
     _emit(ev, w, quiet=True)
-    _mirror_bridge(seat)
     if crossed:
         print("bridge released by %s — it was held by %s, and that is on the event"
               % (seat, holder or r.get("seat")))
@@ -4020,7 +3997,7 @@ def _bridge_take_locked(args, seat, evs, w):
         ev.update(idle_ev)
     if args.purpose:
         ev["purpose"] = args.purpose
-    # 🔑 A take that CROSSED SOMEONE goes on the event, not only into the mirror.
+    # 🔑 A take that CROSSED SOMEONE goes on the event.
     # Without this, `--force` while the holder was still working produced a ledger
     # line indistinguishable from an ordinary uncontested take, and `events.jsonl` —
     # this module's sole source of truth — could never answer "did that take cut
@@ -4054,11 +4031,10 @@ def _bridge_take_locked(args, seat, evs, w):
         if got.get("broke") and "override" not in ev:
             ev["override"] = "took the driver lock from a dead or forced holder"
     _emit(ev, w, quiet=True)
-    won = _mirror_bridge(
-        seat, note=("taken from %s: %s" % (holder, why)) if why else None)
+    won = _bridge_holder_now()
     if won != seat:
         # Another clone's ledger write cannot race this lock, but a write that bypasses it can (a hand-run
-        # `_emit`, an older rimflow). Both events are in the ledger, the later one holds, and the mirror says so.
+        # `_emit`, an older rimflow). Both events are in the ledger, the later one holds, and the lock says so.
         print("bridge is held by %s — they took it in the same instant you did.\n"
               "  your take IS on the ledger; theirs landed after it, so it stands.\n"
               "  cut across it  rimflow bridge take --force --for \"<what for>\"" % won)
@@ -4185,7 +4161,6 @@ def _bridge_other_host_locked(args, seat, w, hk):
                 "  check   rimflow bridge who --host %s\n  retry   rimflow bridge release --host %s"
                 % (hn, rc, out, holder or "nobody", hn, hn, hn))
         _emit(ev, w, quiet=True)
-        _mirror_bridge(None)
         if rc != 0:                    # the guard was another process's, never ours: the ledger release is the truth
             print("%s bridge released by %s (its guard lock is not this window's: %s)" % (hn, seat, out))
         else:
@@ -4246,7 +4221,6 @@ def _bridge_other_host_locked(args, seat, w, hk):
             "driving that game.\n  check   rimflow bridge who --host %s\n  cut across it (recorded)  "
             "rimflow bridge take --host %s --force --for \"<what for>\"" % (hn, rc, out, hn, hn))
     _emit(ev, w, quiet=True)
-    _mirror_bridge(None)
     print("%s bridge taken by %s%s" % (hn, seat, ("  (%s)" % why) if why else ""))
     print("  guard: %s\n  pass RM_HOST_GUARD_GEN to what you run there (rw_game.sh, modcheck) so it drives under "
           "this take; re-run take within 45 min to keep it." % out)

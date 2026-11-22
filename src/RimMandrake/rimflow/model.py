@@ -148,8 +148,7 @@ def shard_dir(path=None):
     🔑 RELATIVE TO THE LEDGER IN USE, NEVER A HARDCODED ABSOLUTE PATH. `RIMFLOW_LEDGER`
     and a reassigned `model.EVENTS` point the whole tool at a throwaway ledger, and a
     shard path bound to the module constant would let a selftest's appends escape into
-    the real repo's ledger — the one file with no undo. Same discipline as
-    `bridge_mirror_path()`, for the same reason.
+    the real repo's ledger — the one file with no undo.
     """
     return os.path.join(os.path.dirname(path or EVENTS) or ".", SHARD_DIR)
 
@@ -624,8 +623,8 @@ VERBS = {
     # Either live window may drive; one at a time is enforced by cmd_bridge's holder
     # guard (redesign #4, 2026-08-27 — CHECK's monopoly retired with the seat).
     # `purpose` is what `--for` lands in: one line saying what the holder is driving
-    # it FOR, printed into infrastructure/state/BRIDGE so the other window can judge
-    # whether to wait or go offline. Optional — a take without one is still a take.
+    # it FOR, which `rimflow bridge who` and `game_lock.py query` print so the other window
+    # can judge whether to wait or go offline. Optional — a take without one is still a take.
     # `host` (BRIDGE_LOCK_WIDEN_ONE_PER_HOST, 2026-10-25): which machine's game. Absent means Archmagi, so every
     # event written before the widening still reads as the Archmagi bridge it was.
     "bridge":    {"who": ("BENCH", "FOUNDRY", "CHECK", RELENTLESS_HOLDER) + CODEX_SEATS, "req": ("state",), "opt": ("purpose", "host", "idleProbe")},
@@ -1253,8 +1252,6 @@ def validate(ev):
     return ev
 
 
-BRIDGE_FILE = os.path.join(STATE, "BRIDGE")
-
 # ── one bridge per HOST (BRIDGE_LOCK_WIDEN_ONE_PER_HOST, 2026-10-25) ───────────────────────────
 # Two machines each run a game: Archmagi (interactive) and SteveDesktop (the batch test centre). A take names its
 # host; absent means Archmagi, the only game there was before. Keys are lower-case machine names. A second game on one
@@ -1301,33 +1298,6 @@ def ambient_bridge_host():
 # a window that is working is never stolen from, and a window that is gone is never
 # in the way.
 BRIDGE_STALE_SECONDS = 45 * 60
-
-
-# The five comment lines every mirror opens with. ⚠️ Their COUNT is asserted by
-# `selftest_bridge_file_concurrency.py`, which proves the final file is one writer's
-# complete body by checking exactly where the status line lands.
-BRIDGE_HEADER = (
-    "# WHO IS DRIVING THE LIVE RIMWORLD BRIDGE.\n"
-    "# A print of each game's driver lock (game_lock.py). Written by `rimflow bridge`, never by hand.\n"
-    "#   free?  ->  rimflow bridge take --for \"<what for>\"\n"
-    "#   held?  ->  do offline work. Nobody will come and tell you it freed; look again.\n"
-    "#   wrong? ->  rimflow bridge who   (prints this again from the lock)\n")
-
-
-def bridge_mirror_path():
-    """Where the mirror goes for the LEDGER IN USE.
-
-    ⚠️ Derived from the ledger in use, not from the module constant. `RIMFLOW_LEDGER`
-    points the whole tool at a throwaway ledger for the selftests, and a mirror bound
-    to the module constant wrote a synthetic test holder ("HELD CHECK") over the real
-    file on the first run — the tests would have kept lying to two live windows.
-    """
-    led = os.environ.get("RIMFLOW_LEDGER")
-    # `or "."` because `dirname("events.jsonl")` is "", and `makedirs("")` raises
-    # FileNotFoundError — which is not a LedgerError, so it takes the tool down
-    # instead of naming a rule. A bare filename in RIMFLOW_LEDGER is a legal thing
-    # for a test or a one-off to set.
-    return os.path.join(os.path.dirname(led) or ".", "BRIDGE") if led else BRIDGE_FILE
 
 
 # ── game a's holder, read from its driver lock (game_lock.py) ─────────────────────────────────────────────────────
@@ -1383,92 +1353,6 @@ def touched_age_seconds(d):
         return max(0, int(time.time() - calendar.timegm(time.strptime(d["touched"], "%Y-%m-%dT%H:%M:%SZ"))))
     except (KeyError, TypeError, ValueError):
         return None
-
-
-def _game_name(hk):
-    """'stevedesktop.b' -> 'Steve2': the name people read for a bridge key (game_names.py, the one map)."""
-    try:
-        from . import game_names
-    except ImportError:
-        import game_names
-    return game_names.show_key(hk)
-
-
-def bridge_body(holder, actor, purpose=None, since=None, note=None, others=None):
-    """The exact bytes the mirror should hold. Pure, so it is testable without a disk."""
-    if holder:
-        line = "HELD    %s    since %s" % (holder, since or now())
-        if purpose:
-            line += "\nfor     %s" % purpose
-    else:
-        line = "FREE    since %s" % (since or now())
-        if actor:
-            line += "    (released by %s)" % actor
-    if note:
-        line += "\nnote    %s" % note
-    for key, ent in sorted((others or {}).items()):     # another game's holder, one line each; a free one adds nothing
-        line += "\nother   %s  %s  since %s%s" % (_game_name(key), ent["holder"], ent.get("since") or "?",
-                                               "  for: %s" % ent["purpose"] if ent.get("purpose") else "")
-    return BRIDGE_HEADER + line + "\n"
-
-
-def _write_atomically(target, body):
-    """Replace `target` with `body` in one rename, leaving no litter behind on failure.
-
-    🔴 THE TEMP NAME MUST BE PER-CALL UNIQUE, NOT A FIXED "<target>.tmp".
-    A shared tmp path means O_TRUNC (which fires at open(), BEFORE flock is even
-    requested) truncates whatever a concurrent writer already wrote to the SAME
-    inode — both fds name the same file, truncation is not fd-local. Two windows
-    calling this within the same instant (exactly the BENCH/FOUNDRY scenario this
-    file exists for) could interleave into a torn write, or have the second
-    os.replace() raise FileNotFoundError chasing a tmp the first replace already
-    renamed away. Found by code review, 2026-09-02, never actually hit live — but
-    this is the same class of 9p write-tearing `append()`'s own docstring measures.
-
-    ⚠️ AND THE TEMP FILE IS UNLINKED IF ANYTHING FAILS. A unique name fixes the race
-    and creates a second problem: every failed write left a `BRIDGE.tmp.<pid>.<ns>`
-    behind, in a directory that is IN GIT, where the next `git status` shows it as
-    untracked state nobody can attribute. Found by code review, 2026-09-03.
-    """
-    tmp = "%s.tmp.%d.%d" % (target, os.getpid(), time.time_ns())
-    try:
-        fd = os.open(tmp, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o644)
-        try:
-            fcntl.flock(fd, fcntl.LOCK_EX)
-            try:
-                blob = body.encode("utf-8")
-                written = os.write(fd, blob)
-                if written != len(blob):
-                    raise LedgerError(
-                        "short write to %s: %d of %d bytes; the mirror was NOT "
-                        "replaced." % (target, written, len(blob)))
-            finally:
-                fcntl.flock(fd, fcntl.LOCK_UN)
-        finally:
-            os.close(fd)
-        os.replace(tmp, target)
-    except BaseException:
-        try:
-            os.unlink(tmp)
-        except OSError:
-            pass
-        raise
-    return body
-
-
-def write_bridge_file(holder, actor, purpose=None, since=None, note=None, others=None):
-    """Print the game locks into one glanceable file at infrastructure/state/BRIDGE, for a person.
-
-    🔑 A PRINT, NOT A RECORD. Each game's driver lock is the one record of who drives it
-    (game_lock.py); no program reads this file to decide (preflight_bridge and running_now
-    read the lock). `rimflow bridge who` prints it again, so a stale print is one command
-    from being corrected. Written here rather than in cli.py because every write in this
-    system goes through the module that owns the 9p lock discipline.
-    """
-    target = bridge_mirror_path()
-    body = bridge_body(holder, actor, purpose, since, note, others)
-    os.makedirs(os.path.dirname(target) or ".", exist_ok=True)
-    return _write_atomically(target, body)
 
 
 def append(ev, path=None):
@@ -1536,7 +1420,7 @@ def append(ev, path=None):
             "event is %d bytes; O_APPEND is only atomic below %d, and a torn line "
             "corrupts the ledger irrecoverably. Move the prose into items/%s.md."
             % (len(blob), PIPE_BUF, ev.get("id", "<ID>")))
-    os.makedirs(os.path.dirname(path) or ".", exist_ok=True)   # see bridge_mirror_path
+    os.makedirs(os.path.dirname(path) or ".", exist_ok=True)   # `or "."`: dirname of a bare filename is ""
     dlock = _dir_lock(os.path.dirname(path) or ".")
     try:
         off = _append_locked(path, blob)
