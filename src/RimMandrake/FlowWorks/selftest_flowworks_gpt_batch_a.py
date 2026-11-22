@@ -40,9 +40,9 @@ CASES = [
     # ── UNLIMITED_SINK_FIX_FRACTIONAL_WATER (FA_core_sim_1.4) ──
     Case("UNLIMITED_SINK_FIX_FRACTIONAL_WATER", "the sink drains part-notch water", "MapControls/RM_FlowTaps.cs",
          r"public class Building_RM_FlowSink[\s\S]*?public override void FlowPulse\(RM_MapComponent_Excavation ex\)",
-         [r"long w = ex\.WaterDlAt \( c \) ; if \( w > 0 &&",
-          r"long took = ex\.TryTakeDl \( candCells \[ pick \] , Math\.Min \( RM_LevelSolve\.U , dueDl - doneDl \) , out _ \) ;"
-          r" if \( took <= 0 \) \{ break ; \} doneDl \+= took ;",
+         # the drain moved into RM_MapControlMath.DrainReach (2083f92acb): each reach cell offers its part-notch water
+         [r"long w = ex\.WaterDlAt \( c \) ; return w > 0 &&",
+          r"\( i , max \) => ex\.TryTakeDl \( reachCells \[ i \] , max , out _ \)",
           r"ex\.NoteMapControlFlowDl \( 0 , doneDl \)"],
          ("long w = ex.WaterDlAt(c);", "long w = ex.FillAt(c);"),
          absent=[r"ex\.FillAt \(", r"ex\.TryTakeLevel \("]),

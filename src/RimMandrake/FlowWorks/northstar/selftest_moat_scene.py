@@ -156,7 +156,8 @@ class Fake:
         if tool == 'jawa/flowworks_excavation_drive':
             c = (kw['x'], kw['z'])
             g['dug'][c] = g['dug'].get(c, 0) + kw['deepenLevels']
-            return {'success': True}
+            # the real drive answers the square's depth and water: the scene reads the brim back (eb15c22de9)
+            return {'success': True, 'depth': g['dug'][c], 'waterM': g['water'].get(c, 0) / DL_PER_M}
         if tool == 'jawa/flowworks_excavation_rect':
             rows = [{'x': x, 'z': z, 'd': g['dug'].get((x, z), 0), 'dl': g['water'].get((x, z), 0), 'fluid': g['fluid'].get((x, z))}
                     for x in range(kw['x'], kw['x'] + kw['w']) for z in range(kw['z'], kw['z'] + kw['h'])]
@@ -281,7 +282,8 @@ class Fake:
             g['lifted'] = m.group(2) == 'true'
             return 'DOOR RM_Sluice lifted=%s open=%s' % (g['lifted'], g['lifted'])
         if method == 'ProofMakeDrawbridge':
-            m = re.fullmatch(r'(%s);(%s);timber;A;winch' % (XZ, XZ), arg or '')
+            # hinge A sits at the first end, B at the second (the scene hinges on B since eb15c22de9); the winch is beyond it
+            m = re.fullmatch(r'(%s);(%s);timber;([AB]);winch' % (XZ, XZ), arg or '')
             if not m:
                 self.bad('ProofMakeDrawbridge arg %r' % arg)
                 return 'DRAW ok=False reason=args'
@@ -292,7 +294,9 @@ class Fake:
                 self.bad('ProofMakeDrawbridge breaks the build rules: %r' % arg)
                 return 'DRAW ok=False reason=rules'
             g['leaf'] = {'deck': inner, 'progress': 0, 'target': 'lowered'}
-            return 'DRAW ok=True leaves=1 tier=Timber hinges=A winchAt=%d,%d' % (a[0], a[1] - step)
+            h = m.group(3)
+            w = (a[0], a[1] - step) if h == 'A' else (b[0], b[1] + step)
+            return 'DRAW ok=True leaves=1 tier=Timber hinges=%s winchAt=%d,%d' % (h, w[0], w[1])
         if method in ('ProofLeaf', 'ProofDevSet'):
             a = (arg or '').split(';')
             lf = g['leaf']
