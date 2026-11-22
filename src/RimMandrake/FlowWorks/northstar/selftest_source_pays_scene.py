@@ -339,8 +339,29 @@ CASES = (   # (fault, lake map?, row, the verdict it must read)
 )
 
 
-def run(C, sigs, fault=None, lake=False):
+class _FakeSites(types.ModuleType):
+    """test_site_saves for the fake: the scene loads the river site for its lake row when the calm map has no limitless
+    body (visit 4). river=True loads verified and turns the fake's map into one with a limitless body; else the load is
+    not verified (the river site is built on another tier), so the row must read UNMEASURED."""
+    def __init__(self):
+        super().__init__('test_site_saves')
+
+    @staticmethod
+    def load_site(call, site, **kw):
+        F = call.__self__
+        F.__dict__.setdefault('site_loads', []).append(site)   # film_sweep builds its Fake without run()
+        if site == 'river' and getattr(F, 'river', False):
+            F.lake = True
+            return {'site': site, 'save': 'fake', 'verified': True, 'problems': []}
+        return {'site': site, 'save': 'fake', 'verified': False, 'problems': ['fake: the river site is not on this list']}
+
+
+sys.modules['test_site_saves'] = _FakeSites()
+
+
+def run(C, sigs, fault=None, lake=False, river=False):
     F = Fake(fault, lake, sigs)
+    F.river, F.site_loads = river, []
     out = C.scene_source_pays(F, lambda: None, lambda: None, {'calls': []})
     return {r['id']: r['status'] for r in out['rows']}, out, F
 
@@ -417,8 +438,16 @@ def main():
     want['SRC_lake_reads_endless'] = 'UNMEASURED'
     check('(b) the healthy calm fake reads every row PASS, the endless row UNMEASURED', rows == want, rows)
     lake = next((r['detail'] for r in out['rows'] if r['id'] == 'SRC_lake_reads_endless'), '')
-    check('(b) the calm endless row states its reason (no limitless body, owed on the river site)',
-          'no limitless body' in lake and 'river site' in lake, lake)
+    check('(b) the calm endless row states its reason (the river site did not load verified)',
+          'river site' in lake and 'did not load verified' in lake and F.site_loads == ['river'], (lake, F.site_loads))
+    r3, o3, F3 = run(C, sigs, river=True)
+    check('(b) on the calm map the lake row goes to the river site and reads PASS there',
+          r3.get('SRC_lake_reads_endless') == 'PASS' and F3.site_loads == ['river'], (r3, F3.site_loads))
+    r4, o4, F4 = run(C, sigs, 'lake_drops', river=True)
+    check('(c) fault lake_drops on the river site: SRC_lake_reads_endless reads FAIL',
+          r4.get('SRC_lake_reads_endless') == 'FAIL' and o4['status'] != 'PASS', r4)
+    r5, o5, F5 = run(C, sigs, lake=True)
+    check('(b) a map that already has a limitless body loads no other site', F5.site_loads == [], F5.site_loads)
     check('(b) the calm scene is not PASS while a row is UNMEASURED', out['status'] != 'PASS', out['status'])
     r2, o2, F2 = run(C, sigs, lake=True)
     check('(b) a fake map with a limitless body reads every row PASS', set(r2.values()) == {'PASS'} and o2['status'] == 'PASS', r2)

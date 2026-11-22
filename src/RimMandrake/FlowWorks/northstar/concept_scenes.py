@@ -616,6 +616,26 @@ def _src_lake(S):
           (hit, stock0, stock1, sum(took)))
 
 
+def _src_lake_site(S):
+    """SRC_lake_reads_endless needs an edge body, which the calm site has not: read it on the scene's own map when that map
+    has a limitless body, else on the river site (test_site_saves 'river', RM_TestSite_river_v3, built on the fw_gss_sitting
+    tier), loaded here; the scene's finally reloads its calm snapshot after. HARNESS (visit 4, 2026-11-21): the row read
+    UNMEASURED on every run since visit 1 because nothing ever took it to the river site. A river site that does not load
+    verified is UNMEASURED (SITE), never a pass."""
+    r = S.call('jawa/flowworks_pulse', count=1, x=0, z=0, w=0, h=0, includeBodies=True)
+    pulses = (r or {}).get('pulses') or []
+    bodies = pulses[-1].get('bodies') if pulses else None
+    if bodies is not None and any(b.get('limitless') for b in bodies):
+        return _src_lake(S)
+    import test_site_saves as T
+    loaded = T.load_site(S.B.call, 'river')
+    S.r['lake_site'] = {k: loaded.get(k) for k in ('site', 'save', 'verified', 'problems')}
+    if not loaded.get('verified'):
+        return S.row('SRC_lake_reads_endless', False, 'the river site did not load verified (it is built on the fw_gss_sitting '
+                     'tier): %s' % str(loaded.get('problems'))[:240], unmeasured=True)
+    return _src_lake(S)
+
+
 def _source_pays(S):
     core = [(O[0] + i, O[1] + j) for i in range(20) for j in range(1, 9)]
     shelf = [(O[0] + i, O[1] + j) for i in range(20) for j in (0, 9)]
@@ -715,7 +735,7 @@ def _source_pays(S):
         S.row('SRC_refill_visible', False, ('the readout carried no litres', series), unmeasured=True)
     else:   # some water came back, not all at once (false_pass: refill is instant), and it kept rising
         S.row('SRC_refill_visible', s3 > start and s1 < full and s1 <= s2 <= s3 and s3 > s1, ('litres', series, 'full', full))
-    _src_lake(S)
+    _src_lake_site(S)
 
 
 # sc_pawn_height. Visit 1 (2026-11-15) dug each pad ONE row tall, so the shipped lip clamp (pitSinkClampEnabled, on) held the
