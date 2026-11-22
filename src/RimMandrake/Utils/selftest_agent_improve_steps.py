@@ -72,6 +72,7 @@ with tempfile.TemporaryDirectory() as tmp:
     check("role target", (A.resolve_target("operations") or {}).get("path") == "src/RimMandrake/rimflow/roles/operations.md")
     check("conductor proposal-only", A.resolve_target("conductor") is None)
     check("unknown proposal-only", A.resolve_target("git-efficiency") is None)
+    check("retired relentless target is proposal-only (its file is gone)", A.resolve_target("relentless") is None)
 
     res = A.resolve_target("foo")
     good = {"decision": "change", "cites": [0, 2], "fix_layer": "prompt", "why_text": "SECRET-REASONING",

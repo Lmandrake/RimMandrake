@@ -336,7 +336,7 @@ VERDICTS = ("KEEP", "REDO", "UNSURE")
 
 def resolve_target(t):
     """-> {path (repo-relative), region (start marker, or None for the whole file), what} or None (proposal only)."""
-    if t == "relentless":
+    if t == "relentless" and os.path.isfile(os.path.join(REPO, RELENTLESS)):   # retired era: file deleted -> proposal only
         return {"path": RELENTLESS, "region": "def worker_prompt(", "what": "the Relentless worker brief"}
     if t in PROPOSAL_ONLY_ROLES:
         return None
