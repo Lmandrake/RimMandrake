@@ -852,6 +852,14 @@ def reach(ctx):
             gv = (B.call("jawa/list_things", defName="RM_Gravel", limit=50) or {}).get("things") or []
             if not V.require(gv, "gravel left to fill with", str(gv)[:120], cls="HARNESS"):
                 break  # require() records the fault and returns False; it does not raise
+            # visit 6 (2026-11-21, diag_reach.py): sixteen fills are ~16 game hours of shovel work; the worker's food fell
+            # 0.79 -> 0 and rest to 0.16 over one run. This row asks reach and grounding, not needs: keep the worker fed and
+            # rested. This is not the cause of the row's "stopped at depth n" FAILs: those were a fill job that held its gravel
+            # beside the square and never worked (RIMMANDRAKE_UNSTICK_FLOWWORKS_FILL_JOB_HOLDS_GRAVEL_BESIDE_THE_HOLE).
+            topped = [(B.call("jawa/pawn_need", pawn=pid, action="need", need=n, level=1.0) or {}).get("success") for n in
+                      ("Food", "Rest")]
+            if not V.require(all(topped), "the worker's food and rest topped up", str(topped), cls="HARNESS"):
+                break
             od = B.call("jawa/ordered_job", pawnId=pid, jobDef="RM_FillInCanalJob", targetAX=c[0], targetAZ=c[1],
                         targetBId=gv[0].get("id"), count=1, waitTicks=0) or {}
             out["jobs"].append(bool(od.get("accepted")))

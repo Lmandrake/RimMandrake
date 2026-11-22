@@ -1,0 +1,120 @@
+{
+ "script": "suspension_bridge_proof.py",
+ "started": "2026-11-21T23:43:30",
+ "rows": [
+  {
+   "id": "SB_islands_restore_reach",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "outcome": "reached_not_grounded",
+    "why": "the edge square stopped at depth 8 of 8",
+    "depth0": 8,
+    "loneMidCanReach": false,
+    "loneMidHasJobOnCell": true,
+    "edge": {
+     "depths": [
+      8
+     ],
+     "jobs": [
+      true
+     ],
+     "can": true
+    },
+    "mid": {
+     "depths": [],
+     "jobs": [],
+     "can": null
+    },
+    "labour": 500.0,
+    "claim": "the lone mid square is refused (climb rule) and a bank colonist grounds the causeway edge then the mid square by Restore"
+   }
+  }
+ ],
+ "args": {
+  "out": "design\\concepts\\FlowWorks\\version\\in_game\\visit_6\\evidence\\reach_planted.json",
+  "origin": "140,140",
+  "fresh_map": false,
+  "river": "",
+  "lake": "",
+  "sea": "",
+  "only": "reach",
+  "mock": false
+ },
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "614e55ccc22bcf17155a7f36097a75040f1e0c7f0a7635059345dc38a25a9e03",
+ "manifest": {
+  "schema": 1,
+  "script": "../../../design/concepts/FlowWorks/version/in_game/visit_6/diag_reach.py",
+  "runtime": "2eaaf5bbfc9172b6859b8752d5fe3d3a2aedd2cc318389ede540d41bf35195ee",
+  "test": "6a6128feaca137ec4c58544d3adda42c2079530740bc1693681870d556dce62f",
+  "test_files": [
+   "../../design/concepts/FlowWorks/version/in_game/visit_6/diag_reach.py",
+   "Utils/await_lifecycle.py",
+   "Utils/conds.py",
+   "Utils/conds_dsl.py",
+   "Utils/game_instance.py",
+   "Utils/game_paths.py",
+   "Utils/load_policy.json",
+   "Utils/load_policy.py",
+   "Utils/modcheck/bland_world.py",
+   "Utils/modcheck/clockgate.py",
+   "Utils/modcheck/helpers.py",
+   "Utils/modcheck/preconditions.py",
+   "Utils/modcheck/testenv_guards.py",
+   "Utils/northstar_driver/tool_schemas.json",
+   "Utils/rimbridge_client.py",
+   "Utils/rmpaths.py",
+   "Utils/tickburst_step.py",
+   "Utils/validation_core.py",
+   "Utils/wrapup_debt.py"
+  ],
+  "unresolved": []
+ },
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "owlchemist.cherrypicker",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.patches"
+  ],
+  "assembly_sha256": "e7568c52d6d0ea59b2a11ce35927b0ce456b3931bda92e80b0aa3c02cbc433fc"
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [],
+   "threatsAfter": 0,
+   "error": null
+  },
+  "fed": [
+   "Human475",
+   "Human478",
+   "Human483"
+  ]
+ },
+ "finished": "2026-11-21T23:44:09"
+}
