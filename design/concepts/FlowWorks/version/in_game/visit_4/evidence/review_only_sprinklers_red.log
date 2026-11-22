@@ -1,0 +1,112 @@
+OWNER REVIEW MAP FLOWWORKS_OWNER_REVIEW_20261121_1708  origin (36, 100)  rect (33, 94, 64, 70)  rows ['sprinklers', 'bars_trench']
+ROW sprinklers: four looks, pipe restyled before the head is built
+  place RM_LiquidTank at (36, 155) rot=-
+  place RM_UniversalPipe at (38, 155) rot=-
+  place RM_UniversalPipe at (39, 155) rot=-
+  place RM_UniversalPipe at (40, 155) rot=-
+  place RM_UniversalPipe at (41, 155) rot=-
+  place RM_LiquidPump at (39, 155) rot=-
+  place PowerConduit at (39, 154) rot=-
+  place PowerConduit at (39, 153) rot=-
+  place Battery at (39, 151) rot=-
+  battery_set charge battery at (39, 151) to 100%
+  fill tank (36, 155) with RM_Liquid_FreshWater 100000 dL (ProofTank)
+  Choose style Futuristic on the whole pipe run via the pipe's gizmo (objects_sheet.choose_look run=True)
+  fill tank (36, 155) with RM_Liquid_FreshWater 100000 dL (ProofTank)
+  place RM_SprinklerHead at (41, 155) rot=-
+  station 1 (sprinklers) (36, 151, 6, 6): sprinkler Futuristic: head at (41, 155) (look read back in notes)
+  place RM_LiquidTank at (44, 155) rot=-
+  place RM_UniversalPipe at (46, 155) rot=-
+  place RM_UniversalPipe at (47, 155) rot=-
+  place RM_UniversalPipe at (48, 155) rot=-
+  place RM_UniversalPipe at (49, 155) rot=-
+  place RM_LiquidPump at (47, 155) rot=-
+  place PowerConduit at (47, 154) rot=-
+  place PowerConduit at (47, 153) rot=-
+  place Battery at (47, 151) rot=-
+  battery_set charge battery at (47, 151) to 100%
+  fill tank (44, 155) with RM_Liquid_FreshWater 100000 dL (ProofTank)
+  Choose style Industrial on the whole pipe run via the pipe's gizmo (objects_sheet.choose_look run=True)
+  fill tank (44, 155) with RM_Liquid_FreshWater 100000 dL (ProofTank)
+  place RM_SprinklerHead at (49, 155) rot=-
+  station 2 (sprinklers) (44, 151, 6, 6): sprinkler Industrial: head at (49, 155) (look read back in notes)
+  place RM_LiquidTank at (52, 155) rot=-
+  place RM_UniversalPipe at (54, 155) rot=-
+  place RM_UniversalPipe at (55, 155) rot=-
+  place RM_UniversalPipe at (56, 155) rot=-
+  place RM_UniversalPipe at (57, 155) rot=-
+  place RM_LiquidPump at (55, 155) rot=-
+  place PowerConduit at (55, 154) rot=-
+  place PowerConduit at (55, 153) rot=-
+  place Battery at (55, 151) rot=-
+  battery_set charge battery at (55, 151) to 100%
+  fill tank (52, 155) with RM_Liquid_FreshWater 100000 dL (ProofTank)
+  Choose style Modern on the whole pipe run via the pipe's gizmo (objects_sheet.choose_look run=True)
+  fill tank (52, 155) with RM_Liquid_FreshWater 100000 dL (ProofTank)
+  place RM_SprinklerHead at (57, 155) rot=-
+  station 3 (sprinklers) (52, 151, 6, 6): sprinkler Modern: head at (57, 155) (look read back in notes)
+  place RM_LiquidTank at (60, 155) rot=-
+  place RM_UniversalPipe at (62, 155) rot=-
+  place RM_UniversalPipe at (63, 155) rot=-
+  place RM_UniversalPipe at (64, 155) rot=-
+  place RM_UniversalPipe at (65, 155) rot=-
+  place RM_LiquidPump at (63, 155) rot=-
+  place PowerConduit at (63, 154) rot=-
+  place PowerConduit at (63, 153) rot=-
+  place Battery at (63, 151) rot=-
+  battery_set charge battery at (63, 151) to 100%
+  fill tank (60, 155) with RM_Liquid_FreshWater 100000 dL (ProofTank)
+  Choose style Scrapper on the whole pipe run via the pipe's gizmo (objects_sheet.choose_look run=True)
+  fill tank (60, 155) with RM_Liquid_FreshWater 100000 dL (ProofTank)
+  place RM_SprinklerHead at (65, 155) rot=-
+  station 4 (sprinklers) (60, 151, 6, 6): sprinkler Scrapper: head at (65, 155) (look read back in notes)
+  advance 2800 ticks
+ROW bars_trench: waist-deep (1 m) and chest-deep (1.5 m) colonist, a shooter 8 squares east on flat ground
+  dig (186, 122) depth 2
+  dig (186, 123) depth 2
+  dig (186, 124) depth 2
+  dig (187, 122) depth 2
+  dig (187, 123) depth 2
+  dig (187, 124) depth 2
+  dig (188, 122) depth 2
+  dig (188, 123) depth 2
+  dig (188, 124) depth 2
+  colonist at (187, 123) (waist-deep)
+  colonist at (195, 123) (shooter)
+  station 5 (bars_trench) (186, 122, 10, 3): waist-deep colonist (1.0 m hole) with a shooter 8 squares east
+  proof RM_TrenchCover.ProofTrenchCover(Human21221;Human21224)
+  dig (198, 122) depth 3
+  dig (198, 123) depth 3
+  dig (198, 124) depth 3
+  dig (199, 122) depth 3
+  dig (199, 123) depth 3
+  dig (199, 124) depth 3
+  dig (200, 122) depth 3
+  dig (200, 123) depth 3
+  dig (200, 124) depth 3
+  colonist at (199, 123) (chest-deep)
+  colonist at (207, 123) (shooter)
+  station 6 (bars_trench) (198, 122, 10, 3): chest-deep colonist (1.5 m hole) with a shooter 8 squares east
+  proof RM_TrenchCover.ProofTrenchCover(Human21227;Human21230)
+  review_label clear tag=owner_review_stage; add 6 station labels
+    label 39|157|1|Futuristic|#ffd27f|small|owner_review_stage
+    label 47|157|2|Industrial|#ffd27f|small|owner_review_stage
+    label 55|157|3|Modern|#ffd27f|small|owner_review_stage
+    label 63|157|4|Scrapper|#ffd27f|small|owner_review_stage
+    label 191|125|5|waist-deep|#ffd27f|small|owner_review_stage
+    label 203|125|6|chest-deep|#ffd27f|small|owner_review_stage
+SWATCH: vanilla WaterShallow (34, 95, 3, 3), photographed and measured before the save (water must read blue over red)
+FINISH: kill hostiles, Clear weather, step toward midday, frame, shoot, save 'FLOWWORKS_OWNER_REVIEW_20261121_1708'
+NOTE: origin moved to (36, 100) to fit the 250x250 map
+NOTE: map biome AridShrubland
+NOTE: pipe look for net 0: asked Futuristic, game reads None
+NOTE: pipe look for net 1: asked Industrial, game reads None
+NOTE: pipe look for net 2: asked Modern, game reads None
+NOTE: pipe look for net 3: asked Scrapper, game reads None
+NOTE: proof RM_TrenchCover.ProofTrenchCover(Human21221;Human21224) REFUSED/failed: REFUSED: shooter has no ranged verb
+NOTE: trench cover waist-deep: REFUSED: shooter has no ranged verb
+NOTE: proof RM_TrenchCover.ProofTrenchCover(Human21227;Human21230) REFUSED/failed: REFUSED: shooter has no ranged verb
+NOTE: trench cover chest-deep: REFUSED: shooter has no ranged verb
+NOTE: approx hour 10.5 (ticksAbs mod day, longitude ignored)
+[bridge split] 21.2 s wall: load 0.0 / ticks 4.5 / reads 6.1 / other 6.7 / outside calls 3.9 s
+[bridge split] WARN 101 calls of jawa/list_things (5.1 s): batch them

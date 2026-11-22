@@ -784,11 +784,18 @@ def row_bars_trench(s, L):
     s.say("ROW bars_trench: waist-deep (1 m) and chest-deep (1.5 m) colonist, a shooter 8 squares east on flat ground")
     cap = []
     for k, (m, what) in enumerate(((1.0, "waist-deep"), (1.5, "chest-deep"))):
-        pit = (bx + k * 12, bz + 22)        # pit + shooter 9 east = 10 wide: the old 5 pitch put shooter 1 inside station 2
+        pit = (bx + k * 12, bz + 22)        # pit + shooter 10 east = 11 wide: the old 5 pitch put shooter 1 inside station 2
         s.pit(pit, 3, int(m * 2))
-        tid = s.pawn((pit[0] + 1, pit[1] + 1), what)
-        sid = s.pawn((pit[0] + 9, pit[1] + 1), "shooter")
-        cap.append(s.station("bars_trench", (pit[0], pit[1], 10, 3), "%s colonist (%s m hole) with a shooter 8 squares east" % (what, m), short=what))
+        # the colonist stands against the pit's EAST wall, the shooter's side: trench cover comes only from a wall square next
+        # to the occupant (RM_TrenchCoverMath.TrenchBlock reads the 8 neighbours), so the 3x3 pit's centre read 0 (visit 4)
+        tid = s.pawn((pit[0] + 2, pit[1] + 1), what)
+        sid = s.pawn((pit[0] + 10, pit[1] + 1), "shooter")
+        if sid is not None and not s.dry:
+            # a spawned Colonist may roll no weapon, and ProofTrenchCover refuses a shooter with no ranged verb (visits 3-4)
+            g = s.w.call("jawa/pawn_gear", **{"pawn": sid, "action": "equip", "def": "Gun_AssaultRifle", "stuff": ""}) or {}
+            if not g.get("success"):
+                s.notes.append("shooter at %s NOT armed (%s)" % ((pit[0] + 9, pit[1] + 1), str(g)[:100]))
+        cap.append(s.station("bars_trench", (pit[0], pit[1], 11, 3), "%s colonist (%s m hole, against the wall) with a shooter 8 squares east" % (what, m), short=what))
         if not s.dry and tid is not None and sid is not None:
             ok, txt = s.proof(TRENCH, "ProofTrenchCover", "%s;%s" % (tid, sid))
             s.notes.append("trench cover %s: %s" % (what, (txt or "")[:160]))

@@ -1,0 +1,40 @@
+OWNER REVIEW MAP FLOWWORKS_OWNER_REVIEW_20261121_1711  origin (36, 100)  rect (33, 94, 64, 70)  rows ['bars_trench']
+ROW bars_trench: waist-deep (1 m) and chest-deep (1.5 m) colonist, a shooter 8 squares east on flat ground
+  dig (186, 122) depth 2
+  dig (186, 123) depth 2
+  dig (186, 124) depth 2
+  dig (187, 122) depth 2
+  dig (187, 123) depth 2
+  dig (187, 124) depth 2
+  dig (188, 122) depth 2
+  dig (188, 123) depth 2
+  dig (188, 124) depth 2
+  colonist at (188, 123) (waist-deep)
+  colonist at (196, 123) (shooter)
+  station 1 (bars_trench) (186, 122, 11, 3): waist-deep colonist (1.0 m hole, against the wall) with a shooter 8 squares east
+  proof RM_TrenchCover.ProofTrenchCover(Human21169;Human21172)
+  dig (198, 122) depth 3
+  dig (198, 123) depth 3
+  dig (198, 124) depth 3
+  dig (199, 122) depth 3
+  dig (199, 123) depth 3
+  dig (199, 124) depth 3
+  dig (200, 122) depth 3
+  dig (200, 123) depth 3
+  dig (200, 124) depth 3
+  colonist at (200, 123) (chest-deep)
+  colonist at (208, 123) (shooter)
+  station 2 (bars_trench) (198, 122, 11, 3): chest-deep colonist (1.5 m hole, against the wall) with a shooter 8 squares east
+  proof RM_TrenchCover.ProofTrenchCover(Human21176;Human21179)
+  review_label clear tag=owner_review_stage; add 2 station labels
+    label 191|125|1|waist-deep|#ffd27f|small|owner_review_stage
+    label 203|125|2|chest-deep|#ffd27f|small|owner_review_stage
+FINISH: kill hostiles, Clear weather, step toward midday, frame, shoot, save 'FLOWWORKS_OWNER_REVIEW_20261121_1711'
+NOTE: origin moved to (36, 100) to fit the 250x250 map
+NOTE: map biome AridShrubland
+NOTE: trench cover waist-deep: TRENCH trench=0.441 vanilla=0.000 combined=0.441 hit=0.264 hitNoTrench=0.472 cage=False target=188,123 shooter=196,123 size=1.000
+NOTE: trench cover chest-deep: TRENCH trench=0.662 vanilla=0.000 combined=0.662 hit=0.124 hitNoTrench=0.367 cage=False target=200,123 shooter=208,123 size=1.000
+NOTE: approx hour 10.2 (ticksAbs mod day, longitude ignored)
+SHOT: \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_FOUR.det\Transient\owner_review_stage\row_bars_trench_labelled.png
+SHOT: \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_FOUR.det\Transient\owner_review_stage\overview.png
+[bridge split] 14.9 s wall: load 0.0 / ticks 3.3 / reads 1.0 / other 3.7 / outside calls 7.0 s

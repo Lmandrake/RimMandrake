@@ -173,8 +173,11 @@ def choose_look(w, cell, look, run=False):
     # tanks/pipes read "<Look>: this tank" / "<Look>: whole connected run"; the reel's menu reads just "<Look>" (LIVE 2026-10-17)
     want = [o for o in opts if look_of(o.get("label")) == look]
     pick = [o for o in want if ("whole connected run" in str(o.get("label"))) == run]
-    if not pick and not run:
-        pick = want            # the reel/weir menus have no ': this one' tail: the bare look row is the single-thing pick
+    if not pick and (not run or not any(":" in str(o.get("label")) for o in opts)):
+        # the reel/weir menus have no ': this one' tail: the bare look row is the single-thing pick; and the pipe's menu has
+        # had none since 03011b05fb (owner 2026-10-23: whole connected run only), so there the bare row IS the run pick
+        # (visit 4: every review-map sprinkler run read "game reads None" and kept its default look)
+        pick = want
     if not pick:
         w.B.call("rimworld/close_context_menu")
         return None
