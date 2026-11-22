@@ -1826,9 +1826,13 @@ def c_disk(now, rules, ctx):
         pr = scratch_clone.pool_reading()
         ss = scratch_clone.scratch_stranded()
         out["disk.pool_clones"] = M(pr["count"], "worker clones in the pool (cap %d)" % pr["max_clones"])
-        out["disk.pool_gb"] = M(pr["gb"], "GB the pool holds (cap %s)" % pr["max_gb"])
+        out["disk.pool_gb"] = M(pr["gb"], "GB the pool holds")
+        # the pool's limit is the disk floor (scratch_clone.pool_admit): its margin is the reading, unreadable floor = UNMEASURED
+        out["disk.pool_floor_margin_gb"] = (M(pr["margin_gb"], "GB free on / above the pool floor, after the largest clone",
+                                              floor_gb=pr["floor_gb"], root_free_gb=pr["root_free_gb"])
+                                            if pr.get("margin_gb") is not None else U(pr.get("floor_error") or "no floor", "GB"))
         out["disk.pool_oldest_h"] = M(pr["oldest_h"], "hours since the oldest pool clone was made")
-        out["disk.pool_breach"] = M(pr["breach"] + len(ss["stranded"]), "pool breaches: over count, over bytes, stranded unpushed clones",
+        out["disk.pool_breach"] = M(pr["breach"] + len(ss["stranded"]), "pool breaches: over count, under the disk floor, stranded unpushed clones",
                                     stranded=pr["stranded"] + ss["stranded"], unpushed=pr["unpushed"])
     except Exception as e:
         out["disk.pool_breach"] = M(9999, "pool breaches", why="pool unreadable: %s" % str(e))

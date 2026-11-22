@@ -383,12 +383,18 @@ def clone(purpose: str, name: str | None, checkout: bool, sparse: list[str], fet
 
 
 # ---------------------------------------------------------------- the bounded clone pool
-# WORKER_CLONES_MONITOR_POOL_NOT_RABBITS. Owner, 2026-10-31: bounded pool of about 10 reused clones for writers above 4 (widened to 16 clones / 70 GB by the owner's card 2026-11-02 18:35 PST, "How hard should Relentless run this machine? → 8 workers, 16 clones / 70 GB"),
-# "I trust you, but please monitor them carefully. They seem to propagate prolifically." Revert line (PLAN.md section 4):
-# a clone strands work, or the pool passes the GB line (70, raised to 80 on 2026-11-18). `git worktree` stays banned. Enforced HERE, at creation, because every
-# pool clone (relentless builders' and checkers') is made by this file; the reading below is what RimPulse and ops_watch show.
+# WORKER_CLONES_MONITOR_POOL_NOT_RABBITS. Owner, 2026-10-31: bounded pool of about 10 reused clones for writers above 4,
+# "I trust you, but please monitor them carefully. They seem to propagate prolifically." Two limits, each with its danger
+# (design/specs/2026-11-22-clone-pool-disk-floor/boundary.md). Enforced HERE, at creation, because every pool clone is made by
+# this file; the reading below is what Operations shows. `git worktree` stays banned.
+# The count line guards clones that multiply unwatched: 16, the owner's card 2026-11-02 18:35 PST ("8 workers, 16 clones / 70 GB").
 POOL_MAX_CLONES = 16
-POOL_MAX_BYTES = 80 * 10**9   # 70 -> 80 GB 2026-11-18: owner "You set the GB limit, so yes do as you think."; 16 clones of 4.2-5.6 GB measured 72.6 GB
+# The disk line guards a full root disk: a new clone is refused when / would keep less free than the DISK_LOW line once the
+# new clone grows as large as the largest one now in the pool. The number lives in slot_rules.json `disk_brake_free_gb`
+# (210 GB, one worst day of scratch growth, 207 GB on 2026-10-26), read by the slot allocator's disk brake too. It replaced a
+# fixed 80 GB pool size that refused a launch at 83.55 GB with 433 GB free (2026-11-22).
+SLOT_RULES = Path(__file__).resolve().with_name("slot_rules.json")
+FLOOR_KEY = "disk_brake_free_gb"
 POOL_IDLE_S = 3600
 POOL_WARM = "warm-"     # relentless_disk.WARM
 
@@ -397,9 +403,63 @@ def pool_root() -> Path:
     return Path(os.environ.get("RM_POOL_ROOT", RM / "relentless" / "clones"))
 
 
-def pool_cap() -> tuple[int, int]:
-    return (int(os.environ.get("RM_POOL_MAX_CLONES", POOL_MAX_CLONES)),
-            int(float(os.environ.get("RM_POOL_MAX_BYTES", POOL_MAX_BYTES))))
+class FloorUnreadable(Exception):
+    """The disk floor could not be read: a new clone is refused, naming the cause. There is no fallback number."""
+
+
+def pool_cap() -> int:
+    return int(os.environ.get("RM_POOL_MAX_CLONES", POOL_MAX_CLONES))
+
+
+def pool_floor_bytes() -> int:
+    """The free space / must keep: RM_POOL_FLOOR_GB, else slot_rules.json ops.disk_brake_free_gb. Raises FloorUnreadable."""
+    if os.environ.get("RM_POOL_FLOOR_GB"):
+        return int(float(os.environ["RM_POOL_FLOOR_GB"]) * 10**9)
+    try:
+        v = json.loads(SLOT_RULES.read_text())["ops"][FLOOR_KEY]
+        if isinstance(v, bool) or not isinstance(v, (int, float)):
+            raise ValueError(f"{FLOOR_KEY} is {v!r}, not a number")
+        return int(v * 10**9)
+    except (OSError, ValueError, KeyError, TypeError) as e:
+        raise FloorUnreadable(f"the pool's disk floor ops.`{FLOOR_KEY}` in {SLOT_RULES} cannot be read: "
+                              f"{type(e).__name__}: {e}") from e
+
+
+def root_free_bytes(path: Path | None = None) -> int:
+    """Free bytes on the disk that holds the pool root (its nearest existing parent when it is not made yet)."""
+    p = Path(path or pool_root())
+    while not p.exists() and p != p.parent:
+        p = p.parent
+    return shutil.disk_usage(p).free
+
+
+def floor_reading(largest: int) -> dict:
+    """free, floor and margin (free - largest clone - floor) in GB; floor_error names why the floor could not be read."""
+    free = root_free_bytes()
+    d = {"root_free_gb": round(free / 1e9, 2), "largest_clone_gb": round(largest / 1e9, 2)}
+    try:
+        floor = pool_floor_bytes()
+    except FloorUnreadable as e:
+        return dict(d, floor_gb=None, margin_gb=None, floor_error=str(e))
+    return dict(d, floor_gb=round(floor / 1e9, 2), margin_gb=round((free - largest - floor) / 1e9, 2), floor_error=None)
+
+
+TREECHECK_PREFIX = "rm-treecheck-"      # publish.py CHECKTREE_PREFIX: its full checkout for the door checks
+
+
+def shed(c: Path) -> list[str]:
+    """Make a reused clone as small as a fresh one: remove every untracked and ignored file (a run's Transient output, a
+    Saves backup), every leftover publish checkout in .git, and every loose object a pack already holds. Only for a clone
+    nobody works in whose work is pushed (pool_reuse's own test). -> what it did, one line per step."""
+    said = []
+    for d in sorted((c / ".git").glob(TREECHECK_PREFIX + "*")):
+        shutil.rmtree(d, ignore_errors=True)
+        said.append(f"removed {d.name}" + (" (FAILED)" if d.exists() else ""))
+    for argv, what in ((["clean", "-q", "-ffdx"], "clean"), (["repack", "-d", "-l", "-q"], "repack"),
+                       (["prune-packed", "-q"], "prune-packed")):
+        r = subprocess.run(["git", *argv], cwd=c, capture_output=True, text=True, timeout=900)
+        said.append(f"{what} exit {r.returncode}" + (f": {r.stderr.strip()[:120]}" if r.returncode else ""))
+    return said
 
 
 def clone_bytes(c: Path) -> int:
@@ -657,7 +717,7 @@ def pool_reading(risk: bool = True) -> dict:
     family ~1000 git spawns a pass and pushed the metronome's sense phase past its 15 s limit
     (DISK_COLLECTOR_SHRINK_THOUSAND_FORKS_A_BEAT). `risk=False` (count and bytes only: the reaper's sanity) reads no git
     at all and writes no pool.json, as its unpushed and stranded lists are not a reading."""
-    root, (cmax, bmax) = pool_root(), pool_cap()
+    root, cmax = pool_root(), pool_cap()
     try:
         os.listdir(root)     # is_dir() is False on a denied parent too: a blind look is not an empty pool, and writes no reading
     except FileNotFoundError:
@@ -688,10 +748,12 @@ def pool_reading(risk: bool = True) -> dict:
     tot = sum(r["bytes"] for r in rows)
     held = [r["name"] for r in rows if r["stranded"]]
     d = {"ts": now_iso(), "epoch": now, "root": str(root), "count": len(rows), "max_clones": cmax,
-         "bytes": tot, "gb": round(tot / 1e9, 2), "max_gb": round(bmax / 1e9, 1),
+         "bytes": tot, "gb": round(tot / 1e9, 2),
          "oldest_h": max([r["age_h"] for r in rows], default=0.0), "unpushed": [r["name"] for r in rows if r["unpushed"]],
          "busy": [r["name"] for r in rows if r["busy"]], "stranded": held, "clones": rows}
-    d["breach"] = int(len(rows) > cmax) + int(tot > bmax) + len(held)
+    d.update(floor_reading(max((r["bytes"] for r in rows), default=0)))
+    # under the floor, or a floor nobody can read: both refuse every new clone, so both are a breach
+    d["breach"] = int(len(rows) > cmax) + int(d["margin_gb"] is None or d["margin_gb"] < 0) + len(held)
     if not risk:
         return d
     try:
@@ -884,12 +946,16 @@ def pool_admit(dest: Path, reading: dict | None = None) -> str | None:
     """None = may create; else the refusal. Called before any pool clone is made."""
     if dest.parent != pool_root():
         return None
-    r = reading or pool_reading(risk=False)     # count and bytes are all it asks
-    cmax, bmax = pool_cap()
+    r = reading or pool_reading(risk=False)     # count, sizes and free space are all it asks
+    cmax = pool_cap()
     if r["count"] >= cmax:
         return f"pool full: {r['count']} clones, cap {cmax} (no idle clone to reuse); finish or push one, then retry"
-    if r["bytes"] >= bmax:
-        return f"pool at {r['gb']} GB, cap {bmax / 1e9:.0f} GB (the revert line)"
+    if r.get("floor_error"):
+        return r["floor_error"]
+    if r["margin_gb"] < 0:
+        return (f"disk floor: {r['root_free_gb']} GB free on /, less the largest clone ({r['largest_clone_gb']} GB), is under "
+                f"the {r['floor_gb']:.0f} GB floor (ops.`{FLOOR_KEY}` in slot_rules.json, the DISK_LOW line); free disk or "
+                f"remove a finished clone, then retry")
     return None
 
 
@@ -933,6 +999,9 @@ def pool_reuse(dest: Path, fetch: bool = False) -> Path | None:
             if fetch:
                 git("fetch", "-q", "origin", cwd=dest, timeout=900)
             git("checkout", "-q", "-B", "main", "refs/remotes/origin/main", cwd=dest)    # on main, as a fresh clone is
+            # the last run's ignored output (a 7 GB Saves backup), publish checkouts and loose ledger blobs went with
+            # every reuse: reused clones measured 11-16 GB against 4.5 GB fresh (2026-11-22)
+            shed(dest)
             set_identity(dest)      # a clone made before the identity rule commits as the noreply one from now on
             return dest
         except Exception:

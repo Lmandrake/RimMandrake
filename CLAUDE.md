@@ -509,11 +509,13 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 - Land with `./publish`. It prints `PUBLISHED <sha>`. Skill: `clone-landing-commits`.
 - Keep file writes and commits in separate Bash calls. Hooks refuse a compound command whole.
 - Commit explicit paths only. The pathspec goes on the commit.
-- More than 4 writers at one time may use a pool of up to 16 reused clones and 80 GB. `scratch_clone.py` refuses a new clone past
-  those limits. Monitor the pool carefully, because clones multiply fast.
-- The pool has one alarm, `disk.pool_breach`. It also fires on a helper clone that holds unlanded work after an idle
-  hour.
-- Revert the pool if a clone strands work or the pool passes 80 GB.
+- More than 4 writers at one time may use a pool of up to 16 reused clones. `scratch_clone.py` refuses a new clone when
+  the pool has 16 clones. It also refuses a new clone when the free space on `/`, less the largest clone, is under the
+  disk floor. The disk floor is `ops.disk_brake_free_gb` in `src/RimMandrake/Utils/slot_rules.json`. Monitor the pool
+  carefully, because clones multiply fast.
+- The pool has one alarm, `disk.pool_breach`. It reads the same two limits. It also fires on a helper clone that holds
+  unlanded work after an idle hour.
+- Revert the pool if a clone strands work or the free space on `/` goes under the disk floor.
 - A committed mod DLL travels with its `.srchash`.
 - Pool reuse, the alarm details, the landing wrappers and per-writer state:
   `design/RimMandrake/standing_rulings.md` §Git.

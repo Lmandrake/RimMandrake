@@ -278,7 +278,10 @@ def main() -> int:
         # follow it to the next owner, or the pre-push hook refuses every push in the name of a stranger's dead gen
         (pool / "p4" / ".git" / "relentless.json").write_text('{"item": "SOME_OTHER_ITEM_ENTIRELY", "gen": 7}')
         sh("git", "-C", str(pool / "p4"), "config", "--local", "--unset", "user.email")     # made before the identity rule
+        (pool / "p4" / ".git" / "rm-treecheck-left" / "src").mkdir(parents=True)     # a killed ./publish's checkout
         check(sc.pool_reuse(pool / "p6") == pool / "p6" and not (pool / "p4").exists(), "and blocks no reuse")
+        check(not (pool / "p6" / ".git" / "rm-treecheck-left").exists(),
+              "a reused clone sheds a killed publish's checkout (pool-reuse-sheds-the-clone)")
         check(ident(pool / "p6") == "fixture+noreply@users.example",
               f"a reused clone commits as the seat clone's repo-local identity: {ident(pool / 'p6')!r}")
         pu = subprocess.run(["git", "-C", str(pool / "p6"), "config", "--get-all", "remote.origin.pushurl"],
@@ -527,17 +530,16 @@ def main() -> int:
         os.environ["RM_POOL_ROOT"] = walled_root
         os.environ["RM_POOL_STATE_GLOB"] = str(BASE / "nostate*.json")
         os.environ["RM_POOL_MAX_CLONES"] = "9"
-        os.environ["RM_POOL_MAX_BYTES"] = "1"
+        os.environ["RM_POOL_FLOOR_GB"] = "1e9"      # a floor no disk has: the disk line refuses
         r5, _ = quiet(sc.clone, "pool test", "p5", True, [], False, False)
-        check(r5 == 1 and not (pool / "p5").exists(), "the byte cap refuses too")
+        check(r5 == 1 and not (pool / "p5").exists(), "the disk floor refuses too")
+        check("disk floor" in (sc.read_jsonl("uses.jsonl")[-1].get("error") or ""), "and the refusal names the disk floor")
+        del os.environ["RM_POOL_FLOOR_GB"]
 
-        # The shipped disk line is 80 GB (owner 2026-11-18, "You set the GB limit"): 16 clones of 4.2-5.6 GB must fit.
-        _saved = {k: os.environ.pop(k, None) for k in ("RM_POOL_MAX_CLONES", "RM_POOL_MAX_BYTES")}
+        # The shipped count line stays 16 (owner's card 2026-11-02); the GB line is the disk floor (selftest_pool_floor.py).
+        _saved = {k: os.environ.pop(k, None) for k in ("RM_POOL_MAX_CLONES",)}
         try:
-            _cmax, _bmax = sc.pool_cap()
-            check(_cmax == 16, f"the clone count cap stays 16: {_cmax}")
-            check(74 * 10**9 <= _bmax, f"16 clones totalling 74 GB are not over the shipped line: {_bmax / 1e9} GB")
-            check(81 * 10**9 > _bmax, f"a pool at 81 GB is over the shipped line: {_bmax / 1e9} GB")
+            check(sc.pool_cap() == 16, f"the clone count cap stays 16: {sc.pool_cap()}")
         finally:
             for k, v in _saved.items():
                 if v is not None:

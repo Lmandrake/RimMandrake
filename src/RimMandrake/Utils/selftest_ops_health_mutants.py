@@ -20,14 +20,14 @@ MUTANTS = [
     # GAP 1: the shipped rule's key or unit moves off what the collector emits
     (RU, '"unit": "GB free on /tmp"', '"unit": "GB free on /nowhere"', "rules: tmp unit"),
     (RU, '"unit": "GB free on /"', '"unit": "GB free on /mnt/x"', "rules: root unit"),
-    (RU, '"unit": "GB the pool holds (cap 80.0)"', '"unit": "GB the pool holds (cap 99)"', "rules: pool unit"),
+    (RU, '"unit": "GB free on / above the pool floor, after the largest clone"', '"unit": "GB above the floor"', "rules: pool unit"),
     (RU, '"unit": "nightly reds no known-red entry parks"', '"unit": "nightly reds"', "rules: nightly_reds unit"),
     (RU, '"key": "disk.tmp_free_gb", "unit"', '"key": "disk.nope_free_gb", "unit"', "rules: tmp key"),
-    (RU, '"key": "disk.pool_gb", "unit"', '"key": "disk.pool_nope", "unit"', "rules: pool key"),
+    (RU, '"key": "disk.pool_floor_margin_gb", "unit"', '"key": "disk.pool_nope", "unit"', "rules: pool key"),
     (RU, '"key": "testing.nightly_unparked_reds", "unit"', '"key": "testing.nightly_news", "unit"', "rules: the blind key back"),
     # GAP 1: the collector moves off the shipped rule
     (OW, '"GB free on %s" % mnt', '"free GB %s" % mnt', "collector: free GB unit"),
-    (OW, '"GB the pool holds (cap %s)" % pr["max_gb"]', '"GB in pool"', "collector: pool unit"),
+    (OW, '"GB free on / above the pool floor, after the largest clone"', '"GB in pool"', "collector: pool unit"),
     (OW, '"nightly reds no known-red entry parks"', '"nightly reds nothing parks"', "collector: unparked unit"),
     (OW, 'out["disk.%s_free_gb" % name] = M(', 'out["disk.%s_gone_gb" % name] = M(', "collector: free key"),
     (OW, '    out.update(nightly_news(now, ctx))\n', '', "collector: c_testing stops calling nightly_news"),

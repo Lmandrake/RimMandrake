@@ -2531,10 +2531,10 @@ def pool_measures() -> dict:
     try:
         import scratch_clone
         d = scratch_clone.pool_reading(risk=False)     # count and bytes: no git reading of every clone
-        return {k: d[j] for k, j in (("pool_clones", "count"), ("pool_clones_cap", "max_clones"), ("pool_gb", "gb"),
-                                     ("pool_gb_cap", "max_gb"))}
+        return {k: d.get(j) for k, j in (("pool_clones", "count"), ("pool_clones_cap", "max_clones"), ("pool_gb", "gb"),
+                                         ("pool_floor_margin_gb", "margin_gb"))}
     except Exception:  # noqa: BLE001 - a sanity reading never kills the run it reports on
-        return {"pool_clones": None, "pool_clones_cap": None, "pool_gb": None, "pool_gb_cap": None}
+        return {"pool_clones": None, "pool_clones_cap": None, "pool_gb": None, "pool_floor_margin_gb": None}
 
 
 def fixture_age_h(p: Path, now: float) -> float | None:
@@ -2597,11 +2597,14 @@ def judge_sanity(phase: str, m: dict) -> list[str]:
     """-> every line this reading is over, by the limits of that end of the run. No reading is a problem, never a pass."""
     lim = sanity_limits()[phase]
     out = []
-    for key in ("pool_clones", "pool_gb"):
-        if m.get(key) is None:
-            out.append(f"{key}: no reading")
-        elif m[key] > m[key + "_cap"]:
-            out.append(f"{key} {m[key]} over the pool cap {m[key + '_cap']}")
+    if m.get("pool_clones") is None:
+        out.append("pool_clones: no reading")
+    elif m["pool_clones"] > m["pool_clones_cap"]:
+        out.append(f"pool_clones {m['pool_clones']} over the pool cap {m['pool_clones_cap']}")
+    if m.get("pool_floor_margin_gb") is None:       # the pool's GB line is the disk floor (scratch_clone.pool_admit)
+        out.append("pool_floor_margin_gb: no reading")
+    elif m["pool_floor_margin_gb"] < 0:
+        out.append(f"pool_floor_margin_gb {m['pool_floor_margin_gb']}: under the pool's disk floor")
     for key, line in lim.items():
         if m.get(key) is None:
             out.append(f"{key}: no reading")

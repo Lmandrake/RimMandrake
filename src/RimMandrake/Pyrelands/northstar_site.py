@@ -733,7 +733,9 @@ def main(argv=None):
     ap.add_argument("--site", type=int, help="fixture index k (1-based)")
     ap.add_argument("--temp", type=float, default=TARGET_TEMP)
     ap.add_argument("--fingerprint", help="def fingerprint from gate A evidence")
-    ap.add_argument("--work", default=os.path.join(P.ROOT, "Transient", "modcheck", "pyrelands", "sites"))
+    # agent storage, never the clone: each site run copies the whole Saves folder here (6-7 GB), and a pool clone kept it
+    # for every later item that reused the clone (RIMMANDRAKE_RESIZE_CLONE_POOL_CAP_CLONES_GREW_TO_FOURTEEN_GB, 2026-11-22)
+    ap.add_argument("--work", default=None, help="evidence + saves_backup_<k> dir (default: agent scratch pyrelands_sites)")
     ap.add_argument("--out", help="fixture record JSON (default <work>/site_<k>.json)")
     ap.add_argument("--reload-only", action="store_true",
                     help="load + settle the existing fixture NS_Pyrelands_site_<k>_<fp12>; needs --tile")
@@ -742,6 +744,9 @@ def main(argv=None):
     ap.add_argument("--tag", help="fixture name suffix for a rebuild whose Pyrelands def fingerprint is unchanged "
                                   "(e.g. 'anima0' after the MandrakePatches anima block); --reload-only needs it too")
     a = ap.parse_args(argv)
+    if a.work is None:
+        from rmpaths import rm_str      # raises by name when no agent storage root is set: no repo fallback
+        a.work = rm_str("scratch", "pyrelands_sites")
     if a.plan or a.site is None:
         print(STEPS)
         return 0

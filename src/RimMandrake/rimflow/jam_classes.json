@@ -7,12 +7,13 @@
   {
    "id": "pool_full",
    "plain": "The clone pool was full and no clone could be given back, so no new worker could start.",
-   "match": ["^pool (full|at)\\b"],
+   "match": ["^pool (full|at)\\b", "^disk floor:"],
    "detector": {"target": "OPS_RELENTLESS_UNSTICK", "how": "relentless.distressed: the staffing reading names the pool hold as the cause of nothing live"},
    "remedy": {"auto": "src/RimMandrake/rimflow/relentless.py::make_room", "what": "each tick gives back idle and put-down clones before a lease; a held, blocked or game-waiting item's clone goes back with all its commits"},
    "fixed": {"sha": "aa7fdebfa2", "at": "2026-11-06T05:00:35Z", "item": "OPS_JAM_CLASS_FIX_AGAIN_HJWN"},
    "examples": ["pool full: 16 clones, cap 16, nothing to release: BIOME_FLORAFAUNA_ART_REVIEW_1 (live), CLIFF_SHOT_FIX_DEPENDS_ON_SHOOTER_END (live)",
-                "pool at 81 GB, cap 80 GB (the revert line)"]
+                "pool at 81 GB, cap 80 GB (the revert line)",
+                "disk floor: 215.0 GB free on /, less the largest clone (10.0 GB), is under the 210 GB floor (ops.`disk_brake_free_gb` in slot_rules.json, the DISK_LOW line); free disk or remove a finished clone, then retry"]
   },
   {
    "id": "books_dirty",

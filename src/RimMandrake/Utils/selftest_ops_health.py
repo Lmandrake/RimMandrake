@@ -203,7 +203,7 @@ ok("collector: the shipped nightly_reds SLI sees the 84", b["now"] == "bad" and 
 # --- every shipped SLI against the REAL collector of its family, by equality on key and unit, fed from fixtures. The
 # literal scan above cannot pin a unit: ops_watch holds the literal '%s%s', which matches anything.
 fx = Path(tempfile.mkdtemp(prefix="ops_health_fx_"))
-for var in ("RM_OPS_DISKS", "RM_POOL_MAX_BYTES", "RM_POOL_MAX_CLONES"):   # the shipped mounts and caps, whatever this shell set
+for var in ("RM_OPS_DISKS", "RM_POOL_MAX_BYTES", "RM_POOL_MAX_CLONES", "RM_POOL_FLOOR_GB"):   # the shipped mounts and caps, whatever this shell set
     os.environ.pop(var, None)
 (fx / "pool").mkdir()
 os.environ.update(RM_POOL_ROOT=str(fx / "pool"), RM_OBJSTORE_STATE=str(fx / "state"), RM_SCRATCH_ROOT=str(fx / "scratch"),

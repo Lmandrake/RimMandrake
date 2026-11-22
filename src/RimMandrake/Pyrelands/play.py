@@ -33,7 +33,8 @@ from northstar_driver.session import FastSession     # noqa: E402
 from game_paths import SAVES                         # noqa: E402
 
 SHOTS = r"D:\ClaudeWork\rimmandrake\ralph_pyrelands\shots"
-WORK = os.path.join(P.ROOT, "Transient", "pyre_play")
+from rmpaths import rm_str                           # noqa: E402
+WORK = rm_str("scratch", "pyre_play")     # agent storage, never the clone: a play build copies the whole Saves folder here
 TEMP = 50.0
 KEEP_ALIVE_PACKS = 60
 
