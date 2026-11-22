@@ -253,9 +253,10 @@ class Fake:
                     leaf['progress'] = FULL if a[1] == 'raise' else 0
                 return 'DEVSET target=%s progress=%d' % (leaf['target'], leaf['progress'])
             has = any(w['leaf'] == dx for w in g['winches'].values())
+            # ProofLeaf reads standing=n/m since bdd56c6ff6: a dropped leaf counts only while its decks stand
             return 'LEAF leaf=1/1 progress=%d full=%d target=%s raised=%d/3 frozen=False winch=%s powered=False hold=False ' \
-                   'auto=False pending=none tip=False hinge=A version=1' % (leaf['progress'], FULL, leaf['target'],
-                                                                           3 if leaf['progress'] else 0, has)
+                   'auto=False pending=none tip=False hinge=A version=1 standing=%d/3' % (
+                       leaf['progress'], FULL, leaf['target'], 3 if leaf['progress'] else 0, has, leaf.get('standing', 3))
         if method == 'ProofFillWithFluid':          # the draft's water fill (x,z,metres,fluid): accepted, so its spawn_batch is reached
             return 'FILLED %s' % arg if re.fullmatch(r'-?\d+,-?\d+,[\d.]+,\w+', arg or '') else 'REFUSED: bad args'
         if typ == 'RimWorld.SappersUtility' and method in ('HasBuildingDestroyerWeapon', 'IsGoodSapper'):

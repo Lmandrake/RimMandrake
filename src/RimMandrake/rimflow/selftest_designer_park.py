@@ -302,7 +302,8 @@ def healthy(base):
     d = concept(root)
     g = [{"what": "a", "where": "x", "return_to": 3, "ids": ["l1"], "new_since": "first"}]
     judge = Judge([answer("not_covered", g, 700000)] * (CJ.NOT_COVERED_LIMIT - 1)
-                  + [answer("covered", [], 700000, {"g1": True})])   # the judge says g1 is repaired
+                  + [answer("covered", [], 700000, {"g1": True},   # the judge says g1 is repaired, with its row:
+                            [{"id": "l1", "parts": [{"what": "l1", "ok": True}]}])])   # a slot closes on a row (64a1eda328)
     recs = [CJ.run(d, root, judge, now=1794200000 + i)[0] for i in range(CJ.NOT_COVERED_LIMIT)]
     st = DS.load_state(d)
     check("healthy attended walk: refusals below the limit then covered -> signed, never parked",
@@ -312,7 +313,8 @@ def healthy(base):
     root = os.path.join(base, "healthy_away")
     d = concept(root)
     judge = Judge([answer("not_covered", g, 700000)] * (CJ.NOT_COVERED_LIMIT - 1)
-                  + [answer("covered", [], 700000, {"g1": True})])   # the judge says g1 is repaired
+                  + [answer("covered", [], 700000, {"g1": True},   # the judge says g1 is repaired, with its row:
+                            [{"id": "l1", "parts": [{"what": "l1", "ok": True}]}])])   # a slot closes on a row (64a1eda328)
     recs = [CJ.run(d, root, judge, now=1794300000 + i)[0] for i in range(CJ.NOT_COVERED_LIMIT)]
     check("healthy away: one refusal then covered -> signed (away parks the second refusal, not the first)",
           recs[-1].get("signed") and not any(r.get("parked") for r in recs), recs)

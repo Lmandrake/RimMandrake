@@ -129,8 +129,10 @@ def tool_parameters(source_dir: Path | None = None) -> dict[str, set[str]] | Non
     known = {
         # `clearOverlays` added 2026-11-05 (HOSE_SITE_FIX_TERRAIN_WONT_READ_BACK);
         # missing here, it turned the nightly rimplace selftest red.
+        # `mapId` added 2026-11-15 (bd2815adcd: terrain batch on a named map); missing here, every contract check read
+        # UNMEASURED and the rimplace selftest went red again.
         "jawa/set_terrain_batch": {"ops", "terrainDef", "layer", "refresh",
-                                   "clearOverlays"},
+                                   "clearOverlays", "mapId"},
         # ⚠️ This set must track the SOURCE. `refuseIfDisplaces` was added to
         # build_batch on 2026-08-27 (BUILD_BATCH_OVERWRITES_SILENTLY_1) and this
         # calibration then failed silently for a day - every contract check read

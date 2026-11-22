@@ -95,7 +95,9 @@ os.utime(TMP / "reading_promise", (LAST_STAMP, LAST_STAMP))
 r, f = sweep_filed(HAND_ARMED, STOP + 660)
 check(not f and r["excused"] == 10, "hand-armed stop: the 19:33Z sweep reopens none of ten promises (%s)" % r["line"])
 r, f = sweep_filed(BARE, STOP + 660)
-check(len(f) == 10 and {t["result"] for t in f} == {"broken"}, "a stop with no restart armed reopens them: an outage stays one")
+# one fault files one ticket since 1b2317ef72 (LIVE_RESTORE_<cause> per cause; the ten members file nothing)
+check(len(f) == 1 and f[0]["result"] == "broken" and f[0]["item"].startswith("LIVE_RESTORE_") and "10 broken" in r["line"],
+      "a stop with no restart armed reopens them: an outage stays one (%s)" % r["line"])
 
 ops = TMP / "ops"
 (ops / "timers_pauses.json").write_text(json.dumps({"timer-resume-20261106-192210.timer": [UNIT]}))
