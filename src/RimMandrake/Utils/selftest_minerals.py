@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """MINERAL_POLICY_CODE_STARTUP_ZEROING L0 selftest of the mineral policy kernel (src/RimMandrake/Minerals/Source/Kernel/), no game.
 
 The C# SelfTest (Source/SelfTest/Program.cs) compiles the PRODUCTION kernel alone and runs it over:

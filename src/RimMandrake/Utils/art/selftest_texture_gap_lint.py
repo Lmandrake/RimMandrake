@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 300
 """selftest_texture_gap_lint.py — a texPath that resolves to no loadable picture is caught, and the real repo's gaps are all listed.
 
 Part 1, synthetic: an index where one path is shipped by an ACTIVE mod, one only by an INACTIVE mod, one by the base-game

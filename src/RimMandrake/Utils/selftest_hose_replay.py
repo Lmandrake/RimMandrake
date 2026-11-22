@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 300   (25 s on 2026-10-28, build included; a cold dotnet restore adds ~60 s)
 """Selftest of the offline hose replay harness (hose_replay.py, FlowWorks/Source/Replay/; HOSE_PERF_BUILD_OFFLINE_REPLAY_HARNESS).
 
 Every gate is proved able to go red before its green is believed: each of the seven gates gets the fault built to break

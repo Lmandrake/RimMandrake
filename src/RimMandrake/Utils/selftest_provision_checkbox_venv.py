@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 120
 """RELENTLESS_FIX_CHECKBOX_TEST_SERIAL_LANE: (a) run_selftests' serial lanes hold (the checkbox test itself went with the
 retired tick); (b) provision_checkbox_venv.py makes the checkbox venv idempotently on any host (uv, or python3 -m venv + pip).
 Offline: the installer runs against a fake command runner over a temp folder; no network, no real venv is touched."""

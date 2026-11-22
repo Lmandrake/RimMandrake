@@ -2,7 +2,6 @@
 """Selftest for scratch_clone.py — a throwaway seed/store/scratch tree under
 /home/mandrake/rm/scratch/<SEAT>/ (ext4, never /tmp), every path env-overridden so the real
 store and ~/.local/state/rm-objstore are never touched."""
-# selftest-timeout: 180
 from __future__ import annotations
 
 import io

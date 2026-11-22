@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """Selftest: the PRODUCTION jawa/run_scenes pure core (JawaBenchSceneRunnerCore.cs) and the PRODUCTION RMTestAttribute
 (src/RimMandrake/_Shared/SceneRunner/RMTestAttribute.cs) built and unit-tested offline (RIMMANDRAKE_BUILD_SHARED_SCENE_RUNNER_FIRST_SLICE):
 discovery by attribute type name, refusals of a broken suite, plots, Outside reads, the PASS / FAIL / UNMEASURED row table

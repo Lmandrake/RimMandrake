@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 600   (one staged net8 build of the Graffiti kernel harness, ~1-2 min)
 """T_UGLINESS_OFFLINE (RIMMANDRAKE_REPIN_GRAFFITI_UGLINESS_BAR_STAT_NOBODY_INSPECTS): a vandal scrawl inspects uglier than a tally when
 the same hand made both, offline, no game. Owner by card 2026-11-16 ("Look and stat agree"): the bar ugliness_visible says a scrawl looks
 worse than a tally AND inspects as uglier when the same hand made both, with no numbers named.

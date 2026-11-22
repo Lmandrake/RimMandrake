@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 120
 """Selftest for selftest_own_dirs.py (REAPER_FIX_OWN_SELFTEST_LITTERS_FAKE_SAVES): a reaper selftest killed mid-run
 leaves no fake CANONICAL_*.rws clone behind for longer than the next run, and nothing that is not provably its own
 is removed: a live run's dir, a dir that lost its marker, a real-sized save. Also the seed and wall selftests' git

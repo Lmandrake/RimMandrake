@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """Approach B fuzz of the JawaRules kernel (src/RimStarWars/JawaRules/Source/Kernel/RSW_JawaRulesKernel.cs), no game.
 
 Seeded fuzz with explicit invariants: the swim-hood postfix and the always-on fallback hood against a fake render engine (flag masking, headgear

@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 240
 """Compile actual production AerialMath and exact AerialProbe explode branch with explicit engine doubles.
 
 This proves parsing, registered lookup dispatch and reply identity offline; no real engine effects.

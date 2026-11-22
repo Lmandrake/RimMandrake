@@ -7,7 +7,6 @@ first (same staging root as winbuild.py).
 
     python3 src/RimMandrake/KineticArms/selftest_kineticarms_kernel.py
 """
-# selftest-timeout: 300
 import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
 _rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[3] / "src" / "RimMandrake" / "Utils"))
 from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)

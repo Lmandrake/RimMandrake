@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """Approach B fuzz of the RaidRedesigner roster kernel (src/RimMandrake/RaidRedesigner/Source/Kernel/RM_RosterKernel.cs), no game.
 
 Seeded random Record / death / lost-pawn sweep / cap-change sequences through the production RecordEncounter flow, compared after every step

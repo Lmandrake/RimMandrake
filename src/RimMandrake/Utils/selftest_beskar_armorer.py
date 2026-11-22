@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """BESKAR_ARMORER_QUEST_1 L3 offline: beskar mass, melt count x0.8, smelt ceil(n/3)+1 slag, the bill gate and the route gates.
 
 Compiles Source/Kernel/ArmorerKernel.cs into a console selftest through winbuild.stage_build and runs it.

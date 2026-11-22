@@ -22,7 +22,6 @@ stubs drawing over the hose coupler and the gap at the tank nipple both became t
 tank port. This file runs that gate and requires its table to hold all four sides of the Modern pump and tank, each at 0
 gap with the coupler beneath (so it cannot pass by not looking).
 """
-# selftest-timeout: 400
 import sys
 from pathlib import Path
 

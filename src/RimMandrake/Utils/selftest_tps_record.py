@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """Offline selftest of the TPS record (BRIDGE_TPS_CAPTURE_FIXES_1 criteria C1 and C2).
 
     python3 src/RimMandrake/Utils/selftest_tps_record.py            Python checks + C# parity

@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """Selftest: the PRODUCTION jawa/static_call scalar argument core (JawaBenchStaticCallArgsCore.cs) built and unit-tested offline.
 Builds bridgetools/StaticCallArgsSelfTest (net8.0, no RimWorld references) through winbuild staging.
 Without dotnet.exe this FAILS as UNMEASURED (pass --no-cs to accept that). No game, no bridge.

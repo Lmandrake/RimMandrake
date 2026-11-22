@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """SithLine offline selftest (SANGUOPHAGE_KEPT_UNREACHABLE_1): the production kernel RSW_SithLineKernel.cs, built into a
 plain net8.0 exe through winbuild.stage_build (dotnet.exe is Windows-native) and run; then the mod's STATIC checks
 (validation.py). No game.

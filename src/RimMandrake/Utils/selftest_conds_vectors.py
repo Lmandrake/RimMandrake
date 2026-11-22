@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """Selftest: the bridge condition evaluator's two twins agree byte for byte (CONDCORE_BUILD_THREE_VALUED_TREES).
 
 Spec: design/RimMandrake/bridge_conditions_2026-11-06/build_spec.md §2 row T1. The C# core

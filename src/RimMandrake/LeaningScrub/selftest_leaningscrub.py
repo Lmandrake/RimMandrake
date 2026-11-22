@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 600   (healthy + ~270 breaks run ~420 s alone; the 240 s default CRASHed it as [timeout])
 """Offline selftest for LeaningScrub's validation.py: a scripted FAKE GAME that implements the
 mod's behaviours, run (1) healthy -- every component must PASS -- and (2) once per mod behaviour
 broken -- the named component must go FAIL and no other component may.

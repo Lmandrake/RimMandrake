@@ -71,11 +71,12 @@ from pathlib import Path
 
 # RM_SELFTEST_REPO_ROOT exists for the runner's own fixture selftests only (a fake repo in scratch).
 REPO_ROOT = Path(os.environ.get("RM_SELFTEST_REPO_ROOT") or Path(__file__).resolve().parents[3]).resolve()
-PER_TEST_TIMEOUT_S = 240
-# A test that legitimately outlasts that (one that walks every deployed mod on
-# the drvfs mount) declares its own cap in its first 40 lines, e.g.
-#   # selftest-timeout: 600
-# so the runner does not report a 367 s PASS as a TIMEOUT (2026-09-23).
+# One hang guard for every test, never a speed bar: its danger, evidence and value are the LIMITS entry of
+# design/specs/2026-11-22-selftest-deadline/boundary.md. Speed is selftest.slow_test_flag_s, not this.
+PER_TEST_TIMEOUT_S = 600
+# A test that is slower than that declares a higher deadline in its first 40 lines, e.g.
+#   # selftest-timeout: 1800
+# A tag only raises the deadline; one at or below the default has no effect.
 _TIMEOUT_TAG = re.compile(r"^#\s*selftest-timeout:\s*(\d+)", re.M)
 
 
@@ -124,7 +125,7 @@ def per_test_timeout(path: Path) -> int:
     except OSError:
         return PER_TEST_TIMEOUT_S
     m = _TIMEOUT_TAG.search(head)
-    return int(m.group(1)) if m else PER_TEST_TIMEOUT_S
+    return max(PER_TEST_TIMEOUT_S, int(m.group(1))) if m else PER_TEST_TIMEOUT_S
 # The phrase a child prints when it could not run at all (a toolchain this
 # machine lacks, a game that is not up) rather than when something is wrong.
 # It is a convention the children already follow verbatim — grep it before

@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 600
 """selftest_ship_contributions.py -- ship_contributions.py passes the real list and FAILS each kind of false claim.
 
 A checker that only ever says PASS proves nothing (grader-validation). Each mutation below rewrites ONE row of the

@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 600
 """Production corpse queue/placement/butcher code against a destructive engine stand-in; no game or bridge."""
 import os
 import sys

@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """Approach B fuzz of The Rot kernel (RM_TheRotKernel.cs), no game.
 
 Seeded action sequences over the production kernel (the hwelgrue's gut clock and map cap, a hwelgrue holding someone, the gut-mother vat's

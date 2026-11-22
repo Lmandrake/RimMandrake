@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 300
 """RM_SCRATCH_FIX_ENACT_DIRS_UNREAPED: art.py enact selftests left enact_* fixture dirs in rm/scratch/<SEAT>.
 Two proofs. SOURCE: a real enact selftest (v2, which never removed its own dir) leaves its ENACT_SELFTEST_ROOT empty.
 CLEANER: an old enact_* dir is seen and DELETEd; a young one is YOUNG; one with a repo inside is not touched."""

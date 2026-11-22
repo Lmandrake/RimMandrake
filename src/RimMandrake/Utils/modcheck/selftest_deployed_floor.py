@@ -10,7 +10,6 @@ as walks/mods are added or fixed. Split out of modcheck/selftest.py 2026-10-08 (
 """
 # selftest-tier: deployed
 # Runs only under `run_selftests.py --tier deployed` (or --tier all / --only): after a deploy or a game update.
-# selftest-timeout: 600
 # Reason (measured 2026-10-07): floor.triage over the REAL mod tree on the drvfs mount - 112 components_declared
 # calls, ~17k stat + 26k lstat (patch_targets mod_index/location_index/check_mod) - ~110 s wall (~27 s CPU, rest is
 # drvfs IO), which under the parallel pool brushes the 240 s default. The check is deliberately against live data.

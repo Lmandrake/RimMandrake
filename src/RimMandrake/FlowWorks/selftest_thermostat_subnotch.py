@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 60
 """THERMOSTAT_FIX_IGNORES_SUBNOTCH_LIQUID: offline structural proof that the liquid thermostat counts a part-notch
 sheet (WaterDlAt > 0, FillAt == 0) and that each pin can go red. No game, no bridge, no dotnet (the C# cases
 MapControl_thermostat_energy / MapControl_thermostat_subnotch_liquid run the arithmetic under dotnet; this file is

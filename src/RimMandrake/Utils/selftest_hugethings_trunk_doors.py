@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 600
 """Production trunk-contact IL rewrite: exact driver injection and fail-closed mismatch mutations."""
 import os
 import sys

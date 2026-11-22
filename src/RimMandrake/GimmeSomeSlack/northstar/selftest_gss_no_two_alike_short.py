@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 30
 """SC_no_two_cords_alike exempts cords shorter than 3 cells (owner, by card 2026-11-13: "Short cords → exempt cords shorter
 than 3 cells from SC_no_two_cords_alike"; OWNER:1794594173709591776).
 

@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 60
 """selftest_scratch_tmp_pressure_margin.py — scratch_reap's /tmp pressure trigger fires BELOW the TMP_FULL alarm line.
 
 Class guard for OPS_TMP_DRAIN_RESTORE_JVCO: the trigger sat ON the alarm's 80 % line, so the reaper started draining

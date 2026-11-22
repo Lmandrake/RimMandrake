@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 120
 """RIMMANDRAKE_RESTORE_KILLED_MUTANTS_SIGKILL_SKIPS_FINALLY: a mutation run killed mid-mutation (run_selftests' timeout is
 SIGKILL, so run_mutations' `finally` never runs) must not leave its mutant in the production kernel for good. The next
 run_mutations call restores it from the journal, and never clobbers a file someone edited after the kill.

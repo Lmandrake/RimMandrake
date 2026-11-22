@@ -16,7 +16,6 @@ name never matches.
 
     python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_proofgate.py [--no-build]
 """
-# selftest-timeout: 420
 import os
 import struct
 import subprocess

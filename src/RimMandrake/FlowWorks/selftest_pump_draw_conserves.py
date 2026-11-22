@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 60
 """PUMP_DRAW_FIX_LOSES_A_LEVEL: offline proof that a pump's channel draw conserves liquid, and that the live bar which
 once read "channel lost 4 levels for 3 draws" (modcheck run4, 2026-10-25) now measures conservation exactly.
 

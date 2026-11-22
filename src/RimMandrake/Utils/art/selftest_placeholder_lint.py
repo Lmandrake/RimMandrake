@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 300
 """selftest_placeholder_lint.py — the repo lint: no shipped def draws a geometric placeholder (owner rule 2026-10-07
 22:33 PDT), except the dated allowlist, which can only shrink.
 

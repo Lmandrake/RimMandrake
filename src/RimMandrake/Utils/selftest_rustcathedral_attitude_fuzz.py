@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """Approach B fuzz of the Cathedral hum-mood kernel (RustCathedral/Source/Hum/RM_AttitudeKernel.cs), no game.
 
 Seeded action sequences (irritation and standing events, decay + band checks with hysteresis, drain under a day cap, stage and line-cycle changes, AFK) over the production

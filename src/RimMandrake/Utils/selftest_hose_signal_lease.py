@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 60
 """HOSE_SIGNAL_TAME_WITH_EXPIRY_TICK: HoseFlow.Signal reads expiry ticks, it does not walk the relay chain.
 
 Advisory design/RimMandrake/hose_wire_algorithms_advisory_2026-10-28.md section 4 #6 (SETUP: one Signal phase 17.2 ms):

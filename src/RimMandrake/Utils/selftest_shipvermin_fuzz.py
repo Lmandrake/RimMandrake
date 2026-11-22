@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """Approach B fuzz of the ShipVermin kernel (src/RimMandrake/ShipVermin/Source/Kernel/RM_VerminKernel.cs), no game.
 
 Seeded fuzz against independent restatements: a wreck nest's life under random time, setting and respawn sequences (one burst, attempts only

@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 300
 """selftest_scratch_reap_tmp_committed_saves.py — a git-less repo COPY in /tmp is scratch, not work (OPS_TMP_DRAIN_RESTORE_DEVU).
 
 The instance (2026-11-04): agents' mutation runs copied the repo tree, without .git, to /tmp/rmmut, /tmp/mj, /tmp/bj

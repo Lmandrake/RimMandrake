@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """Approach B fuzz of the SeaShores kernel (src/RimMandrake/SeaShores/Source/Kernel/RM_SeaKernel.cs), no game.
 
 Seeded fuzz against brute-force restatements: the terrain -> sea key map (exclusive terrain only, order independent), the sea a tile faces

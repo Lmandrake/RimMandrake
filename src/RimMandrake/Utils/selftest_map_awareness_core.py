@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """Selftest: the PRODUCTION map-awareness core (JawaBenchAwarenessCore.cs) built and unit-tested offline.
 
 Items THING_LOOKUP_BUILD_OWNER_IS_NOT_PAINTER / INCIDENT_JOURNAL_BUILD_CALLED_IS_NOT_FIRED /

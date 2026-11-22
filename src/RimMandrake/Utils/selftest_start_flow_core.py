@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """Selftest: the PRODUCTION new-game start-flow core (JawaBenchStartFlowCore.cs) built and unit-tested offline.
 The decisions behind scenario_select / start_site_select / ideo_load_rid (JawaBenchStartFlowTools.cs): scenario
 matching (defName then exact name, ambiguity refused, never a substring pick), .rid path resolution (Windows, /mnt/x,

@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 120
 """selftest_plant_glow_halfset.py — no plant in src/ sets growMinGlow 0 and leaves growOptimalGlow above 0.
 
 Why: vanilla's light factor is GenMath.InverseLerp(growMinGlow, growOptimalGlow, glow). With min 0 and the default

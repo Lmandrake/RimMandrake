@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 600   (winbuild.stage_build + one dotnet.exe run; interop retries as in selftest_ninefold_fuzz.py)
 """Offline selftest of the Sinking (SUMP_SINKING_RITE_BUILD_1, Salvation Rites, src/RimUtinni/Rites), no game. Two parts:
 
 1. KERNEL GUARDS (lint_kernel_guards.kernel_guards): every Source/Kernel/*.cs of Rites stays engine-free and is compiled

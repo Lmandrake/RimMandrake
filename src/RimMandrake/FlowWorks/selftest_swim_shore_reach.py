@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 600   (stages and builds the FlowWorks C# SelfTest, then runs only the shore-search cases)
 """selftest_swim_shore_reach.py — TIRED_SWIMMER_FIX_UNREACHABLE_SHORE (GPT FA_core_sim_4.1).
 
 WHY: a tired swimmer's shore search (RM_Swim.NearestFooting) accepted a dry ledge beside it that was too high to climb,

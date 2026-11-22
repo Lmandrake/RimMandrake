@@ -53,13 +53,14 @@ def fixtures():
     if [r[0] for r in past_line([("a", 468.0, 480), ("b", 216.0, 240), ("c", 215.9, 240)])] != ["a", "b"]:
         bad.append("past_line: 468/480 and 216/240 are past the line, 215.9/240 is not")
     with tempfile.TemporaryDirectory() as d:
-        (Path(d) / "selftest_slow.py").write_text("#!/usr/bin/env python3\n# selftest-timeout: 600\n")
+        (Path(d) / "selftest_slow.py").write_text("#!/usr/bin/env python3\n# selftest-timeout: 1200\n")
         (Path(d) / "selftest_plain.py").write_text("#!/usr/bin/env python3\n")
-        got = measured({"selftest_slow.py": 300, "selftest_plain.py": 230, "selftest_gone.py": 999}, d)
-        if sorted(got) != [("selftest_plain.py", 230.0, RS.PER_TEST_TIMEOUT_S), ("selftest_slow.py", 300.0, 600)]:
+        plain = 0.96 * RS.PER_TEST_TIMEOUT_S
+        got = measured({"selftest_slow.py": 600, "selftest_plain.py": plain, "selftest_gone.py": 999}, d)
+        if sorted(got) != [("selftest_plain.py", plain, RS.PER_TEST_TIMEOUT_S), ("selftest_slow.py", 600.0, 1200)]:
             bad.append("measured: a test's own tag sets its cap and a deleted test is dropped, got %r" % (got,))
         if [r[0] for r in past_line(got)] != ["selftest_plain.py"]:
-            bad.append("the tagged test at half its 600 s cap passes, the plain one at 230 of 240 s does not")
+            bad.append("the tagged test at half its 1200 s cap passes, the plain one at 96% of the default does not")
     return bad
 
 

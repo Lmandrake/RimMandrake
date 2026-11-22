@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 600
 """Production footprint scheduler, geometry, ledger and planner under adversarial budgets; no game or bridge."""
 import os
 import sys

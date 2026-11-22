@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """Approach B fuzz of the Explosive Knockback kernel (src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs), no game.
 
 Seeded fuzz beside the K-01..K-16 scene checks (selftest_explosiveknockback_kernel.py): throw distance against an oracle and its

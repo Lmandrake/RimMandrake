@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 60
 """L22 no_hose_in_gss (GSS dense proofs 2026-11-12): the hose moved to FlowWorks, so Gimme Some Slack ships no hose.
 
 The check: no def under Defs/ or Patches/ whose type (element tag), Class attribute or any field but prose (label, texPath,

@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 600   (step 1b builds and runs the C# SelfTest through selftest_sun_heat.py, inner cap 480 s; the 240 s default CRASHed [timeout] in rm-harness.slice 2026-11-02)
 """selftest_tidal_lock_guard.py -- offline proof for TIDAL_LOCK_FIX_PRESET_NAME_WAS_MISSING.
 
     python3 src/RimMandrake/Utils/selftest_tidal_lock_guard.py

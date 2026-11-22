@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 600
 """selftest_scratch_reap_tmp.py — scratch_reap's /tmp backstop (sweep_tmp, TMP_SCRATCH_ENFORCE_MUTANTS_CLEAN_UP).
 
 Every path is a temp root named through SCRATCH_REAP_TMP; the real /tmp is only READ (one mount-table question).

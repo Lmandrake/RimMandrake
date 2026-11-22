@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """Offline proof of "Planet: drawn rivers" / "Planet: worn roads" (RIVERS_ROADS_REDESIGN_WORTH_LOOKING_AT).
 
 The river graph (Source/RM_RiverGraph.cs) decides every width the planet draws: taper from the heads, a fan at the

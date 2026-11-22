@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 60   (offline: pure Python, no dotnet, no game)
 """Selftest of the hose replay Mono timing lane's checker (`hose_replay.py mono-check`; HOSE_REPLAY_WIRE_MONO_TIMING_LANE).
 The committed report Replay/mono_timing.txt (written by `hose_replay.py mono --write`, which needs Windows dotnet.exe and the
 game's mono-2.0-bdwgc.dll) must pass the checker; then each way a report can lie is injected into a copy and must FAIL:

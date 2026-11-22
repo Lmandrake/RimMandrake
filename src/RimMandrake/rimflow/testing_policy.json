@@ -85,9 +85,9 @@
    "signal": "raise if a night gives up on restarts alone; lower if repeated tries hurt the machine"
   },
   "selftest.per_test_timeout_s": {
-   "value": 240,
-   "unit": "seconds (a `# selftest-timeout: N` tag overrides per file)",
-   "why": "run_selftests.py PER_TEST_TIMEOUT_S; 4 tests at ~600 s are 41% of the 5,818 test-seconds of the 2026-10-28 sweep",
+   "value": 600,
+   "unit": "seconds (a `# selftest-timeout: N` tag above it raises it per file; a lower tag has no effect)",
+   "why": "run_selftests.py PER_TEST_TIMEOUT_S, a hang guard and never a speed bar: design/specs/2026-11-22-selftest-deadline/boundary.md LIMITS",
    "provenance": "D",
    "signal": "a test over 120 s for 3 nights is a split/move-to-tier candidate, not a timeout raise"
   },

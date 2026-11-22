@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """Approach B fuzz of CreatureBehaviors, no game: the moving-shade layer
 (CreatureBehaviors/Source/RM_MovingShadeLayer.cs + RM_MovingShadeMath.cs) and the sand swimmer's surface/submerge
 machine (RM_SandSwimKernel.cs), and the metal eater's bite/gate kernel (RM_MetalEaterKernel.cs, family eat). Seeded action sequences over the PRODUCTION kernels the mod calls, with explicit

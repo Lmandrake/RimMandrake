@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """Approach B fuzz of the Warcasket kernel (src/RimMandrake/Warcasket/Source/Kernel/RM_WarcasketKernel.cs), no game.
 
 Seeded fuzz with explicit invariants: a worn suit under changing hazards (integrity), pawns walking in and out of deep water in

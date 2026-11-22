@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """Selftest: the PRODUCTION world-tool argument core (JawaBenchWorldArgsCore.cs) built and unit-tested offline.
 The argument parsing behind the world tools (JawaBenchWorldTools.cs; review 2026-10-20 D1/D5/D6): tile-id
 lists and 'from-to' ranges clamped to the grid before allocating ("0-2147483647" used to hang the main thread),

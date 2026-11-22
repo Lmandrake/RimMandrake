@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 530
 """Selftest for scratch_reap.py, the expiry that nobody has to run by hand.
 
 The planted cases are the brief's (SCRATCH_CLONES_BUILD_EXPIRY_NO_ONE_TIDIES): a live session, borrowed alternates, an

@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """Approach B fuzz of the Flame Statues kernel (src/RimMandrake/FlameStatues/Source/Kernel/RM_FlameKernel.cs), no game.
 
 Seeded fuzz with explicit invariants: the quality-to-size table, the burning / shown / lit predicates exhaustively, the fleck cadence

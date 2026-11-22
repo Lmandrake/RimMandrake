@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """Approach B fuzz of the SWBestiary kernels (Livestock/Kernel/RSW_LivestockKernel.cs, BeastMechanics/Kernel/RSW_BeastKernel.cs,
 JawaIkee/Kernel/RSW_IkeeKernel.cs under src/RimStarWars/SWBestiary/Source), no game.
 

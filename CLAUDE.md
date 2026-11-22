@@ -325,7 +325,7 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
     by hand, use `maturation_dispatch.py void <unit> --why "..."`. `unvoid` reverses a void.
   - Do not refuse to void a run because the record is frozen or append-only.
 - **The pipeline fixes its own defects.** This rule applies to any agent or program in the Maturation Pipeline. It
-  covers defects in the pipeline's own machinery: code, tools, records, tests and the status page. Full text: `design/RimMandrake/standing_rulings.md` §The pipeline fixes its own defects.
+  covers defects in the pipeline's own machinery: code, tools, records, tests and the status page.
   - When the fix is known, file the ticket with its acceptance test. Do the fix in the same run, tests first. Then
     publish, and say so.
   - Hand off only when the fix is unknown, is outside your tools, or would change a north-star bar. Put the evidence
@@ -363,8 +363,7 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 - **A refusal carries its path to pass.** Before you write or run a judge or a gate, read
   `design/RimMandrake/standing_rulings.md` §A refusal carries its path to pass. Only a refusal from a CALIBRATED brief
   sends work back.
-- Item: `RIMMANDRAKE_REPAIR_AT_THE_REFUSAL_NO_STOP_FOR_UNTIED_SHOES`. Full text:
-  `design/RimMandrake/standing_rulings.md` §A fault of form is repaired where it is found.
+- Full text: `design/RimMandrake/standing_rulings.md` §A fault of form is repaired where it is found.
 
 ## After a change, only the checks that the change touches run again
 
@@ -377,8 +376,7 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 - When the relation cannot be read for a check, that check runs again. The others still count.
 - Do not add a full rerun as a safety step. A full pass is a named act with its reason, never a default.
 - Never tell the owner that all checks must run again after a small change. Name the checks that the change touches.
-- Item: `RIMMANDRAKE_RERUN_ONLY_CHECKS_THE_CHANGE_TOUCHES_NOT_ALL_203`. Full text:
-  `design/RimMandrake/standing_rulings.md` §After a change, only the checks that the change touches run again.
+- Full text: `design/RimMandrake/standing_rulings.md` §After a change, only the checks that the change touches run again.
 
 ## Touching code has a cost; if you see it, do it
 
@@ -436,7 +434,8 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 - This rule covers every cap, pause, timeout, wall time, retry bound, rate and text cut. It applies in our code,
   configs, role files and briefs.
 - Each limit names the danger that it guards and the evidence that the danger happens. Put this beside the number, on
-  the boundary page under LIMITS, or in the brief.
+  the boundary page under LIMITS, or in the brief. A class names it once: a call or test deadline is a hang guard
+  (`call_deadline_lint.py`, `run_selftests.py`), set far above a real run, never a speed bar.
 - If a limit cannot name both, remove it. Do not tune it.
 - If you find such a limit in pipeline machinery, fix it in the same run.
 - When the danger is real, guard against it cheaply.

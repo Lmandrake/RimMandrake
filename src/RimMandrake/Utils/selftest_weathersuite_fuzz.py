@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """Approach B fuzz of the WeatherSuite kernel (src/RimMandrake/WeatherSuite/Source/Kernel/), no game.
 
 Seeded fuzz with explicit invariants against independent restatements of the rules. Built through winbuild.stage_build

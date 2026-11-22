@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 30
 """Another mod's dropped live cord is not an overhead line: the overhead-lines master switch must not silence it.
 
 Bars shock_reach_setting ("under Only downed lines the fallen wire and the dropped deck cord bite"; the delegated detail

@@ -19,7 +19,6 @@ runs) and four planted files made from a mod-on run, and checks it against this 
 
     python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_barrage_p99.py
 """
-# selftest-timeout: 300
 import csv
 import json
 import math

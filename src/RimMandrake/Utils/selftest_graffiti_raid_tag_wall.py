@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 300   (one small net8 build through dotnet.exe, ~10-60 s, plus a 244 MB def dump read)
 """T_RAID_TAG_BUILT_WALL_ONLY (RIMMANDRAKE_KEEP_GRAFFITI_RAID_TAGS_OFF_NATURAL_ROCK): a raider's exit tag lands only on a BUILT wall,
 never on natural rock (held walk defect #2: a raider tagged a gold vein). Offline, no game.
 

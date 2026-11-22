@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """Approach B fuzz of the Bazaar price engine kernel (TheBazaar/Source/Economy/RM_BazaarKernel.cs), no game.
 
 Seeded action sequences (drift, nudge, session record, save/load of the history ring, reseed) over the production

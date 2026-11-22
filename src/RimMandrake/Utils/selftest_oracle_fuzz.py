@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """Approach B fuzz of the Oracle kernels (Oracle/Source/Kernel/*.cs), no game: see Oracle/Source/SelfTest/OracleFuzz.cs for the families.
 The project is built through winbuild.stage_build (dotnet.exe is Windows-native), then run.
 

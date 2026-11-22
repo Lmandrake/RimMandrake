@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 300
 """RIMMANDRAKE_INVENT_SLACK_LIVE_END_GREEN_BY_THIN_MARGIN: the live cut end's mathematics, swept offline, as a permanent check.
 
 The Python original of Core/CordLiveEnd.cs and CordMotion.Whip (src/RimMandrake/Utils/mockups/messy_conduit/live_end_lay.py) is swept

@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """Approach B fuzz of the Contagion kernels (Contagion/Source/Kernel/*.cs), no game.
 
 Seeded fuzz over the production kernels with explicit invariants: the Burn clock / tells / Bloom / Cloud Repulsor (sky), the

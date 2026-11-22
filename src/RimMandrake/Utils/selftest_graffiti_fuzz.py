@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """Approach B fuzz of the Graffiti kernel (src/RimMandrake/Graffiti/Source/Kernel/RM_GraffitiKernel.cs), no game.
 
 Seeded fuzz with explicit invariants: the weighted mark pick (range, monotone in the roll, boundary rolls, frequencies), the meme / skill /

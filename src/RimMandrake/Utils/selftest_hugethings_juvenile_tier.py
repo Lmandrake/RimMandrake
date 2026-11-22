@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 600
 """Compile the production tier adapter/kernel, then check independent policy and complete gate truth tables. L0 only."""
 import os
 import sys

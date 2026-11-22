@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """Offline selftest of the Ninefold engine inside Salvation Rites (src/RimUtinni/Rites/Source), no game. Two parts:
 
 1. SAVE TYPE ALIAS. Ninefold was its own mod (mandrake.rm.ninefold, namespace RimMandrake.Ninefold) until the

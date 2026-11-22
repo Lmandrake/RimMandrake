@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 30
 """Every GSS proof row cites a leaf of the Designer's tree, and every leaf has a row (owner, by card 2026-11-13,
 OWNER:1794594173709591776: "Re-key proof rows to the tree's leaf ids and restore his 2026-11-07 'no sharp turn' bar to the
 tree"). The map is northstar/proof_leaves.py; the tree is design/concepts/GimmeSomeSlack/tree.json.

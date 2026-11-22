@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """Offline proof of jawa/alloc_probe (MONO_ALLOC_MEASURE_PER_TICK_ON_GAME).
 
     python3 src/RimMandrake/Utils/selftest_alloc_probe.py              core units + judges + every mutant (must go red)

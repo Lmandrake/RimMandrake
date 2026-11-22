@@ -77,7 +77,7 @@ Provenance of each tunable: **O** owner's words, **C** owner by card, **D** code
 - **Run it when:** before any commit that touches code or data a selftest reads.
 - **It was a mistake when:** the test did not import or exercise the changed code; or it was red before your
   change and you "fixed" it to pass without an item.
-- **Tunables:** `selftest.per_test_timeout_s` 240 [D].
+- **Tunables:** `selftest.per_test_timeout_s` 600 [D], a hang guard (design/specs/2026-11-22-selftest-deadline/boundary.md).
 
 ### 2.2 Red-first selftest for a fix
 - **Purpose:** prove the test can fail at all.

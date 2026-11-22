@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 600   (dotnet.exe build + run through winbuild.run_interop)
 """Scenario test of RIMMASTER_FIX_SOUTH_DRAWS_FRONT_SAID_MANY_TIMES at the pawn caller: the real SouthDrawsFrontPawn.cs
 against a fake Verse whose DrawPos is vanilla's line (Scenario/SouthDrawsFront/). Built through winbuild.stage_build
 (dotnet.exe is Windows-native), then run; exit 0 = every scenario holds.

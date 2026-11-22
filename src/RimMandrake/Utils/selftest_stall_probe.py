@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """Offline proof of the stall probe's "top job" read (BRIDGE_STALL_DIAGNOSTIC_1): which tick list, bucket and pawn jobs a
 stall dump names.
 

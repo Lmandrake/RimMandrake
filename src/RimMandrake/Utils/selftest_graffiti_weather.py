@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 600   (one staged net8 build of the Graffiti kernel harness, ~1-2 min; --mutants adds three more)
 """T_WEATHER_OFFLINE (RIMMANDRAKE_PIN_GRAFFITI_WEATHER_FADE_CURVE_OFFLINE): Graffiti's paint weathering pinned offline, no game.
 
 Two halves:

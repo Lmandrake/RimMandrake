@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """Offline proof of the zoom-gated canopy layer (CANOPY_LAYER_BUILD_ROOF_OF_THE_WORLD).
 
 Owner, 2026-10-18: "Titanic trees should be seen only as the solid trunk" and "scroll out from the map enough that

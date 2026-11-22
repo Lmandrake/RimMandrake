@@ -13,7 +13,6 @@ Game-side settings stay in the live scene (sc_settings_sweep's wiring lines, or 
 
     python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_settings_sweep.py
 """
-# selftest-timeout: 300
 import json
 import os
 import re

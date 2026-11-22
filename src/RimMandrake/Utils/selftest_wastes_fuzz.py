@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# selftest-timeout: 600   (150-180 s under the nightly sweep, plus the launches run_interop may repeat)
 """Approach B fuzz of the Wastes kernels (Wastes/Source/Kernel/*.cs), no game.
 
 Seeded fuzz over the production kernels with explicit invariants: the waste cask and sealed cask bay (cask), the
