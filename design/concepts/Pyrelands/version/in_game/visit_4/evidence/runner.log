@@ -70,3 +70,17 @@ START batch9 2026-11-22 01:04:55
 DONE burn_line_off_control@burn_line_off_control_planted reload_rc=0 rc=1 182s 01:07:57
 END batch9 2026-11-22 01:07:57
 START batch10 2026-11-22 01:08:01
+DONE flamefang_venom@flamefang_venom_repaired reload_rc=0 rc=1 297s 01:12:58
+END batch10 2026-11-22 01:12:58
+START batch11 2026-11-22 01:12:58
+DONE flamefang_venom@flamefang_venom_planted_wrong_tend reload_rc=0 rc=1 99s 01:14:37
+END batch11 2026-11-22 01:14:37
+START batch12 2026-11-22 01:14:37
+DONE script:design/concepts/Pyrelands/version/in_game/visit_4/scripts/walk_save.py@walk_save reload_rc=0 rc=0 31s 01:15:08
+END batch12 2026-11-22 01:15:08
+START batch13 2026-11-22 01:15:09
+DONE +script:design/concepts/Pyrelands/version/in_game/visit_4/scripts/desc_probe.py@desc_probe reload_rc=skipped rc=0 0s 01:15:09
+END batch13 2026-11-22 01:15:09
+START batch14 2026-11-22 01:15:12
+SKIPPED grass_cover,embergrass_regrow@embergrass_regrow_deep_ash (the visit's 3-hour bound: the deep-ash regrow read is owed to the item that owns the slow ember grass) 01:15:12
+END batch14 2026-11-22 01:15:12

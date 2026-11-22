@@ -134,7 +134,7 @@ def exit_block():
 
 
 _ws = os.path.join(E, "walk_save.json")   # the path the game reported for the labelled save (walk_save.py)
-SAVE = (json.load(open(_ws)).get("save") or {}).get("path") if os.path.exists(_ws) else None
+SAVE = ((json.load(open(_ws)).get("save") or {}).get("path") or "").replace("/", "\\") if os.path.exists(_ws) else None
 if "--exit" in sys.argv:
     p = os.path.join(VD, "SUMMARY.md")
     s = open(p).read()

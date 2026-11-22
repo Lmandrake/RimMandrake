@@ -1,0 +1,29 @@
+{
+ "ullai": [
+  "RM_Ullai109856",
+  "RM_Ullai109857",
+  "RM_Ullai109858",
+  "RM_Ullai109859",
+  "RM_Ullai109860",
+  "RM_Ullai109861"
+ ],
+ "rotated": [
+  true,
+  true,
+  true,
+  true,
+  true,
+  true
+ ],
+ "shot": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\pv4_walk_station_1b.png",
+ "save": {
+  "success": true,
+  "path": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\Saves\\PYRELANDS_0.1.0_VISIT4_WALK.rws",
+  "new": [],
+  "changed": [
+   "PYRELANDS_0.1.0_VISIT4_WALK.rws"
+  ],
+  "bytes": 26838549
+ }
+}
+[bridge split] 6.9 s wall: load 0.9 / ticks 0.0 / reads 0.0 / other 0.9 / outside calls 5.1 s

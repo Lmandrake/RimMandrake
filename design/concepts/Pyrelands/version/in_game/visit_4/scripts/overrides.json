@@ -36,5 +36,71 @@
  },
  "sc_three_skies": {
   "note": "owed RIMMANDRAKE_TRACE_PYRE_ASHFALL_FIRE_IN_FIRST_LIGHTNING_WINDOW: real cinderfall_lightning PASS (19 strikes under cinderfall, 0 under ash fall; the ash-fall window-1 fire named 'not lightning'); planted PYRE_PLANT_ASHFALL_STRIKE=DryThunderstorm FAIL, 6 strikes under ash fall (design/concepts/Pyrelands/version/in_game/visit_4/evidence/run_cinderfall_planted_strike.log)"
+ },
+ "sc_burn_line_walks": {
+  "label": "burn_line",
+  "repair": {
+   "class": "HARNESS",
+   "commit": "a0e6da8ce330457722fce4989cdb8c807538f4c6",
+   "what": "burn_line_off_control waits four more reseed retries (OFF_CONTROL_WAIT_TICKS): the old window fitted one attempt, so a planted run whose one attempt found no lawful cell read 0 fires and the control could not fail (visit 3)",
+   "planted": {
+    "plant": "PYRE_PLANT_BURNLINE_TOGGLE_IGNORED=1: burnLineEnabled left on for the control",
+    "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains burn_line_off_control  (PYRE_PLANT_BURNLINE_TOGGLE_IGNORED=1 through WSLENV)",
+    "verdict": "FAIL",
+    "evidence": "design/concepts/Pyrelands/version/in_game/visit_4/evidence/pv4_burn_line_off_control_planted.json"
+   },
+   "real_alone": {
+    "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains burn_line_off_control",
+    "verdict": "PASS",
+    "evidence": "design/concepts/Pyrelands/version/in_game/visit_4/evidence/pv4_burn_line_off_control_real.json"
+   }
+  },
+  "note": "owed RIMMANDRAKE_TRACE_PYRE_FIREHAWK_TURNS_MANHUNTER_IN_BURN_WALK: the 17-mod tier run reached its share verdict (PASS) with no Manhunter stop; RIMMANDRAKE_MEASURE_PYRE_BURNED_SHARE_FLOOD_ALSO_MOVES, RIMMANDRAKE_REORDER_PYRE_BURN_WALK_BEFORE_ITS_FRONT_DIES, RIMMANDRAKE_RENEW_SAFE_ADVANCE_AUTO_ARM_HOURLY: burned share, hourly walk and the long wait all PASS"
+ },
+ "sc_flamefang_venom": {
+  "label": "flamefang_venom_repaired",
+  "prior": [
+   {
+    "label": "flamefang_venom",
+    "class": "SITE",
+    "note": "the plain-bite control (two fennec scratches) bled out inside the next row: venom_tended_vs_untended RESTART, venom_wait_out stopped"
+   },
+   {
+    "label": "flamefang_venom_healed",
+    "class": "HARNESS",
+    "note": "venom_tended_vs_untended FAIL in hour 1 only: the hourly series started at the tend order and the tend landed inside hour 1 (0.0152 = 13 untended 200-tick updates); venom_wait_out RESTART: the still-drafted plain-bite control was downed (the subject's own course 0.228, 0.577, 0.213, gone by day 3, no death)"
+   },
+   {
+    "label": "flamefang_venom_planted_wrong_tend",
+    "class": "SITE",
+    "note": "the planted run (PYRE_PLANT_VENOM_TEND_WRONG_PATIENT=1) was voided by a blood-loss death before its comparison: the tend-start repair is not shown both ways"
+   }
+  ],
+  "class": "SITE",
+  "unrepaired": "venom_wait_out stopped on a starving bystander (a fixture of the chain's earlier rows, drafted by _bite_until) inside the visit's bound, and the tend-start repair's planted run was voided by a death, so the repair is not shown both ways",
+  "owner": "RIMMANDRAKE_FEED_PYRE_VENOM_FIXTURES_HUNGER_STOPS_WAITOUT",
+  "filed": "RIMMANDRAKE_FEED_PYRE_VENOM_FIXTURES_HUNGER_STOPS_WAITOUT"
+ },
+ "sc_grass_regreens": {
+  "label": "embergrass_regrow",
+  "class": "MOD",
+  "unfixed": "the fix is not known: ember grass grew +0.054 a day where its def's own rate wants >= 0.369 (vanilla Plant_Grass beside it +0.118); the factor that holds it is not traced (MOD presumed, unproven). Also: the scene laid soil, not deep ash (SITE, repaired 4fff1aa5e7, not yet run); grass_census_first counted the driver's offline declaration pass (HARNESS, repaired aa441a608f, not yet run); plant_density_one_control_map has no tool (RIMMANDRAKE_BUILD_PYRE_GRASS_FOIL_SAME_SEED_DENSITY_ONE)",
+  "filed": "RIMMANDRAKE_TRACE_PYRE_EMBERGRASS_GROWS_TENTH_OF_ITS_RATE",
+  "note": "the regrow reader repaired (897516fc92: '70% grown', selftest_pyrelands_growth_lines.py red on the old reader, green on the fix); first numbers ever read"
+ },
+ "sc_walk": {
+  "verdict_fixed": "UNMEASURED",
+  "site_checked": false,
+  "held": [],
+  "class": "SITE",
+  "detail": "not run in this visit: the walk needs his full list on game a (a cold load of 315 mods, a full-list site, then two game weeks with three reloads, about two hours [guess ~60%]), past the visit's 3-hour bound; the tier checks and their repairs ran first",
+  "unrepaired": "not run (the visit's bound); owed to this item's relaunch (LEFT OPEN)",
+  "owner": "RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT_FOUR"
+ },
+ "P_scorchfruit_spoils": {
+  "note": "owed RIMMANDRAKE_IGNORE_OFFMAP_COLONIST_DEATH_HEART_ATTACK_TWICE: no world-pawn death happened in this run; no stop"
+ },
+ "sc_burn_compounds": {
+  "note": "owed RIMMANDRAKE_IGNORE_OFFMAP_COLONIST_DEATH_HEART_ATTACK_TWICE: no world-pawn death happened in this run; no stop"
  }
 }
