@@ -347,8 +347,6 @@ namespace RimMandrake.Pyrelands
     // vanilla's rule. Both patches read one predicate, so the two can never disagree about a fire.
     public static class WindCarriedFire
     {
-        private static readonly int[] probeX = new int[3 * RM_BurnKernel.WindCarryReach];
-        private static readonly int[] probeZ = new int[3 * RM_BurnKernel.WindCarryReach];
         private static Map cachedMap;
         private static MapComponent_BurnLine cachedBurn;
 
@@ -369,20 +367,41 @@ namespace RimMandrake.Pyrelands
             return FireEcologyHookMod.IsScorchableGround(fire.Position.GetTerrain(map));
         }
 
+        // RIMMANDRAKE_WIDEN_PYRE_FIRE_TRAILS_RUN_AS_RULER_STRAIGHT_LANES: the carry and the gap heal are RM_BurnKernel.CarryPlan;
+        // this reads the map for it (a fire on the cell, vanilla's ChanceToStartFireIn, the ash field's burn stamp) and lights.
         internal static void Carry(Fire fire, MapComponent_BurnLine burn)
         {
             Map map = fire.Map;
             burn.MarkCarried(fire);
-            RM_BurnKernel.WindProbes(burn.WindBearing, Rand.Value, Rand.Value, RM_BurnKernel.WindCarryReach, probeX, probeZ);
-            for (int i = 0; i < probeX.Length; i++)
+            IntVec3 at = fire.Position;
+            int now = Find.TickManager.TicksGame;
+            MapComponent_PyrelandsAshField ash = MapComponent_PyrelandsAshField.For(map);
+            int n = RM_BurnKernel.CarryPlan(burn.WindBearing, Rand.Value, Rand.Value, Rand.Value, RM_BurnKernel.WindCarryReach,
+                RM_BurnKernel.HealReach,
+                (dx, dz) => CellState(map, new IntVec3(at.x + dx, 0, at.z + dz)),
+                (dx, dz) => Anchor(map, ash, burn, new IntVec3(at.x + dx, 0, at.z + dz), now),
+                planX, planZ, out _);
+            for (int i = 0; i < n; i++)
             {
-                IntVec3 c = new IntVec3(fire.Position.x + probeX[i], 0, fire.Position.z + probeZ[i]);
-                if (c.InBounds(map) && FireUtility.ChanceToStartFireIn(c, map) > 0f
-                    && FireUtility.TryStartFireIn(c, map, Fire.MinFireSize, fire.instigator))
-                {
-                    return;
-                }
+                FireUtility.TryStartFireIn(new IntVec3(at.x + planX[i], 0, at.z + planZ[i]), map, Fire.MinFireSize, fire.instigator);
             }
+        }
+
+        private static readonly int[] planX = new int[2];
+        private static readonly int[] planZ = new int[2];
+
+        private static RM_BurnKernel.RM_CarryCell CellState(Map map, IntVec3 c)
+        {
+            if (!c.InBounds(map)) return RM_BurnKernel.RM_CarryCell.Bare;
+            if (c.ContainsStaticFire(map)) return RM_BurnKernel.RM_CarryCell.Burning;
+            return FireUtility.ChanceToStartFireIn(c, map) > 0f ? RM_BurnKernel.RM_CarryCell.Fuel : RM_BurnKernel.RM_CarryCell.Bare;
+        }
+
+        private static bool Anchor(Map map, MapComponent_PyrelandsAshField ash, MapComponent_BurnLine burn, IntVec3 c, int now)
+        {
+            if (!c.InBounds(map)) return false;
+            int stamp = Math.Max(ash != null ? ash.BurnTickAt(c) : -1, burn.CarriedAt(c));
+            return RM_BurnKernel.RecentBurn(c.ContainsStaticFire(map), stamp, now, RM_BurnKernel.HealRecentTicks);
         }
     }
 

@@ -16,7 +16,7 @@ Generated 2026-11-16T21:27:29-08:00 from `test_table.json` (the record; this is 
 
 | bar | from | proves at | decides | supports | runnable today |
 |---|---|---|---|---|---|
-| `burn_line_walks` | tree | 6 | sc_burn_line_walks | T_FUZZ, T_BURN_ECOLOGY, LOOK_STAGE8 | all |
+| `burn_line_walks` | tree | 6 | sc_burn_line_walks | T_FUZZ, T_BURN_ECOLOGY, T_BURN_LANES, LOOK_STAGE8 | all |
 | `ash_ground_and_blowing_ash` | tree | 6 | sc_fire_dusts_ash | T_LINT, T_FUZZ, T_TRACKS, P_ambient_ash_drift | all |
 | `ash_fertile_when_watered` | tree | 6 | sc_ash_watered | T_FUZZ | all |
 | `fresh_burn_compounds_with_black_rain` | tree | 6 | sc_burn_compounds | T_FUZZ, T_ASH_PROBE_OFFLINE | all |
@@ -70,6 +70,7 @@ Generated 2026-11-16T21:27:29-08:00 from `test_table.json` (the record; this is 
 |---|---|---|---|---|
 | `T_FUZZ` | offline | 4-5 | `src/RimMandrake/Utils/selftest_pyrelands_fuzz.py` | PASS 14.5s |
 | `T_BURN_ECOLOGY` | offline | 4-5 | `src/RimMandrake/Pyrelands/selftest_pyrelands_burn_ecology.py` | PASS 100.1s |
+| `T_BURN_LANES` | offline | 4-5 | `src/RimMandrake/Pyrelands/selftest_pyrelands_burn_front_lanes.py` | PASS 137.0s |
 | `T_LINT` | offline | 4-5 | `src/RimMandrake/Utils/selftest_pyrelands_lint.py` | PASS 76.2s |
 | `T_ALLOWLIST` | offline | 4-5 | `src/RimMandrake/Utils/selftest_pyrelands_allowlist_postfix.py` | PASS 1.7s |
 | `T_BURN_COST` | offline | 4-5 | `src/RimMandrake/Utils/selftest_pyrelands_burn_cost.py` | PASS 0.1s |

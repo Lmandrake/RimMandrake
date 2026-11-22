@@ -1,4 +1,30 @@
 {
+ "T_BURN_ECOLOGY": {
+  "at": "2026-11-22T21:47:33Z",
+  "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_burn_ecology.py",
+  "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_burn_ecology.py",
+  "last": "FAIL: 12 of 15 rows hold",
+  "patch": "--- a/src/RimMandrake/Pyrelands/pyre_burn_sim.py\n+++ b/src/RimMandrake/Pyrelands/pyre_burn_sim.py\n@@ -54,7 +54,7 @@\n     carried=False,           # the pick: the wind carries the fire (RM_BurnKernel.CarryPlan: one cell on per fire, once, and one gap cell)\n     carry_ticks=1200, carry_reach=2,   # RM_BurnKernel.WindCarryTicks / WindCarryReach (the selftest reads them from the C# file)\n     heal_reach=5, heal_recent=60000,   # RM_BurnKernel.HealReach / HealRecentTicks (selftest_pyrelands_burn_front_lanes.py reads them)\n-    carry_merge=True,        # with heal_reach=0 and this False: the rule before 2026-11-22 (lanes; the lanes test's --old)\n+    carry_merge=False,       # PLANTED: no merge; with heal_reach=0 and this False: the rule before 2026-11-22 (lanes; the lanes test's --old)\n     burn_stamps=True,        # RM_PyrelandsSettings.freshBurnBonusEnabled: the ash field stamps every burning cell; off, the heal\n                              # reads live fires and MapComponent_BurnLine.CarriedAt (cells whose fire was carried on) only\n     carry_heal=None,         # DROPPED candidate: lanes that heal (wind_carry_plan); None = the shipped one-cell rule\n",
+  "patch_files": [
+   "src/RimMandrake/Pyrelands/pyre_burn_sim.py"
+  ],
+  "patch_sha": "5e8334fb07b31272",
+  "rc": 1,
+  "test_blob": "16830e9f97a9a5f1b3a17f0b8f2631f5704e3daf"
+ },
+ "T_BURN_LANES": {
+  "at": "2026-11-22T21:44:25Z",
+  "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_burn_front_lanes.py",
+  "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_burn_front_lanes.py",
+  "last": "FAIL: 6 of 7 rows hold",
+  "patch": "--- a/src/RimMandrake/Pyrelands/pyre_burn_sim.py\n+++ b/src/RimMandrake/Pyrelands/pyre_burn_sim.py\n@@ -54,7 +54,7 @@\n     carried=False,           # the pick: the wind carries the fire (RM_BurnKernel.CarryPlan: one cell on per fire, once, and one gap cell)\n     carry_ticks=1200, carry_reach=2,   # RM_BurnKernel.WindCarryTicks / WindCarryReach (the selftest reads them from the C# file)\n     heal_reach=5, heal_recent=60000,   # RM_BurnKernel.HealReach / HealRecentTicks (selftest_pyrelands_burn_front_lanes.py reads them)\n-    carry_merge=True,        # with heal_reach=0 and this False: the rule before 2026-11-22 (lanes; the lanes test's --old)\n+    carry_merge=False,       # PLANTED: no merge; with heal_reach=0 and this False: the rule before 2026-11-22 (lanes; the lanes test's --old)\n     burn_stamps=True,        # RM_PyrelandsSettings.freshBurnBonusEnabled: the ash field stamps every burning cell; off, the heal\n                              # reads live fires and MapComponent_BurnLine.CarriedAt (cells whose fire was carried on) only\n     carry_heal=None,         # DROPPED candidate: lanes that heal (wind_carry_plan); None = the shipped one-cell rule\n",
+  "patch_files": [
+   "src/RimMandrake/Pyrelands/pyre_burn_sim.py"
+  ],
+  "patch_sha": "5e8334fb07b31272",
+  "rc": 1,
+  "test_blob": "79acacbcd03ab046c15e5d98e792921f3df9c57a"
+ },
  "T_DEFS_OFFLINE": {
   "at": "2026-11-22T05:34:49Z",
   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_defs_offline.py",
@@ -27,15 +53,15 @@
   "test_blob": "58fcb05e761cb4ec6ce26d118950c7cc784b950e"
  },
  "T_FUZZ": {
-  "at": "2026-11-22T17:48:29Z",
+  "at": "2026-11-22T21:42:15Z",
   "command": "python3 src/RimMandrake/Utils/selftest_pyrelands_fuzz.py",
   "file": "src/RimMandrake/Utils/selftest_pyrelands_fuzz.py",
-  "last": "pyrelands fuzz: 16269 cases, 1080805098 steps, 14.86s total -> FAILED",
-  "patch": "diff --git a/src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs b/src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs\n--- a/src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs\n+++ b/src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs\n@@ -106,9 +106,9 @@\n         public static int ProbeHistory<T>(IList<int> ticks, IList<T> cells, int now, int keepTicks, int ticksAgo,\n             out int samples, out int oldestTick, out int newestTick, out int newestAt)\n         {\n-            int agoAt = IndexAgoPruned(ticks, cells, now, keepTicks, ticksAgo);\n             samples = ticks.Count;\n             newestAt = samples - 1;\n+            int agoAt = IndexAgoPruned(ticks, cells, now, keepTicks, ticksAgo);\n             oldestTick = samples > 0 ? ticks[0] : -1;\n             newestTick = samples > 0 ? ticks[newestAt] : -1;\n             return agoAt;\n",
+  "last": "pyrelands fuzz: 13868 cases, 2360441 steps, 5.33s total -> FAILED",
+  "patch": "--- a/src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs\n+++ b/src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs\n@@ -614,7 +614,7 @@\n             for (int i = 0; i < px.Length; i++)\n             {\n                 RM_CarryCell st = cell(px[i], pz[i]);\n-                if (st == RM_CarryCell.Burning) break;\n+                if (st == RM_CarryCell.Burning) continue;   // PLANTED: no merge\n                 if (st == RM_CarryCell.Fuel)\n                 {\n                     outX[0] = px[i];\n",
   "patch_files": [
    "src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs"
   ],
-  "patch_sha": "85d19104dce53b69",
+  "patch_sha": "658ad01fdb970a4b",
   "rc": 1,
   "test_blob": "9f77d082fb433d4e86a3b19b744edbbaa340d383"
  },

@@ -102,6 +102,25 @@ namespace RimMandrake.Pyrelands
         {
             if (carriedFires.Count > 100000) carriedFires.Clear();   // pruned to the live fires at every save; bound it between saves
             carriedFires.Add(fire.thingIDNumber);
+            int n = map.cellIndices.NumGridCells;
+            if (carriedAt == null || carriedAt.Length != n)
+            {
+                carriedAt = new int[n];
+                for (int i = 0; i < n; i++) carriedAt[i] = -1;
+            }
+            if (fire.Position.InBounds(map)) carriedAt[map.cellIndices.CellToIndex(fire.Position)] = Find.TickManager.TicksGame;
+        }
+
+        // RIMMANDRAKE_WIDEN_PYRE_FIRE_TRAILS_RUN_AS_RULER_STRAIGHT_LANES: the tick each cell's fire was carried on, so the gap heal
+        // knows where this line burned without the ash field's stamp (which keeps none with freshBurnBonusEnabled off). Unsaved:
+        // after a load the heal reads live fires and stamps only until the line has walked on a row.
+        private int[] carriedAt;
+
+        /// <summary>The tick a fire on this cell was last carried on, -1 when none this session.</summary>
+        internal int CarriedAt(IntVec3 c)
+        {
+            if (carriedAt == null || carriedAt.Length != map.cellIndices.NumGridCells || !c.InBounds(map)) return -1;
+            return carriedAt[map.cellIndices.CellToIndex(c)];
         }
 
         /// <summary>Test probe (jawa/static_call): "wind=;carries=;carried=;fires=" for the current map.</summary>

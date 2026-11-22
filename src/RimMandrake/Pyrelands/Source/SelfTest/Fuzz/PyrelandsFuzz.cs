@@ -458,10 +458,49 @@ namespace RimMandrake.Pyrelands.Fuzz
             return h;
         }
 
+        /// <summary>The carry-plan table the Python model (pyre_burn_sim.carry_plan_checksum) also computes: 1,200 LCG-drawn
+        /// 17 x 17 neighbourhoods (bare, fuel, burning, burned lately), bearings on a 7.5-degree step, exact-binary rolls, reach 2,
+        /// HealReach. selftest_pyrelands_burn_front_lanes.py asserts the same number, so the model's carry and gap heal are this
+        /// kernel's (RIMMANDRAKE_WIDEN_PYRE_FIRE_TRAILS_RUN_AS_RULER_STRAIGHT_LANES).</summary>
+        internal const long CarryPlanChecksum = 414964797L;
+
+        internal static long CarryPlanTable()
+        {
+            long h = 0;
+            int[] ox = new int[2], oz = new int[2];
+            for (int c = 0; c < 1200; c++)
+            {
+                long x = 12345 + c;
+                var grid = new int[17, 17];
+                for (int dz = -8; dz <= 8; dz++)
+                    for (int dx = -8; dx <= 8; dx++)
+                    {
+                        x = (x * 1103515245L + 12345L) & 0x7fffffffL;
+                        grid[dx + 8, dz + 8] = (int)((x >> 8) % 100);
+                    }
+                float bearing = (c * 75 % 3600) / 10f;
+                float r1 = (c * 3 % 8) / 8f, r2 = (2 * (c * 5 % 8) + 1) / 16f, rs = (2 * (c * 7 % 4) + 1) / 8f;
+                Func<int, int, int> at = (dx, dz) => dx < -8 || dx > 8 || dz < -8 || dz > 8 ? -1 : grid[dx + 8, dz + 8];
+                int n = RM_BurnKernel.CarryPlan(bearing, r1, r2, rs, 2, RM_BurnKernel.HealReach,
+                    (dx, dz) =>
+                    {
+                        int v = at(dx, dz);
+                        if (v < 20 || v >= 80) return RM_BurnKernel.RM_CarryCell.Bare;
+                        return v < 70 ? RM_BurnKernel.RM_CarryCell.Fuel : RM_BurnKernel.RM_CarryCell.Burning;
+                    },
+                    (dx, dz) => at(dx, dz) >= 70, ox, oz, out bool healed);
+                for (int i = 0; i < n; i++) h = (h * 31 + (ox[i] + 20) * 41 + (oz[i] + 20)) % 1000000007L;
+                h = (h * 31 + n * 7 + (healed ? 1 : 0)) % 1000000007L;
+            }
+            return h;
+        }
+
         private static List<string> Burn(int n, int seed)
         {
             if (WindProbeTable() != WindProbeChecksum)
                 return new List<string> { "burn: wind probe table " + WindProbeTable() + " != the model's " + WindProbeChecksum + " (pyre_burn_sim.wind_probes and RM_BurnKernel.WindProbes disagree)" };
+            if (CarryPlanTable() != CarryPlanChecksum)
+                return new List<string> { "burn: carry plan table " + CarryPlanTable() + " != the model's " + CarryPlanChecksum + " (pyre_burn_sim.carry_plan and RM_BurnKernel.CarryPlan disagree)" };
             var fails = RunFamily("burn", n, seed, GenBurn, RunBurn);
             fails.AddRange(RunSeeded("burn-pure", Math.Max(1, n), seed, 31, r =>
             {
@@ -539,6 +578,50 @@ namespace RimMandrake.Pyrelands.Fuzz
                             "a fire is under both spread rules, or under neither (" + m + ")");
                         Check(!RM_BurnKernel.WindCarryDue(en, free, ground, true, int.MaxValue), "a carried fire is carried again");
                         Check(!RM_BurnKernel.WindCarryDue(en, free, ground, false, RM_BurnKernel.WindCarryTicks - 1), "a fire is carried before its time");
+                    }
+                    // the gap heal (RIMMANDRAKE_WIDEN_PYRE_FIRE_TRAILS_RUN_AS_RULER_STRAIGHT_LANES): on a random neighbourhood the plan
+                    // lights at most the carry cell and one heal cell; the carry cell is a Fuel probe; a Burning first probe lights
+                    // nothing; the heal cell is Fuel, one step beside the carry cell, never upwind of the fire; with no anchor
+                    // anywhere nothing is healed (the outermost lane never heals outward)
+                    {
+                        var g = new Dictionary<long, int>();
+                        bool noAnchor = r.Next(3) == 0;
+                        Func<int, int, int> v = (ax, az) =>
+                        {
+                            long key = ax * 1000L + az;
+                            if (!g.TryGetValue(key, out int val)) { val = r.Next(100); if (noAnchor && val >= 70) val = r.Next(70); g[key] = val; }
+                            return val;
+                        };
+                        Func<int, int, RM_BurnKernel.RM_CarryCell> cellF = (ax, az) =>
+                        {
+                            int val = v(ax, az);
+                            return val < 20 || val >= 80 ? RM_BurnKernel.RM_CarryCell.Bare : val < 70 ? RM_BurnKernel.RM_CarryCell.Fuel : RM_BurnKernel.RM_CarryCell.Burning;
+                        };
+                        int[] ox = new int[2], oz = new int[2];
+                        float rs = (float)r.NextDouble();
+                        float r1 = (float)r.NextDouble(), r2 = (float)r.NextDouble();
+                        int planned = RM_BurnKernel.CarryPlan(bearing, r1, r2, rs, reach, RM_BurnKernel.HealReach, cellF, (ax, az) => v(ax, az) >= 70, ox, oz, out bool healed);
+                        RM_BurnKernel.WindProbes(bearing, r1, r2, reach, wx, wz);
+                        Check(planned >= 0 && planned <= 2 && healed == (planned == 2), "carry plan lit " + planned + " cells, healed " + healed);
+                        if (cellF(wx[0], wz[0]) == RM_BurnKernel.RM_CarryCell.Burning) Check(planned == 0, "a carry whose first probe burns lit a cell (no merge)");
+                        if (planned >= 1)
+                        {
+                            Check(cellF(ox[0], oz[0]) == RM_BurnKernel.RM_CarryCell.Fuel, "the carry cell is not fuel");
+                            bool isProbe = false;
+                            for (int i = 0; i < wx.Length; i++) isProbe |= wx[i] == ox[0] && wz[i] == oz[0];
+                            Check(isProbe, "the carry cell is not one of the wind probes");
+                        }
+                        if (planned == 2)
+                        {
+                            Check(cellF(ox[1], oz[1]) == RM_BurnKernel.RM_CarryCell.Fuel, "the heal cell is not fuel");
+                            Check(Math.Max(Math.Abs(ox[1] - ox[0]), Math.Abs(oz[1] - oz[0])) == 1, "the heal cell is not beside the carry cell");
+                            double bn = ((bearing % 360.0) + 360.0) % 360.0;
+                            int cn = (int)Math.Floor(bn / 45.0 + 0.5) % 8;
+                            Check(ox[1] * RM_BurnKernel.Dir8X[cn] + oz[1] * RM_BurnKernel.Dir8Z[cn] >= 0, "the heal cell lies behind the fire's own row");
+                            Check(!noAnchor, "a gap was healed with no anchor anywhere");
+                        }
+                        Check(RM_BurnKernel.RecentBurn(true, -1, 0, 0) && RM_BurnKernel.RecentBurn(false, 100, 60100, 60000)
+                              && !RM_BurnKernel.RecentBurn(false, 100, 60101, 60000) && !RM_BurnKernel.RecentBurn(false, -1, 5, 60000), "RecentBurn boundary");
                     }
                     // the wind blows the way yesterday's fire walked in
                     for (int e = 0; e < 4; e++)

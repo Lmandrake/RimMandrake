@@ -84,6 +84,8 @@ REVIEWED = {
     "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitRooms.cs::sweepMap": "compared by reference; a new map re-sweeps",
     "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitStepCost.cs::current": "prefix/postfix __state hand-off inside one call",
     "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitDepthDraw.cs::cachedMap": "reference cache; a new map re-reads its component",
+    "src/RimMandrake/Pyrelands/Source/FireEcologyHook.cs::cachedMap": "reference cache (WindCarriedFire.Governs); a new map re-reads its component",
+    "src/RimMandrake/Pyrelands/Source/FireEcologyHook.cs::cachedBurn": "with cachedMap",
     "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitDepthDraw.cs::cachedComp": "with cachedMap",
     "src/RimMandrake/FlowWorks/Source/RM_Patch_SuperdeepShooting.cs::cachedMap": "reference cache; Forget on MapRemoved",
     "src/RimMandrake/FlowWorks/Source/RM_Patch_SuperdeepShooting.cs::cachedEngine": "with cachedMap",

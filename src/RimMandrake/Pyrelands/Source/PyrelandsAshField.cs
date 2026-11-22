@@ -274,6 +274,14 @@ namespace RimMandrake.Pyrelands
             active = true;
         }
 
+        /// <summary>The tick this cell last burned, -1 when never or when no stamps are kept (freshBurnBonusEnabled off). The
+        /// wind carry's gap heal reads it (RM_BurnKernel.RecentBurn).</summary>
+        public int BurnTickAt(IntVec3 c)
+        {
+            if (burnTick == null || burnTick.Length != map.cellIndices.NumGridCells || !c.InBounds(map)) return -1;
+            return burnTick[map.cellIndices.CellToIndex(c)];
+        }
+
         // Unsaved: the latest watered-until stamp this session laid or loaded, so the ash cover can skip a map with nothing wet.
         private int maxWateredUntil = -1;
         private int lastCoverDirtyTick = -99999;

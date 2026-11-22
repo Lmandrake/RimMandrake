@@ -136,6 +136,31 @@
     "margins": []
    }
   },
+  "T_BURN_LANES": {
+   "id": "T_BURN_LANES",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_burn_front_lanes.py",
+   "observes": "a burn line burns as a front, not one-cell lanes (visit 5's strange thing): over the scar arc (radius 35/45/61, wind from each edge) and the scheduled front at every 15 degrees, on cover 1.00/0.97/0.80/0.70, with the ash stamps on and off, the share of burned cells in one-cell strands stays within 0.10 of the game's own even-spread fire on the same grass, and the burn is no wider than under the carry alone; red on the rule before the fix (--old) and on a carry that lights two probes; the model's carry equals RM_BurnKernel.CarryPlan (CarryPlanChecksum)",
+   "reads": [
+    "src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs",
+    "src/RimMandrake/Pyrelands/pyre_burn_sim.py",
+    "src/RimMandrake/Pyrelands/Source/SelfTest/Fuzz/PyrelandsFuzz.cs",
+    "src/RimMandrake/Pyrelands/Source/PyrelandsTuning.cs"
+   ],
+   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_burn_front_lanes.py",
+   "item": "RIMMANDRAKE_WIDEN_PYRE_FIRE_TRAILS_RUN_AS_RULER_STRAIGHT_LANES",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 137.0,
+    "last": "PASS: 7 of 7 rows hold",
+    "at": "2026-11-22T22:40:00Z",
+    "result": "PASS",
+    "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_burn_front_lanes.py",
+    "margins": []
+   }
+  },
   "T_LINT": {
    "id": "T_LINT",
    "kind": "offline",
@@ -1694,6 +1719,7 @@
    "supports": [
     "T_FUZZ",
     "T_BURN_ECOLOGY",
+    "T_BURN_LANES",
     "LOOK_STAGE8"
    ],
    "held": [],

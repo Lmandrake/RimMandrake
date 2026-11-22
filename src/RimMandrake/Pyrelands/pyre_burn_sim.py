@@ -51,8 +51,12 @@ DEFAULTS = dict(
     wind_lin=None,           # candidate (owner, 2026-11-16): spread weight 1 + a cos: less against the wind, vanilla across, more along
     wind_side=None,          # candidate in between: weight `side` across the wind, rising to 2 straight downwind, 0 upwind
     wind_drift_deg_per_day=0.0,
-    carried=False,           # the pick: the wind carries the fire (RM_BurnKernel.WindProbes; one cell on per fire, once)
+    carried=False,           # the pick: the wind carries the fire (RM_BurnKernel.CarryPlan: one cell on per fire, once, and one gap cell)
     carry_ticks=1200, carry_reach=2,   # RM_BurnKernel.WindCarryTicks / WindCarryReach (the selftest reads them from the C# file)
+    heal_reach=5, heal_recent=60000,   # RM_BurnKernel.HealReach / HealRecentTicks (selftest_pyrelands_burn_front_lanes.py reads them)
+    carry_merge=True,        # with heal_reach=0 and this False: the rule before 2026-11-22 (lanes; the lanes test's --old)
+    burn_stamps=True,        # RM_PyrelandsSettings.freshBurnBonusEnabled: the ash field stamps every burning cell; off, the heal
+                             # reads live fires and MapComponent_BurnLine.CarriedAt (cells whose fire was carried on) only
     carry_heal=None,         # DROPPED candidate: lanes that heal (wind_carry_plan); None = the shipped one-cell rule
     carry_splits=1,          # MUTANT only: a fire lights this many cells (2 = a fire makes two, the flood comes back)
     cure_days=0.0,           # DROPPED candidate: grass younger than this does not carry fire
@@ -97,6 +101,53 @@ def wind_probes(bearing_deg, roll01, roll2, reach):
 
 
 BARE, FUEL, BURNING = 0, 1, 2
+
+
+def heal_dirs(bearing_deg, roll_side):
+    """RM_BurnKernel.HealDirs: the four steps a carried fire looks along, beside it, for a gap in its own line, from the
+    compass step nearest the bearing: the two at 90 degrees (beside), then the two at 135 degrees (beside and behind: they
+    close the checkerboard a line lit across a diagonal wind leaves). roll_side picks which side comes first."""
+    b = bearing_deg % 360.0
+    n = int(math.floor(b / 45.0 + 0.5)) % 8
+    s1, s2 = (1, -1) if roll_side < 0.5 else (-1, 1)
+    return [DIRS8[(n + 2 * s1) % 8], DIRS8[(n + 2 * s2) % 8], DIRS8[(n + 3 * s1) % 8], DIRS8[(n + 3 * s2) % 8]]
+
+
+def carry_plan(bearing_deg, roll01, roll2, roll_side, reach, heal_reach, cell, anchor, splits=1, merge=True):
+    """RM_BurnKernel.CarryPlan: the cells one carried fire lights, as offsets from it, and how many of them are the heal
+    (0 or 1). cell(dx, dz) is BARE, FUEL or BURNING; anchor(dx, dz) is true where a fire burns or the ground burned lately.
+    RIMMANDRAKE_WIDEN_PYRE_FIRE_TRAILS_RUN_AS_RULER_STRAIGHT_LANES: with the carry alone a line lit with gaps (the scar's
+    arc lights every 3rd or 4th cell) walked as separate one-cell lanes for good, grass standing between them.
+    1. Carry: the first probe (wind_probes) that holds FUEL. A probe that holds a fire already ends the carry with nothing
+       lit (merge): the lane runs on in that fire. Without it a gap cell lit beside a lane shoves every lane beside it one
+       cell out and the flank creeps at 45 degrees, a flood (measured 2026-11-22: 10,600 cells burned against 1,440).
+    2. Heal (heal_reach > 0): from that cell T, the first heal_dirs step s whose cell T+s holds FUEL and whose ray T+k*s,
+       k = 2 .. heal_reach + 1, meets an anchor (the ray passes bare cells, as the carry's reach does: stopped at the first
+       bare cell, a 70%-cover burn left 0.38 of its cells in one-cell strands, vanilla's own fire 0.23; passing, 0.27).
+       That one gap cell is lit too. The fire's
+       own trail never lies on those rays (a lane moves at most one cell aside a row), so the outermost lane of a line
+       never heals outward: the burn is never wider than what was lit, or what it ran into.
+    splits (MUTANT only): the carry lights that many probes."""
+    out = []
+    for dx, dz in wind_probes(bearing_deg, roll01, roll2, reach):
+        st = cell(dx, dz)
+        if st == BURNING and merge:
+            break
+        if st == FUEL:
+            out.append((dx, dz))
+            if len(out) >= splits:
+                break
+    if not out or heal_reach <= 0:
+        return out, 0
+    tx, tz = out[0]
+    for sx, sz in heal_dirs(bearing_deg, roll_side):
+        if cell(tx + sx, tz + sz) != FUEL:
+            continue
+        for k in range(2, heal_reach + 2):
+            ax, az = tx + k * sx, tz + k * sz
+            if anchor(ax, az):
+                return out + [(tx + sx, tz + sz)], 1
+    return out, 0
 CARDINAL = [(0, 1), (1, 0), (0, -1), (-1, 0)]       # the wind blows toward north, east, south, west
 
 
@@ -136,6 +187,36 @@ def wind_carry_plan(state, roll01, reach, heal):
     return out
 
 
+def carry_plan_checksum(cases=1200, reach=2, heal_reach=5):
+    """The CarryPlan table both sides compute (PyrelandsFuzz.CarryPlanTable asserts CarryPlanChecksum): per case a 17 x 17
+    neighbourhood drawn by a 31-bit LCG (20% bare, 50% fuel, 10% burning, 20% burned lately: bare but an anchor), a bearing
+    on a 7.5-degree step and exact-binary rolls, so float and double agree. Hashes every planned cell, the count and the heal."""
+    h = 0
+    for c in range(cases):
+        x = 12345 + c
+        grid = {}
+        for dz in range(-8, 9):
+            for dx in range(-8, 9):
+                x = (x * 1103515245 + 12345) & 0x7fffffff
+                grid[(dx, dz)] = (x >> 8) % 100
+        bearing = (c * 75 % 3600) / 10.0
+        r1, r2, rs = (c * 3 % 8) / 8.0, (2 * (c * 5 % 8) + 1) / 16.0, (2 * (c * 7 % 4) + 1) / 8.0
+
+        def cell(dx, dz):
+            v = grid.get((dx, dz))
+            if v is None or v < 20 or v >= 80: return BARE
+            return FUEL if v < 70 else BURNING
+
+        def anchor(dx, dz):
+            v = grid.get((dx, dz))
+            return v is not None and v >= 70
+        plan, healed = carry_plan(bearing, r1, r2, rs, reach, heal_reach, cell, anchor)
+        for dx, dz in plan:
+            h = (h * 31 + (dx + 20) * 41 + (dz + 20)) % 1000000007
+        h = (h * 31 + len(plan) * 7 + healed) % 1000000007
+    return h
+
+
 class Sim:
     def __init__(self, plant, plantable, seed=0, **kw):
         self.P = dict(DEFAULTS); self.P.update(kw)
@@ -149,6 +230,7 @@ class Sim:
         self.acc = np.zeros(plant.shape)
         self.burn = np.full(plant.shape, -1, np.int64)
         self.born = np.zeros(plant.shape, np.int64); self.carried = np.zeros(plant.shape, bool)
+        self.carried_at = np.full(plant.shape, -1, np.int64)
         self.tick = 0
         self.weather, self.last_weather = "AshDrift", "AshDrift"
         self.w_age, self.w_dur = 0, 10000
@@ -296,16 +378,29 @@ class Sim:
             # spread
             if P["carried"]:
                 due = (~out) & (~self.carried[zs, xs]) & (self.tick - self.born[zs, xs] >= P["carry_ticks"])
-                for z0, x0 in zip(zs[due], xs[due]):
-                    self.carried[z0, x0] = True; self.carries += 1
+                dz_, dx_ = zs[due], xs[due]
+                for i in rng.permutation(len(dz_)):      # the game ticks its fires in no row order
+                    z0, x0 = int(dz_[i]), int(dx_[i])
+                    self.carried[z0, x0] = True; self.carries += 1; self.carried_at[z0, x0] = self.tick
                     if P["carry_heal"] is None:
-                        # THE SHIPPED RULE (RM_BurnKernel.WindProbes): the first cell downwind that can take fire, and only it.
-                        left = P["carry_splits"]
-                        for dx, dz in wind_probes(self.wind, rng.random(), rng.random(), P["carry_reach"]):
+                        # THE SHIPPED RULE (RM_BurnKernel.CarryPlan): the first cell downwind that can take fire, unless the lane
+                        # runs on in a fire already there; and one gap cell of its own line beside it.
+                        def cell(dx, dz, x0=x0, z0=z0):
                             tx, tz = x0 + dx, z0 + dz
-                            if 0 <= tx < self.W and 0 <= tz < self.H and self.chance(tz, tx) > 0:
-                                self.start(tz, tx, 0.1); self.carry_lit += 1; left -= 1
-                                if left <= 0: break
+                            if not (0 <= tx < self.W and 0 <= tz < self.H): return BARE
+                            if self.size[tz, tx] > 0: return BURNING
+                            return FUEL if self.chance(tz, tx) > 0 else BARE
+
+                        def anchor(dx, dz, x0=x0, z0=z0):
+                            tx, tz = x0 + dx, z0 + dz
+                            if not (0 <= tx < self.W and 0 <= tz < self.H): return False
+                            stamp = max(int(self.burn[tz, tx]) if P["burn_stamps"] else -1, int(self.carried_at[tz, tx]))
+                            return bool(self.size[tz, tx] > 0 or (stamp >= 0 and self.tick - stamp <= P["heal_recent"]))
+                        plan, healed = carry_plan(self.wind, rng.random(), rng.random(), rng.random(), P["carry_reach"],
+                                                  P["heal_reach"], cell, anchor, P["carry_splits"], P["carry_merge"])
+                        for dx, dz in plan:
+                            self.start(z0 + dz, x0 + dx, 0.1)
+                        self.carry_lit += len(plan) - healed; self.heal_lit += healed
                         continue
                     # DROPPED candidate (lanes that heal): see wind_carry_plan.
                     ux, uz = CARDINAL[int(round(self.wind / 90.0)) % 4]; px, pz = uz, -ux

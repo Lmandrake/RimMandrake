@@ -7,7 +7,7 @@ a site built with the fire mechanics off and the sky locked clear, so nothing ev
 walk saves one opening front burned 78% of the map in 4 days. This check runs the whole-map model (pyre_burn_sim.py: vanilla
 Fire, the weather chooser, the fire clock, the keep-alive, black rain, regrowth) and reads the EXPERIENCES the bars state:
 
-  burn_line_walks              a line walks the map; it is never a flood; it is never out for long
+  burn_line_walks              a line walks the map and never widens; it is never a flood; it is never out for long
   grass_carpets_and_regreens   the carpet stays; a fresh scar does not carry fire again at once
   three_skies                  black rain puts fires out, and the everyday line does not call it down
 
@@ -84,20 +84,25 @@ def worst_day_burn(s):
     return max(s.lit_by_day.values() or [0]) / float(s.plantable.sum())
 
 
-def line_run(cover, seed, wind, carried=True, splits=1, size=250):
+def line_run(cover, seed, wind, carried=True, splits=1, size=250, **rule):
     rng = np.random.default_rng(seed)
     plant = np.where(rng.random((size, size)) < cover, np.where(rng.random((size, size)) < 0.79, 1, 2), 0).astype(np.int8)
     s = M.Sim(plant, np.ones_like(plant, bool), seed, weather=False, clock=False, keepalive=False, sprout_per_day=0,
-              loss_per_day=0, wind=wind, carried=carried, carry_splits=splits, **CARRY)
+              loss_per_day=0, wind=wind, carried=carried, carry_splits=splits, **dict(CARRY, **rule))
     r = math.radians(wind)
     s.light_line(int(size / 2 - 100 * math.sin(r)), int(size / 2 - 100 * math.cos(r)), WIDTH, 0.35)
     lit = int((s.size > 0).sum())
+    zl, xl = np.nonzero(s.size > 0)
+    across = lambda x, z: (x - size / 2) * math.cos(r) - (z - size / 2) * math.sin(r)
+    a0 = across(xl, zl)
     peak = lit
     while s.tick < 8 * DAY and (s.size > 0).any():
         s.beat()
         peak = max(peak, int((s.size > 0).sum()))
     zs, xs = np.nonzero(s.burn >= 0)
     reach = float(((xs - size / 2) * math.sin(r) + (zs - size / 2) * math.cos(r)).max() + 100) if len(xs) else 0.0
+    a = across(xs, zs)
+    s.widen = max(float(a0.min() - a.min()), float(a.max() - a0.max()), 0.0) if len(xs) and len(xl) else 0.0
     return lit, reach, peak, s
 
 
@@ -150,26 +155,32 @@ def main(argv):
 
     # ---- 3. a line stays a line: every cover, bearing and seed --------------------------------------------------------
     seeds = (0, 1) if quick else (0, 1, 2)
-    worst_reach, worst_peak, worst_case = 1e9, 0.0, ""
+    worst_reach, worst_widen, ctrl_widen, worst_case, widen_case = 1e9, 0.0, 0.0, "", ""
     for cover in (0.70, 0.80, 0.97):
         for wind in (0.0, 30.0, 90.0, 200.0, 315.0):
             for sd in seeds:
                 lit, reach, peak, s = line_run(cover, sd, wind)
                 if reach < worst_reach:
                     worst_reach, worst_case = reach, "cover %.2f wind %.0f seed %d" % (cover, wind, sd)
-                worst_peak = max(worst_peak, peak / max(1, lit))
+                if s.widen > worst_widen:
+                    worst_widen, widen_case = s.widen, "cover %.2f wind %.0f seed %d" % (cover, wind, sd)
+                ctrl_widen = max(ctrl_widen, line_run(cover, sd, wind, heal_reach=0, carry_merge=False)[3].widen)
                 assert s.carry_lit <= s.carries
     row("a lit line crosses the map (burn_line_walks)", worst_reach >= 200, "reach %.0f cells (%s)" % (worst_reach, worst_case),
         ">= 200 of the 200+ to the far edge", "%d-cell line, cover 0.70/0.80/0.97 x 5 bearings x %d seeds" % (WIDTH, len(seeds)))
-    # each fire burns for about two carry intervals, so a line holds about two fires a lane, never a growing number
-    row("a line never widens (no fire makes two)", worst_peak <= 3.0, "peak fires %.1f x cells lit" % worst_peak,
-        "<= 3 x the cells lit", "the same 45 line runs")
+    # RIMMANDRAKE_WIDEN_PYRE_FIRE_TRAILS_RUN_AS_RULER_STRAIGHT_LANES: this row read "peak fires <= 3 x cells lit (no fire makes
+    # two)". The gap heal now lets a carried fire light one cell beside it, into its own line's gap, so a line lit with holes
+    # (patchy grass, or the checkerboard across a diagonal wind) burns solid: 5.2 x lit, while the burn grew no wider (27-63
+    # cells across against 35-67 under the carry alone, the same 45 runs). The row now reads the width itself, against the
+    # carry alone on the same runs; a fire that makes two outside its line still floods it (the planted row below).
+    row("a line never widens", worst_widen <= ctrl_widen, "%.1f cells beyond the lit line (%s)" % (worst_widen, widen_case),
+        "<= %.1f (the carry alone, no merge, no heal)" % ctrl_widen, "the same 45 line runs, each also run as the control")
     died = max(line_run(0.30, sd, 90.0)[1] for sd in seeds)
     row("a fresh scar does not carry the line again", died < 100, "reach %.0f cells" % died, "< 100 (it dies in thin regrowth)",
         "%d-cell line into 30%% cover x %d seeds" % (WIDTH, len(seeds)))
     lit, reach, peak, s2 = line_run(0.97, 0, 90.0, splits=2)
-    row("PLANTED FAULT a fire that lights two cells is caught", peak / max(1, lit) > 3.0, "peak fires %.1f x cells lit" % (peak / max(1, lit)),
-        "> 3 x (the row above goes red)", "the same line with carry_splits=2")
+    row("PLANTED FAULT a fire that lights two cells is caught", s2.widen > ctrl_widen, "%.1f cells beyond the lit line" % s2.widen,
+        "> %.1f (the row above goes red)" % ctrl_widen, "the same line with carry_splits=2")
 
     # ---- 4. a season with the sky free ---------------------------------------------------------------------------------
     days = 20 if quick else 40

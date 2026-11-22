@@ -548,6 +548,103 @@ namespace RimMandrake.Pyrelands
             }
         }
 
+        // ------------------------------------------------------------ a line closes its own gaps
+        // RIMMANDRAKE_WIDEN_PYRE_FIRE_TRAILS_RUN_AS_RULER_STRAIGHT_LANES (Pyrelands visit 5, 2026-11-22): the scar's arc lights every
+        // 3rd or 4th cell (ArcStride), and each fire carried one cell downwind and never aside, so the burn walked as one-cell lanes
+        // with grass standing between them for good, ruler-straight under a wind on a compass step (bar burn_line_walks: "a natural
+        // grass fire"). Two rules close the gaps and keep the line no wider than it was lit:
+        //   merge: a probe that holds a fire already ends the carry with nothing lit; the lane runs on in that fire. Without it a
+        //          gap cell lit beside a lane shoves every lane beside it one cell out, and the flank creeps at 45 degrees (a flood:
+        //          the model burned 10,600 cells against 1,440 in a day);
+        //   heal:  the carried fire lights one more cell beside its new cell, only into a gap that another lane or a recent burn
+        //          closes within HealReach. Its own trail never lies on those rays, so the outermost lane never heals outward.
+        // A sideways wobble of the carry was tried and dropped (measured 2026-11-22): the flanks diffuse, and the 9-cell scene of
+        // bar fire_walks_with_wind put a fire in its outer lanes on 1 to 2 of 40 seeds. Model: pyre_burn_sim.carry_plan (the
+        // fuzz's CarryPlanChecksum ties the two); check: selftest_pyrelands_burn_front_lanes.py.
+
+        /// <summary>How far across a carried fire looks for the lane that closes a gap. The widest gap a lit line leaves: the
+        /// scar's arc at its largest (radius 50 pushed out by YesterdayFireRagged 0.22, about 165 arc cells over the cap of 32 fires,
+        /// measured on the model's arc) lights every 6th cell, 5 cells between fires.</summary>
+        public const int HealReach = 5;
+
+        /// <summary>How lately a cell must have burned to close a gap: one day. The lanes of one line pass a row at different
+        /// times: the arc's flank lanes start up to r (1 - cos 60) = 25 rows behind its middle, 25 carries x 1,200 ticks =
+        /// 30,000 ticks. A day covers that twice and stays under FireFrontMinDays (2), so a finished front's trail is not
+        /// taken for this one's.</summary>
+        public const int HealRecentTicks = 60000;
+
+        public enum RM_CarryCell { Bare, Fuel, Burning }
+
+        /// <summary>A cell closes a gap: a fire burns on it, or it burned within windowTicks (burnTick -1 = never).</summary>
+        public static bool RecentBurn(bool burning, int burnTick, int now, int windowTicks)
+        {
+            return burning || (burnTick >= 0 && now - burnTick <= windowTicks);
+        }
+
+        /// <summary>The four steps a carried fire looks along for a gap in its own line, from the compass step nearest the
+        /// bearing: the two at 90 degrees (beside), then the two at 135 degrees (beside and behind: they close the checkerboard
+        /// a line lit across a diagonal wind leaves). rollSide picks which side comes first.</summary>
+        public static void HealDirs(float bearingDeg, float rollSide, int[] dx, int[] dz)
+        {
+            double b = bearingDeg % 360.0;
+            if (b < 0) b += 360.0;
+            int n = (int)Math.Floor(b / 45.0 + 0.5) % 8;
+            int s1 = rollSide < 0.5f ? 1 : -1, s2 = -s1;
+            int[] dirs = { (n + 2 * s1 + 8) % 8, (n + 2 * s2 + 8) % 8, (n + 3 * s1 + 8) % 8, (n + 3 * s2 + 8) % 8 };
+            for (int i = 0; i < 4; i++)
+            {
+                dx[i] = Dir8X[dirs[i]];
+                dz[i] = Dir8Z[dirs[i]];
+            }
+        }
+
+        /// <summary>The cells one carried fire lights, as offsets from it, written to outX/outZ (room for 2); returns how many.
+        /// cell(dx, dz) says what lies there; anchor(dx, dz) is RecentBurn there. 1. Carry: the first WindProbes cell that holds
+        /// Fuel; a probe that holds a fire ends the carry with nothing lit (merge). 2. Heal: from that cell T, the first HealDirs
+        /// step s whose cell T+s holds Fuel and whose ray T+k*s, k = 2 .. healReach + 1, meets an anchor: that gap cell too
+        /// (healed = true). The ray passes bare cells, as the carry's own reach does: a ray stopped at the first bare cell left
+        /// 0.38 of a 70%-cover burn in one-cell strands against vanilla's own fire's 0.23; passing them, 0.27.</summary>
+        public static int CarryPlan(float bearingDeg, float roll01, float roll2, float rollSide, int reach, int healReach,
+            Func<int, int, RM_CarryCell> cell, Func<int, int, bool> anchor, int[] outX, int[] outZ, out bool healed)
+        {
+            healed = false;
+            int[] px = new int[3 * reach], pz = new int[3 * reach];
+            WindProbes(bearingDeg, roll01, roll2, reach, px, pz);
+            int n = 0;
+            for (int i = 0; i < px.Length; i++)
+            {
+                RM_CarryCell st = cell(px[i], pz[i]);
+                if (st == RM_CarryCell.Burning) break;
+                if (st == RM_CarryCell.Fuel)
+                {
+                    outX[0] = px[i];
+                    outZ[0] = pz[i];
+                    n = 1;
+                    break;
+                }
+            }
+            if (n == 0 || healReach <= 0) return n;
+            int tx = outX[0], tz = outZ[0];
+            int[] hx = new int[4], hz = new int[4];
+            HealDirs(bearingDeg, rollSide, hx, hz);
+            for (int d = 0; d < 4; d++)
+            {
+                if (cell(tx + hx[d], tz + hz[d]) != RM_CarryCell.Fuel) continue;
+                for (int k = 2; k <= healReach + 1; k++)
+                {
+                    int ax = tx + k * hx[d], az = tz + k * hz[d];
+                    if (anchor(ax, az))
+                    {
+                        outX[1] = tx + hx[d];
+                        outZ[1] = tz + hz[d];
+                        healed = true;
+                        return 2;
+                    }
+                }
+            }
+            return 1;
+        }
+
         /// <summary>Is this fire due to be carried on? Only a free-standing ground fire on Pyrelands ground, once, at its age.</summary>
         public static bool WindCarryDue(bool enabled, bool freeStanding, bool onPyrelandsGround, bool alreadyCarried, int ticksSinceSpawn)
         {
