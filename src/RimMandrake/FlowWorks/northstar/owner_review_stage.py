@@ -870,7 +870,11 @@ def row_bars_bridge_kinds(s, L):
     for k, tier in enumerate(("steel", "heavy")):
         x0 = bx + k * BRIDGE_PITCH
         span_pit(s, x0, z)
-        s.proof(SUSP, "ProofJetty", "%d,%d;%d,%d;%s;god" % (x0, z, x0 + 4, z, tier))
+        # root on the ground west of the pit, 2 squares out (RM_SuspensionMath.JettyMaxCells): a 4-square drag is refused and
+        # left both stations an empty pit on visits 3 and 4 (the reply's ok=False was never read)
+        ok, txt = s.proof(SUSP, "ProofJetty", "%d,%d;%d,%d;%s;god" % (x0, z, x0 + 2, z, tier))
+        if ok and "ok=True" not in txt and not s.dry:
+            s.notes.append("jetty %s at (%d, %d) not built: %s" % (tier, x0, z, txt[:160]))
         cap.append(s.station("bars_bridge_kinds", (x0, z - 1, 6, 3), "%s jetty reaching out over a 4 m pit" % tier, lane=1,
                              short="%s jetty" % tier))
     for k, look in enumerate(("Scrapper", "Industrial", "Modern", "Futuristic")):
