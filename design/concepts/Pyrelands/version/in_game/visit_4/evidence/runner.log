@@ -43,3 +43,15 @@ DONE script:design/concepts/Pyrelands/version/in_game/visit_4/scripts/inspect_pr
 DONE firehawk@firehawk_repaired reload_rc=0 rc=1 116s 23:34:03
 END batch3a 2026-11-21 23:34:03
 START batch3b 2026-11-21 23:34:03
+DONE firehawk@firehawk_planted_no_seek reload_rc=0 rc=1 119s 23:36:02
+END batch3b 2026-11-21 23:36:02
+START batch3c 2026-11-21 23:36:02
+DONE script:design/concepts/Pyrelands/version/in_game/visit_4/scripts/offctl_probe.py@offctl_probe_on reload_rc=0 rc=0 164s 23:38:46
+END batch3c 2026-11-21 23:38:46
+START batch4 2026-11-21 23:38:47
+DONE flamefang_venom@flamefang_venom_healed reload_rc=0 rc=1 353s 23:44:40
+END batch4 2026-11-21 23:44:40
+START batch5 2026-11-21 23:44:43
+DONE script:design/concepts/Pyrelands/version/in_game/visit_4/scripts/fires_probe.py@fires_probe reload_rc=0 rc=0 45s 23:45:28
+END batch5 2026-11-21 23:45:28
+START batch6 2026-11-21 23:45:32

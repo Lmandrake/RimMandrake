@@ -3654,8 +3654,13 @@ def flamefang_venom(t):
     # SITE (visit 4, 2026-11-21, game a): the control's two fennec scratches (6.17 each, after the fauna normalization)
     # bled on untended, and it died of blood loss inside the next row, which then read RESTART and stopped the chain. Its
     # reading is taken above, so it is healed here and is no bystander to bleed out in the rows after it.
+    # And it stays drafted after _bite_until (no sleep, no meals of its own): in visit 4's rerun it was downed inside the
+    # wait-out's days and voided that row too. Undrafted here; the wait-out also counts it among the chain's earlier
+    # fixtures, which are not its subjects (_GEN["venom_fixtures"]).
     if _live(t) and cid2:
         t.bridge_call("jawa/pawn_health", pawn=cid2, action="healAll", confirmDestructive=True)
+        t.bridge_call("jawa/set_draft", pawnId=cid2, drafted=False)
+        _GEN.setdefault("venom_fixtures", []).append(cid2)
     _ten_flamefang_venom(t)
 
 
@@ -4753,7 +4758,8 @@ def _ten_embergrass_regrow(t):
         t.screenshot(rect=(x - 10, z - 3, 20, 6))
 
 
-PLANT_REGROW_WET_OFF_ENV = "PYRE_PLANT_REGROW_WET_ROOTS_OFF"   # planted state: the ash field's water switched off at sowing
+PLANT_REGROW_WET_OFF_ENV = "PYRE_PLANT_REGROW_WET_ROOTS_OFF"
+PLANT_VENOM_TEND_WRONG_ENV = "PYRE_PLANT_VENOM_TEND_WRONG_PATIENT"   # planted state: the tend lands on the untended patient   # planted state: the ash field's water switched off at sowing
 
 
 def _ten_furnace_sleep(t):
@@ -4842,16 +4848,38 @@ def _ten_flamefang_venom(t):
             if _live(t) and not _has_hediff(row, VENOM):
                 _unmeasured(t, "the %s patient was never envenomed: %r" % (k, (row or {}).get("health")))
         doc = _spawn_colonist(t, x + 12, z)
-        r = t.bridge_call("jawa/ordered_job", pawnId=doc, jobDef="TendPatient", targetAId=pts["tended"])
+        _GEN.setdefault("venom_fixtures", []).extend([pts["tended"], pts["untended"], doc])
+        wrong = os.environ.get(PLANT_VENOM_TEND_WRONG_ENV) == "1"
+        if wrong:
+            _note(t, "PLANTED FAULT", "%s=1: the doctor tends the untended patient, as if the tend did nothing for the "
+                  "tended one" % PLANT_VENOM_TEND_WRONG_ENV)
+        r = t.bridge_call("jawa/ordered_job", pawnId=doc, jobDef="TendPatient",
+                          targetAId=pts["untended" if wrong else "tended"])
+        # HARNESS (Pyrelands visit 4, 2026-11-21): the doctor walks over and tends inside the first hour, so that hour's rise
+        # was mostly untended (0.0152 = 13 untended updates) and the row failed it, though the bar compares 'every hour from
+        # the tend onwards'. The hourly series starts once the doctor's TendPatient job has run and ended.
+        tend_seen, tend_wait = False, 0
+        while _live(t) and tend_wait < TEN_HOUR:
+            j = _job_of(t, doc)
+            if j == "TendPatient":
+                tend_seen = True
+            elif tend_seen:
+                break
+            _bite_wait(t, 30)
+            tend_wait += 30
         series = {"tended": [], "untended": []}
         for _ in range(VENOM_HOURS + 1):
             for k, pid in pts.items():
                 series[k].append(hediff_severity(_pawn_row(t, pid, health=True), VENOM))
             _bite_wait(t, TEN_HOUR)
         if _live(t):
-            _note(t, "venom severity each hour, tended vs untended", {"order": r, "series": series})
+            _note(t, "venom severity each hour, tended vs untended", {"order": r, "series": series,
+                                                                         "tendSeen": tend_seen, "tendEndedAfterTicks": tend_wait})
             if not (r or {}).get("success"):
                 _unmeasured(t, "the TendPatient order was refused: %r" % r)
+            if not tend_seen:
+                _unmeasured(t, "the doctor's TendPatient job was never seen in the hour after the order (polled every 30 "
+                               "ticks), so 'from the tend onwards' has no start: %r" % r)
             if any(v is None for k in series for v in series[k]):
                 _unmeasured(t, "venom severity unread: %r" % series)
             ok, why = tended_rises_less(series["tended"], series["untended"])
@@ -4862,7 +4890,10 @@ def _ten_flamefang_venom(t):
     # row's ten days; one died of the venom and two were downed, which voided the row (RESTART). They are not its
     # subject, so their fate is left out of its damage reading.
     retired = _retire_venom_patients(t)
-    _GEN["not_subjects"] = list(retired)
+    # SITE (Pyrelands visit 4): the earlier rows' other colonists (the plain-bite control, the tended pair, the doctor)
+    # are this chain's fixtures too, drafted or bitten for their own rows; a bystander's fate is not the wait-out's answer.
+    fixtures = [p_ for p_ in _GEN.pop("venom_fixtures", None) or [] if p_ and p_ not in retired]
+    _GEN["not_subjects"] = list(retired) + fixtures
     with _comp(t, "venom_wait_out"):
         if _live(t):
             _note(t, "earlier venom patients on the map, not this row's subjects", retired)
@@ -5510,6 +5541,13 @@ PLANT_BURNLINE_TOGGLE_IGNORED_ENV = "PYRE_PLANT_BURNLINE_TOGGLE_IGNORED"   # pla
 # (KeepTheBurnAlive). burnLineEnabled and fireClockEnabled are independent switches (MapComponent_BurnLine, MOD_OPTIONS_
 # RETROFIT_1): visit 3's control switched off the burn line alone, the fire clock lit its fronts, and 161 fires read FAIL.
 OFF_CONTROL_HOLDS = ("fireClockEnabled", "fireHawkSpreadEnabled")
+# HARNESS (visit 4, 2026-11-21): the quiet window plus a few watch intervals fits ONE reseed attempt (KeepAlive retries
+# every StandingBurnRetryTicks 2500, the lawful-cell search takes 40 random tries), so a planted run whose one attempt
+# found no cell read 0 fires and the control could not fail (visit 3). Four more retries; with the toggle off nothing else
+# lights, so the longer window only makes the PASS stricter. Visit 4's probe (burnLineEnabled on, the other sources held
+# off) read 1-2 burn-line fires at every sample from the window's end to 15000 ticks past it.
+BURN_RETRY_TICKS = 2500        # PyrelandsTuning.StandingBurnRetryTicks
+OFF_CONTROL_WAIT_TICKS = BURN_LINE_WAIT_TICKS + 4 * BURN_RETRY_TICKS
 
 
 def _burn_line_off_control(t):
@@ -5524,7 +5562,7 @@ def _burn_line_off_control(t):
         t.bridge_call("jawa/weather_set", weather="Clear", lockWeather=True)
         try:
             _extinguish(t)
-            _wait(t, BURN_LINE_WAIT_TICKS)
+            _wait(t, OFF_CONTROL_WAIT_TICKS)
             n = len(_r6_fires(t))
         finally:
             _set(t, dict([("burnLineEnabled", True)] + [(k, str(v) == "True") for k, v in prior.items()]))

@@ -273,7 +273,14 @@ class Game(object):
             target.tended_until, target.tend_q = self.tick + 12 * HOUR, 0.7
             for h in target.hediffs:
                 h["tended"] = True
+            # the doctor's TendPatient job runs a few hundred ticks (walk and tend), as the live game reads it through
+            # jawa/site_state (Pyrelands visit 4: the row starts its hourly series once that job has ended)
+            self.tend_job = (kw.get("pawnId"), self.tick + 400)
             return {"success": True}
+        if tool == "jawa/site_state":
+            doc, end = getattr(self, "tend_job", (None, -1))
+            return {"success": True, "pawns": [{"id": q.id, "job": "TendPatient" if (q.id == doc and self.tick < end)
+                                                else None} for q in self.pawns.values() if q.alive]}
         return {"success": True}
 
 
