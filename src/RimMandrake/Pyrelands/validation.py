@@ -4160,7 +4160,7 @@ def _walk_vanish_arrivals(session, r):
 
 
 WALK_WILDLIFE = "walk: harm to a pawn not the player's, or a colonist's panic flight, read back"
-WALK_WILDLIFE_KINDS = ("hurt", "downed", "mental", "death")
+WALK_WILDLIFE_KINDS = ("hurt", "downed", "mental", "death", "starving")   # visit 5 walk 2: three starving fire-wasps rode with a downing
 WALK_PANIC_STATES = ("PanicFlee", "PanicFleeFire")   # a colonist running from fire: no harm, the biome's ordinary day
 
 
