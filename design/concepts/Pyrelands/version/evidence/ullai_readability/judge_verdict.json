@@ -1,0 +1,49 @@
+{
+  "judge": "rm-judge opus, fresh",
+  "date": "2026-11-22",
+  "item": "RIMMANDRAKE_JUDGE_PYRE_ULLAI_HERD_READS_AS_GREY_RUBBLE",
+  "promise": "each graphic object is recognisable as what it is (owner rule)",
+  "brief": "design/RimMandrake/art_judge_brief.md (B1a no outlines, B2 legibility advisory, C2, D1)",
+  "evidence": [
+    "design/concepts/Pyrelands/version/evidence/ullai_readability/ullai_vs_vanilla_20ppc.png",
+    "design/concepts/Pyrelands/version/evidence/ullai_readability/ullai_vs_vanilla_48ppc.png",
+    "design/concepts/Pyrelands/version/in_game/visit_5/screenshots/walk_station_creatures.jpg",
+    "src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/Ullai/Ullai_{south,east,north}.png"
+  ],
+  "measurements": {
+    "silhouette_width_frac_of_canvas": {"ullai_south": 0.17, "ullai_north": 0.15, "ullai_east": 0.64,
+      "vanilla_south_for_comparison": {"ElkFemale": 0.27, "DeerFemale": 0.27, "Dromedary": 0.36, "Gazelle": 0.37, "Alpaca": 0.31}},
+    "ullai_south_width_px": {"20ppc": 6.7, "48ppc": 16},
+    "share_of_opaque_px_darker_than_L70": {"south": 0.43, "north": 0.39, "east": 0.34},
+    "ground_luminance_L_p10_p50_p90": [37, 77, 116],
+    "ullai_pale_body_median_L": 124,
+    "method": "PIL alpha>128 bbox and Rec.601 luminance on the raw 256 px textures; ground = walk capture rows 520-700"
+  },
+  "per_pose": [
+    {"zoom": "20ppc", "pose": "south", "reads": "DOES NOT READ", "reason": "a ~7 px wide pale vertical stalk; the black lower legs (43% of the figure) sink into the black ash, so no legs, body or head register. The in-game capture confirms it: six grey stakes."},
+    {"zoom": "20ppc", "pose": "east", "reads": "READS AS ANIMAL", "reason": "the profile keeps the neck-back-rump line and a leg pair, so it reads as a small gazelle or giraffe glyph. It is faint but has an animal shape."},
+    {"zoom": "20ppc", "pose": "north", "reads": "DOES NOT READ", "reason": "the same stalk as the south facing (about 6 px wide), with no rump mass or legs that separate from the ground."},
+    {"zoom": "20ppc", "pose": "lying", "reads": "DOES NOT READ", "reason": "the turned east profile is a thin grey scribble (neck and stick legs, little barrel) and reads as a twig or bone on the ground. Each vanilla neighbour lying still shows a body mass."},
+    {"zoom": "48ppc", "pose": "south", "reads": "READS AS ANIMAL", "reason": "the head and crest, the neck, the pale chest and four dark legs are separable: a thin long-necked grazer facing the viewer. It is weak beside the vanilla animals."},
+    {"zoom": "48ppc", "pose": "east", "reads": "READS AS ANIMAL", "reason": "a clear long-necked quadruped profile."},
+    {"zoom": "48ppc", "pose": "north", "reads": "READS AS ANIMAL", "reason": "the rump, the legs and the neck rising to the head read as a long-necked animal from behind. It is thin but legible."},
+    {"zoom": "48ppc", "pose": "lying", "reads": "READS AS ANIMAL", "reason": "it reads as a long-necked animal on its side (head, neck and legs visible). The turn is the engine's rule and applies to vanilla too."}
+  ],
+  "verdict": "FLAW",
+  "flaws": [
+    {"promise": "each graphic object is recognisable as what it is",
+     "seen": "At the default map zoom of these captures (20 px/cell), 3 of 4 poses do not read as an animal. In the real capture (walk_station_creatures.jpg, ~22 px/cell) the herd of six south-facing ullai reads as thin grey posts, not animals.",
+     "causes": [
+       "Silhouette width: the south and north facings use 15-17% of the canvas width, against 27-37% for the narrowest vanilla grazers (female elk and deer, dromedary, gazelle). At drawSize 2.0 that is about 7 px at 20 ppc, so the legs are sub-pixel.",
+       "Contrast against the ground: the black lower legs are 34-43% of the opaque pixels, at the value of the Pyrelands ash (ground p10 L=37, median 77). The legs vanish and leave a floating pale stalk with no quadruped cue.",
+       "Little body mass: the light-boned design puts most of the 2-cell height into neck and legs. The barrel and haunch are too small to make a 'body' shape at 20 ppc, and this also makes the lying (turned east) pose a scribble."
+     ],
+     "not_a_cause": "Missing keyline. Vanilla animals carry one, but owner card 2026-10-04 (brief B1a) rules out drawn outlines, so a keyline is not a valid fix."}
+  ],
+  "polish": [
+    "polish: at 48 ppc the south and north facings read, but stick-thin beside the vanilla animals. The broader S/N redraw below would also fix this.",
+    "polish: the crest and head are very small at both zooms. A slightly larger head mass would help the face read on the south facing.",
+    "polish: the composites have no shadow or lighting. A live shadow may help a little at 20 ppc, but the walk capture (which has both) still shows posts, so this does not change the verdict."
+  ],
+  "smallest_fix": "Redraw only the south and north facings with more body width: a wider stance (legs splayed under a visible barrel and haunch, chest and rump shown with volume, the neck slightly foreshortened), so the front and rear views carry a body mass like vanilla deer and elk. Then restrict the black to the hooves and pasterns (pale or ash-grey cannons above), so the legs separate from the black ash; this needs an owner-acceptable reading of 'black lower legs'. Deepen the barrel a little in the east facing, which also fixes the lying pose. No outline (B1a). A larger drawSize is only a suggestion and would not alone fix the colour-on-ash loss."
+}
