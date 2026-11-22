@@ -1191,6 +1191,22 @@ def mapgen_log(t):
         t.screenshot(rect=_whole_rect(t))   # the subject is the fresh map itself
 
 
+PLANT_FRUIT_UNBURNED_ENV = "PYRE_PLANT_SCORCHFRUIT_UNBURNED"
+
+
+def _far_from_pads(t):
+    """A cell more than 18 cells (in x or z) from every FIRE_PADS centre and 5 from the map edge, nearest the map centre."""
+    sx, sz = _map_size(t)
+    best = None
+    for x in range(5, sx - 5, 5):
+        for z in range(5, sz - 5, 5):
+            if all(abs(x - px) > 18 or abs(z - pz) > 18 for (px, pz) in FIRE_PADS):
+                d = (x - sx // 2) ** 2 + (z - sz // 2) ** 2
+                if best is None or d < best[0]:
+                    best = (d, (x, z))
+    return best[1] if best else (5, 5)
+
+
 @suite.chain("plant_census")
 def plant_census(t):
     _pad(t, PAD_PROBE)
@@ -1198,6 +1214,12 @@ def plant_census(t):
         _fresh_site(t)
         live = _get_defs(t, "BiomeDef/RM_Pyrelands", "wildPlants,plantDensity")
         census = _whole_map(t, "Plant")
+        if _live(t) and os.environ.get(PLANT_FRUIT_UNBURNED_ENV) == "1":
+            # planted state for sc_scorchfruit's 'never on unburned land': one fruit on unburned ground, far from every pad
+            cell = _far_from_pads(t)
+            _plants(t, "RM_FE_Plant_ScorchFruit", (cell[0], cell[1], 1, 1))
+            _note(t, "PLANTED FAULT: %s=1, one ScorchFruit set at %r, outside every fire pad" % (PLANT_FRUIT_UNBURNED_ENV,
+                                                                                               cell), _GEN["last_plants"])
         if _live(t):
             _GEN["scorchfruit"] = [(p.get("x"), p.get("z")) for p in
                                    _things(t, "RM_FE_Plant_ScorchFruit", limit=500)]
@@ -3854,6 +3876,9 @@ def burn_injuries(row):
             if isinstance(h, dict) and "Burn" in str(h.get("def") or h.get("defName") or h.get("hediff") or "")]
 
 
+FRUIT_RING = 3   # the fire ring's thickness round the 3x3 fruit in the 9x9 burn: nothing clear is left beside the fruit
+
+
 def _stage_burning_fruit(t, x, z, west_gap=False):
     """A 9x9 grass burn, ripe scorch-fruit in its 3x3 centre, a fire ring on every path in. -> (fruit ids, ring rect).
     west_gap: the planted state of the control (PLANT_RING_GAP_ENV): the west edge, the colonist's side, is left unlit,
@@ -3863,9 +3888,15 @@ def _stage_burning_fruit(t, x, z, west_gap=False):
     _plants(t, "RM_FE_Plant_EmberGrass", (x, z, 9, 9))
     _plants(t, FRUIT_PLANT, (x + 3, z + 3, 3, 3))
     # the ring: all four edges. SITE (visit 2, 2026-11-20): only the bottom strip (x, z, 9, 2) was lit, and the control
-    # colonist walked in from the open side and took the fruit unburned
-    for edge in ((x, z, 9, 2), (x, z + 7, 9, 2), (x, z + 2, 2, 5), (x + 7, z + 2, 2, 5)):
-        if west_gap and edge == (x, z + 2, 2, 5):
+    # colonist walked in from the open side and took the fruit unburned.
+    # SITE (visit 5, 2026-11-22, ArchBig; visits 3 and 4 the same): a 2-cell ring is crossed in about 25 ticks, and vanilla
+    # Fire tries to ignite a pawn in its cell only at its 150-tick DoComplexCalcs, so a bare colonist crossed it unburned and
+    # harvested from the clear interior beside it. The ring is FRUIT_RING cells thick, so the only cells beside the fruit
+    # are burning ring cells: to harvest, the colonist must stand in fire through the harvest work.
+    k = FRUIT_RING
+    west = (x, z + k, k, 9 - 2 * k)
+    for edge in ((x, z, 9, k), (x, z + 9 - k, 9, k), west, (x + 9 - k, z + k, k, 9 - 2 * k)):
+        if west_gap and edge == west:
             continue
         _fire(t, edge)
     _wait(t, 250)
