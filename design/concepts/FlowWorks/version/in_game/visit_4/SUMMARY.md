@@ -27,6 +27,9 @@ since visit 3). The other 25 keep their earlier rows (build_match.py check: 28 o
 | sc_source_pays | PASS | fw_gss_sitting | after a HARNESS repair shown both ways (below); SRC_flow_stops_when_empty PASS at 0 dL (the sink fix holds live) |
 | OL_OWNER_LOOK_READS | UNMEASURED | evening_20261113 | 1629 PASS, 0 FAIL, 0 UNMEASURED, 1 BLOCKED (below) |
 
+Also rerun: sc_ways_out PASS (flowworks tier, calm site asserted, 277 s), because the review-map repair af8babff42 changed
+objects_sheet.choose_look, which sc_ways_out reaches (build_match named it).
+
 ### sc_source_pays: HARNESS, repaired and shown both ways
 
 - First run (flowworks tier): every row PASS but SRC_lake_reads_endless UNMEASURED: the scene read the lake row on the calm site,
@@ -92,24 +95,34 @@ since visit 3). The other 25 keep their earlier rows (build_match.py check: 28 o
 
 ## The labelled savegame and what was caught before his look
 
-- FLOWWORKS_OWNER_REVIEW_VISIT4_FULL_20261121_1625, his full list, calm site, under save_guard (545 keepers backed up, VERIFIED
+- First staged as FLOWWORKS_OWNER_REVIEW_VISIT4_FULL_20261121_1625, his full list, calm site, under save_guard (545 keepers backed up, VERIFIED
   none changed). The 4:03 PM save of the same map (..._1603) is superseded by it; it is kept.
 - Caught and fixed in the sitting: stations 59 and 60 ('steel jetty', 'heavy jetty') were empty pits on visits 3 and 4: the
   scene dragged a 4-square jetty and the mod caps a jetty at 2 squares. Repaired 02df5f8f4a (SITE); both jetties built live
   (anchor 1, decks 2, railed 2) before the _1625 save.
-- Caught and filed: sprinkler stations 24-27 never get their four looks and the row capture is off-frame; trench stations 40-41
-  have an unarmed shooter. RIMMANDRAKE_FIX_FLOWWORKS_REVIEW_MAP_SPRINKLER_LOOKS_NEVER_CHOSEN (acceptance test in its prose).
+- Caught, filed and fixed in the run: sprinkler stations 24-27 never got their four looks (the pipe's style menu has carried
+  bare look rows since 03011b05fb, whole run only, and objects_sheet.choose_look wanted a "whole connected run" tail) and the
+  trench shooters at 40-41 were unarmed. Then, with the shooter armed, the trench colonist read cover 0: it stood in the 3x3
+  pit's centre, and by the mod's rule trench cover comes only from a wall square next to the occupant. Repaired af8babff42
+  (SITE): bare row picked, shooter given an assault rifle, colonist against the east wall; live on the calm site: four looks
+  (screenshots/sprinklers_looks_fixed.jpg), cover 0.441 waist-deep and 0.662 chest-deep. Item
+  RIMMANDRAKE_FIX_FLOWWORKS_REVIEW_MAP_SPRINKLER_LOOKS_NEVER_CHOSEN closed with the red and green logs.
+- Re-staged on his full list after the repair: FLOWWORKS_OWNER_REVIEW_VISIT4_FULL_20261121_1727 (calm site verified, save_guard:
+  554 keepers backed up, VERIFIED none changed). Its stage log (evidence/owner_review_stage_full2.log) holds no refusal note:
+  jetties built, four pipe looks applied, trench cover 0.441 / 0.662. Looked at: screenshots/review2_bars_bridge_kinds.jpg (59, 60
+  jetties stand), screenshots/sprinklers_full_list_1727.jpg (24-27 in four looks). This is the walk savegame in the exit block;
+  the _1603 and _1625 saves are superseded and kept.
 
 ## Items filed this visit (each --caused-by this item)
 
 RIMMANDRAKE_PLANT_FLOWWORKS_ENDLESS_LAKE_ROW_NEVER_SEEN_RED (closed in the sitting, 3cf5fdfc07),
-RIMMANDRAKE_FIX_FLOWWORKS_REVIEW_MAP_SPRINKLER_LOOKS_NEVER_CHOSEN (open, review-map scene),
+RIMMANDRAKE_FIX_FLOWWORKS_REVIEW_MAP_SPRINKLER_LOOKS_NEVER_CHOSEN (review-map scene, fixed and closed in the run, af8babff42),
 RIMMANDRAKE_SPARE_HELD_STATEMENT_CHECKS_FROM_NEEDLESS_REMOVAL (pipeline defect, fixed and closed in the run, 1c65a6e664).
 
 ## Commits
 
 891d5f4f16 skeleton; 02df5f8f4a review-map jetties (SITE); 9da1303401 sc_source_pays lake row on the river site (HARNESS);
-4cdd6d47e9, 3cf5fdfc07 rows and evidence; 1c65a6e664 the exit reader's held-statement rule (pipeline). No offline decider reads concept_scenes.py, selftest_source_pays_scene.py or
+4cdd6d47e9, 3cf5fdfc07 rows and evidence; 1c65a6e664 the exit reader's held-statement rule (pipeline); af8babff42 review-map sprinkler looks and trench stations (SITE). No offline decider reads concept_scenes.py, selftest_source_pays_scene.py or
 owner_review_stage.py (test_table.json), so no red-seen record is owed; the live red reading is on the sc_source_pays row.
 
 ## The pipeline's reading (maturation.py next FlowWorks, 5:04 PM PST)
@@ -120,8 +133,8 @@ Exit tests passing: order, version, hold, exit_met, build_match. Refused only st
 
 ## Exit
 ```
-ingame_rows: {sc_source_pays: pass, sc_ice: pass, sc_hole_prison: pass, sc_islands: pass, sc_walk: pass, OL_OWNER_LOOK_READS: unmeasured}
+ingame_rows: {sc_ways_out: pass, sc_source_pays: pass, sc_ice: pass, sc_hole_prison: pass, sc_islands: pass, sc_walk: pass, OL_OWNER_LOOK_READS: unmeasured}
 strange_open: 0
-savegame: C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Saves\FLOWWORKS_OWNER_REVIEW_VISIT4_FULL_20261121_1625.rws
+savegame: C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Saves\FLOWWORKS_OWNER_REVIEW_VISIT4_FULL_20261121_1727.rws
 exit_met: true
 ```

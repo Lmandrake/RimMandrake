@@ -17,3 +17,10 @@ stations, and row_sprinklers.png shows all four stations (expected: 0 such notes
 ## refs
 file: src/RimMandrake/FlowWorks/northstar/owner_review_stage.py
 file: src/RimMandrake/FlowWorks/northstar/objects_sheet.py
+
+## outcome (visit 4, 2026-11-21 ~5:12 PM PST, af8babff42)
+Red: evidence/review_only_sprinklers_red.log (4 "reads None", 2 "no ranged verb"). Causes: the pipe's style menu has carried bare
+look rows since 03011b05fb (whole run only), and choose_look(run=True) wanted a "whole connected run" tail; the shooter rolled no
+weapon. Green: evidence/review_only_sprinklers_green.log (no such notes; four looks visible, screenshots/sprinklers_looks_fixed.jpg).
+Found on the way: the trench colonist stood in the 3x3 pit's centre, where trench cover is 0 by the mod's rule (cover comes from
+an adjacent wall); moved against the east wall: cover 0.441 / 0.662 (evidence/review_only_trench_wall.log).
