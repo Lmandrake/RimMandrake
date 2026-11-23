@@ -1,6 +1,16 @@
 # The Maturation Pipeline
 
-**Design Version 0.1.0 of the pipeline itself. DRAFT for Mandrake to argue with, 2026-11-13.** What is built is listed, as read from the code, in the operating doc `design/RimMandrake/maturation_pipeline.md` §9 (corrected 2026-11-15: this line said only the stage record and the queue admission were built, "nothing else"; by then Dispatch, its timer, the offline-build, blind and in-game briefs and launchers, both exit readers and the status page were built too). He answered the six questions that blocked the pilot on the evening of 2026-11-13 (by card, two of them typed); those answers are written into this draft and listed in §8 as "Decided". On 2026-11-14 he agreed the lock rule (§4, Stage 1) and answered questions 8, 12 and 18 by card (§8). Everything else marked [PROPOSAL] is still not his.
+**Design Version 0.1.0 of the pipeline itself. DRAFT for Mandrake to argue with, 2026-11-13.**
+
+- The operating doc `design/RimMandrake/maturation_pipeline.md` §9 lists what is built, as read from the code.
+- The statement of what is built was corrected on 2026-11-15. The old statement said that only the stage record and the queue admission were built, "nothing else". By then these parts were built too:
+  - Dispatch and its timer;
+  - the offline-build, blind and in-game briefs and launchers;
+  - both exit readers;
+  - the status page.
+- He answered the six questions that blocked the pilot on the evening of 2026-11-13 (by card, two of them typed). Those answers are written into this draft. §8 lists them as "Decided".
+- On 2026-11-14 he agreed the lock rule (§4, Stage 1). On that day he also answered questions 8, 12 and 18 by card (§8).
+- Everything else marked [PROPOSAL] is still not his.
 
 Item: `RIMMANDRAKE_DESIGN_MATURATION_PIPELINE_WHOLE_MOD_IS_THE_UNIT`.
 Live status page: `D:\ClaudeWork\rimmandrake\conductor\MATURATION_NOW.md` (where each mod stands today).
@@ -13,21 +23,25 @@ Every statement carries one of three marks.
 |---|---|
 | **[HIS]** | Mandrake's own words, quoted and dated, or a thing he agreed to in words quoted here. |
 | **[CARRIED]** | Already ruled by him earlier. The ruling is cited. Nothing new is decided. |
-| **[PROPOSAL]** | An agent's suggestion. It is not his until he says so. Where the Conductor and this writer disagree, both views are given. |
+| **[PROPOSAL]** | An agent's suggestion. The suggestion is not his until he says so. Where the Conductor and this writer disagree, both views are given. |
 
 In a table, the mark in a row's last column covers the whole row.
 
 Words used here:
 
 - **Mod**: one RimMandrake mod, for example Explosive Knockback.
-- **Design Version**: the numbered design a mod is being built towards, for example 0.1.0. [CARRIED: his ruling of 2026-11-13, `design/RimMandrake/standing_rulings.md`, "Mod Design Versions use Semantic Versioning".]
-- **Bar**: one thing that must be true for a version to pass, written as a plain sentence about what the player sees or can do. An acceptance criterion.
+- **Design Version**: the numbered design that a mod is built towards, for example 0.1.0. [CARRIED: his ruling of 2026-11-13, `design/RimMandrake/standing_rulings.md`, "Mod Design Versions use Semantic Versioning".]
+- **Bar**: one thing that must be true for a version to pass. A bar is a plain sentence about what the player sees or can do. A bar is an acceptance criterion.
 - **Check**: the code that decides a bar. In this spec a bar's "test" is its check.
-- **Line item**: one bar together with the one test that decides it. It has an id, the files it reads, and a stored verdict. [CARRIED: `design/RimMandrake/validation_map_and_rules.md`, "Words used throughout".]
+- **Line item**: one bar together with the one test that decides it. A line item has an id, the files it reads, and a stored verdict. [CARRIED: `design/RimMandrake/validation_map_and_rules.md`, "Words used throughout".]
 - **Blind judge**: a fresh agent that did not do the work and is not told what an earlier judge found.
 - **Offline**: without a running game. **In-game**: through a running RimWorld.
-- **The two games**: the RimWorld on Archmagi (his machine) and the RimWorld on SteveDesktop (the second machine, which runs the test queue: scripted game tests, unattended, nobody watching). [HIS, by card 2026-11-14] Either game may give the scripted verdict on an in-game bar, and Dispatch takes whichever is free; only tests that came through the offline stages are queued on SteveDesktop (§4 Stage 6, "Which game runs what"; §8, decision 18).
-- **RimFlow**: the ticket ledger. It stays. It is not the pipeline.
+- **The two games**: the RimWorld on Archmagi (his machine) and the RimWorld on SteveDesktop (the second machine).
+  - SteveDesktop runs the test queue: scripted game tests, unattended, nobody watching.
+  - **[HIS, by card 2026-11-14]** Either game may give the scripted verdict on an in-game bar. Dispatch takes whichever is free.
+  - **[HIS, by card 2026-11-14]** SteveDesktop's queue takes only tests that came through the offline stages. (Both: §4 Stage 6, "Which game runs what"; §8, decision 18).
+- **Evidence-for-Ask**: take the obvious answer, and pause for him only with concrete evidence against it. His five acts still wait for him. The home section gives the full rule. [CARRIED: his ruling of 2026-11-15, `design/RimMandrake/standing_rulings.md` §Evidence-for-Ask.]
+- **RimFlow**: the ticket ledger. RimFlow stays. RimFlow is not the pipeline.
 
 ---
 
@@ -43,12 +57,12 @@ Words used here:
 
 > can't we actually simulate that settings check offline? That seems a gratuitous use of the game, unless that's actually a very fast check?
 
-**What "what you recommend" refers to.** Just before his message the Conductor had recommended six things. His "Yes, we're going to do what you recommend" makes them **[HIS] by agreement**; the wording of each is the Conductor's:
+**What "what you recommend" refers to.** Just before his message the Conductor had recommended six things. His "Yes, we're going to do what you recommend" makes the six things **[HIS] by agreement**. The wording of each one is the Conductor's:
 
 1. Lock the five mods now in the Designer as Design Version 0.1.0, as they stand.
 2. Hold the scheduled Designer judge loop on those five.
-3. Give every bar a test, tagged with the stage that proves it. (What the lock requires of that test is the lock rule of 2026-11-14, §4 Stage 1.)
-4. Fold his held look statements in as bars. (These are the 66 things he said during live looks on 2026-11-12 and 2026-11-13, kept in `design/RimMandrake/validation_holding/`.)
+3. Give every bar a test, tagged with the stage that proves it. (The lock rule of 2026-11-14 says what the lock requires of that test: §4 Stage 1.)
+4. Fold his held look statements in as bars. (The statements are the 66 things he said during live looks on 2026-11-12 and 2026-11-13. The folder `design/RimMandrake/validation_holding/` keeps the statements.)
 5. Keep the Designer for arguing ideas and edges.
 6. Pilot on Explosive Knockback first.
 
@@ -60,23 +74,31 @@ His full message is also kept at `D:\ClaudeWork\rimmandrake\conductor\maturation
 
 > Please make this a principle of the Maturation pipeline: the Pipeline fixes its own issues once detected. When there's a clear problem and a known fix... do it. It's not a ticket for someone else, it's a ticket to file then do yourself.
 
-What it means in practice: §5, "The pipeline fixes its own defects".
+What these two messages mean in practice: §5, "The pipeline fixes its own defects".
 
 ---
 
 ## 2. The idea in eleven lines
 
 1. **[HIS]** The pipeline moves **whole versioned mods**, not tickets. Tickets stay in RimFlow.
-2. **[HIS]** Ideas wait at an intake. A mod then passes eight stages: Designer, preflight, offline build, offline blind challenge, offline game-logic testing, in-game acceptance, pre-human check, human live walk. **[HIS, 2026-11-17]** The pre-human check judges nothing: it is one fresh read that writes his walk brief, with no veto (§4 Stage 7). **[HIS, by card 2026-11-13]** Stages 4 and 5 run as one stage, tests first (§8, decision 1).
-3. **[HIS]** A judge that finds a fault at Stages 4 and 5 fixes it at once, shows it working, and hands the mod to a **new** blind judge. The cycles are counted on the mod. **[HIS, 2026-11-13]** After three cycles the Conductor decides what to do, and he confirms or changes it when he is next available (§8, decision 3).
-4. **[HIS]** Operations and Dispatch float above. Dispatch knows which mods are advancing and gives them the two games and the offline builders as they need them. **[HIS, by card 2026-11-14]** Either game may give a bar's scripted verdict, whichever is free (§8, decision 18). **[HIS, 2026-11-17]** SteveDesktop takes any mod's token-free tests whatever its stage (§8, 18c).
+2. **[HIS]** Ideas wait at an intake. A mod then passes eight stages. The first five are Designer, preflight, offline build, offline blind challenge and offline game-logic testing. The last three are in-game acceptance, pre-human check and human live walk.
+   - **[HIS, 2026-11-17]** The pre-human check judges nothing. One fresh reader reads once and writes his walk brief. The reader has no veto (§4 Stage 7).
+   - **[HIS, by card 2026-11-13]** Stages 4 and 5 run as one stage, tests first (§8, decision 1).
+3. **[HIS]** A judge that finds a fault at Stages 4 and 5 fixes it at once and shows it working. Then the judge hands the mod to a **new** blind judge. The cycles are counted on the mod.
+   - **[HIS, 2026-11-13]** After three cycles the Conductor decides what to do. He confirms or changes the decision when he is next available (§8, decision 3).
+4. **[HIS]** Operations and Dispatch float above. Dispatch knows which mods are advancing. Dispatch gives them the two games and the offline builders as they need them.
+   - **[HIS, by card 2026-11-14]** Either game may give a bar's scripted verdict, whichever is free (§8, decision 18).
+   - **[HIS, 2026-11-17]** SteveDesktop takes any mod's token-free tests whatever its stage (§8, 18c).
 5. **[CARRIED]** The target holds still: a mod is built towards a locked Design Version. A change that shifts the vision goes to the next version. (His ruling of 2026-11-13.)
 6. **[CARRIED]** An objection sends back only the line items it touches, to the lowest stage that can show the fault. (Rule 2 of `validation_map_and_rules.md`, his card answer of 2026-11-12.)
 7. **[PROPOSAL]** The mod is the unit that flows. The line item is the unit that is re-tested.
-8. **[HIS, by card 2026-11-13]** The **steward** is the Conductor, always. **[PROPOSAL]** Each mod has a **journal file**; the Conductor reads the evidence at every stage change and the journal holds the memory. This is the answer offered to "how do we preserve the intelligence".
-9. **[HIS, 2026-11-13]** He may look at any stage, and questions may be sent to him at any time; the Conductor lets him know (§8, decision 5). **[PROPOSAL]** An early look produces line items like any other.
-10. **[HIS, by agreement]** It is done by hand on Explosive Knockback first. **[PROPOSAL]** Only what proved boring by hand gets automated.
-11. **[HIS, 2026-11-15]** The pipeline fixes its own defects once detected: a clear problem with a known fix is a ticket to file and then do in the same run, not a ticket for someone else (§5, "The pipeline fixes its own defects"). A mod's gaps still go through the stages.
+8. **[HIS, by card 2026-11-13]** The **steward** is the Conductor, always.
+   - **[PROPOSAL]** Each mod has a **journal file**. The Conductor reads the evidence at every stage change. The journal holds the memory. This is the answer offered to "how do we preserve the intelligence".
+9. **[HIS, 2026-11-13]** He may look at any stage. Questions may be sent to him at any time. The Conductor lets him know (§8, decision 5).
+   - **[PROPOSAL]** An early look produces line items like any other.
+10. **[HIS, by agreement]** The pipeline is done by hand on Explosive Knockback first.
+    - **[PROPOSAL]** Only what proved boring by hand gets automated.
+11. **[HIS, 2026-11-15]** The pipeline fixes its own defects once they are detected. A clear problem with a known fix is a ticket to file and then do in the same run. Such a ticket is not for someone else (§5, "The pipeline fixes its own defects"). A mod's gaps still go through the stages.
 
 ---
 
@@ -144,9 +166,15 @@ Plain-text version of the same map:
                                                             └── a Divergent idea ──▶ next version ──▶ INTAKE
 ```
 
-**[HIS]** the eight stages, their order, their numbers, the fix-in-place loop, Operations and Dispatch above. **[HIS, by card 2026-11-13]** Stages 4 and 5 as one stage, tests first; the steward is the Conductor, always; three cycles, then the Conductor decides.
-**[CARRIED]** the roads back from 6 and 8 (rule 2, "lowest stage, touched line items only"); the Divergent road (Design Versions ruling). **[HIS, 2026-11-17]** Stage 7 has no road back: it judges nothing, and what it notices goes into the walk brief or onto a ticket.
-**[PROPOSAL]** keeping the numbers 6 to 8 unchanged after the merge (from the recommendation he answered; the card did not rule on numbering); the road from "passed" back to intake.
+**[HIS]** the eight stages, their order, their numbers, the fix-in-place loop, Operations and Dispatch above.
+
+**[HIS, by card 2026-11-13]** Stages 4 and 5 as one stage, tests first. The steward is the Conductor, always. After three cycles, the Conductor decides.
+
+**[CARRIED]** the roads back from 6 and 8 (rule 2, "lowest stage, touched line items only"); the Divergent road (Design Versions ruling).
+
+**[HIS, 2026-11-17]** Stage 7 has no road back. Stage 7 judges nothing. What the Stage 7 reader notices goes into the walk brief or onto a ticket.
+
+**[PROPOSAL]** The numbers 6 to 8 stay unchanged after the merge. (This comes from the recommendation that he answered. The card did not rule on numbering.) The road from "passed" back to intake is also a proposal.
 
 ---
 
@@ -154,18 +182,18 @@ Plain-text version of the same map:
 
 "Model tier" points at `infrastructure/agents/Agent_Policy.md` (the file that says which model does which work). The ladder is not repeated here.
 
-"Tracked on the mod" means: written into the mod's own version record, so the status page can show it without asking anyone.
+"Tracked on the mod" means: written into the mod's own version record. Then the status page can show the value and ask nobody.
 
 ### Intake: ideas waiting
 
 | | | mark |
 |---|---|---|
 | Purpose | Hold mod ideas, and mods that exist but have no locked design, until one is chosen to advance. Show how many are waiting. | HIS ("We need to show how many 'new mod ideas' we have waiting to process") |
-| Who | Nobody works here. No mod enters Stage 1 until one of the four advancing mods (Explosive Knockback, FlowWorks, Gimme Some Slack, Pyrelands) reaches his live walk (Stage 8); after that they enter by his order of 2026-11-15 (§8, decision 8) with no ask (Evidence-for-Ask). | HIS, by card 2026-11-14 ("Wait for one full pass"; §8, decision 8) |
+| Who | Nobody works here. No mod enters Stage 1 until one of the four advancing mods (Explosive Knockback, FlowWorks, Gimme Some Slack, Pyrelands) reaches his live walk (Stage 8). After that, mods enter by his order of 2026-11-15 (§8, decision 8) with no ask (Evidence-for-Ask). | HIS, by card 2026-11-14 ("Wait for one full pass"; §8, decision 8) |
 | Model tier | None. A list, read by a program. | PROPOSAL |
-| Inputs | Today: 42 "first touch" Designer items in RimFlow (`python3 src/RimMandrake/Utils/owner_queue.py`, measured 2026-11-13 3:03 PM PST). Other ideas sit inside tickets and are not counted yet. | measured; "trapped in tickets" is HIS |
+| Inputs | Today: 42 "first touch" Designer items in RimFlow (`python3 src/RimMandrake/Utils/owner_queue.py`, measured 2026-11-13 3:03 PM PST). Other ideas sit inside tickets. Those ideas are not counted yet. | measured; "trapped in tickets" is HIS |
 | Outputs | One line per waiting mod: its name, one sentence, whether code already exists. | PROPOSAL |
-| Exit ("ready" means) | Closed until one of the four reaches Stage 8. The rule for leaving intake after that is asked of him then. Before that, a mod leaves intake only on his words in the request (`advance --owner-said`): "If the current mod set isn't enough to keep the pipeline busy then pick the next most mature biome mod to add." (Contagion entered this way.) | HIS, by card 2026-11-14; HIS, 2026-11-15 ~05:40 PST |
+| Exit ("ready" means) | Intake is closed until one of the four reaches Stage 8. The rule for leaving intake after that is asked of him then. Before that, a mod leaves intake only on his words in the request (`advance --owner-said`): "If the current mod set isn't enough to keep the pipeline busy then pick the next most mature biome mod to add." (Contagion entered this way.) | HIS, by card 2026-11-14; HIS, 2026-11-15 ~05:40 PST |
 | Road back | A mod can be put back at intake at any time. Nothing is lost: its folder stays. | PROPOSAL |
 | Tracked on the mod | Date it arrived; date it was picked. | PROPOSAL |
 
@@ -174,35 +202,41 @@ Plain-text version of the same map:
 | | | mark |
 |---|---|---|
 | Purpose | "Talk with us until we create a well defined series of specifications and acceptance criteria", to a level that will be tuned over time. | HIS |
-| Who | The Designer role (`src/RimMandrake/rimflow/roles/designer.md`), with him. Its inner steps (Read, Argue the idea, Argue the edge, Write, Exam, Lock) live inside this stage. | HIS ("Within the Designer are those 1-5 steps... more like a 'Stage 1'") |
+| Who | The Designer role (`src/RimMandrake/rimflow/roles/designer.md`), with him. The Designer's inner steps (Read, Argue the idea, Argue the edge, Write, Exam, Lock) live inside this stage. | HIS ("Within the Designer are those 1-5 steps... more like a 'Stage 1'") |
 | Model tier | Judgment work: see Agent_Policy.md, "The one question". | CARRIED |
 | Inputs | The idea. His words. If any code exists: a live walk of what exists, before more design is added. | CARRIED (his ruling 2026-11-12 5:06 PM PST, rule 7 of `validation_map_and_rules.md`) |
 | Outputs | The mod's version folder: a short vision, the bars, and for every bar **how it will be checked (offline, or an in-game scene), with the stage that proves it**. Also the next-version file and the Polish list. | HIS by agreement (recommendation 3; the lock rule 2026-11-14); folder layout CARRIED from the Design Versions ruling |
-| Exit ("ready" means) | He said "lock it" for this version, or, for a new mod's 0.1.0 with no evidence against it, the pipeline locked it (Evidence-for-Ask, 2026-11-15). Every bar is written and names how it will be checked and its stage. No check code is required. | CARRIED (Design Versions: locked on his word); the rest HIS by agreement (the lock rule, below) |
-| Road back | Stage 2 refuses the spec: back here for the refused lines only. After the lock, a Divergent idea never comes back here in this version; it opens the next one. | CARRIED (rule 2; Design Versions ruling) |
+| Exit ("ready" means) | He said "lock it" for this version. Or, for a new mod's 0.1.0 with no evidence against it, the pipeline locked it (Evidence-for-Ask, 2026-11-15). Every bar is written. Every bar names how it will be checked and its stage. No check code is required. | CARRIED (Design Versions: locked on his word); the rest HIS by agreement (the lock rule, below) |
+| Road back | When Stage 2 refuses the spec, the mod comes back here for the refused lines only. After the lock, a Divergent idea never comes back here in this version. The Divergent idea opens the next version. | CARRIED (rule 2; Design Versions ruling) |
 | Tracked on the mod | Version number; state (drafting, locked); count of bars; tokens spent; his open questions. | CARRIED (Design Versions draft §3.7) |
 
 #### The lock rule
 
-**[HIS, by agreement 2026-11-14, about 12:50 PM PST]** The Conductor proposed this rule and he answered "Yes this all sounds good." (recorded on `RIMMANDRAKE_DESIGN_MATURATION_PIPELINE_WHOLE_MOD_IS_THE_UNIT`). His own words on it:
+**[HIS, by agreement 2026-11-14, about 12:50 PM PST]** The Conductor proposed this rule. He answered "Yes this all sounds good." (recorded on `RIMMANDRAKE_DESIGN_MATURATION_PIPELINE_WHOLE_MOD_IS_THE_UNIT`). His own words on the rule:
 
 > Acceptance tests evolve just like implementation and design evolve based on discoveries as we go. So we need to acknowledge that a lock is never as strict as we'd like. But I understand the stricter the better.
 
 > If it doesn't have good acceptance tests we need a way to get them. Designer is the only way I know how to do that... this is why most of our built mods still need that pass even if they're built.
 
-1. **Bars and checks.** A bar is a plain sentence about what the player sees or can do; a check is the code that decides it. Bars come from the Designer pass, and every built mod still needs that pass. Checks are builder work.
-2. **At the lock**, every bar is written and each names how it will be checked: offline, or an in-game scene. No check code is required at the lock. For each check Stage 2 reads its id, its stage, the file it will live in, what it will observe and the files it reads.
-3. **Right after the lock (Stage 3)**, a builder writes every check, and each is seen failing where the behaviour is missing. A mod does not move past Stage 3 until every bar has a check that runs. An in-game scene may be recorded UNRUN, with its command, until Stage 6.
+1. **Bars and checks.** A bar is a plain sentence about what the player sees or can do. A check is the code that decides the bar. Bars come from the Designer pass, and every built mod still needs that pass. Checks are builder work.
+2. **At the lock**, every bar is written. Each bar names how it will be checked: offline, or an in-game scene. No check code is required at the lock. For each check Stage 2 reads:
+   - its id;
+   - its stage;
+   - the file it will live in;
+   - what it will observe;
+   - the files it reads.
+3. **Right after the lock (Stage 3)**, a builder writes every check. Each check is seen failing where the behaviour is missing. A mod does not move past Stage 3 until every bar has a check that runs. An in-game scene may be recorded UNRUN, with its command, until Stage 6.
 4. **A lock means changes are visible and have a reason, not that nothing changes.**
-   - The check was wrong and the bar's meaning is unchanged: the steward (the Conductor) fixes it and re-pins it, with one journal line saying why. He is not asked.
+   - The check was wrong and the bar's meaning is unchanged: the steward (the Conductor) fixes the check and re-pins it. One journal line says why. He is not asked.
    - A bar is added because of a discovery: agents may do it, recorded in the journal.
-   - A bar is made easier or deleted outright: his call, brought to him with the discovery that made it wrong.
-   - A bar is deferred (put off to a later stage or to the next Design Version): the Conductor decides and tells him after. **[HIS, 2026-11-14, about 1:05 PM PST]** "Let's try you deferring and letting me know. If it happens too often then we will change it." This is a trial he may withdraw. Each deferral is one journal line in the intervention form (§5 item 5), so the Maturation Now page counts deferrals per mod and "too often" can be seen.
-   - A discovery that changes what the mod is: not a bar edit. It goes to the next Design Version.
-5. **Every one of these is one journal line** in the intervention form of §5 ("The steward and the journal", item 5), so the Maturation Now page shows it as a yellow arrow on that mod's stage box. A lock reopened again and again is the visible sign that the design was not ready.
+   - A bar is made easier or deleted outright: this is his call. The discovery that made the bar wrong is brought to him with it.
+   - A bar is deferred (put off to a later stage or to the next Design Version). The Conductor decides and tells him after.
+     - **[HIS, 2026-11-14, about 1:05 PM PST]** "Let's try you deferring and letting me know. If it happens too often then we will change it." This is a trial he may withdraw. Each deferral is one journal line in the intervention form (§5 item 5). So the Maturation Now page counts deferrals per mod, and "too often" can be seen.
+   - A discovery that changes what the mod is: the change is not a bar edit. The change goes to the next Design Version.
+5. **Every one of these is one journal line** in the intervention form. §5 ("The steward and the journal", item 5) gives the form. So the Maturation Now page shows it as a yellow arrow on that mod's stage box. A lock reopened again and again is the visible sign that the design was not ready.
 6. **The four locks of 2026-11-13** (Explosive Knockback, FlowWorks, Gimme Some Slack, Pyrelands) were valid under this rule, not early. Their missing checks are Stage 3 work.
 
-One proposal inside Stage 1 is big enough to be an open question: whether the Designer's Exam and coverage judge stay as gates (open question 7).
+One proposal inside Stage 1 is big enough to be an open question. The question is whether the Designer's Exam and coverage judge stay as gates (open question 7).
 
 ### Stage 2: Preflight
 
@@ -213,11 +247,16 @@ One proposal inside Stage 1 is big enough to be an open question: whether the De
 | Model tier | None. | CARRIED |
 | Inputs | The locked version folder; the repo; the list of every def in the game; the mod lists. | CARRIED (spec `design/specs/2026-11-12-ticket-preflight-before-any-token.md`) |
 | Outputs | A preflight record: each check, pass or refuse, the smallest fix for each refusal, and how long the run took. | CARRIED (same spec; "the precise time this took to run" is his) |
-| Exit ("ready" means) | Every named file, def and mod is real. Every bar names its check. Every check names its stage. A check whose code is not written yet is not a refusal; it is Stage 3 work (the lock rule). Every test that needs the game says why an offline test cannot decide it. Every test that needs the full mod list says why. Every held look statement for this mod (`design/RimMandrake/validation_holding/`) has been placed in its table; that placement is the ingest. | First two CARRIED; "every bar has a test" HIS by agreement; "says why the game is needed" PROPOSAL (agreed by the Conductor and this writer, see below); full-list reason CARRIED (his 2026-11-12 ruling); held statements HIS, by card 2026-11-14 ("Per mod, as it advances"; §8, decision 12) |
+| Exit ("ready" means) | Every named file, def and mod is real. Every bar names its check. Every check names its stage. A check whose code is not written yet is not a refusal. Writing that code is Stage 3 work (the lock rule). Every test that needs the game says why an offline test cannot decide it. Every test that needs the full mod list says why. Every held look statement for this mod (`design/RimMandrake/validation_holding/`) has been placed in the mod's table. That placement is the ingest. | First two CARRIED; "every bar has a test" HIS by agreement; "says why the game is needed" PROPOSAL (agreed by the Conductor and this writer; see "On 'the cheapest stage that can decide it'" after this table); full-list reason CARRIED (his 2026-11-12 ruling); held statements HIS, by card 2026-11-14 ("Per mod, as it advances"; §8, decision 12) |
 | Road back | A refusal names the line and the fix. A wrong fact goes back to Stage 1. A broken criterion goes to the neutral fixer (a fresh agent that repairs acceptance criteria and is neither the judge nor the builder). | CARRIED (his refusal ruling 2026-11-12 2:50 PM PST) |
 | Tracked on the mod | Last preflight time and duration; refusals open. | PROPOSAL |
 
-**On "the cheapest stage that can decide it".** The Conductor proposes that preflight checks this mechanically. This writer agrees in part. Python can check that a stage is *declared* and that a game-stage test carries a *written reason*. Python cannot check that the reason is *true*. That part is judgment, and it belongs to the Stage 4 challenger, who is asked one extra question per game-stage test: "could a faster test decide this?" His settings question of today ("can't we actually simulate that settings check offline?") is exactly that question. **[PROPOSAL]**
+**On "the cheapest stage that can decide it".** **[PROPOSAL]** The Conductor proposes that preflight checks this mechanically. This writer agrees in part.
+
+- Python can check that a stage is *declared* and that a game-stage test carries a *written reason*.
+- Python cannot check that the reason is *true*. That part is judgment. That part belongs to the Stage 4 challenger.
+- The challenger is asked one extra question per game-stage test: "could a faster test decide this?"
+- His settings question of 2026-11-13 ("can't we actually simulate that settings check offline?") is exactly that question.
 
 ### Stage 3: Offline build
 
@@ -227,53 +266,72 @@ One proposal inside Stage 1 is big enough to be an open question: whether the De
 | Who | Builder agents, one RimFlow ticket at a time, inside this mod. | HIS (tickets stay in RimFlow); PROPOSAL (tickets are the work inside the mod's current stage) |
 | Model tier | Per ticket: see Agent_Policy.md, "The ladder" and "Helpers in this repo". | CARRIED |
 | Inputs | The locked version; the preflight record. | PROPOSAL |
-| Outputs | Code, defs, art. For each bar, its offline test and its in-game test, each watched failing before the code made it pass. Review status clean. | CARRIED (his ruling 2026-11-13: "we build the test at the same time as the item, both offline and online versions") |
+| Outputs | Code, defs, art. For each bar, its offline test and its in-game test. Each test was watched failing before the code made it pass. Review status clean. | CARRIED (his ruling 2026-11-13: "we build the test at the same time as the item, both offline and online versions") |
 | Exit ("ready" means) | Every bar has a check that runs, each seen failing where the behaviour was missing. Every bar's offline check passes. Every in-game check exists and is listed UNRUN with its exact command until Stage 6. The builder's own list of what it could not test is written down. | HIS by agreement (the lock rule, §4 Stage 1); "passes" and the builder's list PROPOSAL |
 | Road back | None of its own. Faults found later arrive here as line items. | CARRIED (rule 2) |
 | Tracked on the mod | Tickets open and done in this stage; bars with a passing offline test, of total; tokens. | PROPOSAL |
 
-For a mod that is already built (all five current mods), Stage 3 is not "build". It is "reconcile": check each locked bar against what exists, and build only the missing tests and the missing pieces. **[PROPOSAL]**
+**[PROPOSAL]** For a mod that is already built (all five current mods), Stage 3 is not "build". Stage 3 is then "reconcile". Check each locked bar against what exists. Build only the missing tests and the missing pieces.
 
-**[HIS, 2026-11-17]** From a mod's first build, the builder's brief (and the road-back fixer's) carries the offline model: decision logic Verse-free so an offline test runs the shipped decision, a generator of the mod's situations read by the bars' own checks before any fix or tuning, its range declared. One source, `roles/fable_rescue.md` step 2; `design/RimMandrake/standing_rulings.md` §Every mod builder builds the offline model from the first build.
+**[HIS, 2026-11-17]** From a mod's first build, the builder's brief carries the offline model. The road-back fixer's brief carries it too. The offline model is:
+
+- decision logic that is Verse-free (no Verse types), so that an offline test runs the shipped decision;
+- a generator of the mod's situations, read by the bars' own checks before any fix or tuning;
+- the range of the generator, declared.
+
+The one source is `roles/fable_rescue.md` step 2. The ruling is `design/RimMandrake/standing_rulings.md` §Every mod builder builds the offline model from the first build.
 
 ### Stages 4 and 5: Blind offline challenge and game-logic testing, one stage, tests first
 
-**[HIS, by card 2026-11-13]** "One stage, tests first." His question "is this really different than Stage 4, or should it be folded in?" is answered: one stage. The independence two stages would have bought is kept by order: the blind agent writes and runs its own game-logic tests from the bars alone, before it opens the builder's code or tests, and only then does the code challenge. One load of the mod, one cycle, independent tests. The two parts are reported as two lanes so the pilot can count what each finds. **[PROPOSAL]** the stage keeps the label "Stages 4 and 5", so that his numbers 6 to 8 do not move.
+**[HIS, by card 2026-11-13]** "One stage, tests first." His question "is this really different than Stage 4, or should it be folded in?" is answered: one stage.
+
+- Order keeps the independence that two stages would have bought. First the blind agent writes and runs its own game-logic tests from the bars alone. The agent does this before it opens the builder's code or tests. Only then does the agent do the code challenge.
+- The result is one load of the mod, one cycle, and independent tests.
+- The two parts are reported as two lanes, so the pilot can count what each lane finds.
+- **[PROPOSAL]** The stage keeps the label "Stages 4 and 5", so that his numbers 6 to 8 do not move.
 
 | | | mark |
 |---|---|---|
-| Purpose | Stage 4: "Offline blind code review, mutation-type coverage challenges, and verification of test outputs/rerunning plus judgement." Stage 5: "Offline game logic testing in all its many forms." In plain words: are the mod's rules and maths right over thousands of cases without the game; does the code do what it claims; can the tests actually fail; do the builder's test results repeat? | HIS |
+| Purpose | Stage 4: "Offline blind code review, mutation-type coverage challenges, and verification of test outputs/rerunning plus judgement." Stage 5: "Offline game logic testing in all its many forms." In plain words, the stage asks four questions. Are the mod's rules and maths right over thousands of cases without the game? Does the code do what it claims? Can the tests actually fail? Do the builder's test results repeat? | HIS |
 | Who | A fresh agent that did not build the mod and is not told what any earlier judge found. | HIS ("a new blind judgement pass"; "send it back to a new blind you") |
 | Model tier | A judging role: see Agent_Policy.md, "Four places a cheaper tier is forbidden outright". | CARRIED |
-| Order | First, with only the locked bars, the code's logic kernels (the game-free core of a mod's rules) and the mod's settings as shipped: write the game-logic tests and run them. Then open the code, the builder's tests and their recorded outputs for the review, planted faults and reruns. | HIS, by card ("tests first"); the exact inputs per part PROPOSAL |
-| Outputs | Lane 1 (game logic): test rows; random cases with the failing case shrunk to its smallest form; conservation checks (nothing created or lost); the shipped settings swept through their ranges. Lane 2 (challenge): a list of faults, each as detailed as the evidence, saying what would pass and naming the smallest fix; planted-fault results (a planted fault is a deliberate bug put in to see whether a test catches it); rerun results. | Lane 1 CARRIED (kept schemes, his picks of 2026-11-12: kernels with random cases, shipped-settings sweep with conservation laws); lane 2 HIS for the content, record shape CARRIED (refusal ruling 2026-11-12) |
-| Exit ("ready" means) | Every bar tagged "offline" is green. A blind judge found nothing that is a Problem. | PROPOSAL (Problem versus Polish is CARRIED from his card of 2026-11-13); **built as the rule 2026-11-18**: `advance` refuses a forward move whose program exit reading is not met, a steward's word alone moves nothing, and his OWNER event newer than the cycle or visit is the only override (clause `exit_met`; delegated Evidence-for-Ask decision of 2026-11-15, RIMMANDRAKE_BIND_ADVANCE_TO_EXIT_READINGS). **On a game-only move** (`advance --to in_game --game-only <IDs>` whose `game_only` clause passes), the exit does not count two things. It does not count the new blind judge owed only for the cycle's own FIXED Problems, each shown red then green. It does not count a lane-1 `not_kernel` UNSETTLED row when a named game-only item carries each of its bars (the item's title names the bar). An unfixed Problem, any other gap, and every other move still refuse (the Conductor's act of 2026-11-19, RIMMANDRAKE_UNBLOCK_GAME_ONLY_ADVANCE_AT_BLIND_EXIT; page `design/specs/2026-11-19-maturation-game-only-blind-exit/boundary.md`) |
-| Road back | "If it finds issues, it should FIX THEM RIGHT THERE and force the system to pass, but then send it back to just before Stage 4 again for a new blind judgement pass." "Once you make your list of what's wrong, you're the one who should fix it RIGHT NOW and show it working... then send it back to a new blind you." Since 2026-11-20 a fixed mod owes ONE fresh reader of each fix (a run that did not make it reads only that fix, once; `read_exit`, `fix_reader_owed`), not a whole new blind cycle; a wrong check or scene that the judge repairs, seen FAIL on a planted fault and PASS on the real build, owes nothing more (`check_repairs`). | HIS; HIS 2026-11-20 for the fresh reader and the wrong check (standing_rulings §Touching code has a cost) |
-| What the next blind judge reads | **"All once, then changes."** The first judge reads everything. After a fix, the new judge reads the changed files and the line items whose inputs changed, without being told what the last judge found. A fault found late in unchanged material is still fixed, and is logged as a miss of the first judge. | HIS, by card 2026-11-13 |
-| Tracked on the mod | "These cycles should be tracked on the work item so we can monitor a cycling ticket": the cycle count, and per cycle what each lane found, what was fixed, which tests were edited, tokens; lane 1 rows passing of total. | HIS for the count; detail PROPOSAL |
+| Order | First, take only the locked bars, the code's logic kernels (the game-free core of a mod's rules) and the mod's settings as shipped. Write the game-logic tests and run them. Then open the code, the builder's tests and their recorded outputs for the review, planted faults and reruns. | HIS, by card ("tests first"); the exact inputs per part PROPOSAL |
+| Outputs | Lane 1 (game logic): test rows; random cases with the failing case shrunk to its smallest form; conservation checks (nothing created or lost); the shipped settings swept through their ranges. Lane 2 (challenge): a list of faults, each as detailed as the evidence; planted-fault results; rerun results. Each fault says what would pass and names the smallest fix. A planted fault is a deliberate bug put in to see whether a test catches it. | Lane 1 CARRIED (kept schemes, his picks of 2026-11-12: kernels with random cases, shipped-settings sweep with conservation laws); lane 2 HIS for the content, record shape CARRIED (refusal ruling 2026-11-12) |
+| Exit ("ready" means) | Every bar tagged "offline" is green. A blind judge found nothing that is a Problem. | PROPOSAL (Problem versus Polish is CARRIED from his card of 2026-11-13); **built as the rule 2026-11-18**: `advance` refuses a forward move whose program exit reading is not met. A steward's word alone moves nothing. The only override is his OWNER event newer than the cycle or visit (clause `exit_met`; delegated Evidence-for-Ask decision of 2026-11-15, RIMMANDRAKE_BIND_ADVANCE_TO_EXIT_READINGS). **On a game-only move** (`advance --to in_game --game-only <IDs>` whose `game_only` clause passes), the exit does not count two things. The exit does not count the new blind judge owed only for the cycle's own FIXED Problems, each shown red then green. The exit does not count a lane-1 `not_kernel` UNSETTLED row when a named game-only item carries each of its bars (the item's title names the bar). An unfixed Problem, any other gap, and every other move still refuse (the Conductor's act of 2026-11-19, RIMMANDRAKE_UNBLOCK_GAME_ONLY_ADVANCE_AT_BLIND_EXIT; page `design/specs/2026-11-19-maturation-game-only-blind-exit/boundary.md`) |
+| Road back | "If it finds issues, it should FIX THEM RIGHT THERE and force the system to pass, but then send it back to just before Stage 4 again for a new blind judgement pass." "Once you make your list of what's wrong, you're the one who should fix it RIGHT NOW and show it working... then send it back to a new blind you." Since 2026-11-20 a fixed mod owes ONE fresh reader of each fix, not a whole new blind cycle. The fresh reader is a run that did not make the fix. The fresh reader reads only that fix, once (`read_exit`, `fix_reader_owed`). A wrong check or scene that the judge repairs, seen FAIL on a planted fault and PASS on the real build, owes nothing more (`check_repairs`). | HIS; HIS 2026-11-20 for the fresh reader and the wrong check (standing_rulings §Touching code has a cost) |
+| What the next blind judge reads | **"All once, then changes."** The first judge reads everything. After a fix, the new judge reads the changed files and the line items whose inputs changed. The new judge is not told what the last judge found. A fault found late in unchanged material is still fixed, and is logged as a miss of the first judge. | HIS, by card 2026-11-13 |
+| Tracked on the mod | "These cycles should be tracked on the work item so we can monitor a cycling ticket": the cycle count; per cycle, what each lane found, what was fixed, which tests were edited, tokens; lane 1 rows passing of total. | HIS for the count; detail PROPOSAL |
 
 **Guards on fix-in-place.** **[PROPOSAL]** from the Conductor; this writer agrees and adds the last one.
 
-- The fixer may not edit a bar or an acceptance criterion. A wrong criterion goes to the neutral fixer. (This part is [CARRIED], his refusal ruling.) A wrong check whose bar keeps its meaning is re-pinned by the steward, and a bar changes only as the lock rule allows (§4 Stage 1). [HIS by agreement]
+- The fixer may not edit a bar or an acceptance criterion. A wrong criterion goes to the neutral fixer. (This part is [CARRIED], his refusal ruling.)
+  - [HIS by agreement] The steward re-pins a wrong check whose bar keeps its meaning. A bar changes only as the lock rule allows (§4 Stage 1).
 - Every test the fixer edits is listed in the cycle record and shown to the next blind judge. Otherwise "force the system to pass" could be done by weakening a test.
-- Added by this writer: each fix is shown red first. The fixer records the test failing on the old code, then passing on the new. "Show it working" is his phrase; red-first is how it is shown.
+- Added by this writer: each fix is shown red first. The fixer records the test failing on the old code, then passing on the new. "Show it working" is his phrase. Red-first is how it is shown.
 
-**After three cycles.** **[HIS, 2026-11-13, typed]** "After three cycles, Conductor is brought in (Fable 5.2 class reasoner) to make a decision on what to do. When the user is next available, they are informed and the decision is confirmed or changes made. Conductor may choose any of the options you offered, or yet more creative ones (it may see how to fix the problem in a way the judges did not)." The options offered were: defer a bar, repair a criterion, call it a design fault, or allow one more cycle. Cycles are counted on the mod; a fourth judge never starts on its own.
+**After three cycles.** **[HIS, 2026-11-13, typed]**
+
+- "After three cycles, Conductor is brought in (Fable 5.2 class reasoner) to make a decision on what to do. When the user is next available, they are informed and the decision is confirmed or changes made. Conductor may choose any of the options you offered, or yet more creative ones (it may see how to fix the problem in a way the judges did not)."
+- The options offered were: defer a bar, repair a criterion, call it a design fault, or allow one more cycle.
+- Cycles are counted on the mod. A fourth judge never starts on its own.
 
 ### Stage 6: In-game acceptance
 
 | | | mark |
 |---|---|---|
 | Purpose | "In-game acceptance testing with setup maps, proper acceptance testing, and using the fastest methods available with dense, rich setups that test many items simultaneously + allowances to explore beyond the acceptance tests and plentiful screenshots to look for 'strange unexpected things.'" | HIS |
-| Who | A live-test agent driving one of the two games. Scripts give the verdict on each bar; the agent explores and looks. | HIS for the stage; "scripts decide" CARRIED from the old map's stage 4 (not his by card) |
+| Who | A live-test agent driving one of the two games. Scripts give the verdict on each bar. The agent explores and looks. | HIS for the stage; "scripts decide" CARRIED from stage 4 of the earlier stage map (§7; not his by card) |
 | Model tier | A live driver: see Agent_Policy.md, "Helpers in this repo". | CARRIED |
 | Inputs | The mod as deployed to the game; the in-game tests from Stage 3; a prepared map built by the mod's own proof script. | CARRIED (rule 5: dense, labelled savegame on matrix scenes, his words of 2026-11-12) |
 | Outputs | One verdict per in-game line item. Screenshots. A list of strange things seen that no bar covers. A labelled savegame. | HIS |
-| Exit ("ready" means) | Every in-game line item passes on a site that was checked first (open sky, no stray animals). Every strange thing is either explained or filed. The savegame for him exists. | CARRIED (rule 6: "a site is asserted, never hoped", his words 2026-11-12) plus PROPOSAL; **built as the rule 2026-11-18**: `advance` refuses a forward move whose program exit reading is not met, a steward's word alone moves nothing, and his OWNER event newer than the cycle or visit is the only override (clause `exit_met`; delegated Evidence-for-Ask decision of 2026-11-15, RIMMANDRAKE_BIND_ADVANCE_TO_EXIT_READINGS) |
-| Road back | Each failed or unmeasured line is classed first: the mod is wrong, the check is wrong, or the staged scene is wrong. A wrong check or scene never goes back: the driver repairs it in the sitting and it counts only when seen FAIL on a planted fault and PASS on the real build; when no bar needs it, it is removed from the test table, with one polish line as the record. A mod fault the driver can fix is fixed in the sitting (a before/after test, every check re-run on the fixed build, one fresh reader of the fix). Only a mod fault that could not be fixed there, or a bar left undecided, goes to the lowest stage that can show the fault, and an offline test that fails on the old code is written first; the driver files those lines itself before it ends. Only that line item and those sharing its inputs are re-run. | CARRIED (rules 2c and 2d); HIS 2026-11-20 for the classes, the fix in the sitting and the removal (standing_rulings §Touching code has a cost) |
+| Exit ("ready" means) | Every in-game line item passes on a site that was checked first (open sky, no stray animals). Every strange thing is either explained or filed. The savegame for him exists. | CARRIED (rule 6: "a site is asserted, never hoped", his words 2026-11-12) plus PROPOSAL; **built as the rule 2026-11-18**: `advance` refuses a forward move whose program exit reading is not met. A steward's word alone moves nothing. The only override is his OWNER event newer than the cycle or visit (clause `exit_met`; delegated Evidence-for-Ask decision of 2026-11-15, RIMMANDRAKE_BIND_ADVANCE_TO_EXIT_READINGS) |
+| Road back | Each failed or unmeasured line is classed first: the mod is wrong, the check is wrong, or the staged scene is wrong. A wrong check or scene never goes back. The driver repairs it in the sitting. The repaired check or scene counts only when it is seen FAIL on a planted fault and PASS on the real build. When no bar needs the check or scene, it is removed from the test table, with one polish line as the record. A mod fault that the driver can fix is fixed in the sitting (a before/after test, every check re-run on the fixed build, one fresh reader of the fix). Only two things go to the lowest stage that can show the fault: a mod fault that could not be fixed there, and a bar left undecided. For those lines an offline test that fails on the old code is written first. The driver files those lines itself before it ends. Only that line item and those sharing its inputs are re-run. | CARRIED (rules 2c and 2d); HIS 2026-11-20 for the classes, the fix in the sitting and the removal (standing_rulings §Touching code has a cost) |
 | Tracked on the mod | Rows pass, fail and unmeasured; which game; wall time; strange things open. | PROPOSAL |
 
-The fastest methods: the 13-mod minimal list loads in 22 seconds; the full list takes about 15 minutes. A test uses the full list only when it says why. **[CARRIED]** (his ruling 2026-11-12). A flyer's flight is never tested live without him. **[CARRIED]**
+The fastest methods:
+
+- The 13-mod minimal list loads in 22 seconds. The full list takes about 15 minutes. A test uses the full list only when it says why. **[CARRIED]** (his ruling 2026-11-12)
+- A flyer's flight is never tested live without him. **[CARRIED]**
 
 #### Which game runs what
 
@@ -286,22 +344,54 @@ The fastest methods: the 13-mod minimal list loads in 22 seconds; the full list 
 | The labelled savegame and his live walk (Stage 8) | Archmagi | CARRIED: he sits at that machine |
 | Re-running a passed version's bars when something it depends on changes | Either game, through the queue (§6, "After a version passes") | HIS, by card 2026-11-14 (18b): built only after one version has passed |
 
-**A verdict counts only on the version and list he walks.** This follows from 18a: a pass from a game that ran a different build proves nothing about the one he walks. **[HIS, 2026-11-17]** ("I approve your changes to the Step 6->Step 7 transition and preparation", item `RIMMANDRAKE_FOLD_STAGE_SEVEN_INTO_WALK_BRIEF_NO_VETO`.) The **build match** is a program, no model, run at the Stage 6 exit. Every in-game verdict row records the game it ran on, the mod's source sha, a hash of its deployed folder there, the active mod list read by parsing that game's `ModsConfig.xml` (`activeMods`, in order) and the game build: the runner gets them from `python3 src/RimMandrake/rimflow/build_match.py identity --mod <Mod> (--tier <T> | --full)` after the deploy and the list swap, and merges that line into every row. The program reads the same on Archmagi for the build he walks (the mod's deployed folder hash, the game's `Version.txt`, and the mod list of the labelled walk savegame that the Stage 6 Exit block names) and compares each check's last row with it (visit N's, else the latest earlier visit's). A row whose game build differs does not count, and its line item is re-run. **[HIS, 2026-11-21]** A row whose mod hash differs still counts when the change since its commit touches nothing its check reads or exercises (`src/RimMandrake/rimflow/rerun_relation.py`; `design/RimMandrake/standing_rulings.md` §After a change, only the checks that the change touches run again); only a touched check, or one whose relation cannot be read, is re-run. A walk folder that is not the current source is one act, a deploy, and reruns no check. The mod list is compared as the test declares it: a full-list test (its `why_full_list` set) must match his walk's list exactly; a minimal-list test (the carried default, §4 Stage 6) must match the list `modset_builder.py` builds for its tier from the same commit, and his walk is the check of that verdict on his full list. `maturation.py` runs it in its Stage 6 exit reading (its `build_match` clause); `python3 src/RimMandrake/rimflow/build_match.py check --mod <Mod> [--visit N]` runs it alone and exits 0 only when every check counts. Selftest: `src/RimMandrake/rimflow/selftest_build_match.py` (with `--mutants`).
+**A verdict counts only on the version and list he walks.** This rule follows from 18a. A pass from a game that ran a different build proves nothing about the build that he walks.
 
-**Entry rule. [HIS, 2026-11-17, about 11:00 AM PST]** "Drop 11-14 limits, old rule. Clear its limitations. We are remeasuring it for a brand new pipeline." (item `RIMMANDRAKE_DROP_STEVEDESKTOP_PIPELINE_ONLY_LIMIT`.) Any mod's token-free test, proof chain, `--full` sweep or `--item` selection may be queued and filled on SteveDesktop whatever its pipeline stage. `src/RimMandrake/Utils/testq/pipeline_admit.py`, called by `testq.py submit` before anything else and by the filler, the nightly sweep and the fault-window rerun, refuses one thing: a mod on his hold (`src/RimMandrake/rimflow/mod_owner_hold.json`, his 2026-11-16 hold), and every test while that list cannot be read. The filler (`coverage.fill_mods`) leaves held mods out. Ops jobs are never refused: the brake-release canary (`Operations.canary`) and the steward's repair wake (`BENCH.steward-wake`). The machine-safety brakes (fault monitor, hardware outage, brake release) are unchanged. Stage-6 `testq` blocks (`testq_blocks.py`) still name the modcheck chain of each check, so the filler walks a past-blind mod without hand wiring. Selftest: `src/RimMandrake/Utils/testq/selftest_testq_pipeline_admit.py` (with `--mutants`).
+**[HIS, 2026-11-17]** ("I approve your changes to the Step 6->Step 7 transition and preparation", item `RIMMANDRAKE_FOLD_STAGE_SEVEN_INTO_WALK_BRIEF_NO_VETO`.)
+
+- The **build match** is a program, no model. The build match runs at the Stage 6 exit.
+- **What a row records.** Every in-game verdict row records five things:
+  - the game it ran on;
+  - the mod's source sha;
+  - a hash of the mod's deployed folder there;
+  - the active mod list, read by parsing that game's `ModsConfig.xml` (`activeMods`, in order);
+  - the game build.
+- **Where the runner gets them.** The runner runs `python3 src/RimMandrake/rimflow/build_match.py identity --mod <Mod> (--tier <T> | --full)` after the deploy and the list swap. The runner merges that line into every row.
+- **What the program compares.** The program reads the same things on Archmagi for the build that he walks:
+  - the mod's deployed folder hash;
+  - the game's `Version.txt`;
+  - the mod list of the labelled walk savegame that the Stage 6 Exit block names.
+- **Which row.** The program compares each check's last row with those readings. The last row is the row of visit N. If visit N has no row, the last row is the row of the latest earlier visit.
+- **A different game build.** A row whose game build differs does not count, and its line item is re-run.
+- **A different mod hash. [HIS, 2026-11-21]** A row whose mod hash differs can still count. The row counts when the change since its commit touches nothing that its check reads or exercises (`src/RimMandrake/rimflow/rerun_relation.py`; `design/RimMandrake/standing_rulings.md` §After a change, only the checks that the change touches run again). Only a touched check, or a check whose relation cannot be read, is re-run. A walk folder that is not the current source is one act, a deploy. That act reruns no check.
+- **The mod list.** The program compares the mod list as the test declares it.
+  - A full-list test (its `why_full_list` set) must match his walk's list exactly.
+  - A minimal-list test (the carried default, §4 Stage 6) must match the list of its tier. `modset_builder.py` builds that list from the same commit. His walk is the check of that verdict on his full list.
+- **How to run it.** `maturation.py` runs the build match in its Stage 6 exit reading (its `build_match` clause). `python3 src/RimMandrake/rimflow/build_match.py check --mod <Mod> [--visit N]` runs the build match alone. That command exits 0 only when every check counts.
+- **Selftest:** `src/RimMandrake/rimflow/selftest_build_match.py` (with `--mutants`).
+
+**Entry rule. [HIS, 2026-11-17, about 11:00 AM PST]** "Drop 11-14 limits, old rule. Clear its limitations. We are remeasuring it for a brand new pipeline." (item `RIMMANDRAKE_DROP_STEVEDESKTOP_PIPELINE_ONLY_LIMIT`.)
+
+- Any mod's token-free test, proof chain, `--full` sweep or `--item` selection may be queued and filled on SteveDesktop. The mod's pipeline stage does not matter.
+- `src/RimMandrake/Utils/testq/pipeline_admit.py` is the gate. `testq.py submit` calls it before anything else. The filler, the nightly sweep and the fault-window rerun call it too.
+- The gate refuses one thing: a mod on his hold (`src/RimMandrake/rimflow/mod_owner_hold.json`, his 2026-11-16 hold). While that list cannot be read, the gate refuses every test.
+- The filler (`coverage.fill_mods`) leaves held mods out.
+- Ops jobs are never refused: the brake-release canary (`Operations.canary`) and the steward's repair wake (`BENCH.steward-wake`).
+- The machine-safety brakes (fault monitor, hardware outage, brake release) are unchanged.
+- Stage-6 `testq` blocks (`testq_blocks.py`) still name the modcheck chain of each check. So the filler walks a past-blind mod (a mod past the blind challenge) without hand wiring.
+- Selftest: `src/RimMandrake/Utils/testq/selftest_testq_pipeline_admit.py` (with `--mutants`).
 
 ### Stage 7: Pre-human check, the walk brief
 
-**[HIS, 2026-11-17]** Stage 7 judges nothing. He asked "What is step 7 in the maturation pipeline other than redundancy with just-passed judges?" and approved the change: the judges have judged, the build match (Stage 6) has kept only the verdicts that count on the build he walks, and what is left is one fresh read that prepares his walk.
+**[HIS, 2026-11-17]** Stage 7 judges nothing. He asked "What is step 7 in the maturation pipeline other than redundancy with just-passed judges?" and approved the change. The judges have judged. The build match (Stage 6) has kept only the verdicts that count on the build he walks. What is left is one fresh read that prepares his walk.
 
 | | | mark |
 |---|---|---|
-| Purpose | Prepare his walk: one fresh read of the evidence "as not merely sufficient but consistent and not containing obvious anomalies beyond the stated goals that would waste a human's review time". What it finds goes into his brief or onto a ticket; it refuses nothing. | HIS (the quote); HIS, 2026-11-17 (no veto) |
+| Purpose | Prepare his walk: one fresh read of the evidence "as not merely sufficient but consistent and not containing obvious anomalies beyond the stated goals that would waste a human's review time". What the read finds goes into his brief or onto a ticket. The read refuses nothing. | HIS (the quote); HIS, 2026-11-17 (no veto) |
 | Who | ONE fresh reader that made none of the evidence writes: no stage move of this version and no in-game row. `maturation.py` refuses a brief whose `written_by` names a unit that made either. | HIS, 2026-11-17; CARRIED (user-level rule, 2026-10-22: "Read it first and see if it's obviously broken... before wasting a human's time") |
 | Model tier | A reading role, one run. | PROPOSAL |
 | Inputs | Everything from stages 2 to 6: records, test rows, screenshots, the savegame, the build match's reading, the journal and the commits since his last look, the mod's open tickets. | PROPOSAL |
 | Outputs | The walk brief, `design/concepts/<Mod>/version/walk_brief/arrival_<N>.md` (N = arrivals at this stage), under four headings: what to open; what changed since his last look; "known, not fixed: you need not report these"; what it noticed first. Role: `src/RimMandrake/rimflow/roles/walk_brief.md`. | HIS, 2026-11-17; CARRIED (rule 4) |
-| Exit ("ready" means) | The brief is written, its four headings filled, by a fresh reader. It has NO veto: a finding goes into the brief or onto a ticket, never down a road. No `--steward-confirms`. | HIS, 2026-11-17 |
+| Exit ("ready" means) | The brief is written, its four headings filled, by a fresh reader. The reader has NO veto: a finding goes into the brief or onto a ticket, never down a road. No `--steward-confirms`. | HIS, 2026-11-17 |
 | Road back | None. | HIS, 2026-11-17 |
 | Tracked on the mod | Arrivals at this stage (`pre_human_arrivals`). Each arrival is one release candidate: 0.1.0-rc.1, 0.1.0-rc.2. Version numbering is unchanged. | CARRIED ("A judge round is a release candidate") with a PROPOSAL about what counts as a round (open question); HIS, 2026-11-17: the rc count per arrival stays |
 
@@ -315,7 +405,7 @@ The fastest methods: the 13-mod minimal list loads in 22 seconds; the full list 
 | Inputs | The Stage 7 brief; a dense, labelled savegame. | CARRIED (rule 5) |
 | Outputs | His words, verbatim, in the ledger. Each thing he says becomes one line item with a class: mod fault, test-map fault, test-tool fault, art, new bar, or question. Each pass he gives is pinned. | CARRIED (rules 2a and 2e) |
 | Exit ("ready" means) | He passes the version. The pass record is written: date, git commit, bars, evidence, cost, cycles. | CARRIED (Design Versions draft §3.7); the pass is his alone |
-| Road back | A Problem (a defect, or something a player would reject as strange or disappointing) stays in this version and goes to the lowest stage that can show it. Polish goes to the mod's Polish list, confirmed with him. A Divergent idea goes to the next version. His objection closes only on his own later look, as a labelled cell in the next save he opens anyway. | CARRIED (his cards of 2026-11-13 and 2026-11-12) |
+| Road back | A Problem (a defect, or something a player would reject as strange or disappointing) stays in this version. The Problem goes to the lowest stage that can show it. Polish goes to the mod's Polish list, confirmed with him. A Divergent idea goes to the next version. His objection closes only on his own later look, as a labelled cell in the next save he opens anyway. | CARRIED (his cards of 2026-11-13 and 2026-11-12) |
 | Tracked on the mod | His minutes; objections by class; pinned passes; the pass record. | PROPOSAL |
 
 ---
