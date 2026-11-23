@@ -1,0 +1,1 @@
+A new GSS SelfTest flag that takes a value must be added to the positional-argument filter in Program.cs Main (the line that picks the scenes JSON path), or a full run reads the value as its scenes file and crashes at start in about 4 s; --looks-only and the other early-return modes never reach that line, so they stay green and hide it (2026-11-23, --textures, fixed 8486f6d981).

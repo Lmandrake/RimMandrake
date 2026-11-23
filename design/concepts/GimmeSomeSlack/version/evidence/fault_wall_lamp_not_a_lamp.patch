@@ -1,0 +1,13 @@
+diff --git a/src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs b/src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs
+index 0bab3764e4..1dbe5d9795 100644
+--- a/src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs
++++ b/src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs
+@@ -29,7 +29,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
+         /// machine, and machines end a run (design 2.1), so a lamp keeps its own picked look (art round 5, 2026-10-04).
+         /// 0.2.0 (bar wall_lamp_takes_looks, T_WALL_LAMP_LOOKS_OFFLINE): the vanilla wall lamp takes the looks as the standing
+         /// lamp does; every lamp rule here and in RM_MapComponent_ConduitRuns reads this list, never a def name.</summary>
+-        public static readonly string[] LampDefs = { "StandingLamp", "WallLamp" };
++        public static readonly string[] LampDefs = { "StandingLamp" };   // PLANTED: the 0.1.1 lamp list
+ 
+         /// <summary>Modern (extension cord) colours, in CordMaterials' strand order.</summary>
+         public static readonly string[] Colours = { "Orange", "Green", "Brown", "Yellow", "Blue" };

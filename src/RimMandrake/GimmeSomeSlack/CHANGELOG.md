@@ -4,6 +4,8 @@ Version here must match `<modVersion>` in `About/About.xml`. Never deployed (`.m
 
 ## Unreleased
 
+- Every look in a look menu (the build menu's look choice and the Restyle menus) shows its own icon, the same picture in every menu; a Modern colour choice shows the Modern icon and names its colour.
+- The vanilla wall lamp takes the four looks as the standing lamp does: pick its look in the build menu or with Restyle, it follows the cable run it is hooked to on "All connected", and with the master switch off it draws the vanilla wall lamp.
 - The style button is now "Restyle...", on every conduit cell, switch, pole, bracket and floor lamp. It asks how far first: this item only, all connected, or all on the map (your own things; every faction in god mode), with the number of pieces each will repaint, then the look. A run can now hold more than one look: joining runs settles a look only when both runs have one look each, a piece built onto a mixed run takes the look of the piece it touches, and "All connected" makes a run one look again. The god-mode button "DEV: switch ALL to..." is gone; "All on map" does its job.
 - Overhead wires sway in the Gust look by default (Pendulum and Rope stay in Mod Settings).
 - A cord end that turns live or dead off screen is laid again at once (it kept its old cord until that part of the map was next redrawn).

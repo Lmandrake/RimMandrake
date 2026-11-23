@@ -1,0 +1,13 @@
+diff --git a/src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs b/src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs
+index 0bab3764e4..f034dad4ed 100644
+--- a/src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs
++++ b/src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs
+@@ -98,7 +98,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
+         public static string LookIconPath(string key)
+         {
+             if (key == Key("Modern", Multi)) return LookIconDir + "Modern";
+-            return TryParseKey(key, out string look, out _) ? LookIconDir + look : null;
++            return TryParseKey(key, out string look, out _) ? LookIconDir + key : null;   // PLANTED: a colour entry on a picture of its own
+         }
+ 
+         // ------------------------------------------------------------------ naming

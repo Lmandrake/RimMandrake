@@ -1,0 +1,13 @@
+diff --git a/src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStylePicker.cs b/src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStylePicker.cs
+index 701b9722d7..d7aa23e586 100644
+--- a/src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStylePicker.cs
++++ b/src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStylePicker.cs
+@@ -182,7 +182,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
+         {
+             string iconPath = ConduitStyles.LookIconPath(key);
+             Texture2D lookIcon = iconPath == null ? null : RimMandrake.GimmeSomeSlack.SafeTex.Get(iconPath, false);
+-            if (lookIcon != null) return lookIcon;
++            // PLANTED: the look icon is never returned
+             if (!IsConduit(d))
+             {
+                 ThingStyleDef s = StyleFor(d, key);
