@@ -1,0 +1,13 @@
+ROW                          STATUS     DETAIL
+W_PRECONDITIONS              PASS       small list, 24 active mods, storeroom stocked (frame arms only)
+FRAME_BUDGET                 PASS       -1.0% over mod off; on p99 50.0 ms (496 rows, 8 in the air), mod off p99 50.5 ms (495 rows), PASS at most +10%; on: 21 arm(s), p99s [53.8, 46.4, 50.0, 49.7, 53.1, 46.9, 50.1, 50.8, 45.2, 50.0, 47.0, 50.0, 42.2, 72.4, 50.8, 50.6, 48.0, 50.9, 48.2, 54.7, 52.1]: FRAME frames=687 probeRows=687 paused=4 wall=11.75s worstMs=81.4 meanMs=17.1 maxInAir=10 window=0.5-10s windowRows=555 windowP99Ms=53.8 path
+evidence: D:\ClaudeWork\rimmandrake\ek_run_20261123\ek_frames_small_SRCID_21_20261123.json   throwaway saves: ['EK_WALK_RAID_BASE_20261123T141338']
+[bridge split] 807.6 s wall: load 1.3 / ticks 0.0 / reads 66.9 / other 24.9 / outside calls 714.4 s
+[bridge split] WARN 221 calls of rimworld/get_ui_state (57.8 s): batch them
+[bridge split] WARN 157 calls of rimworld/set_time_speed (1.4 s): batch them
+[bridge split] WARN 151 calls of jawa/static_call (4.3 s): batch them
+[bridge split] WARN 140 calls of jawa/time_clock (6.1 s): batch them
+[bridge split] WARN 126 calls of jawa/explosion_at (8.0 s): batch them
+[bridge split] WARN 96 calls of jawa/mod_settings_field (2.8 s): batch them
+[bridge split] WARN 88 calls of rimworld/get_game_info (9.1 s): batch them
+rc=0

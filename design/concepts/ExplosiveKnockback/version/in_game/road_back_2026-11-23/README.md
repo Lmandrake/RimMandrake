@@ -17,4 +17,7 @@ Small-list only, seen in the behaviour runs and not touched: C_OFF_IMPACTS_NO_TH
 destroyed vanilla shelf, 0 throw lines; 0 of 11 on every full-list run) and A_GAS_CLUMP_BY_CLUMP FAIL 1 of 8 (one straggler cell; 0 of 18
 orders on the full list).
 
-Left: the full-list walk on ArchBig with --frame-evidence and sc_barrage_perf.
+A second 21-pair cold run on the landed proof build (77296ea4, src_id 51f9663608541267), made so the file carries the source id the
+full-list walk now matches on: PASS, mod on 1.0% under mod off (50.0 vs 50.5 ms) `ek_frames_small_SRCID_21_20261123.json`. Use this file.
+
+Left: the full-list walk on ArchBig with --frame-evidence, and sc_barrage_perf (both in `unrun.jsonl`, for visit 5).
