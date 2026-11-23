@@ -20,8 +20,8 @@ rimflow is one master queue. rimflow makes the queue from an append-only ledger.
   close/drop/supersede, rimflow moves the prose file to `infrastructure/state/items/closed/`.
 - An id has the form `PROJECT_VERB_INTENTION_TWIST`, 4–9 words, ≤ 64 chars. Check an id with `rimflow namecheck <NAME>`.
   Legacy `…_1` ids stay valid. An id is guessable cold, never a number.
-- `file` and `spawn` refuse only two kinds of id: an id that exists, and an id that is not UPPER_SNAKE. They file any
-  other bad name with a `NAME NOTE:` line and a `name_note` field on the event.
+- `file` and `spawn` refuse only two kinds of id: an id that exists, and an id that is not UPPER_SNAKE. These
+  two verbs file any other bad name with a `NAME NOTE:` line and a `name_note` field on the event.
 - `rimflow next --seat <SEAT>` is the one command that you need to start work. Each other view command (`show`, `why`,
   `render`, `reindex`) derives a view from the same ledger.
 
@@ -142,9 +142,11 @@ Then rimflow reads the item. A refusal prints its reason and changes nothing. Th
   `rimflow verify <ID> --sha <sha> --level L0 --result pass --config <what ran> --evidence <path>`. A pass on another
   sha does not count.
 - **fail:** the newest deciding run is a fail. A pass on that sha after the fail clears this refusal.
-- **guard:** this fix died: its live promise broke after the fix was built or closed. No newer class guard test is on record.
-  This kind refuses a `--no-code` close too. Record the test with `rimflow guard`. The close runs the recorded test in your
-  clone, and the test must pass. Which commit must hold the test: see the traps file.
+- **guard:** this fix died: its live promise broke after the fix was built or closed. No newer guard is on record.
+  - A guard (a class guard test) is a test for the whole class of this fault. `rimflow guard` must see the guard fail on this
+    instance of the fault.
+  - This kind refuses a `--no-code` close too. Record the guard with `rimflow guard`. The close runs the recorded test in
+    your clone, and the test must pass. Which commit must hold the test: see the traps file.
 - **cited paths** (rimflow prints `sha`): the sha touches none of the paths that the item cites. This close needs `--why`.
 
 `--owner-said`, `--by-card` or `--per-ruling` on the close lifts **fail**, **guard** and **cited paths** only. `--why`
@@ -201,7 +203,7 @@ nothing lands in `ownerSaid` by mistake:
 - **A delegated decision** (`design/RimMandrake/delegation_policy.md`, owner 2026-10-22) is `--why "delegated: <class>"`.
   The decision is ours, not his. ⛔ Never pass `--per-ruling` with the delegation item to make the call read as OWNER.
   The ruling authorises the class, not the call.
-- rimflow checks only the **shape** of the quote. It refuses an empty quote. rimflow records a question or a bare assent
+- rimflow checks only the **shape** of the quote. rimflow refuses an empty quote. rimflow records a question or a bare assent
   ("yes") as he typed it. For a bare assent with no `--why`, rimflow prints a note that asks for one (owner 2026-11-20).
 - `note --owner-said` stamps the WHOLE event as OWNER-authored. For your own text, use a bare `note` (plus `--why` if
   useful).
@@ -243,7 +245,7 @@ calling seat.
 
 - The short way to land a write is the flag `--publish`. The brief of a detached helper asks for it on every write.
   rimflow then lands exactly the paths that the call wrote: the shard, OWNER.jsonl
-  for an OWNER event, and moved item prose. It prints `PUBLISHED <sha>`. Exit 4 means that the write stands and the
+  for an OWNER event, and moved item prose. rimflow prints `PUBLISHED <sha>`. Exit 4 means that the write stands and the
   landing failed. The printed line then names the cause, and the command that lands the write where rimflow can make one.
 - A write without `--publish` is easy to miss. CLAUDE.md says "explicit paths, never `git add -A`". So a commit that
   names only the code and content files of a fix never includes the ledger change. The queue history of a full session
@@ -266,7 +268,7 @@ calling seat.
   - The default is a dry run. Pass `--apply --owner-said "…"` to write.
   - `--seat <SEAT>` targets the shard of that seat. The value is a seat name, never a path.
   - The tool removes only lines that fail to parse. The tool keeps a whole event that is joined to a torn fragment.
-  - The tool first makes a backup in `D:\ClaudeWork\rimmandrake\ledger_repair\`. It stops at more than 25 bad lines.
+  - The tool first makes a backup in `D:\ClaudeWork\rimmandrake\ledger_repair\`. The tool stops at more than 25 bad lines.
 - **`--owner-said` (and `--per-ruling`/`--by-card` acts) write `infrastructure/state/ledger/events/OWNER.jsonl`, not your
   seat shard.** A commit of only `<SEAT>.jsonl` leaves those events uncommitted (17 raise/note events sat ~8 h once).
   `./publish` prints a WARNING when OWNER.jsonl has uncommitted events and you named other paths. After any such act, land
@@ -280,8 +282,8 @@ A projection is a view that a program makes from the ledger, for example `rimflo
 
 - Every ledger file is append-only. Since 2026-10-02, git merges the shards with `merge=union` (`.gitattributes`). Union
   keeps duplicate lines, and mixes the appends of two clones in any order. So **file position means nothing**.
-- `model.read()` with no path is the one reader that is correct under union. It collapses identical events, and orders by
-  `(ts, subject, model.VERB_RANK, seat, content)`, with `tsn` (nanoseconds) before the subject. It never orders by file.
+- `model.read()` with no path is the one reader that is correct under union. `model.read()` collapses identical events, and orders by
+  `(ts, subject, model.VERB_RANK, seat, content)`, with `tsn` (nanoseconds) before the subject. `model.read()` never orders by file.
 - **Never re-sort on `(ts, event)` yourself.** A sort by `event` name inverts a `start`+`close` pair of the same second.
   Such a sort once turned 61 real "doing" items into a reported 102. `VERB_RANK` exists to prevent that.
 - If you make your own view (instead of `rimflow show`/`next`/`queue <SEAT>`), call `model.read()`. Do not merge by hand.
@@ -289,8 +291,9 @@ A projection is a view that a program makes from the ledger, for example `rimflo
   with both timestamps. The window with the later claim stands down.
 - `ledger_lint.py` (selftests + a push guard) refuses torn lines, missing newlines and any non-append edit.
 - 🔴 **A view is only as current as the clone it renders from.** `rimflow queue` in a clone behind origin replays an old
-  ledger, and shows closed or changed items as open. A RECONCILE or decay sweep checks each item again in a
-  fresh origin clone (`git fetch` and compare, or `scratch_clone.py`). It never uses the view of a stale seat clone.
+  ledger, and shows closed or changed items as open. A RECONCILE or
+  decay sweep is any pass that checks if open items are already done or stale. Such a sweep checks each item again in a
+  fresh origin clone (`git fetch` and compare, or `scratch_clone.py`), never in the view of a stale seat clone.
 - 🔴 **Never re-derive item state from raw events by hand — fold through `model.replay(events, observe=cb)`.** A reader
   that knew only the `needs` verb missed `implemented` and `file --needs owner`. So the old RimPulse board hid 29 owner
   items, and listed one item 9.5 h after it moved (2026-10-11).

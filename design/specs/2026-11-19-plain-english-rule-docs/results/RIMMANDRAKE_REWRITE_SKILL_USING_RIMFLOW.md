@@ -13,15 +13,15 @@ The front matter is byte-identical, the `description` included. The headings are
 
 | measure | before | after |
 |---|---|---|
-| bytes | 19,912 | 25,356 |
-| words in linted prose | 2,439 | 3,212 |
-| STE violations per 100 words | 4.39 | 1.74 |
-| sentences over 20 words | 52 | 20 |
+| bytes | 19,912 | 25,629 |
+| words in linted prose | 2,439 | 3,257 |
+| STE violations per 100 words | 4.39 | 1.78 |
+| sentences over 20 words | 52 | 22 |
 | flagged lines (mechanical) | 15 | 14 |
 | hand count (lines a cold reader cannot act on) | 10 | 0 |
 
-The file grew by 27%: the rewrite adds the `--publish` flag, the missing verb flags and the missing `close` refusal kinds.
-The 14 flagged lines are 12 marker emoji on slogans and 2 copies of one cited heading. The 20 long sentences are owner
+The file grew by 29%: the rewrite adds the `--publish` flag, the missing verb flags and the missing `close` refusal kinds.
+The 14 flagged lines are 12 marker emoji on slogans and 2 copies of one cited heading. The 22 long sentences are owner
 quotes, sentences that hold a command, or a bold slogan that the lint joins to the next sentence.
 
 ## The hand count
@@ -88,8 +88,8 @@ No selftest names this skill. Names of people: the diff was read; the only one i
 
 ## What the meaning read found
 
-Three fresh Opus reads (rm-judge), one after the other. No reader got the writer's reasoning. Read 1 was the whole file and
-the changed traps. Reads 2 and 3 were the repaired places. (The plan asks for the same reader. A resumed reader runs in the
+Four fresh Opus reads (rm-judge), one after the other. No reader got the writer's reasoning. Read 1 was the whole file and
+the changed traps. Reads 2 to 4 were the repaired places. (The plan asks for the same reader. A resumed reader runs in the
 background, where the end of this run could kill it. So a fresh reader read the repairs.)
 
 | read | finding | repair |
@@ -107,7 +107,9 @@ background, where the end of this run could kill it. So a fresh reader read the 
 | 2 | STALE_GATE words, his hold's own take, the WARNING's scope, UPPER_SNAKE, the hook's limit, `who` | repaired |
 | 3 | none | none |
 
-After read 3, one sentence of §Done means running became its own bullet, with no changed word. Reader 2's point on
+The first landing's prose check named 9 sentences: 7 pronouns, "class guard test" and "RECONCILE or decay sweep". Each was
+repaired in a second landing, and read 4 read those repairs: none. After read 3, one sentence of §Done means running became
+its own bullet, with no changed word. Reader 2's point on
 `bridge release --force` (a game other than ArchBig refuses it) is below, under Polish.
 
 ## Could not determine
@@ -116,6 +118,8 @@ After read 3, one sentence of §Done means running became its own bullet, with n
 
 ## Polish (not fixed)
 
+- The skill gives RECONCILE and decay sweeps one meaning. `cmd_reconcile` judges the commits that name one item and changes
+  no state. A decay sweep closes or drops dead items. The instructed act is the same for both.
 - `bridge release --force` on a game other than ArchBig does not cut a live holder; `take --force` does.
 - `./pipe off game:<g>` beats `--force`; the skill does not say so (`game_lock.py` does).
 - A verb that fails after it writes keeps its own exit code and prints `NOT PUBLISHED`, not exit 4.
