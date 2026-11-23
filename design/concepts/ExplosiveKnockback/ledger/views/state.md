@@ -1,16 +1,16 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":344431,"DISPATCH":30663,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"HOLDER.run-1795441975":2951,"HOLDER.run-1795448832":5159,"HOLDER.run-1795461416":958,"HOLDER.run-1795464425":2030,"JUDGE.judge-1794890427":18837,"JUDGE.judge-1795437145":6544,"OWNER":1207} body_sha256=29fbc578050350608b7f57385c9cb46268f56f26ae920a37a3f3a9fef2353386 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":344431,"DISPATCH":30663,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"HOLDER.run-1795441975":2951,"HOLDER.run-1795448832":5159,"HOLDER.run-1795461416":958,"HOLDER.run-1795464425":3294,"JUDGE.judge-1794890427":18837,"JUDGE.judge-1795437145":6544,"OWNER":1207} body_sha256=7549df35280803a5b81a9365aa4b523dee5d5738e96836526de07e1ddbc99311 -->
 # ExplosiveKnockback — mod ledger packet
-version 0.1.0 · stage in_game · 637 events in 16 shards · reducer 1
-holder lease run-1795464425, token 20, last active 2026-11-23T22:13:39Z
+version 0.1.0 · stage in_game · 639 events in 16 shards · reducer 1
+holder lease run-1795464425, token 20, last active 2026-11-23T22:33:55Z
 holder session 51379f50-c772-4cdc-be85-dd887d8ad4b2, context 392157 of ceiling 400000
 
-## Last checkpoint (HOLDER.run-1795461416, 2026-11-23T19:49:32Z)
-- done: fix 2590111487 read sound dc7550420b; koth.isid identity fixed 4ecd015e866f; moved to in-game visit 5 (ed2418697333)
-- next: Holder with game: repair sc_spared (read preBlast[carrier] first), run the walk frame arms, rerun walk and barrage
-- ruled out: full rows off the walk list: koth.isid was uninstalled, not a list change; carrier walk-off is unproven
+## Last checkpoint (HOLDER.run-1795464425, 2026-11-23T22:33:55Z)
+- done: FRAME_BUDGET PASS -7.3%/-1.0% small list, plant FAIL +14.5%; sc_spared held; landed b710076da6 805379254192 159c28a2dd5a
+- next: Visit 5 on ArchBig: run the two UNRUN full-list rows (sc_walk_raid with --frame-evidence, sc_barrage_perf), then all 56 checks
+- ruled out: C_OFF moved stack and gas straggler are small-list check noise (0 of 18 full-list orders)
 
 ## Open findings (44)
-(claimed fixes, awaiting a judge, on one line each with the oldest 40 open findings, named without their 'finding:': `modledger.py show --mod ExplosiveKnockback finding:<NAME>`)
+(claimed fixes, awaiting a judge, on one line each with the oldest 41 open findings, named without their 'finding:': `modledger.py show --mod ExplosiveKnockback finding:<NAME>`)
 - RIMMANDRAKE_RETIRE_UNUSED_CONTAINER_SHOVE_KERNEL [open, polish · bars closed_container_holds]: RM_KnockbackMath.ContainerShove (slide-or-jolt, parameter lightMassLimit) is called by no game code; ThrowContainer thr…
 - RIMMANDRAKE_STAGE_KERNEL_SELFTEST_COPY_INSIDE_LOCK [open, polish · bars inv_kernel]: selftest_explosiveknockback_kernel.py copies RM_KnockbackMath.cs into the machine-wide ExplosiveKnockbackSelfTest build…
 - RIMMANDRAKE_ASK_GOODS_WILD_FACTOR_BECOME_A_SLIDER [open, polish · bars settings_scale_and_switch, goods_arc_spin_rebound]: The goods wild factor ships as a constant 1.6 because adding a saved setting (goodsThrowWild) turns T_STAGE3_SCENES red…
@@ -51,9 +51,7 @@ holder session 51379f50-c772-4cdc-be85-dd887d8ad4b2, context 392157 of ceiling 4
 - RIMMANDRAKE_PROVE_SCENE_RUNNER_LIVE_SAME_ROWS_FEWER_CALLS [open, problem]: The shared scene runner's first slice (fd8e514b76) is proven offline only; it is unproven live that scene_runner.py giv…
 - RIMMANDRAKE_REPOINT_EK_JOURNAL_JOLT_CHECKS_AFTER_PLAN_MOVE [open, problem]: selftest_explosiveknockback_journal_jolt.py greps RM_MapComponent_Knockback.cs for throw rules that ffc3937ee7 moved in…
 - RIMMANDRAKE_RESCUE_KNOCKBACK_PAST_CEILING_CYCLE_SIX [open, problem]: Explosive Knockback 0.1.0 was stuck at Stages 4+5 with blind cycle 6 unrun and paused at its stage spend ceiling. Live…
-- finding:RIMMANDRAKE_FIX_KNOCKBACK_RAID_NULL_PAWN_STORM_780_TICKS [open, problem] by BACKFILL, 2026-11-19T23:33:01Z: The raid walk logs 780x 'Exception ticking Levin' (vanilla Pawn.Tick+0x60 at (246,0,36)) and 447x root Update NRE in PawnTweener.TweenedPosRoot via Pawn_DrawTracker.DrawPos; both read as a pawn left with a null map/position by a knockback.
-  proposed fix: Fix the knockback so no pawn is left with a null map/position (see midair saves EK_WALK_RAID_MIDAIR_*), and cut the walk's reloads (57 reloads in 2 h, heap 2.9 to 11.4 GB).
-  accept: none, live-only: a rerun of the raid walk logs 0 'Exception ticking' and 0 'TweenedPosRoot' lines.
+- RIMMANDRAKE_FIX_KNOCKBACK_RAID_NULL_PAWN_STORM_780_TICKS [open, problem]: The raid walk logs 780x 'Exception ticking Levin' (vanilla Pawn.Tick+0x60 at (246,0,36)) and 447x root Update NRE in Pa…
 - finding:RIMMANDRAKE_STOP_GAS_SHOVE_PAST_WALL_CORNER_UNSEEN [open, problem] by BACKFILL, 2026-11-19T23:33:03Z · bars gas_goes_clump_by_clump: RM_MapComponent_Knockback.GasBurst queues every pawn, corpse and good within gasBurstRadius by GenRadial alone, with no line of sight. A burning clump can shove a thing diagonally past a wall corner into another room, which a real explosion never reaches.
   proposed fix: Skip cells GenSight.LineOfSight(c, cell, map) refuses, and give the map's model the same rule for gas (KnockbackMap.cs A5).
   accept: Live only, not yet watched fail: map_agreement.py case 'c:wall:1:0;c:wall:0:1;t:a:steel2:1:1;b:gas:1.9' expects a stays on 1,1 (DISAGREE today); after the fix AGREE and selftest_explosiveknockback_map.py green.
@@ -62,7 +60,7 @@ holder session 51379f50-c772-4cdc-be85-dd887d8ad4b2, context 392157 of ceiling 4
   accept: selftest_proof_restore_check.py exit 0; exit 1 with an unguarded settings poke planted in RM_KnockbackProof.Frame
 - RIMMANDRAKE_MOVE_KNOCKBACK_GOODS_PINNED_AGAINST_WALLS_SHELVES on fa2de6ee4b
 
-## Traps (64) — what a reader would otherwise get wrong
+## Traps (65) — what a reader would otherwise get wrong
 - trap:judge-round-count-has-three-answers (design/concepts/ExplosiveKnockback/journal.md:58): Judge round count has three answers (12 / 13 / 19); not reconciled (spec §10).
 - trap:97-2-million-tokens (version/VERSION.json): 97.2 million tokens were charged to the Designer stage, 86.5 million of them estimates (`version/VERSION.json`).
 - trap:proof-build-versus-release-build (RM_KnockbackProof.cs): Proof build versus release build. Most live scenes exist only in the proof build (`RM_KnockbackProof.cs`, `proof_build_gate.py`); the test queue cannot deploy a proof build today (RIMMANDRAKE_ROUTE_TESTQ_PROOF_BUILD_JOBS_TO_STEVE).
@@ -127,6 +125,7 @@ holder session 51379f50-c772-4cdc-be85-dd887d8ad4b2, context 392157 of ceiling 4
 - trap:the-250-x2-lane-statedtable-false-only-because (sc_mass_and_power 250_x2): The 250_x2 lane statedTable=False only, because a 63 kg colonist ties the capped rat.
 - trap:sc-pit-fetch-failed-once-the-main-lane (sc_pit_fetch control pit): sc_pit_fetch failed once: the main lane passed, but the stack in the control pit (ladder raised) also got out.
 - trap:killed-blind-judge-leaves-preliminary-exit-block (blind_challenge/cycle_6/SUMMARY.md ## Exit): A killed blind judge leaves its preliminary Exit block (written with lane 1, before its fixes) reading red; cycle 6 read red that way. The steward reruns the deciders at HEAD and sets the block from those reruns, never from the report.
+- trap:frame-arms-need-a-held-frame-rate (RM_FrameProbe; validation.py --frame-evidence): Vsync does not hold a covered window: frame arms ran at 517 to 2678 window frames; the probe now holds 60 fps. Deploy the proof DLL with its .srchash: the evidence matches on sources; a bare dll copy loses it.
 
 ## Causes refuted (14) — do not chase these again
 - cause:portable-ladder-placement-is-not-the-cause-rm: Portable ladder placement is not the cause: RM_Building_Ladder.SpawnSetup re-hangs it toward the rim O(1,0) and LadderReaches(4,0,6) is true. (on f03d8d4f4a, depends on src/RimMandrake/ExplosiveKnockback)
@@ -238,7 +237,7 @@ spend recorded: USD 178.61, 171672717 tokens
 - closed findings: 53, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
 - tests: 106, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
 - claimed fixes in brief: 1 on one line (name and sha), their claim, test and fix by `show`
-- open findings in brief: the oldest 40 on one line, their fix and accept by `modledger.py show --mod ExplosiveKnockback <subject>`
-- the full history: 637 events (views/history.md; never read whole)
+- open findings in brief: the oldest 41 on one line, their fix and accept by `modledger.py show --mod ExplosiveKnockback <subject>`
+- the full history: 639 events (views/history.md; never read whole)
 
-cursor: t=2026-11-23T22:13:39Z.1795472019032435734 (modledger.py since --mod ExplosiveKnockback t=2026-11-23T22:13:39Z.1795472019032435734 prints what changed after this packet)
+cursor: t=2026-11-23T22:33:55Z.1795473235685412890 (modledger.py since --mod ExplosiveKnockback t=2026-11-23T22:33:55Z.1795473235685412890 prints what changed after this packet)

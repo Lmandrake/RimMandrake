@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":344431,"DISPATCH":30663,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"HOLDER.run-1795441975":2951,"HOLDER.run-1795448832":5159,"HOLDER.run-1795461416":958,"HOLDER.run-1795464425":2030,"JUDGE.judge-1794890427":18837,"JUDGE.judge-1795437145":6544,"OWNER":1207} body_sha256=97e7edba98b9e8fd23440b540acc851f45b9f6c05f4ef4207a3df2ee88faedf7 -->
-# ExplosiveKnockback — mod ledger history (637 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":344431,"DISPATCH":30663,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"HOLDER.run-1795441975":2951,"HOLDER.run-1795448832":5159,"HOLDER.run-1795461416":958,"HOLDER.run-1795464425":3294,"JUDGE.judge-1794890427":18837,"JUDGE.judge-1795437145":6544,"OWNER":1207} body_sha256=8a253a625817d173f9dddaaa8b904a525bbd238e82b8d86dbc0fc7421093a725 -->
+# ExplosiveKnockback — mod ledger history (639 events, merged across shards)
 
 - 2026-11-16T06:51:51Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 56 of 59 bars met at the lock
 - 2026-11-16T06:51:51Z BACKFILL#2 decision version v0.1.0: 
@@ -638,3 +638,5 @@
 - 2026-11-23T21:40:39Z HOLDER.run-1795464425#5 lease.renew lease v0.1.0: 
 - 2026-11-23T22:00:00Z HOLDER.run-1795464425#6 lease.renew lease v0.1.0: 
 - 2026-11-23T22:13:39Z HOLDER.run-1795464425#7 lease.renew lease v0.1.0: 
+- 2026-11-23T22:33:55Z HOLDER.run-1795464425#8 trap.noted trap:frame-arms-need-a-held-frame-rate v0.1.0: Vsync does not hold a covered window: frame arms ran at 517 to 2678 window frames; the probe now holds 60 fps. Deploy the proof DLL with its .srchash: the evidence matches on sources; a bare dll copy loses it.
+- 2026-11-23T22:33:55Z HOLDER.run-1795464425#9 session.checkpoint session v0.1.0: 

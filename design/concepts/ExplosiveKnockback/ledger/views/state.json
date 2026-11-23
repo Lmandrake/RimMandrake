@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "f65b59159351eb9a6f849c9571e315045d1a8b09d9a5cb261b30af693d466747",
+  "body_sha256": "339850688ddd37f3ef974f79ac59980be0fa2216334b031272577f0ff5aad036",
   "reducer": 1,
   "shards": {
    "BACKFILL": 344431,
@@ -15,7 +15,7 @@
    "HOLDER.run-1795441975": 2951,
    "HOLDER.run-1795448832": 5159,
    "HOLDER.run-1795461416": 958,
-   "HOLDER.run-1795464425": 2030,
+   "HOLDER.run-1795464425": 3294,
    "JUDGE.judge-1794890427": 18837,
    "JUDGE.judge-1795437145": 6544,
    "OWNER": 1207
@@ -685,11 +685,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795461416",
-   "done": "fix 2590111487 read sound dc7550420b; koth.isid identity fixed 4ecd015e866f; moved to in-game visit 5 (ed2418697333)",
-   "next": "Holder with game: repair sc_spared (read preBlast[carrier] first), run the walk frame arms, rerun walk and barrage",
-   "ruled_out": "full rows off the walk list: koth.isid was uninstalled, not a list change; carrier walk-off is unproven",
-   "ts": "2026-11-23T19:49:32Z"
+   "by": "HOLDER.run-1795464425",
+   "done": "FRAME_BUDGET PASS -7.3%/-1.0% small list, plant FAIL +14.5%; sc_spared held; landed b710076da6 805379254192 159c28a2dd5a",
+   "next": "Visit 5 on ArchBig: run the two UNRUN full-list rows (sc_walk_raid with --frame-evidence, sc_barrage_perf), then all 56 checks",
+   "ruled_out": "C_OFF moved stack and gas straggler are small-list check noise (0 of 18 full-list orders)",
+   "ts": "2026-11-23T22:33:55Z"
   },
   "decisions": {
    "bar:inv_items_teleport": {
@@ -885,7 +885,7 @@
     "ts": "2026-11-16T06:51:51Z"
    }
   },
-  "events": 637,
+  "events": 639,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -2507,7 +2507,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-23T22:13:39Z",
+   "last": "2026-11-23T22:33:55Z",
    "lease": "run-1795464425",
    "released": false,
    "token": 20
@@ -3607,6 +3607,14 @@
     "ts": "2026-11-16T11:37:18Z",
     "version": "0.1.0",
     "where": "design/RimMandrake/explosion_mods_characterized_2026-11-12.md; Dynamic Effects Forge"
+   },
+   "trap:frame-arms-need-a-held-frame-rate": {
+    "by": "HOLDER.run-1795464425",
+    "status": "noted",
+    "text": "Vsync does not hold a covered window: frame arms ran at 517 to 2678 window frames; the probe now holds 60 fps. Deploy the proof DLL with its .srchash: the evidence matches on sources; a bare dll copy loses it.",
+    "ts": "2026-11-23T22:33:55Z",
+    "version": "0.1.0",
+    "where": "RM_FrameProbe; validation.py --frame-evidence"
    },
    "trap:fx-jolt-bounded-tests-only-the-bound-so": {
     "by": "BACKFILL",
