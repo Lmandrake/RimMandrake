@@ -16,6 +16,11 @@ oldest filing first, one decision:
   blind | no_effect  the check is unmeasured | the item has no check
   adopt           no check, but its ## verify names an existing *_accept.py: attached as `cmd:python3 <path>` (seen
                   failing by the step-1 gate); nothing launches on that tick
+  shape           no check and no route, and due for Shape (list_shape.due: named, or filed after shape_from and older
+                  than shape_grace_h): one Shape run (opus, the brief roles/list_shape.md), through every gate below. It
+                  shapes the item and, when the item is small, does its work in the same run. A `large` Shape run is not
+                  counted as a Work run. A Shape run that left neither check nor route reads stopped.
+  routed          no check, and a part routed to judge, owner, conductor or review: nothing launches (list_shape.py)
   live            a detached run is live on it
   waits_on | blocked | waiting | reshape   it waits on an open item | is blocked | has a dated wait ahead | its dated
                   wait passed and the check fails (a date never launches old work; Shape, step 4, takes it)
@@ -192,7 +197,8 @@ def decide(cfg, st, facts, now, account=(True, "")):
         return [{"item": "-", "decision": "blind", "why": "the ledger could not be read; nothing launches"}], []
     sti = st.setdefault("items", {})
     runs = facts.get("runs") or {}
-    live_total = sum(len((runs.get(i) or {}).get("live") or []) for i in items if (items[i] or {}).get("effect"))
+    live_total = sum(len((runs.get(i) or {}).get("live") or []) for i in items
+                     if (items[i] or {}).get("effect") or (items[i] or {}).get("shape_due"))
     paused, pool = facts.get("paused"), facts.get("pool")
     max_runs = int(cfg.get("max_runs_per_item", 2))
     max_never = int(cfg.get("max_never_started", 2))
@@ -232,6 +238,7 @@ def decide(cfg, st, facts, now, account=(True, "")):
             put("off", it["off"])
             continue
         claimed = it.get("claimed") if not att else None     # the lease of a run of ours never stops our next run
+        shape = False
         if not it.get("effect"):
             acc = it.get("accept")
             if claimed:
@@ -248,18 +255,25 @@ def decide(cfg, st, facts, now, account=(True, "")):
             elif acc:
                 put("adopt", "no outcome check; its ## verify runs %s, attached as its check this tick" % acc)
                 row["accept"] = acc
+            elif it.get("route"):
+                r = it["route"]
+                put("routed", "routed to %s: %s; resumes on: %s" % (r.get("who"), r.get("ask"), r.get("resumes")))
+            elif it.get("shape_due"):
+                shape = True
             else:
-                put("no_effect", "the item carries no outcome check, so it is not the lane's (Shape, step 4)")
-            continue
+                put("no_effect", "the item carries no outcome check and is not due for Shape: %s"
+                    % (it.get("shape_why") or "not named"))
+            if not shape:
+                continue
         verdict = it.get("verdict")
-        if verdict == "holds":
+        if not shape and verdict == "holds":
             ref = s.get("close_refused") or {}
             if ref.get("fp") == [it.get("effect"), it.get("events")]:
                 put("close_refused", "the check holds but `rimflow close` refused: %s" % _one(ref.get("why"), 200))
             else:
                 put("close", "the check holds: the work is done (%s)" % _one(it.get("out"), 160))
             continue
-        if verdict != "fails":
+        if not shape and verdict != "fails":
             put("blind", "the check is unmeasured: %s" % _one(it.get("out") or verdict, 200))
             continue
         if run.get("live"):
@@ -285,18 +299,27 @@ def decide(cfg, st, facts, now, account=(True, "")):
         if it.get("held"):
             put("held", it["held"])
             continue
+        # A `large` Shape run only shaped: it is not a Work run (list_shape.py; boundary a-large-shape-run-is-not-a-work-run)
+        work = [a for a in done if not (a.get("kind") == "shape" and it.get("shape_size") == "large")]
         if done:
             last = done[-1]
             if last.get("unit") not in (run.get("ended") or []):
                 put("unseen", "run %s is neither live nor seen ended in the run records; no second launch" % last.get("unit"))
                 continue
-            if len(done) >= max_runs:
+            if shape:
+                stop("Shape run %s ended and the item still has neither an outcome check nor a route" % last.get("unit"),
+                     "read run %s's notes on %s, then shape it by hand (`rimflow shape %s --parts ...`), drop it, or "
+                     "`list_dispatch.py clear %s --why ...` for one more Shape run" % (last.get("unit"), iid, iid, iid))
+                continue
+        if work:
+            last = work[-1]
+            if len(work) >= max_runs:
                 stop("%d Work runs (%s) ended and the check still fails; %d is the most" % (
-                    len(done), ", ".join(str(a.get("unit")) for a in done), max_runs),
+                    len(work), ", ".join(str(a.get("unit")) for a in work), max_runs),
                     "read the runs' notes on %s, then do the rest by hand, put a wait on it, drop it, or "
                     "`list_dispatch.py clear %s --why ...` for one more run" % (iid, iid))
                 continue
-            if not last.get("next"):
+            if last is done[-1] and not last.get("next"):
                 stop("run %s ended with no LEFT OPEN: note (no next act of its own) and no wait, and the check still "
                      "fails" % last.get("unit"),
                      "read run %s's note on %s, then do the rest by hand, put a wait on it, drop it, or "
@@ -324,14 +347,22 @@ def decide(cfg, st, facts, now, account=(True, "")):
         if pool and not it.get("clone_exists"):
             put("pool_full", pool)
             continue
-        model, mwhy = pick_model(cfg, it.get("effect"))
+        if shape:
+            model, mwhy = "opus", "a Shape run is a judgement, and does the work too when the item is small"
+        else:
+            model, mwhy = pick_model(cfg, it.get("effect"))
         cap = cfg.get("%s_cap_usd" % model, _shipped().get("%s_cap_usd" % model))   # a partial cfg keeps the shipped cap
         if not (isinstance(cap, (int, float)) and not isinstance(cap, bool) and cap > 0):
             put("no_cap", "list_dispatch.json has no positive %s_cap_usd; nothing launches without a cap" % model)
             continue
         live_total += 1
-        row.update(model=model, cap=cap, run_n=len(done) + 1)
-        put("launch", "Work run %d: %s (%s); the check fails: %s" % (len(done) + 1, model, mwhy, _one(it.get("out"), 120)))
+        if shape:
+            row.update(model=model, cap=cap, run_n=1, kind="shape")
+            put("shape", "Shape run: %s (%s); %s" % (model, mwhy, it.get("shape_why") or "due for Shape"))
+        else:
+            row.update(model=model, cap=cap, run_n=len(work) + 1)
+            put("launch", "Work run %d: %s (%s); the check fails: %s" % (len(work) + 1, model, mwhy,
+                                                                         _one(it.get("out"), 120)))
         launches.append(iid)
     return rows, launches
 
@@ -439,24 +470,29 @@ def gather(st, now=None, root=None):
         for b in (x.blocked_on,) + tuple(x.blocked_also or ()):
             if b:
                 waited_on.add(b)
+    import list_shape as LS
     mods = _mods()
     adopt_ok = os.path.isdir(LM.ITEMS)
+    cfg = _shipped()
     items = {}
     for iid, x in open_.items():
         acc = None
+        sf = LS.facts(x)
+        sdue, swhy = LS.due(sf, cfg, now)
         if not x.effect and adopt_ok:
             p = os.path.join(LM.ITEMS, iid + ".md")
             if os.path.isfile(p):
                 with open(p, encoding="utf-8", errors="replace") as f:
                     acc = accept_script(f.read())
-            if not acc:
-                continue
+        if not x.effect and not acc and not sdue and not sf["route"]:
+            continue
         waits = [b for b in (x.blocked_on,) + tuple(x.blocked_also or ())
                  if b and b in w.items and w.items[b].state not in CLOSED]
         d = {"state": x.state, "blocked": bool(x.blocked) and not waits, "blocked_reason": x.blocked_reason,
              "effect": x.effect, "waits_on": waits, "events": len(x.history), "title": x.title,
              "filed": LM.epoch(x.created_at) if x.created_at else None, "blocks_others": iid in waited_on,
-             "caused_by": x.caused_by}
+             "caused_by": x.caused_by, "shape_due": sdue and not acc, "shape_why": swhy, "route": sf["route"],
+             "shape_size": sf["size"]}
         if x.state == "doing" and LM.lease_status(x, now) == "live":
             d["claimed"] = "doing under %s, whose lease is live to %s" % (x.owner, (x.lease or {}).get("expires"))
         if x.wait_until:
@@ -479,11 +515,12 @@ def gather(st, now=None, root=None):
         d["off"], cnl = _off(iid, d["mod"])
         if cnl:
             d["off_unreadable"] = cnl
-        if not d.get("effect") or paused or d["off"] or cnl:      # no check runs where the lane may not act
+        if not (d.get("effect") or d.get("shape_due")) or paused or d["off"] or cnl:   # no check runs where the lane may not act
             continue
-        d["verdict"], d["out"] = LE.run(d["effect"], root)
-        if d["verdict"] != "fails":
-            continue
+        if d.get("effect"):
+            d["verdict"], d["out"] = LE.run(d["effect"], root)
+            if d["verdict"] != "fails":
+                continue
         try:
             d["held"] = _held(d["mod"])
         except Exception as e:  # noqa: BLE001
@@ -635,11 +672,16 @@ def execute(cfg, st, rows, launches, facts, now, fx=None):
             continue
         if iid not in launches:
             continue
-        rc, text, unit = do_launch(iid, row["model"], row["cap"], brief_text(iid, it, row), cfg.get("seat", "BENCH"),
-                                   it.get("mod"))
+        if row.get("kind") == "shape":
+            import list_shape as LS
+            brief = LS.brief_text(iid, it, row)
+        else:
+            brief = brief_text(iid, it, row)
+        rc, text, unit = do_launch(iid, row["model"], row["cap"], brief, cfg.get("seat", "BENCH"), it.get("mod"))
         ok = rc == 0 and bool(unit)
         s.pop("told", None)
         s.setdefault("attempts", []).append({"at": now, "unit": unit, "model": row["model"], "cap": row["cap"],
+                                             "kind": row.get("kind") or "work",
                                              "failed": None if ok else "never started: " + (_one(text, 400) or "rc %s" % rc)})
         if ok:
             row.update(decision="launched", unit=unit)
@@ -665,12 +707,14 @@ def tick(cfg, apply, fx=None, now=None, only=None):
             facts = dict(facts, items={i: facts["items"][i] for i in only if i in facts["items"]})
         rows, launches = decide(cfg, st, facts, now, account)
         rows += [{"item": i, "decision": "not_found",
-                  "why": "not an open item with an outcome check or an acceptance script"} for i in gone]
+                  "why": "not an open item with an outcome check, an acceptance script, a route, or due for Shape"}
+                 for i in gone]
         if apply:
             execute(cfg, st, rows, launches, facts, now, fx)
         else:
             for r in rows:
-                r["decision"] = {"launch": "would_launch", "close": "would_close", "adopt": "would_adopt"}.get(
+                r["decision"] = {"launch": "would_launch", "close": "would_close", "adopt": "would_adopt",
+                                 "shape": "would_shape"}.get(
                     r["decision"], r["decision"])
                 r.pop("need", None)
         counts = {}

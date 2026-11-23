@@ -40,7 +40,8 @@ waited for the Conductor's hand, because no program launched them. Each promise 
   None) is one `blind` row and no launch.
 - **the-check-runs-before-every-attempt.** An item whose check holds reads `close`, whatever its runs; the tick closes it
   as the pipeline's act (`list_effect.close_item`, role unit `rm-list-dispatch.service`) and launches nothing on it. An
-  unmeasured check reads `blind`. An item with no check reads `no_effect`.
+  unmeasured check reads `blind`. An item with no check reads `no_effect`, unless it is routed (`routed`) or due for
+  Shape (`shape`); those two are promised on the Shape page, `design/specs/2026-11-23-list-shape/boundary.md`.
 - **one-work-run-then-one-more-only-on-a-named-next-act.** An item gets a first Work run. After a run ended with the check
   failing, it gets one more run only when that run left a `LEFT OPEN:` note (its next act) and did not put a wait on the
   item. `max_runs_per_item` (2) runs is the most. Every other end reads `stopped`.
@@ -59,7 +60,8 @@ waited for the Conductor's hand, because no program launched them. Each promise 
   control store that cannot be read) also stop its closes and its adoptions, and the tick runs no check under the pause.
 - **the-lane-has-its-own-slots-and-chain-rule.** At most `max_live` live runs on lane items. Mod and nightly-test runs do
   not count. An item whose chain of causes (its `caused_by` ancestors) already holds `max_chain_depth` lane runs reads
-  `chain_stop`. Live runs on items that carry no check do not fill the lane's slots.
+  `chain_stop`. Live runs on items that carry no check do not fill the lane's slots, except Shape runs on items due for
+  Shape, which do.
 - **a-claimed-item-is-not-the-lanes.** An item that is `doing` under a live lease, with no lane run on it, reads
   `claimed`: it is not launched and not adopted. The lease of the lane's own run does not stop its second run.
 - **oldest-blocking-item-first.** Items are taken in this order: an item that another open item waits on first, then the

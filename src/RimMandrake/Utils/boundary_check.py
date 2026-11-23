@@ -30,6 +30,7 @@ PAGES = {
     "design/specs/2026-11-23-steve-two-games-lane/boundary.md": "src/RimMandrake/Utils/testq/selftest_testq_steve2.py",
     "design/specs/2026-11-22-steve-idle-takeable/boundary.md": "src/RimMandrake/Utils/selftest_steve_idle_takeable.py",
     "design/specs/2026-11-23-list-dispatch/boundary.md": "src/RimMandrake/rimflow/selftest_list_dispatch.py",
+    "design/specs/2026-11-23-list-shape/boundary.md": "src/RimMandrake/rimflow/selftest_list_shape.py",
     "design/specs/2026-11-22-list-outcome-checks/boundary.md": "src/RimMandrake/rimflow/selftest_list_effect.py",
     "design/specs/2026-11-23-follow-through-audit/boundary.md": "src/RimMandrake/Utils/selftest_follow_through.py",
     "design/specs/2026-11-22-art-worker-own-signin/boundary.md": "src/RimMandrake/Utils/artpipe/selftest_artpipe_signin.py",

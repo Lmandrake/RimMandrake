@@ -2249,6 +2249,50 @@ def cmd_effect(args, seat):
     return 0
 
 
+def cmd_shape(args, seat):
+    """`rimflow shape <ID> --parts '<json>' [--size small|large]` | `--enter`: the Shape stage's facts (list_shape.py).
+    --parts writes the split, each part a check with its fooled_by line or a route, and the item's one outcome check
+    derived from them; an unshaped split writes nothing and names the repair. --enter names an item for a Shape run."""
+    import list_effect
+    import list_shape
+    _, w = load()
+    it = w.items.get(args.id)
+    if it is None:
+        die("shape: %s has never been filed." % args.id)
+    if it.state in model.TERMINAL:
+        die("shape: %s is %s already; a closed item is not shaped." % (args.id, it.state))
+    if bool(args.enter) == bool(args.parts):
+        die("shape: give --parts '<json list>' or --enter (one of them).")
+    ev = {"seat": seat, "event": "shape", "id": args.id}
+    if args.enter:
+        f = list_shape.facts(it)
+        if not list_shape.needs_shape_run(f):
+            print("%s: not named; it needs no Shape run (%s). Nothing was written."
+                  % (args.id, list_shape.due(f, {}, 0)[1]))
+            return 0
+        ev["enter"] = True
+        _emit(ev, w, quiet=True)
+        print("%s: named for Shape. The list lane (list_dispatch.py) launches its Shape run through its gates." % args.id)
+        return 0
+    parts, why = list_shape.read_parts(args.parts)
+    if why:
+        die("shape refused: %s.\nNothing was written." % why)
+    filed = model.epoch(it.created_at)
+    root = list_effect.check_root()
+    fields, said = list_shape.write_fields(
+        args.id, parts, args.size,
+        lambda check, holds_why: list_effect.attach_gate(check, root, filed_ts=filed, holds_why=holds_why))
+    if fields is None:
+        die("shape refused: %s\nNothing was written. Repair the split and run the same command again." % said)
+    ev.update(fields)
+    _emit(ev, w, quiet=True)
+    print("%s: shaped, %d part(s), size %s; its outcome check: %s" % (
+        args.id, len(fields["parts"]), fields["size"], fields.get("check") or "none (every part is routed)"))
+    for n in said:
+        print("NOTE: " + n)
+    return 0
+
+
 def _card_owed_or_die(args, evs):
     """A consequence a card's picked option states ("needs bigger art") is work owed: the close's words must name each
     one, saying where it was done or filed (RIMMANDRAKE_RECORD_CARD_OPTION_TEXT_LABEL_LOST_THE_ART)."""
@@ -4916,6 +4960,17 @@ def build_parser():
     s.add_argument("--holds-why", dest="holds_why", metavar="WHY",
                    help="the check holds now and did not fail at the item's filing: why it cannot be seen failing")
     s.add_argument("--clear", action="store_true", help="remove the item's outcome check")
+
+    s = add("shape", "the Shape stage: give an item with no check its parts (each a check with its fooled_by line, "
+            "or a route), or --enter to name it for a Shape run (list_shape.py)", cmd_shape)
+    s.add_argument("id")
+    s.add_argument("--parts", help="a JSON list of parts, or @<path> to a file of one: [{\"name\", \"effect\": "
+                                   "\"<check>\" or null, \"fooled_by\": \"what would pass this check and leave the need "
+                                   "unmet\", \"route\": null or {\"who\": judge|owner|conductor|review, \"ask\", "
+                                   "\"resumes\"}, \"holds_why\": optional}]")
+    s.add_argument("--size", choices=("small", "large"), default="small",
+                   help="small (default): this run also does the work; large: the lane gives it its own Work runs")
+    s.add_argument("--enter", action="store_true", help="name the item for a Shape run (an old item enters only so)")
 
     s = add("claim", "take it under a LEASE and start it (-> doing); never re-offers it",
             cmd_claim)

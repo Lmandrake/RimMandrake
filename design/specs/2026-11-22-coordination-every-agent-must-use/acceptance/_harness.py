@@ -1,4 +1,4 @@
-"""Shared by the acceptance scripts of plan.md steps 3 and 4. Steps 1, 2 and 5 moved, green, to
+"""Shared by the acceptance scripts of plan.md step 3. Steps 1, 2, 4 and 5 moved, green, to
 src/RimMandrake/rimflow/acceptance/, which has its own copy of this file. Each script names the module that its step must
 add; while the module is absent, every check reads FAIL with that reason, and the script exits 1."""
 import importlib

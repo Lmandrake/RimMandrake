@@ -1185,6 +1185,10 @@ CANONICAL = {
     "walk":      dict(seat="BUILD", id="A_B_1", phase="staged", save="s.rws"),
     # list_effect.py (selftest_list_effect.py covers the semantics; this fuzzes the field reads)
     "effect":    dict(seat="BUILD", id="A_B_1", check="cmd:test -f x", seen={"verdict": "fails", "at": 1}),
+    # list_shape.py (selftest_list_shape.py covers the semantics; this fuzzes the field reads)
+    "shape":     dict(seat="BUILD", id="A_B_1", enter=True, size="small", check="cmd:test -f x",
+                      seen={"verdict": "fails", "at": 1},
+                      parts=[{"name": "a", "effect": "cmd:test -f x", "fooled_by": "x", "route": None}]),
     "lease":     dict(seat="BUILD", id="A_B_1", action="take", token="BUILD.abc.1234abcd",
                       expires="2099-01-01T00:30:00Z"),
 }

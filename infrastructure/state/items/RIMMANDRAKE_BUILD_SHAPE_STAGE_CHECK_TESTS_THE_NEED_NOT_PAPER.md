@@ -21,13 +21,13 @@ file: src/RimMandrake/rimflow/roles/designer.md
 file: src/RimMandrake/rimflow/red_dispatch.py
 
 ## criteria
-- `python3 design/specs/2026-11-22-coordination-every-agent-must-use/acceptance/step4_shape_accept.py` exits 0 and prints `PASS 12/12`.
+- `python3 src/RimMandrake/rimflow/acceptance/step4_shape_accept.py` exits 0 and prints `PASS 12/12`.
 - Live proof: three real open Conductor debts with no check are shaped by a run, and a fresh reader that did not shape
   them finds that each check tests the need. UNRUN until built.
 - Acceptance test for what a Shape run writes: none, it is a judgement; the weekly audit reads it.
 
 ## verify
-python3 design/specs/2026-11-22-coordination-every-agent-must-use/acceptance/step4_shape_accept.py   # exit 0, PASS 12/12
+python3 src/RimMandrake/rimflow/acceptance/step4_shape_accept.py   # exit 0, PASS 12/12
 Acceptance test: watched failing on 87a18efda498: 12 of 12 fail, because list_shape.py does not exist. Expected: 12 pass. The
 script was also run against a throwaway reference (12 of 12 pass) and against a planted fault (weak made a stop: red),
 2026-11-22; the reference was deleted and is not in the repo.
