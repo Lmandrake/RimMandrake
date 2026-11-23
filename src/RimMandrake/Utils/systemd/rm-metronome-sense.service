@@ -1,0 +1,14 @@
+# The metronome's sense phase, apart from the beat (design/specs/2026-11-23-sense-apart-from-beat/boundary.md): it
+# runs ops_watch's families here, so the beat (and dispatch in it) never waits on a sense pass however long it takes.
+# The phase's limit_s (120 s, a hang guard) kills a pass that never returns.
+[Unit]
+Description=RimMandrake Operations metronome, the sense phase (apart from the beat)
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/mandrake/rm/dispatch
+ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/metronome.py apart --phase sense
+Nice=10
+MemoryMax=1G
+# A hang guard for the metronome process itself: above the phase's 120 s limit and 5 s cleanup.
+TimeoutStartSec=150s

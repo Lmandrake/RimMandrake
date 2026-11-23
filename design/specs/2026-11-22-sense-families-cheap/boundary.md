@@ -10,10 +10,10 @@ written Sun 2026-11-22, 8:40 PM PST. Each promise has a test of its name in
 
 ## The danger the limits guard
 
-- **The sense kill (15 s, `metronome_phases.json` phase `sense`).** It is the sense phase's share of the 45 s beat. A
-  sense pass past it pushes dispatch (the pipeline's launcher) to the next beat. Measured over the 24 h to 2026-11-23
-  04:30Z: 1120 beats, 10 dispatch deferrals, and each one was in a beat where sense ran its full 15 s. The kill costs
-  the pass its whole reading, so the reads must stay far below it; the phase's own `reason` holds the latest figures.
+- **The sense kill (`metronome_phases.json` phase `sense`).** When this page was written it was 15 s, the sense
+  phase's share of the 45 s beat: a pass past it pushed dispatch to the next beat (24 h to 2026-11-23 04:30Z: 10
+  dispatch deferrals, each in a beat where sense ran its full 15 s). Since 2026-11-23 sense runs apart from the beat
+  under a 120 s hang guard (`design/specs/2026-11-23-sense-apart-from-beat/boundary.md`).
 - **Why the families overran it (measured 2026-11-22, each collector alone on a copy of the live store).** Not load
   alone: each slow family had its own large read. tps 9 s (`tps_record.py` read the whole 7-day TPS record, 145 files
   and 152 MB on `/mnt/c`, to judge 5 minutes). queues 8.4 s (each pass re-statted 4000 + 1728 + 1176 old names of the

@@ -1,0 +1,10 @@
+[Unit]
+Description=RimMandrake Operations metronome, one sense pass a minute after the last ends
+
+[Timer]
+OnBootSec=4min
+OnUnitInactiveSec=60s
+AccuracySec=5s
+
+[Install]
+WantedBy=timers.target

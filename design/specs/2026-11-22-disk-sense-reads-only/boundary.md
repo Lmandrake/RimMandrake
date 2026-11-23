@@ -7,9 +7,9 @@ a test of its name in `src/RimMandrake/Utils/selftest_disk_sense.py`.
 
 ## The danger the limits guard
 
-- **The sense kill (15 s, `metronome_phases.json` phase `sense`).** It guards a beat that hangs: a hung sense pass
-  would hold the beat and every later phase. Its danger and evidence are on the phase's own `reason`. This page does
-  not move it.
+- **The sense kill (`metronome_phases.json` phase `sense`).** Until 2026-11-23 it was 15 s, inside the beat; now the
+  phase runs apart under a 120 s hang guard (`design/specs/2026-11-23-sense-apart-from-beat/boundary.md`). This page
+  does not move it.
 - **Why the disk family overran it (measured 2026-11-22).** From 11:02 to 16:20 PST every disk sense run was killed at
   about 15.1 s, and every `disk.*` point read UNMEASURED. The seat clone `/home/mandrake/rm/bench` held three
   safe-class paths. With `--file-alarms`, the disk family ran `seat_dirt.tidy` on them: a `git fetch` (5.4 s), a

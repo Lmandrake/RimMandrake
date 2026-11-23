@@ -4949,11 +4949,12 @@ EXIT_FENCED = 3
 COMPOSE_MAX_AGE_S = 1000.0   # the FLOOR of the carry bound; compose_max_age_s() derives the real one from the round robin
 METRONOME_PHASES = HERE / "systemd" / "metronome_phases.json"
 METRONOME_TIMER = HERE / "systemd" / "rm-metronome.timer"
+METRONOME_SENSE_TIMER = HERE / "systemd" / "rm-metronome-sense.timer"     # runs the sense phase when it is apart
 COMPOSE_NEEDS_FLOW = ("testing",)   # collectors that read the flow collector's ctx (closes, open_ids): flow joins them
 COMPOSE_ALARM_FAMILY = "flow"  # a compose pass files alarms only when it measures this family (its ctx: the ledger ids)
 
 
-def compose_round_bound_s(phases=None, timer=None, n_families=None):
+def compose_round_bound_s(phases=None, timer=None, n_families=None, sense_timer=None):
     """-> (seconds, why): the longest a healthy family can wait between its own sense passes while the metronome's
     round robin keeps turning, from the phase table and the timer, never a typed number. A pass whose families overrun
     is followed by one retry beat per family (metronome fam_retry) before the round moves on, so the worst turn of
@@ -4966,7 +4967,11 @@ def compose_round_bound_s(phases=None, timer=None, n_families=None):
         tab = json.loads(Path(phases or METRONOME_PHASES).read_text(encoding="utf-8"))
         sense = tab["phases"][SENSE_PHASE]
         per = int(sense["per_beat"])
-        budget = float(tab["budget_s"])
+        apart = bool(sense.get("apart"))
+        # apart (its own unit): a pass lasts at most its limit and cleanup, the gap is its own timer's, and a kill is no
+        # longer a normal turn (the limit is a hang guard), so no retry beats are counted
+        budget = float(sense["limit_s"]) + float(sense["cleanup_s"]) if apart else float(tab["budget_s"])
+        timer = (sense_timer or METRONOME_SENSE_TIMER) if apart else timer
         unit = {"ms": 0.001, "s": 1, "sec": 1, "min": 60, "m": 60, "h": 3600}
         tmr = {}
         for line in Path(timer or METRONOME_TIMER).read_text(encoding="utf-8").splitlines():
@@ -4980,6 +4985,10 @@ def compose_round_bound_s(phases=None, timer=None, n_families=None):
             raise ValueError("per_beat %s, families %s, gap %s, budget %s" % (per, n, gap, budget))
     except (OSError, ValueError, KeyError, TypeError) as e:
         return None, "the round robin's bound does not read: %s: %s" % (type(e).__name__, str(e))
+    if apart:
+        beats = math.ceil(n / per)
+        return beats * (gap + budget), "%d sense passes (%d families, %d a pass, apart) x %.0f s" % (
+            beats, n, per, gap + budget)
     beats = math.ceil(n / per) * (1 + per)
     return beats * (gap + budget), "%d beats (%d families, %d a beat, each turn overrun and retried) x %.0f s" % (
         beats, n, per, gap + budget)

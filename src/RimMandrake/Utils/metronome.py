@@ -67,6 +67,7 @@ HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[2]
 TABLE = HERE / "systemd" / "metronome_phases.json"
 ORDER = ("sense", "remember", "raise", "ring", "dispatch", "chores")
+APART = "apart"     # <state dir>/apart/<phase>: a phase run by its own unit (RIMMANDRAKE_SIZE_SENSE_STEP_LIMIT_...)
 RESERVED = ("raise", "ring")
 EXIT_DUPLICATE = 75
 
@@ -76,6 +77,16 @@ def state_dir(arg=None):
 
 
 # ---------------------------------------------------------------- files
+
+def phase_dir(d, table, name):
+    """Where a phase keeps its state, lock, generation, fence and output: the beat's dir, or <d>/apart/<name> for a
+    phase the table runs apart (its own unit, `metronome.py apart`), so its generation is its own."""
+    p = (table.get("phases") or {}).get(name) or {}
+    d = Path(d)
+    if not p.get("apart") or (d.name == name and d.parent.name == APART):     # already its dir (a child's METRONOME_DIR)
+        return d
+    return d / APART / name
+
 
 def write_json(path, obj):
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -191,10 +202,14 @@ def load_table(path=None):
                 raise ValueError("%s: an owning phase needs its real argv carrying {gen} (no --no-file)" % name)
         if p.get("critical") and not isinstance(p.get("max_ok_age_s"), (int, float)):
             raise ValueError("%s: a critical phase needs max_ok_age_s" % name)
+        if p.get("apart") is not None and (p["apart"] is not True or name in RESERVED or p.get("slots")):
+            raise ValueError("%s: apart must be true, on a phase that is not reserved and has no slots" % name)
     reserve = sum(ph[n]["limit_s"] + ph[n]["cleanup_s"] for n in RESERVED)
     if reserve > b:
         raise ValueError("reserved phases need %.1f s, more than the %.1f s budget" % (reserve, b))
     for name in ORDER:
+        if ph[name].get("apart"):
+            continue        # its own unit runs it (apart): the beat's budget never holds it
         if name not in RESERVED and ph[name]["limit_s"] + ph[name]["cleanup_s"] + reserve > b:
             raise ValueError("%s can never fit: its %.1f s beside the %.1f s reserve exceeds the %.1f s budget"
                              % (name, ph[name]["limit_s"] + ph[name]["cleanup_s"], reserve, b))
@@ -430,7 +445,7 @@ def run_phase(d, table, name, n, st, limit, slot, log):
     # freshness: what this phase reads, and the oldest of it
     read_bytes, oldest = [], None
     for src, max_age in sorted((p.get("reads") or {}).items()):
-        rec, why = read_output(d, src, max_age, now=start)
+        rec, why = read_output(phase_dir(_beat_dir(d, table, name), table, src), src, max_age, now=start)
         if rec is None:
             line.update(seconds=0.0, exit="stale_input", why=why)
             log(line)
@@ -560,6 +575,8 @@ def beat(d, table, shadow=True):
         due = {}
         for name in ORDER:
             p = table["phases"][name]
+            if p.get("apart"):
+                continue        # its own unit runs it (apart): dispatch never waits on it
             isdue, slot, missed = _due(name, p, n, st, now)
             for key in missed:
                 log({"beat": n, "phase": name, "start": round(now, 3), "seconds": 0.0, "exit": "slot_missed",
@@ -567,7 +584,8 @@ def beat(d, table, shadow=True):
                 st["slots_done"].setdefault(name, []).append(key)
             if isdue:
                 due[name] = slot
-        cost = {k: table["phases"][k]["limit_s"] + table["phases"][k]["cleanup_s"] for k in ORDER}
+        cost = {k: table["phases"][k]["limit_s"] + table["phases"][k]["cleanup_s"] for k in ORDER
+                if not table["phases"][k].get("apart")}
         # reserved first: raise and ring, then each overdue phase in order while it fits, so a deferred phase
         # cannot starve behind phases that are due every beat
         held = [k for k in RESERVED if k in due]
@@ -602,6 +620,51 @@ def beat(d, table, shadow=True):
         lk.__exit__()
 
 
+def _beat_dir(d, table, name):
+    """The beat's dir, from the dir a phase runs in (an apart phase runs in <d>/apart/<name>)."""
+    d = Path(d)
+    return d.parent.parent if (table["phases"][name].get("apart") and d.parent.name == APART) else d
+
+
+def apart(d, table, name):
+    """One run of an apart phase, from its own unit (rm-metronome-sense for sense): its own lock, state, generation and
+    fence under <d>/apart/<name>; its line goes to the shared beats.jsonl, marked apart. A crashed run left inflight:
+    this run kills that group and fences it first, as a beat does. -> 0, or EXIT_DUPLICATE while another run holds it."""
+    p = table["phases"][name]
+    if not p.get("apart"):
+        raise ValueError("%s is not an apart phase in this table" % name)
+    d = Path(d)
+    sd = phase_dir(d, table, name)
+    sd.mkdir(parents=True, exist_ok=True)
+
+    def log(obj):
+        append_line(d / "beats.jsonl", dict(obj, apart=True))
+
+    try:
+        lk = Lock(sd / "beat.lock", block=False).__enter__()
+    except BlockingIOError:
+        log({"beat": None, "phase": name, "start": round(time.time(), 3), "seconds": 0.0, "exit": "duplicate",
+             "why": "another %s run holds %s" % (name, sd / "beat.lock")})
+        return EXIT_DUPLICATE
+    try:
+        st = load_state(sd)
+        inf = st.get("inflight")
+        if inf:
+            ended = kill_group(inf["pgid"], p["cleanup_s"]) if _group_alive(inf["pgid"]) else "gone"
+            set_fence(sd, name, inf["beat"])
+            log({"beat": inf["beat"], "gen": inf["beat"], "phase": name, "start": inf["start"], "seconds": None,
+                 "exit": "beat_died", "orphan": ended})
+            st["inflight"] = None
+        n = st["beat"] + 1
+        st["beat"] = st["generation"] = n
+        write_json(sd / "state.json", st)
+        run_phase(sd, table, name, n, st, p["limit_s"], None, log)
+        write_json(sd / "state.json", st)
+        return 0
+    finally:
+        lk.__exit__()
+
+
 def health(d, table, now=None):
     """(ok, lines): each critical phase's last successful run against its allowance."""
     now = now or time.time()
@@ -611,7 +674,7 @@ def health(d, table, now=None):
         p = table["phases"][name]
         if not p.get("critical"):
             continue
-        last = st["last_ok"].get(name)
+        last = (load_state(phase_dir(d, table, name)) if p.get("apart") else st)["last_ok"].get(name)
         if last is None:
             ok = False
             lines.append("%s: UNMEASURED (no successful run on record)" % name)
@@ -629,7 +692,9 @@ def main(argv=None):
     sub = ap.add_subparsers(dest="cmd", required=True)
     b = sub.add_parser("beat")
     b.add_argument("--shadow", action="store_true")
-    for s in (b, sub.add_parser("health"), sub.add_parser("lint")):
+    ap_ = sub.add_parser("apart", help="run one apart phase once (its own unit)")
+    ap_.add_argument("--phase", required=True, choices=ORDER)
+    for s in (b, sub.add_parser("health"), sub.add_parser("lint"), ap_):
         s.add_argument("--table")
         s.add_argument("--dir")
     r = sub.add_parser("read")
@@ -653,7 +718,7 @@ def main(argv=None):
     op.add_argument("--dir")
     a = ap.parse_args(argv)
     d = state_dir(a.dir)
-    if a.cmd in ("beat", "health", "lint"):
+    if a.cmd in ("beat", "health", "lint", "apart"):
         try:
             table = load_table(a.table)
         except ValueError as e:
@@ -664,9 +729,17 @@ def main(argv=None):
             return 0
         if a.cmd == "beat":
             return beat(d, table, shadow=a.shadow)
+        if a.cmd == "apart":
+            try:
+                return apart(d, table, a.phase)
+            except ValueError as e:
+                print("metronome: %s" % e, file=sys.stderr)
+                return 2
         ok, lines = health(d, table)
         print("\n".join(lines))
         return 0 if ok else 1
+    if a.cmd == "read" and (d / APART / a.phase).is_dir():
+        d = d / APART / a.phase     # an apart phase keeps its output in its own dir (a child publishes with its own --dir)
     if a.cmd == "read":
         rec, why = read_output(d, a.phase, a.max_age)
         print(json.dumps(rec, sort_keys=True) if rec else why)
