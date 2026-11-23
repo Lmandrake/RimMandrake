@@ -1,0 +1,10 @@
+--- a/src/RimMandrake/GimmeSomeSlack/northstar/scene_rows.py
++++ b/src/RimMandrake/GimmeSomeSlack/northstar/scene_rows.py
+@@ -1028,7 +1028,6 @@
+     link = B.ap("link:%d,%d" % (ids[ma], ids[mb])) if ids.get(ma) and ids.get(mb) else {"success": False, "error": "a mast is missing"}
+     # the new anchors link themselves to whatever is in range (the mod's auto-link): the first pole's own wire to the bracket is taken down, so
+     # the poles' span is the one thing joining the legs (in-game visit 1 of 0.2.0: the cut left that second wire, and the line was still one)
+-    B.ap("unlink:%d,%d" % (ids.get(ma) or -1, ids.get(br) or -1))
+     B.ap("cprocess")
+     cells_a, cells_b = leg_a + [sw, ma], leg_b + [mb, br]
+     for c in cells_a + cells_b:
