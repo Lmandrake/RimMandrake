@@ -9,7 +9,9 @@ and their use in `read_ingame_exit`; `check_repair` and its use in `read_exit`; 
 `ingame_brief_text`, `blind_brief_text`, `steward_brief` and `fixer_brief`. Item
 `RIMMANDRAKE_ENACT_WRONG_CHECK_FIXED_IN_SITTING_NOT_RETURNED`; the rule is
 `design/RimMandrake/standing_rulings.md` §Touching code has a cost, "A wrong check is repaired or set aside in the
-sitting". Each promise has a test of its name in `src/RimMandrake/rimflow/selftest_wrong_check_fixed_in_sitting.py`;
+sitting". A row with an `outcome`, and a tagged scene, are
+read first by `live_kinds.py` (`design/specs/2026-11-23-live-kinds-exit-reader/boundary.md`).
+Each promise has a test of its name in `src/RimMandrake/rimflow/selftest_wrong_check_fixed_in_sitting.py`;
 that selftest also plants a fault in each part of the reader and sees its test go red.
 
 ## ACCEPTS (the only inputs these parts are built for)

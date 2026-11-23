@@ -51,6 +51,7 @@ import subprocess
 import sys
 import xml.etree.ElementTree as ET
 
+import live_kinds as LK
 import rerun_relation as RR
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -602,8 +603,9 @@ def last_rows(rows):
 
 
 def carried_rows(root, mod, n=None):
-    """{check id: its last row}: visit n's last row for each check it ran, else the last row of the latest earlier
-    visit that ran it (a row is carried with `_visit` naming its visit). n None: the latest visit on disk. Rows naming
+    """{check id: its deciding row}: visit n's last row for each check it ran, else the last row of the latest earlier
+    visit that ran it (a row is carried with `_visit` naming its visit). A spoiled run speaks for nobody, so its row never
+    replaces one that is not spoiled (live_kinds.later; owner, 2026-11-23). n None: the latest visit on disk. Rows naming
     no check are kept as a list under "" (visit n's only)."""
     import maturation as M
     have = M.visit_numbers(root, mod) or []
@@ -611,12 +613,33 @@ def carried_rows(root, mod, n=None):
     out = {}
     for k in sorted(v for v in have if v <= n):
         rows = M._jsonl(os.path.join(M.mod_dir(root, mod), M.INGAME_DIR, "visit_%d" % k, "rows.jsonl")) or []
-        for t, r in last_rows(rows).items():
-            if t == "":
-                if k == n:
-                    out[""] = r
-                continue
-            out[t] = dict(r, _visit=k)
+        for r in rows:
+            t = r.get("test") or r.get("id")
+            if t:
+                out[t] = LK.later(out.get(t), dict(r, _visit=k))
+            elif k == n:
+                out.setdefault("", []).append(r)
+    return out
+
+
+def check_runs(root, mod, n=None):
+    """{check id: [(visit, row)]}: every row of every visit up to n, in order (live_kinds.reading). A visit with no
+    rows.jsonl yet has no rows; one that is there and cannot be read raises, since an UNRESOLVED run in it would be missed."""
+    import maturation as M
+    have = M.visit_numbers(root, mod)
+    n = n or (have[-1] if have else 1)
+    out = {}
+    for k in sorted(v for v in have if v <= n):
+        p = os.path.join(M.mod_dir(root, mod), M.INGAME_DIR, "visit_%d" % k, "rows.jsonl")
+        if not os.path.exists(p):
+            continue
+        rows = M._jsonl(p)
+        if rows is None:
+            raise ValueError("visit_%d/rows.jsonl is there and cannot be read" % k)
+        for r in rows:
+            t = r.get("test") or r.get("id")
+            if t:
+                out.setdefault(t, []).append((k, r))
     return out
 
 

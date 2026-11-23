@@ -221,7 +221,9 @@ def read_ingame(root, mod, tt, until, errors):
         if until is not None and at0 is not None and at0 > until:
             continue
         p = os.path.join(base, "visit_%d" % v, "rows.jsonl")
-        rows = [r for r in _jsonl(p, errors) if r.get("test")]
+        # a spoiled run and a random miss are no verdict about the mod (live_kinds.py)
+        import live_kinds as LK
+        rows = [r for r in _jsonl(p, errors) if r.get("test") and not LK.no_verdict(r)]
         if until is not None:
             rows = [r for r in rows if ts(r.get("at")) is None or ts(r["at"]) <= until]
         by = {}

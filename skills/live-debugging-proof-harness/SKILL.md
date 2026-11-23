@@ -183,23 +183,23 @@ opportunity at the deciding moment (example: the carrier stands inside the blast
 
 **A run ends in one of seven outcomes. Keep them apart.**
 
-| outcome | the record shows | row today (`rows.jsonl`; write `kind` and `outcome` beside the verdict) |
+| outcome | the record shows | row (`rows.jsonl`; one row per run; write `outcome` beside the verdict) |
 |---|---|---|
 | SUCCESS | the opportunity was valid and the success state was read | PASS |
-| MOD FAILURE | the opportunity was valid and the success state did not come; or any forbidden effect, even in a spoiled run | FAIL, class MOD |
-| RANDOM MISS | a valid opportunity, and a miss that the design allows | no row of its own: one kind B row per scene, with each run in its `runs` list |
-| ENVIRONMENT FAULT | something outside the tested behaviour spoiled the opportunity | UNMEASURED, class SITE |
-| APPARATUS FAULT | our script, our tool or our staging spoiled the run | UNMEASURED, class HARNESS or SITE |
-| UNRESOLVED | something went wrong and nobody knows why; or the mod could have spoiled the opportunity | FAIL with no class: the exit then holds the pass until someone writes the class |
+| MOD FAILURE | the opportunity was valid and the success state did not come; or any forbidden effect, even in a spoiled run | FAIL, class MOD; `forbidden`: the list of the forbidden effects seen |
+| RANDOM MISS | a valid opportunity, and a miss that the design allows | UNMEASURED; only on a kind B scene with `x_of_y` |
+| ENVIRONMENT FAULT | something outside the tested behaviour spoiled the opportunity | UNMEASURED, with `spoiled_by`: what spoiled the run, and the record that shows it |
+| APPARATUS FAULT | our script, our tool or our staging spoiled the run | UNMEASURED; add class HARNESS or SITE only when the check or the scene itself is wrong |
+| UNRESOLVED | something went wrong and nobody knows why; or the mod could have spoiled the opportunity | UNMEASURED: the exit holds the pass, in any later visit too, until someone adds `classed` to the row: `{"outcome", "why" (six words at least), "by"}` |
 | COULD NOT LOOK | no reading | UNMEASURED |
 
 - Only SUCCESS speaks for the mod. No other outcome needs a later pass to cancel it.
 - An ENVIRONMENT FAULT needs a record: the spoiling thing, and why the mod could not have caused it. No record means
   UNRESOLVED. Example: a carrier walked out of the blast before it fired. The job trace shows that the carrier left for
   food. This run is an ENVIRONMENT FAULT. With no trace, the run is UNRESOLVED.
-- A kind B scene whose verdict is INCONCLUSIVE is an UNMEASURED row that says INCONCLUSIVE.
-- The pipeline reads the last column today. The ticket that teaches the pipeline the outcomes themselves:
-  `RIMMANDRAKE_TEACH_EXIT_READER_KINDS_KNOWS_THREE_WORDS_ONLY`.
+- The tag is on the scene in the test table: `tests.<id>.test_kind`, `tag_evidence`, `budget`, `x_of_y`. The Stage 6 exit
+  reads the tags and the outcomes, and it works out INCONCLUSIVE itself (`src/RimMandrake/rimflow/live_kinds.py`; page
+  `design/specs/2026-11-23-live-kinds-exit-reader/boundary.md`). A row with no `outcome` is read by its verdict and class.
 
 **A spoiled environment is repaired.** Trace the spoiled run to its source. Then try to remove the source: hold or place
 the thing inside the scene, use the calm test environment (a named bridge profile that reports which controls it switched
@@ -207,11 +207,10 @@ on), use a smaller mod list, use a bridge tool, or build a bridge tool. Lean tow
 cost of many later scenes. What still cannot be controlled is the reason for tag B.
 
 **A hunt never opens silently.** Open a hunt when the fault is serious (one sighting is enough) or is seen again. The
-run that opens the hunt does two things at once:
+run that opens the hunt gives one command, which writes the note on the item and the line in the Conductor log:
 
 ```
-python3 src/RimMandrake/rimflow/cli.py note <your item> --text "HUNT OPENED: what happened | why it matters | the next step that tells two causes apart | what that step costs" --seat BENCH --why "hunt" --publish
-python3 -c "import sys,time; sys.path.insert(0,'src/RimMandrake/rimflow'); import detached_helper as D; D.conductor_line('<the same text, with the item id>', time.time(), head='HUNT OPENED (RAISE FIRST)')"
+python3 src/RimMandrake/rimflow/hunt_open.py <your item> --what "..." --why-it-matters "..." --next-step "<the step that tells two causes apart>" --cost "<what that step costs>"
 ```
 
 - Each hunt step answers a named question. Before the step, write what the answer could change and what the step may

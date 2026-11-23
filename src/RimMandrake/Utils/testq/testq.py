@@ -1488,6 +1488,43 @@ def retest_stop(mod):
     return st["settled"] | set(st["held"])
 
 
+def tagged_repeats(mod, chains):
+    """-> {chain of CHAINS that may run again on its code version with no --retest-why}: a chain that a kind B check of the
+    mod's test table names (with tag evidence) while its DONE runs at this version are fewer than the budget, and one that
+    a kind C check names (owner, 2026-11-23, standing_rulings §Live tests have three kinds). A chain a repair or a Test
+    Pilot holds never. The table is read first, so an untagged chain pays no probe; what cannot be read passes nothing."""
+    if not chains:
+        return set()
+    try:
+        rf = os.path.join(REPO, "src", "RimMandrake", "rimflow")
+        if rf not in sys.path:
+            sys.path.append(rf)
+        import live_kinds as LK
+        with open(os.path.join(REPO, "design", "concepts", mod, "version", "test_table.json"), encoding="utf-8") as f:
+            tests = (json.load(f) or {}).get("tests") or {}
+        tagged = {}
+        for t in tests.values():
+            q = t.get("testq") if isinstance(t, dict) else None
+            if not isinstance(q, dict) or LK.kind(t) not in ("B", "C") or LK.tag_flaws(t):
+                continue
+            for c in q.get("chains") or []:
+                if c in chains:
+                    tagged[c] = max(tagged.get(c, 0), float("inf") if LK.kind(t) == "C" else LK.budget(t))
+        if not tagged:
+            return set()
+        import gaps
+        st = gaps.settled(mod, records("done"))
+        now_v = st["pr"].get("versions") or {}
+        ran = lambda c: sum(1 for r in st["runs"] if not r["partial"] and c in r["chains"] and now_v.get(c)
+                            and (r["versions"] or {}).get(c) == now_v[c])
+        return {c for c, b in tagged.items() if c not in st["held"] and now_v.get(c) and ran(c) < b}
+    except FileNotFoundError:       # a mod with no test table has no tag
+        return set()
+    except Exception as e:      # noqa: BLE001
+        log("the tags of %s could not be read: %s" % (mod, e))
+        return set()
+
+
 def pilot_stop(mod):
     """-> {chain: item} the Test Pilot rule has taken (gaps.pilot_chains); {} when unreadable."""
     import gaps
@@ -1579,7 +1616,9 @@ def already_tested(a, sel, pv):
     # chains named one by one, or --full: each must earn its run. An --item's chains are modcheck's choice: one fresh
     # one is enough.
     hit = sorted(c for c in chains if c in stop)
-    if len(hit) == len(chains) or (hit and (sel.get("chains") or sel.get("full"))):
+    free = tagged_repeats(a.mod, hit)       # a budgeted kind B run and a hunt step repeat on one code version
+    hit = [c for c in hit if c not in free]
+    if hit and (len(hit) == len(chains) or sel.get("chains") or sel.get("full")):
         return ("%s already hold a verdict at this code version, or wait for a harness repair: the owner's retest rule; "
                 "drop them, or --retest-why REASON overrides" % ",".join(hit[:6]))
     return None

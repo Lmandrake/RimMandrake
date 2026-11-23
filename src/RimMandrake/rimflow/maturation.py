@@ -72,6 +72,7 @@ REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 sys.path.insert(0, HERE)
 sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
 import maturation_now as MN     # noqa: E402  the journal readers: one parser, never a second one
+import live_kinds as LK          # noqa: E402  the kinds of a live scene and the outcomes of its runs
 import refusal_contract as RC   # noqa: E402
 import judge_certificate as JC   # noqa: E402  the pre-judgement certificate (PRE_JUDGEMENT_CERTIFICATE)
 import build_match as BM         # noqa: E402  the Stage 6 exit's build match (owner, 2026-11-17)
@@ -2117,8 +2118,7 @@ WRONG_CHECK_RULE = "\n".join([
     "- A wrong check or scene never sends the mod back a stage. Only a mod wrong line not fixed in the sitting, or a bar "
     "left undecided, does."])
 # The three kinds of live test and the seven outcomes of a run (owner, 2026-11-23; standing_rulings.md §Live tests have
-# three kinds). Carried by the in-game driver's brief. The exit reader does not read the outcomes yet:
-# RIMMANDRAKE_TEACH_EXIT_READER_KINDS_KNOWS_THREE_WORDS_ONLY.
+# three kinds). Carried by the in-game driver's brief. live_kinds.py reads the kinds and the outcomes at the exit.
 LIVE_KINDS_RULE = "\n".join([
     "Full text: `design/RimMandrake/standing_rulings.md` §Live tests have three kinds. How to write each row: "
     "`skills/live-debugging-proof-harness/SKILL.md` §The scene contract.",
@@ -2126,14 +2126,21 @@ LIVE_KINDS_RULE = "\n".join([
     "- Kind B (stochastic) and kind C (an intermittent hunt) carry their evidence on the scene. Kind B passes on one "
     "SUCCESS, with no MOD FAILURE and no UNRESOLVED run on the same claim and build. A result that is random by design "
     "passes on its written X of Y. All budgeted runs done with no SUCCESS: the verdict is INCONCLUSIVE. A hunt is never "
-    "part of the exit.",
+    "part of the exit. The tag is on the scene in the test table: `test_kind` (\"A\", \"B\", \"C\"; absent is A), "
+    "`tag_evidence`, `budget` (runs, kind B) and `x_of_y` ([X, Y], a result that is random by design).",
     "- Write `outcome` on every row: SUCCESS, MOD FAILURE, RANDOM MISS, ENVIRONMENT FAULT, APPARATUS FAULT, UNRESOLVED or "
-    "COULD NOT LOOK. Only SUCCESS speaks for the mod. No other outcome needs a later pass to cancel it.",
+    "COULD NOT LOOK. Only SUCCESS speaks for the mod. No other outcome needs a later pass to cancel it. One row per run. "
+    "Beside it: `spoiled_by` on an ENVIRONMENT FAULT (what spoiled the run, and the record that shows it) and "
+    "`forbidden` (the list of forbidden effects seen; `[]` for none). SUCCESS goes with verdict PASS. MOD FAILURE goes "
+    "with FAIL and class MOD. Every other outcome goes with UNMEASURED; add class HARNESS or SITE to an APPARATUS FAULT "
+    "only when the check or the scene itself is wrong.",
     "- ENVIRONMENT FAULT only when the record shows that something outside the tested behaviour spoiled the opportunity. "
     "If the mod could have spoiled it: UNRESOLVED. A forbidden effect is a MOD FAILURE in any run. An UNRESOLVED run "
-    "holds the scene's pass until someone classes it.",
+    "holds the scene's pass until someone classes it: that person adds to the row `classed`: `{\"outcome\", \"why\" (six "
+    "words at least), \"by\"}`.",
     "- A serious fault (one sighting), or a fault seen again, opens a hunt. A hunt never opens silently: a note "
-    "`HUNT OPENED:` on your item and a line in the Conductor log (the skill section has both commands).",
+    "`HUNT OPENED:` on your item and a line in the Conductor log. One command writes both: `python3 "
+    "src/RimMandrake/rimflow/hunt_open.py <your item> --what ... --why-it-matters ... --next-step ... --cost ...`.",
     "- When a run names a thing that spoiled it, try to remove that thing. Lean towards building the control.",
     "- No exit asks for every scene in one visit, or for one scene several times in a row."])
 # What the Gimme Some Slack and Pyrelands rescues taught (2026-11-16; owner: "let's make these changes to the
@@ -3936,9 +3943,11 @@ OWNER_STAGE6 = ("In-game acceptance testing with setup maps, proper acceptance t
 
 
 def ingame_tests(tt):
-    """-> [(test id, test)] for the table's stage-6 in-game checks (kind live*, stage 6), in table order."""
+    """-> [(test id, test)] for the table's stage-6 in-game checks (kind live*, stage 6), in table order. A kind C scene
+    (a hunt) is never one (owner, 2026-11-23; live_kinds.table_flaws names a bar that this would leave undecided)."""
     return [(k, t) for k, t in ((tt or {}).get("tests") or {}).items()
-            if isinstance(t, dict) and str(t.get("kind", "")).startswith("live") and str(t.get("stage")) == "6"]
+            if isinstance(t, dict) and str(t.get("kind", "")).startswith("live") and str(t.get("stage")) == "6"
+            and LK.kind(t) != "C"]
 
 
 def visit_numbers(root, mod):
@@ -4406,29 +4415,48 @@ def read_ingame_exit(root, mod, n, tt=None):
     checks = ingame_tests(tt)
     if not checks:
         why.append("the test table names no stage-6 in-game check (kind live*, stage 6)")
+    for t, f in LK.table_flaws(tt).items():
+        why.append("%s%s: %s" % ("" if t.startswith("bar ") else "in-game check ", t, "; ".join(f)))
     rows = _jsonl(os.path.join(d, "rows.jsonl"))
     if rows is None:
         why.append("rows.jsonl is missing")
     # a check this visit did not run keeps the last row of the latest earlier visit that ran it (owner, 2026-11-21:
     # only the checks a change touches run again); the build match below decides whether that row still counts
-    ran_here = {r.get("test") or r.get("id") for r in rows or []}
-    carried = {t: r for t, r in (BM.carried_rows(root, mod, n - 1).items() if n > 1 else ()) if t and t not in ran_here}
+    # (a spoiled run speaks for nobody: a check with only spoiled runs here keeps its earlier row too, live_kinds.py)
+    ran_here = {r.get("test") or r.get("id") for r in rows or [] if not LK.spoiled(r)}
+    here = {r.get("test") or r.get("id") for r in rows or []}
+    carried = {t: r for t, r in (BM.carried_rows(root, mod, n - 1).items() if n > 1 else ()) if t and t not in ran_here
+               and not (t in here and LK.spoiled(r))}
     rows = [carried[t] for t in sorted(carried)] + list(rows or [])
     # an earlier row counts against its check only as a real FAIL: an UNMEASURED row (a run the 540 s command bound
     # split) or a FAIL the driver classed HARNESS or SITE (the check or the scene was wrong) spends nothing (standing_
     # rulings, No trial is spent by a system failure, and §Touching code has a cost); the last row decides (line_class)
-    last, earlier = {}, {}
+    # what the kind of the scene and the outcomes of its runs say (live_kinds.py; None: old rows, read as they always were)
+    last, earlier, specs = {}, {}, dict(checks)
     for r in rows or []:
         t = r.get("test") or r.get("id")
         if t:
-            p = last.get(t) or {}
-            if str(p.get("verdict", "")).upper() == "FAIL" and str(p.get("class", "")).upper() not in WRONG_CLASSES:
+            p = LK.as_old(last.get(t) or {})
+            if str(p.get("verdict", "")).upper() == "FAIL" and str(p.get("class", "")).upper() not in WRONG_CLASSES \
+                    and LK.earlier_fail(p, specs.get(t)) and LK.later(p, r) is r:
                 earlier.setdefault(t, []).append(str(p.get("class", "")).upper() or "unclassed")
-            last[t] = r
+            last[t] = LK.later(last.get(t), r)
+    try:
+        runs = BM.check_runs(root, mod, n)
+    except ValueError as e:     # not read: an UNRESOLVED run may stand there, so the exit is not met, by name
+        runs = {}
+        why.append("the rows of every visit could not be read (%s): no run's outcome is known to be clear" % e)
+    kinds = {t: LK.reading(x, runs.get(t)) for t, x in checks}
     lines_ = out["lines"] = {}
     for t, _ in checks:
-        r = last.get(t)
+        r, k = last.get(t), kinds[t]
+        if r is not None and k is not None:
+            r = last[t] = LK.as_old(k["use"])
+            if k["mod"] and "MOD" not in earlier.get(t, ()):
+                earlier.setdefault(t, []).append("MOD")
         cnt = line_class(r, earlier.get(t)) if r is not None else "no_row"
+        if k is not None and r is not None and k["count"] in LK.HOLDS and cnt != "mod":
+            cnt = k["count"]
         rp = r.get("repair") if r is not None and isinstance(r.get("repair"), dict) else {}
         cls = str(r.get("class") or rp.get("class") or "").upper() if r is not None else ""
         lines_[t] = {"count": cnt, "class": cls or None, "bars": _bars_of(tt, t)}
@@ -4450,6 +4478,9 @@ def read_ingame_exit(root, mod, n, tt=None):
         r = last.get(t)
         if claim is None and t in carried and str((r or {}).get("verdict", "")).upper() == "PASS":
             claim = "pass"          # carried from visit r["_visit"]: this visit's block need not list it
+        k = kinds[t]
+        if k is not None and k["claim_free"] and lines_[t]["count"] == "pass":
+            claim = "pass"          # the block writes the last run's word; that run does not decide this check
         v = str((r or {}).get("verdict", "")).upper()
         out["rows"][t] = v or "NO ROW"
         ln = lines_[t]
@@ -4466,6 +4497,12 @@ def read_ingame_exit(root, mod, n, tt=None):
                 why.append("in-game check %s: the mod fix %s made in the sitting owes one fresh reader (%s): a run that "
                            "did not make the fix reads only that fix, once, and writes %s/%s" % (
                                t, mf.get("commit"), rwhy, rel(mod, base), FIX_REVIEWS))
+        if k is not None:
+            why.extend("in-game check %s: %s" % (t, w) for w in k["why"])
+            if cnt in LK.HOLDS:     # nothing here sends the mod back, and no class is owed: the scene, or the words, are
+                out["rows"][t] = k["rows"] or v
+                ln["why"] = "; ".join(k["why"])
+                continue
         if cnt == "needless":
             why.append("in-game check %s is classed %s and no bar needs it (another check decides each of its bars "
                        "%s): remove it from the test table (and delete it when nothing else names it), with one line "
@@ -5115,6 +5152,7 @@ def ingame_facts(root, mod):
     ex = read_ingame_exit(root, mod, n, tt)
     out.update({"visit": n, "visits_present": have, "exit": ex, "opened": ingame_openings(rec).get(n) or rec.get("since"),
                 "blocked": blocked, "checks": [k for k, _ in checks],
+                "tag_flaws": LK.table_flaws(tt),
                 "full_list": [k for k, t in checks if BM.is_full(t)],
                 "testq": [k for k, t in checks if isinstance(t.get("testq"), dict)]})
     try:
@@ -5186,23 +5224,32 @@ def _check_lines(tt, ids, root):
                 os.path.join(root, f)) else " (NOT ON DISK in this tree)"))
         if x.get("why_full_list"):
             out.append("  - full list, because: %s" % x["why_full_list"])
+        if LK.kind(x) != "A":
+            xy = LK.x_of_y(x)
+            out.append("  - kind %s: budget %s run(s)%s; evidence: %s%s" % (
+                LK.kind(x), LK.budget(x) or "NONE", "; passes on %d of %d" % xy if xy else "",
+                x.get("tag_evidence") or "NONE", "".join("; NOT USABLE: %s" % w for w in LK.tag_flaws(x))))
     return out
 
 
 def ingame_to_run(root, mod, n, tt):
     """-> (to_run, counted): the stage-6 checks visit n runs, and those it does not because an earlier visit's last row
     is a PASS that the change since its commit does not touch (rerun_relation.py; owner, 2026-11-21: only the checks a
-    change touches run again). A check with no earlier row, a last row that is not a PASS, a touched check and one
-    whose relation cannot be read all run. The Stage 6 exit's build match reads the walk build and decides for good."""
+    change touches run again). A check with no earlier row, a last row that is not a PASS (a spoiled or INCONCLUSIVE
+    scene, live_kinds.py), a touched check and one whose relation cannot be read all run. The Stage 6 exit's build match reads the walk build and decides for good."""
     checks = ingame_tests(tt or {})
     if n <= 1:
         return [k for k, _ in checks], []
     last = BM.carried_rows(root, mod, n - 1)
+    runs = BM.check_runs(root, mod, n - 1)
     rel = BM.RR.relate(root, mod, dict(checks), {t: r for t, r in last.items() if t})
     run, counted = [], []
-    for k, _ in checks:
+    for k, spec in checks:
         r = last.get(k)
         st = (rel["rows"].get(k) or {}).get("state")
+        x = LK.reading(spec, runs.get(k)) if r else None
+        if x is not None:       # the kind and the outcomes say whether the scene passes on its runs
+            r = dict(x["use"], verdict="PASS" if x["passes"] else "FAIL")
         if r and str(r.get("verdict", "")).upper() == "PASS" and r.get("site_checked") is True and st == "untouched":
             counted.append(k)
         else:
@@ -5342,7 +5389,8 @@ def ingame_brief_text(root, mod, cap_usd=None, seat="BENCH"):
           "test table (`design/concepts/%s/version/test_table.json`: the entry, and its id in each bar's `decides`), "
           "delete its code when nothing else names it, and write one line on `%s/polish.md` as the record. No item. The "
           "exit reads a needless check left in the table as not met." % (mod, vdir),
-          "- A FAIL or UNMEASURED row with no class never passes: the exit reads it not met.",
+          "- A FAIL or UNMEASURED row with no class never passes: the exit reads it not met. A spoiled run needs no class and no "
+          "later PASS: with no valid run beside it, its line reads `spoiled` and the scene runs again.",
           "- **File your own failures before you end**, while you hold them: each line that still goes back (a mod "
           "fault you could not fix, a needed check not counted) is one named rimflow item, `--caused-by` your item, with "
           "its acceptance test (red now, green on a fix) and what you found; write its id on the row as `filed`. The "
@@ -5351,6 +5399,7 @@ def ingame_brief_text(root, mod, cap_usd=None, seat="BENCH"):
           "## The record (skeleton first: create it before the first live call)", "",
           "`%s/`:" % vdir,
           "- `rows.jsonl`: one row per run: `{\"test\": id, \"verdict\": \"PASS\"|\"FAIL\"|\"UNMEASURED\", "
+          "\"outcome\": one of the seven, \"spoiled_by\": ..., \"forbidden\": [...], "
           "\"site_checked\": true, \"game\": \"archmagi\"|\"stevedesktop\", \"mod_sha\": <sha of the deployed source>, "
           "\"command\": ..., \"evidence\": <path>, \"held\": [what the site switched off or locked for this run, e.g. "
           "\"fire\", \"weather\"; [] when the whole mod ran]}`, merged with the one JSON line `python3 "

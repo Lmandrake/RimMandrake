@@ -1765,7 +1765,7 @@ STEWARD_RULES = """Rules (the owner's, carried; every one binds you):
   wording or bookkeeping fields, the bar's meaning unchanged, is re-pinned in `version/bars.md` with a journal line
   saying what changed and why the meaning is the same. A changed bar (its words, its numbers, what decides it, which
   version holds it) is never re-pinned by you: that is his card, with the before and after text.
-""" + M.WRONG_CHECK_RULE + "\n" + M.SELF_FIX_RULE + "\n"
+""" + M.WRONG_CHECK_RULE + "\n" + M.LK.STEWARD_RULE + "\n" + M.SELF_FIX_RULE + "\n"
 
 
 # a Stage 6 failure goes to the lowest stage that can show it (spec Stage 6 road back; "Offline stages never wait for a

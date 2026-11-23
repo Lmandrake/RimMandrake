@@ -48,6 +48,20 @@ Stage 0 (the script audit) and stage 3 (planning) inject this packet. The contra
 
 The intent behind a scene is the approved requirement that it cites (`requirement`), or the exploration's `question`.
 
+## The kind of a scene, in the test table
+
+The rule: `design/RimMandrake/standing_rulings.md` §Live tests have three kinds. A stage-6 check with no tag is kind A.
+The fields are on `tests.<id>` of `version/test_table.json`, and the Stage 6 exit reads them
+(`src/RimMandrake/rimflow/live_kinds.py`):
+
+- `test_kind`: `"A"`, `"B"` or `"C"`.
+- `tag_evidence`: for B, the things that spoil the run, what was tried to control each, and why that was not enough. For
+  C, the symptom, how often it was seen in how many opportunities, and where the trace is. An empty one is refused.
+- `budget`: the runs to spend on a kind B scene, a whole number, written before the first run.
+- `x_of_y`: `[X, Y]`, only for a result that is random by design (a yield, a drop chance), written before the first run.
+
+A kind C scene is never in a bar's `decides` alone. Do not tag a new scene B or C on a guess: the tester tags it on evidence.
+
 ## The showcase set
 
 A mod's face is an **ordered list of showcases**, not one first-judged scene. A showcase is a group of scenes from this
