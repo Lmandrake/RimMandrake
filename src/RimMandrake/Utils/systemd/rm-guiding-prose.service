@@ -1,0 +1,21 @@
+# The daily recheck of the guiding-prose check (Utils/guiding_prose.py recheck; item
+# RIMMANDRAKE_CHECK_GUIDING_PROSE_AT_WRITE_NO_SEARCHING_FOR_MEANING; page design/specs/2026-11-23-guiding-prose-check/boundary.md).
+# It sends a planted fault through a throwaway publish.py landing and through detached_helper.py's launch path, and it names
+# each landing of guiding prose with no run record. No model, no write to the repo. Runs from the dispatch clone.
+# Reading: D:\ClaudeWork\rimmandrake\guiding_prose\recheck.json, moved only while both doors return the fault; a failed
+# recheck writes recheck_failed.json there.
+# Install:  python3 src/RimMandrake/Utils/ops_clocks.py install, then systemctl --user enable --now rm-guiding-prose.timer
+[Unit]
+Description=RimMandrake guiding-prose check, daily proof that both doors still return a planted fault
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/mandrake/rm/dispatch
+Environment=PATH=/home/mandrake/.local/bin:/usr/local/bin:/usr/bin:/bin
+Environment=PYTHONUNBUFFERED=1
+Environment=RM_ROLE_UNIT=rm-guiding-prose.service
+ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/guiding_prose.py recheck
+Nice=10
+MemoryMax=2G
+# Hang guard: the two throwaway doors (DOOR_TIMEOUT_S each) and one git log.
+TimeoutStartSec=15min

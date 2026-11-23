@@ -1137,6 +1137,19 @@ def skill_path_warning(brief):
             "Name the paths for its kind of work from skills/BY_WORK.md")
 
 
+def prose_after(brief, item):
+    """-> the faults of the brief's new sentences with their repairs, "" for none (Utils/guiding_prose.py; page
+    design/specs/2026-11-23-guiding-prose-check/boundary.md). Run by main() after the start. It refuses nothing."""
+    try:
+        utils = os.path.join(os.path.dirname(HERE), "Utils")
+        if utils not in sys.path:
+            sys.path.insert(0, utils)
+        import guiding_prose
+        return guiding_prose.after_launch(brief, item)
+    except Exception as e:  # noqa: BLE001  the run has started
+        return "GUIDING PROSE: UNMEASURED, the check did not load (%s: %s). The run has started." % (type(e).__name__, e)
+
+
 DRAIN_NOTICE_FRESH_S = 20 * 60     # switching_plan.py writes its notice every 5 min: an older one means its timer stopped
 
 
@@ -2148,7 +2161,7 @@ def main(argv=None):
             extra = {"continue_on_cap": args.continue_on_cap} if args.continue_on_cap > 0 else {}
             if args.next_act_owner:
                 extra["next_act_owner"] = args.next_act_owner
-            session, first = args.resume, ""
+            session, first, written = args.resume, "", brief
             if session and not args.planned_resume:     # the one resume rule (left_open_continue.whole_or_fresh): a large session with a progress
                 import left_open_continue as LOC        # record starts fresh from it
                 cr = LOC.conductor_resume(session, args.item, brief)
@@ -2158,6 +2171,9 @@ def main(argv=None):
                               args.max_s, budget, clone=args.clone, skip_launch_checks=args.skip_launch_checks,
                               env=env, resume_session=session, extra=extra or None)
             text = (first + "\n" if first else "") + carried + text
+            if rc == 0:     # the writer reads the faults of the brief's new sentences; it refuses nothing
+                prose = prose_after(written, args.item)
+                text += "\n" + prose if prose else ""
     elif args.cmd == "finish":
         keep_off_result(args.unit)      # before anything prints: never into claude's result or error file
         rc, text = finish(args.unit)

@@ -57,3 +57,36 @@ This file is the project tier. It narrows or extends the fleet's `~/dev/Lodestar
 | **Utinni layer** | Everything that belongs to this one campaign only: its clan, its story, its lore. |
 | **Archmagi** | The main machine: his desk, the Conductor and the game he plays. |
 | **SteveDesktop** | The second machine: a game that runs test jobs unattended. |
+
+## Machinery words of the rule files
+
+These words are for the files that agents read, not for talk with Mandrake. Each row points at the home of the word.
+
+| Term | Means |
+|---|---|
+| **Seat** | A name that signs ledger writes: BENCH (the Conductor), OWNER, RUNNER, DISPATCHER. "A seat" in a rule is the window, role or helper that signs with that name (`src/RimMandrake/rimflow/cli.py`, `--seat`). |
+| **Helper** | A run that the Conductor or the pipeline starts with `src/RimMandrake/rimflow/detached_helper.py`. |
+| **Item** | One entry of the rimflow ledger, shown by `rimflow show <ID>`; "ticket" is the same thing. |
+| **Card** | A question to the owner with options that he picks from; the pick is in the card store (`src/RimMandrake/rimflow/card_capture.py`). |
+| **His five acts** | A live flight test of a flyer, a replacement of art that he kept, the pass at his walk, a money spend, publication outside the private repos (`CLAUDE.md` §Only five acts stay his). |
+| **Tick** | One timed run of the pipeline: `maturation_dispatch.py tick`. In a game sentence, a tick is the game's own time step. |
+| **Clone pool** | The reused helper clones under `/home/mandrake/rm/relentless/clones` (`src/RimMandrake/Utils/scratch_clone.py`). |
+| **Disk floor** | The free space below which no new clone is made: `ops.disk_brake_free_gb` in `src/RimMandrake/Utils/slot_rules.json`. |
+| **Leave line** | The percent left on an account at which work moves to the next account (`leave_pct_left` in `src/RimMandrake/Utils/switching_plan.json`). |
+| **Companion** | The JawaBench DLL that adds tools to the bridge (`skills/rimbridge-companion/SKILL.md`). |
+| **Calibrated brief** | A judge brief whose planted cases ran on its present text and came out as planted (`infrastructure/state/judge_calibration.json`). |
+| **Design Version** | The numbered version of a mod's design that the mod is built towards (`CLAUDE.md` §Each mod has its own Design Version). |
+| **Operational item** | An item whose result must stay running: a hook, unit, timer or alarm. Its close names its live promise (`CLAUDE.md` §An operational item is done only when it is running). |
+| **Live promise** | The `--live` text of a close: what must stay alive and its last reading (`src/RimMandrake/rimflow/live_line.py`). |
+| **Boundary page** | The page of promises of a piece of pipeline code, `design/specs/<component>/boundary.md`. |
+| **Official dump** | The frozen dump of the game's defs, `observed/inventory/DefDump_OFFICIAL/`. |
+| **Naming tiers** | RimMandrake, RimStarWars and RimUtinni, with the prefixes `RM_`, `RSW_` and `RUT_` (`design/NAMING_SCHEME_PLAN.md`). |
+| **Direct Sun** | The one heat of the sun, a function of the sun's angle (`design/RimMandrake/unified_direct_sun_heat_2026-10-19.md`). |
+
+## Retired names
+
+A rule file never uses these names. `src/RimMandrake/Utils/guiding_prose.py` returns each one to the writer.
+
+| Name | Write instead |
+|---|---|
+| **the belt** | The queue of builders of the retired Relentless era. Name the step that does the work now, for example the clone's return step at the end of a run. |

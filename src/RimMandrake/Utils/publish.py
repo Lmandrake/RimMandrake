@@ -1168,6 +1168,25 @@ def carried_prose_moves(top, named):
     return out_
 
 
+PROSE_RANGE = []        # [base, local head, landed sha] of this run's landing, for the prose check that main() runs after it
+
+
+def prose_after(top):
+    """The faults of the guiding prose that this run landed, for the same writer (guiding_prose.py; page
+    design/specs/2026-11-23-guiding-prose-check/boundary.md). Run by main() after the landing, outside the clone lock: it
+    refuses nothing and never changes the exit code."""
+    if not PROSE_RANGE:
+        return
+    try:
+        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+        import guiding_prose
+        text = guiding_prose.after_publish(top, *PROSE_RANGE)
+    except Exception as e:  # noqa: BLE001  the landing is done
+        text = "GUIDING PROSE: UNMEASURED, the check did not load (%s: %s). The landing is complete." % (type(e).__name__, e)
+    if text:
+        print(text)
+
+
 def _publish(top, paths, msg, cwd=None):
     skips = door_skips()
     if paths:
@@ -1217,7 +1236,9 @@ def _publish(top, paths, msg, cwd=None):
     head = out(top, "rev-parse", "HEAD")
     if label == BRANCH and is_ancestor(top, head, track):
         raise Refuse("nothing to publish: HEAD is already on origin/main")
+    base = run(top, "merge-base", head, track, check=False).stdout.strip() if ref_exists(top, track) else ""
     sha = land(top)
+    PROSE_RANGE[:] = [base, head, sha] if base else []
     print("PUBLISHED %s%s" % (sha, "" if label == BRANCH else "  (on %s)" % label))
     return sha
 
@@ -1239,6 +1260,7 @@ def main(argv=None):
         sha = publish(toplevel(), a.paths, msg, os.getcwd())
         if sha:
             print("close with: rimflow close <ID> --sha %s" % sha[:12])
+            prose_after(toplevel())
         return 0
     except IndexLockHeld as e:
         print("REFUSED (index lock held): %s" % e, file=sys.stderr)

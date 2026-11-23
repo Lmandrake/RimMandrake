@@ -1,0 +1,10 @@
+# Daily at 06:40 local - see rm-guiding-prose.service.
+[Unit]
+Description=RimMandrake guiding-prose recheck, daily at 06:40
+
+[Timer]
+OnCalendar=*-*-* 06:40:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target

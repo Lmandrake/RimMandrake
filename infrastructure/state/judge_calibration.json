@@ -1248,6 +1248,242 @@
    "status": "CALIBRATED",
    "was": "CALIBRATED"
   },
+  "guiding_prose_reader": {
+   "brief": [
+    "src/RimMandrake/Utils/guiding_prose_reader.md"
+   ],
+   "cases": {
+    "bad": [
+     "the owner's three lines before de63778138e0, real \"could not determine\" lines of the 2026-11-23 rewrites, planted coined terms, a synonym, verbs with no object (guiding_prose_calibration.py)"
+    ],
+    "good": [
+     "the same lines as repaired, plain commands, terms that the section defines, RimWorld words, glossary words, an owner quote, pointers"
+    ]
+   },
+   "hash": "1271f013f355bbf9",
+   "last_run": {
+    "at": "2026-11-23T16:38:15Z",
+    "cases": "18 planted case(s) ran and came out as planted",
+    "exit": 0,
+    "out": "ok item_and_path_pointers: expect pass, got pass ([])",
+    "results": [
+     {
+      "expect": "refuse",
+      "got": "refuse",
+      "id": "his_line_d_f_primitive",
+      "named": [
+       "D/F primitive",
+       "rulings 18/19"
+      ]
+     },
+     {
+      "expect": "refuse",
+      "got": "refuse",
+      "id": "his_line_the_belt",
+      "named": [
+       "The alarm",
+       "the belt"
+      ]
+     },
+     {
+      "expect": "refuse",
+      "got": "refuse",
+      "id": "his_line_revert_what",
+      "named": [
+       "Revert"
+      ]
+     },
+     {
+      "expect": "refuse",
+      "got": "refuse",
+      "id": "real_coverage_park",
+      "named": [
+       "coverage park"
+      ]
+     },
+     {
+      "expect": "refuse",
+      "got": "refuse",
+      "id": "real_cap_n",
+      "named": [
+       "N",
+       "a cap",
+       "a stage ceiling"
+      ]
+     },
+     {
+      "expect": "refuse",
+      "got": "refuse",
+      "id": "real_preflight_code",
+      "named": [
+       "preflight O13",
+       "that one command"
+      ]
+     },
+     {
+      "expect": "refuse",
+      "got": "refuse",
+      "id": "coined_the_kennel",
+      "named": [
+       "the kennel"
+      ]
+     },
+     {
+      "expect": "refuse",
+      "got": "refuse",
+      "id": "coined_quiet_lane",
+      "named": [
+       "the quiet lane"
+      ]
+     },
+     {
+      "expect": "refuse",
+      "got": "refuse",
+      "id": "synonym_warden_for_monitor",
+      "named": [
+       "the warden"
+      ]
+     },
+     {
+      "expect": "refuse",
+      "got": "refuse",
+      "id": "no_object_release",
+      "named": [
+       "Release"
+      ]
+     },
+     {
+      "expect": "pass",
+      "got": "pass",
+      "id": "repaired_pit",
+      "named": []
+     },
+     {
+      "expect": "pass",
+      "got": "pass",
+      "id": "repaired_pool",
+      "named": []
+     },
+     {
+      "expect": "pass",
+      "got": "pass",
+      "id": "plain_commands",
+      "named": []
+     },
+     {
+      "expect": "pass",
+      "got": "pass",
+      "id": "defined_in_the_section",
+      "named": []
+     },
+     {
+      "expect": "pass",
+      "got": "pass",
+      "id": "rimworld_and_shell_words",
+      "named": []
+     },
+     {
+      "expect": "pass",
+      "got": "pass",
+      "id": "glossary_words",
+      "named": []
+     },
+     {
+      "expect": "pass",
+      "got": "pass",
+      "id": "an_owner_quote",
+      "named": []
+     },
+     {
+      "expect": "pass",
+      "got": "pass",
+      "id": "item_and_path_pointers",
+      "named": []
+     }
+    ]
+   },
+   "model_check": [
+    "python3",
+    "src/RimMandrake/Utils/guiding_prose_calibration.py"
+   ],
+   "planted": [
+    {
+     "expect": "refuse",
+     "id": "his_line_d_f_primitive"
+    },
+    {
+     "expect": "refuse",
+     "id": "his_line_the_belt"
+    },
+    {
+     "expect": "refuse",
+     "id": "his_line_revert_what"
+    },
+    {
+     "expect": "refuse",
+     "id": "real_coverage_park"
+    },
+    {
+     "expect": "refuse",
+     "id": "real_cap_n"
+    },
+    {
+     "expect": "refuse",
+     "id": "real_preflight_code"
+    },
+    {
+     "expect": "refuse",
+     "id": "coined_the_kennel"
+    },
+    {
+     "expect": "refuse",
+     "id": "coined_quiet_lane"
+    },
+    {
+     "expect": "refuse",
+     "id": "synonym_warden_for_monitor"
+    },
+    {
+     "expect": "refuse",
+     "id": "no_object_release"
+    },
+    {
+     "expect": "pass",
+     "id": "repaired_pit"
+    },
+    {
+     "expect": "pass",
+     "id": "repaired_pool"
+    },
+    {
+     "expect": "pass",
+     "id": "plain_commands"
+    },
+    {
+     "expect": "pass",
+     "id": "defined_in_the_section"
+    },
+    {
+     "expect": "pass",
+     "id": "rimworld_and_shell_words"
+    },
+    {
+     "expect": "pass",
+     "id": "glossary_words"
+    },
+    {
+     "expect": "pass",
+     "id": "an_owner_quote"
+    },
+    {
+     "expect": "pass",
+     "id": "item_and_path_pointers"
+    }
+   ],
+   "reset_at": "2026-11-23T16:38:15Z",
+   "status": "CALIBRATED",
+   "was": "UNTESTED"
+  },
   "maturation_advance": {
    "brief": [
     "src/RimMandrake/rimflow/maturation.py"
