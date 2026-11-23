@@ -1,0 +1,25 @@
+{
+ "mod": "MachineLooks",
+ "version": "0.1.0",
+ "state": "open: admitted at intake 2026-11-23; no locked design yet; the 0.1.0 / later split in admission_proposal.md is a proposal for the Designer",
+ "ruled_on": "2026-11-23",
+ "ruled_by": "conductor",
+ "per_ruling": "RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS",
+ "owner_words": "2026-11-20, 3:30 PM PST (D:\\ClaudeWork\\rimmandrake\\conductor\\gss_walk_20261120_his_words.md, Message 2): Go ahead and commission different looks for the battery at this time for the various styles too, like we did for the lamp already. | 2026-11-20 (conversations/2026-11-20-2350-97f0c93f.md line 116): I wonder if RimFridge should be part of the same RimMandrake mod that holds all of our reskinning of vanilla electrical devices and workbenches etc. Might even already be something there, or if that should be merged with some other mod all together, your call. But we should decide now so it can become an item that's worked and the art gathered out of the main pool.",
+ "record": "MachineLooks",
+ "bars_total": "UNMEASURED",
+ "bars_met": "UNMEASURED",
+ "judge_rounds": 0,
+ "tokens_spent": 0,
+ "measured_from": {
+  "bars_total": "no Designer tree yet; the Designer's Lock step sets the bars",
+  "tokens_spent": "no Designer stage has run on this concept; the pre-pipeline art spend of 2026-11-20 (item RIMMANDRAKE_DESIGN_HOME_FOR_VANILLA_ELECTRICAL_ART) and the 2026-10-26 cold-storage renders are not charged here"
+ },
+ "caveats": [
+  "the home decision is design/specs/2026-11-20-vanilla-electrical-art-home/design.md: Gimme Some Slack keeps the installation (wires, switches, poles, lights incl. the wall lamp); Machine Looks takes the appliances",
+  "the fridge PICTURES are folded in (Conductor's call on the owner's 'your call', conversations/2026-11-20-2350-97f0c93f.md lines 116 and 177-180); the cold-storage FUNCTION stays parked with ColdStorage (design/concepts/ColdStorage) and Cuisine",
+  "the fridge candidates were drawn for RSW_* defs in mandrake.rsw.cuisine (Star Wars tier) and RM_EvaporativeCrock in ColdStorage; vanilla has no fridge; how a fridge picture fits an RM vanilla-reskin mod is a Designer question (admission_proposal.md section 'The fridge')",
+  "the Modern battery north is owed (RIMMANDRAKE_REDO_MODERN_BATTERY_NORTH_VIEW_FAILED_JUDGE_THRICE)",
+  "admitted by item RIMMANDRAKE_ADMIT_MACHINE_LOOKS_MOD_WITH_FRIDGE_AND_BATTERY; first-touch Designer item RIMMANDRAKE_DESIGN_MACHINE_LOOKS_FIRST_TOUCH_BATTERY_LEADS"
+ ]
+}
