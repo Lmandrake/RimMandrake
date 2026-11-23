@@ -410,6 +410,27 @@ def full_list_only(f):
     return [k for k in checks if k in full] if checks and set(checks) <= set(full) else []
 
 
+STEVE_GAMES = "SteveDesktop (Steve1, Steve2)"
+
+
+def steve_takes(f, mod):
+    """-> the clause a visit's wait for ArchBig or ArchSmall adds about SteveDesktop's two games: what of the owed checks
+    the visit feed sends to the lane (a check goes there only with a testq block, testq/visit_feed.py), or that it takes
+    none and the command that says why per check. Checks that could not be read read UNMEASURED, never "none". Page
+    design/specs/2026-11-23-tick-names-steve-games/boundary.md (RIMMANDRAKE_SEND_MOD_VISITS_TO_STEVEDESKTOP_TICK_SEES_
+    TWO_OF_FOUR_GAMES: the line named two of four games, 2026-11-23)."""
+    owed = f.get("to_run") if isinstance(f.get("to_run"), list) else f.get("checks")
+    if not isinstance(owed, list) or not owed or not isinstance(f.get("testq"), list):
+        return "%s: UNMEASURED, the visit's owed checks or their testq blocks could not be read" % STEVE_GAMES
+    tq = set(f["testq"])
+    lane = [k for k in owed if k in tq]
+    if lane:
+        return ("%s: the visit feed sends the lane %d of its %d checks (those with a testq block); the other %d need a "
+                "Claude driver on ArchBig or ArchSmall" % (STEVE_GAMES, len(lane), len(owed), len(owed) - len(lane)))
+    return ("%s: takes none of its %d checks, since none carries a testq block (why, per check: python3 "
+            "src/RimMandrake/Utils/testq/testq_blocks.py derive %s)" % (STEVE_GAMES, len(owed), mod))
+
+
 def lock_says(game, query=None):
     """-> "; the lock now: <its line>" for game `game`, read from its lock at this moment (game_lock.py), or "" when no
     lock is readable here (a test tree, another machine). The tick's words about a game come from the lock."""
@@ -2067,8 +2088,8 @@ def decide_ingame(cfg, s, f, row, put, now, account, live_total, drivers, bridge
     held = {(games_of or {}).get(u, "a"): u for u in drivers}
     games = (cfg.get("game_instances") or ["a"]) if (bridge is None or M.takes_game(bridge)) else ["a"]
     if all(g in held for g in games):
-        put("driver_busy", "an in-game run is live on every game (%s): one live-game driver per game across all mods"
-            % ", ".join("%s: %s" % (_GN.show(g), held[g]) for g in games))
+        put("driver_busy", "an in-game run is live on every game (%s): one live-game driver per game across all mods; %s"
+            % (", ".join("%s: %s" % (_GN.show(g), held[g]) for g in games), steve_takes(f, mod)))
         return False
     if no_slot(cfg, live_total, put):
         return False
@@ -2077,8 +2098,9 @@ def decide_ingame(cfg, s, f, row, put, now, account, live_total, drivers, bridge
         n, ", ".join(full), _GN.show(g), _GN.show("a")) for g in games if g != "a"} if full else None
     game, whys = pick_game(cfg, bridge, "%s in-game acceptance visit %s" % (mod, n), held, only=only)
     if not game:
-        put("bridge_held", "%sno game is free: %s" % (
-            "WAITS FOR %s, full list (%s): " % (_GN.show("a"), ", ".join(full)) if full else "", "; ".join(whys)))
+        put("bridge_held", "%sno game is free: %s; %s" % (
+            "WAITS FOR %s, full list (%s): " % (_GN.show("a"), ", ".join(full)) if full else "", "; ".join(whys),
+            steve_takes(f, mod)))
         return False
     row.update(cap=cap, visit_id=vid, game=game)
     if retry:
