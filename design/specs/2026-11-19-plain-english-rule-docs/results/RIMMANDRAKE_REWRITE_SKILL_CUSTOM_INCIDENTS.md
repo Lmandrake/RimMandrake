@@ -78,7 +78,9 @@ A second fresh Opus reader (rm-judge) read each of those repairs and all changes
 | "dies with the map" reads as an engine fact | use a `MapComponent`, or delete the state |
 
 No reader read the repairs of the second table. Nor did a reader read one added clause in study §1 (the `resolved` flag).
-Each repair uses the words that the second reader proposed.
+Each repair follows what the second reader proposed.
+After the first landing (ffe1c7ab41), the prose check of `./publish` named three lines: the one trigger of an incident (§2
+step 1), the test toggle (§2 step 7) and the hot-method trap. The writer repaired them. No reader read those repairs.
 
 ## Conflicts and stale lines: settled
 
