@@ -62,11 +62,15 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             }
             // 0.1.1 reaches (design 2.5): creach:x,z lists the reach menu's labels for the piece there (the gizmo's own build);
             // crestyleone:x,z:key = "This item"; crestyleall:key:player|god = "All on map"; clamprun:x,z:key = a lamp's "All connected"
+            if (cmd == "cclosemenus") { int n = 0; while (Find.WindowStack.TryRemove(typeof(FloatMenu), false)) n++; return AerialProbe.Ok(cmd, "\"closed\":" + n); }
             if (cmd.StartsWith("creach:"))
             {
-                Thing t = Cell(cmd.Substring(7)).GetThingList(map).FirstOrDefault(x => ConduitStylePicker.IsMember(x.def) || ConduitStylePicker.IsLamp(x.def));
+                string[] p = cmd.Substring(7).Split(':');      // creach:x,z[:open] -- :open also shows the menu on screen (for a capture)
+                Thing t = Cell(p[0]).GetThingList(map).FirstOrDefault(x => ConduitStylePicker.IsMember(x.def) || ConduitStylePicker.IsLamp(x.def));
                 if (!(t is Building b)) return AerialProbe.Fail(cmd, "no run member or lamp there");
-                return AerialProbe.Ok(cmd, "\"reaches\":[" + string.Join(",", ConduitStylePicker.ReachMenu(b).Select(o => S(o.Label) + "")) + "]");
+                List<FloatMenuOption> opts = ConduitStylePicker.ReachMenu(b);
+                if (p.Length > 1 && p[1] == "open") Find.WindowStack.Add(new FloatMenu(opts));
+                return AerialProbe.Ok(cmd, "\"reaches\":[" + string.Join(",", opts.Select(o => S(o.Label))) + "]");
             }
             if (cmd.StartsWith("crestyleone:"))
             {
