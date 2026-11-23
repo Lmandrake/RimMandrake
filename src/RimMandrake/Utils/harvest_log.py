@@ -66,8 +66,8 @@ from game_paths import DEF_DUMP, MODS_CONFIG, PLAYER_LOG, PREV_LOG              
 DEFAULT_LOG = PLAYER_LOG
 
 # The mod list the game will have loaded. Its mtime is the launch-time anchor:
-# RimWorld reads this at startup and rewrites it on exit, so a ModsConfig
-# NEWER than the log can only mean the log is from an earlier run.
+# RimWorld reads this at startup and does not rewrite it on exit. A ModsConfig NEWER
+# than the log means that the list on disk changed after the last write of the log.
 DEFAULT_MODSCONFIG = MODS_CONFIG
 
 # Unity writes this block only when the process shuts down cleanly. Its

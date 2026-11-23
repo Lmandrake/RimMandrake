@@ -18,10 +18,10 @@ topological sort over those edges, with Core and Harmony pinned to the front and
 our own mods pinned to the back, which is the invariant the whole armoury rests
 on: our patches must have the final word.
 
-SAFETY. This NEVER writes ModsConfig.xml while RimWorld is running -- the game
-holds its list in memory and rewrites the file on exit, so an edit made during a
-session is silently discarded. It refuses, loudly, if Player.log is newer than a
-few minutes. Always back up first; --apply does that automatically.
+SAFETY. --apply and --restore NEVER write ModsConfig.xml while RimWorld is running -- the game
+holds its list in memory, and a list change made IN-GAME writes the file over an
+edit made during the session (a clean exit does not: measured 2026-08-13). It asks
+the OS whether the game runs, and refuses, loudly. Always back up first; --apply does that automatically.
 
     python src/RimMandrake/Utils/modset_builder.py --list
     python src/RimMandrake/Utils/modset_builder.py --tier bridge          # plan only
@@ -1810,15 +1810,15 @@ def main():
         print("  plan only. Re-run with --apply to write ModsConfig.xml.")
         return 0
     if game_running():
-        print("\n  REFUSING TO WRITE: RimWorld looks live (Player.log touched "
-              "in the last 3 minutes).\n  A running game holds its mod list in "
+        print("\n  REFUSING TO WRITE: RimWorld looks live (its process is up, or "
+              "the process list could not be read).\n  A running game holds its mod list in "
               "memory, and if the list is changed IN-GAME the engine writes "
               "ModsConfig\n  itself and clobbers this edit; the running game "
               "would also ignore it regardless.\n  Exit the game, then re-run."
               "\n  (This refusal used to say 'the game rewrites ModsConfig on "
               "exit'. That is FALSE -- measured\n  2026-08-13: at a clean exit "
               "the config's mtime was OLDER than the exit. RimWorld rewrites it "
-              "only\n  when the list changes in-game. The guard is still right, "
+              "when\n  the list changes in-game, or on the recovery reset. The guard is still right, "
               "for the reason above.)")
         return 1
 
