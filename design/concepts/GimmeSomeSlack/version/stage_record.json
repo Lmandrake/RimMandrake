@@ -2,10 +2,10 @@
   "schema": 1,
   "mod": "GimmeSomeSlack",
   "version": "0.1.1",
-  "stage": "his_walk",
-  "stage_label": "His live walk (Stage 8)",
-  "since": "2026-11-21T22:32:25-08:00",
-  "since_from": "advance by BENCH",
+  "stage": "passed",
+  "stage_label": "Version passed (Passed)",
+  "since": "2026-11-23T00:21:50-08:00",
+  "since_from": "advance by CONDUCTOR",
   "at_door": false,
   "seeded": {
     "at": "2026-11-20T16:09:35-08:00",
@@ -195,6 +195,26 @@
         "version",
         "hold",
         "walk_brief"
+      ]
+    },
+    {
+      "from": "his_walk",
+      "to": "passed",
+      "at": "2026-11-23T00:21:50-08:00",
+      "by": "CONDUCTOR",
+      "why": "his walk of the four changes passed (OWNER:1795413364353487264, 'GSS walk full pass. Looks great!'); visit 3's 203 checks rerun on the build he walked (244ae76cdf, ArchBig), 203 PASS, build match 203/203 (d03f1cad5b)",
+      "unit": "rm-detached-bench-rimmandrake-stage-slack-short-look-at-fo-1795413598",
+      "confirmed": {
+        "owner_said": "OWNER:1795413364353487264"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "owner_said",
+        "walk_build",
+        "pass_record_new"
       ]
     }
   ]
