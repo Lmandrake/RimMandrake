@@ -1,10 +1,10 @@
 {
  "_view": {
-  "body_sha256": "5cb7b7c0b2c1dbfcecd8aaf721221da11007665ccdba8302ea4052d94d742bb6",
+  "body_sha256": "5c502f343a8faf9c00ce05dde98df798e5737fc2cfeaa1cd1ff55390dd6ed007",
   "reducer": 1,
   "shards": {
    "BACKFILL": 893183,
-   "DISPATCH": 78846,
+   "DISPATCH": 79180,
    "HOLDER.run-1794816885": 928,
    "HOLDER.run-1794848129": 1121,
    "HOLDER.run-1794861652": 2822,
@@ -39,6 +39,7 @@
    "HOLDER.run-1795412632": 930,
    "HOLDER.run-1795427578": 1657,
    "HOLDER.run-1795429371": 2915,
+   "HOLDER.run-1795441687": 754,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1289,11 +1290,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795429371",
-   "done": "visit 8 on ArchBig: 27 of 30 PASS (25 first run; sc_garden and sc_ice reran after the outside wrapup restore was fixed, 8380450 and f459f47); sc_moat_raid FAIL class MOD, filed RIMMANDRAKE_TRACE_FLOWWORKS_MOAT_CAPTURE_FAILS_TWO_IN_THREE_ON_NEW_BUILD; PIT_LOOK_1114_LIVE and OL_OWNER_LOOK_READS not run; record 15a3481",
-   "next": "Trace the two-held capture failure in sc_moat_raid on the post-visit-7 build, then rerun sc_moat_raid three times, PIT_LOOK_1114_LIVE and OL_OWNER_LOOK_READS",
-   "ruled_out": "the garden filter half rate was not the mod or the chunk size: an outside wrapup.py restore replayed the scene converterRateMultiplier debt mid-window",
-   "ts": "2026-11-23T12:54:30Z"
+   "by": "HOLDER.run-1795441687",
+   "done": "visit 8 steward: sc_moat_raid only line back (MOD, game-only); capture-faults item retagged game-up with visit-8 evidence; filed RIMMANDRAKE_TRACE_FLOWWORKS_MOAT_SWIMMER_PAST_LOWERED_LEAF_AGAIN; advanced to in_game (next visit), both game-only",
+   "next": "Trace a stalled moat capture and the bridge-down swimmer live, then run sc_moat_raid as visit 9",
+   "ruled_out": "OL_OWNER_LOOK_READS: HARNESS, decides no bar, blind sub-row on polish.md; sends nothing back",
+   "ts": "2026-11-23T14:00:31Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1745,7 +1746,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1674,
+  "events": 1676,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7846,7 +7847,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-23T13:51:02Z",
+   "last": "2026-11-23T14:00:31Z",
    "lease": "run-1795441687",
    "released": false,
    "token": 56
@@ -7965,6 +7966,7 @@
    "HOLDER.run-1795412632",
    "HOLDER.run-1795427578",
    "HOLDER.run-1795429371",
+   "HOLDER.run-1795441687",
    "JUDGE.judge-1794833810",
    "JUDGE.judge-1794849236",
    "JUDGE.judge-1795134433",

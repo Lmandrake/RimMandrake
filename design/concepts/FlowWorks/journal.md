@@ -12,7 +12,7 @@ now, offline only"). Its table matches the pilot's columns (`design/concepts/Exp
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`: "Yes, lock the other four mods").
   Code exists and is large: `src/RimMandrake/FlowWorks/` (C# mod, a 325+ case C# SelfTest, about 168 Python selftests,
   a northstar proof harness).
-- **Stage now:** Stage 6, in-game acceptance, since 2026-11-22 3:48 PM PST (`version/stage_record.json`).
+- **Stage now:** Stage 6, in-game acceptance, since 2026-11-23 6:00 AM PST (`version/stage_record.json`).
 - **Bars:** 57 = 29 inventory rows of `record.json` + 28 leaves of `tree.json` (`coverage_judge.required_ids()`); 59 at the
   lock, his card of 2026-11-14 added `inv_geyser_tub` and `inv_liquid_coating` (61), and his card of 2026-11-14 ~9:43 PM
   PST moved the four wetting bars to 0.2.0 (interventions below; `version/next_version/README.md`).
@@ -22,7 +22,7 @@ now, offline only"). Its table matches the pilot's columns (`design/concepts/Exp
 - **Held look statements for this mod:** 103 rows in five files of `design/RimMandrake/validation_holding/` (2026-11-12:
   56 rows; 2026-11-13 morning: 18; 2026-11-13 dig interface: 2; 2026-11-13 evening: 5; 2026-11-14: 22); 83 are placed
   in `version/test_table.json`, all 103 placed. [measured, preflight C8, 2:40 PM PST]
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-22 3:48 PM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-23 6:00 AM PST).
 
 ### The vision (his root paragraph, approved 2026-11-04, OWNER:1793794915205594887; eight lines in `version/vision.md`)
 
@@ -489,4 +489,14 @@ None open; question 3 (the dig speed) is answered in the history entry of 2026-1
 - Walk result: design/concepts/FlowWorks/version/walk_brief/walk_2_result.json
 - Was, "Stage now": - **Stage now:** Stage 8, his live walk, since 2026-11-22 3:42 AM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-22 3:42 AM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-23 6:00 AM PST, stage change: In-game acceptance (Stage 6) to In-game acceptance (Stage 6) (by BENCH)
+
+- Why: visit 8 road back: the only line that sends the mod back is sc_moat_raid (MOD, not fixed in the sitting: 2 capture FAILs and 1 bridge-down swimmer in 9 counted runs on 6b52871479); both causes are known only from a live read, so both items are game-only and the mod goes to the next visit, never to Stage 3. OL_OWNER_LOOK_READS is HARNESS, decides no bar, its blind sub-row already on polish.md: no item. undecided_bars [] and fix_readers_owed [] per maturation.py next.
+- Checks passed: order, by, version, hold.
+- Steward confirms: read visit_8/SUMMARY.md and rows.jsonl (sc_moat_raid 10 rows: 3 MOD FAIL, 1 HARNESS void, 6 PASS with no mod_fix; OL not counted, HARNESS, no bar); verdict: exit not met stands, a REAL MISS on moat_raid_sequence, game-only
+- Game only: RIMMANDRAKE_HOLD_FLOWWORKS_PIT_PRISONERS_THREE_CAPTURE_FAULTS, RIMMANDRAKE_TRACE_FLOWWORKS_MOAT_SWIMMER_PAST_LOWERED_LEAF_AGAIN
+- Was, "Stage now": - **Stage now:** Stage 6, in-game acceptance, since 2026-11-22 3:48 PM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-22 3:48 PM PST).
 - Record: `version/stage_record.json`.
