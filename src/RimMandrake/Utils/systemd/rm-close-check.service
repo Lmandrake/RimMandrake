@@ -1,0 +1,20 @@
+# The daily no-AI check of every closed item (rimflow/close_check.py; page design/specs/2026-11-23-close-check/boundary.md;
+# item RIMMANDRAKE_REVIVE_FIVE_PROMISED_THINGS_SILENTLY_NOT_HAPPENING). It hangs on no role. A close that claims work that
+# main does not hold is reopened by a `fail` run on the same item. No model. Runs from the dispatch clone.
+# Reading: D:\ClaudeWork\rimmandrake\close_check\reading.json (WSL /mnt/d/ClaudeWork/rimmandrake/close_check/reading.json)
+# Install:  cp src/RimMandrake/Utils/systemd/rm-close-check.{service,timer} ~/.config/systemd/user/
+#           systemctl --user daemon-reload && systemctl --user enable --now rm-close-check.timer
+[Unit]
+Description=RimMandrake daily no-AI check of every closed item
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/mandrake/rm/dispatch
+Environment=PATH=/home/mandrake/.local/bin:/usr/local/bin:/usr/bin:/bin
+Environment=PYTHONUNBUFFERED=1
+Environment=RM_ROLE_UNIT=rm-close-check.service
+ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/rimflow/close_check.py run --apply
+Nice=10
+MemoryMax=3G
+# Hang guard: two ledger replays, two git calls and one rimflow write per finding.
+TimeoutStartSec=60min

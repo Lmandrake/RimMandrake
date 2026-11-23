@@ -36,7 +36,7 @@ and that the Conductor decides if it matters. Nobody is assigned here.
 
 | duty | who or what does it now | evidence |
 |---|---|---|
-| AU-1 sample closed items and passes | Nobody: REVIVE-OR-DROP. (A mod's pass has blind judges before it. A list close has nobody after it.) The mechanical part, that a close names a sha that resolves here, is in `rimflow close`. | last audit 2026-11-01 (`audits.jsonl`); `cli.py` |
+| AU-1 sample closed items and passes | The mechanical check of every close: `close_check.py`, daily, no AI (a close whose commit is not on main reopens its item). The sample by a reader: the weekly follow-through audit reads needs, not closes; a sample of closes is REVIVE-OR-DROP. | `rm-close-check.timer`; `design/specs/2026-11-23-close-check/boundary.md` |
 | AU-2 re-check each verdict that sets blocking evidence aside | A rule, not a re-check: a repaired check counts only when it is seen to fail and pass, and one fresh reader reads a fix. | `CLAUDE.md` §Touching code has a cost |
 | AU-3 a repeat error becomes an enforced rule | The findings judge files `Rule candidate:` items for the Conductor, on Fridays. The run that sees a defect fixes it. A program that counts repeats over lessons: REVIVE-OR-DROP. | `Utils/findings_judge_friday.md`; `rm-findings-judge.timer` enabled |
 | AU-4 scheduled adversarial reviews that he released | Nobody. GPT and Codex reviews of pipeline code stay stopped. | `CLAUDE.md` §Code is clean |

@@ -1,0 +1,10 @@
+# Daily at 06:20 - see rm-close-check.service.
+[Unit]
+Description=RimMandrake daily no-AI check of every closed item, 06:20
+
+[Timer]
+OnCalendar=*-*-* 06:20:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target

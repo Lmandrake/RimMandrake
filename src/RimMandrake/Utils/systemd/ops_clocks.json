@@ -27,7 +27,8 @@
     "rm-red-dispatch": "rm-red-dispatch.timer",
     "rm-list-effect": "rm-list-effect.timer",
     "rm-follow-through": "rm-follow-through.timer",
-    "rm-guiding-prose": "rm-guiding-prose.timer"
+    "rm-guiding-prose": "rm-guiding-prose.timer",
+    "rm-close-check": "rm-close-check.timer"
   },
   "outside": {
     "rm-relentless": "the Relentless tick: retired by the owner 2026-11-13, unit masked (design/RimMandrake/retired_loops_2026-11-13.md)",
