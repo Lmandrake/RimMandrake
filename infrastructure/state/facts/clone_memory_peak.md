@@ -2,11 +2,15 @@
 
 # What one relentless clone costs in memory, and who holds it
 
-Item `RELENTLESS_TICK_MEASURE_CLONE_MEMORY_PEAK`. MEASURED 2026-11-03 on Archmagi (36 GB WSL2, 14 cores), store
-`/home/mandrake/rm/store.git` (21 GB), worktree of a full checkout ~3.8 GB. Instrument:
-`python3 src/RimMandrake/Utils/clone_mem_probe.py --runs N` — one clone made exactly as `relentless.py` makes it
-(`scratch_clone.py clone ... --checkout --fetch`, `RM_SEAT=clones`) inside its own systemd user scope, so the cgroup's
-`memory.peak` is that clone alone: the same counter systemd prints as the tick unit's "memory peak".
+Item `RELENTLESS_TICK_MEASURE_CLONE_MEMORY_PEAK`. MEASURED 2026-11-03 on Archmagi (36 GB WSL2, 14 cores).
+
+- The store is `/home/mandrake/rm/store.git` (21 GB). The worktree of a full checkout is ~3.8 GB.
+- The instrument is `python3 src/RimMandrake/Utils/clone_mem_probe.py --runs N`.
+- The probe makes one clone exactly as `relentless.py` makes it (`scratch_clone.py clone ... --checkout --fetch`,
+  `RM_SEAT=clones`).
+- The clone runs inside its own systemd user scope. So the cgroup's `memory.peak` is that clone alone. Systemd prints
+  the same counter as the tick unit's "memory peak".
+- "Anon" is anonymous memory. "File" is page cache. The probe reads both from the cgroup.
 
 | run | store | cgroup memory.peak | anon at peak | page cache (file) at peak | largest anon process (RssAnon) | host MemAvailable dip |
 |---|---|---|---|---|---|---|
@@ -19,33 +23,42 @@ Item `RELENTLESS_TICK_MEASURE_CLONE_MEMORY_PEAK`. MEASURED 2026-11-03 on Archmag
 | 7 | live | 2.60 GB | 0.22 GB | 2.24 GB (86 %) | `git read-tree`, 0.21 GB | 1.06 GB |
 | 8 | live | 0.98 GB | 0.16 GB | 0.73 GB (75 %) | `git read-tree`, 0.21 GB | 0.79 GB |
 
-Runs 1–4 2026-11-03 ~20:51, runs 5–8 ~21:06–21:10 (local). "private" = a store seeded outside the scope from the checkout's
-HEAD tree (the probe's fallback when the live store is unreadable); the checkout it measures is the same.
-Records: `D:\ClaudeWork\rimmandrake\clone_mem_probe\run-*.json` (scratch; each holds a 0.5 s timeline).
+- Runs 1–4 were 2026-11-03 ~20:51. Runs 5–8 were ~21:06–21:10 (local).
+- "private" means a store that the probe seeded outside the scope, from the checkout's HEAD tree. The probe falls back
+  to it when the live store is unreadable. The checkout that the probe measures is the same.
+- Records: `D:\ClaudeWork\rimmandrake\clone_mem_probe\run-*.json` (scratch; each holds a 0.5 s timeline).
 
 ## The answer
 
 - **git holds it, not `scratch_clone.py`.** `scratch_clone.py` peaks at ~24 MB. The peak is `git read-tree -mu HEAD`,
-  the checkout, from t≈2 s to the end of the clone (~13 s wall).
-- **It is page cache, not process memory: 75–93 % of the peak is `file`.** read-tree writes the ~3.8 GB worktree;
-  the written pages (mostly dirty at the peak) are charged to the cgroup that wrote them. Anon is ~0.2 GB.
-- `git read-tree` shows ~2.8 GB **VmRSS**, of which 0.21 GB is RssAnon: the rest is the store's packfiles mmapped,
-  shared and reclaimable. Reading VmRSS calls it a 2.8 GB process; it is not.
-- **The host feels 0.1–1.1 GB, not 2–4.5 GB:** MemAvailable's lowest point during a clone was 0.13–1.06 GB below its
-  start, because clean page cache counts as available.
-- **One clone alone reaches 4–4.5 GB of cgroup peak** (runs 5, 6): how much of the written worktree is still charged
-  at the high-water mark varies run to run (0.98–4.5 GB over 8 runs). So a tick's 4–5 GB "memory peak" (the high-water
-  mark of the whole `rm-relentless.service` run) is within what ONE clone's page cache produces; it does not need two
-  clones. Workers are their own systemd units and are not in that number. UNMEASURED: the tick journal's larger peaks
-  over 2026-10-31 to 2026-11-03, up to 10.9 GB (`journalctl --user -u rm-relentless.service | grep "memory peak"`),
-  were not taken apart.
+  the checkout. It lasts from t≈2 s to the end of the clone (~13 s wall).
+- **The peak is page cache, not process memory: 75–93 % of the peak is `file`.**
+  - `read-tree` writes the ~3.8 GB worktree. The kernel charges the written pages to the cgroup that wrote them. Those
+    pages are mostly dirty at the peak.
+  - Anon is ~0.2 GB.
+- `git read-tree` shows ~2.8 GB **VmRSS**, of which 0.21 GB is RssAnon. The rest is the store's packfiles mmapped,
+  shared and reclaimable. Read by VmRSS alone, `git read-tree` looks like a 2.8 GB process. `git read-tree` is not a 2.8 GB process.
+- **The host feels 0.1–1.1 GB, not 2–4.5 GB.** The lowest MemAvailable during a clone was 0.13–1.06 GB below its start.
+  The reason is that clean page cache counts as available.
+- **One clone alone reaches 4–4.5 GB of cgroup peak** (runs 5, 6).
+  - Some of the written worktree is still charged at the high-water mark. How much varies run to run (0.98–4.5 GB over 8
+    runs).
+  - So two clones are not needed for a tick's 4–5 GB "memory peak". That peak is the
+    high-water mark of the whole `rm-relentless.service` run. The page cache of ONE clone produces as much.
+  - Workers are their own systemd units. So that number does not include the workers.
+  - UNMEASURED: the larger peaks in the tick journal over 2026-10-31 to 2026-11-03, up to 10.9 GB. Nobody took them
+    apart. The source of those peaks is `journalctl --user -u rm-relentless.service | grep "memory peak"`.
 
 ## What this means for the stop lines
 
-`min_mem_available_gb` (6) and the 3 GB host stop line read MemAvailable, which already treats this page cache as
-available. Budgeting a clone at 4–5 GB against them overcounts it several times over; ~0.5 GB of MemAvailable per
-concurrent clone is the measured figure (worst seen 1.06 GB). Recheck: `clone_mem_probe.py --runs 1 --check` exits 0
-while >= 60 % of the peak is page cache and a git process is the largest anon holder, 1 when either stops being true,
-2 when it could not measure (no user scope, clone failed, or too few samples / too small a peak to have seen the
-checkout). It needs neither the live store, GitHub nor Lodestar: it falls back to a private store and a TMPDIR record
-dir and prints which it used.
+- `min_mem_available_gb` (6) and the 3 GB host stop line read MemAvailable. MemAvailable already treats this page cache
+  as available.
+- A budget of 4–5 GB per clone against those lines overcounts the clone several times over. The measured figure is
+  ~0.5 GB of MemAvailable per concurrent clone (worst seen 1.06 GB).
+- Recheck with `clone_mem_probe.py --runs 1 --check`. Its exit codes:
+  - 0 while >= 60 % of the peak is page cache and a git process is the largest anon holder;
+  - 1 when either stops being true;
+  - 2 when it could not measure: no user scope, the clone failed, or too few samples / too small a peak to have seen the
+    checkout.
+- The recheck needs neither the live store, GitHub nor Lodestar. It falls back to a private store and a TMPDIR record
+  dir, and prints which it used.

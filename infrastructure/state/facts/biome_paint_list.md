@@ -1,30 +1,43 @@
 # Biome paint list — source of truth for the ONE terminal repaint
 
-**What this is.** The registry of every BiomeDef we own (`RM_*`, `RUT_*`), with the verdict the terminal
-repaint paints from (`BIOME_PAINT_ONCE_AT_THE_END_1`, executed as `BIG_REPAINT_FINISH_ONCE_AND_FOR_ALL`;
-plan `design/Jawa/worldbuilding/big_repaint_plan_2026-10-21.md`). `src/RimMandrake/Utils/paint_inputs_build.py`
-reads the last column of the table (`PAINT` / `NO PAINT`): keep each row starting `` | `defName` | ``.
+**What this is.** This file is the registry of every BiomeDef we own (`RM_*`, `RUT_*`). Each row holds the verdict that
+the terminal repaint paints from. The terminal repaint is the single paint of the planet, after every biome is in a mod.
+
+- The ruling is `BIOME_PAINT_ONCE_AT_THE_END_1`. The work is `BIG_REPAINT_FINISH_ONCE_AND_FOR_ALL`. The plan is
+  `design/Jawa/worldbuilding/big_repaint_plan_2026-10-21.md`.
+- `src/RimMandrake/Utils/paint_inputs_build.py` reads the last column of the table (`PAINT` / `NO PAINT`). Keep each row
+  starting `` | `defName` | ``.
 
 🔴 **A biome of ours on 0 tiles is not a defect** (owner, 2026-09-20: *"Don't worry about worldmap painting. Once
 we have all the biomes in mods we will do the painting once and for all."*). A tile count here gates no build work.
 
-**Where we are.** The dev world already carries only our biomes: all 21,872 tiles sit on the 27 `PAINT` rows below,
-0 on donor or vanilla defs. What the repaint still owes is a re-stamp of the biome layer onto three renamed defNames
-(`RM_Wasteland` → `RM_Wastes`, `RM_NightsideIce` → `RM_SleepingIce`, `RM_FloodedCanyon` → `RM_CrackedLands`), then
-deleting the 25 frozen `RUT_` twins, which carry 0 dev-world tiles.
+**Where we are.**
+
+- The dev world already carries only our biomes. All 21,872 tiles sit on the 27 `PAINT` rows of the table. 0 tiles sit
+  on donor or vanilla defs.
+- The repaint still owes a re-stamp of the biome layer onto three renamed defNames: `RM_Wasteland` → `RM_Wastes`,
+  `RM_NightsideIce` → `RM_SleepingIce`, `RM_FloodedCanyon` → `RM_CrackedLands`.
+- The 25 frozen `RUT_` twins carry 0 dev-world tiles. A twin is the old `RUT_` BiomeDef of a biome that now has an `RM_`
+  BiomeDef. The plan was to delete the twins after the re-stamp. Commit `ee7c219b70` (2026-11-06) deleted the 25 twins
+  from `src/` before the re-stamp.
 
 **Provenance.**
-- **Tiles** — MEASURED 2026-11-01 with `python3 src/RimMandrake/Utils/remake/repaint_biomes.py census` on the dev
-  start `world/ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws` (sha256 prefix `2c6525bcc357f2eb`, the same bytes as
-  `Saves\` then; the 2026-11-03 landmark rename changed only landmark names, not a tile), decoded against the dump `DefDump\captures\2026-10-28T23-26-38Z`. The histogram equals the
-  2026-10-21 census in the plan's §1a, tile for tile. The fingerprints differ (save 325 mods `f1c87543b447bab6`,
-  dump 321 `e67d6d9c5d2548de`), but a shortHash depends only on the defName: 25 of 27 hashes resolve, and the two that
-  do not, 18404 and 21915, are `short_hash_raw("RM_Wasteland")` and `short_hash_raw("RM_NightsideIce")`
-  (`src/RimMandrake/Utils/save_donor_rewrite.py`), the old names of `RM_Wastes` and `RM_SleepingIce`. The count is a
-  record of that save. The live planet is read only through the bridge.
-- **Defs, labels, folders** — read from the BiomeDef XML under `src/` on 2026-11-01. **Package** is the deployed
-  packageId from the same dump: every per-biome `RM_` mod is composed into `mandrake.rm.biomes` (34 BiomeDefs;
-  `src/RimMandrake/Utils/biomes_compose.py`), and every `RUT_` def lives in `mandrake.rut.patches` (27 BiomeDefs).
+- **Tiles** — MEASURED 2026-11-01 with `python3 src/RimMandrake/Utils/remake/repaint_biomes.py census`.
+  - The save is the dev start `world/ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws` (sha256 prefix
+    `2c6525bcc357f2eb`). "R3" in this file means that save. Its bytes were the same as in `Saves\` then. The 2026-11-03
+    landmark rename changed only landmark names, not a tile.
+  - The census decoded the save against the dump `DefDump\captures\2026-10-28T23-26-38Z`.
+  - The histogram equals the 2026-10-21 census in §1a of the plan, tile for tile.
+  - The fingerprints differ (save 325 mods `f1c87543b447bab6`, dump 321 `e67d6d9c5d2548de`). But a shortHash depends
+    only on the defName.
+  - 25 of 27 hashes resolve. The two that do not are 18404 and 21915: `short_hash_raw("RM_Wasteland")` and
+    `short_hash_raw("RM_NightsideIce")` (`src/RimMandrake/Utils/save_donor_rewrite.py`). Those are the old names of
+    `RM_Wastes` and `RM_SleepingIce`.
+  - The count is a record of that save. The live planet is read only through the bridge.
+- **Defs, labels, folders** — read from the BiomeDef XML under `src/` on 2026-11-01.
+- **Package** is the deployed packageId from the same dump. Every per-biome `RM_` mod is composed into
+  `mandrake.rm.biomes` (34 BiomeDefs; `src/RimMandrake/Utils/biomes_compose.py`). Every `RUT_` def lives in
+  `mandrake.rut.patches` (27 BiomeDefs).
 
 ## Table
 
@@ -69,35 +82,40 @@ deleting the 25 frozen `RUT_` twins, which carry 0 dev-world tiles.
 
 ## Counts
 
-Counted from the table, 2026-11-01:
-- **PAINT: 27** — 26 `RM_` defs plus `RUT_Umbra`; 21,872 tiles between them, every tile on the dev start.
+Counted from the table, 2026-11-01. The table then had a row for each twin. The twin rows left the table with commit
+`ee7c219b70` on 2026-11-06.
+- **PAINT: 27** — 26 `RM_` defs plus `RUT_Umbra`. Together they hold 21,872 tiles, every tile on the dev start.
 - **NO PAINT: 34** — 25 frozen `RUT_` twins (each names its `RM_` survivor) and 9 that never take a surface tile:
   `RUT_Jawa_BackgroundWater`, `RM_LanternDeeps`, `RM_ChillCrater` and the 6 `RM_Seabed*` floor biomes.
 - **Total: 61** owned BiomeDefs (34 in `mandrake.rm.biomes`, 27 in `mandrake.rut.patches`).
 
 ## What the repaint still owes (each its own item)
 
-- **The re-stamp**: a two-column `tile,biome` CSV built from the dev save (never the 2026-10-20 bundle, which would
-  revert the mountains), moving 1,853 + 1,506 tiles onto `RM_Wastes` and `RM_SleepingIce` and 970 onto
-  `RM_CrackedLands` — `BIG_REPAINT_FINISH_ONCE_AND_FOR_ALL`, `BIOME_DEFNAME_MIGRATION_WAVE_1`,
-  `CRACKEDLANDS_FULL_RENAME_1`. Until it lands, those 3,359 tiles decode as unknown hashes on today's list.
+- **The re-stamp** uses a two-column `tile,biome` CSV built from the dev save. Never build that CSV from the 2026-10-20
+  bundle, which would revert the mountains.
+  - The re-stamp moves 1,853 + 1,506 tiles onto `RM_Wastes` and `RM_SleepingIce`, and 970 onto `RM_CrackedLands`.
+  - The items are `BIG_REPAINT_FINISH_ONCE_AND_FOR_ALL`, `BIOME_DEFNAME_MIGRATION_WAVE_1` and
+    `CRACKEDLANDS_FULL_RENAME_1`.
+  - Until the re-stamp lands, those 3,359 tiles (1,853 + 1,506) decode as unknown hashes on today's list.
 - **No biome placement edits are ruled.** The Scald stays put (card 2026-10-22). The Warscar pilgrim camps and the six
   geological landmarks are world objects, not biome edits.
-- **The twins are deleted** (`BIOME_TWINS_RETIRE_TWENTY_FIVE_FROZEN`, owner card 2026-11-06). `CANONICAL_ASHKARR_START_2026-09-12.rws` stays on disk as a record only and is no longer expected to load correctly.
+- **The twins are deleted** (`BIOME_TWINS_RETIRE_TWENTY_FIVE_FROZEN`, owner card 2026-11-06).
+  `CANONICAL_ASHKARR_START_2026-09-12.rws` stays on disk as a record only. Nobody expects that save to load correctly
+  any more.
 - **Donor biome mods on 0 tiles**: `DONOR_BIOME_MODS_RETIRE_ZERO_TILES_LEFT`.
 
 ## Roster hole-filling policy — owner, 2026-09-22
 
-When `BIOME_SPECIFIC_FAUNA_LAW_1` (one animal, one biome) withdraws a species from a roster,
-it leaves a hole, and his law's other half says holes are filled with **new** creatures. He
-scoped when that happens:
+`BIOME_SPECIFIC_FAUNA_LAW_1` (one animal, one biome) can withdraw a species from a roster. That leaves a hole in the
+roster. The other half of his law says that holes are filled with **new** creatures. He scoped when that happens:
 
 > *"We will fill rosters as per-biome work continues. Only fill the mostly finished biomes as
 > needed: deep desert, desert, rot, pyrelands, lantern deeps. Others we will work
 > individually."*
 
-- ✅ **Fill now, as needed — the mostly-finished five:** the deep desert (`RM_Stillsand`), the desert (`RM_LongShade`), the Rot, the Pyrelands, the
-  Lantern Deeps.
-- ⛔ **Do NOT file fill work for any other biome** on the strength of a hole alone — those are
-  worked individually as their own per-biome pass reaches them. A withdrawn *admission* that
-  was never wired changes nothing in game and is not a hole worth chasing.
+- ✅ **Fill now, as needed — the mostly-finished five:** the deep desert (`RM_Stillsand`), the desert (`RM_LongShade`),
+  the Rot, the Pyrelands, the Lantern Deeps.
+- ⛔ **Do NOT file fill work for any other biome** on the strength of a hole alone. Those other
+  biomes are worked individually, as their own per-biome pass reaches them.
+  - A withdrawn *admission* that was never wired changes nothing in game. Such a withdrawal is not
+    a hole worth chasing.

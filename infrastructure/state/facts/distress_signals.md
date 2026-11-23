@@ -1,24 +1,34 @@
 # What predicts that a queue item is in trouble — measured 2026-08-23
 
-**Measured by REP with the owner, on `infrastructure/state/ledger/events.jsonl` as it stood
-2026-08-23T20:4x PDT: 2,029 events, 436 items, 306 closed / 47 dropped / 83 open, spanning
-2026-08-21T05:05Z → 2026-08-24T03:06Z (2.92 days).** Feeds the BENCH scan in
-`infrastructure/agents/REP.md`. ⚠️ **Every weight below is a rounded LIFT from this population.**
-Re-derive at three weeks; do not treat any number here as a constant.
+**Measured by REP with the owner, on `infrastructure/state/ledger/events.jsonl` as it stood 2026-08-23T20:4x PDT.**
+
+- The ledger held 2,029 events and 436 items: 306 closed, 47 dropped, 83 open.
+- The ledger spanned 2026-08-21T05:05Z → 2026-08-24T03:06Z (2.92 days).
+- REP is a retired seat (`infrastructure/agents/REP.md`).
+- This file feeds the BENCH scan in `infrastructure/agents/REP.md`. The query `rimflow next --bench` computes the index
+  of this file (`cmd_bench` in `src/RimMandrake/rimflow/cli.py`).
+- A lift of detention is the rate of detention among flagged items, divided by the base rate (8.2%). The next two
+  sections define detention and the base rate.
+- ⚠️ **Every weight below is a rounded LIFT from this population.** Re-derive each weight at three weeks. Do not treat
+  any number here as a constant.
 
 ## 🔴 Two methodological traps that will bite anyone who redoes this
 
 1. **The backfill.** The ledger opens with **352 events stamped across 3 timestamps inside 2 seconds**
-   (05:05:16–05:05:18Z), including **122 claims**. It is an import, not work. Exclude by a 60-second
-   window from `t0`. A narrower filter left six items reading as "claimed 70 h ago" — the full age of
-   the ledger — and every one was an artifact.
-2. **`drop` is mostly not failure.** Of 47 drops, **38 are triage** (24 blanket-v2 rulings, 9 owner
-   rulings, 5 premises measured false) and **only 9 are failures** — 5 outside the backfill.
-   ⛔ **Do not fit a mortality model on this.** n=9 is noise. Track detention instead.
+   (05:05:16–05:05:18Z).
+   - Those events include **122 claims**. The backfill is an import, not work.
+   - Exclude the backfill with a 60-second window from `t0`, the first timestamp.
+   - A narrower filter left six items that read as "claimed 70 h ago". That is the full age of the ledger. Every one of
+     the six was an artifact.
+2. **`drop` is mostly not failure.** There are 47 drops.
+   - **38 are triage**: 24 blanket-v2 rulings, 9 owner rulings, 5 premises measured false.
+   - **Only 9 are failures**, 5 of them outside the backfill.
+   - ⛔ **Do not fit a mortality model on this.** A sample of n=9 is noise. Track detention instead.
+   - Detention means that an item lives longer than the p90 of its own kind (next section).
 
 ## The clock: expected duration is per-KIND and varies 7×
 
-Absolute age is meaningless on a mixed board. p90 of items that CLOSED:
+Absolute age is meaningless on a mixed board. This table shows the p90 life of items that CLOSED:
 
 | kind | n | median | **p90 — the detention line** |
 |---|---|---|---|
@@ -27,8 +37,8 @@ Absolute age is meaningless on a mixed board. p90 of items that CLOSED:
 | fix | 15 | 2.62 h | **15.18 h** |
 | check | 45 | 12.78 h | **53.41 h** |
 
-🔑 **A ruling sitting 20 h is in trouble; a check running 40 h is normal.** Compute these at run time
-from closed items — hard-coding them guarantees they are wrong within a fortnight.
+- **A ruling that sits for 20 h is in trouble. A check that runs for 40 h is normal.**
+- Compute these figures at run time, from closed items. Hard-coded figures are certain to be wrong within a fortnight.
 
 ## What predicts detention (life > its own kind's p90). Base rate 8.2%
 
@@ -49,29 +59,36 @@ from closed items — hard-coding them guarantees they are wrong within a fortni
 | owner had to intervene (`ownerSaid` / `override`) | 2.13× |
 | **downstream** reassign (DECIDE→BUILD→CHECK) | **0.55×** |
 
-⭐ **Direction is the whole signal, not movement.** Upstream-reassigned items live **10.5 h against
-1.5 h** median and close **26.9% against 72.9%**. Downstream is the conveyor working; upstream is a
-seat saying *"this is not what I thought it was."*
+**Direction is the whole signal, not movement.**
+
+- Upstream-reassigned items live **10.5 h against 1.5 h** median. They close **26.9% against 72.9%**.
+- Downstream is the conveyor working. Upstream is a seat that says *"this is not what I thought it was."*
 
 ## ⛔ REFUTED — do not re-derive these, they cost an hour
 
-- **Prose thinness predicts NOTHING.** `has_file`, `has_spec`, `has_verify`, `has_criteria` and
-  links-to-other-items all sit at **AUC 0.48–0.53, coin flips**, against death. Against detention they
-  are **inverted**: no prose file **0.00×**, under 200 words **0.00×**, no `## spec` **0.00×**. Not one
-  thin item was ever detained. 🔑 **Thin items are thin because they are small, and small things
-  finish.** What kills work is contested scope, and contested things are verbose.
-  ⇒ The mandatory `## spec` / `## verify` / `## criteria` prose buys **no** early warning. It may be
-  worth writing for other reasons; it cannot be defended on this one.
-- **The apparent thinness effect was the backfill.** 70% of dropped items are backfilled vs 28% of
-  closed; backfilled items drop at 22.9% vs 4.8%. Control for it and word-count AUC falls 0.615 → **0.49**.
-- **"Fast class stuck in a long line" is not a term — it is the DENOMINATOR.** Cohort-relative slowness
-  scored **0.45–0.60× against drops**. It works only as the per-kind normalisation above.
-- **Reassignment COUNT is misleading.** Its top hit had **11 reassignments and closed in 1.0 h** —
-  DECIDE reassigning an item to itself to get past `COMMIT_GUARD_BLOCKS_SPECS_1`.
-- Useless breadth: silence >48 h flags 21 of 83 open; unmet `needs` flags **51 of 83 — that is just the
-  load queue**; `spawn`/`caused_by` has no hotspot.
+- **Prose thinness predicts NOTHING.** `has_file`, `has_spec`, `has_verify`, `has_criteria` and links to other items all
+  sit at **AUC 0.48–0.53, coin flips**, against death.
+  - Against detention, these fields are **inverted**: no prose file **0.00×**, under 200 words **0.00×**, no `## spec`
+    **0.00×**. Not one thin item was ever detained.
+  - **Thin items are thin because they are small, and small things finish.** What kills work is contested scope, and
+    contested things are verbose.
+  - So the mandatory `## spec` / `## verify` / `## criteria` prose gives **no** early warning. That prose may be worth
+    writing for other reasons. It cannot be defended on this one.
+- **The apparent thinness effect was the backfill.** 70% of dropped items are backfilled vs 28% of closed items.
+  Backfilled items drop at 22.9% vs 4.8%. Control for the backfill, and the word-count AUC falls 0.615 → **0.49**.
+- **"Fast class stuck in a long line" is not a term — it is the DENOMINATOR.** Cohort-relative slowness scored
+  **0.45–0.60× against drops**. That slowness works only as the per-kind normalisation in the clock section.
+- **Reassignment COUNT is misleading.** The top hit of the count had **11 reassignments and closed in 1.0 h**. DECIDE
+  reassigned that item to itself to get past `COMMIT_GUARD_BLOCKS_SPECS_1` (the commit guard refused a filing seat its
+  own spec prose).
+- Useless breadth. These signals do not single out an item in trouble:
+  - Silence >48 h flags 21 of 83 open items.
+  - Unmet `needs` flags **51 of 83 — that is just the load queue**.
+  - `spawn`/`caused_by` has no hotspot.
 
 ## The coarse index
+
+The number is the score that each signal adds.
 
 ```
 3  blocked, unresolved >24h  (1 if <24h)   2  per upstream reassignment
@@ -88,19 +105,21 @@ seat saying *"this is not what I thought it was."*
 | **≥3** | **21/353** | **31.0%** | **42.9%** | **5.22×** |
 | ≥5 | 4/353 | 10.3% | 75.0% | 9.13× |
 
-🔑 **When it fires, believe it. When it does not, that is not safety.** Good triage, bad alarm.
+**When the index fires, believe it. When the index does not fire, that is not safety.** The index is good triage and a
+bad alarm.
 
 ## ⚠️ Why this is not on the board, and must not be
 
-Every other board tile measures a fact about the world — `ps`, a TCP probe, `git`. **This one measures
-actions seats CHOOSE**, so it is the one metric that can be gamed. Most pressure it creates is
-harmless; one is not. **Penalising upstream reassignment would teach seats to absorb mis-scoped work
-rather than hand it back** — which is worse and invisible. So the score goes to the OWNER and to REP;
-a seat gets the underlying fact (*"claimed 33 h, no commit"*) and never a number to optimise.
+- Every other board tile measures a fact about the world: `ps`, a TCP probe, `git`.
+- **This index measures actions that seats CHOOSE.** So the index is the one metric that can be gamed.
+- Most pressure that the index creates is harmless. One pressure is not harmless. **A penalty on upstream reassignment
+  would teach seats to absorb mis-scoped work rather than hand it back.** That is worse, and it is invisible.
+- So the score goes to the OWNER and to REP. A seat gets the underlying fact (*"claimed 33 h, no commit"*). A seat never
+  gets a number to optimise.
 
 ## What would sharpen it
 
-1. 🔴 **`reassign` records no `from` — 0 of 73.** The best signal is reconstructed by inference. One
-   line at the writing end, and it is the prerequisite for trusting it.
-2. No event exists for a seat putting an item DOWN. Claims are visible; abandonment is not.
-3. **195 of 436 items carry no `needs` on any event**, which blurs every population count here.
+1. 🔴 **`reassign` records no `from` — 0 of 73.** So the best signal is reconstructed by inference. One line at the
+   writing end fixes this. That line is the prerequisite for trusting the signal.
+2. No event exists for a seat that puts an item DOWN. Claims are visible. Abandonment is not.
+3. **195 of 436 items carry no `needs` on any event.** This blurs every population count here.

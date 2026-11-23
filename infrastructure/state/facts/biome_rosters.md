@@ -6,24 +6,37 @@ One fact per entry, newest at the bottom. Append only.
 
 ## 2026-09-20 — third-party donor load across every owned BiomeDef
 
-**How measured:** `xml.etree.ElementTree` over all 26 `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_*.xml`,
-walking each `BiomeDef`'s `<wildPlants>` and `<wildAnimals>` children. Ownership
-read from each entry's **`MayRequire` packageId attribute**, not from its defName
-prefix: `mandrake.*` = ours, `Ludeon.*` = core/DLC, anything else = third-party
-donor, no attribute = unguarded. XML comments skipped (`isinstance(tag, str)`).
+A donor is a third-party mod whose animals and plants our rosters borrow.
 
-🔴 **These tables are ELEMENT-KEYED, not `<li>`-keyed** — an entry is
-`<Bantha MayRequire="mlie.starwarsanimalcollection">0.8</Bantha>`. A parser that
-looks for `<li>` returns **zero rows for every biome**, which is a failure, not a
-finding. (Hit this exact way, this session.)
+- The counts in the tables and in the unguarded list are of 2026-09-20.
+- Later renames changed 5 row names: `RUT_Cauldron` (measured as `RUT_PoisonForest`), `RUT_Abyss`
+  (`RUT_ForsakenCrags`), `RUT_Wastes` (`RUT_Wasteland`), `RUT_SleepingIce` (`RUT_NightsideIce`), `RM_TheRot`
+  (`RUT_TheRot`).
+- Commit `ee7c219b70` (2026-11-06) deleted 25 frozen `RUT_` BiomeDefs from `src/`. Of the BiomeDefs that this census
+  measured, only `RUT_Umbra` is still in `src/`.
 
-🔴 **Do not infer a donor from the defName prefix.** The Star Wars Animal
-Collection ships BARE defNames — `Bantha`, `Kreetle`, `Scavrat`, `Shyrack`,
-`Gorg`, `Gutkurr`, `Jamel`, `Rat` — so a prefix rule buckets them as vanilla
-Core. A census this session did exactly that and reported the desert as "98.4%
-donor, 40 of them vanilla"; the real reading is that those 40 are almost all the
-single largest donor on the planet. The `MayRequire` attribute is ground truth
-and it is already in the file.
+**How measured:** the census read all 26 `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_*.xml` with
+`xml.etree.ElementTree`. It walked the `<wildPlants>` and `<wildAnimals>` children of each `BiomeDef`. It skipped XML
+comments (`isinstance(tag, str)`).
+
+It read ownership from the **`MayRequire` packageId attribute** of each entry, not from the defName prefix:
+
+- `mandrake.*` = ours;
+- `Ludeon.*` = core/DLC;
+- anything else = third-party donor;
+- no attribute = unguarded.
+
+🔴 **These tables are ELEMENT-KEYED, not `<li>`-keyed.** An entry is
+`<Bantha MayRequire="mlie.starwarsanimalcollection">0.8</Bantha>`. A parser that looks for `<li>` returns **zero rows
+for every biome**. That zero is a failure, not a finding. The session of 2026-09-20 hit this exact failure.
+
+🔴 **Do not infer a donor from the defName prefix.**
+
+- The Star Wars Animal Collection ships BARE defNames: `Bantha`, `Kreetle`, `Scavrat`, `Shyrack`, `Gorg`, `Gutkurr`,
+  `Jamel`, `Rat`. So a prefix rule buckets them as vanilla Core.
+- A census of the same session did exactly that. It reported the desert as "98.4% donor, 40 of them vanilla". The real
+  reading: those 40 are almost all the single largest donor on the planet.
+- The `MayRequire` attribute is ground truth, and it is already in the file.
 
 ### Planet-wide third-party load, by donor mod (entries across all owned biomes)
 
@@ -42,9 +55,8 @@ and it is already in the file.
 | 1 | `lingluo.cockroach` |
 | 1 | `regrowth.botr.core` |
 
-🔑 **Two mods carry 262 of ~330 borrowed roster entries.** Any donor-retirement
-plan that is not mostly about `mlie.starwarsanimalcollection` and
-`sarg.alphaanimals` is aimed at the long tail.
+**Two mods carry 262 of ~330 borrowed roster entries.** Those mods are `mlie.starwarsanimalcollection` and
+`sarg.alphaanimals`. A donor-retirement plan that is not mostly about those two mods is aimed at the long tail.
 
 ### Per biome — ours / core / third-party / unguarded
 
@@ -75,27 +87,32 @@ plan that is not mostly about `mlie.starwarsanimalcollection` and
 | `RUT_TwilightSea` | 1 | 0 | 1 | 0 | alphaanimals:1 |
 | `RUT_TheScald` | 4 | 0 | 0 | 0 | — |
 
-🔑 **`RM_TheRot` is the only biome where we own more than we borrow** (21 ours vs
-8 third-party) — that is what a finished verdict pass looks like, and it is the
-before/after benchmark for every biome below it.
+**`RM_TheRot` is the only biome where we own more than we borrow** (21 ours vs 8 third-party). That is what a finished
+verdict pass looks like. `RM_TheRot` is the before/after benchmark for every biome below it.
 
 ### `RM_BlueDesert` carries its commissioned hydrocarbon life (moved 2026-09-25)
 
-`BLUE_DESERT_LIFE_AUTHORING_1` (FOUNDRY, done 2026-09-21) authored the Swallowers/Burners/Pickers
-cast and the transparent fractal flora; `BLUEDESERT_RM_MOD_BUILD_1` (FOUNDRY, done 2026-09-25) moved
-all of it into its own mod, `mandrake.rm.bluedesert` (`src/RimMandrake/BlueDesert`): `animalDensity`
-0.5, `plantDensity` 0.33, 4 `wildAnimals` rows (`RM_Vekkit`/`RM_Dorrak`/`RM_Krissek` plus the inline
-`AA_Thunderbeast` import), 6 `wildPlants` rows. `RUT_BlueDesert` is FROZEN in `UtinniPatches`,
-carrying the world unchanged until the terminal paint. The roster JSON's `Vapaad` (genuinely canon
-Star Wars) rides `WildAnimals_BlueDesert.xml` onto `RM_BlueDesert` instead — the roster's own
-"two Star Wars rows" framing was wrong: `AA_Thunderbeast` is a plain Alpha Animals import with no
-Star Wars content and ships inline on the RM_ def.
+FOUNDRY is a retired seat name.
+
+- `BLUE_DESERT_LIFE_AUTHORING_1` (FOUNDRY, done 2026-09-21) authored the Swallowers/Burners/Pickers cast and the
+  transparent fractal flora.
+- `BLUEDESERT_RM_MOD_BUILD_1` (FOUNDRY, done 2026-09-25) moved all of it into its own mod, `mandrake.rm.bluedesert`
+  (`src/RimMandrake/BlueDesert`). The BiomeDef then held:
+  - `animalDensity` 0.5 and `plantDensity` 0.33;
+  - 4 `wildAnimals` rows (`RM_Vekkit`/`RM_Dorrak`/`RM_Krissek` plus the inline `AA_Thunderbeast` import);
+  - 6 `wildPlants` rows.
+- On 2026-09-25 `RUT_BlueDesert` was FROZEN in `UtinniPatches`, to carry the world unchanged until the terminal paint
+  (the one paint of the planet at the end). Commit `ee7c219b70` (2026-11-06) deleted `RUT_BlueDesert` with the other
+  frozen twins.
+- The roster JSON's `Vapaad` (genuinely canon Star Wars) rides `WildAnimals_BlueDesert.xml` onto `RM_BlueDesert` instead.
+- The roster's own "two Star Wars rows" framing was wrong. `AA_Thunderbeast` is a plain Alpha Animals import with no Star
+  Wars content. It ships inline on the RM_ def.
 
 ### Unguarded entries — no `MayRequire`, not one of our defs
 
-Present in 16 of 24 populated biomes. Vanilla Core entries need no guard and are
-fine; the ones that matter are **donor defs with no guard at all**, which is
-exactly what breaks when a donor is retired. In the desert family:
+Unguarded entries are present in 16 of 24 populated biomes. Vanilla Core entries need no guard and are fine. The ones
+that matter are **donor defs with no guard at all**. Those defs are exactly what breaks when a donor is retired. In the
+desert family:
 
 - `RUT_Desert` — `AB_HardyGrass`, `AB_Aaklac`, `AB_DessertTree` (Alpha Biomes,
   unguarded), plus `Plant_Chakroot_Wild`, `Plant_HubbaGourd_Wild`,
@@ -106,5 +123,5 @@ exactly what breaks when a donor is retired. In the desert family:
   `RG_Plant_CrimsonCushion`, `RG_Plant_Dervish` (ReGrowth, unguarded), plus
   seven vanilla `Plant_*` and `Rat`
 
-⚠️ Not yet ruled a defect — recorded so the retirement pass does not discover it
-the hard way.
+⚠️ Nobody has ruled this a defect yet. This entry records it, so that the retirement pass does not discover it the hard
+way.
