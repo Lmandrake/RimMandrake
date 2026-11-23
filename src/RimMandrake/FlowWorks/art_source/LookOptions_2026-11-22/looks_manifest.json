@@ -2,12 +2,40 @@
  "schema": 1,
  "rows": [
   {
+   "key": "RM_LiquidTank_Futuristic",
+   "part": "LiquidTank",
+   "look": "Futuristic",
+   "variant": "",
+   "section": "Tanks",
+   "label": "Liquid tank (2x2), Futuristic look: A white composite, B graphite and neon, C titanium and amber (new designs)",
+   "resources": [
+    "RimMandrake/FlowWorks/Tank/Futuristic/RM_LiquidTank"
+   ],
+   "size": {
+    "drawSize": [
+     2,
+     2
+    ],
+    "footprint": [
+     2,
+     2
+    ],
+    "source": "src/RimMandrake/FlowWorks/Defs/LiquidTypes/ThingDefs/RM_LiquidTankStyles.xml ThingStyleDef drawSize (2,2) on RM_LiquidTank size (2,2)"
+   },
+   "former": [],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/options/tank_futuristic_A_new_white_composite.png",
+    "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/options/tank_futuristic_B_new_graphite_neon.png",
+    "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/options/tank_futuristic_C_new_titanium_amber.png"
+   ]
+  },
+  {
    "key": "RM_LiquidTank_Industrial",
    "part": "LiquidTank",
    "look": "Industrial",
    "variant": "",
    "section": "Tanks",
-   "label": "Liquid tank (2x2), Industrial look: which paint? A rust cleaned, B sand-grey",
+   "label": "Liquid tank (2x2), Industrial look: A rust cleaned, B sand-grey (repaints); C gunmetal on cast saddles, D olive panelled (new designs)",
    "resources": [
     "RimMandrake/FlowWorks/Tank/Industrial/RM_LiquidTank"
    ],
@@ -25,7 +53,9 @@
    "former": [],
    "reference_textures": [
     "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/options/tank_industrial_A_rust_cleaned.png",
-    "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/options/tank_industrial_B_sand_grey_paint.png"
+    "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/options/tank_industrial_B_sand_grey_paint.png",
+    "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/options/tank_industrial_C_new_gunmetal_saddle.png",
+    "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/options/tank_industrial_D_new_olive_panelled.png"
    ]
   },
   {
@@ -34,7 +64,7 @@
    "look": "Modern",
    "variant": "",
    "section": "Tanks",
-   "label": "Liquid tank (2x2), Modern look: A the white leg tank weathered",
+   "label": "Liquid tank (2x2), Modern look: A the white leg tank weathered (repaint); B green poly tank on a galvanised frame, C painted steel tank on saddles (new designs)",
    "resources": [
     "RimMandrake/FlowWorks/Tank/Modern/RM_LiquidTank"
    ],
@@ -51,7 +81,9 @@
    },
    "former": [],
    "reference_textures": [
-    "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/options/tank_modern_A_weathered_leg_tank.png"
+    "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/options/tank_modern_A_weathered_leg_tank.png",
+    "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/options/tank_modern_B_new_green_poly_frame.png",
+    "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/options/tank_modern_C_new_painted_steel_saddle.png"
    ]
   },
   {

@@ -37,6 +37,7 @@ import sys
 import time
 import xml.etree.ElementTree as ET
 from collections import Counter, defaultdict
+from datetime import datetime, timezone
 from io import BytesIO
 from pathlib import Path
 
@@ -610,6 +611,23 @@ def build_row(idx: L.Index, res: str, order: dict, slots: dict, former=()) -> di
     return {"res": res, "word": word, "cols": out, "masks": masks, "subjects": subj, "donorPurged": donor_purged}
 
 
+_EPOCH = datetime(1970, 1, 1, tzinfo=timezone.utc)
+
+
+def _ruling_time(r: dict) -> datetime:
+    """A ruling's moment as an aware datetime. Sheet `at` stamps are UTC (`Z`) and install `ts` stamps are local
+    (`-0700`), so a string compare misordered them by up to 7 hours (selftest_prefill_keep_ts.py). A naive stamp is read
+    as this machine's local time; an unreadable or absent one sorts oldest."""
+    for k in ("at", "ts"):
+        v = r.get(k)
+        if v:
+            try:
+                return datetime.fromisoformat(v).astimezone(timezone.utc)
+            except ValueError:
+                continue
+    return _EPOCH
+
+
 def prefill_for(row: dict, rulings: list[dict]) -> tuple[str, str, bool]:
     """(letter, why, contested). Latest ruled owner keep that resolves to a column; then an
     owner ruling cited in the commit that installed a live column's bytes (inferred); else the
@@ -620,10 +638,13 @@ def prefill_for(row: dict, rulings: list[dict]) -> tuple[str, str, bool]:
         for s in c["faces"].values():
             by_sha.setdefault(s, c)
     keeps = [r for r in rulings if r.get("verdict") == "keep" and r.get("trust") == "ruled" and r.get("by") == "owner"]
-    for r in sorted(keeps, key=lambda r: r.get("at") or "", reverse=True):
-        for s in (r.get("target") or {}).get("shas", []):
+    # an install ruling carries only `ts` and names one `target.sha`; a sheet ruling carries `at` and `target.shas`.
+    # Sorting on `at` alone ranked every install keep oldest (selftest_prefill_keep_ts.py).
+    for r in sorted(keeps, key=_ruling_time, reverse=True):
+        t = r.get("target") or {}
+        for s in list(t.get("shas") or []) + ([t["sha"]] if t.get("sha") else []):
             if s in by_sha:
-                return letter[id(by_sha[s])], f"your keep of {(r.get('at') or '')[:10]}", False
+                return letter[id(by_sha[s])], f"your keep of {(r.get('at') or r.get('ts') or '')[:10]}", False
     pat = re.compile(r"owner|approved|ruling", re.I)
     for c in [c for c in row["cols"] if c["kind"] == "live"]:
         # the live bytes' own commit, or a look-alike parent: a mechanical sweep (the halo
@@ -1661,6 +1682,21 @@ def _recommended(g: dict):
         if m and m.group(1) in RECOMMEND:
             return c["letter"], f"agent recommends: {RECOMMEND[m.group(1)]}"
     return None
+
+
+def graphic_rulings(idx, subject_rul: list[dict], g: dict) -> list[dict]:
+    """The subject's rulings plus every ruling that names one of this graphic's column pictures. An install ruling
+    (`art install`, owner words or card) carries an empty subject_key, so subject_rulings() alone never returned it and
+    an older sheet keep won the prefill (selftest_prefill_keep_ts.py)."""
+    out, seen = list(subject_rul), {id(r) for r in subject_rul}
+    for c in g.get("cols") or []:
+        for s in (c.get("faces") or {}).values():
+            for r in idx.rulings_by_sha.get(s, ()):
+                if id(r) not in seen:
+                    seen.add(id(r)); out.append(r)
+    # a released keep no longer stands (artledger.Index.protected reads releases the same way)
+    released = {r.get("releases") for r in idx.rulings if r.get("releases")}
+    return [r for r in out if not (r.get("id") and r["id"] in released)]
 
 
 def _graphic_prefill(g: dict, rulings: list[dict]):
@@ -3282,7 +3318,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
         thumbs, fulls, missing = {}, {}, 0
         for gi, g in enumerate(graphics):
             g["prior"] = g.pop("prior_raw", None)
-            pf = _graphic_prefill(g, rul)
+            pf = _graphic_prefill(g, graphic_rulings(idx, rul, g))
             gkey = g["res"] or "_byname"
             if gi == 0:
                 prim_pf = pf

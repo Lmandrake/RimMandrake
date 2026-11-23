@@ -45,6 +45,7 @@ PAGES = {
     "design/specs/2026-11-18-pipeline-control-surface/boundary.md": "src/RimMandrake/rimflow/selftest_control.py",
     "design/specs/2026-11-19-probe-result/boundary.md": "src/RimMandrake/rimflow/selftest_probe_result.py",
     "design/specs/2026-11-19-stage-ceiling/boundary.md": "src/RimMandrake/rimflow/selftest_stage_ceiling_arrival.py",
+    "design/specs/2026-11-22-art-sheet-prefill/boundary.md": "src/RimMandrake/Utils/art/selftest_prefill_keep_ts.py",
     "design/specs/2026-11-19-asks-on-empty-game/boundary.md": "src/RimMandrake/rimflow/selftest_asks_on_empty_game.py",
     "design/specs/2026-11-19-control-acts-export/boundary.md": "src/RimMandrake/rimflow/selftest_control_acts_export.py",
     "design/specs/2026-11-19-void-counters/boundary.md": "src/RimMandrake/rimflow/selftest_void_counters.py",

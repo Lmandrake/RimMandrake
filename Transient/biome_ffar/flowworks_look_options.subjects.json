@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "generated": "2026-11-22T15:18:27-0800",
+ "generated": "2026-11-22T16:43:50-0800",
  "git_head": null,
  "biome_order": [
   "SUBJECTS_flowworks_look_options"
@@ -12,7 +12,7 @@
    "subjects": true,
    "ground_terrain": "Soil",
    "title": "FlowWorks looks: tank, pipe and sprinkler options (2026-11-22 walk) \u2014 game art",
-   "lead_html": "<p>Your walk, stations 24-27: the Industrial tank is too rusty; the Modern tank, pipe and sprinkler read cartoonish and plastic. Each row shows what ships now and the new options (the reference pictures named A and B) at true scale beside a vanilla human. The first row is the Scrapper tank, the look that reads right, for comparison. Pick one answer per row. Nothing is installed until you pick. The four look briefs: design/specs/2026-11-22-flowworks-look-briefs/looks.md. Not here yet: Futuristic tank options and redrawn Industrial and Modern tanks. Every image generator was signed out or refused today; those options follow once Codex is signed in again.</p>",
+   "lead_html": "<p>Your walk, stations 24-27. Only the Scrapper tank read right; the Futuristic tank read as steampunk Industrial, the Industrial tank rusty and abandoned, the Modern tank, pipe and sprinkler cartoonish and plastic. Each row shows what ships now and the options (reference pictures, lettered in their file names) at true scale beside a vanilla human; the Scrapper tank row is there for comparison. The tank rows now hold NEW designs drawn to the look briefs: Futuristic A, B and C; Industrial C and D (beside the A and B repaints); Modern B and C (beside the A repaint). Every option shown was kept by a judge that did not make it (GPT for the new designs). Each row is prefilled with the judge's pick, a guess only. Pick one answer per row; nothing is installed until you pick, and the other tank sizes (tall, cargo, extra-tall) are drawn after in the look you pick. The four look briefs: design/specs/2026-11-22-flowworks-look-briefs/looks.md.</p>",
    "rows": [
     {
      "key": "RM_LiquidTank",
@@ -52,16 +52,90 @@
      }
     },
     {
+     "key": "RM_LiquidTank_Futuristic",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "Liquid tank (2x2), Futuristic look: A white composite, B graphite and neon, C titanium and amber (new designs)",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "RM_LiquidTank_Industrial",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "RM_LiquidTank_Modern",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [],
+     "render_match": null,
+     "standin": null,
+     "reopen": false,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/options/tank_futuristic_A_new_white_composite.png",
+      "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/options/tank_futuristic_B_new_graphite_neon.png",
+      "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/options/tank_futuristic_C_new_titanium_amber.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       2,
+       2
+      ],
+      "footprint": [
+       2,
+       2
+      ],
+      "source": "src/RimMandrake/FlowWorks/Defs/LiquidTypes/ThingDefs/RM_LiquidTankStyles.xml ThingStyleDef drawSize (2,2) on RM_LiquidTank size (2,2)"
+     },
+     "runtimeDesc": {
+      "def": "RM_LiquidTank_Futuristic",
+      "label": "Liquid tank (2x2), Futuristic look: A white composite, B graphite and neon, C titanium and amber (new designs)",
+      "description": "LiquidTank \u00b7 look Futuristic \u00b7 texture RimMandrake/FlowWorks/Tank/Futuristic/RM_LiquidTank \u00b7 drawn at 2\u00d72 cells",
+      "source": "texture manifest looks_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Tank/Futuristic/RM_LiquidTank",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "RM_LiquidTank_Futuristic"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Tank/Futuristic/RM_LiquidTank"
+     }
+    },
+    {
      "key": "RM_LiquidTank_Industrial",
      "kind": "building",
      "port": null,
      "donors": [],
      "pairing": {},
      "placements": [],
-     "label": "Liquid tank (2x2), Industrial look: which paint? A rust cleaned, B sand-grey",
+     "label": "Liquid tank (2x2), Industrial look: A rust cleaned, B sand-grey (repaints); C gunmetal on cast saddles, D olive panelled (new designs)",
      "defNames": [],
      "commonality_max": null,
      "twins": [
+      {
+       "defName": "RM_LiquidTank_Futuristic",
+       "relation": "same_part_other_look"
+      },
       {
        "defName": "RM_LiquidTank_Modern",
        "relation": "same_part_other_look"
@@ -73,7 +147,9 @@
      "reopen": false,
      "reference_textures": [
       "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/options/tank_industrial_A_rust_cleaned.png",
-      "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/options/tank_industrial_B_sand_grey_paint.png"
+      "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/options/tank_industrial_B_sand_grey_paint.png",
+      "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/options/tank_industrial_C_new_gunmetal_saddle.png",
+      "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/options/tank_industrial_D_new_olive_panelled.png"
      ],
      "runtimeSize": {
       "drawSize": [
@@ -88,7 +164,7 @@
      },
      "runtimeDesc": {
       "def": "RM_LiquidTank_Industrial",
-      "label": "Liquid tank (2x2), Industrial look: which paint? A rust cleaned, B sand-grey",
+      "label": "Liquid tank (2x2), Industrial look: A rust cleaned, B sand-grey (repaints); C gunmetal on cast saddles, D olive panelled (new designs)",
       "description": "LiquidTank \u00b7 look Industrial \u00b7 texture RimMandrake/FlowWorks/Tank/Industrial/RM_LiquidTank \u00b7 drawn at 2\u00d72 cells",
       "source": "texture manifest looks_manifest.json"
      },
@@ -123,10 +199,14 @@
      "donors": [],
      "pairing": {},
      "placements": [],
-     "label": "Liquid tank (2x2), Modern look: A the white leg tank weathered",
+     "label": "Liquid tank (2x2), Modern look: A the white leg tank weathered (repaint); B green poly tank on a galvanised frame, C painted steel tank on saddles (new designs)",
      "defNames": [],
      "commonality_max": null,
      "twins": [
+      {
+       "defName": "RM_LiquidTank_Futuristic",
+       "relation": "same_part_other_look"
+      },
       {
        "defName": "RM_LiquidTank_Industrial",
        "relation": "same_part_other_look"
@@ -137,7 +217,9 @@
      "standin": null,
      "reopen": false,
      "reference_textures": [
-      "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/options/tank_modern_A_weathered_leg_tank.png"
+      "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/options/tank_modern_A_weathered_leg_tank.png",
+      "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/options/tank_modern_B_new_green_poly_frame.png",
+      "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/options/tank_modern_C_new_painted_steel_saddle.png"
      ],
      "runtimeSize": {
       "drawSize": [
@@ -152,7 +234,7 @@
      },
      "runtimeDesc": {
       "def": "RM_LiquidTank_Modern",
-      "label": "Liquid tank (2x2), Modern look: A the white leg tank weathered",
+      "label": "Liquid tank (2x2), Modern look: A the white leg tank weathered (repaint); B green poly tank on a galvanised frame, C painted steel tank on saddles (new designs)",
       "description": "LiquidTank \u00b7 look Modern \u00b7 texture RimMandrake/FlowWorks/Tank/Modern/RM_LiquidTank \u00b7 drawn at 2\u00d72 cells",
       "source": "texture manifest looks_manifest.json"
      },
@@ -304,7 +386,7 @@
    "question": {
     "key": "look_option",
     "label": "Which picture should this look use?",
-    "explain": "The options are the reference pictures on this row, named A and B in their file names. Nothing is installed until you pick.",
+    "explain": "The options are the reference pictures on this row, named by the letter in their file names (A, B, C, D). Nothing is installed until you pick.",
     "options": [
      [
       "A",
@@ -313,6 +395,14 @@
      [
       "B",
       "use option B"
+     ],
+     [
+      "C",
+      "use option C"
+     ],
+     [
+      "D",
+      "use option D"
      ],
      [
       "ship",
@@ -324,15 +414,25 @@
      ]
     ],
     "rows": {
-     "RM_LiquidTank_Industrial": {
+     "RM_LiquidTank": {
+      "prefill": "ship",
+      "why": "the Scrapper tank is the look you accept",
+      "context": "The Scrapper tank: the look you said reads right. Shown for comparison at the same true scale; nothing is asked here."
+     },
+     "RM_LiquidTank_Futuristic": {
       "prefill": "A",
-      "why": "judge KEEP on both; A is exactly what you asked (rust cleaned, else unchanged)",
-      "context": "A: the shipped tank with the rust painted over in gunmetal, a few rust weeps kept. B: the same drawing in sand-grey equipment paint (the Star Wars standard side of Industrial). New Industrial redraws with an analog dial wait for the image generator (Codex sign-in)."
+      "why": "GPT judge pick: the most elegant, with the clearest computerized readouts and slide-open access covers",
+      "context": "Three NEW designs (generated 2026-11-22, all judge KEEP; A and B redone once to remove a drawn outline). A: white ceramic-composite capsule, cyan level bar, small graph screen, two slide-open control ports. B: graphite-black composite with magenta and cyan inlays and a long glass level window. C: brushed titanium and pale grey with amber LED readouts and flush slide-open hatches. None has an analog dial."
+     },
+     "RM_LiquidTank_Industrial": {
+      "prefill": "D",
+      "why": "GPT judge pick: D best joins maintained plant equipment with the Star Wars standard; C is the closest to a working depot tank",
+      "context": "A and B are colour-only repaints of the shipped drawing (A rust cleaned to gunmetal, B sand-grey paint). C and D are NEW designs (2026-11-22, both judge KEEP), each with an analog dial: C gunmetal painted steel on cast saddles, bolted manway, red hand wheel, one hazard band; D olive-drab panelled used-future tank on a steel skid with a dial, a sight glass and a hazard plate."
      },
      "RM_LiquidTank_Modern": {
-      "prefill": "",
-      "why": "",
-      "context": "A: the shipped white leg tank weathered: UV yellowing, matte, dust from the feet, grime streaks, smudges. The judge kept it but found the change small at play zoom. Only option A exists: realistic redraws (other real tank types, an analog dial) wait for the image generator (Codex sign-in)."
+      "prefill": "B",
+      "why": "GPT judge pick: B, the green poly tank, is one of the real tank types you picked by card on 2026-10-23, with convincing everyday wear",
+      "context": "A is a colour-only weathering of the shipped white leg tank (small change at play zoom). B and C are NEW designs (2026-11-22, both judge KEEP), each with an analog dial: B a UV-faded green polyethylene tank on a galvanised frame with straps, a brass tap, dirt splash and a faded label; C an off-white painted steel tank on saddles with a primer touch-up patch, smudges, a handprint and blue ball valves."
      },
      "RM_UniversalPipe_Modern": {
       "prefill": "",
@@ -343,15 +443,10 @@
       "prefill": "",
       "why": "",
       "context": "A and B match pipe A and pipe B. Either sits on either pipe."
-     },
-     "RM_LiquidTank": {
-      "prefill": "ship",
-      "why": "the Scrapper tank is the look you accept",
-      "context": "The Scrapper tank: the look you said reads right. Shown for comparison at the same true scale; nothing is asked here."
      }
     }
    },
-   "textures_manifest": "/home/mandrake/rm/relentless/clones/RIMMANDRAKE_REDRAW_FLOWWORKS_TANKS_THREE_STYLES_ONLY_SCRAPPER_READS_RIGHT.det/src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/looks_manifest.json"
+   "textures_manifest": "/home/mandrake/rm/relentless/clones/RIMMANDRAKE_GENERATE_FLOWWORKS_TANK_DESIGNS_FIRST_RUN_ONLY_REPAINTED.det/src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/looks_manifest.json"
   }
  }
 }

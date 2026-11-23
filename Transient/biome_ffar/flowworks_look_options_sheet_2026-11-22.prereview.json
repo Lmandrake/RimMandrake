@@ -1,8 +1,8 @@
 {
  "sheet": "flowworks_look_options_sheet_2026-11-22.html",
  "looked_by": "seat:BENCH",
- "when": "2026-11-22T15:27:59-0800",
- "caught": "the first build drew every look at a 1-cell fallback size (a look is a ThingStyleDef, not a ThingDef); rebuilt with the real sizes. The judge refused Modern pipe B (a candy stripe of repeating red patches); redrawn duller and sparser, passed a fresh judge. No Futuristic options: every image generator was signed out or refused today.",
+ "when": "2026-11-22T16:57:46-0800",
+ "caught": "2026-11-22 second pass: GPT refused Futuristic A and B for a drawn black outline (B1a; the first prompt asked for one), each redone once and kept; the two new Modern designs came out of conform short of the canvas edges (their end ports would not meet a pipe) and were width-fitted from the raw drawing; the restyle gate was proven red on a planted opaque copy and a port-less copy. Earlier pass: the first build drew every look at a 1-cell fallback size, rebuilt with real sizes; Modern pipe B refused once as a candy stripe, redrawn and kept. The comparison row prefilled the Modern tank slot to the red render he kept on 2026-10-21 (his newer install keep was invisible to the builder); art_sheet fixed and the sheet rebuilt, the slot now prefills the white tank that ships.",
  "criteria": [
   "renders, and is recognisable as the named thing",
   "every candidate in a question depicts the same object",
@@ -13,7 +13,7 @@
   "RM_LiquidTank": {
    "fp": "6ab8b7e78acbeca5",
    "verdict": "OK",
-   "note": "Scrapper tank, the accepted look, shown for comparison at 2x2 true scale; question prefilled 'keep what ships'"
+   "note": "Scrapper tank, the accepted look, shown for comparison at 2x2 true scale; question prefilled 'keep what ships'. Slot prefills are the IN GAME columns (Futuristic D, Industrial F, Modern H); the Modern slot had prefilled the red render he kept 2026-10-21 until art_sheet's prefill fix (RIMMANDRAKE_PREFILL_SHEET_SLOTS_FROM_NEWEST_KEEP_RED_TANK_REVIVED)"
   },
   "RM_UniversalPipe_Modern": {
    "fp": "a554ca95ec6da7f9",
@@ -25,15 +25,20 @@
    "verdict": "OK",
    "note": "renders at 1x1 true scale; A and B are the shipped head repainted (same object); judge KEEP on both; history columns show earlier side-view heads"
   },
+  "RM_LiquidTank_Futuristic": {
+   "fp": "3006331ac49bbea7",
+   "verdict": "OK",
+   "note": "new row: three NEW Futuristic tank designs (A white composite, B graphite neon, C titanium amber), all the same object (the 2x2 liquid tank), 512 canvas, real alpha, both end ports at the canvas edges; GPT judge KEEP on all three after A and B were redone once for a drawn outline (B1a) (infrastructure/state/delegated/2026-11-22/flowworks_tank_designs_futuristic.json); seat looked at each at full size and at true scale beside the human and the Scrapper tank: sleek, computerized, no analog dial"
+  },
   "RM_LiquidTank_Industrial": {
-   "fp": "75335787f3c58a6f",
-   "verdict": "FIXED",
-   "note": "renders at 2x2 true scale beside the human (size from the ThingStyleDef via the texture manifest; the first build fell back to 1 cell and was rebuilt); options A rust cleaned and B sand-grey are the same tank drawing as ships; naive judge (Opus, infrastructure/state/delegated/2026-11-22/flowworks_look_options.json) KEEP on both"
+   "fp": "0e96007fec7f5ca7",
+   "verdict": "OK",
+   "note": "A and B are the earlier repaints (judge KEEP, unchanged); C and D are NEW Industrial designs, same object, both with an analog dial, painted and maintained, not rusty; GPT judge KEEP on both (infrastructure/state/delegated/2026-11-22/flowworks_tank_designs_industrial.json); seat looked at full size and true scale"
   },
   "RM_LiquidTank_Modern": {
-   "fp": "c5566c1760b03f41",
+   "fp": "612c7d4a4a1f94f8",
    "verdict": "OK",
-   "note": "renders at 2x2 true scale; option A is the shipped white leg tank weathered (same object); judge KEEP but the change is small at 32 px/cell; history columns show the retired red and rust versions"
+   "note": "A is the earlier weathering repaint (judge KEEP, unchanged); B (green poly on galvanised frame) and C (painted steel on saddles) are NEW Modern designs, same object, analog dial, smudges and normal wear; width-fitted so the end ports meet the canvas edges; GPT judge KEEP on both (infrastructure/state/delegated/2026-11-22/flowworks_tank_designs_modern.json); seat looked at full size and true scale"
   }
  },
  "dropped": []

@@ -1,0 +1,133 @@
+{
+ "judge_model": "GPT via gpt_consult.py (codex exec, Linux side)",
+ "brief": "design/RimMandrake/art_judge_brief.md@05030c2bac",
+ "looks": "design/specs/2026-11-22-flowworks-look-briefs/looks.md@05030c2bac",
+ "subject": "RM_LiquidTank",
+ "item": "RIMMANDRAKE_GENERATE_FLOWWORKS_TANK_DESIGNS_FIRST_RUN_ONLY_REPAINTED",
+ "given": [
+  "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/generated/judge/reference_scrapper_full.png",
+  "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/generated/judge/tank_futuristic_A_white_composite_r2__full.png",
+  "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/generated/panels/tank_futuristic_A_white_composite_r2__alpha.png",
+  "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/generated/panels/tank_futuristic_A_white_composite_r2__scale128.png",
+  "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/generated/panels/tank_futuristic_A_white_composite_r2__zoom.png",
+  "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/generated/judge/tank_futuristic_B_graphite_neon_r2__full.png",
+  "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/generated/panels/tank_futuristic_B_graphite_neon_r2__alpha.png",
+  "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/generated/panels/tank_futuristic_B_graphite_neon_r2__scale128.png",
+  "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/generated/panels/tank_futuristic_B_graphite_neon_r2__zoom.png",
+  "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/generated/judge/tank_futuristic_C_titanium_amber__full.png",
+  "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/generated/panels/tank_futuristic_C_titanium_amber__alpha.png",
+  "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/generated/panels/tank_futuristic_C_titanium_amber__scale128.png",
+  "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/generated/panels/tank_futuristic_C_titanium_amber__zoom.png"
+ ],
+ "look": "Futuristic",
+ "verdicts": [
+  {
+   "candidate": "tank_futuristic_A_white_composite_r2",
+   "verdict": "KEEP",
+   "violated": "",
+   "quote": "",
+   "seen": "Sleek white composite shell, metallic trim, computerized screen, cyan level bar and small sliding access covers, including exposed illuminated controls. Clean materials read through modeled shading without a drawn silhouette outline. Tank and readout remain recognizable at 32 px/cell. Camera, size class and rendering are compatible with Scrapper; silhouette stays within the footprint and alpha shows no backdrop or ground shadow.",
+   "redo_brief": "",
+   "notes": "Best match to the requested elegance and control access points. Reduced height is a restyle difference, not a binding failure. B6 concerns Modern and does not apply."
+  },
+  {
+   "candidate": "tank_futuristic_B_graphite_neon_r2",
+   "verdict": "KEEP",
+   "violated": "",
+   "quote": "",
+   "seen": "Clean graphite housing with cyan and magenta accents, a glazed liquid display, digital level bars and small sliding access panels. Clearly computerized and cyberpunk, without steampunk fittings. Dark borders describe recessed bezels and panel joints rather than a drawn silhouette keyline. Bold body and cyan window survive 32 px/cell. Camera and size class agree with the reference; alpha and footprint pass visually.",
+   "redo_brief": "",
+   "notes": "More visually busy than A, but simplifying its neon trim would be polish. Its shorter silhouette does not establish a scale failure."
+  },
+  {
+   "candidate": "tank_futuristic_C_titanium_amber",
+   "verdict": "KEEP",
+   "violated": "",
+   "quote": "",
+   "seen": "Brushed titanium shell, flush access covers with recessed sliding grips, amber LED level bar and upper computerized status strip. Low wear and restrained material shading support the sleek brief; no analog instruments, exposed bolts or drawn silhouette outline. At 32 px/cell the tank and central illuminated indicator remain clear. Camera, apparent size and rendering fit the accepted reference; silhouette and real alpha meet the footprint and background requirements.",
+   "redo_brief": "",
+   "notes": "The computerized features are quieter than A or B, but remain sufficient. A more expressive screen would be optional polish."
+  }
+ ],
+ "pick": "tank_futuristic_A_white_composite_r2",
+ "pick_why": "Most directly combines the owner's requested elegance, computerized readouts and visibly sliding control access covers while remaining clear at play zoom.",
+ "proposals": [],
+ "earlier_rounds": [
+  {
+   "verdicts": [
+    {
+     "candidate": "tank_futuristic_A_white_composite",
+     "verdict": "UNSURE",
+     "violated": "",
+     "quote": "",
+     "seen": "Sleek white shell, computerized screen, cyan level bar and small sliding access covers satisfy the Futuristic brief and owner note. The pale body remains readable at play zoom and matches the Scrapper's approximate size class. A dark contour visibly traces the shell and feet, raising a B1a concern.",
+     "redo_brief": "",
+     "notes": "Missing required evidence: D1's human comparison at 128\u2013256 px/cell; supplied comparison is 64. Ground-composited views cannot establish D4 real alpha. Camera elevation is not conclusively measurable from this curved shell. B6 concerns Modern and does not apply."
+    },
+    {
+     "candidate": "tank_futuristic_B_graphite_neon",
+     "verdict": "UNSURE",
+     "violated": "",
+     "quote": "",
+     "seen": "Graphite panels, cyan display window, digital bars and sliding control cover clearly communicate computerized cyberpunk equipment. The broad cyan window preserves legibility at 32 px/cell; overall size matches the Scrapper. Dark perimeter contours raise a B1a concern, distinct from the legitimate dark display framing.",
+     "redo_brief": "",
+     "notes": "Missing required evidence: D1's human comparison at 128\u2013256 px/cell and D4's uncomposited alpha asset. Visible upper facets support an elevated camera, but do not establish the specified angle. Neon prominence is a preference, not a violation."
+    },
+    {
+     "candidate": "tank_futuristic_C_titanium_amber",
+     "verdict": "UNSURE",
+     "violated": "",
+     "quote": "",
+     "seen": "Brushed metal, restrained amber digital indicators and recessed sliding covers satisfy the Futuristic materials, instruments and owner note. Clean material shading carries the silhouette without an obvious black keyline. The body remains legible at play zoom and occupies approximately the Scrapper's size class.",
+     "redo_brief": "",
+     "notes": "Missing required evidence: D1's human comparison at 128\u2013256 px/cell and D4's uncomposited alpha asset. The rounded shell provides insufficient geometry to verify C3's measured camera. Its restrained cyberpunk character is not a failure."
+    }
+   ],
+   "pick": "",
+   "pick_why": "No KEEP can be established with the missing required scale and alpha evidence."
+  },
+  {
+   "verdicts": [
+    {
+     "candidate": "tank_futuristic_A_white_composite",
+     "verdict": "REDO",
+     "violated": "B1a",
+     "quote": "The silhouette is carried by value and colour contrast against the ground, never by a drawn black outline or keyline",
+     "seen": "A continuous black contour traces the bright shell's upper edge and rounded end caps, including illuminated edges. This reads as a drawn outline rather than material shading.",
+     "redo_brief": "Preserve the white composite tank, cyan computerized readouts and sliding access covers; remove the black silhouette tracing and define edges with material values and shaded bevels.",
+     "notes": "Otherwise meets the Futuristic brief and owner's note. Materials, low wear, controls and play-scale legibility pass; camera and size class are comparable to Scrapper. Alpha and footprint pass. B6 concerns Modern and is inapplicable. B1a is applicable and the fix attainable; reference proportion warnings do not decide this restyle."
+    },
+    {
+     "candidate": "tank_futuristic_B_graphite_neon",
+     "verdict": "REDO",
+     "violated": "B1a",
+     "quote": "The silhouette is carried by value and colour contrast against the ground, never by a drawn black outline or keyline",
+     "seen": "A black exterior keyline follows the rounded shoulders and lower support shapes. It is distinct from the legitimate dark display bezel and panel recesses, and gives the outer silhouette an inked finish.",
+     "redo_brief": "Preserve the graphite cyberpunk tank, cyan liquid display, digital controls and flush access covers; replace the exterior black keyline with graphite shading and material edge contrast.",
+     "notes": "Otherwise meets the Futuristic brief and owner's note. Neon accents remain legible at 32 px/cell; graphite and glass read as materials. Camera, size class, footprint and real alpha pass. B6 is inapplicable. B1a is applicable and the fix attainable. The busy accent pattern is polish, not a separate refusal."
+    },
+    {
+     "candidate": "tank_futuristic_C_titanium_amber",
+     "verdict": "KEEP",
+     "violated": "",
+     "quote": "",
+     "seen": "Brushed titanium shell, recessed amber LED level readout, small computerized status indicators and flush access covers with recessed grips. Broad shaded surfaces carry the silhouette without a black exterior keyline. The tank remains recognizable at 32 px/cell and comparable to Scrapper beside the human.",
+     "redo_brief": "",
+     "notes": "Passes Futuristic materials, wear, colour, instruments and exclusions, plus the owner's computerized, sleek access-port requirement. Shaded volume supports B1/B4; C3 is comparable to the accepted reference. D1 scale, D3 footprint and D4 alpha pass. B6 is inapplicable. More explicit sliding-cover tracks would be optional polish."
+    }
+   ],
+   "pick": "tank_futuristic_C_titanium_amber",
+   "pick_why": "It meets the sleek computerized brief with readable amber instrumentation, convincing titanium and an unoutlined silhouette."
+  }
+ ],
+ "given_copied_to": "D:\\ClaudeWork\\rimmandrake\\showings\\RIMMANDRAKE_REDRAW_FLOWWORKS_TANKS_THREE_STYLES_ONLY_SCRAPPER_READS_RIGHT\\_working\\generated_judge (panels/ and judge/; the in-clone generated/panels and generated/judge paths are not committed: derived from raw/ by process_tanks.py and judge_tanks.py)",
+ "final_names": {
+  "tank_futuristic_A_white_composite_r2": "options/tank_futuristic_A_new_white_composite.png",
+  "tank_futuristic_B_graphite_neon_r2": "options/tank_futuristic_B_new_graphite_neon.png",
+  "tank_futuristic_C_titanium_amber": "options/tank_futuristic_C_new_titanium_amber.png",
+  "tank_industrial_A_gunmetal_saddle": "options/tank_industrial_C_new_gunmetal_saddle.png",
+  "tank_industrial_B_olive_panelled": "options/tank_industrial_D_new_olive_panelled.png",
+  "tank_modern_A_green_poly_frame": "options/tank_modern_B_new_green_poly_frame.png",
+  "tank_modern_B_painted_steel_saddle": "options/tank_modern_C_new_painted_steel_saddle.png"
+ }
+}

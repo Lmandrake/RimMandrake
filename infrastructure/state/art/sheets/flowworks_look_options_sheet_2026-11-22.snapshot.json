@@ -1,6 +1,6 @@
 {
  "biome": "SUBJECTS_flowworks_look_options",
- "built": "2026-11-22T15:27:16-0800",
+ "built": "2026-11-22T16:55:52-0800",
  "census": "Transient/biome_ffar/flowworks_look_options.subjects.json",
  "census_git_head": null,
  "droppedAllRuled": [],
@@ -80,6 +80,38 @@
    ],
    "shownBase": [],
    "subject_key": "liquidtank"
+  },
+  "RM_LiquidTank_Futuristic": {
+   "columns": {
+    "A": {
+     "single": "692f5e7c0c76b3818db5dd6f3a0c6e443e6ebe4e5de65dc774a7c0a5dcebddaa"
+    },
+    "B": {
+     "single": "a8ef89a150f7f8959822bbde0ef3cff6a1416e848373647a3da8e25f8385ed1d"
+    },
+    "C": {
+     "single": "bbf01b3a3cbb699887d0b97ac0a8035459c73fc1214ea70ac6a0775b86ff1263"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Tank/Futuristic/RM_LiquidTank",
+    "B": "RimMandrake/FlowWorks/Tank/Futuristic/RM_LiquidTank",
+    "C": "RimMandrake/FlowWorks/Tank/Futuristic/RM_LiquidTank"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "render RM_LiquidTank_ports_Futuristic",
+    "C": "render fwart_RM_LiquidTank"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Tank/Futuristic/RM_LiquidTank",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "liquidtank_futuristic"
   },
   "RM_LiquidTank_Industrial": {
    "columns": {

@@ -1,0 +1,147 @@
+{
+ "tank_futuristic_A_white_composite": {
+  "validate_rc": 1,
+  "restyle_blocking": [],
+  "findings": [
+   "REJECT subject height is 235px against the reference's 263px (-11%). A damaged variant may lose area but must still span its footprint.",
+   "REJECT subject aspect 2.174 against the reference's 1.943 - the art was squashed, not redrawn.",
+   "WARN   0.47% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional.",
+   "WARN   subject touches the canvas edge (left) where the reference does not - the art may be clipped."
+  ],
+  "port_left": true,
+  "port_right": true,
+  "subject_rows": [
+   142,
+   376
+  ],
+  "restyle_ok": true
+ },
+ "tank_futuristic_B_graphite_neon": {
+  "validate_rc": 1,
+  "restyle_blocking": [],
+  "findings": [
+   "REJECT subject height is 240px against the reference's 263px (-9%). A damaged variant may lose area but must still span its footprint.",
+   "REJECT subject aspect 2.129 against the reference's 1.943 - the art was squashed, not redrawn.",
+   "WARN   0.44% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional."
+  ],
+  "port_left": true,
+  "port_right": true,
+  "subject_rows": [
+   142,
+   381
+  ],
+  "restyle_ok": true
+ },
+ "tank_futuristic_C_titanium_amber": {
+  "validate_rc": 0,
+  "restyle_blocking": [],
+  "findings": [
+   "WARN   0.45% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional."
+  ],
+  "port_left": true,
+  "port_right": true,
+  "subject_rows": [
+   142,
+   390
+  ],
+  "restyle_ok": true
+ },
+ "tank_industrial_A_gunmetal_saddle": {
+  "validate_rc": 0,
+  "restyle_blocking": [],
+  "findings": [
+   "WARN   0.59% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional.",
+   "WARN   subject touches the canvas edge (left) where the reference does not - the art may be clipped."
+  ],
+  "port_left": true,
+  "port_right": true,
+  "subject_rows": [
+   139,
+   393
+  ],
+  "restyle_ok": true
+ },
+ "tank_industrial_B_olive_panelled": {
+  "validate_rc": 0,
+  "restyle_blocking": [],
+  "findings": [
+   "WARN   0.59% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional."
+  ],
+  "port_left": true,
+  "port_right": true,
+  "subject_rows": [
+   129,
+   388
+  ],
+  "restyle_ok": true
+ },
+ "tank_modern_A_green_poly_frame": {
+  "validate_rc": 1,
+  "restyle_blocking": [],
+  "findings": [
+   "REJECT subject height is 300px against the reference's 263px (+14%). A damaged variant may lose area but must still span its footprint.",
+   "REJECT subject height exceeds the reference by 7.2% of canvas - art outside the footprint overlaps neighbouring buildings in game.",
+   "REJECT subject aspect 1.700 against the reference's 1.943 - the art was squashed, not redrawn.",
+   "WARN   1.45% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional."
+  ],
+  "port_left": true,
+  "port_right": true,
+  "subject_rows": [
+   113,
+   411
+  ],
+  "restyle_ok": true,
+  "fit": "width_fit (conform left the end ports short of the edges)"
+ },
+ "tank_modern_B_painted_steel_saddle": {
+  "validate_rc": 1,
+  "restyle_blocking": [],
+  "findings": [
+   "REJECT subject height is 282px against the reference's 263px (+7%). A damaged variant may lose area but must still span its footprint.",
+   "REJECT subject height exceeds the reference by 3.7% of canvas - art outside the footprint overlaps neighbouring buildings in game.",
+   "REJECT subject aspect 1.794 against the reference's 1.943 - the art was squashed, not redrawn.",
+   "WARN   1.49% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional."
+  ],
+  "port_left": true,
+  "port_right": true,
+  "subject_rows": [
+   121,
+   402
+  ],
+  "restyle_ok": true,
+  "fit": "width_fit (conform left the end ports short of the edges)"
+ },
+ "tank_futuristic_A_white_composite_r2": {
+  "validate_rc": 1,
+  "restyle_blocking": [],
+  "findings": [
+   "REJECT subject height is 234px against the reference's 263px (-11%). A damaged variant may lose area but must still span its footprint.",
+   "REJECT subject aspect 2.184 against the reference's 1.943 - the art was squashed, not redrawn.",
+   "WARN   0.60% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional.",
+   "WARN   subject touches the canvas edge (left) where the reference does not - the art may be clipped."
+  ],
+  "port_left": true,
+  "port_right": true,
+  "subject_rows": [
+   142,
+   375
+  ],
+  "restyle_ok": true
+ },
+ "tank_futuristic_B_graphite_neon_r2": {
+  "validate_rc": 1,
+  "restyle_blocking": [],
+  "findings": [
+   "REJECT subject height is 239px against the reference's 263px (-9%). A damaged variant may lose area but must still span its footprint.",
+   "REJECT subject aspect 2.138 against the reference's 1.943 - the art was squashed, not redrawn.",
+   "WARN   0.46% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional."
+  ],
+  "port_left": true,
+  "port_right": true,
+  "subject_rows": [
+   142,
+   380
+  ],
+  "restyle_ok": true
+ }
+}

@@ -1,0 +1,52 @@
+{
+ "judge_model": "GPT via gpt_consult.py (codex exec, Linux side)",
+ "brief": "design/RimMandrake/art_judge_brief.md@1c3cca674c",
+ "looks": "design/specs/2026-11-22-flowworks-look-briefs/looks.md@1c3cca674c",
+ "subject": "RM_LiquidTank",
+ "item": "RIMMANDRAKE_GENERATE_FLOWWORKS_TANK_DESIGNS_FIRST_RUN_ONLY_REPAINTED",
+ "given": [
+  "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/generated/judge/reference_scrapper_full.png",
+  "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/generated/judge/tank_industrial_A_gunmetal_saddle__full.png",
+  "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/generated/panels/tank_industrial_A_gunmetal_saddle__alpha.png",
+  "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/generated/panels/tank_industrial_A_gunmetal_saddle__scale128.png",
+  "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/generated/panels/tank_industrial_A_gunmetal_saddle__zoom.png",
+  "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/generated/judge/tank_industrial_B_olive_panelled__full.png",
+  "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/generated/panels/tank_industrial_B_olive_panelled__alpha.png",
+  "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/generated/panels/tank_industrial_B_olive_panelled__scale128.png",
+  "src/RimMandrake/FlowWorks/art_source/LookOptions_2026-11-22/generated/panels/tank_industrial_B_olive_panelled__zoom.png"
+ ],
+ "look": "Industrial",
+ "verdicts": [
+  {
+   "candidate": "tank_industrial_A_gunmetal_saddle",
+   "verdict": "KEEP",
+   "violated": "",
+   "quote": "",
+   "seen": "Heavy gunmetal steel, bolted straps, cast saddles, analog gauge and hand wheel read as maintained industrial equipment. Scuffs and base grime leave the finish mostly intact. Bold body and hazard band remain legible at 32 px/cell. Material shading carries the silhouette without a drawn black outline. Camera and size class agree with Scrapper; the alpha view shows no backdrop, scenery or ground shadow.",
+   "redo_brief": "",
+   "notes": "Left port grazes the canvas edge; additional margin would be polish. Supplied checks pass the binding canvas, alpha and port requirements. B6 concerns Modern."
+  },
+  {
+   "candidate": "tank_industrial_B_olive_panelled",
+   "verdict": "KEEP",
+   "violated": "",
+   "quote": "",
+   "seen": "Olive painted steel, substantial bolted straps, panelled ends and steel base convey working heavy industry and ordinary used-future hardware. Analog dial and sight glass suit the brief. Edge wear is restrained, with mostly whole paint and no abandoned appearance. Broad panels and straps remain readable at 32 px/cell. Shaded metal edges are not drawn outlines. Camera, painterly treatment and size class fit Scrapper; the alpha view shows a contained silhouette without scenery or ground shadow.",
+   "redo_brief": "",
+   "notes": "Small instrument details simplify at play zoom, while the tank remains clear. Supplied checks pass the binding canvas, alpha and port requirements. B6 concerns Modern."
+  }
+ ],
+ "pick": "tank_industrial_B_olive_panelled",
+ "pick_why": "Its heavy olive panels, bolted supports and practical instruments best combine maintained plant equipment with the brief's Star Wars standard.",
+ "proposals": [],
+ "given_copied_to": "D:\\ClaudeWork\\rimmandrake\\showings\\RIMMANDRAKE_REDRAW_FLOWWORKS_TANKS_THREE_STYLES_ONLY_SCRAPPER_READS_RIGHT\\_working\\generated_judge (panels/ and judge/; the in-clone generated/panels and generated/judge paths are not committed: derived from raw/ by process_tanks.py and judge_tanks.py)",
+ "final_names": {
+  "tank_futuristic_A_white_composite_r2": "options/tank_futuristic_A_new_white_composite.png",
+  "tank_futuristic_B_graphite_neon_r2": "options/tank_futuristic_B_new_graphite_neon.png",
+  "tank_futuristic_C_titanium_amber": "options/tank_futuristic_C_new_titanium_amber.png",
+  "tank_industrial_A_gunmetal_saddle": "options/tank_industrial_C_new_gunmetal_saddle.png",
+  "tank_industrial_B_olive_panelled": "options/tank_industrial_D_new_olive_panelled.png",
+  "tank_modern_A_green_poly_frame": "options/tank_modern_B_new_green_poly_frame.png",
+  "tank_modern_B_painted_steel_saddle": "options/tank_modern_C_new_painted_steel_saddle.png"
+ }
+}

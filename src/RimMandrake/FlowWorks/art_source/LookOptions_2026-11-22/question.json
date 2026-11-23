@@ -1,7 +1,7 @@
 {
  "key": "look_option",
  "label": "Which picture should this look use?",
- "explain": "The options are the reference pictures on this row, named A and B in their file names. Nothing is installed until you pick.",
+ "explain": "The options are the reference pictures on this row, named by the letter in their file names (A, B, C, D). Nothing is installed until you pick.",
  "options": [
   [
    "A",
@@ -10,6 +10,14 @@
   [
    "B",
    "use option B"
+  ],
+  [
+   "C",
+   "use option C"
+  ],
+  [
+   "D",
+   "use option D"
   ],
   [
    "ship",
@@ -21,15 +29,25 @@
   ]
  ],
  "rows": {
-  "RM_LiquidTank_Industrial": {
+  "RM_LiquidTank": {
+   "prefill": "ship",
+   "why": "the Scrapper tank is the look you accept",
+   "context": "The Scrapper tank: the look you said reads right. Shown for comparison at the same true scale; nothing is asked here."
+  },
+  "RM_LiquidTank_Futuristic": {
    "prefill": "A",
-   "why": "judge KEEP on both; A is exactly what you asked (rust cleaned, else unchanged)",
-   "context": "A: the shipped tank with the rust painted over in gunmetal, a few rust weeps kept. B: the same drawing in sand-grey equipment paint (the Star Wars standard side of Industrial). New Industrial redraws with an analog dial wait for the image generator (Codex sign-in)."
+   "why": "GPT judge pick: the most elegant, with the clearest computerized readouts and slide-open access covers",
+   "context": "Three NEW designs (generated 2026-11-22, all judge KEEP; A and B redone once to remove a drawn outline). A: white ceramic-composite capsule, cyan level bar, small graph screen, two slide-open control ports. B: graphite-black composite with magenta and cyan inlays and a long glass level window. C: brushed titanium and pale grey with amber LED readouts and flush slide-open hatches. None has an analog dial."
+  },
+  "RM_LiquidTank_Industrial": {
+   "prefill": "D",
+   "why": "GPT judge pick: D best joins maintained plant equipment with the Star Wars standard; C is the closest to a working depot tank",
+   "context": "A and B are colour-only repaints of the shipped drawing (A rust cleaned to gunmetal, B sand-grey paint). C and D are NEW designs (2026-11-22, both judge KEEP), each with an analog dial: C gunmetal painted steel on cast saddles, bolted manway, red hand wheel, one hazard band; D olive-drab panelled used-future tank on a steel skid with a dial, a sight glass and a hazard plate."
   },
   "RM_LiquidTank_Modern": {
-   "prefill": "",
-   "why": "",
-   "context": "A: the shipped white leg tank weathered: UV yellowing, matte, dust from the feet, grime streaks, smudges. The judge kept it but found the change small at play zoom. Only option A exists: realistic redraws (other real tank types, an analog dial) wait for the image generator (Codex sign-in)."
+   "prefill": "B",
+   "why": "GPT judge pick: B, the green poly tank, is one of the real tank types you picked by card on 2026-10-23, with convincing everyday wear",
+   "context": "A is a colour-only weathering of the shipped white leg tank (small change at play zoom). B and C are NEW designs (2026-11-22, both judge KEEP), each with an analog dial: B a UV-faded green polyethylene tank on a galvanised frame with straps, a brass tap, dirt splash and a faded label; C an off-white painted steel tank on saddles with a primer touch-up patch, smudges, a handprint and blue ball valves."
   },
   "RM_UniversalPipe_Modern": {
    "prefill": "",
@@ -40,11 +58,6 @@
    "prefill": "",
    "why": "",
    "context": "A and B match pipe A and pipe B. Either sits on either pipe."
-  },
-  "RM_LiquidTank": {
-   "prefill": "ship",
-   "why": "the Scrapper tank is the look you accept",
-   "context": "The Scrapper tank: the look you said reads right. Shown for comparison at the same true scale; nothing is asked here."
   }
  }
 }

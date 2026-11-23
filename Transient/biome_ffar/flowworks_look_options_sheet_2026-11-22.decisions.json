@@ -19,13 +19,13 @@
    "picks": {
     "RimMandrake/FlowWorks/Tank/Futuristic/RM_LiquidTank": "D",
     "RimMandrake/FlowWorks/Tank/Industrial/RM_LiquidTank": "F",
-    "RimMandrake/FlowWorks/Tank/Modern/RM_LiquidTank": "I"
+    "RimMandrake/FlowWorks/Tank/Modern/RM_LiquidTank": "H"
    },
    "qPrefill": {
     "look_option": "ship"
    }
   },
-  "RM_LiquidTank_Industrial": {
+  "RM_LiquidTank_Futuristic": {
    "decision": "A",
    "note": "",
    "prefill": "A",
@@ -33,12 +33,20 @@
     "look_option": "A"
    }
   },
+  "RM_LiquidTank_Industrial": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A",
+   "qPrefill": {
+    "look_option": "D"
+   }
+  },
   "RM_LiquidTank_Modern": {
    "decision": "A",
    "note": "",
    "prefill": "A",
    "qPrefill": {
-    "look_option": ""
+    "look_option": "B"
    }
   },
   "RM_UniversalPipe_Modern": {
