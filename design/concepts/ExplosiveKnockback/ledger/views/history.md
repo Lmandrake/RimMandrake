@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":344431,"DISPATCH":23214,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"HOLDER.run-1795441975":2951,"JUDGE.judge-1794890427":18837,"OWNER":1207} body_sha256=52256142c5b7ef0dc36584ed24b781552e671e708fda49d5cd69acf09fe09fea -->
-# ExplosiveKnockback — mod ledger history (581 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":344431,"DISPATCH":24227,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"HOLDER.run-1795441975":2951,"JUDGE.judge-1794890427":18837,"JUDGE.judge-1795437145":6544,"OWNER":1207} body_sha256=936325dde14adb035036f445a355fef0b465e057fcb2e54d6420415993c76b03 -->
+# ExplosiveKnockback — mod ledger history (593 events, merged across shards)
 
 - 2026-11-16T06:51:51Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 56 of 59 bars met at the lock
 - 2026-11-16T06:51:51Z BACKFILL#2 decision version v0.1.0: 
@@ -569,6 +569,16 @@
 - 2026-11-23T12:29:50Z DISPATCH#57 run.end run v0.1.0: 
 - 2026-11-23T12:29:50Z DISPATCH#58 session.id session v0.1.0: 
 - 2026-11-23T12:33:05Z DISPATCH#59 run.start run v0.1.0: 
+- 2026-11-23T12:59:14Z JUDGE.judge-1795437145#1 finding.open finding:RIMMANDRAKE_MOVE_KNOCKBACK_GOODS_PINNED_AGAINST_WALLS_SHELVES v0.1.0: every_good_moves: a reached good (throw >= 1 cell) sits still when its line is blocked and no bounce or hop frees it: 593/12474 goods in walled rooms, 764/10699 in shelf storerooms (one-cell throw into a wall, blocked bounce, deep shelf row). The map's M04 exempted them as pinned.
+- 2026-11-23T12:59:14Z JUDGE.judge-1795437145#2 finding.open finding:RIMMANDRAKE_SCOPE_KNOCKBACK_RESTORE_DECIDER_RED_ON_FLOWWORKS v0.1.0: Check wrong, not mod: decider T_RESTORE (inv_proof_scenes) reran FAIL; proof_restore_check reads the whole repo and 4 FlowWorks proof-restore leaks of 2026-11-22 are outside its filed BASELINE.
+- 2026-11-23T12:59:48Z JUDGE.judge-1795437145#3 finding.verified finding:RIMMANDRAKE_STOP_KNOCKBACK_THROW_AT_PAWN_ON_PIT_COVER v0.1.0: Reran cycle_5/lane2/check_pit_pawn.py at 9a0e1710fba759cdcc5992e859b14c105dc7715a's kernel: rc 0, 6 of 6. RM_MapKbGrid.At asks OtherPawnAt before answering a covered cell (PitCell); lane 1 L1_RESOLVE_RANDOM_INVARIANTS: a pawn never passes or rests on a pawn, 60000 grids.
+- 2026-11-23T12:59:48Z JUDGE.judge-1795437145#4 finding.verified finding:RIMMANDRAKE_STOP_THROWS_OVER_COVERED_PITS_K08_SAYS_GROUND v0.1.0: Reran cycle_5/lane2/accept_covered_pit.py --rev 9a0e1710fba759cdcc5992e859b14c105dc7715a: rc 0, 6 of 6. Lane 1 L1_PIT_FALLS_NEVER_ACROSS: pawn, stack and corpse stop in the first covered pit cell and the landing breaks it; RM_PawnFlyerPatches.cs:193 applies it to a landing pawn.
+- 2026-11-23T13:08:58Z JUDGE.judge-1795437145#5 test.run bar:inv_kernel v0.1.0: T_KERNEL PASS on the cycle 6 rerun at 9a0e1710fb
+- 2026-11-23T13:08:58Z JUDGE.judge-1795437145#6 test.run bar:inv_kernel v0.1.0: T_FUZZ PASS on the cycle 6 rerun at 9a0e1710fb
+- 2026-11-23T13:08:58Z JUDGE.judge-1795437145#7 test.run bar:inv_proof_scenes v0.1.0: T_SCRIPT PASS on the cycle 6 rerun at 9a0e1710fb
+- 2026-11-23T13:08:58Z JUDGE.judge-1795437145#8 test.run bar:inv_proof_scenes v0.1.0: T_PROOFGATE PASS on the cycle 6 rerun at 9a0e1710fb
+- 2026-11-23T13:08:58Z JUDGE.judge-1795437145#9 test.run bar:inv_proof_scenes v0.1.0: T_RESTORE FAIL on the cycle 6 rerun at 9a0e1710fb
+- 2026-11-23T13:08:59Z JUDGE.judge-1795437145#10 test.run bar:inv_proof_scenes v0.1.0: T_RESTORE PASS on the cycle 6 rerun at 44bf0e6b6f
 - 2026-11-23T13:21:12Z DISPATCH#60 judge.sealed judge v0.1.0: 
 - 2026-11-23T13:21:12Z DISPATCH#61 run.end run v0.1.0: 
 - 2026-11-23T13:54:16Z DISPATCH#62 lease.grant lease v0.1.0: 
@@ -582,3 +592,5 @@
 - 2026-11-23T14:21:47Z HOLDER.run-1795441975#6 session.checkpoint session v0.1.0: 
 - 2026-11-23T14:25:09Z DISPATCH#65 run.end run v0.1.0: 
 - 2026-11-23T14:25:09Z DISPATCH#66 session.id session v0.1.0: 
+- 2026-11-23T14:29:39Z DISPATCH#67 judge.unsealed judge v0.1.0: 
+- 2026-11-23T14:29:39Z DISPATCH#68 judge.sealed judge v0.1.0: 

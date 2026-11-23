@@ -1,10 +1,10 @@
 {
  "_view": {
-  "body_sha256": "5740e57ffd86abd438d858b1df4bf211fad7a7b57f5af6ede6c933252c658954",
+  "body_sha256": "2c60feb304b6e2a0b2051147f054f1e699b9ed7cd0eeb97d28b91bfccceef34b",
   "reducer": 1,
   "shards": {
    "BACKFILL": 344431,
-   "DISPATCH": 23214,
+   "DISPATCH": 24227,
    "HOLDER.run-1794813483": 1382,
    "HOLDER.run-1794824768": 1788,
    "HOLDER.run-1794830532": 2304,
@@ -14,6 +14,7 @@
    "HOLDER.run-1795435910": 630,
    "HOLDER.run-1795441975": 2951,
    "JUDGE.judge-1794890427": 18837,
+   "JUDGE.judge-1795437145": 6544,
    "OWNER": 1207
   }
  },
@@ -881,7 +882,7 @@
     "ts": "2026-11-16T06:51:51Z"
    }
   },
-  "events": 581,
+  "events": 593,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -1614,6 +1615,24 @@
     "ts": "2026-11-16T11:37:18Z",
     "version": "0.1.0"
    },
+   "finding:RIMMANDRAKE_MOVE_KNOCKBACK_GOODS_PINNED_AGAINST_WALLS_SHELVES": {
+    "accept": "selftest_explosiveknockback_map.py --map-only exit 0, M04 0 breaks (parent exit 1, 7334/243452); lane1 run_lane1.py no FAIL",
+    "bars": [
+     "every_good_moves",
+     "open_shelf_scatters",
+     "goods_arc_spin_rebound"
+    ],
+    "by": "JUDGE.judge-1795437145",
+    "claim": "Tumble(): the good walks the 8 directions, most in line first (judge fix fa2de6ee4b); fresh reader run-1795441975 read it sound (cycle_6/lane2/fix_reviews.jsonl); a JUDGE turns it green",
+    "class": "problem",
+    "code_sha": "fa2de6ee4b",
+    "proposed_fix": "RM_KnockbackPlan.cs GoodsWithNoFirstCell: a Tumble() last resort along the 8 directions, most in line first; KnockbackMap.cs Pinned(): only deep water or no free line",
+    "status": "claimed_fixed",
+    "tags": [],
+    "text": "every_good_moves: a reached good (throw >= 1 cell) sits still when its line is blocked and no bounce or hop frees it: 593/12474 goods in walled rooms, 764/10699 in shelf storerooms (one-cell throw into a wall, blocked bounce, deep shelf row). The map's M04 exempted them as pinned.",
+    "ts": "2026-11-23T14:20:36Z",
+    "version": "0.1.0"
+   },
    "finding:RIMMANDRAKE_MOVE_PIT_FETCH_CORPSE_OFF_RIM_TOUCHED_ABOVE": {
     "accept": "Offline selftest parsing the pit_goods_fetch block asserts all 8 touch neighbours of the corpse and stack cells lie inside the main Pit rect (red on base 1e4264f663); live knockback_runner.py --scenes pit_goods_fetch.",
     "bars": [
@@ -2092,6 +2111,22 @@
     "ts": "2026-11-17T05:58:34Z",
     "version": "0.1.0"
    },
+   "finding:RIMMANDRAKE_SCOPE_KNOCKBACK_RESTORE_DECIDER_RED_ON_FLOWWORKS": {
+    "accept": "selftest_proof_restore_check.py exit 0; exit 1 with an unguarded settings poke planted in RM_KnockbackProof.Frame",
+    "bars": [
+     "inv_proof_scenes"
+    ],
+    "by": "JUDGE.judge-1795437145",
+    "claim": null,
+    "class": "problem",
+    "code_sha": null,
+    "proposed_fix": "proof_restore_check.py: BASELINE keys under filed item RIMMANDRAKE_RESTORE_FLOWWORKS_PIT_PROOF_SETTINGS_FOUR_NEW_LEAKS",
+    "status": "open",
+    "tags": [],
+    "text": "Check wrong, not mod: decider T_RESTORE (inv_proof_scenes) reran FAIL; proof_restore_check reads the whole repo and 4 FlowWorks proof-restore leaks of 2026-11-22 are outside its filed BASELINE.",
+    "ts": "2026-11-23T12:59:14Z",
+    "version": "0.1.0"
+   },
    "finding:RIMMANDRAKE_SHOVE_PAWNS_STANDING_ON_COVERS_IN_BURNING_GAS": {
     "accept": "none, a new offline case the fix writes; would_pass: a pawn on a cover's deck beside a burning clump is shoved one cell, and goods on a deck scatter.",
     "bars": [
@@ -2247,12 +2282,12 @@
     "by": "BACKFILL",
     "claim": "Fixed at 42225e0686: PitCell makes a pawn on an open or covered pit cell block a thrown pawn, and RM_MapKbGrid.At routes superdeep cells through it, ignoring pawns beneath the lid. Check rc 0 6 of 6, kernel 198/198.",
     "class": "problem",
-    "code_sha": "42225e0686",
+    "code_sha": "9a0e1710fba759cdcc5992e859b14c105dc7715a",
     "proposed_fix": "Add RM_KnockbackMath.PitCell(covered, forPawn, pawnThere), where a pawn there blocks a thrown pawn. RM_MapKbGrid.At answers superdeep cells through it, counting only pawns not beneath the lid (IsBeneathCover). Add K-25 in SelfTest/Program.cs.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "RM_MapKbGrid.At returned KbCell.CoveredPit for a superdeep cell with a cover before OtherPawnAt was asked, so a pawn standing on a pit cover did not block a thrown pawn. The kernel passed the thrown pawn over it and could set it down on its cell.",
-    "ts": "2026-11-19T23:32:57Z",
+    "ts": "2026-11-23T12:59:48Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_STOP_THROWS_OVER_COVERED_PITS_K08_SAYS_GROUND": {
@@ -2263,12 +2298,12 @@
     "by": "BACKFILL",
     "claim": "Fixed at 610b127ba8 under the route item RIMMANDRAKE_DROP_THROWS_INTO_COVERED_PITS_K08_MUST_FLIP: a throw over a cover ends in it, and a blast-thrown pawn breaks the cover. Acceptance 6 of 6, kernel 202/202, K-25 6 of 6.",
     "class": "problem",
-    "code_sha": "610b127ba8",
+    "code_sha": "9a0e1710fba759cdcc5992e859b14c105dc7715a",
     "proposed_fix": "Resolve: a CoveredPit cell stops the throw in it when intoPits (a wall when off). LandingBreaksCover drops the Pawn exclusion for blast ids (>= 0). ThrowPawn remembers the explosion id and the landing patch breaks the cover via BreakCoverUnder. Rewrite K-08.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "RM_KnockbackMath.Resolve treats KbCell.CoveredPit as ground, so a throw planned beyond a covered pit flies over it and lands on the far side. A thrown pawn that lands on a cover never breaks it, because LandingBreaksCover excludes KbKind.Pawn.",
-    "ts": "2026-11-19T23:32:57Z",
+    "ts": "2026-11-23T12:59:48Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_SWITCH_ELECTRICAL_BURN_WITH_FIRE_HALF_FLAME_HEIR": {
@@ -2507,6 +2542,7 @@
    "HOLDER.run-1795435910",
    "HOLDER.run-1795441975",
    "JUDGE.judge-1794890427",
+   "JUDGE.judge-1795437145",
    "OWNER"
   ],
   "spend_tokens": 171672717,
@@ -3413,6 +3449,60 @@
     "subject": "bar:inv_perf_all_fly",
     "text": "visit_3 sc_barrage_perf PASS (runner PASS)",
     "ts": "2026-11-19T23:33:05Z"
+   },
+   {
+    "by": "JUDGE.judge-1795437145",
+    "kind": "test.run",
+    "result": "PASS",
+    "sha": "9a0e1710fb",
+    "subject": "bar:inv_kernel",
+    "text": "T_KERNEL PASS on the cycle 6 rerun at 9a0e1710fb",
+    "ts": "2026-11-23T13:08:58Z"
+   },
+   {
+    "by": "JUDGE.judge-1795437145",
+    "kind": "test.run",
+    "result": "PASS",
+    "sha": "9a0e1710fb",
+    "subject": "bar:inv_kernel",
+    "text": "T_FUZZ PASS on the cycle 6 rerun at 9a0e1710fb",
+    "ts": "2026-11-23T13:08:58Z"
+   },
+   {
+    "by": "JUDGE.judge-1795437145",
+    "kind": "test.run",
+    "result": "PASS",
+    "sha": "9a0e1710fb",
+    "subject": "bar:inv_proof_scenes",
+    "text": "T_SCRIPT PASS on the cycle 6 rerun at 9a0e1710fb",
+    "ts": "2026-11-23T13:08:58Z"
+   },
+   {
+    "by": "JUDGE.judge-1795437145",
+    "kind": "test.run",
+    "result": "PASS",
+    "sha": "9a0e1710fb",
+    "subject": "bar:inv_proof_scenes",
+    "text": "T_PROOFGATE PASS on the cycle 6 rerun at 9a0e1710fb",
+    "ts": "2026-11-23T13:08:58Z"
+   },
+   {
+    "by": "JUDGE.judge-1795437145",
+    "kind": "test.run",
+    "result": "FAIL",
+    "sha": "9a0e1710fb",
+    "subject": "bar:inv_proof_scenes",
+    "text": "T_RESTORE FAIL on the cycle 6 rerun at 9a0e1710fb",
+    "ts": "2026-11-23T13:08:58Z"
+   },
+   {
+    "by": "JUDGE.judge-1795437145",
+    "kind": "test.run",
+    "result": "PASS",
+    "sha": "44bf0e6b6f",
+    "subject": "bar:inv_proof_scenes",
+    "text": "T_RESTORE PASS on the cycle 6 rerun at 44bf0e6b6f",
+    "ts": "2026-11-23T13:08:59Z"
    }
   ],
   "traps": {
