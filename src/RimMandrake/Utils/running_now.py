@@ -1291,19 +1291,22 @@ def fleet_of(p):
 
 
 def needs_html(p):
+    """His one view (owner_queue.one_view, design/specs/2026-11-23-owner-one-view/boundary.md): the view Maturation Now
+    built and shared while it is fresh, so both pages show the same rows in the same minute; else the same block from
+    this page's fleet reading, with the shared no-home count when one is fresh."""
+    sys.path.insert(0, HERE)
+    import owner_queue
+    import no_home
+    v = owner_queue.fresh_view(p.get("view"), p["now"])
+    if v:
+        return box(owner_queue.one_view(v["his"], v["ours"], v["home"], fmt="html"))
     f = fleet_of(p)
     if not f:
         return box(HEAD % "NEEDS YOU", '<b style="color:%s">UNMEASURED</b> ' % WARN, hesc(clip(p.get("fleet_why") or "not read yet", 120)))
     n = f["needs"]
-    rows = []
-    for t in n.get("topics") or []:
-        more = "".join("<div style='margin-left:18px;color:%s;font-size:12px'>also: %s</div>" % (DIM, hesc(clip(o, 120))) for o in t["others"])
-        rows.append("<div>• %s %s%s</div>" % (hesc(clip(t["q"], 130)), SMALL % hesc(t["items"][0] if len(t["items"]) == 1 else "%s, %d items" % (t["topic"], len(t["items"]))), more))
-    ans = n.get("answered") or []
-    tail = ""
-    if ans:
-        tail = '<div style="color:%s;font-size:12px;margin-top:6px">%d more you already answered; the next move is ours: %s</div>' % (DIM, len(ans), hesc(", ".join(a["item"] for a in ans)))
-    return box(HEAD % ("NEEDS YOU, %d" % n["count"]), "".join(rows) or "Nothing waits on you.", tail)
+    ours = [{"item": a["item"], "q": a["q"], "age": a.get("age") or "UNMEASURED"} for a in n.get("answered") or []]
+    return box(owner_queue.one_view(n.get("lines") or [], ours, no_home.fresh(p.get("home"), p["now"], FLEET_STALE),
+                                    fmt="html"))
 
 
 def events_html(p):
@@ -1824,6 +1827,11 @@ def gather(env, state, hist=(), write=True):
             p["unmeasured"].append("account %s %s(%s)" % (r["name"], "burn " if not r["why"] else "", r["why"] or r["burn_why"]))
     p["owner_notes"], _ = guarded(collect_owner_notes, env, now)
     p["fleet"], p["fleet_why"] = guarded(env.read_json, FLEET_CACHE)
+    sys.path.insert(0, HERE)
+    import owner_queue
+    import no_home
+    p["view"] = guarded(env.read_json, owner_queue.view_path(create=False))[0]        # his one view, shared
+    p["home"] = guarded(env.read_json, no_home.state_path(create=False))[0]           # the no-home count, shared
     if not write and not fleet_of(p):       # --print on a machine with no fresh cache still draws the whole page
         p["fleet"], p["fleet_why"] = guarded(refresh_fleet, env, False)
     fl = fleet_of(p)

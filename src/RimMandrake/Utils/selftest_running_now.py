@@ -362,7 +362,8 @@ check("mods accepted reads the state after the name", R.mods_status_counts("Abys
 check("mods accepted with no line is UNMEASURED", R.guarded(R.mods_status_counts, "nothing\n")[1] is not None)
 
 # the whole page, every section, on a full fixture
-FLEET = {"needs": {"count": 2, "lines": [], "topics": [{"topic": "DRAW", "items": ["DRAW_A", "DRAW_B"], "q": "Look at the bridge", "others": ["<Other> line"]}, {"topic": "K", "items": ["K_X"], "q": "Keep it?", "others": []}],
+FLEET = {"needs": {"count": 2, "lines": [{"item": "DRAW_A", "q": "Look at the bridge <Other> line"}, {"item": "K_X", "q": "Keep it?"}],
+                   "topics": [{"topic": "DRAW", "items": ["DRAW_A"], "q": "Look at the bridge", "others": []}, {"topic": "K", "items": ["K_X"], "q": "Keep it?", "others": []}],
                    "answered": [{"item": "ANS_ITEM", "q": "old"}]},
          "receipts": [{"item": "R1", "glyph": "✓", "title": "t", "where": "FlowWorks", "receipt": {"check": "PASS", "outcome": "Did the thing.", "commits": 2, "tokens": 5000}}],
          "mods": [{"name": "FlowWorks", "meta": "1 done", "backlog": "Backlog: 1 open", "proof": "Blind check PASS", "next": "Next thing", "waits": ["waits on you: x"],
@@ -377,8 +378,16 @@ for word in ("How to read", "NEEDS YOU, 2", "RECENT EVENTS", "FINISHED TODAY, 1"
     check("the page shows: " + word, word in page)
 check("the page has a how-to-read line for each of its panels", page.count("How to read:") == 6)
 check("the old names are gone", "blind checker" not in page.lower() and "checkers" not in page and "workers " not in page.split("<details>")[0].replace("workers can", ""))
-check("Needs you folds a topic into one row and escapes it", page.count("Look at the bridge") == 1 and "DRAW, 2 items" in page and "&lt;Other&gt; line" in page and "<Other>" not in page)
-check("an answered item leaves the list and says so", "1 more you already answered" in page and "ANS_ITEM" in page)
+check("Needs you is the one view: a row per item, escaped, and the count not filed anywhere", page.count("Look at the bridge") == 1 and "DRAW_A" in page and "&lt;Other&gt; line" in page and "<Other>" not in page and "not filed anywhere: UNMEASURED" in page)
+check("an answered item leaves the list and says so", "1 you answered; the next move is ours" in page and "ANS_ITEM" in page)
+import owner_queue as OQ  # noqa: E402
+import no_home as NH  # noqa: E402
+VIEW = {"at": NOW - 60, "his": [{"item": "SHARED_ONE", "q": "Shared question"}], "ours": [], "home": {"no_home": 4, "by_source": {"typed words": 4}, "unmeasured": []}}
+shared = R.build(Fake(ps=PS, cg=WORKER, files={R.FLEET_CACHE: FLEET, OQ.view_path(create=False): VIEW}), {}, [])[0]
+check("a fresh shared view is shown in place of the fleet rows", "Shared question" in shared and "NEEDS YOU, 1" in shared and "not filed anywhere: 4" in shared and "Look at the bridge" not in shared)
+stale_v = R.build(Fake(ps=PS, cg=WORKER, files={R.FLEET_CACHE: FLEET, OQ.view_path(create=False): dict(VIEW, at=NOW - OQ.VIEW_FRESH_S - 1),
+                                                   NH.state_path(create=False): {"at": NOW - 60, "no_home": 7, "by_source": {"typed words": 7}, "unmeasured": []}}), {}, [])[0]
+check("a stale shared view is not shown; the fleet rows carry the fresh shared count", "Shared question" not in stale_v and "Look at the bridge" in stale_v and "not filed anywhere: 7" in stale_v)
 check("a task title is escaped and sits on one line", "A task &lt;b&gt;" in page)
 sections = re.findall(r"^<div style=.*$", page, re.M)
 check("each html section is one block, one line", len(sections) >= 8 and all(x.rstrip().endswith("</div>") for x in sections))

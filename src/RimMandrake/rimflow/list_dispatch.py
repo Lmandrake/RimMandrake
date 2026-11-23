@@ -728,7 +728,9 @@ def tick(cfg, apply, fx=None, now=None, only=None):
         rd = {"schema": 1, "at": now, "at_pac": pac(now), "apply": apply, "account": list(account), "counts": counts,
               "launched": [{"item": r["item"], "unit": r.get("unit"), "model": r.get("model")} for r in rows
                            if r.get("decision") == "launched"],
-              "items": {r["item"]: {k: r.get(k) for k in ("decision", "why", "model", "unit", "need")} for r in rows}}
+              "items": {r["item"]: dict({k: r.get(k) for k in ("decision", "why", "model", "unit", "need")},
+                                        stage=row_stage((facts.get("items") or {}).get(r["item"]), r, now))
+                        for r in rows}}
         if apply:
             _write(os.path.join(d, "state.json"), st)
             _write(os.path.join(d, "reading.json"), rd)
@@ -738,6 +740,30 @@ def tick(cfg, apply, fx=None, now=None, only=None):
     finally:
         if lock:
             lock.close()
+
+
+def row_stage(it, row, now):
+    """-> the List Pipeline stage of one tick row, from list_pipeline.stage_of over the tick's own facts (the page calls
+    the same function over the ledger, design/specs/2026-11-23-list-stage-view/boundary.md)."""
+    import list_pipeline as LP
+    if not it:
+        return "unmeasured"         # the blind row, or an --only id that is not an item of the lane
+    dec = row.get("decision")
+    waits = None
+    if it.get("waits_on"):
+        waits = {"on": ", ".join(it["waits_on"]), "resumes": "%s closes" % " and ".join(it["waits_on"]), "until": None}
+    elif it.get("wait_until"):
+        waits = {"on": "a date: %s" % _one(it.get("wait_reason") or "no reason given", 90),
+                 "resumes": "the date %s" % pac(it["wait_until"]), "until": it["wait_until"]}
+    elif it.get("blocked"):
+        waits = {"on": "a block: %s" % _one(it.get("blocked_reason") or "no reason given", 90),
+                 "resumes": "the block is lifted", "until": None}
+    live = dec in ("live", "launched", "claimed")
+    f = {"state": it.get("state"), "effect": it.get("effect"), "verdict": LP.lane_verdict(dec, bool(it.get("effect"))),
+         "route": it.get("route"), "waits": waits,
+         "run": ("live_work" if it.get("effect") else "live_shape") if live else None,
+         "stopped": dec == "stopped", "note": "%s: %s" % (dec, _one(row.get("why"), 140))}
+    return LP.stage_of(f, now)["stage"]
 
 
 def _print(rd):

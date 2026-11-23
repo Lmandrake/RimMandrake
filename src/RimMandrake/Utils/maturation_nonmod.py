@@ -27,6 +27,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "rimflow"))
 from item_identity import named_mod  # noqa: E402  the one rule for the mod an item names
+import list_pipeline as LP  # noqa: E402  the List Pipeline's one stage rule (stage_of, six, facts)
 
 PAC = ZoneInfo("America/Los_Angeles")
 UNM = "UNMEASURED"
@@ -49,6 +50,7 @@ RED_WAIT = {"launch": "launches at its next tick", "slots_full": "waits for a fr
             "account_hold": "waits for an account the Dispatcher picks", "disabled": "waits: red_dispatch is off",
             "no_cap": "waits: no spend cap is set for its model", "pipeline_paused": "waits: the pipeline is paused"}
 
+STAGE_ORDER = ("shape", "waiting", "ready", "work", "verify", "trouble", "review", "conflict", "unmeasured")
 RULE = ("An item is mod work when its id or title names a mod on this page (the rule the mod cards use, "
         "item_identity.named_mod) or a run on it recorded its mod; a name that ties between two mods is \"could not "
         "class\"; every other item is work that is not mod work.")
@@ -224,6 +226,18 @@ def read_stores(lf, mods):
         s["games"] = None
         s["causes"]["the game locks"] = "%s: %s" % (e.__class__.__name__, e)
     try:
+        import list_dispatch as LD  # noqa: E402
+        with open(os.path.join(LD.sdir(create=False), "reading.json"), encoding="utf-8") as f:
+            s["lane"] = json.load(f)
+    except Exception as e:      # noqa: BLE001  no reading: every item with a check reads unmeasured, named
+        s["lane"] = None
+        s["causes"]["the List Pipeline tick's reading.json"] = "%s: %s" % (e.__class__.__name__, e)
+    q = lf.get("questions")
+    s["his"] = None if q is None else {x.get("item") for x in q if isinstance(x, dict)}
+    if q is None:
+        s["causes"]["who is his (owner_queue.is_his)"] = next(
+            (e for e in lf.get("errors") or [] if e.startswith("ledger")), "not read")
+    try:
         s["showings"] = sorted(os.listdir(SHOWINGS))
     except OSError as e:
         s["showings"] = None
@@ -233,21 +247,23 @@ def read_stores(lf, mods):
 
 def off_stores(why):
     return {"mods": [], "evs": None, "items": None, "records": None, "red_reading": None, "red_state": None,
-            "alarms": None, "games": None, "showings": None, "causes": {"every store": why}}
+            "alarms": None, "games": None, "showings": None, "lane": None, "his": None, "causes": {"every store": why}}
 
 
 # ---- the section --------------------------------------------------------------------------------------------------
 
-def safe_section(s, now, spend=None):
+def safe_section(s, now, spend=None, stage=None):
     """section(), or a "failed" section naming the cause (four-answers-differ)."""
     try:
-        return section(s, now, spend)
+        return section(s, now, spend, stage)
     except Exception as e:      # noqa: BLE001
         return {"state": "failed", "cause": "%s: %s" % (e.__class__.__name__, e), "causes": dict(s.get("causes") or {}),
                 "cannot": list(CANNOT)}
 
 
-def section(s, now, spend=None):
+def section(s, now, spend=None, stage=None):
+    """stage: the List Pipeline's stage function (list_pipeline.stage_of; maturation_now passes it)."""
+    stage_fn = stage or LP.stage_of
     items, evs, recs = s.get("items"), s.get("evs"), s.get("records")
     causes = dict(s.get("causes") or {})
     out = {"state": "ok", "causes": causes, "rule": RULE, "cannot": list(CANNOT), "now": now}
@@ -262,8 +278,8 @@ def section(s, now, spend=None):
     byitem, run_mods = {}, set()
     for r in recs or []:
         byitem.setdefault(r.get("item"), []).append(r)
-        if (r.get("env") or {}).get("RM_CONTROL_MOD"):
-            run_mods.add(r.get("item"))
+        if str((r.get("env") or {}).get("RM_CONTROL_MOD") or "").strip().lower() not in ("", "none"):
+            run_mods.add(r.get("item"))     # detached_helper records "none" on a run for no mod
     for v in byitem.values():
         v.sort(key=lambda r: r.get("at") or 0)
     red_state = s.get("red_state")
@@ -289,64 +305,64 @@ def section(s, now, spend=None):
     def title(i):
         return g(items.get(i), "title") if i in items else ""
 
-    # each open non-mod item sits at one place (steps-as-they-are)
-    place = {}
-    for i in open_nm:
+    # each open non-mod item has one stage, by the List Pipeline's one rule (list_pipeline.stage_of)
+    lane = s.get("lane")
+    lane_at = float(lane["at"]) if isinstance(lane, dict) and isinstance(lane.get("at"), (int, float)) else None
+    lane_cause = causes.get("the List Pipeline tick's reading.json") or "not read"
+    lane_rows = (lane.get("items") or {}) if isinstance(lane, dict) else {}
+    his = s.get("his")
+    open_set = {i for i, it in items.items() if g(it, "state") in OPEN_STATES}
+    last_ev = LP.last_act(evs)          # a program's note about a run's end is not a later act
+
+    def ready_note(i):
+        hit = [n for n in notes.get(i, []) if READY_RE.search(str(n.get("text") or ""))]
+        return hit[-1] if hit else None
+
+    def fact(i):
         it, rs = items[i], byitem.get(i, [])
-        if recs is not None and any(is_live(r) for r in rs):
-            place[i] = "runs"
-        elif g(it, "wait_until"):
-            place[i] = "date"
-        elif g(it, "blocked"):
-            place[i] = "item" if g(it, "blocked_kind") == "item" and g(it, "blocked_on") else "other"
-        elif recs is None:
-            place[i] = UNM
-        elif (red_items.get(i) or {}).get("decision") in RED_WAIT:
-            place[i] = "red"
-        elif rs and (rs[-1].get("live_state") or rs[-1].get("status")) == "dead":
-            place[i] = "ends"
-        elif rs:
-            place[i] = "acted"
-        else:
-            place[i] = "filed"
-    cnt = {}
-    for p in place.values():
-        cnt[p] = cnt.get(p, 0) + 1
+        kind = None
+        if rs and not is_live(rs[-1]):
+            kind = run_end(rs[-1], notes.get(i, []), spend)[0]
+        rn = ready_note(i)
+        f = LP.facts(it, rs, lane_row=lane_rows.get(i), lane_at=lane_at, lane_cause=lane_cause,
+                     his=bool(his and i in his), ready_note=(rn or {}).get("text"), last_event=last_ev.get(i),
+                     end_kind=kind, open_ids=open_set, now=now)
+        if recs is None and not f.get("note"):
+            f["note"] = "the run records could not be read"
+        return f
 
-    def c(k, needs_runs=True):
-        return UNM if (needs_runs and recs is None) else cnt.get(k, 0)
+    facts = {i: fact(i) for i in open_nm}
+    stage = {i: stage_fn(f, now) for i, f in facts.items()}
+    sx = LP.six(facts, now, stage=stage_fn)
+    out["stage_of"] = {i: st["stage"] for i, st in stage.items()}
 
-    red_word = ("could not look: %s" % causes.get("the red dispatcher's reading.json", causes.get("the red dispatcher", "")))\
-        if rr is None else (("its reading is %d min old: not current" % (red_age // 60)) if not red_cur else None)
-    out["steps"] = [
-        {"n": 1, "step": "Filed on the ledger", "who": "program",
-         "how": "rimflow (`cli.py file`), called by a run, an alarm (ops_watch) or the Conductor",
-         "sits": c("filed"), "sits_words": "filed, never launched: no program launches these; they wait for the "
-                                            "Conductor's hand"},
-        {"n": 2, "step": "Launched", "who": "program in three cases; else by the Conductor's hand",
-         "how": "the red dispatcher (rm-red-dispatch.timer: one capped fixer per nightly test failure); "
-                "left_open_continue (a run that ended with a LEFT OPEN: note); stop_resume (a run a fleet stop killed). "
-                "No program launches any other non-mod item: the Conductor window does, with detached_helper.py launch",
-         "sits": (UNM if (recs is None or rr is None or not red_cur) else cnt.get("red", 0)),
-         "sits_words": "waiting for the red dispatcher" + (" (%s)" % red_word if red_word else "")},
-        {"n": 3, "step": "Runs", "who": "program", "how": "its own systemd unit (rm-detached-*)",
-         "sits": c("runs"), "sits_words": "a run is live on it"},
-        {"n": 4, "step": "Ends", "who": "program",
-         "how": "detached_helper's finish writes the result file and a \"DETACHED RUN ENDED\" line in the Conductor log",
-         "sits": c("ends"), "sits_words": "its unit died and its finish never ran"},
-        {"n": 5, "step": "Read and acted on", "who": "by the Conductor's hand",
-         "how": "no program reads a run's result: the Conductor window closes the item, relaunches it or leaves it",
-         "sits": c("acted"), "sits_words": "a run ended and the item is still open"},
-    ]
-    out["parked"] = [("waiting on a date", cnt.get("date", 0)), ("blocked on another item", cnt.get("item", 0)),
-                     ("held or blocked on something else", cnt.get("other", 0))]
-    out["unplaced"] = cnt.get(UNM, 0)
+    def title(i):
+        return g(items.get(i), "title") if i in items else ""
+
+    def oldest(ids):
+        ids = [i for i in ids if i in items]
+        if not ids:
+            return None
+        o = min(ids, key=lambda i: (utc(g(items[i], "created_at")) or 9e18, i))
+        return "%s, %s" % (named(o, title(o)), age(utc(g(items[o], "created_at")), now))
+
+    by_stage = {}
+    for i, st in stage.items():
+        by_stage.setdefault(st["stage"], []).append(i)
+    out["stages"] = [{"stage": k, "who": LP.MOVED_BY[k][0], "how": LP.MOVED_BY[k][1], "count": len(by_stage.get(k, [])),
+                      "oldest": oldest(by_stage.get(k, []))} for k in STAGE_ORDER]
+    lv = [(i, it) for i, it in items.items() if g(it, "live") and classify(i, g(it, "title"), mods, run_mods) == "nonmod"]
+    dead = sorted(i for i, it in lv if g(it, "live_broken"))
+    out["promises"] = {"kept": len(lv) - len(dead), "dead": dead}
     al = s.get("alarms")
     out["alarms"] = UNM if al is None else sorted(
         (str(v.get("item")), str(v.get("cause") or k)) for k, v in al.items()
         if isinstance(v, dict) and v.get("state") == "OPEN" and v.get("item"))
+    out["lane"] = ("could not look: %s" % lane_cause if lane_at is None else
+                   "%s, %s" % (pac(lane_at), "current" if now - lane_at <= LP.LANE_STALE_S else
+                               "%d min old: not current" % ((now - lane_at) // 60)))
 
-    # doing now
+    # doing now: a live run on the item
     if recs is None:
         out["doing"] = UNM
     else:
@@ -355,14 +371,30 @@ def section(s, now, spend=None):
             for r in byitem.get(i, []):
                 if is_live(r):
                     rows.append({"at": r.get("at"), "what": named(i, title(i)), "who": launcher(r, red_units),
-                                 "since": pac(r.get("at")), "why": cause_line(i, items, evs), "unit": r.get("unit")})
+                                 "since": pac(r.get("at")), "why": cause_line(i, items, evs), "unit": r.get("unit"),
+                                 "stage": stage[i]["stage"]})
         rows.sort(key=lambda x: (x["at"] or 0, x["unit"] or ""))
         out["doing"] = rows
 
-    # next
+    # next: the ready items in the lane's order, then what else would launch
+    order = list(lane_rows) if lane_rows else []
+    pos = {i: k for k, i in enumerate(order)}
+    ready = sorted((r["item"] for r in sx["next"]), key=lambda i: (pos.get(i, 9e9), utc(g(items[i], "created_at")) or 0, i))
     nx = []
+    if ready:
+        gates = {}
+        for i in ready:
+            k = str((lane_rows.get(i) or {}).get("decision") or "not listed by the tick")
+            gates[k] = gates.get(k, 0) + 1
+        nx.append("The List Pipeline tick (rm-list-dispatch.timer) starts the Ready items in this order: %d Ready; what "
+                  "each waits for now: %s." % (len(ready), ", ".join("%s %d" % kv for kv in sorted(gates.items()))))
+        nx += _capped(ready, lambda i: "Ready: %s" % named(i, title(i)))
+    else:
+        nx.append("The List Pipeline tick: no item is Ready (a failing check and nothing waited on); its reading: %s."
+                  % out["lane"])
     if rr is None:
-        nx.append("The red dispatcher: could not look (%s)." % red_word.split(": ", 1)[-1])
+        nx.append("The red dispatcher: could not look (%s)." % causes.get("the red dispatcher's reading.json",
+                                                                         causes.get("the red dispatcher", "")))
     elif not red_cur:
         nx.append("The red dispatcher: its reading is %d min old (rm-red-dispatch.timer may have stopped); its rows "
                   "are not current." % (red_age // 60))
@@ -385,7 +417,7 @@ def section(s, now, spend=None):
             t = r["continue_plan"].get("target") or r.get("item")
             nx.append("left_open_continue continues %s on %s, planned %s; it waits for the run's clone to be given back."
                       % (r.get("unit"), named(t, title(t)), pac(r.get("ended"))))
-    live = [i for i in open_nm if place.get(i) == "other" and g(items[i], "blocked_kind") == "live"]
+    live = [i for i in open_nm if g(items[i], "blocked") and g(items[i], "blocked_kind") == "live"]
     if live:
         games = s.get("games")
         gw = ("the games now: " + "; ".join(games)) if games else ("the games: could not look (%s)"
@@ -393,17 +425,12 @@ def section(s, now, spend=None):
         nx.append("%d item%s wait%s on a live game (the item does not record which): %s. %s."
                   % (len(live), "" if len(live) == 1 else "s", "s" if len(live) == 1 else "",
                      "; ".join(named(i, title(i)) for i in live[:3]) + (" and %d more" % (len(live) - 3) if len(live) > 3 else ""), gw))
-    if recs is None:
-        nx.append("The Conductor's hand: UNMEASURED, the run records cannot be read.")
-    else:
-        hand = [i for i in open_nm if place.get(i) in ("filed", "acted", "ends")]
-        if hand:
-            o = hand[0]
-            nx.append("The Conductor's hand: %d item%s wait%s for it and no program will launch them; the oldest is %s, "
-                      "%s." % (len(hand), "" if len(hand) == 1 else "s", "s" if len(hand) == 1 else "",
-                               named(o, title(o)), age(utc(g(items[o], "created_at")), now)))
-        else:
-            nx.append("The Conductor's hand: 0 items wait for it.")
+    sh = by_stage.get("shape", [])
+    due = [i for i in sh if i in lane_rows]
+    nx.append("Shape: %d item%s %s no outcome check and no route; the tick lists %d of them (due for a Shape run, "
+              "list_shape.due); the rest wait until someone names them (`rimflow shape <ID> --enter`)%s."
+              % (len(sh), "" if len(sh) == 1 else "s", "has" if len(sh) == 1 else "have", len(due),
+                 ("; the oldest is " + oldest(sh)) if sh else ""))
     out["next"] = nx
 
     # closed in the last 24 h (an item open again now does not count)
@@ -419,87 +446,56 @@ def section(s, now, spend=None):
         if it is None or g(it, "state") in OPEN_STATES:
             continue
         if classify(i, g(it, "title"), mods, run_mods) == "nonmod":
-            cl.append({"at": t, "verb": verb, "what": named(i, g(it, "title")), "when": pac(t)})
+            st = stage_fn(LP.facts(it, byitem.get(i, []), now=now), now)
+            cl.append({"at": t, "verb": verb, "what": named(i, g(it, "title")), "when": pac(t),
+                       "promise": st.get("promise")})
     cl.sort(key=lambda x: (-x["at"], x["what"]))
     by = {}
     for x in cl:
         by[x["verb"]] = by.get(x["verb"], 0) + 1
     out["closed"] = {"count": len(cl) if evs is not None else UNM, "by": by, "rows": cl}
 
-    # open and why (no run on it)
-    reasons = [("hand", "Waiting on the Conductor's hand"), ("red", "Waiting on the red dispatcher"),
-               ("date", "Waiting on a date"), ("item", "Blocked on another item"),
-               ("other", "Held or blocked on something else")]
-    op = {}
-    for key, head in reasons:
-        keys = ("filed", "acted", "ends") if key == "hand" else (key,)
-        if recs is None and key in ("hand", "red"):
-            op[key] = {"head": head, "count": UNM, "rows": []}
-            continue
-        rows = []
-        for i in open_nm:
-            if place.get(i) not in keys:
-                continue
-            it = items[i]
-            a = age(utc(g(it, "created_at")), now)
-            if key == "date":
-                wu = utc(g(it, "wait_until"))
-                late = wu is not None and wu < now
-                why = "%s until %s: %s" % ("LATE, waited" if late else "waits", pac(wu), clip(g(it, "wait_reason"), 90))
-            elif key == "item":
-                b = g(it, "blocked_on")
-                why = "blocked on %s" % named(b, title(b))
-            elif key == "other":
-                why = "%s: %s" % ("held for the owner" if g(it, "blocked_kind") == "owner" else
-                                  "blocked, kind %s" % (g(it, "blocked_kind") or "not named"),
-                                  clip(g(it, "blocked_reason"), 90))
-            elif key == "red":
-                why = "the red dispatcher: " + RED_WAIT[red_items[i]["decision"]]
-            else:
-                rs = byitem.get(i, [])
-                why = ("never launched" if not rs else "its last run ended %s" % pac(rs[-1].get("ended") or rs[-1].get("at")))
-                if g(it, "kind") == "owed":
-                    why += "; an owed item of the Conductor's"
-            rows.append({"what": named(i, g(it, "title")), "age": a, "why": why})
-        op[key] = {"head": head, "count": len(rows), "rows": rows}
-    out["open"] = op
+    # open and why: one group per reason, each with its count and its oldest item
+    rank = {k: n for n, k in enumerate(STAGE_ORDER)}
+    groups = []
+    for k, v in sx["open_why"].items():
+        groups.append({"reason": k, "stage": v["stage"], "count": v["count"], "oldest": oldest(v["items"]),
+                       "who": LP.MOVED_BY[v["stage"]][0]})
+    groups.sort(key=lambda x: (rank.get(x["stage"], 99), -x["count"], x["reason"]))
+    out["open"] = groups
 
-    # escalated for help
+    # escalated for help: trouble and conflict
     if recs is None:
         out["escalated"] = UNM
     else:
-        esc = []
-        for i in open_nm:
-            if place.get(i) not in ("acted", "ends"):
-                continue
-            r = byitem[i][-1]
-            k, words = run_end(r, notes.get(i, []), spend)
-            esc.append({"at": r.get("ended") or r.get("at") or 0, "what": named(i, title(i)), "kind": k,
-                        "words": words, "when": pac(r.get("ended") or r.get("at"))})
+        esc = [{"what": named(r["item"], title(r["item"])), "kind": r["stage"], "words": r["why"],
+                "age": age(utc(g(items[r["item"]], "created_at")), now)} for r in sx["escalated"]]
         seen = {x["what"] for x in esc}
         for i, x in sorted(red_items.items()):
             if (x or {}).get("decision") == "stopped" and klass.get(i) == "nonmod" and named(i, title(i)) not in seen:
-                esc.append({"at": float(rr.get("at") or 0), "what": named(i, title(i)), "kind": "red stopped",
+                esc.append({"what": named(i, title(i)), "kind": "red stopped",
                             "words": "the red dispatcher stopped on it: " + clip(x.get("why"), 110),
-                            "when": pac(float(rr.get("at") or 0))})
-        esc.sort(key=lambda x: (-x["at"], x["what"]))
+                            "age": "at " + pac(float(rr.get("at") or 0))})
         out["escalated"] = esc
 
-    # ready for his review
+    # ready for his review: routed to him (owner_queue.is_his) or a look staged for him
     shows = s.get("showings")
     rd = []
-    for i in open_nm:
-        hit = [n for n in notes.get(i, []) if READY_RE.search(str(n.get("text") or ""))]
-        if hit:
-            n = hit[-1]
+    for r in sx["review"]:
+        i = r["item"]
+        n = ready_note(i)
+        where = None
+        if n:
             where = ("%s\\%s" % (NATIVE_SHOWINGS, i)) if shows and i in shows else (
                 "showings folder: could not look" if shows is None else "no showings folder by its name")
-            rd.append({"at": utc(n.get("ts")) or 0, "what": named(i, title(i)), "when": pac(utc(n.get("ts"))),
-                       "note": clip(n.get("text"), 140), "where": where})
+        nt = utc(n.get("ts")) if n else None          # a sort key: a note with no readable time sorts last
+        rd.append({"at": nt if nt is not None else 0, "what": named(i, title(i)),
+                   "when": pac(utc(n.get("ts"))) if n else "", "note": clip(n.get("text"), 140) if n else "",
+                   "where": where, "why": r["why"]})
     rd.sort(key=lambda x: (-x["at"], x["what"]))
     out["ready"] = rd
+    out["his_read"] = his is not None
     return out
-
 
 def cause_line(i, items, evs):
     """The filing's reason, else the title of the item that caused it, else 'no cause on the ledger'."""
@@ -537,20 +533,24 @@ def blocks(sec):
         return [("Could not look", looked + ["Every count of this section is UNMEASURED."]),
                 ("What this section cannot see", sec["cannot"])]
     out = []
-    head = ["Today there is no formal second pipeline: this is the path non-mod work takes now. %s" % sec["rule"],
-            "Open items that are not mod work: %s. Could not class: %s%s." % (
+    head = ["Each open item that is not mod work sits at one stage, decided by one rule (`list_pipeline.stage_of`), "
+            "which the List Pipeline tick also calls. %s" % sec["rule"],
+            "Open items that are not mod work: %s. Could not class: %s%s. The tick's last reading: %s." % (
                 sec["open_total"], sec["unclassed"],
-                (" (%s)" % ", ".join("`%s`" % x for x in sec["unclassed_ids"])) if sec["unclassed"] else "")]
+                (" (%s)" % ", ".join("`%s`" % x for x in sec["unclassed_ids"])) if sec["unclassed"] else "",
+                sec["lane"])]
     out.append(("", head + looked))
-    st = ["%d. **%s**: %s. %s. Sitting here: **%s** (%s)." % (x["n"], x["step"], x["who"], x["how"], _n(x["sits"]),
-                                                              x["sits_words"]) for x in sec["steps"]]
-    st.append("Parked off the steps: " + "; ".join("%s **%s**" % (k, v) for k, v in sec["parked"]) + "."
-              + (" Not placed (the run records cannot be read): %d." % sec["unplaced"] if sec["unplaced"] else ""))
+    st = ["**%s** · %s · **%d**%s. %s." % (x["stage"].capitalize(), x["who"], x["count"],
+                                         (" · oldest: %s" % x["oldest"]) if x["oldest"] else "", x["how"])
+          for x in sec["stages"]]
+    pr = sec["promises"]
+    st.append("Promises (closed operational items, rechecked by rm-deadman): kept **%d**, dead **%d**%s." % (
+        pr["kept"], len(pr["dead"]), (" (%s)" % ", ".join("`%s`" % i for i in pr["dead"][:ROWS])) if pr["dead"] else ""))
     al = sec["alarms"]
     st.append("Alarms (ops_watch, program) file their one fixed item or reopen it; they launch nothing. Open alarms on "
               "items: " + (UNM if al == UNM else ("%d (%s)" % (len(al), ", ".join("`%s`" % i for i, _ in al)) if al
                                                    else "0")) + ".")
-    out.append(("Steps today", st))
+    out.append(("Stages (who moves an item on: program or by hand)", st))
     d = sec["doing"]
     out.append(("Doing now (%s)" % (UNM if d == UNM else len(d)),
                 [UNM + ": the run records cannot be read."] if d == UNM else
@@ -560,14 +560,13 @@ def blocks(sec):
     c = sec["closed"]
     out.append(("Closed in the last 24 h (%s%s)" % (_n(c["count"]), (": " + ", ".join(
         "%d %s" % (v, {"close": "closed", "drop": "dropped", "supersede": "superseded"}[k]) for k, v in sorted(c["by"].items())))
-        if c["by"] else ""), (_capped(c["rows"], lambda x: "%s, %s %s" % (x["what"], x["verb"], x["when"]))
+        if c["by"] else ""), (_capped(c["rows"], lambda x: "%s, %s %s%s" % (
+            x["what"], x["verb"], x["when"], ("; its promise is %s" % x["promise"]) if x.get("promise") else ""))
                               or ["none (looked: the ledger's close, drop and supersede events)"])))
-    for key in ("hand", "red", "date", "item", "other"):
-        o = sec["open"][key]
-        out.append(("Open and why: %s (%s)" % (o["head"], _n(o["count"])),
-                    [UNM + ": the run records cannot be read."] if o["count"] == UNM else
-                    (_capped(o["rows"], lambda x: "%s, %s: %s" % (x["what"], x["age"], x["why"]))
-                     or ["none (looked: the ledger)"])))
+    o = sec["open"]
+    out.append(("Open and why (%d reasons, %d items)" % (len(o), sum(x["count"] for x in o)),
+                _capped(o, lambda x: "**%s** (%d, %s): oldest %s" % (x["reason"], x["count"], x["who"], x["oldest"]))
+                or ["none (looked: the ledger)"]))
     e = sec["escalated"]
     if e == UNM:
         out.append(("Escalated for help (UNMEASURED)", [UNM + ": the run records cannot be read."]))
@@ -577,15 +576,16 @@ def blocks(sec):
             by[x["kind"]] = by.get(x["kind"], 0) + 1
         out.append(("Escalated for help (%d%s)" % (len(e), (": " + ", ".join("%d %s" % (v, k) for k, v in sorted(by.items())))
                                                  if by else ""),
-                    _capped(e, lambda x: "%s: %s (%s)" % (x["what"], x["words"], x["when"]))
-                    or ["none (looked: the run records and the red dispatcher's reading)"]))
+                    _capped(e, lambda x: "%s, %s: %s" % (x["what"], x["age"], x["words"]))
+                    or ["none (looked: the stages and the red dispatcher's reading)"]))
     r = sec["ready"]
     out.append(("Ready for his review (%d)" % len(r),
-                _capped(r, lambda x: "%s, %s: \"%s\" Where: %s" % (x["what"], x["when"], x["note"], x["where"]))
-                or ["none (looked: the notes of open non-mod items for READY TO SHOW, keeper save, pick image)"]))
+                _capped(r, lambda x: ("%s, %s: \"%s\" Where: %s" % (x["what"], x["when"], x["note"], x["where"])) if x["where"]
+                        else "%s: %s" % (x["what"], x["why"]))
+                or ["none (looked: owner_queue.is_his%s, and the notes for READY TO SHOW, keeper save, pick image)"
+                    % ("" if sec.get("his_read") else " could not be read")]))
     out.append(("What this section cannot see", sec["cannot"]))
     return out
-
 
 def _md_cell(s):
     return str(s).replace("\n", " ")

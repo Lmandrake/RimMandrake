@@ -202,7 +202,7 @@ def pipe_needs(events, lo, hi):
     return list(seen.values())
 
 
-PROBE = os.path.join(REPO, "design", "specs", "2026-11-22-one-view-of-open-work", "probe_his_words.py")
+PROBE = os.path.join(REPO, "src", "RimMandrake", "Utils", "probe_his_words.py")
 
 
 def machine_rx():

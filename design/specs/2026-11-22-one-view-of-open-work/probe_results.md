@@ -1,10 +1,10 @@
 # Probe: which of his typed messages have a home in the ledger (2026-11-19 7:00 PM to 2026-11-22 7:00 PM PST)
 
 Item: `RIMMANDRAKE_RESUME_CENSUS_WITH_HIS_COMPLETENESS_RULE_LEDGER_ONLY_REJECTED`. Run 2026-11-22 about 7:20 PM PST.
-The program is `probe_his_words.py` beside this page. It makes no model call and runs in about 5 s.
+The program is `src/RimMandrake/Utils/probe_his_words.py` (it was beside this page; moved 2026-11-23). It makes no model call and runs in about 5 s.
 
 ```
-python3 design/specs/2026-11-22-one-view-of-open-work/probe_his_words.py \
+python3 src/RimMandrake/Utils/probe_his_words.py \
     --since 2026-11-20T03:00:00Z --until 2026-11-23T03:00:00Z --rows /tmp/probe_rows.json
 ```
 

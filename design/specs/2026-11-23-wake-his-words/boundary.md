@@ -30,7 +30,7 @@ writes any line here. Every line comes from records that already exist.
   turn after it, that window told him nothing, so its own start carries back. When this window runs the wake again,
   the wake keeps the start of its first run. With no stamp (the first wake after this change), the start is the first
   record of the old window's transcript. When both read, the earlier one is used.
-- **A home for a typed message** (the probe's rule, `design/specs/2026-11-22-one-view-of-open-work/probe_his_words.py`,
+- **A home for a typed message** (the probe's rule, `src/RimMandrake/Utils/probe_his_words.py`,
   with a typo allowance for short messages). Both sides are normalised: system reminders and image tags removed, lower
   case, words of `a-z 0-9 '`. A message has a home when an event with `ownerSaid`, from 1 h before the message onward,
   holds half of the message's 5-word runs, or holds a quote of 5 or more words of which 80% of runs lie inside the

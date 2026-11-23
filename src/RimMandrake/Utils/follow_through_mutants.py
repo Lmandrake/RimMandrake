@@ -72,7 +72,7 @@ assert m.__file__ == sys.argv[1], m.__file__
 # the copy lives in a scratch folder: its repo paths are the real repo's
 m.REPO, m.HERE = repo, os.path.join(repo, "src", "RimMandrake", "Utils")
 m.RIMFLOW = os.path.join(repo, "src", "RimMandrake", "rimflow")
-m.PROBE = os.path.join(repo, "design", "specs", "2026-11-22-one-view-of-open-work", "probe_his_words.py")
+m.PROBE = os.path.join(repo, "src", "RimMandrake", "Utils", "probe_his_words.py")
 m.BRIEF = os.path.join(m.HERE, "follow_through_reader.md")
 sys.argv = [sys.argv[2]]
 runpy.run_path(sys.argv[0], run_name="__main__")

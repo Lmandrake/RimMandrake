@@ -281,6 +281,127 @@ def needs_you(items, rel, questions=None, evs=None, turns=None, passes=None, cer
             "awaiting_designer": waiting, "certified": sealed}
 
 
+# ---- the owner's one view (design/specs/2026-11-23-owner-one-view/boundary.md) ------------------------------------
+# A view another page wrote is shown while it is younger than this. Danger: Fleet Now would show rows older than its own
+# fleet refresh (FLEET_EVERY, 300 s) and so be staler than before. Evidence: running_now refreshes the fleet every 300 s.
+VIEW_FRESH_S = 300
+UNM = "UNMEASURED"
+
+
+def _days(t, now):
+    """A whole-day age ('<1d', '3d'): no minutes, so two builds a minute apart print the same row (the pages' rule)."""
+    if not isinstance(t, (int, float)):
+        return UNM
+    d = int(max(0, now - t) // 86400)
+    return "<1d" if d < 1 else "%dd" % d
+
+
+def _epoch(v):
+    import datetime as dt
+    try:
+        t = dt.datetime.fromisoformat(str(v).replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    return (t if t.tzinfo else t.replace(tzinfo=dt.timezone.utc)).timestamp()
+
+
+def ours(needs, items, now):
+    """-> [{"item", "q", "age"}]: what he answered and is now ours to do (needs_you's "answered"), oldest first."""
+    rows = []
+    for x in (needs or {}).get("answered") or []:
+        it = (items or {}).get(x["item"])
+        t = _epoch(getattr(it, "created_at", None)) if it is not None else None
+        rows.append({"item": x["item"], "q": x["q"], "age": _days(t, now), "_t": t if t is not None else 9e18})
+    rows.sort(key=lambda r: (r["_t"], r["item"]))
+    return [{k: v for k, v in r.items() if k != "_t"} for r in rows]
+
+
+def _clip(s, n):
+    s = " ".join(str(s or "").split())
+    return s if len(s) <= n else s[:n - 1].rstrip() + "…"
+
+
+def home_line(home):
+    """'not filed anywhere: N (source n, ...; UNMEASURED: ...)', or UNMEASURED, never 0, when nothing could be read."""
+    if not isinstance(home, dict):
+        return "not filed anywhere: %s (no reading yet)" % UNM
+    n = home.get("no_home")
+    parts = ["%s %d" % kv for kv in (home.get("by_source") or {}).items()]
+    unm = list(home.get("unmeasured") or [])
+    tail = "; ".join(x for x in (", ".join(parts), ("%s: %s" % (UNM, ", ".join(unm))) if unm else "") if x)
+    return "not filed anywhere: %s%s" % (UNM if n is None else n, (" (%s)" % tail) if tail else "")
+
+
+def one_view(his, ours_rows, home, fmt="md"):
+    """-> the block both pages show (one-view-shows-his-ours-and-the-count): his rows, our rows oldest first with their
+    age, and the count of needs not filed anywhere beside them. fmt "md": Markdown lines joined by newlines; "html": one
+    line of HTML with no blank line in it (Typora)."""
+    import html as H
+    his, ours_rows = list(his or []), list(ours_rows or [])
+    hl = home_line(home)
+    if fmt == "html":
+        e = H.escape
+        rows = "".join("<div>• %s <span style=\"color:#98a1af;font-size:11px\">%s</span></div>" % (e(x["q"][:130]), e(x["item"]))
+                       for x in his) or "<div>Nothing waits on you.</div>"
+        tail = ""
+        if ours_rows:
+            tail = ('<div style="color:#98a1af;font-size:12px;margin-top:6px">%d you answered; the next move is ours, '
+                    'oldest first: %s</div>' % (len(ours_rows), e(", ".join("%s (%s)" % (x["item"], x.get("age") or UNM)
+                                                                           for x in ours_rows))))
+        return ('<div style="font-weight:bold">NEEDS YOU, %d</div>%s%s<div style="font-size:12px;margin-top:6px">%s</div>'
+                % (len(his), rows, tail, e(hl)))
+    out = ["**Needs you (%d)** · %s" % (len(his), hl), ""]
+    out += ["- %s (`%s`)" % (_clip(x["q"], 200), x["item"]) for x in his] or ["- Nothing waits on you."]
+    if ours_rows:
+        out += ["", "**You answered; the next move is ours (%d, oldest first)**" % len(ours_rows), ""]
+        out += ["- %s (`%s`), %s" % (_clip(x["q"], 160), x["item"], x.get("age") or UNM)
+                for x in ours_rows]
+    return "\n".join(out)
+
+
+def view_dir(create=True):
+    d = os.environ.get("RM_OWNER_VIEW_DIR")
+    if not d:
+        import doorbell
+        d = os.path.join(doorbell.state_dir(), "owner_view")
+    if create:
+        os.makedirs(d, exist_ok=True)
+    return d
+
+
+def view_path(create=True):
+    return os.path.join(view_dir(create), "view.json")
+
+
+def fresh_view(v, now, fresh_s=VIEW_FRESH_S):
+    """-> v when it is a view younger than fresh_s, else None."""
+    if not isinstance(v, dict) or not isinstance(v.get("at"), (int, float)) or not (0 <= now - v["at"] < fresh_s):
+        return None
+    return v
+
+
+def write_view(his, ours_rows, home, now, path=None):
+    """The view one page built, for the other page to show in the same minute. A write that fails is returned, not raised."""
+    path = path or view_path()
+    try:
+        with open(path + ".tmp", "w", encoding="utf-8") as f:
+            json.dump({"at": now, "his": his, "ours": ours_rows, "home": home}, f, indent=1, ensure_ascii=False)
+        os.replace(path + ".tmp", path)
+        return None
+    except OSError as e:
+        return "%s: %s" % (type(e).__name__, e)
+
+
+def read_view(now, path=None, fresh_s=VIEW_FRESH_S):
+    """-> the shared view while it is younger than fresh_s, else None."""
+    try:
+        with open(path or view_path(create=False), encoding="utf-8") as f:
+            v = json.load(f)
+    except (OSError, ValueError):
+        return None
+    return fresh_view(v, now, fresh_s)
+
+
 def misrouted(items, rel):
     """[(item, hold kind)] routed to him by the ledger but held by Relentless for a tooling reason."""
     return [(iid, tooling_hold(rel.get(iid)).get("kind")) for iid, it in sorted(items.items())

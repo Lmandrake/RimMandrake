@@ -71,6 +71,10 @@ def stores(extra_filed=0, red_at=None):
         item("RIMMANDRAKE_REFUSED_LAUNCH", "A launch that was refused", days=3),
         item("RIMMANDRAKE_UNIT_DIED", "A run whose unit died", days=3),
         item("RIMMANDRAKE_READY_LOOK", "A look staged for him", days=2),
+        item("RIMMANDRAKE_LANE_READY", "A lane item whose check fails", days=1.5, effect="cmd:false"),
+        item("RIMMANDRAKE_LANE_HOLDS", "A lane item whose check holds", days=1.4, effect="cmd:true"),
+        item("RIMMANDRAKE_LANE_STOPPED", "A lane item the lane stopped on", days=1.3, effect="cmd:false"),
+        item("RIMMANDRAKE_LIVE_NO_MOD", "A lane run recorded for no mod", days=1.2, effect="cmd:false"),
         # mod work, never in a list
         item("RIMMANDRAKE_FIX_FLOWWORKS_PUMP", "Fix the pump", days=7),
         item("RIMMANDRAKE_TUNE_FIRE_SPREAD", "Pyrelands fire spreads too far", days=7),
@@ -108,6 +112,7 @@ def stores(extra_filed=0, red_at=None):
         rec("u-refused", "RIMMANDRAKE_REFUSED_LAUNCH", NOW - 4 * H, status="refused", result=None),
         rec("u-dead", "RIMMANDRAKE_UNIT_DIED", NOW - 4 * H, status="running", live_state="dead"),
         rec("u-ctl", "RIMMANDRAKE_RUN_CONTROLLED", NOW - 4 * H, env={"RM_CONTROL_MOD": "Pyrelands"}),
+        rec("u-nomod", "RIMMANDRAKE_LIVE_NO_MOD", NOW - 1 * H, status="running", env={"RM_CONTROL_MOD": "none"}),
     ]
     red_at = NOW - 300 if red_at is None else red_at
     return {"mods": list(MODS), "items": items, "evs": evs, "records": recs,
@@ -116,7 +121,13 @@ def stores(extra_filed=0, red_at=None):
                 "SELFTEST_FIX_RED_STOPPED": {"decision": "stopped", "why": "an attempt ended and the item is open"}}},
             "red_state": {"items": {"SELFTEST_FIX_RED_OLD": {"attempts": [{"unit": "u-red"}]}}},
             "alarms": {"X:y": {"item": "OPS_ALARM_ITEM", "state": "OPEN", "cause": "X:y"}},
-            "games": ["ArchBig FREE", "ArchSmall HELD by BENCH"], "showings": ["RIMMANDRAKE_READY_LOOK"], "causes": {}}
+            "games": ["ArchBig FREE", "ArchSmall HELD by BENCH"], "showings": ["RIMMANDRAKE_READY_LOOK"], "causes": {},
+            "his": {"RIMMANDRAKE_HELD_FOR_OWNER"},
+            "lane": {"at": NOW - 120, "items": {
+                "RIMMANDRAKE_LANE_HOLDS": {"decision": "close", "why": "the check holds"},
+                "RIMMANDRAKE_LANE_STOPPED": {"decision": "stopped", "why": "2 Work runs ended and the check still fails"},
+                "RIMMANDRAKE_LIVE_NO_MOD": {"decision": "live", "why": "u-nomod is live on it"},
+                "RIMMANDRAKE_LANE_READY": {"decision": "slots_full", "why": "2 live list-lane runs"}}}}
 
 
 def spend(r):
@@ -146,8 +157,10 @@ def t_mod_or_not_by_one_rule():
     assert N.classify("RIMMANDRAKE_RUN_CONTROLLED", "A stage run", MODS, {"RIMMANDRAKE_RUN_CONTROLLED"}) == "mod"
     assert N.classify("RIMMANDRAKE_FIX_ADG_THING", "", MODS, set()) == "unclassed"
     assert N.classify("RIMMANDRAKE_FIX_PAGE_TYPO_NEVER_LAUNCHED", "Fix the typo", MODS, set()) == "nonmod"
-    assert x["open_total"] == 17, x["open_total"]
+    assert x["open_total"] == 21, x["open_total"]
     assert x["unclassed"] == 1 and x["unclassed_ids"] == ["RIMMANDRAKE_FIX_ADG_THING"], x["unclassed_ids"]
+    # detached_helper records RM_CONTROL_MOD=none on a run for no mod: that is not a recorded mod
+    assert "RIMMANDRAKE_LIVE_NO_MOD" in x["stage_of"], "a run recorded for mod 'none' made its item mod work"
     t = text()
     for mod_id in ("RIMMANDRAKE_FIX_FLOWWORKS_PUMP", "RIMMANDRAKE_TUNE_FIRE_SPREAD", "RIMMANDRAKE_RUN_CONTROLLED",
                    "RIMMANDRAKE_FIX_FLOWWORKS_DONE"):
@@ -155,25 +168,40 @@ def t_mod_or_not_by_one_rule():
     assert "item_identity.named_mod" in t and "Could not class: 1" in t
 
 
-def t_steps_as_they_are():
+WANT_STAGE = {
+    "RIMMANDRAKE_FIX_PAGE_TYPO_NEVER_LAUNCHED": "shape", "RIMMANDRAKE_BUILD_LIVE_THING": "shape",
+    "SELFTEST_FIX_RED_ONE": "shape", "SELFTEST_FIX_RED_STOPPED": "shape", "RIMMANDRAKE_WAIT_DATE_PASSED": "shape",
+    "RIMMANDRAKE_ENDED_LEFT_OPEN": "shape", "RIMMANDRAKE_ENDED_SILENT": "shape", "RIMMANDRAKE_REOPENED": "shape",
+    "RIMMANDRAKE_WAIT_DATE_FUTURE": "waiting", "RIMMANDRAKE_BLOCKED_ON_TYPO": "waiting",
+    "RIMMANDRAKE_WAIT_LIVE_GAME": "waiting", "RIMMANDRAKE_HELD_FOR_OWNER": "review", "RIMMANDRAKE_READY_LOOK": "review",
+    "RIMMANDRAKE_ENDED_STOPPED": "trouble", "RIMMANDRAKE_ENDED_CAPPED": "trouble", "RIMMANDRAKE_REFUSED_LAUNCH": "trouble",
+    "RIMMANDRAKE_UNIT_DIED": "trouble", "RIMMANDRAKE_LANE_STOPPED": "trouble", "RIMMANDRAKE_LANE_READY": "ready",
+    "RIMMANDRAKE_LANE_HOLDS": "verify", "RIMMANDRAKE_LIVE_NO_MOD": "work"}
+
+
+def t_stages_from_one_rule():
     x = sec()
-    st = x["steps"]
-    assert [s["step"] for s in st] == ["Filed on the ledger", "Launched", "Runs", "Ends", "Read and acted on"], st
-    assert st[0]["who"] == "program" and st[2]["who"] == "program" and st[3]["who"] == "program"
-    assert st[4]["who"] == "by the Conductor's hand"
-    assert "Conductor's hand" in st[1]["who"]
-    for prog in ("red dispatcher", "left_open_continue", "stop_resume"):
-        assert prog in st[1]["how"], prog
-    assert "No program launches any other non-mod item" in st[1]["how"]
-    assert "no program reads a run's result" in st[4]["how"]
-    got = {s["step"]: s["sits"] for s in st}
-    # filed: TYPO, RED_STOPPED (not a red wait), READY_LOOK, REOPENED
-    assert got == {"Filed on the ledger": 4, "Launched": 1, "Runs": 1, "Ends": 1, "Read and acted on": 5}, got
-    parked = dict(x["parked"])
-    assert parked == {"waiting on a date": 2, "blocked on another item": 1, "held or blocked on something else": 2}, parked
-    assert sum(got.values()) + sum(parked.values()) == x["open_total"]
+    assert x["stage_of"] == WANT_STAGE, {k: v for k, v in x["stage_of"].items() if WANT_STAGE.get(k) != v}
+    st = {r["stage"]: r for r in x["stages"]}
+    assert [r["stage"] for r in x["stages"]] == list(N.STAGE_ORDER)
+    for k in N.STAGE_ORDER:
+        assert st[k]["who"] in ("program", "by hand") and st[k]["how"], st[k]
+    assert st["shape"]["who"] == "program" and st["ready"]["who"] == "program" and st["trouble"]["who"] == "by hand"
+    assert sum(r["count"] for r in x["stages"]) == x["open_total"]
+    assert st["shape"]["count"] == 8 and st["shape"]["oldest"].startswith("Fix the typo"), st["shape"]
+    # the stage function the page is given is the one it uses
+    seen = []
+    N.section(stores(), NOW, spend=spend, stage=lambda f, t: seen.append(1) or N.LP.stage_of(f, t))
+    assert len(seen) >= x["open_total"]
     t = text()
-    assert "Sitting here: **4**" in t and "Parked off the steps" in t
+    assert "**Shape** · program · **8**" in t and "**Ready** · program · **1**" in t, t[:900]
+    # a run end nobody acted on is trouble; one with a later act is not
+    s = stores()
+    s["evs"].append({"event": "note", "id": "RIMMANDRAKE_ENDED_STOPPED", "ts": iso(NOW - H),
+                     "text": "DETACHED run u-stop ended timeout (killed KILL) after 600 s"})    # the finish's own note
+    assert sec(s)["stage_of"]["RIMMANDRAKE_ENDED_STOPPED"] == "trouble"
+    s["evs"].append({"event": "note", "id": "RIMMANDRAKE_ENDED_STOPPED", "ts": iso(NOW - H), "text": "read it"})
+    assert sec(s)["stage_of"]["RIMMANDRAKE_ENDED_STOPPED"] == "shape"
 
 
 def t_launcher_from_records():
@@ -191,7 +219,7 @@ def t_launcher_from_records():
 def t_doing_now_rows():
     x = sec()
     d = x["doing"]
-    assert len(d) == 1, d
+    assert len(d) == 2 and d[1]["what"].startswith("A lane run recorded for no mod"), d
     r = d[0]
     assert r["what"].startswith("Build the live thing (`RIMMANDRAKE_BUILD_LIVE_THING`)"), r["what"]
     assert "Conductor's hand" in r["who"] and "PST" in r["since"] and r["why"] == "the owner asked for it", r
@@ -199,17 +227,18 @@ def t_doing_now_rows():
     s["evs"] = [e for e in s["evs"] if e.get("event") != "file"]
     assert sec(s)["doing"][0]["why"] == "no cause on the ledger"
     t = text()
-    assert "Doing now (1)" in t and "Why: the owner asked for it" in t
+    assert "Doing now (2)" in t and "Why: the owner asked for it" in t
 
 
 def t_next_names_its_wait():
     x = sec()
     nx = ids_in(x["next"])
+    assert "1 Ready; what each waits for now: slots_full 1" in nx and "Ready: A lane item whose check fails" in nx, nx
     assert "Nightly red: selftest_one fails (`SELFTEST_FIX_RED_ONE`) waits for a free red-fix slot" in nx, nx
     assert "left_open_continue continues u-left" in nx, nx
     assert "1 item waits on a live game" in nx and "ArchBig FREE" in nx and "ArchSmall HELD" in nx, nx
-    assert "The Conductor's hand: 10 items wait for it" in nx, nx
-    assert "Fix the typo on the status page" in nx      # the oldest of those
+    assert "Shape: 8 items have no outcome check and no route; the tick lists 0 of them" in nx, nx
+    assert "the oldest is Fix the typo on the status page" in nx
     stale = ids_in(sec(stores(red_at=NOW - 3 * H))["next"])
     assert "180 min old" in stale and "SELFTEST_FIX_RED_ONE" not in stale, stale
 
@@ -223,50 +252,54 @@ def t_closed_last_day():
 
 def t_open_by_reason_oldest_first():
     x = sec()
-    o = x["open"]
-    assert {k: v["count"] for k, v in o.items()} == {"hand": 10, "red": 1, "date": 2, "item": 1, "other": 2}, o
-    dates = o["date"]["rows"]
-    assert "LATE" in dates[0]["why"] and "LATE" not in dates[1]["why"], dates
-    hand = [r["what"] for r in o["hand"]["rows"]]
-    assert hand[0].startswith("Fix the typo"), hand                     # 9 days: the oldest
-    assert "blocked on Fix the typo on the status page" in o["item"]["rows"][0]["why"]
-    assert any("held for the owner" in r["why"] for r in o["other"]["rows"])
-    assert all(r["age"].startswith("filed ") and "min" not in r["age"] for r in o["hand"]["rows"])
-    assert o["hand"]["rows"][0]["age"].endswith(", 9 days"), o["hand"]["rows"][0]["age"]
+    o = {g["reason"]: g for g in x["open"]}
+    assert o["no outcome check yet (Shape)"]["count"] == 8, o
+    assert o["no outcome check yet (Shape)"]["oldest"].startswith("Fix the typo on the status page"), o
+    assert o["no outcome check yet (Shape)"]["oldest"].endswith(", 9 days"), o
+    assert o["waiting on RIMMANDRAKE_FIX_PAGE_TYPO_NEVER_LAUNCHED"]["count"] == 1
+    assert any(k.startswith("waiting on a date") for k in o) and any(k.startswith("waiting on a live block") for k in o), o
+    assert sum(g["count"] for g in x["open"]) == x["open_total"]
+    ranks = [N.STAGE_ORDER.index(g["stage"]) for g in x["open"]]
+    assert ranks == sorted(ranks), ranks
+    assert all("min" not in g["oldest"] for g in x["open"])
     assert N.game_line({"game": "archmagi", "state": "HELD", "seat": "BENCH", "since_local": "9:00 PM PST",
                         "purpose": "a visit", "held_s": 600}) == "ArchBig HELD by BENCH since 9:00 PM PST, for: a visit"
     big = sec(stores(extra_filed=15))
     t = "\n".join(N.markdown(big))
-    assert big["open"]["hand"]["count"] == 25
-    assert "Waiting on the Conductor's hand (25)" in t and "… and %d more" % (25 - N.ROWS) in t, t[:400]
+    assert {g["reason"]: g for g in big["open"]}["no outcome check yet (Shape)"]["count"] == 23
+    assert "**no outcome check yet (Shape)** (23, program): oldest Fix the typo" in t, t[:400]
 
 
 def t_escalated_from_run_ends():
     e = sec()["escalated"]
     kinds = {r["what"].split("(`")[1].rstrip("`)"): r["kind"] for r in e}
-    assert kinds == {"RIMMANDRAKE_ENDED_STOPPED": "stopped", "RIMMANDRAKE_ENDED_LEFT_OPEN": "left open",
-                     "RIMMANDRAKE_ENDED_SILENT": "said nothing", "RIMMANDRAKE_ENDED_CAPPED": "capped",
-                     "RIMMANDRAKE_REFUSED_LAUNCH": "refused", "RIMMANDRAKE_UNIT_DIED": "stopped",
-                     "SELFTEST_FIX_RED_STOPPED": "red stopped"}, kinds
-    s = stores()       # a NEXT: line the run wrote itself is a left-open
-    s["evs"].append({"event": "note", "id": "RIMMANDRAKE_ENDED_SILENT", "ts": iso(NOW - H), "role_unit": "u-silent",
-                     "text": "done part one. NEXT: do part two"})
-    assert any(r["kind"] == "left open" and "ENDED_SILENT" in r["what"] for r in sec(s)["escalated"])
+    assert kinds == {"RIMMANDRAKE_ENDED_STOPPED": "trouble", "RIMMANDRAKE_ENDED_CAPPED": "trouble",
+                     "RIMMANDRAKE_REFUSED_LAUNCH": "trouble", "RIMMANDRAKE_UNIT_DIED": "trouble",
+                     "RIMMANDRAKE_LANE_STOPPED": "trouble", "SELFTEST_FIX_RED_STOPPED": "red stopped"}, kinds
+    words = {r["what"].split("(`")[1].rstrip("`)"): r["words"] for r in e}
+    assert "was capped" in words["RIMMANDRAKE_ENDED_CAPPED"] and "was refused" in words["RIMMANDRAKE_REFUSED_LAUNCH"]
+    assert "2 Work runs ended" in words["RIMMANDRAKE_LANE_STOPPED"], words
 
 
 def t_ready_for_review():
     r = sec()["ready"]
-    assert len(r) == 1, r
-    assert r[0]["what"].startswith("A look staged for him") and "READY TO SHOW" in r[0]["note"]
-    assert r[0]["where"].endswith(r"showings\RIMMANDRAKE_READY_LOOK"), r[0]["where"]
+    assert [x["what"].split("(`")[1].rstrip("`)") for x in r] == ["RIMMANDRAKE_READY_LOOK", "RIMMANDRAKE_HELD_FOR_OWNER"], r
+    look = r[0]
+    assert "READY TO SHOW" in look["note"] and look["where"].endswith(r"showings\RIMMANDRAKE_READY_LOOK"), look
+    assert "routed to the owner" in r[1]["why"] and r[1]["where"] is None, r[1]
+    assert "ready for his look" in look["why"], look
     s = stores()
     s["evs"].append({"event": "note", "id": "RIMMANDRAKE_FIX_PAGE_TYPO_NEVER_LAUNCHED", "ts": iso(NOW - H),
                      "text": "the keeper save is LOOK_2 for him"})
     r2 = sec(s)["ready"]
-    assert len(r2) == 2 and any("no showings folder" in x["where"] for x in r2), r2
+    assert len(r2) == 3 and any(x["where"] and "no showings folder" in x["where"] for x in r2), r2
     s["evs"].append({"event": "note", "id": "RIMMANDRAKE_WAIT_DATE_FUTURE", "ts": iso(NOW - H),
                      "text": "floor grows zero flora; No keeper save. NEXT: restage"})     # a negation is not a look
-    assert len(sec(s)["ready"]) == 2, sec(s)["ready"]
+    assert len(sec(s)["ready"]) == 3, sec(s)["ready"]
+    s["his"] = None                     # who is his could not be read: nothing is routed to him by that rule
+    s["causes"] = {"who is his (owner_queue.is_his)": "ledger: OSError"}
+    t = "\n".join(N.markdown(sec(s)))
+    assert "Could not look: who is his" in t
 
 
 def t_cannot_see_is_unmeasured():
@@ -282,25 +315,33 @@ def t_four_answers_differ():
     need()
     blind = "\n".join(N.markdown(N.safe_section(N.off_stores("live reads off (--no-live)"), NOW)))
     assert "Could not look: every store (live reads off (--no-live))" in blind and "UNMEASURED" in blind, blind
-    assert "Sitting here" not in blind and "(0)" not in blind
+    assert "Stages (" not in blind and "(0)" not in blind
     norec = stores()
     norec["records"] = None
     norec["causes"] = {"the run records": "run records: OSError: gone"}
     x = sec(norec)
     t = "\n".join(N.markdown(x))
-    assert x["doing"] == "UNMEASURED" and x["steps"][0]["sits"] == "UNMEASURED" and x["escalated"] == "UNMEASURED"
+    assert x["doing"] == "UNMEASURED" and x["escalated"] == "UNMEASURED"
     assert "Doing now (UNMEASURED)" in t and "Could not look: the run records" in t, t[:600]
     failed = "\n".join(N.markdown(N.safe_section({"items": 5, "causes": {}}, NOW)))
     assert failed.count("FAILED") == 1 and "Doing now" not in failed, failed
+    nolane = stores()
+    nolane["lane"] = None
+    nolane["causes"] = {"the List Pipeline tick's reading.json": "FileNotFoundError: gone"}
+    y = sec(nolane)
+    assert {y["stage_of"][i] for i in ("RIMMANDRAKE_LANE_READY", "RIMMANDRAKE_LANE_HOLDS")} == {"unmeasured"}, y["stage_of"]
+    nl = "\n".join(N.markdown(y))
+    assert "could not look: FileNotFoundError: gone" in nl and "**Unmeasured** · by hand · **3**" in nl, nl[:900]
+    stale = stores()
+    stale["lane"]["at"] = NOW - 2 * H
+    assert sec(stale)["stage_of"]["RIMMANDRAKE_LANE_READY"] == "unmeasured"
     ok = text()
-    assert "Waiting on the red dispatcher (1)" in ok
     zero = stores()
     zero["red_reading"]["items"] = {}
+    zero["records"] = [r for r in zero["records"] if r["status"] != "running"]
     z = "\n".join(N.markdown(sec(zero)))
-    assert "Open and why: Waiting on the red dispatcher (0)" in z and "none (looked: the ledger)" in z, z
-    assert len({blind, t, failed, z}) == 4
-
-
+    assert "**Work** · program · **0**" in z and "Doing now (0)" in z and "none (looked: the run records" in z, z
+    assert len({blind, t, failed, z, ok}) == 5
 def t_placed_under_pipeline_now():
     need()
     d = {"mods": [], "others": [], "held": {"total": 0, "counted": 0, "counted_files": 0, "uncounted": [],
@@ -327,7 +368,7 @@ def t_same_inputs_same_section():
 
 
 def main():
-    tests = [t_mod_or_not_by_one_rule, t_steps_as_they_are, t_launcher_from_records, t_doing_now_rows,
+    tests = [t_mod_or_not_by_one_rule, t_stages_from_one_rule, t_launcher_from_records, t_doing_now_rows,
              t_next_names_its_wait, t_closed_last_day, t_open_by_reason_oldest_first, t_escalated_from_run_ends,
              t_ready_for_review, t_cannot_see_is_unmeasured, t_four_answers_differ, t_placed_under_pipeline_now,
              t_same_inputs_same_section]

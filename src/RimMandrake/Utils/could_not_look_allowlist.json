@@ -1,6 +1,8 @@
 {
  "_doc": "Places could_not_look_lint.py found when it was born (2026-11-19, RIMMANDRAKE_SHARE_PROBE_RESULT_TYPE_NINE_FILES_ROLL_OWN), keyed file::function::shape with a count. A count is a list of places to read, not a count of bugs. Fixed places leave slack: could_not_look_lint.py --prune. `reasons` holds, per key, one line per place in source order, classed by reading it (RIMMANDRAKE_LAUNCH_LINT_READS_AFTER_HE_RULES_PAGE_STRICTNESS): RARE (only a rare failure reaches it; the component's boundary page lists it as not handled, owner by card 2026-11-19) or NOT A COLLAPSE (why). A third class, UNREAD (\"unread by owner's card 2026-11-19: only files that failed before are read\", RIMMANDRAKE_READ_ONLY_FILES_THAT_FAILED_PILOT_FOUND_ZERO), marks a place allowed without a reading: only the files where a could-not-look collapse was seen were read.",
  "places": {
+  "src/RimMandrake/rimflow/list_pipeline.py::epoch::except-returns-empty": 1,
+  "src/RimMandrake/Utils/no_home.py::last::except-returns-empty": 1,
   "src/RimMandrake/rimflow/detached_helper.py::drain_refusal::except-returns-empty": 1,
   ".claude/hooks/role_result_before_stop.py::blocks_so_far::except-returns-empty": 1,
   ".claude/hooks/role_result_before_stop.py::blocks_so_far::or-empty": 1,
@@ -265,6 +267,12 @@
   "src/RimMandrake/rimflow/wake_words.py::first_ts::except-returns-empty": 1
  },
  "reasons": {
+  "src/RimMandrake/rimflow/list_pipeline.py::epoch::except-returns-empty": [
+   "NOT A COLLAPSE: None is 'unknown time', never an empty answer: every caller of list_pipeline.epoch reads None as unknown (no age, no later act; a wait date that cannot be read is its own wait), design/specs/2026-11-23-list-stage-view/boundary.md one-stage-per-item-from-one-rule"
+  ],
+  "src/RimMandrake/Utils/no_home.py::last::except-returns-empty": [
+   "NOT A COLLAPSE: None is 'no reading', which owner_queue.one_view prints as 'not filed anywhere: UNMEASURED (no reading yet)', never 0 (design/specs/2026-11-23-owner-one-view/boundary.md one-view-shows-his-ours-and-the-count)"
+  ],
   "src/RimMandrake/rimflow/detached_helper.py::drain_refusal::except-returns-empty": [
    "NOT A COLLAPSE: the gate fails open by its page's promise a-new-launch-waits-while-the-account-drains (design/specs/2026-11-20-account-drain/boundary.md): an unreadable switching notice means the plan's timer cannot be read, and a dead timer must not hold every launch; the plan's own hard line still stops runs"
   ],

@@ -62,7 +62,7 @@ class Unmeasured(Exception):
     """Could not look. The message is the cause, said to the reader by name."""
 
 
-# ---- normalising and matching (the probe's rule, design/specs/2026-11-22-one-view-of-open-work/probe_his_words.py) ---
+# ---- normalising and matching (the probe's rule, src/RimMandrake/Utils/probe_his_words.py) ---
 
 def norm(s):
     s = re.sub(r"<system-reminder>.*?</system-reminder>", " ", str(s or ""), flags=re.S)

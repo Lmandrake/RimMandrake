@@ -454,6 +454,18 @@ def live_facts(mods):
             out["owed"] = DH.owed_lines(recs, world.items, evs)
     except Exception as e:      # noqa: BLE001
         out["errors"].append("run records: %s: %s" % (e.__class__.__name__, str(e)))
+    # the owner's one view, shared with Fleet Now (design/specs/2026-11-23-owner-one-view/boundary.md)
+    if world is not None and out["questions"] is not None:
+        try:
+            import no_home  # noqa: E402
+            now = time_now()
+            home = no_home.reading(evs, world.items, out["records"], now)
+            out["view"] = {"his": out["questions"], "ours": owner_queue.ours(n, world.items, now), "home": home}
+            failed = owner_queue.write_view(out["view"]["his"], out["view"]["ours"], home, now)
+            if failed:
+                out["errors"].append("the owner's one view was not shared with Fleet Now: %s" % failed)
+        except Exception as e:      # noqa: BLE001  no view: the page falls back to its own lists, named
+            out["errors"].append("the owner's one view: %s: %s" % (e.__class__.__name__, str(e)))
     return out
 
 
@@ -718,8 +730,17 @@ def stage_boxes(m, runs, ivs, cur):
     return dict(sorted(box.items(), key=lambda kv: order.get(kv[0], 99)))
 
 
-def mandrake_needs(mods):
-    """-> the "Needs Mandrake" lines: his open journal questions and his queue's questions on each mod."""
+def journal_needs(mods):
+    """-> his open questions in the mods' journals (a store outside the ledger; each is on its mod's card too)."""
+    return ["%s: question %d, %s" % (m["label"], q["n"], q["text"]) for m in mods for q in m.get("jquestions") or []
+            if not q["answered"] and q["who"] != "conductor"]
+
+
+def mandrake_needs(mods, view=None):
+    """-> the "Needs Mandrake" lines. With the owner's one view: its rows (owner_queue.is_his, the rule Fleet Now shows)
+    then the journal questions. Without it: his open journal questions and his queue's questions on each mod."""
+    if view:
+        return ["%s (`%s`)" % (" ".join(str(x["q"]).split()), x["item"]) for x in view["his"]] + journal_needs(mods)
     me = []
     for m in mods:
         for q in m.get("jquestions") or []:
@@ -836,10 +857,11 @@ def conductor_needs(mods, rd, now, owed=(), closed=None, stale=()):
     return {"conductor": _collapse(co), "records": records, "defects": defects}
 
 
-def reactions(mods, now, rd=None, owed=(), closed=None, stale=()):
+def reactions(mods, now, rd=None, owed=(), closed=None, stale=(), view=None):
     """-> {"mandrake": [line], "conductor": [line], "records": {mod: [line]}, "defects": [line]}: only things on disk."""
     out = conductor_needs(mods, rd, now, owed=owed, closed=closed, stale=stale)
-    out["mandrake"] = mandrake_needs(mods)
+    out["mandrake"] = mandrake_needs(mods, view)
+    out["journal"] = journal_needs(mods)
     return out
 
 
@@ -1010,7 +1032,8 @@ def gather(root, live=True):
         has = sorted(os.listdir(os.path.join(croot, f)))
         other.append({"name": f, "files": has})
     rd, stale = read_dispatch(now, lf["errors"]) if live else (None, [])
-    needs = reactions(mods, now, rd, owed=list(lf.get("owed") or []), closed=lf.get("closed"), stale=stale)
+    needs = reactions(mods, now, rd, owed=list(lf.get("owed") or []), closed=lf.get("closed"), stale=stale,
+                      view=lf.get("view"))
     for m in mods:      # what left the list stays on the mod's card (needs-conductor page)
         m["records"] = needs["records"].get(m["name"], [])
         m["unread"] = list(m.get("unread") or []) + [
@@ -1020,8 +1043,10 @@ def gather(root, live=True):
         needs["pipeline"] = dispatch_pipeline(now, lf["errors"])
     # the pipeline for work that is not mod work (design/specs/2026-11-22-non-mod-pipeline-section/boundary.md)
     nm_stores = (MNM.read_stores(lf, versioned) if live else MNM.off_stores("live reads off (--no-live)"))
-    nonmod = MNM.safe_section(nm_stores, now, spend=read_spend)
+    import list_pipeline as LP  # noqa: E402  the List Pipeline's one stage rule, the one list_dispatch's tick calls
+    nonmod = MNM.safe_section(nm_stores, now, spend=read_spend, stage=lambda item, t: LP.stage_of(item, t))
     return {"mods": mods, "others": other, "held": held, "needs": needs, "now": now, "nonmod": nonmod,
+            "view": lf.get("view"),
             "intake": {"count": lf["intake"], "questions_total": UNM if lf["questions"] is None else len(lf["questions"])},
             "errors": lf["errors"], "convergence": convergence(root, lf["errors"])}
 
@@ -1466,10 +1491,33 @@ def boxes_html(m):
     return "".join(parts)
 
 
+def view_block(d, fmt):
+    """The "Needs Mandrake" block from owner_queue.one_view (his rows, ours, the no-home count) and the journal
+    questions under it, or None when the page has no view (then the old per-mod list is drawn)."""
+    v = d.get("view")
+    if not v:
+        return None
+    import owner_queue  # noqa: E402
+    block = owner_queue.one_view(v["his"], v["ours"], v["home"], fmt=fmt)
+    j = d["needs"].get("journal") or []
+    if fmt == "html":
+        return ('<h2 style="color:%s">Needs Mandrake (%d)</h2>%s' % (ALERT, len(v["his"]), block)
+                + ('<p><b>Open questions in mod journals</b> (on the mod cards; no ledger item): %d</p><ul>%s</ul>'
+                   % (len(j), "".join("<li>%s</li>" % esc(x) for x in j)) if j else ""))
+    out = ["## Needs Mandrake (%d)" % len(v["his"]), "", block, ""]
+    if j:
+        out += ["**Open questions in mod journals** (on the mod cards; no ledger item): %d" % len(j), ""]
+        out += ["- " + md_cell(x) for x in j] + [""]
+    return out
+
+
 def needs_md(d):
     out = []
     for key, title in (("mandrake", "Needs Mandrake"), ("conductor", "Needs Conductor"),
                        ("pipeline", "Pipeline now (the Dispatch tick)")):
+        if key == "mandrake" and d.get("view"):
+            out += view_block(d, "md")
+            continue
         L = d["needs"].get(key) or []
         out += ["## %s (%d)" % (title, len(L)), ""] + (["- " + md_cell(x) for x in L] or ["- nothing on disk asks"]) + [""]
     return out
@@ -1488,6 +1536,9 @@ def needs_html(d):
     out = []
     for key, title, col in (("mandrake", "Needs Mandrake", ALERT), ("conductor", "Needs Conductor", YELLOW),
                             ("pipeline", "Pipeline now (the Dispatch tick)", YELLOW)):
+        if key == "mandrake" and d.get("view"):
+            out.append(view_block(d, "html"))
+            continue
         L = d["needs"].get(key) or []
         out.append('<h2 style="color:%s">%s (%d)</h2><ul>%s</ul>' % (col, title, len(L), "".join(
             "<li>%s</li>" % esc(x) for x in L) or "<li>nothing on disk asks</li>"))
