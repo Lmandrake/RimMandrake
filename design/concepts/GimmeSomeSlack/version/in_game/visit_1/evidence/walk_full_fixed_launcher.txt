@@ -1,0 +1,33 @@
+run gsspt_20261123T232747_s1  scenarios=cords,soak,ui,save_reload  mode=batch
+  cords        PASS      20.33s     17 ticks  cord drawn on connect, gone on disconnect, back on reconnect; live == fresh at every step; C1 not reproduced here
+  soak         PASS      46.30s   2000 ticks  8 blasts in wind: cords == fresh, spans symmetric, hose clear after every blast; 1 span cut(s) by explosion
+  ui           PASS      31.62s      0 ticks  24/24 interface checks passed
+  save_reload  PENDING    2.51s    446 ticks  armed: saved JBPT_gsspt_20261123T232747_s1 at tick 18786 (7 lines); verdict owed by save_reload_b (resume=gsspt_20261123T232747_s1) after loading that save
+
+scenario     status   wall s  ticks  frames  setup s  exec s  observe s  ticks/s
+-----------  -------  ------  -----  ------  -------  ------  ---------  -------
+cords        PASS     20.33   17     43      0.01     0.71    19.61      142    
+soak         PASS     46.30   2000   119     0.14     6.44    39.73      323    
+ui           PASS     31.62   0      154     0.01     31.61   0.00       0      
+save_reload  PENDING  2.51    446    37      0.17     1.41    0.93       356    
+RUN TOTAL    done     100.91  2463   357     0.00     0.00    0.00       326    
+tick mode batch (None), frame budget 50 ms, runner overhead 0.15 s, Ultrafast multiplier None
+launcher: 101.68 s wall start->collect, 23 bridge calls
+RUN VERDICT INCOMPLETE  (6 records)  copy \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_GIMMESOMESLACK_IN_GAME_VISIT_ONE_RUN_THREE.det\Transient\gss_playtest\gsspt_20261123T232747_s1.jsonl
+
+RESUME: loading JBPT_gsspt_20261123T232747_s1 (tick 18786)
+RESUME: cords laid=True after 6.16 s (16 polls, last {'pending': 0, 'builds': 52, 'success': True})
+run gsspt_20261123T232948_s1  scenarios=save_reload_b  mode=batch  resume=gsspt_20261123T232747_s1
+  save_reload_b PASS       5.07s      0 ticks  all 7 cord/hose/span lines the same after the load (0 polyline(s) redrawn, not a bar)
+
+scenario       status  wall s  ticks  frames  setup s  exec s  observe s  ticks/s
+-------------  ------  ------  -----  ------  -------  ------  ---------  -------
+save_reload_b  PASS    5.07    0      4       5.07     0.00    0.00       0      
+RUN TOTAL      done    5.11    0      5       0.00     0.00    0.00       0      
+tick mode batch (None), frame budget 50 ms, runner overhead 0.04 s, Ultrafast multiplier None
+launcher: 5.20 s wall start->collect, 38 bridge calls
+RUN VERDICT PASS  (3 records)  copy \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_GIMMESOMESLACK_IN_GAME_VISIT_ONE_RUN_THREE.det\Transient\gss_playtest\gsspt_20261123T232948_s1.jsonl
+RESUME: 1 try, 24.1 s
+
+VERDICT PASS
+[bridge split] 127.1 s wall: load 1.2 / ticks 0.0 / reads 2.8 / other 63.1 / outside calls 60.0 s
