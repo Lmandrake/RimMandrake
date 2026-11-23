@@ -5822,6 +5822,23 @@ def padded_inside(rect, map_size, pad=1):
     return x + pad, z + pad, max(1, w - 2 * pad), max(1, h - 2 * pad)
 
 
+def front_crop(cells, crop=None):
+    """Pure. Fire cells -> (x, z, w, h): the capture rect of the burn front, at most `crop` (R6_FRONT_CROP) a side, laid
+    on the densest crop x crop window of the fires, so the rect holds fire. HARNESS (Pyrelands visit 6, 2026-11-22,
+    ArchSmall): the rect was laid from the bounding box's min corner (min x of one fire, min z of another), and 10 of the
+    24 hourly captures, the last one included, showed grass with no front while 48 to 111 fires burned. Presumed cause
+    (the run kept no fire cells): fires off the front (the run read 12 to 21) put that corner far from it.
+    selftest_pyrelands_frames_subject.py holds the rule. None for no readable cell."""
+    crop = crop or R6_FRONT_CROP
+    busy = densest_cluster(cells, crop)
+    if not busy:
+        return None
+    x0, z0 = min(c[0] for c in busy), min(c[1] for c in busy)
+    w = min(crop, max(c[0] for c in busy) - x0 + 1)
+    d = min(crop, max(c[1] for c in busy) - z0 + 1)
+    return x0, z0, max(w, 4), max(d, 4)
+
+
 def _r6_shot(t, rect, name):
     """A capture of `rect` at play zoom; its path, None offline."""
     if _live(t):
@@ -6016,10 +6033,7 @@ def _r6_burn_line(t):
             if cells:
                 row["cx"] = sum(c[0] for c in cells) / float(len(cells))
                 row["cz"] = sum(c[1] for c in cells) / float(len(cells))
-                x0, z0 = min(c[0] for c in cells), min(c[1] for c in cells)
-                w = min(R6_FRONT_CROP, max(c[0] for c in cells) - x0 + 1)
-                d = min(R6_FRONT_CROP, max(c[1] for c in cells) - z0 + 1)
-                shots.append(_r6_shot(t, (x0, z0, max(w, 4), max(d, 4)), "burn_line_hour_%02d" % i))
+                shots.append(_r6_shot(t, front_crop(cells), "burn_line_hour_%02d" % i))
                 if i >= R6_FRONT_SAVE_HOUR and saved is None:
                     saved = t.bridge_call("rimworld/save_game", saveName="burn_line_walking")
             rows.append(row)

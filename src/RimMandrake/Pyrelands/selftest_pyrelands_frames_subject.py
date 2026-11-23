@@ -161,6 +161,31 @@ def pure_checks():
     check("densest_cluster: a tie picks the lowest window, deterministically", tie == [(5, 5)], repr(tie))
     nn = dc([(None, 1), (3, 4)], 24)
     check("densest_cluster: None coordinates are skipped", nn == [(3, 4)], repr(nn))
+    # front_crop (HARNESS, visit 6): a burn front plus two stray fires far off (the run read 12-21 fires off the front)
+    import math
+    fc = getattr(v, "front_crop", None)
+    arc = [(int(round(100 + 40 * math.cos(a / 20.0))), int(round(150 + 40 * math.sin(a / 20.0)))) for a in range(0, 63)]
+    held = []
+    for k in range(0, len(arc) - 8, 4):
+        part = arc[k:k + 30] + [(30, 30), (31, 30)]   # a front segment of 30 fires and two stray fires far off
+        r = fc(part) if fc else None
+        inside = sum(1 for c in part[:-2] if r and r[0] <= c[0] < r[0] + r[2] and r[1] <= c[1] < r[1] + r[3])
+        held.append(inside)
+    def old_corner(cells, crop=30):   # the parent's rule, kept here as the planted fault this check must see
+        x0, z0 = min(c[0] for c in cells), min(c[1] for c in cells)
+        return x0, z0, max(min(crop, max(c[0] for c in cells) - x0 + 1), 4), max(min(crop, max(c[1] for c in cells) - z0 + 1), 4)
+    old_held = []
+    for k in range(0, len(arc) - 8, 4):
+        part = arc[k:k + 30] + [(30, 30), (31, 30)]
+        r = old_corner(part)
+        old_held.append(sum(1 for c in part[:-2] if r[0] <= c[0] < r[0] + r[2] and r[1] <= c[1] < r[1] + r[3]))
+    check("front_crop: the parent's min-corner rule leaves a crop with no front fire (the check can see the "
+          "fault: fires inside %r)" % old_held, min(old_held) == 0, repr(old_held))
+    check("front_crop: every crop holds front fire (%d segments, fires inside %r)" % (len(held), held),
+          bool(held) and min(held) > 0, repr(held))
+    check("front_crop: no cells -> None", fc is not None and fc([]) is None)
+    one = fc([(10, 20)]) if fc else None
+    check("front_crop: one fire -> a 4x4 rect on it", one == (10, 20, 4, 4), repr(one))
     check("inside_map: a rect over the edge slides back inside", im((230, 230, 48, 48), M) == (202, 202, 48, 48),
           repr(im((230, 230, 48, 48), M)))
     check("inside_map: a rect wider than the map -> the whole width", im((-10, 5, 400, 20), M) == (0, 5, 250, 20),
