@@ -1,0 +1,541 @@
+# GPT's analysis: blind first, then a teardown of his idea and our options
+
+Item: `RIMMANDRAKE_STUDY_ONE_PLACE_FOR_OWED_WORK_HE_ASSUMED_IT_EXISTED`. Sunday 2026-11-22, 7:17 PM to 7:30 PM
+PST. The owner ordered this consult himself. Tool: `python3 src/RimMandrake/Utils/gpt_consult.py` (Codex command line
+on Archmagi, model `gpt-6.1-sol`, default high effort, web search on). Both consults ended `VERDICT=ANSWERED exit=0`.
+Each call is a fresh session, so the second call had no memory of the first.
+
+- **Consult 1, blind.** GPT got `plight.md` and `census.md` and the owner's question. It did not get his proposed
+  cure, our options, or the sibling `proposal.md`. (`plight.md` §9 quotes his message with the cure sentences cut for
+  this reason; his full words are on the ledger item and in the options paper
+  below.) Answered in 271 s.
+- **Consult 2, teardown.** GPT got the same two pages, a paper with his proposal in his own words (H1 capture
+  everything at once in one place; H2 nobody stops until the record is reconciled) and four other options (A to D),
+  and consult 1's answer as "a second, independent analysis". Authorship of both papers was withheld. Answered in 435 s.
+
+GPT's two answers are below word for word. My checks of its claims come first.
+
+## What I checked in GPT's answers, and what I found
+
+| GPT's claim | check | result |
+|---|---|---|
+| The two event totals disagree (67,862 and 61,240) | recounted the event files | **GPT is right that they differed; both are true.** 67,880 events in all, 61,307 of them name an item `[measured 7:22 PM]`. The census counted item events. `plight.md` now says so. |
+| Anthropic's harness post is dated 2025-11-26 and reports premature completion | fetched the page | Confirmed: "Published Nov 26, 2025"; a later agent would "declare the job done". |
+| Cursor, 2026-01-14: a shared locked coordination file failed; roles fixed it | fetched the page | Confirmed (date and text). |
+| Cursor, 2026-02-05: one executor with every role stalled and claimed premature completion; the integrator was removed; a worker's handoff goes back to the planner that asked | fetched the page | Confirmed (date and text). |
+| Yegge, "Welcome to Gas Town": earlier orchestrators failed; heavy account use | fetched https://yegge.ai/essays/welcome-to-gas-town/ | Confirmed: "Eventually it failed... v2, which also failed"; "expensive as hell"; a second account. "Frequent maintenance, substantial human involvement" is GPT's summary; I did not find one sentence that says it, so: partly confirmed. Publication date not read by me. |
+| "10 hours with Gas Town": a dispatched worker sat at an unsubmitted prompt | tried to fetch the Medium page | **UNVERIFIED.** The page returned no text to me. Treat as GPT's report only. |
+| Google SRE workbook: a team cleared months of backlog in two days by triage and deletion; almost nothing deferred was worth resuming | fetched https://sre.google/workbook/overload/ | Confirmed: "almost none of these tasks were impactful or important enough to resume"; "In two days". |
+| Same chapter: turning ignored alerts into tickets with a three-day rule made overload worse | same page | Confirmed: "A new ticket SLO required us to handle tickets within three days... created a side effect that was perhaps even worse." |
+| Google SRE book: a living incident document that "can be messy, but must be functional"; explicit handoff | fetched https://sre.google/sre-book/managing-incidents/ | Confirmed. |
+| "The seven-day census is not a clean drop rate; do not add the rows" | read `census.md` §2c | Correct. The 21 expired waits include 5 owed items that are also counted in other rows. |
+| "Seven obligations were already performed without closure, so 'no report found' may hide more of the same" | `census.md` §2a | Correct as a caution; the census did look for evidence per item, so the 25 are "no evidence found", not "proven undone". |
+| Consult 2: "the run-to-Conductor row lists nine named owed drops, not ten" | read `census.md` §2c | **GPT is right.** The row names 9 owed items; the tenth is the owner's sentence "studies … do not come back to me", which may describe the same nine. Read that row as 9 measured plus 1 report. |
+| Consult 2: nominal flow is 6.9 a day, "closer to seven than six" | (190 − 142) / 7 | **GPT is right:** 6.86. `plight.md` now says about 7. |
+| Consult 2: the options paper "says six handover places but enumerates seven" | read my own paper | **GPT is right.** Seven. |
+| Consult 2: "three stores no program reads back" is not literally true | `handoff.py --wake` | **GPT is right:** the wake program prints handoff pointers. The true claim is narrower: no program acts on what those three stores hold. |
+| Consult 2: 1,597 = 769 + 612 + 144 + 37 + 35; 48 = 7 + 2 + 39; 39 = 25 + 6 + 8 | arithmetic | All three sums hold. |
+| Consult 2: "25 is a useful reported baseline, not independently established ground truth" | — | I agree. `ways_forward.md` says the 25 is audited before the day-seven comparison. |
+
+## How GPT's names map to the ways in `ways_forward.md`
+
+| in the papers GPT read | in `ways_forward.md` |
+|---|---|
+| H1 and H2 (the owner's proposal) | Way 1 |
+| options B "a second drainer"; analysis A "reliable dispatch" | Way 2 |
+| options A "programs record the hand-overs" | Way 3 |
+| options C "the mod is the record"; analysis B "durable domain ownership" | Way 4 |
+| options D "sources against homes"; part of analysis C "reconcile actual against intended state" | Way 5 |
+
+## Where GPT and I differ, after both rounds
+
+1. **The first week.** GPT: only the executor for the Conductor's owed list; a source count first "risks spending the
+   week measuring an already demonstrated failure". Me: the executor, plus a count of two sources that a program can
+   list exactly (ended runs, waits come due). Reason: the owner's own requirement is to see what was dropped ("if you
+   show me JUST from the ledger... I will never know what was dropped"), and an executor that works only the list
+   cannot show what never reached the list. It is one small run, and it does not delay the executor.
+2. **How much life-cycle state a result needs.** GPT wants a returned result to pass through received, interpreted,
+   accepted and fulfilled, with the receiving role accepting each transfer. I would keep two states, returned and
+   answered, and check the act itself. Four states are four more places for a fault of form, and the factory's
+   history says such fields get filled cheaply. This is a judgment, not a measurement.
+3. **His capture rule.** GPT says my paper rejected "capture everything" too broadly, and that capture of accepted
+   debts stays necessary. I accept the correction. `ways_forward.md` keeps mandatory capture of debts between actors
+   and rejects only "everything" and "one physical store".
+4. **Age limits.** My paper proposed that a debt untouched for 24 hours must be done, dropped or put to him, and a cap
+   of 15. GPT: 24 hours and 15 name no danger, and the Google case shows a three-day handling rule making overload
+   worse `[checked, confirmed]`. I withdraw both. Age triggers a second look; it forces nothing.
+5. **Two ideas that are GPT's and not mine, and that I adopt as later steps:** (a) remove a copying job by changing
+   what the reader reads: a builder is given the design plus the current answers to its open questions, so no agent
+   has to copy a ruling into the design page; (b) test any coordination by deliberate interruption (kill a helper,
+   restart the Conductor window, withhold a result line) and check that the debt is still found and done.
+6. **What GPT is least sure of, and I share:** whether a fresh helper can act on an old debt without rebuilding days
+   of context. If it cannot, the answer moves toward Way 4 (the mod's holder does its own follow-ups), not toward a
+   stricter capture rule or a harder stop.
+
+---
+
+## Consult 1, blind: GPT's answer, word for word
+
+**My pick is to give the existing obligations an executor that survives Conductor restarts, while leaving mod state in the mod folders.** Start with the Conductor’s owed queue. Do not begin by consolidating all 24 stores.
+
+The central failure is that recording a need does not reliably cause its next act. The system repeatedly transfers information to the Conductor while leaving responsibility, execution and closure implicit. More capture would preserve more stranded work.
+
+**1. Diagnosis**
+
+I see five interacting causes.
+
+| Root cause | Evidence it explains |
+|---|---|
+| **The Conductor is both the interactive front desk and the default executor of unfinished coordination.** Owner conversation preempts queue work; restarts interrupt it. | The 25 recorded owed drops; studies that never return; four window-to-window drops; the stopped situation briefs. |
+| **Handovers publish information without ensuring a recipient acts.** A result file, alarm or handoff pointer is treated as a transfer of responsibility. | Ten run-to-Conductor drops; nine answered items offered to no seat; 13 open pipeline hand acts despite an alarm. |
+| **Several transitions have no operating mechanism.** Their implementation is a sentence telling a model what to remember. | Twenty-one expired waits; the idle test machine; rulings recorded but not applied; retirement of STATUS_BOARD never taking effect. |
+| **Authority is duplicated, and copies require manual propagation.** Different readers consume different versions of “what is true.” | Conflicting owner lists; false design questions; old goals and priorities; repeated questions already ruled on. |
+| **The factory creates coordination work faster than its scarce integration attention can reliably finish it.** | Filing at 100–300 items daily; owner-triggered culls; studies producing proposed commands that require another run; long digests; growing owed tail despite fast median closure. |
+
+The fifth diagnosis is partly an inference. You have counts of items, but not enough service-time or token data to prove a capacity deficit. Nevertheless, the repeated requirement for the owner to order backlog disposal is strong evidence that disposal and prioritisation lack an effective operator.
+
+Three distinctions matter.
+
+**A completed worker task is not necessarily a completed outcome.** The ticket-routing study fulfilled its brief correctly. Its brief ended before application. That created an integration job for the most interrupted agent. Where authorised, “investigate, apply justified changes, verify and report” would remove that handover. Where investigation genuinely must precede a decision, that decision needs an actual recipient.
+
+**Recording an answer is not applying an answer.** The design-question example is not primarily a memory failure. The answer exists. The missing operation is updating the document builders consume. Likewise, `for=OWNER` continuing after his answer is a broken transition, not insufficient documentation.
+
+**An alarm is not an executor.** You already have alarms that remain open for days. Adding “expired wait” alarms alone would reproduce this pattern unless something independently takes the resulting work.
+
+The documents’ framing misses or overstates several things:
+
+- **“24 stores” is not itself the pathology.** It counts different abstractions: ledger subsets, native creative records, outputs, memory and views. Mod bars and machine readings deserve different homes. The dangerous duplication is competing authority over the same decision or next act.
+- **“Derived” does not mean harmless.** A page contains an operational interpretation: who should act and why. Two computed pages can disagree without either storing new facts.
+- **The evidence does not establish a general failure to capture speech.** That channel is explicitly unmeasured. It remains a risk, but it does not explain away the measured failures after capture.
+- **The census is not a clean systemwide drop rate.** Expired waits overlap other drops; eleven handoff pointers are uncertain; the seven-day census includes outstanding-state observations. Do not add the rows into one failure total.
+- **Missing delivery evidence is weaker than proof of nondelivery.** Seven obligations were already performed without closure. Some “no report found” cases could have the same problem.
+- **The two event totals disagree:** 67,862 versus 61,240 over the same item count. That need not invalidate the diagnosis, but these are not interchangeable snapshots.
+- **Some standing rules conflict.** “File every finding” and “not every finding deserves a ticket” require an operating interpretation. Otherwise agents choose between flooding the queue and violating instructions.
+
+The right interpretation is: **preserve an accepted obligation across interruption; retain creative intent in its native work; discard observations that do not justify further action.** Those are three different decisions.
+
+**2. Three genuinely different ways forward**
+
+These mechanisms can coexist eventually. They should be evaluated separately first.
+
+**A. Reliable dispatch using the existing ledger**
+
+Make the ledger’s actionable obligations drive execution independently of the interactive window. A program discovers readiness and launches a fresh execution role; the model supplies judgment. Neither depends on the Conductor remembering a sweep.
+
+This is a delivery mechanism. It does not make the ledger the home of every mod gap.
+
+- **When work becomes owed:** attach the next act, responsible role, readiness condition and source reference to an existing item. Create an item only when there is an actual separate commitment. A worker result requiring follow-up remains discoverable until someone handles it; it cannot disappear beneath the last forty log lines.
+- **When picked up:** the worker claims that obligation, reads its source and current rulings, then acts. Claims must be shared through a coordination endpoint visible across clones, rather than relying on eventual Git publication. Keep claim transactions short; do not hold a global lock while a model thinks.
+- **When stopped:** leave an evidenced outcome, an explicit cancellation, or a continuation with its real dependency. A crashed worker’s claim becomes reclaimable after checking whether it is still alive and whether its effects already occurred. Repeated delivery must not mean repeated installation, launch or notification.
+- **What the owner sees:** existing pages use the same owner-routing function. They also show a compact “we owe you” section, including delivery promises. He does not read or administer the executor’s queue.
+- **Gain:** directly addresses recorded debts, expired waits, orphaned answers and unconsumed results. Restarts cease to be scheduling events.
+- **Cost:** moderate build effort; additional execution tokens; a little lifecycle metadata. Its attention cost falls only if it performs work rather than sending more flags to the Conductor.
+- **Failure:** duplicate actions, retry storms, bad routing, or cheap “handled” notes without an outcome. Quota exhaustion still prevents progress. The system must show that condition honestly rather than marking the queue healthy.
+- **Month three:** new launchers bypass intake; old item types remain forever “waiting”; the execution role accumulates planning and reporting duties until it becomes another Conductor. The defence is a narrow job—finish or explicitly resolve accepted obligations—and checks at the actual launch/result boundaries.
+- **Delete:** queue-like carry items; handoff sections that merely duplicate next acts; log-tail reading as the result-delivery mechanism; the separate pipeline hand-act queue once its obligations are represented here. Preserve useful historical notes without treating them as live queues.
+
+**How “MUST use” works without paperwork gates:** standard launch, result, answer and stop tools automatically participate. If metadata is malformed, the wrapper preserves the raw reference and repairs it asynchronously. Real work continues. If coordination is unavailable, existing run artifacts support recovery.
+
+That provides automatic participation through supported paths. It cannot guarantee understanding of every spoken promise or capture an arbitrary process killed before it writes anything. Claiming otherwise would be false.
+
+**B. Durable domain ownership**
+
+Give a persistent role responsibility for a whole mod or operational domain across many disposable sessions. Helpers report to that role, which owns integration. The Conductor becomes the owner’s interface and a cross-domain prioritiser.
+
+This changes the organisation rather than standardising all task delivery.
+
+- **When work becomes owed:** it belongs to the domain owner. A swamp-atmosphere intent updates the mod’s direction; a judge’s fault enters its gaps; an answer changes its design. These do not each require a Conductor ticket.
+- **When picked up:** a fresh session resumes the domain, reads its native state and unfinished results, and advances the whole outcome. It does not reconstruct a sitting from a giant carry title.
+- **When stopped:** the domain remains owned. Its native record states the next substantive action or blocker; replacement sessions resume that responsibility. Cross-domain transfers require acceptance by the receiving role; merely mentioning another domain does not discharge the sender.
+- **What the owner sees:** mod outcomes, examples worth judging, genuinely required owner acts, and cross-domain exceptions. He retains one conversational interface.
+- **Gain:** fewer handovers, less ticket ratcheting, better continuity of creative intent. Local integration no longer competes with every owner conversation.
+- **Cost:** recurring tokens to resume domain context; moderate scheduling and ownership machinery; potential duplication across domains. Ownership need not mean 34 continuously running agents.
+- **Failure:** silos, contradictory local interpretations, and domain owners waiting politely on each other. Shared game instances and quotas remain global constraints.
+- **Month three:** renamed or split domains inherit ambiguous responsibilities. A retired role still owns live work. A new domain owner ignores old results because their schema changed. Responsibility therefore needs to attach to a stable domain identity, with explicit reassignment during redesign.
+- **Delete:** Conductor-owned follow-ups for routine mod integration; duplicate tickets that merely mirror native stage/gap state; worker reports whose sole purpose is to ask the Conductor to relay something to the mod’s next worker.
+
+This fits the owner’s preference for whole-mod ownership best. It is a larger organisational change than A.
+
+**C. Reconcile actual state against intended state**
+
+Have scheduled programs repeatedly inspect native records and discover missing effects. Routine continuation is derived from the discrepancy, rather than depending on somebody having filed and delivered every intermediate task.
+
+Examples: an answered design question still marked open; a completed run whose result has not been integrated; an expired hold; an eligible game instance idle while runnable work waits.
+
+This is a convergence mechanism. A temporary execution plan is regenerated each pass; it is not another writable backlog.
+
+- **When work becomes owed:** update the authoritative intent or source record. For example, a card answer identifies the question it resolves. Routine downstream work follows from that state.
+- **When picked up:** the reconciler observes a mismatch and launches an authorised repair. Ambiguous creative decisions go to the domain responsible for them; they are not mechanically “corrected.”
+- **When stopped:** the next pass checks actual effects again. An interrupted repair is rediscovered. A repair is complete when the discrepancy disappears, not when the agent says it finished.
+- **What the owner sees:** outcomes and unresolved exceptions, with last successful observation times. A missing or broken adapter must appear as unknown coverage, not an empty list.
+- **Gain:** catches work nobody remembered to ticket. It is especially suitable for the idle-machine case and ruling-to-document propagation. Your existing operational promise rechecker is local evidence that this mechanism can work.
+- **Cost:** substantial adapter and semantic-mapping effort; cheap deterministic checks where possible, expensive model reads elsewhere. Badly chosen checks consume quota rereading everything.
+- **Failure:** an incorrect model of desired state repeatedly “repairs” the wrong thing. A superseded ruling gets reapplied. A creative preference becomes an endless optimisation loop. Pure conversational promises remain invisible unless recorded somewhere.
+- **Month three:** redesigned folders make checks silently incomplete; old controllers recreate retired behaviour. Reconciliation code must retire with its domain, and report source freshness and unsupported states. Otherwise it becomes a particularly confident stale system.
+- **Delete:** tickets whose entire meaning is a mechanically derivable transition; manual sweeps for those transitions; duplicate status facts that can be read directly. Keep explicit promises and nonderivable judgments.
+
+C is strongest for objective transitions. It is weakest as a universal account of creative work.
+
+**A common requirement for all three**
+
+None creates capacity. Stop automatically converting every finding into future work. Apply authorised, worthwhile findings within the current outcome where possible; put deferred creative possibilities in the mod’s own future-version record; explicitly discard low-value observations.
+
+Likewise, a study should normally include its authorised application. Research-only briefs should name the unresolved decision that prevents application. Otherwise the factory manufactures integration debt by design.
+
+No arbitrary work cap is justified by this census. Scheduling restrictions should name their danger: quota exhaustion, conflicting edits, duplicate side effects, or contention for a game instance. A large queue alone does not justify stopping useful work.
+
+**3. My pick and the first week**
+
+Choose **A first**, narrowly. It targets the clearest demonstrated failure without first redesigning ownership or normalising every store. Move routine mod integration toward B as domains are touched. Use C selectively for transitions that can be checked reliably.
+
+The smallest useful experiment is **one scheduled execution role consuming the existing Conductor owed queue, independent of the interactive window**.
+
+This week:
+
+1. Let it resume ready obligations through the existing launcher and ledger commands. Give it authority to perform the already-authorised acts, rather than merely proposing launches.
+2. Have the existing timer make expired waits eligible. It must distinguish a date for reconsideration from permission to perform a held act.
+3. Reconcile the nine already-done or stale entries using the evidence in the census. These closures are cleanup, not recovered outcomes.
+4. Execute a representative stranded obligation end to end—for example, apply the two answered rulings to the builders’ document, inspect the resulting text, and close that obligation.
+5. Disable the retired STATUS_BOARD writer. Put the execution role’s status and owed-to-owner summary into an existing page.
+
+Do not migrate all 1,597 open items. Do not build a new dashboard. Do not ask the owner to conduct the triage.
+
+For the routing study, the execution role should reread the proposed commands against current state before applying them. Three-day-old bulk commands are evidence to inspect, not a script to execute blindly.
+
+**One seven-day measurement:** repeat the census’s classification of Conductor obligations at the same evening time:
+
+> **Number of ripe obligations over 24 hours old with no evidenced act. Baseline: 25.**
+
+Check the underlying artifacts, including obligations marked closed, so paperwork cannot manufacture improvement. A new promise to act, a launch without follow-through, or an administrative reroute does not discharge the original outcome. Count abandoned obligations separately rather than presenting them as delivered.
+
+Include newly created obligations in the repeated census; do not measure only clearance of the original 25. A lower count supports this experiment. A similar count with more closures suggests it is merely processing turnover.
+
+This measures overdue outstanding work in that scope. The existing census cannot support a defensible percentage reduction in *all* factory drops, especially uncaptured owner speech.
+
+**4. What the outside evidence actually says**
+
+I read the linked pages for this answer. Dates below are publication dates where supplied. The human-organisation sources are older, explicitly identified as such.
+
+**2025-11-26 — REPORTED RESULT, vendor-run experiment.** Anthropic reports premature completion and broken continuity across sessions. Its working approach used an initialiser, a feature list, progress notes, Git history and incremental implementation. Crucially, this used several artifacts with distinct functions; it was not evidence for one universal ledger. Its scope was principally sequential application development across sessions, not a quota-constrained multi-agent creative factory. [Effective harnesses for long-running agents](https://www.anthropic.com/research/effective-harnesses-for-long-running-agents).
+
+**2026-01-14 — REPORTED RESULT, vendor-run experiment.** Cursor reports that equal-status agents coordinating through a shared locked file failed: agents mishandled locks, throughput collapsed, and difficult work lacked ownership. Separating planners and workers improved coordination. This is a direct counterexample to “make everyone use one coordination file and the problem is solved.” The experiments do not isolate record design from role design. [Scaling long-running autonomous coding](https://cursor.com/blog/scaling-agents).
+
+**2026-02-05 — REPORTED RESULT, vendor-run experiment.** Cursor’s fuller account reports that a continuous executor became overloaded with planning, spawning, reviewing, merging and judging, and exhibited stalls and premature completion. It also removed a central integrator that became a bottleneck. Its later design used recursive ownership and worker handoffs delivered back to requesting planners. The browser was explicitly a research project with imperfections; throughput is not proof of product quality or low coordination loss. [Towards self-driving codebases](https://cursor.com/blog/self-driving-codebases).
+
+**2026-01-01 — REPORTED RESULT, creator’s self-report.** Steve Yegge describes failed earlier orchestrators, followed by Gas Town using Beads as its common work substrate. He also describes frequent maintenance, substantial human involvement and heavy account consumption. His superiority claims are **OPINION**, not comparative evidence. For this owner, the maintenance admission matters more than the shared-ledger architecture: it could reproduce the very administration burden he wants to escape. [Welcome to Gas Town](https://yegge.ai/essays/welcome-to-gas-town/).
+
+**2026-01-04 — REPORTED RESULT, short practitioner trial.** Enterprise Vibe Code reports ten hours using Gas Town, increased PR production, and continuing responsibility for keeping agents busy and unblocked. A particularly relevant failure: a supposedly dispatched worker could remain at an unsubmitted terminal prompt until manually checked. The author became a contributor while writing the article. This is useful first-hand failure evidence, but neither independent evaluation nor month-three evidence. [10 hours with Gas Town](https://medium.com/@enterprisevibecode/10-hours-with-gas-town-out-of-a-possible-48-17a6b2801a73).
+
+**2018 publication; includes a mid-2016 case — REPORTED RESULT.** Google’s SRE workbook describes a reduced team tackling months of backlog in two days through triage, deletion, self-service and automation; almost none of a tentative deferred set proved worth resuming. Another case reports that converting ignored alerts into tickets and imposing a three-day response requirement worsened overload. Recovery included removing noise, redistributing responsibility and returning a service to developers. These are uncontrolled organisational case studies, but strong counterexamples to “capture everything and enforce faster handling.” [Identifying and Recovering from Overload](https://sre.google/workbook/overload/). The [publication copyright is 2018](https://sre.google/workbook/colophon/).
+
+**Publication date not shown on the chapter; read 2026-11-22 — OPINION/practice guidance.** Google’s incident-management chapter recommends a living, functional state document, separated operational and communication responsibilities, and explicit acknowledged command handover. It permits a messy document. This supports one recognised coordination surface with clear responsibility, rather than documentary perfection. The chapter’s illustrative incident is not a measured experiment. [Managing Incidents](https://sre.google/sre-book/managing-incidents/).
+
+I found useful experiments and failure reports. I did **not** find convincing comparative evidence that one coordination record remains complete through months of changing multi-agent workflows with scarce owner attention.
+
+My recommendation is therefore narrower than “one place for everything”: **make accepted obligations cause action across restarts, give native work durable ownership, and make the owner-facing answers agree.** The first proof should be fewer stranded outcomes after seven days—not a more comprehensive record of them.
+
+---
+
+## The options paper that consult 2 read (ours, authorship withheld from GPT)
+
+### A design under review: five candidate cures for the plight (authorship withheld)
+
+Context is plight.md and census.md. Below: the owner's own proposal (H), then four other candidates (A to D) and a
+tentative pick. Tear each down.
+
+#### H. The owner's proposal, in his words
+"It feels like the only way out is to have something almost hook-like say "when work is owed, it gets WRITTEN DOWN in a
+single place... right then. Everything." Otherwise how can it get tracked? And then no one can STOP working an item
+they pick up until it's reconciled with its record... either closed, or updated and left open. I had simply assumed
+this is the way, how else could it be? I'm a bit stunned it isn't. ... We're not trying to make a legally binding
+write-once ledger or any nonsense like that. Just some kind of coordination that all the agents MUST use, no choice, no
+exceptions."
+Read as a design: (H1) mandatory capture of every owed thing, at the moment it becomes owed, in one store; (H2) a hard
+gate at stop: an agent that picked up an item cannot end its run until the item's record is closed or updated.
+
+#### A. Records written at the hand-overs by programs; the agent only confirms
+No agent is asked to remember to file. The harness writes a record at each of the six places a need starts or changes
+hands: the owner's message arrives (stamped already); a card is asked; a card is answered; a helper is launched; a run
+ends; a wait date passes; a Conductor window restarts. The key new record is a RETURN: when a run ends, the system
+files one "result returned to <requester>" record that stays open until the requester marks it acted, declined or
+handed on. At stop, a hook does not block: it drafts the item's closing note from the run's own last report and
+commits, and the agent confirms or corrects in one line (form is repaired by the tool, so "a fault of form never stops
+the work" holds). Unacknowledged returns, unanswered cards and expired waits are three program-built lists.
+- At the moment work is owed: nothing for the agent, unless the debt is one only its prose reveals (a promise in a
+  reply); there the existing promise scanner files the item itself instead of printing a note.
+- At pick-up: a claim, as today. At stop: confirm the drafted note.
+- Deletes: handoff pointer lists, the Conductor log as a store, carry items.
+- Suspected failure: returns pile up unacknowledged exactly as owed items do today; the scanner files junk.
+
+#### B. A second drainer and a limit: debts expire into a decision
+The diagnosis here is capacity, not capture: one window drains everything. Add a standing steward (a timed program
+plus one small model run a few times a day, not the Conductor window) that owns the owed list: closes what evidence
+shows done, launches the debts that are "launch run X" through the dispatcher, re-raises waits whose date passed, and
+routes ruled answers into the files that act on them. Add a limit with a named danger: an owed item that is ripe and
+untouched for 24 h must leave the open state: done by the steward, dropped with a reason, or put to the owner as one
+line in a short daily "do or drop" list. The Conductor's open owed list is capped (for example 15); over the cap, new
+debts go to the steward.
+- At the moment work is owed: file as today (rule of 2026-11-15). At pick-up: claim. At stop: as today.
+- Deletes: the manual sweeps he keeps ordering; nothing else.
+- Suspected failure: the steward becomes a second overloaded generalist; a model deciding "drop" on work it does not
+  understand; the daily do-or-drop list becomes the new spam.
+
+#### C. The mod is the record; the ticket pool is retired
+Follow the studio model: the unit the owner looks at (a mod at a design version) carries all its own open work (bars,
+gaps, polish, next version, its notes from his play-through). Pipeline and tooling work gets the same treatment per
+component (its boundary page plus an open-faults list). The ledger stays as an event history and for claims and
+locks, but there is no global pool of open tickets: the 1,597 not-closed items are folded into a mod or component
+list, or dropped. A debt that belongs to no mod and no component goes on one short list owned by the Conductor seat.
+One page per mod replaces the cross-cutting "needs you" lists; a single roll-up page is computed from the mod pages.
+- At the moment work is owed: write it in the owning unit's list. At pick-up: the unit's holder takes it. At stop: the
+  holder updates the unit's page.
+- Deletes: the open-ticket pool, item prose files, most "needs" computations, handoff pointers to items.
+- Suspected failure: cross-cutting work (a ruling that touches 7 mods; an ops incident) has no unit; migration cost;
+  the per-unit lists rot individually where nobody looks.
+
+#### D. Prove completeness by comparing where needs start against where they are recorded
+Do not trust any list. A nightly program enumerates every SOURCE of need for the last N days (each owner statement and
+card answer in the ledger; each ended run; each card asked; each alarm; each wait that reached its date; each handoff
+pointer) and checks that each has a HOME: an open or closed item that cites it, or an explicit "no action: <reason>"
+mark. The page shows "needs started: N; homed: M; NO HOME: the list". This is the only option that can show the owner
+what was dropped rather than assert that nothing was; his words: "if you show me JUST from the ledger... I will never
+know what was dropped". It prevents nothing by itself.
+- Agent changes: none at first. Deletes: nothing; it is a measuring instrument and says so.
+- Suspected failure: matching a source to its home is fuzzy (did this item really answer that sentence?), so the
+  "no home" list is noisy, or agents learn to cite sources to make it green.
+
+#### Tentative pick
+D first (one week, two sources only: ended runs and owner statements) as the measurement, then A's RETURN record and
+wait expiry, then B's 24-hour rule without a new model role (the dispatcher launches launch-type debts; a program
+closes by evidence). H1 as "everything" is rejected (capture already works at about 27 owed items a day and drops
+persisted; "everything" collides with the rule against ticket floods). H2 as a hard gate is rejected in favour of the
+tool-drafted note in A. C is held as the direction for mods only, already half true.
+
+---
+
+## Consult 2, teardown: GPT's answer, word for word
+
+("analysis2" in this answer is consult 1's answer above; "options.md" is the paper just above.)
+
+**I side with analysis2 on the first move: give existing obligations an executor that survives the Conductor.** But options.md is right to demand an independent check for omissions. Execution and completeness are different problems; neither paper fully solves both.
+
+The owner’s central expectation is reasonable: taking responsibility must create something that survives interruption, and ending a session must not silently abandon it. The damaging interpretation is that every observation becomes a ticket, or that a useful run must remain alive until its paperwork passes.
+
+**H1 — Mandatory capture, immediately, in one store.** Right: an obligation cannot depend on the memory of the window that accepted it. The November 15 evidence strongly supports capture: eight of nine earlier losses were prose promises without items.
+
+The rejection in options.md is too broad. “Capture improved, but losses persisted” establishes that capture is insufficient, not unnecessary. Nor does capturing an obligation necessarily mean creating another ticket. A mod’s accepted creative direction can live in its native record, with a reference from the coordination system.
+
+The missing distinction is between a source, an observation, an intent and an accepted obligation. “The swamp feels too lively” deserves preservation as direction; it does not automatically authorize ten fixes.
+
+**Month three:** an automatic promise scanner creates obligations from quotations, tentative plans and superseded intentions. Quota goes into sorting these. Alternatively, new launchers bypass the supposed universal store.
+
+**Cheap compliance:** file “Improve swamp atmosphere” with no concrete next act, or avoid saying “I will” so the scanner sees nothing.
+
+**Improve it:** require a durable home for accepted obligations, through standard tools. Keep raw messages available for omission checks. Allow native mod records as homes. Give unresolved interpretation an honest state rather than forcing everything into “task” or “nothing.”
+
+**H2 — Nobody stops until the record is closed or updated.** Right: a worker should not release responsibility merely because its process ended. The 762 recovery notes and 80 bundles make unrecorded termination a real concern.
+
+But “updated and left open” is an extremely weak requirement. One sentence passes it without improving continuity. Making that requirement a hard stop repeats the documented mistrials over names, sections and quotations. Crashes and exhausted quota also defeat the literal guarantee.
+
+**Month three:** a useful implementation finishes, but the stop hook keeps asking for a valid continuation note. It spends the remaining quota fixing its own account of the work.
+
+**Cheap compliance:** “Progress made; remaining work should be continued by Conductor.” The record is updated; responsibility has gone nowhere.
+
+**Improve it:** reconcile the record automatically, including an honest “interrupted; outcome unverified” state. Let the process stop. Keep the obligation owned and eligible for recovery until its outcome is verified, legitimately cancelled, or accepted by another responsible role. A note is evidence about a transition; it is not the transition itself.
+
+**Options A — Programs record handovers; agents confirm.** Right: actual launch, answer, result and stop boundaries are better instrumentation points than remembered prose rules. Recording asked cards fixes a specific blind spot. A durable result receipt fixes delivery through the last forty log lines.
+
+The missing trade-off is that these events do not each create a new obligation. A launch, its result and its acknowledgement may describe one commitment. Conversely, one result may create several distinct follow-ups. A receipt also needs a durable recipient such as a role, not the address of a vanished window.
+
+**Month three:** the harness reliably creates RETURN records, but they accumulate beside the existing owed queue. The requester marks them “handed on” to another overloaded seat. A new pipeline bypasses the wrapper.
+
+**Cheap compliance:** acknowledge the result without applying it; confirm the drafted close because its prose sounds plausible.
+
+**Improve it:** associate receipts with existing obligations where possible. Distinguish received, interpreted, accepted and fulfilled. Transfer requires a receiving role’s acceptance. Draft factual stop notes from artifacts, but do not infer completion from a final report or commit alone.
+
+Its proposed deletions are premature. Handoffs and carry items contain judgment and sitting context as well as next acts. Delete their duplicated queue function only after checking that their unique content has another home.
+
+**Options B — A second drainer, a cap and compulsory decisions.** Right: it directly addresses the observed movement from uncaptured promises to recorded, unexecuted obligations. Independent execution can turn idle intervals into progress without interrupting the owner.
+
+The proposed limits are poorly grounded. Twenty-four hours is the census’s definition of lateness; it is not evidence that every obligation should expire then. Fifteen items says nothing about their cost. Redirecting the sixteenth item to a steward does not limit total work—it changes its address.
+
+**Month three:** the steward repeatedly reschedules difficult obligations, closes easy ones, and presents the owner with a growing “do or drop” list. The owner becomes backlog administrator again.
+
+**Cheap compliance:** change the due date, reroute the item, or drop it as “stale” without establishing what superseded it.
+
+**Improve it:** use age to trigger reconsideration, not compulsory disposal. Preserve the original readiness time through administrative edits. Automate authorized acts and objective closures. Escalate to the owner only when the decision genuinely requires him. Resource limits should protect a named danger—quota exhaustion, conflicting writes, duplicate launches—not cosmetic queue size.
+
+**Options C — Retire the ticket pool; use domain records.** Right: a versioned mod is a coherent creative outcome. Its bars, gaps and play-through findings belong together. The owner has explicitly rejected advancing mods by isolated ticket ratchets.
+
+The missing distinction is between retiring a storage format and retiring an operating obligation. Moving 1,597 entries into component lists can preserve every coordination failure while making global discovery harder. Naming a component does not give it an executor.
+
+**Month three:** a shared art change appears on seven mod pages. Each assumes another domain will implement it. After a component is renamed, its old list remains authoritative to one worker and invisible to another.
+
+**Cheap compliance:** move difficult work into “next version” or “polish,” declare migration complete, and stop counting it as owed.
+
+**Improve it:** retain native domain records, but assign one responsible domain for each cross-domain outcome. Other affected domains hold references or accepted sub-obligations. Compute global readiness from those records. Migrate as domains are worked, with explicit dispositions; do not make a bulk migration the prerequisite for progress.
+
+This can eliminate duplicate tickets. It cannot eliminate dispatch, ownership or cross-domain coordination.
+
+**Options D — Enumerate sources and check for homes.** Right: checking a queue against itself cannot reveal what never entered it. An independent source-to-record comparison is essential.
+
+But D proves less than its title suggests. An item citing a source does not prove that it represents every obligation in that source, that the interpretation is correct, or that anybody acts. “Homeless” and “stranded in a home” are different failures.
+
+**Month three:** the nightly job reports green because every source points to an umbrella item. Old unresolved sources fall outside the last-N-days window. A broken adapter silently returns zero.
+
+**Cheap compliance:** cite every source in “General follow-up,” or mark everything “no action” with generic reasons.
+
+**Improve it:** separate source coverage, interpretation, responsibility and outcome. Preserve unresolved sources beyond the scanning window. Show adapter failures as unknown coverage. Audit whether cited homes actually cover the substantive obligations. D is an instrument, not a delivery mechanism, and it is not the only possible instrument for omissions: actual-versus-intended-state checks can find some missing work too.
+
+**Analysis2 A — Reliable dispatch through the existing ledger.** Right: this is the strongest immediate response to the measured failures. It gives recorded commitments an operating mechanism independent of the interactive window.
+
+Its largest understated cost is the gap between “ready item” and safely executable act. Current rulings, authorization, clone publication, game locks and uncertain previous effects all matter. A fresh worker needs enough context to act without reconstructing the entire factory.
+
+**Month three:** retries launch duplicate work after a worker performs an effect but crashes before recording it. Cheap obligations get repeated service; difficult integration waits. Quota starvation becomes permanent.
+
+**Cheap compliance:** launch a helper and call the original outcome delivered, or leave an impressive “handled” note.
+
+**Improve it:** judge completion against the obligation’s actual wording. A promise to launch is fulfilled by a real launch; a promise to apply a study is not. Check existing effects before retrying uncertain actions. Use shared claims through supported paths, and make starvation visible. Keep the executor’s job narrow; adding planning, reporting and general oversight recreates the Conductor.
+
+**Analysis2 B — Durable domain ownership.** Right: responsibility should survive disposable sessions. This is organizationally stronger than merely relocating tickets, and it fits creative integration well.
+
+But a persistent role name is not persistent attention. It needs scheduling, resources and a recoverable account of unfinished outcomes. The existing pipeline already provides some domain ownership; introducing another owner could create competition rather than continuity.
+
+**Month three:** two domain owners politely await each other, while a retired role still owns a dependency. Shared game capacity is consumed by whichever domain launches most aggressively.
+
+**Cheap compliance:** assign every loose end to “the mod owner” without scheduling any session to advance it.
+
+**Improve it:** extend existing domain roles rather than overlaying duplicates. Give each domain a stable identity, a current responsible role and a next eligible execution opportunity. Cross-domain transfers need acceptance; until then, the sender retains responsibility. Ownership must include integration and useful cancellation, not merely maintaining the page.
+
+**Analysis2 C — Reconcile actual and intended state.** Right: it can rediscover certain obligations after interruption without relying on a remembered ticket. The existing operational promise rechecker is the strongest local evidence for this approach.
+
+The difficult part is deciding what discrepancy means. An expired date can mean “reconsider,” not “permission granted.” An idle game is actionable only if eligible work can actually run there. A creative bar does not supply an objective convergence test.
+
+**Month three:** an obsolete controller restores retired behavior. STATUS_BOARD is a warning: automation can faithfully reproduce something the owner already abolished. Other adapters miss redesigned folders and report apparent health.
+
+**Cheap compliance:** weaken the desired state, change the test to accept the current result, or classify difficult cases as unsupported.
+
+**Improve it:** use narrow, independently inspectable predicates; identify current authority and supersession explicitly; report stale observations and unsupported states. Retire controllers with their domains. Use this for objective transitions, not endless optimization toward “more dead-feeling swamp.”
+
+The true core of H is **continuity of responsibility**:
+
+> Once an obligation exists, interruption must not make the obligation, its source or responsibility for its next act disappear.
+
+A good answer must preserve that. It need not preserve one physical store, one ticket per observation, documentary perfection, or one continuously running agent.
+
+A nonblocking form of “nobody stops until the record is reconciled” can be exact:
+
+1. The launcher associates the run with its accepted obligations and durable source references.
+2. At normal stop, the wrapper records observed artifacts and effects. It distinguishes verified completion, reported completion and unfinished work.
+3. The agent can confirm or correct that account. Missing confirmation is recorded as missing confirmation; it does not keep the run alive.
+4. If the worker crashes, the supervisor records the interruption against the known run. Unknown results remain unknown.
+5. The obligation retains its responsible role. The scheduler can resume it; a failed transfer does not discharge it.
+6. Malformed fields are repaired asynchronously from preserved raw material. They do not void useful work or hold game locks.
+
+Here, “reconciled” means the record honestly reflects what is known, including uncertainty. It does not mean every field is polished or every outcome is complete.
+
+This still fails when the initial obligation was misunderstood, the raw material was never captured, all recoverable artifacts are lost, or no execution capacity remains. It also cannot guarantee that a generic continuation will be useful. Automatic participation removes remembering-to-file as a requirement; it does not automate understanding or create quota.
+
+Completeness needs a more demanding argument than D supplies.
+
+There are at least four separate claims:
+
+| Claim | What could establish it |
+|---|---|
+| Every event from specified producers was collected | Producer inventory, source counts, checkpoints and detectable gaps |
+| Every collected source was considered for obligations | Interpretation records, with unresolved interpretations visible |
+| Every identified obligation has a current home and responsible role | Referential checks across the authoritative records |
+| Every discharged obligation actually reached its outcome | Inspection of effects, evidence or justified cancellation |
+
+Only parts of this are mechanically provable. In particular, proving that every source was considered does not prove that its interpretation was complete.
+
+Suppose an owner message says: “Install B, keep A for comparison, and show me both tomorrow.” One ticket citing the message makes D green even if it covers only installation. Conversely, five sources may concern one obligation. Source counts are not obligation counts.
+
+A program can enumerate the following **if the producers expose durable records**:
+
+- Ledger events, including captured owner statements and card answers.
+- Launches, known runs, terminations and result artifacts.
+- Asked cards, after question creation is instrumented.
+- Explicit waits and their dates.
+- Emitted alarms and recorded incidents.
+- Structured handoff pointers.
+- Native mod records, declared gaps, holds, stages and version lists.
+- Goals, priorities, question records, showings and recovery bundles at known locations.
+
+Enumeration does not establish semantic completeness. A program can list every bar in `bars.md`; it cannot thereby enumerate every piece of creative work required to satisfy those bars. It can list alarms; it cannot conclude that every operational danger emits one.
+
+Some important sources cannot currently be enumerated as obligations:
+
+- Owner speech omitted from the ledger, unless an independent transcript is available.
+- Previously asked unanswered cards that were never stored.
+- Implications inside reports, prose handoffs, memory and informal promises.
+- Unexpressed discoveries or intentions inside killed sessions.
+- Needs revealed by play, taste or an unforeseen interaction.
+- Artifacts in unknown clones, machines or communication paths.
+
+Some become auditable with additional instrumentation. Some require judgment. Some are irrecoverable.
+
+The owner-facing page should therefore say something like:
+
+> Coverage is complete through these checkpoints for the listed producers. These sources await interpretation. These identified obligations lack a responsible home. These outcomes remain unverified. Uncaptured conversation and unrecorded discoveries are outside coverage; their omission count is unknown.
+
+It must never translate “adapter failed,” “source unsupported” or “no transcript exists” into zero needs.
+
+For his preferred three lists, the proof is about their **union**: publish the scope each covers, stable references between them, unresolved cross-list mappings and the gaps outside all three. They need not be forced into one writable backlog.
+
+D’s source inventory also needs independent challenge. If it enumerates owner statements only from the ledger, it cannot test owner-to-ledger loss. If it scans only recent days, unresolved old obligations must remain carried forward. Otherwise the completeness instrument forgets on schedule.
+
+The strongest disagreements resolve as follows:
+
+- **First move:** analysis2 is right. There is direct evidence of recorded obligations lacking execution. D-first risks spending the week measuring an already demonstrated failure.
+- **Rejecting H1:** options.md goes too far. Mandatory durable capture remains necessary for explicit commitments. Its literal “everything in one store” interpretation needs correction.
+- **A’s automatic boundaries:** options.md contributes useful machinery that analysis2’s executor needs. Its receipts should support existing obligations, rather than create another competing queue.
+- **Twenty-four-hour compulsory decisions and a fifteen-item cap:** analysis2 is right to reject them as unsupported. Age is a useful signal; it does not confer cancellation authority.
+- **Native mod ownership:** analysis2 B is stronger than options C because it specifies responsibility and accepted transfers, not just a change of storage.
+- **Completeness:** options.md asks the stronger question, but its claim that D alone can show omissions is false. Analysis2 C can discover missing effects that nobody ticketed. Neither proves all needs were identified.
+- **Deletion:** analysis2 is more concrete, but both papers are too ready to delete handoff material before establishing which unique judgments it contains.
+
+Two additional directions deserve consideration.
+
+**First, eliminate selected propagation jobs by changing what consumers read.** Neither paper explicitly develops this for design decisions. For structured questions, the builder could receive an effective design assembled from the baseline plus the authoritative current answer, rather than waiting for an agent to copy that answer into prose. This locally beats both an updater and a nightly repair loop because the recurring copying job disappears.
+
+It requires stable question identities and explicit supersession. It is unsuitable for arbitrary creative prose, and all relevant consumers must actually use it. It is a targeted redesign, not a universal replacement for ownership.
+
+**Second, test coordination through deliberate interruptions.** Neither proposes replaying known failure stories with a killed worker, restarted Conductor, unavailable quota or missing result notification. In a safe rehearsal, the expected outcome should remain discoverable and executable. This tests the mechanism under its actual operating conditions. It is an assurance method, not another backlog.
+
+The outside evidence supports caution rather than a universal architecture. Anthropic’s session-continuity work used several artifacts with different functions; that does not establish one universal ledger. [Anthropic report](https://www.anthropic.com/research/effective-harnesses-for-long-running-agents). Cursor observed shared-file contention, missing ownership and an overloaded executor; those results criticize particular coordination designs, not shared records in general. [January report](https://cursor.com/blog/scaling-agents), [February report](https://cursor.com/blog/self-driving-codebases). Google’s overload case documents additional ticket capture and a three-day handling requirement worsening overload, which is directly relevant to B. [SRE case study](https://sre.google/workbook/overload/). None establishes month-three completeness for this factory.
+
+The numbers and logical claims need these corrections or qualifications:
+
+- **Ledger states add correctly:** 769 + 612 + 144 + 37 + 35 = **1,597**. That leaves **6,787** closed items. But “not closed” does not mean “ready for another worker”; 612 await verification.
+- **Owed classifications add correctly:** 7 done + 2 stale + 39 still owed = **48**; 25 drops + 6 waits/not-yet-due + 8 young entries = **39**. Nine immediately closable entries are **18.75%**, correctly rounded to 19%. The 25 classified drops are **52.1%** of the open snapshot—not a factory-wide failure rate.
+- **Nominal seven-day flow:** 190 filed is **27.1/day**; 142 closed is **20.3/day**; the difference is **6.9/day**, closer to seven than six. Inferring the complete queue history also requires its starting state and any other transitions.
+- **The 2.1-hour median is not evidence of a healthy tail.** Unclosed obligations do not have close times. Fast completed work can coexist with growing abandonment.
+- **Ledger totals disagree by 6,622 events:** 67,862 versus 61,240, with the same 8,384 items. Different cutoffs or counting rules might explain it, but the text does not establish which. They should not be presented as interchangeable measurements.
+- **The drop table contradicts “each counted once.”** Its 21 expired waits explicitly include five owed items counted elsewhere. Page errors also overlap the unexecuted routing study. Adding the displayed numeric rows gives 57 before the uncertain eleven; neither 57 nor 68 is a defensible unique-drop total.
+- **The run-to-Conductor row lists nine named owed drops, not ten.** It adds an owner complaint as another entry, but that complaint could describe the same failures. The tenth needs an independently identified incident.
+- **The handoff arithmetic works:** 13 indirectly carried + 11 without carriers = 24 without direct owed-item references. Of 42 unfinished pointers, that leaves 18 directly carried. The estimate that roughly 60% of eleven are real drops remains a guess, not eleven measured drops.
+- **The owner lists have five distinct rows:** 4 + 2 − 1 shared = **5**. One Maturation row is addressed to the Conductor. That is consistent with four genuine owner needs, but the routing semantics need inspection.
+- **Four recorded waits and six semantically valid waits are different classifications.** The examples show future work filed without waits. Likewise, 38 LATE is not 44 actionable. These fields cannot be substituted for actual readiness.
+- **Options A says six handover places but enumerates seven.** Several are lifecycle events rather than births of needs.
+- **The routing study’s counts are not inherently contradictory:** 110 tickets, 103 proposed commands and 80 still open need not have a one-to-one relationship.
+- **“Three stores no program reads back” is not literally supported.** `handoff.py --wake` reads handoffs, and carry items are ledger items. The defensible claim is that no independent mechanism reliably interprets and executes their obligations.
+- **The 24-store count is not a count of 24 independent authorities.** It includes ledger subsets, projections and native records. The six retired entries also group multiple artifacts. Useful inventory; weak architectural score.
+- **Some classifications need stronger evidence.** A walk having occurred does not prove that its briefing was read beforehand. A missing commit citation does not prove an act did not occur. For the Codex-review obligation, the full timestamp of the removed block matters: item age alone cannot establish that it was ripe for over a day.
+- **The machine counts need not contradict each other.** Four machines overall can include two game hosts, and the owner’s earlier statement about two live games may describe another moment. Those are reasons to timestamp operational claims, not silently choose one count.
+
+Consequently, **25 is a useful reported baseline, not independently established ground truth**. Analysis2 acknowledges evidence weakness, but then relies somewhat too confidently on that exact baseline.
+
+**My single first step is one scheduled execution job for the existing Conductor owed queue.** Use the existing launcher and ledger. Give the job responsibility for completing already-authorized next acts independently of the interactive window. It should work from relevant sources and current rulings, rather than blindly execute old proposed commands.
+
+Start its first run with the two answered rulings still absent from the builders’ document: apply them, inspect the resulting text and record the outcome. That demonstrates execution, rather than merely proving another timer can file something.
+
+The queue should have one dispatch authority through supported paths, protecting against duplicate launches. The job should not become another planner, dashboard writer or general supervisor. If quota prevents execution, the obligations stay outstanding and the resource condition is visible.
+
+**What it deletes:** the requirement that every Conductor wake manually drain this queue. The Conductor remains the conversational interface and can change priorities; it ceases to be the sole mechanism that makes these obligations happen. Do not delete unique handoff context as part of this experiment.
+
+**The one seven-day measurement:** repeat an artifact-checked count of ready, accepted Conductor obligations older than 24 hours whose promised outcome remains unfulfilled. Include new obligations and inspect those marked closed, transferred or deferred. Administrative edits do not reset age; justified cancellations are identified as cancellations, not delivered outcomes. Audit the reported baseline of 25 before comparing it with day seven.
+
+This measures stranded recorded obligations. It does not claim to measure uncaptured speech or all creative needs.
+
+**I am least sure that execution context will be cheap enough.** If each seemingly small obligation requires reconstructing several days of rulings, the scheduled job will consume quota without draining much. That result would favor moving integration into existing domain owners and eliminating propagation jobs. It would not justify another capture rule or a harsher stop gate.

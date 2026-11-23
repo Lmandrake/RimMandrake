@@ -16,12 +16,11 @@ session start with no memory, so a first session writes a feature list and a pro
 reads the progress file and the git history, does one increment, and leaves "a clean state". The two failures it was
 built against: an agent tries to do everything at once and runs out of context half-way, and a later agent "would look
 around, see that progress had been made, and declare the job done". REPORTED [read].
-https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents (Nov 2025 per search; date not read
-on page). A later Anthropic post prefers a full context reset with a structured handoff over in-place compaction, "at
+https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents (2025-11-26). A later Anthropic post prefers a full context reset with a structured handoff over in-place compaction, "at
 the cost of the handoff artifact having enough state for the next agent to pick up the work cleanly", and names the
 cost: "orchestration complexity, token overhead, and latency". REPORTED [read].
 https://www.anthropic.com/engineering/harness-design-long-running-apps (April 2026 per a secondary source; date not
-read).
+read on the page).
 *Bearing on us:* our Conductor restarts are this pattern. Their record is per work stream and small. Ours is one
 window's handoff for everything.
 
@@ -64,13 +63,13 @@ One measured study: a git-stored, append-only coordination log cut the share of 
 agents coordinated through one shared file with locks failed: agents "would hold locks for too long, or forget to
 release them entirely", and "twenty agents would slow down to the effective throughput of two or three". With no
 owner, "agents became risk-averse... No agent took responsibility for hard problems". REPORTED [read].
-https://cursor.com/blog/scaling-agents (Jan 2026 per search; date not read). The follow-up describes what worked: a
+https://cursor.com/blog/scaling-agents (2026-01-14). The follow-up describes what worked: a
 planner owns a goal; a worker is "unaware of the larger system" and at the end writes "a single handoff that the
 system submits to the planner that requested the task", holding "not just what was done, but important notes,
 concerns, deviations, findings". One agent given every role (plan, spawn, check, review, merge, judge done) "would
 sleep randomly, stop running agents... and claim premature completion... it was overwhelmed". They also removed an
 integrator role that "created more bottlenecks than it solved", and they accept some duplicate work to keep the
-system simple. REPORTED [read]. https://cursor.com/blog/self-driving-codebases (date not read).
+system simple. REPORTED [read]. https://cursor.com/blog/self-driving-codebases (2026-02-05).
 *Bearing on us:* the overloaded single agent is a description of our Conductor. The fix they report is that a
 result returns to the agent that asked for it, by the system, and that planner is narrow enough to act on it.
 
@@ -121,6 +120,13 @@ result returns to the agent that asked for it, by the system, and that planner i
   I found **no independent practitioner account** of how studios keep notes from being dropped; this part is thin.
   *Bearing on us:* the mod with its version, bars and gaps is our "shot". The studio model says the unit he looks at
   carries its own notes, which is what he ruled for mods on 2026-10-31 and 2026-11-16.
+- **Triage and delete, by the team, not the manager.** A Google SRE team that was buried under months of tickets
+  listed everything, triaged each item, and closed what it could: "Most of these tickets turned out to be obsolete,
+  redundant, or not as urgent as they claimed", and of the items set aside "almost none of these tasks were impactful
+  or important enough to resume". It took two days. REPORTED (a case study) [read; GPT found this source, I read the
+  page]. https://sre.google/workbook/overload/ (book published 2018).
+  *Bearing on us:* this matches our own census (9 of 48 owed items closable on sight, 2 stale) and his rule that
+  there "must also be a way to drain items if they are shown to be useless or wrong".
 - **Andon** (any worker can stop the line on a defect) and the **definition of done**: I did not search these
   separately in this pass. Not researched.
 

@@ -41,7 +41,8 @@ The census of 2026-11-22 found **24 live stores** that hold open work, status or
 stores** still on disk whose text reads like open work `[measured]`. Grouped:
 
 **Tickets and owed acts (the "rimflow ledger").** An append-only event log, one file per writing seat, 67,862 events
-on 8,384 items since 2026-09-24 `[measured: a fold of every event file]`. 1,597 items are not closed: 769 open, 612
+since 2026-09-24, of which about 61,300 name one of 8,384 items (the census counts those: 61,240) `[measured: a
+fold of every event file]`. 1,597 items are not closed: 769 open, 612
 built and awaiting verification, 144 blocked, 37 waiting on a date, 35 in progress `[measured]`. A sub-kind, the "owed
 item", records an act the Conductor itself owes (a launch it promised, a question it must put to him, a page it said
 it would write): 48 open, 38 marked late, the oldest 6 days `[measured]`. Each item may also have a prose file (675
@@ -102,7 +103,7 @@ where it fell `[measured]`:
 | one Conductor window to the next | 4, plus 11 handoff pointers with no carrier `[guess ~60%]` real |
 | a ruling or fact lands in one store and the store that acts on it does not change | 7 + 7 |
 | a wait reaches its date and nothing raises it | 21 of 37 waits |
-| something he said that was never recorded | UNMEASURED (no instrument compares his transcripts with the ledger) |
+| something he typed that was never recorded | UNMEASURED at the census. A probe later the same evening (`design/specs/2026-11-22-one-view-of-open-work/probe_results.md`, read after the GPT consults): 138 typed messages in 3 days, 51 with no ledger home by program, about 7 of them standing instructions or rulings `[guess ~70%, that run's hand reading]` |
 
 Of the 48 owed items open that evening: 25 were real drops (ripe for over a day, no act), 7 were done but never
 closed, 2 were stale, 6 were valid waits, 8 were under four hours old `[measured]`.
@@ -134,8 +135,7 @@ now false. The owed item to write the answers in existed and was not acted on.
   debt is written"**, a short owed view read first at every wake, and a scanner that finds promise sentences ("I
   will...") in the Conductor's replies. The scanner was made advisory on purpose: it prints "NOTE, nothing blocked".
 - **What happened in the week after.** 190 owed items were filed and 142 closed, with a median close of 2.1 hours
-  `[measured]`. So the capture rule works when it is followed, and most debts are paid fast. But the tail grew by about
-  6 a day to 48, and 25 of those are drops. The loss moved: on 11-15 the lost thing was mostly *not written down*; on
+  `[measured]`. So the capture rule works when it is followed, and most debts are paid fast. But the tail grew by about 7 a day to 48, and 25 of those are drops. The loss moved: on 11-15 the lost thing was mostly *not written down*; on
   11-22 it is mostly *written down and not acted on*. Capture did not create anyone who must drain the list. The only
   reader of the owed list is the Conductor window, at the start of its turn, when the owner is usually about to ask it
   something else.
@@ -198,6 +198,10 @@ Filing runs at 100 to 300 items a day `[measured]`.
 
 - The Conductor is one window. It is the only reader of run results, the only drainer of its owed list, the only route
   to the owner, and it restarts on context several times a day. Its attention is the scarcest thing after the owner's.
+- 669 detached helper runs finished in the seven days from 2026-11-16, about 95 a day `[measured: detached_helper.py
+  status --all, counted after the GPT consults, so GPT did not see this line]`. Each one ends as a line for the
+  Conductor. For 52 of them the run's item is still not closed, and 38 of those items have had no ledger event for
+  over a day `[guess ~80%: my own rough fold of item state]`.
 - Helpers work in separate clones and land later, so "the record" is not instantly shared; ledger writes are published
   one event at a time.
 - Four machines, three AI accounts with quotas, and runs that are killed by quota, reboots and crashes.
