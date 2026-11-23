@@ -14,10 +14,10 @@ of the owner left the skill. `design/RimMandrake/CLAUDE.history.md` already held
 
 | measure | before | after |
 |---|---|---|
-| bytes | 22,055 | 26,022 |
-| words in linted prose | 2,590 | 3,219 |
-| STE violations per 100 words | 3.17 | 1.37 |
-| sentences over 20 words | 33 | 5 |
+| bytes | 22,055 | 26,019 |
+| words in linted prose | 2,590 | 3,218 |
+| STE violations per 100 words | 3.17 | 1.34 |
+| sentences over 20 words | 33 | 4 |
 | flagged lines (mechanical) | 11 | 10 |
 | hand count (lines a cold reader cannot act on) | 17 | 0 |
 

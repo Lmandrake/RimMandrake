@@ -162,8 +162,8 @@ block **reads the site back**:
 - **`clear_huge_plants` before every block** on an `RM_TheRot` map.
   - The mod Huge Things plans a giant plant's trunk blockers again when they vanish while the plant stands.
   - So a giant *outside* the rect blocks again a site that you just cleared.
-  - This happened on 2026-10-11, on a map with 5,000+ blocker cells. The block style_hose FAILed with "Space already occupied". Its
-    rows R1–R6 are R1 (pick a hose look and place a reel) to R6 (pack up the reel and reinstall it).
+  - This happened on 2026-10-11, on a map with 5,000+ blocker cells. The rows R1–R6 of the block style_hose FAILed with
+    "Space already occupied". R1 picks a hose look and places a reel; R6 packs up the reel and reinstalls it.
 - **`prepare_site` reads back.**
   - A roof, rock, plant or ruin left in the rect is `UNMEASURED/SITE`, never a mod FAIL.
   - A colonist's sight clears the fog (`reveal`). `set_fog` alone does not clear it.
