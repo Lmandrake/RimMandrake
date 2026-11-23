@@ -188,8 +188,11 @@ called from a shell script without any API key."*
 
 *"I'm not really sure a pit is any different than a deep canal."*
 
-- The ruling is made and fully specified, and its build is in progress: `infrastructure/state/items/PIT_SUPERDEEP_COLLAPSE_1.md`.
-- A pit is depth 4 on the D/F primitive that rulings 18/19 already established.
+- The ruling is made and fully specified. Its item holds the state of the build; read the state there, with
+  `rimflow show PIT_SUPERDEEP_COLLAPSE_1`: `infrastructure/state/items/PIT_SUPERDEEP_COLLAPSE_1.md`.
+- A pit is depth 4 on the D/F primitive that rulings 18/19 already established. D/F is depth and fill: each cell
+  has a dug depth (D) and a fill of liquid (F). Rulings 18 and 19 are in `design/RimMandrake/flowworks_mod_definition.md`
+  (§20 and §21).
 - So the fitting concept collapses to **spikes alone**. Oil and poison are FluidDefs. The oubliette is CUT.
 - An enclosed superdeep area is a room. The room becomes a prison room once a bed is in it.
 - `capture down` and `convert down` happen from the lip, because nobody who enters can leave.
@@ -489,10 +492,12 @@ it."*
   - any helper clone with unlanded work after an idle hour. The clone can be in the pool, in `rm/scratch` or in a
     session dir. PROTECTED is no excuse.
 - The alarm does not count two kinds of commit:
-  - a trailing lesson/ledger commit (the belt carries those);
+  - a trailing lesson/ledger commit (the clone's return step at the end of a run bundles those into the orphans
+    store, so they are not lost);
   - a commit whose content origin/main already holds under another hash.
 - A pool clone with unpushed work is never reused.
-- Revert if a clone strands work, or if the free space on `/` goes under the disk floor.
+- Revert the pool if a clone strands work, or if the free space on `/` goes under the disk floor. To revert the pool
+  is to end the approval of reused clones for more than 4 writers, and to return to at most 4 writers at one time.
 - **Per-writer state, nothing shared:**
   - Ledger shards are `ledger/events/<SEAT>.jsonl` (`merge=union`, `ledger_lint.py`). Never `checkout --ours/--theirs`
     a shard.
