@@ -42,8 +42,8 @@ in flight to a committable state, and commit it. File its remainder as an item. 
   - (1) the static schema lint over bridge calls;
   - (2) the prior-pass-now-fail diff;
   - (3) the GPT-consult wrapper (§5);
-  - (4) `northstar_driver run` that writes its result through `modcheck.status.record_run` (the driver does not record
-    into `modcheck_status.json` today).
+  - (4) `northstar_driver run` that writes its result through `modcheck.status.record_run` (built; `--no-record` skips
+    the record in `modcheck_status.json`).
 - Load rounds that run first scripts. Batch them per `rimworld-load-round`. They remain on the Charter's expensive
   list (`infrastructure/agents/CHARTER.md` §The expensive list).
 - **Exceptions:** only by the owner's own word, quoted on the item. A BENCH request is not an exception until he says
@@ -128,7 +128,8 @@ mods into the mods that own their creatures. The art sits at a path inside the m
 `Patches/ArtFold/` patch points the donor def at that path. The offline proof is
 `src/RimMandrake/Utils/art_fold_check.py` over `art_fold_manifest.json`. The live half is
 `src/RimMandrake/Utils/art_fold_live.py --live` over the same manifest. The live half spawns each bound kind wild in
-one expectations_l2 batch and reads its texPath back. It attributes missing-texture lines per creature
+one expectations_l2 batch (`src/RimMandrake/Utils/expectations_l2.py`: spawn, tick and read the log once for all of the
+kinds) and reads its texPath back. It attributes missing-texture lines per creature
 (ART_OVERRIDE_FAMILY_SCRIPT_1). No owner mod's script covers these rows. (Here an owner mod is the mod that owns the
 creature.)
 
@@ -351,7 +352,8 @@ Superseded by the owner:
 
 - the 20-minute exploration window (now no clock);
 - never-owner-approved non-bar checks (now agent-approved functional scripts);
-- the pilot (now a full stop and a new way of working).
+- the pilot (a trial of 10 incidents or 14 days on Graffiti and two Pyrelands chains; now a full stop and a new way of
+  working).
 
 ## Every debug set carries the camera-zoom mod — owner, 2026-10-04
 

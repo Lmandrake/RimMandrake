@@ -108,13 +108,16 @@ text: `standing_rulings.md` §Only five acts stay his. Code: `src/RimMandrake/ri
 words. Each Conductor act is a digest line (class `conductor act`, §5). Among the rest, the Conductor does these acts:
 
 - certify the first-touch Designer pass of a mod;
-- the owner-only kinds of the Designer: a root, an exam waiver, a floor disable, a locked-tree change, a waiver;
+- the owner-only kinds of the Designer: a root, an exam waiver, a floor disable, a locked-tree change, a waiver (each
+  kind is defined in `src/RimMandrake/rimflow/roles/designer.md` §Authority and provenance);
 - admit a mod before a walk;
 - add a locked bar;
-- lift a coverage park, and rule a final look that is not about fun or gameplay;
+- lift a coverage park (the stop of a concept at the coverage judge's second refusal while he is away, `designer.md`),
+  and rule a final look that is not about fun or gameplay;
 - re-freeze the `official` dump;
 - re-validate a hashed section;
-- raise a cap, N or a stage ceiling inside his weekly partition;
+- raise a cap, N (the helper slots of a seat, `slot_allocator.py`) or a stage ceiling inside his weekly partition (the
+  rough per-day share of each account, `standing_rulings.md` §Account and capacity budget);
 - a cut decision;
 - overturn a ruling about pipeline machinery;
 - `broadcast.py`;
