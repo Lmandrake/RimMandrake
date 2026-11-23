@@ -11,7 +11,8 @@ per cell:
     <roofGrid><roofsDeflate>  ...base64...   RoofDef shortHash (own hash namespace)
     <pollutionGrid><grid><mapSizeX>250</mapSizeX><arrDeflate>
 
-NOT handled: `<snowGrid><depthGridDeflate>` looks the same shape but is a ushort
+NOT handled: `tempGridDeflate` and `pollutionGrid` (no row in GRIDS).
+`<snowGrid><depthGridDeflate>` looks the same shape but is a ushort
 encoding of a FLOAT depth, not a defName shortHash -- see the GRID_DEF_TYPE
 comment below. `<fogGrid>` is a bitfield, not ushorts at all -- see `write()`.
 
@@ -25,8 +26,8 @@ overwrite its source.
 
 DOCTRINE -- read before using this module: skills/rimworld-savegame/SKILL.md.
 It carries the mod-set rule, the fogGrid bitfield hazard, the backup procedure,
-and the division of labour between RimBridge (things and structures, live) and
-save editing (the substrate: terrain, rock, water, roofs).
+and what may be written: nobody paints a world or a map into a save (the live
+bridge does that). Use this module to read.
 """
 import base64
 import io
@@ -175,10 +176,9 @@ class SaveMap(object):
         `natural` flag), so the caller says. Rationale in full:
         skills/rimworld-savegame/SKILL.md section 4.
 
-        ⚠️ NOT HANDLED: foundationGrid. On the save measured it holds a single
-        distinct value across all 62,500 cells, so there was nothing to test a
-        rule against, and inventing one from a uniform sample is how the wrong
-        rule gets baked in. If you author over gravship substructure, check it.
+        ⚠️ NOT HANDLED: foundationGrid. Painting does not clear it, and what an
+        edit of it does is untested. The canonical save R3 holds two values in it
+        (0 and Substructure). If you author over gravship substructure, check it.
         """
         _, by_name = self._hash_table(which)
         h = by_name.get(terrain)

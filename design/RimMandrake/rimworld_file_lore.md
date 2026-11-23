@@ -73,7 +73,7 @@ Ideoligions live **fully-expanded inside the save** under `<game><ideoManager><i
 *Derived with `Savegame_mapview.py`, **retired 2026-08-20** to
 `infrastructure/disposing/code_2026-08-20/` — do not run it. **Successor:**
 `src/RimMandrake/Utils/rimbench/savemap.py`, which decodes (and writes) the
-terrain / under / foundation / roof / snow grids with a shortHash table taken from
+terrain / under / foundation / roof grids with a shortHash table taken from
 a matching def dump. It has no PNG renderer — the preview image is retired with no
 successor. Doctrine: `skills/rimworld-savegame/SKILL.md`.*
 The map is a single block under `<maps><li>`: `<uniqueID>`, `<generatorDef>Base_Player`, `<mapInfo><size>(225, 1, 225)</size><parent>WorldObject_134</parent>`. So map size = **(W, 1, H)**, W·H cells (here 225×225 = 50,625). READING these is safe (parse-only); WRITING them stays in the fragile region.
