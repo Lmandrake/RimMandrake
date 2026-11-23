@@ -19,7 +19,8 @@ that check.
    - The source is a leaf (`leaf:<id>` or the bare id) or an `OWNER:<tsn>` event. The source is never the Examiner's
      taste.
    - No two scenarios share an id or a text (case and spacing aside).
-   - At least a third of the scenarios probe the reject case of a core line.
+   - At least a third of the scenarios probe the reject case of a core line. A core line or core leaf states a concept
+     that must be true for the mod to pass. A line that he delegated or waived is not core.
    - Freeze the scenarios: `scenarios_hash` is `concept_tree.sha(scenarios)`. Write it before any Reader sees them.
 3. **Challenger.** The Challenger is a second fresh agent, neither the author nor the Examiner. Name it in
    `challenger`.

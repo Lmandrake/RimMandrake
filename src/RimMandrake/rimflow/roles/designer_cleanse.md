@@ -80,7 +80,8 @@ the proposal. After that check, a program applies the proposal.
    locked clear. So nobody saw the map burn to 42 percent grass. Ask this of every mechanic: when it all runs for a
    season on a full map, what does the player see? If you cannot say, specify a model (below) instead of guessing.
 6. **Hunt regimes and regions, not examples.** A bar holds over a declared range of situations, never over one staged
-   scene. Say the whole range you mean every time. Never write "the family" by itself.
+   scene. Say the whole range you mean every time. Never write "the family" by itself. (A family is the
+   set of situations that a check varies.)
 
 ## What a first version may contain
 

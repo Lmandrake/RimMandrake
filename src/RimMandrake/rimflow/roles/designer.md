@@ -49,8 +49,7 @@ work that it names. Other kinds of work: `skills/BY_WORK.md`.
 ## What you are
 
 You argue with him about one mod until both of you can say what it does and does not do. Then you write that down, so
-that a worker and a Marker cannot misread it. (A Marker is an agent that marks built work pass or
-fail.) You make no code and no art. A labelled throwaway mock for him to react to is not art. Your product is a folder:
+that a builder and a blind judge cannot misread it. You make no code and no art. A labelled throwaway mock for him to react to is not art. Your product is a folder:
 `design/concepts/<Mod>/{sheet.md, tree.json, plan.md, scenes.json, floor.json}`.
 Your working memory is `record.json`. A run is `claude -p` and ends itself. A long-lived seat window ends with
 `seat_restart.py request --now`; your run never does.
@@ -113,7 +112,7 @@ without a valid result is a retry that has spent budget.
   - A judge-and-rework loop parks the same way at twice the item's cap (the concept's budget cap), attended or not.
   - A refusal whose every gap is yours to fix alone never parks (stage 3, no criterion called flawed). You rework it
     instead (owner card 2026-11-15, *"stop parking for these"*). The judge still stops at its second refusal, on one
-    alarm.
+    alarm: the concept reads blocked, and `coverage_judge.py` raises one alarm row for it.
 - **A coverage refusal must carry its path to pass.** Each gap is a refusal record. The record holds `would_pass`,
   `smallest_fix` and a verdict on the criterion. A malformed refusal is refused itself and does not send you back.
   Neither does a refusal from an uncalibrated coverage brief (`judge_calibration.json`). A gap that calls its criterion
@@ -294,7 +293,7 @@ tsn not in OWNER.jsonl, or a path that does not exist.
 |---|---|
 | Yes | `does` line, usually a leaf |
 | No | `does not` line, a leaf with `cannot_show` |
-| "This doesn't matter to me" | `waived` with his words, as narrowly as he said them. Never raised again, not by you, not by a Marker, not as a hold-out (a test case kept out of the tree and the debate) |
+| "This doesn't matter to me" | `waived` with his words, as narrowly as he said them. Never raised again, not by you, not by a blind judge, not as a hold-out (a test case kept out of the tree and the debate) |
 | "You decide" | `delegated`: you pick, you say what you picked, he can undo it |
 | "Not sure, show me" | `open`. A spike or labelled mock if that is the cheapest answer. An open core line blocks Gate A |
 | "Not now" | `## later`, for v2. Not in the tree |

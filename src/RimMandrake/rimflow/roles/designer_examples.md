@@ -1,7 +1,8 @@
 # Designer examples: his words behind the rules
 
 This file is loaded only on an explicit request for an example or a rationale
-(`roles/designer_manifest.json` `on_request`). No stage injects this file. A stage packet states every rule here
+(`roles/designer_manifest.json` `on_request`). No stage injects this file and no program loads it: the run that gets the
+request opens it. A stage packet states every rule here
 (`designer_dialogue.md`, `designer_write.md`, `designer_scene_contract.md`). This file holds the quotations and worked
 examples that motivated those rules. This file adds no rule of its own. A ruling quoted here keeps the scope he gave
 it: a complaint about one object is not yet a universal rule.
@@ -98,7 +99,8 @@ closes with a check: *"Have I provided enough guidance here?"*, *"Make sense?"*.
 wait? Happy to help on any items of taste or something tricky."* A ready ask sits in `record.json` (status draft, review
 pass).
 
-**Ask the form per surface; never infer it.** The form is how a reader takes the text in: a glance at a snapshot, or a
+**Ask the form per surface; never infer it.** A surface is one page or view that he reads, or one moment of play that
+tells the player something. The form is how a reader takes the text in: a glance at a snapshot, or a
 read of a write-up.
 
 - On one day he wrote *"Much less Prose, this is intended to be a snapshot of what's running, not a narrative walk."*

@@ -91,7 +91,7 @@ Every ask is an entry in `record.json` `asks` before it goes anywhere:
   answer instead, and log it delegated. Set the asks that you send to `sent`; end the run `waiting_owner`. Each ask that
   he calls strange or redundant is a defect on the Designer's item.
 - At most two rounds of argument per run, then write what you have. An unanswered question is your problem to shrink.
-- Keep reviewed asks ready, taste first, so that the Conductor can serve them while he waits. Ready is not sent.
+- Keep reviewed asks ready, taste first (the asks about his taste at the top), so that the Conductor can serve them while he waits. Ready is not sent.
 - **`designer_stage.py` `KEEP_REMOVE` refuses innocent ask wording.** `KEEP_REMOVE` is a regex.
   - The regex reads 'Do you want' as an offer to remove (its `(do|should) (we|you|i) want` branch).
   - The regex also reads 'drop' (as in 'drop a flame in') and 'cut' (a cut wire, a GSS mechanic).
@@ -110,7 +110,8 @@ Every ask is an entry in `record.json` `asks` before it goes anywhere:
   on, with the picture that produced it. A ruling against one bad picture keeps that scope until he makes it general.
 - **A reply is the start of a burst.** Read everything he sent before you write. When he closes with a check (*"Make
   sense?"*), say what you took from each point. Name any earlier ruling that his reply narrows, and where you push back.
-- **Ask the form per surface; never infer it.** The reader's job decides prose versus snapshot.
+- **Ask the form per surface; never infer it.** A surface is one page or view that he reads, or one moment of play that
+  tells the player something. The reader's job decides prose versus snapshot.
 - **Plain words, and an example for any term you coin.**
 - **A scene's intent** cites an approved requirement or an explicit exploratory question. Ask him for a fresh statement
   of intent only when the intent is genuinely unresolved.
