@@ -350,10 +350,11 @@ namespace RimMandrake.FlowWorks
 					continue;
 				}
 				// PIT_LID_FIX_VICKY_PEEKS_THROUGH: the depth the pawn is DRAWN at (a walker on a lid is at ground: no cover round
-				// it); a pawn beneath a lid is not drawn, so nothing to cover
+				// it). RIMMANDRAKE_FADE_EVERY_PIT_COVER_...: a pawn beneath a lid is drawn through the faded lid, so it is
+				// covered by the lip round it like any pit pawn (its own faded lid reads open: SeenDepthAt)
 				// DEEP_PIT_SWIM_FIX_FIVE_METRES_WALKS: a floating swimmer's drawn depth is the water surface (same read as the sink)
 				int d = Pits.RM_SuspensionUnderpass.DrawDepth(p, p.Position, RM_Patch_PitDepthDrawOffset.DrawHollow(p, eng, p.Position));
-				if (d <= 0 || Pits.RM_PitCoverBeneath.IsBeneath(p))
+				if (d <= 0)
 				{
 					continue;
 				}

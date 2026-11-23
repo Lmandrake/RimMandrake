@@ -1,6 +1,6 @@
 // SUSPENSION_BASE_REWIRE_COVERS_STEP_OUT (stage S0, design/RimMandrake/flowworks_bridges_design_2026-10-17.md): the span
 // base lifted out of Building_PitCover, no behaviour change. Offline checks on the production deck read (RM_SpanMath) and
-// the production call sites: a cover reads decked / height 0 / floor band false, an open dug cell reads the floor, the
+// the production call sites: a cover reads decked / height 0 / floor band by the shared rule (owner 2026-11-22), an open dug cell reads the floor, the
 // cover inherits the base's defaults, and every height-dependent "is it covered" site reads RM_SpanUtility. Each case has
 // a can-fail. NOT proven here: a cover still holding 40/120/220 kg and dropping a pawn in a live game (L2, owed).
 using System;
@@ -22,9 +22,14 @@ namespace RimMandrake.FlowWorks.SelfTest
         {
             Case("SpanBase_cover_read_is_decked_surface_no_underpass", () =>
             {
-                RM_SpanMath.DeckRead c = RM_SpanMath.CoverRead;
-                Assert(c.Decked && c.DeckHeightM == 0f && c.DeckNotches == 0 && !c.FloorBandPassesUnder,
-                    "a cover reads decked, at the surface, nothing passing under");
+                RM_SpanMath.DeckRead c = RM_SpanMath.CoverRead(8, true);
+                // RIMMANDRAKE_LET_PAWN_WALK_UNDER_PLANK_COVER_BRIDGES_ALREADY_ALLOW_IT supersedes "nothing passing under" (owner
+                // 2026-11-22: "She should be able to walk beneath it."): the floor band passes under a cover as under a bridge.
+                Assert(c.Decked && c.DeckHeightM == 0f && c.DeckNotches == 0 && c.FloorBandPassesUnder,
+                    "a cover reads decked, at the surface, the floor band passing under it (8 notches, walk-under on)");
+                Assert(!RM_SpanMath.CoverRead(8, false).FloorBandPassesUnder && !RM_SpanMath.CoverRead(3, true).FloorBandPassesUnder
+                    && RM_SpanMath.CoverRead(4, true).FloorBandPassesUnder,
+                    "can-fail: nothing passes under a cover with walk-under off or under 2 m (4 notches) of floor");
                 Assert(RM_SpanMath.WalkingDepth(4, c) == 0 && RM_SpanMath.WalkingDepth(16, c) == 0, "a covered pit is ground at any depth");
                 RM_SpanMath.DeckRead open = RM_SpanMath.DeckRead.None;
                 Assert(!open.Decked && RM_SpanMath.WalkingDepth(4, open) == 4 && RM_SpanMath.WalkingDepth(0, open) == 0,
@@ -49,8 +54,12 @@ namespace RimMandrake.FlowWorks.SelfTest
             {
                 string cover = Src("Pits", "Building_PitCover.cs");
                 Assert(cover.Contains("public class Building_PitCover : Building_SpanDeck, IPitCoverHost"), "a cover is a span deck");
-                Assert(!cover.Contains("override float DeckHeightM") && !cover.Contains("override bool FloorBandPassesUnder")
-                    && !cover.Contains("override bool Grated"), "can-fail: a cover keeps the base's surface / no-underpass / solid defaults");
+                Assert(!cover.Contains("override float DeckHeightM") && !cover.Contains("override bool Grated"),
+                    "can-fail: a cover keeps the base's surface / solid defaults");
+                // owner 2026-11-22 "She should be able to walk beneath it.": the cover's underpass is the one rule every span shares
+                Assert(cover.Contains("public override bool FloorBandPassesUnder")
+                    && cover.Contains("RM_SpanMath.PassesUnder(RM_SpanMath.SpanKind.PitCover, RM_SuspensionSettings.suspensionWalkUnder,"),
+                    "can-fail: a cover lets the floor band under by the shared span rule (setting + 2 m clearance)");
                 Assert(cover.Contains("protected override string CollapseSaveKey => \"rmCoverSprung\";"), "old saves keep their sprung flag");
                 // FLOWWORKS_PITCOVER_FIX_BURNS_PAWN_UNHARMED: a killed (not deconstructed) cover drops its riders through the trap
                 Assert(cover.Contains("public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)")

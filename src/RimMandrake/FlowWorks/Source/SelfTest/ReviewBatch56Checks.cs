@@ -167,7 +167,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "can-fail: a decked previous cell counts as its deck height (a cover: depth 0)");
                 Assert(s.Contains("Pits.Building_SpanDeck toCover = to > 0 ? Pits.RM_SpanUtility.DeckAt(map, c) : null;")
                     && s.Contains("to = RM_SpanMath.WalkingDepth(to, toCover.Read);"), "a decked destination counts as its deck height (a cover: depth 0)");
-                Assert(RM_SpanMath.WalkingDepth(4, RM_SpanMath.CoverRead) == 0, "a cover's walking depth is the surface");
+                Assert(RM_SpanMath.WalkingDepth(4, RM_SpanMath.CoverRead(4, true)) == 0, "a cover's walking depth is the surface");
                 Assert(s.Contains("int surface = toCover != null ? Mathf.Max(toCover.def.pathCost, 0) :")
                     && s.Contains("[HarmonyPriority(Priority.High)]"),
                     "a climb onto a cover is priced as the cover's cost + the climb, ahead of the cover-cost prefix (no order dependence)");

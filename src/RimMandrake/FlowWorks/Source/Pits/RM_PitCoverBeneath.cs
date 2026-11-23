@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using HarmonyLib;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -13,9 +12,16 @@ namespace RimMandrake.FlowWorks.Pits
 	/// lid, and drawn over the lid's ground print. It popped up through the cover.
 	///
 	/// Now the lid takes such a pawn BENEATH (RM_SuperdeepTrapState's saved set): held where it stands; it may leave only
-	/// along the floor into an open pit square (RM_PitCoverBeneathMath, conservative: never under the next lid); not drawn;
-	/// not on the lid's load, and not dropped again when the lid breaks (it is already on the floor). The lid's inspect line
-	/// names who is under it. The flag counts only while an intact lid stands on the pawn's square.
+	/// along the floor into an open pit square (RM_PitCoverBeneathMath, conservative: never under the next lid); not on the
+	/// lid's load, and not dropped again when the lid breaks (it is already on the floor). The lid's inspect line names who is
+	/// under it. The flag counts only while an intact lid stands on the pawn's square.
+	///
+	/// RIMMANDRAKE_LET_PAWN_WALK_UNDER_PLANK_COVER_BRIDGES_ALREADY_ALLOW_IT (owner 2026-11-22 "She should be able to walk
+	/// beneath it"): a lid the floor band passes under (Building_PitCover.FloorBandPassesUnder) takes such a pawn into its
+	/// FLOOR BAND instead, as a bridge does, and it walks on under the lids along the floor. The held beneath set remains for a
+	/// lid the band does not pass under (walk-under setting off, or a floor under 2 m).
+	/// RIMMANDRAKE_FADE_EVERY_PIT_COVER_TRANSPARENT_OVER_A_PAWN_LIGHTEN_PLEASED_HIM: a pawn beneath a lid is drawn, the lid
+	/// faded over it (RM_CoverFadeMath), no longer hidden.
 	/// </summary>
 	public static class RM_PitCoverBeneath
 	{
@@ -65,8 +71,14 @@ namespace RimMandrake.FlowWorks.Pits
 			{
 				return;
 			}
+			RM_MapComponent_SuspensionBridges band = cover.FloorBandPassesUnder ? RM_MapComponent_SuspensionBridges.Of(map) : null;
 			foreach (Pawn p in under)
 			{
+				if (band != null)
+				{
+					band.SetBand(p, true);   // down on the floor under the lid: the floor band, free to walk on beneath
+					continue;
+				}
 				st.SetBeneath(p, true);
 				p.pather?.StopDead();
 				if (p.jobs?.curJob != null)
@@ -109,52 +121,30 @@ namespace RimMandrake.FlowWorks.Pits
 				StepAllowed(p, eng, c + IntVec3.South), StepAllowed(p, eng, c + IntVec3.West));
 		}
 
-		/// <summary>Who is beneath these lid squares (the inspect line).</summary>
+		/// <summary>Who is beneath these lid squares (the inspect line): held beneath, or walking under them in the floor band.</summary>
 		public static List<Pawn> BeneathOn(Map map, IEnumerable<Building_PitCover> deck)
 		{
 			List<Pawn> list = new List<Pawn>();
-			RM_SuperdeepTrapState st = RM_SuperdeepTrapState.BeneathTotal > 0 && map != null ? StateOf(map) : null;
-			if (st == null)
+			if (map == null || (RM_SuperdeepTrapState.BeneathTotal <= 0 && RM_MapComponent_SuspensionBridges.BandTotal <= 0))
 			{
 				return list;
 			}
-			HashSet<IntVec3> cells = new HashSet<IntVec3>();
 			foreach (Building_PitCover d in deck)
 			{
-				cells.Add(d.Position);
-			}
-			foreach (Pawn p in st.BeneathPawns)
-			{
-				if (p != null && p.Spawned && p.Map == map && cells.Contains(p.Position))
+				if (d == null || !d.Spawned || d.Map != map)
 				{
-					list.Add(p);
+					continue;
+				}
+				List<Thing> things = d.Position.GetThingList(map);
+				for (int i = 0; i < things.Count; i++)
+				{
+					if (things[i] is Pawn p && !p.Dead && !list.Contains(p) && (IsBeneath(p) || RM_SuspensionUnderpass.InFloorBand(p)))
+					{
+						list.Add(p);
+					}
 				}
 			}
 			return list;
-		}
-	}
-
-	/// <summary>Hidden under the lid: a beneath pawn is not drawn (Pawn.DynamicDrawPhaseAt, 1.6).</summary>
-	[HarmonyPatch(typeof(Pawn), nameof(Pawn.DynamicDrawPhaseAt))]
-	[RimMandrake.Shared.PatchFeature("Pawns under a pit lid are not drawn")]
-	public static class RM_Patch_PawnBeneathCoverHidden
-	{
-		[HarmonyPrefix]
-		public static bool Prefix(Pawn __instance)
-		{
-			return !RM_PitCoverBeneath.IsBeneath(__instance);
-		}
-	}
-
-	/// <summary>Hidden under the lid: no name label over the lid either (Pawn.DrawGUIOverlay).</summary>
-	[HarmonyPatch(typeof(Pawn), nameof(Pawn.DrawGUIOverlay))]
-	[RimMandrake.Shared.PatchFeature("Pawns under a pit lid show no name label")]
-	public static class RM_Patch_PawnBeneathCoverNoLabel
-	{
-		[HarmonyPrefix]
-		public static bool Prefix(Pawn __instance)
-		{
-			return !RM_PitCoverBeneath.IsBeneath(__instance);
 		}
 	}
 }

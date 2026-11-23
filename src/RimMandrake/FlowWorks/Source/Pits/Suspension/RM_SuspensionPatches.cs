@@ -361,21 +361,24 @@ namespace RimMandrake.FlowWorks.Pits
 
 	/// <summary>
 	/// SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD (construction design §1.4, §4; parent §5.1-§5.2; R8 amended 2026-10-18,
-	/// owner: <i>"only for these new bridges uniquely, NOT actual tunnels."</i>): the FLOOR BAND under a suspension deck.
+	/// owner: <i>"only for these new bridges uniquely, NOT actual tunnels."</i>; widened 2026-11-22 to pit covers,
+	/// RIMMANDRAKE_LET_PAWN_WALK_UNDER_PLANK_COVER_BRIDGES_ALREADY_ALLOW_IT, owner: <i>"She should be able to walk beneath
+	/// it."</i>): the FLOOR BAND under a span deck (a suspension deck or a pit cover).
 	///
 	/// A deck square has two bands: the deck band (everyone who came on from an anchor, a ledge or another deck square) and the
-	/// floor band (everyone who walked in along the hole's floor). The floor band exists only under a Building_SuspensionDeck
-	/// whose floor is at least 2 m below it (FloorBandPassesUnder, setting suspensionWalkUnder); no roof, dug passage, cover or
-	/// other building ever grants it. A pawn's band is decided as it steps onto the square (StepGoesUnder) and kept in the
+	/// floor band (everyone who walked in along the hole's floor). The floor band exists only under a span deck (suspension
+	/// deck or pit cover) whose floor is at least 2 m below it (FloorBandPassesUnder, RM_SpanMath.PassesUnder, setting
+	/// suspensionWalkUnder); no roof, dug passage or other building ever grants it. A pawn's band is decided as it steps onto the square (StepGoesUnder) and kept in the
 	/// bridges component (saved). Everything that asks "is this pawn down in the hole" (fire, slime, fill, exposure, falls,
 	/// crush, shots, the sink, the walked-step cost and floor, the cliff masks' floor view) reads InFloorBand.
 	/// </summary>
 	public static class RM_SuspensionUnderpass
 	{
-		/// <summary>The suspension deck on this square whose floor band passes under it (intact), or null.</summary>
-		public static Building_SuspensionDeck PassingDeckAt(Map map, IntVec3 c)
+		/// <summary>The span deck (suspension deck or pit cover) on this square whose floor band passes under it (intact), or
+		/// null. A cover never stacks with a suspension deck: RM_PitCoverUtility.CoverAt(map, c) is the cover this returns.</summary>
+		public static Building_SpanDeck PassingDeckAt(Map map, IntVec3 c)
 		{
-			return RM_MapComponent_SuspensionBridges.DeckAt(map, c) is Building_SuspensionDeck d && d.FloorBandPassesUnder ? d : null;
+			return RM_SpanUtility.DeckAt(map, c) is Building_SpanDeck d && d.FloorBandPassesUnder ? d : null;
 		}
 
 		/// <summary>Is this pawn under a suspension deck now (in the floor band of the square it stands on)?</summary>
@@ -419,7 +422,7 @@ namespace RimMandrake.FlowWorks.Pits
 			{
 				return false;
 			}
-			Building_SuspensionDeck dTo = PassingDeckAt(map, to);
+			Building_SpanDeck dTo = PassingDeckAt(map, to);
 			if (dTo == null)
 			{
 				return false;
@@ -430,7 +433,9 @@ namespace RimMandrake.FlowWorks.Pits
 			int fromWalk = eng == null || RM_TrenchStride.SteppedOver(p, map, eng, from) ? 0 : RM_SpanUtility.WalkingDepth(map, from, eng.ClimbDepthAt(from));
 			bool fromBand = fromDecked && from == p.Position ? InFloorBand(p) : fromDecked && PassingDeckAt(map, from) != null
 				&& RM_MapComponent_SuspensionBridges.Of(map)?.InBandSet(p) == true;
-			return RM_SuspensionMath.StepGoesUnder(true, dTo.DeckNotches, fromDecked, fromBand, fromWalk);
+			int floorTo = eng == null ? 0 : eng.ClimbDepthAt(to);
+			int k = RM_PocketGrid.ClimbLimitOf(p);
+			return RM_SuspensionMath.StepGoesUnder(true, dTo.DeckNotches, floorTo, k, fromDecked, fromBand, fromWalk);
 		}
 
 		/// <summary>Does a step that leaves a floor-band square stay at floor level (it always does: the floor band never climbs
@@ -492,7 +497,7 @@ namespace RimMandrake.FlowWorks.Pits
 					List<Thing> things = map.listerThings.ThingsInGroup(ThingRequestGroup.BuildingArtificial);
 					for (int i = 0; i < things.Count; i++)
 					{
-						if (things[i] is Building_SuspensionDeck d && d.Decked && d.FloorBandPassesUnder && d.DeckNotches > best)
+						if (things[i] is Building_SpanDeck d && d.Decked && d.FloorBandPassesUnder && d.DeckNotches > best)
 						{
 							best = d.DeckNotches;
 						}
@@ -519,16 +524,28 @@ namespace RimMandrake.FlowWorks.Pits
 			{
 				return;
 			}
-			if (PassingDeckAt(p.Map, to) == null)
+			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(p.Map);
+			Building_SpanDeck dTo = PassingDeckAt(p.Map, to);
+			if (dTo == null)
 			{
+				// RIMMANDRAKE_LET_PAWN_WALK_UNDER_PLANK_COVER_BRIDGES_ALREADY_ALLOW_IT (R7): a floor-band pawn walking out from
+				// under a span along the floor did not arrive from the deck's walking height: the fall detector must not read
+				// the step as a drop from the deck into the open hole
+				bool leftBand = b.InBandSet(p) && PassingDeckAt(p.Map, from) != null;
+				if (eng != null && RM_SuspensionMath.BandExitIsFloorWalk(leftBand, false, eng.ClimbDepthAt(from), eng.ClimbDepthAt(to),
+					RM_PocketGrid.NaturalClimbLimitOf(p)))
+				{
+					eng.SuperdeepTrap?.NoteHandledArrival(p, to);
+				}
 				b.SetBand(p, false);
 				return;
 			}
 			bool fromDecked = RM_SpanUtility.DeckedAt(p.Map, from);
-			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(p.Map);
 			int fromWalk = eng == null || RM_TrenchStride.SteppedOver(p, p.Map, eng, from) ? 0 : RM_SpanUtility.WalkingDepth(p.Map, from, eng.ClimbDepthAt(from));
 			bool fromBand = fromDecked && b.InBandSet(p) && PassingDeckAt(p.Map, from) != null;
-			b.SetBand(p, RM_SuspensionMath.StepGoesUnder(true, PassingDeckAt(p.Map, to).DeckNotches, fromDecked, fromBand, fromWalk));
+			int floorTo = eng == null ? 0 : eng.ClimbDepthAt(to);
+			int k = RM_PocketGrid.ClimbLimitOf(p);
+			b.SetBand(p, RM_SuspensionMath.StepGoesUnder(true, dTo.DeckNotches, floorTo, k, fromDecked, fromBand, fromWalk));
 		}
 
 		/// <summary>The sink depth (notches) the pawn's draw reads on a square: its walking height on a suspension deck in the
@@ -544,7 +561,10 @@ namespace RimMandrake.FlowWorks.Pits
 			}
 			if (RM_PitCoverUtility.CoverAt(p.Map, c) != null)
 			{
-				return c == p.Position && RM_PitCoverBeneath.IsBeneath(p) ? hollow : RM_SpanUtility.WalkingDepth(p.Map, c, hollow);
+				// RIMMANDRAKE_LET_PAWN_WALK_UNDER_PLANK_COVER_BRIDGES_ALREADY_ALLOW_IT: a pawn in a cover's floor band (or held
+				// beneath a lid laid over it) draws down in the hole, as under a bridge
+				bool underLid = c == p.Position ? RM_PitCoverBeneath.IsBeneath(p) || InFloorBand(p) : StepGoesUnder(p, p.Position, c);
+				return underLid ? hollow : RM_SpanUtility.WalkingDepth(p.Map, c, hollow);
 			}
 			if (!(RM_MapComponent_SuspensionBridges.DeckAt(p.Map, c) is Building_SuspensionDeck d))
 			{
@@ -560,11 +580,19 @@ namespace RimMandrake.FlowWorks.Pits
 		}
 
 		/// <summary>PIT_LID_FIX_VICKY_PEEKS_THROUGH: the depth a square SHOWS to the draw (the pit lip search): an intact lid
-		/// shows its walking height (ground), so it is the near lip of an open part of its pit; anything else its hollow depth.</summary>
+		/// shows its walking height (ground), so it is the near lip of an open part of its pit; anything else its hollow depth.
+		/// RIMMANDRAKE_FADE_EVERY_PIT_COVER_TRANSPARENT_OVER_A_PAWN_LIGHTEN_PLEASED_HIM: a lid faded over a pawn beneath it
+		/// shows the hollow (RM_CoverFadeMath.SeenDepth), so the pawn under it is not cut by its own lid.</summary>
 		public static int SeenDepthAt(Map map, RM_MapComponent_Excavation eng, IntVec3 c)
 		{
 			int h = eng.HollowDepthAt(c);
-			return h > 0 && RM_PitCoverUtility.CoverAt(map, c) != null ? RM_SpanUtility.WalkingDepth(map, c, h) : h;
+			if (h <= 0)
+			{
+				return h;
+			}
+			bool lid = RM_PitCoverUtility.CoverAt(map, c) != null;
+			return RM_CoverFadeMath.SeenDepth(h, lid, lid && RM_MapComponent_SuspensionBridges.FadedAt(map, c),
+				lid ? RM_SpanUtility.WalkingDepth(map, c, h) : h);
 		}
 
 		/// <summary>Is this pawn standing on a deck (deck band)?</summary>

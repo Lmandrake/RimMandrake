@@ -2852,7 +2852,7 @@ def phase_X(L, args):
         L.row("X9_cover_deck_uniform", len(printed) == 1 and None not in printed and printed == around, "MOD",
               "deck prints %s; ring terrain %s (one surface: no seam between deck cells or at the lip; the frame is "
               "still the judge's)" % (sorted(printed), sorted(around)))
-        _x8b_cover_occupant(L, cov[0], occ)
+        _x8b_cover_occupant(L, cov[0], occ, cov)
         _x8c_lid_walker(L, cov[1], cov)
         _vc().sweep_non_colonists(B)
         _x10_canal_fire(L)
@@ -2876,29 +2876,47 @@ def _things_at(B, def_name, cells):
     return None if any(None in c for c in cells_) else cells_          # a thing with no readable cell is no reading
 
 
-def _x8b_cover_occupant(L, c, occ):
-    """PIT_COVER_FIX_OCCUPANT_STAYS_BELOW (owner card 2026-10-21 "Stays below, hidden"): the colonist spawned in the pit at c
-    before the lid was laid stays below it 300 ticks later: still on c, beneath, held, sealed (the 2x2 deck covers the whole
-    pit), off the lid's load, not drawn, and the lid's inspect line names her."""
+def _x8b_cover_occupant(L, c, occ, cov=None):
+    """PIT_COVER_FIX_OCCUPANT_STAYS_BELOW (owner card 2026-10-21 "Stays below"): the colonist spawned in the pit at c before
+    the lid was laid stays below it 300 ticks later, under one of the deck's squares (the 2x2 deck covers the whole pit, so
+    she cannot leave it), off the lid's load, and the lid's inspect line names her.
+    RIMMANDRAKE_LET_PAWN_WALK_UNDER_PLANK_COVER_BRIDGES_ALREADY_ALLOW_IT (owner 2026-11-22 "She should be able to walk beneath
+    it"): she is in the floor band under the lids (band=True) or, where the band does not pass, held beneath (beneath=True);
+    free to walk on under the deck, so she is looked for under every deck square, not only c.
+    RIMMANDRAKE_FADE_EVERY_PIT_COVER_TRANSPARENT_OVER_A_PAWN_LIGHTEN_PLEASED_HIM (owner 2026-11-22 "transparent rather than
+    merely lightened, to show both 'over and under' at the same time"): she is drawn (hidden=False, no hide patch), and the
+    lid over her square is faded (faded=True)."""
     B = L.B
     if not occ.get("success"):
         L.row("X8b_cover_occupant_stays_below", False, "HARNESS", "spawn colonist in the pit: %r" % (str(occ)[:200],),
               status="UNMEASURED")
         return
     _direct_step(B, 300, 60000, "X8b_cover_occupant")
-    ok, kv, txt = _proof(B, "ProofBeneath", "%d,%d" % c)
-    okc, kc, _ = _proof(B, "ProofCover", "%d,%d" % c)
-    if not ok or "beneath" not in kv:
-        L.row("X8b_cover_occupant_stays_below", False, "HARNESS", "ProofBeneath unreadable: %s" % txt[:200],
-              status="UNMEASURED")
+    cells = [c] + [q for q in (cov or []) if tuple(q) != tuple(c)]
+    found = None
+    for q in cells:
+        ok, kv, txt = _proof(B, "ProofBeneath", "%d,%d" % tuple(q))
+        if not ok or "beneath" not in kv:
+            L.row("X8b_cover_occupant_stays_below", False, "HARNESS", "ProofBeneath unreadable at %s: %s" % (q, txt[:200]),
+                  status="UNMEASURED")
+            return
+        if kv.get("pawn") not in (None, "none"):
+            found = (q, kv, txt)
+            break
+    if found is None:
+        L.row("X8b_cover_occupant_stays_below", False, "MOD", "no living pawn under any of the %d deck squares %s 300 ticks "
+              "after the lid was laid (she popped up through the cover or left the sealed pit)" % (len(cells), cells))
         return
+    q, kv, txt = found
+    okc, kc, _ = _proof(B, "ProofCover", "%d,%d" % tuple(q))
     inspect = kc.get("inspect", "") if okc else ""
-    good = (kv.get("pawn") not in (None, "none") and kv.get("covered") == "True" and kv.get("beneath") == "True"
-            and kv.get("held") == "True" and kv.get("trapped") == "True" and kv.get("onLoad") == "False"
-            and kv.get("hidden") == "True" and kv.get("drawPatch", "True") == "True" and "Below,_hidden:" in inspect)
+    below = kv.get("beneath") == "True" or kv.get("band") == "True"
+    good = (kv.get("covered") == "True" and below and kv.get("onLoad") == "False" and kv.get("hidden") == "False"
+            and kv.get("drawPatch") == "False" and kv.get("faded") == "True" and "Below," in inspect)
     L.row("X8b_cover_occupant_stays_below", good, "MOD",
-          "%s | lid inspect %s (want: still on %d,%d, beneath/held/trapped True, onLoad False, hidden, named under the lid; "
-          "a pawn popped up reads pawn=none here or beneath=False)" % (txt, inspect[:160], c[0], c[1]))
+          "%s | lid inspect %s (want: under a deck square %s, beneath or band True, onLoad False, hidden False, drawPatch False, "
+          "faded True, named under the lid; a pawn popped up reads pawn=none on every square or beneath=band=False)" % (
+              txt, inspect[:160], list(q)))
 
 
 X8C_LID = "RM_PitCover_PlankLattice"
@@ -3159,7 +3177,8 @@ class MockBridge(object):
         "fluids_look_same": ["X6_two_fluids_distinct"],                # one fill terrain for every fluid
         "cover_shows_hole": ["X8_cover_hides_pit", "X9_cover_deck_uniform"],   # cover prints the pit
         "cover_lifts_occupant": ["X8b_cover_occupant_stays_below"],    # a lid laid over a pit occupant lifts her onto it
-        "beneath_drawn": ["X8b_cover_occupant_stays_below"],           # the hide prefix never ran: she draws over the lid
+        "beneath_hidden": ["X8b_cover_occupant_stays_below"],          # a hide prefix came back: she is not drawn under the lid
+        "lid_not_faded": ["X8b_cover_occupant_stays_below"],           # the lid over her stays opaque (no fade, owner 2026-11-22)
         "lid_walker_sunk": ["X8c_lid_walker_drawn_at_ground"],         # a walker on a lid draws sunk to the pit floor
         "plank_lid_refused": ["X8c_lid_walker_drawn_at_ground"],       # X8c's plank lid never laid: UNMEASURED/SITE, never MOD
         "fire_never_spreads": ["X10_canal_fire"],                     # the front never leaves the lit cell
@@ -3963,17 +3982,17 @@ class MockBridge(object):
             x, z = map(int, args.split(","))
             c = (x, z)
             here = self.spawned_at.get(c, [])
-            b = bool(here) and here[0] in self.beneath
-            hid = b and "beneath_drawn" not in self.faults
+            b = bool(here) and here[0] in self.beneath      # below the lid: in production the floor band (woven scrap, D=4)
+            hid = b and "beneath_hidden" in self.faults
             sunk = bool(here) and c in self.covers and (b or "lid_walker_sunk" in self.faults)
             # a walker (not beneath) on a deck holding ANY woven-scrap lid springs it: a mixed deck gives way at its weakest
             # cover (CompPitCoverTrigger.RunScan, GPT C4-F5), and woven scrap gives way under 40 kg
             sprung = bool(here) and not b and any(self.cover_def.get(d) == "RM_PitCover_WovenScrap" for d in self.deck_of(c))
-            res = "BENEATH cell=%d,%d pawn=%s beneath=%s held=%s trapped=%s onLoad=%s hidden=%s covered=%s" % (
-                x, z, here[0] if here else "none", b, b, b, not b, hid, c in self.covers and not sprung)
+            res = "BENEATH cell=%d,%d pawn=%s beneath=False held=%s trapped=%s onLoad=%s hidden=%s covered=%s" % (
+                x, z, here[0] if here else "none", b, b, not b, hid, c in self.covers and not sprung)
             if here:
-                res += " drawPatch=%s sink=%s drawDz=%s" % (hid or not b, "1.200" if sunk else "0.000",
-                                                           "-1.200" if sunk else "0.000")
+                res += " drawPatch=%s band=%s faded=%s sink=%s drawDz=%s" % (
+                    hid, b, b and "lid_not_faded" not in self.faults, "1.200" if sunk else "0.000", "-1.200" if sunk else "0.000")
         elif method == "ProofIgnite" and "ignite_type_missing" in self.faults:
             return dict(success=False, message="Type not found: %s" % type)
         elif method == "ProofIgnite":

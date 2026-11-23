@@ -215,7 +215,9 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string deck = Src("Pits", "Suspension", "Building_SuspensionDeck.cs");
                 Assert(deck.Contains("public class Building_SuspensionDeck : Building_SpanDeck"), "a suspension deck is a span deck (extends the base)");
                 Assert(deck.Contains("public override float DeckHeightM => (Record?.deckNotches ?? 0) * RM_SpanMath.NotchM;")
-                    && deck.Contains("RM_SpanMath.ClearsUnderpass(eng.ClimbDepthAt(Position), DeckNotches)"),
+                    && deck.Contains("RM_SpanMath.PassesUnder(RM_SpanMath.SpanKind.SuspensionDeck, RM_SuspensionSettings.suspensionWalkUnder,")
+                    && deck.Contains("eng.ClimbDepthAt(Position), DeckNotches)")
+                    && Src("RM_SpanMath.cs").Contains("return walkUnderOn && ClearsUnderpass(floorNotches, deckNotches);"),
                     "a deck's height is its record's (0 = surface) and its floor band passes under at 2 m clearance (UNDERPASS)");
                 string patches = Src("Pits", "Suspension", "RM_SuspensionPatches.cs");
                 Assert(patches.Contains("\"Use a suspension bridge over dug ground\""), "vanilla bridges refused with the ruled message (Q6)");
@@ -409,11 +411,14 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(comp.Contains("new DamageInfo(DamageDefOf.Crush,") && comp.Contains("RM_SuspensionDefOf.RM_SuspensionWreck"), "a falling deck crushes below and leaves a wreck");
                 Assert(Src("Pits", "Building_SpanDeck.cs").Contains("&& !RM_SuspensionUnderpass.InFloorBand(p))"), "a pawn under a deck weighs nothing on it");
                 Assert(comp.Contains("\"rmSuspensionSwingTicks\"") && comp.Contains("\"rmSuspensionSwingCells\""), "can-fail: a swing-down in flight is saved");
-                // NOT actual tunnels: only the suspension deck class grants the floor band
+                // NOT actual tunnels: only the span decks (suspension deck, pit cover) grant the floor band
                 string spanSrc = Src("Pits", "Building_SpanDeck.cs");
                 Assert(spanSrc.IndexOf("int deck = DeckNotches;") < spanSrc.IndexOf("c.Destroy(DestroyMode.Vanish);") && spanSrc.IndexOf("int deck = DeckNotches;") > 0,
                     "can-fail: the collapse reads the deck height BEFORE destroying the span (Map is null after despawn)");
-                Assert(!Src("Pits", "Building_PitCover.cs").Contains("FloorBandPassesUnder"), "can-fail: a pit cover never lets anyone under");
+                // RIMMANDRAKE_LET_PAWN_WALK_UNDER_PLANK_COVER_BRIDGES_ALREADY_ALLOW_IT supersedes "a pit cover never lets anyone under"
+                // (owner 2026-11-22: "She should be able to walk beneath it."): a cover grants the band by the same rule as a deck.
+                Assert(Src("Pits", "Building_PitCover.cs").Contains("RM_SpanMath.PassesUnder(RM_SpanMath.SpanKind.PitCover, RM_SuspensionSettings.suspensionWalkUnder,"),
+                    "can-fail: a pit cover lets the floor band under by the shared span rule (setting + 2 m clearance)");
                 Assert(Src("Pits", "Building_SpanDeck.cs").Contains("public virtual bool FloorBandPassesUnder => false;"), "the base span grants nothing");
                 string set = Src("Pits", "Suspension", "RM_SuspensionSettings.cs");
                 Assert(set.Contains("\"People can walk under suspension bridges\"") && set.Contains("\"Sunken bridges (below ground)\""), "both settings shown");

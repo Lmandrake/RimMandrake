@@ -114,8 +114,8 @@ namespace RimMandrake.FlowWorks.Pits
 		public override float DeckHeightM => (Record?.deckNotches ?? 0) * RM_SpanMath.NotchM;
 
 		/// <summary>SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD (Q2, ruled 2 m clearance): pawns down in the hole walk under this
-		/// deck when its floor is at least 2 m below it and the setting is on. Keyed to this class only: no roof, cover or
-		/// passage ever grants a floor band ("NOT actual tunnels").</summary>
+		/// deck when its floor is at least 2 m below it and the setting is on (RM_SpanMath.PassesUnder, the rule a pit cover
+		/// shares since 2026-11-22). No roof or dug passage ever grants a floor band ("NOT actual tunnels").</summary>
 		public override bool FloorBandPassesUnder
 		{
 			get
@@ -125,8 +125,15 @@ namespace RimMandrake.FlowWorks.Pits
 					return false;
 				}
 				RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(Map);
-				return eng != null && RM_SpanMath.ClearsUnderpass(eng.ClimbDepthAt(Position), DeckNotches);
+				return eng != null && RM_SpanMath.PassesUnder(RM_SpanMath.SpanKind.SuspensionDeck, RM_SuspensionSettings.suspensionWalkUnder,
+					eng.ClimbDepthAt(Position), DeckNotches);
 			}
+		}
+
+		/// <summary>The deck tile the fade pass draws see-through over a pawn under it (its linked tile and turn).</summary>
+		public override Material FadeMaterial(out float angle)
+		{
+			return RM_SuspensionDeckLink.TileFor(this, out angle);
 		}
 
 		/// <summary>DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS: this square of a drawbridge leaf is up (derived from its leaf record by
@@ -213,6 +220,11 @@ namespace RimMandrake.FlowWorks.Pits
 			if (leafRaised)
 			{
 				return;   // DRAWBRIDGE (R12): a raised square draws empty; the winch house draws the leaf upright
+			}
+			Map map = Map;
+			if (map != null && RM_MapComponent_SuspensionBridges.FadedAt(map, Position))
+			{
+				return;   // RIMMANDRAKE_FADE_EVERY_PIT_COVER_...: a pawn beneath; the fade pass draws this square see-through
 			}
 			if (RM_DrawbridgeArt.PrintRaidPlank(layer, this, Record))
 			{

@@ -41,8 +41,26 @@ namespace RimMandrake.FlowWorks
 			public int DeckNotches => Notches(DeckHeightM);
 		}
 
-		/// <summary>The read every intact pit cover gives (the trap tier): decked, at the surface, nothing under.</summary>
-		public static DeckRead CoverRead => new DeckRead(true, 0f, false);
+		/// <summary>The kinds of span whose floor band rule <see cref="PassesUnder"/> decides.</summary>
+		public enum SpanKind
+		{
+			SuspensionDeck = 0,
+			PitCover = 1,
+		}
+
+		/// <summary>Does the floor band pass under an intact span of this kind (pawns down in the hole walk beneath it)?
+		/// The walk-under setting must be on and the floor at least <see cref="UnderpassClearanceNotches"/> below the deck.</summary>
+		public static bool PassesUnder(SpanKind kind, bool walkUnderOn, int floorNotches, int deckNotches)
+		{
+			return walkUnderOn && ClearsUnderpass(floorNotches, deckNotches);
+		}
+
+		/// <summary>The read an intact pit cover gives over a floor this deep: decked, at the surface (walkers on it are at
+		/// ground), and the floor band passes under it per <see cref="PassesUnder"/>.</summary>
+		public static DeckRead CoverRead(int floorNotches, bool walkUnderOn)
+		{
+			return new DeckRead(true, 0f, PassesUnder(SpanKind.PitCover, walkUnderOn, floorNotches, 0));
+		}
 
 		/// <summary>Metres below ground to whole notches (rounded to the nearest; never negative).</summary>
 		public static int Notches(float metres)

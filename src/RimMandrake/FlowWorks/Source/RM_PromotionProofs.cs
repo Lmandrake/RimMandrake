@@ -287,7 +287,11 @@ namespace RimMandrake.FlowWorks
 		/// it (the same read). Read-only.
 		/// PIT_LID_FIX_VICKY_PEEKS_THROUGH adds the draw itself: drawPatch = the hide prefix is really on Pawn.DynamicDrawPhaseAt
 		/// (Harmony's own patch table); hidden = drawPatch and that prefix skips the pawn; sink = the sink the draw reads on its
-		/// square; drawDz = the REAL patched DrawPos z minus the cell centre (a walker on a lid: 0, at ground; sunk: negative).</summary>
+		/// square; drawDz = the REAL patched DrawPos z minus the cell centre (a walker on a lid: 0, at ground; sunk: negative).
+		/// RIMMANDRAKE_LET_PAWN_WALK_UNDER_PLANK_COVER_BRIDGES_ALREADY_ALLOW_IT / RIMMANDRAKE_FADE_EVERY_PIT_COVER_TRANSPARENT_OVER_A_
+		/// PAWN_LIGHTEN_PLEASED_HIM (owner 2026-11-22): the hide prefix is gone (she is drawn, the lid faded over her). drawPatch
+		/// now reads whether ANY FlowWorks prefix sits on Pawn.DynamicDrawPhaseAt (none should); hidden = drawPatch and she is
+		/// under the lid. band = she is in the floor band (walks on beneath the lids); faded = the lid on her square is faded.</summary>
 		public static string ProofBeneath(string arg)
 		{
 			RM_MapComponent_Excavation ex = Engine(out Map map);
@@ -318,17 +322,19 @@ namespace RimMandrake.FlowWorks
 			{
 				foreach (HarmonyLib.Patch pt in info.Prefixes)
 				{
-					drawPatch |= pt.PatchMethod?.DeclaringType == typeof(RM_Patch_PawnBeneathCoverHidden);
+					drawPatch |= pt.PatchMethod?.DeclaringType?.Assembly == typeof(RM_PitCoverBeneath).Assembly;
 				}
 			}
-			bool hidden = drawPatch && !RM_Patch_PawnBeneathCoverHidden.Prefix(p);
+			bool band = RM_SuspensionUnderpass.InFloorBand(p);
+			bool hidden = drawPatch && covered && (beneath || band);
+			bool faded = RM_MapComponent_SuspensionBridges.FadedAt(map, c);
 			Vector3 centre = p.Position.ToVector3Shifted();
 			float sink = RM_Patch_PitDepthDrawOffset.SinkOf(p, centre);
 			float drawDz = p.DrawPos.z - centre.z;
 			return "BENEATH cell=" + c.x + "," + c.z + " pawn=" + p.ThingID + " beneath=" + beneath
 				+ " held=" + RM_SuperdeepTrap.IsHeld(p) + " trapped=" + RM_SuperdeepTrap.IsTrapped(p)
 				+ " onLoad=" + standing.Contains(p) + " hidden=" + hidden + " covered=" + covered
-				+ " drawPatch=" + drawPatch + " sink=" + sink.ToString("0.000", System.Globalization.CultureInfo.InvariantCulture) + " drawDz=" + drawDz.ToString("0.000", System.Globalization.CultureInfo.InvariantCulture);
+				+ " drawPatch=" + drawPatch + " band=" + band + " faded=" + faded + " sink=" + sink.ToString("0.000", System.Globalization.CultureInfo.InvariantCulture) + " drawDz=" + drawDz.ToString("0.000", System.Globalization.CultureInfo.InvariantCulture);
 		}
 
 		/// <summary>POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD live row L8 (northstar/liquid_checks.py): the pond indexed at "x,z" —

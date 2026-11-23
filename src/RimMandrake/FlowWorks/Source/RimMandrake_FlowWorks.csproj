@@ -291,6 +291,7 @@
     <Compile Include="Pits\Building_PitCover.cs" />
     <Compile Include="Pits\RM_PitCoverBeneath.cs" />
     <Compile Include="Pits\RM_PitCoverBeneathMath.cs" />
+    <Compile Include="Pits\RM_CoverFadeMath.cs" />
     <Compile Include="Pits\RM_PitCoverLookMath.cs" />
     <Compile Include="Pits\RM_PitDeckMath.cs" />
     <Compile Include="Pits\Building_SpanDeck.cs" />

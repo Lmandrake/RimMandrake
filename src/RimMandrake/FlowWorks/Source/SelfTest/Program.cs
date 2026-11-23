@@ -2231,6 +2231,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             PlotDBodyPruneChecks.Run(Case);    // PLOT_D_BODY_PRUNE_STALE_SEA: the dev plot reset releases body claims (PlotDBodyPruneChecks.cs)
             SpanBaseChecks.Run(Case);          // SUSPENSION_BASE_REWIRE_COVERS_STEP_OUT: the span base under pit covers, DeckedAt (SpanBaseChecks.cs)
             PitCoverBeneathChecks.Run(Case);   // PIT_COVER_FIX_OCCUPANT_STAYS_BELOW: a lid laid over a pit occupant keeps her below (PitCoverBeneathChecks.cs)
+            CoverUnderFadeChecks.Run(Case);   // RIMMANDRAKE_LET_PAWN_WALK_UNDER_PLANK_COVER_* + RIMMANDRAKE_FADE_EVERY_PIT_COVER_*: walk under every pit cover, fade every covering over a pawn (CoverUnderFadeChecks.cs)
             PitCoverLookChecks.Run(Case);   // PLANK_COVER_REDRAW_READS_AS_EMPTY_PIT: a lid in an open pit shows its planks (PitCoverLookChecks.cs)
             PitDrawHoldChecks.Run(Case);       // PIT_BOAR_FIX_SUNBATHES_ON_THE_WALL: the sink holds the DRAWN (tweened) centre above the near lip (PitDrawHoldChecks.cs)
             LadderClimbSpanChecks.Run(Case);   // RIMMANDRAKE_FIX_CLIMB_SLOW_OUTLASTS_LADDER: the climb is slow only across the ladder's art (LadderClimbSpanChecks.cs)

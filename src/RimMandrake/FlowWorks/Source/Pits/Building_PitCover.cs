@@ -170,6 +170,57 @@ namespace RimMandrake.FlowWorks.Pits
 
         public override bool JoinsSpan(Building_SpanDeck other) => other is Building_PitCover;
 
+        /// <summary>RIMMANDRAKE_LET_PAWN_WALK_UNDER_PLANK_COVER_BRIDGES_ALREADY_ALLOW_IT (owner 2026-11-22: "She should be able
+        /// to walk beneath it."): pawns down in the pit walk under an intact cover as under a bridge, by the one rule every span
+        /// shares (RM_SpanMath.PassesUnder: the walk-under setting on, the floor at least 2 m below the lid's ground).</summary>
+        public override bool FloorBandPassesUnder
+        {
+            get
+            {
+                if (!Spawned)
+                {
+                    return false;
+                }
+                RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(Map);
+                return eng != null && RM_SpanMath.PassesUnder(RM_SpanMath.SpanKind.PitCover, RM_SuspensionSettings.suspensionWalkUnder,
+                    eng.ClimbDepthAt(Position), DeckNotches);
+            }
+        }
+
+        /// <summary>RIMMANDRAKE_FADE_EVERY_PIT_COVER_TRANSPARENT_OVER_A_PAWN_LIGHTEN_PLEASED_HIM: the material the fade pass draws
+        /// this lid in while a pawn is beneath it: what it last printed (its art, else the ground it shows), else its terrain.</summary>
+        public override Material FadeMaterial(out float angle)
+        {
+            angle = 0f;
+            Map map = Map;
+            if (PrintedArt == null && PrintedSurface == null && map != null)
+            {
+                // never printed yet (a fade on the first frame after a load): choose what Print would show
+                Material art = Graphic?.MatSingle;
+                if (art != null && RM_PitCoverUtility.LidShowsArt(map, Position))
+                {
+                    PrintedArt = art;
+                }
+                else
+                {
+                    PrintedSurface = RM_PitCoverUtility.SurfaceAround(map, Position);
+                }
+            }
+            if (PrintedArt != null)
+            {
+                return PrintedArt;
+            }
+            Material m = PrintedSurface?.graphic?.MatSingle;
+            if (m == null && map != null)
+            {
+                m = Position.GetTerrain(map)?.graphic?.MatSingle;
+            }
+            return m;
+        }
+
+        /// <summary>Its own art (a lid beside an open pit square) or the ground it conceals.</summary>
+        public override RM_CoverFadeMath.SpanLook FadeKind => PrintedArt != null ? RM_CoverFadeMath.SpanLook.PitCoverArt : RM_CoverFadeMath.SpanLook.PitCoverConcealed;
+
         /// <summary>FLOWWORKS_PITCOVER_FIX_BURNS_PAWN_UNHARMED (GPT edge read V3): a cover destroyed by damage (fire, shots, a
         /// blast that kills it before the explosion postfix looks) is no longer ground, so whoever stands on it falls, as the
         /// blast rule already has everyone fall (owner cards Q5 + Q9). PIT_COVER_BUILD_DECONSTRUCT_DROPS_TOO (owner card 2026-10-20):
@@ -185,7 +236,7 @@ namespace RimMandrake.FlowWorks.Pits
                 foreach (Thing t in pos.GetThingList(map))
                 {
                     // PIT_COVER_FIX_OCCUPANT_STAYS_BELOW: whoever is beneath the lid is already on the floor
-                    if (t is Pawn p && !p.Dead && !p.Flying && !RM_PitCoverBeneath.IsBeneath(p))
+                    if (t is Pawn p && !p.Dead && !p.Flying && !RM_PitCoverBeneath.IsBeneath(p) && !RM_SuspensionUnderpass.InFloorBand(p))
                     {
                         (riders ?? (riders = new List<Pawn>())).Add(p);
                     }
@@ -256,6 +307,10 @@ namespace RimMandrake.FlowWorks.Pits
             if (map == null)
             {
                 return;
+            }
+            if (RM_MapComponent_SuspensionBridges.FadedAt(map, Position))
+            {
+                return;   // RIMMANDRAKE_FADE_EVERY_PIT_COVER_...: a pawn beneath; the fade pass draws this lid see-through
             }
             // owner 2026-10-24 "says it's a plank covered pit, but it sure doesn't look like it (empty pit appearance?)": a lid in
             // an open pit hides nothing, so it shows its planks (gaps show the hole); a wholly covered pit keeps the ground print
@@ -337,7 +392,7 @@ namespace RimMandrake.FlowWorks.Pits
             {
                 foreach (Thing t in d.Position.GetThingList(map))
                 {
-                    if (t is Pawn p && !RM_PitCoverBeneath.IsBeneath(p))
+                    if (t is Pawn p && !RM_PitCoverBeneath.IsBeneath(p) && !RM_SuspensionUnderpass.InFloorBand(p))
                     {
                         fallers.Add(p);
                     }

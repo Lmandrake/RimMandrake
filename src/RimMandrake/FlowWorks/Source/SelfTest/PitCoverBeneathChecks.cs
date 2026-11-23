@@ -71,7 +71,11 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(cover.Contains("t is Pawn p && !RM_PitCoverBeneath.IsBeneath(p)"), "a blast does not drop them a second time");
                 Assert(cover.Contains("Below, hidden: "), "inspecting the lid names who is under it");
                 Assert(span.Contains("!RM_PitCoverBeneath.IsBeneath(p)"), "a beneath pawn is not on the lid's load");
-                Assert(util.Contains("nameof(Pawn.DynamicDrawPhaseAt)") && util.Contains("nameof(Pawn.DrawGUIOverlay)"), "hidden: not drawn, no label");
+                // RIMMANDRAKE_FADE_EVERY_PIT_COVER_TRANSPARENT_OVER_A_PAWN_LIGHTEN_PLEASED_HIM supersedes "hidden" (owner 2026-11-22: "It
+                // would be even cooler if they became transparent rather than merely lightened, to show both 'over and under' at the same
+                // time. This should be applied to any 'covering' that a pit can have"): she is drawn, the lid faded over her.
+                Assert(!util.Contains("nameof(Pawn.DynamicDrawPhaseAt)") && !util.Contains("nameof(Pawn.DrawGUIOverlay)"),
+                    "can-fail: no hide patch: a pawn under a lid is drawn (and labelled), the lid faded over her");
                 // can-fail: the beneath read must require an intact lid on the pawn's own square
                 Assert(util.Contains("st.InBeneathSet(p) && RM_PitCoverUtility.CoverAt(p.Map, p.Position) != null"), "beneath needs the lid there");
             });
@@ -88,15 +92,19 @@ namespace RimMandrake.FlowWorks.SelfTest
                 int coverAt = draw.IndexOf("RM_PitCoverUtility.CoverAt(p.Map, c) != null");
                 int suspDeck = draw.IndexOf("is Building_SuspensionDeck d");
                 Assert(coverAt > 0 && suspDeck > coverAt, "DrawDepth reads a lid before the suspension-deck branch");
-                Assert(draw.Contains("c == p.Position && RM_PitCoverBeneath.IsBeneath(p) ? hollow : RM_SpanUtility.WalkingDepth(p.Map, c, hollow)"),
-                    "on a lid: the hole's depth only for a pawn beneath it, else the lid's walking height");
+                // RIMMANDRAKE_LET_PAWN_WALK_UNDER_PLANK_COVER_BRIDGES_ALREADY_ALLOW_IT (owner 2026-11-22 "She should be able to walk beneath
+                // it"): a pawn in the floor band under the lid (or stepping under it) keeps the hole's depth too
+                Assert(draw.Contains("bool underLid = c == p.Position ? RM_PitCoverBeneath.IsBeneath(p) || InFloorBand(p) : StepGoesUnder(p, p.Position, c);")
+                    && draw.Contains("return underLid ? hollow : RM_SpanUtility.WalkingDepth(p.Map, c, hollow);"),
+                    "on a lid: the hole's depth only for a pawn beneath it (held or in the floor band), else the lid's walking height");
                 Assert(!susp.Contains("Covers keep their old read"), "can-fail: the old 'covers sink' doc line is gone");
                 // PIT_BOAR_FIX_SUNBATHES_ON_THE_WALL moved the lip scan into RM_PitDrawMath.LipZBelow (s < d) over one SeenDepth lookup
                 Assert(sink.Contains("Pits.RM_SuspensionUnderpass.SeenDepthAt(cachedMap, cachedComp, q)") && sink.Contains("RM_PitDrawMath.LipZBelow(c.x, c.z, d, SeenDepth,"),
                     "the sink clamp sees a lid as the lip");
                 Assert(lip.Contains("int d = Pits.RM_SuspensionUnderpass.DrawDepth(p, p.Position, RM_Patch_PitDepthDrawOffset.DrawHollow(p, eng, p.Position));"),
                     "the lip occluder covers a pawn at its DRAWN depth (a lid walker: none)");
-                Assert(lip.Contains("|| Pits.RM_PitCoverBeneath.IsBeneath(p)"), "no lip cover round a hidden beneath pawn");
+                // owner 2026-11-22 (transparent, "over and under"): a beneath pawn is drawn now, so the lip covers her like any pit pawn
+                Assert(!lip.Contains("|| Pits.RM_PitCoverBeneath.IsBeneath(p)"), "can-fail: the occluder no longer skips a beneath pawn (she is drawn)");
                 Assert(lip.Contains("SeenDepthAt(map, eng, cand) < d") && lip.Contains("SeenDepthAt(map, eng, g) >= d"),
                     "a lid square is ground to the lip search");
                 Assert(lip.Contains("lid != null ? lid.PrintedSurface"), "a lid square is drawn in the ground it prints");

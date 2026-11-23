@@ -892,9 +892,13 @@ namespace RimMandrake.FlowWorks.Pits
 		}
 
 		/// <summary>SUSPENSION_UNDERPASS (construction design §1.4, the risk table's fallback, taken first): a pawn under a deck is
-		/// drawn UNDER it. The deck square it stands under is drawn again over it, half see-through, so the pawn reads as beneath
-		/// the deck and can still be found. (Re-layering every deck-band pawn above the deck is the alternative; it waits on a
-		/// live look at 1.6's draw batching.)</summary>
+		/// drawn UNDER it, and the deck square is drawn again over it, half see-through.
+		/// RIMMANDRAKE_FADE_EVERY_PIT_COVER_TRANSPARENT_OVER_A_PAWN_LIGHTEN_PLEASED_HIM (owner 2026-11-22 "It would be even cooler
+		/// if they became transparent rather than merely lightened, to show both 'over and under' at the same time. This should
+		/// be applied to any 'covering' that a pit can have, bridge, planks, hidden, etc."): every covering a pawn stands under
+		/// (a bridge deck, a pit cover in the floor band, a lid laid over a held pawn) stops printing while she is under it
+		/// (FadedAt, read by each Print), so the pit below shows, and is drawn here see-through over her (RM_CoverFadeMath.For).
+		/// A square changes print only when it fades or clears, so its section is redrawn then and not every frame.</summary>
 		public override void MapComponentUpdate()
 		{
 			// HOSE_DRAW_FIX_LEAKS_ONTO_WORLDMAP: Graphics.DrawMesh from an update draws over the planet unless the world view is skipped
@@ -905,30 +909,94 @@ namespace RimMandrake.FlowWorks.Pits
 			RM_DrawbridgeArt.DrawLeaves(map, bridges);
 			if (floorBand.Count == 0)
 			{
-				return;
+				if (faded.Count == 0 && RM_SuperdeepTrapState.BeneathTotal <= 0)
+				{
+					return;   // nobody under any covering, and nothing left faded to clear
+				}
 			}
+			fadedNext.Clear();
 			foreach (Pawn p in floorBand)
 			{
-				if (p == null || !p.Spawned || p.Map != map)
+				if (p != null && p.Spawned && p.Map == map)
 				{
-					continue;
+					FadeOver(RM_SuspensionUnderpass.PassingDeckAt(map, p.Position));
 				}
-				Building_SuspensionDeck d = RM_SuspensionUnderpass.PassingDeckAt(map, p.Position);
-				float angle = 0f;
-				Material mat = d == null ? null : RM_SuspensionDeckLink.TileFor(d, out angle);
-				if (mat == null)
-				{
-					continue;
-				}
-				Vector3 at = p.Position.ToVector3Shifted();
-				at.y = AltitudeLayer.PawnState.AltitudeFor();
-				Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(at, Quaternion.AngleAxis(angle, Vector3.up), Vector3.one),
-					FadedMaterialPool.FadedVersionOf(mat, UnderFade), 0);
 			}
+			RM_SuperdeepTrapState st = RM_SuperdeepTrapState.BeneathTotal > 0 ? RM_SuperdeepTrap.EngineOf(map)?.SuperdeepTrap : null;
+			if (st != null)
+			{
+				foreach (Pawn p in st.BeneathPawns)
+				{
+					if (p != null && p.Spawned && p.Map == map && RM_PitCoverBeneath.IsBeneath(p))
+					{
+						FadeOver(RM_PitCoverUtility.CoverAt(map, p.Position));
+					}
+				}
+			}
+			if (!fadedNext.SetEquals(faded))
+			{
+				foreach (IntVec3 c in faded)
+				{
+					if (!fadedNext.Contains(c))
+					{
+						Reprint(c);
+					}
+				}
+				foreach (IntVec3 c in fadedNext)
+				{
+					if (!faded.Contains(c))
+					{
+						Reprint(c);
+					}
+				}
+			}
+			HashSet<IntVec3> swap = faded;
+			faded = fadedNext;
+			fadedNext = swap;
 		}
 
-		/// <summary>How opaque the deck drawn over a pawn under it is.</summary>
-		public const float UnderFade = 0.6f;
+		private void Reprint(IntVec3 c)
+		{
+			map.mapDrawer.MapMeshDirty(c, MapMeshFlagDefOf.Things);
+			map.mapDrawer.MapMeshDirty(c, MapMeshFlagDefOf.Buildings);
+		}
+
+		/// <summary>Draw this covering see-through over the pawn under it, and mark its square faded (once per square).</summary>
+		private void FadeOver(Building_SpanDeck deck)
+		{
+			if (deck == null || fadedNext.Contains(deck.Position))
+			{
+				return;
+			}
+			Material mat = deck.FadeMaterial(out float angle);
+			if (mat == null)
+			{
+				return;
+			}
+			RM_CoverFadeMath.Look look = RM_CoverFadeMath.For(deck.FadeKind, true);
+			if (look.PrintSuppressed)
+			{
+				fadedNext.Add(deck.Position);
+			}
+			Vector3 at = deck.Position.ToVector3Shifted();
+			at.y = AltitudeLayer.PawnState.AltitudeFor();
+			Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(at, Quaternion.AngleAxis(angle, Vector3.up), Vector3.one),
+				FadedMaterialPool.FadedVersionOf(mat, look.OverAlpha), 0);
+		}
+
+		/// <summary>Squares whose covering is faded this frame (a pawn under it): their Print draws nothing.</summary>
+		private HashSet<IntVec3> faded = new HashSet<IntVec3>();
+		private HashSet<IntVec3> fadedNext = new HashSet<IntVec3>();
+
+		/// <summary>Is the covering on this square faded over a pawn under it (so its Print stays empty)?</summary>
+		public static bool FadedAt(Map map, IntVec3 c)
+		{
+			RM_MapComponent_SuspensionBridges comp = Of(map);
+			return comp != null && comp.faded.Count > 0 && comp.faded.Contains(c);
+		}
+
+		/// <summary>How opaque the covering drawn over a pawn under it is (the one value, RM_CoverFadeMath.UnderAlpha).</summary>
+		public const float UnderFade = RM_CoverFadeMath.UnderAlpha;
 
 		/// <summary>SUSPENSION_UNDERPASS: every 60 ticks the floor band drops anyone no longer under a deck, and a floor-band
 		/// pawn that died there leaves its corpse on open floor (nothing rests under a deck).</summary>

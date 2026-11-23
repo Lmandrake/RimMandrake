@@ -51,6 +51,32 @@
   "rc": 1,
   "test_blob": "795a35172468d169244de38d74f8539d7b80b12b"
  },
+ "T_BRIDGES": {
+  "at": "2026-11-23T04:09:50Z",
+  "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only Drawbridge*,SpanBase*,Suspension*,SuspensionBridges*,Underpass*,Waters*",
+  "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+  "last": "can-fail: a pit cover lets the floor band under by the shared span rule (setting + 2 m clearance)",
+  "patch": "--- a/src/RimMandrake/FlowWorks/Source/Pits/Building_PitCover.cs\n+++ b/src/RimMandrake/FlowWorks/Source/Pits/Building_PitCover.cs\n@@ -182,7 +182,7 @@\n                     return false;\n                 }\n                 RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(Map);\n-                return eng != null && RM_SpanMath.PassesUnder(RM_SpanMath.SpanKind.PitCover, RM_SuspensionSettings.suspensionWalkUnder,\n+                return eng != null && RM_SpanMath.PassesUnder(RM_SpanMath.SpanKind.PitCover, false,\n                     eng.ClimbDepthAt(Position), DeckNotches);\n             }\n         }\n",
+  "patch_files": [
+   "src/RimMandrake/FlowWorks/Source/Pits/Building_PitCover.cs"
+  ],
+  "patch_sha": "e0887158039f24a4",
+  "rc": 1,
+  "test_blob": "ecdb632246123de160f342b464f55bcbb9ce7ca5"
+ },
+ "T_DOORS": {
+  "at": "2026-11-23T04:13:48Z",
+  "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only FLOWWORKS*,FlowDoor*,FlowDoorFacing*,Grate*,Ruling18*,Sluice*",
+  "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+  "last": "verify L1: grated chance = open-pit chance \u00d7 0.75 (0.8)",
+  "patch": "--- a/src/RimMandrake/FlowWorks/Source/RM_FireMath.cs\n+++ b/src/RimMandrake/FlowWorks/Source/RM_FireMath.cs\n@@ -117,7 +117,7 @@\n \t\n \t\t/// <summary>SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP (parent design \u00a74.1): a grated deck passes the fire below to the people\n \t\t/// on it at this share of the open-pit (trapped) chance; a solid deck keeps the open-cell chance.</summary>\n-\t\tpublic const float GratedOpenPitFactor = 0.75f;\n+\t\tpublic const float GratedOpenPitFactor = 0.8f;\n \n \t\t/// <summary>C4-F7 plus the grate: a flyer is never lit; a pawn on an intact GRATED deck over the fire catches at the\n \t\t/// open-pit chance \u00d7 <see cref=\"GratedOpenPitFactor\"/>; on a solid deck or cover, the open-cell chance.</summary>\n",
+  "patch_files": [
+   "src/RimMandrake/FlowWorks/Source/RM_FireMath.cs"
+  ],
+  "patch_sha": "5468184284f53f38",
+  "rc": 1,
+  "test_blob": "ecdb632246123de160f342b464f55bcbb9ce7ca5"
+ },
  "T_FETCH_FALLEN_OFFLINE": {
   "at": "2026-11-22T06:48:13Z",
   "command": "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only fetch_fallen",
@@ -129,16 +155,42 @@
   "rc": 1,
   "test_blob": "ecdb632246123de160f342b464f55bcbb9ce7ca5"
  },
+ "T_NET": {
+  "at": "2026-11-23T04:22:19Z",
+  "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only Adapter*,LiquidJoin*,Net*,PipeArm*,PipePole*,PipeSpan*,PipeStub*,Pump*,PumpOutflow*,PumpPorts*,Rewire*,TankDebug*,TankFlange*,TankSearch*,TankTheft*,Transfer*",
+  "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+  "last": "present: IsForbidden(pawn)",
+  "patch": "--- a/src/RimMandrake/FlowWorks/Source/LiquidTypes/RM_LiquidTankUtility.cs\n+++ b/src/RimMandrake/FlowWorks/Source/LiquidTypes/RM_LiquidTankUtility.cs\n@@ -94,7 +94,7 @@\n             // tank was never usable, so it must not be the reason the float menu gives.\n             foreach (Building_LiquidTank candidate in map.listerBuildings.AllBuildingsColonistOfClass<Building_LiquidTank>())\n             {\n-                if (candidate.IsForbidden(pawn) || !pawn.CanReserve(candidate, 1, -1, null, false))\n+                if (!pawn.CanReserve(candidate, 1, -1, null, false))\n                 {\n                     continue;\n                 }\n",
+  "patch_files": [
+   "src/RimMandrake/FlowWorks/Source/LiquidTypes/RM_LiquidTankUtility.cs"
+  ],
+  "patch_sha": "44642d4acb6f2059",
+  "rc": 1,
+  "test_blob": "ecdb632246123de160f342b464f55bcbb9ce7ca5"
+ },
+ "T_PIT_COVER": {
+  "at": "2026-11-23T04:05:50Z",
+  "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only Beneath*,DeckCollapse*,FallRail*,LidWalker*,PitCover*,PitCoverLook*,PitDeck*,SpikePierce*,Spikes*,SuperdeepTrap*",
+  "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+  "last": "can-fail: the occluder no longer skips a beneath pawn (she is drawn)",
+  "patch": "--- a/src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitLipOcclusion.cs\n+++ b/src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitLipOcclusion.cs\n@@ -354,7 +354,7 @@\n \t\t\t\t// covered by the lip round it like any pit pawn (its own faded lid reads open: SeenDepthAt)\n \t\t\t\t// DEEP_PIT_SWIM_FIX_FIVE_METRES_WALKS: a floating swimmer's drawn depth is the water surface (same read as the sink)\n \t\t\t\tint d = Pits.RM_SuspensionUnderpass.DrawDepth(p, p.Position, RM_Patch_PitDepthDrawOffset.DrawHollow(p, eng, p.Position));\n-\t\t\t\tif (d <= 0)\n+\t\t\t\tif (d <= 0 || Pits.RM_PitCoverBeneath.IsBeneath(p))\n \t\t\t\t{\n \t\t\t\t\tcontinue;\n \t\t\t\t}\n",
+  "patch_files": [
+   "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitLipOcclusion.cs"
+  ],
+  "patch_sha": "7dd2605913697ed5",
+  "rc": 1,
+  "test_blob": "ecdb632246123de160f342b464f55bcbb9ce7ca5"
+ },
  "T_PRISON": {
-  "at": "2026-11-22T06:13:07Z",
+  "at": "2026-11-23T04:28:12Z",
   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only PitCapture*,PitRoom*,PitRooms*,SWEEP*,TAKEN*",
   "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
-  "last": "call site: the ShouldBeFed postfix reads the hand-fed rule with the pawn's posture  (pattern RM_PitPrisonCare\\.LipCare\\(p\\) && RM_PitRoomMath\\.HandFedInPit\\(true, p\\.guest\\.CanBeBroughtFood, p\\.Downed, p\\.GetPosture\\(\\) == PawnPosture\\.Standing, HealthAIUtility\\.ShouldSeekMedicalRest\\(p\\)\\))",
-  "patch": "diff --git b/src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPrisonCare.cs a/src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPrisonCare.cs\nindex 0fbd6ba6c3..74fa59fdb0 100644\n--- b/src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPrisonCare.cs\n+++ a/src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPrisonCare.cs\n@@ -51,10 +51,8 @@ namespace RimMandrake.FlowWorks\n         [HarmonyPostfix]\n         public static void Postfix(Pawn p, ref bool __result)\n         {\n-            // RIMMANDRAKE_TRACE_FLOWWORKS_AWAKE_PRISONER_MEAL_SKIPPED_ONE_RUN_IN_TWO: never a standing prisoner (vanilla's first\n-            // rule), who then gets food brought; LipCare first, so a pawn with no guest tracker never reads it\n-            if (!__result && RM_PitPrisonCare.LipCare(p) && RM_PitRoomMath.HandFedInPit(true, p.guest.CanBeBroughtFood, p.Downed,\n-                p.GetPosture() == PawnPosture.Standing, HealthAIUtility.ShouldSeekMedicalRest(p))) __result = true;\n+            if (!__result && RM_PitPrisonCare.LipCare(p) && p.guest.CanBeBroughtFood\n+                && (p.Downed || HealthAIUtility.ShouldSeekMedicalRest(p))) __result = true;\n         }\n     }\n \n",
+  "last": "a pit room cell is a person pocket at least the setting's depth",
+  "patch": "--- a/src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitRooms.cs\n+++ b/src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitRooms.cs\n@@ -65,7 +65,7 @@\n \t\t\t// (IsPitFloor), so rooms and the jobs done into them never disagree. The grid never rebuilds mid-flood.\n \t\t\tif (RM_PocketGrid.Relative)\n \t\t\t{\n-\t\t\t\treturn RM_RelativeRulesMath.PitRoomCell(RM_PocketGrid.IsPersonPocketCell(map, c), eng.ExcavatedDepthRaw(c), MinRoomNotches);\n+\t\t\t\treturn RM_RelativeRulesMath.PitRoomCell(RM_PocketGrid.IsPersonPocketCell(map, c), eng.ExcavatedDepthRaw(c), 0);\n \t\t\t}\n \t\t\treturn eng.IsSuperdeepRaw(c);\n \t\t}\n",
   "patch_files": [
-   "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPrisonCare.cs"
+   "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitRooms.cs"
   ],
-  "patch_sha": "5c1365dd6b32fe6e",
+  "patch_sha": "bec360da28c52148",
   "rc": 1,
   "test_blob": "ecdb632246123de160f342b464f55bcbb9ce7ca5"
  },
@@ -154,6 +206,58 @@
   "patch_sha": "99494026ad2f1005",
   "rc": 1,
   "test_blob": "c22a5da199adb85827f9ad13e2e5bf4c00e50776"
+ },
+ "T_QUARRY": {
+  "at": "2026-11-23T04:31:22Z",
+  "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only DigFind*",
+  "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+  "last": "no letter aimed at `made`",
+  "patch": "--- a/src/RimMandrake/FlowWorks/Source/RM_DigDiscovery.cs\n+++ b/src/RimMandrake/FlowWorks/Source/RM_DigDiscovery.cs\n@@ -171,7 +171,7 @@\n \t\t\t{\n \t\t\t\tFind.LetterStack.ReceiveLetter(\"RMFlow_DigFindLetterLabel\".Translate(def.LabelCap),\n \t\t\t\t\t\"RMFlow_DigFindLetterText\".Translate(def.label, digger?.LabelShort ?? \"\"),\n-\t\t\t\t\tLetterDefOf.PositiveEvent, target);\n+\t\t\t\t\tLetterDefOf.PositiveEvent, made);\n \t\t\t}\n \t\t\telse\n \t\t\t{\n",
+  "patch_files": [
+   "src/RimMandrake/FlowWorks/Source/RM_DigDiscovery.cs"
+  ],
+  "patch_sha": "75c349fc4df847db",
+  "rc": 1,
+  "test_blob": "ecdb632246123de160f342b464f55bcbb9ce7ca5"
+ },
+ "T_RIVER": {
+  "at": "2026-11-23T04:25:18Z",
+  "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only Fish*,Flotsam*,P10*,RIVER*,Rain*,RiverCurrent*,RiverProbe*,RiverSwitchFlip*,RiverWalk*,WeirBreach*,WeirCatch*,WeirFoam*,WeirPool*",
+  "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+  "last": "a drifting item never lands on a cell already holding an item",
+  "patch": "--- a/src/RimMandrake/FlowWorks/Source/Rivers/RM_MapComponent_RiverCurrent.cs\n+++ b/src/RimMandrake/FlowWorks/Source/Rivers/RM_MapComponent_RiverCurrent.cs\n@@ -550,7 +550,7 @@\n \t\t\t\tnextMoveTick.Remove(t);\n \t\t\t\treturn; // a bend, a wall, a bridge pier: the carry ends here\n \t\t\t}\n-\t\t\tif (!(t is Pawn) && next.GetFirstItem(map) != null)\n+\t\t\tif (!(t is Pawn) && next.GetFirstBuilding(map) != null)\n \t\t\t{\n \t\t\t\tnextMoveTick.Remove(t);\n \t\t\t\treturn; // another stack lies there: an item never drifts onto it (two unmerged stacks in one cell)\n",
+  "patch_files": [
+   "src/RimMandrake/FlowWorks/Source/Rivers/RM_MapComponent_RiverCurrent.cs"
+  ],
+  "patch_sha": "bdd7733fffe5c2a1",
+  "rc": 1,
+  "test_blob": "ecdb632246123de160f342b464f55bcbb9ce7ca5"
+ },
+ "T_SETTINGS_SWEEP_OFFLINE": {
+  "at": "2026-11-23T04:34:09Z",
+  "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only MachinerySettings*,Settings*,SettingsReset*",
+  "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+  "last": "can-fail: the compare runs before drawing (catches a confirmed Reset-all)",
+  "patch": "--- a/src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs\n+++ b/src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs\n@@ -995,7 +995,6 @@\n             // pit shadow; +150 for hot and icy liquid, 2026-10-08; +400 for per-section reset buttons; +100 recedeSparesOutflow.)\n             // Collapsing/searching shrinks the content, so after the first frame the height is what the listing measured.\n             // Before drawing: a confirmed Reset-all (its dialog runs after this window's frame) is picked up here.\n-            ApplyChangedSettings();\n             Rect view = new Rect(0f, 0f, inRect.width - 24f, lastListHeight > 0f ? lastListHeight + 40f : 11600f);\n             Widgets.BeginScrollView(inRect, ref scrollPosition, view);\n             // maxOneColumn is load-bearing (FLOWWORKS_SETTINGS_MEND_EMPTY_BELOW_RESET): without it, content taller than view\n",
+  "patch_files": [
+   "src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs"
+  ],
+  "patch_sha": "2793c31b7f7ceb02",
+  "rc": 1,
+  "test_blob": "ecdb632246123de160f342b464f55bcbb9ce7ca5"
+ },
+ "T_STOCK": {
+  "at": "2026-11-23T04:18:05Z",
+  "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only Body*,ContainerMat*,CreditableLevels*,Lake*,Limitless*,Placer*,PlacerStock*,Pond*,PondDepth*,Refill*,ReviewFix*,Scenario*,Season*,Theft*,WaterMend*,Wetness*",
+  "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+  "last": "a lowered cap clamps the stock",
+  "patch": "--- a/src/RimMandrake/FlowWorks/Source/Quarry/RM_PlacerMath.cs\n+++ b/src/RimMandrake/FlowWorks/Source/Quarry/RM_PlacerMath.cs\n@@ -45,7 +45,7 @@\n \t\t\tif (cap <= 0f) return 0f;\n \t\t\tif (stock < 0f) stock = 0f;\n \t\t\tif (ticks > 0) stock += cap * ticks / TicksPerYear;\n-\t\t\treturn stock > cap ? cap : stock;\n+\t\t\treturn stock;\n \t\t}\n \n \t\t/// <summary>What the current gives a sluice: only the shallow edge lane (1) washes gravel. Still water\n",
+  "patch_files": [
+   "src/RimMandrake/FlowWorks/Source/Quarry/RM_PlacerMath.cs"
+  ],
+  "patch_sha": "ca31d20dbd8e88a5",
+  "rc": 1,
+  "test_blob": "ecdb632246123de160f342b464f55bcbb9ce7ca5"
  },
  "T_TOSS_FLAME_OFFLINE": {
   "at": "2026-11-22T06:48:16Z",

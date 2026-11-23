@@ -36,6 +36,17 @@ namespace RimMandrake.FlowWorks.Pits
 
 		public virtual bool FloorBandPassesUnder => false;
 
+		/// <summary>RIMMANDRAKE_FADE_EVERY_PIT_COVER_TRANSPARENT_OVER_A_PAWN_LIGHTEN_PLEASED_HIM: the material (and turn) the fade
+		/// pass draws this square in, see-through, while a pawn is beneath it; null = nothing to fade (the print stays).</summary>
+		public virtual UnityEngine.Material FadeMaterial(out float angle)
+		{
+			angle = 0f;
+			return null;
+		}
+
+		/// <summary>Which covering this is, for RM_CoverFadeMath.For.</summary>
+		public virtual RM_CoverFadeMath.SpanLook FadeKind => RM_CoverFadeMath.SpanLook.SuspensionDeck;
+
 		public virtual bool Grated => false;
 
 		public virtual float LoadRatingKg => float.PositiveInfinity;

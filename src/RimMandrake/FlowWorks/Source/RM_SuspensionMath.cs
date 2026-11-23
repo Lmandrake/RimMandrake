@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace RimMandrake.FlowWorks
@@ -577,6 +578,34 @@ namespace RimMandrake.FlowWorks
 				return false;
 			}
 			return fromDecked ? fromInFloorBand : fromWalkDepth > deckNotches;
+		}
+
+		/// <summary>RIMMANDRAKE_LET_PAWN_WALK_UNDER_PLANK_COVER_BRIDGES_ALREADY_ALLOW_IT: <see cref="StepGoesUnder(bool, int, bool, bool, int)"/>
+		/// for the step the path follower actually took, with the floor under the deck (<paramref name="floorNotches"/>) and
+		/// the walker's climb limit <paramref name="climbLimit"/>. The pawn on an undecked square arrives where its walk
+		/// could reach: a step it could only take ONTO the deck (the drop to the floor exceeds its climb, the step to the
+		/// deck does not) is onto the deck, never a drop into the hole beneath it. Owner ruling: "You can't fall in by careless
+		/// colonist pathing."</summary>
+		public static bool StepGoesUnder(bool toPassesUnder, int deckNotches, int floorNotches, int climbLimit, bool fromDecked,
+			bool fromInFloorBand, int fromWalkDepth)
+		{
+			bool under = StepGoesUnder(toPassesUnder, deckNotches, fromDecked, fromInFloorBand, fromWalkDepth);
+			if (!under || fromDecked)
+			{
+				return under;
+			}
+			return Math.Abs(floorNotches - fromWalkDepth) <= climbLimit;
+		}
+
+		/// <summary>RIMMANDRAKE_LET_PAWN_WALK_UNDER_PLANK_COVER_BRIDGES_ALREADY_ALLOW_IT: a walked step out of the floor band
+		/// (from under a deck at floor <paramref name="fromFloorNotches"/>) onto a square not under a deck, at climb depth
+		/// <paramref name="toClimbNotches"/>: is it a walk along the floor (no fall to judge), rather than an arrival from the
+		/// deck's walking height? True when it left the band and the floor step drops no further than the pawn's natural climb.</summary>
+		public static bool BandExitIsFloorWalk(bool fromInFloorBand, bool toUnder, int fromFloorNotches, int toClimbNotches,
+			int naturalClimbLimit)
+		{
+			return fromInFloorBand && !toUnder
+				&& !RM_PitTrapMath.ArrivalDropsTooFar(fromFloorNotches, toClimbNotches, naturalClimbLimit);
 		}
 
 		/// <summary>The deck height of a dragged bridge from its two end squares' walking depths (notches): both ends at the
