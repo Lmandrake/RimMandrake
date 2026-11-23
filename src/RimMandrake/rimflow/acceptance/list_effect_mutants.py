@@ -44,6 +44,7 @@ MUTANTS = [
      '            head, eff, _one(out, OUT_IN_EVENT) or "(none)", epath)',
      '        text = "outcome check holds at %s: %s | evidence %s" % (head, eff, epath)'),
     ("closed reads an open item as closed", '    return 1 if open_ else 0', '    return 0'),
+    ("closed counts a started item without --started", "CLOSED + (STARTED if started else ())", "CLOSED + STARTED"),
     ("closed reads an unreadable ledger as closed", '''        print("UNMEASURED: the ledger could not be read (%s: %s)" % (type(e).__name__, e))
         return 2''', '''        print("UNMEASURED: the ledger could not be read (%s: %s)" % (type(e).__name__, e))
         return 0'''),

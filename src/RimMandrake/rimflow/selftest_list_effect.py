@@ -353,6 +353,11 @@ def t_closed_reads_item_states_for_a_check():
     chk(lambda: L.closed_main([a, b]) == 1, "closed: one open item reads 1")
     chk(lambda: L.closed_main([a, "RIMMANDRAKE_TEST_LIST_EFFECT_NEVER_FILED_AT_ALL"]) == 1, "closed: a never-filed item reads 1")
     chk(lambda: L.closed_main([]) == 2, "closed: no ids is 2 (no answer), never 0")
+    cli("claim", b, "--why", "selftest")
+    chk(lambda: L.closed_main([b]) == 1 and L.closed_main([a, b], started=True) == 0,
+        "closed --started: a claimed item passes only with --started")
+    chk(lambda: L.closed_main(["RIMMANDRAKE_TEST_LIST_EFFECT_NEVER_FILED_AT_ALL"], started=True) == 1,
+        "closed --started: a never-filed item still reads 1")
     saved = os.environ["RIMFLOW_LEDGER"]
     bad = os.path.join(X["root"], "torn.jsonl")
     with open(bad, "w") as f:

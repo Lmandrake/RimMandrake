@@ -63,7 +63,7 @@ Item: `RIMMANDRAKE_BUILD_LIST_OUTCOME_CHECKS_SEVEN_DONE_NEVER_CLOSED`, step 1 of
 - **a-dry-beat-writes-nothing.** A beat without `--apply` runs the checks and prints what it would do, and writes no
   ledger event and no state.
 - **closed-reads-item-states-for-a-check.** `list_effect.py closed ID...` exits 0 when every item is done, dropped or
-  superseded, 1 when one is open or was never filed (each named), and 2 when it is given no item or cannot read the
+  superseded (with `--started`, also doing, built or validated), 1 when one is not or was never filed (each named), and 2 when it is given no item or cannot read the
   ledger: a check built on it never holds on a ledger it could not read.
 
 Later lists beside this page: `polish.md` (none yet).

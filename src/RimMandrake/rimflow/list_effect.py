@@ -16,8 +16,9 @@ filer states why it cannot be (`--holds-why`). A vacuous command is refused alwa
     python3 src/RimMandrake/rimflow/list_effect.py tick [--apply]    one beat; closes only with --apply
     python3 src/RimMandrake/rimflow/list_effect.py status            the last reading
     python3 src/RimMandrake/rimflow/list_effect.py check "<check>"   run one check here: holds|fails|unmeasured, output
-    python3 src/RimMandrake/rimflow/list_effect.py closed ID...      a check's helper: exit 0 every ID is done, dropped
-            or superseded; 1 one is open or never filed (named); 2 the ledger could not be read
+    python3 src/RimMandrake/rimflow/list_effect.py closed [--started] ID...   a check's helper: exit 0 every ID is
+            done, dropped or superseded (--started: or taken up: doing, built, validated); 1 one is not (named, never
+            filed included); 2 the ledger could not be read
             (a check reads `cmd:python3 src/RimMandrake/rimflow/list_effect.py closed A B`)
 
 Per open item that carries a check, one decision:
@@ -415,8 +416,12 @@ def _tick(apply, publish, root, fx, now, d):
     return rd
 
 
-def closed_main(ids):
-    """-> exit code: 0 every id is terminal, 1 one is open or never filed, 2 the ledger could not be read."""
+STARTED = ("doing", "built", "validated")
+
+
+def closed_main(ids, started=False):
+    """-> exit code: 0 every id is terminal (started: or doing, built, validated), 1 one is not or was never filed, 2 the
+    ledger could not be read or no id was given."""
     if not ids:
         print("closed: name at least one item")
         return 2
@@ -430,9 +435,9 @@ def closed_main(ids):
         it = w.items.get(i)
         st = "never filed" if it is None else it.state
         print("%-12s %s" % (st, i))
-        if it is None or it.state not in CLOSED:
+        if it is None or it.state not in CLOSED + (STARTED if started else ()):
             open_.append(i)
-    print("%d of %d closed" % (len(ids) - len(open_), len(ids)))
+    print("%d of %d %s" % (len(ids) - len(open_), len(ids), "started or closed" if started else "closed"))
     return 1 if open_ else 0
 
 
@@ -454,9 +459,10 @@ def main(argv=None):
     c.add_argument("text")
     k = sub.add_parser("closed")
     k.add_argument("ids", nargs="*")
+    k.add_argument("--started", action="store_true", help="an item taken up (doing, built, validated) also passes")
     o = ap.parse_args(argv)
     if o.cmd == "closed":
-        return closed_main(o.ids)
+        return closed_main(o.ids, o.started)
     if o.cmd == "tick":
         _print(tick(apply=o.apply))
         return 0
