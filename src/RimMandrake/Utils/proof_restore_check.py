@@ -59,6 +59,9 @@ BASELINE: dict[str, tuple[str, int]] = {
     'src/RimMandrake/FlowWorks/Source/RM_WaterLookProofs.cs::unrestored-on-throw::RM_WaterLookSettings.deepWaterTintEnabled': ('FLOWWORKS_PROOF_POKES_RESTORE_PRIOR', 1),
     'src/RimMandrake/FlowWorks/Source/RM_WaterLookProofs.cs::unrestored-on-throw::RM_WaterLookSettings.wetWallBandEnabled': ('FLOWWORKS_PROOF_POKES_RESTORE_PRIOR', 1),
     'src/RimMandrake/bridgetools/prove_sea_dive_floor.py::unrestored-on-throw::raw': ('SEA_DIVE_PROOF_RESTORE_PRIOR', 1),
+    'src/RimMandrake/FlowWorks/Source/RM_NorthstarProofs.cs::unrestored-on-throw::RimMandrakeFlowWorksSettings.pitSteppedReliefEnabled': ('RIMMANDRAKE_RESTORE_FLOWWORKS_PIT_PROOF_SETTINGS_FOUR_NEW_LEAKS', 1),
+    'src/RimMandrake/FlowWorks/northstar/pawn_in_liquid_matrix.py::unrestored-on-throw::raw': ('RIMMANDRAKE_RESTORE_FLOWWORKS_PIT_PROOF_SETTINGS_FOUR_NEW_LEAKS', 2),
+    'src/RimMandrake/FlowWorks/northstar/stepped_pit_stage.py::unrestored-on-throw::raw': ('RIMMANDRAKE_RESTORE_FLOWWORKS_PIT_PROOF_SETTINGS_FOUR_NEW_LEAKS', 1),
 }
 
 # ------------------------------------------------------------------------------------------------------------ C#
