@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "7ba1141283d4894ae1e95a9d506aa2215f3db75712089fbc9bb1aea900c33d6e",
+  "body_sha256": "506aeb98aa9528e7cfc47c36644042bca840fe5d48ed6be8f8752882e20dd72a",
   "reducer": 1,
   "shards": {
    "BACKFILL": 893183,
@@ -40,6 +40,7 @@
    "HOLDER.run-1795427578": 1657,
    "HOLDER.run-1795429371": 2915,
    "HOLDER.run-1795441687": 754,
+   "HOLDER.run-1795461568": 2159,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1290,11 +1291,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795441687",
-   "done": "visit 8 steward: sc_moat_raid only line back (MOD, game-only); capture-faults item retagged game-up with visit-8 evidence; filed RIMMANDRAKE_TRACE_FLOWWORKS_MOAT_SWIMMER_PAST_LOWERED_LEAF_AGAIN; advanced to in_game (next visit), both game-only",
-   "next": "Trace a stalled moat capture and the bridge-down swimmer live, then run sc_moat_raid as visit 9",
-   "ruled_out": "OL_OWNER_LOOK_READS: HARNESS, decides no bar, blind sub-row on polish.md; sends nothing back",
-   "ts": "2026-11-23T14:00:31Z"
+   "by": "HOLDER.run-1795461568",
+   "done": "corpse-wounds item dropped as SITE (hit flecks); OL blocked row removed and its item closed; moat control staged one raider at a time, 32766479e0, green/red offline",
+   "next": "In visit 9 read MOAT_control_bridge_down_no_swim and moatControlTrace over 5 runs, and plant six at once",
+   "ruled_out": "wound overlays over tar; pathfinder slack beside the lowered leaf",
+   "ts": "2026-11-23T19:39:50Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1746,7 +1747,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1680,
+  "events": 1684,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7847,7 +7848,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-23T19:20:33Z",
+   "last": "2026-11-23T19:39:50Z",
    "lease": "run-1795461568",
    "released": false,
    "token": 57
@@ -7967,6 +7968,7 @@
    "HOLDER.run-1795427578",
    "HOLDER.run-1795429371",
    "HOLDER.run-1795441687",
+   "HOLDER.run-1795461568",
    "JUDGE.judge-1794833810",
    "JUDGE.judge-1794849236",
    "JUDGE.judge-1795134433",
@@ -8546,6 +8548,14 @@
     "ts": "2026-11-16T11:41:23Z",
     "version": "0.1.0",
     "where": "sweep J20261029T181522Z-8afa44"
+   },
+   "trap:a-raider-on-the-deck-costs-175-to-the-one-behind": {
+    "by": "HOLDER.run-1795461568",
+    "status": "noted",
+    "text": "Vanilla charges 175 for a square held by a pawn when both have collideWithPawns jobs (raid assault goto, not an ordered Goto): raiders swim round a held bridge square; an ordered-Goto experiment cannot see it",
+    "ts": "2026-11-23T19:37:36Z",
+    "version": "0.1.0",
+    "where": "design/concepts/FlowWorks/version/moat_geometry/control_crowd.py"
    },
    "trap:a-real-no-room-cannot-be-staged-because": {
     "by": "BACKFILL",
@@ -9290,6 +9300,14 @@
     "ts": "2026-11-16T11:41:26Z",
     "version": "0.1.0",
     "where": "item:GRATE_FIRE_FIX_SOLID_DECK_BURNS_TOO"
+   },
+   "trap:red-marks-over-tar-in-a-paused-shot-are-hit-flecks": {
+    "by": "HOLDER.run-1795461568",
+    "status": "noted",
+    "text": "Red splotches over tar or water in big_pit_scene shots are BloodSplash hit flecks (0.15 s of ticks) of the staging kill held by the pause, not wound overlays; only copies in the camera view have them",
+    "ts": "2026-11-23T19:37:36Z",
+    "version": "0.1.0",
+    "where": "src/RimMandrake/FlowWorks/northstar/big_pit_scene.py"
    },
    "trap:retargeted-to-flowworks-0-2-0-by-owner": {
     "by": "BACKFILL",
