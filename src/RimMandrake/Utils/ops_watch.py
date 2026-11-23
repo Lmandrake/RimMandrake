@@ -2587,7 +2587,7 @@ def tt_texts(now, rules, ctx):
         for sn in seats:
             bad["commits." + sn] = "git log unreadable: %s: %s" % (type(e).__name__, str(e))
     rd = tt_roles_dir()
-    names = set(cfg.get("roles") or ["producer", "auditor", "innovator"])
+    names = set(cfg.get("roles") or ["producer", "auditor"])
     try:
         if not rd.is_dir():
             raise RuntimeError("role run folder %s absent" % rd)
@@ -2636,7 +2636,7 @@ def tt_groups(rules):
     cfg = rules.get("token_talk") or {}
     seats = cfg.get("seats") or []
     return list(seats) + ["commits." + s for s in seats] + ["role." + r for r in (cfg.get("roles") or
-            ["producer", "auditor", "innovator"])]
+            ["producer", "auditor"])]
 
 
 def tt_retired(k, rules):
@@ -4664,7 +4664,7 @@ def digest_md(dg):
 # routing (run_alarms); the blind digest does NOT rely on it: that is an allow-list (BLIND_KEYS).
 TOKEN_FAMILIES = ("accounts", "codex", "tokentalk")
 
-# digest_blind.md is an ALLOW-LIST (review V, V1): a token-blind role (Producer, Arbiter, Auditor, Innovator) sees exactly these series
+# digest_blind.md is an ALLOW-LIST (review V, V1): a token-blind role (Producer, Auditor) sees exactly these series
 # and nothing else. Machine health (steve, timers, tps), disk, stalls, flow and production output counts. Every key
 # not named here is withheld by default, so a new collector, or a quota reading phrased without a token word
 # (production.B, "% of the week used"), can never reach them. Adding a key is a decision: name it here, with care.

@@ -96,7 +96,7 @@ mine and are decision D1):
   `ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws` (on disk, 13.6 MB). `CANONICAL_SAVE.md` still names the 09-12 file
   and says it is `start_savegame`. That doc is stale; filed, see §9.
 - He does not play right now, so designs that need his play have no input until he does.
-- The item's trial is blocked until `INNOVATOR_BUILD_EXPIRY_WATCHDOG_REVERTS` closes (state: `doing`).
+- No trial watchdog exists: `INNOVATOR_BUILD_EXPIRY_WATCHDOG_REVERTS` was dropped 2026-11-01, and the Innovator role is retired (2026-11-23).
 
 ### 1.3 Success, and how it is measured
 

@@ -177,7 +177,7 @@ Class total: 8 files, 109950 bytes, STE 4.09 per 100 words, 150 sentences over 2
 | `src/RimMandrake/rimflow/roles/designer_scene_contract.md` | 9330 | 4.63 | 21 | 1 | 7, 6, 0 | 2026-11-19 | In a calibration row (now UNTESTED). In the Designer packets. |
 | `src/RimMandrake/rimflow/roles/designer_write.md` | 7868 | 4.01 | 18 | 3 | 2, 2, 0 | 2026-11-18 | In the Designer packets (`designer_manifest.json`). |
 | `src/RimMandrake/rimflow/roles/fable_rescue.md` | 19456 | 4.57 | 67 | 3 | 3, 0, 0 | 2026-11-19 |  |
-| `src/RimMandrake/rimflow/roles/innovator.md` | 18278 | 4.22 | 57 | 7 | 1, 0, 0 | 2026-11-19 | Scheduled role, switch off. |
+| `src/RimMandrake/rimflow/roles/innovator.md` | 18278 | 4.22 | 57 | 7 | 1, 0, 0 | 2026-11-19 | Deleted 2026-11-23: the role is retired. |
 | `src/RimMandrake/rimflow/roles/operations.md` | 27080 | 4.38 | 85 | 4 | 1, 0, 0 | 2026-11-19 | Scheduled role, switch on. |
 | `src/RimMandrake/rimflow/roles/producer.md` | 15565 | 3.58 | 43 | 5 | 2, 0, 0 | 2026-11-19 | Scheduled role, switch off. |
 | `src/RimMandrake/rimflow/roles/runner_options.md` | 15447 | 3.03 | 16 | 6 | 0, 1, 0 | 2026-11-19 | Only `designer.md` cites it. |

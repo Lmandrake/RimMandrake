@@ -155,13 +155,13 @@ order to put FlowWorks and GSS above all else now sits under v3). How to cut: wh
     request); Operations runs its clock and alarm runs; FOUNDRY works one ticket per fresh context
     (FOUNDRY_CONTEXT_BUILD_FRESH_PER_TICKET, his *"Yes we must solve foundry context right now."* 10-28); the Arbiter
     (advisory) rules FOUNDRY's done claims with evidence.
-  - **Trialed, not broken:** Conductor (quick checks and session), Auditor, Innovator and the Dispatcher each have run
+  - **Trialed, not broken:** Conductor (quick checks and session), Auditor and the Dispatcher each have run
     for real, the bugs those runs found are fixed, and evidence is being gathered on them (not yet fully proven).
   - **Whole system trialing** by the end of this week (his preference, above).
   - The 11-04 keep-or-kill call has its numbers: the owed instruments (OPS_KPI_MEASURE_OWED_VTHREE) land so each of
     the v3-vs-v2 primaries reads a number or a named UNMEASURED (V3_VERSUS_V2_MEASURE_PROVE_IT_PAYS, his *"We MUST
     prove that it's superior"*, 10-27).
-- **Cut first if short:** nothing in "proved, reliably". Within "trialed", the Innovator's and the Auditor's trial runs
+- **Cut first if short:** nothing in "proved, reliably". Within "trialed", the Auditor's trial runs
   go last; the Dispatcher's dead-window recovery proof may slip to next week.
 
 ### 2. FlowWorks — fix the 14 broken, then prove more — week of 10-28

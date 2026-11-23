@@ -1884,7 +1884,7 @@ def test_role_weekday_slots():
         except ValueError:
             check(True, "slot %r refused (ValueError)" % bad)
     wed, thu = day_with_weekday(2), day_with_weekday(3)
-    inn = producer(name="Innovator", runs_local=["Mon,Thu 10:00", "Wed 15:00"], weekly_plan_weekday=None,
+    inn = producer(name="Auditor", runs_local=["Mon,Thu 10:00", "Wed 15:00"], weekly_plan_weekday=None,
                    event_runs=None)
     check([t for t, _, _ in RL.slots(inn, wed)] == ["Wed 15:00"], "weekday filter: Wednesday keeps only 'Wed 15:00'")
     check([t for t, _, _ in RL.slots(inn, thu)] == ["Mon,Thu 10:00"], "weekday filter: Thursday keeps 'Mon,Thu 10:00'")
@@ -2231,8 +2231,8 @@ def test_review_t():
           "F4: a 07:30 skipped for another reason (off switch) is not passed over")
     # F7: every role on opus (Agent_Policy.md, the one ladder)
     check(all(r.get("model") == "opus" for r in sch["roles"] if r["name"] in
-              ("Conductor", "Operations", "Producer", "Auditor", "Innovator")),
-          "F7: Conductor, Operations, Producer, Auditor, Innovator are opus")
+              ("Conductor", "Operations", "Producer", "Auditor")),
+          "F7: Conductor, Operations, Producer, Auditor are opus")
 
 
 def test_account_hold_dispatch():
@@ -2856,14 +2856,14 @@ def test_golive_b3_wave1_config():
     check(not wave1_problems(real), "B3 the shipped schedule is within its go-live set: %s" % (wave1_problems(real),))
     on = wave1_base(real)
     check(not wave1_problems(on), "B3 Conductor + Operations enabled is within wave 1")
-    for name in ("Designer", "Auditor", "Producer", "Innovator"):
+    for name in ("Designer", "Auditor", "Producer"):
         x = copy.deepcopy(on)
         next(r for r in x["roles"] if r["name"] == name)["enabled"] = True
         check(wave1_problems(x) == ["role %s must stay disabled (go-live set: Conductor/Operations)" % name],
               "B3 %s enabled is refused" % name)
         del next(r for r in x["roles"] if r["name"] == name)["enabled"]
         check(wave1_problems(x), "B3 %s with no enabled key is refused (only an explicit false passes)" % name)
-    check({r["name"] for r in real["roles"]} >= set(WAVE1_ROLES) | {"Designer", "Auditor", "Producer", "Innovator"},
+    check({r["name"] for r in real["roles"]} >= set(WAVE1_ROLES) | {"Designer", "Auditor", "Producer"},
           "B3 the probe roles exist in the schedule")
     for seat in sorted(real["seats"]):
         x = copy.deepcopy(on)

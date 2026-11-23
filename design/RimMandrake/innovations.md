@@ -1,24 +1,19 @@
-# Innovations: the list
+# Innovations: the idea list
 
-Created 2026-10-27 on the owner's word (ledger OWNER note on `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE`): *"I'd
-certainly like to see a list of the innovations."* Kept by the Innovator (`src/RimMandrake/rimflow/roles/innovator.md`);
-while it is off, any seat may add a `proposed` line. The Conductor's digest points here.
+A plain list of ideas. Any seat may add a line. The Conductor's digest points the owner here. The owner, 2026-10-27
+(ledger OWNER note on `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE`): *"I'd certainly like to see a list of the
+innovations."*
 
-**What belongs here:** real innovation only: `agent` (a redesign of an agent or role), `concept` (a new game
-concept), `mod` (a new mod, a merge or a split), `opportunity` (a new opportunity to consider). Optimization of the
-plan (Producer), hardware, environment and accounts (Operations) or sub-component behaviour (the build pipeline) does not.
+**What belongs here:** a change of shape, of one of four kinds: `agent` (a redesign of an agent or role), `concept` (a
+new game concept), `mod` (a new mod, a merge or a split), `opportunity` (a new opportunity to consider). An
+optimization of a thing that keeps its shape does not belong here.
 
-**Rules:** one line per innovation; update the line in place when its state changes; never delete a line.
+**Rules:** one line per idea; update the line in place when its state changes; never delete a line.
 States: `proposed` → `accepted` (his yes) → `running` (trial live) → `adopted` (kept at its kill date) or `killed`
 (his no, missed keep bar, guard breach, UNMEASURED at the kill date, or withdrawn). Size: `S` one file, flag or
 prompt; `M` one role or one mod; `L` several, or a new one. Line format:
 
 `- <date of last change> | <ITEM_ID> | <state> | <kind>/<size> | <the change of shape, one clause> | <outcome: metric value and word, or his ruling; "-" while open>`
-
-**Proves itself (starting rule, his to change):** at least 3 lines he accepted reach `adopted`, and no trial ended
-`revert-failed` or was reverted for a guard breach in the last 30 days. Until then every line goes through him first.
-
-Status: on its schedule (Tue/Fri 15:00 run, Sun 15:00 weekly); first scheduled run 2026-10-30.
 
 ## The list
 

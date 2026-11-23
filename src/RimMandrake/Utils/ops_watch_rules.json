@@ -128,19 +128,6 @@
     }
    }
   },
-  "roles.Innovator.acted_share": {
-   "owner": "Operations",
-   "max_age_min": 60,
-   "why": "RO1: the share of Innovator's outputs somebody later acted on. Report-only and coarse: under range two weeks running gets a named fix of its input or its reader from the Conductor, and nothing rings. 0.25 is a first line, set by hand from the 2026-11-01 reading, not a target.",
-   "classes": {
-    "under": {
-     "at_least": 0
-    },
-    "sane": {
-     "at_least": 0.25
-    }
-   }
-  },
   "_doc": "OP1 in operating_requirements_2026-11-01.md: the watched metrics' classes as data, read by the collectors and by ops_watch.run, which stamps class, owner, ack_within_min and max_age_min on each reading. A metric fills only the classes it can act on, of idle, sane, distressed, emergency (roles.* alone: under, sane; under rings nothing, RO1 is report-only); every class is one of {\"at_least\": n}, the class of a reading from n up to the next class's n, or {\"in\": [text]} with one {\"otherwise\": true}. owner: who answers for it. ack_within_min: required with distressed or emergency. max_age_min: an older source reads UNMEASURED. idle_if: this metric reads idle while any metric named here does. why: a range change rewrites it. `ops_watch.py lint` and load_rules refuse a metric short of any of these. classes: a limit lives here and nowhere else",
   "disk.scratch_outside_cap": {
    "owner": "Operations",
@@ -322,11 +309,6 @@
    "Producer": {
     "marked": "(?i)^producer (status|daily|weekly|event|run)|rm-role-producer-\\d",
     "coarse": "(?i)^producer\\b",
-    "not_output": "^dispatcher (alarm|role_done|role_launch|role_stop)"
-   },
-   "Innovator": {
-    "marked": "(?i)^innovator run|rm-role-innovator-\\d",
-    "coarse": "(?i)^innovator\\b",
     "not_output": "^dispatcher (alarm|role_done|role_launch|role_stop)"
    }
   }
@@ -631,7 +613,7 @@
   "window_days": 7,
   "min_reports": 5,
   "seats": [],
-  "roles": ["producer", "auditor", "innovator"],
+  "roles": ["producer", "auditor"],
   "_seats_why": "owner 2026-10-31: \"Conductor accesses everything.\" Seat BENCH (the Conductor and its helpers) and the conductor role are not measured. FOUNDRY, the one seat it measured, retired (owner by card 2026-11-02); Relentless writes as RELENTLESS but every ledger reader folds that to BENCH, so no seat is measured here until a reader keeps the written name.",
   "terms": ["tokens?", "burn(?:s|ed|ing)?", "budget(?:s|ed|ing)?", "quota", "runway", "throttl\\w*", "(?:token|daily|week(?:ly)?|session|usage) caps?", "spend(?:s|ing)?", "spent", "cheap(?:er|ly)?", "economi[sz]\\w*", "thrift\\w*"]
  },

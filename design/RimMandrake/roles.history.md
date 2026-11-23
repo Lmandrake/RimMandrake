@@ -253,6 +253,10 @@ The retired Relentless checker made none (it never passed over a red: a MEASUREM
 The owner ruling of 2026-11-01 (D3(a), `LESSONS_RETIRE_INBOX_AS_QUEUE`) reverses his 2026-10-29 answer that the
 Auditor fold lessons weekly.
 
+## innovator.md: the role is retired, 2026-11-23
+
+The owner, 2026-11-23: *"Role is retired."* `innovator.md` was deleted (`git show 2a9009e7ec:src/RimMandrake/rimflow/roles/innovator.md`); item `RIMMANDRAKE_RETIRE_INNOVATOR_ROLE_HE_FORGOT_IT_WAS_THERE`.
+
 ## innovator.md: Innovator role: instructions (v3.4) (title section), base 542106e6
 
 The Innovator was first switched on the v3 trial night, 2026-10-28, 4d9171a1e5. The owner: *"I am back at the

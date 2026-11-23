@@ -80,6 +80,7 @@ an instruction file (CLAUDE.md, agent definitions, roles, SKILL.md files, seat f
 | the telemetry exporter's `pulse` source (RimPulse alarm rows from `~/.local/state/rm-dashboard/metrics.jsonl`, last written 2026-11-03) | `src/RimMandrake/Utils/telemetry/wsl_export.py` (two lines and its docstring row) | RimPulse | the daemon that wrote it is retired; `telemetry/ingest.py` still reads old `pulse` rows already in the store | `ed3b6ca7a5` |
 | the seat files of the 2026-08-27 redesign, each already "SUPERSEDED" and pointing at a CLAUDE.md section that no longer exists | `infrastructure/agents/BUILD.md`, `CHECK.md`, `DECIDE.md` | FOUNDRY-era seats | they sent a reader to Relentless as the place the work went (`.claude/hooks/selftest_documented_commands.py` no longer lists them) | `9761a57a92` |
 | `./bridge foundry` (gave the bridge to the retired FOUNDRY seat, which has no window) | `bridge` (one case and its hint) | FOUNDRY | the override now names `conductor` and `free` only; `rimflow bridge give FOUNDRY` still replays old events | `9761a57a92` |
+| the Innovator role: its instruction file, its schedule row and go-live name, its `ops_watch` word-list and acted-share rows, its live promise and its note name (the owner, 2026-11-23: "Role is retired.") | `src/RimMandrake/rimflow/roles/innovator.md`, the row in `dispatcher_schedule.json`, rows in `ops_watch_rules.json`, `live_baseline.txt`, `contracts/blind*.py` | rimflow v3 | switched off, last ran 2026-10-30, and waited on two items dropped 2026-11-01. The idea list `design/RimMandrake/innovations.md` stays. `selftest_retired_era_gone.py` (`RETIRED_ROLES`) refuses its return | `2a9009e7ec` |
 
 ## Phase 2: renames
 
@@ -334,8 +335,8 @@ ticket, and 11 places that told a fresh agent to use a retired thing, while the 
 - **The gate reads text** (`fbdf50a5b2`): watched red on the pre-fix tree, 2011 era text lines
   (`D:\ClaudeWork\rimmandrake\conductor\era_finish_20261119\gate_prefix_run.txt`); green after, 1782 files read.
 - **Settled from "could not tell"**: `rm-dispatcher.service` is live (static, started by the live wakes; it ran
-  2026-11-19 06:31 PST; its timer is disabled). The Auditor and Innovator are scheduled roles in
-  `dispatcher_schedule.json`, both `enabled: false`. The store's `transcripts` (written by `scratch_clone.py`) and
+  2026-11-19 06:31 PST; its timer is disabled). The Auditor is a scheduled role in
+  `dispatcher_schedule.json`, `enabled: false`. The store's `transcripts` (written by `scratch_clone.py`) and
   `store/evidence_shadow.jsonl` (written by `rimflow close`) are live.
 
 Left, one ticket each, every one with its acceptance test watched failing:

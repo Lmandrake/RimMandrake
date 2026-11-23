@@ -303,8 +303,7 @@ is running).
      by card 2026-11-15: the release reaches his digest with the spend; the page itself is token-blind, you are not).
      A token-blind page shows no token or spend figure.
    - (e) The digest points him at the innovations list, `design/RimMandrake/innovations.md`: the lines that changed
-     since the last digest, and the proposals of the Innovator that await his yes (owner 2026-10-27: ask first until it
-     proves itself).
+     since the last digest, and the `proposed` lines that await his yes.
    - (f) **report:** append 3-5 lines to `D:\ClaudeWork\rimmandrake\conductor\log.md`. Write the local time, what you
      found and what you filed (with item ids). Also write what the window should raise with him first. If an
      input was missing, write `UNMEASURED` in its place. The log is the report of the check. The window reads the last 40 lines of the log at wake.

@@ -107,8 +107,8 @@ share = pts["roles.Auditor.acted_share"]
 check("S1 a real pass reads the Auditor under range", share["class"] == "under" and share["m"] == "MEASURED" and share["v"] == 0.0, share)
 check("S1 the used role reads sane in the same pass", pts["roles.Producer.acted_share"]["class"] == "sane", pts["roles.Producer.acted_share"])
 check("S1 a week under is counted", pts["roles.Auditor.weeks_under"]["v"] == 1, pts["roles.Auditor.weeks_under"])
-check("S1 a role with no output has no share: UNMEASURED, never 0", pts["roles.Innovator.acted_share"]["m"] == "UNMEASURED"
-      and pts["roles.Innovator.silent_days"]["v"] == 7, pts["roles.Innovator.acted_share"])
+check("S1 a role with no output has no share: UNMEASURED, never 0", pts["roles.Operations.acted_share"]["m"] == "UNMEASURED"
+      and pts["roles.Operations.silent_days"]["v"] == 7, pts["roles.Operations.acted_share"])
 digest = (OW.ops_dir() / "digest.md").read_text(encoding="utf-8")
 check("S1 the digest shows it, with its class", any("Auditor.acted_share" in ln and "under" in ln for ln in digest.splitlines()), digest[:300])
 blind = (OW.ops_dir() / "digest_blind.md").read_text(encoding="utf-8")

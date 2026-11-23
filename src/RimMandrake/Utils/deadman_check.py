@@ -656,8 +656,7 @@ def generate_baseline(runner=subprocess.run):
     wired = json.dumps(json.loads((root / ".claude/settings.json").read_text(encoding="utf-8")).get("hooks") or {})
     lines += ["hook=%s" % h for h in sorted(set(re.findall(r"([\w.-]+\.(?:py|sh))", wired)))]
     sched = json.loads((HERE.parent / "rimflow" / "dispatcher_schedule.json").read_text(encoding="utf-8"))
-    lines += ["role=%s max_age=%s" % (r["name"], "6d" if r["name"] == "Innovator" else "3d")   # it runs twice a week
-              for r in sched["roles"] if r.get("enabled")]
+    lines += ["role=%s max_age=3d" % r["name"] for r in sched["roles"] if r.get("enabled")]
     return lines
 
 

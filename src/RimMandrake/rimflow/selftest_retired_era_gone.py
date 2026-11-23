@@ -25,8 +25,14 @@ rulings) must say, on the line, that a retired era or deleted module it names is
 reference, lesson, fact) may instead open with the HISTORY head that Utils/era_history_mark.py writes. The rule is
 rimflow/era_text.py. Watched red on the pre-fix tree: 2011 era text lines (evidence:
 D:\ClaudeWork\rimmandrake\conductor\era_finish_20261119\gate_prefix_run.txt).
+
+Retired roles too (RIMMANDRAKE_RETIRE_INNOVATOR_ROLE_HE_FORGOT_IT_WAS_THERE): the owner, 2026-11-23, "Role is retired."
+A role of RETIRED_ROLES fails on a machinery path named for it, on its word in a file that could launch or count it
+(ROLE_FILES), and on a line of a live instruction file that names it without "retired" on that line. The idea list
+design/RimMandrake/innovations.md is not the role.
 """
 import fnmatch
+import json
 import os
 import re
 import subprocess
@@ -67,6 +73,36 @@ def era_unit(name):
 
 
 MASKED = ("masked", "masked-runtime")
+
+# --- Retired roles: name -> whose word. A role that comes back needs its owner's word and its entry here removed.
+RETIRED_ROLES = {"Innovator": "the owner, 2026-11-23"}
+ROLE_PATHS = ("src/", ".claude/", "skills/", "infrastructure/agents/")
+SCHEDULE = "src/RimMandrake/rimflow/dispatcher_schedule.json"
+ROLE_FILES = (SCHEDULE, "src/RimMandrake/Utils/ops_watch_rules.json", "src/RimMandrake/rimflow/live_baseline.txt")
+
+
+def role_rx(name):
+    return re.compile(r"\b%s\b" % re.escape(name), re.I)      # "_" is a word character: an id INNOVATOR_X is not the role
+
+
+def check_roles(paths, files, live):
+    """-> remnants of RETIRED_ROLES. paths: tracked paths; files: {ROLE_FILES path: text}; live: [(path, text)] of the
+    live instruction files."""
+    out = []
+    for name in RETIRED_ROLES:
+        rx = role_rx(name)
+        out += [f"role {name}: {p}" for p in paths
+                if p.startswith(ROLE_PATHS) and re.search(name, os.path.basename(p), re.I)]
+        for p, text in files.items():
+            if p == SCHEDULE:
+                sch = json.loads(text)
+                out += [f"role {name}: a row of roles in {p}" for r in sch.get("roles") or [] if rx.search(str(r.get("name")))]
+                out += [f"role {name}: named in golive.roles of {p}"
+                        for r in (sch.get("golive") or {}).get("roles") or [] if rx.search(str(r))]
+            out += [f"role {name}: {p}:{n}" for n, ln in enumerate(text.splitlines(), 1) if rx.search(ln)]
+        out += [f"role {name}: {p}:{n}: {ln.strip()[:160]}" for p, text in live
+                for n, ln in enumerate(text.splitlines(), 1) if rx.search(ln) and not re.search(r"\bretired\b", ln, re.I)]
+    return out
 
 # --- Text: the rule lives in era_text.py (shared with Utils/era_history_mark.py).
 from era_text import HISTORY_LINE, HISTORY_MARK, check_text, mark_text, text_scope  # noqa: E402
@@ -237,7 +273,41 @@ def probes():
         want(check_text("src/RimMandrake/rimflow/roles/x.md", line + "\n") == [], f"a past or name-only line passes: {line[:40]}")
     want(check_text("src/RimMandrake/rimflow/x.py", "relentless.py runs\n") == [] and
          check_text("design/Jawa/x.md", "Foundry floor\n") == [], "code and lore are not read by the text check")
+    # Retired roles: a planted return of each kind is refused; the idea list, an id and a "retired" line are not.
+    clean = json.dumps({"golive": {"roles": ["Conductor"]}, "roles": [{"name": "Auditor"}]}, indent=1)
+    row = json.dumps({"golive": {"roles": []}, "roles": [{"name": "Innovator", "enabled": False}]}, indent=1)
+    live = json.dumps({"golive": {"roles": ["Innovator"]}, "roles": []}, indent=1)
+    want(any("a row of roles" in x for x in check_roles([], {SCHEDULE: row}, [])),
+         "a planted return of the schedule row is a remnant, switched off too")
+    want(any("golive.roles" in x for x in check_roles([], {SCHEDULE: live}, [])), "a return in golive.roles is a remnant")
+    want(len(check_roles(["src/RimMandrake/rimflow/roles/innovator.md", ".claude/agents/rm-innovator.md",
+                          "src/RimMandrake/Utils/systemd/rm-innovator.timer"], {}, [])) == 3,
+         "a role file, an agent definition and a unit named for the role are remnants")
+    want(len(check_roles([], {ROLE_FILES[1]: '  "roles": ["auditor", "innovator"],\n', ROLE_FILES[2]: "role=Innovator max_age=6d\n"},
+                         [])) == 2, "a word-list entry and a live promise are remnants")
+    want(len(check_roles([], {}, [("src/RimMandrake/rimflow/roles/x.md", "and the proposals of the Innovator\n")])) == 1,
+         "a live instruction line that names the role as running is a remnant")
+    want(check_roles(["design/RimMandrake/innovations.md", "infrastructure/state/items/closed/INNOVATOR_X.md"],
+                     {SCHEDULE: clean, ROLE_FILES[2]: "role=Auditor max_age=3d\n"},
+                     [("CLAUDE.md", "The Innovator role was retired 2026-11-23.\nGet inventive. Innovate.\n`INNOVATOR_X_Y` is closed.\n")])
+         == [], "the idea list, a closed item, an id and a line that says retired are not remnants")
     return fails
+
+
+def role_problems(paths):
+    """-> (remnants, "") or (None, cause) when a file it must read could not be read."""
+    files, live = {}, []
+    try:
+        for p in ROLE_FILES:
+            with open(os.path.join(REPO, p), encoding="utf-8") as f:
+                files[p] = f.read()
+        for p in paths:
+            if text_scope(p) == "live" and os.path.exists(os.path.join(REPO, p)):
+                with open(os.path.join(REPO, p), encoding="utf-8") as f:
+                    live.append((p, f.read()))
+        return check_roles(paths, files, live), ""
+    except (OSError, ValueError) as e:              # ValueError: not UTF-8, or the schedule is not JSON
+        return None, str(e)
 
 
 def text_problems(paths):
@@ -287,8 +357,14 @@ def main():
     units, cause = read_units()
     remnants, problems = check_tree(paths, units, allow)
     texts, nread = text_problems(paths)
+    roles, cause_roles = role_problems(paths)
+    if roles is None:
+        print(f"COULD NOT LOOK: retired roles unread: {cause_roles}")
+        return 2
     for x in remnants:
         print("REMNANT " + x)
+    for x in roles:
+        print("ROLE " + x)
     for x in problems:
         print("PROBLEM " + x)
     for x in texts:
@@ -298,15 +374,16 @@ def main():
     if nread == 0:
         print("COULD NOT LOOK: no instruction or record file was read, so the text check saw nothing")
         return 2
-    if remnants or problems or texts:
-        print(f"FAIL: {len(remnants)} retired-era remnant(s), {len(problems)} allow-list problem(s), {len(texts)} "
+    if remnants or problems or texts or roles:
+        print(f"FAIL: {len(remnants)} retired-era remnant(s), {len(roles)} retired-role remnant(s) (a ROLE line: delete what "
+              f"names the role, or say 'retired' on the line; {RETIRED_ROLES}), {len(problems)} allow-list problem(s), {len(texts)} "
               f"era text line(s). A remnant: delete it (git is the archive; add its row to {INDEX}) or allow it "
               f"there with a reason. An era text line: say on the line that the thing is retired (or rewrite it to "
               f"what runs today); a design doc, skill reference, lesson or fact may instead open with "
               f"'{HISTORY_MARK}' (src/RimMandrake/Utils/era_history_mark.py adds it).")
         return 1
     print(f"PASS: no retired-era path outside the {len(allow)} allow rows in {INDEX}, and no era text line in "
-          f"{nread} instruction and record files" + ("" if units is not None else "; units UNMEASURED"))
+          f"{nread} instruction and record files; retired roles gone: {', '.join(RETIRED_ROLES)}" + ("" if units is not None else "; units UNMEASURED"))
     return 0
 
 

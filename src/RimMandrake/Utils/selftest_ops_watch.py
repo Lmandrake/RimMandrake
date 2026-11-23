@@ -867,7 +867,7 @@ check("tokentalk: the live rules measure neither seat BENCH nor the conductor ro
       "BENCH" not in R["token_talk"]["seats"] and "conductor" not in R["token_talk"]["roles"], R["token_talk"]["seats"])
 # the mechanism below is exercised on a fixture word-list config, seats and roles as named here, not the live ones
 R = dict(R, token_talk=dict(R["token_talk"], seats=["BENCH", "RELENTLESS"],
-                            roles=["conductor", "producer", "arbiter", "auditor", "innovator"]))
+                            roles=["conductor", "producer", "arbiter", "auditor"]))
 rx = OW.tt_regex(R)
 check("tokentalk: the word list matches whole words only (a bare cap and 'tokenizer' do not)",
       rx.search("save tokens") and rx.search("Budget!") and not rx.search("the log cap") and not rx.search("tokenizer")
@@ -882,7 +882,7 @@ check("tokentalk: a repo that cannot be read makes the commit series UNMEASURED,
       out["tokentalk.commits.BENCH.share"]["m"] == "UNMEASURED" and "git log" in out["tokentalk.commits.BENCH.share"]["why"],
       out["tokentalk.commits.BENCH.share"])
 check("tokentalk: no role run folder makes every role series UNMEASURED",
-      all(out["tokentalk.role.%s.share" % r]["m"] == "UNMEASURED" for r in ("conductor", "producer", "arbiter", "auditor", "innovator")))
+      all(out["tokentalk.role.%s.share" % r]["m"] == "UNMEASURED" for r in ("conductor", "producer", "arbiter", "auditor")))
 out = OW.c_tokentalk(NOW, R, {"events": []})
 check("tokentalk: an empty ledger read is UNMEASURED (an unreadable source), not a clean 0",
       out["tokentalk.BENCH.share"]["m"] == "UNMEASURED" and "ledger" in out["tokentalk.BENCH.share"]["why"])

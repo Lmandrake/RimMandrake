@@ -47,4 +47,3 @@ role=Arbiter max_age=3d
 role=Auditor max_age=3d
 role=Operations max_age=3d
 role=Producer max_age=3d
-role=Innovator max_age=6d

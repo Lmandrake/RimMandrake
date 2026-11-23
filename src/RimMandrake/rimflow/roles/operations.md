@@ -382,7 +382,7 @@ that justify it.
 ## Drift check (yours)
 
 - You own a no-AI check in `ops_watch`. That check flags token talk creeping into the reports of the token-blind roles
-  (Producer, Auditor, Innovator).
+  (Producer, Auditor).
 - The instructions of those roles forbid token talk and token-saving judgment.
 - When the check flags, find which instruction or prompt leaked the token talk, and file the fix. Do not rewrite the
   reports of those roles.

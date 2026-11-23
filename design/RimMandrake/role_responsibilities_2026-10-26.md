@@ -592,14 +592,6 @@ Rules of the table:
 | AU-7 | read codebase health (`rm-codebase-health`) | BENCH | weekly | — | Sun |
 | AU-8 | re-check the quality half of the v3-against-v2 verdict (`quality_blind.md`) against the ledger, token-blind | BENCH | weekly, Monday | Operations reads the re-check before sending | Sun |
 
-### Innovator (Sun)
-| # | duty | interim holder | trigger / cadence | independent checker | hands over |
-|---|---|---|---|---|---|
-| I-1 | innovation proposals (agent, concept, mod, opportunity) and trials of accepted ones, each with a named metric and kill date; ask first until proved (owner 2026-10-27) | **deferred**: none run until the role does (nobody holds it today) | 2×/week once live | Operations reads the metric | Sun |
-| I-2 | weekly game review (new concepts, mods, merges, opportunities; meaning-level fit: what does not belong) | **deferred** (Orphan home 2: nobody does it today) | weekly once live | Lukas | Sun |
-| I-3 | cadence changes proposed as experiments | Operations' economy pass (BENCH before Wed) | daily | Lukas (silencing a role is his) | Sun |
-| I-4 | tend `design/V2_DREAMS.md`; keep `design/RimMandrake/innovations.md` | any seat (adds `proposed` lines) | on idea | Producer reads | Sun |
-
 ### Foundry (no handover: already in its v3 shape)
 | # | duty | interim holder | trigger / cadence | independent checker | hands over |
 |---|---|---|---|---|---|
@@ -608,5 +600,4 @@ Rules of the table:
 Cross-cutting rules (handoff at a wave boundary, lessons, fix a false line on sight, end a dead item on sight,
 explicit-path commits, delegated `--why`) stay with every seat and role; they have no handover.
 
-Count: every duty in Part 2 and every row of Part 3 has a holder above; two are held by nobody on purpose (I-1, I-2,
-deferred until the Innovator runs), and two are owed builds held only partially until they land (D-8, D-9).
+Count: every duty in Part 2 and every row of Part 3 has a holder above, and two are owed builds held only partially until they land (D-8, D-9).
