@@ -1087,7 +1087,8 @@ def container_styles(t):
 DRIVER_RESULTS = ("thirst_live_result_*.json", "sprinkler_live_result_*.json", "drawbridge_result_*.json", "lines_result_*.json",
                   "suspension_bridge_result_*.json", "trench_cover_proof_result_*.json", "live_session_result_*.json",
                   "mission_fixture_result_*.json", "sheet_overflow_result_*.json",
-                  "droid_dig_result_*.json", "pit_exposure_result_*.json", "pit_floor_ladder_result_*.json")
+                  "droid_dig_result_*.json", "pit_exposure_result_*.json", "pit_floor_ladder_result_*.json",
+                  "pit_floor_ground_result_*.json")
 DRIVER_OF = {"T21_drinking_reserve": "sprinkler_live.py", "T22_no_brine_spray": "sprinkler_live.py"}
 
 
@@ -1637,6 +1638,18 @@ PIT_FLOOR_LADDER_LIVE = [
     ("FLOOR_LADDER_EACH_DOUBLING_DARKER_relief_on", None, "relief on (the shipped default): each doubling at least 10 % darker"),
     ("FLOOR_LADDER_DRAWS_THE_LAW_relief_on", None, "relief on: no depth draws more than 0.06 brighter than StepFloorBrightness "
      "(the walls' cast shadow may only darken it)"),
+    ("FLOOR_DEEPEST_KEEPS_GRAIN_relief_on", None, "relief on: the 16 m floor's centre square keeps its dirt grain (grey spread at "
+     "least 2.0 levels; the art judge's ruling of 2026-11-23)"),
+]
+
+# RIMMANDRAKE_DARKEN_PIT_FLOOR_BELOW_GROUND_SLATE_DRAWS_BRIGHTER (Test Pilot sitting 2026-11-23): the depth tone is laid over one
+# gravel floor on any ground, so a pit floor is darker than its ground only on soil-bright ground. Per ground, dry 0.5 m and
+# 2 m floors against the undug margin of the same capture (northstar/pit_floor_ground_live.py; its notes hold the readings and
+# the two theories ruled out: the 2026-11-23 lift as the cause of the bright shallow floor, and a light floor under water).
+PIT_FLOOR_GROUND_LIVE = [
+    ("FLOOR_DARKER_THAN_ITS_GROUND_" + _g, None, "relief on, full daylight: dry 0.5 m and 2 m pit floors dug in %s both draw at "
+     "least 10 %% darker than the %s beside them" % (_g, _g))
+    for _g in ("Soil", "SoilRich", "Sand", "Gravel", "MarshyTerrain", "Mud", "Slate_Rough", "Granite_Rough", "Marble_Rough")
 ]
 
 
@@ -1644,6 +1657,12 @@ PIT_FLOOR_LADDER_LIVE = [
 def pit_floor_ladder(t):
     """Live rows only: read from the newest pit_floor_ladder_live results at the current mod hash, else UNMEASURED."""
     _driver_live_report(t, PIT_FLOOR_LADDER_LIVE, "pit_floor_ladder_live.py", "RIMMANDRAKE_FIX_PIT_FLOOR_TINT_PAST_TWO_M_DRAWS_ONE_COLOUR")
+
+
+@suite.chain("pit_floor_ground")
+def pit_floor_ground(t):
+    """Live rows only: read from the newest pit_floor_ground_live results at the current mod hash, else UNMEASURED."""
+    _driver_live_report(t, PIT_FLOOR_GROUND_LIVE, "pit_floor_ground_live.py", "RIMMANDRAKE_DARKEN_PIT_FLOOR_BELOW_GROUND_SLATE_DRAWS_BRIGHTER")
 
 
 # the extension suites, registered unchanged (their chains carry their own toggle=/shows= claims): the main
@@ -1820,7 +1839,7 @@ for _name in ("limitless_endless", "ladder_rails_raise_lower", "pit_travel_fly_j
               "dig_fill_shovel_hours", "pump_ports_one_per_side", "water_ladder_silt", "deep_water_swims",
               "pit_access_gear_ladders", "wall_scaling_gear", "suspension_bridges_and_covers", "pipes_meet_centre",
               "thirst", "sprinklers", "drawbridges", "lines", "player_missions", "canal_overflow",
-              "droid_dig", "pit_exposure", "pit_floor_ladder"):
+              "droid_dig", "pit_exposure", "pit_floor_ladder", "pit_floor_ground"):
     suite.chain_inputs[_name] = GATE_SELFTEST_INPUTS + GATE_READER_INPUTS
 suite.chain_inputs["trench_cover_and_raiders"] = (["Source/**/*.cs", "Source/**/*.csproj",
                                                    "@closure:../Utils/selftest_flowworks_trench_cover.py"]
@@ -1887,6 +1906,10 @@ suite.live_drivers = [
     # captures; the sitting's runs took 14-20 s (2026-11-22) -> 300.
     {"name": "pit_floor_ladder_live", "script": "northstar/pit_floor_ladder_live.py", "args": [],
      "chains": ["pit_floor_ladder"], "timeout_s": 300},
+    # RIMMANDRAKE_DARKEN_PIT_FLOOR_BELOW_GROUND_SLATE_DRAWS_BRIGHTER: eighteen 3x3 pits on nine ground patches + eighteen captures;
+    # the sitting's run took about 40 s (2026-11-23) -> 300, a hang guard.
+    {"name": "pit_floor_ground_live", "script": "northstar/pit_floor_ground_live.py", "args": [],
+     "chains": ["pit_floor_ground"], "timeout_s": 300},
     # RIVER_CHAINS_WIRE_SWEEP_TO_RIVER_SITE: the river chains need a map with a river (they ran on AridShrubland). The
     # river site replaces the current map, so it is settled on demand by the FIRST river chain, which the composition
     # above puts after every other chain. toggle_river_steam's biome-gate half
