@@ -1,5 +1,8 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using HarmonyLib;
+using RimMandrake.FlowWorks.Hose;
 using RimMandrake.Shared;
 using RimMandrake.Shared.StylePicker;
 using RimWorld;
@@ -108,35 +111,249 @@ namespace RimMandrake.FlowWorks.Machinery
         /// <summary>State read: things repainted by the last default-look switch.</summary>
         public static int lastRepainted;
 
-        /// <summary>Every pipe of the run that holds <paramref name="start"/> (cardinal pipe neighbours, like the net walk), capped
-        /// at the net's own search cap.</summary>
-        public static List<Thing> RunOf(Thing start)
+        // ------------------------------------------------ RIMMANDRAKE_SPREAD_FLOWWORKS_LOOK_ALONG_LINE_NOT_PIPES_ONLY
+        // Owner 2026-11-22: "Clicking 'change style' on an object is supposed to change everything along its connected length."
+        // Every FlowWorks line part's Choose style is this one gizmo; which parts change is RM_LineLook's (Verse-free, SelfTest
+        // LineLookChecks), read over this map through MapLineGraph.
+
+        /// <summary>A def's style of <paramref name="look"/> in its own FlowWorks picker (the pipe one, or the hose reel's).</summary>
+        internal static ThingStyleDef LineStyleFor(ThingDef d, string look) => StyleFor(d, look) ?? HoseLook.StyleFor(d, look);
+
+        internal static bool LineStyled(ThingDef d) => d != null && (IsStyled(d) || HoseLook.IsStyled(d));
+
+        /// <summary>The look a part shows (for the menu's "(current)"), from its own picker.</summary>
+        internal static string LineLookOf(Thing t) => HoseLook.IsStyled(t.def) ? HoseLook.LookOfThing(t) : LookOfThing(t);
+
+        /// <summary>The look a part STORES (null: it follows its picker's default look, so a pick pins it).</summary>
+        internal static string StoredLook(Thing t)
         {
-            var run = new List<Thing>();
-            if (start?.Map == null) return run;
-            Map map = start.Map;
-            var seen = new HashSet<IntVec3> { start.Position };
-            var q = new Queue<IntVec3>();
-            q.Enqueue(start.Position);
-            while (q.Count > 0 && run.Count < RM_LiquidNet.MaxPipeCells)
+            ThingStyleDef s = StylePickerCore.RawStyle(t);
+            return s == null ? null : Core.LookOfStyle(s) ?? HoseLook.LookOfStyle(s);
+        }
+
+        /// <summary>The parts a pick of <paramref name="look"/> from <paramref name="starts"/> changes (RM_LineLook.Changes).</summary>
+        public static List<Thing> LineChanges(Map map, IEnumerable<Thing> starts, string look, out bool capped)
+        {
+            capped = false;
+            var list = new List<Thing>();
+            if (map == null) return list;
+            var g = new MapLineGraph(map);
+            var vs = new List<object>();
+            foreach (Thing t in starts) if (t?.Map == map) vs.Add(RM_LiquidNet.IsPipe(t) ? (object)t.Position : t);
+            foreach (object o in RM_LineLook.Changes(g, vs, look, RM_LiquidNet.MaxPipeCells,
+                         (o, l) => o is Thing t && LineStyleFor(t.def, l) != null, o => StoredLook(o as Thing), out capped))
             {
-                IntVec3 c = q.Dequeue();
-                foreach (Thing t in c.GetThingList(map))
-                {
-                    if (t.def == start.def) run.Add(t);
-                }
-                foreach (IntVec3 d in GenAdj.CardinalDirections)
-                {
-                    IntVec3 n = c + d;
-                    if (!n.InBounds(map) || seen.Contains(n)) continue;
-                    seen.Add(n);
-                    foreach (Thing t in n.GetThingList(map))
-                    {
-                        if (t.def == start.def) { q.Enqueue(n); break; }
-                    }
-                }
+                if (o is Thing t) list.Add(t);
             }
-            return run;
+            return list;
+        }
+
+        /// <summary>Restyle one line part in place, each through its own picker's setter.</summary>
+        internal static bool SetLineLook(Thing t, string look)
+        {
+            Hose.CompHoseReel reel = t.TryGetComp<Hose.CompHoseReel>();
+            if (reel != null && HoseLook.IsStyled(t.def))
+            {
+                reel.SetLook(look);
+                return true;
+            }
+            return RM_LiquidNet.IsPipe(t) ? SetLook(t, look) : CompTankLook.SetLook(t, look);
+        }
+
+        /// <summary>State read: the parts the last line pick changed, and whether the cap cut it.</summary>
+        public static int lastLineChanged;
+        public static bool lastLineCapped;
+
+        /// <summary>Pick <paramref name="look"/> for the whole line(s) holding <paramref name="starts"/>.</summary>
+        public static int PickLineLook(Thing clicked, IEnumerable<Thing> starts, string look)
+        {
+            List<Thing> change = LineChanges(clicked.Map, starts, look, out bool capped);
+            bool pole = false;
+            int n = 0;
+            foreach (Thing t in change)
+            {
+                if (!SetLineLook(t, look)) continue;
+                n++;
+                pole |= t.def.defName == RM_PipePoles.PoleDef;
+            }
+            if (pole) RM_PipePoles.RedrawSpans();
+            lastLineChanged = n;
+            lastLineCapped = capped;
+            if (capped)
+                Messages.Message("Only the nearest " + RM_LiquidNet.MaxPipeCells + " parts of this line took the new look: it is longer than that.",
+                    clicked, MessageTypeDefOf.CautionInput, false);
+            return n;
+        }
+
+        /// <summary>The one Choose style gizmo of every FlowWorks line part: one option per look the clicked part has, each the
+        /// whole connected line (and the lines of the other selected parts). Null when the part has no look or is not the
+        /// player's.</summary>
+        public static Command_Action LineLookGizmo(Thing clicked)
+        {
+            if (clicked == null || clicked.Faction != Faction.OfPlayer || !LineStyled(clicked.def)) return null;
+            return new Command_Action
+            {
+                defaultLabel = "Choose style",
+                defaultDesc = "Change how this whole connected line looks (scrapper, industrial, modern, futuristic): every FlowWorks part on it " +
+                              "at once (pipes, tanks, pumps, sprinkler heads, faucets, pipe poles, hose reels). A part with no art in that look keeps " +
+                              "its own. Free and instant; it changes art only, never cost, capacity or function.",
+                icon = clicked.StyleDef?.UIIcon ?? (Texture2D)clicked.def.uiIcon,
+                action = () =>
+                {
+                    var starts = new List<Thing> { clicked };
+                    foreach (object o in Find.Selector.SelectedObjectsListForReading)
+                        if (o is Thing t && t != clicked && t.Map == clicked.Map && t.Faction == Faction.OfPlayer) starts.Add(t);
+                    string cur = LineLookOf(clicked);
+                    var opts = new List<FloatMenuOption>();
+                    foreach (string look in PipeStyles.Looks)
+                    {
+                        ThingStyleDef sd = LineStyleFor(clicked.def, look);
+                        if (sd == null) continue;
+                        string l = look;
+                        opts.Add(new FloatMenuOption(look + (look == cur ? " (current)" : "") + ": the whole line", () => PickLineLook(clicked, starts, l),
+                            sd.UIIcon, Color.white));
+                    }
+                    Find.WindowStack.Add(new FloatMenu(opts));
+                }
+            };
+        }
+    }
+
+    /// <summary>
+    /// RIMMANDRAKE_SPREAD_FLOWWORKS_LOOK_ALONG_LINE_NOT_PIPES_ONLY: the map as RM_LineLook reads it. A pipe vertex is its cell
+    /// (IntVec3), every other vertex the Thing. Only FlowWorks' own spawned player things have a kind (owner 2026-11-22: each
+    /// mod restyles its own items). Joins are physical: the pipe cells, the pole span edges in force, the members around a
+    /// cell, the things touching a part, each reel's coupled body port, its laid hose's free-end port or relay reel. Liquid
+    /// settings (flow, theft) are not read: a pick changes art only.
+    /// </summary>
+    internal sealed class MapLineGraph : IRM_LineGraph
+    {
+        internal const string OwnPackage = "mandrake.rm.flowworks";
+        private readonly Map map;
+        private readonly RM_PipeSpanEdges spans;
+        private Dictionary<object, List<object>> hoses;
+
+        public MapLineGraph(Map map)
+        {
+            this.map = map;
+            spans = RM_PipePoles.EdgesFor(map);
+        }
+
+        internal static bool Ours(Thing t) => t != null && t.Spawned && t.Faction == Faction.OfPlayer
+            && string.Equals(t.def?.modContentPack?.PackageId, OwnPackage, StringComparison.OrdinalIgnoreCase);
+
+        private bool PipeCell(IntVec3 c)
+        {
+            if (!c.InBounds(map)) return false;
+            List<Thing> l = c.GetThingList(map);
+            for (int i = 0; i < l.Count; i++) if (RM_LiquidNet.IsPipe(l[i]) && Ours(l[i])) return true;
+            return false;
+        }
+
+        public RM_LinePart KindOf(object v)
+        {
+            if (v is IntVec3 c) return PipeCell(c) ? RM_LinePart.Pipe : RM_LinePart.None;
+            Thing t = v as Thing;
+            if (!Ours(t) || t.Map != map) return RM_LinePart.None;
+            if (RM_LiquidNet.IsPipe(t)) return RM_LinePart.Pipe;
+            if (t is LiquidTypes.Building_LiquidTank) return RM_LinePart.Tank;
+            if (t.TryGetComp<Hose.CompHoseReel>() != null) return RM_LinePart.Reel;
+            if (RM_LiquidNet.RoleOfKind(t) == RM_NetRole.Machine) return RM_LinePart.Machine;
+            string d = t.def.defName;
+            if (d == Sprinklers.RM_SprinklerLook.FaucetDef || d == RM_PipePoles.PoleDef) return RM_LinePart.Fitting;
+            return RM_LinePart.None;
+        }
+
+        public IEnumerable<object> PipeNeighbours(object cell)
+        {
+            var c = (IntVec3)cell;
+            foreach (IntVec3 d in GenAdj.CardinalDirections)
+            {
+                IntVec3 n = c + d;
+                if (n.InBounds(map) && RM_LiquidNet.HasPipe(n, map)) yield return n;
+            }
+            foreach (object n in spans.At(c)) yield return n;
+        }
+
+        private IEnumerable<object> ThingsIn(IEnumerable<IntVec3> cells, Thing except)
+        {
+            foreach (IntVec3 c in cells)
+            {
+                if (!c.InBounds(map)) continue;
+                List<Thing> l = c.GetThingList(map);
+                for (int i = 0; i < l.Count; i++) if (l[i] != except) yield return l[i];
+            }
+        }
+
+        public IEnumerable<object> AroundCell(object cell)
+        {
+            var c = (IntVec3)cell;
+            return ThingsIn(GenAdj.AdjacentCellsAndInside.Select(d => c + d), null);
+        }
+
+        public IEnumerable<object> PipeCellsAround(object part)
+        {
+            var t = (Thing)part;
+            foreach (IntVec3 c in t.OccupiedRect().ExpandedBy(1))
+                if (c.InBounds(map) && RM_LiquidNet.HasPipe(c, map)) yield return c;
+        }
+
+        public IEnumerable<object> Touching(object part)
+        {
+            var t = (Thing)part;
+            return ThingsIn(t.OccupiedRect().ExpandedBy(1), t);
+        }
+
+        /// <summary>Every hose coupling on the map, both ways: reel -- its body port, reel -- its laid end's port or relay.</summary>
+        private Dictionary<object, List<object>> Hoses()
+        {
+            if (hoses != null) return hoses;
+            hoses = new Dictionary<object, List<object>>();
+            Hose.RM_MapComponent_Hoses comp = map.GetComponent<Hose.RM_MapComponent_Hoses>();
+            if (comp == null) return hoses;
+            foreach (Hose.CompHoseReel r in comp.Reels)
+            {
+                if (r?.parent == null || !r.parent.Spawned || r.parent.Map != map) continue;
+                Thing body = r.Port();
+                if (body != null) Couple(r.parent, RM_LiquidNet.VertexOf(body));
+                if (!r.laid) continue;
+                Hose.HoseFreeEnd e = r.FreeEnd();
+                if (e.Relay?.parent != null) Couple(r.parent, e.Relay.parent);
+                else if (e.Port != null) Couple(r.parent, RM_LiquidNet.VertexOf(e.Port));
+            }
+            return hoses;
+        }
+
+        private void Couple(object a, object b)
+        {
+            if (a == null || b == null || Equals(a, b)) return;
+            if (!hoses.TryGetValue(a, out List<object> la)) hoses[a] = la = new List<object>();
+            if (!hoses.TryGetValue(b, out List<object> lb)) hoses[b] = lb = new List<object>();
+            la.Add(b);
+            lb.Add(a);
+        }
+
+        public IEnumerable<object> HoseJoins(object v) =>
+            v != null && Hoses().TryGetValue(v, out List<object> l) ? l : (IEnumerable<object>)Array.Empty<object>();
+
+        public IEnumerable<object> PartsOn(object cell)
+        {
+            var c = (IntVec3)cell;
+            foreach (object o in ThingsIn(new[] { c }, null))
+            {
+                var t = (Thing)o;
+                if (RM_LiquidNet.IsPipe(t) || t.def.defName == Sprinklers.RM_SprinklerLook.FaucetDef || t.def.defName == RM_PipePoles.PoleDef) yield return t;
+            }
+            // a pipe pole joins a pipe 8-way or from under it (RM_PipePoles.JoinCells): it is a part of the cells it joins
+            foreach (object o in ThingsIn(GenAdj.AdjacentCells.Select(d => c + d), null))
+                if (((Thing)o).def.defName == RM_PipePoles.PoleDef) yield return o;
+        }
+
+        public IEnumerable<object> FittingCells(object fitting)
+        {
+            var t = (Thing)fitting;
+            if (t.def.defName == RM_PipePoles.PoleDef) return RM_PipePoles.JoinCells(t);
+            return RM_LiquidNet.HasPipe(t.Position, map) ? new object[] { t.Position } : Array.Empty<object>();
         }
     }
 
@@ -157,35 +374,34 @@ namespace RimMandrake.FlowWorks.Machinery
 
     public class CompPipeLook : ThingComp
     {
+        // PIPE_STYLE_PRUNE_WHOLE_RUN_ONLY (owner 2026-10-23: "Pipes should ONLY have the \"choose style for the entire run\" option,
+        // not per pipe. That's too fidgetty."): one option per look, never one piece; since 2026-11-22 the whole LINE, not the
+        // same-def run (RIMMANDRAKE_SPREAD_FLOWWORKS_LOOK_ALONG_LINE_NOT_PIPES_ONLY).
         public override IEnumerable<Gizmo> CompGetGizmosExtra()
         {
             foreach (Gizmo g in base.CompGetGizmosExtra()) yield return g;
-            if (parent.Faction != Faction.OfPlayer || !PipeLook.IsStyled(parent.def)) yield break;
-            yield return new Command_Action
-            {
-                defaultLabel = "Choose style",
-                defaultDesc = "Change how this pipe run looks (scrapper, industrial, modern, futuristic): the whole connected run at once. " +
-                              "Free and instant; it changes art only, never cost or function.",
-                icon = parent.StyleDef?.UIIcon ?? (Texture2D)parent.def.uiIcon,
-                action = () =>
-                {
-                    string cur = PipeLook.LookOfThing(parent);
-                    var opts = new List<FloatMenuOption>();
-                    foreach (string look in PipeStyles.Looks)
-                    {
-                        ThingStyleDef sd = PipeLook.StyleFor(parent.def, look);
-                        if (sd == null) continue;
-                        string l = look;
-                        // PIPE_STYLE_PRUNE_WHOLE_RUN_ONLY (owner 2026-10-23: "Pipes should ONLY have the \"choose style for the
-                        // entire run\" option, not per pipe. That's too fidgetty."): one option per look, always the whole run.
-                        opts.Add(new FloatMenuOption(look + (look == cur ? " (current)" : ""), () =>
-                        {
-                            foreach (Thing t in PipeLook.RunOf(parent)) PipeLook.SetLook(t, l);
-                        }, sd.UIIcon, Color.white));
-                    }
-                    Find.WindowStack.Add(new FloatMenu(opts));
-                }
-            };
+            Command_Action c = PipeLook.LineLookGizmo(parent);
+            if (c != null) yield return c;
+        }
+    }
+
+    /// <summary>The Choose style gizmo of a line part that had none (the sprinkler head, the pipe faucet, the pipe pole):
+    /// the line's (PipeLook.LineLookGizmo).</summary>
+    public class CompProperties_LineLook : CompProperties
+    {
+        public CompProperties_LineLook()
+        {
+            compClass = typeof(CompLineLook);
+        }
+    }
+
+    public class CompLineLook : ThingComp
+    {
+        public override IEnumerable<Gizmo> CompGetGizmosExtra()
+        {
+            foreach (Gizmo g in base.CompGetGizmosExtra()) yield return g;
+            Command_Action c = PipeLook.LineLookGizmo(parent);
+            if (c != null) yield return c;
         }
     }
 
@@ -193,8 +409,8 @@ namespace RimMandrake.FlowWorks.Machinery
     /// TANK_LOOKS_WIRE_FOUR_STYLE_SWITCH (owner 2026-10-16: "The tanks should have switchable art like everything else in
     /// here. I don't see the switch."): the four liquid tanks' "Choose style" gizmo, the reel's and the pipe's twin. The build
     /// button, copy and frame already carried a tank's look (PipeStyles.TankDefs through this picker); a BUILT tank had no
-    /// way to change it. This tank, or every selected tank (each in its own def's style). Shown only once the tank's style
-    /// defs are loaded (PipeLook.IsStyled).
+    /// way to change it. Since 2026-11-22 its whole connected line (PipeLook.LineLookGizmo), each part in its own def's style.
+    /// Shown only once the tank's style defs are loaded (PipeLook.IsStyled).
     /// </summary>
     public class CompProperties_TankLook : CompProperties
     {
@@ -220,47 +436,13 @@ namespace RimMandrake.FlowWorks.Machinery
             return true;
         }
 
-        /// <summary>The player's selected tanks that can take a look (the multi-select option's targets).</summary>
-        private static List<Thing> SelectedTanks()
-        {
-            var list = new List<Thing>();
-            foreach (object o in Find.Selector.SelectedObjectsListForReading)
-            {
-                if (o is Thing t && t.Faction == Faction.OfPlayer && t.TryGetComp<CompTankLook>() != null && PipeLook.IsStyled(t.def)) list.Add(t);
-            }
-            return list;
-        }
-
+        /// <summary>Its Choose style is the line's (RIMMANDRAKE_SPREAD_FLOWWORKS_LOOK_ALONG_LINE_NOT_PIPES_ONLY, owner 2026-11-22):
+        /// the tank or pump and every FlowWorks part on its connected line.</summary>
         public override IEnumerable<Gizmo> CompGetGizmosExtra()
         {
             foreach (Gizmo g in base.CompGetGizmosExtra()) yield return g;
-            if (parent.Faction != Faction.OfPlayer || !PipeLook.IsStyled(parent.def)) yield break;
-            yield return new Command_Action
-            {
-                defaultLabel = "Choose style",
-                defaultDesc = "Change how this " + parent.def.label + " looks (scrapper, industrial, modern, futuristic): this one, or every selected one. " +
-                              "Free and instant; it changes art only, never cost, capacity or function.",
-                icon = parent.StyleDef?.UIIcon ?? (Texture2D)parent.def.uiIcon,
-                action = () =>
-                {
-                    string cur = PipeLook.LookOfThing(parent);
-                    List<Thing> sel = SelectedTanks();
-                    var opts = new List<FloatMenuOption>();
-                    foreach (string look in PipeStyles.Looks)
-                    {
-                        ThingStyleDef sd = PipeLook.StyleFor(parent.def, look);
-                        if (sd == null) continue;
-                        string l = look;
-                        opts.Add(new FloatMenuOption(look + (look == cur ? " (current)" : "") + ": this " + parent.def.label, () => SetLook(parent, l), sd.UIIcon, Color.white));
-                        if (sel.Count > 1)
-                            opts.Add(new FloatMenuOption(look + ": every selected one (" + sel.Count + ")", () =>
-                            {
-                                foreach (Thing t in sel) SetLook(t, l);
-                            }, sd.UIIcon, Color.white));
-                    }
-                    Find.WindowStack.Add(new FloatMenu(opts));
-                }
-            };
+            Command_Action c = PipeLook.LineLookGizmo(parent);
+            if (c != null) yield return c;
         }
     }
 

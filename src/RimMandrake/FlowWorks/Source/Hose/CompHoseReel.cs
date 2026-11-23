@@ -840,26 +840,10 @@ namespace RimMandrake.FlowWorks.Hose
                     action = () => OrderRetract()
                 };
             }
-            if (HoseLook.IsStyled(parent.def))
-                yield return new Command_Action
-                {
-                    defaultLabel = "Choose style",
-                    defaultDesc = "Change how this reel and its hose look (scrapper, industrial, modern, futuristic). Free and instant; it changes art only, never cost or function.",
-                    icon = parent.StyleDef?.UIIcon ?? IconLay,
-                    action = () =>
-                    {
-                        string cur = HoseLook.LookOfThing(parent);
-                        var opts = new List<FloatMenuOption>();
-                        foreach (string look in HoseStyles.Looks)
-                        {
-                            ThingStyleDef sd = HoseLook.StyleFor(parent.def, look);
-                            if (sd == null) continue;
-                            string l = look;
-                            opts.Add(new FloatMenuOption(look + (look == cur ? " (current)" : ""), () => SetLook(l), sd.UIIcon ?? IconLay, Color.white));
-                        }
-                        Find.WindowStack.Add(new FloatMenu(opts));
-                    }
-                };
+            // RIMMANDRAKE_SPREAD_FLOWWORKS_LOOK_ALONG_LINE_NOT_PIPES_ONLY (owner 2026-11-22): the reel's Choose style is its whole
+            // connected line's (the reel, its hose, and every FlowWorks part the hose couples it to)
+            Command_Action look = Machinery.PipeLook.LineLookGizmo(parent);
+            if (look != null) yield return look;
             if (pending != HosePendingOrder.None || carry == HoseCarryState.Carrying || (carry == HoseCarryState.Retracting && carrier != null))
                 yield return new Command_Action
                 {

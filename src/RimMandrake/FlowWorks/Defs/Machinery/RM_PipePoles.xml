@@ -74,6 +74,7 @@
       <!-- no CompProperties_Power: a pipe pole is never a power building, so no power net ever visits it -->
       <li Class="RimMandrake.GimmeSomeSlack.Aerial.CompProperties_AerialAnchor" />
       <li Class="RimMandrake.FlowWorks.Machinery.CompProperties_PipePoleReadout" />   <!-- P9 readout: does its span carry the net -->
+      <li Class="RimMandrake.FlowWorks.Machinery.CompProperties_LineLook" />   <!-- Choose style: the whole connected line -->
     </comps>
     <modExtensions>
       <li Class="RimMandrake.GimmeSomeSlack.Aerial.AerialAnchorExtension">

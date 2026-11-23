@@ -360,6 +360,7 @@
     <Compile Include="Machinery\RM_PipePoles.cs" />
     <Compile Include="Machinery\PipeStyles.cs" />
     <Compile Include="Machinery\PipeLook.cs" />
+    <Compile Include="Machinery\RM_LineLook.cs" />
     <Compile Include="Machinery\LiquidJoinRule.cs" />
     <Compile Include="Machinery\TankArtEdges.cs" />
     <Compile Include="Machinery\RM_LiquidJoins.cs" />

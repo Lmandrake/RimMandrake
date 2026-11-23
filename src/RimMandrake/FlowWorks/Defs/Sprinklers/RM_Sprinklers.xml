@@ -60,6 +60,7 @@
       <li Class="CompProperties_Styleable" />
       <li Class="CompProperties_Flickable" />
       <li Class="RimMandrake.FlowWorks.Sprinklers.CompProperties_RM_SprinklerHead" />
+      <li Class="RimMandrake.FlowWorks.Machinery.CompProperties_LineLook" />   <!-- Choose style: the whole connected line -->
     </comps>
   </ThingDef>
 

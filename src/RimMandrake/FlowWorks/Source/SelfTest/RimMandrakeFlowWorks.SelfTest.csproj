@@ -228,6 +228,7 @@
     <Compile Include="FuelFireChecks.cs" />
     <Compile Include="GateFirebreakChecks.cs" />
     <Compile Include="..\Machinery\RM_LiquidNetKernel.cs" />
+    <Compile Include="..\Machinery\RM_LineLook.cs" />
     <Compile Include="..\Machinery\RM_LiquidTransfer.cs" />
     <Compile Include="TransferChecks.cs" />
     <Compile Include="NetComponentChecks.cs" />
@@ -275,6 +276,7 @@
     <Compile Include="HoseLiveChecks.cs" />
     <Compile Include="StyleStage3Checks.cs" />
     <Compile Include="PipeStyleChecks.cs" />
+    <Compile Include="LineLookChecks.cs" />
     <Compile Include="LiquidJoinChecks.cs" />
     <Compile Include="ReelRiserShadowChecks.cs" />
     <Compile Include="HoseEndLipChecks.cs" />
