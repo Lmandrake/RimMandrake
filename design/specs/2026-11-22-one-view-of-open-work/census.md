@@ -188,7 +188,7 @@ Each drop is counted once, at the hand-over where it fell.
 | window → window | a handoff or a "next window" line; the next window does not take it | 4 + 11 | owed: LAUNCH_RUN_CLONE, ROUTE_SLACK, SETTLE_LANE, WORK_NIGHT; plus 11 handoff pointers with no carrier (`[guess ~60%]` real) |
 | store → store | a ruling or fact lands in one store and the store that acts on it does not change | 7 + 7 | owed: ADD_FRIDGE, CHECK_SCRATCH, DECIDE_MOAT, LAUNCH_CODEX_REVIEWS, LAUNCH_REMAINING_PLAIN, RERUN_FAULT, WRITE_FOLLOWUP; plus the goals store (11-22 plan), the 9 "answered" items, the STATUS_BOARD retirement, and the owner-reported repeats (two games; offline model; 0.1.0; login) |
 | wait → nobody | a wait expires and nothing raises it | 21 | 21 of 37 waits past their date (5 of them owed items, also counted above) |
-| him → ledger | something he said is not recorded | UNMEASURED | this census did not compare transcripts with ledger events; the instrument for it does not exist here |
+| him → ledger | something he typed is not recorded | 7 + 7 `[guess ~70%]` | measured later the same evening by `probe_his_words.py` (`probe_results.md`): of 138 messages typed in 3 days, 51 have no ledger home; by hand, 7 of those are standing instructions or rulings and 7 are questions or one-time orders |
 
 ## Minor things seen (no ticket)
 
