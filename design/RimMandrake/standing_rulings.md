@@ -233,7 +233,7 @@ called from a shell script without any API key."*
   - an on/off switch per major feature/mechanic;
   - tuning where a number is the experience;
   - defaults that equal the shipped behavior;
-  - a mod that degrades gracefully when every switch is off;
+  - a mod that degrades gracefully when every switch is off: the game still works;
   - a label on each toggle that affects worldgen.
 - TESTING: a biome mechanic is tested in game only on its home biome. No test away from the home biome is owed.
 - That testing ruling is the owner's, 2026-10-15, kept by his card of 2026-11-21:
@@ -2064,8 +2064,9 @@ This is the list as the root `CLAUDE.md` carried it until 2026-11-19, word for w
   that matches nothing logs nothing. Detail: `skills/rimworld-modding/references/project-engine-facts.md`.
 - 🔴 **`modcheck run <Mod>` REWRITES the live `ModsConfig.xml`** (expensive list). When a new
   game won't start, read the **FIRST** exception in `Player.log`, not the loudest. More
-  (600 s subagent watchdog, mid-session hooks, card gates, `handoff.py` and two Conductor
-  windows): `infrastructure/state/facts/tool_traps.md`.
+  in `infrastructure/state/facts/tool_traps.md`; the 600 s subagent watchdog, mid-session hooks and card
+  gates in `infrastructure/agents/Agent_Policy.md`; `handoff.py` and two Conductor windows in
+  `skills/using-rimflow/references/traps.md`.
 - **Dumps and harvests decay** (owner, 2026-08-27): trust one only after its fingerprint
   matches the live mod set; the frozen `official` dump is the sole design target.
 

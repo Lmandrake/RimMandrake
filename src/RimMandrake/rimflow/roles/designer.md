@@ -131,8 +131,8 @@ without a valid result is a retry that has spent budget.
 
 He answered three cards that night. The cards, word for word, are in
 `infrastructure/state/items/RIMMANDRAKE_UPGRADE_DESIGNER_CLEANSE_SIXTY_FOUR_BARS_LOCKED.md`. The first two answers are
-what a first version may contain and the fate of an extra. The two sections below quote those answers word for word
-from `roles/designer_cleanse.md`, the brief they were first written into. `selftest_designer_first_version_rules.py`
+what a first version may contain and the fate of an extra. The two sections below are that brief's
+text about his answers, copied word for word from `roles/designer_cleanse.md`. His own words are in the cards. `selftest_designer_first_version_rules.py`
 keeps the two copies equal, so change both or neither. In the two sections, read "this pass" as your run and "his
 pages" as what you put before him (`sheet.md` and your asks).
 

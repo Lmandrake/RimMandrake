@@ -210,7 +210,7 @@ Full evidence in `references/capability-matrix.md`.
 | clear ground | `jawa/destroy_batch`, or paint a terrain the plant cannot grow on (§5) |
 | advance time | `jawa/safe_advance`, via `B.ticks(n)` (`validation_core._BridgeBase.ticks` → `clockgate.advance_chunk`): many ticks per frame. Raw `step_game_ticks` is one tick per frame; keep it for frame-sensitive steps (flyer landing) and legacy callers. Never an advance-read-repeat loop, and never `play_for` / unpaused play inside a proof (`skills/live-debugging-proof-harness/references/lightspeed-authoring.md` §3; `B.until`/`B.watch` PLANNED). ⚠️ Long runs are risky (owner, 2026-10-13); `jawa/time_set_ticks` simulates nothing but ages every absolute-tick timer; ⚠️ it is REFUSED on a map with a spawned colonist unless you pass `timeException=true` (+ `why="…"`), or set the clock before the colonists exist — both in `references/silent-failures.md` |
 | reload edited XML defs, no restart | ⛔ **NOTHING — `jawa/hot_reload_defs` is RETIRED** (owner, 2026-09-03: unstable). It hung a 589-mod game 5 min and left it unable to generate any pawn while reporting healthy. Restart on the 19-mod minimal list instead: 22 s. Canonical entry `skills/rimworld-modding/SKILL.md` §2 |
-| batch-read resolved defs | `jawa/get_defs` — `DefType/defName;…` pairs + reflective `fields`, dozens per call; ⚠️ scalar fields only |
+| batch-read resolved defs | `jawa/get_defs` — `DefType/defName;…` pairs + reflective `fields`, dozens per call; ⚠️ scalar fields only, unless `deep=true` |
 | see it | `take_screenshot` → absolute path you can read back |
 
 🔴 **`jawa/clear_ui` before every screenshot** — see §5.

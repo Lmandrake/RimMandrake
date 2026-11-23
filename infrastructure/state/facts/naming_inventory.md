@@ -1,8 +1,8 @@
 # Naming inventory — what is called what, measured
 
 **MEASURED 2026-08-23 by CHECK** (a retired seat name). CHECK ran two read-only censuses over the working tree at
-`301d1299..15a635c7`. This file exists so that the writer of the rename spec for `GREAT_NAMESPACE_RENAME_1`
-(`design/V2_DREAMS.md`) never pays for this census again.
+`301d1299..15a635c7`. This file is a record of the names before the rename migration. That
+migration is done (`CLAUDE.md` §Shipping names are three-tier), so no rename waits on this file.
 
 ⚠️ **A number here is only true of the tree on that date.** Re-measure before you act on any count. The
 reason on 2026-08-23: four seats share this checkout.
@@ -124,5 +124,5 @@ rename spec should settle that too.
 `src/**/*.xml`. The player is vanilla `PlayerColony`/`PlayerTribe`. All 8 authored
 FactionDefs are NPC factions. **A rename spec must not assume a player faction exists.**
 
-⚠️ **Unrelated drift found in passing, not yet ruled on.** The scenario's GameStartDialog and `CLAUDE.md` call the clan's
+⚠️ **Unrelated drift found in passing, not yet ruled on.** The scenario's GameStartDialog and `CLAUDE.md` then called the clan's
 faith **"the Second Hand"**. The shipped `.rid` is named **"The Salvation"**.

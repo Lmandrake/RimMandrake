@@ -51,7 +51,7 @@ Item `RELENTLESS_TICK_MEASURE_CLONE_MEMORY_PEAK`. MEASURED 2026-11-03 on Archmag
 
 ## What this means for the stop lines
 
-- `min_mem_available_gb` (6) and the 3 GB host stop line read MemAvailable. MemAvailable already treats this page cache
+- The host stop line of 3 GB reads MemAvailable. MemAvailable already treats this page cache
   as available.
 - A budget of 4–5 GB per clone against those lines overcounts the clone several times over. The measured figure is
   ~0.5 GB of MemAvailable per concurrent clone (worst seen 1.06 GB).

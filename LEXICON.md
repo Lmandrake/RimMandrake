@@ -56,7 +56,7 @@ This file is the project tier. It narrows or extends the fleet's `~/dev/Lodestar
 | **Star Wars layer** | Everything that would suit any Star Wars scenario unchanged: races, droids, weapons. |
 | **Utinni layer** | Everything that belongs to this one campaign only: its clan, its story, its lore. |
 | **Archmagi** | The main machine: his desk, the Conductor and the game he plays. |
-| **SteveDesktop** | The second machine: a game that runs test jobs unattended. |
+| **SteveDesktop** | The second machine: two games, Steve1 and Steve2, that run test jobs unattended. |
 
 ## Machinery words of the rule files
 

@@ -33,7 +33,7 @@ This table is not complete. On 2026-11-23 the root also held `GUIDING_PRINCIPLES
   string. So a `git mv` does **not** update the symlinks.
 - If someone moves `skills/`, the links break with **no error at all**. Then the harness silently stops offering those
   skills.
-- A move of `skills/` is gated on the owner. If that gate opens, land the `git mv` and an `ln -sfn` for each entry in
+- A move of `skills/` needs the owner, or the Conductor's recorded act. If it goes ahead, land the `git mv` and an `ln -sfn` for each entry in
   one commit.
 
 ---
@@ -51,7 +51,7 @@ different question. The seven questions are the whole design: **intent, source, 
 | `observed/` | What did a *running game* actually do? | `observed/README.md` |
 | `vendor/` | What did *someone else* write that we run? | `vendor/README.md` |
 | `research/` | What did *someone else* write that we studied? | `research/README.md` |
-| `infrastructure/` | How does the *project* run itself? | `infrastructure/README.md` |
+| `infrastructure/` | How does the *project* run itself? | `infrastructure/agents/CHARTER.md` |
 
 Agents cross these four boundaries by mistake:
 
@@ -70,11 +70,9 @@ Agents cross these four boundaries by mistake:
 - `deployed/`, `observed/` and `infrastructure/` **do not** carry the split, deliberately. An installed config, a
   measurement and a seat definition belong to something other than our reuse category.
 
-> **The owner's promotion test:** *"Am I likely to want this in a totally unrelated
-> playthrough, or will I have to fundamentally remake it — not just reconfigure
-> it?"* **Reconfigure → `RimMandrake/`. Remake → `Jawa/`.**
-
-⚠️ **When unsure, `Jawa/`.**
+Which tier a new thing takes: `design/NAMING_SCHEME_PLAN.md` (the owner's earlier two-way test is in
+`design/RimMandrake/CLAUDE.history.md`). `design/Jawa/` and `research/Jawa/` keep their old folder name: "Jawa" is lore
+text only, and no new mod folder takes it.
 
 To promote a file later costs only a `git mv`. If a "generic" doc silently assumed Star Wars, the cost is a debugging
 session.
@@ -142,7 +140,7 @@ game produced (→ `observed/`).
 **Not here:** tool run-artifacts (→ beside their generator in `src/`), copied game config
 (→ `deployed/config/`).
 
-- For each stamp (dated folder), **only `MANIFEST.json` is tracked**.
+- Small records and READMEs of a stamp (dated folder) are tracked.
 - Saves, def dumps, `Player.log` and screenshots are gitignored and stay on disk.
 
 | Path | Holds |
@@ -164,7 +162,7 @@ game produced (→ `observed/`).
 
 | Path | Holds |
 |---|---|
-| `vendor/mod_sources/` | Third-party mod source. **Gitignored, ~430 MB, and it stays that way.** |
+| `vendor/mod_sources/` | Third-party mod source. **Gitignored, and it stays that way.** |
 | `vendor/salvage/` | Salvaged stray game assemblies, stamped by date. |
 | `vendor/wisdom/` | Ours, but *about their mod*: `benign_log_errors.md` (read §0 first), `def_override_clusters.md`, `Factory_lore.md`, `cqf_quest_types_explainer.md`. |
 
@@ -194,7 +192,6 @@ Payloads are gitignored; **the teardown is the work product.** A teardown is our
 
 | Path | Holds |
 |---|---|
-| `infrastructure/README.md` | The tier rule, and the rules-vs-state line. |
 | `infrastructure/STRUCTURE.md` | This file. |
 | `infrastructure/agents/CHARTER.md` | The whole process rulebook since 2026-08-27 (redesign #4: the fourth redesign of the seats. The first three each removed a coordination channel: peer chat, queue hand-edits, the CHECK seat's re-read loop). `POLICY.md` is a supersession stub. |
 | `infrastructure/agents/<WINDOW>.md` | One charter per window: `CONDUCTOR.md`. The workshop file was folded into it on 2026-11-04. The retired seat files are stubs. |
@@ -212,11 +209,11 @@ they trusted this?*
 
 | Path | Holds |
 |---|---|
-| `infrastructure/state/V1_CHAIN.md` | 🔴 What ships in v1, in the order the engine forces. **Check it before you queue anything.** The authority on the v1/v2 line. |
+| `infrastructure/state/V1_CHAIN.md` | 🔴 A record of what v1 was planned to hold, in the order that the engine forces. It is not a gate. Open work is in the mod's folder or on the one list (`CLAUDE.md` §Mods keep their own state). |
 | `infrastructure/state/items/` | Live item prose. `items/closed/` holds terminal items (done, dropped or superseded). `infrastructure/state/handoffs/` holds reboot handoffs (2026-09-19). |
 | `infrastructure/state/items/COLD_LOAD_RUN_SHEET_*.md` | The run sheet for the next game load, a normal queue item since 2026-08-27. The two hand-kept run-sheet files are deleted. The open folder holds none now; four are in `items/closed/` (2026-11-23). |
 | `infrastructure/state/OWNER_DECISIONS.md` | Every question only the owner can answer, and their rulings. |
-| `infrastructure/state/WORLDGEN_FACTION_CHECKLIST.md` | The Configure Factions page, box by box, for world creation. |
+| `infrastructure/state/WORLDGEN_FACTION_CHECKLIST.md` | A record of the Configure Factions page when the one fixed world was set up by hand. No worldgen feature exists (`CLAUDE.md`). |
 | `design/V2_DREAMS.md` | Deferred `[v2]` bodies, kept intact. Append-only; every seat may write to it directly. |
 | `infrastructure/state/TEST_PLAN.md` | How deployed material gets proved in-game. A retired seat wrote it. `load_session.py` still cites it. |
 | game state | One `game` event on the ledger, measured or owner-announced (`./game`). The old `status/game.json` stamp and its directory are gone. |
@@ -251,7 +248,7 @@ Archives are gitignored build outputs. At hand-off, rebuild them with
 
 The directory is the source. The `<name>.skill` zips beside it are untracked packaging artifacts.
 
-**Which skill to load when is `CLAUDE.md`'s job**, not this file's.
+**Which skill to load when:** `skills/BY_WORK.md` and `skills/README.md`, not this file.
 
 `efficient-subagents` ·
 `generating-rimworld-sprites` · `gravship-layout` · `rimbridge` ·

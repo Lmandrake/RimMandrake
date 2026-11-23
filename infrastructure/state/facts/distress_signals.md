@@ -5,7 +5,7 @@
 - The ledger held 2,029 events and 436 items: 306 closed, 47 dropped, 83 open.
 - The ledger spanned 2026-08-21T05:05Z → 2026-08-24T03:06Z (2.92 days).
 - REP is a retired seat (`infrastructure/agents/REP.md`).
-- This file feeds the BENCH scan in `infrastructure/agents/REP.md`. The query `rimflow next --bench` computes the index
+- The query `rimflow next --bench` computes the index
   of this file (`cmd_bench` in `src/RimMandrake/rimflow/cli.py`).
 - A lift of detention is the rate of detention among flagged items, divided by the base rate (8.2%). The next two
   sections define detention and the base rate.
@@ -114,7 +114,7 @@ bad alarm.
 - **This index measures actions that seats CHOOSE.** So the index is the one metric that can be gamed.
 - Most pressure that the index creates is harmless. One pressure is not harmless. **A penalty on upstream reassignment
   would teach seats to absorb mis-scoped work rather than hand it back.** That is worse, and it is invisible.
-- So the score goes to the OWNER and to REP. A seat gets the underlying fact (*"claimed 33 h, no commit"*). A seat never
+- So the score goes to the OWNER and to BENCH (the Conductor). A seat gets the underlying fact (*"claimed 33 h, no commit"*). A seat never
   gets a number to optimise.
 
 ## What would sharpen it

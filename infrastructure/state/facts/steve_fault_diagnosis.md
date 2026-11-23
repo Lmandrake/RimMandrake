@@ -104,13 +104,13 @@ In this section, "this boot" and "today" mean the boot of 2026-11-20 20:05:07Z a
 - Two jobs overlapped the fault: `J20261118T093145Z-70df7c` (FlowWorks, 20:07:00-20:18:16Z) and
   `J20261118T093156Z-5dcd3d` (FlowWorks, 20:19:38-20:22:18Z). Both were REFUSED, cause HARNESS `stale_load`. The restart
   onto the composed list failed: `rimflow bridge idle` gave no verdict.
-- The vendor-software section below still stands. Today's one-CPU shape fits a per-CPU state loss (CPU defect, driver or
+- The vendor-software section below was written before the cause was known. Today's one-CPU shape fits a per-CPU state loss (CPU defect, driver or
   hypervisor). The shape does not tell those apart.
 
 ## 🔴 The +0.100 V raise is stored in the BIOS, is not visible in the sensors, and did not cure the fault (MEASURED 2026-11-20)
 
-Per-boot bad-cycle counts from the whole probe log, and the pre/post split over all 3898 cycles. The table shows 5 of
-the boots (2326 cycles). Each boot is in `digest\watch_per_boot.tsv` of the 2026-11-19 package:
+Bad-cycle counts of five boots: three before the raise, and the two after it. These five boots hold 2326 cycles. Every
+boot: `infrastructure/state/facts/stevedesktop_cpu_fault_2026-11-19/package/digest/watch_per_boot.tsv`.
 
 | boot (UTC) | cycles | bad cycles | bad share | uptime at last read |
 |---|---|---|---|---|
@@ -144,7 +144,8 @@ the boots (2326 cycles). Each boot is in `digest\watch_per_boot.tsv` of the 2026
 ## The 72 h Prime95 soak (started 2026-11-18T01:29Z, planned end 2026-11-21T01:29Z)
 
 - To read the soak, run `python3 src/RimMandrake/Utils/steve_cpu_retest/soak_read.py` (exit 0 proven / 1 instrument
-  unproven / 2 stalled or unplanned / 3 unreachable).
+  unproven / 2 stalled or unplanned / 3 unreachable / 4 the script exited and took no step / 5 ended
+  with no reason recorded).
 - The task is `SteveDiag CPU Soak` (SYSTEM, boot trigger). The log is `C:\SteveDesktop\diag\soak\soak.log`.
 - The testq lane is paused to 2026-11-21T03:29Z, so no game job or reboot of ours lands in the soak.
 - A reboot resumes the same run and logs `SOAK REBOOT` (proven by a deliberate reboot at 01:34Z).
@@ -167,7 +168,7 @@ the boots (2326 cycles). Each boot is in `digest\watch_per_boot.tsv` of the 2026
   - Every wrong floating-point result in `watch-chk.log` equals the right answer with the two upper lanes turned to the
     x86 default NaN, on every CPU and day, including both post-raise bad cycles.
   - The fault is register-state loss, not random arithmetic noise. A CPU defect, a kernel driver or Hyper-V can each cause
-    such a loss.
+    such a loss. The 2026-11-21 pair of tests named the kernel driver `AVoluteSS3Vad`.
   - The 2026-10-31 `stevecheck hold` test cannot see the loss: it compares two registers that would both be zeroed. So
     its clean result is void.
   - Detail: `infrastructure/state/facts/stevedesktop_cpu_fault_2026-11-19/REPORT.md`.
@@ -197,7 +198,9 @@ the boots (2326 cycles). Each boot is in `digest\watch_per_boot.tsv` of the 2026
 - For a mono JIT abort (`0xE0000001`) that precedes the monitor's first_bad by 6-7 min, `mono_profiler_init_etw` in the
   note is only the thread-start tail. Read `crash.dmp` and first_bad before you touch the harness.
 
-## Hypothesis under test: vendor software holding CPU state
+## Tested and falsified (2026-11-04): vendor software callers holding CPU state
+
+The cause is a kernel driver, not its callers (§`AVoluteSS3Vad` is OFF for good, and "Result" below).
 
 A fault that persists until reboot and spans many cores fits a machine-wide setting that a reboot resets (MSRs,
 voltage/ratio offsets, SMBus/IO writes) better than a marginal core. Steve runs several ring-0 MSR/IO drivers and

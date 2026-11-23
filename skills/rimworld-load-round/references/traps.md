@@ -25,7 +25,7 @@ Lessons folded in from the lessons inbox, by the section of `../SKILL.md` they b
 - **Unity `Crash_*` folder mtime moves after the crash:** on Archmagi, `Crash_2026-10-09_*` folders read mtime >= 2026-10-11, so a 'Crash_ newer than T' check by folder mtime can false-FAIL on old crashes (never false-PASS). The name stamp is local time. A crash may also write NO folder (ntdll heap death): read WER Event 1000/1001 via `src/RimMandrake/Utils/coldstart_crashes.py`.
 
 ## 0. 🟢 FIRST: does this load have to be expensive at all?
-- **The owner's full-list load time is disputed: ~15 min (TestPilot brief) vs ~25 min (above).** Any design that prices full-list loads must range both (testpilot_sim `full_load_min` 15-30) until one is re-measured from a Player.log timestamp pair.
+- **The owner's full-list load time: ~15 min (MEASURED 2026-09-07, second launch of a session), ~25 min (measured 2026-08-19).** The newer measurement is the figure. A first launch after a reboot may run slower, so a design that prices full-list loads still ranges 15-30 min.
 
 ## 9. Before you launch
 - **Before handing the owner a joint live test, put the game on the item's tier first** (`modset_builder --tier <mod>_solo`, e.g. `weepingstones_solo`) **and have a map up.** Naming a creature on whatever list happens to be loaded wastes the sitting: "you didn't prep me in the right game" (owner).

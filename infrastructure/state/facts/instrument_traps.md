@@ -48,10 +48,12 @@ beside the result.
   wrong-path claim wearing a number. The artpipe queue is `<state>/pending/`. The state dir is
   `D:\ClaudeWork\rimmandrake\artpipe`, outside git since 2026-10-02. `artpipe_state.py where` prints the state dir and
   its counts. The queue held **182** jobs when a count of `artpipe/queue/` reported 0, and that figure went to the
-  owner. Before you repeat any count of zero, prove the path: glob `*.json`, which errors loudly. Also, **the artpipe
+  owner. Before you repeat any count of zero, prove the path: `ls <dir>/*.json` errors loudly in bash and
+  in zsh when the path is wrong (Python's `glob.glob` does not). Also, **the artpipe
   daemon does not run on the Mac**. So work queued on the Mac generates nothing until Archmagi (the Windows
   desktop) runs it.
-- 🔴 **The shell here is zsh, and `for x in $NAMES` does NOT word-split** — it loops **ONCE** on the whole string. An
+- 🔴 **In zsh, `for x in $NAMES` does NOT word-split** — it loops **ONCE** on the whole string. The shell differs: the
+  agent's Bash tool on Archmagi ran bash on 2026-11-23, where the loop does split; his login shell is zsh. An
   artpipe art-existence check over 18 plant names ran exactly one query, on a nonsense 18-word string. The check
   reported a confident **"0 of 18"** and had checked nothing (2026-09-23). The real answer was also zero, so the bug
   nearly survived. Write multi-subject sweeps in **python**, never as a shell loop over a variable. **Give every such
@@ -257,7 +259,8 @@ beside the result.
   18-word string printed a trusted "0 of 18". Print a sanity probe with a known hit count beside the result
   (`korrum` 17, `stoneback` 52, `hawkbat` 91). The corrected sweep then found a label clash that a defName check
   misses: `RM_Mirrash` against the shipped label `mirrash veil`.
-- 🔴 **`grep` here is ugrep: `grep -vxFf patterns big_file` with a large pattern set (8 MB ledger shard) fails with
+- 🔴 **In the agent's Bash tool on Archmagi, `grep` is ugrep (7.8.4; under `zsh -c` it is GNU grep 3.12, measured
+  2026-11-23): `grep -vxFf patterns big_file` with a large pattern set (8 MB ledger shard) fails with
   'exceeds complexity limits' on stderr and prints a count of 0,** which reads as 'all lines present'. For
   line-membership checks against a big file, use a Python set, never `grep -Ff`.
 - 🔴 **OOM (out-of-memory kill) counters here are cgroup ceilings, not RAM.** Before you blame the machine, read `memory.events` per slice.

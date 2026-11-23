@@ -11,7 +11,7 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 - Read your own window file. The Conductor (the window that the owner talks to) reads
   `infrastructure/agents/CONDUCTOR.md`.
 - The game cycle is in `infrastructure/GAME_STATE_WORKFLOW.md`.
-- The model ladder is in `infrastructure/agents/Agent_Policy.md` and nowhere else. Do not restate it.
+- The model ladder of this repo is in `infrastructure/agents/Agent_Policy.md` and nowhere else. Do not restate it.
 - `GUIDING_PRINCIPLES.md` says what is always true of the game, above any one mod or biome. It binds. Read it before
   you design or judge.
 
@@ -151,8 +151,9 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 - A patch that matches nothing logs nothing. Detail: `skills/rimworld-modding/references/project-engine-facts.md`.
 - `modcheck run <Mod>` rewrites the live `ModsConfig.xml` (the expensive list).
 - When a new game does not start, read the FIRST exception in `Player.log`, not the loudest one.
-- Some tools have surprising side effects (subagent watchdog, mid-session hooks, card gates, `handoff.py`, two
-  Conductor windows). Read `infrastructure/state/facts/tool_traps.md`.
+- Some tools have surprising side effects. Read `infrastructure/state/facts/tool_traps.md`. Subagent watchdog,
+  mid-session hooks and card gates: `infrastructure/agents/Agent_Policy.md`. `handoff.py` and two Conductor windows:
+  `skills/using-rimflow/references/traps.md`.
 - Dumps and harvests go stale. Trust one only after its fingerprint matches the live mod set. The frozen `official`
   dump (`observed/inventory/DefDump_OFFICIAL/`) is the only design target.
 - Full text: `design/RimMandrake/standing_rulings.md` §Facts you cannot guess.
@@ -609,7 +610,8 @@ Transient/              output to LOOK AT, then bin    UNTRACKED (pins only), ~1
 
 ### Transient
 
-- If a person reads it once, put it in `Transient/`. If a program reads it, put it in `/tmp`, never the repo. If
+- If a person reads it once, put it in `Transient/`. If a program reads it, put it in `scratch/` under the agent
+  storage root (`python3 ~/dev/Lodestar/bin/lib/agent_storage.py`), never the repo. If
   anyone reads it later, commit it in the repo, outside `Transient/`.
 - A Transient file lives about 14 days. Never keep the only copy of anything there. Never cite one from a committed
   doc.

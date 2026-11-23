@@ -70,7 +70,8 @@ Also, `failure_modes` must name the three ways this mod could fail him. Put the 
 The first time an item names a mod, the mod gets a deep Designer pass. The pass has four steps:
 1. Read the mod's code and spec.
 2. Expand the spec and the validation strategies (site prep and controls for each scene).
-3. Certify with him and clear up confusion.
+3. Certify with him, or with the Conductor window as its recorded act (`designer.md` §Authority and provenance), and
+   clear up confusion.
 4. Write it all out as build items for the Maturation Pipeline.
 
 A pass item is `<FOLDER>_DESIGN_FIRST_TOUCH`. `src/RimMandrake/rimflow/designer_passes.json` maps mods to their filed

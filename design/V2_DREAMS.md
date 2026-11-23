@@ -2282,8 +2282,8 @@ and the save is the product we ship.
 deploy it before v2 (TBD, his call). The window is written down so the choice stays
 visible instead of expiring in silence.
 
-📏 **The measured inventory is `infrastructure/state/facts/naming_inventory.md`** — the
-full census, so whoever writes the spec never pays for it again.
+📏 **The inventory measured on 2026-08-23, before the rename migration, is
+`infrastructure/state/facts/naming_inventory.md`.**
 
 ---
 

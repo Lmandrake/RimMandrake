@@ -86,7 +86,7 @@ and points here. Entries state what IS: delete a line the moment it turns false,
 
 ## Tools with surprising side effects
 
-By tool family: Git, publish and clones (3) · Ledger, rimflow, handoffs and lessons (1) · GPT, Codex and image tools (7) · Windows, WSL and paths (25) · Units, timers, hooks and processes (4) · Everything else (11).
+By tool family: Git, publish and clones (3) · Ledger, rimflow, handoffs and lessons (2) · GPT, Codex and image tools (7) · Windows, WSL and paths (24) · Units, timers, hooks and processes (4) · Everything else (11).
 
 ### Git, publish and clones
 
@@ -118,6 +118,10 @@ By tool family: Git, publish and clones (3) · Ledger, rimflow, handoffs and les
 - **`refusal_contract.py calibrate --help` runs the calibration.** The command ignores `--help`. The command runs every row's
   free check and rewrites `infrastructure/state/judge_calibration.json` (measured 2026-11-21). Read the module's
   docstring instead.
+- **`./pipe why <Mod>` and `./pipe show` cut the tick's reason line** (about 200 characters). The printed release
+  command and the true cause sit past the cut. On 2026-11-20, the cut hid that FlowWorks was stuck at an offline stage,
+  not waiting for a free game. Read `python3 src/RimMandrake/rimflow/maturation_dispatch.py status | grep "^<Mod>" |
+  fold -w 250` or `maturation.py next <Mod>`.
 
 ### GPT, Codex and image tools
 
@@ -218,7 +222,7 @@ By tool family: Git, publish and clones (3) · Ledger, rimflow, handoffs and les
     `/etc/sysctl.d`, `rm-order7.timer`).
   - To get root without sudo, use `wsl.exe -u root`.
 - **`tasklist.exe` cannot see the art daemon.** `artpiped.py` is a plain WSL Linux process. So an empty
-  `tasklist.exe | grep artpip` proves nothing. Check with `pgrep -f artpiped.py` from WSL. Empty `pending/` and
+  `tasklist.exe | grep artpip` proves nothing. Check with `systemctl --user is-active rm-artpiped.service` from WSL. Empty `pending/` and
   `active/` with a live PID means that the daemon is fed and waiting, not stopped. Feed it with `fill_queue.py`. Do not
   launch a duplicate daemon.
 - **ASCII `strings` cannot see .NET string literals; they are UTF-16LE.** The `#US` heap stores literals as UTF-16LE.
@@ -284,14 +288,11 @@ By tool family: Git, publish and clones (3) · Ledger, rimflow, handoffs and les
 
   The shot script is `D:\ClaudeWork\rimmandrake\stream-metrics\shot.py` (url out width, full page).
 - ⚠️ **`src/RimMandrake/Utils/system_screenshot.py` refuses under WSL (Windows-only, `ctypes.windll`), though
-  CLAUDE.md lists it as the always-OK desktop capture.** From WSL, use PowerShell `CopyFromScreen` with
+  an OS desktop capture is always allowed (`CLAUDE.md` §Tools).** From WSL, use PowerShell `CopyFromScreen` with
   `SetProcessDPIAware`, and save under `D:\ClaudeWork\scratch`.
 - **A post-read 'same game?' recheck must use `live_log_check.same_game(started)`, never compare `game_started()` to
   the start time directly.** `game_started()` returns `None` for a flaky `powershell.exe` read too. So one hiccup read
   as 'the running game changed while the log was read'. `same_game` re-asks a `None`.
-- **`taskkill /IM RimWorldWin64.exe` (5 files), `Select -First 1` (7 files) and any-game refusals (5 files,
-  `modset_builder.py:1181` among them) take or pick a game by name.** So a second game is not safe beside a running
-  loop until those calls work by pid.
 - **`taskkill /IM python.exe` from WSL kills every Windows python.exe** (other seats' harnesses, artpipe workers), not
   just your stuck probe. Kill by PID (`taskkill /PID <pid>`).
 - **To time FlowWorks math under Mono offline:**
@@ -322,7 +323,7 @@ By tool family: Git, publish and clones (3) · Ledger, rimflow, handoffs and les
   the original. Back up with `cp -rL`. Before you delete anything, check the copy with `ls -la`: the copy must show a
   directory, not `->`.
 - 🔴 **`pkill -f` / `pgrep -f <pattern>` match the agent's own shell (exit 144), and a self-matching wait loop never
-  ends.** The Bash tool runs each command as `zsh -c '... eval "<my whole command>"'`. So the pattern sits in the
+  ends.** The Bash tool runs each command as `<shell> -c '... eval "<my whole command>"'`. So the pattern sits in the
   agent's own argv.
   - On Linux, add `-A` (`--ignore-ancestors`): `pkill -A -f pat` / `pgrep -A -f pat`. Measured: `-f` alone matched 2
     (the wrapper plus the `$(...)` fork); `-A -f` matched 0.
@@ -461,7 +462,3 @@ By tool family: Git, publish and clones (3) · Ledger, rimflow, handoffs and les
 
   Before you call a liveness failure real, read the lasso trace for the cause. Require a lost input in the trace of
   any mutant.
-- **`./pipe why <Mod>` and `./pipe show` cut the tick's reason line** (about 200 characters). The printed release
-  command and the true cause sit past the cut. On 2026-11-20, the cut hid that FlowWorks was stuck at an offline stage,
-  not waiting for a free game. Read `python3 src/RimMandrake/rimflow/maturation_dispatch.py status | grep "^<Mod>" |
-  fold -w 250` or `maturation.py next <Mod>`.

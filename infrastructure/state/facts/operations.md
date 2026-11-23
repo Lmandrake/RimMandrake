@@ -26,9 +26,9 @@ This file is unbudgeted, like everything in `facts/`.
   - Sweep every installed workshop mod for dependents before you disable a mod.
   - Announce loudly where he reads on waking. Name the snapshot and the restore.
 - **`infrastructure/state/MODE`** holds `belt` or `afk` only. `afk` suppresses every `needs: owner` item.
-  - Precedence in rimflow: `--mode` > `$RIMFLOW_MODE` > the file (`cli.py:255`).
+  - Precedence in rimflow: `--mode` > `$RIMFLOW_MODE` > the file (`_ctx` in `cli.py`).
   - rimflow refuses `bench`. The `bench` mode is per-window: `.claude/hooks/bench_mode.py` delivers it.
-  - `interactive`/`autonomous` are dead words.
+  - `interactive`/`autonomous` are dead words: rimflow reads each one as `belt`. Do not write them.
 - **WSL cannot reach the bridge socket.** RimBridge binds Windows loopback and WSL2 is NAT-mode. So `127.0.0.1:5174` has
   *no route* from WSL. A refused connect is no reading at all. Drive the bridge under `python.exe`.
   - The instrument is `rimbridge_client.resolve_endpoint()` + a real `session/hello`. The instrument scrapes host, port
@@ -74,29 +74,17 @@ This file is unbudgeted, like everything in `facts/`.
   - `rm-ops-watch.timer` is disabled. `rm-metronome.timer`'s beat writes
     `/mnt/d/ClaudeWork/rimmandrake/ops_watch/status.json`. So a close promise about ops_watch readings names
     `unit=rm-metronome.timer`.
-- **A stale 0-byte `.git/logs/refs/remotes/origin/HEAD.lock` froze the pulse deploy checkout** (`/mnt/d/ClaudeWork/rimmandrake/pulse-deploy`) for 15 h.
-  - `rm-pulse-update` failed every run. Every rm-* unit kept running old code. Nothing alarmed.
-  - Check that checkout's HEAD when landed code does not seem live.
-  - Two things are owed. One is an ops_watch flag when pulse-update fails N times in a row. The other is for
-    `pulse_update` to clear a lock older than its own max run time when no git process holds the repo.
 - **Wrap-up debts are in-process game state** (DebugSettings, the loaded game's difficulty, ModSettings statics that
   `jawa/mod_settings_field` never writes to disk, scenes on disposable maps). So a debt owed before the game's last launch
   is void. `wrapup.void_debt` reads `Player-prev.log` mtime (Unity rotates at launch, keeps mtime). A wrap-up alarm
   relapse is usually void debts resolved by hand.
 - **Steve lane.**
   - Two consecutive canary REDs 'no live colonist' with a ~1 s load phase mean that the long-lived game session's colony
-    died, and that jobs keep reusing the session. Run `rw_game.sh down/init/up --wait`, then `testq.py resume`.
+    died, and that jobs keep reusing the session. Run `rw_game.sh down`, then `testq.py resume`
+    (`infrastructure/stevedesktop/RUNBOOK.md`: the runner starts a new quicktest).
   - The Steve fault monitor STUCK state is sticky until a new boot. STUCK alarms only when its pause expires. So the lane
     sits idle up to 6 h with jobs queued. When Steve reads PAUSED, check the `steve.state` reason and the `rm-steve-fault`
     journal.
-- **Loop units run on Archmagi, not where their game runs.**
-  - The SteveDesktop Artisan loop's unit `rm-ralph-gss-steve` and its agent run on Archmagi. Only the game and its tools
-    run on SteveDesktop, through `ralph/steve.sh`.
-  - So `systemctl --user is-active rm-ralph-gss-steve` over ssh on SteveDesktop answers inactive while the loop runs. The
-    same ssh listed 0 units: sanity-check an empty answer.
-  - The loop gate's AHEAD lists name `rm-ralph-graffiti`, `rm-ralph-gss`, `rm-ralph-gss2`. The running units are
-    `rm-ralph-graffiti3` and `rm-ralph-gss-steve`. So the Pyrelands gate does not see Graffiti.
-  - The gate lives only in untracked per-loop copies under `rm/scratch/BENCH/ralph_*/ralph/`.
 
 ## Context and cache economics (measured by Utils/sim/ctx_strategy_sim.py)
 - **Prompt-cache economics of long seat sessions.**
@@ -110,7 +98,8 @@ This file is unbudgeted, like everything in `facts/`.
   - Clearing tool results in place does not pay: tool results are only 17% of context growth.
 
 ## Throughput facts (census 2026-10-26, recheck before relying)
-- **The one live game is the bottleneck.** Measured:
+- **On 2026-10-26, with one live game, that game was the bottleneck.** Several games run now (`CLAUDE.md` §There are
+  several live games). Measured then:
   - 343 BUILT items (median age 16.4 d).
   - Verify backlog 521 (median 17.2 d).
   - The bridge held 10.9 h/day.
@@ -132,12 +121,7 @@ This file is unbudgeted, like everything in `facts/`.
   - Of 21 owner defect reports since 10-12, 12 were findable by an instrument we own.
   - The art judge sends 74% to REGEN (802 of 1,086 decisions of the judge in use on 2026-10-26; one asset was regenerated 40 times).
   - Evidence: `D:\ClaudeWork\rimmandrake\csuite\evidence.md` Q7, Q8, Q16.
-- **Open Codex review findings on the relentless live-run files (reviewed at cd905b46d6; the four files are still DIRTY).**
-  `relentless_live.py`: deploy_gap rejects unrelated off mods (~L692); drift exit 1 loses game identity (~L1054);
-  acquisition exceptions bypass release (~L1083); fileless builds skip game-identity checks (~L1094/1122); pre-launch
-  failure gets FAIL (~L1113); WSL retry can erase a violation (~L1116); timeout bypasses the cap (~L1184).
-  `relentless_game.py`: finals_waiting vs expedite rank deadlock (~L252); stage_idle_s includes load time (~L446);
-  riders' remedies omitted (~L1406).
+- **Open Codex review findings (reviewed at cd905b46d6).**
   `modset_builder.py`: tasklist failure treated as stopped (~L1073); concurrent apply backup race; non-atomic restore
   (~L1304/1352).
   `modlist_swap.py`: capture ignores reorder; folder deps not transitive; DLC deps dropped; merge order of deps. Check

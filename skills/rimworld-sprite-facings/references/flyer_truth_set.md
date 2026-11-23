@@ -35,6 +35,6 @@ Stabilize, lines, motion and frames-present are `flier_body_stabilize.py`, its `
 - **Nothing here reads the east double wing or the Porg rip as a number.** Both show on `flyer_eye_checks.py parts`, which is a look: the FireHawk plate holds the folded wing, and the Porg plate is a straight-sided column with belly on the wing layers. A judge has to be shown that sheet to see them.
 - **The body gates are wrong on both of his comparisons.** B is red and he prefers it. E is broken and he calls it perfect.
 - **HOLD is one comparison, A against B.** E holds mid-stroke and he calls it perfect, so HOLD is advice, not a fault.
-- **F is one observation with a louder defect beside it.** It is not a ruling that 2 px is fine. Loosening a bar is his.
+- **F is one observation with a louder defect beside it.** It is not a ruling that 2 px is fine. Only the Conductor may loosen a bar (`CLAUDE.md` §How we debug).
 
 Panel, gates and judge output: `D:\ClaudeWork\rimmandrake\firehawk_replay\`, with the key in `work\page_key.json` and the table with his causes checked in `OWNER_VERDICTS_2026-11-07.md`.

@@ -14,7 +14,9 @@ exempt. Append freely: the overflow destination must never itself be full.
 
 - **One file per topic.** Name the file for the subject, not for the seat or the date: `biomes.md`, `pawnkinds.md`,
   `bridge.md`.
-- **Append. Never rewrite, reorder or prune.** The newest entry goes at the bottom.
+- **Append. Never drop a true fact.** The newest entry goes at the bottom. An entry that is false is corrected or deleted
+  on sight (`infrastructure/agents/CHARTER.md` §Correctness outranks seat ownership). An entry may be reworded when every
+  number, date and measurement stays.
 - **One fact per entry, with the date and how it was measured.** A fact with no measurement behind it is a rumour.
 - ⚠️ **Promote, do not duplicate.** When a fact earns a place in a skill, a design doc or `BUILDABLE.md`, move it.
   Leave a line that says where the fact went. This directory is a holding area, not a second canon.

@@ -1,6 +1,6 @@
 # facts/biome_rosters.md — what our BiomeDef wild tables actually contain
 
-One fact per entry, newest at the bottom. Append only.
+One fact per entry, newest at the bottom. Correct or delete a false entry (`infrastructure/state/facts/README.md`).
 
 ---
 

@@ -129,7 +129,7 @@ Aggressively question whether each one still earns its disk space (owner, 2026-0
 | list | load time |
 |---|---|
 | full 578-mod list | **~25 minutes** |
-| minimal 13-mod list | **~22 seconds** |
+| minimal list | **~22 seconds** (the 13-mod list of 2026-08-19; `ModsConfig.MINIMAL.xml` held 27 mods on 2026-11-23, its load time UNMEASURED) |
 | a bridge quicktest map | **~90 seconds** |
 
 ⇒ Arrive already confident. Before the load, write down the exact `Player.log` strings that will decide each open item.

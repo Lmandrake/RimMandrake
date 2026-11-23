@@ -98,7 +98,7 @@ and **"restart and see" is never an answer.**
 tier-b XML iteration.** That ruling is dead; the text below is what replaced it.
 
 🔑 **The replacement is the minimal-list restart, and it costs almost nothing.**
-Deploy the XML, restart on the 19-mod minimal list (**22 seconds**, plus ~5 s for a
+Deploy the XML, restart on the minimal list (**22 seconds** on the 13-mod list of 2026-08-19, plus ~5 s for a
 quicktest world), read the field back. That is the tier-b cycle now. The whole
 reason hot-reload looked worth having was to save a load, and on the minimal list
 there is barely a load to save.
@@ -110,8 +110,8 @@ there is barely a load to save.
 **What this ruling does NOT change:**
 
 * ✅ **`jawa/get_defs` stands** — batch reflective def reads are unaffected and
-  remain the way to check what the running game actually holds. (Still scalar-only;
-  list/object fields come back as type names.)
+  remain the way to check what the running game actually holds. (Scalar-only by
+  default: list/object fields come back as type names unless you pass `deep=true`.)
 * ✅ **XML changes still never justify a *full-list* restart.** The answer moved
   from hot-reload to the minimal list, not to a 25-minute load.
 * ✅ **C#/Harmony/companion-DLL work is untouched** — that always needed a real

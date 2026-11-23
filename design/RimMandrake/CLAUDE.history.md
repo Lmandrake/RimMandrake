@@ -21,6 +21,12 @@ Moved 2026-11-23 from `design/RimMandrake/debug_process.md` §Test disturbances.
 
 - Owner, 2026-10-13 02:02Z: *"long runs are possible but risky: they require more time, more monitoring, and fewer assumptions to succeed. Avoid them when possible unless it's a clear win for time efficiency compared to an alternative."*
 
+## The owner's earlier two-way promotion test
+
+Moved 2026-11-23 from `infrastructure/STRUCTURE.md`. The three naming tiers (`design/NAMING_SCHEME_PLAN.md`) replaced it.
+
+- The owner: *"Am I likely to want this in a totally unrelated playthrough, or will I have to fundamentally remake it — not just reconfigure it?"* The old rule read: reconfigure → `RimMandrake/`; remake → `Jawa/`; when unsure, `Jawa/`.
+
 ## The owner's words the root CLAUDE.md quoted, by rule
 
 Moved 2026-11-19, when the root `CLAUDE.md` was drained to rule lines and pointers (owner, 2026-11-19: *"No

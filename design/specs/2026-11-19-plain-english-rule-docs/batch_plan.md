@@ -27,8 +27,9 @@ Item: `RIMMANDRAKE_REWRITE_RULE_DOCS_PLAIN_ENGLISH_LOSE_NOTHING`. Run 1, 2026-11
    Then the same reader reads each repair and each later edit against the old text. If the writer edits a line after
    that read, the reader reads that line too. The result file names each line that no reader read.
 7. **Write the result file.** The path is `design/specs/2026-11-19-plain-english-rule-docs/results/<BATCH NAME>.md`.
-   The file holds the scores before and after, and the hand count. The file lists each conflict. The file lists each
-   line that the batch could not determine.
+   The file holds the scores before and after, and the hand count. The file lists each line that the batch could not
+   determine. The file has one row for each conflict and each stale line: the two sides, the decision, the rule that
+   decided it, the evidence. "Listed, not decided" is not an outcome that a batch may report.
 8. **Land.** One `./publish` for the batch, with explicit paths.
 
 Each batch has its own result file. So no two batches edit one file.
@@ -45,7 +46,20 @@ Each batch has its own result file. So no two batches edit one file.
 - **Keep the slogan.** A heading or a bold lead that other files cite stays word for word. Add the plain sentence
   after the slogan.
 - **Never rewrite the owner's quoted words.** Text around a quote can change.
-- **Never change what a rule means.** When two files disagree, list the conflict in the result file. Do not pick.
+- **Never change what a rule means by a rewording.** A rule's meaning changes only through a conflict that you settle.
+- **Delete or correct a stale or false line in the batch.** Edit both places in one commit, and fix each inbound
+  reference (`git grep` the old words). Never edit the owner's quoted words; a replaced quote moves to the history file.
+- **Settle each conflict in the batch.** Stop at the first of these rules that decides the conflict:
+  1. The code or the live tool decides a statement about behaviour. Read the code. The file that disagrees is false.
+  2. A later ruling of the owner beats an earlier one. Take dates from `python3 src/RimMandrake/rimflow/owner_rulings.py
+     --grep <words>`, never from a summary.
+  3. Root `CLAUDE.md` and `GUIDING_PRINCIPLES.md` beat an older process file.
+  4. A thing that is gone (a retired seat, era or tool, a dropped item) cannot bind. Delete the line, or write what is
+     true now.
+  5. Send a conflict to the owner only when rules 1 to 4 leave it open and it turns on his own words (two rulings of his
+     with no later one, or his five acts). Write the exact question: both lines, dates, paths, and what each makes an
+     agent do. Otherwise take the obvious answer and record it.
+- **List only what rule 5 sends to the owner.** Put it in `conflicts_settled.md`, under "For the owner".
 - **Keep each code span, number, path, date and named id.** A rule can move to its home file. Then the old file keeps
   a pointer, and the check runs with the home file as `--also`.
 - **Do not grade a heading as a rule.** A heading is a label for the lines below it.

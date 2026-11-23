@@ -19,7 +19,7 @@ one tier of the ladder. The cheapest tier is first.
 ## L1 — Resolved-live (the workhorse; ~22 s per cycle for XML)
 
 1. Deploy the XML.
-2. **Restart on the 19-mod minimal list (22 s).**
+2. **Restart on the minimal list** (`modlist_swap.py --minimal`; 22 s on the 13-mod list of 2026-08-19).
 3. Read the resolved defs in batches with `jawa/get_defs`.
 
 - A script proves each live criterion. The item's `live-proof` line names that script

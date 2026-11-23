@@ -37,7 +37,7 @@ we have all the biomes in mods we will do the painting once and for all."*). A t
 - **Defs, labels, folders** — read from the BiomeDef XML under `src/` on 2026-11-01.
 - **Package** is the deployed packageId from the same dump. Every per-biome `RM_` mod is composed into
   `mandrake.rm.biomes` (34 BiomeDefs; `src/RimMandrake/Utils/biomes_compose.py`). Every `RUT_` def lives in
-  `mandrake.rut.patches` (27 BiomeDefs).
+  `mandrake.rut.patches` (27 BiomeDefs then, 2 since the twins were deleted).
 
 ## Table
 
@@ -85,9 +85,10 @@ we have all the biomes in mods we will do the painting once and for all."*). A t
 Counted from the table, 2026-11-01. The table then had a row for each twin. The twin rows left the table with commit
 `ee7c219b70` on 2026-11-06.
 - **PAINT: 27** — 26 `RM_` defs plus `RUT_Umbra`. Together they hold 21,872 tiles, every tile on the dev start.
-- **NO PAINT: 34** — 25 frozen `RUT_` twins (each names its `RM_` survivor) and 9 that never take a surface tile:
+- **NO PAINT: 9**, which never take a surface tile:
   `RUT_Jawa_BackgroundWater`, `RM_LanternDeeps`, `RM_ChillCrater` and the 6 `RM_Seabed*` floor biomes.
-- **Total: 61** owned BiomeDefs (34 in `mandrake.rm.biomes`, 27 in `mandrake.rut.patches`).
+- **Total: 36** owned BiomeDefs (34 in `mandrake.rm.biomes`, 2 in `mandrake.rut.patches`). Read from `src/` 2026-11-23.
+  The 61 of 2026-11-01 included the 25 deleted twins.
 
 ## What the repaint still owes (each its own item)
 
@@ -102,12 +103,11 @@ Counted from the table, 2026-11-01. The table then had a row for each twin. The 
 - **The twins are deleted** (`BIOME_TWINS_RETIRE_TWENTY_FIVE_FROZEN`, owner card 2026-11-06).
   `CANONICAL_ASHKARR_START_2026-09-12.rws` stays on disk as a record only. Nobody expects that save to load correctly
   any more.
-- **Donor biome mods on 0 tiles**: `DONOR_BIOME_MODS_RETIRE_ZERO_TILES_LEFT`.
 
 ## Roster hole-filling policy — owner, 2026-09-22
 
-`BIOME_SPECIFIC_FAUNA_LAW_1` (one animal, one biome) can withdraw a species from a roster. That leaves a hole in the
-roster. The other half of his law says that holes are filled with **new** creatures. He scoped when that happens:
+The one-animal-one-biome law (`BIOME_SPECIFIC_FAUNA_LAW_1`, dropped) once withdrew species from rosters and left holes.
+Evictions are stopped (`CLAUDE.md` §Biomes, rosters and seas). The other half of his law says that holes are filled with **new** creatures. He scoped when that happens:
 
 > *"We will fill rosters as per-biome work continues. Only fill the mostly finished biomes as
 > needed: deep desert, desert, rot, pyrelands, lantern deeps. Others we will work

@@ -36,10 +36,10 @@ Words used here:
 - **Line item**: one bar together with the one test that decides it. A line item has an id, the files it reads, and a stored verdict. [CARRIED: `design/RimMandrake/validation_map_and_rules.md`, "Words used throughout".]
 - **Blind judge**: a fresh agent that did not do the work and is not told what an earlier judge found.
 - **Offline**: without a running game. **In-game**: through a running RimWorld.
-- **The two games**: the RimWorld on Archmagi (his machine) and the RimWorld on SteveDesktop (the second machine).
+- **The games**: ArchBig and ArchSmall on Archmagi (his machine), Steve1 and Steve2 on SteveDesktop (the second machine). `CLAUDE.md` §There are several live games.
   - SteveDesktop runs the test queue: scripted game tests, unattended, nobody watching.
-  - **[HIS, by card 2026-11-14]** Either game may give the scripted verdict on an in-game bar. Dispatch takes whichever is free.
-  - **[HIS, by card 2026-11-14]** SteveDesktop's queue takes only tests that came through the offline stages. (Both: §4 Stage 6, "Which game runs what"; §8, decision 18).
+  - **[HIS, by card 2026-11-14]** Any game may give the scripted verdict on an in-game bar. Dispatch takes whichever is free.
+  - **[HIS, 2026-11-17]** SteveDesktop's queue takes any mod's token-free test, whatever its stage. (Both: §4 Stage 6, "Which game runs what"; §8, decision 18).
 - **Evidence-for-Ask**: take the obvious answer, and pause for him only with concrete evidence against it. His five acts still wait for him. The home section gives the full rule. [CARRIED: his ruling of 2026-11-15, `design/RimMandrake/standing_rulings.md` §Evidence-for-Ask.]
 - **RimFlow**: the ticket ledger. RimFlow stays. RimFlow is not the pipeline.
 
@@ -86,7 +86,7 @@ What these two messages mean in practice: §5, "The pipeline fixes its own defec
    - **[HIS, by card 2026-11-13]** Stages 4 and 5 run as one stage, tests first (§8, decision 1).
 3. **[HIS]** A judge that finds a fault at Stages 4 and 5 fixes it at once and shows it working. Then the judge hands the mod to a **new** blind judge. The cycles are counted on the mod.
    - **[HIS, 2026-11-13]** After three cycles the Conductor decides what to do. He confirms or changes the decision when he is next available (§8, decision 3).
-4. **[HIS]** Operations and Dispatch float above. Dispatch knows which mods are advancing. Dispatch gives them the two games and the offline builders as they need them.
+4. **[HIS]** Operations and Dispatch float above. Dispatch knows which mods are advancing. Dispatch gives them the games and the offline builders as they need them.
    - **[HIS, by card 2026-11-14]** Either game may give a bar's scripted verdict, whichever is free (§8, decision 18).
    - **[HIS, 2026-11-17]** SteveDesktop takes any mod's token-free tests whatever its stage (§8, 18c).
 5. **[CARRIED]** The target holds still: a mod is built towards a locked Design Version. A change that shifts the vision goes to the next version. (His ruling of 2026-11-13.)
@@ -193,7 +193,7 @@ Plain-text version of the same map:
 | Model tier | None. A list, read by a program. | PROPOSAL |
 | Inputs | Today: 42 "first touch" Designer items in RimFlow (`python3 src/RimMandrake/Utils/owner_queue.py`, measured 2026-11-13 3:03 PM PST). Other ideas sit inside tickets. Those ideas are not counted yet. | measured; "trapped in tickets" is HIS |
 | Outputs | One line per waiting mod: its name, one sentence, whether code already exists. | PROPOSAL |
-| Exit ("ready" means) | Intake is closed until one of the four reaches Stage 8. The rule for leaving intake after that is asked of him then. Before that, a mod leaves intake only on his words in the request (`advance --owner-said`): "If the current mod set isn't enough to keep the pipeline busy then pick the next most mature biome mod to add." (Contagion entered this way.) | HIS, by card 2026-11-14; HIS, 2026-11-15 ~05:40 PST |
+| Exit ("ready" means) | Intake is closed until one of the four reaches Stage 8. After that, mods enter by his order of 2026-11-15 with no ask (§8, decision 8). Before that, a mod leaves intake only on his words in the request (`advance --owner-said`): "If the current mod set isn't enough to keep the pipeline busy then pick the next most mature biome mod to add." (Contagion entered this way.) | HIS, by card 2026-11-14; HIS, 2026-11-15 ~05:40 PST |
 | Road back | A mod can be put back at intake at any time. Nothing is lost: its folder stays. | PROPOSAL |
 | Tracked on the mod | Date it arrived; date it was picked. | PROPOSAL |
 
@@ -271,7 +271,7 @@ One proposal inside Stage 1 is big enough to be an open question. The question i
 | Road back | None of its own. Faults found later arrive here as line items. | CARRIED (rule 2) |
 | Tracked on the mod | Tickets open and done in this stage; bars with a passing offline test, of total; tokens. | PROPOSAL |
 
-**[PROPOSAL]** For a mod that is already built (all five current mods), Stage 3 is not "build". Stage 3 is then "reconcile". Check each locked bar against what exists. Build only the missing tests and the missing pieces.
+**[PROPOSAL]** For a mod that is already built (the five mods of 2026-11-13: the four advancing mods and Graffiti), Stage 3 is not "build". Stage 3 is then "reconcile". Check each locked bar against what exists. Build only the missing tests and the missing pieces.
 
 **[HIS, 2026-11-17]** From a mod's first build, the builder's brief carries the offline model. The road-back fixer's brief carries it too. The offline model is:
 
@@ -320,7 +320,7 @@ The one source is `roles/fable_rescue.md` step 2. The ruling is `design/RimMandr
 | | | mark |
 |---|---|---|
 | Purpose | "In-game acceptance testing with setup maps, proper acceptance testing, and using the fastest methods available with dense, rich setups that test many items simultaneously + allowances to explore beyond the acceptance tests and plentiful screenshots to look for 'strange unexpected things.'" | HIS |
-| Who | A live-test agent driving one of the two games. Scripts give the verdict on each bar. The agent explores and looks. | HIS for the stage; "scripts decide" CARRIED from stage 4 of the earlier stage map (§7; not his by card) |
+| Who | A live-test agent driving one of the games. Scripts give the verdict on each bar. The agent explores and looks. | HIS for the stage; "scripts decide" CARRIED from stage 4 of the earlier stage map (§7; not his by card) |
 | Model tier | A live driver: see Agent_Policy.md, "Helpers in this repo". | CARRIED |
 | Inputs | The mod as deployed to the game; the in-game tests from Stage 3; a prepared map built by the mod's own proof script. | CARRIED (rule 5: dense, labelled savegame on matrix scenes, his words of 2026-11-12) |
 | Outputs | One verdict per in-game line item. Screenshots. A list of strange things seen that no bar covers. A labelled savegame. | HIS |
@@ -340,8 +340,8 @@ The fastest methods:
 | work | game | mark |
 |---|---|---|
 | The scripted verdict on each locked in-game bar | Either game: Dispatch takes whichever is free | HIS, by card 2026-11-14 (18a) |
-| Exploring beyond the bars; screenshots looking for strange things | Archmagi | PROPOSAL: an agent must look, and the looking tools run there |
-| The labelled savegame and his live walk (Stage 8) | Archmagi | CARRIED: he sits at that machine |
+| Exploring beyond the bars; screenshots looking for strange things | ArchBig or ArchSmall | PROPOSAL: an agent must look, and the looking tools run there |
+| The labelled savegame and his live walk (Stage 8) | ArchBig | CARRIED: he sits at that machine |
 | Re-running a passed version's bars when something it depends on changes | Either game, through the queue (§6, "After a version passes") | HIS, by card 2026-11-14 (18b): built only after one version has passed |
 
 **A verdict counts only on the version and list he walks.** This rule follows from 18a. A pass from a game that ran a different build proves nothing about the build that he walks.
@@ -426,8 +426,8 @@ Nothing changes in what Operations watches. **[PROPOSAL]** One thing is added to
 
 - Dispatch holds a short list of **advancing mods**. Everything else waits at intake or rests. **[HIS, by card 2026-11-14]** The list is the four (Explosive Knockback, FlowWorks, Gimme Some Slack, Pyrelands), and Dispatch adds no mod to it until one of them reaches Stage 8 (§8, decision 8). **[HIS, 2026-11-14 ~9 PM PST]** Graffiti joined the list by his word that night (it stands at the Designer, which Dispatch never launches).
 - For each advancing mod it asks one question: what does this mod's current stage need right now? A game, an offline builder, a blind judge, or him.
-- The two games are the narrow point. A mod at Stage 6 waits for a game; a mod at Stage 8 waits for him and for the game on his machine. Offline stages never wait for a game.
-- **[HIS, by card 2026-11-14]** (§8, decision 18) Dispatch sends a Stage 6 mod's scripted bar verdicts to whichever game is free. Stage 8 is Archmagi only [CARRIED: he sits there]. SteveDesktop's queue admits only tests that came through the offline stages (§4 Stage 6, "Which game runs what"), so Dispatch, not the queue's filler, decides what SteveDesktop runs.
+- The games are the narrow point. A mod at Stage 6 waits for a game; a mod at Stage 8 waits for him and for the game on his machine. Offline stages never wait for a game.
+- **[HIS, by card 2026-11-14]** (§8, decision 18) Dispatch sends a Stage 6 mod's scripted bar verdicts to whichever game is free. Stage 8 is ArchBig only [CARRIED: he sits there]. SteveDesktop's queue admits any mod's token-free test, whatever its stage ([HIS, 2026-11-17], 18c).
 - Inside a stage, the work is still tickets in RimFlow. The stage's worker picks among that mod's tickets. Nobody picks among all tickets of all mods.
 - **[HIS, 2026-11-14 ~9 PM PST]** "So can we wire up Operations/Dispatch such that they do advance on these offline builders? This was pretty inefficient and pointlessly it seems, if I'm reading correctly. As long as we don't have automated loops rejecting/cycling things, we can't get into too much trouble." (That evening all four advancing mods had sat at Stage 3 for 6 to 9 hours with no builder on them: every launch was a Conductor hand step.) So Dispatch launches offline builders by itself: `src/RimMandrake/rimflow/maturation_dispatch.py` on `rm-maturation-dispatch.timer`, every 60 seconds (page and launch decisions alike; a run that ended under 180 s ago is not judged yet), no model of its own. For each advancing mod at Stage 3 whose exit tests refuse bars as build work and that has no detached run live on it, it launches one capped builder (opus, USD 15, `maturation.py launch`). Guard rails, his condition: one live builder per mod and at most two on advancing mods at once; after a run ends the next starts only if the count of refused bars fell, otherwise (or past USD 60 spent at the stage) it stops on that mod with a "Needs Conductor" line and never tries the same refusals again; it never judges, rejects, sends a mod back or advances it, and launches nothing at any other stage but the blind challenge and in-game acceptance (the Designer stays his; the pre-human check onward stay hand steps). At the blind challenge it launches one capped judge per visit when the cycle is owed and nothing is live or recorded on it, never a second automatically; every ended cycle is a "Needs Conductor" line and the steward still confirms the exit (item RIMMANDRAKE_BUILD_BLIND_CHALLENGE_LAUNCHER_FOUR_MODS_PARKED, 2026-11-15). At in-game acceptance it launches one capped live driver per visit when the visit is owed, nothing is live on the mod, no in-game run is live on any mod (one live-game driver at a time) and `rimflow bridge idle` says the bridge is takeable; it ships off (`ingame_enabled` false in `maturation_dispatch.json`) until the Conductor has run the first visit by hand, and every ended visit is a "Needs Conductor" line (item RIMMANDRAKE_BUILD_IN_GAME_STAGE_LAUNCHER_PYRELANDS_ARRIVED_FIRST, 2026-11-15). A mod whose exit tests all pass gets "ready to advance" for the Conductor. Graffiti joined the advancing list by his word the same night.
 - Work that belongs to no mod (tools, infrastructure) stays ticket work as today. A tool ticket that blocks an advancing mod takes that mod's urgency. (Open question "Tickets that belong to no mod".)
@@ -636,7 +636,7 @@ Six questions blocked the pilot. He answered all six on the evening of 2026-11-1
 **9. How many mods advance at once?** Until one of the four reaches Stage 8, the four advance and none is added (decision 8). This asks the limit after that.
 
 - One, three or five.
-- The trade: the narrow points are the two games and his own time. More mods advancing means more waiting at stages 6 and 8, and more half-finished work.
+- The trade: the narrow points are the games and his own time. More mods advancing means more waiting at stages 6 and 8, and more half-finished work.
 - **Recommendation:** three.
 
 **10. The light path: what may a small change skip?**

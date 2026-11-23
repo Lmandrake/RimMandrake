@@ -55,7 +55,7 @@ and `guard`; the launcher owns `budget`. You propose only the oracle and the tie
   in this biome feeds a forager", "the Doublemaw outruns a colonist"). The mod's selftest owns a def's declared numbers.
   A judge's gap on one is advisory only (`bar_rule.py`). His words: `design/RimMandrake/standing_rulings.md` §A passing
   bar is an experience.
-- `oracle_proposed` and `tier_proposed`: your offer. The Setter binds the oracle and the tier. Live needs `tier_reason`:
+- `oracle_proposed` and `tier_proposed`: your offer. The Setter binds the oracle and the tier. Every tier but `offline` needs `tier_reason`:
   `concept_tree.py lint` asks for a `tier_reason` on every tier except `offline`. Skills
   `rimworld-debug-testing` and `live-debugging-proof-harness` say what a quicktest, a bridge read or a live proof can show.
 - One `walk` leaf per mod: reload a mid-way save, repeat the core action, and reorder the main actions.
