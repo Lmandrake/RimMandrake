@@ -28,8 +28,9 @@ a test of its name in `src/RimMandrake/Utils/selftest_disk_sense.py`.
 
 ## DOES NOT SURVIVE (not promised)
 
-- **a-slow-read.** The slowest read alone can still pass 15 s. The pool walk (`find` over every pool clone) took
-  17.3 s on a cold cache at load 23 on 2026-11-22, and 4.0 s warm. Then the family is blind for that beat.
+- **a-slow-read.** The slowest read alone can still pass 15 s on a loaded box. The first pass after the size record is
+  lost walks every pool clone (13.0 s at load 20 on 2026-11-22; later passes 2.6 to 2.8 s). Then the family is blind
+  for that beat.
 
 ## PROMISES (each one is owed a test of the same name)
 
@@ -46,6 +47,7 @@ a test of its name in `src/RimMandrake/Utils/selftest_disk_sense.py`.
   is byte-identical to origin's closed prose, since nothing is lost. A copy that differs stays, and counts as dirt by age.
 - **the-disk-reads-overlap.** `c_disk` runs the pool reading, the stranded-clone scan and the seat_dirt reading at the
   same time, and the seat_dirt reading reads its clones at the same time. The family's wall time is then the slowest
-  read, not the sum. In series the reads took 21 to 29 s at load 45 on 2026-11-22.
+  read, not the sum. In series the reads took 21 to 29 s at load 45 on 2026-11-22. The pool is read with
+  `cached_sizes=True` (the clone pool page's `the-sense-reading-walks-few-clones-a-pass`).
 
 Later lists beside this page: `polish.md`.

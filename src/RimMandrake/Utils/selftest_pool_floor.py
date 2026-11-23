@@ -112,6 +112,49 @@ def t_a_reading_under_the_floor_is_a_breach():
     check(r["breach"] == 0 and r["margin_gb"] == 231, f"a-reading-under-the-floor-is-a-breach: none at 451 GB -> {r['breach']}")
 
 
+def t_the_sense_reading_walks_few_clones_a_pass():
+    """pool_reading(cached_sizes=True), ops_watch's call: a clone with no size on record is walked, at most
+    SIZE_WALKS_PER_PASS known sizes are walked again (the oldest first), and no size older than SIZE_MAX_AGE_S is used.
+    The plain call (admission, the reaper) walks every clone, every time. The walk of 13 clones took 37.9 s in series
+    at load 29 on 2026-11-22, past the disk sense's 15 s kill."""
+    os.environ["RM_OBJSTORE_STATE"] = tempfile.mkdtemp(prefix="pool_sizes_")
+    pool_of(10, 5)
+    free_is(451)
+    walked = []
+
+    def count(c, _b=5 * GB):
+        walked.append(c.name)
+        return _b
+    sc.clone_bytes = count
+    k = getattr(sc, "SIZE_WALKS_PER_PASS", None)
+    try:
+        r1 = sc.pool_reading(risk=False, cached_sizes=True)
+    except TypeError as e:
+        check(False, f"the-sense-reading-walks-few-clones-a-pass: pool_reading takes no cached_sizes ({e})")
+        return
+    n1, walked[:] = len(walked), []
+    r2 = sc.pool_reading(risk=False, cached_sizes=True)
+    n2, first2, walked[:] = len(walked), list(walked), []
+    check(n1 == 10 and n2 == k and r2["gb"] == r1["gb"] == 50.0 and r2["count"] == 10,
+          f"the-sense-reading-walks-few-clones-a-pass: first pass walks all 10 ({n1}), the next {k} ({n2}), same bytes")
+    r3 = sc.pool_reading(risk=False, cached_sizes=True)
+    check(not set(walked) & set(first2) and len(walked) == k,
+          f"the-sense-reading-walks-few-clones-a-pass: the next pass walks the oldest, not the same ones ({walked})")
+    walked[:] = []
+    import time as _t
+    real_time = sc.time.time
+    sc.time.time = lambda: real_time() + sc.SIZE_MAX_AGE_S + 60
+    try:
+        sc.pool_reading(risk=False, cached_sizes=True)
+    finally:
+        sc.time.time = real_time
+    check(len(walked) == 10, f"the-sense-reading-walks-few-clones-a-pass: a size past its age is walked ({len(walked)} of 10)")
+    walked[:] = []
+    sc.pool_reading(risk=False)
+    check(len(walked) == 10, f"the-sense-reading-walks-few-clones-a-pass: the plain call walks every clone ({len(walked)})")
+    os.environ.pop("RM_OBJSTORE_STATE", None)
+
+
 def git(c, *a):
     return subprocess.run(["git", "-C", str(c), *a], capture_output=True, text=True, check=True).stdout.strip()
 
@@ -165,7 +208,8 @@ def main() -> int:
     for t in (t_a_pool_of_normal_clones_with_free_disk_is_admitted, t_a_near_full_disk_refuses_a_new_clone,
               t_the_clone_count_limit_still_refuses, t_the_floor_is_the_disk_low_line,
               t_an_unreadable_floor_refuses_by_name, t_a_reading_under_the_floor_is_a_breach,
-              t_a_reused_clone_sheds_what_the_last_run_left, t_pool_reuse_sheds_the_clone):
+              t_a_reused_clone_sheds_what_the_last_run_left, t_pool_reuse_sheds_the_clone,
+              t_the_sense_reading_walks_few_clones_a_pass):
         try:
             t()
         except Exception as e:  # noqa: BLE001  a test that raises is a red, named

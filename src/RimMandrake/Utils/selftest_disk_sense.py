@@ -227,9 +227,15 @@ def t_the_disk_reads_overlap():
             time.sleep(1.0)
             return v
         return f
-    scratch_clone.pool_reading = slow({"count": 0, "max_clones": 16, "gb": 0.0, "margin_gb": 300.0, "floor_gb": 210.0,
+    calls = []
+
+    def pool(*a, **kw):
+        calls.append(kw)
+        return slow_pool(*a, **kw)
+    slow_pool = slow({"count": 0, "max_clones": 16, "gb": 0.0, "margin_gb": 300.0, "floor_gb": 210.0,
                                        "root_free_gb": 500.0, "oldest_h": 0.0, "breach": 0, "stranded": [],
                                        "unpushed": []})
+    scratch_clone.pool_reading = pool
     scratch_clone.scratch_stranded = slow({"stranded": []})
     seat_dirt.clones = lambda *a, **kw: ["/x/a", "/x/b", "/x/c"]
     seat_dirt.reading = slow({"stale": 0, "fresh": 0, "landable": 0, "stale_paths": [], "tidy_late": 0})
@@ -243,6 +249,7 @@ def t_the_disk_reads_overlap():
           and d["disk.seat_dirt"]["v"] == 0, "the-disk-reads-overlap: the readings still read (%s, %s)"
           % (d["disk.pool_breach"], d["disk.seat_dirt"]))
     check(wall < 2.5, "the-disk-reads-overlap: five 1 s reads took %.1f s (in series: 5 s)" % wall)
+    check(calls == [{"cached_sizes": True}], "the-disk-reads-overlap: the pool is read with its recent sizes (%s)" % calls)
 
 
 def main():

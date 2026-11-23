@@ -15,6 +15,11 @@ in `src/RimMandrake/Utils/selftest_pool_floor.py`.
 - **The count line.** 16 clones (the owner's card of 2026-11-02, "8 workers, 16 clones / 70 GB"). It guards clones
   that multiply with nobody to watch them (owner, 2026-10-31: "They seem to propagate prolifically"). The disk line
   does not guard that danger, so the count line stays.
+- **The size age (`SIZE_MAX_AGE_S`, 1 h, and `SIZE_WALKS_PER_PASS`, 4).** Only ops_watch's disk sense uses them
+  (`pool_reading(cached_sizes=True)`). They guard a clone that grew since its last walk. Free space on `/` is read live
+  on every pass, so a stale size moves only the floor margin's "largest clone" term, never the free-space reading. The
+  walk of every clone took 37.9 s in series (13 clones, load 29, 2026-11-22), past the sense phase's 15 s kill
+  (`RIMMANDRAKE_UNBLIND_OPS_DISK_FAMILY_TWENTY_OVERRUNS_STRAIGHT`).
 - **Why the old 80 GB line went.** It was a fixed pool size. On 2026-11-22 it refused a launch at 83.55 GB with 433
   GB free on `/`. A pool size does not measure free disk, and it refused work while the disk was safe.
 
@@ -56,5 +61,8 @@ in `src/RimMandrake/Utils/selftest_pool_floor.py`.
 - **a-reused-clone-sheds-what-the-last-run-left.** `shed` on a clone removes every ignored and untracked file, every
   `.git/rm-treecheck-*` folder and every loose object that a pack holds. A tracked file and a commit stay.
 - **pool-reuse-sheds-the-clone.** `pool_reuse` calls `shed` on the clone it gives.
+- **the-sense-reading-walks-few-clones-a-pass.** `pool_reading(cached_sizes=True)` walks each clone with no size on
+  record, each size older than `SIZE_MAX_AGE_S`, and the `SIZE_WALKS_PER_PASS` oldest of the rest. It uses no size older
+  than `SIZE_MAX_AGE_S`. The count, the free space and the git readings stay live. Every other caller walks every clone.
 
 Later lists beside this page: `polish.md`.

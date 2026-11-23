@@ -706,17 +706,59 @@ def level_origin_ref(c: Path, refreshed: list) -> bool:
         return False
 
 
+# The sizes ops_watch's disk sense reads (pool_reading(cached_sizes=True)). Danger the age guards: a clone that grew since
+# its last walk. Free space on / is read live every pass, so a filling disk is never hidden; a stale size moves only the
+# floor margin's "largest clone" term. A walk of every clone took 37.9 s in series at load 29 on 2026-11-22, past the
+# sense phase's 15 s kill (RIMMANDRAKE_UNBLIND_OPS_DISK_FAMILY_TWENTY_OVERRUNS_STRAIGHT). The disk family runs about every
+# 12 min, so SIZE_WALKS_PER_PASS of 16 clones refreshes every size within SIZE_MAX_AGE_S.
+SIZE_MAX_AGE_S = 3600
+SIZE_WALKS_PER_PASS = 4
+
+
+def _sizes_path() -> Path:
+    return state_dir() / "pool_sizes.json"
+
+
+def _sizes_to_walk(clones: list, now: float) -> tuple[set, dict]:
+    """-> (names to walk this pass, {name: (bytes, epoch)} usable as is). A clone with no size, a size past
+    SIZE_MAX_AGE_S, or a size older than the clone's own directory (a clone made again under the same name) is walked;
+    then the SIZE_WALKS_PER_PASS oldest of the rest."""
+    try:
+        rec = json.loads(_sizes_path().read_text())
+        rec = rec if isinstance(rec, dict) else {}
+    except (OSError, ValueError):
+        rec = {}
+    walk, have = set(), {}
+    for c in clones:
+        r = rec.get(c.name)
+        try:
+            born = c.stat().st_ctime
+        except OSError:
+            born = now
+        ok = (isinstance(r, dict) and isinstance(r.get("bytes"), int) and isinstance(r.get("epoch"), (int, float))
+              and now - SIZE_MAX_AGE_S < r["epoch"] <= now + 60 and r["epoch"] >= born)
+        if ok:
+            have[c.name] = (r["bytes"], r["epoch"])
+        else:
+            walk.add(c.name)
+    for name in sorted(have, key=lambda n: have[n][1])[:SIZE_WALKS_PER_PASS]:
+        walk.add(name)
+    return walk, {n: v for n, v in have.items() if n not in walk}
+
+
 class PoolUnreadable(OSError):
     """The pool root exists and this process may not look (a walled unit). ops_watch turns it into its 9999 alarm."""
 
 
-def pool_reading(risk: bool = True) -> dict:
+def pool_reading(risk: bool = True, cached_sizes: bool = False) -> dict:
     """Live: count, bytes, oldest clone, and every idle clone with unpushed work. Written to pool.json for RimPulse.
     A clone someone is using (touched within the idle hour, a process's cwd, or named by a live item) can never be stranded,
     so its git reading is skipped and it is listed as busy: reading every clone's unpushed commits cost the ops_watch disk
     family ~1000 git spawns a pass and pushed the metronome's sense phase past its 15 s limit
     (DISK_COLLECTOR_SHRINK_THOUSAND_FORKS_A_BEAT). `risk=False` (count and bytes only: the reaper's sanity) reads no git
-    at all and writes no pool.json, as its unpushed and stranded lists are not a reading."""
+    at all and writes no pool.json, as its unpushed and stranded lists are not a reading. `cached_sizes=True` (ops_watch's
+    disk sense only) takes a clone's bytes from its last walk when that is under SIZE_MAX_AGE_S old and walks the rest
+    (_sizes_to_walk); the count, free space and git readings stay live. Every other caller walks every clone."""
     root, cmax = pool_root(), pool_cap()
     try:
         os.listdir(root)     # is_dir() is False on a denied parent too: a blind look is not an empty pool, and writes no reading
@@ -740,17 +782,28 @@ def pool_reading(risk: bool = True) -> dict:
         if stranded and level_origin_ref(c, refreshed):     # only a clone about to alarm is worth the fetch, and it is idle
             unp = clone_unpushed(c)
             stranded = bool(unp)
-        return {"name": c.name, "bytes": clone_bytes(c), "age_h": round((now - born) / 3600, 2),
+        b, at = have[c.name] if c.name in have else (clone_bytes(c), time.time())
+        return {"name": c.name, "bytes": b, "size_epoch": at, "age_h": round((now - born) / 3600, 2),
                 "unpushed": unp, "busy": busy, "stranded": stranded}
 
     clones = [c for c in (sorted(root.glob("*")) if root.is_dir() else []) if (c / ".git").exists()]
+    if cached_sizes:
+        walk, have = _sizes_to_walk(clones, now)
+    else:
+        walk, have = {c.name for c in clones}, {}
     rows = _per_clone(one, clones)
+    if cached_sizes:
+        try:
+            _sizes_path().write_text(json.dumps({r["name"]: {"bytes": r["bytes"], "epoch": r["size_epoch"]} for r in rows}))
+        except OSError:
+            pass
     tot = sum(r["bytes"] for r in rows)
     held = [r["name"] for r in rows if r["stranded"]]
     d = {"ts": now_iso(), "epoch": now, "root": str(root), "count": len(rows), "max_clones": cmax,
          "bytes": tot, "gb": round(tot / 1e9, 2),
          "oldest_h": max([r["age_h"] for r in rows], default=0.0), "unpushed": [r["name"] for r in rows if r["unpushed"]],
-         "busy": [r["name"] for r in rows if r["busy"]], "stranded": held, "clones": rows}
+         "busy": [r["name"] for r in rows if r["busy"]], "stranded": held, "clones": rows,
+         "sizes_oldest_s": round(max([now - r["size_epoch"] for r in rows], default=0.0), 1)}
     d.update(floor_reading(max((r["bytes"] for r in rows), default=0)))
     # under the floor, or a floor nobody can read: both refuse every new clone, so both are a breach
     d["breach"] = int(len(rows) > cmax) + int(d["margin_gb"] is None or d["margin_gb"] < 0) + len(held)

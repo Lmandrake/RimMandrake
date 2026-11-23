@@ -1758,7 +1758,8 @@ def c_disk(now, rules, ctx):
             scratch_reap.mirror_tips()     # its cache fills by appending: fill it before scratch_stranded's threads read it
         except Exception:  # noqa: BLE001 - scratch_stranded raises the same cause in its own future, read below
             pass
-        f_pool, f_scr = ex.submit(scratch_clone.pool_reading), ex.submit(scratch_clone.scratch_stranded)
+        f_pool = ex.submit(scratch_clone.pool_reading, cached_sizes=True)     # sizes up to SIZE_MAX_AGE_S old
+        f_scr = ex.submit(scratch_clone.scratch_stranded)
     except Exception as e:  # noqa: BLE001 - an import that fails is the pool alarm below, never silence
         f_pool = f_scr = e
     f_seat = ex.submit(seat_dirt_reading)
