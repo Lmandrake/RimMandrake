@@ -27,13 +27,25 @@ namespace RimMandrake.ExplosiveKnockback
             }
             if (!control)
             {
-                if (!Pit(O(s, PitFallRimDx, -1), 1, 3) || !Pit(O(s, -PitFallRimDx, -1), 1, 3))
+                if (!Pit(O(s, PitFallRimDx, -1), 1, 3) || !Pit(O(s, -PitFallRimDx, -1), 1, 3)
+                    || !Pit(O(s, -1, PitFallRimDx), 3, 1) || !Pit(O(s, -1, -PitFallRimDx), 3, 1))
                 {
                     return "could not dig the pits";
                 }
                 foreach (IntVec3 c in new CellRect(s.o.x - PitFallRimDx, s.o.z - 1, 1, 3))
                 {
                     Build("RM_PitCover_WovenScrap", c);
+                }
+                foreach (int z in new[] { PitFallRimDx, -PitFallRimDx })
+                {
+                    foreach (IntVec3 c in new CellRect(s.o.x - 1, s.o.z + z, 3, 1))
+                    {
+                        Build("RM_PitCover_WovenScrap", c);
+                    }
+                }
+                if (RM_KnockbackCompat.CoverAt(Map, O(s, 0, PitFallRimDx)) == null || RM_KnockbackCompat.CoverAt(Map, O(s, 0, -PitFallRimDx)) == null)
+                {
+                    return "a cover over the north or south pit is not intact after building it";
                 }
                 if (RM_KnockbackCompat.CoverAt(Map, O(s, -PitFallRimDx, 0)) == null)
                 {
@@ -44,6 +56,11 @@ namespace RimMandrake.ExplosiveKnockback
             Item(s, "s", "Steel", 10, O(s, PitFallStartDx, 0));
             Colonist(s, "pc", O(s, -PitFallStartDx, 0));
             Item(s, "sc", "Steel", 10, O(s, -PitFallStartDx, 0));
+            // the covered lane above throws a colonist and a stack at ONE covered cell, so the first landing breaks the cover for
+            // both and hides a fault in the other (visit 4: PF_CALLER_PAWN_LANDING_KEEPS_COVER read PASS). Each alone, on its own
+            // cover: the colonist north, the stack south.
+            Colonist(s, "pn", O(s, 0, PitFallStartDx));
+            Item(s, "ss", "Steel", 10, O(s, 0, -PitFallStartDx));
             // the blast reaches the throwers (distance 1) and not the cover (distance 3 > 2.9), so only a landing can break it
             Blast(s.o, 2.9f);
             s.verdict = sc => PitFallVerdict(sc, control);
@@ -53,6 +70,31 @@ namespace RimMandrake.ExplosiveKnockback
         private static string PitFallVerdict(Scene sc, bool control)
         {
             var lanes = new[] { ("p", "s", 1), ("pc", "sc", -1) };
+            string solo = "";
+            bool soloOk = true;
+            foreach ((string k, int dz, bool isPawn) in new[] { ("pn", 1, true), ("ss", -1, false) })
+            {
+                Thing t = sc.things[k];
+                var fly = ForThing(sc, isPawn ? "launch" : "item_move", t);
+                if (fly.Count != 1 || System.Convert.ToInt32(fly[0]["planned"]) <= PitFallRimDx - PitFallStartDx)
+                {
+                    return "INVALID " + sc.name + " " + k + " launches/moves=" + fly.Count + " planned=" + (fly.Count > 0 ? fly[0]["planned"] : "none");
+                }
+                IntVec3 cell = O(sc, 0, dz * PitFallRimDx);
+                var ld = ForThing(sc, isPawn ? "land" : "item_land", t);
+                IntVec3 at = ld.Count == 1 ? (IntVec3)ld[0][isPawn ? "at" : "to"] : IntVec3.Invalid;
+                int falls = ForThing(sc, "descent", t).Count;
+                var brk = Recs(sc, "cover_break").Where(r => r.TryGetValue("thingId", out object id)
+                    && System.Convert.ToInt32(id) == t.thingIDNumber && r["broken"] is bool bb && bb).ToList();
+                bool open = RM_KnockbackCompat.CoverAt(Map, cell) == null;
+                bool inPit = t.Spawned && RM_KnockbackCompat.IsSuperdeep(Map, t.Position) && RM_KnockbackCompat.CoverAt(Map, t.Position) == null;
+                bool good = control
+                    ? at == (IntVec3)fly[0]["to"] && dz * (at.z - sc.o.z) > PitFallRimDx && falls == 0 && !inPit
+                    : at == cell && inPit && open && brk.Count == 1 && (!isPawn || falls == 1);
+                soloOk &= good;
+                solo += " | solo " + k + ": landed=" + at.x + "," + at.z + " descents=" + falls + " inPit=" + inPit + " coverGone=" + open
+                    + " breaksByOwnLanding=" + brk.Count + (good ? "" : " (NOT OK)");
+            }
             var parts = new List<string>();
             bool ok = true;
             foreach ((string pk, string sk, int dir) in lanes)
@@ -113,7 +155,7 @@ namespace RimMandrake.ExplosiveKnockback
                 ok &= laneOk;
                 parts.Add(line);
             }
-            return Result(sc, ok, string.Join(" | ", parts));
+            return Result(sc, ok && soloOk, string.Join(" | ", parts) + solo);
         }
     }
 }

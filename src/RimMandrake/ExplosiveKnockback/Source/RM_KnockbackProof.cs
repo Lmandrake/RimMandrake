@@ -1965,17 +1965,44 @@ namespace RimMandrake.ExplosiveKnockback
                     Colonist(s, "q", O(s, 1, 5));
                     Blast(s.o, 2.9f);
                     Blast(O(s, 0, 5), 2.9f);
+                    // the same stop when the standing pawn stands on an intact pit cover (42225e0686; visit 4: the planted
+                    // PF_CALLER_PAWN_ON_COVER_IGNORED read PASS, no lane had a pawn on a cover)
+                    if (RM_KnockbackCompat.FlowWorks)
+                    {
+                        if (!Pit(O(s, 3, -5), 1, 1))
+                        {
+                            return "could not dig the covered lane's pit";
+                        }
+                        Build("RM_PitCover_ReinforcedFrame", O(s, 3, -5));
+                        Colonist(s, "p2", O(s, 1, -5));
+                        Colonist(s, "w2", O(s, 3, -5), drafted: true);
+                        if (RM_KnockbackCompat.CoverAt(Map, O(s, 3, -5)) == null)
+                        {
+                            return "the covered lane's cover is not intact after building it";
+                        }
+                        Blast(O(s, 0, -5), 2.9f);
+                    }
                     s.verdict = sc =>
                     {
                         string m = Moved(sc, "p", out Thing t, out int cells);
                         Moved(sc, "q", out Thing _, out int qc);
+                        bool onCover = true;
+                        string cm = "covered lane not staged (no FlowWorks)";
+                        if (sc.things.ContainsKey("p2"))
+                        {
+                            cm = Moved(sc, "p2", out Thing p2, out int c2);
+                            var cb = ForThing(sc, "launch", p2).Concat(ForThing(sc, "blocked", p2)).ToList();
+                            onCover = cb.Count == 1 && (string)cb[0]["stop"] == "Pawn" && Convert.ToSingle(cb[0]["impact"]) > 0f
+                                && p2.Spawned && p2.Position == O(sc, 2, -5) && RM_KnockbackCompat.CoverAt(Map, O(sc, 3, -5)) != null;
+                            cm = "covered lane " + cm + (cb.Count > 0 ? " [" + Rec(cb[0]) + "]" : " no record");
+                        }
                         var b = ForThing(sc, "launch", t).Concat(ForThing(sc, "blocked", t)).ToList();
                         bool pawnStop = b.Count == 1 && (string)b[0]["stop"] == "Pawn" && Convert.ToSingle(b[0]["impact"]) > 0f;
                         if (qc != 3)
                         {
                             return "INVALID " + sc.name + " control threw " + qc + " cells, not 3";
                         }
-                        return Result(sc, t.Spawned && t.Position == O(sc, 2, 0) && pawnStop, m + (b.Count > 0 ? " [" + Rec(b[0]) + "]" : " no record"));
+                        return Result(sc, t.Spawned && t.Position == O(sc, 2, 0) && pawnStop && onCover, m + (b.Count > 0 ? " [" + Rec(b[0]) + "]" : " no record") + " | " + cm);
                     };
                     return null;
 

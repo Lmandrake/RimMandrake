@@ -64,6 +64,7 @@ def main():
     ap.add_argument("--kind", default="live_minimal")
     ap.add_argument("--biome", default="AridShrubland")
     ap.add_argument("--suffix", default="")
+    ap.add_argument("--rows", default="rows.jsonl", help="planted runs write another file: never the visit rows")
     ap.add_argument("--sha", required=True, help="source sha the deployed DLL was built from")
     ap.add_argument("--timeout", type=int, default=500)
     ap.add_argument("--no-sweep", action="store_true", help="leave non-colonists on the map (default: destroy them first)")
@@ -109,7 +110,7 @@ def main():
                               "dll_md5": md5, "modlist": a.env, **ident,
                "command": cmd, "evidence": ev.replace("\\", "/"),
                "wall_s": round(time.time() - t0, 1), "at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S PST")}
-        with open(os.path.join(VISIT, "rows.jsonl"), "a", encoding="utf-8") as f:
+        with open(os.path.join(VISIT, a.rows), "a", encoding="utf-8") as f:
             f.write(json.dumps(row) + "\n")
         print("%-24s %-10s rc=%s %.0fs site=%s" % (tid, v, rc, row["wall_s"], row["site_checked"]), flush=True)
 
