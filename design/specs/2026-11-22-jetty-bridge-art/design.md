@@ -31,9 +31,8 @@ cell) with a vanilla colonist at the same scale, and again at default zoom (40 p
 copies are in `previews/` beside this page. The generator is
 `src/RimMandrake/FlowWorks/art_source/JettyBridgeRedesign/` (`sheets.py OUTDIR` rebuilds every sheet in about a minute).
 
-The mockups are drawn in Python, not generated. Generated art was not possible: the shared Codex sign-in was still
-revoked at 2:56 PM PST (`gpt_consult.py` returned `VERDICT=ALLOWANCE exit=21`, "refresh token was revoked"). The
-generated options that are still owed, with their prompts, are in `owed_generation_prompts.md`.
+These sheets are procedural mockups drawn in Python (the Codex sign-in was revoked when they were made). Generated art
+for two options per kind, built on this geometry, is on its own sheets: `generated.md` beside this page.
 
 ## 1. Today's draw, and why a jetty reads as two squares and as wood [measured]
 
@@ -137,8 +136,8 @@ not only in colour.
 ## 6. Build order
 
 1. He picks one option per kind on these sheets.
-2. The art for his picks (generated when the Codex sign-in is back, using the saved prompts; otherwise hand-built from
-   these procedural pieces), judged by a second agent against `design/RimMandrake/art_judge_brief.md`.
+2. The art for his picks. Two generated options per kind already exist (`generated.md`); a pick outside them is generated
+   with the same tools (`art_source/JettyBridgeRedesign/gen_prompts.py`, `gen_tiles.py`).
 3. Code change 1 (jetty strip) and its piece selftest. This alone fixes the seam.
 4. Code changes 2 and 3 (posts and cables), jetties first, then bridges.
 5. The review map's new north/south row (below) is staged on a free game; he walks it.
@@ -177,4 +176,4 @@ fire station, and chemfuel beside rather than under the deck. The row has not be
   (above).
 - The north/south stage row ran only against the offline fake; the real `ProofJetty` and `ProofFillWithFluid` replies
   on north/south lines are unread.
-- No second agent has judged the options yet.
+- The procedural options were not judged. The generated options were judged by GPT (`generated.md`).

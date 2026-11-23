@@ -493,6 +493,18 @@ def draw_post(sc, d, base, h, w, look, kind, spec):
             d.line([x0, yy, x1, yy - w * 0.25], fill=lk["accent"] if k % 2 == 0 else (25, 25, 25), width=max(2, int(w * 0.22)))
 
 
+def draw_beam(sc, draw, t0, t1, pw, look, spec):
+    lk = LOOKS[look]
+    draw.line([t0, t1], fill=spec.get("post_col") or lk["dark"], width=int(pw * 0.8))
+    draw.line([(t0[0], t0[1] - pw * 0.3), (t1[0], t1[1] - pw * 0.3)], fill=lk["light"], width=max(1, int(pw * 0.15)))
+
+
+def draw_leg(sc, draw, f, at, pw, look, spec):
+    lk = LOOKS[look]
+    draw.line([f, at], fill=spec.get("post_col") or lk["dark"], width=int(pw * 0.7))
+    draw.line([(f[0] - pw * 0.2, f[1]), (at[0] - pw * 0.2, at[1])], fill=lk["light"], width=max(1, int(pw * 0.15)))
+
+
 def draw_cable(sc, d, p0, h0, p1, h1, w, look, spec, style=None):
     lk = LOOKS[look]
     style = style or spec.get("cable_style", "wire")
@@ -537,7 +549,7 @@ def structure(sc, look, spec, seed, anchors, deck_cells, d, n, ends, human_at=No
     P = sc.P
     lk = LOOKS[look]
     dx, dy = DIRS[d]
-    deck = orient(deck_image(n, look, spec, seed, ends, P), d)
+    deck = orient(HOOKS["deck"](n, look, spec, seed, ends, P), d)
     bx, by = sc.px(*deck_cells)
     # the deck's own drop shadow goes UNDER the deck (on the pit and ledge), never over it
     under = Image.new("L", sc.img.size, 0)
@@ -629,9 +641,9 @@ def structure(sc, look, spec, seed, anchors, deck_cells, d, n, ends, human_at=No
                     for o in (-0.35, 0.35):
                         oq = (q[0] - ax * o * cw, q[1] - ay * o * cw)
                         ot = (tp[0] - ax * o * cw, tp[1] - ay * o * cw)
-                        overs.append(("cable", (ot, h, oq, 0.12), 0.75))
+                        overs.append(("cable", (ot, h, oq, spec.get("cable_end_h", 0.12)), 0.75))
                 else:
-                    overs.append(("cable", (tp, h, q, 0.12), 1.0))
+                    overs.append(("cable", (tp, h, q, spec.get("cable_end_h", 0.12)), 1.0))
     # pawn for scale (cables draw above pawns: the design's altitude rule)
     if human_at is not None:
         hum, m, off = HUMAN(sc.P)
@@ -656,23 +668,21 @@ def structure(sc, look, spec, seed, anchors, deck_cells, d, n, ends, human_at=No
     for kind, a, b in overs:
         if kind == "posts":
             for f in sorted(a, key=lambda f: f[1]):
-                draw_post(sc, draw, f, H, pw, look, spec.get("post_kind", "steel"), spec)
+                HOOKS["post"](sc, draw, f, H, pw, look, spec.get("post_kind", "steel"), spec)
             if posts == "portal" and len(a) == 2:      # the crossbeam joining the two post heads
                 t0, t1 = sc.scr(a[0], H), sc.scr(a[1], H)
-                draw.line([t0, t1], fill=spec.get("post_col") or lk["dark"], width=int(pw * 0.8))
-                draw.line([(t0[0], t0[1] - pw * 0.3), (t1[0], t1[1] - pw * 0.3)], fill=lk["light"], width=max(1, int(pw * 0.15)))
+                HOOKS["beam"](sc, draw, t0, t1, pw, look, spec)
         if kind == "aframe":
             feet, apex = a, b
             for f in feet:
                 at = sc.scr(apex, H)
-                draw.line([f, at], fill=spec.get("post_col") or lk["dark"], width=int(pw * 0.7))
-                draw.line([(f[0] - pw * 0.2, f[1]), (at[0] - pw * 0.2, at[1])], fill=lk["light"], width=max(1, int(pw * 0.15)))
+                HOOKS["leg"](sc, draw, f, at, pw, look, spec)
             at = sc.scr(apex, H)
             draw.ellipse([at[0] - pw * 0.5, at[1] - pw * 0.5, at[0] + pw * 0.5, at[1] + pw * 0.5], fill=lk["light"])
     for kind, a, b in overs:
         if kind == "cable":
             p, h, q, g = a
-            draw_cable(sc, draw, p, h, q, g, cw * b, look, spec)
+            HOOKS["cable"](sc, draw, p, h, q, g, cw * b, look, spec)
     if spec.get("cable_style") == "rope" or look == "Scrapper":
         for tl in tops:          # lashing wraps where the cables meet the post tops
             for (tp, h, s) in tl:
@@ -680,6 +690,9 @@ def structure(sc, look, spec, seed, anchors, deck_cells, d, n, ends, human_at=No
                 draw.ellipse([t[0] - cw, t[1] - cw, t[0] + cw, t[1] + cw], fill=(150, 120, 80))
     return sc
 
+
+# the draw functions structure() calls; gen_render.py swaps in the generated pieces
+HOOKS = dict(deck=deck_image, post=draw_post, cable=draw_cable, beam=draw_beam, leg=draw_leg)
 
 _HUM = {}
 

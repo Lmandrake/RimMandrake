@@ -1,0 +1,3 @@
+**FAIL.** Industrial and Modern could be confused at default zoom: both have essentially the same suspension silhouette, cable arrangement, narrow grey deck, and railing pattern. Modern’s lighter steel and yellow edge stripes distinguish the finishes, but don’t make the looks unmistakably different.
+
+Scrapper’s rusty, patched construction and Futuristic’s magenta accents read more distinctly. Ignoring the placeholder anchors, Futuristic also relies heavily on accent colour rather than visibly sleeker construction.

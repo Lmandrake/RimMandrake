@@ -1,0 +1,86 @@
+{
+ "steel_jetty_B": {
+  "angle": 0.0,
+  "deck_px": 189,
+  "strip_cells": 6.17,
+  "mid_from": 776
+ },
+ "steel_jetty_C": {
+  "angle": 0.003,
+  "deck_px": 154,
+  "strip_cells": 4.81,
+  "mid_from": 256
+ },
+ "heavy_jetty_A": {
+  "angle": 0.001,
+  "deck_px": 220,
+  "strip_cells": 6.39,
+  "mid_from": 568
+ },
+ "heavy_jetty_B": {
+  "angle": 0.0,
+  "deck_px": 215,
+  "strip_cells": 6.73,
+  "mid_from": 688
+ },
+ "bridge_Scrapper_A": {
+  "angle": -0.0,
+  "deck_px": 200,
+  "strip_cells": 6.78,
+  "mid_from": 256
+ },
+ "bridge_Scrapper_C": {
+  "angle": 0.024,
+  "deck_px": 200,
+  "strip_cells": 6.98,
+  "mid_from": 1088
+ },
+ "bridge_Industrial_A": {
+  "angle": 0.0,
+  "deck_px": 200,
+  "strip_cells": 5.71,
+  "mid_from": 932
+ },
+ "bridge_Industrial_C": {
+  "angle": -0.017,
+  "deck_px": 205,
+  "strip_cells": 7.26,
+  "mid_from": 256
+ },
+ "bridge_Modern_A": {
+  "angle": -0.002,
+  "deck_px": 195,
+  "strip_cells": 6.2,
+  "mid_from": 576
+ },
+ "bridge_Modern_B": {
+  "angle": -0.008,
+  "deck_px": 205,
+  "strip_cells": 7.22,
+  "mid_from": 256
+ },
+ "bridge_Futuristic_A": {
+  "angle": 0.001,
+  "deck_px": 200,
+  "strip_cells": 7.71,
+  "mid_from": 1204
+ },
+ "bridge_Futuristic_B": {
+  "angle": -0.0,
+  "deck_px": 200,
+  "strip_cells": 10.14,
+  "mid_from": 1212
+ },
+ "heavy_bridge_A": {
+  "angle": 0.0,
+  "deck_px": 220,
+  "strip_cells": 7.33,
+  "mid_from": 1360
+ },
+ "heavy_bridge_B": {
+  "angle": -0.0,
+  "deck_px": 215,
+  "strip_cells": 6.85,
+  "mid_from": 484
+ }
+}
