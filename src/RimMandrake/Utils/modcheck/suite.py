@@ -854,6 +854,8 @@ class TestContext(object):
                                       fileName="%s_%d" % (name, int(time.time())),
                                       suppressMessage=True)
             path = (r or {}).get("path")
+            if rect and not path and "does not fit" in str((r or {}).get("message") or ""):
+                path = self._fit_rect_shot(rect, padding, name)
         except Exception:
             path = None
         if not path:
@@ -875,6 +877,37 @@ class TestContext(object):
         if self._current is not None:
             self._current.screenshots.append(path)
         return path
+
+    def _fit_rect_shot(self, rect, padding, name):
+        """A rect the cell-rect tool refused as too big for the screen at the current zoom, retaken through play_zoom at
+        the px per cell where its width fits one screen (a taller rect is shot in bands and stitched). None when that
+        fails too; the caller then falls back as before.
+        RIMMANDRAKE_FIT_SUITE_WIDE_RECT_SHOTS_NOT_A_DESKTOP_GRAB (Pyrelands visit 6, 2026-11-22, ArchSmall): every sky
+        and whole-map frame was refused at root 24 (one screen 94x50 cells) and replaced by an OS desktop capture, a
+        picture of another window. selftest_suite_wide_rect_shot.py holds this."""
+        import math
+        import play_zoom
+        if not hasattr(self, "_zoom"):
+            self._zoom = play_zoom.Calibration()
+        cal = self._zoom
+        rx, rz, rw, rh = rect
+        p = int(padding or 0)
+        if cal.k is None:   # learn the window from a small rect that fits at any zoom
+            probe = play_zoom._call(self.session, (rx, rz, min(rw, 8), min(rh, 8)), None,
+                                    "%s_fitprobe_%d" % (name, int(time.time() * 1000)))
+            if not cal.learn(probe):
+                return None
+        if not (cal.k and cal.wide):
+            return None
+        ppc = cal.k * cal.wide / (rw + 2 * p + 2 * play_zoom.MARGIN_CELLS + 2)   # the widest px per cell that fits
+        ppc = math.floor(ppc * 0.95 * 100) / 100.0
+        _Shot.n += 1
+        try:
+            return play_zoom.shoot(self.session, cal, rect, padding, ppc,
+                                   "%s_%d_%d" % (name, int(time.time() * 1000), _Shot.n), ExpectationFailed)
+        except ExpectationFailed as ex:
+            self._record("fit rect shot %s: %s" % (rect, ex), None)
+            return None
 
     def capture_frames(self, n, every_ticks, name=None, rect=None, padding=1):
         """Capture an ORDERED sequence of `n` screenshots, `every_ticks` real
