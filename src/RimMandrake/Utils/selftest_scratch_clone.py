@@ -620,7 +620,7 @@ def main() -> int:
         # SCRATCH_STRANDED_FIX_SHARDS_CRY_WOLF cause 1: a helper's shard whose every line main holds, judged against the MIRROR
         # (each clone's own origin/main is left at plant time, before the lines landed: the stale ref of a --shared clone)
         led = "infrastructure/state/ledger/events/BENCH.jsonl"
-        for n in ("shardlanded", "shardnew", "shardgone", "mainsame", "maindiff"):
+        for n in ("shardlanded", "shardnew", "shardgone", "mainsame", "maindiff", "ledgertwin", "ledgernew", "ledgermixed"):
             plant(n)
         (work / led).parent.mkdir(parents=True, exist_ok=True)
         (work / led).write_text('{"a":1}\n{"b":2}\n{"c":3}\n')
@@ -637,18 +637,38 @@ def main() -> int:
         (scr / "shardgone" / "infrastructure/state/code_review/BENCH.jsonl").write_text('{"main":"has no such file"}\n')
         for n, text in (("mainsame", "print('landed')\n"), ("maindiff", "print('mine')\n")):
             (scr / n / "landed.py").write_text(text)
+        # RIMMANDRAKE_EXCUSE_STRANDED_LEDGER_COMMIT_MAIN_HOLDS_ITS_LINES: a helper's COMMITTED ledger close whose line main landed
+        # under another hash (its own ./publish re-made the commit on a newer main, so neither print nor patch-id matches).
+        # Seen 2026-11-23: fix-launcher-publish-nothing-to-publish-20261122-170808 read stranded and the incident reached his rung.
+        for n, text, extra in (("ledgertwin", '{"a":1}\n{"c":3}\n', None), ("ledgernew", '{"a":1}\n{"never":"landed"}\n', None),
+                               ("ledgermixed", '{"a":1}\n', "mixed.txt")):
+            (scr / n / led).parent.mkdir(parents=True, exist_ok=True)
+            (scr / n / led).write_text(text)
+            paths = [led]
+            if extra:
+                (scr / n / extra).write_text("code beside the ledger line\n")
+                paths.append(extra)
+            sh("git", "-C", str(scr / n), "add", *paths)
+            # its own second: a print (author+committer time) main shares would excuse it before the ledger rule is asked
+            subprocess.run(["git", "-C", str(scr / n), "commit", "-q", "-m", f"ledger: {n} close"], check=True,
+                           env={**os.environ, "GIT_AUTHOR_DATE": "1700002000 +0000", "GIT_COMMITTER_DATE": "1700002000 +0000"})
         check(sr.disposable("infrastructure/state/art/sheets/flyer_gate_selftest.snapshot.json"), "selftest_flyer_gate's snapshot is disposable")
         check(not sc.noise_on_mirror(scr / "maindiff", "landed.py", sr.mirror_tips()[0]), "a non-noise path main lacks is never excused")
         for n in ("pushed", "unpushed", "dirty", "built", "held", "rewritten", "shardlanded", "shardnew", "shardgone",
-                  "rebased", "authortwin", "spacetwin", "reverted", "mainsame", "maindiff"):
+                  "rebased", "authortwin", "spacetwin", "reverted", "mainsame", "maindiff", "ledgertwin", "ledgernew",
+                  "ledgermixed"):
             idle(scr / n)
         ss = sc.scratch_stranded()
         rows = {Path(r["path"]).name: r for r in ss["rows"]}
         names = {Path(p).name for p in ss["stranded"]}
         check("mainsame" not in rows, f"a file main holds byte for byte is not work: {rows.get('mainsame')}")
         check(rows.get("maindiff", {}).get("holds") == ["1 dirty file(s)"], f"a file main holds otherwise is: {rows.get('maindiff')}")
-        check(names == {"unpushed", "dirty", "held", "shardnew", "shardgone", "authortwin", "spacetwin", "reverted", "maindiff"},
+        check(names == {"unpushed", "dirty", "held", "shardnew", "shardgone", "authortwin", "spacetwin", "reverted", "maindiff",
+                        "ledgernew", "ledgermixed"},
               f"exactly the unlanded idle clones are stranded: {sorted(names)}")
+        check("ledgertwin" not in rows, f"a committed ledger shard whose every line main holds is not work: {rows.get('ledgertwin')}")
+        for n, why in (("ledgernew", "a committed ledger line main lacks"), ("ledgermixed", "a ledger commit that also carries code")):
+            check("1 commit(s) on no remote" in rows.get(n, {}).get("holds", []), f"{why} is held: {rows.get(n)}")
         check("rebased" not in rows, f"a pre-sync backup whose rebased twin main holds is not work: {rows.get('rebased')}")
         check("1 commit(s) on no remote" in rows.get("authortwin", {}).get("holds", []),
               f"a same-subject commit with another patch is held: {rows.get('authortwin')}")

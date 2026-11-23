@@ -907,6 +907,30 @@ def rebased_on_main(c: Path, sha: str, subject: str) -> bool:
     return bool(mine) and any(patch_id(sr.origin_mirrors()[0], h) == mine for h in twins)
 
 
+def ledger_commit_on_mirror(c: Path, sha: str, tip: str) -> bool:
+    """RIMMANDRAKE_EXCUSE_STRANDED_LEDGER_COMMIT_MAIN_HOLDS_ITS_LINES: a single-parent commit that touches only POOL_NOISE
+    .jsonl shards, each of whose lines at that commit the mirror's main (tip) already holds. A helper's ledger close that its
+    ./publish re-made on a newer main lands under another hash and another patch (the append's context moved), so neither the
+    print nor rebased_on_main sees it (2026-11-23: a false strand took a disk incident to his rung). A deletion, any other
+    path, an unreadable blob, or any doubt is work."""
+    import scratch_reap as sr
+    try:
+        if len(sr.git(c, "rev-list", "--parents", "-n1", sha).stdout.split()) != 2:
+            return False
+        r = sr.git(c, "diff-tree", "--no-commit-id", "--name-only", "-r", "-z", sha)
+        files = [f for f in r.stdout.split("\0") if f]
+        if r.returncode or not files or not all(f.startswith(POOL_NOISE) and f.endswith(".jsonl") for f in files):
+            return False
+        for f in files:
+            mine, theirs = sr.git(c, "cat-file", "blob", f"{sha}:{f}"), sr.git(c, "cat-file", "blob", f"{tip}:{f}")
+            if mine.returncode or theirs.returncode or not holds_content(
+                    f, mine.stdout.encode("utf-8", "surrogateescape"), theirs.stdout.encode("utf-8", "surrogateescape")):
+                return False
+        return True
+    except (OSError, subprocess.SubprocessError):
+        return False
+
+
 def clone_unlanded(c: Path) -> tuple[list[str], float]:
     """(what this clone alone holds, mtime of its newest dirty file). Branches, HEAD and stash; a tag is an archive, not work.
     Fails closed: what git cannot read reports itself unreadable."""
@@ -924,7 +948,8 @@ def clone_unlanded(c: Path) -> tuple[list[str], float]:
         if d.returncode:
             return ["unreadable: the commits the mirror lacks"], 0.0
         prints = main_prints()
-        n = sum(at + " " + ct not in prints and not rebased_on_main(c, h, subject) for at, ct, h, subject in split_log(d.stdout))
+        n = sum(at + " " + ct not in prints and not rebased_on_main(c, h, subject) and not ledger_commit_on_mirror(c, h, tips[0])
+                for at, ct, h, subject in split_log(d.stdout))
         if n:
             out.append(f"{n} commit(s) on no remote")
     st = sr.git(c, "status", "--porcelain=v1", "-z", "--untracked-files=normal")
