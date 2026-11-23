@@ -98,6 +98,7 @@ FAMILIES = {                        # the 7 launch families of the re-measure (0
     "stop_resume": "stop_resume.py sweep unit",
     "left_open_continue": "left_open_continue.py run unit (<run>-continue): a run that ended with work left",
     "testq": "testq/steward.py wake unit",
+    "ops_held_filer": "ops_watch.start_held_filer (rm-ops-held-filer): files the alarms a sense pass held, outside the beat",
     "probe": "selftest probes (rm-probe-*)",
 }
 STAGES = ("intake", "designer", "preflight", "offline_build", "blind_challenge", "in_game", "pre_human", "his_walk",

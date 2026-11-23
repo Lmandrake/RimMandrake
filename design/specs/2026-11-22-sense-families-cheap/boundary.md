@@ -29,6 +29,12 @@ written Sun 2026-11-22, 8:40 PM PST. Each promise has a test of its name in
   2026-11-22: of 1497 rollouts on both sides, none was written more than 1 day after its folder's date.
 - **`TPS_RECENT_SLACK_S` (600 s).** A segment last written before the verdict window, less this slack, holds no row of
   the window. The slack guards a clock step between Windows and WSL.
+- **Why even a cheap family was killed (measured live 2026-11-22, the kill stamp).** 2 of 2 kills at 8:40 and 8:42 PM
+  PST were in the stage `alarms`: a light pass filed what the alarm pass had deferred (two reopens, deferred 24 and 12
+  times), through `rimflow live`, `raise` and a publish. That did not fit the beat, the kill came mid-filing, and the
+  next light pass began it again. Before the stamp, maturation and pager (0.05 s collectors) were killed alone the same way.
+- **`HELD_FILER_MAX_S` (600 s, the detached filer's `RuntimeMaxSec`).** A hang guard. Each rimflow call in
+  `real_filer` is bounded at 120 s, and a real held filing takes about 10 to 40 s.
 - **The blind bound.** A family is blind when its newest series record is older than `compose_max_age_s` (the same
   bound past which its carried points read UNMEASURED). It guards the round robin's worst healthy round, so a family
   that is merely waiting for its turn never alarms.
@@ -67,6 +73,9 @@ written Sun 2026-11-22, 8:40 PM PST. Each promise has a test of its name in
   `PROGRESS_RESTAT` old ones; a rewrite in place under an old name is still seen once the cursor reaches it.
 - **codex-skips-day-folders-past-the-lookback.** `readings(newer_than=…)` stats no rollout in a day folder older than
   the lookback by more than `CODEX_LATE_WRITE_DAYS`, and reads every rollout in a newer folder.
+- **a-light-pass-files-nothing-inside-the-beat.** A compose pass that does not measure the alarm family files no alarm
+  itself. When alarms are held, it starts `ops_watch.py file-held` as its own user unit (outside the beat's cgroup), one
+  at a time; a filer that cannot start is said in the flags. `file-held` files the held alarms with no beat deadline.
 - **the-ledger-and-the-stamps-are-read-once.** `World.doing_claims` reads and replays the ledger once for a whole
   `standing()`, and `role_use.epoch` parses each stamp once, with the same answers as before.
 

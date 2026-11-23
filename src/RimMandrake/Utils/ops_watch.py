@@ -4358,6 +4358,83 @@ def settle_filing(state, todo, res, filer, now, log, said_causes, book=None):
             log.append({"ts": iso(now), "event": "step_failed", "aid": a["aid"], "error": str(e)})
 
 
+def held_todo(state):
+    """The PENDING alarms the alarm pass deferred (deferred_at), oldest try first, as filer todo entries."""
+    todo = []
+    for aid, cur in sorted(state.items(), key=lambda kv: str((kv[1] or {}).get("last_try") or "")
+                           if isinstance(kv[1], dict) else ""):
+        if not (isinstance(cur, dict) and cur.get("state") == "PENDING" and cur.get("deferred_at")
+                and isinstance(cur.get("name"), str) and cur.get("name") and isinstance(cur.get("title"), str)):
+            continue
+        todo.append({"aid": aid, "name": cur["name"], "title": cur["title"], "conductor_log": cur.get("conductor_log"),
+                     "key": aid.split(":", 1)[-1], "reopen": bool(cur.get("reopen")),
+                     "cause": cur.get("cause")})
+    return todo
+
+
+HELD_FILER_UNIT = "rm-ops-held-filer"
+HELD_FILER_LOCK = "held_filer.lock"
+# A hang guard on the detached filer's unit: each rimflow call in real_filer is bounded at 120 s and a real held
+# filing (a spawn or reopen, a raise, a publish) takes about 10-40 s, so 600 s is far above a real run.
+HELD_FILER_MAX_S = 600
+
+
+def spawn_held_filer(argv):
+    """Start `argv` as its own transient user unit (outside the beat's cgroup, which systemd kills when the beat ends).
+    -> "started" | the refusal (one unit name at a time: a filer already running refuses the second)."""
+    rf = str(HERE.parent / "rimflow")
+    if rf not in sys.path:
+        sys.path.insert(0, rf)
+    import control as C     # the one admission point: a pipe switch, a duplicate and the end receipt are its
+    try:
+        r = C.launch_unit(["--user", "--collect", "--quiet", "-p", "RuntimeMaxSec=%d" % HELD_FILER_MAX_S,
+                           "-p", "WorkingDirectory=%s" % HERE, "--"] + list(argv),
+                          {"family": "ops_held_filer", "unit": HELD_FILER_UNIT, "reuse_name": True},
+                          capture_output=True, text=True, timeout=30)
+    except (OSError, subprocess.SubprocessError) as e:
+        return "not started: %s: %s" % (type(e).__name__, e)
+    if r.returncode == 0 and not getattr(r, "refused", False):
+        return "started"
+    why = ((getattr(r, "stderr", None) or "") + (getattr(r, "stdout", None) or "")).strip()
+    if "DUPLICATE" in why or "already loaded" in why or "already exists" in why:
+        return "running"        # the unit is still up: a filer runs (it takes its lock a moment after it starts)
+    return "not started: %s" % why[:200]
+
+
+def start_held_filer(spawn=None):
+    """A light compose pass's filing, moved out of the beat (RIMMANDRAKE_WATCH_OPS_SENSE_OVERRUN_MOST_FAMILIES_BLIND):
+    inside the 15 s sense limit a held reopen (rimflow live, raise, publish) did not fit, the kill came mid-filing, and
+    the next light pass began it again (2 of 2 kill stamps on 2026-11-22 20:40-20:42 PST were in this stage). Now the
+    pass only starts `ops_watch.py file-held`, which files without the beat's deadline under its own lock.
+    -> "nothing held" | "running" | "started" | "not started: <why>"."""
+    import fcntl
+    state = _obj(read_json(ops_dir() / "alarms.json"))
+    if not held_todo(state):
+        return "nothing held"
+    with open(ops_dir() / HELD_FILER_LOCK, "a") as lk:
+        try:
+            fcntl.flock(lk, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            return "running"
+        fcntl.flock(lk, fcntl.LOCK_UN)
+    return (spawn or spawn_held_filer)([sys.executable, str(Path(__file__).resolve()), "file-held"])
+
+
+def file_held_detached(now=None):
+    """`ops_watch.py file-held`: file what the alarm pass deferred, with no beat deadline, one filer at a time."""
+    import fcntl
+    for k in [k for k in os.environ if k.startswith("METRONOME_")]:
+        os.environ.pop(k)       # no beat bounds this run: real_filer files without deferring
+    with open(ops_dir() / HELD_FILER_LOCK, "a") as lk:
+        try:
+            fcntl.flock(lk, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            return "skipped: another held filer runs"
+        before = len(held_todo(_obj(read_json(ops_dir() / "alarms.json"))))
+        st = _obj(file_held(real_filer, load_rules(), now or time.time()))
+        return "held filings: %d before, %d still held" % (before, len(held_todo(st)))
+
+
 @_book_locked
 def file_held(filer, rules, now):
     """A light beat's filing (ALARM_FILING_FIX_NO_ROOM_AT_INN). Alarms are composed on the beat that measures
@@ -4371,15 +4448,7 @@ def file_held(filer, rules, now):
     state = read_json(p) if p.exists() else {}
     if not isinstance(state, dict):
         return {}
-    todo = []
-    for aid, cur in sorted(state.items(), key=lambda kv: str((kv[1] or {}).get("last_try") or "")
-                           if isinstance(kv[1], dict) else ""):
-        if not (isinstance(cur, dict) and cur.get("state") == "PENDING" and cur.get("deferred_at")
-                and isinstance(cur.get("name"), str) and cur.get("name") and isinstance(cur.get("title"), str)):
-            continue
-        todo.append({"aid": aid, "name": cur["name"], "title": cur["title"], "conductor_log": cur.get("conductor_log"),
-                     "key": aid.split(":", 1)[-1], "reopen": bool(cur.get("reopen")),
-                     "cause": cur.get("cause")})
+    todo = held_todo(state)
     if not todo:
         return state
     cb = cause_mods()[0]
@@ -5022,7 +5091,7 @@ def blind_point(blind, max_age):
 
 
 @_locked
-def run(now=None, rules=None, filer=None, families=None, compose=False, still_owner=None):
+def run(now=None, rules=None, filer=None, families=None, compose=False, still_owner=None, held_detach=False):
     """One pass. `families` limits it to those collectors. With `compose` (the metronome's sense phase, a family or two
     a beat, round robin) every other family's last series record is carried in (carry_family), so the status, health
     verdict, digest and flags are a whole pass's; the alarms run, over that composite, only on the pass that measures
@@ -5177,7 +5246,14 @@ def run(now=None, rules=None, filer=None, families=None, compose=False, still_ow
     try:
         if compose and COMPOSE_ALARM_FAMILY not in families:
             # this beat's pass is not the alarm pass: it composes nothing, but files what the alarm pass had to defer
-            if filer:
+            if filer and held_detach:      # outside the beat (start_held_filer): a filing here was killed mid-way
+                fence("starting the held filer")
+                why = start_held_filer()
+                if why.startswith("not started"):
+                    flags.append({"rule": "held_filer", "key": "alarms.held_filer", "value": None, "window": "now",
+                                 "detail": "the deferred alarms were not filed this pass: %s" % why})
+                alarms = _obj(read_json(ops_dir() / "alarms.json"))
+            elif filer:
                 fence("filing held alarms")
                 def hfiler(todo, conf, _f=filer):
                     fence("filing")
@@ -5301,6 +5377,7 @@ def main(argv=None):
     d = sub.add_parser("digest")
     d.add_argument("--blind", action="store_true", help="print digest_blind.md (the token-blind roles' digest)")
     sub.add_parser("backfill", help="seed an empty production series from rm-streams-collect' history")
+    sub.add_parser("file-held", help="file the alarms the alarm pass deferred, outside the beat (start_held_filer)")
     sub.add_parser("rerun-reds", help="rerun the night's new red groups at origin/main (out of the metronome's beat)")
     ln = sub.add_parser("lint", help="refuse a ranges block with a metric short of owner, class, age, ack or why")
     ln.add_argument("--rules", help="the rules file, default the shipped one")
@@ -5331,7 +5408,7 @@ def main(argv=None):
             signal.signal(signal.SIGTERM, on_sense_term)
         try:
             dg = run(filer=real_filer if a.file_alarms else None, families=a.family, compose=a.compose,
-                     still_owner=still_owner)
+                     still_owner=still_owner, held_detach=a.compose)
         except Busy as e:
             print("skipped: %s" % e)
             return 0
@@ -5347,6 +5424,9 @@ def main(argv=None):
         problems = ranges_problems(json.loads(Path(a.rules or rules_path()).read_text(encoding="utf-8")))
         print("\n".join("REFUSED: " + p for p in problems) or "ranges clean")
         return 1 if problems else 0
+    if a.cmd == "file-held":
+        print(file_held_detached())
+        return 0
     if a.cmd == "rerun-reds":
         try:
             print(rerun_reds())

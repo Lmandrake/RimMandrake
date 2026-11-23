@@ -316,6 +316,52 @@ def t_the_ledger_and_the_stamps_are_read_once():
           (reads, a1, a2))
 
 
+def t_a_light_pass_files_nothing_inside_the_beat():
+    import fcntl
+    os.environ["RM_OPS_WATCH_DIR"] = str(_TMP / "ops_held")
+    od = _TMP / "ops_held"
+    OW.COLLECTORS = {f: stub(f) for f in OW.ORDER}
+    now = time.time()
+    OW.run(now=now - 120, rules=rules)
+    held = {"MATURATION_PAUSED:maturation.paused": {"state": "PENDING", "name": "OPS_SELFTEST_HELD_ITEM_ABCD",
+                                                     "title": "held a", "deferred_at": OW.iso(now - 100), "deferred_n": 9,
+                                                     "reopen": True, "tries": 0}}
+    (od / "alarms.json").write_text(json.dumps(held))
+    filer_calls, spawned = [], []
+    _spawn = OW.spawn_held_filer
+    OW.spawn_held_filer = lambda argv: (spawned.append(argv), "started")[1]
+    os.environ["METRONOME_DEADLINE"] = "%.3f" % (time.time() + 15)
+    OW.run(now=now, rules=rules, families=["companion"], compose=True, held_detach=True,
+           filer=lambda todo, conf: (filer_calls.append(todo), {a["name"]: None for a in todo})[1])
+    check("a-light-pass-files-nothing-inside-the-beat: the light pass starts the detached filer and files nothing",
+          filer_calls == [] and len(spawned) == 1 and spawned[0][-1] == "file-held", (filer_calls, spawned))
+    with open(od / OW.HELD_FILER_LOCK, "a") as lk:
+        fcntl.flock(lk, fcntl.LOCK_EX)
+        r = OW.start_held_filer()
+    check("a-light-pass-files-nothing-inside-the-beat: a second filer is not started while one runs",
+          r == "running" and len(spawned) == 1, (r, spawned))
+    OW.spawn_held_filer = lambda argv: "not started: Unit rm-ops-held-filer.service already exists"
+    OW.run(now=now + 60, rules=rules, families=["companion"], compose=True, held_detach=True,
+           filer=lambda todo, conf: (filer_calls.append(todo), {})[1])
+    fl = json.loads((od / "flags.json").read_text())["flags"]
+    check("a-light-pass-files-nothing-inside-the-beat: a filer that cannot start is said in the flags",
+          any(f.get("key") == "alarms.held_filer" for f in fl) and filer_calls == [], [f.get("key") for f in fl])
+    OW.spawn_held_filer = _spawn
+    seen = []
+    _rf = OW.real_filer
+    OW.real_filer = lambda todo, conf: (seen.append((OW.beat_deadline(), [a["name"] for a in todo])),
+                                        dict({a["name"]: None for a in todo}, _publish="published"))[1]
+    out = OW.file_held_detached(now=now + 120)
+    OW.real_filer = _rf
+    st = json.loads((od / "alarms.json").read_text())["MATURATION_PAUSED:maturation.paused"]
+    check("a-light-pass-files-nothing-inside-the-beat: file-held files the held alarms with no beat deadline",
+          seen == [(None, ["OPS_SELFTEST_HELD_ITEM_ABCD"])] and st.get("state") == "OPEN" and "0 still held" in out,
+          (seen, st, out))
+    check("a-light-pass-files-nothing-inside-the-beat: nothing held starts nothing", OW.start_held_filer() == "nothing held")
+    os.environ.pop("METRONOME_DEADLINE", None)
+    os.environ["RM_OPS_WATCH_DIR"] = str(_TMP / "ops")
+
+
 def main():
     for t in (t_a_family_left_unread_raises_the_blind_alarm,
               t_a_blind_familys_points_say_why,
@@ -325,7 +371,8 @@ def main():
               t_the_week_of_commits_is_read_once,
               t_few_old_progress_names_are_restatted,
               t_codex_skips_day_folders_past_the_lookback,
-              t_the_ledger_and_the_stamps_are_read_once):
+              t_the_ledger_and_the_stamps_are_read_once,
+              t_a_light_pass_files_nothing_inside_the_beat):
         try:
             t()
         except (Exception, SystemExit) as e:  # noqa: BLE001  a test that raises is a red, named
