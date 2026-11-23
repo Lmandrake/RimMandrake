@@ -95,7 +95,7 @@ Next version (marked target v2; it never moves a 0.1.0 bar):
 - `860f017c50`: `selftest_explosiveknockback_journal_jolt.py` reads the throw rules where ffc3937ee7 moved them
   (`RM_KnockbackPlan.cs`), and checks that the map component hands the plan `Rules()`. Red on the base: 6 faults, 11 of 16
   planted breaks caught. Green: 0 faults, 21 of 21.
-- The fuzz mutation list (`Utils/mutate_explosiveknockback_fuzz.py`) drops the two per-tick budget mutants, whose target
+- `feec252970`: the fuzz mutation list (`Utils/mutate_explosiveknockback_fuzz.py`) drops the two per-tick budget mutants, whose target
   was removed by design in 0808c55303 (all-fly, no throw caps). It retargets the two pit mutants at the current pit rule
   and adds a mutant for the covered-pit rule that the K-08 flip established. Red on the base: 59 caught, 4 missed
   (MUTATION TARGET NOT FOUND), exit 1. Green: 62 caught, 0 missed, exit 0.
@@ -118,3 +118,9 @@ Nothing in this run changed the mod's shipped source, so no DLL was rebuilt. No 
   reads as a load failure instead of "no empty-game adapter". The certificate's real refusals are stale runs (red_seen
   and ran_on_this_build), which `maturation_dispatch.py` reruns. Not fixed here: it changes no verdict, and pipeline
   repair lanes are live on that file today.
+
+## End state (measured with model.replay(), 2026-11-22 about 4:30 PM PST)
+
+Of the 34 items about the mod: 17 done, 7 dropped, 6 superseded into the two new tickets, 4 open (STOP_GAS_SHOVE and the
+three next-version tickets, now target v2). With the two new tickets, 3 current-version tickets and 3 next-version
+tickets are open.
