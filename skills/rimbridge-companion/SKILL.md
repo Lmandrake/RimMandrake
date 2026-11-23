@@ -62,8 +62,8 @@ src/RimMandrake/bridgetools/launch_and_wait.sh &&
 python.exe 'D:\Luke\dev\RimMandrake\src\RimMandrake\bridgetools\prove_<thing>.py'
 ```
 
-* ⛔ **Keep the block whole.** `launch_and_wait.sh` takes the game from `RM_GAME_INSTANCE`, with ArchBig as the default. It
-  kills that game with no lock check. So a lost `eval`, or a launch after a refused `stop`, kills a game that is not yours.
+* ⛔ **Keep the block whole.** `launch_and_wait.sh` takes the game from `RM_GAME_INSTANCE`, with ArchBig as the default.
+  The launcher kills that game with no lock check. So a lost `eval`, or a launch after a refused `stop`, kills a game that is not yours.
 * **Never stop a game by image name** (`taskkill.exe` with `/F /IM RimWorldWin64.exe`). Both games on Archmagi have that
   image name, so the command kills the other game too. `game_instance.py stop` kills by process id.
 * **Quote each `D:\` path in bash.** Bash removes the backslashes of an unquoted path, and then `python.exe` cannot find
@@ -154,7 +154,7 @@ same gate.
 ## 3. The eleven design rules, each learned by getting it wrong
 
 1. 🔴 **Report refusals; never `catch {}`.** An early zone builder of this companion swallowed `AddCell` refusals. A 6×6
-   stockpile silently took 11 of 36 cells while the tool reported success. That is *the exact bug class this whole bridge exists to
+   stockpile silently took 11 of 36 cells while the tool reported success. The silent loss is *the exact bug class this whole bridge exists to
    expose.* Return `cellsRequested`, `refusedCount` and a `refused[]` list with a reason per item.
 2. 🔴 **Read back the RAW field, not the convenient getter.** `SkillRecord.Level` adds aptitudes. `Tile.HillinessLabel` is
    cached forever. `SurfaceTile.Rivers` is biome-filtered. When the raw field and the getter differ, report both.

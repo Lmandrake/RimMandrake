@@ -73,7 +73,8 @@ One fresh Opus reader (rm-judge, model opus) read both texts without the writer'
 | `extending-detail.md` held only ArchBig's deploy path | ArchSmall's path added |
 
 A second fresh reader read the repaired parts once and found 2 items: `$GAME` is empty in a later Bash call, and the §6 row
-said "ArchBig's deploy path" after both were in the file. Both are repaired. No reader read those last two repairs.
+said "ArchBig's deploy path" after both were in the file. Both are repaired. No reader read those last two repairs. After the first landing, the prose check
+of `./publish` named 2 pronouns; both are repaired in the same run. No reader read those two either.
 
 ## Conflicts and stale lines: settled
 
