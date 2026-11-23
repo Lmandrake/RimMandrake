@@ -1843,10 +1843,10 @@ def ingame_main():
         chk(lambda: M.INGAME_DEFAULT[:50] in text[0], "no stage-6 decision written: the standing default")
         chk(lambda: all(w not in text[0] for w in ("supersedes the FAIL", "Do not fix the mod in the sitting"))
             and all(w in " ".join(text[0].split()) for w in (
-                "fix it in the sitting", "re-run EVERY check on the fixed build", "one fresh reader", "road back",
+                "fix it in the sitting", "re-run the checks that the fix touches", "one fresh reader", "road back",
                 "a new visit reruns", "the row stays FAIL")),
-            "brief and exit reader agree on a FAIL: a mod fault the driver can fix is fixed in the sitting, every check "
-            "re-run on the fixed build, one fresh reader of the fix (owner, 2026-11-20); one it cannot fix stays FAIL, "
+            "brief and exit reader agree on a FAIL: a mod fault the driver can fix is fixed in the sitting, the checks it "
+            "touches re-run on the fixed build, one fresh reader of the fix (owner, 2026-11-20); one it cannot fix stays FAIL, "
             "goes down its road back, a new visit reruns it")
         t2 = json.loads(json.dumps(tt))
         t2["tests"][live6[0]]["testq"] = {"chain": "selftest"}

@@ -2116,6 +2116,26 @@ WRONG_CHECK_RULE = "\n".join([
     RED_SEEN_RULE,
     "- A wrong check or scene never sends the mod back a stage. Only a mod wrong line not fixed in the sitting, or a bar "
     "left undecided, does."])
+# The three kinds of live test and the seven outcomes of a run (owner, 2026-11-23; standing_rulings.md §Live tests have
+# three kinds). Carried by the in-game driver's brief. The exit reader does not read the outcomes yet:
+# RIMMANDRAKE_TEACH_EXIT_READER_KINDS_KNOWS_THREE_WORDS_ONLY.
+LIVE_KINDS_RULE = "\n".join([
+    "Full text: `design/RimMandrake/standing_rulings.md` §Live tests have three kinds. How to write each row: "
+    "`skills/live-debugging-proof-harness/SKILL.md` §The scene contract.",
+    "- A scene with no tag is kind A: one valid run decides PASS or FAIL. Never repeat an unchanged run to get a PASS.",
+    "- Kind B (stochastic) and kind C (an intermittent hunt) carry their evidence on the scene. Kind B passes on one "
+    "SUCCESS, with no MOD FAILURE and no UNRESOLVED run on the same claim and build. A result that is random by design "
+    "passes on its written X of Y. All budgeted runs done with no SUCCESS: the verdict is INCONCLUSIVE. A hunt is never "
+    "part of the exit.",
+    "- Write `outcome` on every row: SUCCESS, MOD FAILURE, RANDOM MISS, ENVIRONMENT FAULT, APPARATUS FAULT, UNRESOLVED or "
+    "COULD NOT LOOK. Only SUCCESS speaks for the mod. No other outcome needs a later pass to cancel it.",
+    "- ENVIRONMENT FAULT only when the record shows that something outside the tested behaviour spoiled the opportunity. "
+    "If the mod could have spoiled it: UNRESOLVED. A forbidden effect is a MOD FAILURE in any run. An UNRESOLVED run "
+    "holds the scene's pass until someone classes it.",
+    "- A serious fault (one sighting), or a fault seen again, opens a hunt. A hunt never opens silently: a note "
+    "`HUNT OPENED:` on your item and a line in the Conductor log (the skill section has both commands).",
+    "- When a run names a thing that spoiled it, try to remove that thing. Lean towards building the control.",
+    "- No exit asks for every scene in one visit, or for one scene several times in a row."])
 # What the Gimme Some Slack and Pyrelands rescues taught (2026-11-16; owner: "let's make these changes to the
 # builder/fixers so they act better from now on too"): green on the suite's examples was taken for green everywhere,
 # builders tuned between bars that want opposite things, and a rescue ended with open cases as a footnote. Carried by
@@ -4500,9 +4520,7 @@ def read_ingame_exit(root, mod, n, tt=None):
         why.append("bar %s is undecided: its in-game check(s) %s are not counted (%s) and no other in-game check of it "
                    "counts: repair one in the sitting, seen FAIL on a plant and PASS on the real build, and re-run it" % (
                        b, ", ".join(undecided[b]), "; ".join(lines_[t]["why"] for t in undecided[b])))
-    # RIMMANDRAKE_BIND_STAGE_EVIDENCE_TO_ONE_BUILD (the part that needs no ruling): one visit judges ONE build, so every
-    # check's last row names the same commit (a short hash agrees with a long one it starts); rows before a mod fix made
-    # in the sitting are on the old build and count for nothing, so they are not read here
+    # RIMMANDRAKE_BIND_STAGE_EVIDENCE_TO_ONE_BUILD: a short hash agrees with a long one it starts
     # rows made on several builds (a check rerun after a change, beside rows carried from before it) are judged each from
     # its own commit by the build match below (owner, 2026-11-21); the build is then the mod's source now
     shas = sorted({str(last[t].get("mod_sha")) for t, _ in checks if t in last and lines_[t]["count"] != "needless"
@@ -5294,14 +5312,15 @@ def ingame_brief_text(root, mod, cap_usd=None, seat="BENCH"):
           "for the desktop, the bridge's capture for the map), looked at, not only taken. Every strange thing no bar "
           "covers is a row of `strange.jsonl`: explained (what it is and why it is fine) or filed (a rimflow item, its "
           "id in the row). Screenshots go in `%s/screenshots/` only if under 1 MB each; else name their paths." % vdir,
+          "", "## A live test declares its kind", "", LIVE_KINDS_RULE,
           "", "## A FAIL is diagnosed and classed in the sitting", "",
           "A FAIL or UNMEASURED is not a verdict to carry home bare: diagnose it by experiment while the game is up "
           "(change one thing, watch the row), and class it.", "", WRONG_CHECK_RULE, FREE_GAME_RULE, "",
           "What each class does here (`read_ingame_exit` reads these row fields):",
           "- **Mod wrong, and you can fix it** (`class: \"MOD\"` on the failed row): fix it in the sitting. Write the "
           "before/after test first and see it red on the parent, fix the mod, see it green, commit, redeploy, and re-run "
-          "EVERY check on the fixed build (one visit judges one build: the last rows must all name it; the rows before "
-          "the fix count for nothing). Write the re-run row of this check with `mod_fix`: `{\"commit\": <sha>, \"unit\": "
+          "the checks that the fix touches on the fixed build (`build_match.py check` names them; every other row still "
+          "counts). Write the re-run row of this check with `mod_fix`: `{\"commit\": <sha>, \"unit\": "
           "<your unit>, \"red\": {\"cmd\": ..., \"rc\": <non-zero>, \"on\": <parent>}, \"green\": {\"cmd\": ..., "
           "\"rc\": 0, \"on\": <sha>}}`. Then one fresh reader, a run that did not make the fix, reads only that fix, "
           "once, and writes `%s/%s` (`{\"fix\": <sha>, \"reader\": <its unit>, \"verdict\": \"sound\"|\"unsound\", "

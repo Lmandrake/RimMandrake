@@ -150,6 +150,100 @@ when it is not PASS**. A green harness or site row becomes a site note.
 
 More traps for this section: [references/traps.md](references/traps.md) § Row semantics: PASS, FAIL, UNMEASURED.
 
+## The scene contract: kinds, outcomes, hunts
+
+The rule and the owner's words: `design/RimMandrake/standing_rulings.md` §Live tests have three kinds. A scene is one
+staged live test. A run is one play of a scene.
+
+**Before its first run, a scene states six things:**
+
+- **the claim**: one sentence about what the mod does (example: "an ordered rescue carries this pawn out of the pit");
+- **the entry point**: where the scene steps in, and which decisions the scene leaves to the mod;
+- **a valid opportunity**: the state that must hold for the run to test the claim;
+- **success**: game state that a program reads (who is where, who holds what), never only a message that the mod wrote;
+- **forbidden effects**: what must not happen (a pawn lost or doubled, an exception);
+- **the end**: when the program stops looking.
+
+A program decides each run from the contract. An agent reads only a run that the program cannot decide. Check the valid
+opportunity at the deciding moment (example: the carrier stands inside the blast when the blast fires).
+
+**The kind says how the scene is judged.** A scene with no tag is kind A.
+
+| kind | when | verdict |
+|---|---|---|
+| A, deterministic | the scene makes a valid opportunity on demand, and the result is not random | one valid run decides PASS or FAIL; never "4 of 5" |
+| B, stochastic | after a sincere attempt at control, the opportunity is still uncertain | one SUCCESS passes, with no MOD FAILURE and no UNRESOLVED run on the same claim and build; all budgeted runs done with no SUCCESS is INCONCLUSIVE |
+| B, random by design | the result is a yield or a drop chance | X successes in Y valid opportunities; X and Y are written before the first run |
+| C, hunt | a fault that shows only sometimes | looks for evidence of failure; temporary; never part of a mod's final acceptance tests |
+
+- Tag B names the things that spoil the run, what was tried to control each, and why that was not enough. The budget of
+  runs stands on the scene before the first run.
+- Tag C names the symptom, how often it was seen in how many opportunities, and where the trace is.
+- A tag never removes a recorded run. Never tag B on a guess.
+
+**A run ends in one of seven outcomes. Keep them apart.**
+
+| outcome | the record shows | row today (`rows.jsonl`; write `kind` and `outcome` beside the verdict) |
+|---|---|---|
+| SUCCESS | the opportunity was valid and the success state was read | PASS |
+| MOD FAILURE | the opportunity was valid and the success state did not come; or any forbidden effect, even in a spoiled run | FAIL, class MOD |
+| RANDOM MISS | a valid opportunity, and a miss that the design allows | no row of its own: one kind B row per scene, with each run in its `runs` list |
+| ENVIRONMENT FAULT | something outside the tested behaviour spoiled the opportunity | UNMEASURED, class SITE |
+| APPARATUS FAULT | our script, our tool or our staging spoiled the run | UNMEASURED, class HARNESS or SITE |
+| UNRESOLVED | something went wrong and nobody knows why; or the mod could have spoiled the opportunity | FAIL with no class: the exit then holds the pass until someone writes the class |
+| COULD NOT LOOK | no reading | UNMEASURED |
+
+- Only SUCCESS speaks for the mod. No other outcome needs a later pass to cancel it.
+- An ENVIRONMENT FAULT needs a record: the spoiling thing, and why the mod could not have caused it. No record means
+  UNRESOLVED. Example: a carrier walked out of the blast before it fired. The job trace shows that the carrier left for
+  food. That is an ENVIRONMENT FAULT. With no trace, the run is UNRESOLVED.
+- A kind B scene whose verdict is INCONCLUSIVE is an UNMEASURED row that says INCONCLUSIVE.
+- The pipeline reads the last column today. The ticket that teaches the pipeline the outcomes themselves:
+  `RIMMANDRAKE_TEACH_EXIT_READER_KINDS_KNOWS_THREE_WORDS_ONLY`.
+
+**A spoiled environment is repaired.** Trace the spoiled run to its source. Then try to remove the source: hold or place
+the thing inside the scene, use the calm test environment (a named bridge profile that reports which controls it switched
+on), use a smaller mod list, use a bridge tool, or build a bridge tool. Lean towards building the control: it lowers the
+cost of many later scenes. What still cannot be controlled is the reason for tag B.
+
+**A hunt never opens silently.** Open a hunt when the fault is serious (one sighting is enough) or is seen again. The
+run that opens the hunt does two things at once:
+
+```
+python3 src/RimMandrake/rimflow/cli.py note <ITEM> --text "HUNT OPENED: what happened | why it matters | the next step that tells two causes apart | what that step costs" --seat BENCH --why "hunt" --publish
+python3 -c "import sys,time; sys.path.insert(0,'src/RimMandrake/rimflow'); import detached_helper as D; D.conductor_line('<the same text, with the item id>', time.time(), head='HUNT OPENED (RAISE FIRST)')"
+```
+
+- Each hunt step answers a named question. Before the step, write what the answer could change and what the step may
+  spend. Count opportunities, not runs.
+- A hunt ends as FIXED AND SHOWN, NOT A FAULT, STOPPED, UNRESOLVED or HANDED ON. A trigger found is not a fix. A hunt
+  stopped is not a fix.
+- A hunt that stops unresolved leaves a record: the symptom, how bad it is for the player, the trace and the save, the
+  build and mod list, what was tried, and what would reopen the hunt. A serious fault also needs the Conductor's written
+  decision at the mod's pass.
+- After a fix, the forced scene stays in the live tests only while the fault is likely to return. Otherwise its check
+  goes to the offline tests, or is retired.
+
+**Verdicts keep, per scene.** A verdict stands until a change touches what the scene reads or exercises. No exit of a
+visit asks for every scene in one visit, or for one scene several times in a row. Record the build that the game had
+loaded, not only the build on disk.
+
+### Minimum Force
+
+> **Use the least force that makes a scene affordable and reliable, and that leaves to the mod every decision the scene
+> claims to test.** Whatever the force steps past is outside that scene's evidence.
+
+The ladder, from most force to least, for "a raider crosses a covered pit":
+
+1. Teleport the raider onto the cover.
+2. Give the raider a path over the cover.
+3. Build a corridor with no other way, and put bait beyond the pit.
+4. Put a ring of pits round a base, and let a natural raid come.
+
+Say which step the scene uses. Say in one line why not a lighter one. Trying every lighter step first is not required.
+Example of a decision that force steps past: our pathing patch decides whether a raider enters a pit. Teleporting the
+raider (step 1) skips that patch, so step 1 shows nothing about the patch.
+
 ## Sites, clearing, calm
 
 The owner's full list will not leave a map alone. Each block starts by making its site independent of the map. Then the
@@ -224,7 +318,8 @@ A flat tick window measures whatever happened to be slowest. The slowest thing i
   `GameEnded`). A dead colony ends the counted part of the run.
 - **Verdicts when something disturbs a row** are the owner's rules in `debug_process.md` § "Test disturbances":
   - A corrected anomaly with no damage to the test may PASS.
-  - After damage to the test, restart the row. Never score it FAIL.
+  - After damage to the test, restart the row. Never score it FAIL. Class the spoiled run by §The scene contract
+    (ENVIRONMENT FAULT, APPARATUS FAULT or UNRESOLVED).
   - Log **every** threat, and file a test-environment item for it.
   - Protect support colonists (they cannot die or starve) only in rows labelled as not about health, needs, damage or death.
 - **Watch the run, not just its result.**

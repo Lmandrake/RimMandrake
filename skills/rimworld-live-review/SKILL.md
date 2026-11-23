@@ -97,6 +97,23 @@ scene shows something that the proof never reproduces. Then the owner judges a s
 - Before the capture, pause, verify the pause, and read the state of the subject back.
 - To capture pawns after you step time, use `settled_shot` (`rimbench/shotsettle.py`, §2).
 
+## Minimum Force (owner, 2026-11-23)
+
+> **Use the least force that makes a scene affordable and reliable, and that leaves to the mod every decision the scene
+> claims to test.** Whatever the force steps past is outside that scene's evidence.
+
+The ladder, from most force to least, for "a raider crosses a covered pit":
+
+1. Teleport the raider onto the cover.
+2. Give the raider a path over the cover.
+3. Build a corridor with no other way, and put bait beyond the pit.
+4. Put a ring of pits round a base, and let a natural raid come.
+
+Say which step the scene uses, and in one line why not a lighter one. Trying every lighter step first is not required. A
+scene that shows a mechanism says which of the mod's decisions its force steps past. The scene shows nothing about those
+decisions. The kinds of live scene and the seven outcomes of a run: `skills/live-debugging-proof-harness/SKILL.md` §The
+scene contract.
+
 ## The helper does the whole clean-stage in one call
 
 `src/RimMandrake/Utils/stage_review.py` composes every step below, with the read-backs and the traps already handled.
