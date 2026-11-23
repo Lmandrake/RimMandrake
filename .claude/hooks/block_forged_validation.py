@@ -148,7 +148,7 @@ def main():
                 "to VALIDATED are his word (or the Conductor's, --per-ruling):\n\n"
                 "    %s\n\n"
                 "or, for NEW bars only (owner 2026-10-26, delegation_policy.md "
-                "§2.1), `validate <mod> --delegated --judge-verdict <json>`, "
+                "§1), `validate <mod> --delegated --judge-verdict <json>`, "
                 "which refuses any loosening against the last validated "
                 "section.\n\n"
                 "The verb prints every line about to bind and writes nothing "
