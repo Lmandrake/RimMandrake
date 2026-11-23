@@ -246,6 +246,8 @@ namespace RimMandrake.FlowWorks
         // capture down / convert down are done from the lip.
         public static bool superdeepRoomsEnabled = true;
         public static bool captureDownEnabled = true;
+        /// <summary>A pawn its pit room holds cannot melee across the lip, nor be meleed from it (2026-11-23).</summary>
+        public static bool pitLipMeleeDeniedEnabled = true;
         public static bool wardenFromLipEnabled = true;
         // PIT_ROOM_TUNE_TALL_FOLK_DIG_DEEPER (owner card 2026-10-18): a pit room is a person-band pocket whose floor is at least
         // this deep for a person (3.0 m: reach overhead plus a small jump), scaled by body height per pawn. 0 = any depth.
@@ -637,6 +639,7 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref superdeepRoomsEnabled, "superdeepRoomsEnabled", true);
             Scribe_Values.Look(ref pitRoomMinDepthMetres, "pitRoomMinDepthMetres", 3f);
             Scribe_Values.Look(ref captureDownEnabled, "captureDownEnabled", true);
+            Scribe_Values.Look(ref pitLipMeleeDeniedEnabled, "pitLipMeleeDeniedEnabled", true);
             Scribe_Values.Look(ref wardenFromLipEnabled, "wardenFromLipEnabled", true);
             Scribe_Values.Look(ref pitWidthBodySizeMultiplier, "pitWidthBodySizeMultiplier", 1f);
             Scribe_Values.Look(ref pitRelativeClimbEnabled, "pitRelativeClimbEnabled", true);
@@ -821,7 +824,7 @@ namespace RimMandrake.FlowWorks
             .Declare("pitSubmergeCutEnabled", "underLiquidDeepOpacity", "underLiquidShallowOpacity", "underLiquidFullMetres", "underLiquidDarken", "pitThingShadowAlpha")
             .Declare("pitWaterRippleLightEnabled", "pitWaterRippleLight")
             .Declare("trapTriggerEnabled", "trapSensitivityMultiplier")
-            .Declare("superdeepRoomsEnabled", "captureDownEnabled", "pitRoomMinDepthMetres")
+            .Declare("superdeepRoomsEnabled", "captureDownEnabled", "pitRoomMinDepthMetres", "pitLipMeleeDeniedEnabled")
             .Declare("superdeepShootingRuleEnabled", "shootingCliffMetres")
             .Declare("trenchCoverEnabled", "trenchCoverStrength", "trenchCoverCap", "trenchAiAvoidsCages")
             .Declare("digFindsEnabled", "digFindsLocalOnly", "digFindChanceMultiplier", "digFindBudgetPercent", "digFindLetterEnabled")
@@ -1684,7 +1687,7 @@ namespace RimMandrake.FlowWorks
 
             }
 
-            if (Section(list, "Pit prisoners, sluice gates and grates", new[] { "superdeepRoomsEnabled", "pitRoomMinDepthMetres", "captureDownEnabled", "wardenFromLipEnabled", "flowDoorsSealedFromPitEnabled" }))
+            if (Section(list, "Pit prisoners, sluice gates and grates", new[] { "superdeepRoomsEnabled", "pitRoomMinDepthMetres", "captureDownEnabled", "pitLipMeleeDeniedEnabled", "wardenFromLipEnabled", "flowDoorsSealedFromPitEnabled" }))
             {
             list.CheckboxLabeled("An enclosed pit is its own room", ref superdeepRoomsEnabled,
                 "A dug pocket a person cannot climb out of counts as a room of its own, separate "
@@ -1708,6 +1711,9 @@ namespace RimMandrake.FlowWorks
                   + "and takes them prisoner from above, without climbing in. Only someone the pit actually holds "
                   + "(a creature too wide for it is not trapped). Off: no capture-down order.");
             }
+            list.CheckboxLabeled("No melee across a pit's edge", ref pitLipMeleeDeniedEnabled,
+                "Someone a pit room holds cannot reach a person on the edge above with a hand weapon, and cannot be struck "
+              + "from there either. Shooting follows its own rule. Off: a trapped raider can stab whoever stands at the edge.");
             list.CheckboxLabeled("Wardens and doctors work from the lip", ref wardenFromLipEnabled,
                 "Recruiting, converting, enslaving, wearing down, interrogating, tending and bringing food to "
               + "someone in a pit is done from the edge: food is dropped down onto its spot, talk happens "

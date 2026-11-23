@@ -102,6 +102,36 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string set = RiverSwitchFlipChecks.Src("RimMandrakeFlowWorksMod.cs");
                 Assert(set.Contains("Scribe_Values.Look(ref pitRoomMinDepthMetres, \"pitRoomMinDepthMetres\", 3f);"), "saved with the 3 m default");
             });
+            Case("PitCapture_takes_from_the_rim_without_touching", () =>
+            {
+                // RIMMANDRAKE_HOLD_FLOWWORKS_PIT_PRISONERS_THREE_CAPTURE_FAULTS (live 2026-11-23, save TP_MOAT_STALL_FAILING_MOMENT):
+                // a raider on the far row of a 2-wide drained moat, 2 squares from the warden's rim square, was never taken.
+                Assert(RM_PitRoomMath.CaptureReach(true, false, false, 99f), "touching always reaches");
+                Assert(RM_PitRoomMath.CaptureReach(false, true, true, 2f), "from the rim, in sight, 2 squares off: reaches (the failing moment)");
+                Assert(RM_PitRoomMath.CaptureReach(false, true, true, RM_PitRoomMath.RadiusFor(RM_PitRoomMath.LipKind.Interact)), "talking range is the bound");
+                Assert(!RM_PitRoomMath.CaptureReach(false, true, true, RM_PitRoomMath.RadiusFor(RM_PitRoomMath.LipKind.Interact) + 0.5f), "can-fail: past talking range");
+                Assert(!RM_PitRoomMath.CaptureReach(false, false, true, 2f), "can-fail: not at the rim (the owner ruled the warden adjacent to the lip)");
+                Assert(!RM_PitRoomMath.CaptureReach(false, true, false, 2f), "can-fail: no line of sight");
+                string rooms = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", "RM_PitRooms.cs"));
+                Assert(rooms.Contains("RM_PitRooms.CaptureGaveUp(pawn, Victim);") && rooms.Contains("\"RMFlow_CaptureDownGaveUp\".Translate("),
+                    "can-fail: a capture that gives up says so");
+            });
+            Case("PitLip_no_melee_across_a_pit_room_edge", () =>
+            {
+                // live 2026-11-23: held raiders stabbed wardens on the rim of a drained 3 m moat (2 to 3 stabs downed one)
+                Assert(RM_PitRoomMath.MeleeAcrossLipDenied(true, true, 3f, 0f, 3f, RM_PitRoomMath.ReferenceHeightMetres), "held 3 m down, target on the rim: no melee");
+                Assert(!RM_PitRoomMath.MeleeAcrossLipDenied(false, true, 3f, 0f, 3f, RM_PitRoomMath.ReferenceHeightMetres), "can-fail: the switch off allows it");
+                Assert(!RM_PitRoomMath.MeleeAcrossLipDenied(true, false, 3f, 0f, 3f, RM_PitRoomMath.ReferenceHeightMetres), "can-fail: not held (swimming at the surface)");
+                Assert(!RM_PitRoomMath.MeleeAcrossLipDenied(true, true, 3f, 3f, 3f, RM_PitRoomMath.ReferenceHeightMetres), "can-fail: both on the pit floor fight as ever");
+                Assert(!RM_PitRoomMath.MeleeAcrossLipDenied(true, true, 2f, 0f, 3f, RM_PitRoomMath.ReferenceHeightMetres), "can-fail: 2 m is not a pit room");
+                Assert(!RM_PitRoomMath.MeleeAcrossLipDenied(true, true, 3f, 0f, 3f, 2f * RM_PitRoomMath.ReferenceHeightMetres), "can-fail: a creature twice as tall reaches out of 3 m");
+                string patch = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", "RM_Patch_PitLipMelee.cs"));
+                Assert(patch.Contains("nameof(Pawn_MeleeVerbs.TryMeleeAttack)") && patch.Contains("RM_PitRooms.MeleeAcrossLipDenied(__instance.Pawn, target)"),
+                    "can-fail: the rule sits on the one door every hand attack uses");
+                // live 2026-11-23: the patch file was written but not on the project's Compile list, so the game ran without it
+                Assert(RiverSwitchFlipChecks.Src("RimMandrake_FlowWorks.csproj").Contains("<Compile Include=\"Superdeep\\RM_Patch_PitLipMelee.cs\" />"),
+                    "can-fail: the patch file is compiled into the mod");
+            });
             Case("PitCapture_follows_a_held_pawn_that_moves", () =>
             {
                 // PIT_CAPTURE_FIX_HOSTILE_NOT_PRISONER: the held hostile wandered one cell in the pit (95,167 -> 96,167),
@@ -291,7 +321,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 foreach (var kv in new[] { new[] { "reach", reach }, new[] { "hold", hold } })
                 {
                     string t = kv[1];
-                    Assert(t.Contains("RM_PitRoomMath.CaptureDownNext(pawn.Position.AdjacentTo8WayOrInside(Victim.Position), onPit, repaths)"),
+                    Assert(t.Contains("RM_PitRoomMath.CaptureDownNext(RM_PitRooms.CaptureInReach(pawn, Victim), onPit, repaths)"),
                         "can-fail: " + kv[0] + " asks CaptureDownNext with the live touch, pit and repath count");
                     int r = t.IndexOf("case RM_PitRoomMath.CaptureStep.Repath:", StringComparison.Ordinal);
                     int d = t.IndexOf("default:", StringComparison.Ordinal);

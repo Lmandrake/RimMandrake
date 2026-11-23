@@ -1484,6 +1484,31 @@ def _moat_lip(G, at):
     return near[0] if near else None
 
 
+def _capture_trace_line(S, caught):
+    """One poll of a capture window, one short string: the tick, then each warden and captive as id@x,z:job>target.
+    A stalled capture names its own cause from this (who stopped doing what, when). Read past the receipt (S.B.call):
+    a 30-tick trace recorded call by call would be most of the evidence file."""
+    r = S.B.call('jawa/site_state') or {}
+    ids = {c['warden'] for c in caught} | {c['pawn'] for c in caught}
+    out = []
+    for p in r.get('pawns') or []:
+        if p.get('id') in ids:
+            t = p.get('targetA') or {}
+            out.append('%s@%s,%s:%s>%s' % (p['id'], p.get('x'), p.get('z'), p.get('job'),
+                                         t.get('id') or t.get('thingId') or ('%s,%s' % (t.get('x'), t.get('z')) if t else '-')))
+    seen = {s.split('@')[0] for s in out}
+    return 't=%s %s%s' % ((r.get('state') or {}).get('tick'), ' '.join(sorted(out)),
+                         ''.join(' %s:gone' % i for i in sorted(ids - seen)))
+
+
+def _hits_on(S, pid):
+    """Who hurt pawn pid, from the bridge's damage recorder: ['tick instigator damageDef', ...] (the last 12)."""
+    r = S.B.call('jawa/damage_log', thingId=str(pid), limit=12) or {}
+    if not r.get('success'):
+        return 'damage recorder refused: %s' % str(r)[:80]
+    return ['%s %s %s' % (e.get('tick'), e.get('instigatorId') or 'no instigator', e.get('damageDef')) for e in r.get('events') or []]
+
+
 def _moat_plot_lip(at):
     """The plot square nearest the raider at `at` (the plot is x/z O+2..O+9: undug, inside the ring)."""
     plot = [(O[0] + i, O[1] + j) for i in range(2, MOAT_N - 2) for j in range(2, MOAT_N - 2)]
@@ -1545,15 +1570,20 @@ def _moat_rows(S, G):
         c['accepted'] = S.call('jawa/ordered_job', pawnId=c['warden'], jobDef='RM_CaptureDown', targetAId=pid,
                                targetBX=lip[0], targetBZ=lip[1]).get('accepted')
         caught.append(c)
+    trace = [_capture_trace_line(S, caught)]
     for _ in range(MOAT_CAPTURE_TICKS // 60):
         waiting = [c for c in caught if 'prisoner=True' not in c['after']]
-        if len(caught) - len(waiting) >= 2:
+        if len(caught) - len(waiting) >= 2 or not waiting:   # nobody left to wait for (one held raider): do not tick 900 for nothing
             break
-        S.ticks(60)
+        for _half in (0, 1):                        # the trace reads every 30 ticks; the verdict every 60, as before
+            S.ticks(30)
+            trace.append(_capture_trace_line(S, caught))
         for c in waiting:
             c['after'] = S.sc(NSP, 'ProofCaptureDown', c['pawn'])
+    S.r['moatCaptureTrace'] = trace                 # beside the rows: a row's detail is cut short in the evidence file
     for c in caught:
         c['wardenAbleAfter'] = _able(S, c['warden'])
+    S.r['moatWardenHits'] = {c['warden']: _hits_on(S, c['warden']) for c in caught}
     # Fewer than two prisoners where every unfinished capture lost its warden (downed) or its captive (no longer read)
     # did not ask the mod: UNMEASURED, never FAIL. A held raider beside the lip can down the warden before the capture
     # pins it (RIMMANDRAKE_PROBE_FLOWWORKS_WARDEN_DOWNED_BESIDE_HELD_RAIDER); 'wardensDowned' counts them on the row.

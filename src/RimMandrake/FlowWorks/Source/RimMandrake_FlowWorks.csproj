@@ -142,6 +142,7 @@
     <Compile Include="RM_DigDiscoveryMath.cs" />
     <Compile Include="RM_LegacyFillProof.cs" />
     <Compile Include="Superdeep\RM_PitRooms.cs" />
+    <Compile Include="Superdeep\RM_Patch_PitLipMelee.cs" />
     <Compile Include="Superdeep\RM_PitPrisonCare.cs" />
     <Compile Include="Superdeep\RM_PitStuckAlert.cs" />
     <Compile Include="RM_FireMath.cs" />

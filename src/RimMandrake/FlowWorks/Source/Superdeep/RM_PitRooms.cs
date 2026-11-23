@@ -358,6 +358,72 @@ namespace RimMandrake.FlowWorks
 
 		// ── capture down ─────────────────────────────────────────────────
 
+		/// <summary>Can <paramref name="warden"/> take <paramref name="victim"/> from where it stands (RM_PitRoomMath.CaptureReach)?
+		/// Touching it, or on a rim square (ground with a pit square beside it) within talking range and in sight.</summary>
+		public static bool CaptureInReach(Pawn warden, Pawn victim)
+		{
+			if (warden == null || victim == null || !warden.Spawned || !victim.Spawned || warden.Map != victim.Map)
+			{
+				return false;
+			}
+			bool touching = warden.Position.AdjacentTo8WayOrInside(victim.Position);
+			if (touching)
+			{
+				return true;
+			}
+			Map map = warden.Map;
+			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
+			bool atRim = false;
+			if (eng != null && !IsPitFloor(map, eng, warden.Position))
+			{
+				foreach (IntVec3 c in GenAdj.CellsAdjacent8Way(warden))
+				{
+					if (c.InBounds(map) && IsPitFloor(map, eng, c))
+					{
+						atRim = true;
+						break;
+					}
+				}
+			}
+			return RM_PitRoomMath.CaptureReach(false, atRim, atRim && GenSight.LineOfSight(warden.Position, victim.Position, map, true),
+				warden.Position.DistanceTo(victim.Position));
+		}
+
+		/// <summary>The capture ended with no prisoner: say so (a job that stops with no sign reads as a bug).</summary>
+		public static void CaptureGaveUp(Pawn warden, Pawn victim)
+		{
+			if (warden != null && victim != null && warden.Faction == Faction.OfPlayer)
+			{
+				Messages.Message("RMFlow_CaptureDownGaveUp".Translate(warden.LabelShort, victim.LabelShort), victim,
+					MessageTypeDefOf.RejectInput, false);
+			}
+		}
+
+		/// <summary>RM_PitRoomMath.MeleeAcrossLipDenied for a live pair: the one standing lower is held by its pit room and the
+		/// other stands at least that pit-room depth above it.</summary>
+		public static bool MeleeAcrossLipDenied(Pawn attacker, Thing target)
+		{
+			if (!RimMandrakeFlowWorksSettings.pitLipMeleeDeniedEnabled || attacker == null || target == null || !attacker.Spawned
+				|| !target.Spawned || attacker.Map != target.Map)
+			{
+				return false;
+			}
+			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(attacker.Map);
+			if (!AnyPitFloor(eng))
+			{
+				return false;
+			}
+			float a = eng.ExcavatedDepthAt(attacker.Position) * RM_RelativeRulesMath.MetresPerNotch;
+			float t = eng.ExcavatedDepthAt(target.Position) * RM_RelativeRulesMath.MetresPerNotch;
+			Pawn lower = a >= t ? attacker : target as Pawn;
+			if (lower == null)
+			{
+				return false;       // a building down in the pit, struck from the rim: not a pawn's reach question
+			}
+			return RM_PitRoomMath.MeleeAcrossLipDenied(true, RM_SuperdeepTrap.IsHeld(lower), Math.Max(a, t), Math.Min(a, t),
+				RimMandrakeFlowWorksSettings.pitRoomMinDepthMetres, RM_Drowning.HeightOf(lower));
+		}
+
 		public static RM_PitRoomMath.CaptureDownVerdict CaptureDownVerdict(Pawn target)
 		{
 			bool humanlike = target?.RaceProps != null && target.RaceProps.Humanlike && target.guest != null;
@@ -758,7 +824,7 @@ namespace RimMandrake.FlowWorks
 			{
 				// the held pawn is not frozen: the lip can stop touching it while the warden walks (live: 95,167 -> 96,167)
 				bool onPit = RM_PitRooms.IsPitFloor(pawn.Map, RM_SuperdeepTrap.EngineOf(pawn.Map), pawn.Position);
-				switch (RM_PitRoomMath.CaptureDownNext(pawn.Position.AdjacentTo8WayOrInside(Victim.Position), onPit, repaths))
+				switch (RM_PitRoomMath.CaptureDownNext(RM_PitRooms.CaptureInReach(pawn, Victim), onPit, repaths))
 				{
 					case RM_PitRoomMath.CaptureStep.Hold:
 						JobDriver_CaptureDownPinned.Pin(Victim, pawn, RM_PitRoomMath.CaptureDownTicks + 30);
@@ -769,6 +835,7 @@ namespace RimMandrake.FlowWorks
 						JumpToToil(pause);
 						return;
 					default:
+						RM_PitRooms.CaptureGaveUp(pawn, Victim);
 						EndJobWith(JobCondition.Incompletable);
 						return;
 				}
@@ -782,7 +849,7 @@ namespace RimMandrake.FlowWorks
 			hold.AddPreTickIntervalAction(delegate(int delta)
 			{
 				bool onPit = RM_PitRooms.IsPitFloor(pawn.Map, RM_SuperdeepTrap.EngineOf(pawn.Map), pawn.Position);
-				switch (RM_PitRoomMath.CaptureDownNext(pawn.Position.AdjacentTo8WayOrInside(Victim.Position), onPit, repaths))
+				switch (RM_PitRoomMath.CaptureDownNext(RM_PitRooms.CaptureInReach(pawn, Victim), onPit, repaths))
 				{
 					case RM_PitRoomMath.CaptureStep.Hold:
 						// PIT_CAPTURE_FIX_WARDEN_HURT_AT_LIP: a pin something else ended (damage, its lord) is put back
@@ -794,6 +861,7 @@ namespace RimMandrake.FlowWorks
 						JumpToToil(pause);
 						return;
 					default:
+						RM_PitRooms.CaptureGaveUp(pawn, Victim);
 						EndJobWith(JobCondition.Incompletable);
 						return;
 				}

@@ -66,6 +66,7 @@
   <RMFlow_CaptureDownNotPrison>needs an enclosed pit room</RMFlow_CaptureDownNotPrison>
   <RMFlow_CaptureDownNoLip>no reachable edge cell next to them</RMFlow_CaptureDownNoLip>
   <RMFlow_CapturedDown>{0} took {1} prisoner from the edge of the pit.</RMFlow_CapturedDown>
+  <RMFlow_CaptureDownGaveUp>{0} could not get within reach of {1} from the edge of the pit, and gave up the capture.</RMFlow_CaptureDownGaveUp>
 
   <!-- LIQUID_BOTTLE_LOOP_1 revert timer. -->
   <RMFlow_RevertsIn>Becomes {0} in {1}.</RMFlow_RevertsIn>

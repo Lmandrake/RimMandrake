@@ -164,6 +164,27 @@ namespace RimMandrake.FlowWorks
 			return repaths < CaptureRepathLimit ? CaptureStep.Repath : CaptureStep.GiveUp;
 		}
 
+		/// <summary>RIMMANDRAKE_HOLD_FLOWWORKS_PIT_PRISONERS_THREE_CAPTURE_FAULTS: can the warden take the held pawn from where it
+		/// stands? Touching it, or from the rim (a ground square beside the pit) within talking range and in sight. The owner
+		/// ruled the warden ADJACENT TO THE LIP ([B-item], 2026-09-17), never adjacent to the pawn: a raider on a pit square that
+		/// no rim square the warden can walk to touches (the far column of a 2-wide moat, the centre of a 3x3 pit) was waited for
+		/// until the repath budget ran out, and the capture ended with no prisoner and no message (live 2026-11-23).</summary>
+		public static bool CaptureReach(bool touching, bool wardenAtRim, bool lineOfSight, float distToVictim)
+		{
+			return touching || (wardenAtRim && lineOfSight && distToVictim <= RadiusFor(LipKind.Interact));
+		}
+
+		/// <summary>RIMMANDRAKE_HOLD_FLOWWORKS_PIT_PRISONERS_THREE_CAPTURE_FAULTS: a hand weapon does not reach across the lip of a
+		/// pit room. The pawn standing lower is held by its pit and the floor between the two is at least that pawn's pit-room
+		/// depth: no melee either way. Held raiders stabbed wardens on the rim and walked the pit floor to reach the next one
+		/// (live 2026-11-23: an unarmed warden downed in 2 to 3 stabs). Shooting keeps its own rule (ruling 23).</summary>
+		public static bool MeleeAcrossLipDenied(bool settingOn, bool lowerIsHeld, float lowerFloorMetres, float upperFloorMetres,
+			float personMetres, float lowerHeightMetres)
+		{
+			return settingOn && lowerIsHeld && DeepEnoughFor(lowerFloorMetres - upperFloorMetres, personMetres, lowerHeightMetres)
+				&& lowerFloorMetres - upperFloorMetres > 1e-4f;
+		}
+
 		/// <summary>Where the capture-down warden walks.</summary>
 		public enum CaptureLip
 		{
