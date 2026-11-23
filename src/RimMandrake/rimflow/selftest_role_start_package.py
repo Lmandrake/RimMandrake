@@ -8,7 +8,7 @@ Covered, all offline (no claude, no unit, nothing written outside a temp dir):
             slim_start; launch_argv puts them on the claude argv
   settings  a slim_start run's --settings exclude the owner's personal CLAUDE.md and turn auto-memory off, and still
             carry the stop-channel PostToolUse hook; a role without slim_start gets the hook only
-  hooks     each seat hook (SessionStart set_session_title; UserPromptSubmit set_session_title, bench_mode,
+  hooks     each seat hook (SessionStart set_session_title; UserPromptSubmit set_session_title,
             conductor_goodbye) prints nothing for a launched run (RM_ROLE_UNIT set) and still prints for the
             Conductor window (no RM_ROLE_UNIT): no CONDUCTOR title, no OWED line, no identity in a role run
   inline    every inline_by_mode heading of every role resolves to exactly one section of its instructions; an alarm
@@ -106,7 +106,6 @@ def test_hooks():
         os.makedirs(os.path.join(tmp, ".claude", "session_roles"))
         cases = [("set_session_title.py", "SessionStart", "", "CONDUCTOR"),
                  ("set_session_title.py", "UserPromptSubmit", "check the alarms", "CONDUCTOR"),
-                 ("bench_mode.py", "UserPromptSubmit", "I'm here, work with me", "BENCH"),
                  ("conductor_goodbye.py", "UserPromptSubmit", "check the alarms", "OWED")]
         for script, event, prompt, mark in cases:
             rc, out = _hook(script, event, prompt, True, tmp)
@@ -117,7 +116,7 @@ def test_hooks():
             rc, out = _hook(script, event, prompt, False, tmp)
             check(rc == 0 and mark in out, "%s %s still prints %s for the Conductor window (%r)" % (
                 script, event, mark, out[:80]))
-        print("hooks covered: %d (set_session_title x2 events, bench_mode, conductor_goodbye), both ways" % len(cases))
+        print("hooks covered: %d (set_session_title x2 events, conductor_goodbye), both ways" % len(cases))
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
 

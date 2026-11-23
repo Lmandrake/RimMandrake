@@ -382,16 +382,13 @@ def certification(base):
 
 def away_units():
     DS.owner_away = REAL_AWAY
-    saved = (cli._mode_file, cli._owner_verdict, os.environ.get("RIMFLOW_MODE"))
+    saved = (cli._owner_verdict, os.environ.get("RIMFLOW_MODE"))
     os.environ.pop("RIMFLOW_MODE", None)
     try:
-        cli._mode_file = lambda: "afk"
         cli._owner_verdict = lambda holds, evs=None: (False, "his last deliberate interaction was 2 min ago")
-        check("away: the recorded mode afk is away", DS.owner_away()[0] is True, DS.owner_away())
-        cli._mode_file = lambda: "belt"
-        check("present: mode belt and a sitting 2 min old is attended", DS.owner_away()[0] is False, DS.owner_away())
+        check("present: a sitting 2 min old is attended", DS.owner_away()[0] is False, DS.owner_away())
         os.environ["RIMFLOW_MODE"] = "afk"
-        check("away: RIMFLOW_MODE=afk beats the file", DS.owner_away()[0] is True, DS.owner_away())
+        check("away: RIMFLOW_MODE=afk is away", DS.owner_away()[0] is True, DS.owner_away())
         os.environ.pop("RIMFLOW_MODE")
         cli._owner_verdict = lambda holds, evs=None: (True, "his last deliberate interaction was 50 min ago")
         check("away: no sitting (45+ min since his last deliberate interaction)",
@@ -404,11 +401,11 @@ def away_units():
         cli._owner_verdict = boom
         check("away: an unreadable presence parks", DS.owner_away()[0] is True, DS.owner_away())
     finally:
-        cli._mode_file, cli._owner_verdict = saved[0], saved[1]
-        if saved[2] is None:
+        cli._owner_verdict = saved[0]
+        if saved[1] is None:
             os.environ.pop("RIMFLOW_MODE", None)
         else:
-            os.environ["RIMFLOW_MODE"] = saved[2]
+            os.environ["RIMFLOW_MODE"] = saved[1]
     check("code_present: only impl present counts",
           DS.code_present({"inventory": [{"id": "a", "impl": "present"}, {"id": "b", "impl": "absent"},
                                          {"id": "c", "impl": "unknown"}]}) == ["a"])

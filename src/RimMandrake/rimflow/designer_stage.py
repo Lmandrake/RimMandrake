@@ -2267,14 +2267,14 @@ JUDGE_REF = "rm-coverage-judge-"     # coverage_judge.UNIT_PREFIX (that module i
 
 
 def owner_away():
-    """-> (away?, why). Away when the recorded mode is afk ($RIMFLOW_MODE, else infrastructure/state/MODE), or his last
+    """-> (away?, why). Away when $RIMFLOW_MODE is afk, or his last
     deliberate interaction (an OWNER ledger act, ./bridge, a chat prompt or card answer; owner_interaction.py) is 45+
     min old (no sitting), or that cannot be measured: parking is the safe side. Never his keyboard or input clock."""
     try:
         import cli
-        mode = str(os.environ.get("RIMFLOW_MODE") or cli._mode_file() or "").strip().lower()
+        mode = str(os.environ.get("RIMFLOW_MODE") or "").strip().lower()
         if mode == "afk":
-            return True, "the recorded mode is afk"
+            return True, "RIMFLOW_MODE is afk"
         takeable, text = cli._owner_verdict([])
     except Exception as e:  # noqa: BLE001 - an unreadable presence parks, it never runs on
         return True, "his presence could not be read (%s): treated as away" % e

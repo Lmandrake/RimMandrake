@@ -351,8 +351,58 @@ def text_problems(paths):
     return out, n
 
 
+# --- Retired things (the Conductor, 2026-11-23, design/specs/2026-11-23-retire-census/census.md Tables 1 and 2): paths,
+# units and instruction words that stay gone. A thing that comes back needs a word that says so and its row here removed.
+CENSUS = "the Conductor, 2026-11-23, retire census"
+RETIRED_PATHS = (                     # fnmatch globs of tracked paths
+    ".claude/hooks/bench_mode.py", "infrastructure/state/MODE",
+)
+RETIRED_UNITS = ()                    # unit file names; a tracked copy in the one home, or an installed unmasked one
+RETIRED_WORDS = (                     # regexes refused on a live instruction line that does not say "retired"
+    r"\bbench_mode\.py\b", r"infrastructure/state/MODE\b",
+)
+UNIT_HOME = "src/RimMandrake/Utils/systemd/"
+
+
+def check_things(paths, units, live):
+    """-> remnants of the retired things. units: [(unit, state)] or None (unread: the tracked copies still count)."""
+    out = [f"thing: {p}" for p in paths for g in RETIRED_PATHS if fnmatch.fnmatchcase(p, g)]
+    out += [f"unit: {UNIT_HOME}{u}" for u in RETIRED_UNITS if UNIT_HOME + u in set(paths)]
+    out += [f"unit installed: {n} ({st})" for n, st in units or () if n in RETIRED_UNITS and st not in MASKED]
+    return out + [f"words: {p}:{n}: {ln.strip()[:160]}" for p, text in live for n, ln in enumerate(text.splitlines(), 1)
+                  if not re.search(r"\bretired\b", ln, re.I) and any(re.search(w, ln) for w in RETIRED_WORDS)]
+
+
+def things_probes():
+    """The checker must see a planted return of each kind, and pass a line that says retired."""
+    fails = []
+    for ok, what in (
+            (check_things(["infrastructure/state/MODE"], [], []) == ["thing: infrastructure/state/MODE"], "a returned path is a remnant"),
+            (check_things([], [], [("CLAUDE.md", "Read infrastructure/state/MODE first.")]) != [], "a rule line that uses a retired thing is a remnant"),
+            (check_things(["infrastructure/state/MODELS.md"], None, [("CLAUDE.md", "The file infrastructure/state/MODE is retired.")]) == [],
+             "a longer name and a line that says retired are not"),
+            (all(check_things([UNIT_HOME + u], None, []) and check_things([], [(u, "disabled")], []) for u in RETIRED_UNITS)
+             and all(check_things([], [(u, "masked")], []) == [] for u in RETIRED_UNITS), "a returned unit is a remnant, a masked one is not")):
+        print(("ok   " if ok else "FAIL ") + "probe: " + what)
+        fails += [] if ok else [what]
+    return fails
+
+
+def things_problems(paths, units):
+    """-> remnants, reading the live instruction files; a file that cannot be read is named, never skipped."""
+    live, bad = [], []
+    for p in paths:
+        if text_scope(p) == "live" and os.path.exists(os.path.join(REPO, p)):
+            try:
+                with open(os.path.join(REPO, p), encoding="utf-8") as f:
+                    live.append((p, f.read()))
+            except (OSError, UnicodeError) as e:
+                bad.append(f"{p}: UNREADABLE ({e})")
+    return bad + check_things(paths, units, live)
+
+
 def main():
-    fails = probes()
+    fails = probes() + things_probes()
     if fails:
         print(f"FAIL: {len(fails)} probe(s) failed: the checker is not trustworthy, so its verdict on the tree does not count")
         return 1
@@ -383,6 +433,12 @@ def main():
     if roles is None:
         print(f"COULD NOT LOOK: retired roles unread: {cause_roles}")
         return 2
+    things = things_problems(paths, units)
+    for x in things:
+        print("RETIRED THING " + x)
+    if things:
+        print(f"FAIL: {len(things)} retired thing(s) back ({CENSUS}): delete it, or say 'retired' on the line")
+        return 1
     for x in remnants:
         print("REMNANT " + x)
     for x in roles:

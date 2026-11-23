@@ -20,7 +20,6 @@ unit=rm-telemetry-export.timer max_age=2h
 unit=rm-telemetry-health.timer max_age=2h
 unit=timer-guard.timer max_age=2h
 hook=auto_allow_bash_permission.py
-hook=bench_mode.py
 hook=block_agent_over_slots.py
 hook=block_agent_without_model.py
 hook=block_blanket_git_stage.py
@@ -41,6 +40,5 @@ hook=conductor_goodbye.py
 hook=queue_lint.py
 hook=set_session_title.py
 hook=warn_skill_unwired.py
-hook=warn_unclosed_queue_item.py
 role=Conductor max_age=3d
 role=Operations max_age=3d

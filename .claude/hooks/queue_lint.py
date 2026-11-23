@@ -54,14 +54,6 @@ already fixed, so the regenerated index would NOT be in the commit — leaving t
 dirty and the author believing it was handled. Warn, name the command, let a human run
 it.
 
-🔴 AND ONE THING THE PLAN ASKED FOR THAT IS DELIBERATELY NOT DONE
-=================================================================
-§8 says to make `warn_unclosed_queue_item.py` **block**. It must not. The owner ruled
-2026-08-15 that it warns and never gates: *"a hook that refuses a commit costs more
-than the miscount it prevents, and a seat that hits it mid-flow will work around it."*
-That ruling has not been reversed, so the hook exits 1 — visible, non-blocking — and
-the plan is corrected rather than obeyed.
-
 FAIL-OPEN, STDLIB ONLY
 ======================
 Blocks via `permissionDecision: deny` on stdout with exit 0, the same mechanism as

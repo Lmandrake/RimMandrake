@@ -90,14 +90,6 @@ item filed the same day recorded that the noted work had already been served
 and ruled. Before acting on any note, list items filed AFTER it that name the
 same subject: `ls -t infrastructure/state/items/` is enough.
 
-🔴 **`infrastructure/state/MODE` has no CLI setter — it is a plain file
-`cli.py` only reads, and it can go stale.** A FOUNDRY window (a seat since retired) once read `afk`
-from a prior session while the owner was live saying "go go go"; `rimflow why`
-silently suppressed a fully-specified `needs=owner` item under that stale
-mode with no warning that mode gating was the reason. If the owner is
-actively present but items keep reading "needs owner, afk suppressed", check
-this file before assuming the item is genuinely blocked.
-
 🔴 **`rimflow unblock` refuses another seat's in-flight item, and names the
 right move itself:** correct the false prose in their item file, commit by
 explicit path, and use `note` to nudge. Do not force the state.

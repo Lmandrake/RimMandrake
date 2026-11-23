@@ -25,10 +25,8 @@ This file is unbudgeted, like everything in `facts/`.
   - Take a snapshot to `infrastructure/state/modlists/`, named for the test.
   - Sweep every installed workshop mod for dependents before you disable a mod.
   - Announce loudly where he reads on waking. Name the snapshot and the restore.
-- **`infrastructure/state/MODE`** holds `belt` or `afk` only. `afk` suppresses every `needs: owner` item.
-  - Precedence in rimflow: `--mode` > `$RIMFLOW_MODE` > the file (`_ctx` in `cli.py`).
-  - rimflow refuses `bench`. The `bench` mode is per-window: `.claude/hooks/bench_mode.py` delivers it.
-  - `interactive`/`autonomous` are dead words: rimflow reads each one as `belt`. Do not write them.
+- **Mode `afk`** suppresses every `needs: owner` item in `rimflow next`. Its sources: `--mode`, else `$RIMFLOW_MODE`
+  (`_ctx` in `cli.py`).
 - **WSL cannot reach the bridge socket.** RimBridge binds Windows loopback and WSL2 is NAT-mode. So `127.0.0.1:5174` has
   *no route* from WSL. A refused connect is no reading at all. Drive the bridge under `python.exe`.
   - The instrument is `rimbridge_client.resolve_endpoint()` + a real `session/hello`. The instrument scrapes host, port

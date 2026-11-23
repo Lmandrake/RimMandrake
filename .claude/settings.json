@@ -46,12 +46,6 @@
           },
           {
             "type": "command",
-            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/warn_unclosed_queue_item.py\"",
-            "timeout": 10,
-            "statusMessage": "Checking for a Closes: trailer"
-          },
-          {
-            "type": "command",
             "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/queue_lint.py\"",
             "timeout": 20,
             "statusMessage": "Checking the ledger and the generated views"
@@ -224,12 +218,6 @@
             "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/set_session_title.py\" 2>/dev/null || true",
             "timeout": 10,
             "statusMessage": "Naming this conversation"
-          },
-          {
-            "type": "command",
-            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/bench_mode.py\" 2>/dev/null || true",
-            "timeout": 10,
-            "statusMessage": "Checking whether he is at the bench"
           },
           {
             "type": "command",

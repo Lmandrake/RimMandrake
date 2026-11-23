@@ -268,7 +268,7 @@ def sanity(promises, items, baseline_names, ever, retired=()):
               % (tag.replace("_", " "), target, (probs or ["none"])[0]))
     ex = {"OLD": type("It", (), {"state": "dropped", "live": "hook=%s" % TARGET})()}
     check(TARGET not in promised(ex, [], set()) and TARGET not in promised({}, ["hook=" + TARGET], {"hook=" + TARGET})
-          and "bench_mode.py" not in promised({"LIVE_RESTORE_BENCH_MODE": ex["OLD"]}, ["hook=bench_mode.py"], set()),
+          and "conductor_goodbye.py" not in promised({"LIVE_RESTORE_CONDUCTOR_GOODBYE": ex["OLD"]}, ["hook=conductor_goodbye.py"], set()),
           "fixture: a dropped item, a retired subject and a dropped LIVE_RESTORE_ item promise nothing")
 
 
