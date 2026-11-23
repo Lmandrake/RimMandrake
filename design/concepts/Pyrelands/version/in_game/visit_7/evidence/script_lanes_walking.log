@@ -1,0 +1,4 @@
+loaded burn_line_walking: map 1 tile 193 RM_Pyrelands
+{"verdict": "PASS", "save": "burn_line_walking", "now": 533722, "window": 60000, "burned": 4213, "strandCells": 234, "strandShare": 0.0555, "limit": 0.25, "longestOneCellRunAlongX": 19, "oneCellRunsAlongX_ge20": 0}
+[bridge split] 19.8 s wall: load 0.1 / ticks 1.8 / reads 1.6 / other 2.8 / outside calls 13.4 s
+[bridge split] WARN 170 calls of jawa/static_call (2.5 s): batch them

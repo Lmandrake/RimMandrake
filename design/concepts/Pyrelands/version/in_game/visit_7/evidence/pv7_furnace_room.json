@@ -1,0 +1,2167 @@
+{
+  "mod": "Pyrelands",
+  "mode": "live",
+  "started_utc": "2026-11-23T13:30:38Z",
+  "expected": [
+    "pyre_plant_distribution_correct",
+    "pyre_animal_distribution_correct",
+    "pyre_mapgen_log_clean",
+    "pyre_ground_deep_ash",
+    "pyre_ash_fertile_when_watered",
+    "pyre_fresh_burn_feeds_the_field",
+    "pyre_grass_chokes_ground",
+    "pyre_embergrass_regrows",
+    "pyre_burn_line_present",
+    "pyre_scorchfruit_fire_born",
+    "pyre_scorchfruit_produces",
+    "pyre_scorchfruit_spoils_fast",
+    "pyre_ruins_scorched",
+    "pyre_firehawk_carries_ember",
+    "pyre_furnacebeast_warmth",
+    "pyre_furnacebeast_heats_room",
+    "pyre_burrowers_dive",
+    "pyre_ashfall_darkens_drifts",
+    "pyre_cinderfall_distinct",
+    "pyre_blackrain_reads",
+    "pyre_cannot_ordinary_rain"
+  ],
+  "expected_source": "VALIDATED walk Pyrelands.md",
+  "bars": [
+    {
+      "id": "pyre_plant_distribution_correct",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]"
+    },
+    {
+      "id": "pyre_animal_distribution_correct",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]"
+    },
+    {
+      "id": "pyre_mapgen_log_clean",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]"
+    },
+    {
+      "id": "pyre_ground_deep_ash",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]"
+    },
+    {
+      "id": "pyre_ash_fertile_when_watered",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]"
+    },
+    {
+      "id": "pyre_fresh_burn_feeds_the_field",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]"
+    },
+    {
+      "id": "pyre_grass_chokes_ground",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]"
+    },
+    {
+      "id": "pyre_embergrass_regrows",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]"
+    },
+    {
+      "id": "pyre_burn_line_present",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]"
+    },
+    {
+      "id": "pyre_scorchfruit_fire_born",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]"
+    },
+    {
+      "id": "pyre_scorchfruit_produces",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]"
+    },
+    {
+      "id": "pyre_scorchfruit_spoils_fast",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]"
+    },
+    {
+      "id": "pyre_ruins_scorched",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]"
+    },
+    {
+      "id": "pyre_firehawk_carries_ember",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]"
+    },
+    {
+      "id": "pyre_furnacebeast_warmth",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]"
+    },
+    {
+      "id": "pyre_furnacebeast_heats_room",
+      "status": "FAIL",
+      "evidence": "furnacebeast_heats_room=FAIL [{'execution': 'ran', 'detail': 'ExpectationFailed: beast room is not clearly hotter than the matched control (+0.3 C, under +10): [[52.58191, 51.8247566], [53.06925, 51.99697], [53.5570946, 52.24644], [53.931427, 52.4994659], [54.245327, 52.7668266], [54.52159, 53.06896], [54.695488, 53.32647], [54.]",
+      "evidenceFull": "furnacebeast_heats_room=FAIL [{'execution': 'ran', 'detail': 'ExpectationFailed: beast room is not clearly hotter than the matched control (+0.3 C, under +10): [[52.58191, 51.8247566], [53.06925, 51.99697], [53.5570946, 52.24644], [53.931427, 52.4994659], [54.245327, 52.7668266], [54.52159, 53.06896], [54.695488, 53.32647], [54.7995644, 53.5635262], [54.83132, 53.79547], [54.7829, 53.9629631], [54.6623955, 54.0879], [54.44169, 54.17163]]', 'evidence': [{'call': \"set_setting(RimMandrake.Pyrelands.RM_PyrelandsSettings, {'furnaceThermalEnabled': True})\", 'result': True}, {'call': 'bridge_call jawa/make_empty_room', 'result': {'success': True, 'rect': {'x': 151, 'z': 87, 'w': 7, 'h': 7}, 'wallDef': 'Wall', 'floorDef': 'WoodPlankFloor', 'doorAt': {'x': 154, 'z': 87}, 'cellsWalled': 24, 'cellsFloored': 49, 'ticksGame': 379001, 'operation': {'OperationId': 'op_22fc3202695d4d1aaa619482e0e7b8a9', 'Status': 'Completed', 'Success': True, 'DurationMs': 37}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 379001}}}, {'call': 'bridge_call jawa/make_empty_room', 'result': {'success': True, 'rect': {'x': 162, 'z': 87, 'w': 7, 'h': 7}, 'wallDef': 'Wall', 'floorDef': 'WoodPlankFloor', 'doorAt': {'x': 166, 'z': 93}, 'cellsWalled': 24, 'cellsFloored': 49, 'ticksGame': 379001, 'operation': {'OperationId': 'op_fb1c461b085d4b9c8f3131205702379e', 'Status': 'Completed', 'Success': True, 'DurationMs': 25}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 379001}}}, {'call': 'bridge_call jawa/spawn_pawn', 'result': {'success': True, 'message': 'Spawned 1/1 RM_FurnaceBeast in faction (none).', 'spawnedCount': 1, 'failedCount': 0, 'substitutedCount': 0, 'pawns': [{'ok': True, 'id': 'RM_FurnaceBeast78946', 'name': 'Furnace-beast', 'kindRequested': 'RM_FurnaceBeast', 'kindActual': 'RM_FurnaceBeast', 'kindSubstituted': False, 'hostile': False, 'x': 154, 'z': 90, 'spawned': True, 'xenotypeApplied': True}], 'ticksGame': 379001, 'operation': {'OperationId': 'op_67902657f8684868a2b1c96b6d6d91c1', 'Status': 'Completed', 'Success': True, 'DurationMs': 7}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 379001}}}, {'call': 'wait_ticks(600) -> 600 real tick(s) over 1 call(s)', 'result': {'success': True, 'executed': 600}}, {'call': 'bridge_call jawa/room_get', 'result': {'success': True, 'message': '1 distinct room(s) over 1 cell(s).', 'cellsProbed': 1, 'roomsFound': 1, 'outdoorsSkipped': 0, 'outdoorsCheckErrors': 0, 'rooms': [{'id': 342, 'role': 'Room', 'roleLabel': 'room', 'cellCount': 25, 'temperature': 58.2227135, 'openRoofCount': 6, 'properRoom': True, 'psychologicallyOutdoors': False, 'isOutdoors': False, 'usesOutdoorTemperature': False, 'sampleCell': {'x': 154, 'z': 90}, 'stats': {'Impressiveness': 6.08500338, 'Beauty': -0.9230769, 'Space': 34.9999962, 'Cleanliness': -0.4, 'Wealth': 337.314056}}], 'recomputedNotCached': True, 'ticksGame': 379601, 'operation': {'OperationId': 'op_af8113a709dd48e1b3139cc495342dbd', 'Status': 'Completed', 'Success': True, 'DurationMs': 14}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 379601}}}, {'call': 'bridge_call jawa/room_get', 'result': {'success': True, 'message': '1 distinct room(s) over 1 cell(s).', 'cellsProbed': 1, 'roomsFound': 1, 'outdoorsSkipped': 0, 'outdoorsCheckErrors': 0, 'rooms': [{'id': 343, 'role': 'Room', 'roleLabel': 'room', 'cellCount': 25, 'temperature': 51.7187424, 'openRoofCount': 0, 'properRoom': True, 'psychologicallyOutdoors': False, 'isOutdoors': False, 'usesOutdoorTemperature': False, 'sampleCell': {'x': 165, 'z': 90}, 'stats': {'Impressiveness': 24.4542351, 'Beauty': 0.0, 'Space': 34.9999962, 'Cleanliness': 0.0, 'Wealth': 337.314056}}], 'recomputedNotCached': True, 'ticksGame': 379601, 'operation': {'OperationId': 'op_400cedb611f64ba79e2185c1b7443591', 'Status': 'Completed', 'Success': True, 'DurationMs': 12}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 379601}}}, {'call': 'bridge_call jawa/list_pawns', 'result': {'success': True, 'message': '28 pawn(s).', 'pawns': [{'id': 'RM_FireHawk75539', 'name': 'Fire-hawk', 'kind': 'RM_FireHawk', 'kindDef': 'RM_FireHawk', 'def': 'RM_FireHawk', 'hasGenes': False, 'uniqueXenotype': False, 'isPlayer': False, 'hostile': False, 'x': 140, 'z': 124, 'spawned': True, 'dead': False, 'downed': False, 'stunned': False, 'stunTicksLeft': 0, 'fleshType': 'Normal', 'isMechanoid': False, 'isFlesh': True, 'intelligence': 'Animal', 'bodySize': 0.65}, {'id': 'RM_FurnaceBeast75540', 'name': 'Furnace-beast', 'kind': 'RM_FurnaceBeast', 'kindDef': 'RM_FurnaceBeast', 'def': 'RM_FurnaceBeast', 'hasGenes': False, 'uniqueXenotype': False, 'isPlayer': False, 'hostile': False, 'x': 67, 'z': 109, 'spawned': True, 'dead': False, 'downed': False, 'stunned': False, 'stunTicksLeft': 0, 'fleshType': 'Normal', 'isMechanoid': False, 'isFlesh': True, 'intelligence': 'Animal', 'bodySize': 9.0}, {'id': 'RM_FurnaceBeast75541', 'name': 'Furnace-beast', 'kind': 'RM_FurnaceBeast', 'kindDef': 'RM_FurnaceBeast', 'def': 'RM_FurnaceBeast', 'hasGenes': False, 'uniqueXenotype': False, 'isPlayer': False, 'hostile': False, 'x': 61, 'z': 110, 'spawned': True, 'dead': False, 'downed': False, 'stunned': False, 'stunTicksLeft': 0, 'fleshType': 'Normal', 'isMechanoid': False, 'isFlesh': True, 'intelligence': 'Animal', 'bodySize': 9.0}, {'id': 'RSW_Orray75542', 'name': 'Orray', 'kind': 'RSW_Orray', 'kindDef': 'RSW_Orray', 'def': 'RSW_Orray', 'hasGenes': False, 'uniqueXenotype': False, 'isPlayer': False, 'hostile': False, 'x': 148, 'z': 30, 'spawned': True, 'dead': False, 'downed': False, 'stunned': False, 'stunTicksLeft': 0, 'fleshType': 'Normal', 'isMechanoid': False, 'isFlesh': True, 'intelligence': 'Animal', 'bodySize': 2.0}, {'id': 'RM_FireHawk75543', 'name': 'Fire-hawk', 'kind': 'RM_FireHawk', 'kindDef': 'RM_FireHawk', 'def': 'RM_FireHawk', 'hasGenes': False, 'uniqueXenotype': False, 'isPlayer': False, 'hostile': False, 'x': 63, 'z': 50, 'spawned': True, 'dead': False, 'downed': False, 'stunned': False, 'stunTicksLeft': 0, 'fleshType': 'Normal', 'isMechanoid': False, 'isFlesh': True, 'intelligence': 'Animal', 'bodySize': 0.65}, {'id': 'RM_FireHawk75544', 'name': 'Fire-hawk', 'kind': 'RM_FireHawk', 'kindDef': 'RM_FireHawk', 'def': 'RM_FireHawk', 'hasGenes': False, 'uniqueXenotype': False, 'isPlayer': False, 'hostile': False, 'x': 10, 'z': 6, 'spawned': True, 'dead': False, 'downed': False, 'stunned': False, 'stunTicksLeft': 0, 'fleshType': 'Normal', 'isMechanoid': False, 'isFlesh': True, 'intelligence': 'Animal', 'bodySize': 0.65}, {'id': 'RSW_Iriaz75545', 'name': 'Iriaz', 'kind': 'RSW_Iriaz', 'kindDef': 'RSW_Iriaz', 'def': 'RSW_Iriaz', 'hasGenes': False, 'uniqueXenotype': False, 'isPlayer': False, 'hostile': False, 'x': 107, 'z': 161, 'spawned': True, 'dead': False, 'downed': False, 'stunned': False, 'stunTicksLeft': 0, 'fleshType': 'Normal', 'isMechanoid': False, 'isFlesh': True, 'intelligence': 'Animal', 'bodySize': 0.7}, {'id': 'RSW_Iriaz75546', 'name': 'Iriaz', 'kind': 'RSW_Iriaz', 'kindDef': 'RSW_Iriaz', 'def': 'RSW_Iriaz', 'hasGenes': False, 'uniqueXenotype': False, 'isPlayer': False, 'hostile': False, 'x': 99, 'z': 174, 'spawned': True, 'dead': False, 'downed': False, 'stunned': False, 'stunTicksLeft': 0, 'fleshType': 'Normal', 'isMechanoid': False, 'isFlesh': True, 'intelligence': 'Animal', 'bodySize': 0.7}, {'id': 'RSW_Iriaz75547', 'name': 'Iriaz', 'kind': 'RSW_Iriaz', 'kindDef': 'RSW_Iriaz', 'def': 'RSW_Iriaz', 'hasGenes': False, 'uniqueXenotype': False, 'isPlayer': False, 'hostile': False, 'x': 93, 'z': 175, 'spawned': True, 'dead': False, 'downed': False, 'stunned': False, 'stunTicksLeft': 0, 'fleshType': 'Normal', 'isMechanoid': False, 'isFlesh': True, 'intelligence': 'Animal', 'bodySize': 0.7}, {'id': 'RSW_Iriaz75548', 'name': 'Iriaz', 'kind': 'RSW_Iriaz', 'kindDef': 'RSW_Iriaz', 'def': 'RSW_Iriaz', 'hasGenes': False, 'uniqueXenotype': False, 'isPlayer': False, 'hostile': False, 'x': 91, 'z': 172, 'spawned': True, 'dead': False, 'downed': False, 'stunned': False, 'stunTicksLeft': 0, 'fleshType': 'Normal', 'isMechanoid': False, 'isFlesh': True, 'intelligence': 'Animal', 'bodySize': 0.7}, {'id': 'RSW_Iriaz75549', 'name': 'Iriaz', 'kind': 'RSW_Iriaz', 'kindDef': 'RSW_Iriaz', 'def': 'RSW_Iriaz', 'hasGenes': False, 'uniqueXenotype': False, 'isPlayer': False, 'hostile': False, 'x': 102, 'z': 159, 'spawned': True, 'dead': False, 'downed': False, 'stunned': False, 'stunTicksLeft': 0, 'fleshType': 'Normal', 'isMechanoid': False, 'isFlesh': True, 'intelligence': 'Animal', 'bodySize': 0.7}, {'id': 'RSW_Iriaz75550', 'name': 'Iriaz', 'kind': 'RSW_Iriaz', 'kindDef': 'RSW_Iriaz', 'def': 'RSW_Iriaz', 'hasGenes': False, 'uniqueXenotype': False, 'isPlayer': False, 'hostile': False, 'x': 93, 'z': 173, 'spawned': True, 'dead': False, 'downed': False, 'stunned': False, 'stunTicksLeft': 0, 'fleshType': 'Normal', 'isMechanoid': False, 'isFlesh': True, 'intelligence': 'Animal', 'bodySize': 0.7}, {'id': 'RSW_Iriaz75551', 'name': 'Iriaz', 'kind': 'RSW_Iriaz', 'kindDef': 'RSW_Iriaz', 'def': 'RSW_Iriaz', 'hasGenes': False, 'uniqueXenotype': False, 'isPlayer': False, 'hostile': False, 'x': 98, 'z': 173, 'spawned': True, 'dead': False, 'downed': False, 'stunned': False, 'stunTicksLeft': 0, 'fleshType': 'Normal', 'isMechanoid': False, 'isFlesh': True, 'intelligence': 'Animal', 'bodySize': 0.7}, {'id': 'RSW_Iriaz75552', 'name': 'Iriaz', 'kind': 'RSW_Iriaz', 'kindDef': 'RSW_Iriaz', 'def': 'RSW_Iriaz', 'hasGenes': False, 'uniqueXenotype': False, 'isPlayer': False, 'hostile': False, 'x': 102, 'z': 164, 'spawned': True, 'dead': False, 'downed': False, 'stunned': False, 'stunTicksLeft': 0, 'fleshType': 'Normal', 'isMechanoid': False, 'isFlesh': True, 'intelligence': 'Animal', 'bodySize': 0.7}, {'id': 'RSW_Iriaz75553', 'name': 'Iriaz', 'kind': 'RSW_Iriaz', 'kindDef': 'RSW_Iriaz', 'def': 'RSW_Iriaz', 'hasGenes': False, 'uniqueXenotype': False, 'isPlayer': False, 'hostile': False, 'x': 102, 'z': 160, 'spawned': True, 'dead': False, 'downed': False, 'stunned': False, 'stunTicksLeft': 0, 'fleshType': 'Normal', 'isMechanoid': False, 'isFlesh': True, 'intelligence': 'Animal', 'bodySize': 0.7}, {'id': 'RSW_Iriaz75554', 'name': 'Iriaz', 'kind': 'RSW_Iriaz', 'kindDef': 'RSW_Iriaz', 'def': 'RSW_Iriaz', 'hasGenes': False, 'uniqueXenotype': False, 'isPlayer': False, 'hostile': False, 'x': 98, 'z': 174, 'spawned': True, 'dead': False, 'downed': False, 'stunned': False, 'stunTicksLeft': 0, 'fleshType': 'Normal', 'isMechanoid': False, 'isFlesh': True, 'intelligence': 'Animal', 'bodySize': 0.7}, {'id': 'RM_Ashwallow75555', 'name': 'Ashwallow', 'kind': 'RM_Ashwallow', 'kindDef': 'RM_Ashwallow', 'def': 'RM_Ashwallow', 'hasGenes': False, 'uniqueXenotype': False, 'isPlayer': False, 'hostile': False, 'x': 132, 'z': 127, 'spawned': True, 'dead': False, 'downed': False, 'stunned': False, 'stunTicksLeft': 0, 'fleshType': 'Normal', 'isMechanoid': False, 'isFlesh': True, 'intelligence': 'Animal', 'bodySize': 1.3}, {'id': 'RM_Ashwallow75556', 'name': 'Ashwallow', 'kind': 'RM_Ashwallow', 'kindDef': 'RM_Ashwallow', 'def': 'RM_Ashwallow', 'hasGenes': False, 'uniqueXenotype': False, 'isPlayer': False, 'hostile': False, 'x': 134, 'z': 145, 'spawned': True, 'dead': False, 'downed': False, 'stunned': False, 'stunTicksLeft': 0, 'fleshType': 'Normal', 'isMechanoid': False, 'isFlesh': True, 'intelligence': 'Animal', 'bodySize': 1.3}, {'id': 'RM_Ashwallow75557', 'name': 'Ashwallow', 'kind': 'RM_Ashwallow', 'kindDef': 'RM_Ashwallow', 'def': 'RM_Ashwallow', 'hasGenes': False, 'uniqueXenotype': False, 'isPlayer': False, 'hostile': False, 'x': 137, 'z': 129, 'spawned': True, 'dead': False, 'downed': False, 'stunned': False, 'stunTicksLeft': 0, 'fleshType': 'Normal', 'isMechanoid': False, 'isFlesh': True, 'intelligence': 'Animal', 'bodySize': 1.3}, {'id': 'RM_Ashwallow75558', 'name': 'Ashwallow', 'kind': 'RM_Ashwallow', 'kindDef': 'RM_Ashwallow', 'def': 'RM_Ashwallow', 'hasGenes': False, 'uniqueXenotype': False, 'isPlayer': False, 'hostile': False, 'x': 135, 'z': 137, 'spawned': True, 'dead': False, 'downed': False, 'stunned': False, 'stunTicksLeft': 0, 'fleshType': 'Normal', 'isMechanoid': False, 'isFlesh': True, 'intelligence': 'Animal', 'bodySize': 1.3}, {'id': 'RM_Ashwallow75559', 'name': 'Ashwallow', 'kind': 'RM_Ashwallow', 'kindDef': 'RM_Ashwallow', 'def': 'RM_Ashwallow', 'hasGenes': False, 'uniqueXenotype': False, 'isPlayer': False, 'hostile': False, 'x': 127, 'z': 137, 'spawned': True, 'dead': False, 'downed': False, 'stunned': False, 'stunTicksLeft': 0, 'fleshType': 'Normal', 'isMechanoid': False, 'isFlesh': True, 'intelligence': 'Animal', 'bodySize': 1.3}, {'id': 'RM_Ashwallow75560', 'name': 'Ashwallow', 'kind': 'RM_Ashwallow', 'kindDef': 'RM_Ashwallow', 'def': 'RM_Ashwallow', 'hasGenes': False, 'uniqueXenotype': False, 'isPlayer': False, 'hostile': False, 'x': 126, 'z': 147, 'spawned': True, 'dead': False, 'downed': False, 'stunned': False, 'stunTicksLeft': 0, 'fleshType': 'Normal', 'isMechanoid': False, 'isFlesh': True, 'intelligence': 'Animal', 'bodySize': 1.3}, {'id': 'RM_Ashwallow75561', 'name': 'Ashwallow', 'kind': 'RM_Ashwallow', 'kindDef': 'RM_Ashwallow', 'def': 'RM_Ashwallow', 'hasGenes': False, 'uniqueXenotype': False, 'isPlayer': False, 'hostile': False, 'x': 130, 'z': 133, 'spawned': True, 'dead': False, 'downed': False, 'stunned': False, 'stunTicksLeft': 0, 'fleshType': 'Normal', 'isMechanoid': False, 'isFlesh': True, 'intelligence': 'Animal', 'bodySize': 1.3}, {'id': 'RM_Ashwallow75562', 'name': 'Ashwallow', 'kind': 'RM_Ashwallow', 'kindDef': 'RM_Ashwallow', 'def': 'RM_Ashwallow', 'hasGenes': False, 'uniqueXenotype': False, 'isPlayer': False, 'hostile': False, 'x': 128, 'z': 141, 'spawned': True, 'dead': False, 'downed': False, 'stunned': False, 'stunTicksLeft': 0, 'fleshType': 'Normal', 'isMechanoid': False, 'isFlesh': True, 'intelligence': 'Animal', 'bodySize': 1.3}, {'id': 'Human75563', 'name': 'Tail', 'kind': 'Colonist', 'kindDef': 'Colonist', 'def': 'Human', 'hasGenes': True, 'xenotype': 'Baseliner', 'xenotypeLabel': 'baseliner', 'uniqueXenotype': False, 'faction': 'PlayerColony', 'factionName': 'Northstar Pyrelands', 'isPlayer': True, 'hostile': False, 'x': 81, 'z': 120, 'spawned': True, 'dead': False, 'downed': False, 'stunned': False, 'stunTicksLeft': 0, 'fleshType': 'Normal', 'isMechanoid': False, 'isFlesh': True, 'intelligence': 'Humanlike', 'bodySize': 1.0}, {'id': 'Human75566', 'name': 'Lees', 'kind': 'Colonist', 'kindDef': 'Colonist', 'def': 'Human', 'hasGenes': True, 'xenotype': 'Baseliner', 'xenotypeLabel': 'baseliner', 'uniqueXenotype': False, 'faction': 'PlayerColony', 'factionName': 'Northstar Pyrelands', 'isPlayer': True, 'hostile': False, 'x': 124, 'z': 98, 'spawned': True, 'dead': False, 'downed': False, 'stunned': False, 'stunTicksLeft': 0, 'fleshType': 'Normal', 'isMechanoid': False, 'isFlesh': True, 'intelligence': 'Humanlike', 'bodySize': 1.0}, {'id': 'Human75569', 'name': 'Doom', 'kind': 'Colonist', 'kindDef': 'Colonist', 'def': 'Human', 'hasGenes': True, 'xenotype': 'Baseliner', 'xenotypeLabel': 'baseliner', 'uniqueXenotype': False, 'faction': 'PlayerColony', 'factionName': 'Northstar Pyrelands', 'isPlayer': True, 'hostile': False, 'x': 81, 'z': 120, 'spawned': True, 'dead': False, 'downed': False, 'stunned': False, 'stunTicksLeft': 0, 'fleshType': 'Normal', 'isMechanoid': False, 'isFlesh': True, 'intelligence': 'Humanlike', 'bodySize': 1.0}, {'id': 'RM_FurnaceBeast78946', 'name': 'Furnace-beast', 'kind': 'RM_FurnaceBeast', 'kindDef': 'RM_FurnaceBeast', 'def': 'RM_FurnaceBeast', 'hasGenes': False, 'uniqueXenotype': False, 'isPlayer': False, 'hostile': False, 'x': 153, 'z': 92, 'spawned': True, 'dead': False, 'downed': False, 'stunned': False, 'stunTicksLeft': 0, 'fleshType': 'Normal', 'isMechanoid': False, 'isFlesh': True, 'intelligence': 'Animal', 'bodySize': 9.0}], 'returned': 28, 'truncated': 0, 'totalOnMap': 28, 'ticksGame': 379601, 'operation': {'OperationId': 'op_c9830ceca84f4fed89ec30fb74e9858e', 'Status': 'Completed', 'Success': True, 'DurationMs': 11}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 379601}}}, {'call': 'bridge_call jawa/cell_temperature', 'result': {'success': True, 'cell': {'x': 154, 'z': 90}, 'ok': True, 'temperature': 58.2227135, 'outdoorTemp': 52.084095, 'seasonalTemp': 50.774353, 'ticksGame': 379601, 'operation': {'OperationId': 'op_1f863819d84046afa244beca55c99b2d', 'Status': 'Completed', 'Success': True, 'DurationMs': 7}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 379601}}}, {'call': 'bridge_call jawa/cell_temperature', 'result': {'success': True, 'cell': {'x': 165, 'z': 90}, 'ok': True, 'temperature': 51.7187424, 'outdoorTemp': 52.084095, 'seasonalTemp': 50.774353, 'ticksGame': 379601, 'operation': {'OperationId': 'op_76ee16febe9144918f72f03656e249e9', 'Status': 'Completed', 'Success': True, 'DurationMs': 7}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 379601}}}, {'call': 'wait_ticks(1000) -> 1000 real tick(s) over 1 call(s)', 'result': {'success': True, 'executed': 1000}}, {'call': 'bridge_call jawa/cell_temperature', 'result': {'success': True, 'cell': {'x': 154, 'z': 90}, 'ok': True, 'temperature': 52.58191, 'outdoorTemp': 52.61374, 'seasonalTemp': 50.77921, 'ticksGame': 380601, 'operation': {'OperationId': 'op_fb6ad0582bd446099983e37149f39c2c', 'Status': 'Completed', 'Success': True, 'DurationMs': 9}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 380601}}}, {'call': 'bridge_call jawa/cell_temperature', 'result': {'success': True, 'cell': {'x': 165, 'z': 90}, 'ok': True, 'temperature': 51.8247566, 'outdoorTemp': 52.61374, 'seasonalTemp': 50.77921, 'ticksGame': 380601, 'operation': {'OperationId': 'op_85b1dcba59264583ba9bfdda83ab9fac', 'Status': 'Completed', 'Success': True, 'DurationMs': 8}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 380601}}}, {'call': 'wait_ticks(1000) -> 1000 real tick(s) over 1 call(s)', 'result': {'success': True, 'executed': 1000}}, {'call': 'bridge_call jawa/cell_temperature', 'result': {'success': True, 'cell': {'x': 154, 'z': 90}, 'ok': True, 'temperature': 53.06925, 'outdoorTemp': 53.12674, 'seasonalTemp': 50.7843628, 'ticksGame': 381601, 'operation': {'OperationId': 'op_f7676c5e38eb4217a4827485f69255fd', 'Status': 'Completed', 'Success': True, 'DurationMs': 8}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 381601}}}, {'call': 'bridge_call jawa/cell_temperature', 'result': {'success': True, 'cell': {'x': 165, 'z': 90}, 'ok': True, 'temperature': 51.99697, 'outdoorTemp': 53.12674, 'seasonalTemp': 50.7843628, 'ticksGame': 381601, 'operation': {'OperationId': 'op_7df7c75762d64474bebfed8d8b4ee360', 'Status': 'Completed', 'Success': True, 'DurationMs': 7}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 381601}}}, {'call': 'wait_ticks(1000) -> 1000 real tick(s) over 1 call(s)', 'result': {'success': True, 'executed': 1000}}, {'call': 'bridge_call jawa/cell_temperature', 'result': {'success': True, 'cell': {'x': 154, 'z': 90}, 'ok': True, 'temperature': 53.5570946, 'outdoorTemp': 53.5821762, 'seasonalTemp': 50.7895164, 'ticksGame': 382601, 'operation': {'OperationId': 'op_8de5e5341fe6468bad59ae53840f786c', 'Status': 'Completed', 'Success': True, 'DurationMs': 8}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 382601}}}, {'call': 'bridge_call jawa/cell_temperature', 'result': {'success': True, 'cell': {'x': 165, 'z': 90}, 'ok': True, 'temperature': 52.24644, 'outdoorTemp': 53.5821762, 'seasonalTemp': 50.7895164, 'ticksGame': 382601, 'operation': {'OperationId': 'op_1a1da5fbe67240d0b550e51b90bed8ec', 'Status': 'Completed', 'Success': True, 'DurationMs': 8}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 382601}}}, {'call': 'wait_ticks(1000) -> 1000 real tick(s) over 1 call(s)', 'result': {'success': True, 'executed': 1000}}, {'call': 'bridge_call jawa/cell_temperature', 'result': {'success': True, 'cell': {'x': 154, 'z': 90}, 'ok': True, 'temperature': 53.931427, 'outdoorTemp': 53.952858, 'seasonalTemp': 50.7943649, 'ticksGame': 383601, 'operation': {'OperationId': 'op_c87234b0a60a48cf9e2cfc9ed6cee8b3', 'Status': 'Completed', 'Success': True, 'DurationMs': 11}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 383601}}}, {'call': 'bridge_call jawa/cell_temperature', 'result': {'success': True, 'cell': {'x': 165, 'z': 90}, 'ok': True, 'temperature': 52.4994659, 'outdoorTemp': 53.952858, 'seasonalTemp': 50.7943649, 'ticksGame': 383601, 'operation': {'OperationId': 'op_346ff8d541c64311906fd4163f00db69', 'Status': 'Completed', 'Success': True, 'DurationMs': 5}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 383601}}}, {'call': 'wait_ticks(1000) -> 1000 real tick(s) over 1 call(s)', 'result': {'success': True, 'executed': 1000}}, {'call': 'bridge_call jawa/cell_temperature', 'result': {'success': True, 'cell': {'x': 154, 'z': 90}, 'ok': True, 'temperature': 54.245327, 'outdoorTemp': 54.28012, 'seasonalTemp': 50.7995148, 'ticksGame': 384601, 'operation': {'OperationId': 'op_fd1ece60edd84d00be9f82e0d8b9ed9c', 'Status': 'Completed', 'Success': True, 'DurationMs': 9}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 384601}}}, {'call': 'bridge_call jawa/cell_temperature', 'result': {'success': True, 'cell': {'x': 165, 'z': 90}, 'ok': True, 'temperature': 52.7668266, 'outdoorTemp': 54.28012, 'seasonalTemp': 50.7995148, 'ticksGame': 384601, 'operation': {'OperationId': 'op_82e6c923cb174cc1a2ad7d14b329f643', 'Status': 'Completed', 'Success': True, 'DurationMs': 7}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 384601}}}, {'call': 'wait_ticks(400) -> 400 real tick(s) over 1 call(s)', 'result': {'success': True, 'executed': 400}}, {'call': 'heat guard (every 6000 ticks, row furnacebeast_heats_room)', 'result': {'cleared': [('Human75563', 0.0214), ('Human75569', 0.009)], 'failed': [], 'read': True}}, {'call': 'wait_ticks(600) -> 600 real tick(s) over 1 call(s)', 'result': {'success': True, 'executed': 600}}, {'call': 'bridge_call jawa/cell_temperature', 'result': {'success': True, 'cell': {'x': 154, 'z': 90}, 'ok': True, 'temperature': 54.52159, 'outdoorTemp': 54.5344658, 'seasonalTemp': 50.80466, 'ticksGame': 385601, 'operation': {'OperationId': 'op_183469165957466aa9b3a5dce902c7f0', 'Status': 'Completed', 'Success': True, 'DurationMs': 6}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 385601}}}, {'call': 'bridge_call jawa/cell_temperature', 'result': {'success': True, 'cell': {'x': 165, 'z': 90}, 'ok': True, 'temperature': 53.06896, 'outdoorTemp': 54.5344658, 'seasonalTemp': 50.80466, 'ticksGame': 385601, 'operation': {'OperationId': 'op_1dfb30c0c301473e9a5c7f11c05828d6', 'Status': 'Completed', 'Success': True, 'DurationMs': 7}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 385601}}}, {'call': 'wait_ticks(1000) -> 1000 real tick(s) over 1 call(s)', 'result': {'success': True, 'executed': 1000}}, {'call': 'bridge_call jawa/cell_temperature', 'result': {'success': True, 'cell': {'x': 154, 'z': 90}, 'ok': True, 'temperature': 54.695488, 'outdoorTemp': 54.70406, 'seasonalTemp': 50.8095, 'ticksGame': 386601, 'operation': {'OperationId': 'op_20a426b6f8b54e9db8cc41b36734dc75', 'Status': 'Completed', 'Success': True, 'DurationMs': 7}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 386601}}}, {'call': 'bridge_call jawa/cell_temperature', 'result': {'success': True, 'cell': {'x': 165, 'z': 90}, 'ok': True, 'temperature': 53.32647, 'outdoorTemp': 54.70406, 'seasonalTemp': 50.8095, 'ticksGame': 386601, 'operation': {'OperationId': 'op_7544db3f5af549099415c31bd4b9c94b', 'Status': 'Completed', 'Success': True, 'DurationMs': 8}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 386601}}}, {'call': 'wait_ticks(1000) -> 1000 real tick(s) over 1 call(s)', 'result': {'success': True, 'executed': 1000}}, {'call': 'bridge_call jawa/cell_temperature', 'result': {'success': True, 'cell': {'x': 154, 'z': 90}, 'ok': True, 'temperature': 54.7995644, 'outdoorTemp': 54.80758, 'seasonalTemp': 50.8146439, 'ticksGame': 387601, 'operation': {'OperationId': 'op_4780da329e5a44bf9f0df9cf4ecaa5c8', 'Status': 'Completed', 'Success': True, 'DurationMs': 8}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 387601}}}, {'call': 'bridge_call jawa/cell_temperature', 'result': {'success': True, 'cell': {'x': 165, 'z': 90}, 'ok': True, 'temperature': 53.5635262, 'outdoorTemp': 54.80758, 'seasonalTemp': 50.8146439, 'ticksGame': 387601, 'operation': {'OperationId': 'op_34d5729aceec49e8aef5877886feedf8', 'Status': 'Completed', 'Success': True, 'DurationMs': 8}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 387601}}}, {'call': 'wait_ticks(1000) -> 1000 real tick(s) over 1 call(s)', 'result': {'success': True, 'executed': 1000}}, {'call': 'bridge_call jawa/cell_temperature', 'result': {'success': True, 'cell': {'x': 154, 'z': 90}, 'ok': True, 'temperature': 54.83132, 'outdoorTemp': 54.83041, 'seasonalTemp': 50.8197823, 'ticksGame': 388601, 'operation': {'OperationId': 'op_7c1d8a1712924c4298f4c2b777df7934', 'Status': 'Completed', 'Success': True, 'DurationMs': 6}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 388601}}}, {'call': 'bridge_call jawa/cell_temperature', 'result': {'success': True, 'cell': {'x': 165, 'z': 90}, 'ok': True, 'temperature': 53.79547, 'outdoorTemp': 54.83041, 'seasonalTemp': 50.8197823, 'ticksGame': 388601, 'operation': {'OperationId': 'op_5163915d4a074ccfaa3f7712efc93e58', 'Status': 'Completed', 'Success': True, 'DurationMs': 9}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 388601}}}, {'call': 'wait_ticks(1000) -> 1000 real tick(s) over 1 call(s)', 'result': {'success': True, 'executed': 1000}}, {'call': 'bridge_call jawa/cell_temperature', 'result': {'success': True, 'cell': {'x': 154, 'z': 90}, 'ok': True, 'temperature': 54.7829, 'outdoorTemp': 54.77748, 'seasonalTemp': 50.8246155, 'ticksGame': 389601, 'operation': {'OperationId': 'op_8573b47dd26c4f52817e9cbbba4faf6f', 'Status': 'Completed', 'Success': True, 'DurationMs': 12}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 389601}}}, {'call': 'bridge_call jawa/cell_temperature', 'result': {'success': True, 'cell': {'x': 165, 'z': 90}, 'ok': True, 'temperature': 53.9629631, 'outdoorTemp': 54.77748, 'seasonalTemp': 50.8246155, 'ticksGame': 389601, 'operation': {'OperationId': 'op_e120e6cd1e14499591b5b487c10b4db5', 'Status': 'Completed', 'Success': True, 'DurationMs': 13}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 389601}}}, {'call': 'wait_ticks(1000) -> 1000 real tick(s) over 1 call(s)', 'result': {'success': True, 'executed': 1000}}, {'call': 'bridge_call jawa/cell_temperature', 'result': {'success': True, 'cell': {'x': 154, 'z': 90}, 'ok': True, 'temperature': 54.6623955, 'outdoorTemp': 54.6422958, 'seasonalTemp': 50.82975, 'ticksGame': 390601, 'operation': {'OperationId': 'op_47bcace65cb0423daedf59526c623148', 'Status': 'Completed', 'Success': True, 'DurationMs': 6}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 390601}}}, {'call': 'bridge_call jawa/cell_temperature', 'result': {'success': True, 'cell': {'x': 165, 'z': 90}, 'ok': True, 'temperature': 54.0879, 'outdoorTemp': 54.6422958, 'seasonalTemp': 50.82975, 'ticksGame': 390601, 'operation': {'OperationId': 'op_4c4fe27be5e641d5997f133f979cfbae', 'Status': 'Completed', 'Success': True, 'DurationMs': 7}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 390601}}}, {'call': 'wait_ticks(400) -> 400 real tick(s) over 1 call(s)', 'result': {'success': True, 'executed': 400}}, {'call': 'heat guard (every 6000 ticks, row furnacebeast_heats_room)', 'result': {'cleared': [('Human75563', 0.0315), ('Human75569', 0.0375)], 'failed': [], 'read': True}}, {'call': 'wait_ticks(600) -> 600 real tick(s) over 1 call(s)', 'result': {'success': True, 'executed': 600}}, {'call': 'bridge_call jawa/cell_temperature', 'result': {'success': True, 'cell': {'x': 154, 'z': 90}, 'ok': True, 'temperature': 54.44169, 'outdoorTemp': 54.4268227, 'seasonalTemp': 50.83488, 'ticksGame': 391601, 'operation': {'OperationId': 'op_872585518a7f426fa67b05055401c1a7', 'Status': 'Completed', 'Success': True, 'DurationMs': 11}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 391601}}}, {'call': 'bridge_call jawa/cell_temperature', 'result': {'success': True, 'cell': {'x': 165, 'z': 90}, 'ok': True, 'temperature': 54.17163, 'outdoorTemp': 54.4268227, 'seasonalTemp': 50.83488, 'ticksGame': 391601, 'operation': {'OperationId': 'op_8618ee52c4ba42889eb14cd213c49035', 'Status': 'Completed', 'Success': True, 'DurationMs': 10}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 391601}}}, {'call': 'bridge_call jawa/room_get', 'result': {'success': True, 'message': '1 distinct room(s) over 1 cell(s).', 'cellsProbed': 1, 'roomsFound': 1, 'outdoorsSkipped': 0, 'outdoorsCheckErrors': 0, 'rooms': [{'id': 342, 'role': 'Room', 'roleLabel': 'room', 'cellCount': 25, 'temperature': 54.44169, 'openRoofCount': 25, 'properRoom': True, 'psychologicallyOutdoors': False, 'isOutdoors': False, 'usesOutdoorTemperature': True, 'sampleCell': {'x': 154, 'z': 90}, 'stats': {'Impressiveness': -102.397453, 'Beauty': -8.307693, 'Space': 34.9999962, 'Cleanliness': -3.6, 'Wealth': 337.314056}}], 'recomputedNotCached': True, 'ticksGame': 391601, 'operation': {'OperationId': 'op_6f87e30bac364313af3c33ebd66b8da5', 'Status': 'Completed', 'Success': True, 'DurationMs': 10}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 391601}}}, {'call': 'bridge_call jawa/room_get', 'result': {'success': True, 'message': '1 distinct room(s) over 1 cell(s).', 'cellsProbed': 1, 'roomsFound': 1, 'outdoorsSkipped': 0, 'outdoorsCheckErrors': 0, 'rooms': [{'id': 343, 'role': 'Room', 'roleLabel': 'room', 'cellCount': 25, 'temperature': 54.17163, 'openRoofCount': 0, 'properRoom': True, 'psychologicallyOutdoors': False, 'isOutdoors': False, 'usesOutdoorTemperature': False, 'sampleCell': {'x': 165, 'z': 90}, 'stats': {'Impressiveness': 24.4542351, 'Beauty': 0.0, 'Space': 34.9999962, 'Cleanliness': 0.0, 'Wealth': 337.314056}}], 'recomputedNotCached': True, 'ticksGame': 391601, 'operation': {'OperationId': 'op_d0cf0ee2821445b0a657a3fdc39d0e0f', 'Status': 'Completed', 'Success': True, 'DurationMs': 9}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 391601}}}, {'call': 'rooms after the series (A, B)', 'result': [{'success': True, 'message': '1 distinct room(s) over 1 cell(s).', 'cellsProbed': 1, 'roomsFound': 1, 'outdoorsSkipped': 0, 'outdoorsCheckErrors': 0, 'rooms': [{'id': 342, 'role': 'Room', 'roleLabel': 'room', 'cellCount': 25, 'temperature': 54.44169, 'openRoofCount': 25, 'properRoom': True, 'psychologicallyOutdoors': False, 'isOutdoors': False, 'usesOutdoorTemperature': True, 'sampleCell': {'x': 154, 'z': 90}, 'stats': {'Impressiveness': -102.397453, 'Beauty': -8.307693, 'Space': 34.9999962, 'Cleanliness': -3.6, 'Wealth': 337.314056}}], 'recomputedNotCached': True, 'ticksGame': 391601}, {'success': True, 'message': '1 distinct room(s) over 1 cell(s).', 'cellsProbed': 1, 'roomsFound': 1, 'outdoorsSkipped': 0, 'outdoorsCheckErrors': 0, 'rooms': [{'id': 343, 'role': 'Room', 'roleLabel': 'room', 'cellCount': 25, 'temperature': 54.17163, 'openRoofCount': 0, 'properRoom': True, 'psychologicallyOutdoors': False, 'isOutdoors': False, 'usesOutdoorTemperature': False, 'sampleCell': {'x': 165, 'z': 90}, 'stats': {'Impressiveness': 24.4542351, 'Beauty': 0.0, 'Space': 34.9999962, 'Cleanliness': 0.0, 'Wealth': 337.314056}}], 'recomputedNotCached': True, 'ticksGame': 391601}]}, {'call': 'room temperatures', 'result': {'ambient': [58.2227135, 51.7187424], 'series': [[52.58191, 51.8247566], [53.06925, 51.99697], [53.5570946, 52.24644], [53.931427, 52.4994659], [54.245327, 52.7668266], [54.52159, 53.06896], [54.695488, 53.32647], [54.7995644, 53.5635262], [54.83132, 53.79547], [54.7829, 53.9629631], [54.6623955, 54.0879], [54.44169, 54.17163]], 'beastAt': (153, 92), 'beastInsideRoomA': True, 'roomsFound': [1, 1]}}], 'freshness': 'fresh'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "FAIL",
+      "state_evidence": "furnacebeast_heats_room=FAIL [{'execution': 'ran', 'detail': 'ExpectationFailed: beast room is not clearly hotter than the matched control (+0.3 C, under +10): [[52.58191, 51.8247566], [53.06925, 51.99697], [53.5570946, 52.24644], [53.931427, 52.4994659], [54.245327, 52.7668266], [54.52159, 53.06896], [54.695488, 53.32647], [54.]"
+    },
+    {
+      "id": "pyre_burrowers_dive",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]"
+    },
+    {
+      "id": "pyre_ashfall_darkens_drifts",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]"
+    },
+    {
+      "id": "pyre_cinderfall_distinct",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]"
+    },
+    {
+      "id": "pyre_blackrain_reads",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]"
+    },
+    {
+      "id": "pyre_cannot_ordinary_rain",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]",
+      "visual": true,
+      "polarity": "cannot",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains furnace_room)'}]"
+    },
+    {
+      "id": "plant_census.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "plant_census.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "ruins.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "burn_line.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "burn_line.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "burn_line.skipped#3",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "opening_front.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "opening_front.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "startup_and_def_wiring.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "ground_deep_ash.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "ground_deep_ash.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "ground_deep_ash.skipped#3",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "ground_deep_ash.skipped#4",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "ground_deep_ash.skipped#5",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "ground_deep_ash.skipped#6",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "ground_deep_ash.skipped#7",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "ash_fertility_watered.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "ash_fertility_watered.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "fresh_burn_bonus.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "ambient_ash_drift.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "fire_tick_effects.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "fire_tick_effects.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "ashfall_weather_accumulation.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "cinderfall.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "cinderfall.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "cinderfall.skipped#3",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "blackrain.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "blackrain.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "soaked_map_stays_smooth.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "no_ordinary_rain.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "no_ordinary_rain.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "scorchfruit_fire_born.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "firehawk.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "firehawk.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "furnace_sleep.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "furnace_sleep.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "heat_dome.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "heat_dome.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "heat_dome.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "embergrass_regrow.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "embergrass_regrow.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "embergrass_regrow.skipped#3",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "ullai_and_giant.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "ullai_and_giant.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "ullai_and_giant.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "ullai_and_giant.skipped#3",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "gpt_hunt_plausible.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "gpt_hunt_plausible.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "gpt_hunt_plausible.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "gpt_hunt_plausible.skipped#3",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "gpt_hunt_plausible.skipped#4",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "gpt_hunt_plausible.skipped#5",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "gpt_hunt_plausible.skipped#6",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "gpt_hunt_plausible.skipped#7",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "gpt_hunt_plausible.skipped#8",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "sand_shovel.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "flamefang_venom.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "flamefang_venom.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "flamefang_venom.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "flamefang_venom.skipped#3",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "flamefang_venom.skipped#4",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "rite_hook_alone.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "rite_hook_alone.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "firefoam_sprayer.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "firefoam_sprayer.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "walk_season.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "walk_season.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "walk_season.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "walk_season.skipped#3",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "walk_season.skipped#4",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "walk_season.skipped#5",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "walk_season.skipped#6",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "walk_season.skipped#7",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "foreign_arrivals.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "foreign_arrivals.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "foreign_arrivals.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "fire_sense.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "fire_sense.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "fire_sense.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "fire_sense.skipped#3",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "fire_sense.skipped#4",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "burn_line_off_control.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "furnace_hide_bank.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "roof_withers.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "roof_withers.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "roof_withers.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "herd_thirst.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "firehawk_first_sighting_letter.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "firehawk_first_sighting_letter.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "firehawk_first_sighting_letter.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "firehawk_crestfeather_yield.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    },
+    {
+      "id": "firehawk_mapwide_carry.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains furnace_room)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)"
+    }
+  ],
+  "preflight": [
+    {
+      "name": "tool_census",
+      "status": "PASS",
+      "evidence": "563 tools, all 4 required present",
+      "required": true
+    },
+    {
+      "name": "game_loaded",
+      "status": "PASS",
+      "evidence": "ticksGame=379001 map=250x250",
+      "required": true
+    },
+    {
+      "name": "no_modal",
+      "status": "PASS",
+      "evidence": "open blocking windows: none",
+      "required": true
+    },
+    {
+      "name": "paused",
+      "status": "PASS",
+      "evidence": "ticksGame frozen at 379001 over two reads",
+      "required": true
+    },
+    {
+      "name": "dev_god_mode",
+      "status": "PASS",
+      "evidence": "dev on",
+      "required": true
+    },
+    {
+      "name": "modlist",
+      "status": "PASS",
+      "evidence": "18 active, sha256 66f3f1d90416d398 (disk = NEXT load, not proof of the running list)",
+      "required": true
+    }
+  ],
+  "compat": [],
+  "config": "current",
+  "config_list": null,
+  "chains_selected": [
+    "furnace_room"
+  ],
+  "chains_skipped": [
+    "mapgen_log",
+    "plant_census",
+    "animal_census",
+    "grass_cover",
+    "ruins",
+    "burn_line",
+    "opening_front",
+    "startup_and_def_wiring",
+    "ground_deep_ash",
+    "ash_fertility_watered",
+    "fresh_burn_bonus",
+    "ambient_ash_drift",
+    "fire_tick_effects",
+    "ashfall_weather_accumulation",
+    "ashfall_drifts",
+    "cinderfall",
+    "blackrain",
+    "soaked_map_stays_smooth",
+    "no_ordinary_rain",
+    "scorchfruit_fire_born",
+    "scorchfruit_produces",
+    "scorchfruit_spoils",
+    "firehawk",
+    "furnace_warmth",
+    "furnace_sleep",
+    "burrowers",
+    "heat_dome",
+    "embergrass_regrow",
+    "ullai_and_giant",
+    "gpt_hunt_plausible",
+    "sand_shovel",
+    "flamefang_venom",
+    "rite_hook_alone",
+    "firefoam_sprayer",
+    "walk_season",
+    "foreign_arrivals",
+    "fire_sense",
+    "burn_line_off_control",
+    "furnace_hide_bank",
+    "roof_withers",
+    "herd_thirst",
+    "firehawk_first_sighting_letter",
+    "firehawk_crestfeather_yield",
+    "firehawk_mapwide_carry"
+  ],
+  "bar_text": {
+    "pyre_plant_distribution_correct": {
+      "polarity": "must",
+      "text": "every wild plant on a fresh Pyrelands map is ember grass, quick grass or scorch-fruit; no other wild plant species grows there."
+    },
+    "pyre_animal_distribution_correct": {
+      "polarity": "must",
+      "text": "every wild animal on a fresh Pyrelands map belongs to the biome's fire-ecology cast, no other kind wanders in, and the small common grazers outnumber the big predators."
+    },
+    "pyre_mapgen_log_clean": {
+      "polarity": "must",
+      "text": "generating a fresh Pyrelands map raises no error message on screen."
+    },
+    "pyre_ground_deep_ash": {
+      "polarity": "must",
+      "text": "a fresh Pyrelands map is almost all deep ash; only small pockets of unburned soil and gravel remain, and standing water is ringed with richer ground."
+    },
+    "pyre_ash_fertile_when_watered": {
+      "polarity": "must",
+      "text": "a crop on deep ash beside a watered channel grows clearly faster than the same crop on dry ash."
+    },
+    "pyre_fresh_burn_feeds_the_field": {
+      "polarity": "must",
+      "text": "ground that has just burned grows noticeably faster for a few days, and black rain compounds that advantage rather than washing it away."
+    },
+    "pyre_grass_chokes_ground": {
+      "polarity": "must",
+      "text": "open ground is carpeted densely in grass; there are no bare-dirt expanses where grass should carry the ground."
+    },
+    "pyre_embergrass_regrows": {
+      "polarity": "must",
+      "text": "a burned patch of grass is visibly re-greening within a few days and largely green again within about a week, at the biome's own heat."
+    },
+    "pyre_burn_line_present": {
+      "polarity": "must",
+      "text": "a fresh Pyrelands map shows grass fire burning somewhere and moving like a natural grass fire, with a visibly scorched trail behind it."
+    },
+    "pyre_scorchfruit_fire_born": {
+      "polarity": "must",
+      "text": "scorch-fruit appears only on freshly burned ground, never as ordinary wild growth on unburned land."
+    },
+    "pyre_scorchfruit_produces": {
+      "polarity": "must",
+      "text": "a ripe scorch-fruit plant yields edible fruit that a colonist can harvest, and eating it raises a hungry colonist's food meter."
+    },
+    "pyre_scorchfruit_spoils_fast": {
+      "polarity": "must",
+      "text": "unrefrigerated, harvested scorch-fruit rots within about four days, and a ripe unharvested plant withers within about a day."
+    },
+    "pyre_ruins_scorched": {
+      "polarity": "must",
+      "text": "ruins on a fresh Pyrelands map stand blackened and fire-scarred, not pristine."
+    },
+    "pyre_firehawk_carries_ember": {
+      "polarity": "must",
+      "text": "a fire-hawk picks up a burning twig and a new fire starts where it drops it, ahead of the existing blaze."
+    },
+    "pyre_furnacebeast_warmth": {
+      "polarity": "must",
+      "text": "a pawn standing in the open near a furnace-beast shows a readable warmth status that disappears after it walks away."
+    },
+    "pyre_furnacebeast_heats_room": {
+      "polarity": "must",
+      "text": "an enclosed room holding a furnace-beast becomes clearly hotter than a comparable room without one."
+    },
+    "pyre_burrowers_dive": {
+      "polarity": "must",
+      "text": "when fire reaches a burrowing grazer it shows a readable burrowed status and comes through unharmed once the fire has passed."
+    },
+    "pyre_ashfall_darkens_drifts": {
+      "polarity": "must",
+      "text": "ash fall dims the map and lays visible loose-ash drifts that keep accumulating while it lasts."
+    },
+    "pyre_cinderfall_distinct": {
+      "polarity": "must",
+      "text": "cinderfall is recognisable at a glance as its own weather, not ash fall renamed."
+    },
+    "pyre_blackrain_reads": {
+      "polarity": "must",
+      "text": "black rain falls visibly dark, plainly different from ordinary blue-grey rain."
+    },
+    "pyre_cannot_ordinary_rain": {
+      "polarity": "cannot",
+      "text": "ordinary rain falling on a Pyrelands map; its only wet weather is black rain."
+    }
+  },
+  "bar_text_source": "design\\validation_walks\\RimMandrake\\Pyrelands.md (hash 6ad3da0a6e44abb1094d65b4d4918cb8e839049de167f2abf59f48d61fdd2cf7)",
+  "components": [
+    {
+      "chain": "furnace_room",
+      "name": "furnacebeast_heats_room",
+      "verdict": "FAIL",
+      "evidenceFull": "ExpectationFailed: beast room is not clearly hotter than the matched control (+0.3 C, under +10): [[52.58191, 51.8247566], [53.06925, 51.99697], [53.5570946, 52.24644], [53.931427, 52.4994659], [54.245327, 52.7668266], [54.52159, 53.06896], [54.695488, 53.32647], [54.7995644, 53.5635262], [54.83132, 53.79547], [54.7829, 53.9629631], [54.6623955, 54.0879], [54.44169, 54.17163]]",
+      "shows": [
+        "pyre_furnacebeast_heats_room"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "mapgen_log",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [
+        "pyre_mapgen_log_clean"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "plant_census",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [
+        "pyre_plant_distribution_correct"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "plant_census",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "plant_census",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "animal_census",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [
+        "pyre_animal_distribution_correct"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "grass_cover",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [
+        "pyre_grass_chokes_ground"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "ruins",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [
+        "pyre_ruins_scorched"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "ruins",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "burn_line",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [
+        "pyre_burn_line_present"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "burn_line",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "burn_line",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "burn_line",
+      "name": "skipped#3",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "opening_front",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "opening_front",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "startup_and_def_wiring",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ground_deep_ash",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [
+        "pyre_ground_deep_ash"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "ground_deep_ash",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ground_deep_ash",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ground_deep_ash",
+      "name": "skipped#3",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ground_deep_ash",
+      "name": "skipped#4",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ground_deep_ash",
+      "name": "skipped#5",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ground_deep_ash",
+      "name": "skipped#6",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ground_deep_ash",
+      "name": "skipped#7",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ash_fertility_watered",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [
+        "pyre_ash_fertile_when_watered"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "ash_fertility_watered",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ash_fertility_watered",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "fresh_burn_bonus",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [
+        "pyre_fresh_burn_feeds_the_field"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "fresh_burn_bonus",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ambient_ash_drift",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "fire_tick_effects",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "fire_tick_effects",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ashfall_weather_accumulation",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ashfall_drifts",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [
+        "pyre_ashfall_darkens_drifts"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "cinderfall",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [
+        "pyre_cinderfall_distinct"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "cinderfall",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "cinderfall",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "cinderfall",
+      "name": "skipped#3",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "blackrain",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [
+        "pyre_blackrain_reads"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "blackrain",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "blackrain",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "soaked_map_stays_smooth",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "no_ordinary_rain",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [
+        "pyre_cannot_ordinary_rain"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "no_ordinary_rain",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "no_ordinary_rain",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "scorchfruit_fire_born",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [
+        "pyre_scorchfruit_fire_born"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "scorchfruit_fire_born",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "scorchfruit_produces",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [
+        "pyre_scorchfruit_produces"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "scorchfruit_spoils",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [
+        "pyre_scorchfruit_spoils_fast"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "firehawk",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [
+        "pyre_firehawk_carries_ember"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "firehawk",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "firehawk",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "furnace_warmth",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [
+        "pyre_furnacebeast_warmth"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "furnace_sleep",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "furnace_sleep",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "burrowers",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [
+        "pyre_burrowers_dive"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "heat_dome",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "heat_dome",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "heat_dome",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "embergrass_regrow",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [
+        "pyre_embergrass_regrows"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "embergrass_regrow",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "embergrass_regrow",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "embergrass_regrow",
+      "name": "skipped#3",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ullai_and_giant",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ullai_and_giant",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ullai_and_giant",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ullai_and_giant",
+      "name": "skipped#3",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gpt_hunt_plausible",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gpt_hunt_plausible",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gpt_hunt_plausible",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gpt_hunt_plausible",
+      "name": "skipped#3",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gpt_hunt_plausible",
+      "name": "skipped#4",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gpt_hunt_plausible",
+      "name": "skipped#5",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gpt_hunt_plausible",
+      "name": "skipped#6",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gpt_hunt_plausible",
+      "name": "skipped#7",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gpt_hunt_plausible",
+      "name": "skipped#8",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "sand_shovel",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flamefang_venom",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flamefang_venom",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flamefang_venom",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flamefang_venom",
+      "name": "skipped#3",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flamefang_venom",
+      "name": "skipped#4",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "rite_hook_alone",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "rite_hook_alone",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "firefoam_sprayer",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "firefoam_sprayer",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "walk_season",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "walk_season",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "walk_season",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "walk_season",
+      "name": "skipped#3",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "walk_season",
+      "name": "skipped#4",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "walk_season",
+      "name": "skipped#5",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "walk_season",
+      "name": "skipped#6",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "walk_season",
+      "name": "skipped#7",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "foreign_arrivals",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "foreign_arrivals",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "foreign_arrivals",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "fire_sense",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "fire_sense",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "fire_sense",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "fire_sense",
+      "name": "skipped#3",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "fire_sense",
+      "name": "skipped#4",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "burn_line_off_control",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "furnace_hide_bank",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "roof_withers",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "roof_withers",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "roof_withers",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "herd_thirst",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "firehawk_first_sighting_letter",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "firehawk_first_sighting_letter",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "firehawk_first_sighting_letter",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "firehawk_crestfeather_yield",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "firehawk_mapwide_carry",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains furnace_room)",
+      "shows": [],
+      "screenshots": []
+    }
+  ],
+  "summary": {
+    "PASS": 0,
+    "FAIL": 1,
+    "UNMEASURED": 112
+  },
+  "all_green": false,
+  "timing": {
+    "n": 269,
+    "total_ms": 29949.274,
+    "mean_ms": 111.3356,
+    "p50_ms": 31.7993,
+    "p95_ms": 953.3928,
+    "by_tool": {
+      "jawa/static_call": {
+        "n": 1,
+        "mean_ms": 206.9345,
+        "errors": 0
+      },
+      "rimworld/get_game_info": {
+        "n": 34,
+        "mean_ms": 3.4985,
+        "errors": 0
+      },
+      "jawa/map_info": {
+        "n": 20,
+        "mean_ms": 11.319,
+        "errors": 0
+      },
+      "rimworld/get_ui_state": {
+        "n": 1,
+        "mean_ms": 3.5653,
+        "errors": 0
+      },
+      "jawa/prefs": {
+        "n": 1,
+        "mean_ms": 44.5202,
+        "errors": 0
+      },
+      "jawa/world_mutators_get": {
+        "n": 1,
+        "mean_ms": 39.2657,
+        "errors": 0
+      },
+      "jawa/list_things": {
+        "n": 1,
+        "mean_ms": 21.6226,
+        "errors": 0
+      },
+      "jawa/get_roof_batch": {
+        "n": 20,
+        "mean_ms": 11.2993,
+        "errors": 0
+      },
+      "rimworld/get_cell_info": {
+        "n": 20,
+        "mean_ms": 4.0214,
+        "errors": 0
+      },
+      "jawa/cell_temperature": {
+        "n": 46,
+        "mean_ms": 39.5857,
+        "errors": 0
+      },
+      "jawa/world_tile_get": {
+        "n": 1,
+        "mean_ms": 48.8638,
+        "errors": 0
+      },
+      "jawa/weather_get": {
+        "n": 2,
+        "mean_ms": 51.0042,
+        "errors": 0
+      },
+      "jawa/time_clock": {
+        "n": 1,
+        "mean_ms": 42.5251,
+        "errors": 0
+      },
+      "jawa/incident_queue_clear": {
+        "n": 1,
+        "mean_ms": 78.5943,
+        "errors": 0
+      },
+      "jawa/list_pawns": {
+        "n": 25,
+        "mean_ms": 12.9887,
+        "errors": 0
+      },
+      "jawa/window_list_close": {
+        "n": 2,
+        "mean_ms": 49.2117,
+        "errors": 0
+      },
+      "jawa/drain_log": {
+        "n": 1,
+        "mean_ms": 40.1812,
+        "errors": 0
+      },
+      "jawa/name_colony": {
+        "n": 1,
+        "mean_ms": 47.9532,
+        "errors": 0
+      },
+      "jawa/destroy_batch": {
+        "n": 2,
+        "mean_ms": 805.2724,
+        "errors": 0
+      },
+      "jawa/pawn_need": {
+        "n": 51,
+        "mean_ms": 37.7464,
+        "errors": 0
+      },
+      "jawa/pawn_health": {
+        "n": 6,
+        "mean_ms": 38.4772,
+        "errors": 0
+      },
+      "jawa/mod_settings_field": {
+        "n": 6,
+        "mean_ms": 49.2281,
+        "errors": 0
+      },
+      "jawa/make_empty_room": {
+        "n": 2,
+        "mean_ms": 68.2311,
+        "errors": 0
+      },
+      "jawa/spawn_pawn": {
+        "n": 1,
+        "mean_ms": 39.8338,
+        "errors": 0
+      },
+      "jawa/safe_advance": {
+        "n": 15,
+        "mean_ms": 1460.6596,
+        "errors": 0
+      },
+      "jawa/room_get": {
+        "n": 4,
+        "mean_ms": 42.875,
+        "errors": 0
+      },
+      "rimworld/list_colonists": {
+        "n": 2,
+        "mean_ms": 3.0534,
+        "errors": 0
+      },
+      "jawa/pawn_force_incapacitate": {
+        "n": 1,
+        "mean_ms": 51.7748,
+        "errors": 0
+      }
+    }
+  },
+  "partial": false,
+  "mod_hash": "3d7d1b8ced76b3c7c79b3a0527decfa512db3426575d018bf731ca66a346eba3"
+}

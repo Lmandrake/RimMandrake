@@ -1,0 +1,12 @@
+{
+ "verdict": "PASS",
+ "save": "burn_line_walking",
+ "now": 533722,
+ "window": 60000,
+ "burned": 4213,
+ "strandCells": 234,
+ "strandShare": 0.0555,
+ "limit": 0.25,
+ "longestOneCellRunAlongX": 19,
+ "oneCellRunsAlongX_ge20": 0
+}

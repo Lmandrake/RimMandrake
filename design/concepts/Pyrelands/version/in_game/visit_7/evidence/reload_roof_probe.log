@@ -1,0 +1,3 @@
+[rimbridge_client] auto-reconciled 3effa1cf8dd840b4 jawa/safe_advance as moot: its writer (pid 31688, cli.py) is gone and jawa/safe_advance is repeat-safe: advances the clock: a later caller reads the clock it finds, it never relied on this one
+reloaded NS_Pyrelands_site_1_417df172fdb5_visit7: map 1 tile 193 RM_Pyrelands outdoor 51.73168 -- now run gate B
+[bridge split] 13.2 s wall: load 0.0 / ticks 2.1 / reads 1.9 / other 0.4 / outside calls 8.7 s

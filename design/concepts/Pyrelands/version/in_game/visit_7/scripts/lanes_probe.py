@@ -11,6 +11,7 @@ sys.path.insert(0, r"src\RimMandrake\Utils")
 from rimbridge_client import RimBridge, resolve_endpoint
 
 SAVE = os.environ.get("LANES_SAVE", "burn_line_walking")
+TAG = os.environ.get("LANES_TAG", SAVE)
 WINDOW = int(os.environ.get("LANES_WINDOW", "60000"))
 LIMIT = 0.25
 ASH = "RimMandrake.Pyrelands.MapComponent_PyrelandsAshField"
@@ -78,12 +79,12 @@ with RimBridge(h, p, tk) as rb:
             im.putpixel((x, sz - 1 - z), (20, 20, 20))
         for (x, z) in strands:
             im.putpixel((x, sz - 1 - z), (230, 60, 30))
-        im.resize((sx * 3, sz * 3)).save(os.path.join(OUT, "lanes_%s_mask.png" % SAVE))
+        im.resize((sx * 3, sz * 3)).save(os.path.join(OUT, "lanes_%s_mask.png" % TAG))
     except Exception as e:   # the mask is a picture to look at, never the verdict
         print("mask not drawn: %r" % (e,))
     v = "PASS" if share <= LIMIT else "FAIL"
     res = {"verdict": v, "save": SAVE, "now": now, "window": WINDOW, "burned": len(burned), "strandCells": len(strands),
            "strandShare": round(share, 4), "limit": LIMIT, "longestOneCellRunAlongX": longest, "oneCellRunsAlongX_ge20": runs20}
-    json.dump(res, open(os.path.join(OUT, "lanes_%s.json" % SAVE), "w"), indent=1)
+    json.dump(res, open(os.path.join(OUT, "lanes_%s.json" % TAG), "w"), indent=1)
     print(json.dumps(res))
     sys.exit(0 if v == "PASS" else 1)

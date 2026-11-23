@@ -1,0 +1,166 @@
+[modcheck] chain ash_fertility_watered START 14:25:12Z
+[pyre-note] heat guard (row start, row ash_fertile_when_watered): {"cleared": [["Human75563", 0.0008], ["Human75569", 0.0008]], "failed": [], "read": true}
+[pyre-note] ash strip placement (natural water within the sweep radius 2 rejects an origin): {"origin": [60, 190], "rejected": [], "nRejected": 0}
+[pyre-note] FertilityAt: beside water vs 8 cells away (and both cells before the water): {"origin": [60, 190], "before": {"fertility": 0.7, "terrain": "RM_FE_Ash_Deep", "ashField": "True", "watered": false, "bonus": 0.0, "burnTick": "-1", "base": 0.7, "wateredFertility": 1.4, "raining": "False", "blackRainWateredUntil": "-1", "now": "379001", "active": "True", "lift": "0.000", "bonusAgeDays": "-1", "bonusDaysLeft": "0.00", "rainOnCell": "False", "expected": "0.700", "consistent": "True"}, "farBefore": {"fertility": 0.7, "terrain": "RM_FE_Ash_Deep", "ashField": "True", "watered": false, "bonus": 0.0, "burnTick": "-1", "base": 0.7, "wateredFertility": 1.4, "raining": "False", "blackRainWateredUntil": "-1", "now": "379001", "active": "True", "lift": "0.000", "bonusAgeDays": "-1", "bonusDaysLeft": "0.00", "rainOnCell": "False", "expected": "0.700", "consistent": "True"}, "beside": {"fertility": 1.4, "terrain": "RM_FE_Ash_Deep", "ashField": "True", "watered": true, "bonus": 0.0, "burnTick": "-1", "base": 0.7, "wateredFertility": 1.4, "raining": "False", "blackRainWateredUntil": "-1", "now": "381601", "active": "True", "lift": "0.700", "bonusAgeDays": "-1", "bonusDaysLeft": "0.00", "rainOnCell": "False", "expected": "1.400", "consistent": "True"}, "far": {"fertility": 0.7, "terrain": "RM_FE_Ash_Deep", "ashField": "True", "watered": false, "bonus": 0.0, "burnTick": "-1", "base": 0.7, "wateredFertility": 1.4, "raining": "False", "blackRainWateredUntil": "-1", "now": "381601", "active": "True", "lift": "0.000", "bonusAgeDays": "-1", "bonusDaysLeft": "0.00", "rainOnCell": 
+[pyre-note] colony vitals after ash_fertile_when_watered: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 06:25:19 ash_fertile_when_watered PASS 
+[pyre-note] heat guard (row start, row wet_roots_cool_the_crop): {"cleared": [["Human75563", 0.0004], ["Human75569", 0.0023]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row wet_roots_cool_the_crop): {"cleared": [["Human75563", 0.0375], ["Human75569", 0.0203]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row wet_roots_cool_the_crop): {"cleared": [["Human75563", 0.0375], ["Human75569", 0.0375]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row wet_roots_cool_the_crop): {"cleared": [["Human75563", 0.0375], ["Human75569", 0.0218]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row wet_roots_cool_the_crop): {"cleared": [["Human75569", 0.0008]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row wet_roots_cool_the_crop): {"cleared": [["Human75563", 0.0146], ["Human75569", 0.0326]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row wet_roots_cool_the_crop): {"cleared": [["Human75563", 0.0375], ["Human75569", 0.0319]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row wet_roots_cool_the_crop): {"cleared": [["Human75569", 0.0038]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row wet_roots_cool_the_crop): {"cleared": [["Human75563", 0.0157], ["Human75569", 0.0157]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row wet_roots_cool_the_crop): {"cleared": [["Human75563", 0.0375], ["Human75569", 0.0375]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row wet_roots_cool_the_crop): {"cleared": [["Human75563", 0.0375], ["Human75569", 0.0375]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row wet_roots_cool_the_crop): {"cleared": [["Human75563", 0.0375], ["Human75569", 0.0375]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row wet_roots_cool_the_crop): {"cleared": [["Human75563", 0.0218], ["Human75569", 0.0218]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row wet_roots_cool_the_crop): {"cleared": [["Human75563", 0.0203], ["Human75569", 0.0203]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row wet_roots_cool_the_crop): {"cleared": [["Human75563", 0.0398], ["Human75569", 0.0398]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row wet_roots_cool_the_crop): {"cleared": [["Human75563", 0.0641], ["Human75569", 0.0641]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row wet_roots_cool_the_crop): {"cleared": [["Human75563", 0.0841], ["Human75566", 0.0053], ["Human75569", 0.0841]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row wet_roots_cool_the_crop): {"cleared": [["Human75563", 0.0867], ["Human75566", 0.0157], ["Human75569", 0.0867]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row wet_roots_cool_the_crop): {"cleared": [["Human75563", 0.0717], ["Human75569", 0.0717]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row wet_roots_cool_the_crop): {"cleared": [["Human75563", 0.0464], ["Human75569", 0.0464]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row wet_roots_cool_the_crop): {"cleared": [["Human75563", 0.0375], ["Human75569", 0.0375]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row wet_roots_cool_the_crop): {"cleared": [["Human75563", 0.0203], ["Human75569", 0.0203]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row wet_roots_cool_the_crop): {"cleared": [["Human75563", 0.0112], ["Human75569", 0.0004]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row wet_roots_cool_the_crop): {"cleared": [["Human75563", 0.0375], ["Human75569", 0.0004]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row wet_roots_cool_the_crop): {"cleared": [["Human75563", 0.0416], ["Human75569", 0.0349]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row wet_roots_cool_the_crop): {"cleared": [["Human75563", 0.003], ["Human75569", 0.0617]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row wet_roots_cool_the_crop): {"cleared": [["Human75563", 0.0186], ["Human75569", 0.0817]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row wet_roots_cool_the_crop): {"cleared": [["Human75563", 0.0819], ["Human75569", 0.0819]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row wet_roots_cool_the_crop): {"cleared": [["Human75563", 0.0651], ["Human75569", 0.0652]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row wet_roots_cool_the_crop): {"cleared": [["Human75563", 0.0397], ["Human75569", 0.04]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row wet_roots_cool_the_crop): {"cleared": [["Human75563", 0.0368], ["Human75569", 0.0368]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row wet_roots_cool_the_crop): {"cleared": [["Human75563", 0.0278], ["Human75569", 0.0274]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row wet_roots_cool_the_crop): {"cleared": [["Human75563", 0.0385], ["Human75569", 0.0388]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row wet_roots_cool_the_crop): {"cleared": [["Human75563", 0.057], ["Human75569", 0.057]], "failed": [], "read": true}
+[pyre-note] daily: cell temperature vs Plant_Potato maxOptimalGrowthTemperature 42.0, the wet-roots line: [{"temp": 54.13495, "wetLine": true, "dryLine": false, "wetFactor": [1.0, 1.0, 1.0, 1.0, 0.2415657, 0.2415657], "dryFactor": [0.2415657, 0.2415657, 0.2415657, 0.2415657, 0.2415657, 0.2415657], "dryTemp": 54.13495, "vanillaDry": 0.2415657}, {"temp": 50.974102, "wetLine": true, "dryLine": false, "wetFactor": [1.0, 1.0, 1.0, 1.0, 0.4391186, 0.4391186], "dryFactor": [0.4391186, 0.4391186, 0.4391186, 0.4391186, 0.4391186, 0.4391186], "dryTemp": 50.974102, "vanillaDry": 0.4391186}, {"temp": 53.1693153, "wetLine": true, "dryLine": false, "wetFactor": [1.0, 1.0, 1.0, 1.0, 0.3019178, 0.3019178], "dryFactor": [0.3019178, 0.3019178, 0.3019178, 0.3019178, 0.3019178, 0.3019178], "dryTemp": 53.1693153, "vanillaDry": 0.3019178}, {"temp": 63.3194542, "wetLine": true, "dryLine": false, "wetFactor": [0.6050341, 0.6050341, 0.6050341, 0.6050341, 0.0, 0.0], "dryFactor": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "dryTemp": 63.3194542, "vanillaDry": 0.0}, {"temp": 62.9681664, "wetLine": true, "dryLine": false, "wetFactor": [0.6269896, 0.6269896, 0.6269896, 0.6269896, 0.0, 0.0], "dryFactor": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "dryTemp": 62.9681664, "vanillaDry": 0.0}]
+[pyre-note] colony vitals after wet_roots_cool_the_crop: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 06:36:51 wet_roots_cool_the_crop PASS 
+[pyre-note] heat guard (row start, row growth_rate_factor_temperature): {"cleared": [["Human75563", 0.0304], ["Human75569", 0.0312]], "failed": [], "read": true}
+[pyre-note] daily GrowthRateFactor_Temperature: wet / dry strip and vanilla's at the dry cell: {"reads": [{"temp": 54.13495, "wetLine": true, "dryLine": false, "wetFactor": [1.0, 1.0, 1.0, 1.0, 0.2415657, 0.2415657], "dryFactor": [0.2415657, 0.2415657, 0.2415657, 0.2415657, 0.2415657, 0.2415657], "dryTemp": 54.13495, "vanillaDry": 0.2415657}, {"temp": 50.974102, "wetLine": true, "dryLine": false, "wetFactor": [1.0, 1.0, 1.0, 1.0, 0.4391186, 0.4391186], "dryFactor": [0.4391186, 0.4391186, 0.4391186, 0.4391186, 0.4391186, 0.4391186], "dryTemp": 50.974102, "vanillaDry": 0.4391186}, {"temp": 53.1693153, "wetLine": true, "dryLine": false, "wetFactor": [1.0, 1.0, 1.0, 1.0, 0.3019178, 0.3019178], "dryFactor": [0.3019178, 0.3019178, 0.3019178, 0.3019178, 0.3019178, 0.3019178], "dryTemp": 53.1693153, "vanillaDry": 0.3019178}, {"temp": 63.3194542, "wetLine": true, "dryLine": false, "wetFactor": [0.6050341, 0.6050341, 0.6050341, 0.6050341, 0.0, 0.0], "dryFactor": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "dryTemp": 63.3194542, "vanillaDry": 0.0}, {"temp": 62.9681664, "wetLine": true, "dryLine": false, "wetFactor": [0.6269896, 0.6269896, 0.6269896, 0.6269896, 0.0, 0.0], "dryFactor": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "dryTemp": 62.9681664, "vanillaDry": 0.0}], "top": 42.0}
+[pyre-note] colony vitals after growth_rate_factor_temperature: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 06:36:51 growth_rate_factor_temperature PASS 
+[modcheck] chain ash_fertility_watered END 700s PASS=3 FAIL=0 UNMEASURED=0 NOT_RUN=0 hold=0.0s body=699.5s teardown=0.0s
+component mapgen_log/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_mapgen_log_clean"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component plant_census/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_plant_distribution_correct"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component plant_census/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component plant_census/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component animal_census/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_animal_distribution_correct"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component grass_cover/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_grass_chokes_ground"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component ruins/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_ruins_scorched"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component ruins/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component burn_line/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_burn_line_present"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component burn_line/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component burn_line/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component burn_line/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component opening_front/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component opening_front/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component startup_and_def_wiring/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "biomeGenerationEnabled", "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component ground_deep_ash/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_ground_deep_ash"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component ground_deep_ash/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component ground_deep_ash/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component ground_deep_ash/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component ground_deep_ash/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component ground_deep_ash/skipped#5: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component ground_deep_ash/skipped#6: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component ground_deep_ash/skipped#7: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component fresh_burn_bonus/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_fresh_burn_feeds_the_field"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component fresh_burn_bonus/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component ambient_ash_drift/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "ambientAshEnabled", "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component fire_tick_effects/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "ashDustingEnabled", "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component fire_tick_effects/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "scorchFruitEnabled", "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component ashfall_weather_accumulation/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "ashfallAccumulationEnabled", "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component ashfall_drifts/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_ashfall_darkens_drifts"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component cinderfall/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_cinderfall_distinct"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component cinderfall/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component cinderfall/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component cinderfall/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component blackrain/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_blackrain_reads"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component blackrain/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component blackrain/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "blackRainDousingEnabled", "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component soaked_map_stays_smooth/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component no_ordinary_rain/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_cannot_ordinary_rain"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component no_ordinary_rain/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component no_ordinary_rain/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component scorchfruit_fire_born/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_scorchfruit_fire_born"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component scorchfruit_fire_born/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component scorchfruit_produces/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_scorchfruit_produces"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component scorchfruit_spoils/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_scorchfruit_spoils_fast"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component firehawk/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_firehawk_carries_ember"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component firehawk/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component firehawk/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component furnace_warmth/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_furnacebeast_warmth"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component furnace_room/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_furnacebeast_heats_room"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component furnace_sleep/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component furnace_sleep/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component burrowers/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_burrowers_dive"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component heat_dome/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "burrowDomeOnHeatHit", "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component heat_dome/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "burrowDomeOnHeatHit", "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component heat_dome/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component embergrass_regrow/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_embergrass_regrows"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component embergrass_regrow/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component embergrass_regrow/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component embergrass_regrow/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component ullai_and_giant/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "ullaiEnabled", "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component ullai_and_giant/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "furnaceBeastGiant", "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component ullai_and_giant/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component ullai_and_giant/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component gpt_hunt_plausible/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component gpt_hunt_plausible/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component gpt_hunt_plausible/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component gpt_hunt_plausible/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component gpt_hunt_plausible/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": "sandShovelEnabled", "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component gpt_hunt_plausible/skipped#5: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component gpt_hunt_plausible/skipped#6: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component gpt_hunt_plausible/skipped#7: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component gpt_hunt_plausible/skipped#8: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component sand_shovel/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "sandShovelEnabled", "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component flamefang_venom/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component flamefang_venom/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component flamefang_venom/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component flamefang_venom/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component flamefang_venom/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component rite_hook_alone/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "fireClockEnabled", "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component rite_hook_alone/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "fireClockEnabled", "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component firefoam_sprayer/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component firefoam_sprayer/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component walk_season/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component walk_season/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component walk_season/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component walk_season/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component walk_season/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component walk_season/skipped#5: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component walk_season/skipped#6: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component walk_season/skipped#7: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component foreign_arrivals/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component foreign_arrivals/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component foreign_arrivals/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component fire_sense/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component fire_sense/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component fire_sense/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component fire_sense/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component fire_sense/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component burn_line_off_control/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component furnace_hide_bank/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component roof_withers/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component roof_withers/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component roof_withers/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component herd_thirst/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component firehawk_first_sighting_letter/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component firehawk_first_sighting_letter/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "fireHawkSightingLetterEnabled", "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component firehawk_first_sighting_letter/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component firehawk_crestfeather_yield/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+component firehawk_mapwide_carry/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains ash_fertility_watered)"}
+Pyrelands: NOT GREEN  PASS=2 FAIL=0 UNMEASURED=111  calls=1478 mean=474.277ms  -> design/concepts/Pyrelands/version/in_game/visit_7/evidence/pv7_ash_fertility_watered.json
+[bridge split] 705.9 s wall: load 0.0 / ticks 660.6 / reads 4.8 / other 11.8 / outside calls 28.7 s
+[bridge split] WARN 549 calls of jawa/pawn_need (6.7 s): batch them
+[bridge split] WARN 221 calls of jawa/list_pawns (3.0 s): batch them
+[bridge split] WARN 220 calls of rimworld/get_game_info (0.7 s): batch them
+[bridge split] WARN 161 calls of jawa/safe_advance (660.6 s): batch them
+[bridge split] WARN 72 calls of jawa/pawn_health (0.9 s): batch them
+[bridge split] WARN 66 calls of jawa/map_info (0.7 s): batch them
