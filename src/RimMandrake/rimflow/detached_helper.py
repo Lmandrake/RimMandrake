@@ -1332,12 +1332,16 @@ def _launch(seat, item, brief, model, max_s, budget, now, runner, known, clone, 
     unpublished = pf.gate("I6", origin_gate, item, runner=runner, seat=seat, judge=_refusal)    # before a clone or a unit
     if unpublished:
         return 2, unpublished
+    notes = []
+    if clone and not clone_can_start(clone):    # RIMMANDRAKE_GUARD_HELPER_LAUNCH_ON_MISSING_CLONE_TWO_RUNS_DIED_UNSTARTED
+        notes.append("NOTE (form, repaired): --clone %s is missing or has no claude_bounded.sh (the pool took it back); "
+                     "this launch took a pool clone for %s instead, as a launch without --clone does." % (clone, item))
+        clone = None
     dest = clone or os.path.join(pool_root(), "clones", item + ".det")
     if resume[0]:
         fresh = resume_fresh_clone(item, dest, runner, now)
         if fresh:       # the clone a finished run still holds may vanish under a resume: the resume takes its own
             dest, clone = fresh, None
-    notes = []
     held = hold_until_returned(dest, runner, sleep, now, kept_ok=bool(clone), notes=notes)
     if held:
         return 2, held
@@ -1345,6 +1349,11 @@ def _launch(seat, item, brief, model, max_s, budget, now, runner, known, clone, 
         code, text = _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, dest, skip_launch_checks,
                                     pf, env, resume=resume, extra=extra)
     return code, "\n".join([text] + notes) if notes else text
+
+
+def clone_can_start(clone):
+    """True when a unit can start in `clone`: the directory holds the claude_bounded.sh the unit's argv runs."""
+    return os.path.isfile(os.path.join(clone, "src", "RimMandrake", "Utils", "claude_bounded.sh"))
 
 
 def _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, dest, skip_launch_checks=None, pf=None,
