@@ -1,0 +1,13 @@
+diff --git a/src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPrisonCare.cs b/src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPrisonCare.cs
+index 0fbd6ba6c3..e4b1bcc096 100644
+--- a/src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPrisonCare.cs
++++ b/src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPrisonCare.cs
+@@ -27,7 +27,7 @@ namespace RimMandrake.FlowWorks
+         [HarmonyPostfix]
+         public static void Postfix(Room __instance, ref bool __result)
+         {
+-            if (!__result && RM_PitPrisonCare.PrisonRoom(__instance)) __result = true;
++            
+         }
+     }
+ 

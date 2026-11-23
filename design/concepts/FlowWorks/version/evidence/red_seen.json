@@ -1,42 +1,42 @@
 {
  "PY_FLOWWORKS_NORTHSTAR": {
-  "at": "2026-11-21T13:01:48Z",
+  "at": "2026-11-23T10:09:47Z",
   "command": "python3 src/RimMandrake/FlowWorks/northstar/selftest_flowworks_northstar.py",
   "file": "src/RimMandrake/FlowWorks/northstar/selftest_flowworks_northstar.py",
-  "last": "FAIL: 1 failure(s): ['settings RimMandrakeFlowWorksSettings: defaults equal the C#']",
-  "patch": "diff --git a/src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs b/src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs\nindex 3b6460dfad..9980fd9acd 100644\n--- a/src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs\n+++ b/src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs\n@@ -84,7 +84,7 @@ namespace RimMandrake.FlowWorks\n         // square, canal or pond, 0.5 m a day; front speed and source reach are PROVISIONAL.\n         public static bool canalFireEnabled = true;\n         // RIMMANDRAKE_BUILD_FLOWWORKS_TOSS_FLAME_JOBDEF_STILL_UNKNOWN: the \"toss a flame\" order (RM_TossFlame.cs).\n-        public static bool tossFlameOrderEnabled = true;\n+        public static bool tossFlameOrderEnabled = false;\n         // LIQUID_HEAT_PUSH_1: hot/icy liquid warms or chills its room through vanilla heat (strength PROVISIONAL).\n         public static bool liquidHeatPushEnabled = true;\n         // FLOWWORKS_WATERBODY_DIAGNOSE_SOIL_THROW: fixes a vanilla water-body count bug when water changes type.\n",
+  "last": "FAIL: 3 failure(s): ['settings RimMandrakeFlowWorksSettings: same field set as the C#', 'every Scribed settings field is in site_spec.SETTINGS', '217 toggles: every registry bool (S.toggles), not the harness floor']",
+  "patch": "diff --git a/src/RimMandrake/FlowWorks/northstar/site_spec.py b/src/RimMandrake/FlowWorks/northstar/site_spec.py\nindex 6544bf56ff..e99733c95c 100644\n--- a/src/RimMandrake/FlowWorks/northstar/site_spec.py\n+++ b/src/RimMandrake/FlowWorks/northstar/site_spec.py\n@@ -106,7 +106,6 @@ SETTINGS = {\n         \"astrofuelDetonationEnabled\": True, \"astrofuelBlastScale\": 1.0,   # CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL fuel fires\n         \"pitStuckAlertEnabled\": True, \"superdeepRoomsEnabled\": True, \"captureDownEnabled\": True, \"wardenFromLipEnabled\": True, \"pitRoomMinDepthMetres\": 3.0,   # PIT_ROOM_TUNE_TALL_FOLK_DIG_DEEPER (3.0 m for a person);   # SUPERDEEP_PRISON_ROOM_1\n         \"excavationWallFacesEnabled\": True,                     # EXCAVATION_WALL_ART_1 carrier\n-        \"pitSteppedReliefEnabled\": True,                        # stepped pit relief (52182cca96): shadows and depth shading\n         \"bottleRevertEnabled\": True,                            # LIQUID_BOTTLE_LOOP_1 revert timer\n         \"liquidPumpEnabled\": True,                              # Phase 8 slice 1 (universal pump)\n         \"digFindsEnabled\": True, \"digFindsLocalOnly\": True, \"digFindChanceMultiplier\": 1.0,\n",
   "patch_files": [
-   "src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs"
+   "src/RimMandrake/FlowWorks/northstar/site_spec.py"
   ],
-  "patch_sha": "9a7e53b099266fc5",
+  "patch_sha": "74af6ecb20294c72",
   "rc": 1,
-  "test_blob": "b7621127fdb5617db99cc80349ed936abbf1b807"
+  "test_blob": "aafaec0d2b38537314dd7d886507c3c46d84246b"
  },
  "PY_FLOWWORKS_PIT_DRAW_CENSUS": {
-  "at": "2026-11-21T08:53:25Z",
+  "at": "2026-11-23T10:12:40Z",
   "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_pit_draw_census.py",
   "file": "src/RimMandrake/FlowWorks/selftest_flowworks_pit_draw_census.py",
   "last": "FAILED (1)",
-  "patch": "diff --git a/src/RimMandrake/GimmeSomeSlack/Source/PlantedUnclassifiedDraw.cs b/src/RimMandrake/GimmeSomeSlack/Source/PlantedUnclassifiedDraw.cs\nnew file mode 100644\n--- /dev/null\n+++ b/src/RimMandrake/GimmeSomeSlack/Source/PlantedUnclassifiedDraw.cs\n@@ -0,0 +1,10 @@\n+using UnityEngine;\n+using Verse;\n+\n+namespace RimMandrake.GimmeSomeSlack\n+{\n+    internal static class PlantedUnclassifiedDraw\n+    {\n+        public static void Draw(Mesh m, Material mat) { Graphics.DrawMesh(m, Matrix4x4.identity, mat, 0); }\n+    }\n+}\n",
+  "patch": "diff --git a/src/RimMandrake/FlowWorks/Source/RM_PlantedDrawSite.cs b/src/RimMandrake/FlowWorks/Source/RM_PlantedDrawSite.cs\nnew file mode 100644\nindex 0000000000..e048d08770\n--- /dev/null\n+++ b/src/RimMandrake/FlowWorks/Source/RM_PlantedDrawSite.cs\n@@ -0,0 +1,8 @@\n+using UnityEngine;\n+namespace RimMandrake.FlowWorks\n+{\n+\tpublic static class RM_PlantedDrawSite\n+\t{\n+\t\tpublic static void Draw(Mesh m, Matrix4x4 x, Material mat) { Graphics.DrawMesh(m, x, mat, 0); }\n+\t}\n+}\n",
   "patch_files": [
-   "src/RimMandrake/GimmeSomeSlack/Source/PlantedUnclassifiedDraw.cs"
+   "src/RimMandrake/FlowWorks/Source/RM_PlantedDrawSite.cs"
   ],
-  "patch_sha": "8d5ac0a1dd5aac80",
+  "patch_sha": "3ba2b6c2ef1ae0e1",
   "rc": 1,
-  "test_blob": "4cb9e6bd4ef50c560618fb6c5f3e6715604bbe2c"
+  "test_blob": "eb3976321dea0f57b124484d0f1763da8f563f3e"
  },
  "PY_FLOWWORKS_UNDERLIQUID_PARITY": {
-  "at": "2026-11-21T08:49:50Z",
+  "at": "2026-11-23T10:12:39Z",
   "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_underliquid_parity.py",
   "file": "src/RimMandrake/FlowWorks/selftest_flowworks_underliquid_parity.py",
-  "last": "RESULT RED 2",
-  "patch": "--- a/src/RimMandrake/FlowWorks/model/underliquid.py\n+++ b/src/RimMandrake/FlowWorks/model/underliquid.py\n@@ -44,7 +44,7 @@\n import math\n \n NOTCH = 0.5\n-DEEP_OPACITY = 0.90         # setting underLiquidDeepOpacity: the most a clear liquid hides (its body at full depth)\n+DEEP_OPACITY = 0.95         # setting underLiquidDeepOpacity: the most a clear liquid hides (its body at full depth)\n SHALLOW_OPACITY = 0.35      # setting underLiquidShallowOpacity: the least a clear liquid hides once it covers a thing\n                             # (water_by_depth_target.json shallow_opacity, the FIRM mockup)\n FULL_METRES = 4.0           # setting underLiquidFullMetres: fresh water reaches DEEP_OPACITY at this depth\n",
+  "last": "RESULT RED 4",
+  "patch": "diff --git a/src/RimMandrake/FlowWorks/model/underliquid.py b/src/RimMandrake/FlowWorks/model/underliquid.py\nindex 439237f511..5b80ffd92c 100644\n--- a/src/RimMandrake/FlowWorks/model/underliquid.py\n+++ b/src/RimMandrake/FlowWorks/model/underliquid.py\n@@ -44,7 +44,7 @@ from dataclasses import dataclass\n import math\n \n NOTCH = 0.5\n-DEEP_OPACITY = 0.90         # setting underLiquidDeepOpacity: the most a clear liquid hides (its body at full depth)\n+DEEP_OPACITY = 0.70         # setting underLiquidDeepOpacity: the most a clear liquid hides (its body at full depth)\n SHALLOW_OPACITY = 0.35      # setting underLiquidShallowOpacity: the least a clear liquid hides once it covers a thing\n                             # (water_by_depth_target.json shallow_opacity, the FIRM mockup)\n FULL_METRES = 4.0           # setting underLiquidFullMetres: fresh water reaches DEEP_OPACITY at this depth\n",
   "patch_files": [
    "src/RimMandrake/FlowWorks/model/underliquid.py"
   ],
-  "patch_sha": "55be3763dbc48e92",
+  "patch_sha": "bb58287ae3b64a62",
   "rc": 1,
-  "test_blob": "7b1488674bd548217fadf4d07fc4c99a5c37ebf1"
+  "test_blob": "cb0e55742b60bdcac1bb98c254cf25c3c0d6680b"
  },
  "PY_FW_OFFLINE_ART": {
   "at": "2026-11-23T05:03:22Z",
@@ -51,6 +51,19 @@
   "rc": 1,
   "test_blob": "04207e8b77c84390ceb467daedbf22fbf44858f8"
  },
+ "PY_PUMP_DRAW_CONSERVES": {
+  "at": "2026-11-23T10:12:38Z",
+  "command": "python3 src/RimMandrake/FlowWorks/selftest_pump_draw_conserves.py",
+  "file": "src/RimMandrake/FlowWorks/selftest_pump_draw_conserves.py",
+  "last": "FAIL (2)",
+  "patch": "diff --git a/src/RimMandrake/FlowWorks/northstar/extensions.py b/src/RimMandrake/FlowWorks/northstar/extensions.py\nindex b631450d95..84ebdaa94c 100644\n--- a/src/RimMandrake/FlowWorks/northstar/extensions.py\n+++ b/src/RimMandrake/FlowWorks/northstar/extensions.py\n@@ -3661,7 +3661,7 @@ def _pit_prison_room_body(t, x0, z0):\n \n \n PUMP_DX = 12   # liquid_pump's channel starts at x0+PUMP_DX on plot D\n-PUMP_LEVEL_TOL = 0.02   # levels: 200 dL of slack on the exact channel sum (a pump move is 10,000 dL)\n+PUMP_LEVEL_TOL = 1.5   # levels: 200 dL of slack on the exact channel sum (a pump move is 10,000 dL)\n \n \n @suite.chain(\"liquid_pump\")\n",
+  "patch_files": [
+   "src/RimMandrake/FlowWorks/northstar/extensions.py"
+  ],
+  "patch_sha": "203fcc4c60ff60d2",
+  "rc": 1,
+  "test_blob": "0ed59c90e93bfa03d2770eb8f47ae4fa44fe7b82"
+ },
  "PY_SETTINGS_REGISTRY": {
   "at": "2026-11-18T21:47:10Z",
   "command": "python3 src/RimMandrake/FlowWorks/northstar/selftest_settings_registry.py",
@@ -63,6 +76,32 @@
   "patch_sha": "23570f90c0249680",
   "rc": 1,
   "test_blob": "795a35172468d169244de38d74f8539d7b80b12b"
+ },
+ "PY_SWIM_SHORE_REACH": {
+  "at": "2026-11-23T10:13:01Z",
+  "command": "python3 src/RimMandrake/FlowWorks/selftest_swim_shore_reach.py",
+  "file": "src/RimMandrake/FlowWorks/selftest_swim_shore_reach.py",
+  "last": "FAIL: 2 production climb-input pin(s) broken",
+  "patch": "diff --git a/src/RimMandrake/FlowWorks/Source/Swimming/RM_Swim.cs b/src/RimMandrake/FlowWorks/Source/Swimming/RM_Swim.cs\nindex 20a93024e0..554f86b12d 100644\n--- a/src/RimMandrake/FlowWorks/Source/Swimming/RM_Swim.cs\n+++ b/src/RimMandrake/FlowWorks/Source/Swimming/RM_Swim.cs\n@@ -722,7 +722,7 @@ namespace RimMandrake.FlowWorks.Swimming\n \t\t\tfloat h = RM_Drowning.HeightOf(p);\n \t\t\tfloat frac = RimMandrakeFlowWorksSettings.pitDrowningHeadFraction;\n \t\t\tbool climbRule = ex != null && RM_CliffMask.On;\n-\t\t\tint k = RM_PocketGrid.ClimbLimitOf(p);\n+\t\t\tint k = int.MaxValue;\n \t\t\treturn RM_SwimMath.NearestReachableFooting(p.Position, CardinalNeighbours,\n \t\t\t\t(c, n) => n.InBounds(map) && n.Walkable(map) && (!climbRule || CanStep(map, ex, p, c, n, k)),\n \t\t\t\tn => !RM_RelativeRulesMath.HeadUnder(RM_SwimWater.WaterMetresAt(map, ex, n), h, false, frac) && n.Standable(map),\n",
+  "patch_files": [
+   "src/RimMandrake/FlowWorks/Source/Swimming/RM_Swim.cs"
+  ],
+  "patch_sha": "8a37ce39c788beeb",
+  "rc": 1,
+  "test_blob": "c98dcc50c1ed08d663f3e2df95a86047afe128ce"
+ },
+ "PY_VALIDATION_V2_OFFLINE": {
+  "at": "2026-11-23T10:11:22Z",
+  "command": "python3 src/RimMandrake/FlowWorks/northstar/validation_v2.py --offline",
+  "file": "src/RimMandrake/FlowWorks/northstar/validation_v2.py",
+  "last": "O-LIVE-NEG FAIL   clean mock run not green: [('L2_tier_live', 'FAIL', \"settings_default: settings table misses C# toggles: ['pitSteppedReliefEnabled missing from the table']\")]",
+  "patch": "diff --git a/src/RimMandrake/FlowWorks/northstar/site_spec.py b/src/RimMandrake/FlowWorks/northstar/site_spec.py\nindex 6544bf56ff..e99733c95c 100644\n--- a/src/RimMandrake/FlowWorks/northstar/site_spec.py\n+++ b/src/RimMandrake/FlowWorks/northstar/site_spec.py\n@@ -106,7 +106,6 @@ SETTINGS = {\n         \"astrofuelDetonationEnabled\": True, \"astrofuelBlastScale\": 1.0,   # CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL fuel fires\n         \"pitStuckAlertEnabled\": True, \"superdeepRoomsEnabled\": True, \"captureDownEnabled\": True, \"wardenFromLipEnabled\": True, \"pitRoomMinDepthMetres\": 3.0,   # PIT_ROOM_TUNE_TALL_FOLK_DIG_DEEPER (3.0 m for a person);   # SUPERDEEP_PRISON_ROOM_1\n         \"excavationWallFacesEnabled\": True,                     # EXCAVATION_WALL_ART_1 carrier\n-        \"pitSteppedReliefEnabled\": True,                        # stepped pit relief (52182cca96): shadows and depth shading\n         \"bottleRevertEnabled\": True,                            # LIQUID_BOTTLE_LOOP_1 revert timer\n         \"liquidPumpEnabled\": True,                              # Phase 8 slice 1 (universal pump)\n         \"digFindsEnabled\": True, \"digFindsLocalOnly\": True, \"digFindChanceMultiplier\": 1.0,\n",
+  "patch_files": [
+   "src/RimMandrake/FlowWorks/northstar/site_spec.py"
+  ],
+  "patch_sha": "74af6ecb20294c72",
+  "rc": 1,
+  "test_blob": "7bfbf35b104701a6aca1d07a64575a5197ea8fb9"
  },
  "T_BRIDGES": {
   "at": "2026-11-23T04:09:50Z",
@@ -91,7 +130,7 @@
   "test_blob": "ecdb632246123de160f342b464f55bcbb9ce7ca5"
  },
  "T_FETCH_FALLEN_OFFLINE": {
-  "at": "2026-11-22T06:48:13Z",
+  "at": "2026-11-23T10:12:36Z",
   "command": "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only fetch_fallen",
   "file": "src/RimMandrake/FlowWorks/selftest_stage3_owed.py",
   "last": "RED 1: fetch_fallen: the assault duty asks it before it fights",
@@ -101,7 +140,7 @@
   ],
   "patch_sha": "4affb42272e5b5d7",
   "rc": 1,
-  "test_blob": "c22a5da199adb85827f9ad13e2e5bf4c00e50776"
+  "test_blob": "b2225384005543e872cf9c0caee3be6c1b6dfa81"
  },
  "T_FIRE": {
   "at": "2026-11-22T08:53:25Z",
@@ -143,7 +182,7 @@
   "test_blob": "ecdb632246123de160f342b464f55bcbb9ce7ca5"
  },
  "T_LIQUID_COATING_OFFLINE": {
-  "at": "2026-11-22T06:48:14Z",
+  "at": "2026-11-23T10:12:38Z",
   "command": "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only coating",
   "file": "src/RimMandrake/FlowWorks/selftest_stage3_owed.py",
   "last": "RED 1: coating: stepping out of a coating liquid adds the coat",
@@ -153,7 +192,7 @@
   ],
   "patch_sha": "4c8393008d2ee6d2",
   "rc": 1,
-  "test_blob": "c22a5da199adb85827f9ad13e2e5bf4c00e50776"
+  "test_blob": "b2225384005543e872cf9c0caee3be6c1b6dfa81"
  },
  "T_MAP_CONTROLS": {
   "at": "2026-11-21T19:46:26Z",
@@ -208,17 +247,17 @@
   "test_blob": "ecdb632246123de160f342b464f55bcbb9ce7ca5"
  },
  "T_PRISON_CARE_OFFLINE": {
-  "at": "2026-11-22T06:48:15Z",
+  "at": "2026-11-23T10:12:37Z",
   "command": "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only prison_care",
   "file": "src/RimMandrake/FlowWorks/selftest_stage3_owed.py",
-  "last": "RED 2: prison_care: food lands in the hole, not outside it; prison_care mutant 'food drops outside': its text is not in the source (the law moved)",
-  "patch": "diff --git a/src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPrisonCare.cs b/src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPrisonCare.cs\nindex 0fbd6ba6c3..5b234b9de6 100644\n--- a/src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPrisonCare.cs\n+++ b/src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPrisonCare.cs\n@@ -101,7 +101,7 @@ namespace RimMandrake.FlowWorks\n         public static void Postfix(Thing t, Job __result)\n         {\n             // Vanilla delivers to target C, which can otherwise be a chewing spot OUTSIDE the pit.\n-            if (__result != null && RM_PitPrisonCare.LipCare(t as Pawn)) __result.targetC = t.Position;\n+            if (__result != null && RM_PitPrisonCare.LipCare(t as Pawn)) \n         }\n     }\n }\n",
+  "last": "RED 2: prison_care: a pit room is a prison cell: IsPrisonCell postfix sets true for PrisonRoom; prison_care mutant 'room patch gone': its text is not in the source (the law moved)",
+  "patch": "diff --git a/src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPrisonCare.cs b/src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPrisonCare.cs\nindex 0fbd6ba6c3..e4b1bcc096 100644\n--- a/src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPrisonCare.cs\n+++ b/src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPrisonCare.cs\n@@ -27,7 +27,7 @@ namespace RimMandrake.FlowWorks\n         [HarmonyPostfix]\n         public static void Postfix(Room __instance, ref bool __result)\n         {\n-            if (!__result && RM_PitPrisonCare.PrisonRoom(__instance)) __result = true;\n+            \n         }\n     }\n \n",
   "patch_files": [
    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPrisonCare.cs"
   ],
-  "patch_sha": "99494026ad2f1005",
+  "patch_sha": "10dee95b87f4aa64",
   "rc": 1,
-  "test_blob": "c22a5da199adb85827f9ad13e2e5bf4c00e50776"
+  "test_blob": "b2225384005543e872cf9c0caee3be6c1b6dfa81"
  },
  "T_QUARRY": {
   "at": "2026-11-23T04:31:22Z",
@@ -273,17 +312,17 @@
   "test_blob": "ecdb632246123de160f342b464f55bcbb9ce7ca5"
  },
  "T_TOSS_FLAME_OFFLINE": {
-  "at": "2026-11-22T06:48:16Z",
+  "at": "2026-11-23T10:12:34Z",
   "command": "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only toss_flame",
   "file": "src/RimMandrake/FlowWorks/selftest_stage3_owed.py",
-  "last": "RED 1: toss_flame: the toss lights a burnable canal or pond through the liquid-fire engine",
-  "patch": "diff --git a/src/RimMandrake/FlowWorks/Source/RM_TossFlame.cs b/src/RimMandrake/FlowWorks/Source/RM_TossFlame.cs\nindex b95b9ff54f..466d396fea 100644\n--- a/src/RimMandrake/FlowWorks/Source/RM_TossFlame.cs\n+++ b/src/RimMandrake/FlowWorks/Source/RM_TossFlame.cs\n@@ -129,7 +129,7 @@ namespace RimMandrake.FlowWorks\n \t\t\tMap map = pawn.Map;\n \t\t\tFleckMaker.ThrowMicroSparks(c.ToVector3Shifted(), map);\n \t\t\tRM_MapComponent_Excavation ex = RM_SuperdeepTrap.EngineOf(map);\n-\t\t\tif (ex != null && ex.LiquidFire.IgniteNow(map, ex, c))\n+\t\t\tif (ex != null && false)\n \t\t\t{\n \t\t\t\treturn true;\n \t\t\t}\n",
+  "last": "RED 1: toss_flame: the menu offers it only where something will catch, and only with its setting on",
+  "patch": "diff --git a/src/RimMandrake/FlowWorks/Source/RM_TossFlame.cs b/src/RimMandrake/FlowWorks/Source/RM_TossFlame.cs\nindex b95b9ff54f..35c101d313 100644\n--- a/src/RimMandrake/FlowWorks/Source/RM_TossFlame.cs\n+++ b/src/RimMandrake/FlowWorks/Source/RM_TossFlame.cs\n@@ -150,7 +150,7 @@ namespace RimMandrake.FlowWorks\n \t\tprotected override bool Multiselect => false;\n \t\tprotected override bool RequiresManipulation => true;\n \n-\t\tprotected override bool AppliesInt(FloatMenuContext context) => RimMandrakeFlowWorksSettings.tossFlameOrderEnabled;\n+\t\tprotected override bool AppliesInt(FloatMenuContext context) => true;\n \n \t\tpublic override IEnumerable<FloatMenuOption> GetOptions(FloatMenuContext context)\n \t\t{\n",
   "patch_files": [
    "src/RimMandrake/FlowWorks/Source/RM_TossFlame.cs"
   ],
-  "patch_sha": "797d8cd22dc65f3e",
+  "patch_sha": "273b4e3bd588685c",
   "rc": 1,
-  "test_blob": "c22a5da199adb85827f9ad13e2e5bf4c00e50776"
+  "test_blob": "b2225384005543e872cf9c0caee3be6c1b6dfa81"
  },
  "T_UNDERLIQUID": {
   "at": "2026-11-23T02:33:21Z",

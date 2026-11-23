@@ -1,0 +1,13 @@
+diff --git a/src/RimMandrake/FlowWorks/Source/Swimming/RM_Swim.cs b/src/RimMandrake/FlowWorks/Source/Swimming/RM_Swim.cs
+index 20a93024e0..554f86b12d 100644
+--- a/src/RimMandrake/FlowWorks/Source/Swimming/RM_Swim.cs
++++ b/src/RimMandrake/FlowWorks/Source/Swimming/RM_Swim.cs
+@@ -722,7 +722,7 @@ namespace RimMandrake.FlowWorks.Swimming
+ 			float h = RM_Drowning.HeightOf(p);
+ 			float frac = RimMandrakeFlowWorksSettings.pitDrowningHeadFraction;
+ 			bool climbRule = ex != null && RM_CliffMask.On;
+-			int k = RM_PocketGrid.ClimbLimitOf(p);
++			int k = int.MaxValue;
+ 			return RM_SwimMath.NearestReachableFooting(p.Position, CardinalNeighbours,
+ 				(c, n) => n.InBounds(map) && n.Walkable(map) && (!climbRule || CanStep(map, ex, p, c, n, k)),
+ 				n => !RM_RelativeRulesMath.HeadUnder(RM_SwimWater.WaterMetresAt(map, ex, n), h, false, frac) && n.Standable(map),

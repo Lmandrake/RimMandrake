@@ -1,0 +1,13 @@
+diff --git a/src/RimMandrake/FlowWorks/Source/RM_TossFlame.cs b/src/RimMandrake/FlowWorks/Source/RM_TossFlame.cs
+index b95b9ff54f..35c101d313 100644
+--- a/src/RimMandrake/FlowWorks/Source/RM_TossFlame.cs
++++ b/src/RimMandrake/FlowWorks/Source/RM_TossFlame.cs
+@@ -150,7 +150,7 @@ namespace RimMandrake.FlowWorks
+ 		protected override bool Multiselect => false;
+ 		protected override bool RequiresManipulation => true;
+ 
+-		protected override bool AppliesInt(FloatMenuContext context) => RimMandrakeFlowWorksSettings.tossFlameOrderEnabled;
++		protected override bool AppliesInt(FloatMenuContext context) => true;
+ 
+ 		public override IEnumerable<FloatMenuOption> GetOptions(FloatMenuContext context)
+ 		{

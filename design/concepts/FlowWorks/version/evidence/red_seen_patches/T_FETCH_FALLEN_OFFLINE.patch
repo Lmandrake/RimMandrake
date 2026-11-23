@@ -1,0 +1,13 @@
+diff --git a/src/RimMandrake/FlowWorks/Source/Superdeep/RM_RaiderFetchFallen.cs b/src/RimMandrake/FlowWorks/Source/Superdeep/RM_RaiderFetchFallen.cs
+index 4d75eb8458..b7d8d430ee 100644
+--- a/src/RimMandrake/FlowWorks/Source/Superdeep/RM_RaiderFetchFallen.cs
++++ b/src/RimMandrake/FlowWorks/Source/Superdeep/RM_RaiderFetchFallen.cs
+@@ -259,7 +259,7 @@ namespace RimMandrake.FlowWorks
+ 	{
+ 		protected override Job TryGiveJob(Pawn pawn)
+ 		{
+-			return RM_RaiderFetchFallen.TryFetch(pawn);
++			return null;
+ 		}
+ 	}
+ 

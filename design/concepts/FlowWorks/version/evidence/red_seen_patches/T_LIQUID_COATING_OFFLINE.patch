@@ -1,0 +1,13 @@
+diff --git a/src/RimMandrake/FlowWorks/Source/RM_LiquidCoating.cs b/src/RimMandrake/FlowWorks/Source/RM_LiquidCoating.cs
+index 7ba2cee937..9e1df6bef9 100644
+--- a/src/RimMandrake/FlowWorks/Source/RM_LiquidCoating.cs
++++ b/src/RimMandrake/FlowWorks/Source/RM_LiquidCoating.cs
+@@ -129,7 +129,7 @@ namespace RimMandrake.FlowWorks
+ 			{
+ 				h = (Hediff_LiquidCoat)HediffMaker.MakeHediff(CoatDef, p);
+ 				h.liquid = liquid;
+-				p.health.AddHediff(h);
++				
+ 			}
+ 			h.liquid = liquid;
+ 			h.ageTicks = 0;

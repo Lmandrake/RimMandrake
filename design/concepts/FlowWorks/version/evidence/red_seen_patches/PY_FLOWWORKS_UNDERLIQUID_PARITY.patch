@@ -1,0 +1,13 @@
+diff --git a/src/RimMandrake/FlowWorks/model/underliquid.py b/src/RimMandrake/FlowWorks/model/underliquid.py
+index 439237f511..5b80ffd92c 100644
+--- a/src/RimMandrake/FlowWorks/model/underliquid.py
++++ b/src/RimMandrake/FlowWorks/model/underliquid.py
+@@ -44,7 +44,7 @@ from dataclasses import dataclass
+ import math
+ 
+ NOTCH = 0.5
+-DEEP_OPACITY = 0.90         # setting underLiquidDeepOpacity: the most a clear liquid hides (its body at full depth)
++DEEP_OPACITY = 0.70         # setting underLiquidDeepOpacity: the most a clear liquid hides (its body at full depth)
+ SHALLOW_OPACITY = 0.35      # setting underLiquidShallowOpacity: the least a clear liquid hides once it covers a thing
+                             # (water_by_depth_target.json shallow_opacity, the FIRM mockup)
+ FULL_METRES = 4.0           # setting underLiquidFullMetres: fresh water reaches DEEP_OPACITY at this depth

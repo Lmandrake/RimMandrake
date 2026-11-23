@@ -3972,9 +3972,9 @@
    "runs_today": {
     "ran": true,
     "rc": 1,
-    "seconds": 2.84,
+    "seconds": 3.28,
     "last": "selftest_fw_modern_fit.py: 1 failure(s)",
-    "at": "2026-11-23T10:07:10Z",
+    "at": "2026-11-23T10:13:12Z",
     "result": "FAIL",
     "build": "d8d3f1887c062c1a4a8e",
     "command": "python3 src/RimMandrake/FlowWorks/Tools/selftest_fw_modern_fit.py",

@@ -1,0 +1,13 @@
+diff --git a/src/RimMandrake/FlowWorks/northstar/extensions.py b/src/RimMandrake/FlowWorks/northstar/extensions.py
+index b631450d95..84ebdaa94c 100644
+--- a/src/RimMandrake/FlowWorks/northstar/extensions.py
++++ b/src/RimMandrake/FlowWorks/northstar/extensions.py
+@@ -3661,7 +3661,7 @@ def _pit_prison_room_body(t, x0, z0):
+ 
+ 
+ PUMP_DX = 12   # liquid_pump's channel starts at x0+PUMP_DX on plot D
+-PUMP_LEVEL_TOL = 0.02   # levels: 200 dL of slack on the exact channel sum (a pump move is 10,000 dL)
++PUMP_LEVEL_TOL = 1.5   # levels: 200 dL of slack on the exact channel sum (a pump move is 10,000 dL)
+ 
+ 
+ @suite.chain("liquid_pump")
