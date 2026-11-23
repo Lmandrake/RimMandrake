@@ -447,6 +447,25 @@ About 3–5 agent-days, split into three build items:
 
 The live proof is written with item 1 and grows with each item.
 
+### 8.8 Melee across a step: reach is the climb (owner ruling, 2026-11-23)
+
+*"Melee across a pit ledge (in to out or out to in) should only work if the creature could feasibly reach out. But that is
+the same criteria as being able to climb out. So anything that can't climb out also cannot melee attack out. Same for melee
+attacking "down" into the pit. If you couldn't climb in you can't melee attack in. So a very large creature can attack farther
+down a pit than a little one. And there can be cases where a large creature can attack a smaller one but not vice versa."*
+
+- An attacker strikes across a step exactly when its own body takes that step by 8.1 and 8.2 (cardinal or diagonal). One
+  function answers both: `RM_PitTrapMath.BodyTakesStep`, asked by the walked step and by `RM_PitReach`. Equal depths are no step.
+- Up and down are the same read for one body, so two bodies of one size strike each other both ways or not at all. Different
+  sizes can be one-way. Sweep: `design/concepts/FlowWorks/pit_melee_reach/table.txt`.
+- Each body is read at the depth it stands at (on the floor under a deck or a lid, at the surface of water it swims in).
+- A ramp is sloping ground and counts (8.4). A ladder and climbing gear do **not** lengthen reach: they are steps and gear that
+  move a body (8.1 "Ladders and ramps are steps", 8.4 a ladder joins "any" depth, which no arm spans), and the climb limit
+  itself is the body's height (8.2). A creature that flies, jumps or floats over walls, or that is too wide for its pocket, reaches.
+- A melee attacker picks a target it can strike, or one whose floor the climb rule lets it walk to; stopped at a rim it cannot
+  strike across, it walks on to that floor. A building standing down in a pit may be struck from the rim, as before.
+- The Mod Settings switch "Melee across a pit's edge needs reach" (on) returns vanilla melee when off. Shooting keeps its rule.
+
 ## 9. GPT review — dispositions
 
 Review: `design/RimMandrake/relative_depth_climb_gpt_review_2026-10-12.md` (20 points, verbatim). GPT read our

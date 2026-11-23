@@ -1,16 +1,16 @@
 {
  "PY_FLOWWORKS_NORTHSTAR": {
-  "at": "2026-11-23T10:09:47Z",
+  "at": "2026-11-23T18:23:19Z",
   "command": "python3 src/RimMandrake/FlowWorks/northstar/selftest_flowworks_northstar.py",
   "file": "src/RimMandrake/FlowWorks/northstar/selftest_flowworks_northstar.py",
   "last": "FAIL: 3 failure(s): ['settings RimMandrakeFlowWorksSettings: same field set as the C#', 'every Scribed settings field is in site_spec.SETTINGS', '217 toggles: every registry bool (S.toggles), not the harness floor']",
-  "patch": "diff --git a/src/RimMandrake/FlowWorks/northstar/site_spec.py b/src/RimMandrake/FlowWorks/northstar/site_spec.py\nindex 6544bf56ff..e99733c95c 100644\n--- a/src/RimMandrake/FlowWorks/northstar/site_spec.py\n+++ b/src/RimMandrake/FlowWorks/northstar/site_spec.py\n@@ -106,7 +106,6 @@ SETTINGS = {\n         \"astrofuelDetonationEnabled\": True, \"astrofuelBlastScale\": 1.0,   # CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL fuel fires\n         \"pitStuckAlertEnabled\": True, \"superdeepRoomsEnabled\": True, \"captureDownEnabled\": True, \"wardenFromLipEnabled\": True, \"pitRoomMinDepthMetres\": 3.0,   # PIT_ROOM_TUNE_TALL_FOLK_DIG_DEEPER (3.0 m for a person);   # SUPERDEEP_PRISON_ROOM_1\n         \"excavationWallFacesEnabled\": True,                     # EXCAVATION_WALL_ART_1 carrier\n-        \"pitSteppedReliefEnabled\": True,                        # stepped pit relief (52182cca96): shadows and depth shading\n         \"bottleRevertEnabled\": True,                            # LIQUID_BOTTLE_LOOP_1 revert timer\n         \"liquidPumpEnabled\": True,                              # Phase 8 slice 1 (universal pump)\n         \"digFindsEnabled\": True, \"digFindsLocalOnly\": True, \"digFindChanceMultiplier\": 1.0,\n",
+  "patch": "--- a/src/RimMandrake/FlowWorks/northstar/site_spec.py\n+++ b/src/RimMandrake/FlowWorks/northstar/site_spec.py\n@@ -104,7 +104,7 @@\n         \"rainDousesLiquidFireEnabled\": True,                    # Phase 6 owed (ignition by explosion, extinguishing)\n         \"chemfuelInfernoEnabled\": True, \"chemfuelIntensity\": 1.0, \"chemfuelSpreadSpeed\": 1.0, \"chemfuelBurnRate\": 1.0,\n         \"astrofuelDetonationEnabled\": True, \"astrofuelBlastScale\": 1.0,   # CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL fuel fires\n-        \"pitStuckAlertEnabled\": True, \"superdeepRoomsEnabled\": True, \"captureDownEnabled\": True, \"pitLipMeleeDeniedEnabled\": True, \"wardenFromLipEnabled\": True, \"pitRoomMinDepthMetres\": 3.0,   # PIT_ROOM_TUNE_TALL_FOLK_DIG_DEEPER (3.0 m for a person);   # SUPERDEEP_PRISON_ROOM_1\n+        \"pitStuckAlertEnabled\": True, \"superdeepRoomsEnabled\": True, \"captureDownEnabled\": True, \"wardenFromLipEnabled\": True, \"pitRoomMinDepthMetres\": 3.0,   # PIT_ROOM_TUNE_TALL_FOLK_DIG_DEEPER (3.0 m for a person);   # SUPERDEEP_PRISON_ROOM_1\n         \"excavationWallFacesEnabled\": True,                     # EXCAVATION_WALL_ART_1 carrier\n         \"pitSteppedReliefEnabled\": True,                        # stepped pit relief (52182cca96): shadows and depth shading\n         \"bottleRevertEnabled\": True,                            # LIQUID_BOTTLE_LOOP_1 revert timer\n",
   "patch_files": [
    "src/RimMandrake/FlowWorks/northstar/site_spec.py"
   ],
-  "patch_sha": "74af6ecb20294c72",
+  "patch_sha": "5a91252a224d5a3d",
   "rc": 1,
-  "test_blob": "aafaec0d2b38537314dd7d886507c3c46d84246b"
+  "test_blob": "6b704bc23c333fd738906e63350cea4f61ffa854"
  },
  "PY_FLOWWORKS_PIT_DRAW_CENSUS": {
   "at": "2026-11-23T10:12:40Z",
@@ -234,15 +234,15 @@
   "test_blob": "ecdb632246123de160f342b464f55bcbb9ce7ca5"
  },
  "T_PRISON": {
-  "at": "2026-11-23T04:28:12Z",
+  "at": "2026-11-23T18:21:52Z",
   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only PitCapture*,PitRoom*,PitRooms*,SWEEP*,TAKEN*",
   "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
-  "last": "a pit room cell is a person pocket at least the setting's depth",
-  "patch": "--- a/src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitRooms.cs\n+++ b/src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitRooms.cs\n@@ -65,7 +65,7 @@\n \t\t\t// (IsPitFloor), so rooms and the jobs done into them never disagree. The grid never rebuilds mid-flood.\n \t\t\tif (RM_PocketGrid.Relative)\n \t\t\t{\n-\t\t\t\treturn RM_RelativeRulesMath.PitRoomCell(RM_PocketGrid.IsPersonPocketCell(map, c), eng.ExcavatedDepthRaw(c), MinRoomNotches);\n+\t\t\t\treturn RM_RelativeRulesMath.PitRoomCell(RM_PocketGrid.IsPersonPocketCell(map, c), eng.ExcavatedDepthRaw(c), 0);\n \t\t\t}\n \t\t\treturn eng.IsSuperdeepRaw(c);\n \t\t}\n",
+  "last": "melee reach asks the same pure one",
+  "patch": "--- a/src/RimMandrake/FlowWorks/Source/RM_PitRoomMath.cs\n+++ b/src/RimMandrake/FlowWorks/Source/RM_PitRoomMath.cs\n@@ -183,7 +183,7 @@\n \t\t\tint cornerBD, bool rampJoins, bool bodyFree)\n \t\t{\n \t\t\treturn !settingOn || attackerD == targetD\n-\t\t\t\t|| RM_PitTrapMath.BodyTakesStep(attackerD, targetD, bodyClimbLimit, diagonal, cornerAD, cornerBD, rampJoins, bodyFree);\n+\t\t\t\t|| !(System.Math.Abs(attackerD - targetD) > bodyClimbLimit && DeepEnoughFor(System.Math.Abs(attackerD - targetD) * 0.5f, 3f, RM_RelativeRulesMath.HeightMetres(bodyClimbLimit)));\n \t\t}\n \n \t\t/// <summary>May a melee searcher pick this target? It strikes it from where it stands, or the climb rule lets it walk onto the\n",
   "patch_files": [
-   "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitRooms.cs"
+   "src/RimMandrake/FlowWorks/Source/RM_PitRoomMath.cs"
   ],
-  "patch_sha": "bec360da28c52148",
+  "patch_sha": "71715f7b47ce0088",
   "rc": 1,
   "test_blob": "ecdb632246123de160f342b464f55bcbb9ce7ca5"
  },

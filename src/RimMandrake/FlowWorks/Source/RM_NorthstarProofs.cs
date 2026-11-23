@@ -345,6 +345,13 @@ namespace RimMandrake.FlowWorks
 				return "CLIMB k=" + k + " held=" + RM_SuperdeepTrap.IsHeld(p) + " trapped=" + RM_SuperdeepTrap.IsTrapped(p)
 					+ " cell=" + p.Position.x + "," + p.Position.z + " | " + RM_PocketGrid.ProofPocket(map, p.Position, k);
 			}
+			if (arg.StartsWith("melee:"))
+			{
+				// RM_PitReach: "melee:<attacker id>;<target id>"
+				string[] ids = arg.Substring(6).Split(';');
+				Pawn at = ids.Length == 2 ? PawnById(map, ids[0]) : null, tg = ids.Length == 2 ? PawnById(map, ids[1]) : null;
+				return at == null || tg == null ? "REFUSED: arg must be melee:<attacker id>;<target id>, both spawned" : RM_PitReach.Proof(at, tg);
+			}
 			bool mask = arg.StartsWith("mask:");
 			string[] a = (mask ? arg.Substring(5) : arg).Split(';');
 			if (a.Length != 2 || !Cell(a[0], out IntVec3 c) || !int.TryParse(a[1], out int band))

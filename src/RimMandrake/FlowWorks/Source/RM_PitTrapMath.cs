@@ -517,6 +517,20 @@ namespace RimMandrake.FlowWorks
 			return hi - lo <= Math.Max(1, k);
 		}
 
+		/// <summary>RIMMANDRAKE_ENACT_PIT_MELEE_REACH_EQUALS_CLIMB_SIZE_DECIDES: the ONE criterion for "this body spans this step",
+		/// asked by the walked step (RM_Patch_PathFollower_SuperdeepFloor.RelativeStepAllowed) and by melee across a pit's edge
+		/// (RM_PitReach), so the two can never disagree: a cardinal step by <see cref="StepAllowed"/>, a diagonal one by
+		/// <see cref="DiagonalAllowed"/>. <paramref name="bodyFree"/>: a body no pit wall stops (it flies, jumps or floats over
+		/// it, or is too wide for the pocket it stands in and braces out).</summary>
+		public static bool BodyTakesStep(int fromD, int toD, int k, bool diagonal, int cornerAD, int cornerBD, bool joined, bool bodyFree)
+		{
+			if (bodyFree)
+			{
+				return true;
+			}
+			return diagonal ? DiagonalAllowed(fromD, toD, cornerAD, cornerBD, k) : StepAllowed(fromD, toD, k, joined);
+		}
+
 		/// <summary>Slow-climb factor's default (design §8.2, PROVISIONAL): a step of exactly K ≥ 2 costs twice a normal climb.</summary>
 		public const float DefaultSlowClimbFactor = 2f;
 

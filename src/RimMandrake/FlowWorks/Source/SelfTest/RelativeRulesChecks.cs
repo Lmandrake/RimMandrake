@@ -16,6 +16,14 @@ namespace RimMandrake.FlowWorks.SelfTest
             if (!ok) throw new Exception(msg);
         }
 
+        /// <summary>Melee across a cardinal step by a body of this size, through the production rule and the production climb limit.</summary>
+        private static bool Reach(float size, int from, int to, bool ramp = false, bool free = false)
+        {
+            return RM_PitRoomMath.MeleeReaches(true, from, to, RM_PitTrapMath.ClimbLimit(size), false, 0, 0, ramp, free);
+        }
+
+        private static int PersonK => RM_PitTrapMath.ClimbLimit(1f);
+
         /// <summary>A w×h depth grid (notches); out of bounds answers -1 (TallestWallOver skips it) or 0 (shot rule).</summary>
         private sealed class Grid
         {
@@ -116,21 +124,117 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(rooms.Contains("RM_PitRooms.CaptureGaveUp(pawn, Victim);") && rooms.Contains("\"RMFlow_CaptureDownGaveUp\".Translate("),
                     "can-fail: a capture that gives up says so");
             });
-            Case("PitLip_no_melee_across_a_pit_room_edge", () =>
+            // RIMMANDRAKE_ENACT_PIT_MELEE_REACH_EQUALS_CLIMB_SIZE_DECIDES (owner 2026-11-23): melee across a depth step works exactly
+            // when the attacker's own body could climb it. Scenes: a sheer pit of a given depth (notches) beside the ground.
+            Case("PitRoomReach_who_cannot_climb_out_cannot_melee_out_nor_be_meleed_by_its_size", () =>
             {
-                // live 2026-11-23: held raiders stabbed wardens on the rim of a drained 3 m moat (2 to 3 stabs downed one)
-                Assert(RM_PitRoomMath.MeleeAcrossLipDenied(true, true, 3f, 0f, 3f, RM_PitRoomMath.ReferenceHeightMetres), "held 3 m down, target on the rim: no melee");
-                Assert(!RM_PitRoomMath.MeleeAcrossLipDenied(false, true, 3f, 0f, 3f, RM_PitRoomMath.ReferenceHeightMetres), "can-fail: the switch off allows it");
-                Assert(!RM_PitRoomMath.MeleeAcrossLipDenied(true, false, 3f, 0f, 3f, RM_PitRoomMath.ReferenceHeightMetres), "can-fail: not held (swimming at the surface)");
-                Assert(!RM_PitRoomMath.MeleeAcrossLipDenied(true, true, 3f, 3f, 3f, RM_PitRoomMath.ReferenceHeightMetres), "can-fail: both on the pit floor fight as ever");
-                Assert(!RM_PitRoomMath.MeleeAcrossLipDenied(true, true, 2f, 0f, 3f, RM_PitRoomMath.ReferenceHeightMetres), "can-fail: 2 m is not a pit room");
-                Assert(!RM_PitRoomMath.MeleeAcrossLipDenied(true, true, 3f, 0f, 3f, 2f * RM_PitRoomMath.ReferenceHeightMetres), "can-fail: a creature twice as tall reaches out of 3 m");
-                string patch = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", "RM_Patch_PitLipMelee.cs"));
-                Assert(patch.Contains("nameof(Pawn_MeleeVerbs.TryMeleeAttack)") && patch.Contains("RM_PitRooms.MeleeAcrossLipDenied(__instance.Pawn, target)"),
-                    "can-fail: the rule sits on the one door every hand attack uses");
+                foreach (int d in new[] { 3, 4, 5, 6, 16 })     // 1.5 m (shallower than a pit room) to 8 m: a person climbs 1 m
+                {
+                    Assert(!RM_PitTrapMath.StepAllowed(d, 0, PersonK), "scene: a person does not climb out of " + d * 0.5 + " m");
+                    Assert(!Reach(1f, d, 0), "a raider " + d * 0.5 + " m down cannot strike the rim");
+                    Assert(!Reach(1f, 0, d), "a same-size pawn on the rim cannot strike down " + d * 0.5 + " m");
+                }
+            });
+            Case("PitRoomReach_who_climbs_the_step_melees_across_it_both_ways", () =>
+            {
+                foreach (int d in new[] { 1, 2 })
+                {
+                    Assert(Reach(1f, d, 0) && Reach(1f, 0, d), "a person strikes both ways across " + d * 0.5 + " m");
+                }
+                Assert(Reach(4f, 4, 0) && Reach(4f, 0, 4), "a thrumbo strikes both ways across the 2 m it climbs");
+                Assert(Reach(1f, 8, 8) && Reach(1f, 0, 0), "no step: two on one floor fight as ever, however deep");
+                Assert(Reach(1f, 8, 6), "a ledge 1 m above the floor is climbed, so it is reached");
+                Assert(Reach(1f, 3, 0, ramp: true), "a ramp is sloping ground: those at its ends fight across it");
+                Assert(Reach(1f, 16, 0, free: true), "a body no pit wall stops (a flyer, a jumper, one too wide for its pocket) reaches");
+                Assert(RM_PitRoomMath.MeleeReaches(false, 16, 0, 1, false, 0, 0, false, false), "the switch off: vanilla melee");
+            });
+            Case("PitRoomReach_large_reaches_a_small_one_that_cannot_reach_back", () =>
+            {
+                Assert(Reach(4f, 0, 4) && !Reach(1f, 4, 0), "a thrumbo on the rim strikes a person 2 m down, who cannot strike back");
+                Assert(Reach(2.4f, 0, 3) && !Reach(1f, 3, 0), "a muffalo on the rim strikes a person 1.5 m down, one way");
+                Assert(Reach(1f, 0, 2) && !Reach(0.2f, 2, 0), "a person on the rim strikes a rat 1 m down, one way");
+                Assert(Reach(4f, 4, 0) && !Reach(1f, 0, 4), "and from below: a thrumbo 2 m down strikes the rim, the person there cannot strike down");
+            });
+            Case("PitRoomReach_every_size_depth_and_direction_agrees_with_the_climb", () =>
+            {
+                int cases = 0;
+                for (int b = 1; b <= 120; b++)
+                {
+                    float size = b * 0.05f;
+                    int k = RM_PitTrapMath.ClimbLimit(size);
+                    for (int from = 0; from <= 16; from++)
+                    for (int to = 0; to <= 16; to++)
+                    {
+                        cases++;
+                        bool r = Reach(size, from, to);
+                        Assert(r == (from == to || RM_PitTrapMath.StepAllowed(from, to, k)), "size " + size + " " + from + "->" + to + ": reach " + r + " is not the climb");
+                        Assert(r == Reach(size, to, from), "up and down agree for one body: size " + size + " " + from + "->" + to);
+                        Assert(!r || Reach(size + 0.05f, from, to), "a larger body never reaches less: size " + size + " " + from + "->" + to);
+                        Assert(!r || from == to || Reach(size, from, to + Math.Sign(from - to)), "reach never returns at a deeper step");
+                        // a diagonal: both squares and both corners within K, as a diagonal climb is; equal depths need no step
+                        for (int c = 0; c <= 16; c += 4)
+                        {
+                            bool d = RM_PitRoomMath.MeleeReaches(true, from, to, k, true, c, from, false, false);
+                            Assert(d == (from == to || RM_PitTrapMath.DiagonalAllowed(from, to, c, from, k)), "diagonal " + from + "->" + to + " corner " + c);
+                        }
+                    }
+                }
+                Console.WriteLine("      reach = climb: " + cases + " size x step cases, each with 5 diagonals");
+            });
+            Case("PitRoomReach_one_criterion_called_by_the_walked_step_and_by_melee", () =>
+            {
+                string trap = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", "RM_SuperdeepTrap.cs"));
+                string math = RiverSwitchFlipChecks.Src("RM_PitRoomMath.cs");
+                string reach = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", "RM_Patch_PitLipMelee.cs"));
+                RiverSwitchFlipChecks.Has(trap, @"return BodyTakesStep\(pawn, map, eng, from, fromD, next, toD, k, join, false\);", "the walked step asks the criterion");
+                Assert(trap.Contains("return RM_PitTrapMath.BodyTakesStep(fromD, toD, k, diagonal, a, b, joined, bodyFree);"), "the walked step's criterion is the pure one");
+                Assert(math.Contains("|| RM_PitTrapMath.BodyTakesStep(attackerD, targetD, bodyClimbLimit, diagonal, cornerAD, cornerBD, rampJoins, bodyFree);"), "melee reach asks the same pure one");
+                Assert(reach.Contains("RM_PitRoomMath.MeleeReaches(true, a, t, RM_PocketGrid.NaturalClimbLimitOf(attacker), diagonal, ca, cb,"),
+                    "the live melee rule reads the attacker's own climb limit, attacker's depth first");
+                Assert(!math.Contains("MeleeAcrossLipDenied") && !reach.Contains("HeightOf") && !reach.Contains("pitRoomMinDepthMetres") && !reach.Contains("IsHeld(") ,
+                    "no second reach formula: no body height, room depth or held test decides melee");
+                Assert(reach.Contains("nameof(Pawn_MeleeVerbs.TryMeleeAttack)") && reach.Contains("RM_PitReach.Strikes(__instance.Pawn, target)"),
+                    "the rule sits on the one door every hand attack uses");
                 // live 2026-11-23: the patch file was written but not on the project's Compile list, so the game ran without it
                 Assert(RiverSwitchFlipChecks.Src("RimMandrake_FlowWorks.csproj").Contains("<Compile Include=\"Superdeep\\RM_Patch_PitLipMelee.cs\" />"),
-                    "can-fail: the patch file is compiled into the mod");
+                    "the patch file is compiled into the mod");
+            });
+            Case("PitRoomReach_ladder_and_gear_change_climbing_not_reach", () =>
+            {
+                // design 2026-10-12 §8.1 "Ladders and ramps are steps", §8.2 the climb limit is the body's height
+                int gear = RM_PitAccessMath.ClimbLimitWithGear(PersonK, true, true);
+                Assert(RM_PitTrapMath.StepAllowed(6, 0, gear) || RM_PocketGridMath.BandFor(gear, RM_PitTrapMath.ClimbBands) == 0, "scene: gear climbs 3 m");
+                Assert(RM_PitTrapMath.StepAllowed(6, 0, PersonK, false, true), "scene: a ladder joins a 3 m wall");
+                string reach = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", "RM_Patch_PitLipMelee.cs"));
+                Assert(!reach.Contains("ClimbLimitOf(attacker)") || reach.Replace("NaturalClimbLimitOf(attacker)", "").IndexOf("ClimbLimitOf(attacker)") < 0,
+                    "reach never reads the limit that climbing gear raises");
+                Assert(!reach.Contains("RM_ClimbJoins.ForPawn") && !reach.Contains("LadderRules") && reach.Contains("RM_ClimbJoins.RampJoins(map, eng, from, to, a, t)"),
+                    "reach reads a ramp and never a ladder");
+            });
+            Case("PitRoomReach_a_raider_picks_only_what_it_strikes_or_walks_to", () =>
+            {
+                Assert(!RM_PitRoomMath.MeleeTargetWorth(true, false, false), "a held raider under a colonist it cannot strike: not picked");
+                Assert(!RM_PitRoomMath.MeleeTargetWorth(false, true, false), "across a chasm it would reach if it were adjacent: not picked");
+                Assert(RM_PitRoomMath.MeleeTargetWorth(true, true, false), "adjacent and in reach: picked");
+                Assert(RM_PitRoomMath.MeleeTargetWorth(true, false, true), "a ramp or a ladder leads to its floor: picked, and walked to");
+                string reach = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", "RM_Patch_PitLipMelee.cs"));
+                Assert(reach.Contains("RM_PitReach.WalkIn(__instance.Pawn, target);") && reach.Contains("attacker.pather.StartPath(target, PathEndMode.OnCell);"),
+                    "a chase that stopped at a rim it cannot strike across walks on to the target's floor");
+            });
+            Case("PitRoomReach_shooting_and_capture_from_the_rim_unchanged", () =>
+            {
+                string reach = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", "RM_Patch_PitLipMelee.cs"));
+                Assert(!reach.Contains("typeof(Verb)") && !reach.Contains("CanHitTarget") && reach.Contains("verb == null || !verb.IsMeleeAttack"),
+                    "no shooting method is patched and a ranged searcher's validator is left alone");
+                Func<int, int, int> pit = (x, z) => x > 0 ? 6 : 0;
+                Assert(!RM_RelativeRulesMath.ShotBlocked(pit, 0, 0, 1, 0, 4), "a gunner at the rim still shoots a raider 3 m down beside it");
+                Assert(RM_RelativeRulesMath.ShotBlocked(pit, -2, 0, 1, 0, 4), "and from back off the rim still cannot");
+                // 1c053b325bc5: a warden on the rim takes a held raider from above, and the raider cannot stab it
+                Assert(RM_PitRoomMath.CaptureReach(false, true, true, 2f) && RM_PitRoomMath.CaptureReach(true, true, true, 1f), "the warden still takes him from the rim");
+                Assert(RM_PitRoomMath.CaptureDownNext(RM_PitRoomMath.CaptureReach(false, true, true, 2f), false, 0) == RM_PitRoomMath.CaptureStep.Hold, "and holds");
+                Assert(!Reach(1f, 6, 0), "a held raider who cannot climb out of 3 m does not stab the warden on the rim");
+                string rooms = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", "RM_PitRooms.cs"));
+                Assert(rooms.Contains("RM_PitRoomMath.CaptureDownNext(RM_PitRooms.CaptureInReach(pawn, Victim), onPit, repaths)"), "the capture job asks the rim reach");
             });
             Case("PitCapture_follows_a_held_pawn_that_moves", () =>
             {

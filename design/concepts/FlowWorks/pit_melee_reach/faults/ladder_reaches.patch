@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/FlowWorks/Source/Superdeep/RM_Patch_PitLipMelee.cs
++++ b/src/RimMandrake/FlowWorks/Source/Superdeep/RM_Patch_PitLipMelee.cs
+@@ -82,7 +82,7 @@
+ 				cb = RM_TrenchStride.StepDepthFor(attacker, map, eng, new IntVec3(from.x, 0, to.z));
+ 			}
+ 			return RM_PitRoomMath.MeleeReaches(true, a, t, RM_PocketGrid.NaturalClimbLimitOf(attacker), diagonal, ca, cb,
+-				!diagonal && RM_ClimbJoins.RampJoins(map, eng, from, to, a, t),
++				!diagonal && RM_ClimbJoins.ForPawn(map, eng, from, to, a, t, attacker, out _, out _),
+ 				RM_PocketGrid.FreePitTraveller(attacker) || RM_SuperdeepTrap.InOwnPocketTooNarrow(attacker));
+ 		}
+ 

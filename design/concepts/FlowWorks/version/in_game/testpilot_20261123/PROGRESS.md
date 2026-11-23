@@ -136,3 +136,6 @@ Host: ArchBig (archmagi), bridge taken 06:06 PST 2026-11-23. Clone: .../RIMMANDR
 - t6 stray: free raider Human21297 (Arkady) stood on pit square 60,60 from t=632 to 1052 (AttackMelee on a far colonist, no
   path), then walked out over the strip. Lids were gone by then (t18 read: every lid gone after the fall), so he stood IN an
   open 4 m pit square, unread by my trace then (fixed since: every hostile on a pit square is read). Not seen in t7-t22.
+## The melee rule of this sitting was replaced (owner ruling, 2026-11-23, RIMMANDRAKE_ENACT_PIT_MELEE_REACH_EQUALS_CLIMB_SIZE_DECIDES)
+- "No melee across a pit's edge" (3 m pit rooms, both ways, every size) is gone. Melee reach is now the climb criterion:
+  `design/RimMandrake/relative_depth_climb_design_2026-10-12.md` §8.8. Capture from the rim is unchanged. Live: UNRUN.

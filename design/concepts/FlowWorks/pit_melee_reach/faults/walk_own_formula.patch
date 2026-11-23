@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/FlowWorks/Source/Superdeep/RM_SuperdeepTrap.cs
++++ b/src/RimMandrake/FlowWorks/Source/Superdeep/RM_SuperdeepTrap.cs
+@@ -1018,7 +1018,7 @@
+ 			int fromD = RM_TrenchStride.StepDepthFor(pawn, map, eng, from);
+ 			int toD = RM_TrenchStride.StepDepthFor(pawn, map, eng, next);
+ 			bool join = everyone && RM_ClimbJoins.ForPawn(map, eng, from, next, fromD, toD, pawn, out _, out _);
+-			return BodyTakesStep(pawn, map, eng, from, fromD, next, toD, k, join, false);
++			return RM_PitTrapMath.StepAllowed(fromD, toD, k, join);
+ 		}
+ 
+ 		/// <summary>RM_PitTrapMath.BodyTakesStep for a live pawn, the corners of a diagonal read as this pawn sees them. Asked by

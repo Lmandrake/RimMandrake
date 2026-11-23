@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/FlowWorks/Source/RM_PitRoomMath.cs
++++ b/src/RimMandrake/FlowWorks/Source/RM_PitRoomMath.cs
+@@ -190,7 +190,7 @@
+ 		/// target's own square (then it walks in and fights there).</summary>
+ 		public static bool MeleeTargetWorth(bool adjacent, bool strikes, bool walksOntoItsFloor)
+ 		{
+-			return (adjacent && strikes) || walksOntoItsFloor;
++			return adjacent || walksOntoItsFloor;
+ 		}
+ 
+ 		/// <summary>Where the capture-down warden walks.</summary>

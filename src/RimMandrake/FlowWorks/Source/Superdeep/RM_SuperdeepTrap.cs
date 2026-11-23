@@ -1017,14 +1017,23 @@ namespace RimMandrake.FlowWorks
 			// TITAN_TRENCHES_WIRE_MIND_THE_GAP: depths as this pawn sees them (a trench it steps over is ground), as its masks do
 			int fromD = RM_TrenchStride.StepDepthFor(pawn, map, eng, from);
 			int toD = RM_TrenchStride.StepDepthFor(pawn, map, eng, next);
-			if (from.x != next.x && from.z != next.z)
-			{
-				return RM_PitTrapMath.DiagonalAllowed(fromD, toD,
-					RM_TrenchStride.StepDepthFor(pawn, map, eng, new IntVec3(next.x, 0, from.z)),
-					RM_TrenchStride.StepDepthFor(pawn, map, eng, new IntVec3(from.x, 0, next.z)), k);
-			}
 			bool join = everyone && RM_ClimbJoins.ForPawn(map, eng, from, next, fromD, toD, pawn, out _, out _);
-			return RM_PitTrapMath.StepAllowed(fromD, toD, k, join);
+			return BodyTakesStep(pawn, map, eng, from, fromD, next, toD, k, join, false);
+		}
+
+		/// <summary>RM_PitTrapMath.BodyTakesStep for a live pawn, the corners of a diagonal read as this pawn sees them. Asked by
+		/// the walked step above and by melee across a pit's edge (RM_PitReach): one criterion.</summary>
+		internal static bool BodyTakesStep(Pawn pawn, Map map, RM_MapComponent_Excavation eng, IntVec3 from, int fromD, IntVec3 to,
+			int toD, int k, bool joined, bool bodyFree)
+		{
+			bool diagonal = from.x != to.x && from.z != to.z;
+			int a = 0, b = 0;
+			if (diagonal)
+			{
+				a = RM_TrenchStride.StepDepthFor(pawn, map, eng, new IntVec3(to.x, 0, from.z));
+				b = RM_TrenchStride.StepDepthFor(pawn, map, eng, new IntVec3(from.x, 0, to.z));
+			}
+			return RM_PitTrapMath.BodyTakesStep(fromD, toD, k, diagonal, a, b, joined, bodyFree);
 		}
 	}
 

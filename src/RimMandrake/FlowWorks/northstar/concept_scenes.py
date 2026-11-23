@@ -1571,7 +1571,7 @@ def _moat_plot_lip(at):
 #   CaptureRepathLimit x CaptureRepathPauseTicks ran out (about 330 ticks), then the job ended with no prisoner and no message:
 #   the "prisoner flag backslides" and "held raider read free" readings. (b) any held raider that is not pinned stabbed any
 #   colonist on a rim square and walked the moat floor to reach one: the downed wardens. The check for (a) is the C# case
-#   PitCapture_takes_from_the_rim_without_touching; for (b) the row MOAT_rim_wardens_not_stabbed and PitLip_no_melee_across_a_pit_room_edge.
+#   PitCapture_takes_from_the_rim_without_touching; for (b) the row MOAT_rim_wardens_not_stabbed and PitRoomReach_*.
 # RULED OUT: a third raider's hit ends the warden's capture job. A stab (with stun spores) landed 90 ticks into the hold and
 #   the capture still finished at 180 ticks.
 # RULED OUT: the first finished capture ends the others (the pit becoming a prison). Two captures 60 ticks apart both finished.
@@ -1660,7 +1660,7 @@ def _moat_rows(S, G):
            'standingLooseInTheDrainedMoat': loose},
           unmeasured=not swimmers or dry_at is None or (len(held) < 2 and (bool(held) or not loose))
           or (bool(held) and len(made) < 2 and len(made) + len(lost) == len(caught)))
-    # RIMMANDRAKE_HOLD_FLOWWORKS_PIT_PRISONERS_THREE_CAPTURE_FAULTS: no held raider's hand weapon reaches a warden on the rim
+    # RIMMANDRAKE_HOLD_FLOWWORKS_PIT_PRISONERS_THREE_CAPTURE_FAULTS: a held raider who cannot climb out cannot reach a warden on the rim (RM_PitReach: melee reach is the climb criterion)
     # (setting pitLipMeleeDeniedEnabled, shipped on). Red before 1c053b325bc5: visit 8 run T042734 (2 wardens downed) and the
     # sitting's E3 (a warden standing on the rim downed in 360 ticks by 3 stabs).
     raiders = set(G['raiders'])

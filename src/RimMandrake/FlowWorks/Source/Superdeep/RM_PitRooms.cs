@@ -399,31 +399,6 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
-		/// <summary>RM_PitRoomMath.MeleeAcrossLipDenied for a live pair: the one standing lower is held by its pit room and the
-		/// other stands at least that pit-room depth above it.</summary>
-		public static bool MeleeAcrossLipDenied(Pawn attacker, Thing target)
-		{
-			if (!RimMandrakeFlowWorksSettings.pitLipMeleeDeniedEnabled || attacker == null || target == null || !attacker.Spawned
-				|| !target.Spawned || attacker.Map != target.Map)
-			{
-				return false;
-			}
-			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(attacker.Map);
-			if (!AnyPitFloor(eng))
-			{
-				return false;
-			}
-			float a = eng.ExcavatedDepthAt(attacker.Position) * RM_RelativeRulesMath.MetresPerNotch;
-			float t = eng.ExcavatedDepthAt(target.Position) * RM_RelativeRulesMath.MetresPerNotch;
-			Pawn lower = a >= t ? attacker : target as Pawn;
-			if (lower == null)
-			{
-				return false;       // a building down in the pit, struck from the rim: not a pawn's reach question
-			}
-			return RM_PitRoomMath.MeleeAcrossLipDenied(true, RM_SuperdeepTrap.IsHeld(lower), Math.Max(a, t), Math.Min(a, t),
-				RimMandrakeFlowWorksSettings.pitRoomMinDepthMetres, RM_Drowning.HeightOf(lower));
-		}
-
 		public static RM_PitRoomMath.CaptureDownVerdict CaptureDownVerdict(Pawn target)
 		{
 			bool humanlike = target?.RaceProps != null && target.RaceProps.Humanlike && target.guest != null;

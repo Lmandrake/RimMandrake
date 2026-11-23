@@ -265,7 +265,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "the hold reads the pocket grid when the relative rule is on");
                 Assert(trap.Contains("RM_PitTrapMath.ArrivalDropsTooFar("), "the descent detector falls by drop over K");
                 Assert(trap.Contains("RM_RelativeRulesMath.FallScaleNotches("), "fall damage scales by the drop (metres fallen, P7 V3)");
-                Assert(trap.Contains("RM_PitTrapMath.StepAllowed(") && trap.Contains("RM_PitTrapMath.DiagonalAllowed("),
+                Assert(trap.Contains("return BodyTakesStep(pawn, map, eng, from, fromD, next, toD, k, join, false);") && trap.Contains("RM_PitTrapMath.BodyTakesStep(fromD, toD, k, diagonal, a, b, joined, bodyFree)")
+                    && Src("RM_PitTrapMath.cs").Contains("return diagonal ? DiagonalAllowed(fromD, toD, cornerAD, cornerBD, k) : StepAllowed(fromD, toD, k, joined);"),
                     "the per-move floor uses the relative step rule");
                 string grid = Src("Superdeep", "RM_PocketGrid.cs");
                 Assert(grid.Contains("RM_PocketGridMath.Label("), "the runtime grid is the selftested labeller");

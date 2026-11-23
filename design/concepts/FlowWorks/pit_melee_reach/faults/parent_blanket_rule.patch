@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/FlowWorks/Source/RM_PitRoomMath.cs
++++ b/src/RimMandrake/FlowWorks/Source/RM_PitRoomMath.cs
+@@ -183,7 +183,7 @@
+ 			int cornerBD, bool rampJoins, bool bodyFree)
+ 		{
+ 			return !settingOn || attackerD == targetD
+-				|| RM_PitTrapMath.BodyTakesStep(attackerD, targetD, bodyClimbLimit, diagonal, cornerAD, cornerBD, rampJoins, bodyFree);
++				|| !(System.Math.Abs(attackerD - targetD) > bodyClimbLimit && DeepEnoughFor(System.Math.Abs(attackerD - targetD) * 0.5f, 3f, RM_RelativeRulesMath.HeightMetres(bodyClimbLimit)));
+ 		}
+ 
+ 		/// <summary>May a melee searcher pick this target? It strikes it from where it stands, or the climb rule lets it walk onto the

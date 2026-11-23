@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/FlowWorks/Source/Superdeep/RM_Patch_PitLipMelee.cs
++++ b/src/RimMandrake/FlowWorks/Source/Superdeep/RM_Patch_PitLipMelee.cs
+@@ -173,7 +173,7 @@
+ 			}
+ 			Pawn p = searcher.Thing as Pawn;
+ 			Verb verb = searcher.CurrentEffectiveVerb;
+-			if (p == null || !p.Spawned || verb == null || !verb.IsMeleeAttack)
++			if (p == null || !p.Spawned || verb == null)
+ 			{
+ 				return;
+ 			}

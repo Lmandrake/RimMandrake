@@ -246,7 +246,8 @@ namespace RimMandrake.FlowWorks
         // capture down / convert down are done from the lip.
         public static bool superdeepRoomsEnabled = true;
         public static bool captureDownEnabled = true;
-        /// <summary>A pawn its pit room holds cannot melee across the lip, nor be meleed from it (2026-11-23).</summary>
+        /// <summary>Melee across a pit's edge only where the attacker's body could climb that step (RM_PitReach, 2026-11-23). The key is the
+        /// saved one of the blanket rule it replaced.</summary>
         public static bool pitLipMeleeDeniedEnabled = true;
         public static bool wardenFromLipEnabled = true;
         // PIT_ROOM_TUNE_TALL_FOLK_DIG_DEEPER (owner card 2026-10-18): a pit room is a person-band pocket whose floor is at least
@@ -1711,9 +1712,10 @@ namespace RimMandrake.FlowWorks
                   + "and takes them prisoner from above, without climbing in. Only someone the pit actually holds "
                   + "(a creature too wide for it is not trapped). Off: no capture-down order.");
             }
-            list.CheckboxLabeled("No melee across a pit's edge", ref pitLipMeleeDeniedEnabled,
-                "Someone a pit room holds cannot reach a person on the edge above with a hand weapon, and cannot be struck "
-              + "from there either. Shooting follows its own rule. Off: a trapped raider can stab whoever stands at the edge.");
+            list.CheckboxLabeled("Melee across a pit's edge needs reach", ref pitLipMeleeDeniedEnabled,
+                "A creature strikes up or down across a pit's edge only where its own body could climb that step: a person 1 m, "
+              + "a muffalo 1.5 m, a thrumbo 2 m. So a large creature can reach down to a small one that cannot reach back. A "
+              + "ladder or climbing gear gives no extra reach. Shooting follows its own rule. Off: anyone touching may strike.");
             list.CheckboxLabeled("Wardens and doctors work from the lip", ref wardenFromLipEnabled,
                 "Recruiting, converting, enslaving, wearing down, interrogating, tending and bringing food to "
               + "someone in a pit is done from the edge: food is dropped down onto its spot, talk happens "

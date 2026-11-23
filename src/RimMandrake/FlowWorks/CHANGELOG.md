@@ -4,6 +4,8 @@ Version here must match `<modVersion>` in `About/About.xml`. Never deployed (`.m
 
 ## Unreleased
 
+- 2026-11-23: melee across a pit's edge needs reach: a creature strikes up or down only where its own body could climb that
+  step, so a large one reaches down to a small one that cannot reach back (setting "Melee across a pit's edge needs reach").
 - 2026-10-16: River Colors merged in (was its own mod, `mandrake.rut.rivercolors`, `src/RimUtinni/RiverColors`):
   the planet-map river gradient now lives in `Source/RiverColors/`, its settings are the "River colours" section of
   this mod's settings (`riverColors_`-prefixed keys; old standalone values are not imported), and its check is

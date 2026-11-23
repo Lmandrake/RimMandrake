@@ -1,0 +1,26 @@
+edges [0.75, 1.65, 3.0]; a cell: U = strikes up out of the pit, D = strikes down into it, . = neither
+body            size  K   0.0  0.5  1.0  1.5  2.0  2.5  3.0  3.5  4.0  4.5  5.0  5.5  6.0  6.5  7.0  7.5  8.0  (m)
+rat             0.20  1    UD   UD    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .
+child           0.50  1    UD   UD    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .
+cat/dog edge    0.74  1    UD   UD    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .
+person edge     0.75  2    UD   UD   UD    .    .    .    .    .    .    .    .    .    .    .    .    .    .
+person          1.00  2    UD   UD   UD    .    .    .    .    .    .    .    .    .    .    .    .    .    .
+warg            1.40  2    UD   UD   UD    .    .    .    .    .    .    .    .    .    .    .    .    .    .
+person edge     1.64  2    UD   UD   UD    .    .    .    .    .    .    .    .    .    .    .    .    .    .
+large edge      1.65  3    UD   UD   UD   UD    .    .    .    .    .    .    .    .    .    .    .    .    .
+muffalo         2.40  3    UD   UD   UD   UD    .    .    .    .    .    .    .    .    .    .    .    .    .
+large edge      2.99  3    UD   UD   UD   UD    .    .    .    .    .    .    .    .    .    .    .    .    .
+huge edge       3.00  4    UD   UD   UD   UD   UD    .    .    .    .    .    .    .    .    .    .    .    .
+thrumbo         4.00  4    UD   UD   UD   UD   UD    .    .    .    .    .    .    .    .    .    .    .    .
+titan          25.00  4    UD   UD   UD   UD   UD    .    .    .    .    .    .    .    .    .    .    .    .
+
+pairs (attacker below / target above, or the other way round): two-way = either strikes, one-way = only the larger, none
+pair                            0.0  0.5  1.0  1.5  2.0  2.5  3.0  3.5  4.0  4.5  5.0  5.5  6.0  6.5  7.0  7.5  8.0
+rat / person                    two  two  one    .    .    .    .    .    .    .    .    .    .    .    .    .    .
+rat / thrumbo                   two  two  one  one  one    .    .    .    .    .    .    .    .    .    .    .    .
+person / person                 two  two  two    .    .    .    .    .    .    .    .    .    .    .    .    .    .
+person / muffalo                two  two  two  one    .    .    .    .    .    .    .    .    .    .    .    .    .
+person / thrumbo                two  two  two  one  one    .    .    .    .    .    .    .    .    .    .    .    .
+muffalo / thrumbo               two  two  two  two  one    .    .    .    .    .    .    .    .    .    .    .    .
+
+regions: every one sensible: reach never returns deeper, a larger body never reaches less, same sizes are always two-way or neither, one-way only to the larger

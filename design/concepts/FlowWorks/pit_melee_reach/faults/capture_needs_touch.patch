@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/FlowWorks/Source/RM_PitRoomMath.cs
++++ b/src/RimMandrake/FlowWorks/Source/RM_PitRoomMath.cs
+@@ -171,7 +171,7 @@
+ 		/// until the repath budget ran out, and the capture ended with no prisoner and no message (live 2026-11-23).</summary>
+ 		public static bool CaptureReach(bool touching, bool wardenAtRim, bool lineOfSight, float distToVictim)
+ 		{
+-			return touching || (wardenAtRim && lineOfSight && distToVictim <= RadiusFor(LipKind.Interact));
++			return touching;
+ 		}
+ 
+ 		/// <summary>RIMMANDRAKE_ENACT_PIT_MELEE_REACH_EQUALS_CLIMB_SIZE_DECIDES (owner 2026-11-23: <i>"anything that can't climb out

@@ -104,7 +104,7 @@ SETTINGS = {
         "rainDousesLiquidFireEnabled": True,                    # Phase 6 owed (ignition by explosion, extinguishing)
         "chemfuelInfernoEnabled": True, "chemfuelIntensity": 1.0, "chemfuelSpreadSpeed": 1.0, "chemfuelBurnRate": 1.0,
         "astrofuelDetonationEnabled": True, "astrofuelBlastScale": 1.0,   # CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL fuel fires
-        "pitStuckAlertEnabled": True, "superdeepRoomsEnabled": True, "captureDownEnabled": True, "wardenFromLipEnabled": True, "pitRoomMinDepthMetres": 3.0,   # PIT_ROOM_TUNE_TALL_FOLK_DIG_DEEPER (3.0 m for a person);   # SUPERDEEP_PRISON_ROOM_1
+        "pitStuckAlertEnabled": True, "superdeepRoomsEnabled": True, "captureDownEnabled": True, "pitLipMeleeDeniedEnabled": True, "wardenFromLipEnabled": True, "pitRoomMinDepthMetres": 3.0,   # PIT_ROOM_TUNE_TALL_FOLK_DIG_DEEPER (3.0 m for a person);   # SUPERDEEP_PRISON_ROOM_1
         "excavationWallFacesEnabled": True,                     # EXCAVATION_WALL_ART_1 carrier
         "pitSteppedReliefEnabled": True,                        # stepped pit relief (52182cca96): shadows and depth shading
         "bottleRevertEnabled": True,                            # LIQUID_BOTTLE_LOOP_1 revert timer

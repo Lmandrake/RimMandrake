@@ -174,15 +174,23 @@ namespace RimMandrake.FlowWorks
 			return touching || (wardenAtRim && lineOfSight && distToVictim <= RadiusFor(LipKind.Interact));
 		}
 
-		/// <summary>RIMMANDRAKE_HOLD_FLOWWORKS_PIT_PRISONERS_THREE_CAPTURE_FAULTS: a hand weapon does not reach across the lip of a
-		/// pit room. The pawn standing lower is held by its pit and the floor between the two is at least that pawn's pit-room
-		/// depth: no melee either way. Held raiders stabbed wardens on the rim and walked the pit floor to reach the next one
-		/// (live 2026-11-23: an unarmed warden downed in 2 to 3 stabs). Shooting keeps its own rule (ruling 23).</summary>
-		public static bool MeleeAcrossLipDenied(bool settingOn, bool lowerIsHeld, float lowerFloorMetres, float upperFloorMetres,
-			float personMetres, float lowerHeightMetres)
+		/// <summary>RIMMANDRAKE_ENACT_PIT_MELEE_REACH_EQUALS_CLIMB_SIZE_DECIDES (owner 2026-11-23: <i>"anything that can't climb out
+		/// also cannot melee attack out. Same for melee attacking 'down' into the pit. If you couldn't climb in you can't melee
+		/// attack in."</i>): a hand weapon reaches across a depth step exactly when the attacker's own body takes that step,
+		/// by the climb criterion (RM_PitTrapMath.BodyTakesStep), up and down alike. Equal depths are no step. A ramp is sloping
+		/// ground and joins; a ladder and climbing gear move a body and lengthen no arm, so neither is asked.</summary>
+		public static bool MeleeReaches(bool settingOn, int attackerD, int targetD, int bodyClimbLimit, bool diagonal, int cornerAD,
+			int cornerBD, bool rampJoins, bool bodyFree)
 		{
-			return settingOn && lowerIsHeld && DeepEnoughFor(lowerFloorMetres - upperFloorMetres, personMetres, lowerHeightMetres)
-				&& lowerFloorMetres - upperFloorMetres > 1e-4f;
+			return !settingOn || attackerD == targetD
+				|| RM_PitTrapMath.BodyTakesStep(attackerD, targetD, bodyClimbLimit, diagonal, cornerAD, cornerBD, rampJoins, bodyFree);
+		}
+
+		/// <summary>May a melee searcher pick this target? It strikes it from where it stands, or the climb rule lets it walk onto the
+		/// target's own square (then it walks in and fights there).</summary>
+		public static bool MeleeTargetWorth(bool adjacent, bool strikes, bool walksOntoItsFloor)
+		{
+			return (adjacent && strikes) || walksOntoItsFloor;
 		}
 
 		/// <summary>Where the capture-down warden walks.</summary>
