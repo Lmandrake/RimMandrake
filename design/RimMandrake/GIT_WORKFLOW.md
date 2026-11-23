@@ -175,7 +175,8 @@ land.sh -m "subject" <path>...                  # land working-tree bytes of the
   See `git_migration_drain_2026-10-02.md`. `git tag -l 'archive/*'` lists the tags.
 - Never merge in a tree that others write. No such tree is left: each clone has one writer.
 - A history rewrite of origin/main strands every remote clone that pulls `--ff-only` ('ahead N, behind N').
-  - Evidence: SteveDesktop's `~/rm/runner` and testq paused REFUSED/SYNC after the work-history excise.
+  - Evidence: SteveDesktop's `~/rm/runner` and testq paused REFUSED/SYNC after the work-history excise (the rewrite of
+    origin/main by 2026-10-29, `RIMMANDRAKE_EXCISE_WORK_HISTORY`).
   - Re-point the remote clones in the same change.
   - The reset-hard hook matches ssh command text too.
   - `git switch --detach origin/main; git branch -f main origin/main; git switch main` moves a clean clone. That
@@ -525,7 +526,8 @@ The rest are discipline. Each trap gives what happens, then what to do instead.
 - Rehearsing parallel integration:
   - Clone an integration repo with `-b main`. Its HEAD may sit on the candidate branch mid fan-in.
   - `git cherry-pick --continue` fails on an empty pick. Use `--skip`.
-  - A board's `done` must mean LANDED before dependents are given.
+  - The task board of a parallel trial (`design/RimMandrake/parallel_add_on_trial_design_2026-11-01.md`) gives the tasks to
+    the workers. A board's `done` must mean LANDED before dependents are given.
 - **Re-measure state numbers immediately before acting.**
   - Peers' commits land on origin/main all the time. Your clone does not see them until `./sync`.
   - The read-only D:\ mirror trails origin by up to 5 minutes (`MIRROR_HEAD` names its commit).

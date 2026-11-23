@@ -82,7 +82,8 @@ freeze stamp (`ASHKARR_WORLDMAP_tiles.csv.frozen.json`, owner ruling 2026-09-07)
 - `RUT_Umbra` is the **Auroral Umbra**: 2,531 tiles, with perpetual aurora. The 2026-10-19 ruling kept it. Its sheet
   is `the_propane_lakes.md` §0.
 - Every other `RUT_` def is a frozen twin, and its RM_ successor wins. So the count of 27 holds the `RM_` def, not its twin.
-- **A sea IS its floor:** each sea is one row. The `RM_SeabedFloor_*` defs are plumbing.
+- **A sea IS its floor:** in a table of biomes, each sea is one row, and the sea's row holds its floor's minerals. A
+  floor gets no row of its own. The `RM_SeabedFloor_*` defs are plumbing.
 - **RM_Cauldron's sheet is `design/Jawa/worldbuilding/biomes/cauldron.md`.** Its key in `_freeze_matrix.csv` is
   `poison_forest`. The Cauldron is the toxic pools in the terminator band.
 - Never ask him about a biome's existence, home or sheet before you read those files.
@@ -101,8 +102,10 @@ Then the 2026-10-28 audit read the 09-12 record instead of the painted map. The 
   - MEASURED 2026-09-23, in one session. The owner proposed a "special oil to seal part of the greatbole so it cannot
     regrow". It ships as `RM_ToxinSealant` (item + terrain). `RM_MapComponent_LivingRegrowth` **already gates
     regrowth on that terrain**.
-  - The grubs' two behaviours are `RM_EatCleanableExtension` and `RM_ParentalEnrageExtension`, with one axis widened
-    each.
+  - The grubs are the greatbole grubs (`RM_GreatboleGrub`). The grubs' two behaviours are `RM_EatCleanableExtension`
+    (eat named items) and `RM_ParentalEnrageExtension` (attack whoever comes near a guarded thing), with one axis
+    widened each. A widened axis is one field made more general: for example, the guard field also takes an item, not
+    only a young animal.
   - The grubs breed through `RM_CompVerminBreeder` + `RM_MapComponent_VerminPopulation` + its alert.
   - The mining thresholds need no new record, because `BoleRecord.footprint`/`timers` are already Scribed (saved).
   - **Four of six mechanisms already built.**

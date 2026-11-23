@@ -53,7 +53,7 @@ The bridge holder is a helper or the Conductor. Before the FOUNDRY seat retired,
 | `DEPLOYING` | Deploy the build, then run `rimflow seat ready`. Going idle is the owner's go-signal. | unaffected |
 | `LOADING` | Offline work. Items with `needs: game-up`/`bridge` are simply not offered. | unaffected |
 | `UP` | **First harvest the fresh dumps and log, before anything else.** Then do bridge work: take the bridge, run the live list, release the bridge, go idle. | The owner plays or drives; "spawn me one and I'll read it back". |
-| `GOING_DOWN` | Live items ONLY. Postpone offline work that can wait. Announce "Close the Game" when clear. | unaffected |
+| `GOING_DOWN` | Live items ONLY. Postpone offline work that can wait. Announce "Close the Game" when clear (the list of live items is empty). | unaffected |
 
 `--this-deployment` items (`rimflow spawn … --this-deployment`) jump the queue while the game is UP. Those items are cleared
 automatically on `DOWN`. So no false urgency leaks forward.
