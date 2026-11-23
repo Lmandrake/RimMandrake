@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs
++++ b/src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs
+@@ -236,7 +236,7 @@
+             }
+             if (spans != null)
+                 foreach ((T other, bool up) in spans)
+-                    if (up && other != null) yield return other;
++                    if (other != null) yield return other;
+         }
+ 
+         /// <summary>The floor lamps hooked to a run (RM_MapComponent_ConduitRuns.LampsOf is this over the map): a lamp's power

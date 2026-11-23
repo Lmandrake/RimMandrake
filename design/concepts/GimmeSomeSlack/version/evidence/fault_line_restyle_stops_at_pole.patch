@@ -1,0 +1,13 @@
+--- a/src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs
++++ b/src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs
+@@ -234,9 +234,7 @@
+                 for (int i = 0; i < l.Count; i++)
+                     if (l[i] != t && joins(l[i])) yield return l[i];
+             }
+-            if (spans != null)
+-                foreach ((T other, bool up) in spans)
+-                    if (up && other != null) yield return other;
++            // FAULT: the overhead spans are not followed, so the flood stops at a pole
+         }
+ 
+         /// <summary>The floor lamps hooked to a run (RM_MapComponent_ConduitRuns.LampsOf is this over the map): a lamp's power

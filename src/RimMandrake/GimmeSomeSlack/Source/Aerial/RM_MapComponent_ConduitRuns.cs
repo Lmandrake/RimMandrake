@@ -77,31 +77,25 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         }
 
         // ------------------------------------------------------------------ the graph
-        /// <summary>Members touching t: in its cells or a cardinal neighbour of them, plus its anchor's span partners.</summary>
+        /// <summary>Members touching t: in its cells or a cardinal neighbour of them, plus its anchor's span partners. The rule
+        /// is ConduitStyles.RunNeighbours (Verse-free, run by T_LINE_RESTYLE_OFFLINE); this feeds it the map.</summary>
         public IEnumerable<Thing> Neighbours(Thing t)
         {
-            CellRect r = t.OccupiedRect();
-            var cells = new HashSet<IntVec3>(r.Cells);
-            foreach (IntVec3 c in r.Cells)
-                foreach (IntVec3 d in GenAdj.CardinalDirections) cells.Add(c + d);
-            foreach (IntVec3 c in cells)
-            {
-                if (!c.InBounds(map)) continue;
-                List<Thing> l = map.thingGrid.ThingsListAtFast(c);
-                for (int i = 0; i < l.Count; i++)
-                    if (l[i] != t && (ConduitStylePicker.IsMember(l[i].def) || IsBridgeConduit(l[i].def))) yield return l[i];
-            }
             CompAerialAnchor a = CompAerialAnchor.Of(t);
-            if (a != null)
-                foreach (SpanLink s in a.links)
-                    if (s.state == SpanState.Up && s.other?.parent != null && s.other.Spawned) yield return s.other.parent;   // GPT read A15: never across a cut span
+            return ConduitStyles.RunNeighbours<Thing>(
+                t,
+                t.OccupiedRect().Cells.Select(c => (c.x, c.z)),
+                c => new IntVec3(c.x, 0, c.z).InBounds(map),
+                c => map.thingGrid.ThingsListAtFast(new IntVec3(c.x, 0, c.z)),
+                x => ConduitStylePicker.IsMember(x.def) || IsBridgeConduit(x.def),
+                a?.links.Select(s => ((Thing)s.other?.parent, s.state == SpanState.Up && s.other?.parent != null && s.other.Spawned)));   // GPT read A15: never across a cut span
         }
 
         /// <summary>GPT pre-release D8: a conduit GSS draws as cords that cannot carry a style (another mod's conduit, not
         /// patched with the style field) still JOINS a run: the flood fill walks through it, but it is never a member (it is
         /// not in the result, so it is never painted or counted). Without this, two halves joined only through it could keep
         /// two looks on one visible cord run.</summary>
-        public static bool IsBridgeConduit(ThingDef d) => d != null && !ConduitStylePicker.IsOurs(d) && ConduitVisuals.IsTarget(d);
+        public static bool IsBridgeConduit(ThingDef d) => d != null && ConduitStyles.IsBridge(ConduitStylePicker.IsOurs(d), ConduitVisuals.IsTarget(d));
 
         /// <summary>The run containing seed (flood fill), never stepping onto an excluded member or across the cut link.</summary>
         public List<Thing> RunOf(Thing seed, HashSet<Thing> exclude = null, Thing cutA = null, Thing cutB = null)
@@ -171,30 +165,17 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         /// (ConduitStyles.LampHooked; GPT pre-release D2: a lamp wired to ANOTHER run is not this run's). Thing-id order.</summary>
         public List<Thing> LampsOf(List<Thing> run)
         {
-            var set = new HashSet<Thing>(run);
-            var cells = new HashSet<IntVec3>();
-            foreach (Thing m in run) foreach (IntVec3 c in m.OccupiedRect().Cells) cells.Add(c);
-            var o = new List<Thing>();
+            var lamps = new List<Thing>();
             foreach (string dn in ConduitStyles.LampDefs)
             {
                 ThingDef d = DefDatabase<ThingDef>.GetNamedSilentFail(dn);
-                if (d == null) continue;
-                foreach (Thing l in map.listerThings.ThingsOfDef(d))
-                {
-                    Thing parent = l.TryGetComp<CompPower>()?.connectParent?.parent;
-                    bool touches = false;
-                    if (parent == null)
-                        foreach (IntVec3 c in l.OccupiedRect().Cells)
-                        {
-                            if (cells.Contains(c)) { touches = true; break; }
-                            foreach (IntVec3 dd in GenAdj.CardinalDirections) if (cells.Contains(c + dd)) { touches = true; break; }
-                            if (touches) break;
-                        }
-                    if (ConduitStyles.LampHooked(parent != null, parent != null && set.Contains(parent), touches)) o.Add(l);
-                }
+                if (d != null) lamps.AddRange(map.listerThings.ThingsOfDef(d));
             }
-            o.Sort((p, q) => p.thingIDNumber.CompareTo(q.thingIDNumber));
-            return o;
+            return ConduitStyles.LampsHookedTo(run, lamps,
+                x => x.OccupiedRect().Cells.Select(c => (c.x, c.z)),
+                l => l.TryGetComp<CompPower>()?.connectParent?.parent,
+                (p, q) => p.thingIDNumber.CompareTo(q.thingIDNumber),
+                x => Neighbours(x).Where(n => IsBridgeConduit(n.def)));   // a lamp wired to another mod's conduit in the line is hooked
         }
 
         /// <summary>D9: the lamp wears a style that is not one of ours (Ideology, another mod).</summary>

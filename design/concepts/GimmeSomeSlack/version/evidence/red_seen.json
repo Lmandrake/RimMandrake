@@ -25,6 +25,19 @@
   "rc": 1,
   "test_blob": "130d8579e10c3a3de37bae17294cbd7944651256"
  },
+ "T_LINE_RESTYLE_OFFLINE": {
+  "at": "2026-11-23T12:08:23Z",
+  "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/LineRestyleChecks.cs",
+  "last": "5743/5755 checks passed",
+  "patch": "--- a/src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs\n+++ b/src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs\n@@ -52,7 +52,7 @@\n         /// mod's thing (a FlowWorks pipe pole, a pipe) is never one: each mod restyles only its own (owner 2026-11-22).\n         /// ConduitStylePicker builds its member set from this (bar restyle_whole_line, T_LINE_RESTYLE_OFFLINE).</summary>\n         public static bool IsRunMemberDef(string defName, bool stylable) =>\n-            defName != null && (Array.IndexOf(AerialStyles.StyledDefs, defName) >= 0 || (stylable && (IsConduitDef(defName) || IsSwitchDef(defName))));\n+            defName != null && (Array.IndexOf(AerialStyles.StyledDefs, defName) >= 0 || defName.EndsWith(\"Pole\") || (stylable && (IsConduitDef(defName) || IsSwitchDef(defName))));\n \n         /// <summary>GPT pre-release D8: a conduit GSS draws as cords that is not ours (another mod's conduit with no style\n         /// field) BRIDGES: the flood walks through it, but it is never a member.</summary>\n",
+  "patch_files": [
+   "src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs"
+  ],
+  "patch_sha": "e40a58f9529cdcad",
+  "rc": 1,
+  "test_blob": "f8678fe66ef6183f6694ce2138c06a59689e5aaf"
+ },
  "T_MAIN_THREAD_TEXTURES_OFFLINE": {
   "at": "2026-11-21T02:29:36Z",
   "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_main_thread_textures.py",

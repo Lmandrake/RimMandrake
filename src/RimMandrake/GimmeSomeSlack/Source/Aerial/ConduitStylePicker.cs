@@ -87,12 +87,13 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             foreach (string m in NotStylable) Log.Warning("[GimmeSomeSlack] " + m + " has no style field (CompProperties_Styleable patch skipped?): its runs draw the default look");
             bool[] flags = StyleIndex.styled;
             foreach (ThingDef d in byDef.Keys) if (flags != null && d.index < flags.Length) flags[d.index] = true;
-            foreach (string dn in AerialStyles.StyledDefs)
+            // the member rule is ConduitStyles.IsRunMemberDef (Verse-free, T_LINE_RESTYLE_OFFLINE): the anchors, and the conduit
+            // and switch defs that carry the style field; a lamp ends a run
+            foreach (string dn in AerialStyles.StyledDefs.Concat(defs))
             {
                 ThingDef d = DefDatabase<ThingDef>.GetNamedSilentFail(dn);
-                if (d != null) members.Add(d);
+                if (d != null && ConduitStyles.IsRunMemberDef(dn, byDef.ContainsKey(d))) members.Add(d);
             }
-            foreach (ThingDef d in byDef.Keys) if (!ConduitStyles.IsLampDef(d.defName)) members.Add(d);   // a lamp ends a run
             memberList.AddRange(members);
         }
 

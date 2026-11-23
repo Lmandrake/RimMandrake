@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs
++++ b/src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs
+@@ -255,7 +255,7 @@
+         {
+             var set = new HashSet<T>(run);
+             var wired = new HashSet<T>(run);                     // the run and the bridges its flood walks
+-            if (bridgesBeside != null)
++            if (false && bridgesBeside != null)
+             {
+                 var todo = new Queue<T>(run);
+                 while (todo.Count > 0) foreach (T b in bridgesBeside(todo.Dequeue())) if (b != null && wired.Add(b)) todo.Enqueue(b);

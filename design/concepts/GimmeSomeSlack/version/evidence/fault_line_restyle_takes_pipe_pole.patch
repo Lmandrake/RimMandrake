@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs
++++ b/src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs
+@@ -52,7 +52,7 @@
+         /// mod's thing (a FlowWorks pipe pole, a pipe) is never one: each mod restyles only its own (owner 2026-11-22).
+         /// ConduitStylePicker builds its member set from this (bar restyle_whole_line, T_LINE_RESTYLE_OFFLINE).</summary>
+         public static bool IsRunMemberDef(string defName, bool stylable) =>
+-            defName != null && (Array.IndexOf(AerialStyles.StyledDefs, defName) >= 0 || (stylable && (IsConduitDef(defName) || IsSwitchDef(defName))));
++            defName != null && (Array.IndexOf(AerialStyles.StyledDefs, defName) >= 0 || defName.EndsWith("Pole") || (stylable && (IsConduitDef(defName) || IsSwitchDef(defName))));
+ 
+         /// <summary>GPT pre-release D8: a conduit GSS draws as cords that is not ours (another mod's conduit with no style
+         /// field) BRIDGES: the flood walks through it, but it is never a member.</summary>

@@ -46,6 +46,18 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public static bool IsSwitchDef(string d) => d != null && Array.IndexOf(SwitchDefs, d) >= 0;
         public static bool IsLampDef(string d) => d != null && Array.IndexOf(LampDefs, d) >= 0;
 
+        /// <summary>Is a def a RUN MEMBER (restyled by "All connected", carries the run's look): the overhead anchors
+        /// (AerialStyles.StyledDefs: masts, lamp masts, wall brackets), and the conduit and switch defs that carry the style
+        /// field (<paramref name="stylable"/>). A lamp is styled but never a member: a machine ends a run (design 2.1). Another
+        /// mod's thing (a FlowWorks pipe pole, a pipe) is never one: each mod restyles only its own (owner 2026-11-22).
+        /// ConduitStylePicker builds its member set from this (bar restyle_whole_line, T_LINE_RESTYLE_OFFLINE).</summary>
+        public static bool IsRunMemberDef(string defName, bool stylable) =>
+            defName != null && (Array.IndexOf(AerialStyles.StyledDefs, defName) >= 0 || (stylable && (IsConduitDef(defName) || IsSwitchDef(defName))));
+
+        /// <summary>GPT pre-release D8: a conduit GSS draws as cords that is not ours (another mod's conduit with no style
+        /// field) BRIDGES: the flood walks through it, but it is never a member.</summary>
+        public static bool IsBridge(bool ours, bool drawnAsCord) => !ours && drawnAsCord;
+
         /// <summary>The power-tap clamp's art in a look (texture path under the mod): Scrapper, an unknown look or none =
         /// the root Aerial/TapClamp; the others Aerial/Styles/&lt;Look&gt;/TapClamp.</summary>
         public static string TapClampPath(string aerialDir, string look) =>
@@ -193,6 +205,76 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             }
             res.Sort(compare);
             return res;
+        }
+
+        /// <summary>The run graph's neighbour rule (RM_MapComponent_ConduitRuns.Neighbours is this over the map; bar
+        /// restyle_whole_line, T_LINE_RESTYLE_OFFLINE): the things that join a run (<paramref name="joins"/>: a member or a
+        /// bridge conduit) in t's own cells or a cardinal neighbour of them (power nets join cardinally), then the partners of
+        /// t's overhead spans that are UP (GPT read A15: never across a cut span) and on the map. No power state, switch
+        /// position or faction is read: a run is the drawn line. Cell order: t's cells, then each cell's N, E, S, W (Verse
+        /// GenAdj.CardinalDirections), each cell once.</summary>
+        public static IEnumerable<T> RunNeighbours<T>(
+            T t,
+            IEnumerable<(int x, int z)> occupied,
+            Func<(int x, int z), bool> inBounds,
+            Func<(int x, int z), IList<T>> thingsAt,
+            Func<T, bool> joins,
+            IEnumerable<(T other, bool up)> spans) where T : class
+        {
+            var own = new List<(int x, int z)>(occupied);
+            var cells = new HashSet<(int x, int z)>(own);
+            foreach ((int x, int z) in own)
+            {
+                cells.Add((x, z + 1)); cells.Add((x + 1, z)); cells.Add((x, z - 1)); cells.Add((x - 1, z));
+            }
+            foreach ((int x, int z) c in cells)
+            {
+                if (!inBounds(c)) continue;
+                IList<T> l = thingsAt(c);
+                for (int i = 0; i < l.Count; i++)
+                    if (l[i] != t && joins(l[i])) yield return l[i];
+            }
+            if (spans != null)
+                foreach ((T other, bool up) in spans)
+                    if (up && other != null) yield return other;
+        }
+
+        /// <summary>The floor lamps hooked to a run (RM_MapComponent_ConduitRuns.LampsOf is this over the map): a lamp's power
+        /// connection decides when it has one (<see cref="LampHooked"/>); a lamp with none falls back to standing on or
+        /// cardinally beside a member cell. A lamp wired to another mod's conduit that the run's flood walks through (a bridge:
+        /// <paramref name="bridgesBeside"/> gives the bridges beside a piece) is on the line's power too, so it is hooked
+        /// (T_LINE_RESTYLE_OFFLINE: "the lamps hooked to the line"). <paramref name="lamps"/> in any order; the result is sorted by
+        /// <paramref name="compare"/>.</summary>
+        public static List<T> LampsHookedTo<T>(
+            IList<T> run,
+            IEnumerable<T> lamps,
+            Func<T, IEnumerable<(int x, int z)>> cellsOf,
+            Func<T, T> connectionOf,
+            Comparison<T> compare,
+            Func<T, IEnumerable<T>> bridgesBeside = null) where T : class
+        {
+            var set = new HashSet<T>(run);
+            var wired = new HashSet<T>(run);                     // the run and the bridges its flood walks
+            if (bridgesBeside != null)
+            {
+                var todo = new Queue<T>(run);
+                while (todo.Count > 0) foreach (T b in bridgesBeside(todo.Dequeue())) if (b != null && wired.Add(b)) todo.Enqueue(b);
+            }
+            var cells = new HashSet<(int x, int z)>();
+            foreach (T m in run) foreach ((int x, int z) c in cellsOf(m)) cells.Add(c);
+            var o = new List<T>();
+            foreach (T l in lamps)
+            {
+                T parent = connectionOf(l);
+                bool touches = false;
+                if (parent == null)
+                    foreach ((int x, int z) in cellsOf(l))
+                        if (cells.Contains((x, z)) || cells.Contains((x, z + 1)) || cells.Contains((x + 1, z)) || cells.Contains((x, z - 1)) || cells.Contains((x - 1, z)))
+                        { touches = true; break; }
+                if (LampHooked(parent != null, parent != null && wired.Contains(parent), touches)) o.Add(l);
+            }
+            o.Sort(compare);
+            return o;
         }
 
         /// <summary>One run as the rules see it.</summary>
