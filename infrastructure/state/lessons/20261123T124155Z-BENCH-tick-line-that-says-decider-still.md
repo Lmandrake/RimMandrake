@@ -1,0 +1,1 @@
+A tick line that says a decider is 'still red' can mean a red_seen refusal (an edited test with no recorded red proof), not a failing test: run maturation.py certificate <Mod> --to <stage> and read the clause before you debug the test (Pyrelands T_SITE, 2026-11-23: green on the build; f7773e31d1 had edited it).
