@@ -1,0 +1,4 @@
+# A1: the three bridge tools, green on a clean state and red on planted faults, on one small list through testq.
+live-tier A1: ratchet_pilot
+live-mods: mandrake.rm.biomes, mandrake.rut.patches, mandrake.rsw.swbestiary, mandrake.rut.pyrelandsmechanics, mandrake.rm.flowworks, mandrake.rm.gimmesomeslack, mandrake.rm.patches
+live-proof A1: python.exe src/RimMandrake/bridgetools/prove_three_tools.py --out Transient/three_tools < /dev/null
