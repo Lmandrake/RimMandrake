@@ -1,4 +1,4 @@
-# Three kinds of live test: draft 1 (working text, not yet a rule)
+# Three kinds of live test: draft 2 (working text, not yet a rule)
 
 Item `RIMMANDRAKE_ENACT_THREE_TEST_KINDS_FORCED_COUNTED_HUNTED_NOT_STARS_ALIGNED`. Written 2026-11-23 by the Conductor with
 the owner. Next steps, in his order: his corrections, a deep GPT review, then the final short rule text. Nothing here
@@ -46,7 +46,11 @@ A test with no tag is kind A.
 - The test passes on evidence of success: at least one traced success, and no run classed MOD FAILURE.
 - Every non-success run is read and classed. The count "X of Y" is a resource choice for that test, set before the first
   run and written on the test with its reason. The count is tuned by experience.
-- A failure that nobody can class after one read is not bad luck. If it is seen a second time, it opens a kind C hunt.
+- A failure that nobody can class after one read is recorded. If the same unclassed failure is seen again, it opens a
+  kind C hunt.
+- **A hunt never opens silently.** The run that opens it tells the Conductor, as a line in the Conductor's log and on
+  the item. Needing a hunt is a large event in a mod's testing. The Conductor may call a Fable rescue for it, add the
+  hunt to a rescue that is called later, or look itself and give a second view from its different context.
 - Where the capability is random by design (a yield, a drop chance), the test states the expected rate and the count
   that would show it, before the first run.
 
@@ -92,20 +96,23 @@ A test with no tag is kind A.
 - Step 4 is almost never affordable. Each scene says which step it uses and why a lower-force step was not used.
 - Force the environment. Do not force past a decision that our own mod's code makes: that decision is under test, and
   it gets its own scene.
+- **Wording and place** (his card, 2026-11-23): this restatement, in the live-testing skills
+  (`skills/live-debugging-proof-harness`, `skills/rimworld-live-review`, `skills/test-pilot-sitting`), with his ladder
+  as the example.
 - **The testing horizon.** Some configurations are found only at the owner's walk, and some only in real play. That is
   accepted. The horizon is what we can afford, and it is stated, not hidden.
 
-## 7. The Principle of Impactful Evidence (proposed wording, for his correction)
-> **Testing is spent where it is likely to change what we do.** Our resources are fixed. A test earns its place by the
-> future value of the evidence it is likely to give, never by coverage for its own sake. That value changes as the
-> system and our knowledge of it change, so a test's place is reviewed, and a test that no longer earns it is retired.
+## 7. The Principle of Impactful Evidence
+> **Testing is spent where it is likely to change what we do with appropriate resource cost.** Our resources are fixed. A test earns its place by the future value of the evidence it is likely to give weighed against the cost to (re)generate that evidence. Coverage for its own sake should be reserved for essentially free testing (offline and computationally cheap). These values and costs change as the system and our knowledge of it change, so a test's place must be periodically reviewed, and a test that no longer earns is retired.
+
+This wording is the owner's own edit of 2026-11-23 (about 12:40 PM PST) and is final for the review.
+**Place** (his card, 12:5x PM PST): the top of `infrastructure/agents/CHARTER.md`, with one pointer line in `CLAUDE.md`.
 
 Corollaries that this draft already uses: a hunt that cannot reproduce its bug is dropped; a fixed bug keeps a live
 check only when it is likely to return; cheap offline checks may hold many "once wrong" cases, because their cost is low.
 
 ## 8. Open points for him and for the GPT review
 - How a scene proves "traced success" without an agent reading every trace (cost).
-- Whether "seen a second time" is the right door from kind B into kind C.
 - Who retires a test under the Principle, and how often the review happens.
 - What the calm test environment can really hold still in RimWorld, and what each missing bridge capability costs.
 - How the existing scenes of the four running mods sort into A, B and C, and what that does to their open exits.
@@ -131,3 +138,9 @@ Card answer 3, who tags:
 Card answer 4, forcing and natural runs:
 
 > Agreed, forcing is dangerous, not simply preferred. It tests the basic, elemental capability but does not explore important configurations. Here is another Principle, this time for Debugging/testing skills in rimworld: the minimum force required for testing is optimal. Example: We are testing a raider walking over a large covered pit, but they rarely choose to walk over it in a real game. From least desirable/most elemental to most desirable/most complete: teleport raider onto middle of covered pit; pre-set raider walk path over the pit; place pit in narrow hallway without alternative route and place desired object/combatant as bait to draw them over it; place an array of covered pits entirely surrounding a natural base and allow naturally spawned raiders to find their own path across in their own time. [We will almost never be able to afford that final, natural test type due to the time and token cost of each test plus a potentially low yield due to environmental factors and other mod interactions] [Agreed that the player walkthrough can cover the most complex situations, but even still some will simply have to wait for real gameplay to discover, and that's ok. that is the "testing horizon" we can afford.]
+
+Card answers of about 12:50 PM PST. Placement of Impactful Evidence: "Top of the Charter, pointer in CLAUDE.md
+(Recommended)". Minimum Force: "My restatement, in the live-testing skills (Recommended)". The unexplained kind B
+failure, typed:
+
+> (1) repeated unexplained failures indicate deeper investigation is required, yes. I would also like to suggest that a Hunt be communicated to the Conductor as an opportunity for Fable Rescue (or at least to be included in such a rescue if it is called later), or the Conductor may choose to look and give a second perspective with its different context to assist. It should not be a silent conversion to a Hunt. It's a big deal in a mod's testing to need this.
