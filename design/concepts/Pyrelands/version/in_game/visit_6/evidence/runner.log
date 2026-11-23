@@ -44,3 +44,18 @@ DONE PYRE_PLANT_VENOM_TEND_WRONG_PATIENT=1:flamefang_venom@flamefang_venom_plant
 DONE PYRE_PLANT_FOIL_AT_SITE_DENSITY=1:grass_cover,embergrass_regrow@embergrass_planted_foil reload_rc=0 rc=1 1238s 00:43:25
 END follow 2026-11-23 00:43:25
 START last 2026-11-23 00:43:32
+DONE grass_cover,embergrass_regrow@embergrass_regrow2 reload_rc=0 rc=1 1144s 01:02:36
+DONE script:design/concepts/Pyrelands/version/in_game/visit_6/scripts/walk_save.py@walk_save reload_rc=0 rc=0 27s 01:03:03
+END last 2026-11-23 01:03:03
+START venom2 2026-11-23 01:03:16
+DONE flamefang_venom@flamefang_venom2 reload_rc=0 rc=1 89s 01:04:45
+END venom2 2026-11-23 01:04:45
+START foil 2026-11-23 01:04:54
+DONE grass_cover,embergrass_regrow@embergrass_regrow3 reload_rc=0 rc=1 1303s 01:26:37
+DONE PYRE_PLANT_FOIL_AT_SITE_DENSITY=1:grass_cover,embergrass_regrow@embergrass_planted_foil2 reload_rc=0 rc=1 1285s 01:48:02
+END foil 2026-11-23 01:48:02
+START venom3 2026-11-23 01:48:15
+DONE flamefang_venom@flamefang_venom3 reload_rc=0 rc=1 304s 01:53:19
+DONE PYRE_PLANT_VENOM_TEND_WRONG_PATIENT=1:flamefang_venom@flamefang_venom_planted_wrong_tend2 reload_rc=0 rc=1 300s 01:58:19
+END venom3 2026-11-23 01:58:19
+START final 2026-11-23 01:59:37

@@ -1,0 +1,254 @@
+[modcheck] chain grass_cover START 08:43:52Z
+[pyre-note] heat guard (row start, row grass_chokes_ground): {"cleared": [["Human94152", 0.0094], ["Human94158", 0.0094]], "failed": [], "read": true}
+[pyre-note] burned cells outside the suite's fire pads: 11
+[pyre-note] coverage: {"covered": 53619, "plantableCells": 54109, "buildingsExcluded": 499, "ratio": 0.9909442052153985, "roofedCells": "not excluded (no whole-map roof read)"}
+[pyre-note] colony vitals after grass_chokes_ground: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 00:43:55 grass_chokes_ground PASS 
+[modcheck] chain grass_cover END 3s PASS=1 FAIL=0 UNMEASURED=0 NOT_RUN=0 hold=0.0s body=3.0s teardown=0.0s
+[modcheck] chain embergrass_regrow START 08:43:55Z
+[pyre-note] regrow burn check (original plants still standing after the fire): {"pre": 256, "standingAfterBurn": 0}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0464], ["Human94158", 0.0462]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0575], ["Human94158", 0.0575]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0507], ["Human94158", 0.0508]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0379], ["Human94158", 0.0379]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0206], ["Human94158", 0.021]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0206], ["Human94158", 0.0203]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0107], ["Human94158", 0.0072]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0548], ["Human94158", 0.0546]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0175], ["Human94158", 0.0039]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0577], ["Human94158", 0.0579]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0403], ["Human94158", 0.0404]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0341], ["Human94158", 0.0345]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0094], ["Human94158", 0.009]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0379], ["Human94158", 0.0375]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0272], ["Human94158", 0.0518]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0775], ["Human94158", 0.0773]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0391], ["Human94155", 0.0293], ["Human94158", 0.0885]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0813], ["Human94158", 0.0815]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0592], ["Human94158", 0.0594]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0385], ["Human94158", 0.0385]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0319], ["Human94158", 0.0323]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0184], ["Human94158", 0.018]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0375], ["Human94158", 0.0375]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0482], ["Human94158", 0.048]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0715], ["Human94158", 0.0713]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0824], ["Human94158", 0.0041]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0771], ["Human94158", 0.0357]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0556], ["Human94158", 0.0558]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0378], ["Human94158", 0.0379]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0214], ["Human94158", 0.0218]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0341], ["Human94158", 0.0338]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.038], ["Human94158", 0.038]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0501], ["Human94158", 0.05]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0572], ["Human94158", 0.0572]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0476], ["Human94158", 0.0478]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0375], ["Human94158", 0.0375]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0101], ["Human94158", 0.0105]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0004]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0375], ["Human94158", 0.0375]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0423], ["Human94158", 0.0421]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0538], ["Human94158", 0.0537]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0487], ["Human94158", 0.0488]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0377], ["Human94158", 0.0377]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0176], ["Human94158", 0.018]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0229], ["Human94158", 0.0225]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0375], ["Human94158", 0.0011]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0375]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0375], ["Human94158", 0.0304]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0071], ["Human94158", 0.0075]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row embergrass_regrows): {"cleared": [["Human94152", 0.0341], ["Human94158", 0.0338]], "failed": [], "read": true}
+[pyre-note] regrow on the real clock: {"pre": 256, "afterBurn": 2, "fractions": [[3, 0.35546875], [7, 0.7109375]], "temp": {"success": true, "cell": {"x": 190, "z": 190}, "ok": true, "temperature": 57.5951347, "outdoorTemp": 57.6436577, "seasonalTemp": 51.6054268, "ticksGame": 1104001, "operation": {"OperationId": "op_b93e3dc5ce1d479ab43d7b676381414f", "Status": "Completed", "Success": true, "DurationMs": 7}, "state": {"programState": "Playing", "hasCurrentGame": true, "paused": true, "timeSpeed": "Paused", "tick": 1104001}}}
+[pyre-note] colony vitals after embergrass_regrows: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 00:51:08 embergrass_regrows PASS 
+[pyre-note] heat guard (row start, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0324], ["Human94158", 0.0339]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0512], ["Human94158", 0.0508]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0491], ["Human94158", 0.0486]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0378], ["Human94158", 0.0378]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0195], ["Human94158", 0.0195]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.033], ["Human94158", 0.0326]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0343], ["Human94158", 0.0355]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.001], ["Human94158", 0.0488]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0251], ["Human94158", 0.045]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0375], ["Human94158", 0.0375]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.015], ["Human94158", 0.015]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0285], ["Human94158", 0.0285]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0379], ["Human94158", 0.0379]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0453], ["Human94158", 0.0453]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0431], ["Human94158", 0.0431]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0375], ["Human94158", 0.0379]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0225], ["Human94158", 0.0225]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.012], ["Human94158", 0.012]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0375], ["Human94158", 0.0375]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0456], ["Human94158", 0.0456]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0565], ["Human94158", 0.0565]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0505], ["Human94158", 0.0505]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.038], ["Human94158", 0.038]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0195], ["Human94158", 0.0195]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.027], ["Human94158", 0.027]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0375], ["Human94158", 0.0375]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0375], ["Human94158", 0.0375]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0375], ["Human94158", 0.0375]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0315], ["Human94158", 0.0315]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0349], ["Human94158", 0.0349]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0458], ["Human94158", 0.0458]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0613], ["Human94158", 0.0613]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0601], ["Human94158", 0.0594]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0429], ["Human94158", 0.0429]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0375], ["Human94158", 0.0375]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0038], ["Human94158", 0.0038]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0236], ["Human94158", 0.0255]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0395], ["Human94158", 0.0335]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0598], ["Human94158", 0.0598]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0739], ["Human94158", 0.0739]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0707], ["Human94158", 0.0707]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.051], ["Human94158", 0.051]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0375], ["Human94158", 0.0375]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.012], ["Human94158", 0.012]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0075], ["Human94158", 0.0015]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0011], ["Human94158", 0.0109]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0312], ["Human94158", 0.0375]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0392], ["Human94158", 0.0392]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0375], ["Human94158", 0.0375]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.024], ["Human94158", 0.024]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0255], ["Human94158", 0.0255]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0165], ["Human94158", 0.0142]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0375], ["Human94158", 0.0375]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0375], ["Human94158", 0.0375]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0195], ["Human94158", 0.0195]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0345], ["Human94158", 0.0345]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0023], ["Human94158", 0.0401]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0401], ["Human94158", 0.0502]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0435], ["Human94158", 0.0457]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0375], ["Human94158", 0.0375]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.018], ["Human94158", 0.018]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0368], ["Human94158", 0.0368]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0416], ["Human94158", 0.0416]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row regrow_dry_watered_vanilla): {"cleared": [["Human94152", 0.0544], ["Human94158", 0.0544]], "failed": [], "read": true}
+[pyre-note] patch cells after 7 days (burnTick, watered, bonus): {"dry": {"fertility": 0.7, "terrain": "RM_FE_Ash_Deep", "ashField": "True", "watered": false, "bonus": 0.0, "burnTick": "1105536", "base": 0.7, "wateredFertility": 1.4, "raining": "False", "blackRainWateredUntil": "-1", "now": "1534101", "active": "True", "lift": "0.000", "bonusAgeDays": "7.14", "bonusDaysLeft": "0.00", "rainOnCell": "False", "expected": "0.700", "consistent": "True"}, "watered": {"fertility": 1.4, "terrain": "RM_FE_Ash_Deep", "ashField": "True", "watered": true, "bonus": 0.0, "burnTick": "1105612", "base": 0.7, "wateredFertility": 1.4, "raining": "False", "blackRainWateredUntil": "-1", "now": "1534101", "active": "True", "lift": "0.700", "bonusAgeDays": "7.14", "bonusDaysLeft": "0.00", "rainOnCell": "False", "expected": "1.400", "consistent": "True"}, "vanilla": {"fertility": 0.7, "terrain": "RM_FE_Ash_Deep", "ashField": "True", "watered": false, "bonus": 0.0, "burnTick": "1105676", "base": 0.7, "wateredFertility": 1.4, "raining": "False", "blackRainWateredUntil": "-1", "now": "1534101", "active": "True", "lift": "0.000", "bonusAgeDays": "7.14", "bonusDaysLeft": "0.00", "rainOnCell": "False", "expected": "0.700", "consistent": "True"}}
+[pyre-note] daily growth, rates before maturity, burst count (a burst: a day the patch's lowest plant fell): {"rates": {"dry": 0.6399999999999999, "watered": 0.6799999999999999, "vanilla": 0.148}, "censored": {"dry": false, "watered": false, "vanilla": false}, "eventDay": {"dry": 2, "watered": 2, "vanilla": null}, "emberVanillaRate": 0.46249999999999997, "bursts": {"dry": 0, "watered": 0, "vanilla": 0}, "failures": [], "unmeasured": [], "series": {"dry": [[0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05], [0.69, 0.69, 0.69, 0.69, 0.69, 0.69, 0.69, 0.69, 0.69, 0.69, 0.69, 0.69, 0.69, 0.69, 0.69, 0.69], [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0], [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0], [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0], [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]], "watered": [[0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05], [0.69, 0.69, 0.69, 0.69, 0.69, 0.69, 0.69, 0.69, 0.77, 0.77, 0.77, 0.77, 0.77, 0.77, 0.77, 0.77], [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0], [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0], [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0], [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]], "vanilla": [[0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.
+[pyre-note] colony vitals after regrow_dry_watered_vanilla: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 01:02:29 regrow_dry_watered_vanilla PASS 
+[pyre-note] heat guard (row start, row grass_census_first): {"cleared": [["Human94152", 0.037], ["Human94158", 0.037]], "failed": [], "read": true}
+[pyre-note] grass_cover census record: {"mutationsBefore": [], "ratio": 0.9909442052153985, "covered": 53619, "plantable": 54109, "plantDensity": 16.0}
+[pyre-note] colony vitals after grass_census_first: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 01:02:29 grass_census_first PASS 
+[pyre-note] plantDensity-1.0 same-seed foil against the enforced site: {"site": {"ratio": 0.9909442052153985, "covered": 53619, "plantable": 54109, "plantDensity": 16.0}, "foil": {"ratio": 0.49722786915542416, "covered": 26905, "plantable": 54110, "plantDensity": 1.0, "seed": -1173541292, "pawnsToWorld": 0}, "margin": 0.49371633605997434}
+[pyre-note] colony vitals after plant_density_one_control_map: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 01:02:35 plant_density_one_control_map PASS 
+[modcheck] chain embergrass_regrow END 1120s PASS=4 FAIL=0 UNMEASURED=0 NOT_RUN=0 hold=0.0s body=1120.3s teardown=0.0s
+component mapgen_log/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_mapgen_log_clean"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component plant_census/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_plant_distribution_correct"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component plant_census/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component plant_census/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component animal_census/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_animal_distribution_correct"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component ruins/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_ruins_scorched"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component ruins/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component burn_line/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_burn_line_present"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component burn_line/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component burn_line/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component burn_line/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component opening_front/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component opening_front/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component startup_and_def_wiring/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "biomeGenerationEnabled", "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component ground_deep_ash/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_ground_deep_ash"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component ground_deep_ash/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component ground_deep_ash/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component ground_deep_ash/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component ground_deep_ash/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component ground_deep_ash/skipped#5: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component ground_deep_ash/skipped#6: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component ground_deep_ash/skipped#7: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component ash_fertility_watered/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_ash_fertile_when_watered"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component ash_fertility_watered/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component ash_fertility_watered/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component fresh_burn_bonus/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_fresh_burn_feeds_the_field"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component fresh_burn_bonus/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component ambient_ash_drift/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "ambientAshEnabled", "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component fire_tick_effects/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "ashDustingEnabled", "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component fire_tick_effects/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "scorchFruitEnabled", "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component ashfall_weather_accumulation/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "ashfallAccumulationEnabled", "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component ashfall_drifts/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_ashfall_darkens_drifts"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component cinderfall/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_cinderfall_distinct"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component cinderfall/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component cinderfall/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component cinderfall/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component blackrain/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_blackrain_reads"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component blackrain/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component blackrain/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "blackRainDousingEnabled", "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component soaked_map_stays_smooth/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component no_ordinary_rain/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_cannot_ordinary_rain"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component no_ordinary_rain/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component no_ordinary_rain/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component scorchfruit_fire_born/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_scorchfruit_fire_born"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component scorchfruit_fire_born/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component scorchfruit_produces/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_scorchfruit_produces"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component scorchfruit_spoils/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_scorchfruit_spoils_fast"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component firehawk/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_firehawk_carries_ember"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component firehawk/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component firehawk/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component furnace_warmth/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_furnacebeast_warmth"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component furnace_room/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_furnacebeast_heats_room"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component furnace_sleep/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component furnace_sleep/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component burrowers/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_burrowers_dive"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component heat_dome/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "burrowDomeOnHeatHit", "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component heat_dome/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "burrowDomeOnHeatHit", "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component heat_dome/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component ullai_and_giant/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "ullaiEnabled", "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component ullai_and_giant/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "furnaceBeastGiant", "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component ullai_and_giant/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component ullai_and_giant/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component gpt_hunt_plausible/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component gpt_hunt_plausible/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component gpt_hunt_plausible/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component gpt_hunt_plausible/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component gpt_hunt_plausible/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": "sandShovelEnabled", "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component gpt_hunt_plausible/skipped#5: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component gpt_hunt_plausible/skipped#6: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component gpt_hunt_plausible/skipped#7: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component gpt_hunt_plausible/skipped#8: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component sand_shovel/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "sandShovelEnabled", "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component flamefang_venom/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component flamefang_venom/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component flamefang_venom/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component flamefang_venom/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component flamefang_venom/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component rite_hook_alone/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "fireClockEnabled", "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component rite_hook_alone/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "fireClockEnabled", "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component firefoam_sprayer/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component firefoam_sprayer/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component walk_season/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component walk_season/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component walk_season/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component walk_season/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component walk_season/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component walk_season/skipped#5: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component walk_season/skipped#6: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component walk_season/skipped#7: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component foreign_arrivals/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component foreign_arrivals/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component foreign_arrivals/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component fire_sense/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component fire_sense/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component fire_sense/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component fire_sense/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component fire_sense/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component burn_line_off_control/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component furnace_hide_bank/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component roof_withers/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component roof_withers/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component roof_withers/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component herd_thirst/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component firehawk_first_sighting_letter/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component firehawk_first_sighting_letter/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "fireHawkSightingLetterEnabled", "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component firehawk_first_sighting_letter/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component firehawk_crestfeather_yield/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+component firehawk_mapwide_carry/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains grass_cover,embergrass_regrow)"}
+Pyrelands: NOT GREEN  PASS=3 FAIL=0 UNMEASURED=110  calls=4772 mean=235.471ms  -> design/concepts/Pyrelands/version/in_game/visit_6/evidence/pv6_embergrass_regrow2.json
+[bridge split] 1129.3 s wall: load 0.0 / ticks 1017.2 / reads 10.8 / other 29.8 / outside calls 71.5 s
+[bridge split] WARN 1927 calls of jawa/pawn_need (16.0 s): batch them
+[bridge split] WARN 796 calls of jawa/list_pawns (7.5 s): batch them
+[bridge split] WARN 793 calls of rimworld/get_game_info (1.2 s): batch them
+[bridge split] WARN 590 calls of jawa/safe_advance (1017.2 s): batch them
+[bridge split] WARN 231 calls of jawa/pawn_health (2.1 s): batch them
+[bridge split] WARN 219 calls of jawa/map_info (1.7 s): batch them

@@ -26,14 +26,36 @@
   }
  },
  "sc_grass_regreens": {
-  "label": "embergrass_regrow2",
+  "label": "embergrass_regrow3",
+  "class": "HARNESS",
   "prior": [
    {
     "label": "embergrass_regrow",
     "class": "SITE",
-    "note": "voided, not counted: safe_advance stopped on a wild nuna killed by a native orray mid-row (embergrass_regrows and regrow_dry_watered_vanilla UNMEASURED); damage to the run, rerun"
+    "note": "voided, not counted: safe_advance stopped when a native orray killed a wild nuna mid-row (embergrass_regrows, regrow_dry_watered_vanilla UNMEASURED); damage to the run, rerun"
+   },
+   {
+    "label": "embergrass_planted_foil",
+    "class": "HARNESS",
+    "note": "the planted foil (PYRE_PLANT_FOIL_AT_SITE_DENSITY=1) read plant_density_one_control_map PASS: margin 0.0002 passed 'strictly below' (generation noise); the check could not fail"
+   },
+   {
+    "label": "embergrass_regrow2",
+    "class": "HARNESS",
+    "note": "all 5 PASS, but its foil row ran on the blind strictly-below check (before 50c8836758); superseded by embergrass_regrow3"
    }
-  ]
+  ],
+  "repair": {
+   "class": "HARNESS",
+   "commit": "50c8836758989548189a19b8f26ab5bc9c7ddf00",
+   "what": "density_foil_verdict needs the foil FOIL_MIN_MARGIN (0.05) below the site; selftest_pyrelands_scene_controls.py red 2/63 on the parent, 0/63 on the fix; real margin 0.494",
+   "planted": {
+    "plant": "PYRE_PLANT_FOIL_AT_SITE_DENSITY=1: the foil generated at the site's own plantDensity 16",
+    "command": "PYRE_PLANT_FOIL_AT_SITE_DENSITY=1 (through WSLENV) python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains grass_cover,embergrass_regrow",
+    "verdict": "FAIL",
+    "evidence": "design/concepts/Pyrelands/version/in_game/visit_6/evidence/pv6_embergrass_planted_foil2.json"
+   }
+  }
  },
  "sc_walk": {
   "verdict_fixed": "UNMEASURED",
@@ -94,5 +116,37 @@
     "note": "rows PASS 4/4; 10 of its 24 hourly captures held no fire (crop laid from the bbox corner), repaired 783177c5ca; rerun for frames a judge can read"
    }
   ]
+ },
+ "sc_flamefang_venom": {
+  "label": "flamefang_venom3",
+  "class": "HARNESS",
+  "prior": [
+   {
+    "label": "flamefang_venom",
+    "class": "HARNESS",
+    "note": "the flamefang never bit in 6000 ticks (bite row UNMEASURED, SITE: chance, the pad read clean) and venom_rises_untreated FAILed on 7 empty reads (HARNESS, fixed 785e683198); venom_wait_out RESTART (a site colonist died during the ten days, cause not in the log)"
+   },
+   {
+    "label": "flamefang_venom_planted_wrong_tend",
+    "class": "HARNESS",
+    "note": "planted PYRE_PLANT_VENOM_TEND_WRONG_PATIENT=1: venom_tended_vs_untended FAIL as planted, bite and rises PASS; venom_wait_out RESTART (a site colonist downed)"
+   },
+   {
+    "label": "flamefang_venom2",
+    "class": "HARNESS",
+    "note": "4/5 PASS; venom_wait_out stopped 60 ticks in on its own undeclared biter as a 'hostile_arrival' (fixed 2a6d7b392a)"
+   }
+  ],
+  "repair": {
+   "class": "HARNESS",
+   "commit": "2a6d7b392af9fd2caab0aa8a8069fec5958f37c1",
+   "what": "_bite_until declares each biter a fixture (selftest_pyrelands_venom_staging.py red 960/960 cases on the parent, 0/43 on the fix); 785e683198 reads a rises row with no venom read UNMEASURED; red-seen T_VENOM_STAGING recorded for both",
+   "planted": {
+    "plant": "PYRE_PLANT_VENOM_TEND_WRONG_PATIENT=1: the doctor tends the untended patient",
+    "command": "PYRE_PLANT_VENOM_TEND_WRONG_PATIENT=1 (through WSLENV) python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains flamefang_venom",
+    "verdict": "FAIL",
+    "evidence": "design/concepts/Pyrelands/version/in_game/visit_6/evidence/pv6_flamefang_venom_planted_wrong_tend2.json"
+   }
+  }
  }
 }
