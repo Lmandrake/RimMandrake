@@ -464,25 +464,39 @@ namespace RimMandrake.FlowWorks.Pits
 		/// the art runs top to bottom, turned to the span. False for a square that is not on a raid plank record.</summary>
 		public static bool PrintRaidPlank(SectionLayer layer, Building_SuspensionDeck deck, SuspensionBridgeRecord r)
 		{
-			if (r == null || !r.raidPlank || !r.TryIndexOf(deck.Position, out _, out int i))
+			if (r == null || !r.raidPlank)
 			{
 				return false;
 			}
-			DrawbridgeArtPaths.RaidPlankPiece piece = DrawbridgeArtPaths.PieceAt(i, r.length);
-			if (piece == DrawbridgeArtPaths.RaidPlankPiece.None)
-			{
-				return false;
-			}
-			Material mat = piece == DrawbridgeArtPaths.RaidPlankPiece.Mid
-				? MatOrNull(DrawbridgeArtPaths.RaidPlankLaid)
-				: MatOrNull(DrawbridgeArtPaths.RaidPlankLaidEnd, DrawbridgeArtPaths.RaidPlankLaid);
+			Material mat = RaidPlankMat(deck, r, out float angle);
 			if (mat == null)
 			{
 				return false;
 			}
-			Rot4 top = DrawbridgeArtPaths.TopTowardLip(piece) ? r.dir.Opposite : r.dir;
-			Printer_Plane.PrintPlane(layer, deck.TrueCenter(), Vector2.one, mat, top.AsAngle);
+			Printer_Plane.PrintPlane(layer, deck.TrueCenter(), Vector2.one, mat, angle);
 			return true;
+		}
+
+		/// <summary>The piece a laid raid plank square prints, and its turn: the one chooser PrintRaidPlank and the fade over a
+		/// pawn beneath (Building_SuspensionDeck.FadeMaterial) share. Null for a square that is not on a raid plank record.</summary>
+		public static Material RaidPlankMat(Building_SuspensionDeck deck, SuspensionBridgeRecord r, out float angle)
+		{
+			angle = 0f;
+			if (r == null || !r.raidPlank || !r.TryIndexOf(deck.Position, out _, out int i))
+			{
+				return null;
+			}
+			DrawbridgeArtPaths.RaidPlankPiece piece = DrawbridgeArtPaths.PieceAt(i, r.length);
+			if (piece == DrawbridgeArtPaths.RaidPlankPiece.None)
+			{
+				return null;
+			}
+			Material mat = piece == DrawbridgeArtPaths.RaidPlankPiece.Mid
+				? MatOrNull(DrawbridgeArtPaths.RaidPlankLaid)
+				: MatOrNull(DrawbridgeArtPaths.RaidPlankLaidEnd, DrawbridgeArtPaths.RaidPlankLaid);
+			Rot4 top = DrawbridgeArtPaths.TopTowardLip(piece) ? r.dir.Opposite : r.dir;
+			angle = top.AsAngle;
+			return mat;
 		}
 	}
 }

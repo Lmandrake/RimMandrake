@@ -155,19 +155,31 @@ namespace RimMandrake.FlowWorks.Pits
 		/// <summary>Print a deck square as its strip piece. False when its bridge has no picked art (it draws as before).</summary>
 		public static bool PrintDeck(SectionLayer layer, Building_SuspensionDeck deck, SuspensionBridgeRecord r)
 		{
-			RM_DeckArtExtension x = For(r, deck.StyleDef);
-			if (x == null || x.strip == null || !r.TryIndexOf(deck.Position, out _, out int i))
-			{
-				return false;
-			}
-			int n = DeckCount(r);
-			Material m = Mat(x.strip + "_" + RM_DeckArtMath.PieceAt(i - FirstDeck(r), n));
+			Material m = DeckMat(deck, r, out float angle);
 			if (m == null)
 			{
 				return false;
 			}
-			Printer_Plane.PrintPlane(layer, deck.TrueCenter(), Vector2.one, m, RM_DeckArtMath.StripAngle(r.dir.AsInt));
+			Printer_Plane.PrintPlane(layer, deck.TrueCenter(), Vector2.one, m, angle);
 			return true;
+		}
+
+		/// <summary>The strip piece a deck square of a bridge with picked art prints, and its turn: the one chooser PrintDeck and
+		/// the fade over a pawn beneath (Building_SuspensionDeck.FadeMaterial) share. Null when its bridge has no picked art.</summary>
+		public static Material DeckMat(Building_SuspensionDeck deck, SuspensionBridgeRecord r, out float angle)
+		{
+			angle = 0f;
+			if (r == null)
+			{
+				return null;
+			}
+			RM_DeckArtExtension x = For(r, deck.StyleDef);
+			if (x == null || x.strip == null || !r.TryIndexOf(deck.Position, out _, out int i))
+			{
+				return null;
+			}
+			angle = RM_DeckArtMath.StripAngle(r.dir.AsInt);
+			return Mat(x.strip + "_" + RM_DeckArtMath.PieceAt(i - FirstDeck(r), DeckCount(r)));
 		}
 
 		/// <summary>Every deck square of the record is built and down (lane 0): the cables have something to hold.</summary>

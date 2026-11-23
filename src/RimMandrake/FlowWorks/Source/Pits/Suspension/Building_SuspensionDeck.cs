@@ -130,10 +130,17 @@ namespace RimMandrake.FlowWorks.Pits
 			}
 		}
 
-		/// <summary>The deck tile the fade pass draws see-through over a pawn under it (its linked tile and turn).</summary>
+		/// <summary>The picture the fade pass draws see-through over a pawn under it: what Print would draw, chosen in Print's
+		/// order (a laid raid plank's piece, else the picked deck art's strip piece, else the linked tile), with its turn.</summary>
 		public override Material FadeMaterial(out float angle)
 		{
-			return RM_SuspensionDeckLink.TileFor(this, out angle);
+			SuspensionBridgeRecord r = Record;
+			Material m = RM_DrawbridgeArt.RaidPlankMat(this, r, out angle);
+			if (m == null)
+			{
+				m = RM_DeckArt.DeckMat(this, r, out angle);
+			}
+			return m ?? RM_SuspensionDeckLink.TileFor(this, out angle);
 		}
 
 		/// <summary>DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS: this square of a drawbridge leaf is up (derived from its leaf record by

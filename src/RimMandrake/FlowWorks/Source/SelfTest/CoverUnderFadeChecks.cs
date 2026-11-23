@@ -272,6 +272,27 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "can-fail: a pawn beneath a lid is drawn (shown through the faded lid), not hidden");
                 Assert(!lip.Contains("Pits.RM_PitCoverBeneath.IsBeneath(p))"), "can-fail: the lip occluder treats a pawn beneath a lid like any pit pawn");
             });
+
+            // The faded square must show the picture its Print would have drawn: a laid raid plank prints its own plank pieces
+            // and a bridge with picked art prints its strip piece BEFORE the linked tile, so the fade picks its material through
+            // the same choosers, in the same order (else a pawn under a raid plank or a picked-art bridge sees the wrong deck).
+            Case("CoverFade_deck_fades_in_the_art_it_prints", () =>
+            {
+                string deck = Src("Pits", "Suspension", "Building_SuspensionDeck.cs");
+                string art = Src("Pits", "Suspension", "RM_DeckArt.cs");
+                string plank = Src("Pits", "Drawbridge", "RM_DrawbridgeArt.cs");
+                int fm = deck.IndexOf("public override Material FadeMaterial(out float angle)");
+                Assert(fm >= 0, "can-fail: the bridge deck names its fade material");
+                int end = deck.IndexOf("/// <summary>", fm, StringComparison.Ordinal);   // the next member's doc ends the body
+                string body = end > fm ? deck.Substring(fm, end - fm) : "";
+                int a = body.IndexOf("RM_DrawbridgeArt.RaidPlankMat(this, r, out angle)", StringComparison.Ordinal);
+                int b = body.IndexOf("RM_DeckArt.DeckMat(this, r, out angle)", StringComparison.Ordinal);
+                int c = body.IndexOf("RM_SuspensionDeckLink.TileFor(this, out angle)", StringComparison.Ordinal);
+                Console.WriteLine($"    fade chooser order raidPlank={a} deckArt={b} linked={c} (want 0 <= raidPlank < deckArt < linked)");
+                Assert(a >= 0 && b > a && c > b, "can-fail: the fade tries raid plank art, then picked deck art, then the linked tile, as Print does");
+                Assert(plank.Contains("Material mat = RaidPlankMat(deck, r, out float angle);"), "can-fail: PrintRaidPlank draws the chooser's material");
+                Assert(art.Contains("Material m = DeckMat(deck, r, out float angle);"), "can-fail: PrintDeck draws the chooser's material");
+            });
         }
     }
 }
