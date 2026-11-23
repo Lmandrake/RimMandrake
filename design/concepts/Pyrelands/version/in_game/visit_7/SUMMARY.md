@@ -3,7 +3,8 @@
 Detached BENCH helper, item RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT_SEVEN. 2026-11-23 05:01 to 08:45 PST.
 
 Game ArchSmall, game 1.6.4871 rev590, tier `pyrelands` (18 mods, all five DLC; Huge Things joined the tier since visit 6),
-identity `evidence/identity_pyrelands.json` (mod_sha 3b18f315d8, mod_hash sha256:9aa62b4a...). Nothing in the mod was changed.
+identity `evidence/identity_pyrelands.json` (mod_sha 3b18f315d8, mod_hash sha256:9aa62b4a...). Nothing in the mod was changed; FlowWorks and MandrakePatches
+were stale on the game (see Limits).
 Site built fresh on the 18-mod list: tile 193, 51.7 C, `NS_Pyrelands_site_1_417df172fdb5_visit7`, reloaded before every chain
 (`scripts/runner.sh`). Gate B CLEAN; gate A all PASS except loadavg (other agents' work; strange.jsonl). SteveDesktop not
 used (visits 2 and 5 measured no Pyrelands site there). The run went past the brief's 3-hour bound (the launch line set none).
@@ -33,6 +34,28 @@ used (visits 2 and 5 measured no Pyrelands site there). The run went past the br
   a lone-fire lane); fresh_burn_bonus2 on a reloaded site PASS 2/2 (strange.jsonl).
 - Pipeline: the main runner was killed at its 2-hour background limit during scorchfruit_spoils; requeued, PASS.
 
+## Limits of this visit (read before counting a row)
+
+- FlowWorks and MandrakePatches (mandrake.rm.patches) were STALE on ArchSmall the whole visit. I checked only compose biomes,
+  UtinniPatches and Huge Things before starting, and ran the per-mod dry run visit 6 ran only at the end. The deployed FlowWorks
+  DLL is of 2026-11-22 21:29 and the patches DLL of 2026-11-08; source changed after (FlowWorks pit shading and depth, 23:25;
+  patches building draw order, 927580657d 03:51; FlowWorks again 07:29, during the visit). WeatherSuite, SWBestiary,
+  LuminousPigment, UtinniPatches read in sync. Build match does not see this: it compares the Pyrelands hash and the mod list,
+  not the other mods' versions. The changes are drawing code, so I expect no row to move [guess ~85%]; not measured.
+- sc_burn_line_walks reads FAIL by my override, not by the harness: all four of its rows PASS. The FAIL is my reading of the
+  bar's judge clause, the judge being this driver. A steward may rule otherwise; the facts are the stamps and the offline test.
+- The lane probe's limit (0.25) and its window (one day) were mine, set after I had seen the day-end captures, and the
+  walking save is one mid-walk state, so "the front lanes are gone" (0.056) holds for that save only. The probe passed; the
+  lone lanes were found by looking at its mask, then measured.
+- What lights a lone fire is NOT read: a fire-hawk ember or lightning is a guess. `accept_lone_fire_lane.py` lights one
+  cell by hand. The straight, flat-sided burned bands of the day-end captures beyond the lanes were not traced.
+- furnace_room was run four times (default FAIL, off PASS, default FAIL, plus the probe); venom twice and one planted run;
+  fresh_burn_bonus twice (the first UNMEASURED; kept as a prior row); every run is in runner.log. sc_burn_compounds' second run
+  passed without the first run's cause being found.
+- The Saves folder was backed up after the walk save was written, and after burn_line had already replaced its own
+  burn_line_walking and burn_line_share_start saves (disposable, not canonical). The brief asks for the backup first.
+- Planted runs made this visit were not a full set: the density-foil plant and the fire-tick plants were not rerun.
+
 ## Owed cases, one by one
 
 - RIMMANDRAKE_SCOPE_SETTINGS_SCREENS_DECIDER_TO_ITS_OWN_MOD: P_gate PASS live (gate_live_proof); sc_walk not run (ArchBig).
@@ -61,8 +84,8 @@ used (visits 2 and 5 measured no Pyrelands site there). The run went past the br
   5/5 PASS incl. the density-one control; the same-density plant was not rerun.
 - RIMMANDRAKE_FIX_PYRE_BURN_HISTORY_PROBE_COUNTS_BEFORE_IT_PRUNES: probe_burnhist_red.py on the burn_line_walking save PASS
   (21 samples backdated, 0 after); sc_walk part not run (ArchBig).
-- RIMMANDRAKE_WIDEN_PYRE_FIRE_TRAILS_RUN_AS_RULER_STRAIGHT_LANES: the front lanes are gone (strand share 0.056 on the walking
-  save), but lone fires still walk one-cell lanes (above).
+- RIMMANDRAKE_WIDEN_PYRE_FIRE_TRAILS_RUN_AS_RULER_STRAIGHT_LANES: the front reads 0.056 strand share on the one walking save
+  (limits above), but lone fires still walk one-cell lanes (above).
 - Plants: scorchfruit off-burn toggle ignored FAIL; venom wrong tend FAIL; cinderfall strike FAIL; ring gap not set.
 
 ## The labelled savegame
