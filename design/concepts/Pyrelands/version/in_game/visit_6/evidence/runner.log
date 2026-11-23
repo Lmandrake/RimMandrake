@@ -35,3 +35,12 @@ DONE plant_census,scorchfruit_fire_born@scorchfruit_repaired reload_rc=0 rc=1 14
 DONE PYRE_PLANT_OFFBURN_TOGGLE_IGNORED=1:plant_census,scorchfruit_fire_born@scorchfruit_planted_offburn reload_rc=0 rc=1 153s 23:43:07
 DONE firefoam_sprayer@firefoam_repaired reload_rc=0 rc=1 52s 23:43:59
 DONE PYRE_PLANT_RING_GAP=1:firefoam_sprayer@firefoam_planted_ring_gap reload_rc=0 rc=1 50s 23:44:49
+DONE PYRE_PLANT_ASHFALL_STRIKE=DryThunderstorm:cinderfall@cinderfall_planted_strike reload_rc=0 rc=1 368s 23:50:57
+DONE burn_line@burn_line_reframed reload_rc=0 rc=1 1072s 00:08:49
+DONE script:src/RimMandrake/Pyrelands/gate_live_proof.py@gate_live_proof reload_rc=0 rc=0 15s 00:09:04
+DONE script:src/RimMandrake/Pyrelands/wind_burn_live.py@wind_burn_live reload_rc=0 rc=0 121s 00:11:05
+DONE flamefang_venom reload_rc=0 rc=1 407s 00:17:52
+DONE PYRE_PLANT_VENOM_TEND_WRONG_PATIENT=1:flamefang_venom@flamefang_venom_planted_wrong_tend reload_rc=0 rc=1 295s 00:22:47
+DONE PYRE_PLANT_FOIL_AT_SITE_DENSITY=1:grass_cover,embergrass_regrow@embergrass_planted_foil reload_rc=0 rc=1 1238s 00:43:25
+END follow 2026-11-23 00:43:25
+START last 2026-11-23 00:43:32

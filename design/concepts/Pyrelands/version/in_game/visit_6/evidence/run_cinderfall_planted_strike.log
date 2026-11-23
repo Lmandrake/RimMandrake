@@ -1,0 +1,150 @@
+[modcheck] chain cinderfall START 07:45:08Z
+[pyre-note] heat guard (row start, row cinderfall_distinct): {"cleared": [["Human94152", 0.0094], ["Human94158", 0.0094]], "failed": [], "read": true}
+[pyre-note] def fields: {"RM_FE_Weather_Cinderfall": {"windSpeedFactor": 1.8, "overlayClasses": ["WeatherOverlay_SnowBlizzard", "WeatherOverlay_Fog"], "skyColorsNightMid": {"sky": {"r": 0.3, "g": 0.18, "b": 0.15, "a": 1.0}, "shadow": {"r": 0.85, "g": 0.82, "b": 0.8, "a": 1.0}, "overlay": {"r": 0.74, "g": 0.32, "b": 0.11, "a": 1.0}, "saturation": 0.85}, "skyColorsDay": {"sky": {"r": 0.72, "g": 0.44, "b": 0.28, "a": 1.0}, "shadow": {"r": 0.9, "g": 0.86, "b": 0.84, "a": 1.0}, "overlay": {"r": 0.95, "g": 0.46, "b": 0.16, "a": 1.0}, "saturation": 0.85}}, "RM_FE_Weather_AshFall": {"windSpeedFactor": 1.2, "overlayClasses": ["WeatherOverlay_RM_AshFall", "WeatherOverlay_Fog"], "skyColorsNightMid": {"sky": {"r": 0.24, "g": 0.24, "b": 0.25, "a": 1.0}, "shadow": {"r": 0.85, "g": 0.85, "b": 0.85, "a": 1.0}, "overlay": {"r": 0.34, "g": 0.32, "b": 0.3, "a": 1.0}, "saturation": 0.55}, "skyColorsDay": {"sky": {"r": 0.62, "g": 0.58, "b": 0.54, "a": 1.0}, "shadow": {"r": 0.9, "g": 0.9, "b": 0.9, "a": 1.0}, "overlay": {"r": 0.78, "g": 0.75, "b": 0.7, "a": 1.0}, "saturation": 0.55}}}
+[pyre-note] colony vitals after cinderfall_distinct: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 23:45:20 cinderfall_distinct PASS 
+[pyre-note] heat guard (row start, row cinderfall_lightning): {"cleared": [["Human94152", 0.0373], ["Human94158", 0.0376]], "failed": [], "read": true}
+[pyre-note] lightning mechanism on the live def: "cinderfall ['WeatherEvent_LightningFlash', 'WeatherEvent_LightningStrike'], ash fall []"
+[pyre-note] PLANTED FAULT: the ash-fall leg runs under DryThunderstorm: "PYRE_PLANT_ASHFALL_STRIKE"
+[pyre-note] heat guard (every 6000 ticks, row cinderfall_lightning): {"cleared": [["Human94152", 0.0569], ["Human94158", 0.0569]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row cinderfall_lightning): {"cleared": [["Human94152", 0.0531], ["Human94158", 0.0531]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row cinderfall_lightning): {"cleared": [["Human94152", 0.0389], ["Human94158", 0.0389]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row cinderfall_lightning): {"cleared": [["Human94152", 0.027], ["Human94158", 0.027]], "failed": [], "read": true}
+[pyre-note] lightning: fires under RM_FE_Weather_AshFall (first 5 rows, window = 1..10): [{"id": "Fire97369", "def": "Fire", "label": "Fire", "x": 106, "z": 83, "spawned": true, "rot": 0, "stackCount": 1, "hitPoints": -1, "maxHitPoints": -1, "window": 1}, {"id": "Fire97370", "def": "Fire", "label": "Fire", "x": 206, "z": 197, "spawned": true, "rot": 0, "stackCount": 1, "hitPoints": -1, "maxHitPoints": -1, "window": 1}, {"id": "Fire97371", "def": "Fire", "label": "Fire", "x": 38, "z": 113, "spawned": true, "rot": 0, "stackCount": 1, "hitPoints": -1, "maxHitPoints": -1, "window": 1}, {"id": "Fire97372", "def": "Fire", "label": "Fire", "x": 92, "z": 85, "spawned": true, "rot": 0, "stackCount": 1, "hitPoints": -1, "maxHitPoints": -1, "window": 1}, {"id": "Fire97374", "def": "Fire", "label": "Fire", "x": 66, "z": 64, "spawned": true, "rot": 0, "stackCount": 1, "hitPoints": -1, "maxHitPoints": -1, "window": 1}]
+[pyre-note] lightning: fires under RM_FE_Weather_Cinderfall (first 5 rows, window = 1..10): [{"id": "Fire97552", "def": "Fire", "label": "Fire", "x": 228, "z": 114, "spawned": true, "rot": 0, "stackCount": 1, "hitPoints": -1, "maxHitPoints": -1, "window": 1}, {"id": "Fire97553", "def": "Fire", "label": "Fire", "x": 95, "z": 235, "spawned": true, "rot": 0, "stackCount": 1, "hitPoints": -1, "maxHitPoints": -1, "window": 1}, {"id": "Fire97555", "def": "Fire", "label": "Fire", "x": 224, "z": 246, "spawned": true, "rot": 0, "stackCount": 1, "hitPoints": -1, "maxHitPoints": -1, "window": 1}, {"id": "Fire97556", "def": "Fire", "label": "Fire", "x": 224, "z": 245, "spawned": true, "rot": 0, "stackCount": 1, "hitPoints": -1, "maxHitPoints": -1, "window": 1}, {"id": "Fire97557", "def": "Fire", "label": "Fire", "x": 224, "z": 247, "spawned": true, "rot": 0, "stackCount": 1, "hitPoints": -1, "maxHitPoints": -1, "window": 1}]
+[pyre-note] lightning: strikes (RimWorld.WeatherEvent_LightningStrike:FireEvent calls) per window under each sky: "strikes per 1000 ticks: cinderfall [3, 2, 0, 1, 2, 4, 1, 2, 0, 2] (total 17), ash fall [1, 0, 0, 0, 0, 1, 0, 0, 0, 1] (total 3); worst ash-fall window 1, limit 0; 20 windows read; new fires per window (evidence only): cinderfall [23, 16, 0, 8, 13, 36, 1, 19, 0, 8], ash fall [12, 0, 0, 0, 0, 7, 0, 0, 0, 8]"
+[pyre-note] colony vitals after cinderfall_lightning: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 23:46:25 cinderfall_lightning FAIL ExpectationFailed: strikes per 1000 ticks: cinderfall [3, 2, 0, 1, 2, 4, 1, 2, 0, 2] (total 17), ash fall [1, 0, 0, 0, 0, 1, 0, 0, 0, 1] (total 3); worst ash-fall window 1, limit 0; 20 windows read; new fires per window (evidence only): cinderfall [23, 16, 0, 8, 13, 36, 1, 19, 0, 8], ash fall [12, 0
+[pyre-note] heat guard (every 6000 ticks, row three_skies_from_noon): {"cleared": [["Human94152", 0.0079], ["Human94158", 0.0079]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row three_skies_from_noon): {"cleared": [["Human94152", 0.0053], ["Human94158", 0.0034]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row three_skies_from_noon): {"cleared": [["Human94152", 0.0188], ["Human94158", 0.0188]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row three_skies_from_noon): {"cleared": [["Human94152", 0.0004], ["Human94158", 0.0011]], "failed": [], "read": true}
+[pyre-note] capture hours per sky: {"RM_FE_Weather_AshFall": 12.3004, "RM_FE_Weather_Cinderfall": 12.3004, "RM_FE_BlackRain": 12.3004, "Rain": 12.3004}
+[pyre-note] colony vitals after three_skies_from_noon: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 23:49:45 three_skies_from_noon PASS 
+[pyre-note] heat guard (row start, row blackrain_wash_vs_clear_patch): {"cleared": [["Human94152", 0.013], ["Human94158", 0.0115]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row blackrain_wash_vs_clear_patch): {"cleared": [["Human94152", 0.0245], ["Human94158", 0.0226]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row blackrain_wash_vs_clear_patch): {"cleared": [["Human94152", 0.049], ["Human94158", 0.0145]], "failed": [], "read": true}
+[pyre-note] equal patches from skies_noon: clear vs black rain: "depthSum loss: clear 0.61 ((72.0, 71.392)), black rain 56.67 ((72.0, 15.333)); needs >= 2x clear and >= 10% of 72.00"
+[pyre-note] colony vitals after blackrain_wash_vs_clear_patch: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 23:50:57 blackrain_wash_vs_clear_patch PASS 
+[modcheck] chain cinderfall END 349s PASS=3 FAIL=1 UNMEASURED=0 NOT_RUN=0 hold=0.0s body=348.7s teardown=0.0s
+component cinderfall/cinderfall_lightning: {"toggle": null, "beyond_toggle": true, "verdict": "FAIL", "execution": "ran", "detail": "ExpectationFailed: strikes per 1000 ticks: cinderfall [3, 2, 0, 1, 2, 4, 1, 2, 0, 2] (total 17), ash fall [1, 0, 0, 0, 0, 1, 0, 0, 0, 1] (total 3); worst ash-fall window 1, limit 0; 20 windows read; new fires per window (evidence only): cinderfall [23, 16, 0, 8, 13, 36, 1, 19, 0, 8], ash fall [12, 0, 0, 0, 0, 7, 0, 0, 0, 8]", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "3 of 3 def(s) resolved", "requested": 3, "foundCount": 3, "notFound": [], "malformed": [], 
+component mapgen_log/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_mapgen_log_clean"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component plant_census/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_plant_distribution_correct"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component plant_census/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component plant_census/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component animal_census/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_animal_distribution_correct"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component grass_cover/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_grass_chokes_ground"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component ruins/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_ruins_scorched"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component ruins/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component burn_line/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_burn_line_present"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component burn_line/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component burn_line/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component burn_line/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component opening_front/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component opening_front/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component startup_and_def_wiring/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "biomeGenerationEnabled", "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component ground_deep_ash/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_ground_deep_ash"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component ground_deep_ash/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component ground_deep_ash/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component ground_deep_ash/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component ground_deep_ash/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component ground_deep_ash/skipped#5: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component ground_deep_ash/skipped#6: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component ground_deep_ash/skipped#7: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component ash_fertility_watered/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_ash_fertile_when_watered"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component ash_fertility_watered/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component ash_fertility_watered/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component fresh_burn_bonus/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_fresh_burn_feeds_the_field"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component fresh_burn_bonus/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component ambient_ash_drift/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "ambientAshEnabled", "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component fire_tick_effects/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "ashDustingEnabled", "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component fire_tick_effects/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "scorchFruitEnabled", "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component ashfall_weather_accumulation/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "ashfallAccumulationEnabled", "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component ashfall_drifts/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_ashfall_darkens_drifts"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component blackrain/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_blackrain_reads"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component blackrain/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component blackrain/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "blackRainDousingEnabled", "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component soaked_map_stays_smooth/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component no_ordinary_rain/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_cannot_ordinary_rain"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component no_ordinary_rain/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component no_ordinary_rain/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component scorchfruit_fire_born/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_scorchfruit_fire_born"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component scorchfruit_fire_born/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component scorchfruit_produces/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_scorchfruit_produces"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component scorchfruit_spoils/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_scorchfruit_spoils_fast"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component firehawk/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_firehawk_carries_ember"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component firehawk/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component firehawk/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component furnace_warmth/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_furnacebeast_warmth"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component furnace_room/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_furnacebeast_heats_room"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component furnace_sleep/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component furnace_sleep/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component burrowers/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_burrowers_dive"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component heat_dome/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "burrowDomeOnHeatHit", "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component heat_dome/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "burrowDomeOnHeatHit", "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component heat_dome/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component embergrass_regrow/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_embergrass_regrows"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component embergrass_regrow/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component embergrass_regrow/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component embergrass_regrow/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component ullai_and_giant/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "ullaiEnabled", "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component ullai_and_giant/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "furnaceBeastGiant", "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component ullai_and_giant/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component ullai_and_giant/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component gpt_hunt_plausible/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component gpt_hunt_plausible/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component gpt_hunt_plausible/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component gpt_hunt_plausible/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component gpt_hunt_plausible/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": "sandShovelEnabled", "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component gpt_hunt_plausible/skipped#5: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component gpt_hunt_plausible/skipped#6: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component gpt_hunt_plausible/skipped#7: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component gpt_hunt_plausible/skipped#8: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component sand_shovel/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "sandShovelEnabled", "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component flamefang_venom/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component flamefang_venom/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component flamefang_venom/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component flamefang_venom/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component flamefang_venom/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component rite_hook_alone/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "fireClockEnabled", "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component rite_hook_alone/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "fireClockEnabled", "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component firefoam_sprayer/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component firefoam_sprayer/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component walk_season/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component walk_season/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component walk_season/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component walk_season/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component walk_season/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component walk_season/skipped#5: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component walk_season/skipped#6: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component walk_season/skipped#7: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component foreign_arrivals/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component foreign_arrivals/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component foreign_arrivals/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component fire_sense/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component fire_sense/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component fire_sense/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component fire_sense/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component fire_sense/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component burn_line_off_control/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component furnace_hide_bank/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component roof_withers/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component roof_withers/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component roof_withers/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component herd_thirst/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component firehawk_first_sighting_letter/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component firehawk_first_sighting_letter/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "fireHawkSightingLetterEnabled", "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component firehawk_first_sighting_letter/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component firehawk_crestfeather_yield/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+component firehawk_mapwide_carry/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains cinderfall)"}
+Pyrelands: NOT GREEN  PASS=2 FAIL=1 UNMEASURED=110  calls=1203 mean=241.336ms  -> design/concepts/Pyrelands/version/in_game/visit_6/evidence/pv6_cinderfall_planted_strike.json
+[bridge split] 353.7 s wall: load 1.1 / ticks 225.0 / reads 25.7 / other 23.9 / outside calls 78.0 s
+[bridge split] WARN 227 calls of jawa/pawn_need (7.6 s): batch them
+[bridge split] WARN 142 calls of rimworld/get_game_info (4.2 s): batch them
+[bridge split] WARN 114 calls of jawa/list_pawns (3.5 s): batch them
+[bridge split] WARN 100 calls of jawa/map_info (2.9 s): batch them
+[bridge split] WARN 74 calls of rimworld/get_ui_state (13.3 s): batch them
+[bridge split] WARN 65 calls of jawa/safe_advance (225.0 s): batch them
+[bridge split] WARN 60 calls of jawa/debug_settings (0.8 s): batch them
