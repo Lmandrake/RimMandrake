@@ -288,10 +288,29 @@ def source_sha(root, mod):
         return None
 
 
+def _installed_only(am, mods_dir, scan=None):
+    """-> (the packages of am this machine has installed, the ones it has not, why[]). The game skips an active package
+    with no mod on disk, so a save never names it (koth.isid, ExplosiveKnockback visit 4). A scan that fails or finds no
+    base game is 'could not look': the list comes back whole, with the reason."""
+    try:
+        if scan is None:
+            sys.path.insert(0, UTILS) if UTILS not in sys.path else None
+            import modset_builder
+            scan = modset_builder.scan
+        here = {norm_pid(p) for p in scan(mods_dir)}
+    except Exception as e:
+        return am, None, ["the installed mods could not be scanned (%s: %s)" % (type(e).__name__, e)]
+    if "ludeon.rimworld" not in here:
+        return am, None, ["the scan of the installed mods found no base game, so which packages the game loads is unknown"]
+    return [p for p in am if norm_pid(p) in here], [p for p in am if norm_pid(p) not in here], []
+
+
 def identity(root, mod, tier=None, full=False, mods_dir=None, config=None, version_txt=None, host=None, mod_sha=None,
-             cache_dir=None):
+             cache_dir=None, scan=None):
     """The fields a row records: game, mod_sha, mod_hash, game_build, active_mods, unit, and tier or full_list. `why`
-    names what could not be read (a row with a missing field does not count)."""
+    names what could not be read (a row with a missing field does not count). A full row's active_mods are the packages
+    of ModsConfig that this machine has installed, the ones the game loads and a save names; the rest are `not_installed`.
+    scan: a stand-in for modset_builder.scan (selftests)."""
     if None in (mods_dir, config, version_txt):
         m, c, v = _paths()
         mods_dir, config, version_txt = mods_dir or m, config or c, version_txt or v
@@ -307,6 +326,10 @@ def identity(root, mod, tier=None, full=False, mods_dir=None, config=None, versi
     am = active_mods(config)
     if not am:
         why.append("no activeMods read from %s" % config)
+    absent = None
+    if full and am:
+        am, absent, bad = _installed_only(am, mods_dir, scan)
+        why += bad
     gb = game_build(version_txt)
     if not gb:
         why.append("no game build read from %s" % version_txt)
@@ -319,6 +342,8 @@ def identity(root, mod, tier=None, full=False, mods_dir=None, config=None, versi
         out["unit"] = os.environ["RM_ROLE_UNIT"]
     if full:
         out["full_list"] = True
+        if absent:
+            out["not_installed"] = absent
     else:
         out["tier"] = tier
     if why:

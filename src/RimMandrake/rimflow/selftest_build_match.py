@@ -245,7 +245,7 @@ def io_checks(tmp):
           and not idn.get("why"), "identity names the game, sha, deployed hash, build, list, tier and unit: %s"
           % {k: idn.get(k) for k in ("game", "mod_hash", "tier", "why")})
     full = B.identity(root, "TestMod", full=True, mods_dir=os.path.join(tmp, "Mods"), config=cfg, version_txt=vt,
-                      host="Archmagi", mod_sha="abc1234")
+                      host="Archmagi", mod_sha="abc1234", scan=lambda m: dict.fromkeys(B.norm_list(am)))
     check(full.get("full_list") is True and "tier" not in full, "identity --full marks the row full_list, no tier")
     gone = B.identity(root, "TestMod", tier="bridge", mods_dir=os.path.join(tmp, "Nomods"), config=cfg,
                       version_txt=vt, host="Archmagi", mod_sha="abc1234")

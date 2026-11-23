@@ -69,6 +69,11 @@ stage (the in-game build match, the Stage 6 exit, the visit brief, `./pipe why`,
   install gives it counts; a list that is the tier's on neither does not. (Measured 2026-11-23: 37 ArchSmall rows of
   Pyrelands visit 7 read "to run" against ArchBig's older About.xml; item
   RIMMANDRAKE_READ_TIER_LIST_FROM_EVERY_GAME_INSTALL_HERE.)
+- **full-list-is-the-mods-the-game-can-load.** The identity of a full-list row lists the packages of ModsConfig that
+  the machine has installed, because the game loads only those and a save names only those. A package left out is named
+  in `not_installed`. A scan that fails leaves the list whole and gives the reason. (Measured 2026-11-23: koth.isid was
+  in ModsConfig and not installed, so ExplosiveKnockback visit 4 read 315 mods against the save's 314; item
+  RIMMANDRAKE_DROP_UNINSTALLED_MOD_FROM_FULL_LIST_IDENTITY_KOTH.)
 - **python-imports-read-once-per-commit.** In one relation, the imports of a Python file at one commit are parsed once,
   however many checks declare or import that file: a git blob at a resolved commit never changes. (Measured
   2026-11-23: the tick's three relations parsed 1166 files for 107 checks, 86 s of a 204 s profiled tick; item

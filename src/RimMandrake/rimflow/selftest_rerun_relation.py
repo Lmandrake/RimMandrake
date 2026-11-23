@@ -381,6 +381,42 @@ def t_tier_list_of_any_install_here_counts():
        yes[0] and "ArchSmall" in yes[1] and not no[0], (yes, no))
 
 
+def t_full_list_is_the_mods_the_game_can_load():
+    """RIMMANDRAKE_DROP_UNINSTALLED_MOD_FROM_FULL_LIST_IDENTITY_KOTH (ExplosiveKnockback visit 4, 2026-11-23): ModsConfig named
+    koth.isid, which is not installed; the rows listed 315 mods, the save the game wrote 314, and no full row counted."""
+    d = tempfile.mkdtemp(prefix="full_list_")
+    try:
+        cfg, vt = os.path.join(d, "ModsConfig.xml"), os.path.join(d, "Version.txt")
+        with open(cfg, "w") as f:
+            f.write("<ModsConfigData><activeMods><li>ludeon.rimworld</li><li>Koth.ISID</li><li>A.Mod_steam</li>"
+                    "</activeMods></ModsConfigData>")
+        with open(vt, "w") as f:
+            f.write("1.6.4871 rev590\n")
+
+        def idn(scan, **k):
+            return BM.identity(d, "Planted", mods_dir=d, config=cfg, version_txt=vt, mod_sha="s", scan=scan, **k)
+        here = {"ludeon.rimworld": {}, "a.mod": {}}
+        full = idn(lambda m: here, full=True)
+        ok("full-list-is-the-mods-the-game-can-load: a package with no mod on this machine is left out and named",
+           full["active_mods"] == ["ludeon.rimworld", "A.Mod_steam"] and full.get("not_installed") == ["Koth.ISID"], full)
+        both = idn(lambda m: dict(here, **{"koth.isid": {}}), full=True)
+        ok("full-list-is-the-mods-the-game-can-load: an installed package stays in",
+           len(both["active_mods"]) == 3 and not both.get("not_installed"), both)
+
+        def boom(m):
+            raise OSError("no drive")
+        for name, scan in (("raises", boom), ("finds no game", lambda m: {})):
+            bad = idn(scan, full=True)
+            ok("full-list-is-the-mods-the-game-can-load: a scan that %s is 'could not look', never a filtered list" % name,
+               len(bad["active_mods"]) == 3 and "not_installed" not in bad
+               and any("installed mods" in w for w in bad["why"]), bad)
+        tier = idn(boom, tier="t")
+        ok("full-list-is-the-mods-the-game-can-load: a tier row is not scanned",
+           len(tier["active_mods"]) == 3 and not any("installed mods" in w for w in tier.get("why") or []), tier)
+    finally:
+        shutil.rmtree(d, ignore_errors=True)
+
+
 def t_a_path_outside_the_repo_is_not_in_the_change():
     """RIMMANDRAKE_KEEP_RERUN_RELATION_READABLE_PAST_THE_STEAM_FOLDER: Pyrelands' table declared `/mnt/c/Program Files`
     paths; git diff refused the whole pathspec (exit 128), and all 64 checks read 'git cannot list the change'."""
@@ -411,7 +447,7 @@ TESTS = [t_declared_paths_are_exercises_reads_and_file, t_untouched_row_counts, 
          t_whole_mod_check_reruns_on_any_change, t_whole_mod_check_skips_hashignored,
          t_csharp_relates_by_source_file, t_python_relates_by_symbol,
          t_json_relates_by_entry, t_spec_change_reruns, t_rows_from_several_builds, t_walk_not_the_source_is_one_deploy,
-         t_tier_list_of_any_install_here_counts,
+         t_tier_list_of_any_install_here_counts, t_full_list_is_the_mods_the_game_can_load,
          t_a_path_outside_the_repo_is_not_in_the_change]
 
 
@@ -484,6 +520,7 @@ def main():
     t_rows_from_several_builds()
     t_walk_not_the_source_is_one_deploy()
     t_tier_list_of_any_install_here_counts()
+    t_full_list_is_the_mods_the_game_can_load()
     t_a_path_outside_the_repo_is_not_in_the_change()
     t_python_imports_read_once_per_commit()
     ok("the run left infrastructure/state/ledger/events/ unchanged", _ledger_digest() == before)
