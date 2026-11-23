@@ -10,6 +10,8 @@ Detached BENCH helper, item RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_VISIT_SIX_RUN_TW
 
 - 22:46 24 chains read: 22 all PASS. SITE: scorchfruit_off_burn_bears_none (pad on marble mountain) and both firefoam rows (pad on an ancient shrine): the fixed pads misfit tile 38; repair 4f68a44fbf (`_open_ground`, plant PYRE_PLANT_OFFBURN_TOGGLE_IGNORED), reruns owed after the batch. Pipeline defect: suite.screenshot filed a desktop grab for every frame too big for the screen; filed RIMMANDRAKE_FIT_SUITE_WIDE_RECT_SHOTS_NOT_A_DESKTOP_GRAB, fixed 499c059923 (selftest 5 FAIL on the base, 0 on the fix).
 
+- 23:30 28 of 29 main chains done: every row PASS but the SITE pads (rerun queued) and the regrow chain, stopped when a native orray killed a wild nuna mid-row (rerun queued, embergrass_regrow2). The hourly burn-front frames held no fire in 10 of 24: crop repaired 783177c5ca (HARNESS), burn_line rerun for new frames. Saves backed up to D:\ClaudeWork\backups\rimmandrake\archsmall_saves_before_pyre_visit6_20261122T2328.
+
 ## Exit
 ```
 ingame_rows: {}

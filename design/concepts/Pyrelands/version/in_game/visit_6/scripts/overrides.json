@@ -3,7 +3,14 @@
   "label": "scorchfruit_with_census"
  },
  "sc_grass_regreens": {
-  "label": "embergrass_regrow"
+  "label": "embergrass_regrow2",
+  "prior": [
+   {
+    "label": "embergrass_regrow",
+    "class": "SITE",
+    "note": "voided, not counted: safe_advance stopped on a wild nuna killed by a native orray mid-row (embergrass_regrows and regrow_dry_watered_vanilla UNMEASURED); damage to the run, rerun"
+   }
+  ]
  },
  "sc_walk": {
   "verdict_fixed": "UNMEASURED",
@@ -17,5 +24,8 @@
   "P_mapgen_log",
   "sc_flamefang_venom",
   "firehawk_first_sighting_letter"
- ]
+ ],
+ "P_grass_cover": {
+  "label": "grass_cover"
+ }
 }
