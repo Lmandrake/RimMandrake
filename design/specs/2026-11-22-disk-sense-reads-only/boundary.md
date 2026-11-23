@@ -28,8 +28,8 @@ a test of its name in `src/RimMandrake/Utils/selftest_disk_sense.py`.
 
 ## DOES NOT SURVIVE (not promised)
 
-- **a-slow-read.** The disk family's reads (pool walk, stranded-clone scan, git status per clone) still take seconds,
-  more under load. A box loaded enough to push those reads past 15 s still blinds the family.
+- **a-slow-read.** The slowest read alone can still pass 15 s. The pool walk (`find` over every pool clone) took
+  17.3 s on a cold cache at load 23 on 2026-11-22, and 4.0 s warm. Then the family is blind for that beat.
 
 ## PROMISES (each one is owed a test of the same name)
 
@@ -44,5 +44,8 @@ a test of its name in `src/RimMandrake/Utils/selftest_disk_sense.py`.
   origin also holds `items/closed/<ID>.md`, is never landable: origin's check refuses that push, and on 2026-11-22 two
   such copies in the seat clone sank the whole land (`rm-seat-tidy.service`, 4:39 PM PST). The tidy removes a copy that
   is byte-identical to origin's closed prose, since nothing is lost. A copy that differs stays, and counts as dirt by age.
+- **the-disk-reads-overlap.** `c_disk` runs the pool reading, the stranded-clone scan and the seat_dirt reading at the
+  same time, and the seat_dirt reading reads its clones at the same time. The family's wall time is then the slowest
+  read, not the sum. In series the reads took 21 to 29 s at load 45 on 2026-11-22.
 
 Later lists beside this page: `polish.md`.

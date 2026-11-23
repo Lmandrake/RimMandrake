@@ -215,9 +215,40 @@ def t_a_closed_items_leftover_copy_is_removed_not_landed():
     (SEAT / differs).unlink()
 
 
+def t_the_disk_reads_overlap():
+    """The pool walk, the stranded-clone scan and each clone's seat_dirt reading wait on subprocesses: c_disk overlaps
+    them, so its wall time is the slowest read, not their sum (the reads took 21-29 s in series at load 45 on
+    2026-11-22, past the 15 s kill). Each stub read here sleeps 1 s: five of them in series would take 5 s."""
+    import scratch_clone
+    real = (scratch_clone.pool_reading, scratch_clone.scratch_stranded, seat_dirt.clones, seat_dirt.reading)
+
+    def slow(v):
+        def f(*a, **kw):
+            time.sleep(1.0)
+            return v
+        return f
+    scratch_clone.pool_reading = slow({"count": 0, "max_clones": 16, "gb": 0.0, "margin_gb": 300.0, "floor_gb": 210.0,
+                                       "root_free_gb": 500.0, "oldest_h": 0.0, "breach": 0, "stranded": [],
+                                       "unpushed": []})
+    scratch_clone.scratch_stranded = slow({"stranded": []})
+    seat_dirt.clones = lambda *a, **kw: ["/x/a", "/x/b", "/x/c"]
+    seat_dirt.reading = slow({"stale": 0, "fresh": 0, "landable": 0, "stale_paths": [], "tidy_late": 0})
+    try:
+        t0 = time.time()
+        d = OW.c_disk(time.time(), OW.load_rules(), {})
+        wall = time.time() - t0
+    finally:
+        scratch_clone.pool_reading, scratch_clone.scratch_stranded, seat_dirt.clones, seat_dirt.reading = real
+    check(d["disk.pool_breach"]["m"] == "MEASURED" and d["disk.pool_breach"]["v"] == 0
+          and d["disk.seat_dirt"]["v"] == 0, "the-disk-reads-overlap: the readings still read (%s, %s)"
+          % (d["disk.pool_breach"], d["disk.seat_dirt"]))
+    check(wall < 2.5, "the-disk-reads-overlap: five 1 s reads took %.1f s (in series: 5 s)" % wall)
+
+
 def main():
     for t in (t_the_disk_sense_starts_no_fetch_and_no_landing, t_the_seat_tidy_runs_in_its_own_unit,
-              t_a_safe_path_the_tidy_left_counts_as_dirt, t_a_closed_items_leftover_copy_is_removed_not_landed):
+              t_a_safe_path_the_tidy_left_counts_as_dirt, t_a_closed_items_leftover_copy_is_removed_not_landed,
+              t_the_disk_reads_overlap):
         try:
             t()
         except (Exception, SystemExit) as e:  # noqa: BLE001  a test that raises (argparse exits) is a red, named

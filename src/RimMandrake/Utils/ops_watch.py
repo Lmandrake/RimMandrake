@@ -1745,6 +1745,30 @@ def whea_reading(now):
 
 
 def c_disk(now, rules, ctx):
+    # The three slow reads wait on subprocesses (find over the pool, git over the scratch clones and the seat and role
+    # clones). They start first and overlap the rest: in series they took 21-29 s at load 45 on 2026-11-22, past the
+    # sense phase's 15 s kill (RIMMANDRAKE_UNBLIND_OPS_DISK_FAMILY_TWENTY_OVERRUNS_STRAIGHT).
+    from concurrent.futures import ThreadPoolExecutor
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    ex = ThreadPoolExecutor(max_workers=3)
+    try:
+        import scratch_clone
+        try:
+            import scratch_reap
+            scratch_reap.mirror_tips()     # its cache fills by appending: fill it before scratch_stranded's threads read it
+        except Exception:  # noqa: BLE001 - scratch_stranded raises the same cause in its own future, read below
+            pass
+        f_pool, f_scr = ex.submit(scratch_clone.pool_reading), ex.submit(scratch_clone.scratch_stranded)
+    except Exception as e:  # noqa: BLE001 - an import that fails is the pool alarm below, never silence
+        f_pool = f_scr = e
+    f_seat = ex.submit(seat_dirt_reading)
+    try:
+        return _c_disk(now, rules, ctx, f_pool, f_scr, f_seat)
+    finally:
+        ex.shutdown(wait=True)
+
+
+def _c_disk(now, rules, ctx, f_pool, f_scr, f_seat):
     out = {}
     for name, mnt in disk_mounts().items():
         try:
@@ -1821,10 +1845,9 @@ def c_disk(now, rules, ctx):
     # in the pool or anywhere else a helper clones (rm/scratch, session dirs: LIQUIDNET_SURFACEGAP_FIX_UNLANDED_CLONES).
     # A pool that cannot be read is the alarm too (9999), not silence.
     try:
-        sys.path.insert(0, str(Path(__file__).resolve().parent))
-        import scratch_clone
-        pr = scratch_clone.pool_reading()
-        ss = scratch_clone.scratch_stranded()
+        if isinstance(f_pool, Exception):
+            raise f_pool
+        pr, ss = f_pool.result(), f_scr.result()
         out["disk.pool_clones"] = M(pr["count"], "worker clones in the pool (cap %d)" % pr["max_clones"])
         out["disk.pool_gb"] = M(pr["gb"], "GB the pool holds")
         # the pool's limit is the disk floor (scratch_clone.pool_admit): its margin is the reading, unreadable floor = UNMEASURED
@@ -1836,7 +1859,7 @@ def c_disk(now, rules, ctx):
                                     stranded=pr["stranded"] + ss["stranded"], unpushed=pr["unpushed"])
     except Exception as e:
         out["disk.pool_breach"] = M(9999, "pool breaches", why="pool unreadable: %s" % str(e))
-    out.update(seat_dirt_reading())
+    out.update(f_seat.result())
     return out
 
 
@@ -1869,13 +1892,21 @@ def seat_dirt_reading():
     try:
         sys.path.insert(0, str(Path(__file__).resolve().parent))
         import seat_dirt
+        from concurrent.futures import ThreadPoolExecutor
         stale, fresh, late, paths, unread = 0, 0, 0, [], []
-        for clone in seat_dirt.clones():
-            tag = "" if clone == seat_dirt.SEAT_CLONE else os.path.basename(clone) + ":"
+
+        def one(clone):
             try:
-                r = seat_dirt.reading(clone)
+                return seat_dirt.reading(clone)
             except Exception as e:  # noqa: BLE001 - one unreadable clone makes the whole reading unreadable below
-                unread.append("%s %s" % (clone, str(e)[:150]))
+                return e
+        cl = seat_dirt.clones()
+        with ThreadPoolExecutor(max_workers=max(1, len(cl))) as ex:     # each clone's reading is git subprocesses
+            got = list(ex.map(one, cl))
+        for clone, r in zip(cl, got):
+            tag = "" if clone == seat_dirt.SEAT_CLONE else os.path.basename(clone) + ":"
+            if isinstance(r, Exception):
+                unread.append("%s %s" % (clone, str(r)[:150]))
                 continue
             stale += r["stale"]
             fresh += r["fresh"]
