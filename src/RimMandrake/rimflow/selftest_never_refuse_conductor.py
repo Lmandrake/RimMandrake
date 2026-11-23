@@ -313,6 +313,8 @@ def t_replay_launch_publishes_the_ledger_shard():
     repo, shards = _det_repo("launch_pub", item)
     clone = os.path.join(TMP, "launch_pub_clone")
     os.makedirs(clone)
+    os.makedirs(os.path.join(clone, "src", "RimMandrake", "Utils"), exist_ok=True)   # a clone a unit can start in
+    open(os.path.join(clone, "src", "RimMandrake", "Utils", "claude_bounded.sh"), "w").close()
     with _det_repo_bound(repo) as DH:
         fake = FakeSys(shards=shards)
         with as_caller(helper_env()):

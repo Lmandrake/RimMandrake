@@ -319,7 +319,8 @@ def signexpect():  # RIMMANDRAKE_SIGN_ONLY_THE_JUDGED_TREE_HASH
 
 ITEM = "SOME_ITEM_TO_BUILD"
 CLONE = os.path.join(TMP, "clone")
-os.makedirs(CLONE)
+os.makedirs(os.path.join(CLONE, "src", "RimMandrake", "Utils"))   # a clone a unit can start in
+open(os.path.join(CLONE, "src", "RimMandrake", "Utils", "claude_bounded.sh"), "w").close()
 
 
 def fake(script=None):

@@ -66,6 +66,7 @@ PAGES = {
     "design/specs/2026-11-19-launch-unpublished-item/boundary.md": "src/RimMandrake/rimflow/selftest_detached_helper.py",
     "design/specs/2026-11-22-ledger-write-lands-its-shard/boundary.md": "src/RimMandrake/rimflow/selftest_ledger_landing.py",
     "design/specs/2026-11-21-launch-returns-a-kept-clone/boundary.md": "src/RimMandrake/rimflow/selftest_detached_helper.py",
+    "design/specs/2026-11-22-launch-missing-clone/boundary.md": "src/RimMandrake/rimflow/selftest_detached_helper.py",
     "design/specs/2026-11-20-detached-game-env/boundary.md": "src/RimMandrake/rimflow/selftest_detached_game_env.py",
     "design/specs/2026-11-20-reviewmap-game-saves/boundary.md": "src/RimMandrake/Utils/modcheck/selftest_reviewmap_game_saves.py",
     "design/specs/2026-11-19-launch-spend-cap/boundary.md": "src/RimMandrake/rimflow/selftest_detached_helper.py",

@@ -67,7 +67,16 @@ FAILS = []
 T0 = 1_800_000_000.0
 KNOWN = {"SOME_ITEM_TO_BUILD"}
 CLONE = os.path.join(TMP, "clone")
-os.makedirs(CLONE)        # a clone that stands: finish notes and publishes from it (a gone one is skipped)
+# a --clone that exists is one a unit can start in (RIMMANDRAKE_GUARD_HELPER_LAUNCH_ON_MISSING_CLONE_TWO_RUNS_DIED_UNSTARTED)
+def _bounded(path):
+    """Make `path` a clone a unit can start in: the claude_bounded.sh the unit's argv runs."""
+    os.makedirs(os.path.join(path, "src", "RimMandrake", "Utils"), exist_ok=True)
+    open(os.path.join(path, "src", "RimMandrake", "Utils", "claude_bounded.sh"), "w").close()
+
+
+for _c in (CLONE, CLONE + "-other"):
+    _bounded(_c)
+os.makedirs(CLONE, exist_ok=True)        # a clone that stands: finish notes and publishes from it (a gone one is skipped)
 
 
 def check(ok, msg):
@@ -274,6 +283,7 @@ def det_clone(item, how=None, status="finished", unit=None, path=None, state=Non
     path = path or os.path.join(POOL, "clones", item + ".det")
     os.makedirs(os.path.join(path, os.path.dirname(LAND_REL)), exist_ok=True)
     open(os.path.join(path, LAND_REL), "w").close()
+    _bounded(path)
     unit = unit or "rm-detached-%s-%d" % (item.lower().replace("_", "-"), len(os.listdir(DH.runs_dir())))
     rec = {"seat": "BENCH", "item": item, "clone": path, "model": "sonnet", "max_s": 600, "budget_usd": 5.0, "at": T0,
            "state": os.environ["RM_DISPATCHER_STATE"], "status": status, "unit": unit,
@@ -1218,6 +1228,7 @@ def test_launch_checks():
     gclone = os.path.join(TMP, "gate_clone")
     items = os.path.join(gclone, "infrastructure", "state", "items")
     os.makedirs(items)
+    _bounded(gclone)
     with open(os.path.join(items, "SOME_ITEM_TO_BUILD.md"), "w", encoding="utf-8") as fh:
         fh.write("## spec\nmust-pass: false (prose never refuses)\n\n## launch-checks\nmust-fail: echo still green; true\n")
 
@@ -1618,8 +1629,30 @@ def t_an_offline_run_at_the_in_game_stage_names_no_game():
             os.environ["RM_CONTROL_DB"] = saved
 
 
+def t_a_launch_on_a_missing_clone_takes_a_pool_clone_instead():
+    """Boundary page design/specs/2026-11-22-launch-missing-clone/boundary.md. Measured 2026-11-22: two runs given
+    --clone <path the pool had taken back> started and died in one second (FileNotFoundError claude_bounded.sh) while the
+    launch printed DETACHED."""
+    item = "SOME_ITEM_TO_BUILD"
+    gone = os.path.join(TMP, "pool-took-it-back", "clone")
+    pool = os.path.join(TMP, "missingpool")
+    os.makedirs(os.path.join(pool, "clones", item + ".det", ".git"), exist_ok=True)   # the pool clone a launch reuses
+    os.environ["RM_DETACHED_POOL"] = pool
+    try:
+        rc, text = DH.launch("BENCH", item, "Build.", "sonnet", 600, 5, now=T0 + 7, runner=recorder()[1], known=KNOWN,
+                             clone=gone)
+    finally:
+        os.environ.pop("RM_DETACHED_POOL", None)
+    check(not os.path.exists(gone), "missing clone: the launch never made the path it was given")
+    check("--clone %s" % gone in text and text.count("NOTE (form, repaired): ") == 1
+          and rc == 0 and "clone %s (reused" % os.path.join(pool, "clones", item + ".det") in text,
+          "missing clone: no unit started in the missing path, one NOTE says the pool clone was taken (rc %s): %s"
+          % (rc, text[:400]))
+
+
 def main():
     test_refuse()
+    t_a_launch_on_a_missing_clone_takes_a_pool_clone_instead()
     test_launch_and_finish()
     test_killed_and_failed_launch()
     test_same_second()

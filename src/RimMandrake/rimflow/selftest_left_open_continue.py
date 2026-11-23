@@ -347,6 +347,8 @@ def test_launch_records_opt_in():
         return R()
     clone = os.path.join(TMP, "clones", "launchclone")
     os.makedirs(clone, exist_ok=True)
+    os.makedirs(os.path.join(clone, "src", "RimMandrake", "Utils"), exist_ok=True)   # a clone a unit can start in
+    open(os.path.join(clone, "src", "RimMandrake", "Utils", "claude_bounded.sh"), "w").close()
     import role_launch
     import subprocess
     orig = role_launch.unit_state
