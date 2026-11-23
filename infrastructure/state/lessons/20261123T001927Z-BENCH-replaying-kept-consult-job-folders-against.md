@@ -1,0 +1,3 @@
+Replaying kept consult job folders against the call log finds defects a unit test cannot: 109 Windows-side gpt_consult calls (2026-10-30..11-03) exited 0, were logged answered=False, and hold a non-empty answer.md now; 9 Linux calls killed at their deadline wrote answer.md afterwards (codex outlived subprocess.run's kill). Dispatch's gpt_door re-reads an absent answer for 5 s after exit 0 and kills the whole process group on a deadline. Join on the job folder name; gpt_call_log.read_records() returns (records, unreadable_count), not a list: iterating it joins nothing and every rc reads unknown (measured 2026-11-22).
+item: RIMMANDRAKE_ROUTE_EVERY_GPT_CONSULT_THROUGH_DISPATCH_ONE_DOOR_CAREFULLY
+home: skills/chatgpt-consult

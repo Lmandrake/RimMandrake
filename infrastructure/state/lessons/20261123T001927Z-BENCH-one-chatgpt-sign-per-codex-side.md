@@ -1,0 +1,3 @@
+One ChatGPT sign-in per Codex side is enough for consults (measured 2026-11-22): 76 auth.json files carried one account in 14 token families; 3 concurrent consults through one Linux ~/.codex all answered with auth.json unchanged; a fresh Windows login did not revoke the Linux one. Copies of one auth.json are the hazard (single-use refresh tokens: the first copy to refresh revokes the rest), so never seed a home by copying the consult home's auth.json. Unmeasured: two processes in one home refreshing at the same instant; gpt_door retries AUTH once for it.
+item: RIMMANDRAKE_ROUTE_EVERY_GPT_CONSULT_THROUGH_DISPATCH_ONE_DOOR_CAREFULLY
+home: skills/chatgpt-consult
