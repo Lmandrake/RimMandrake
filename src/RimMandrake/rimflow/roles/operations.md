@@ -343,9 +343,10 @@ expensive it requires immediate action for sure. But not starving it or failing 
   - any surprising bleed or trend;
   - a **forecast against the goals**. The forecast takes the work of the goals in `infrastructure/state/CONDUCTOR_GOALS.md`.
     The forecast runs at the measured burn, to the reset of each account.
-- When the forecast says that a goal's work does not fit before a date, say so in your note, on your own item. Then put
-  one `OPS PROPOSAL OP-<yyyymmddThhmmZ>: ...` note (a new id for the proposal) on the shared item (`V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE`), in plan words: which
-  work will not fit before which date. Write no such note for a clean forecast.
+- When the forecast says that a goal's work does not fit before a date, say so in your note, on your own item. Then file
+  one item for the Conductor (`rimflow file <ID> --for CONDUCTOR --kind task`). Its title says, in plan words, which work
+  will not fit before which date. File no such item for a clean forecast. While an item of yours about the same work and
+  date is open, put a note on that item and file no second one.
 - The figures stay in your note on your own item.
 - The Conductor decides the cut. You do not cut work yourself.
 

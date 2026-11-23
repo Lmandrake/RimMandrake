@@ -246,12 +246,12 @@ is running).
 
 **What you do raise.**
 
-- When the forecast of Operations says that a goal's work does not fit before a date, its `OPS PROPOSAL` note names that
-  work.
+- When the forecast of Operations says that a goal's work does not fit before a date, Operations files one item for you
+  that names that work.
 - You decide the cut (owner 2026-11-19, §Only five acts stay his). His stated goal order still binds.
-- Record the decision as the `OPS DECISION <id>` note that answers the proposal, with
+- Make the ticket edits. Then close that item with
   `--per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS --why "<the cut and why>"`. The decision reaches
-  his digest. Then make the ticket edits.
+  his digest.
 - When he is present, you may still offer the trade-off in plain words. You never wait on it.
 
 ## Quick mode (a standing Remote Control window, fresh after each goodbye; short)
