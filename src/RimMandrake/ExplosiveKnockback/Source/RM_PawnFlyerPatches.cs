@@ -117,7 +117,6 @@ namespace RimMandrake.ExplosiveKnockback
                 Resume(__state.pawn, __state.resume);
             }
             Landed(__state?.pawn);
-            BreakCoverUnderLanding(__state?.pawn);
 #if RM_PROOFS
             if (__state != null && __state.t0 != 0)
             {
@@ -177,7 +176,7 @@ namespace RimMandrake.ExplosiveKnockback
         /// deck mass that spares the own faction, so without this a thrown colonist stood on the cover. A gas shove (negative id)
         /// never breaks one (LandingBreaksCover). The id rides in the map component's save, so a flight saved in mid-air
         /// breaks its cover after a reload too.</summary>
-        private static void BreakCoverUnderLanding(Pawn p)
+        internal static void BreakCoverUnderLanding(Pawn p)
         {
             if (p == null || !p.Spawned)
             {
@@ -301,6 +300,25 @@ namespace RimMandrake.ExplosiveKnockback
             // a pawn standing on the cell does not re-target the landing (bar pawn_flight_arc: "lands on the cell chosen at the
             // blast"; Stage 3 reconcile 2026-11-14): pawns share cells, and the Postfix journals the pawn landed on
             return true;
+        }
+    }
+
+    /// <summary>The cover under a thrown pawn breaks after every other landing hook (Priority.Last). FlowWorks' landing hook
+    /// (RM_Patch_PawnFlyer_LandInPit) drops a pawn that lands on an open pit cell; breaking the cover before it ran opened the
+    /// cell, so the same landing fell twice and was hurt twice (sc_pit_fall solo lane, visit 4: descents=2, 3 of 3). With the
+    /// cover still whole it sees a covered cell and does nothing; the break then drops the pawn, once.</summary>
+    [HarmonyPatch(typeof(PawnFlyer), "RespawnPawn")]
+    public static class RM_Patch_PawnFlyer_KnockbackCoverBreak
+    {
+        public static void Prefix(PawnFlyer __instance, out Pawn __state)
+        {
+            __state = __instance.def == RM_KnockbackDefOf.RM_PawnFlyer_Knockback ? __instance.FlyingPawn : null;
+        }
+
+        [HarmonyPriority(Priority.Last)]
+        public static void Postfix(Pawn __state)
+        {
+            RM_Patch_PawnFlyer_KnockbackLanding.BreakCoverUnderLanding(__state);
         }
     }
 }
