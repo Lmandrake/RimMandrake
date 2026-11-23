@@ -21,8 +21,8 @@ PHASES, each independently runnable so a save can sit between any two:
            word stays. That contrast IS the story.
   breach   never implemented - not a valid --phase choice below. The blister
            damage described in NOTES was done separately, by hand.
-  notes    my own out-of-world reasoning, as named ZONES - a zone label renders on
-           the map, which is the only text this game will draw where you can read it.
+  notes    my own out-of-world reasoning, as LETTERS - a zone cannot carry the text
+           (`phase_notes`); a click on a letter moves the camera to the place.
 
 Saving is done by `--save NAME`, which does NOT trust `save_game`'s reported path:
 it stats the Saves folder before and after and copies whatever actually changed to

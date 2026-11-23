@@ -6,10 +6,9 @@ VERSION 1.0  (2026-08-27)   Project: D:/Luke/dev/RimMandrake/src/RimMandrake/Uti
 
 WHY THIS EXISTS
 ---------------
-`skills/gravship-layout/SKILL.md` says mid-game import "does not exist" because
-GravshipExport's own importer only runs at world creation. That is true of the
-MOD's route. It is not true of the bridge: foundation, terrain and buildings are
-three batch calls we already have, and a layout file is just a grid.
+GravshipExport's own importer runs only at new-game setup. The bridge can stamp a
+layout onto a live map: foundation, terrain and buildings are three batch calls we
+already have, and a layout file is just a grid.
 
 RUN FROM WINDOWS PYTHON (`python.exe`). The bridge binds Windows loopback.
 

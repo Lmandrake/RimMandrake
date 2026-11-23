@@ -55,8 +55,13 @@ FORMAT, read off a real export (2026-08-13, our v1 ship, 4,057 cells /
  * `IsNull="True"` is how this format writes "absent". An empty element is NOT
    the same thing and RimWorld's scribe will read it as a value.
  * The file is written with a UTF-8 BOM. Preserved here; harmless either way.
+ * A real export holds NO GravEngine thing (GravshipExporter.BuildLayout skips the
+   engine's def). The importer places the engine from gravEngineX/Z.
+
+Page: design/specs/2026-11-23-gravship-layout-library/boundary.md. Tests: selftest_gravship_layout.py.
 """
 import argparse
+import copy
 import os
 import sys
 import xml.etree.ElementTree as ET
@@ -65,15 +70,18 @@ NULL = {"IsNull": "True"}
 
 
 class Thing(object):
-    __slots__ = ("defName", "stuffDef", "rot", "quality", "plantToGrow")
+    __slots__ = ("defName", "stuffDef", "rot", "quality", "plantToGrow",
+                 "storage", "comps")
 
     def __init__(self, defName, stuffDef=None, rot=0, quality=None,
-                 plantToGrow=None):
+                 plantToGrow=None, storage=None, comps=None):
         self.defName = defName
         self.stuffDef = stuffDef
         self.rot = rot
         self.quality = quality
         self.plantToGrow = plantToGrow
+        self.storage = storage      # <exportedStorageSettings> element, carried whole
+        self.comps = comps          # <compSettings> element, carried whole
 
     def __repr__(self):
         return "Thing(%s%s%s)" % (
@@ -98,7 +106,8 @@ class Layout(object):
     """A gravship layout. Indexed [z][x] -- row major, matching the file."""
 
     def __init__(self, width, height, defName="Gravship", label=None,
-                 gravEngineX=None, gravEngineZ=None):
+                 gravEngineX=None, gravEngineZ=None, description=None):
+        self.description = description
         self.width = width
         self.height = height
         self.defName = defName
@@ -158,7 +167,12 @@ class Layout(object):
 
         w = int(txt(root, "width", "0"))
         h = int(txt(root, "height", "0"))
-        lay = cls(w, h, txt(root, "defName", "Gravship"), txt(root, "label"))
+        def block(parent, tag):
+            e = parent.find(tag)
+            return None if e is None or e.get("IsNull") == "True" else e
+
+        lay = cls(w, h, txt(root, "defName", "Gravship"), txt(root, "label"),
+                  description=txt(root, "description"))
         gx, gz = txt(root, "gravEngineX"), txt(root, "gravEngineZ")
         lay.gravEngineX = int(gx) if gx is not None else None
         lay.gravEngineZ = int(gz) if gz is not None else None
@@ -179,7 +193,9 @@ class Layout(object):
                             txt(tEl, "stuffDef"),
                             int(txt(tEl, "rotInteger", "0") or 0),
                             txt(tEl, "quality"),
-                            txt(tEl, "plantToGrowDef")))
+                            txt(tEl, "plantToGrowDef"),
+                            block(tEl, "exportedStorageSettings"),
+                            block(tEl, "compSettings")))
         return lay
 
     def to_element(self):
@@ -205,8 +221,8 @@ class Layout(object):
                     ET.SubElement(tEl, "rotInteger").text = str(t.rot)
                     _opt(tEl, "quality", t.quality)
                     _opt(tEl, "plantToGrowDef", t.plantToGrow)
-                    ET.SubElement(tEl, "exportedStorageSettings", NULL)
-                    ET.SubElement(tEl, "compSettings", NULL)
+                    _block(tEl, "exportedStorageSettings", t.storage)
+                    _block(tEl, "compSettings", t.comps)
         ET.SubElement(root, "width").text = str(self.width)
         ET.SubElement(root, "height").text = str(self.height)
         if self.gravEngineX is not None and self.gravEngineZ is not None:
@@ -214,6 +230,8 @@ class Layout(object):
             ET.SubElement(root, "gravEngineZ").text = str(self.gravEngineZ)
         ET.SubElement(root, "defName").text = self.defName
         ET.SubElement(root, "label").text = self.label
+        if self.description is not None:
+            ET.SubElement(root, "description").text = self.description
         ET.SubElement(root, "descriptionHyperlinks", NULL)
         ET.SubElement(root, "ignoreIllegalLabelCharacterConfigError").text = "False"
         return root
@@ -241,12 +259,22 @@ class Layout(object):
                               self.width, self.height))
             else:
                 c = self.rows[self.gravEngineZ][self.gravEngineX]
-                if not any("GravEngine" in t.defName for t in c.things):
+                here = (self.gravEngineX, self.gravEngineZ)
+                engines = [(x, z) for z, row in enumerate(self.rows)
+                           for x, cell in enumerate(row)
+                           if any(t.defName == "GravEngine" for t in cell.things)]
+                # An export holds no engine thing: the importer places the engine
+                # at these coordinates. A hand-written layout may hold one, and
+                # then the two must agree.
+                if engines and engines != [here]:
                     bad.append(
-                        "gravEngineX/Z points at (%d,%d) but no GravEngine is "
-                        "in that cell -- the coordinates are LAYOUT-LOCAL and "
-                        "include the 1-cell margin; this is the usual slip"
-                        % (self.gravEngineX, self.gravEngineZ))
+                        "gravEngineX/Z points at %s but the GravEngine thing is "
+                        "at %s -- the coordinates are LAYOUT-LOCAL and include "
+                        "the 1-cell margin; this is the usual slip"
+                        % (here, ", ".join(map(str, engines))))
+                if not c.foundationDef:
+                    bad.append("gravEngineX/Z points at %s, a cell with no "
+                               "foundation" % (here,))
         for z, row in enumerate(self.rows):
             for x, c in enumerate(row):
                 if c.things and not c.foundationDef:
@@ -262,6 +290,19 @@ def _opt(parent, tag, value):
     else:
         e.text = str(value)
     return e
+
+
+def _block(parent, tag, el):
+    """Write a block carried whole from the file, or the format's absent mark."""
+    if el is None:
+        ET.SubElement(parent, tag, NULL)
+    else:
+        parent.append(copy.deepcopy(el))
+
+
+def _canon(el):
+    return None if el is None else ET.canonicalize(
+        ET.tostring(el, encoding="unicode"), strip_text=True)
 
 
 def _indent(el, level=0):
@@ -291,7 +332,7 @@ def roundtrip(path):
 
     diffs = []
     for attr in ("width", "height", "defName", "label",
-                 "gravEngineX", "gravEngineZ"):
+                 "gravEngineX", "gravEngineZ", "description"):
         if getattr(a, attr) != getattr(b, attr):
             diffs.append("%s: %r != %r" % (attr, getattr(a, attr),
                                            getattr(b, attr)))
@@ -315,8 +356,10 @@ def roundtrip(path):
                     # them on export still printed "round trip clean". Proven
                     # 2026-09-03: monkeypatching quality to None during
                     # to_element() produced zero diffs.
-                    if (ta.defName, ta.stuffDef, ta.rot, ta.quality, ta.plantToGrow) != \
-                       (tb.defName, tb.stuffDef, tb.rot, tb.quality, tb.plantToGrow):
+                    if (ta.defName, ta.stuffDef, ta.rot, ta.quality, ta.plantToGrow,
+                            _canon(ta.storage), _canon(ta.comps)) != \
+                       (tb.defName, tb.stuffDef, tb.rot, tb.quality, tb.plantToGrow,
+                            _canon(tb.storage), _canon(tb.comps)):
                         diffs.append("(%d,%d) thing %r != %r" % (x, z, ta, tb))
             if len(diffs) > 20:
                 return a, diffs
@@ -374,8 +417,8 @@ def main():
             for d in diffs[:20]:
                 print("   " + d)
             sys.exit(1)
-        print("✅ round trip clean -- every cell, thing, stuff and rotation "
-              "survived write+reread. The format is understood.")
+        print("✅ round trip clean -- every cell, thing, stuff, rotation, quality, plant, "
+              "storage and comp block survived write+reread. This is not the game's answer.")
         return
 
     if a.demo:
