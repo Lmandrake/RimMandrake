@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "09662f537879d15650a3bebec1b696cfb985238873056e821883396eebf1ff9e",
+  "body_sha256": "f582f3a8e9ef5d4ba21f378637d3b78d70642aced9d7b609eac6df297dc8ab2e",
   "reducer": 1,
   "shards": {
    "BACKFILL": 893183,
@@ -38,6 +38,7 @@
    "HOLDER.run-1795396410": 1686,
    "HOLDER.run-1795412632": 930,
    "HOLDER.run-1795427578": 1657,
+   "HOLDER.run-1795429371": 2915,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1288,11 +1289,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795427578",
-   "done": "offline deciders PY_FLOWWORKS_NORTHSTAR, PY_VALIDATION_V2_OFFLINE (pitSteppedReliefEnabled into site_spec.SETTINGS, toggle pin 261) and PY_FW_OFFLINE_ART (spike compositor draws FloorShade) green, 6b52871; 10 edited deciders seen red, c7e0114; certificate FlowWorks --to in_game exits 0",
-   "next": "Run in-game visit 8 on the first free game",
-   "ruled_out": "the art red was not a compositor regression: the live floor reference was measured on the relief-off law, which the terrain lift preserved only through FloorShade",
-   "ts": "2026-11-23T10:14:47Z"
+   "by": "HOLDER.run-1795429371",
+   "done": "visit 8 on ArchBig: 27 of 30 PASS (25 first run; sc_garden and sc_ice reran after the outside wrapup restore was fixed, 8380450 and f459f47); sc_moat_raid FAIL class MOD, filed RIMMANDRAKE_TRACE_FLOWWORKS_MOAT_CAPTURE_FAILS_TWO_IN_THREE_ON_NEW_BUILD; PIT_LOOK_1114_LIVE and OL_OWNER_LOOK_READS not run; record 15a3481",
+   "next": "Trace the two-held capture failure in sc_moat_raid on the post-visit-7 build, then rerun sc_moat_raid three times, PIT_LOOK_1114_LIVE and OL_OWNER_LOOK_READS",
+   "ruled_out": "the garden filter half rate was not the mod or the chunk size: an outside wrapup.py restore replayed the scene converterRateMultiplier debt mid-window",
+   "ts": "2026-11-23T12:54:30Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1744,7 +1745,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1662,
+  "events": 1670,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7845,7 +7846,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-23T10:24:54Z",
+   "last": "2026-11-23T12:54:30Z",
    "lease": "run-1795429371",
    "released": false,
    "token": 55
@@ -7963,6 +7964,7 @@
    "HOLDER.run-1795396410",
    "HOLDER.run-1795412632",
    "HOLDER.run-1795427578",
+   "HOLDER.run-1795429371",
    "JUDGE.judge-1794833810",
    "JUDGE.judge-1794849236",
    "JUDGE.judge-1795134433",

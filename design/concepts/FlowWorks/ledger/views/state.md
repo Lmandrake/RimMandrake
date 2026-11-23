@@ -1,13 +1,13 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":77517,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"HOLDER.run-1795260677":3322,"HOLDER.run-1795263747":1891,"HOLDER.run-1795268290":5226,"HOLDER.run-1795285878":924,"HOLDER.run-1795297113":4566,"HOLDER.run-1795304573":2662,"HOLDER.run-1795312089":1009,"HOLDER.run-1795312923":2298,"HOLDER.run-1795315124":1540,"HOLDER.run-1795321038":846,"HOLDER.run-1795325268":1929,"HOLDER.run-1795329869":754,"HOLDER.run-1795330730":1090,"HOLDER.run-1795335550":748,"HOLDER.run-1795338340":3967,"HOLDER.run-1795341097":2076,"HOLDER.run-1795346318":1646,"HOLDER.run-1795396410":1686,"HOLDER.run-1795412632":930,"HOLDER.run-1795427578":1657,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=55c736230013f281c489fd056db2955c97f2eba12a09c69e810996033e8c2673 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":77517,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"HOLDER.run-1795260677":3322,"HOLDER.run-1795263747":1891,"HOLDER.run-1795268290":5226,"HOLDER.run-1795285878":924,"HOLDER.run-1795297113":4566,"HOLDER.run-1795304573":2662,"HOLDER.run-1795312089":1009,"HOLDER.run-1795312923":2298,"HOLDER.run-1795315124":1540,"HOLDER.run-1795321038":846,"HOLDER.run-1795325268":1929,"HOLDER.run-1795329869":754,"HOLDER.run-1795330730":1090,"HOLDER.run-1795335550":748,"HOLDER.run-1795338340":3967,"HOLDER.run-1795341097":2076,"HOLDER.run-1795346318":1646,"HOLDER.run-1795396410":1686,"HOLDER.run-1795412632":930,"HOLDER.run-1795427578":1657,"HOLDER.run-1795429371":2915,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=5b332fb4b78d45a4edcafe6057b4bd7c2e2643cf5a0aaeae4d23598780abfe5c -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage in_game · 1662 events in 39 shards · reducer 1
-holder lease run-1795429371, token 55, last active 2026-11-23T10:24:54Z
+version 0.1.0 · stage in_game · 1670 events in 40 shards · reducer 1
+holder lease run-1795429371, token 55, last active 2026-11-23T12:54:30Z
 holder session 4ce89f49-44fa-4c1e-ba31-c6154a7a736f, context 179951 of ceiling 400000
 
-## Last checkpoint (HOLDER.run-1795427578, 2026-11-23T10:14:47Z)
-- done: offline deciders PY_FLOWWORKS_NORTHSTAR, PY_VALIDATION_V2_OFFLINE (pitSteppedReliefEnabled into site_spec.SETTINGS, toggle pin 261) and PY_FW_OFFLINE_ART (spike compositor draws FloorShade) green, 6b52871; 10 edited deciders seen red, c7e0114; certificate FlowWorks --to in_game exits 0
-- next: Run in-game visit 8 on the first free game
-- ruled out: the art red was not a compositor regression: the live floor reference was measured on the relief-off law, which the terrain lift preserved only through FloorShade
+## Last checkpoint (HOLDER.run-1795429371, 2026-11-23T12:54:30Z)
+- done: visit 8 on ArchBig: 27 of 30 PASS (25 first run; sc_garden and sc_ice reran after the outside wrapup restore was fixed, 8380450 and f459f47); sc_moat_raid FAIL class MOD, filed RIMMANDRAKE_TRACE_FLOWWORKS_MOAT_CAPTURE_FAILS_TWO_IN_THREE_ON_NEW_BUILD; PIT_LOOK_1114_LIVE and OL_OWNER_LOOK_READS not run; record 15a3481
+- next: Trace the two-held capture failure in sc_moat_raid on the post-visit-7 build, then rerun sc_moat_raid three times, PIT_LOOK_1114_LIVE and OL_OWNER_LOOK_READS
+- ruled out: the garden filter half rate was not the mod or the chunk size: an outside wrapup.py restore replayed the scene converterRateMultiplier debt mid-window
 
 ## Open findings (178)
 (claimed fixes, awaiting a judge, on one line each with the oldest 127 open findings, named without their 'finding:': `modledger.py show --mod FlowWorks finding:<NAME>`)
@@ -505,6 +505,6 @@ spend recorded: USD 78.94, 45401435 tokens
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
 - notes: 11, never printed here (`modledger.py find --mod FlowWorks <words>`)
-- the full history: 1662 events (views/history.md; never read whole)
+- the full history: 1670 events (views/history.md; never read whole)
 
-cursor: t=2026-11-23T10:25:02Z.1795429502517074774 (modledger.py since --mod FlowWorks t=2026-11-23T10:25:02Z.1795429502517074774 prints what changed after this packet)
+cursor: t=2026-11-23T12:54:30Z.1795438470186319134 (modledger.py since --mod FlowWorks t=2026-11-23T12:54:30Z.1795438470186319134 prints what changed after this packet)
