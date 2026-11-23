@@ -884,10 +884,15 @@ def brief(name, full_list=None):
     me, first, second = _n(name), _n(DEFAULT), _n("b")
     extra = []
     if name != DEFAULT and full_list:
+        # RIMMANDRAKE_ALIGN_SECOND_GAME_FULL_LIST_ROW_WITH_EXIT_READER (Pyrelands visit 6, 2026-11-23): the row this
+        # names must carry the class, unrepaired cause and owner maturation.line_class counts as not_counted; a bare
+        # UNMEASURED row read 'unclassed' and refused the exit on form (selftest_full_list_row_on_second_game.py)
         extra = ["- These checks need his full list, which %s cannot hold beside %s (memory): %s. Run every "
-                 "other check on a tier list here; give each of these one row with result UNMEASURED and detail "
-                 "`%s: tier list only beside %s` (an UNMEASURED row spends nothing); %s runs them later."
-                 % (me, first, ", ".join(full_list), me, first, first)]
+                 "other check on a tier list here; give each of these one row with result UNMEASURED, detail "
+                 "`%s: tier list only beside %s`, class `SITE`, unrepaired `%s cannot hold his full list beside %s "
+                 "in memory, so this check did not run here` and owner `%s: its full-list run of this check` (an "
+                 "UNMEASURED row spends nothing, and its bar stays undecided); %s runs them later."
+                 % (me, first, ", ".join(full_list), me, first, me, first, first, first)]
     return "\n".join([
         "## Your game: %s" % me, "",
         "This machine runs two RimWorld games, %s and %s. This run drives **%s**: `RM_GAME_INSTANCE=%s` is set in "
