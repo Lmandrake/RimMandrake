@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build rows.jsonl for Pyrelands visit 5 from the per-chain result JSONs (evidence/pv5_<label>.json), the script logs,
+"""Build rows.jsonl for Pyrelands visit 6 from the per-chain result JSONs (evidence/pv6_<label>.json), the script logs,
 the identity line and overrides.json (per test: which label to read, class, repair, unrepaired, owner, filed, detail).
 A check reads its entry's components when the entry names components of the chain, else every component of the chain."""
 import json, os, re, sys
@@ -11,7 +11,7 @@ REL = os.path.relpath(VD, ROOT)
 T = json.load(open(os.path.join(ROOT, "design/concepts/Pyrelands/version/test_table.json")))["tests"]
 IDENT = json.load(open(os.path.join(E, "identity_pyrelands.json")))
 OV = json.load(open(os.path.join(H, "overrides.json"))) if os.path.exists(os.path.join(H, "overrides.json")) else {}
-TOUCHED = set(open(os.path.join(H, "touched.txt")).read().split())   # rerun_relation.py RERUN lines; the rest carry visit 3
+TOUCHED = set(open(os.path.join(H, "touched.txt")).read().split())   # rerun_relation.py RERUN lines; the rest keep their earlier PASS
 HELD = ["weather: Clear locked at the site's start", "storyteller quiet, incident queue cleared"]
 
 
@@ -21,7 +21,7 @@ def chain_of(cmd):
 
 
 def read_chain(label, chain, entry):
-    p = os.path.join(E, "pv5_%s.json" % label)
+    p = os.path.join(E, "pv6_%s.json" % label)
     if not os.path.exists(p):
         return "UNMEASURED", "not run: no %s" % os.path.relpath(p, ROOT), None, False
     d = json.load(open(p))
@@ -140,7 +140,7 @@ def exit_block():
             % (ing, open_n, SAVE, "true" if met else "false"))
 
 
-_ws = os.path.join(E, "walk_save_full.json")   # the labelled save on his full list (walk_save.py ..._FULL): sc_walk is a full-list check
+_ws = os.path.join(E, "walk_save.json")   # the labelled save on the pyrelands tier (ArchSmall; sc_walk owed on ArchBig)
 SAVE = ((json.load(open(_ws)).get("save") or {}).get("path") or "").replace("/", "\\") if os.path.exists(_ws) else None
 if "--exit" in sys.argv:
     p = os.path.join(VD, "SUMMARY.md")

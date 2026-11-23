@@ -1,0 +1,15 @@
+{
+ "sc_scorchfruit": {
+  "label": "scorchfruit_with_census"
+ },
+ "sc_grass_regreens": {
+  "label": "embergrass_regrow"
+ },
+ "sc_walk": {
+  "verdict_fixed": "UNMEASURED",
+  "site_checked": false,
+  "detail": "ArchSmall: tier list only beside ArchBig (sc_walk needs his full list; ArchBig runs it later)",
+  "held": []
+ },
+ "_extra_tests": []
+}

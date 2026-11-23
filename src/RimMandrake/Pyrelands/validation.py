@@ -921,6 +921,41 @@ def _soil(t, rect):
                   height=rect[3], layer="top")
 
 
+def _open_ground(t, rect, margin=0, soil=None):
+    """Make `rect` (grown by `margin`) open ground whatever the map put there, then read it back: every thing destroyed
+    (natural rock, a ruin's walls and furniture, plants), the roof taken off, `soil` (default: the whole cleared rect)
+    re-laid as SOIL. UNMEASURED, never a verdict, when a thing, a roof or another terrain is left.
+    SITE (Pyrelands visit 6, 2026-11-22, ArchSmall, site tile 38): the pads are fixed cells. scorchfruit_off_burn_bears_none
+    fell on solid marble (144 Marble rocks under a rock roof; _soil did not take and every cell refused ember grass), and
+    the firefoam pad held an ancient shrine (a grand stele, 11 walls, an urn, a door). Both rows read FAIL on 'map_fire
+    started no fire', a fault of the scene, not of the mod."""
+    x, z, w, h = rect
+    big = (x - margin, z - margin, w + 2 * margin, h + 2 * margin)
+    soil = soil or big
+    t.bridge_call("jawa/destroy_batch", rects=_rs(big), categories="All")
+    t.bridge_call("jawa/set_roof_batch", ops="None:%s" % _rs(big))
+    _soil(t, soil)
+    if not _live(t):
+        return
+    ex = t.bridge_call("jawa/export_things", rect=_rs(big), includePawns=False, includeItems=True, limit=5000)
+    left = [str(th.get("def")) for th in (ex or {}).get("things") or []] if isinstance(ex, dict) else None
+    terr = _terrain(t, _rs(soil))
+    ci = t.bridge_call("rimworld/get_cells_info", x=big[0], z=big[1], width=big[2], height=big[3])
+    roofed = [c for c in (ci or {}).get("cells") or [] if c.get("roof")]
+    bad = []
+    if left is None:
+        bad.append("export_things unreadable: %r" % str(ex)[:160])
+    elif left:
+        bad.append("%d thing(s) still stand: %r" % (len(left), sorted(set(left))[:8]))
+    if set(terr) != {SOIL}:
+        bad.append("terrain %r, not all %s" % (terr, SOIL))
+    if roofed:
+        bad.append("%d cell(s) still roofed" % len(roofed))
+    _note(t, "open ground %s (margin %d)" % (_rs(rect), margin), {"left": left, "terrain": terr, "roofed": len(roofed)})
+    if bad:
+        _unmeasured(t, "SITE: %s could not be made open ground: %s" % (_rs(big), "; ".join(bad)))
+
+
 def _extinguish(t):
     t.bridge_call("jawa/map_fire", action="extinguish", rect=_whole(t))
 
@@ -4128,6 +4163,7 @@ def firefoam_sprayer(t):
     x, z = PAD_SPRAY
     _pad(t, PAD_SPRAY)
     with _comp(t, "sprayer_reaches_the_fruit"):
+        _open_ground(t, (x, z, 9, 9), margin=5, soil=(x, z, 9, 9))   # SITE (visit 6): the pad held a ruin
         t.bridge_call("jawa/research_finish_project", project="Firefoam")
         fruit, fires, staged = _stage_burning_fruit(t, x, z)
         if _live(t):
@@ -4174,6 +4210,7 @@ def firefoam_sprayer(t):
             _note(t, "PLANTED FAULT", "%s=1: the control's ring is open on the west, the colonist's side: that edge's fuel is cut and it is never lit"
                   % PLANT_RING_GAP_ENV)
         # the sprayer row's foam is cleared by the staging (both rows start on clean ground)
+        _open_ground(t, (x, z, 9, 9), margin=5, soil=(x, z, 9, 9))
         fruit, fires, staged = _stage_burning_fruit(t, x, z, west_gap=gap)
         if _live(t):
             _note(t, "control burn staging", staged)
@@ -6403,6 +6440,9 @@ def _r6_no_ordinary_rain(t):
                       % ctl.get("rolled"))
 
 
+PLANT_OFFBURN_TOGGLE_IGNORED_ENV = "PYRE_PLANT_OFFBURN_TOGGLE_IGNORED"   # planted state for scorchfruit_off_burn_bears_none
+
+
 def _r6_scorchfruit_fire_born(t):
     """sc_scorchfruit (g4): a second fresh burn of the same ground with scorchFruitEnabled off reads 0 scorch-fruit during
     and after it."""
@@ -6412,7 +6452,12 @@ def _r6_scorchfruit_fire_born(t):
         x, z = t.anchor
         rect = (x - 6, z + TEST_SIZE // 2 + 6, 12, 12)
         _clear_scorchfruit(t)
-        _set(t, {"scorchFruitEnabled": False})
+        planted = os.environ.get(PLANT_OFFBURN_TOGGLE_IGNORED_ENV) == "1"
+        if planted:
+            _note(t, "PLANTED FAULT", "%s=1: scorchFruitEnabled is left on, as if the switch did nothing"
+                  % PLANT_OFFBURN_TOGGLE_IGNORED_ENV)
+        _set(t, {"scorchFruitEnabled": planted})
+        _open_ground(t, rect, margin=4)   # SITE (visit 6): this rect lies outside the cleared pad, on whatever the map holds
         _firebreak(t, rect)
         _soil(t, rect)
         _plants(t, "RM_FE_Plant_EmberGrass", rect)
