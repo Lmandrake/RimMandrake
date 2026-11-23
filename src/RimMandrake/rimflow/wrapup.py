@@ -863,6 +863,10 @@ def restore_at_release(runner=subprocess.run, world=None, timeout=None, env=None
     env = dict(os.environ if env is None else env)
     if env.get("RM_UNDER_SELFTEST") and runner is subprocess.run:
         return None, "not run: under a selftest"
+    if env.get("RIMFLOW_LEDGER") and not env.get("RM_WRAPUP_DIR"):
+        # a release on a throwaway ledger: its hold is a fixture, but python.exe would replay the REAL register onto the
+        # real game (RIMMANDRAKE_HOLD_WRAPUP_RESTORE_OFF_A_LIVE_OWNERS_DEBT: ./publish's selftest_conductor_acts.py did)
+        return None, "not run: a throwaway ledger (RIMFLOW_LEDGER) never replays the real register"
     try:
         toks = owed_plans(world)
     except Exception as e:  # noqa: BLE001  unreadable register: say so, the release goes on

@@ -11,6 +11,9 @@ release` now replays the owed settings while the releasing seat still holds the 
   W5  `release --mine` replays too
   W6  restore_at_release in-process: a void debt (owed to an exited game) is not owed; a runner that raises or times out
       answers (None, why), never raises; under RM_UNDER_SELFTEST the real runner is never used
+  W7  a release on a throwaway ledger (RIMFLOW_LEDGER) never replays the real register (RM_WRAPUP_DIR unset): its hold
+      is a fixture, the game it would write is real. RIMMANDRAKE_HOLD_WRAPUP_RESTORE_OFF_A_LIVE_OWNERS_DEBT: on
+      2026-11-23 ./publish's run of selftest_conductor_acts.py replayed live debts onto ArchBig this way
 
 Runs the real cli on a throwaway ledger, wrap-up register and fake python.exe; touches nothing real."""
 import os
@@ -178,6 +181,18 @@ def unit_rows():
     clear_register()
     code, line = wrapup.restore_at_release(runner=boom, world=World(), env={})
     check(code is None and "no planned setting debt" in line, "W6 nothing owed -> not run: %s" % line)
+    clear_register()
+    owe_planned()
+    ran = []
+    code, line = wrapup.restore_at_release(runner=lambda *a, **k: ran.append(a) or subprocess.CompletedProcess(a, 0, "", ""),
+                                           world=World(), env={"RIMFLOW_LEDGER": os.path.join(TMP, "x.jsonl")})
+    check(ran == [] and code is None and "throwaway ledger" in line,
+          "W7 a throwaway ledger never replays the real register: %s (%d runs)" % (line, len(ran)))
+    ran = []
+    code, line = wrapup.restore_at_release(runner=lambda *a, **k: ran.append(a) or subprocess.CompletedProcess(a, 0, "", ""),
+                                           world=World(), env={"RIMFLOW_LEDGER": os.path.join(TMP, "x.jsonl"),
+                                                               "RM_WRAPUP_DIR": os.environ["RM_WRAPUP_DIR"]})
+    check(len(ran) == 2, "W7 a throwaway ledger with its own register still replays it (wslpath + python.exe: %d)" % len(ran))
 
 
 def main():

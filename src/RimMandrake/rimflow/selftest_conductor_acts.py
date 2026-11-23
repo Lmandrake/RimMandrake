@@ -136,7 +136,10 @@ def t_bridge_cut_only_mindful():
                                                              "RM_DETACHED_UNIT", "RIMFLOW_RAN_BY")}
     base.update(RIMFLOW_LEDGER=os.path.join(T, "events.jsonl"), RIMFLOW_ITEMS=os.path.join(T, "items"),
                 RIMFLOW_PROBE="no-reading", RIMFLOW_DRIVER_LOCK="", RM_HOST="archmagi",
-                RIMFLOW_BRIDGE_LOCK=os.path.join(T, "b.lock"), RIMFLOW_SCHEDULE=os.path.join(T, "none.json"))
+                RIMFLOW_BRIDGE_LOCK=os.path.join(T, "b.lock"), RIMFLOW_SCHEDULE=os.path.join(T, "none.json"),
+                # its own wrap-up register: a release here once replayed the real register's live debts onto ArchBig
+                # (RIMMANDRAKE_HOLD_WRAPUP_RESTORE_OFF_A_LIVE_OWNERS_DEBT)
+                RM_WRAPUP_DIR=os.path.join(T, "wrapup"), RM_UNDER_SELFTEST="1")
     cli = os.path.join(HERE, "cli.py")
 
     def run(env, *a):
