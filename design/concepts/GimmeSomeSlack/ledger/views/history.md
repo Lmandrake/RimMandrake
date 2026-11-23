@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod GimmeSomeSlack) reducer=1 shards={"BACKFILL":440876,"DISPATCH":16061,"HOLDER.run-1794828190":994,"JUDGE.judge-1794822790":13753,"JUDGE.judge-1794822890":2037} body_sha256=90776486fca4540946236fecbf5174db92608187b628b01d32bc7bf400eee98f -->
-# GimmeSomeSlack — mod ledger history (633 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod GimmeSomeSlack) reducer=1 shards={"BACKFILL":440876,"DISPATCH":16604,"HOLDER.run-1794828190":994,"JUDGE.judge-1794822790":13753,"JUDGE.judge-1794822890":2037} body_sha256=94226e51cc236ee9aea9e78dbe4cb0b33b1eeb9d832e7fc3cad350f4e51ac306 -->
+# GimmeSomeSlack — mod ledger history (634 events, merged across shards)
 
 - 2026-11-16T07:11:06Z BACKFILL#1 spend spend v0.1.0: 
 - 2026-11-16T07:11:06Z BACKFILL#2 stage.accepted stage v0.1.0: offline_build -> blind_challenge: Stage 3 exit: every bar has a check that runs; the one walk bar proves at Stage 8
@@ -634,3 +634,4 @@
 - 2026-11-22T03:02:31Z DISPATCH#44 stage.accepted stage v0.1.1: 
 - 2026-11-22T05:40:26Z DISPATCH#45 stage.accepted stage v0.1.1: 
 - 2026-11-23T08:21:50Z DISPATCH#46 stage.accepted stage v0.1.1: 
+- 2026-11-23T10:24:49Z DISPATCH#47 version.open version v0.2.0: opened by next-version (DESIGNER): 0.2.0 MINOR opened from his own words (whole-line restyle 2026-11-22; look icons and wall lamp, his walk 2026-11-20), locked under Evidence-for-Ask; 57 bars; brief RIMMANDRAKE_OPEN_SLACK_NEXT_VERSION_SO_THREE_MODS_ADVANCE_TONIGHT

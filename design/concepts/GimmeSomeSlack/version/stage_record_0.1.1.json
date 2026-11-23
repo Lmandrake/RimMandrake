@@ -1,0 +1,221 @@
+{
+  "schema": 1,
+  "mod": "GimmeSomeSlack",
+  "version": "0.1.1",
+  "stage": "passed",
+  "stage_label": "Version passed (Passed)",
+  "since": "2026-11-23T00:21:50-08:00",
+  "since_from": "advance by CONDUCTOR",
+  "at_door": false,
+  "seeded": {
+    "at": "2026-11-20T16:09:35-08:00",
+    "by": "maturation.py next-version",
+    "from_version": "0.1.0",
+    "previous": "version/stage_record_0.1.0.json"
+  },
+  "cycles": {
+    "visit": 1,
+    "total": 1
+  },
+  "pre_human_arrivals": 2,
+  "spend": [],
+  "moves": [
+    {
+      "from": "0.1.0 at passed",
+      "to": "preflight",
+      "at": "2026-11-20T16:09:35-08:00",
+      "by": "BENCH",
+      "why": "Conductor act under RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS: he passed 0.1.0 with fixes as 0.1.1 by card OWNER:1795217553611770372 and picked Gimme Some Slack 0.1.1 for the pipeline; 0.1.1 is locked (conductor_event OWNER:1795219726240521449) with the four walk faults as scope",
+      "version_from": "0.1.0",
+      "version_to": "0.1.1"
+    },
+    {
+      "from": "preflight",
+      "to": "offline_build",
+      "at": "2026-11-20T16:59:23-08:00",
+      "by": "BENCH",
+      "why": "Preflight (Stage 2) of 0.1.1 run by the steward: preflight_throwaway.py wrote version/preflight.json for 0.1.1 (verdict refuse, 2 refusals, both return_to 3). delegated: evidence-for-ask: the four PATCH bars' deciders transcribed into the test table from the locked record.json proof_note of each bar (no bar's words changed; the 49 kept bars' decides unchanged), his 2026-11-20 walk rows placed",
+      "unit": "rm-detached-bench-rimmandrake-steward-gimmesomeslack-prefl-1795220569",
+      "confirmed": {
+        "steward_confirms": "Read version/preflight.json (0.1.1, 19 checks, 2 refusals), record.json inventory rows of the four 0.1.1 bars, gss_walk_20261120.md, test_table.json. Both refusals are unbuilt checks, not spec faults: built_mod_decider_entries_exist names sc_switch_off_ends, sc_pole_icons_loaded, sc_pole_south_of_tree, sc_no_roof_over_pole (live entries not written yet); built_mod_offline_deciders_run names T_SWITCH_OFF_NODE_OFFLINE, T_POLE_SOUTH_DRAWS_FRONT_OFFLINE (offline tests not built yet). Each is the PATCH work of the four 0.1.1 items, for Stage 3 to build red first. Two preflight checks were repaired in the sitting and shown both ways (named_defs_and_symbols_real, held_statements_placed; readings in preflight.json repairs). Verdict: ready for the offline build."
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "preflight_record",
+        "steward_confirms"
+      ]
+    },
+    {
+      "from": "offline_build",
+      "to": "blind_challenge",
+      "at": "2026-11-20T19:23:17-08:00",
+      "by": "BENCH",
+      "why": "steward run RIMMANDRAKE_CONFIRM_GIMMESOMESLACK_OFFLINE_BUILD_HAND: only hand step walk_bars_confirmed left; read its deciders",
+      "unit": "rm-detached-bench-rimmandrake-confirm-gimmesomeslack-offli-1795231332",
+      "confirmed": {
+        "steward_confirms": "walk_scavenger_base: deciders sc_walk + LOOK_STAGE8. sc_walk is live_full, entry exists (src/RimMandrake/GimmeSomeSlack/northstar/gss_playtest_runner.py::scene_walk, line 240; scenes.json sc_walk present; its build item GSS_SCENES_BUILD_EVERY_CORD_A_FOIL closed), UNRUN with its command as a Stage 6 scene. LOOK_STAGE8 is his stage-8 walk, no entry by nature. Support T_H_PLAYTEST_RUNNER PASS 43/43 re-run now. Verdict: the scene entry exists and only his look waits; confirmed."
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "every_bar_has_a_check_that_runs",
+        "walk_bars_confirmed",
+        "table_version",
+        "fourth_cycle",
+        "judge_certificate"
+      ]
+    },
+    {
+      "from": "blind_challenge",
+      "to": "in_game",
+      "at": "2026-11-20T21:23:58-08:00",
+      "by": "BENCH",
+      "why": "delegated: evidence-for-ask: blind cycle 1 of 0.1.1 met its exit; the two lane-1 FAILs are Polish (fallen-wire clip <=0.117 cell on a Stage-6 bar; DLL hose names are shared altitude constants); 34 not_kernel rows are game-side, owed at Stage 6",
+      "unit": "rm-detached-bench-rimmandrake-confirm-gimmesomeslack-cycle-1795238532",
+      "confirmed": {
+        "steward_confirms": "read blind_challenge/cycle_1/SUMMARY.md, faults.json (0 Problems, 4 Polish), tests_edited.json (judge's own lane-1 test only; git shows no GSS source or test-table commit after the 19:30 PST cycle start), fixes.jsonl empty (no fix reader owed); reran T_NO_HOSE myself: PASS rc=0; rerun_offline.py --recheck: 38 of 38 match; judge-the-judge: no RECORD GAP, CRITERION FLAW or REAL MISS; verdict: exit met, advance to in_game"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "steward_confirms",
+        "exit_met",
+        "judge_certificate"
+      ]
+    },
+    {
+      "from": "in_game",
+      "to": "in_game",
+      "at": "2026-11-20T23:44:15-08:00",
+      "by": "BENCH",
+      "why": "steward: visit 1 not met only on re-runs: the mod changed after the visit (switch lamp 2e073c2b60, bar switch_light_reads_state by his card fdde703a0a), so all 203 checks re-run on build f8936daf; sc_switch_light new, never run; sc_walk needs game a (full list), held by another run all visit. No mod-wrong line, no wrong check. Game-only: next visit.",
+      "unit": "rm-detached-bench-rimmandrake-route-gimmesomeslack-visit-o-1795246077",
+      "confirmed": {
+        "steward_confirms": "read visit_1 SUMMARY.md + maturation.py next: 201 PASS/1 UNMEASURED on b9ae8819; judge-the-judge: build_match 203 re-run = REAL MISS (re-run not done; build changed after the visit, not a visit fault); sc_switch_light no row = REAL MISS (check added 23:27, after the visit); sc_walk undecided = REAL MISS (not run, game a busy, owner named in unrun.jsonl). No RECORD GAP, no CRITERION FLAW; no tests_edited by a judge; no fix_readers_owed. Verdict: back to in_game, nothing filed."
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold"
+      ]
+    },
+    {
+      "from": "in_game",
+      "to": "pre_human",
+      "at": "2026-11-21T04:32:13-08:00",
+      "by": "CONDUCTOR",
+      "why": "the Conductor confirms the Stage 6 exit of GimmeSomeSlack 0.1.1: the reader says exit met, 203 of 203 in-game checks PASS, and the only refusal left was this confirmation",
+      "unit": null,
+      "confirmed": {
+        "steward_confirms": "in-game visit 2 run three: 6 of 6 related checks PASS on game a, the other 197 keep their visit-1 PASS (the change touches nothing they read); 5 strange things all explained, none filed; walk save GSS_011_VISIT2_WALK_20261121.rws; record 355738466c",
+        "owner_said": "per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS: the Conductor confirms the Stage 6 exit of GimmeSomeSlack 0.1.1: the reader says exit met, 203 of 203 in-game checks PASS, and the only refusal left was this confirmation"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "steward_confirms",
+        "exit_met",
+        "build_match"
+      ]
+    },
+    {
+      "from": "pre_human",
+      "to": "his_walk",
+      "at": "2026-11-21T04:58:12-08:00",
+      "by": "BENCH",
+      "why": "walk brief arrival_1 written",
+      "unit": "rm-detached-bench-rimmandrake-steward-gimmesomeslack-pre-h-1795265290",
+      "confirmed": {},
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "walk_brief"
+      ]
+    },
+    {
+      "from": "his_walk",
+      "to": "in_game",
+      "at": "2026-11-21T19:02:31-08:00",
+      "by": "BENCH",
+      "why": "RIMMANDRAKE_DECLARE_GSS_SCENE_CSHARP_SWITCH_LAMP_SETTING_UNSEEN: with each check's exercises declared (a26b6bd232), build_match names 140 of 203 in-game checks to rerun (rows made on 934b35e053, before the switch lamp 2e073c2b60/fdde703a0a/d0b6483f04 changed the settings class, the cord component's frame update, the probe and the session reset). No mod fault: a declaration gap in the change relation. Back to Stage 6 for exactly those 140; 63 still count.",
+      "unit": "rm-detached-bench-rimmandrake-declare-gss-scene-csharp-swi-1795315512",
+      "confirmed": {
+        "conductor_decision": "In-game checks that count from a build older than the C# they exercise must run again BEFORE his walk, so that his walk is not the first reader of those bars. Sending GimmeSomeSlack back to the in-game stage for exactly those checks is decided: do it."
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold"
+      ]
+    },
+    {
+      "from": "in_game",
+      "to": "pre_human",
+      "at": "2026-11-21T21:40:26-08:00",
+      "by": "BENCH",
+      "why": "steward run RIMMANDRAKE_CONFIRM_GIMMESOMESLACK_VISIT_THREE_EXIT_MET_RUN_TWO: in-game visit 3 of 0.1.1 exit met, read and confirmed",
+      "unit": "rm-detached-bench-rimmandrake-confirm-gimmesomeslack-visit-1795324498",
+      "confirmed": {
+        "steward_confirms": "read design/concepts/GimmeSomeSlack/version/in_game/visit_3 (run RIMMANDRAKE_DRIVE_GIMMESOMESLACK_IN_GAME_VISIT_THREE_RUN_TWO, commit 1319d36add): rows.jsonl 364 rows, 196 checks each with a last row PASS, all on deployed hash sha256:e9c2b80d6890; the one FAIL (P_Z_log_budget runE, flowworks tier) is class SITE (FlowWorks RM_PitAccess.cs:277, open item RIMMANDRAKE_TRACE_SLACK_FLOWWORKS_TIER_MINIFIED_LOOKUP_ERROR), PASS on runF/runC/runB. sc_walk keeps its visit 2 full-list PASS: git diff d0b6483f04..HEAD under the mod is only review/KEYSHEET.md, README.md, keysheet.html, all in .hashignore; rerun_relation fix 83fb77dd87 read and sound. maturation.py next: exit tests passing order,version,hold,exit_met,build_match; 0 lines not pass, undecided_bars [], strange_open 0 (7 rows: 4 explained, 3 filed); build_match check: 203 read, 203 count, 0 to run. No mod fix in the sitting (no fix reader owed), no deciding test edited. Judge-the-judge: no not-met reasons to class. Verdict: exit met, confirmed."
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "steward_confirms",
+        "exit_met",
+        "build_match"
+      ]
+    },
+    {
+      "from": "pre_human",
+      "to": "his_walk",
+      "at": "2026-11-21T22:32:25-08:00",
+      "by": "BENCH",
+      "why": "walk brief arrival_2 written",
+      "unit": "rm-detached-bench-rimmandrake-steward-gimmesomeslack-pre-h-1795328697",
+      "confirmed": {},
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "walk_brief"
+      ]
+    },
+    {
+      "from": "his_walk",
+      "to": "passed",
+      "at": "2026-11-23T00:21:50-08:00",
+      "by": "CONDUCTOR",
+      "why": "his walk of the four changes passed (OWNER:1795413364353487264, 'GSS walk full pass. Looks great!'); visit 3's 203 checks rerun on the build he walked (244ae76cdf, ArchBig), 203 PASS, build match 203/203 (d03f1cad5b)",
+      "unit": "rm-detached-bench-rimmandrake-stage-slack-short-look-at-fo-1795413598",
+      "confirmed": {
+        "owner_said": "OWNER:1795413364353487264"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "owner_said",
+        "walk_build",
+        "pass_record_new"
+      ]
+    }
+  ]
+}

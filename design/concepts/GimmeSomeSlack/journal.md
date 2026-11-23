@@ -13,7 +13,7 @@ mods read alike.
 - **Design Version 0.1.0, locked** on his word 2026-11-13 ~3:40 PM PST (`version/VERSION.json`); the lock record pins the text
   at that word, `bf33322d77` (re-pinned 2026-11-14, steward's decision). Code: `src/RimMandrake/GimmeSomeSlack/` (C#, 62
   sources; C# SelfTest 4515 checks; `validation.py`; `northstar/proof_all.py`, the one dense live proof).
-- **Stage now:** Version passed on his word, since 2026-11-23 12:21 AM PST (`version/stage_record.json`).
+- **Stage now:** Stage 2, preflight, since 2026-11-23 2:24 AM PST (`version/stage_record.json`).
 - **Bars:** 48 (23 inventory rows of `record.json` + 26 leaves of `tree.json`; `shock_reach_setting` is both, so 49 rows
   name 48 ids; `cords_draw_under_things` added by his card 2026-11-14). The test-and-stage table is
   `version/test_table.json` (read view `version/test_table.md`), made by the throwaway `version/make_test_table.py`. Of 48
@@ -544,4 +544,12 @@ row 2; Stage 3 about $10.3 and 50 minutes (12:15 to 13:05 PST). No helpers, no g
 - Owner said: OWNER:1795413364353487264
 - Was, "Stage now": - **Stage now:** Stage 8, his live walk, since 2026-11-21 10:32 PM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-21 10:32 PM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-23 2:24 AM PST, version change: 0.1.1 to 0.2.0 (by DESIGNER)
+
+- Why: 0.2.0 MINOR opened from his own words (whole-line restyle 2026-11-22; look icons and wall lamp, his walk 2026-11-20), locked under Evidence-for-Ask; 57 bars; brief RIMMANDRAKE_OPEN_SLACK_NEXT_VERSION_SO_THREE_MODS_ADVANCE_TONIGHT
+- The 0.1.1 record (at Version passed (Passed)) is kept as `version/stage_record_0.1.1.json`.
+- Its numbered evidence (6 cycle, visit and arrival paths) is set aside in `version/previous/0.1.1`.
+- Was, "Stage now": - **Stage now:** Version passed on his word, since 2026-11-23 12:21 AM PST (`version/stage_record.json`).
 - Record: `version/stage_record.json`.
