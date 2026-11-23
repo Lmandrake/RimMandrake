@@ -314,11 +314,14 @@ class World(object):
     def doing_claims(self, seat, since, session=None):
         """-> [(item, ts)] this session's (else `seat`'s) claims/starts at or after `since`, still doing; raises when
         unreadable. See claims_of."""
-        sys.path.insert(0, HERE)
-        import model  # noqa: E402  (lazy: the unit path must not pay for the ledger)
-        evs = model.read()
-        w = model.replay(evs)
-        return claims_of(evs, {i: getattr(it, "state", None) for i, it in w.items.items()}, seat, since, session)
+        if getattr(self, "_ledger", None) is None:   # once per World: standing() asks once a row (3 s each, 2026-11-22)
+            sys.path.insert(0, HERE)
+            import model  # noqa: E402  (lazy: the unit path must not pay for the ledger)
+            evs = model.read()
+            w = model.replay(evs)
+            self._ledger = (evs, {i: getattr(it, "state", None) for i, it in w.items.items()})
+        evs, states = self._ledger
+        return claims_of(evs, states, seat, since, session)
 
     def exists(self, path):
         return os.path.isdir(path)

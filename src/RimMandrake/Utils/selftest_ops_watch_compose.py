@@ -87,11 +87,15 @@ st = json.loads((_TMP / "ops" / "status.json").read_text())
 check("health: the alarm pass makes the verdict, the next pass carries it", made == [h0], made)
 check("health: the carried verdict says when it was made", st["points"]["health.state"]["x"]["observed_at"] == OW.iso(h0),
       st["points"]["health.state"])
-for i in range(2, int(OW.compose_max_age_s(rules)[0] // 60) + 3):      # pass after pass without the alarm family: the verdict ages out, never made without it
+calls.clear()
+for i in range(2, int(OW.compose_max_age_s(rules)[0] // 60) + 3):      # pass after pass without the alarm family
     OW.run(now=h0 + 60 * i, rules=rules, families=["accounts"], compose=True)
 st = json.loads((_TMP / "ops" / "status.json").read_text())
-check("health: past the round robin's age the verdict reads UNMEASURED, never made without the ledger",
-      made == [h0] and st["points"]["health.state"]["m"] == "UNMEASURED", (made, st["points"]["health.state"]))
+# past the bound flow joins (the-alarm-family-joins-when-it-is-blind): the verdict is made again by a pass that read
+# the ledger, never by one without it, and never left to age out with nobody told
+check("health: past the round robin's age a pass joins the alarm family and makes the verdict with it",
+      len(made) == 2 and made[1] - h0 > OW.compose_max_age_s(rules)[0] and calls.count("flow") == 1
+      and st["points"]["health.state"]["m"] == "MEASURED", (made, calls.count("flow"), st["points"]["health.state"]))
 OW.publish_health = _ph
 
 # --- review fixes: flow joins testing; a carried reading counts once in the alarms; honest freshness ---------------

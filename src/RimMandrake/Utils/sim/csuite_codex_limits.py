@@ -109,6 +109,62 @@ def _read_file(f, st, old):
                          "recs": recs, "tail": tail}
 
 
+# A rollout lives in the day folder (YYYY/MM/DD) of its start. With newer_than, a folder whose last day ends more than
+# this before it is not listed or statted. It guards a session resumed days after its start; measured 2026-11-22: of
+# 1497 rollouts on both sides, none was written more than 1 day after its folder's date. Before the skip, ops_watch's
+# codex family statted all 746 Windows rollouts on /mnt/c each pass (2.8 s of the 15 s sense limit).
+CODEX_LATE_WRITE_DAYS = 7
+
+
+def _folder_end(parts):
+    """The epoch after which nothing dated by the YYYY[/MM[/DD]] folder `parts` can start (a day's slack for its zone),
+    or None for a folder not in that shape."""
+    try:
+        if not parts or len(parts) > 3 or len(parts[0]) != 4 or any(len(x) != 2 for x in parts[1:]):
+            return None
+        n = [int(x) for x in parts]
+    except ValueError:
+        return None
+    y, m, d = n[0], (n[1] if len(n) > 1 else 12), (n[2] if len(n) > 2 else None)
+    try:
+        if d is not None:
+            end = dt.datetime(y, m, d) + dt.timedelta(days=1)
+        else:
+            end = dt.datetime(y + (m == 12), m % 12 + 1, 1)
+    except ValueError:
+        return None
+    return (end - dt.datetime(1970, 1, 1)).total_seconds() + 86400
+
+
+def rollout_files(d, newer_than=None):
+    """Every rollout-*.jsonl under `d` (as glob's '**': hidden names skipped), without listing a day folder that ended
+    more than CODEX_LATE_WRITE_DAYS before newer_than."""
+    cut = None if newer_than is None else newer_than - CODEX_LATE_WRITE_DAYS * 86400
+    out = []
+
+    def walk(path, parts):
+        try:
+            it = list(os.scandir(path))
+        except OSError:
+            return
+        for e in it:
+            if e.name.startswith("."):
+                continue
+            try:
+                is_dir = e.is_dir()
+            except OSError:
+                continue
+            if is_dir:
+                end = _folder_end(parts + [e.name]) if cut is not None else None
+                if end is not None and end < cut:
+                    continue
+                walk(e.path, parts + [e.name])
+            elif e.name.startswith("rollout-") and e.name.endswith(".jsonl"):
+                out.append(e.path)
+    walk(d, [])
+    return out
+
+
 def readings(dirs=None, newer_than=None, cache=None):
     """Every rate_limits reading in the rollout files under `dirs`, oldest first, plus the file count.
 
@@ -123,7 +179,7 @@ def readings(dirs=None, newer_than=None, cache=None):
     keep = {}
     saved = time.monotonic()
     for d in (dirs or DIRS):
-        for f in glob.glob(os.path.join(d, "**", "rollout-*.jsonl"), recursive=True):
+        for f in rollout_files(d, newer_than):
             try:
                 st = os.stat(f)
             except OSError:

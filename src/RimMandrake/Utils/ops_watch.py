@@ -2331,26 +2331,74 @@ def steve_incident_unclaimed(world, model, now, rules, fault_since=None):
              ages={n: round(a, 1) for a, n in old})
 
 
-def c_process(now, rules, ctx):
-    rx = re.compile(rules["process_regex"])
-    r = subprocess.run(["git", "-C", str(data_clone()), "log", "--since=@%d" % int(now - 7 * DAY), "--no-renames",
-                        "--name-only", "--format=@@%ct"], capture_output=True, text=True, timeout=120)
+GIT_LOG_FMT = "--format=%x1e%ct%x1f%B%x1f"
+
+
+def _git_log_commits(root, rx, *rev):
+    """-> [[ct, n_files, all_process, any_process, message or None]] for `git log <rev>`, oldest first. The message is
+    kept only when tokentalk reads it (not empty, not a 'ledger:' commit)."""
+    r = subprocess.run(["git", "-C", str(root), "log", "--no-renames", "--name-only", GIT_LOG_FMT] + list(rev),
+                       capture_output=True, text=True, timeout=120)
     if r.returncode != 0:
         raise RuntimeError("git log: " + r.stderr.strip())
-    commits, cur = [], None
-    for line in r.stdout.splitlines():
-        if line.startswith("@@"):
-            cur = [int(line[2:]), []]
-            commits.append(cur)
-        elif line.strip() and cur is not None:
-            cur[1].append(line.strip())
+    out = []
+    for rec in r.stdout.split("\x1e")[1:]:
+        parts = rec.split("\x1f")
+        if len(parts) < 3:
+            continue
+        try:
+            ct = int(parts[0].strip())
+        except ValueError:
+            continue
+        msg = parts[1].strip()
+        files = [f.strip() for f in parts[2].split("\n") if f.strip()]
+        out.append([ct, len(files), bool(files) and all(rx.match(f) for f in files), any(rx.match(f) for f in files),
+                    msg if msg and not msg.startswith("ledger:") else None])
+    out.reverse()
+    return out
+
+
+def git_window(since, rx_pattern, now=None):
+    """-> the commits of the data clone with commit time >= since, oldest first (as _git_log_commits). process and
+    tokentalk each ran a 7-day `git log` over ~8700 commits (3-5 s apiece of the 15 s sense limit, 2026-11-22). This
+    reads once, caches by head in the ops store, and after that reads only the commits since the cached head. A head
+    not descended from the cached one, a changed regex or root, or a window the cache does not cover reads whole."""
+    root = str(data_clone())
+    rx = re.compile(rx_pattern)
+    p = ops_dir() / "git_window_cache.json"
+    r = subprocess.run(["git", "-C", root, "rev-parse", "HEAD"], capture_output=True, text=True, timeout=60)
+    if r.returncode != 0:
+        raise RuntimeError("git rev-parse: " + r.stderr.strip())
+    head = r.stdout.strip()
+    c = _load_json_dict(p)
+    ok = (c.get("v") == 1 and c.get("root") == root and c.get("rx") == rx_pattern and isinstance(c.get("head"), str)
+          and is_num(c.get("from")) and c["from"] <= since and isinstance(c.get("commits"), list))
+    if ok and c["head"] != head:
+        anc = subprocess.run(["git", "-C", root, "merge-base", "--is-ancestor", c["head"], head],
+                             capture_output=True, text=True, timeout=60)
+        ok = anc.returncode == 0
+        if ok:
+            c["commits"] = c["commits"] + _git_log_commits(root, rx, "%s..%s" % (c["head"], head))
+    if not ok:
+        c = {"v": 1, "root": root, "rx": rx_pattern, "from": since,
+             "commits": _git_log_commits(root, rx, "--since=@%d" % int(since), head)}
+    if c.get("head") != head or not ok:
+        c["head"] = head
+        c["commits"] = [x for x in c["commits"] if isinstance(x, list) and len(x) == 5 and x[0] >= since - DAY]
+        c["from"] = max(c["from"], since - DAY) if is_num(c.get("from")) else since
+        _save_json(p, c)
+    return [x for x in c["commits"] if x[0] >= since]
+
+
+def c_process(now, rules, ctx):
+    commits = git_window(now - 7 * DAY, rules["process_regex"], now=now)
     out = {}
     for key, span in (("share_24h", DAY), ("share_7d", 7 * DAY)):
-        cs = [fs for t, fs in commits if fs and t >= now - span]
+        cs = [x for x in commits if x[1] and x[0] >= now - span]
         if not cs:
             out["process." + key] = U("no commit with files in the window")
             continue
-        p = sum(1 for fs in cs if all(rx.match(f) for f in fs))
+        p = sum(1 for x in cs if x[2])
         out["process." + key] = M(round(100.0 * p / len(cs), 1), "% of commits touching process paths only",
                                   commits=len(cs), process_only=p)
     try:  # the live lane's occupancy (FOUNDRY_THROUGHPUT_MEASURE_V2_GAP); a ledger that will not read must not cost the shares above
@@ -2414,7 +2462,8 @@ def c_tps(now, rules, ctx):
     health = game_health(now)
     out = dict(health)      # a recorder that fails must not take the game-health readings, measured apart, down with it
     try:
-        r = subprocess.run([sys.executable, str(HERE / "tps_record.py"), "--json"], capture_output=True, text=True, timeout=90)
+        r = subprocess.run([sys.executable, str(HERE / "tps_record.py"), "--recent", "--json"], capture_output=True,
+                           text=True, timeout=90)
         if r.returncode != 0:
             raise RuntimeError("tps_record.py exit %d: %s" % (r.returncode, (r.stderr or r.stdout).strip()))
         s = (json.loads(r.stdout) or {}).get("summary") or {}
@@ -2528,19 +2577,10 @@ def tt_texts(now, rules, ctx):
         for sn in seats:
             bad[sn] = "ledger unreadable: %s: %s" % (type(e).__name__, str(e))
     try:
-        rx = re.compile(rules["process_regex"])
-        r = subprocess.run(["git", "-C", str(data_clone()), "log", "--since=@%d" % int(since), "--no-renames", "--name-only",
-                            "--format=%x1e%ct%x1f%B%x1f"], capture_output=True, text=True, timeout=120)
-        if r.returncode != 0:
-            raise RuntimeError("git log: " + r.stderr.strip())
-        for rec in r.stdout.split("\x1e")[1:]:
-            parts = rec.split("\x1f")
-            if len(parts) < 3:
+        for _ct, _n, _all, anyp, msg in git_window(since, rules["process_regex"], now=now):
+            if not msg:
                 continue
-            msg, files = parts[1].strip(), [f for f in parts[2].split("\n") if f.strip()]
-            if not msg or msg.startswith("ledger:"):
-                continue
-            seat = "BENCH" if any(rx.match(f) for f in files) else "RELENTLESS"
+            seat = "BENCH" if anyp else "RELENTLESS"
             if seat in seats:
                 texts.setdefault("commits." + seat, []).append(msg)
     except Exception as e:  # noqa: BLE001
@@ -2973,7 +3013,10 @@ def newest_mtime(d, pattern="*.json"):
     return max(ts) if ts else None
 
 
-PROGRESS_RESTAT = 4000        # names already seen that each pass stats again, in turn
+# Old names each pass stats again, in turn (design/specs/2026-11-22-sense-families-cheap/boundary.md). It guards a
+# progress file rewritten in place under an old name, which no listing shows; a miss can only read a moving queue as
+# stalled (loud). At 4000 the queues family re-statted ~6900 names a pass on drvfs: 8.4 s of the 15 s sense limit.
+PROGRESS_RESTAT = 250
 
 
 def newest_progress_mtime(d, cache, now, pattern="*.json", checkpoint=None):
@@ -4869,9 +4912,10 @@ def observed_at(p):
     return t if is_num(t) else None
 
 
-def carry_family(fam, recs, now, max_age):
+def carry_family(fam, recs, now, max_age, cause=None):
     """The points of family `fam`'s last series record, for a compose pass that did not measure it this beat: each
-    carries observed_at (its record's time). None recorded, or older than max_age, reads UNMEASURED, never as now."""
+    carries observed_at (its record's time). None recorded, or older than max_age, reads UNMEASURED, never as now;
+    `cause` (blind_families' kill note) is then said in each point's why."""
     recs = [r for r in recs if isinstance(r, dict) and is_num(r.get("t")) and r["t"] <= now + 300
             and isinstance(r.get("points"), dict)]
     last = recs[-1] if recs else None
@@ -4886,6 +4930,8 @@ def carry_family(fam, recs, now, max_age):
     why = ("last measured %s, %.0f min ago: older than the round robin allows (%d min)" % (
         last.get("at") or iso(last["t"]), (now - last["t"]) / 60, max_age / 60) if last else
         "not measured yet: the round robin has not reached it")
+    if cause:
+        why += "; " + cause
     out = {k: U(why, p.get("unit") if isinstance(p, dict) else None) for k, p in (last or {}).get("points", {}).items()
            if not k.endswith("._collector")}
     out["%s._collector" % fam] = U(why)
@@ -4914,6 +4960,67 @@ def held_health(now, max_age):
     return out if out.get("health.state", {}).get("m") == "MEASURED" else None
 
 
+SENSE_KILLS = "sense_kills.jsonl"     # one line per sense pass killed at its limit (on_sense_term)
+BLIND_KEY = "sense.families_blind"
+_STAGE = {"stage": "start", "t0": None, "families": []}     # what a killed pass was doing (on_sense_term)
+
+
+def sense_stage(what):
+    _STAGE["stage"] = what
+
+
+def on_sense_term(signum, frame):
+    """SIGTERM from the metronome at the sense limit: say which families and which stage it cut, then exit 143. Before
+    this a killed pass left nothing (its log was empty), so 87 of 136 kills in 3 h could not be told apart."""
+    t0 = _STAGE.get("t0") or time.time()
+    try:
+        with open(ops_dir() / SENSE_KILLS, "a", encoding="utf-8") as f:
+            f.write(json.dumps({"t": time.time(), "at": iso(time.time()), "families": _STAGE.get("families") or [],
+                                "stage": _STAGE.get("stage"), "seconds": round(time.time() - t0, 2),
+                                "gen": os.environ.get("METRONOME_GEN")}, sort_keys=True) + "\n")
+    except OSError:
+        pass        # the age of the family's series still makes it blind; only the stage is lost
+    os._exit(143)
+
+
+def sense_kills():
+    """-> the recent kill lines (oldest first); [] when none was ever written. An unreadable tail reads as none: the
+    blind count stands on the series' ages alone, and only its cause loses the kills."""
+    p = ops_dir() / SENSE_KILLS
+    try:
+        return tail_json_lines(p, chunk=1 << 18)
+    except OSError:
+        return []
+
+
+def blind_families(prev, now, max_age, kills, measured=()):
+    """-> {family: cause} for each family (ORDER) whose newest series record is older than max_age, or which has none in
+    the series window; a family measured by this pass is never blind. The cause names its age and the sense passes on it
+    killed since it last read (sense_kills), with the stage of the last one."""
+    out = {}
+    for fam in ORDER:
+        if fam in measured:
+            continue
+        ts = [r["t"] for r in prev.get(fam) or [] if isinstance(r, dict) and is_num(r.get("t")) and r["t"] <= now + 300]
+        last = max(ts) if ts else None
+        if last is not None and now - last <= max_age:
+            continue
+        ks = [k for k in kills if isinstance(k, dict) and fam in (k.get("families") or [])
+              and is_num(k.get("t")) and (last is None or k["t"] > last)]
+        age = ("unread %.0f min" % ((now - last) / 60)) if last is not None else "no record in the series window"
+        kill = ("; %d sense pass%s on it killed at the limit since, the last in %s after %s s" % (
+            len(ks), "" if len(ks) == 1 else "es", ks[-1].get("stage"), ks[-1].get("seconds"))) if ks else \
+            "; no kill recorded since (the round robin has not reached it, or its pass died without SIGTERM)"
+        out[fam] = age + kill
+    return out
+
+
+def blind_point(blind, max_age):
+    cause = "; ".join("%s %s" % (f, c) for f, c in sorted(blind.items()))
+    return M(len(blind), "families unread past the round robin's bound", names=",".join(sorted(blind)) or None,
+             cause=cause or None, bound_s=round(max_age))
+
+
 @_locked
 def run(now=None, rules=None, filer=None, families=None, compose=False, still_owner=None):
     """One pass. `families` limits it to those collectors. With `compose` (the metronome's sense phase, a family or two
@@ -4926,17 +5033,24 @@ def run(now=None, rules=None, filer=None, families=None, compose=False, still_ow
         if still_owner is not None and not still_owner(what):
             raise Fenced("fenced before %s" % what)
     compose = bool(compose and families)
+    _STAGE.update(t0=time.time(), families=list(families or []), stage="start")
     if families and not compose:     # a sample, never the live reading: refused before anything is written or filed
         if filer is not None and filer is real_filer:
             raise PartialPass("a --family pass without --compose files no alarms: its readings are not a whole pass's")
         if live_store():
             raise PartialPass("a --family pass without --compose writes nothing into the live store %s (status.json, "
                               "series, alarms): set RM_OPS_WATCH_DIR to a scratch dir" % ops_dir())
-    if compose and COMPOSE_ALARM_FAMILY not in families and any(f in families for f in COMPOSE_NEEDS_FLOW):
-        families = [COMPOSE_ALARM_FAMILY] + list(families)
-    whole = not families or compose
     now = now or time.time()
     rules = rules or load_rules()
+    if compose and COMPOSE_ALARM_FAMILY not in families and any(f in families for f in COMPOSE_NEEDS_FLOW):
+        families = [COMPOSE_ALARM_FAMILY] + list(families)
+    if compose and COMPOSE_ALARM_FAMILY not in families:
+        # the alarm family unread past the bound: no alarm (the blind one included) could run, so this pass reads it
+        fl = [r["t"] for r in read_series(COMPOSE_ALARM_FAMILY, now - rules.get("series_days", 8) * DAY)
+              if is_num(r.get("t")) and r["t"] <= now + 300]
+        if not fl or now - max(fl) > compose_max_age_s(rules)[0]:
+            families = [COMPOSE_ALARM_FAMILY] + list(families)
+    whole = not families or compose
     t0 = time.time()
     ctx = {"no_reruns": True} if compose else {}
     points = {}
@@ -4953,6 +5067,8 @@ def run(now=None, rules=None, filer=None, families=None, compose=False, still_ow
             continue
         old = read_series(fam, since)
         prev[fam] = old
+        sense_stage("collector %s" % fam)
+        c0 = time.time()
         try:
             pts = COLLECTORS[fam](now, rules, ctx)
         except Exception as e:  # noqa: BLE001  an instrument that errors is UNMEASURED, never 0
@@ -4962,7 +5078,8 @@ def run(now=None, rules=None, filer=None, families=None, compose=False, still_ow
                    if not k.endswith("._collector")}
             pts["%s._collector" % fam] = U(why)
         unfit += stamp_ranges(pts, rules)
-        rec = {"schema": SCHEMA, "t": now, "at": iso(now), "family": fam, "points": pts}
+        rec = {"schema": SCHEMA, "t": now, "at": iso(now), "family": fam, "points": pts,
+               "collector_s": round(time.time() - c0, 2)}
         if fam == "production" and ctx.get("production_src_t"):
             rec["src_t"] = ctx["production_src_t"]
         dup = fam == "production" and old and old[-1].get("src_t") and old[-1].get("src_t") == rec.get("src_t")
@@ -4975,16 +5092,23 @@ def run(now=None, rules=None, filer=None, families=None, compose=False, still_ow
                              "detail": "this pass's %s points were not kept: %s: %s" % (fam, type(e).__name__, str(e))})
         points.update(pts)
     if compose:
+        sense_stage("carry")
         max_age, bound_flag = compose_max_age_s(rules)
         if bound_flag:
             sick.append(bound_flag)
+        for fam in ORDER:
+            if fam not in families:
+                prev[fam] = read_series(fam, since)
+        blind = blind_families(prev, now, max_age, sense_kills(), measured=families)
         carried = {}
         for fam in ORDER:
             if fam in families:
                 continue
-            prev[fam] = read_series(fam, since)
-            carried.update(carry_family(fam, prev[fam], now, max_age))
+            carried.update(carry_family(fam, prev[fam], now, max_age, cause=blind.get(fam)))
         points = dict(carried, **points)        # this pass's own readings win
+        points[BLIND_KEY] = blind_point(blind, max_age)
+    elif whole:     # a whole pass measures every family: none is blind, and the target still has its reading
+        points[BLIND_KEY] = blind_point({}, compose_max_age_s(rules)[0])
     if release is not None:
         sick += steve_release_finish(release)
     for fam, key in (("seats", "seats.blind"), ("plan", "plan.blind"),
@@ -5049,6 +5173,7 @@ def run(now=None, rules=None, filer=None, families=None, compose=False, still_ow
     except OSError as e:    # a full disk is what the alarms below are for: never let it stop them
         flags.append({"rule": "bad_rule", "key": "last_measured", "value": None, "window": "now",
                       "detail": "last_measured.json not written: %s" % str(e)})
+    sense_stage("alarms")
     try:
         if compose and COMPOSE_ALARM_FAMILY not in families:
             # this beat's pass is not the alarm pass: it composes nothing, but files what the alarm pass had to defer
@@ -5096,6 +5221,7 @@ def run(now=None, rules=None, filer=None, families=None, compose=False, still_ow
     for f in flags:
         f["since"] = (old_flags.get(flag_id(f)) or {}).get("since") or iso(now)
     run_s = round(time.time() - t0, 1)
+    sense_stage("status")
     fence("the status")
     atomic_json(ops_dir() / "flags.json", {"at": iso(now), "flags": flags})
     st = {"schema": SCHEMA, "at": iso(now), "t": now, "run_s": run_s, "points": points, "flags": flags, "alarms": alarms}
@@ -5201,6 +5327,8 @@ def main(argv=None):
                 return ok
             if not still_owner("the pass"):
                 return EXIT_FENCED
+        if a.compose:
+            signal.signal(signal.SIGTERM, on_sense_term)
         try:
             dg = run(filer=real_filer if a.file_alarms else None, families=a.family, compose=a.compose,
                      still_owner=still_owner)

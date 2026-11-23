@@ -334,6 +334,10 @@ def sustained(run_windows):
 
 DEFAULT_TZ = os.environ.get("TPS_TZ", "America/Los_Angeles")
 FUTURE_SLACK_SECONDS = 120
+# --recent: a segment last written before the verdict window, less this slack, holds no row of it. The slack guards a
+# clock step between Windows (the writer) and WSL (the reader). Without --recent, ops_watch's tps family read all
+# 145 segments (152 MB on /mnt/c) to judge 5 minutes: 9 s of the 15 s sense limit (2026-11-22).
+TPS_RECENT_SLACK_S = 600
 SEGMENT_RE = re.compile(r"^tps_(\d{8}T\d{6}Z)_([0-9a-f]+)_(\d+)_(\d{3,})\.jsonl$")   # SegmentName pads to >= 3
 LEGACY = ("tps.1.jsonl", "tps.jsonl", "observer.jsonl")   # observer.jsonl: belt_watchdog's external findings
 _open = open   # selftest swaps this to simulate a segment vanishing mid-read
@@ -470,17 +474,35 @@ def _valid(r):
     return True
 
 
-def read_record(directory=None, now=None):
+def recent_files(files, now, recent_s):
+    """The files last written at or after now - recent_s; one whose age cannot be read is kept (it opens as vanished)."""
+    out = []
+    for p in files:
+        try:
+            if os.path.getmtime(p) < now - recent_s:
+                continue
+        except OSError:
+            pass
+        out.append(p)
+    return out
+
+
+def read_record(directory=None, now=None, recent_s=None):
     """Every valid row, ordered by session (in start order) then seq. Bad rows are COUNTED, never silently
     dropped: malformed (not JSON, incl. a torn last line), invalid (JSON but unplaceable), future (utc more
-    than FUTURE_SLACK_SECONDS ahead of now), vanished (a segment deleted between listing and opening)."""
+    than FUTURE_SLACK_SECONDS ahead of now), vanished (a segment deleted between listing and opening).
+    `recent_s` reads only the segments written in the last recent_s seconds (--recent: the verdict needs no more)."""
     d = directory or record_dir()
     now = time.time() if now is None else now
     out = {"dir": d, "rows": [], "malformed": 0, "invalid": 0, "future": 0, "vanished": 0, "files": 0,
            "replayed": 0, "conflicts": 0}
     seen = {}
     order = 0
-    for p in list_files(d):
+    files = list_files(d)
+    if recent_s is not None:
+        files = recent_files(files, now, recent_s)
+        out["recentOnlyS"] = recent_s
+    for p in files:
         try:
             fh = _open(p, "rb")
         except FileNotFoundError:
@@ -1156,11 +1178,17 @@ def main(argv=None):
     ap.add_argument("--window", type=int, default=300, help="verdict window in seconds (default 300)")
     ap.add_argument("--dir", default=None, help="record directory (default: the game's SaveData JawaBench/tps)")
     ap.add_argument("--json", action="store_true")
+    ap.add_argument("--recent", action="store_true", help="verdict only: read just the segments written within the "
+                    "window (+%d s); the counts then cover those segments" % TPS_RECENT_SLACK_S)
     ap.add_argument("--health", action="store_true", help="with --at/--since: join the external health observer's "
                     "stream (health_observer.py) to the timeline and its incidents; evidence only, no causes")
     ap.add_argument("--health-dir", default=None, help="observer stream directory (default <LocalLow>/JawaBench/health)")
     a = ap.parse_args(argv)
-    rec = read_record(a.dir)
+    if a.recent and (a.at or a.since or a.sessions):
+        print("tps_record: --recent reads only the verdict window; it does not go with --at, --since or --sessions",
+              file=sys.stderr)
+        return 2
+    rec = read_record(a.dir, recent_s=(a.window + TPS_RECENT_SLACK_S) if a.recent else None)
     rows = select_session(rec["rows"], a.session)
     health = ("%d rows on disk in %d files; %d malformed, %d invalid, %d future, %d vanished mid-read, %d replayed, "
               "%d conflicting duplicates, %d seq missing [%s]") % (

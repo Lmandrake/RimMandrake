@@ -107,7 +107,8 @@ except OW.PartialPass as e:
 st = json.loads((live / "status.json").read_text())
 check("compose: a --compose pass on the live store runs and replaces status.json", ok and any(k.startswith("disk.") for k in st.get("points", {})), (why, sorted(st.get("points", {}))[:5]))
 check("compose: its status is whole (the carried families are named)", "accounts._collector" in st.get("points", {})
-      and st.get("measured") == ["disk"], (st.get("measured"), sorted(st.get("points", {}))[:8]))
+      and st.get("measured") == ["disk", "flow"], (st.get("measured"), sorted(st.get("points", {}))[:8]))   # flow joins:
+# the store holds no flow record (the-alarm-family-joins-when-it-is-blind, design/specs/2026-11-22-sense-families-cheap)
 
 # 6. with no env at all the default store is the live one
 for k in ("RM_OPS_WATCH_DIR", "RM_OPS_WATCH_LIVE_DIR"):

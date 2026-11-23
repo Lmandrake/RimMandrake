@@ -32,11 +32,19 @@ RULES = HERE.parent / "Utils" / "ops_watch_rules.json"
 TEXTS = ("why", "text", "reason")
 
 
+_EPOCHS = {}
+
+
 def epoch(s):
-    try:
-        return float(calendar.timegm(time.strptime(str(s)[:19], "%Y-%m-%dT%H:%M:%S")))
-    except (ValueError, TypeError):
-        return None
+    """A stamp's epoch, each distinct stamp parsed once: ops_watch's roles family parsed ~39 000 stamps 621 000 times
+    (8 roles x 2 weeks), 3 s of the 15 s sense limit (2026-11-22)."""
+    k = str(s)[:19]
+    if k not in _EPOCHS:
+        try:
+            _EPOCHS[k] = float(calendar.timegm(time.strptime(k, "%Y-%m-%dT%H:%M:%S")))
+        except (ValueError, TypeError):
+            _EPOCHS[k] = None
+    return _EPOCHS[k]
 
 
 def said(ev):
