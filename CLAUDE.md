@@ -258,6 +258,24 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
   what is wrong.
 - History: `design/RimMandrake/ticket_naming_2026-10-10.md`.
 
+## Mods keep their own state; all other work goes in the one list
+
+- The open work of a mod stays in the folder of that mod: its version, bars, gaps, polish list and next version. The
+  Maturation Pipeline works it.
+- All other work goes in one list, the rimflow ledger. Write the work there. Close the work there.
+- A handoff, a log, a status page, a memory file, a result file or a reply does not hold owed work. If a debt is only
+  in one of those, file it in the list.
+- The pipeline works the list. Do not make a seat or a role that works the list by hand. Do not make the owner the
+  memory of the list.
+- Work goes to the owner only for one of his five acts, or with concrete evidence against the obvious answer.
+- A trouble report names the outcome at risk, why the recovery was not enough, and the smallest act that clears it.
+- A page for the owner is a view of the list, made by one rule. A count of needs that have no home in the list goes
+  beside the view.
+- No gate stops an agent until a record is reconciled. Where a program can check the outcome, the check decides that
+  the work is done. A note does not.
+- Full text: `design/RimMandrake/standing_rulings.md` §Mods keep their own state. Plan:
+  `design/specs/2026-11-22-coordination-every-agent-must-use/plan.md`.
+
 ## Correctness outranks seat ownership; wrong material is deleted
 
 - Fix a false statement on sight, in any file. Delete the wrong material; do not supersede it. This is a user-level

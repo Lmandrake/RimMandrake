@@ -145,4 +145,4 @@ result returns to the agent that asked for it, by the system, and that planner i
 - Any account of a creative studio, or an agent system doing creative work, that solves "owed is fuzzy". Found
   nothing beyond vendor pages.
 - Any month-three report on a mandatory coordination protocol for agents. Every agent source here describes days or
-  weeks, usually on one codebase with a fixed goal, which is not our case (weekly process change, taste as the bar).
+  weeks, usually on one codebase with a fixed goal, which is not our case (a pipeline still being built toward needing its owner less, taste as the bar).

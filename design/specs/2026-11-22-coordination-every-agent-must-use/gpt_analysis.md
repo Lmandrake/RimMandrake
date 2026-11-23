@@ -1,4 +1,11 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # GPT's analysis: blind first, then a teardown of his idea and our options
+
+**Read first (added 2026-11-22, 11:00 PM PST):** consults 1 and 2 below read the pipeline's frequent changes as churn.
+The owner corrected that the same night. Consult 3, at the end of this page, tears down the plan with the motive stated
+correctly, and `plan.md` is the result. The recommendation that consults 1 and 2 led to (a fresh helper that works
+the Conductor's debts) is withdrawn: it was the shape of the retired FOUNDRY seat and the retired Relentless tick.
 
 Item: `RIMMANDRAKE_STUDY_ONE_PLACE_FOR_OWED_WORK_HE_ASSUMED_IT_EXISTED`. Sunday 2026-11-22, 7:17 PM to 7:30 PM
 PST. The owner ordered this consult himself. Tool: `python3 src/RimMandrake/Utils/gpt_consult.py` (Codex command line
@@ -539,3 +546,241 @@ The queue should have one dispatch authority through supported paths, protecting
 This measures stranded recorded obligations. It does not claim to measure uncaptured speech or all creative needs.
 
 **I am least sure that execution context will be cheap enough.** If each seemingly small obligation requires reconstructing several days of rulings, the scheduled job will consume quota without draining much. That result would favor moving integration into existing domain owners and eliminating propagation jobs. It would not justify another capture rule or a harsher stop gate.
+
+---
+
+## Consult 3: GPT's teardown of the plan, with the motive stated correctly (2026-11-22, 10:38 PM PST)
+
+The owner corrected the first two consults' reading the same night: the pipeline's changes are convergence toward a
+pipeline that needs him less, not churn. Consult 3 got the amended `plight.md` (with its new section 10: his words,
+the ancestors) and the first draft of `plan.md`, and was asked to tear the plan down. Tool and model as before; a
+fresh session; `VERDICT=ANSWERED exit=0`. The draft it read is in git (`plan.md` before this change); the main
+differences from the plan as it stands: the draft gave every item one of five class labels (launch, watch, judge,
+tell, his), had the tick file a follow-on item at each run's end, capped the lane at 12 launches a day, had the
+Conductor confirm a drafted item for each promise sentence, and built the class labels first.
+
+### What I acted on, after my own check
+
+| GPT's point | my check | what changed in `plan.md` |
+|---|---|---|
+| The five classes mix five different things (can it run, when, who judges, who is told, whose authority), so one real debt needs several, and a label is cheap to game ("apply the obvious corrections"). | The study of 110 tickets in `plight.md` Story 1 does need three of the labels at once. Confirmed. | **No class label.** The plan asks one question of an item: can a program check that the work is done. An item enters the pipeline's lane by carrying a check that fails today. That is dearer to fake than a label, and it is the house rule for tickets already. |
+| "A sha or existing path substitutes for proving the intended outcome"; the lane can still close on paper. | True of the draft: it checked that the evidence exists, not that the effect holds. | Only a passing outcome check closes a lane item. The tick runs the check; the helper's note decides nothing. |
+| No recovery contract: a helper that does the work and dies leaves an item that is stopped or run twice. | The red lane's "attempted, then stopped" rule has exactly this hole for work with side effects. Confirmed by reading `red_dispatch.decide`. | The tick runs the check before every attempt, so finished work closes. A launch that never started is not a spent attempt. Both are rows in the step 2 acceptance test. |
+| The follow-on item at each run's end feeds a chain; 12 launches a day is a weak guard for it. | 669 helper runs ended in the week `[measured]`; even a small follow-on rate is a large inflow. | The tick files no follow-on items. The 12-a-day cap is gone; the guard is on the chain itself (an item whose causes already hold 2 lane runs is not launched). |
+| A stop "until the Conductor clears" is a new pile for the same window; an escalation must carry a diagnosis. | The red lane's stop line already names the cause and the commands; the draft's "still open after a day" did not. | A trouble report names the outcome at risk, why recovery was not enough, and the smallest act. The owner gets it only when that act is one of his five. "The list grew for three days" and "unanswered for a day goes to his view" are deleted. |
+| Build one complete path first, on a real debt, and kill the helper mid-way. Class labels first "does not work a debt". | The debt GPT names (two ruled answers into the builders' page) was paid at 7:30 PM. A second live one exists: his plan of 2026-11-22 is not in the goals file, last changed 2026-11-15 `[measured]`. | New order: step 1 checks and closes (7 of 48 debts were done and never closed), step 2 launches, proved on the goals-file debt and with a killed helper. |
+| Every day-seven count can go green on paper (a comment makes a debt "touched"). Add a source-audited follow-through rate for both streams, lower rate as headline. | Agreed; it is the only measure that names his "focus of attention" failure. | Adopted as the headline; the three counts stay beside it, reworded to "still unpaid" and "not looked at again". |
+| Drafts that the Conductor confirms each turn become "another unpaid inbox". | The scanner's false-hit count is an open item, due this week, unread. | The promise hook is left as it is until that count is read. |
+| Excluding old items lets the lane look healthy while the measured debts sit outside it. | True of the draft ("only items classed from its first day"). | Tonight's 41 Conductor debts are in scope; an old item enters when it is given a check. |
+| Handoff pointers carry a live run, a lock, a half-landed change; deleting them when a hook drafts destroys recovery state. A store goes only after its writers stop and its readers move. An unanswered card is in no store. | Agreed on all three. | Handoffs keep their content. Removal has a rule (writer stopped, readers moved, a week of no-home readings). An unanswered card becomes an item. The 24-store map is called an inventory to finish. |
+| "No reserved game time" can starve a list item forever. | One of 48 debts needed a game; rare, not never. | A list item takes its turn by age with mod visits. Still no reserved number. |
+
+### What I did not take, and why
+
+- **"`his` is broader than the five acts; an agent can manufacture an owner dependency by documenting uncertainty."**
+  The wording GPT attacks is the owner's own Evidence-for-Ask rule (root `CLAUDE.md`), which already demands concrete
+  evidence against the obvious answer. I left the rule as he made it and named it in the plan.
+- **"Reconsider due waits automatically."** In part. On its date a wait's check is run and a pass closes the item.
+  The tick does not launch work because a date came: that is the ancestors' "very old tickets" failure of 2026-10-29.
+- **"The plan automates dispatch more than ownership; when execution is hard, responsibility returns to the
+  Conductor."** I think this is true and I did not solve it. The plan narrows what returns (work with a check never
+  does, unless its one run fails) and measures the rest. Work whose "done" needs judgement still waits on one window.
+  GPT's own closing doubt is the same: nobody has measured how much judgement the 25 debts need.
+- **"Seven simultaneous runs may exhaust a shared account."** The three lanes pass the same account gate
+  (`maturation_dispatch.account_gate`) and the disk brake; the plan now says so. I did not add a combined cap,
+  because no measured failure names one.
+
+### Unverified in this consult
+
+GPT used no web source in this answer. Its arithmetic (12 a day is at most 84 a week against 190 filings; 669 runs is
+about 96 a day; 21 of 37 is about 57%) is correct. The step 2 change it asks for is larger than "one helper run";
+the ticket says so.
+
+### GPT's answer, word for word
+
+The plan serves the owner’s direction in two important respects: mods retain their state, and a clock takes responsibility for starting work outside mods. But it automates dispatch much more clearly than it automates ownership. Whenever execution becomes difficult, responsibility returns to the same Conductor window that already drops work. After a day, the owner gets to watch that failure accumulate.
+
+That is the central weakness: the plan can produce more activity, cleaner records and fewer untouched items while still needing the owner to hold the factory together.
+
+1. **It rebuilds the ancestors at the points where autonomous ownership matters most.**
+
+   A timed program selecting ledger items and giving each to a fresh helper is substantially the late FOUNDRY/Relentless execution shape. That resemblance is not itself a reason to reject it. The question is whether the known failure mechanisms have been removed. Several have merely been renamed:
+
+   - The fresh agent receives an assembled brief instead of the state the human held. Missing knowledge still stops it.
+   - Failed attempts, missing context and expired waits become Conductor work. The Conductor remains the recovery mechanism.
+   - `judge` makes unresolved judgment a queue for the existing window.
+   - `tell` still requires the Conductor to stage a look. A timer delivers existing files; it does not ensure the promised result gets produced.
+   - An unanswered trouble line becomes something the owner sees. He must recognize which failures matter and intervene.
+   - A run creates its successor item and ends. Ownership can still dissolve between tickets.
+   - A sha or existing path substitutes for proving the intended outcome. That retains the ancestor’s opportunity to close work on paper.
+
+   The plan’s claim that “nothing reaches you but the five acts and a written trouble test” does not establish reduced dependence. A trouble test can route the entire unfinished factory back to him.
+
+   Copying `red_dispatch` is reasonable implementation reuse. Its acceptance is not evidence that its recovery policy suits arbitrary work. A failing nightly test already supplies a subject, a reproducible failure and a bounded success check. “Resolve what this conversation means for the pipeline” supplies none of those automatically.
+
+2. **The five classes mix different dimensions, so classification becomes a scheduling negotiation.**
+
+   The actual study of 110 wrongly routed tickets is enough to break the partition. Applying its proposed dispositions is `launch`; deciding which proposals remain valid is `judge`; returning the study to the owner is `tell`. If the scope exceeds one run, the whole obligation is not `launch`, although several necessary acts are.
+
+   This is not an unusual edge case. The measured failure is precisely that a study completes while applying it and reporting back do not. Assigning one class to the parent encourages declaring one part complete and losing the rest.
+
+   More fundamentally, `launch` describes executability, `watch` describes timing, `judge` describes unresolved judgment, `tell` describes an owed communication, and `his` describes authority. An item can have several simultaneously. A page owed to the owner may need to be written automatically after another item finishes.
+
+   “Missing class never refuses a filing” avoids a filing gate. It does not avoid an execution gate. The default is `judge`, and only `launch` enters the automatic lane. Thus missing paperwork can still stop otherwise clear, authorized work.
+
+   The cheap way to obtain `launch` is to write: “Apply the obvious corrections, verify, report.” Unresolved policy choices disappear into “obvious.” Another cheap route is to shrink the obligation to “produce a plan,” make a file, and claim completion while filing the actual work for someone else. A class label does not prevent either.
+
+   Agents can also exploit the reverse incentive: select `judge` to avoid responsibility for uncertain execution.
+
+   Yes, `judge` is the old Conductor bottleneck. The plan provides visibility and an aging rule, but no mechanism that drains it. Due waits, unclassified filings, missing-context runs and failures all feed it. A banner on every prompt increases competition for the same attention.
+
+3. **The list lane lacks a recovery contract and an outcome contract.**
+
+   Consider five concrete failures.
+
+   **Crash after an effect.** A helper applies some of the study’s 103 commands, publishes changes, then dies before recording completion. The plan does not establish whether a resumed or manually cleared attempt can recognize the already completed effects. Conversely, recording an attempt before launching could leave an item permanently stopped after a crash that launched nothing. Separate clones and individually published ledger events make those gaps material.
+
+   “One automatic attempt” suppresses a retry loop; it does not reconcile what happened. The minimum needed is a durable attempt identity, an exclusive claim, and a way to inspect the effect before repeating it. Ordinary reversible edits can use simple reconciliation. This does not require an elaborate legal ledger.
+
+   **A plausible but incomplete brief.** The old routing study says 103 commands. Since then, some tickets changed. A related ruling uses different vocabulary from the item’s “subject.” Relevant context sits in a showing, another mod’s record or a runtime observation. The assembled brief can be internally coherent and still wrong. The worst result is not “lacked context”; it is confident execution using incomplete context.
+
+   **A self-feeding chain.** A helper files “apply recommendations”; its successor files “verify application”; that successor files “investigate verification discrepancy.” Every individual run has a plausible output. The original outcome remains unmet. Twelve launches a day slows the chain without establishing when it should end.
+
+   **Launchable on paper, unsafe in reality.** “Apply the owner’s two design answers” is a valid automatic act. A helper working from an older clone could write them into the wrong design version. “One helper can finish and check” says nothing about current target state, superseding rulings or overlapping writers.
+
+   **Closed on paper.** A study file exists, but nobody applied it. A commit exists, but is not running. A screenshot exists, but shows an old build. A path check passes all three.
+
+   The plan explicitly says the lane closes nothing. That is not protection if the helper can close and the tick accepts existence as proof. The relevant check is whether the requested effect holds in the place that matters.
+
+   Finally, stopping until the Conductor clears creates a recovery pile. It may be appropriate for a narrow red-test lane. Generalizing it requires evidence that the pile can drain. None is supplied.
+
+4. **The shares name some real dangers, but the numbers do not establish protection.**
+
+   The count of two live list runs addresses a real concern: conversation-born work must receive execution opportunities while mod work continues. But an independent counter is not a resource reservation.
+
+   The lanes still share accounts, quotas, machines and sometimes games. Three mod runs, two red fixes and two list runs permit seven simultaneous runs. The plan does not explain what allocation prevents those seven from exhausting a shared account or starving one another at admission.
+
+   Even with perfect execution shares, the attention failure moves downstream: several lanes produce stops for one Conductor. There is no corresponding capacity for recovery, context repair or decisions.
+
+   Twelve launches a day has an acknowledged speculative basis. It names the danger of a self-feeding chain, but daily launches are a weak proxy for that danger. Twelve unrelated useful acts can be harmless; three successive planning runs can be churn. Large jobs can also consume much more than small ones.
+
+   The missing controls concern descendants and outcomes: whether successive runs are making progress toward the same obligation, whether a chain is repeating itself, and what resource cost its children inherit.
+
+   “No reserved game time” is also an allocation policy. Under continuous mod demand, a list item needing a game can wait forever. Finding only one such debt among 48 establishes rarity in that sample, not permission for indefinite starvation. It can be owed a scheduled opportunity without displacing a visit already in progress.
+
+5. **The trouble test catches activity failures better than failures of purpose.**
+
+   It misses:
+
+   - A run that closes incorrectly with a valid path.
+   - A ruling recorded but not effective in the document builders actually use.
+   - Work never captured at all, when the no-home classifier also misses it.
+   - A stable queue whose older obligations continually lose to newer ones.
+   - Work blocked on shared quota while fewer than two list runs are active.
+   - Repeated successors that produce artifacts but do not advance the original obligation.
+   - A `tell` page delivered without answering the owner’s actual question.
+
+   “The list grew for three days” is especially weak. Growth during useful capture can be healthy. A constant-sized list can conceal severe neglect if new easy work closes while old work remains.
+
+   The test also creates predictable noise. An attempt ending with its item open might reflect a valid wait, a legitimate handoff, quota interruption or the correctly bounded result of a study. Store-read errors may be brief. A better capture pass can raise the no-home count while improving the system.
+
+   “Unanswered for a day” rewards acknowledgment. The Conductor can add “reviewed; awaiting…” without removing the problem. That is another way the measures improve while attention remains the bottleneck.
+
+   A useful escalation must identify the threatened outcome, explain why available automatic recovery is insufficient, and state the smallest intervention required. Showing an old line on the owner’s page does not supply that diagnosis.
+
+   There is also an authority expansion: `his` includes any question carrying evidence against the obvious answer. That is broader than the five acts. An agent can manufacture an owner dependency by documenting uncertainty instead of exercising the authority it already has.
+
+6. **By month three, capture can become another unpaid inbox.**
+
+   The hook generates drafts; the Conductor confirms or strikes them. The owner’s attention problem has become the Conductor’s classification workload.
+
+   A likely decay sequence is:
+
+   - Promise detection creates duplicates, conditional promises and obligations already fulfilled within the same turn.
+   - Confirming becomes routine assent; alternatively drafts are left untouched.
+   - Untouched drafts become another counted backlog.
+   - Repeated scans rediscover the same statements because deduplication and supersession are unspecified.
+   - The daily no-home report gets skimmed because most entries need no action.
+   - The model filter becomes the trusted view, quietly hiding its false negatives.
+
+   The supplied probe gives a warning: of 51 messages the program found homeless, the hand reader judged 14 actionable. If that reading is right, 37 were noise for this purpose. The classifier has substantial filtering work to do before it is useful.
+
+   Promise syntax is also narrower than the obligation. “The swamp biome should feel more dead” can be significant without being a promise sentence. Conversely, that statement belongs in a mod’s state, not necessarily in the outside-work list. Comparing typed words only against the list could create duplicates across the intended boundary.
+
+   Most importantly, the current system already demonstrated that better capture does not ensure action. In the measured week, 190 owed items were filed and 142 closed. Automating draft creation addresses a real residual problem, but not the main measured failure.
+
+   The daily audit should remain a backstop. It must not become a daily administrative assignment, and its full underlying source list must remain available for sampling what the filter excluded.
+
+7. **The store consolidation is not yet an executable removal plan.**
+
+   “Four kinds” does not reconcile 24 actual stores. Categories are useful, but each current writer and reader needs a disposition.
+
+   Several gaps matter. Unanswered cards are explicitly absent from any store; the plan does not say how asking creates a persistent obligation. Lessons, Operations incidents and plans, and some run-result state have no precise treatment. Rulings remain spread through ledger events, cards and rule files, without a stated mechanism proving that the acting reader received the current ruling.
+
+   The riskiest removal is “handoff pointer lists when the hook drafts.” Promise drafts cannot replace pointers to an active run, a lock, a partial landing or a sitting’s unstated context. Removing them at that milestone can destroy useful recovery information before there is an equivalent.
+
+   Folding hand acts and Operations proposals “after the lane has run a week” uses elapsed time as evidence of coverage. Seven days of successful routine launches would not demonstrate crash recovery or preservation of those obligations.
+
+   Deleting the retired board first is sensible only after stopping its writers and redirecting readers. Otherwise a job recreates it, fails noisily or continues treating it as authoritative.
+
+   The situation brief may contain synthesis that the ledger view does not provide: what changed, what is uncertain and what deserves attention now. Remove its queue duty, but do not assume a sorted list replaces that function.
+
+   Likewise, a stale priority list can contain still-valid priorities. Preserve or supersede those decisions before deletion.
+
+   What will keep being written? Handoffs, memory, result files, rule files and old board outputs, unless their producers change. Calling them “content, not queues” does not stop agents acting on imperative text inside them. Retirement requires replacement references, changed writers and explicit treatment of outstanding obligations.
+
+8. **Every proposed day-seven measure can go green without fixing the problem.**
+
+   The 25 untouched debts receive comments and become “touched.” They are still unpaid.
+
+   The 21 expired waits receive automatic transitions to `judge`. None has been substantively reconsidered, but none lacks an event.
+
+   The 14 homeless messages receive generic tickets. Their homes exist; their intended effects do not.
+
+   The “lacked context” share falls because agents stop admitting uncertainty, weak briefs produce confident mistakes, or difficult items stay in `judge` and never enter the denominator.
+
+   Excluding old unclassed items makes this worse: the new lane can look healthy while the measured debts remain outside it.
+
+   I would add one outcome measure: **source-audited, unassisted follow-through rate**, measured separately for routine pipeline work and conversation-born or pipeline-questioning work; use the lower rate as the headline.
+
+   Draw the sample from source conversations and actual pipeline needs, not only filed items. Count success when the due obligation reaches a verified outcome within its useful time, without the owner reminding, dispatching or reconstructing context. A properly evidenced disposal of useless work counts; so does a genuinely ready handoff for one of his five acts. A new event or successor ticket does not.
+
+   Using the lower rate makes the owner’s particular failure visible: improving one stream by neglecting the other cannot produce a healthy headline.
+
+9. **Step 1 is small in code terms and weak as a standalone intervention.**
+
+   Adding a class field is probably bounded. Adding the view and due-wait transition might also be. But the result does not work a debt. It creates the categories on which later work depends and begins feeding `judge`.
+
+   “Each one helper run” is not supported for step 2. A dispatcher, timer and run-end write-back cross shared-resource admission, clone publication, crash recovery and item lifecycle. Reusing functions does not establish that those contracts carry over.
+
+   I would first build one complete automatic path for an existing, clearly authorized debt: propagating an already answered design ruling into the current document builders read.
+
+   Use the existing owed item. Have the pipeline select it, check the current target and ruling, apply the answer, verify the effective document, and discharge that obligation. Exercise interruption after applying the change but before recording completion, and show that recovery recognizes the effect. Then repeat the path across a Conductor restart.
+
+   That is useful alone: it fixes Story 3 and demonstrates a small transfer of responsibility from the window to the pipeline.
+
+   I would cut mandatory single-class assignment, unconditional successor-item creation, and Conductor confirmation of every promise draft. Update an existing obligation when the next step is part of fulfilling it; create another item when there is a genuinely distinct obligation. I would defer broad deletion until replacement paths have demonstrated coverage.
+
+10. **The numerical evidence supports urgency, but not several of the plan’s conclusions.**
+
+   The basic arithmetic checks out: the five open ledger states total 1,597; the owed-item breakdown totals 48; and 190 filed minus 142 closed equals 48. The average net accumulation is about seven a day. That does not prove uniform daily growth.
+
+   The other important distinctions are:
+
+   - The 25 real drops are not interchangeable with 38 late items or all 48 open debts.
+   - The 14 homeless messages are a hand-classified estimate with roughly 70% confidence in the source. The plan presents the baseline without that qualification.
+   - Twenty-one expired waits out of 37 is about 57%. Writing a due event would repair the recorded symptom, not necessarily the neglected work.
+   - The 669 helper completions average about 96 a day. If run-end write-back covers all helpers, even a modest successor rate could create substantial inflow. The plan needs to specify its scope.
+   - Twelve launches daily allows at most 84 per week, versus 190 owed filings in the measured week. That does **not** prove insufficient capacity: some filings are waits, communications or otherwise unsuitable for automatic launch. It does show that the plan lacks the classification and service-time evidence needed to defend the number.
+   - Relentless’s 146 unmeasured proof rows out of 172—about 85%—are evidence of inadequate verification, not proof that 146 acts failed. Checking artifact existence does not supply the missing measurement.
+   - “One accepted dispatcher” supports reusing machinery. It does not validate applying its one-attempt recovery policy to every kind of outside-mod obligation.
+
+   Finally, the text gives enough evidence to say stores and queues overlap, but not enough to verify that the proposed categories exhaust all 24. That should remain an open inventory task, not a claimed consolidation.
+
+Before building it, I would make these three changes, in order:
+
+1. **Replace class-first dispatch with one demonstrated path of durable ownership.** Start with a real existing debt, carry it through execution, interruption recovery and verified effect, and preserve the obligation until it is discharged. Missing classification must not stop clear, authorized work.
+2. **Redesign exception handling so it does not accumulate at the Conductor.** Retrieve context, reconcile partial effects and reconsider due waits automatically where possible. Escalate a diagnosed decision or authority boundary, not merely an open item. Tie limits to the specific resource or failure they protect.
+3. **Make source-audited follow-through the acceptance test, then retire stores against demonstrated coverage.** Include existing dropped work and both attention streams. Remove writers and redirect readers before deleting their outputs.
+
+I am least sure how much genuine judgment the 25 debts require. The text gives their count and several stories, not their full contents. That uncertainty matters: the plan may need a small recovery mechanism, or substantial improvements in the pipeline’s ability to interpret and own work. It does not justify assuming that a `judge` queue will take care of the difference.
