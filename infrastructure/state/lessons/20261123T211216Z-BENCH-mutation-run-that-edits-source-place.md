@@ -1,0 +1,1 @@
+A mutation run that edits the source in place and dies on a timeout (SIGTERM skips finally) leaves the mutant in the tree, and 15 selftests then passed on it. Mutate a throwaway copy with symlinks for the rest, run an unmutated CONTROL first (an import crash reads as CAUGHT with no red test named), and count CAUGHT only when a named test is red.
