@@ -331,8 +331,8 @@ expensive it requires immediate action for sure. But not starving it or failing 
     The forecast runs at the measured burn, to the reset of each account.
 - When the forecast says that a goal's work does not fit before a date, say so in your note, on your own item. Then file
   one item for the Conductor (`rimflow file <ID> --for CONDUCTOR --kind owed`). The Conductor's wake prints each open
-  item of kind `owed`, and no item of kind `task`. The title of the item says, in plan words, which work will not fit
-  before which date. File no such item for a clean forecast. While an item of yours about the same work and
+  item of kind `owed`, and no item of kind `task`. The title of the item names the work that will not fit and the date
+  before which it will not fit, with no account, token or budget figure. File no such item for a clean forecast. While an item of yours about the same work and
   date is open, put a note on that item and file no second one.
 - The figures stay in your note on your own item.
 - The Conductor decides the cut. You do not cut work yourself.
