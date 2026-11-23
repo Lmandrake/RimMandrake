@@ -16,7 +16,7 @@ The evidence, the dates and the old text that was wrong are in `references/histo
 
 - **Machine checks come first:** art presence, def resolution, log errors. A human never hunts magenta (the colour of
   missing art).
-- **Opus evaluation** comes next. It judges art quality and theme, beyond the grade of the model that built the work.
+- **Opus evaluation** comes next. Opus judges art quality and theme, beyond the grade of the model that built the work.
 - **The owner comes last, and ONLY for** gameplay, fun, overall thematic coherence and UI.
 
 If an agent can review a thing, the agent reviews it. A cut decision is the owner's, or the Conductor's as a recorded
@@ -81,7 +81,7 @@ sheet tools exist already (see "The tools here").
 - **Do NOT deduplicate defNames.** A doubled cell means that two mods ship the same thing. Such a cell is a finding. Doubled
   cells showed that *zebra*, *black bear* and *mandrill* shipped twice. If you cut one copy, the other copy stays on
   the map.
-- **Vanilla and DLC art is not in loose PNGs.** It is in Unity AssetBundles and `resources.assets`. The sheet tools read
+- **Vanilla and DLC art is not in loose PNGs.** Vanilla and DLC art is in Unity AssetBundles and `resources.assets`. The sheet tools read
   it from a cache that `src/RimMandrake/Utils/extract_bundle_textures.py` makes. Git ignores the cache, so a fresh clone
   has none. Without the cache, around 40% of animals come out blank, and that is CORRECT. Blank ≠ broken. The details are
   in `skills/reading-rimworld-graphics/SKILL.md`.
@@ -111,8 +111,8 @@ the patches are loaded. The dump is captured after Cherry Picker. The proof is i
 | `ThingDef`, `PawnKindDef`, `BiomeDef`, `IncidentDef`, `HediffDef`, `FactionDef`, `AbilityDef` and most others | the def stays in the game. Cherry Picker clears or zeroes fields on it (`weaponTags`, `apparel.tags`, `tradeability`, biome commonality, `BiomeDef.implemented`) | a cut that worked is **PRESENT** |
 | `GeneDef`, `XenotypeDef`, `BackstoryDef`, `ResearchProjectDef`, `RecipeDef`, `TraitDef`, `HairDef`, `BeardDef`, `TattooDef`, `MemeDef`, `PreceptDef`, `RitualPatternDef`, `DesignationCategoryDef` | the def is deleted | a cut that worked is **ABSENT**, and so is a typo. PRESENT means that the cut did not work, or that the dump comes from a load without the key |
 
-- ⇒ For a type of the first row, the presence of a def in the dump is not evidence about a cut. This holds in either
-  direction. Only the changed fields are evidence.
+- ⇒ For a type of the first row, the presence of a def in the dump is not evidence about a cut, in either
+  direction. The def is present if the cut worked, and if the cut did not work. Only the changed fields are evidence.
 - The second row is the list of vanilla types. Cherry Picker also deletes two modded types, `PowerDef` and
   `PsycasterPathDef`.
 - 🔑 **An unfiltered census, count or contact sheet silently includes cut content.** From mod XML, that is every cut. From
@@ -126,7 +126,7 @@ the patches are loaded. The dump is captured after Cherry Picker. The proof is i
   for each def follows. `cherrypicker.from_log()` reads the lines. A key that
   Cherry Picker skipped has no line.
 - 🪤 A cut that failed reads `- FAILED: <key>`, and the header then also holds an error count. `from_log()` stops at the
-  first FAILED line and drops the lines after it. It also does not read the second block, `These dynamically generated
+  first FAILED line and drops the lines after it. `from_log()` also does not read the second block, `These dynamically generated
   defs were also processed`. Grep the log for both.
 - A check of a key against a dump is most useful for **newly added** keys. Before the next load, the check confirms the
   spelling. If the key resolves in the dump, the name is spelled right. The dump must match the mod list.
@@ -185,15 +185,15 @@ load.
 1. **Every def type the mod defines**, not just the one that you reviewed. A creature mod that also ships items,
    buildings, sounds, bodies or damage types does work that you did not audit.
 2. **The mod's patch xpaths.** This is the real test. Removal is contained if every xpath names the mod's own prefix.
-   It is also contained if the xpath adds the mod's own defs to a shared list. If an xpath reaches into Core or another mod's def, removal reverts a
+   Removal is also contained if the xpaths only add the mod's own defs to a shared list. If an xpath reaches into Core or another mod's def, removal reverts a
    functional change.
 3. **Whether an assembly loads for the CURRENT game version.** DLLs under old version folders do not load and do not
    matter.
-4. **Hard `modDependencies` from other mods.** These are distinct from `loadAfter`, which is harmless. Grep inside the
+4. **Hard `modDependencies` from other mods.** A `modDependencies` entry is distinct from `loadAfter`, which is harmless. Grep inside the
    `<modDependencies>` block only.
 
 🪤 **An unprefixed defName is the thing to chase.** `WoolCamel` in an animal mod looked like it might make Core's camel
-shearable, a real functional change to vanilla. It belonged to the mod's own camel. Verify. Do not assume either way.
+shearable, a real functional change to vanilla. `WoolCamel` belonged to the mod's own camel. Verify. Do not assume either way.
 
 🔴 **A one-hop reference census is not enough — walk donor-of-donor chains too.** One retirement census checked only
 direct references to the retired mod. A THIRD mod gated its own content on the presence of the retired mod. Our code consumed
@@ -276,7 +276,7 @@ means that the def is deleted from XML, patched out, or its mod leaves the list.
 - **Mod XML on disk is not the running game.** Some mods change defs at load, dedup passes especially. So a claim from
   disk about what EXISTS is unsafe. The def dump is captured inside the game, after patches and startup code, on one
   mod list and one date.
-- 🪤 **Abstract parent defs have no `defName`** and are not content. They inflate every count. They cannot be cut, because
+- 🪤 **Abstract parent defs have no `defName`** and are not content. Abstract parents inflate every count. Abstract parents cannot be cut, because
   Cherry Picker keys on `defName`. One animal census carried **50** of them. Two wore inherited labels that read as real
   creatures. Filter abstract parents out before you present anything to a reviewer.
 - **Only the next load proves a cut.** After a large batch, census `Player.log` for `Could not resolve cross-reference`
@@ -295,7 +295,7 @@ src/RimMandrake/Utils/weapon_tag_audit.py     the pawn kinds with no surviving w
 src/RimMandrake/Utils/apparel_tag_audit.py    the same for apparel
 ```
 
-The contact sheet is a thin projection over the inventory. It owns no load-set resolution and no XML parsing. Build any
+The contact sheet is a thin projection over the inventory. The contact sheet owns no load-set resolution and no XML parsing. Build any
 new sheet the same way: project over `def_inventory.py`, and do not re-solve inheritance.
 
 ⚠️ **Pillow can be absent from a WSL `python3`** (PEP 668 blocks `pip install`). Windows `python.exe` has it. Relative

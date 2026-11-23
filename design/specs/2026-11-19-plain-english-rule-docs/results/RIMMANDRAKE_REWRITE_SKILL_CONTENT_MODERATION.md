@@ -10,11 +10,11 @@ Also: skills/rimworld-content-moderation/references/history.md
 
 | measure | before | after |
 |---|---|---|
-| bytes | 22,350 | 26671 |
-| words in linted prose | 3,204 | 3768 |
-| STE violations per 100 words | 4.81 | 1.99 |
+| bytes | 22,350 | 26833 |
+| words in linted prose | 3,204 | 3791 |
+| STE violations per 100 words | 4.81 | 1.98 |
 | sentences over 20 words | 65 | 34 |
-| flagged lines (mechanical) | 27 | 23 |
+| flagged lines (mechanical) | 27 | 21 |
 | lines that a cold reader cannot act on (hand count, by the writer) | 9 | 0 |
 
 Most of the 34 long sentences are two short sentences that the lint joined at a bold lead, an emoji or a closing mark. One
@@ -72,7 +72,9 @@ One fresh Opus reader (rm-judge, model opus) read both texts without the writer'
 The same reader then read the repairs and the edits in the other files. It found 0 real items in the skill and the history
 file, and 5 real leftovers in edited files: `apparel_tag_audit.py`, `genome_matrix_build.py`, `biome_animal_conflicts.py`,
 `thing_contact_sheet.py` and `validate_save_artifact.py`. All 5, and the 4 trivial ones, are repaired. No reader read
-those last repairs.
+those last repairs. After the first landing (ba9a9e0c7e), the prose check of `./publish` named 15 lines. The writer repaired
+them (subjects in place of pronouns, two terms). No reader read those lines either, or the next-line wording of "in either
+direction".
 
 ## Conflicts and stale lines: settled
 

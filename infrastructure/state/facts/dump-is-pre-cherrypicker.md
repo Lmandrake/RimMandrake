@@ -3,7 +3,7 @@
 The file name says "pre-cherrypicker". That explanation is wrong (corrected 2026-11-23). The name stays, because code
 cites the path.
 
-**Measured 2026-11-23.** In one `Player.log` (ArchBig, 314 mods), the Cherry Picker block is at line 1279 and the dump
+**Measured 2026-11-23.** In one `Player.log` (the game ArchBig on Archmagi, 314 mods), the Cherry Picker block is at line 1279 and the dump
 starts at line 2817. So Cherry Picker runs FIRST. `RemoveDef` in the 1.6 `CherryPicker.dll` (decompiled with `ilspycmd`)
 does two different things:
 
@@ -15,10 +15,10 @@ does two different things:
 - The fields that it changes include: `weaponTags`, `apparel.tags`, `tradeability`, `thingCategories`, the commonality of
   the animal in `race/wildBiomes` and in each biome's `wildAnimals` and `pollutionWildAnimals` (set to 0),
   `BiomeDef.implemented` (set to false), and three world-creation fields of a `FactionDef`.
-- It does not touch `coastalWildAnimals` (read in the code; not tested in game).
+- Cherry Picker does not touch `coastalWildAnimals` (read in the code; not tested in game).
 - A `FactionDef` with `maxConfigurableAtWorldCreation` at 0 or below is skipped with no message.
 - The practical rule does not change: for a type of the second row, a dump cannot say "is this cut". Use the kill list or
-  the log. For a deleted type, PRESENT means that the cut did not work, or that the dump comes from a load without the key.
+  the log. For a deleted type, PRESENT means that the cut did not work, or that the dump comes from a load whose kill list did not hold the def.
 
 The rest of this file is the record of 2026-08-23 to 2026-09-05. Where it says that the dump comes before Cherry Picker,
 the explanation above replaces it. Its measurements stand.
@@ -108,7 +108,7 @@ Measured during the build of the weapon register (764 weapons, full 595-mod stac
 
 - All **177** weapons that Cherry Picker cut carry an **empty `weaponTags`** in the dump. **No tagged weapon is cut.**
   The match is 177/177, in BOTH directions.
-- So the **def** of a cut weapon is still in the dump. That is why cut things still appear in sheets.
+- So the **def** of a cut weapon is still in the dump. So cut things still appear in sheets.
 - But some **list fields have been stripped** in the dump. The def of a cut weapon is present, and its
   `weaponTags` list is empty.
 
