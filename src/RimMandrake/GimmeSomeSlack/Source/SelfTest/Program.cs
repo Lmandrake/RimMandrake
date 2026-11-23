@@ -78,6 +78,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             if (args.Contains("--switchlight-only")) { SwitchLightChecks.Run(); SwitchLightChecks.Plant(); Console.WriteLine($"{checks - fails}/{checks} checks passed (switch light only)"); return fails == 0 ? 0 : 1; }
             if (args.Contains("--switchlight-plant")) { SwitchLightChecks.Plant(); Console.WriteLine($"{checks - fails}/{checks} checks passed (switch light plant)"); return fails == 0 ? 0 : 1; }
             if (args.Contains("--switchoff-only")) { SwitchOffChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (switch off only)"); return fails == 0 ? 0 : 1; }
+            if (args.Contains("--reach-only")) { StyleStage2Checks.Run(); StyleReachChecks.Run(); BatchedLinkStyleMergeChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (style reach only)"); return fails == 0 ? 0 : 1; }
             if (args.Contains("--joins-only")) { StubJoinChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (stub joins only)"); return fails == 0 ? 0 : 1; }
             if (args.Contains("--endkind-only")) { CordEndKindChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (end kind + slope only)"); return fails == 0 ? 0 : 1; }
             if (args.Contains("--shape-diag")) { CordShapeChecks.Diag(); return 0; }
@@ -134,6 +135,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             PileLookChecks.Run(scenes);    // MESSYCONDUIT_CABLE_PILE_LOOK_1 (owner 2026-10-04): pile strips, ends on bodies, hose fittings: PileLookChecks.cs
             StyleStage1Checks.Run();       // per-build style stage 1 (2026-10-04): StyleStage1Checks.cs + ../Aerial/AerialStyles.cs
             StyleStage2Checks.Run();       // per-build style stage 2, conduit runs (2026-10-04): StyleStage2Checks.cs + ../Aerial/ConduitStyles.cs
+            StyleReachChecks.Run();        // 0.1.1: three reaches + mixed-look runs + Gust default: StyleReachChecks.cs + ../Aerial/ConduitStyles.cs
             BatchedLinkStyleMergeChecks.Run(); // GSS_BATCHED_LINK_FIX_SKIPS_STYLE_MERGE
 TexPathChecks.Run();           // RIMMANDRAKE_TRACE_GSS_ILLEGAL_PATH_ONLY_ON_FIRST_START: TexPathChecks.cs + ../Core/TexPath.cs
                         LegacyNameChecks.Run();        // rename from Messy Conduit (2026-10-05): saved type names + settings files: LegacyNameChecks.cs + ../Core/LegacyName.cs

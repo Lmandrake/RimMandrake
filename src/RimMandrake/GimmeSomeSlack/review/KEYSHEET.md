@@ -13,7 +13,7 @@ The hose is not on this map: it moved to FlowWorks, and so did its review statio
 ## Everywhere
 
 - Build menu: clicking a conduit, switch, pole, lamp mast, wall bracket or floor lamp button opens a menu of four looks (Scrapper, Industrial, Modern, Futuristic); conduit adds the Modern colour entries (random mix, one colour per run, orange, green, brown, yellow, blue). The button remembers your last pick.
-- 'Restyle this run' sits on any selected conduit, switch or pole: it repaints the whole run (art only, free).
+- 'Restyle... > All connected' sits on any selected conduit, switch or pole: it repaints the whole run (art only, free).
 - A run = connected conduit cells + switches + the poles and brackets wired into them. Batteries and machines end a run. Joining two runs of different looks: the run with more conduit cells wins; a tie goes to the older run.
 - Mod Settings > RimMandrake: Gimme Some Slack: master switch OFF restores vanilla conduit art instantly.
 - Unpause (space) to see motion: sway, live-end sparks. Pause again to study a frame.
@@ -26,7 +26,7 @@ Built through the real style machinery: every piece stores its look; the global 
 
 one compact floor build in the Scrapper look: full battery, a 3x3 tangle, a run under a steel wall, an in-line switch, three plugged devices and one missing conduit cell (a live end and a dead end)
 
-**Poke it:** flick the switch; Restyle this run; build one conduit into the gap in another look
+**Poke it:** flick the switch; Restyle... > All connected; build one conduit into the gap in another look
 
 **Look for / suspected weak spot:** the tangle's pieces may follow the DEFAULT look, not the run's (known gap); only the battery side of the gap may spark
 
@@ -35,11 +35,11 @@ one compact floor build in the Scrapper look: full battery, a 3x3 tangle, a run 
 - every cord, plug, junction, wall stub, cut end and the switch is Scrapper art (the art board M says which pieces still fall back)
 - the tangle: junction boxes with cables in them (KNOWN GAP, stage 2: the pile's pieces still follow the DEFAULT look, not the run's)
 - the battery side of the gap sparks when unpaused (live end), the far side lies limp (dead end); the far lamp is dark
-- the three floor lamps are Scrapper lamps (round 6: built in their run's look; 'Restyle this run' repaints them too)
+- the three floor lamps are Scrapper lamps (round 6: built in their run's look; 'Restyle... > All connected' repaints them too)
 
 **Try**
 
-- select any conduit or the switch: the 'Restyle this run' gizmo repaints the whole run (art only)
+- select any conduit or the switch: the 'Restyle... > All connected' gizmo repaints the whole run (art only)
 - build one conduit into the gap from the menu in ANOTHER look: it joins the run and takes the run's look (the larger run wins: here the battery side)
 - flick the switch: everything past it goes dark, the cords stay
 
@@ -51,7 +51,7 @@ one compact floor build in the Scrapper look: full battery, a 3x3 tangle, a run 
 
 one compact floor build in the Industrial look: full battery, a 3x3 tangle, a run under a steel wall, an in-line switch, three plugged devices and one missing conduit cell (a live end and a dead end)
 
-**Poke it:** as 1: switch, Restyle this run, fill the gap
+**Poke it:** as 1: switch, Restyle... > All connected, fill the gap
 
 **Look for / suspected weak spot:** Industrial picks a cable kind per net: does the tangle or a cut half pick a different kind?
 
@@ -60,11 +60,11 @@ one compact floor build in the Industrial look: full battery, a 3x3 tangle, a ru
 - every cord, plug, junction, wall stub, cut end and the switch is Industrial art (the art board M says which pieces still fall back)
 - the tangle: junction boxes with cables in them (KNOWN GAP, stage 2: the pile's pieces still follow the DEFAULT look, not the run's)
 - the battery side of the gap sparks when unpaused (live end), the far side lies limp (dead end); the far lamp is dark
-- the three floor lamps are Industrial lamps (round 6: built in their run's look; 'Restyle this run' repaints them too)
+- the three floor lamps are Industrial lamps (round 6: built in their run's look; 'Restyle... > All connected' repaints them too)
 
 **Try**
 
-- select any conduit or the switch: the 'Restyle this run' gizmo repaints the whole run (art only)
+- select any conduit or the switch: the 'Restyle... > All connected' gizmo repaints the whole run (art only)
 - build one conduit into the gap from the menu in ANOTHER look: it joins the run and takes the run's look (the larger run wins: here the battery side)
 - flick the switch: everything past it goes dark, the cords stay
 
@@ -81,12 +81,12 @@ one compact floor build in the Modern look (menu entry 'Modern: one colour per r
 - every cord, plug, junction, wall stub, cut end and the switch is Modern art (the art board M says which pieces still fall back)
 - the tangle: power strips with plugs in the sockets (KNOWN GAP, stage 2: the pile's pieces still follow the DEFAULT look, not the run's)
 - the battery side of the gap sparks when unpaused (live end), the far side lies limp (dead end); the far lamp is dark
-- the three floor lamps are Modern lamps (round 6: built in their run's look; 'Restyle this run' repaints them too)
+- the three floor lamps are Modern lamps (round 6: built in their run's look; 'Restyle... > All connected' repaints them too)
 - one colour along the whole run (built with 'one colour per run'); the 2 cells past the gap are a run of their own and may carry another colour
 
 **Try**
 
-- select any conduit or the switch: the 'Restyle this run' gizmo repaints the whole run (art only)
+- select any conduit or the switch: the 'Restyle... > All connected' gizmo repaints the whole run (art only)
 - build one conduit into the gap from the menu in ANOTHER look: it joins the run and takes the run's look (the larger run wins: here the battery side)
 - flick the switch: everything past it goes dark, the cords stay
 
@@ -103,11 +103,11 @@ one compact floor build in the Futuristic look: full battery, a 3x3 tangle, a ru
 - every cord, plug, junction, wall stub, cut end and the switch is Futuristic art (the art board M says which pieces still fall back)
 - the tangle: junction boxes with cables in them (KNOWN GAP, stage 2: the pile's pieces still follow the DEFAULT look, not the run's)
 - the battery side of the gap sparks when unpaused (live end), the far side lies limp (dead end); the far lamp is dark
-- the three floor lamps are Futuristic lamps (round 6: built in their run's look; 'Restyle this run' repaints them too)
+- the three floor lamps are Futuristic lamps (round 6: built in their run's look; 'Restyle... > All connected' repaints them too)
 
 **Try**
 
-- select any conduit or the switch: the 'Restyle this run' gizmo repaints the whole run (art only)
+- select any conduit or the switch: the 'Restyle... > All connected' gizmo repaints the whole run (art only)
 - build one conduit into the gap from the menu in ANOTHER look: it joins the run and takes the run's look (the larger run wins: here the battery side)
 - flick the switch: everything past it goes dark, the cords stay
 
@@ -135,7 +135,7 @@ seven Modern runs, one per entry of the conduit build menu: random mix, one colo
 
 four overhead lines side by side, one per look (top to bottom: Scrapper, Industrial, Modern, Futuristic): battery, power mast, power mast, lamp mast, and a wall bracket on a steel wall stub
 
-**Poke it:** select a pole > Restyle this run; Link wire across to another row
+**Poke it:** select a pole > Restyle... > All connected; Link wire across to another row
 
 **Look for / suspected weak spot:** the span cable has no per-look art (falls back): does each row's wire still read as its look?
 
@@ -147,7 +147,7 @@ four overhead lines side by side, one per look (top to bottom: Scrapper, Industr
 
 **Try**
 
-- select a pole > Restyle this run: the whole row (poles, bracket, spans) changes look
+- select a pole > Restyle... > All connected: the whole row (poles, bracket, spans) changes look
 - build a new mast near a row from the menu in ANOTHER look: auto-link joins only a run of the SAME look
 - select a pole > Link wire to a pole of another row: two looks meeting is a merge (the bigger run wins)
 
@@ -215,7 +215,7 @@ an Industrial run of 11 cells; the after row had its middle cell deconstructed
 
 a Scrapper run (battery, conduit, an in-line switch, a lamp) with a power mast wired into its end and a span to a lamp mast: nothing restyled yet, the button is yours
 
-**Poke it:** select any piece > Restyle this run; then the lamp > Restyle this lamp
+**Poke it:** select any piece > Restyle... > All connected; then the lamp > Restyle... > This item
 
 **Look for / suspected weak spot:** the lamp's own look must survive the next run restyle; 'Match its cable run' must undo it; the span must restyle with the poles
 
@@ -225,8 +225,8 @@ a Scrapper run (battery, conduit, an in-line switch, a lamp) with a power mast w
 
 **Try**
 
-- select ANY piece (a conduit cell, the switch, either pole) > 'Restyle this run' > pick a look: the cords, the switch, both poles, the span AND the floor lamp all change at once; cost and power do not
-- select the lamp > 'Restyle this lamp' > another look: it keeps that look through the next run restyle ('Match its cable run' undoes it)
+- select ANY piece (a conduit cell, the switch, either pole) > 'Restyle... > All connected' > pick a look: the cords, the switch, both poles, the span AND the floor lamp all change at once; cost and power do not
+- select the lamp > 'Restyle... > This item' > another look: it keeps that look through the next run restyle ('Match its cable run' undoes it)
 - pick Modern > random mix: the colours vary piece to piece along the run; restyle again and back: the same colours come back
 - unpause: nothing reverts
 
@@ -531,7 +531,7 @@ four runs of waterproof conduit, one per look (top to bottom: Scrapper, Industri
 
 **Try**
 
-- select a cell > Restyle this run: the waterproof run takes any look, like plain conduit
+- select a cell > Restyle... > All connected: the waterproof run takes any look, like plain conduit
 - Mod Settings > 'Which conduits become cords' > untick Waterproof conduit: these four runs go back to vanilla art
 
 ### 25. CONDUIT KINDS
@@ -714,7 +714,7 @@ Global settings change every station at once, so they are never faked side by si
 | `aerial.keepWiresOnGravship` | True | wires on a launched gravship stay strung | no station (needs a gravship launch) |
 | `aerial.sway` | Auto | wire sway: Auto / CPU (always) / Off | 6, 21 (unpause) |
 | `aerial.swayStrength` | 1.0 | wire sway strength | 6, 21 |
-| `aerial.swayLook` | Rope | how pole wires swing: Pendulum, Rope or Gust | 6, 21 |
+| `aerial.swayLook` | Gust | how pole wires swing: Pendulum, Rope or Gust | 6, 21 |
 | `aerial.explosionsCut` | True | explosions cut wires | 13 |
 | `aerial.kineticSway` | True | Kinetic Arms push waves swing wires, never cut | no station (needs a Kinetic Arms push wave) |
 | `aerial.shockReach` | All | live lines shock whoever crosses them: All (floor cord ends too) / Only downed lines / None | 29 |

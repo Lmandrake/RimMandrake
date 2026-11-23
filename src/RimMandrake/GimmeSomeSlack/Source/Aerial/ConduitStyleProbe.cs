@@ -22,6 +22,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     ///   cplace:def:key:x,z:god|build | cline:def:key:x0,z0:x1,z1:god|build | cfinishbuild | cprocess | cclearpicks
     ///   crestyle:x,z:key             the gizmo's own call | cdeconstruct:x,z   a member destroyed as by deconstruction
     ///   clamp:x,z:<Look>|MatchRun    round 6: a floor lamp's own Restyle gizmo call (cstyles lists "lamps")
+    ///   creach:x,z | crestyleone:x,z:key | crestyleall:key:player|god | clamprun:x,z:key   0.1.1 reaches (design 2.5)
     ///   cmultilink:x,z;x,z;...[:plan]  S12c (GPT D5): select the anchors at those cells and fire the "Auto-link selected"
     ///                                gizmo's own action ONCE (every TryLink of the spanning forest queues in ONE call, no
     ///                                cprocess between); reports the anchor ids, the pairs linked and the pending count left
@@ -58,6 +59,36 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 if (t == null) return AerialProbe.Fail(cmd, "no run member there");
                 int n = runs.RestyleRun(t, p[1], false);
                 return AerialProbe.Ok(cmd, "\"changed\":" + n + ",\"message\":" + S(runs.lastMessage));
+            }
+            // 0.1.1 reaches (design 2.5): creach:x,z lists the reach menu's labels for the piece there (the gizmo's own build);
+            // crestyleone:x,z:key = "This item"; crestyleall:key:player|god = "All on map"; clamprun:x,z:key = a lamp's "All connected"
+            if (cmd.StartsWith("creach:"))
+            {
+                Thing t = Cell(cmd.Substring(7)).GetThingList(map).FirstOrDefault(x => ConduitStylePicker.IsMember(x.def) || ConduitStylePicker.IsLamp(x.def));
+                if (!(t is Building b)) return AerialProbe.Fail(cmd, "no run member or lamp there");
+                return AerialProbe.Ok(cmd, "\"reaches\":[" + string.Join(",", ConduitStylePicker.ReachMenu(b).Select(o => S(o.Label) + "")) + "]");
+            }
+            if (cmd.StartsWith("crestyleone:"))
+            {
+                string[] p = cmd.Substring(12).Split(':');
+                Thing t = Cell(p[0]).GetThingList(map).FirstOrDefault(x => ConduitStylePicker.IsMember(x.def));
+                if (t == null) return AerialProbe.Fail(cmd, "no run member there");
+                int n = runs.RestyleOne(t, p[1], false);
+                return AerialProbe.Ok(cmd, "\"changed\":" + n + ",\"message\":" + S(runs.lastMessage));
+            }
+            if (cmd.StartsWith("crestyleall:"))
+            {
+                string[] p = cmd.Substring(12).Split(':');
+                int n = runs.RestyleAll(p[0], false, p.Length > 1 && p[1] == "god");
+                return AerialProbe.Ok(cmd, "\"changed\":" + n + ",\"message\":" + S(runs.lastMessage));
+            }
+            if (cmd.StartsWith("clamprun:"))
+            {
+                string[] p = cmd.Substring(9).Split(':');
+                Thing t = Cell(p[0]).GetThingList(map).FirstOrDefault(x => ConduitStylePicker.IsLamp(x.def));
+                if (t == null) return AerialProbe.Fail(cmd, "no styled floor lamp there");
+                bool ok = runs.RestyleLampRun(t, p[1], false);
+                return AerialProbe.Ok(cmd, "\"hooked\":" + B(ok) + ",\"message\":" + S(runs.lastMessage));
             }
             if (cmd.StartsWith("clamp:"))             // round 6: clamp:x,z:<Look>|MatchRun -- the lamp's own Restyle gizmo call
             {

@@ -1,0 +1,13 @@
+FAIL reach: a mixed loser is never repainted by a join; the new piece takes the uniform winner's look
+FAIL reach: a uniform loser of a mixed winner keeps its look; the new piece takes the look it touches in the winner (Futuristic)
+FAIL reach: a span joining a uniform run to a larger mixed run repaints nothing
+FAIL reach: built onto a mixed run beside a Green Modern cell: Modern, Green, nothing repainted
+FAIL reach: touching only a Modern pole: Modern with no stored colour (a pole carries no colour)
+FAIL reach: touching a member that stores no look: the new piece stores none either
+FAIL reach: the Restyle gizmo opens the reach menu, which names all three reaches
+FAIL reach: the separate god-mode 'DEV: switch ALL to...' button is gone (its job is the map reach)
+FAIL reach: the run component has this-item and player-limited all-on-map calls
+FAIL reach: all on map decides ownership through the tested ReachTakes rule
+FAIL reach: gust: the shipped overhead sway is Gust in the field, the saved default and Reset (field False, scribe False, reset False)
+FAIL reach: gust: the settings radio button marks Gust as the default, not Rope
+103/115 checks passed (style reach only)

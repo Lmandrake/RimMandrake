@@ -55,7 +55,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
         public void ProcessPending()
         {
-            var batch = new ConduitStyles.PlacementBatch<Thing>();
+            var batch = new ConduitStyles.PlacementBatch<Thing>(StylePicker.DefaultLook);
             // in spawn order; a member still waiting is not part of any run yet (pendingSet), so a god-mode line of cells
             // resolves cell by cell exactly as if built one at a time
             for (int i = 0; i < pending.Count; i++)
@@ -127,21 +127,42 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             return false;
         }
 
-        public static ConduitStyles.Run Info(List<Thing> run)
+        public static ConduitStyles.Run Info(List<Thing> run) => Info(run, out _);
+
+        /// <summary>The run as the rules see it, and (0.1.1, design 2.5) the looks its members draw: Mixed when more than one.</summary>
+        public static ConduitStyles.Run Info(List<Thing> run, out ConduitStyles.LookSet drawn)
         {
             var info = new ConduitStyles.Run { Oldest = int.MaxValue, Tag = run };
             var colours = new List<string>();
+            drawn = new ConduitStyles.LookSet(StylePicker.DefaultLook);
             foreach (Thing t in run)
             {
                 bool conduit = ConduitStylePicker.IsConduit(t.def);
                 if (conduit) info.Area++;
                 info.Oldest = Math.Min(info.Oldest, t.thingIDNumber);
                 string look = ConduitStylePicker.LookOf(StylePicker.RawStyle(t), out string colour);
+                drawn.Add(look, conduit, conduit && look == "Modern" ? colour : null);
                 if (look != null && info.Look == null) info.Look = look;       // run sorted by id: the oldest styled member
                 if (conduit && look == "Modern") colours.Add(colour);
             }
             info.Colour = info.Look == "Modern" ? ConduitStyles.RunColour(colours) : null;
+            info.Mixed = drawn.Mixed;
             return info;
+        }
+
+        /// <summary>0.1.1 (design 2.5, rule 2): for each MIXED run, the member a new piece x takes its look from: among x's
+        /// neighbours in that run, a conduit cell first when x is conduit, then the oldest (ConduitStyles.LocalPick).</summary>
+        private static void SetTouches(Thing x, List<Thing> nbrs, List<ConduitStyles.Run> infos, Func<Thing, int> runIndex)
+        {
+            if (!infos.Any(i => i.Mixed)) return;
+            bool xConduit = ConduitStylePicker.IsConduit(x.def);
+            for (int r = 0; r < infos.Count; r++)
+            {
+                if (!infos[r].Mixed) continue;
+                List<ConduitStyles.Run> touched = nbrs.Where(n => runIndex(n) == r && !IsBridgeConduit(n.def)).Select(MemberInfo).ToList();
+                int k = ConduitStyles.LocalPick(touched, xConduit);
+                infos[r].Touch = k >= 0 ? touched[k] : null;
+            }
         }
 
         // ------------------------------------------------------------------ floor lamps (round 6)
@@ -253,6 +274,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             if (groups != null && groups.Count > 0)
             {
                 var cachedInfos = groups.Select(gr => gr.Info).ToList();
+                SetTouches(x, nbrs, cachedInfos, n => groups.IndexOf(batch.GroupOf(n)));
                 ConduitStyles.Plan cachedPlan = ConduitStyles.PlanPlacement(ownLook, ownColour, cachedInfos, StylePicker.DefaultLook);
                 if (cachedPlan.Look != null)
                 {
@@ -267,6 +289,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                     if (cachedPlan.Repaint.Count > 0) Announce(cachedPlan, cachedInfos, x);
                     foreach (int i in cachedPlan.Repaint) batch.Refresh(groups[i], MemberInfo);
                 }
+                foreach (ConduitStyles.Run ci in cachedInfos) ci.Touch = null;   // a cached group's Info outlives this placement
                 batch.Merge(x, MemberInfo(x), groups);
                 return;
             }
@@ -281,6 +304,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             }
             if (runs.Count == 0) { batch.Remember(new[] { x }, MemberInfo); return; }
             List<ConduitStyles.Run> infos = runs.Select(Info).ToList();
+            var runSets = runs.Select(r => new HashSet<Thing>(r)).ToList();
+            SetTouches(x, nbrs, infos, n => runSets.FindIndex(rs => rs.Contains(n)));
             ConduitStyles.Plan plan = ConduitStyles.PlanPlacement(ownLook, ownColour, infos, StylePicker.DefaultLook);
             if (plan.Look != null)
             {
@@ -407,10 +432,11 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             map.GetComponent<RM_MapComponent_CordGraph>()?.Notify_SettingsChanged();
         }
 
-        /// <summary>God mode "DEV: switch ALL to" (owner 2026-11-22): repaint every run member and every floor lamp on this
-        /// map in one look, the player's and other factions' alike, to compare the looks across a whole review map. A lamp
-        /// in another mod's style is left alone; "one colour per run" picks a colour for each run. Returns pieces changed.</summary>
-        public int RestyleAll(string key, bool message)
+        /// <summary>The "All on map" reach (0.1.1, design 2.5; it began as the god-mode "DEV: switch ALL to", owner
+        /// 2026-11-22): repaint every run member and floor lamp on this map that the player owns in one look;
+        /// <paramref name="everyFaction"/> (god mode) takes other factions' pieces too (ConduitStyles.ReachTakes). A lamp in
+        /// another mod's style is left alone; "one colour per run" picks a colour for each run. Returns pieces changed.</summary>
+        public int RestyleAll(string key, bool message, bool everyFaction)
         {
             ProcessPending();
             bool multi = key == ConduitStyles.Key("Modern", ConduitStyles.Multi);
@@ -423,21 +449,79 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             foreach (Thing t in map.listerThings.AllThings.ToList())
             {
                 if (t == null || !t.Spawned) continue;
-                if (ConduitStylePicker.IsLamp(t.def)) { lampList.Add(t); continue; }
+                if (ConduitStylePicker.IsLamp(t.def)) { if (MapTakes(t, everyFaction)) lampList.Add(t); continue; }
                 if (!ConduitStylePicker.IsMember(t.def) || seen.Contains(t)) continue;
                 List<Thing> run = RunOf(t);
-                runCount++;
+                bool any = false;
                 string c = multi ? ConduitStyles.Colours[Rand.Range(0, ConduitStyles.Colours.Length)] : colour;
-                foreach (Thing m in run) { if (seen.Add(m) && ConduitStylePicker.IsMember(m.def)) Paint(m, look, c, true); }
+                foreach (Thing m in run)
+                    if (seen.Add(m) && ConduitStylePicker.IsMember(m.def) && MapTakes(m, everyFaction)) { Paint(m, look, c, true); any = true; }
                 seen.Add(t);
+                if (any) runCount++;
             }
             foreach (Thing l in lampList) if (!ForeignStyled(l) && SetStyle(l, look)) lampsChanged++;
             restyles++;
             Finish();
             int n = repainted - before;
-            lastMessage = "DEV: switched ALL to " + ConduitStylePicker.Label(key) + ": " + runCount + " runs, " + n + " pieces changed, " + lampsChanged + " of " + lampList.Count + " lamps changed.";
+            lastMessage = "Restyled everything on the map" + (everyFaction ? " (god mode: every faction)" : " that you own") + " to " + ConduitStylePicker.Label(key) + ": " +
+                          runCount + " runs, " + n + " pieces changed, " + lampsChanged + " of " + lampList.Count + " lamps changed.";
             if (message && Current.ProgramState == ProgramState.Playing) Messages.Message(lastMessage, MessageTypeDefOf.SilentInput, historical: false);
             return n + lampsChanged;
+        }
+
+        /// <summary>Does the map reach take this piece (ConduitStyles.ReachTakes: the player's own, or every faction's in god mode).</summary>
+        public static bool MapTakes(Thing t, bool everyFaction) =>
+            ConduitStyles.ReachTakes(ConduitStyles.Reach.Map, false, false, t.Faction == Faction.OfPlayer, everyFaction);
+
+        /// <summary>What the map reach would repaint now: run members and floor lamps (the reach menu's counts).</summary>
+        public void CountMap(bool everyFaction, out int pieces, out int lamps)
+        {
+            pieces = lamps = 0;
+            foreach (ThingDef d in ConduitStylePicker.MemberDefs)
+                foreach (Thing t in map.listerThings.ThingsOfDef(d)) if (t.Spawned && MapTakes(t, everyFaction)) pieces++;
+            foreach (string dn in ConduitStyles.LampDefs)
+            {
+                ThingDef d = DefDatabase<ThingDef>.GetNamedSilentFail(dn);
+                if (d != null && ConduitStylePicker.IsLamp(d))
+                    foreach (Thing t in map.listerThings.ThingsOfDef(d)) if (t.Spawned && MapTakes(t, everyFaction)) lamps++;
+            }
+        }
+
+        /// <summary>The "This item" reach on a run member (0.1.1, design 2.5): repaint that one piece and nothing else, so its
+        /// run may become mixed. "One colour per run" picks one colour for the piece. No lamp moves. Returns 1 if it changed.</summary>
+        public int RestyleOne(Thing t, string key, bool message)
+        {
+            if (t == null || !t.Spawned || !ConduitStylePicker.IsMember(t.def)) return 0;
+            ProcessPending();
+            string look, colour;
+            if (key == ConduitStyles.Key("Modern", ConduitStyles.Multi)) { look = "Modern"; colour = ConduitStyles.Colours[Rand.Range(0, ConduitStyles.Colours.Length)]; }
+            else if (!ConduitStyles.TryParseKey(key, out look, out colour)) return 0;
+            int before = repainted;
+            Paint(t, look, colour, true);
+            restyles++;
+            Finish();
+            int n = repainted - before;
+            lastMessage = "Restyled this " + t.def.label + " only to " + ConduitStylePicker.Label(ConduitStyles.Key(look, ConduitStylePicker.IsConduit(t.def) ? colour : null)) +
+                          (n == 0 ? " (it already had that look)" : "") + ".";
+            if (message && Current.ProgramState == ProgramState.Playing) Messages.Message(lastMessage, new LookTargets(t), MessageTypeDefOf.SilentInput, historical: false);
+            return n;
+        }
+
+        /// <summary>"All connected" from a floor lamp: restyle the run it is hooked to (and that run's following lamps), and
+        /// the lamp itself. False when the lamp is hooked to no run.</summary>
+        public bool RestyleLampRun(Thing lamp, string key, bool message)
+        {
+            if (lamp == null || !lamp.Spawned) return false;
+            ProcessPending();
+            List<Thing> run = RunOfLamp(lamp);
+            if (run == null || run.Count == 0) return false;
+            RestyleRun(run[0], key, false);
+            string look = ConduitStyles.TryParseKey(key, out string l, out _) ? l : "Modern";
+            bool changed = SetStyle(lamp, look);
+            Finish();
+            lastMessage += " This lamp: " + look + ".";
+            if (message && Current.ProgramState == ProgramState.Playing) Messages.Message(lastMessage, new LookTargets(lamp), MessageTypeDefOf.SilentInput, historical: false);
+            return true;
         }
 
         /// <summary>The free "Restyle this run" (owner 2026-10-04): repaint the whole run t belongs to. "One colour per run"
@@ -450,7 +534,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             if (key == ConduitStyles.Key("Modern", ConduitStyles.Multi)) { look = "Modern"; colour = ConduitStyles.Colours[Rand.Range(0, ConduitStyles.Colours.Length)]; }
             else if (!ConduitStyles.TryParseKey(key, out look, out colour)) return 0;
             List<Thing> run = RunOf(t);
-            string lookBefore = Info(run).Look;
+            Info(run, out ConduitStyles.LookSet drewBefore);      // 0.1.1 rule 4: every look the (maybe mixed) run drew
             List<Thing> lamps = LampsOf(run);
             int before = repainted;
             foreach (Thing m in run) Paint(m, look, colour, true);
@@ -458,7 +542,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             int lampsChanged = 0, lampsKept = 0;
             foreach (Thing l in lamps)
             {
-                if (!ConduitStyles.LampFollowsRun(ConduitStylePicker.RawLook(l), lookBefore, StylePicker.DefaultLook, foreignStyle: ForeignStyled(l))) { lampsKept++; continue; }
+                if (!ConduitStyles.LampFollowsRun(ConduitStylePicker.RawLook(l), drewBefore.Looks, true, ForeignStyled(l))) { lampsKept++; continue; }
                 if (SetStyle(l, look)) { lampsChanged++; lampsFollowed++; }
             }
             lampsKeptOwn += lampsKept;

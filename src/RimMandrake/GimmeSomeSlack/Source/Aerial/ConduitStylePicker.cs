@@ -28,8 +28,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     ///   * the vanilla floor lamp (StandingLamp, art round 5): same menu/getter/copy/Frame guard, NOT a run member (a lamp
     ///     ends a run); drawn by its ThingStyleDef's own graphic; unstyled (legacy) lamps keep vanilla art;
     ///   * the spawn hook that queues every new run member for the run rule (RM_MapComponent_ConduitRuns);
-    ///   * the free "Restyle this run" gizmo on any member, and (round 6) "Restyle this lamp" on a floor lamp; a lamp hooked
-    ///     to a run follows the run's Restyle unless it was given its own look (ConduitStyles.LampFollowsRun);
+    ///   * the free "Restyle..." gizmo on any member and floor lamp (0.1.1: this item, all connected or all on map, then a
+    ///     look); a lamp hooked to a run follows "all connected" unless it wears a look no member drew (ConduitStyles.LampFollowsRun);
     ///   * the stage-1 copy-carries-style and Frame guard patches extended to these defs (StyleIndex flags).
     /// The cord layer reads <see cref="CellStyles"/> to pick each piece's material.
     /// </summary>
@@ -265,7 +265,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         private static int hintFrame = -1, hintMap = -1;
         private static string hintText;
 
-        /// <summary>"joins Industrial run" / "bridges Modern + Industrial: Industrial wins" for a cell, or null. Recomputed only
+        /// <summary>"joins Industrial run" / "bridges Modern + Industrial: Industrial wins" / (0.1.1) "joins a mixed-look run" for a cell, or null. Recomputed only
         /// when the mouse cell changes (or every 30 frames), so a long run costs one flood fill per cell moved.</summary>
         public static string JoinsHint(Map map, IntVec3 c)
         {
@@ -289,85 +289,94 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 }
             }
             if (infos.Count == 0) return null;
-            string Look(ConduitStyles.Run r) => r.Look ?? StylePicker.DefaultLook;
+            string Look(ConduitStyles.Run r) => r.Mixed ? "mixed-look" : r.Look ?? StylePicker.DefaultLook;
             var looks = infos.Select(Look).Distinct().ToList();
-            if (infos.Count == 1 || looks.Count == 1) hintText = "joins " + looks[0] + " run";
-            else hintText = "bridges " + string.Join(" + ", looks) + " runs: " + Look(infos[ConduitStyles.Winner(infos)]) + " wins (most conduit)";
+            ConduitStyles.Run win = infos[ConduitStyles.Winner(infos)];
+            // 0.1.1 (design 2.5): a mixed run keeps its looks; a piece built onto it takes the look of the piece it touches
+            if (infos.Count == 1 || looks.Count == 1) hintText = win.Mixed ? "joins a mixed-look run: takes the look of the piece it touches" : "joins " + looks[0] + " run";
+            else if (win.Mixed) hintText = "bridges " + string.Join(" + ", looks) + " runs: the larger is mixed-look, so no run is repainted; takes the look it touches";
+            else hintText = "bridges " + string.Join(" + ", looks) + " runs: " + Look(win) + " wins (most conduit)" + (infos.Any(r => r.Mixed) ? "; mixed-look runs keep their looks" : "");
             return hintText;
         }
 
         // ------------------------------------------------------------------ restyle gizmo
-        /// <summary>Round 6: "Restyle this lamp" on a floor lamp (one piece; a lamp is a machine, not a run member). The four
-        /// looks, plus "match its cable run". A lamp left alone follows its run when the run is restyled
-        /// (ConduitStyles.LampFollowsRun).</summary>
-        public static Command RestyleLampGizmo(Building lamp)
-        {
-            string cur = RawLook(lamp);
-            return new Command_Action
-            {
-                defaultLabel = "Restyle this lamp",
-                defaultDesc = "Give this lamp another look (" + (cur ?? "vanilla") + " now). Art only: it costs nothing and changes nothing else.\n\n" +
-                              "A lamp hooked to a cable run changes look with the run when the run is restyled, unless you give it a different look here.",
-                icon = Icon(lamp.def, cur ?? StylePicker.DefaultLook),
-                action = () =>
-                {
-                    var opts = new List<FloatMenuOption>();
-                    RM_MapComponent_ConduitRuns runs = lamp.Map?.GetComponent<RM_MapComponent_ConduitRuns>();
-                    foreach (string look in AerialStyles.Looks)
-                    {
-                        string k = look;
-                        if (StyleFor(lamp.def, k) == null) continue;
-                        opts.Add(new FloatMenuOption(look + (k == cur ? " (current)" : ""), () => runs?.RestyleLamp(lamp, k, true), Icon(lamp.def, k), Color.white));
-                    }
-                    opts.Add(new FloatMenuOption("Match its cable run", () => runs?.RestyleLamp(lamp, RM_MapComponent_ConduitRuns.LampMatchRun, true)));
-                    Find.WindowStack.Add(new FloatMenu(opts));
-                }
-            };
-        }
-
+        /// <summary>0.1.1 (owner walk 2026-11-22, card "All three, now"; design 2.5): ONE "Restyle..." gizmo on a run member and
+        /// on a floor lamp. It asks the reach first (<see cref="ReachMenu"/>: this item, all connected, all on map, each with
+        /// the pieces it will repaint), then the look. RimWorld's float menu has no sub-menus, and a remembered right-click
+        /// mode would be state the player cannot see, so the reach is asked every time.</summary>
         public static Command RestyleGizmo(Building b)
         {
-            var cmd = new Command_Action
-            {
-                defaultLabel = "Restyle this run",
-                defaultDesc = "Repaint this whole run (every conduit cell, switch, pole and bracket connected to it) in another style. Art only: it costs nothing and changes nothing else.\n\n" +
-                              "Floor lamps hooked to the run change with it, unless a lamp was given a different look of its own.",
-                icon = Icon(DefDatabase<ThingDef>.GetNamedSilentFail("PowerConduit") ?? b.def, ConduitStyles.Key(RawLook(b) ?? StylePicker.DefaultLook, RawColour(b))),
-                action = () =>
-                {
-                    var opts = new List<FloatMenuOption>();
-                    ThingDef pc = DefDatabase<ThingDef>.GetNamedSilentFail("PowerConduit");
-                    foreach (string key in MenuKeys(true))
-                    {
-                        string k = key;
-                        opts.Add(new FloatMenuOption(Label(key), () => b.Map?.GetComponent<RM_MapComponent_ConduitRuns>()?.RestyleRun(b, k, true), Icon(pc, key), Color.white));
-                    }
-                    Find.WindowStack.Add(new FloatMenu(opts));
-                }
-            };
-            return cmd;
-        }
-
-        /// <summary>God mode only (owner 2026-11-22): one button that repaints every run and lamp on the map in one look.</summary>
-        public static Command SwitchAllGizmo(Building b)
-        {
+            bool lamp = IsLamp(b.def);
+            string cur = RawLook(b);
             return new Command_Action
             {
-                defaultLabel = "DEV: switch ALL to...",
-                defaultDesc = "God mode: repaint EVERY cable run and floor lamp on this map in one look. Art only.",
-                icon = Icon(DefDatabase<ThingDef>.GetNamedSilentFail("PowerConduit") ?? b.def, ConduitStyles.Key(RawLook(b) ?? StylePicker.DefaultLook, RawColour(b))),
-                action = () =>
-                {
-                    var opts = new List<FloatMenuOption>();
-                    ThingDef pc = DefDatabase<ThingDef>.GetNamedSilentFail("PowerConduit");
-                    foreach (string key in MenuKeys(true))
-                    {
-                        string k = key;
-                        opts.Add(new FloatMenuOption("ALL: " + Label(key), () => b.Map?.GetComponent<RM_MapComponent_ConduitRuns>()?.RestyleAll(k, true), Icon(pc, key), Color.white));
-                    }
-                    Find.WindowStack.Add(new FloatMenu(opts));
-                }
+                defaultLabel = "Restyle...",
+                defaultDesc = "Give this " + b.def.label + " another look (" + (cur ?? (lamp ? "vanilla" : StylePicker.DefaultLook)) + " now). " +
+                              "First choose how far: this item only, everything connected to it, or everything you own on the map. " +
+                              "Art only: it costs nothing and changes nothing else.\n\n" +
+                              "Floor lamps hooked to a run change with it on \"All connected\", unless a lamp wears a look no piece of the run had.",
+                icon = lamp ? Icon(b.def, cur ?? StylePicker.DefaultLook)
+                            : Icon(DefDatabase<ThingDef>.GetNamedSilentFail("PowerConduit") ?? b.def, ConduitStyles.Key(cur ?? StylePicker.DefaultLook, RawColour(b))),
+                action = () => Find.WindowStack.Add(new FloatMenu(ReachMenu(b)))
             };
+        }
+
+        /// <summary>The first menu: the three reaches (ConduitStyles.Reach), each naming what it will repaint.</summary>
+        public static List<FloatMenuOption> ReachMenu(Building b)
+        {
+            var opts = new List<FloatMenuOption>();
+            RM_MapComponent_ConduitRuns runs = b.Map?.GetComponent<RM_MapComponent_ConduitRuns>();
+            if (runs == null) return opts;
+            bool lamp = IsLamp(b.def), god = DebugSettings.godMode;
+            opts.Add(new FloatMenuOption(ConduitStyles.ReachLabel(ConduitStyles.Reach.Item) + ": this " + b.def.label + " only",
+                () => Find.WindowStack.Add(new FloatMenu(LookMenu(b, ConduitStyles.Reach.Item)))));
+            List<Thing> run = lamp ? runs.RunOfLamp(b) : runs.RunOf(b);
+            if (run == null || run.Count == 0)
+                opts.Add(new FloatMenuOption(ConduitStyles.ReachLabel(ConduitStyles.Reach.Connected) + ": not hooked to a cable run", null));
+            else
+            {
+                int lamps = runs.LampsOf(run).Count;
+                opts.Add(new FloatMenuOption(ConduitStyles.ReachLabel(ConduitStyles.Reach.Connected) + ": " + run.Count + " pieces" + (lamps > 0 ? ", " + lamps + " lamps" : ""),
+                    () => Find.WindowStack.Add(new FloatMenu(LookMenu(b, ConduitStyles.Reach.Connected)))));
+            }
+            runs.CountMap(god, out int mp, out int ml);
+            opts.Add(new FloatMenuOption(ConduitStyles.ReachLabel(ConduitStyles.Reach.Map) + ": " + mp + " pieces, " + ml + " lamps" + (god ? " (god mode: every faction)" : " you own"),
+                () => Find.WindowStack.Add(new FloatMenu(LookMenu(b, ConduitStyles.Reach.Map)))));
+            return opts;
+        }
+
+        /// <summary>The second menu: the looks for that reach. A lamp alone takes the four looks and "Match its cable run";
+        /// anything that repaints conduit offers the Modern colour choices too.</summary>
+        public static List<FloatMenuOption> LookMenu(Building b, ConduitStyles.Reach reach)
+        {
+            var opts = new List<FloatMenuOption>();
+            RM_MapComponent_ConduitRuns runs = b.Map?.GetComponent<RM_MapComponent_ConduitRuns>();
+            if (runs == null) return opts;
+            bool lamp = IsLamp(b.def);
+            string cur = RawLook(b), curKey = cur == null ? null : ConduitStyles.Key(cur, IsConduit(b.def) ? RawColour(b) : null);
+            if (lamp && reach == ConduitStyles.Reach.Item)
+            {
+                foreach (string look in AerialStyles.Looks)
+                {
+                    string k = look;
+                    if (StyleFor(b.def, k) == null) continue;
+                    opts.Add(new FloatMenuOption(look + (k == cur ? " (current)" : ""), () => runs.RestyleLamp(b, k, true), Icon(b.def, k), Color.white));
+                }
+                opts.Add(new FloatMenuOption("Match its cable run", () => runs.RestyleLamp(b, RM_MapComponent_ConduitRuns.LampMatchRun, true)));
+                return opts;
+            }
+            ThingDef pc = DefDatabase<ThingDef>.GetNamedSilentFail("PowerConduit");
+            bool piece = reach == ConduitStyles.Reach.Item;
+            foreach (string key in MenuKeys(piece ? IsConduit(b.def) : true))
+            {
+                string k = key;
+                Action act;
+                if (reach == ConduitStyles.Reach.Item) act = () => runs.RestyleOne(b, k, true);
+                else if (reach == ConduitStyles.Reach.Connected) act = lamp ? (Action)(() => runs.RestyleLampRun(b, k, true)) : () => runs.RestyleRun(b, k, true);
+                else act = () => runs.RestyleAll(k, true, DebugSettings.godMode);
+                opts.Add(new FloatMenuOption(Label(key) + (piece && key == curKey ? " (current)" : ""), act, Icon(piece ? b.def : pc, key), Color.white));
+            }
+            return opts;
         }
     }
 
@@ -484,7 +493,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         }
     }
 
-    /// <summary>The "Restyle this run" gizmo on every run member the player owns.</summary>
+    /// <summary>The "Restyle..." gizmo (three reaches, 0.1.1) on every run member and floor lamp the player owns.</summary>
     [RimMandrake.Shared.PatchFeature("Messy cords: conduit run looks", typeof(GimmeSomeSlackSettings), "enabled")]
     [HarmonyPatch(typeof(Building), nameof(Building.GetGizmos))]
     internal static class Patch_Building_GetGizmos_Restyle
@@ -493,10 +502,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         {
             foreach (Gizmo g in __result) yield return g;
             if (!GimmeSomeSlackSettings.enabled || !__instance.Spawned || __instance.Faction != Faction.OfPlayer) yield break;
-            if (ConduitStylePicker.IsMember(__instance.def)) yield return ConduitStylePicker.RestyleGizmo(__instance);
-            else if (ConduitStylePicker.IsLamp(__instance.def)) yield return ConduitStylePicker.RestyleLampGizmo(__instance);
-            if (DebugSettings.godMode && (ConduitStylePicker.IsMember(__instance.def) || ConduitStylePicker.IsLamp(__instance.def)))
-                yield return ConduitStylePicker.SwitchAllGizmo(__instance);
+            if (ConduitStylePicker.IsMember(__instance.def) || ConduitStylePicker.IsLamp(__instance.def)) yield return ConduitStylePicker.RestyleGizmo(__instance);
         }
     }
 

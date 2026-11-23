@@ -758,7 +758,7 @@ def _run_live(args, B, tap):
         time.sleep(0.6)
         c = B.ap("census")
         looks[lk] = {k: c.get(k) for k in ("swayLook", "swayDraws", "swayReason", "wind")}
-    B.ap("set:swayLook=Rope")
+    B.ap("set:swayLook=Gust")                       # back to the shipped default (Gust since 0.1.1)
     B.ap("set:sway=Auto")
     calm = all((v.get("swayReason") or "") == "no wind" for v in looks.values())
     drew = all(v.get("swayLook") == k and (v.get("swayDraws") or 0) > 0 for k, v in looks.items())

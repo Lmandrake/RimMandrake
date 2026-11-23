@@ -206,7 +206,74 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             public string Look;
             /// <summary>Its Modern colour mode over its conduit cells: a colour (uniform), Mix, or null (never stored).</summary>
             public string Colour;
+            /// <summary>0.1.1 (design 2.5): its members draw more than one look, or its Modern conduit more than one colour
+            /// choice (<see cref="LookSet"/>). A mixed run is never repainted by a join.</summary>
+            public bool Mixed;
+            /// <summary>0.1.1: the member of this run that a new piece touches (<see cref="LocalPick"/>; Area 1 = conduit),
+            /// set only when the run is mixed; a new piece built onto a mixed run takes this member's look.</summary>
+            public Run Touch;
             public object Tag;
+        }
+
+        /// <summary>0.1.1 (design 2.5): the looks a run's members DRAW (a member storing no look draws the default) and the
+        /// colour choices its Modern conduit draws (a stored colour, the mix marker, or none). Mixed = more than one of either.
+        /// A switch or pole carries the look alone, so it never counts as a colour.</summary>
+        public sealed class LookSet
+        {
+            private readonly string defaultLook;
+            public readonly HashSet<string> Looks = new HashSet<string>();
+            private readonly HashSet<string> colours = new HashSet<string>();
+            public LookSet(string defaultLook) { this.defaultLook = defaultLook; }
+            public bool Mixed => Looks.Count > 1 || colours.Count > 1;
+
+            public void Add(string storedLook, bool conduit, string storedColour)
+            {
+                string drawn = storedLook ?? defaultLook;
+                Looks.Add(drawn);
+                if (conduit && drawn == "Modern") colours.Add(storedLook == null ? "" : storedColour ?? "");
+            }
+
+            public void AddSet(LookSet other)
+            {
+                Looks.UnionWith(other.Looks);
+                colours.UnionWith(other.colours);
+            }
+        }
+
+        /// <summary>0.1.1 (design 2.5, rule 2): which touched member of a mixed run a new piece takes its look from. A new
+        /// conduit cell prefers a touching conduit cell (it carries the Modern colour); then the oldest (lowest id). -1 = none.</summary>
+        public static int LocalPick(IList<Run> touched, bool newIsConduit)
+        {
+            int best = -1;
+            for (int i = 0; i < touched.Count; i++)
+            {
+                if (best < 0) { best = i; continue; }
+                Run a = touched[i], b = touched[best];
+                bool ac = newIsConduit && a.Area > 0, bc = newIsConduit && b.Area > 0;
+                if (ac != bc) { if (ac) best = i; continue; }
+                if (a.Oldest < b.Oldest) best = i;
+            }
+            return best;
+        }
+
+        /// <summary>0.1.1: how far the style button reaches (owner walk 2026-11-22: "this item" vs "all connected" vs "all on map").</summary>
+        public enum Reach { Item, Connected, Map }
+
+        public static string ReachLabel(Reach r) =>
+            r == Reach.Item ? "This item" : r == Reach.Connected ? "All connected" : "All on map";
+
+        /// <summary>Does a reach repaint this piece? <paramref name="isTarget"/>: the piece the button is on;
+        /// <paramref name="inTargetRun"/>: in the same run as it (the target counts); <paramref name="playerOwned"/>: the player's.
+        /// All connected takes the whole run whoever owns a piece of it (a run is one cable); all on map takes only the
+        /// player's own things, and in god mode every faction's.</summary>
+        public static bool ReachTakes(Reach r, bool isTarget, bool inTargetRun, bool playerOwned, bool godMode)
+        {
+            switch (r)
+            {
+                case Reach.Item: return isTarget;
+                case Reach.Connected: return isTarget || inTargetRun;
+                default: return playerOwned || godMode;
+            }
         }
 
         /// <summary>Only for one synchronous placement batch. Known members share an exact run summary;
@@ -219,9 +286,14 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 public readonly List<T> Members = new List<T>();
                 internal int oldestStyled = int.MaxValue;
                 internal string modernColour;
+                internal LookSet looks;
+
+                internal Group(string defaultLook) { looks = new LookSet(defaultLook); }
 
                 internal void Add(Run member)
                 {
+                    looks.Add(member.Look, member.Area > 0, member.Colour);
+                    Info.Mixed = looks.Mixed;
                     Info.Area += member.Area;
                     Info.Oldest = Math.Min(Info.Oldest, member.Oldest);
                     if (member.Look != null && member.Oldest < oldestStyled)
@@ -237,6 +309,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
                 internal void AddGroup(Group other)
                 {
+                    looks.AddSet(other.looks);
+                    Info.Mixed = looks.Mixed;
                     Info.Area += other.Info.Area;
                     Info.Oldest = Math.Min(Info.Oldest, other.Info.Oldest);
                     if (other.oldestStyled < oldestStyled)
@@ -252,7 +326,12 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             }
 
             private readonly Dictionary<T, Group> known = new Dictionary<T, Group>();
+            /// <summary>The look a member storing none draws (0.1.1: a group reads mixed by DRAWN looks).</summary>
+            public readonly string DefaultLook;
+            public PlacementBatch(string defaultLook = null) { DefaultLook = defaultLook; }
             public void Clear() => known.Clear();
+            /// <summary>The group a known member is in, or null.</summary>
+            public Group GroupOf(T member) => known.TryGetValue(member, out Group g) ? g : null;
 
             public List<Group> Groups(IEnumerable<T> neighbours)
             {
@@ -309,8 +388,10 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
             public void Refresh(Group group, Func<T, Run> describe)
             {
-                var fresh = new Group();
+                var fresh = new Group(DefaultLook);
                 foreach (T member in group.Members) fresh.Add(describe(member));
+                group.looks = fresh.looks;
+                group.Info.Mixed = fresh.Info.Mixed;
                 group.Info.Area = fresh.Info.Area;
                 group.Info.Oldest = fresh.Info.Oldest;
                 group.Info.Look = fresh.Info.Look;
@@ -338,7 +419,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
             public void Remember(IEnumerable<T> members, Func<T, Run> describe)
             {
-                var group = new Group();
+                var group = new Group(DefaultLook);
                 foreach (T member in members) Extend(member, describe(member), group);
             }
         }
@@ -403,6 +484,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         ///   * no neighbouring run: it keeps the style it was built with (none stays none = drawn in the default look);
         ///   * one run: it adopts that run's style whatever the button said;
         ///   * several runs: the largest wins (tie: older), every other run is repainted to it.
+        /// 0.1.1 (design 2.5): only uniform runs settle. A mixed winner repaints nobody and the new piece takes the look of the
+        /// member it touches (<see cref="Run.Touch"/>); a mixed loser is never repainted.
         /// A legacy run (nothing stored) counts as the default look it draws; an unstyled piece (another mod, a quest) joining
         /// only legacy runs writes nothing, and a styled piece or run joining a LARGER legacy run is cleared to legacy (GSS D1).
         /// Under a styled winner, which members are actually written is NeedsWrite's call.
@@ -417,6 +500,16 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             bool anyStyled = ownLook != null;
             foreach (Run r in runs) anyStyled |= r.Look != null;
             if (!anyStyled) return p;                       // all legacy + an unstyled piece: nothing is written
+            if (win.Mixed)
+            {
+                // 0.1.1 (design 2.5, rules 1-2): a mixed winner repaints nobody; the new piece takes the look of the member it
+                // touches (a link has no new piece: Touch is null and nothing is written)
+                Run t = win.Touch;
+                if (t == null) return p;
+                if (t.Look == null) { p.MaterialiseWinner = true; p.Look = defaultLook; p.Colour = null; }
+                else { p.Look = t.Look; p.Colour = t.Area > 0 && t.Look == "Modern" ? t.Colour : null; }
+                return p;
+            }
             if (win.Look == null)
             {
                 p.MaterialiseWinner = true;
@@ -428,6 +521,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             {
                 if (i == w) continue;
                 Run r = runs[i];
+                if (r.Mixed) continue;                      // 0.1.1 rule 1: a mixed loser keeps its looks
                 string rl = r.Look ?? defaultLook;
                 if (rl != p.Look) { p.StylesDiffered = true; p.LoserLook = p.LoserLook ?? rl; }
                 p.Repaint.Add(i);
@@ -511,6 +605,12 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         /// </summary>
         public static bool LampFollowsRun(string lampLook, string runLookBefore, string defaultLook, bool restyle = true, bool foreignStyle = false) =>
             !foreignStyle && (lampLook == null ? restyle : lampLook == (runLookBefore ?? defaultLook));
+
+        /// <summary>0.1.1 (design 2.5, rule 4): the same rule over a run that may be mixed. The lamp follows when it wears a
+        /// look that some member of the run drew before the change (<paramref name="runDrawnLooksBefore"/>, LookSet.Looks), or
+        /// on a Restyle when it stores none. For a uniform run (one drawn look) this equals the overload above.</summary>
+        public static bool LampFollowsRun(string lampLook, ICollection<string> runDrawnLooksBefore, bool restyle, bool foreignStyle) =>
+            !foreignStyle && (lampLook == null ? restyle : runDrawnLooksBefore != null && runDrawnLooksBefore.Contains(lampLook));
 
         /// <summary>GPT pre-release D2: is a floor lamp hooked to a run? Its power connection decides when it has one (wired
         /// to a member of the run, or not hooked at all: wired to another run or any other transmitter); only a lamp with no

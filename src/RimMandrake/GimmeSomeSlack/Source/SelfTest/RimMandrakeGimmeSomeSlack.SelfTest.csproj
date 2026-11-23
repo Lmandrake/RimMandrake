@@ -97,6 +97,7 @@
     <Compile Include="StyleStage1Checks.cs" />
     <Compile Include="..\Aerial\ConduitStyles.cs" />
     <Compile Include="StyleStage2Checks.cs" />
+    <Compile Include="StyleReachChecks.cs" />
     <Compile Include="BatchedLinkStyleMergeChecks.cs" />
     <Compile Include="TheftChecks.cs" />
     <Compile Include="TapWindowChecks.cs" />

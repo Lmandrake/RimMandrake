@@ -31,8 +31,9 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public static int maxStrands = 3;
         public static WireSwayMode sway = WireSwayMode.Auto;
         public static float swayStrength = 1f;
-        /// <summary>How a pole wire swings (owner 2026-11-16, "too stiff"; AerialMath.SwayPose): Rope by default.</summary>
-        public static WireSwayLook swayLook = WireSwayLook.Rope;
+        /// <summary>How a pole wire swings (owner 2026-11-16, "too stiff"; AerialMath.SwayPose): Gust by default (his pick of
+        /// the three at the walk of 2026-11-22: "the Gusts works best for overhead power lines").</summary>
+        public static WireSwayLook swayLook = WireSwayLook.Gust;
         /// <summary>An explosion whose radius reaches a span's ground line cuts it.</summary>
         public static bool explosionsCut = true;
         /// <summary>A kinetic blast (Kinetic Arms' push wave) swings the spans it reaches; it never cuts them (owner Q3).</summary>
@@ -89,7 +90,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             Scribe_Values.Look(ref maxStrands, "maxStrands", 3);
             Scribe_Values.Look(ref sway, "sway", WireSwayMode.Auto);
             Scribe_Values.Look(ref swayStrength, "swayStrength", 1f);
-            Scribe_Values.Look(ref swayLook, "swayLook", WireSwayLook.Rope);
+            Scribe_Values.Look(ref swayLook, "swayLook", WireSwayLook.Gust);
             Scribe_Values.Look(ref explosionsCut, "explosionsCut", true);
             Scribe_Values.Look(ref kineticSway, "kineticSway", true);
             Scribe_Values.Look(ref tapsEnabled, "tapsEnabled", true);
@@ -118,7 +119,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             maxStrands = 3;
             sway = WireSwayMode.Auto;
             swayStrength = 1f;
-            swayLook = WireSwayLook.Rope;
+            swayLook = WireSwayLook.Gust;
             explosionsCut = true;
             kineticSway = true;
             tapsEnabled = true;
@@ -202,8 +203,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             list.Label("How the wires swing");
             foreach (WireSwayLook k in Enum.GetValues(typeof(WireSwayLook)))
                 if (list.RadioButton(k == WireSwayLook.Pendulum ? "   Pendulum (the sag swings out and back as one)" :
-                                     k == WireSwayLook.Rope ? "   Rope (default: the belly wanders, the wire flexes)" :
-                                     "   Gust (leans downwind, ripples travel along the span)", swayLook == k))
+                                     k == WireSwayLook.Rope ? "   Rope (the belly wanders, the wire flexes)" :
+                                     "   Gust (default: leans downwind, ripples travel along the span)", swayLook == k))
                     swayLook = k;
             }
                 list.GapLine();

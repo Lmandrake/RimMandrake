@@ -228,10 +228,10 @@ def ground_station(mk, n, x, look):
         "the tangle: %s" % ("power strips with plugs in the sockets" if modern else "junction boxes with cables in them") +
         " (KNOWN GAP, stage 2: the pile's pieces still follow the DEFAULT look, not the run's)",
         "the battery side of the gap sparks when unpaused (live end), the far side lies limp (dead end); the far lamp is dark",
-        "the three floor lamps are %s lamps (round 6: built in their run's look; 'Restyle this run' repaints them too)" % look]
+        "the three floor lamps are %s lamps (round 6: built in their run's look; 'Restyle... > All connected' repaints them too)" % look]
        + (["one colour along the whole run (built with 'one colour per run'); the 2 cells past the gap are a run of their "
            "own and may carry another colour"] if modern else []),
-       ["select any conduit or the switch: the 'Restyle this run' gizmo repaints the whole run (art only)",
+       ["select any conduit or the switch: the 'Restyle... > All connected' gizmo repaints the whole run (art only)",
         "build one conduit into the gap from the menu in ANOTHER look: it joins the run and takes the run's look "
         "(the larger run wins: here the battery side)", "flick the switch: everything past it goes dark, the cords stay"],
        devs=[("Battery", (0, 3), 0, 1.0), ("Heater", (15, 3), None, None), ("StandingLamp", (2, 6), None, None),
@@ -282,7 +282,7 @@ def stations_style(mk):
        ["each row's poles, lamp mast, bracket and hanging cable are that look's own (the cable falls back for all four: art board M)",
         "two different looks stand side by side on one map: the old global setting could not show this",
         "the spans sag and cast a ground shadow; the lamp masts are lit"],
-       ["select a pole > Restyle this run: the whole row (poles, bracket, spans) changes look",
+       ["select a pole > Restyle... > All connected: the whole row (poles, bracket, spans) changes look",
         "build a new mast near a row from the menu in ANOTHER look: auto-link joins only a run of the SAME look",
         "select a pole > Link wire to a pole of another row: two looks meeting is a merge (the bigger run wins)"],
        devs=[("Battery", (0, 1 + 7 * i), 0, 1.0) for i in range(4)], walls=walls, masts=masts, links=links, style_station=True)
@@ -333,14 +333,14 @@ def stations_style(mk):
     mk(10, "T", 164, 93, 26, 6, "RESTYLE THIS RUN (yours)", "a Scrapper run (battery, conduit, an in-line switch, a lamp) with a "
        "power mast wired into its end and a span to a lamp mast: nothing restyled yet, the button is yours",
        ["before you press anything: every piece is Scrapper, poles and span included"],
-       ["select ANY piece (a conduit cell, the switch, either pole) > 'Restyle this run' > pick a look: the cords, the switch, "
+       ["select ANY piece (a conduit cell, the switch, either pole) > 'Restyle... > All connected' > pick a look: the cords, the switch, "
         "both poles, the span AND the floor lamp all change at once; cost and power do not",
-        "select the lamp > 'Restyle this lamp' > another look: it keeps that look through the next run restyle ('Match its cable run' undoes it)",
+        "select the lamp > 'Restyle... > This item' > another look: it keeps that look through the next run restyle ('Match its cable run' undoes it)",
         "pick Modern > random mix: the colours vary piece to piece along "
         "the run; restyle again and back: the same colours come back", "unpause: nothing reverts"],
        devs=[("Battery", (0, 2), 1, 1.0), ("StandingLamp", (15, 2), None, None)], styled=rs,
        masts=[("RM_AerialMast", (14, 3), None, "Scrapper"), ("RM_AerialLampMast", (24, 3), None, "Scrapper")], links=[(0, 1)],
-       marks=[(8, 0, "select any piece > Restyle this run", "")], style_station=True, lamp_looks={(15, 2): "Scrapper"})
+       marks=[(8, 0, "select any piece > Restyle... > All connected", "")], style_station=True, lamp_looks={(15, 2): "Scrapper"})
     mk(11, "U", 208, 93, 26, 8, "OLDER SAVE: NO STORED LOOK", "conduit, a switch, a lamp and a power mast with a span to a lamp "
        "mast, all built OUTSIDE the menu (as in a save from before this change): nothing stores a look",
        ["everything draws the DEFAULT look (Mod Settings 'Default style', `--style`): the same as before the change",
@@ -470,7 +470,7 @@ def stations_round8(mk):
        ["each run draws its look's cord on soil AND in the water: the waterproof cells are the same cord as the plain ones",
         "in the water the cord dives (Mod Settings 'cords dive under walls and water'): it should not lie on top of the water as if on soil",
         "all four lamps lit"],
-       ["select a cell > Restyle this run: the waterproof run takes any look, like plain conduit",
+       ["select a cell > Restyle... > All connected: the waterproof run takes any look, like plain conduit",
         "Mod Settings > 'Which conduits become cords' > untick Waterproof conduit: these four runs go back to vanilla art"],
        devs=wp_devs + [("StandingLamp", c, None, None) for c in wp_lamps], styled=wp_styled, lamp_looks=wp_lamps,
        terrain=[("WaterShallow", (6, 0, 6, 12))], style_station=True, prev=None)
@@ -908,7 +908,7 @@ SHORT = {1: "Scrapper: plugs, tangle, wall, switch, cut ends", 2: "Industrial: t
          3: "Modern (one colour per run): the same build", 4: "Futuristic: the same build",
          5: "every Modern colour entry, random mix on top", 6: "poles, lamp mast, bracket, spans: one row per look",
          7: "8 Industrial + 4 Modern: the bigger run wins", 8: "5 + 5: the older run wins",
-         9: "deconstruct the middle: both halves keep the look", 10: "select any piece > Restyle this run",
+         9: "deconstruct the middle: both halves keep the look", 10: "select any piece > Restyle... > All connected",
          11: "built outside the menu: draws the DEFAULT look", 12: "cord stubs into a wall and through rock",
          13: "three masts, the second span CUT", 14: "clamp drains THEIR grid into our lamp",
          15: "one pole, many kinds of device, near and far", 16: "crowded electric room, a line overhead",
@@ -924,9 +924,9 @@ SHORT = {1: "Scrapper: plugs, tangle, wall, switch, cut ends", 2: "Industrial: t
 # Round 8 (owner 2026-10-15): every card leads with HOW TO POKE IT and WHAT TO LOOK FOR / THE SUSPECTED WEAK SPOT (that is
 # what finds bugs). One line each; the long Notice / Try lists stay below them on the card.
 CARD = {
-    1: ("flick the switch; Restyle this run; build one conduit into the gap in another look",
+    1: ("flick the switch; Restyle... > All connected; build one conduit into the gap in another look",
          "the tangle's pieces may follow the DEFAULT look, not the run's (known gap); only the battery side of the gap may spark"),
-    2: ("as 1: switch, Restyle this run, fill the gap",
+    2: ("as 1: switch, Restyle... > All connected, fill the gap",
          "Industrial picks a cable kind per net: does the tangle or a cut half pick a different kind?"),
     3: ("as 1; also restyle to random mix and back",
          "the 2 cells past the gap are a run of their own and may take another colour: confusing or fine?"),
@@ -934,7 +934,7 @@ CARD = {
          "fallback pieces (power strip, live end) borrowed from Scrapper: do they jar in Futuristic?"),
     5: ("build one conduit onto a run's end; restyle the blue run to random mix and back",
          "random mix: a colour may change only at a node, never mid-cord; restyling back must bring the same colours back"),
-    6: ("select a pole > Restyle this run; Link wire across to another row",
+    6: ("select a pole > Restyle... > All connected; Link wire across to another row",
          "the span cable has no per-look art (falls back): does each row's wire still read as its look?"),
     7: ("build ONE conduit into the upper row's gap (hover first)",
          "the hover hint must say 'bridges Industrial + Modern runs: Industrial wins' BEFORE the click; the message must name both looks"),
@@ -942,7 +942,7 @@ CARD = {
          "tie goes to the OLDER run: a rebuilt (younger) cell must not make its run count as newer"),
     9: ("deconstruct the marked cell in the upper row",
          "after the split a half may re-pick its Industrial cable kind (the colour-reshuffle bug)"),
-    10: ("select any piece > Restyle this run; then the lamp > Restyle this lamp",
+    10: ("select any piece > Restyle... > All connected; then the lamp > Restyle... > This item",
          "the lamp's own look must survive the next run restyle; 'Match its cable run' must undo it; the span must restyle with the poles"),
     11: ("`--style Cybertek`: this set and 12-30 (not 24) change, 1-10 do not; build one conduit onto it",
          "the build must write the run's look for real; nothing here may change when only the stored looks (1-10) are touched"),
@@ -1024,7 +1024,7 @@ SETTINGS = [
     ("aerial", "keepWiresOnGravship", "True", "wires on a launched gravship stay strung", "no station (needs a gravship launch)"),
     ("aerial", "sway", "Auto", "wire sway: Auto / CPU (always) / Off", "6, 21 (unpause)"),
     ("aerial", "swayStrength", "1.0", "wire sway strength", "6, 21"),
-    ("aerial", "swayLook", "Rope", "how pole wires swing: Pendulum, Rope or Gust", "6, 21"),
+    ("aerial", "swayLook", "Gust", "how pole wires swing: Pendulum, Rope or Gust", "6, 21"),
     ("aerial", "explosionsCut", "True", "explosions cut wires", "13"),
     ("aerial", "kineticSway", "True", "Kinetic Arms push waves swing wires, never cut", "no station (needs a Kinetic Arms push wave)"),
     ("aerial", "shockReach", "All", "live lines shock whoever crosses them: All (floor cord ends too) / Only downed lines / None", "29"),
@@ -1501,7 +1501,7 @@ def keysheet(S, style, live=None):
            "- Build menu: clicking a conduit, switch, pole, lamp mast, wall bracket or floor lamp button opens a menu of four looks "
            "(Scrapper, Industrial, Modern, Futuristic); conduit adds the Modern colour entries (random mix, one colour per run, "
            "orange, green, brown, yellow, blue). The button remembers your last pick.",
-           "- 'Restyle this run' sits on any selected conduit, switch or pole: it repaints the whole run (art only, free).",
+           "- 'Restyle... > All connected' sits on any selected conduit, switch or pole: it repaints the whole run (art only, free).",
            "- A run = connected conduit cells + switches + the poles and brackets wired into them. Batteries and machines end a "
            "run. Joining two runs of different looks: the run with more conduit cells wins; a tie goes to the older run.",
            "- Mod Settings > RimMandrake: Gimme Some Slack: master switch OFF restores vanilla conduit art instantly.",
@@ -1586,7 +1586,7 @@ th{color:var(--teal)}td.fb{color:var(--rust)}td.own{color:var(--muted)}
 </style></head><body>
 <h1>Gimme Some Slack &mdash; human review</h1>
 <p class="sub">Reviewing the <b>per-build style</b> design: the look is picked on the build button and stored on each piece. Stations 1&ndash;10 stand side by side in four looks. Default look (station 11 and the stations 12&ndash;30 but 24, which store no look): <b>%s</b>; change it in Mod Settings &rsaquo; Default style. The game is paused, god mode on, clear weather, noon, Peaceful.</p>
-<div class="box" style="margin-top:14px"><b>Everywhere:</b> each build button opens a four-look menu (conduit adds the Modern colours: random mix, one colour per run, orange, green, brown, yellow, blue) and remembers your pick. 'Restyle this run' sits on any selected conduit, switch or pole. Joining two looks: the run with more conduit cells wins, a tie goes to the older run. Master switch OFF = vanilla conduit art. Unpause for motion.</div>
+<div class="box" style="margin-top:14px"><b>Everywhere:</b> each build button opens a four-look menu (conduit adds the Modern colours: random mix, one colour per run, orange, green, brown, yellow, blue) and remembers your pick. 'Restyle... > All connected' sits on any selected conduit, switch or pole. Joining two looks: the run with more conduit cells wins, a tie goes to the older run. Master switch OFF = vanilla conduit art. Unpause for motion.</div>
 %s
 <h2>Mod Settings &mdash; one switch each</h2><p class="sub">Global: they change every station at once. Flip one live with <code>human_review.py --set gss.FIELD=VALUE</code> / <code>--set aerial.FIELD=VALUE</code>, or in Mod Settings &rsaquo; Gimme Some Slack.</p>
 <div class="tw"><table><tr><th>setting</th><th>shipped</th><th>what it does</th><th>where to look</th></tr>%s</table></div>

@@ -130,8 +130,8 @@ the conduit grid is the truth and the run is worked out from it.
 | A new piece touching **one** run | It adopts that run's style, whatever the button says. The placement cursor shows "joins Industrial run", so nothing is a surprise |
 | A new piece bridging **two runs of different styles** | Owner question 2. Recommended: the older run's style wins, and the other run is repainted to match, with a message naming both styles |
 | A run split by deconstruction, a fire or an explosion | Each half keeps the style it already has. Every cell carries the style, so nothing needs to be decided |
-| Restyling a run that already exists | Owner question 3. Recommended: a free "Restyle this run" gizmo on any selected conduit or pole that repaints the whole run. It changes art only, never cost or function |
-| An overhead span | It draws in its run's style. A span always lies inside one run, so a span with mixed styles cannot exist |
+| Restyling a run that already exists | A free "Restyle" gizmo on any selected conduit, switch, pole, bracket or floor lamp. Since 0.1.1 it asks first how far to reach (this item, all connected, all on map), then which look (section 2.5). It changes art only, never cost or function |
+| An overhead span | It draws in its run's style. Since 0.1.1 a pole can be restyled alone (section 2.5), so the two ends of a span can differ: the span then draws the look of the end whose run has more conduit cells, a tie going to the older end (`ConduitStyles.SpanLook`) |
 | A pole placed within reach of poles of another style | Auto-link only links to a run of the **same** style. Linking two styles by hand is the same as bridging two runs (question 2) |
 | Hose reel, hose, nozzle and end piece | The reel is its own building with its own style. The hose takes the reel's style. A hose is not part of a power run |
 | Power-tap clamp | It takes the style of the run it brings power home to. (It keeps its single crude art until the other three exist.) |
@@ -142,6 +142,52 @@ the conduit grid is the truth and the run is worked out from it.
 flood fill over the touching run, done once per placement, not per frame). The cord graph then reads each piece's
 style from the cells it is drawn between. Because the whole run already carries one style, it can never disagree
 with itself. Repainting writes the style field on every member of the run, then rebuilds that run's cords.
+
+### 2.5 Three reaches and mixed-look runs (Design Version 0.1.1)
+
+The owner, at his walk of 2026-11-22: *"I think we may want a single option (perhaps a right click menu on the style
+button) that select between "this item" vs "all connected" vs "all on map.""* By card (2026-11-22, "All three, now")
+he accepted that "this item" ends the rule that a run always settles to one look.
+
+**The button.** The "Restyle" gizmo opens a float menu of three reaches. Each reach names how many pieces it will
+repaint. Picking a reach opens the menu of looks (on a run member: the four looks and the Modern colour choices; on a
+floor lamp: the four looks and "Match its cable run"). RimWorld's float menu has no sub-menus, and a right-click mode
+on the gizmo would be state the player cannot see, which is the kind of surprise he met. So the reach is asked every
+time, first, with its piece count beside it.
+
+| Reach | On a run member | On a floor lamp |
+|---|---|---|
+| This item | that one conduit cell, switch, pole or bracket; nothing else changes | that lamp only |
+| All connected | the whole run, and the lamps that follow it (the rule below) | the run the lamp is hooked to, and that run's following lamps; absent when the lamp is hooked to no run |
+| All on map | every run member and floor lamp on the map that the player owns | the same |
+
+In god mode, "All on map" reaches every faction's pieces too. The separate god-mode button "DEV: switch ALL to..." is
+removed: the menu now does what it did.
+
+**A mixed run.** A run is *mixed* when its members draw more than one look, or its Modern conduit cells draw more than
+one colour choice (a stored colour, the mix marker, or none). A member that stores no look draws the default look. Only
+"this item" makes a mixed run on purpose. A run that is not mixed is *uniform*. Every run before 0.1.1 is uniform, and
+"one colour per run" (Modern multicolour) paints a uniform run, so everything below leaves such runs as they were.
+
+The rule, in five lines:
+
+1. **A join** (a new piece, a span or a restring that connects two runs) repaints a losing run only when the winner
+   and that loser are both uniform. The winner is the run with the most conduit cells, a tie going to the older run, as
+   before. A mixed run is never repainted by a join, and a uniform run that loses to a mixed one keeps its look.
+2. **A new piece built onto a run** takes the look of a uniform run, as before. Built onto a mixed run (or bridging
+   into one that wins), it takes the look of the member of the winning run that it touches: a touching conduit cell
+   first when the new piece is conduit, otherwise the oldest touching member. That member's colour comes with it when
+   both are conduit. A touched member that stores no look makes the new piece store none.
+3. **"All connected"** repaints every member of the run to the chosen look, so a mixed run becomes uniform again.
+4. **A lamp follows its run** on "all connected" when it wears a look that some member of the run drew before the
+   change, or when it stores no look. For a uniform run this is the rule of round 6 unchanged. A lamp wearing a look
+   that no member drew was styled on purpose and keeps it. "This item" on a run member never moves a lamp.
+5. **Load, split and save** need nothing new: every member carries its own look, and loading never runs the rule.
+
+The placement cursor says what a piece will take: "joins Industrial run" on a uniform run, "joins a mixed-look run:
+takes the look it touches (Industrial)" on a mixed one, and on a bridge it names the winner and which runs keep their
+looks. Pure rules: `ConduitStyles.Mixed`, `PlanPlacement`, `LocalPick`, `LampFollowsRun` (the overload over the
+looks the run drew). Checks: `Source/SelfTest/StyleReachChecks.cs`.
 
 ### 2.4 What the global Mod Setting becomes
 
