@@ -85,9 +85,13 @@ def fauna_defs(done_dir: Path) -> list:
     return sorted(out)
 
 
-def judged_jobs(recs) -> set:
+NO_VERDICT = ("HOLD_ERROR",)
+NO_VERDICT_FAUNA = ("HOLD_ERROR", "HOLD_CANVAS")     # a fauna candidate is fitted to its canvas (fauna_drive.shipping_png)
+
+
+def judged_jobs(recs, no_verdict=NO_VERDICT) -> set:
     """artpipe job ids that have a verdict in a production run. HOLD_ERROR (429, timeout) is no verdict."""
-    return {r.get("artpipe_job") for _, r in recs if r.get("artpipe_job") and r.get("decision") != "HOLD_ERROR"}
+    return {r.get("artpipe_job") for _, r in recs if r.get("artpipe_job") and r.get("decision") not in no_verdict}
 
 
 def unjudged_specs(spec_paths, judged: set) -> list:
@@ -745,7 +749,7 @@ def cmd_run(a) -> int:
            HERE, log, timeout=1800)     # hang guard: a def's first spec is built here (about 20 s each)
         rf = cand_dir / "ready.txt"
         ready = [x for x in rf.read_text().split() if x] if rf.is_file() else []
-        ready = unjudged_specs(ready, judged_jobs(RS.production_decisions(STATE / "runs")))
+        ready = unjudged_specs(ready, judged_jobs(RS.production_decisions(STATE / "runs"), NO_VERDICT_FAUNA))
     budget = a.max_subjects
     fauna_specs, facing = ready[:budget], owed["facing"][:max(0, budget - len(ready[:budget]))]
     st["picked"] = {"fauna": [Path(x).name for x in fauna_specs], "facing": [k for k, _ in facing]}

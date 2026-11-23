@@ -218,6 +218,46 @@ def stored_png(job: str):
     return AL.store_path(sha) if sha and AL.store_has(sha) else None
 
 
+FIT = R.storage_root() / "fauna_fit"
+
+
+def shipping_png(job: str, draw):
+    """The job's render on the shipping canvas of drawSize `draw`: itself, or a copy brought down by a whole factor (area
+    average, premultiplied alpha; the same bytes every time, so the installer's judged-sha check holds). A render on any
+    other canvas comes back as it is. The October renders came at 1024 and were held for their canvas for good."""
+    p = job_png(job)
+    rule = P.canvas_rule(draw)
+    if p is None or rule is None:
+        return p
+    sys.path.insert(0, str(HERE.parent))
+    import image_skills
+    image_skills.add_to_path()
+    import pnglib
+    w, h, rgba = pnglib.read_png(str(p))
+    if w != h or w <= rule or w % rule:
+        return p
+    out = FIT / f"{job}_{rule}.png"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    tmp = out.with_suffix(".tmp")
+    pnglib.write_rgba(str(tmp), rule, rule, bytes(pnglib.resize_rgba(w, h, bytes(rgba), rule, rule)))
+    tmp.replace(out)
+    return out
+
+
+def off_canvas(pngs: dict, draw):
+    """Why these renders are not on the shipping canvas, or None (also when the size is unknown)."""
+    rule = P.canvas_rule(draw)
+    if rule is None:
+        return None
+    bad = []
+    for f, p in sorted(pngs.items()):
+        head = Path(p).read_bytes()[:24]
+        wh = (int.from_bytes(head[16:20], "big"), int.from_bytes(head[20:24], "big"))
+        if wh != (rule, rule):
+            bad.append(f"{f} {wh[0]}x{wh[1]}")
+    return f"canvas not {rule}x{rule}: {', '.join(bad)}" if bad else None
+
+
 def job_stem(defname: str, tg: str) -> str:
     """The artpipe job id stem of the def's round `tg`. A first pass whose candidate was named "live" filed its redraw as
     arteval_<DEF>__live_<tag> until the job id followed the series tag (2026-10-28): six such renders waited a month
@@ -279,8 +319,13 @@ def cmd_candidates(a):
                 print(f"{d}: {why} - no candidate")
                 continue
         s = json.loads(base.read_text())
-        imgs = {f: str(p) for f, p in pngs.items()}
         sz = s["size"]["drawSize"][0]
+        pngs = {f: shipping_png(f"{stem}_{f}", sz) for f in pngs}
+        off = off_canvas(pngs, sz)
+        if off:
+            print(f"{d}: {off} - no candidate")     # the runner would hold it at every pass
+            continue
+        imgs = {f: str(p) for f, p in pngs.items()}
         cp = out / "panels" / f"{d}_{tg}_scale.png"
         SP.render_panel(pngs["east"].read_bytes(), {"kind": "animal", "drawSize": (sz, sz)}, cp,
                         out / "panels" / f"{d}_{tg}_scale_full.png")
@@ -305,9 +350,9 @@ def production():
 
 
 def judged_set(recs) -> set:
-    """(subject, candidate) pairs that have a verdict. HOLD_ERROR is a transport failure (429, timeout), not a
-    verdict: the candidate stays owed and the next pass judges it again."""
-    return {(r["subject"], r.get("candidate")) for _, r in recs if r.get("decision") != "HOLD_ERROR"}
+    """(subject, candidate) pairs that have a verdict. HOLD_ERROR is a transport failure (429, timeout) and HOLD_CANVAS a
+    render of the wrong size (shipping_png fits it now): neither looked at the picture, so the candidate stays owed."""
+    return {(r["subject"], r.get("candidate")) for _, r in recs if r.get("decision") not in ("HOLD_ERROR", "HOLD_CANVAS")}
 
 
 CAND_TAG = re.compile(r"^(?:s\d+)?r\d+$")        # a candidate's own tag (r2, s2r1); a first pass is None or "live"
@@ -414,7 +459,7 @@ def cmd_install(a):
     locals_ = {}
     for fl in files:
         f = fl["face"]
-        src = job_png(f"{job_stem(a.defname, tg)}_{f}")
+        src = shipping_png(f"{job_stem(a.defname, tg)}_{f}", (spec.get("size") or {}).get("drawSize"))
         if not src:
             print(f"{a.defname}: {f} has no render - nothing installed (a partial set would mix two pictures)")
             return 1

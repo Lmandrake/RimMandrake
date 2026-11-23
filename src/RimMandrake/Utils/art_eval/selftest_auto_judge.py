@@ -42,6 +42,9 @@ def main():
             ("audit_t", {"subject": "RM_C", "decision": "ACCEPT"})]
     jj = AJ.judged_jobs(recs)
     check("judged_jobs: a verdict counts, HOLD_ERROR and job-less records do not", jj == {"arteval_RM_A_r2_n"}, jj)
+    hc = [("f", {"subject": "RM_D", "artpipe_job": "arteval_RM_D_r1", "decision": "HOLD_CANVAS"})]
+    check("a canvas hold is a verdict for a facing row and none for a fauna candidate",
+          AJ.judged_jobs(hc) == {"arteval_RM_D_r1"} and AJ.judged_jobs(hc, AJ.NO_VERDICT_FAUNA) == set())
     check("hold_errors lists the subjects", AJ.hold_errors([r for _, r in recs]) == ["RM_B"])
 
     # ---- facing rows: per-view subject keys come from the driver's state, never from a name scan

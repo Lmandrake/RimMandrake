@@ -85,6 +85,35 @@ def main():
             FD.ART, FD._STORED = saved, None
             os.environ.pop("ARTSTORE", None)
 
+    # a render on a whole multiple of the shipping canvas is brought down to it; any other size is named, never sent on
+    with tempfile.TemporaryDirectory() as td:
+        sys.path.insert(0, str(HERE.parent))
+        import image_skills
+        image_skills.add_to_path()
+        import pnglib
+        big, odd, right = Path(td) / "big.png", Path(td) / "odd.png", Path(td) / "right.png"
+        for f, n in ((big, 1024), (odd, 700), (right, 256)):
+            pnglib.write_rgba(str(f), n, n, bytes([9, 8, 7, 255]) * (n * n))
+        saved, FD.job_png = FD.job_png, lambda j: {"big": big, "odd": odd, "right": right}.get(j)
+        saved_fit, FD.FIT = FD.FIT, Path(td) / "fit"
+        try:
+            got = FD.shipping_png("big", [2.0, 2.0])
+            check("1024 for a 256 canvas is brought down to 256", pnglib.read_png(str(got))[:2] == (256, 256), got)
+            first = got.read_bytes()
+            got.unlink()
+            check("the same picture gives the same bytes (the installer matches the judged sha)",
+                  FD.shipping_png("big", [2.0, 2.0]).read_bytes() == first)
+            check("a right-sized render is itself", FD.shipping_png("right", [2.0, 2.0]) == right)
+            check("a size that is no whole multiple stays itself", FD.shipping_png("odd", [2.0, 2.0]) == odd)
+            check("a size that cannot be fitted is named before the judge",
+                  "odd 700x700" in (FD.off_canvas({"odd": odd, "south": right}, 2.0) or "")
+                  and FD.off_canvas({"south": right}, 2.0) is None and FD.off_canvas({"odd": odd}, None) is None)
+            check("no render is None", FD.shipping_png("none", [2.0, 2.0]) is None)
+        finally:
+            FD.job_png, FD.FIT = saved, saved_fit
+    check("a canvas hold is no verdict: the candidate stays owed",
+          FD.judged_set([("r", {"subject": "D", "candidate": "r1", "decision": "HOLD_CANVAS"})]) == set())
+
     # ARTEVAL_FILE_REGENS_JOBID_FIX_SERIES_TAG: a candidate judged under an adopted non-fauna run counts; an
     # unadopted audit run does not; a HOLD_ERROR (transport failure, no verdict) is not "judged"
     with tempfile.TemporaryDirectory() as td:
