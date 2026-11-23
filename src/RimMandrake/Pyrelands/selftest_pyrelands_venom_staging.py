@@ -368,7 +368,8 @@ def run_scene(V, game):
         session = Session()
 
         def _declare_fixture(self, pid, name=None):   # the suite's: the safe_advance stop rule's own-pawn list
-            game.declared.add(pid)
+            if hasattr(game, "declared"):
+                game.declared.add(pid)
 
         def bridge_call(self, tool, **kw):
             return game.call(tool, **kw)

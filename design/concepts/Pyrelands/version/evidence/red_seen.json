@@ -131,16 +131,16 @@
   "test_blob": "a2db853aca26cabcb82fc6e4d3df9586ee47e704"
  },
  "T_VENOM_STAGING": {
-  "at": "2026-11-23T08:20:47Z",
+  "at": "2026-11-23T09:07:37Z",
   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_venom_staging.py",
   "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_venom_staging.py",
-  "last": "selftest_pyrelands_venom_staging: 2 of 42 checks failed",
-  "patch": "--- a/src/RimMandrake/Pyrelands/validation.py\n+++ b/src/RimMandrake/Pyrelands/validation.py\n@@ -3592,7 +3592,7 @@\n     UNMEASURED, never a FAIL against the mod. HARNESS (Pyrelands visit 6, 2026-11-22, ArchSmall): the flamefang never bit\n     (the bite row UNMEASURED), and venom_rises_untreated read [None] * 7 and failed 'fewer than 3 readable severities'.\n     A bite with no venom is the bite row's own FAIL.\"\"\"\n-    return not [s for s in series or () if s is not None]\n+    return False   # PLANTED: the guard never fires\n \n \n def venom_rises(series, min_rise=0.02):\n",
+  "last": "selftest_pyrelands_venom_staging: 1 of 43 checks failed",
+  "patch": "--- a/src/RimMandrake/Pyrelands/validation.py\n+++ b/src/RimMandrake/Pyrelands/validation.py\n@@ -3758,8 +3758,6 @@\n             bid = _spawn_wild(t, biter_kind, bx, bz)\n             # HARNESS (visit 6, 2026-11-22, ArchSmall): undeclared, the wait-out's own biter stopped the advance as a\n             # 'hostile_arrival' 60 ticks in; the biter is this test's own pawn (selftest_pyrelands_venom_staging.py)\n-            if bid and hasattr(t, \"_declare_fixture\"):\n-                t._declare_fixture(bid, biter_kind)\n             biters.append(bid)\n             m = t.bridge_call(\"jawa/pawn_mental\", pawn=bid, action=\"start\", state=\"ManhunterPermanent\")\n             if not (m or {}).get(\"success\"):\n",
   "patch_files": [
    "src/RimMandrake/Pyrelands/validation.py"
   ],
-  "patch_sha": "b4696ec6ee7fbc1a",
+  "patch_sha": "97d6d57336bd10f4",
   "rc": 1,
-  "test_blob": "c510d950cade50d656d9c7482f6f9ed40873be5a"
+  "test_blob": "cdbddc13a5f546d70c835a15e462e99f4ace0bfa"
  }
 }
