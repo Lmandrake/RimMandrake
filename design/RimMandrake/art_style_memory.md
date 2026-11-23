@@ -1,14 +1,13 @@
 # Art style memory: what the owner likes, learned from his overrides
 
-Kept by The Artist (`src/RimMandrake/rimflow/roles/artist.md`), updated at the end of every Artist run. It records what his
-overrides show, so that a style question gets an answer that cites him. It is not a constraint file: the Opus judge does not
-read it, and it decides no verdict. A line here reaches the pipeline only through `ledger.py fix` and `runner.py regress`.
+A reference for the art judge (`.claude/agents/rm-judge.md` lists it). It records what his overrides show, so that a style
+question gets an answer that cites him. It is not a constraint file, and it decides no verdict. A line here reaches the pipeline only through `ledger.py fix` and `runner.py regress`.
 
 Every line cites a criteria-ledger id (`infrastructure/state/art_eval/criteria_ledger.jsonl`) or a ruling. Lines beginning
-`> CL-nnn:` are his words, copied verbatim; `selftest_artist_role.py` checks each one against the ledger.
+`> CL-nnn:` are his words, copied verbatim from the ledger.
 
-**Studied through:** CL-045. Seeded 2026-11-01 from the ledger, 45 entries. No Artist run has happened yet: this seed is the
-builder's reading. The first run re-reads it against the ledger and may strike any of it.
+**Studied through:** CL-045. Seeded 2026-11-01 from the ledger, 45 entries. This seed is the builder's reading; no later run has
+re-read it against the ledger.
 
 ## How to answer a style question
 

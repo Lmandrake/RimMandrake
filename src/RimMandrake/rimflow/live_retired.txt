@@ -26,3 +26,5 @@ hook=bench_mode.py              # no belt and no second seat; conductor_goodbye.
 unit=rm-codebase-health.timer   # the older clean/dirty page; CODEBASE_NOW replaced it (the Conductor, 2026-11-23, census Table 2 row 10)
 unit=testq-sweep.timer          # the nightly full FlowWorks sweep on SteveDesktop (the Conductor, 2026-11-23, census Table 2 row 6)
 unit=steve-cpu-retest.timer     # the retest ended END_FAULT 2026-11-01 (the Conductor, 2026-11-23, census Table 1)
+unit=rm-agent-improve.timer     # the daily agent-improvement pass, stopped by his card 2026-11-23 (RIMMANDRAKE_ENACT_HIS_CARD_ARTIST_DAILY_PASS_SKILL_CARDS_RETIRED)
+unit=rm-agent-improve.service     # the daily agent-improvement pass, stopped by his card 2026-11-23 (RIMMANDRAKE_ENACT_HIS_CARD_ARTIST_DAILY_PASS_SKILL_CARDS_RETIRED)

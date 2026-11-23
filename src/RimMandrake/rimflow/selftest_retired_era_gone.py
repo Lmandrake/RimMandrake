@@ -78,9 +78,10 @@ MASKED = ("masked", "masked-runtime")
 
 # --- Retired roles: name -> whose word. A role that comes back needs its owner's word and its entry here removed.
 RETIRED_ROLES = {"Innovator": "the owner, 2026-11-23", "Producer": "the owner, 2026-11-23", "Auditor": "the owner, 2026-11-23",
+                 "Artist": "the owner by card, 2026-11-23",
                  "Arbiter": "CONCEPT_LOCK_UNBLOCK_SIGNER_NEVER_CALLED",
                  "Setter": "RIMMANDRAKE_RETIRE_SETTER_ARBITER_SEAMS_EVERY_LAUNCH_REFUSED"}
-COMMON_WORDS = ("Producer", "Auditor", "Arbiter", "Setter")   # plain English in lower case ("a pipe producer")
+COMMON_WORDS = ("Producer", "Auditor", "Artist", "Arbiter", "Setter")   # plain English in lower case ("a pipe producer")
 NOT_THE_ROLE = (("skills/telemetry/SKILL.md", "Producer writes JSONL"),)    # any program that writes a series
 ROLE_LIVE_TOO = ("src/RimMandrake/Utils/findings_judge_prompt.md", "src/RimMandrake/Utils/findings_judge_friday.md")
 ROLE_PATHS = ("src/", ".claude/", "skills/", "infrastructure/agents/")
@@ -304,7 +305,7 @@ def probes():
                      {SCHEDULE: clean, ROLE_FILES[2]: "role=Operations max_age=3d\n"},
                      [("CLAUDE.md", "The Innovator role was retired 2026-11-23.\nGet inventive. Innovate.\n`INNOVATOR_X_Y` is closed.\n")])
          == [], "the idea list, a closed item, an id and a line that says retired are not remnants")
-    for name in ("Producer", "Auditor"):
+    for name in ("Producer", "Auditor", "Artist"):
         back = json.dumps({"golive": {"roles": []}, "roles": [{"name": name, "enabled": False}]}, indent=1)
         want(any("a row of roles" in x for x in check_roles([], {SCHEDULE: back}, [])), f"a planted {name} schedule row is a remnant")
         want(check_roles([f"src/RimMandrake/rimflow/roles/{name.lower()}.md"], {}, []) != [], f"a returned {name} role file is a remnant")
@@ -356,6 +357,7 @@ def text_problems(paths):
 CENSUS = "the Conductor, 2026-11-23, retire census"
 RETIRED_PATHS = (                     # fnmatch globs of tracked paths
     ".claude/hooks/bench_mode.py", "infrastructure/state/MODE",
+    "src/RimMandrake/Utils/*agent_improve*", "infrastructure/state/agent_improve/*",    # the owner by card, 2026-11-23
     "final.md", "claude_sha.txt", ".bridge.eld", "GLOBAL_CLAUDE.md", "Fable_Review/*", "src/RimMandrake/rimflow/docs/*",
     "infrastructure/agents/POLICY.md", "infrastructure/agents/REP.md", "infrastructure/agents/CODEX_PROPOSAL_*",
     "infrastructure/REFRESH.md", "infrastructure/state/queue/HUMAN.md",
@@ -368,13 +370,15 @@ RETIRED_PATHS = (                     # fnmatch globs of tracked paths
     "src/RimMandrake/Utils/prove_scratch_reap_refused_day.py", "src/RimMandrake/Utils/codebase_health_publish.py", "src/RimMandrake/Utils/codebase_health_artifact.tmpl.html",
 )
 RETIRED_UNITS = (                     # unit file names; a tracked copy in the one home, or an installed unmasked one
+    "rm-agent-improve.timer", "rm-agent-improve.service",
     "steve-cpu-retest.timer", "steve-cpu-retest.service", "testq-sweep.timer", "testq-sweep.service",
     "rm-codebase-health.timer", "rm-codebase-health.service", "rm-dispatcher.timer", "rm-ops-watch.timer",
     "rm-ops-watch.service", "rm-restart-reconcile.timer", "rm-restart-reconcile.service",
 )
 RETIRED_WORDS = (                     # regexes refused on a live instruction line that does not say "retired"
     r"\bbench_mode\.py\b", r"infrastructure/state/MODE\b", r"\bGOAL_SHEET\.md\b", r"queue/HUMAN\.md\b", r"\bGLOBAL_CLAUDE\.md\b",
-    r"\bproject_maturity_dashboard\b", r"\bcodebase_health_publish\b", r"\b(testq-sweep|rm-codebase-health|steve-cpu-retest)\b",
+    r"\bproject_maturity_dashboard\b", r"\bcodebase_health_publish\b", r"\bagent_improve|rm-agent-improve\b",
+    r"daily agent[- ]improvement", r"\b(testq-sweep|rm-codebase-health|steve-cpu-retest)\b",
 )
 UNIT_HOME = "src/RimMandrake/Utils/systemd/"
 

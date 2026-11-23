@@ -271,7 +271,6 @@ OWNER_ONLY = {
     "src/RimMandrake/Utils/ops_core/ops_ledger.py": "display of whose event it was, authorizes nothing",
     "src/RimMandrake/Utils/artpipe/fill_queue.py": "verifies a recorded card ruling of his (evidence), authorizes nothing new",
     "src/RimMandrake/Utils/rimflow_metrics.py": "counts provenance, authorizes nothing",
-    "src/RimMandrake/Utils/agent_improve.py": "reads his words from the ledger, authorizes nothing",
     "src/RimMandrake/rimflow/conductor_closeout.py": "reads his words from the ledger, authorizes nothing",
     "src/RimMandrake/rimflow/wrapup.py": "never releases his OWNER bridge hold at an agent's end (owner by card "
                                          "2026-10-30); authorizes nothing",

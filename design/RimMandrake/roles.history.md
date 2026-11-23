@@ -257,6 +257,10 @@ Auditor fold lessons weekly.
 
 The owner, 2026-11-23: *"Those are old v3 roles we retired! V3 and relentless was supposed to be retired. Get those out if active rules. The codex versions of modern roles though are valuable for when we need to burn their tokens instead."* Both files were deleted (`git show 2a9009e7ec:src/RimMandrake/rimflow/roles/producer.md`, `…/auditor.md`); item `RIMMANDRAKE_REMOVE_RETIRED_V3_ROLES_FROM_ACTIVE_RULES_STILL_LISTED`.
 
+## artist.md: the role is retired, 2026-11-23
+
+The owner by card, 2026-11-23: "Retire it, keep style memory". It never ran. His words that made it, 2026-11-01: *"(3) because your point about learning from the overrides and being able to ask key questions about art style is important. Currently that's trapped inside skills, but it really belongs in an agent role that's evolving and improving. The Artist. Responsible only for art generation. Reports to the Conductor. Oversees the Art pipeline. Already exists today as "an opus judge" in the existing pipeline. Please keep as much of the current pipeline functionality: it's working pretty well, so this agent is simply a codification of what's happening today."* `artist.md` was deleted (`git show ecd2092b44:src/RimMandrake/rimflow/roles/artist.md`); `design/RimMandrake/art_style_memory.md` stays. Item `RIMMANDRAKE_ENACT_HIS_CARD_ARTIST_DAILY_PASS_SKILL_CARDS_RETIRED`.
+
 ## innovator.md: the role is retired, 2026-11-23
 
 The owner, 2026-11-23: *"Role is retired."* `innovator.md` was deleted (`git show 2a9009e7ec:src/RimMandrake/rimflow/roles/innovator.md`); item `RIMMANDRAKE_RETIRE_INNOVATOR_ROLE_HE_FORGOT_IT_WAS_THERE`.

@@ -6,7 +6,7 @@ Item: `RIMMANDRAKE_REWRITE_RULE_DOCS_PLAIN_ENGLISH_LOSE_NOTHING`. Run 1, 2026-11
 ## The plan in short
 
 - The plan has 17 batches. Each batch has a name. No two batches edit one file. So the batches can run at the same time.
-- One batch is done: the worked example, `src/RimMandrake/rimflow/roles/artist.md`.
+- One batch is done: the worked example, `src/RimMandrake/rimflow/roles/artist.md` (deleted 2026-11-23, the role is retired).
 - Each batch writes with Opus. A fresh Opus reader then compares old and new text for meaning.
 - Each batch runs two no-loss checks, the STE lint and the tests that read its files.
 - The worked example showed one thing that the checks do not see. The first draft changed the meaning of 3 lines.
@@ -144,7 +144,7 @@ inside code" below.
 These files are in no batch:
 
 - `CLAUDE.md` (see `claude_md_review.md`);
-- `roles/artist.md` (done);
+- `roles/artist.md` (done; deleted 2026-11-23, the role is retired);
 - `design/RimMandrake/CLAUDE.history.md` (a history file);
 - the 10 dated fact files;
 - the two `Fable_Review/rewrites/` files;
@@ -205,7 +205,7 @@ how to behave, so the owner's request covers it. A change to that text is a code
   helper reads that footer.
 - The Conductor decides if this group is in the scope of the item.
 
-## The worked example: `src/RimMandrake/rimflow/roles/artist.md`
+## The worked example: `src/RimMandrake/rimflow/roles/artist.md` (deleted 2026-11-23, the role is retired)
 
 The Artist role file is a mid-size role file: 8,374 bytes. No calibration row and no packet hash binds it. One test
 reads it (`src/RimMandrake/rimflow/selftest_artist_role.py`).

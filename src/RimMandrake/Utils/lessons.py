@@ -23,8 +23,7 @@ lesson. `LESSONS_INBOX.md` is a gitignored rendered view (listed in .gitignore, 
 tracked): rebuilt by `render` on demand; never edit it — an edit there is lost on
 the next render. A lesson's last line may be `home: <skill|doc path|NONE>`, its
 proposed durable home. Before it may come `item: <ID|NONE>`, the item the lesson was learned on: --item, else the
-session's item from the environment (RIMFLOW_ITEM, which close_evidence also reads). The daily agent-improvement pass reads a lesson's task kind from it (design
-daily_agent_improvement_2026-11-02.md 4.3). Only the footer counts: the `item:`/`home:` lines at the end of the file,
+session's item from the environment (RIMFLOW_ITEM, which close_evidence also reads). Only the footer counts: the `item:`/`home:` lines at the end of the file,
 never a line of that shape inside the lesson text.
 """
 import argparse
@@ -38,7 +37,7 @@ ROOT = os.environ.get("LESSONS_ROOT") or os.path.dirname(os.path.dirname(os.path
 DIR = os.path.join(ROOT, "infrastructure", "state", "lessons")
 VIEW = os.path.join(ROOT, "infrastructure", "state", "LESSONS_INBOX.md")
 ITEM_ENV = ("RIMFLOW_ITEM",)
-ITEM_ID = re.compile(r"[A-Z][A-Z0-9]*(?:_[A-Z0-9]+){2,}")   # agent_improve.ITEM_TOKEN's grammar: three words or more
+ITEM_ID = re.compile(r"[A-Z][A-Z0-9]*(?:_[A-Z0-9]+){2,}")   # three words or more
 README = "README.md"
 
 

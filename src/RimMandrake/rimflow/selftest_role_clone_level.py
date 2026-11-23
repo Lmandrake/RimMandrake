@@ -219,20 +219,20 @@ def t_a_clone_is_made_under_a_hidden_name_and_renamed():
 
     def fake_scratch(argv, env=None, **kw):
         dest = os.path.join(env["RM_SCRATCH_ROOT"], env["RM_SEAT"], argv[argv.index("--name") + 1])
-        seen.append((dest, os.path.exists(RC.clone_of("Artist"))))
+        seen.append((dest, os.path.exists(RC.clone_of("DesignerCodex"))))
         os.makedirs(os.path.join(dest, ".git"))
         return subprocess.CompletedProcess(argv, 0, dest + "\n", "")
 
     def half(argv, env=None, **kw):
         os.makedirs(os.path.join(env["RM_SCRATCH_ROOT"], env["RM_SEAT"], argv[argv.index("--name") + 1], ".git"))
         return subprocess.CompletedProcess(argv, 1, "", "fetch failed")
-    ok, said = RC.ensure("Artist", runner=fake_scratch)
-    made = (ok and os.path.isdir(os.path.join(RC.clone_of("Artist"), ".git")) and len(seen) == 1
+    ok, said = RC.ensure("DesignerCodex", runner=fake_scratch)
+    made = (ok and os.path.isdir(os.path.join(RC.clone_of("DesignerCodex"), ".git")) and len(seen) == 1
             and not RC.is_role_clone(seen[0][0]) and not seen[0][1] and not os.path.exists(seen[0][0]))
-    shutil.rmtree(RC.clone_of("Artist"))
-    os.makedirs(os.path.join(RC.part_of("Artist"), ".git"))      # a make killed half-way
-    ok2, said2 = RC.ensure("Artist", runner=half)
-    check(made and not ok2 and not os.path.exists(RC.clone_of("Artist")) and not os.path.exists(RC.part_of("Artist")),
+    shutil.rmtree(RC.clone_of("DesignerCodex"))
+    os.makedirs(os.path.join(RC.part_of("DesignerCodex"), ".git"))      # a make killed half-way
+    ok2, said2 = RC.ensure("DesignerCodex", runner=half)
+    check(made and not ok2 and not os.path.exists(RC.clone_of("DesignerCodex")) and not os.path.exists(RC.part_of("DesignerCodex")),
           "a-clone-is-made-under-a-hidden-name-and-renamed", "%s | %s | %s" % (seen, said, said2))
 
 

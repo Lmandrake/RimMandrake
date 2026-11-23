@@ -299,19 +299,19 @@ is running).
    - (f) **report:** append 3-5 lines to `D:\ClaudeWork\rimmandrake\conductor\log.md`. Write the local time, what you
      found and what you filed (with item ids). Also write what the window should raise with him first. If an
      input was missing, write `UNMEASURED` in its place. The log is the report of the check. The window reads the last 40 lines of the log at wake.
-   - (g) **new-skill proposals** (owner, 2026-10-29: *"This is a good thing to discuss with the user and a positive
-     outcome."*):
-     - A large doc or the unowned lessons can point at a new skill. Such a pointer is a proposal.
-     - Bring each proposal to him on a question card (`question-card`). Frame it as good news: the docs have grown
-       enough to earn a skill.
-     - The card gives the proposed name and trigger, what moves in, and the size before and after. The choices are
-       yes / not yet / merge or trim instead.
-     - Never handle a proposal silently. Do not drop or build any proposal without his answer. His own words ask for
-       this discussion; that is the Evidence-for-Ask evidence (CHARTER §Decisions).
-     - Record his answer as a note on the item of the proposal, with the right provenance flag.
-     - Elevation proposals (owner, 2026-10-29: skill to MandrakeWorkflows, rule to Lodestar's user-level `CLAUDE.md`)
-       come the same way, as a positive discussion item. Give what would move, where, why it is general, and the
-       choices yes / not yet / keep it in the project. The move touches other repos. So it happens only on his yes.
+   - (g) **skill and tool proposals** (owner, 2026-10-29: *"This is a good thing to discuss with the user and a positive
+     outcome."*; his card, 2026-11-23: "Weekly, in one report"):
+     - A proposal is a new skill, or a move of a skill or tool up to the user-level tools. A large doc or the unowned
+       lessons can point at a new skill.
+     - Each proposal goes in the weekly Crystallize report. It is not a daily card. Full rule:
+       `design/RimMandrake/standing_rulings.md` §The weekly Crystallize pass improves the agents.
+     - The report gives, for each proposal, its name, what moves, why it is general, and the measured evidence.
+     - Never handle a proposal silently. Do not drop or build any proposal without his answer. A move touches other
+       repos, so it happens only on his yes. Record his answer as a note on the item of the proposal, with the right
+       provenance flag.
+     - First entry owed: `RIMMANDRAKE_PROPOSE_PROSE_CHECK_TO_USER_TOOLS_BELOW_TWELVE`, the move of the write-time
+       guiding prose check (`src/RimMandrake/Utils/guiding_prose.py`) to the user-level tools. It enters the report when
+       the false-alarm rate of its model reader is lower than the 12% measured on 2026-11-23.
 4. Quick mode does not build, test or deploy. Quick mode never takes the bridge.
 
 ## Session mode (he is here)

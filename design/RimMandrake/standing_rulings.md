@@ -2104,6 +2104,23 @@ This is the list as the root `CLAUDE.md` carried it until 2026-11-19, word for w
 - **Dumps and harvests decay** (owner, 2026-08-27): trust one only after its fingerprint
   matches the live mod set; the frozen `official` dump is the sole design target.
 
+## The weekly Crystallize pass improves the agents and carries the skill proposals — owner, 2026-11-02, 2026-10-29, by card 2026-11-23
+
+Crystallize is the consolidation pass (the `crystallize` skill of MandrakeWorkflows). For this project it has two jobs.
+
+- **It improves the agents and the skills.** His words, 2026-11-02: *"Every day we should ask if each agent can be
+  improved based on our evidence. That's the beauty of making them agents. Same with reusable skills not agent
+  specific."* By his card of 2026-11-23 ("Stop it, weekly does it") the weekly pass does this work. The daily improvement
+  pass was deleted. Each pass asks, for each role file and each skill, if the evidence since the last pass improves it.
+- **It carries the skill and tool proposals.** His words, 2026-10-29: *"This is a good thing to discuss with the user and
+  a positive outcome."* By his card of 2026-11-23 ("Weekly, in one report") a proposal for a new skill, or for a move of a
+  skill or tool up to the user-level tools, goes in the weekly report, not on a daily card. Each entry gives its name,
+  what moves, why it is general, and the measured evidence. He decides each one. First entry owed:
+  `RIMMANDRAKE_PROPOSE_PROSE_CHECK_TO_USER_TOOLS_BELOW_TWELVE`.
+- The report is `CYCLE_REPORT.md` in `D:\ClaudeWork\rimmandrake\conductor\crystallize_<year>W<week>\`.
+- Measured 2026-11-23: the pass runs and applies edits, but it has not been weekly. Its last two runs were 31 days apart
+  (2026-10-19 and 2026-11-19). `RIMMANDRAKE_REVIVE_WEEKLY_CRYSTALLIZE_RAN_31_DAYS_APART` holds the repair.
+
 ## Sittings with the owner keep the advanced-zoom mod — owner, 2026-11-03
 
 *"there was a standing rule that the advanced zoom capabilities were always to be included in mod lists where the human sat with Conductor, so I can zoom in and study things."* Any mod list built for a sitting with him includes it.

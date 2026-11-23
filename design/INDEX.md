@@ -827,7 +827,6 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `convenience_replacements.md` | Convenience/automation mods: what we keep by building it ourselves | 📜 names a retired era |
 | `csuite_brief_2026-10-26.md` | The integrator layer — the owner's brief, verbatim (2026-10-26, ~19:40 PDT) | — |
 | `csuite_design_2026-10-26.md` | The C-suite layer: what sits above Bench and Foundry (design, 2026-10-26) | 📜 names a retired era |
-| `daily_agent_improvement_2026-11-02.md` | Daily agent improvement pass (and the transfer audit that motivated it) | 📜 names a retired era |
 | `debug_process.md` | How we debug — debug through the script, leave the harness behind | — |
 | `debug_process_proposal.md` | — | — |
 | `deepfire_luminous_pigment_spec.md` | Deepfire — luminous pigment mod (`LuminousPigment`) — design spec | 📜 names a retired era |

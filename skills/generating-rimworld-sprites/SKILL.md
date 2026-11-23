@@ -418,10 +418,9 @@ More traps for this section: [references/traps.md](references/traps.md) § Befor
 
 Full validation plan (PROVE/EXPECT/LIES, how sprite checks lie, worked example): `references/validation-plan.md`.
 
-## Who owns this
+## What he has shown that he likes
 
-Art generation answers to The Artist (`src/RimMandrake/rimflow/roles/artist.md`). What the owner has shown that he likes
-is in `design/RimMandrake/art_style_memory.md`. This skill stays the how-to until the role proves out.
+What the owner has shown that he likes is in `design/RimMandrake/art_style_memory.md`. It is a reference, not a constraint.
 
 ## Reference
 

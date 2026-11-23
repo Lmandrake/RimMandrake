@@ -77,7 +77,7 @@ with tempfile.TemporaryDirectory() as root:
     run(root, "add", "tau eight quoted at the end\nitem: WIDGET_REPAIR_SHAPE", "--item", "GADGET_BUILD_FRAME", "--distinct", "fixture")
     run(root, "add", "omega five", "--home", "foo", RIMFLOW_ITEM="not an id; rm -rf")
     check("a malformed session item is ignored", "item:" not in body_of("omega-five"), body_of("omega-five"))
-    for bad in ("lower_case", "GADGET_BUILD"):   # two words is not an item id (agent_improve.ITEM_TOKEN needs three)
+    for bad in ("lower_case", "GADGET_BUILD"):   # two words is not an item id (three are needed)
         r = run(root, "add", "omega six " + bad, "--item", bad)
         check("a malformed --item refused: " + bad, r.returncode != 0 and "not an item id" in (r.stderr + r.stdout), r.stderr)
     sys.path.insert(0, HERE)

@@ -2568,14 +2568,14 @@ def test_golive_b3_wave1_config():
     check(not wave1_problems(real), "B3 the shipped schedule is within its go-live set: %s" % (wave1_problems(real),))
     on = wave1_base(real)
     check(not wave1_problems(on), "B3 Conductor + Operations enabled is within wave 1")
-    for name in ("Designer", "Artist"):
+    for name in ("Designer", "DesignerCodex"):
         x = copy.deepcopy(on)
         next(r for r in x["roles"] if r["name"] == name)["enabled"] = True
         check(wave1_problems(x) == ["role %s must stay disabled (go-live set: Conductor/Operations)" % name],
               "B3 %s enabled is refused" % name)
         del next(r for r in x["roles"] if r["name"] == name)["enabled"]
         check(wave1_problems(x), "B3 %s with no enabled key is refused (only an explicit false passes)" % name)
-    check({r["name"] for r in real["roles"]} >= set(WAVE1_ROLES) | {"Designer", "Artist"},
+    check({r["name"] for r in real["roles"]} >= set(WAVE1_ROLES) | {"Designer", "DesignerCodex"},
           "B3 the probe roles exist in the schedule")
     for seat in sorted(real["seats"]):
         x = copy.deepcopy(on)
@@ -2601,9 +2601,9 @@ def test_golive_trial_set_from_schedule():
     x["golive"]["roles"].append("Designer")
     check(not wave1_problems(x), "TN Designer enabled AND listed in golive.roles passes (the trial flip): %s"
           % (wave1_problems(x),))
-    next(r for r in x["roles"] if r["name"] == "Artist")["enabled"] = True
-    check(wave1_problems(x) == ["role Artist must stay disabled (go-live set: Conductor/Operations/Designer)"],
-          "TN listing Designer does not let Artist through: %s" % (wave1_problems(x),))
+    next(r for r in x["roles"] if r["name"] == "DesignerCodex")["enabled"] = True
+    check(wave1_problems(x) == ["role DesignerCodex must stay disabled (go-live set: Conductor/Operations/Designer)"],
+          "TN listing Designer does not let DesignerCodex through: %s" % (wave1_problems(x),))
     y = copy.deepcopy(base)
     y["seats"]["FOUNDRY"] = {"enabled": True, "wake": True, "recover_dead": False, "session_name": "AGENT FOUNDRY", "clone": "/home/mandrake/rm/foundry", "model": "sonnet"}      # a worker seat: the live schedule has none since 2026-11-02
     y["seats"]["FOUNDRY"]["recover_dead"] = True
