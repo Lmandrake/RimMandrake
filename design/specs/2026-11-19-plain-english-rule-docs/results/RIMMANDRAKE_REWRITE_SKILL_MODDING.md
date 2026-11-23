@@ -10,11 +10,11 @@ Also: skills/rimworld-modding/references/history.md
 
 | measure | before | after |
 |---|---|---|
-| bytes | 29,064 | 39,839 |
-| words in linted prose | 3,657 | 5,324 |
-| STE violations per 100 words | 4.32 | 2.03 |
-| sentences over 20 words | 68 | 46 |
-| flagged lines (mechanical) | 36 | 32 |
+| bytes | 29,064 | 40,118 |
+| words in linted prose | 3,657 | 5,370 |
+| STE violations per 100 words | 4.32 | 1.99 |
+| sentences over 20 words | 68 | 47 |
+| flagged lines (mechanical) | 36 | 28 |
 | lines that a cold reader cannot act on (hand count, by the writer) | 35 | 0 |
 
 The long sentences that stay are of four kinds: two short sentences that the lint joined at a bold lead; a sentence that holds a
@@ -71,6 +71,8 @@ engine claims in the local 1.6 decompile.
 The same reader then read each repair and each reference edit. It found nothing significant and three minor lines: the research
 recursion is conditional, `measure` is not on each PATH, and one reference line was too broad. The writer repaired the three.
 No reader read those three repairs or the new ticket.
+After the first landing (adc323949a), the prose check of `./publish` named 10 lines: pronouns, one "should", two undefined
+names. The writer repaired them. No reader read those lines. "roster name" now means a name in the `<wildAnimals>` list.
 
 ## Conflicts and stale lines: settled
 

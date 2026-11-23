@@ -125,7 +125,7 @@ Hot reload means that the running game reads its defs again, without a restart. 
 **The replacement is the minimal-list restart, and that restart costs almost nothing.**
 
 - Deploy the XML. Restart on the minimal list. Read the field back.
-- The restart took **22 seconds** on the 13-mod list of 2026-08-19. A quicktest world adds ~5 s. That is now the cycle for tier-b work.
+- The restart took **22 seconds** on the 13-mod list of 2026-08-19. A quicktest world adds ~5 s. The minimal-list restart is now the cycle for tier-b work.
 - Hot reload looked worth having only because it saved a load. The minimal list has almost no load to save.
 
 **Why it was retired — measured, on the full 589-mod list, 2026-09-03:**
@@ -170,7 +170,7 @@ Work down this ladder. Stop at the first tier that can do the job:
 
 - **The rule of thumb: bake what must be TRUE, script what must be PLACED, run live only what must CHANGE.**
 - If a value never varies during a playthrough, the value belongs in tier b. No exception.
-- Do not take C# because XML feels weak. That is the most common overbuild in this domain.
+- Do not take C# because XML feels weak. C# in place of XML is the most common overbuild in this domain.
 
 ⚠️ **Prove that a comp exists before you scope tier b around the comp:** `grep -rln "CompProperties_<Name>" "$RW/Data"`. `$RW` is the RimWorld folder. Zero hits means that no vanilla def uses a comp of that name.
 
@@ -199,8 +199,8 @@ Put each operation inside a `PatchOperationConditional` that tests for the exact
 **The shape of XML**
 
 - **Take a field's SHAPE from a shipped def, never from a spec or a sample.** A spec names fields; a def defines shapes. A plain list uses `<li>`. A field keyed by def uses the def name as the element name (`<wildBiomes><Desert>0.3</Desert>`). The C# type of the field decides, so the shape is the same in every mod. (A true C# `Dictionary` is a third shape: `<li><key>…</key><value>…</value></li>`.)
-- **An `<li>` in a field keyed by def makes the engine discard the entire parent def.** This is the most destructive mistake in this document. The def worked before you touched it, and no log line names the def. The sign is `No Verse.WeatherDef named li found`, under many later errors.
-  - `validate_patch.py` catches this in `Patches/`. It cannot catch this in a `Defs/` file that you author.
+- **An `<li>` in a field keyed by def makes the engine discard the entire parent def.** An `<li>` there is the most destructive mistake in this document. The def worked before you touched it, and no log line names the def. The sign is `No Verse.WeatherDef named li found`, under many later errors.
+  - `validate_patch.py` catches this in `Patches/`. The validator cannot catch such an `<li>` in a `Defs/` file that you author.
 - **A mis-CASED enum value discards the whole target def, exactly like the `<li>` mistake.** The parse is case-sensitive: `water` is not `Water`. The log has at most one line, `Exception loading def from file …`, and no def name. A generator must refuse an unknown or wrongly cased member.
 - **Match the def's XML ELEMENT NAME, not `ThingDef`.** The loader reads the element name as the C# type. So `/Defs/ThingDef[…]` misses a `<VFEPirates.WarcasketDef>`. Only the XML of the mod tells you the element name. The def dump never does.
 - **XML comments cannot contain a double hyphen.** `--` anywhere inside `<!-- -->` is a hard parse error. The error takes the whole file. Use `===` for rules, and `→` or `to` for arrows. Never replace `->` across a file: that breaks each `-->`.
@@ -292,7 +292,7 @@ If you fix a scattered order by hand, you treat the symptom. The mod manager sor
 
 - **→ `skills/rimworld-start-prep/SKILL.md` owns this**: `userRules.json`, `loadAfter` vs `loadBottom`, Refresh-reads/Save-writes, and why a rule keyed by `packageId` is orphaned by a rename.
 - 🔴 You never block on the mod manager. `ModsConfig.xml`, load order and user rules are writable with the game up or down (owner, 2026-08-15). Only **assemblies** wait.
-- 🔴 **`<loadAfter>` is an ordering hint and is INVISIBLE to dependency closure.** If a mod SUPPLIES a class or a texture that your mod references, put that mod in `<modDependencies>`. A tool that builds a reduced list walks `<modDependencies>`. It drops a mod that only `<loadAfter>` names. A missing comp type then discards the whole def that carries the comp, with no error that names the def.
+- 🔴 **`<loadAfter>` is an ordering hint and is INVISIBLE to dependency closure.** If a mod SUPPLIES a class or a texture that your mod references, put that mod in `<modDependencies>`. A tool that builds a reduced list walks `<modDependencies>`. Such a tool drops a mod that only `<loadAfter>` names. A missing comp type then discards the whole def that carries the comp, with no error that names the def.
 
 → mechanism and the incident behind this: `references/load-order.md`.
 
@@ -308,7 +308,7 @@ Author in the project repo. Deploy a copy to the game. Never edit in place under
 - `-` lines and `--pull`;
 - `DEPLOY_HOLD.txt`;
 - the minimum viable mod folder;
-- which game the deploy writes to (ArchBig or ArchSmall).
+- which game the deploy writes to (ArchBig is Steam's install, the owner's game with his full mod list; ArchSmall is a second install with its own `Mods` folder).
 
 Enable a compatibility patch LAST in load order, after the mods that it patches. Then restart the game.
 
@@ -352,7 +352,7 @@ Do not `grep` this log first. Run `python3 src/RimMandrake/Utils/harvest_log.py 
 
 Use C# only when tier (c) is truly required (§3). Then read `references/csharp-and-loading.md`. That file covers the Harmony patch types, the entry-point classes with their required constructor signatures, and `LoadFolders.xml`. Two constructor rules cause a large share of the "mod does nothing" reports:
 
-- A `GameComponent` needs a **public constructor taking `(Game game)`**. Without that constructor, `Game.FillComponents` catches a `MissingMethodException`, logs one line (`Could not instantiate a GameComponent of type …`) and continues. The component never exists. This is worse than a crash, because the feature appears to work and has no consequences.
+- A `GameComponent` needs a **public constructor taking `(Game game)`**. Without that constructor, `Game.FillComponents` catches a `MissingMethodException`, logs one line (`Could not instantiate a GameComponent of type …`) and continues. The component never exists. The missing component is worse than a crash, because the feature appears to work and has no consequences.
 - A `Mod` subclass needs `(ModContentPack content)`.
 
 🔴 **Every mod we ship carries a real Mod Settings screen** (owner ruling, 2026-09-12, `MOD_OPTIONS_RETROFIT_1`). The rule applies to each future mod, not only to a retrofit pass. The screen has:
@@ -377,7 +377,7 @@ The code is the standard `Mod` + `ModSettings`:
 
 **C# builds work from WSL; do not believe "this WSL machine cannot compile the .csproj".**
 
-- Build with `python3 src/RimMandrake/Utils/winbuild.py <Mod|csproj>`. Any subagent brief that touches C# must state this command. The false "can't compile from WSL" claim ships C# that nobody built. It is the most common false claim of subagents.
+- Build with `python3 src/RimMandrake/Utils/winbuild.py <Mod|csproj>`. Any subagent brief that touches C# must state this command. The false "can't compile from WSL" claim ships C# that nobody built. That claim is the most common false claim of subagents.
 - `winbuild.py` stages the mod on the Windows drive, builds with Windows dotnet, and copies the DLL and its `.srchash` back as a pair. Commit that pair together. The Windows `dotnet.exe` cannot build from a `\\wsl.localhost` path, so do not call `dotnet.exe` on a clone directly.
 - There is no Visual Studio, NuGet CLI or .NET Framework targeting pack, and none is needed. The SDK is user-local at `C:\Users\Mandrake\.dotnet\dotnet.exe` (no admin, not on PATH). `C:\Program Files\dotnet` is runtime-only and does not build.
 - `net472` targeting comes from the `Microsoft.NETFramework.ReferenceAssemblies` NuGet package.
@@ -402,7 +402,7 @@ The code is the standard `Mod` + `ModSettings`:
 - **The trap files are `references/traps-*.md`.** Open the one topic file that matches what you are about to do: patches, tooling, art, the mod stack, or diagnosis. Do not read all five. All five cost about 35k tokens.
 - **If you are already running, do not reread — take the delta.** `python3 src/RimMandrake/Utils/whats_new.py --seat <SEAT>` prints what changed, in a few lines. Run this command when the game loads.
 - **After any RimWorld task, ask: did anything here surprise me?** If yes, file a lesson: `python3 src/RimMandrake/Utils/lessons.py add "…" --home <the topic file>`. Keep the lesson short: what it looked like, what was actually true, what worked.
-- ⚠️ **Most candidate lessons should be REJECTED.** A lesson stays only if the lesson is specific, non-obvious, RimWorld-bound and still true. General software or process advice is not a trap.
+- ⚠️ **Reject most candidate lessons.** A lesson stays only if the lesson is specific, non-obvious, RimWorld-bound and still true. General software or process advice is not a trap.
 - A lesson can change what *this file* says to do by default. Then that lesson belongs here, not in a trap file. Name this file as its `--home`.
 - A fresh-context curation session moves the lessons into the skill. Do not edit a skill outside such a session (`skills/README.md`). An edit of `skills/rimworld-modding/` in this repo is the installed text.
 - 🔴 **Never number an entry, and never cite one by number, line or heading.** Say "as per the trap file" and stop.
@@ -441,4 +441,4 @@ External, when the references above do not cover the question:
 
 - **`src/RimMandrake/Utils/animal_inventory.py` selects an animal by its OWN `<race>` element.** A ThingDef that inherits its whole `<race>` block from an abstract parent is dropped in silence.
 - Two examples are RM_Drommath and RM_Ollareth: both read 'no def in the load set'.
-- So any census built on animals.csv undercounts such animals. Select by roster name, and then read the RESOLVED race.
+- So any census built on animals.csv undercounts such animals. Select each animal by the name in the biome's roster (its `<wildAnimals>` list). Then read the RESOLVED race of that def (after inheritance).
