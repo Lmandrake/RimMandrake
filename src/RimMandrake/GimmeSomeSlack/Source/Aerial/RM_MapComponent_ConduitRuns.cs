@@ -407,6 +407,39 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             map.GetComponent<RM_MapComponent_CordGraph>()?.Notify_SettingsChanged();
         }
 
+        /// <summary>God mode "DEV: switch ALL to" (owner 2026-11-22): repaint every run member and every floor lamp on this
+        /// map in one look, the player's and other factions' alike, to compare the looks across a whole review map. A lamp
+        /// in another mod's style is left alone; "one colour per run" picks a colour for each run. Returns pieces changed.</summary>
+        public int RestyleAll(string key, bool message)
+        {
+            ProcessPending();
+            bool multi = key == ConduitStyles.Key("Modern", ConduitStyles.Multi);
+            string look, colour = null;
+            if (multi) look = "Modern";
+            else if (!ConduitStyles.TryParseKey(key, out look, out colour)) return 0;
+            int before = repainted, runCount = 0, lampsChanged = 0;
+            var seen = new HashSet<Thing>();
+            var lampList = new List<Thing>();
+            foreach (Thing t in map.listerThings.AllThings.ToList())
+            {
+                if (t == null || !t.Spawned) continue;
+                if (ConduitStylePicker.IsLamp(t.def)) { lampList.Add(t); continue; }
+                if (!ConduitStylePicker.IsMember(t.def) || seen.Contains(t)) continue;
+                List<Thing> run = RunOf(t);
+                runCount++;
+                string c = multi ? ConduitStyles.Colours[Rand.Range(0, ConduitStyles.Colours.Length)] : colour;
+                foreach (Thing m in run) { if (seen.Add(m) && ConduitStylePicker.IsMember(m.def)) Paint(m, look, c, true); }
+                seen.Add(t);
+            }
+            foreach (Thing l in lampList) if (!ForeignStyled(l) && SetStyle(l, look)) lampsChanged++;
+            restyles++;
+            Finish();
+            int n = repainted - before;
+            lastMessage = "DEV: switched ALL to " + ConduitStylePicker.Label(key) + ": " + runCount + " runs, " + n + " pieces changed, " + lampsChanged + " of " + lampList.Count + " lamps changed.";
+            if (message && Current.ProgramState == ProgramState.Playing) Messages.Message(lastMessage, MessageTypeDefOf.SilentInput, historical: false);
+            return n + lampsChanged;
+        }
+
         /// <summary>The free "Restyle this run" (owner 2026-10-04): repaint the whole run t belongs to. "One colour per run"
         /// picks one random colour for the whole run. Returns the number of members changed.</summary>
         public int RestyleRun(Thing t, string key, bool message)

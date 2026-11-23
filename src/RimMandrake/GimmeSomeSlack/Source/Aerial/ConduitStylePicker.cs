@@ -347,6 +347,28 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             };
             return cmd;
         }
+
+        /// <summary>God mode only (owner 2026-11-22): one button that repaints every run and lamp on the map in one look.</summary>
+        public static Command SwitchAllGizmo(Building b)
+        {
+            return new Command_Action
+            {
+                defaultLabel = "DEV: switch ALL to...",
+                defaultDesc = "God mode: repaint EVERY cable run and floor lamp on this map in one look. Art only.",
+                icon = Icon(DefDatabase<ThingDef>.GetNamedSilentFail("PowerConduit") ?? b.def, ConduitStyles.Key(RawLook(b) ?? StylePicker.DefaultLook, RawColour(b))),
+                action = () =>
+                {
+                    var opts = new List<FloatMenuOption>();
+                    ThingDef pc = DefDatabase<ThingDef>.GetNamedSilentFail("PowerConduit");
+                    foreach (string key in MenuKeys(true))
+                    {
+                        string k = key;
+                        opts.Add(new FloatMenuOption("ALL: " + Label(key), () => b.Map?.GetComponent<RM_MapComponent_ConduitRuns>()?.RestyleAll(k, true), Icon(pc, key), Color.white));
+                    }
+                    Find.WindowStack.Add(new FloatMenu(opts));
+                }
+            };
+        }
     }
 
     // ---------------------------------------------------------------------- patches
@@ -473,6 +495,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             if (!GimmeSomeSlackSettings.enabled || !__instance.Spawned || __instance.Faction != Faction.OfPlayer) yield break;
             if (ConduitStylePicker.IsMember(__instance.def)) yield return ConduitStylePicker.RestyleGizmo(__instance);
             else if (ConduitStylePicker.IsLamp(__instance.def)) yield return ConduitStylePicker.RestyleLampGizmo(__instance);
+            if (DebugSettings.godMode && (ConduitStylePicker.IsMember(__instance.def) || ConduitStylePicker.IsLamp(__instance.def)))
+                yield return ConduitStylePicker.SwitchAllGizmo(__instance);
         }
     }
 
