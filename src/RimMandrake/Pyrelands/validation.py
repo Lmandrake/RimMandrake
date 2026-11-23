@@ -3587,6 +3587,14 @@ def hediff_severity(row, hediff):
     return best
 
 
+def venom_never_read(series):
+    """Pure. True when no hourly reading holds venom at all: the rises row then has no patient to read, and is
+    UNMEASURED, never a FAIL against the mod. HARNESS (Pyrelands visit 6, 2026-11-22, ArchSmall): the flamefang never bit
+    (the bite row UNMEASURED), and venom_rises_untreated read [None] * 7 and failed 'fewer than 3 readable severities'.
+    A bite with no venom is the bite row's own FAIL."""
+    return not [s for s in series or () if s is not None]
+
+
 def venom_rises(series, min_rise=0.02):
     """Hourly venom severities -> (ok, why). Rising = the last reading clearly above the first and no reading
     falls more than noise. Untreated venom climbs +0.35/day (RM_FlamefangVenom), ~0.087 over six hours. Pure."""
@@ -3811,6 +3819,9 @@ def flamefang_venom(t):
             _venom_wait(t, 2500)
         if _live(t):
             _note(t, "venom severity each hour", series)
+            if venom_never_read(series):
+                _unmeasured(t, "no hour read any %s on the bite row's colonist: that row's bite was not answered, so "
+                               "whether venom rises untreated could not be asked" % VENOM)
             ok, why = venom_rises(series)
             if not ok:
                 _fail(why)

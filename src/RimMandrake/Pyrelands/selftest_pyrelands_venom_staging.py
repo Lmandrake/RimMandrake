@@ -527,6 +527,15 @@ def main():
                 ("one read only", [0.2], [0.2], False)):
             ok, why = f(te, un)
             check("tended_rises_less: %s -> %s" % (what, want), ok is want, why)
+    # HARNESS (visit 6, 2026-11-22): a bite row with no bite left venom_rises_untreated reading [None] * 7, and it FAILed the
+    # mod; with no venom read at all the rises row is UNMEASURED (venom_never_read), a bite with no venom is the bite row's FAIL
+    nr = getattr(V, "venom_never_read", None)
+    check("venom_never_read exists", nr is not None)
+    if nr is not None:
+        for what, series, want in (("seven unreadable hours (no bite)", [None] * 7, True), ("no reading", [], True),
+                                   ("venom read once", [None, 0.17, None], False), ("venom rising", [0.17, 0.19, 0.21], False),
+                                   ("venom read as 0.0", [0.0, None], False)):
+            check("venom_never_read: %s -> %s" % (what, want), nr(series) is want, repr(series))
     bad = RESULTS.count(False)
     print("%s: %d of %d checks failed" % (NAME, bad, len(RESULTS)))
     return 1 if bad else 0
