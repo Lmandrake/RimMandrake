@@ -290,7 +290,7 @@
    ],
    "id": "T_SETTINGS_SCREEN",
    "kind": "offline",
-   "command": "python3 src/RimMandrake/Utils/selftest_settings_screens.py",
+   "command": "python3 src/RimMandrake/Utils/selftest_settings_screens.py --mod ExplosiveKnockback",
    "runs_today": {
     "ran": true,
     "rc": 1,
