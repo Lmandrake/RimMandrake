@@ -10,9 +10,9 @@ Also: skills/rimworld-load-round/references/history.md
 
 | measure | before | after |
 |---|---|---|
-| bytes | 26,955 | 32,224 |
-| words in linted prose | 3,596 | 4,433 |
-| STE violations per 100 words | 4.31 | 1.87 |
+| bytes | 26,955 | 32,400 |
+| words in linted prose | 3,596 | 4,452 |
+| STE violations per 100 words | 4.31 | 1.86 |
 | sentences over 20 words | 71 | 34 |
 | flagged lines (mechanical) | 27 | 26 |
 | lines that a cold reader cannot act on (hand count, by the writer) | 12 | 0 that this run could resolve; 3 listed under "Could not determine" |
@@ -81,7 +81,8 @@ manifest (§8), one remedy for two guards (§4, the bridge gate read in `model.p
 new §6 heading; the heading stays word for word, because other files cite it, and the text below it now says what the
 announcement is. No reader read these last repairs. They are: the guards bullet (§4), the announcement bullet (§6), the two
 exit code 2 sentences (§8), the preflight bullet (§9), the Steam, "already running" and `--instance` sentences (§10), the
-`harvest_log.py` comment, and one refusal sentence of `modset_builder.py`.
+`harvest_log.py` comment, and one refusal sentence of `modset_builder.py`. The prose check of `./publish` then named 9 lines (7 pronouns, the beggars
+patch, "the ledger stamp"). All are repaired in a second landing. No reader read those either.
 
 ## Conflicts and stale lines: settled
 

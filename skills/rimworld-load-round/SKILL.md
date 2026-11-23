@@ -90,14 +90,14 @@ you: write the config, restart through Steam, poll, and grep the verdicts.
   packageIds goes on top.
 - The tool launches, waits and prints the standing failure counts: `config_errors`, `crossref_errors`, `patch_failed`,
   `typeload`, `recovery_hits`. You do not watch the load.
-- `sweep_load.sh` stops and starts ArchBig only. It refuses a shell that means ArchSmall.
+- `sweep_load.sh` stops and starts ArchBig only. The script refuses a shell that means ArchSmall.
 
 ⚠️ **Poll `"Bridge token:"` in `Player.log`, not the JawaBench ready line.**
 
 - `Bridge token:` is written at bridge start. `Bridge token:` is the correct ready signal on ArchBig.
 - ArchSmall writes a port line (`GABP server connected to GABS on port`) and no token line. `logwait.py` takes both.
 - The JawaBench "ready" line is not a ready signal. Before 2026-10-10 that line appeared only on the FIRST tool call, so a
-  wait for it could hang a sweep forever. The absence of that line is UNMEASURED. It never proves
+  wait for it could hang a sweep forever. The absence of that line is UNMEASURED. The absence never proves
   that the deploy did not take (`src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchInit.cs`). This command settles
   it: `python.exe src/RimMandrake/Utils/rimbridge_client.py --list-tools`.
 - `sweep_load.sh` also watches for `"Recovered from incompatible or corrupted mods"`. That text ends the wait as a failure.
@@ -128,7 +128,7 @@ of your config write.**
 - `sweep_load.sh` already greps `^Config error in`. On a full load, `harvest_log.py --show configerror` (§8) reads the
   same class of line.
 - A config error means that the def loaded and the ENGINE disapproves. The def is not necessarily wrong for our purposes.
-  Before you file a finding of this sweep, run `src/RimMandrake/Utils/check_config_errors.py`. It classifies every line. The
+  Before you file a finding of this sweep, run `src/RimMandrake/Utils/check_config_errors.py`. That tool classifies every line. The
   note of `harvest_log.py` at its `configerror` check (a run without `--show`) gives the baseline.
 
 ### Which list to test on (owner rulings)
@@ -158,8 +158,9 @@ of your config write.**
     `acc_2026*` tiers are 31-46. Count them: whether that is added mods or a total is UNMEASURED.
   - Never quote a remembered total of the full list (578 drifting to ~593 in 2026-08; 315 on 2026-11-23). Print the total
     from `activeMods` in `ModsConfig.xml` at that moment.
-* The list holds Ideology, `brrainz.rimbridgeserver` and `mandrake.rm.inhabited`. So the beggars Harmony patch has a real
-  target, and the bridge works.
+* The list holds Ideology, `brrainz.rimbridgeserver` and `mandrake.rm.inhabited`. So the beggars
+  Harmony patch of Inhabited (`src/RimMandrake/Inhabited/Source/Patch_BeggarsFromPool.cs`) has a real target, and the bridge
+  works.
 * A save, quit, reload soak costs TWO loads: ~45 s on minimal against ~30 min on the full list. That saving is the whole
   reason for small lists.
 * Disarm the def dump (§5) before you swap to minimal. A dump from a debug list makes every real mod's def read as "does
@@ -174,7 +175,7 @@ More traps for this section: [references/traps.md](references/traps.md) § 0. �
 **Arrive already confident.** A restart *confirms* a prediction. Do not use a restart to form one.
 
 - Defs, `About.xml`, `ModsConfig.xml`, the workshop tree and the live def dump are ordinary files. Read the files first.
-  They beat the screen of a mod manager, and they beat a launch.
+  The files beat the screen of a mod manager, and the files beat a launch.
 - If the question truly needs the running game, put it in your queue for the next load. Do not launch for that question
   alone.
 
@@ -276,7 +277,7 @@ More traps for this section: [references/traps.md](references/traps.md) § 4. Mo
 ## 5. Do I need a load at all? `src/RimMandrake/Utils/refresh.py` answers exactly that
 
 Every generated artefact is a snapshot of ONE mod set, load order included. When you add a mod, the artefacts do not break.
-They quietly describe a game that no longer exists.
+The artefacts quietly describe a game that no longer exists.
 
 ```bash
 python3 src/RimMandrake/Utils/refresh.py             # changes nothing; prints what is stale and its cost
@@ -315,11 +316,11 @@ next launch and restores the saves. Measured: 26 `.rws`, 701 MB, came back with 
 
 > **The window where a deletion survives is while the game is RUNNING.**
 
-- This rule covers throw-away debugging worlds only. It never covers a canonical save
+- This rule covers throw-away debugging worlds only. The rule never covers a canonical save
   (`infrastructure/state/CANONICAL_SAVE.md`) or a save that holds options for his review (root `CLAUDE.md`).
 - When you throw a debugging world away, delete the saves **and** the screenshots **after the game is live**, not after the
   game exits.
-- **Do not disable Steam Cloud.** That is no longer the fix, and nobody asked for it.
+- **Do not disable Steam Cloud.** A disabled Steam Cloud is no longer the fix, and nobody asked for it.
 - **A text that says "needs Steam Cloud disabled first" about a second deletion is wrong.** The deletion needs the game
   *running*.
 
@@ -349,8 +350,8 @@ So "takes effect next restart" is false for an assembly. You cannot write the fi
 > **Whoever calls a shutdown checks for waiting assemblies BEFORE the game closes.** Miss the window and the work waits a
 > full cycle.
 
-- The announcement is the ledger stamp. When the game is down, run `./game --why "<your reason>" down`. The stamp messages no
-  window. Other windows read the state with `rimflow next`. Say so in your reply afterwards. The CHECK seat, which this rule once told, is retired.
+- The announcement is one command. When the game is down, run `./game --why "<your reason>" down`. The command writes the
+  state in the ledger and messages no window. Other windows read the state with `rimflow next`. Say so in your reply afterwards. The CHECK seat, which this rule once told, is retired.
 - So look for the waiting assemblies yourself: `rimflow` items with `needs: deploy`, and the plan-only run of
   `deploy_custom_mods.py --mod <name>` for each mod. A companion DLL has its own plan-only run
   (`skills/rimbridge-companion/SKILL.md`).
