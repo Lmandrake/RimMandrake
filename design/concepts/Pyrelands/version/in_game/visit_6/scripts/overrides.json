@@ -1,6 +1,29 @@
 {
  "sc_scorchfruit": {
-  "label": "scorchfruit_with_census"
+  "label": "scorchfruit_repaired",
+  "components": [
+   "scorchfruit_fire_born",
+   "scorchfruit_off_burn_bears_none"
+  ],
+  "class": "SITE",
+  "prior": [
+   {
+    "label": "scorchfruit_with_census",
+    "class": "SITE",
+    "note": "scorchfruit_off_burn_bears_none FAIL 'map_fire started no fire in 184,78,12,12': the rect lies outside the cleared pad, on solid marble under a rock roof on this site (144 Marble, scripts/pad_peek.py); _soil never took and every cell refused ember grass"
+   }
+  ],
+  "repair": {
+   "class": "SITE",
+   "commit": "4f68a44fbf04dfb76071da6f49f1328279feb59e",
+   "what": "_open_ground: the rect and a 4-cell margin cleared of every thing, unroofed, laid soil and read back (UNMEASURED if anything is left); real run read 400 soil cells, nothing left, 0 roofed",
+   "planted": {
+    "plant": "PYRE_PLANT_OFFBURN_TOGGLE_IGNORED=1: scorchFruitEnabled left on, as if the switch did nothing",
+    "command": "PYRE_PLANT_OFFBURN_TOGGLE_IGNORED=1 (through WSLENV) python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains plant_census,scorchfruit_fire_born",
+    "verdict": "FAIL",
+    "evidence": "design/concepts/Pyrelands/version/in_game/visit_6/evidence/pv6_scorchfruit_planted_offburn.json"
+   }
+  }
  },
  "sc_grass_regreens": {
   "label": "embergrass_regrow2",
@@ -27,5 +50,27 @@
  ],
  "P_grass_cover": {
   "label": "grass_cover"
+ },
+ "sc_firefoam_sprayer": {
+  "label": "firefoam_repaired",
+  "class": "SITE",
+  "prior": [
+   {
+    "label": "firefoam_sprayer",
+    "class": "SITE",
+    "note": "both rows: 'map_fire started no fire' / '6 cells beside the fruit hold no fire': the pad (225,30) held an ancient shrine on this site (a grand stele, 11 walls, an urn, a door, flagstone floor; scripts/pad_peek.py), ember grass refused on its floor"
+   }
+  ],
+  "repair": {
+   "class": "SITE",
+   "commit": "4f68a44fbf04dfb76071da6f49f1328279feb59e",
+   "what": "_open_ground before each row: the 9x9 and a 5-cell margin cleared, unroofed, the 9x9 laid soil, read back (81 soil cells, nothing left, 0 roofed)",
+   "planted": {
+    "plant": "PYRE_PLANT_RING_GAP=1: the control's west ring edge unfuelled and never lit",
+    "command": "PYRE_PLANT_RING_GAP=1 (through WSLENV) python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains firefoam_sprayer",
+    "verdict": "FAIL",
+    "evidence": "design/concepts/Pyrelands/version/in_game/visit_6/evidence/pv6_firefoam_planted_ring_gap.json"
+   }
+  }
  }
 }

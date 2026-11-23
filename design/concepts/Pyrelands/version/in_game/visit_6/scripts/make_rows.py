@@ -20,7 +20,7 @@ def chain_of(cmd):
     return m.group(1) if m else None
 
 
-def read_chain(label, chain, entry):
+def read_chain(label, chain, entry, names=None):
     p = os.path.join(E, "pv6_%s.json" % label)
     if not os.path.exists(p):
         return "UNMEASURED", "not run: no %s" % os.path.relpath(p, ROOT), None, False
@@ -28,7 +28,8 @@ def read_chain(label, chain, entry):
     if d.get("refused"):
         return "UNMEASURED", "driver refused: %s" % d["refused"], p, False
     comps = [c for c in d.get("components", []) if c.get("chain") in str(chain).split(",")]   # a command may name two chains
-    pick = [c for c in comps if c.get("name") == entry or str(c.get("name")).startswith(entry + "#")] or comps
+    pick = [c for c in comps if c.get("name") in names] if names else []   # overrides.json "components": a check's parts
+    pick = pick or [c for c in comps if c.get("name") == entry or str(c.get("name")).startswith(entry + "#")] or comps
     if not pick:
         return "UNMEASURED", "chain %s wrote no component rows" % chain, p, True
     log = open(os.path.join(E, "run_%s.log" % label), encoding="utf-8", errors="replace").read() \
@@ -69,7 +70,7 @@ def prior_rows(tid, e, o):
     out = []
     for pr in o.get("prior") or []:
         ch = chain_of(e.get("command"))
-        v, detail, ev, site = read_chain(pr["label"], ch, e.get("entry") or ch)
+        v, detail, ev, site = read_chain(pr["label"], ch, e.get("entry") or ch, o.get("components"))
         r = {"test": tid, "verdict": v, "site_checked": bool(site), "game": "archmagi", "mod_sha": IDENT["mod_sha"],
              "command": e.get("command"), "evidence": os.path.relpath(ev, ROOT) if ev else None,
              "held": pr.get("held", HELD), "detail": detail, "run": pr["label"]}
@@ -96,7 +97,7 @@ for tid, e in sorted(T.items()):
         v, detail, ev, site = o["verdict_fixed"], o.get("detail", ""), o.get("evidence"), o.get("site_checked", False)
     elif cmd.startswith("python.exe src/RimMandrake/Utils/northstar_driver"):
         ch = chain_of(cmd)
-        v, detail, ev, site = read_chain(o.get("label", ch), ch, e.get("entry") or ch)
+        v, detail, ev, site = read_chain(o.get("label", ch), ch, e.get("entry") or ch, o.get("components"))
     else:
         lab = os.path.basename(cmd.split()[1])[:-3]
         v, detail, ev = read_script(o.get("label", lab))
