@@ -502,6 +502,10 @@ say you will write.
 
 Then report in a few lines what is open, what needs him, and what the last quick check found. Then wait for him.
 
+**Before you tell him that he has not said or decided a thing, read his words.** Read the HIS WORDS section of the wake
+(`python3 src/RimMandrake/rimflow/seat_restart.py words --seat BENCH` prints it again), or the OWNER shard. A note is not
+evidence that he was silent.
+
 **Measure throughput before anything else** (owner, 2026-11-02; his words: `design/RimMandrake/roles.history.md` §conductor.md).
 
 - At wake and on every check, read your running helpers

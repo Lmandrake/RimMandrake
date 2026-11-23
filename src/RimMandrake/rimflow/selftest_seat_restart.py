@@ -1631,7 +1631,7 @@ def test_g6_wake_lists_his_messages_after_the_goodbye():
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
             rc = SR.main(["wake", "--seat", "BENCH", "--gen", "g6"])
-        o = out.getvalue()
+        o = _replay_only(out.getvalue())
     finally:
         SR._schedule = saved
         os.environ.pop("CLAUDE_CONFIG_DIR", None)
@@ -2153,6 +2153,18 @@ def test_j4_no_clock_filter_after_the_cursor():
     check(bstate(st) is None, "J4 an unreadable transcript gives no backstop (fail closed)")
 
 
+WORDS_HEADS = ("PASSES SINCE THE PREVIOUS WAKE", "PASSED SINCE THE PREVIOUS WAKE", "HIS WORDS", "EACH MOD NOW",
+               "HIS TYPED MESSAGES WITH NO HOME")
+
+
+def _replay_only(o):
+    """The wake's output without wake_words.py's blocks (his words, each mod, his messages with no home): those print
+    his messages on purpose, so a check that a message is NOT replayed reads the rest."""
+    parts = ("\n" + o).split("\n== ")
+    keep = [parts[0]] + ["== " + x for x in parts[1:] if not x.startswith(WORDS_HEADS)]
+    return "\n".join(keep)[1:]
+
+
 def _wake(rec, gen):
     import contextlib
     import io
@@ -2164,7 +2176,7 @@ def _wake(rec, gen):
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
             SR.main(["wake", "--seat", "BENCH"] + (["--gen", gen] if gen else []))
-        return out.getvalue(), SR._read_json(SR.killed_path("BENCH")) or {}
+        return _replay_only(out.getvalue()), SR._read_json(SR.killed_path("BENCH")) or {}
     finally:
         SR._schedule = saved
 

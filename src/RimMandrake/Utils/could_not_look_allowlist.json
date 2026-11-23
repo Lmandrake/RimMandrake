@@ -206,11 +206,11 @@
   "src/RimMandrake/rimflow/seat_restart.py::_turn_ended_since::or-empty": 1,
   "src/RimMandrake/rimflow/seat_restart.py::background_commands::except-returns-empty": 4,
   "src/RimMandrake/rimflow/seat_restart.py::cmd_intile::or-empty": 3,
-  "src/RimMandrake/rimflow/seat_restart.py::cmd_last_reply::or-empty": 2,
+  "src/RimMandrake/rimflow/seat_restart.py::cmd_last_reply::or-empty": 3,
   "src/RimMandrake/rimflow/seat_restart.py::cmd_mode::or-empty": 1,
   "src/RimMandrake/rimflow/seat_restart.py::cmd_request::or-empty": 1,
   "src/RimMandrake/rimflow/seat_restart.py::cmd_status::or-empty": 1,
-  "src/RimMandrake/rimflow/seat_restart.py::cmd_wake::or-empty": 3,
+  "src/RimMandrake/rimflow/seat_restart.py::cmd_wake::or-empty": 4,
   "src/RimMandrake/rimflow/seat_restart.py::consume_request::or-empty": 1,
   "src/RimMandrake/rimflow/seat_restart.py::cursor_scan::except-returns-empty": 1,
   "src/RimMandrake/rimflow/seat_restart.py::default_obs::or-empty": 2,
@@ -257,7 +257,12 @@
   "src/RimMandrake/rimflow/maturation_dispatch.py::rerun_landed::except-returns-empty": 1,
   "src/RimMandrake/Utils/maturation_nonmod.py::utc::except-returns-empty": 1,
   "src/RimMandrake/Utils/maturation_nonmod.py::run_end::or-empty": 1,
-  "src/RimMandrake/Utils/maturation_nonmod.py::section::or-empty": 2
+  "src/RimMandrake/Utils/maturation_nonmod.py::section::or-empty": 2,
+  "src/RimMandrake/rimflow/seat_restart.py::_wake_words::except-returns-empty": 1,
+  "src/RimMandrake/rimflow/seat_restart.py::cmd_words::or-empty": 1,
+  "src/RimMandrake/rimflow/wake_words.py::Wake._since::or-empty": 1,
+  "src/RimMandrake/rimflow/wake_words.py::Wake.stamp::or-empty": 1,
+  "src/RimMandrake/rimflow/wake_words.py::first_ts::except-returns-empty": 1
  },
  "reasons": {
   "src/RimMandrake/rimflow/detached_helper.py::drain_refusal::except-returns-empty": [
@@ -918,6 +923,7 @@
   ],
   "src/RimMandrake/rimflow/seat_restart.py::cmd_last_reply::or-empty": [
    "NOT A COLLAPSE: no seat named reads '' and no seat's reply is shown",
+   "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md a-state-file-that-does-not-parse): the killed record present but unparseable reads as no record, so the wake reads his words from the stamp or the old window's start; writes are whole (os.replace)",
    "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md an-unreadable-session-file): the wake's own session id reads None; measured 0 torn in 3,429,496 reads"
   ],
   "src/RimMandrake/rimflow/seat_restart.py::cmd_mode::or-empty": [
@@ -931,6 +937,7 @@
   ],
   "src/RimMandrake/rimflow/seat_restart.py::cmd_wake::or-empty": [
    "NOT A COLLAPSE: no seat named reads '' and no seat's record is shown",
+   "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md a-state-file-that-does-not-parse): the killed record present but unparseable reads as no record, so the wake reads his words from the stamp or the old window's start; writes are whole (os.replace)",
    "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md a-state-file-that-does-not-parse): the killed record (the wake prints less) present but unparseable reads as no record; writes are whole (os.replace)",
    "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md an-unreadable-session-file): the wake's own session id reads None; measured 0 torn in 3,429,496 reads"
   ],
@@ -1086,6 +1093,21 @@
   ],
   "src/RimMandrake/Utils/maturation_nonmod.py::section::or-empty": [
    "SORT KEY ONLY: an unparsable created_at or note ts sorts first; the row itself prints 'filed UNMEASURED' / UNMEASURED for the time (pac/age), never a date or 0"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::_wake_words::except-returns-empty": [
+   "NOT A COLLAPSE: prints FAILED with the cause and the OWNER shard path before it returns None; the callers then print none of the three sections"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::cmd_words::or-empty": [
+   "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md a-state-file-that-does-not-parse): the killed record present but unparseable reads as no record, so the wake reads his words from the stamp or the old window's start; writes are whole (os.replace)"
+  ],
+  "src/RimMandrake/rimflow/wake_words.py::Wake._since::or-empty": [
+   "RARE (design/specs/2026-11-23-wake-his-words/boundary.md an-unreadable-stamp): an unparseable stamp reads as no stamp, so the start is the old window's first record: the side that shows more of his words"
+  ],
+  "src/RimMandrake/rimflow/wake_words.py::Wake.stamp::or-empty": [
+   "RARE (design/specs/2026-11-23-wake-his-words/boundary.md an-unreadable-stamp): an unparseable stamp reads as no stamp; this wake's own start is written"
+  ],
+  "src/RimMandrake/rimflow/wake_words.py::first_ts::except-returns-empty": [
+   "NOT A COLLAPSE: None is 'no start read'; with no stamp either, every section says UNMEASURED (design/specs/2026-11-23-wake-his-words/boundary.md since-is-the-previous-wake)"
   ]
  }
 }
