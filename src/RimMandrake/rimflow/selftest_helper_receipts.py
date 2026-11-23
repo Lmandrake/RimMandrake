@@ -189,9 +189,11 @@ def scenarios():
     check(d not in new, "NEGATIVE: a foreground helper's tool result is its read report")
     check(e in new and new[e]["ended"] == "/clear" and [x["id"] for x in new[e]["died"]] == ["clr1"],
           "the /clear route: the helper reads DIED, the end reads /clear (%r)" % new.get(e))
-    check(f not in new and SR._read_json(HR.receipt_path(SEAT, f)) == {"session": f, "empty": True},
-          "NEGATIVE: no helpers, an empty marker")
-    check(g not in new and not os.path.exists(HR.receipt_path(SEAT, g)), "NEGATIVE: a fresh window is not read yet")
+    check(f not in new and os.path.exists(os.path.join(HR.receipts_dir(SEAT), f + ".empty"))
+          and not os.path.exists(HR.receipt_path(SEAT, f)), "NEGATIVE: no helpers, an empty marker")
+    check(g not in new and not os.path.exists(HR.receipt_path(SEAT, g))
+          and not os.path.exists(os.path.join(HR.receipts_dir(SEAT), g + ".empty")),
+          "NEGATIVE: a fresh window is not read yet")
     check(h in new and new[h]["ended"] == "restart kill (goodbye)" and [x["id"] for x in new[h]["bash"]] == ["bgood"],
           "the goodbye route: the watcher with an unseen killed notice reads no-reader (%r)" % new.get(h))
     return new, a, e
@@ -243,10 +245,47 @@ def unreadable():
         check(True, "an unreadable sessions dir raises, it never reads as nobody alive")
 
 
+def t_empty_markers_are_not_reread():
+    """empty-markers-are-not-reread: 783 of 801 live receipts were empty markers read by every Dispatcher beat; on the
+    D: drive that read (2.6 s warm) cut the observe step 25 times on 2026-11-23 and starved the beat. An empty marker is
+    a seen-mark for collect only; open_receipts never opens one, and an old empty `.json` is renamed once on read."""
+    d = HR.receipts_dir(SEAT)
+    old = "eeee0000-legacy-empty"
+    SR._write_json(os.path.join(d, old + ".json"), {"session": old, "empty": True})
+    HR.open_receipts(SEAT)
+    check(not os.path.exists(os.path.join(d, old + ".json")) and os.path.exists(os.path.join(d, old + ".empty")),
+          "empty-markers-are-not-reread: a legacy empty .json is renamed .empty on its first read")
+    opened = []
+    orig = SR._read_json
+    SR._read_json = lambda path, *a, **k: (opened.append(path), orig(path, *a, **k))[1]
+    try:
+        found = HR.open_receipts(SEAT)
+    finally:
+        SR._read_json = orig
+    check(not [p for p in opened if p.endswith(".empty")] and not [p for p in opened if old in p],
+          "empty-markers-are-not-reread: open_receipts opens no empty marker (%r)" % [p for p in opened if old in p])
+    check(found and all(HR.has_findings(r) for r in found),
+          "empty-markers-are-not-reread: receipts with findings still read open (%d)" % len(found or []))
+    seen = "eeee1111-seen-dead"
+    os.makedirs(os.path.dirname(tx(seen)), exist_ok=True)
+    write(tx(seen), [dict(user("go"), cwd=CLONE)])
+    helper(seen, "dead9", RUNNING, "A helper that died")
+    open(os.path.join(d, seen + ".empty"), "w").write('{"session": "%s", "empty": true}' % seen)
+    check(seen not in [r["session"] for r in HR.collect(SEAT, CLONE, force=[seen])]
+          and not os.path.exists(HR.receipt_path(SEAT, seen)),
+          "empty-markers-are-not-reread: collect counts a .empty marker as seen")
+    control = "eeee2222-unseen-dead"
+    write(tx(control), [dict(user("go"), cwd=CLONE)])
+    helper(control, "dead8", RUNNING, "A helper that died")
+    check(control in [r["session"] for r in HR.collect(SEAT, CLONE, force=[control])],
+          "empty-markers-are-not-reread: control, the same dead helper with no marker gets a receipt")
+
+
 def main():
     os.makedirs(CLONE)
     real_kill()
     _, a, e = scenarios()
+    t_empty_markers_are_not_reread()
     readers(a, e)
     unreadable()
     print("FAILED %d" % len(FAILS) if FAILS else "ALL OK")

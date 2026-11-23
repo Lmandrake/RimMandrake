@@ -64,6 +64,16 @@ def receipt_path(seat, session, root=None):
     return os.path.join(receipts_dir(seat, root), "%s.json" % session)
 
 
+def empty_path(seat, session, root=None):
+    """A window read with no findings: a seen-mark for collect only, never opened again. Kept apart from `.json` because
+    open_receipts reading ~800 empty markers each Dispatcher beat on the D: drive starved the beat (2026-11-23)."""
+    return os.path.join(receipts_dir(seat, root), "%s.empty" % session)
+
+
+def _mark_empty(seat, sid, root=None):
+    SR._write_json(empty_path(seat, sid, root), {"session": sid, "empty": True})
+
+
 def live_sessions():
     """-> the session ids of processes alive now. A session file names the current session of its pid. An unreadable
     directory raises: read as "nobody is alive" it would receipt every live window."""
@@ -257,7 +267,7 @@ def collect(seat, clone, root=None, now=None, force=(), since_s=MAX_AGE_S, max_r
     new, todo = [], []
     for n in names:
         sid = n[:-len(".jsonl")]
-        if sid + ".json" in seen or sid in live:
+        if sid + ".json" in seen or sid + ".empty" in seen or sid in live:
             continue
         p = os.path.join(project, n)
         try:
@@ -269,17 +279,19 @@ def collect(seat, clone, root=None, now=None, force=(), since_s=MAX_AGE_S, max_r
     reads = 0
     for _, _, sid, p in sorted(todo):         # the named predecessor first, then the newest
         if not _worth_parsing(p):
-            SR._write_json(receipt_path(seat, sid, root), {"session": sid, "empty": True})
+            _mark_empty(seat, sid, root)
             continue
         if reads >= max_reads:
             continue
         reads += 1
         rec = harvest(p, seat, now, root)
-        if os.path.exists(receipt_path(seat, sid, root)):
+        if os.path.exists(receipt_path(seat, sid, root)) or os.path.exists(empty_path(seat, sid, root)):
             continue                    # a concurrent collector published (maybe acked) it while we parsed: never overwrite
-        SR._write_json(receipt_path(seat, sid, root), rec if has_findings(rec) else {"session": sid, "empty": True})
         if has_findings(rec):
+            SR._write_json(receipt_path(seat, sid, root), rec)
             new.append(rec)
+        else:
+            _mark_empty(seat, sid, root)
     return new
 
 
@@ -299,7 +311,16 @@ def open_receipts(seat, root=None):
     except OSError:
         return out
     for n in sorted(names):
-        rec = SR._read_json(os.path.join(receipts_dir(seat, root), n))
+        if not n.endswith(".json"):
+            continue                    # a .empty seen-mark (or a stray file): nothing to report, never opened
+        path = os.path.join(receipts_dir(seat, root), n)
+        rec = SR._read_json(path)
+        if isinstance(rec, dict) and rec.get("empty") and not has_findings(rec):
+            try:                        # an empty marker written before .empty existed: renamed once, never read again
+                os.replace(path, empty_path(seat, n[:-len(".json")], root))
+            except OSError:
+                pass
+            continue
         if rec and has_findings(rec) and not rec.get("acked_at"):
             out.append(rec)
     return sorted(out, key=lambda r: r.get("last_at") or 0)

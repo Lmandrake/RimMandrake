@@ -52,6 +52,7 @@ PAGES = {
     "design/specs/2026-11-19-logon-tabs-shortcut/boundary.md": "src/RimMandrake/Utils/selftest_logon_shortcut.py",
     "design/specs/2026-11-19-judge-gates-and-designer-close/boundary.md": "src/RimMandrake/rimflow/selftest_judge_gates_designer_close.py",
     "design/specs/2026-11-19-exam-expect-verdict/boundary.md": "src/RimMandrake/rimflow/selftest_designer_stage.py",
+    "design/specs/2026-11-23-helper-receipts-empty-markers/boundary.md": "src/RimMandrake/rimflow/selftest_helper_receipts.py",
     "design/specs/2026-11-18-pipeline-control-surface/boundary.md": "src/RimMandrake/rimflow/selftest_control.py",
     "design/specs/2026-11-19-probe-result/boundary.md": "src/RimMandrake/rimflow/selftest_probe_result.py",
     "design/specs/2026-11-19-stage-ceiling/boundary.md": "src/RimMandrake/rimflow/selftest_stage_ceiling_arrival.py",
