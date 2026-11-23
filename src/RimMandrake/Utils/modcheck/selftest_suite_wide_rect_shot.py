@@ -9,7 +9,8 @@ and the other game), filed as the row's capture. Visit 5 (ArchBig) had 30 such c
 
 The fake game here answers like the live tool: a rect that fits (rect + padding inside the view at the root size used)
 is captured, with clipRect, paddedRect, appliedRootSize and cameraDuringCapture as the live reply carries them; else the
-refusal above. The OS fallback is replaced by a recorder. Cases: a small rect (unchanged: one cell-rect call, no
+refusal above; a rect whose padding runs off the 250x250 map is refused as out of bounds, as live
+(visit 6: the first fix asked for (-1, -1, 252, 126) and was refused). The OS fallback is replaced by a recorder. Cases: a small rect (unchanged: one cell-rect call, no
 fallback), a 48x48 and a 250x250 rect (a real image, no fallback; the 250 one is stitched from bands), and a game whose
 every capture refuses (the fallback still runs: this change only adds the retake).
 
@@ -32,6 +33,7 @@ FAILURES = []
 K = 19.7 * 24          # px per cell x root size, as measured live (root 24 = 19.7 px per cell)
 TALL, WIDE = 50.0 / 24, 94.0 / 24   # visible cells per unit root size (viewRect 94x50 at root 24)
 ROOT_MAX = 100.0
+MAP = 250             # the map's side: a rect (padding included) off the map is refused, as live
 REFUSE = "Requested cell rectangle does not fit in the viewport at the selected camera root size."
 
 
@@ -47,6 +49,8 @@ class FakeGame(object):
 
     def call(self, tool, **kw):
         self.log.append((tool, dict(kw)))
+        if tool == "jawa/map_info":
+            return {"success": True, "sizeX": MAP, "sizeZ": MAP}
         if tool != "rimworld/screenshot_cell_rect":
             return {"success": True}
         root = float(kw.get("rootSize") or 24.0)
@@ -54,6 +58,11 @@ class FakeGame(object):
         w, h = kw["width"] + 2 * p, kw["height"] + 2 * p
         if self.refuse_all or root > ROOT_MAX or w >= WIDE * root or h >= TALL * root:   # live: 50 rows at a 50-row view refused
             return {"success": False, "path": None, "message": REFUSE}
+        p0 = int(kw.get("paddingCells") or 0)
+        if kw["x"] - p0 < 0 or kw["z"] - p0 < 0 or kw["x"] + kw["width"] + p0 > MAP or kw["z"] + kw["height"] + p0 > MAP:
+            # live order (visit 6): fit is judged first, then bounds; a retake asked for (-1, -1, 252, 126) and was refused
+            return {"success": False, "path": None, "message": "Requested rect (%d, %d, %d, %d) is out of bounds for the "
+                    "current map." % (kw["x"] - p0, kw["z"] - p0, kw["width"] + 2 * p0, kw["height"] + 2 * p0)}
         ppc = K / root
         path = os.path.join(self.tmp, "%s__cell_rect.png" % kw["fileName"])
         try:

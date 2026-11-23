@@ -72,5 +72,27 @@
     "evidence": "design/concepts/Pyrelands/version/in_game/visit_6/evidence/pv6_firefoam_planted_ring_gap.json"
    }
   }
+ },
+ "sc_three_skies": {
+  "planted_faults": [
+   {
+    "plant": "PYRE_PLANT_ASHFALL_STRIKE=DryThunderstorm (owed by RIMMANDRAKE_TRACE_PYRE_ASHFALL_FIRE_IN_FIRST_LIGHTNING_WINDOW)",
+    "command": "PYRE_PLANT_ASHFALL_STRIKE=DryThunderstorm (through WSLENV) python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains cinderfall",
+    "verdict": "FAIL",
+    "row": "cinderfall_lightning",
+    "reading": "ash fall 3 strikes in 10 windows (limit 0)",
+    "evidence": "design/concepts/Pyrelands/version/in_game/visit_6/evidence/pv6_cinderfall_planted_strike.json"
+   }
+  ],
+  "note": "real run: ash fall 0 strikes in 10 windows; the one ash-fall window with fire (window 1, 6 fires) named 'not lightning' by window, no cell"
+ },
+ "sc_burn_line_walks": {
+  "label": "burn_line_reframed",
+  "prior": [
+   {
+    "label": "burn_line",
+    "note": "rows PASS 4/4; 10 of its 24 hourly captures held no fire (crop laid from the bbox corner), repaired 783177c5ca; rerun for frames a judge can read"
+   }
+  ]
  }
 }

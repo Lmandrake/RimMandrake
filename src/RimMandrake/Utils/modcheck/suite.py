@@ -890,8 +890,16 @@ class TestContext(object):
         if not hasattr(self, "_zoom"):
             self._zoom = play_zoom.Calibration()
         cal = self._zoom
-        rx, rz, rw, rh = rect
         p = int(padding or 0)
+        try:   # the padding grows the rect only as far as the map edge: off the map the tool refuses (visit 6)
+            mi = self.session.call("jawa/map_info") or {}
+            sx, sz = int(mi["sizeX"]), int(mi["sizeZ"])
+            x0, z0 = max(0, rect[0] - p), max(0, rect[1] - p)
+            x1, z1 = min(sx, rect[0] + rect[2] + p), min(sz, rect[1] + rect[3] + p)
+            rect, p = (x0, z0, x1 - x0, z1 - z0), 0
+        except Exception:   # noqa: BLE001 - no map size: keep the caller's padding, the tool judges it
+            pass
+        rx, rz, rw, rh = rect
         if cal.k is None:   # learn the window from a small rect that fits at any zoom
             probe = play_zoom._call(self.session, (rx, rz, min(rw, 8), min(rh, 8)), None,
                                     "%s_fitprobe_%d" % (name, int(time.time() * 1000)))
@@ -903,7 +911,7 @@ class TestContext(object):
         ppc = math.floor(ppc * 0.95 * 100) / 100.0
         _Shot.n += 1
         try:
-            return play_zoom.shoot(self.session, cal, rect, padding, ppc,
+            return play_zoom.shoot(self.session, cal, rect, p, ppc,
                                    "%s_%d_%d" % (name, int(time.time() * 1000), _Shot.n), ExpectationFailed)
         except ExpectationFailed as ex:
             self._record("fit rect shot %s: %s" % (rect, ex), None)
