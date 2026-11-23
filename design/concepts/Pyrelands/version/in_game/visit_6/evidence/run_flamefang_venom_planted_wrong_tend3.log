@@ -1,0 +1,24 @@
+[modcheck] chain flamefang_venom START 10:07:30Z
+[pyre-note] heat guard (row start, row flamefang_bite_injects_venom): {"cleared": [["Human94152", 0.0094], ["Human94158", 0.0094]], "failed": [], "read": true}
+[pyre-note] biters of Human96827: {"spawned": ["RM_Flamefang96830"], "landed": true, "ticks": 90, "killed": 1, "left": []}
+[pyre-note] colonist health after the flamefang: {"hediffs": [{"def": "Heatstroke", "label": "heatstroke (initial)", "severity": 0.00075}, {"def": "Bite", "label": "bite (flamefang venom-fangs)", "severity": 20.9686489, "part": "Arm", "partLabel": "left arm"}, {"def": "RM_FlamefangVenom", "label": "flamefang venom (onset)", "severity": 0.188717827}, {"def": "BloodLoss", "label": "blood loss (minor)", "severity": 0.00125811889}], "capacities": {"Consciousness": 0.91, "Moving": 0.91, "Manipulation": 0.56, "Talking": 0.91, "Eating": 0.91, "Sight": 1.0, "Hearing": 1.0, "Breathing": 1.0, "BloodFiltration": 1.0, "BloodPumping": 1.0, "Metabolism": 1.0}, "capacityErrors": [], "painTotal": 0.312108129, "bleedRate": 1.25811887}
+[pyre-note] colony vitals after flamefang_bite_injects_venom: {"colonists": 4, "offsite": 0, "damage": []}
+[pyre] 02:07:31 flamefang_bite_injects_venom PASS 
+[pyre-note] heat guard (row start, row venom_rises_untreated): {"cleared": [["Human94152", 0.0004], ["Human94158", 0.0008]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row venom_rises_untreated): {"cleared": [["Human94152", 0.0466], ["Human94158", 0.007], ["Human96827", 0.0466]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row venom_rises_untreated): {"cleared": [["Human94152", 0.0565], ["Human94158", 0.0575], ["Human96827", 0.0575]], "failed": [], "read": true}
+[pyre-note] venom severity each hour: [0.188717827, 0.203884557, 0.217884615, 0.233051345, 0.2470514, 0.262218118, 0.276218176]
+[pyre-note] colony vitals after venom_rises_untreated: {"colonists": 4, "offsite": 0, "damage": []}
+[pyre] 02:07:58 venom_rises_untreated PASS 
+[pyre-note] heat guard (row start, row plain_bite_carries_no_venom): {"cleared": [["Human94152", 0.0017], ["Human94158", 0.0471], ["Human96827", 0.0458]], "failed": [], "read": true}
+[pyre-note] biters of Human96987: {"spawned": ["Fox_Fennec96990"], "landed": true, "ticks": 90, "killed": 1, "left": []}
+[pyre-note] control colonist health: [{"def": "Heatstroke", "label": "heatstroke (initial)", "severity": 0.000430875254}]
+[pyre-note] colony vitals after plain_bite_carries_no_venom: {"colonists": 5, "offsite": 0, "damage": []}
+[pyre] 02:07:59 plain_bite_carries_no_venom PASS 
+[pyre-note] heat guard (row start, row venom_tended_vs_untended): {"cleared": [["Human94152", 0.0004], ["Human94158", 0.0004], ["Human96827", 0.0009]], "failed": [], "read": true}
+[pyre-note] biters of Human96992: {"spawned": ["RM_Flamefang96995"], "landed": true, "ticks": 180, "killed": 1, "left": []}
+[pyre-note] biters of Human97006: {"spawned": ["RM_Flamefang97010"], "landed": true, "ticks": 90, "killed": 1, "left": []}
+[pyre-note] PLANTED FAULT: "PYRE_PLANT_VENOM_TEND_WRONG_PATIENT=1: the doctor tends the untended patient, as if the tend did nothing for the tended one"
+[pyre-note] heat guard (every 6000 ticks, row venom_tended_vs_untended): {"cleared": [["Human94152", 0.0382], ["Human94158", 0.0008], ["Human96827", 0.0382], ["Human96987", 0.0382], ["Human96992", 0.0369]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row venom_tended_vs_untended): {"cleared": [["Human94152", 0.0229], ["Human94158", 0.0188], ["Human96827", 0.0229], ["Human96987", 0.0229], ["Human96992", 0.0229]], "failed": [], "read": true}
+[pyre-note] venom severity each hour, tended vs untended: {"order": {"success": true, "accepted": true, "interruptibleBefore": true, "requestedJobDef": "TendPatient", "afterJobDef": "TendPatient", "nowRunningRequested": true, "ticksElapsed": 0, "pausedDuringWait": true, "queueLength": 0, "operation": {"OperationId": "op_904d82abf9374581bc029fb1c6415cf4", "Status": "Completed", "Success": true, "DurationMs": 15388}, "state": {"programState": "Playing"

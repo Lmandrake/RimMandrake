@@ -131,16 +131,16 @@
   "test_blob": "a2db853aca26cabcb82fc6e4d3df9586ee47e704"
  },
  "T_VENOM_STAGING": {
-  "at": "2026-11-23T09:59:36Z",
+  "at": "2026-11-23T10:09:23Z",
   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_venom_staging.py",
   "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_venom_staging.py",
-  "last": "selftest_pyrelands_venom_staging: 1 of 45 checks failed",
-  "patch": "diff --git a/src/RimMandrake/Pyrelands/validation.py b/src/RimMandrake/Pyrelands/validation.py\nindex 5c0e3be5b5..267683c8c6 100644\n--- a/src/RimMandrake/Pyrelands/validation.py\n+++ b/src/RimMandrake/Pyrelands/validation.py\n@@ -3628,20 +3628,11 @@ def _bite_wait(t, n, stop_on=None):\n     import clockgate  # noqa: E402 - on sys.path via the modcheck package\n     if not clockgate.has_safe_advance(t.session):\n         return _wait(t, n)\n-    # HARNESS (visit 6, 2026-11-22, ArchSmall, 55.8 C): this path never ran the heat guard that _wait runs, and three ten-day\n-    # wait-outs lost a site colonist by day 3-4; exposure is now carried and guarded as in _wait\n-    import testenv_guards  # noqa: E402 - on sys.path via the modcheck package\n-    guarded = _heat_guarded(t)\n-    for part, guard in (testenv_guards.heat_steps(n, _GEN.get(\"heat_ticks\", 0)) if guarded else [(n, False)]):\n-        left = part\n-        while left > 0:\n-            step = min(left, clockgate.SAFE_CHUNK_MAX)\n-            clockgate.advance_chunk(t.session, step, stop_on=stop_on or BITE_STOP_ON)\n-            left -= step\n-        if guarded:\n-            _GEN[\"heat_ticks\"] = _GEN.get(\"heat_ticks\", 0) + part\n-            if guard and _heat_guarded(t):\n-                _heat_guard(t, \"every %d ticks\" % testenv_guards.HEAT_CHUNK_TICKS)\n+    left = n\n+    while left > 0:\n+        step = min(left, clockgate.SAFE_CHUNK_MAX)\n+        clockgate.advance_chunk(t.session, step, stop_on=stop_on or BITE_STOP_ON)\n+        left -= step\n     _on_site(t)\n \n \n",
+  "last": "selftest_pyrelands_venom_staging: 1 of 46 checks failed",
+  "patch": "diff --git a/src/RimMandrake/Pyrelands/validation.py b/src/RimMandrake/Pyrelands/validation.py\nindex 8bc49d0bd3..5c0e3be5b5 100644\n--- a/src/RimMandrake/Pyrelands/validation.py\n+++ b/src/RimMandrake/Pyrelands/validation.py\n@@ -5401,9 +5401,6 @@ def _ten_flamefang_venom(t):\n     hediff and its severity, not immunity.\"\"\"\n     x, z = PAD_VENOM\n     _independent(t)\n-    # HARNESS (visit 6, 2026-11-22, ArchSmall): the first row's patient, untended, was downed by its venom during this row\n-    # and the row read RESTART (twice); like the wait-out, the earlier envenomed patients are not this row's subjects\n-    _GEN[\"not_subjects\"] = _retire_venom_patients(t)\n     with _comp(t, \"venom_tended_vs_untended\"):\n         # SITE (visit 4, 2026-11-22): both patients were spawned before either bite, so the second, undrafted, fled from\n         # the first one's biter, and the first (drafted, standing) took the second one's biter again and again: venom 0.67\n",
   "patch_files": [
    "src/RimMandrake/Pyrelands/validation.py"
   ],
-  "patch_sha": "9155e4a22411409e",
+  "patch_sha": "4dcbf0dfb4acc07c",
   "rc": 1,
-  "test_blob": "ece0819d7f2d8bc76f5f935891cd9e89b1f50068"
+  "test_blob": "9bfb3ce8492223ad37fbf5b03b75597d43ffaa71"
  }
 }

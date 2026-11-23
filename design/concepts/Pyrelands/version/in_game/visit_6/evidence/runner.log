@@ -59,3 +59,6 @@ DONE flamefang_venom@flamefang_venom3 reload_rc=0 rc=1 304s 01:53:19
 DONE PYRE_PLANT_VENOM_TEND_WRONG_PATIENT=1:flamefang_venom@flamefang_venom_planted_wrong_tend2 reload_rc=0 rc=1 300s 01:58:19
 END venom3 2026-11-23 01:58:19
 START final 2026-11-23 01:59:37
+DONE firefoam_sprayer@firefoam_repaired2 reload_rc=0 rc=1 47s 02:00:24
+DONE PYRE_PLANT_RING_GAP=1:firefoam_sprayer@firefoam_planted_ring_gap2 reload_rc=0 rc=1 61s 02:01:25
+DONE flamefang_venom@flamefang_venom4 reload_rc=0 rc=1 344s 02:07:09
