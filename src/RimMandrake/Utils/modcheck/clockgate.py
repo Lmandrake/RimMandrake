@@ -262,11 +262,24 @@ def withdraw_fixture(pid):
     FIXTURE_IDS.discard(_thing_number(pid))
 
 
-def is_fixture_arrival(r, fixtures=None):
+def asked_kinds(stop_on):
+    """The trigger kinds a caller's stop_on names -> a frozenset, or None when it is "default", empty or names "default"
+    (the latch's own set, which this side cannot read). Pure."""
+    if not isinstance(stop_on, str):
+        return None
+    kinds = frozenset(k.strip() for k in stop_on.split(",") if k.strip())
+    return None if not kinds or "default" in kinds else kinds
+
+
+def is_fixture_arrival(r, fixtures=None, stop_on=None):
     """True when the stop is ONLY the arrival of hostile pawns the test spawned itself: stopBy is a hostile_arrival of a
     declared fixture, and every other trigger is either another declared fixture's arrival or an info ride-along of
-    nobody critical. A fixture that HURTS someone, any death, an undeclared hostile (a real raid) still stops. Pure."""
+    nobody critical. A fixture that HURTS someone, any death, an undeclared hostile (a real raid) still stops. Pure.
+    With an explicit stop_on (asked_kinds), a non-critical trigger of a kind the caller did not ask to stop on also rides
+    along: the venom rows leave 'hurt' out and their biter arrives and bites in one sub-step
+    (RIMMANDRAKE_RESUME_FIXTURE_ARRIVAL_PAST_UNASKED_BITE, Pyrelands visit 7)."""
     ids = FIXTURE_IDS if fixtures is None else fixtures
+    asked = asked_kinds(stop_on)
     if not ids or not isinstance(r, dict) or r.get("state") != "stopped":
         return False
     sb = r.get("stopBy") or {}
@@ -276,15 +289,17 @@ def is_fixture_arrival(r, fixtures=None):
     if not mine(sb):
         return False
     return all(mine(t) or (t.get("severity") == "info" and t.get("kind") in RIDE_ALONG_INFO and not t.get("critical"))
+               or (asked is not None and t.get("kind") not in asked and not t.get("critical"))
                for t in (r.get("triggers") or []))
 
 
-def resumable_stop(r):
+def resumable_stop(r, stop_on=None):
     """-> a short reason when safe_advance may resume past this stop (a benign wild-animal downing, the arrival of the
-    test's own spawned fixture, or a declared expected disturbance), else None."""
+    test's own spawned fixture, or a declared expected disturbance), else None. stop_on: the caller's, see
+    is_fixture_arrival."""
     if is_benign_stop(r):
         return "benign"
-    if is_fixture_arrival(r):
+    if is_fixture_arrival(r, stop_on=stop_on):
         return "fixture arrival"
     lab = expected_stop_label(r)
     return ("expected: %s" % lab) if lab else None
@@ -298,10 +313,10 @@ def _repair_for(label):
     return None
 
 
-def _resume(session, r):
+def _resume(session, r, stop_on=None):
     """-> (why, repair evidence or None): why the stop may resume (resumable_stop), after the matched expectation's repair
     ran. A repair that is not ok, or raises, -> (None, evidence): the stop stands, and abortWhy names the repair."""
-    why = resumable_stop(r)
+    why = resumable_stop(r, stop_on=stop_on)
     if not why or not why.startswith("expected: "):
         return why, None
     fix = _repair_for(why[len("expected: "):])
@@ -340,7 +355,7 @@ def advance_chunk(session, ticks, pause_first=True, stop_on="default", time_exce
     r = _unwrap(session.call(SAFE_ADVANCE, ticks=ticks, stopOn=stop_on, timeException=bool(time_exception),
                              timeoutMs=max(60000, ticks * 100)))
     done, resumes = 0, 0
-    why, ev = _resume(session, r)
+    why, ev = _resume(session, r, stop_on)
     while why and resumes < BENIGN_RESUME_MAX and ticks - done - int(r.get("executed") or 0) > 0:
         resumes += 1
         done += int(r.get("executed") or 0)
@@ -348,7 +363,7 @@ def advance_chunk(session, ticks, pause_first=True, stop_on="default", time_exce
         rest = ticks - done
         r = _unwrap(session.call(SAFE_ADVANCE, ticks=rest, stopOn=stop_on, timeException=bool(time_exception),
                                  timeoutMs=max(60000, rest * 100)))
-        why, ev = _resume(session, r)
+        why, ev = _resume(session, r, stop_on)
     if why and ticks - done - int(r.get("executed") or 0) <= 0:
         # TESTENV_SWEPT_BRUISE_REPAIR_SLIPS_ITS_PASS (L1 2026-10-15): a resumable stop latched on the chunk's LAST tick
         # ("stopped after 10 of 10") leaves nothing to resume, and used to fall through to GovernorStop although the

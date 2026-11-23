@@ -622,6 +622,56 @@ def test_fixture_arrival_resumes():
     ok(not cg.FIXTURE_IDS, "a withdrawn fixture leaves no declaration behind")
 
 
+def test_fixture_arrival_resumes_past_unasked_kinds():
+    """RIMMANDRAKE_RESUME_FIXTURE_ARRIVAL_PAST_UNASKED_BITE (Pyrelands visit 7, 2026-11-23, ArchSmall):
+    the venom rows advance with stop_on BITE_STOP_ON, which leaves 'hurt' out on purpose, and declare their biter a
+    fixture. The biter arrived and bit in ONE 60-tick sub-step, so the stop was the declared arrival with a 'hurt'
+    (severity damage) riding along, and the row read UNMEASURED. A trigger whose kind the caller did not ask to stop on
+    rides along; with the default stop_on, and for any asked kind (death), the stop still stands."""
+    os.environ["RIMBRIDGE_GOVERNOR_LOG"] = ""
+    biter = {"seq": 100, "kind": "hostile_arrival", "severity": "threat", "subjectId": 78913, "subject": "flamefang",
+             "critical": False, "declared": False, "detail": "arrived: RM_Flamefang RM_Flamefang (animal)"}
+    hurt = {"seq": 99, "kind": "hurt", "severity": "damage", "subjectId": 78911, "subject": "Badluck",
+            "critical": False, "declared": False, "detail": "health 1 -> 0.65"}
+    died = {"kind": "death", "severity": "damage", "subjectId": 78911, "critical": False, "declared": False}
+    crit = dict(hurt, critical=True)
+    asked = "death,colonist_hostile,hostile_arrival,threat_structure,modal_stuck,colony_loss,starving,mental," \
+            "clock_discontinuity,specimen_lost,coverage,cancel"
+
+    class S(object):
+        def __init__(self, triggers):
+            self.n, self.triggers = 0, triggers
+
+        def call(self, tool, **p):
+            if tool == "jawa/safe_advance" and not p.get("action"):
+                self.n += 1
+                if self.n == 1:
+                    return {"success": False, "state": "stopped", "requested": p["ticks"], "executed": 60,
+                            "stopBy": biter, "triggers": self.triggers}
+                return {"success": True, "state": "done", "requested": p["ticks"], "executed": p["ticks"]}
+            return {"success": True, "ticksGame": 1}
+
+    cg.declare_fixture("RM_Flamefang78913")
+    try:
+        try:
+            got = cg.advance_chunk(S([biter, hurt]), 90, stop_on=asked)
+        except cg.GovernorStop as e:
+            got = "GovernorStop %s" % e
+        ok(got == 90, "the declared biter arriving as it bites resumes when the caller never asked to stop on hurt: %s"
+           % (str(got)[:160],))
+        for label, trig, so in (("the same stop under the default stop_on", [biter, hurt], "default"),
+                                ("a death riding along (death asked)", [biter, died], asked),
+                                ("a critical hurt riding along", [biter, crit], asked)):
+            try:
+                cg.advance_chunk(S(trig), 90, stop_on=so)
+                ok(False, "can-fail: %s still stops the clock" % label)
+            except cg.GovernorStop:
+                ok(True, "can-fail: %s still stops the clock" % label)
+    finally:
+        cg.withdraw_fixture("RM_Flamefang78913")
+    ok(not cg.FIXTURE_IDS, "a withdrawn fixture leaves no declaration behind")
+
+
 def test_benign_stops_in_run_json():
     """BENIGN_STOPS_FIX_NOT_IN_RUN_JSON: a resumed benign stop reaches the run JSON write_sheet writes."""
     import tempfile
@@ -668,7 +718,7 @@ def test_benign_stops_in_run_json():
 
 
 def main():
-    for t in (test_benign_stops_in_run_json, test_fixture_arrival_resumes, test_expected_disturbance, test_expected_disturbance_repair, test_between_call_ticks_charged,
+    for t in (test_benign_stops_in_run_json, test_fixture_arrival_resumes, test_fixture_arrival_resumes_past_unasked_kinds, test_expected_disturbance, test_expected_disturbance_repair, test_between_call_ticks_charged,
               test_step_charges_measured_and_records_overshoot,
               test_truncation_is_looped,
               test_negative_delta_new_epoch,
