@@ -2,77 +2,88 @@
 
 Item `RIMMANDRAKE_DESIGN_BRIDGE_TWO_REBUILD_OR_IMPROVE_CODE_READ`. Written 2026-11-23.
 The full design is `D:\Luke\dev\RimMandrake\design\specs\2026-11-23-bridge-v2\05_build_design.md`; the build order is
-`06_build_order.md` beside it. Nothing here was measured in a game.
+`06_build_order.md` beside it. **Nothing here was measured in a game.** Every gain below is what the design aims at,
+not a result.
 
 ## The decision
 
 **We improve the bridge that we have. We do not rebuild it.** The second designer read its code, which the first
 did not. Most of what the first design asked for is already there, built piece by piece over three months and never
 joined: a runner that plays a whole scene in one call, a condition language, recorders for damage, deaths, arrivals
-and incidents, a safe profile for your game. The build is one small part that joins them.
+and incidents, a safe profile for your game. The new work joins them. Its first step is a small trial on one scene
+that shows whether the joining holds; if that trial fails, the design says what we do instead.
 
 ## What will change in live testing
 
 1. **A live test becomes one file and one call.** Today a test is a script that makes hundreds of calls and decides
    between them, and the game moves in the gaps. After: the builder writes a short scene file (who is on stage, what
    happens, what must be true). The game stages it, plays it, records it and stops on the exact tick.
-2. **The game records; a program outside the game gives the verdict.** Every run leaves a recording of what
-   happened, tick by tick. So when a check turns out to be wrong, we repair the check and judge the same recording
-   again. **No game runs again for a wrong check.** Today a wrong check costs a full rerun; 51 of 73 past "mod
-   failures" were faults of the test, not of the mod.
-3. **Scenes play on an empty stage.** A test game gets a second map that holds only the actors of the scene. The test
-   colony waits on another map. No bystander can wander in, haul the evidence, drink the water under test, starve or
-   die in a long run. The stage holds its temperature and weather by itself.
+2. **The game records; a program outside the game gives the verdict.** A run leaves a recording, tick by tick, of the
+   actors and of everything the scene's contract names. When a check turns out to be wrong in how it reads those
+   facts, we repair the check and judge the same recording again, with no new run. When the fault was in the staging
+   or in what was recorded, a new run is still needed, and the program says which case it is. (Past record: 51 of 73
+   "mod failures" were faults of the test, not of the mod.)
+3. **Scenes play on a stage with no bystanders.** A test game gets a second map that holds only the actors of the
+   scene. The test colony waits on another map. No bystander can wander in, haul the evidence, drink the water under
+   test, starve or die in a long run. A result on the stage is evidence for the scene as staged; each bar keeps at
+   least one scene in a real colony, on your walk.
 4. **Every run ends in one of your seven outcomes, by program.** A spoiled run is named as spoiled, with what
    spoiled it. An agent reads only the runs that the program could not decide.
 5. **Force is the default, and it is written down.** A raid is fired by the scene. An order is given the way a player
    gives it. Each run's record says how hard each actor was pushed and which decisions were left to the mod.
-6. **A test proves it can fail before we trust it.** Each mod keeps a short list of planted faults. The program picks
-   one that the test's author did not choose, switches it on in the running game, sees the test go red, and switches
-   it off. No rebuild and no restart for that.
-7. **Tuning a number takes seconds.** The live tuning that you asked about is part of the same machine: a value is
-   changed in the running game, the run is stamped as a tuning run, and a stamped run can never count as a pass.
+6. **A test must show that it can fail.** Each mod keeps a list of planted faults. The program picks one that the
+   test's author did not choose and runs the test against it. A fault that a live value can express is switched on in
+   the running game, with no rebuild. Other faults need a test build and a restart.
+7. **Tuning a number without a reload.** The live tuning that you asked about is part of the same machine: a value
+   is changed in the running game, the run is stamped as a tuning run, and a stamped run can never count as a pass.
+   How fast one tuning point is has not been measured yet; the design expects seconds for a short scene.
 
 ## What you will notice
 
-- **Fewer reruns, and fewer "unmeasured" rows.** That is the point of the whole build.
-- **Visits get shorter.** One call for a scene, and repeats of a scene side by side on the stage.
-- **On your game, ArchBig, nothing changes unless you ask.** The new machinery is switched off in the profile that your
-  saves run in. No test moves your camera, focuses the window, unpauses while you look, or writes over a save of
-  yours. Full-list checks run on a copy of your save.
-- **A test game may show a small line in a corner**, `OVERLAY <name>`, while a tuning value is live. You will see it
-  only if you look at a test game, or if you ask for tuning on your own game.
-- **Walk saves get a START and an AFTER station side by side**, as you asked on 2026-11-23.
+- **Fewer reruns, and fewer "unmeasured" rows.** That is the aim of the whole build.
+- **Shorter visits**: one call for a scene, and repeats of a scene side by side on the stage.
+- **Walk saves get a START and an AFTER station side by side** (your request of 2026-11-23, as the first design's
+  brief relays it).
 - **It arrives in steps.** The first three steps give the recording, the exact stop and the first scene as a file.
-  The empty stage, the planted faults and the tuning follow. The order is in `06_build_order.md`.
+  The stage, the planted faults and the tuning follow. The order is in `06_build_order.md`.
+
+## Your game, ArchBig: what a test may do
+
+| | your save, loaded in ArchBig | a copy of your save, loaded in ArchBig | a test game (ArchSmall, Steve1, Steve2) |
+|---|---|---|---|
+| run a scene | only while your hold is off | yes, while your hold is off | yes |
+| remove things (wild animals, a queued incident) | **no** (choice 3 below) | yes: the copy is disposable | yes |
+| change a value in the running game (tuning, planted faults) | **no agent does.** Only you, by your own word or with the sliders | no | yes |
+| move the camera, take the window's focus, go fullscreen, unpause while you look | **never** | never focus or fullscreen; the camera only under choice 4 | the camera is the test's |
+| write over a save of yours | **never** | never; the copy has its own name | not applicable |
+| stop a broken game | choice 2 below | choice 2 below | yes, at once |
 
 ## The choices that are yours
 
-Only three. Each is one of your own acts: a live flight test, or your own game.
+Each is one of your own acts: a live flight test, or your own game and camera.
 
 ### 1. The flapping bird
 
 Your rule stands: no live flight test of a flyer without you, and no hunting a flight with screenshots. The design
 tests flight with no picture at all: the program records the flight state on every tick, and which wing picture the
-game would draw on every tick. This pass read the game's code and found that the wing picture is a plain function of
-the game clock, so that part is a small build.
+game selects on every tick. This pass read the game's code: the selected picture follows the game clock, so that part
+is a small build. It shows what the game selects, not what reaches the screen; that last step is your eye.
 
 - **The first live run of that test is with you present.** That follows your rule; nothing to decide.
-- **Choice A: after that first run, may flight scenes that read state only (no picture) run without you?**
+- **Choice 1a: after that first run, may flight scenes that read state only (no picture) run without you?**
   Yes buys a flapping test for every flyer on every change, with no session of yours. No keeps every flight run for a
-  joint session. **Recommended: yes, after the first joint run shows that the recording is right.**
-- **Choice B: may the program make a filmstrip for your eye?** One image that tiles the ticks of one wing beat, made
+  joint session. **Recommended: yes, after the first joint run shows that the recording matches what you see.**
+- **Choice 1b: may the program make a filmstrip for your eye?** One image that tiles the ticks of one wing beat, made
   by the program after the state test passes. It is never a pass condition. Yes costs a medium build and is proven on
   a vanilla bird first. **Recommended: yes, for review only.**
 
 ### 2. When ArchBig breaks while your hold is on it, does the bridge stop the game?
 
-On a test game a broken game is stopped at once. ArchBig under your hold is your game.
 - **Stop it:** no wedged game holding memory for hours. Cost: unsaved play of yours is lost.
 - **Report only:** nothing is ever taken from you. Cost: tests that need ArchBig wait for you.
 - **Recommended: report only while your hold is on; stop it when your hold is off.**
 
-### 3. On your saves, may a test remove things?
+### 3. On your own saves, may a test remove things?
 
 Some calm controls remove things: wild animals, a queued incident, an active game condition.
 - **Refuse on your saves (the default):** nothing of yours is ever removed. Cost: a scene in your full-list colony
@@ -80,8 +91,16 @@ Some calm controls remove things: wild animals, a queued incident, an active gam
 - **Allow when a scene asks:** a calmer full-list run. Cost: your save is changed by a test.
 - **Recommended: refuse.** Full-list checks run on a copy, which is disposable.
 
+### 4. May a test take an off-screen picture on ArchBig while your hold is off?
+
+The picture tool that exists points the camera at a rectangle, renders to a file, and puts the camera back inside one
+frame. You should see nothing on screen; you might feel one hitch `[guess 80%; not measured]`.
+- **Yes:** pictures of full-list scenes for the art judge and for you, with no session of yours.
+- **No:** every full-list picture waits for a sitting with you.
+- **Recommended: yes, with your hold off only, after one trial that you watch.**
+
 ## What is not yours to decide
 
-The Conductor decides the rest and tells you after: test-only hooks inside our mods, the order of the tickets, which
-scenes convert first, and the content of the standard calm profile. No money is asked for. Nothing is published
-outside the private repos.
+By the standing rule, only five acts stay yours. The Conductor decides the rest and tells you after: test-only hooks
+inside our mods, the order of the tickets, which scenes convert first, and the content of the standard calm profile.
+No money is asked for. Nothing is published outside the private repos.
