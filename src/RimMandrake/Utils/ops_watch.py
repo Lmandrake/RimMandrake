@@ -5445,8 +5445,7 @@ def main(argv=None):
                 return ok
             if not still_owner("the pass"):
                 return EXIT_FENCED
-        if a.compose:
-            signal.signal(signal.SIGTERM, on_sense_term)
+        old_term = signal.signal(signal.SIGTERM, on_sense_term) if a.compose else None
         try:
             dg = run(filer=real_filer if a.file_alarms else None, families=a.family, compose=a.compose,
                      still_owner=still_owner, held_detach=a.compose)
@@ -5459,6 +5458,9 @@ def main(argv=None):
         except PartialPass as e:
             print("ops_watch: REFUSED: %s" % e)
             return 2
+        finally:
+            if old_term is not None:
+                signal.signal(signal.SIGTERM, old_term)     # an in-process caller (a selftest) gets its own back
         print(dg["headline"])
         return 0
     if a.cmd == "lint":

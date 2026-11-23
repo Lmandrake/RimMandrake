@@ -107,7 +107,7 @@ def t_the_disk_sense_starts_no_fetch_and_no_landing():
     real_run, real_may = OW.run, metronome.may_act
     got = {}
 
-    def run(filer=None, families=None, compose=False, still_owner=None):
+    def run(filer=None, families=None, compose=False, still_owner=None, held_detach=False):
         got.update(OW.c_disk(time.time(), OW.load_rules(), {}))
         return {"headline": "stub"}
     OW.run, metronome.may_act = run, (lambda *a, **kw: (True, ""))
