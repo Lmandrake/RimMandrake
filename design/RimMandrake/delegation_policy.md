@@ -116,7 +116,7 @@ words. Each Conductor act is a digest line (class `conductor act`, §5). Among t
   and rule a final look that is not about fun or gameplay;
 - re-freeze the `official` dump;
 - re-validate a hashed section;
-- raise a cap, N (the helper slots of a seat, `slot_allocator.py`) or a stage ceiling inside the account lines. No
+- raise a cap, N (the helper slots of a seat, `slot_allocator.py`) or a stage ceiling (the spend limit of one stage) inside the account lines. No
   capacity is kept for his evenings (`standing_rulings.md` §Account and capacity budget);
 - move a change to a mod's Polish list, and decide whether a change goes in the current Design Version or the next
   (owner, card 2026-11-23, `standing_rulings.md` §Mod Design Versions);

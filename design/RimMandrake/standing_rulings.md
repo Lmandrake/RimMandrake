@@ -1938,7 +1938,7 @@ repair drew new claims [measured, `design/specs/2026-11-18-review-growth-cycle/0
   `systemctl` call; without this such a promise would promise nothing). The same card's second question, *"May I run
   one more Codex test?"*: he picked *"Yes, after the page rule (Recommended)"*: *"Why: the page rule above changes
   which complaints count as real. I relabel the 35 by your rule, then run one test. Cost: one Codex run, and a short
-  wait for the relabel. Recommended: a test against wrong labels tells us nothing."* That is one run; it does not
+  wait for the relabel. Recommended: a test against wrong labels tells us nothing."* That answer allows one run; it does not
   turn Codex reviews of pipeline machinery back on (his card of 2026-11-23 below did).
   Applied: `src/RimMandrake/rimflow/roles/code_review.md`, the control page's DOES NOT SURVIVE, and the relabel in
   `design/specs/2026-11-18-review-growth-cycle/05-three-way-labels-20261119.md`.
@@ -1953,15 +1953,16 @@ repair drew new claims [measured, `design/specs/2026-11-18-review-growth-cycle/0
   requirement. The old ones didn’t. It was the forced working of any finding no matter how small. Push back if that is
   not your understanding but I felt we resolved this."*
   - Each review uses `src/RimMandrake/rimflow/roles/code_review.md`, or a prompt that carries the same significance
-    rule, stop level and polish route. A finding that is not significant is one line on `polish.md`, never a ticket
+    rule, the same stop level (one full read, one fresh read of a fix, never a third) and the same polish route (one
+    line on `polish.md`, no ticket). A finding that is not significant is one line on `polish.md`, never a ticket
     and never worked.
   - A Codex or GPT reviewer that cannot write the clone returns its Problems. The run that launched it fixes each
     Problem, test first, and one fresh reader reads the fixed file once.
   - UNMEASURED: that Codex obeys the significance rule on real code. To measure it, read the first three reviews:
     count the findings, and count the significant ones. The one measured reading is a sort of 35 old claims, not a
     review of code (2026-11-19): 1 of 9 agreed polish claims called a Problem, and 2 of 3 agreed real ones caught.
-    The `code_review` family reads UNTESTED. That does not stop a review; an UNTESTED brief's refusal sends no work
-    back by itself.
+    The row `code_review` (the review brief's calibration) in `infrastructure/state/judge_calibration.json` reads
+    UNTESTED. An UNTESTED row does not stop a review; an UNTESTED brief's refusal sends no work back by itself.
 - **First page (the pilot):** the control store, `design/specs/2026-11-18-pipeline-control-surface/boundary.md`.
 - **Test that this was applied:** a new pipeline component has a `boundary.md` committed before its first code
   commit; a review finding on pipeline machinery quotes a page entry or sits on a later list.

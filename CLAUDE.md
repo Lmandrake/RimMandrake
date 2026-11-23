@@ -548,11 +548,11 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 
 - The Design Version rule (Semantic Versioning, Convergent and Divergent changes) is a user-level rule. Here the unit
   is the mod. Each mod has its own current version and status.
-- In this repo, the Conductor decides each move to a Polish list, and whether a change goes in the current Design
+- In this repo, the Conductor decides each move to a mod's Polish list (`version/polish.md` in its design folder), and whether a change goes in the current Design
   Version or the next. The Conductor decides at filing and tells the owner after, in his daily digest. Log it with
   `--per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS --why "<the call and its reason>"`. Do not ask him
   at filing (this replaces the "ask at filing" words of the user-level rule, in this repo only). A helper files the
-  change with the class that it recommends.
+  change and names what it recommends: current version, next version or Polish list.
 - Each version that passes gets the git tag `mod/<Mod>/v<version>` on its pass commit, and the tag is pushed.
   To return to a version, check out its tag.
 - Detail: `design/RimMandrake/standing_rulings.md` §Mod Design Versions. Draft build plan:
@@ -597,8 +597,8 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
   `src/RimMandrake/Utils/pipeline_tests.json`.
 - Codex and GPT may review pipeline code. Each such review uses `src/RimMandrake/rimflow/roles/code_review.md` or a
   prompt that carries the same significance rule, stop level and polish route. A finding that is not significant is
-  one line on `polish.md`. It is never a ticket, and nobody works it. That Codex obeys this is UNMEASURED: read the
-  first three reviews, and count the findings and the significant ones.
+  one line on `polish.md`. Such a finding is never a ticket, and nobody works it. Whether Codex obeys this rule is
+  UNMEASURED: read the first three reviews, and count the findings and the significant ones.
 - Before you spend a review on a file, check that the file is still reachable.
 - Full text: `design/RimMandrake/standing_rulings.md` §Code is clean when its promises are tested, and §A boundary
   page before pipeline code.

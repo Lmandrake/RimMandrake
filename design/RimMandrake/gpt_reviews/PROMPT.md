@@ -24,5 +24,5 @@ Produce a review in FOUR labelled parts, then the POLISH list. Put most effort o
 2. LIKELY FUTURE COMPLICATIONS. What will bite when content is added, when other mods interact, when saves persist across versions, and at scale.
 3. UNLEVERAGED OPPORTUNITIES. Things that the mod's machinery could do cheaply and does not do.
 4. EXTENSIONS BEYOND THE MOD. Implications for, and reuse by, other mods or content in the campaign.
-Parts 2, 3 and 4 are ideas for a human to read. They are not findings: no ticket comes from them.
+Parts 2, 3 and 4 are ideas for a human to read. Parts 2, 3 and 4 hold no findings: no ticket comes from those parts.
 Be specific; cite code. Do not praise. Do not restate the code. If something is unverifiable from the bundle, say UNVERIFIABLE rather than guessing.
