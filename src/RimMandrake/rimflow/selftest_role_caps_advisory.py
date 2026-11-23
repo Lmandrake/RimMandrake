@@ -6,8 +6,7 @@ expensive it requires immediate action for sure. But not starving it or failing 
 A role with `caps_advisory: true`, against the same state that holds or refuses a role without it:
   A1 a scheduled slot past daily_token_cap LAUNCHES, with ONE immediate overspend_day alarm (Conductor log, RAISE
      FIRST); unflagged it is REFUSED.
-  A2 a throttle band that skips slots (FLOOR, slots "none") or shrinks budgets (quick_cap_x) neither skips nor
-     shrinks it; unflagged it is skipped.
+  A2 a low week on the account neither skips nor shrinks a slot, flagged or not (the bands are retired, 2026-11-23).
   A3 the daily alarm-run count (alarm_runs_per_day) does not hold its alarm run; unflagged it waits.
   A4 a DISPATCHER incident run-now past the cap launches (it used to be refused, and the refusal sent its incidents
      to the owner rung); unflagged it is refused.
@@ -85,20 +84,13 @@ def main():
             check(not la and any("REFUSED: daily_token_cap" in a.get("why", "") for a in acts),
                   "A1 unflagged: the same slot is REFUSED on the daily cap")
     # A2
-    bands = {"GREEN": {"runway_ge": 1.5, "quick_cap_x": 1.0, "slots": "all"},
-             "AMBER": {"runway_ge": 0.0, "quick_cap_x": 0.5, "slots": "first"},
-             "FLOOR": {"week_left_pct_lt": 10, "quick_cap_x": 0.4, "slots": "none"}}
     t = SD.at_local("19:30")
-    floor = SD.ops_status(t, week_left=5.0)
-    acts, _ = drive(SD.operations(caps_advisory=True, throttle_bands=bands), t, status=floor)
-    la = launched(acts)
-    check(len(la) == 1 and la[0]["budget"] == 60000, "A2 advisory: FLOOR (slots none) neither skips nor shrinks it (%r)"
-          % [(a.get("do"), a.get("budget"), a.get("why")) for a in acts])
-    acts, _ = drive(SD.operations(caps_advisory=False, throttle_bands=bands), t, status=floor)
-    check(not launched(acts), "A2 strict (caps_advisory false): FLOOR skips the slot")
-    acts, _ = drive(SD.operations(throttle_bands=bands), t, status=floor)
-    check(len(launched(acts)) == 1, "A2 unflagged is advisory by default (owner 2026-11-02, token limits advisory "
-          "everywhere): FLOOR does not skip it")
+    for flag in (True, False, None):
+        kw = {} if flag is None else {"caps_advisory": flag}
+        acts, _ = drive(SD.operations(**kw), t, status=SD.ops_status(t, week_left=5.0))
+        la = launched(acts)
+        check(len(la) == 1 and la[0]["budget"] == 60000, "A2 caps_advisory %s: a low week neither skips nor shrinks the slot (%r)"
+              % (flag, [(a.get("do"), a.get("budget"), a.get("why")) for a in acts]))
     # A3
     t = SD.at_local("12:00")
     al = {"a1": {"state": "OPEN", "item": "ITEM_ONE"}}

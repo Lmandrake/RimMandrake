@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """selftest: a fix that died closes only with a class guard test shown failing (REPEAT_ALARM_ENFORCE_GUARD_OR_STAY_OPEN, design
-idea 5). rimflow close, implemented, verify and the fold; `rimflow guard`'s red; alarm_census.recurring; ops_health's words.
+idea 5). rimflow close, implemented, verify and the fold; `rimflow guard`'s red; alarm_census.recurring.
 
     python3 src/RimMandrake/rimflow/selftest_repeat_guard.py
 """
@@ -19,7 +19,6 @@ TMP = tempfile.mkdtemp(prefix="selftest_repeat_guard_")
 os.environ["RM_OPS_WATCH_DIR"] = os.path.join(TMP, "ops")      # nothing here reads or writes the real alarm log
 import alarm_census as AC  # noqa: E402
 import model  # noqa: E402
-import ops_health as H  # noqa: E402
 import repeat_guard as RG  # noqa: E402
 
 FAILS = []
@@ -109,7 +108,7 @@ def seam():
     first = (FILED, BROKEN)
     it = world(AFTER, *first).items["A_FIX_B"]
     check(it.live_repeats == 1 and model.deaths(it) == 0 and not model.guard_owed(it), "a first sighting is an outage, not a death")
-    check(not H.owes_guard(it) and not AC.recurring([], {"A_FIX_B": it}), "ops_health and the census agree: it owes nothing")
+    check(not AC.recurring([], {"A_FIX_B": it}), "the census agrees: it owes nothing")
     check(world(AFTER, *first, KEPT).items["A_FIX_B"].state == "done", "a blip that clears on its own goes to done, staffing nobody")
     it = world(BEFORE, *first).items["A_FIX_B"]
     check(model.deaths(it) == 1 and model.guard_owed(it), "before DEATHS_FROM every outage counted, as written")
@@ -117,7 +116,7 @@ def seam():
     again = (*first, PASS1, CLOSED, BROKEN)
     it = world(AFTER, *again).items["A_FIX_B"]
     check(model.deaths(it) == 1 and it.live_repeats == 2 and model.guard_owed(it), "the outage of a closed fix is a death")
-    check(H.owes_guard(it) and [r["seen"] for r in AC.recurring([], {"A_FIX_B": it})] == [1], "the census counts deaths")
+    check([r["seen"] for r in AC.recurring([], {"A_FIX_B": it})] == [1], "the census counts deaths")
     check(world(AFTER, *again, KEPT).items["A_FIX_B"].state == "ready", "and kept does not walk it out unguarded")
 
 
@@ -425,30 +424,6 @@ def census():
         check(False, "a missing log is no reading")
     except OSError:
         check(True, "a missing log is no reading")
-    # the published verdict
-    os.makedirs(os.environ["RM_OPS_WATCH_DIR"], exist_ok=True)
-    w = types.SimpleNamespace(items={})
-    c = H.conf({"health": {"guard_exempt_kinds": []}})
-    check(H.unguarded(w, c) is None, "no alarm log reads None in the verdict, never an empty list")
-    with open(os.path.join(os.environ["RM_OPS_WATCH_DIR"], "alarms_log.jsonl"), "w") as f:
-        f.write("\n".join(json.dumps(r) for r in rows) + "\n")
-    check([r["kind"] for r in H.unguarded(types.SimpleNamespace(items=items), c)][:1] == ["live:FIX_STALE"], "ops_health reads the census")
-    check(H.owes_guard(types.SimpleNamespace(live_repeats=2, guard={"outages": 1})) and not H.owes_guard(types.SimpleNamespace(live_repeats=1, guard={"outages": 1})),
-          "ops_health's owes_guard agrees with model.guard_owed")
-
-
-def words():
-    rules = json.load(open(os.path.join(UTILS, "ops_watch_rules.json"), encoding="utf-8"))
-    c = H.conf(rules)
-    bare = dict(c, not_system=[])       # the word rule alone, with the hand list out of the way
-    sys_ = lambda iid, cc=bare: H.is_system(types.SimpleNamespace(id=iid, kind="task"), cc, set())   # noqa: E731
-    for iid in ("WATER_LEDGER_DOUBLE_CHARGE_1", "KIT_ART_INSTALL_FISHED_FROM_THE_WORKERS", "HOSE_NET_SELFTEST_FIX_VACUOUS_ISOLATION",
-                "HOSE_SELFTEST_FIX_TIMING_BAR_FLAKE", "TIMBER_WINCH_FIX_POWERS_STEEL_BRIDGE"):
-        check(not sys_(iid), "false friend is content by the words alone: " + iid)
-    for iid in ("RELENTLESS_LINE_FIX_ONE_MOD_CLOGS_ALL", "SELFTEST_CLOCK_BUILD_INJECTED_TIME", "BRIDGE_LOCK_CROSS_CLONE_RACE_1",
-                "OPS_STAFFING_RESTORE_UNDER_BUDGET", "LEDGER_LEASE_HARDEN_ATTEMPT_TOKEN", "SCRATCH_CLONES_SHRINK_SPARSE_NOT_FULL",
-                "REPEAT_ALARM_ENFORCE_GUARD_OR_STAY_OPEN", "HELPER_RECEIPTS_FIX_KILL_READS_CRASH", "PROOF_HARNESS_BUILD_SAVELOAD_TRIPLET"):
-        check(sys_(iid), "system item stays system: " + iid)
 
 
 if __name__ == "__main__":
@@ -458,7 +433,6 @@ if __name__ == "__main__":
         gate()
         grown()
         census()
-        words()
     finally:
         shutil.rmtree(TMP, ignore_errors=True)
     print("selftest_repeat_guard: %s" % ("FAIL %d" % len(FAILS) if FAILS else "PASS"))

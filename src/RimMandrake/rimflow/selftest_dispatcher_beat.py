@@ -520,7 +520,7 @@ def test_designer_launch_fetches_once():
     fx = {"lock": Lock, "note": lambda i, t: (True, "ok"), "publish": lambda n: "pushed", "off": lambda p: None,
           "paused": lambda: None, "stage_open": lambda *a, **k: opened.append(k),
           "role_launch": lambda role, unit, msg, root, exe: (True, "unit u1", {}), "stage_abort": lambda *a: None}
-    a = {"do": "role_launch", "role": "Designer", "unit": "u1", "budget": 1, "slot": "s", "band": "b", "mode": "slot",
+    a = {"do": "role_launch", "role": "Designer", "unit": "u1", "budget": 1, "slot": "s", "mode": "slot",
          "concept": "/nonexistent/concept", "message": "m", "why": "w", "ticket": None}
     saved = D.claude_exe
     D.claude_exe = lambda: "claude"
@@ -591,7 +591,7 @@ def _ops_launch_decide(name):
         st.setdefault("roles", {})[name] = {"pending_launch": {"unit": "u-" + name, "mode": "slot", "had_done": False,
                                                                "key": "d1"},
                                             "runs": [], "done": {"d1": 5}}
-        out.append({"do": "role_launch", "role": name, "unit": "u-" + name, "budget": 1, "slot": "s", "band": "b",
+        out.append({"do": "role_launch", "role": name, "unit": "u-" + name, "budget": 1, "slot": "s",
                     "mode": "slot", "message": "m", "why": "w", "ticket": None})
         return out
     return decide
@@ -642,7 +642,7 @@ def test_making_clone_is_a_planned_hold():
           "paused": lambda: None, "role_launch": fake_launch,
           "role_prepare": lambda role: {"refused": RC.MAKING + " role clone /x is missing: unit u is making it",
                                         "lv": None}}
-    a = {"do": "role_launch", "role": "Designer", "unit": "u1", "budget": 1, "slot": "s", "band": "b", "mode": "slot",
+    a = {"do": "role_launch", "role": "Designer", "unit": "u1", "budget": 1, "slot": "s", "mode": "slot",
          "message": "m", "why": "w", "ticket": None}
     acts = [a]
     saved = D.claude_exe

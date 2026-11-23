@@ -328,15 +328,15 @@ def subject(line):
 
 
 def parse_retired(raw_lines):
-    """-> {subject}: one bare `unit=`/`hook=`/`role=` per line ('#' comments). Anything else raises: a typo must not
+    """-> {subject}: one bare `unit=`/`hook=`/`role=`/`reading=` per line ('#' comments). Anything else raises: a typo must not
     leave a retired thing swept, nor retire a living one."""
     out = set()
     for raw in raw_lines:
         line = raw.split("#", 1)[0].strip()
         if not line:
             continue
-        if not re.fullmatch(r"(unit|hook|role)=\S+", line):
-            raise ValueError("not a retired subject (want unit=|hook=|role=<name> alone): %r" % line)
+        if not re.fullmatch(r"(unit|hook|role|reading)=\S+", line):
+            raise ValueError("not a retired subject (want unit=|hook=|role=<name> or reading=<path> alone): %r" % line)
         out.add(line)
     return out
 
@@ -363,13 +363,19 @@ def moved(line):
 EXCUSED = "(excused)"   # paused on purpose: not broken, and no proof it recovered either
 
 
+def retired_line(line, retired):
+    """True when the promise's subject, or the reading it watches (its program was removed on purpose), is retired. Pure."""
+    m = re.search(r"(?:^|\s)(reading=\S+)", line)
+    return subject(line) in retired or bool(m and m.group(1) in retired)
+
+
 def promises(items, baseline, retired=()):
     """-> [{"item", "line"}]: the baseline's, then every promise on the ledger. Pure. `once:` is the visible escape and
     is ignored; an item being worked holds its own promise until it closes again; a retired item holds none, and
-    nor does any promise whose subject is in `retired` (a unit/hook/role removed on purpose)."""
+    nor does any promise whose subject or reading is in `retired` (a unit/hook/role/program removed on purpose)."""
     out = []
     for line in baseline:
-        if subject(line) in retired:
+        if retired_line(line, retired):
             continue
         iid = item_id(line)
         it = items.get(iid)
@@ -378,7 +384,7 @@ def promises(items, baseline, retired=()):
     seen = {r["item"] for r in out}        # a fixed id answers for its baseline line, whatever it closed with
     for iid, it in sorted(items.items()):
         line = getattr(it, "live", None)
-        if not line or line.startswith("once:") or it.state in RETIRED or iid in seen or subject(line) in retired:
+        if not line or line.startswith("once:") or it.state in RETIRED or iid in seen or retired_line(line, retired):
             continue
         if it.state in SETTLED or it.live_broken:
             out.append({"item": iid, "line": moved(line)})

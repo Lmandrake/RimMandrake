@@ -125,7 +125,7 @@ READING = {"runway": 2.0, "runway_m": "MEASURED", "week_left": 50.0, "week_left_
 
 
 def _prompt(role, mode, scope, root=None):
-    return RL.prompt(role, mode, "t", "GREEN", READING, 0, 0, 1.0, 0, UNIT, rows=["- row"], scope=scope, root=root)
+    return RL.prompt(role, mode, "t", READING, 0, 0, 0, UNIT, rows=["- row"], scope=scope, root=root)
 
 
 def test_inline():

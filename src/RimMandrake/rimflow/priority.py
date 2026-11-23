@@ -18,7 +18,6 @@ model in the loop. Same inputs, same item, every time.
       filter  blocked == false
       filter  target  == the active version, normally v1
       filter  needs   is satisfiable in the CURRENT GAME STATE
-      sort    0. priority list    asc      ← ctx["plan_order"], `next` only (priority_list.py)
               1. this_deployment  desc     ← the live window is closing
               2. v1 row           asc      ← the campaign's own order
               3. created_at       asc      ← oldest first, so nothing starves
@@ -34,7 +33,7 @@ import json
 import os
 import re
 
-from . import model, priority_list
+from . import model
 
 # Which `needs` are satisfiable in which game state. ⚠️ `harvest` and `owner` are NOT
 # functions of game state alone — they are passed in, because the ledger cannot know
@@ -146,58 +145,12 @@ def offerable_state(it, now):
     return False
 
 
-def focus_config(path=None):
-    """-> the schedule's `focus_cap` (RO2) checked, or None when the file or key is absent; ValueError when damaged.
-    per_seat: the WIP cap of a held window, read by `next`. seats: who `next` holds to it.
-    waits_max: dated waits at once. since: `doing` work last taken before this is history, not focus (86 FOUNDRY items
-    sat `doing` with no lease on 2026-11-01; counted, they would pin `next` at the cap for good)."""
-    path = path or os.environ.get("RIMFLOW_SCHEDULE") or os.path.join(
-        os.path.dirname(os.path.abspath(__file__)), "dispatcher_schedule.json")
-    try:
-        with open(path) as f:
-            c = json.load(f).get("focus_cap")
-    except FileNotFoundError:
-        return None
-    except (OSError, ValueError, AttributeError) as e:
-        raise ValueError("%s: %s" % (path, e))
-    if c is None:
-        return None
-    n = lambda x, low: isinstance(x, int) and not isinstance(x, bool) and x >= low     # noqa: E731
-    if not (isinstance(c, dict) and n(c.get("per_seat"), 1) and n(c.get("waits_max"), 0)
-            and isinstance(c.get("seats"), list) and priority_list.epoch(c.get("since")) is not None):
-        raise ValueError("focus_cap is malformed in %s: per_seat >= 1, waits_max >= 0, seats a list, since a date" % path)
-    return c
-
-
 def wait_running(it, now):
     """A dated wait still ahead, on started work. Past its date the item counts and is offered again, unprompted."""
     if not (it.wait_until and it.state in ("ready", "doing")):
         return False
-    e = priority_list.epoch(it.wait_until)
+    e = model.iso_epoch(it.wait_until)
     return e is not None and e > now
-
-
-def is_focus(it, now, since):
-    """Started and not done: `doing` taken at or after `since`, or `proposed`/`ready` under a live lease. `next` leases
-    both (a filed item is `proposed`), and the reservation is counted so two callers cannot both pass the cap; a lapsed
-    one gives its place back. A running wait is out of the count; a block is not: it says something is wrong, and the
-    wrong thing still holds the place."""
-    if wait_running(it, now):
-        return False
-    if it.state in ("proposed", "ready"):
-        return model.lease_status(it, now) == "live"
-    if it.state != "doing":
-        return False
-    cut = priority_list.epoch(since)
-    return any((priority_list.epoch(t) or 0) >= cut for t in (it.started_at, (it.lease or {}).get("taken")) if t)
-
-
-def focus_items(world, seat, now, since):
-    return [i for i in world.items.values() if i.owner == seat and i.open and is_focus(i, now, since)]
-
-
-def waiting_items(world, seat, now):
-    return [i for i in world.items.values() if i.owner == seat and i.open and wait_running(i, now)]
 
 
 def rank(world, seat, target="v1", ctx=None):
@@ -219,9 +172,7 @@ def rank(world, seat, target="v1", ctx=None):
         out.append(it)
     # `raised` (2026-10-26, steward escalation T+30) outranks everything, raised items in
     # RAISE order (model.raise_key, 2026-10-29), then `this_deployment`, then the campaign row.
-    # The priority list (DI3) goes before all of it, when the caller carries one: only `rimflow next`, the ring's path.
-    orders = (ctx or {}).get("plan_order") or {}
-    out.sort(key=lambda i: (priority_list.position(i, orders), model.raise_key(i), not i.this_deployment, _row_key(i),
+    out.sort(key=lambda i: (model.raise_key(i), not i.this_deployment, _row_key(i),
                             i.created_at or "", i.id))
     return out
 
@@ -322,7 +273,7 @@ def release_reason(world, it, now):
         return None
     kind = block_kind(it)
     if kind == "time":
-        e = priority_list.epoch(it.blocked_lift_at)
+        e = model.iso_epoch(it.blocked_lift_at)
         return ("its date %s has passed" % it.blocked_lift_at) if e is not None and e <= now else None
     if kind != "item" or not it.blocked_on:
         return None
@@ -563,12 +514,6 @@ def why_not(world, seat, iid, target="v1", ctx=None):
             out.append(state)
     if wait_running(it, now):
         out.append("WAITING until %s: %s (`rimflow unwait %s` ends it early)." % (it.wait_until, it.wait_reason, it.id))
-    cap = (ctx or {}).get("focus_cap")
-    if cap and it.owner == seat and not is_focus(it, now, cap["since"]) and not wait_running(it, now):
-        fo = focus_items(world, seat, now, cap["since"])
-        if len(fo) >= cap["per_seat"]:
-            out.append("FOCUS CAP: %s holds %d focus items, the cap is %d, so no new item is offered. Finish one, "
-                       "`rimflow wait` one, or `rimflow reclaim` one." % (seat, len(fo), cap["per_seat"]))
     rel = release_reason(world, it, now)
     if it.blocked and rel:
         out.append("block ENDED by its own rule (%s): offered again; the claim clears it. Was: %s" % (rel, block_line(it)))

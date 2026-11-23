@@ -245,7 +245,7 @@ def test_d_full_reasons():
     check(req.get("reasons") == errs, "D1 the re-chain request carries all %d reasons, untruncated" % len(errs))
     cfg = designer_cfg()
     job = RL.run_now_job(cfg, req, T)
-    msg = RL.prompt(cfg, job["mode"], job["trigger"], "green", {}, 0, 0, 1.0, 0, "rm-role-designer-2",
+    msg = RL.prompt(cfg, job["mode"], job["trigger"], {}, 0, 0, 0, "rm-role-designer-2",
                     rows=job.get("rows"), reasons=job.get("reasons"))
     check(all(e in msg for e in errs), "D2 the launch message holds every reason in full (the fifth and sixth too)")
 

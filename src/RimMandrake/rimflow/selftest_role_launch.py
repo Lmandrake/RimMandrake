@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Selftest of role_launch.py's own behaviour (ROLE_LAUNCH_HARDEN_MUTATION_SURVIVORS): each check below kills named
 surviving mutants of the mutmut run 20261028f (stop path, unit/scope queries, launch result, schedule validation,
-the ops reading and throttle band). Pure: fake runners, no systemd, no clock."""
+the ops reading). Pure: fake runners, no systemd, no clock."""
 import os
 import subprocess
 import sys
@@ -236,22 +236,6 @@ def test_ops_reading():
     check("is absent" in bad["why"], "non-dict point treated as absent: %r" % bad["why"])
 
 
-# ---------------------------------------------------------------- band
-def test_band():
-    bands = {"FLOOR": {"week_left_pct_lt": 10, "slots": "none", "quick_cap_x": 0.0},
-             "HIGH": {"runway_ge": 5, "slots": "all", "quick_cap_x": 1.0},
-             "LOW": {"runway_ge": 2, "slots": "first", "quick_cap_x": 0.5}}
-    role = {"throttle_bands": bands}
-    check(RL.band({}, {}) == ("NONE", {"quick_cap_x": 1.0, "slots": "all"}), "no bands -> NONE x1.0")
-    check(RL.band(role, {"week_left": 9.9, "runway": 9})[0] == "FLOOR", "below the floor line")
-    check(RL.band(role, {"week_left": 10, "runway": 9})[0] == "HIGH", "exactly on the floor line is not floor")
-    check(RL.band(role, {"week_left": 50, "runway": 5})[0] == "HIGH", "runway meeting the line")
-    check(RL.band(role, {"week_left": 50, "runway": 4.9})[0] == "LOW", "next band down")
-    check(RL.band(role, {"week_left": 50, "runway": 0.1})[0] == "LOW", "below every line -> the lowest runway band")
-    check(raises(lambda: RL.band({"throttle_bands": {"F": {"week_left_pct_lt": 5}}}, {"week_left": 50, "runway": 1}), "runway_ge"),
-          "no runway band -> ValueError")
-
-
 def test_run_budget_usd_hard_stop():
     # RIMMANDRAKE_RESTORE_PAUSED_WORK_KEEP_EVERY_SPEND_CAP: run_budget_usd is a hard stop, enforced from outside by
     # spend_watchdog --cap-usd (never --max-budget-usd: RIMMANDRAKE_HIDE_SPEND_FROM_BUILDERS_CAP_NAGGED_EVERY_TURN)
@@ -280,12 +264,7 @@ def test_validate_role():
     check(raises(lambda: RL.validate_role(dict(good(), slot_late_s=3600, runs_local=["23:30"])), "midnight"),
           "a late window past midnight is refused")
     RL.validate_role(dict(good(), slot_late_s=3600, runs_local=["20:00"]))
-    check(raises(lambda: RL.validate_role(dict(good(), throttle_bands=[1])), "mapping"), "bands must be a mapping")
-    check(raises(lambda: RL.validate_role(dict(good(), throttle_bands={"A": 1})), "throttle band A is not a mapping"), "band mapping")
-    check(raises(lambda: RL.validate_role(dict(good(), throttle_bands={"A": {"runway_ge": "x"}})), "not a number"), "band number")
-    check(raises(lambda: RL.validate_role(dict(good(), throttle_bands={"A": {"week_left_pct_lt": 5}})), "runway_ge"),
-          "bands with no runway_ge refused")
-    RL.validate_role(dict(good(), throttle_bands={"A": {"runway_ge": 1}, "B": {"week_left_pct_lt": 5}}))
+    check(raises(lambda: RL.validate_role(dict(good(), throttle_bands={})), "throttle_bands"), "a retired throttle band is refused")
     check(raises(lambda: RL.validate_role(dict(good(), slot_when="pending_work")), "retired"), "slot_when retired")
     check(raises(lambda: RL.validate_role(dict(good(), pre_launch_max_s=0)), "pre_launch_max_s 0 is not a number > 0"), "pre 0")
     RL.validate_role(dict(good(), pre_launch_max_s=1))
@@ -339,7 +318,7 @@ def test_after_ready_covered_slot():
     job = {"slot": "08:00", "key": RL.slot_key(T, "08:00")}
     keys = RL.after_slots(op, job, T)
     rk = "2026-11-03 run-now 2026-11-03T15:00:00Z"
-    done = {k: "band RED" for k in keys[1:]}
+    done = {k: "launch" for k in keys[1:]}
     done[keys[0]] = "covered by " + rk
     ok = RL.after_ready(c, {"Operations": {"runs": [{"slot": rk, "state": "done", "mode": "run"}], "done": done}},
                         set(), job, T, op)
@@ -441,7 +420,7 @@ def test_new_concept_not_orphan_swept():
 
 TESTS = (test_new_concept_not_orphan_swept, test_judge_stopped_run_charged_nothing, test_incident_run_cap_and_page, test_after_ready_covered_slot, test_ops_reading_points_not_mapping, test_stop_call_failed_is_not_ok, test_stop_reports_each_failure, test_failed_stop_reissued_each_tick,
          test_unit_state_and_scope_of, test_launch_result, test_launch_argv_shape, test_run_budget_usd_hard_stop, test_model_id, test_ops_reading,
-         test_band, test_validate_role)
+         test_validate_role)
 
 
 def main():

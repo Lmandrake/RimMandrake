@@ -2772,9 +2772,9 @@ def test_d11_shard_rechecked_at_the_kill():
     check(any("unpublished" in h for h in holds), "D11 an append after the verdict holds the kill (%s)" % holds)
     holds = SR.recheck_at_kill("FOUNDRY", sch, rs, sf, paused=lambda: None, work=lambda s_, ts: [], shard=lambda s_: None)
     check(not any("unpublished" in h for h in holds), "D11 a published shard does not hold (%s)" % holds)
-    # NEGATIVE (GPT review 2026-11-01 #5): a plain request, a goodbye, a bring-back append after their gate (or never
+    # NEGATIVE (GPT review 2026-11-01 #5): a plain request or a goodbye append after their gate (or never
     # passed one): the fence holds every source but a size restart
-    for src in ("request", "bringback"):
+    for src in ("request",):
         holds = SR.recheck_at_kill("FOUNDRY", sch, dict(rs, deferred=False, source=src), sf, paused=lambda: None,
                                    work=lambda s_, ts: [], shard=lambda s_: "x has uncommitted lines")
         check(any("unpublished" in h for h in holds), "D11 %s: an unpublished shard holds the kill (%s)" % (src, holds))

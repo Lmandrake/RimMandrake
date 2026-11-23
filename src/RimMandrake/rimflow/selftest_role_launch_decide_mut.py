@@ -205,7 +205,6 @@ def after_ready_every_reason():
     c = SD.conductor(after_role="Operations")
     job = {"slot": "08:00", "key": RL.slot_key(T, "08:00")}
     k = RL.slot_key(T, "07:30")
-    kp = RL.slot_key(RL.prev_day(T), "19:30")
     out = {}
     r = lambda *a, **kw: RL.after_ready(c, kw.pop("rst"), kw.pop("busy", set()), job, T, kw.pop("acfg", op))
     out["no after_role"] = RL.after_ready(SD.conductor(), {}, set(), job, T, op)
@@ -220,9 +219,6 @@ def after_ready_every_reason():
     out["ended last of two"] = r(rst={"Operations": rs_runs({"slot": k, "state": "failed", "mode": "quick"},
                                                            {"slot": k, "state": "running", "mode": "quick"})})
     out["done"] = r(rst={"Operations": rs_runs({"slot": k, "state": "done", "mode": "quick"})})
-    out["band skipped both"] = r(rst={"Operations": rs_runs(done={k: "band RED", kp: "band RED"})})
-    out["band skipped then ok"] = r(rst={"Operations": rs_runs({"slot": kp, "state": "done", "mode": "quick"},
-                                                               done={k: "band RED"})})
     return out
 
 
@@ -455,14 +451,10 @@ def decide_off_switch_and_window():
 
 
 @scen
-def decide_blocked_by_reading_band_and_caps():
+def decide_blocked_by_reading_and_caps():
     out = {}
     c = SD.conductor()
     out["ops unreadable"] = decide([c], fresh_st(), SD.robs(None), T, busy=set())
-    out["band FLOOR blocks the slot"] = decide([c], fresh_st(), SD.robs(SD.ops_status(T, week_left=5.0)), T, busy=set())
-    t20 = SD.at_local("20:00")
-    st = fresh_st()
-    out["AMBER: second slot held"] = tick([c], st, SD.robs(SD.ops_status(t20, runway=1.2)), t20, n=1, busy=set())
     out["no cap"] = decide([SD.conductor(quick_token_cap=0)], fresh_st(), SD.robs(SD.ops_status(T)), T, busy=set())
     out["daily cap 0"] = decide([SD.conductor(daily_token_cap=0)], fresh_st(), SD.robs(SD.ops_status(T)), T, busy=set())
     out["daily cap exactly fits"] = decide([SD.conductor(daily_token_cap=30000)], fresh_st(), SD.robs(SD.ops_status(T)), T,
@@ -515,21 +507,11 @@ def decide_exception_without_a_launch_alarms_with_the_roles_item():
 
 
 @scen
-def slot_blocked_table_and_slots_edges():
+def slots_edges():
     c = SD.conductor(quick_checks_local=["09:00", "13:00", "19:30"], economy_pass_local="13:00", economy_token_cap=5000)
     t = SD.at_local("07:00")
     sl = RL.slots(c, t)
     out = {"slots": sl}
-    jobs = []
-    for i, (hh, m, _) in enumerate(sl):
-        jobs.append({"slot": hh, "first": i == 0, "mode": m})
-    jobs.append({"slot": None, "first": False, "mode": "alarm"})
-    jobs.append({"slot": "", "first": False, "mode": "quick"})
-    for allowed in RL.BAND_SLOTS + ("bogus",):
-        out[allowed] = [RL.slot_blocked(allowed, j, c, t) for j in jobs]
-    # quick_one with a schedule of nothing but an economy slot
-    ce = SD.conductor(quick_checks_local=["13:00"], economy_pass_local="13:00", economy_token_cap=5000)
-    out["quick_one, only economy"] = [RL.slot_blocked("quick_one", {"slot": "13:00", "first": True, "mode": "quick"}, ce, t)]
     # weekday filtering
     p = SD.daily(runs_local=["Wed 09:00", "Wed 15:00", "Thu 09:00"])
     out["Wed"] = RL.slots(p, SD.at_local("07:00"))
@@ -571,10 +553,10 @@ def supervise_overbudget_repeats_tell_the_conductor():
     return supervise([c], st, sobs({"u0": "inactive"}, {"u0": cli(1, subtype="success")}), T)
 
 
-def _first_launching_cap(role, band_cfg, t, lo_, hi_, step):
+def _first_launching_cap(role, t, lo_, hi_, step):
     al = {"a1": {"state": "OPEN", "item": "ITEM_ONE"}}
     for cap in range(lo_, hi_, step):
-        r = dict(role, daily_token_cap=cap, throttle_bands=band_cfg)
+        r = dict(role, daily_token_cap=cap)
         res = decide([r], fresh_st(), SD.robs(SD.ops_status(t, alarms=al)), t, busy=set())
         if any(a["do"] == "role_launch" for a in res["acts"]):
             return cap
@@ -582,20 +564,11 @@ def _first_launching_cap(role, band_cfg, t, lo_, hi_, step):
 
 
 @scen
-def alarm_reserve_sweeps_the_daily_cap_for_every_band_shape():
+def alarm_reserve_sweeps_the_daily_cap():
     t = SD.at_local("07:00")
     p = SD.operations(after_role=None, runs_local=["08:00", "10:00", "12:00", "14:00"], run_token_cap=40000,
                       quick_token_cap=20000, economy_pass_local="12:00", economy_token_cap=10000)
-    shapes = {
-        "x1 all": {"GREEN": {"runway_ge": 1.5, "quick_cap_x": 1.0, "slots": "all"}},
-        "x1.5 all": {"GREEN": {"runway_ge": 1.5, "quick_cap_x": 1.5, "slots": "all"}},
-        "x2 first": {"GREEN": {"runway_ge": 1.5, "quick_cap_x": 2.0, "slots": "first"}},
-        "x1 last": {"GREEN": {"runway_ge": 1.5, "quick_cap_x": 1.0, "slots": "last"}},
-        "x1 quick": {"GREEN": {"runway_ge": 1.5, "quick_cap_x": 1.0, "slots": "quick"}},
-        "x1 quick_one": {"GREEN": {"runway_ge": 1.5, "quick_cap_x": 1.0, "slots": "quick_one"}},
-        "x1 none": {"GREEN": {"runway_ge": 1.5, "quick_cap_x": 1.0, "slots": "none"}},
-    }
-    return {name: _first_launching_cap(p, bc, t, 20000, 400000, 1000) for name, bc in shapes.items()}
+    return _first_launching_cap(p, t, 20000, 400000, 1000)
 
 
 @scen
@@ -604,15 +577,11 @@ def alarm_reserve_edges_one_cap_apart():
     t = SD.at_local("07:00")
     p = SD.operations(after_role=None, runs_local=["08:00", "10:00"], economy_pass_local=None, run_token_cap=40000,
                       quick_token_cap=20000)
-    bc = {"GREEN": {"runway_ge": 1.5, "quick_cap_x": 1.5, "slots": "all"}}
-    return _first_launching_cap(p, bc, t, 60000, 140000, 1)
+    return _first_launching_cap(p, t, 60000, 140000, 1)
 
 
 # GOLDEN-BEGIN
 GOLDEN = {'after_ready_every_reason': {'alarm job': None,
-                              'band skipped both': 'every Operations slot in the last 24 h was skipped by its band '
-                                                   '(2026-10-28 07:30, 2026-10-27 19:30)',
-                              'band skipped then ok': None,
                               'busy': 'an Operations run is still going',
                               'disabled': 'Operations is not enabled',
                               'done': None,
@@ -626,16 +595,9 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                     '08:00': ['2026-10-28 08:00', '2026-10-27 12:00'],
                                                     '08:01': ['2026-10-28 08:00', '2026-10-27 12:00'],
                                                     '12:00': ['2026-10-28 12:00', '2026-10-28 08:00']},
- 'alarm_reserve_edges_one_cap_apart': 100000,
- 'alarm_reserve_sweeps_the_daily_cap_for_every_band_shape': {'x1 all': 110000,
-                                                             'x1 last': 60000,
-                                                             'x1 none': None,
-                                                             'x1 quick': 100000,
-                                                             'x1 quick_one': None,
-                                                             'x1.5 all': 140000,
-                                                             'x2 first': 80000},
+ 'alarm_reserve_edges_one_cap_apart': 80000,
+ 'alarm_reserve_sweeps_the_daily_cap': 110000,
  'decide_after_role_waits_once_and_follows': [{'acts': [{'account': None,
-                                                         'band': 'NONE',
                                                          'blind': {'mode': 'economy',
                                                                    'outcome': 'launched',
                                                                    'role': 'Operations',
@@ -651,9 +613,9 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                          'slot': '2026-10-28 07:30',
                                                          'ticket': 'ROLES_ITEM_X',
                                                          'unit': 'rm-role-operations-1793174460',
-                                                         'why': 'Operations slot 07:30 local, band NONE, budget '
-                                                                '150000 (cap 150000 x 1.0), 0 used today, unit '
-                                                                'rm-role-operations-1793174460, model sonnet'},
+                                                         'why': 'Operations slot 07:30 local, budget 150000, 0 used '
+                                                                'today, unit rm-role-operations-1793174460, model '
+                                                                'sonnet'},
                                                         {'do': 'role_hold',
                                                          'role': 'Conductor',
                                                          'why': 'Conductor slot 08:00 local waits: runs after a '
@@ -699,7 +661,6 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                       'why': 'Operations slot 07:30 missed (tick '
                                                                              '16260 s late > slot_late_s)'},
                                                                      {'account': None,
-                                                                      'band': 'NONE',
                                                                       'blind': {'mode': 'alarm',
                                                                                 'outcome': 'launched',
                                                                                 'role': 'Operations',
@@ -716,10 +677,9 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                       'ticket': 'ITEM_ONE',
                                                                       'unit': 'rm-role-operations-1793188860',
                                                                       'why': 'Operations ops_watch alarm ITEM_ONE, '
-                                                                             'ITEM_TWO, band NONE, budget 60000 (cap '
-                                                                             '60000 x 1.0), 0 used today, unit '
-                                                                             'rm-role-operations-1793188860, model '
-                                                                             'sonnet'}],
+                                                                             'ITEM_TWO, budget 60000, 0 used today, '
+                                                                             'unit rm-role-operations-1793188860, '
+                                                                             'model sonnet'}],
                                                             'ledger_blind': None,
                                                             'roles': {'Operations': {'alarm_day': {'day': '2026-10-28',
                                                                                                    'keys': {'ITEM_ONE': 1,
@@ -777,7 +737,6 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                   'why': 'Operations slot 07:30 missed (tick 16260 s '
                                                                          'late > slot_late_s)'},
                                                                  {'account': None,
-                                                                  'band': 'NONE',
                                                                   'blind': {'mode': 'alarm',
                                                                             'outcome': 'launched',
                                                                             'role': 'Operations',
@@ -794,8 +753,7 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                   'ticket': 'ITEM_ONE',
                                                                   'unit': 'rm-role-operations-1793188860',
                                                                   'why': 'Operations ops_watch alarm ITEM_ONE, '
-                                                                         'ITEM_TWO, band NONE, budget 60000 (cap '
-                                                                         '60000 x 1.0), 0 used today, unit '
+                                                                         'ITEM_TWO, budget 60000, 0 used today, unit '
                                                                          'rm-role-operations-1793188860, model '
                                                                          'sonnet'}],
                                                         'ledger_blind': None,
@@ -831,7 +789,6 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                               'alarm_runs_per_day None); the '
                                                                               'scheduled running checks read it'},
                                                                       {'account': None,
-                                                                       'band': 'NONE',
                                                                        'blind': {'mode': 'alarm',
                                                                                  'outcome': 'launched',
                                                                                  'role': 'Operations',
@@ -848,8 +805,7 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                        'ticket': 'ITEM_TWO',
                                                                        'unit': 'rm-role-operations-1793188860',
                                                                        'why': 'Operations ops_watch alarm ITEM_TWO, '
-                                                                              'band NONE, budget 60000 (cap 60000 x '
-                                                                              '1.0), 0 used today, unit '
+                                                                              'budget 60000, 0 used today, unit '
                                                                               'rm-role-operations-1793188860, model '
                                                                               'sonnet'}],
                                                              'ledger_blind': None,
@@ -903,7 +859,6 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                                      '(tick 16260 s late > '
                                                                                      'slot_late_s)'},
                                                                              {'account': None,
-                                                                              'band': 'NONE',
                                                                               'blind': {'mode': 'alarm',
                                                                                         'outcome': 'launched',
                                                                                         'role': 'Operations',
@@ -920,9 +875,8 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                               'ticket': 'ITEM_ONE',
                                                                               'unit': 'rm-role-operations-1793188860',
                                                                               'why': 'Operations ops_watch alarm '
-                                                                                     'ITEM_ONE, ITEM_TWO, band NONE, '
-                                                                                     'budget 60000 (cap 60000 x '
-                                                                                     '1.0), 0 used today, unit '
+                                                                                     'ITEM_ONE, ITEM_TWO, budget '
+                                                                                     '60000, 0 used today, unit '
                                                                                      'rm-role-operations-1793188860, '
                                                                                      'model sonnet'}],
                                                                     'ledger_blind': None,
@@ -952,7 +906,6 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                                           'missed (tick 3660 s late '
                                                                                           '> slot_late_s)'},
                                                                                   {'account': None,
-                                                                                   'band': 'NONE',
                                                                                    'blind': {'mode': 'alarm',
                                                                                              'outcome': 'launched',
                                                                                              'role': 'Operations',
@@ -969,10 +922,8 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                                    'ticket': 'ITEM_ONE',
                                                                                    'unit': 'rm-role-operations-1793170860',
                                                                                    'why': 'Operations ops_watch '
-                                                                                          'alarm ITEM_ONE, band '
-                                                                                          'NONE, budget 60000 (cap '
-                                                                                          '60000 x 1.0), 0 used '
-                                                                                          'today, unit '
+                                                                                          'alarm ITEM_ONE, budget '
+                                                                                          '60000, 0 used today, unit '
                                                                                           'rm-role-operations-1793170860, '
                                                                                           'model sonnet'}],
                                                                          'ledger_blind': None,
@@ -1026,7 +977,6 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                         'why': 'Operations slot 07:30 missed (tick 16260 s late > '
                                                                'slot_late_s)'},
                                                        {'account': None,
-                                                        'band': 'NONE',
                                                         'blind': {'mode': 'alarm',
                                                                   'outcome': 'launched',
                                                                   'role': 'Operations',
@@ -1042,9 +992,9 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                         'slot': 'alarm ITEM_ONE',
                                                         'ticket': 'ITEM_ONE',
                                                         'unit': 'rm-role-operations-1793188860',
-                                                        'why': 'Operations ops_watch alarm ITEM_ONE, alarm:a2, band '
-                                                               'NONE, budget 60000 (cap 60000 x 1.0), 0 used today, '
-                                                               'unit rm-role-operations-1793188860, model sonnet'}],
+                                                        'why': 'Operations ops_watch alarm ITEM_ONE, alarm:a2, '
+                                                               'budget 60000, 0 used today, unit '
+                                                               'rm-role-operations-1793188860, model sonnet'}],
                                               'ledger_blind': None,
                                               'roles': {'Operations': {'alarm_day': {'day': '2026-10-28',
                                                                                      'keys': {'ITEM_ONE': 1,
@@ -1093,7 +1043,6 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                   'why': 'Operations slot 07:30 missed (tick 16260 s late > '
                                                          'slot_late_s)'},
                                                  {'account': None,
-                                                  'band': 'NONE',
                                                   'blind': {'mode': 'alarm',
                                                             'outcome': 'launched',
                                                             'role': 'Operations',
@@ -1109,9 +1058,9 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                   'slot': 'alarm ITEM_ONE',
                                                   'ticket': 'ITEM_ONE',
                                                   'unit': 'rm-role-operations-1793188860',
-                                                  'why': 'Operations ops_watch alarm ITEM_ONE, alarm:a2, band NONE, '
-                                                         'budget 60000 (cap 60000 x 1.0), 0 used today, unit '
-                                                         'rm-role-operations-1793188860, model sonnet'}],
+                                                  'why': 'Operations ops_watch alarm ITEM_ONE, alarm:a2, budget '
+                                                         '60000, 0 used today, unit rm-role-operations-1793188860, '
+                                                         'model sonnet'}],
                                         'ledger_blind': None,
                                         'roles': {'Operations': {'alarm_day': {'day': '2026-10-28',
                                                                                'keys': {'ITEM_ONE': 1, 'alarm:a2': 1},
@@ -1133,7 +1082,6 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                       'why': 'Operations slot 07:30 missed (tick '
                                                                              '16260 s late > slot_late_s)'},
                                                                      {'account': None,
-                                                                      'band': 'NONE',
                                                                       'blind': {'mode': 'alarm',
                                                                                 'outcome': 'launched',
                                                                                 'role': 'Operations',
@@ -1150,8 +1098,7 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                       'ticket': 'ROLES_ITEM_X',
                                                                       'unit': 'rm-role-operations-1793188860',
                                                                       'why': 'Operations ops_watch alarm alarm:a2, '
-                                                                             'band NONE, budget 60000 (cap 60000 x '
-                                                                             '1.0), 0 used today, unit '
+                                                                             'budget 60000, 0 used today, unit '
                                                                              'rm-role-operations-1793188860, model '
                                                                              'sonnet'}],
                                                             'ledger_blind': None,
@@ -1177,7 +1124,6 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                'why': 'Operations slot 07:30 missed (tick 16260 s '
                                                                       'late > slot_late_s)'},
                                                               {'account': None,
-                                                               'band': 'NONE',
                                                                'blind': {'mode': 'alarm',
                                                                          'outcome': 'launched',
                                                                          'role': 'Operations',
@@ -1194,8 +1140,7 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                'ticket': 'ITEM_ONE',
                                                                'unit': 'rm-role-operations-1793188860',
                                                                'why': 'Operations ops_watch alarm ITEM_ONE, '
-                                                                      'alarm:a2, band NONE, budget 60000 (cap 60000 '
-                                                                      'x 1.0), 0 used today, unit '
+                                                                      'alarm:a2, budget 60000, 0 used today, unit '
                                                                       'rm-role-operations-1793188860, model sonnet'}],
                                                      'ledger_blind': None,
                                                      'roles': {'Operations': {'alarm_day': {'day': '2026-10-28',
@@ -1254,152 +1199,117 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                               'roles': {'Operations': {'alarm_blind': True,
                                                                        'done': {'2026-10-28 07:30': 'missed'},
                                                                        'runs': []}}}]},
- 'decide_blocked_by_reading_band_and_caps': {'AMBER: second slot held': [{'acts': [{'do': 'role_hold',
-                                                                                    'role': 'Conductor',
-                                                                                    'why': 'Conductor slot 08:00 '
-                                                                                           'missed (tick 43260 s '
-                                                                                           'late > slot_late_s)'},
-                                                                                   {'do': 'role_hold',
-                                                                                    'role': 'Conductor',
-                                                                                    'why': 'Conductor slot 20:00 '
-                                                                                           'local not run: band '
-                                                                                           'AMBER runs first '
-                                                                                           'scheduled slots (runway '
-                                                                                           '1.20 MEASURED, week left '
-                                                                                           '40%)'}],
-                                                                          'ledger_blind': None,
-                                                                          'roles': {'Conductor': {'done': {'2026-10-28 08:00': 'missed',
-                                                                                                           '2026-10-28 20:00': 'band '
-                                                                                                                               'AMBER'},
-                                                                                                  'runs': []}}}],
-                                             'band FLOOR blocks the slot': {'acts': [{'do': 'role_hold',
-                                                                                      'role': 'Conductor',
-                                                                                      'why': 'Conductor slot 08:00 '
-                                                                                             'local not run: band '
-                                                                                             'FLOOR runs none '
-                                                                                             'scheduled slots '
-                                                                                             '(runway 2.00 MEASURED, '
-                                                                                             'week left 5%)'}],
-                                                                            'ledger_blind': None,
-                                                                            'roles': {'Conductor': {'done': {'2026-10-28 08:00': 'band '
-                                                                                                                                 'FLOOR'},
-                                                                                                    'runs': []}}},
-                                             'daily cap 0': {'acts': [{'do': 'alarm',
-                                                                       'kind': 'role:Conductor:cap',
-                                                                       'note': True,
-                                                                       'ticket': 'ROLES_ITEM_X',
-                                                                       'why': 'Conductor slot 08:00 local REFUSED: '
-                                                                              'daily_token_cap 0, 0 used today + '
-                                                                              '30000 budget'}],
-                                                             'ledger_blind': None,
-                                                             'roles': {'Conductor': {'done': {'2026-10-28 08:00': 'daily '
-                                                                                                                  'cap'},
-                                                                                     'runs': []}}},
-                                             'daily cap exactly fits': {'acts': [{'account': None,
-                                                                                  'band': 'GREEN',
-                                                                                  'blind': {'mode': 'quick',
-                                                                                            'outcome': 'launched',
-                                                                                            'role': 'Conductor',
-                                                                                            'unit': 'rm-role-conductor-1793174460'},
-                                                                                  'budget': 30000,
-                                                                                  'do': 'role_launch',
-                                                                                  'message': '<message>',
-                                                                                  'mode': 'quick',
-                                                                                  'note': True,
-                                                                                  'role': 'Conductor',
-                                                                                  'run_max_s': 1800,
-                                                                                  'seat': 'BENCH',
-                                                                                  'slot': '2026-10-28 08:00',
-                                                                                  'ticket': 'ROLES_ITEM_X',
-                                                                                  'unit': 'rm-role-conductor-1793174460',
-                                                                                  'why': 'Conductor slot 08:00 '
-                                                                                         'local, band GREEN, budget '
-                                                                                         '30000 (cap 30000 x 1.0), 0 '
-                                                                                         'used today, unit '
-                                                                                         'rm-role-conductor-1793174460, '
-                                                                                         'model sonnet'}],
-                                                                        'ledger_blind': None,
-                                                                        'roles': {'Conductor': {'done': {'2026-10-28 08:00': 'launch'},
-                                                                                                'pending_launch': {'alarm_day': None,
-                                                                                                                   'alarm_last_run': None,
-                                                                                                                   'alarms_seen': None,
-                                                                                                                   'done': None,
-                                                                                                                   'had_done': False,
-                                                                                                                   'key': '2026-10-28 '
-                                                                                                                          '08:00',
-                                                                                                                   'mode': 'quick',
-                                                                                                                   'unit': 'rm-role-conductor-1793174460'},
-                                                                                                'runs': []}}},
-                                             'daily cap one short': {'acts': [{'do': 'alarm',
-                                                                               'kind': 'role:Conductor:cap',
-                                                                               'note': True,
-                                                                               'ticket': 'ROLES_ITEM_X',
-                                                                               'why': 'Conductor slot 08:00 local '
-                                                                                      'REFUSED: daily_token_cap '
-                                                                                      '29999, 0 used today + 30000 '
-                                                                                      'budget'}],
-                                                                     'ledger_blind': None,
-                                                                     'roles': {'Conductor': {'done': {'2026-10-28 08:00': 'daily '
-                                                                                                                          'cap'},
-                                                                                             'runs': []}}},
-                                             'daily cap used up by a run today': {'acts': [{'do': 'alarm',
-                                                                                            'kind': 'role:Conductor:cap',
-                                                                                            'note': True,
-                                                                                            'ticket': 'ROLES_ITEM_X',
-                                                                                            'why': 'Conductor slot '
-                                                                                                   '08:00 local '
-                                                                                                   'REFUSED: '
-                                                                                                   'daily_token_cap '
-                                                                                                   '200000, 190000 '
-                                                                                                   'used today + '
-                                                                                                   '30000 budget'}],
-                                                                                  'ledger_blind': None,
-                                                                                  'roles': {'Conductor': {'done': {'2026-10-28 08:00': 'daily '
-                                                                                                                                       'cap'},
-                                                                                                          'runs': [{'at': 1793167260.0,
-                                                                                                                    'budget': 190000,
-                                                                                                                    'day': '2026-10-28',
-                                                                                                                    'item': 'ROLES_ITEM_X',
-                                                                                                                    'mode': 'quick',
-                                                                                                                    'run_max_s': 1800,
-                                                                                                                    'scope': 'sc-r1',
-                                                                                                                    'seat': 'BENCH',
-                                                                                                                    'state': 'done',
-                                                                                                                    'tokens': 190000,
-                                                                                                                    'unit': 'r1'}]}}},
-                                             'gate holds, once': [{'acts': [{'do': 'role_hold',
-                                                                             'role': 'Conductor',
-                                                                             'why': 'Conductor slot 08:00 local held '
-                                                                                    'for the account switch: '
-                                                                                    'switching to acctB'}],
-                                                                   'ledger_blind': None,
-                                                                   'roles': {'Conductor': {'account_hold': '2026-10-28 '
-                                                                                                           '08:00',
-                                                                                           'done': {},
-                                                                                           'runs': []}}},
-                                                                  {'acts': [],
-                                                                   'ledger_blind': None,
-                                                                   'roles': {'Conductor': {'account_hold': '2026-10-28 '
-                                                                                                           '08:00',
-                                                                                           'done': {},
-                                                                                           'runs': []}}}],
-                                             'no cap': {'acts': [{'conductor_log': True,
-                                                                  'do': 'alarm',
-                                                                  'kind': 'role:Conductor',
+ 'decide_blocked_by_reading_and_caps': {'daily cap 0': {'acts': [{'do': 'alarm',
+                                                                  'kind': 'role:Conductor:cap',
                                                                   'note': True,
-                                                                  'why': 'role Conductor has no token cap for '
-                                                                         'quick'}],
+                                                                  'ticket': 'ROLES_ITEM_X',
+                                                                  'why': 'Conductor slot 08:00 local REFUSED: '
+                                                                         'daily_token_cap 0, 0 used today + 30000 '
+                                                                         'budget'}],
                                                         'ledger_blind': None,
-                                                        'roles': {'Conductor': {'done': {}, 'runs': []}}},
-                                             'ops unreadable': {'acts': [{'do': 'alarm',
-                                                                          'kind': 'role:Conductor:ops',
+                                                        'roles': {'Conductor': {'done': {'2026-10-28 08:00': 'daily '
+                                                                                                             'cap'},
+                                                                                'runs': []}}},
+                                        'daily cap exactly fits': {'acts': [{'account': None,
+                                                                             'blind': {'mode': 'quick',
+                                                                                       'outcome': 'launched',
+                                                                                       'role': 'Conductor',
+                                                                                       'unit': 'rm-role-conductor-1793174460'},
+                                                                             'budget': 30000,
+                                                                             'do': 'role_launch',
+                                                                             'message': '<message>',
+                                                                             'mode': 'quick',
+                                                                             'note': True,
+                                                                             'role': 'Conductor',
+                                                                             'run_max_s': 1800,
+                                                                             'seat': 'BENCH',
+                                                                             'slot': '2026-10-28 08:00',
+                                                                             'ticket': 'ROLES_ITEM_X',
+                                                                             'unit': 'rm-role-conductor-1793174460',
+                                                                             'why': 'Conductor slot 08:00 local, '
+                                                                                    'budget 30000, 0 used today, '
+                                                                                    'unit '
+                                                                                    'rm-role-conductor-1793174460, '
+                                                                                    'model sonnet'}],
+                                                                   'ledger_blind': None,
+                                                                   'roles': {'Conductor': {'done': {'2026-10-28 08:00': 'launch'},
+                                                                                           'pending_launch': {'alarm_day': None,
+                                                                                                              'alarm_last_run': None,
+                                                                                                              'alarms_seen': None,
+                                                                                                              'done': None,
+                                                                                                              'had_done': False,
+                                                                                                              'key': '2026-10-28 '
+                                                                                                                     '08:00',
+                                                                                                              'mode': 'quick',
+                                                                                                              'unit': 'rm-role-conductor-1793174460'},
+                                                                                           'runs': []}}},
+                                        'daily cap one short': {'acts': [{'do': 'alarm',
+                                                                          'kind': 'role:Conductor:cap',
                                                                           'note': True,
                                                                           'ticket': 'ROLES_ITEM_X',
                                                                           'why': 'Conductor slot 08:00 local '
-                                                                                 'REFUSED: ops_watch status.json '
-                                                                                 'missing or unreadable'}],
+                                                                                 'REFUSED: daily_token_cap 29999, 0 '
+                                                                                 'used today + 30000 budget'}],
                                                                 'ledger_blind': None,
-                                                                'roles': {'Conductor': {'done': {}, 'runs': []}}}},
+                                                                'roles': {'Conductor': {'done': {'2026-10-28 08:00': 'daily '
+                                                                                                                     'cap'},
+                                                                                        'runs': []}}},
+                                        'daily cap used up by a run today': {'acts': [{'do': 'alarm',
+                                                                                       'kind': 'role:Conductor:cap',
+                                                                                       'note': True,
+                                                                                       'ticket': 'ROLES_ITEM_X',
+                                                                                       'why': 'Conductor slot 08:00 '
+                                                                                              'local REFUSED: '
+                                                                                              'daily_token_cap '
+                                                                                              '200000, 190000 used '
+                                                                                              'today + 30000 '
+                                                                                              'budget'}],
+                                                                             'ledger_blind': None,
+                                                                             'roles': {'Conductor': {'done': {'2026-10-28 08:00': 'daily '
+                                                                                                                                  'cap'},
+                                                                                                     'runs': [{'at': 1793167260.0,
+                                                                                                               'budget': 190000,
+                                                                                                               'day': '2026-10-28',
+                                                                                                               'item': 'ROLES_ITEM_X',
+                                                                                                               'mode': 'quick',
+                                                                                                               'run_max_s': 1800,
+                                                                                                               'scope': 'sc-r1',
+                                                                                                               'seat': 'BENCH',
+                                                                                                               'state': 'done',
+                                                                                                               'tokens': 190000,
+                                                                                                               'unit': 'r1'}]}}},
+                                        'gate holds, once': [{'acts': [{'do': 'role_hold',
+                                                                        'role': 'Conductor',
+                                                                        'why': 'Conductor slot 08:00 local held for '
+                                                                               'the account switch: switching to '
+                                                                               'acctB'}],
+                                                              'ledger_blind': None,
+                                                              'roles': {'Conductor': {'account_hold': '2026-10-28 '
+                                                                                                      '08:00',
+                                                                                      'done': {},
+                                                                                      'runs': []}}},
+                                                             {'acts': [],
+                                                              'ledger_blind': None,
+                                                              'roles': {'Conductor': {'account_hold': '2026-10-28 '
+                                                                                                      '08:00',
+                                                                                      'done': {},
+                                                                                      'runs': []}}}],
+                                        'no cap': {'acts': [{'conductor_log': True,
+                                                             'do': 'alarm',
+                                                             'kind': 'role:Conductor',
+                                                             'note': True,
+                                                             'why': 'role Conductor has no token cap for quick'}],
+                                                   'ledger_blind': None,
+                                                   'roles': {'Conductor': {'done': {}, 'runs': []}}},
+                                        'ops unreadable': {'acts': [{'do': 'alarm',
+                                                                     'kind': 'role:Conductor:ops',
+                                                                     'note': True,
+                                                                     'ticket': 'ROLES_ITEM_X',
+                                                                     'why': 'Conductor slot 08:00 local REFUSED: '
+                                                                            'ops_watch status.json missing or '
+                                                                            'unreadable'}],
+                                                           'ledger_blind': None,
+                                                           'roles': {'Conductor': {'done': {}, 'runs': []}}}},
  'decide_busy_role_waits_and_is_not_marked': {'acts': [],
                                               'ledger_blind': None,
                                               'roles': {'Conductor': {'done': {}, 'runs': []}}},
@@ -1449,7 +1359,6 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                    'raised RuntimeError: act failed'}],
                                                   'roles': {'Conductor': {'done': {}, 'runs': []}}},
  'decide_launch_golden_with_and_without_account': [{'acts': [{'account': 'acctA',
-                                                              'band': 'GREEN',
                                                               'blind': {'mode': 'quick',
                                                                         'outcome': 'launched',
                                                                         'role': 'Conductor',
@@ -1465,10 +1374,9 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                               'slot': '2026-10-28 08:00',
                                                               'ticket': 'ROLES_ITEM_X',
                                                               'unit': 'rm-role-conductor-1793174460',
-                                                              'why': 'Conductor slot 08:00 local, band GREEN, budget '
-                                                                     '30000 (cap 30000 x 1.0), 0 used today, unit '
-                                                                     'rm-role-conductor-1793174460, model sonnet, '
-                                                                     'account acctA (ready)'}],
+                                                              'why': 'Conductor slot 08:00 local, budget 30000, 0 '
+                                                                     'used today, unit rm-role-conductor-1793174460, '
+                                                                     'model sonnet, account acctA (ready)'}],
                                                     'ledger_blind': None,
                                                     'roles': {'Conductor': {'done': {'2026-10-28 08:00': 'launch'},
                                                                             'pending_launch': {'alarm_day': None,
@@ -1482,12 +1390,11 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                                                'unit': 'rm-role-conductor-1793174460'},
                                                                             'runs': []}}},
                                                    {'acts': [{'account': None,
-                                                              'band': 'AMBER',
                                                               'blind': {'mode': 'quick',
                                                                         'outcome': 'launched',
                                                                         'role': 'Conductor',
                                                                         'unit': 'rm-role-conductor-1793174460'},
-                                                              'budget': 18000,
+                                                              'budget': 30000,
                                                               'do': 'role_launch',
                                                               'message': '<message>',
                                                               'mode': 'quick',
@@ -1498,9 +1405,9 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                               'slot': '2026-10-28 08:00',
                                                               'ticket': 'ROLES_ITEM_X',
                                                               'unit': 'rm-role-conductor-1793174460',
-                                                              'why': 'Conductor slot 08:00 local, band AMBER, budget '
-                                                                     '18000 (cap 30000 x 0.6), 0 used today, unit '
-                                                                     'rm-role-conductor-1793174460, model sonnet'}],
+                                                              'why': 'Conductor slot 08:00 local, budget 30000, 0 '
+                                                                     'used today, unit rm-role-conductor-1793174460, '
+                                                                     'model sonnet'}],
                                                     'ledger_blind': None,
                                                     'roles': {'Conductor': {'done': {'2026-10-28 08:00': 'launch'},
                                                                             'pending_launch': {'alarm_day': None,
@@ -1523,7 +1430,6 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                  'roles': {'Conductor': {'done': {'2026-10-28 08:00': 'off'},
                                                                          'runs': []}}},
                                   'off without an off_file': {'acts': [{'account': None,
-                                                                        'band': 'GREEN',
                                                                         'blind': {'mode': 'quick',
                                                                                   'outcome': 'launched',
                                                                                   'role': 'Conductor',
@@ -1539,9 +1445,8 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                         'slot': '2026-10-28 08:00',
                                                                         'ticket': 'ROLES_ITEM_X',
                                                                         'unit': 'rm-role-conductor-1793174460',
-                                                                        'why': 'Conductor slot 08:00 local, band '
-                                                                               'GREEN, budget 30000 (cap 30000 x '
-                                                                               '1.0), 0 used today, unit '
+                                                                        'why': 'Conductor slot 08:00 local, budget '
+                                                                               '30000, 0 used today, unit '
                                                                                'rm-role-conductor-1793174460, model '
                                                                                'sonnet'}],
                                                               'ledger_blind': None,
@@ -1565,7 +1470,6 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                      'roles': {'Conductor': {'done': {'2026-10-28 08:00': 'off'},
                                                                              'runs': []}}},
                                   'window gone clears hold': {'acts': [{'account': None,
-                                                                        'band': 'GREEN',
                                                                         'blind': {'mode': 'quick',
                                                                                   'outcome': 'launched',
                                                                                   'role': 'Conductor',
@@ -1581,9 +1485,8 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                         'slot': '2026-10-28 08:00',
                                                                         'ticket': 'ROLES_ITEM_X',
                                                                         'unit': 'rm-role-conductor-1793174460',
-                                                                        'why': 'Conductor slot 08:00 local, band '
-                                                                               'GREEN, budget 30000 (cap 30000 x '
-                                                                               '1.0), 0 used today, unit '
+                                                                        'why': 'Conductor slot 08:00 local, budget '
+                                                                               '30000, 0 used today, unit '
                                                                                'rm-role-conductor-1793174460, model '
                                                                                'sonnet'}],
                                                               'ledger_blind': None,
@@ -1614,7 +1517,6 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                            'window_hold': '2026-10-28 08:00'}}}],
                                   'window live asked': ['Conductor RC', 'Conductor RC'],
                                   'window not live': [{'acts': [{'account': None,
-                                                                 'band': 'GREEN',
                                                                  'blind': {'mode': 'quick',
                                                                            'outcome': 'launched',
                                                                            'role': 'Conductor',
@@ -1630,10 +1532,10 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                  'slot': '2026-10-28 08:00',
                                                                  'ticket': 'ROLES_ITEM_X',
                                                                  'unit': 'rm-role-conductor-1793174460',
-                                                                 'why': 'Conductor slot 08:00 local, band GREEN, '
-                                                                        'budget 30000 (cap 30000 x 1.0), 0 used '
-                                                                        'today, unit rm-role-conductor-1793174460, '
-                                                                        'model sonnet'}],
+                                                                 'why': 'Conductor slot 08:00 local, budget 30000, 0 '
+                                                                        'used today, unit '
+                                                                        'rm-role-conductor-1793174460, model '
+                                                                        'sonnet'}],
                                                        'ledger_blind': None,
                                                        'roles': {'Conductor': {'done': {'2026-10-28 08:00': 'launch'},
                                                                                'pending_launch': {'alarm_day': None,
@@ -1796,7 +1698,6 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                          'ledger_blind': None,
                                          'roles': {'Conductor': {'done': {}, 'runs': []}}},
                               'exact': {'acts': [{'account': None,
-                                                  'band': 'GREEN',
                                                   'blind': {'mode': 'quick',
                                                             'outcome': 'launched',
                                                             'role': 'Conductor',
@@ -1812,9 +1713,8 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                   'slot': '2026-10-28 08:00',
                                                   'ticket': 'ROLES_ITEM_X',
                                                   'unit': 'rm-role-conductor-1793174400',
-                                                  'why': 'Conductor slot 08:00 local, band GREEN, budget 30000 (cap '
-                                                         '30000 x 1.0), 0 used today, unit '
-                                                         'rm-role-conductor-1793174400, model sonnet'}],
+                                                  'why': 'Conductor slot 08:00 local, budget 30000, 0 used today, '
+                                                         'unit rm-role-conductor-1793174400, model sonnet'}],
                                         'ledger_blind': None,
                                         'roles': {'Conductor': {'done': {'2026-10-28 08:00': 'launch'},
                                                                 'pending_launch': {'alarm_day': None,
@@ -1827,7 +1727,6 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                                    'unit': 'rm-role-conductor-1793174400'},
                                                                 'runs': []}}},
                               'late edge': {'acts': [{'account': None,
-                                                      'band': 'GREEN',
                                                       'blind': {'mode': 'quick',
                                                                 'outcome': 'launched',
                                                                 'role': 'Conductor',
@@ -1843,9 +1742,9 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                       'slot': '2026-10-28 08:00',
                                                       'ticket': 'ROLES_ITEM_X',
                                                       'unit': 'rm-role-conductor-1793175000',
-                                                      'why': 'Conductor slot 08:00 local, band GREEN, budget 30000 '
-                                                             '(cap 30000 x 1.0), 0 used today, unit '
-                                                             'rm-role-conductor-1793175000, model sonnet'}],
+                                                      'why': 'Conductor slot 08:00 local, budget 30000, 0 used '
+                                                             'today, unit rm-role-conductor-1793175000, model '
+                                                             'sonnet'}],
                                             'ledger_blind': None,
                                             'roles': {'Conductor': {'done': {'2026-10-28 08:00': 'launch'},
                                                                     'pending_launch': {'alarm_day': None,
@@ -1865,7 +1764,6 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                          'roles': {'Conductor': {'done': {'2026-10-28 08:00': 'missed'},
                                                                  'runs': []}}},
                               'missed after waiting': {'acts': [{'account': None,
-                                                                 'band': 'NONE',
                                                                  'blind': {'mode': 'economy',
                                                                            'outcome': 'launched',
                                                                            'role': 'Operations',
@@ -1881,10 +1779,10 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                  'slot': '2026-10-28 07:30',
                                                                  'ticket': 'ROLES_ITEM_X',
                                                                  'unit': 'rm-role-operations-1793175100',
-                                                                 'why': 'Operations slot 07:30 local, band NONE, '
-                                                                        'budget 150000 (cap 150000 x 1.0), 0 used '
-                                                                        'today, unit rm-role-operations-1793175100, '
-                                                                        'model sonnet'},
+                                                                 'why': 'Operations slot 07:30 local, budget 150000, '
+                                                                        '0 used today, unit '
+                                                                        'rm-role-operations-1793175100, model '
+                                                                        'sonnet'},
                                                                 {'do': 'role_hold',
                                                                  'role': 'Conductor',
                                                                  'why': 'Conductor slot 08:00 missed (tick 700 s '
@@ -1908,7 +1806,6 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                                                    'unit': 'rm-role-operations-1793175100'},
                                                                                 'runs': []}}},
                               'missed, waiting for another slot': {'acts': [{'account': None,
-                                                                             'band': 'NONE',
                                                                              'blind': {'mode': 'economy',
                                                                                        'outcome': 'launched',
                                                                                        'role': 'Operations',
@@ -1925,8 +1822,7 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                              'ticket': 'ROLES_ITEM_X',
                                                                              'unit': 'rm-role-operations-1793175100',
                                                                              'why': 'Operations slot 07:30 local, '
-                                                                                    'band NONE, budget 150000 (cap '
-                                                                                    '150000 x 1.0), 0 used today, '
+                                                                                    'budget 150000, 0 used today, '
                                                                                     'unit '
                                                                                     'rm-role-operations-1793175100, '
                                                                                     'model sonnet'},
@@ -1966,22 +1862,10 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                               'raise': 'marker scan raised ZeroDivisionError: UNMEASURED',
                               'scan raised': 'marker scan raised ZeroDivisionError: UNMEASURED',
                               'term': 'TERM to 2 of 2 process(es) marked m'},
- 'slot_blocked_table_and_slots_edges': {'Thu': [['Thu 09:00', 'run', 100000]],
-                                        'Wed': [['Wed 09:00', 'run', 100000], ['Wed 15:00', 'run', 100000]],
-                                        'all': [False, False, False, False, False],
-                                        'bogus': [False, False, False, False, False],
-                                        'first': [False, True, True, False, False],
-                                        'last': [True, True, False, False, False],
-                                        'no day': [['Wed 09:00', 'run', 100000],
-                                                   ['Wed 15:00', 'run', 100000],
-                                                   ['Thu 09:00', 'run', 100000]],
-                                        'none': [True, True, True, True, True],
-                                        'quick': [False, True, False, False, False],
-                                        'quick_one': [False, True, True, True, True],
-                                        'quick_one, only economy': [False],
-                                        'slots': [['09:00', 'quick', 30000],
-                                                  ['13:00', 'economy', 5000],
-                                                  ['19:30', 'quick', 30000]]},
+ 'slots_edges': {'Thu': [['Thu 09:00', 'run', 100000]],
+                 'Wed': [['Wed 09:00', 'run', 100000], ['Wed 15:00', 'run', 100000]],
+                 'no day': [['Wed 09:00', 'run', 100000], ['Wed 15:00', 'run', 100000], ['Thu 09:00', 'run', 100000]],
+                 'slots': [['09:00', 'quick', 30000], ['13:00', 'economy', 5000], ['19:30', 'quick', 30000]]},
  'sup_done_runs_and_budget_alarm': {'acts': [{'blind': {'mode': 'quick',
                                                         'outcome': 'completed',
                                                         'role': 'Conductor',

@@ -133,6 +133,10 @@ def main(retired_path=None):
                       lines, fx)
     check(sorted(r["line"] for r in got) == ["unit=rm-here.timer max_age=1h", "unit=rm-here.timer max_age=2h"],
           "unit, hook and role retirements all hold, from the baseline and from an item; the living stay swept")
+    rd = DM.parse_retired(["reading=/ops/health.json  # its program is gone"])
+    got = DM.promises({"X": It(live="unit=rm-here.timer reading=/ops/health.json max_age=1h"),
+                       "Y": It(live="unit=rm-here.timer reading=/ops/health.json2 max_age=1h")}, [], rd)
+    check([r["item"] for r in got] == ["Y"], "a retired reading ends the promises that watch it, and no other (%s)" % got)
     check(DM.subject("max_age=2h unit=rm-gone.timer") == "unit=rm-gone.timer" and DM.subject("once: why") == "",
           "the subject is found in any field order; `once:` has none")
     check(DM.promises({"Y": It(live="unit=rm-here.timer max_age=1h")}, [], ()) != [], "no retired list sweeps as before")

@@ -90,12 +90,9 @@ def test_refusals_consume():
     for name, kw, want in (
             ("off switch", {"off": "owner: off"}, "off switch"),
             ("ops UNMEASURED", {"status": SD.ops_status(T, m="UNMEASURED")}, "REFUSED"),
-            ("band FLOOR", {"status": SD.ops_status(T, week_left=5.0)}, "band FLOOR"),
             ("daily cap", {"spent": 200000}, "daily_token_cap")):
         st = state(req())
-        role = SD.arbiter(enabled=False, throttle_bands={
-            "GREEN": {"runway_ge": 1.5, "quick_cap_x": 1.0, "slots": "all"},
-            "FLOOR": {"week_left_pct_lt": 10, "quick_cap_x": 0.4, "slots": "none"}})
+        role = SD.arbiter(enabled=False)
         if kw.get("spent"):
             st["roles"]["Arbiter"]["runs"] = [{"day": RL.day_of(T), "tokens": kw["spent"], "token_unit": RL.TOKEN_UNIT, "state": "done",
                                                "unit": "rm-role-arbiter-1", "at": T - 600}]

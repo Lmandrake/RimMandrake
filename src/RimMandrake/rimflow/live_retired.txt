@@ -1,6 +1,6 @@
 # Live promises retired on purpose: deadman_check.py sweeps no promise (baseline line or closed item's `live`)
 # whose subject is listed here, so a deleted unit never reopens the fix that once ran it (OPS_TIMER_REPAIR_EC51).
-# One bare subject per line: unit=<name> | hook=<file> | role=<name>, then '# why'.
+# One bare subject per line: unit=<name> | hook=<file> | role=<name> | reading=<path>, then '# why'.
 unit=rm-pulse.service           # RimPulse retired, owner 2026-11-03 (5734f22602)
 unit=rm-pulse-brief.timer       # RimPulse retired, owner 2026-11-03 (5734f22602)
 unit=rm-pulse-digest.timer      # RimPulse retired, owner 2026-11-03 (5734f22602)
@@ -28,3 +28,5 @@ unit=testq-sweep.timer          # the nightly full FlowWorks sweep on SteveDeskt
 unit=steve-cpu-retest.timer     # the retest ended END_FAULT 2026-11-01 (the Conductor, 2026-11-23, census Table 1)
 unit=rm-agent-improve.timer     # the daily agent-improvement pass, stopped by his card 2026-11-23 (RIMMANDRAKE_ENACT_HIS_CARD_ARTIST_DAILY_PASS_SKILL_CARDS_RETIRED)
 unit=rm-agent-improve.service     # the daily agent-improvement pass, stopped by his card 2026-11-23 (RIMMANDRAKE_ENACT_HIS_CARD_ARTIST_DAILY_PASS_SKILL_CARDS_RETIRED)
+reading=/mnt/d/ClaudeWork/rimmandrake/ops_watch/health.json  # ops_health.py, the health verdict nobody read (the Conductor, 2026-11-23, census Table 2 row 4)
+reading=/mnt/d/ClaudeWork/rimmandrake/ops_watch/series/plan.jsonl  # the plan family of ops_watch, removed e0a979ce9f with the Producer's list

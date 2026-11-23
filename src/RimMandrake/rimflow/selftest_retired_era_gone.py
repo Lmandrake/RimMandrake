@@ -356,7 +356,7 @@ def text_problems(paths):
 # units and instruction words that stay gone. A thing that comes back needs a word that says so and its row here removed.
 CENSUS = "the Conductor, 2026-11-23, retire census"
 RETIRED_PATHS = (                     # fnmatch globs of tracked paths
-    ".claude/hooks/bench_mode.py", "infrastructure/state/MODE",
+    ".claude/hooks/bench_mode.py", ".claude/hooks/warn_unclosed_queue_item.py", "infrastructure/state/MODE",
     "src/RimMandrake/Utils/*agent_improve*", "infrastructure/state/agent_improve/*",    # the owner by card, 2026-11-23
     "final.md", "claude_sha.txt", ".bridge.eld", "GLOBAL_CLAUDE.md", "Fable_Review/*", "src/RimMandrake/rimflow/docs/*",
     "infrastructure/agents/POLICY.md", "infrastructure/agents/REP.md", "infrastructure/agents/CODEX_PROPOSAL_*",
@@ -367,6 +367,9 @@ RETIRED_PATHS = (                     # fnmatch globs of tracked paths
     "infrastructure/state/haiku_census_2026-10-31.md", "infrastructure/state/live_proof_triage.tsv",
     "infrastructure/state/lightspeed_unmatched.tsv",
     "infrastructure/dashboards/*", "infrastructure/state/GOAL_SHEET.md", "src/RimMandrake/Utils/project_maturity_dashboard.py",
+    "src/RimMandrake/Utils/ops_health.py", "src/RimMandrake/Utils/selftest_ops_health*.py",
+    "src/RimMandrake/rimflow/priority_list.py", "infrastructure/state/priority_list.json",
+    "src/RimMandrake/rimflow/selftest_idle_bringback.py", "src/RimMandrake/rimflow/selftest_focus_cap.py",
     "src/RimMandrake/Utils/prove_scratch_reap_refused_day.py", "src/RimMandrake/Utils/codebase_health_publish.py", "src/RimMandrake/Utils/codebase_health_artifact.tmpl.html",
 )
 RETIRED_UNITS = (                     # unit file names; a tracked copy in the one home, or an installed unmasked one
@@ -379,6 +382,9 @@ RETIRED_WORDS = (                     # regexes refused on a live instruction li
     r"\bbench_mode\.py\b", r"infrastructure/state/MODE\b", r"\bGOAL_SHEET\.md\b", r"queue/HUMAN\.md\b", r"\bGLOBAL_CLAUDE\.md\b",
     r"\bproject_maturity_dashboard\b", r"\bcodebase_health_publish\b", r"\bagent_improve|rm-agent-improve\b",
     r"daily agent[- ]improvement", r"\b(testq-sweep|rm-codebase-health|steve-cpu-retest)\b",
+    r"\bpriority_list\b", r"\bidle_bringback\b", r"\bbusy_waiting\b", r"\bfocus_cap\b", r"[Tt]hrottle:? (runway )?bands?\b", r"\bquick_cap_x\b",
+    r"\bops_health\b", r"\b[Hh]ealth verdict\b(?!, its budgets)", r"\bV3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE\b", r"[Ii]nnovations list", r"\bRULINGS_BUILD_STATE_RECONCILER",
+
 )
 UNIT_HOME = "src/RimMandrake/Utils/systemd/"
 

@@ -37,51 +37,16 @@ def collector():
 
 
 T = SD.at_local("08:00")          # the Conductor's first slot of the day
-DEGRADED = {"state": "MEASURED", "degraded": "status.json missing", "account": None, "at": "UNREADABLE",
-            "runway": 0.0, "runway_m": "UNMEASURED", "week_left": 0.0, "week_left_m": "UNMEASURED"}
 
-
-def f1_band_unit():
-    c = SD.conductor()
-    check(RL.band(c, DEGRADED)[0] == "FLOOR", "F1 degraded reading, FLOOR is the strictest (slots none) -> FLOOR")
-    # the bug's shape: a degraded reading with a HEALTHY week_left must still get FLOOR (no value decides it)
-    check(RL.band(c, dict(DEGRADED, week_left=100.0, runway=9.0))[0] == "FLOOR",
-          "F1 degraded reading with placeholder week_left 100 / runway 9 -> still FLOOR (values not consulted)")
-    stricter = {"GREEN": {"runway_ge": 1.5, "quick_cap_x": 1.0, "slots": "all"},
-                "RED": {"runway_ge": 0.0, "quick_cap_x": 0.4, "slots": "none"},
-                "FLOOR": {"week_left_pct_lt": 10, "quick_cap_x": 1.0, "slots": "first"}}
-    check(RL.band({"throttle_bands": stricter}, DEGRADED)[0] == "RED",
-          "F1 a band stricter than FLOOR (slots none vs first) is the one picked")
-    tie = {"GREEN": {"runway_ge": 1.5, "quick_cap_x": 1.0, "slots": "all"},
-           "RED": {"runway_ge": 0.0, "quick_cap_x": 1.0, "slots": "all"},
-           "FLOOR": {"week_left_pct_lt": 10, "quick_cap_x": 1.0, "slots": "all"}}
-    check(RL.most_cautious_band(tie)[0] == "FLOOR", "F1 full tie on slots and factor -> the FLOOR band")
-    cap = {"A": {"runway_ge": 1.0, "quick_cap_x": 0.5, "slots": "all"},
-           "B": {"runway_ge": 0.0, "quick_cap_x": 0.8, "slots": "all"}}
-    check(RL.most_cautious_band(cap)[0] == "A", "F1 same slots -> the smaller quick_cap_x")
-    # a MEASURED reading is unchanged: healthy -> GREEN, low week_left -> FLOOR
-    ok = {"state": "MEASURED", "runway": 2.0, "week_left": 40.0}
-    check(RL.band(c, ok)[0] == "GREEN" and RL.band(c, dict(ok, week_left=5.0))[0] == "FLOOR",
-          "F1 measured readings keep their band (GREEN; FLOOR under the line)")
 
 
 def f1_decide_not_advisory():
-    # strict caps (caps_advisory false) + degraded_reading_ok + no status.json: before the fix the made-up
-    # week_left 100 / runway 0 chose RED (slots first), so the 08:00 first slot LAUNCHED past a FLOOR of slots none
-    c = SD.conductor(caps_advisory=False, degraded_reading_ok=True)
-    acts, act = collector()
-    st = {"roles": {}}
-    RL.decide_roles({"roles": [c]}, st, SD.robs(None), T, act, set(), None)
-    launched = [a for a in acts if a.get("do") == "role_launch"]
-    held = [a for a in acts if a.get("do") == "role_hold" and "band FLOOR" in a.get("why", "")]
-    check(not launched, "F1 strict caps, degraded reading: nothing launched (got %d launches)" % len(launched))
-    check(len(held) == 1, "F1 strict caps, degraded reading: held by band FLOOR (%s)"
-          % [a.get("why", "")[:90] for a in acts])
-    # advisory caps (the default) still launch on the degraded reading: FLOOR is read as all slots
-    acts2, act2 = collector()
-    RL.decide_roles({"roles": [SD.conductor(degraded_reading_ok=True)]}, {"roles": {}}, SD.robs(None), T, act2,
-                    set(), None)
-    check(any(a.get("do") == "role_launch" for a in acts2), "F1 advisory caps, degraded reading: still launches")
+    # a degraded reading (no status.json) launches whether or not caps bind: nothing reads a made-up week_left
+    for flag in (False, True):
+        acts, act = collector()
+        RL.decide_roles({"roles": [SD.conductor(caps_advisory=flag, degraded_reading_ok=True)]}, {"roles": {}}, SD.robs(None),
+                        T, act, set(), None)
+        check(any(a.get("do") == "role_launch" for a in acts), "F1 caps_advisory %s, degraded reading: launches" % flag)
 
 
 def f2_names():
@@ -130,7 +95,6 @@ def f2_names():
           % [a.get("role") for a in acts if a.get("do") == "role_launch"])
 
 
-f1_band_unit()
 f1_decide_not_advisory()
 f2_names()
 print("\n%s: %d failed" % ("FAIL" if FAILS else "PASS", len(FAILS)))

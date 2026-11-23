@@ -4,9 +4,9 @@
 - The `enabled` field of that row decides whether the role runs. This file never decides it.
 - Design: `design/RimMandrake/role_responsibilities_2026-10-26.md` §Operations, `design/RimMandrake/dispatcher_design_2026-10-26.md` §3.
 - Item: `OPERATIONS_MONITOR_ACCOUNTS_OFF_SHARED_TABLE`. This item is your own.
-- Every other role but the Conductor is token-blind. Those roles read `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE`, the
+- Every other role but the Conductor is token-blind. Those roles read `RIMMANDRAKE_KEEP_ROLE_NOTES_ON_ONE_LIVE_ITEM`, the
   shared item. So no reading, runway, budget or token figure goes on
-  `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE` (review U N2).
+  `RIMMANDRAKE_KEEP_ROLE_NOTES_ON_ONE_LIVE_ITEM` (review U N2).
 - A code such as `review U N2` names a finding of a past review. `review V2` and `review roles r2 #6` are two more
   such codes. `git log --grep "review U"` finds the commits of that review. The code records why a rule exists.
 - The owner's words that set this role up (2026-10-26, 2026-10-27) and its first switch-on are in
@@ -88,12 +88,12 @@ windows, never for you.
 |---|---|---|
 | 19:30 local (`runs_local`) | the running check: alarms, flags, anything UNMEASURED that was MEASURED yesterday | `run_token_cap` |
 | an ops_watch alarm that is OPEN and not yet run (the alarm trigger, below) | diagnose each alarm that the trigger names: cause, owner, fix or a filed item. Note each alarm item. Note an Operations-only alarm on your own item. | `run_token_cap` |
-| 07:30 local (`runs_local`, `economy_pass_local`) | the running check, then the economy pass below. A band without the economy pass skips this whole run. No band does so while the bands are neutralised (see Throttle). | `economy_token_cap` |
+| 07:30 local (`runs_local`, `economy_pass_local`) | the running check, then the economy pass below. | `economy_token_cap` |
 
 The alarm trigger:
 
 - An alarm trigger is one of two kinds:
-  - an alarm item that ops_watch filed (`OPS_*` under the parent item, `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE`);
+  - an alarm item that ops_watch filed (`OPS_*` under the parent item, `RIMMANDRAKE_KEEP_ROLE_NOTES_ON_ONE_LIVE_ITEM`);
   - an Operations-only alarm (`alarm:<aid>`, in `alarms.json`).
 - One run covers every such alarm. The trigger names the alarms.
 - If the reading of an alarm is already back under its line (`clear_seen` >= 1), the alarm waits. The alarm runs if it
@@ -178,18 +178,9 @@ expensive it requires immediate action for sure. But not starving it or failing 
 - **Never treat UNMEASURED as zero.** Never report a round, zero or alarming count until a sanity probe proves that the
   instrument can see it (`infrastructure/state/facts/instrument_traps.md`).
 
-## Throttle: runway bands, neutralised
+## The ops reading, and the off switch
 
-- The Dispatcher reads the bands from `accounts.<account>.runway` in ops_watch's `status.json` before every launch.
-- The bands are GREEN (runway ≥ 1.5), AMBER (≥ 1.0), RED (below) and FLOOR (`week_left_pct` < 10).
-- The bands are still computed and journaled.
-- Since 2026-10-28 every band, FLOOR included, runs like GREEN: `slots: "all"`, `quick_cap_x` 1.0 (d92c4c825e,
-  owner: *"Stop the whole account rated RED on runeway crap. Just do the checkout."*).
-- So the 07:30 run, the 19:30 check and alarm runs all go, whatever the band.
-- Restoring a band is the owner's or the Conductor's act (owner 2026-11-19, `standing_rulings.md` §Only five acts stay
-  his).
-- A missing, stale (older than 45 min) or UNMEASURED reading is refused loudly with an alarm. Such a reading is not
-  treated as a band.
+- A missing, stale (older than 45 min) or UNMEASURED reading is said loudly with an alarm.
 - The dead-man timer covers the death of ops_watch.
 - How the caps bind: "When you run", the caps.
 
@@ -301,13 +292,9 @@ expensive it requires immediate action for sure. But not starving it or failing 
   - The ops_memory build stalls ~10.2 s on about half its runs from WSL. The cause is the VictoriaMetrics read
     (`telemetry/store.py _get`: urlopen to 127.0.0.1, then the curl.exe fallback), not the build.
   - Candidate fixes: go straight to curl.exe when the local VM is unreachable, or use a short urlopen connect timeout.
-- **The nightly and everything that feeds on it are HELD until a mod's Design Version passes** (owner by card
-  2026-11-15; standing_rulings.md §The nightly checks finished mods only).
-  - timers_guard and deadman read the hold as a planned stop, not an outage.
-  - While the hold stands, every `testing.nightly_*` reading and build-cop group reads 0. (A build-cop group is the
-    red nightly tests of one root cause, which `ops_watch` files as one item.) red_dispatch launches no
-    fixer.
-  - While the hold waits, a missing nightly is not a fault.
+- **The nightly runs on finished mods, and a missing nightly is a fault** (measured 2026-11-23; `nightly_scope.py show`;
+  standing_rulings.md §The nightly checks finished mods only). A build-cop group is the red nightly tests of one root
+  cause, which `ops_watch` files as one item.
 - **A held red is cured only by the instrument's own reading.**
   - `ops_watch.red_groups` reruns only NEW nightly-red groups (RerunGate: one rerun at origin/main before a new group is
     filed). So a deleted test kept
@@ -316,8 +303,7 @@ expensive it requires immediate action for sure. But not starving it or failing 
     `NIGHTLY_RED_OVERDUE` alarm whose reds were deleted clears by itself.
   - Check `status.json` before you build anything.
 - **When redefining a measured point, grep its key across rules and readers, not just its alarm.**
-  - `ops_health` SLIs now name the unit that they were written against. A changed unit reads UNMEASURED and alarms
-    `SLI_DRIFT`.
+  - A reader names the unit that it was written against. A point with another unit has changed its meaning.
 - **`ops_watch` `c_flow untriaged_findings` counts every UNTRIAGED finding not yet an item** (131).
   - That count is blind to the standing table of `findings_fold`. In that table the findings fold to 78 signatures,
     and only 26 need build work (residue).
@@ -404,12 +390,12 @@ where the file is.
   - anything already ruled;
   - resource budgets inside the slot rules (tightening).
   - You file items for a fix that passes test 1 and that you set down with evidence (Alarm runs, question 4):
-    `rimflow spawn --from V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE --for CONDUCTOR`. Get the names through
+    `rimflow spawn --from RIMMANDRAKE_KEEP_ROLE_NOTES_ON_ONE_LIVE_ITEM --for CONDUCTOR`. Get the names through
     `rimflow namecheck`.
 - **Hands to the Conductor:** any loosening (a raised N, a lowered bar, a wider budget).
   - The Conductor decides a loosening (owner 2026-11-19, `standing_rulings.md` §Only five acts stay his). Only a
     purchase is his.
-  - The blind roles read the parent item, `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE`. So a hand-up note on the parent item
+  - The blind roles read the parent item, `RIMMANDRAKE_KEEP_ROLE_NOTES_ON_ONE_LIVE_ITEM`. So a hand-up note on the parent item
     carries no account, figure, runway or budget word (review roles r2 #1).
   - Some loosenings can go in plan words (a lowered bar, a cut). Such a loosening goes as a plain note on the parent
     item.
@@ -420,7 +406,7 @@ where the file is.
        `OP-<yyyymmddThhmmZ>`, a name that the blind view passes intact.
     2. Read the file back. Check every figure against its series. You are the reader of record of the file; nothing
        reaches him unread.
-    3. Put one note on `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE`: `OPS PROPOSAL <id>: <what it would change, in plan
+    3. Put one note on `RIMMANDRAKE_KEEP_ROLE_NOTES_ON_ONE_LIVE_ITEM`: `OPS PROPOSAL <id>: <what it would change, in plan
        words>, for the Conductor's decision; owner-only file <path>`. Put no figure, account or reason in that note.
     4. The Conductor reads the file, decides, and records the decision as `OPS DECISION <id>`. You carry out a yes.
   - Answer a `QUESTION FOR OPERATIONS` note the same way.

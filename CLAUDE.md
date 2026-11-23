@@ -665,8 +665,7 @@ python3 src/RimMandrake/rimflow/game_lock.py query  who drives each game (claim|
 rimflow …                                           the ledger: file/claim/close/drop/verify
 rimflow pilot [<ID>]                                Test Pilot: 3 non-pass runs in a row or live-only defect → spawn rm-testpilot
 python3 src/RimMandrake/Utils/run_selftests.py --only <tests>   before a commit: only the tests for what you changed;
-                                                     the nightly checks FINISHED mods only, and is held until one
-                                                     passes (`nightly_scope.py show`);
+                                                     the nightly checks FINISHED mods only (`nightly_scope.py show`);
                                                      pipeline tests run at ./publish (pipeline_tests.json)
 python3 src/RimMandrake/Utils/system_screenshot.py <out.bmp>   OS desktop capture; always allowed, do not ask
 python3 src/RimMandrake/Utils/system_click.py <x> <y>          OS-level click for dialogs a

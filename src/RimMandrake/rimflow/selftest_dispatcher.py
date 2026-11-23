@@ -150,55 +150,6 @@ def test_blind_pause_roles_caps():
     check(kinds(stall(sch, st, obs())) == ["alarm"], "80 wakes today overall: capped")
 
 
-def test_busy_waiting_seat():
-    """BUSY_SEAT_FIX_WAITING_COUNTS_AS_WORK: 2026-11-01, FOUNDRY's turn ended, a helper lived, status stayed busy, no ring."""
-    sch = sched()
-    sch["busy_waiting"] = {"enabled": True, "turn_s": 600, "tool_s": 1200}
-    t0, session = 10000.0, [sess(status="busy")]
-
-    def reading(tx, helpers=()):
-        o = obs(sessions=session)
-        o["seat_restart"] = {"tx": lambda seat, s: tx, "helpers": lambda seat, s: helpers}
-        st = {"seats": {}, "wakes": [], "recovers": [], "alarms": {}}
-        D.decide(sch, st, o, t0, True)
-        return D.decide(sch, st, o, t0 + sch["stall_after_s"], True), st
-
-    def tx(kind, age, tool=None):
-        return {"last_kind": kind, "last_at": t0 - age, "open_tool": tool}
-
-    live = [{"id": "agent-a", "alive": True}]
-    a, st = reading(tx("assistant_end", 601), live)
-    check("ring" in kinds(a), "turn ended past the limit, helper alive, status busy: the seat is rung")
-    check(st["seats"]["FOUNDRY"].get("waiting"), "the waiting spell is on the seat's record")
-    a, _ = reading(tx("assistant_end", 300), live)
-    check(kinds(a) == [], "turn ended under the limit: busy stands")
-    a, _ = reading(tx("assistant_tool", 60, "Bash"))
-    check(kinds(a) == [], "a tool running under the limit: busy stands")
-    a, _ = reading(tx("user", 5000))
-    check(kinds(a) == [], "the model is answering a result: busy stands")
-    a, _ = reading(None)
-    check(kinds(a) == [], "unreadable transcript: busy stands, no action on a blind instrument")
-    a, _ = reading(tx("assistant_tool", 1300, "Bash"))
-    check("ring" in kinds(a), "one foreground command past the limit, no helper: a live command is not work moving")
-    a, _ = reading(tx("assistant_tool", 1300, "Agent"), live)
-    check(kinds(a) == [], "a foreground helper alive and past the limit: work is moving")
-    a, _ = reading(tx("assistant_tool", 1300, "Bash"), None)
-    check(kinds(a) == [], "helpers unreadable: busy stands")
-    a, _ = reading(tx("assistant_tool", 9000, "AskUserQuestion"))
-    check(kinds(a) == [], "a question open to the owner: busy stands")
-    sch.pop("busy_waiting")
-    a, _ = reading(tx("assistant_end", 9000), live)
-    check(kinds(a) == [], "no busy_waiting block: off")
-
-    sch["busy_waiting"] = {"enabled": True, "turn_s": 600, "tool_s": 1200}
-    o = obs(sessions=session, ticket={})
-    o["seat_restart"] = {"tx": lambda seat, s: tx("assistant_end", 9000), "helpers": lambda seat, s: []}
-    st = {"seats": {}, "wakes": [], "recovers": [], "alarms": {}}
-    first = D.decide(sch, st, o, t0, True)
-    check(kinds(first) == ["busy_waiting"], "the spell is journaled when it starts")
-    check(kinds(D.decide(sch, st, o, t0 + 120, True)) == [], "once a spell, and an empty queue rings nobody")
-
-
 def test_verify_retry():
     sch = sched()
     st = {"seats": {}, "wakes": [], "recovers": [], "alarms": {}}
@@ -942,11 +893,7 @@ def conductor(**kw):
     r = {"name": "Conductor", "enabled": True, "instructions": "src/RimMandrake/rimflow/roles/conductor.md",
          "seat": "BENCH", "clone": os.path.join(TMP, "clone"), "model": "sonnet", "ledger_item": "ROLES_ITEM_X",
          "off_file": os.path.join(TMP, "CONDUCTOR_OFF"), "quick_checks_local": ["08:00", "20:00"],
-         "quick_token_cap": 30000, "daily_token_cap": 200000,
-         "throttle_bands": {"GREEN": {"runway_ge": 1.5, "quick_cap_x": 1.0, "slots": "all"},
-                            "AMBER": {"runway_ge": 1.0, "quick_cap_x": 0.6, "slots": "first"},
-                            "RED": {"runway_ge": 0.0, "quick_cap_x": 0.4, "slots": "first"},
-                            "FLOOR": {"week_left_pct_lt": 10, "quick_cap_x": 0.4, "slots": "none"}}}
+         "quick_token_cap": 30000, "daily_token_cap": 200000}
     r.update(kw)
     return r
 
@@ -994,7 +941,7 @@ def role_acts(acts):
     return [a for a in acts if a["do"].startswith("role") or str(a.get("kind", "")).startswith("role")]
 
 
-def test_role_reading_and_band():
+def test_role_reading():
     now = at_local("08:00")
     r = RL.ops_reading(ops_status(now), "acct", now)
     check(r["state"] == "MEASURED" and r["runway"] == 2.0, "ops reading: fresh MEASURED points are read")
@@ -1005,11 +952,6 @@ def test_role_reading_and_band():
           "ops reading: an UNMEASURED point is UNMEASURED")
     check(RL.ops_reading(None, "acct", now)["state"] == "UNMEASURED", "ops reading: no status.json is UNMEASURED")
     check(RL.ops_reading(ops_status(now), None, now)["state"] == "UNMEASURED", "ops reading: no account is UNMEASURED")
-    c = conductor()
-    for rw, wl, want in ((2.0, 40, "GREEN"), (1.5, 40, "GREEN"), (1.2, 40, "AMBER"), (0.3, 40, "RED"),
-                         (2.0, 9, "FLOOR"), (-0.5, 40, "RED")):
-        check(RL.band(c, {"runway": rw, "week_left": wl})[0] == want, "band: runway %s week_left %s -> %s" % (rw, wl, want))
-    check(RL.band(operations(), {"runway": 0.1, "week_left": 5})[0] == "NONE", "band: a role with no bands -> NONE x1")
     check(RL.run_tokens({"usage": {"input_tokens": 2, "cache_creation_input_tokens": 24009,
                                    "cache_read_input_tokens": 11227, "output_tokens": 4}}, "claude-haiku-4-5") == 12291,
           "run tokens: all four usage fields, price-weighted (the usage of the proof's trivial haiku run, 35242 raw, "
@@ -1030,7 +972,7 @@ def test_role_gates():
     st = fresh()
     a = role_acts(rdecide([conductor()], st, robs(ops_status(now)), now))
     check([x["do"] for x in a] == ["role_launch"] and a[0]["budget"] == 30000 and a[0]["note"]
-          and a[0]["ticket"] == "ROLES_ITEM_X", "GREEN 08:00: launch, full quick cap, noted on the role's item")
+          and a[0]["ticket"] == "ROLES_ITEM_X", "08:00: launch, full quick cap, noted on the role's item")
     check("conductor.md" in a[0]["message"] and "bridge" in a[0]["message"],
           "launch prompt names the instructions and the no-bridge line")
     blind = a[0]["message"].lower()
@@ -1051,16 +993,9 @@ def test_role_gates():
         check("%s 08:00" % RL.day_of(now) not in st["roles"]["Conductor"]["done"],
               "ops reading %s: the slot is not spent (retried next tick)" % label)
     st = fresh()
-    a = role_acts(rdecide([conductor()], st, robs(ops_status(now, runway=1.2)), now))
-    check(a and a[0]["do"] == "role_launch" and a[0]["budget"] == 18000, "AMBER 08:00: runs at x0.6")
-    t20 = at_local("20:00")
-    a = role_acts(rdecide([conductor()], st, robs(ops_status(t20, runway=1.2), unit="inactive",
-                                                  result=cli(usage(output_tokens=10))), t20))
-    check("role_launch" not in [x["do"] for x in a] and any("band AMBER" in x.get("why", "") for x in a),
-          "AMBER 20:00: held (first slot only)")
-    st = fresh()
     a = role_acts(rdecide([conductor()], st, robs(ops_status(now, week_left=5)), now))
-    check([x["do"] for x in a] == ["role_hold"] and "FLOOR" in a[0]["why"], "FLOOR: no scheduled check")
+    check([x["do"] for x in a] == ["role_launch"] and a[0]["budget"] == 30000,
+          "a low week or runway skips and shrinks no scheduled run (the bands are retired, 2026-11-23)")
     st = fresh()
     st["roles"] = {"Conductor": {"done": {}, "runs": [{"day": RL.day_of(now), "tokens": 190000, "token_unit": RL.TOKEN_UNIT, "state": "done",
                                                         "at": now - 3600, "unit": "u0", "budget": 30000}]}}
@@ -1081,7 +1016,7 @@ def test_role_economy_and_alarms():
     alarms = {"k1": {"state": "OPEN", "item": "OPS_OLD_ONE"}}
     a = role_acts(rdecide([operations()], st, robs(ops_status(now, runway=0.1, week_left=3, alarms=alarms)), now))
     check([x["do"] for x in a] == ["role_launch"] and a[0]["mode"] == "economy" and a[0]["budget"] == 150000,
-          "Operations 07:30: economy pass at economy_token_cap, no bands (x1.0 even when low)")
+          "Operations 07:30: economy pass at economy_token_cap, even when the runway is low")
     check(st["roles"]["Operations"]["alarms_seen"] == [], "W1: alarms open at first enable are not seen while the run is going")
     t = now + 600
     st["roles"]["Operations"]["runs"] = [{"unit": "u1", "at": now, "day": RL.day_of(now), "budget": 150000,
@@ -1120,17 +1055,6 @@ def test_role_economy_and_alarms():
           "a run past run_max_s: its scope and unit are stopped, with an alarm")
 
 
-# Frozen copy of Operations' throttle_bands as of 2460d2cc0a~1 (before the owner neutralized them).
-CON_BANDS_FROZEN = {"GREEN": {"runway_ge": 1.5, "quick_cap_x": 1.0, "slots": "all"},
-                    "AMBER": {"runway_ge": 1.0, "quick_cap_x": 0.75, "slots": "last"},
-                    "RED": {"runway_ge": 0.0, "quick_cap_x": 0.75, "slots": "last"},
-                    "FLOOR": {"week_left_pct_lt": 10, "quick_cap_x": 0.75, "slots": "none"}}
-OPS_BANDS_FROZEN = {"GREEN": {"runway_ge": 1.5, "quick_cap_x": 1.0, "slots": "all"},
-                    "AMBER": {"runway_ge": 1.0, "quick_cap_x": 1.0, "slots": "quick"},
-                    "RED": {"runway_ge": 0.0, "quick_cap_x": 0.75, "slots": "quick_one"},
-                    "FLOOR": {"week_left_pct_lt": 10, "quick_cap_x": 0.75, "slots": "none"}}
-
-
 PRUNED_SCHEDULE_KEYS = ("throttle_order", "session_helpers_max", "helpers_max")
 
 
@@ -1166,7 +1090,7 @@ OPS_CAPS_PINNED = {"run_token_cap": 600000, "economy_token_cap": 700000, "daily_
                    "alarm_runs_per_alarm_per_day": 1, "alarm_runs_per_day": 2}
 
 
-def test_role_real_schedule_caps_and_ops_bands():
+def test_role_real_schedule_caps():
     sch = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "dispatcher_schedule.json")))
     roles = {r["name"]: r for r in sch["roles"]}
     c, o = roles["Conductor"], roles["Operations"]
@@ -1176,22 +1100,20 @@ def test_role_real_schedule_caps_and_ops_bands():
           and o["daily_token_cap"] >= o["economy_token_cap"] + o["run_token_cap"] * 2,
           "schedule: Operations daily cap fits economy + evening + one alarm run")
     for r, cap in ((c, c["quick_token_cap"]), (o, o["run_token_cap"])):
-        for bn, b in r["throttle_bands"].items():
-            check(b["slots"] == "none" or cap * b["quick_cap_x"] >= 285538,
-                  "%s band %s: launches nothing or stays >= 285,538 (the measured Operations run, weighted)"
-                  % (r["name"], bn))
-    # The LIVE bands were neutralized (owner 2026-10-28: "Stop the whole account rated RED on runeway crap. Just do
-    # the checkout."), so the rows below test the band MECHANISM on a frozen copy of the old Operations bands.
-    # the band MECHANISM, on a role whose caps bind; Operations' own caps are advisory (owner 2026-11-02, below)
+        check(cap >= 285538, "%s: its run cap stays >= 285,538 (the measured Operations run, weighted)" % r["name"])
+    # on a role whose caps bind; Operations' own caps are advisory (owner 2026-11-02, below)
     # caps frozen too: the live ones were re-set from measurement (OPERATIONS_RUN_FIX_HALF_A_MILLION_HABIT)
-    o_old = dict(o, throttle_bands=OPS_BANDS_FROZEN, caps_advisory=False, run_token_cap=450000,
+    o_old = dict(o, caps_advisory=False, run_token_cap=450000,
                  economy_token_cap=550000, daily_token_cap=4600000)
     check(o.get("caps_advisory") is True, "schedule: Operations caps are advisory (owner 2026-11-02, e7069d65ba)")
-    for r in sch["roles"]:
-        check(all(b.get("slots", "all") == "all" and float(b.get("quick_cap_x", 1.0)) >= 1.0
-                  for b in r["throttle_bands"].values()),
-              '%s live bands never restrict (owner 2026-10-28: "Stop the whole account rated RED on runeway crap")'
-              % r["name"])
+    check(not any("throttle_bands" in r for r in sch["roles"]),
+          'no role has a throttle band (owner 2026-10-28: "Stop the whole account rated RED on runeway crap"; retired 2026-11-23)')
+    for bad in ({}, {"GREEN": {"runway_ge": 1.5}}):
+        try:
+            RL.validate_role(dict(RL.ROLE_DEFAULTS, **dict(o, throttle_bands=bad)))
+            check(False, "a schedule that brings throttle_bands back is refused")
+        except ValueError as e:
+            check("throttle_bands" in str(e), "a schedule that brings throttle_bands back is refused (%s)" % e)
     base = at_local("07:30")
     ev = at_local("19:30")
 
@@ -1203,19 +1125,15 @@ def test_role_real_schedule_caps_and_ops_bands():
                                           clone=os.path.join(TMP, "clone"))], st,
                                      robs(ops_status(now, **kw)), now))
     st, a = run(base, runway=2.0)
-    check(a and a[0]["mode"] == "economy" and a[0]["budget"] == 550000, "Ops GREEN 07:30: economy pass")
+    check(a and a[0]["mode"] == "economy" and a[0]["budget"] == 550000, "Ops 07:30: economy pass")
     st, a = run(base, runway=1.2)
-    check([x["do"] for x in a] == ["role_hold"] and "band AMBER" in a[0]["why"], "Ops AMBER 07:30: no economy pass")
-    st, a = run(ev, runway=1.2)
-    check(a and a[0]["do"] == "role_launch" and a[0]["budget"] == 450000, "Ops AMBER 19:30: quick run, 450,000")
+    check(a and a[0]["mode"] == "economy" and a[0]["budget"] == 550000, "Ops 07:30 on a low runway: the economy pass, whole")
     st, a = run(ev, runway=0.5)
-    check(a and a[0]["do"] == "role_launch" and a[0]["budget"] == 337500, "Ops RED 19:30: the one quick run, 337,500")
-    st, a = run(base, runway=0.5)
-    check([x["do"] for x in a] == ["role_hold"], "Ops RED 07:30: economy pass held")
+    check(a and a[0]["do"] == "role_launch" and a[0]["budget"] == 450000, "Ops 19:30 on a low runway: the running check, whole")
     st, a = run(ev, week_left=5)
-    check([x["do"] for x in a] == ["role_hold"] and "FLOOR" in a[0]["why"], "Ops FLOOR: nothing")
-    # alarm runs: RED and FLOOR block, AMBER allows
-    for rw, wl, want in ((1.2, 50, True), (0.5, 50, False), (2.0, 5, False)):
+    check(a and a[0]["do"] == "role_launch" and a[0]["budget"] == 450000, "Ops 19:30 on a low week: the running check, whole")
+    # alarm runs go on any runway
+    for rw, wl, want in ((1.2, 50, True), (0.5, 50, True), (2.0, 5, True)):
         st = fresh()
         st["roles"] = {"Operations": {"done": {"%s 07:30" % RL.day_of(ev): "x", "%s 19:30" % RL.day_of(ev): "x"},
                                       "runs": [], "alarms_seen": []}}
@@ -1328,7 +1246,7 @@ def test_role_execute_and_dry():
     sch = sched(roles=[role])
     st = fresh()
     act = {"do": "role_launch", "role": "Conductor", "unit": "U1", "message": "m", "ticket": "ROLES_ITEM_X",
-           "note": True, "mode": "quick", "budget": 30000, "slot": "k", "band": "GREEN", "why": "w",
+           "note": True, "mode": "quick", "budget": 30000, "slot": "k", "why": "w",
            "blind": RL.blind("Conductor", "launched", "quick", "rm-role-conductor-1")}   # as decide builds it
     noted = []
     fx = {"note": lambda i, t: noted.append((i, t)) or (True, ""), "publish": lambda n: "p", "lock": lambda: open(os.devnull),
@@ -1420,7 +1338,7 @@ def test_review_q():
     # 4: a launch that raised after systemd-run stays tracked; MainPID failure keeps the run; stop resolves the scope
     sch = sched(roles=[conductor()])
     act = {"do": "role_launch", "role": "Conductor", "unit": "UQ", "message": "m", "ticket": "ROLES_ITEM_X",
-           "note": False, "mode": "quick", "budget": 30000, "slot": "k", "band": "GREEN", "why": "w", "seat": "BENCH",
+           "note": False, "mode": "quick", "budget": 30000, "slot": "k", "why": "w", "seat": "BENCH",
            "run_max_s": 1800}
     base_fx = {"note": lambda i, x: (True, ""), "publish": lambda n: None, "lock": lambda: open(os.devnull),
                "off": lambda p: None, "paused": lambda: None}
@@ -1465,17 +1383,13 @@ def test_review_q():
     real = {r["name"]: r for r in json.load(open(os.path.join(here, "dispatcher_schedule.json")))["roles"]}
     ops_md = open(os.path.join(here, "roles", "operations.md"), encoding="utf-8").read()
     con_md = open(os.path.join(here, "roles", "conductor.md"), encoding="utf-8").read()
-    check("skips this whole run" in ops_md and "07:30 and 19:30 local" not in ops_md,
-          "Q6 operations.md: a band without the economy pass skips the whole 07:30 run (as the code does)")
-    cb = CON_BANDS_FROZEN
-    check(real["Conductor"].get("after_role") == "Operations" and "after_role" in con_md
-          and cb["AMBER"]["slots"] == cb["RED"]["slots"] == "last",
-          "Q7 Conductor runs after Operations (schedule + conductor.md); AMBER/RED keep the 20:00 check (schedule bands; "
-          "the role file carries no band text since review T, F6)")
-    # band mechanism on the frozen pre-2460d2cc0a bands (the live ones were neutralized by owner order, 2026-10-28)
-    rc = dict(real["Conductor"], **CON_CAPS_PINNED, throttle_bands=CON_BANDS_FROZEN, enabled=True, clone=os.path.join(TMP, "clone"),
+    check("07:30 and 19:30 local" not in ops_md and "skips this whole run" not in ops_md,
+          "Q6 operations.md: no band skips the 07:30 run (the bands are retired)")
+    check(real["Conductor"].get("after_role") == "Operations" and "after_role" in con_md,
+          "Q7 Conductor runs after Operations (schedule + conductor.md)")
+    rc = dict(real["Conductor"], **CON_CAPS_PINNED, enabled=True, clone=os.path.join(TMP, "clone"),
               off_file=os.path.join(TMP, "CQ_OFF"))
-    ro = dict(real["Operations"], **OPS_CAPS_PINNED, throttle_bands=OPS_BANDS_FROZEN, caps_advisory=False, enabled=True, clone=os.path.join(TMP, "clone"), off_file=os.path.join(TMP, "OQ_OFF"))
+    ro = dict(real["Operations"], **OPS_CAPS_PINNED, caps_advisory=False, enabled=True, clone=os.path.join(TMP, "clone"), off_file=os.path.join(TMP, "OQ_OFF"))
     c8 = at_local("08:00")
     st = fresh()
     st["roles"] = {"Operations": {"done": {"%s 07:30" % RL.day_of(c8): "x"}, "runs": []}}
@@ -1496,19 +1410,15 @@ def test_review_q():
     st = fresh()
     a = role_acts(rdecide([rc], st, robs(ops_status(c8)), c8))
     check(any(x.get("kind") == "role:Conductor:after" for x in a), "Q7 Operations not enabled: alarm")
-    st = fresh()
-    a = role_acts(rdecide([rc, ro], st, robs(ops_status(c8, runway=1.2)), c8))
-    check(not [x for x in a if x["do"] == "role_launch" and x.get("role") == "Conductor"],
-          "Q7 Conductor AMBER 08:00: not its slot")
     c20 = at_local("20:00")
     st = fresh()
     st["roles"] = {"Operations": {"done": {"%s 19:30" % RL.day_of(c20): "launch"}, "runs": [{"unit": "o2", "at": at_local("19:30"), "day": RL.day_of(c20),
                                                         "state": "done", "budget": 1, "mode": "run", "item": "X",
                                                         "slot": "%s 19:30" % RL.day_of(c20)}]},
                    "Conductor": {"done": {"%s 08:00" % RL.day_of(c20): "x"}, "runs": []}}
-    a = role_acts(rdecide([rc, ro], st, robs(ops_status(c20, runway=1.2)), c20))
-    check([(x["role"], x["budget"]) for x in a if x["do"] == "role_launch" and x["role"] == "Conductor"] == [("Conductor", 337500)],
-          "Q7 Conductor AMBER 20:00, after the 19:30 Operations run: launches at 337,500 (450,000 x 0.75)")
+    a = role_acts(rdecide([rc, ro], st, robs(ops_status(c20)), c20))
+    check([(x["role"], x["budget"]) for x in a if x["do"] == "role_launch" and x["role"] == "Conductor"] == [("Conductor", 450000)],
+          "Q7 Conductor 20:00, after the 19:30 Operations run: launches at its whole cap, 450,000")
     # 8: missing / malformed usage is UNMEASURED, failed, counted at its budget
     for bad in ({}, {"input_tokens": "abc"}, dict(usage(), output_tokens=True), dict(usage(), output_tokens=-1),
                 dict(usage(), output_tokens=float("nan"))):
@@ -1578,7 +1488,7 @@ def test_review_r():
     # B: an Operations alarm run (or yesterday's late run) does not let the Conductor skip today's 07:30 run
     real = {r["name"]: r for r in json.load(open(os.path.join(HERE, "dispatcher_schedule.json")))["roles"]}
     rc = dict(real["Conductor"], **CON_CAPS_PINNED, enabled=True, clone=os.path.join(TMP, "clone"), off_file=os.path.join(TMP, "CR_OFF"))
-    ro = dict(real["Operations"], **OPS_CAPS_PINNED, throttle_bands=OPS_BANDS_FROZEN, caps_advisory=False, enabled=True, clone=os.path.join(TMP, "clone"), off_file=os.path.join(TMP, "OR_OFF"))
+    ro = dict(real["Operations"], **OPS_CAPS_PINNED, caps_advisory=False, enabled=True, clone=os.path.join(TMP, "clone"), off_file=os.path.join(TMP, "OR_OFF"))
     t801 = at_local("08:00", 60)
     for label, run in (("an alarm run at 02:00", {"at": at_local("02:00"), "mode": "alarm", "slot": "alarm OPS_A"}),
                        ("yesterday's 19:30 run launched late", {"at": at_local("20:10") - 86400, "mode": "run",
@@ -1829,10 +1739,7 @@ def daily(**kw):
     r = {"name": "Daily", "enabled": True, "instructions": "src/RimMandrake/rimflow/roles/operations.md",
          "seat": "BENCH", "clone": os.path.join(TMP, "clone"), "model": "opus", "ledger_item": "ROLES_ITEM_X",
          "off_file": os.path.join(TMP, "DAILY_OFF"), "runs_local": ["09:00"],
-         "run_token_cap": 100000, "daily_token_cap": 250000,
-         "throttle_bands": {"GREEN": {"runway_ge": 1.5, "quick_cap_x": 1.0, "slots": "all"},
-                            "RED": {"runway_ge": 0.0, "quick_cap_x": 0.75, "slots": "first"},
-                            "FLOOR": {"week_left_pct_lt": 10, "quick_cap_x": 0.75, "slots": "none"}}}
+         "run_token_cap": 100000, "daily_token_cap": 250000}
     r.update(kw)
     return r
 
@@ -1893,20 +1800,6 @@ def test_role_zero_daily_cap():
           "daily_token_cap 0: refused, not uncapped %r" % a)
 
 
-def test_role_review_r5():
-    """Review r5 (role_launch.py): a negative quick_cap_x (a negative budget passes every cap) and an unknown band
-    `slots` policy (slot_blocked would block nothing) are schedule errors, refused by validate_role."""
-    for bad, word in (({"runway_ge": 0.0, "quick_cap_x": -1}, "quick_cap_x"),
-                      ({"runway_ge": 0.0, "quick_cap_x": 1.0, "slots": "weeky"}, "slots")):
-        try:
-            RL.validate_role(dict(RL.ROLE_DEFAULTS, **daily(throttle_bands={"GREEN": bad})))
-            check(False, "r5: band %r is refused" % bad)
-        except ValueError as e:
-            check(word in str(e), "r5: band %r is refused (%s)" % (bad, e))
-    RL.validate_role(dict(RL.ROLE_DEFAULTS, **daily()))
-    check(True, "r5: the fixture bands (all, first, none) still validate")
-
-
 def test_role_review_night_r3():
     """Review night r3 (role_launch.py): a zero quick/economy cap is a cap, not a fall-back; one status.json read per
     tick; after_role chains decided in order; the unit's wall bound adds pre_launch_max_s to the DEFAULT run_max_s."""
@@ -1962,15 +1855,15 @@ def test_role_real_schedule_triggers():
 
 def test_review_t():
     # F1: only a token_aware role (Operations, and the Conductor since the owner ruling of 2026-10-31) is told the
-    # ACCOUNT's band and runway; no role is told its own budget, cap or spend (owner 2026-11-16, 76dd23d59d: "I don't
+    # ACCOUNT's runway; no role is told its own budget, cap or spend (owner 2026-11-16, 76dd23d59d: "I don't
     # like how you're telling the agent how much it's spent")
     t = at_local("07:30")
     o = operations(token_aware=True, alarm_runs=False)
     a = role_acts(rdecide([o], fresh(), robs(ops_status(t)), t))
     la = [x for x in a if x["do"] == "role_launch"]
     lm = la[0]["message"].lower() if la else ""
-    check(la and "throttle band" in lm and "runway" in lm,
-          "F1: Operations (token_aware) is told the account's band and runway")
+    check(la and "account reading" in lm and "runway" in lm,
+          "F1: Operations (token_aware) is told the account's runway and week left")
     check(la and not any(w in lm for w in ("token budget", "budget", "spent", "remaining", "does not stop you", "cap ")),
           "F1: Operations (token_aware) is not told its own budget, cap or spend (owner 2026-11-16)")
     a = role_acts(rdecide([operations(alarm_runs=False)], fresh(), robs(ops_status(t)), t))
@@ -1978,8 +1871,8 @@ def test_review_t():
     check(not any(w in msg for w in ("token", "budget", "runway", "week left", "band")),
           "F1: a role without token_aware: no token content in its launch message")
     for r in (daily(after_role=None), arbiter()):
-        msg = RL.prompt(r, "run", "x", "GREEN", {"runway": 2.0, "runway_m": "MEASURED", "week_left": 40,
-                                                "week_left_m": "MEASURED", "at": "now"}, 1, 2, 1.0, 3, "u").lower()
+        msg = RL.prompt(r, "run", "x", {"runway": 2.0, "runway_m": "MEASURED", "week_left": 40,
+                                                "week_left_m": "MEASURED", "at": "now"}, 1, 2, 3, "u").lower()
         check(not any(w in msg for w in ("token", "budget", "runway", "week left", "band", "stop at")),
               "F1: %s's launch message is token-blind" % r["name"])
     sch = json.load(open(os.path.join(HERE, "dispatcher_schedule.json")))
@@ -1988,29 +1881,18 @@ def test_review_t():
     # F2: no code claims a mid-run token stop
     src = open(os.path.join(HERE, "role_launch.py"), encoding="utf-8").read()
     check("At the budget" not in src and "stops a run at its cap" not in src, "F2: role_launch claims no token stop")
-    # F4: Operations' 07:30 skipped by its band -> a following role's 09:00 follows the 19:30 run of the day before
+    # F4: Operations' 07:30 was not run -> a following role's 09:00 waits for it
     t9 = at_local("09:00")
-    ops = operations(throttle_bands={"AMBER": {"runway_ge": 0.0, "quick_cap_x": 0.75, "slots": "quick"}})
+    ops = operations()
     p = daily(after_role="Operations")
     yday = RL.day_of(t9 - 86400)
     st = fresh()
-    st["roles"] = {"Operations": {"done": {"%s 19:30" % yday: "launch", "%s 07:30" % RL.day_of(t9): "band AMBER"},
+    st["roles"] = {"Operations": {"done": {"%s 19:30" % yday: "launch", "%s 07:30" % RL.day_of(t9): "off switch"},
                                   "runs": [{"unit": "u", "at": t9 - 50000, "day": yday, "slot": "%s 19:30" % yday,
                                             "mode": "run", "state": "done", "tokens": 1, "token_unit": RL.TOKEN_UNIT, "budget": 1}]}}
     a = role_acts(rdecide([ops, p], st, robs(ops_status(t9)), t9))
-    check([x for x in a if x["do"] == "role_launch" and x["role"] == "Daily"],
-          "F4: AMBER, Operations 07:30 band-skipped: the role's 09:00 follows yesterday's 19:30 run")
-    st["roles"]["Operations"]["runs"][0]["state"] = "failed"
-    st["roles"].pop("Daily", None)
-    a = role_acts(rdecide([ops, p], st, robs(ops_status(t9)), t9))
     check(not [x for x in a if x["do"] == "role_launch" and x["role"] == "Daily"],
-          "F4: ... but not when that 19:30 run failed")
-    st["roles"]["Operations"]["done"]["%s 07:30" % RL.day_of(t9)] = "off switch"
-    st["roles"]["Operations"]["runs"][0]["state"] = "done"
-    st["roles"].pop("Daily", None)
-    a = role_acts(rdecide([ops, p], st, robs(ops_status(t9)), t9))
-    check(not [x for x in a if x["do"] == "role_launch" and x["role"] == "Daily"],
-          "F4: a 07:30 skipped for another reason (off switch) is not passed over")
+          "F4: a 07:30 that was not run (off switch) is not passed over")
     # F7: every role on opus (Agent_Policy.md, the one ladder)
     check(all(r.get("model") == "opus" for r in sch["roles"] if r["name"] in
               ("Conductor", "Operations")),
@@ -2170,18 +2052,13 @@ def test_review_u_group4():
     bad = conductor(throttle_bands={"X": {"quick_cap_x": 1.0, "slots": "all"}})
     a = role_acts(rdecide([bad, quiet_ops], fresh(), robs(ops_status(t8)), t8))
     al = [x for x in a if x.get("kind") == "role:Conductor:schedule"]
-    check(al and "runway_ge" in al[0]["why"] and al[0]["note"], "N5: bands without runway_ge -> schedule alarm")
+    check(al and "throttle_bands" in al[0]["why"] and al[0]["note"], "N5: a retired throttle band -> schedule alarm")
     check([x["role"] for x in a if x["do"] == "role_launch"] == ["Operations"], "N5: the other role still launches")
     for kw, word in (({"run_token_cap": "lots"}, "run_token_cap"),
-                     ({"throttle_bands": {"G": {"runway_ge": "high"}}}, "runway_ge")):
+                     ({"throttle_bands": {"G": {"runway_ge": 1}}}, "throttle_bands")):
         a = role_acts(rdecide([daily(after_role=None, **kw)], fresh(), robs(ops_status(t8)), t8))
         check([x.get("kind") for x in a] == ["role:Daily:schedule"] and word in a[0]["why"],
               "N5: %s refused per role" % word)
-    try:
-        RL.band({"throttle_bands": {"F": {"week_left_pct_lt": 10}}}, {"week_left": 50, "runway": 1})
-        check(False, "N5: band() with no runway band raises")
-    except ValueError as e:
-        check("runway_ge" in str(e), "N5: band() with no runway band raises a clear ValueError")
     # an unforeseen raise (a malformed ops alarms map) is caught per role, and supervision still acts
     st = fresh()
     st["roles"] = {"Conductor": {"done": {}, "runs": [{"unit": "U0", "at": t8 - 4000, "day": RL.day_of(t8),
@@ -2412,7 +2289,7 @@ def test_review_w_alarm_rearm():
           "W1: a launch that did not happen gives back the alarm and the gap clock")
     # the real schedule's Operations, enabled with both live runway alarms open: one run covers both
     real = {r["name"]: r for r in json.load(open(os.path.join(HERE, "dispatcher_schedule.json")))["roles"]}
-    ro = dict(real["Operations"], throttle_bands=OPS_BANDS_FROZEN, caps_advisory=False, enabled=True, clone=os.path.join(TMP, "clone"), off_file=os.path.join(TMP, "OR_OFF"))
+    ro = dict(real["Operations"], caps_advisory=False, enabled=True, clone=os.path.join(TMP, "clone"), off_file=os.path.join(TMP, "OR_OFF"))
     two = {"RUNWAY_LOW:accounts.lukas.runway": {"state": "OPEN", "for": "Operations"},
            "RUNWAY_LOW:codex.runway": {"state": "OPEN", "for": "Operations"}}
     t13 = at_local("13:00")
@@ -2746,7 +2623,7 @@ def test_golive_b1_busy_until_ended():
     # execute: the scope and marker are on disk BEFORE systemd-run, and a launcher's own scope cannot replace them
     sch = sched(roles=[conductor()])
     act = {"do": "role_launch", "role": "Conductor", "unit": "UB1", "message": "m", "ticket": "ROLES_ITEM_X",
-           "note": False, "mode": "quick", "budget": 1, "slot": "k", "band": "GREEN", "why": "w", "seat": "BENCH",
+           "note": False, "mode": "quick", "budget": 1, "slot": "k", "why": "w", "seat": "BENCH",
            "run_max_s": 1800}
     seen = []
     st = fresh()
@@ -3291,7 +3168,7 @@ def test_unring_gives_back_a_backoff_and_bad_roles_are_skipped():
 
 
 def strict_roles():
-    """These tests drive the STRICT role gates (bands, daily caps, a blind reading refused). Since owner 2026-11-02
+    """These tests drive the STRICT role gates (daily caps, a blind reading refused). Since owner 2026-11-02
     (TOKEN_LIMITS_TAME_BARK_NO_BITE, token limits advisory everywhere) every role defaults to caps_advisory and
     degraded_reading_ok; the strict gates stay for a role that sets them false, so their tests pin that here.
     selftest_role_caps_advisory A7 and selftest_role_degraded_reading prove the advisory default."""
@@ -3390,14 +3267,14 @@ def test_review_e_incident_gates_and_torn_denied():
 
 def main():
     strict_roles()
-    for t in (test_conductor_log_guard_blocks_real_path, test_parse_peek, test_wake_and_owner, test_busy_waiting_seat, test_blind_pause_roles_caps, test_verify_retry,
+    for t in (test_conductor_log_guard_blocks_real_path, test_parse_peek, test_wake_and_owner, test_blind_pause_roles_caps, test_verify_retry,
               test_no_handoff_rering_and_escalation, test_new_ticket_skips_the_backoff, test_alarm_delivery_and_lock, test_answered_ring_is_not_no_handoff, test_dead_recover,
               test_never_adopt_or_resume_a_stranger, test_review_fixes, test_ts_skip_journalled_once, test_doorbell, test_end_to_end, test_dry_run, test_alarm_rate, test_review_s, test_publish_young_lock_is_traffic, test_seat_rule, test_ringed_next_withholds_nothing,
-              test_role_reading_and_band, test_role_gates, test_role_economy_and_alarms,
-              test_role_real_schedule_caps_and_ops_bands, test_schedule_keeps_no_unread_helper_keys, test_role_execute_and_dry, test_review_q,
+              test_role_reading, test_role_gates, test_role_economy_and_alarms,
+              test_role_real_schedule_caps, test_schedule_keeps_no_unread_helper_keys, test_role_execute_and_dry, test_review_q,
               test_review_r, test_account_pick_rule, test_account_pick_dispatch,
               test_role_weekday_slots, test_role_pre_launch_max_s,
-              test_role_zero_daily_cap, test_role_review_r5,
+              test_role_zero_daily_cap,
               test_role_review_night_r3,
               test_role_read_ledger, test_role_real_schedule_triggers, test_review_t,
               test_account_hold_dispatch, test_review_u_notes,

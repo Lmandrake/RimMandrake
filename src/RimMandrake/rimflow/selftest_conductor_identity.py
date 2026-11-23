@@ -121,7 +121,7 @@ def test_window():
     import role_launch as RL
     # token_aware since the owner's 2026-10-31 ruling ("Conductor accesses everything"), so its launch reads a reading
     reading = {"runway": 3.0, "runway_m": "MEASURED", "week_left": 40.0, "week_left_m": "MEASURED", "at": "t"}
-    m = RL.prompt(role, "quick", "20:00", "-", reading, 0, 0, 1.0, 0, "u")
+    m = RL.prompt(role, "quick", "20:00", reading, 0, 0, 0, "u")
     check("then stop" in m and role["instructions"] in m, "a headless quick launch runs conductor.md and stops")
 
 

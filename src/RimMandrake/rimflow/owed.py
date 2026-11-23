@@ -27,10 +27,10 @@ import time
 HERE = os.path.dirname(os.path.abspath(__file__))
 
 try:                                                 # imported by cli.py as rimflow.owed: share its rebound model
-    from . import model, priority, priority_list
+    from . import model, priority
 except ImportError:                                  # a hook or script: priority imports only as rimflow.priority
     sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    from rimflow import model, priority, priority_list
+    from rimflow import model, priority
 
 KIND = "owed"
 LATE_S = 2 * 3600
@@ -67,7 +67,7 @@ def refusal(iid, text):
 
 
 def _age(created, now):
-    e = priority_list.epoch(created) if created else None
+    e = model.iso_epoch(created) if created else None
     if e is None:
         return None, "age?"
     s = max(0, now - e)

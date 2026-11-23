@@ -55,13 +55,9 @@ check("compose: the status holds every family", all("%s.stub" % f in st["points"
 check("compose: a carried reading says when it was observed",
       (st["points"]["flow.stub"].get("x") or {}).get("observed_at") == OW.iso(t0), st["points"]["flow.stub"])
 check("compose: its own reading is this pass's", "observed_at" not in (st["points"]["accounts.stub"].get("x") or {}))
-check("compose: the health verdict is written", "health.state" in st["points"], sorted(st["points"])[:5])
 check("compose: no alarm pass without %s" % OW.COMPOSE_ALARM_FAMILY, alarm_runs == [], alarm_runs)
 OW.run(now=t0 + 120, rules=rules, families=["flow", "testing"], compose=True)
 check("compose: the pass measuring %s runs the alarms" % OW.COMPOSE_ALARM_FAMILY, alarm_runs == [1], alarm_runs)
-OW.run(now=t0 + 180, rules=rules, families=["flow"])
-st = json.loads((_TMP / "ops" / "status.json").read_text())
-check("a limited pass without --compose still writes no verdict", "health.state" not in st["points"])
 
 late = t0 + 120 + OW.compose_max_age_s(rules)[0] + 60     # the derived bound (RELAPSE_PLAN_FIX_DIED_TWICE)
 OW.run(now=late, rules=rules, families=["accounts"], compose=True)
@@ -76,27 +72,13 @@ check("carry_family: a future record is not carried",
       OW.carry_family("x", [{"t": late + 3600, "at": "z", "points": {"x.a": OW.M(1)}}], late, 60)["x._collector"]["m"]
       == "UNMEASURED")
 
-# --- the health verdict: made by the alarm pass, carried by the others, aged from the pass that made it ---------------
-_ph = OW.publish_health
-made = []
-OW.publish_health = lambda points, prev, ctx, rules, now: (made.append(now), {"health.state": OW.M("ok")})[1]
+# --- past the round robin's age, a pass joins the alarm family ------------------------------------------------------
 h0 = late + 1000
 OW.run(now=h0, rules=rules, families=["flow"], compose=True)
-OW.run(now=h0 + 60, rules=rules, families=["accounts"], compose=True)
-st = json.loads((_TMP / "ops" / "status.json").read_text())
-check("health: the alarm pass makes the verdict, the next pass carries it", made == [h0], made)
-check("health: the carried verdict says when it was made", st["points"]["health.state"]["x"]["observed_at"] == OW.iso(h0),
-      st["points"]["health.state"])
 calls.clear()
 for i in range(2, int(OW.compose_max_age_s(rules)[0] // 60) + 3):      # pass after pass without the alarm family
     OW.run(now=h0 + 60 * i, rules=rules, families=["accounts"], compose=True)
-st = json.loads((_TMP / "ops" / "status.json").read_text())
-# past the bound flow joins (the-alarm-family-joins-when-it-is-blind): the verdict is made again by a pass that read
-# the ledger, never by one without it, and never left to age out with nobody told
-check("health: past the round robin's age a pass joins the alarm family and makes the verdict with it",
-      len(made) == 2 and made[1] - h0 > OW.compose_max_age_s(rules)[0] and calls.count("flow") == 1
-      and st["points"]["health.state"]["m"] == "MEASURED", (made, calls.count("flow"), st["points"]["health.state"]))
-OW.publish_health = _ph
+check("compose: past the round robin's age a pass joins the alarm family, once", calls.count("flow") == 1, calls.count("flow"))
 
 # --- review fixes: flow joins testing; a carried reading counts once in the alarms; honest freshness ---------------
 calls.clear()

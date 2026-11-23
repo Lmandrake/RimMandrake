@@ -64,10 +64,10 @@ import sys
 import time
 
 try:                                                    # python3 -m rimflow.cli
-    from . import conductor_acts, principal, driver_lock, fulltext, game_lock, host_guard, lease, ledger_landing, model, owner_interaction, priority, priority_list, probe, reconcile, testpilot_route
+    from . import conductor_acts, principal, driver_lock, fulltext, game_lock, host_guard, lease, ledger_landing, model, owner_interaction, priority, probe, reconcile, testpilot_route
 except ImportError:                                     # python3 .../rimflow/cli.py
     sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    from rimflow import conductor_acts, principal, driver_lock, fulltext, game_lock, host_guard, lease, ledger_landing, model, owner_interaction, priority, priority_list, probe, reconcile, testpilot_route   # noqa: F401
+    from rimflow import conductor_acts, principal, driver_lock, fulltext, game_lock, host_guard, lease, ledger_landing, model, owner_interaction, priority, probe, reconcile, testpilot_route   # noqa: F401
 
 PROSE_BUDGET = 2400          # chars of items/<ID>.md that `next` will print, ~600 tokens
 
@@ -992,11 +992,6 @@ def cmd_next(args, seat):
     # changing. It's causing so many problems and I don't need it.").
     _apply_grant_preflight(ctx)
     ctx["focus"] = _seat_focus(seat, world=w)
-    ctx["focus_cap"] = _focus_cap(seat)
-    # The priority list orders `next`, so the ring's peek and the claim that follows agree (DI3). A redirected ledger
-    # is a throwaway: it reads the list only when the same caller redirected that too.
-    if os.environ.get("RM_PRIORITY_LIST") or not os.environ.get("RIMFLOW_LEDGER"):
-        ctx["plan_order"] = priority_list.order_map(priority_list.load(model.ROOT)["entries"])
     # 🔑 GUARDED DISPATCH (rimflow redesign step 1, 2026-10-07). `rank()` stays pure;
     # its output is checked against the published git history before anything is
     # offered, because an item whose work already shipped kept being offered as fresh
@@ -1022,9 +1017,6 @@ def cmd_next(args, seat):
                 held = _take_lease(ch["item"], seat, ctx["now"])
             _rerender_queue_views()
     skipped = ch["skipped"]
-    if ch.get("capped"):
-        print("FOCUS CAP: %s holds %d focus items (cap %d, schedule focus_cap): only their next steps are offered. "
-              "`rimflow wait <ID> --until <date> --reason ...` frees a place." % (seat, ch["capped"], ctx["focus_cap"]["per_seat"]))
     if ch["kind"] == "nothing":
         _nothing(w, seat, args, ctx)
         _print_frontier(w, seat)
@@ -1178,19 +1170,6 @@ def _seat_focus(seat, path=None, world=None):
     return {"until": c.get("until"), "prefixes": tuple(fix)}
 
 
-def _focus_cap(seat):
-    """-> the schedule's focus_cap when `next` holds `seat` to it, else None. A redirected ledger is a throwaway: it
-    reads the cap only when the same caller redirected the schedule too. A damaged schedule refuses, as `_seat_focus`:
-    read as no cap, it would lift the cap in silence."""
-    if os.environ.get("RIMFLOW_LEDGER") and not os.environ.get("RIMFLOW_SCHEDULE"):
-        return None
-    try:
-        c = priority.focus_config()
-    except ValueError as e:
-        die("schedule unreadable, %s's focus cap is unknown: %s" % (seat, e))
-    return c if c and seat in c["seats"] else None
-
-
 def _choose(w, seat, args, ctx, idx):
     """-> {"kind", "offer", "item", "claimable", "skipped"}: what `next` offers. Pure over its
     inputs (ctx carries `now`); `cmd_next` calls it inside the dispatcher lock.
@@ -1216,25 +1195,16 @@ def _choose(w, seat, args, ctx, idx):
     if fo:      # seat focus: only items whose id starts with an included prefix are offered
         offers = [a for a in offers if a.item.id.startswith(fo["prefixes"])]
         claimable = [c for c in claimable if c.id.startswith(fo["prefixes"])]
-    cap = ctx.get("focus_cap")
-    if cap:     # RO2: a focus item's next step goes first; at the cap it is all that is offered
-        focus = {i.id for i in priority.focus_items(w, seat, ctx.get("now"), cap["since"])}
-        offers.sort(key=lambda a: a.item.id not in focus)
-        if len(focus) >= cap["per_seat"]:
-            offers, claimable = [a for a in offers if a.item.id in focus], []
-            out["capped"] = len(focus)
     if ctx.get("hold_grant"):
         gneeds = tuple(ctx.get("hold_grant_needs") or GRANT_DEFAULT_NEEDS)
         offers = [a for a in offers if a.item.needs not in gneeds]
         claimable = [c for c in claimable if c.needs not in gneeds]
     # 🔑 A RAISED proposed item (the steward's T+30, design §6.4: "top of `rimflow next
     # --seat BENCH`") beats an unraised ranked offer, and of two raised heads the one raised
-    # FIRST wins (raise order, 2026-10-29); otherwise ranked work comes first. A listed one beats both (DI3).
+    # FIRST wins (raise order, 2026-10-29); otherwise ranked work comes first.
     out["also"] = claimable     # the `ALSO waiting` line: what this seat may claim, withheld items never named
-    orders = ctx.get("plan_order") or {}
-    place = lambda i: (priority_list.position(i, orders), model.raise_key(i))    # noqa: E731
-    jumps = claimable and (claimable[0].raised is not None or priority_list.position(claimable[0], orders) <= priority_list.MAX_ENTRIES)
-    if offers and (not jumps or place(offers[0].item) <= place(claimable[0])):
+    if offers and not (claimable and claimable[0].raised is not None
+                       and model.raise_key(claimable[0]) < model.raise_key(offers[0].item)):
         out.update(kind="offer", offer=offers[0], item=offers[0].item)
         return out
     if claimable:
@@ -1407,8 +1377,7 @@ def _claimable(w, seat, target="v1", now=None, ctx=None):
            and model.lease_status(i, now) != "live" and not _owed().is_owed(i)]   # owed acts are never offered
     if ctx is not None:      # `next`: the availability rule a ranked item passes (--mode afk and needs=owner, above all)
         out = [i for i in out if priority.satisfiable(i, w, ctx, seat)]
-    orders = (ctx or {}).get("plan_order") or {}
-    out.sort(key=lambda i: (priority_list.position(i, orders), model.raise_key(i), not i.this_deployment,
+    out.sort(key=lambda i: (model.raise_key(i), not i.this_deployment,
                             i.created_at or "", i.id))
     return out
 
@@ -1663,7 +1632,7 @@ def _chain(w, iid, seen=None):
 
 def cmd_why(args, seat):
     _, w = load()
-    ctx = dict(_ctx(args), focus_cap=_focus_cap(seat))
+    ctx = _ctx(args)
     for line in priority.why_not(w, seat, args.id, args.target, ctx):
         print("- " + line)
     return 0
@@ -2225,23 +2194,6 @@ def _move_prose_to_closed(iid):
     return (os.path.relpath(live, model.ROOT), os.path.relpath(closed, model.ROOT))
 
 
-def _claim_cap_check(w, it, seat, now):
-    """The WIP cap on the direct door (CLAIM_CAP_ENFORCE_DIRECT_DOOR_LEFT_AJAR). `next` holds a seat to focus_cap, but a
-    worker naming an item to `claim` walked past it. A claim makes the item `seat`'s focus, so: an item that is not
-    already a focus item of `seat` is refused while `seat` holds per_seat of them. A reservation `next` made (live lease,
-    token or not) and work already started are focus already, so they pass; called inside the dispatch lock."""
-    cap = _focus_cap(seat)
-    if not cap:
-        return
-    if it.owner == seat and priority.is_focus(it, now, cap["since"]):
-        return
-    fo = priority.focus_items(w, seat, now, cap["since"])
-    if len(fo) >= cap["per_seat"]:
-        die("claim refused: FOCUS CAP: %s holds %d focus items (cap %d, schedule focus_cap): %s. Finish one, or "
-            "`rimflow wait <ID> --until <date> --reason ...` frees a place." % (
-                seat, len(fo), cap["per_seat"], ", ".join(sorted(i.id for i in fo))))
-
-
 def cmd_claim(args, seat):
     """`claim` — take the item AND a lease on it, and START it (rimflow redesign step 3).
 
@@ -2266,18 +2218,14 @@ def cmd_claim(args, seat):
         _say_shadow(pf, "claim", args.id)
 
 
-def _pickup_gates(pf, w, it, seat, now, cap):
+def _pickup_gates(pf, w, it, seat, now):
     """The existing gates a pickup door already applies, observed in place (spec 6.3): E1 thin item (a warning, owner
-    2026-08-21), G1 a live block (claimed anyway, said), I2 the focus cap (refuses, in `_claim_cap_check`)."""
+    2026-08-21), G1 a live block (claimed anyway, said)."""
     pf.run(kind=(it.kind if it else None) or "task", needs=(it.needs if it else None) or "offline", items=_pf_items(w))
     pf.gate("E1", lambda: model._missing(it) if it is not None else ["the item is not in the ledger"],
             judge=_judge_list("missing ##"))
     pf.gate("G1", lambda: it is not None and it.blocked,
             judge=lambda b: ("FAIL", "blocked: " + priority.block_line(it)) if b else ("PASS", ""))
-    if cap:
-        pf.gate("I2", _claim_cap_check, w, it, seat, now, judge=lambda _r: ("PASS", "under the focus cap, or no cap"))
-    else:
-        pf.gate("I2", lambda: None, judge=lambda _r: ("PASS", "does not apply: this claim takes no focus place"))
 
 
 def _claim(args, seat, pf):
@@ -2287,7 +2235,7 @@ def _claim(args, seat, pf):
         w = _replay_now()
         it = w.items.get(args.id)
         now = model.epoch_now()
-        _pickup_gates(pf, w, it, seat, now, it is not None and it.state in ("proposed", "ready", "doing"))
+        _pickup_gates(pf, w, it, seat, now)
         pfx = pf.fields()
         rel = priority.release_reason(w, it, now) if it is not None else None
         if rel:     # the block ended by its own rule: the claim writes that down, so the books stop calling it blocked
@@ -2364,7 +2312,7 @@ def cmd_block(args, seat):
     if (kind == "time") != bool(lift_at):
         die("`block --kind time` takes --lift-at <ISO time or YYYY-MM-DD>, and --lift-at only goes with --kind time.")
     if lift_at:
-        e = priority_list.epoch(lift_at)
+        e = model.iso_epoch(lift_at)
         if e is None:
             die("block --lift-at %r is not a date (YYYY-MM-DD or ISO time)." % lift_at)
         lift_at = datetime.datetime.fromtimestamp(e, datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -2431,9 +2379,8 @@ def cmd_block(args, seat):
 
 
 def cmd_wait(args, seat):
-    """A dated wait on a slow external (RO2). The third at once is refused, under the lock `next` takes, so a wait and a
-    reservation cannot pass each other. Without a focus_cap for the item's seat the wait is recorded and nothing is capped."""
-    day = priority_list.epoch(args.until)
+    """A dated wait on a slow external (RO2)."""
+    day = model.iso_epoch(args.until)
     if day is None:
         die("wait --until %r is not a date (YYYY-MM-DD or ISO time). A wait with no date is a block." % args.until)
     until = datetime.datetime.fromtimestamp(day, datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -2444,16 +2391,6 @@ def cmd_wait(args, seat):
             die("%s has never been filed." % args.id)
         if day <= now:
             die("wait --until %s is not ahead of now: a wait frees a place only while its date runs." % until)
-        cap = _focus_cap(it.owner)
-        if cap:
-            others = [i.id for i in priority.waiting_items(w, it.owner, now) if i.id != it.id]
-            if len(others) >= cap["waits_max"]:
-                die("wait refused: %s already has %d waiting of %d (%s). Depth before breadth: end one first."
-                    % (it.owner, len(others), cap["waits_max"], ", ".join(others)))
-            if not priority.is_focus(it, now, cap["since"]) and not priority.wait_running(it, now):
-                die("wait refused: %s is not a focus item of %s, so a wait would free no place." % (it.id, it.owner))
-            if it.state == "proposed":      # reserved, so focus; but only started work can wait (priority.wait_running)
-                die("wait refused: %s is reserved, not started, so a wait would free no place. Claim it or release the lease." % it.id)
         _emit({"seat": seat, "event": "wait", "id": args.id, "until": until, "reason": args.reason}, w, quiet=True)
     print("wait %s until %s" % (args.id, until))
     return 0
@@ -2573,8 +2510,8 @@ def _simple_run(verb, extra, args, seat, pf):
     ev = {"seat": seat, "event": verb, "id": args.id}
     for field, attr in extra:
         ev[field] = getattr(args, attr, None)
-    if pf is not None:      # a bare `start` takes no focus place: I2 does not apply (cmd_claim holds the cap)
-        _pickup_gates(pf, w, w.items.get(args.id), seat, model.epoch_now(), False)
+    if pf is not None:
+        _pickup_gates(pf, w, w.items.get(args.id), seat, model.epoch_now())
         ev.update(pf.fields())
     _emit(ev, w, quiet=True)
     it = _replay_now().items.get(args.id)

@@ -431,10 +431,10 @@ def main(argv):
     here = os.path.dirname(os.path.abspath(__file__))
     sys.path[:0] = [here, os.path.join(os.path.dirname(here), "Utils")]
     import model
-    import ops_health as H
     with open(os.path.join(os.path.dirname(here), "Utils", "ops_watch_rules.json"), encoding="utf-8") as f:
-        c = H.conf(json.load(f))
-    rows = recurring(read_log(str(H.ops_dir() / "alarms_log.jsonl")), model.replay(model.read()).items, c["guard_exempt_kinds"])
+        exempt = json.load(f)["guard_exempt_kinds"]
+    log = os.path.join(os.environ.get("RM_OPS_WATCH_DIR", "/mnt/d/ClaudeWork/rimmandrake/ops_watch"), "alarms_log.jsonl")
+    rows = recurring(read_log(log), model.replay(model.read()).items, exempt)
     for r in rows:
         print("%-55s seen %3d  %s" % (r["kind"], r["seen"], ",".join(r["items"][:3])))
     print("%d recurring kind(s) with no guard" % len(rows))

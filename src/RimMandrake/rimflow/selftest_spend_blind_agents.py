@@ -81,7 +81,7 @@ flat = [str(x) for x in ra]
 check(FLAG not in flat, "A role argv carries no %s" % FLAG)
 check("--cap-usd" in flat and flat[flat.index("--cap-usd") + 1] == "6", "A role argv wraps claude in spend_watchdog --cap-usd 6")
 reading = {"runway": 2.0, "runway_m": "[A]", "week_left": 50, "week_left_m": "[A]", "at": "now"}
-p = RL.prompt(role, "run", "tick", "green", reading, 300000, 300000, 1.0, 120000, "rm-role-operations-1")
+p = RL.prompt(role, "run", "tick", reading, 300000, 300000, 120000, "rm-role-operations-1")
 check(not SPEND_RX.search(p), "A token_aware role prompt states no budget or spend (%r)" % (SPEND_RX.search(p) or [""])[0])
 rp = RL.resume_prompt({"name": "Designer"}, {"unit": "u0", "error": "rate limit", "tokens": 1234, "budget": 9999, "n": 1},
                       "u1")

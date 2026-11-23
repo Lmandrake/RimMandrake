@@ -208,7 +208,7 @@ def t_a_run_now_never_launched_gives_its_chain_back(tmp):
 
 
 def t_a_gate_refusal_keeps_its_chain(tmp):
-    for how in ("stage machine: BLOCKED on x", "band RED", "no cap", "daily cap", "ops reading UNMEASURED"):
+    for how in ("stage machine: BLOCKED on x", "no cap", "daily cap", "ops reading UNMEASURED"):
         rs, key = chained(how)
         ok(rs["chain_day"][key] == 3 and rs["chain_stages_day"][key] == ["3", "4", "4"],
            "a gate refusal (%s) keeps its chain: the brake on an ask-and-refuse loop" % how)

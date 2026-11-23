@@ -1484,7 +1484,7 @@ def test_execute_recover():
 
 def _role_act(**kw):
     a = {"do": "role_launch", "role": "Conductor", "unit": "U1", "message": "m", "ticket": "ROLES_ITEM_X", "note": False,
-         "mode": "quick", "budget": 30000, "slot": "k1", "band": "GREEN", "why": "w", "run_max_s": 99, "seat": "BENCH"}
+         "mode": "quick", "budget": 30000, "slot": "k1", "why": "w", "run_max_s": 99, "seat": "BENCH"}
     a.update(kw)
     return a
 
@@ -1512,7 +1512,7 @@ def test_execute_role_launch():
           "launch: run tracked + persisted before systemd-run, again after: %r %r" % (snap, len(persists)))
     check(run["state"] == "running" and run["tokens"] is None and run["unit"] == "U1" and run["marker"] == "U1" and run["scope"] != "evil"
           and run["at"] == NOW and run["day"] == RL.day_of(NOW) and run["mode"] == "quick" and run["budget"] == 30000 and run["slot"] == "k1"
-          and run["band"] == "GREEN" and run["item"] == "ROLES_ITEM_X" and run["seat"] == "BENCH" and run["run_max_s"] == 99
+          and run["item"] == "ROLES_ITEM_X" and run["seat"] == "BENCH" and run["run_max_s"] == 99
           and run["out"] == "OUT2" and run["extra"] == 1 and run["err"] and "U1" in run["scope"], "run record: %r" % run)
     a = _role_act(seat=None)
     st = fresh()

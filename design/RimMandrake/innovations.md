@@ -1,6 +1,6 @@
 # Innovations: the idea list
 
-A plain list of ideas. Any seat may add a line. The Conductor's digest points the owner here. The owner, 2026-10-27
+A plain list of ideas. Any seat may add a line. The owner, 2026-10-27
 (ledger OWNER note on `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE`): *"I'd certainly like to see a list of the
 innovations."*
 

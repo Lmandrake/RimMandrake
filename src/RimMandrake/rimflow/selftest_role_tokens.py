@@ -79,9 +79,6 @@ for r in sch["roles"]:
     check("rm-role-operations-1793226998" in why and "[A]" in why,
           "W5 %s: _caps_why names the measured record and carries [A]" % r["name"])
     check(caps and min(caps) >= int(MEASURED * 1.25), "W5 %s: every per-run cap >= measured x1.25 (%r)" % (r["name"], caps))
-    shrunk = min(caps) * min([float(b.get("quick_cap_x", 1.0)) for b in (r.get("throttle_bands") or {}).values()] or [1])
-    check(shrunk >= MEASURED * 1.15, "W5 %s: the band-shrunk cap %d holds the measured run with >= 15%% to spare"
-          % (r["name"], shrunk))
     import time as _t
     days = [_t.mktime((2026, 10, 26 + d, 12, 0, 0, 0, 0, -1)) for d in range(7)]       # Mon..Sun
     need = max(sum(c for _, _, c in RL.slots(r, d) if c) for d in days)

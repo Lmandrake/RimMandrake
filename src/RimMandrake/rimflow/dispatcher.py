@@ -4,8 +4,7 @@
 
 Every tick (the metronome's dispatch phase) it, for each seat in the schedule:
   1. OBSERVES the seat's window: `claude agents --json` (status idle/busy, session id). If that command fails the
-     whole tick is UNMEASURED and nothing is done (never act on a blind instrument). A busy window whose main transcript
-     shows no work moving counts as idle (busy_waiting; BUSY_SEAT_FIX_WAITING_COUNTS_AS_WORK).
+     whole tick is UNMEASURED and nothing is done (never act on a blind instrument).
   2. WAKES a stalled window — idle for `stall_after_s`, and its queue has work (`rimflow next --peek` in the seat's
      clone) — by RINGING its doorbell (doorbell.py, an asyncRewake Stop hook): it writes inbox/<SEAT>.json with the
      hand-off message. The message tells the window to run `rimflow next`, which takes the item under a LEASE (the
@@ -37,7 +36,7 @@ deaths in 7 days, login/quota gated per model; it replaced the flat recovers_per
 (state/PAUSE) that stops everything. §3's roles are listed in the
 schedule; role_launch.py starts an enabled role that has its launch keys on its clock slots (daily or
 weekday-qualified, "Wed 09:00"), each as its own transient systemd unit, so the run outlives this oneshot
-tick, gated by its off switch, the ops_watch reading, its throttle band and its token caps; an enabled role without
+tick, gated by its off switch, the ops_watch reading and its token caps; an enabled role without
 launch keys is an alarm.
 
 ACCOUNT FIRST (account_pick.py; item DISPATCHER_BUILD_PICK_ACCOUNT_FIRST): before it releases work that spends a
@@ -299,30 +298,6 @@ def claude_exe():
 def sessions_ok(data):
     """A `claude agents --json` reading: a list whose every entry is an object (review dispatcher-full #5)."""
     return CC.sessions_ok(data)
-
-
-def busy_waiting(sch, obs, seat, sess, status, now):
-    """-> why a window that `claude agents` calls busy is doing no work, or None (BUSY_SEAT_FIX_WAITING_COUNTS_AS_WORK).
-    MEASURED 2026-11-01: status stays busy after the main turn ended while a background helper or command lives, so
-    FOUNDRY (end_turn 14:26, 424 ready) went unrung until 19:19. Work moving is read from the main transcript:
-    `turn_s` past an ended turn, or `tool_s` (above the longest foreground command) inside one tool call with no helper
-    alive to be doing it and no question to the owner open. A live command is not work moving. No `busy_waiting` block,
-    no transcript or an unreadable one: busy stands, never act on a blind instrument."""
-    rule, ro = sch.get("busy_waiting") or {}, obs.get("seat_restart") or {}
-    if status != "busy" or not rule.get("enabled") or not ro.get("tx"):
-        return None
-    tx = ro["tx"](seat, sess)
-    if not tx or tx.get("last_at") is None:
-        return None
-    quiet = now - tx["last_at"]
-    if tx.get("last_kind") == "assistant_end":
-        if quiet >= rule["turn_s"]:
-            return "%s reads busy but its turn ended %d s ago" % (seat, quiet)
-    elif tx.get("last_kind") == "assistant_tool" and quiet >= rule["tool_s"] and tx.get("open_tool") != "AskUserQuestion":
-        hs = ro["helpers"](seat, sess)
-        if hs is not None and not any(h.get("alive") for h in hs):
-            return "%s reads busy but has sat %d s in one %s call with no helper alive" % (seat, quiet, tx.get("open_tool"))
-    return None
 
 
 def observe_agents(timeout=60):
@@ -987,14 +962,6 @@ def decide(sch, st, obs, now, apply, out=None):
             ss.pop("alive_since", None)
         ladder_tend(seat, ss)
         status = (sess or {}).get("status") or (sess or {}).get("state")
-        waiting = busy_waiting(sch, obs, seat, sess, status, now) if enabled and cfg.get("wake", True) else None
-        if waiting:
-            if not ss.get("waiting"):    # once a spell, not once a tick
-                act(do="busy_waiting", seat=seat, why=waiting)
-            ss["waiting"] = True
-            status = "idle"              # every reading below, stall clock included, sees what the window is doing
-        else:
-            ss.pop("waiting", None)
         pend = ss.get("ring")
         # ---- a ring in flight: verify it
         if pend:
@@ -1017,7 +984,6 @@ def decide(sch, st, obs, now, apply, out=None):
                     ss.pop("cooldown_until", None)
                     ss.pop("nh_until", None)
                     ss.pop("nh_tickets", None)
-                    SR.bb_clear(st, seat)            # the take ends the bring-back watch
                 elif now - pend["rung_at"] >= sch["handoff_s"]:
                     # FOUNDRY_IDLE_REWIRE_PARKS_ON_LANE_WAITS: this used to wait the full cooldown_s (3600) before the
                     # next ring, so an idle seat with a full queue sat ~70 min per cycle (handoff_s + cooldown_s +
@@ -1044,7 +1010,7 @@ def decide(sch, st, obs, now, apply, out=None):
                     ss["nh_streak"] = streak
                     ss["nh_tickets"] = sorted(set(ss.get("nh_tickets") or []) | {pend.get("ticket")} - {None})
                     ss["cooldown_until"] = ss["nh_until"] = now + wait
-                    n = 0 if SR.bb_incident(st, seat) else rule["escalate_after"]   # one outage, one incident (OP3)
+                    n = rule["escalate_after"]
                     if n and streak >= n and ans:
                         act(do="alarm", kind="seat_declined:" + seat, seat=seat, note=True, conductor_log=True, impact=streak,
                             ticket=rule.get("escalate_item") or sch.get("alarm_item"),
@@ -1170,10 +1136,6 @@ def decide(sch, st, obs, now, apply, out=None):
         if rh:
             return
         armed = obs["armed"](seat)
-        if SR.bb_rule(sch) and (not armed or not obs["alive"](armed.get("pid"))
-                                or (armed.get("session_id") and sess.get("sessionId")
-                                    and armed["session_id"] != sess["sessionId"])):
-            SR.bb_work(sch, st, seat, obs["peek"](seat), now)    # no ring can reach it: exactly what the restart is for
         if not armed or not obs["alive"](armed.get("pid")):
             act(do="alarm", kind="unwakeable:" + seat, seat=seat, note=True, conductor_log=True,
                 raise_first="%s cannot be woken: no doorbell." % seat,
@@ -1192,7 +1154,6 @@ def decide(sch, st, obs, now, apply, out=None):
             act(do="alarm", kind="peek:" + seat, seat=seat, note=True, conductor_log=True,
                 raise_first="%s cannot read its queue." % seat, why="rimflow next --peek failed in %s" % cfg.get("clone"))
             return
-        SR.bb_work(sch, st, seat, ticket, now)
         if not ticket:
             ss.pop("nh_streak", None)  # no work waiting: an idle window is correct, nothing to escalate
             ss.pop("nh_tickets", None)
@@ -1981,7 +1942,7 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                             seat = a.get("seat") or role.get("seat")
                             run = dict(out=out_p, err=err_p, scope=RL.role_scope(seat, a["unit"]), marker=a["unit"],
                                        unit=a["unit"], at=now, day=RL.day_of(now),
-                                       mode=a["mode"], budget=a["budget"], slot=a["slot"], band=a["band"],
+                                       mode=a["mode"], budget=a["budget"], slot=a["slot"],
                                        item=a["ticket"], seat=seat, runner=role.get("runner", "claude"),
                                        run_max_s=a.get("run_max_s"), state="running", tokens=None,
                                        **({"concept": a["concept"]} if a.get("concept") else {}),

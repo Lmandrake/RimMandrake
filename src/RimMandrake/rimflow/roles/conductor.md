@@ -11,7 +11,7 @@ The Conductor role has its row in `src/RimMandrake/rimflow/dispatcher_schedule.j
   lists six duties that had no named owner, and gives each duty a home: an orphan home.
 - Design: `design/RimMandrake/dispatcher_design_2026-10-26.md` §2, §3.
 - Caps: `design/RimMandrake/process_sim_findings_2026-10-27.md` finding 7.
-- Item: `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE`.
+- Item: `RIMMANDRAKE_KEEP_ROLE_NOTES_ON_ONE_LIVE_ITEM`.
 
 Owner words, dates and history that left this file: `design/RimMandrake/roles.history.md` §conductor.md.
 
@@ -67,7 +67,6 @@ Ledger: `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`, with the Conduc
   - The canon check: `check_canon.py`, run by `canon_sweep.py` on `rm-canon-sweep.timer`. The check runs in full when
     `canon.yml` moves, and nightly. Per commit, it runs over the changed docs. A new contradiction lands in your log
     once. The open set is in `D:\ClaudeWork\rimmandrake\canon_sweep\findings.md`.
-  - The rulings reconciler (`RULINGS_BUILD_STATE_RECONCILER_NEWEST_WINS`).
 - **Operations analyses** the readings (`roles/operations.md`). Operations hands you every loosening: a raised N (the
   helper slots of a seat, `slot_allocator.py`), a lowered bar, a wider budget. Operations writes the loosening in plan words, or as an owner-only proposal. Plan
   words hold no account, figure, runway or budget word. The figures of an owner-only proposal stay off the blind page.
@@ -97,10 +96,8 @@ Your usual inputs:
 - `digest.md`;
 - `python3 src/RimMandrake/rimflow/cli.py queue` and `show <ID>`;
 - `infrastructure/state/CONDUCTOR_GOALS.md`;
-- the Conductor log `D:\ClaudeWork\rimmandrake\conductor\log.md` (the reports of the quick checks, step 3f);
+- the Conductor log `D:\ClaudeWork\rimmandrake\conductor\log.md` (the reports of the quick checks, step 3e);
 - the findings of the canon check;
-- the mismatches of the reconciler;
-- `design/RimMandrake/innovations.md`;
 - the daily digest that a program builds: `Transient/delegated_digest_<date>.md`. `delegated_digest.py` writes it, as
   the pre-step of your scheduled run. If the digest is missing, or `delegated_digest_<date>.FAILED.md` stands beside
   it, say so in one line. Never assemble the digest by hand.
@@ -111,7 +108,7 @@ Read design docs, rulings, code and evidence files when his question or a step o
 **When he asks about accounts, tokens or runway**, read the figures yourself: `status.json`, `digest.md` and
 `python3 src/RimMandrake/Utils/account_usage.py now`. Answer with the word of each figure. The standing analysis
 (rates, bleeds, the forecast) stays the job of Operations. A question that needs that analysis goes to Operations, as
-a note headed `QUESTION FOR OPERATIONS` on the parent item (`V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE`).
+a note headed `QUESTION FOR OPERATIONS` on the parent item (`RIMMANDRAKE_KEEP_ROLE_NOTES_ON_ONE_LIVE_ITEM`).
 
 **Operations' owner-only proposals.**
 
@@ -280,8 +277,7 @@ is running).
    run, and then to him. Reading an incident is not an ack.
 3. **The scheduled check** (no message needed):
    - (a) Pending enact items from his rulings. An enact item is the item that a ruling record creates, to carry the
-     ruling out (Orphan home 1). Each enact item has a builder ticket, or gets one. A reconciler mismatch
-     older than a day gets a note and a re-ticket.
+     ruling out (Orphan home 1). Each enact item has a builder ticket, or gets one.
    - (b) Canon-check findings. When the fix is a wording edit in one file, fix the doc to canon. Never fix canon to the
      doc. Otherwise, file the finding to the Conductor lane. An ambiguous reading goes to him on a card.
    - (c) New `--for OWNER` items and the hand-ups of Operations: gate them.
@@ -294,12 +290,10 @@ is running).
      `ceiling release` line on it WITH its spend. Read the spend yourself from `maturation_dispatch.py releases` (owner
      by card 2026-11-15: the release reaches his digest with the spend; the page itself is token-blind, you are not).
      A token-blind page shows no token or spend figure.
-   - (e) The digest points him at the innovations list, `design/RimMandrake/innovations.md`: the lines that changed
-     since the last digest, and the `proposed` lines that await his yes.
-   - (f) **report:** append 3-5 lines to `D:\ClaudeWork\rimmandrake\conductor\log.md`. Write the local time, what you
+   - (e) **report:** append 3-5 lines to `D:\ClaudeWork\rimmandrake\conductor\log.md`. Write the local time, what you
      found and what you filed (with item ids). Also write what the window should raise with him first. If an
      input was missing, write `UNMEASURED` in its place. The log is the report of the check. The window reads the last 40 lines of the log at wake.
-   - (g) **skill and tool proposals** (owner, 2026-10-29: *"This is a good thing to discuss with the user and a positive
+   - (f) **skill and tool proposals** (owner, 2026-10-29: *"This is a good thing to discuss with the user and a positive
      outcome."*; his card, 2026-11-23: "Weekly, in one report"):
      - A proposal is a new skill, or a move of a skill or tool up to the user-level tools. A large doc or the unowned
        lessons can point at a new skill.
@@ -507,8 +501,8 @@ evidence that he was silent.
 
 - At wake and on every check, read your running helpers
   (`python3 src/RimMandrake/rimflow/detached_helper.py status --all`).
-- Once a mod has a passed Design Version, also read the nightly selftest result. Until then the nightly is held:
-  `nightly_scope.py show` says "nothing finished yet" (standing_rulings.md §The nightly checks finished mods only).
+- Also read the nightly selftest result. It tests the finished mods: `nightly_scope.py show` (standing_rulings.md §The
+  nightly checks finished mods only).
 - If any game (ArchBig, ArchSmall, Steve1 or Steve2) sits idle or down with work waiting that it could take, that is
   the headline. Fix what keeps it idle at once, with helpers, on
   your authority. Do not only file it. The same holds for any pipeline defect (Builds, above).

@@ -33,13 +33,11 @@ The Conductor's gap list was marked "to be proved". Proved against the ledger an
 | Past failure | Caught by | Told within |
 |---|---|---|
 | Relentless jammed 6 h behind an open breaker, 382 ready | OP2, DI2, OP3 | 30 min, acked or escalated by 60 |
-| FOUNDRY idle with work ready | DI1 | 30 min; brought back automatically |
 | 279 clones outside the cap | OP2 (`disk.scratch_outside_cap`) | next 15-min pass |
 | Selftest sweep RED 14 of 14 nights | TE1 | the morning of the first new red |
 | A helper's fake alarms | OP5 | at write time |
 | A goodbye cancelled silently | CK3 | 10 min |
 | A machine stuck testing what it already knew | RW1, RW2, TE2 | within the run, 30 min |
-| Busy for days with no real advance (GPT) | MI1 | `advance_max_days` |
 
 ## 2. Context keeper
 
@@ -62,11 +60,6 @@ outside the code path that might have dropped it. Signal: requests joined to `re
 `dispatcher_schedule.json` new `restart_reconcile_s` 600. Told: the seat, then Operations. Test: plant a goodbye then
 cancel it the way the peer message did; alarm inside 10 min. Exists: `restart_verified`. Missing: the join. Each past fix
 was on the code path; this one does not trust it.
-
-**CK4 A fresh window takes work.** [Dispatcher runs; Operations reads] A restarted seat with ready work makes a handoff or a `started` event within
-`fresh_take_s`, else one more restart, then alarm. Signal: `started` events after `restart_verified`. Threshold:
-`fresh_take_s` 900. Test: a fresh stub that ignores its prompt is restarted once, then alarms. Exists: `no_handoff`
-rings, the bring-back (shared with DI1).
 
 ## 3. Operations
 
@@ -114,7 +107,7 @@ ledger unwritable alarms by the deadman path. Exists: guard `fa573c87c2`. Missin
 with reason; a bare new item does not end it. Test: an aged fixture flag reddens the twice-daily report until one of the three happens. Exists:
 `signal_watch` flags. Missing: the end state.
 
-**OP7 The twice-daily run reads and judges.** [Operations] It reads the report plus the priority list (DI3), and handles what ranges
+**OP7 The twice-daily run reads and judges.** [Operations] It reads the report, and handles what ranges
 cannot: reads that are sane but wrong against the plan. It must end with a verdict per family and act on a told row or
 explain. Test: a fixture where 3 workers run sanely on items not on the priority list; the run must name it. Exists:
 `roles/operations.md`. Missing: the list and the check.
@@ -154,25 +147,11 @@ Deferred until the pilot: class slugs can be gamed, so it is built after RW1 and
 *"Doesn't forget to keep checking ever. Looks for idle agents and brings them back up on useful items. Is plan-aware."*
 Dispatch stays a plain program.
 
-**DI1 Idle with work is ended, not just rung (one state machine with CK4).** [Dispatcher runs; Operations reads] Seat idle with ready work: ring, then after `no_handoff.escalate_after`
-rings the Dispatcher restarts it once (a window that does not take work is treated as dead), then alarms. Threshold:
-`dispatcher_schedule.json` new `idle_bringback_after_min` 30. Told: the told ledger. Test: stub window that ignores rings
-restarted at the limit; still silent, alarm; a seat with a human active is left alone. Exists: rings, `idle_full_queue`,
-the restart (`seat_restart.py` `_bringback`, `selftest_idle_bringback.py`); the limit starts it, since three rings take 50 min.
-
 **DI2 A stall names itself, and a breaker cannot sleep on it.** [Dispatcher runs; Operations reads] Live under target with work ready names one cause.
 Breaker cools are capped at `breaker_cool_max_s`, lowered from 14400 to 1800; the same cause opening it twice is an
 emergency. Infrastructure refusals never charge the breaker. Test: plant a pool refusal and a failing launcher;
 the first does not open it; the second opens twice and reaches the told ledger as emergency. Exists: breaker, jam alarm
 to log. Missing: same-cause count, delivery, cap.
-
-**DI3 Plan-aware by one short list.** [Producer writes; Dispatcher obeys] `infrastructure/state/priority_list.json`: ordered item ids and row names, under 30
-entries, written by Producer or Conductor, with `set_at`. Dispatcher's ring and relentless's pool read it, nothing else
-does. A closed entry or age past `list_max_age_h` is a distressed reading. Test: a listed item is launched before a
-ranked one; a stale list alarms; a missing list falls back to today's order and reads distressed. Exists: `rimflow raise`,
-V1 rows, `priority.py`, `rimflow/priority_list.py` (the one writer), `plan.*` in `ops_watch.py`, limits `list_max_age_h` and
-`advance_max_days` as the distressed bounds of `plan.list_age_h` and `plan.days_since_advance` in the ranges block. A listed
-item goes ahead of raised ones; `raise` stays as the way to move one unlisted item up.
 
 **DI4 Nothing falls off the schedule.** [Operations] Every enabled `rm-*` timer appears in the deadman baseline or in an explicit
 exempt list with reason. Test: enable a stub timer; the next pass reports it. Keep a timer firing while its job does nothing:
@@ -213,12 +192,6 @@ escape with neither; a new test that passes on the old build is refused. Missing
 
 ## 7. Mission progress
 
-**MI1 Busy is not progress.** [Producer writes; Operations reads; Conductor acts] Every entry on the priority list (DI3)
-names a finish-line reading. `plan.days_since_advance` per entry: a list entry with no rise in that reading past
-`advance_max_days` is distressed, however many tickets closed. Exists: `plan.days_since_advance` (a mod's modcheck status, or a
-number in a repo file; `modcheck floor --all` takes minutes and is no 15-min reading). Test: fixture with
-20 closes and a flat reading on a listed mod alarms; a rise clears it. The rest of C1, C2, C7, C8 waits for the pilot.
-
 ## 7a. Roles: rules move into programs, the chairs stay
 
 The chairs stay. `rimflow_v3_minimal_opus_2026-10-29.md` found rules written in role prose were not enforced; its
@@ -239,11 +212,6 @@ prefix on the ledger, so approximate):
 | Arbiter | 179 run notes, 2 items filed | Verdicts feed gates; both filed items untouched | RO1 |
 | Producer | 30 raises, 10 items | Used: 8 implemented. The plan's WIP line binds nothing | RO2 |
 | Innovator | 4 notes, 2 items, 2 list entries | **Nothing shown adopted; not yet reading finding curves** | RW5, RO1 |
-
-**RO2 WIP cap held by `rimflow next`.** [Producer sets; `next` enforces] The number is `focus_cap.per_seat` in `dispatcher_schedule.json`, read by `priority.focus_config`. Foundry at the cap: `next` offers only
-the next step of a focus item (fix, answer, retest). A wait is a state and the waiting count is capped too. Relentless's
-budget 8 caps workers, not open focus, so it reads the same number. Test: at N focus items `next` offers no new item; a
-dated wait frees a place; a third wait is refused. Minimal design I2.
 
 **RO3 Done is earned at `close`.** [Arbiter rules; `close` enforces; Auditor samples] A close needs a named sha that
 touches more than the ledger, or `--no-code "<what>"`; owed checks passed on that sha; a non-maker verdict on that sha; no
@@ -268,9 +236,9 @@ fold was retired 2026-11-01, D3(a), `LESSONS_RETIRE_INBOX_AS_QUEUE`).
 
 | Q | His question | Instrument | Gate | Role that reads |
 |---|---|---|---|---|
-| 1 | Stale helpers, processes | `flow.lapsed_leases`, long-helper alarm | CK4, OP3 | Operations |
+| 1 | Stale helpers, processes | `flow.lapsed_leases`, long-helper alarm | OP3 | Operations |
 | 2 | Testing known-good code | RW1, `selftest_cache` hit share | RW2, TE2 | Operations |
-| 3 | Focus-mod bugs | RW5 per mod, mission page | DI3 orders them | Producer; Conductor (FlowWorks) |
+| 3 | Focus-mod bugs | RW5 per mod, mission page | - | Producer; Conductor (FlowWorks) |
 | 4 | Game framerate | `tps` family | OP1 range, OP3 | Operations |
 | 5 | Token pace and resets | `accounts`, `codex` runway | OP3; forecast miss → cut list | Operations; Producer |
 | 6 | Bottlenecks | OP2, D2 idle with work | DI1, DI2 | Operations |
@@ -285,7 +253,6 @@ fold was retired 2026-11-01, D3(a), `LESSONS_RETIRE_INBOX_AS_QUEUE`).
 | 15 | Wake size | CK1 context reading | OP1 range | Operations |
 | 16 | Art sheet efficiency | repeat-offer rate (UNMEASURED) | OP1 once measured | Arbiter; Conductor |
 | 17 | When he is present | presence log | Live looks ring only then | Conductor; Dispatcher |
-| 18 | What is not getting done | P4 blocked, DI3 stale list | RO2, OP6 | Producer |
 | 19 | What is done or frozen | finish line, Arbiter verdicts | RO3 | Arbiter |
 
 ## 9. Duties with no gate yet (Part 3 of the register)
@@ -327,12 +294,9 @@ All owned by FOUNDRY, acceptance in the item file, each proved by its planted fa
 | 3 | `BREAKER_COOL_FIX_SAME_CAUSE_ALARMS_EMERGENCY` | DI2 | enrolled |
 | 4 | `ALARM_RANGES_BUILD_CLASSES_AS_DATA` | OP1 | enrolled |
 | 5 | `INCIDENT_LEDGER_BUILD_TOLD_ACKED_RECOVERED` | OP3, OP4, RO4 | enrolled |
-| 6 | `IDLE_SEAT_RESTART_BUILD_BRINGS_QUIET_BACK` | DI1, CK4 | enrolled |
 | 7 | `RESTART_JOIN_BUILD_EVERY_GOODBYE_ENDS` | CK3 | enrolled |
 | 8 | `DISK_WATCH_BUILD_SCRATCH_OUTSIDE_CAP` | OP2 | enrolled |
 | 9 | `SELFTEST_NIGHTLY_SILENCE_KNOWN_REDS` | TE1 | enrolled |
-| 10 | `PRIORITY_LIST_BUILD_ONE_SHORT_FILE` | DI3, MI1 | enrolled |
-| 11 | `FOCUS_CAP_ENFORCE_IN_RIMFLOW_NEXT` | RO2 | enrolled |
 | 12 | `WORKER_TIME_LEDGER_BUILD_WHERE_HOURS_WENT` | RW1 | enrolled |
 | 13 | `MISSION_PAGE_BUILD_READ_ONLY_STATE` | C7, MI1 | enrolled |
 

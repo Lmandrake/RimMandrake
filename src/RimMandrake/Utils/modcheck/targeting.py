@@ -1,8 +1,8 @@
 """Targeted runs: pick the chains a change touches, so a live run proves a fix without the full suite.
 
-Owner, 2026-10-25 (design/RimMandrake/standing_rulings.md "Live runs are TARGETED"): *"Targeted runs should
-always have been policy."* A run after a change covers only that change's chains/rows; the full `modcheck run
-<Mod> --full` is a scheduled sweep (at most daily). Three ways to name what to run, unioned:
+Owner, 2026-10-25 (design/RimMandrake/standing_rulings.md §After a change, only the checks that the change touches run
+again): *"Targeted runs should always have been policy."* A run after a change covers only that change's chains/rows; the full `modcheck run
+<Mod> --full` is a named act. Three ways to name what to run, unioned:
 
   --chains a,b      chain names, exactly as registered with `@suite.chain("...")`
   --rows r1,r2      row (component) ids; each selects the chain(s) that declare it as a PREFIX: the chain runs from its

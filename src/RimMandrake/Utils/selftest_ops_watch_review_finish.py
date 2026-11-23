@@ -156,10 +156,6 @@ def main():
     ok(dead("testing.red_*") == [], "5: a wildcard with no instance this pass raises no bad_rule", dead("testing.red_*"))
     ok(dead("nofamily.red_*") == ["rules.target.nofamily.red_*"], "5: a wildcard on a family nobody reports is dead",
        dead("nofamily.red_*"))
-    hp = ow.health_unmeasured("no verdict")
-    ok(all(ow.dead_targets({"targets": [tg(k)]}, hp) == [] for k in
-           ("health.spent_slis", "health.unmeasured", "health.drifted_slis", "health.incident_slis")),
-       "6: a pass with no health verdict carries every health.* key, so no health target reads dead", sorted(hp))
     ok(dead("testing.absent") == ["rules.target.testing.absent"], "5: a literal key no reading carries is dead",
        dead("testing.absent"))
 

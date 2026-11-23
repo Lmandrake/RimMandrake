@@ -311,14 +311,14 @@ def debts(world, now):
     """-> {"count", "rows"} | {"unmeasured"}: the Conductor's open owed items ripe over a day (owed.split's actionable
     ones; ripe at the later of the filing and a passed wait's date)."""
     try:
-        from rimflow import owed, priority_list
+        from rimflow import model, owed
         act, _ = owed.split(world, SEAT, now)
     except Exception as e:                                   # noqa: BLE001 - said, never 0
         return {"unmeasured": "owed.split failed (%s: %s)" % (type(e).__name__, e)}
     rows = []
     for it in act:
-        t0 = priority_list.epoch(it.created_at) if it.created_at else None
-        tw = priority_list.epoch(it.wait_until) if it.wait_until else None
+        t0 = model.iso_epoch(it.created_at) if it.created_at else None
+        tw = model.iso_epoch(it.wait_until) if it.wait_until else None
         if t0 is None:
             rows.append({"id": it.id, "age": "unknown", "title": it.title or ""})
             continue
@@ -333,14 +333,14 @@ def waits_past(world, events, now):
     item since. An event with no readable time on such an item counts as a look (the count never grows on a blind
     read); `untimed` says how many items had one."""
     try:
-        from rimflow import priority_list
+        from rimflow import model
     except Exception as e:                                   # noqa: BLE001
-        return {"unmeasured": "priority_list cannot be imported (%s)" % e}
+        return {"unmeasured": "model cannot be imported (%s)" % e}
     by = _by_item(events)
     waited = [it for it in world.items.values() if it.open and it.wait_until]
     rows, untimed = [], 0
     for it in sorted(waited, key=lambda i: i.id):
-        tw = priority_list.epoch(it.wait_until)
+        tw = model.iso_epoch(it.wait_until)
         if tw is None or tw > now:
             continue
         evs = by.get(it.id, [])

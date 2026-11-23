@@ -46,7 +46,7 @@ policy."*).
   game other than ArchBig; "Game state and the bridge" below).
 - The pipeline never "blesses" a small change (owner, 2026-11-05). For a small change, the agent does a quick manual
   validation on the spot. Then the agent closes the item with that evidence. Never queue a small change for a Judge
-  (`standing_rulings.md`).
+  (`standing_rulings.md` §Touching code has a cost).
 
 ## The expensive list — the only things that get ceremony
 

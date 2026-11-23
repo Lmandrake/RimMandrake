@@ -45,9 +45,6 @@ rimflow/dispatcher_schedule.json "measure":
    ALARM   a target with alarm true files ONE rimflow item when its condition is NEW (alarms.json dedupes; it re-arms
            only after the condition clears; a failed filing stays PENDING and is retried next pass). Filed as RUNNER
            from the dispatch clone (its testq/ingest.py) under QHOME/ingest.lock. Only with --file-alarms.
-   HEALTH  ops_health.py, on a full pass only: Operations' ONE verdict for Relentless, health.json (healthy/degraded, the
-           error budget per SLI, the ordered system items, as_of); its points health.state and health.spent_slis (the
-           OPS_ERROR_BUDGET_DIAGNOSE alarm). PIPELINE_BUDGET_ENFORCE_HEAL_THYSELF.
    HAND    status.json (every current point: slot_allocator.py reads it), digest.json and digest.md: per KPI the
    OVER    current value, its mark, the change over 24 h and 7 d, and its open flags; one cheap read for Operations.
            digest_blind.md: an ALLOW-LIST (BLIND_KEYS: machine health, disk, stalls, flow, production output
@@ -4752,47 +4749,6 @@ def carry_last_measured(lastm, saved, points, now):
     return merged, keep
 
 
-def health_unmeasured(why):
-    """Every health.* point UNMEASURED with `why`: a pass with no verdict must still carry each key, or dead_targets reads
-    the health targets (health.spent_slis ...) as dead rules and files bad_rule flags."""
-    return {k: U(why) for k in ("health.state", "health.spent_slis", "health.drifted_slis",
-                                "health.incident_slis", "health.unmeasured")}
-
-
-def publish_health(points, prev, ctx, rules, now):
-    """Operations' one verdict (ops_health.py, health.json) from this pass's points and the series. -> its points:
-    health.state, health.spent_slis (the OPS_ERROR_BUDGET_DIAGNOSE target) and health.drifted_slis. A failure is UNMEASURED and flagged;
-    the old verdict then ages until Relentless reads it as stale."""
-    import ops_health
-    try:
-        world = None
-        if ctx.get("events") is not None:
-            import ops_ledger as pc
-            world = pc._model().replay(ctx["events"])
-        v = ops_health.publish(points, prev, world, rules, str(data_clone()), now,
-                               stamp={"ledger": ops_health.ledger_mark(ctx.get("events"))})
-    except Exception as e:  # noqa: BLE001  the pass outlives its verdict, and says so
-        why = "health verdict not written: %s: %s" % (type(e).__name__, str(e))
-        return health_unmeasured(why)
-    x = {"spent": v["spent"], "system_items": len(v["system_items"] or []), "why": v["why"]}
-    guardless = v.get("recurring_unguarded")
-    inc = v.get("incident") or {}
-    if inc.get("bad") or (inc.get("slis") and len(inc.get("unmeasured") or ()) < len(inc["slis"])):
-        # a held SLI (ok now, budget spent) counts: a dip over its line closed and relapsed churn-20261104075956 twice
-        inc_pt = M(len(inc["bad"]) + len(inc.get("held") or ()), "incident SLIs reading bad now", cause=inc["cause"],
-                   unmeasured=inc.get("unmeasured") or [], held=inc.get("held") or [])
-    else:       # nothing to judge: no incident SLI, or none of them could see this pass
-        inc_pt = U("no incident SLI measured this pass: %s" % (", ".join(inc.get("unmeasured") or ()) or "none configured"))
-    return {"health.recurring_unguarded": U("no ledger or alarm log this pass") if guardless is None else M(
-                len(guardless), "alarm kinds that came back with no class guard test", said=", ".join(r["kind"] for r in guardless[:5])),
-            "health.incident_slis": inc_pt,
-            "health.state": M(v["state"], None, **x),
-            # the health rules are unusable: no budget was read (OPS_HEALTH_FIX_BROKEN_RULES_READ_HEALTHY); alarm REPAIR_ALARM
-            "health.unmeasured": M(int(v["state"] == "unmeasured"), "health verdicts with unusable rules",
-                                   said=v["why"] if v["state"] == "unmeasured" else ""), "health.spent_slis": M(len(v["spent"]), "SLIs with a spent budget", **x),
-            "health.drifted_slis": M(len(v["drifted"]), "SLIs whose point changed unit under them", said=", ".join(v["drifted"]))}
-
-
 def steve_release_start():
     """Start testq/brake_release.py, Operations' deterministic hand on the Steve lane, in its own process (its import of
     testq reads TESTQ_QUEUE as this pass does) and its own session, output to ops_dir()/brake_release.out. -> the
@@ -4955,28 +4911,6 @@ def carry_family(fam, recs, now, max_age, cause=None):
     return out
 
 
-def held_health(now, max_age):
-    """The health.* points of the last status a compose alarm pass wrote (each with observed_at), for a compose pass
-    without the ledger; None when there is none within max_age, so that pass computes its own verdict."""
-    st = _obj(read_json(ops_dir() / "status.json"))
-    pts, t = st.get("points"), st.get("t")
-    if not isinstance(pts, dict) or not is_num(t) or not 0 <= now - t <= max_age:
-        return None
-    hs = pts.get("health.state")
-    obs = ((hs.get("x") or {}).get("observed_at") if isinstance(hs, dict) else None) or st.get("at") or iso(t)
-    try:
-        seen = epoch(obs)       # a verdict carried pass after pass ages from the pass that made it
-    except (TypeError, ValueError, OverflowError):
-        return None
-    if not is_num(seen) or not 0 <= now - seen <= max_age:
-        return None
-    out = {}
-    for k, p in pts.items():
-        if k.startswith("health.") and isinstance(p, dict):
-            out[k] = dict(p, x=dict(p.get("x") or {}, observed_at=obs))
-    return out if out.get("health.state", {}).get("m") == "MEASURED" else None
-
-
 SENSE_KILLS = "sense_kills.jsonl"     # one line per sense pass killed at its limit (on_sense_term)
 BLIND_KEY = "sense.families_blind"
 _STAGE = {"stage": "start", "t0": None, "families": []}     # what a killed pass was doing (on_sense_term)
@@ -5132,17 +5066,6 @@ def run(now=None, rules=None, filer=None, families=None, compose=False, still_ow
         if (whole or fam in families) and not counts_as_measured(points.get(key)):
             points[key] = st_suppressed(points, fam)
             stamp_ranges(points, rules)
-    health_flag = None
-    if compose and COMPOSE_ALARM_FAMILY not in families:
-        # the verdict needs the ledger, which only the alarm pass reads: carry that pass's, never make one without it
-        points.update(held_health(now, max_age) or health_unmeasured(
-            "the health verdict is made on the beat that measures %s; none within %d min" % (
-                COMPOSE_ALARM_FAMILY, max_age / 60)))
-    elif whole:      # a limited pass has not measured every SLI: it never overwrites the verdict
-        points.update(publish_health(points, prev, ctx, rules, now))
-        if points["health.state"].get("m") != "MEASURED":
-            health_flag = {"rule": "health", "key": "health.state", "value": None, "window": "now",
-                           "detail": "NO HEALTH VERDICT this pass: %s" % points["health.state"].get("why")}
     hist, lastm = {}, {}
     for fam, recs in prev.items():
         recs = [r for r in recs if r["t"] <= now + 300]     # a future row would read as just measured, and hide silence
@@ -5162,8 +5085,6 @@ def run(now=None, rules=None, filer=None, families=None, compose=False, still_ow
     except Exception as e:  # noqa: BLE001  no flags this pass, said aloud; the alarms still run
         flags = sick + [{"rule": "bad_rule", "key": "rules", "value": None, "window": "now",
                          "detail": "andon failed: %s: %s" % (type(e).__name__, str(e))}]
-    if health_flag:
-        flags.append(health_flag)
     if rules.get("_load_error"):
         flags.append({"rule": "bad_rule", "key": "rules.file", "value": None, "window": "now",
                       "detail": "the rules file cannot be read, last good copy in use: %s" % rules["_load_error"]})

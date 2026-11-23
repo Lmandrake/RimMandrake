@@ -2,14 +2,14 @@
 """selftest_handoff_restart.py — HANDOFF_FIX_RESTART_TWENTY_SECONDS on the real path.
 
 Owner 2026-11-01: "20 seconds, build it now and implement." dispatcher.tick() runs with obs=None on the production schedule,
-over selftest_idle_bringback's World: real child processes, session files, transcripts, doorbell and SIGTERM. cmd_request
+over restart_world's World: real child processes, session files, transcripts, doorbell and SIGTERM. cmd_request
 is the real one (only the shard reading and the wall-clock of its ts are replaced); the clock is simulated in seconds, ticks
 landing where kick_handoff puts them.
   wait      the kill lands on the first tick past 20 s, never before
   rings     no ring while it is pending; a ring still in the inbox is withdrawn; a ring the window already took holds
             nothing (the live hold of 2026-11-01); a ring that lands anyway neither cancels nor fails it
   human     his own text in the window still cancels
-  deferred  helpers drain, a shard the kill cannot publish holds, then it fires once; the bring-back stays out
+  deferred  helpers drain, a shard the kill cannot publish holds, then it fires once
   spin      a fresh window handing off with no work is refused and alarmed; with work, or past the cooldown, it fires
   fresh     a restart ends in work: the fresh window, armed, is verified and rung on one tick, backoff or no; the doorbell
             kicks that tick; an empty queue or an unarmed window is left alone
@@ -27,7 +27,7 @@ import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-import selftest_idle_bringback as IB  # noqa: E402
+import restart_world as IB  # noqa: E402
 
 D, SR, doorbell, SEAT = IB.D, IB.SR, IB.doorbell, IB.SEAT
 check, FAILS, REAL = IB.check, IB.FAILS, IB.REAL
@@ -281,7 +281,7 @@ def test_deferred():
     check(not w.killed(), "held while the helper lives")
     w.helpers[0]["last_at"] = w.now
     w.at(IB.LIMIT - 300)
-    check(w.count("idle_bringback:" + SEAT) == 0 and not w.count("ring"), "no bring-back and no ring through a long drain")
+    check(not w.count("ring"), "no ring through a long drain")
     w.helpers = [dict(w.helpers[0], alive=False, last_at=w.now)]
     w.shard = "shard dirty"
     w.end_turn(win)                          # the last notice woke it

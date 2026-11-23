@@ -6,7 +6,7 @@ switch to a new account before new work is released (when appropriate)").
 A program, not a judgement: pick() applies the schedule's `account_pick` rule to the ops_watch reading
 (status.json points accounts.<label>.runway / week_left_pct / hours_to_reset) and returns one of
   KEEP        the account this machine runs on (role_launch.resolve_account) stays: it is not under the rule's
-              `switch_when` line, or no other account is fit to take the work (the throttle bands then pace it)
+              `switch_when` line, or no other account is fit to take the work
   SWITCH      it is under the line and another account meets `target_min`: the pick names that account. `act` is
               "recommend": the work listed under `hold` (role_launch / ring / recover) is HELD and an alarm says
               which account to switch to. Nothing here switches: a switch is `claude-account use` (one account per

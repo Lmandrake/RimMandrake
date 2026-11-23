@@ -36,8 +36,6 @@
   "routes": [
     {"match": "roles.*.acted_share", "route": "program", "_why": "RO1: report-only and coarse, nothing rings; the Conductor reads it in role_use"},
     {"match": "restore_incomplete", "route": "role", "reader": "Operations", "cause": "work_belt", "_why": "run_store restore_bundle could not bring a put-down clone's carried commits back into a fresh clone; the bundle stays on disk and the alarm names it (ALARM_ROUTE_FIX_RESTORE_INCOMPLETE_ORPHAN)"},
-    {"match": "health.incident_slis", "route": "role", "reader": "Operations", "cause": "churn", "_why": "OPS_CHURN_MEASURE_RETURNS_ARE_NOT_PROGRESS: churn or a blind instrument is its own cause; under work_belt (open since 2026-11-01) its Conductor line was swallowed the pass it first filed"},
-    {"match": "health.*", "route": "role", "reader": "Operations", "cause": "work_belt"},
     {"match": "queues.*", "route": "role", "reader": "Operations", "cause": "queues"},
     {"match": "process.*", "route": "role", "reader": "Operations", "cause": "process", "_why": "no target or ranges row yet, so nothing rings; the census reads every point a collector builds, so a row added later lands on a route"},
     {"match": "production.*", "route": "role", "reader": "Operations", "cause": "production", "_why": "as process.*"},
@@ -92,7 +90,6 @@
     {"match": "withdraw_failed:*", "route": "role", "reader": "Operations", "cause": "seats"},
     {"match": "seat_declined:*", "route": "role", "reader": "Operations", "cause": "seats"},
     {"match": "idle_full_queue:*", "route": "role", "reader": "Operations", "cause": "seats"},
-    {"match": "idle_bringback:*", "route": "role", "reader": "Operations", "cause": "seats", "_why": "DI1, CK4: the one restart was spent and the fresh window took nothing"},
     {"match": "decide:*", "route": "role", "reader": "Operations", "cause": "dispatcher"},
     {"match": "restart:*:held", "route": "program"},
     {"match": "restart:*:held_first", "route": "program", "_why": "RIMMANDRAKE_ROUTE_HELD_FIRST_AWAY_FOUR_HOLDS_NO_FAULT: a first-hold courtesy note whose tell is its Conductor-log line (raise_first); through restart:* it re-opened seats-20261115234127 four times on 2026-11-16, each a restart waiting on a background command. Held past the bound is restart:*:held"},

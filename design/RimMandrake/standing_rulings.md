@@ -89,36 +89,6 @@ else.
 - a helper is refused every act;
 - a mindful act without `lost:` and `undo:` is refused.
 
-## The pipeline never "blesses" a small change — owner, 2026-11-05
-
-*"Please make a ruling: The pipeline is NOT to be used to "bless" any change in the game. That's a huge expenditure
-for a small validation that could be manually performed."*
-
-- A small change is a change whose check is a quick manual validation. Examples: an installed picture equals his pick,
-  a value reads back, a file is deployed.
-- The agent that made a small change checks it on the spot (a hash, a read, a single bridge call).
-- That agent then closes the change with that evidence: `rimflow verify ... --level L0`, then `close`.
-- Never queue a small change, unhold it, or leave it open for the pipeline to judge.
-  He said this of Relentless, which is now retired.
-- The Maturation Pipeline builds and proves real work: code, systems, and live proofs that need a game round.
-- This rule goes with "See it, fix it, then" in the CHARTER.
-
-## Fix it and check it yourself; no notes, no re-run generations — owner, 2026-11-05
-
-*"We MUST stop this endless token burn by making little cute notes on tickets and letting the system totally restart
-each item once more time to do a check, ok?"* (He had just said *"NO! Do not write this diagnosis onto the item...
-YOU DO IT NOW!"* to a Conductor. That Conductor had diagnosed `MODCHECK_DONOR_ENVIRONMENTS_1` and had written the next
-step on the item.)
-
-- When a seat or helper finds why an item is stuck, that seat or helper does the fix and the remaining check itself.
-- Do both in the same sitting: a run, a read, a bridge call or one live line.
-- Then that seat or helper closes the item with that evidence.
-- Never write the diagnosis or a `NEXT:` onto the ticket instead.
-- Never unhold or re-release an item for a check alone. A whole new pipeline run would rebuild the item only to run
-  the check again.
-- An item returns to the pipeline only when real build work remains.
-- This rule goes with the section "The pipeline never blesses a small change", just before this section.
-
 ## North-star validation state
 
 - 🔴 **Validation state is never written as prose: `modcheck floor --all` measures it.**
@@ -760,6 +730,20 @@ failure classes came from reviewers, judges and auto-filers with no stopping lev
   ticket. A count in such a brief names the danger it guards beside it (§No limit without the danger it guards).
   Until a calibration run checks a brief's stop rule, that rule is only words: the list of briefs and the runs owed
   are on `RIMMANDRAKE_CALIBRATE_JUDGE_STOP_RULES_WORDS_UNTIL_RUN`.
+- **A small change is checked by the agent that made it, and never waits for a run** (two rulings of the owner,
+  2026-11-05, merged here 2026-11-23). *"Please make a ruling: The pipeline is NOT to be used to "bless" any change in
+  the game. That's a huge expenditure for a small validation that could be manually performed."* He said this of
+  Relentless, which is now retired. *"We MUST stop this endless token burn by making little cute notes on tickets and
+  letting the system totally restart each item once more time to do a check, ok?"* (He had just said *"NO! Do not write
+  this diagnosis onto the item... YOU DO IT NOW!"* to a Conductor. That Conductor had diagnosed
+  `MODCHECK_DONOR_ENVIRONMENTS_1` and had written the next step on the item.)
+  - A small change is a change whose check is a quick manual validation: an installed picture equals his pick, a value
+    reads back, a file is deployed. The agent that made it checks it on the spot (a hash, a read, a single bridge call)
+    and closes it with that evidence: `rimflow verify ... --level L0`, then `close`.
+  - When a seat or helper finds why an item is stuck, that seat or helper does the fix and the remaining check in the
+    same sitting, and closes the item with that evidence. Never write the diagnosis or a `NEXT:` onto the ticket instead.
+  - Never queue, unhold or re-release an item for a check alone. An item goes back to the pipeline only when real build
+    work remains.
 - **How the rules fit.** §Code is clean when its promises are tested is this rule for code review (significant, the
   reviewer fixes, one blind reread). §The pipeline fixes its own defects is test 2 for the pipeline's own machinery,
   and its hand-off list is the list above. The CHARTER's "See it, fix it, then" (owner, 2026-11-05) is test 2 for a
@@ -863,21 +847,6 @@ work that would wire it in often has not happened yet.
   actually already saw beautiful art for giant leaf somewhere in a review
   sheet"* and asked for a check across the rest of the missing set. Nothing
   in the workflow up to that point had prompted the check on its own.
-
-## Live runs are TARGETED; the full suite is a scheduled sweep — owner, 2026-10-25
-
-*"Targeted runs should always have been policy."* A live run after a change runs only the
-chains/rows that change touches (the item's own rows, plus the chains its files feed); the
-full `modcheck run <Mod>` is not the verification step for a fix. A full sweep runs at most
-once a day, or when a change is wide enough that its rows cannot be named. A brief that
-asks a live helper for the whole suite to prove one fix is the defect. Executable since
-2026-10-25: `modcheck run <Mod> --item <ID>` / `--chains` / `--rows`; the whole suite needs `--full`.
-
-Extended (owner, 2026-10-25): *"When we're building out content we should be focusing aggressive
-testing only on the highest value informative tests not rerunning other tests that happen to be
-nearby or ahead of it."* Run the rows that can change what we do next; never re-run a row only
-because it shares a chain with, or runs before, the row you need. Tiers and options:
-`design/RimMandrake/focused_testing_plan_2026-10-25.md`.
 
 ## Spare capacity: finish, then strengthen, then explore — and a conditional pass is a pass (owner, 2026-10-25, by card)
 
@@ -1156,48 +1125,6 @@ Baseline: 8 blocks in 7 records for 2026-11-05 to 2026-11-19 [measured; pinned b
 `src/RimMandrake/Utils/selftest_owner_objections.py` at `338b3cae50`]; the 14 days before that (2026-10-22 to
 2026-11-04) read 2, so part of the spike belongs to the retired pipelines and a fall is not all this rule's doing.
 Review date: 2026-12-03 (any 14-day window after adoption works).
-
-## Relentless fixes the system first (said of the retired Relentless) — owner, 2026-11-03
-
-He said this of Relentless, retired 2026-11-13 (`retired_eras_index_2026-11-18.md`); his words below stand, and the
-Maturation Pipeline's form of the first rule is §The pipeline fixes its own defects.
-
-*"Yes relentless fixes itself first."* · *"Relentless fixes operations or conductor or designer or any other part of the
-system before continuing content creation yes."* Any known fault in the system itself (Operations, the Conductor,
-the Designer, the Dispatcher, timers, tests, tools: anything that is not game content) outranked content creation: while
-such an item was open and buildable, Relentless took it before any content item. When the system missed
-its health targets (its error budget was spent), new content stopped only as far as the broken part reached (below).
-Two rulings of 2026-11-19 replace "fixes itself first" for work today: only an open ticket classed BLOCKS on a mod's path
-stops that mod (§No mod runs forward on a broken pipeline), and a fault that fails test 1 gets no fix (§Touching code has
-a cost). Design: top-5 #5 of
-`design/RimMandrake/build_system_practices_2026-11-03.md`; build item `PIPELINE_BUDGET_ENFORCE_HEAL_THYSELF`.
-
-🔑 **Operations owns the health assessment; the build pipeline only asks** — owner, 2026-11-03, of the retired Relentless: *"I don't want relentless to own
-assessing system health. I want it to ask "the system" for its health assessment, and that belongs to the operations
-component."* Operations (ops_watch) publishes ONE health verdict: healthy or not, the error-budget state, and the ordered
-list of system items to take before content, with its own as-of time (`src/RimMandrake/Utils/ops_health.py`, written
-to `health.json` every ops_watch pass). Relentless was its one reader and obeyed it; it never computed health, budgets or
-SLOs itself, and reported what it observed (failures, refusals, spend) to Operations as signals, never as a verdict.
-Today nothing in the Maturation Pipeline reads the verdict (measured 2026-11-19: no importer of `ops_health` outside
-ops_watch, alarm_census and model; `RIMMANDRAKE_WIRE_HEALTH_VERDICT_READER_NOBODY_OBEYS_IT`). A missing or stale
-verdict is Operations' alarm to raise.
-
-🔑 **"First" means first pick, never preemption or idling** — owner, by card 2026-11-03, on what Relentless (retired) did when the
-verdict was missing or stale: *"System work immediately but existing non system work continues. If all system tickets
-are already being worked non system work can be selected. Keeps system work at max priority without forcing others to
-wait pointlessly."* So a system item always takes the next free place; work already running is never stopped for it;
-when every open, buildable system item is already being worked, a free place takes content. With no verdict, the
-reader applies this at once, treating every open system item as first (no grace period), and says so in its reading.
-
-🔑 **An unhealthy system pauses only what it touches** — owner, by card 2026-11-05: *"What should happen to mod work while
-the system is unhealthy?"* → **Pause only what it touches.** All new content waits only while a shared integrity resource
-is impaired (the account circuit is open, storage headroom is spent, the assessment is unmeasured, or the store is
-suspect). Otherwise only content in the spent SLI's lane waits (each SLI's `scope` in `ops_watch_rules.json`
-`health.slis`: `game` reaches content that needs the live game, `system` reaches no content), a free place is kept for
-each system item still in line, and content he ruled on within 48 h may take a kept place (every other check still
-applies). Runnable content held over 6 h is told to the Conductor, naming the system items holding it. Why (measured 2026-11-05): the spent SLIs were not tied to the items that would heal them, so one red nightly class
-stopped every mod item, including ones he had ruled on that day. Build item `DEGRADED_PAUSE_FIX_STOPS_ONLY_WHAT_BROKE`;
-the spec, the retired Relentless recovery plan's §3, is in git: `git show 9e35e61381:design/RimMandrake/relentless_recovery_plan_2026-11-05.md`.
 
 ## Wrap-up is a script, never a request — owner, 2026-11-03
 
@@ -1603,8 +1530,18 @@ switch. This is so stupid! We've already agreed that when you change code only t
 that logic everywhere! Please get efficient! No more ceremony and over completeness!"*
 
 The earlier agreements he cites: his card of 2026-11-12 (rule 2d, `design/specs/2026-11-13-maturation-pipeline.md`):
-*"Piecemeal revalidation of specific touched line items is crucial"*; §Live runs are TARGETED (2026-10-25); and
+*"Piecemeal revalidation of specific touched line items is crucial"*; his live-run ruling of 2026-10-25 (its words are
+below); and
 `run_selftests.py --only <tests>` with `pipeline_tests.json` (only the tests for what you changed).
+
+**The live-run ruling of 2026-10-25, merged here 2026-11-23.** *"Targeted runs should always have been policy."* Then:
+*"When we're building out content we should be focusing aggressive testing only on the highest value informative tests
+not rerunning other tests that happen to be nearby or ahead of it."* A live run after a change runs only the chains and
+rows that the change touches: `modcheck run <Mod> --item <ID>`, `--chains` or `--rows`; the whole suite needs `--full`.
+Run the rows that can change what we do next. Never re-run a row only because it shares a chain with, or runs before,
+the row you need. A brief that asks a live helper for the whole suite to prove one fix is the defect. The design of the
+code that does this: `design/RimMandrake/focused_testing_plan_2026-10-25.md`. The daily full sweep that the ruling once
+allowed is gone (2026-11-23): a full pass is a named act with its reason, below.
 
 **What it narrows.** The build-match change of 2026-11-17 (item `RIMMANDRAKE_FOLD_STAGE_SEVEN_INTO_WALK_BRIEF_NO_VETO`).
 The text is ours, as `build_match.py` records it: "A verdict whose mod hash or game build differs from the build he walks
@@ -1680,6 +1617,12 @@ The rule, for every agent and program that can move a mod:
   launches by hand carries no mod, so for that the rule binds by itself. `./pipe off all` is the wrong switch: every run
   is in scope `all` (`control.run_scopes`), so it would also stop the repair helpers this rule wants. Ledger calls made
   under it: `--per-ruling RIMMANDRAKE_ENACT_NO_MOD_RUNS_ON_BROKEN_PIPELINE_RULING`.
+
+**It replaces the rule of 2026-11-03** (the Conductor's decision, 2026-11-23: the later ruling wins). Then he said of
+Relentless, which is now retired: *"Relentless fixes operations or conductor or designer or any other part of the system
+before continuing content creation yes."* The pipeline's form of *"Yes relentless fixes itself first."* is §The pipeline
+fixes its own defects. The health verdict, its budgets and its pauses are deleted; his other words of those days are in
+`design/RimMandrake/CLAUDE.history.md`.
 
 ## Mods keep their own state; all other work goes in the one list; the pipeline works the list — owner, 2026-11-22
 
@@ -1761,9 +1704,10 @@ his to overrule: the pipeline's machinery is the most fluid code there is, so it
   at `passed`, or a kept older record that is): `src/<tier>/<Mod>/**/selftest*.py` and
   `src/RimMandrake/Utils/selftest_<mod>_*.py`. A mod in production is never in it; process machinery is never in it.
   None passed: the run says "nothing finished yet", green. `python3 src/RimMandrake/Utils/nightly_scope.py show`.
-- **Held until the first pass.** rm-selftests-nightly, its catch-up, rm-ops-reds and rm-red-dispatch are stopped by
-  `timers_guard.py hold --until finished-mod` (a recorded, ruling-backed stop: no outage, no alarm). The timer guard
-  starts them again by itself the pass after a mod's version passes; nobody has to remember.
+- **It runs now.** He chose the hold until a mod passed; the first mod passed and the hold lifted itself (measured
+  2026-11-23: `nightly_scope.py show` reads 41 tests from 1 finished mod, and `timers_held.json` is empty). So a missing
+  nightly is a fault. A hold would come back only by `timers_guard.py hold --until finished-mod`, a recorded,
+  ruling-backed stop.
 - **When it runs**, it runs on a clean clone of origin/main (`/home/mandrake/rm/nightly`) with `~/.local/bin` on PATH, and
   no fixer launches on a red until it has been rerun red on current origin/main (the build cop's RerunGate files the item
   only then; red_dispatch launches only on filed items).
@@ -1823,7 +1767,7 @@ obsess on cost savings..."* and *"You're telling it constantly"*.
   table stops the run by name.
   Launchers call `spend_watchdog.wrap(argv, cap_usd)`; `selftest_spend_blind_agents.py` sweeps the tree for the flag.
 - **Humans still see spend**, in weighted tokens: run records, the DETACHED RUN ENDED lines, the status page. An
-  Operations run is still told the ACCOUNT's throttle band (its job), never its own budget or spend.
+  Operations run is still told the ACCOUNT's reading (its job), never its own budget or spend.
 
 ## The pipeline's pause switch and its "up next" forecast — owner, 2026-11-18
 

@@ -10,11 +10,9 @@ is still an ALARM, as in v3.0: switching on a role nobody can run must be loud.
 When: the role's clock slots — `quick_checks_local` (Conductor) or `runs_local` (Operations), local "HH:MM" — each
 once per local day, launched in the first tick at or after the slot and no later than `slot_late_s` after it (a
 missed slot is journaled, never run late). The slot equal to `economy_pass_local` is the economy pass, which carries
-that slot's running check with it: when a band skips the economy pass the whole slot is skipped (the cheaper reading,
-operations.md says so). A role with `after_role` (Conductor -> Operations) launches a slot only after that role's own
+that slot's running check with it. A role with `after_role` (Conductor -> Operations) launches a slot only after that role's own
 scheduled run for the slot it follows (08:00 -> 07:30, 20:00 -> 19:30; never an alarm run or yesterday's late run)
-finished done and none is going (after_ready); a slot of that role its band skipped on purpose is passed over for
-its previous one within 24 h; it is decided after that role in each tick. Operations
+finished done and none is going (after_ready); it is decided after that role in each tick. Operations
 also runs once per OPEN ops_watch alarm crossing, and once per worsening of one (<key>@worse<n>) (`alarm_runs`): `alarms_seen` is pruned to the alarms open now, so
 one that clears runs again when it re-crosses (review W, W1); alarms already open when the role is first enabled run
 once too (no baseline). One alarm run covers every open alarm not yet run, and alarm runs are at least
@@ -36,21 +34,18 @@ Gates, in order, each journaled (and each refusal an ALARM when it needs a human
      2026-10-27 says refuse: refusing is the stricter of the two, so a quick run never launches on a blind reading.)
      EXCEPT a role with `degraded_reading_ok: true` (EVERY role by default since owner 2026-11-02, token limits
      advisory everywhere, TOKEN_LIMITS_TAME_BARK_NO_BITE; first Operations, the role that reads the watch; items
-     OPERATIONS_FIX_RUNS_BLIND_WHEN_STALE and the 2026-11-01 brief): it launches on the most cautious band with a
+     OPERATIONS_FIX_RUNS_BLIND_WHEN_STALE and the 2026-11-01 brief): it launches with a
      noted alarm, its message marking the reading UNMEASURED and saying to diagnose the watch first. Caps and the
      account gate still apply; only a role that sets it false is still refused.
      The account is the switcher-registry label whose email is the one this machine is logged in as
      (account_usage.registry()/live_email()): no account is named here.
-  3. throttle band (role `throttle_bands`, as conductor.md writes them): FLOOR when week_left_pct < its line, else
-     the highest band whose `runway_ge` the runway meets (an ESTIMATE counts as its value). The band's `slots`
-     ("all" | "first" | "last" | "none") says which scheduled slots still run and `quick_cap_x` scales the run's budget.
-     A role with no bands runs at x1.0. "quick" / "quick_one" (Operations): see slot_blocked.
-  4. caps: the run's budget = its cap x the band factor; it is REFUSED (alarm) when today's spend plus that budget
+  3. caps: the run's budget = its cap; it is REFUSED (alarm) when today's spend plus that budget
      passes `daily_token_cap`. Today's spend = tokens of finished runs (measured from the transcript when the result
      is missing) + the full budget of runs still going. A role with `caps_advisory: true` (EVERY role by default
-     since owner 2026-11-02: "Nothing gets killed or stopped for that"; first Operations, e7069d65ba) is never refused, held, skipped or shrunk by a band, budget, daily cap or daily alarm-run count: its
-     band is read as all slots at x1.0, and overspend raises an immediate alarm instead (overspend_day, overbudget).
-  5. account (dispatcher.account_gate, account_pick.py): the schedule's `account_pick` rule, asked at the moment of
+     since owner 2026-11-02: "Nothing gets killed or stopped for that"; first Operations, e7069d65ba) is never refused,
+     held, skipped or shrunk by a budget, daily cap or daily alarm-run count: overspend raises an immediate alarm
+     instead (overspend_day, overbudget).
+  4. account (dispatcher.account_gate, account_pick.py): the schedule's `account_pick` rule, asked at the moment of
      release; a SWITCH pick holds the launch (journaled once per slot) until the machine is switched or the slot is
      missed. The launch records the account it runs on.
 
@@ -63,7 +58,7 @@ a model not in the table leaves the run UNMEASURED with the name. Every cap, bud
 alarm here is in these units; the raw sum is kept beside it on the run as `raw_tokens`. A run over its budget is an ALARM after the fact: `claude -p` has no
 token stop and nothing here stops a run at its token budget: the budget is checked on its result (the dollar
 run_budget_usd stop is spend_watchdog.py's, from outside). No role is told its budget or spend (owner 2026-11-16); only a
-`token_aware` role (Operations, the Conductor) is told the account's band in its launch message; every other role is
+`token_aware` role (Operations, the Conductor) is told the account's reading in its launch message; every other role is
 token-blind and is told neither (owner 2026-10-27; review T, F1/F2). A run still going after
 `run_max_s` is stopped (its claude_bounded scope and its unit) with an alarm; it stays `running` and the stop is
 re-issued each tick until systemd says the unit AND its claude_bounded scope are inactive/failed (claude lives in the
@@ -132,7 +127,7 @@ LAUNCH_KEYS = ("instructions", "seat", "clone", "model", "ledger_item")
 # Token limits are ADVISORY for every role (owner 2026-11-02, TOKEN_LIMITS_TAME_BARK_NO_BITE: "Please make token limits
 # advisory at this time everywhere. Nothing gets killed or stopped for that, but it might call attention from another
 # agent (Conductor, Operations) to investigate and THAT agent may determine it needs to be killed for evidence-based
-# reasons."): caps_advisory and degraded_reading_ok default true, so no band, budget, daily cap or blind runway reading
+# reasons."): caps_advisory and degraded_reading_ok default true, so no budget, daily cap or blind runway reading
 # refuses, holds or shrinks a run; overspend_day / overbudget / role:<name>:ops raise the attention line instead. A role
 # that sets either key false is back on the strict gates (kept, and tested, for when he lifts this).
 ROLE_DEFAULTS = {"slot_late_s": 3600, "run_max_s": 1800, "caps_advisory": True, "degraded_reading_ok": True}
@@ -251,7 +246,7 @@ TOKEN_WEIGHTS = {"input_tokens": Fraction(1), "cache_write_5m": Fraction(5, 4), 
                  "cache_read_input_tokens": Fraction(1, 10), "output_tokens": Fraction(5)}
 # run-now (V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE): a one-shot run asked for by hand, held in the dispatcher state as
 # st["roles"][R]["run_now"] and launched by the next tick through every gate a scheduled run passes. A request the
-# ticks could not launch for this long (busy, account hold) expires, said; refusals (off, ops, band, cap) consume it.
+# ticks could not launch for this long (busy, account hold) expires, said; refusals (off, ops, cap) consume it.
 RUN_NOW_TTL_S = 3600
 RUN_NOW_MODES = ("run", "quick", "economy")
 # The one alias table (design/specs/2026-11-22-run-spend-and-model-alias/boundary.md): the variable that names each
@@ -340,46 +335,8 @@ def ops_reading(status, account, now, stale_s=OPS_STALE_S, model=None):
     return out
 
 
-# how much of the day a band's `slots` lets run, fewest first (slot_blocked's policies): most_cautious_band's order
-SLOT_CAUTION = {"none": 0, "quick_one": 2, "first": 3, "last": 3, "quick": 4, "all": 5}
-
-
-def most_cautious_band(bands):
-    """Pure. -> (name, band) of the configured band that lets the least run: fewest slots (SLOT_CAUTION), then the
-    smallest quick_cap_x, then a week_left_pct_lt (FLOOR) band before a runway band, then the lowest runway_ge; the
-    name breaks a full tie so the pick is stable. A degraded reading is judged by this, never by made-up values that
-    would pass a stricter FLOOR line (ROLE_LAUNCH_HARDEN_FLOOR_AND_ODD_NAMES)."""
-    _, _, _, _, name = min((SLOT_CAUTION.get(b.get("slots", "all"), SLOT_CAUTION["all"]),
-                            float(b.get("quick_cap_x", 1.0)), 0 if "week_left_pct_lt" in b else 1,
-                            float(b.get("runway_ge", 0.0)), name) for name, b in bands.items())
-    return name, bands[name]
-
-
-def band(role, reading):
-    """Pure. -> (band name, band dict). No bands -> ("NONE", x1.0, all slots). A degraded reading (decide_roles'
-    degraded_reading_ok path: runway and week left UNMEASURED) -> the most cautious configured band, FLOOR included."""
-    bands = role.get("throttle_bands") or {}
-    if not bands:
-        return "NONE", {"quick_cap_x": 1.0, "slots": "all"}
-    if reading.get("degraded"):
-        return most_cautious_band(bands)
-    for name, b in bands.items():
-        if "week_left_pct_lt" in b and reading["week_left"] < b["week_left_pct_lt"]:
-            return name, b
-    ranked = sorted(((b["runway_ge"], name, b) for name, b in bands.items() if "runway_ge" in b), reverse=True)
-    if not ranked:
-        raise ValueError("throttle_bands has no band with runway_ge: no band to fall back to")
-    for ge, name, b in ranked:
-        if reading["runway"] >= ge:
-            return name, b
-    return ranked[-1][1], ranked[-1][2]          # below every line: the lowest runway band
-
-
 def _num(v):
     return isinstance(v, (int, float)) and not isinstance(v, bool) and math.isfinite(v)
-
-
-BAND_SLOTS = ("all", "none", "first", "last", "quick", "quick_one")   # slot_blocked's policies
 
 
 def validate_role(role):
@@ -387,22 +344,8 @@ def validate_role(role):
     bad value is skipped with an alarm, never allowed to raise through the whole tick."""
     if role.get("runner", "claude") not in ("claude", "codex"):
         raise ValueError("runner must be claude or codex")
-    bands = role.get("throttle_bands") or {}
-    if not isinstance(bands, dict):
-        raise ValueError("throttle_bands is not a mapping")
-    for name, b in bands.items():
-        if not isinstance(b, dict):
-            raise ValueError("throttle band %s is not a mapping" % name)
-        for k in ("runway_ge", "week_left_pct_lt", "quick_cap_x"):
-            if k in b and not _num(b[k]):
-                raise ValueError("throttle band %s: %s %r is not a number" % (name, k, b[k]))
-        if "quick_cap_x" in b and b["quick_cap_x"] < 0:      # a negative budget would pass every cap (review r5)
-            raise ValueError("throttle band %s: quick_cap_x %r is negative" % (name, b["quick_cap_x"]))
-        if b.get("slots", "all") not in BAND_SLOTS:          # slot_blocked blocks nothing it does not know (r5)
-            raise ValueError("throttle band %s: slots %r is not one of %s" % (name, b.get("slots"),
-                                                                             ", ".join(BAND_SLOTS)))
-    if bands and not any("runway_ge" in b for b in bands.values()):
-        raise ValueError("throttle_bands has no band with runway_ge: no band to fall back to")
+    if "throttle_bands" in role:
+        raise ValueError("throttle_bands are retired (the Conductor, 2026-11-23; nothing reads them): remove the key")
     if "slot_when" in role:
         raise ValueError("slot_when is retired with the Arbiter (CONCEPT_LOCK_UNBLOCK_SIGNER_NEVER_CALLED): remove the key")
     if "cover_window_s" in role and not (_num(role["cover_window_s"]) and role["cover_window_s"] >= 0):
@@ -473,29 +416,6 @@ def codex_stop(cfg, r):
         return "Codex week %.1f%% left, under the %g%% stop line (codex_stop_week_left_pct); held until the reset" % (
             left, line)
     return None
-
-
-def slot_blocked(allowed, job, role, now=None):
-    """Pure. May this band's `slots` setting stop this job? "all": never. "none": every scheduled slot and every alarm
-    run. "first" / "last": only the first / last scheduled slot of the day (now's weekday).
-    "quick": the economy-pass slot is skipped whole (its running check
-    goes with it: operations.md), the other running checks and alarm runs go. "quick_one": the economy-pass slot and
-    alarm runs are skipped, and only the first NON-economy running check runs (Ops: 19:30)."""
-    if allowed == "none":
-        return True
-    if allowed == "first":
-        return bool(job["slot"]) and not job["first"]
-    if allowed == "last":
-        return bool(job["slot"]) and job["slot"] != slots(role, now)[-1][0]
-    if allowed in ("quick", "quick_one"):
-        if job["mode"] == "economy":
-            return True
-        if allowed == "quick_one":
-            if not job["slot"]:
-                return True
-            quick = [t for t, m, _ in slots(role, now) if m != "economy"]
-            return bool(quick) and job["slot"] != quick[0]
-    return False
 
 
 def parse_slot(s):
@@ -939,11 +859,11 @@ def overspend_day(name, rs, item, daily, spent, budget, now, act, did):
                     "never starve it." % (name, daily))
 
 
-def prompt(role, mode, trigger, band_name, reading, budget, cap, factor, spent, unit, rows=None, reasons=None,
+def prompt(role, mode, trigger, reading, budget, cap, spent, unit, rows=None, reasons=None,
            scope=None, root=None):
     """The launch message. Every role is spend-blind (owner 2026-11-16): no message states its budget, cap or spend. Only
-    a `token_aware: true` role (Operations; the Conductor, owner 2026-10-31) is told the ACCOUNT's band; every other
-    role is token-blind (owner 2026-10-27): its message carries no band, runway, week, budget or cap,
+    a `token_aware: true` role (Operations; the Conductor, owner 2026-10-31) is told the ACCOUNT's reading; every other
+    role is token-blind (owner 2026-10-27): its message carries no runway, week, budget or cap,
     and no order to watch one (review T, F1). Nothing stops a run at its budget mid-run: the real bounds are
     `run_max_s` (wall time) and the after-the-fact accounting (supervise_roles), both the Dispatcher's (F2).
     `scope` (default `mode`; "incident" for an incident-only run) picks `inline_by_mode`: those sections of the
@@ -971,12 +891,12 @@ def prompt(role, mode, trigger, band_name, reading, budget, cap, factor, spent, 
     if inline:
         lines += ["----- your instructions (from %s) -----" % role["instructions"], inline, "----- end of instructions -----"]
     if role.get("token_aware") is True:
-        lines += ["Throttle band: %s (account runway %.2f %s, week left %.0f%% %s; ops_watch status at %s)." % (
-                      band_name, reading["runway"], reading["runway_m"], reading["week_left"], reading["week_left_m"],
+        lines += ["Account reading: runway %.2f %s, week left %.0f%% %s; ops_watch status at %s." % (
+                      reading["runway"], reading["runway_m"], reading["week_left"], reading["week_left_m"],
                       reading["at"]),
-                  ("DEGRADED READING: %s. The ops reading is UNMEASURED (runway and week left above are placeholders for the most cautious band, not readings): diagnose the watch first (ops_watch status.json, its unit and timer) and report it before any work that relies on the reading." % reading["degraded"]) if reading.get("degraded") else ""]
+                  ("DEGRADED READING: %s. The ops reading is UNMEASURED (runway and week left above are placeholders, not readings): diagnose the watch first (ops_watch status.json, its unit and timer) and report it before any work that relies on the reading." % reading["degraded"]) if reading.get("degraded") else ""]
         # no line on this run's own budget or spend (owner 2026-11-16: "I don't like how you're telling the agent how
-        # much it's spent"): the band above is the account's state, the run's own spend stays on its record
+        # much it's spent"): the line above is the account's state, the run's own spend stays on its record
     lines = [x for x in lines if x]
     lines.append("You work as seat %s in %s. Never take the bridge, restart the game or deploy." % (
         role["seat"], role["clone"]))
@@ -1327,7 +1247,7 @@ def resume_record(run, res, err, now, cfg, account=None):
     wait = cfg.get("cloudflare_retry_s", CLOUDFLARE_RETRY_S) if err == "cloudflare" else cfg.get("resume_wait_s", RESUME_WAIT_S)
     return {"of": run.get("resume_of") or run["unit"], "unit": run["unit"], "session": res.get("session_id") or
             run.get("session"), "account": account, "mode": run.get("mode"), "budget": run.get("budget"), "slot": run.get("slot"),
-            "item": run.get("item") or cfg.get("ledger_item"), "band": run.get("band"), "error": err,
+            "item": run.get("item") or cfg.get("ledger_item"), "error": err,
             "tokens": run.get("tokens"), "n": n + 1, "at": now,
             "due": reset if reset is not None else now + wait}, None
 
@@ -1383,7 +1303,7 @@ def resume_due(name, rs, cfg, now, act, busy, gate, account=None, tick_launch=No
     unit = "rm-role-%s-%d" % (name.lower(), int(now))
     # built before anything is consumed: a raise here leaves the resume pending (review V, V7)
     kw = dict(do="role_launch", role=name, unit=unit, ticket=rec.get("item"), note=True, mode=rec.get("mode"),
-              budget=rec.get("budget") or 0, slot="resume of %s" % rec["unit"], band=rec.get("band"), seat=cfg["seat"],
+              budget=rec.get("budget") or 0, slot="resume of %s" % rec["unit"], seat=cfg["seat"],
               run_max_s=max_s_of({}, cfg), account=pk.get("account"), resume=rec["session"],
               resume_of=rec.get("of") or rec["unit"], resume_n=rec.get("n") or 1, resume_error=rec.get("error"),
               why="%s resume %s of %s (cut off by the account: %s, after %s weighted tokens%s), budget %s, unit %s, "
@@ -1499,9 +1419,7 @@ def after_slots(after_cfg, job, now):
 def after_ready(cfg, rst, busy, job, now, after_cfg=None):
     """`after_role` (Conductor: "each after an Operations run", conductor.md; Producer: after the economy pass): a
     scheduled slot waits until that role's OWN scheduled run for the slot it follows (after_slots: Conductor 08:00 ->
-    Operations 07:30 today, 20:00 -> 19:30) finished done, and none of its runs is in flight. A slot of that role the
-    band skipped on purpose (done "band X": Operations' 07:30 in AMBER/RED) is passed over for its previous slot within
-    24 h (review T, F4: the Producer's 09:00 then follows the 19:30 run). An alarm run, or yesterday's run launched
+    Operations 07:30 today, 20:00 -> 19:30) finished done, and none of its runs is in flight. An alarm run, or yesterday's run launched
     late, never counts (review round R, B). A parent that is not enabled holds every scheduled slot (review
     dispatcher-full #4). -> None when ready, else why it waits."""
     after = cfg.get("after_role")
@@ -1517,7 +1435,6 @@ def after_ready(cfg, rst, busy, job, now, after_cfg=None):
     if not keys:
         return "%s has no scheduled slots to follow" % after
     ars = rst.get(after) or {}
-    skipped = []
     for key in keys:
         mine = [r for r in ars.get("runs") or [] if r.get("slot") == key and r.get("mode") != "alarm"]
         if any(r.get("state") == "done" for r in mine):
@@ -1532,13 +1449,10 @@ def after_ready(cfg, rst, busy, job, now, after_cfg=None):
                 return None
             return "the %s %s slot was covered by a run that %s" % (
                 after, key, ("ended " + str(cov[-1].get("state"))) if cov else "is not on record")
-        if how and str(how).startswith("band "):
-            skipped.append(key)
-            continue
         if how:
             return "the %s %s slot was not run (%s)" % (after, key, how)
         return "the %s %s run has not run yet" % (after, key)
-    return "every %s slot in the last 24 h was skipped by its band (%s)" % (after, ", ".join(skipped))
+    return "%s has no scheduled slots to follow" % after
 
 
 def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
@@ -1608,7 +1522,7 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
         if (req or {}).get("runner"):
             cfg["runner"] = req["runner"]
         if cfg.get("runner") == "codex":
-            cfg.update(daily_token_cap=None, throttle_bands={}, token_aware=False)
+            cfg.update(daily_token_cap=None, token_aware=False)
         if role.get("enabled") and cfg.get("after_role") and not (by_name.get(cfg["after_role"]) or {}).get("enabled"):
             act(do="alarm", kind="role:%s:after" % name, ticket=role["ledger_item"], note=True,
                 blind=blind(name, "after_disabled"),
@@ -1652,7 +1566,7 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
             due.append({"key": key, "slot": hhmm, "first": i == 0, "mode": mode, "cap": cap,
                         "item": role["ledger_item"], "trigger": "slot %s local" % hhmm})
         if role.get("alarm_runs") and not req:
-            # alarms_seen holds the OPEN alarms a run already covered (or a band/cap/off switch passed over). It is
+            # alarms_seen holds the OPEN alarms a run already covered (or a cap/off switch passed over). It is
             # pruned to what is open now, so an alarm that clears is eligible again when it re-crosses (review W, W1).
             # Read only from a MEASURED reading with a readable alarms dict: a blind one would prune every key and
             # re-run every open alarm when it reads again (review R, C). No baseline: alarms already open when the
@@ -1787,11 +1701,11 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
                                                                           if cfg.get("model") else None)
         if r["state"] != "MEASURED" and cfg.get("degraded_reading_ok") is True:
             # the role that reports the problem must not be refused by it (owner-authority brief 2026-11-01, Operations
-            # slot 07:30 REFUSED 'accounts.system.runway is absent'): launch on the most cautious reading, say so
+            # slot 07:30 REFUSED 'accounts.system.runway is absent'): launch, say so
             act(do="alarm", kind="role:%s:ops" % name, ticket=job["item"], note=True,
-                why="%s %s LAUNCHED on a degraded ops reading (the most cautious band): %s" % (name, job["trigger"], r["why"]))
+                why="%s %s LAUNCHED on a degraded ops reading: %s" % (name, job["trigger"], r["why"]))
             r = {"state": "MEASURED", "degraded": r["why"], "account": None, "at": "UNREADABLE", "runway": 0.0,
-                 "runway_m": "UNMEASURED", "week_left": 0.0, "week_left_m": "UNMEASURED"}   # band() picks the band
+                 "runway_m": "UNMEASURED", "week_left": 0.0, "week_left_m": "UNMEASURED"}
         if r["state"] != "MEASURED":
             refuse_now(rs, "ops reading " + r["state"], now, job)
             act(do="alarm", kind="role:%s:ops" % name, ticket=job["item"], note=True,
@@ -1811,36 +1725,19 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
         if cv is not None:
             # it covers the next scheduled slot, so it IS that run: that slot's own mode and cap (07:30 is the economy
             # pass), the incidents first, then the slot's full check; never the memory page alone (review g2r2).
-            # Resolved before the band, which then judges the slot's mode (g2r3)
             cm, cc = next((m, c) for hh, m, c in today if hh == cv)
             job = dict(job, mode=cm, cap=cc, covers=cv, trigger=(job.get("incident") or {}).get("trigger", job["trigger"]) +
                        "; INCIDENT RUN that also covers the %s slot (%s): do the incidents first, then that slot's full "
                        "check" % (cv, cm))
-        bname, b = band(cfg, r)
-        allowed = b.get("slots", "all")
+        # advisory (owner 2026-11-02, e7069d65ba): "a token limit for operations must be advisory only. We can't have the
+        # system crash because we couldn't afford to watch." No budget or daily cap refuses, delays, skips or shrinks
+        # this role's run; overspend raises an immediate alarm instead (overspend_alarm)
         advisory = cfg.get("caps_advisory") is True
-        if advisory:
-            # owner 2026-11-02 (e7069d65ba): "a token limit for operations must be advisory only. We can't have the
-            # system crash because we couldn't afford to watch." No band, budget or daily cap refuses, delays, skips
-            # or shrinks this role's run; overspend raises an immediate alarm instead (overspend_alarm)
-            allowed = "all"
-        # a covering run is judged as the slot it covers (its slot and first-ness), not as a slotless run-now (g2r4)
-        if slot_blocked(allowed, dict(job, slot=cv, first=[hh for hh, _, _ in today].index(cv) == 0)
-                        if cv is not None else job, cfg, now):
-            mark(rs, job, "band " + bname)
-            refuse_now(rs, "band " + bname, now, job)
-            act(do="role_hold", role=name, why="%s %s not run: band %s runs %s scheduled slots (runway %.2f %s, "
-                "week left %.0f%%)" % (name, job["trigger"], bname, allowed, r["runway"], r["runway_m"],
-                                       r["week_left"]))
-            return
-        factor = float(b.get("quick_cap_x", 1.0)) if job["mode"] in ("quick", "run") else 1.0
-        if advisory:
-            factor = 1.0
         if not job["cap"] and not advisory:
             refuse_now(rs, "no cap", now, job)
             act(do="alarm", kind="role:" + name, note=True, conductor_log=True, why="role %s has no token cap for %s" % (name, job["mode"]))
             return
-        budget = int((job["cap"] or 0) * factor)
+        budget = int(job["cap"] or 0)
         spent = spent_today(rs, now)
         daily = role.get("daily_token_cap")           # 0 is a cap of zero; only absent (None) is no cap
         if advisory:
@@ -1850,19 +1747,16 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
             daily = None
         if daily is not None and (job["mode"] == "alarm" or job.get("manual")):
             # an alarm or run-now may spend only what the day's scheduled runs not yet run leave (review U, N3; X, X1)
-            # a slot this band will block never runs, so it reserves nothing (review V, V6)
             # an incident run (covers_slot) IS the next scheduled run when that slot is due within cover_window_s: it
             # reads the same open incidents first, so it takes that slot's share instead of asking the daily cap for a
             # second one (INCIDENTS_FIX_ONE_READER); a slot further off keeps its run and its reserve
             # (OPS_NIGHT_GAP_FILL_COVERED_SLOT)
             cover = covered_slot(rs, today, now, cfg.get("cover_window_s", COVER_WINDOW_S)) if (job.get("manual") or {}).get("covers_slot") else None
-            reserve = sum(int(c * (float(b.get("quick_cap_x", 1.0)) if m in ("quick", "run") else 1.0))
-                          for i, (hh, m, c) in enumerate(today if role.get("enabled") else [])
+            reserve = sum(int(c) for hh, m, c in (today if role.get("enabled") else [])
                           if hh != cover
                           and c and slot_key(now, hh) not in rs["done"]
                           # a run-now does not keep budget for a slot already past its late window (it never runs)
-                          and not (job.get("manual") and now - slot_epoch(now, hh) > float(cfg["slot_late_s"]))
-                          and not slot_blocked(allowed, {"slot": hh, "first": i == 0, "mode": m}, cfg, now))
+                          and not (job.get("manual") and now - slot_epoch(now, hh) > float(cfg["slot_late_s"])))
             if job.get("manual") and spent + budget + reserve > daily:
                 refuse_now(rs, "daily cap", now, job)
                 act(do="alarm", kind="role:%s:cap" % name, ticket=job["item"], note=True,
@@ -1906,7 +1800,7 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
             if pre:
                 job = dict(job, pre_launch=pre)
         # built before anything is consumed: a raise here leaves the slot due (review V, V7)
-        message = prompt(cfg, job["mode"], job["trigger"], bname, r, budget, job["cap"] or 0, factor, spent, unit,
+        message = prompt(cfg, job["mode"], job["trigger"], r, budget, job["cap"] or 0, spent, unit,
                          rows=job.get("rows"), reasons=job.get("reasons"),
                          scope=launch_scope(job))
         if packet:
@@ -1944,9 +1838,9 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
                 ad["keys"][k] = ad["keys"].get(k, 0) + 1
             rs["alarm_day"] = ad
         act(do="role_launch", role=name, unit=unit, ticket=job["item"], note=True, mode=job["mode"], budget=budget,
-            slot=job["key"], band=bname, seat=role["seat"], run_max_s=max_s_of({}, cfg), account=pk.get("account"),
-            why="%s %s, band %s, budget %d (cap %d x %.1f), %d used today, unit %s, model %s%s" % (
-                name, job["trigger"], bname, budget, job["cap"] or 0, factor, spent, unit, job_model(cfg, job),
+            slot=job["key"], seat=role["seat"], run_max_s=max_s_of({}, cfg), account=pk.get("account"),
+            why="%s %s, budget %d, %d used today, unit %s, model %s%s" % (
+                name, job["trigger"], budget, spent, unit, job_model(cfg, job),
                 (", account %s (%s)" % (pk["account"], pk["state"])) if pk.get("account") else ""),
             # the blind item's note: role, mode, unit and a fixed outcome; execute swaps the outcome for the true one
             # (held / failed: review V, V4), never for a reason or an error text (review dispatcher-full #2)
@@ -2180,7 +2074,7 @@ def covered_slot(rs, today, now, window_s=COVER_WINDOW_S):
 
 # a chained run-now consumed with no launch for one of these gives its chain back (it never started: no trial spent,
 # owner 2026-11-18); chain_ask asks nothing while a hold or pause stands, and the sweep nothing while the role is off,
-# so none is re-asked in a loop. Every other refusal (the stage machine, band, caps, ops reading) keeps its chain: the
+# so none is re-asked in a loop. Every other refusal (the stage machine, caps, ops reading) keeps its chain: the
 # sweep re-asks a ready concept every tick, and the daily chain cap is the brake on that ask-and-refuse loop
 # (design/specs/2026-11-19-void-counters/boundary.md)
 CHAIN_BACK_ON = ("expired", "pipeline paused", "owner hold", "off switch")
@@ -2605,7 +2499,7 @@ def stage_land(concept, unit):
 # DESIGNER_STAGES_WIRE_NOBODY_PRESSED_GO: a stage-machine role whose row sets chain_stages true chains its own next
 # stage. A run whose close is ACCEPTED and leaves the concept at status=ready (stage N done -> N+1, or a return to an
 # earlier stage) queues a run-now for that concept, by the Dispatcher, launched by the next decide through every gate a
-# hand-pressed run-now passes (off file, ops band, account pick, stage_open's refusals). waiting_owner, blocked and
+# hand-pressed run-now passes (off file, account pick, stage_open's refusals). waiting_owner, blocked and
 # locked chain nothing (the owner, the dependency or nobody moves them); a REJECTED result chains nothing (its alarm
 # stands, and a retry loop would spend unwatched). run_now is one slot per role: a chain that finds it taken waits in
 # rs["run_now_queue"] (one entry per concept) and takes the slot once it frees. Before this, every finished stage sat
@@ -3734,7 +3628,7 @@ def _cli_state(root, wait_s=500):
 
 def main(argv=None):
     """run-now: ask for one run of a role by hand (it need not be enabled); the next dispatcher tick launches it
-    through every gate a scheduled run passes (off switch, PAUSE, busy, ops reading, band, caps, account).
+    through every gate a scheduled run passes (off switch, PAUSE, busy, ops reading, caps, account).
     run-status: what a role's last run-now did."""
     import argparse
     p = argparse.ArgumentParser(prog="role_launch.py")

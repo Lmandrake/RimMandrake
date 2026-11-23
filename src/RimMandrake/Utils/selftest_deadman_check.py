@@ -161,7 +161,7 @@ def sweeps():
     check(DM.duration_s("{ OnBootUSec=3min ; x }") is None, "no period is unknown")
     base = DM.load_baseline()
     names = [DM.item_id(x) for x in base]
-    check(len(base) > 40 and len(set(names)) == len(names), "baseline: %d lines, one id each" % len(base))
+    check(len(base) > 30 and len(set(names)) == len(names), "baseline: %d lines, one id each" % len(base))
     bad = TMP / "bad.txt"
     bad.write_text("unit=rm-x.timer\n")
     try:

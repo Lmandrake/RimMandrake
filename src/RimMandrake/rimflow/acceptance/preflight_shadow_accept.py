@@ -10,7 +10,7 @@ THE CONTRACT:
   * file, claim and start run the preflight in SHADOW: they print its lines, record them, and refuse nothing. Each
     run appends a timing line (RIMFLOW_PREFLIGHT_RUNS) with "door" set to file / claim / start; the claim and start
     events carry "preflight_run" (that line's run_id) and "preflight_ms". The claim line lists the existing gates it
-    observed (at least I2 focus cap and E1 sections); the filing line lists A1 (name grammar).
+    observed (at least E1 sections); the filing line lists A1 (name grammar).
   * RIMFLOW_PREFLIGHT_BREAK=1 (test hook) makes the runner raise at entry: the door still works and prints
     "preflight did not run". A timing file that cannot be written is reported ("timing") and stops nothing.
   * detached_helper.launch calls it; no relentless*.py file does (owner, by card 2026-11-13: out of Relentless
@@ -84,8 +84,8 @@ def main():
         check(c.returncode == 0, "claim is shadow: a FAIL refuses nothing")
         by = {l.get("door"): l for l in lines(runs)}
         cl = by.get("claim", {})
-        check(cl and {"I2", "E1"} <= {x.get("id") for x in cl.get("checks", [])},
-              "the claim line observes the existing gates I2 and E1")
+        check(cl and {"E1"} <= {x.get("id") for x in cl.get("checks", [])},
+              "the claim line observes the existing gate E1")
         check(cl and cl.get("total_ms", 1e9) < 3000, "the claim run is inside the 3 s PICKUP hard stop (%s ms)"
               % cl.get("total_ms"))
         ev = [e for e in events() if e.get("event") == "claim" and e.get("id") == A]

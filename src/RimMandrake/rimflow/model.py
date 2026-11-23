@@ -81,6 +81,7 @@ except ImportError:
     import ledger_landing as _landing  # noqa: E402
 import calendar
 import copy
+import datetime
 import fcntl
 import json
 import os
@@ -785,7 +786,7 @@ def with_project_slot(name):
     return name if str(name).split("_")[0] in project_slots()[0] else PROJECT_SLOT + "_" + name
 
 
-# Machine-generated id families whose FORMAT other code parses (ops_health.CAUSE_REPAIR_ID, first_touch.SUFFIX, owner_queue):
+# Machine-generated id families whose FORMAT other code parses (first_touch.SUFFIX, owner_queue):
 # the machines that mint them predate the owner's 2026-11-05 grammar and their regexes would all have to move with a rename.
 # Closed list, each entry a whole shape; a human-chosen name never matches one. Move a family out by changing its minter
 # and its parsers together, then delete its line here.
@@ -1171,6 +1172,14 @@ def epoch(ts):
     try:
         return _cal.timegm(time.strptime(str(ts), "%Y-%m-%dT%H:%M:%SZ"))
     except (TypeError, ValueError):
+        return None
+
+
+def iso_epoch(s):
+    """-> seconds since the epoch of an ISO date or time (a date with no time is local midnight), or None."""
+    try:
+        return datetime.datetime.fromisoformat(str(s).replace("Z", "+00:00")).timestamp()
+    except ValueError:
         return None
 
 

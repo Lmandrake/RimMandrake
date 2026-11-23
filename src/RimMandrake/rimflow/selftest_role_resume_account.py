@@ -249,7 +249,7 @@ def test_execute_records_the_chain():
     st = SD.fresh()
     st["roles"] = {"Operations": {"pending_launch": {"unit": "U2", "mode": "resume", "resume": {"unit": "U1"}}}}
     act = {"do": "role_launch", "role": "Operations", "unit": "U2", "message": "m", "ticket": "ROLES_ITEM_X",
-           "note": True, "mode": "run", "budget": 60000, "slot": "resume of U1", "band": "GREEN", "why": "w",
+           "note": True, "mode": "run", "budget": 60000, "slot": "resume of U1", "why": "w",
            "resume": SID, "resume_of": "U1", "resume_n": 1, "blind": RL.blind("Operations", "launched", "run", "U2")}
     got = []
     fx = {"note": lambda i, t: (True, ""), "publish": lambda n: "p", "lock": lambda: open(os.devnull),

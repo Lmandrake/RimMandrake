@@ -347,7 +347,7 @@ def test_r2_5_raise_before_run():
     # a blind role: the shared item's fixed outcome is launch_failed, never "launched"
     st = fresh()
     a = {"do": "role_launch", "role": "Gone", "unit": "UG", "message": "m", "ticket": "X", "note": True,
-         "mode": "quick", "budget": 1, "slot": "k", "band": "GREEN", "why": "w", "seat": "BENCH",
+         "mode": "quick", "budget": 1, "slot": "k", "why": "w", "seat": "BENCH",
          "blind": {"role": "Gone", "outcome": "launched"}}
     st["roles"] = {"Gone": {"done": {"k": 5}, "pending_launch": {
         "unit": "UG", "mode": "quick", "key": "k", "done": None, "had_done": False, "alarms_seen": None,

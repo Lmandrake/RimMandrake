@@ -58,5 +58,5 @@ and that the Conductor decides if it matters. Nobody is assigned here.
 - `stage_dispute.py` and `stage_dispute.json` are the retired Arbiter's loop. Nothing starts them.
 - `concept_tree.py` keeps the leaf value `setter_sweep` and an error text that names the Setter. No code reads
   `binding.json`.
-- The priority list (`infrastructure/state/priority_list.json`) orders `rimflow next` only. Its three entries are closed,
-  so it orders nothing. Only the Conductor writes it now. The alarms that watched its age are retired.
+- The priority list and its tool were deleted 2026-11-23 (retire census): the order of work comes from the Maturation
+  Pipeline, the List Pipeline and `CONDUCTOR_GOALS.md`.

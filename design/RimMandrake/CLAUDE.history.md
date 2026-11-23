@@ -189,3 +189,17 @@ owner, 2026-10-01, typed: *"It's worth slowing or stopping all current build to 
 everywhere and really exercise northstar. I really do mean stop and start working a new
 way. This would be as big a need as rerunning clean dirty code is now."* He lifted it on 2026-10-02, typed: *"Build
 pause is lifted."* The rules of the pause: `git show a3c29f34e3:design/RimMandrake/debug_process.md`.
+
+## "The system first", from the retired Relentless (2026-11-03 and 2026-11-05)
+
+Moved 2026-11-23 from `design/RimMandrake/standing_rulings.md` (the Conductor's decision on the retire census: §No mod runs
+forward on a broken pipeline, 2026-11-19, replaced it). His words, 2026-11-03: *"Yes relentless fixes itself first."* ·
+*"Relentless fixes operations or conductor or designer or any other part of the
+system before continuing content creation yes."* · *"I don't want relentless to own
+assessing system health. I want it to ask "the system" for its health assessment, and that belongs to the operations
+component."* By card 2026-11-03, on what Relentless (retired) did when the verdict was missing: *"System work immediately but existing
+non system work continues. If all system tickets
+are already being worked non system work can be selected. Keeps system work at max priority without forcing others to
+wait pointlessly."* By card 2026-11-05: *"What should happen to mod work while
+the system is unhealthy?"* → **Pause only what it touches.** The section's full text:
+`git show 4e19c34bf6:design/RimMandrake/standing_rulings.md`.
