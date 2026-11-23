@@ -601,9 +601,13 @@ def settle_site(s, tile, map_id, sleep=time.sleep):
     return mi
 
 
-def reload_fixture(s, name, tile, budget_s=420, sleep=time.sleep, map_id=None):
+def reload_fixture(s, name, tile, budget_s=420, sleep=time.sleep, map_id=None, ignore_mods=False):
     """`rimworld/load_game` (load_game_ready is a PRE-condition check, traps.md); assert on
-    programState, never on the call's own success. Then settle_site."""
+    programState, never on the call's own success. Then settle_site.
+    ignore_mods: load past the bridge's save.missing_mods pre-check (ignoreModCompatibility), for a REGISTERED site save
+    whose header names a mod the running list lacks (owlchemist.cherrypicker on SteveDesktop, 2026-11-22); settle_site
+    and the caller's biome read-back verify the site. Without it that refusal is a SiteError at once, naming the code:
+    nothing loads after it, and polling Entry for the budget only hid it (RIMMANDRAKE_ROUTE_PYRE_TESTQ_OFF_STEVE_NO_SITE_THERE)."""
     # Load from the MAIN MENU, once: loading over a live game runs Game.Dispose() right after queueing the
     # async load, and a map still being torn down then NREs during the new load (GlowGrid.GlowPool.Take,
     # "Error while loading a map" -- MEASURED live 2026-10-01, twice).
@@ -617,10 +621,17 @@ def reload_fixture(s, name, tile, budget_s=420, sleep=time.sleep, map_id=None):
         except Exception:
             pass
         _wait_state(s, "Entry", 180, sleep)
+    r = None
     try:
-        s.call("rimworld/load_game", saveName=name)
+        if ignore_mods:
+            r = s.call("rimworld/load_game", saveName=name, ignoreModCompatibility=True)
+        else:
+            r = s.call("rimworld/load_game", saveName=name)
     except Exception as ex:
         print("  load_game raised %s -- polling, not resending" % type(ex).__name__)
+    if isinstance(r, dict) and r.get("code") == "save.missing_mods":
+        raise SiteError("load_game %s refused: save.missing_mods (%s): the save records mods the running load lacks"
+                        % (name, str(r.get("message"))[:200]))
     _wait_state(s, "Playing", budget_s, sleep)
     # programState is still "Playing" on the OLD map while the load begins (MEASURED live 2026-10-01:
     # map_info answered "No current map"), so poll until a map answers; WHICH map is current does not matter,

@@ -383,6 +383,10 @@ class FakeGame(object):
             self.saved_named = self.named
             return {"success": True}
         if tool == "rimworld/load_game":
+            if "missing_mods" in f and not p.get("ignoreModCompatibility"):
+                # the bridge's pre-check: the save records a mod the running load lacks; nothing loads, no dialog
+                self.missing_refusals = getattr(self, "missing_refusals", 0) + 1
+                return {"success": False, "code": "save.missing_mods", "message": "1 mod(s) not active: owlchemist.cherrypicker"}
             self.state = "Playing"
             # MEASURED 2026-10-11: the reloaded pilot fixture came up on the quicktest colony (tile 52347)
             self.current = 1 if "load_on_colony" in f and 1 in self.maps else max(self.maps)
@@ -1609,7 +1613,7 @@ def test_on_site_finds_the_site_2026_11_12():
     # northstar_site.reload_fixture, and reads UNMEASURED SITE only when that load fails, naming why
     loads = []
 
-    def fake_reload(s, name, tile, map_id=None):
+    def fake_reload(s, name, tile, map_id=None, **_kw):
         loads.append((name, tile, map_id))
         s.maps[7] = "RM_Pyrelands"
         s.cur = 7
@@ -1636,7 +1640,7 @@ def test_on_site_finds_the_site_2026_11_12():
         check("the site is loaded once per run: a second loss reads UNMEASURED SITE, no second load",
               len(loads) == 1 and bool(raised) and raised.startswith("UNMEASURED SITE"), (loads, raised))
 
-        def bad_reload(s, name, tile, map_id=None):
+        def bad_reload(s, name, tile, map_id=None, **_kw):
             raise RuntimeError("no Playing map within 420s of load_game %s" % name)
         v._northstar_site = lambda: type("NS", (), {"reload_fixture": staticmethod(bad_reload)})
         v._GEN.clear()
@@ -2056,6 +2060,56 @@ def test_burn_history_probe_reads_after_prune_2026_11_22():
           "IndexAgoPruned(" in body and body.find("IndexAgoPruned(") < body.find("ticks.Count"), body[:200])
 
 
+def test_registered_site_loads_past_a_missing_mod_2026_11_22():
+    """RIMMANDRAKE_ROUTE_PYRE_TESTQ_OFF_STEVE_NO_SITE_THERE: on SteveDesktop the registered site save records
+    owlchemist.cherrypicker, which that host lacks. The bridge refused load_game with save.missing_mods, reload_fixture
+    ignored the reply and polled Entry for 420 s, and every chain read UNMEASURED SITE (J20261123T064115Z-6e8714). A
+    registered site is a fixture whose mod list is not the running tier's (test_site_saves.load_site loads it with
+    ignoreModCompatibility for the same reason); the settle and the RM_Pyrelands read-back verify it."""
+    slept = []
+    g, site, tmp = _fixture_game(("missing_mods",))
+    try:
+        g.state = "Entry"
+        with quiet():
+            mi = S.reload_fixture(g, "NS_Pyrelands_site_1_abcdef123456", site, sleep=slept.append, map_id=None,
+                                  ignore_mods=True)
+        check("registered site: a save naming a mod the load lacks loads with ignoreModCompatibility",
+              mi.get("mapBiome") == P.BIOME and any(c[0] == "rimworld/load_game" and c[1].get("ignoreModCompatibility")
+                                                    for c in g.calls), (mi, [c for c in g.calls if "load" in c[0]]))
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+    g, site, tmp = _fixture_game(("missing_mods",))
+    try:
+        g.state = "Entry"
+        slept.clear()
+        err = None
+        try:
+            with quiet():
+                S.reload_fixture(g, "NS_Pyrelands_site_1_abcdef123456", site, sleep=slept.append, map_id=None)
+        except Exception as ex:
+            err = ex
+        check("registered site: a missing-mods refusal without the flag is a SiteError at once, naming the code "
+              "(no 420 s poll)", isinstance(err, S.SiteError) and "save.missing_mods" in str(err) and sum(slept) < 5,
+              (repr(err), sum(slept)))
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+    v = _load_validation("pyre_validation_regsite")
+    seen = []
+
+    def fake_reload(s, name, tile, map_id=None, **kw):
+        seen.append(kw)
+        return {"mapId": 1, "tile": tile, "mapBiome": "RM_Pyrelands"}
+    real_ns, real_reg = v._northstar_site, v._site_registry
+    try:
+        v._northstar_site = lambda: type("NS", (), {"reload_fixture": staticmethod(fake_reload)})
+        v._site_registry = lambda: {"pyrelands": {"save": "X", "tile": 5, "mapId": 1}}
+        t = type("T", (), {"session": object(), "_record": lambda self, *a: None})()
+        v._load_registered_site(t)
+        check("registered site: validation loads it with ignore_mods", seen == [{"ignore_mods": True}], seen)
+    finally:
+        v._northstar_site, v._site_registry = real_ns, real_reg
+
+
 def main():
     for t in (test_tier, test_manifests_match_suite, test_defaults_match_source, test_gate_a, test_gate_b,
               test_gate_c, test_site_pure, test_site_build, test_site_offsite_refused, test_naming_dialog_lesson, test_plan_refuses_on_gate_b,
@@ -2066,7 +2120,8 @@ def main():
               test_furnace_heat_and_sleep_2026_11_08, test_on_site_finds_the_site_2026_11_12,
               test_offline_acceptance_2026_11_12, test_ruins_count_charred_floors_2026_11_15,
               test_old_save_row_skips_a_fixture_born_lit_2026_11_15, test_sky_clauses_2026_11_15,
-              test_lightning_row_counts_strikes_2026_11_21, test_burn_history_probe_reads_after_prune_2026_11_22):
+              test_lightning_row_counts_strikes_2026_11_21, test_burn_history_probe_reads_after_prune_2026_11_22,
+              test_registered_site_loads_past_a_missing_mod_2026_11_22):
         try:
             t()
         except Exception as ex:

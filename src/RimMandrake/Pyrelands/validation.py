@@ -502,7 +502,11 @@ def _load_registered_site(t):
     if not entry.get("save") or entry.get("tile") is None:
         return None, "no registered pyrelands site (save and tile) in test_site_saves.json"
     try:
-        mi = _northstar_site().reload_fixture(t.session, entry["save"], entry["tile"], map_id=entry.get("mapId"))
+        # ignore_mods: a registered site is a fixture whose header is not the running list's (SteveDesktop has no
+        # owlchemist.cherrypicker; test_site_saves.load_site loads its sites the same way); the RM_Pyrelands read-back
+        # below verifies it (RIMMANDRAKE_ROUTE_PYRE_TESTQ_OFF_STEVE_NO_SITE_THERE)
+        mi = _northstar_site().reload_fixture(t.session, entry["save"], entry["tile"], map_id=entry.get("mapId"),
+                                              ignore_mods=True)
     except Exception as ex:  # noqa: BLE001 - a load that fails is the reason the row is UNMEASURED, said in it
         return None, "loading %s failed: %s: %s" % (entry["save"], type(ex).__name__, str(ex)[:240])
     t._record("on_site: loaded the registered site %s" % entry["save"], mi)
