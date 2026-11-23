@@ -11721,3 +11721,5 @@
 {"seat":"RUNNER","event":"live","id":"OPS_FINDINGS_DIAGNOSE_XZLM","result":"kept","detail":"sweep: running again","ts":"2026-11-23T19:33:21Z","tsn":1795462401974245179}
 {"seat":"RUNNER","event":"note","id":"HARNESS_REPAIR_CAUSE_AC81755A_3","text":"seen again in testq J20261123T192405Z-16f0ac.a1 (job J20261123T192405Z-16f0ac): modcheck exit 1; {'UNMEASURED': 1, 'NOT_RUN': 11}","ts":"2026-11-23T19:41:29Z","tsn":1795462889896729314}
 {"seat":"RUNNER","event":"note","id":"HARNESS_REPAIR_CAUSE_4AFBF8A2_2","text":"seen again in testq J20261123T192405Z-16f0ac.a1 (job J20261123T192405Z-16f0ac): modcheck exit 1; {'UNMEASURED': 1, 'NOT_RUN': 11}","ts":"2026-11-23T19:41:43Z","tsn":1795462903519302762}
+{"seat":"RUNNER","event":"note","id":"OPS_DISPATCH_CLONE_BEHIND_UNSTICK_YUYW","text":"ops_watch: cleared at 2026-11-23T19:41:19Z (maturation.clone_behind_min now 0.0)","ts":"2026-11-23T19:42:25Z","tsn":1795462945551872601}
+{"seat":"RUNNER","event":"note","id":"OPS_STEVE_FEED_IDLE_LANE_HURP","text":"ops_watch: cleared at 2026-11-23T19:41:19Z (steve.idle_with_takeable_min now 8.9)","ts":"2026-11-23T19:42:42Z","tsn":1795462962689729229}
