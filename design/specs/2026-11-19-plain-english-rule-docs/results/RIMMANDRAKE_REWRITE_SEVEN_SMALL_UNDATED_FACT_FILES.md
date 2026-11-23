@@ -148,3 +148,32 @@ The added facts that the readers confirmed stay: each one is from the code, the 
 - No reader read the repairs after the meaning read.
 - The measurements were not taken again. Each claim stays as the old text stated it, apart from the stale facts listed
   above.
+
+## Second read of the repairs
+
+Run 2026-11-23, item `RIMMANDRAKE_REREAD_REWRITE_REPAIRS_NO_READER_SAW_THEM`. One fresh Opus reader that made none of
+these edits read each repair, restored line and late edit against the base text and the lines that travel with it. SAME
+means that a reader of the new line acts as a reader of the old line. A gloss reads SAME when its source says the same.
+His quotes: a script compared each quote of three words or more in the base with today's text, whitespace ignored. No quote differs (one match in the list was prose between two quotes).
+
+| file | line read | verdict | what was done |
+|---|---|---|---|
+| distress | the `CONDUCTOR.md` pointer removed | SAME | none |
+| distress | "feeds" | SAME | none |
+| distress | "the query computes the index of this file" | SAME | none |
+| distress | a lift of detention only | SAME | none |
+| distress | "against death", restored | SAME | none |
+| distress | "What kills work is contested scope", restored | SAME | none |
+| dump | "is configured to remove" | SAME | none |
+| dump | the three kill-list figures named | SAME | none |
+| dump | "judging", restored | SAME | none |
+| paint list | the dated debt removed | SAME | none |
+| paint list | the twins left before the re-stamp | SAME | none |
+| paint list | "as their own per-biome pass reaches them", restored | SAME | none |
+| paint list | the "admission" sentence under its bullet | SAME | none |
+| rosters | the 5 renamed rows; only `RUT_Umbra` survives | SAME | none |
+| rosters | the dates limited to the tables and the unguarded list | SAME | none |
+| naming | the reason to re-measure | SAME | none |
+| naming | the open drift, present tense | SAME | none |
+| clone memory | the anon gloss and the two-clone lines | SAME | none |
+| almost-out log | three polish repairs, the row with its cells in place | SAME | none |
