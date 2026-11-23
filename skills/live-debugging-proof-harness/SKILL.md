@@ -173,7 +173,7 @@ opportunity at the deciding moment (example: the carrier stands inside the blast
 |---|---|---|
 | A, deterministic | the scene makes a valid opportunity on demand, and the result is not random | one valid run decides PASS or FAIL; never "4 of 5" |
 | B, stochastic | after a sincere attempt at control, the opportunity is still uncertain | one SUCCESS passes, with no MOD FAILURE and no UNRESOLVED run on the same claim and build; all budgeted runs done with no SUCCESS is INCONCLUSIVE |
-| B, random by design | the result is a yield or a drop chance | X successes in Y valid opportunities; X and Y are written before the first run |
+| B, random by design | the result is a yield or a drop chance | X successes in Y valid opportunities; X and Y come from the intended yield and the testing budget, and are written before the first run; check the rate itself offline where possible |
 | C, hunt | a fault that shows only sometimes | looks for evidence of failure; temporary; never part of a mod's final acceptance tests |
 
 - Tag B names the things that spoil the run, what was tried to control each, and why that was not enough. The budget of
@@ -196,7 +196,7 @@ opportunity at the deciding moment (example: the carrier stands inside the blast
 - Only SUCCESS speaks for the mod. No other outcome needs a later pass to cancel it.
 - An ENVIRONMENT FAULT needs a record: the spoiling thing, and why the mod could not have caused it. No record means
   UNRESOLVED. Example: a carrier walked out of the blast before it fired. The job trace shows that the carrier left for
-  food. That is an ENVIRONMENT FAULT. With no trace, the run is UNRESOLVED.
+  food. This run is an ENVIRONMENT FAULT. With no trace, the run is UNRESOLVED.
 - A kind B scene whose verdict is INCONCLUSIVE is an UNMEASURED row that says INCONCLUSIVE.
 - The pipeline reads the last column today. The ticket that teaches the pipeline the outcomes themselves:
   `RIMMANDRAKE_TEACH_EXIT_READER_KINDS_KNOWS_THREE_WORDS_ONLY`.
@@ -210,7 +210,7 @@ cost of many later scenes. What still cannot be controlled is the reason for tag
 run that opens the hunt does two things at once:
 
 ```
-python3 src/RimMandrake/rimflow/cli.py note <ITEM> --text "HUNT OPENED: what happened | why it matters | the next step that tells two causes apart | what that step costs" --seat BENCH --why "hunt" --publish
+python3 src/RimMandrake/rimflow/cli.py note <your item> --text "HUNT OPENED: what happened | why it matters | the next step that tells two causes apart | what that step costs" --seat BENCH --why "hunt" --publish
 python3 -c "import sys,time; sys.path.insert(0,'src/RimMandrake/rimflow'); import detached_helper as D; D.conductor_line('<the same text, with the item id>', time.time(), head='HUNT OPENED (RAISE FIRST)')"
 ```
 
@@ -224,8 +224,8 @@ python3 -c "import sys,time; sys.path.insert(0,'src/RimMandrake/rimflow'); impor
 - After a fix, the forced scene stays in the live tests only while the fault is likely to return. Otherwise its check
   goes to the offline tests, or is retired.
 
-**Verdicts keep, per scene.** A verdict stands until a change touches what the scene reads or exercises. No exit of a
-visit asks for every scene in one visit, or for one scene several times in a row. Record the build that the game had
+**Verdicts keep, per scene.** A verdict stands until a change touches what the scene reads or exercises. The exit of an in-game
+visit never asks for every scene in one visit, or for one scene several times in a row. Record the build that the game had
 loaded, not only the build on disk.
 
 ### Minimum Force
