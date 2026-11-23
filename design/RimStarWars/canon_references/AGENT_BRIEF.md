@@ -48,7 +48,7 @@ xenotypes. That file is **generated, so never edit it.**
 
 ## Fetching
 
-**WebSearch is dead on this model group.**
+**Do not depend on WebSearch.** Some models and helper types do not have it; no `rm-*` helper type does.
 
 🔑 **Try plain `curl` to the API first — it works, and it is far faster than Fetcher.** A batch measured this on
 2026-09-15, and that batch completed all seven of its species this way. `curl` to `starwars.fandom.com/api.php`
@@ -58,7 +58,7 @@ returned wikitext directly, with **no Cloudflare block**. Only the rendered arti
 curl -s 'https://starwars.fandom.com/api.php?action=parse&page=<PageName>&format=json&prop=wikitext'
 ```
 
-Fall back to Fetcher (invoke the `fetcher` skill) only if `curl` is actually blocked.
+Fall back to Fetcher (the project `~/dev/Fetcher`; read its `README.md`) only if `curl` is actually blocked.
 
 ⚠️ **Fetcher truncates at 50,000 characters, and long species articles exceed it.** A batch lost the Biology sections
 of two species this way.
@@ -79,7 +79,8 @@ Other fetching rules:
 - Images live at `https://static.wikia.nocookie.net/starwars/images/...`. Download the real files; do not merely cite
   them.
 - A FETCH returns in **well under a second.** Poll for the delivery immediately; do not sleep first. Confirm success by
-  reading `MANIFEST.txt` in the delivery folder or `Complete/<id>.txt.log`. Do not infer success from files existing.
+  reading `MANIFEST.txt` in the delivery folder (`~/.cache/Fetcher/Delivery/<id>/`) or
+  `~/dev/Fetcher/Complete/<id>.txt.log`. Do not infer success from files existing.
 - **If a fetch pattern fails twice, note it in the entry and move on.** Do not loop.
 
 ## 🔴 Do not read oversized images — it kills your session
@@ -91,8 +92,10 @@ Wookieepedia images are frequently far larger than 2000px. So before you view a 
 a downscaled copy if needed:
 
 ```
-sips -g pixelWidth -g pixelHeight <file>                 # check dimensions
-sips -Z 1600 <file> --out /tmp/<name>_small.jpg           # downscale a COPY to /tmp
+# check dimensions
+python3 -c "import sys; from PIL import Image; print(Image.open(sys.argv[1]).size)" <file>
+# downscale a COPY to /tmp
+python3 -c "import sys; from PIL import Image; i=Image.open(sys.argv[1]).convert('RGB'); i.thumbnail((1600,1600)); i.save(sys.argv[2])" <file> /tmp/<name>_small.jpg
 ```
 
 Keep the full-size original in the entry directory, because the original is the reference asset. View only the `/tmp`
