@@ -1,13 +1,13 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":76184,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"HOLDER.run-1795260677":3322,"HOLDER.run-1795263747":1891,"HOLDER.run-1795268290":5226,"HOLDER.run-1795285878":924,"HOLDER.run-1795297113":4566,"HOLDER.run-1795304573":2662,"HOLDER.run-1795312089":1009,"HOLDER.run-1795312923":2298,"HOLDER.run-1795315124":1540,"HOLDER.run-1795321038":846,"HOLDER.run-1795325268":1929,"HOLDER.run-1795329869":754,"HOLDER.run-1795330730":1090,"HOLDER.run-1795335550":748,"HOLDER.run-1795338340":3967,"HOLDER.run-1795341097":2076,"HOLDER.run-1795346318":1646,"HOLDER.run-1795396410":1686,"HOLDER.run-1795412632":930,"HOLDER.run-1795427578":843,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=17b935d498d5bff50bdc96f12bb8d6a282f996122c8cac25c53ecf904061c284 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":76184,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"HOLDER.run-1795260677":3322,"HOLDER.run-1795263747":1891,"HOLDER.run-1795268290":5226,"HOLDER.run-1795285878":924,"HOLDER.run-1795297113":4566,"HOLDER.run-1795304573":2662,"HOLDER.run-1795312089":1009,"HOLDER.run-1795312923":2298,"HOLDER.run-1795315124":1540,"HOLDER.run-1795321038":846,"HOLDER.run-1795325268":1929,"HOLDER.run-1795329869":754,"HOLDER.run-1795330730":1090,"HOLDER.run-1795335550":748,"HOLDER.run-1795338340":3967,"HOLDER.run-1795341097":2076,"HOLDER.run-1795346318":1646,"HOLDER.run-1795396410":1686,"HOLDER.run-1795412632":930,"HOLDER.run-1795427578":1657,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=7284d472207d57c84b44cf889bbd3ddb27c5d8e11a896e704b51d81ee2821204 -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage in_game · 1657 events in 39 shards · reducer 1
-holder lease run-1795427578, token 54, last active 2026-11-23T10:12:33Z
+version 0.1.0 · stage in_game · 1658 events in 39 shards · reducer 1
+holder lease run-1795427578, token 54, last active 2026-11-23T10:14:47Z
 holder session 26b405bb-9c4f-4ecd-87ca-898323d2417c, context 121160 of ceiling 400000
 
-## Last checkpoint (HOLDER.run-1795412632, 2026-11-23T05:54:27Z)
-- done: no game free for the pit floor tint sitting (ArchBig his pipe off, ArchSmall Pyrelands visit 6); fixed rimflow bridge take ignoring pipe off game (34d860f96a)
-- next: On the first free game run the tint sitting in the item LEFT OPEN note of 2026-11-23T02:38Z
-- ruled out: a dispatch fault: this run launched at 21:45:20, before the hold at 21:46:17
+## Last checkpoint (HOLDER.run-1795427578, 2026-11-23T10:14:47Z)
+- done: offline deciders PY_FLOWWORKS_NORTHSTAR, PY_VALIDATION_V2_OFFLINE (pitSteppedReliefEnabled into site_spec.SETTINGS, toggle pin 261) and PY_FW_OFFLINE_ART (spike compositor draws FloorShade) green, 6b52871; 10 edited deciders seen red, c7e0114; certificate FlowWorks --to in_game exits 0
+- next: Run in-game visit 8 on the first free game
+- ruled out: the art red was not a compositor regression: the live floor reference was measured on the relief-off law, which the terrain lift preserved only through FloorShade
 
 ## Open findings (178)
 (claimed fixes, awaiting a judge, on one line each with the oldest 127 open findings, named without their 'finding:': `modledger.py show --mod FlowWorks finding:<NAME>`)
@@ -505,6 +505,6 @@ spend recorded: USD 78.94, 45401435 tokens
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
 - notes: 11, never printed here (`modledger.py find --mod FlowWorks <words>`)
-- the full history: 1657 events (views/history.md; never read whole)
+- the full history: 1658 events (views/history.md; never read whole)
 
-cursor: t=2026-11-23T10:12:33Z.1795428753378872773 (modledger.py since --mod FlowWorks t=2026-11-23T10:12:33Z.1795428753378872773 prints what changed after this packet)
+cursor: t=2026-11-23T10:14:47Z.1795428887105049929 (modledger.py since --mod FlowWorks t=2026-11-23T10:14:47Z.1795428887105049929 prints what changed after this packet)

@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "37837118d42cce2434ef3679bd4ec9510246348fd38e735da7adf527ec8789d6",
+  "body_sha256": "ac357d42b2fdc8de4933f69349190304f73fc366016403b2029edc940d5fd2eb",
   "reducer": 1,
   "shards": {
    "BACKFILL": 893183,
@@ -37,7 +37,7 @@
    "HOLDER.run-1795346318": 1646,
    "HOLDER.run-1795396410": 1686,
    "HOLDER.run-1795412632": 930,
-   "HOLDER.run-1795427578": 843,
+   "HOLDER.run-1795427578": 1657,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1288,11 +1288,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795412632",
-   "done": "no game free for the pit floor tint sitting (ArchBig his pipe off, ArchSmall Pyrelands visit 6); fixed rimflow bridge take ignoring pipe off game (34d860f96a)",
-   "next": "On the first free game run the tint sitting in the item LEFT OPEN note of 2026-11-23T02:38Z",
-   "ruled_out": "a dispatch fault: this run launched at 21:45:20, before the hold at 21:46:17",
-   "ts": "2026-11-23T05:54:27Z"
+   "by": "HOLDER.run-1795427578",
+   "done": "offline deciders PY_FLOWWORKS_NORTHSTAR, PY_VALIDATION_V2_OFFLINE (pitSteppedReliefEnabled into site_spec.SETTINGS, toggle pin 261) and PY_FW_OFFLINE_ART (spike compositor draws FloorShade) green, 6b52871; 10 edited deciders seen red, c7e0114; certificate FlowWorks --to in_game exits 0",
+   "next": "Run in-game visit 8 on the first free game",
+   "ruled_out": "the art red was not a compositor regression: the live floor reference was measured on the relief-off law, which the terrain lift preserved only through FloorShade",
+   "ts": "2026-11-23T10:14:47Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1744,7 +1744,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1657,
+  "events": 1658,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7845,7 +7845,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-23T10:12:33Z",
+   "last": "2026-11-23T10:14:47Z",
    "lease": "run-1795427578",
    "released": false,
    "token": 54
