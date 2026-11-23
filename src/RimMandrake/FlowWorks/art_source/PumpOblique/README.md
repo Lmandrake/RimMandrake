@@ -25,29 +25,12 @@ all four.
 `D:\ClaudeWork\rimmandrake\showings\LIQUID_PUMP_REDRAW_PLAN_VIEW_HUB\2026-11-23_true_oblique\` holds the candidates,
 raw renders, exact prompts, GPT's advice, the judge's answer and `pump_pick_sheet.png`.
 
-## Blocked: owner-kept art
+## Installed 2026-11-23
 
-All four installed looks are owner-KEPT pictures (960ddf23f012, ea7ddc15b970, 87725568582f, afffd14b1d58), so
-`art.py install --why` refuses. Replacing kept art is his call (delegation_policy.md §2.2).
+He accepted all four; they went in through `art.py install --owner-said`. `plan/` is the revert.
 
-## Once he rules
-
-1. Install each look:
-
-   ```
-   art.py install src/RimMandrake/FlowWorks <rel> <sha> --owner-said|--by-card ...
-   ```
-
-   The `<rel>` values are:
-   - `Textures/Things/Building/FlowWorks/Machinery/RM_LiquidPump.png` (Scrapper)
-   - `Textures/RimMandrake/FlowWorks/Pump/<Look>/RM_LiquidPump.png` (Industrial, Modern, Futuristic)
-2. Regenerate the under-coupler reach table:
-
-   ```
-   python3 src/RimMandrake/FlowWorks/art_source/UnderCouplers/under_coupler_reach.py --write
-   ```
-
-   This rewrites `UnderCouplerReach.cs`, and the DLL is rebuilt by publish.
-3. Promote only the port clause of `check_oblique.py` to `src/RimMandrake/FlowWorks/selftest_pump_oblique.py`.
-4. Run `selftest_hose_fittings.py`.
-
+- The south arm ends in a drawn cap. `Source/Machinery/PumpSouthSocket.cs` prints a connected south pipe's end over that
+  cap. `v2/south_socket.py --write` measures the cap from the installed art. `v2/joined.py` draws the offline composite.
+- `selftest_pump_south_socket.py` checks the cap table, the cover, the visible rim and the sixteen ports.
+- After any new pump art: run `v2/south_socket.py --write`, then
+  `art_source/UnderCouplers/under_coupler_reach.py --write`, then `selftest_hose_fittings.py`.

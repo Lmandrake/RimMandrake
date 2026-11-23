@@ -219,6 +219,7 @@
     <Compile Include="..\Hose\HoseStyles.cs" />
     <Compile Include="..\Machinery\PipeStyles.cs" />
     <Compile Include="..\Machinery\LiquidJoinRule.cs" />
+    <Compile Include="..\Machinery\PumpSouthSocket.cs" />
     <Compile Include="..\Machinery\TankArtEdges.cs" />
     <Compile Include="..\Machinery\RM_PumpPortMath.cs" />
     <Compile Include="..\Hose\HoseCarry.cs" />
@@ -280,6 +281,7 @@
     <Compile Include="PipeStyleChecks.cs" />
     <Compile Include="LineLookChecks.cs" />
     <Compile Include="LiquidJoinChecks.cs" />
+    <Compile Include="PumpSouthSocketChecks.cs" />
     <Compile Include="ReelRiserShadowChecks.cs" />
     <Compile Include="HoseEndLipChecks.cs" />
     <Compile Include="ContainerStyleChecks.cs" />

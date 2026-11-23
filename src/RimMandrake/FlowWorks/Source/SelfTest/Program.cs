@@ -2197,6 +2197,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             PipeStyleChecks.Run(Case);         // rigid pipe looks + build-menu placement (owner rulings 2026-10-11)
             LineLookChecks.Run(Case);          // a look picked on any FlowWorks part restyles its whole line (owner walk 2026-11-22)
             LiquidJoinChecks.Run(Case);        // liquid-join draw hooks + hose thickness (HOSE_JOINTS_REDESIGN_PUMP_TOO_PUNY)
+            PumpSouthSocketChecks.Run(Case);   // the pipe end over the pump's south cap
             ReelRiserShadowChecks.Run(Case);   // owner cards 2026-10-22: reel turns, pipe riser onto the tank flange, empty-hose shadow
             HoseEndLipChecks.Run(Case);        // HOSE_MOUTH_FIX_FACE_ON_DISC edge-on open end, HOSE_REEL_SHADOW_FIX_FULL_TILE_SQUARE (HoseEndLipChecks.cs)
             ContainerStyleChecks.Run(Case);    // LIQUID_CONTAINERS_REDRAW_NO_MANA_POTIONS: bottle/bucket/barrel in the four looks

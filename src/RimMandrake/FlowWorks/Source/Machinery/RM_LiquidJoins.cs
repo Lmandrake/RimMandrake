@@ -278,6 +278,10 @@ namespace RimMandrake.FlowWorks.Machinery
             return "COUPLERS ok=" + ok + " tank=" + at.x + "," + at.z + sb;
         }
 
+        /// <summary>True for the liquid pump: its art draws a bolted flange on each of its four sides, so a loose one on the pipe
+        /// beside it floated a quarter cell off (LIQUID_PUMP_REDRAW_PLAN_VIEW_HUB; the tank nozzles' rule, owner 2026-10-24).</summary>
+        public static bool DrawsOwnFlanges(Thing t) => t != null && t.def.defName == PipeStyles.PumpDef;
+
         public static bool IsHoseReel(Thing t) => t is ThingWithComps tw && tw.GetComp<Hose.CompHoseReel>() != null;
 
         /// <summary>WRECKED_LINKS_FIX_RUINS_SNUB_THEIR_PIPES (owner 2026-11-06: "For wrecked machines, they should ALL draw in the
@@ -396,6 +400,7 @@ namespace RimMandrake.FlowWorks.Machinery
                             Material m = RM_LiquidJoins.Mat("Flange", RM_LiquidJoins.LookOf(t));
                             if (m == null) continue;
                             Thing b = RM_LiquidJoins.PartnerAt(c + d, map);
+                            if (RM_LiquidJoins.DrawsOwnFlanges(b)) continue;
                             double pz = 0;
                             bool riser = RM_MachinerySettings.pipeLinksIntoMachines && RM_LiquidJoins.RiserInto(c, d, b, out pz);
                             // PIPE_JOINS_REDRAW_RISER_ELBOW_AND_COLLAR (owner 2026-10-24: "The collar by the tank is superimposed
@@ -483,6 +488,9 @@ namespace RimMandrake.FlowWorks.Machinery
         /// <summary>State read: stub pieces printed by the last regeneration of any section (probe / live look).</summary>
         public static int lastPieces;
 
+        /// <summary>State read: pipe ends drawn over a pump's south cap by the last regeneration of any section.</summary>
+        public static int lastSockets;
+
         private static readonly Vector2[] uvs = new Vector2[4];
 
         private static bool PipeOn(IntVec3 q, Map map) => q.InBounds(map) && RM_LiquidNet.HasPipe(q, map);
@@ -553,6 +561,29 @@ namespace RimMandrake.FlowWorks.Machinery
             return quads.Count;
         }
 
+        /// <summary>The end of the pipe <paramref name="pipe"/> (on <paramref name="c"/>, south of the pump <paramref name="pump"/>)
+        /// drawn over the pump's south cap, inside its bolted rim (PumpSouthSocket). Returns 1 when printed.</summary>
+        private int PrintSouthSocket(Thing pipe, IntVec3 c, Thing pump)
+        {
+            if (!PumpSouthSocket.TryCap(RM_LiquidJoins.LookOf(pump), out PumpSouthSocket.Cap cap)) return 0;
+            Material m = StraightMat(pipe, false);
+            if (m == null) return 0;
+            LayerSubMesh mesh = GetSubMesh(m);
+            float y = AltitudeLayer.Building.AltitudeFor() + PumpSouthSocket.AboveBuilding;
+            List<PumpSouthSocket.Vert> q = PumpSouthSocket.Quads(cap);
+            for (int i = 0; i < q.Count; i++)
+            {
+                int k = mesh.verts.Count;
+                mesh.verts.Add(new Vector3(c.x + (float)q[i].X, y, c.z + 1 + (float)q[i].Z));
+                mesh.uvs.Add(new Vector3((float)q[i].U, (float)q[i].V, 0f));
+                mesh.colors.Add(new Color32(255, 255, 255, 255));
+                if (i % 4 != 3) continue;
+                mesh.tris.Add(k - 3); mesh.tris.Add(k - 2); mesh.tris.Add(k - 1);
+                mesh.tris.Add(k - 3); mesh.tris.Add(k - 1); mesh.tris.Add(k);
+            }
+            return 1;
+        }
+
         public override void Regenerate()
         {
             ClearSubMeshes(MeshParts.All);
@@ -564,7 +595,7 @@ namespace RimMandrake.FlowWorks.Machinery
             }
             Map map = Map;
             float y = AltitudeLayer.FloorEmplacement.AltitudeFor() - 0.002f;
-            int n = 0, nr = 0;
+            int n = 0, nr = 0, nSockets = 0;
             foreach (IntVec3 c in section.CellRect)
             {
                 List<Thing> l = c.GetThingList(map);
@@ -581,6 +612,7 @@ namespace RimMandrake.FlowWorks.Machinery
                         IntVec3 d = di < 4 ? GenAdj.CardinalDirections[di] : GenAdj.DiagonalDirections[di - 4];
                         Thing b = RM_LiquidJoins.PartnerAt(c + d, map);
                         if (b == null) continue;
+                        if (risers && di < 4 && d.z == 1 && RM_LiquidJoins.DrawsOwnFlanges(b)) nSockets += PrintSouthSocket(t, c, b);
                         CellRect r = b.OccupiedRect();
                         double[] poly;
                         if (di < 4 && risers && RM_LiquidJoins.RiserInto(c, d, b, out double portZ))
@@ -627,6 +659,7 @@ namespace RimMandrake.FlowWorks.Machinery
             }
             lastPieces = n;
             lastRisers = nr;
+            lastSockets = nSockets;
             FinalizeMesh(MeshParts.All);
         }
     }

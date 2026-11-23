@@ -5,10 +5,9 @@
   RM_LiquidNet.TanksFor), or pours from that tank into an adjacent dug channel (gizmo). Building_LiquidPump.
   Minifiable (Phase 8 slice 2): the tanker pillar's portable pump — uninstall it, carry it to a far liquid
   body with a cargo tank and a hose, pump, and fly home; a ruined works' damaged pump can be stolen the same way.
-  PROVISIONAL: power 150 W, cost, work. Art: 512x512 top-down square housing, four-fold symmetric, one bolted
-  flanged port centred on every side (face 232 px from centre, ~118 px bore = a rigid pipe) with alpha-0 corners
-  and edge band so pipes/hoses drawn under it show to the centre; non-rotatable, so one Graphic_Single serves
-  every facing (PUMP_ART_RESKIN_LESS_GARDEN_HOSE; source and composer: art_source/Pump/).
+  PROVISIONAL: power 150 W, cost, work. Art: 512x512, the oblique building camera,
+  a bolted flange on each side (LIQUID_PUMP_REDRAW_PLAN_VIEW_HUB; art_source/PumpOblique/). Pipes draw under it; a pipe on
+  the south is also drawn over the south cap (PumpSouthSocket). Non-rotatable: one Graphic_Single serves every facing.
 -->
 <Defs>
 
