@@ -218,6 +218,18 @@ TIERS = {
         "forbid_substr": ["manywaters"],
         "dlc": True,
     },
+    "explosiveknockback_visit": {
+        "why": "Explosive Knockback Stage 6 visit (its test_table live_minimal checks): the explosiveknockback tier plus "
+               "what those checks' commands name: LWM's Deep Storage (closed containers), RimMandrake: Baroque Biomes "
+               "(the Cauldron's vent gas, folded into it) and Jawa Armoury Rebalance with its dependencies (the "
+               "crate-tagged storage). The plain tier lacks all three, so closed_containers, settings_sweep and "
+               "gas_into_pit could not run on it.",
+        "want": [BRIDGE, "mandrake.rm.flowworks", "mandrake.rm.gimmesomeslack", "mandrake.rm.explosiveknockback",
+                 "mandrake.rsw.swbestiary", "lwm.deepstorage", "mandrake.rm.biomes", "mandrake.rsw.armoury"],
+        "forbid": ["mandrake.rm.pits", "sarg.alphabiomes", "glitchgoblin.invisibleconduitcont"],
+        "forbid_substr": ["manywaters"],
+        "dlc": True,
+    },
     "kineticarms": {
         "why": "Kinetic Arms first script (KineticArms/validation.py, KINETIC_BLAST_WEAPONS_1): the explosiveknockback "
                "tier plus Kinetic Arms. FlowWorks and Gimme Some Slack ride along for JawaBench's shared playtest "
