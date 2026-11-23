@@ -253,7 +253,7 @@ def travels_west(path):
     return bool(path) and seg_end(path[-1], 1)[0] < seg_end(path[0], 0)[0]
 
 
-TANK_PORT_DZ = {"Scrapper": 0.021, "Industrial": 0.025, "Modern": -0.016, "Futuristic": -0.057}   # TankPortGeometry.PortDz
+TANK_PORT_DZ = {"Scrapper": 0.021, "Industrial": 0.025, "Modern": -0.016, "Futuristic": 0.016}   # TankPortGeometry.PortDz
 
 
 def riser_into(net, c, d, b):

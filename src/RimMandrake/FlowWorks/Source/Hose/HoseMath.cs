@@ -2646,7 +2646,7 @@ namespace RimMandrake.FlowWorks.Hose
         public const string TankDef = "RM_LiquidTank";
         public static readonly string[] Looks = { "Scrapper", "Industrial", "Modern", "Futuristic" };
         /// <summary>Port flange centre, dz cells from the footprint centre, per look (alpha &gt; 128 rows at the edge column).</summary>
-        public static readonly double[] PortDz = { 0.021, 0.025, -0.016, -0.057 };
+        public static readonly double[] PortDz = { 0.021, 0.025, -0.016, 0.016 };
 
         /// <summary>The drawn port a hose end on side (sx, sz) of a 2x2 universal tank couples to, or false (keep the edge midpoint).
         /// (sx, sz) = unit step from the end cell into the tank; (bx, bz) = the tank's footprint minimum.</summary>

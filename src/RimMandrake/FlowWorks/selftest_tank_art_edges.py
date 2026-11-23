@@ -109,6 +109,12 @@ def measure(tank, look, size, ds, off):
     for lane in range(fh):   # west / east: a row
         r = int(round(h - (lane + 0.5 - az0) * ppz))
         cols = np.nonzero(a[max(0, r - BAND):r + BAND, :].any(axis=0))[0]
+        if not len(cols):
+            # a lane above a low tank's body meets no outline: read the body's nearest row (a 2x2 tank's side pipes rise to
+            # its port, so that lane's number is not drawn with)
+            body = np.nonzero(a.any(axis=1))[0]
+            r = min(max(r, int(body[0]) + BAND), int(body[-1]) - BAND)
+            cols = np.nonzero(a[max(0, r - BAND):r + BAND, :].any(axis=0))[0]
         res[("west", lane)] = ax0 + cols[0] / ppx
         res[("east", lane)] = fw - (ax0 + (cols[-1] + 1) / ppx)
     return res

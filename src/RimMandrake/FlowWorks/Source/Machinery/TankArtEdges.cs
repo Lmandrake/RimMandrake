@@ -15,9 +15,9 @@ namespace RimMandrake.FlowWorks.Machinery
         private static readonly double[][] Table =
         {
             new[] { 0.461, 0.461, 0.512, 0.512, 0.309, 0.512, 0.309, 0.508 },   // RM_LiquidTank Scrapper
-            new[] { 0.410, 0.410, 0.520, 0.520, 0.309, 0.383, 0.305, 0.379 },   // RM_LiquidTank Industrial
+            new[] { 0.461, 0.461, 0.562, 0.559, 0.344, 0.277, 0.344, 0.277 },   // RM_LiquidTank Industrial
             new[] { 0.383, 0.391, 0.516, 0.516, 0.059, 0.457, 0.176, 0.465 },   // RM_LiquidTank Modern
-            new[] { 0.289, 0.293, 0.598, 0.496, 0.312, 1.414, 0.293, 0.176 },   // RM_LiquidTank Futuristic
+            new[] { 0.531, 0.531, 0.559, 0.559, 0.352, 0.273, 0.352, 0.273 },   // RM_LiquidTank Futuristic
             new[] { 0.242, 0.238, -0.633, -0.699, 0.332, 0.273, 0.324, 0.270 },   // RM_LiquidTankTall Scrapper
             new[] { 0.238, 0.238, -0.570, -0.641, 0.316, 0.273, 0.320, 0.270 },   // RM_LiquidTankTall Industrial
             new[] { 0.391, 0.387, -0.781, -0.777, 0.359, 0.273, 0.352, 0.270 },   // RM_LiquidTankTall Modern
