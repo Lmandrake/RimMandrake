@@ -6,7 +6,7 @@ design/specs/2026-11-22-coordination-every-agent-must-use/plan.md. Page design/s
 selftest selftest_list_dispatch.py; acceptance acceptance/step2_list_lane_accept.py. Why: on 2026-11-23 about 918 open list
 items waited for the Conductor's hand, because no program launched them. The shape of red_dispatch.py.
 
-    python3 src/RimMandrake/rimflow/list_dispatch.py tick [--apply]      one pass; acts only with --apply
+    python3 src/RimMandrake/rimflow/list_dispatch.py tick [--apply] [--only ID...]   one pass; acts only with --apply
     python3 src/RimMandrake/rimflow/list_dispatch.py status              the last reading
     python3 src/RimMandrake/rimflow/list_dispatch.py clear ITEM --why "..."   the Conductor lifts a stop: one more run
 
@@ -601,7 +601,7 @@ def execute(cfg, st, rows, launches, facts, now, fx=None):
             row.update(decision="launch_failed", why=_one(text, 300) or "rc %s" % rc)
 
 
-def tick(cfg, apply, fx=None, now=None):
+def tick(cfg, apply, fx=None, now=None, only=None):
     fx = fx or {}
     now = time.time() if now is None else now
     d = sdir(create=apply)
@@ -613,7 +613,13 @@ def tick(cfg, apply, fx=None, now=None):
         st = _read(os.path.join(d, "state.json"), {})     # a dry tick reads it and writes nothing
         facts = fx["facts"](st) if "facts" in fx else gather(st, now)
         account = fx["account"]() if "account" in fx else account_gate()
+        gone = []
+        if only and facts.get("items") is not None:     # the Conductor's run-now: these items, every gate
+            gone = [i for i in only if i not in facts["items"]]
+            facts = dict(facts, items={i: facts["items"][i] for i in only if i in facts["items"]})
         rows, launches = decide(cfg, st, facts, now, account)
+        rows += [{"item": i, "decision": "not_found",
+                  "why": "not an open item with an outcome check or an acceptance script"} for i in gone]
         if apply:
             execute(cfg, st, rows, launches, facts, now, fx)
         else:
@@ -652,13 +658,15 @@ def main(argv=None):
     sub = ap.add_subparsers(dest="cmd", required=True)
     t = sub.add_parser("tick")
     t.add_argument("--apply", action="store_true", help="act and write state; without it, a dry pass")
+    t.add_argument("--only", nargs="+", metavar="ID", help="the Conductor's run-now: decide only these items (every "
+                                                          "gate and slot still applies)")
     sub.add_parser("status")
     c = sub.add_parser("clear")
     c.add_argument("item")
     c.add_argument("--why", required=True)
     o = ap.parse_args(argv)
     if o.cmd == "tick":
-        _print(tick(load_cfg(), o.apply))
+        _print(tick(load_cfg(), o.apply, only=o.only))
         return 0
     if o.cmd == "status":
         rd = _read(os.path.join(sdir(create=False), "reading.json"), None)

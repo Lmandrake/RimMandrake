@@ -69,6 +69,9 @@ waited for the Conductor's hand, because no program launched them. Each promise 
   and `effect` (an adopted acceptance script).
 - **a-dry-tick-writes-nothing.** A tick without `--apply` launches nothing, closes nothing, attaches nothing and writes no
   state.
+- **only-narrows-the-items-never-the-gates.** `tick --only ID...` (the Conductor's run-now) decides only the named
+  items, in the order given, through every gate and the same slots; a named item that is not open with a check or an
+  acceptance script reads `not_found`.
 - **each-limit-names-its-danger.** Each numeric setting in `list_dispatch.json` has a `_<name>_doc` that names the danger
   it guards.
 

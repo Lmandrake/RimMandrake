@@ -261,6 +261,17 @@ def t_a_dry_tick_writes_nothing():
         "a dry tick acts on nothing and writes no state (%s, %s)" % (acts, os.listdir(d)))
 
 
+def t_only_narrows_the_items_never_the_gates():
+    base = {"items": {"A": it(), "B": it()}, "runs": {}, "other_live": 0}
+    fx = {"facts": lambda st: json.loads(json.dumps(base)), "account": lambda: (True, "")}
+    rd = LD().tick(dict(CFG), apply=False, fx=fx, now=NOW, only=["B", "GONE"])
+    chk(lambda: set(rd["items"]) == {"B", "GONE"} and rd["items"]["B"]["decision"] == "would_launch"
+        and rd["items"]["GONE"]["decision"] == "not_found", "--only works only the named items; an unknown one says so")
+    fx2 = {"facts": lambda st: json.loads(json.dumps(base)), "account": lambda: (False, "drain")}
+    rd2 = LD().tick(dict(CFG), apply=False, fx=fx2, now=NOW, only=["B"])
+    chk(lambda: rd2["items"]["B"]["decision"] == "account_hold", "--only still passes every gate")
+
+
 def t_each_limit_names_its_danger():
     c = LD().load_cfg()
     nums = [k for k, v in c.items() if isinstance(v, (int, float)) and not isinstance(v, bool) and not k.startswith("_")]
@@ -282,6 +293,7 @@ def main():
               t_the_run_owns_no_continuation,
               t_the_tick_files_nothing,
               t_a_dry_tick_writes_nothing,
+              t_only_narrows_the_items_never_the_gates,
               t_each_limit_names_its_danger):
         try:
             t()
