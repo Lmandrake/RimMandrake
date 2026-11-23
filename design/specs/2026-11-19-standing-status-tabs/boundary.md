@@ -70,3 +70,11 @@ CODEBASE_NOW"*. Written 2026-11-19. Each promise has a test of its name in
   temp, rename → exit 0.
 - **a run:** read the folder → check each page file → build one command → (dry run: print and exit 0/2) → launch →
   print each URL and each MISSING → exit 0 (all opened), 2 (a page missing), 3 (launch failed).
+
+## MATURATION_NOW.md, section "Every mod, one line" (`maturation_now.py`, `one_line_md`)
+
+- **Promise: no table, no cut text.** The section is one bullet per advancing mod (mod, version, stage, last movement; then
+  its "Waits on" line and its "Needs you" line), and held, off or paused mods are one short list. Typora sizes table
+  columns by the longest cell, so a table made narrow, tall rows. Test: `selftest_maturation_now.py` check 18.
+- **Promise: a passed mod rests, it does not wait.** `waits_text` removes the leading "waiting:" for a passed mod.
+  Test: check 18 (`waits_text` of a passed mod).

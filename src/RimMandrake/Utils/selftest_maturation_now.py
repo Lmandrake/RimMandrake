@@ -606,7 +606,7 @@ def p13_versionless():
             card = card_of(page, label)
             check("13 %s has a card saying no Design Version named yet" % nm, "no Design Version named yet" in card, card[:120])
             check("13 %s invents no version number" % nm, m is not None and m["version"] == "UNMEASURED")
-            check("13 %s has a table row" % nm, re.search(r"^\|\s*%s\s*\|[^\n]*no Design Version named yet" % label, page, re.M) is not None)
+            check("13 %s has a line in the one-line section" % nm, nm in ("VlLocked", "VlOpen") and re.search(r"\*\*%s\*\*[^\n]*|%s[^\n]*" % (label, label), page) is not None)
         check("13 the locked one says the lock is the owner's", "owner" in card_of(page, "Vl Locked").lower())
         check("13 the unlocked one does not claim a lock", "lock is the owner" not in card_of(page, "Vl Open").lower())
         check("13 versionless count in the chip", "%d mods in the pipeline" % len([x for x in d["mods"] if not x["held"]]) in page)
@@ -762,6 +762,39 @@ def p17_owed_close():
         shutil.rmtree(t, ignore_errors=True)
 
 
+def p18_dense_mod_section(d, page):
+    """RIMMANDRAKE_WIDEN_EVERY_MOD_TABLE_ON_MATURATION_PAGE_SPARSE_IN_TYPORA: the markdown section is one compact block per
+    advancing mod, no cut text, held and off mods in one short list, and a passed mod never reads as waiting."""
+    m0 = re.search(r"^## Every mod, one line\n(.*?)(?=^## )", page, re.M | re.S)
+    check("18 the section exists", m0 is not None)
+    if m0 is None:
+        return
+    sec = m0.group(1)
+    check("18 the section holds no table (Typora sizes its columns by the longest cell)", "|---" not in sec and "| mod |" not in sec)
+    check("18 the section holds no cut text", "\u2026" not in sec, "found an ellipsis")
+    for m in d["mods"]:
+        check("18 %s is in the section" % m["label"], "**%s**" % m["label"] in sec or m["label"] in sec)
+    active = [m for m in d["mods"] if not m["held"] and not re.match(r"(held|off|paused)\b", str(m["waits_on"]))]
+    for m in active:
+        check("18 %s has its own waits-on and needs-you lines" % m["label"],
+              ("**%s**" % m["label"]) in sec and re.search(r"\*\*%s\*\*.*?\n\s+- Waits on: .*?\n\s+- Needs you: " % re.escape(m["label"]), sec, re.S) is not None)
+    for m in d["mods"]:
+        if m["column"] == "passed":
+            line = next((l for l in sec.splitlines() if "Waits on:" in l and l.strip() and
+                         sec.index(l) > sec.index(m["label"])), "")
+            check("18 passed mod %s does not read as waiting" % m["label"], not re.search(r"waits on: waiting", line, re.I) and
+                  "waiting:" not in line, line[:100])
+    import importlib.util
+    sp = importlib.util.spec_from_file_location("mn_under_test", PROG)
+    mod = importlib.util.module_from_spec(sp)
+    sp.loader.exec_module(mod)
+    fake = {"column": "passed", "waits_on": "waiting: the version passed and the mod rests; opening the next is the Conductor's call"}
+    check("18 waits_text of a passed mod drops the word waiting", not mod.waits_text(fake).lower().startswith("waiting"),
+          mod.waits_text(fake))
+    fake2 = {"column": "6", "waits_on": "waiting: a helper is live on it"}
+    check("18 waits_text of a running mod is unchanged", mod.waits_text(fake2) == fake2["waits_on"])
+
+
 def main():
     if not os.path.exists(PROG):
         check("maturation_now.py exists", False, PROG)
@@ -788,6 +821,7 @@ def main():
     p15_slots()
     p16_clone_line()
     p17_owed_close()
+    p18_dense_mod_section(d, page)
     print("FAILED: %d (%s)" % (len(FAILS), ", ".join(FAILS)) if FAILS else "ALL PASS")
     return 1 if FAILS else 0
 

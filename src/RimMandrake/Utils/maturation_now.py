@@ -1283,7 +1283,7 @@ def card(m):
     if isinstance(his, list) and his:
         head.append(chip("⚑ needs you: %d" % len(his), ALERT))
     rows = []
-    rows.append(row("Waits on", val(m["waits_on"])))
+    rows.append(row("Waits on", val(waits_text(m))))
     if his == UNM:
         needs = val(UNM) + " (the ledger was not read)"
     elif his:
@@ -1539,13 +1539,48 @@ def summary_rows(d):
         needs = UNM if his == UNM else (", ".join(x["item"] for x in his) if his else "nothing")
         if m.get("versionless"):
             rows.append((m["label"], "no Design Version named yet" + (" (the lock is the owner's)" if m["owner_lock"] else ""),
-                         where_word(m), clip(m["waits_on"], 110),
+                         where_word(m), clip(waits_text(m), 110),
                          UNM if m["his"] == UNM else (", ".join(x["item"] for x in m["his"]) if m["his"] else "nothing"),
                          m["last_move"]))
             continue
         rows.append((m["label"], "%s, %s" % (m["version"], "locked" if m["state"].startswith("locked") else clip(m["state"], 30)),
-                     where_word(m), clip(m["waits_on"], 110), needs, m["last_move"]))
+                     where_word(m), clip(waits_text(m), 110), needs, m["last_move"]))
     return rows
+
+
+def waits_text(m):
+    """The "waits on" words for a person. A passed mod rests; it does not wait, so its leading word "waiting:" goes."""
+    w = str(m["waits_on"])
+    if m.get("column") == "passed":
+        w = re.sub(r"^waiting:\s*", "", w)
+        return ("Resting, passed. " + w[:1].upper() + w[1:]) if w else "Resting, passed."
+    return w
+
+
+def folded(m):
+    """A held, off or paused mod goes into the one short list under the advancing ones."""
+    return bool(m.get("held")) or re.match(r"(held|off|paused)\b", str(m["waits_on"]), re.I) is not None
+
+
+def one_line_md(d):
+    """Markdown for the per-mod summary: one compact block per advancing mod, no cut text (Typora sizes table columns by
+    the longest cell, so a table here is narrow and tall). Held and off mods are one short list."""
+    out, rows = [], summary_rows(d)
+    off = []
+    for m, r in zip(d["mods"], rows):
+        label, _ver, where, _w, needs, last = r
+        ver = ("no Design Version named yet" if m.get("versionless") else
+               m["version"] + (", locked" if m["state"].startswith("locked") else ", " + m["state"].split(":")[0].strip()))
+        if folded(m):
+            kind = re.match(r"[A-Za-z ]+?(?=:|$)", str(m["waits_on"]))
+            off.append("- %s: %s, %s (%s)" % (label, where, ver, (kind.group(0) if kind else "held").lower()))
+            continue
+        out += ["- **%s** \u00b7 %s \u00b7 %s \u00b7 last movement %s" % (label, ver, where, last),
+                "  - Waits on: " + waits_text(m),
+                "  - Needs you: " + needs]
+    if off:
+        out += ["", "**Held or off (%d):**" % len(off), ""] + off
+    return out + [""]
 
 
 HEADS = ("mod", "Design Version", "stands at", "waits on", "needs you", "last movement")
@@ -1585,8 +1620,7 @@ def build(d, now):
     parts_md += ["# " + title, "", measured, ""] + needs_md(d) + nonmod_md(d) + [top_chips(d), "", lead, "",
                                                                  "<div>" + picture(d) + "</div>", ""]
     # summary table
-    parts_md += ["## Every mod, one line", "", "| " + " | ".join(HEADS) + " |", "|" + "---|" * len(HEADS)]
-    parts_md += ["| " + " | ".join(md_cell(c) for c in r) + " |" for r in summary_rows(d)]
+    parts_md += ["## Every mod, one line", ""] + one_line_md(d)
     parts_md += [""] + convergence_md(d)
     parts_md += ["## Each mod", ""]
     for m in d["mods"]:
