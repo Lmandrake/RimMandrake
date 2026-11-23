@@ -66,7 +66,8 @@ python3 race.py run --race <tag> --rows <rows.jsonl>... --variant incumbent --va
 python3 selftest_art_eval.py                            # pure parts + a mocked end-to-end run
 ```
 
-- `DEF:LETTER` names one candidate picture of the pilot. A third part names the picture of the living animal (catch items).
+- `DEF:LETTER` names one candidate picture of the pilot. A catch item is the caught animal as an object,
+  a dead specimen. For a catch item, a third part names the picture of the living animal.
 - **Batch size.** Give each `run` call a few subjects. One Opus call takes ~40–70 s. One GPT call takes ~25–45 s.
 - **A run id is resumable.** A second call with the same run id skips each subject that the run already decided. So you can
   split a batch across calls freely. A `HOLD_ERROR` record also counts as decided
@@ -107,9 +108,9 @@ More traps for this section: [references/traps.md](references/traps.md) § Run i
 
 ## Before you trust a decision
 
-1. **The shadow sheet must show the picture that was judged.** `shadow.py build` FLAGs a row when one of
-   its judged records has no picture (by source sha) on that row. art_sheet shows installed art and renders that it finds
-   by name or by `--jobs`.
+1. **The shadow sheet must show the picture that was judged.** `shadow.py build` compares
+   source shas. The tool FLAGs a row when one of its judged records has no picture on that row.
+   The sheet from art_sheet shows installed art and renders that it finds by name or by `--jobs`.
    `shadow.py` also passes the judged pictures to art_sheet with `--references`. Give production specs their
    `artpipe_job`, so that the render is a column.
 2. **Nothing reaches the owner unread** still holds. The pipeline's look IS the prereview (`looked_by judge:<models>`).
@@ -123,7 +124,7 @@ More traps for this section: [references/traps.md](references/traps.md) § Run i
    - A pass from stills is not evidence about motion. Judges passed three faults: a wing baked into the plate, squash noise,
      and flesh that rips away with the wing. He saw all three at speed. The plate is the body layer without the wings.
    - Give a flyer judge the `flyer_eye_checks.py parts` sheet and every frame at full size.
-   - Count only the judge's catches.
+   - Count only the faults that the flyer judge finds. Its pass counts for nothing.
    - Score any flyer check against `../rimworld-sprite-facings/references/flyer_truth_set.md`.
 
 More traps for this section: [references/traps.md](references/traps.md) § Before you trust a decision.
@@ -176,6 +177,7 @@ full text and the measured incident are in `references/subagent_budget.md`. The 
 - **A loop is one driver script, not a turn per picture.**
 - **Wait with Monitor, never with polling turns.**
 - **Judge each picture once per (image hash, prompt version).**
-- **A prompt comparison is the incumbent + 2 variants, with ≤12 known verdicts and one round per order.**
+- **A prompt comparison is the incumbent + 2 variants, with ≤12 known verdicts and one round per order.** An order is one
+  instruction to compare prompts. `references/subagent_budget.md` rule 11 says when a second round can start.
 - **Probe the quota before judge-heavy work. Never record a 429 as a verdict.**
 - **Measure every helper afterwards with `scripts/helper_cost.py`.**

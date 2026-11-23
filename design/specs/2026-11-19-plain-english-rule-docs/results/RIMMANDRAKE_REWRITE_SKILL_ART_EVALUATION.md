@@ -11,14 +11,14 @@ No evidence left the skill file. So `references/history.md` did not change, and 
 
 | measure | before | after |
 |---|---|---|
-| bytes | 11,861 | 14,107 |
-| words in linted prose | 941 | 1,284 |
-| STE violations per 100 words | 3.51 | 1.71 |
+| bytes | 11,861 | 14,381 |
+| words in linted prose | 941 | 1,331 |
+| STE violations per 100 words | 3.51 | 1.65 |
 | sentences over 20 words | 17 | 4 |
 | flagged lines (mechanical) | 0 | 0 |
 | lines that a cold reader cannot act on (hand count, by the writer) | 10 | 0 |
 
-The 4 long sentences that stay: lines 22, 71 and 110 are two short sentences that the lint joined at a bold lead. Line 101
+The 4 long sentences that stay: lines 22, 72 and 180 are two short sentences that the lint joined at a bold lead. Line 102
 is the spec field list, one code span.
 
 ## The hand count
@@ -66,8 +66,12 @@ One fresh Opus reader (rm-judge, model opus) read both texts without the writer'
 | fact: the auto-judge timer files without the owner's prompt | stated in the skill and in `references/traps.md` |
 
 The same reader then read each repair and found no wrong line. It said that the kept-art row was narrower than the code
-(the two checks also skip `replaces_kept` when a revert record exists). The writer widened that row of `pipeline.md`. No
-reader read that last edit.
+(the two checks also skip `replaces_kept` when a revert record exists). The writer widened that row of `pipeline.md`.
+
+After the first landing (7cceccf2d2), the prose check of `./publish` named 4 lines. The writer repaired all 4. The same reader
+read those repairs and the widened row, and found each one the same or true. `subagent_budget.md` rule 11 does not define
+"order"; the gloss (one instruction to compare prompts) is the natural reading of that rule.
+The reader then called line 112 overlong. The writer split that line. No reader read that split.
 
 ## Conflicts and stale lines: settled
 
