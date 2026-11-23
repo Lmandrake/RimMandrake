@@ -1,0 +1,13 @@
+diff --git a/src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_Ullai.xml b/src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_Ullai.xml
+index 592dbb88de..7b7a60b269 100644
+--- a/src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_Ullai.xml
++++ b/src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_Ullai.xml
+@@ -122,7 +122,7 @@
+       </li>
+       <li>
+         <bodyGraphicData>
+-          <texPath>Things/Pawn/Animal/Pyrelands/Ullai/Ullai</texPath>
++          <texPath>Things/Pawn/Animal/Pyrelands/Ullai/UllaiGone</texPath>
+           <graphicClass>Graphic_Multi</graphicClass>
+           <drawSize>2.0</drawSize>
+         </bodyGraphicData>

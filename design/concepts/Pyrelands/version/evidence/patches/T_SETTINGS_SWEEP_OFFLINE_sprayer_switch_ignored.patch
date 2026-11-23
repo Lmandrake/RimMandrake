@@ -1,0 +1,13 @@
+diff --git a/src/RimMandrake/Pyrelands/Source/PyrelandsFoamPath.cs b/src/RimMandrake/Pyrelands/Source/PyrelandsFoamPath.cs
+index 0dce249108..66ba23572f 100644
+--- a/src/RimMandrake/Pyrelands/Source/PyrelandsFoamPath.cs
++++ b/src/RimMandrake/Pyrelands/Source/PyrelandsFoamPath.cs
+@@ -56,7 +56,7 @@ namespace RimMandrake.Pyrelands
+ 
+         public override void MapComponentTick()
+         {
+-            if (!RM_PyrelandsSettings.sprayerFoamsPathEnabled || SprayerDef == null) return;
++            if (SprayerDef == null) return;
+             if (map.listerThings.ThingsOfDef(ThingDefOf.Fire).Count == 0) return;
+             List<Pawn> pawns = map.mapPawns.SpawnedPawnsInFaction(Faction.OfPlayer);
+             for (int i = 0; i < pawns.Count; i++)

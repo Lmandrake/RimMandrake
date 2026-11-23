@@ -39,17 +39,17 @@
   "test_blob": "3b1c0d91704957a35f87d54e536566f8904cb9ce"
  },
  "T_DEFS_OFFLINE": {
-  "at": "2026-11-23T18:19:17Z",
+  "at": "2026-11-23T23:24:39Z",
   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_defs_offline.py",
   "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_defs_offline.py",
   "last": "FAIL: the unchanged copy is not green (the copy misses a file facts() reads)",
-  "patch": "--- a/src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_PyrelandsFauna.xml\n+++ b/src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_PyrelandsFauna.xml\n@@ -336,7 +336,7 @@\n       <!-- Body size 9 makes it a Huge Things T2 titan, and a T2 wake holes every thin roof: it unroofed the barn it heats.\n            It stays a titan and spares roofs. -->\n       <li Class=\"RimMandrake.TitanicCreatures.RM_TitanicExtension\" MayRequire=\"mandrake.rm.hugethings\">\n-        <sparesRoofs>true</sparesRoofs>\n+        <sparesRoofs>false</sparesRoofs>\n       </li>\n     </modExtensions>\n   </ThingDef>\n",
+  "patch": "diff --git a/src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_Ullai.xml b/src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_Ullai.xml\nindex 592dbb88de..7b7a60b269 100644\n--- a/src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_Ullai.xml\n+++ b/src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_Ullai.xml\n@@ -122,7 +122,7 @@\n       </li>\n       <li>\n         <bodyGraphicData>\n-          <texPath>Things/Pawn/Animal/Pyrelands/Ullai/Ullai</texPath>\n+          <texPath>Things/Pawn/Animal/Pyrelands/Ullai/UllaiGone</texPath>\n           <graphicClass>Graphic_Multi</graphicClass>\n           <drawSize>2.0</drawSize>\n         </bodyGraphicData>\n",
   "patch_files": [
-   "src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_PyrelandsFauna.xml"
+   "src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_Ullai.xml"
   ],
-  "patch_sha": "14c34be75c255792",
+  "patch_sha": "bcb6597ac4919b38",
   "rc": 1,
-  "test_blob": "da1b0e763efb5d3facf0c80982880b78c7e64fbf"
+  "test_blob": "7104d4ccc158eb1ccba93bfe0ea0cddf589fa0b8"
  },
  "T_FH_CRESTFEATHER": {
   "at": "2026-11-23T00:14:11Z",
@@ -105,17 +105,17 @@
   "test_blob": "e9bc063b23c724c03dc083e4fe903a476d17771b"
  },
  "T_SETTINGS_SWEEP_OFFLINE": {
-  "at": "2026-11-23T00:06:24Z",
+  "at": "2026-11-23T23:24:06Z",
   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_settings_sweep.py",
   "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_settings_sweep.py",
   "last": "FAIL: the unchanged copy is not green",
-  "patch": "diff --git a/src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs b/src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs\nindex 69f4ae65d4..285a2925b3 100644\n--- a/src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs\n+++ b/src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs\n@@ -547,7 +547,7 @@ namespace RimMandrake.Pyrelands\n                            + (PyrelandsTuning.FurnaceWarmthMaxC * furnaceWarmthStrength).ToString(\"0\") + \" C at the beast)\");\n                 furnaceWarmthStrength = list.Slider(furnaceWarmthStrength, 0f, 2f);\n                 }\n-                list.CheckboxLabeled(\"Fire clock (the biome's fire fronts, flame harvest, fire raid, fire rite)\",\n+                list.CheckboxLabeled(\"Fire clock (flame harvest / fire raid / fire rite)\",\n                     ref fireClockEnabled,\n                     \"The Pyrelands' own fire fronts: the burn a new map opens with and the fronts that start on a \"\n                   + \"schedule after it, and the Deep Desert Tribes' incidents that answer the burn. Off: no fire front \"\n",
+  "patch": "diff --git a/src/RimMandrake/Pyrelands/Source/PyrelandsFoamPath.cs b/src/RimMandrake/Pyrelands/Source/PyrelandsFoamPath.cs\nindex 0dce249108..66ba23572f 100644\n--- a/src/RimMandrake/Pyrelands/Source/PyrelandsFoamPath.cs\n+++ b/src/RimMandrake/Pyrelands/Source/PyrelandsFoamPath.cs\n@@ -56,7 +56,7 @@ namespace RimMandrake.Pyrelands\n \n         public override void MapComponentTick()\n         {\n-            if (!RM_PyrelandsSettings.sprayerFoamsPathEnabled || SprayerDef == null) return;\n+            if (SprayerDef == null) return;\n             if (map.listerThings.ThingsOfDef(ThingDefOf.Fire).Count == 0) return;\n             List<Pawn> pawns = map.mapPawns.SpawnedPawnsInFaction(Faction.OfPlayer);\n             for (int i = 0; i < pawns.Count; i++)\n",
   "patch_files": [
-   "src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs"
+   "src/RimMandrake/Pyrelands/Source/PyrelandsFoamPath.cs"
   ],
-  "patch_sha": "c3e6dc19958b3b26",
+  "patch_sha": "d8be776eb15c6ffe",
   "rc": 1,
-  "test_blob": "9e24663abb2361ca8e61a5be65f401a8b499380f"
+  "test_blob": "a408e7fe34b34b66b03acac809dc452a8f00c1c1"
  },
  "T_SITE": {
   "at": "2026-11-23T12:31:32Z",

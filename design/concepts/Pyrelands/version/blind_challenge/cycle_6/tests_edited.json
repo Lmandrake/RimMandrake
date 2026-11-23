@@ -1,0 +1,20 @@
+{
+ "edited": [
+  {
+   "path": "src/RimMandrake/Pyrelands/selftest_pyrelands_settings_sweep.py",
+   "why": "added own_switch_stops, wind_tooltip, master_tooltip and 4 mutants. Nothing removed or loosened.",
+   "before_on": "eed7c3668e5e1cf5372fe5a71713a41f51b0a8c1",
+   "after_on": "454764adbe6a5f8f07b3eb1a89a993af1246619c",
+   "before_sha256": "ff950d00eacbe4dc06d158911f135fcb9bb27f3b1f720b85a2c538b11cdc5072",
+   "after_sha256": "521f33bcd3203ef870af2ba45fb90846e111f3f0e81b4d5a9880d6ae2457bba9"
+  },
+  {
+   "path": "src/RimMandrake/Pyrelands/selftest_pyrelands_defs_offline.py",
+   "why": "added pictures_shipped, fire_text_true and 2 mutants; _copy now also copies Languages. Nothing removed or loosened.",
+   "before_on": "eed7c3668e5e1cf5372fe5a71713a41f51b0a8c1",
+   "after_on": "454764adbe6a5f8f07b3eb1a89a993af1246619c",
+   "before_sha256": "27deaf0b8b4e1b8050cc95c828f1d4a7d74f1b76cb11ae2092768b3b3145ec46",
+   "after_sha256": "00bc1058c41865a7b539e6310739ca68bd85d4576599a746b8961ac651096408"
+  }
+ ]
+}

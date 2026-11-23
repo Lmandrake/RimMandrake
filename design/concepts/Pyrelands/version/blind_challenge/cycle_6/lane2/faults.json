@@ -1,0 +1,89 @@
+{
+ "faults": [
+  {
+   "id": "RIMMANDRAKE_CORRECT_PYRE_WIND_TEXT_SAYS_NEVER_SIDEWAYS",
+   "class": "Problem",
+   "against": "mod",
+   "fault_class": "MOD",
+   "bar": "inv_settings_gate",
+   "criterion": "Mod Settings and the mod's letters say what the mod does (the precedent: RIMMANDRAKE_FIX_PYRELANDS_FIRE_CLOCK_LABEL_SAYS_TRIBES_ONLY)",
+   "evidence": [
+    "lane1_rows.jsonl: settings_wind_tooltip_matches_kernel FAIL: the tooltip promised one cell a fire, never sideways, a line as wide as what was lit",
+    "RM_FireFrontLetterTextWind, the letter a player acts on, said the fire will not spread sideways, so a line is as wide as it was lit",
+    "RM_BurnKernel.CarryPlan heals a cell aside, FlankPlan opens and closes flanks; lane 1 sim_lone_fire_runs_downwind_and_fans_out: 64 of 64 lone fires fan out (burned at least 4 cells a row)"
+   ],
+   "would_pass": "neither text promises one cell a fire, no sideways step, or a width fixed at lighting",
+   "smallest_fix": "reword the tooltip and the letter",
+   "verdict_on_criterion": "criterion right; the text was left behind by RIMMANDRAKE_WIDEN_PYRE_LONE_FIRE_INTO_A_FRONT and its heal",
+   "status": "FIXED 454764adbe6a5f8f07b3eb1a89a993af1246619c",
+   "miss_of": null,
+   "also_bar": "inv_art_and_text (the letter's text)"
+  },
+  {
+   "id": "RIMMANDRAKE_NAME_PYRE_SPRAYER_SWITCH_MASTER_LEAVES_ON",
+   "class": "Problem",
+   "against": "mod",
+   "fault_class": "MOD",
+   "bar": "inv_settings_gate",
+   "criterion": "the 'Mod enabled' tooltip says every mechanic below stops, bar the ones it names",
+   "evidence": [
+    "lane1_rows.jsonl: settings_master_tooltip_names_what_it_leaves_on FAIL",
+    "RM_PyrelandsMod.cs declares sprayerFoamsPathEnabled Independent; MapComponent_RM_FoamPath reads no gate; the tooltip named sand shovelling and the restart switches only"
+   ],
+   "would_pass": "the tooltip names the sprayer carrier's foam among what it does not stop (or the gate stops it)",
+   "smallest_fix": "name it in the tooltip",
+   "verdict_on_criterion": "criterion right",
+   "status": "FIXED 454764adbe6a5f8f07b3eb1a89a993af1246619c",
+   "miss_of": null
+  },
+  {
+   "id": "RIMMANDRAKE_CATCH_PYRE_SPRAYER_SWITCH_PROBE_READ_COUNTED",
+   "class": "Problem",
+   "against": "check",
+   "fault_class": "HARNESS",
+   "bar": "inv_settings_gate",
+   "criterion": "T_SETTINGS_SWEEP_OFFLINE decides that every switch is read and stops its mechanic",
+   "evidence": [
+    "planted_results.jsonl foam_switch_ignored (first run): a carrier that foams with its switch off left T_SETTINGS_SWEEP_OFFLINE, T_FUZZ, T_FIREFOAM_SCENE and lane 1 green; ProbeFoam's read satisfied `read`"
+   ],
+   "would_pass": "the planted switch drop goes red and the real build stays green",
+   "smallest_fix": "own_switch_stops: the mechanic's tick returns first on its switch",
+   "verdict_on_criterion": "criterion right; the check read too little",
+   "status": "FIXED 956fb0c6009e5598383b9049e78fbf0ca30a7cfb",
+   "miss_of": null
+  },
+  {
+   "id": "RIMMANDRAKE_CATCH_PYRE_PICTURE_GONE_PINK_ULLAI_GREEN",
+   "class": "Problem",
+   "against": "check",
+   "fault_class": "HARNESS",
+   "bar": "inv_art_and_text",
+   "criterion": "T_DEFS_OFFLINE decides the shipped art set offline",
+   "evidence": [
+    "planted_results.jsonl art_ullai_facing_gone (first run): a texPath to no file left T_DEFS_OFFLINE green; only lane 1 went red"
+   ],
+   "would_pass": "a def that names a picture the mod does not ship goes red, the real build stays green",
+   "smallest_fix": "pictures_shipped: every texture path resolves to a file or a pinned vanilla path",
+   "verdict_on_criterion": "criterion right; the check read no pictures",
+   "status": "FIXED 956fb0c6009e5598383b9049e78fbf0ca30a7cfb",
+   "miss_of": 5
+  },
+  {
+   "id": "RIMMANDRAKE_POLISH_PYRE_STALE_CODE_COMMENTS_WIND_CARRY",
+   "class": "Polish",
+   "against": "mod",
+   "fault_class": "MOD",
+   "bar": "none",
+   "criterion": "comments only",
+   "evidence": [
+    "MapComponent_BurnLine.cs 'each lights one cell, once'; RM_BurnKernel.cs two doubled <summary> blocks (ApproachWarnDue carries TribesIncidentSwitchesOn's)",
+    "PyrelandsFoamPath.cs: a sleeping carrier beside a fire would cast (gate reads no Awake); no bar, helpful when it happens"
+   ],
+   "would_pass": "-",
+   "smallest_fix": "when the file next changes",
+   "verdict_on_criterion": "-",
+   "status": "PENDING",
+   "miss_of": null
+  }
+ ]
+}
