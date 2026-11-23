@@ -109,7 +109,7 @@ The order puts the most-read files first. In a group of equal reach, the file wi
 | 3 | `RIMMANDRAKE_REWRITE_CHARTER_AND_AGENT_POLICY_EVERY_SEAT_READS` | `infrastructure/agents/CHARTER.md`, `infrastructure/agents/Agent_Policy.md` | 37,093 | 4.22 | 87 | each agent that `CLAUDE.md` sends there | `Agent_Policy.md` is the only home of the model ladder. Keep each figure. |
 | 4 | `RIMMANDRAKE_REWRITE_OPERATIONS_ROLE_ONE_OF_TWO_SWITCHED_ON` | `roles/operations.md` | 27,080 | 4.38 | 85 | each Operations run | None. |
 | 5 | `RIMMANDRAKE_REWRITE_RESCUE_AND_WALK_ROLES_PIPELINE_NAMES_THEM` | `roles/fable_rescue.md`, `roles/walk_brief.md`, `roles/criteria_fixer.md` | 25,476 | 4.38 | 82 | a rescue run, a walk-brief writer, the neutral fixer | `maturation.py` quotes a marked block in `fable_rescue.md` step 2. Keep the marks. |
-| 6 | `RIMMANDRAKE_REWRITE_JUDGE_BRIEFS_ONE_IS_CALIBRATED` | `design/RimMandrake/art_judge_brief.md`, `design/RimMandrake/scene_look_judge_brief.md`, `design/RimStarWars/canon_references/AGENT_BRIEF.md`, the two `PROMPT.md` files | 39,692 | 3.95 | 96 | each art judge and scene judge | `art_judge_brief.md` is CALIBRATED. An edit makes it UNTESTED. Run `python3 src/RimMandrake/rimflow/art_calibration.py run` after the edit, in the same batch. Keep each constraint id, for example A1 and E3. |
+| 6 | `RIMMANDRAKE_REWRITE_JUDGE_BRIEFS_ONE_IS_CALIBRATED` | `design/RimMandrake/art_judge_brief.md`, `design/RimMandrake/scene_look_judge_brief.md`, `design/RimStarWars/canon_references/AGENT_BRIEF.md`, the two `PROMPT.md` files | 39,692 | 3.95 | 96 | each art judge and scene judge | `art_judge_brief.md` reads UNTESTED in `infrastructure/state/judge_calibration.json` (measured 2026-11-23). Calibrate it after the edit, in the same batch: `python3 src/RimMandrake/rimflow/refusal_contract.py calibrate --model art_judge_brief` (its model check is `python3 src/RimMandrake/rimflow/art_calibration.py run`). Keep each constraint id, for example A1 and E3. |
 | 7 | `RIMMANDRAKE_REWRITE_BIOME_DELEGATION_DEBUG_DOCS_CODE_CITES_THEM` | `design/RimMandrake/biome_rulings.md`, `delegation_policy.md`, `debug_process.md` | 62,173 | 4.52 | 157 | each agent that a `CLAUDE.md` pointer sends there | Code cites `debug_process.md` from 40 files and `delegation_policy.md` from 23. Keep each heading and each section number. |
 | 8 | `RIMMANDRAKE_REWRITE_STANDING_RULINGS_LARGEST_HOME_FILE` | `design/RimMandrake/standing_rulings.md` | 126,133 | 4.47 | 357 | each agent that a `CLAUDE.md` pointer sends there | `CLAUDE.md` holds 38 pointers to sections of this file. Keep each heading word for word. Keep each quote and date. One batch, in several sessions, one after another. |
 | 9 | `RIMMANDRAKE_REWRITE_TRAP_FACT_FILES_TWO_FILES` | `infrastructure/state/facts/instrument_traps.md`, `tool_traps.md` | 80,548 | 4.13 | 273 | each agent before it trusts a count or a tool | Keep each measurement. |
@@ -134,6 +134,25 @@ These files are in no batch:
 - the two `Fable_Review/rewrites/` files;
 - `infrastructure/DETERMINISM_ASSESSMENT.md` (a dated assessment);
 - each candidate in `census.md`.
+
+### How the remaining batches run (from 2026-11-23)
+
+- Batches 6 to 17 are items on the rimflow list. The List Pipeline (`src/RimMandrake/rimflow/list_dispatch.py`) launches
+  each one as a detached helper, inside its own slot limits. Item `RIMMANDRAKE_LAUNCH_REMAINING_PLAIN_ENGLISH_BATCHES_ELEVEN_LEFT`
+  filed them.
+- Each item's prose is its brief: `infrastructure/state/items/<ID>.md`.
+- One helper run does well up to about 50 KB of text. So a larger batch is split into parts, one item each. The batch
+  item waits on its parts and closes when every part is closed.
+  - `standing_rulings.md` is five session items, by heading. Each session waits on the one before.
+  - The maturation spec is two session items. The second waits on the first.
+  - The skills batch is one item per skill, one item for `skills/README.md` and `skills/BY_WORK.md`, and one item for
+    the five art-evaluation prompt files. The 11 registered skills were filed first, so the pipeline takes them first.
+- The two calibration batches never run at one time: the untested judge role files wait on the judge briefs. The
+  prompt files wait on the untested judge role files.
+- Each Designer packet part has a launch check. The check refuses the launch while a `rm-role-designer*` unit is active.
+- The outcome check of each part is `batch_done.py check <ID> <paths>` beside this file. The check holds when the result
+  file has its `Base:` line and its meaning-read heading, each file changed since the base, and `rule_doc_lint.py keep`
+  loses nothing. `batch_done.py selftest` runs 12 planted cases.
 
 ### Which batches can run at the same time
 
