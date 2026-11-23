@@ -1,6 +1,6 @@
 # Gimme Some Slack 0.1.1: test-and-stage table
 
-Generated 2026-11-20T23:26:58-08:00 from `test_table.json` (the record; this is its read view) by the throwaway `make_test_table.py`. Stages: 2 preflight, 4-5 blind offline, 6 in-game, 8 his walk. A bar passes when every deciding test passes. Columns follow Explosive Knockback's table.
+Generated 2026-11-22T20:15:46-08:00 from `test_table.json` (the record; this is its read view) by the throwaway `make_test_table.py`. Stages: 2 preflight, 4-5 blind offline, 6 in-game, 8 his walk. A bar passes when every deciding test passes. Columns follow Explosive Knockback's table.
 
 ## Counts (measured)
 
@@ -12,7 +12,7 @@ Generated 2026-11-20T23:26:58-08:00 from `test_table.json` (the record; this is 
 - decided offline only (no game needed): 2
 - in-game scenes: 26 named in scenes.json plus 7 specified here; entry exists 33, absent 0
 - older proof rows (supports): 170 mapped in proof_leaves.ROW_LEAVES (2 of them gravship_scene), code found for 170; last live run J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard); mapped rows and run rows not reconciled one to one
-- offline tests: 31 built before Stage 3 (ran today: 31 PASS, 0 FAIL); 8 specified at the lock, built in Stage 3: T_SETTINGS_SWEEP_OFFLINE PASS, T_SHOCK_RULE_OFFLINE PASS, T_CORD_GEOMETRY_OFFLINE PASS, T_MAIN_THREAD_TEXTURES_OFFLINE PASS, T_STATICS_CENSUS PASS, T_SWITCH_OFF_NODE_OFFLINE PASS, T_SWITCH_LIGHT_OFFLINE PASS, T_POLE_SOUTH_DRAWS_FRONT_OFFLINE PASS
+- offline tests: 31 built before Stage 3 (ran today: 30 PASS, 1 FAIL); 9 specified at the lock, built in Stage 3: T_SETTINGS_SWEEP_OFFLINE PASS, T_SHOCK_RULE_OFFLINE PASS, T_CORD_GEOMETRY_OFFLINE PASS, T_MAIN_THREAD_TEXTURES_OFFLINE PASS, T_STATICS_CENSUS PASS, T_SWITCH_OFF_NODE_OFFLINE PASS, T_SWITCH_LIGHT_OFFLINE PASS, T_NO_KINK_OFFLINE PASS, T_POLE_SOUTH_DRAWS_FRONT_OFFLINE PASS
 
 ## Bars
 
@@ -49,7 +49,7 @@ Generated 2026-11-20T23:26:58-08:00 from `test_table.json` (the record; this is 
 | `switch_light_reads_state` | record | 6 | T_SWITCH_LIGHT_OFFLINE, sc_switch_light | - | 0 | all |
 | `conduit_invisible` | tree | 6 | sc_conduit_invisible | T_GATE | 7 | all |
 | `cords_lie_slack` | tree | 6 | T_CORE, T_CORD_GEOMETRY_OFFLINE, sc_cords_slack | T_MATRIX, T_END_HEAP, T_NO_GROUND_WIND_OFFLINE | 20 | all |
-| `no_unforced_sharp_turn` | tree | 6 | T_CORD_GEOMETRY_OFFLINE, sc_no_sharp_turn | - | 2 | all |
+| `no_unforced_sharp_turn` | tree | 6 | T_CORD_GEOMETRY_OFFLINE, T_NO_KINK_OFFLINE, sc_no_sharp_turn | - | 2 | all |
 | `cords_meet_walls_at_face` | tree | 6 | sc_walls | T_CORE, T_END_HEAP | 6 | all |
 | `strip_at_every_junction` | tree | 6 | T_CORE, sc_junction_strips | T_JUNCTION_ART, T_STRIP_ART | 3 | all |
 | `dense_block_tangle` | tree | 6 | T_CORE, sc_dense_tangle | T_MATRIX | 8 | all |
@@ -77,39 +77,40 @@ Generated 2026-11-20T23:26:58-08:00 from `test_table.json` (the record; this is 
 
 | test | stage | kind | file :: entry | runs today | observes |
 |---|---|---|---|---|---|
-| `T_CORE` | 4-5 | offline | `src/RimMandrake/Utils/selftest_gimmesomeslack.py` | PASS rc=0 311.15s | the C# SelfTest on the production core and aerial halves against the Python oracle: graph reduction, planner, slack laying, shape no-two-alike, junction strips, |
-| `T_STUB_JOINS` | 4-5 | offline | `src/RimMandrake/Utils/selftest_gimmesomeslack.py` | PASS rc=0 20.42s | Core/StubJoinAudit over 524 generated scenes (four looks x boxes, switches with 1-4 cords, wall/rock faces through and dead-ending, his stations 12 and 25): eac |
-| `T_STUB_ART_CENSUS` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_stub_art_census.py` | PASS rc=0 0.28s | every texture under Textures/ is classed in StubArt.Census (stubbed, position only, loose end, cord); a planted unknown texture goes red |
-| `T_GATE` | 2 | offline | `src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py` | PASS rc=0 348.44s | the offline tier O1-O8: mod files, csproj and DLL, the 26 shipped setting defaults, style art sanity with planted faults, review-round art, GPT fix shapes, lamp |
-| `T_MATRIX` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/northstar_matrix/selftest.py` | PASS rc=0 7.68s | the scene matrix generator, oracle, placer and fake game: 57 checks, 17 negative controls |
-| `T_NO_HOSE` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_no_hose.py` | PASS rc=0 2.44s | the mod ships no hose, reel or pipe def, texture or class; a planted hose goes red |
-| `T_SHOCK_OUTLIVES` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_shock_outlives_wire.py` | PASS rc=0 0.12s | a fallen wire's shock cells die with the wire (GSS_FALLEN_WIRE_FIX_SHOCK_OUTLIVES_WIRE) |
-| `T_SHOCK_OUTLIVES_BINDING` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_shock_outlives_wire_binding.py` | PASS rc=0 7.8s | the live binding of the shock-outlives fix, compiled offline |
-| `T_SHOCK_BITES_BINDING` | 4-5 | offline | `src/RimMandrake/Utils/selftest_gss_shock_still_bites_binding.py` | PASS rc=0 0.42s | a live fallen wire still shocks after the outlives fix (binding, offline) |
+| `T_CORE` | 4-5 | offline | `src/RimMandrake/Utils/selftest_gimmesomeslack.py` | PASS rc=0 409.19s | the C# SelfTest on the production core and aerial halves against the Python oracle: graph reduction, planner, slack laying, shape no-two-alike, junction strips, |
+| `T_STUB_JOINS` | 4-5 | offline | `src/RimMandrake/Utils/selftest_gimmesomeslack.py` | PASS rc=0 23.2s | Core/StubJoinAudit over 524 generated scenes (four looks x boxes, switches with 1-4 cords, wall/rock faces through and dead-ending, his stations 12 and 25): eac |
+| `T_STUB_ART_CENSUS` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_stub_art_census.py` | PASS rc=0 0.36s | every texture under Textures/ is classed in StubArt.Census (stubbed, position only, loose end, cord); a planted unknown texture goes red |
+| `T_GATE` | 2 | offline | `src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py` | FAIL rc=1 408.02s | the offline tier O1-O8: mod files, csproj and DLL, the 26 shipped setting defaults, style art sanity with planted faults, review-round art, GPT fix shapes, lamp |
+| `T_MATRIX` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/northstar_matrix/selftest.py` | PASS rc=0 8.63s | the scene matrix generator, oracle, placer and fake game: 57 checks, 17 negative controls |
+| `T_NO_HOSE` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_no_hose.py` | PASS rc=0 2.71s | the mod ships no hose, reel or pipe def, texture or class; a planted hose goes red |
+| `T_SHOCK_OUTLIVES` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_shock_outlives_wire.py` | PASS rc=0 0.08s | a fallen wire's shock cells die with the wire (GSS_FALLEN_WIRE_FIX_SHOCK_OUTLIVES_WIRE) |
+| `T_SHOCK_OUTLIVES_BINDING` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_shock_outlives_wire_binding.py` | PASS rc=0 7.93s | the live binding of the shock-outlives fix, compiled offline |
+| `T_SHOCK_BITES_BINDING` | 4-5 | offline | `src/RimMandrake/Utils/selftest_gss_shock_still_bites_binding.py` | PASS rc=0 0.34s | a live fallen wire still shocks after the outlives fix (binding, offline) |
 | `T_END_HEAP` | 4-5 | offline | `src/RimMandrake/Utils/selftest_gss_end_heap_budget.py` | PASS rc=0 0.01s | long-run end heaps stay inside the loop budget |
-| `T_JUNCTION_ART` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_junction_necks.py` | PASS rc=0 0.13s | the Modern and Futuristic T/X junction PNGs: body wider than the cord, necks meet the cord |
-| `T_STRIP_ART` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_strip_art.py` | PASS rc=0 0.05s | the Modern power-strip PNGs have no black fringe (his 2026-11-08 sitting) |
-| `T_FW_PIT_DRAW_CENSUS` | 4-5 | offline | `src/RimMandrake/FlowWorks/selftest_flowworks_pit_draw_census.py` | PASS rc=0 0.71s | everything drawn outside the map-mesh print against FlowWorks' under-liquid law; GSS floor cords on a pit floor are faded by FloorSeen (CordUnderLiquid), overhe |
-| `T_PROOF_LEAVES` | 2 | offline | `src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_proof_leaves.py` | PASS rc=0 0.08s | every proof row cites a leaf of tree.json and every leaf has a row or a live item owing it |
-| `T_H_RESTRING_PROOF` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_restring_proof.py` | PASS rc=0 0.18s | harness: the M15f re-string proof path's instruments |
-| `T_H_KINETIC_SWAY` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_kinetic_sway.py` | PASS rc=0 0.44s | harness: the M22 kinetic-sway proof rows, probe transport, launcher |
-| `T_H_AERIAL_PROBE_BATCH` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_aerial_probe_batch.py` | PASS rc=0 0.68s | harness: the aerial mod-settings probe batch |
-| `T_H_EXPLODE_PARSE` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_explode_parse.py` | PASS rc=0 2.41s | harness: the explode probe's parsing against production AerialMath |
+| `T_JUNCTION_ART` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_junction_necks.py` | PASS rc=0 0.14s | the Modern and Futuristic T/X junction PNGs: body wider than the cord, necks meet the cord |
+| `T_STRIP_ART` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_strip_art.py` | PASS rc=0 0.06s | the Modern power-strip PNGs have no black fringe (his 2026-11-08 sitting) |
+| `T_FW_PIT_DRAW_CENSUS` | 4-5 | offline | `src/RimMandrake/FlowWorks/selftest_flowworks_pit_draw_census.py` | PASS rc=0 0.21s | everything drawn outside the map-mesh print against FlowWorks' under-liquid law; GSS floor cords on a pit floor are faded by FloorSeen (CordUnderLiquid), overhe |
+| `T_PROOF_LEAVES` | 2 | offline | `src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_proof_leaves.py` | PASS rc=0 0.09s | every proof row cites a leaf of tree.json and every leaf has a row or a live item owing it |
+| `T_H_RESTRING_PROOF` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_restring_proof.py` | PASS rc=0 0.17s | harness: the M15f re-string proof path's instruments |
+| `T_H_KINETIC_SWAY` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_kinetic_sway.py` | PASS rc=0 0.35s | harness: the M22 kinetic-sway proof rows, probe transport, launcher |
+| `T_H_AERIAL_PROBE_BATCH` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_aerial_probe_batch.py` | PASS rc=0 0.66s | harness: the aerial mod-settings probe batch |
+| `T_H_EXPLODE_PARSE` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_explode_parse.py` | PASS rc=0 1.42s | harness: the explode probe's parsing against production AerialMath |
 | `T_H_NO_TWO_ALIKE_SHORT` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_no_two_alike_short.py` | PASS rc=0 0.02s | harness: SC_no_two_cords_alike exempts cords under 3 cells |
-| `T_H_PLAYTEST_RUNNER` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_playtest_runner.py` | PASS rc=0 0.06s | harness: the walk launcher's recipe expansion |
-| `T_H_PROOF_DRIVERS` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_proof_drivers.py` | PASS rc=0 0.2s | harness: the proof drivers' false-pass fixes |
-| `T_H_REVIEW_LEFTOVERS` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_review_leftovers.py` | PASS rc=0 0.34s | harness: post-approval proof-harness findings |
-| `T_H_WEAKCLOSE_GUARDS` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_weakclose_guards.py` | PASS rc=0 0.01s | harness: source-shape guards for Verse-bound findings |
-| `T_H_HUMAN_REVIEW` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_human_review.py` | PASS rc=0 0.06s | harness: the review map layout |
-| `T_H_PROOF_ALL` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/northstar/selftest_proof_all.py` | PASS rc=0 19.47s | harness: proof_all's durability on a fake bridge |
-| `T_SETTINGS_SWEEP_OFFLINE` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_settings_sweep.py` | PASS rc=0 2.42s | the settings sweep, moved out of the game: for each key of the shipped floor table (validation.SHIPPED, 26) and each AerialSettings field, either an offline fli |
-| `T_SHOCK_RULE_OFFLINE` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/Source/SelfTest/ShockRuleChecks.cs` | PASS rc=0 310.41s | the who-is-shocked rule as a pure table: line kind (floor end, downed span, FlowWorks deck cord) x live by power path at the last poll x setting (None, Only dow |
-| `T_CORD_GEOMETRY_OFFLINE` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/Source/SelfTest/CordGeometryChecks.cs` | PASS rc=0 315.72s | on the oracle scenes and on the M2c junction-battery site as a lab world: every edge's drawn length is at least 1.4 times its chord, every edge over four cells  |
-| `T_MAIN_THREAD_TEXTURES_OFFLINE` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_main_thread_textures.py` | PASS rc=0 0.18s | no texture, material or graphic is fetched in a static field initializer, or in the static constructor of a class without [StaticConstructorOnStartup], anywhere |
-| `T_STATICS_CENSUS` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_statics_census.py` | PASS rc=0 0.11s | every mutable static field in Source (outside SelfTest) is cleared in GssSessionReset.cs or listed immutable with a reason; planted: a new static collection not |
-| `T_SWITCH_OFF_NODE_OFFLINE` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SwitchOffChecks.cs` | PASS rc=0 308.26s | the mod selftest reads an off power switch as a node of the cord graph with both cords ending on its stubs: no cut, live or dead end at the switch, on and off d |
-| `T_SWITCH_LIGHT_OFFLINE` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SwitchLightChecks.cs` | PASS rc=0 1.79s | the shipped lamp rule (Core/SwitchLight) over every side/power/state/setting case (4^4 sides x closed/open x setting) and the brief's sequences (power lost whil |
-| `T_POLE_SOUTH_DRAWS_FRONT_OFFLINE` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_pole_south_draws_front.py` | PASS rc=0 0.64s | over the SouthDrawsFront rule (MandrakePatches) and the mast def: the mast is drawn above every plant or building north of it within its picture height and belo |
+| `T_H_PLAYTEST_RUNNER` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_playtest_runner.py` | PASS rc=0 0.07s | harness: the walk launcher's recipe expansion |
+| `T_H_PROOF_DRIVERS` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_proof_drivers.py` | PASS rc=0 0.1s | harness: the proof drivers' false-pass fixes |
+| `T_H_REVIEW_LEFTOVERS` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_review_leftovers.py` | PASS rc=0 0.27s | harness: post-approval proof-harness findings |
+| `T_H_WEAKCLOSE_GUARDS` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_weakclose_guards.py` | PASS rc=0 0.02s | harness: source-shape guards for Verse-bound findings |
+| `T_H_HUMAN_REVIEW` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_human_review.py` | PASS rc=0 0.09s | harness: the review map layout |
+| `T_H_PROOF_ALL` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/northstar/selftest_proof_all.py` | PASS rc=0 23.75s | harness: proof_all's durability on a fake bridge |
+| `T_SETTINGS_SWEEP_OFFLINE` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_settings_sweep.py` | PASS rc=0 2.62s | the settings sweep, moved out of the game: for each key of the shipped floor table (validation.SHIPPED, 26) and each AerialSettings field, either an offline fli |
+| `T_SHOCK_RULE_OFFLINE` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/Source/SelfTest/ShockRuleChecks.cs` | PASS rc=0 409.19s | the who-is-shocked rule as a pure table: line kind (floor end, downed span, FlowWorks deck cord) x live by power path at the last poll x setting (None, Only dow |
+| `T_CORD_GEOMETRY_OFFLINE` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/Source/SelfTest/CordGeometryChecks.cs` | PASS rc=0 370.02s | on the oracle scenes and on the M2c junction-battery site as a lab world: every edge's drawn length is at least 1.4 times its chord, every edge over four cells  |
+| `T_MAIN_THREAD_TEXTURES_OFFLINE` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_main_thread_textures.py` | PASS rc=0 0.2s | no texture, material or graphic is fetched in a static field initializer, or in the static constructor of a class without [StaticConstructorOnStartup], anywhere |
+| `T_STATICS_CENSUS` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_statics_census.py` | PASS rc=0 0.12s | every mutable static field in Source (outside SelfTest) is cleared in GssSessionReset.cs or listed immutable with a reason; planted: a new static collection not |
+| `T_SWITCH_OFF_NODE_OFFLINE` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SwitchOffChecks.cs` | PASS rc=0 377.83s | the mod selftest reads an off power switch as a node of the cord graph with both cords ending on its stubs: no cut, live or dead end at the switch, on and off d |
+| `T_SWITCH_LIGHT_OFFLINE` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SwitchLightChecks.cs` | PASS rc=0 3.65s | the shipped lamp rule (Core/SwitchLight) over every side/power/state/setting case (4^4 sides x closed/open x setting) and the brief's sequences (power lost whil |
+| `T_NO_KINK_OFFLINE` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/Source/SelfTest/KinkChecks.cs` | PASS rc=0 29.3s | the production builder over the review map's ground-cord stations 1-4 (the probe's dump; station 3 is the build he walked) and the region round station 3 (seeds |
+| `T_POLE_SOUTH_DRAWS_FRONT_OFFLINE` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_pole_south_draws_front.py` | PASS rc=0 0.58s | over the SouthDrawsFront rule (MandrakePatches) and the mast def: the mast is drawn above every plant or building north of it within its picture height and belo |
 | `sc_conduit_invisible` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_conduit_invisible | entry exists | no pipe drawn on any PowerConduit or WaterproofConduit cell, a cord per edge on both runs, overlay connector lines present; the HiddenConduit run owns no cord |
 | `sc_cords_slack` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_cords_slack | entry exists | every edge at least 1.4 times its chord, no bend tighter than the minimum radius, an excursion off the conduit line on edges over four cells |
 | `sc_no_sharp_turn` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_no_sharp_turn | entry exists | strands read greater than zero in every look (the instrument sees cords); unforced == 0 in every look, at plug and junction ends as well as mid-cord; every forc |
@@ -144,7 +145,7 @@ Generated 2026-11-20T23:26:58-08:00 from `test_table.json` (the record; this is 
 | `sc_no_roof_over_pole` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_no_roof_over_pole | entry exists | auto-roof and a build-roof designation over a mast cell form no roof and the refusal names the pole; a god-mode roof still cuts the spans |
 | `sc_switch_light` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_switch_light | entry exists | two batteries, an in-line power switch: the GSS probe switchlights reads the lamp dark with no power, green closed and powered, red open and powered, dark after |
 | `LOOK_STAGE8` | 8 | look | `None` | entry ABSENT | his walk of a scavenger base on his full list, with a mid-way reload |
-| `T_CORDS_UNDER_ITEMS_OFFLINE` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_cords_under_items.py` | PASS rc=0 0.28s | Offline half of sc_cords_under_items (GimmeSomeSlack 0.1.0, bar cords_draw_under_things, owner by card 2026-11-14). No game: the scene's entry imports and is wi |
+| `T_CORDS_UNDER_ITEMS_OFFLINE` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_cords_under_items.py` | PASS rc=0 0.3s | Offline half of sc_cords_under_items (GimmeSomeSlack 0.1.0, bar cords_draw_under_things, owner by card 2026-11-14). No game: the scene's entry imports and is wi |
 | `T_DROPPED_CORDS_AERIAL_MASTER_OFFLINE` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_dropped_cords_ignore_aerial_master.py` | PASS rc=0 0.02s | Another mod's dropped live cord is not an overhead line: the overhead-lines master switch must not silence it. |
 | `T_FLIP_FRESH_OFFLINE` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_flip_fresh.py` | PASS rc=0 0.02s | live_flip_fresh.py's verdict, and that the mod's dirty-event patch sends a liveness flip to the on/off-screen rule. |
 | `T_LIVE_END_SWEEP_OFFLINE` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_live_end_sweep.py` | PASS rc=0 97.99s | RIMMANDRAKE_INVENT_SLACK_LIVE_END_GREEN_BY_THIN_MARGIN: the live cut end's mathematics, swept offline, as a permanent check. |

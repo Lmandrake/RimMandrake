@@ -548,7 +548,8 @@ GPT_PRERELEASE_FIX_SHAPES = [
     ("B16 printed-strand read forgets a removed map", "RM_MapComponent_CordGraph.cs", "SectionLayer_RM_MessyCords.ForgetMap(map);"),
     ("D11 last picks cleared per game", "GssSessionReset.cs", "Aerial.ConduitStylePicker.ClearPicks();"),
     ("D2 a lamp's run is its connection's", "Aerial/RM_MapComponent_ConduitRuns.cs", "ConduitStyles.LampHooked(parent != null, parent != null && set.Contains(parent), touches)"),
-    ("D9 restyle keeps a foreign-styled lamp", "Aerial/RM_MapComponent_ConduitRuns.cs", "foreignStyle: ForeignStyled(l)"),
+    # the restyle reach work (c3633a8f30) passes the flag by position: LampFollowsRun(raw, looks, restyle, foreignStyle)
+    ("D9 restyle keeps a foreign-styled lamp", "Aerial/RM_MapComponent_ConduitRuns.cs", "drewBefore.Looks, true, ForeignStyled(l))"),
     ("B15 whip resumes its snap cursor", "RM_MapComponent_CordGraph.cs", "CordMotion.WhipInto(tail, now, seed, CordMotion.WhipAmp, bentBuf, ref cur, roomPos, roomNeg);"),
     ("B24 unchanged settings close re-prints nothing", "GimmeSomeSlackMod.cs", "if (GimmeSomeSlackSettings.ChangedSinceApply) GimmeSomeSlackSettings.Apply();"),
     ("a pole's lead lies from its foot (owner 2026-11-08)", "Aerial/RM_MapComponent_Aerial.cs", "FallenLay lay = AerialMath.LayFootDrop(foot, from, d.thingIDNumber, walk);"),
