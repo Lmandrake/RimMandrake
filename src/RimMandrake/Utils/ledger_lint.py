@@ -16,7 +16,7 @@ landing. So this lint does, refusing:
                  the old and the new line on the next merge, so an edit never sticks.
                  A shard emptied or deleted outright is the same finding, per line
   DUP_DIFFERENT  a NEW line (not on the base) with the same event identity —
-                 (seat, verb, subject, ts) — as a line ALREADY ON THE BASE but different
+                 (seat, verb, subject, ts, tsn) — as a line ALREADY ON THE BASE but different
                  content. That is the shape an edit-in-place leaves after a union: the
                  landed original plus its altered twin. Two new same-second events are
                  NOT flagged — the owner writes same-second note pairs legitimately
@@ -93,8 +93,10 @@ def content(root, rev, path):
 
 
 def identity(ev):
+    # tsn (nanoseconds, stamped at write) is in the identity: two writers' events in one second carry different tsn and
+    # are two events, while an edit in place keeps its tsn (2026-11-22: two helpers' `./game` stamps, seat CONDUCTOR)
     subj = ev.get("id") or ev.get("name") or ev.get("system") or ev.get("path") or ""
-    return (ev.get("seat"), ev.get("event"), subj, ev.get("ts"))
+    return (ev.get("seat"), ev.get("event"), subj, ev.get("ts"), ev.get("tsn"))
 
 
 def lint_blob(path, data, base_data=None):
@@ -152,7 +154,7 @@ def lint_blob(path, data, base_data=None):
             continue
         if base_idents.get(identity(ev)) and canon not in base_idents[identity(ev)]:
             out.append(("DUP_DIFFERENT", path, i,
-                        "same (seat, event, subject, ts) %r as another line with "
+                        "same (seat, event, subject, ts, tsn) %r as another line with "
                         "different content — an in-place edit after a union merge? "
                         "Re-append a corrected event with a fresh ts instead"
                         % (identity(ev),)))

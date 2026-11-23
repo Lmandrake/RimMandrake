@@ -165,7 +165,10 @@ def add(a):
             st, det = V.scene_verdict(tid, merged)
         except KeyError:                      # not a scenes.json scene (sc_stub_joins): its own command writes its row
             continue
-        if tid in last and last[tid]["verdict"] == st and last[tid].get("detail") == det["rows"]:
+        # an unchanged verdict on the SAME build adds nothing; on another build (a rerun after a change) it is that build's
+        # row, or the build match keeps reading the old build's row (2026-11-22 rerun on 244ae76cdf)
+        if tid in last and last[tid]["verdict"] == st and last[tid].get("detail") == det["rows"] \
+                and last[tid].get("mod_hash") == IDENT.get("mod_hash"):
             continue
         # a scene whose rows have not all run yet is not a run of that scene: no row until they have (or --final)
         # (visit 1: interim MISSING-only rows read as UNMEASURED history to maturation.py next)

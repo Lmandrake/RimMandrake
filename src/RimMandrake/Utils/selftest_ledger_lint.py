@@ -46,6 +46,14 @@ check("union of an edit: original kept + altered twin", codes(A + "\n" + A_EDIT 
       ["DUP_DIFFERENT"])
 check("two new same-second distinct events are legitimate", codes(A + "\n" + A2 + "\n" + A3 + "\n", A + "\n"), [])
 check("empty shard", codes(""), [])
+# two writers' stamps in one second (2026-11-22: a Pyrelands helper's and a GSS helper's `./game` bridge events, seat
+# CONDUCTOR, same ts): distinct tsn, so distinct events; an edit in place keeps its tsn and is still caught
+T1 = j(seat="CONDUCTOR", event="bridge", state="taken", purpose="one", ts="2026-11-23T07:59:34Z", tsn=1795420774376240112)
+T2 = j(seat="CONDUCTOR", event="bridge", state="taken", purpose="two", ts="2026-11-23T07:59:34Z", tsn=1795420774144853679)
+T1_EDIT = j(seat="CONDUCTOR", event="bridge", state="taken", purpose="EDITED", ts="2026-11-23T07:59:34Z", tsn=1795420774376240112)
+check("two writers' same-second events with distinct tsn, one on the base", codes(T1 + "\n" + T2 + "\n", T1 + "\n"), [])
+check("union of an edit that kept its tsn: still DUP_DIFFERENT", codes(T1 + "\n" + T1_EDIT + "\n", T1 + "\n"),
+      ["DUP_DIFFERENT"])
 check("a shard truncated to empty loses its base lines", codes("", A + "\n" + B + "\n"), ["NOT_APPEND"])
 check("a shard gone at rev (None) loses its base lines",
       sorted({c for c, *_ in L.lint_blob("s.jsonl", None, (A + "\n").encode())}), ["NOT_APPEND"])

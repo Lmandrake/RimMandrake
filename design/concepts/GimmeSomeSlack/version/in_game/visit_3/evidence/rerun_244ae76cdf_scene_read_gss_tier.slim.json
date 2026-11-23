@@ -1,0 +1,45 @@
+{
+ "label": "rerun_244ae76cdf_scene_read_gss_tier",
+ "order": 11,
+ "source": "/home/mandrake/rm/relentless/clones/RIMMANDRAKE_STAGE_SLACK_SHORT_LOOK_AT_FOUR_CHANGES_THEN_HIS_PASS.det/Transient/gss_v3r/gravship_off.json",
+ "mode": "live",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "owlchemist.cherrypicker",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.patches"
+  ],
+  "tier": {
+   "name": "gimmesomeslack",
+   "active_equals_running": true,
+   "source": "proof_all env of runB, same ArchBig session"
+  }
+ },
+ "active_mods": [
+  "brrainz.harmony",
+  "ludeon.rimworld",
+  "ludeon.rimworld.royalty",
+  "ludeon.rimworld.ideology",
+  "ludeon.rimworld.biotech",
+  "ludeon.rimworld.anomaly",
+  "ludeon.rimworld.odyssey",
+  "brrainz.rimbridgeserver",
+  "owlchemist.cherrypicker",
+  "ray1203.simplecamerasetting",
+  "mandrake.rm.gimmesomeslack",
+  "mandrake.rm.patches"
+ ],
+ "game_build": "1.6.4871 rev590",
+ "run_identity": null,
+ "mod_hash": null,
+ "rows": []
+}

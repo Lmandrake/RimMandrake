@@ -1,0 +1,50 @@
+{
+ "scene": "scene_switch_off_ends",
+ "status": "PASS",
+ "rows": [
+  {
+   "id": "SC_switch_off_cords_connected",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "near": "24.5,170.5,1.5",
+    "stranded_tips_near": 2,
+    "endsOn": 0,
+    "endsOff": 0,
+    "both": 0,
+    "none": 0,
+    "bad": []
+   }
+  },
+  {
+   "id": "SC_switch_off_on_differs_only_in_power",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "on": [
+     "battery:17,170|transmitter:25,170",
+     "consumer:32,170|transmitter:25,170"
+    ],
+    "off": [
+     "battery:17,170|transmitter:25,170",
+     "consumer:32,170|transmitter:25,170"
+    ]
+   }
+  },
+  {
+   "id": "SCENE_sc_switch_off_ends",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "rows": {
+     "SC_switch_off_cords_connected": [
+      "PASS"
+     ],
+     "SC_switch_off_on_differs_only_in_power": [
+      "PASS"
+     ]
+    }
+   }
+  }
+ ]
+}
