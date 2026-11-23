@@ -161,11 +161,6 @@ namespace RimMandrake.FlowWorks
 		public const float WetBandCells = 0.15625f;
 		public const float WetBandDarken = 0.30f;
 
-		/// <summary>The thin pale line where the water meets a wall or the rim, drawn over the water.</summary>
-		public const float WaterlineCells = 0.03125f;
-		public const float WaterlineAlpha = 0.45f;
-		public static readonly Float3 WaterlineColour = new Float3(0.80f, 0.88f, 0.92f);
-
 		/// <summary>The drifting ripple light on clear water in a pit: additive, alpha <see cref="RippleAlpha"/>. Setting
 		/// pitWaterRippleLight (0 = off).</summary>
 		public const float DefaultRipplePeak = 0.16f;
@@ -219,6 +214,15 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>A gate stands on the channel floor and its head clears the bank by one notch.</summary>
 		public static float GateMetres(int depthNotches) => (depthNotches + 1) * Notch;
+
+		/// <summary>RIMMANDRAKE_HIDE_WATER_OVER_EAST_WEST_SLUICE_GATE_STATION_SEVEN (owner walk 2026-11-22, station 7: "There
+		/// should be no water shown over an E/W Sluice gate."): only a gate seen face-on (Rot4 North/South, its leaf spans
+		/// east-west, the art's _south drawing) has its foot up the screen from the floor, so only it has the liquid's line
+		/// climb it. A gate turned East/West is the art's _east side view: its sprite runs along the canal's width (bank to
+		/// bank, north to south), not up from the floor, so no part of it is "under" by a cut from its foot; it draws dry.
+		/// <paramref name="rotAsInt"/> is Rot4.AsInt (0 N, 1 E, 2 S, 3 W). A 1x1 door is only ever N or E (vanilla
+		/// DoorUtility.DoorRotationAt); S and W are answered by the same face/side rule.</summary>
+		public static bool GateShowsLiquid(int rotAsInt) => rotAsInt == 0 || rotAsInt == 2;
 
 		public const int Bands = 4;
 		public const float NoCut = -1f;

@@ -17,12 +17,15 @@ naive taste judge on the Conductor's ruling). This test holds the shipped law to
      clear liquid hides at least its shallow strength and at most its deep strength. Left out: per-pixel drawing (a live
      look, Stage 6), waves (0.2.0).
   5. the effects (second pass, RIMMANDRAKE_RESEARCH_FLOWWORKS_WATER_LOOK_FIRM_ALREADY_PICKED: BLEND picked): the judged
-     mockup's BLEND numbers are the target's; the model's wet ground, wet band, waterline and ripple light equal the
-     target (ripple alpha at each listed depth); RM_UnderLiquid's literals equal them; and the drawers call them
-     (RM_ExcavationWalls draws the wet tint, band and waterline, RM_LiquidSurface the ripple light).
+     mockup's BLEND numbers are the target's; the model's wet ground, wet band and ripple light equal the target
+     (ripple alpha at each listed depth); RM_UnderLiquid's literals equal them; and the drawers call them
+     (RM_ExcavationWalls draws the wet tint and band, RM_LiquidSurface the ripple light). The judged pale waterline is
+     removed (owner walk 2026-11-22, target "waterline.removed"): the model, the C# literals and the wall drawer carry
+     none of it.
 CAN IT FAIL: run in this file: the law shipped before this build (shallow 0), a pale body (Darken 0.3), a spliced golden
-row, a C# shallow default of 0, a model with dry ground (wet darken 0), a C# ripple peak of 0.3 (RIPPLE's, refused) and
-a wall drawer that never calls the wet tint must each go RED.
+row, a C# shallow default of 0, a model with dry ground (wet darken 0), a C# ripple peak of 0.3 (RIPPLE's, refused), a
+wall drawer that never calls the wet tint, a model / a C# file / a wall drawer that brings the pale waterline back must
+each go RED.
     python3 src/RimMandrake/FlowWorks/selftest_flowworks_water_target.py
 """
 from __future__ import annotations
@@ -65,7 +68,10 @@ def cs_float3(text, name):
 def effects_checks(t, model, ul_cs, walls_cs, surface_cs):
     out = []
     e = t["effects"]
-    wg, wb, wl, rl = e["wet_ground"], e["wet_band"], e["waterline"], e["ripple_light"]
+    wg, wb, rl = e["wet_ground"], e["wet_band"], e["ripple_light"]
+    wl = e["waterline"]["judged"]  # history of the judged picture; the line itself is removed (e["waterline"]["removed"])
+    gone = bool(e["waterline"].get("removed"))
+    wl_names = ("WaterlineCells", "WaterlineAlpha", "WaterlineColour")
     near = lambda a, b, tol=1e-6: a is not None and b is not None and abs(a - b) <= tol
     nearv = lambda a, b, tol=1e-6: a is not None and b is not None and len(a) == len(b) and all(abs(x - y) <= tol for x, y in zip(a, b))
     # 5a. the judged picture: water_mockup's BLEND
@@ -87,8 +93,9 @@ def effects_checks(t, model, ul_cs, walls_cs, surface_cs):
     bad = [n for n, ok in (
         ("WET_DARKEN", near(g("WET_DARKEN"), wg["darken"])), ("WET_BAND_CELLS", near(g("WET_BAND_CELLS"), wb["cells"])),
         ("WET_BAND_DARKEN", near(g("WET_BAND_DARKEN"), wb["darken"])),
-        ("WATERLINE_CELLS", near(g("WATERLINE_CELLS"), wl["cells"])), ("WATERLINE_ALPHA", near(g("WATERLINE_ALPHA"), wl["alpha"])),
-        ("WATERLINE_COLOUR", nearv(g("WATERLINE_COLOUR") and list(g("WATERLINE_COLOUR")), wl["colour"])),
+        ("waterline removed in the target", gone),
+        *[(f"{n} still in the model (the waterline is removed)", g(n) is None)
+          for n in ("WATERLINE_CELLS", "WATERLINE_ALPHA", "WATERLINE_COLOUR")],
         ("RIPPLE_PEAK", near(g("RIPPLE_PEAK"), rl["peak"])), ("RIPPLE_FADE_METRES", near(g("RIPPLE_FADE_METRES"), rl["fade_metres"])),
         ("RIPPLE_COLOUR", nearv(g("RIPPLE_COLOUR") and list(g("RIPPLE_COLOUR")), rl["colour"])),
     ) if not ok]
@@ -104,24 +111,25 @@ def effects_checks(t, model, ul_cs, walls_cs, surface_cs):
                 + (f": {', '.join(bad)}" if bad else ""), not bad and w <= TOL))
     # 5c. the C# literals
     ulm = mask_comments(ul_cs)
-    got = {n: cs_float(ulm, n) for n in ("DefaultWetDarken", "WetBandCells", "WetBandDarken", "WaterlineCells", "WaterlineAlpha",
+    got = {n: cs_float(ulm, n) for n in ("DefaultWetDarken", "WetBandCells", "WetBandDarken",
                                           "DefaultRipplePeak", "RippleFadeMetres")}
     want = {"DefaultWetDarken": wg["darken"], "WetBandCells": wb["cells"], "WetBandDarken": wb["darken"],
-            "WaterlineCells": wl["cells"], "WaterlineAlpha": wl["alpha"], "DefaultRipplePeak": rl["peak"],
-            "RippleFadeMetres": rl["fade_metres"]}
+            "DefaultRipplePeak": rl["peak"], "RippleFadeMetres": rl["fade_metres"]}
     bad = [f"{n}={got[n]} want {v}" for n, v in want.items() if not near(got[n], v)]
-    for n, v in (("WaterlineColour", wl["colour"]), ("RippleColour", rl["colour"])):
+    for n, v in (("RippleColour", rl["colour"]),):
         if not nearv(cs_float3(ulm, n), v):
             bad.append(f"{n}={cs_float3(ulm, n)} want {v}")
-    out.append((f"5c C# effect literals are the target's (9 read){': ' + '; '.join(bad) if bad else ''}", not bad))
+    bad += [f"{n} still declared (the waterline is removed)" for n in wl_names if re.search(r"\b" + n + r"\b", ulm)]
+    out.append((f"5c C# effect literals are the target's (6 read, 3 removed names checked absent){': ' + '; '.join(bad) if bad else ''}", not bad))
     # 5d. the drawers call them
     wm_ = mask_comments(walls_cs)
     sm_ = mask_comments(surface_cs)
-    need = [("RM_ExcavationWalls", wm_, n) for n in ("RM_UnderLiquid.WetAlpha", "RM_UnderLiquid.WetBandCells",
-                                                      "RM_UnderLiquid.WaterlineCells")] + \
+    need = [("RM_ExcavationWalls", wm_, n) for n in ("RM_UnderLiquid.WetAlpha", "RM_UnderLiquid.WetBandCells")] + \
            [("RM_LiquidSurface", sm_, "RM_UnderLiquid.RippleAlpha")]
     miss = [f"{f} never calls {n}" for f, txt, n in need if n not in txt]
-    out.append((f"5d wiring: the wall drawer draws wet tint, band and line, the surface draws ripple light"
+    miss += [f"{f} draws the removed waterline ({n})" for f, txt in (("RM_ExcavationWalls", wm_), ("RM_LiquidSurface", sm_))
+             for n in wl_names if re.search(r"RM_UnderLiquid\." + n + r"\b", txt)]
+    out.append((f"5d wiring: the wall drawer draws wet tint and band and no pale waterline, the surface draws ripple light"
                 + (f": {'; '.join(miss)}" if miss else ""), not miss))
     return out
 
@@ -268,6 +276,13 @@ def main():
         ("a C# ripple peak of 0.3 (RIPPLE's, refused by the judge)",
          ul, re.sub(r"(DefaultRipplePeak\s*=\s*)[0-9.]+f", r"\g<1>0.3f", ul_cs), gold_cs, "5c C# effect"),
         ("a wall drawer that never calls the wet tint", ul, ul_cs, gold_cs, "5d wiring", walls_cs.replace("RM_UnderLiquid.WetAlpha", "0f")),
+        ("a model that brings the waterline back", Planted(WATERLINE_CELLS=0.03125, WATERLINE_ALPHA=0.45,
+                                                           WATERLINE_COLOUR=(0.80, 0.88, 0.92)), ul_cs, gold_cs, "5b model effects"),
+        ("a C# file that declares the waterline again", ul,
+         ul_cs.replace("public const float WetBandDarken", "public const float WaterlineAlpha = 0.45f;\n\t\tpublic const float WetBandDarken", 1),
+         gold_cs, "5c C# effect"),
+        ("a wall drawer that draws the pale waterline (white frames at every water edge)", ul, ul_cs, gold_cs, "5d wiring",
+         walls_cs.replace("float band = RM_UnderLiquid.WetBandCells;", "float band = RM_UnderLiquid.WetBandCells, l = RM_UnderLiquid.WaterlineCells;", 1)),
     ]
     for plant in plants:
         name, model, u, g, must = plant[:5]

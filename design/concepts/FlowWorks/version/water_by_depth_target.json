@@ -89,14 +89,17 @@
       "what": "a ragged dark band on the ground just above the line: on the dry wall above it, or on the bank round a brim-full pit, fading to nothing over this width"
     },
     "waterline": {
-      "cells": 0.03125,
-      "alpha": 0.45,
-      "colour": [
-        0.8,
-        0.88,
-        0.92
-      ],
-      "what": "a thin pale line where the water meets a wall or the rim, drawn over the water"
+      "removed": "RIMMANDRAKE_REMOVE_WHITE_FRAMES_AT_EVERY_WATER_EDGE_HE_SAW_THEM_EVERYWHERE (owner walk 2026-11-22: \"Those white frames are everywhere there is water. Looks pretty bad...\" and \"You can easily see if the white frames appear places. That's easy. See them?\"): no pale line is drawn where the water meets a wall or the rim; the model and the C# carry no waterline numbers and the wall drawer draws none",
+      "judged": {
+        "cells": 0.03125,
+        "alpha": 0.45,
+        "colour": [
+          0.8,
+          0.88,
+          0.92
+        ],
+        "what": "history: the line in the judged BLEND mockup (model/water_mockup.py), a thin pale line drawn over the water; the owner removed it in game"
+      }
     },
     "ripple_light": {
       "peak": 0.16,

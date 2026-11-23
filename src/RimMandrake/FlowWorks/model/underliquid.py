@@ -70,9 +70,7 @@ SIDE_BY_DROP = [0, .06, .11, .17, .23, .29]
 WET_DARKEN = 0.30           # setting pitWaterWetGroundEnabled: ground under the line under black at this alpha (value x 0.70)
 WET_BAND_CELLS = 0.15625    # the wet band above the line (10 px at 64 px a cell), fading to nothing
 WET_BAND_DARKEN = 0.30      # its darkest, at the line
-WATERLINE_CELLS = 0.03125   # the pale line where the water meets a wall or the rim (2 px at 64 px a cell)
-WATERLINE_ALPHA = 0.45
-WATERLINE_COLOUR = (0.80, 0.88, 0.92)
+# no pale waterline: RIMMANDRAKE_REMOVE_WHITE_FRAMES_AT_EVERY_WATER_EDGE_HE_SAW_THEM_EVERYWHERE (owner 2026-11-22)
 RIPPLE_PEAK = 0.16          # setting pitWaterRippleLight: the ripple light's alpha at the surface
 RIPPLE_FADE_METRES = 0.7    # it fades as exp(-metres / this): faint by 2 m
 RIPPLE_COLOUR = (0.78, 0.90, 0.96)

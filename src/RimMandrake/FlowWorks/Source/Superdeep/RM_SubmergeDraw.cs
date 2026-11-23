@@ -1432,7 +1432,7 @@ namespace RimMandrake.FlowWorks
 				{
 					kind = "gate";
 					heightM = RM_UnderLiquid.GateMetres(d);
-					share = d <= 0 ? 0f : RM_UnderLiquid.Share(levelM, 0f, heightM);
+					share = d <= 0 || !RM_UnderLiquid.GateShowsLiquid(t.Rotation.AsInt) ? 0f : RM_UnderLiquid.Share(levelM, 0f, heightM);
 					lineM = levelM - share * heightM; footM = levelM;
 				}
 				else if (t is Pawn || t is Corpse)

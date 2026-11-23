@@ -5,6 +5,7 @@
 // it. Each case has a can-fail.
 // NOT proven here: the pictures on screen. Live proof owed (northstar/pit_fittings_matrix.py).
 using System;
+using System.Text.RegularExpressions;
 using RimMandrake.FlowWorks;
 
 namespace RimMandrake.FlowWorks.SelfTest
@@ -123,6 +124,55 @@ namespace RimMandrake.FlowWorks.SelfTest
 				int hook = eng.IndexOf("RM_SubmergeDraw.FillPictured(", StringComparison.Ordinal);
 				Assert(depthCheck > 0 && hook > depthCheck && hook - depthCheck < 400, "can-fail: the fill picture-writer re-meshes a noted cell");
 				Assert(eng.Contains("if (submergeDrawn.Count != 0)"), "can-fail: nothing noted, nothing done (dry costs nothing)");
+			});
+			Case("Submerge_gate_side_view_shows_no_liquid", () =>
+			{
+				// RIMMANDRAKE_HIDE_WATER_OVER_EAST_WEST_SLUICE_GATE_STATION_SEVEN (owner walk 2026-11-22, station 7: "There should be
+				// no water shown over an E/W Sluice gate."). Range: both flow doors (RM_Sluice, RM_SecurityGrateDoor) share one
+				// DrawAt; a 1x1 door is turned N or E every frame (DoorPreDraw), S/W answered too; the cut is rotation-only, so the
+				// four rotations are the whole range of the decision. Depth, level, lift and stuff only move the cut, never whether.
+				int read = 0, wrong = 0;
+				bool[] face = { true, false, true, false };
+				for (int rot = 0; rot < 4; rot++)
+				{
+					read++;
+					if (RM_UnderLiquid.GateShowsLiquid(rot) != face[rot]) wrong++;
+				}
+				Console.WriteLine("  gate rotations read=" + read + " wrong=" + wrong + " (limit 0)");
+				Assert(wrong == 0, "can-fail: only a face-on (N/S) gate has the liquid climb it; " + wrong + " of " + read + " wrong");
+				string gates = RiverSwitchFlipChecks.Src("Superdeep/RM_FlowDoors.cs");
+				string draw = RiverSwitchFlipChecks.Src("Superdeep/RM_SubmergeDraw.cs");
+				Assert(gates.Contains("RM_SubmergeDraw.Wet(this, out int depth, out float levelM, out float clarity, false) && RM_UnderLiquid.GateShowsLiquid(Rotation.AsInt)"),
+					"can-fail: the shipped gate draw cuts water over the gate only when GateShowsLiquid says so (unfixed: every rotation)");
+				Assert(draw.Contains("kind = \"gate\";") && draw.Contains("!RM_UnderLiquid.GateShowsLiquid(t.Rotation.AsInt) ? 0f"),
+					"can-fail: the submerge proof read reports a side-view gate's share as 0, as it is drawn");
+			});
+			Case("Submerge_water_edge_draws_no_pale_frame", () =>
+			{
+				// RIMMANDRAKE_REMOVE_WHITE_FRAMES_AT_EVERY_WATER_EDGE_HE_SAW_THEM_EVERYWHERE (owner walk 2026-11-22: "Those white
+				// frames are everywhere there is water. Looks pretty bad"; stations 6, 22, 28-33). The frame was WetEdges' pale
+				// waterline (0.03125 cell, colour .80/.88/.92 at alpha .45 over the sheet), drawn at the north line, the south
+				// lining and both side lines of every wet dug square, so it crossed at the corners. Range: every edge of every wet
+				// square goes through WetEdges (north dry face / brim-full rim, south lining, west / east dry face / brim-full),
+				// in pits and canals alike; the whole drawer and every other source file are read, not a scene.
+				string walls = RiverSwitchFlipChecks.Src("Superdeep/RM_ExcavationWalls.cs");
+				int at = walls.IndexOf("private void WetEdges(", StringComparison.Ordinal);
+				Assert(at >= 0, "WetEdges is where a wet square's edges are drawn");
+				int end = walls.IndexOf("private void SideUnder(", at, StringComparison.Ordinal);
+				string edges = walls.Substring(at, (end > at ? end : walls.Length) - at);
+				int sheetDraws = Regex.Matches(edges, @"RM_FaceMaterial\.SheetMat|lineMat").Count;
+				Console.WriteLine("  WetEdges light-material draws=" + sheetDraws + " (limit 0)");
+				Assert(sheetDraws == 0, "can-fail: no pale line is drawn over the water at a wet square's edge (" + sheetDraws + " found)");
+				int files = 0, refs = 0;
+				foreach (string f in System.IO.Directory.GetFiles(System.IO.Path.GetDirectoryName(RiverSwitchFlipChecks.SrcPath("Superdeep/RM_UnderLiquid.cs")) + "/..", "*.cs", System.IO.SearchOption.AllDirectories))
+				{
+					if (f.Replace('\\', '/').Contains("/SelfTest/")) continue;
+					files++;
+					refs += Regex.Matches(System.IO.File.ReadAllText(f), @"\bWaterline(Cells|Alpha|Colour)\b").Count;
+				}
+				Console.WriteLine("  source files read=" + files + " waterline references=" + refs + " (limit 0)");
+				Assert(files > 50, "the source tree was read (" + files + " files)");
+				Assert(refs == 0, "can-fail: the pale waterline is deleted, not left switched off (" + refs + " references)");
 			});
 			Case("Submerge_drowned_part_reads_as_under_the_liquid", () =>
 			{

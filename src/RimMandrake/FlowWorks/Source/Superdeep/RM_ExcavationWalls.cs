@@ -681,9 +681,10 @@ namespace RimMandrake.FlowWorks
 		/// <summary>RIMMANDRAKE_RESEARCH_FLOWWORKS_WATER_LOOK_FIRM_ALREADY_PICKED (owner card 2026-11-20 evening: "Maybe dry and
 		/// wet have different colors too"; a naive judge picked BLEND; target design/concepts/FlowWorks/version/
 		/// water_by_depth_target.json "effects"): where the water meets the pit's edge, a dark wet band on the ground just
-		/// above the line (on the dry wall above it, or on the bank round a brim-full pit; ragged by the rough fade) and a thin
-		/// pale waterline drawn over the water. The near (south) wall is hidden, so the water meets the near rim there.
-		/// Nothing when the setting is off.</summary>
+		/// above the line (on the dry wall above it, or on the bank round a brim-full pit; ragged by the rough fade). The near
+		/// (south) wall is hidden, so the water meets the near rim there. Nothing when the setting is off. No pale waterline is
+		/// drawn over the water: RIMMANDRAKE_REMOVE_WHITE_FRAMES_AT_EVERY_WATER_EDGE_HE_SAW_THEM_EVERYWHERE (owner walk
+		/// 2026-11-22: "Those white frames are everywhere there is water. Looks pretty bad").</summary>
 		private void WetEdges(Map map, RM_MapComponent_Excavation eng, IntVec3 c, int d, float lv, int north, int west, int east, float y)
 		{
 			if (!(RM_UnderLiquid.WetAlpha > 0f))
@@ -691,13 +692,10 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			int south = NeighbourLevel(map, eng, c + IntVec3.South, d);
-			float band = RM_UnderLiquid.WetBandCells, l = RM_UnderLiquid.WaterlineCells;
+			float band = RM_UnderLiquid.WetBandCells;
 			Color32 wet = new Color32(0, 0, 0, Alpha(RM_UnderLiquid.WetBandDarken)), none = new Color32(0, 0, 0, 0);
-			RM_UnderLiquid.Float3 wc = RM_UnderLiquid.WaterlineColour;
-			Color32 line = new Color32((byte)(255f * wc.r + 0.5f), (byte)(255f * wc.g + 0.5f), (byte)(255f * wc.b + 0.5f),
-				Alpha(RM_UnderLiquid.WaterlineAlpha));
-			Material bandMat = RM_FaceMaterial.WetBandMat, lineMat = RM_FaceMaterial.SheetMat;
-			float yb = y + 0.0003f, yl = y + 0.0006f;
+			Material bandMat = RM_FaceMaterial.WetBandMat;
+			float yb = y + 0.0003f;
 			float zTop = 1f;
 			if (RM_UnderLiquid.Exposed(d, north, 0f) > 0f)
 			{
@@ -711,11 +709,9 @@ namespace RimMandrake.FlowWorks
 				{
 					Quad(bandMat, c.x, c.z + 1f, 1f, band, yb, wet, none, UvWorld);
 				}
-				QuadVMat(lineMat, c.x, c.z + zTop - (hDry > 0f ? 0f : RM_WallFaceMath.RimLine) - l, 1f, l, yl, line, line);
 			}
 			if (d - south > 0)
 			{
-				QuadVMat(lineMat, c.x, c.z + RM_WallFaceMath.SouthLining(d - south), 1f, l, yl, line, line);
 				if (!(RM_UnderLiquid.Exposed(d, south, lv) > 0f))
 				{
 					Quad(bandMat, c.x, c.z - band, 1f, band, yb, none, wet, UvWorld);
@@ -730,19 +726,16 @@ namespace RimMandrake.FlowWorks
 					continue;
 				}
 				float wDry = RM_UnderLiquid.SideFace(RM_UnderLiquid.Exposed(d, nb, lv));
-				float inset = wDry > 0f ? 0f : RM_WallFaceMath.SideLine;
 				float bw = wDry > 0f ? Mathf.Min(band, wDry) : band;
 				float bh = wDry > 0f ? zTop : 1f;
 				if (!isEast)
 				{
 					// the band from the bank side (clear) to the line (wet); a brim-full pit's lies on the bank beyond the edge
 					QuadHWorld(bandMat, wDry > 0f ? c.x + wDry - bw : c.x - band, c.z, bw, bh, yb, none, wet);
-					QuadHMat(lineMat, c.x + wDry + inset, c.z, l, zTop, yl, line, line);
 				}
 				else
 				{
 					QuadHWorld(bandMat, wDry > 0f ? c.x + 1f - wDry : c.x + 1f, c.z, bw, bh, yb, wet, none);
-					QuadHMat(lineMat, c.x + 1f - wDry - inset - l, c.z, l, zTop, yl, line, line);
 				}
 			}
 		}

@@ -169,15 +169,15 @@
   "test_blob": "c22a5da199adb85827f9ad13e2e5bf4c00e50776"
  },
  "T_UNDERLIQUID": {
-  "at": "2026-11-21T05:16:08Z",
+  "at": "2026-11-23T02:33:21Z",
   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only DeepBed*,Submerge*,UnderLiquid*,WaterLook*",
   "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
-  "last": "can-fail: a thing flush with the line shows its icon dimmed, not whole (0.30054277)",
-  "patch": "--- a/src/RimMandrake/FlowWorks/Source/Superdeep/RM_UnderLiquid.cs\n+++ b/src/RimMandrake/FlowWorks/Source/Superdeep/RM_UnderLiquid.cs\n@@ -97,7 +97,7 @@\n \t\t// the experience numbers; Mod Settings write them (RimMandrakeFlowWorksSettings.PushUnderLiquid), these are the\n \t\t// shipped defaults\n \t\tpublic const float DefaultDeepOpacity = 0.90f;\n-\t\tpublic const float DefaultShallowOpacity = 0.35f;\n+\t\tpublic const float DefaultShallowOpacity = 0.6f;\n \t\tpublic const float DefaultFullMetres = 4.0f;\n \t\tpublic const float DefaultDarken = 0.6f;\n \t\tpublic const float DefaultThingShadowAlpha = 0.30f;\n",
+  "last": "can-fail: no pale line is drawn over the water at a wet square's edge (1 found)",
+  "patch": "--- a/src/RimMandrake/FlowWorks/Source/Superdeep/RM_ExcavationWalls.cs\n+++ b/src/RimMandrake/FlowWorks/Source/Superdeep/RM_ExcavationWalls.cs\n@@ -696,6 +696,8 @@\n \t\t\tColor32 wet = new Color32(0, 0, 0, Alpha(RM_UnderLiquid.WetBandDarken)), none = new Color32(0, 0, 0, 0);\n \t\t\tMaterial bandMat = RM_FaceMaterial.WetBandMat;\n \t\t\tfloat yb = y + 0.0003f;\n+\t\t\tColor32 pale = new Color32(204, 224, 235, 115);\n+\t\t\tQuadVMat(RM_FaceMaterial.SheetMat, c.x, c.z + 1f - 0.03125f, 1f, 0.03125f, y + 0.0006f, pale, pale);\n \t\t\tfloat zTop = 1f;\n \t\t\tif (RM_UnderLiquid.Exposed(d, north, 0f) > 0f)\n \t\t\t{\n",
   "patch_files": [
-   "src/RimMandrake/FlowWorks/Source/Superdeep/RM_UnderLiquid.cs"
+   "src/RimMandrake/FlowWorks/Source/Superdeep/RM_ExcavationWalls.cs"
   ],
-  "patch_sha": "2d06843bd91769b1",
+  "patch_sha": "0cc92d63a95ffbac",
   "rc": 1,
   "test_blob": "ecdb632246123de160f342b464f55bcbb9ce7ca5"
  }

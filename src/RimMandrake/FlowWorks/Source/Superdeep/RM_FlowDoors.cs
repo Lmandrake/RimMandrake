@@ -243,7 +243,9 @@ namespace RimMandrake.FlowWorks
 			// RM_UnderLiquid.GateMetres (its head clears the bank); the liquid's line climbs it from its foot and the drowned
 			// part is seen through by the one law (RM_SubmergeDraw.DrawUnder). The lifted panel's foot is higher by its lift.
 			float h = frameGraphic.drawSize.y * scale.z;
-			bool wet = RM_SubmergeDraw.Wet(this, out int depth, out float levelM, out float clarity, false);
+			// RIMMANDRAKE_HIDE_WATER_OVER_EAST_WEST_SLUICE_GATE_STATION_SEVEN: only a face-on (N/S) gate has the line climb it;
+			// an E/W gate is the side view, its sprite spans the canal bank to bank, and draws dry (RM_UnderLiquid.GateShowsLiquid)
+			bool wet = RM_SubmergeDraw.Wet(this, out int depth, out float levelM, out float clarity, false) && RM_UnderLiquid.GateShowsLiquid(Rotation.AsInt);
 			float gateM = RM_UnderLiquid.GateMetres(depth);
 			Vector3 panelPos = drawLoc;
 			panelPos.y = alt;
