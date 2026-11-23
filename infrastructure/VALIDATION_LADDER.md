@@ -80,7 +80,9 @@ interactions that need to be studied."
 So a sitting of this tier is one staged scene for each content cluster.
 
 - The scene holds the biome, its ecosystem, the factions' dwellings, the resident race, the equipment and the
-  augmentors.
+  tile mutators that are relevant to the biome. A tile mutator is the game's world-tile feature that changes how a
+  map on that tile generates (a river, a coast, a cave system, an ancient ruin). His "tile augmentor" means a tile
+  mutator.
 - Build the scene through the bridge on a throwaway map.
 - A machine has already passed everything in the scene at L0–L3.
 
