@@ -24,6 +24,8 @@ Item: `RIMMANDRAKE_REWRITE_RULE_DOCS_PLAIN_ENGLISH_LOSE_NOTHING`. Run 1, 2026-11
 5. **Run the tests that read the file.** Find them with `git grep -l <file name> -- '*selftest*' '*accept*'`.
 6. **Meaning read.** A fresh Opus agent that did not write the text reads old and new text side by side. The agent
    lists each line whose meaning changed. The writer repairs each line, or restores the old line.
+   Then the same reader reads each repair and each later edit against the old text. If the writer edits a line after
+   that read, the reader reads that line too. The result file names each line that no reader read.
 7. **Write the result file.** The path is `design/specs/2026-11-19-plain-english-rule-docs/results/<BATCH NAME>.md`.
    The file holds the scores before and after, and the hand count. The file lists each conflict. The file lists each
    line that the batch could not determine.
