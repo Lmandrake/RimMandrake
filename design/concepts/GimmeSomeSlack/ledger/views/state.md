@@ -1,6 +1,6 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod GimmeSomeSlack) reducer=1 shards={"BACKFILL":440876,"DISPATCH":16950,"HOLDER.run-1794828190":994,"JUDGE.judge-1794822790":13753,"JUDGE.judge-1794822890":2037} body_sha256=cb4f7b23d868561091737cdfab2a74f08345fd1fc3fc745c3def29d3d61a6b88 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod GimmeSomeSlack) reducer=1 shards={"BACKFILL":440876,"DISPATCH":17302,"HOLDER.run-1794828190":994,"JUDGE.judge-1794822790":13753,"JUDGE.judge-1794822890":2037} body_sha256=1caa78eb9ba1fd5ce847f4ef66956ad5b07dfdbd9258fb1066f5db93ea3a9e93 -->
 # GimmeSomeSlack — mod ledger packet
-version 0.2.0 · stage offline_build · 635 events in 5 shards · reducer 1
+version 0.2.0 · stage blind_challenge · 636 events in 5 shards · reducer 1
 holder lease run-1794835732, token 7, last active 2026-11-16T13:29:05Z
 holder session 18a0c1e9-d471-4254-a766-ca303b1027ec, context 114312 of ceiling 400000
 
@@ -334,6 +334,6 @@ spend recorded: USD 147.58, 73397505 tokens
 - open findings in brief: the oldest 39 on one line, their fix and accept by `modledger.py show --mod GimmeSomeSlack <subject>`
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars)
-- the full history: 635 events (views/history.md; never read whole)
+- the full history: 636 events (views/history.md; never read whole)
 
-cursor: t=2026-11-23T10:47:42Z.1795430862306911604 (modledger.py since --mod GimmeSomeSlack t=2026-11-23T10:47:42Z.1795430862306911604 prints what changed after this packet)
+cursor: t=2026-11-23T18:38:25Z.1795459105345770085 (modledger.py since --mod GimmeSomeSlack t=2026-11-23T18:38:25Z.1795459105345770085 prints what changed after this packet)
