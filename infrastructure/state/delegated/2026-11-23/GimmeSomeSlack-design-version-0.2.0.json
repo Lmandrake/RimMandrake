@@ -1,0 +1,10 @@
+{
+ "item": "RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME",
+ "subject": "GimmeSomeSlack Design Version 0.2.0",
+ "class": "design",
+ "decision": "opened and locked 0.2.0 (MINOR) with three new bars: restyle_whole_line, look_menu_icons, wall_lamp_takes_looks; the battery left to Machine Looks",
+ "reasons": "Divergent additions from his own words, opened as a MINOR on the obvious reading: the whole-line restyle (his words 2026-11-22, OWNER:1795387443867018723), the look icons (his walk 2026-11-20, OWNER:1795218772062482262) and the wall lamp looks (his walk 2026-11-20, OWNER:1795217435873952971, homed in GSS by the design pass he ordered). No recorded evidence argues against 0.2.0 or against these bars (his Evidence-for-Ask ruling, 2026-11-15).",
+ "evidence": "design/concepts/GimmeSomeSlack/version/VERSION.json",
+ "at": "2026-11-23T10:21:54Z",
+ "by": "Designer run RIMMANDRAKE_OPEN_SLACK_NEXT_VERSION_SO_THREE_MODS_ADVANCE_TONIGHT"
+}

@@ -1,0 +1,32 @@
+{
+ "mod": "GimmeSomeSlack",
+ "version": "0.1.1",
+ "kind": "PATCH",
+ "state": "locked",
+ "locked_on": "2026-11-20",
+ "locked_by": "conductor",
+ "per_ruling": "RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS",
+ "conductor_event": "OWNER:1795219726240521449",
+ "owner_words": "By card 2026-11-20 (OWNER:1795217553611770372), \"Does Gimme Some Slack 0.1.0 pass\" answered \"Pass now, fixes are 0.1.1\"; by card 2026-11-20 3:55 PM PST he picked \"Gimme Some Slack 0.1.1\" for the pipeline.",
+ "scope": [
+  "RIMMANDRAKE_SEAT_SLACK_CORDS_IN_OFF_SWITCH_NOT_CUT",
+  "RIMMANDRAKE_LOAD_SLACK_POLE_ICONS_ON_MAIN_THREAD",
+  "RIMMANDRAKE_DRAW_SLACK_POLES_IN_FRONT_WHEN_SOUTH",
+  "RIMMANDRAKE_BLOCK_SLACK_ROOF_OVER_POLE_KEEP_THE_CUT"
+ ],
+ "previous": "version/previous/0.1.0/VERSION.json",
+ "bars_total": 54,
+ "bars_met": "UNMEASURED",
+ "locked_from_commit": "e7dffd0052d505badc09ed501cbd2cef2dec874e",
+ "measured_from": {
+  "bars_total": "required ids at locked_from_commit e7dffd0052d5: record.json inventory (28) + tree.json leaves (26), shock_reach_setting in both = 53; the 49 bars of 0.1.0 (all kept, PATCH) plus the four bars of the 0.1.1 faults (switch_off_cords_stay_connected, pole_buttons_show_icons, poles_draw_in_front_when_south, no_roof_over_pole), each a plain sentence of what the player sees; plus switch_light_reads_state, added 2026-11-20 by his card (OWNER:1795244532644873616, \"In 0.1.1 (Recommended)\") through maturation.py lock-bars --add = 54",
+  "bars_met": "not yet measured for 0.1.1: preflight and the stages after it measure it"
+ },
+ "caveats": [
+  "The next version README's entry 'Re-judge coverage under a calibrated brief when the next version opens' falls due now (owner card 2026-11-16, point 19).",
+  "Out of scope for 0.1.1 and kept in next_version/README.md: the look-menu icons, the battery looks, the review stations to delete."
+ ],
+ "bars_added_after_lock": [
+  "switch_light_reads_state"
+ ]
+}

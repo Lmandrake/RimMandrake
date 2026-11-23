@@ -1,32 +1,50 @@
 {
  "mod": "GimmeSomeSlack",
- "version": "0.1.1",
- "kind": "PATCH",
+ "version": "0.2.0",
+ "kind": "MINOR",
  "state": "locked",
- "locked_on": "2026-11-20",
- "locked_by": "conductor",
- "per_ruling": "RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS",
- "conductor_event": "OWNER:1795219726240521449",
- "owner_words": "By card 2026-11-20 (OWNER:1795217553611770372), \"Does Gimme Some Slack 0.1.0 pass\" answered \"Pass now, fixes are 0.1.1\"; by card 2026-11-20 3:55 PM PST he picked \"Gimme Some Slack 0.1.1\" for the pipeline.",
+ "locked_on": "2026-11-23",
+ "locked_by": "pipeline",
+ "per_ruling": "RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME",
+ "why": "Divergent additions from his own words, opened as a MINOR on the obvious reading: the whole-line restyle (his words 2026-11-22, OWNER:1795387443867018723), the look icons (his walk 2026-11-20, OWNER:1795218772062482262) and the wall lamp looks (his walk 2026-11-20, OWNER:1795217435873952971, homed in GSS by the design pass he ordered). No recorded evidence argues against 0.2.0 or against these bars (his Evidence-for-Ask ruling, 2026-11-15).",
+ "opened_by": "Designer run RIMMANDRAKE_OPEN_SLACK_NEXT_VERSION_SO_THREE_MODS_ADVANCE_TONIGHT (the Conductor's brief)",
  "scope": [
-  "RIMMANDRAKE_SEAT_SLACK_CORDS_IN_OFF_SWITCH_NOT_CUT",
-  "RIMMANDRAKE_LOAD_SLACK_POLE_ICONS_ON_MAIN_THREAD",
-  "RIMMANDRAKE_DRAW_SLACK_POLES_IN_FRONT_WHEN_SOUTH",
-  "RIMMANDRAKE_BLOCK_SLACK_ROOF_OVER_POLE_KEEP_THE_CUT"
+  "RIMMANDRAKE_SPREAD_SLACK_LOOK_ALONG_LINE_EACH_MOD_ITS_OWN_ITEMS",
+  "RIMMANDRAKE_WIRE_STYLE_ICONS_INTO_EVERY_LOOK_MENU",
+  "RIMMANDRAKE_DESIGN_HOME_FOR_VANILLA_ELECTRICAL_ART (wall lamp share)",
+  "RIMMANDRAKE_ORDER_SLACK_MAST_BEHIND_TALL_SOUTHERN_PICTURES",
+  "RIMMANDRAKE_CUT_SLACK_REVIEW_STATIONS_NOBODY_READS",
+  "RIMMANDRAKE_CORRECT_SLACK_TWO_FALSE_LINES_AFTER_HIS_WALK",
+  "RIMMANDRAKE_JUDGE_SLACK_COVERAGE_AGAIN_UNDER_CALIBRATED_BRIEF"
  ],
- "previous": "version/previous/0.1.0/VERSION.json",
- "bars_total": 54,
+ "bars_new": [
+  "restyle_whole_line",
+  "look_menu_icons",
+  "wall_lamp_takes_looks"
+ ],
+ "art_items": {
+  "look_menu_icons": "the four look icons are judged and kept in the art store (RIMMANDRAKE_DESIGN_HOME_FOR_VANILLA_ELECTRICAL_ART, design/specs/2026-11-20-vanilla-electrical-art-home/commissions.md); install through art install only, under RIMMANDRAKE_INSTALL_SLACK_LOOK_ICONS_AND_WALL_LAMP_FROM_ART_STORE",
+  "wall_lamp_takes_looks": "the twelve wall lamp pictures are judged and kept in the art store (same item and record); install under RIMMANDRAKE_INSTALL_SLACK_LOOK_ICONS_AND_WALL_LAMP_FROM_ART_STORE"
+ },
+ "mod_settings": "Every 0.1.1 switch stays. The wall lamp's looks ride the master switch as the standing lamp's do (off: vanilla art, no restart); the whole-line restyle and the icons are parts of the look picker and add no switch. Defaults equal the shipped behaviour.",
+ "out_of_scope": {
+  "reach menu (this item / all connected / all on map)": "built and checked live in 0.1.1 (c3633a8f30, e851961457)",
+  "Gust as the default overhead sway": "built in 0.1.1 (c3633a8f30, his pick at the walk of 2026-11-22)",
+  "RIMMANDRAKE_LOOSEN_SLACK_POLE_WIRE_SWAY_STILL_TOO_STIFF": "answered by his walk of 2026-11-22 ('all three of your motions are beautiful. But the Gusts works best') and the Gust default of 0.1.1",
+  "RIMMANDRAKE_STYLE_SLACK_BATTERY_LIKE_THE_LAMP": "the battery's home is the new mod Machine Looks by the design pass he ordered (design/specs/2026-11-20-vanilla-electrical-art-home/design.md)",
+  "RIMMANDRAKE_REWORD_GSS_NO_HOSE_BAR_POLES_DRAW_PIPES": "a polish ticket; the leaf lives in the concept tree, whose edit reopens the Designer's stage 3",
+  "RIMMANDRAKE_TRACE_SLACK_FLOWWORKS_TIER_MINIFIED_LOOKUP_ERROR": "FlowWorks' file (RM_PitAccess.cs), not this mod"
+ },
+ "previous": "version/previous/0.1.1/VERSION.json",
+ "bars_total": 57,
  "bars_met": "UNMEASURED",
- "locked_from_commit": "e7dffd0052d505badc09ed501cbd2cef2dec874e",
+ "locked_from_commit": "403dab5985a7d5e32e5545a6d44fa068b7415c3c",
  "measured_from": {
-  "bars_total": "required ids at locked_from_commit e7dffd0052d5: record.json inventory (28) + tree.json leaves (26), shock_reach_setting in both = 53; the 49 bars of 0.1.0 (all kept, PATCH) plus the four bars of the 0.1.1 faults (switch_off_cords_stay_connected, pole_buttons_show_icons, poles_draw_in_front_when_south, no_roof_over_pole), each a plain sentence of what the player sees; plus switch_light_reads_state, added 2026-11-20 by his card (OWNER:1795244532644873616, \"In 0.1.1 (Recommended)\") through maturation.py lock-bars --add = 54",
-  "bars_met": "not yet measured for 0.1.1: preflight and the stages after it measure it"
+  "bars_total": "required ids at locked_from_commit 403dab5985a7: record.json inventory (32) + tree.json leaves (26), shock_reach_setting in both = 57; the 54 bars of 0.1.1 (all kept, MINOR) plus restyle_whole_line, look_menu_icons and wall_lamp_takes_looks",
+  "bars_met": "not measured at the lock: preflight and the stages after it measure it"
  },
  "caveats": [
-  "The next version README's entry 'Re-judge coverage under a calibrated brief when the next version opens' falls due now (owner card 2026-11-16, point 19).",
-  "Out of scope for 0.1.1 and kept in next_version/README.md: the look-menu icons, the battery looks, the review stations to delete."
- ],
- "bars_added_after_lock": [
-  "switch_light_reads_state"
+  "The coverage re-judge under a calibrated brief falls due now (next_version/README.md, entry 1; item RIMMANDRAKE_JUDGE_SLACK_COVERAGE_AGAIN_UNDER_CALIBRATED_BRIEF).",
+  "locked by the pipeline under his Evidence-for-Ask ruling, not on his card; the delegated record is infrastructure/state/delegated/2026-11-23/GimmeSomeSlack-design-version-0.2.0.json"
  ]
 }

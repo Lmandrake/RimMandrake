@@ -1,0 +1,110 @@
+{
+ "schema": 1,
+ "mod": "GimmeSomeSlack",
+ "version": "0.1.1",
+ "locked_from_commit": "e7dffd0052d505badc09ed501cbd2cef2dec874e",
+ "ids": [
+  "invisible_conduit",
+  "cord_slack_lay",
+  "junction_strips",
+  "connectivity_truth",
+  "break_ends_live_dead",
+  "rebuild_cost",
+  "overhead_spans",
+  "downed_spans",
+  "fallen_wire_shock",
+  "wire_down_alert",
+  "restring_job",
+  "power_theft",
+  "four_styles",
+  "mod_settings",
+  "pipe_pole_switch",
+  "gravship_connectivity",
+  "owner_change_cut",
+  "game_statics_reset",
+  "uninstall_clean",
+  "no_hose",
+  "floor_end_shock",
+  "shock_reach_setting",
+  "cords_draw_under_things",
+  "cords_join_stubs_on_position_and_slope",
+  "switch_off_cords_stay_connected",
+  "pole_buttons_show_icons",
+  "poles_draw_in_front_when_south",
+  "no_roof_over_pole",
+  "conduit_invisible",
+  "cords_lie_slack",
+  "no_unforced_sharp_turn",
+  "cords_meet_walls_at_face",
+  "strip_at_every_junction",
+  "dense_block_tangle",
+  "cord_shape_variation_probe",
+  "cords_never_repeat",
+  "drawing_true_to_grid",
+  "cut_live_and_dead_ends",
+  "floor_end_shocks_crossers",
+  "no_stall_on_rewire",
+  "spans_above_everything",
+  "fallen_span_on_ground",
+  "fallen_wire_shocks_crossers",
+  "restring_cut_span",
+  "live_wire_lights_fuel",
+  "tap_steals_and_costs_goodwill",
+  "four_looks_one_run",
+  "settings_switch_cleanly",
+  "gravship_keeps_connections",
+  "owner_change_coils_wires",
+  "statics_clear_between_games",
+  "no_hose_in_gss",
+  "walk_scavenger_base",
+  "switch_light_reads_state"
+ ],
+ "history": [
+  {
+   "at": "2026-11-15T15:59:00Z",
+   "by": "BENCH",
+   "why": "the lock's bars, derived from locked_from_commit (RIMMANDRAKE_DERIVE_CHECKS_FROM_LOCKED_BARS); the count equals VERSION.json bars_total, plus the bar his card of 2026-11-14 added under the lock rule (VERSION.json measured_from)",
+   "how": "required_ids at locked_from_commit bf33322d7754bb3a9e504924bc062dc7fb65fea3 (47), less bars_moved_to_next_version (0), plus bars_added_after_lock (0)",
+   "source": "OWNER:1794693278631337978",
+   "added": [
+    "cords_draw_under_things"
+   ],
+   "removed": [],
+   "count": 48
+  },
+  {
+   "at": "2026-11-20T04:53:45Z",
+   "by": "BENCH",
+   "why": "RIMMANDRAKE_CHECK_THREE_COVERAGE_HOLES_CLOSED_WITH_TEST_RED: the bar his words added 2026-11-16 (fourth ask) reached VERSION.json (49), bars.md and the test table but never locked_bars.json (48), so the offline_build table check refused the table",
+   "how": "changed by his card",
+   "source": "OWNER:1794839942592183916",
+   "added": [
+    "cords_join_stubs_on_position_and_slope"
+   ],
+   "removed": [],
+   "count": 49
+  },
+  {
+   "at": "2026-11-21T00:09:39Z",
+   "by": "BENCH",
+   "why": "record the 53 bars of the 0.1.1 lock: the 49 of 0.1.0 kept plus the four walk-fault bars",
+   "how": "required_ids at locked_from_commit e7dffd0052d505badc09ed501cbd2cef2dec874e (53), less bars_moved_to_next_version (0), plus bars_added_after_lock (0)",
+   "source": null,
+   "added": [],
+   "removed": [],
+   "count": 53
+  },
+  {
+   "at": "2026-11-21T07:26:07Z",
+   "by": "BENCH",
+   "why": "RIMMANDRAKE_LIGHT_SLACK_SWITCH_GREEN_RED_DARK_WHEN_UNPOWERED: the switch lamp bar his card put in 0.1.1 (\"In 0.1.1 (Recommended)\")",
+   "how": "changed by his card",
+   "source": "OWNER:1795244532644873616",
+   "added": [
+    "switch_light_reads_state"
+   ],
+   "removed": [],
+   "count": 54
+  }
+ ]
+}

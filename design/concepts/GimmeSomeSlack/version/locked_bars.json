@@ -1,8 +1,8 @@
 {
  "schema": 1,
  "mod": "GimmeSomeSlack",
- "version": "0.1.1",
- "locked_from_commit": "e7dffd0052d505badc09ed501cbd2cef2dec874e",
+ "version": "0.2.0",
+ "locked_from_commit": "403dab5985a7d5e32e5545a6d44fa068b7415c3c",
  "ids": [
   "invisible_conduit",
   "cord_slack_lay",
@@ -32,6 +32,10 @@
   "pole_buttons_show_icons",
   "poles_draw_in_front_when_south",
   "no_roof_over_pole",
+  "switch_light_reads_state",
+  "restyle_whole_line",
+  "look_menu_icons",
+  "wall_lamp_takes_looks",
   "conduit_invisible",
   "cords_lie_slack",
   "no_unforced_sharp_turn",
@@ -56,8 +60,7 @@
   "owner_change_coils_wires",
   "statics_clear_between_games",
   "no_hose_in_gss",
-  "walk_scavenger_base",
-  "switch_light_reads_state"
+  "walk_scavenger_base"
  ],
  "history": [
   {
@@ -105,6 +108,16 @@
    ],
    "removed": [],
    "count": 54
+  },
+  {
+   "at": "2026-11-23T10:22:26Z",
+   "by": "DESIGNER",
+   "why": "0.2.0 locked under Evidence-for-Ask: 54 bars of 0.1.1 kept plus three from his words (restyle_whole_line, look_menu_icons, wall_lamp_takes_looks), derived from locked_from_commit 403dab5985a7",
+   "how": "required_ids at locked_from_commit 403dab5985a7d5e32e5545a6d44fa068b7415c3c (57), less bars_moved_to_next_version (0), plus bars_added_after_lock (0)",
+   "source": null,
+   "added": [],
+   "removed": [],
+   "count": 57
   }
  ]
 }
