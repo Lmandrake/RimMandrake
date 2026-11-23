@@ -66,6 +66,19 @@ def main():
           "a closed-type blind note reaches the shared item: %r" % bn)
     check(bool(bn) and "1793241004" not in bn and not rx.search(bn), "the blind note carries no unit digits or token term")
 
+    # a forecast miss is an item the Conductor sees at its wake (RIMMANDRAKE_REVIVE_FIVE_PROMISED_THINGS_SILENTLY_NOT_
+    # HAPPENING): seven REPLAN REQUEST notes had no reader, and a `task` is one line in about 1,600
+    import re
+    import owed
+    import types
+    ops_md = " ".join(open(os.path.join(HERE, "roles", "operations.md"), encoding="utf-8").read().split())
+    i = ops_md.find("a goal's work does not fit before a date")
+    m = re.search(r"`rimflow file <ID> --for (\w+) --kind (\w+)`", ops_md[i:i + 600]) if i >= 0 else None
+    check(bool(m), "operations.md says how to file a forecast miss")
+    it = types.SimpleNamespace(kind=m.group(2) if m else None)
+    check(bool(m) and m.group(1) in ("CONDUCTOR", "BENCH") and owed.is_owed(it),
+          "a forecast miss is filed as an act the Conductor owes: the wake prints it (%s)" % (m.groups() if m else None,))
+
     print("%d failed" % len(FAILS) if FAILS else "ALL PASS")
     return 1 if FAILS else 0
 
