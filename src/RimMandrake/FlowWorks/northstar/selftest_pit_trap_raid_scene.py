@@ -238,6 +238,11 @@ class Fake:
             return {'success': True, 'accepted': True, 'requestedJobDef': 'RM_CaptureDown'}
         if tool == 'jawa/static_call':
             return {'success': True, 'result': self.static(kw['type'], kw['method'], kw.get('args', ''))}
+        if tool == 'jawa/site_state':                # the capture trace's read (S.B.call, past the receipt)
+            return {'success': True, 'state': {'tick': g['ticked']},
+                    'pawns': [{'id': k, 'x': h['x'], 'z': h['z'], 'job': None} for k, h in g['hostile'].items()]
+                    + [{'id': k, 'x': xz[0], 'z': xz[1], 'job': 'RM_CaptureDown' if k in g['wardens'] else None}
+                       for k, xz in g['player'].items()]}
         if tool == 'jawa/mod_settings_field':
             if kw.get('action') == 'set':
                 g['settings'][kw['field']] = kw['value']
@@ -295,6 +300,12 @@ check('every staging call keeps its tool contract (C# parameters, ProofCover x,z
 check('the scene leaves the governor as it found it', F.stop_on == 'default', F.stop_on)
 check('healthy fake (two fall, both captured from the lip, the open pit holds nobody): every row PASS',
       out['status'] == 'PASS' and all(rows.get(r) == 'PASS' for r in ROWS), rows)
+tr = out.get('ptrCaptureTrace') or []
+check('the capture window leaves a 30-tick trace beside the rows (ptrCaptureTrace: tick, each warden and captive as '
+      'id@x,z:job>target), so a captive that leaves the trench names how '
+      '(RIMMANDRAKE_TRACE_FLOWWORKS_HELD_RAIDER_LEFT_4M_TRENCH_ONCE: two reads 900 ticks apart could not)',
+      len(tr) >= 3 and all(t.startswith('t=') for t in tr) and any(':RM_CaptureDown>' in t for t in tr)
+      and len({t.split()[0] for t in tr}) == len(tr), tr[:4])
 r, o, _ = run(mod=None)
 check('a mod whose capture makes no prisoner: PTR_fallen_become_prisoners FAIL, the fall and the control PASS',
       r.get('PTR_fallen_become_prisoners') == 'FAIL' and r.get('PTR_two_fall') == 'PASS'

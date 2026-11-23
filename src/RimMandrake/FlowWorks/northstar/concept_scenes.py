@@ -1962,14 +1962,18 @@ def _pit_trap_raid(S):
                 c['accepted'] = S.call('jawa/ordered_job', pawnId=c['warden'], jobDef='RM_CaptureDown', targetAId=pid,
                                        targetBX=lip[0], targetBZ=lip[1]).get('accepted')
             caught.append(c)
+        ptrace = [_capture_trace_line(S, [c for c in caught if c['warden']])]
         for _ in range(PTR_CAPTURE_TICKS // TRAP_POLL):               # 60-tick reads: where each captive went, and when
             waiting = [c for c in caught if c['lip'] and c['after'] is False]
             if not waiting:
                 break
-            S.ticks(TRAP_POLL)
+            for _half in range(2):                                    # a 30-tick trace: who did what to whom, and when
+                S.ticks(TRAP_POLL // 2)
+                ptrace.append(_capture_trace_line(S, [c for c in caught if c['warden']]))
             for c in waiting:
                 c['after'], c['reply'] = _ptr_prisoner(S, c['pawn'])
                 c['trace'] = (c['trace'] + [c['reply'][8:60]])[-3:]
+        S.r['ptrCaptureTrace'] = ptrace             # beside the rows, as moatCaptureTrace: a row's detail is cut short
         for c in caught:
             c['reply'] = c['reply'][:120]
             if c['warden']:
