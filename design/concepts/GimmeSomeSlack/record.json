@@ -863,6 +863,64 @@
    "quote": "You know with respect to the switch issue with gss showing disconnection the switch should have some illuminated indicator on it showing whether it is open or closed but always powered (green Vs red) vs unpowered (no glow). That would help with the user awareness part. Please make that so.",
    "note": "His words 2026-11-20 about 8:05 PM PST; his card the same evening: colours \"Green flows, red cut (Recommended)\" and version \"In 0.1.1 (Recommended)\". Added to 0.1.1 by maturation.py lock-bars --add citing that card. Powered: a closed switch's own net has an active power source; an open switch's net on any of its four cardinal side cells has one (Core/SwitchLight.cs header). A plain sentence about what the player sees, never a tuning number.",
    "proof_note": "offline: T_SWITCH_LIGHT_OFFLINE (SelfTest/SwitchLightChecks.cs: every side/power/state/setting case and the brief's sequences, with planted wrong rules caught every run); live: sc_switch_light (scene_rows.switch_light: two batteries, an in-line switch, the probe switchlights read through empty, full, flick, power lost, far side, setting off)"
+  },
+  {
+   "id": "restyle_whole_line",
+   "what": "The player picks All connected on the style button of any Gimme Some Slack piece of a line (a floor cord, a power switch, a pole or a wall bracket), and every Gimme Some Slack piece on that line takes the picked look: the floor cords, the switches, the poles and brackets, the overhead wires strung between them, and the lamps hooked to the line that wear its look. A FlowWorks item on the same line keeps its own look, and a cut overhead wire ends the line.",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RM_MapComponent_ConduitRuns.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStylePicker.cs",
+    "design/concepts/GimmeSomeSlack/version/evidence/style_reach/live_archsmall_20261122.json"
+   ],
+   "proof": "missing",
+   "scope": "opened_by_owner",
+   "scope_source": "OWNER:1795387443867018723",
+   "source": [
+    "OWNER:1795387443867018723",
+    "ITEM:RIMMANDRAKE_SPREAD_SLACK_LOOK_ALONG_LINE_EACH_MOD_ITS_OWN_ITEMS"
+   ],
+   "speaker": "owner",
+   "quote": "Both Flow Works need the \"change everything on this line\" (for flow works items) and GSS needs \"change everything on this line\" (for GSS items). They don't need to change each other's items though. Each mod can handle only its own, that's ok.",
+   "note": "0.2.0 MINOR. The code that this bar needs was built in 0.1.1 (c3633a8f30: the reach menu; a run already joins switches, poles, wall brackets and the overhead spans between them, RM_MapComponent_ConduitRuns.Neighbours, never across a cut span). The 0.1.1 live look (e851961457, 8/8 PASS on ArchSmall) proved All connected only on floor-cord runs with lamps, never across a pole, an overhead wire or a switch, so proof is missing. A plain sentence about what the player sees, never a tuning number.",
+   "proof_note": "offline: T_LINE_RESTYLE_OFFLINE (Stage 3 builds it, red first) over a line of cords, a switch, two poles with a span, a wall bracket, a hooked lamp and a FlowWorks pipe pole; live: sc_restyle_whole_line on the gimmesomeslack_flowworks tier (Stage 6)"
+  },
+  {
+   "id": "look_menu_icons",
+   "what": "Each look that the player can pick in a Gimme Some Slack look menu (the build menu's look choice and the Restyle button) shows its own icon, so the player tells the looks apart before reading a label. The icon for a look is the same picture that every RimMandrake mod with these looks shows for it.",
+   "impl": "absent",
+   "search_scope": "grep of src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStylePicker.cs (MenuIcon draws strand art per look and the switch's own art) and of src/RimMandrake/_Shared for a look-icon piece: none (no _Shared/StyleIcons); the four icon pictures are kept in the art store, not installed (design/specs/2026-11-20-vanilla-electrical-art-home/commissions.md)",
+   "proof": "missing",
+   "scope": "opened_by_owner",
+   "scope_source": "OWNER:1795218772062482262",
+   "source": [
+    "OWNER:1795218772062482262",
+    "ITEM:RIMMANDRAKE_WIRE_STYLE_ICONS_INTO_EVERY_LOOK_MENU",
+    "design/specs/2026-11-20-vanilla-electrical-art-home/commissions.md"
+   ],
+   "speaker": "owner",
+   "quote": "And the \"change style\" really needs some proper icons to represent the different options (true on ALL mods that use our style switches).",
+   "note": "0.2.0 MINOR. His walk of 2026-11-20. The icon art exists (4 of 4 KEEP, judged, in the art store by RIMMANDRAKE_DESIGN_HOME_FOR_VANILLA_ELECTRICAL_ART); the install is through art install only. The FlowWorks half is RIMMANDRAKE_REDRAW_FLOWWORKS_FOUR_PLACEHOLDER_ARTS_FOR_ZERO_TWO. A plain sentence about what the player sees, never an asset count.",
+   "proof_note": "offline: T_LOOK_ICONS_OFFLINE (Stage 3 builds it, red first): every look menu entry in Gimme Some Slack takes its icon from the shared look-icon path, and a planted strand-art icon goes red; live: sc_look_menu_icons, a capture of both menus (Stage 6)"
+  },
+  {
+   "id": "wall_lamp_takes_looks",
+   "what": "A wall lamp takes the looks as the standing lamp does: it wears the look of the line it is hooked to unless the player gives it its own from its style button, each look reads as that look's wall lamp from every facing, and with the master switch off it draws the vanilla wall lamp.",
+   "impl": "absent",
+   "search_scope": "grep of src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs (LampDefs = StandingLamp only), src/RimMandrake/GimmeSomeSlack/Defs and src/RimMandrake/GimmeSomeSlack/Textures for WallLamp: none; the twelve wall lamp pictures are kept in the art store, not installed (design/specs/2026-11-20-vanilla-electrical-art-home/commissions.md)",
+   "proof": "missing",
+   "scope": "opened_by_owner",
+   "scope_source": "OWNER:1795217435873952971",
+   "source": [
+    "OWNER:1795217435873952971",
+    "ITEM:RIMMANDRAKE_DESIGN_HOME_FOR_VANILLA_ELECTRICAL_ART",
+    "design/specs/2026-11-20-vanilla-electrical-art-home/design.md"
+   ],
+   "speaker": "owner",
+   "quote": "Please also re-examine the basegame lamp and Wall Lamp (some of the existing ones are too low res for our modern tastes, see dpi for creatures, and the Wall Lamp doesn't even have any yet).",
+   "note": "0.2.0 MINOR. His walk of 2026-11-20 (full words: D:\\ClaudeWork\\rimmandrake\\conductor\\gss_walk_20261120_his_words.md, message 2; the OWNER note lists 'better lamp and wall lamp art'). The design pass that he ordered ('design and decide and advise') put the wall lamp in Gimme Some Slack with the other light fixtures and the battery in a new mod, Machine Looks (design.md, Decision). The art exists (12 of 12 KEEP, in the art store); the install is through art install only. A plain sentence about what the player sees, never an asset count.",
+   "proof_note": "offline: T_WALL_LAMP_LOOKS_OFFLINE (Stage 3 builds it, red first): ConduitStyles registers WallLamp as a lamp def with a style def per look, its textures exist for every facing, and with the master switch off it draws vanilla; live: sc_wall_lamp_looks, a capture of each look on a wall beside a standing lamp, a restyle of its line, and the master switch off (Stage 6)"
   }
  ],
  "contradictions": [

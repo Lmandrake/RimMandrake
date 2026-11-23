@@ -27,3 +27,24 @@ Divergent work: anything that shifts or extends the 0.1.0 vision (`../vision.md`
 - **What:** delete review stations 5, 8, 9, 11, 17, 18, 19, 23, 27 and 30 (proposed; each checked once more first) and the stale "KNOWN GAP" lines of stations 1-4. Ticket: `RIMMANDRAKE_CUT_SLACK_REVIEW_STATIONS_NOBODY_READS`; the station table is in `design/RimMandrake/validation_holding/gss_walk_20261120.md`.
 - **Who, when, why not now:** owner, his walk of 2026-11-20 (*"We should just delete stations we don't actually use for review, so we don't keep reviewing it or excusing it"*); the review map of 0.1.0 is passed and nothing deleted now would be read again before the next walk.
 - **Acceptance test:** `human_review.py --plan` lists none of the deleted titles (red today: 31 stations); `selftest_human_review.py` passes.
+
+## 0.2.0 opened, 2026-11-23: what it took from this list
+
+Appended by the Designer run `RIMMANDRAKE_OPEN_SLACK_NEXT_VERSION_SO_THREE_MODS_ADVANCE_TONIGHT` (Evidence-for-Ask, the
+obvious reading; no entry above is removed). The 0.2.0 scope is `../VERSION.json`; its bars are `../locked_bars.json`.
+
+- **Re-judge coverage under a calibrated brief:** due now; work of 0.2.0 (item
+  `RIMMANDRAKE_JUDGE_SLACK_COVERAGE_AGAIN_UNDER_CALIBRATED_BRIEF`), not a bar.
+- **Proper icons for the four looks:** in 0.2.0, bar `look_menu_icons`. The icon art is kept in the art store; the FlowWorks
+  half is `RIMMANDRAKE_REDRAW_FLOWWORKS_FOUR_PLACEHOLDER_ARTS_FOR_ZERO_TWO`.
+- **The battery in the four looks:** NOT in 0.2.0. The design pass he ordered on his walk of 2026-11-20 (*"design and
+  decide and advise"*) put the battery in a new mod, Machine Looks
+  (`design/specs/2026-11-20-vanilla-electrical-art-home/design.md`, Decision), after this entry was written. The entry
+  stays here until he moves it; its ticket `RIMMANDRAKE_STYLE_SLACK_BATTERY_LIKE_THE_LAMP` names the new home.
+- **Delete the review stations nobody reads:** in 0.2.0 as work (item `RIMMANDRAKE_CUT_SLACK_REVIEW_STATIONS_NOBODY_READS`),
+  not a bar: it changes the review map, not what a player sees.
+- Taken from his walk of 2026-11-22 and his words of the same day: bar `restyle_whole_line` (his "GSS needs "change
+  everything on this line""). The reach menu (this item, all connected, all on map) and Gust as the default sway were
+  built and checked in 0.1.1 (`c3633a8f30`, `e851961457`), so they are not 0.2.0 scope.
+- Taken from the 2026-11-20 design pass: bar `wall_lamp_takes_looks`.
+

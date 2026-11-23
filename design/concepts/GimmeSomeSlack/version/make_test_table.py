@@ -176,6 +176,33 @@ NEW = {  # specified at this lock; Stage 3 builds each and shows it red first
                "src/RimMandrake/MandrakePatches/Source/SouthDrawsFront/SouthDrawsFrontPatches.cs",
                "src/RimMandrake/MandrakePatches/selftest_south_draws_front.py"]
               + sorted(glob.glob(G + "Textures/RimMandrake/GimmeSomeSlack/Aerial/**/Aerial*Mast.png", recursive=True))),
+    # ---- 0.2.0 MINOR (opened 2026-11-23, RIMMANDRAKE_OPEN_SLACK_NEXT_VERSION_SO_THREE_MODS_ADVANCE_TONIGHT): specified, Stage 3 builds each red first
+    "T_LINE_RESTYLE_OFFLINE": dict(
+        stage="4-5", file=G + "Source/SelfTest/LineRestyleChecks.cs",
+        observes="the run flood (ConduitStyles.Components over RM_MapComponent_ConduitRuns' neighbour rule) on generated lines of floor cords, "
+                 "a power switch, two poles joined by an overhead span, a wall bracket, a hooked lamp and a FlowWorks pipe pole on the same "
+                 "cells: All connected from each member kind takes every Gimme Some Slack member and no FlowWorks item; a cut span splits "
+                 "the line in two; planted: a flood that stops at a pole, and one that takes the pipe pole, each go red (bar restyle_whole_line)",
+        reads=[G + "Source/Aerial/ConduitStyles.cs", G + "Source/Aerial/RM_MapComponent_ConduitRuns.cs", G + "Source/Aerial/ConduitStylePicker.cs"]),
+    "T_LOOK_ICONS_OFFLINE": dict(
+        stage="4-5", file=G + "Source/SelfTest/LookIconChecks.cs",
+        observes="every look entry of the build menu's look choice and of the Restyle button takes its icon from the shared look-icon path "
+                 "(UI/Looks/<Look>), the four pictures exist and differ; planted: a menu entry back on its strand art goes red (bar look_menu_icons)",
+        reads=[G + "Source/Aerial/ConduitStylePicker.cs", G + "Textures"]),
+    "T_WALL_LAMP_LOOKS_OFFLINE": dict(
+        stage="4-5", file=G + "Source/SelfTest/WallLampLookChecks.cs",
+        observes="WallLamp is a lamp def of the picker with one style def per look, each look's texture exists for every facing it draws, "
+                 "the wall lamp follows its line as the standing lamp does, and the master switch off draws vanilla; planted: a look with a "
+                 "missing facing goes red (bar wall_lamp_takes_looks)",
+        reads=[G + "Source/Aerial/ConduitStyles.cs", G + "Defs", G + "Textures"]),
+    "T_MAST_BEHIND_TALL_SOUTH_PICTURE_OFFLINE": dict(
+        stage="4-5", file=G + "selftest_gss_mast_behind_tall_south_picture.py",
+        observes="the reverse case of the south rule: a building whose picture reaches north into a mast just north of it draws in front of "
+                 "the mast; the line APART BUILDING_LAYER_REACH of selftest_gss_pole_south_draws_front.py reads no pairs (1170 on "
+                 "2026-11-22); planted: the building back on its own layer goes red (bar poles_draw_in_front_when_south; item "
+                 "RIMMANDRAKE_ORDER_SLACK_MAST_BEHIND_TALL_SOUTHERN_PICTURES)",
+        reads=[G + "selftest_gss_pole_south_draws_front.py", G + "Defs/Aerial/RM_AerialAnchors.xml",
+               "src/RimMandrake/MandrakePatches/Source/SouthDrawsFront/SouthDrawsFrontKernel.cs"]),
 }
 
 # ---- the judgment: which offline tests decide (or support) each bar ----
@@ -200,7 +227,12 @@ OFF_DECIDES = {
     "poles_draw_in_front_when_south": ["T_POLE_SOUTH_DRAWS_FRONT_OFFLINE"],
     # added 2026-11-20 by his card (OWNER:1795244532644873616); the live half sc_switch_light is added with the scenes below
     "switch_light_reads_state": ["T_SWITCH_LIGHT_OFFLINE"],
+    # 0.2.0 MINOR bars (record.json proof_note); the live halves are added with the scenes below
+    "restyle_whole_line": ["T_LINE_RESTYLE_OFFLINE"],
+    "look_menu_icons": ["T_LOOK_ICONS_OFFLINE"],
+    "wall_lamp_takes_looks": ["T_WALL_LAMP_LOOKS_OFFLINE"],
 }
+OFF_DECIDES["poles_draw_in_front_when_south"].append("T_MAST_BEHIND_TALL_SOUTH_PICTURE_OFFLINE")
 OFF_SUPPORTS = {
     "conduit_invisible": ["T_GATE"], "cords_lie_slack": ["T_MATRIX", "T_END_HEAP"], "cords_meet_walls_at_face": ["T_CORE", "T_END_HEAP"],
     "strip_at_every_junction": ["T_JUNCTION_ART", "T_STRIP_ART"], "dense_block_tangle": ["T_MATRIX"],
@@ -241,6 +273,11 @@ HELD = [
                "user awareness part. Please make that so.",
          bars=["switch_light_reads_state"], test="T_SWITCH_LIGHT_OFFLINE + sc_switch_light", stage="4-5 then 6",
          kind="request, 0.1.1: bar added by his card 2026-11-20 (OWNER:1795244532644873616)"),
+    dict(file="infrastructure/state/ledger/events/OWNER.jsonl", row="OWNER:1795387443867018723",
+         words="Both Flow Works need the \"change everything on this line\" (for flow works items) and GSS needs \"change everything on this "
+               "line\" (for GSS items). They don't need to change each other's items though. Each mod can handle only its own, that's ok.",
+         bars=["restyle_whole_line"], test="T_LINE_RESTYLE_OFFLINE + sc_restyle_whole_line", stage="4-5 then 6",
+         kind="request, 0.2.0 MINOR: bar restyle_whole_line"),
 ]
 
 W = H + "gss_walk_20261120.md"  # his walk of 2026-11-20, "His points" table; the class column is the walk record's
@@ -253,12 +290,12 @@ _WALK = [  # row, bars, kind
     (7, [], "request, next version: RIMMANDRAKE_CUT_SLACK_REVIEW_STATIONS_NOBODY_READS (VERSION.json caveats)"),
     (8, ["junction_strips", "cords_join_stubs_on_position_and_slope"], "approval"),
     (9, ["pole_buttons_show_icons"], "defect; 0.1.1 bar (RIMMANDRAKE_LOAD_SLACK_POLE_ICONS_ON_MAIN_THREAD)"),
-    (10, [], "request, next version: RIMMANDRAKE_WIRE_STYLE_ICONS_INTO_EVERY_LOOK_MENU"),
-    (11, [], "request, next version: RIMMANDRAKE_STYLE_SLACK_BATTERY_LIKE_THE_LAMP; art on RIMMANDRAKE_DESIGN_HOME_FOR_VANILLA_ELECTRICAL_ART"),
+    (10, ["look_menu_icons"], "request; 0.2.0 bar look_menu_icons (RIMMANDRAKE_WIRE_STYLE_ICONS_INTO_EVERY_LOOK_MENU)"),
+    (11, [], "request; the battery's home is Machine Looks by the design pass (design/specs/2026-11-20-vanilla-electrical-art-home/design.md), not a GSS bar: RIMMANDRAKE_STYLE_SLACK_BATTERY_LIKE_THE_LAMP"),
     (12, [], "art, held by RIMMANDRAKE_DESIGN_HOME_FOR_VANILLA_ELECTRICAL_ART"),
     (13, ["poles_draw_in_front_when_south"], "defect; 0.1.1 bar (RIMMANDRAKE_DRAW_SLACK_POLES_IN_FRONT_WHEN_SOUTH)"),
     (14, ["no_roof_over_pole"], "defect; 0.1.1 bar (RIMMANDRAKE_BLOCK_SLACK_ROOF_OVER_POLE_KEEP_THE_CUT)"),
-    (15, [], "request, held by RIMMANDRAKE_DESIGN_HOME_FOR_VANILLA_ELECTRICAL_ART"),
+    (15, ["wall_lamp_takes_looks"], "request; the wall lamp is a 0.2.0 bar (wall_lamp_takes_looks); the other machines go to Machine Looks (RIMMANDRAKE_DESIGN_HOME_FOR_VANILLA_ELECTRICAL_ART)"),
     (16, [], "approval of the whole mod: the 0.1.0 pass (e1d9c3c042)"),
 ]
 for _r, _b, _k in _WALK:
@@ -305,7 +342,11 @@ NEW_CMD = {"T_CORD_GEOMETRY_OFFLINE": ["src/RimMandrake/Utils/selftest_gimmesome
            "T_SWITCH_OFF_NODE_OFFLINE": ["src/RimMandrake/Utils/selftest_gimmesomeslack.py"],
            "T_SWITCH_LIGHT_OFFLINE": ["src/RimMandrake/Utils/selftest_gimmesomeslack.py", "--no-export", "--switchlight-only"],
            "T_NO_KINK_OFFLINE": ["src/RimMandrake/Utils/selftest_gimmesomeslack.py", "--no-export", "--kinks-only"],
-           "T_SHOCK_RULE_OFFLINE": ["src/RimMandrake/Utils/selftest_gimmesomeslack.py"]}
+           "T_SHOCK_RULE_OFFLINE": ["src/RimMandrake/Utils/selftest_gimmesomeslack.py"],
+           # 0.2.0: a SelfTest .cs is run by T_CORE once Stage 3 writes it
+           "T_LINE_RESTYLE_OFFLINE": ["src/RimMandrake/Utils/selftest_gimmesomeslack.py"],
+           "T_LOOK_ICONS_OFFLINE": ["src/RimMandrake/Utils/selftest_gimmesomeslack.py"],
+           "T_WALL_LAMP_LOOKS_OFFLINE": ["src/RimMandrake/Utils/selftest_gimmesomeslack.py"]}
 for k, t in NEW.items():
     argv = NEW_CMD.get(k) or [t["file"]]
     row = dict(id=k, kind="offline", stage=t["stage"], file=t["file"], observes=t["observes"], reads=t["reads"], new=True,
@@ -394,6 +435,22 @@ NEW_LIVE = {
         "with the switchLight setting off (fake-game proof: selftest_gss_switch_light_scene.py)",
         [G + "Source/SwitchLightDraw.cs", G + "Source/GimmeSomeSlackProbe.cs"],
         "the lamp reads the running map's power nets (PowerNetManager rebuilds them on the tick after a flick or a battery change)"),
+    # 0.2.0 MINOR (opened 2026-11-23): entries ABSENT until Stage 3 writes them; UNRUN until Stage 6
+    "sc_restyle_whole_line": ("restyle_whole_line", "scene_restyle_whole_line",
+        "a line of floor cords, a power switch, two poles with an overhead span, a wall bracket and a hooked lamp, all Industrial: "
+        "All connected on the far pole to Futuristic; the GSS probe cstyles reads every piece, the span and the lamp Futuristic; then a "
+        "cut span and All connected on one side to Modern leaves the other side Futuristic",
+        [G + "Source/Aerial/ConduitStyleProbe.cs", G + "Source/Aerial/RM_MapComponent_ConduitRuns.cs"],
+        "a run is worked out from the running map (things, spans and their Up state); only the live map has them"),
+    "sc_look_menu_icons": ("look_menu_icons", "scene_look_menu_icons",
+        "a capture of the build menu's look choice and of the Restyle menu: each look shows its own icon, the same picture in both menus",
+        [G + "Source/Aerial/ConduitStylePicker.cs"],
+        "a float menu and its icons are drawn only by the running game's UI"),
+    "sc_wall_lamp_looks": ("wall_lamp_takes_looks", "scene_wall_lamp_looks",
+        "wall lamps on a wall in each look beside a standing lamp, captured at play zoom; a restyle of the line they hook to repaints "
+        "them as it does the standing lamp; the master switch off draws vanilla wall lamps without a restart",
+        [G + "Source/Aerial/ConduitStyles.cs", G + "Source/Aerial/ConduitStyleProbe.cs"],
+        "the drawn picture of a style def exists only in the running renderer"),
 }
 for sid, (bid, fn, obs, rd, why) in NEW_LIVE.items():
     f = G + "validation.py"
