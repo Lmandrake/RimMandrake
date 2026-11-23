@@ -13,28 +13,28 @@
   "test_blob": "dbb6d32f674d44644b8a6ff1229a21abbd280952"
  },
  "T_HEAVY_KNOCK_RULE": {
-  "at": "2026-11-23T12:20:09Z",
+  "at": "2026-11-23T22:00:21Z",
   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
   "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
-  "last": "explosive knockback kernel: 240/246 passed",
-  "patch": "diff --git a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs\nindex c4d5d6130c..29314b640f 100644\n--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs\n@@ -340,7 +340,7 @@ namespace RimMandrake.ExplosiveKnockback\n         {\n             damage = 0f;\n             stun = 0;\n-            if (!enabled || kind != KbKind.Item || !personThere || mass < minMass)\n+            if (!enabled || kind != KbKind.Item || !personThere || mass > minMass)\n             {\n                 return false;\n             }\n",
+  "last": "explosive knockback kernel: 247/248 passed",
+  "patch": "diff --git a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackVerdicts.cs b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackVerdicts.cs\nindex 15f572f674..843773b287 100644\n--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackVerdicts.cs\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackVerdicts.cs\n@@ -30,7 +30,7 @@ namespace RimMandrake.ExplosiveKnockback\n             {\n                 return key + \" not on the map\";\n             }\n-            return x == stagedX && z == stagedZ ? null : key + \" at \" + x + \",\" + z + \", staged \" + stagedX + \",\" + stagedZ;\n+            return x == stagedX ? null : key + \" at \" + x + \",\" + z + \", staged \" + stagedX + \",\" + stagedZ;\n         }\n \n         /// <summary>sc_calibration: the colonist is thrown exactly 3 cells (people_thrown_three_cells), straight away from\n",
   "patch_files": [
-   "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackVerdicts.cs"
   ],
-  "patch_sha": "d130e2979074e6b9",
+  "patch_sha": "d67b0864ecfdaf22",
   "rc": 1,
   "test_blob": "3440aaf847989a207203f2188a7bda4fa7ad094f"
  },
  "T_KERNEL": {
-  "at": "2026-11-23T12:20:03Z",
+  "at": "2026-11-23T22:00:17Z",
   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
   "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
-  "last": "explosive knockback kernel: 233/246 passed",
-  "patch": "diff --git a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs\nindex c4d5d6130c..633c1113cf 100644\n--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs\n@@ -192,7 +192,7 @@ namespace RimMandrake.ExplosiveKnockback\n         public static float MassScale(float mass, KbSettings s)\n         {\n             float m = Math.Max(mass, 1f);\n-            float v = (float)Math.Sqrt(s.refMass / m);\n+            float v = (float)Math.Sqrt(m / s.refMass);\n             return v < 0.25f ? 0.25f : (v > 2f ? 2f : v);\n         }\n \n",
+  "last": "explosive knockback kernel: 247/248 passed",
+  "patch": "diff --git a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackVerdicts.cs b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackVerdicts.cs\nindex 15f572f674..843773b287 100644\n--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackVerdicts.cs\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackVerdicts.cs\n@@ -30,7 +30,7 @@ namespace RimMandrake.ExplosiveKnockback\n             {\n                 return key + \" not on the map\";\n             }\n-            return x == stagedX && z == stagedZ ? null : key + \" at \" + x + \",\" + z + \", staged \" + stagedX + \",\" + stagedZ;\n+            return x == stagedX ? null : key + \" at \" + x + \",\" + z + \", staged \" + stagedX + \",\" + stagedZ;\n         }\n \n         /// <summary>sc_calibration: the colonist is thrown exactly 3 cells (people_thrown_three_cells), straight away from\n",
   "patch_files": [
-   "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackVerdicts.cs"
   ],
-  "patch_sha": "f8b774053f6e36d8",
+  "patch_sha": "d67b0864ecfdaf22",
   "rc": 1,
   "test_blob": "3440aaf847989a207203f2188a7bda4fa7ad094f"
  },
