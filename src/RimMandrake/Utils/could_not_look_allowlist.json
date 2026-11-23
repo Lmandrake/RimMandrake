@@ -254,7 +254,10 @@
   "src/RimMandrake/rimflow/rerun_relation.py::Relation._table_at::except-returns-empty": 1,
   "src/RimMandrake/rimflow/rerun_relation.py::Relation.undeclared::or-empty": 1,
   "src/RimMandrake/rimflow/control.py::to_run_text::or-empty": 1,
-  "src/RimMandrake/rimflow/maturation_dispatch.py::rerun_landed::except-returns-empty": 1
+  "src/RimMandrake/rimflow/maturation_dispatch.py::rerun_landed::except-returns-empty": 1,
+  "src/RimMandrake/Utils/maturation_nonmod.py::utc::except-returns-empty": 1,
+  "src/RimMandrake/Utils/maturation_nonmod.py::run_end::or-empty": 1,
+  "src/RimMandrake/Utils/maturation_nonmod.py::section::or-empty": 2
  },
  "reasons": {
   "src/RimMandrake/rimflow/detached_helper.py::drain_refusal::except-returns-empty": [
@@ -1074,6 +1077,15 @@
   ],
   "src/RimMandrake/rimflow/maturation_dispatch.py::rerun_landed::except-returns-empty": [
    "NOT A COLLAPSE: None is the could-not-look answer, apart from True (landed) and False (not yet here); cert_rerun_decide waits only on False, so an unreadable tree keeps the repair route"
+  ],
+  "src/RimMandrake/Utils/maturation_nonmod.py::utc::except-returns-empty": [
+   "NOT A COLLAPSE: utc() returns None for a time it cannot parse, and every printed time goes through pac(), which prints UNMEASURED for None (design/specs/2026-11-22-non-mod-pipeline-section/boundary.md, four-answers-differ); ledger and record times are written by rimflow and detached_helper as ISO or unix time"
+  ],
+  "src/RimMandrake/Utils/maturation_nonmod.py::run_end::or-empty": [
+   "RARE: a note whose ts rimflow wrote and that cannot be parsed counts as written before the run, so the run reads 'said nothing' rather than 'left open'; it stays listed under Escalated for help either way"
+  ],
+  "src/RimMandrake/Utils/maturation_nonmod.py::section::or-empty": [
+   "SORT KEY ONLY: an unparsable created_at or note ts sorts first; the row itself prints 'filed UNMEASURED' / UNMEASURED for the time (pac/age), never a date or 0"
   ]
  }
 }

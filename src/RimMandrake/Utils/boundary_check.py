@@ -36,6 +36,7 @@ PAGES = {
     "design/specs/2026-11-22-login-deadline-forewarning/boundary.md": "src/RimMandrake/rimflow/selftest_login_deadline.py",
     "design/specs/2026-11-22-item-identity/boundary.md": "src/RimMandrake/rimflow/selftest_item_identity.py",
     "design/specs/2026-11-22-needs-conductor-list/boundary.md": "src/RimMandrake/Utils/selftest_needs_conductor.py",
+    "design/specs/2026-11-22-non-mod-pipeline-section/boundary.md": "src/RimMandrake/Utils/selftest_maturation_nonmod.py",
     "design/specs/2026-11-22-selftest-deadline/boundary.md": "src/RimMandrake/Utils/selftest_selftest_deadline.py",
     "design/specs/2026-11-21-one-game-lock/boundary.md": "src/RimMandrake/rimflow/selftest_game_lock.py",
     "design/specs/2026-11-22-game-names/boundary.md": "src/RimMandrake/rimflow/selftest_game_names.py",

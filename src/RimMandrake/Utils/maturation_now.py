@@ -68,6 +68,8 @@ from zoneinfo import ZoneInfo
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "rimflow"))
 from item_identity import item_mod  # noqa: E402  the one rule for the mod an item names
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import maturation_nonmod as MNM  # noqa: E402  the section for work that is not mod work
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
@@ -430,6 +432,7 @@ def live_facts(mods):
         import fleet_mods  # noqa: E402
         import owner_queue  # noqa: E402
         evs, world = fleet_mods.ledger()
+        out["_evs"], out["_items"] = evs, (world.items or {})   # read once; the non-mod section reads them too
         out["notes"] = [e for e in evs if isinstance(e, dict) and e.get("event") == "note"]
         out["titles"] = {k: str(getattr(v, "title", "") or "") for k, v in (world.items or {}).items()}
         out["closed"] = {k for k, v in (world.items or {}).items() if getattr(v, "state", None) in CLOSED_STATES}
@@ -1015,7 +1018,10 @@ def gather(root, live=True):
     lf["errors"] += needs["defects"]
     if live:
         needs["pipeline"] = dispatch_pipeline(now, lf["errors"])
-    return {"mods": mods, "others": other, "held": held, "needs": needs, "now": now,
+    # the pipeline for work that is not mod work (design/specs/2026-11-22-non-mod-pipeline-section/boundary.md)
+    nm_stores = (MNM.read_stores(lf, versioned) if live else MNM.off_stores("live reads off (--no-live)"))
+    nonmod = MNM.safe_section(nm_stores, now, spend=read_spend)
+    return {"mods": mods, "others": other, "held": held, "needs": needs, "now": now, "nonmod": nonmod,
             "intake": {"count": lf["intake"], "questions_total": UNM if lf["questions"] is None else len(lf["questions"])},
             "errors": lf["errors"], "convergence": convergence(root, lf["errors"])}
 
@@ -1469,6 +1475,15 @@ def needs_md(d):
     return out
 
 
+def nonmod_md(d):
+    """The non-mod pipeline section, directly under "Pipeline now" (maturation_nonmod.py)."""
+    return MNM.markdown(d["nonmod"]) if d.get("nonmod") else []
+
+
+def nonmod_html(d):
+    return MNM.html_block(d["nonmod"], YELLOW) if d.get("nonmod") else ""
+
+
 def needs_html(d):
     out = []
     for key, title, col in (("mandrake", "Needs Mandrake", ALERT), ("conductor", "Needs Conductor", YELLOW),
@@ -1567,7 +1582,7 @@ def build(d, now):
     title = "Maturation now"
     lead = ("Where every mod stands in the Maturation Pipeline and what each one waits on. "
             "The map is the spec's (`%s\\design\\specs\\2026-11-13-maturation-pipeline.md`)." % NATIVE_REPO)
-    parts_md += ["# " + title, "", measured, ""] + needs_md(d) + [top_chips(d), "", lead, "",
+    parts_md += ["# " + title, "", measured, ""] + needs_md(d) + nonmod_md(d) + [top_chips(d), "", lead, "",
                                                                  "<div>" + picture(d) + "</div>", ""]
     # summary table
     parts_md += ["## Every mod, one line", "", "| " + " | ".join(HEADS) + " |", "|" + "---|" * len(HEADS)]
@@ -1606,7 +1621,8 @@ def build(d, now):
                   % (TEXT, FONT, TEXT, CARD, DIM, EDGE, DIM),
                   "<h1>%s</h1>" % title,
                   '<p id="built" class="m">Built %s. This tab reloads itself every 5 minutes; if this time is older '
-                  'than that, the writer stopped.</p>' % esc(pac(now)), "<p>%s</p>" % inline_md(measured), needs_html(d), "<p>%s</p>" % top_chips(d),
+                  'than that, the writer stopped.</p>' % esc(pac(now)), "<p>%s</p>" % inline_md(measured), needs_html(d),
+                  nonmod_html(d), "<p>%s</p>" % top_chips(d),
                   "<p class='m'>%s</p>" % inline_md(lead), picture(d),
                   "<h2>Every mod, one line</h2>", tbl, convergence_html(d), "<h2>Each mod</h2>"] + [
                       card(m) for m in d["mods"]]

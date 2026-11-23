@@ -153,6 +153,7 @@
     {"test": "src/RimMandrake/rimflow/selftest_designer_owner_elsewhere.py", "seconds": 0.7},
     {"test": "src/RimMandrake/rimflow/selftest_designer_review_findings.py", "seconds": 0.5},
     {"test": "src/RimMandrake/rimflow/selftest_stage5_program.py", "seconds": 0.8},
+    {"test": "src/RimMandrake/Utils/selftest_maturation_nonmod.py", "seconds": 1, "inputs": ["src/RimMandrake/Utils/maturation_nonmod.py", "src/RimMandrake/Utils/maturation_now.py", "src/RimMandrake/rimflow/item_identity.py", "design/specs/2026-11-22-non-mod-pipeline-section/boundary.md"]},
     {"test": ".claude/hooks/selftest_role_result_before_stop.py", "seconds": 0.2},
     {"test": "src/RimMandrake/rimflow/selftest_detached_helper.py", "seconds": 2.6},
     {"test": "src/RimMandrake/rimflow/selftest_ledger_landing.py", "seconds": 6.0, "inputs": ["src/RimMandrake/rimflow/ledger_landing.py", "src/RimMandrake/rimflow/selftest_ledger_landing_recorded.jsonl", "src/RimMandrake/rimflow/cli.py", "src/RimMandrake/rimflow/model.py", "src/RimMandrake/Utils/publish.py", "design/specs/2026-11-22-ledger-write-lands-its-shard/boundary.md"]},
