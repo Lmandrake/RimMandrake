@@ -155,7 +155,7 @@ same gate.
 
 1. 🔴 **Report refusals; never `catch {}`.** An early zone builder of this companion swallowed `AddCell` refusals. A 6×6
    stockpile silently took 11 of 36 cells while the tool reported success. The silent loss is *the exact bug class this whole bridge exists to
-   expose.* Return `cellsRequested`, `refusedCount` and a `refused[]` list with a reason per item.
+   expose*. Return `cellsRequested`, `refusedCount` and a `refused[]` list with a reason per item.
 2. 🔴 **Read back the RAW field, not the convenient getter.** `SkillRecord.Level` adds aptitudes. `Tile.HillinessLabel` is
    cached forever. `SurfaceTile.Rivers` is biome-filtered. When the raw field and the getter differ, report both.
    `pawn_get` returns `levelRaw` *and* `levelEffective`, so no one can mistake inflation for a failed write.
