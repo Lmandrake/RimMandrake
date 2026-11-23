@@ -282,9 +282,10 @@ The playstyle itself is bucket B (B2). **The only thing BUILD owes here is not
 to break it**, and there are exactly two ways to break it from a file:
 
 1. ⛔ **Never set `standardAnomalyPlaystyleOnly` on any scenario we ship** (R-S2).
-2. ⛔ **Never author a `DifficultyDef` preset for this campaign** (R-S5) — a
-   non-Custom preset hides the anomaly threat slider and the game applies
-   `SetupNonCustomDifficultyAnomalySettings` instead, which is not 0.
+2. ⛔ **Never author a `DifficultyDef` preset for this campaign** (R-S5): on a
+   non-Custom preset the in-game storyteller page hides the anomaly threat slider,
+   so a player must first pick Custom to change the value. The value chosen at the entry screen stays
+   (`SetupNonCustomDifficultyAnomalySettings` saves and loads it).
 
 **The three defs, from the live dump — there are exactly three and no mod adds one:**
 
@@ -294,8 +295,9 @@ to break it**, and there are exactly two ways to break it from a file:
 | ⭐ **`AmbientHorror`** | **false** | **true** | **true** | **true** |
 | `Disabled` | false | **false** | false | false |
 
-⭐ **`AmbientHorror` + the threat slider at 0% is "present but dormant".** Nothing
-auto-spawns, no monolith ever, and study, the anomaly research tab, the entity
+⭐ **`AmbientHorror` + the threat slider at 0% is "present but dormant".** The
+storyteller draws no Anomaly *threat* (`ThreatSmall`, `ThreatBig`). The slider does not gate the categories `Misc`
+and `GiveQuest` or the weather `GrayPall`: `Scenario_Utinni.xml` disables those incidents one by one. No monolith ever, and study, the anomaly research tab, the entity
 codex and tome trading all stay live. Because `generateMonolith` is false the
 `minAnomalyThreatLevel` gate is skipped entirely, so `PitGate` and
 `FleshmassHeart` can still be fired deliberately by an authored quest — which is
@@ -312,18 +314,19 @@ Full derivation in `design/V2_DREAMS.md`, "Anomaly playstyle — measured, 2026-
 stated as a ruling rather than a note.**
 
 `DifficultyDef` is an ordinary XML def — Storyteller Enhanced ships three, and
-they load. **But authoring one for this campaign is the wrong move and would
-silently cost us R-S4.**
+they load. **But authoring one for this campaign is the wrong move: it would
+hide the in-game anomaly slider (R-S4) and it is not Custom.**
 
 | the trap | the evidence |
 |---|---|
 | Patching `DifficultyDef[defName="Custom"]` does nothing | vanilla's own file carries the comment *"no specific values defined, they are aren't used when Custom is selected"* — `…\Data\Core\Defs\Misc\DifficultyDefs\Difficulties.xml` |
 | Authoring a **new** preset works, but is not Custom | `isCustom` is what the UI keys on; a new preset has `isCustom false` |
-| 🔴 The anomaly threat slider renders **only** on `isCustom` | and a non-Custom preset instead gets `SetupNonCustomDifficultyAnomalySettings` — not 0 |
-| 🔴 The dial we need is not on `DifficultyDef` at all | **`overrideAnomalyThreatsFraction` is absent from all 10 live `DifficultyDef`s.** It exists only on the runtime `Difficulty` object, which is scribed into the save under `<customDifficulty>` |
+| 🔴 The in-game anomaly threat slider renders **only** on `isCustom` | `Dialog_AnomalySettings` at the entry screen draws the slider with each preset, and `SetupNonCustomDifficultyAnomalySettings` keeps that value in the save. Only Custom lets anybody change the value later |
+| 🔴 The dial we need is not on `DifficultyDef` at all | **`overrideAnomalyThreatsFraction` is absent from all 10 live `DifficultyDef`s.** It exists only on the runtime `Difficulty` object. The save holds it under `<customDifficulty>` on Custom, and beside the storyteller fields on each other preset |
 
 ⇒ **Custom difficulty is a REQUIREMENT of this campaign, not a preference.** Any
-ruling that names a slider value is lost the moment someone picks `Rough`.
+ruling that names a slider value is lost the moment someone picks `Rough`, except the
+anomaly override and the playstyle, which a preset does not overwrite.
 
 **Six UI dials that exist on `Difficulty` and NOT on `DifficultyDef`** — i.e. they
 can never be shipped in a file and must be set at the screen:
@@ -339,7 +342,7 @@ exact field name so nobody sets the neighbouring slider:
 
 | our doctrine | the field, exactly | note |
 |---|---|---|
-| 🔴 **Anomaly content at zero** | `overrideAnomalyThreatsFraction` = **0** | UI label **"Anomaly threats"**, single slider. Renders only under `AmbientHorror` + Custom. Its own 0 label is *"No major threats"* |
+| 🔴 **Anomaly content at zero** | `overrideAnomalyThreatsFraction` = **0** | UI label **"Anomaly threats"**, single slider. Renders under `AmbientHorror`: in the entry window with each preset, in-game only on Custom. Its own 0 label is *"No major threats"* |
 | raids **heavier** | `threatScale` | ⚠️ this is **magnitude**, not frequency. Tooltip: *"Adjust the size of threats like raids and infestations"* |
 | raids **fewer** | 🔴 **no such Custom slider exists** | `threatsGeneratorThreatCountFactor` is on `DifficultyDef` but has **no UI label**, so it is unreachable at the screen. Frequency lives on `StorytellerDef` comps (`onDays`/`offDays`/`minSpacingDays`/`numIncidentsRange`) — a bucket-A patch, not a click |
 | "disable enemy flee %" | 🔴 **DOES NOT EXIST.** Strike it | No `flee` field on `DifficultyDef`, no `Difficulty_*Flee*` key anywhere. Fleeing is decided in code (`LordJob_AssaultColony.canTimeoutOrFlee`, `FleeUtility`). The docs quoting it — `setup_checklist.md` §1, `Gravship_Campaign_Planning_Discussion_2026-08-02.md:1420`, `concept.md:66` — are citing a setting that is not there. The nearest real dial is `enemyDeathOnDownedChanceFactor`, a different mechanic |
@@ -440,7 +443,7 @@ population, landmarks, pollution) → *Advanced settings* (map size, start seaso
 
 | # | the choice | bucket-B evidence | what must be true |
 |---|---|---|---|
-| B1 | **Difficulty = Custom** | the anomaly slider block draws only when `difficulty.isCustom`; the values live in the save's `<customDifficulty>`, not in any def | 🔴 **Pick Custom BEFORE opening Anomaly settings.** Without it the threat slider is not on the page at all. *Technically re-selectable mid-game, but see B2 — the playstyle beside it is not, so treat the pair as one permanent click* |
+| B1 | **Difficulty = Custom** | the in-game anomaly slider block draws only when `difficulty.isCustom`; the values live in the save's `<customDifficulty>`, not in any def | After the start, the threat slider shows only while the game is on Custom. The *Anomaly settings…* window itself shows the slider with each preset, and the order of the two clicks does not matter. *Technically re-selectable mid-game, but see B2 — the playstyle beside it is not, so treat the pair as one permanent click* |
 | B2 | 🔴 **Anomaly playstyle = `AmbientHorror`** | `Dialog_AnomalySettings` is the only vanilla UI that writes `difficulty.AnomalyPlaystyleDef`, and `StorytellerUI.DrawStorytellerSelectionInterface` draws the "Anomaly settings…" button only inside `if (Current.ProgramState == ProgramState.Entry)`. `Page_SelectStorytellerInGame` calls the same method, so the button is simply **absent** once a game exists | **`AmbientHorror`, then drag "Anomaly threats" to 0%** (its own label at 0 is *"No major threats"*). ⛔ NOT `Disabled` — that kills study, research, codex and tome trading. The default on picking the playstyle is 0.15, so **not touching the slider is the failure mode** |
 | B3 | **Permadeath / commitment = OFF** | `permadeathMode` and `permadeathModeUniqueName` are scribed on `Game`; `MustChoosePermadeath` is a storyteller-page validation string and no keyed string exists for changing it later | Ruled OFF (`setup_checklist.md` §1, owner 2026-08-04). OFF is the default — the risk is only an accidental tick |
 | B4 | 🔴 **Planet type = `TidallyLocked`** — ⚠️ **NOT on this page. It is in Mod settings → Alien Worlds Framework** | R-S1. `ferny.Worldbuilder` is inactive so the backend is `Standalone`; the value is scribed per save as `alienWorldsFrameworkPlanetType` and the setting is labelled *"for new worlds"* | 🔴 **Today it reads `Default` and there is no settings file at all.** Set it, screenshot it, reopen the page to confirm. **Do not go to the world page until the settings page says *tidally locked world*** |
@@ -450,16 +453,16 @@ population, landmarks, pollution) → *Advanced settings* (map size, start seaso
 | B8 | **Overall temperature** — `overallTemperature` | `<overallTemperature>` | 🔴 **SEVEN stops:** `VeryCold · Cold · LittleBitColder · Normal · LittleBitWarmer · Hot · VeryHot`. ⚠️ It sits **on top of** `avgTempByLatitudeCurve`, whose live range is already +70 → −80 °C. The habitable ring is narrow (**40–57° of arc** — owner's ruling 2026-08-21, `canon.yml > world.habitable_ring_arc`; ~~34–57~~ lost) and one stop moves it |
 | B9 | **Population** — `overallPopulation` | 🔴 **NOT in `WorldInfo.ExposeData`** — a pure generation input, absent from the save | **Seven stops**, same names as rainfall. ⚠️ Settlement DENSITY, not which factions exist (that is B13, a different page). The design wants trader frequency high (`setup_checklist.md` §9), which argues away from the sparse end. 🔴 **Unrecoverable afterwards — the screenshot IS the record** |
 | B10 | **Landmarks** (Odyssey) — `landmarkDensity` | 🔴 **also NOT in `ExposeData`** | **Seven stops:** `Sparse · SlightlyMoreSparse · SlightlySparse · Normal · SlightlyCrowded · SlightlyMoreCrowded · Crowded`. ⭐ **Not previously on any checklist.** `desert_world_design.md`'s two-tier set-piece model rides native Landmarks generating the tile *type* before anything of ours authors its content — the sparse end thins the layer the design assumes. 🔴 Screenshot it |
-| B11 | **Pollution** (Biotech) — `pollution` | `<pollution>`, a **float 0–1**, not an enum. Default `0.05` | ⭐ **It closes the one residual Anomaly auto-spawn.** Under `AmbientHorror`, `GameComponent_Anomaly.TrySpawnHarbingerTrees` bypasses the threat fraction — but `GenStep_HarbingerTrees` sets `pollutionNone 0` / `pollutionLight 0`, so on an unpolluted world the desired count is 0 and the incident refuses. **Low pollution is load-bearing for R-S4, not cosmetic** |
+| B11 | **Pollution** (Biotech) — `pollution` | `<pollution>`, a **float 0–1**, not an enum. Default `0.05` | Not needed for R-S4. Under `AmbientHorror`, no monolith is spawned, so the monolith level is `Inactive`, and `GenStep_HarbingerTrees.DesiredTreeCountForMap` returns that level's `desiredHarbingerTreeCount`, 0. The harbinger tree incident refuses at each pollution level |
 | B12 | ⭐ **Advanced settings → MAP SIZE and START SEASON** | `<initialMapSize>` is scribed into `<world><info>`; the season is consumed by map generation | 🔴 **Behind the *Advanced settings* button on the world page, and previously OPEN on `setup_checklist.md` §6 with no ruling.** Sizes are exactly **200 · 225 · 250 · 275 · 300 · 325**; `MapSizePerformanceWarning` guards the top. Season is `Undefined(Auto) · Spring · Summer · Fall · Winter · PermanentSummer · PermanentWinter` — ⚠️ on a tidally locked world *PermanentSummer* is the fiction, and `MapWinterWarning` guards a winter start |
-| B13 | **Factions** | `WORLDGEN_FACTION_CHECKLIST.md`, ratified. ⚠️ `<factions IsNull="True" />` in the observed save — the counts do not survive either | 🔴 **A faction absent at world creation can NEVER be added later.** ⚠️ **Corrected 2026-08-23: the 21 unticks are DEAD** — `OnlyOurFactions.xml` zeroes them and the page opens as our twelve at one each; those rows moved to `infrastructure/state/archive/WORLDGEN_FACTION_CHECKLIST_ARCHIVE.md`. Live: **4 keeps** (2 of them defaulting to 0) **/ 13 set ≥ 1**. Screenshot the page |
+| B13 | **Factions** | `WORLDGEN_FACTION_CHECKLIST.md`, ratified. ⚠️ `<factions IsNull="True" />` in the observed save. `WorldInfo.ExposeData` writes the list when the world page passes one, so a save made through the page can hold it | 🔴 **A faction absent at world creation can NEVER be added later.** ⚠️ **Corrected 2026-08-23: the 21 unticks are DEAD** — `OnlyOurFactions.xml` zeroes them and the page opens as our twelve at one each; those rows moved to `infrastructure/state/archive/WORLDGEN_FACTION_CHECKLIST_ARCHIVE.md`. Live: **4 keeps** (2 of them defaulting to 0) **/ 13 set ≥ 1**. Screenshot the page |
 | B14 | **The landing tile** | `<game><info><startingTile>` | The deleted run book's §2.B and §2.C — read the tile's **mutators**, and target by **arc distance from the subsolar point**, never by latitude |
 | B15 | **The scenario and the ideoligion** | both serialised into the save verbatim | ⚠️ Listed for completeness. The scenario is R-S2's problem and the ideo is B54's; **both are read once** |
 
 🔴 **Screenshot every one of these screens.** The world is not reproducible from
-any file in this repo, a cold load is ~25–30 minutes, and **population, landmark
-density and the faction counts are not written to the save at all** — for those
-three the screenshot is the only record that will ever exist.
+any file in this repo, a cold load is ~25–30 minutes, and **population and landmark
+density are not written to the save at all** (the faction list can be, B13). For those
+two the screenshot is the only record that will ever exist.
 
 ⚠️ **One counter-signal, so nobody "corrects" B2 later.** `Dialog_AnomalySettings`
 carries the string `CanBeEditedInStorytellerSettings` — *"These can be modified
@@ -476,7 +479,7 @@ careful click, and being wrong the other way costs a campaign.
 | setting | how it changes later |
 |---|---|
 | **Storyteller** | `Page_SelectStorytellerInGame`. Free |
-| **Difficulty preset** | same page. ⚠️ but moving *off* Custom loses every custom value, including the anomaly override |
+| **Difficulty preset** | same page. ⚠️ but moving *off* Custom loses every custom value, except the anomaly playstyle and the anomaly override (`Difficulty.CopyFrom` writes neither) |
 | **The anomaly threat slider** | adjustable in an existing save — **only while difficulty is Custom**. This is the reason B1 and B2 must be taken together |
 | **Individual Custom sliders** | same page, same Custom-only condition |
 | **Mod settings, autosave interval, UI** | any time |

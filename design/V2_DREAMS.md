@@ -1041,11 +1041,11 @@ content real and reachable on purpose, nothing spawning by itself?
 
 **Why `AmbientHorror` is the one.**
 
-- **Nothing auto-spawns.** `GameComponent_Anomaly.AnomalyThreatFractionNow`
+- **No Anomaly threat is drawn at 0** (categories `ThreatSmall` and `ThreatBig` only, see below). `GameComponent_Anomaly.AnomalyThreatFractionNow`
   returns `difficulty.overrideAnomalyThreatsFraction` outright when
   `overrideThreatFraction` is set. That feeds `Storyteller.AnomalyIncidentChanceNow`,
   which `StorytellerComp` uses as a plain `Rand.Chance` before it will draw from the
-  anomaly incident pool at all. **At 0 the storyteller never looks at that pool.**
+  anomaly incident pool at all. **At 0 the storyteller never looks at that pool for those two categories.**
   The slider runs 0–1 and the game's own label for 0 is **"No major threats"**
   (keyed `AnomalyFrequency_None`). Default when you pick the playstyle is 0.15.
 - **No monolith, ever.** `generateMonolith:false` makes `GenStep_Monolith.GenerateMonolith`
@@ -1074,12 +1074,15 @@ content real and reachable on purpose, nothing spawning by itself?
   the void monolith physically spawns on the starting map, and the `minAnomalyThreatLevel`
   gates stay live at tier 0, so an authored pit gate would need the monolith advanced first.
 
-**Residual auto-spawn under `AmbientHorror`: one, and it is off on our world.**
-`GameComponent_Anomaly.TrySpawnHarbingerTrees` queues `HarbingerTreeSpawn` directly on a
-timer, bypassing the fraction. It is pollution-gated —
-`GenStep_HarbingerTrees` sets `pollutionNone 0` and `pollutionLight 0` — so on an
-unpolluted desert map the desired count is 0 and `IncidentWorker_SpecialTreeSpawn.CanFireNowSub`
-refuses. Worth one grep after the first load, not worth a redesign.
+**What ignores the fraction under `AmbientHorror`.** `StorytellerComp.UsableIncidentsInCategory` applies the
+fraction only to a category with `canUseAnomalyChance` (`ThreatSmall`, `ThreatBig`). So the Anomaly incidents of `Misc` and
+`GiveQuest` (creepjoiners, mysterious cargo, metalhorror implantation, the distress call) are still drawn, and
+`Scenario_Utinni.xml` disables them one by one. Also one weather: `WeatherDecider` allows `GrayPall`
+(`canOccurInAmbientHorror`) on each biome that lists it in its weather odds.
+Harbinger trees do not spawn: `GameComponent_Anomaly.TrySpawnHarbingerTrees` queues `HarbingerTreeSpawn`
+on a timer, but `GenStep_HarbingerTrees.DesiredTreeCountForMap` returns the monolith level's
+`desiredHarbingerTreeCount`. With no monolith the level is `Inactive`, the count is 0, and
+`IncidentWorker_SpecialTreeSpawn.CanFireNowSub` refuses at each pollution level.
 
 **🔴 Locked at world creation — this is a decision with a deadline.**
 `Dialog_AnomalySettings` is the only vanilla UI that writes `difficulty.AnomalyPlaystyleDef`,
