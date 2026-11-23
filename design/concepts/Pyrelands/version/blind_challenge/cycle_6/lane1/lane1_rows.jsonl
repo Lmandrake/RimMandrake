@@ -1,0 +1,39 @@
+{"id": "probes_never_upwind", "bars": ["fire_walks_with_wind", "burn_line_walks"], "kind": "random", "verdict": "PASS", "cases": 20000, "detail": "seeds 0..19999"}
+{"id": "probes_mean_heading_is_wind", "bars": ["fire_walks_with_wind", "burn_line_walks"], "kind": "random", "verdict": "PASS", "cases": 72, "detail": "seeds 0..71"}
+{"id": "carry_plan_lights_fuel_only_at_most_two_adjacent", "bars": ["fire_walks_with_wind", "burn_line_walks"], "kind": "random", "verdict": "PASS", "cases": 20000, "detail": "seeds 0..19999"}
+{"id": "carry_due_once_and_vanilla_spread_exclusive", "bars": ["fire_walks_with_wind", "burn_line_walks", "inv_settings_gate"], "kind": "sweep", "verdict": "PASS", "cases": 1, "detail": "seeds 0..0"}
+{"id": "recent_burn_window", "bars": ["fire_walks_with_wind", "burn_line_walks"], "kind": "random", "verdict": "PASS", "cases": 5000, "detail": "seeds 0..4999"}
+{"id": "carry_age_in_range_smooth_deterministic", "bars": ["burn_line_walks"], "kind": "random", "verdict": "PASS", "cases": 20000, "detail": "seeds 0..19999"}
+{"id": "ground_noise_not_constant_across_maps", "bars": ["burn_line_walks"], "kind": "random", "verdict": "PASS", "cases": 200, "detail": "seeds 0..199"}
+{"id": "flank_plan_bounds", "bars": ["fire_walks_with_wind", "burn_line_walks"], "kind": "random", "verdict": "PASS", "cases": 30000, "detail": "seeds 0..29999"}
+{"id": "lone_fire_never_closes", "bars": ["burn_line_walks"], "kind": "random", "verdict": "PASS", "cases": 5000, "detail": "seeds 0..4999"}
+{"id": "sim_lone_fire_runs_downwind_and_fans_out", "bars": ["fire_walks_with_wind", "burn_line_walks"], "kind": "random", "verdict": "PASS", "cases": 64, "detail": "ok | minDown=99 maxFrac=0.05 wideRuns=64/64 diedEarly=0"}
+{"id": "sim_strip_90", "bars": ["fire_walks_with_wind"], "kind": "random", "verdict": "PASS", "cases": 500, "detail": "outer-lane runs 0/500, no lean 0, most fires at once 26 (limit 27 = 3x the 9 lit) "}
+{"id": "sim_strip_270", "bars": ["fire_walks_with_wind"], "kind": "random", "verdict": "PASS", "cases": 500, "detail": "outer-lane runs 0/500, no lean 0, most fires at once 26 (limit 27 = 3x the 9 lit) "}
+{"id": "sim_front_walks_never_floods", "bars": ["burn_line_walks"], "kind": "random", "verdict": "PASS", "cases": 24, "detail": "ok worst burned share 0.20, worst one-cell-strand share 0.00"}
+{"id": "history_probe_counts_after_prune", "bars": ["ullai_graze_old_burns"], "kind": "random", "verdict": "PASS", "cases": 20000, "detail": "seeds 0..19999"}
+{"id": "foam_gate_exhaustive", "bars": ["firefoam_sprayer_reaches_the_fruit", "inv_settings_gate"], "kind": "fixed", "verdict": "PASS", "cases": 128, "detail": "seeds 0..127"}
+{"id": "foam_target_is_first_hittable_fire_in_the_way", "bars": ["firefoam_sprayer_reaches_the_fruit"], "kind": "random", "verdict": "PASS", "cases": 30000, "detail": "seeds 0..29999"}
+{"id": "foam_null_path_safe", "bars": ["firefoam_sprayer_reaches_the_fruit"], "kind": "fixed", "verdict": "PASS", "cases": 1, "detail": "seeds 0..0"}
+{"id": "foam_walk_never_steps_on_fire", "bars": ["firefoam_sprayer_reaches_the_fruit"], "kind": "random", "verdict": "PASS", "cases": 3000, "detail": "seeds 0..2999"}
+{"id": "probe_parts_sum_over_shipped_ranges", "bars": ["ash_fertility_probe", "fresh_burn_compounds_with_black_rain"], "kind": "sweep", "verdict": "PASS", "cases": 30000, "detail": "seeds 0..29999"}
+{"id": "wet_fresh_beats_dry_fresh_and_wet_old_at_defaults", "bars": ["fresh_burn_compounds_with_black_rain", "ash_fertility_probe"], "kind": "fixed", "verdict": "PASS", "cases": 1, "detail": "seeds 0..0"}
+{"id": "mechanics_gate_table", "bars": ["inv_settings_gate"], "kind": "fixed", "verdict": "PASS", "cases": 8, "detail": "seeds 0..7"}
+{"id": "nk_lightning_breaker", "bars": ["inv_lightning_breaker"], "kind": "info", "verdict": "INFO", "cases": 0, "detail": "absence bar: decided by text_absent_breaker in lane1 python rows"}
+{"id": "settings_saved_at_shipped_defaults", "bars": ["inv_settings_gate"], "kind": "sweep", "verdict": "PASS", "cases": 45, "detail": "45 settings"}
+{"id": "settings_every_one_declared", "bars": ["inv_settings_gate"], "kind": "sweep", "verdict": "PASS", "cases": 45, "detail": ""}
+{"id": "settings_every_one_drawn_and_reset", "bars": ["inv_settings_gate"], "kind": "sweep", "verdict": "PASS", "cases": 45, "detail": ""}
+{"id": "settings_defaults_inside_sliders", "bars": ["inv_settings_gate"], "kind": "sweep", "verdict": "PASS", "cases": 18, "detail": ""}
+{"id": "settings_worldgen_off_and_labelled", "bars": ["inv_settings_gate"], "kind": "fixed", "verdict": "PASS", "cases": 1, "detail": ""}
+{"id": "settings_master_tooltip_names_what_it_leaves_on", "bars": ["inv_settings_gate"], "kind": "fixed", "verdict": "FAIL", "cases": 14, "detail": "'Mod enabled' says every mechanic below stops, but does not gate sprayerFoamsPathEnabled and its tooltip does not name it"}
+{"id": "settings_wind_tooltip_matches_kernel", "bars": ["inv_settings_gate"], "kind": "fixed", "verdict": "FAIL", "cases": 1, "detail": "tooltip says each fire lights one cell, never sideways, a line as wide as what was lit; CarryPlan heals a cell aside and FlankPlan opens and closes the flanks (a lone fire fans out)"}
+{"id": "text_biome_engineered_millennia", "bars": ["biome_text_says_engineered"], "kind": "fixed", "verdict": "PASS", "cases": 1, "detail": "A hot, wind-scoured savanna, genetically engineered in a forgotten age to feed grazing herds, that has gone on burning on a schedule of its own for millennia. Coarse fast grass carpets the ground agai"}
+{"id": "text_absent_breaker", "bars": ["inv_lightning_breaker"], "kind": "fixed", "verdict": "PASS", "cases": 42, "detail": ""}
+{"id": "text_absent_firebreak", "bars": ["inv_firebreak_firefoam"], "kind": "fixed", "verdict": "PASS", "cases": 42, "detail": ""}
+{"id": "text_defs_described", "bars": ["inv_art_and_text"], "kind": "sweep", "verdict": "PASS", "cases": 40, "detail": ""}
+{"id": "art_files_whole", "bars": ["inv_art_and_text"], "kind": "sweep", "verdict": "PASS", "cases": 53, "detail": ""}
+{"id": "venom_one_bite_course", "bars": ["flamefang_bite_carries_venom"], "kind": "sweep", "verdict": "PASS", "cases": 18, "detail": "peaks 0.44..0.79"}
+{"id": "nk_populations_are_the_biomes_own", "bars": ["populations_are_the_biomes_own"], "kind": "not_kernel", "verdict": "UNSETTLED", "cases": 0, "detail": "changed inputs touch it but its logic is game-side: the census is the live map's; settled by its Stage 6 scene"}
+{"id": "nk_three_skies", "bars": ["three_skies"], "kind": "not_kernel", "verdict": "UNSETTLED", "cases": 0, "detail": "changed inputs touch it but its logic is game-side: a look; settled by its Stage 6 scene"}
+{"id": "nk_walk_season_on_the_pyre", "bars": ["walk_season_on_the_pyre"], "kind": "not_kernel", "verdict": "UNSETTLED", "cases": 0, "detail": "changed inputs touch it but its logic is game-side: a live season; settled by its Stage 6 scene"}
+{"id": "nk_furnacebeast_warms", "bars": ["furnacebeast_warms"], "kind": "not_kernel", "verdict": "UNSETTLED", "cases": 0, "detail": "changed inputs touch it but its logic is game-side: the beast's live room; the def row sparesRoofs is another mod's code; settled by its Stage 6 scene"}
