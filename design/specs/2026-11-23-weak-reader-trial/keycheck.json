@@ -1,0 +1,378 @@
+[
+ {
+  "follows": true,
+  "wrong_is_wrong": true,
+  "extra_detail": null,
+  "why": "The source says the lane is the seat named by --for, the seat that picks the item up, and --for is required, so with BENCH agreed to do the fix the lane is BENCH, while the finder's seat, the area, the branch or an empty lane all contradict it.",
+  "case": "BINDING_charter_lane",
+  "_w": 2956.0
+ },
+ {
+  "follows": false,
+  "wrong_is_wrong": false,
+  "extra_detail": "The source does not force lifting it now without waiting or asking, recording the act with a reason under a ruling, or telling the owner afterwards.",
+  "why": "The source says only that the owner's word or the Conductor's act, not a release, lifts a park, so it makes the ordinary release wrong and allows the Conductor's act, but it does not require that act now or make waiting for or asking the owner wrong.",
+  "case": "BINDING_coverage_park",
+  "_w": 4817.0
+ },
+ {
+  "follows": true,
+  "wrong_is_wrong": true,
+  "extra_detail": null,
+  "why": "The source says that when the live list is clear the agent announces \"Close the Game\" and then switches back to offline work, with postponable offline work postponed, so with the last live item released the announcement comes next and the open offline items wait, which makes each listed wrong act contrary to the rule.",
+  "case": "BINDING_close_game_when_clear",
+  "_w": 3209.0
+ },
+ {
+  "follows": false,
+  "wrong_is_wrong": false,
+  "extra_detail": null,
+  "why": "The source defines what makes a leaf core and so shows `winch_side` is core and the delegated `rope_cost` is not, but neither it nor the situation says the leaf removed for the test reader must be a core one, so removing `winch_side` and ruling out `rope_cost` or 'either will do' both rest on an unstated rule.",
+  "case": "BINDING_exam_core_leaf",
+  "_w": 4726.0
+ },
+ {
+  "follows": true,
+  "wrong_is_wrong": true,
+  "extra_detail": null,
+  "why": "The source says to revert on a stranded clone and defines the thing reverted as the approval of the clone pool itself (back to at most 4 writers with no pool), c09's two-day unlanded commits are a stranded clone even though later rescued, and every listed wrong act either keeps the pool running or reverts something the source expressly excludes or does not name.",
+  "case": "BINDING_pool_revert",
+  "_w": 3555.0
+ },
+ {
+  "follows": true,
+  "wrong_is_wrong": true,
+  "extra_detail": null,
+  "why": "A runway of 0.7 is under 1.0, so the advice is HOLD and exit 4 means the call lacked `--required`; since the project's rule requires the review, rerunning with `--required` naming that rule is the only call that runs, and an unchanged rerun would exit 4 again.",
+  "case": "BINDING_low_codex_runway",
+  "_w": 3374.0
+ },
+ {
+  "follows": true,
+  "wrong_is_wrong": true,
+  "extra_detail": null,
+  "why": "The source says to restore settings and snapshots even on failure and makes the operator of the run owe each one it changed, so with intact backups the agent must itself put back both the Prefs and the colony save before it ends, and leaving, splitting, delegating or deferring the restore breaks that duty.",
+  "case": "BINDING_snapshot_debts",
+  "_w": 3362.0
+ },
+ {
+  "follows": true,
+  "wrong_is_wrong": true,
+  "extra_detail": "The key requires the answer to say that the concept stays blocked on the alarm, but the question asks only what the agent does about the judge, so a correct 'no new look, the judge is stopped after the second refusal' could fail for not naming the alarm; wrong act 5 likewise turns on mentioning the alarm.",
+  "why": "The source directly supports stopping at the second refusal, the blocked state on one alarm row and a further look only by release with --why, and it contradicts the listed wrong acts (the fifth by giving the wrong reason for the stop), but the question does not prompt for the alarm status that the key makes mandatory.",
+  "case": "BINDING_on_one_alarm",
+  "_w": 6305.0
+ },
+ {
+  "follows": true,
+  "wrong_is_wrong": true,
+  "extra_detail": null,
+  "why": "The source says the fixer fixes, publishes, runs the remaining check itself and closes the item, with no notes and no unhold or re-release for a new generation, so with the fix already pushed both key parts (run the check, close the item) are forced and each listed wrong act breaks an explicit clause.",
+  "case": "BINDING_one_more_generation",
+  "_w": 3318.0
+ },
+ {
+  "follows": true,
+  "wrong_is_wrong": true,
+  "extra_detail": null,
+  "why": "The source requires the whole range to be written out each time, both what varies and over which values, so bar 7 must restate all three variables with their values, and every listed wrong act leaves out part or all of that range in bar 7 itself.",
+  "case": "BINDING_the_family",
+  "_w": 3394.0
+ },
+ {
+  "follows": true,
+  "wrong_is_wrong": true,
+  "extra_detail": null,
+  "why": "The source says a hard problem gets a smarter model on the same short leash and not more spec sections, which directly yields the usual short brief and unchanged 40-call limit (figures supplied by the situation) and rules out added sections, extra process, looser limits, or dropping back to Sonnet.",
+  "case": "BINDING_short_leash",
+  "_w": 3311.0
+ },
+ {
+  "follows": true,
+  "wrong_is_wrong": true,
+  "extra_detail": null,
+  "why": "The source says an OPEN ops alarm joins the open incident of its cause with one cause, one ring, one run, so `flow.blind` belongs in inc-0412 regardless of family, plan readings or the uncrossed trigger line, and the plan/ack update is only permitted, not required.",
+  "case": "BINDING_metric_joins",
+  "_w": 3356.0
+ },
+ {
+  "follows": true,
+  "wrong_is_wrong": true,
+  "extra_detail": null,
+  "why": "The source says a program writes Transient/delegated_digest_<date>.md daily and the Conductor delivers it and never assembles one by hand, so delivering the fresh 2026-11-23 file follows directly (its path comes from the source pattern and the situation), and hand-composing, replacing, or delegating a hand-built digest is barred, while the 2026-11-22 file is the earlier day's digest rather than today's.",
+  "case": "CORRECTION_digest_by_hand",
+  "_w": 3448.0
+ },
+ {
+  "follows": true,
+  "wrong_is_wrong": true,
+  "extra_detail": null,
+  "why": "The source defines RimStarWars as generalizable within the Star Wars family and names Jawa species genes as its example, while it bars new shipping mods from Jawa/, reserves RimMandrake for unrelated playthroughs and RimUtinni for this scenario only, and the situation itself requires exactly one folder.",
+  "case": "CORRECTION_jawa_folder",
+  "_w": 3409.0
+ },
+ {
+  "follows": true,
+  "wrong_is_wrong": true,
+  "extra_detail": null,
+  "why": "The source says the Conductor window, sending as its act under the five-acts ruling, may message windows while every other agent's relay stays stamp-only, so both required parts follow and each wrong act either denies that permission or rests it on a ground the source rejects; the source says 'may', and the key's 'may reach' wording stays within that permission.",
+  "case": "CORRECTION_who_broadcasts",
+  "_w": 3362.0
+ },
+ {
+  "follows": true,
+  "wrong_is_wrong": true,
+  "extra_detail": null,
+  "why": "The source makes the hold depend only on the holder process being alive (pid, start time, boot), says ledger events decide nothing, and limits 45 minutes to the owner's OWNER hold, so the live pid 41877 keeps the game and every listed wrong act takes or discounts a valid hold; waiting, asking or retrying are only optional in the key.",
+  "case": "CORRECTION_bridge_45_min",
+  "_w": 3542.0
+ },
+ {
+  "follows": true,
+  "wrong_is_wrong": true,
+  "extra_detail": null,
+  "why": "The source says the design of a whole mod from a blank page is one detached Fable run, which matches this situation exactly and forces Fable, a single agent and a detached run (the helper command is only given as an example), so every listed wrong act breaks the model, the single-run or the detached requirement.",
+  "case": "CORRECTION_fable_blank_page",
+  "_w": 3232.0
+ },
+ {
+  "follows": true,
+  "wrong_is_wrong": true,
+  "extra_detail": null,
+  "why": "The source says a running background command holds any Conductor restart but a goodbye, so this goodbye restart does not wait for the build, and every listed wrong act contradicts that.",
+  "case": "CORRECTION_goodbye_background",
+  "_w": 2963.0
+ },
+ {
+  "follows": true,
+  "wrong_is_wrong": true,
+  "extra_detail": null,
+  "why": "Deleting work that is not ours is not one of the five reserved acts, so the Conductor may do it itself without the owner's word as its own recorded act naming `lost:` and `undo:` while a helper may not, and although \"may\" is permissive, the disk-clearing task before tonight's build and the checked, zipped, unused folder make deletion the mindful choice, with the zip only an example of the undo.",
+  "case": "CORRECTION_delete_others_work",
+  "_w": 4764.0
+ },
+ {
+  "follows": true,
+  "wrong_is_wrong": true,
+  "extra_detail": null,
+  "why": "Decision 18c lets any mod's token-free tests be queued on SteveDesktop whatever its stage, with the owner's hold as the only ground for refusal, so an unheld early-stage mod's token-free test is queued without offline checks, waiting for Archmagi, or asking the owner.",
+  "case": "CORRECTION_steve_queue_entry",
+  "_w": 3300.0
+ },
+ {
+  "follows": true,
+  "wrong_is_wrong": true,
+  "extra_detail": null,
+  "why": "The source says plain land.sh can move HEAD through seat_sync.py and that LAND_SYNC=0 prevents this, so the two required elements are forced and omitting LAND_SYNC=0 is wrong, though the source does not itself cover ./publish moving HEAD (waiting fails by the situation's deadline) or the example's argument order, which the key does not strictly require.",
+  "case": "CORRECTION_land_sh_head",
+  "_w": 5242.0
+ },
+ {
+  "follows": true,
+  "wrong_is_wrong": true,
+  "extra_detail": null,
+  "why": "The source says a live process holds however long it is silent, a plain take is refused, and only a recorded --force cuts it, so the key's two required points follow directly, each listed wrong act contradicts it, and --force is only an optional branch rather than a required detail.",
+  "case": "CORRECTION_stale_hold",
+  "_w": 3389.0
+ },
+ {
+  "follows": true,
+  "wrong_is_wrong": true,
+  "extra_detail": null,
+  "why": "The source says a loosen is refused only when both the card reference and the second-read reference are missing and that either one is enough, so submitting the declared loosen with C-0187 and no second reader passes, while requiring both or omitting the only reference held contradicts it.",
+  "case": "CORRECTION_second_reader",
+  "_w": 3147.0
+ },
+ {
+  "follows": true,
+  "wrong_is_wrong": true,
+  "extra_detail": null,
+  "why": "The source says outright that cutting or loosening a bar is not one of the owner's five reserved acts and that the Conductor decides it, so naming the Conductor with no owner ruling needed follows directly, and naming the owner, Operations, the Producer or dropping the proposal contradicts it.",
+  "case": "CORRECTION_bar_cut",
+  "_w": 3446.0
+ },
+ {
+  "follows": true,
+  "wrong_is_wrong": true,
+  "extra_detail": null,
+  "why": "The section says to recommend retiring outright an extra that duplicates something a neighbour already does, with retiring left to the owner and the one-line reason put on his pages, so the recommendation plus the duplication reason is forced, and parking without that recommendation, keeping it because it works, or removing it unilaterally all contradict the text.",
+  "case": "STYLE_03",
+  "_w": 4153.0
+ },
+ {
+  "follows": true,
+  "wrong_is_wrong": true,
+  "extra_detail": null,
+  "why": "The section says an unusual plant with its own mechanic stays only if deleting its player-facing behaviour would defeat land, life or the signature as stated, and that extras move to the next version however good, so the reed's ringing and mood boost (which nothing stated depends on, even though life mentions sound) move out on that ground, and each listed wrong act ignores that test or the move.",
+  "case": "STYLE_06",
+  "_w": 6449.0
+ },
+ {
+  "follows": true,
+  "wrong_is_wrong": true,
+  "extra_detail": null,
+  "why": "The section says that when a tier or provenance question starts generating sub-questions, one must ask whether the category is needed at all before adjudicating inside it, which makes holding the four problems and raising that question the right act, and makes adjudicating, refining, or bypassing the question (including deleting without asking) wrong.",
+  "case": "STYLE_10",
+  "_w": 5320.0
+ },
+ {
+  "follows": true,
+  "wrong_is_wrong": true,
+  "extra_detail": null,
+  "why": "The section says every number given to the owner comes from the inputs with its word (MEASURED / ESTIMATE / UNMEASURED) and never from memory, so reading the current status.json and giving its directly counted value as MEASURED is forced, and each listed wrong act breaks either the source or the word requirement.",
+  "case": "STYLE_18",
+  "_w": 3983.0
+ },
+ {
+  "follows": true,
+  "wrong_is_wrong": true,
+  "extra_detail": null,
+  "why": "Item 6 says anything the owner must look at is read by us first, every item an agent can judge, with broken ones fixed or dropped, then given with the complete native path in backticks with spaces as spaces, which forces all three parts of the key and makes each listed wrong act a breach.",
+  "case": "STYLE_20",
+  "_w": 4401.0
+ },
+ {
+  "follows": true,
+  "wrong_is_wrong": true,
+  "extra_detail": null,
+  "why": "The section makes condition-based operation the default and allows unloading outside the parent biome only for a mechanic that is a heavy load even where it is not active, so a 0.01 ms inactive cost fails the exception, the 3.8 ms active cost is not a qualifying reason even if written down, an absolute refusal contradicts 'a default, not a prohibition', and the question's explicit 'on what ground' makes the inactive-cost ground required.",
+  "case": "STYLE_21",
+  "_w": 4297.0
+ },
+ {
+  "follows": true,
+  "wrong_is_wrong": true,
+  "extra_detail": null,
+  "why": "The section requires 'a fresh helper per run or site (never one helper across many runs)' and 'one Opus helper at a time', which directly forces a new helper for each of Saltpan and Millbrook run sequentially, and directly rules out reusing Northgate's helper, sharing one new helper across both sites, or running two at once.",
+  "case": "STYLE_22",
+  "_w": 3732.0
+ },
+ {
+  "follows": true,
+  "wrong_is_wrong": true,
+  "extra_detail": null,
+  "why": "The section says 'one ledger item per rung per mod', and validating (VALIDATED) and claiming bar lines via shows= (WIRED) are two separate rungs, so two mods times two rungs forces exactly four items, and every listed wrong act merges, over-splits or omits items against that rule.",
+  "case": "STYLE_27",
+  "_w": 4209.0
+ },
+ {
+  "follows": true,
+  "wrong_is_wrong": true,
+  "extra_detail": null,
+  "why": "The source says work is batched, never per-item, and a question never rises a tier while a lower one can answer it; since the files hold exact, render-matching widths, one script pass over all 180 settles the question, so using the vision model or owner for it, or checking signs one by one, breaks the rule.",
+  "case": "STYLE_29",
+  "_w": 3517.0
+ },
+ {
+  "follows": true,
+  "wrong_is_wrong": true,
+  "extra_detail": null,
+  "why": "The section says a scratch clone is made only via `scratch_clone.py`, sparse by default, with the task's needed dirs named via `--sparse <dir>...`, `--checkout` only for repo-wide work, and worktrees never, so the key and each wrong act follow directly, with the two directories supplied by the situation.",
+  "case": "STYLE_30",
+  "_w": 4350.0
+ },
+ {
+  "follows": true,
+  "wrong_is_wrong": true,
+  "extra_detail": null,
+  "why": "The section says to save the old build mid-job before the port deploys and prove the new build loads it with the job still running, which is exactly the key's two parts, and each wrong act omits the old-build mid-job save or the still-running check.",
+  "case": "STYLE_32",
+  "_w": 3779.0
+ },
+ {
+  "follows": true,
+  "wrong_is_wrong": true,
+  "extra_detail": null,
+  "why": "The section says any seat that finds an item dead ends it itself with no routing to the owning seat and no asking, via rimflow drop with a --reason stating the proof, and the grep and git log meet the evidence bar, so dropping it now is right and each listed wrong act either routes, asks, leaves it open, or uses an ownership-gated verb instead of ending it.",
+  "case": "STYLE_34",
+  "_w": 5947.0
+ },
+ {
+  "follows": true,
+  "wrong_is_wrong": true,
+  "extra_detail": null,
+  "why": "The section's next_version.md row says it holds every moved extra with one line what and one line why, and 'recommended retirements marked', which places the dropped toggle there with a distinguishing mark and makes omission, other-file-only, new-file, or unmarked listing wrong.",
+  "case": "CONTROL_00",
+  "_w": 3973.0
+ },
+ {
+  "follows": true,
+  "wrong_is_wrong": true,
+  "extra_detail": null,
+  "why": "The Authority paragraph says a Conductor instruction carries the owner's authority, is acted on as on his word, and is recorded with --per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM plus the Conductor's text in --why, so all three key parts are forced and each listed wrong act contradicts it.",
+  "case": "CONTROL_01",
+  "_w": 4057.0
+ },
+ {
+  "follows": true,
+  "wrong_is_wrong": true,
+  "extra_detail": null,
+  "why": "The section sets a fixed alarm for an advancing mod at an offline stage with work owed and nothing running for over 60 minutes, so 75 idle minutes requires the alarm now, independent of the stage's usual time or of healthy machines, logs and sessions, and the key requires only the alarm and that reason.",
+  "case": "CONTROL_02",
+  "_w": 3723.0
+ },
+ {
+  "follows": true,
+  "wrong_is_wrong": true,
+  "extra_detail": null,
+  "why": "The section names a judge among the agents that, on finding a pipeline defect (status page included) with a clear cause and known fix, must file the ticket with its acceptance test, fix it in the same run tests first, publish and report it, so deferring, only reporting, fixing without a ticket, ignoring it or hand-correcting the entry are all excluded.",
+  "case": "CONTROL_03",
+  "_w": 5055.0
+ },
+ {
+  "follows": true,
+  "wrong_is_wrong": true,
+  "extra_detail": null,
+  "why": "The section says that when something is sent back only the touched line items and those sharing their inputs are re-run while every other stored pass stands, so check 12 plus 13 and 30 (which read the changed file) are queued and the other 37 saved passes are kept, making a full run, a lone check 12, a safety pass or discarded passes all contrary to it.",
+  "case": "CONTROL_04",
+  "_w": 4726.0
+ },
+ {
+  "follows": true,
+  "wrong_is_wrong": true,
+  "extra_detail": null,
+  "why": "Rule 12 says a defect reported in a look is stored until the ladder is regenerated, names design/RimMandrake/validation_holding/ as the store, and says held statements are placed in the mod's table when it reaches Stage 2, with that placement being the ingest, so both parts of the key and the wrongness of every listed alternative follow directly.",
+  "case": "CONTROL_05",
+  "_w": 4852.0
+ },
+ {
+  "follows": true,
+  "wrong_is_wrong": true,
+  "extra_detail": null,
+  "why": "The Write row is a Designer step in Stage 1 whose output gains the test-and-stage table, so the step is incomplete without it and the Designer must produce it there, which rules out completing without it, deferring it, handing it to the builder or disowning it.",
+  "case": "CONTROL_06",
+  "_w": 4108.0
+ },
+ {
+  "follows": true,
+  "wrong_is_wrong": true,
+  "extra_detail": null,
+  "why": "The row 'Ticket preflight | 2, and a door on every ticket' makes preflight an entry gate for each ticket regardless of stage, so ticket 15 must pass its own preflight before the fix begins, and skipping, deferring or substituting it contradicts 'a door on every ticket'.",
+  "case": "CONTROL_07",
+  "_w": 4208.0
+ },
+ {
+  "follows": true,
+  "wrong_is_wrong": true,
+  "extra_detail": null,
+  "why": "The section marks MOD_VALIDATION_RETROFIT_1 as retired for the pipeline by his 2026-11-14 card and superseded, and says each bar names its own check instead, so both parts of the right act follow and writing the file, waiting for ratification, doing both, or asking as if undecided all go against it.",
+  "case": "CONTROL_08",
+  "_w": 4210.0
+ },
+ {
+  "follows": true,
+  "wrong_is_wrong": true,
+  "extra_detail": null,
+  "why": "The Hold entry says nothing launches until he or the Conductor lifts it, so the Conductor's verified lift alone ends the hold, and since nothing else blocks the queued launch, waiting, re-asking, refusing or parking it all contradict the source.",
+  "case": "CONTROL_09",
+  "_w": 3888.0
+ },
+ {
+  "follows": true,
+  "wrong_is_wrong": true,
+  "extra_detail": null,
+  "why": "The section says to read references/run-checklists.md before reporting a full-list run (end checklist), and the agent read only the start part, so it must work through the end checklist before sending, which makes every listed alternative a miss of that step.",
+  "case": "CONTROL_10",
+  "_w": 3561.0
+ }
+]
