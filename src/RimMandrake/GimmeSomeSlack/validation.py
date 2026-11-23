@@ -547,7 +547,10 @@ GPT_PRERELEASE_FIX_SHAPES = [
     ("B16 printed-strand read cleared per game", "GssSessionReset.cs", "SectionLayer_RM_MessyCords.PrintedStatic.Clear();"),
     ("B16 printed-strand read forgets a removed map", "RM_MapComponent_CordGraph.cs", "SectionLayer_RM_MessyCords.ForgetMap(map);"),
     ("D11 last picks cleared per game", "GssSessionReset.cs", "Aerial.ConduitStylePicker.ClearPicks();"),
-    ("D2 a lamp's run is its connection's", "Aerial/RM_MapComponent_ConduitRuns.cs", "ConduitStyles.LampHooked(parent != null, parent != null && set.Contains(parent), touches)"),
+    # e05790f67e (T_LINE_RESTYLE_OFFLINE) moved the hook rule Verse-free into ConduitStyles.LampsHookedTo; the map side hands it each
+    # lamp's power connection. The old single pin on RM_MapComponent_ConduitRuns.cs held T_GATE red from that commit on.
+    ("D2 a lamp's run is its connection's", "Aerial/ConduitStyles.cs", "if (LampHooked(parent != null, parent != null && wired.Contains(parent), touches)) o.Add(l);"),
+    ("D2 the map hands each lamp its power connection", "Aerial/RM_MapComponent_ConduitRuns.cs", "l => l.TryGetComp<CompPower>()?.connectParent?.parent,"),
     # the restyle reach work (c3633a8f30) passes the flag by position: LampFollowsRun(raw, looks, restyle, foreignStyle)
     ("D9 restyle keeps a foreign-styled lamp", "Aerial/RM_MapComponent_ConduitRuns.cs", "drewBefore.Looks, true, ForeignStyled(l))"),
     ("B15 whip resumes its snap cursor", "RM_MapComponent_CordGraph.cs", "CordMotion.WhipInto(tail, now, seed, CordMotion.WhipAmp, bentBuf, ref cur, roomPos, roomNeg);"),
