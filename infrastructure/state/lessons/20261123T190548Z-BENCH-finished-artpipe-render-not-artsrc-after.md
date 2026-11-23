@@ -1,0 +1,1 @@
+A finished artpipe render is not in _artsrc after 14 days: artpiped prunes that folder. Find the picture by its job id in the art ledger (type variant, job -> sha) and read it from the art store (fauna_drive.stored_png). A judge that looked only in _artsrc read pruned renders as 'waiting' for a month.
