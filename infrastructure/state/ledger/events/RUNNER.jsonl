@@ -11684,3 +11684,4 @@
 {"seat":"RUNNER","event":"raise","id":"LIVE_RESTORE_UNITS","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-23T17:03:57Z","tsn":1795453437980434559}
 {"seat":"RUNNER","event":"note","id":"OPS_STEVE_FEED_IDLE_LANE_HURP","text":"ops_watch: WORSE at 2026-11-23T17:06:56Z: 83 -> 167 min idle with takeable checks waiting, the rule's step is {\"factor\": 2}","ts":"2026-11-23T17:07:33Z","tsn":1795453653353453622}
 {"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_UNITS","result":"kept","detail":"sweep: running again","ts":"2026-11-23T17:18:23Z","tsn":1795454303252157662}
+{"seat":"RUNNER","event":"note","id":"OPS_FINDINGS_DIAGNOSE_XZLM","text":"ops_watch: cleared at 2026-11-23T17:20:41Z (flow.untriaged_findings now 0)","ts":"2026-11-23T17:20:55Z","tsn":1795454455747373282}
