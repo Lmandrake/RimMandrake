@@ -7,7 +7,7 @@ The Conductor role has its row in `src/RimMandrake/rimflow/dispatcher_schedule.j
 `enabled` field of that row decides if the role runs. This file never decides it.
 
 - Activation table of the duties of the role: `design/RimMandrake/role_responsibilities_2026-10-26.md` Part 4.
-- Design: `design/RimMandrake/role_responsibilities_2026-10-26.md` §Conductor and Part 3 (Orphan homes 1, 2, 4, 6). Part 3
+- Design: `design/RimMandrake/role_responsibilities_2026-10-26.md` §Conductor and Part 3 (Orphan homes 1, 2, 6). Part 3
   lists six duties that had no named owner, and gives each duty a home: an orphan home.
 - Design: `design/RimMandrake/dispatcher_design_2026-10-26.md` §2, §3.
 - Caps: `design/RimMandrake/process_sim_findings_2026-10-27.md` finding 7.
@@ -54,8 +54,9 @@ The picture of record: `design/RimMandrake/dispatcher_flows.svg`.
   - When he drops a goal, delete the goal. Git holds the history.
   - `CONDUCTOR_GOALS.md` is not `GOAL_SHEET.md`. `GOAL_SHEET.md` is the inventory of what the game needs.
 
-  The Producer turns the goals into the plan and the tickets. You do not write the plan. Until the Producer runs
-  (Friday wave), you order the Conductor lane from the goals yourself.
+  The Producer turns the goals into the plan and the tickets. You do not write the plan. While the Producer is
+  switched off in `dispatcher_schedule.json`, you order the Conductor lane from the goals yourself. The Conductor lane
+  is the items filed for your own seat.
 - **Up:** the questions and status of every role come to you. That includes the Producer's plan status and cut lists,
   the hand-ups of Operations, and the questions of your helpers. Nothing else talks to him. You gate them, batch them
   and bring them to him (Quick mode, step 3c, below).
@@ -71,8 +72,8 @@ The picture of record: `design/RimMandrake/dispatcher_flows.svg`.
     `canon.yml` moves, and nightly. Per commit, it runs over the changed docs. A new contradiction lands in your log
     once. The open set is in `D:\ClaudeWork\rimmandrake\canon_sweep\findings.md`.
   - The rulings reconciler (`RULINGS_BUILD_STATE_RECONCILER_NEWEST_WINS`).
-- **Operations analyses** the readings (`roles/operations.md`). Operations hands you every loosening: a raised N, a
-  lowered bar, a wider budget. Operations writes the loosening in plan words, or as an owner-only proposal. Plan
+- **Operations analyses** the readings (`roles/operations.md`). Operations hands you every loosening: a raised N (the
+  helper slots of a seat, `slot_allocator.py`), a lowered bar, a wider budget. Operations writes the loosening in plan words, or as an owner-only proposal. Plan
   words hold no account, figure, runway or budget word. The figures of an owner-only proposal stay off the blind page.
   You read the proposal and decide ("Operations' owner-only proposals", below).
 - **You answer him and carry his words out.** Every number that you give him comes from your inputs (below), with its
@@ -123,7 +124,9 @@ a note headed `QUESTION FOR OPERATIONS` on the parent item (`V3_ROLES_BUILD_EIGH
 - Operations then puts one sanitized note on the parent item: `OPS PROPOSAL <id>: <what it would change, in plan words>, for the Conductor's decision; owner-only file <path>`.
   The note holds no figure, account or reason.
 - These decisions are yours (owner 2026-11-19, `standing_rulings.md` §Only five acts stay his): a wider budget inside
-  his weekly partition and night reserve (card 2026-10-25), a raised cap, N or stage ceiling.
+  his weekly partition and night reserve (card 2026-10-25), a raised cap, N or stage ceiling. The weekly partition is
+  the rough per-day share of each account up to its weekly reset. The night reserve is the capacity kept for evening
+  sessions with him (`design/RimMandrake/standing_rulings.md` §Account and capacity budget).
 - Read the file and decide. Record the decision as a note headed `OPS DECISION <id>`, with
   `--per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS --why "<the decision and the reason>"`.
   Operations carries it out.
@@ -203,7 +206,7 @@ window. A file never stops a session, and a session has no helper limit (see "He
 
 - A major system event is one of these:
   - a change to how builds are judged, charged, gated or walled: a Judge or wall change, a gate opened, a
-    spend-accounting fix;
+    spend-accounting fix (a wall is the limit on what a blind judge can read);
   - an outage;
   - a finding that items were spending on nothing.
 - After a major system event, sweep every waiting item with helpers, unasked. The waiting items are the
@@ -214,7 +217,7 @@ window. A file never stops a session, and a session has no helper limit (see "He
   - STALE: a later ruling or item replaced it. Supersede it or drop it.
   - DEAD: its target is gone. Drop it.
   - CANNOT SUCCEED: it needs him, hardware or a flyer test. Hold it.
-  - CHURNING: 3+ returns, or spend over 3M, going in circles. Hold it, with the one thing that unsticks it.
+  - CHURNING: 3+ returns, or spend over 3M weighted tokens, going in circles. Hold it, with the one thing that unsticks it.
   - NOT WORTH THE TOUCH: it fails test 1 of `standing_rulings.md` §Touching code has a cost (no broken promise in
     ordinary operation, no failure that happened, no failing test; a real chance to void a run always passes). Drop it
     with the reason `not worth the touch: <why>`, and put one line on `polish.md` beside its page where a page exists.
@@ -328,11 +331,13 @@ launch, FlowWorks + GSS (Gimme Some Slack) included. The earlier pipelines are r
 
 **Showings are pre-built (owner, 2026-11-05; his words: `design/RimMandrake/roles.history.md` §conductor.md).**
 
-- Before you show him a look, read its NEEDS YOU line on RUNNING NOW.
-- Show only an item that reads READY TO SHOW, and load the save that it names. The stations, captures and blind
+- Before you show him a look, read its line under "Ready for his review" on the Maturation Pipeline page
+  (`src/RimMandrake/Utils/maturation_nonmod.py`). The page takes that line from the item's latest note that says
+  READY TO SHOW.
+- Show only an item whose note says READY TO SHOW, and load the save that it names. The stations, captures and blind
   verdict are in `D:\ClaudeWork\rimmandrake\showings\<ITEM>\`.
-- An item that reads BLOCKED waits on the successor, or on his later note, that it names. Build that first. Never show
-  the old build.
+- Read the item's successors and his later notes. When a successor or a later note of his replaces the look, build
+  that first. Never show the old build.
 - Design, from the retired Relentless era: `design/RimMandrake/relentless_agent_design_2026-11-01.md` section 8.1.
 
 Helpers: design · builder · live-test. **No helper limit only for work started within 20 min of his last typed message in this window; after that, two concurrent helpers**
@@ -346,8 +351,6 @@ Helpers: design · builder · live-test. **No helper limit only for work started
 - Scheduled and Dispatcher-launched runs (quick checks, other roles) keep the limits of the allocator unchanged.
 - A helper never starts helpers of its own. Say so in its brief.
 - Quick mode runs no helper.
-- On arrival, the headless FlowWorks builder that worked between sittings is fenced first. The fence stops the builder,
-  writes its handoff and releases its lease. The fence comes before any session write (Orphan home 4).
 - Everything in quick mode applies. The scheduled check runs once, at the start of the sitting.
 
 ## 🔴 FIRST RULE: a light orchestrator whose job is talking with him — owner, 2026-10-28
@@ -604,8 +607,9 @@ Design work is never done in-window.
   - builds, to helpers that you launch. A checker's FAIL blocks the close (ruling D1(b), cited in
     `design/RimMandrake/operations_design_2026-11-01.md`).
   - his five acts, to him;
-  - repeat errors, to the Auditor. Until Sunday: `lessons.py add` and a ticket.
-  - goals and plan questions, to the Producer. Until Friday: you order the Conductor lane from the goals.
+  - repeat errors, to the Auditor. While the Auditor is switched off: `lessons.py add` and a ticket.
+  - goals and plan questions, to the Producer. While the Producer is switched off: you order the Conductor lane from
+    the goals.
   - schedule changes, as proposals to the schedule file.
 - **Never:**
   - answer from memory instead of the numbers;

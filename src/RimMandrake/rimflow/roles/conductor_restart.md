@@ -18,7 +18,8 @@ One goodbye ruling replaced another. He first asked for a 30-second countdown (2
   delays it one round.
 - **auto:** the limits below.
 
-**The goodbye kill is ON.** Owner 2026-10-29, after blind review 3: *"Leave the goodbye kill on. If I'm typing at the same time it's an acceptable risk."*
+**The goodbye kill is ON.** Owner 2026-10-29, after blind review 3 (the third blind code review of this restart; it found that the check
+and the kill of a live window cannot be one step): *"Leave the goodbye kill on. If I'm typing at the same time it's an acceptable risk."*
 The goodbye restart below is ON (`seat_restart.seats.BENCH._why_enabled`).
 
 **The context backstop for this window is ON** (owner by card 2026-11-01: "Should the Conductor restart itself like Foundry? → Same limits as Foundry"; `seat_restart.seats.BENCH._why_backstop`).
