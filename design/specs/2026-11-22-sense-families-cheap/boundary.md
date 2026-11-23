@@ -33,6 +33,9 @@ written Sun 2026-11-22, 8:40 PM PST. Each promise has a test of its name in
   PST were in the stage `alarms`: a light pass filed what the alarm pass had deferred (two reopens, deferred 24 and 12
   times), through `rimflow live`, `raise` and a publish. That did not fit the beat, the kill came mid-filing, and the
   next light pass began it again. Before the stamp, maturation and pager (0.05 s collectors) were killed alone the same way.
+- **Why the alarm pass was killed too (measured live 2026-11-22).** At 9:01 PM PST the pass of timers and flow was
+  killed in the stage `alarms`: a new crossing was spawned in the beat. The detached filer then took 17.7 s of wall
+  time for one held filing, more than the whole sense limit, so no filing fits a beat.
 - **`HELD_FILER_MAX_S` (600 s, the detached filer's `RuntimeMaxSec`).** A hang guard. Each rimflow call in
   `real_filer` is bounded at 120 s, and a real held filing takes about 10 to 40 s.
 - **The blind bound.** A family is blind when its newest series record is older than `compose_max_age_s` (the same
@@ -76,6 +79,10 @@ written Sun 2026-11-22, 8:40 PM PST. Each promise has a test of its name in
 - **a-light-pass-files-nothing-inside-the-beat.** A compose pass that does not measure the alarm family files no alarm
   itself. When alarms are held, it starts `ops_watch.py file-held` as its own user unit (outside the beat's cgroup), one
   at a time; a filer that cannot start is said in the flags. `file-held` files the held alarms with no beat deadline.
+- **an-alarm-pass-in-a-beat-files-nothing-inside-it.** In a beat, the alarm pass decides each crossing and clearing
+  as before, but files nothing: a spawn or a reopen goes PENDING for the detached filer, and a note is queued for it
+  (the newest wording of each note). `file-held` files the held alarms, says the queued notes and makes the book's
+  queued blocks, then empties the note queue; a note it could not say is queued again by the next alarm pass.
 - **the-ledger-and-the-stamps-are-read-once.** `World.doing_claims` reads and replays the ledger once for a whole
   `standing()`, and `role_use.epoch` parses each stamp once, with the same answers as before.
 

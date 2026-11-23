@@ -362,6 +362,50 @@ def t_a_light_pass_files_nothing_inside_the_beat():
     os.environ["RM_OPS_WATCH_DIR"] = str(_TMP / "ops")
 
 
+def t_an_alarm_pass_in_a_beat_files_nothing_inside_it():
+    os.environ["RM_OPS_WATCH_DIR"] = str(_TMP / "ops_alarm_pass")
+    od = _TMP / "ops_alarm_pass"
+    OW.COLLECTORS = {f: stub(f) for f in OW.ORDER}
+    now = time.time()
+    OW.run(now=now - 3 * bound, rules=rules)
+    for i, f in enumerate(OW.ORDER):            # all read again but pager: pager is blind, and the target crosses
+        if f not in ("pager", "flow"):
+            OW.run(now=now - 200 + i, rules=rules, families=[f], compose=True)
+    filer_calls, spawned = [], []
+    _spawn = OW.spawn_held_filer
+    OW.spawn_held_filer = lambda argv: (spawned.append(argv), "started")[1]
+    os.environ["METRONOME_DEADLINE"] = "%.3f" % (time.time() + 15)
+    OW.run(now=now, rules=rules, families=["flow"], compose=True, held_detach=True,
+           filer=lambda todo, conf: (filer_calls.append(todo), {a["name"]: None for a in todo})[1])
+    st = json.loads((od / "alarms.json").read_text())
+    cur = [v for k, v in st.items() if k.endswith(":sense.families_blind")]
+    check("an-alarm-pass-in-a-beat-files-nothing-inside-it: the crossing is held for the detached filer, not filed",
+          filer_calls == [] and cur and cur[0].get("state") == "PENDING" and cur[0].get("deferred_at")
+          and len(spawned) == 1, (filer_calls, cur, spawned))
+    OW.spawn_held_filer = _spawn
+    note = {"note_only": True, "item": "OPS_SELFTEST_OPEN_ITEM_WXYZ", "name": "note:X:y.z", "aid": "X:y.z", "text": "hi"}
+    st["X:y.z"] = {"state": "OPEN", "item": "OPS_SELFTEST_OPEN_ITEM_WXYZ", "name": "OPS_SELFTEST_OPEN_ITEM_WXYZ"}
+    (od / "alarms.json").write_text(json.dumps(st))
+    r = OW.queue_filer([note, dict(note, text="newer")], {})
+    check("an-alarm-pass-in-a-beat-files-nothing-inside-it: a note is queued once, newest wording, and deferred",
+          r == {"note:X:y.z": OW.FILING_DEFERRED} and [a["text"] for a in OW.queued_notes(st)] == ["newer"],
+          (r, OW.queued_notes(st)))
+    seen = []
+    _rf = OW.real_filer
+    OW.real_filer = lambda todo, conf: (seen.append((OW.beat_deadline(), sorted(a["name"] for a in todo))),
+                                        dict({a["name"]: None for a in todo}, _publish="published"))[1]
+    out = OW.file_held_detached(now=now + 60)
+    OW.real_filer = _rf
+    st = json.loads((od / "alarms.json").read_text())
+    cur = [v for k, v in st.items() if k.endswith(":sense.families_blind")]
+    check("an-alarm-pass-in-a-beat-files-nothing-inside-it: file-held files the held crossing and says the queued note",
+          len(seen) == 1 and seen[0][0] is None and "note:X:y.z" in seen[0][1]
+          and any(n.startswith("OPS_SENSE_FAMILY_READING_RESTORE_") for n in seen[0][1])
+          and cur and cur[0].get("state") == "OPEN" and OW.queued_notes(st) == [], (seen, cur, out))
+    os.environ.pop("METRONOME_DEADLINE", None)
+    os.environ["RM_OPS_WATCH_DIR"] = str(_TMP / "ops")
+
+
 def main():
     for t in (t_a_family_left_unread_raises_the_blind_alarm,
               t_a_blind_familys_points_say_why,
@@ -372,7 +416,8 @@ def main():
               t_few_old_progress_names_are_restatted,
               t_codex_skips_day_folders_past_the_lookback,
               t_the_ledger_and_the_stamps_are_read_once,
-              t_a_light_pass_files_nothing_inside_the_beat):
+              t_a_light_pass_files_nothing_inside_the_beat,
+              t_an_alarm_pass_in_a_beat_files_nothing_inside_it):
         try:
             t()
         except (Exception, SystemExit) as e:  # noqa: BLE001  a test that raises is a red, named

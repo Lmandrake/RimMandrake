@@ -4372,6 +4372,30 @@ def held_todo(state):
     return todo
 
 
+FILING_QUEUE = "filing_queue.json"
+
+
+def queue_filer(todo, conf):
+    """The alarm pass's filer inside a beat (run(held_detach=True)): it files nothing. A spawn or reopen is deferred, so
+    it goes PENDING and the detached filer (start_held_filer) files it; a note is queued for that filer. A real filing
+    (rimflow spawn or live, raise, publish) took 17.7 s wall for one held alarm on 2026-11-22, more than the whole
+    sense limit, so an alarm pass that filed in the beat was killed mid-filing (21:01 PST, stage alarms)."""
+    notes = [a for a in todo if a.get("note_only") and a.get("name")]
+    if notes:
+        p = ops_dir() / FILING_QUEUE
+        q = {a["name"]: a for a in _obj(read_json(p)).get("notes") or [] if isinstance(a, dict) and a.get("name")}
+        q.update((a["name"], a) for a in notes)     # the newest wording of each note wins
+        atomic_json(p, {"notes": list(q.values())})
+    return {a["name"]: FILING_DEFERRED for a in todo}
+
+
+def queued_notes(state):
+    """The notes queue_filer left, for alarms still in the state (a note on an alarm since removed is dropped)."""
+    q = _obj(read_json(ops_dir() / FILING_QUEUE)).get("notes") or []
+    return [a for a in q if isinstance(a, dict) and a.get("note_only") and a.get("name") and a.get("item")
+            and (not a.get("aid") or a["aid"] in state)]
+
+
 HELD_FILER_UNIT = "rm-ops-held-filer"
 HELD_FILER_LOCK = "held_filer.lock"
 # A hang guard on the detached filer's unit: each rimflow call in real_filer is bounded at 120 s and a real held
@@ -4409,7 +4433,12 @@ def start_held_filer(spawn=None):
     -> "nothing held" | "running" | "started" | "not started: <why>"."""
     import fcntl
     state = _obj(read_json(ops_dir() / "alarms.json"))
-    if not held_todo(state):
+    blocks = False
+    try:
+        blocks = bool(cause_mods()[0].queued_blocks(cause_mods()[0].load(ops_dir() / "causes.json")))
+    except (ValueError, OSError):
+        pass
+    if not (held_todo(state) or queued_notes(state) or blocks):
         return "nothing held"
     with open(ops_dir() / HELD_FILER_LOCK, "a") as lk:
         try:
@@ -4431,12 +4460,12 @@ def file_held_detached(now=None):
         except BlockingIOError:
             return "skipped: another held filer runs"
         before = len(held_todo(_obj(read_json(ops_dir() / "alarms.json"))))
-        st = _obj(file_held(real_filer, load_rules(), now or time.time()))
+        st = _obj(file_held(real_filer, load_rules(), now or time.time(), with_queue=True))
         return "held filings: %d before, %d still held" % (before, len(held_todo(st)))
 
 
 @_book_locked
-def file_held(filer, rules, now):
+def file_held(filer, rules, now, with_queue=False):
     """A light beat's filing (ALARM_FILING_FIX_NO_ROOM_AT_INN). Alarms are composed on the beat that measures
     COMPOSE_ALARM_FAMILY, the heaviest sense pair (8-15 s of 15), so its filer, which starts a filing only when one and
     the publish still fit, deferred nearly every alarm: 8 nightly reds sat PENDING 12-17 passes and reached nobody.
@@ -4449,14 +4478,18 @@ def file_held(filer, rules, now):
     if not isinstance(state, dict):
         return {}
     todo = held_todo(state)
-    if not todo:
-        return state
     cb = cause_mods()[0]
     bp = ops_dir() / "causes.json"
     try:
         book = cb.load(bp)
     except (ValueError, OSError):
         book = None     # the alarm pass says it aloud; a held filing still lands on its own id
+    if with_queue:      # the detached filer also says what a beat's alarm pass queued (queue_filer) and the book's blocks
+        todo += queued_notes(state)
+        if book is not None:
+            todo += [cause_block_todo(k, d, r) for k, d, r in cb.queued_blocks(book)]
+    if not todo:
+        return state
     log = []
     try:
         res = filer(todo, alarm_conf(rules))
@@ -4470,6 +4503,8 @@ def file_held(filer, rules, now):
     atomic_json(p, state)
     if book is not None:
         cb.save(bp, book)
+    if with_queue:      # said or failed: a note left unsaid is queued again by the next alarm pass
+        atomic_json(ops_dir() / FILING_QUEUE, {"notes": []})
     with open(ops_dir() / "alarms_log.jsonl", "a", encoding="utf-8") as f:
         for r in log:
             f.write(json.dumps(r, sort_keys=True) + "\n")
@@ -5272,13 +5307,19 @@ def run(now=None, rules=None, filer=None, families=None, compose=False, still_ow
                 apts = {k: p for k, p in points.items() if not observed_at(p) or last_t is None
                         or observed_at(p) > last_t}
                 if filer:
-                    def afiler(todo, conf, _f=filer):
+                    def afiler(todo, conf, _f=queue_filer if held_detach else filer):
                         fence("filing")
                         return _f(todo, conf)
             alarms = run_alarms(apts, rules, now, ctx.get("known_ids") or set(), afiler, ctx.get("open_ids"),
                                 ctx.get("closes"), cause_tree=alarm_conf(rules).get("clone") if afiler else None)
             if compose:
                 atomic_json(ap, {"t": now, "at": iso(now)})
+            if compose and filer and held_detach:
+                fence("starting the held filer")
+                why = start_held_filer()
+                if why.startswith("not started"):
+                    flags.append({"rule": "held_filer", "key": "alarms.held_filer", "value": None, "window": "now",
+                                  "detail": "this pass's alarms were not filed: %s" % why})
     except Fenced:
         raise
     except Exception as e:  # noqa: BLE001  the digest still goes out, and says the alarms did not run
