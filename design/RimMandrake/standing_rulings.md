@@ -695,8 +695,8 @@ failure classes came from reviewers, judges and auto-filers with no stopping lev
     what exists: the planted cases of the blind challenge, a check's `--old` or mutant switch, or a save or state that
     is known bad.
   - A mod fault that the judge or driver can fix is fixed in the sitting: a before/after test (red on the parent,
-    green on the fix), the fix, and the check shown passing on the fixed build (in a visit, every check is re-run on
-    that build). Then one fresh reader, a run that did not make the fix, reads only that fix, once, and writes its
+    green on the fix), the fix, and the check shown passing on the fixed build (in a visit, the checks that the fix
+    touches run again on that build). Then one fresh reader, a run that did not make the fix, reads only that fix, once, and writes its
     review (`fix_reviews.jsonl`); the steward run that reads the record is that reader. This replaces the whole new
     blind cycle that a fixed mod used to owe.
   - Only a mod fault that could not be fixed in the sitting goes down the road back, with the evidence why (no tools,
@@ -1050,9 +1050,9 @@ His earlier words: *"a "Test Pilot" type agent to sit down with the raiders and 
 
 ## Retest only after a code change — owner, by card 2026-10-31
 
-Card: "Retest rule → Retest only after a code change". An item is tested once per code version; a harness-invalid run is repaired, never counted.
+Card: "Retest rule → Retest only after a code change". An item is tested once per code version; a harness-invalid run is repaired, never counted. Two kinds of run repeat on one code version: the budgeted runs of a kind B scene and the steps of a kind C hunt (§Live tests have three kinds).
 
-A code version is `gate.code_version`: the chain's runtime hash, the runtime hash of every mod composed with it, its code slice and its declared inputs, without the harness and without a driver's result files. Every kind of verdict counts, GAP included: a row owed a live check stays owed however often it runs. A chain the harness stopped gets no verify at all, and one `HARNESS_REPAIR_CAUSE_<HEX>` item per distinct cause holds it until the repair closes. A flaky chain is reported, not repeated. `testq.py submit --retest-why REASON` is the human override, and a `--rows` job asks no permission. Code: `src/RimMandrake/Utils/testq/retest.py`, `gaps.settled`.
+A code version is `gate.code_version`: the chain's runtime hash, the runtime hash of every mod composed with it, its code slice and its declared inputs, without the harness and without a driver's result files. Every kind of verdict counts, GAP included: a row owed a live check stays owed however often it runs. A chain the harness stopped gets no verify at all, and one `HARNESS_REPAIR_CAUSE_<HEX>` item per distinct cause holds it until the repair closes. A chain whose verdict changes with no code change is reported, not repeated blindly: each of its runs is classed by outcome (§Live tests have three kinds, section 2). `testq.py submit --retest-why REASON` is the human override, and a `--rows` job asks no permission. Code: `src/RimMandrake/Utils/testq/retest.py`, `gaps.settled`.
 
 ## No limit without the danger it guards; parallel work is the default — owner, 2026-10-31 to 2026-11-17
 
@@ -1275,6 +1275,134 @@ still validated by the existing checks, and the quota gate and the rule against 
 
 *"Yes, from now on, we build the test at the same time as the item, both offline and online versions. then they get consolidated into the formal tests."*
 The run that builds an item also writes its offline test (red-first selftest) and its live test (a bridge script that stages the case and reads state). A live test that could not be run is recorded on the item as UNRUN with its exact command. Both are later consolidated into the mod's formal tests (its functional script and north-star bars). Item: `RIMMANDRAKE_BUILD_TESTS_WITH_ITEM_OFFLINE_AND_LIVE`.
+
+## Live tests have three kinds — owner, 2026-11-23
+
+Item `RIMMANDRAKE_ENACT_THREE_TEST_KINDS_FORCED_COUNTED_HUNTED_NOT_STARS_ALIGNED`. He approved this text on 2026-11-23
+(*"Approve updated draft 3."*). Sections 1 to 8 below are the approved text. The reasons and the examples:
+`design/specs/2026-11-23-three-test-kinds/draft.md`.
+
+Two cases of 2026-11-23 started the rule. In Explosive Knockback visit 4, the spared-carrier scene failed once because
+the carrier walked out of the blast; the one failure blocked the exit of the visit. In FlowWorks, a raider was lifted
+out of a pit once in 18 free runs; when the rescue was ordered, the rescue happened 2 of 2 times, and the bug was fixed
+that morning.
+
+The Principle of Impactful Evidence is at the top of `infrastructure/agents/CHARTER.md`, in his exact words. Minimum
+Force (section 7) is also in the live-testing skills: `skills/live-debugging-proof-harness/SKILL.md`,
+`skills/rimworld-live-review/SKILL.md` and `~/dev/MandrakeWorkflows/skills/test-pilot-sitting/SKILL.md`.
+
+### 1. Every live scene has a contract
+Before its first run, a scene states:
+- **the claim**: one sentence about what the mod does (example: "an ordered rescue carries this pawn out of the pit");
+- **the entry point**: where the scene steps in, and which decisions of the mod it leaves to the mod;
+- **a valid opportunity**: the state that must hold for the run to test the claim;
+- **success**: game state that a program reads (who is where, who holds what), never only a message that the mod wrote;
+- **forbidden effects**: what must not happen (a pawn lost or doubled, an exception);
+- **the end**: when the program stops looking.
+A program decides each run from the contract. An agent reads only a run that the program cannot decide.
+
+### 2. A run ends in one of seven outcomes, kept apart
+SUCCESS · MOD FAILURE · RANDOM MISS (a valid opportunity, an allowed miss) · ENVIRONMENT FAULT · APPARATUS FAULT ·
+UNRESOLVED (something went wrong and nobody knows why) · COULD NOT LOOK.
+- A run is an ENVIRONMENT FAULT only when the record shows that something outside the tested behaviour spoiled the
+  opportunity. If the mod could have spoiled it, the run is UNRESOLVED.
+- A forbidden effect is a MOD FAILURE in any run, even a spoiled one.
+- Only SUCCESS speaks for the mod. No other outcome needs a later pass to cancel it.
+
+### 3. The kind says how a scene is judged
+A scene with no tag is kind A.
+- **Kind A, deterministic.** The scene can make a valid opportunity on demand, and the result is not random. One valid
+  run decides: PASS or FAIL. A count such as "4 of 5" is never used.
+- **Kind B, stochastic.** After a sincere attempt at control, the opportunity is still uncertain, or the result is random
+  by design. The scene looks for evidence of success.
+  - It passes on one SUCCESS, with no MOD FAILURE and no UNRESOLVED run on the same claim and build.
+  - That pass says "this was seen to work". It does not say how often it works.
+  - How many runs to spend is a budget, written on the scene before the first run. When the budget ends with no
+    SUCCESS, the verdict is INCONCLUSIVE, never PASS and never FAIL.
+  - Where the result is random by design (a yield, a drop chance), the scene passes on X successes in Y valid
+    opportunities. X and Y come from the intended yield and from the testing budget, and are written before the first
+    run. Check the rate itself offline where that is possible, because offline runs are free.
+- **Kind C, intermittent hunt.** A temporary hunt for a fault that shows only sometimes. It looks for evidence of failure.
+  It is never part of a mod's final acceptance tests. It may use kind A or B scenes to get exposure; their verdicts
+  stay their own.
+
+### 4. Tags B and C carry their evidence
+- Tag B names the things that spoil the run, what was tried to control each, and why that was not enough.
+- Tag C names the symptom, how often it was seen in how many opportunities, and where the trace is.
+- The tester gives the tag. The Conductor, the owner or a Fable rescue run gives it when the tester does not see the need.
+- A tag changes how a scene is judged. A tag never removes a recorded run.
+
+### 5. An UNRESOLVED run, and the hunt
+- One UNRESOLVED run is recorded and holds the scene's pass until someone classes it.
+- A hunt opens when the fault is serious (one sighting is enough) or is seen again.
+- **A hunt never opens silently.** The run that opens it tells the Conductor: what happened, why it matters, the next
+  step that would tell two causes apart, and what that step costs. The Conductor may call a Fable rescue, add the hunt to
+  a later rescue, or look itself.
+- Each hunt step answers a named question. Before each step, state what the answer could change and what the step may
+  spend. Count opportunities, not runs.
+- A hunt ends as one of four: FIXED AND SHOWN · NOT A FAULT (the apparatus, or disproved) · STOPPED, UNRESOLVED ·
+  HANDED ON.
+- A trigger found is not a fix. A hunt stopped is not a fix.
+- After a fix, the forced scene stays in the live tests only while the fault is likely to return. Otherwise its check
+  goes to the offline tests, or is retired.
+- A hunt that stops unresolved leaves a record: the symptom, how bad it is for the player, the trace and the save, the
+  build and mod list, what was tried, and what would reopen it. A serious unresolved fault also needs a written decision
+  at the mod's pass: the Conductor writes it, and the owner reads it in his digest.
+
+### 6. A spoiled environment is repaired, in proportion
+- When a run names a thing that spoiled it, the run tries to remove that thing: hold or place it inside the scene, use
+  the calm test environment, use a smaller mod list, use a bridge tool, or build a bridge tool.
+- Lean towards building the control. A control is rarely for one scene: it lowers the cost of this scene's later runs
+  and of many later scenes. So weigh a control against the testing it makes possible, not against one proof.
+- Trace a spoiled run to its source. Be inventive. What still cannot be controlled is the reason for tag B.
+- The calm test environment is a named bridge profile. It reports which controls it switched on and which it could not.
+  A scene checks that the controls it needs are on. A line in a list is not proof.
+
+### 7. Minimum Force (goes in the live-testing skills)
+> **Use the least force that makes a scene affordable and reliable, and that leaves to the mod every decision the scene
+> claims to test.** Whatever the force steps past is outside that scene's evidence.
+
+The ladder, from most force to least, for "a raider crosses a covered pit": teleport it onto the cover; give it a path
+over the cover; a corridor with no other way and bait beyond; a ring of pits round a base and a natural raid. Say which
+step the scene uses and, in one line, why not a lighter one. Trying every lighter step first is not required.
+
+### 8. Verdicts keep, per scene
+- A scene's verdict stands until a change touches what the scene reads or exercises. The record names the build that the
+  game had loaded, not only the build on disk.
+- No exit asks for every scene in one visit, or for one scene several times in a row.
+- **The testing horizon.** State which claims are left to the owner's walk and to real play. That is accepted.
+
+### His words, 2026-11-23
+
+The order (about 11:35 AM PST):
+
+> YES! Stochastic event testing requires the changes you pose. 0) We need to define three things to make this work. A: deterministic test (should always be reliably testable, the standard default, what we assume today). B: Stochastic test (testing a reliable capability with many input variables that make the test's outcome unreliable, thus requiring looking for evidence-of-success rather than guaranteed reproducable success on demand. Only justified due to large numbers of unreliable environmental variables or a capability that itself stochastic in yield/production by intention) C: Intermittent test (the test itself is deterministic, but it's seeking an intermittent bug that only occasionally manifests due to complex environments or unknown nature, thus requiring looking for evidence-of-failure amidst repeated apparent successes). We need to explicitly tag tests for their intention, so they can be repeated and judged appropriately. Approved explicitly: 1) Force the situation ALWAYS if possible, there are too many variables to control otherwise. 2) Broaden this definition of detection/success/failure to handle A, B, and C cases explicitly. 3) Required to handle case B. 4) Correct, a detected failed environment is not a mod failure and may or may not indicate a testing apparatus failure, depending on the level of our own control. Each time a failed environmental variable is identified, the testing environment (number of loaded mods, calm testing environment definition, use of or creation of new BRIDGE capabilities to remove the influences) should be explored and exercised if possible. There will likely always be some residual testing influences, but let's get VERY creative in trying to remove them to preserve sanity and not burn all our tokens on repeating large expensive test suites with low yields even if the mod is 100% correct. Push back and question card me, expand this prompt to make it excellent. This is a VITAL upgrade, immediate priority, work with me Fable right now! Then we send it to GPT afterwards for deep review, skeptical breakdown, and fix improvements, and finally work together on the final token-efficient simple bearing language version.
+
+Card answer 1, how kind B is judged:
+
+> For Tests of Type A (intended for capabilities that should be reliable and reliably testable) you would not use "4 of 5" form of success. That would be inappropriate. If there are environmental variables that frequently confound an otherwise reliable capability (such as requiring certain pawns present in specific onfigurations), it becomes test type B where traced success & failures is important evidence but ANY demonstration of success may be as good as we're going to get. Then tuning the X out of Y numbers becomes art and resource balancing. Please push back if this doesn't seem appropriate or make sense or address your concern.
+
+Card answer 2, kind C and the pass:
+
+> Intermittent bugs will be a transient hunt mode, usually by a test pilot, but possibly temporarily inserted into passing pipeline tests while they are still being hunted during the development (after having been seen once or twice). They are never intended to be left on for the final testing suite. As you say, once their source is detected, they may be converted into specific forced configurations (hopefully even deterministic at that point) to ensure it does not reoccur, but after the fix that requires proof of likely re-emergence (you don't want your basic acceptance suite turning into a littany of everything that was once wrong, it's too expensive for live game testing). Offline tests may be more receptive to holding a large number of "once wrong" recursion testing. If the bug is never or exceptionally rarely reproducable and cannot be transformed into a forced test, it is dropped from any mod acceptance testing to preserve efficiency. This should become a broad principle in our game: the Principle of Impactful Evidence: due to fixed resources, we must allocate testing only to what is likely to provide future value, never comprehensive coverage for its own sake, and that equation will change over time given evolving knowledge of an evolving system. [Please help me restate this answer before you record it verbatim, we want this to be superbly stated for the best impact on the game. That principle should be placed at the highest level within this project, I believe you made a place for that guidance recently?]
+
+Card answer 3, who tags:
+
+> It's not as hard as you say. Of course the User or the Conductor have authority to do this. If environmental variables beyond our control can be identified that preclude a Kind A test, even after sincere attempts to control them, it is reasonable to proceed to kind B testing. There is evidence for it, not a lazy tester. The tester should have to provide evidence that type B testing is required, after a sincere attempt to control the environment otherwise fails. The Conductor or a Fable Rescue would be ideal sources for this if the tester fails to recognize it. Debugging/diagnosing a failed pass is a perfect time to recognize this in an ordinary environment. PLEASE do try to control environment and/or upgrade the BRIDGE with skills to help provide a more stable testing environment first whenever possible. That too is evidence that type B testing is required.
+
+Card answer 4, forcing and natural runs:
+
+> Agreed, forcing is dangerous, not simply preferred. It tests the basic, elemental capability but does not explore important configurations. Here is another Principle, this time for Debugging/testing skills in rimworld: the minimum force required for testing is optimal. Example: We are testing a raider walking over a large covered pit, but they rarely choose to walk over it in a real game. From least desirable/most elemental to most desirable/most complete: teleport raider onto middle of covered pit; pre-set raider walk path over the pit; place pit in narrow hallway without alternative route and place desired object/combatant as bait to draw them over it; place an array of covered pits entirely surrounding a natural base and allow naturally spawned raiders to find their own path across in their own time. [We will almost never be able to afford that final, natural test type due to the time and token cost of each test plus a potentially low yield due to environmental factors and other mod interactions] [Agreed that the player walkthrough can cover the most complex situations, but even still some will simply have to wait for real gameplay to discover, and that's ok. that is the "testing horizon" we can afford.]
+
+Card answers of about 12:50 PM PST. Placement of Impactful Evidence: "Top of the Charter, pointer in CLAUDE.md
+(Recommended)". Minimum Force: "My restatement, in the live-testing skills (Recommended)". The unexplained kind B
+failure, typed:
+
+> (1) repeated unexplained failures indicate deeper investigation is required, yes. I would also like to suggest that a Hunt be communicated to the Conductor as an opportunity for Fable Rescue (or at least to be included in such a rescue if it is called later), or the Conductor may choose to look and give a second perspective with its different context to assist. It should not be a silent conversion to a Hunt. It's a big deal in a mod's testing to need this.
+
+His comments on draft 3, about 1:25 PM PST (the last part of the message orders BRIDGE v2):
+
+> 1) agreed, but that was kind of covered. We are obliged to trace environmental causes to their source... and unexplained movement of colonists repeatedly out of the zone should show up... but I take your point. 2) Agreed... I had indicated that for stochastic testing you use X of Y successes, where X and Y are set by the intended yield plus the testing resources we have. That should cover this, should it not? 3) Yes... we know this... that's why the rule of minimum forcing. I feel this restates what we ourselves said. But if you find value in its version, so be it. Environment repair is proportionate: but biased towards the spend towards control. It is unlikely a single test will require a unique environmental control, so you are lowering the cost of much future testing (as well as reruns of this test in the future). So proportional here is biased towards testing capacity, not just "the cost of a single proof." Hunt opens on serious, yes surely. Serous faults must announce being dropped, agreed. These are my comments.
 
 ## A cleansed design passes all three checks — owner, by card 2026-11-23
 

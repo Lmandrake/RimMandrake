@@ -1,8 +1,8 @@
-# Three kinds of live test: draft 2 (working text, not yet a rule)
+# Three kinds of live test: draft 2 (working text behind the rule)
 
 Item `RIMMANDRAKE_ENACT_THREE_TEST_KINDS_FORCED_COUNTED_HUNTED_NOT_STARS_ALIGNED`. Written 2026-11-23 by the Conductor with
-the owner. Next steps, in his order: his corrections, a deep GPT review, then the final short rule text. Nothing here
-binds a run yet.
+the owner. The approved text came after it: `rule_draft3.md`, now the rule in `design/RimMandrake/standing_rulings.md`
+§Live tests have three kinds. Where this draft differs from that text, that text binds.
 
 ## The problem
 A live scene can fail while the mod is correct. Two cases from 2026-11-23:

@@ -1,4 +1,4 @@
-# Live tests: three kinds, one contract (draft 3, the short rule text; not yet a rule)
+# Live tests: three kinds, one contract (draft 3; the owner approved it on 2026-11-23; the rule lives in `design/RimMandrake/standing_rulings.md` §Live tests have three kinds)
 
 After the GPT review (`gpt_review.md`). The reasons, the examples and the owner's words are in `draft.md`.
 
