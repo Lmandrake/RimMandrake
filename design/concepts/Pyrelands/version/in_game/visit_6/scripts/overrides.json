@@ -11,5 +11,11 @@
   "detail": "ArchSmall: tier list only beside ArchBig (sc_walk needs his full list; ArchBig runs it later)",
   "held": []
  },
- "_extra_tests": []
+ "_extra_tests": [
+  "sc_fire_walks_with_wind",
+  "P_gate",
+  "P_mapgen_log",
+  "sc_flamefang_venom",
+  "firehawk_first_sighting_letter"
+ ]
 }
