@@ -19,7 +19,8 @@ What it emulates (read from the C#, not guessed):
     to PARITY below.
 
 Floors (PIT_SPIKES_FIX_READ_AS_FUZZ_LIVE): render(floor="standin") is the flat grey the owner-approved sheet was drawn on;
-floor="real" is the game's dug-floor terrain (vanilla Gravel x RM_Channel_* <color>), which live fwclose_03 matches.
+floor="real" is the game's dug floor with the stepped relief off (vanilla Gravel x RM_Channel_* <color> under the
+FloorShade black alpha), which live fwclose_03 matches.
   floor_matches_live(floor) -> the D4 floor's luminance == live's: FAILS on "standin", PASSES on "real"/"real_flat"
 
 Checks (each FAILS on the shipped drawing and PASSES on the fix; selftest_fw_offline_art.py runs both):
@@ -44,6 +45,8 @@ HERE = Path(__file__).resolve().parent
 FW = HERE.parent
 sys.path.insert(0, str(FW / "art_source" / "Spikes"))
 import stakes as STAKES  # noqa: E402
+sys.path.insert(0, str(FW / "model"))
+import pitdraw as PITDRAW  # noqa: E402
 
 TEXDIR = FW / "Textures/Things/Building/FlowWorks/Canals/RM_Spikes"
 MATH_CS = FW / "Source/Superdeep/RM_SpikeDrawMath.cs"
@@ -288,9 +291,17 @@ def gravel(P, flat=False):
     return _GRAVEL[P]
 
 
+def floor_drawn_tint(d):
+    """(r, g, b) multiplier on Gravel for a dry floor at depth d notches, as the game draws it with the stepped relief OFF:
+    the RM_Channel_* <color> under RM_PitReliefMath.FloorShade's black alpha (model/pitdraw.floor_shade, its parity twin).
+    Since RIMMANDRAKE_FIX_PIT_FLOOR_TINT_PAST_TWO_M_DRAWS_ONE_COLOUR lifted the Deep/Superdeep colours, the terrain alone is
+    no longer what the game draws; the shade takes the difference (the 2 m floor draws 0.38, as live fwclose_03 measured)."""
+    k = 1.0 - PITDRAW.floor_shade(d)
+    return tuple(c * k for c in floor_tints()[min(max(d, 1), 4)])
+
+
 def real_floor_rgb(d):
-    t = floor_tints()[min(max(d, 1), 4)]
-    return tuple(m * k for m, k in zip(GRAVEL_MEAN, t))
+    return tuple(m * k for m, k in zip(GRAVEL_MEAN, floor_drawn_tint(d)))
 
 
 class Pit:
@@ -333,7 +344,7 @@ def render(pit, mode="after", P=160, faces=True, outline=True, atlases=None, flo
     atlas, or atlases[name] when given); "approved" the owner-approved layout sampling the sprite through the pinned
     library, recoloured by stakes.pale (his later pick "C", which the atlases carry), its `sliver` mask every scene pixel a neighbour's sliver inside a box can reach (dilated by SLIVER_REACH);
     "approved_clean" the same with each box's slivers' alpha cleared. floor: "standin" (the approved sheet's grey),
-    "real" (the game's dug-floor terrain: Gravel x the depth's def colour), "real_flat" (that, at the texture's mean)."""
+    "real" (the game's dug floor, relief off: Gravel x the depth's def colour under FloorShade), "real_flat" (that, at the texture's mean)."""
     W, H = pit.W * P, pit.H * P
     rgb = np.zeros((H, W, 3), np.float32)
     wall = np.zeros((H, W), bool)
@@ -356,7 +367,7 @@ def render(pit, mode="after", P=160, faces=True, outline=True, atlases=None, flo
             if floor == "standin":
                 fill_box(x, z, 0, 0, 1, 1, _floor(d))
             else:
-                tex, tint = gravel(P, floor == "real_flat"), floor_tints()[min(d, 4)]
+                tex, tint = gravel(P, floor == "real_flat"), floor_drawn_tint(d)
                 r0, r1, c0, c1 = box(x, z, 0, 0, 1, 1)
                 if tex is None:
                     rgb[r0:r1, c0:c1] = real_floor_rgb(d)
