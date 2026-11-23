@@ -37,3 +37,24 @@ darken a floor until its grain disappears, and tell 3 m from 4 m by a north wall
   or by both together. 12 m against 16 m reaches 0.97 of that bar: marginal. Both thresholds are my reading of the judge's
   numbers (1.9 L* read as steps, 1.3 read alike), not a measurement of a player.
 - His L's 4 m north arm keeps 0.475 of a square of floor (0.50 before, 0.26 when he called it "incredibly narrow").
+
+## In game (ArchBig, 2026-11-23 00:22-00:30 PST, 23-mod tier of the save, 14 h sun and 2 h night)
+
+- `live_look.py` loads `RM_STEPPED_PIT_12_CASES` from the main menu, digs one-depth 3x3 pits of 2 to 16 m at 80,44 with a
+  colonist beside them, and captures default zoom and close, day and night. Run on the shipped build (`before`) and on
+  81ee41df54 (`after`); `compose.py` makes the before/after. Captures and both images:
+  `D:\ClaudeWork\rimmandrake\showings\RIMMANDRAKE_FIX_PIT_FLOOR_TINT_PAST_TWO_M_DRAWS_ONE_COLOUR\` (`ingame\`,
+  `BEFORE_AFTER_pit_depth_ladder.png`). Keeper save on ArchBig: `RM_PIT_DEPTH_LADDER_AFTER`.
+- Centre-square grey mean / spread [measured, close captures]:
+
+| | 2 m | 3 m | 4 m | 6 m | 8 m | 12 m | 16 m |
+|---|---|---|---|---|---|---|---|
+| before | 27.1 / 3.6 | 22.8 / 2.8 | 19.9 / 2.3 | 15.3 / 1.8 | 12.5 / 1.8 | 9.8 / 1.1 | 8.5 / 0.8 |
+| after | 45.3 / 6.0 | 41.1 / 5.1 | 37.8 / 4.2 | 31.7 / 3.9 | 27.0 / 4.5 | 22.2 / 3.6 | 19.4 / 2.2 |
+
+- `pit_floor_ladder_live.py --origin 80,60`: 5 of 5 rows PASS (`northstar/pit_floor_ladder_result_20261123T002943.json`); the
+  grain row reads 2.38 with the relief on and 1.2 on the old law (relief off), so it can go red.
+- What I saw: every floor keeps its grain; 2, 4, 8 and 16 m read as four steps; the north face is visibly taller at 8 and 16 m
+  than at 2 m. 3 m against 4 m, and 12 m against 16 m, are still close at default zoom (the face step 3 -> 4 m is about 2 px
+  there); the art judge decides whether that is enough. At night every floor is dark and no pit shadow is drawn (the moon at
+  2 h casts none).

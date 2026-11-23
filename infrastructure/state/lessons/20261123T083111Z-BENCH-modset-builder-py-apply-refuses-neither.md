@@ -1,0 +1,1 @@
+modset_builder.py --apply refuses ('neither its tier list nor its before-copy') when a seat's ModsConfig.swap-active.json is stale (another run restored the owner's list since): the live list is then the owner's full list; back it up, move the stale record aside, and apply. Seen ArchBig 2026-11-23 (record from 2026-11-21).
