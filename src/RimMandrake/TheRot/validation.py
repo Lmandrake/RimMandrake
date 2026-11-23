@@ -27,6 +27,10 @@ CHAINS
   wound_link         ROT_WOUNDLINK_FIX_DROPPED_AT_THE_DOOR A2/A3: RM_Chittik (and RM_Durrok/RM_Mullgoth, when
                      mandrake.rsw.swbestiary loads) carry CompProperties_WoundLink live, a control reads notFound; a Cut
                      on one chittik's carapace mirrors to kin 2 cells away with woundLinkEnabled ON and not with it OFF.
+  spore_emitter_perf RIMMANDRAKE_TELL_HIM_ROT_SPORE_MUSHROOM_PERFORMANCE_VERDICT_HIS_HUNCH: on an RM_TheRot map, one 60 s
+                     Superfast window: CompActiveGasEmitter.Burst max < 5 ms and < 5% of the worst DoSingleTick
+                     (Utils/perf/spore_emitter_window.py; FAIL at BETWEEN/SUPPORTED, UNMEASURED off-biome, no emitter,
+                     never fired, blind). Live: UNRUN until the first window.
   map_mechanics      the ten toggled mechanics: UNMEASURED, each naming what it needs (a generated RM_TheRot map, ticks, a game condition).
 
 STATIC (also): ambrosyx_checks -- AMBROSYX_SOURCE_BUILD_DISH_BEFORE_SHROOM: some non-abstract plant of this mod has
@@ -1407,7 +1411,36 @@ def _build_suite():
                 elif res["bCutAny"] > 0:
                     raise ExpectationFailed("sharing OFF: the kin still received a wound: %r" % (res,))
 
+    @suite.chain("spore_emitter_perf")
+    def spore_emitter_perf(t):
+        """RIMMANDRAKE_TELL_HIM_ROT_SPORE_MUSHROOM_PERFORMANCE_VERDICT_HIS_HUNCH: one 60 s Superfast window on an
+        RM_TheRot map; CompActiveGasEmitter.Burst's worst call stays under 5 ms and under 5% of the worst tick.
+        The verdict is spore_emitter_window.verdict (offline: selftest_spore_emitter_window.py)."""
+        with t.component("burst_max_under_tick_budget", beyond_toggle=True):
+            if not _live(t):
+                return
+            W = _spore_window()
+            biome = (t.bridge_call("jawa/map_info") or {}).get("mapBiome")
+            if biome != W.BIOME:
+                _unmeasured(t, "needs an RM_TheRot map (map reads %s): python.exe src/RimMandrake/Utils/live_site.py "
+                               "--biome RM_TheRot --needs mandrake.rm.biomes" % biome)
+                return
+            rec = W.window(lambda tool, **kw: t.bridge_call(tool, **kw), secs=60.0, speed="Superfast", dpa=False)
+            _code, word, text = rec["verdict"]
+            if word in ("SUPPORTED", "BETWEEN"):
+                raise ExpectationFailed("%s: %s" % (word, text))
+            if word != "REFUTED":
+                _unmeasured(t, "%s: %s" % (word, text))
+
     return suite
+
+
+def _spore_window():
+    d = os.path.join(HERE, "..", "Utils", "perf")
+    if d not in sys.path:
+        sys.path.insert(0, d)
+    import spore_emitter_window
+    return spore_emitter_window
 
 
 suite = _build_suite() if Suite is not None else None
