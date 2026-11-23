@@ -58,6 +58,14 @@ def plan(ox, oz):
                     [(xn + dx, z) for z in range(zn + 1, zn + 4) for dx in (-1, 0, 1)], (xn - 2, zn - 1, 5, 6)))
         out.append(("jetty_%s_S1" % tier, "jetty", "Industrial", tier, (xn + 5, zn + 4), (xn + 5, zn + 3),
                     [(xn + 5 + dx, z) for z in range(zn + 1, zn + 4) for dx in (-1, 0, 1)], (xn + 3, zn, 5, 6)))
+    # the DEFAULT look (Scrapper): what a player who never picks a look builds -- the heavy bridge and both jetties
+    zd = oz + 32
+    out.append(("ew4_heavy_Scrapper_default", "bridge", "Scrapper", "heavy", (ox, zd), (ox + 5, zd),
+                [(x, zd + dz) for x in range(ox + 1, ox + 5) for dz in (-1, 0, 1)], (ox - 1, zd - 2, 8, 5)))
+    for k, tier in enumerate(("steel", "heavy")):
+        xb = ox + 10 + k * 10
+        out.append(("jetty_%s_E2_Scrapper_default" % tier, "jetty", "Scrapper", tier, (xb, zd), (xb + 2, zd),
+                    [(x, zd + dz) for x in range(xb + 1, xb + 4) for dz in (-1, 0, 1)], (xb - 1, zd - 2, 6, 5)))
     return out
 
 
@@ -100,31 +108,24 @@ def main(argv=None):
     time.sleep(1.5)
     r = w.call("jawa/take_screenshot", fileName="deckart_yard_%d" % int(time.time())) or {}
     readings["_yard_default"] = r.get("filePath")
-    # a colonist walks across the Industrial steel bridge (east/west); shots while on the deck
-    walk = [s for s in stations if s[0] == "ew4_steel_Industrial"][0]
-    lp = w.call("jawa/list_pawns", includeHealth=False, limit=50) or {}
-    cols = [pw for pw in lp.get("pawns") or [] if pw.get("faction") in ("player", "Player", "PlayerColony") or pw.get("isColonist")]
-    if not cols:
-        cols = (w.call("jawa/list_colonists") or {}).get("colonists") or []
-    if cols:
-        pid = cols[0].get("id")
-        p, q = walk[4], walk[5]
-        w.call("jawa/order_pawn", pawnId=pid, x=p[0] - 1, z=p[1], waitTicks=1500)
-        w.call("jawa/order_pawn", pawnId=pid, x=q[0] + 1, z=q[1], waitTicks=0)
-        shots = []
-        for k in range(60):
-            w.ticks(15)
-            lp = w.call("jawa/list_pawns", includeHealth=False, limit=50) or {}
-            me = [pw for pw in lp.get("pawns") or [] if str(pw.get("id")) == str(pid)]
-            xz = (me[0].get("x"), me[0].get("z")) if me else None
-            if xz and p[0] + 1 <= xz[0] <= q[0] - 1 and xz[1] == p[1] and len(shots) < 3 and (not shots or xz[0] != shots[-1][0]):
-                path = C.snap(w, "walk_%d_%d" % (len(shots), xz[0]), walk[7])
-                shots.append((xz[0], path))
-            if xz and xz[0] >= q[0]:
-                break
-        readings["_walk"] = dict(pawn=pid, shots=shots)
-    else:
-        readings["_walk"] = "UNMEASURED: no colonist found by jawa/list_pawns or jawa/list_colonists"
+    # a colonist STANDS on a deck square of each kind, so a capture shows whether the cables draw over a pawn.
+    # HARNESS (2026-11-22, RIMMANDRAKE_DEPLOY_THIN_OUTLINE_ULLAI_INSTALLED_BUT_NO_GAME_HAS_IT): the old walk ordered a map
+    # colonist across ew4_steel_Industrial and took 0 shots in 60 x 15 ticks (the pawn never reached the deck), so the
+    # cable-over-pawn look went undecided. jawa/spawn_pawn on the deck square is deterministic.
+    on_deck = {"ew4_steel_Industrial": 2, "ew4_heavy_Industrial": 2, "ns4_steel_Industrial": 2, "jetty_steel_E2": 1}
+    shots = []
+    for s in stations:
+        if s[0] not in on_deck:
+            continue
+        p, q, k = s[4], s[5], on_deck[s[0]]
+        dx, dz = (q[0] > p[0]) - (q[0] < p[0]), (q[1] > p[1]) - (q[1] < p[1])
+        cell = (p[0] + dx * k, p[1] + dz * k)
+        r = w.call("jawa/spawn_pawn", kindDef="Colonist", faction="PlayerColony", x=cell[0], z=cell[1]) or {}
+        if not r.get("spawnedCount"):
+            shots.append((s[0], "UNMEASURED: spawn_pawn on %s refused: %s" % (cell, str(r)[:160])))
+            continue
+        shots.append((s[0], C.snap(w, "pawn_on_" + s[0], s[7])))
+    readings["_walk"] = dict(on_deck=shots)
     with open(os.path.join(a.out, "readings.json"), "w") as f:
         json.dump(readings, f, indent=1)
     w.say("WROTE %s" % os.path.join(a.out, "readings.json"))
