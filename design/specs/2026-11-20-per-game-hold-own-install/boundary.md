@@ -22,7 +22,7 @@ A game's name (ArchBig, ArchSmall, Steve1, Steve2) and the map from its letter a
 ## DOES NOT SURVIVE (not promised)
 
 - **a-full-list-on-game-b-beside-game-a.** His full list on ArchSmall beside ArchBig does not fit in memory on Archmagi
-  (about 17.5 GB needed, 19.6 GB headroom, a 12 GB floor; measured 2026-11-20). A visit whose every check needs the
+  (about 17.5 GB needed, 19.6 GB headroom, a 12 GB floor; measured 2026-11-20). A visit whose every owed check needs the
   full list waits for ArchBig; a full-list check inside a mixed visit on b is recorded UNMEASURED by the driver.
 - **a-third-party-mod-updated-after-the-copy.** ArchSmall's copy of a third-party mod in `Mods` is the copy of the day it
   was made; `install --refresh` adds and updates, and never deletes.
@@ -45,8 +45,8 @@ A game's name (ArchBig, ArchSmall, Steve1, Steve2) and the map from its letter a
 - **a-held-game-is-never-picked-and-game-b-takes-the-run.** `pick_game` never returns a held game, whatever its bridge
   reading says, so his walk is kept when the Conductor's bridge hold lapses; the next free game takes the run. A store
   that cannot be read holds the game.
-- **a-full-list-only-visit-waits-for-game-a-and-says-so-by-name.** A visit whose every stage-6 check needs the full list
-  is offered ArchBig only; while ArchBig is held it waits, and the tick's reason names those checks and the hold.
+- **a-full-list-only-visit-waits-for-game-a-and-says-so-by-name.** A visit whose every owed stage-6 check (its `to_run`,
+  the checks not counted from an earlier visit) needs the full list is offered ArchBig only; while ArchBig is held it waits, and the tick's reason names those checks and the hold.
 - **the-askers-own-hold-is-a-hold-for-a-new-run.** `crossing(new_run=True)` reads a live driver lock as held even when
   the holder is the asker's own window; without `new_run` it does not (the holder may drive its own game).
 - **leftovers-never-offers-a-held-game.** `leftovers` never lists a game that is held, or whose driver lock has any

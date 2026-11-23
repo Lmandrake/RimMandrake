@@ -160,6 +160,15 @@ def t_a_full_list_only_visit_waits_for_game_a_and_says_so_by_name(X):
         "pick: a visit whose every check is full-list needs game a")
     chk(lambda: MD.full_list_only({"checks": ["sc_x", "sc_walk"], "full_list": ["sc_walk"]}) == [],
         "pick: a visit with a tier check may use game b")
+    # the checks a visit OWES decide, not every check of the table (Pyrelands visit 6, 2026-11-23: 32 of 38 owed, one of
+    # them full-list; a later visit owing sc_walk alone must wait for game a, or it runs on b and leaves it UNMEASURED)
+    chk(lambda: MD.full_list_only({"checks": ["sc_x", "sc_walk"], "to_run": ["sc_walk"], "full_list": ["sc_walk"]})
+        == ["sc_walk"], "pick: a visit that owes only full-list checks needs game a, whatever else the table holds")
+    chk(lambda: MD.full_list_only({"checks": ["sc_x", "sc_walk"], "to_run": ["sc_x", "sc_walk"],
+                                   "full_list": ["sc_walk"]}) == [],
+        "pick: a visit that owes a tier check may use game b (must stay green)")
+    chk(lambda: MD.full_list_only({"checks": ["sc_x", "sc_walk"], "to_run": [], "full_list": ["sc_walk"]}) == [],
+        "pick: a visit that owes nothing is not full-list-only (must stay green)")
     _hold(X, "a", True, "his walk")
     g, whys = _safe(lambda: MD.pick_game(cfg, go, "visit", only={"b": "every check needs his full list (sc_walk)"}),
                     ("x", []))

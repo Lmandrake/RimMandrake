@@ -401,9 +401,13 @@ def full_list_only(f):
     """-> the visit's full-list checks when EVERY stage-6 check of it needs his full list, else []. Such a visit cannot
     run on game b beside game a: a full list on b does not fit in memory beside a (about 17.5 GB against 19.6 GB of
     headroom over a 12 GB floor, MEASURED 2026-11-20), so it waits for game a and says so. A visit with any tier check
-    may go to b; its full-list checks are UNMEASURED there (game_instance.brief)."""
-    checks, full = list(f.get("checks") or []), list(f.get("full_list") or [])
-    return full if checks and set(checks) <= set(full) else []
+    may go to b; its full-list checks are UNMEASURED there (game_instance.brief). The checks the visit OWES decide
+    (to_run, when the facts carry it), not every check of the table: a visit owing sc_walk alone, with the other rows
+    counted, ran on b and left it UNMEASURED again (RIMMANDRAKE_SEND_WALK_ONLY_VISIT_TO_ARCHBIG_NOT_ARCHSMALL)."""
+    full = list(f.get("full_list") or [])
+    checks = [k for k in f["to_run"] if k in (f.get("checks") or f["to_run"])] if "to_run" in f \
+        else list(f.get("checks") or [])
+    return [k for k in checks if k in full] if checks and set(checks) <= set(full) else []
 
 
 def lock_says(game, query=None):
