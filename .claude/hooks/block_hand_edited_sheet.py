@@ -45,7 +45,7 @@ REASON = (
     "(owner, 2026-10-05: the scaled-image review sheet MUST pass its requirements to be generated).\n\n"
     "The instrument is src/RimMandrake/Utils/art/scaled_review_gate.py (spec: skills/rimworld-review-sheets/SKILL.md). "
     "It runs inside `python3 src/RimMandrake/Utils/art/art_sheet.py --biome <RM_X>` and `refresh_sheets.py`, which build to a "
-    "temp file, check all 12 rulings, and only then replace the sheet (stamped); a failing sheet is never written and the last "
+    "temp file, check every requirement of the gate, and only then replace the sheet (stamped); a failing sheet is never written and the last "
     "good one stays. Servers start only through `python3 src/RimMandrake/Utils/art/serve_gated.py --sheet <html> --decisions <json>`, "
     "which refuses an HTML without a valid stamp.\n\n"
     "If the tool fails a requirement, fix the TOOL and add a selftest — never patch one HTML file. To check a sheet: "

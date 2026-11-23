@@ -2,7 +2,7 @@
 """game_art.py — does a review sheet show GAME ART? Decided from the pictures themselves, never from the sheet's say-so.
 
 Owner, by question card 2026-10-11 ("Hybrid fix"): any sheet showing game art is refused without its true-scale panels
-wherever it is delivered — served (serve_gated.py), committed (.githooks/pre-commit), or published to the phone
+wherever it is delivered — served (serve_gated.py), committed (infrastructure/githooks/pre-commit), or published to the phone
 (sheet_to_artifact.py). A sheet cannot opt out by declaring itself non-art: `sheet_conflicts_review_2026-10-09` declared
 `non-art` while showing 311 game sprites.
 
