@@ -13,20 +13,35 @@ description: >-
 
 # RimWorld review sheets
 
-The general `review-sheets` skill (`~/.claude/skills/review-sheets/SKILL.md`) covers the page itself:
-prefill, posture, decisions-as-data, the sidecar, `check_sheet.py`. Read it once. This skill is what
-RimMandrake adds on top, and where it is stricter, it wins.
+The general `review-sheets` skill (`~/.claude/skills/review-sheets/SKILL.md`) covers the page itself. The
+general skill covers the prefill, the posture, the decisions as data, the sidecar and `check_sheet.py`. Read the general skill once. This skill
+holds what RimMandrake adds. Where this skill is stricter than the general skill, obey this skill.
+
+Four terms in this file:
+
+- **The sidecar** is the server process of one sheet. The sidecar writes each click of the owner to the sheet's
+  `.decisions.json`.
+- **A stamp** is the `scaled-review-gate` tag that the gate puts in the HTML of a sheet that passed. The stamp holds a
+  hash of the HTML. So a hand edit after the gate makes the stamp invalid.
+- **A letter** is the name of one column of pictures on a sheet. His picks are letters.
+- **Donor art** is art from a mod that is not ours. Vanilla art counts as donor art too.
 
 ## Rule 1 — game art is shown at its true in-game size. The tools enforce it.
 
 Owner, 2026-10-04: *"I also need to know the cell size for each of these flora and fauna too, with a
-realistic game human for scale. It's the only way I can judge the art quality/resolution."* A skill alone
-failed within an hour (2026-10-05), so this is code now: `game_art.py` decides from the PICTURES whether a
-sheet shows game art, and such a sheet is refused unless the scaled-review gate stamped it — when served
-(`serve_gated.py`), committed (`infrastructure/githooks/pre-commit`) or published to the phone
-(`sheet_to_artifact.py`). **Declaring a sheet non-art does not exempt it.** Only the builders below can
-produce a stamp, so: never hand-roll a generator for game art. If a builder cannot do what you need, fix
-the builder and add a selftest.
+realistic game human for scale. It's the only way I can judge the art quality/resolution."*
+
+- A skill alone failed within an hour (2026-10-05). So code now enforces this rule.
+- `game_art.py` decides from the PICTURES whether a sheet shows game art.
+- A sheet with game art is refused unless the scaled-review gate stamped it. Three places refuse the sheet:
+  - when the sheet is served (`serve_gated.py`);
+  - when the sheet is committed (`infrastructure/githooks/pre-commit`);
+  - when the sheet is published to the phone (`sheet_to_artifact.py`).
+- **Declaring a sheet non-art does not exempt it.**
+- Only the builders below can make a sheet that earns a stamp. The gate fails a sheet that has no snapshot from a
+  builder.
+- Never hand-roll a generator for game art.
+- If a builder cannot do what you need, fix the builder and add a selftest.
 
 ## Which builder
 
@@ -36,42 +51,66 @@ the builder and add a selftest.
 | any other game art: buildings, items, junk, gear, creatures, plants, UI defs, a batch of renders | `python3 src/RimMandrake/Utils/art/art_sheet.py --subjects <defName>... [--jobs <artpipe job id>...] --name <lower_snake> [--label "Title"]` |
 | no game art (code triage, text/def curation, numbers) | the general template, then `python3 src/RimMandrake/Utils/art/nonart_sheet.py declare <html>` |
 
-Both art modes write `Transient/biome_ffar/<name>_sheet_<date>.html`, build to a temp file, run
-`scaled_review_gate.py` (16 requirements) and move the sheet into place stamped only on a pass; a failure
-exits 3, names the rows and requirement, and leaves the last good sheet alone. Sizes come from the live def
-dump through `scale_panel.py`: animals (adult drawSize), plants (drawSize × visualSize, mesh count),
-buildings and items (drawSize on the `size` footprint, south facing, footprint outlined). A def the game
-draws only in the UI (a ResearchProjectDef, a ThingDef with no graphicData) is measured "no world size" —
-the resolver, re-asked by the gate, is the only thing that exempts a row from a panel.
+- Both art modes write `Transient/biome_ffar/<name>_sheet_<date>.html`.
+- Both art modes build to a temp file and run `scaled_review_gate.py` (16 requirements) on that file. Only a pass
+  stamps the sheet. Only a pass moves the sheet into place, except with `--allow-failing` (`references/lifecycle.md`).
+- A failure exits 3 and names the rows and the requirement. A failure leaves the last good sheet alone.
+- `scale_panel.py` reads each size from the live def dump:
+  - animals: the adult drawSize;
+  - plants: drawSize × visualSize, with the mesh count;
+  - buildings and items: drawSize on the `size` footprint. The thing faces south. The panel outlines the footprint.
+- The game draws some defs only in the UI (a ResearchProjectDef, a ThingDef with no graphicData). The resolver
+  (`Resolver` in `scale_panel.py`) measures such a def as "no world size".
+- The gate asks the resolver again. Only the resolver can exempt a row from a scale panel.
 
 ## The lifecycle
 
-1. **Build** (above). **Check** any sheet: `scaled_review_gate.py check <html>`; game art or not:
-   `game_art.py classify <html>`.
+1. **Build** the sheet (see "Which builder").
+   - To **check** any sheet, run `scaled_review_gate.py check <html>`.
+   - To see whether a sheet shows game art, run `game_art.py classify <html>`.
 2. **Read it first** (owner, 2026-10-22: *"Read it first and see if it's obviously broken, malfunctioning, or
-   problematic before wasting a human's time to tell that to you."*). Look at every row — yourself, or a naive judge
-   (a fresh Opus that did not make it; `gpt_consult.py` for a big sheet): does it render, is it recognisable as what
-   it is, does it repeat a ruling, does it contradict its spec? Fix it or rebuild without it (never hand-edit the
-   sheet), then `prereview.py init <sheet> --by seat:<SEAT>|judge:<model>` and fill each row OK / FIXED / FLAG + note,
-   `caught`, `dropped`. `serve_gated.py`, `review_queue.py` and `sheet_to_artifact.py` refuse a sheet without it
-   (exit 4); a row whose pictures change afterwards needs a fresh look (`init` resets only it).
-3. **Serve** — `serve_gated.py` only, its output in `<sheet>.serve.log` beside the sheet (`refresh_sheets.py` and
-   status tooling find it there; RimPulse is retired, the owner has the URL from you). Give him the URL; the page writes every click as he goes (owner, 2026-10-31).
-4. **Refresh** as renders land — `refresh_sheets.py` keeps URLs stable, rebuilds only changed sheets, and
-   prints an `UNPUBLISHED:` publish command for a rebuilt sheet only if it is pinned (tracked). Run it.
-5. **Remap** after any rebuild of a sheet he has touched — `remap_decisions.py` (dry run, then `--apply`), so
-   every letter he picked still names the same pictures.
-6. **Enact** when he says a sheet is done — `art.py enact <decisions.json>` (dry run), then `--apply`;
-   `--hold <subject>` for rows awaiting a sitting, `--mark-done <row>` once a def half of a note is done.
-   One pass, at most one batched card for conflicts (owner, 2026-10-08).
-7. **Audit** the enact with a fresh read of the ledger and artpipe — never the enact's own summary.
-8. **Clear followed notes** — enact moves a followed note into `notes_followed`; never act on a raw note
-   without checking it was not already followed (owner, 2026-10-08: *"You shouldn't leave my notes AFTER you
-   follow the notes... it can produce accidental multiple firings."*).
+   problematic before wasting a human's time to tell that to you."*).
+   - Look at every row yourself, or give every row to a naive judge. A naive judge is a fresh Opus that did not make
+     the sheet. For a big sheet, use `gpt_consult.py`.
+   - Ask four questions about each row:
+     - Does the row render?
+     - Is the picture recognisable as what it is?
+     - Does the row repeat a ruling?
+     - Does the row contradict its spec?
+   - Fix a broken row, or rebuild the sheet without that row. Never hand-edit the sheet.
+   - Then run `prereview.py init <sheet> --by seat:<SEAT>|judge:<model>`. The command writes the pre-review record.
+   - In the record, fill each row with OK / FIXED / FLAG and a note. Fill `caught` and `dropped` too.
+   - `serve_gated.py`, `review_queue.py` and `sheet_to_artifact.py` refuse a sheet that has no complete record. The
+     refusal of `serve_gated.py` and `sheet_to_artifact.py` is exit 4.
+   - If the pictures of a row change after the look, that row needs a fresh look. `init` resets only that row.
+3. **Serve** the sheet with `serve_gated.py` only.
+   - Send the output of `serve_gated.py` to `<sheet>.serve.log` beside the sheet. `refresh_sheets.py` and the status
+     tooling find the output there.
+   - RimPulse is retired. So the owner has the URL only from you. Give him the URL.
+   - The page writes every click as he goes (owner, 2026-10-31).
+4. **Refresh** the sheets as renders land. Run `refresh_sheets.py`.
+   - `refresh_sheets.py` keeps URLs stable and rebuilds only the changed sheets.
+   - For a rebuilt sheet that is pinned (tracked), `refresh_sheets.py` prints an `UNPUBLISHED:` line with a publish
+     command. Run that command.
+5. **Remap** after any rebuild of a sheet that he has touched. Run `remap_decisions.py` (a dry run), then run the
+   command again with `--apply`. The remap keeps every letter that he picked on the same pictures. `--apply` skips a
+   file with an orphaned letter. Resolve that letter first.
+6. **Enact** the sheet when he says that the sheet is done. Run `art.py enact <decisions.json>` (a dry run), then run
+   the command again with `--apply`.
+   - `--hold <subject>` leaves out the rows that wait for a sitting with him.
+   - Some notes ask for a picture and also for a change to the def. After the def half is done, pass
+     `--mark-done <row>`.
+   - Enact in one pass, with at most one batched card for the conflicts (owner, 2026-10-08).
+7. **Audit** the enact with a fresh read of the art ledger and artpipe. Never audit the enact from its own summary.
+8. **Clear followed notes.** Enact moves a note that was followed into `notes_followed`.
+   - Before you act on a raw note, check that the note was not already followed (owner, 2026-10-08: *"You shouldn't
+     leave my notes AFTER you follow the notes... it can produce accidental multiple firings."*).
 
-Commands, flags, files and the hand-off: `references/lifecycle.md`. The 14 rulings, verbatim, and
-which tool refuses what: `references/art_requirements.md`. Failures that have actually happened, each with
-its check: `references/traps.md`.
+The other files of this skill:
+
+- `references/lifecycle.md` holds the commands, the flags, the files and the hand-off.
+- `references/art_requirements.md` holds the 14 rulings, verbatim, and says which tool refuses what.
+- `references/traps.md` holds the failures that have actually happened, each with its check.
 
 ## Sheet behaviour he has ruled
 
@@ -80,18 +119,55 @@ its check: `references/traps.md`.
 
 ## Before he sees a sheet
 
-- [ ] every row read by the seat or a naive judge, broken rows fixed or dropped; `prereview.py check <html>` OK, and
-      the one-line `caught` goes to him with the link
-- [ ] built by `art_sheet.py`; `scaled_review_gate.py check` PASS; `game_art.py deliver <html>` OK
-- [ ] a scale panel on every row whose def has a world size; FALLBACK sizes flagged on the row
-- [ ] donor-only rows = 0, or each has a pending render job and the count is shown to him
-- [ ] served via `serve_gated.py` into `<sheet>.serve.log`; the URL answers 200
-- [ ] for a sheet he has touched: `remap_decisions.py` reports 0 orphaned, and `letter_mismatches` = 0
-- [ ] he gets the served `http://localhost` URL and nothing else: never a copy of the sheet and never a `/home/`, `/mnt/` or
-      `\\wsl.localhost` path. A sheet with no server gets served first, even for an owner pile. Code enforces this: a page
-      without its live writer blocks picks and names the URL (`sheet_live_guard.py`, req 16), a copy out of the clone is
-      refused (hook) and refuses to serve, and `owner_doc_lint.py` refuses those paths in piles, Transient docs and cards.
-- **Every sheet shown must be truly new.** "Please ensure that each sheet is truly new." (owner) Before a sheet reaches him by link, card or phone, prove and say in one line: built this sitting, not an older sheet re-served; `art_sheet.py`'s `ruled_elsewhere` collapse shows 0 un-collapsed rows he ruled on another sheet (rows whose only new thing is a redraw he asked for are fine); `python3 src/RimMandrake/Utils/art/sheet_freshness.py verify <html>` exits 0; and its `.decisions.json` is not already finished. If any check fails, rebuild or drop the sheet; never send it with a caveat.
-- **One row = one decision about one thing, and he must be able to tell what he is clicking** (owner: "I have no idea what you want me to click on."). Each row gives a plain description of what the thing is, where it is placed and how it is used; options are named for what they DO ("use the new art" / "keep what ships"), never "Body" vs "No longer needed"; never four unrelated items in one choice; every candidate in a row depicts the SAME object (a style x content matrix, e.g. 4 tech styles x 3 liquids, is split into separate questions: "it was making me choose between different objects"). Check candidates actually differ by bytes before offering them (a "new" render was byte-for-byte the current art). A gated `art_sheet --subjects` sheet is built for gating and true scale, not for a person deciding: if the builder cannot give the description, ask by question card. A prereview that judges picture quality per row does not catch this; ask "are all candidates the same object?"
-- **When candidates are per-look variants** (Scrapper / Industrial / Modern / Futuristic), the sheet lets him accept all looks together; never force one "use this" per row as if the looks were rival options (owner: "just accept the art").
-- **A sheet's `.prereview.json` is a record of one clone's look, not proof the sheet is fine where it is served.** A sheet served from a clone where 18 of its untracked thumbnails (`Transient/biome_ffar/img`) never existed read STALE on every row. Before serving any sheet, run `sheet_freshness.verify_html` on it in the serving clone and `curl` the served page; `fresh False` means rebuild (`refresh_sheets.py --force --only <slug>`) first.
+- [ ] The seat or a naive judge read every row. No broken row is on the sheet: fix or drop it.
+- [ ] `prereview.py check <html>` reads OK. The one-line `caught` goes to him with the link.
+- [ ] `art_sheet.py` built the sheet. `scaled_review_gate.py check` reads PASS, and `game_art.py deliver <html>` reads OK.
+- [ ] Every row whose def has a world size has a scale panel. A size that was not measured reads FALLBACK, and the row
+      is flagged.
+- [ ] The donor-only rows (rows whose only art is donor art) are 0. Otherwise each such row has a pending render job, and
+      the count is shown to him.
+- [ ] `serve_gated.py` serves the sheet into `<sheet>.serve.log`, and the URL answers 200.
+- [ ] For a sheet that he has touched: `remap_decisions.py` reports 0 orphaned, and `letter_mismatches` = 0. A letter
+      is orphaned when its pictures are no longer in the row.
+- [ ] He gets the served `http://localhost` URL and nothing else.
+  - Never give him a copy of the sheet. Never give him a `/home/`, `/mnt/` or `\\wsl.localhost` path.
+  - If a sheet has no server, serve the sheet first. This also applies when the link goes in an owner pile (a
+    `Transient/owner_pile…` page of work for him).
+  - His device can be unable to reach that URL (a phone off the tailnet). Then export the sheet with
+    `sheet_to_artifact.py`. Publish that page privately (`references/lifecycle.md`).
+  - Code enforces this:
+    - A page without its live writer blocks picks and names the URL (`sheet_live_guard.py`, req 16).
+    - A hook refuses a copy out of the clone, and a copy refuses to serve.
+    - `owner_doc_lint.py` refuses those paths in piles, Transient docs and cards.
+- **Every sheet shown must be truly new.** "Please ensure that each sheet is truly new." (owner)
+  - Before a sheet reaches him by link, card or phone, prove these four things. Say them in one line:
+    - You built the sheet this sitting. The sheet is not an older sheet, served again.
+    - The `ruled_elsewhere` collapse of `art_sheet.py` shows 0 un-collapsed rows that he ruled on another sheet. A row
+      is fine if its only new thing is a redraw that he asked for.
+    - `python3 src/RimMandrake/Utils/art/sheet_freshness.py verify <html>` exits 0.
+    - The `.decisions.json` of the sheet is not already finished. `review_queue.py` counts a sheet as closed when the
+      file is frozen, is `returned`, or has the `reviewStatus` state `ruled`. A sheet with none of these three marks can still be finished. So also check
+      that its picks are not already enacted.
+  - If any check fails, rebuild or drop the sheet. Never send the sheet with a caveat.
+- **One row = one decision about one thing, and he must be able to tell what he is clicking** (owner: "I have no idea what you want me to click on.").
+  - Each row describes plainly what the thing is, where the thing is placed and how the thing is used.
+  - Name each option for what the option DOES ("use the new art" / "keep what ships"). Never name options "Body" vs
+    "No longer needed".
+  - Never put four unrelated items in one choice.
+  - Every candidate in a row depicts the SAME object. Split a style x content matrix (e.g. 4 tech styles x 3 liquids)
+    into separate questions. Owner: "it was making me choose between different objects".
+  - Before you offer the candidates, check that they differ by bytes. A "new" render was once byte-for-byte the
+    current art.
+  - A gated `art_sheet --subjects` sheet is built for gating and true scale. The sheet is not built for a person who
+    decides. If the builder cannot give the description, ask by question card.
+  - A prereview that judges the picture quality of each row does not catch this fault. Ask "are all candidates the
+    same object?"
+- **When candidates are per-look variants** (Scrapper / Industrial / Modern / Futuristic), the sheet lets him accept all looks together.
+  - Never force one "use this" per row as if the looks were rival options (owner: "just accept the art").
+- **A sheet's `.prereview.json` is a record of one clone's look, not proof the sheet is fine where it is served.**
+  - One sheet was served from a clone where 18 of its untracked thumbnails (`Transient/biome_ffar/img`) never existed.
+    Every row of that sheet read STALE.
+  - Before you serve any sheet, run `sheet_freshness.verify_html` on the sheet in the serving clone. The
+    `sheet_freshness.py verify` command calls that function.
+  - If the result is `fresh False`, first rebuild the sheet (`refresh_sheets.py --force --only <slug>`).
+  - After you serve the sheet, `curl` the served page.

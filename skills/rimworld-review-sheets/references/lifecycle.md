@@ -7,12 +7,12 @@ serve logs live in `Transient/biome_ffar/`; snapshots in `infrastructure/state/a
 
 | file | written by | tracked? | read by |
 |---|---|---|---|
-| `<name>_sheet_<date>.html` | `art_sheet.py` / `refresh_sheets.py` (gated, stamped) | yes | the owner's browser, the gate |
+| `<name>_sheet_<date>.html` | `art_sheet.py` / `refresh_sheets.py` (gated, stamped) | only when pinned | the owner's browser, the gate |
 | `<name>_sheet_<date>.decisions.json` | the sidecar (his clicks); prefill by `art_sheet.py` only while untouched | yes | `art.py enact`, `remap_decisions.py`, the gate (req 8) |
 | `infrastructure/state/art/sheets/<sheet>.snapshot.json` | `art_sheet.py` | yes | letters → pictures; `L.snapshot_by_id` recovers ruled ones from git |
 | `<name>_sheet_<date>.serve.log` | the server's stdout | no (gitignored) | `refresh_sheets.served_url` |
 | `sheets_state.json` | `refresh_sheets.py` (fingerprint per sheet) | no | `refresh_sheets.py` — missing means rebuild all once |
-| `<name>.subjects.json` | `art_sheet.py --subjects` (the subject sheet's one-entry census) | yes | rebuilds, the gate (via the snapshot's `census`) |
+| `<name>.subjects.json` | `art_sheet.py --subjects` (the subject sheet's one-entry census) | only when pinned | rebuilds, the gate (via the snapshot's `census`) |
 | `img/scale_*.png` | `scale_panel.render_panel` | untracked | the sheet |
 
 ## Build
@@ -41,7 +41,7 @@ python3 src/RimMandrake/Utils/art/art_sheet.py --jobs <artpipe job id>... --name
 ## Gate and classify
 
 ```bash
-python3 src/RimMandrake/Utils/art/scaled_review_gate.py check <html> [--urls] [--stamp]   # all 14 requirements
+python3 src/RimMandrake/Utils/art/scaled_review_gate.py check <html> [--urls] [--stamp]   # every gate requirement; req 10 only with --urls, req 9 is checked at ingest
 python3 src/RimMandrake/Utils/art/scaled_review_gate.py all                              # every biome_ffar sheet
 python3 src/RimMandrake/Utils/art/game_art.py classify <html>...                          # GAME-ART / NOT-ART + evidence
 python3 src/RimMandrake/Utils/art/game_art.py deliver <html>...                           # what serve/commit/phone apply
@@ -60,7 +60,8 @@ setsid python3 ../../src/RimMandrake/Utils/art/serve_gated.py --no-open --sheet 
   there that answers 200 (RimPulse, which also listed it, is retired 2026-11-03; give the owner the URL yourself). Art sheets live in `Transient/biome_ffar/`; a
   non-art sheet is REFUSED there (`nonart_sheet.py`), so serve it from `Transient/` itself.
 - Start servers one at a time: eight at once raced the WSL loopback relay and four tabs showed "Network error".
-- `refresh_sheets.py` restarts a dead server itself (same log), so an already-served sheet needs nothing.
+- `refresh_sheets.py` never restarts a dead server by itself. A default run reports `(not served)` and exits 0 for that; pass
+  `--restart-servers`, or serve the sheet again with `serve_gated.py`. A restarted server has a NEW URL. `SERVER DOWN` means that a restart failed.
 - Non-art sheets take the same launcher; it routes them through `nonart_sheet.py check`, which refuses one whose
   pictures are game art.
 - Phone (his device is off the tailnet): `python3 src/RimMandrake/Utils/art/sheet_to_artifact.py <html> --out <dir>`
@@ -79,7 +80,7 @@ python3 src/RimMandrake/Utils/art/refresh_sheets.py [--dry-run] [--force] [--onl
 ```
 
 Backfills renders, rebuilds sheets whose candidate fingerprint changed (HTML-only once he has saved decisions),
-re-verifies the rest, restarts dead servers, and ends with `UNPUBLISHED: … land.sh -m "…" <paths>` for pinned (tracked) sheets only — run that, or
+re-verifies the rest, restarts a dead server only with `--restart-servers`, and ends with `UNPUBLISHED: … land.sh -m "…" <paths>` for pinned (tracked) sheets only — run that, or
 the rebuilt sheets sit dirty in the clone. A failing rebuild keeps the previous sheet and is retried every cycle.
 
 ## Remap, enact, audit, notes
