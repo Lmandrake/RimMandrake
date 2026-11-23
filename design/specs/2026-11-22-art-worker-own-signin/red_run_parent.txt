@@ -1,0 +1,16 @@
+FAIL  a-restart-leaves-every-worker-signin-untouched: no worker auth.json changed at start-up  -- overwritten: ['w0', 'w1', 'w2', 'w3']
+PASS  a-restart-leaves-every-worker-signin-untouched: five live own sign-ins raise no warning
+PASS  a-mid-run-rotation-copies-no-signin: the stale home took the guard
+FAIL  a-mid-run-rotation-copies-no-signin: no sibling home was overwritten  -- overwritten: ['w1', 'w2', 'w3', 'w4']
+FAIL  a-new-worker-home-is-never-seeded-with-a-signin: codex_home() refuses a home with no sign-in  -- no refusal
+FAIL  a-new-worker-home-is-never-seeded-with-a-signin: no auth.json was copied in by codex_home()  -- 
+FAIL  a-new-worker-home-is-never-seeded-with-a-signin: seed_codex_home() copies config but no auth.json  -- 
+FAIL  a-new-worker-home-is-never-seeded-with-a-signin: auth.json is not a seed file  -- 
+PASS  a-dead-signin-reads-red: each planted fault has its verdict
+FAIL  test_a_dead_signin_reads_red  -- AttributeError: module 'ops_watch' has no attribute 'artpipe_signin_reading'
+PASS  a-live-signin-reads-green: all five live
+FAIL  test_a_live_signin_reads_green  -- AttributeError: module 'ops_watch' has no attribute 'artpipe_signin_reading'
+FAIL  a-new-signin-clears-an-auth-failure: the guard recorded the failed job  -- {'w0': 'live', 'w1': 'live', 'w2': 'live', 'w3': 'live', 'w4': 'live'}
+PASS  a-new-signin-clears-an-auth-failure: a new device sign-in reads live
+FAIL  test_a_new_signin_clears_an_auth_failure  -- FileNotFoundError: [Errno 2] No such file or directory: '<tmp>/w3/.artpipe_signin.json'
+FAIL  test_a_root_that_cannot_be_read_is_unmeasured  -- AttributeError: module 'ops_watch' has no attribute 'artpipe_signin_reading'

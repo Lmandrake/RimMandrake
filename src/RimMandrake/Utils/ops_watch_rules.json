@@ -437,6 +437,8 @@
   ],
   "why": "AGENT_WRAPUP_ENFORCE_ASKING_NEVER_WORKED: an agent ended and left debris its wrap-up could not clean (a dirty or unpushed clone, a bridge hold, a forced setting or staged scene, a claim still doing); `python3 src/RimMandrake/rimflow/wrapup.py list` names each, `sweep` clears what is gone, `resolve` the rest"
  },
+  {"key": "queues.artpipe.signins_bad", "op": ">", "value": 0, "alarm": true, "tag": "ART_SIGNIN_BAD", "name": "RIMMANDRAKE_ALARM_ART_WORKER_SIGNIN_DEAD_OR_SHARED", "marks": ["MEASURED"],
+   "why": "RIMMANDRAKE_TEST_ART_WORKERS_SHARING_ONE_CODEX_LOGIN_NOT_FIVE: an art worker home (~/.codex_workers/artpipe/w<N>) has a Codex sign-in that is gone, torn, shared with another home (so one of the two dies on its next refresh: 'refresh token was already used') or that failed its last job. All five died this way on 2026-11-20 (60 of 60 jobs failed) and nothing rang. x.bad names each home and its verdict; python3 src/RimMandrake/Utils/artpipe/signin_health.py prints them. Repair: CODEX_HOME=<home> codex login --device-auth for each bad home (the agent may finish it in his signed-in Chrome; his 2026-11-21 ruling); never copy an auth.json. Page: design/specs/2026-11-22-art-worker-own-signin/boundary.md"},
   {
    "key": "queues.artpipe.stalled_min",
    "op": ">",

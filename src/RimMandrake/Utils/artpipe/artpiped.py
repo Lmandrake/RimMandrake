@@ -88,6 +88,7 @@ import artreg  # noqa: E402 — ART_REGEN_REGISTRY_1: sole writer of registry.js
 common.image_skills.add_to_path()
 import codex_grumpiness  # noqa: E402
 import codex_image  # noqa: E402
+import signin_health  # noqa: E402 — one sign-in per worker home; the dead-sign-in alarm reads it
 
 # Month-long measured median for a cold `generate` (design addendum §A) —
 # the baseline row 4's wall-clock guard compares against. `edit` (a
@@ -1431,16 +1432,12 @@ class RunCtx:
         self._codex_homes: list[Path | None] = [None] * workers_count
         self.lease_handles: list = []  # closed by main() at shutdown
         self._lease_lock = threading.Lock()
-        # ARTPIPE_WORKER_AUTH_STALENESS_1's recurrence guard: resync_stale_worker_homes
-        # (called once in main(), before any lease is used) only prevents the
-        # failure AT STARTUP. Every home it resynced now shares the identical
-        # refresh-token lineage, so as the run goes on they age together —
-        # once one is old enough that codex might attempt a refresh, EVERY
-        # sibling home is too, and letting two such jobs run concurrently is
-        # exactly the "first wins, second gets 'already used'" race this item
-        # exists to prevent. This lock serializes any job whose home's own
-        # last_refresh has aged past the stale threshold; see
-        # stale_refresh_guard below.
+        # ARTPIPE_WORKER_AUTH_STALENESS_1's guard: serializes any job whose
+        # home's own last_refresh has aged past the stale threshold; see
+        # stale_refresh_guard below. Since 2026-11-22 each home holds its own
+        # device sign-in and nothing copies one between homes
+        # (design/specs/2026-11-22-art-worker-own-signin/boundary.md), so the
+        # lock guards only a home that still shares a lineage by mistake.
         self._stale_refresh_lock = threading.Lock()
         # ART_PIPELINE_LATENCY fix (2026-10-08): the lock above used to be
         # taken by EVERY job once a home passed 12 h, and codex only rotates
@@ -1460,11 +1457,9 @@ class RunCtx:
         looks due for a refresh (last_refresh older than
         codex_image.STALE_REFRESH_THRESHOLD_S) is serialized against every
         OTHER such home via `_stale_refresh_lock` — a home that's still
-        fresh never blocks on it at all. If the guarded job's own refresh
-        actually fires (its last_refresh advances), every sibling home is
-        re-synced from it before the lock releases, so the NEXT stale job
-        picks up the already-refreshed token instead of racing its own
-        refresh attempt against a now-dead lineage."""
+        fresh never blocks on it at all. A rotation copies nothing to any
+        other home. On exit every job records its home's sign-in outcome
+        (signin_health.record_outcome), which the dead-sign-in alarm reads."""
         return _StaleRefreshGuard(self, codex_home)
 
     def codex_home_for_slot(self, slot: int) -> Path:
@@ -1556,7 +1551,7 @@ class _StaleRefreshGuard:
         if due:
             self.ctx._stale_refresh_lock.acquire()
             # Re-check under the lock: the job we just waited behind may have
-            # rotated the lineage (and resynced us) or probed it clean, in
+            # probed this lineage clean, in
             # which case this job has nothing to serialize and runs in parallel.
             due, last_refresh = _codex_home_is_refresh_due(self.codex_home, probe_ok)
             self.before_last_refresh = last_refresh
@@ -1567,17 +1562,15 @@ class _StaleRefreshGuard:
         return self
 
     def __exit__(self, exc_type, exc, tb) -> bool:
+        if exc_type is None:
+            signin_health.record_outcome(self.codex_home, self.auth_failed)
         if self.held:
             try:
                 _, after_last_refresh = _codex_home_is_refresh_due(self.codex_home)
-                if after_last_refresh is not None and after_last_refresh != self.before_last_refresh:
-                    # This job's own use just rotated the lineage's token —
-                    # propagate it to every sibling home BEFORE the next
-                    # stale-guarded job (waiting on this same lock) can try
-                    # its own, now-doomed refresh against the old one.
-                    common.resync_stale_worker_homes(self.ctx.codex_home_root)
-                elif (exc_type is None and not self.auth_failed
-                      and self.before_last_refresh is not None):
+                # A home that rotated its own lineage copies it nowhere: no other home shares it.
+                rotated = after_last_refresh is not None and after_last_refresh != self.before_last_refresh
+                if (not rotated and exc_type is None and not self.auth_failed
+                        and self.before_last_refresh is not None):
                     # Codex ran on this lineage and chose not to rotate: it is
                     # not refresh-due right now. Vouch for it for a short window.
                     self.ctx._lineage_probe_ok[self.before_last_refresh] = time.time()
@@ -3283,6 +3276,30 @@ def _report_batch(console_obj: "console.Console", collapsed_label: str,
             console_obj.note(detail_of(item))
 
 
+
+def codex_image_base_home() -> Path | None:
+    """The shared Codex home, or None when it cannot be found (then no lineage is compared with it)."""
+    try:
+        return codex_image.base_codex_home()
+    except Exception:  # noqa: BLE001 - no shared home is no comparison, never a start-up failure
+        return None
+
+
+def worker_signin_startup(codex_home_root: Path, base: Path | None, warn) -> dict:
+    """The daemon's start-up sign-in step: read every worker home's sign-in and `warn` one line per bad home. It
+    writes no auth.json (design/specs/2026-11-22-art-worker-own-signin/boundary.md). -> the verdicts, {} when the
+    root cannot be read (warned)."""
+    try:
+        verdicts = signin_health.check(codex_home_root, base)
+    except OSError as e:
+        warn(f"worker sign-ins not read: {e}")
+        return {}
+    for name, v in verdicts.items():
+        if v in signin_health.BAD:
+            warn(f"worker home {name} sign-in {v}; "
+                 + codex_image.SIGN_IN_HOWTO.format(home=Path(codex_home_root) / name))
+    return verdicts
+
 def main(argv=None) -> int:
     args = parse_args(argv)
 
@@ -3391,22 +3408,12 @@ def main(argv=None) -> int:
         console_obj.warn(f"codex channel disabled until a sandbox re-preflight passes — {codex_sandbox_msg}")
         console_obj.mark_codex_channel_disabled()
 
-    # ARTPIPE_WORKER_AUTH_STALENESS_1: resync every already-provisioned
-    # worker home's auth.json to whichever is genuinely freshest, BEFORE any
-    # lease is used — same "once at startup" placement as the sandbox
-    # preflight just above, same reason: letting each of N workers
-    # independently discover a stale/dead refresh-token lineage on its own
-    # first job is how "3 succeeded, 5 identical failures" happened
-    # (MEASURED 2026-09-26). A gemini-only run, or a codex_home_root with
-    # fewer than 2 already-provisioned homes, is a no-op. Skipped when the
-    # codex channel is already disabled above — nothing will lease these
-    # homes this run anyway.
+    # Read (never write) each worker home's sign-in before any lease is used:
+    # a home that is gone, torn, shared or dead is named on the console. The
+    # start-up resync that copied one home's auth.json over the others is gone
+    # (2026-11-22): it would have overwritten the owner's five device sign-ins.
     if codex_sandbox_ok:
-        resynced_homes = common.resync_stale_worker_homes(args.codex_home_root)
-        if resynced_homes:
-            console_obj.info(
-                f"resynced {len(resynced_homes)} stale worker auth.json "
-                f"({', '.join(resynced_homes)}) from the freshest live token")
+        worker_signin_startup(args.codex_home_root, codex_image_base_home(), console_obj.warn)
 
     # codex_home leases are NOT acquired here — RunCtx acquires each slot's
     # lease lazily, on that slot's first CODEX job (see codex_home_for_slot).

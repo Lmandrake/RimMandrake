@@ -49,8 +49,11 @@ class RuntimeTests(unittest.TestCase):
             with patch.object(Path, "home", return_value=root), patch.object(cx, "wsl_to_win", side_effect=AssertionError("Windows translation on Linux")), patch.object(cx, "seed_sandbox_from_template", side_effect=AssertionError("Windows sandbox on Linux")):
                 self.assertEqual(cx.base_codex_home(), base)
                 self.assertEqual(cx.find_codex_cli(), exe)
+                with self.assertRaises(cx.EnvError):       # no sign-in of its own: refused, never copied in
+                    cx.codex_home(root / "worker")
+                self.assertFalse((root / "worker" / "auth.json").exists())
+                (root / "worker" / "auth.json").write_text('{}')  # its own device sign-in
                 home = cx.codex_home(root / "worker")
-                self.assertTrue((home / "auth.json").is_file())
                 self.assertFalse((home / ".sandbox").exists())
                 self.assertEqual(cx.child_env(home)["CODEX_HOME"], str(home))
                 self.assertNotIn("WSLENV", cx.child_env(home))

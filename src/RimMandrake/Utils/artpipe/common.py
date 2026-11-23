@@ -374,8 +374,8 @@ def _default_codex_home_root() -> Path:
     """Where per-slot worker CODEX_HOMEs live — OUTSIDE the repo, always.
 
     `infrastructure/artpipe/_codex_homes/` (the original default) is inside
-    this PUBLIC repo, and seeding a worker home copies `auth.json` into it —
-    a credential leak, not a config choice. The owner has gitignored that
+    this PUBLIC repo, and a worker home holds its own `auth.json` (its device
+    sign-in) — a credential leak, not a config choice. The owner has gitignored that
     path as a backstop; this function is the actual fix: never point there
     in the first place. Linux uses ~/.codex_workers/artpipe; Windows prefers
     the Windows user profile (codex.exe is a
@@ -403,16 +403,6 @@ def read_auth_freshness(home: Path) -> dict | None:
 def stale_refresh_threshold_s() -> float:
     """Thin wrapper — see codex_image.STALE_REFRESH_THRESHOLD_S."""
     return _import_codex_image().STALE_REFRESH_THRESHOLD_S
-
-
-def resync_stale_worker_homes(codex_home_root: Path, stale_after_s: float | None = None) -> list[str]:
-    """Thin wrapper — see codex_image.resync_stale_worker_homes for the real
-    logic (ARTPIPE_WORKER_AUTH_STALENESS_1). Kept here so artpiped.py only
-    ever imports `common`, the same pattern as codex_sandbox_preflight below."""
-    codex_image = _import_codex_image()
-    if stale_after_s is None:
-        return codex_image.resync_stale_worker_homes(codex_home_root)
-    return codex_image.resync_stale_worker_homes(codex_home_root, stale_after_s=stale_after_s)
 
 
 def codex_sandbox_preflight(base: Path | None = None) -> tuple[bool, str]:

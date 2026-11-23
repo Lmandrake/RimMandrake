@@ -1,0 +1,1 @@
+- The stale-refresh lock in `artpiped._StaleRefreshGuard` now only matters for a lineage shared by mistake; with one sign-in per home it still serializes stale jobs (one per lineage per hour) for nothing.

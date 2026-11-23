@@ -3985,7 +3985,7 @@ def test_detector_selects_meter_by_declared_window_not_position():
 
 
 # --------------------------------------------------------------------------
-# ARTPIPE_WORKER_AUTH_STALENESS_1: worker-home auth resync + refresh-race guard
+# ARTPIPE_WORKER_AUTH_STALENESS_1: worker-home auth freshness + refresh-race guard (no sign-in is copied)
 # --------------------------------------------------------------------------
 
 def _fake_access_token(exp: int, plan_type: str = "plus") -> str:
@@ -4032,49 +4032,6 @@ def test_read_auth_freshness_decodes_last_refresh_and_jwt_claims():
            common.read_auth_freshness(Path(td) / "nohome") is None)
 
 
-def test_resync_stale_worker_homes_updates_only_the_stale_ones():
-    """MEASURED 2026-09-26: 3 fresh homes, 5 stale ones sharing dead/behind
-    lineages. resync_stale_worker_homes must re-seed every home that is
-    EITHER behind the freshest by more than the threshold OR on a different
-    refresh-token lineage entirely — and touch nothing else."""
-    with tempfile.TemporaryDirectory() as td:
-        root = Path(td)
-        now = datetime.now(timezone.utc)
-        write_auth_json(root / "w0", now, "rt-fresh")                              # freshest
-        write_auth_json(root / "w1", now - timedelta(hours=20), "rt-dead")         # old AND different lineage
-        write_auth_json(root / "w2", now - timedelta(hours=1), "rt-other")         # fresh by age, different lineage
-        write_auth_json(root / "w3", now - timedelta(hours=1), "rt-fresh")         # fresh, SAME lineage — untouched
-
-        resynced = common.resync_stale_worker_homes(root, stale_after_s=12 * 3600)
-
-        ok("resync: reports exactly the two homes that needed it",
-           set(resynced) == {"w1", "w2"}, resynced)
-        w1_after = common.read_auth_freshness(root / "w1")
-        w2_after = common.read_auth_freshness(root / "w2")
-        w3_after = common.read_auth_freshness(root / "w3")
-        ok("resync: w1 (old + dead lineage) now carries the freshest's refresh_token",
-           w1_after["refresh_token"] == "rt-fresh")
-        ok("resync: w1 now carries the freshest's last_refresh too (a real file copy)",
-           w1_after["last_refresh"] == now)
-        ok("resync: w2 (fresh-by-age but different lineage) was ALSO resynced",
-           w2_after["refresh_token"] == "rt-fresh")
-        ok("resync: w3 (already on the freshest's own lineage) was left untouched",
-           w3_after["refresh_token"] == "rt-fresh"
-           and w3_after["last_refresh"] == now - timedelta(hours=1))
-
-
-def test_resync_stale_worker_homes_noop_with_fewer_than_two_homes():
-    """Nothing to resync FROM (or TO) — must not raise, must not invent
-    a home, must return an empty list."""
-    with tempfile.TemporaryDirectory() as td:
-        root = Path(td)
-        ok("resync: an empty/nonexistent root is a no-op",
-           common.resync_stale_worker_homes(root) == [])
-        write_auth_json(root / "w0", datetime.now(timezone.utc), "rt-solo")
-        ok("resync: exactly one provisioned home is a no-op (nothing to resync FROM)",
-           common.resync_stale_worker_homes(root) == [])
-
-
 def _minimal_ctx(codex_home_root: Path) -> "artpiped.RunCtx":
     return artpiped.RunCtx(
         worker_script=MOCK_WORKER, validator_script=VALIDATOR,
@@ -4100,17 +4057,18 @@ def test_stale_refresh_guard_fresh_home_never_takes_the_lock():
         ok("stale-guard: lock still free after exit", not ctx._stale_refresh_lock.locked())
 
 
-def test_stale_refresh_guard_propagates_refresh_to_sibling_stale_homes():
-    """The recurrence half of ARTPIPE_WORKER_AUTH_STALENESS_1: once a
-    guarded job's own use of a due-for-refresh home actually rotates its
-    token, every sibling home sharing that (now-dead) lineage must be
-    re-synced BEFORE the lock releases — so the next stale job never
-    attempts its own, now-doomed refresh against the old token."""
+def test_stale_refresh_guard_rotation_copies_to_no_sibling():
+    """A guarded job whose home rotates its own token mid-run leaves every
+    other home's sign-in as it was: nothing copies a sign-in between homes
+    (design/specs/2026-11-22-art-worker-own-signin/boundary.md; the 2026-09-26
+    resync that copied it here would have overwritten the owner's five device
+    sign-ins of 2026-11-21)."""
     with tempfile.TemporaryDirectory() as td:
         root = Path(td)
         stale_at = datetime.now(timezone.utc) - timedelta(hours=20)
-        write_auth_json(root / "w0", stale_at, "rt-old")
-        write_auth_json(root / "w1", stale_at, "rt-old")  # same dead lineage
+        write_auth_json(root / "w0", stale_at, "rt-own-0")
+        write_auth_json(root / "w1", stale_at, "rt-own-1")
+        w1_before = (root / "w1" / "auth.json").read_bytes()
         ctx = _minimal_ctx(root)
 
         with ctx.stale_refresh_guard(root / "w0") as guard:
@@ -4118,12 +4076,11 @@ def test_stale_refresh_guard_propagates_refresh_to_sibling_stale_homes():
             ok("stale-guard: the lock is genuinely held for a due-for-refresh home",
                not ctx._stale_refresh_lock.acquire(blocking=False))
             # Simulate codex itself refreshing w0's token mid-job.
-            write_auth_json(root / "w0", datetime.now(timezone.utc), "rt-new")
+            write_auth_json(root / "w0", datetime.now(timezone.utc), "rt-own-0-rotated")
 
         ok("stale-guard: lock released on exit", not ctx._stale_refresh_lock.locked())
-        w1_after = common.read_auth_freshness(root / "w1")
-        ok("stale-guard: the sibling stale home was re-synced to the new token before release",
-           w1_after["refresh_token"] == "rt-new", w1_after)
+        ok("stale-guard: the sibling home's sign-in is byte-identical after the rotation",
+           (root / "w1" / "auth.json").read_bytes() == w1_before)
 
 
 def test_stale_refresh_guard_serializes_two_due_for_refresh_homes():
@@ -4665,10 +4622,8 @@ def main() -> int:
         test_cancel_jobs_takes_pending_out_and_spares_running,
         test_detector_selects_meter_by_declared_window_not_position,
         test_read_auth_freshness_decodes_last_refresh_and_jwt_claims,
-        test_resync_stale_worker_homes_updates_only_the_stale_ones,
-        test_resync_stale_worker_homes_noop_with_fewer_than_two_homes,
         test_stale_refresh_guard_fresh_home_never_takes_the_lock,
-        test_stale_refresh_guard_propagates_refresh_to_sibling_stale_homes,
+        test_stale_refresh_guard_rotation_copies_to_no_sibling,
         test_stale_refresh_guard_serializes_two_due_for_refresh_homes,
         test_stale_refresh_guard_clean_probe_releases_concurrency,
         test_n_workers_run_concurrently_with_stale_logins,

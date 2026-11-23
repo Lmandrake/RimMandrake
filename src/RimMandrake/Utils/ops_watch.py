@@ -3045,7 +3045,29 @@ def c_queues(now, rules, ctx):
         pcache.pop(k_)
     _save_json(cpath, pcache)
     out["queues.blind"] = M(len(blind), "queues not seen", names=",".join(blind))
+    out.update(artpipe_signin_reading())
     return out
+
+
+def artpipe_signin_reading(root=None, base=None):
+    """queues.artpipe.signins_bad (RIMMANDRAKE_TEST_ART_WORKERS_SHARING_ONE_CODEX_LOGIN_NOT_FIVE): art worker homes
+    whose Codex sign-in is gone, torn, shared with another home or dead on its last job (artpipe/signin_health.py; a
+    read of each auth.json and the daemon's per-home outcome record, no network, no token in the point). A root that
+    cannot be read is UNMEASURED, never 0. Page: design/specs/2026-11-22-art-worker-own-signin/boundary.md."""
+    k = "queues.artpipe.signins_bad"
+    try:
+        ap = str(HERE / "artpipe")
+        if ap not in sys.path:
+            sys.path.insert(0, ap)
+        import signin_health as SH
+        if root is None:
+            root, base = SH.default_root(), SH.default_base()
+        v = SH.check(Path(root), Path(base) if base else None)
+    except Exception as e:  # noqa: BLE001 - an unreadable root or a failed import is blind, never a calm 0
+        return {k: U("worker sign-ins not read: %s: %s" % (type(e).__name__, str(e)), "homes")}
+    bad = {n: x for n, x in v.items() if x in SH.BAD}
+    return {k: M(len(bad), "art worker homes whose Codex sign-in is gone, torn, shared or dead", homes=len(v),
+                 bad=bad, root=str(root))}
 
 
 def c_wrapup(now, rules, ctx):
