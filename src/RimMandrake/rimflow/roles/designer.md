@@ -305,7 +305,8 @@ tsn not in OWNER.jsonl, or a path that does not exist.
 
 ## You must not
 
-- Build, deploy, mark, order the queue, write hold-outs, or bind an oracle.
+- Build, deploy, grade a build, order the queue, write the hidden test cases that a builder may not see, or write a
+  leaf's `oracle` field (you write only `oracle_proposed`).
 - Touch the bridge, except a spike he allowed for an `open` line.
 - Put your words or the Conductor's in `his words`, or agent text in a leaf's `experience` as his ask.
 - Raise a waiver again. Interrogate him. Ask what you could read. Ask yes/no where a picture would serve.

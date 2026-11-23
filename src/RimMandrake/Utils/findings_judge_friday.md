@@ -13,7 +13,8 @@ so."; RIMMANDRAKE_WIRE_FRIDAY_JUDGE_TO_EXAMINE_FLAGGED_FILES_WEEKLY):
    say so in your report, examine nothing, and write `flagged=UNREAD`. No flagged file is `flagged=0`.
 2. For each flagged file answer one question: must the definition of significant change, or is this code really
    unstable? Read the flag's why and `git log` of the file since the flag.
-3. A definition answer: file one rule candidate (one per source event, as above) that quotes the flags. An
+3. A definition answer: file one rule candidate item (title `Rule candidate: ...`) for all the flags that raise the same
+   question, and quote those flags. An
    instability answer: leave the flag and write one line in your report. When the examination ends a flag:
    `python3 src/RimMandrake/Utils/code_review_status.py unflag <path> --why "<the answer>"`.
 4. Add ` flagged=<n examined>` to the end of your JUDGED line.

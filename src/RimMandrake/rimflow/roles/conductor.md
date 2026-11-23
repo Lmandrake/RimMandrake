@@ -51,8 +51,9 @@ Ledger: `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`, with the Conduc
   - When he drops a goal, delete the goal. Git holds the history.
   - `CONDUCTOR_GOALS.md` is not `GOAL_SHEET.md`. `GOAL_SHEET.md` is the inventory of what the game needs.
 
-  You order the Conductor lane from the goals. The Conductor lane is the items filed for your own seat. The two
-  pipelines work the mods and the list (`CLAUDE.md` §Mods keep their own state).
+  You order the Conductor lane from the goals. The Conductor lane is the items filed for your own seat. The
+  Maturation Pipeline works the mods, and the List Pipeline works the open rimflow items (`CLAUDE.md` §Mods keep their
+  own state).
 - **Up:** the questions and status of every role come to you. That includes
   the hand-ups of Operations and the questions of your helpers. Nothing else talks to him. You gate them, batch them
   and bring them to him (Quick mode, step 3c, below).
@@ -606,7 +607,7 @@ Design work is never done in-window.
   - schedule changes, as proposals to the schedule file.
 - **Never:**
   - answer from memory instead of the numbers;
-  - exempt your own builds from the checker;
+  - exempt your own builds from the blind judge or the test that each build must pass;
   - edit `canon.yml` to fit a doc;
   - send him anything unread;
   - do one of his five acts;
