@@ -196,8 +196,15 @@ def t_fixed_template_text():
     out, _ = hw(f, item="OPS_WHEA_FATAL_DIAGNOSE_HW_QUIT")
     check(out == P.SENT and len(f.calls) == 1, "a clean page is sent")
     fields = f.calls[0][1]
-    check(set(fields) == {"token", "user", "title", "message", "priority", "retry", "expire"},
+    check(set(fields) == {"token", "user", "title", "message", "priority", "retry", "expire", "sound"},
           "only the fixed fields go to Pushover: %s" % sorted(fields))
+    check(fields.get("sound") == "echo", "a real page rings with his long sound, echo: %r" % fields.get("sound"))
+    f2 = FakePost() if "FakePost" in globals() else type(f)()
+    out, _ = P.send("TEST", "drill:20261123t000000", "drill from the Conductor window",
+                    "a drill to prove that a page reaches his phone", env=CONDUCTOR_ENV, cgroup=CONDUCTOR_CG,
+                    post=f2, t=T0)
+    check(out == P.SENT and "sound" not in f2.calls[0][1],
+          "a TEST page keeps the brief default sound: %s" % (sorted(f2.calls[0][1]) if f2.calls else out))
     check(fields["message"] == "Hardware failure: whea_severe_24h = 2 (line 0) Item OPS_WHEA_FATAL_DIAGNOSE_HW_QUIT.",
           "the message is the template filled with the reading and item: %r" % fields["message"])
     check(fields["title"] == "RimMandrake CRITICAL: Hardware failure", "the title is fixed: %r" % fields["title"])

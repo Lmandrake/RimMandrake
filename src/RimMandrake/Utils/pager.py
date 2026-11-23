@@ -49,6 +49,10 @@ EXIT = {SENT: 0, REFUSED: 1, REPEAT: 2, COULD_NOT_SEND: 3, DRY_RUN: 4}
 
 # Pushover emergency priority (pushover.net/api, read 2026-11-19: retry >= 30 s, expire <= 10800 s, at most 50 retries).
 PRIORITY = 2
+# A real page rings with "Pushover Echo (long)", his pick of 2026-11-19 (Machinist knowledge/pushover.md). A TEST page
+# sends no sound and keeps the app's brief default (owner, 2026-11-23: the default is "very brief" for a real alert and
+# "a good test sound").
+REAL_SOUND = "echo"
 # RETRY_S: how often an unacknowledged page rings again. Danger: a page that rings once is missed while he is away from
 # the phone (the Todoist alarms rang never, 2026-11-08); ringing every 30 s for an hour (Pushover's floor) is noise he
 # learns to mute. 120 s gives 30 rings in EXPIRE_S.
@@ -464,6 +468,8 @@ def send(cls_name, cause, reading, why, item=None, goal=None, dry_run=False, env
         else:
             fields = {"token": creds["token"], "user": creds["user"], "title": title, "message": body,
                       "priority": PRIORITY, "retry": RETRY_S, "expire": EXPIRE_S}
+            if cls_name != "TEST":
+                fields["sound"] = REAL_SOUND
             ok, receipt, why_not = pushover_verdict(*post(API + "/messages.json", fields))
         f = state["failing"].get(key)
         if ok:
