@@ -10,7 +10,7 @@ used (visits 2 and 5 measured no Pyrelands site there). The run went past the br
 
 ## Result
 
-35 checks [measured, each check's last row]: 32 PASS, 2 FAIL, 1 UNMEASURED. The 2 FAIL and the UNMEASURED:
+38 checks [measured, each check's last row]: 35 PASS, 2 FAIL, 1 UNMEASURED (the 32 the change touched, P_gate, sc_fire_walks_with_wind, firehawk_first_sighting_letter, and sc_sand_shovel, P_firefoam_aim, firehawk_crestfeather_yield, which `maturation.py next` asked for again because the tier list gained Huge Things; build match now 38 count, 0 to run). The 2 FAIL and the UNMEASURED:
 - P_furnace_room FAIL, class MOD, unfixed, filed RIMMANDRAKE_SPARE_PYRE_FURNACE_BARN_ROOF_FROM_TITAN_WAKE. Beast room +0.3 C
   over its control (needs +10) and both pens' roofs open. Huge Things (a hard dependency of the composed biomes since
   0dc82e3270) rates the furnace-beast (body size 9) tier T2, whose wake holes thin roofs per cell. Measured both ways: its
@@ -85,10 +85,12 @@ added its one file). Captures in `screenshots/` (walk stations and close-ups inc
 - 07:42 sc_flamefang_venom on the repaired clockgate (5e888e1af2): 5/5 PASS (flamefang_venom2); planted wrong tend -> venom_tended_vs_untended FAIL. HARNESS repair shown both ways.
 - 07:50 lane read of the burn_line_walking save: strand share 0.056 (limit 0.25) PASS, no one-cell run of 20 cells along x; but its burn map (`evidence/lanes_burn_line_walking_mask.png`) shows straight one-cell burned trails away from the front, about 20-26 cells each. What moves along them: `scripts/line_speed.py` queued.
 
+- 08:51 `maturation.py next` read: exit_met false on sc_burn_line_walks and P_furnace_room (substance), build match asked for three untouched checks on the new list: run (gen 42), all PASS; build match 38 count, 0 to run. ArchSmall bridge released, game left running at the walk save on the tier list.
+
 ## Exit
 
 ```
-ingame_rows: {P_ambient_ash_drift: pass, P_animal_census: pass, P_ashfall_drifts: pass, P_ashfall_weather_accumulation: pass, P_blackrain: pass, P_furnace_room: fail, P_gate: pass, P_grass_cover: pass, P_mapgen_log: pass, P_scorchfruit_produces: pass, P_scorchfruit_spoils: pass, P_startup_and_def_wiring: pass, firehawk_first_sighting_letter: pass, sc_ash_watered: pass, sc_ashwallow: pass, sc_burn_compounds: pass, sc_burn_line_walks: fail, sc_fire_dusts_ash: pass, sc_fire_walks_with_wind: pass, sc_firefoam_sprayer: pass, sc_firehawk: pass, sc_firehawk_rewards: pass, sc_flamefang_venom: pass, sc_foreign_arrivals: pass, sc_furnace: pass, sc_grass_regreens: pass, sc_heat_dome: pass, sc_no_rain: pass, sc_populations: pass, sc_rite_hook_alone: pass, sc_ruins: pass, sc_scorchfruit: pass, sc_three_skies: pass, sc_ullai: pass, sc_walk: unmeasured}
+ingame_rows: {P_ambient_ash_drift: pass, P_animal_census: pass, P_ashfall_drifts: pass, P_ashfall_weather_accumulation: pass, P_blackrain: pass, P_firefoam_aim: pass, P_furnace_room: fail, P_gate: pass, P_grass_cover: pass, P_mapgen_log: pass, P_scorchfruit_produces: pass, P_scorchfruit_spoils: pass, P_startup_and_def_wiring: pass, firehawk_crestfeather_yield: pass, firehawk_first_sighting_letter: pass, sc_ash_watered: pass, sc_ashwallow: pass, sc_burn_compounds: pass, sc_burn_line_walks: fail, sc_fire_dusts_ash: pass, sc_fire_walks_with_wind: pass, sc_firefoam_sprayer: pass, sc_firehawk: pass, sc_firehawk_rewards: pass, sc_flamefang_venom: pass, sc_foreign_arrivals: pass, sc_furnace: pass, sc_grass_regreens: pass, sc_heat_dome: pass, sc_no_rain: pass, sc_populations: pass, sc_rite_hook_alone: pass, sc_ruins: pass, sc_sand_shovel: pass, sc_scorchfruit: pass, sc_three_skies: pass, sc_ullai: pass, sc_walk: unmeasured}
 strange_open: 0
 savegame: D:\ClaudeWork\rimmandrake\instances\b\Saves\PYRELANDS_0.1.0_VISIT7_WALK.rws
 exit_met: false

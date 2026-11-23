@@ -59,3 +59,8 @@ DONE +script:design/concepts/Pyrelands/version/in_game/visit_7/scripts/load_walk
 DONE +script:design/concepts/Pyrelands/version/in_game/visit_7/scripts/walk_closeups.py@walk_closeups reload_rc=skipped rc=0 12s 08:29:32
 DONE +script:design/concepts/Pyrelands/version/in_game/visit_7/scripts/walk_creatures_probe.py@walk_creatures_probe reload_rc=skipped rc=0 1s 08:29:33
 END final 2026-11-23 08:29:33
+START extra3 2026-11-23 08:48:35
+DONE sand_shovel@sand_shovel reload_rc=0 rc=1 46s 08:49:21
+DONE firehawk_crestfeather_yield@firehawk_crestfeather_yield reload_rc=0 rc=1 49s 08:50:10
+DONE script:src/RimMandrake/Pyrelands/firefoam_aim_live_proof.py@firefoam_aim_live_proof reload_rc=0 rc=0 27s 08:50:37
+END extra3 2026-11-23 08:50:37

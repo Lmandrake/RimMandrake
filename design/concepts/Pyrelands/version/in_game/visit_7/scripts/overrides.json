@@ -9,9 +9,12 @@
   "owner": "ArchBig: its full-list run of this check"
  },
  "_extra_tests": [
-  "sc_fire_walks_with_wind",
+  "P_firefoam_aim",
   "P_gate",
-  "firehawk_first_sighting_letter"
+  "firehawk_crestfeather_yield",
+  "firehawk_first_sighting_letter",
+  "sc_fire_walks_with_wind",
+  "sc_sand_shovel"
  ],
  "P_furnace_room": {
   "label": "furnace_room_holing",
