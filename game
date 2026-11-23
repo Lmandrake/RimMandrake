@@ -83,7 +83,7 @@ case "${1}" in
 esac
 
 # ⭐ Provenance flags, in any order before the state. `rimflow` records each in its own
-# event field and refuses bare assent ("yes") as --said in place of an instruction.
+# event field. A bare assent ("yes") as --said is recorded, with a note that asks for --why.
 said=""; why=""; by_card=""; per_ruling=""; idle_ok=0; flyer=()
 while [ $# -gt 0 ]; do
     case "$1" in
