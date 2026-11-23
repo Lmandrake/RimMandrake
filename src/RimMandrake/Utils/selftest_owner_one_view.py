@@ -138,6 +138,31 @@ def t_the_reading_is_shared_and_cached():
 HOME = {"no_home": 3, "by_source": {"typed words": 2, "ended runs": 1}, "unmeasured": ["words typed elsewhere"]}
 
 
+def t_a_test_never_writes_the_shared_files():
+    need()
+    real_dir, real_state = os.environ.pop("RM_OWNER_VIEW_DIR"), None
+    try:
+        import doorbell
+        real_state = doorbell.state_dir
+        fake_real = tempfile.mkdtemp(prefix="real_state_", dir=TMP)
+        doorbell.state_dir = lambda: fake_real          # stands in for the real state dir: never touched here
+        said = OQ.write_view([{"item": "A", "q": "q"}], [], None, NOW)
+        assert said and "test" in said and not os.path.exists(os.path.join(fake_real, "owner_view", "view.json")), said
+        calls = []
+        real_sources = NH.sources
+        NH.sources = lambda *a, **k: calls.append(1) or {"a": lambda: ["x"]}
+        try:
+            r = NH.reading(None, None, None, NOW, fresh=True)
+        finally:
+            NH.sources = real_sources
+        assert r["no_home"] == 1 and "test" in r.get("write_failed", ""), r
+        assert not os.path.exists(os.path.join(fake_real, "owner_view", "no_home.json"))
+    finally:
+        os.environ["RM_OWNER_VIEW_DIR"] = real_dir
+        if real_state:
+            doorbell.state_dir = real_state
+
+
 def t_one_view_shows_his_ours_and_the_count():
     need()
     his = [{"item": "X_ONE", "q": "Pick the <bridge> art"}]
@@ -187,6 +212,7 @@ def t_each_limit_names_its_danger():
 def main():
     tests = [t_count_sums_the_readable_sources, t_no_readable_source_is_none_never_zero, t_an_unanswered_card_is_a_need,
              t_an_ended_run_with_no_later_act_is_a_need, t_the_reading_is_shared_and_cached,
+             t_a_test_never_writes_the_shared_files,
              t_one_view_shows_his_ours_and_the_count, t_both_pages_build_from_one_view, t_each_limit_names_its_danger]
     failed = 0
     for t in tests:

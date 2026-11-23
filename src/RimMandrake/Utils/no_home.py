@@ -194,7 +194,9 @@ def reading(evs, items, records, now=None, path=None, ttl=TTL_S, fresh=False):
     """-> count() plus "at", from the shared file while it is younger than ttl, else counted now and written
     (the-reading-is-shared-and-cached). A file that cannot be written leaves the count as it is, with "write_failed"."""
     now = time.time() if now is None else now
-    path = path or state_path()
+    import owner_queue
+    refused = owner_queue.test_refusal(path)
+    path = path or state_path(create=not refused)
     if not fresh:
         try:
             with open(path, encoding="utf-8") as f:
@@ -206,6 +208,9 @@ def reading(evs, items, records, now=None, path=None, ttl=TTL_S, fresh=False):
     r = count(sources(evs, items, records, now))
     r["at"] = now
     r["window_s"] = WINDOW_S
+    if refused:
+        r["write_failed"] = refused
+        return r
     try:
         with open(path + ".tmp", "w", encoding="utf-8") as f:
             json.dump(r, f, indent=1, ensure_ascii=False)

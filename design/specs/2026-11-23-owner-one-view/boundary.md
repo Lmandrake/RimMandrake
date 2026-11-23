@@ -48,6 +48,10 @@ Why: on 2026-11-23 Fleet Now listed 4 things for him and Maturation Now's "Needs
 - **the-reading-is-shared-and-cached.** `no_home.reading(...)` answers from one file in the state directory while it is
   younger than `TTL_S`; else it counts, and writes the file. Both pages read the same file, so they show the same count
   in the same minute.
+- **a-test-never-writes-the-shared-files.** A test process (`test_process.under_test`) never writes the real `view.json`
+  or `no_home.json`: `write_view` returns the refusal and `reading` returns its count with `write_failed`. A test's own
+  path or `RM_OWNER_VIEW_DIR` is written. Why: `selftest_maturation_now` builds the page live; on 2026-11-23 5:15 AM PST
+  a publish's test run wrote the real view.
 - **one-view-shows-his-ours-and-the-count.** `one_view` prints his rows (question and item), then our rows oldest first
   with their age, then `not filed anywhere: N` with each source's own number and the names of the sources not read.
   With `no_home` None it prints `not filed anywhere: UNMEASURED` and never `0`. `fmt="md"` returns Markdown lines;

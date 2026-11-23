@@ -380,8 +380,21 @@ def fresh_view(v, now, fresh_s=VIEW_FRESH_S):
     return v
 
 
+def test_refusal(path=None):
+    """-> why a write to the shared owner-view files is refused, or None. A test process (test_process.under_test, the
+    one definition) never writes the real ones: a selftest builds Maturation Now live, and its view would reach Fleet
+    Now. An explicit path or RM_OWNER_VIEW_DIR is a test's own place and is allowed."""
+    if path or os.environ.get("RM_OWNER_VIEW_DIR"):
+        return None
+    import test_process
+    return "a test process does not write the shared view (test_process.under_test)" if test_process.under_test() else None
+
+
 def write_view(his, ours_rows, home, now, path=None):
     """The view one page built, for the other page to show in the same minute. A write that fails is returned, not raised."""
+    refused = test_refusal(path)
+    if refused:
+        return refused
     path = path or view_path()
     try:
         with open(path + ".tmp", "w", encoding="utf-8") as f:
