@@ -523,7 +523,6 @@ def cmd_tick(_a):
         except BlockingIOError:
             print("tick already running")
             return 0
-        visit_feed_step()       # an open visit's waiting checks queue first, so this tick admits them
         status = ssh_reachable()
         steve_up = status is not None
         if steve_up:
@@ -532,12 +531,17 @@ def cmd_tick(_a):
                 for rec in steve_running():
                     reconcile(rec)
                 drain_outbox(remote(["outbox"])[1].get("outbox") or [])
+                # after reconcile (a visit job that just finished is done, not "running": 07:28Z 2026-11-23 the feed
+                # read it busy and the fill loop queued filler), before admission (this tick admits what it queues)
+                visit_feed_step()
                 admit(remote(["status"])[1])
             except SshDown as e:
                 S.dump({"down_since": S.utcnow(), "last_probe": time.time(), "last_error": str(e)},
                        q("ssh_state.json"))
                 log("ssh dropped mid-tick: %s" % e)
                 steve_up = False
+        else:
+            visit_feed_step()       # SteveDesktop unreachable: the visit's job still waits first in the queue
         archmagi_tick(steve_up=steve_up, steve_busy=bool(steve_running()) or bool((status or {}).get("busy")))
     return 0
 

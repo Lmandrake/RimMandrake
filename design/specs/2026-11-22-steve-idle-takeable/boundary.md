@@ -80,6 +80,9 @@ test of its name in `src/RimMandrake/Utils/selftest_steve_visit_feed.py`; the si
 - **could-not-look-sends-nothing.** A missing, stale (over 30 min) or blockless dispatch reading sends nothing and
   says why. A queue that is not the live one reads no dispatch reading unless one is named for it
   (`RM_MATURATION_DISPATCH_DIR`).
+- **the-feed-runs-after-reconcile-before-admission.** In each tick the feed step runs after reconcile and the outbox
+  (so a visit job that just finished reads done, not running) and before admission (so the tick admits what it
+  queued). With SteveDesktop unreachable it still runs, and the site copy does not.
 - **mods-take-turns.** The earliest-opened visit goes first. After that, the mod whose last visit job was submitted
   longest ago goes first.
 - **filler-prefers-advancing-mods.** The filler walks the advancing mods (`maturation_dispatch.json` `advancing`) first,

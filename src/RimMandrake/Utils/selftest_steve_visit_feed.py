@@ -298,10 +298,48 @@ def t_site_saves_ship_when_the_registry_changes():
           % (T.SITE_RETRY_S, calls))
 
 
+def t_the_feed_runs_after_reconcile_before_admission():
+    # live 2026-11-23 07:28Z: the feed ran before reconcile, read a finished visit job as still running ("busy"), and
+    # the fill loop then queued filler while 30 Pyrelands checks waited
+    order = []
+    saved = {k: getattr(T, k) for k in ("ssh_reachable", "steve_running", "reconcile", "drain_outbox", "remote",
+                                        "admit", "archmagi_tick", "visit_feed_step", "site_stage_step")}
+    try:
+        T.ssh_reachable = lambda: {"busy": False}
+        T.steve_running = lambda: [{"job": {"id": "J-x"}}]
+        T.reconcile = lambda rec: order.append("reconcile")
+        T.drain_outbox = lambda ob: order.append("outbox")
+        T.remote = lambda args: (0, {"outbox": []})
+        T.admit = lambda st: order.append("admit")
+        T.archmagi_tick = lambda **kw: order.append("archmagi")
+        T.visit_feed_step = lambda now=None: order.append("feed")
+        T.site_stage_step = lambda now=None: order.append("sites")
+        T.cmd_tick(None)
+    finally:
+        for k, v in saved.items():
+            setattr(T, k, v)
+    ok = "feed" in order and "reconcile" in order and "admit" in order and \
+        order.index("reconcile") < order.index("feed") < order.index("admit")
+    check(ok, "the-feed-runs-after-reconcile-before-admission: %s" % order)
+    order.clear()
+    try:
+        T.ssh_reachable = lambda: None              # SteveDesktop unreachable: the feed still queues for later
+        T.archmagi_tick = lambda **kw: order.append("archmagi")
+        T.visit_feed_step = lambda now=None: order.append("feed")
+        T.site_stage_step = lambda now=None: order.append("sites")
+        T.cmd_tick(None)
+    finally:
+        for k, v in saved.items():
+            setattr(T, k, v)
+    check(order[:1] == ["feed"] and "sites" not in order,
+          "the-feed-runs-after-reconcile-before-admission: with ssh down it still runs, sites do not (%s)" % order)
+
+
 def main():
     for t in (t_a_waiting_check_is_queued_ahead_of_filler, t_a_visit_opening_with_an_offset_reads, t_the_owners_hold_and_gate_still_stop_a_check,
               t_nothing_waits_nothing_is_sent, t_could_not_look_sends_nothing, t_mods_take_turns,
-              t_filler_prefers_advancing_mods, t_site_saves_ship_when_the_registry_changes):
+              t_filler_prefers_advancing_mods, t_site_saves_ship_when_the_registry_changes,
+              t_the_feed_runs_after_reconcile_before_admission):
         try:
             t()
         except (Exception, SystemExit) as e:  # noqa: BLE001  a test that raises is a red, named
