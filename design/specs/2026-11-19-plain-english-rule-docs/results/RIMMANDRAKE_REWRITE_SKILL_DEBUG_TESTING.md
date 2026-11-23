@@ -10,11 +10,11 @@ Also: skills/rimworld-debug-testing/references/history.md
 
 | measure | before | after |
 |---|---|---|
-| bytes | 28,834 | 31,878 |
-| words in linted prose | 3,973 | 4,567 |
+| bytes | 28,834 | 31,947 |
+| words in linted prose | 3,973 | 4,579 |
 | STE violations per 100 words | 4.33 | 2.10 |
-| sentences over 20 words | 66 | 32 |
-| flagged lines (mechanical) | 36 | 26 |
+| sentences over 20 words | 66 | 33 |
+| flagged lines (mechanical) | 36 | 24 |
 | lines that a cold reader cannot act on (hand count, by the writer) | 10 | 0 that this run could resolve; 2 listed under "Could not determine" |
 
 The long sentences that stay, by kind. Owner quotes or set phrases in quotes: the 2026-08-30 and 2026-09-25 quotes, the
@@ -74,6 +74,9 @@ that the settled rows below make on purpose, and the repo supports them. The oth
 The same reader then read the repairs twice (1 REAL and 8 TRIVIAL, then 0 REAL and 1 TRIVIAL). The REAL one was the start
 conditions on a timed-out call. All are repaired. No reader read the last edit: the two call names in "Before you call
 `go_to_main_menu` or `start_debug_game_ready`".
+
+After the first landing (8a3c5d6ab3), the prose check of `./publish` named 10 faults in 9 lines: undefined "tier" and
+"ArchBig", 7 pronouns and 1 "should". The writer repaired each one. No reader read those 9 repairs.
 
 ## Conflicts and stale lines: settled
 

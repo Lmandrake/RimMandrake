@@ -42,8 +42,8 @@ The cost of each:
   are in `rimworld-load-round` §0.
 - The 13-mod minimal list cost ~22 seconds.
 - A quicktest costs from seconds to ~90 s (§1), and belongs to nobody.
-- There are four games, each with its own bridge lock (root `CLAUDE.md` §There are several live games). A quicktest on
-  a tier does not need ArchBig.
+- There are four games, each with its own bridge lock (root `CLAUDE.md` §There are several live games). A quicktest on a
+  small mod list does not need ArchBig, the owner's game on Archmagi.
 
 > 🔴 **"Blocked on a map" is almost never real.** Owner's ruling, `infrastructure/agents/CHARTER.md` (maps, saves and
 > colonies are "not precious"): **whoever holds the bridge may create and destroy dev colonies at will.** You need no
@@ -160,8 +160,8 @@ More traps for this section: [references/traps.md](references/traps.md) § 1. St
 | does this terrain/map-gen override appear — **a quicktest map IS a newly generated map** | **anything that needs the real 580-mod load order to differ from what is loaded now** |
 | does a silent failure actually fire (§4) | a claim about **save-file** contents |
 
-**On a trimmed tier list, GenStep NREs and `StatRequest for null def` spam are NORMAL behaviour.** They are not a
-defect.
+**On a trimmed tier list, GenStep NREs and `StatRequest for null def` spam are NORMAL behaviour.** Such lines are
+not a defect.
 
 - An unresolved `BiomePlantRecord` or `BiomeAnimalRecord` cross-reference leaves a record IN the list, with a null
   `plant` or `animal` field. Only `MayRequire` removes the entry outright.
@@ -197,7 +197,7 @@ or ask permission.
 
 🔔 **THE TRIGGER THAT BRINGS IT BACK:** the owner says that the play phase has begun.
 
-- **Nobody else may reinstate the rule, and nobody should ask.**
+- **Nobody else may reinstate the rule. Do not ask.**
 - When he says so, this section reverts to *"the campaign save is untouchable — do not test on it"*, and every seat is
   told. **Until then, test destructively.**
 
@@ -329,7 +329,7 @@ what a field says. A screenshot tells you what the player sees. The v1 gate aske
 - **A faction name that is GENERATED.** The Fallen Dominion's label is not a fixed string, so no grep finds it. Look,
   and take a screenshot.
 - **UI state.** A quest is actually in the Quests tab, a letter in the notification pane, or a weapon in a pawn's hands.
-- **Anything where "it exists in a def" and "the player experiences it" differ.** That is most things.
+- **Anything where "it exists in a def" and "the player experiences it" differ.** Most things are like that.
 
 ### 🔴 A SCREENSHOT IS A CACHE, NOT AN OBSERVATION — read this before trusting one
 
@@ -373,7 +373,8 @@ There are two reasons, and the second one costs more:
 1. **The window hides the evidence.** A shot that is 70% debug output proves nothing about the map under it.
 2. **Stale lines read as fresh failures.** An unfiltered log window carries errors from earlier in the session. The next
    reader blames them on the thing in the screenshot. **Clear it, then act, then shoot.** Then what you just did caused
-   anything that shows. That is a far stronger claim.
+   anything that shows. A claim about such a line is far
+   stronger.
 
 ⚙️ Zoom and camera matter. An object that spawned correctly off-screen looks the same as an object that never spawned.
 Frame the object before you shoot.
@@ -429,8 +430,8 @@ map's edge zones.**
 
 **"Just needs a quicktest" is true only if the thing under test is already deployed AND in `ModsConfig`.**
 
-- If the mod under test is not loaded yet, a "pre-build quicktest gate" in a design can hide three acts. They are
-  a deploy, a mod-list write and a restart.
+- If the mod under test is not loaded yet, a "pre-build quicktest gate" in a design can hide three acts: a
+  deploy, a mod-list write and a restart.
 - In one case, the right move was to implement both branches behind one def field. A restart of the owner's live 599-mod
   session to settle a one-field decision was the wrong move.
 - Check that the subject is actually live before you call a check "just a quicktest" (2026-09-09).
@@ -485,12 +486,12 @@ Every numbered trap here cost a real debug cycle.
 ### 🔴 Never CHOOSE between mods by reading a def dump
 
 A dump shows the world after the load and after the dedup. One of the mods that you choose between can delete the
-others at load. Then they are **already gone from the dump**, and your preference list silently collapses to one
+others at load. Then the others are **already gone from the dump**, and your preference list silently collapses to one
 option.
 
 Measured 2026-08-15, in `gen_races_mod.py` (fixed since):
 
-- The tool declared "source preference BTD, then SWX, then Outer Rim". It picked with
+- The tool declared "source preference BTD, then SWX, then Outer Rim". The tool picked with
   `next((c for c in cand if c in x))`, where `x` was the live dump. BTD, SWX and Outer Rim were three mods with the same
   species.
 - BTD deletes the SWX and Outer Rim duplicates at load. So those candidates were never in `x`, and the fallback could
@@ -504,8 +505,8 @@ behind any "best available source" rule.
 
 A headless COUNT (a count of species with no head type) does not find the worst version of this fault.
 
-- A species whose only head-forcing gene is a GENERIC one (`Outland_ScaleSkin`) has a head type and resolves clean. It
-  still renders as the wrong creature.
+- A species whose only head-forcing gene is a GENERIC one (`Outland_ScaleSkin`) has a head type and resolves clean. The
+  species still renders as the wrong creature.
 - Ask the running game for `forcedHeadTypes` per gene. Check WHICH head the gene forces, not whether one exists.
 
 More traps for this section: [references/traps.md](references/traps.md) § **A quicktest finding and a campaign finding are different claims.** Report which.
