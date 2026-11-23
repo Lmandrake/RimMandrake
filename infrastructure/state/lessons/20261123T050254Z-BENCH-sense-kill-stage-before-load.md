@@ -1,0 +1,3 @@
+When an ops_watch sense pass is killed at its limit, read the stage in D:\ClaudeWork\rimmandrake\ops_watch\sense_kills.jsonl before you blame machine load. On 2026-11-22 the filed guess was load (~50%); timing each collector alone showed distinct large reads (tps 9 s, queues 8.4 s), and the kill stamp then showed that even 0.05-s families died in the held-alarm filing, not in a collector. A family timed alone on a copy of the store misses the filing stage, because the copy files nothing.
+item: RIMMANDRAKE_WATCH_OPS_SENSE_OVERRUN_MOST_FAMILIES_BLIND
+home: infrastructure/state/facts/instrument_traps.md
