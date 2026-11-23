@@ -20,8 +20,8 @@ A hand act (observe, called by maturation_dispatch.tick on every applied tick):
   ceiling_release   a `maturation_dispatch.py release` record (the tick's own killed-run refund is marked auto: not one)
   clear             a `maturation_dispatch.py clear`
   coverage_release  a `coverage_judge.py release` or a grant written by hand (a release a grant made is the grant's)
-  hand_run          a detached run the tick did not launch that does a stage's work on an advancing mod: a blind judge,
-                    an in-game driver, a fix on one of the tick's own road-back or stop tickets, or a run live at the
+  hand_run          a detached run that neither the tick nor left_open_continue.py launched and that does a stage's
+                    work on an advancing mod: a blind judge, an in-game driver, a fix on one of the tick's own road-back or stop tickets, or a run live at the
                     offline build with build work owed. Any other run on the mod (a feature build) is not one
   hand_move         a stage move that names no run (maturation.py advance writes its run's unit) and that no run the
                     tick launched was live for
@@ -127,6 +127,17 @@ def _json(p):
 
 def _act(aid, at, kind, mod, what, why=""):
     return {"id": aid, "at": at, "kind": kind, "mod": mod, "what": what, "why": str(why or "")}
+
+
+def continued_from(unit, fx=None):
+    """The run that left_open_continue.py continued as `unit`, or None (no parent, or its record cannot be read: then the
+    run still counts as a hand's). A continuation is a program's launch, never a hand act."""
+    get = (fx or {}).get("record")
+    if get is None:
+        import detached_helper as DH
+        get = DH.read_record
+    rec = get(unit)
+    return rec.get("continued_from") if rec else None
 
 
 def tick_units(s):
@@ -258,7 +269,7 @@ def collect(root, cfg, st, facts, now, fx=None):
                     "a run at the offline build with %s bars refused" % w.get("refused")
                     if (w.get("unit") == r["unit"] and not w.get("ours") and f.get("stage") == "offline_build"
                         and (w.get("refused") or 0) > 0) else None)
-            if what:
+            if what and not continued_from(r["unit"], fx):
                 out.append(_act("run-%s" % r["unit"], at, "hand_run", mod, "%s launched by hand: %s on %s" % (
                     what, r["unit"], item)))
         rec = _json(os.path.join(root, "design", "concepts", mod, "version", "stage_record.json")) or {}
@@ -356,11 +367,11 @@ def _fold_named(fx, h, fresh, now):
                             "why": "its reason names the item"})
 
 
-def _fold_tick_own(st, now):
+def _fold_tick_own(st, now, fx=None):
     """Fold every open hand_run act whose unit the tick's current books hold: it was recorded as a hand run before a
     tick_units fix taught the books to see it (voided 11-18, cleared 11-20), and collect never looks at a recorded act
     again, so it stayed open and overdue for good (RIMMANDRAKE_FOLD_HAND_RUNS_THE_BOOKS_NOW_OWN: seven such acts at his
-    rung, 11-21). Reads only state.json, so it cannot be blind the way a ledger read can."""
+    rung, 11-21). Reads only state.json, so it cannot be blind the way a ledger read can. Also folds a continuation."""
     folds = read_folds()
     mods = st.get("mods") or {}
     units = {}
@@ -374,6 +385,12 @@ def _fold_tick_own(st, now):
             _append(FOLDS, {"id": a["id"], "at": now, "by": "maturation_hands",
                             "why": "the tick's own run by its current books (recorded as a hand run before a "
                                    "tick_units fix)"})
+            continue
+        parent = continued_from(a["id"][len("run-"):], fx)
+        if parent:
+            _append(FOLDS, {"id": a["id"], "at": now, "by": "maturation_hands",
+                            "why": "left_open_continue.py continued %s: a program launched it (recorded as a hand run "
+                                   "before 2026-11-23)" % parent})
 
 
 def observe(root, cfg, st, facts, now, rd, fx=None):
@@ -392,7 +409,7 @@ def observe(root, cfg, st, facts, now, rd, fx=None):
         if a["at"] <= BASELINE_TS:
             _append(FOLDS, {"id": a["id"], "at": now, "census": BASELINE_FOLD, "by": "maturation_hands"})
     _fold_named(fx, h, seen, now)
-    _fold_tick_own(st, now)
+    _fold_tick_own(st, now, fx)
     acts, folds = read_acts(), read_folds()
     open_ = [a for a in acts if a["id"] not in folds]
     over = [a for a in open_ if now - a["at"] >= DAY_S]

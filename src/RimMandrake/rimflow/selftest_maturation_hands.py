@@ -821,9 +821,47 @@ def reclass_main():
         shutil.rmtree(root, ignore_errors=True)
 
 
+def continued_main():
+    """A run that left_open_continue.py started is a program's launch. Until 2026-11-23 each one was recorded as a hand
+    launch: 7 of the 17 open hand runs of that day were the pipeline continuing itself."""
+    if MH is None:
+        ok(False, "continued: maturation_hands.py exists")
+        return
+    root = tempfile.mkdtemp(prefix="mat_hands_continued_")
+    was = os.environ.get("RM_MATURATION_DISPATCH_DIR")
+    os.environ["RM_MATURATION_DISPATCH_DIR"] = os.path.join(root, "state")
+    recs = {"rm-detached-cont": {"continued_from": "rm-detached-first"}, "rm-detached-hand": {"continued_from": None},
+            "rm-detached-old-cont": {"continued_from": "rm-detached-first"}}
+    try:
+        MD.sdir()
+        os.makedirs(os.path.join(root, "design", "concepts", "F", "version"))
+        item = "RIMMANDRAKE_DRIVE_F_IN_GAME_VISIT_TWO"
+        MH._append(MH.ACTS, MH._act("run-rm-detached-old-cont", NOW - 2 * 86400, "hand_run", "F", "x") | {"recorded": NOW})
+        st = {"hands": {"since": NOW - 3600, "last_tick": NOW - 60, "fold_at": NOW - 10}, "mods": {"F": {}}}
+        facts = {"F": {"runs_seen": [{"unit": u, "item": item, "at": NOW - 600, "end": NOW - 60}
+                                     for u in ("rm-detached-cont", "rm-detached-hand", "rm-detached-no-record")]}}
+        MH.observe(root, dict(CFG, advancing=["F"]), st, facts, NOW, {"needs_conductor": []},
+                   {"events": lambda: [], "known": lambda: {item}, "record": recs.get})
+        ids = {a["id"] for a in MH.read_acts()}
+        ok("run-rm-detached-cont" not in ids, "continued 1: a continuation is no hand run", ids)
+        ok("run-rm-detached-hand" in ids, "continued 2: a run with no parent run is a hand run", ids)
+        ok("run-rm-detached-no-record" in ids, "continued 3: a run whose record cannot be read stays a hand run", ids)
+        f = MH.read_folds().get("run-rm-detached-old-cont")
+        ok(bool(f) and "left_open_continue" in f.get("why", ""),
+           "continued 4: one already recorded as a hand run folds by itself, with its reason", f)
+        ok("run-rm-detached-hand" not in MH.read_folds(), "continued 5: the real hand run stays open")
+    finally:
+        if was is None:
+            os.environ.pop("RM_MATURATION_DISPATCH_DIR", None)
+        else:
+            os.environ["RM_MATURATION_DISPATCH_DIR"] = was
+        shutil.rmtree(root, ignore_errors=True)
+
+
 SECTIONS = (("stalled", stalled_main), ("stop", stop_main), ("retry", retry_main), ("refund", refund_main), ("briefs", briefs_main),
             ("acts", acts_main), ("chores", chores_main), ("false_hands", false_hands_main),
-            ("road_back", road_back_main), ("fold_later", fold_later_main), ("reclass", reclass_main))
+            ("road_back", road_back_main), ("fold_later", fold_later_main), ("reclass", reclass_main),
+            ("continued", continued_main))
 
 if __name__ == "__main__":
     only = sys.argv[sys.argv.index("--only") + 1] if "--only" in sys.argv else None
