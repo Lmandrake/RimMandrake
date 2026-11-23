@@ -2,9 +2,9 @@
   "schema": 1,
   "mod": "Pyrelands",
   "version": "0.1.0",
-  "stage": "blind_challenge",
-  "stage_label": "Blind challenge, tests first (Stages 4 and 5)",
-  "since": "2026-11-23T14:16:25-08:00",
+  "stage": "in_game",
+  "stage_label": "In-game acceptance (Stage 6)",
+  "since": "2026-11-23T15:46:03-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -327,6 +327,26 @@
         "every_bar_has_a_check_that_runs",
         "table_version",
         "fourth_cycle",
+        "judge_certificate"
+      ]
+    },
+    {
+      "from": "blind_challenge",
+      "to": "in_game",
+      "at": "2026-11-23T15:46:03-08:00",
+      "by": "BENCH",
+      "why": "blind cycle 6 exit met: both mod fixes of 454764adbe read sound by the steward as fresh reader (lane2/fix_reviews.jsonl); RIMMANDRAKE_ROUTE_PYRELANDS_CYCLE_SIX_FAILURES_BACK",
+      "unit": "rm-detached-bench-rimmandrake-route-pyrelands-cycle-six-fa-1795477190",
+      "confirmed": {
+        "steward_confirms": "read cycle_6 SUMMARY.md, faults.json, fixes.jsonl, tests_edited.json and both test diffs (checks added, none weakened), red_seen for both edited deciders; reran red on 956fb0c600 and green on 454764adbe, lane 1 34 PASS 0 FAIL; run rm-detached-bench-rimmandrake-judge-pyrelands-blind-cycle-1795472682, verdict exit met"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "steward_confirms",
+        "exit_met",
         "judge_certificate"
       ]
     }
