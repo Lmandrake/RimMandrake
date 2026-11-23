@@ -1,0 +1,4 @@
+PASS \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_NINE.det\design\concepts\FlowWorks\version\in_game\visit_9\evidence\sc_garden_20261123T150418.json 
+[bridge split] 106.8 s wall: load 0.4 / ticks 21.5 / reads 3.5 / other 37.3 / outside calls 44.0 s
+[bridge split] WARN 676 calls of jawa/static_call (28.2 s): batch them
+[bridge split] WARN 132 calls of jawa/pawn_need (5.5 s): batch them

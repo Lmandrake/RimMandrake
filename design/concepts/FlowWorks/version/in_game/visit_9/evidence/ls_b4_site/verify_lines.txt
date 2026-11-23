@@ -1,0 +1,1 @@
+# PARTIAL run (--only/--skip): never recordable as the session result; each line stands only for its own rows

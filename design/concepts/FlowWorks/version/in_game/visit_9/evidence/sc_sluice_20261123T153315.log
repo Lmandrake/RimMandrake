@@ -1,0 +1,6 @@
+site save calm: CLEAN load 4.2s ready 6.3s 
+extensions: {'PASS': 6} in 46.8s -> \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_NINE.det\design\concepts\FlowWorks\version\in_game\visit_9\evidence\sc_sluice_20261123T153315.json
+[modcheck] chain flow_doors START 23:33:38Z
+[modcheck] chain flow_doors END 25s PASS=6 FAIL=0 UNMEASURED=0 NOT_RUN=0 hold=7.0s body=16.4s teardown=1.2s
+[bridge split] 46.9 s wall: load 0.0 / ticks 1.6 / reads 4.5 / other 13.4 / outside calls 27.4 s
+[bridge split] WARN 83 calls of jawa/time_clock (3.5 s): batch them

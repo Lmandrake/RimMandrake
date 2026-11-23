@@ -1,0 +1,7 @@
+site save calm: CLEAN load 4.4s ready 6.5s 
+extensions: {'PASS': 4} in 48.9s -> \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_NINE.det\design\concepts\FlowWorks\version\in_game\visit_9\evidence\sc_fill_tiers_20261123T152649.json
+[modcheck] chain plot_B_fill_tiers START 23:27:14Z
+[modcheck] chain plot_B_fill_tiers END 25s PASS=4 FAIL=0 UNMEASURED=0 NOT_RUN=0 hold=7.1s body=16.9s teardown=1.2s
+[bridge split] 49.0 s wall: load 0.0 / ticks 0.0 / reads 2.9 / other 16.0 / outside calls 30.1 s
+[bridge split] WARN 115 calls of jawa/time_clock (5.1 s): batch them
+[bridge split] WARN 76 calls of jawa/flowworks_excavation_drive (3.3 s): batch them
