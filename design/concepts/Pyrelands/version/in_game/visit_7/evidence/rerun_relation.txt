@@ -1,0 +1,77 @@
+RERUN  sc_burn_line_walks: src/RimMandrake/Pyrelands/validation.py: _load_registered_site, _r6_burn_line, front_crop
+RERUN  sc_ash_watered: src/RimMandrake/Pyrelands/validation.py: _load_registered_site
+RERUN  sc_burn_compounds: src/RimMandrake/Pyrelands/validation.py: FOIL_MIN_MARGIN, PLANT_OFFBURN_TOGGLE_IGNORED_ENV, _load_registered_site, _open_ground, _r6_scorchfruit_fire_born, density_foil_verdict
+RERUN  sc_grass_regreens: src/RimMandrake/Pyrelands/validation.py: FOIL_MIN_MARGIN, PLANT_OFFBURN_TOGGLE_IGNORED_ENV, _load_registered_site, _open_ground, _r6_scorchfruit_fire_born, density_foil_verdict
+RERUN  sc_scorchfruit: src/RimMandrake/Pyrelands/validation.py: FOIL_MIN_MARGIN, PLANT_OFFBURN_TOGGLE_IGNORED_ENV, _load_registered_site, _open_ground, _r6_scorchfruit_fire_born, density_foil_verdict
+RERUN  sc_populations: src/RimMandrake/Pyrelands/validation.py: FOIL_MIN_MARGIN, PLANT_OFFBURN_TOGGLE_IGNORED_ENV, _load_registered_site, _open_ground, _r6_scorchfruit_fire_born, density_foil_verdict
+RERUN  sc_ruins: src/RimMandrake/Pyrelands/validation.py: _load_registered_site
+RERUN  sc_firehawk: src/RimMandrake/Pyrelands/validation.py: FOIL_MIN_MARGIN, PLANT_OFFBURN_TOGGLE_IGNORED_ENV, _load_registered_site, _open_ground, _r6_scorchfruit_fire_born, density_foil_verdict
+RERUN  sc_furnace: src/RimMandrake/Pyrelands/validation.py: _load_registered_site
+RERUN  sc_ashwallow: src/RimMandrake/Pyrelands/validation.py: FOIL_MIN_MARGIN, PLANT_OFFBURN_TOGGLE_IGNORED_ENV, _load_registered_site, _open_ground, _r6_scorchfruit_fire_born, density_foil_verdict
+RERUN  sc_ullai: src/RimMandrake/Pyrelands/validation.py: _load_registered_site
+RERUN  sc_three_skies: src/RimMandrake/Pyrelands/validation.py: _load_registered_site
+RERUN  sc_no_rain: src/RimMandrake/Pyrelands/validation.py: _load_registered_site
+RERUN  sc_walk: a whole-mod check: 9 changed file(s) under the mod
+RERUN  sc_firefoam_sprayer: src/RimMandrake/Pyrelands/validation.py: _bite_wait, _load_registered_site, _open_ground, firefoam_sprayer
+RERUN  sc_rite_hook_alone: src/RimMandrake/Pyrelands/validation.py: _load_registered_site
+RERUN  sc_heat_dome: src/RimMandrake/Pyrelands/validation.py: _load_registered_site
+RERUN  sc_fire_dusts_ash: src/RimMandrake/Pyrelands/validation.py: FOIL_MIN_MARGIN, PLANT_OFFBURN_TOGGLE_IGNORED_ENV, _load_registered_site, _open_ground, _r6_scorchfruit_fire_born, density_foil_verdict
+RERUN  sc_flamefang_venom: src/RimMandrake/Pyrelands/validation.py: _bite_until, _bite_wait, _load_registered_site, _ten_flamefang_venom, flamefang_venom, venom_never_read
+RERUN  sc_foreign_arrivals: src/RimMandrake/Pyrelands/validation.py: _load_registered_site
+RERUN  sc_firehawk_rewards: src/RimMandrake/Pyrelands/validation.py: no top-level name reached from firehawk_first_sighting_letter or sc_firehawk_rewards (related whole)
+RERUN  P_startup_and_def_wiring: src/RimMandrake/Pyrelands/validation.py: _load_registered_site
+RERUN  P_mapgen_log: src/RimMandrake/Pyrelands/validation.py: _load_registered_site
+RERUN  P_grass_cover: src/RimMandrake/Pyrelands/validation.py: FOIL_MIN_MARGIN, _load_registered_site, density_foil_verdict
+RERUN  P_animal_census: src/RimMandrake/Pyrelands/validation.py: _bite_until, _bite_wait, _load_registered_site
+RERUN  P_ambient_ash_drift: src/RimMandrake/Pyrelands/validation.py: _load_registered_site
+RERUN  P_scorchfruit_produces: src/RimMandrake/Pyrelands/validation.py: PLANT_OFFBURN_TOGGLE_IGNORED_ENV, _load_registered_site, _open_ground, _r6_scorchfruit_fire_born
+RERUN  P_scorchfruit_spoils: src/RimMandrake/Pyrelands/validation.py: PLANT_OFFBURN_TOGGLE_IGNORED_ENV, _load_registered_site, _open_ground, _r6_scorchfruit_fire_born
+RERUN  P_furnace_room: src/RimMandrake/Pyrelands/validation.py: _load_registered_site
+RERUN  P_ashfall_weather_accumulation: src/RimMandrake/Pyrelands/validation.py: _load_registered_site
+RERUN  P_ashfall_drifts: src/RimMandrake/Pyrelands/validation.py: _load_registered_site
+RERUN  P_blackrain: src/RimMandrake/Pyrelands/validation.py: _load_registered_site
+UNDECLARED  src/RimMandrake/Pyrelands/About/About.xml: changed, and no check declares it
+UNDECLARED  src/RimMandrake/Pyrelands/Defs/DamageDefs/RM_FlamefangVenomBite.xml: changed, and no check declares it
+UNDECLARED  src/RimMandrake/Pyrelands/Defs/HediffDefs/RM_FlamefangVenom.xml: changed, and no check declares it
+UNDECLARED  src/RimMandrake/Pyrelands/Source/FireEcologyHook.cs: changed, and no check declares it
+UNDECLARED  src/RimMandrake/Pyrelands/Source/FireEcologyHook.csproj: changed, and no check declares it
+UNDECLARED  src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs: changed, and no check declares it
+UNDECLARED  src/RimMandrake/Pyrelands/Source/Kernel/RM_FoamPathKernel.cs: changed, and no check declares it
+UNDECLARED  src/RimMandrake/Pyrelands/Source/MapComponent_BurnLine.cs: changed, and no check declares it
+UNDECLARED  src/RimMandrake/Pyrelands/Source/PyrelandsAshField.cs: changed, and no check declares it
+UNDECLARED  src/RimMandrake/Pyrelands/Source/PyrelandsFireSense.cs: changed, and no check declares it
+UNDECLARED  src/RimMandrake/Pyrelands/Source/PyrelandsFoamPath.cs: changed, and no check declares it
+UNDECLARED  src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs: changed, and no check declares it
+UNDECLARED  src/RimMandrake/Pyrelands/Source/SelfTest/Fuzz/FoamPathFuzz.cs: changed, and no check declares it
+UNDECLARED  src/RimMandrake/Pyrelands/Source/SelfTest/Fuzz/PyrelandsFuzz.cs: changed, and no check declares it
+UNDECLARED  src/RimMandrake/Pyrelands/Source/SelfTest/Fuzz/RimMandrakePyrelands.Fuzz.csproj: changed, and no check declares it
+UNDECLARED  src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/Ullai/Ullai_east.png: changed, and no check declares it
+UNDECLARED  src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/Ullai/Ullai_north.png: changed, and no check declares it
+UNDECLARED  src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/Ullai/Ullai_south.png: changed, and no check declares it
+UNDECLARED  src/RimMandrake/Pyrelands/accept_teardown_no_game.py: changed, and no check declares it
+UNDECLARED  src/RimMandrake/Pyrelands/northstar_site.py: changed, and no check declares it
+UNDECLARED  src/RimMandrake/Pyrelands/play.py: changed, and no check declares it
+UNDECLARED  src/RimMandrake/Pyrelands/preflight_pyrelands.py: changed, and no check declares it
+UNDECLARED  src/RimMandrake/Pyrelands/pyre_burn_sim.py: changed, and no check declares it
+UNDECLARED  src/RimMandrake/Pyrelands/selftest_pyrelands_burn_ecology.py: changed, and no check declares it
+UNDECLARED  src/RimMandrake/Pyrelands/selftest_pyrelands_burn_front_lanes.py: changed, and no check declares it
+UNDECLARED  src/RimMandrake/Pyrelands/selftest_pyrelands_cut_stays_cut.py: changed, and no check declares it
+UNDECLARED  src/RimMandrake/Pyrelands/selftest_pyrelands_defs_offline.py: changed, and no check declares it
+UNDECLARED  src/RimMandrake/Pyrelands/selftest_pyrelands_firefoam_scene.py: changed, and no check declares it
+UNDECLARED  src/RimMandrake/Pyrelands/selftest_pyrelands_firehawk_crestfeather.py: changed, and no check declares it
+UNDECLARED  src/RimMandrake/Pyrelands/selftest_pyrelands_frames_subject.py: changed, and no check declares it
+UNDECLARED  src/RimMandrake/Pyrelands/selftest_pyrelands_growth_lines.py: changed, and no check declares it
+UNDECLARED  src/RimMandrake/Pyrelands/selftest_pyrelands_regrow_rates.py: changed, and no check declares it
+UNDECLARED  src/RimMandrake/Pyrelands/selftest_pyrelands_round6_gaps.py: changed, and no check declares it
+UNDECLARED  src/RimMandrake/Pyrelands/selftest_pyrelands_round6_parts.py: changed, and no check declares it
+UNDECLARED  src/RimMandrake/Pyrelands/selftest_pyrelands_scene_controls.py: changed, and no check declares it
+UNDECLARED  src/RimMandrake/Pyrelands/selftest_pyrelands_settings_sweep.py: changed, and no check declares it
+UNDECLARED  src/RimMandrake/Pyrelands/selftest_pyrelands_site.py: changed, and no check declares it
+UNDECLARED  src/RimMandrake/Pyrelands/selftest_pyrelands_ten_scenes_parts.py: changed, and no check declares it
+UNDECLARED  src/RimMandrake/Pyrelands/selftest_pyrelands_terrain_union.py: changed, and no check declares it
+UNDECLARED  src/RimMandrake/Pyrelands/selftest_pyrelands_venom_dose.py: changed, and no check declares it
+UNDECLARED  src/RimMandrake/Pyrelands/selftest_pyrelands_venom_staging.py: changed, and no check declares it
+UNDECLARED  src/RimMandrake/Pyrelands/selftest_pyrelands_walk_digest.py: changed, and no check declares it
+UNDECLARED  src/RimMandrake/Pyrelands/selftest_pyrelands_walk_shield.py: changed, and no check declares it
+UNDECLARED  src/RimMandrake/Pyrelands/venom_dose.py: changed, and no check declares it
+relation: 38 check(s), 32 touched, 0 with no readable relation, 0 with no row, 6 untouched; 44 changed file(s) under the mod no check declares
