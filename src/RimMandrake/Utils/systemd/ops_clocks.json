@@ -24,7 +24,9 @@
     "rm-control-acts-export": "rm-control-acts-export.timer",
     "rm-fleet-now": "rm-fleet-now.timer",
     "rm-maturation-dispatch": "rm-maturation-dispatch.timer",
-    "rm-red-dispatch": "rm-red-dispatch.timer"
+    "rm-red-dispatch": "rm-red-dispatch.timer",
+    "rm-list-effect": "rm-list-effect.timer",
+    "rm-follow-through": "rm-follow-through.timer"
   },
   "outside": {
     "rm-relentless": "the Relentless tick: retired by the owner 2026-11-13, unit masked (design/RimMandrake/retired_loops_2026-11-13.md)",

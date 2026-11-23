@@ -26,11 +26,11 @@ file: design/specs/2026-11-22-one-view-of-open-work/census.md
 file: design/specs/2026-11-22-one-view-of-open-work/probe_results.md
 
 ## criteria
-- `python3 design/specs/2026-11-22-coordination-every-agent-must-use/acceptance/step5_follow_through_accept.py` exits 0 and prints `PASS 15/15`.
+- `python3 src/RimMandrake/rimflow/acceptance/step5_follow_through_accept.py` exits 0 and prints `PASS 15/15`.
 - The audit page for 2026-11-29 exists and states both rates, the headline, and each stream that could not be read as UNMEASURED.
 
 ## verify
-python3 design/specs/2026-11-22-coordination-every-agent-must-use/acceptance/step5_follow_through_accept.py   # exit 0, PASS 15/15
+python3 src/RimMandrake/rimflow/acceptance/step5_follow_through_accept.py   # exit 0, PASS 15/15
 Acceptance test: watched failing on 68355dc59b2b: 11 of 11 fail, because the module the step adds does not exist. Expected:
 11 pass. Re-watched on 87a18efda498 after the update: 15 of 15 fail for the same reason; expected 15 pass. The script was also run against a throwaway reference to show that it can pass, and against a planted fault to
 show that it goes red (2026-11-22; the reference was deleted and is not in the repo).

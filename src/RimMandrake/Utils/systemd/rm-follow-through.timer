@@ -1,0 +1,11 @@
+# Daily at 18:00 local - see rm-follow-through.service. Daily, not weekly: a beat whose launch a gate held on Sunday
+# retries the next evening; a beat with nothing to do only writes its reading.
+[Unit]
+Description=RimMandrake follow-through audit, daily at 18:00
+
+[Timer]
+OnCalendar=*-*-* 18:00:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target

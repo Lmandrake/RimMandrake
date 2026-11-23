@@ -16,7 +16,7 @@ Contract: a new module src/RimMandrake/Utils/follow_through.py
       every stage with no act by the Conductor window. items = list of {"closed": bool, "window_acts": int or None};
       an open item is not counted; an item whose acts could not be read (None) makes the share None, never a guess;
       no closed item is None, never 0.
-Expected when built: PASS 15/15.  Today: FAIL 0/15, because follow_through.py does not exist."""
+Expected: PASS 15/15. Seen FAIL 0/15 on c0b85fb125 (follow_through.py absent), PASS 15/15 on the build."""
 import os
 import sys
 

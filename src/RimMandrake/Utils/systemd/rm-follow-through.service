@@ -1,0 +1,23 @@
+# The weekly follow-through audit (Utils/follow_through.py; item RIMMANDRAKE_BUILD_FOLLOW_THROUGH_AUDIT_LOWER_RATE_IS_HEADLINE;
+# page design/specs/2026-11-23-follow-through-audit/boundary.md). One beat a day: for the week that ends on the latest
+# Sunday (from 2026-11-29 on) it files the week's reader item and planted need once each, and launches one fresh opus
+# reader once. It obeys the pipeline's pause, `./pipe off family:follow_through` and the Dispatcher's account pick.
+# No model of its own. Runs from the dispatch clone.
+# Reading: D:\ClaudeWork\rimmandrake\dispatcher\follow_through\reading.json (WSL /mnt/d/ClaudeWork/rimmandrake/dispatcher/follow_through/reading.json)
+# Install:  cp src/RimMandrake/Utils/systemd/rm-follow-through.{service,timer} ~/.config/systemd/user/
+#           systemctl --user daemon-reload && systemctl --user enable --now rm-follow-through.timer
+# Off:      ./pipe off family:follow_through --why "..."   (or systemctl --user disable --now rm-follow-through.timer)
+[Unit]
+Description=RimMandrake follow-through audit: file and launch the week's fresh reader, daily at 18:00
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/mandrake/rm/dispatch
+Environment=PATH=/home/mandrake/.local/bin:/usr/local/bin:/usr/bin:/bin
+Environment=PYTHONUNBUFFERED=1
+Environment=RM_ROLE_UNIT=rm-follow-through.service
+ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/follow_through.py tick --apply
+Nice=10
+MemoryMax=2G
+# Hang guard: a ledger replay, two rimflow writes (CLI_TIMEOUT_S each) and one launch (LAUNCH_TIMEOUT_S).
+TimeoutStartSec=60min
