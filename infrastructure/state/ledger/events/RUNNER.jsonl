@@ -11654,3 +11654,4 @@
 {"seat":"RUNNER","event":"raise","id":"OPS_STEVE_FEED_IDLE_LANE_HURP","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-23T14:57:16Z","tsn":1795445836148662293}
 {"seat":"RUNNER","event":"live","id":"OPS_DISPATCH_CLONE_BEHIND_UNSTICK_YUYW","result":"broken","detail":"Ops alarm DISPATCH_CLONE_BEHIND: maturation.clone_behind_min = 5.4 min (MEASURED), line > 5","ts":"2026-11-23T15:19:30Z","tsn":1795447170468552192}
 {"seat":"RUNNER","event":"raise","id":"OPS_DISPATCH_CLONE_BEHIND_UNSTICK_YUYW","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-23T15:19:36Z","tsn":1795447176819634261}
+{"seat":"RUNNER","event":"live","id":"OPS_DISPATCH_CLONE_BEHIND_UNSTICK_YUYW","result":"kept","detail":"sweep: running again","ts":"2026-11-23T15:33:08Z","tsn":1795447988970121221}
