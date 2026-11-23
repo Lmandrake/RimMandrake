@@ -343,6 +343,28 @@ def t_a_dry_beat_writes_nothing():
     shutil.rmtree(d, ignore_errors=True)
 
 
+def t_closed_reads_item_states_for_a_check():
+    L = LE()
+    a, b = "RIMMANDRAKE_TEST_LIST_EFFECT_CLOSED_HELPER_DONE", "RIMMANDRAKE_TEST_LIST_EFFECT_CLOSED_HELPER_OPEN"
+    file_item(a)
+    file_item(b)
+    cli("drop", a, "--reason", "selftest", "--why", "selftest")
+    chk(lambda: L.closed_main([a]) == 0, "closed: a dropped item reads closed (exit 0)")
+    chk(lambda: L.closed_main([a, b]) == 1, "closed: one open item reads 1")
+    chk(lambda: L.closed_main([a, "RIMMANDRAKE_TEST_LIST_EFFECT_NEVER_FILED_AT_ALL"]) == 1, "closed: a never-filed item reads 1")
+    chk(lambda: L.closed_main([]) == 2, "closed: no ids is 2 (no answer), never 0")
+    saved = os.environ["RIMFLOW_LEDGER"]
+    bad = os.path.join(X["root"], "torn.jsonl")
+    with open(bad, "w") as f:
+        f.write("{not json\n")
+    os.environ["RIMFLOW_LEDGER"] = bad
+    try:
+        rc = L.closed_main([a])
+    finally:
+        os.environ["RIMFLOW_LEDGER"] = saved
+    chk(lambda: rc != 0, "closed: an unreadable ledger never reads 0 (got %s)" % rc)
+
+
 def main():
     top = tempfile.mkdtemp(prefix="selftest_list_effect_")
     X.update(root=os.path.join(top, "root"), git=os.path.join(top, "git"), state=os.path.join(top, "state"))
@@ -374,7 +396,8 @@ def main():
                   t_the_tick_obeys_pause_and_pipe_off,
                   t_the_tick_launches_nothing_and_files_nothing,
                   t_a_refused_close_is_not_sent_again_unchanged,
-                  t_a_dry_beat_writes_nothing):
+                  t_a_dry_beat_writes_nothing,
+                  t_closed_reads_item_states_for_a_check):
             try:
                 t()
             except Exception as e:  # noqa: BLE001

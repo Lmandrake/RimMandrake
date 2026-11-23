@@ -16,6 +16,9 @@ filer states why it cannot be (`--holds-why`). A vacuous command is refused alwa
     python3 src/RimMandrake/rimflow/list_effect.py tick [--apply]    one beat; closes only with --apply
     python3 src/RimMandrake/rimflow/list_effect.py status            the last reading
     python3 src/RimMandrake/rimflow/list_effect.py check "<check>"   run one check here: holds|fails|unmeasured, output
+    python3 src/RimMandrake/rimflow/list_effect.py closed ID...      a check's helper: exit 0 every ID is done, dropped
+            or superseded; 1 one is open or never filed (named); 2 the ledger could not be read
+            (a check reads `cmd:python3 src/RimMandrake/rimflow/list_effect.py closed A B`)
 
 Per open item that carries a check, one decision:
     pipeline_paused | off | blind   the pause, a `pipe off` (all, family:list_effect, item:<ID>), or an unreadable store
@@ -412,6 +415,27 @@ def _tick(apply, publish, root, fx, now, d):
     return rd
 
 
+def closed_main(ids):
+    """-> exit code: 0 every id is terminal, 1 one is open or never filed, 2 the ledger could not be read."""
+    if not ids:
+        print("closed: name at least one item")
+        return 2
+    try:
+        w = _world()
+    except Exception as e:  # noqa: BLE001 - could not look is its own exit
+        print("UNMEASURED: the ledger could not be read (%s: %s)" % (type(e).__name__, e))
+        return 2
+    open_ = []
+    for i in ids:
+        it = w.items.get(i)
+        st = "never filed" if it is None else it.state
+        print("%-12s %s" % (st, i))
+        if it is None or it.state not in CLOSED:
+            open_.append(i)
+    print("%d of %d closed" % (len(ids) - len(open_), len(ids)))
+    return 1 if open_ else 0
+
+
 def _print(rd):
     for iid, r in sorted(rd["items"].items()):
         print("%-64s %-16s %s" % (iid, r["decision"], _one(r.get("why"), 160)))
@@ -428,7 +452,11 @@ def main(argv=None):
     sub.add_parser("status")
     c = sub.add_parser("check")
     c.add_argument("text")
+    k = sub.add_parser("closed")
+    k.add_argument("ids", nargs="*")
     o = ap.parse_args(argv)
+    if o.cmd == "closed":
+        return closed_main(o.ids)
     if o.cmd == "tick":
         _print(tick(apply=o.apply))
         return 0
