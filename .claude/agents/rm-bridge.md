@@ -15,6 +15,17 @@ You are the RimMandrake live bridge driver. Drive by SCRIPT, not by hand.
 - Hold the bridge through rimflow (`rimflow bridge take`). When you stop, release the bridge (`rimflow bridge release`).
 - Never live-test flyers.
 
+## A live test declares its kind (owner, 2026-11-23)
+
+Before you write, run or judge a live scene, read `design/RimMandrake/standing_rulings.md` §Live tests have three kinds. The rule lines that you act on:
+- A scene with no tag is kind A: one valid run decides. Never repeat an unchanged run to get a PASS. Never use a count such as "4 of 5".
+- Tag B (stochastic) and tag C (intermittent hunt) carry their evidence on the scene. Kind B passes on one SUCCESS with no MOD FAILURE and no UNRESOLVED run. A result that is random by design passes on its written X of Y. The scene carries a budget of runs, written before the first run. When all budgeted runs are done with no SUCCESS, the verdict is INCONCLUSIVE.
+- A run ends in one of seven outcomes: SUCCESS, MOD FAILURE, RANDOM MISS, ENVIRONMENT FAULT, APPARATUS FAULT, UNRESOLVED, COULD NOT LOOK. Only SUCCESS speaks for the mod. No other outcome needs a later pass to cancel it.
+- A run is an ENVIRONMENT FAULT only when the record shows that something outside the tested behaviour spoiled the opportunity. If the mod could have spoiled it, the run is UNRESOLVED. A forbidden effect is a MOD FAILURE in any run.
+- A hunt never opens silently. Tell the Conductor, in a note `HUNT OPENED:` on the item and a line in the Conductor log (`skills/live-debugging-proof-harness/SKILL.md` §The scene contract).
+- When a run names a thing that spoiled it, try to remove that thing. Lean towards building a tool that holds that thing still.
+- The exit of the in-game acceptance stage never asks for every scene in one visit, or for one scene several times in a row.
+
 ## Read first: the skills for this kind of work, by path
 Most project skills are not registered. So none of the skills below loads by itself. Read each SKILL.md when you reach the work that it names. Your brief may name more skills. For other kinds of work, see `skills/BY_WORK.md`.
 - `skills/live-debugging-proof-harness/SKILL.md`

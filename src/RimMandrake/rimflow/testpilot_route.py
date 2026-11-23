@@ -72,8 +72,9 @@ HOLDS_LINES = [
     "conflict into one, invent something that satisfies both, or propose a relaxation with its evidence (the map of "
     "where each holds, the failing moment). Relaxing a bar is never yours: it is a question to your parent.",
     "- You may not end with open cases. Every case you saw fail is fixed and committed, proved unreachable by a check "
-    "you land, or filed as its own item carrying the check that goes red and the captured failing moment. "
-    "\"Unexplained\" is not an ending; only what truly needs the owner stays open, as his question.",
+    "you land, filed as its own item carrying the check that goes red and the captured failing moment, or is a hunt "
+    "that stopped unresolved and left its whole record (standing_rulings.md §Live tests have three kinds, section 5). "
+    "\"Unexplained\" with no record is not an ending; only what truly needs the owner stays open, as his question.",
     "- The game is the instrument: run experiments in it instead of code-and-retest.",
     "- First make the failure happen on demand, and capture it (state read, save, picture).",
     "- Vary one thing at a time across the regimes the game really produces: ordinary play conditions, weather "

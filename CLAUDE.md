@@ -36,8 +36,8 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
   blind, poke the live game.
 - Each live debug session ends with an update to that script. Write what the session learned, false theories included.
   The lesson is a check that is red for the reported reason before the final fix.
-- After the fix, a check that was made only for that fault stays in the live tests only while the fault is likely to return. Otherwise move the check to
-  the offline tests, or retire the check (§A live test declares its kind).
+- After the fix, a check that was made only for that fault stays in the live tests only while the fault is likely to
+  return. Otherwise move the check to the offline tests, or retire the check (§A live test declares its kind).
 - Agents write, approve and declare passing on these scripts. Every new mod ships with its first script.
 - Agents may add regression checks and new north-star bars (`design/RimMandrake/delegation_policy.md` §1).
 - Only the Conductor may loosen a bar, as a mindful act (see "Only five acts stay his" below).
@@ -589,18 +589,21 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
   thing, and why that was not enough. Tag C names the symptom, how often it was seen in how many opportunities, and the
   trace.
 - A run ends in one of seven outcomes: SUCCESS, MOD FAILURE, RANDOM MISS, ENVIRONMENT FAULT, APPARATUS FAULT, UNRESOLVED,
-  COULD NOT LOOK. Keep the seven outcomes apart. Only SUCCESS speaks for the mod. No other outcome needs a later pass to
+  COULD NOT LOOK. Keep the seven outcomes apart. RANDOM MISS: a valid opportunity with an allowed miss. APPARATUS FAULT:
+  our script, our tool or our staging spoiled the run. UNRESOLVED: something went wrong and nobody knows why. COULD NOT
+  LOOK: the run gave no reading. Only SUCCESS speaks for the mod. No other outcome needs a later pass to
   cancel it.
 - A run is an ENVIRONMENT FAULT only when the record shows that something outside the tested behaviour spoiled the
   opportunity. If the mod could have spoiled it, the run is UNRESOLVED. A forbidden effect is a MOD FAILURE in any run.
 - One UNRESOLVED run holds the scene's pass until someone classes the run.
 - Open a hunt when the fault is serious (one sighting is enough) or is seen again. A hunt never opens silently: tell the
   Conductor what happened, why it matters, the next step that tells two causes apart, and the cost of that step.
-- When a run names a thing that spoiled it, try to remove that thing. Lean towards building the control.
+- When a run names a thing that spoiled it, try to remove that thing. Lean towards building a tool
+  that holds that thing still.
 - Use Minimum Force: the least force that makes the scene affordable and reliable, and that leaves to the mod every
   decision that the scene claims to test.
-- A verdict on a scene stands until a change touches what the scene reads or exercises. The exit condition of a
-  stage or a visit never asks for every scene in one visit, or for one scene several times in a row.
+- A verdict on a scene stands until a change touches what the scene reads or exercises. The exit condition of
+  Stage 6 (in-game acceptance in the Maturation Pipeline) never asks for every scene in one in-game visit, or for one scene several times in a row.
 - Full text: `design/RimMandrake/standing_rulings.md` §Live tests have three kinds.
 
 ## Code is clean when its promises are tested

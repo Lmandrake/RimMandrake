@@ -125,7 +125,8 @@ Walk the ladder in order. Stop at the first rung that settles the bug.
   `ns_probe_*` scratch files vanished, and what they learned survived only in commit messages.
 - **Rung 4: fix** the mod, the site or the harness, as the class says. Independent fixes may share a rerun. Isolate
   only fixes that could interact. A new assembly always goes alone.
-- **Rung 5: rerun until green and read the whole result.** A changed predicate carries its reason in the commit.
+- **Rung 5: run the touched checks on the fix and read the whole result.** One valid run decides a kind A scene
+  (`standing_rulings.md` §Live tests have three kinds). Never repeat an unchanged run to get a green. A changed predicate carries its reason in the commit.
   Never weaken a check to pass. A looser check is a script defect, unless the commit shows that the old predicate
   was wrong.
 - **Rung 6: commit the check.** The commit names the class (MOD / SITE / HARNESS) and the check id.
@@ -136,9 +137,10 @@ Walk the ladder in order. Stop at the first rung that settles the bug.
 script does not lead. **Every bench session leaves a test behind whenever a machine can check the lesson.** Write the
 test in that sitting, or file it as a named item before the session ends.
 
-**Ablation is later and explicit.** Owner: *"We can ablate unnecessary testing later if it
-becomes slow or onerous."* Ablation is the removal of tests. Until he or a review says so, coverage grows. Nobody cuts a
-test for speed.
+**A live test earns its place.** The Principle of Impactful Evidence (top of `infrastructure/agents/CHARTER.md`) decides
+which tests stay. A live check that was made for one fixed fault stays only while the fault is likely to return.
+Otherwise the check moves to the offline tests, or is retired with its record (`standing_rulings.md` §Live tests have
+three kinds). Offline tests can hold many "once wrong" checks, because offline runs are cheap.
 
 ## 4. Boundaries — where the script does not lead
 
@@ -150,7 +152,8 @@ test for speed.
 | flyers in flight | `Pawn_FlightTracker` state read **only**; never unattended live flight (ruled 3×) | the state read, as a check |
 | cold load, mod list, save migration | `rimworld-start-prep`, `rimworld-load-round`, `rimworld-savegame` | a tier fingerprint in preflight |
 | world, map, art authoring | iterate by LOOKING | nothing |
-| performance, intermittent, statistical | none yet; no Boolean check, which would mislead | the seed or sampling method, once one exists |
+| performance | none yet; no Boolean check, which would mislead | the sampling method, once one exists |
+| a result that is random by design, or a fault that shows only sometimes | a kind B scene or a kind C hunt (`standing_rulings.md` §Live tests have three kinds) | a forced scene, kind A where possible; after the fix, an offline check |
 
 **Short ambient visuals are not verified live with the owner watching** (owner, 2026-09-25, verbatim):
 *"stop this live testing. It's wasting time. These tests should be first handled my northstar-type validations and screenshots and such."*
@@ -302,7 +305,7 @@ This file adopts GPT's adversarial review of the draft on these points (prompt a
 
 - a red check before the *final* fix, not before all investigation;
 - "red for the reported reason" defined;
-- non-machine, intermittent and performance defects out of scope (§4);
+- non-machine and performance defects out of scope (§4);
 - prior-pass-now-fail kept separate from a new unrelated red;
 - independent fixes batch;
 - the bench owes a test;
@@ -332,7 +335,9 @@ Superseded by the owner:
 > *"if telemetry detected an anomaly that was corrected and there is no evidence of damage to the test, it can PASS still. If there's any sign of damage to the test itself (active fires in the testing area, colonists dying or getting hurt that were supposed to do something) test is restarted. ALSO, every time a threat to a test appears, it must be logged and a testing environment ticket made to improve/control the testing environment to prevent this interference next time. Let's get better at testing!"*
 
 - **Corrected anomaly, no damage to the test → the row may still PASS.** Damage to the test itself (fire in the test
-  area, a needed colonist hurt or dead, the sample gone) → restart the row. Never score the row FAIL.
+  area, a needed colonist hurt or dead, the sample gone) → restart the row. Never score the row FAIL. Record the spoiled
+  run as an ENVIRONMENT FAULT only when the record shows that something outside the tested behaviour did the damage. If
+  the mod could have done the damage, the run is UNRESOLVED (`standing_rulings.md` §Live tests have three kinds).
 - **Every threat that appears during a test is logged AND gets a test-environment item.** The job of the item is to
   stop that interference next time.
 - **A long clock advance** is allowed only when the colony is safe (§A long clock advance below).

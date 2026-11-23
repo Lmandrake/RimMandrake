@@ -272,6 +272,13 @@ is running).
    - A brief for a by-card item pastes the picked description word for word. `card_capture.py show <ID>` prints it.
    - Each "needs X" that the brief states is work that the builder owes. The close of the builder names it.
 
+   A hunt can be announced to you: a `HUNT OPENED` line in your log, with a note on its item. A hunt is a temporary search
+   for a fault that shows only sometimes in live tests (`standing_rulings.md` §Live tests have three kinds). Needing a
+   hunt is a large event in the testing of a mod. Do one of these, and write which one on the item: call a Fable rescue;
+   add the hunt to a later rescue; look at the evidence yourself. When a tester does not see that a scene needs tag B (stochastic:
+   judged by evidence of success) or tag C (an intermittent hunt), you give the tag, with its evidence. When a serious fault stays unresolved at the mod's pass, write the
+   decision about it. The owner reads that decision in his digest.
+
    An incident can be rung to you: a `DISPATCHER ESCALATION (incident:<id>)` line in your log, or an entry in
    `rimflow incidents`. Take it with `rimflow ack <id> --plan "<next>"`. If you do not, it goes on to a fresh Operations
    run, and then to him. Reading an incident is not an ack.

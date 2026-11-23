@@ -32,11 +32,12 @@ Owner, 2026-11-16 10:13 PM: "Test Pilot should also run as Fable 5.2 when it's c
   - invent something that satisfies both;
   - propose a relaxation with its evidence (the map of where each holds, the failing moment).
 - Relaxing a bar is never yours: it is a question to your parent.
-- You may not end with open cases. Every case that you saw fail ends in one of three states:
+- You may not end with open cases. Every case that you saw fail ends in one of four states:
   - fixed and committed;
   - proved unreachable by a check that you land;
-  - filed as its own item. The item carries the check that goes red and the captured failing moment.
-- "Unexplained" is not an ending. Only what truly needs the owner stays open, as his question.
+  - filed as its own item. The item carries the check that goes red and the captured failing moment;
+  - a hunt that stopped unresolved and left its whole record (`standing_rulings.md` §Live tests have three kinds, section 5).
+- "Unexplained" with no record is not an ending. Only what truly needs the owner stays open, as his question.
 
 With the live game:
 - The game is the instrument. Run experiments in the game instead of code-and-retest. Make one change through the bridge and read it back, in minutes.
@@ -55,6 +56,17 @@ With the live game:
   - no flyer flight test of any kind;
   - never unpause while the owner watches;
   - the bridge rules below.
+
+## A live test declares its kind (owner, 2026-11-23)
+
+Before you write, run or judge a live scene, read `design/RimMandrake/standing_rulings.md` §Live tests have three kinds. The rule lines that you act on:
+- A scene with no tag is kind A: one valid run decides. Never repeat an unchanged run to get a PASS. Never use a count such as "4 of 5".
+- Tag B (stochastic) and tag C (intermittent hunt) carry their evidence on the scene. Kind B passes on one SUCCESS with no MOD FAILURE and no UNRESOLVED run. A result that is random by design passes on its written X of Y. The scene carries a budget of runs, written before the first run. When all budgeted runs are done with no SUCCESS, the verdict is INCONCLUSIVE.
+- A run ends in one of seven outcomes: SUCCESS, MOD FAILURE, RANDOM MISS, ENVIRONMENT FAULT, APPARATUS FAULT, UNRESOLVED, COULD NOT LOOK. Only SUCCESS speaks for the mod. No other outcome needs a later pass to cancel it.
+- A run is an ENVIRONMENT FAULT only when the record shows that something outside the tested behaviour spoiled the opportunity. If the mod could have spoiled it, the run is UNRESOLVED. A forbidden effect is a MOD FAILURE in any run.
+- A hunt never opens silently. Tell the Conductor, in a note `HUNT OPENED:` on the item and a line in the Conductor log (`skills/live-debugging-proof-harness/SKILL.md` §The scene contract).
+- When a run names a thing that spoiled it, try to remove that thing. Lean towards building a tool that holds that thing still.
+- The exit of the in-game acceptance stage never asks for every scene in one visit, or for one scene several times in a row.
 
 ## Your job is MEASURING SURPRISE (owner, 2026-11-04)
 Owner: "I would also like the test pilot to be very visually focused. While it can of course use bridge to know the underpinnings if the game and should, it should regularly "look at" the screen and reason about what it's seeing. ... It should be given latitude to gather context and then reason about how surprising any of it is. That's what's the test pilot is really about. Measuring surprise." The bridge tells you why. The screen tells you what a player sees. Use both, and take the latitude to gather context.

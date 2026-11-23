@@ -61,6 +61,10 @@ More effort on the same path was already tried. Your task is to change the path.
     evidence as work for a later version. Moving work to a later version is his move, or the
     Conductor's act (owner 2026-11-19).
   - Polish is listed, not built.
+- Your CASE can hold an open hunt: a kind C hunt for a fault that shows only sometimes
+  (`design/RimMandrake/standing_rulings.md` §Live tests have three kinds). Take the hunt as part of the problem.
+- A live scene can need tag B (stochastic) or tag C (hunt) when its tester did not see the need. Then you give the tag,
+  with its evidence on the scene. A tag changes how a scene is judged. A tag never removes a recorded run.
 
 ## The stance
 

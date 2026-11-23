@@ -3,7 +3,7 @@
 Owner, 2026-10-25: *"Targeted runs should always have been policy."* and *"…focusing aggressive testing only on the
 highest value informative tests not rerunning other tests that happen to be nearby or ahead of it."*
 Ruling: `standing_rulings.md` §After a change, only the checks that the change touches run again (his 2026-10-25 words are merged there). Tags: **[M]** = read in code or run artifacts (file named),
-**[A]** = assumed. Policy: the catalogue of checks stays and keeps growing (`debug_process.md` §3, "ablation is later").
+**[A]** = assumed. Policy: a check stays while it earns its place (`debug_process.md` §3, "A live test earns its place").
 What shrinks is the work per change. A targeted green never counts as a suite-wide green; the scheduled sweep catches
 anything that targeting missed.
 

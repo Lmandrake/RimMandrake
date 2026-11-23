@@ -1302,8 +1302,9 @@ Before its first run, a scene states:
 A program decides each run from the contract. An agent reads only a run that the program cannot decide.
 
 ### 2. A run ends in one of seven outcomes, kept apart
-SUCCESS · MOD FAILURE · RANDOM MISS (a valid opportunity, an allowed miss) · ENVIRONMENT FAULT · APPARATUS FAULT ·
-UNRESOLVED (something went wrong and nobody knows why) · COULD NOT LOOK.
+SUCCESS · MOD FAILURE · RANDOM MISS (a valid opportunity, an allowed miss) · ENVIRONMENT FAULT · APPARATUS FAULT
+(our script, our tool or our staging spoiled the run) · UNRESOLVED (something went wrong and nobody knows why) · COULD
+NOT LOOK (the run gave no reading).
 - A run is an ENVIRONMENT FAULT only when the record shows that something outside the tested behaviour spoiled the
   opportunity. If the mod could have spoiled it, the run is UNRESOLVED.
 - A forbidden effect is a MOD FAILURE in any run, even a spoiled one.
@@ -1315,7 +1316,7 @@ A scene with no tag is kind A.
   run decides: PASS or FAIL. A count such as "4 of 5" is never used.
 - **Kind B, stochastic.** After a sincere attempt at control, the opportunity is still uncertain, or the result is random
   by design. The scene looks for evidence of success.
-  - A kind B scene passes on one SUCCESS, with no MOD FAILURE and no UNRESOLVED run on the same claim and build.
+  - A kind B scene passes on one SUCCESS, with no MOD FAILURE and no UNRESOLVED run (section 2) on the same claim and build.
   - That pass says "this was seen to work". That pass does not say how often the thing works.
   - How many runs to spend is a budget, written on the scene before the first run. When the budget ends with no
     SUCCESS, the verdict is INCONCLUSIVE, never PASS and never FAIL.
