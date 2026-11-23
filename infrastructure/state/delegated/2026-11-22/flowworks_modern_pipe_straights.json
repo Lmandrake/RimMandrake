@@ -1,0 +1,29 @@
+{
+ "A": {
+  "verdict": "KEEP",
+  "saw": "Subtle, irregular dull patches distinguish it from today. No obvious repeating rhythm, broken tube, or artificial-looking mark.",
+  "redo_brief": ""
+ },
+ "B": {
+  "verdict": "KEEP",
+  "saw": "Uneven grime, fading, and small chips read as wear. The run remains continuous, with no conspicuous periodic pattern.",
+  "redo_brief": ""
+ },
+ "C": {
+  "verdict": "KEEP",
+  "saw": "Sparse clamps read as physical hardware and clearly distinguish this option. No obvious repetition or unintended break.",
+  "redo_brief": ""
+ },
+ "page": {
+  "verdict": "KEEP",
+  "saw": "Focused comparison with readable labels. The colonist establishes scale, and the bottom previews help judge normal play visibility."
+ },
+ "polish": "A's wear could be slightly stronger at play zoom; B's broad grime patches could have softer edges; C's clamps could use slightly clearer metallic shading.",
+ "_meta": {
+  "judge": "GPT via src/RimMandrake/Utils/gpt_consult.py, fresh, did not make the work",
+  "image": "D:/ClaudeWork/rimmandrake/showings/RIMMANDRAKE_REDRAW_FLOWWORKS_TANKS_THREE_STYLES_ONLY_SCRAPPER_READS_RIGHT/PICK_modern_pipe.png",
+  "sources": "src/RimMandrake/FlowWorks/art_source/pipe/compose_modern_straights.py, build_pick_modern_pipe.py",
+  "date": "2026-11-22",
+  "item": "RIMMANDRAKE_INSTALL_TANK_SPRINKLER_PICKS_REDO_MODERN_PIPE_TOO_REPETITIVE"
+ }
+}
