@@ -1,0 +1,19 @@
+{"id": "RM_Ashwallow94127", "kindDef": "RM_Ashwallow", "x": 88, "z": 154, "dead": false, "downed": false, "faction": null}
+{"id": "RM_Ashwallow94145", "kindDef": "RM_Ashwallow", "x": 133, "z": 38, "dead": false, "downed": false, "faction": null}
+{"id": "RM_Ashwallow94146", "kindDef": "RM_Ashwallow", "x": 123, "z": 56, "dead": false, "downed": false, "faction": null}
+{"id": "RM_Ashwallow94147", "kindDef": "RM_Ashwallow", "x": 133, "z": 56, "dead": false, "downed": false, "faction": null}
+{"id": "RM_Ashwallow94148", "kindDef": "RM_Ashwallow", "x": 130, "z": 49, "dead": false, "downed": false, "faction": null}
+{"id": "RM_Ashwallow94149", "kindDef": "RM_Ashwallow", "x": 144, "z": 54, "dead": false, "downed": false, "faction": null}
+{"id": "RM_Ashwallow94150", "kindDef": "RM_Ashwallow", "x": 144, "z": 47, "dead": false, "downed": false, "faction": null}
+{"id": "RM_Ashwallow94151", "kindDef": "RM_Ashwallow", "x": 143, "z": 37, "dead": false, "downed": false, "faction": null}
+{"id": "RM_Ullai97165", "kindDef": "RM_Ullai", "x": 91, "z": 15, "dead": false, "downed": false, "faction": null}
+{"id": "RM_Ullai97166", "kindDef": "RM_Ullai", "x": 87, "z": 26, "dead": false, "downed": false, "faction": null}
+{"id": "RM_Ullai97167", "kindDef": "RM_Ullai", "x": 86, "z": 25, "dead": false, "downed": false, "faction": null}
+{"id": "RM_Ullai97168", "kindDef": "RM_Ullai", "x": 87, "z": 24, "dead": false, "downed": false, "faction": null}
+{"id": "RM_Ullai97169", "kindDef": "RM_Ullai", "x": 91, "z": 22, "dead": false, "downed": false, "faction": null}
+{"id": "RM_Ullai97170", "kindDef": "RM_Ullai", "x": 86, "z": 15, "dead": false, "downed": false, "faction": null}
+{"id": "RM_FurnaceBeast97171", "kindDef": "RM_FurnaceBeast", "x": 43, "z": 26, "dead": false, "downed": false, "faction": null}
+{"id": "RM_Ashwallow97172", "kindDef": "RM_Ashwallow", "x": 94, "z": 25, "dead": false, "downed": false, "faction": null}
+{"id": "RM_Ashwallow97173", "kindDef": "RM_Ashwallow", "x": 91, "z": 30, "dead": false, "downed": false, "faction": null}
+in station rect (80..99, 20..35): ['RM_Ullai97166', 'RM_Ullai97167', 'RM_Ullai97168', 'RM_Ullai97169', 'RM_Ashwallow97172', 'RM_Ashwallow97173']
+[bridge split] 0.2 s wall: load 0.0 / ticks 0.0 / reads 0.0 / other 0.0 / outside calls 0.2 s

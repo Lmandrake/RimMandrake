@@ -61,7 +61,10 @@
   "verdict_fixed": "UNMEASURED",
   "site_checked": false,
   "detail": "ArchSmall: tier list only beside ArchBig (sc_walk needs his full list; ArchBig runs it later)",
-  "held": []
+  "held": [],
+  "class": "SITE",
+  "unrepaired": "ArchSmall cannot hold his full list beside ArchBig in memory, so this check did not run here",
+  "owner": "ArchBig: its full-list run of this check"
  },
  "_extra_tests": [
   "sc_fire_walks_with_wind",
@@ -74,13 +77,23 @@
   "label": "grass_cover"
  },
  "sc_firefoam_sprayer": {
-  "label": "firefoam_repaired",
+  "label": "firefoam_repaired3",
   "class": "SITE",
   "prior": [
    {
     "label": "firefoam_sprayer",
     "class": "SITE",
     "note": "both rows: 'map_fire started no fire' / '6 cells beside the fruit hold no fire': the pad (225,30) held an ancient shrine on this site (a grand stele, 11 walls, an urn, a door, flagstone floor; scripts/pad_peek.py), ember grass refused on its floor"
+   },
+   {
+    "label": "firefoam_repaired",
+    "class": "SITE",
+    "note": "2/2 PASS on 4f68a44fbf; superseded: dc711048f6 changed the bite wait its harvest window advances through"
+   },
+   {
+    "label": "firefoam_repaired2",
+    "class": "SITE",
+    "note": "control PASS; the sprayer row UNMEASURED: the randomly drawn harvester had Plants disabled by backstory (the row's own refusal), rerun"
    }
   ],
   "repair": {
@@ -91,7 +104,8 @@
     "plant": "PYRE_PLANT_RING_GAP=1: the control's west ring edge unfuelled and never lit",
     "command": "PYRE_PLANT_RING_GAP=1 (through WSLENV) python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains firefoam_sprayer",
     "verdict": "FAIL",
-    "evidence": "design/concepts/Pyrelands/version/in_game/visit_6/evidence/pv6_firefoam_planted_ring_gap.json"
+    "evidence": "design/concepts/Pyrelands/version/in_game/visit_6/evidence/pv6_firefoam_planted_ring_gap2.json",
+    "note": "planted on dc711048f6 (the build the counted row runs): control FAIL 'reached the fruit unburned while fires still burned'"
    }
   }
  },
@@ -118,7 +132,7 @@
   ]
  },
  "sc_flamefang_venom": {
-  "label": "flamefang_venom3",
+  "label": "flamefang_venom5",
   "class": "HARNESS",
   "prior": [
    {
@@ -135,17 +149,32 @@
     "label": "flamefang_venom2",
     "class": "HARNESS",
     "note": "4/5 PASS; venom_wait_out stopped 60 ticks in on its own undeclared biter as a 'hostile_arrival' (fixed 2a6d7b392a)"
+   },
+   {
+    "label": "flamefang_venom3",
+    "class": "HARNESS",
+    "note": "bite, rises, plain PASS; tended RESTART (the first row's untended patient downed by its own venom, fixed 3b18f315d8); wait_out RESTART (site colonist died day 3-4: the bite wait never ran the heat guard, fixed dc711048f6)"
+   },
+   {
+    "label": "flamefang_venom_planted_wrong_tend2",
+    "class": "HARNESS",
+    "note": "planted wrong tend: tended FAIL as planted; wait_out RESTART (before dc711048f6)"
+   },
+   {
+    "label": "flamefang_venom4",
+    "class": "HARNESS",
+    "note": "on dc711048f6: wait_out PASS (the heat guard holds); tended RESTART on the first patient's venom (fixed 3b18f315d8)"
    }
   ],
   "repair": {
    "class": "HARNESS",
-   "commit": "2a6d7b392af9fd2caab0aa8a8069fec5958f37c1",
-   "what": "_bite_until declares each biter a fixture (selftest_pyrelands_venom_staging.py red 960/960 cases on the parent, 0/43 on the fix); 785e683198 reads a rises row with no venom read UNMEASURED; red-seen T_VENOM_STAGING recorded for both",
+   "commit": "3b18f315d8691c22cda1fcb1a90af6c1c86c02c6",
+   "what": "785e683198 (rises row with no venom read UNMEASURED), 2a6d7b392a (biter declared a fixture), dc711048f6 (the bite wait runs the heat guard), 3b18f315d8 (the tended row leaves earlier envenomed patients out of its damage reading); selftest_pyrelands_venom_staging.py red on each parent, 0/46 now; red-seen T_VENOM_STAGING recorded for each",
    "planted": {
     "plant": "PYRE_PLANT_VENOM_TEND_WRONG_PATIENT=1: the doctor tends the untended patient",
     "command": "PYRE_PLANT_VENOM_TEND_WRONG_PATIENT=1 (through WSLENV) python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains flamefang_venom",
     "verdict": "FAIL",
-    "evidence": "design/concepts/Pyrelands/version/in_game/visit_6/evidence/pv6_flamefang_venom_planted_wrong_tend2.json"
+    "evidence": "design/concepts/Pyrelands/version/in_game/visit_6/evidence/pv6_flamefang_venom_planted_wrong_tend4.json"
    }
   }
  }

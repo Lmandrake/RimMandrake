@@ -21,7 +21,7 @@ for p in sorted(glob.glob(os.path.join(V, "evidence", "pv6_*.json"))):
             if not os.path.exists(src):
                 print("MISSING", lab, src); continue
             dst = os.path.join(out, "%s__%s" % (lab, os.path.basename(src)))
-            if os.path.getsize(src) < 1 << 20:
+            if os.path.getsize(src) < 1000000:   # the brief: under 1 MB
                 if not os.path.exists(dst):
                     shutil.copy2(src, dst)
             else:   # a reduced JPEG copy (long side 1600) to look at; the full file stays where the game wrote it

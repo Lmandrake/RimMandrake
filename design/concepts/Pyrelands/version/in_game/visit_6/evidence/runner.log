@@ -62,3 +62,16 @@ START final 2026-11-23 01:59:37
 DONE firefoam_sprayer@firefoam_repaired2 reload_rc=0 rc=1 47s 02:00:24
 DONE PYRE_PLANT_RING_GAP=1:firefoam_sprayer@firefoam_planted_ring_gap2 reload_rc=0 rc=1 61s 02:01:25
 DONE flamefang_venom@flamefang_venom4 reload_rc=0 rc=1 344s 02:07:09
+DONE PYRE_PLANT_VENOM_TEND_WRONG_PATIENT=1:flamefang_venom@flamefang_venom_planted_wrong_tend3 reload_rc=0 rc=1 432s 02:14:21
+DONE +script:design/concepts/Pyrelands/version/in_game/visit_6/scripts/load_walk.py@load_walk reload_rc=skipped rc=0 20s 02:14:41
+DONE +script:design/concepts/Pyrelands/version/in_game/visit_6/scripts/walk_closeups.py@walk_closeups reload_rc=skipped rc=0 12s 02:14:53
+END final 2026-11-23 02:14:53
+START final2 2026-11-23 02:15:04
+DONE firefoam_sprayer@firefoam_repaired3 reload_rc=0 rc=1 71s 02:16:15
+DONE flamefang_venom@flamefang_venom5 reload_rc=0 rc=1 405s 02:23:00
+DONE PYRE_PLANT_VENOM_TEND_WRONG_PATIENT=1:flamefang_venom@flamefang_venom_planted_wrong_tend4 reload_rc=0 rc=1 345s 02:28:45
+END final2 2026-11-23 02:28:45
+START probe 2026-11-23 02:28:47
+DONE +script:design/concepts/Pyrelands/version/in_game/visit_6/scripts/load_walk.py@load_walk2 reload_rc=skipped rc=0 16s 02:29:03
+DONE +script:design/concepts/Pyrelands/version/in_game/visit_6/scripts/walk_creatures_probe.py@walk_creatures_probe reload_rc=skipped rc=0 1s 02:29:04
+END probe 2026-11-23 02:29:04
