@@ -53,8 +53,11 @@ If one of these is missing, answer `UNSURE: not given <what>`. Never guess the m
   `src/RimMandrake/Utils/artpipe/common.py`). This card retired the outline clause that B1 carried from 2026-09-14.
   Exception: the Pyrelands ullai carries a MEDIUM black outline (option B) by the owner's pick of 2026-11-23, this creature only.
 - B2. Legibility at play zoom: at 32 px/cell the subject reads as a few bold shapes, with a body value clearly
-  apart from the ground. Grey mud is a REDO reason. This is an advisory measure
-  only: never refuse on a number. — Lesson 2026-09-12, softened by Owner 2026-09-14
+  apart from the ground. Grey mud is a REDO reason. Grey mud is either of two faults, and one alone is a REDO. Fault
+  one: the body blends into the ground. Fault two: the body is dull, with no clear shapes. A plain body with clear
+  shapes, clearly apart from the ground, is not grey mud. Judge both faults by eye. This is an advisory measure
+  only: never refuse on a number. — Lesson 2026-09-12, softened by Owner 2026-09-14; the two faults: Owner card
+  2026-11-23 (`RIMMANDRAKE_ANSWER_SEVEN_TERMS_NO_SOURCE_DEFINES_GREY_MUD`)
 - B3. Matches its **sibling keeps**: the other sex, lifestages and variants that he already approved set the style,
   palette and scale. A candidate that reads as a different artist or size class is REDO. — Owner 2026-10-21
   (Varactyl; `ART_SHEET_FIX_SIBLING_KEEPS_UNSEEN`, `art_sheet.py sibling_keeps`)
@@ -72,8 +75,10 @@ If one of these is missing, answer `UNSURE: not given <what>`. Never guess the m
   incorrectly sized creatures")
 - C3. A building's south facing is drawn from the measured building camera (orthographic, ~35°; a round top is an
   ellipse 0.56 tall for its width). — `design/RimMandrake/building_camera_perspective_2026-10-14.md`
-- C4. Registration on the rigid body: heads centred and sized on the skull mass (crown to chin), never ear tips,
-  horns or crests. A flyer's body stays static across frames while wings move. — Owner 2026-10-20
+- C4. Registration on the rigid body: line the pictures up on the part that does not move, never on the picture's
+  outer extremes. For a flyer, that part is the body. For a head, that part is the skull. Heads are centred and sized
+  on the skull mass (crown to chin), never ear tips, horns or crests. A flyer's body stays static across frames while
+  wings move. — Owner 2026-10-20 (`FLIER_FRAMES_AUDIT_BODY_NOT_WING_EXTREMES`)
 - C6. A pipe, hose or nozzle is drawn in its true perspective plane. Its open bore shows only where the pipe
   really turns toward the camera. A pipe lying along the ground that shows its inside reads as "bent up" — REDO.
   — Owner card 2026-10-23 ("Reel_Deployed_north.png shows the inside of the pipe, which implies the pipe is
@@ -94,8 +99,9 @@ If one of these is missing, answer `UNSURE: not given <what>`. Never guess the m
   REDO. — `generating-rimworld-sprites`
 - D4. Real alpha: no backdrop, halo, ground shadow or scenery. Some ground matter is the subject, not scenery: matter
   that the subject's own description says it makes where it stands (the fermatalis's mounds of mash). Any other prop
-  on the ground is scenery. — `generating-rimworld-sprites`; B1's prompt; Owner 2026-10-24 picked `RM_DecayDrake` r2
-  with its mash mounds (criteria_ledger CL-035, owner_escalations_cauldron)
+  on the ground is scenery. — `generating-rimworld-sprites`; the house art prompt (`HOUSE_ART_REGISTER`, the
+  prompt text that B1's item made canonical); Owner 2026-10-24 picked `RM_DecayDrake` r2 with its mash mounds
+  (criteria_ledger CL-035, on the review sheet `owner_escalations_cauldron_sheet_2026-10-24`)
   - D4 exception: `RM_LadderPortable` west/east facings may carry a small soft floor shadow attached to the foot. — Owner card 2026-10-22 ("How should we resolve the side walls? → Keep side walls, add a shadow")
 
 ### E. Provenance
@@ -106,7 +112,9 @@ If one of these is missing, answer `UNSURE: not given <what>`. Never guess the m
 - E3. A delegated call (a call that an agent makes in the owner's place) never displaces a picture that he KEPT.
   The one exception is the art-eval pipeline's regen verdict: the picture is redrawn, and he sees it after on the
   shadow sheet as *replaced your kept art*, with a one-click revert. If a kept picture looks wrong, say so in the
-  report. — Owner 2026-10-19; owner card 2026-10-23 06:42 (*"Kept art judged really bad: may the pipeline redraw it on its own? → Yes, but show me after"*);
+  report. So on a picture that he kept, your verdict is KEEP, whatever other line it breaks. Write the concern in
+  `notes`, with no refusal record. Only the art-eval pipeline's own judge, which does not use this brief, may write a
+  regen verdict on it. — Owner 2026-10-19; owner card 2026-10-23 06:42 (*"Kept art judged really bad: may the pipeline redraw it on its own? → Yes, but show me after"*);
   `delegation_policy.md` §2.3
 - E4. His note on a subject is a requirement, quoted verbatim. A candidate that ignores his note is REDO. — Owner
   (req 9)
@@ -127,6 +135,17 @@ If one of these is missing, answer `UNSURE: not given <what>`. Never guess the m
 6. Scale, canvas, alpha (D).
 7. Provenance and his notes (E).
 8. Pawn faces (F).
+
+## When the look is enough, and when to stop
+
+- Enough: every picture and facing that you were given has one verdict (KEEP, REDO or UNSURE) with its evidence.
+  Then stop. Do not look for more.
+- Make one full inspection, then one check of the repairs. A re-judge after a regen looks only at the REDO lines. It
+  raises something new only where the regen itself changed the picture. Never look a third time
+  (`standing_rulings.md` §The judge refuses flaws, not polish). The danger that this count guards: a judge asked again
+  never stops. Pyrelands stage 5 took nine recorded looks (2026-11-17).
+- A REDO quotes a violated constraint. A wish that no constraint states is a `proposals` line. It files no ticket and
+  blocks nothing.
 
 ## Output — one JSON file, committed by the window
 
@@ -158,7 +177,14 @@ So the file also carries a `contract` block in the form of the refusal contract
 - every other constraint that you applied, in `passed`;
 - a verdict on the constraint itself.
 
-`clause` is the constraint id. `evidence` names the picture that you looked at.
+- `clause` is the constraint id. `evidence` names the picture that you looked at.
+- `criterion_hash` is a short code made from the words of the constraint line. It shows which wording you judged. The
+  launching window fills it in, so leave it empty.
+- `new_since` says why a refusal is raised now. On the first look it is `first`. Later it is one of four:
+  - `unfixed:<constraint id>`: an earlier refusal was not fixed;
+  - `changed:<file>`: the named input changed;
+  - `regression:<constraint id>`: a constraint that passed before now fails;
+  - `late`: you could have raised it on an earlier look.
 
 ```json
 {"contract": {"item": "<ledger item>", "family": "art_judge_brief", "sha": "<picture sha>",

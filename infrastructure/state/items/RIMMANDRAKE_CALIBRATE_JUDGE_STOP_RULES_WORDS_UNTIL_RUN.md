@@ -20,7 +20,7 @@ Briefs that now carry a stop rule, and their calibration state on 2026-11-19 (`r
 | `src/RimMandrake/Utils/findings_judge_prompt.md` | step 2: worth the touch, "Enough: each signature …" | none |
 | `design/RimMandrake/scene_look_judge_brief.md` | §When the look is enough, and when to stop | `scene_look_judge_brief`, UNTESTED |
 | `.claude/agents/rm-judge.md` | §When the look is enough, and when to stop | none |
-| `design/RimMandrake/art_judge_brief.md` | NOT YET WRITTEN, on purpose (below) | `art_judge_brief`, CALIBRATED |
+| `design/RimMandrake/art_judge_brief.md` | §When the look is enough, and when to stop (written 2026-11-23) | `art_judge_brief`, CALIBRATED 2026-11-23 on 14 cases |
 
 Written without an acceptance check here, and why:
 - `src/RimMandrake/rimflow/roles/conductor.md` §Review briefs: the stop rule for the blind-challenge judge briefs that
@@ -32,26 +32,8 @@ Written without an acceptance check here, and why:
   UNTESTED). It already stops at the second `not_covered`; its polish route is owed in code, under its own boundary
   page.
 
-**Why the art judge brief has no stop rule yet.** `art_judge_brief` was CALIBRATED on 2026-11-19 at 14:00:26Z (11
-planted cases). Any edit resets it to UNTESTED by its hash, and then its verdicts have no consequence until a model
-run (`refusal_contract.advisory`). So the edit and its calibration run go in ONE sitting, here. The text to add, after
-§Checklist (per subject):
-
-```
-## When the look is enough, and when to stop
-
-- Enough: every picture and facing that you were given has one verdict (KEEP, REDO or UNSURE) with its evidence.
-  Then stop. Do not look for more.
-- One full inspection, then one check of the repairs: a re-judge after a regen looks only at the REDO lines and
-  raises something new only where the regen itself changed it. Never a third look (`standing_rulings.md` §The judge
-  refuses flaws, not polish). The danger this count guards: a judge asked again never stops (Pyrelands stage 5 took
-  nine recorded looks, 2026-11-17).
-- A REDO quotes a violated constraint. A wish that no constraint states is a `proposals` line: it files no ticket
-  and blocks nothing.
-```
-
 Work: write a calibration family (planted good and bad cases, `judge_cases`) for each brief in the table that has
-none, add the art judge text, then run `python3 src/RimMandrake/rimflow/refusal_contract.py calibrate --model <family>`
+none, then run `python3 src/RimMandrake/rimflow/refusal_contract.py calibrate --model <family>`
 per family. A brief that comes out FAILED is reported with its case results; never edit a case to pass.
 
 ## criteria

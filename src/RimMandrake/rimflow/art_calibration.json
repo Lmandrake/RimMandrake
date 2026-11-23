@@ -63,6 +63,24 @@
    "east.png": "fd658e5252c6ed0ec21a37043d3f9b1f6a8c960dd6d04ff79ea46c1e9d111659",
    "north.png": "749228c8e4f3a4e89b85be2c5f2d8e5414001997195ba990c2305d2c57d58cc3",
    "scale.png": "3e44689226d24bc5a6b8eb81fc2b31fd337391a9262730a5ea1f7cb7244cd790"
+  },
+  "RM_DecayDrake__p1": {
+   "south.png": "8ca90a234767cc71693171b146f9fb013415e68ec7be4b89493d6e59b3f75ca3",
+   "east.png": "f9e59e7f147d571be6d5539cb09ed296d3fa8c33fb1f1a541c7d15593b82ab3d",
+   "north.png": "5b82e7c5ec54c35f2573f8527f2ef31f619bad154aaea40fd801f6bf2634788c",
+   "scale.png": "122242d70d6a19563560b27ebffc2aa9c787f6185cd000ef5a593e6427cbab89"
+  },
+  "RM_DecayDrake__p2": {
+   "south.png": "f2264487c1e13de0fd234e975b746a4140403c08e03953b26220ebb132422917",
+   "east.png": "80312187c2b2dd6d9d61f7c9030d6878e1f8196d091efe4b19625b252f90a783",
+   "north.png": "38d0b762b1a65a0e635801fb78db637716a9386ae366b617fed914a46180edbd",
+   "scale.png": "3dd71b686b56f8c5cd6114e319ac5f19b6c709e01f1d4ec516c109a88b7b1365"
+  },
+  "RM_DecayDrake__p3": {
+   "south.png": "84fbd832c2e5837ec6abb96c221826b9300448d92e4c3a35e08c9e4782209b59",
+   "east.png": "2f90cedb52183f247fad266f554bd8e058dbfa7e4bedd98e555b25afd24c3e21",
+   "north.png": "85253bf558fc200d92b052b47fd4f64145af4a8caf3093b253e026df4c27921d",
+   "scale.png": "e1d7de048f1d695390fd67fdd26d3481fd470ee19ef5b82d956f4792b8a9ab9c"
   }
  },
  "planted": [
@@ -81,6 +99,26 @@
    "plant": "north_from_south",
    "route": "north_rear",
    "why": "owner PICKED DecayDrake r2 (owner_picks_2026-10-24); its north.png is replaced by its own south.png, whose face (eyes, snout, jaw) then sits where the rear belongs: C1 refuses and the fix is a rear-view redraw (point 27)"
+  },
+  {
+   "id": "variant_RM_DecayDrake_p1",
+   "expect": "refuse",
+   "card": "RM_DecayDrake__p1",
+   "route": "b2",
+   "why": "RM_DecayDrake r2 (owner-picked), altered offline by design/specs/2026-11-19-plain-english-rule-docs/make_b2_planted_cases.py: hue and value moved to the true-scale panel's ground, shapes kept: the body blends into the ground (owner card 2026-11-23, B2)"
+  },
+  {
+   "id": "variant_RM_DecayDrake_p2",
+   "expect": "refuse",
+   "card": "RM_DecayDrake__p2",
+   "route": "b2",
+   "why": "RM_DecayDrake r2 (owner-picked), altered offline by design/specs/2026-11-19-plain-english-rule-docs/make_b2_planted_cases.py: grey, darker than the ground, interior flattened: a dull body with no clear shapes (owner card 2026-11-23, B2)"
+  },
+  {
+   "id": "variant_RM_DecayDrake_p3",
+   "expect": "pass",
+   "card": "RM_DecayDrake__p3",
+   "why": "RM_DecayDrake r2 (owner-picked), altered offline by design/specs/2026-11-19-plain-english-rule-docs/make_b2_planted_cases.py: nearly grey, darker than the ground, every shape kept: plain but legible, which B2 does not refuse"
   }
  ]
 }

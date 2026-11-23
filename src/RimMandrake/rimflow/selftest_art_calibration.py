@@ -112,6 +112,10 @@ def planted_cases(AC):
     kinds = {c.get("plant"): c for c in AC.cases()}
     check("planted: an owner-kept subject that must pass (E3)",
           (kinds.get("owner_kept") or {}).get("expect") == "pass", kinds.get("owner_kept"))
+    b2 = {c["id"]: c for c in AC.cases() if c["id"].startswith("variant_")}
+    check("planted: B2 is tested both ways (two refused on B2, one plain sprite passed)",
+          sorted((c["expect"], c.get("route") or "") for c in b2.values())
+          == [("pass", ""), ("refuse", "b2"), ("refuse", "b2")], b2)
     check("planted: a north facing whose fix must be a rear-view redraw",
           (kinds.get("north_from_south") or {}).get("expect") == "refuse"
           and (kinds.get("north_from_south") or {}).get("route") == "north_rear", kinds.get("north_from_south"))
@@ -212,7 +216,12 @@ def outcome_cases(AC):
              answer([REDO_N], [c1_refusal("Use a rear view: rotate south.png 180 degrees, not a new drawing.")]), [],
              "refuse, misdirected"),
             ("north: a refusal on another clause only is misdirected", "north_rear",
-             answer([dict(REDO_N, violated="B2")], [dict(c1_refusal(), clause="B2")]), [], "refuse, misdirected")):
+             answer([dict(REDO_N, violated="B2")], [dict(c1_refusal(), clause="B2")]), [], "refuse, misdirected"),
+            # RIMMANDRAKE_ANSWER_SEVEN_TERMS_NO_SOURCE_DEFINES_GREY_MUD: a B2 plant is caught on B2, not on another line
+            ("b2: a B2 refusal is the planted refusal", "b2",
+             answer([dict(REDO_N, violated="B2")], [dict(c1_refusal(), clause="B2")]), [], "refuse"),
+            ("b2: a refusal on another clause only is misdirected", "b2", answer([REDO_N], [c1_refusal()]), [],
+             "refuse, misdirected")):
         got = o(route, ans, errs)
         check("outcome: %s" % name, got == want if want != "refuse, misdirected" else got.startswith(want), got)
 

@@ -17,6 +17,10 @@ $RM_CALIBRATION_RESULTS. Every picture is art already made and already ruled by 
   north_from_south_RM_DecayDrake_r2   owner-picked art whose north.png is replaced by its own south.png (a face where
                               the rear belongs) -> must be refused on C1 at north.png with a rear-view redraw as the
                               fix, never a rotation of the south (point 27); any other refusal is misdirected
+  variant_RM_DecayDrake_p1..p3   the same owner-picked art altered offline (make_b2_planted_cases.py, named in each
+                              case's `why`): p1 blends into the ground and p2 is dull with no clear shapes -> each must
+                              be refused on B2 (owner card 2026-11-23); p3 is plain but legible -> must pass. The ids
+                              and card names tell the judge nothing: the id is the item name in its prompt
 
 What the judge is given per subject (the brief's "What you are given"): each facing picture (or the single plant
 picture) at full resolution, the true-scale panel beside a vanilla human (scale.png), a 32 px/cell play-zoom copy of
@@ -302,7 +306,8 @@ def contract_errors(so, g):
 def outcome(route, so, errs):
     """-> "pass", "unsure", "refuse", or a refusal production would not act on: "refuse, malformed" (the record failed
     the contract after its re-ask), "refuse, invalid" (a REDO without its quoted line or what was seen) or "refuse,
-    misdirected (<clauses>)" on the north case (no C1 refusal at north.png whose fix is a rear-view redraw)."""
+    misdirected (<clauses>)" on the north case (no C1 refusal at north.png whose fix is a rear-view redraw) or on a B2
+    case (no B2 refusal)."""
     redo, refs, v = _refusing(so or {})
     if not redo and not refs:
         return "pass" if v and all(x.get("verdict") == "KEEP" for x in v) else "unsure"
@@ -314,8 +319,12 @@ def outcome(route, so, errs):
         ok = any(r.get("clause") == "C1" and any("north" in str(e) for e in r.get("evidence") or [])
                  and REAR_RE.search(str((r.get("smallest_fix") or {}).get("what", "")).lower())
                  and not rotate_fix((r.get("smallest_fix") or {}).get("what")) for r in refs)
-        if not ok:
-            return "refuse, misdirected (%s)" % ", ".join(sorted({str(r.get("clause")) for r in refs}) or ["no record"])
+    elif route == "b2":
+        ok = any(r.get("clause") == "B2" for r in refs)
+    else:
+        ok = True
+    if not ok:
+        return "refuse, misdirected (%s)" % ", ".join(sorted({str(r.get("clause")) for r in refs}) or ["no record"])
     return "refuse"
 
 
