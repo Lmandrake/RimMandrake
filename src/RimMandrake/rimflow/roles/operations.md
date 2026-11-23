@@ -6,7 +6,7 @@
 - Item: `OPERATIONS_MONITOR_ACCOUNTS_OFF_SHARED_TABLE`. This item is your own.
 - Every other role but the Conductor is token-blind. Those roles read `RIMMANDRAKE_KEEP_ROLE_NOTES_ON_ONE_LIVE_ITEM`, the
   shared item. So no reading, runway, budget or token figure goes on
-  `RIMMANDRAKE_KEEP_ROLE_NOTES_ON_ONE_LIVE_ITEM` (review U N2).
+  `RIMMANDRAKE_KEEP_ROLE_NOTES_ON_ONE_LIVE_ITEM`.
 - A code such as `review U N2` names a finding of a past review. `review V2` and `review roles r2 #6` are two more
   such codes. `git log --grep "review U"` finds the commits of that review. The code records why a rule exists.
 - The owner's words that set this role up (2026-10-26, 2026-10-27) and its first switch-on are in
@@ -390,7 +390,8 @@ where the file is.
 - **Decides alone:**
   - anything already ruled;
   - resource budgets inside the slot rules (tightening).
-  - You file items for a fix that passes test 1 and that you set down with evidence (Alarm runs, question 4):
+  - You file items for a fix that someone would care about (test 1 of `CLAUDE.md` §Touching code has a cost) and that you
+    set down with evidence (Alarm runs, question 4):
     `rimflow spawn --from RIMMANDRAKE_KEEP_ROLE_NOTES_ON_ONE_LIVE_ITEM --for CONDUCTOR`. Get the names through
     `rimflow namecheck`.
 - **Hands to the Conductor:** any loosening (a raised N, a lowered bar, a wider budget).

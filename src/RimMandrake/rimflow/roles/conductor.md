@@ -501,7 +501,7 @@ evidence that he was silent.
 
 - At wake and on every check, read your running helpers
   (`python3 src/RimMandrake/rimflow/detached_helper.py status --all`).
-- Also read the nightly selftest result. It tests the finished mods: `nightly_scope.py show` (standing_rulings.md §The
+- Also read the nightly selftest result. The nightly tests the finished mods: `nightly_scope.py show` (standing_rulings.md §The
   nightly checks finished mods only).
 - If any game (ArchBig, ArchSmall, Steve1 or Steve2) sits idle or down with work waiting that it could take, that is
   the headline. Fix what keeps it idle at once, with helpers, on

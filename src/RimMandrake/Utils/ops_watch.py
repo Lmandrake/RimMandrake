@@ -88,7 +88,7 @@ HOUR = 3600.0
 DAY = 24 * HOUR
 # families whose collector was removed: their old keys never read as silent and their alarms leave (relentless: the retired
 # tick's belt, 2026-11-18; plan: the retired Producer's daily list, 2026-11-23)
-REMOVED_FAMILIES = ("relentless", "plan")
+REMOVED_FAMILIES = ("relentless", "plan", "health")
 FAMILIES = ("accounts", "codex", "steve", "testing", "disk", "timers", "flow", "process", "tps", "production", "v3", "tokentalk",
             "evidence", "companion", "seats", "roles", "queues", "wrapup", "maturation", "pager")
 

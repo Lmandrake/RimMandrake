@@ -740,8 +740,8 @@ failure classes came from reviewers, judges and auto-filers with no stopping lev
   - A small change is a change whose check is a quick manual validation: an installed picture equals his pick, a value
     reads back, a file is deployed. The agent that made it checks it on the spot (a hash, a read, a single bridge call)
     and closes it with that evidence: `rimflow verify ... --level L0`, then `close`.
-  - When a seat or helper finds why an item is stuck, that seat or helper does the fix and the remaining check in the
-    same sitting, and closes the item with that evidence. Never write the diagnosis or a `NEXT:` onto the ticket instead.
+  - When a seat or helper finds why an item is stuck, that seat or helper does the fix and the remaining check at once.
+    Then the same seat or helper closes the item with that evidence. Never write the diagnosis or a `NEXT:` onto the ticket instead.
   - Never queue, unhold or re-release an item for a check alone. An item goes back to the pipeline only when real build
     work remains.
 - **How the rules fit.** §Code is clean when its promises are tested is this rule for code review (significant, the
@@ -1618,7 +1618,7 @@ The rule, for every agent and program that can move a mod:
   is in scope `all` (`control.run_scopes`), so it would also stop the repair helpers this rule wants. Ledger calls made
   under it: `--per-ruling RIMMANDRAKE_ENACT_NO_MOD_RUNS_ON_BROKEN_PIPELINE_RULING`.
 
-**It replaces the rule of 2026-11-03** (the Conductor's decision, 2026-11-23: the later ruling wins). Then he said of
+**This section replaces the rule of 2026-11-03** (the Conductor's decision, 2026-11-23: the later ruling wins). Then he said of
 Relentless, which is now retired: *"Relentless fixes operations or conductor or designer or any other part of the system
 before continuing content creation yes."* The pipeline's form of *"Yes relentless fixes itself first."* is §The pipeline
 fixes its own defects. The health verdict, its budgets and its pauses are deleted; his other words of those days are in
@@ -1704,7 +1704,7 @@ his to overrule: the pipeline's machinery is the most fluid code there is, so it
   at `passed`, or a kept older record that is): `src/<tier>/<Mod>/**/selftest*.py` and
   `src/RimMandrake/Utils/selftest_<mod>_*.py`. A mod in production is never in it; process machinery is never in it.
   None passed: the run says "nothing finished yet", green. `python3 src/RimMandrake/Utils/nightly_scope.py show`.
-- **It runs now.** He chose the hold until a mod passed; the first mod passed and the hold lifted itself (measured
+- **The nightly runs now.** He chose the hold until a mod passed; the first mod passed and the hold lifted itself (measured
   2026-11-23: `nightly_scope.py show` reads 41 tests from 1 finished mod, and `timers_held.json` is empty). So a missing
   nightly is a fault. A hold would come back only by `timers_guard.py hold --until finished-mod`, a recorded,
   ruling-backed stop.

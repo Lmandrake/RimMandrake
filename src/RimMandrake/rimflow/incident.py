@@ -170,7 +170,7 @@ def readings(table, status, now):
     return bad, True, seen
 
 
-REMOVED_FAMILIES = ("relentless", "plan")    # ops_watch.REMOVED_FAMILIES: collectors taken out
+REMOVED_FAMILIES = ("relentless", "plan", "health")    # ops_watch.REMOVED_FAMILIES: collectors taken out
 
 
 def retired_sane(status, metric):

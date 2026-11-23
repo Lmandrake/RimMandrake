@@ -205,3 +205,24 @@ next look can ask whether the citing code is alive.
 - Who reads `rm-streams-collect`'s page; whether `STATUS_BOARD.html` (written 9:03 AM today) has a reader: not traced.
 - The exam and judge briefs in `design/concepts/`: not looked at.
 - Whether he still opens the old codebase-health page: only he knows.
+
+## 7. What was done (2026-11-23, item `RIMMANDRAKE_DECIDE_RETIRE_CENSUS_EIGHTEEN_ARE_THE_CONDUCTORS`)
+
+The Conductor decided: every row of Table 1, and rows 4, 5, 6, 7, 8 and 10 of Table 2. The removed paths, units and words
+are in `selftest_retired_era_gone.py` (`RETIRED_PATHS`, `RETIRED_UNITS`, `RETIRED_WORDS`). Set down, each with its evidence:
+- `rm-dispatcher.service`: `seat_restart.py` (2 places) and `rm-restart-now.service` start it. Only its timer went.
+- The ring itself (`dispatcher.ring`, `caps`, `no_handoff`, `doorbell.py`): `incident.py` gives a ring `how: doorbell` by
+  default, and `incident_execute` sends it; `no_handoff.conductor_log` is the live path of every RAISE FIRST line.
+- `steve_cpu_retest.py`: `soak_read.py` and `steve_cpu_sweep.py` import it. Its timer, its units and its copy on D: went.
+- `focused_testing_plan_2026-10-25.md`: seven files of `modcheck` cite it as their design.
+- The close pre-screen and the reader of Operations' proposals: the run
+  `RIMMANDRAKE_REVIVE_FIVE_PROMISED_THINGS_SILENTLY_NOT_HAPPENING` rebuilt the first (`close_check.py`,
+  `rm-close-check.timer`) and holds the second.
+
+Candidates seen on the way, for the next census:
+- `alarm_item` in `dispatcher_schedule.json` is `RIMFLOW_V3_BUILD_DISPATCHER_FIRST`, an item that is dropped.
+  `OPERATIONS_MONITOR_ACCOUNTS_OFF_SHARED_TABLE`, the note home of Operations, is done.
+- Two live promises watch `series/relentless.jsonl`, last written 2026-11-18. One item of them reads broken
+  (`CHECKER_DEATHS_ALARM_BUILD_29_WENT_UNHEARD`).
+- `owner_pause.json` and `run_rules.json` still describe the retired `relentless.py` as their reader.
+- The state machine of `steve_cpu_retest.py` (arm, tick) and its selftest: no clock runs it.
