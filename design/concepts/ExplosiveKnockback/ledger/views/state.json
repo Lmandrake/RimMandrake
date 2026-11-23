@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "4be432821ab9cc335f98f8f47b87d0fbfef7132eba71e6cdd1d253154e74bbec",
+  "body_sha256": "095bef0c946134bf7846e74782e68e2f43feb45fe047089f2d4ed7addc06431f",
   "reducer": 1,
   "shards": {
    "BACKFILL": 344431,
@@ -14,7 +14,7 @@
    "HOLDER.run-1795435910": 630,
    "HOLDER.run-1795441975": 2951,
    "HOLDER.run-1795448832": 5159,
-   "HOLDER.run-1795461416": 292,
+   "HOLDER.run-1795461416": 958,
    "JUDGE.judge-1794890427": 18837,
    "JUDGE.judge-1795437145": 6544,
    "OWNER": 1207
@@ -684,11 +684,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795448832",
-   "done": "visit 4 on ArchBig: mod fault fixed 2590111487 (thrown colonist on a covered pit fell twice), sc_cauldron_gas/sc_pit_fall/sc_pawn_hits_pawn repaired and seen both ways, 54 of 56 PASS, walk save EK_VISIT4_WALK_20261123",
-   "next": "Steward: read fix 2590111487 as fresh reader, then fix sc_spared carrier hold, run the walk frame arms, fix koth.isid identity and rerun barrage and walk raid",
-   "ruled_out": "pawn_arc rehaul=False is crowding (cell_reserved), not the list; wind drift was never tested properly",
-   "ts": "2026-11-23T19:04:32Z"
+   "by": "HOLDER.run-1795461416",
+   "done": "fix 2590111487 read sound dc7550420b; koth.isid identity fixed 4ecd015e866f; moved to in-game visit 5 (ed2418697333)",
+   "next": "Holder with game: repair sc_spared (read preBlast[carrier] first), run the walk frame arms, rerun walk and barrage",
+   "ruled_out": "full rows off the walk list: koth.isid was uninstalled, not a list change; carrier walk-off is unproven",
+   "ts": "2026-11-23T19:49:32Z"
   },
   "decisions": {
    "bar:inv_items_teleport": {
@@ -884,7 +884,7 @@
     "ts": "2026-11-16T06:51:51Z"
    }
   },
-  "events": 617,
+  "events": 618,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -2506,7 +2506,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-23T19:32:19Z",
+   "last": "2026-11-23T19:49:32Z",
    "lease": "run-1795461416",
    "released": false,
    "token": 17
