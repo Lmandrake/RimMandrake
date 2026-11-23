@@ -1,0 +1,12 @@
+diff --git a/src/RimMandrake/GimmeSomeSlack/Defs/Planted_HoseReel.xml b/src/RimMandrake/GimmeSomeSlack/Defs/Planted_HoseReel.xml
+new file mode 100644
+--- /dev/null
++++ b/src/RimMandrake/GimmeSomeSlack/Defs/Planted_HoseReel.xml
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="utf-8"?>
++<Defs>
++  <ThingDef>
++    <defName>RM_HoseReel</defName>
++    <label>hose reel</label>
++  </ThingDef>
++</Defs>
