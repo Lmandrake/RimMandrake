@@ -1,0 +1,1 @@
+A page that must build the same text twice a minute apart cannot embed game_lock's line(): it carries the hold age as '(N min)'. Build the game text from name, state, seat and since_local instead (maturation_nonmod.game_line). A keyword rule over ledger notes also needs the negation: 'no keeper save' matched 'keeper save' and put an unstaged item under Ready for his review.
