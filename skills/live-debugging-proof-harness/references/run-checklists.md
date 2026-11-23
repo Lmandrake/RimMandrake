@@ -24,7 +24,7 @@ Each line names the failure it prevents. Every one of these cost a full-list run
 
 - [ ] **Launch via Steam**, not the bare exe.
 - [ ] **A cold load of the full list takes ~13–19 minutes** (03:16 → 03:35 on 2026-10-11).
-      `launch_and_wait.sh` gives up after ~5 minutes. Its timeout is not a failed launch.
+      `launch_and_wait.sh` exit 2 (`DEADLINE_ALIVE`) leaves the game running: that is not a failed launch.
 - [ ] **"Bridge token:" in Player.log right after a relaunch can be the PREVIOUS
       session's line.** The new process has not truncated the file yet, so a naive
       grep reads "ready" at 0 s. Before trusting the hit, require a fresh log: a small

@@ -5,7 +5,7 @@ Part of the trap catalogue indexed in [../traps.md](../traps.md); its first law 
 ## Verifying a compiled-out tool: attribute names are UTF-8 blobs, not UTF-16 literals
 **Symptom:** a byte-scan of the deployed companion for its fourteen tool names reported a confident **0/14** — on a DLL containing all fourteen. Reads as "the deploy did not land", and the next hour goes to a deploy problem that does not exist.
 **Cause:** the scan searched UTF-16, because .NET string *literals* live in the `#US` metadata heap as UTF-16. A tool name is a `[Tool("jawa/...")]` **custom attribute argument**, stored in the metadata **blob heap as length-prefixed UTF-8**. Different heap, same source text.
-**Fix:** `verify_gm_gate()` in `src/RimMandrake/bridgetools/build.py` tests `name.encode("utf-16-le") in blob or name.encode("utf-8") in blob`. It was proven by building both ways and confirming it flips — 115,712 B "verified absent" against 125,440 B "in DLL" — and it `sys.exit`s if gated tools appear, so every way it can be wrong ends in "do not deploy". It gates `jawa/fire_incident`, the one tool that can drop a raid on the colony the owner is playing.
+**Fix:** `verify_gm_gate()` in `src/RimMandrake/bridgetools/build.py` reads the `[Tool]` attribute table through `tool_metadata.py` (since 2026-09-06). Its first form tested `name.encode("utf-16-le") in blob or name.encode("utf-8") in blob`. That form was proven by building both ways and confirming it flips — 115,712 B "verified absent" against 125,440 B "in DLL" — and it `sys.exit`s if gated tools appear, so every way it can be wrong ends in "do not deploy". It gates `jawa/fire_incident`, the one tool that can drop a raid on the colony the owner is playing.
 **Recurs when:** a build flag that flips `DefineConstants` without `--no-incremental` — MSBuild keys incrementality off timestamps, not properties, so a `--gm` run can hand back the previous non-GM DLL. Also: an XML comment cannot contain `--`, so documenting a `--flag` inside a csproj comment is an `MSB4025` build failure; name the property (`/p:JawaGmTools=true`).
 
 **⚠️ The mirror image bit again on 2026-08-13, with this entry already written.** `strings -a "<dll>" | grep -F "No target. jawa/damage takes"` came back **ABSENT** on a DLL that contained it, because plain `strings` scans 7-bit ASCII and a method-body literal is UTF-16LE. The same command found `jawa/order_pawn`, `spawnedCount` and `countAllIncludingHidden` — attribute blobs and metadata member names, both UTF-8 — so the scan **looked** like it was working, and the false ABSENT was read as "the damage fix never deployed". **So: `strings -a` proves a tool NAME present; only `strings -a -el` proves a MESSAGE present, and a mixed check must run both.** The heap a string lives in is decided by whether it is an attribute argument or a literal, never by what you are trying to verify.
@@ -40,15 +40,17 @@ a **stale companion DLL**: rebuild and redeploy with the game closed
 
 `build.py` cannot overwrite a memory-mapped DLL and says so clearly — but a piped `grep`
 can hide the refusal, and you then spend a whole cycle testing **stale code** and
-concluding a new tool "was not found". Always `taskkill` first, and check for the word
-`deployed` in the output rather than assuming.
+concluding a new tool "was not found". Always stop the game that you deploy to first (`game_instance.py stop`, never
+`taskkill` by image name: the machine has two games), and check for the line that starts
+with `deployed` or `already deployed` in the output rather than assuming.
 
 ## ⚠️ A docstring containing `jawa/world_*` made build.py report a phantom lost tool
 
-`build.py` extracts tool names by scanning the assembly for `jawa/...` literals. A
+✅ Fixed 2026-09-06: `build.py` now reads only the real `[Tool]` names. Until then
+`build.py` extracted tool names by scanning the assembly for `jawa/...` literals. A
 docstring saying *"use the `jawa/world_*` family"* produced a phantom tool named
-`jawa/world_`, and the next build "lost" it and refused to deploy. **Avoid `jawa/` prefixes
-in prose inside tool descriptions.** The guard is right; the input was ambiguous.
+`jawa/world_`, and the next build "lost" it and refused to deploy. In a description, write another
+tool's complete name, never a partial `jawa/` prefix.
 
 ## ⚠️ A bare `catch {}` in your own tool is the same bug you are hunting
 

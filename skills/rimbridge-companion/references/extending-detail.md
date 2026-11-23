@@ -10,7 +10,8 @@ source   D:\Luke\dev\RimMandrake\src\RimMandrake\bridgetools\JawaBench.BridgeToo
 csproj   ...\JawaBench.BridgeTools\JawaBench.BridgeTools.csproj      (SDK-style, globs .cs)
 build    D:\Luke\dev\RimMandrake\src\RimMandrake\bridgetools\build.py
 artifact ...\bridgetools\artifacts\BridgeTools\JawaBench\JawaBench.BridgeTools.dll
-deployed C:\Program Files (x86)\Steam\steamapps\common\RimWorld\BridgeTools\JawaBench\
+deployed C:\Program Files (x86)\Steam\steamapps\common\RimWorld\BridgeTools\JawaBench\   (ArchBig)
+         D:\ClaudeWork\rimmandrake\instances\b\game\BridgeTools\JawaBench\                    (ArchSmall)
 ```
 
 🔑 The deploy target is a **sibling of `Mods\`**, not inside it, and it never appears in
@@ -77,7 +78,7 @@ patch to run, both assume you control the whole call graph. You don't.
 
 | script | does |
 |---|---|
-| `launch_and_wait.sh` | kill → launch → wait for log truncation → wait for the bridge marker |
+| `launch_and_wait.sh` | runs `launch_ready.py`: stop this game by process id → move the old log away → launch → READY only on a receipt of the new process |
 | `shoot_planet.py` | world view, close dialogs with retry, screenshot |
 | `prove_*.py` | one per area; the acceptance evidence |
 

@@ -15,8 +15,8 @@ Grepping `Player.log` for `GABP server running standalone` to know the bridge is
 started. You then connect, get `ConnectionRefused`, and go looking for a bridge fault that
 does not exist.
 
-**Wait for the log to TRUNCATE first.** `src/RimMandrake/bridgetools/launch_and_wait.sh`
-records the size, waits for it to shrink, and only then looks for the marker.
+**Never read the old log.** `src/RimMandrake/bridgetools/launch_and_wait.sh` moves the old log
+away before the launch, and reports READY only on the new process's own token line (ArchSmall: port line).
 
 ## ⚠️ An "ended" GameCondition still lists while the game is PAUSED
 
