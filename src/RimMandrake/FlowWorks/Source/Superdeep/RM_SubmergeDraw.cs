@@ -626,7 +626,8 @@ namespace RimMandrake.FlowWorks
 			}
 			RM_LiquidSurfaceLook look = LookAt(at.Map, RM_SuperdeepTrap.EngineOf(at.Map), at.Position);
 			Color liquid = CoverColour(look, clarity);
-			float seen = clarity > 0f ? RM_UnderLiquid.Seen(clarity, levelM) : 0f;
+			// the drowned part is seen as the floor under the full depth, in the same steps as a print (round 7)
+			float seen = clarity > 0f ? (float)RM_UnderLiquid.DrownedStep(clarity, levelM) / RM_UnderLiquid.Steps : 0f;
 			RM_UnderLiquid.Float3 k = RM_PawnCutMath.TintFactor(new RM_UnderLiquid.Float3(liquid.r, liquid.g, liquid.b), seen, strength);
 			cut = new PawnCutState { on = true, mode = mode, lineZ = lineZ, clear = clarity > 0f, tint = new Color(k.r, k.g, k.b, 1f) };
 		}
