@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":344431,"DISPATCH":21490,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"JUDGE.judge-1794890427":18837,"OWNER":1207} body_sha256=5888afe4c232eda957a23521a2b7f91d8f002153f8ae5af5fcb46e55df8d86f3 -->
-# ExplosiveKnockback — mod ledger history (570 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":344431,"DISPATCH":22162,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"JUDGE.judge-1794890427":18837,"OWNER":1207} body_sha256=6650c8ea516f5ef189b94cb9fd9d6a1a07f56f68756b3798a2063ecae8bf3e56 -->
+# ExplosiveKnockback — mod ledger history (572 events, merged across shards)
 
 - 2026-11-16T06:51:51Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 56 of 59 bars met at the lock
 - 2026-11-16T06:51:51Z BACKFILL#2 decision version v0.1.0: 
@@ -571,3 +571,5 @@
 - 2026-11-23T12:33:05Z DISPATCH#59 run.start run v0.1.0: 
 - 2026-11-23T13:21:12Z DISPATCH#60 judge.sealed judge v0.1.0: 
 - 2026-11-23T13:21:12Z DISPATCH#61 run.end run v0.1.0: 
+- 2026-11-23T13:54:16Z DISPATCH#62 lease.grant lease v0.1.0: 
+- 2026-11-23T13:54:17Z DISPATCH#63 run.start run v0.1.0: 
