@@ -42,8 +42,8 @@ for o, name in OPTS:
     gcap = cap_im.crop((1700, 900, 1700 + GW, 900 + 480)).resize((GW, 480))
     c = cap_im.crop((1536, 880, 1536 + GW // Z, 880 + 480 // Z)).resize((GW, 480), Image.LANCZOS)
     n = int(2.0 * PX * Z); im = get(o, 'east').resize((n, n), Image.LANCZOS)
-    c.alpha_composite(im, (40, 470 - int(n * 0.97)))
-    c.alpha_composite(hum, (40 + n - 20, 470 - hh))
+    c.alpha_composite(im, (40, 440 - int(n * 0.97)))
+    c.alpha_composite(hum, (40 + n - 20, 440 - hh))
     closes.append(c)
 W = pad + 2 * (GW + pad)
 H = pad + 2 * (lab + GH + pad) + (lab + 480 + pad) * 1
