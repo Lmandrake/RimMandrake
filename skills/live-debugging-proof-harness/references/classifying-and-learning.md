@@ -60,10 +60,11 @@ After the harness is honest and the run is green, spend part of the time on wher
 mod could still be wrong. Each item below becomes a row that can go red, or a filed
 lead.
 
-- **Leads noticed while debugging.** For example: `Building_LiquidPump.TryDraw` increments
-  `Moved` and has already taken the channel level when `tank.TryAddLiquid` returns false,
-  so the level is lost. `TankToFill` should make that unreachable, but nothing asserts
-  it. Write the assertion.
+- **Leads noticed while debugging.** An example, since fixed: `Building_LiquidPump.TryDraw` incremented
+  `Moved` and had already taken the channel level when `tank.TryAddLiquid` returned false,
+  so the level was lost, and nothing asserted that it could not happen. Write the assertion for each
+  such lead. (The fix: `RM_LiquidTransfer.Move` reserves the tank leg first and puts it back on a
+  refusal; `SelfTest/TransferChecks.cs` asserts it.)
 - **Conservation.** Units drawn == units delivered + units held, across relays, saves and
   removals.
 - **Upgrade paths.** Old saves (pre-port fixtures), imported settings, one-time flags. One

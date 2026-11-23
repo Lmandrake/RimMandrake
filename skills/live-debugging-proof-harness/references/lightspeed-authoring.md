@@ -36,8 +36,10 @@ Format (`src/RimMandrake/rimflow/proof_lines.py`: `PROOF_LINE`, `SITE_LINE`):
 `live-proof A2: <cmd>` in `infrastructure/state/live_proofs/<ID>.txt`, plus
 `live-mods:`, `live-deploy:`, `live-tier [A1]: <tier>` and `live-site <CID>: <cmd>`.
 The criteria go in `<ID>.criteria` as `A2 L1: what is observed`.
-`rimflow file` and `close` refuse the following (`cli.prooflint`, through
-`proof_lint.py` `lint_item()` and `refused_proof()`), so writing any of them wastes the item:
+`rimflow file` and `close` print a warning for each of the following, and go on (`cli.prooflint`, through
+`proof_lint.py` `lint_item()` and `refused_proof()`). `rimflow lint --proofs <ID>` exits 1 on them. Two rows are seen
+less: a cut criterion shows only once the item is `implemented`, and no rimflow verb checks a `live-site` line
+(`refused_site` has no caller but `preflight`). Write none of them:
 
 | Refused | Reason |
 |---|---|
@@ -83,8 +85,8 @@ not a mod FAIL. Do not rely on that. Exit 2 yourself (§1).
   not one call per cell. FlowWorks v2 L_preflight made 371 read calls. Batch-read
   tools are PLANNED (item BATCHREADS_BUILD_ROUND_TRIP_CUT).
 - The lint that would refuse poll loops is PLANNED (item POLLLOOPS_MIGRATE_TO_UNTIL,
-  `lint_calls.py`), and so is the proof-line lint at filing (PROOFLINT_WIRE_AT_FILING_NOT_AT_RUN).
-  Today: you are the lint.
+  `lint_calls.py`). Today: you are the lint for poll loops. The proof-line lint at filing is built and warns
+  (PROOFLINT_WIRE_AT_FILING_NOT_AT_RUN, done; §2).
 - **Condition node ids (`conds_dsl`) come from ONE counter across the `until` tree and every watch tree.** Read ids from the compiled canonical; never renumber. (`clockgate.resumable_stop` and `is_benign_stop` take dict triggers only; `conds_dsl.run_until` filters string triggers such as `('cond','unknown')` before calling.)
 
 ## 4. Validate the site before the proof, and name the UNMEASURED reason
@@ -108,7 +110,7 @@ not a mod FAIL. Do not rely on that. Exit 2 yourself (§1).
 
 Read a flyer's defs, comps, job and position state. Never prove its flight live: flight
 needs the owner present (CLAUDE.md). Flyer-frame proofs are a joint session, item
-FLYERFRAMES_PROVE_JOINT_SESSION (needs=owner). The runner refuses flyer words (§2).
+FLYERFRAMES_PROVE_JOINT_SESSION (needs=owner). The proof-line lint marks flyer words as refused (§2).
 
 ## 6. Prefer the minimal list
 
