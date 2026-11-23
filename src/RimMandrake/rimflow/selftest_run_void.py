@@ -433,6 +433,21 @@ def main():
             subprocess.run(["git", "-C", root, "add", vf], check=True)
             subprocess.run(["git", "-C", root, "-c", "user.name=t", "-c", "user.email=t@t", "commit", "-qm", j],
                            check=True)
+        # RIMMANDRAKE_SKIP_VOID_LANDING_WHEN_STAGE_FILE_UNCHANGED: a void whose rewritten stage.json equals HEAD has
+        # nothing to land; it is not a failed landing (./publish refuses "nothing to publish", exit 1 read as NOT LANDED)
+        ok(callable(getattr(RV, "landable", None)), "run_void.landable exists (the paths a void verb must land)")
+        if callable(getattr(RV, "landable", None)):
+            rel_vf = os.path.relpath(vf, root)
+            ok(RV.landable(root, [rel_vf]) == [], "a committed file unchanged since HEAD is not landable (nothing to land)")
+            with open(vf, "a") as f:
+                f.write("\n")
+            ok(RV.landable(root, [rel_vf]) == [rel_vf], "a committed file changed since HEAD is landable")
+            subprocess.run(["git", "-C", root, "checkout", "-q", "--", vf], check=True)
+            new = os.path.join(d, "stage.json")
+            ok(RV.landable(root, [os.path.relpath(new, root)]) == [os.path.relpath(new, root)],
+               "an untracked file is landable")
+            ok(RV.landable(os.path.join(tmp, "not_a_repo"), [rel_vf]) == [rel_vf],
+               "where git cannot look, every path stays landable (could not look is not unchanged)")
         paths = RV.swap_verdict(root, "Fake", UJ)
         arch = os.path.join(d, "coverage_verdict.void.%s.json" % UJ)
         ok(json.load(open(vf))["judge"] == "rm-coverage-judge-3" and json.load(open(arch))["judge"] == UJ

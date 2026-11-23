@@ -4402,6 +4402,11 @@ def _void(o):
     for x in RV.status_lines(st):
         print(x)
     paths = list(dict.fromkeys(paths))
+    keep = RV.landable(root, paths)
+    same = [p for p in paths if p not in keep]
+    if same:    # a rewritten file equal to HEAD is nothing to land, not a failed landing
+        print("nothing to land (equal to HEAD): %s" % " ".join(same))
+        paths = [p for p in paths if p not in same]
     if paths and not o.no_land:
         r = subprocess.run([os.path.join(root, "publish"), "-m", "%s: %d run(s), %s" % (
             o.cmd, len(lines), o.why[:80])] + paths, cwd=root, capture_output=True, text=True, timeout=900)

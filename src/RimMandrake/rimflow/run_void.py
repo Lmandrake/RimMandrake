@@ -872,6 +872,25 @@ def _at(text):
         return 0
 
 
+def landable(root, paths):
+    """-> the paths a void verb must land: those that differ from HEAD or are untracked. A void whose rewritten
+    stage.json equals HEAD has nothing to land, and ./publish refuses an empty landing (exit 1), which the verb read
+    as WRITTEN, NOT LANDED (RIMMANDRAKE_SKIP_VOID_LANDING_WHEN_STAGE_FILE_UNCHANGED). Where git cannot look, every
+    path stays landable: could not look is not unchanged."""
+    import subprocess
+    if not paths:
+        return []
+    try:
+        r = subprocess.run(["git", "-C", root, "status", "--porcelain", "--untracked-files=all", "--"] + list(paths),
+                           capture_output=True, text=True, timeout=120)   # hang guard on a slow mount; a real status takes about 2 s
+    except (OSError, subprocess.TimeoutExpired):
+        return list(paths)
+    if r.returncode != 0:
+        return list(paths)
+    dirty = {ln[3:].strip().strip('"') for ln in r.stdout.splitlines() if len(ln) > 3}
+    return [p for p in paths if os.path.normpath(p) in {os.path.normpath(d) for d in dirty}]
+
+
 def swap_verdict(root, mod, judge, back=False, runner=None):
     """A VOID coverage judge's coverage_verdict.json is kept as evidence (coverage_verdict.void.<judge>.json) and the
     verdict before it, read from git, is put back: the next look checks the look before the void one, as if it never
