@@ -10,9 +10,9 @@ Also: skills/rimworld-crew-and-nemesis-events/references/history.md
 
 | measure | before | after |
 |---|---|---|
-| bytes | 8,267 | 11565 |
-| words in linted prose | 993 | 1565 |
-| STE violations per 100 words | 3.73 | 1.41 |
+| bytes | 8,267 | 11686 |
+| words in linted prose | 993 | 1580 |
+| STE violations per 100 words | 3.73 | 1.39 |
 | sentences over 20 words | 16 | 2 |
 | flagged lines (mechanical) | 3 | 3 |
 | lines that a cold reader cannot act on (hand count, by the writer) | 9 | 0 |
@@ -65,6 +65,8 @@ significant thing: `RecordEncounter` was named without its pawn. The writer repa
 envoy or the faction leader, never null or the victim; or an envoy as the kidnapper) and dropped `noLord`, which has no
 effect beside `dontSpawn`. No reader read those last repairs: the two routes in §3, the `dontSpawn` phrase, the changed
 sentence in `crew_mechanisms.md` §4 and in study idea 19. Each repeats what the second reader measured.
+After the first landing (9d279423a1), the prose check of `./publish` named one line, the joiners trap in §5. The writer
+repaired that line. No reader read that repair.
 
 ## Conflicts and stale lines: settled
 

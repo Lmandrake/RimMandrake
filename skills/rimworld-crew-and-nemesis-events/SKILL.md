@@ -136,7 +136,8 @@ Rimesis is 248 files. About five fields and three hooks make the story.
   composition: ours.
 - **Unbounded rosters** grow with every raider, every encounter and every karma event. Cap the roster and prune by
   notability, as OldFriends does (24 living entries by default).
-- **Joiners that bypass the gate** of §1 skip population intent and the crew cap.
+- **Joiners that bypass the gate.** A joiner without `populationEffect` or `rootIncreasesPopulation` escapes population
+  intent. A joiner path without a check of its own also escapes the crew cap (§1).
 - **Statics.** A nemesis plan that a static dictionary caches survives quit-to-menu into the next save.
 
 ## 6. Pointers
