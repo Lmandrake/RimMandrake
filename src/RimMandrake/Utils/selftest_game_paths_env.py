@@ -74,10 +74,23 @@ def path_forms_round_trip():
     assert g.wsl_to_win("/home/x") == "/home/x"
 
 
+def deploy_takes_every_game_name():
+    # `--instance ArchBig` once raised InstanceError at import: the raw name is not "a", so game_paths took it for a
+    # second game. A name in any letter case, and the old letters, must all reach the argument parser.
+    for game in ("ArchBig", "archbig", "a", "ArchSmall", "ARCHSMALL", "b"):
+        r = subprocess.run([sys.executable, os.path.join(HERE, "deploy_custom_mods.py"), "--instance", game, "--help"],
+                           env=dict(os.environ, RM_HOST="archmagi"), capture_output=True, text=True, timeout=60)
+        assert r.returncode == 0, (game, r.stderr[-200:])
+    r = subprocess.run([sys.executable, os.path.join(HERE, "deploy_custom_mods.py"), "--instance", "NoSuchGame", "--help"],
+                       env=dict(os.environ, RM_HOST="archmagi"), capture_output=True, text=True, timeout=60)
+    assert r.returncode != 0 and "NoSuchGame" in r.stderr, (r.returncode, r.stderr[-200:])
+
+
 for n, f in [("no env -> Archmagi literals", no_env_is_archmagi),
              ("RM_STEAMAPPS (Windows form) moves Steam, game dir, Mods", steamapps_win_form),
              ("RM_GAME_USERDATA (WSL form) moves Config/Saves/DefDump, not Player.log", userdata_moves_config_not_log),
              ("RM_GAME_LOGDIR moves Player.log + prev only", logdir_moves_log),
+             ("deploy_custom_mods --instance takes every game name", deploy_takes_every_game_name),
              ("win_to_wsl / wsl_to_win", path_forms_round_trip)]:
     case(n, f)
 print("\n%d passed, %d failed" % (len(PASS), len(FAIL)))

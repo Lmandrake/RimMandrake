@@ -146,7 +146,13 @@ def _instance_arg(argv):
 
 
 if __name__ == "__main__" and _instance_arg(sys.argv[1:]):
-    os.environ["RM_GAME_INSTANCE"] = _instance_arg(sys.argv[1:]).strip().lower()
+    # The letter, not the name as typed: game_paths takes every value but "a" for a second game, so "ArchBig" raised.
+    sys.path.append(os.path.join(ROOT, "src", "RimMandrake", "rimflow"))
+    import game_names
+    try:
+        os.environ["RM_GAME_INSTANCE"] = game_names.letter(_instance_arg(sys.argv[1:]))
+    except game_names.GameNameError as e:
+        sys.exit("deploy_custom_mods.py: --instance: %s" % e)
 from game_paths import LOCAL_MODS, MODS_CONFIG            # noqa: E402
 import biomes_compose                                      # noqa: E402
 
@@ -619,8 +625,8 @@ def main():
                          "run, so the def guard judges both together (e.g. --compose "
                          "biomes --with SWBestiary after a creature moved between them)")
     ap.add_argument("--instance", metavar="GAME",
-                    help="the game to deploy to (a: Steam's install; b: its own install under the instances root). "
-                         "Default: RM_GAME_INSTANCE, else a")
+                    help="the game to deploy to (ArchBig: Steam's install; ArchSmall: its own install under the instances root). "
+                         "Default: RM_GAME_INSTANCE, else ArchBig")
     ap.add_argument("--despite-hold", dest="despite_hold", metavar="WHY",
                     help="--apply into a game held by `pipe off game:<g>`, on purpose: why")
     ap.add_argument("--gate", action="store_true",

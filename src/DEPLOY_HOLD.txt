@@ -9,7 +9,7 @@
 # FORMAT
 #   <glob>    # <reason, including who ruled it and when>
 #
-# Paths are relative to custom_patches/ and always use forward slashes.
+# A path is <ModFolder>/<path in the mod>, with no tier in front, and always uses forward slashes.
 # ⚠️ `*` matches across directory separators, unlike a shell — so
 # `WreckedMachines/*` holds the whole tree, not just its top level.
 

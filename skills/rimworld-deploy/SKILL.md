@@ -5,195 +5,270 @@ description: Writing a file is not deploying it — RimWorld loads C:\Program Fi
 
 # Deploying to the game
 
+The evidence and the old lines that are no longer true are in [references/history.md](references/history.md).
+
 ## 1. "Written" and "the game can see it" are two claims
 
 ```
-<repo>/custom_patches/<ModName>/   ← source of truth, committed
+<repo>/src/<tier>/<ModName>/       ← source of truth, committed
         ↓  deploy_custom_mods.py
 C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\<ModName>   ← what loads
 ```
 
-That is ArchBig, Steam's install. ArchSmall on Archmagi has its own install and its own `Mods`
-(`D:\ClaudeWork\rimmandrake\instances\b\game\Mods`): deploy to it with `deploy_custom_mods.py --mod <name>
---instance ArchSmall` (or `RM_GAME_INSTANCE=b`), which writes only under ArchSmall. A deploy with no game named writes ArchBig's
-folder. Deploy to the game that your run drives, never to another run's game.
+- `<tier>` is `RimMandrake`, `RimStarWars`, `RimUtinni` or `SPLIT_Phase3`. The deployed folder has the bare mod name.
+- The `Mods` path in the figure is the folder of ArchBig, Steam's install. A deploy with no game named writes ArchBig's
+  folder.
+- ArchSmall on Archmagi has its own install and its own `Mods` (`D:\ClaudeWork\rimmandrake\instances\b\game\Mods`).
+- To deploy to ArchSmall, run `deploy_custom_mods.py --mod <name> --instance ArchSmall` (or set `RM_GAME_INSTANCE=b`). That
+  deploy writes only under ArchSmall.
+- Deploy to the game that your run drives, never to another run's game.
+- Each plan prints the folder that it compares, on its `game :` line. Read that line before `--apply`.
+- To see which copy a game loaded, read the paths in its `Player.log`. Its XML messages name the file, as in
+  `[File: C:\...\RimWorld\Mods\UtinniPatches\...]`.
 
-The game names its own copy on every launch:
-`Adding mandrake.jawa.patches(C:\...\RimWorld\Mods\Jawa_Patches)`.
+**Nothing syncs them.** If you edit only the repo, the change never reaches the game, and nothing tells you. There is no
+error and no red text. The def is simply not there.
 
-**Nothing syncs them.** Editing only the repo means the change silently never
-reaches the game — no error, no red text, the def simply is not there. That cost a
-whole test cycle once: a xenotype and its pawnkinds authored, reported ready, and
-invisible in game because the deployed copy was untouched. **And never edit in
-place under `Mods/`** — that copy is disposable, overwritten by the next `--apply`,
-and not in version control.
+- An edit of the repo alone cost a whole test cycle once. A xenotype and its pawnkinds were written and reported ready. They
+  were invisible in
+  game, because nobody had touched the deployed copy.
+- **And never edit in place under `Mods/`.** That copy is disposable and is not in version control. The next `--apply`
+  overwrites it.
 
-🔑 **Where you run it.** Edit and commit in your seat clone (`/home/mandrake/rm/<seat>`);
-`deploy_custom_mods.py` runs from the clone and plans/copies from it. C# mods are built with
-`python3 src/RimMandrake/Utils/winbuild.py <Mod|csproj>` (stages on `D:\ClaudeWork\rimmandrake\build`, Windows
-dotnet, DLL and `.srchash` copied back as a pair). `D:\Luke\dev\RimMandrake` is a read-only
-mirror of origin/main: Windows tools read it, nothing writes it.
+🔑 **Where you run it.**
 
-🔴 **A subagent's clean `dotnet build`/`validate_patch.py` pass, plus a real
-commit+push, is NOT proof the fix was deployed.** Twice in one wave a
-genuinely-fixed patch/DLL sat undeployed in the repo while a live re-test still
-showed the old failure. Deploying static def/XML output needs no running game —
-always run `deploy_custom_mods.py --mod <X>` (plan-only first) before trusting a
-live re-check of anything a prior pass claims fixed.
+- Edit and commit in your seat clone (`/home/mandrake/rm/<seat>`) or in the helper clone that your brief names.
+- Run `deploy_custom_mods.py` from that clone. The tool plans and copies from the clone that holds it.
+- Build a C# mod with `python3 src/RimMandrake/Utils/winbuild.py <Mod|csproj>`. The tool stages on
+  `D:\ClaudeWork\rimmandrake\build` and builds with Windows dotnet. Then it copies the DLL and the `.srchash` back as a pair.
+- `D:\Luke\dev\RimMandrake` is a read-only mirror of origin/main. Windows tools read it. Nothing writes it.
 
-🔑 **"Deployed" and "active" are separate states with nothing reconciling
-them.** `deploy_custom_mods.py` writes files and (correctly) never touches the
-mod list — it even PRINTS "not enabled in ModsConfig" where nobody reads it. A
-mod can be deployed and inert (present on disk, absent from `ModsConfig.xml`,
-so it silently never spawns anything) for a long time before anyone notices;
-check both states independently, never infer one from the other.
+🔴 **A subagent's clean `dotnet build`/`validate_patch.py` pass, plus a real commit+push, is NOT proof the fix was deployed.**
+
+- Twice in one wave, a patch or DLL that was truly fixed sat undeployed in the repo. A live test still showed the old
+  failure.
+- A deploy of static def or XML output needs no running game.
+- Before you trust a live check of a fix that an earlier run claims, always run `deploy_custom_mods.py --mod <X>`. Run the
+  plan first.
+
+🔑 **"Deployed" and "active" are separate states with nothing reconciling them.**
+
+- `deploy_custom_mods.py` writes files. It never touches the mod list, and that is correct. It even PRINTS "not enabled in
+  ModsConfig", but nobody reads that flag.
+- A mod can be on disk and absent from `ModsConfig.xml`. Such a mod is inert: it spawns nothing, with no message. That state
+  can last a long time before anyone sees it.
+- Check both states, each on its own. Never infer one from the other.
 
 ## 2. Plan first. Always read the plan.
 
 ```bash
-python src/RimMandrake/Utils/deploy_custom_mods.py                 # plan only -- changes nothing
-python src/RimMandrake/Utils/deploy_custom_mods.py --apply         # repo -> game, then self-verifies
-python src/RimMandrake/Utils/deploy_custom_mods.py --mod Jawa_Patches
-python src/RimMandrake/Utils/deploy_custom_mods.py --apply --prune # also delete deployed files gone from the repo
+python3 src/RimMandrake/Utils/deploy_custom_mods.py                 # plan only -- changes nothing
+python3 src/RimMandrake/Utils/deploy_custom_mods.py --apply         # repo -> game, then self-verifies
+python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod UtinniPatches
+python3 src/RimMandrake/Utils/deploy_custom_mods.py --apply --prune # also delete deployed files gone from the repo
 ```
 
-Safe by default, skips authoring-side files (`Source/`, `*.py`, `README.md`), warns
-when a mod is not enabled in `ModsConfig.xml`, verifies every copy, and exits
-non-zero while drift remains — so the plan doubles as a pre-flight check.
+What the tool does:
 
-🔴 **`--apply` overwrites the game copy with whatever is in the repo *right now*,
-including another seat's half-finished work.** Five seats share this tree.
+- The default run is safe: it changes nothing.
+- The tool skips authoring-side files (`Source/`, `*.py`, `README.md` and every other `.md`, and more). The plan's `skip :`
+  line names the skipped folders and extensions.
+- The tool warns when a mod is not enabled in `ModsConfig.xml`.
+- After `--apply`, the tool compares each mod that differed again, byte for byte.
+- **Drift** is any difference between the repo copy and the game copy. Held files (§5) and skipped files are not drift. A
+  plan
+  exits non-zero while drift remains. So the plan is
+  also a pre-flight check.
+- A folder that is folded into the composed biomes mod (`mandrake.rm.biomes`) is refused by name. The refusal prints the
+  `--compose biomes` command. A run with no `--mod` skips those folders. So a clean plan proves nothing about the composed
+  biomes: plan them with `--compose biomes`.
 
-> **Read the plan. `--apply` only if every listed file is yours.** A file you do not
-> recognise is a live hazard, not a todo — tell the owner before you write.
+🔴 **`--apply` overwrites the game copy with whatever is in the repo *right now*, including another seat's half-finished
+work.**
 
-⚠️ **With no `--mod`, the walk is alphabetical and a 120s tool-call timeout can
-TRUNCATE it mid-list.** A run that stopped at "Cuisine" would have been read as
-"only Armoury drifts"; the real answer that day was 5 mods including one the
-caller owned. Redirect the run to a file and confirm it printed its final
-`Drift found` / `Everything in sync` line before believing any drift list.
+- "The repo" here is your clone, with its uncommitted files. A subagent that edits in your clone is in it too.
+- Each clone is separate, but every clone deploys to the same `Mods` folder of a game. A clone that is behind puts an old
+  file over a newer deployed file.
+
+> **Read the plan. `--apply` only if every listed file is yours.** A file you do not recognise is a live hazard, not a
+> todo.
+
+- Before you write a file that you do not recognise, read its `git log`. A file that nobody ever
+  committed has none, and a log does not name the author of an uncommitted edit. Bring your
+  clone level with origin/main
+  (`clone-landing-commits` skill). Then plan again.
+- If the file is still in the plan, tell the Conductor before you write. A helper puts it in a note on its item.
+
+⚠️ **With no `--mod`, the walk is alphabetical and a 120s tool-call timeout can TRUNCATE it mid-list.**
+
+- One truncated run stopped at "Cuisine". A reader of that run would have said "only Armoury drifts". The real answer that
+  day was 5 mods, and one of them was the caller's.
+- Send the run to a file. Believe a drift list only after the file holds the last line, `Drift found` or
+  `Everything in sync`.
 
 More traps for this section: [references/traps.md](references/traps.md) § 2. Plan first. Always read the plan..
 
 ## 3. A `-` line means someone hand-edited the deployed copy
 
-`-` = present in the game, absent from the repo: an edit made directly in `Mods/`
-that `--apply` is about to destroy.
+`-` = present in the game, absent from the repo. The heading names one cause. The plan tells three kinds apart, and each `-`
+line
+names its kind:
+
+| the `-` line says | cause | what `--apply` does |
+|---|---|---|
+| `deleted in repo` | a commit deleted or moved the file | deletes the game copy |
+| `deleted in repo working tree, UNCOMMITTED` | a delete or a move that nobody committed yet | keeps the game copy, unless you pass `--prune` |
+| `kept — use --prune to delete, or --pull to rescue` | a file that your clone's history never deleted: a hand edit, or a file that a newer clone deployed | keeps the game copy, unless you pass `--prune` |
+
+- If your clone is behind origin/main, a file of another clone's newer deploy can read `kept`. Level your clone and plan
+  again
+  before you use `--pull` or `--prune`. `--pull` would import that file, and `--prune` would delete it from the game.
+- `--apply --prune` deletes every `-` file that no hold covers (§5), so it destroys a hand-made file. After a refusal or a
+  failed write, the tool deletes nothing in that mod.
+- A hand edit to a file that the repo also has is a `~` line, not a `-` line. Plain `--apply` destroys that edit.
 
 ```bash
-python src/RimMandrake/Utils/deploy_custom_mods.py --pull <ModName>   # game -> repo, rescue it first
+python3 src/RimMandrake/Utils/deploy_custom_mods.py --pull <ModName>   # game -> repo, rescue it first
 ```
 
-`--pull` before overwriting, every time.
+- `--pull` before overwriting, every time. The tool refuses `--pull` for a folded biome member and for the composed biomes mod.
+  In a `--compose biomes` plan, an uncommitted delete reads `kept`.
+- `--pull` copies every file of that mod that differs, also a file whose repo copy is newer. That copy also
+  brings back a file that the repo deleted. Read `git diff` before you commit. One malformed XML in the game copy stops the
+  whole pull.
 
 ## 4. Validate BEFORE it goes near the Mods folder — BOTH flags
 
 ```bash
-python skills/rimworld-modding/scripts/validate_patch.py <file> \
+python3 skills/rimworld-modding/scripts/validate_patch.py <file> \
   --live <dump> \
-  --defs "C:/Program Files (x86)/Steam/steamapps/common/RimWorld/Data" \
-  --defs "C:/Program Files (x86)/Steam/steamapps/workshop/content/294100" \
-  --defs "C:/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods"
+  --defs "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data" \
+  --defs "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100" \
+  --defs "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods"
 ```
 
-🔴 **The Mods folder is not optional.** First-party `mandrake.*` mods live
-there, not in Workshop content — omit it and a real, working cross-mod
-`ParentName` inheritance reports as "resolves to no def" (a false failure).
+- `<dump>` is the `DefDump` folder of the game's user data. The tool takes the newest capture in it and prints which one.
+- These paths are for WSL. With a `C:/` root, WSL python prints `UNMEASURABLE` and gives no verdict. Windows python takes the
+  `C:/` form.
+- One patch file took about 4 minutes with all three roots (2026-11-23). Run it with a timeout above that, to a file.
+
+🔴 **The Mods folder is not optional.** Our own `mandrake.*` mods are there, not in the Workshop content. Without that
+root, a correct `ParentName` that points into another mod of ours reads as "resolves to no def". That is a false failure.
 
 ⚠️ **`--live` and `--defs` are orthogonal, and only `--defs` checks xpaths.**
-`--live` checks defName existence; `--defs` walks the XML and reports xpath hit
-counts. `validate_patch.py <file> --live <dump>` prints `OK - 0 errors` having
-evaluated **zero xpaths**, and says so above: `no --defs given; static checks only`.
-**If only `--live` ran, nothing was validated.**
 
-🔴 **`measure` is not executable on the Mac laptop** (`permission denied`) and
-there is no local def dump there either — "does this def resolve against the
-live mod list" is UNMEASURABLE from the laptop. Say so and hand the check to a
-session on the Windows Desktop rather than closing the item on an assumption
+- `--live` checks that a defName exists. `--defs` walks the XML and reports the hit count of each xpath.
+- `validate_patch.py <file> --live <dump>` can print `OK - 0 errors` with **zero xpaths** evaluated. The top of that run says
+  `no --defs: ParentName and Class checks are SKIPPED and no xpath is executed`.
+- **If only `--live` ran, nothing was validated.**
+
+🔴 **`measure` is not executable on the Mac laptop** (`permission denied`), and that laptop has no local def dump
 (2026-09-22).
 
-⚠️ **`--defs` inherits the LIVE `ModsConfig.xml`**, which another seat may have cut
-to a spike. Pass the **newest** backup, never a pinned filename, and never a small
-spike config — every xpath then legitimately matches nothing and the wall of false
-failures burns a day:
+- So "does this def resolve against the live mod list" is UNMEASURABLE from the laptop.
+- Say so. Give the check to a session on the Windows Desktop. Do not close the item on an assumption.
+
+⚠️ **`--defs` inherits the LIVE `ModsConfig.xml`**, and another seat may have cut that list to a spike (a small test list).
+
+- Pass the owner's full list, never a dated backup with its date in the name.
+- Never pass a small spike config in its place. Every xpath into an absent mod then matches nothing, and that
+  is correct. The wall of false failures burns a day.
 
 ```bash
 --mods-config infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml
 ```
 
-🔴 **CORRECTED 2026-08-22 by CHECK — the command this section used to give was
-`$(ls -t deployed/config/ModsConfig.full-*.xml | head -1)`, and it resolved to the
-WRONG STACK.** Measured on the day: that glob returns
-`deployed/config/ModsConfig.full-574.2026-08-12.xml` — **574 mods, ten days old, and
-it still carries `thereallemon.factioncontrol`**, a mod the owner removed on
-2026-08-21 because it aborted three save loads. The live list is **578 and clean**.
+- **`infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml` is the owner's real list.** `modlist_swap.py --restore` writes
+  that file back to the live list. `modlist_swap.py --capture-full` updates that file. So the list is maintained.
+- `deployed/config/` is an ARCHIVE of dated snapshots. Its newest member is only as fresh as the last write. Never glob it
+  for "the newest list": on 2026-08-22 that glob gave a ten-day-old stack.
 
-The advice ("pass the newest backup, never a pinned filename") was right; the command
-was globbing the wrong directory. `deployed/config/` is an ARCHIVE of dated snapshots
-and its newest member is only as fresh as the last time someone happened to write one
-there. **`infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml` is the owner's
-real list** — it is what `modlist_swap.py --restore` restores FROM (`modlist_swap.py:24`),
-so it is maintained rather than merely deposited.
+⚠️ **It is still not the LIVE file.** Compare the two lists before you trust a verdict:
 
-⚠️ **It is still not the LIVE file.** Confirm they agree before trusting a verdict:
 ```bash
 diff <(grep -o '<li>[^<]*</li>' infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml) \
      <(grep -o '<li>[^<]*</li>' "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Config/ModsConfig.xml")
 ```
 
-Read the `N active mods → M def files` line before trusting any verdict. **If it does
-not say 578, you are validating against a stack the game does not load.** 0 errors
-is the bar.
+- That path is ArchBig's live list. ArchSmall's is `D:\ClaudeWork\rimmandrake\instances\b\Config\ModsConfig.xml`.
+- If the lists differ, find the cause first. The live file can be on a tier on purpose, or `FULL.LATEST` can be behind.
+- Read the `N active mods … -> M def files` line before you trust any verdict. **If N is not the count of the list that the
+  game will load, you are validating against a stack the game does not load.** Parse `activeMods` for that count.
+- 0 errors is the bar.
 
-⚠️ **It reads `Patches/` only — never `Defs/`.** New content under `Defs/` is
-unvalidated, so parse every XML in the mod folder yourself, `About.xml` included.
+⚠️ **It reads `Patches/` and `Defs/`, and each run prints what it did not scan.**
+
+- For a def file, the tool checks the XML parse, the comment bodies and missing or duplicate defNames. It also checks
+  `ParentName`, `Class` attributes and texture paths.
+- The tool does not check field names, field types, value ranges or C# class members. It cannot see a node that a patch
+  creates at load.
+- Give the tool the whole mod folder, so that it lists every XML, `About.xml` included. If you give it less, parse every
+  other XML
+  in the mod folder yourself.
 
 More traps for this section: [references/traps.md](references/traps.md) § 4. Validate BEFORE it goes near the Mods folder — BOTH flags.
 
 ## 5. Files undeployed ON PURPOSE — `DEPLOY_HOLD.txt`
 
-`src/DEPLOY_HOLD.txt` is read by the deploy script; anything matching is
-reported **HELD** instead of as drift, and `--apply` will not write it.
+The deploy script reads `src/DEPLOY_HOLD.txt`. A file that matches a line there is **HELD**. The plan does not count a held
+file as drift. `--apply` does not write that file, and `--prune` does not delete it. A hold does not remove a copy that is
+already in the
+game.
 
 ```
 <glob>    # <reason, including who ruled it and when>
 ```
 
-Paths are relative to `src/`, forward slashes, and **`*` matches across
-directory separators** — `WreckedMachines/*` holds the whole tree.
+- A path is `<ModFolder>/<path in the mod>`, with forward slashes and no tier in front.
+- **`*` matches across directory separators.** So `WreckedMachines/*` holds the whole tree.
 
-**A reason is REQUIRED.** Without one the plan can only say "the repo and the game
-differ": *parked on purpose* and *half-finished* render identically, and both end
-with "Drift found. Re-run with `--apply`." Acting on that overrides an owner ruling
-while looking like housekeeping. **It is PER-FILE, not per-mod** — a live mod can
-have two held files while the rest of it keeps deploying, and inferring the hold
-from `ModsConfig.xml` only proves a mod is INERT, never that it is INTENDED.
+**A reason is REQUIRED.** The script does not refuse a line with no reason. The plan then prints `NO REASON GIVEN`.
 
-🔑 **"Not in the Workshop folder" is not "not available."** Donor mod sources
-are vendored at `vendor/mod_sources/` — check there before concluding a donor
-mod's own XML/source is unreachable.
+- Without a reason, nobody can tell a file that is *parked on purpose* from a file that is *half-finished*. Both look the
+  same.
+- With no hold line at all, the plan can only say "the repo and the game differ". Both files end with "Drift found. Re-run
+  with
+  `--apply`." If you act on that, you override an owner
+  ruling, and it looks like housekeeping.
+
+**It is PER-FILE, not per-mod.** A live mod can have two held files while the rest of it keeps deploying.
+
+- Do not infer a hold from `ModsConfig.xml`. Absence from that list proves only that a mod is INERT. It never proves that the
+  state is INTENDED.
+
+🔑 **"Not in the Workshop folder" is not "not available."** Copies of donor mod sources are in `vendor/mod_sources/`. Look
+there before you decide that a donor mod's XML or source is out of reach.
+
+- The copies are not in git: a clone has only `SOURCES.md`. The copies are in `D:\Luke\dev\RimMandrake\vendor\mod_sources`.
 
 More traps for this section: [references/traps.md](references/traps.md) § 5. Files undeployed ON PURPOSE — `DEPLOY_HOLD.txt`.
 
 ## 6. Not every folder is deployable
 
 **A mod with no `About/About.xml`, or no `packageId` in it, is not a mod.**
-Deploying it creates a `Mods/` folder RimWorld ignores; the plan flags
-`no packageId in About.xml`. That is **a ruling to ask for, not a file to invent** —
-a packageId is an identity, and guessing one ships a name nobody chose. Hold the
-mod with its reason and put the decision in the owner's path. Minimum viable folder:
 
-⚠️ **That refusal message can point at the wrong field.** It also fires when
-`ET.parse` throws on a genuinely malformed `About.xml` — a raw `<=`/`<` inside
-plain description text parses as a tag start (`harvestAfterGrowth <= 0f` written
-straight into a description broke one this way). The tool refused correctly; the
-message named `packageId` when the real defect was that the file does not parse
-at all. Check the file actually parses before assuming the packageId is absent.
+- RimWorld ignores such a folder under `Mods/`.
+- With no `About/About.xml`, the tool does not see the folder: `--mod` says `no such mod in the repo`.
+- With no `packageId`, the plan flags `no packageId in About.xml`, and `--apply` refuses that mod.
+- The packageId is **a ruling to ask for, not a file to invent**. A packageId is an identity. A guess ships a name that
+  nobody
+  chose.
+- Hold the mod with its reason, and put the decision to the Conductor. A new packageId follows
+  `design/NAMING_SCHEME_PLAN.md`.
 
-🔴 **`[ -e "$dir" ]` is not a test for "a mod lives here."** `src/RimMandrake/Pits`
-passed that test while holding only `__pycache__` — the mod had merged elsewhere
-and the folder was a shell. Test `$dir/About/About.xml` instead; existence of a
-directory is not identity of a mod.
+⚠️ **That refusal message can point at the wrong field.**
+
+- The message `no packageId in About.xml` also appears when `ET.parse` throws on a malformed `About.xml`.
+- A raw `<=` or `<` in plain description text parses as the start of a tag. `harvestAfterGrowth <= 0f`, written straight into
+  a description, broke one file this way.
+- The tool was right to refuse. But the message named `packageId`, and the real defect was that the file does not parse.
+- Check that the file parses before you assume that the packageId is absent.
+
+🔴 **`[ -e "$dir" ]` is not a test for "a mod lives here."** One mod's folder passed that test while it held only
+`__pycache__`. The mod had merged elsewhere, and the folder was a shell. Test `$dir/About/About.xml` instead. A directory
+that exists does not prove which mod it is.
+
+The smallest folder that deploys:
 
 ```
 <ModName>/
@@ -205,120 +280,158 @@ More traps for this section: [references/traps.md](references/traps.md) § 6. No
 
 ## 7. Assemblies deploy in the shutdown window, not now
 
-A DLL the game has loaded **cannot be written while RimWorld runs** — memory-mapped,
-and Windows refuses with `WinError 1224`. The copy is impossible, not merely
-ineffective. Deploy in the gap after the game closes and before it launches, and
-tell CHECK before any shutdown: `skills/rimworld-load-round/SKILL.md` §6.
+A DLL that a game has loaded **cannot be written while that game runs**. The file is memory-mapped, and Windows refuses with
+`WinError 1224`. The copy is impossible, not merely ineffective.
 
-🔴 **`deploy_custom_mods.py --mod <X>` deploys only that one mod, not the mods it
-depends on.** A new mod referencing a class from a SIBLING mod's assembly (a
-`<li Class="RimMandrake.SomeNamespace.SomeExtension">` pointing at another mod's
-compiled comp) got enabled and deployed while the DEPENDENCY mod's own rebuilt
-DLL had never actually been redeployed — confirmed by comparing deployed-vs-repo
-DLL mtimes (the deployed copy was hours stale). A stale dependency DLL missing a
-referenced type can crash mod-loading badly enough to trip RimWorld's own
-corrupted-mods safety net (§ below), resetting `ModsConfig.xml` — not just log a
-quiet config error. **When enabling a mod that leans on another mod's C# (a
-shared "engine" assembly), deploy BOTH mods explicitly before the next launch.**
+- Deploy in the **shutdown window**: the gap after the game closes and before it launches.
+- The lock is per install. ArchBig locks the DLLs in ArchBig's `Mods`, and ArchSmall locks those in ArchSmall's `Mods`.
+- A reboot is yours to call: `infrastructure/GAME_STATE_WORKFLOW.md` § A REBOOT IS YOURS TO CALL. Before you close a game,
+  its
+  bridge must be free or yours. Take the bridge for the reboot, so that the other runs can read the reason.
+- Never close a game that the owner is playing.
+- Deploy in the gap. Then run `preflight_bridge.py` before the launch, as that section says. Announce the restart in your
+  reply
+  after the fact.
+- The window is described in `skills/rimworld-load-round/SKILL.md` §6.
 
-⚠️ **But `WinError 1224` is not the only lock failure, and the other one is
-silent.** `deploy_custom_mods.py --apply` has printed the DLL's `~` plan line
-and "Deployed N file(s)" while silently SKIPPING a locked assembly — the file
-count printed is the only tell that it did not match the plan-line count.
-Mechanism: a TRUNCATING copy (`shutil.copy2`, `open(dst, "wb")`) fails on a
-locked file with `[Errno 22] Invalid argument` while an in-place
-`open(dst, "r+b")` write + `os.truncate` lands byte-identical. Without the
-in-place route, the XML half of a deploy lands and the DLL half silently does
-not — which discards every def whose comp `Class` lives in that DLL. Re-run
-once the game is really gone, and check the deployed vs. plan file counts
-before trusting either "Deployed" line.
+🔴 **`deploy_custom_mods.py --mod <X>` deploys only that one mod, not the mods it depends on.**
 
-⚠️ **`MayRequire` checks the MOD, never the TYPE — it is no protection against
-an assembly that is PRESENT but STALE.** New C# written and never rebuilt can
-leave types missing from the deployed DLL while every `Class=` reference
-guards correctly on the mod being active: the guard passes, the type still
-isn't there, and the def carrying it is silently discarded. Check that the
-type is actually IN the deployed DLL's bytes, not merely that the owning mod
-is active. (2026-09-21)
+- A new mod named a class from a SIBLING mod's assembly. Its XML held
+  `<li Class="RimMandrake.SomeNamespace.SomeExtension">`, which points at a compiled comp of that other mod.
+- The new mod was enabled and deployed. The rebuilt DLL of the DEPENDENCY mod had never been deployed again.
+  The deployed copy was hours older than the repo copy.
+- A stale dependency DLL that lacks a referenced type can crash mod loading. The crash can trip RimWorld's own corrupted-mods
+  safety net, which resets `ModsConfig.xml`. A reset is worse than a quiet config error. The reset is described in
+  `skills/rimworld-load-round/SKILL.md` § Automated sweeps across many mod-list batches: `loadsweep/`.
+- **When enabling a mod that leans on another mod's C# (a shared "engine" assembly), deploy BOTH mods explicitly before the
+  next launch.**
+
+⚠️ **But `WinError 1224` is not the only lock failure, and the other one is silent.**
+
+- `deploy_custom_mods.py --apply` once printed the `~` plan line of the DLL and "Deployed N file(s)". But it had
+  SKIPPED the locked assembly with no message. The only sign was the printed file count: it did not match the count of plan
+  lines.
+- A TRUNCATING copy (`shutil.copy2`, `open(dst, "wb")`) of a locked file fails with `[Errno 22] Invalid argument`. An
+  in-place
+  `open(dst, "r+b")` write + `os.truncate` lands byte-identical. The deploy tool has no in-place route: it uses
+  `shutil.copy2`.
+- So the XML half of a deploy can land while the DLL half does not. Then every def whose comp `Class` is in that DLL is
+  discarded.
+- The tool now prints `FAILED to write`, then `STILL DIFFERS`, and exits 1. It still prints "Deployed N file(s)" when any
+  other
+  file landed.
+- Run again when the game is really gone. Compare the deployed count with the plan count before you trust either "Deployed"
+  line. `VERIFIED in sync` is the proof for each `+` and `~` file that no hold covers. It
+  does not count a `-` file that the tool kept: the game still loads that file.
+
+⚠️ **`MayRequire` checks the MOD, never the TYPE — it is no protection against an assembly that is PRESENT but STALE.**
+(2026-09-21)
+
+- New C# that nobody rebuilt leaves its types out of the deployed DLL. Every `Class=` reference still guards correctly on the
+  mod, and the mod is active.
+- The guard passes, the type is not there, and the def that carries it is discarded with no message.
+- Check that the type is IN the bytes of the deployed DLL. An active owning mod does not prove it.
 
 ## 7b. 🔴 Is this artifact CURRENT? Never answer from a timestamp
 
-Half the deploy questions in this project are really one question — *does this
-derived thing still describe what the game loads?* — and reading **age** to answer
-it has now been wrong four separate times in one day. The rule:
+Half the deploy questions in this project are one question: *does this derived thing still describe what the game loads?* A
+**derived** thing is made from the mod set, for example a def dump. Seats answered that question from **age**, and the answer
+was wrong four separate times in one day. The rule:
 
 > **Trust a fingerprint of the load-set. Never a clock, on any layer:
 > folder mtime, file mtime, or the artifact's own captured timestamp.**
 
-Each of these was believed, acted on, and false:
+The **load-set** is the list of mods that the game loads. Its **fingerprint** is a hash of that list. `refresh.py` prints one
+that
+also holds the load order and leaves out a listed mod that is not installed. The fingerprint that a def dump's database
+stores
+does not hold the order; a second one does.
+
+Somebody believed each of these readings and acted on it, and each was false:
 
 | the reading | why it lied |
 |---|---|
-| **A folder's mtime** | `DefDump/defs/` read `Aug 14` while every file inside was written `Aug 15`. A dump that **overwrites a fixed set of filenames** creates and deletes nothing, so the directory mtime never moves. Generalises to any tool that rewrites the same names. |
-| **The artifact's own `capturedUtc`** | Fresh in TIME is not fresh in SET. A dump captured 08:10 missed a mod deprecated at 11:58. **Direction matters**: that dump is a *superset* — everything live is described correctly, but it still carries defs from a mod that no longer loads, so an xpath onto *those* validates **clean** and matches **nothing** in game. |
-| **A bare `<li>` count in `ModsConfig.xml`** | Reads 580 against a true 575. The file holds a second list, `knownExpansions`, duplicating the DLC ids. **Scope the count inside `<activeMods>`.** |
-| **`Version.txt`** | Reads `rev590` while every engine-written file reads `rev591`. **The build stamp comes from the RUNNING game**, not from the file that appears to name it. (BUILD, 2026-08-15) |
-| **A flat `DefDump/manifest.json` reader** | Silently degrades to `Version.txt` since the dump layout migrated to `captures/` — the flat path is gone, the reader finds nothing, and it resurfaces the exact rev590/591 lie one row up. `sync_mod_state.py` nearly stamped `rev590` over `rev591` saves before this was caught (fixed `801bd127`; swept as `FLAT_MANIFEST_READER_SWEEP_1`). |
-| **`refresh.py` calling `defs.sqlite` "current"** | `DumpDB.stale` checks the mod-set **fingerprint**, not whether the capture it names still **exists on disk**. Retention had already PRUNED the source capture (built 08-23) while a newer one existed (08-29); the fingerprint still matched, so the verdict read current anyway. Rebuild whenever provenance names a missing capture — a matching fingerprint is not proof the file behind it survives (BENCH 2026-08-29). |
-| **A generator's own "regenerating is a no-op" header comment** | Can drift silently from a renamed/moved target and never say so. `gen_pawnkind_roster.py`'s own claim was stale — it emitted pre-rename defNames across 49 `PawnKindDef`s, and a routine re-run per the file's own instructions would have silently reverted a whole naming migration. **Verify a generator's no-op claim with `git diff --stat` against committed output, never the exit code** (2026-09-18). |
+| **A folder's mtime** | `DefDump/defs/` read `Aug 14` while every file inside was written `Aug 15`. A dump that **overwrites a fixed set of filenames** creates and deletes nothing, so the directory mtime never moves. The same is true of any tool that rewrites the same names. |
+| **The artifact's own `capturedUtc`** | Fresh in TIME is not fresh in SET. A dump captured 08:10 missed a mod that was deprecated at 11:58. **Direction matters**: that dump is a *superset*. It describes everything live correctly. But it still carries defs from a mod that no longer loads, so an xpath onto *those* validates **clean** and matches **nothing** in game. |
+| **A bare `<li>` count in `ModsConfig.xml`** | It read 580 against a true 575. The file holds a second list, `knownExpansions`, which repeats the DLC ids. **Scope the count inside `<activeMods>`.** |
+| **`Version.txt`** | It read `rev590` while every file that the engine wrote read `rev591`. **The build stamp comes from the RUNNING game**, not from the file that appears to name it. (BUILD, 2026-08-15) |
+| **A flat `DefDump/manifest.json` reader** | The dump layout moved to `captures/`, so the flat path is gone and the reader finds nothing. It then falls back to `Version.txt` with no message, and repeats the rev590/591 lie of the row above. `sync_mod_state.py` nearly stamped `rev590` over `rev591` saves before this was caught (fixed `801bd127`; the other readers were swept as `FLAT_MANIFEST_READER_SWEEP_1`). |
+| **`refresh.py` calling `defs.sqlite` "current"** | `DumpDB.stale` once checked only the mod-set **fingerprint**. It did not check that the capture it names still **exists on disk**. Retention had already PRUNED the source capture (built 08-23) while a newer one existed (08-29). The fingerprint still matched, so the verdict read current (BENCH 2026-08-29). `DumpDB.stale` now reads STALE when the newest capture is not the named one, also when the named one is gone. Rebuild whenever the provenance names a missing capture: a matching fingerprint does not prove that the file behind it survives. |
+| **A generator's own "regenerating is a no-op" header comment** | The comment can drift from a renamed or moved target and never say so. `gen_pawnkind_roster.py`'s own claim was stale: it emitted pre-rename defNames across 49 `PawnKindDef`s. A routine run, as the file itself instructed, would have reverted a whole naming migration with no message. **Verify a generator's no-op claim with `git diff --stat` against committed output, never the exit code** (2026-09-18). |
 
-✅ **What was right the whole time: `refresh.py`'s `STALE` verdict**, because it
-keys on the load-set fingerprint rather than the clock — and it named the one real
-mod while two seats were escalating the wrong thing. **Believe it over your own
-timestamp arithmetic.**
+✅ **What was right the whole time: `refresh.py`'s `STALE` verdict.** That verdict compared the load-set fingerprint, not
+the clock. The verdict named the one real mod while two seats escalated the wrong thing. **Believe it over your own timestamp
+arithmetic.** The table shows one way that a `current` verdict of `refresh.py` failed.
 
-⬜ **Coverage is a third axis, after time and set.** 79 of 529 def-type files in
-the 2026-08-15 dump are **empty** (`AbilityDef` among them), so for those types
-"absent from the dump" says nothing at all about the game. A `--defs` check
-against an empty type is **UNMEASURED, not passed** — give it its own exit code
-and its own word, or it silently becomes a green tick.
+- While a dump is frozen, `refresh.py` prints `FROZEN` for the dump row. That word says nothing about the live mod set.
+- The `defs.sqlite` row compares the database with the newest capture, not with `ModsConfig.xml`.
+- For a `--live` run, `validate_patch.py` warns when the dump's mod count differs from the count of `activeMods`. Equal
+  counts
+  do not prove equal sets.
 
-📌 Dump location, freshness and known holes are published by the seat that
-measures them: `observed/LIVE.md`. **Read it; do not
-re-derive it**, and do not copy its numbers into another doc where they will rot.
+⬜ **Coverage is a third axis, after time and set.** Coverage is which def types the dump holds with rows in them.
+
+- 79 of 529 def-type files in the 2026-08-15 dump are **empty** (`AbilityDef` among them). For those types, "absent from the
+  dump" says nothing at all about the game. Which types are empty changes with each dump, so read the dump that you use.
+- A `--defs` check against an empty type is **UNMEASURED, not passed**. Give it its own exit code and its own word. If you do
+  not, it becomes a green tick with no message.
+
+📌 Where to read the dump facts:
+
+- `DUMP_ROOT` in `src/RimMandrake/Utils/game_paths.py` is the `DefDump` folder. `DEF_DUMP` there is its newest capture. The
+  freshness verdict is `refresh.py`'s.
+- The known holes are in `observed/LIVE.md`. Its list of empty types is of the 2026-08-15 dump. Read it for the kinds of
+  blind spot, not for a count.
+- **Do not re-derive those facts**, and do not copy the numbers into another doc. They rot there.
 
 More traps for this section: [references/traps.md](references/traps.md) § 7b. 🔴 Is this artifact CURRENT? Never answer from a timestamp.
 
 ## 8. After deploying
 
-- **Restart RimWorld.** Defs are parsed once at startup; reloading a save does not
-  pick up new XML. Adding brand-new defs is safe for an existing save; changing or
-  removing a def a save already references is not.
-- **Enable compatibility-patch mods LAST in load order.** Patches apply in load
-  order, so a fix-up mod loading before the mod it fixes patches a def that has not
-  been redefined yet, and the redefine wins. This is the most common reason a
+- **Restart RimWorld.** The game parses defs once, at startup. A reloaded save does not pick up new XML.
+  - A brand-new def is safe for an existing save. A change to a def that a save already references is not safe, and neither
+    is
+    its removal.
+- **Enable compatibility-patch mods LAST in load order.** Patches apply in load order. A fix-up mod that loads before the mod
+  it fixes patches a def that has not been redefined yet. Then the redefinition wins. This is the most common reason why a
   correct patch appears to do nothing.
-- **One mod at a time**, verified before the next — `skills/rimworld-load-round/SKILL.md` §3.
-- Test on a dev-mode throwaway world and read `Player.log` for the patch's own name
-  before trusting it in the campaign save.
-- 🔴 **"Deployed and VERIFIED" is true only until the next writer.** Every clone
-  deploys to the same Mods folder: a subagent's verified UtinniPatches deploy was
-  overwritten within minutes by another clone deploying from an older sha. Before
-  calling a fix live, re-run the deploy dry run from a clone AT the fix sha — a
-  clean plan (no `~`/`-` lines for your files) is the proof; the earlier report is not.
+- **One mod at a time, verified before the next, unless the load is shared on purpose.**
+  `skills/rimworld-load-round/SKILL.md` §3 says which changes can share a
+  load. A new assembly or a mod that patches broadly goes alone, except as the owner's
+  three-assembly waiver there says.
+- Test on a dev-mode throwaway world. Read `Player.log` for the patch's own name before you trust the patch in the campaign
+  save.
+- 🔴 **"Deployed and VERIFIED" is true only until the next writer.** Every clone deploys to the same Mods folder. A
+  subagent's verified UtinniPatches deploy was overwritten within minutes by another clone that deployed from an older sha.
+  - Before you call a fix live, run the deploy dry run again from a clone AT the fix sha.
+  - A clean plan (no `~`, `+`, `-` or `H` lines for your files) is the proof. The earlier report is not.
 
 More traps for this section: [references/traps.md](references/traps.md) § 8. After deploying.
 
 ## 9. Validation plan — what you owe whoever holds the game
 
-**A deploy ends with a validation plan, not with `--apply`.** You are almost never
-the seat that will see it work: a game load costs **23–30 minutes** and one game is
-shared by five seats, so whoever holds it needs your prediction, not a nudge to
-"have a look at the Jawa stuff".
+**A deploy ends with a validation plan, not with `--apply`.** You are almost never the one who will see the change work. A
+load
+of the full list costs many minutes (readings run from ~15 to **23–30 minutes**). One process drives a game at a time. So
+whoever holds the game needs your prediction, not a nudge to "have a look at the Jawa stuff".
 
 ### The six fields
 
-**1. The observable** — what a player SEES when it works. 🔴 A positive
-observation, never "no error"; absences are the cheapest thing in the world to
-produce by accident.
-**2. The route** — the exact call, defName or click path that produces it.
-**3. The prediction** — a number or specific string, written BEFORE the look.
-**4. The threshold** — what CLOSES it, and the minutia explicitly out of scope. An
-item with no threshold is inspected forever; one observation, not a battery.
-**5. Batch or solo** — most checks ride together; **a new assembly goes solo**,
-because if the load comes up wrong nobody can tell whether it was the DLL or the
-three def changes beside it.
-**6. What a FALSE PASS looks like** — the way this particular check lies.
+**1. The observable** — what a player SEES when it works. 🔴 Write a positive observation, never "no error". An absence is the
+cheapest thing in the world to produce by accident.
+
+**2. The route** — the exact call, defName or click path that produces the observable.
+
+**3. The prediction** — a number or a specific string. Write it BEFORE the look.
+
+**4. The threshold** — what CLOSES the item, and which details are explicitly out of scope. Without a threshold, people
+inspect
+an item forever. Ask for one observation, not a battery.
+
+**5. Batch or solo** — most checks ride together. **A new assembly goes solo.** If that load comes up wrong, nobody can tell
+whether the cause was the DLL or the three def changes beside it.
+
+**6. What a FALSE PASS looks like** — the way that this particular check lies.
 
 ```
 PROVE    <exact call / defName / click path>
@@ -326,39 +439,40 @@ EXPECT   <number or string, written before the look>
 LIES     <how this check produces a false pass>
 ```
 
-Three lines: the call, the expected reading, and how a pass could be false. 🔴 And first
-ask whether it needs the game at all — the default is source. Rule and false-pass catalogue:
+The plan is those three lines: the call, the expected reading, and how a pass can be false. 🔴 And first ask whether it needs
+the game at all. The default is source. The rule and the catalogue of false passes are in
 `skills/rimworld-modding/references/validation-plan.md`.
 
 ### The four ways a DEPLOY produces a false pass
 
-1. **A successful write says nothing about the running game.** RimWorld parses defs
-   and loads assemblies **once, at startup**. `--apply` reporting every file copied
-   and verified is a statement about the filesystem; the process that matters read
-   its copy minutes or hours ago. ⇒ **LIES** must name what the game last loaded
-   and when, not what the plan printed.
-2. **An assembly the game holds cannot be overwritten — and the failure is easy to
-   file and forget.** Windows refuses with `WinError 1224` (§7), so the copy does
-   not silently succeed; but the game folder is now carrying a **different build**
-   from the repo, and nothing in the plan output distinguishes "same DLL" from
-   "yesterday's DLL". **md5 both copies — it is the only way to know:**
+1. **A successful write says nothing about the running game.** RimWorld parses defs and loads assemblies **once, at
+startup**.
+   - When `--apply` reports every file copied and verified, the report is about the filesystem. The running process read its
+     copy minutes or hours ago.
+   - ⇒ **LIES** must name what the game last loaded and when, not what the plan printed.
+2. **An assembly the game holds cannot be overwritten — and the failure is easy to file and forget.** Windows refuses with
+   `WinError 1224` (§7), so the copy does not silently succeed. But the game folder now carries a **different build** from
+   the repo.
+   - The plan compares bytes. So a new `--mod <Mod>` dry run still shows the `~` line of the DLL. A DLL with no line at all
+     (no `~`, `+` or `H`) has the same bytes on both sides.
+   - The line does not say how old the game copy is. To compare the two files with no plan, md5 both copies:
    ```bash
-   md5sum src/<Mod>/Assemblies/<Name>.dll "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/<Mod>/Assemblies/<Name>.dll"
+   md5sum src/<tier>/<Mod>/Assemblies/<Name>.dll "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/<Mod>/Assemblies/<Name>.dll"
    ```
-3. **An unscoped `--apply` deployed more than you think.** Five seats share one
-   working tree, so a bare `--apply` sweeps up whatever else is dirty — including
-   another seat's half-finished work — and any breakage in that load gets
-   attributed to your change. ⇒ **Scope every deploy: `--mod <ModName>`**, and say
-   in the plan which mods moved.
-4. **"Deployed" and "live" are different words.** A folder under `Mods/` changes
-   nothing until it is **enabled in the load order** (and, for a compatibility
-   patch, enabled LAST — §8). The plan warns when a mod is absent from
-   `ModsConfig.xml`; a plan that was not read is a mod that is on disk and inert.
+   - That path is ArchBig's. For ArchSmall, use its own `Mods` (§1).
+3. **An unscoped `--apply` deployed more than you think.** An unscoped run takes every mod where your clone
+   differs from the game, except the folded biome members (§2). The run ships a subagent's half-finished work, and it puts an
+   old file over another clone's newer
+   deploy. Any breakage in that load is then blamed
+   on your change.
+   - ⇒ **Scope every deploy: `--mod <ModName>`.** Say in the plan which mods moved.
+4. **"Deployed" and "live" are different words.** A folder under `Mods/` changes nothing until it is **enabled in the load
+   order**. A compatibility patch must be enabled LAST (§8).
+   - The plan warns when a mod is absent from `ModsConfig.xml`. If nobody reads the plan, the mod is on disk and inert.
 
 ### Worked example
 
-A Harmony patch shipped as a new DLL for `Jawa_Patches`, deployed in the shutdown
-window:
+A Harmony patch shipped as a new DLL for `Jawa_Patches` (an old mod name), deployed in the shutdown window:
 
 ```
 PROVE    Spawn Jawa + MeleeWeapon_Vibroblade, spawn a muffalo, draft and attack; watch the combat log
@@ -366,24 +480,27 @@ EXPECT   A Jawa with a vibroblade attacks twice in the time a vanilla knife pawn
 LIES     Game copy may be the PREVIOUS build if RimWorld was running at deploy (WinError 1224); md5 both DLLs before the load. Absent Harmony line = patch never applied, not "nothing to report".
 ```
 
-⚠️ **Write it in the same commit as the deploy.** The alternative is that whoever
-holds the game invents a check, and theirs will not carry your prediction — which
-is the field that turns a look into evidence.
+⚠️ **Write it in the same commit as the deploy.** If you do not, whoever holds the game invents a check. That check does not
+carry your prediction, and the prediction is the field that turns a look into evidence.
 
 ## The deployed companion DLL runs behind source, and a missing tool is ambiguous
 
-A companion assembly deploys only in a game-down window, so the game copy drifts behind the
-repo for as long as the game stays up. Measured once at **166 tool names deployed against
-238 built** — 670 KB of IL, everything written that day.
+The **companion** is the JawaBench assembly that adds bridge tools (`rimbridge-companion` skill). A companion assembly
+deploys
+only in a game-down window. So the game copy falls behind the repo for as long as the game stays up. One measurement read
+**166
+tool names deployed against 238 built** — 670 KB of IL, everything written that day.
 
-⇒ **A tool missing from `--list-tools` proves nothing on its own:** undeployed, gated out of
-the build, or genuinely absent all read identically. Disambiguate with `build.py`'s own
-`tool_surface()` over both DLLs.
+⇒ **A tool missing from `--list-tools` proves nothing on its own.**
 
-⚠️ **That is a BYTE SCAN.** Its "added" list is untrustworthy — encoding differences make
-tools that shipped weeks ago look new. Trust it for `LOST` being empty and for a name being
-PRESENT; corroborate a gap with file size and the build commit stamped in the assembly.
-
-⛔ **A `jawa/` literal written in PROSE inside a tool description becomes a phantom tool
-name**, which makes `build.py`'s "THIS DEPLOY WOULD REMOVE TOOLS" guard lie in both
-directions. After any description edit: `[x for x in surface if x.endswith('_')]`.
+- Three causes look the same. The tool is not deployed, the tool is gated out of the build, or the tool does not exist.
+- To tell the first cause apart, run `tool_surface()` of `src/RimMandrake/bridgetools/build.py` over the bytes of both DLLs.
+  One is the built DLL, and one is in the `BridgeTools` folder of the game's install.
+- To tell the other two apart, read `tool_names_from_source` of `src/RimMandrake/bridgetools/tool_metadata.py`. A tool in the
+  source and in neither DLL is gated out of the build, or its DLL is not built yet.
+- `tool_surface()` reads the exact set of `[Tool]` names from the metadata of the DLL. The function is no longer a byte scan.
+  A name in
+  one DLL and not in the other is a real difference. The read compares names only: a tool that got worse shows no difference.
+- A `jawa/` literal in the PROSE of a tool description no longer counts as a tool name. So a name in the "THIS DEPLOY WOULD
+  REMOVE TOOLS" list of `build.py` is a real difference. Its usual cause is a missing `--gm` flag.
+- If a doubt is left, read the file size and the build commit that is stamped in the assembly.
