@@ -96,7 +96,7 @@ every existing thing of that def on its next read.
 |---|---|---|---|---|
 | **stats** | `ThingDef.statBases`, `StatDef.defaultBaseValue` | AFTER A CLEAR | computed from the def on each call, behind `StatWorker.immutableStatCache` (kept for ever when `StatDef.immutable`) and `temporaryStatCache`. Follow-up: `StatWorker.TryClearCache()` or `ClearCacheForThing(thing)`. Never `DeleteStatCache`. | read: `StatWorker.GetValue`, `GetBaseValueFor` |
 | | abstract values (`BaseMaxHitPoints`, `BaseMarketValue`) | AT ONCE | `GetValueAbstract` has no cache | read: `StatWorker.GetValueAbstract` |
-| | `MaxHitPoints` of an existing thing | AFTER A CLEAR | up to 10 ticks stale by itself; `HitPoints` of each thing is its own number and is not rescaled | read: `Thing.MaxHitPoints` |
+| | `MaxHitPoints` of an existing thing | AFTER A CLEAR | stale for 10 ticks, or for ever if the stat is immutable: always clear (`ClearCacheForThing`); `HitPoints` of each thing is its own number and is not rescaled | read: `Thing.MaxHitPoints` |
 | | `StatDef.parts`, `statFactors` (the stat's structure) | AFTER A CLEAR | `StatDef.immutable` is worked out once at load. Follow-up: `StatDef.SetImmutability()` | read: `StatDef.SetImmutability` |
 | | `equippedStatOffsets`, hediff stat offsets | AFTER A CLEAR | the stat caches above; pawn capacities are dirtied only on equip: `PawnCapacitiesHandler.Notify_CapacityLevelsDirty()` | read: `StatWorker`, `Pawn_ApparelTracker` |
 | **comp properties** | any number the comp reads from `Props` at use | AT ONCE | by reference | read: `ThingComp.Initialize` |
@@ -107,18 +107,20 @@ every existing thing of that def on its next read.
 | | add or remove a comp on a def | NEW THINGS ONLY, risky | existing things keep their comp list; a save then holds things of both shapes. Refused in the first version. | read: `ThingWithComps.InitializeComps` |
 | | **our own comps** | by how we wrote them | a comp of ours that copies a `Props` number into a field at spawn is NEW THINGS ONLY | rule for our code, section 2 |
 | **costs and recipes** | `costList`, `costStuffCount` | AFTER A CLEAR | `CostListCalculator.Reset()` | read: `CostListCalculator.CostListAdjusted` |
-| | `RecipeDef` fields (work amount, products, skill) | AT ONCE for most **[guess 75%]**; a few private caches | RIMMSqol nulls `premultipliedSmallIngredients`, `workerInt`, `isSurgeryCached` and the users' `allRecipesCached` | read: RIMMSqol `SettingsInit.cs:2325-2347` |
-| | `ThingDef.recipeMaker.*` | LOAD ONLY | copied into the generated `Make_X` RecipeDef at load. **Write the generated RecipeDef instead.** | read: `RecipeDefGenerator` |
+| | `RecipeDef` fields (work amount, products, skill) | AT ONCE for most **[guess 75%]**; a few private caches; a bill in progress and an unfinished thing keep the work amount they started with | RIMMSqol nulls `premultipliedSmallIngredients`, `workerInt`, `isSurgeryCached` and the users' `allRecipesCached` | read: RIMMSqol `SettingsInit.cs:2325-2347` |
+| | `ThingDef.recipeMaker.*` | LOAD ONLY | copied into the generated `Make_X` RecipeDef at load. **Write the generated RecipeDef instead.** The export must map that write back to the `recipeMaker` field, because `Make_X` does not exist when XML patches run. A cost change also does not reach the generated recipe's ingredients (those are rebuilt only by `RecipeDefGenerator.ResetRecipeIngredientsForDifficulty()`). | read: `RecipeDefGenerator`, `Game.FinalizeInit` |
 | | which recipes a bench offers (`AllRecipes`) | AFTER A CLEAR | private `ThingDef.allRecipesCached`; no method clears it; set it to null by reflection | read: `ThingDef.AllRecipes` |
 | | market value from cost | AT ONCE, behind the stat caches | | read: `StatWorker_MarketValue` |
 | | frame and blueprint defs | LOAD ONLY | generated at load; the frame's hit points are baked | read: `ThingDefGenerator_Buildings` |
-| **verbs and projectiles** | `VerbProperties` (range, warm-up, burst) | AT ONCE | by reference | read: `VerbTracker.InitVerb` |
+| **verbs and projectiles** | `VerbProperties.range` and most numbers | AT ONCE | by reference | read: `VerbTracker.InitVerb` |
+| | burst count, ticks between burst shots | AFTER A CLEAR | each `Verb` keeps private `cachedBurstShotCount` and `cachedTicksBetweenBurstShots`; set them to null on each live verb | read: `Verb.cs` lines 53-55, 227-259 (found in GPT round 2, then read) |
+| | warm-up time | AT ONCE for the next warm-up | a warm-up in progress keeps its length **[GPT round 2; not read]** | not read |
 | | `projectile.damageAmountBase`, `explosionRadius` | AT ONCE | read at impact | read: `Projectile.DamageAmount`, `Projectile_Explosive` |
-| | `projectile.speed` | AT ONCE for the next shot | a projectile in flight keeps its `ticksToImpact` | read: `Projectile.Launch` |
+| | `projectile.speed` | AT ONCE for the next shot; **wrong for a shot in flight** | `ticksToImpact` is fixed at launch, but the drawn position divides by `StartingTicksToImpact`, which reads the speed again: a projectile in the air jumps. Write it only with no such projectile in flight. | read: `Projectile.cs` lines 84-110, 213 |
 | | add or remove a melee `Tool` | LOAD ONLY | tool ids are given in `ThingDef.PostLoad`; RIMMSqol asks for a restart here | read: `ThingDef.PostLoad`; RIMMSqol `SettingsInit.cs:2952` |
-| **hediffs** | `HediffStage` numbers, `lethalSeverity`, `hediffGivers` | AT ONCE | `Hediff.CurStage` reads the def each time | read: `Hediff.CurStage` |
+| **hediffs** | `HediffStage` numbers, `lethalSeverity`, `hediffGivers` | AT ONCE | `Hediff.CurStage` reads the def each time. A changed stage threshold (`minSeverity`) moves existing hediffs to another stage with no stage-change notice: treat thresholds as NEW THINGS ONLY. | read: `Hediff.CurStage`; the notice: GPT round 2, not read |
 | | `capMods`, `painOffset` | AFTER A CLEAR | `HediffSet.DirtyCache()` and `PawnCapacitiesHandler.Notify_CapacityLevelsDirty()` for each pawn that has the hediff | read: `HediffSet.DirtyCache` |
-| | hediff comp properties | AT ONCE | by reference | read: `HediffWithComps.InitializeComps` |
+| | hediff comp properties | AT ONCE, with exceptions | by reference; but a comp that draws a value when the hediff is made (a duration in `HediffComp_Disappears`) is NEW THINGS ONLY | read: `HediffWithComps.InitializeComps`; the exception: GPT round 2, not read |
 | **graphics and draw size** | `graphicData.texPath`, `drawSize`, `color`, `shaderType` | AFTER A CLEAR, then per thing | private `GraphicData.cachedGraphic` (rebuilt after `CopyFrom`, or set null); then `Thing.Notify_ColorChanged()` on each spawned thing (clears the thing's graphic and dirties its map mesh); pawns: `PawnRenderer.SetAllGraphicsDirty()` | read: `GraphicData`, `Thing.Notify_ColorChanged`, `PawnRenderer` |
 | | `ThingDef.uiIconPath` | LOAD ONLY | resolved once; write the `uiIcon` texture itself | read: `BuildableDef.PostLoad` |
 | | `ThingDef.size` | **NEVER LIVE** while a thing of the def is spawned | the thing grid registers and deregisters by `def.size`; a change strands grid entries | read: `ThingGrid.Register` |
@@ -135,10 +137,10 @@ every existing thing of that def on its next read.
 | | any `workerClass` (incident, weather, work giver, stat) | LOAD ONLY in effect | the worker object is made once and kept in a private `workerInt` | read: `IncidentDef`, `WeatherDef`, `WorkGiverDef` |
 | **AI** | a number on a `JobGiver` or other think node | AT ONCE **[guess 75%]** | the nodes are live objects built at load; address the node by its place in the tree | read: `ThinkTreeDef.ResolveReferences` |
 | | the shape of a think tree (add, remove, reorder nodes) | LOAD ONLY | keys are assigned once | read: `ThinkTreeDef` |
-| | `JobDef` flags | AT ONCE | | read: `Pawn_JobTracker` |
+| | `JobDef` flags | AT ONCE, or at the next job start, by flag | | read: `Pawn_JobTracker` |
 | | `JobDef.driverClass` | new jobs only | a running job keeps its driver | read: `Job.MakeDriver` |
 | | work giver priority | AFTER A CLEAR | `WorkTypeDef.workGiversByPriority` rebuilt, then `Pawn_WorkSettings.Notify_UseWorkPrioritiesChanged()` on each pawn (RIMMSqol does this) | read: `Pawn_WorkSettings`; RIMMSqol |
-| | `PawnKindDef.combatPower`, `RaceProperties.baseBodySize` | AT ONCE | pawns already generated keep what generation gave them | read: `Pawn.BodySize` |
+| | `PawnKindDef.combatPower`, `RaceProperties.baseBodySize` | AT ONCE | `BodySize` changes for existing pawns too; what generation already chose from a kind (gear, age) stays | read: `Pawn.BodySize` |
 | **sounds** | `SubSoundDef` numbers (volume, pitch) | next play **[guess 60%]** | resolved grains are LOAD ONLY; a running sustainer is unread | read: `SubSoundDef.ResolveReferences` |
 | **UI text** | `label` | AFTER A CLEAR | `Def.ClearCachedData()` and `GenLabel.ClearCache()` | read: `Def`, `GenLabel` |
 | | `description` | AFTER A CLEAR | private `ThingDef.descriptionDetailedCached`, set null | read: `ThingDef` |
@@ -238,7 +240,7 @@ Where a live patch refuses, each by name and with the route that works:
 | a change of `ParentName`, `Name`, `Abstract` | refuse; inheritance was flattened at load and no parent object exists. A patch aimed at an abstract parent lists the concrete defs it would have reached, and the caller addresses those. |
 | a change of a def's class, `thingClass`, `compClass`, any `workerClass` | refuse; existing objects are of the old class |
 | adding or removing a comp, a tool, a think node | refuse in the first version (NEW THINGS ONLY with mixed shapes, or LOAD ONLY) |
-| a field with **no write recipe yet** | write it, and mark the write **UNVERIFIED**: the receipt says the effect is not known until a check by behaviour passes. An unknown field is never reported as changed-and-acting. |
+| a field with **no write recipe yet** | only when the field is a plain number or a true/false value (never an enum, a type, a def reference, a list or a name), the value is finite, and the game is a disposable test game. Then write it, and mark the write **UNVERIFIED**: the receipt says the effect is not known until a check by behaviour passes. Every other unknown field is refused until it has a recipe. An unknown field is never reported as changed-and-acting. |
 
 **The load-time overlay** is the second route and the faithful one: the same overlay, written as ordinary
 `PatchOperation`s into a test-only mod that loads last. It costs one restart, covers every XML-shaped change
@@ -260,24 +262,36 @@ A file an agent writes and the game holds while it is on:
    script that crashes cannot leave an unknown game: one call returns "no overlay", or the overlay with every entry.
 2. **Every write goes through the overlay.** There is no bare "set field" beside it (the existing
    `jawa/mod_settings_field set` joins the overlay). One write is an overlay of one entry.
-3. **Apply is all-or-nothing in order.** Each entry is written, followed up, read back. If one fails, the entries
-   already written are reverted, and the answer names the failed entry.
+3. **Apply runs in order, with the simulation paused, and stops at the first failure.** Each entry is written,
+   followed up, read back. If one fails, the entries already written are reverted and the answer names the failed entry.
+   If that revert also fails, or a follow-up threw half-way, the game is marked **SPOILED**: no scene runs in it again,
+   and the holder restarts it. A hang inside a follow-up is caught from outside the game (pass 1, capability 10).
 4. **Revert is exact and is checked.** Entries are undone in reverse order with their follow-ups, and each target is
    read back. A fingerprint of every touched def (all scalar leaves, taken before the first write) must be equal after
-   the revert. Revert reports honestly what it cannot undo: things made while the overlay was on keep what was copied
-   into them, and everything that happened in the simulation happened. After a sweep, the scene is discarded, not
-   "reverted".
-5. **What survives what.** Defs and C# statics belong to the process, not to the save: an overlay **stays on through a
-   save load inside the same process** and is gone after a restart **[guess 90%; defs are not rebuilt on a game load]**.
+   the revert. Revert restores the VALUES; it does not restore the game. Things made while the overlay was on keep what
+   was copied into them, a heavy follow-up (a region rebuild) leaves its own marks, and everything that happened in
+   the simulation happened. So the process and the loaded game carry a **taint mark** from the first live write until
+   the game is restarted (the process) or a save from before the overlay is loaded (the game state). `overlay: none`
+   with the taint mark set is not a clean game, and a run in it cannot be evidence for a bar.
+5. **What survives what.** Defs and C# statics belong to the process, not to the save: an overlay **mostly stays on
+   through a save load inside the same process** and is gone after a restart. A game load does not load defs again, but
+   it does write to some: `Game.FinalizeInit` reapplies research mods to defs, calls the ideology start hook, and
+   rebuilds recipe ingredients for the difficulty **[read: `Game.FinalizeInit`]**; stat caches are cleared; any mod's
+   own load hook may reset its statics. So after every game load each entry is read again and repaired or reported.
    Values that a save holds for each thing come back from the save. So "re-apply after load" has two cases:
    - after a game load in the same process: check and repair (pass 1's "reassert", capability 3, includes the overlay);
    - after a restart: only when the overlay file is marked armed for this game instance. The companion then applies it
      at startup, after defs are resolved, as RIMMSqol does **[read: RIMMSqol `HarmonyBootstrap.cs:23-72`]**, and stamps
      it. A restart without an armed file starts clean. ArchBig never arms.
 6. **Mod settings must not reach the disk.** A poked settings field is written to the mod's config file if anything
-   calls `WriteSettings` (closing the options window does). The overlay keeps a journal file of poked settings; revert
-   restores them; the companion's handshake reports an unreverted journal; and a settings file whose hash changed while
-   an overlay was on is restored from the copy taken at apply.
+   calls `WriteSettings` (closing the options window does). The guard acts before the write, not after: while an
+   overlay holds a settings entry, the companion blocks `WriteSettings` for that mod (a test-profile patch), and the
+   journal file of poked settings is written BEFORE the first poke, so a crash leaves a record that the next handshake
+   reports. A test game with its own Config folder (ArchSmall has one) makes any leak harmless to the owner. The tool
+   itself writes no file in a Config folder.
+7. **Writes the overlay did not make.** A hand on the TweakValues window, or another tool, can change a tuning point.
+   The receipt therefore lists the current value of every tuning point of the mod under test that differs from its
+   compiled default, whether or not an overlay wrote it.
 
 ### How every record says which overlay was on
 - **Receipts.** Every scene receipt carries `overlay: none`, or the overlay stamp and the entry list with before and
@@ -285,7 +299,10 @@ A file an agent writes and the game holds while it is on:
   The game fills the field; a scene script cannot leave it out.
 - **Screenshots.** While an overlay is on, the companion draws a small fixed line in a corner of the game view:
   `OVERLAY <name> <hash>`. Any capture, by any tool, and the owner's own eyes, see it. The capture's sidecar repeats it.
-- **Saves.** A save written while an overlay is on gets the stamp in its file name and a sidecar file with the overlay.
+- **Saves.** A save written while an overlay is on, or while the taint mark is set, gets the stamp in its file name
+  and a sidecar file with the overlay. A file name can be changed, so the stamp also goes INSIDE the save where a
+  loader of ours reads it; how to do that without a save that names a test-only class is a question for the second
+  designer (a scenario note or the game's own name field are candidates; not read).
   The def values themselves are not in a save, so such a save loaded in a clean game shows the SHIPPED values with
   things whose copied state came from the overlay: a mixed state that proves nothing. Such a save is a scratch save.
   It is never promoted to a keeper, a fixture or a canonical save.
@@ -303,7 +320,11 @@ Three rungs, in rising order of truth and cost:
   (or as `PatchOperation`s when the def is not ours), C# entries as a list of `file:line, field, old, new`, formula
   slots as the expression to write as code. Settings entries become new defaults.
 - **Absorbed check.** After the build is loaded with no overlay, the overlay is run in dry mode: every entry's target
-  must already hold the entry's value. The call answers ABSORBED, or names the entries that differ.
+  must already hold the entry's value. The call answers ABSORBED, or names the entries that differ. ABSORBED is valid
+  only in a fresh process whose receipt shows: the new build's assembly hashes, no rehearsal mod in the mod list, no
+  settings file for the mod (so a value comes from the compiled default, not from an old config), and no taint mark.
+  A formula slot and a patch switch are not values: for those the check is that the slot holds its default and the
+  patch list equals the build's own.
 - **One confirming run.** The scene runs once on the build, overlay `none`. Only that run is evidence for a bar.
 - **The program enforces it.** A row of a mod's test table, a proof, a visit result or a `modcheck` record with an
   overlay stamp other than `none` cannot be recorded as PASS. Its state is TUNED, with the stamp. This is the rule of
@@ -315,9 +336,16 @@ Three rungs, in rising order of truth and cost:
 
 ### The design
 A sweep is one request: named parameters, their values, a scene, the measures to return.
-- **Parameters**: overlay targets, each with a list or a range. The first point and the last point are always the
-  shipped values (the **baseline twice**): if the two baselines differ by more than the differences between points, the
-  sweep says its noise is too large to rank the points.
+- **Parameters**: overlay targets, each with a list or a range.
+- **Controls**: the shipped values are run first, last and after every few points (the **repeated baseline**), and
+  the points run in a shuffled order, so a slow drift of the game does not look like an effect of the parameter. If
+  the baselines differ among themselves by as much as the points differ, the sweep says that it cannot rank the points.
+- **A reset contract.** Fresh things are not a fresh game. Each scene names what must be the same at the start of
+  every point: weather, temperature, the map components and statics of the mod under test, pending effects. Pass 1's
+  reassert checks it. Where the contract cannot be met inside one game, each point starts from a restored snapshot
+  (pass 1, capability 8). A mod of ours that keeps a static cache must offer a reset for it.
+- **The winner is confirmed cold.** The sweep ranks; it does not prove. The chosen point is run again in a fresh
+  process (rung 2 or rung 3 of section 5) before anyone relies on it.
 - **Order of points**: a full grid for one or two parameters; one parameter at a time around the baseline for more;
   halving for "where is the threshold"; a simple search on a score for "best". All are a list of points made by the
   caller's side; the game side only needs "run this list".
@@ -328,8 +356,9 @@ A sweep is one request: named parameters, their values, a scene, the measures to
   side help in two cases only: the axis is a property of each copy (pit depth, distance from the blast, the stuff of a
   wall), or several random repeats of the SAME point run at once. A sweep can use both: a row of copies along the
   per-copy axis, run once for each point.
-- **Randomness**: a point with a random result runs N seeds (kind B thinking: the sweep reports the spread, never one
-  sample as the answer). Pass 1's `Rand` capture and snapshot restore (capability 8) are used as they are; this design
+- **Randomness**: a point with a random result runs N seeds, the same seed set for every point (kind B thinking: the
+  sweep reports the spread, never one sample as the answer). Equal seeds do not make equal runs: new thing ids shift
+  the engine's hash-interval schedule, and a changed parameter changes how many random numbers are drawn. Pass 1's `Rand` capture and snapshot restore (capability 8) are used as they are; this design
   adds nothing there.
 - **What a sweep returns**: a table, one row for each point (values, measures, the scene's outcome, ticks, seconds),
   the baseline pair, and the overlay file of the chosen point, ready to export.
@@ -387,7 +416,7 @@ towards 2 to 1 for a scene that must run a game day. Short scenes are where live
 | **A tuning result counted as a result of the build** (the worst one) | a mod passes on values that are not in it | the stamp is filled by the game; a stamped row cannot be PASS; export, the absorbed check and one confirming run (section 5) |
 | **The write "took" but the game acts on a cache** | the test lies: a sweep shows no effect, or the old effect | write recipes; a field without one is UNVERIFIED; a check by behaviour for each recipe; the baseline twice |
 | **An overlay left on** | every later scene in that process runs on wrong values | the game owns the overlay; every receipt shows it; the on-screen line; pass 1's reassert includes "overlay is what the scene declares"; a scene that declares no overlay refuses to start while one is on |
-| **Poked settings saved to the config file** | the values survive a restart silently, on that game | the journal, the hash check and the restore (section 5, rule 6) |
+| **Poked settings saved to the config file** | the values survive a restart silently, on that game | `WriteSettings` blocked while an entry is on; the journal written first; a test game's own Config folder (section 5, rule 6) |
 | **A save written under an overlay** | a mixed state that looks like a normal save | stamped file name and sidecar; never promoted; autosave is off in the calm test environment (pass 1) |
 | **A write to identity or structure** (`size`, `defName`, classes, comps added) | stranded grid entries, broken references, a save that will not load | class NEVER LIVE is refused by name; structural changes are refused in the first version |
 | **A full rebuild used as a follow-up** | the 2026-09-03 failure again | no follow-up may call `HotReloadDefs`, a database clear or a resolve-all; `DeleteStatCache` is banned by name |
@@ -396,7 +425,9 @@ towards 2 to 1 for a scene that must run a game day. Short scenes are where live
 | **A poke of `const` or `static readonly`** | no effect, or two answers in one game | refused by name |
 | **Two agents, one game** | one changes values under the other's scene | the overlay belongs to the bridge holder of that game (the driver lock); a second holder cannot apply |
 | **Another mod's cache** (Performance Fish and the like) | writes dropped on the full list | results from the small list are confirmed on the list they are claimed for; check by behaviour |
-| **Drift of the sweep's own environment** | points are not comparable | the baseline twice; fresh scene for each point; pass 1's calm environment |
+| **Drift of the sweep's own environment**, and state that leaks from one point to the next | points are not comparable | the repeated baseline; shuffled order; the reset contract; the winner confirmed in a fresh process |
+| **A clean-looking game after a revert** | a later run with `overlay: none` passes on things and state that the overlay made | the taint mark (section 5, rule 4): no evidence for a bar from a tainted process or game |
+| **A follow-up that fails half-way, or hangs** | a game in a state nobody can name | the game is marked SPOILED and restarted; the hang is caught from outside |
 
 **The owner's game (ArchBig) and his saves. This tool must never:**
 - apply an overlay on ArchBig by any agent's own decision. Live writes are denied in the CAMPAIGN profile, as
@@ -421,14 +452,16 @@ or closed. E1 and E2 need no new code.
 | **E3** | (needs a first def-field write tool, test profile only) write `comps[CompProperties_Explosive].explosiveRadius` of a vanilla shell def; detonate a shell that was spawned BEFORE the write | the blast has the new radius | comps do not read by reference as read in the source: the central claim of section 1 is wrong, and most writes become NEW THINGS ONLY |
 | **E4** | write `statBases[MaxHitPoints]` of a wall def; read `MaxHitPoints` of an existing wall at once, after 15 ticks, and after `stat_cache_bust` | old or new at once; new within 10 ticks or after the clear | the stat is cached for ever (immutable): the recipe needs the clear always. Either answer fixes the recipe. |
 | **E5** | after E3 and E4 (about ten writes): spawn a colonist and a muffalo; revert all; compare the touched defs' fingerprints with the ones taken before; spawn again | both spawns succeed; fingerprints equal | a spawn failure is the 2026-09-03 symptom: stop, the approach is unsafe as designed. A fingerprint difference: revert is not exact. |
-| **E6** | negative controls in a test class in the companion: poke a `static readonly int` after the method that reads it has run; ask the tool to poke a `const` | the `const` is refused by name; the readonly poke reads back new while the method still returns the old value | if the method returns the new value, Mono 1.6 does not fold it, and the refusal can soften to a warning |
+| **E6** | negative controls in a test class in the companion: poke a `static readonly int` after the method that reads it has run; ask the tool to poke a `const` | the `const` is refused by name; the readonly poke reads back new while the method still returns the old value | the old value confirms the refusal. A new value proves little (one method, one compile), so the refusal stays either way; the experiment can only confirm the danger. |
 | **E7** | write a `BiomeDef` wild animal commonality on a map of that biome; read the spawner's choice weights before and after setting the private caches to null | no change before the clear; the new weights after | a change with no clear: the cache table is wrong for 1.6; trust the table less and check by behaviour more |
 | **E8** | in the companion, compile `(depth, cap) => min(cap, 0.5 * (depth - 2))` with `System.Linq.Expressions` and call it 1,000 times | right answers; time for each call near a normal delegate | no formula slots by this route; fall back to tuning numbers only, or a hand-written interpreter |
 | **E9** | take one of our own Harmony prefixes off with `Harmony.Unpatch`, count its calls over 600 ticks, put it back, count again | zero calls while off; calls return | calls continue while "off": an inlined or cached caller; live patch switching cannot be trusted for that method |
 | **E10** | repeat E3 and E4 on a game with a large mod list (SteveDesktop, or ArchBig on his word) | the same results | another mod caches the value: name the mod; results from the small list do not carry to the full list for that field |
-| **E11** | export the E1/E2 overlay as a load-time patch mod and as new defaults; restart; run the absorbed check | ABSORBED | the export does not write what the live write wrote: the path from tuning to build is broken |
+| **E11** | export the E3/E4 def overlay as a load-time patch mod; restart with no live overlay and no old settings file; run the absorbed check; then remove the patch mod, restart, run it again | ABSORBED with the patch mod; NOT absorbed without it | the first: the export does not write what the live write wrote. The second: the absorbed check cannot tell a build from a rehearsal, and must not be trusted. |
+| **E12** | apply the E1 and E4 writes, load a scratch save in the same process, read every target and repeat the E1 drop; compare with a cold start | the values are still on and act the same; the receipt shows the overlay | a value went back: name what reset it (`Game.FinalizeInit`, a mod's load hook); the check after every load is then a need, not a caution |
 
 The first three (E1, E2, E3) answer the owner's question for our own mods, for the cost of a point, and for defs.
+E3 passing shows the claim for one vanilla comp; each other comp still gets its own check by behaviour.
 
 ## Three shapes, and the pick
 
@@ -466,13 +499,28 @@ Round 1 (web facts, `gpt_consult.py`, 2026-11-23; the answer is in agent scratch
 - **Not relied on**: its account of RIMMSqol's internals (it could not verify them). The RIMMSqol facts here come from
   the mod's source on this machine.
 
-Round 2 (skeptical review of this file): see the end of this section once it has run.
+Round 2 (skeptical review of the first full draft, 12 findings):
+- **Taken, and read in the engine afterwards**: `Verb` caches burst count and burst spacing; a projectile in flight
+  reads its speed again for its drawn position; `Game.FinalizeInit` writes to defs on every game load (research mods,
+  ideology hook, recipe ingredients). The table and section 5 rule 5 changed, and E12 was added.
+- **Taken**: `overlay: none` after a revert is not a clean game (the taint mark). ABSORBED could be reached by an old
+  settings file or a rehearsal mod still loaded (the conditions on the absorbed check, and the second half of E11).
+  "All-or-nothing" and "exact revert" were overclaims (the SPOILED state). The settings guard acted after the leak
+  (now it blocks the write). An unknown field is not safe by default (UNVERIFIED is now for plain numbers and flags
+  on a disposable game only). Baseline twice was not enough (repeated baseline, shuffled order, reset contract, the
+  winner confirmed cold). E6 cannot justify relaxing the readonly refusal.
+- **Taken, not read**: the hediff duration and stage-threshold exceptions, warm-up length, work amount kept by a bill
+  in progress. Each is marked in the table.
+- **Rejected**: a cold-process comparison for every point of a sweep. It gives back the reload cost that the design
+  removes; one cold confirmation of the chosen point does the job.
 
 ## What is guessed, not read
 
 - Every row marked **[guess]** in the tables: `RecipeDef` field timing, think-node fields, `affordances`,
   `altitudeLayer`/`drawerType`, sound numbers, the name of the engine's value parser.
-- That defs and statics stay as written across a game load in one process.
+- Which defs a game load writes to beyond the three calls read in `Game.FinalizeInit`; what any mod's own load hook
+  resets (E12).
+- How to put the overlay stamp inside a save without naming a test-only class.
 - All costs in time for a live point (UNMEASURED; E2 measures the first).
 - That `System.Linq.Expressions` compiles under RimWorld's Mono (E8).
 - The Mono facts about `static readonly` come from GPT's reading of Unity's Mono source, not from RimWorld's shipped
