@@ -205,16 +205,21 @@ A flat tick window measures whatever happened to be slowest. The slowest thing i
 - **A long-duration property is compressed, or decomposed and INFERRED — never chased for hours** (owner, 2026-10-13).
   - Compress first: shorten the property's timing constants, and watch the property in minutes. Then restore the shipped
     value and read it back.
-  - If compression cannot reach the property, verify the components. Record the whole as INFERRED.
+  - If compression cannot reach the property and the colony is safe, make a long clock advance (next rule).
+  - If no safe test can show the property, verify the components. Record the whole as INFERRED.
   - *"we should not waste dozens of hours frantically testing for a single very-hard-to-demonstrate property of an
     otherwise checked out mod."*
   - Full text: `design/RimMandrake/debug_process.md` § "Long-duration properties".
-- **Start no long runs of game time.**
-  - Owner, 2026-10-13: *"Go back to building and testing things you can directly measure. No more long runs, ok?"*
-  - Pass 7's 120k–280k-tick waits starved the whole unfed colony.
-  - Never warp the clock on a populated map. Set the season before mapgen.
-  - Mechanics: `skills/rimbridge/references/silent-failures.md`.
-  - His earlier, weaker words of that day are in `design/RimMandrake/CLAUDE.history.md` § Long runs of game time.
+- **Make a long clock advance only when the colony is safe** (owner, card, 2026-11-23).
+  - A long clock advance is an advance of game time that is long enough that colonists must eat or sleep while no agent
+    watches them. The test tools draw the line at 30,000 ticks.
+  - Safe case 1: no map in the game has a colonist.
+  - Safe case 2: the colonists are protected from starving and dying, and the test is labelled as not about health, needs,
+    damage or death.
+  - The danger: the 120k–280k-tick waits of Pyrelands live pass 7 starved the whole unfed colony.
+  - Full text and the owner's words: `design/RimMandrake/debug_process.md` § "A long clock advance".
+- **Never set the clock with `jawa/time_set_ticks` on a populated map whose time-dated things are under test.** Set the
+  season before mapgen. Mechanics: `skills/rimbridge/references/silent-failures.md`.
 - **Before and after every advance, read two things:** the free colonists (alive and fed), and the open letters (death,
   `GameEnded`). A dead colony ends the counted part of the run.
 - **Verdicts when something disturbs a row** are the owner's rules in `debug_process.md` § "Test disturbances":

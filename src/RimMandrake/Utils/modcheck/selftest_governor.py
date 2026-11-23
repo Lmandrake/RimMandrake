@@ -31,25 +31,35 @@ def T(seq, kind, sev, subject_id=-1, subject=None, declared=False, tick=100, det
 
 
 class FakeSession(object):
-    """Answers jawa/vitals + jawa/safe_advance from a scripted list of triggers per attempt."""
+    """Answers jawa/vitals + jawa/safe_advance from a scripted list of triggers per attempt. safe_advance refuses as
+    JawaBenchVitalsCore.AdvanceRefusal does. populated: True | False | None (the status read carries no answer) | a
+    callable(ticks executed so far)."""
 
-    def __init__(self, attempts):
-        self.attempts, self.n, self.calls = attempts, -1, []
+    def __init__(self, attempts, populated=True):
+        self.attempts, self.n, self.calls, self.populated, self.moved, self.armed = attempts, -1, [], populated, 0, {}
+
+    def pop(self):
+        return self.populated(self.moved) if callable(self.populated) else self.populated
 
     def call(self, tool, **p):
         self.calls.append((tool, p))
         if tool == "jawa/vitals" and p.get("action") == "arm":
             self.n += 1
+            self.armed = p
             return {"success": True, "armed": True, "latched": {"seq": 0}}
         if tool == "jawa/vitals" and p.get("action") == "events":
             return {"success": True, "triggers": self.attempts[self.n], "truncated": 0}
         if tool == "jawa/vitals" and p.get("action") == "disarm":
             return {"success": True}
         if tool == "jawa/vitals":
-            return {"success": True, "armed": True}
+            st = {"success": True, "armed": True}
+            return st if self.pop() is None else dict(st, populated=self.pop())
         if tool == "jawa/safe_advance":
-            if p["ticks"] > 30000 and not p.get("timeException"):
+            budget = p.get("budgetTicks") or self.armed.get("budgetTicks") or 30000
+            exc = p.get("timeException") or self.armed.get("timeException")
+            if p["ticks"] > 1200000 or (self.pop() and not exc and p["ticks"] > budget):
                 return {"success": False, "state": "refused", "refused": "over budget", "requested": p["ticks"], "executed": 0}
+            self.moved += p["ticks"]
             return {"success": True, "state": "done", "requested": p["ticks"], "executed": p["ticks"]}
         return {"success": False}
 
@@ -141,13 +151,41 @@ def main():
           "run_row_restarts_exhausted_never_fail")
     check(any("governor: file -> rimflow file TESTENV_DEATHS" in l for l in logs), "run_row_prints_env_item")
 
-    # --- governed advance: the 600k request is refused by the companion; the governor records it
-    s = FakeSession([[]])
-    gov = G.RowGovernor(s, c, log=logs.append)
-    gov.arm()
-    r = gov.advance(600000)
-    check(r["state"] == "refused" and gov.advances[0]["refused"], "governed_600k_refused")
-    check(s.calls[-1][1]["timeException"] is False and s.calls[-1][1]["budgetTicks"] == 0, "advance_passes_contract_flags")
+    # --- long clock advance (owner, card 2026-11-23 9:55 AM PST "Allowed when the colony is safe"): allowed with no
+    # colonist on any map, or with protected colonists in a row labelled not about health/needs/damage/death
+    def adv(contract, ticks, populated=True):
+        s = FakeSession([[]], populated)
+        gov = G.RowGovernor(s, contract, log=logs.append)
+        gov.arm()
+        return s, gov, gov.advance(ticks)
+
+    s, gov, r = adv(c, 600000)
+    check(r["state"] == "refused" and s.moved == 0 and gov.advances[0]["refused"], "long_advance_unprotected_colony_refused", (r, s.moved))
+    prot = G.RowContract("crop_row", about=("growth",), protected=True)
+    s, gov, r = adv(prot, 600000)
+    check(r["state"] == "done" and r["executed"] == 600000 and s.moved == 600000, "long_advance_protected_colony_allowed", (r, s.moved))
+    for n in (600000, 3600000):
+        s, gov, r = adv(c, n, populated=False)
+        check(r["state"] == "done" and r["executed"] == n and s.moved == n, "long_advance_no_colonists_allowed_%d" % n, (r, s.moved))
+    s, gov, r = adv(ct, 600000)
+    check(r["state"] == "refused" and s.moved == 0, "clock_set_exception_does_not_unlock_a_long_advance", (r, s.moved))
+    s, gov, r = adv(G.RowContract("big_budget", about=("terrain",), budget_ticks=600000), 40000)
+    check(r["state"] == "refused" and s.moved == 0, "row_budget_cannot_raise_the_long_advance_line", (r, s.moved))
+    s, gov, r = adv(G.RowContract("small_budget", about=("terrain",), budget_ticks=5000), 20000)
+    check(r["state"] == "refused" and s.moved == 0, "row_budget_can_lower_the_line", (r, s.moved))
+    for n in (30000, 20000):
+        s, gov, r = adv(c, n)
+        check(r["state"] == "done" and s.moved == n, "short_advance_unprotected_colony_allowed_%d" % n, (r, s.moved))
+    s, gov, r = adv(c, 600000, populated=None)
+    check(r["state"] == "refused" and s.moved == 0 and "UNMEASURED" in r["refused"], "colonists_unreadable_is_not_an_empty_map", (r, s.moved))
+    s, gov, r = adv(c, 600000, populated=lambda moved: moved >= 100000)
+    check(r["state"] == "stopped" and 100000 <= s.moved < 110000 and r["executed"] == s.moved and gov.state == "LATCHED",
+          "a_colonist_arriving_mid_advance_stops_it", (r, s.moved))
+    try:
+        G.RowContract("unlabelled_row", protected=True)
+        check(False, "protection_needs_a_label")
+    except G.ContractError:
+        check(True, "protection_needs_a_label")
     check(G.judge(c, [T(1, "cancel", "block")], "PASS")["env_items"] == [], "cancel_is_not_a_threat")
 
     # --- TESTENV_WILD_DOWNED_REPAIR_STOPS_CLOCK: a downed WILD animal (severity threat) neither stops the clock nor spoils the row

@@ -9,10 +9,13 @@ THE OWNER'S RULINGS (debug_process.md § "Test disturbances", 2026-10-13, by car
     an undeclared clock jump)                                               -> the row is RESTARTED, never scored FAIL;
   * EVERY threat that appears during a test is logged AND gets a test-environment item -> `env_item_lines()` prints a
     ready-to-file `rimflow file TESTENV_..._HARDEN_...` line per distinct threat;
-  * long runs of game time only when clearly worth it -> a populated-map advance over the row's budget is refused by
-    the companion (jawa/safe_advance) unless the contract declares `time_exception`;
   * protected (support) colonists only on rows labelled as NOT about health / needs / damage / death -> RowContract
-    refuses `protected=True` on such rows.
+    refuses `protected=True` on such rows, and on a row with no `about` label;
+  * a long clock advance only when the colony is safe (owner, card 2026-11-23 9:55 AM PST: "Allowed when the colony is
+    safe"; debug_process.md § "A long clock advance"). Over LONG_ADVANCE_TICKS, `advance` runs only when no map has a
+    free colonist, or when the row is `protected`. `protected` is the row's statement: the row's own script feeds and
+    protects the colonists; the vitals latch still stops the advance on a starving, downed or dead colonist.
+    `time_exception` is for a declared clock SET (jawa/time_set_ticks); it does not allow a long advance.
 
 Two independent dimensions, as in contract.py: criterion PASS / FAIL / UNMEASURED and validity CLEAN / DISRUPTED /
 INDETERMINATE. The governor adds the OUTCOME the harness acts on: PASS, FAIL, RESTART, UNMEASURED.
@@ -26,6 +29,10 @@ import clockgate
 import contract as C
 
 PASS, FAIL, RESTART, UNMEASURED = "PASS", "FAIL", "RESTART", "UNMEASURED"
+# Half an in-game day: past this, colonists must eat or sleep. JawaBenchVitalsCore.DefaultAdvanceBudget is the same number,
+# and the companion refuses a raw jawa/safe_advance call over it on a populated map. Danger it guards: Pyrelands live pass 7
+# (2026-10-13), 120k-280k-tick advances starved the whole unfed colony.
+LONG_ADVANCE_TICKS = 30000
 HEALTH_TAGS = frozenset(("health", "needs", "damage", "death"))
 
 # severities from JawaBenchVitalsCore
@@ -67,6 +74,10 @@ class RowContract(object):
         if protected and self.about & HEALTH_TAGS:
             raise ContractError("protected colonists refused: row %r is about %s (owner 2026-10-13: protection only on "
                                 "rows NOT about health, needs, damage or death)" % (row, sorted(self.about & HEALTH_TAGS)))
+        if protected and not self.about:
+            raise ContractError("protected colonists refused: row %r has no label; pass about=(...) naming what the row is "
+                                "about (owner 2026-10-13: protection only on rows labelled NOT about health, needs, damage "
+                                "or death)" % row)
         self.actors = [str(a) for a in actors]
         self.specimens = [str(s) for s in specimens]
         self.budget_ticks = int(budget_ticks or 0)
@@ -79,9 +90,14 @@ class RowContract(object):
             self.expected.append((e[0], e[1] if len(e) > 1 else None, int(e[2]) if len(e) > 2 else 1))
         self.max_restarts = int(max_restarts)
 
+    @property
+    def advance_budget(self):
+        """Ticks one advance may move an unprotected colony: the row's budget, never over LONG_ADVANCE_TICKS."""
+        return min(self.budget_ticks or LONG_ADVANCE_TICKS, LONG_ADVANCE_TICKS)
+
     def arm_params(self, ttl_min=60, why=None):
-        p = {"action": "arm", "ttlMin": ttl_min, "row": self.row, "timeException": self.time_exception,
-             "budgetTicks": self.budget_ticks, "why": why or "row governor"}
+        p = {"action": "arm", "ttlMin": ttl_min, "row": self.row, "timeException": self.protected,
+             "budgetTicks": self.advance_budget, "why": why or "row governor"}
         if self.actors:
             p["critical"] = ",".join(self.actors)
         if self.specimens:
@@ -242,19 +258,46 @@ class RowGovernor(object):
         self.state = "ARMED"
         return r
 
+    def _colony_unsafe(self):
+        """-> why an advance over the row's budget may not move now, or None. Reads the live map; a read that does not
+        answer is UNMEASURED, never an empty map."""
+        if self.c.protected:
+            return None
+        st = self.call("jawa/vitals")
+        pop = st.get("populated")
+        if pop is False:
+            return None
+        if pop is True:
+            return ("a map has free colonists and row %r does not protect them (RowContract protected=True, in a row not "
+                    "about health, needs, damage or death)" % self.c.row)
+        return "UNMEASURED: jawa/vitals did not say whether a map has colonists: %s" % (
+            st.get("message") or st.get("error") or st)
+
     def advance(self, ticks, stop_on="default"):
-        """Governed time: the companion refuses over-budget advances and stops on the latch."""
+        """Governed time, in chunks of clockgate.SAFE_CHUNK_MAX. Over the row's advance budget the colony must be safe
+        (_colony_unsafe), read before every chunk: refused before any tick, stopped if a colonist arrives on the way.
+        The companion stops any chunk on the latch."""
         self.state = "EXECUTING"
-        r = self.call("jawa/safe_advance", ticks=int(ticks), budgetTicks=self.c.budget_ticks,
-                      timeException=self.c.time_exception, stopOn=stop_on)
-        done = 0
-        while clockgate.is_benign_stop(r) and int(ticks) - done - int(r.get("executed") or 0) > 0 and len(self.advances) < 200:
-            self.advances.append({k: r.get(k) for k in ("state", "requested", "executed", "refused", "stopBy")})
+        ticks, done, resumes, r = int(ticks), 0, 0, None
+        while r is None or done < ticks:
+            unsafe = self._colony_unsafe() if ticks > self.c.advance_budget else None
+            if unsafe:
+                r = {"success": False, "state": "stopped" if done else "refused", "executed": 0,
+                     "refused": "a long clock advance (%d ticks; more than %d) needs a safe colony: %s" % (
+                         ticks, self.c.advance_budget, unsafe)}
+                break
+            r = self.call("jawa/safe_advance", ticks=min(ticks - done, clockgate.SAFE_CHUNK_MAX),
+                          budgetTicks=self.c.advance_budget, timeException=self.c.protected, stopOn=stop_on)
             done += int(r.get("executed") or 0)
-            r = self.call("jawa/safe_advance", ticks=int(ticks) - done, budgetTicks=self.c.budget_ticks,
-                          timeException=self.c.time_exception, stopOn=stop_on)
-        if done and isinstance(r, dict) and r.get("state") == "done":
-            r = dict(r, executed=done + int(r.get("executed") or 0))
+            if r.get("state") == "done":
+                if not int(r.get("executed") or 0):
+                    break
+                continue
+            if not clockgate.is_benign_stop(r) or done >= ticks or resumes >= 200:
+                break
+            resumes += 1
+            self.advances.append({k: r.get(k) for k in ("state", "requested", "executed", "refused", "stopBy")})
+        r = dict(r, requested=ticks, executed=done)
         self.advances.append({k: r.get(k) for k in ("state", "requested", "executed", "refused", "stopBy")})
         if r.get("state") in ("stopped", "aborted"):
             self.state = "LATCHED"

@@ -53,7 +53,7 @@ Rules: 1 the code · 2 his later ruling · 3 root `CLAUDE.md` · 4 the thing is 
 
 | old line / other side | decision | rule and evidence |
 |---|---|---|
-| "Avoid long runs of game time … unless it's a clear win" / `debug_process.md` "No long runs" | "Start no long runs"; his later words quoted; the pointer names `CLAUDE.history.md` | 2: ledger 2026-10-13 02:02Z against 04:34Z; settled already in `conflicts_settled.md` |
+| "Avoid long runs of game time … unless it's a clear win" / `debug_process.md` "No long runs" | allowed when the colony is safe: `debug_process.md` §A long clock advance | 2: his card, 2026-11-23 9:55 AM PST; `conflicts_settled.md` |
 | `B.until` / `B.watch` "are PLANNED" / Python methods exist | the line says what exists: the Python half. `jawa/safe_advance` has no `until`, and no watch tool exists | 1: `validation_core.py`, `JawaBenchVitalsTools.cs` |
 | the lead "`TryDraw` loses the level if `TryAddLiquid` refuses, and nothing asserts it" | "an example, since fixed", here and in `references/classifying-and-learning.md` | 1: `RM_LiquidTransfer.cs` reserves the tank leg first; `TransferChecks.cs` |
 | "`rimflow file`/`close` refuse proof lines" | they warn and go on; `rimflow lint --proofs <ID>` exits 1. Corrected here and in `references/lightspeed-authoring.md` §2 | 1: `cli.py` `_prooflint_say`, `cmd_lint` |
@@ -90,7 +90,7 @@ run could kill it. So a fresh reader read the repairs.)
 
 | reader | finding | repair |
 |---|---|---|
-| 1 | long runs: the "clear win" exception is gone | none: the correction is his later ruling |
+| 1 | long runs: the "clear win" exception is gone | none then; his card of 2026-11-23 gives the new rule |
 | 1 | the fresh-context audit became an instruction | none: `classifying-and-learning.md` orders it |
 | 1 | "Their game half does not exist" overstates: `jawa/cond_eval` is built | "is not complete", with what is absent |
 | 1 | the `TryDraw` lead is fixed, and the reference still says live | reference corrected |
@@ -117,7 +117,6 @@ the poll-loop line and the §5 line of `lightspeed-authoring.md`.
 ## Polish (not fixed)
 
 - The text of `cli.py lint --proofs` says "the live lane would refuse". That lane is retired.
-- `jawa/safe_advance` describes its `timeException` with the superseded words ("long runs only when clearly worth it").
 - The C# half of `references/lightspeed-authoring.md` §3 lists two closed items among the PLANNED ones.
 
 ## What this run did not test

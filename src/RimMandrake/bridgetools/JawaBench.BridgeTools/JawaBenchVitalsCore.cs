@@ -378,7 +378,7 @@ namespace JawaBench.BridgeTools
 
         // ------------------------------------------------------------------ advance policy + stop rule
         /// <summary>null = allowed. A populated map (a spawned free colonist) refuses more than `budget` ticks unless the row
-        /// declared a time exception; nothing ever exceeds HardAdvanceCap.</summary>
+        /// declared a safe colony through `timeException` (debug_process.md "A long clock advance"); nothing ever exceeds HardAdvanceCap.</summary>
         internal static string AdvanceRefusal(long requested, long budget, bool populated, bool timeException)
         {
             if (requested <= 0) return "ticks must be > 0";
@@ -387,8 +387,9 @@ namespace JawaBench.BridgeTools
             if (budget <= 0) budget = DefaultAdvanceBudget;
             if (populated && !timeException && requested > budget)
                 return "refused before any tick: " + requested + " ticks (" + (requested / 60000.0).ToString("0.##", CultureInfo.InvariantCulture) +
-                       " days) on a POPULATED map exceeds the budget " + budget + "; long runs need the row to declare timeException=true " +
-                       "(owner 2026-10-13: long runs only when clearly worth it). Prefer a prepared fixture over advancing a live colony.";
+                       " days) on a POPULATED map exceeds the budget " + budget + "; a long clock advance needs a safe colony: " +
+                       "no colonist on any map, or timeException=true in a row that protects its colonists from starving and dying and " +
+                       "is not about health, needs, damage or death (owner 2026-11-23: allowed when the colony is safe).";
             return null;
         }
 

@@ -107,7 +107,7 @@ Rules: 1 the code or the live tool; 2 his later ruling; 3 root `CLAUDE.md`; 4 th
 | "fold-in owed" (§0, `preflight.md`) / one list holds owed work | deleted in both: the pointer row is the form of that table | 3, 5 |
 | `.rws` parse is "the only way to measure damage" / `jawa/pawn_get` | both routes | 1: `JawaBenchPawnTools.cs` |
 | "spawn a pawn" by debug action / it NPEs on a VEF-loaded list | `jawa/spawn_pawn`; the debug action without VEF | 1: `traps/pawns-factions.md`, measured |
-| "Long runs are risky" / "No more long runs" (both 2026-10-13) | no long runs | 2: 02:02Z against 04:34Z; as settled before |
+| "Long runs are risky" / "No more long runs" (both 2026-10-13) | allowed when the colony is safe (his card, 2026-11-23 9:55 AM PST) | `debug_process.md` §A long clock advance |
 | "19-mod minimal list: 22 s" / 13-mod | the 13-mod list of 2026-08-19 | 1: as settled before |
 | `--tier bridge` = 3 mods / every DLC is assumed | Core, every DLC, Harmony, RimBridgeServer and two helper mods | 1: plan run of 2026-11-23, 10 entries |
 | `--restore` hands back the previous tier / md5-verified first before-copy | the second | 1: `modset_builder.py`, `7de700be43`, `0a63b2267e` |

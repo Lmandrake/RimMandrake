@@ -34,7 +34,8 @@ the rest. Each line below is a record, not a rule.
   that it NPEs on every pawn defName on a VEF-loaded list.
 
 - §3 once named a 19-mod minimal list for the 22 s restart. The 22 s was measured on the 13-mod list of 2026-08-19.
-- §3 once said "Long runs are risky (owner, 2026-10-13)". His later words of that day are the rule:
+- §3 once said "Long runs are risky (owner, 2026-10-13)", and later "No long runs". His card of 2026-11-23 is the rule:
+  "Allowed when the colony is safe" (`design/RimMandrake/debug_process.md` § "A long clock advance"). His words of 2026-10-13:
   *"Do not do this long run now. Go back to building and testing things you can directly measure. No more long runs."* (the ledger event of 04:34Z; in the
   transcript the words go on: *"No more long runs, ok?"*)
 - §6 once called `--tier bridge` a list of 3 mods, and said "Three suspects instead of

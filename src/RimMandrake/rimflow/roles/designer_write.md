@@ -81,7 +81,8 @@ remark.
 
 - `applicable`: the line is tested. A numeric line may set `evidence_mode` to `measured` (default), `compressed`,
   `decomposed` or `inferred`. A line in `compressed`, `decomposed` or `inferred` mode also sets
-  `establishes`. `establishes` names which properties that run establishes and which stay inferred. A 30-day soak is never required (no long runs).
+  `establishes`. `establishes` names which properties that run establishes and which stay inferred. A 30-day soak (30 in-game days of advance in one live test) is never required.
+  A live test may make a long clock advance when the colony is safe (`design/RimMandrake/debug_process.md` §A long clock advance).
 - `not_applicable` with `evidence`: this mod lacks the line's object or behaviour (no selectable art, no
   motion, no visible states). A `not_applicable` line is not a waiver and needs no owner words. The status cannot
   excuse a failed applicable line. `mod_settings`, `log`, `load_order`, `naming`, `text`, `test_isolation`, `dlc`,

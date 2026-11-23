@@ -335,7 +335,7 @@ Superseded by the owner:
   area, a needed colonist hurt or dead, the sample gone) → restart the row. Never score the row FAIL.
 - **Every threat that appears during a test is logged AND gets a test-environment item.** The job of the item is to
   stop that interference next time.
-- **Long runs of game time:** start none (§Long-duration properties below: his words of 2.5 h later the same day).
+- **A long clock advance** is allowed only when the colony is safe (§A long clock advance below).
 - **Staging is put back by a script step, never by an agent remembering** (owner, 2026-11-03; item
   `AGENT_WRAPUP_ENFORCE_ASKING_NEVER_WORKED`). A teardown step in the script restores whatever a scene forces (event
   chances, spawns, cleared plants, drafted pawns). A run that ends early still runs the teardown step.
@@ -362,15 +362,39 @@ pit.)
 - **Compress first.** A property can need days of game time. Shorten its timing constants (a Mod Setting or a
   test-profile override), so that you can watch it in minutes. Then restore the shipped constant, and read its value
   back to check it.
-- **Otherwise decompose.** When compression cannot reach the property, verify each component separately. Record the
+- **Otherwise, when the colony is safe, make a long clock advance** (§A long clock advance below).
+- **Otherwise decompose.** When no safe test can show the property, verify each component separately. Record the
   integrated whole as **INFERRED**, and name the components that it rests on. INFERRED is an accepted verdict, not a
   gap to chase.
-- **No long runs (owner, 2026-10-13, typed: *"Go back to building and testing things you can directly measure. No more long runs, ok?"*).**
-  Do not start long multi-suite live passes or long game-time waits. Build and test the work in pieces that you can
-  measure directly.
 - **Never chase one hard property for hours.** One very-hard-to-demonstrate property does not hold a mod hostage when
   its other rows check out. Most mods will have some of these items by necessity. A row of this kind says so in its
   contract, instead of reading UNMEASURED forever.
+
+## A long clock advance is allowed only when the colony is safe — owner, 2026-11-23 (by card)
+
+- **A long clock advance** is an advance of game time in a live test. The advance is long enough that colonists must eat
+  or sleep while no agent watches them. The test tools draw the line at 30,000 ticks (half an in-game day).
+- **A live test may make a long clock advance only when the colony is safe.** The colony is safe in two cases:
+  1. No map in the game has a colonist. (Game time passes on every map.)
+  2. The colonists are protected from starving and dying, and the test is labelled as not about health, needs, damage
+     or death. His card of 2026-10-13 02:02Z sets this label rule: *"Should the colonists that support a test be
+     protected from harm? → Protected colonists, labelled per test"* (§Test disturbances, "Support colonists").
+- **Before and after each advance, the test reads** the free colonists (alive and fed) and the open letters.
+- **When no safe test can show a slow property, prove the parts of the property** and record the whole as INFERRED
+  (§Long-duration properties).
+- **This rule is about game time in a live test.** This rule sets no limit on how long an agent, a helper or an in-game
+  visit works.
+- A protected colony can hide a real needs bug. So a test of food, rest or another need uses an unprotected colony.
+  Each advance of that test is 30,000 ticks or less.
+- In code: `src/RimMandrake/Utils/modcheck/governor.py` (`RowGovernor.advance`, `RowContract(protected=True)`).
+  `protected=True` protects nobody by itself. The script of the test feeds and protects the colonists.
+
+His words, oldest first:
+
+- 2026-10-13 02:02Z, typed: *"long runs are possible but risky: they require more time, more monitoring, and fewer assumptions to succeed. Avoid them when possible unless it's a clear win for time efficiency compared to an alternative."*
+- 2026-10-13 04:34Z, typed, about one planned run: *"Do not do this long run now. Go back to building and testing things you can directly measure. No more long runs."* The transcript goes on: *"No more long runs, ok?"*
+- 2026-11-23 (ledger 17:57Z), typed, about the rule line "Start no long runs": *"I have no idea what "start no long runs" means."*
+- 2026-11-23 9:55 AM PST (ledger 17:57Z), card: he picked **"Allowed when the colony is safe"**. The text of that option: "Why: the harm was a starved colony, not the length. Buys: slow things (crops, seasons, a long burn) can be proved live on a map with no colonists, or with colonists who cannot starve, in tests not about needs or health. Costs: more staging per test; a protected colony can hide a real needs bug. Recommended: it guards the danger that happened."
 
 ## Every owner-found defect is stored for the ladder — owner, 2026-11-12
 

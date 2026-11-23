@@ -54,7 +54,7 @@ helper by `conductor_acts.check`. So the ledger notes of this item carry the Con
 | conflict (side 1 / side 2) | decision | rule and evidence | commit |
 |---|---|---|---|
 | `debug_process.md` §6 "only his validate binds" / `delegation_policy.md` | three routes bind | 1: `block_forged_validation.py`; 2 | A |
-| Long game-time runs: "possible but risky" / "No more long runs" (both 2026-10-13) | no long runs; the earlier quote moved to `CLAUDE.history.md` | 2: ledger 02:02Z against 04:34Z | A |
+| Long game-time runs: "possible but risky" / "No more long runs" (both 2026-10-13) | allowed when the colony is safe: `debug_process.md` §A long clock advance, with both quotes | 2: his card 2026-11-23 9:55 AM PST, "Allowed when the colony is safe" | `RIMMANDRAKE_ENACT_LONG_GAME_TIME_ALLOWED_WHEN_COLONY_IS_SAFE` |
 | A live session ends with a check / a look defect is stored, not wired | both: the script is not a ladder stage. "Until the ladder is regenerated" became "at its mod's preflight" in `debug_process.md` and `validation_map_and_rules.md` Rule 12 | 2: his card 2026-11-14, "Per mod, as it advances." | A |
 | Old section numbers in dated records (`Contagion`, `CARDS_ENFORCE_DELEGATED_CLASSES_STOP`) | no edit: the numbers were true on the date of the record | 5, obvious answer | none |
 | `designer_grounding.md` "Certify with him" / `designer.md` | him or the Conductor window | 2 | C |

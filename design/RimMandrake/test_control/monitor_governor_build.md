@@ -5,8 +5,8 @@
 Item: `TELEMETRY_COLONY_VITALS_BUILD_SPEC_SAID_SO`. Basis: GPT review
 `design/RimMandrake/test_control/test_control_review_gpt_20261013.md` §5, bound by the owner's rulings in
 `design/RimMandrake/debug_process.md` § "Test disturbances" (corrected anomaly with no damage may PASS; damage to
-the test restarts the row, never FAIL; every threat is logged and gets a test-environment item; long runs only
-when clearly worth it; protected colonists only on rows labelled not about health/needs/damage/death).
+the test restarts the row, never FAIL; every threat is logged and gets a test-environment item; a long clock advance
+only when the colony is safe; protected colonists only on rows labelled not about health/needs/damage/death).
 
 ## Reused, not rebuilt
 
@@ -45,7 +45,8 @@ A source that is off or unread reports `UNMEASURED`, never 0.
 
 **Python**
 - `modcheck/governor.py` — `RowContract` (about-tags, required actors, specimens, tick budget, time exception,
-  protection; protection refused when the row is about health/needs/damage/death) and `RowGovernor`
+  protection; protection refused when the row is about health/needs/damage/death or has no label; `advance` refuses
+  more than 30,000 ticks unless no map has a colonist or the row is protected) and `RowGovernor`
   (PRECHECK → ARMED → EXECUTING → CHECKING → COMPLETE | LATCHED). Disturbance → outcome:
   damage to the test (critical actor downed/dead/hurt, specimen gone, colony loss, fire in scope) → `RESTART`;
   anomaly corrected with no damage → `PASS_ALLOWED` (validity CLEAN with note); coverage lost → INDETERMINATE.

@@ -14,13 +14,6 @@ Moved 2026-11-19 (Crystallize W47, knowledge merge), because the figure grows wi
   2026-08-19; the `rimworld-load-round` skill carries it with its method).
 - The rule that stays in `CLAUDE.md`: never "restart and see"; a quicktest map is the cheap instrument.
 
-## Long runs of game time — the earlier of his two rulings of 2026-10-13
-
-Moved 2026-11-23 from `design/RimMandrake/debug_process.md` §Test disturbances. His later words of the same day
-(2026-10-13 04:34Z) replaced it: `debug_process.md` §Long-duration properties, "No long runs".
-
-- Owner, 2026-10-13 02:02Z: *"long runs are possible but risky: they require more time, more monitoring, and fewer assumptions to succeed. Avoid them when possible unless it's a clear win for time efficiency compared to an alternative."*
-
 ## The owner's earlier two-way promotion test
 
 Moved 2026-11-23 from `infrastructure/STRUCTURE.md`. The three naming tiers (`design/NAMING_SCHEME_PLAN.md`) replaced it.

@@ -2,7 +2,7 @@
 
 Items BUILT (L0 green, published) and owing only a SHORT live proof. Ordered by value, GSS/FlowWorks first.
 Source of each check: the 2026-10-13 closer triage notes on the item (`Transient/night_20261013/closer.md`, `fw_checks.md`).
-Tier for all FlowWorks rows: ratchet_pilot (+ mandrake.rm.patches) unless stated. Run one site at a time; no long runs (owner 2026-10-13).
+Tier for all FlowWorks rows: ratchet_pilot (+ mandrake.rm.patches) unless stated. Run one site at a time.
 GSS: nothing owed live. proof_all 106/106 at dbe92f0c92 (`Transient/bench_live_20261013b/`); its only open item is owner-conditional `GIMMESOMESLACK_NORTHSTAR_VALIDATE_1` (owner word, no live work).
 Site blocker first: FW river rows need a swept-pawn site (`FW_RIVER_SITE_DIAGNOSE_NOBODY_SWEPT_AWAY`, BENCH, already claimed by the offline list).
 
