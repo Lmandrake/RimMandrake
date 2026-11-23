@@ -17,6 +17,13 @@
       <displayName>RimMandrake: Creature Behaviors</displayName>
       <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
+    <!-- The Rot's giants (Patches/RotGiants_HugeFootprint.xml) are drawn up to 20 cells wide on a one-cell root;
+         only Huge Things makes a click on the body select them. -->
+    <li>
+      <packageId>mandrake.rm.hugethings</packageId>
+      <displayName>RimMandrake: Huge Things</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
+    </li>
   </modDependencies>
   <loadAfter>
     <li>Ludeon.RimWorld</li>
@@ -25,6 +32,7 @@
     <li>Ludeon.RimWorld.Ideology</li>
     <li>mandrake.rm.environmentalhazards</li>
     <li>mandrake.rm.creaturebehaviors</li>
+    <li>mandrake.rm.hugethings</li>
     <li>vanillaexpanded.vplantsemore</li>
   </loadAfter>
   <description>THEROT_RM_MOD_BUILD_1 — absorbs mandrake.rut.rotsporekit (151 files, the Rot's
