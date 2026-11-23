@@ -122,7 +122,8 @@ Read these sources, in this order:
   the Dispatcher runs before it launches you. Each ranked row carries the item, its real sha and the flags that put
   the row there.
 - The checker's passes since your last run (the `rimflow verify` events with `--config marker:blind-check`).
-- The escapes filed since your last run.
+- The escapes filed since your last run. The proxy that a program counts is an item filed with `--caused-by` a done
+  item (`rimflow_metrics.py`, `rework.cause_already_done`).
 - The alarm and flag lines of `digest_blind.md`.
 - Your own carried picks.
 
@@ -245,7 +246,8 @@ A DEFECT becomes a ticket for the seat that owns the work. File the ticket with 
 A **repeat** is the same defect class seen twice or more across these sources:
 - your audits;
 - escapes;
-- the owner's messages tagged repeat (`D:\ClaudeWork\rimmandrake\csuite\stats.txt`, tag R);
+- the owner's messages tagged repeat (`D:\ClaudeWork\rimmandrake\csuite\stats.txt`, tag R; a one-time census that stops
+  at 2026-10-26);
 - filed lessons.
 
 The rules for a repeat:
@@ -284,7 +286,7 @@ The duties:
   - The yield of the random slice.
   - A flag that finds nothing for two weeks is a ticket to retune the rules file of the pre-screen.
   - A defect class that the random slice found and no flag caught is also such a ticket.
-- **Codebase health**: read the `rm-codebase-health` output. File what has worsened.
+- **Codebase health**: read the `rm-codebase-health` output (`Transient/codebase_health*` in the bench clone). File what has worsened.
 - **Adversarial reviews**: the owner releases reviews of some scripts (`NORTHSTAR_ADVERSARIAL_REVIEW_1` and later
   ones). Run each released review with a helper that never wrote the script.
 - **Digest spot check**: sample the week's delegated digest lines against their sources.

@@ -109,7 +109,7 @@ If either one is set, the Dispatcher launches no run.
    - Each entry is `{"id": ...}` or `{"row": ...}`, plus a finish-line `"reading"`. A reading is `{"mod": "<Mod>"}`
      (its modcheck status) or `{"file": "<repo path>", "key": "<dotted.key>"}` (a number).
    - Commit `infrastructure/state/priority_list.json` by path.
-   - Listed items launch first on the ring and the pool.
+   - Listed items come first in `rimflow next`.
    - The list reads distressed in three cases, however many items closed. A distressed list is an alarm reading of
      `ops_watch`. The cases: the list is past 48 h; an entry is closed; a reading is flat past 7 days.
    - `rimflow raise` still moves one unlisted item up.
@@ -152,7 +152,7 @@ If either one is set, the Dispatcher launches no run.
      its filer writes it. If a plan item has none, you write it first, in the same run.
    - Moving an item between v1 and v2 (`retarget`) is a scope call. Send it to the Conductor as a proposal; do not
      edit.
-   - FlowWorks + GSS go through the Maturation Pipeline like every other mod; the Conductor takes only their
+   - FlowWorks + GSS (Gimme Some Slack) go through the Maturation Pipeline like every other mod; the Conductor takes only their
      needs=owner live looks.
 4. **Wednesday, the weekly plan**, per focus mod. The weekly plan holds:
    - the critical path to the goal;
@@ -227,7 +227,7 @@ uses no AI. Read the file that it writes.
 - **Hands:**
   - plan status, cut lists, per-mod test-time proposals and questions to the Conductor (which brings them to the
     owner);
-  - bars and coverage gaps to the Conductor (and Efficiency, Operations' economy pass);
+  - bars and coverage gaps to the Conductor (and Efficiency, which is the economy pass of Operations);
   - a forecast question to Operations through the Conductor.
 - **Never:**
   - set or change a goal (the Conductor's, with the owner);

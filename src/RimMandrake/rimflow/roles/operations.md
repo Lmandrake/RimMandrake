@@ -75,8 +75,8 @@ work that it names. For other kinds of work, read `skills/BY_WORK.md`.
 - A dead promise reopens its own item. For a promise with no item, `LIVE_RESTORE_<NAME>` is the fixed id. A repeat
   outage counts on that item.
 - At two outages, `rimflow show` prints NEEDS FOLD. The fold is yours.
-- To do the fold, build the check, hook, rule or live line that stops a third outage. Or hand the fold to a lane ahead
-  of new work.
+- To do the fold, build the check, hook, rule or live line that stops a third outage. Or file the fold as an
+  item, and raise it ahead of new work (`rimflow raise`).
 - Rule: skill `using-rimflow`, "Done means running".
 
 ## When you run
@@ -160,7 +160,7 @@ expensive it requires immediate action for sure. But not starving it or failing 
   on the alarm item. One cause seen by several alarms is one item (`RIMMANDRAKE_KEY_AUTO_FILERS_ONE_FAULT_ONE_TICKET`
   builds the dedupe key in the filers).
 - Note each alarm item. Note an Operations-only alarm (`alarm:<aid>`) on your own item.
-- The running check, the economy pass and the weekly assessment are not the work of an alarm run.
+- The running check and the economy pass are not the work of an alarm run.
 
 ## Run hygiene (every run)
 
@@ -233,7 +233,7 @@ expensive it requires immediate action for sure. But not starving it or failing 
        - the line is crossed;
        - the line cannot be read;
        - the rung moves;
-       - a metric joins.
+       - a metric joins (a reading of the same cause joins the open incident).
      - Each morning, one deep Opus run reads every incident at his rung again.
      - If only you can read the test of a plan, the plan keeps its model revisits. Say so in the plan, and give no
        line.
@@ -300,28 +300,16 @@ expensive it requires immediate action for sure. But not starving it or failing 
   - The ops_memory build stalls ~10.2 s on about half its runs from WSL. The cause is the VictoriaMetrics read
     (`telemetry/store.py _get`: urlopen to 127.0.0.1, then the curl.exe fallback), not the build.
   - Candidate fixes: go straight to curl.exe when the local VM is unreachable, or use a short urlopen connect timeout.
-- **Churn alarm diagnosis starts from `attempts.jsonl` end classes, not the headline.**
-  - The headline 'bouncing: N returns' reads the `state.json` returns over the whole life of the item. The headline
-    does so once one failure lands inside `churn_window_h`.
-  - A distinct-class bouncer is progress, not churn, when its old returns predate a rule fix.
-  - A full-list final-verification item can meet a new harness gap at each live sitting. That cost is not a pipeline
-    fault.
-  - An alarm filed before an instrument fix lands still spawns a diagnosis item. Before you hunt a new cause, replay
-    `churn_why` at the epoch of the alarm. Replay it with the old and with the current `churn_not_fail_ends`.
-  - A churn alarm can also be TRUE. An example is two blind UNMEASUREDs of one cause. They rang when a reach-repair
-    unblock put the item back without resolving it.
-  - An unblock that hands a binding back to its builder is not an unhold. Once the item is blocked on the cause,
-    `churn_item_points` skips it as parked.
-  - An 'unmeasured' ending is the Judge's blindness on one candidate. The same sha re-checked after a reach repair
-    counts once (`ops_watch.blind_again`).
 - **The nightly and everything that feeds on it are HELD until a mod's Design Version passes** (owner by card
   2026-11-15; standing_rulings.md §The nightly checks finished mods only).
   - timers_guard and deadman read the hold as a planned stop, not an outage.
-  - While the hold stands, every `testing.nightly_*` reading and build-cop group reads 0. red_dispatch launches no
+  - While the hold stands, every `testing.nightly_*` reading and build-cop group reads 0. (A build-cop group is the
+    red nightly tests of one root cause, which `ops_watch` files as one item.) red_dispatch launches no
     fixer.
   - While the hold waits, a missing nightly is not a fault.
 - **A held red is cured only by the instrument's own reading.**
-  - `ops_watch.red_groups` reruns only NEW nightly-red groups (RerunGate). So a deleted test kept
+  - `ops_watch.red_groups` reruns only NEW nightly-red groups (RerunGate: one rerun at origin/main before a new group is
+    filed). So a deleted test kept
     `NIGHTLY_RED:testing.red_<x>` refiling under fresh items.
   - `known_reds` counts a deleted test as no red (`selftest_nightly_red_deleted_clears.py`). So a
     `NIGHTLY_RED_OVERDUE` alarm whose reds were deleted clears by itself.
@@ -374,7 +362,7 @@ The economy pass also looks at these:
 - the slot rules (`slot_rules.json`): is N matched to runway? N is the slot count per seat (`slot_allocator.py`).
 - test hours that catch nothing (`testing.*`, target ≤18 h/wk);
 - art redraw loops;
-- ceremony on his attention;
+- ceremony on his attention: a review or a confirmation that he is asked for with no real choice in it;
 - north-star skepticism: propose cuts. A bar cut is always his.
 
 Output: one note on your own item, with at most five proposed changes. Each change names the series and the window

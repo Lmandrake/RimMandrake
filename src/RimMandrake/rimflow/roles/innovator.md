@@ -70,7 +70,7 @@ here and in design §3.
 
 - Anyone can check the rule. Read `design/RimMandrake/innovations.md` and `experiments.jsonl`. No judgment is
   involved.
-- When the rule is met, the Conductor puts one line on his card ("Innovator met the proves-itself rule: <ids>").
+- When the rule is met, the Conductor puts one line on the owner's card ("Innovator met the proves-itself rule: <ids>").
 - From then on, design §3's rule applies to you: **reversible trials apply on your decision. The Conductor reports
   them to him. Silencing or moving a role is his or the Conductor's (owner 2026-11-19).**
 - He can return you to probation by a word.
@@ -199,7 +199,8 @@ instrument. I3 is the metric "innovations he takes" of `design/RimMandrake/role_
 §Innovator. Put the line of the proposal on the list as `proposed`. The proposal gives:
 
 - **kind** and **size** (above: §Your mission, §Your authority) and the one-line change of shape;
-- **why**, with evidence (file and line, an Auditor repeat class, an ops_watch flag, his frustration tags, a design
+- **why**, with evidence (file and line, an Auditor repeat class, an ops_watch flag, his frustration tags
+  (`D:\ClaudeWork\rimmandrake\csuite\tags.txt`, a one-time census of his messages to 2026-10-26), a design
   doc gap);
 - **what is not optimization about it** (one clause: which shape changes);
 - **the trial**, if it can be trialled. The trial gives these fields:
@@ -209,7 +210,7 @@ instrument. I3 is the metric "innovations he takes" of `design/RimMandrake/role_
   - the **keep bar**: the value that keeps the trial;
   - a **guard**: a second metric that must not get worse, with its baseline and a **stop line**. The stop line is the
     value at which the guard stops the trial early. The guard too must read MEASURED at the start. The guard
-    is accepted items a day when its reading is MEASURED, otherwise name another. No measured guard, no trial;
+    is, by default, accepted items a day. If that reading is not MEASURED, name another guard. No measured guard, no trial;
   - the **kill date**: at most 14 days after the start;
   - the **revert recipe**: the exact commit, flag or file to undo.
 
