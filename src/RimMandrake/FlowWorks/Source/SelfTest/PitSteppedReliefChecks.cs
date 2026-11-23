@@ -2402,6 +2402,20 @@ namespace RimMandrake.FlowWorks.SelfTest
 
 		private static bool Near(float a, float b, float eps = 1e-3f) => Math.Abs(a - b) < eps;
 
+		/// <summary>A 5x5 window of depths (notches), north row first, from f(row, col) with row and col in -2..2.</summary>
+		private static int[] Win(Func<int, int, int> f)
+		{
+			int[] w = new int[25];
+			for (int r = -2; r <= 2; r++)
+			{
+				for (int c = -2; c <= 2; c++)
+				{
+					w[(r + 2) * 5 + (c + 2)] = f(r, c);
+				}
+			}
+			return w;
+		}
+
 		public static void Run(Action<string, Action> Case)
 		{
 			Case("PitStepped_curves_match_the_twin", () =>
@@ -2492,6 +2506,91 @@ namespace RimMandrake.FlowWorks.SelfTest
 					Assert(1f - RM_PitReliefMath.StepH(n) >= 0.4f, "can-fail: a one-square north shelf at " + n + " notches shows "
 						+ (1f - RM_PitReliefMath.StepH(n)) + " of a square");
 				}
+			});
+			// step 3 (Conductor's brief 2026-11-22): the pit shadow's direction and strength come from the game's own sun (vanilla's
+			// _CastVect: the sun by day, the moon by night, fading at dusk), and fade where lamp light outshines the sky. No fixed sun.
+			Case("PitStepped_shadow_follows_the_games_sun", () =>
+			{
+				// a 6 m square whose south and east neighbours are ground; its north and west neighbours are as deep
+				int[] winSE = Win((r, c) => r <= 0 && c <= 0 ? 12 : 0);
+				RM_PitReliefMath.PitSun fromSE = RM_PitReliefMath.SunFromCastVect(-1.06f, 1.06f, 1f);   // shadow toward the north-west
+				Assert(RM_PitReliefMath.Lit(winSE, 0.5f, 0.5f, fromSE) < 0.5f,
+					"can-fail: a sun from the south-east shades the floor beside the south-east drops (" + RM_PitReliefMath.Lit(winSE, 0.5f, 0.5f, fromSE) + ")");
+				Assert(RM_PitReliefMath.Lit(winSE, 0.5f, 0.5f, RM_PitReliefMath.FixedSun) > 0.5f, "can-fail: the north-west sun leaves that point lit");
+				// vanilla's noon vector points south: the sun is north, at the pick's slope
+				RM_PitReliefMath.PitSun noon = RM_PitReliefMath.SunFromCastVect(0f, -1.5f, 1f);
+				Assert(Near(noon.Dx, 0f, 0.01f) && Near(noon.Dy, -1f, 0.01f) && Near(noon.Slope, 1f, 0.01f) && Near(noon.Strength, 1f),
+					"can-fail: noon sun from the north, slope 1 (" + noon.Dx + "," + noon.Dy + " slope " + noon.Slope + ")");
+				// an evening vector (vanilla 18:00: x 7.5, y -2.9) points east: the sun is in the west
+				RM_PitReliefMath.PitSun eve = RM_PitReliefMath.SunFromCastVect(7.5f, -2.9f, 1f);
+				Assert(eve.Dx < -0.5f && eve.Slope > 1f, "can-fail: the evening sun is in the west and low (" + eve.Dx + ", slope " + eve.Slope + ")");
+				// a longer cast vector casts a longer shadow: 0.6 west of the east drop is lit at slope 1, shaded at slope 2
+				RM_PitReliefMath.PitSun east1 = RM_PitReliefMath.SunFromCastVect(-1.5f, 0f, 1f), east2 = RM_PitReliefMath.SunFromCastVect(-3f, 0f, 1f);
+				float x = 1f - RM_PitReliefMath.StepW(12) - 0.6f;
+				Assert(RM_PitReliefMath.Lit(winSE, x, 0.3f, east1) > 0.5f && RM_PitReliefMath.Lit(winSE, x, 0.3f, east2) < 0.5f,
+					"can-fail: a low sun casts farther (" + RM_PitReliefMath.Lit(winSE, x, 0.3f, east1) + " / " + RM_PitReliefMath.Lit(winSE, x, 0.3f, east2) + ")");
+			});
+			Case("PitStepped_long_shadow_stays_inside_its_window", () =>
+			{
+				// live 2026-11-22, ArchSmall at 17 h: the evening sun (slope 2) marched two squares out and PointTop read that square's
+				// neighbours past the 5x5 window: IndexOutOfRangeException, and every pit section drew no relief at all.
+				RM_PitReliefMath.PitSun se2 = RM_PitReliefMath.SunFromCastVect(-3f, 3f, 1f);   // a low sun from the south-east, slope 2
+				int[] w5 = Win((r, c) => 12);
+				string err = null;
+				for (float fx = 0.05f; fx < 1f; fx += 0.15f)
+				{
+					for (float fy = 0.05f; fy < 1f; fy += 0.15f)
+					{
+						try
+						{
+							RM_PitReliefMath.Lit(w5, fx, fy, se2);
+						}
+						catch (Exception e)
+						{
+							err = err ?? (fx + "," + fy + ": " + e.GetType().Name);
+						}
+					}
+				}
+				Assert(err == null, "can-fail: a slope-2 march over a 5x5 window never throws (" + err + ")");
+				// with the 7x7 window the layer fills, a drop two squares east shades a point at slope 2 and not at slope 1
+				int[] w7 = new int[49];
+				for (int r = -3; r <= 3; r++)
+				{
+					for (int c = -3; c <= 3; c++)
+					{
+						w7[(r + 3) * 7 + (c + 3)] = c >= 2 ? 0 : 12;
+					}
+				}
+				RM_PitReliefMath.PitSun east1 = RM_PitReliefMath.SunFromCastVect(-1.5f, 0f, 1f), east2 = RM_PitReliefMath.SunFromCastVect(-3f, 0f, 1f);
+				float l1 = RM_PitReliefMath.Lit(w7, 0.9f, 0.5f, east1), l2 = RM_PitReliefMath.Lit(w7, 0.9f, 0.5f, east2);
+				Assert(l1 > 0.5f && l2 < 0.5f, "can-fail: a 7x7 window carries a long shadow from two squares away (" + l1 + " / " + l2 + ")");
+			});
+			Case("PitStepped_shadow_strength_follows_the_sky_and_lamps", () =>
+			{
+				RM_PitReliefMath.PitSun dusk = RM_PitReliefMath.SunFromCastVect(-1.06f, 1.06f, 0f);
+				Assert(RM_PitReliefMath.ShadowDarkFor(dusk) == 0f, "can-fail: strength 0 (dusk) shades nothing (" + RM_PitReliefMath.ShadowDarkFor(dusk) + ")");
+				Assert(!RM_PitReliefMath.MayBeShaded(Win((r, c) => r <= 0 && c <= 0 ? 12 : 0), dusk), "can-fail: strength 0 skips the march");
+				Assert(Near(RM_PitReliefMath.FaceLight(0, dusk), RM_PitReliefMath.FaceLight(1, dusk)) && Near(RM_PitReliefMath.FaceLight(1, dusk), RM_PitReliefMath.FaceLight(2, dusk)),
+					"can-fail: with no directional light no face is sunlit");
+				RM_PitReliefMath.PitSun half = RM_PitReliefMath.SunFromCastVect(-1.06f, 1.06f, 0.5f);
+				Assert(Near(RM_PitReliefMath.ShadowDarkFor(half), 0.5f * RM_PitReliefMath.ShadowDarkFor(RM_PitReliefMath.SunFromCastVect(-1.06f, 1.06f, 1f))),
+					"can-fail: half strength, half the shadow");
+				// lamps: a cell whose artificial glow is above its sky glow is unshaded; by day (sky 1) a lamp (glow at most 0.5) changes nothing
+				Assert(RM_PitReliefMath.SkyShare(false, 0.2f, 0.5f) == 0f, "can-fail: a lamp at night outshines the sky: no cast shadow");
+				Assert(RM_PitReliefMath.SkyShare(false, 1f, 0.5f) == 1f, "can-fail: a lamp by day leaves the sun's shadow");
+				Assert(RM_PitReliefMath.SkyShare(false, 0.3f, 0f) == 1f, "can-fail: no lamp, the moon's shadow stays");
+				Assert(RM_PitReliefMath.SkyShare(true, 1f, 0f) == 0f, "can-fail: under a roof the sun casts nothing (Direct Sun: roofs cover at every angle)");
+				Assert(RM_PitReliefMath.ShadowDarkFor(RM_PitReliefMath.Reached(RM_PitReliefMath.FixedSun, 0f)) == 0f, "can-fail: a share of 0 shades nothing");
+				// the re-bake key: a small move keeps it, a turn, a dusk fade or a sky change moves it
+				int k0 = RM_PitReliefMath.SunKey(0f, -1.5f, 1f, 1f);
+				Assert(k0 == RM_PitReliefMath.SunKey(0.05f, -1.5f, 1f, 1f), "can-fail: a 2 degree move keeps the bake");
+				Assert(k0 != RM_PitReliefMath.SunKey(1.5f, -1.5f, 1f, 1f) && k0 != RM_PitReliefMath.SunKey(0f, -1.5f, 0.5f, 1f)
+					&& k0 != RM_PitReliefMath.SunKey(0f, -1.5f, 1f, 0.3f), "can-fail: a turn, a fade or a darker sky re-bakes");
+				RM_PitReliefMath.PitSun q = RM_PitReliefMath.QuantizedSun(1.5f, -1.5f, 1f);
+				Assert(Near(q.Dx, -0.7071f, 0.01f) && Near(q.Dy, -0.7071f, 0.01f), "can-fail: the baked sun is the snapped game sun (" + q.Dx + "," + q.Dy + ")");
+				// the fixed sun keeps the golden numbers
+				Assert(Near(RM_PitReliefMath.FaceLight(1, RM_PitReliefMath.FixedSun), FaceLightW) && Near(RM_PitReliefMath.ShadowDarkFor(RM_PitReliefMath.FixedSun), ShadowDark),
+					"can-fail: the fixed sun is the golden sun");
 			});
 			Case("PitStepped_face_sizes_follow_the_relief_switch", () =>
 			{

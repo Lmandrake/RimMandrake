@@ -1,8 +1,9 @@
 # A stepped pit: the inner cliff stops part way down the side walls
 
 Item: `RIMMANDRAKE_REDRAW_STEPPED_PIT_INNER_CLIFF_STOPS_SHORT_OF_THE_RIM`. Mod: FlowWorks (pits). Status: option B is built in the
-mod behind the Mod Setting "Pit relief: shadows and depth shading" (`pitSteppedReliefEnabled`, default on; off: today's look).
-His pick between A and B is still open; A is one constant (`RM_PitReliefMath.SunAzimuth` 0).
+mod behind the Mod Setting "Pit relief: shadows and depth shading" (`pitSteppedReliefEnabled`, default on; off: the earlier look).
+The shadow's sun is the game's own (section Light), so "sun A or B" is no longer a choice. Seen in game on ArchSmall, 2026-11-22:
+`D:\ClaudeWork\rimmandrake\showings\RIMMANDRAKE_REDRAW_STEPPED_PIT_INNER_CLIFF_STOPS_SHORT_OF_THE_RIM\BEFORE_AFTER_stepped_pit_in_game.png`.
 
 His words (2026-11-22, about 6:20 PM PST, on the comparison sheet of
 `RIMMANDRAKE_ASK_GPT_HOW_TO_DRAW_STEPPED_PIT_FLOOR_HE_COULD_NOT_READ_IT`): *"I see comparison.png now. Oh boy. These all
@@ -60,7 +61,7 @@ His words, on the pick image: *"YOU SOLVED IT! The new pit renderings with shado
 - Test: `selftest_pitrule.py` P7 (red on the old rule: 0.38 at 2.5 m), the C# case `PitStepped_north_shelf_stays_in_view`, and the
   golden tables (`gen_golden.py`).
 
-## Light: the sun's direction, the moon, lamps, roofs (from the 1.6 decompile, 2026-11-22; nothing here is measured in game)
+## Light: the sun's direction, the moon, lamps, roofs (vanilla read in the 1.6 decompile; the build seen in game 2026-11-22)
 
 His question (2026-11-22): *"how do shadows render when a player brings a strong light in the game today? If they light a pit
 with a strong lamp, do the shadows throw correctly? What about if the light is "below?" This is pretty important actually."*
@@ -76,46 +77,25 @@ What vanilla does (read in RimSage):
 - Lamps cast no shadows in vanilla. Light is a per-cell glow grid drawn as one darkening overlay over everything
   (`SectionLayer_LightingOverlay`), so a lamp brightens cells in its radius and never moves a shadow.
 
-What the pit draws today, as built (option B):
-- The pit's cast shadow and face light come from one fixed sun (`RM_PitReliefMath.SunAzimuth` 315, elevation 55), baked in the
-  walls layer. They do not follow `_CastVect`, do not fade at dusk, and do not turn with the moon.
-- (a) A strong lamp at the rim, and (b) a lamp on the pit floor: the floor brightens by the glow overlay, as every lit cell
-  does. The depth darkening and the baked north-west shadow stay. With a lamp south-east of a rim, the baked shadow points
-  toward the lamp: this breaks "no shadow may point toward a light". At night a lamp-lit pit floor is brighter than an unlit
-  one, because the overlay darkens the unlit floor more. By day a lamp changes little.
-- (c) Night with no lamp: the whole map is dark by the overlay. The pit keeps its fixed sun shadow at full strength while the
-  buildings beside it switch to moon shadows.
-- (d) A roofed pit: `SectionLayer_SunShadows` reads no roof, so vanilla's sun shadows draw under a roof; the pit's baked
-  shadow also stays.
-
-The plan (not built; build after the in-game stage of this build has been looked at):
-1. The pit's cast shadow takes its direction, length and strength from `_CastVect` (read from `SkyManager`, the same numbers
-   vanilla's shader gets), not from a constant. The shadow is re-baked when the direction moves by more than a step (on a pinned
-   sun: never after the first bake). A and B stop being a choice.
-2. Where artificial light outshines the sky at a cell, the cast shadow there fades out (re-baked on the `GroundGlow` change
-   that vanilla already raises when a light turns on or off). So no shadow points toward a lamp, and a lamp on the floor
-   lights it.
-3. Directional shadows thrown BY a lamp are a new feature (a Divergent change): file it for the next version, with his
-   choice at filing.
-Acceptance test for 1 and 2 (offline, C#): with a cast vector from the south-east, the cast shadow falls on the north-west
-side of each drop; with strength 0, no cell is shaded; with a cell's artificial glow above its sky glow, that cell is unshaded.
-Each check is red on the build as it is (fixed sun), green on the fix. Live: the stage below at noon, at dusk, at night, and with
-a lamp on a pit floor.
-
-## The options (the same rule; only the sun differs)
-
-- **A, sun from north.** Vanilla RimWorld's noon shadow points south (`GenCelestial.GetLightSourceInfo`: the shadow vector's
-  y is always negative), so the pit's shadows agree with the game's own at noon. North faces and risers are in shade;
-  each lip casts a band onto the floor below it.
-- **B, sun from north-west.** The west walls also cast shadows east, and the east walls are lit: the classic map relief.
-  The side walls' extra depth shows twice, by width and by shadow. Vanilla's afternoon shadow points this way (south-east).
-- **Recommended: B.** One fresh judge (Opus, did not make the renders) passed both and picked B: "Its north-west shadows make
-  the east-facing drops read as drops, which A's north-only shadow does not." Its one gap, his L's 4 m and 8 m floors too
-  close in value at default zoom (33 vs 24 of 255), was closed here: the depth darkening went from about 25 % to about
-  30 % a doubling and the shaded faces lifted above their shadows.
-- Rejected here: today's lit cream faces with the new shadows (the walls take the ground's tone and the pit edge
-  vanishes); a sun from the south (its shadows fall on the far side of each lip, away from the step, and disagree with
-  vanilla's).
+What the pit draws, as built (2026-11-22, `RM_PitReliefMath.PitSun`, `Superdeep/RM_PitSunDraw.cs`):
+- The cast shadow and the face light take their direction, length and strength from `_CastVect`: `RM_PitSunDraw` reads it on
+  the current map every 20 frames, snaps it (compass 15 degrees, slope 0.25, strength and sky glow 0.1: `SunKey`), and re-meshes
+  the walls layer (its own mesh flag `RM_PitSun`) when the snapped value moves. Noon's vector (length 1.5) is slope 1; a longer
+  vector casts longer, up to slope 2 (the march then reads a 7x7 window; a depth change re-meshes the 7x7). By day the sun, by
+  night the moon, nothing at dusk and dawn; on a pinned-sun map the pinned sun.
+- A square's share of that light (`SkyShare`): none under a roof (Direct Sun: a roof covers at every angle); none where lamp glow
+  outshines the sky (full while the lamp gives at most half the sky's glow, so a lamp by day changes nothing). The layer also
+  re-meshes on `GroundGlow` and `Roofs`. So no pit shadow points toward a lamp, and a lamp on a pit floor is not left in a sun
+  shadow. With no directional light every face draws as a face in shade.
+- Lamps throw no shadows (vanilla's do not either). A lamp-thrown shadow is a new feature for the owner (a Divergent change).
+- The fixed north-west sun (`FixedSun`, azimuth 315, elevation 55) stays only as the offline twin's sun: the golden tables and
+  the pick images use it.
+- Tests: `PitStepped_shadow_follows_the_games_sun`, `PitStepped_shadow_strength_follows_the_sky_and_lamps` (red on stubs that
+  answered the fixed sun, green on the build), `PitStepped_long_shadow_stays_inside_its_window` (red: the IndexOutOfRange
+  that blanked every pit at 17 h in game; green on the 7x7 window).
+- Seen in game (ArchSmall, `northstar/stepped_pit_light_stage.py`): at 17 h the east wall, facing west, reads 70 of 255 against
+  43 for the west wall; at 08 h the west wall brightens (58 against 46 at noon); at dusk and at night the two are within 2.
+  Torch glow on the lit floor 0.5 against sky 0 at 23 h.
 
 ## What the sweep found
 
@@ -130,19 +110,22 @@ a lamp on a pit floor.
 ## The build (as built)
 
 - `RM_PitReliefMath`: `StepH`, `StepW`, `StepK` (notches), `PlanStep` (the plan of `pitrule.plan_cell`, with liquid), `PointTop`
-  and `Lit` (the cast shadow at a point, a march over a 5x5 window of depths: `pitrule.lit_at`), `FaceLight`, `ShadowDark`,
+  and `Lit` (the cast shadow at a point, a march over a window of depths, 5x5 in the twin `pitrule.lit_at` and 7x7 in the layer), `FaceLight`, `ShadowDark`,
   `StepFloorShade` (StepK anchored so the 2 m floor keeps its look), `StepLipAlpha`.
 - `RM_UnderLiquid.NorthFaceAt` / `SideFaceAt(d, n, lv)`: H(d - lv) - H(n) under the rule (`Relief`, pushed from the setting), today's
   face by the drop when off. The water layers, `RM_LiquidSurface`, the ladder waterline proof read, the stakes' floor
   (`RM_SpikeDrawMath`) and `CornerPiece` read these, so every layer agrees on the face sizes.
 - `SectionLayer_RMExcavationWalls`: the dry relief path (`ReliefCell`): faces as polygons of the plan, toned by StepK of
   their top x their light, lines by the plan, lip bands, the floor shade, the cast-shadow grid (8 a cell). `RedrawStep` dirties
-  the 5x5.
+  the 7x7 (a low sun reaches 2 squares).
 - Test: `SelfTest/PitSteppedReliefChecks.cs`, golden tables written by `gen_golden.py --write` from `pitrule.py` (plain
   `gen_golden.py` fails when they drift). Red on the parent (the rule's functions absent), green on the build.
-- Live stage: `FlowWorks/northstar/stepped_pit_stage.py` digs the 12 cases, captures each, saves the map.
-- Not done: a ladder hung on an inner riser in water reads its waterline from the drop (`Waterline(rot, drop, lv)`), not
-  from the riser's top; the water layers draw their side strips as plain strips (no hv / top width).
+- Live stage: `FlowWorks/northstar/stepped_pit_stage.py` digs the 12 cases (`--set water`: 4 wet cases with ladders),
+  captures each, saves the map (`RM_STEPPED_PIT_12_CASES`). `stepped_pit_light_stage.py` captures six lights and, with
+  `--compare`, the relief switch off and on beside a colonist (`ProofPitRelief on|off`).
+- Seen in game (2026-11-22): all 12 dry cases read as steps; side walls in water show down to the waterline; a ladder on a
+  part-wet inner cliff hangs from the cliff's lip into the water. A ladder on a fully drowned cliff draws as a faint short
+  stub about 0.3 of a square south of the drowned edge (on the polish list).
 
 ## The build plan (as planned before the build)
 

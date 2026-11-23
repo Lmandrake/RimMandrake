@@ -302,7 +302,16 @@ namespace RimMandrake.FlowWorks
 		public static float PointTop(int[] win, float x, float y)
 		{
 			int c = (int)Math.Floor(x), r = (int)Math.Floor(y);
-			int D(int rr, int cc) => win[(rr + 2) * 5 + (cc + 2)];
+			// any odd square window (5x5 for the golden tables, 7x7 from the walls layer); a read past its edge takes the edge square
+			// (a slope-2 march reaches 2 squares and reads their neighbours: past a 5x5 it threw, live 2026-11-22, and the whole
+			// section drew no relief)
+			int n = win.Length == 49 ? 7 : 5, half = n / 2;
+			int D(int rr, int cc)
+			{
+				rr = rr < -half ? -half : (rr > half ? half : rr);
+				cc = cc < -half ? -half : (cc > half ? half : cc);
+				return win[(rr + half) * n + (cc + half)];
+			}
 			int d = D(r, c);
 			if (d <= 0) return 0f;
 			StepPlan p = PlanStep(d, D(r - 1, c), D(r + 1, c), D(r, c - 1), D(r, c + 1), D(r - 1, c - 1), D(r - 1, c + 1), 0f);
@@ -320,22 +329,7 @@ namespace RimMandrake.FlowWorks
 		/// <summary>1 lit .. 0 in shadow at a point (<paramref name="fx"/>, <paramref name="fy"/>) of the centre square of
 		/// <paramref name="win"/> (y down): a march toward the sun over the heights, at a slope of 1, so a drop from a to b casts
 		/// 0.12 x (b^0.7 - a^0.7) squares (metres) past the face's foot. Only a higher point casts. The twin's lit_at.</summary>
-		public static float Lit(int[] win, float fx, float fy)
-		{
-			float h0 = Height(PointTop(win, fx, fy));
-			double a = SunAzimuth * Math.PI / 180.0;
-			float dx = (float)Math.Sin(a), dy = -(float)Math.Cos(a);
-			float reach = ShadowK * (float)Math.Pow(StepDeepest, ShadowPow) + MarchStep;
-			float excess = -1e9f;
-			for (int k = 1; k * MarchStep <= reach; k++)
-			{
-				float s = k * MarchStep;
-				float hq = Height(PointTop(win, fx + dx * s, fy + dy * s));
-				if (hq > h0 + 1e-6f && hq - h0 - s > excess) excess = hq - h0 - s;
-			}
-			float lit = 0.5f - excess / (2f * Penumbra);
-			return lit <= 0f ? 0f : (lit >= 1f ? 1f : lit);
-		}
+		public static float Lit(int[] win, float fx, float fy) => Lit(win, fx, fy, FixedSun);
 
 		/// <summary>Can any point of the centre square of <paramref name="win"/> lie in a cast shadow? Only when a square within reach
 		/// toward the sun is shallower (else every point it marches over stands as deep or deeper).</summary>
@@ -365,6 +359,160 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>How much darker a floor in full shadow is than a lit one (the black alpha of a full shadow).</summary>
 		public static float ShadowDark => (float)(1.0 - Ambient / (Ambient + Direct * Math.Sin(SunElevation * Math.PI / 180.0)));
+
+		// ---- The pit's sun is the game's own (RIMMANDRAKE_REDRAW_STEPPED_PIT_INNER_CLIFF_STOPS_SHORT_OF_THE_RIM, step 3) ----
+		// The baked shadow follows vanilla's one shadow vector, _CastVect (SkyManager.SkyManagerUpdate sets it every frame: x, z the
+		// shadow's direction and length per unit of height, w GenCelestial.CurShadowStrength; by day the sun, by night the moon, 0
+		// round dusk and dawn; a pinned-sun map overrides it). So every shadow on a map points one way, on Utinni and elsewhere.
+
+		/// <summary>The light a pit square's relief is drawn under: (Dx, Dy) the unit direction TOWARD the light (x east, y DOWN = south),
+		/// Slope the shadow length against the noon sun's (1 = the 55 degree sun of the pick), Strength 0 (no directional light) .. 1.</summary>
+		public struct PitSun
+		{
+			public float Dx, Dy, Slope, Strength;
+		}
+
+		/// <summary>Vanilla's noon cast vector is (0, -1.5) (GenCelestial.GetLightSourceInfo): that length is slope 1.</summary>
+		public const float NoonCastLength = 1.5f;
+		/// <summary>The march reads a 5x5 window: from any point of the centre square it may reach 2 squares, so the slope stops at 2
+		/// (a dawn vector is about 4.7 noon lengths; past 2 the shadow is drawn 2 long).</summary>
+		public const float MinSlope = 0.5f, MaxSlope = 2f;
+		/// <summary>Re-bake steps: the sun's compass turns by 15 degrees, the slope by 0.25, the strength and the sky glow by 0.1.</summary>
+		public const float AzimuthStep = 15f, SlopeStep = 0.25f, StrengthStep = 0.1f, SkyStep = 0.1f;
+
+		/// <summary>The sun from compass degrees, slope and strength.</summary>
+		public static PitSun MakeSun(float azimuthDeg, float slope, float strength)
+		{
+			double a = azimuthDeg * Math.PI / 180.0;
+			return new PitSun { Dx = (float)Math.Sin(a), Dy = -(float)Math.Cos(a), Slope = slope, Strength = strength };
+		}
+
+		/// <summary>The fixed north-west sun of the pick (option B), at full strength: the golden tables' sun, and the sun of a layer
+		/// that has not yet read the game's.</summary>
+		public static readonly PitSun FixedSun = MakeSun(SunAzimuth, 1f, 1f);
+
+		private static float Clamp01(float v) => v <= 0f ? 0f : (v >= 1f ? 1f : v);
+
+		/// <summary>The sun casting vanilla's shadow vector (<paramref name="vx"/>, <paramref name="vz"/>) (x east, z north) at strength
+		/// <paramref name="strength"/>: the light comes from the opposite way, as long as the vector is against noon's.</summary>
+		public static PitSun SunFromCastVect(float vx, float vz, float strength)
+		{
+			float len = (float)Math.Sqrt(vx * vx + vz * vz);
+			if (len < 1e-4f)
+			{
+				return new PitSun { Dx = FixedSun.Dx, Dy = FixedSun.Dy, Slope = 1f, Strength = 0f };
+			}
+			float slope = len / NoonCastLength;
+			slope = slope < MinSlope ? MinSlope : (slope > MaxSlope ? MaxSlope : slope);
+			return new PitSun { Dx = -vx / len, Dy = vz / len, Slope = slope, Strength = Clamp01(strength) };
+		}
+
+		private static void Snap(float vx, float vz, float strength, out int az, out int sl, out int st)
+		{
+			PitSun s = SunFromCastVect(vx, vz, strength);
+			double deg = Math.Atan2(s.Dx, -s.Dy) * 180.0 / Math.PI;
+			az = ((int)Math.Round(deg / AzimuthStep) % 24 + 24) % 24;
+			sl = (int)Math.Round(s.Slope / SlopeStep);
+			st = (int)Math.Round(s.Strength / StrengthStep);
+		}
+
+		/// <summary>The sun the layer bakes: the game's, snapped to the re-bake steps (so the bake agrees with its key).</summary>
+		public static PitSun QuantizedSun(float vx, float vz, float strength)
+		{
+			Snap(vx, vz, strength, out int az, out int sl, out int st);
+			return MakeSun(az * AzimuthStep, sl * SlopeStep, Clamp01(st * StrengthStep));
+		}
+
+		/// <summary>One number per baked look: the snapped sun and the snapped sky glow. A change re-bakes the map's pit relief.</summary>
+		public static int SunKey(float vx, float vz, float strength, float skyGlow)
+		{
+			Snap(vx, vz, strength, out int az, out int sl, out int st);
+			int sky = (int)Math.Round(Clamp01(skyGlow) / SkyStep);
+			return ((az * 16 + sl) * 16 + st) * 16 + sky;
+		}
+
+		/// <summary>How much of the sun's directional light reaches a square (0 .. 1): none under a roof (Direct Sun: a roof covers at
+		/// every angle); none where lamp light outshines the sky (so no shadow points toward a lamp, and a lamp-lit floor is not left in
+		/// a sun shadow); full while the lamp gives at most half the sky's glow. Vanilla's lamp glow is at most 0.5 (GlowGrid.GroundGlowAt),
+		/// so by day (sky 1) a lamp changes nothing.</summary>
+		public static float SkyShare(bool roofed, float skyGlow, float artificialGlow)
+		{
+			if (roofed)
+			{
+				return 0f;
+			}
+			if (artificialGlow <= 0f)
+			{
+				return 1f;
+			}
+			if (skyGlow <= 0f)
+			{
+				return 0f;
+			}
+			return Clamp01(2f * (skyGlow - artificialGlow) / skyGlow);
+		}
+
+		/// <summary>The sun as it reaches a square that gets <paramref name="share"/> of it.</summary>
+		public static PitSun Reached(PitSun sun, float share)
+		{
+			sun.Strength *= Clamp01(share);
+			return sun;
+		}
+
+		private static double Elevation(PitSun sun) => Math.Atan(Math.Tan(SunElevation * Math.PI / 180.0) / Math.Max(1e-3, sun.Slope));
+
+		/// <summary>1 lit .. 0 in shadow at a point (<paramref name="fx"/>, <paramref name="fy"/>) of the centre square of
+		/// <paramref name="win"/> (y down) under <paramref name="sun"/>: a march toward the sun over the heights; a drop from a to b casts
+		/// 0.12 x (b^0.7 - a^0.7) x Slope squares past the face's foot. Only a higher point casts.</summary>
+		public static float Lit(int[] win, float fx, float fy, PitSun sun)
+		{
+			float h0 = Height(PointTop(win, fx, fy));
+			float slope = sun.Slope < MinSlope ? MinSlope : (sun.Slope > MaxSlope ? MaxSlope : sun.Slope);
+			float reach = ShadowK * (float)Math.Pow(StepDeepest, ShadowPow) * slope + MarchStep;
+			float excess = -1e9f;
+			for (int k = 1; k * MarchStep <= reach; k++)
+			{
+				float s = k * MarchStep;
+				float hq = Height(PointTop(win, fx + sun.Dx * s, fy + sun.Dy * s));
+				if (hq > h0 + 1e-6f && hq - h0 - s / slope > excess) excess = hq - h0 - s / slope;
+			}
+			float lit = 0.5f - excess / (2f * Penumbra);
+			return lit <= 0f ? 0f : (lit >= 1f ? 1f : lit);
+		}
+
+		/// <summary>A face's light against a lit floor under <paramref name="sun"/>: the sky light a wall always sees, plus the sun's
+		/// direct light by its facing, times the strength. At strength 0 every face draws as a face in shade.</summary>
+		public static float FaceLight(int facing, PitSun sun)
+		{
+			double e = Elevation(sun), ce = Math.Cos(e);
+			double sx = ce * sun.Dx, sy = -ce * sun.Dy, sz = Math.Sin(e);
+			double nx = facing == 1 ? 1.0 : (facing == 2 ? -1.0 : 0.0), ny = facing == 0 ? -1.0 : 0.0;
+			double flat = Ambient + Direct * sz;
+			return (float)((WallAmbient + Direct * Clamp01(sun.Strength) * Math.Max(0.0, nx * sx + ny * sy)) / flat);
+		}
+
+		/// <summary>The black alpha of a full cast shadow under <paramref name="sun"/> (0 at strength 0).</summary>
+		public static float ShadowDarkFor(PitSun sun)
+		{
+			double sz = Math.Sin(Elevation(sun));
+			return (float)((1.0 - Ambient / (Ambient + Direct * sz)) * Clamp01(sun.Strength));
+		}
+
+		/// <summary>Can any point of the centre square lie in a cast shadow under <paramref name="sun"/>? Only with some strength, and only
+		/// when a square of the window is shallower (else every point a march reaches stands as deep or deeper).</summary>
+		public static bool MayBeShaded(int[] win, PitSun sun)
+		{
+			if (sun.Strength <= 0f)
+			{
+				return false;
+			}
+			int d = win[win.Length / 2];
+			for (int i = 0; i < win.Length; i++)
+			{
+				if (win[i] < d) return true;
+			}
+			return false;
+		}
 
 		/// <summary>RIMMANDRAKE_DIM_FLOWWORKS_DROWNED_WALLS_PALE_FRAME_IN_WATER: the far wall's drowned band spans only between the
 		/// side walls' full feet (each side strip carries its own corner). It spanned the whole square, so the wall light lay twice

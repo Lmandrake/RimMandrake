@@ -384,6 +384,7 @@
     <Compile Include="Superdeep\RM_PitLipOcclusion.cs" />
     <Compile Include="Superdeep\RM_PitScorch.cs" />
     <Compile Include="Superdeep\RM_ExcavationWalls.cs" />
+    <Compile Include="Superdeep\RM_PitSunDraw.cs" />
     <Compile Include="LiquidTypes\RM_LiquidProperties.cs" />
     <Compile Include="LiquidTypes\LiquidCorrosion.cs" />
     <Compile Include="LiquidTypes\LiquidIgnition.cs" />

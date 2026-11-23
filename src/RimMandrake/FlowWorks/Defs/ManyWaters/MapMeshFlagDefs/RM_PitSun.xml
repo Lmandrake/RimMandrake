@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- RIMMANDRAKE_REDRAW_STEPPED_PIT_INNER_CLIFF_STOPS_SHORT_OF_THE_RIM: the pit relief's own mesh flag (RM_PitSunDraw.cs). Only
+       SectionLayer_RMExcavationWalls listens; RM_PitSunDraw raises it when the game's snapped sun or sky glow moves, so the baked
+       pit shadow follows the sun and the moon without rebuilding the terrain mesh. -->
+  <MapMeshFlagDef>
+    <defName>RM_PitSun</defName>
+  </MapMeshFlagDef>
+
+</Defs>

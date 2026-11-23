@@ -301,6 +301,11 @@ namespace RimMandrake.FlowWorks
 		public long ReleaseLostDl => releaseLostDl;
 
 		public int ExcavatedCellCount => excavatedCells.Count;
+
+		/// <summary>The game's sun as the pit relief last baked it (RM_PitSunDraw; not saved: read again on load).</summary>
+		internal RM_PitReliefMath.PitSun pitSun = RM_PitReliefMath.FixedSun;
+		internal float pitSky = 1f;
+		internal int pitSunKey = int.MinValue;
 		/// <summary>Read-only view of the excavated set (LIQUID_HEAT_PUSH_1). Never mutate while iterating.</summary>
 		public IEnumerable<IntVec3> ExcavatedCells => excavatedCells;
 
@@ -2809,6 +2814,8 @@ namespace RimMandrake.FlowWorks
 		public override void MapComponentUpdate()
 		{
 			base.MapComponentUpdate();
+			// RIMMANDRAKE_REDRAW_STEPPED_PIT_INNER_CLIFF_STOPS_SHORT_OF_THE_RIM: the pit relief follows the game's sun
+			RM_PitSunDraw.Update(map, this);
 			// V2_PIT_ROWS_DIAGNOSE_NOBODY_STAYS_IN: with the clock stopped the tick-throttled pocket rebuild never runs.
 			RM_PocketGrid.UpdatePaused(map, this);
 		}

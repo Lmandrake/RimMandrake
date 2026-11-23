@@ -1155,6 +1155,24 @@ namespace RimMandrake.FlowWorks
 		/// every cell of the rect to <c>levels</c> notches through the engine's own Deepen (the bridge dig's call) and sets
 		/// waterM metres of water in every square through TrySetDriverWaterDl (0 = dry). Two 40,000-square basins are staged in strips (one call per strip
 		/// keeps the main-thread call short). "BASIN cells=n dug=n filled=n refused=n maxDepth=n", or "REFUSED: ...".</summary>
+		/// <summary>RIMMANDRAKE_REDRAW_STEPPED_PIT_INNER_CLIFF_STOPS_SHORT_OF_THE_RIM: arg "on" | "off" sets the Mod Setting "Pit relief:
+		/// shadows and depth shading" as the settings window would (the field, the push into RM_UnderLiquid, a re-mesh of the pit layers),
+		/// so one staged map shows the look before the relief and after it. A bridge field write alone pushes nothing (the push runs
+		/// only from the settings window). Reads back "PITRELIEF setting=b relief=b".</summary>
+		public static string ProofPitRelief(string arg)
+		{
+			Map map = Find.CurrentMap;
+			string a = (arg ?? "").Trim().ToLowerInvariant();
+			if (map == null || (a != "on" && a != "off"))
+			{
+				return "REFUSED: arg must be on|off on a current map";
+			}
+			RimMandrakeFlowWorksSettings.pitSteppedReliefEnabled = a == "on";
+			RimMandrakeFlowWorksSettings.PushUnderLiquid();
+			map.mapDrawer.WholeMapChanged((ulong)MapMeshFlagDefOf.Terrain | RM_WaterLookDraw.LookFlag | RM_PitSunDraw.PitSunFlag);
+			return "PITRELIEF setting=" + RimMandrakeFlowWorksSettings.pitSteppedReliefEnabled + " relief=" + RM_UnderLiquid.Relief;
+		}
+
 		public static string ProofStageBasin(string arg)
 		{
 			Map map = Find.CurrentMap;

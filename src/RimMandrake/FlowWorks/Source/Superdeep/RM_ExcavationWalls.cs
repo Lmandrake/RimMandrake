@@ -35,7 +35,13 @@ namespace RimMandrake.FlowWorks
 			// RIMMANDRAKE_SUBMERGE_PIT_FITTINGS_BY_LEVEL: the faces follow the TRUE level, which moves between terrain rungs;
 			// RM_SubmergeDraw.FillPictured dirties LookFlag on a cell whose drawn level note went stale.
 			relevantChangeTypes = (ulong)MapMeshFlagDefOf.Terrain | RM_WaterLookDraw.LookFlag;
+			// RIMMANDRAKE_REDRAW_STEPPED_PIT_INNER_CLIFF_STOPS_SHORT_OF_THE_RIM: the relief is lit by the game's own sun (RM_PitSunDraw
+			// raises PitSunFlag when the snapped sun or sky moves), and a lamp or a roof changes what reaches a square.
+			relevantChangeTypes |= RM_PitSunDraw.PitSunFlag | (ulong)MapMeshFlagDefOf.GroundGlow | (ulong)MapMeshFlagDefOf.Roofs;
 		}
+
+		/// <summary>The sun as it reaches the square being drawn (set by ReliefCell; read by its faces and cast shadow).</summary>
+		private RM_PitReliefMath.PitSun sunHere = RM_PitReliefMath.FixedSun;
 
 		public override bool Visible => DebugViewSettings.drawTerrain && RimMandrakeFlowWorksSettings.excavationWallFacesEnabled;
 
@@ -194,13 +200,17 @@ namespace RimMandrake.FlowWorks
 			// the 4-argument form: the 2-argument MapMeshDirty dirties the 8 neighbours' sections only for FogOfWar, Buildings or
 			// Roofs (Verse.MapDrawer, 1.6, read in RimSage 2026-11-21), so a neighbour across a section edge kept its old faces.
 			// RIMMANDRAKE_REDRAW_STEPPED_PIT_INNER_CLIFF_STOPS_SHORT_OF_THE_RIM: a square's cast shadow reads the plans of the squares
-			// toward the sun, which read their own neighbours: the 5x5 re-meshes (each of the 3x3 with its adjacent cells).
-			for (int i = 0; i < 9; i++)
+			// toward the sun, up to 2 away under a low sun, which read their own neighbours: the 7x7 re-meshes (each of the 5x5 with
+			// its adjacent cells).
+			for (int dz = -2; dz <= 2; dz++)
 			{
-				IntVec3 q = c + GenAdj.AdjacentCellsAndInside[i];
-				if (q.InBounds(map))
+				for (int dx = -2; dx <= 2; dx++)
 				{
-					map.mapDrawer.MapMeshDirty(q, flag != 0 ? flag : (ulong)MapMeshFlagDefOf.Terrain, regenAdjacentCells: true, regenAdjacentSections: false);
+					IntVec3 q = c + new IntVec3(dx, 0, dz);
+					if (q.InBounds(map))
+					{
+						map.mapDrawer.MapMeshDirty(q, flag != 0 ? flag : (ulong)MapMeshFlagDefOf.Terrain, regenAdjacentCells: true, regenAdjacentSections: false);
+					}
 				}
 			}
 		}
@@ -248,10 +258,11 @@ namespace RimMandrake.FlowWorks
 		// lift only where the sun brightens it past the ground), fading by FaceFade toward its foot; floors darken by StepK; the
 		// upper floor at a lip gets a pale band; a fixed north-west sun casts each face's shadow onto the floor past its foot.
 
-		private readonly int[] win = new int[25];
+		private readonly int[] win = new int[49];
 
 		private void ReliefCell(Map map, RM_MapComponent_Excavation eng, IntVec3 c, int d, RM_PitReliefMath.StepPlan sp, bool dry, float sc, float y)
 		{
+			sunHere = RM_PitSunDraw.SunAt(map, eng, c);
 			if (sp.T > 0f)
 			{
 				NorthFaceStep(map, eng, c, sp, y, sc);
@@ -296,7 +307,7 @@ namespace RimMandrake.FlowWorks
 			float[] frac = { 0f, 0f, sp.HvR / t, 1f, 1f, sp.HvL / t };
 			TerrainDef ground = RM_FaceMaterial.GroundBeside(map, eng, c, c + IntVec3.North, out bool stone);
 			Fan(RM_FaceMaterial.FaceMat(ground), q, null, true, foot);
-			FaceShadeStep(q, frac, RM_PitReliefMath.StepK(sp.Zn), RM_PitReliefMath.FaceLight(0), foot);
+			FaceShadeStep(q, frac, RM_PitReliefMath.StepK(sp.Zn), RM_PitReliefMath.FaceLight(0, sunHere), foot);
 			Fan(stone ? RM_FaceMaterial.JointMat : RM_FaceMaterial.StrataMat, Lift(q, 0.0004f), null, true, foot);
 			if (scorch > 0f)
 			{
@@ -336,7 +347,7 @@ namespace RimMandrake.FlowWorks
 			}
 			TerrainDef ground = RM_FaceMaterial.GroundBeside(map, eng, c, east ? c + IntVec3.East : c + IntVec3.West, out bool _);
 			Fan(RM_FaceMaterial.FaceMat(ground), q, null, false, c.z);
-			FaceShadeStep(q, frac, RM_PitReliefMath.StepK(east ? sp.Ze : sp.Zw), RM_PitReliefMath.FaceLight(east ? 2 : 1), c.z);
+			FaceShadeStep(q, frac, RM_PitReliefMath.StepK(east ? sp.Ze : sp.Zw), RM_PitReliefMath.FaceLight(east ? 2 : 1, sunHere), c.z);
 			if (scorch > 0f)
 			{
 				byte st = (byte)(255f * RM_WallFaceMath.FaceSoot(scorch, 0.3f, 0.5f));
@@ -357,7 +368,7 @@ namespace RimMandrake.FlowWorks
 			}
 			TerrainDef ground = RM_FaceMaterial.GroundBeside(map, eng, c, diag, out bool _);
 			Fan(RM_FaceMaterial.FaceMat(ground), q, null, false, c.z);
-			FaceShadeStep(q, frac, RM_PitReliefMath.StepK(zTop), RM_PitReliefMath.FaceLight(east ? 2 : 1), c.z);
+			FaceShadeStep(q, frac, RM_PitReliefMath.StepK(zTop), RM_PitReliefMath.FaceLight(east ? 2 : 1, sunHere), c.z);
 		}
 
 		/// <summary>A face's tone: StepK of its top x its light x (1 - FaceFade x frac), frac 0 at the top line, 1 at the foot. Under 1
@@ -435,22 +446,24 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
-		/// <summary>The cast shadow over the dry floor: a vertex grid (8 a cell) whose black alpha is ShadowDark x (1 - Lit), read from
-		/// the 5x5 depths round the square (RM_PitReliefMath.Lit). Skipped when nothing toward the sun is shallower.</summary>
+		/// <summary>The cast shadow over the dry floor: a vertex grid (8 a cell) whose black alpha is ShadowDarkFor(sun) x (1 - Lit), read
+		/// from the 5x5 depths round the square (RM_PitReliefMath.Lit) under the game's sun as it reaches the square. Skipped when the sun
+		/// gives no shadow there or nothing in reach is shallower.</summary>
 		private void CastShadow(Map map, RM_MapComponent_Excavation eng, IntVec3 c, int d, RM_PitReliefMath.StepPlan sp, float y)
 		{
-			for (int r = -2; r <= 2; r++)
+			// 7x7: a low sun's shadow reaches 2 squares (slope 2), and the plan of a square it reaches reads that square's neighbours
+			for (int r = -3; r <= 3; r++)
 			{
-				for (int k = -2; k <= 2; k++)
+				for (int k = -3; k <= 3; k++)
 				{
-					win[(r + 2) * 5 + (k + 2)] = r == 0 && k == 0 ? d : NeighbourLevel(map, eng, c + new IntVec3(k, 0, -r), d);
+					win[(r + 3) * 7 + (k + 3)] = r == 0 && k == 0 ? d : NeighbourLevel(map, eng, c + new IntVec3(k, 0, -r), d);
 				}
 			}
-			if (!RM_PitReliefMath.MayBeShaded(win))
+			if (!RM_PitReliefMath.MayBeShaded(win, sunHere))
 			{
 				return;
 			}
-			float dark = RM_PitReliefMath.ShadowDark;
+			float dark = RM_PitReliefMath.ShadowDarkFor(sunHere);
 			int n = RM_PitReliefMath.FloorRects(sp.L, sp.R, sp.T, sp.CnwW, sp.CnwH, sp.CneW, sp.CneH, floorRects);
 			for (int i = 0; i < n; i++)
 			{
@@ -464,7 +477,7 @@ namespace RimMandrake.FlowWorks
 					{
 						float fx = x0 + (x1 - x0) * a / nx, fz = z0 + (z1 - z0) * b / nz;
 						Color32 k = ShadeBlack;
-						k.a = Alpha(dark * (1f - RM_PitReliefMath.Lit(win, fx, 1f - fz)));
+						k.a = Alpha(dark * (1f - RM_PitReliefMath.Lit(win, fx, 1f - fz, sunHere)));
 						any |= k.a > 0;
 						col[a, b] = k;
 					}
