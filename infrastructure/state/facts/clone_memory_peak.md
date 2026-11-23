@@ -49,11 +49,10 @@ Item `RELENTLESS_TICK_MEASURE_CLONE_MEMORY_PEAK`. MEASURED 2026-11-03 on Archmag
   - UNMEASURED: the larger peaks in the tick journal over 2026-10-31 to 2026-11-03, up to 10.9 GB. Nobody took them
     apart. The source of those peaks is `journalctl --user -u rm-relentless.service | grep "memory peak"`.
 
-## What this means for the stop lines
+## What this means for a memory limit
 
-- The host stop line of 3 GB reads MemAvailable. MemAvailable already treats this page cache
-  as available.
-- A budget of 4–5 GB per clone against those lines overcounts the clone several times over. The measured figure is
+- MemAvailable (in `/proc/meminfo`) already treats this page cache as available.
+- A budget of 4–5 GB of MemAvailable per clone overcounts the clone several times over. The measured figure is
   ~0.5 GB of MemAvailable per concurrent clone (worst seen 1.06 GB).
 - Recheck with `clone_mem_probe.py --runs 1 --check`. Its exit codes:
   - 0 while >= 60 % of the peak is page cache and a git process is the largest anon holder;

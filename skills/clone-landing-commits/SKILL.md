@@ -32,12 +32,12 @@ src/RimMandrake/Utils/land.sh -m "subject" <path>...     # land the paths' worki
     place, leaves your edit alone, and prints `LANDED, CLONE NOT MOVED: <why>`.
   - If the edit really overlaps and the landing must rebuild a DLL, `./publish` refuses. The refusal names the path.
     Your commit stays on HEAD.
-- Use `land.sh` when you must not move HEAD, or when you must publish a subset. After the push, `land.sh` realigns the
-  clone itself.
+- Use `land.sh` when you must publish a subset. After the push, `land.sh` realigns the clone itself, which can move HEAD.
+  When you must not move HEAD, run it with `LAND_SYNC=0`.
 - `land.sh` is `src/RimMandrake/Utils/land.sh`. `land.sh` is not on PATH. The old copy `/home/mandrake/.seat-tmp/land.sh` is
   absent (measured 2026-11-23).
 - `LAND_REPO` defaults to the clone that you are in.
-- For a brand-new file, run `git add -- <file>` first (explicit path). Then publish the file.
+- `./publish` adds a brand-new file that you name. Before `land.sh`, run `git add -- <file>` for it (explicit path).
 - Keep file writes and git in SEPARATE Bash calls. A hook refusal cancels the whole call, writes included.
 - A commit message is a subject plus at most 2-3 lines. End the message with the session's attribution lines.
 

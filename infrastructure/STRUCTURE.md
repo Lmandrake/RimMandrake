@@ -33,7 +33,8 @@ This table is not complete. On 2026-11-23 the root also held `GUIDING_PRINCIPLES
   string. So a `git mv` does **not** update the symlinks.
 - If someone moves `skills/`, the links break with **no error at all**. Then the harness silently stops offering those
   skills.
-- A move of `skills/` needs the owner, or the Conductor's recorded act. If it goes ahead, land the `git mv` and an `ln -sfn` for each entry in
+- A move of `skills/` needs the owner's word, or the Conductor's act with its ledger note (`design/RimMandrake/delegation_policy.md`
+  §2). If it goes ahead, land the `git mv` and an `ln -sfn` for each entry in
   one commit.
 
 ---

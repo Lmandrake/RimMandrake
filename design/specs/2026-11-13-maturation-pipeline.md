@@ -271,7 +271,7 @@ One proposal inside Stage 1 is big enough to be an open question. The question i
 | Road back | None of its own. Faults found later arrive here as line items. | CARRIED (rule 2) |
 | Tracked on the mod | Tickets open and done in this stage; bars with a passing offline test, of total; tokens. | PROPOSAL |
 
-**[PROPOSAL]** For a mod that is already built (the five mods of 2026-11-13: the four advancing mods and Graffiti), Stage 3 is not "build". Stage 3 is then "reconcile". Check each locked bar against what exists. Build only the missing tests and the missing pieces.
+**[PROPOSAL]** For a mod that is already built (the five mods of 2026-11-13: Explosive Knockback, FlowWorks, Gimme Some Slack, Pyrelands and Graffiti), Stage 3 is not "build". Stage 3 is then "reconcile". Check each locked bar against what exists. Build only the missing tests and the missing pieces.
 
 **[HIS, 2026-11-17]** From a mod's first build, the builder's brief carries the offline model. The road-back fixer's brief carries it too. The offline model is:
 
