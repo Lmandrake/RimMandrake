@@ -75,8 +75,8 @@ Harmony patch on a vanilla worker where a worker of the mod itself was enough.
      `Find.WorldPawns.PassToWorld(p, PawnDiscardDecideMode.Discard)`. Never do this to a spawned pawn.
    - State that belongs to a map dies with the map. So keep it in a `MapComponent`, or delete it when the map goes.
    - Every list that we keep has a cap.
-7. **Test hook — can a bridge or dev action fire it deterministically?** Add a settings toggle that skips the choice
-   and applies the result of a timeout. Write one log line for each outcome.
+7. **Test hook — can a bridge or dev action fire it deterministically?** Add a settings toggle that skips the
+   choice. With that toggle on, the game applies the result of a timeout. Write one log line for each outcome.
 
 ## 3. Traps (each one cost a mod we studied, or the engine does it silently)
 

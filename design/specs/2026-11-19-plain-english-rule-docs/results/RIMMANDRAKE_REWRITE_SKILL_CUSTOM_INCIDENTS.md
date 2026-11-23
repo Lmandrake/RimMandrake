@@ -10,9 +10,9 @@ Also: skills/rimworld-custom-incidents/references/history.md
 
 | measure | before | after |
 |---|---|---|
-| bytes | 8,600 | 12,205 |
-| words in linted prose | 857 | 1392 |
-| STE violations per 100 words | 3.85 | 1.01 |
+| bytes | 8,600 | 12299 |
+| words in linted prose | 857 | 1409 |
+| STE violations per 100 words | 3.85 | 0.99 |
 | sentences over 20 words | 17 | 2 |
 | flagged lines (mechanical) | 5 | 5 |
 | lines that a cold reader cannot act on (hand count, by the writer) | 9 | 0 |
