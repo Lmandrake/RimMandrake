@@ -107,6 +107,7 @@ namespace RimMandrake.ExplosiveKnockback
         public KbLeg first;
         public bool wallFirst;
         public bool hopped;           // its short throw ended on sandbags and it cleared them instead of staying put
+        public bool tumbled;          // no line of its throw, hop or bounce took it: it tumbled along the freest of the eight directions
         // container
         public int planned, travelled, toX, toZ;
         public bool overLimit;
@@ -292,12 +293,57 @@ namespace RimMandrake.ExplosiveKnockback
                         return;
                     }
                 }
-                return;
             }
-            if (Rebound(grid, p.res.stop, p.cells, 0, p.res, f.x, f.z, p.dx, p.dz, f.kind, f.mass, s, q, out KbLeg bounce))
+            else if (p.res.stop == KbStop.Water)
+            {
+                return; // deep water right behind it holds it ("never into deep water")
+            }
+            else if (Rebound(grid, p.res.stop, p.cells, 0, p.res, f.x, f.z, p.dx, p.dz, f.kind, f.mass, s, q, out KbLeg bounce))
             {
                 p.first = bounce;
                 p.wallFirst = true;
+                return;
+            }
+            Tumble(p, f, s, grid);
+        }
+
+        /// <summary>Leaf every_good_moves, the cases its throw, hop and bounce all leave in place (blind cycle 6,
+        /// RIMMANDRAKE_MOVE_KNOCKBACK_GOODS_PINNED_AGAINST_WALLS_SHELVES; seed 7741: 593 of 12,474 reached goods in walled rooms, and
+        /// 764 of 10,699 in shelf storerooms, sat still): a one-cell throw into a wall (a bounce keeps floor(0.7 x 1) = 0 cells), a
+        /// bounce whose reflected line is blocked at a corner, a throw along a shelf row deeper than HopExtraCells. The good tumbles
+        /// along the first of the eight directions, most in line with its throw first, whose walk of its throw (up to
+        /// HopExtraCells more, to clear a shelf) moves it. Only a good with no such line anywhere stays.</summary>
+        private static void Tumble(KbPlan p, KbFacts f, KbSettings s, IKbGrid grid)
+        {
+            float m = (float)Math.Sqrt(p.dx * p.dx + p.dz * p.dz);
+            float ux = m > 1e-6f ? p.dx / m : 1f, uz = m > 1e-6f ? p.dz / m : 0f;
+            var dirs = new List<(int x, int z, float dot)>(8);
+            for (int ddx = -1; ddx <= 1; ddx++)
+            {
+                for (int ddz = -1; ddz <= 1; ddz++)
+                {
+                    if (ddx == 0 && ddz == 0) continue;
+                    float n2 = (float)Math.Sqrt(ddx * ddx + ddz * ddz);
+                    dirs.Add((ddx, ddz, (ddx * ux + ddz * uz) / n2));
+                }
+            }
+            // most in line first; ties keep the fixed order above, so the choice is deterministic
+            var order = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7 };
+            order.Sort((a, b) => { int c = dirs[b].dot.CompareTo(dirs[a].dot); return c != 0 ? c : a.CompareTo(b); });
+            foreach (int i in order)
+            {
+                for (int n = Math.Max(1, p.cells); n <= p.cells + HopExtraCells; n++)
+                {
+                    KbResult r = RM_KnockbackMath.Resolve(grid, f.x, f.z, dirs[i].x, dirs[i].z, n, f.kind, f.mass, s);
+                    if (r.Moved)
+                    {
+                        p.res = r;
+                        p.dx = dirs[i].x;
+                        p.dz = dirs[i].z;
+                        p.tumbled = true;
+                        return;
+                    }
+                }
             }
         }
 

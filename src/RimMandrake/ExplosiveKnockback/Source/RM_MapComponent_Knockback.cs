@@ -690,7 +690,7 @@ namespace RimMandrake.ExplosiveKnockback
                 RM_KnockbackJournal.Add("item_move", r.explosionId, t, "kind", kind.ToString(), "from", start, "to", legDest,
                     "planned", cells, "cells", leg.res.cellsTravelled, "stop", leg.res.stop.ToString(), "mass", mass, "count", count,
                     "kernelCells", kernelCells, "wildCells", cells, "flying", true, "flyer", fl.thingIDNumber, "flightTicks", fl.TicksLeft,
-                    "wallFirst", p.wallFirst, "hopped", p.hopped);
+                    "wallFirst", p.wallFirst, "hopped", p.hopped, "tumbled", p.tumbled);
                 if (p.wallFirst)
                 {
                     FleckMaker.ThrowDustPuff(start, map, 0.8f);

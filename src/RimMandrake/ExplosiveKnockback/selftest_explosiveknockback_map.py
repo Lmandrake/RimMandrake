@@ -72,6 +72,9 @@ FAULTS = [
     ("flying goods off falls back to a throw", "RM_KnockbackPlan.cs", "if (!pawn && !q.flyingGoods)", "if (false)"),
     ("the container shove cannot be switched off", "RM_KnockbackPlan.cs", "if (!q.shoveClosedContainers)", "if (false)"),
     ("downed pawns cannot be switched off", "RM_KnockbackPlan.cs", "if (f.downed && !q.throwDowned)", "if (false)"),
+    # blind cycle 6 (RIMMANDRAKE_MOVE_KNOCKBACK_GOODS_PINNED_AGAINST_WALLS_SHELVES): the tumble that moves a good its throw, hop
+    # and bounce leave in place (a one-cell throw into a wall, a blocked bounce, a deep shelf row)
+    ("a good pinned by a wall or a shelf row sits still", "RM_KnockbackPlan.cs", "            Tumble(p, f, s, grid);\n", ""),
 ]
 
 

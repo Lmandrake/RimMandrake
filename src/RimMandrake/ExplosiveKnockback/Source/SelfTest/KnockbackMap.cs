@@ -458,7 +458,7 @@ internal static class KnockbackMap
         "M12 wall_stops_dead / pawn_hits_pawn_stops: a pawn stopped by a wall, door or pawn rests on the cell before it",
         "M13 goods_arc_spin_rebound: a good that hits a wall or door with speed to spare bounces off it",
         "M15 thrown_into_pit_falls, the full pit: with every floor cell beside its landing taken, a stack is set down on the side it came from, within three cells of where it came down",
-        "M16 (count only) goods held where they lie by the map itself: deep water behind them, a wall that takes a one-cell throw whole, or walls on every side of the bounce",
+        "M16 (count only) goods held where they lie by the map itself: deep water behind them, or no line to rest on in any of the eight directions",
         "M17 (count only) full-pit landings with no free ground on the side they came from either: put back beside where they were thrown from",
         "M18 shield_belt_holds: a burning gas clump's one-cell shove still moves a belted pawn",
         "M19 closed_container_holds: what lay on a closed container's cell ends on that container's cell",
@@ -645,8 +645,10 @@ internal static class KnockbackMap
     }
 
     // the only goods a blast reaches and may leave lying (read independently of the plan's own branches): deep water is the
-    // first thing on its line ("stop short of deep water"); or a wall, door or edge is and no bounce is possible; or sandbags
-    // lie under its whole throw and no free cell lies within HopExtraCells past it
+    // first thing on its line ("stop short of deep water"); or no line from its cell, in any of the eight directions, comes
+    // to rest within its throw plus HopExtraCells (walls, doors, the edge or sandbags on every side). Leaf every_good_moves
+    // spares nothing else: a good with a wall right behind it and a one-cell throw, or a bounce whose reflected line is
+    // blocked, still leaves its cell (blind cycle 6, RIMMANDRAKE_MOVE_KNOCKBACK_GOODS_PINNED_AGAINST_WALLS_SHELVES).
     public static string Dbg = "";
     private static bool Pinned(MWorld w, MThing t, KbPlan p)
     {
@@ -655,22 +657,15 @@ internal static class KnockbackMap
         try
         {
             if (p.res.stop == KbStop.Water) return true;
-            if (p.res.stop == KbStop.Wall || p.res.stop == KbStop.Door || p.res.stop == KbStop.OutOfBounds)
-            {
-                bool bb = BounceBlocked(g, p.res, t.sx, t.sz, p.dx, p.dz, p.cells, 0);
-                if (!bb)
+            for (int ddx = -1; ddx <= 1; ddx++)
+                for (int ddz = -1; ddz <= 1; ddz++)
                 {
-                    RM_KnockbackMath.Reflect(g, p.res, p.dx, p.dz, out float rx, out float rz);
-                    int back = RM_KnockbackMath.ReboundCells(p.cells, Q.goodsReboundKeepPercent);
-                    KbResult nr = RM_KnockbackMath.Resolve(g, t.sx, t.sz, rx, rz, back, t.kind, t.mass, p.s);
-                    Dbg = "reflect (" + rx + "," + rz + ") back " + back + " -> stop " + nr.stop + " travelled " + nr.cellsTravelled + " line " + string.Join(" ", RM_KnockbackMath.Line(t.sx, t.sz, rx, rz, back).Select(c => c + ":" + g.At(c.x, c.z))) + " intoPits " + p.s.intoPits;
+                    if (ddx == 0 && ddz == 0) continue;
+                    for (int n = Math.Max(1, p.cells); n <= p.cells + KbPlanner.HopExtraCells; n++)
+                    {
+                        if (CanRest(g, t.sx, t.sz, ddx, ddz, n)) { Dbg = "free line (" + ddx + "," + ddz + ") n " + n; return false; }
+                    }
                 }
-                return bb;
-            }
-            for (int n = p.cells; n <= p.cells + KbPlanner.HopExtraCells; n++)
-            {
-                if (CanRest(g, t.sx, t.sz, p.dx, p.dz, n)) return false;
-            }
             return true;
         }
         finally { w.self = null; }
