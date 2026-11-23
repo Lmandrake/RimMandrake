@@ -30,3 +30,11 @@ Started 2026-11-23 1:14 PM PST.
   CordBuilder.cs: EndDecor's tie picked the dive end as the machine's end; FitEnds and UnkinkPiece skipped dive ends. Test
   first (StubJoinChecks.FarWallLamps, 240 scenes): red on the parent (240 of 240 plugs away from their lamp, 6 joins off),
   green after (0, 0). Full SelfTest 5803/5803. Every check runs again on the fixed build.
+- 2:07-2:13 PM fix and repairs published (01c8191ac9), deployed to ArchBig (mod_hash sha256:18fde3975f10), ArchBig relaunched
+  on tier gimmesomeslack. All rows below are on this build.
+- 2:14-2:22 PM runC 108 PASS + 2 UNMEASURED that need FlowWorks (left out of its rows); runB 62/62; scenes switch_off_ends,
+  pole_icons_loaded, no_roof_over_pole, switch_light, restyle_whole_line PASS; look_menu_icons, wall_lamp_looks,
+  pole_south_of_tree PASS on their program rows with captures read. joins on the wall lamp scene: 29 taken, 0 off, 0 bare.
+- 2:22-2:27 PM gravship on PASS, off PASS. 2:30 PM sc_look_menu_icons capture repaired (b4a2b18daf). 2:33 PM sc_stub_joins on
+  GSS_OWNER_LOOK_20261116 (md5 a1c76e27c41e before and after): PASS, 398 taken, 0 off line, 0 off slope.
+- 2:42-2:59 PM tier gimmesomeslack_flowworks (13 mods): runE 110/110, runF 62/62, P_Z_log_budget PASS on both.

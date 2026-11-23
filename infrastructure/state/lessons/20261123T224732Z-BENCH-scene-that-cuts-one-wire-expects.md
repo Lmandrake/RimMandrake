@@ -1,0 +1,1 @@
+A scene that cuts one wire and expects two legs must take down every other wire the mod auto-links between them and read it back: GSS sc_restyle_whole_line's pole auto-linked to the wall bracket 14 cells off, so the cut left the line whole and the row read FAIL (in-game visit 1 of 0.2.0).
