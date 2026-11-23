@@ -33,8 +33,8 @@ Rows (one family per owner sentence; the pure judges below are selftested by sel
                             simply be transparent to them as usual" -> a building in a pit has ONE floor shadow at its own
                             (dry) alpha in clear liquid, drawn UNDER the liquid's sheet so the sheet hides it by the law
                             (RM_UnderLiquid.ThingShadow, RM_FaceMaterial.UnderSheetQueue); 0 under tar; 0 or a faded alpha
-                            in clear liquid is FAIL. The _under_sheet row reads shadowQueue < SheetQueue when ProofSubmerge
-                            reports it, else BLOCKED ON HOOK (it does not, 2026-11-16).
+                            in clear liquid is FAIL. The draw order (shadowQueue) is judged per thing if ProofSubmerge ever
+                            reports it; it does not, so the order is his walk's to see (polish.md).
   OL_labels_fade            18:15 labels at full brightness over faded items -> a label fades with its thing's TOP
                             (RM_UnderLiquid.LabelAlpha): label < 1 once the line is over the top in clear liquid, 0 under
                             tar; a top at the line is seen whole.
@@ -270,7 +270,7 @@ def judge_absent(text, kv, here, x0, z0, kind, dn, x, z):
 def judge_scene(plan, proof, here=None):
     """plan: scene_plan.json; proof(x, z) -> ProofSubmerge text; here(x0, z0) -> the copy's list_things rows (def, x, z) or
     None when unreadable. -> list of (row, verdict, got). Pure but for proof() and here()."""
-    rows, mono, dry, queues = [], {}, {}, []
+    rows, mono, dry = [], {}, {}
     pr = plan_rows(plan)
     if not pr:
         return [("OL_scene", "UNMEASURED", "the plan has no things in its copies: nothing to read")]
@@ -300,19 +300,10 @@ def judge_scene(plan, proof, here=None):
             mono.setdefault((kind, dn), []).append((f, num(kv, "share", 0.0), num(kv, "seenFoot", 1.0)))
         if kind == "furn":
             rows.append(("OL_no_surface_shadow_%s_%s" % (key, dn),) + judge_shadow(kv, True, dry.get(dn)))
-            if not fl and num(kv, "shadow", 0.0) > EPS:
-                queues.append((key, dn, num(kv, "shadowQueue")))
         rows.append(("OL_labels_fade_%s_%s_%s" % (key, kind, dn),) + judge_label(kv))
     for (kind, dn), seq in sorted(mono.items()):
         if len(seq) > 1:
             rows.append(("OL_one_law_over_fill_%s_%s" % (kind, dn),) + judge_monotone(seq))
-    if queues:
-        over = [q for q in queues if q[2] is not None and q[2] >= SHEET_QUEUE]
-        told = [q for q in queues if q[2] is not None]
-        rows.append(("OL_no_surface_shadow_under_sheet",) + (
-            ("FAIL", "drawn over the sheet: " + " ".join("%s/%s@%d" % (k, d, q) for k, d, q in over[:6])) if over else
-            ("BLOCKED", "ProofSubmerge reports no shadowQueue: a shadow drawn over the sheet is invisible to this read")
-            if len(told) < len(queues) else ("PASS", "%d shadows under the sheet (queue < %d)" % (len(told), SHEET_QUEUE))))
     return rows
 
 

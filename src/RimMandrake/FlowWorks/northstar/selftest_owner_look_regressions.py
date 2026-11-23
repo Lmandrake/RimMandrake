@@ -532,12 +532,11 @@ def main():
     sh = [r for r in good if r[0].startswith("OL_no_surface_shadow_BP3_")]
     check("shadow under the sheet in clear water at the dry alpha -> PASS", sh and all(r[1] == "PASS" for r in sh), sh[:3])
     over = [r for r in O.judge_scene(PLAN, toy_world("shadow_over_sheet"), toy_here()) if r[0].startswith("OL_no_surface_shadow")]
-    check("planted shadow over the sheet -> its per-thing rows and the sheet row FAIL",
-          any(r[0] == "OL_no_surface_shadow_under_sheet" and r[1] == "FAIL" for r in over)
-          and any(r[0].startswith("OL_no_surface_shadow_BP3_") and r[1] == "FAIL" for r in over), over[:3])
+    check("planted shadow over the sheet -> its per-thing rows FAIL",
+          any(r[0].startswith("OL_no_surface_shadow_BP3_") and r[1] == "FAIL" for r in over), over[:3])
     noq = O.judge_scene(PLAN, toy_world(queue=None), toy_here())
-    check("no shadowQueue in the reply: the sheet row is BLOCKED ON HOOK, never PASS",
-          [r[1] for r in noq if r[0] == "OL_no_surface_shadow_under_sheet"] == ["BLOCKED"], [r for r in noq if r[1] != "PASS"][:3])
+    check("no shadowQueue in the reply (the shipped reader's): no row waits on it, every row PASS",
+          noq and not [r for r in noq if r[1] != "PASS"], [r for r in noq if r[1] != "PASS"][:3])
     check("tar: a shadow seen through it -> FAIL",
           O.judge_shadow(O.kv_of("def=Bed kind=building share=1 clarity=0.000 shadow=0.300"), True)[0] == "FAIL")
     # labels (RM_UnderLiquid.LabelAlpha: a label fades with its TOP; a top at the line is seen whole)

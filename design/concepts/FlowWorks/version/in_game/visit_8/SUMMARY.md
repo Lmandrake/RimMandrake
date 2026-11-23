@@ -88,7 +88,8 @@ OL_OWNER_LOOK_READS and the big-pit screenshots, on ArchBig, same deployed build
 Continuation 1 took the big-pit captures (overview and the seven copies, dry to brim and 1.5 m tar) and looked at them.
 Small copies in `screenshots/` (under 1 MB each); full size in `D:\ClaudeWork\rimmandrake\flowworks_visit8_shots\`.
 Three strange things, all in `strange.jsonl`: the mid-run setting reset (filed, fixed), the interop fault (explained), and
-corpse wound overlays drawn on top of opaque tar (filed, RIMMANDRAKE_CUT_FLOWWORKS_CORPSE_WOUNDS_FLOAT_ON_TAR).
+red splotches over the tar at the corpses (filed as wound overlays, RIMMANDRAKE_CUT_FLOWWORKS_CORPSE_WOUNDS_FLOAT_ON_TAR; since
+explained: vanilla hit flecks of the staging's killing blow, held by the pause; SITE, dropped).
 
 ## The savegame
 
@@ -100,7 +101,7 @@ looks are today's, but its staged scenes were not re-checked on this build:
 
 RIMMANDRAKE_HOLD_WRAPUP_RESTORE_OFF_A_LIVE_OWNERS_DEBT (pipeline, fixed and closed, 8380450 and f459f47);
 RIMMANDRAKE_TRACE_FLOWWORKS_MOAT_CAPTURE_FAILS_TWO_IN_THREE_ON_NEW_BUILD (superseded into
-RIMMANDRAKE_HOLD_FLOWWORKS_PIT_PRISONERS_THREE_CAPTURE_FAULTS); RIMMANDRAKE_CUT_FLOWWORKS_CORPSE_WOUNDS_FLOAT_ON_TAR (MOD, open).
+RIMMANDRAKE_HOLD_FLOWWORKS_PIT_PRISONERS_THREE_CAPTURE_FAULTS); RIMMANDRAKE_CUT_FLOWWORKS_CORPSE_WOUNDS_FLOAT_ON_TAR (read as SITE by its fixer, dropped).
 
 ## Exit
 ```

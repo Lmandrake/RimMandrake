@@ -1363,9 +1363,24 @@ def _moat_geom():
             'col': (x0 + W + 5, z0 + W + 4), 'raiders_at': [(x0 + W + 1 + k, z0 - 6) for k in range(MOAT_RAIDERS)]}
 
 
+def _moat_send(S, G, spots):
+    """Raiders of the moat raid at these spots, under an assault lord."""
+    new = []
+    for at in spots:
+        r = S.call('jawa/spawn_pawn', kindDef=MOAT_KIND, x=at[0], z=at[1], faction=G['faction'], count=1)
+        pid = ((r.get('pawns') or [{}])[0]).get('id')
+        require(pid, 'raider not spawned at %s: %s' % (at, r))
+        new.append(pid)
+    S.call('jawa/lord_assault_spawn', pawns=','.join(new), sappers=False)
+    G['raiders'] += new
+
+
 def _moat_stage(S, raised=True):
     """Ring, drain pit, shut sluice, drawbridge (raised or lowered, read back), the west-bank pump plant, one colonist in the
-    plot and six raiders on the south bank under an assault lord. -> the staged state."""
+    plot and six raiders on the south bank under an assault lord; over the LOWERED leaf they come one at a time (the first now,
+    the rest in G['later'], sent by _moat_watch as each one before has crossed): a raider on the deck costs the one behind him
+    175 in vanilla's path (PathFinderJob.Cost_Blocked), a swim square beside him 60, so six at once swim round each other, which
+    the control does not ask about (version/moat_geometry/control_crowd.py). -> the staged state."""
     G = _moat_geom()
     for k in ('deepSwimEnabled',):
         S.setting(k, True, typ=SWIMSET)
@@ -1406,14 +1421,10 @@ def _moat_stage(S, raised=True):
     require(bid is not None, 'no battery at %s' % (G['battery'],))
     S.call('jawa/battery_set', thing=bid, mode='setPct', value=1.0)
     G['colonist'] = S.pawn('Colonist', G['col'], 'player')
-    fac = _isl_hostile_faction(S)
-    G['raiders'] = []
-    for at in G['raiders_at']:
-        r = S.call('jawa/spawn_pawn', kindDef=MOAT_KIND, x=at[0], z=at[1], faction=fac, count=1)
-        pid = ((r.get('pawns') or [{}])[0]).get('id')
-        require(pid, 'raider not spawned at %s: %s' % (at, r))
-        G['raiders'].append(pid)
-    S.call('jawa/lord_assault_spawn', pawns=','.join(G['raiders']), sappers=False)
+    G['faction'], G['raiders'] = _isl_hostile_faction(S), []
+    first = len(G['raiders_at']) if raised else 1
+    _moat_send(S, G, G['raiders_at'][:first])
+    G['later'] = list(G['raiders_at'][first:])
     return G
 
 
@@ -1477,9 +1488,20 @@ def _moat_watch(S, G, polls=MOAT_POLLS, until_swimmers=2, until_crossed=0):
         now = _moat_read(S, G, seen)
         if until_swimmers and now >= until_swimmers:
             break
-        if until_crossed and len(seen['crossed']) >= until_crossed:
-            break
+        if until_crossed:
+            S.r.setdefault('moatControlTrace', []).append(_raid_trace_line(S, G, seen['polls']))
+            if len(seen['crossed']) >= until_crossed:
+                break
+            if G.get('later') and set(G['raiders']) <= seen['crossed']:      # the deck is free: the next one comes
+                _moat_send(S, G, [G['later'].pop(0)])
     return seen
+
+
+def _raid_trace_line(S, G, poll):
+    """One poll of the bridge-down control: each raider and the colonist as id@x,z:job (a swimmer names who stood where)."""
+    mine = set(G['raiders']) | {G['colonist']}
+    return 'poll %d ' % poll + ' '.join('%s@%s,%s:%s' % (p['id'], p.get('x'), p.get('z'), p.get('job')) for p in
+                                        (S.B.call('jawa/site_state') or {}).get('pawns') or [] if p.get('id') in mine)
 
 
 def _moat_in_ring(S, G):
@@ -1687,7 +1709,7 @@ def _moat_rows(S, G):
         _toss(S, near, 'MOAT_moat_burns', at=_moat_lip(G, near))
     else:
         S.row('MOAT_moat_burns', False, 'no chemfuel square in the moat to light', unmeasured=True)
-    # control: the same raid with the leaf lowered -- they walk over the bridge and nobody swims
+    # control: the same raid with the leaf lowered -- they walk over the bridge, one after the other, and nobody swims
     S.again()
     G = _moat_stage(S, raised=False)
     c = _moat_watch(S, G, until_swimmers=0, until_crossed=2)

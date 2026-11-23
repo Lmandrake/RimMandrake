@@ -62,7 +62,8 @@ def xz(s):
 class Fake:
     """mod: 'healthy', 'noswim' (raiders stop at the bank), 'nodrain' (the lifted sluice moves nothing), 'nohold' (walls
     stand, but no raider in the moat reads held). fault: 'gone' (the raid is gone at the first poll), 'swimrefused' (ProofSwim REFUSED), 'nopower',
-    'edgeraid' (jawa/fire_raid answers success)."""
+    'edgeraid' (jawa/fire_raid answers success). mod 'swimcheap': raiders never choose the lowered deck. Every other raider is
+    slow on the deck (recorded raiders stand on it for a whole poll); a raider holds his deck square against the one behind him, who swims round (control_crowd.py)."""
 
     def __init__(self, mod='healthy', fault=None):
         self.mod, self.fault = mod, fault
@@ -144,12 +145,17 @@ class Fake:
                 nxt = (c[0] + (1 if c[0] < lf['deck'][0][0] else -1), c[1])       # over the lowered leaf
             else:
                 nxt = (c[0], c[1] + 1)
+            if self.mod == 'swimcheap' and lf and lf['progress'] == 0:            # a forced path: the deck is never chosen
+                nxt = (c[0], c[1] + 1) if c[0] != lf['deck'][0][0] else (c[0] + 1, c[1])
+            if self.decked(nxt) and any(k2 != k and q['hostile'] and (q['x'], q['z']) == nxt for k2, q in g['pawns'].items()):
+                nxt = (nxt[0] + 1, nxt[1])                  # held by another raider (vanilla +175): round him through the water
             if abs(self.climb(nxt) - self.climb(c)) > 2 or (self.mod == 'noswim' and self.deep(nxt)):
                 p['goal'] = None
                 continue
             if p['goal'] != nxt:                                                  # he pays the next square's cost where he stands
                 p['goal'] = nxt
-                p['next'] = g['tick'] + (SWIM if self.deep(nxt) else 13) + (CLIMB if self.climb(c) - self.climb(nxt) == 2 else 0)
+                slow = self.decked(nxt) and int(k[5:]) % 2           # every other raider dawdles on the deck
+                p['next'] = g['tick'] + (SWIM if self.deep(nxt) else 60 if slow else 13) + (CLIMB if self.climb(c) - self.climb(nxt) == 2 else 0)
                 continue
             p['x'], p['z'], p['goal'] = nxt[0], nxt[1], None
 
@@ -458,5 +464,23 @@ check('a REFUSED swim read: the swim and the control UNMEASURED, never PASS',
 r, o, _ = run(fault='nopower')
 check('a pump that never runs: the chemfuel UNMEASURED and the burn (no chemfuel square) UNMEASURED',
       r.get('MOAT_chemfuel_pumped') == 'UNMEASURED' and r.get('MOAT_moat_burns') == 'UNMEASURED', r)
+r, o, _ = run(mod='swimcheap')
+check('raiders that never choose the lowered deck: the control FAILs (its staging excuses nobody)',
+      r.get('MOAT_control_bridge_down_no_swim') == 'FAIL', [x for x in o['rows'] if 'control' in x['id']])
+check('the control leaves a trace of who stood where', bool(o.get('moatControlTrace')), sorted(o))
+if hasattr(C, '_moat_send'):
+    stage = C._moat_stage
+
+    def all_at_once(S, raised=True):
+        G = stage(S, raised)
+        if G['later']:
+            C._moat_send(S, G, G['later'])
+            G['later'] = []
+        return G
+    C._moat_stage = all_at_once
+    r, o, _ = run()
+    C._moat_stage = stage
+    check('the old control staging (six at once on a 1-wide deck): a raider swims round the one who holds it, the control FAILs',
+          r.get('MOAT_control_bridge_down_no_swim') == 'FAIL', r)
 print('selftest_moat_scene: %s' % ('FAIL' if FAILS else 'ok'))
 sys.exit(1 if FAILS else 0)
