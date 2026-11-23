@@ -62,7 +62,8 @@ def data_of(root, live=False):
 
 
 def page_of(root, live=False, env=None):
-    rc, out, err = run(["--root", root, "--print"] + ([] if live else ["--no-live"]), env=env)
+    # the summary page, then MATURATION_DETAIL (the cards and the whole lists)
+    rc, out, err = run(["--root", root, "--print", "--print-detail"] + ([] if live else ["--no-live"]), env=env)
     if rc != 0:
         raise RuntimeError("maturation_now.py --print exit %d: %s" % (rc, err[-600:]))
     return out
@@ -291,7 +292,8 @@ def p6_dispatch_clock():
                 plant(kind, at)
                 with patch.dict(os.environ, env, clear=True):
                     d = M.gather(root, live=live)
-                    pair = M.build(d, dt.datetime.fromtimestamp(d["now"], dt.timezone.utc))
+                    at_ = dt.datetime.fromtimestamp(d["now"], dt.timezone.utc)
+                    pair = tuple(x + y for x, y in zip(M.build(d, at_), M.build_detail(d, at_)))
                 pages.append(pair)
                 return pair[0] + ("\nchanged content" if kind == "changed page content" and len(pages) == 2 else "")
 
@@ -765,7 +767,7 @@ def p17_owed_close():
 def p18_dense_mod_section(d, page):
     """RIMMANDRAKE_WIDEN_EVERY_MOD_TABLE_ON_MATURATION_PAGE_SPARSE_IN_TYPORA: the markdown section is one compact block per
     advancing mod, no cut text, held and off mods in one short list, and a passed mod never reads as waiting."""
-    m0 = re.search(r"^## Every mod, one line\n(.*?)(?=^## )", page, re.M | re.S)
+    m0 = re.search(r"^## Every mod, one line\n(.*?)(?=^---$)", page, re.M | re.S)
     check("18 the section exists", m0 is not None)
     if m0 is None:
         return

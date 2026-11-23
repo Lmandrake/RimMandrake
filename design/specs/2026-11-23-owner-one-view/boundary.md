@@ -56,8 +56,9 @@ Why: on 2026-11-23 Fleet Now listed 4 things for him and Maturation Now's "Needs
   with their age, then `not filed anywhere: N` with each source's own number and the names of the sources not read.
   With `no_home` None it prints `not filed anywhere: UNMEASURED` and never `0`. `fmt="md"` returns Markdown lines;
   `fmt="html"` returns one line of HTML with no blank line in it (Typora).
-- **both-pages-build-from-one-view.** `maturation_now` (its "Needs Mandrake" block) and `running_now` (its "Needs you"
-  panel) both call `owner_queue.one_view`. `maturation_now.live_facts` writes the view it built (`write_view`);
+- **both-pages-build-from-one-view.** `maturation_now` (its "Needs Mandrake" block on MATURATION_DETAIL; the short block on
+  MATURATION_NOW draws the same rows and counts) and `running_now` (its "Needs you" panel) both call
+  `owner_queue.one_view`. `maturation_now.live_facts` writes the view it built (`write_view`);
   `running_now` reads that view and the shared count through its own file reader, shows the view while it is younger
   than `VIEW_FRESH_S`, and else draws the same block from its own fleet reading.
 - **each-limit-names-its-danger.** `WINDOW_S`, `TTL_S`, `NAMES_SHOWN` and `VIEW_FRESH_S` are written beside their

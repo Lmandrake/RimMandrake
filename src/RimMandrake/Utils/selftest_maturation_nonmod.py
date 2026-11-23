@@ -342,21 +342,138 @@ def t_four_answers_differ():
     z = "\n".join(N.markdown(sec(zero)))
     assert "**Work** · program · **0**" in z and "Doing now (0)" in z and "none (looked: the run records" in z, z
     assert len({blind, t, failed, z, ok}) == 5
-def t_placed_under_pipeline_now():
-    need()
+def page_dict(s=None, **kw):
     d = {"mods": [], "others": [], "held": {"total": 0, "counted": 0, "counted_files": 0, "uncounted": [],
                                             "per_mod": {}},
-         "needs": {"mandrake": [], "conductor": [], "pipeline": ["Slots: 0 live"]}, "now": NOW,
-         "intake": {"count": 0, "questions_total": 0}, "errors": [], "convergence": None, "nonmod": sec()}
+         "needs": {"mandrake": [], "conductor": [], "pipeline": ["Slots: 0 live of max_live 4"]}, "now": NOW,
+         "intake": {"count": 0, "questions_total": 0}, "errors": [], "convergence": None, "nonmod": sec(s)}
+    d.update(kw)
+    return d
+
+
+def built(d):
     import datetime as dt
-    md, page = M.build(d, dt.datetime.fromtimestamp(NOW, dt.timezone.utc))
-    a, b, c = md.find("## Pipeline now"), md.find("## " + N.TITLE), md.find("mods in the pipeline")
-    assert -1 < a < b < c, (a, b, c)
-    a, b, c = page.find("Pipeline now (the Dispatch tick)"), page.find(">" + N.TITLE + "<"), page.find("mods in the pipeline")
-    assert -1 < a < b < c, (a, b, c)
-    # Typora: no blank line inside the HTML block
-    blk = N.html_block(d["nonmod"])
-    assert "\n" not in blk
+    t = dt.datetime.fromtimestamp(NOW, dt.timezone.utc)
+    return M.build(d, t), (M.build_detail(d, t) if hasattr(M, "build_detail") else ("", ""))
+
+
+def t_lists_go_to_detail():
+    (md, page), (dmd, dpage) = built(page_dict())
+    for x in (md, page):
+        assert N.TITLE not in x and "Pipeline now (the Dispatch tick)" not in x, "the whole lists are on the summary page"
+        assert "MATURATION_DETAIL" in x, "the summary names its detail page"
+    for x in (dmd, dpage):
+        a, b, c = x.find("Pipeline now (the Dispatch tick)"), x.find(N.TITLE), x.find("mods in the pipeline")
+        assert -1 < a < b < c, (a, b, c)
+    assert "\n" not in N.html_block(sec())         # Typora: no blank line inside the HTML block
+
+
+LOG_WORDS = ("Launched by", "rm-list-dispatch.timer", "reading.json", "item_identity", "oldest:", "Why: the owner asked",
+             "python3 ", "maturation_dispatch.py")
+
+
+def t_page_is_a_picture_not_a_log():
+    s = stores(extra_filed=15)
+    (md, page), _ = built(page_dict(s))
+    for x in (md, page):
+        assert N.PANEL_TITLE in x, "no List Pipeline picture on the page"
+        hit = [w for w in LOG_WORDS if w in x]
+        assert not hit, "log lines on the summary page: %s" % hit
+        assert len(x) < 40000, len(x)
+    one = [ln for ln in md.splitlines() if "List Pipeline: open" in ln]
+    assert len(one) == 1 and one[0].startswith("<div>"), "the picture is one line of HTML (Typora)"
+    import re as _re
+    words = _re.findall(r">([^<>]+)</text>", one[0])
+    for w in ("Shape", "Waiting", "Ready", "Work", "Verify", "Closed", "Trouble", "His review", "Conflict", "Unread",
+              "being worked now", "stuck, needs a hand"):
+        assert w in words, "%s is not in the picture" % w
+    assert "23" in words and "36 open tickets that are not mod work, by stage" in words, words[:30]
+    # a plain title first; an id only small and beside it, and never as the main text
+    for w in words:
+        assert not _re.match(r"[A-Z0-9]+_[A-Z0-9_]+$", w), "an id is main text: %s" % w
+    assert "Build the live thing" in words and "A run that timed out" in words
+    stuck = words.index("stuck, needs a hand")
+    assert words[stuck - 1] == "6", words[stuck - 2:stuck + 1]
+
+
+def t_waits_in_plain_words():
+    x = sec()
+    assert dict(x["waits"]) == {"a date": 1, "another ticket to close": 1, "a live game": 1}, x["waits"]
+    assert sum(n for _k, n in x["waits"]) == {r["stage"]: r["count"] for r in x["stages"]}["waiting"]
+
+
+def t_plain_titles():
+    need()
+    assert N.plain("Bridge conditions T10 (spec a/b.md row T10): flyer flight recorded as STATE: probes") == \
+        "Bridge conditions T10: flyer flight recorded as STATE"
+    assert N.plain("`a` " + "word " * 60).endswith("…") and len(N.plain("word " * 60)) <= 84
+    assert N.plain("") == "(no title on the ledger)"
+    g_ = N.alike([{"title": "Plain-English rewrite of skills/one"}, {"title": "Other"}, {"title": "Plain-English rewrite of skills/two"}])
+    assert [(t, n) for t, n, _ in g_] == [("Plain-English rewrite of skills/one", 2), ("Other", 1)], g_
+
+
+def t_page_four_answers_differ():
+    need()
+    blind = N.panel(N.safe_section(N.off_stores("live reads off (--no-live)"), NOW))
+    failed = N.panel(N.safe_section({"items": 5, "causes": {}}, NOW))
+    norec = stores()
+    norec["records"] = None
+    norec["causes"] = {"the run records": "run records: OSError: gone"}
+    nr = N.panel(sec(norec))
+    quiet = stores()
+    quiet["records"] = []
+    quiet["red_reading"]["items"] = {}
+    quiet["lane"]["items"].pop("RIMMANDRAKE_LANE_STOPPED")
+    q = N.panel(sec(quiet))
+    assert "COULD NOT LOOK" in blind and "live reads off" in blind and "<svg" not in blind, blind
+    assert "FAILED" in failed and "<svg" not in failed, failed
+    assert "The run records could not be read." in nr and "Nothing: no run is live" not in nr and "UNMEASURED" in nr, nr[:400]
+    assert "Could not look: the run records" in nr
+    assert "Nothing: no run is live on a ticket" in q and "Nothing is stuck." in q and "UNMEASURED" not in q
+    assert len({blind, failed, nr, q}) == 4
+
+
+def t_needs_short_and_his_first():
+    need()
+    co = ["FlowWorks: Stage 6 has run 25 times", "Pyrelands: Stage 6 has run 45 times",
+          "Dispatch step, 2026-11-23 1:00 PM PST: FlowWorks Stage 6 (In-game) DIVERGING, open rising: open 15 -> 13",
+          "Dispatch step, 2026-11-23 1:00 PM PST: FlowWorks: the ceiling, ≈19.8M weighted tokens spent at In-game "
+          "acceptance (Stage 6) plus the next run's cap; release it: python3 x.py",
+          "run rm-x ended success; item X_Y is still doing: close it", "Pyrelands: a run has been live 2.4 h (Stage 3, since 10)"]
+    short = M.conductor_short(co, [{"name": "FlowWorks", "label": "FlowWorks"}])
+    assert len(short) == 5, short
+    assert "Repeating a stage: FlowWorks Stage 6 (25 times), Pyrelands Stage 6 (45 times)" in short, short
+    assert "Not converging, decide what changes: FlowWorks Stage 6" in short, short
+    assert not any("python3" in x or "weighted" in x or "rm-x" in x for x in short), short
+    view = {"his": [{"item": "X_LOOK", "q": "Look at the drawbridges in game (save A): do they work? 10 minutes"}],
+            "ours": [], "home": {"no_home": None, "by_source": {}, "unmeasured": []}}
+    p = M.needs_panel(page_dict(view=view, needs={"mandrake": [], "conductor": co, "journal": [], "pipeline": []}))
+    assert "\n" not in p and "Needs Mandrake (1)" in p and "Needs the Conductor (5)" in p, p[:300]
+    assert p.find("Needs Mandrake") < p.find("Needs the Conductor")
+    assert "look in game · 10 min" in p and "needs not filed anywhere: UNMEASURED" in p, p
+    none = M.needs_panel(page_dict(view=dict(view, his=[])))
+    assert "Nothing waits on you." in none
+    blind = M.needs_panel(page_dict(errors=["ledger: OSError: gone"]))
+    assert "Needs Mandrake (UNMEASURED)" in blind and "Nothing waits on you." not in blind, blind
+
+
+def t_trend_on_the_page():
+    need()
+    import maturation_trend as T
+    (md, page), _ = built(page_dict(trend={"state": "blind", "cause": "the ledger was not read"}))
+    for x in (md, page):
+        assert T.TITLE in x and "COULD NOT LOOK" in x, "no graph of tickets by hour on the page"
+
+
+def t_plain_waits():
+    need()
+    assert M.plain_wait("waiting: rm-detached-x-1 is live on it (in-game visit 5)") == "a run is on it now (in-game visit 5)"
+    assert M.plain_wait('held: HELD BY OWNER 2026-11-16: "And stop" (lift: python3 x)') == "your hold, since Nov 16"
+    assert M.plain_wait("off: OFF by pipe (act ct_1 at 2026-11-20 12:00:12 PM PST): admitted; waits (on: pipe on X --why)") == \
+        "switched off since Nov 20: admitted; waits"
+    assert "python3" not in M.plain_wait("ceiling: ≈19.8M weighted tokens spent at In-game acceptance (Stage 6) plus the next "
+                                         "run's cap; release it: python3 x.py")
+    assert M.plain_wait("something new") == "something new"
 
 
 def t_same_inputs_same_section():
@@ -364,14 +481,16 @@ def t_same_inputs_same_section():
     a = N.markdown(N.section(stores(), NOW, spend=spend))
     b = N.markdown(N.section(copy.deepcopy(stores()), NOW, spend=spend))
     assert a == b
+    assert N.panel(N.section(stores(), NOW, spend=spend)) == N.panel(N.section(copy.deepcopy(stores()), NOW, spend=spend))
     assert N.html_block(N.section(stores(), NOW, spend=spend)) == N.html_block(N.section(stores(), NOW, spend=spend))
 
 
 def main():
     tests = [t_mod_or_not_by_one_rule, t_stages_from_one_rule, t_launcher_from_records, t_doing_now_rows,
              t_next_names_its_wait, t_closed_last_day, t_open_by_reason_oldest_first, t_escalated_from_run_ends,
-             t_ready_for_review, t_cannot_see_is_unmeasured, t_four_answers_differ, t_placed_under_pipeline_now,
-             t_same_inputs_same_section]
+             t_ready_for_review, t_cannot_see_is_unmeasured, t_four_answers_differ, t_lists_go_to_detail,
+             t_page_is_a_picture_not_a_log, t_waits_in_plain_words, t_plain_titles, t_page_four_answers_differ,
+             t_needs_short_and_his_first, t_trend_on_the_page, t_plain_waits, t_same_inputs_same_section]
     failed = 0
     for t in tests:
         try:

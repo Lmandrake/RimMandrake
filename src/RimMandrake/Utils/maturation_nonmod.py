@@ -11,8 +11,8 @@ programs (red_dispatch, left_open_continue, stop_resume) or by the Conductor's h
 the Conductor's hand. It draws no stage that does not exist.
 
 maturation_now.gather calls read_stores (the red dispatcher, alarms, games, showings; the ledger and run records come
-from its own live_facts, read once) and safe_section; maturation_now.build places markdown() / html_block() directly
-under "Pipeline now". A store it cannot read is "could not look" and its counts read UNMEASURED, never 0.
+from its own live_facts, read once) and safe_section. The page draws panel(): the stages with their counts, what is
+worked, closed and stuck, in a picture. markdown() / html_block(), the whole lists, go to MATURATION_DETAIL. A store it cannot read is "could not look" and its counts read UNMEASURED, never 0.
 """
 
 import datetime as dt
@@ -370,7 +370,7 @@ def section(s, now, spend=None, stage=None):
         for i in open_nm:
             for r in byitem.get(i, []):
                 if is_live(r):
-                    rows.append({"at": r.get("at"), "what": named(i, title(i)), "who": launcher(r, red_units),
+                    rows.append({"at": r.get("at"), "what": named(i, title(i)), "id": i, "title": title(i), "who": launcher(r, red_units),
                                  "since": pac(r.get("at")), "why": cause_line(i, items, evs), "unit": r.get("unit"),
                                  "stage": stage[i]["stage"]})
         rows.sort(key=lambda x: (x["at"] or 0, x["unit"] or ""))
@@ -432,6 +432,12 @@ def section(s, now, spend=None, stage=None):
               % (len(sh), "" if len(sh) == 1 else "s", "has" if len(sh) == 1 else "have", len(due),
                  ("; the oldest is " + oldest(sh)) if sh else ""))
     out["next"] = nx
+    out["ready_rows"] = [{"id": i, "title": title(i)} for i in ready]
+    out["shape_due"] = len(due) if lane_at is not None else UNM
+    wk = {}
+    for i in by_stage.get("waiting", []):
+        wk[wait_kind(items[i], facts[i])] = wk.get(wait_kind(items[i], facts[i]), 0) + 1
+    out["waits"] = sorted(wk.items(), key=lambda kv: (-kv[1], kv[0]))
 
     # closed in the last 24 h (an item open again now does not count)
     last = {}
@@ -447,7 +453,8 @@ def section(s, now, spend=None, stage=None):
             continue
         if classify(i, g(it, "title"), mods, run_mods) == "nonmod":
             st = stage_fn(LP.facts(it, byitem.get(i, []), now=now), now)
-            cl.append({"at": t, "verb": verb, "what": named(i, g(it, "title")), "when": pac(t),
+            cl.append({"at": t, "verb": verb, "what": named(i, g(it, "title")), "id": i, "title": g(it, "title"),
+                       "when": pac(t),
                        "promise": st.get("promise")})
     cl.sort(key=lambda x: (-x["at"], x["what"]))
     by = {}
@@ -468,12 +475,13 @@ def section(s, now, spend=None, stage=None):
     if recs is None:
         out["escalated"] = UNM
     else:
-        esc = [{"what": named(r["item"], title(r["item"])), "kind": r["stage"], "words": r["why"],
+        esc = [{"what": named(r["item"], title(r["item"])), "id": r["item"], "title": title(r["item"]),
+                "kind": r["stage"], "words": r["why"],
                 "age": age(utc(g(items[r["item"]], "created_at")), now)} for r in sx["escalated"]]
         seen = {x["what"] for x in esc}
         for i, x in sorted(red_items.items()):
             if (x or {}).get("decision") == "stopped" and klass.get(i) == "nonmod" and named(i, title(i)) not in seen:
-                esc.append({"what": named(i, title(i)), "kind": "red stopped",
+                esc.append({"what": named(i, title(i)), "id": i, "title": title(i), "kind": "red stopped",
                             "words": "the red dispatcher stopped on it: " + clip(x.get("why"), 110),
                             "age": "at " + pac(float(rr.get("at") or 0))})
         out["escalated"] = esc
@@ -489,13 +497,30 @@ def section(s, now, spend=None, stage=None):
             where = ("%s\\%s" % (NATIVE_SHOWINGS, i)) if shows and i in shows else (
                 "showings folder: could not look" if shows is None else "no showings folder by its name")
         nt = utc(n.get("ts")) if n else None          # a sort key: a note with no readable time sorts last
-        rd.append({"at": nt if nt is not None else 0, "what": named(i, title(i)),
+        rd.append({"at": nt if nt is not None else 0, "what": named(i, title(i)), "id": i, "title": title(i),
                    "when": pac(utc(n.get("ts"))) if n else "", "note": clip(n.get("text"), 140) if n else "",
                    "where": where, "why": r["why"]})
     rd.sort(key=lambda x: (-x["at"], x["what"]))
     out["ready"] = rd
     out["his_read"] = his is not None
     return out
+
+
+WAIT_WORDS = {"item": "another ticket to close", "live": "a live game", "external": "something outside",
+              "owner": "a block he has answered", "judge": "a judge", "time": "a time",
+              "other": "a block that names no event"}
+
+
+def wait_kind(it, f):
+    """What a waiting item waits on, in a few plain words (waits-in-plain-words)."""
+    if isinstance(f.get("route"), dict) and f["route"].get("who") and not f.get("waits"):
+        return "routed to %s" % f["route"]["who"]
+    if g(it, "wait_until"):
+        return "a date"
+    if g(it, "blocked"):
+        return WAIT_WORDS.get(g(it, "blocked_kind") or ("item" if g(it, "blocked_on") else "other"), "a named event")
+    return "a named event"
+
 
 def cause_line(i, items, evs):
     """The filing's reason, else the title of the item that caused it, else 'no cause on the ledger'."""
@@ -592,6 +617,7 @@ def _md_cell(s):
 
 
 def markdown(sec):
+    """Every list of the section, for MATURATION_DETAIL.md. The page itself draws panel(sec)."""
     out = ["## %s" % TITLE, ""]
     for h, lines in blocks(sec):
         if h:
@@ -606,10 +632,287 @@ def _inline(s):
     return re.sub(r"`([^`]+)`", r"<code>\1</code>", s)
 
 
-def html_block(sec, colour="#e8eaee"):
+def html_block(sec, colour="#efe7d9"):
     parts = ['<h2 style="color:%s">%s</h2>' % (colour, html.escape(TITLE))]
     for h, lines in blocks(sec):
         if h:
             parts.append('<h3 style="font-size:14px;margin:12px 0 4px">%s</h3>' % html.escape(h))
         parts.append("<ul>%s</ul>" % "".join("<li>%s</li>" % _inline(x) for x in lines))
     return "".join(parts)
+
+
+# ---- the picture on the page ----------------------------------------------------------------------------------------
+# Warm dark brown, the owner's palette (the maturity dashboard's).
+BG, CARD, EDGE, TEXT, DIM, FAINT = "#171310", "#211b16", "#4a3d2e", "#efe7d9", "#b5a993", "#8f8470"
+ACCENT, OLIVE, GOLD, RUST, INK = "#e0803a", "#8aa24a", "#e6c34e", "#d8694a", "#14100c"
+FONT = "'Segoe UI',Helvetica,Arial,sans-serif"
+PW = 1040
+LINE = (("shape", "Shape", "needs a check"), ("waiting", "Waiting", "on a named event"), ("ready", "Ready", "next to start"),
+        ("work", "Work", "a run is on it"), ("verify", "Verify", "check runs next"))
+SIDE = (("trouble", "Trouble", "needs a hand"), ("review", "His review", "ready for him"),
+        ("conflict", "Conflict", "facts disagree"), ("unmeasured", "Unread", "check not readable"))
+STAGE_COL = {"shape": "#8f8470", "waiting": "#c98536", "ready": "#e6c34e", "work": "#8aa24a", "verify": "#62b0a4",
+             "trouble": "#d8694a", "review": "#e0803a", "conflict": "#d8694a", "unmeasured": "#6d6252"}
+TOP = 4              # rows drawn per list; the heading carries the full count and MATURATION_DETAIL the rest
+
+
+def plain(s, n=84):
+    """A title as one short plain phrase: its first clause, cut at a word, with no code marks."""
+    s = re.sub(r"\s*\([^()]*\)", "", re.sub(r"[`*]", "", str(s or "")))      # an aside in brackets is detail
+    s = " ".join(s.split())
+    for stop in (". ", "; ", ": ", " ("):
+        k = s.find(stop, 24)
+        if 0 <= k <= n:
+            s = s[:k]
+            break
+    s = s.rstrip(".:;, ")
+    if len(s) > n:
+        k = s.rfind(" ", 0, n - 1)
+        s = s[:k if k > n // 2 else n - 1].rstrip(" ,;:(") + "…"
+    return s or "(no title on the ledger)"
+
+
+def alike(rows):
+    """Rows whose plain titles open with the same four words (a path counts as its first folder), joined: [(title, count, [row])], first-seen order."""
+    out, at = [], {}
+    for r in rows:
+        k = " ".join(w.split("/")[0] for w in plain(r.get("title")).lower().split()[:4])
+        if k in at:
+            out[at[k]][2].append(r)
+        else:
+            at[k] = len(out)
+            out.append((plain(r.get("title")), 0, [r]))
+    return [(t, len(v), v) for t, _, v in out]
+
+
+def _t(x, y, s, size=11, fill=TEXT, bold=False, anchor="start"):
+    return '<text x="%.1f" y="%.1f" font-size="%s" fill="%s"%s%s>%s</text>' % (
+        x, y, size, fill, ' font-weight="700"' if bold else "", ' text-anchor="%s"' % anchor if anchor != "start" else "",
+        html.escape(str(s), quote=True))
+
+
+def _r(x, y, w, h, fill, rx=4, stroke=None):
+    return '<rect x="%.1f" y="%.1f" width="%.1f" height="%.1f" rx="%s" fill="%s"%s/>' % (
+        x, y, w, h, rx, fill, ' stroke="%s"' % stroke if stroke else "")
+
+
+def short_id(i, n=70):
+    return i if len(i) <= n else i[:n - 1] + "…"
+
+
+def who_short(w):
+    for k, v in (("red dispatcher", "started by the red-test program"), ("left_open_continue", "a continued run"),
+                 ("stop_resume", "a resumed run"), ("Conductor", "started by the Conductor")):
+        if k in str(w):
+            return v
+    return "who started it: UNMEASURED"
+
+
+def verbs(by):
+    return ", ".join("%d %s" % (by[k], w) for k, w in (("close", "done"), ("drop", "dropped"), ("supersede", "replaced"))
+                     if by.get(k)) or "none"
+
+
+def picture(sec):
+    """The List Pipeline drawn like the mod picture: one line of SVG. sec must be state "ok"."""
+    cnt = {x["stage"]: x["count"] for x in sec["stages"]}
+    P = []
+    y = 12
+    cw, gap = 112.0, 8.0
+    x = 14.0
+    for k, name, sub_ in LINE:
+        P.append(_r(x, y, cw, 74, CARD, 6))
+        P.append(_t(x + cw / 2, y + 18, name, 12, TEXT, True, "middle"))
+        P.append(_t(x + cw / 2, y + 46, cnt.get(k, 0), 24, TEXT if cnt.get(k) else FAINT, True, "middle"))
+        P.append(_t(x + cw / 2, y + 63, sub_, 10.5, DIM, False, "middle"))
+        P.append(_r(x, y + 71, cw, 4, STAGE_COL[k], 2))
+        P.append('<path d="M%.1f %.1f l4 4 l-4 4" stroke="%s" stroke-width="1.5" fill="none"/>' % (
+            x + cw + (5 if k == "verify" else 2), y + 33, DIM))
+        x += cw + gap
+    c = sec["closed"]
+    x += 6
+    P.append(_r(x, y, cw, 74, "#33401f", 6))
+    P.append(_t(x + cw / 2, y + 18, "Closed", 12, TEXT, True, "middle"))
+    P.append(_t(x + cw / 2, y + 46, c["count"], 24 if c["count"] != UNM else 12, "#cfe09a", True, "middle"))
+    P.append(_t(x + cw / 2, y + 63, "last 24 hours", 10.5, "#cfe09a", False, "middle"))
+    x += cw + 20
+    P.append('<line x1="%.1f" y1="%d" x2="%.1f" y2="%d" stroke="%s" stroke-dasharray="3 3"/>' % (x - 12, y, x - 12, y + 74, EDGE))
+    sw = (PW - 14 - x - gap) / 2
+    for n, (k, name, _s) in enumerate(SIDE):
+        sx, sy = x + (n % 2) * (sw + gap), y + (n // 2) * 39
+        v = cnt.get(k, 0)
+        P.append(_r(sx, sy, sw, 35, CARD, 5))
+        P.append(_r(sx, sy, 4, 35, STAGE_COL[k] if v else EDGE, 2))
+        P.append(_t(sx + 12, sy + 22, name, 12, TEXT if v else DIM, bool(v)))
+        P.append(_t(sx + sw - 10, sy + 23, v, 16, TEXT if v else FAINT, True, "end"))
+    y += 90
+    # where the open items stand: one bar, length = count
+    tot = sec["open_total"]
+    P.append(_t(14, y + 10, "%d open tickets that are not mod work, by stage" % tot, 11, DIM))
+    y += 17
+    bx, bw = 14.0, PW - 28.0
+    P.append(_r(bx, y, bw, 12, CARD, 3))
+    if tot:
+        for k, _n2, _s in LINE + SIDE:
+            w = bw * cnt.get(k, 0) / float(tot)
+            if w > 0:
+                P.append('<rect x="%.2f" y="%d" width="%.2f" height="12" fill="%s"><title>%s %d</title></rect>' % (
+                    bx, y, w, STAGE_COL[k], k, cnt[k]))
+                bx += w
+    y += 26
+    due = sec.get("shape_due")
+    P.append(_t(14, y, "Shape holds the old backlog: %s of its %d are due for a run; the rest wait until someone names them."
+                % (due, cnt.get("shape", 0)), 11, DIM))
+    y += 14
+
+    def head(x0, yy, name, n, col):
+        P.append(_t(x0, yy, "%s" % n, 20, col, True))
+        P.append(_t(x0 + 12 * max(1, len(str(n))) + (8 if n != UNM else 24), yy - 1, name, 13, TEXT, True))
+
+    def rule(yy):
+        P.append('<line x1="14" y1="%.1f" x2="%d" y2="%.1f" stroke="%s"/>' % (yy, PW - 14, yy, EDGE))
+
+    def mini(yy, stage, word, fill):
+        """The mod rows' chips: the five stages, the item's own one filled, at the right of its row."""
+        mx, mw = 636.0, 74.0
+        ks = [k for k, _a, _b in LINE]
+        cur = ks.index(stage) if stage in ks else None
+        for n, k in enumerate(ks):
+            xx = mx + n * (mw + 4)
+            if cur is not None and n == cur:
+                P.append(_r(xx, yy, mw, 22, fill, 4))
+                P.append(_t(xx + mw / 2, yy + 15, word, 10.5, INK, True, "middle"))
+            elif cur is not None and n < cur:
+                P.append(_r(xx, yy, mw, 22, "#3f5a2c", 4))
+                P.append(_t(xx + mw / 2, yy + 15.5, "✓", 11, "#cfe09a", True, "middle"))
+            else:
+                P.append(_r(xx, yy, mw, 22, "none", 4, EDGE))
+
+    def row(yy, title, under, stage, word, fill):
+        P.append(_t(14, yy + 10, plain(title, 92), 13, TEXT, True))
+        P.append(_t(14, yy + 25, under, 10.5, DIM))
+        if stage:
+            mini(yy, stage, word, fill)
+
+    # being worked now
+    rule(y)
+    y += 26
+    d = sec["doing"]
+    head(14, y, "being worked now", UNM if d == UNM else len(d), OLIVE)
+    y += 12
+    if d == UNM:
+        P.append(_t(14, y + 10, "The run records could not be read.", 12, TEXT))
+        y += 22
+    elif not d:
+        P.append(_t(14, y + 10, "Nothing: no run is live on a ticket that is not mod work.", 12, DIM))
+        y += 22
+    else:
+        for r in d[:TOP]:
+            row(y, r["title"], "since %s, %s · %s" % (r["since"].split(",")[0], who_short(r["who"]), short_id(r["id"], 58)),
+                r["stage"], "a run is on it", OLIVE)
+            y += 37
+        if len(d) > TOP:
+            P.append(_t(14, y + 6, "and %d more" % (len(d) - TOP), 11, DIM))
+            y += 16
+        if any(r["stage"] == "shape" for r in d):
+            P.append(_t(14, y + 4, "A run on a ticket with no outcome check counts at Shape until the ticket has one.", 10.5, FAINT))
+            y += 14
+    # two columns: closed, and stuck
+    y += 6
+    rule(y)
+    y += 26
+    lx, rx = 14, 540
+    yl = yr = y
+    head(lx, yl, "closed in the last day" + ("" if c["count"] == UNM else " (%s)" % verbs(c["by"])), c["count"], "#a9c25f")
+    yl += 8
+    if c["count"] == UNM:
+        P.append(_t(lx, yl + 14, "The ledger's events could not be read.", 12, TEXT))
+        yl += 20
+    elif not c["rows"]:
+        P.append(_t(lx, yl + 14, "Nothing closed.", 12, DIM))
+        yl += 20
+    else:
+        done = [r for r in c["rows"] if r["verb"] == "close"] or c["rows"]
+        groups = alike(done)
+        for t, n, v in groups[:TOP + 1]:
+            P.append(_t(lx, yl + 16, "✓", 12, "#a9c25f", True))
+            P.append(_t(lx + 18, yl + 16, plain(t, 60 if n > 1 else 72) + (" (%d like it)" % n if n > 1 else ""), 12.5, TEXT))
+            yl += 22
+        rest = c["count"] - sum(n for _t2, n, _v in groups[:TOP + 1])
+        if rest:
+            P.append(_t(lx + 18, yl + 14, "and %d more" % rest, 11, DIM))
+            yl += 18
+    e = sec["escalated"]
+    head(rx, yr, "stuck, needs a hand", UNM if e == UNM else len(e), RUST if e else "#a9c25f")
+    yr += 8
+    if e == UNM:
+        P.append(_t(rx, yr + 14, "The run records could not be read.", 12, TEXT))
+        yr += 20
+    elif not e:
+        P.append(_t(rx, yr + 14, "Nothing is stuck.", 12, DIM))
+        yr += 20
+    else:
+        for t, n, v in alike(e)[:3]:
+            P.append(_t(rx, yr + 16, plain(t, 62) + (" (%d like it)" % n if n > 1 else ""), 12.5, TEXT, True))
+            P.append(_t(rx, yr + 30, plain(v[0]["words"], 84), 10.5, DIM))
+            yr += 36
+        rest = len(e) - sum(n for _t2, n, _v in alike(e)[:3])
+        if rest:
+            P.append(_t(rx, yr + 12, "and %d more" % rest, 11, DIM))
+            yr += 18
+    w = sec.get("waits") or []
+    if w:
+        yr += 8
+        P.append(_t(rx, yr + 12, "What the %d waiting tickets wait for" % sum(n for _k, n in w), 11, DIM))
+        yr += 18
+        mx = float(max(n for _k, n in w))
+        for k, n in w[:6]:
+            P.append(_r(rx, yr + 2, max(2, 150 * n / mx), 11, STAGE_COL["waiting"], 2))
+            P.append(_t(rx + max(2, 150 * n / mx) + 6, yr + 12, "%d" % n, 11, TEXT, True))
+            P.append(_t(rx + 190, yr + 12, k, 11.5, TEXT))
+            yr += 17
+    y = max(yl, yr) + 10
+    # what starts next
+    rr = sec.get("ready_rows") or []
+    rule(y)
+    y += 26
+    head(14, y, "ready: what starts next", len(rr), GOLD)
+    y += 8
+    if not rr:
+        P.append(_t(14, y + 14, "Nothing is Ready (a failing check, and nothing waited on).", 12, DIM))
+        y += 20
+    else:
+        for t, n, v in alike(rr)[:3]:
+            P.append(_t(14, y + 16, "→", 12, GOLD, True))
+            P.append(_t(32, y + 16, plain(t, 110) + (" (%d like it)" % n if n > 1 else ""), 12.5, TEXT))
+            y += 21
+        rest = len(rr) - sum(n for _t2, n, _v in alike(rr)[:3])
+        if rest:
+            P.append(_t(32, y + 13, "and %d more" % rest, 11, DIM))
+            y += 17
+    y += 14
+    words = ", ".join("%s %d" % (k, cnt.get(k, 0)) for k in STAGE_ORDER)
+    return ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %d %d" width="100%%" role="img" aria-label="%s" '
+            'style="max-width:%dpx;font-family:%s">%s%s</svg>' % (
+                PW, y, html.escape("The List Pipeline: open %d; %s; closed in the last day %s" % (tot, words, c["count"]),
+                                   quote=True), PW, FONT, _r(0, 0, PW, y, BG, 10), "".join(P)))
+
+
+PANEL_TITLE = "The List Pipeline: all work that is not mod work"
+
+
+def panel(sec):
+    """The non-mod half of the page, one line of HTML: the picture, and one line for what could not be read."""
+    st = sec.get("state")
+    if st == "failed":
+        return ('<div style="background:%s;color:%s;border-radius:10px;padding:14px 18px"><b>FAILED:</b> this half could '
+                'not be built (%s). No count is an answer.</div>' % (BG, TEXT, html.escape(str(sec["cause"]))))
+    looked = "; ".join("%s (%s)" % (k, clip(v, 80)) for k, v in sorted((sec.get("causes") or {}).items()))
+    if st == "blind":
+        return ('<div style="background:%s;color:%s;border-radius:10px;padding:14px 18px"><b>COULD NOT LOOK:</b> %s. Every '
+                'count of this half is UNMEASURED.</div>' % (BG, TEXT, html.escape(looked or "the ledger")))
+    out = picture(sec)
+    foot = "Could not class as mod or non-mod: %d." % sec["unclassed"]
+    if looked:
+        foot = "Could not look: %s. %s" % (looked, foot)
+    return '<div>%s<div style="font-size:11px;color:%s;padding:2px 14px">%s</div></div>' % (out, DIM, html.escape(foot))

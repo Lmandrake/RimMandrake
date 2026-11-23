@@ -1,7 +1,8 @@
-# BOUNDARY: the "Pipeline for work that is not mod work" section of MATURATION_NOW, Design Version 0.2.0
+# BOUNDARY: the "Pipeline for work that is not mod work" section of MATURATION_NOW, Design Version 0.3.0
 
 Code: `src/RimMandrake/Utils/maturation_nonmod.py` (the reader `read_stores`, the pure builder `section`, the two
-renderers `markdown` and `html_block`) and its two calls in `src/RimMandrake/Utils/maturation_now.py` (`gather`, `build`).
+renderers of the whole lists `markdown` and `html_block`, and the picture `panel`) and its calls in
+`src/RimMandrake/Utils/maturation_now.py` (`gather`, `build`, `build_detail`, `needs_panel`, `conductor_short`).
 Tests: `src/RimMandrake/Utils/selftest_maturation_nonmod.py`.
 Item: `RIMMANDRAKE_SHOW_NON_MOD_PIPELINE_ON_MATURATION_PAGE_AS_IT_IS_TODAY`. Written 2026-11-22. Why it exists: the
 owner, 2026-11-22 10:47 PM PST (OWNER note on `RIMMANDRAKE_PLAN_ONE_LIST_FOR_NON_MOD_WORK_WORKED_BY_THE_PIPELINE`):
@@ -15,6 +16,12 @@ Version 0.1.0 drew the path of non-mod work as it was on 2026-11-22. Version 0.2
 non-mod item sits at the one stage that `list_pipeline.stage_of` gives it (the rule the List Pipeline tick also
 calls; its own page is `design/specs/2026-11-23-list-stage-view/boundary.md`), and each stage row says "program" or
 "by hand". A program builds the section from stores of record only; no model writes any of it.
+
+Version 0.3.0 (item `RIMMANDRAKE_REDRAW_NONMOD_PAGE_HALF_SLEEK_SUMMARY_NOT_LOG_BARF`; the owner, 2026-11-23: *"This is
+supposed to be a summary page"*, with *"WAY less log noise"*): MATURATION_NOW draws the section as one picture
+(`panel`). The whole lists, the mods' cards, the Dispatch tick's lines and what the pages cannot say are on
+MATURATION_DETAIL. The promises below from `mod-or-not-by-one-rule` to `four-answers-differ` hold of the lists on
+MATURATION_DETAIL.
 
 ## ACCEPTS
 
@@ -98,8 +105,29 @@ calls; its own page is `design/specs/2026-11-23-list-stage-view/boundary.md`), a
   measured count of nothing prints 0. A list looked at and empty prints "none (looked: <store>)". A tick reading that
   cannot be read, or is older than `list_pipeline.LANE_STALE_S`, makes every item with a check read `unmeasured` and
   names the cause. The four never print alike. Tested by `t_four_answers_differ`.
-- **placed-under-pipeline-now.** On both pages the section comes directly after "Pipeline now (the Dispatch tick)" and
-  before the chips. Tested by `t_placed_under_pipeline_now`.
+- **lists-go-to-detail.** The whole lists, with the Dispatch tick's lines before them and the chips after, are on
+  MATURATION_DETAIL (both forms) and not on MATURATION_NOW, which names its detail page. Tested by
+  `t_lists_go_to_detail`.
+- **page-is-a-picture-not-a-log.** MATURATION_NOW shows the section as one line of HTML with one SVG: the stages with
+  their counts, what closed in the last day, trouble, his review, conflict and unread; one bar of where the open items
+  stand; what is worked now; a few of what closed; what is stuck; what starts next. A row is a plain title; an id is
+  never the main text. No launcher line, command, timer or file name of the program is on it. Tested by
+  `t_page_is_a_picture_not_a_log`.
+- **waits-in-plain-words.** Each waiting item counts under one plain reason; the counts add up to the Waiting stage.
+  Tested by `t_waits_in_plain_words`.
+- **plain-titles.** A title is cut to its first clause, with no bracketed aside, at a word. Rows whose titles open with
+  the same four words are one row with "(N like it)". Tested by `t_plain_titles`.
+- **page-four-answers-differ.** On the picture: COULD NOT LOOK with its cause, FAILED with its cause, UNMEASURED for
+  what an unread store would count, and the plain words for a measured nothing, never alike. Tested by
+  `t_page_four_answers_differ`.
+- **needs-short-and-his-first.** "Needs Mandrake" comes first and largest: one plain line per need, the act when the
+  line's own words say it, the minutes when they say them, the id small. "Needs the Conductor" is under it in a smaller
+  font: repeats of one kind (repeated stages, stages that do not converge, finished runs) are one line, with no command
+  and no run name. An unread ledger reads UNMEASURED, never "nothing". Tested by `t_needs_short_and_his_first`.
+- **trend-on-the-page.** The graph of tickets by hour is on both forms of the page, or says why not
+  (`design/specs/2026-11-23-ticket-trend-graph/boundary.md`). Tested by `t_trend_on_the_page`.
+- **plain-waits.** A mod's "waits on" text on the page holds no run name, command or quoted hold; words it does not know
+  print as they are. Tested by `t_plain_waits`.
 - **same-inputs-same-section.** Two builds from the same stores and the same clock are the same text: the section is a
   function of the stores. Tested by `t_same_inputs_same_section`.
 
@@ -108,6 +136,6 @@ calls; its own page is `design/specs/2026-11-23-list-stage-view/boundary.md`), a
 - **a page build:** `maturation_now.gather` reads the ledger and the run records once (`live_facts`) →
   `maturation_nonmod.read_stores` reads the List Pipeline tick, the red dispatcher, alarms, games and showings →
   `section` places each item by `stage_of` and builds the lists with `list_pipeline.six` →
-  `build` places `markdown` and `html_block` under "Pipeline now". `rm-maturation-dispatch.timer` regenerates the page
-  every minute from the dispatch clone.
+  `build` draws `panel` on MATURATION_NOW; `build_detail` places `markdown` and `html_block` on MATURATION_DETAIL.
+  `rm-maturation-page.timer` regenerates both from the dispatch clone, 60 s after each build.
 - **`--no-live`:** no store is read; the section reads "could not look: live reads off".

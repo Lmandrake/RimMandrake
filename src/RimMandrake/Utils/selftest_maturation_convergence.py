@@ -226,7 +226,7 @@ def main():
 
         # 10: the page
         p = subprocess.run([sys.executable, os.path.join(HERE, "maturation_now.py"), "--root", root, "--no-live",
-                            "--print"], capture_output=True, text=True, timeout=300,
+                            "--print-detail"], capture_output=True, text=True, timeout=300,
                            env=dict(os.environ, MATURATION_NOW_CLOCK="1794800000"))
         out = p.stdout
         check("10 the page prints", p.returncode == 0, p.stderr[-800:])

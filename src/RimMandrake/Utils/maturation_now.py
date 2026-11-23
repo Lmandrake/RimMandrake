@@ -7,10 +7,14 @@ Item RIMMANDRAKE_BUILD_MATURATION_PAGE_NO_TOKENS_SPENT; spec design/specs/2026-1
 §6 what is tracked on each mod, §9 the pipeline's own bar 2: "He can see where every mod stands on one page that a
 program regenerates without tokens").
 
-Writes D:\\ClaudeWork\\rimmandrake\\conductor\\MATURATION_NOW.md (read in Typora) and MATURATION_NOW.html beside it.
+Writes D:\\ClaudeWork\\rimmandrake\\conductor\\MATURATION_NOW.md (read in Typora) and MATURATION_NOW.html beside it: the
+summary (the needs, the mod picture, the List Pipeline picture, the graph of tickets by hour, every mod on one line).
+MATURATION_DETAIL.md and .html hold the lists, the cards and what could not be read (the owner, 2026-11-23: "This is
+supposed to be a summary page ... WAY less log noise").
 
     python3 src/RimMandrake/Utils/maturation_now.py            build and write both pages
     python3 src/RimMandrake/Utils/maturation_now.py --print    the Markdown page to stdout, write nothing
+    python3 src/RimMandrake/Utils/maturation_now.py --print-detail    the MATURATION_DETAIL page to stdout, write nothing
     python3 src/RimMandrake/Utils/maturation_now.py --json     the gathered facts to stdout, write nothing
         --root DIR   read design/ from DIR instead of this repo (the selftest's temp copies)
         --no-live    do not read the ledger or the detached-run records (their fields print UNMEASURED)
@@ -70,6 +74,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."
 from item_identity import item_mod  # noqa: E402  the one rule for the mod an item names
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import maturation_nonmod as MNM  # noqa: E402  the section for work that is not mod work
+import maturation_trend as MT  # noqa: E402  the graph of tickets by hour
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
@@ -92,15 +97,15 @@ COL_LONG = {"intake": "ideas waiting", "1": "vision, bars, lock", "2": "spec che
             "passed": "the mod rests"}
 DESIGNER_STEPS = {0: "Read", 1: "Argue the idea", 2: "Argue the edge", 3: "Write", 4: "Exam", 5: "Lock"}  # fallback only
 
-# Palette: running_now.py, so the NOW pages read as one family.
-BG, CARD, EDGE, TEXT, DIM, FAINT = "#14171c", "#1f242c", "#3a4250", "#e8eaee", "#a2abb8", "#5d6675"
-ALERT, INK = "#ff8a7a", "#0b0f14"
-DONE = "#2f5f4c"
+# Palette: the owner's warm dark brown (the maturity dashboard, CODEBASE_NOW).
+BG, CARD, EDGE, TEXT, DIM, FAINT = "#171310", "#211b16", "#4a3d2e", "#efe7d9", "#b5a993", "#8f8470"
+ALERT, INK = "#ff8a7a", "#14100c"
+DONE = "#3f5a2c"
 STATUS = {   # key: (fill, text colour, word on the chip, legend line)
-    "helper": ("#2aa98a", INK, "helper on it", "a helper is on it now"),
-    "waiting": ("#b28a00", INK, "waiting", "waiting for its next step"),
+    "helper": ("#8aa24a", INK, "helper on it", "a helper is on it now"),
+    "waiting": ("#c98536", INK, "waiting", "waiting for its next step"),
     "held": ("hatch", TEXT, "held", "held on purpose"),
-    "unknown": ("#6b7380", TEXT, "stage unread", "its stage could not be read"),
+    "unknown": ("#6d6252", TEXT, "stage unread", "its stage could not be read"),
 }
 FONT = "'Segoe UI',Helvetica,Arial,sans-serif"
 
@@ -478,7 +483,7 @@ def live_facts(mods):
 # An intervention is a line "CONDUCTOR INTERVENED (stage N, <date time PST>, kind K): what" in the journal or in a ledger
 # note on the mod's items (spec §5); a stage run more than once adds one derived "relaunch" per extra run.
 
-YELLOW = "#ffd23f"
+YELLOW = "#e6c34e"
 IV_KINDS = ("decision", "re-pin", "hold", "release", "relaunch", "brief", "bar-added")
 IV_RX = re.compile(r"CONDUCTOR INTERVENED\s*\(\s*stage\s+(intake|4\s*\+\s*5|[1-8])\s*"
                    r"(?:,\s*(\d{4}-\d{2}-\d{2})\s+(\d{1,2}):(\d{2})\s*(AM|PM)?\s*(?:PST|PDT)?)?\s*"
@@ -695,7 +700,7 @@ def journal_questions(text):
             body = " ".join(q.group(2).split())
             b = re.match(r"\*\*(.+?)\*\*", body)
             title = strip_md(b.group(1)).rstrip(":") if b else clip(strip_md(body), 110)
-            out.append({"n": int(q.group(1)), "who": "conductor" if re.search(r"(?i)for the Conductor", body) else "mandrake",
+            out.append({"n": int(q.group(1)), "who": "conductor" if re.search(r"(?i)(?:for the Conductor|^\W*\(?to the Conductor\b)", body) else "mandrake",
                         "text": clip(title, 140), "answered": int(q.group(1)) in answered})
     return out
 
@@ -1046,9 +1051,20 @@ def gather(root, live=True):
     import list_pipeline as LP  # noqa: E402  the List Pipeline's one stage rule, the one list_dispatch's tick calls
     nonmod = MNM.safe_section(nm_stores, now, spend=read_spend, stage=lambda item, t: LP.stage_of(item, t))
     return {"mods": mods, "others": other, "held": held, "needs": needs, "now": now, "nonmod": nonmod,
+            "trend": trend(lf, versioned, now, live),
             "view": lf.get("view"),
             "intake": {"count": lf["intake"], "questions_total": UNM if lf["questions"] is None else len(lf["questions"])},
             "errors": lf["errors"], "convergence": convergence(root, lf["errors"])}
+
+
+def trend(lf, mods, now, live):
+    """maturation_trend's reading of tickets by hour (design/specs/2026-11-23-ticket-trend-graph/boundary.md)."""
+    recs = lf.get("records")
+    run_mods = {r.get("item") for r in recs or []
+                if str((r.get("env") or {}).get("RM_CONTROL_MOD") or "").strip().lower() not in ("", "none")}
+    cause = "live reads off (--no-live)" if not live else next(
+        (e for e in lf.get("errors") or [] if e.startswith("ledger")), "the ledger was not read")
+    return MT.safe(lf.get("_evs"), now, mods, MNM.classify, run_mods, recs, MNM.is_live, cause=cause)
 
 
 def convergence(root, errors):
@@ -1114,12 +1130,13 @@ def chip_fill(status):
 def picture(d):
     mods = d["mods"]
     row_h, top = 78, 150
-    h = top + 56 + row_h * len(mods) + 34
+    rows_h = [44 if folded(m) else row_h for m in mods]        # a held or off mod rests: one short row
+    h = top + 56 + sum(rows_h) + 34
     p = ['<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %d %d" width="100%%" role="img" aria-label="%s" '
          'style="max-width:%dpx;font-family:%s">' % (W, h, esc(aria(d)), W, FONT)]
     p.append('<defs><pattern id="mnHatch" patternUnits="userSpaceOnUse" width="7" height="7" '
-             'patternTransform="rotate(45)"><rect width="7" height="7" fill="#2a2f38"/><rect width="2.5" height="7" '
-             'fill="#7d8796"/></pattern></defs>')
+             'patternTransform="rotate(45)"><rect width="7" height="7" fill="#2c241c"/><rect width="2.5" height="7" '
+             'fill="#8f8470"/></pattern></defs>')
     p.append('<rect width="%d" height="%d" rx="10" fill="%s"/>' % (W, h, BG))
     # floating above
     p.append('<rect x="12" y="10" width="%d" height="26" rx="6" fill="%s" stroke="%s"/>' % (W - 24, CARD, EDGE))
@@ -1168,9 +1185,9 @@ def picture(d):
                 "as a mod idea).", 10.5, DIM))
     # mod rows
     y = top + 56
-    for m in mods:
-        p.append(mod_row(m, y, row_h))
-        y += row_h
+    for m, rh in zip(mods, rows_h):
+        p.append(mod_row(m, y, rh))
+        y += rh
     p.append(t_(LBL_X, h - 14, "Stage from each mod's stage record, else its journal (\"Stage now\"); with neither, a locked version waits "
                 "at Stage 2's door. Designer step is stage.json's own inner step inside Stage 1.", 10.5, FAINT))
     p.append("</svg>")
@@ -1199,7 +1216,7 @@ def arrow_mark(x, y, n=None):
 
 
 def mod_row(m, y, row_h):
-    p = ['<line x1="12" y1="%d" x2="%d" y2="%d" stroke="#262b34"/>' % (y + row_h - 3, W - 12, y + row_h - 3)]
+    p = ['<line x1="12" y1="%d" x2="%d" y2="%d" stroke="#332a20"/>' % (y + row_h - 3, W - 12, y + row_h - 3)]
     flag = ""
     if m["disagree"]:
         flag += " ⚠"
@@ -1211,7 +1228,9 @@ def mod_row(m, y, row_h):
         p.append(t_(LBL_X + 10 + len(m["label"]) * 8.6, y + 20, flag.strip(), 12, ALERT, 700))
     st = m["state"]
     st = "locked" if st.startswith("locked") else ("not started" if st.lower().startswith("not started") else st)
-    p.append(t_(LBL_X + 4, y + 36, "no Design Version yet" if m["versionless"] else "%s · %s" % (m["version"], clip(st, 22)), 11, DIM))
+    short = row_h < 60
+    p.append(t_(LBL_X + 4, y + 35 if short else y + 36, clip(waits_text(m), 36) if short else "no Design Version yet" if m["versionless"]
+                else "%s · %s" % (m["version"], clip(st, 22)), 11, DIM))
     cur = COLUMNS.index(m["column"]) if m["column"] in COLUMNS else None
     for i, c in enumerate(COLUMNS):
         cx = COL_X0 + i * COLW + 4
@@ -1231,10 +1250,10 @@ def mod_row(m, y, row_h):
             p.append(t_(cx + w / 2, y + 23, word, 10.5, ink, 700, "middle"))
         elif before:
             p.append('<rect x="%.1f" y="%d" width="%.1f" height="22" rx="4" fill="%s"/>' % (cx, y + 8, w, DONE))
-            p.append(t_(cx + w / 2, y + 23, "✓", 11, "#9fd8c0", 700, "middle"))
+            p.append(t_(cx + w / 2, y + 23, "✓", 11, "#cfe09a", 700, "middle"))
         else:
             p.append('<rect x="%.1f" y="%d" width="%.1f" height="22" rx="4" fill="none" stroke="%s"/>' % (cx, y + 8, w, EDGE))
-        x = (m.get("boxes") or {}).get(c)
+        x = None if short else (m.get("boxes") or {}).get(c)
         if x:
             ivs = [i for i in x["ivs"] if not i.get("derived")]
             notes = []
@@ -1252,7 +1271,9 @@ def mod_row(m, y, row_h):
             for word, col in notes:
                 p.append(t_(tx, y + 44, word, 10, col, 700))
                 tx += len(word) * 6 + 6
-    line = "waits on: " + m["waits_on"]
+    if short:
+        return "".join(p)
+    line = "waits on: " + waits_text(m)
     p.append(t_(COL_X0 + 6, y + 64, clip(line, 128), 10.5, ALERT if str(m["waits_on"]).startswith(UNM) else DIM))
     return "".join(p)
 
@@ -1271,7 +1292,7 @@ def val(v):
 
 
 def row(k, v_html):
-    return ('<div style="display:flex;gap:10px;padding:3px 0;border-top:1px solid #262b34"><div style="flex:0 0 150px;'
+    return ('<div style="display:flex;gap:10px;padding:3px 0;border-top:1px solid #332a20"><div style="flex:0 0 150px;'
             'color:%s;font-size:12px;padding-top:1px">%s</div><div style="flex:1">%s</div></div>' % (DIM, esc(k), v_html))
 
 
@@ -1280,13 +1301,13 @@ def strip_html(m):
     cur = COLUMNS.index(m["column"]) if m["column"] in COLUMNS else None
     for i, c in enumerate(COLUMNS):
         if cur is None:
-            bg, fg, word = "#2a2f38", DIM, COL_NUM[c]
+            bg, fg, word = "#2c241c", DIM, COL_NUM[c]
         elif i == cur:
             f = STATUS[m["status"]][0]
-            bg = "repeating-linear-gradient(45deg,#2a2f38 0 4px,#7d8796 4px 6px)" if f == "hatch" else f
+            bg = "repeating-linear-gradient(45deg,#2c241c 0 4px,#8f8470 4px 6px)" if f == "hatch" else f
             fg, word = STATUS[m["status"]][1], COL_NUM[c]
         elif i < cur:
-            bg, fg, word = DONE, "#9fd8c0", COL_NUM[c]
+            bg, fg, word = DONE, "#cfe09a", COL_NUM[c]
         else:
             bg, fg, word = "transparent", FAINT, COL_NUM[c]
         border = "1px dashed %s" % TEXT if (i == cur and m["at_door"]) else "1px solid %s" % (EDGE if bg == "transparent" else bg if not bg.startswith("repeat") else EDGE)
@@ -1299,9 +1320,9 @@ def card(m):
     fill, ink, word, _ = STATUS[m["status"]]
     head = ['<span style="font-size:18px;font-weight:800">%s</span>' % esc(m["label"]),
             chip("no Design Version named yet" if m["versionless"] else
-                 (m["version"] if m["version"] != UNM else "version UNMEASURED"), "#dfe3ea"),
-            chip(where_word(m), "#4f97d6"),
-            chip(word, fill if fill != "hatch" else "#5d6675", ink if fill != "hatch" else TEXT)]
+                 (m["version"] if m["version"] != UNM else "version UNMEASURED"), "#e6dcc8"),
+            chip(where_word(m), "#e0803a"),
+            chip(word, fill if fill != "hatch" else "#8f8470", ink if fill != "hatch" else TEXT)]
     if m["disagree"]:
         head.append(chip("⚠ files disagree", ALERT))
     his = m["his"]
@@ -1387,7 +1408,7 @@ def card(m):
     return ('<div data-mod="%s" style="background:%s;color:%s;border:1px solid %s;border-left:5px solid %s;'
             'border-radius:10px;padding:10px 16px;margin:0 0 12px;max-width:1040px;box-sizing:border-box;font-family:%s;'
             'font-size:13px;line-height:1.45"><div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px">%s</div>'
-            '%s%s%s</div>' % (esc(m["label"]), BG, TEXT, EDGE, fill if fill != "hatch" else "#7d8796", FONT,
+            '%s%s%s</div>' % (esc(m["label"]), BG, TEXT, EDGE, fill if fill != "hatch" else "#8f8470", FONT,
                               " ".join(head), strip_html(m), boxes_html(m), "".join(rows)))
 
 
@@ -1511,6 +1532,130 @@ def view_block(d, fmt):
     return out
 
 
+ACT_WORDS = ((r"(?i)\bfly(?:er|ing)?\b|\bflight\b", "live flight test"), (r"^Look\b", "look in game"),
+             (r"(?i)\bwalk\b", "walk it"), (r"(?i)^(?:pick|choose)\b|\bpick\b", "pick"))
+
+
+def act_of(q):
+    """The act a line asks of him, only when its own words say it, else ""."""
+    return next((w for rx, w in ACT_WORDS if re.search(rx, q)), "")
+
+
+def his_rows(d):
+    """-> [(plain line, act, minutes as the line says them or "", id)]: what waits on him."""
+    v = d.get("view")
+    rows = []
+    for x in (v["his"] if v else []):
+        q = " ".join(str(x["q"]).split())
+        mi = re.search(r"(?i)\b(\d{1,3}(?:-\d{1,3})?) ?min(?:ute)?s?\b", q)
+        rows.append((MNM.plain(q, 110), act_of(q), mi.group(1) + " min" if mi else "", x["item"]))
+    for t in (d["needs"].get("journal") or []) if v else d["needs"].get("mandrake") or []:
+        rows.append((MNM.plain(t, 110), act_of(t), "", ""))
+    return rows
+
+
+def conductor_short(lines, mods=()):
+    """The "Needs the Conductor" lines as a few plain ones: repeats of one kind are one line. The whole lines are on
+    MATURATION_DETAIL (each-kind-one-line)."""
+    out, rep, div, owed, seen = [], [], [], [], []
+    labels = {m.get("name"): m.get("label") for m in mods}
+
+    def label(folder):
+        return labels.get(folder) or spaced(folder)
+    for x in lines:
+        m = re.match(r"(.+?): (Stage \S+) has run (\d+) times$", x)
+        if m:
+            rep.append("%s %s (%s times)" % m.groups())
+            continue
+        y = re.sub(r"^Dispatch step, [^:]*\d:\d\d [AP]M P[SD]T: ", "", x)
+        m = re.match(r"(\w+) (Stage \S+)(?: \([^)]*\))? DIVERGING", y)
+        if m:
+            div.append("%s %s" % (label(m.group(1)), m.group(2)))
+            continue
+        m = re.match(r"run \S+ ended success; item (\S+) is still", y)
+        if m:
+            owed.append(m.group(1))
+            continue
+        m = re.match(r"(\w+): the ceiling, .*? spent at (.+?) plus the next run", y)
+        if m:
+            seen.append("%s: the spend limit at %s is reached; read the spend, then release or stop" % (
+                label(m.group(1)), m.group(2)))
+            continue
+        y = re.sub(r"`[^`]*`", "its command", y)
+        seen.append(MNM.plain(y, 120) if ": files disagree" not in y else clip(y, 120))
+    out += seen
+    if div:
+        out.append("Not converging, decide what changes: " + ", ".join(div))
+    if rep:
+        out.append("Repeating a stage: " + ", ".join(rep))
+    if owed:
+        out.append("%d finished run%s left %s ticket open: close it or say what is left" % (
+            len(owed), "" if len(owed) == 1 else "s", "its" if len(owed) == 1 else "their"))
+    return out
+
+
+def needs_panel(d):
+    """Both "Needs" lists, one line of HTML: his first and largest, the Conductor's under it in a smaller font."""
+    his, co = his_rows(d), conductor_short(d["needs"].get("conductor") or [], d["mods"])
+    v = d.get("view")
+    blind = v is None and not d["needs"].get("mandrake") and any(str(e).startswith("ledger") for e in d.get("errors") or [])
+    out = ['<div style="background:%s;border-left:5px solid #e0803a;border-radius:10px;padding:12px 18px;color:%s">'
+           '<div style="font-size:19px;font-weight:700;color:#f0a867">Needs Mandrake (%s)</div>'
+           % (BG, TEXT, UNM if blind else len(his))]
+    for t, act, mins, iid in his:
+        tag = " · ".join(x for x in (act, mins) if x)
+        out.append('<div style="font-size:15.5px;padding:5px 0;border-top:1px solid #332a20">%s%s%s</div>' % (
+            esc(t), ' <span style="background:#e0803a;color:%s;border-radius:4px;padding:0 7px;font-size:11.5px;font-weight:600;'
+            'white-space:nowrap">%s</span>' % (INK, esc(tag)) if tag else "",
+            '<br><span style="font-size:10px;color:%s;overflow-wrap:anywhere">%s</span>' % (FAINT, esc(iid)) if iid else ""))
+    if blind:
+        out.append('<div style="font-size:14px">Could not look: the ledger was not read.</div>')
+    elif not his:
+        out.append('<div style="font-size:14px;color:%s">Nothing waits on you.</div>' % DIM)
+    foot = []
+    if v:
+        foot.append("%d you answered; the next move is ours" % len(v["ours"]))
+        h = v.get("home")
+        n = h.get("no_home") if isinstance(h, dict) else None
+        foot.append("needs not filed anywhere: %s" % (UNM if n is None else "%d (most are typed words, chat included)" % n))
+    asked = {r[3] for r in his}
+    nm = d.get("nonmod") or {}
+    staged = [r for r in nm.get("ready") or [] if r["id"] not in asked]
+    if staged:
+        foot.append("a look is staged for you and not asked yet: " + "; ".join(MNM.plain(r["title"], 70) for r in staged[:3])
+                    + (" and %d more" % (len(staged) - 3) if len(staged) > 3 else ""))
+    foot.append("the minutes an act takes are shown only where a ticket says them")
+    out.append('<div style="font-size:11.5px;color:%s;margin-top:6px">%s.</div></div>' % (DIM, esc(" · ".join(foot))))
+    out.append('<div style="background:%s;border-left:5px solid %s;border-radius:10px;padding:8px 18px;margin-top:8px">'
+               '<div style="font-size:12.5px;font-weight:700;color:%s">Needs the Conductor (%d)</div>' % (BG, EDGE, DIM, len(co)))
+    for x in co or ["Nothing."]:
+        out.append('<div style="font-size:11.5px;color:%s;padding:1.5px 0;line-height:1.4">%s</div>' % (DIM, esc(x)))
+    return "<div>" + "".join(out) + "</div></div>"
+
+
+def pipeline_line(d):
+    """The Dispatch tick in one line: the slots, and how many mods run, are held or are off."""
+    L = d["needs"].get("pipeline") or []
+    if not L:
+        return "The Dispatch tick's reading is missing or old: what runs on mods now is UNMEASURED."
+    s = next((x for x in L if x.startswith("Slots:")), "")
+    m = re.match(r"Slots: (\S+) live of max_live (\S+)", s)
+    out = ["%s of %s mod run slots in use" % m.groups()] if m else [clip(s, 100) or "run slots UNMEASURED"]
+    stop = [x for x in L if x.startswith("PIPELINE PAUSED")]
+    if stop:
+        out.insert(0, clip(stop[0], 110))
+    st = [x for x in L if "STALLED" in x]
+    if st:
+        out.append("stalled: " + ", ".join(x.split(":")[0] for x in st))
+    c = next((x for x in L if x.startswith("clone: BEHIND")), None)
+    k = re.search(r"by (\d+) .* for ([\d.]+) min", c) if c else None
+    if k and float(k.group(2)) >= 10:
+        out.append("the timers run code %s commits old" % k.group(1))
+    off = [m for m in d["mods"] if folded(m)]
+    out.append("%d of %d mods advance; %d held or off" % (len(d["mods"]) - len(off), len(d["mods"]), len(off)))
+    return " · ".join(out)
+
+
 def needs_md(d):
     out = []
     for key, title in (("mandrake", "Needs Mandrake"), ("conductor", "Needs Conductor"),
@@ -1551,28 +1696,28 @@ def top_chips(d):
     mods = d["mods"]
     out = []
     adv = [m for m in mods if not m["held"]]
-    out.append(chip("%d mods in the pipeline" % len(adv), "#4f97d6"))
+    out.append(chip("%d mods in the pipeline" % len(adv), "#e0803a"))
     nh = sum(1 for m in mods if m["status"] == "helper")
     out.append(chip("%d with a helper on them" % nh, STATUS["helper"][0]) if all(m["runs"] != UNM for m in mods)
-               else chip("helpers UNMEASURED", "#6b7380", TEXT))
+               else chip("helpers UNMEASURED", "#6d6252", TEXT))
     held = [m for m in mods if m["held"]]
     if held:
-        out.append(chip("%d held" % len(held), "#5d6675", TEXT))
+        out.append(chip("%d held" % len(held), "#8f8470", TEXT))
     ic = d["intake"]["count"]
-    out.append(chip("%s waiting at intake" % ic, "#3a4250", TEXT))
+    out.append(chip("%s waiting at intake" % ic, "#4a3d2e", TEXT))
     his = [x for m in mods if isinstance(m["his"], list) for x in m["his"]]
     if any(m["his"] == UNM for m in mods):
-        out.append(chip("needs you: UNMEASURED", "#6b7380", TEXT))
+        out.append(chip("needs you: UNMEASURED", "#6d6252", TEXT))
     else:
-        out.append(chip("%d of his questions name these mods" % len(his), ALERT if his else "#256b4c",
+        out.append(chip("%d of his questions name these mods" % len(his), ALERT if his else "#3f5a2c",
                         INK if his else "#fff"))
     niv = sum(1 for m in mods for x in (m.get("boxes") or {}).values() for i in x["ivs"] if not i.get("derived"))
     out.append(chip("➤ %d Conductor interventions" % niv, YELLOW))
     ncy = sum(1 for m in mods for x in (m.get("boxes") or {}).values() if x["cycled"] > 1)
     if all(m["runs"] != UNM for m in mods):
-        out.append(chip("%d stage%s cycled" % (ncy, "" if ncy == 1 else "s"), YELLOW if ncy else "#3a4250", INK if ncy else TEXT))
+        out.append(chip("%d stage%s cycled" % (ncy, "" if ncy == 1 else "s"), YELLOW if ncy else "#4a3d2e", INK if ncy else TEXT))
     else:
-        out.append(chip("cycles UNMEASURED", "#6b7380", TEXT))
+        out.append(chip("cycles UNMEASURED", "#6d6252", TEXT))
     nd = sum(1 for m in mods if m["disagree"])
     if nd:
         out.append(chip("⚠ files disagree on %d" % nd, ALERT))
@@ -1599,9 +1744,28 @@ def summary_rows(d):
     return rows
 
 
+def plain_wait(w):
+    """A "waits on" text with no unit name, command or quoted hold: what he reads. MATURATION_DETAIL has the whole text."""
+    w = str(w)
+    x = re.match(r"waiting: rm-\S+ is live on it \((.*)\)\s*$", w, re.S)
+    if x:
+        return "a run is on it now (%s)" % x.group(1)
+    x = re.match(r"held: HELD BY OWNER (\d{4})-(\d\d)-(\d\d)", w)
+    if x:
+        return "your hold, since %s %d" % (dt.date(*map(int, x.groups())).strftime("%b"), int(x.group(3)))
+    x = re.match(r"ceiling: (.+?) spent at (.+?) plus the next run's", w, re.S)
+    if x:
+        return "the Conductor: %s spent at %s; one more run would pass the stage's spend limit" % x.groups()
+    x = re.match(r"off: OFF by pipe \(act \S+ at (\d{4})-(\d\d)-(\d\d) [^)]*\): (.*)$", w, re.S)
+    if x:
+        why = re.sub(r"\s*\(on: pipe on .*$", "", x.group(4), flags=re.S)
+        return "switched off since %s %d: %s" % (dt.date(*map(int, x.groups()[:3])).strftime("%b"), int(x.group(3)), why)
+    return w
+
+
 def waits_text(m):
     """The "waits on" words for a person. A passed mod rests; it does not wait, so its leading word "waiting:" goes."""
-    w = str(m["waits_on"])
+    w = plain_wait(m["waits_on"])
     if m.get("column") == "passed":
         w = re.sub(r"^waiting:\s*", "", w)
         return ("Resting, passed. " + w[:1].upper() + w[1:]) if w else "Resting, passed."
@@ -1662,61 +1826,103 @@ def unread_lines(d):
     return out
 
 
+DETAIL = "MATURATION_DETAIL"
+PAGE_CSS = ('body{background:#120f0c;color:%s;font:14px/1.5 %s;margin:0;padding:18px 22px}'
+            '.wrap{max-width:1040px;margin:0 auto}h1{font-size:26px;margin:4px 0 6px;color:#e6be7e}'
+            'h2{font-size:17px;margin:24px 0 8px;color:#e6be7e}code{font-family:Consolas,monospace;font-size:12px;'
+            'overflow-wrap:anywhere}'
+            'table{border-collapse:collapse;width:100%%;font-size:13px;background:%s;border-radius:8px}'
+            'th{color:%s;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.06em;'
+            'padding:6px 10px;border-bottom:1px solid %s}td{padding:6px 10px;border-bottom:1px solid #332a20;'
+            'vertical-align:top}li{margin:3px 0;overflow-wrap:anywhere}.m{color:%s}a{color:#f0a867}'
+            '@media(max-width:640px){body{padding:8px}table{font-size:11.5px}}'
+            % (TEXT, FONT, CARD, DIM, EDGE, DIM))
+
+
+def shell(title, now, body, reload=True):
+    return "\n".join([
+        '<!doctype html><html lang="en"><head><meta charset="utf-8"><title>%s</title>'
+        '<meta name="viewport" content="width=device-width,initial-scale=1">%s<style>%s</style></head><body><div class="wrap">'
+        % (esc(title), '<meta http-equiv="refresh" content="300">' if reload else "", PAGE_CSS),
+        "<h1>%s</h1>" % esc(title),
+        '<p id="built" class="m">Built %s. This tab reloads itself every 5 minutes; if this time is older '
+        'than that, the writer stopped.</p>' % esc(pac(now))] + body + ["</div></body></html>"])
+
+
+def unread_note(d):
+    """One line on the page when a store or a record could not be read; "" when all were read."""
+    e = d.get("errors") or []
+    return "" if not e else "Could not read %d thing%s for this page; %s names each." % (
+        len(e), "" if len(e) == 1 else "s", DETAIL)
+
+
 def build(d, now):
-    measured = "**Measured from disk %s.** Made by `maturation_now.py`, no model, no tokens." % pac(now)
-    parts_md, parts_html = [], []
+    """-> (markdown, html): the summary page. The same blocks in both; what only an agent needs is build_detail's."""
+    measured = "**Measured from disk %s.** Made by a program, no model, no tokens." % pac(now)
     title = "Maturation now"
-    lead = ("Where every mod stands in the Maturation Pipeline and what each one waits on. "
-            "The map is the spec's (`%s\\design\\specs\\2026-11-13-maturation-pipeline.md`)." % NATIVE_REPO)
-    parts_md += ["# " + title, "", measured, ""] + needs_md(d) + nonmod_md(d) + [top_chips(d), "", lead, "",
-                                                                 "<div>" + picture(d) + "</div>", ""]
-    # summary table
+    nm, tr = d.get("nonmod"), d.get("trend")
+    note = unread_note(d)
+    tail = "Everything behind these numbers: `%s\\%s.html`." % (NATIVE_OUT, DETAIL)
+    parts_md = ["# " + title, "", measured, "", needs_panel(d), ""]
+    if tr:
+        parts_md += ["## " + MT.TITLE, "", MT.block(tr), ""]
+    if nm:
+        parts_md += ["## " + MNM.PANEL_TITLE, "", MNM.panel(nm), ""]
+    parts_md += ["## The mod pipeline", "", pipeline_line(d), "", "<div>" + picture(d) + "</div>", ""]
     parts_md += ["## Every mod, one line", ""] + one_line_md(d)
-    parts_md += [""] + convergence_md(d)
-    parts_md += ["## Each mod", ""]
-    for m in d["mods"]:
-        parts_md += [card(m), ""]
-    if d["others"]:
-        parts_md += ["## Concept folders with no Design Version", ""]
-        for o in d["others"]:
-            parts_md.append("- `%s` (%s): no `version/VERSION.json`, so not placed on the map." % (
-                o["name"], ", ".join(o["files"][:6]) + (", …" if len(o["files"]) > 6 else "")))
-        parts_md.append("")
-    parts_md += ["## What this page cannot say", ""] + ["- " + x for x in unread_lines(d)] + [""]
-    parts_md += ["---", "", "Regenerate: `python3 src/RimMandrake/Utils/maturation_now.py` (in a RimMandrake clone). "
-                 "Selftest: `python3 src/RimMandrake/Utils/selftest_maturation_now.py`. Same view as a web page: "
-                 "`%s\\MATURATION_NOW.html`." % NATIVE_OUT, ""]
+    parts_md += ["---", ""] + ([note, ""] if note else []) + [tail, ""]
     md = "\n".join(parts_md)
-    # the html twin: the same pieces, the markdown bits rendered by hand
-    tbl = ('<table><tr>%s</tr>%s</table>' % ("".join("<th>%s</th>" % esc(h) for h in HEADS), "".join(
-        "<tr>%s</tr>" % "".join("<td>%s</td>" % (val(c) if c == UNM else esc(c)) for c in r) for r in summary_rows(d))))
+    body = [needs_panel(d)]
+    if tr:
+        body += ["<h2>%s</h2>" % esc(MT.TITLE), MT.block(tr)]
+    if nm:
+        body += ["<h2>%s</h2>" % esc(MNM.PANEL_TITLE), MNM.panel(nm)]
+    body += ["<h2>The mod pipeline</h2><p class='m'>%s</p>" % esc(pipeline_line(d)), picture(d)]
+    rows = [r for m, r in zip(d["mods"], summary_rows(d)) if not folded(m)]
+    off = ["%s (%s, %s)" % (m["label"], where_word(m), "held" if m["held"] or str(m["waits_on"]).startswith("held") else "off")
+           for m in d["mods"] if folded(m)]
+    body += ["<h2>Every mod, one line</h2>", '<div style="overflow-x:auto"><table><tr>%s</tr>%s</table></div>' % (
+        "".join("<th>%s</th>" % esc(h) for h in HEADS),
+        "".join("<tr>%s</tr>" % "".join("<td>%s</td>" % (val(c) if c == UNM else esc(c)) for c in r) for r in rows))]
+    if off:
+        body += ["<p class='m' style='font-size:12.5px'>Held or off (%d): %s.</p>" % (len(off), esc(", ".join(off)))]
+    if note:
+        body += ["<p class='m'>%s</p>" % esc(note)]
+    body += ["<p class='m'><a href='%s.html'>Everything behind these numbers</a> (%s): the whole lists, each mod's card, "
+             "convergence, and what this page cannot say.</p>" % (DETAIL, DETAIL)]
+    return md, shell(title, now, body)
+
+
+def build_detail(d, now):
+    """-> (markdown, html): everything an agent needs and the summary page leaves out."""
+    title = "Maturation detail"
+    measured = "**Measured from disk %s.** Made by `maturation_now.py`, no model, no tokens." % pac(now)
+    lead = ("The lists behind MATURATION_NOW. "
+            "The map is the spec's (`%s\\design\\specs\\2026-11-13-maturation-pipeline.md`)." % NATIVE_REPO)
+    md = ["# " + title, "", measured, ""] + needs_md(d) + nonmod_md(d) + [top_chips(d), "", lead, ""]
+    md += convergence_md(d) + ["## Each mod", ""]
+    for m in d["mods"]:
+        md += [card(m), ""]
+    if d["others"]:
+        md += ["## Concept folders with no Design Version", ""]
+        for o in d["others"]:
+            md.append("- `%s` (%s): no `version/VERSION.json`, so not placed on the map." % (
+                o["name"], ", ".join(o["files"][:6]) + (", …" if len(o["files"]) > 6 else "")))
+        md.append("")
+    md += ["## What this page cannot say", ""] + ["- " + x for x in unread_lines(d)] + [""]
+    md += ["---", "", "Regenerate: `python3 src/RimMandrake/Utils/maturation_now.py` (in a RimMandrake clone). "
+           "Selftest: `python3 src/RimMandrake/Utils/selftest_maturation_now.py`. The summary: "
+           "`%s\\MATURATION_NOW.html`." % NATIVE_OUT, ""]
     others = "".join("<li><code>%s</code>: no <code>version/VERSION.json</code>, so not placed on the map.</li>"
                      % esc(o["name"]) for o in d["others"])
     cant = "".join("<li>%s</li>" % inline_md(x) for x in unread_lines(d))
-    parts_html = ['<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Maturation now</title>'
-                  '<meta name="viewport" content="width=device-width,initial-scale=1">'
-                  '<meta http-equiv="refresh" content="300"><style>'
-                  'body{background:#0e1014;color:%s;font:14px/1.5 %s;margin:0;padding:18px 22px}'
-                  '.wrap{max-width:1040px;margin:0 auto}h1{font-size:26px;margin:4px 0 6px}'
-                  'h2{font-size:17px;margin:22px 0 8px;color:%s}code{font-family:Consolas,monospace;font-size:12px}'
-                  'table{border-collapse:collapse;width:100%%;font-size:13px;background:%s;border-radius:8px}'
-                  'th{color:%s;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.06em;'
-                  'padding:6px 10px;border-bottom:1px solid %s}td{padding:6px 10px;border-bottom:1px solid #262b34;'
-                  'vertical-align:top}li{margin:3px 0}.m{color:%s}</style></head><body><div class="wrap">'
-                  % (TEXT, FONT, TEXT, CARD, DIM, EDGE, DIM),
-                  "<h1>%s</h1>" % title,
-                  '<p id="built" class="m">Built %s. This tab reloads itself every 5 minutes; if this time is older '
-                  'than that, the writer stopped.</p>' % esc(pac(now)), "<p>%s</p>" % inline_md(measured), needs_html(d),
-                  nonmod_html(d), "<p>%s</p>" % top_chips(d),
-                  "<p class='m'>%s</p>" % inline_md(lead), picture(d),
-                  "<h2>Every mod, one line</h2>", tbl, convergence_html(d), "<h2>Each mod</h2>"] + [
-                      card(m) for m in d["mods"]]
+    body = ["<p class='m'><a href='MATURATION_NOW.html'>The summary</a></p>", needs_html(d), nonmod_html(d),
+            "<p>%s</p>" % top_chips(d), "<p class='m'>%s</p>" % inline_md(lead), convergence_html(d),
+            "<h2>Each mod</h2>"] + [card(m) for m in d["mods"]]
     if others:
-        parts_html += ["<h2>Concept folders with no Design Version</h2><ul>%s</ul>" % others]
-    parts_html += ["<h2>What this page cannot say</h2><ul>%s</ul>" % cant,
-                   "<p class='m'>Regenerate: <code>python3 src/RimMandrake/Utils/maturation_now.py</code>. "
-                   "Markdown twin: <code>%s\\MATURATION_NOW.md</code>.</p></div></body></html>" % esc(NATIVE_OUT)]
-    return md, "\n".join(parts_html)
+        body += ["<h2>Concept folders with no Design Version</h2><ul>%s</ul>" % others]
+    body += ["<h2>What this page cannot say</h2><ul>%s</ul>" % cant]
+    return "\n".join(md), shell(title, now, body)
 
 
 # ---- the phone images ----------------------------------------------------------------------------------------------
@@ -1790,13 +1996,13 @@ class Phone:
         for i, c in enumerate(COLUMNS):
             x = PH_M + i * (w + gap)
             if cur is None:
-                fill, ink, outline = "#2a2f38", DIM, None
+                fill, ink, outline = "#2c241c", DIM, None
             elif i == cur:
                 fill = STATUS[m["status"]][0]
-                fill, ink = ("#5d6675", TEXT) if fill == "hatch" else (fill, STATUS[m["status"]][1])
+                fill, ink = ("#8f8470", TEXT) if fill == "hatch" else (fill, STATUS[m["status"]][1])
                 outline = TEXT if m["at_door"] else None
             elif i < cur:
-                fill, ink, outline = DONE, "#9fd8c0", None
+                fill, ink, outline = DONE, "#cfe09a", None
             else:
                 fill, ink, outline = None, FAINT, EDGE
             self.ops.append(("r", x, self.y, x + w, self.y + 78, fill, outline))
@@ -1834,6 +2040,17 @@ class Phone:
             elif op[0] == "r":
                 g.rounded_rectangle((op[1], op[2], op[3], op[4]), radius=8, fill=op[5], outline=op[6],
                                     width=3 if op[6] else 0)
+            elif op[0] == "g":     # one primitive of the trend graph (maturation_trend.ops), set at the left margin
+                y0, q = op[1], op[2]
+                if q[0] == "r":
+                    g.rectangle((PH_M + q[1], y0 + q[2], PH_M + q[1] + q[3], y0 + q[2] + q[4]), fill=q[5])
+                elif q[0] == "l":
+                    pts = [(PH_M + a, y0 + b) for a, b in q[1]]
+                    g.line(pts, fill=q[2], width=max(1, int(round(q[3]))), joint="curve")
+                else:
+                    from PIL import ImageFont
+                    ft = ImageFont.truetype(PH_FONTS["b" if q[6] else "r"], int(q[4]))
+                    g.text((PH_M + q[1], y0 + q[2]), q[3], font=ft, fill=q[5], anchor={"start": "ls", "end": "rs"}[q[7]])
             elif op[0] == "a":     # the yellow arrow, pointing right, with its count
                 cx, y, n, f = op[1], op[2], op[3], op[4]
                 x = cx - 34
@@ -1846,17 +2063,79 @@ class Phone:
         return im.size
 
 
+def phone_list(P, sec):
+    """The List Pipeline on the phone: the stage boxes with their counts, then three short lists."""
+    P.text("The List Pipeline (not mod work)", "h2", True, fill="#e6be7e", gap=10)
+    st = (sec or {}).get("state")
+    if st != "ok":
+        P.text("%s: no count here is an answer (%s)." % ("FAILED" if st == "failed" else "COULD NOT LOOK", clip(
+            (sec or {}).get("cause") or "; ".join("%s: %s" % kv for kv in sorted(((sec or {}).get("causes") or {}).items()))
+            or "no section", 120)), "body", fill=ALERT)
+        return
+    cnt = {x["stage"]: x["count"] for x in sec["stages"]}
+    boxes = [(n, cnt.get(k, 0), MNM.STAGE_COL[k]) for k, n, _s in MNM.LINE] + [("Closed 24h", sec["closed"]["count"], "#8aa24a")]
+    boxes += [(n, cnt.get(k, 0), MNM.STAGE_COL[k]) for k, n, _s in MNM.SIDE]
+    per, gap = 5, 10
+    w = (PH_W - 2 * PH_M - gap * (per - 1)) / per
+    big, fs = P.font("h2", True), P.font("small", True)
+    for i, (name, v, col) in enumerate(boxes):
+        x, y = PH_M + (i % per) * (w + gap), P.y + (i // per) * 132
+        P.ops.append(("r", x, y, x + w, y + 122, CARD, EDGE))
+        P.ops.append(("r", x, y + 112, x + w, y + 122, col, None))
+        P.ops.append(("c", x + w / 2, y + 28, name, P.font("small", False), DIM))
+        P.ops.append(("c", x + w / 2, y + 76, str(v), big if v != UNM else fs, TEXT))
+    P.y += 132 * ((len(boxes) + per - 1) // per) + 12
+    dn = sec["doing"]
+    P.text("Being worked now (%s)" % (UNM if dn == UNM else len(dn)), "h3", True, fill="#a9c25f", gap=4)
+    for r in (dn if dn != UNM else [])[:MNM.TOP]:
+        P.text(MNM.plain(r["title"], 110), "small", bullet="•", gap=4)
+    c = sec["closed"]
+    P.text("Closed in the last day (%s%s)" % (c["count"], "" if c["count"] == UNM else ": " + MNM.verbs(c["by"])), "h3", True,
+           fill="#a9c25f", gap=4)
+    for t, n, _v in MNM.alike([r for r in c["rows"] if r["verb"] == "close"] or c["rows"])[:MNM.TOP]:
+        P.text(t + (" (%d like it)" % n if n > 1 else ""), "small", bullet="✓", gap=4)
+    e = sec["escalated"]
+    P.text("Stuck, needs a hand (%s)" % (UNM if e == UNM else len(e)), "h3", True, fill=MNM.RUST if e else "#a9c25f", gap=4)
+    for t, n, _v in MNM.alike(e if e != UNM else [])[:3]:
+        P.text(t + (" (%d like it)" % n if n > 1 else ""), "small", bullet="•", gap=4)
+
+
+def phone_trend(P, t):
+    """The graph of tickets by hour, drawn from maturation_trend.ops at phone type size."""
+    P.text(MT.TITLE, "h2", True, fill="#e6be7e", gap=6)
+    if (t or {}).get("state") != "ok":
+        P.text("%s: the graph was not drawn (%s)." % ("FAILED" if (t or {}).get("state") == "failed" else "COULD NOT LOOK",
+                                                      clip((t or {}).get("cause") or "no reading", 120)), "body", fill=ALERT)
+        return
+    P.text(MT.headline(t), "body", gap=8)
+    h, prim = MT.ops(t, w=PH_W - 2 * PH_M + 30, fs=2.5)
+    for p in prim:
+        P.ops.append(("g", P.y, p))
+    P.y += h + 10
+    for x in MT.rule_lines(t)[:1]:
+        P.text(x, "small", fill=DIM, gap=8)
+
+
 def phone_overview(d, now):
     P = Phone()
     P.text("Maturation now", "h1", True, gap=4)
     P.text("Measured %s. No model, no tokens." % pac(now), "small", fill=DIM, gap=24)
-    for key, title, col in (("mandrake", "NEEDS MANDRAKE", ALERT), ("conductor", "NEEDS CONDUCTOR", YELLOW)):
-        L = d["needs"][key]
-        P.text("%s (%d)" % (title, len(L)), "h2", True, fill=col, gap=12)
-        for x in L or ["nothing on disk asks"]:
-            P.text(x, "body", bullet="•", gap=12)
-        P.y += 14
+    his, co = his_rows(d), conductor_short(d["needs"].get("conductor") or [], d["mods"])
+    P.text("Needs Mandrake (%d)" % len(his), "h2", True, fill="#f0a867", gap=12)
+    for t, act, mins, _iid in his or [("Nothing waits on you.", "", "", "")]:
+        tag = ", ".join(x for x in (act, mins) if x)
+        P.text(t + (" [%s]" % tag if tag else ""), "body", bullet="•", gap=12)
+    P.text("Needs the Conductor (%d)" % len(co), "small", True, fill=DIM, gap=6)
+    for x in co or ["Nothing."]:
+        P.text(x, "small", fill=DIM, bullet="•", gap=4)
+    P.y += 10
     P.rule()
+    phone_trend(P, d.get("trend"))
+    P.rule()
+    phone_list(P, d.get("nonmod"))
+    P.rule()
+    P.text("The mod pipeline", "h2", True, fill="#e6be7e", gap=4)
+    P.text(pipeline_line(d), "small", fill=DIM, gap=16)
     for m in d["mods"]:
         P.text(m["label"], "h2", True, gap=2)
         P.text("%s · %s · %s" % (m["version"], where_word(m), STATUS[m["status"]][2]), "small", fill=DIM, gap=14)
@@ -1877,7 +2156,7 @@ def phone_overview(d, now):
                 P.text("%s ran %d times (cycled)" % (stage_title(c), x["cycled"]), "body", fill=YELLOW, gap=8)
         if m["runs"] == UNM:
             P.text("Runs: UNMEASURED (the run records were not read)", "body", fill=ALERT, gap=8)
-        P.text("Waits on: " + clip(m["waits_on"], 200), "small", fill=DIM, gap=10)
+        P.text("Waits on: " + clip(waits_text(m), 200), "small", fill=DIM, gap=10)
         P.rule()
     P.text("One image per mod sits beside this one. Made by maturation_now.py.", "small", fill=FAINT, gap=0)
     return P
@@ -1947,6 +2226,7 @@ def main(argv=None):
     ap.add_argument("--root", default=REPO)
     ap.add_argument("--out", default=OUT_DIR)
     ap.add_argument("--print", action="store_true", dest="print_")
+    ap.add_argument("--print-detail", action="store_true", help="the MATURATION_DETAIL Markdown to stdout, write nothing")
     ap.add_argument("--json", action="store_true")
     ap.add_argument("--no-live", action="store_true")
     ap.add_argument("--no-phone", action="store_true", help="write no phone images")
@@ -1957,11 +2237,13 @@ def main(argv=None):
         return 0
     now = dt.datetime.fromtimestamp(d["now"], dt.timezone.utc)
     md, page = build(d, now)
-    if a.print_:
-        sys.stdout.write(md)
+    dmd, dpage = build_detail(d, now)
+    if a.print_ or a.print_detail:
+        sys.stdout.write((md if a.print_ else "") + (dmd if a.print_detail else ""))
         return 0
     os.makedirs(a.out, exist_ok=True)
-    for name, text in (("MATURATION_NOW.md", md), ("MATURATION_NOW.html", page)):
+    for name, text in (("MATURATION_NOW.md", md), ("MATURATION_NOW.html", page),
+                       (DETAIL + ".md", dmd), (DETAIL + ".html", dpage)):
         p = os.path.join(a.out, name)
         with open(p + ".tmp", "w", encoding="utf-8", newline="\n") as f:
             f.write(text)
