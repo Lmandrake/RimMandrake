@@ -1,7 +1,9 @@
 # BRIDGE v2.0, pass 2: the build order
 
 Item `RIMMANDRAKE_DESIGN_BRIDGE_TWO_REBUILD_OR_IMPROVE_CODE_READ`. Written 2026-11-23, repaired after two GPT review rounds.
-The design is `05_build_design.md`. **None of these tickets is filed.** The list is for the Conductor.
+The design is `05_build_design.md`. All the tickets are filed (2026-11-23, by
+`RIMMANDRAKE_FILE_BRIDGE_TWO_BUILD_ORDER_THEN_WIRE_FIRST_SLICE`), each with its test, except `RIMMANDRAKE_BUILD_FLIGHT_FILMSTRIP_FOR_HIS_EYE_ONLY`,
+which waits for the owner's choice 1b (`07_for_the_owner.md`).
 
 ## How to read a ticket
 
