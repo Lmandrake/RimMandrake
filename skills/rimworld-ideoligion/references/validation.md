@@ -70,7 +70,9 @@ python3 src/RimMandrake/Utils/validate_ideoligion.py --xml <FactionDefs.xml or a
 python3 src/RimMandrake/Utils/validate_ideoligion.py --spec my_religion.json
 ```
 
-Options: `--only <substring>` filters by religion name · `--impact-budget N`
+Options: `--mods-config <file>` reads the active mods from that ModsConfig (needed while a minimal list
+is live: without it every modded meme is `def/inactive-mod`) · `--only <substring>` filters by religion
+name · `--impact-budget N`
 turns the impact total into an ERROR above `N` (**pass only a measured cap**;
 `DEFAULT_IMPACT_BUDGET` is deliberately `None`).
 
@@ -97,11 +99,11 @@ validate_ideoligion — 11 religion(s) against the live dump (2026-08-14T08:20:2
 2/11 VALID. INVALID: ['1 · Galactic Empire …', '2 · Hutt Cartel …', … 9 names]
 ```
 exit **1**. Verdicts 2026-08-14: 6 (Wildsteam) and 7 (Deepwater) VALID, the other
-nine INVALID; section 12 is the deliberate empty Jawa slot and is skipped.
+nine INVALID; section 12 is the deliberate empty Jawa slot and is skipped. On 2026-11-23 the spec
+reads 11/11 VALID.
 
-**No FactionDef XML exists anywhere in this repo** — `grep -rl '<forcedMemes\|<fixedIdeo\|<requiredMemes\|<structureMemeWeights' --include='*.xml' .`
-returns nothing (2026-08-14). The eleven religions are spec-only. The `--xml`
-route was therefore exercised against vanilla:
+The eleven religions ship as FactionDef XML and patches in `src/RimUtinni/UtinniPatches` and
+`src/RimStarWars/StarWarsPatches/Patches/GalacticEmpire.xml`. The `--xml` route against vanilla:
 
 ```
 $ … --xml '/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data/Anomaly/Defs/FactionDefs/Factions_Misc.xml'
@@ -170,11 +172,11 @@ the code actually emits.
 |---|---|---|---|---|
 | `structure/none` | 🔴 | exactly-one-structure rule, lower half — **only when there are no candidates at all**, i.e. a religion you authored outright | add a structure meme (35 available) | — |
 | `structure/multiple` | 🔴 | upper half, over the **held** set | keep one | nothing about the candidate menu: several `structureMemeWeights` entries are a weighted pick of one (§2) |
-| `structure/generated` | ℹ️ | no held structure, but a candidate menu exists — the generator picks | nothing; this is how `allowedMemes` factions work | *which* structure it will pick |
+| `structure/generated` | ℹ️ | no held structure, but a candidate menu exists — the generator picks | nothing for an `allowedMemes` faction without `forcedMemes`; with `forcedMemes` and no `structureMemeWeights`, add a structure meme | *which* structure it will pick |
 | `structure/candidate-shadowed` | ⚠️ | a held structure **and** candidate structures both present, so the weights can never apply | drop one of the two lists | which of the two you meant |
-| `deity/count` | ⚠️ | named deities inside the structure's `deityCount` `IntRange` | add/remove `<deityPresets>` entries, or change structure | **WARN, not ERROR** — SKILL.md §4 implies a hard gate; it is advisory |
+| `deity/count` | ⚠️ | named deities inside the structure's `deityCount` `IntRange` | add/remove `<deityPresets>` entries, or change structure | **WARN, not ERROR** — it is advisory |
 | `deity/missing` | ⚠️ | structure wants ≥1 and you named none | name them, or accept generated gods | whether generated names fit the fiction |
-| `deity/structure-generates-none` | ⚠️ | `deityCount 0` + named deities | usually leave it — HoraxCult ships exactly this | ❓ **whether a preset on a `deityCount 0` structure actually displays.** Unresolved; it is on the §5 list |
+| `deity/structure-generates-none` | ⚠️ | `deityCount 0` + named deities | usually leave it — HoraxCult ships exactly this | nothing in game: with `fixedIdeo` the preset displays (`IdeoFoundation_Deity.DoInfo`); without `fixedIdeo` it is ignored |
 | `deity/ok` | ℹ️ | — | — | — |
 
 ### Memes
@@ -183,7 +185,7 @@ the code actually emits.
 |---|---|---|---|---|
 | `meme/exclusion` | 🔴 | no two **held** memes share an `exclusionTags` entry | drop one. Known real collisions: `Loyalist`+`Supremacist` (`GroupRelation`), `Transhumanist`+`VME_Fleshcrafters` (`FleshAugmentation`) | anything about candidates — two of those sharing a tag is what a menu is *for* (§2) |
 | `meme/candidate-excluded` | ⚠️ | a candidate shares an `exclusionTags` entry with a **held** meme, so it can never be drawn | remove it from `allowedMemes`, or drop the held meme | whether you meant the menu entry to be dead weight. WARN by design — the game generates fine, the list is just wrong as a set |
-| `meme/impact-budget` | 🔴 *(opt-in)* | total `impact` of the **held** set ≤ `N` | drop a 3-impact meme | **the real engine cap.** `MaxMemeImpact` and `MemeCountRangeAbsolute` exist as symbols in Assembly-CSharp 1.6.4871 but their values are unmeasured, so nothing is failed on a guess |
+| `meme/impact-budget` | 🔴 *(opt-in)* | total `impact` of the **held** set ≤ `N` | drop a 3-impact meme | there is no impact cap in the engine (`authoring.md` §2), so do not pass the option |
 | `meme/impact` | ℹ️ | the held total and per-meme breakdown, plus a count of candidates the generator may add | — | the post-generation total. Candidate impacts are **not** summed; they are alternatives |
 | `meme/requireOne` | ⚠️ | for each `requireOne` group, the spec names a member | name one, or accept the generator's pick | **the loudest and least alarming line in the output.** It is normal on almost every religion — it says *the generator chooses your doctrine here*, not that anything is wrong |
 
@@ -209,7 +211,7 @@ Both also appear in `Player.log` at startup (§4b) — offline is the cheaper re
 | `precept/conflicting-meme` | 🔴 | precept's `conflictingMemes` ∩ meme set = ∅ | drop the precept or the meme | — |
 | `precept/required-meme` | 🔴 | precept's `requiredMemes` ∩ meme set ≠ ∅ | add one of the listed memes | — |
 | `precept/invisible` | 🔴 | no `visible:false` precept | remove it — 33 are engine-internal | that a `visible:true` precept is *authorable* |
-| `precept/npc-disabled` | 🔴 | `enabledForNPCFactions` not false (only when `target=faction`) | pick another position; 52 precepts are player-only | — |
+| `precept/npc-disabled` | 🔴 | `enabledForNPCFactions` not false (only when `target=faction`) | pick another position; on an NPC pawn most effects of such a precept are off (`SKILL.md` §6) | that the precept is absent: the generator can still add it |
 | `precept/exclusion` | 🔴 | no two precepts share an `exclusionTags` entry | drop one | — |
 | `precept/issue-duplicate` | 🔴 / ⚠️ | one position per `IssueDef`; downgraded to WARN if any precept sets `allowDuplicates` | pick one position | — |
 | `precept/orphan-issue` | ⚠️ | the precept's `issue` is installed | usually a mod-version skew | — |
@@ -221,14 +223,14 @@ Both also appear in `Player.log` at startup (§4b) — offline is the cheaper re
 |---|---|---|
 | `route/precepts-unauthorable` | ⚠️ | fires on **every** faction religion with precepts. Not a defect — it is the reminder that `FactionDef` has no precept whitelist |
 | `route/fixed-no-memes` | 🔴 | `fixedIdeo: true` with an empty meme set — the generator fills it randomly and your `fixedIdeo` bought nothing |
-| `route/preceptsonly-without-fixed` | ⚠️ | `requiredPreceptsOnly` without `fixedIdeo` constrains a religion you did not author |
+| `route/preceptsonly-without-fixed` | ⚠️ | `requiredPreceptsOnly` acts without `fixedIdeo`, but the faction can be given an existing religion that ignores it |
 | `interest/live-precepts` | ℹ️ | how many precepts carry `comps` (fire thoughts), how many are `High` impact, how many produce mood or refusal |
 | `interest/inert` | ⚠️ | precepts with **no comps at all** — a tooltip, not a mechanic. Feeds §5's rubric |
 | *(cross-religion)* | ⚠️ | the **name-blind test**: pairwise Jaccard over memes+precepts, printed for any pair ≥ 34 % shared |
 
-### SKILL.md §4's seven claims vs. the code
+### The main checks vs. the code
 
-| §4 claim | status |
+| check | status |
 |---|---|
 | every defName exists in the live dump | ✅ `def/unknown-*` |
 | one structure meme and only one | ✅ `structure/none` · `structure/multiple` |
@@ -238,7 +240,7 @@ Both also appear in `Player.log` at startup (§4b) — offline is the cheaper re
 | no `visible:false` precept | ✅ `precept/invisible` |
 | `MayRequire` on every modded def **and** its packageId active | ❌ **half.** The packageId half is `def/inactive-mod`; the *"`MayRequire` is present"* half is **not implemented** — attributes are never read |
 
-Ten further ERROR-capable checks §4 does not mention: `def/unknown-style`,
+Ten further ERROR-capable checks: `def/unknown-style`,
 `precept/required-meme`, `precept/npc-disabled`, `precept/exclusion`,
 `precept/issue-duplicate`, `route/fixed-no-memes`, `meme/impact-budget`,
 `def/inactive-mod`, `faction/both-meme-lists`, `faction/required-not-allowed`.
@@ -254,9 +256,9 @@ Ten further ERROR-capable checks §4 does not mention: `def/unknown-style`,
 
 ## 4. live — proving the ideo was BUILT
 
-**Three routes. One works today, one is a grep, one does not exist yet.**
+**Three routes: the tab, the log, and a bridge read.**
 
-### 4a. The Ideoligions tab — available today, and the only positive proof
+### 4a. The Ideoligions tab — positive proof by eye
 
 There is a main tab window `MainTabWindow_Ideos`. Inside it, the button
 `ButtonShowAllIdeoligions` → **"Show all ideoligions"**
@@ -272,8 +274,8 @@ Read off it, in order: **memes match `forcedMemes` exactly** (a substitution mea
 specified them.
 
 ⚠️ **`hiddenIdeo: true` is the trap.** HoraxCult ships it and the field exists as
-`hiddenIdeo` in Assembly-CSharp. ❓ Whether the tab filters hidden ideos out is
-**unverified** — assume it does. If you need to *see* a religion on its first
+`hiddenIdeo` in Assembly-CSharp. The tab reads `IdeoManager.IdeosInViewOrder`, which leaves
+hidden ideos out. If you need to *see* a religion on its first
 load, author it without `hiddenIdeo`, confirm it, then add the flag.
 
 **There is no dev-mode shortcut.** `Verse.DebugActionsIdeo` exists as a class, but
@@ -308,42 +310,34 @@ occurred, never how many times. (The strings were confirmed to exist in Assembly
 | `both disallowedMemes (black list) and allowedMemes (white list) are defined` | 🔴 `FactionDef` ConfigError — now caught offline too, `faction/both-meme-lists` |
 | `has a required meme which is not allowed:` | 🔴 `FactionDef` ConfigError — now caught offline too, `faction/required-not-allowed` |
 
-🔴 **A clean log is not proof.** The five silent modes in §5 produce **none** of
+🔴 **A clean log is not proof.** Three of the five modes in §5 produce **none** of
 these lines. Absence of error means only "no error"; only 4a shows the ideo.
 
-### 4c. The bridge — a real gap, not a workaround
+### 4c. The bridge — `jawa/ideo_of`
 
-`skills/rimbridge/SKILL.md`. The bridge can list every faction —
-`jawa/list_factions`, drove live 2026-08-14, returns *defName, name, isPlayer,
-hostile, goodwill, hidden* and **no ideo field**
-(`/mnt/d/Luke/dev/RimMandrake/src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchTerrainTools.cs:4183`).
-The only ideo signal anywhere in the tool surface is `factionHasIdeo` — a bare
-bool, and it appears **only on the failure row of `jawa/spawn_pawn`** (same file,
-`:1791`).
-
-⏳ **`jawa/ideo_of` is requested from CHECK and does not exist**
-(`/mnt/d/Luke/dev/RimMandrake/infrastructure/state/queue/CHECK.md`). Until it
-lands, "the game built the ideoligion I specified" is read off a screenshot of
-4a, by eye — it cannot be diffed. **Say "unverified", not "verified", when the
-only evidence is a clean log.**
+`skills/rimbridge/SKILL.md`. `jawa/ideo_of` (`src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchTerrainTools.cs`)
+reads each ideoligion that the running game built: name, structure meme, deity, memes, precepts, roles, venerated
+animals, the factions whose primary ideo it is, and the believer counts. Diff its memes against your `forcedMemes`.
+It lists no styles: read those off the tab (4a). **Say "unverified", not "verified", when the only evidence is a
+clean log.**
 
 ---
 
-## 5. The silent failure modes
+## 5. The quiet failure modes
 
-SKILL.md §4 names five. All produce **no red error**; the faction simply
-generates something else.
+Only a name that does not resolve and is not wrapped makes a red line, `Could not resolve
+cross-reference`. The other modes make none.
 
 | mode | symptom in game | why silent | offline check |
 |---|---|---|---|
-| **uninstalled defName** | faction generates without that meme; doctrine drifts | the `<li>` resolves to nothing and the list shrinks | ✅ `def/unknown-meme` / `-precept` / `-style` |
-| **unwrapped `MayRequire`** | same, plus a cross-reference line if the mod is off | `MayRequire` deletes the node *before* resolution; unwrapped, it becomes a cross-ref warning nobody reads | ❌ **not checked.** `def/needs-mayrequire` tells you the string, never audits the file. Read the XML by eye |
-| **meme exclusion collision** | one of the two memes is dropped at generation | `exclusionTags` is a generator filter, not a validator | ✅ `meme/exclusion` over the **held** set; a candidate colliding with a held meme is ⚠️ `meme/candidate-excluded` (§2) |
-| **precept whose `requiredMemes` are absent** | the precept never appears | `PreceptMaker` skips ineligible precepts | ✅ `precept/required-meme` (and `precept/npc-disabled` for the NPC-only variant) |
-| **`deityPresets` on a `deityCount 0` structure** | ❓ gods may simply not display | the structure invents none, and nothing objects to naming some | ⚠️ `deity/structure-generates-none`, WARN only — HoraxCult ships this, so it cannot be an error |
+| **uninstalled defName** | faction generates without that meme; doctrine drifts | not silent: one red cross-reference line. Silent only inside `MayRequire` of a mod that is off | ✅ `def/unknown-meme` / `-precept` / `-style` |
+| **unwrapped `MayRequire`** | same, plus a cross-reference line if the mod is off | not silent: a red cross-reference line. `MayRequire` makes the failed lookup silent | ❌ **not checked.** `def/needs-mayrequire` tells you the string, never audits the file. Read the XML by eye |
+| **meme exclusion collision** | both memes are held (`forcedMemes`, `requiredMemes`); the random draw never takes the second | only the random draw and the editor test `exclusionTags` | ✅ `meme/exclusion` over the **held** set; a candidate colliding with a held meme is ⚠️ `meme/candidate-excluded` (§2) |
+| **precept whose `requiredMemes` are absent** | the precept never appears | `IdeoFoundation.CanAdd` refuses the precept | ✅ `precept/required-meme`, only from `--md` and `--spec`; XML carries no precepts |
+| **`deityPresets` on a `deityCount 0` structure** | none with `fixedIdeo`: the named gods display. Without `fixedIdeo` the preset is ignored | only `MakeFixedIdeo` reads `deityPresets` | ⚠️ `deity/structure-generates-none`, WARN only — HoraxCult ships this, so it cannot be an error |
 
-**The pattern: four of five are caught, and the one that is not — `MayRequire` —
-is the one the script most looks like it is catching.**
+**The pattern: the script misses two real mistakes. It never checks for a missing `MayRequire`, although it
+looks like it does. It does not report `deityPresets` without `fixedIdeo`. Check both in the XML by eye.**
 
 ---
 

@@ -106,8 +106,8 @@ makes a colonist *refuse the job*, naming a concrete `HistoryEventDef`.
 names it correctly.** No meme *forces* it — `TreeCutting` has three precepts
 (`Prohibited`/`Horrible`/`Disapproved`) and no meme's `requireOne` guarantees the
 Prohibited one. It is the best single precept in the game and you get it by
-**listing it directly in a `disallowedPrecepts`-shaped design and taking it in the
-in-game editor**, not by picking a meme. Same for `Mining_Prohibited`.
+**taking it in the in-game editor**, not by picking a meme. An NPC religion with `NaturePrimacy`
+can only draw it by chance. Same for `Mining_Prohibited`, which has no effect on NPC pawns.
 
 ### 2.3 Tier 2 — adds a building, designator, or gear rule (33 memes)
 
@@ -267,19 +267,19 @@ The nine vanilla:
 
 | structure | `deityCount` | worship room | design consequence |
 |---|---|---|---|
-| `Structure_Animist` | 0–0 | temple | **No deity may be named.** A `deityPresets` block here is a silent failure. Spirits in things; the fiction has to carry itself without a face. |
+| `Structure_Animist` | 0–0 | temple | The generator names no deity; a `deityPresets` block shows only with `fixedIdeo`. Spirits in things; the fiction has to carry itself without a face. |
 | `Structure_Ideological` | 0–0 | sanctuary | No gods, a *grand narrative*. Adds `SacrificialFlag`. The natural home for machine, corporate and political faiths. |
 | `Structure_Archist` | 0–0 | shrine | No named deity, but archotechs are the object. The Horax cult's structure (`…\Data\Anomaly\Defs\FactionDefs\Factions_Misc.xml`). |
 | `Structure_TheistAbstract` | **1–4** | temple | Formless, omnipresent gods. The only structure with a *range* wider than one besides Embodied — you may name 1, 2, 3 or 4. |
-| `Structure_TheistEmbodied` | **2–4** | pantheon | Gods that walk. **Minimum two** — a design with one god cannot use this. |
+| `Structure_TheistEmbodied` | **2–4** | pantheon | Gods that walk. **Minimum two** — a generated religion with one god cannot use this. |
 | `Structure_OriginChristian` | 1–1 | church | Exactly one deity. Forces `ChristmasTree` + a `CelebrationTree` ritual and requires a pew-class seat (`Pew`, `TST_*`). |
 | `Structure_OriginIslamic` | 1–1 | mosque | Exactly one. Requires a `KneelSheet` seat. Carries `exclusionTags: [AM_Ascetic]`. |
 | `Structure_OriginHindu` | **4–4** | shrine | **Exactly four deities — not three, not five.** Adds `IncenseShrine`, requires a kneel seat. |
-| `Structure_OriginBuddhist` | **0–0** | pagoda | Despite the label, **no deity may be named.** Adds `IncenseShrine`, requires a `KneelPillow`. |
+| `Structure_OriginBuddhist` | **0–0** | pagoda | Despite the label, the generator names no deity (`deityPresets` shows only with `fixedIdeo`). Adds `IncenseShrine`, requires a `KneelPillow`. |
 
 **The rule that catches people:** `deityCount` is an `IntRange` with a hard
-minimum as well as a maximum. `Structure_TheistEmbodied` at 2–4 rejects a
-one-god pantheon; `Structure_OriginHindu` and `AM_Structure_Kemetism` and
+minimum as well as a maximum. The generator at `Structure_TheistEmbodied` (2–4) never makes a
+one-god pantheon (only `deityPresets` with `fixedIdeo` can); `Structure_OriginHindu` and `AM_Structure_Kemetism` and
 `AM_Structure_Neolithic` and `VME_Structure_ChthonianCult` are all **4–4**, not
 "up to 4".
 
@@ -320,15 +320,15 @@ precept does needs a colonist to do it, and NPC pawns do not live on your map.
 | **Diplomacy / trade prices** | ❌ No `PreceptDef` field affects faction goodwill or trade. Checked: the full field set has nothing diplomatic. | ❌ No. "They hate you for your religion" is not encodable in the ideo. |
 | **Their settlement's look** | *Unverified* — `styles`/`thingStyleCategories` plausibly reach generated bases, but this was not measured. Do not spend on it. | ⚠️ |
 
-🔴 **52 precepts carry `enabledForNPCFactions: false` and cannot appear in a
-faction religion at all** — every `Violence_*` (8), every `Nomadism_*` (3),
+🔴 **52 precepts carry `enabledForNPCFactions: false`, which switches off most of their
+effects on NPC pawns. The generator can still add them** (`SKILL.md` §6) — every `Violence_*` (8), every `Nomadism_*` (3),
 `DrugUse_Essential`, `Comfort_Essential`, `Alcohol_Essential/Wanted`,
 `Mining_Prohibited`, `Traps_Prohibited`, `AutonomousWeapons_Prohibited`,
 `GR_AutonomousWeapons_Scorned`, `VME_MeatEating_Abhorrent_Strict`,
 `VME_LeatherApparel_Abhorrent/Disliked`, `VME_PermanentBases_*`, `Elderly_Revered`,
 `Elderly_Abhorred`, `Compassion_All`, all `DrugPossession_*`, and the whole
 `RomanceOnTheRim_*` family. **Note what that costs:** a pacifist NPC faction
-cannot hold `Violence_Pacifism`, and a vegan one cannot hold the strict
+gets almost nothing from `Violence_Pacifism`, and a vegan one almost nothing from the strict
 meat-eating precept. Carry the doctrine with a meme instead (`VME_Pacifist`,
 `AM_NonViolence`) and say so in the document.
 
@@ -349,7 +349,7 @@ Running the §1 loop over it as written:
 
 **Step 1 — structure.** `Structure_Ideological`. `deityCount 0–0`, worship room
 "sanctuary", adds `SacrificialFlag`. ✅ Correct: the spec says "Deity: none", and
-a `deityPresets` block here would be a silent failure. Free against the budget.
+a `deityPresets` block would contradict it. Free against the budget.
 
 **Step 2 — impact budget.** Spec names four normal memes. Measured:
 
@@ -362,8 +362,8 @@ a `deityPresets` block here would be a silent failure. Free against the budget.
 
 🔴 **`OuterRim_DroidPrimacy` is in neither the live dump nor
 `ideology_palette.md`.** No `MemeDef` or `PreceptDef` in this load order contains
-`OuterRim` or `Droid`. Naming it in a `FactionDef` is the exact silent no-op
-`SKILL.md` §4 warns about — the faction generates without it and nobody is told.
+`OuterRim` or `Droid`. Naming it in a `FactionDef` is the dropped name that
+`SKILL.md` §4 warns about — the faction generates without it, and one red log line says so.
 The remaining three are legal: **no exclusionTag overlap**, total impact **5**,
 which lands at the bottom of the `Intense` band (5–10). There is room for a
 fourth meme, and the design needs one to replace the missing droid meme.

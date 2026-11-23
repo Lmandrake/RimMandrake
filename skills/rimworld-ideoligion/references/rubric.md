@@ -35,9 +35,9 @@ python3 src/RimMandrake/Utils/validate_ideoligion.py --xml <FactionDefs.xml>   #
 
 Exit 0 = `VALID`. Any `🔴 ERROR` = `INVALID`. `WARN`/`INFO` never change it.
 
-🔴 **`INVALID` is not a low score. It is the statement that the religion the document
-describes does not exist.** An exclusion collision does not degrade a religion — the
-generator drops a meme and builds something else, silently. Still score interest (it
+🔴 **`INVALID` is not a low score. The game's own rules refuse the religion that the
+document describes, even where `forcedMemes` lets it through.** An exclusion collision does not degrade a religion — no
+random draw and no editor session can make it. Still score interest (it
 says whether the fix is worth making), but **never write "strong despite minor
 validity issues". Report one line per error, verbatim from the script:**
 

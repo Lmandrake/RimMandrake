@@ -1,0 +1,1 @@
+Every FactionDef with fixedIdeo=true makes a 'solid' Ideo, and vanilla IdeoManager.Horaxian returns the FIRST solid Ideo: with several of our fixed factions, the Horax-only exceptions (no baby exposure, IdeoChangeToWeight 0) can land on one of ours. Read in the 1.6 source, not seen in game.

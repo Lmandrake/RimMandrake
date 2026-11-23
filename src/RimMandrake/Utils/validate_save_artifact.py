@@ -70,7 +70,7 @@ from pathlib import Path
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from dump_manifest import dump_db          # noqa: E402
-from game_paths import DEF_DUMP            # noqa: E402
+from game_paths import DEF_DUMP, MODS_CONFIG  # noqa: E402
 import cherrypicker                        # noqa: E402
 
 DUMP = Path(DEF_DUMP)
@@ -315,9 +315,8 @@ def collect(path):
 
 
 def active_mods():
-    cfg = (
-        DUMP.parent / "Config" / "ModsConfig.xml"
-    )
+    # Not beside the dump: a dump lives in DefDump/captures/<stamp>, so DUMP.parent holds no Config.
+    cfg = Path(MODS_CONFIG)
     if not cfg.exists():
         return None
     text = cfg.read_text(encoding="utf-8-sig", errors="replace")
@@ -381,7 +380,8 @@ def report(path, index, meta, as_json=False):
         "dumpEmptyDefTypes": len(meta.get("_emptyDefTypes", [])),
         "emptyListEntries": len(empties),
         "provenanceModIds": len(mod_ids),
-        "provenanceNoLongerActive": dropped,
+        # null = the live list did not read; [] = it read, and every mod is active
+        "provenanceNoLongerActive": dropped if live is not None else None,
     }
     if as_json:
         return (1 if (missing or cut) else 0), result
@@ -421,6 +421,8 @@ def report(path, index, meta, as_json=False):
               f"have them too; not a defect)")
     if mod_ids:
         print(f"    provenance: {len(mod_ids)} modIds captured at save time")
+        if live is None:
+            print("                provenance list: UNMEASURED (the live ModsConfig.xml did not read)")
         if dropped:
             print(f"                {len(dropped)} no longer active — PROVENANCE ONLY,")
             print(f"                not a defect unless a reference above is missing:")

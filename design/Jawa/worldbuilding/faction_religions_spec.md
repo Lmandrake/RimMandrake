@@ -435,8 +435,8 @@ load. **Do not report this as measured until it has been seen in game.**
 **Both halves of the old caution re-verified against the live dump, 2026-08-14, and
 both hold.** `DrugUse_Essential`: `requiredMemes: ['HighLife']` ✅ and
 `enabledForNPCFactions: false` ✅. It is the **sole** option in `HighLife`'s only
-`requireOne` group, so that group yields nothing on an NPC faction. **The Cartel
-will have no `DrugUse` precept, and no XML can give it one.**
+`requireOne` group. The field does not stop the generator (`IdeoFoundation.CanAdd` does not read it): **the Cartel
+holds `DrugUse_Essential`, with most of its effects off on NPC pawns** (corrected 2026-11-23).
 
 **The overrule is still right, because the caution was about the precept and the
 owner asked for the meme.** `HighLife` is `category: Normal`, `impact: 2`,
@@ -446,7 +446,7 @@ AM_NonViolenceVowVsGladiator]`. It is legal. And it is **not** inert:
 
 | what `HighLife` forces | NPC-legal? | the player sees |
 |---|---|---|
-| `DrugUse_Essential` | ❌ `enabledForNPCFactions: false` | **nothing** — the headline precept is barred |
+| `DrugUse_Essential` | ❌ `enabledForNPCFactions: false` | **a line in the ideo panel** — the precept is held, with most effects off on NPC pawns |
 | ritual `DateRitualConsumable`, pattern `SmokeCircle`, building `Burnbong` | ✅ | ⭐ **the spice sacrament, as a ritual** — a named rite in the Cartel's ideo panel and a Burnbong in their settlements |
 | `ApparelDesired_Soft_Subordinate` + `Apparel_Flophat`, `noneChance: 0` | ✅ | ⭐ **flophats on Hutt pawns, always.** Vanilla's Horax cult explicitly blacklists this precept; **we keep it** — a Cartel enforcer in a flophat is the single most legible thing on this faction |
 | `agreeableTraits: DrugDesire` (degrees 1–2) | — | Cartel pawns skew chemical-interested. ⚠️ UNVERIFIED that meme `agreeableTraits` weight NPC pawn generation |
@@ -487,10 +487,10 @@ the text now. Combined impact after the swap: 2+1+1+2 = **6**.
 | Ritual | `DateRitualConsumable` / `SmokeCircle` / `Burnbong` | ✅ forced ritual, `HighLife` |
 | ApparelDesire | `ApparelDesired_Soft_Subordinate` + `Apparel_Flophat` | ✅ `noneChance: 0` ⇒ guaranteed |
 | Charity | `Charity_Essential` \| `_Important` \| `_Worthwhile` | 🎲 3-way roll, `Guilty`. ⚠️ **the Cartel WILL hold a positive charity position** — all three conflict only with `Supremacist`/`PainIsVirtue`/`Trader` (vanilla `Trader`, **not** `VME_Trader`), none of which is here. Correction to the old "not encodable" note: charity-*abhorrent* is unsayable, a positive charity precept is **unavoidable** |
-| Compassion | `Compassion_NonHostile` \| `_Allies` | 🎲 2-way — `Compassion_All` and `_NonGuiltyEnemies` are `enabledForNPCFactions: false` and drop out |
+| Compassion | `Compassion_All` \| `_NonGuiltyEnemies` \| `_NonHostile` \| `_Allies` | 🎲 4-way — the first two are `enabledForNPCFactions: false`: the generator can still roll them, with most effects off |
 | Execution | `Execution_Required` | ⚠️ see the Execution block — blacklist-dependent, outcome UNVERIFIED |
 | Slavery | `Slavery_Acceptable` | 🎲 the issue's weight-`1` default; `_Honorable` and both `GarryFlowers_*` conflict with `Guilty` |
-| DrugUse | *(none — barred)* | ❌ `DrugUse_Essential` is `enabledForNPCFactions: false` |
+| DrugUse | `DrugUse_Essential` | ⚠️ held; `enabledForNPCFactions: false` turns off most effects on NPC pawns |
 | OrganUse · Skullspike · IdeoDiversity · Cannibalism | *(removed)* | ❌ all weight-`0`, none forced by any meme here. The old table listed them; they were never going to exist |
 
 **What the player meets:** the only faction that stays tradeable while hostile, and
@@ -637,7 +637,7 @@ is the only meme gating **both** `Scarification_Heavy` and `Pain_Idealized`, and
 without it the ⭐ body-debt doctrine was two validator errors, not a design. Of
 `VME_Nomad`'s four forced groups only `VME_Travel_Desired` and
 `VME_Ranching_Nomadic` were genuinely lost (`VME_PermanentBases_Despised` is
-`enabledForNPCFactions: false` and could never appear; `RoughLiving_Welcomed` is
+`enabledForNPCFactions: false`, so most of its effects are off on NPC pawns; `RoughLiving_Welcomed` is
 re-forced by `PainIsVirtue`). ⇒ **Nomadism is now fiction only** — `Nomadic_Preferred`
 has `requiredMemes: []` so it stays legal, but under `requiredPreceptsOnly` nothing
 forces it either way.
@@ -645,8 +645,8 @@ forces it either way.
 ⚠️ **Two prediction errors the validator does not flag.** `PainIsVirtue`'s
 scarification group is a **3-way roll** — `[Scarification_Minor, _Heavy,
 _Extreme]` — so *Heavy* is not guaranteed. And `VQE_Technophobia` also forces
-`AutonomousWeapons_Prohibited`, which is `enabledForNPCFactions: false` and will
-silently not appear.
+`AutonomousWeapons_Prohibited`. The religion holds it, but `enabledForNPCFactions: false`
+turns off most of its effects on NPC pawns.
 
 **What the player meets:** the raider that attacks the *Homestead* as readily as
 you, for a reason. ⭐ **Their hostility to the moisture farmers should be visible on

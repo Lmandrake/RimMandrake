@@ -5,7 +5,7 @@ that ACTUALLY LOADED, straight from the live def dump.
 WHY: a religion spec is worthless if it names a meme that is not installed. The
 KotOR Factions mod ships `guy762_MemeDef_mando`, which is exactly what the
 Blackstar Company's Creed wants -- and that mod is not in the active list, so the
-meme does not exist and a FactionDef naming it is a silent no-op. The only honest
+meme does not exist and a FactionDef naming it generates without it. The only honest
 source is what the running game built.
 
     python3 src/RimMandrake/Utils/ideology_palette.py
@@ -58,8 +58,8 @@ def main() -> int:
     w("")
     w("🔴 **This is the whole legal vocabulary.** A `MemeDef`, `PreceptDef` or "
       "`StyleCategoryDef` not listed here does not exist in this campaign, and a "
-      "`FactionDef` naming one fails silently — the faction simply generates "
-      "without it. Check against this file before writing any ideoligion XML.")
+      "`FactionDef` naming one generates without it (one red line in Player.log "
+      "is the only sign). Check against this file before writing any ideoligion XML.")
     w("")
     w(f"**Totals:** {len(memes)} memes · {len(precepts)} precepts across "
       f"{len(issues)} issues · {len(styles)} style categories · "

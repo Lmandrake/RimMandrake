@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
 r"""validate_ideoligion.py — check a religion against the LIVE def dump.
 
-WHY THIS EXISTS. Every way an ideoligion can be wrong fails SILENTLY. A meme that
-is not installed, two memes sharing an `exclusionTag`, a precept whose
-`conflictingMemes` names a meme you took, a `deityPresets` block on a structure
-with `deityCount 0` — none of these produce a red error. The faction simply
-generates something else and the design is gone, discovered (if ever) 25 minutes
-into a cold load.
+WHY THIS EXISTS. An ideoligion goes wrong QUIETLY. Two memes sharing an
+`exclusionTag`, a precept whose `conflictingMemes` names a meme you took: neither
+makes a red error. A meme that is not installed makes one red cross-reference line
+in a long log. The design is gone, discovered (if ever) 25 minutes into a cold load.
 
 This runs offline in under a second and is the gate before any of that.
 
@@ -242,8 +240,7 @@ def check(rel: dict, D: Dump, budget) -> Report:
             # NOT an error: Ludeon's own HoraxCult puts one deityPreset on
             # Structure_Archist (deityCount 0). deityCount governs how many
             # deities the GENERATOR invents; deityPresets supplies them
-            # explicitly. Unproven whether the preset then displays — that is on
-            # the live-load checklist (references/validation.md).
+            # explicitly, and only with fixedIdeo (IdeoGenerator.MakeFixedIdeo).
             r.add(r.W, "deity/structure-generates-none",
                   f"{deities} deity(s) named on {deity_struct}, which has deityCount 0. "
                   "Legal — HoraxCult ships exactly this — but the structure invents "
@@ -268,7 +265,8 @@ def check(rel: dict, D: Dump, budget) -> Report:
     for t, ns in sorted(tagged.items()):
         if len(ns) > 1:
             r.add(r.E, "meme/exclusion",
-                  f"{' + '.join(ns)} all carry exclusionTag '{t}' — they cannot coexist")
+                  f"{' + '.join(ns)} all carry exclusionTag '{t}' — the random draw and the "
+                  "editor refuse this pair; forcedMemes/requiredMemes keep both unchecked")
     # a candidate that collides with a HELD meme can never be drawn — the menu is
     # wrong as a set, but nothing is broken at generation, so WARN
     for n in known_cands:
@@ -333,7 +331,7 @@ def check(rel: dict, D: Dump, budget) -> Report:
                   f"{n} has visible:false — engine-internal, never hand-author it")
         if target == "faction" and D.f(p, "enabledForNPCFactions") is False:
             r.add(r.E, "precept/npc-disabled",
-                  f"{n} has enabledForNPCFactions:false — it cannot appear on a faction ideo")
+                  f"{n} has enabledForNPCFactions:false — most of its effects are off on NPC pawns")
         iss = D.f(p, "issue")
         if iss:
             by_issue[iss].append(n)
@@ -367,7 +365,7 @@ def check(rel: dict, D: Dump, budget) -> Report:
               "fixedIdeo true with no memes — the generator fills it randomly anyway")
     if rel.get("requiredPreceptsOnly") and not rel.get("fixedIdeo"):
         r.add(r.W, "route/preceptsonly-without-fixed",
-              "requiredPreceptsOnly without fixedIdeo constrains a religion you did not author")
+              "requiredPreceptsOnly acts without fixedIdeo, but the faction can be given an existing religion that ignores it")
 
     # -- interest metrics (counted, never scored here) ----------------------- #
     if known_precepts:

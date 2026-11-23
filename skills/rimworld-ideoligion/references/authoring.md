@@ -33,15 +33,15 @@ Family-B narrowing fields dead weight.
 
 | field | type | default | family | what it does |
 |---|---|---|---|---|
-| `fixedIdeo` | `bool` | `false` | **A** | Do not generate. Build the ideo from `forcedMemes` + `ideoName` + `deityPresets` + `styles`. |
+| `fixedIdeo` | `bool` | `false` | **A** | Run the generator for this faction alone, then write `ideoName`, `ideoDescription`, `deityPresets`, `styles` and `hiddenIdeo` over its result (`IdeoGenerator.MakeFixedIdeo`). Those five act only with `fixedIdeo`. An absent `ideoName` or `ideoDescription` writes null. |
 | `ideoName` | `string` | `null` | **A** | The religion's displayed name. Free text, not a def. Horax: `Nightmare Deep`. |
 | `ideoDescription` | `string` | `null` | **A** | The paragraph shown in the ideo tab. Free text. |
-| `forcedMemes` | `List<MemeDef>` | empty | **A** | **The complete meme set, structure meme included.** Not additive to a random roll. |
+| `forcedMemes` | `List<MemeDef>` | empty | **A** | **The complete meme set, structure meme included.** Not additive to a random roll. It acts without `fixedIdeo` too. No exclusion check, no count clamp. `requiredMemes` is added as well. A missing structure meme comes only from `structureMemeWeights` or `requiredMemes`. |
 | `deityPresets` | `List<DeityPreset>` | empty | **A** | Named gods. Shape in §5. |
 | `styles` | `List<StyleCategoryDef>` | empty | **A** | Art/apparel/tattoo style categories. Ceiling 3 — §6. |
 | `hiddenIdeo` | `bool` | `false` | both | Keep the ideo off the player's ideo list UI. Horax and Odyssey `Salvagers` set it. |
 | `classicIdeo` | `bool` | `false` | both | Give this faction the Ideology-off fallback belief set. `OutlanderCivil` and `AG_OutlanderCivilUnion` only. Mutually exclusive with authoring anything else. |
-| `requiredPreceptsOnly` | `bool` | `false` | **A** | Take **only** the precepts the memes' `requireOne` groups demand — suppress every random extra. Meaningless without `fixedIdeo`. |
+| `requiredPreceptsOnly` | `bool` | `false` | **A** | No random precepts: only what the memes require (`requireOne`, `requiredRituals`) plus the rituals, single roles (no specialist roles) and other precepts that do not count towards the precept limit. It acts without `fixedIdeo` too. |
 | `requiredMemes` | `List<MemeDef>` | empty | **B** | The roll must include these; the remainder is random. |
 | `allowedMemes` | `List<MemeDef>` | empty | **B** | The random remainder may draw only from this list. Must be a superset of `requiredMemes`. |
 | `disallowedMemes` | `List<MemeDef>` | empty | **B** | Never roll these. 🔴 **Mutually exclusive with `allowedMemes`** — both is a `ConfigError`. |
@@ -73,15 +73,15 @@ Family-B narrowing fields dead weight.
 ⚠️ **`MemeDef.factionWhitelist` exists and is not what you would guess.**
 `Inhuman` is whitelisted to `HoraxCult`, `Shipborn` to `TradersGuild` — yet Odyssey's
 `Salvagers` forces `Shipborn` anyway. So the whitelist gates the *random picker*,
-not `forcedMemes`. **Inferred from those two defs; the enforcement site in the
-assembly is UNVERIFIED.** Treat a whitelisted meme in `allowedMemes` as a no-op and
-in `forcedMemes` as probably fine.
+not `forcedMemes`. The enforcement site is `IdeoUtility.IsMemeAllowedFor`, which returns
+before the whitelist for a meme in `forcedMemes` or `requiredMemes`. A whitelisted meme in
+`allowedMemes` is a no-op; in `forcedMemes` it works.
 
 ---
 
 ## 2. §meme budget — the measured cap
 
-🔴 **There is no total-impact budget. The enforced ceiling is a meme COUNT.**
+🔴 **There is no total-impact budget. The ceiling is a meme COUNT, and only the editor enforces it.**
 
 Read from the CLI metadata of
 `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\Assembly-CSharp.dll`
@@ -90,7 +90,7 @@ hand — `ldc.i4.1 ldc.i4.4 newobj IntRange stsfld MemeCountRangeAbsolute`):
 
 | symbol | value | what it governs |
 |---|---|---|
-| `IdeoFoundation.MemeCountRangeAbsolute` | `IntRange(1, 4)` | 🔴 **hard cap: 1–4 NORMAL memes.** The structure meme is outside it. |
+| `IdeoFoundation.MemeCountRangeAbsolute` | `IntRange(1, 4)` | 🔴 **the editor's cap: 1–4 NORMAL memes.** The structure meme is outside it. |
 | `IdeoFoundation.MemeCountRangeNPCInitial` | `IntRange(1, 3)` | how many normal memes a *generated* NPC ideo gets |
 | `IdeoFoundation.MemeCountRangeFluidAbsolute` | `IntRange(1, 1)` | a fluid ideo starts at one meme |
 | `IdeoFoundation.MaxStyleCategories` | `3` | see §6 |
@@ -128,9 +128,9 @@ deliberate decision rather than a default.
 (`D:\Luke\dev\RimMandrake\src\RimMandrake\Utils\validate_ideoligion.py` line 58).
 **Do not pass `--impact-budget`.** There is nothing to enforce.
 
-**UNVERIFIED:** whether `forcedMemes` listing 5+ normal memes is clamped, ignored
-or accepted. No def in the installed universe exceeds 3, so there is no natural
-experiment. `Dialog_ChooseMemes` is the *editor* path, not the worldgen path.
+**`forcedMemes` with 5+ normal memes is accepted whole.** `IdeoUtility.GenerateRandomMemes`
+adds the list and returns, with no clamp. `Dialog_ChooseMemes` is the *editor* path, not the
+worldgen path.
 
 ---
 
@@ -392,13 +392,14 @@ none. Installed values:
 🔴 **A `deityPresets` block on a `deityCount 0..0` structure is legal but strange
 — and Ludeon ships exactly that.** `HoraxCult` names one deity on
 `Structure_Archist` (0..0). The structure invents no gods, so the religion has only
-what you named. Whether the named preset then *displays* is **UNVERIFIED** and sits
-on the live-load checklist in `references/validation.md`.
+what you named. With `fixedIdeo` the named preset displays: `MakeFixedIdeo` sets the list after
+the generator ran, and `IdeoFoundation_Deity.DoInfo` draws every deity in it. Without `fixedIdeo`
+the game ignores `deityPresets`.
 `validate_ideoligion.py` reports this as a WARN (`deity/structure-generates-none`),
 not an error — match that.
 
-⇒ **If the design calls for named gods, pick a structure whose `deityCount` covers
-the number you are naming.** `Structure_TheistAbstract` (1..4) is the flexible one.
+⇒ **If the design calls for named gods without `fixedIdeo`, you cannot name them. With
+`fixedIdeo`, any structure works; one whose `deityCount` covers the number keeps the validator quiet.** `Structure_TheistAbstract` (1..4) is the flexible one.
 
 ---
 
@@ -437,8 +438,8 @@ Read the **dump**, not the vanilla XML, when you want to know what a faction
 actually has.
 
 Memes also drag styles in via `MemeDef.thingStyleCategories` / `styleItemTags`,
-independently of the faction's `styles` list. **UNVERIFIED** whether those count
-against `MaxStyleCategories`.
+independently of the faction's `styles` list. The generator takes at most three of them
+(`RandomizeStyles`). With `fixedIdeo`, a `styles` list replaces them all and is not clamped.
 
 ---
 
@@ -453,7 +454,7 @@ against `MaxStyleCategories`.
 3. **Decide the family.** `fixedIdeo` if the doctrine is load-bearing for the
    campaign; `structureMemeWeights` + `requiredMemes` if you only want flavour.
    Do not write both.
-4. **`requiredPreceptsOnly` only with `fixedIdeo`**, and only when you want the
+4. **`requiredPreceptsOnly`** only when you want the
    religion *empty* of random doctrine. It is what makes the Junkers austere.
 5. **Deities, then styles** — ≤3 styles, and only styles from the palette.
 6. **`disallowedPrecepts` last**, and only for precepts that would actively
@@ -469,24 +470,24 @@ python3 src/RimMandrake/Utils/validate_ideoligion.py --md design/Jawa/worldbuild
 
 Exit 0 = no errors. **Do not pass `--impact-budget`** (§2).
 
-🔴 **Every one of these fails silently — no red error, no log line, the faction
-just generates something else:**
+🔴 **Most of these fail silently. The two marked rows raise a red `ConfigError`. An unknown defName, or an
+unwrapped one from a disabled mod, logs one red `Could not resolve cross-reference` line:**
 
 | failure | what you see in game | caught offline by |
 |---|---|---|
-| defName not installed | faction has a different religion | `def/unknown-meme` |
+| defName not installed | the religion lacks that def; one red log line | `def/unknown-meme` |
 | meme from a disabled mod | same | `def/inactive-mod` |
-| missing `MayRequire` | works today, breaks on any load-order change | `def/needs-mayrequire` (INFO) |
-| two memes share an `exclusionTag` | one is dropped | `meme/exclusion` |
-| zero or two structure memes | random structure | `structure/none` / `structure/multiple` |
-| `deityPresets` on a `deityCount 0` structure | possibly no gods shown | `deity/structure-generates-none` (WARN) |
+| missing `MayRequire` | works while the mod is on; a red log line and a lost def when it is off | **nothing**; `def/needs-mayrequire` (INFO) only prints the attribute to write |
+| two memes share an `exclusionTag` | in `forcedMemes` or `requiredMemes` both are kept; the random draw never takes the second | `meme/exclusion` |
+| zero or two structure memes | zero in `forcedMemes`: no structure, unless `structureMemeWeights` or `requiredMemes` supplies one; two: both are kept | `structure/none` / `structure/multiple`. With `allowedMemes` beside `forcedMemes`, zero reads INFO `structure/generated` |
+| `deityPresets` on a `deityCount 0` structure | the named gods show with `fixedIdeo`; without it they are ignored | `deity/structure-generates-none` (WARN) for the `deityCount 0`; nothing for the missing `fixedIdeo` |
 | precept with `visible: false` | never appears | `precept/invisible` |
-| precept with `enabledForNPCFactions: false` | never appears on a faction | `precept/npc-disabled` |
+| precept with `enabledForNPCFactions: false` | can appear on a faction, with most effects off for NPC pawns | `precept/npc-disabled` |
 | precept whose `conflictingMemes` hits your set | dropped | `precept/conflicting-meme` |
-| >4 normal memes | **UNVERIFIED** — clamp, ignore or accept | nothing yet |
+| >4 normal memes in `forcedMemes` | accepted whole | nothing yet |
 | `allowedMemes` + `disallowedMemes` together | ⚠️ **not silent** — a red `ConfigError` | `faction/both-meme-lists` |
 | a `requiredMemes` entry outside `allowedMemes` | ⚠️ **not silent** — a red `ConfigError` | `faction/required-not-allowed` |
-| a 4th style | **UNVERIFIED** — probably truncated | nothing yet |
+| a 4th style | kept with `fixedIdeo` (no clamp) | nothing yet |
 
 **Offline green is not built.** Only a game load proves the ideo was *constructed*
 as specified — `references/validation.md` §live.
