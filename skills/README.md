@@ -32,7 +32,8 @@ ln -s /mnt/d/Luke/dev/<name> .claude/skills/<name>         # one that lives OUTS
 
 - **To edit `skills/<name>/` IS to install the skill.** For a wired skill, the symlink means that the next session loads
   the new text.
-- Edit skills only in fresh-context curation sessions.
+- Edit skills only in fresh-context curation sessions. Such a session starts new, for the edit of a skill. Never edit a
+  skill at the end of a session's context.
 - Until such a session, each lesson goes in its own file in `infrastructure/state/lessons/`
   (`src/RimMandrake/Utils/lessons.py add`).
 - Any window maintains any skill.

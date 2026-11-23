@@ -22,8 +22,9 @@ to pass relevant debug skills to the subagents we assign to do related work, yes
   `LogTap`).
 - `skills/rimworld-debug-testing/SKILL.md`: test in a throwaway quicktest colony. The skill says what a quicktest can and
   cannot prove.
-- `skills/northstar-validation/SKILL.md`: run a mod's north-star suites live (the bland world, and the situational envelope of
-  `modcheck run --situational`).
+- `skills/northstar-validation/SKILL.md`: run a mod's north-star suites live. The bland world is a test world with no features
+  (flat, dry, no strangers). The situational envelope is the watch of `modcheck run --situational`. The watch captures
+  the first surprise.
 - `skills/telemetry/SKILL.md`: recorded history. Query the history before you measure the game, the bridge, the disks or
   the art pipeline again.
 - `~/dev/MandrakeWorkflows/skills/test-pilot-sitting/SKILL.md`: the Test Pilot's method (write theories first; make
@@ -96,7 +97,8 @@ to pass relevant debug skills to the subagents we assign to do related work, yes
 ## The ledger (rimflow) and the accounts
 - `skills/using-rimflow/SKILL.md`: every rimflow verb, the ledger shards, the provenance flags and the bridge lock.
 - `skills/rimflow-operations/SKILL.md`: the quota of the Claude accounts and the plan for an account switch. The
-  skill also says how to stand windows down and up.
+  skill also says how to stand windows down and up. An account switch closes every Claude window. The switch
+  relaunches only the Fleet (the windows that `~/.claude-accounts/machine.json` names).
 
 ## Measuring large files
 - `~/dev/MandrakeWorkflows/skills/measuring-large-artifacts/SKILL.md`: get numbers from files that are too big to

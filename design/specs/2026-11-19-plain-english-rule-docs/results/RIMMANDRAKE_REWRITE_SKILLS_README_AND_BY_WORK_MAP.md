@@ -12,9 +12,9 @@ registration table of `skills/BY_WORK.md` is the same. No text moved to a home f
 
 | measure | README before | README after | BY_WORK before | BY_WORK after |
 |---|---|---|---|---|
-| bytes | 14,777 | 16,625 | 8,244 | 9,112 |
-| words in linted prose | 586 | 886 | 800 | 962 |
-| STE violations per 100 words | 5.63 | 2.03 | 5.00 | 2.49 |
+| bytes | 14,777 | 16,733 | 8,244 | 9,365 |
+| words in linted prose | 586 | 908 | 800 | 999 |
+| STE violations per 100 words | 5.63 | 1.98 | 5.00 | 2.40 |
 | sentences over 20 words | 10 | 3 | 4 | 1 |
 | flagged lines (mechanical) | 3 | 1 | 0 | 0 |
 | hand count (lines a cold reader cannot act on) | 10 | 0 | 9 | 0 |
@@ -76,11 +76,15 @@ read the README repairs against the old text, and the two side corrections.
 | BY_WORK | no line lost, weakened or strengthened | none |
 | BY_WORK | "this file does not declare" can read as BY_WORK | "`skills.md`" |
 | BY_WORK | the closing print of `package_skill.py` disagrees with its new docstring | print corrected |
+| third reader, the last-edited lines | "relaunches them" is false: a switch relaunches only the Fleet | corrected, from `skills/rimflow-operations/SKILL.md` |
 | BY_WORK | `package_skill.py` counts two more lines than `validate_skills.py`, so it refuses a body of 499 lines | not changed: polish, one line here |
 
-No reader read these lines after their last edit: the `skills.md` words in BY_WORK; its line about
-`rimworld-crew-and-nemesis-events` and its line about the table at the end; in README, the two sentences that define
-"active files"; the closing print of `package_skill.py`.
+The first `./publish` (`2c07e7e0aa87`) printed 4 prose faults (undefined terms: the bland world, the situational envelope,
+"stand windows down and up", "fresh-context curation sessions"). Each term now has its meaning, taken from
+`northstar-validation`, `rimflow-operations` and `infrastructure/agents/CHARTER.md`. A third fresh Opus reader read those
+lines and each line edited after the first two reads.
+
+No reader read one line after its last edit: the two sentences about the Fleet in BY_WORK (the third reader's own repair).
 
 ## Conflicts and stale lines: settled
 
