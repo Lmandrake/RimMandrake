@@ -1,41 +1,80 @@
 {
- "T_HEAVY_KNOCK_RULE": {
-  "at": "2026-11-19T03:36:31Z",
-  "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
-  "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
-  "last": "explosive knockback kernel: 239/246 passed",
-  "patch": "diff --git a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs\nindex c4d5d6130c..dfda2370a6 100644\n--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs\n@@ -519,7 +519,7 @@ namespace RimMandrake.ExplosiveKnockback\n                     lastNonPartialZ = z;\n                     lastNonPartialN = travelled;\n                 }\n-                if (pit)\n+                if (false)\n                 {\n                     // stops IN the first pit cell, open or covered: nothing is thrown across a pit (sheet thrown_into_pit_falls:\n                     // \"onto a covered cell falls through and breaks the cover; nothing is thrown across\"); the landing breaks\n",
+ "T_FUZZ": {
+  "at": "2026-11-23T12:19:57Z",
+  "command": "python3 src/RimMandrake/Utils/selftest_explosiveknockback_fuzz.py",
+  "file": "src/RimMandrake/Utils/selftest_explosiveknockback_fuzz.py",
+  "last": "explosiveknockback fuzz: 36004 cases, 916489 steps, 1.45s total -> FAILED",
+  "patch": "diff --git a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs\nindex c4d5d6130c..83847935a8 100644\n--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs\n@@ -186,7 +186,7 @@ namespace RimMandrake.ExplosiveKnockback\n             {\n                 return 0f;\n             }\n-            return 1f - Clamp01(dist / radius);\n+            return 1f - Clamp01(dist / (radius + 0.5f));\n         }\n \n         public static float MassScale(float mass, KbSettings s)\n",
   "patch_files": [
    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
   ],
-  "patch_sha": "b2a8d1d6f0650439",
+  "patch_sha": "81197cdbb95ff94a",
   "rc": 1,
-  "test_blob": "7ab345005837a175d31c66ac382aa38256a7d9b0"
+  "test_blob": "dbb6d32f674d44644b8a6ff1229a21abbd280952"
+ },
+ "T_HEAVY_KNOCK_RULE": {
+  "at": "2026-11-23T12:20:09Z",
+  "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
+  "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
+  "last": "explosive knockback kernel: 240/246 passed",
+  "patch": "diff --git a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs\nindex c4d5d6130c..29314b640f 100644\n--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs\n@@ -340,7 +340,7 @@ namespace RimMandrake.ExplosiveKnockback\n         {\n             damage = 0f;\n             stun = 0;\n-            if (!enabled || kind != KbKind.Item || !personThere || mass < minMass)\n+            if (!enabled || kind != KbKind.Item || !personThere || mass > minMass)\n             {\n                 return false;\n             }\n",
+  "patch_files": [
+   "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+  ],
+  "patch_sha": "d130e2979074e6b9",
+  "rc": 1,
+  "test_blob": "3440aaf847989a207203f2188a7bda4fa7ad094f"
  },
  "T_KERNEL": {
-  "at": "2026-11-19T03:36:27Z",
+  "at": "2026-11-23T12:20:03Z",
   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
   "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
-  "last": "explosive knockback kernel: 239/246 passed",
-  "patch": "diff --git a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs\nindex c4d5d6130c..dfda2370a6 100644\n--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs\n@@ -519,7 +519,7 @@ namespace RimMandrake.ExplosiveKnockback\n                     lastNonPartialZ = z;\n                     lastNonPartialN = travelled;\n                 }\n-                if (pit)\n+                if (false)\n                 {\n                     // stops IN the first pit cell, open or covered: nothing is thrown across a pit (sheet thrown_into_pit_falls:\n                     // \"onto a covered cell falls through and breaks the cover; nothing is thrown across\"); the landing breaks\n",
+  "last": "explosive knockback kernel: 233/246 passed",
+  "patch": "diff --git a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs\nindex c4d5d6130c..633c1113cf 100644\n--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs\n@@ -192,7 +192,7 @@ namespace RimMandrake.ExplosiveKnockback\n         public static float MassScale(float mass, KbSettings s)\n         {\n             float m = Math.Max(mass, 1f);\n-            float v = (float)Math.Sqrt(s.refMass / m);\n+            float v = (float)Math.Sqrt(m / s.refMass);\n             return v < 0.25f ? 0.25f : (v > 2f ? 2f : v);\n         }\n \n",
   "patch_files": [
    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
   ],
-  "patch_sha": "b2a8d1d6f0650439",
+  "patch_sha": "f8b774053f6e36d8",
   "rc": 1,
-  "test_blob": "7ab345005837a175d31c66ac382aa38256a7d9b0"
+  "test_blob": "3440aaf847989a207203f2188a7bda4fa7ad094f"
  },
  "T_PROOFGATE": {
-  "at": "2026-11-19T03:42:34Z",
+  "at": "2026-11-23T12:20:21Z",
   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_proofgate.py",
   "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_proofgate.py",
-  "last": "FAIL G1 gate misreads [True, True, True, False, False, True, True]",
-  "patch": "diff --git a/src/RimMandrake/ExplosiveKnockback/proof_build_gate.py b/src/RimMandrake/ExplosiveKnockback/proof_build_gate.py\nindex be3442a71f..4697b1afea 100644\n--- a/src/RimMandrake/ExplosiveKnockback/proof_build_gate.py\n+++ b/src/RimMandrake/ExplosiveKnockback/proof_build_gate.py\n@@ -24,7 +24,7 @@ MESSAGE = (\"PROOF BUILD REQUIRED: the running ExplosiveKnockback DLL has no %s (\n def is_release_answer(resp):\n     \"\"\"True when a jawa/static_call answer says the proof type is not loaded.\"\"\"\n     text = repr(resp)\n-    return \"Type not found\" in text and \"RM_KnockbackProof\" in text\n+    return \"Type not found\" in text or \"RM_KnockbackProof\" in text\n \n \n def require_proof_build(resp, out=None):\n",
+  "last": "FAIL G1 gate misreads [False, True, True, True, True, False, True]",
+  "patch": "diff --git a/src/RimMandrake/ExplosiveKnockback/proof_build_gate.py b/src/RimMandrake/ExplosiveKnockback/proof_build_gate.py\nindex be3442a71f..ac92abb9b9 100644\n--- a/src/RimMandrake/ExplosiveKnockback/proof_build_gate.py\n+++ b/src/RimMandrake/ExplosiveKnockback/proof_build_gate.py\n@@ -24,7 +24,7 @@ MESSAGE = (\"PROOF BUILD REQUIRED: the running ExplosiveKnockback DLL has no %s (\n def is_release_answer(resp):\n     \"\"\"True when a jawa/static_call answer says the proof type is not loaded.\"\"\"\n     text = repr(resp)\n-    return \"Type not found\" in text and \"RM_KnockbackProof\" in text\n+    return \"Type not loaded\" in text and \"RM_KnockbackProof\" in text\n \n \n def require_proof_build(resp, out=None):\n",
   "patch_files": [
    "src/RimMandrake/ExplosiveKnockback/proof_build_gate.py"
   ],
-  "patch_sha": "db71d6c859e2bc5d",
+  "patch_sha": "5e39b12367f9ced5",
   "rc": 1,
-  "test_blob": "ff2d8fcdc479afbe28916ed93e97b6f5746c8819"
+  "test_blob": "386e6f1136ffb5c294b41ddcaf97985183e4c230"
+ },
+ "T_SETTINGS_SCREEN": {
+  "at": "2026-11-23T12:20:21Z",
+  "command": "python3 src/RimMandrake/Utils/selftest_settings_screens.py --mod ExplosiveKnockback",
+  "file": "src/RimMandrake/Utils/selftest_settings_screens.py",
+  "last": "settings screens selftest: 6/7 ok (mods: ExplosiveKnockback)",
+  "patch": "diff --git a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs\nindex 0f94fbc7d9..2574a49b46 100644\n--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs\n@@ -364,7 +364,7 @@ namespace RimMandrake.ExplosiveKnockback\n                 list.GapLine();\n             }\n \n-            if (Group(list, \"Shield belts\", RimMandrake.Shared.SettingScope.Now, new[] { \"shieldsAbsorbThrow\", \"shieldDebitPerForce\" }))\n+            if (Group(list, \"Shield belts\", RimMandrake.Shared.SettingScope.Now, new[] { \"shieldsAbsorbThrow\" }))\n             {\n                 list.CheckboxLabeled(\"Shield belts absorb the throw\", ref shieldsAbsorbThrow,\n                     \"On: a pawn whose shield absorbed the blast is not thrown, and the shield pays extra charge for it (a strong throw can pop it). Off: shields stop the wound, never the shove.\");\n",
+  "patch_files": [
+   "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs"
+  ],
+  "patch_sha": "eda2f061d059c9ad",
+  "rc": 1,
+  "test_blob": "e9bc063b23c724c03dc083e4fe903a476d17771b"
+ },
+ "T_SETTINGS_SWEEP_OFFLINE": {
+  "at": "2026-11-23T12:20:26Z",
+  "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_settings_sweep.py",
+  "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_settings_sweep.py",
+  "last": "explosive knockback settings sweep: PASS (24 runs, 0 faults, 2/2 coupling mutants caught) | static: 1 faults, 4/4 planted caught, 10/10 switch faults caught | FAIL",
+  "patch": "diff --git a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs\nindex 0f94fbc7d9..d51192b452 100644\n--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs\n@@ -158,7 +158,7 @@ namespace RimMandrake.ExplosiveKnockback\n                 lightMassLimit = lightMassLimit,\n                 impactEnabled = impactDamageEnabled,\n                 impactPerCell = impactDamagePerCell,\n-                sandbagsStop = sandbagsStopThrow,\n+                sandbagsStop = sandbagsStopThrow && throwIntoPits,\n                 intoPits = throwIntoPits,\n             };\n         }\n",
+  "patch_files": [
+   "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs"
+  ],
+  "patch_sha": "924363a99fd88f0a",
+  "rc": 1,
+  "test_blob": "787cc18515457b03ad94d895813165e4d18ea988"
  }
 }
