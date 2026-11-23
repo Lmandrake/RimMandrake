@@ -19,7 +19,14 @@ check (kind live_full) declares the whole mod. How a changed file relates, by ki
          entry reach (across every Python file it declares, by name, attribute and string) include one; a dict
          literal relates key by key. A file that does not parse relates whole.
   .json  by object: when the file holds an object whose id (or key) is the check's id or entry, only that object.
-  .cs    by source file. The DLL and its .srchash are derived: they relate to nothing by themselves.
+  .cs    by member and by switch section (cs_units, a lexical read): a changed member or `case "x":` section touches
+         the check only when the members and sections its id and entry reach include it (a section by its label, a
+         helper by its name, `goto case` by its string; a section no check's entry labels runs with its method). It
+         relates whole when the file does not read at either commit, the check anchors in no member or section of it,
+         a using or namespace line changed, the changed member carries an attribute, is called by the engine (override,
+         Unity message), is named in another .cs or .py file of the mod, or is reached by no check. A changed section
+         that uses a shared static the check reaches touches it too. The DLL and its .srchash are derived: they
+         relate to nothing by themselves.
   other  by file.
 A check whose own test-table entry changed in what it runs (RUN_KEYS) is touched. A check with no declared path, or a
 row whose commit git cannot resolve, has no readable relation: it alone runs again, and it is listed.
@@ -345,6 +352,394 @@ def json_touches(old_text, new_text, seeds):
     return a != b
 
 
+# ---- C#, by member and by scene section -----------------------------------------------------------------------------
+# One proof file can hold every scene of a mod (ExplosiveKnockback RM_KnockbackProof.cs: 2,832 lines, one `case
+# "<entry>":` section per scene). Related by file, one scene's edit sent all 54 scene checks of visit 5 back
+# (2026-11-23). A lexical read, no compiler: a file it cannot read relates whole.
+
+CS_WORD = re.compile(r"[A-Za-z_][A-Za-z0-9_]*")
+CS_TYPE_KW = ("class", "struct", "interface", "enum", "record")
+# Unity calls these by name on a MonoBehaviour; nothing in the file names them
+UNITY_MESSAGES = {"Awake", "Start", "Update", "LateUpdate", "FixedUpdate", "OnGUI", "OnDestroy", "OnEnable",
+                  "OnDisable", "OnApplicationQuit", "OnApplicationFocus", "OnApplicationPause"}
+CS_LIST_TOKENS = {"new", "string"}
+
+
+def cs_mask(text):
+    """-> (code, plain, strings) or None when a comment or a literal does not close. code: the text with comments and
+    the contents of string and char literals blanked (same length, newlines kept; an interpolation hole stays code);
+    plain: the text with comments alone blanked; strings: [(position, value)] of each string literal."""
+    n = len(text)
+    code, plain = list(text), list(text)
+    strings = []
+
+    def blank(buf, a, b):
+        for k in range(a, b):
+            if buf[k] != "\n":
+                buf[k] = " "
+
+    def simple(j):
+        """A regular string from the quote at j: -> its end (after the closing quote), or -1."""
+        k = j + 1
+        while k < n and text[k] != '"':
+            if text[k] == "\n":
+                return -1
+            k += 2 if text[k] == "\\" else 1
+        return k + 1 if k < n else -1
+
+    i = 0
+    while i < n:
+        c = text[i]
+        if text.startswith("//", i):
+            j = text.find("\n", i)
+            j = n if j < 0 else j
+            blank(code, i, j)
+            blank(plain, i, j)
+            i = j
+        elif text.startswith("/*", i):
+            j = text.find("*/", i + 2)
+            if j < 0:
+                return None
+            blank(code, i, j + 2)
+            blank(plain, i, j + 2)
+            i = j + 2
+        elif c == "'":
+            j = i + 1
+            j = text.find("'", j + 2 if j < n and text[j] == "\\" else j + 1)
+            if j < 0 or j - i > 12:
+                return None
+            blank(code, i + 1, j)
+            i = j + 1
+        elif c == '"' or (c in "$@" and re.match(r'[$@]{1,2}"', text[i:i + 3])):
+            pre = re.match(r'[$@]{0,2}', text[i:i + 2]).group(0)
+            q = i + len(pre)
+            if "@" not in pre and text.startswith('"""', q):   # a raw literal (@""" is a verbatim one opening on "")
+                j = text.find('"""', q + 3)
+                if j < 0:
+                    return None
+                strings.append((i, text[q + 3:j]))
+                blank(code, q + 1, j + 2)
+                i = j + 3
+                continue
+            verb, interp = "@" in pre, "$" in pre
+            k, val = q + 1, []
+            while True:
+                if k >= n:
+                    return None
+                ch = text[k]
+                if verb and ch == '"':
+                    if text.startswith('""', k):
+                        val.append('"')
+                        blank(code, k, k + 2)
+                        k += 2
+                        continue
+                    break
+                if not verb and ch == '"':
+                    break
+                if not verb and ch == "\n":
+                    return None
+                if not verb and ch == "\\":
+                    val.append(text[k:k + 2])
+                    blank(code, k, k + 2)
+                    k += 2
+                    continue
+                if interp and ch == "{":
+                    if text.startswith("{{", k):
+                        blank(code, k, k + 2)
+                        k += 2
+                        continue
+                    depth, k = 1, k + 1                         # a hole: code, its own strings blanked
+                    while k < n and depth:
+                        if text[k] == '"':
+                            e = simple(k)
+                            if e < 0:
+                                return None
+                            blank(code, k + 1, e - 1)
+                            k = e
+                            continue
+                        depth += {"{": 1, "}": -1}.get(text[k], 0)
+                        k += 1
+                    if depth:
+                        return None
+                    continue
+                val.append(ch)
+                blank(code, k, k + 1)
+                k += 1
+            strings.append((i, "".join(val)))
+            i = k + 1
+        else:
+            i += 1
+    return "".join(code), "".join(plain), strings
+
+
+def _pairs(code, open_c, close_c):
+    st, out = [], {}
+    for i, ch in enumerate(code):
+        if ch == open_c:
+            st.append(i)
+        elif ch == close_c:
+            if not st:
+                return None
+            out[st.pop()] = i
+    return out if not st else None
+
+
+class CsUnit:
+    __slots__ = ("key", "name", "kind", "spans", "parent", "labels", "flags", "text", "refs", "strs", "static")
+
+    def __init__(self, key, name, kind, a, b, parent):
+        self.key, self.name, self.kind, self.spans, self.parent = key, name, kind, [(a, b)], parent
+        self.labels, self.flags, self.static = set(), set(), False
+
+
+def _strip_attrs(code, a, b, sq):
+    """-> (start after any leading [attribute] sections, had one)."""
+    had = False
+    while True:
+        m = re.compile(r"\s*").match(code, a, b)
+        a = m.end()
+        if a < b and code[a] == "[" and a in sq and sq[a] < b:
+            a, had = sq[a] + 1, True
+        else:
+            return a, had
+
+
+def cs_units(text):
+    """-> {key: CsUnit} or None when the file cannot be read. Units: each member of each type (by name and signature),
+    each nested type's own head, each section of each switch (by its labels; stacked labels are one section), each
+    element of a string-literal list field ('N[value]'), and '<file>' (usings, namespace heads, anything unnamed)."""
+    m = cs_mask(text)
+    if m is None:
+        return None
+    code, plain, strings = m
+    br, pa, sq = _pairs(code, "{", "}"), _pairs(code, "(", ")"), _pairs(code, "[", "]")
+    if br is None or pa is None or sq is None:
+        return None
+    units = {}
+    filed = CsUnit("<file>", "<file>", "file", 0, 0, None)
+    filed.spans = []
+    units["<file>"] = filed
+
+    def add(u):
+        k, i = u.key, 1
+        while u.key in units:
+            i += 1
+            u.key = "%s#%d" % (k, i)
+        units[u.key] = u
+        return u
+
+    def flat(a, b):
+        """code[a:b] with each bracketed group's inside cut: a parameter's default (`string stuff = null`) is not an
+        initializer of the member."""
+        out, i = [], a
+        while i < b:
+            ch = code[i]
+            if ch in "([" and (pa if ch == "(" else sq).get(i, b) < b:
+                out.append("()" if ch == "(" else "[]")
+                i = (pa if ch == "(" else sq)[i] + 1
+                continue
+            out.append(ch)
+            i += 1
+        return "".join(out)
+
+    def items(a, b):
+        """Top-level items of a body [a, b): (start, end, brace) -- brace the position of the item's own body '{'."""
+        out, i, s = [], a, a
+        while i < b:
+            ch = code[i]
+            if ch == ";":
+                out.append((s, i + 1, None))
+                s = i + 1
+            elif ch == "{":
+                head = flat(s, i)
+                j = br[i]
+                if re.search(r"(?<![=!<>])=(?![=>])|=>", head):     # an initializer: the item ends at its ';'
+                    i = j + 1
+                    continue
+                out.append((s, j + 1, i))
+                s = i = j + 1
+                continue
+            elif ch in "([":
+                i = (pa if ch == "(" else sq)[i] + 1
+                continue
+            i += 1
+        if code[s:b].strip():
+            out.append((s, b, None))
+        return out
+
+    def body(a, b, prefix, parent, is_type):
+        for s, e, brace in items(a, b):
+            if not code[s:e].strip():
+                continue
+            hs, attr = _strip_attrs(code, s, e, sq)
+            head = code[hs:brace if brace is not None else e]
+            words = CS_WORD.findall(head)
+            paren = head.find("(")
+            mk = re.search(r"\b(class|struct|interface|enum|record)\b", head)
+            if mk and paren >= 0 and mk.start() > paren:
+                mk = None                                          # `where T : class` in a method's head
+            if "namespace" in words or words[:1] == ["using"] or (not is_type and not mk):
+                filed.spans.append((s, brace + 1 if brace is not None and "namespace" in words else e))
+                if brace is not None and "namespace" in words:
+                    filed.spans.append((br[brace], br[brace] + 1))
+                    body(brace + 1, br[brace], prefix, parent, False)
+                continue
+            if mk and brace is not None and mk.group(1) != "enum":
+                tw = CS_WORD.findall(head[mk.end():])
+                nm = tw[0] if tw else "<anon>"
+                u = add(CsUnit(prefix + nm, nm, "type", s, brace + 1, parent))
+                u.spans.append((br[brace], br[brace] + 1))
+                if attr:
+                    u.flags.add("attribute")
+                body(brace + 1, br[brace], prefix + nm + "/", u, True)
+                continue
+            cut = re.search(r"\(|(?<![=!<>])=(?![=>])|=>|\{|;", head)
+            tok = cut.group(0) if cut else ";"
+            bw = CS_WORD.findall(head[:cut.start()] if cut else head)
+            nm = bw[-1] if bw else "<anon>"
+            if mk:                                                 # an enum: one unit
+                tw = CS_WORD.findall(head[mk.end():])
+                nm, tok = (tw[0] if tw else "<anon>"), "enum"
+            sig = ""
+            if tok == "(":
+                p = hs + cut.start()
+                sig = "(%s)" % " ".join(code[p + 1:pa.get(p, p)].split())
+            kind = "method" if tok == "(" else "field"
+            u = add(CsUnit(prefix + nm + sig, nm, kind, s, e, parent))
+            if attr:
+                u.flags.add("attribute")
+            if "override" in words or (kind == "method" and nm in UNITY_MESSAGES):
+                u.flags.add("called by the engine")
+            if nm == "<anon>":
+                u.flags.add("unnamed")
+            # shared storage: a static field or auto-property, not a computed property (`static Map Map => ...`)
+            u.static = (kind == "field" and "static" in words and "const" not in words and tok != "=>" and
+                        (brace is None or not re.sub(r"\b(get|set|init|private|protected|internal)\b|[\s;]", "",
+                                                     code[brace + 1:br[brace]])))
+            if kind == "field" and tok == "=" and "const" not in words and "static" not in words:
+                u.flags.add("instance initializer")
+            if kind == "field" and tok == "=":
+                init = code[hs + cut.end():e]
+                rest = set(CS_WORD.findall(init)) - CS_LIST_TOKENS
+                lits = [(p, v) for p, v in strings if hs + cut.end() <= p < e]
+                if lits and not rest and not re.sub(r'[\s{}\[\],;"$@]', "", init):
+                    for p, v in lits:                               # a string list relates element by element
+                        q2 = p + len(re.match(r'[$@]*', code[p:p + 2]).group(0))
+                        add(CsUnit("%s[%s]" % (u.key, v), v, "elem", p, code.index('"', q2 + 1) + 1, u))
+            if kind == "method" and brace is not None:
+                switches(brace + 1, br[brace], u.key, u)
+
+    def switches(a, b, prefix, parent):
+        """Each switch statement in [a, b) that no deeper switch holds, its sections as children of parent."""
+        for mm in re.finditer(r"\bswitch\s*\(", code[a:b]):
+            p = a + mm.end() - 1
+            q = pa.get(p)
+            if q is None:
+                continue
+            r = re.compile(r"\s*").match(code, q + 1).end()
+            if r >= b or code[r] != "{":
+                continue
+            if any(a2 <= r < b2 for u2 in units.values() if u2.parent is parent and u2.kind == "case"
+                   for a2, b2 in u2.spans):
+                continue                                           # a deeper switch: its section reads it
+            end, labels, i = br[r], [], r + 1
+            while i < end:
+                ch = code[i]
+                if ch == "{":
+                    i = br[i] + 1
+                    continue
+                if ch == "(":
+                    i = pa[i] + 1
+                    continue
+                lm = re.compile(r"(case\b[^:;{}]*|default\s*):").match(code, i)
+                if lm and not re.match(r"[A-Za-z0-9_.]", code[i - 1]):   # `goto case "x";` ends on ';', no label
+                    labels.append((i, lm.end()))
+                    i = lm.end()
+                    continue
+                i += 1
+            groups, made = [], []
+            for ls, le in labels:
+                if groups and not code[groups[-1][-1][1]:ls].strip():
+                    groups[-1].append((ls, le))
+                else:
+                    groups.append([(ls, le)])
+            for g, grp in enumerate(groups):
+                gs = grp[0][0]
+                ge = groups[g + 1][0][0] if g + 1 < len(groups) else end
+                labs = set()
+                for ls, le in grp:
+                    vals = [v for pp, v in strings if ls <= pp < le]
+                    labs.update(vals or [" ".join(code[ls:le].split())])
+                u = add(CsUnit("%s/case:%s" % (prefix, "|".join(sorted(labs))), "", "case", gs, ge, parent))
+                u.labels = labs
+                made.append((u, grp[-1][1]))
+            for u, after in made:
+                switches(after, u.spans[0][1], u.key, u)
+
+    body(0, len(code), "", None, False)
+    kids = {}
+    for u in units.values():
+        if u.parent is not None:
+            kids.setdefault(u.parent.key, []).extend(u.spans)
+    for u in units.values():
+        own = []
+        for a, b in u.spans:
+            cut = sorted((x, y) for x, y in kids.get(u.key, []) if a <= x < b)
+            p = a
+            for x, y in cut:
+                own.append((p, x))
+                p = max(p, y)
+            own.append((p, b))
+        u.text = " ".join(" ".join(plain[a:b].split()) for a, b in own)
+        u.refs = {w for a, b in own for w in CS_WORD.findall(code[a:b])}
+        u.strs = {v for p, v in strings if any(a <= p < b for a, b in own)}
+    return units
+
+
+def cs_changed(old, new):
+    """Unit keys that differ between two readings (added, removed, or different own text)."""
+    return {k for k in set(old) | set(new) if (old.get(k).text if k in old else None) !=
+            (new.get(k).text if k in new else None)}
+
+
+def cs_reach(units, seeds, owned, added=frozenset()):
+    """-> (reached keys, anchored): from the seeds (the check's id and entry). A case section is reached by a label
+    that is a seed or a string a reached section or method holds (`goto case "x"`), or with its method when no check's
+    seed labels it (owned: every check's seeds); a member by its name; a string-list element by its value, or with its
+    list when it was there before (added: the elements new at this commit, reached by their value only); a unit's
+    parents with it."""
+    names, strs = set(seeds), set(seeds)
+    reached, anchored, grew = set(), False, True
+    while grew:
+        grew = False
+        for k, u in units.items():
+            if k in reached or u.kind == "file":
+                continue
+            if u.kind == "case":
+                hit = bool(u.labels & strs) or (not (u.labels & owned) and u.parent is not None
+                                                and u.parent.key in reached)
+                anchor = bool(u.labels & seeds)
+            elif u.kind == "elem":
+                anchor = u.name in seeds
+                hit = anchor or (u.parent.name in names and k not in added)
+            else:
+                anchor = u.name in seeds or (u.kind == "method" and bool(u.strs & seeds))
+                hit = anchor or u.name in names
+            if not hit:
+                continue
+            anchored = anchored or anchor
+            p = u
+            while p is not None:
+                if p.key not in reached:
+                    reached.add(p.key)
+                    names |= p.refs
+                    if p.kind in ("case", "method"):
+                        strs |= p.strs
+                p = p.parent
+            grew = True
+    return reached, anchored
+
+
 # ---- the relation ---------------------------------------------------------------------------------------------------
 
 def _srchash_sources(text, mod):
@@ -477,6 +872,101 @@ class Relation:
             self._py[k] = names
         return self._py[k]
 
+    def _cs(self, sha, path):
+        """The C# units of a file at a commit, read once per relation; None when absent or unreadable."""
+        k = ("cs", sha, path)
+        if k not in self._py:
+            txt = self.git.show(sha, path)
+            self._py[k] = cs_units(txt) if txt is not None else None
+        return self._py[k]
+
+    def _owned(self):
+        """Every check's seeds (id and entry): a case section no seed labels runs with its method, for every check."""
+        if not hasattr(self, "_owned_seeds"):
+            self._owned_seeds = {x for t, s in self.tests.items() for x in (t, (s or {}).get("entry")) if x}
+        return self._owned_seeds
+
+    def _cs_reach(self, sha, path, seeds, old=None):
+        """cs_reach at a commit; old: the commit before, whose absence of a string-list element makes it added."""
+        k = ("csreach", sha, path, tuple(sorted(seeds)), old)
+        if k not in self._py:
+            u = self._cs(sha, path)
+            before = self._cs(old, path) if old else None
+            added = {x for x, v in (u or {}).items() if v.kind == "elem" and before is not None and x not in before}
+            self._py[k] = cs_reach(u, seeds, self._owned(), added) if u is not None else (set(), False)
+        return self._py[k]
+
+    def _cs_named_elsewhere(self, sha, path, name):
+        """True when a word `name` stands in another C# or Python file of the mod at the commit (a caller this read of one
+        file cannot see: another class, a scene script, the bridge). A list or a file git cannot show counts as naming it:
+        what cannot be read relates whole."""
+        k = ("named", sha, path, name)
+        if k not in self._py:
+            if ("modsrc", sha) not in self._py:
+                out = self.git._git("ls-tree", "-r", "--name-only", sha, "--", mod_root(self.mod) + "/")
+                self._py[("modsrc", sha)] = None if out is None else [
+                    f for f in out.decode().splitlines() if f.endswith((".cs", ".py"))]
+            files = self._py[("modsrc", sha)]
+            rx = re.compile(r"(?<![A-Za-z0-9_])%s(?![A-Za-z0-9_])" % re.escape(name))
+            texts = [self.git.show(sha, f) for f in files or () if f != path]
+            self._py[k] = files is None or any(t is None or rx.search(t) for t in texts)
+        return self._py[k]
+
+    def cs_touches(self, f, o, seeds):
+        """-> (touches, why) for one changed C# file: by member and by switch section (cs_units)."""
+        a, b = self._cs(o, f), self._cs(self.new, f)
+        if a is None or b is None:
+            return True, "does not read at one commit (related whole)"
+        seeds = {s for s in seeds if s}
+        ro, anc_o = self._cs_reach(o, f, seeds)
+        rn, anc_n = self._cs_reach(self.new, f, seeds, o)
+        if not (anc_o or anc_n):
+            return True, "no member or case section of it names %s (related whole)" % " or ".join(sorted(seeds))
+        chg = cs_changed(a, b)
+        if not chg:
+            return False, ""
+        for k in list(chg):                                     # an instance field's initializer runs with its type
+            for side in (a, b):
+                u = side.get(k)
+                if u is not None and "instance initializer" in u.flags and u.parent is not None:
+                    chg.add(u.parent.key)
+        for k in sorted(chg):
+            for side, sha in ((a, o), (b, self.new)):
+                u = side.get(k)
+                if u is None:
+                    continue
+                if u.kind == "file":
+                    return True, "%s changed (related whole)" % ("a using or namespace line" if k == "<file>" else k)
+                ext = u.flags & {"attribute", "called by the engine", "unnamed"}
+                if ext:
+                    return True, "%s is %s (related whole)" % (k, sorted(ext)[0])
+                if u.kind in ("method", "field", "type") and self._cs_named_elsewhere(sha, f, u.name):
+                    return True, "%s is named in another file of the mod (related whole)" % k
+        unowned = [k for k in sorted(chg) if not self._cs_owned(o, f, k)]
+        if unowned:
+            return True, "%s: reached by no check (related whole)" % ", ".join(unowned[:4])
+        got = sorted(k for k in chg if k in rn or k in ro)
+        if got:
+            return True, ", ".join(got[:6]) + (" ..." if len(got) > 6 else "")
+        statics = {side[k].name for side, r in ((a, ro), (b, rn)) for k in r if k in side and side[k].static}
+        for k in sorted(chg):
+            for side in (a, b):
+                u = side.get(k)
+                if u is not None and u.refs & statics:
+                    return True, "%s uses the shared static %s it reads" % (k, ", ".join(sorted(u.refs & statics)))
+        return False, ""
+
+    def _cs_owned(self, o, f, key):
+        """True when some check of the table reaches the unit at either commit."""
+        k = ("csowned", o, self.new, f)
+        if k not in self._py:
+            seen = set()
+            for t, s in self.tests.items():
+                sd = {x for x in (t, (s or {}).get("entry")) if x}
+                seen |= self._cs_reach(o, f, sd)[0] | self._cs_reach(self.new, f, sd, o)[0]
+            self._py[k] = seen
+        return key in self._py[k]
+
     def touches(self, tid, old):
         """-> (state, why, files): state 'untouched' | 'touched' | 'unreadable'. files: the changed files that touch."""
         spec = self.tests.get(tid) or {}
@@ -545,6 +1035,12 @@ class Relation:
                     why.append("%s: %s" % (f, ", ".join(got[:6]) + (" ..." if len(got) > 6 else "")))
         for f in mine:
             if f.endswith(".py"):
+                continue
+            if f.endswith(".cs"):
+                got, how = self.cs_touches(f, o, seeds)
+                if got:
+                    hits.append(f)
+                    why.append("%s: %s" % (f, how))
                 continue
             if f.endswith(".json"):
                 t = json_touches(self.git.show(o, f), self.git.show(self.new, f), {s for s in seeds if s})

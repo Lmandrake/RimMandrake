@@ -50,6 +50,12 @@ stage (the in-game build match, the Stage 6 exit, the visit brief, `./pipe why`,
   full-list check; the same change beside a shipped file still reruns them.
 - **csharp-relates-by-source-file.** A C# change relates through the changed `.cs` files; the DLL and its `.srchash`
   are derived and relate to nothing by themselves.
+- **csharp-relates-by-scene-section.** In a changed `.cs` file, only the members and `case "x":` sections that changed
+  count, and they touch a check only when what its id and entry reach includes one (its own section, the helpers and
+  fields it names, a `goto case` target). Whole file when it does not read, the check anchors nowhere in it, a using
+  line, an attribute or engine-called member, a member another file of the mod names, or a part no check reaches
+  changed; a section that starts using a shared static another check reads touches that check. (ExplosiveKnockback
+  visit 5, 2026-11-23: one scene's edit to RM_KnockbackProof.cs had sent all 54 scene checks back.)
 - **python-relates-by-symbol.** In a changed Python file, only the top-level names that changed count, and they
   touch a check only when the names its entry and id reach (across its declared Python files) include one of them; a
   dict literal relates key by key. A file that does not parse at either commit relates whole.

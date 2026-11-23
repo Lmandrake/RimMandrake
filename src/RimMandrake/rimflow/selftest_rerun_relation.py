@@ -268,6 +268,127 @@ def t_csharp_relates_by_source_file():
         tr.close()
 
 
+PROOF_CS = '''using System;
+using System.Collections.Generic;
+namespace Planted
+{
+    public static partial class Proof
+    {
+        private sealed class Scene
+        {
+            public string name;
+            public int a;
+        }
+
+        private static readonly Dictionary<string, Scene> scenes = new Dictionary<string, Scene>();
+        internal static readonly HashSet<int> NoHarm = new HashSet<int>();
+
+        public static string Stage(string arg)
+        {
+            var s = new Scene { name = arg };
+            scenes[arg] = s;
+            return Build(s);
+        }
+
+        private static int Helper(int x) => x + 1;
+
+        private static string Build(Scene s)
+        {
+            switch (s.name)
+            {
+                case "alpha":
+                    s.a = Helper(1);
+                    return "A";
+                case "beta":
+                    // a comment with { a brace
+                    if (NoHarm.Contains(7)) { return "B{" + '}'; }
+                    return @"B "" {";
+                case "gamma":
+                    goto case "beta";
+                case "reset":
+                    scenes.Clear();
+                    return "R";
+            }
+            return null;
+        }
+    }
+}
+'''
+
+PROOF_OTHER_CS = "namespace Planted { public static class Other { public static int Use() => 1; } }\n"
+
+
+def _proof_tests():
+    f = "src/RimMandrake/Planted/Source/Proof.cs"
+    return {k: {"id": k, "kind": "live_minimal", "stage": "6", "tier": "t", "file": f, "entry": e,
+                "reads": [f, "src/RimMandrake/Planted/Source/Other.cs"]}
+            for k, e in (("sc_alpha", "alpha"), ("sc_beta", "beta"), ("sc_gamma", "gamma"), ("sc_delta", "delta"))}
+
+
+def _proof_case(edits, other=None):
+    """-> the touched checks after the edits [(old, new)] to Proof.cs alone, or the error. other: Other.cs's text at both
+    commits (it never changes, so it touches nothing by itself)."""
+    tr = Tree()
+    try:
+        tr.write("src/RimMandrake/Planted/Source/Proof.cs", PROOF_CS)
+        tr.write("src/RimMandrake/Planted/Source/Other.cs", other if other is not None else PROOF_OTHER_CS)
+        tests = _proof_tests()
+        tr.set_table(tests)
+        base = tr.commit("proof base")
+        for a, b in edits:
+            if a not in tr.read("src/RimMandrake/Planted/Source/Proof.cs"):
+                return "edit target missing: %r" % a
+            tr.edit("src/RimMandrake/Planted/Source/Proof.cs", a, b)
+        tr.commit("proof edit")
+        res = relate(tr, all_rows(base, tests), tests)
+        return sorted(res["touched"])
+    finally:
+        tr.close()
+
+
+def t_csharp_relates_by_scene_section():
+    """One proof file holds every scene (ExplosiveKnockback RM_KnockbackProof.cs, 2026-11-23: a change to sc_spared's
+    case alone sent all 54 scene checks of visit 5 back). Each scenario reads its touched set against the one it owes."""
+    allc = ["sc_alpha", "sc_beta", "sc_delta", "sc_gamma"]
+    cases = [
+        ("an edit inside case beta reruns beta and gamma (goto case beta), and delta (no case of its own)",
+         [('return "A";\n                case "beta":\n                    // a comment with { a brace\n'
+           '                    if (NoHarm.Contains(7))', 'return "A";\n                case "beta":\n'
+           '                    // a comment with { a brace\n                    if (NoHarm.Contains(8))')],
+         None, ["sc_beta", "sc_delta", "sc_gamma"]),
+        ("a new Scene field that only case alpha uses reruns alpha (and delta)",
+         [("public int a;", "public int a;\n            public int b;"),
+          ("s.a = Helper(1);", "s.a = Helper(1);\n                    s.b = 2;")], None, ["sc_alpha", "sc_delta"]),
+        ("a helper only case alpha calls reruns alpha (and delta)",
+         [("x + 1;", "x + 2;")], None, ["sc_alpha", "sc_delta"]),
+        ("a comment-only edit inside case beta reruns nothing but delta",
+         [("a comment with { a brace", "a comment with no brace")], None, ["sc_delta"]),
+        ("the bridge method Stage, called from outside the file, reruns every check",
+         [("scenes[arg] = s;", "scenes[arg] = s; s.a = 0;")], None, allc),
+        ("a Scene field initializer runs for every scene: every check",
+         [("public int a;", "public int a = 3;")], None, allc),
+        ("case reset, which no check's entry names, reruns every check",
+         [('return "R";', 'return "R2";')], None, allc),
+        ("case alpha starts writing a shared static case beta reads: alpha, beta, gamma (and delta)",
+         [("s.a = Helper(1);", "s.a = Helper(1);\n                    NoHarm.Add(7);")], None, allc),
+        ("a helper another C# file of the mod names reruns every check",
+         [("x + 1;", "x + 2;")], "namespace Planted { public static class Other { public static int Use() => "
+                                 "Proof.Helper(1); } }\n", allc),
+        ("a new public method no check reaches (a bridge entry, called from outside) reruns every check",
+         [("x + 1;", "x + 1;\n        public static int Spare() => 2;")], None, allc),
+        ("a file that no longer parses (one brace short) relates whole",
+         [('return null;\n        }', 'return null;\n')], None, allc),
+        ("a using line relates whole", [("using System;\n", "using System;\nusing System.Linq;\n")], None, allc),
+    ]
+    for why, edits, other, want in cases:
+        got = _proof_case(edits, other)
+        ok("csharp-relates-by-scene-section: %s" % why, got == want, "got %s, want %s" % (got, want))
+    # every .cs file of the repo read on 2026-11-23 (2,646); the six unread ones opened a verbatim string on "" (@""")
+    u = RR.cs_units('class K { string v = @""" q"" x"; int w; }\n')
+    ok("csharp-relates-by-scene-section: a verbatim string that opens on \"\" (@\"\"\" ...) reads",
+       u is not None and "K/w" in u, sorted(u or {}))
+
+
 def t_python_relates_by_symbol():
     tr = Tree()
     try:
@@ -514,6 +635,7 @@ def main():
     t_whole_mod_check_reruns_on_any_change()
     t_whole_mod_check_skips_hashignored()
     t_csharp_relates_by_source_file()
+    t_csharp_relates_by_scene_section()
     t_python_relates_by_symbol()
     t_json_relates_by_entry()
     t_spec_change_reruns()
