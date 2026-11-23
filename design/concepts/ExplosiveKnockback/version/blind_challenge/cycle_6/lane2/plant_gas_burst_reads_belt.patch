@@ -1,0 +1,13 @@
+diff --git a/src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs b/src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs
+index ed7c8995e1..0c5b33f344 100644
+--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs
++++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs
+@@ -1025,7 +1025,7 @@ namespace RimMandrake.ExplosiveKnockback
+                         comp.Enqueue(new KnockbackRequest
+                         {
+                             explosionId = id, centre = c, radius = radius, damType = null, force = cfg.force, ownCap = cfg.ownCap,
+-                            config = cfg, shield = null, instigator = instigator, thing = t, takeoff = t.Position, tick = now, gas = true,
++                            config = cfg, shield = (t as Pawn)?.apparel?.WornApparel.Select(a => a.GetComp<CompShield>()).FirstOrDefault(c => c != null), instigator = instigator, thing = t, takeoff = t.Position, tick = now, gas = true,
+                         });
+                         n++;
+                     }

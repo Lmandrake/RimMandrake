@@ -204,12 +204,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 21.17,
+    "seconds": 24.73,
     "last": "PASS storage census: closed exactly when hidden",
-    "at": "2026-11-19T03:37:55Z",
+    "at": "2026-11-23T14:15:41Z",
     "result": "PASS",
-    "build": "c9870f6e6d6e2aaae543",
-    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_storage_census.py"
+    "build": "b4d286a67a0f65931a94",
+    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_storage_census.py",
+    "margins": []
    }
   },
   "T_SCRIPT": {
@@ -251,11 +252,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 14.37,
+    "seconds": 5.97,
     "last": "PASS proofgate (R1 P1 G1)",
-    "at": "2026-11-23T10:30:12Z",
+    "at": "2026-11-23T14:15:47Z",
     "result": "PASS",
-    "build": "5481fe6b6e68fcc23333",
+    "build": "62d47aa7e64d119b802c",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_proofgate.py",
     "margins": []
    }
@@ -394,12 +395,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.04,
+    "seconds": 0.06,
     "last": "explosive knockback gas clumps: PASS (0 faults, 11/11 planted faults caught)",
-    "at": "2026-11-19T03:38:28Z",
+    "at": "2026-11-23T14:15:47Z",
     "result": "PASS",
-    "build": "3d68680cb0f2ede4684b",
-    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_gas_clumps.py"
+    "build": "3d5fd6e1a28e6cbe8803",
+    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_gas_clumps.py",
+    "margins": []
    }
   },
   "T_HEAVY_KNOCK_RULE": {
@@ -470,12 +472,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.31,
+    "seconds": 0.23,
     "last": "explosive knockback hook scope: PASS (0 faults, 3/3 planted faults caught)",
-    "at": "2026-11-19T03:38:30Z",
+    "at": "2026-11-23T14:15:48Z",
     "result": "PASS",
-    "build": "bd301ad97ed1cefc803e",
-    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_hook_scope.py"
+    "build": "8e3509e7b40c9319c095",
+    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_hook_scope.py",
+    "margins": []
    }
   },
   "sc_storeroom_bomb_pit": {
@@ -1915,12 +1918,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 206.85,
-    "last": "explosive knockback map: PASS (every bar holds; 30 of 30 planted faults seen)",
-    "at": "2026-11-19T03:42:00Z",
+    "seconds": 233.59,
+    "last": "explosive knockback map: PASS (every bar holds; 31 of 31 planted faults seen)",
+    "at": "2026-11-23T14:19:41Z",
     "result": "PASS",
-    "build": "bc087d0106c9d897c10a",
-    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_map.py"
+    "build": "c27e2f3877a8680b07ce",
+    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_map.py",
+    "margins": []
    }
   },
   "T_PIT_FETCH_OFFLINE": {

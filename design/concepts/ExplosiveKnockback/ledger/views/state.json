@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "d6f7a95589654e698e017f6e401f50f440ee6c38684db1e0883d103bb26104e0",
+  "body_sha256": "0f7ff130fd278df2d675d7dc9631680c2340b5c302237f09e3981bda8e1664a1",
   "reducer": 1,
   "shards": {
    "BACKFILL": 344431,
@@ -12,6 +12,7 @@
    "HOLDER.run-1794865314": 728,
    "HOLDER.run-1794895533": 1780,
    "HOLDER.run-1795435910": 630,
+   "HOLDER.run-1795441975": 2181,
    "JUDGE.judge-1794890427": 18837,
    "OWNER": 1207
   }
@@ -880,7 +881,7 @@
     "ts": "2026-11-16T06:51:51Z"
    }
   },
-  "events": 572,
+  "events": 577,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -2468,7 +2469,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-23T13:54:16Z",
+   "last": "2026-11-23T14:20:36Z",
    "lease": "run-1795441975",
    "released": false,
    "token": 15
@@ -2504,6 +2505,7 @@
    "HOLDER.run-1794865314",
    "HOLDER.run-1794895533",
    "HOLDER.run-1795435910",
+   "HOLDER.run-1795441975",
    "JUDGE.judge-1794890427",
    "OWNER"
   ],
@@ -3541,6 +3543,14 @@
     "ts": "2026-11-16T07:19:30Z",
     "version": "0.1.0",
     "where": "design/concepts/ExplosiveKnockback/journal.md:58"
+   },
+   "trap:killed-blind-judge-leaves-preliminary-exit-block": {
+    "by": "HOLDER.run-1795441975",
+    "status": "noted",
+    "text": "A killed blind judge leaves its preliminary Exit block (written with lane 1, before its fixes) reading red; cycle 6 read red that way. The steward reruns the deciders at HEAD and sets the block from those reruns, never from the report.",
+    "ts": "2026-11-23T14:20:21Z",
+    "version": "0.1.0",
+    "where": "blind_challenge/cycle_6/SUMMARY.md ## Exit"
    },
    "trap:melee-shove-into-pit-contest-is-out-of": {
     "by": "BACKFILL",

@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":344431,"DISPATCH":22162,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"JUDGE.judge-1794890427":18837,"OWNER":1207} body_sha256=6650c8ea516f5ef189b94cb9fd9d6a1a07f56f68756b3798a2063ecae8bf3e56 -->
-# ExplosiveKnockback — mod ledger history (572 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":344431,"DISPATCH":22162,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"HOLDER.run-1795441975":2181,"JUDGE.judge-1794890427":18837,"OWNER":1207} body_sha256=df14db0f78525d79c39810e5e8c85a83941624b760bc8714ff2b5fd21cc1797c -->
+# ExplosiveKnockback — mod ledger history (577 events, merged across shards)
 
 - 2026-11-16T06:51:51Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 56 of 59 bars met at the lock
 - 2026-11-16T06:51:51Z BACKFILL#2 decision version v0.1.0: 
@@ -573,3 +573,8 @@
 - 2026-11-23T13:21:12Z DISPATCH#61 run.end run v0.1.0: 
 - 2026-11-23T13:54:16Z DISPATCH#62 lease.grant lease v0.1.0: 
 - 2026-11-23T13:54:17Z DISPATCH#63 run.start run v0.1.0: 
+- 2026-11-23T13:57:30Z HOLDER.run-1795441975#1 lease.renew lease v0.1.0: 
+- 2026-11-23T14:07:37Z HOLDER.run-1795441975#2 lease.renew lease v0.1.0: 
+- 2026-11-23T14:14:52Z HOLDER.run-1795441975#3 lease.renew lease v0.1.0: 
+- 2026-11-23T14:20:21Z HOLDER.run-1795441975#4 trap.noted trap:killed-blind-judge-leaves-preliminary-exit-block v0.1.0: A killed blind judge leaves its preliminary Exit block (written with lane 1, before its fixes) reading red; cycle 6 read red that way. The steward reruns the deciders at HEAD and sets the block from those reruns, never from the report.
+- 2026-11-23T14:20:36Z HOLDER.run-1795441975#5 finding.claimed_fixed finding:RIMMANDRAKE_MOVE_KNOCKBACK_GOODS_PINNED_AGAINST_WALLS_SHELVES v0.1.0: Tumble(): the good walks the 8 directions, most in line first (judge fix fa2de6ee4b); fresh reader run-1795441975 read it sound (cycle_6/lane2/fix_reviews.jsonl); a JUDGE turns it green

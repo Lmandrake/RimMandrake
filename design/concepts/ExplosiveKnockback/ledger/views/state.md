@@ -1,7 +1,7 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":344431,"DISPATCH":22162,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"JUDGE.judge-1794890427":18837,"OWNER":1207} body_sha256=b935e03d8267f735d69ced3c90b93b9b340af25b3f3ababe5127ebd6a0faff29 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":344431,"DISPATCH":22162,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"HOLDER.run-1795441975":2181,"JUDGE.judge-1794890427":18837,"OWNER":1207} body_sha256=2ca53dd194260553028319e3ee8a7b60549b78ee17b8883903fa02cb58fedf73 -->
 # ExplosiveKnockback — mod ledger packet
-version 0.1.0 · stage blind_challenge · 572 events in 11 shards · reducer 1
-holder lease run-1795441975, token 15, last active 2026-11-23T13:54:16Z
+version 0.1.0 · stage blind_challenge · 577 events in 12 shards · reducer 1
+holder lease run-1795441975, token 15, last active 2026-11-23T14:20:36Z
 holder session cd35d81a-f17f-4ab1-8903-7d8930199e43, context 116582 of ceiling 400000
 
 ## Last checkpoint (HOLDER.run-1795435910, 2026-11-23T12:27:41Z)
@@ -62,7 +62,7 @@ holder session cd35d81a-f17f-4ab1-8903-7d8930199e43, context 116582 of ceiling 4
   proposed fix: Skip cells GenSight.LineOfSight(c, cell, map) refuses, and give the map's model the same rule for gas (KnockbackMap.cs A5).
   accept: Live only, not yet watched fail: map_agreement.py case 'c:wall:1:0;c:wall:0:1;t:a:steel2:1:1;b:gas:1.9' expects a stays on 1,1 (DISAGREE today); after the fix AGREE and selftest_explosiveknockback_map.py green.
 
-## Traps (63) — what a reader would otherwise get wrong
+## Traps (64) — what a reader would otherwise get wrong
 - trap:judge-round-count-has-three-answers (design/concepts/ExplosiveKnockback/journal.md:58): Judge round count has three answers (12 / 13 / 19); not reconciled (spec §10).
 - trap:97-2-million-tokens (version/VERSION.json): 97.2 million tokens were charged to the Designer stage, 86.5 million of them estimates (`version/VERSION.json`).
 - trap:proof-build-versus-release-build (RM_KnockbackProof.cs): Proof build versus release build. Most live scenes exist only in the proof build (`RM_KnockbackProof.cs`, `proof_build_gate.py`); the test queue cannot deploy a proof build today (RIMMANDRAKE_ROUTE_TESTQ_PROOF_BUILD_JOBS_TO_STEVE).
@@ -126,6 +126,7 @@ holder session cd35d81a-f17f-4ab1-8903-7d8930199e43, context 116582 of ceiling 4
 - trap:flowworks-journals-pawn-descents-only-so-goods-descents (RM_KnockbackProof_StoreroomBombPit.cs; knockback_runner.py --scenes storeroom_bomb_pit,storeroom_bomb_pit_control --ticks 900): FlowWorks journals pawn descents only, so goods descents come from the scene's own per-tick thing trace.
 - trap:the-250-x2-lane-statedtable-false-only-because (sc_mass_and_power 250_x2): The 250_x2 lane statedTable=False only, because a 63 kg colonist ties the capped rat.
 - trap:sc-pit-fetch-failed-once-the-main-lane (sc_pit_fetch control pit): sc_pit_fetch failed once: the main lane passed, but the stack in the control pit (ladder raised) also got out.
+- trap:killed-blind-judge-leaves-preliminary-exit-block (blind_challenge/cycle_6/SUMMARY.md ## Exit): A killed blind judge leaves its preliminary Exit block (written with lane 1, before its fixes) reading red; cycle 6 read red that way. The steward reruns the deciders at HEAD and sets the block from those reruns, never from the report.
 
 ## Causes refuted (14) — do not chase these again
 - cause:portable-ladder-placement-is-not-the-cause-rm: Portable ladder placement is not the cause: RM_Building_Ladder.SpawnSetup re-hangs it toward the rim O(1,0) and LadderReaches(4,0,6) is true. (on f03d8d4f4a, depends on src/RimMandrake/ExplosiveKnockback)
@@ -238,6 +239,6 @@ spend recorded: USD 178.61, 171672717 tokens
 - tests: 100, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
 - claimed fixes in brief: 2 on one line (name and sha), their claim, test and fix by `show`
 - open findings in brief: the oldest 39 on one line, their fix and accept by `modledger.py show --mod ExplosiveKnockback <subject>`
-- the full history: 572 events (views/history.md; never read whole)
+- the full history: 577 events (views/history.md; never read whole)
 
-cursor: t=2026-11-23T13:54:17Z.1795442057691829909 (modledger.py since --mod ExplosiveKnockback t=2026-11-23T13:54:17Z.1795442057691829909 prints what changed after this packet)
+cursor: t=2026-11-23T14:20:36Z.1795443636610147405 (modledger.py since --mod ExplosiveKnockback t=2026-11-23T14:20:36Z.1795443636610147405 prints what changed after this packet)

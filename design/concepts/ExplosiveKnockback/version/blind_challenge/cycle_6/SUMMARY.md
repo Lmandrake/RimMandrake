@@ -36,7 +36,9 @@ Result: 34 rows: 28 PASS, 2 FAIL, 4 UNSETTLED [measured] (`lane1/lane1_rows.json
 - Verified the two claimed fixes of cycle 5 (`judge-verify`): RIMMANDRAKE_STOP_KNOCKBACK_THROW_AT_PAWN_ON_PIT_COVER (`cycle_5/lane2/check_pit_pawn.py` rc 0, 6 of 6) and RIMMANDRAKE_STOP_THROWS_OVER_COVERED_PITS_K08_SAYS_GROUND (`accept_covered_pit.py --rev 9a0e1710fb` rc 0, 6 of 6); both `finding.verified` in the mod ledger.
 
 ## Planted
-(pending)
+The judge (judge-1795437145) was killed before it wrote this section. The steward run (run-1795441975) read `lane2/planted_results.jsonl` [measured]: 33 planted faults, 21 caught, 12 not caught, tree clean after.
+- 8 not caught are game-side Verse callers on Stage-6 bars (PF_CALLER_SHIELD_NEVER, PF_CALLER_PIT_NEVER_READ, PF_CALLER_PAWN_ON_COVER_IGNORED, PF_CALLER_FIRE_SWITCH_IGNORED, PF_CALLER_PAWN_LANDING_KEEPS_COVER, PF_CALLER_PAWN_LANDING_NOT_STANDABLE, PF_CALLER_GOODS_LANDING_KEEPS_COVER, PF_CALLER_HEAVY_KNOCK_OFF). This is the class of the open finding RIMMANDRAKE_NOTE_KNOCKBACK_CALLER_MUTANTS_OWED_TO_STAGE_SIX. No offline test runs Verse code.
+- 4 not caught are in proof code and proof scripts (PF_PROOF_RESET_NOOP, PF_PROOF_WALL_SCENE_DROPPED, PF_MAPAGREE_ALWAYS_OK, PF_SAVELOAD_ALWAYS_OK). This is the class of the open finding RIMMANDRAKE_PIN_KNOCKBACK_PROOF_VERDICTS_NINE_MUTANTS_UNSEEN (open since cycle 3; cycles 4 and 5 judged inv_proof_scenes green with the same class surviving). No new item: one source event, one item.
 
 ## Faults
 `lane2/faults.json` [measured counts]: 2 Problems, 2 Polish; 0 `miss_of: 5`.
@@ -63,9 +65,12 @@ None were written for this cycle; the standing default held (every bar judged as
 - Code review status of the changed files reads UNREADABLE (mod bars mostly UNRUN live, Stage 6 state) and NO PAGE for `proof_restore_check.py` [measured].
 
 ## Exit
-offline_bars: {inv_kernel: red, inv_proof_scenes: red}
+The judge wrote this block at `dbdd5f88d6`, with lane 1 only, before lane 2 and before its fixes. It was then killed. The steward run (run-1795441975) set offline_bars from its own reruns at `e0e997836e`, after the mod fix `fa2de6ee4b` (`lane2/reruns_after_fix.jsonl`, rows `by` run-1795441975): T_KERNEL, T_FUZZ, T_SCRIPT, T_PROOFGATE and T_RESTORE are rc 0. exit_met stays the judge's false. The reader reads that false as the owed fresh reader of the mod fix, and `lane2/fix_reviews.jsonl` holds that reader's review.
+offline_bars: {inv_kernel: green, inv_proof_scenes: green}
 problems_open: 0
 exit_met: false
 
 ## Owed
-(pending: run in progress)
+- Steward run run-1795441975 is the one fresh reader of `fa2de6ee4b`. Its verdict is sound (`lane2/fix_reviews.jsonl`).
+- `L1_SHIELD_DOES_NOT_STOP_GAS_SHOVE` is settled by a planted run of T_GAS_CLUMP_ORDER. The planted run uses `lane2/plant_gas_burst_reads_belt.patch`, a gas request that reads the belt. It gives rc 1, and the check gives rc 0 at `e0e997836e` (`lane2/lane1_rows_after_fix.jsonl`, `settled_by`).
+- Stage 6 owes the game-side bars named by `L1_NOT_KERNEL_GAME_SIDE` and the 8 caller faults that no offline test caught.
