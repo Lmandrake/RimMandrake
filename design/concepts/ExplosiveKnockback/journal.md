@@ -8,13 +8,13 @@ The top part, **the mod as it stands**, is rewritten at every stage change and s
 
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`). Code exists:
   `src/RimMandrake/ExplosiveKnockback/`.
-- **Stage now:** Stage 6, in-game acceptance, since 2026-11-23 6:21 AM PST (`version/stage_record.json`).
+- **Stage now:** Stage 6, in-game acceptance, since 2026-11-23 11:44 AM PST (`version/stage_record.json`).
 - **Bars:** 59 (30 inventory rows of `record.json` + 29 leaves of `tree.json`). The test-and-stage table is
   `version/test_table.json` (read view `version/test_table.md`).
 - **Measured 2026-11-14 12:45 PST:** 53 of 59 bars have at least one test that runs today; 47 have every deciding test
   runnable; 41 have all their offline deciding tests green. All 15 offline tests are built (13 PASS, 2 known red,
   unchanged). In-game scenes: 56, entry exists 50, absent 6. Every in-game scene is UNRUN (Stage 6); commands in the table.
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-23 6:21 AM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-23 11:44 AM PST).
 - **Open questions:** see "Questions" at the end of the history.
 
 ### The vision (his root paragraph, approved by card 2026-11-11, OWNER:1794468835221748501)
@@ -398,4 +398,14 @@ answer the locked bar, his recorded words or the shipped code already gives; no 
 - Steward confirms: run-1795441975 read cycle_6 SUMMARY, faults, fixes, tests_edited (M04 narrowed: stronger; restore BASELINE: check repair shown red on a planted EK leak), planted results (12 not caught, all in the two open findings' classes), and read fa2de6ee4b once: sound. Polish confirmed for lane-1 rows L1_FIRE_SWITCH_ON_UNPATCHED_FIRE_TYPE and L1_GAS_SHOVE_PAWN_ON_INTACT_COVER (no failure, no concrete case in normal play; test 1 fails). Verdict: exit met.
 - Was, "Stage now": - **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-16 10:21 PM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-16 10:21 PM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-23 11:44 AM PST, stage change: In-game acceptance (Stage 6) to In-game acceptance (Stage 6) (by BENCH)
+
+- Why: steward road back: visit 4 exit not met; every open line is game-only: sc_spared (SITE, four bars undecided, RIMMANDRAKE_HOLD_SPARED_CARRIER_IN_BLAST_IT_WALKED_AWAY) and sc_walk_raid (HARNESS/SITE, RIMMANDRAKE_RUN_KNOCKBACK_WALK_FRAME_ARMS_SMALL_COLONY_ABSENT); no mod-wrong line open: fix 2590111487 read sound dc7550420b; koth.isid identity fixed 4ecd015e866f
+- Checks passed: order, by, version, hold.
+- Steward confirms: run-1795461416 read visit_4 SUMMARY, rows, strange, the three commits that touched tests (cabe962231, 092b2e358b: lanes and a memory reset added, no assertion weakened) and read fix 2590111487 once: sound. 22 of 23 EK offline selftests rc 0, selftest_explosiveknockback_map.py past my 110 s limit: UNMEASURED. Verdict: next visit, never a stage back.
+- Owner said: per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: steward road back: visit 4 exit not met; every open line is game-only: sc_spared (SITE, four bars undecided, RIMMANDRAKE_HOLD_SPARED_CARRIER_IN_BLAST_IT_WALKED_AWAY) and sc_walk_raid (HARNESS/SITE, RIMMANDRAKE_RUN_KNOCKBACK_WALK_FRAME_ARMS_SMALL_COLONY_ABSENT); no mod-wrong line open: fix 2590111487 read sound dc7550420b; koth.isid identity fixed 4ecd015e866f
+- Was, "Stage now": - **Stage now:** Stage 6, in-game acceptance, since 2026-11-23 6:21 AM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-23 6:21 AM PST).
 - Record: `version/stage_record.json`.

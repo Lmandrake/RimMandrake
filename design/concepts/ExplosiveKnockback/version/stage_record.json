@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "stage": "in_game",
   "stage_label": "In-game acceptance (Stage 6)",
-  "since": "2026-11-23T06:21:40-08:00",
+  "since": "2026-11-23T11:44:19-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -254,6 +254,24 @@
         "steward_confirms",
         "exit_met",
         "judge_certificate"
+      ]
+    },
+    {
+      "from": "in_game",
+      "to": "in_game",
+      "at": "2026-11-23T11:44:19-08:00",
+      "by": "BENCH",
+      "why": "steward road back: visit 4 exit not met; every open line is game-only: sc_spared (SITE, four bars undecided, RIMMANDRAKE_HOLD_SPARED_CARRIER_IN_BLAST_IT_WALKED_AWAY) and sc_walk_raid (HARNESS/SITE, RIMMANDRAKE_RUN_KNOCKBACK_WALK_FRAME_ARMS_SMALL_COLONY_ABSENT); no mod-wrong line open: fix 2590111487 read sound dc7550420b; koth.isid identity fixed 4ecd015e866f",
+      "unit": "rm-detached-bench-rimmandrake-route-explosiveknockback-vis-1795461526",
+      "confirmed": {
+        "steward_confirms": "run-1795461416 read visit_4 SUMMARY, rows, strange, the three commits that touched tests (cabe962231, 092b2e358b: lanes and a memory reset added, no assertion weakened) and read fix 2590111487 once: sound. 22 of 23 EK offline selftests rc 0, selftest_explosiveknockback_map.py past my 110 s limit: UNMEASURED. Verdict: next visit, never a stage back.",
+        "owner_said": "per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: steward road back: visit 4 exit not met; every open line is game-only: sc_spared (SITE, four bars undecided, RIMMANDRAKE_HOLD_SPARED_CARRIER_IN_BLAST_IT_WALKED_AWAY) and sc_walk_raid (HARNESS/SITE, RIMMANDRAKE_RUN_KNOCKBACK_WALK_FRAME_ARMS_SMALL_COLONY_ABSENT); no mod-wrong line open: fix 2590111487 read sound dc7550420b; koth.isid identity fixed 4ecd015e866f"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold"
       ]
     }
   ],
