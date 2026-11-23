@@ -13,7 +13,8 @@ rimflow/dispatcher_schedule.json "measure"):
                          account for it (fleet_stop_h), each account's runway were the fleet moved there (moved_runway)
              codex       sim/csuite_codex_limits.readings(): the weekly window's used %, reset, runway
              steve       testq steward.json / steward_watch.json / done/*.json: state, fault, heartbeat, INVALID streak;
-                         a filing pass also runs testq/brake_release.py, which ACTS: one canary job on a known-cause brake
+                         idle_with_takeable_min (the lane idle or on filler while in-game visit checks with a testq
+                         block wait: the dispatch reading's ingame_testq block + running/ + pending/); a filing pass also runs testq/brake_release.py, which ACTS: one canary job on a known-cause brake
              testing     testq done jobs (Steve lane, per job) + testing_metrics history (archmagi, per day):
                          busy hours on runs that caught nothing (no FAIL, no finding, no close within 24 h)
              disk        free GB on / (WSL ext4), C:, D:; D: used GB (agent storage growth); scratch under the reaper
@@ -1021,6 +1022,147 @@ def c_steve_seats(now, rules, ctx, probed=None):
                                         uptime_min=round(up / 60.0, 1) if reach else None)}
 
 
+STEVE_TAKEABLE_KEY = "steve.idle_with_takeable_min"
+FILLER_BY = "BENCH.filler"      # testq/archmagi_switch.py FILLER: the requester of a filler job
+
+
+def c_steve_takeable(now, rules, ctx):
+    """steve.idle_with_takeable_min (RIMMANDRAKE_WATCH_STEVE_LANE_IDLE_WHILE_VISIT_CHECKS_WAIT; page
+    design/specs/2026-11-22-steve-idle-takeable/boundary.md): minutes the SteveDesktop lane has sat idle, braked or on
+    filler while an in-game visit's check with a testq block waits for it. Measured 2026-11-22: 5.5 h (21:14Z-02:45Z)
+    with 28 Pyrelands and 6 FlowWorks checks waiting, no reading fired. Four answers: 0 `busy` (a commissioned job, or
+    any job on a waiting check's chain, runs or is ready); 0 `quiet` (nothing takeable waits); the minutes `waiting`
+    since the later of the visit's opening and the last finish of a commissioned or takeable job; UNMEASURED when the
+    dispatch reading (maturation_dispatch ingame_testq), the owner's hold or the queue could not be read."""
+    unit = "min idle with takeable checks waiting"
+    rf = str(HERE.parent / "rimflow")
+    if rf not in sys.path:
+        sys.path.insert(0, rf)
+    import maturation_dispatch as MD
+    p = os.path.join(MD.sdir(), "reading.json")
+    rd = read_json(p)
+    if not isinstance(rd, dict):
+        return {STEVE_TAKEABLE_KEY: U("the dispatch reading %s missing or unreadable" % p, unit)}
+    at = epoch(rd.get("at"))
+    if at is None or now - at > MATURATION_READING_MAX_AGE_S or at > now + 300:
+        return {STEVE_TAKEABLE_KEY: U("the dispatch reading %s is %s old (the step is not ticking)" % (
+            p, "of unknown age" if at is None else "%d min" % ((now - at) / 60)), unit)}
+    blk = rd.get("ingame_testq")
+    if not isinstance(blk, dict):
+        return {STEVE_TAKEABLE_KEY: U("no ingame_testq block in %s (%s)" % (
+            p, rd.get("ingame_testq_error") or "the dispatch tick did not write it"), unit)}
+    # every mod the stage records put at in_game must be in the block: one missing is not read, never "nothing waits"
+    unread = []
+    for sr in sorted(glob.glob(str(data_clone() / "design" / "concepts" / "*" / "version" / "stage_record.json"))):
+        mod = Path(sr).parent.parent.name
+        rec = read_json(sr)
+        if not isinstance(rec, dict):
+            unread.append("%s (stage record unreadable)" % mod)
+        elif rec.get("stage") == "in_game" and mod not in blk:
+            unread.append("%s (at in_game, not in the dispatch reading)" % mod)
+    waiting, opened, counts = {}, {}, {}
+    for mod, e in sorted(blk.items()):
+        if not isinstance(e, dict) or e.get("error") or e.get("hold_unreadable"):
+            unread.append("%s (%s)" % (mod, (e or {}).get("error") if isinstance(e, dict) and e.get("error")
+                                       else "the owner's hold unreadable"))
+            continue
+        if e.get("held") or e.get("blocked") or e.get("owed") == "exit met":
+            continue        # his hold, a blocked visit, a visit whose exit is met: nothing to take
+        ch = {k: [c for c in v if isinstance(c, str)] for k, v in (e.get("checks") or {}).items() if isinstance(v, list)}
+        ch = {k: v for k, v in ch.items() if v}
+        if not ch:
+            continue
+        t0 = epoch(e.get("opened"))
+        if t0 is None:
+            unread.append("%s (visit opening %r unreadable)" % (mod, e.get("opened")))
+            continue
+        waiting[mod], opened[mod] = ch, t0
+    # the queue: what runs on the lane and what waits ready for it
+    jobs = []
+    for state in ("running", "pending"):
+        d = qhome() / state
+        try:
+            names = sorted(n for n in os.listdir(d) if n.endswith(".json"))
+        except OSError as e:
+            return {STEVE_TAKEABLE_KEY: U("testq %s unreadable: %s" % (d, e), unit)}
+        for n in names:
+            r = read_json(d / n)
+            j = (r.get("job") if state == "running" else r) if isinstance(r, dict) else None
+            if not isinstance(j, dict):
+                if state == "running":      # an unreadable running job could be the lane's work: cannot say idle
+                    return {STEVE_TAKEABLE_KEY: U("testq running record %s unreadable" % n, unit)}
+                continue
+            host = (r.get("host") if state == "running" else j.get("host")) or "stevedesktop"   # testq.host_of
+            jobs.append((state, host, j))
+
+    def chains(j):
+        s = j.get("selector") if isinstance(j.get("selector"), dict) else {}
+        return {c for c in s.get("chains") or [] if isinstance(c, str)}
+
+    def on_waiting(j, w):
+        return set().union(*w.get(j.get("mod"), {}).values()) & chains(j) if j.get("mod") in w else set()
+
+    def ready(j):           # testq.ready: no owner gate, its not_before passed, on the Steve lane
+        nb = epoch(j.get("not_before")) if j.get("not_before") else None
+        return not j.get("owner_gate") and (nb is None or nb <= now) and j.get("lane") in ("stevedesktop", "any")
+
+    # a check whose job waits on the owner's gate is his, not the lane's: it does not wait for the lane
+    for state, host, j in jobs:
+        if state == "pending" and j.get("owner_gate") and j.get("mod") in waiting:
+            g = chains(j)
+            waiting[j["mod"]] = {k: v for k, v in waiting[j["mod"]].items() if not (set(v) & g)}
+    # a check is drained when each of its chains ran DONE for the mod since the visit opened
+    bad = list(ctx.get("steve_jobs_bad") or [])
+    since = min(opened.values()) if opened else now - 7 * DAY
+    done = ctx.get("steve_jobs") if since >= now - 7 * DAY and ctx.get("steve_jobs") is not None else None
+    if done is None:
+        done = done_jobs(min(since, now - 7 * DAY), bad, now)
+    ran = {}
+    for fin, d in done:
+        j = d.get("job") or {}
+        if outcome_of(d) == "DONE" and j.get("mod") in opened and fin >= opened[j["mod"]]:
+            ran.setdefault(j["mod"], set()).update(chains(j))
+    for mod in list(waiting):
+        waiting[mod] = {k: v for k, v in waiting[mod].items() if not set(v) <= ran.get(mod, set())}
+        if not waiting[mod]:
+            del waiting[mod]
+    counts = {m: len(v) for m, v in waiting.items()}
+    sj = read_json(qhome() / "steward.json")
+    sj = sj if isinstance(sj, dict) else {}
+    steward = "%s%s" % (sj.get("state") or "unread", " (%s)" % sj["reason"] if sj.get("reason") else "")
+    work = [(state, j) for state, host, j in jobs if host == "stevedesktop" and (state == "running" or ready(j))
+            and (j.get("requested_by") != FILLER_BY or on_waiting(j, waiting))]
+    if work:
+        state, j = work[0]
+        return {STEVE_TAKEABLE_KEY: M(0, unit, state="busy", job=j.get("id"), by=j.get("requested_by"),
+                                      job_mod=j.get("mod"), job_state=state, waiting=counts)}
+    if not waiting:
+        if unread:
+            return {STEVE_TAKEABLE_KEY: U("nothing known waits, but not read: %s" % "; ".join(unread[:4]), unit)}
+        return {STEVE_TAKEABLE_KEY: M(0, unit, state="quiet", steward=steward)}
+    # the clock: the later of the earliest waiting visit's opening and the last finish of a lane job that was work
+    start = min(opened[m] for m in waiting)
+    for fin, d in done:
+        j = d.get("job") or {}
+        h = d.get("host") or j.get("host") or "stevedesktop"
+        if h == "stevedesktop" and fin > start and (j.get("requested_by") != FILLER_BY or on_waiting(j, waiting)):
+            start = fin
+    v = round(max(0.0, now - start) / 60.0, 1)
+    run = [j for state, host, j in jobs if state == "running" and host == "stevedesktop"]
+    said = "SteveDesktop %s for %.0f min, %s; %s waiting with a testq block (%s)" % (
+        "on filler %s (%s)" % (run[0].get("id"), run[0].get("mod")) if run else "idle", v, steward,
+        sum(counts.values()), ", ".join("%s %d" % (m, n) for m, n in sorted(counts.items())))
+    x = dict(state="waiting", waiting=counts, steward=steward, running=run[0].get("id") if run else None,
+             since=time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(start)), said=said,
+             first={m: sorted(w)[:3] for m, w in sorted(waiting.items())})
+    if unread:
+        x["unread"] = unread[:6]
+    if bad:
+        return {STEVE_TAKEABLE_KEY: E(v, "%d done record(s) unreadable (%s): a check counted waiting may have run" % (
+            len(bad), ", ".join(bad[:3])), unit, **x)}
+    return {STEVE_TAKEABLE_KEY: M(v, unit, **x)}
+
+
 def c_steve_all(now, rules, ctx):
     """The seat probe starts first, beside its siblings (STEVE_SEATS_FIX_SIBLINGS_EAT_THE_BEAT): run after them, a
     c_steve that read testq's done history for the whole 15 s beat left it <SEAT_PROBE_MIN_S, so it returned no
@@ -1037,6 +1179,10 @@ def c_steve_all(now, rules, ctx):
         t.start()
     try:
         out = c_steve(now, rules, ctx)
+        try:        # after c_steve: it reads ctx["steve_jobs"], the week's done records c_steve already read
+            out.update(c_steve_takeable(now, rules, ctx))
+        except Exception as e:      # noqa: BLE001  this reading failing never costs the family's other points
+            out[STEVE_TAKEABLE_KEY] = U("%s: %s" % (type(e).__name__, e), "min")
     finally:
         if t is not None:
             t.join()        # bounded: the probe's ssh times out inside the beat (or at 30 s outside one)

@@ -3581,6 +3581,43 @@ def _aut(rows, mod):
     return any(r["mod"] == mod and r.get("aut") for r in rows)
 
 
+def ingame_testq(root, facts, holds):
+    """-> {mod: entry} for every in-game mod this tick read (the reading's `ingame_testq` block; page
+    design/specs/2026-11-22-steve-idle-takeable/boundary.md): visit, opened, owed, blocked, held (the owner's hold),
+    hold_unreadable, ran_in_visit (testq checks with a row in this visit's own folder) and checks {id: [chains]}: the
+    checks the visit runs (to_run) that carry a testq block with chains, less those with a row of this visit. ops_watch
+    reads it each beat (ingame_facts costs 5-16 s a mod, measured 2026-11-22; the tick already pays it). A mod that
+    could not be read carries `error`, never an empty list."""
+    out = {}
+    for mod, f in sorted((facts or {}).items()):
+        if not isinstance(f, dict) or f.get("stage") != "in_game":
+            continue
+        try:
+            n = f.get("visit")
+            tt, terr = M.read_json(root, mod, "version/test_table.json")
+            tests = (tt or {}).get("tests") or {}
+            ran = {t for t, r in M.BM.carried_rows(root, mod, n).items()
+                   if t and isinstance(r, dict) and r.get("_visit") == n}
+            tq = set(f.get("testq") or [])
+            waiting = {}
+            for k in f.get("to_run") or []:
+                q = (tests.get(k) or {}).get("testq") if isinstance(tests.get(k), dict) else None
+                if k in tq and isinstance(q, dict) and k not in ran:
+                    ch = [c for c in q.get("chains") or [] if isinstance(c, str) and c]
+                    if ch:
+                        waiting[k] = ch
+            h = (holds or {}).get(OH.key(mod))
+            out[mod] = {"visit": n, "opened": f.get("opened"), "owed": f.get("owed"),
+                        "blocked": list(f.get("blocked") or []), "held": bool(h),
+                        "hold_unreadable": bool(h and h.get("unreadable")), "ran_in_visit": sorted(ran & tq),
+                        "checks": waiting}
+            if tt is None:
+                out[mod]["error"] = "version/test_table.json: %s" % terr
+        except Exception as e:      # noqa: BLE001  one mod unread is said, the others still read
+            out[mod] = {"error": "%s: %s" % (type(e).__name__, e)}
+    return out
+
+
 def held_rows(holds, facts):
     """One row per mod the owner holds (mod_owner_hold.py): decision owner_hold, klass held, status HELD BY OWNER with his
     words, date and lift command. A run live on it is named and left to finish."""
@@ -3748,6 +3785,10 @@ def _tick(root, cfg, apply, fx=None, now=None, page=True):
         if x not in rd["pipeline_pause"]["said"]:
             rd["pipeline_pause"]["said"].append(x)
     rd["voids"] = RV.status_lines(st, record)
+    try:    # the in-game checks SteveDesktop could take (ops_watch steve.idle_with_takeable_min reads this block)
+        rd["ingame_testq"] = ingame_testq(root, facts, holds)
+    except Exception as e:      # noqa: BLE001  this reading failing never costs the tick; ops_watch reads UNMEASURED
+        rd["ingame_testq_error"] = "%s: %s" % (e.__class__.__name__, str(e))
     try:    # a DIVERGING stage is a Needs Conductor line; it pauses nothing (maturation_convergence.py)
         conv = fx.get("convergence")    # a selftest's fixture source (RIMMANDRAKE_ISOLATE_DISPATCH_SELFTEST_FROM_CONVERGENCE)
         if conv is None:
