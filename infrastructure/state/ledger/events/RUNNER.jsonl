@@ -11675,3 +11675,4 @@
 {"seat":"RUNNER","event":"raise","id":"OPS_FINDINGS_DIAGNOSE_XZLM","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-23T16:17:25Z","tsn":1795450645306694603}
 {"seat":"RUNNER","event":"live","id":"OPS_FINDINGS_DIAGNOSE_XZLM","result":"kept","detail":"sweep: running again","ts":"2026-11-23T16:18:12Z","tsn":1795450692821275311}
 {"seat":"RUNNER","event":"live","id":"OPS_MATURATION_IDLE_ADVANCING_MOD_CBFQ","result":"kept","detail":"sweep: running again","ts":"2026-11-23T16:18:20Z","tsn":1795450700509488991}
+{"seat":"RUNNER","event":"spawn","name":"STEVE_LANE_UNSTICK_STALLED_UNOWNED_9D9E","kind":"task","needs":"offline","title":"SteveDesktop lane STALE_HEARTBEAT, unowned 10 min: steward.json not written for 644 s (the tick or the steward stopped); restarting testq-tick.timer did not bri","for":"RELENTLESS","from":"STEVE_STEWARD_BUILD_NO_LLM_OWNER","ts":"2026-11-23T16:30:10Z","tsn":1795451410892879044}
