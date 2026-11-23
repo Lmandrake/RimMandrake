@@ -1,4 +1,4 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod GimmeSomeSlack) reducer=1 shards={"BACKFILL":440876,"DISPATCH":17302,"HOLDER.run-1794828190":994,"JUDGE.judge-1794822790":13753,"JUDGE.judge-1794822890":2037} body_sha256=d6c46772e598834231eaddabe921db93cc270b6785db614281b8775b8a50303e -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod GimmeSomeSlack) reducer=1 shards={"BACKFILL":440876,"DISPATCH":17648,"HOLDER.run-1794828190":994,"JUDGE.judge-1794822790":13753,"JUDGE.judge-1794822890":2037} body_sha256=d6c46772e598834231eaddabe921db93cc270b6785db614281b8775b8a50303e -->
 # GimmeSomeSlack — closed in Design Version 0.1.0 (64)
 
 - finding:GSS_ART_MANIFEST_FIX_OVERLAY_SIZES verified 6247fa669d4982a0699d780911eb4556aa591ee1 (2026-11-16T11:37:56Z)
