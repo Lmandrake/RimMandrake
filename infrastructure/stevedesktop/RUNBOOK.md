@@ -282,6 +282,7 @@ Everything free, nothing signed in. Files: `kit/wt_settings.json` (Terminal sett
 | Already present | Git for Windows, 7-Zip, Tailscale, Chrome Remote Desktop, WSL git/gh/tmux/htop/jq/curl/rsync/python3/node | verified, not reinstalled |
 | WSL extras | `apt-get install ripgrep tree ncdu pipx fd-find bat` as root | |
 | testq contract deps | `cd ~/rm/runner && python3 -m pip install --target ~/rm/pydeps -r src/RimMandrake/contracts/requirements.lock` (pydantic for `worker.py`'s `TestqResult` check; WSL python is PEP 668 managed; the daily self-upgrade reinstalls when the lock moves) | installed 2026-11-04 (2.13.5) |
+| Windows python live-proof deps | `python.exe -m pip install --user numpy` from the WSL (Pillow was already there). Live proofs run under Windows python, because the bridge binds Windows loopback; the HugeThings mask module needs both | installed 2026-11-23 (numpy 2.5.5, Pillow 13.0.0) for user sjlewis |
 | Desktop shortcuts (all users) | `Terminal - Ubuntu`, `Terminal - SteveDesktop status` (runs `status.ps1`: uptime, disks, IPs, services, Steam, Tailscale, WSL), `Terminal - Archmagi (SSH)` | `kit/shortcuts.ps1`; recreated 2026-11-03 after Defender removed them |
 | Desktop: `Claude - SteveDesktop test centre` | all-users desktop; `kit/shortcuts.ps1` | Terminal -> WSL -> `claude_session.sh centre`: `~/rm/runner`, bounded claude, `--name`, `--remote-control "SteveDesktop-Owner"`, opening prompt (read this RUNBOOK + the orchestration design) |
 | Desktop: `Claude - Lodestar` | same script | `claude_session.sh lodestar`: `~/dev/Lodestar`, remote-control `SteveDesktop-Lodestar`, for machine-maintenance work |
@@ -345,6 +346,16 @@ First remote run GREEN: `JawaIonWeapons --chains def_wiring`, driven from Archma
   `-File`; the script deletes itself.
 - `kit/automation.ps1`: the idempotent "nobody at the keyboard" fixes, run elevated over SSH
   (see the audit below).
+
+**Steve2 takes lane jobs beside Steve1 (since 2026-11-23).** The testq tick drives Steve2 while
+`D:\ClaudeWork\rimmandrake\testq\steve2.on` exists and `steve2.stop` does not (create `steve2.stop` to stop new jobs on
+Steve2; its running job still finishes). Steve2 has its own install (`D:\ClaudeWork\rimmandrake\instances\b\game`, from
+`game_instance.py install b`), its own runner clone `~/rm/runner_b` and its own worker home `/mnt/d/RimTest/testq.b`; it
+reads its staged companion from Steve1's inbox. The machine's pause (`paused.json`) and fault windows cover both games;
+Steve2's own red canary pauses Steve2 only (`testq.py resume --lane stevedesktop.b`). Reading: `steve_games.json` (each
+tick) and `steve_both_busy.json` (written only while both games run a job). Page:
+`design/specs/2026-11-23-steve-two-games-lane/boundary.md`. `sync_test_mods.py` (Workshop mods) writes Steve1's folders
+only: run `game_instance.py install b --refresh` in `~/rm/runner_b` after a third-party mod update.
 
 Switch lists with `modlist_swap.py --minimal|--restore --apply` on the runner (game down).
 The runner is not a seat, so record the printed `rimflow verify` line from a seat clone.

@@ -1,6 +1,6 @@
 # BOUNDARY: the SteveDesktop lane drives Steve1 and Steve2 at once, Design Version 0.1.0
 
-Code: `src/RimMandrake/Utils/testq/testq.py` (`STEVE2`, `on_steve`, `steve2_on`, `steve_lanes`, `games_reading`, `remote` with `host`, `worker_for`, `admit` with `host`, `lane_running`, the tick's Steve2 step, `fill_plan`'s busy rule), `infrastructure/stevedesktop/worker.py` (`STEVE_LANE`, `staged_companion`, the kept environment of `spawn`), `src/RimMandrake/Utils/testq/visit_feed.py` (the in-flight rule of `step`), `src/RimMandrake/Utils/testq/fault_monitor.py` (`gate`, `worker_busy`, the not-quarantined count), `src/RimMandrake/Utils/testq/ingest.py` (`env_window`, `ingest_group`'s config), `infrastructure/stevedesktop/sync_test_mods.py` (`site_saves`' extra targets, `--also-saves`), `testq.py`'s `site_stage_argv`.
+Code: `src/RimMandrake/Utils/testq/testq.py` (`STEVE2`, `on_steve`, `steve2_on`, `steve_lanes`, `games_reading`, `remote` with `host`, `worker_for`, `admit` with `host`, `lane_running`, the tick's Steve2 step, `fill_plan`'s busy rule), `infrastructure/stevedesktop/worker.py` (`STEVE_LANE`, `staged_companion`, the kept environment of `spawn`, `proof_verdict`), `src/RimMandrake/Utils/testq/visit_feed.py` (the in-flight rule of `step`), `src/RimMandrake/Utils/testq/fault_monitor.py` (`gate`, `worker_busy`, the not-quarantined count), `src/RimMandrake/Utils/testq/ingest.py` (`env_window`, `ingest_group`'s config), `infrastructure/stevedesktop/sync_test_mods.py` (`site_saves`' extra targets, `--also-saves`), `testq.py`'s `site_stage_argv`.
 Item: `RIMMANDRAKE_FILL_BOTH_STEVEDESKTOP_GAMES_HE_SAYS_IT_HOLDS_TWO`, written 2026-11-23. The owner's words that night:
 *"Fill up Steve Desktop please... it can support two live games at a time."* Each promise has a test of its name in
 `src/RimMandrake/Utils/testq/selftest_testq_steve2.py`. This page covers only these parts of the files named; the rest
@@ -65,3 +65,7 @@ host `stevedesktop.b`); the map is `src/RimMandrake/rimflow/game_names.py`.
   (each game: off, paused, idle or the job it runs; `both_busy`). Only a tick in which both games run a job writes
   `QHOME/steve_both_busy.json` (the two jobs), so its age is the time since both games were last busy together: the
   item's `--live` promise reads it.
+- **a-proof-that-crashes-is-unmeasured-not-fail.** A live-proof line that exits 1 with its output ending in an uncaught
+  Python exception (a traceback, then `SomethingError: ...` as the last line) reads UNMEASURED ("crashed: could not
+  look"), never FAIL; a FAIL line printed after a quoted traceback stays FAIL. (2026-11-23: the Rot giants' proof died on
+  `ModuleNotFoundError: numpy` under SteveDesktop's Windows python and was recorded FAIL, J20261123T115429Z-9dd04f.)

@@ -382,6 +382,17 @@ def t_a_tick_with_both_games_busy_writes_the_reading(r):
     r.reset()
 
 
+def t_a_proof_that_crashes_is_unmeasured_not_fail(r):
+    tb = ("Traceback (most recent call last):\n  File \"x.py\", line 33, in <module>\n    import numpy as np\n"
+          "ModuleNotFoundError: No module named 'numpy'\n")
+    cases = [[0, "all PASS"], [1, "ROT_click_RM_X FAIL: a picture cell did not select it"], [1, tb],
+             [1, "rows:\n" + tb + "ROT_click_RM_X FAIL: 3 cells missed\n"], [2, "UNMEASURED HARNESS"], [None, ""]]
+    got = r.py("import worker as W\nprint(json.dumps([W.proof_verdict(rc, t)[0] for rc, t in %r]))" % (cases,))
+    check(got == ["PASS", "FAIL", "UNMEASURED", "FAIL", "UNMEASURED", "UNMEASURED"],
+          "a-proof-that-crashes-is-unmeasured-not-fail: exit 1 ending in a traceback reads UNMEASURED, a FAIL line "
+          "after a quoted traceback stays FAIL (%s)" % (got,))
+
+
 def main():
     tmp = tempfile.mkdtemp(prefix="testq_steve2_")
     r = Rig(tmp)
@@ -389,7 +400,7 @@ def main():
               t_fault_drain_waits_for_both_workers, t_filler_fills_an_idle_game, t_visit_feed_one_mod_per_game,
               t_steve2_off_by_default, t_two_jobs_run_at_once_one_per_game,
               t_steve2_respects_the_machine_pause_and_its_own, t_steve2_stop_file_wins,
-              t_a_tick_with_both_games_busy_writes_the_reading):
+              t_a_tick_with_both_games_busy_writes_the_reading, t_a_proof_that_crashes_is_unmeasured_not_fail):
         try:
             t(r)
         except Exception as e:  # noqa: BLE001 - a crashing test is a failed promise, named

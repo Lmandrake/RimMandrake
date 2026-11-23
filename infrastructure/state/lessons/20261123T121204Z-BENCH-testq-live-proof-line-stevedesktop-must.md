@@ -1,0 +1,1 @@
+A testq live-proof line on SteveDesktop must call python.exe, not python3: the bridge binds Windows loopback, so WSL python3 reads UNMEASURED (no route to 127.0.0.1:5174/5175). Windows python there needs numpy and Pillow for the HugeThings mask module (installed 2026-11-23).

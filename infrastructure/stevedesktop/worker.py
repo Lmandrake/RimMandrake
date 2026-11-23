@@ -593,6 +593,24 @@ def guard_held_by_other():
     return "%s (%s)" % (st.get("seat"), st.get("purpose"))
 
 
+UNCAUGHT_RX = re.compile(r"^(?:[A-Za-z_][\w.]*\.)?[A-Za-z_]\w*(?:Error|Exception|Interrupt)(?::.*)?$")
+
+
+def proof_verdict(rc, tail):
+    """A live-proof line's (verdict, crash) from its exit code and output tail: 0 PASS, 1 FAIL, else UNMEASURED. An exit
+    1 whose output ENDS in an uncaught Python exception (a traceback, its exception line last) is a crash: UNMEASURED,
+    could not look, never FAIL (2026-11-23: a missing numpy under SteveDesktop's Windows python read FAIL,
+    J20261123T115429Z-9dd04f). A FAIL line printed after a quoted traceback is still the script's FAIL."""
+    if rc == 0:
+        return "PASS", None
+    if rc == 1:
+        lines = [x.strip() for x in (tail or "").splitlines() if x.strip()]
+        if lines and "Traceback (most recent call last)" in (tail or "") and UNCAUGHT_RX.match(lines[-1]):
+            return "UNMEASURED", lines[-1][:160]
+        return "FAIL", None
+    return "UNMEASURED", None
+
+
 def kept_env_keys(environ):
     """The environment a detached attempt keeps: the RM_/TESTQ_/STEVE_/RIMFLOW_ seams, and GABP_ (Steve2's bridge port
     and token, from `game_instance.py env b`; without them its modcheck would knock on Steve1's 5174)."""
@@ -1398,8 +1416,9 @@ class Attempt:
                 continue
             log = "proof_%s.log" % c
             rc, tail = self.sh(cmd, log_name=log, timeout=per)
-            verdict = "PASS" if rc == 0 else "FAIL" if rc == 1 else "UNMEASURED"
-            head = "exit %d" % rc if rc is not None else "timed out after %d s" % per
+            verdict, crashed = proof_verdict(rc, tail)
+            head = ("exit %d" % rc + (", crashed (%s): could not look" % crashed if crashed else "")) \
+                if rc is not None else "timed out after %d s" % per
             rows.append({"chain": "proofs", "row": c, "verdict": verdict,
                          "detail": ("%s: %s" % (head, tail))[-S.DETAIL_CAP:]})
             path = os.path.join(self.d, log)
