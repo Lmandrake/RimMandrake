@@ -27,7 +27,8 @@ stage (the in-game build match, the Stage 6 exit, the visit brief, `./pipe why`,
 
 - **a-change-no-declaration-connects.** A change can break a check whose declarations do not name what changed (a
   Python name reached only by a computed import or `getattr` on a string the check does not carry; a C# file the
-  check exercises but does not declare). The guards are the whole-mod checks, the next visit of the related checks,
+  check exercises that it does not declare and whose types no declared C# file names, such as a class a def's XML
+  names or one reached through a member of a type the check never names). The guards are the whole-mod checks, the next visit of the related checks,
   and the owner's walk. No full rerun is added to cover it.
 - **lookup-by-a-computed-key.** A dict read with a key the code computes is related through the keys the check's own
   strings name. A key computed from something else is not seen.
@@ -56,6 +57,14 @@ stage (the in-game build match, the Stage 6 exit, the visit brief, `./pipe why`,
   line, an attribute or engine-called member, a member another file of the mod names, or a part no check reaches
   changed; a section that starts using a shared static another check reads touches that check. (ExplosiveKnockback
   visit 5, 2026-11-23: one scene's edit to RM_KnockbackProof.cs had sent all 54 scene checks back.)
+- **csharp-reads-the-types-it-names.** A declared `.cs` file reads the mod's other `.cs` files that define a type it
+  names, a partial class's other parts among them, to a fixed point, at either commit, of the C# project a `.srchash`
+  names (an offline SelfTest program is not one). In such a file a changed member touches a check only when the names
+  the check reaches include the member's name and its type's name; strings, case labels and list values do not reach
+  there. An engine-called member there touches the checks that name its type. A using line there relates it whole; a
+  check that anchors in none of its declared files relates it whole. (ExplosiveKnockback, 2026-11-23:
+  sc_frame_probe_check's RM_FrameProbe lives in RM_KnockbackProof_StageThree.cs, which no check declares; with the
+  section relation alone its change reran nothing, and with this it reruns sc_frame_probe_check, 4 of 56 in all.)
 - **python-relates-by-symbol.** In a changed Python file, only the top-level names that changed count, and they
   touch a check only when the names its entry and id reach (across its declared Python files) include one of them; a
   dict literal relates key by key. A file that does not parse at either commit relates whole.

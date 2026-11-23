@@ -118,7 +118,10 @@ class Tree:
         return self.git("rev-parse", "HEAD")
 
     def edit(self, rel, old, new):
-        self.write(rel, self.read(rel).replace(old, new))
+        text = self.read(rel)
+        if old not in text:   # a scenario whose edit misses tests an empty change and passes or fails for nothing
+            raise AssertionError("edit of %s: %r is not in the file" % (rel, old))
+        self.write(rel, text.replace(old, new))
 
     def close(self):
         shutil.rmtree(self.root, ignore_errors=True)
@@ -389,6 +392,75 @@ def t_csharp_relates_by_scene_section():
        u is not None and "K/w" in u, sorted(u or {}))
 
 
+VERD_CS = ("namespace Planted\n{\n    public static class Verd\n    {\n        public static int Off(int x) => Deep.In(x);\n"
+           "        public static int Other() => 2;\n    }\n}\n")
+DEEP_CS = ("namespace Planted\n{\n    public static class Deep\n    {\n        public static int In(int y) => y;\n"
+           "        public static int Out() => 4;\n    }\n}\n")
+# a type only case beta names; its members carry words case alpha reaches (Off, a, Helper) without the type
+PROBE_CS = ("namespace Planted\n{\n    public sealed class Probe : MonoBehaviour\n    {\n        public static int Off;\n"
+            "        public static string[] Paths = { \"a\" };\n        public static bool Begin(int n) => n > 0;\n"
+            "        public static string Tag() => \"Begin\";\n        public void OnDestroy() { Off = 0; }\n"
+            "        public static int Pick(string k)\n        {\n            switch (k)\n            {\n"
+            "                case \"Begin\":\n                    return 1;\n            }\n            return 0;\n        }\n"
+            "    }\n}\n")
+# an offline program of its own project, the shipped DLL not built from it, whose type name case alpha's code holds
+SELFTEST_CS = ("namespace PlantedTest\n{\n    internal static class Helper\n    {\n        public static int fail;\n"
+               "        public static void Main() { fail = 1; }\n    }\n}\n")
+
+
+def t_csharp_reads_the_types_it_names():
+    """A declared C# file reads the mod's C# files that define the types it names, at either commit (ExplosiveKnockback,
+    2026-11-23: RM_KnockbackVerdicts.cs and the partial class's RM_KnockbackProof_StageThree.cs, where sc_frame_probe_check's
+    RM_FrameProbe lives, are declared by no check; the whole-file relation had rerun them by the proof file alone)."""
+    cases = [
+        ("a changed member case alpha calls reruns alpha (and delta, which anchors nowhere)",
+         ("int x) => Deep.In(x);", "int x) => Deep.In(x) + 1;"), ["sc_alpha", "sc_delta"], "Verd.cs"),
+        ("a changed member of a file the named file names, which case alpha reaches through it, reruns alpha",
+         ("int y) => y;", "int y) => y + 1;"), ["sc_alpha", "sc_delta"], "Deep.cs"),
+        ("a member of that file nothing reaches reruns delta alone", ("() => 4;", "() => 5;"), ["sc_delta"], "Deep.cs"),
+        ("a changed member no check's section calls reruns delta alone", ("() => 2;", "() => 3;"), ["sc_delta"], "Verd.cs"),
+        ("a using line in the named file relates whole", ("namespace Planted\n", "using System;\nnamespace Planted\n"),
+         ["sc_alpha", "sc_beta", "sc_delta", "sc_gamma"], "Verd.cs"),
+        ("a member whose name case alpha holds, of a type case alpha never names, does not rerun alpha",
+         ("public static int Off;", "public static int Off = 1;"), ["sc_delta"], "Probe.cs"),
+        ("a list element whose value is a word case alpha holds does not rerun alpha", ('{ "a" }', '{ "a2" }'),
+         ["sc_delta"], "Probe.cs"),
+        ("a method whose string is a word case beta holds is not reached by it", ('=> "Begin";', '=> "Begin" + "!";'),
+         ["sc_delta"], "Probe.cs"),
+        ("a case section whose label is a word case beta holds is not reached by it", ("return 1;", "return 3;"),
+         ["sc_delta"], "Probe.cs"),
+        ("an engine-called member reruns the checks that name its type (beta, gamma by goto), not alpha",
+         ("{ Off = 0; }", "{ Off = 2; }"), ["sc_beta", "sc_delta", "sc_gamma"], "Probe.cs"),
+        ("a file of another C# project than the one the DLL is built from is no file a check names",
+         ("{ fail = 1; }", "{ fail = 2; }"), [], "SelfTest/Program.cs"),
+    ]
+    for why, (a, b), want, name in cases:
+        tr = Tree()
+        try:
+            tr.write("src/RimMandrake/Planted/Source/Proof.cs", PROOF_CS.replace(
+                "s.a = Helper(1);", "s.a = Helper(1) + Verd.Off(1);").replace(
+                "if (NoHarm.Contains(7))", "if (NoHarm.Contains(7) && Probe.Begin(1))"))
+            tr.write("src/RimMandrake/Planted/Source/Probe.cs", PROBE_CS)
+            tr.write("src/RimMandrake/Planted/Source/Planted.csproj", "<Project />\n")
+            tr.write("src/RimMandrake/Planted/Source/SelfTest/SelfTest.csproj", "<Project />\n")
+            tr.write("src/RimMandrake/Planted/Source/SelfTest/Program.cs", SELFTEST_CS)
+            tr.write("src/RimMandrake/Planted/Assemblies/Planted.dll.srchash",
+                     "# project: RimMandrake/Planted/Source/Planted.csproj\n# dll: 00\n11 Proof.cs\n22 Other.cs\n")
+            tr.write("src/RimMandrake/Planted/Source/Other.cs", PROOF_OTHER_CS)
+            tr.write("src/RimMandrake/Planted/Source/Verd.cs", VERD_CS)
+            tr.write("src/RimMandrake/Planted/Source/Deep.cs", DEEP_CS)
+            tests = _proof_tests()
+            tr.set_table(tests)
+            base = tr.commit("proof base")
+            tr.edit("src/RimMandrake/Planted/Source/" + name, a, b)
+            tr.commit("verd edit")
+            res = relate(tr, all_rows(base, tests), tests)
+            got = sorted(res["touched"])
+            ok("csharp-reads-the-types-it-names: %s" % why, got == want, "got %s, want %s" % (got, want))
+        finally:
+            tr.close()
+
+
 def t_python_relates_by_symbol():
     tr = Tree()
     try:
@@ -636,6 +708,7 @@ def main():
     t_whole_mod_check_skips_hashignored()
     t_csharp_relates_by_source_file()
     t_csharp_relates_by_scene_section()
+    t_csharp_reads_the_types_it_names()
     t_python_relates_by_symbol()
     t_json_relates_by_entry()
     t_spec_change_reruns()

@@ -25,8 +25,11 @@ check (kind live_full) declares the whole mod. How a changed file relates, by ki
          relates whole when the file does not read at either commit, the check anchors in no member or section of it,
          a using or namespace line changed, the changed member carries an attribute, is called by the engine (override,
          Unity message), is named in another .cs or .py file of the mod, or is reached by no check. A changed section
-         that uses a shared static the check reaches touches it too. The DLL and its .srchash are derived: they
-         relate to nothing by themselves.
+         that uses a shared static the check reaches touches it too. A declared C# file reads the mod's C# files that
+         define a type it names (a partial class's other parts among them; to a fixed point; of the project a
+         .srchash names): there a member touches the check only when the check reaches its name and its type's name,
+         by name alone (no string, label or list value), and an engine-called member when the check names its type.
+         The DLL and its .srchash are derived: they relate to nothing by themselves.
   other  by file.
 A check whose own test-table entry changed in what it runs (RUN_KEYS) is touched. A check with no declared path, or a
 row whose commit git cannot resolve, has no readable relation: it alone runs again, and it is listed.
@@ -702,13 +705,15 @@ def cs_changed(old, new):
             (new.get(k).text if k in new else None)}
 
 
-def cs_reach(units, seeds, owned, added=frozenset()):
+def cs_reach(units, seeds, owned, added=frozenset(), names_only=False):
     """-> (reached keys, anchored): from the seeds (the check's id and entry). A case section is reached by a label
     that is a seed or a string a reached section or method holds (`goto case "x"`), or with its method when no check's
     seed labels it (owned: every check's seeds); a member by its name; a string-list element by its value, or with its
     list when it was there before (added: the elements new at this commit, reached by their value only); a unit's
-    parents with it."""
-    names, strs = set(seeds), set(seeds)
+    parents with it. names_only: the seeds are member names (the words a check reaches in another file), never strings
+    or labels: a word like `x` is no `case "x":` and no string a method holds, and a member counts only when its type's
+    name is reached too."""
+    names, strs = set(seeds), (set() if names_only else set(seeds))
     reached, anchored, grew = set(), False, True
     while grew:
         grew = False
@@ -719,12 +724,20 @@ def cs_reach(units, seeds, owned, added=frozenset()):
                 hit = bool(u.labels & strs) or (not (u.labels & owned) and u.parent is not None
                                                 and u.parent.key in reached)
                 anchor = bool(u.labels & seeds)
+            elif u.kind == "elem" and names_only:               # the word `none` is no element "none"
+                anchor = False
+                hit = u.parent.key in reached and k not in added
             elif u.kind == "elem":
                 anchor = u.name in seeds
                 hit = anchor or (u.parent.name in names and k not in added)
             else:
-                anchor = u.name in seeds or (u.kind == "method" and bool(u.strs & seeds))
+                anchor = u.name in seeds or (u.kind == "method" and not names_only and bool(u.strs & seeds))
                 hit = anchor or u.name in names
+                if names_only and hit and u.kind != "type":     # `live` of RM_FrameProbe is not any `live`: its type too
+                    t = u.parent
+                    while t is not None and t.kind != "type":
+                        t = t.parent
+                    hit = anchor = t is None or t.name in names
             if not hit:
                 continue
             anchored = anchored or anchor
@@ -886,14 +899,14 @@ class Relation:
             self._owned_seeds = {x for t, s in self.tests.items() for x in (t, (s or {}).get("entry")) if x}
         return self._owned_seeds
 
-    def _cs_reach(self, sha, path, seeds, old=None):
+    def _cs_reach(self, sha, path, seeds, old=None, names_only=False):
         """cs_reach at a commit; old: the commit before, whose absence of a string-list element makes it added."""
-        k = ("csreach", sha, path, tuple(sorted(seeds)), old)
+        k = ("csreach", sha, path, tuple(sorted(seeds)), old, names_only)
         if k not in self._py:
             u = self._cs(sha, path)
             before = self._cs(old, path) if old else None
             added = {x for x, v in (u or {}).items() if v.kind == "elem" and before is not None and x not in before}
-            self._py[k] = cs_reach(u, seeds, self._owned(), added) if u is not None else (set(), False)
+            self._py[k] = cs_reach(u, seeds, self._owned(), added, names_only) if u is not None else (set(), False)
         return self._py[k]
 
     def _cs_named_elsewhere(self, sha, path, name):
@@ -912,15 +925,16 @@ class Relation:
             self._py[k] = files is None or any(t is None or rx.search(t) for t in texts)
         return self._py[k]
 
-    def cs_touches(self, f, o, seeds):
-        """-> (touches, why) for one changed C# file: by member and by switch section (cs_units)."""
+    def cs_touches(self, f, o, seeds, named=False):
+        """-> (touches, why) for one changed C# file: by member and by switch section (cs_units). named: the file is one
+        the check's declared C# files name a type of (cs_named_files), and seeds are the names the check reaches there."""
         a, b = self._cs(o, f), self._cs(self.new, f)
         if a is None or b is None:
             return True, "does not read at one commit (related whole)"
         seeds = {s for s in seeds if s}
-        ro, anc_o = self._cs_reach(o, f, seeds)
-        rn, anc_n = self._cs_reach(self.new, f, seeds, o)
-        if not (anc_o or anc_n):
+        ro, anc_o = self._cs_reach(o, f, seeds, None, named)
+        rn, anc_n = self._cs_reach(self.new, f, seeds, o, named)
+        if not named and not (anc_o or anc_n):
             return True, "no member or case section of it names %s (related whole)" % " or ".join(sorted(seeds))
         chg = cs_changed(a, b)
         if not chg:
@@ -938,11 +952,19 @@ class Relation:
                 if u.kind == "file":
                     return True, "%s changed (related whole)" % ("a using or namespace line" if k == "<file>" else k)
                 ext = u.flags & {"attribute", "called by the engine", "unnamed"}
+                if ext and named:                       # the engine calls it on its type: a check that names the type
+                    t = u
+                    while t is not None and t.kind != "type":
+                        t = t.parent
+                    if t is None or t.name in seeds:
+                        return True, "%s is %s, and it reaches %s (related whole)" % (
+                            k, sorted(ext)[0], t.name if t is not None else "the file")
+                    continue
                 if ext:
                     return True, "%s is %s (related whole)" % (k, sorted(ext)[0])
-                if u.kind in ("method", "field", "type") and self._cs_named_elsewhere(sha, f, u.name):
+                if not named and u.kind in ("method", "field", "type") and self._cs_named_elsewhere(sha, f, u.name):
                     return True, "%s is named in another file of the mod (related whole)" % k
-        unowned = [k for k in sorted(chg) if not self._cs_owned(o, f, k)]
+        unowned = [] if named else [k for k in sorted(chg) if not self._cs_owned(o, f, k)]
         if unowned:
             return True, "%s: reached by no check (related whole)" % ", ".join(unowned[:4])
         got = sorted(k for k in chg if k in rn or k in ro)
@@ -955,6 +977,88 @@ class Relation:
                 if u is not None and u.refs & statics:
                     return True, "%s uses the shared static %s it reads" % (k, ", ".join(sorted(u.refs & statics)))
         return False, ""
+
+    def _cs_types(self, sha):
+        """{mod .cs path: the type names it defines} at the commit (a file that does not read defines none), of the C#
+        projects the mod's DLLs are built from: a file whose nearest .csproj is one no .srchash names (an offline
+        SelfTest program) never runs in the game. When no .srchash names a project, every C# file of the mod counts."""
+        k = ("cstypes", sha)
+        if k not in self._py:
+            out = self.git._git("ls-tree", "-r", "--name-only", sha, "--", mod_root(self.mod) + "/")
+            files = out.decode().splitlines() if out else []
+            built = set()
+            for p in files:
+                if p.startswith(mod_root(self.mod) + "/Assemblies/") and p.endswith(".srchash"):
+                    txt = self.git.show(sha, p)
+                    if txt is None:                 # a .srchash git cannot show: which project ships is unknown
+                        built = set()
+                        break
+                    for ln in txt.splitlines():
+                        if ln.startswith("# project:"):
+                            built.add(ln.split(":", 1)[1].strip())
+            projs = [p for p in files if p.endswith(".csproj")]
+
+            def project(f):
+                d = f.rsplit("/", 1)[0]
+                while d.startswith(mod_root(self.mod)):
+                    mine = [p for p in projs if p.rsplit("/", 1)[0] == d]
+                    if mine:
+                        return mine[0]
+                    d = d.rsplit("/", 1)[0]
+                return None
+            m = {}
+            for f in files:
+                pr = project(f) if f.endswith(".cs") else None
+                if built and pr is not None and not any(pr.endswith(b) or b.endswith(pr) for b in built):
+                    continue
+                if f.endswith(".cs") and not derived(f):
+                    u = self._cs(sha, f)
+                    m[f] = {x.name for x in (u or {}).values() if x.kind == "type"}
+            self._py[k] = m
+        return self._py[k]
+
+    def cs_named_files(self, files, o):
+        """The mod's C# files, outside `files`, that define a type a C# file of `files` names (a partial class's other
+        parts among them), to a fixed point, at either commit: the helpers a proof file calls (RM_KnockbackVerdicts.cs)."""
+        seen, todo = set(), [f for f in files if f.endswith(".cs")]
+        while todo:
+            f = todo.pop()
+            if f in seen:
+                continue
+            seen.add(f)
+            for sha in (self.new, o):
+                u = self._cs(sha, f)
+                if u is None and self._cs_unreadable(sha, f):  # what it names is unknown: it names every file
+                    todo.extend(q for q in self._cs_types(sha) if q not in seen)
+                    continue
+                words = {w for x in u.values() for w in x.refs} if u is not None else set()
+                todo.extend(q for q, names in self._cs_types(sha).items() if q not in seen and names & words)
+        return seen - set(files)
+
+    def _cs_names(self, files, named, o, seeds):
+        """-> (names the check reaches across its declared C# files and the named ones, anchored in a declared one)."""
+        names, anchored = set(), False
+        if any(self._cs_unreadable(sha, f) for f in list(files) + list(named) for sha in (o, self.new)):
+            return names, False                      # a file that does not read: what the check reaches is unknown
+        for f in files:
+            for sha, prev in ((o, None), (self.new, o)):
+                r, a = self._cs_reach(sha, f, seeds, prev)
+                anchored = anchored or a
+                u = self._cs(sha, f)
+                names |= {w for k in r for w in u[k].refs} if u is not None else set()
+        size = -1
+        while size != len(names):
+            size = len(names)
+            for f in named:
+                for sha, prev in ((o, None), (self.new, o)):
+                    r, _ = self._cs_reach(sha, f, names, prev, True)
+                    u = self._cs(sha, f)
+                    names = names | ({w for k in r for w in u[k].refs} if u is not None else set())
+        return names, anchored
+
+    def _cs_unreadable(self, sha, path):
+        """True when the file is at the commit and does not read as C# (absent is not unreadable)."""
+        return self._cs(sha, path) is None and self.git.show(sha, path) is not None
 
     def _cs_owned(self, o, f, key):
         """True when some check of the table reaches the unit at either commit."""
@@ -1001,6 +1105,10 @@ class Relation:
                         ".hashignore lists (never ships; the mod hash does not move)" % len(under), [])
             return "untouched", "a whole-mod check, and nothing under the mod changed", []
         imported = self.py_closure([p for p in paths if p.endswith(".py")], o)
+        decl_cs = sorted({f for f in ch if f.endswith(".cs") and any(covers(p, f) for p in paths)} |
+                         {p for p in paths if p.endswith(".cs")})
+        cs_named = self.cs_named_files(decl_cs, o) if decl_cs else set()
+        imported |= cs_named
         mine = [f for f in ch if not derived(f) and (any(covers(p, f) for p in paths) or f in imported)]
         if not mine:
             return "untouched", "no changed file is one it declares or its Python imports", []
@@ -1037,7 +1145,12 @@ class Relation:
             if f.endswith(".py"):
                 continue
             if f.endswith(".cs"):
-                got, how = self.cs_touches(f, o, seeds)
+                if f in cs_named and not any(covers(p, f) for p in paths):
+                    names, anchored = self._cs_names(decl_cs, sorted(cs_named), o, {s for s in seeds if s})
+                    got, how = ((True, "a C# file it names a type of, and it anchors in none of its own (related "
+                                 "whole)") if not anchored else self.cs_touches(f, o, names, named=True))
+                else:
+                    got, how = self.cs_touches(f, o, seeds)
                 if got:
                     hits.append(f)
                     why.append("%s: %s" % (f, how))
