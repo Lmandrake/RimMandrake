@@ -25,6 +25,19 @@
   "rc": 1,
   "test_blob": "79acacbcd03ab046c15e5d98e792921f3df9c57a"
  },
+ "T_CUT_STAYS_CUT": {
+  "at": "2026-11-23T00:06:14Z",
+  "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_cut_stays_cut.py",
+  "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_cut_stays_cut.py",
+  "last": "FAIL: the unchanged copy is not green",
+  "patch": "diff --git a/src/RimMandrake/Pyrelands/About/About.xml b/src/RimMandrake/Pyrelands/About/About.xml\nindex 5711507fda..d4a88abef9 100644\n--- a/src/RimMandrake/Pyrelands/About/About.xml\n+++ b/src/RimMandrake/Pyrelands/About/About.xml\n@@ -13,7 +13,7 @@ The fire. Ember grass is back on a burn within days and dries to tinder soon aft\n \n The weather. Fine ash drifts through the air like snow even on clear days. Ash fall and cinderfall bank loose ash across the map, and cinderfall brings lightning with it. The only rain is black rain: a short, filthy downpour that puts fires out, washes the loose ash away and waters the ash beneath, so a burn it falls on grows faster still.\n \n-Behind the fire, some solace. A scorch-fruit pod appears only where flame has just cracked one open and rots within a day, so the harvest happens during the burn or not at all. A firefoam sprayer lets you decide where the next burn stops. Pyrelands sand can be shovelled for glass sand, leaving gravel behind, so every sand patch is a finite deposit.\n+Fire pays. A scorch-fruit pod appears only where flame has just cracked one open and rots within a day, so the harvest happens during the burn or not at all. A firefoam sprayer lets you decide where the next burn stops. Pyrelands sand can be shovelled for glass sand, leaving gravel behind, so every sand patch is a finite deposit.\n \n The creatures. The fire-hawk carries a live ember away to start a new burn. The giant furnace-beast warms the ground around it, banks heat in the burn and smoulders the bed it lies in. Ullai herds drift to wherever it burned a couple of days ago. The ashwallow goes to ground ahead of a fire front and curls into its dome when struck by heat. The emberscythe mantis, sytheclaw, barbslinger with its tail spikes, venomous flamefang and fire wasp round out the cast.\n \n",
+  "patch_files": [
+   "src/RimMandrake/Pyrelands/About/About.xml"
+  ],
+  "patch_sha": "499a1955c1184043",
+  "rc": 1,
+  "test_blob": "3b1c0d91704957a35f87d54e536566f8904cb9ce"
+ },
  "T_DEFS_OFFLINE": {
   "at": "2026-11-22T05:34:49Z",
   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_defs_offline.py",
@@ -37,6 +50,19 @@
   "patch_sha": "dfb701b20d318fd0",
   "rc": 1,
   "test_blob": "6f3c72c49fc0af980c0f84f993ed6e2098f95ea0"
+ },
+ "T_FH_CRESTFEATHER": {
+  "at": "2026-11-23T00:14:11Z",
+  "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_firehawk_crestfeather.py",
+  "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_firehawk_crestfeather.py",
+  "last": "- trophy: the hawk's chance is '1.5', not a chance strictly between 0 and 1",
+  "patch": "diff --git a/src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_PyrelandsFauna.xml b/src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_PyrelandsFauna.xml\nindex dc0abf0ea8..d39cff7a3e 100644\n--- a/src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_PyrelandsFauna.xml\n+++ b/src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_PyrelandsFauna.xml\n@@ -162,7 +162,7 @@\n            35 %, 2026-11-13; Defs/ThingDefs_Items/RM_PristineFirehawkCrestfeather.xml, Source/FireHawkRewards.cs). -->\n       <li Class=\"RimMandrake.Pyrelands.RM_ButcherTrophyExtension\">\n         <thingDef>RM_PristineFirehawkCrestfeather</thingDef>\n-        <chance>0.35</chance>\n+        <chance>1.5</chance>\n       </li>\n     </modExtensions>\n   </ThingDef>\n",
+  "patch_files": [
+   "src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_PyrelandsFauna.xml"
+  ],
+  "patch_sha": "f03bbb1fc16f6021",
+  "rc": 1,
+  "test_blob": "0e603f79eb555f5fa4fbba3233c3d6764fad65db"
  },
  "T_FH_LETTER": {
   "at": "2026-11-21T11:45:31Z",
@@ -79,17 +105,17 @@
   "test_blob": "e9bc063b23c724c03dc083e4fe903a476d17771b"
  },
  "T_SETTINGS_SWEEP_OFFLINE": {
-  "at": "2026-11-21T01:42:41Z",
+  "at": "2026-11-23T00:06:24Z",
   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_settings_sweep.py",
   "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_settings_sweep.py",
   "last": "FAIL: the unchanged copy is not green",
-  "patch": "--- a/src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs\n+++ b/src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs\n@@ -229,7 +229,7 @@\n         /// by the sky's black-rain share. 0 when off or sheltered.</summary>\n         public static float BlackRainDouseAmount(bool gateOn, bool enabled, float dousePer150, float share, bool exposed)\n         {\n-            if (!gateOn || !enabled || !exposed || share <= 0f || dousePer150 <= 0f) return 0f;\n+            if (!enabled || !exposed || share <= 0f || dousePer150 <= 0f) return 0f;\n             return dousePer150 * (share > 1f ? 1f : share);\n         }\n \n",
+  "patch": "diff --git a/src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs b/src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs\nindex 69f4ae65d4..285a2925b3 100644\n--- a/src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs\n+++ b/src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs\n@@ -547,7 +547,7 @@ namespace RimMandrake.Pyrelands\n                            + (PyrelandsTuning.FurnaceWarmthMaxC * furnaceWarmthStrength).ToString(\"0\") + \" C at the beast)\");\n                 furnaceWarmthStrength = list.Slider(furnaceWarmthStrength, 0f, 2f);\n                 }\n-                list.CheckboxLabeled(\"Fire clock (the biome's fire fronts, flame harvest, fire raid, fire rite)\",\n+                list.CheckboxLabeled(\"Fire clock (flame harvest / fire raid / fire rite)\",\n                     ref fireClockEnabled,\n                     \"The Pyrelands' own fire fronts: the burn a new map opens with and the fronts that start on a \"\n                   + \"schedule after it, and the Deep Desert Tribes' incidents that answer the burn. Off: no fire front \"\n",
   "patch_files": [
-   "src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs"
+   "src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs"
   ],
-  "patch_sha": "6467e19c7ead9951",
+  "patch_sha": "c3e6dc19958b3b26",
   "rc": 1,
-  "test_blob": "de6276dffc1c6364bfa5707523f6c90815e728ee"
+  "test_blob": "9e24663abb2361ca8e61a5be65f401a8b499380f"
  },
  "T_SITE": {
   "at": "2026-11-22T17:48:38Z",

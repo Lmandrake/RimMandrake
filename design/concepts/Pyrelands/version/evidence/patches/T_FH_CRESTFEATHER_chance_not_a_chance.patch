@@ -1,0 +1,13 @@
+diff --git a/src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_PyrelandsFauna.xml b/src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_PyrelandsFauna.xml
+index dc0abf0ea8..d39cff7a3e 100644
+--- a/src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_PyrelandsFauna.xml
++++ b/src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_PyrelandsFauna.xml
+@@ -162,7 +162,7 @@
+            35 %, 2026-11-13; Defs/ThingDefs_Items/RM_PristineFirehawkCrestfeather.xml, Source/FireHawkRewards.cs). -->
+       <li Class="RimMandrake.Pyrelands.RM_ButcherTrophyExtension">
+         <thingDef>RM_PristineFirehawkCrestfeather</thingDef>
+-        <chance>0.35</chance>
++        <chance>1.5</chance>
+       </li>
+     </modExtensions>
+   </ThingDef>
