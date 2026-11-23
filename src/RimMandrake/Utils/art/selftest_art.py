@@ -245,6 +245,10 @@ def main():
         cen.write_text(json.dumps({"biome_order": ["RM_Test"], "git_head": "x",
                                    "biomes": {"RM_Test": {"label": "Test", "rows": [row_a, row_b]}}}))
         bout = tmp / "sheet" / "test_sheet.html"
+        # the sheet build rewrites BIOME_OUT/scale_ground_measured.json, a TRACKED file in the real tree: a fixture build
+        # writes it under tmp (red census 2026-11-22: it dirtied every clone that ran the suite and blocked their pulls)
+        art_sheet.BIOME_OUT = tmp / "biome_out"
+        art_sheet.BIOME_OUT.mkdir(parents=True, exist_ok=True)
         rb = art_sheet.generate_biome("RM_Test", cen, bout, "T", allow_failing="selftest fixture")
         bh = bout.read_text()
         bitems = json.loads(re.search(r'<script id="ITEMS" type="application/json">(.*?)</script>', bh, re.S).group(1))
