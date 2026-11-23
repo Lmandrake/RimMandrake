@@ -4270,6 +4270,23 @@ def _stamp_bare_bridge(w):
     return 1
 
 
+def _refuse_pipe_hold(hk):
+    """A take of a game under his `./pipe off game:<g>` is refused before any lock or event, --force too (his switch, as
+    game_lock.claim does; the one rule is game_lock.pipe_hold). A store that cannot be read is COULD NOT LOOK (exit 2).
+    Another machine's game keeps its own guard: nothing is checked here for it."""
+    try:
+        g = game_lock.check_game(hk)
+    except ValueError:
+        return
+    hold, cause = game_lock.pipe_hold(g)
+    nm = game_lock.game_names.show(g)
+    if cause:
+        die("bridge NOT taken: COULD NOT LOOK: " + cause, code=game_lock.EX_BLIND)
+    if hold:
+        die("bridge NOT taken: HIS HOLD: pipe off game:%s: %s\n  what passes: ./pipe on game:%s --why \"...\"\n"
+            "  (--force does not cut his switch)" % (nm, hold, nm), code=game_lock.EX_HIS)
+
+
 def cmd_bridge(args, seat):
     """Dispatch only. Each action is its own function so the take rule — the one piece
     with a real race in it — can be read and tested without the other three."""
@@ -4292,6 +4309,8 @@ def cmd_bridge(args, seat):
         hk = model.bridge_host_key(getattr(args, "host", None) or model.ambient_bridge_host())
     except model.SchemaError as e:          # a typo'd --host: a refusal naming the known hosts, not a traceback
         die(str(e))
+    if args.action in ("take", "idle"):
+        _refuse_pipe_hold(hk)
     if getattr(args, "mine", False):
         # `release --mine` (ralph_a loop, ralph_loop_design §1.2): free the bridge ONLY if this seat holds it. A
         # plain release frees anyone's hold (recorded); a loop's after-every-pass release must never cut across
