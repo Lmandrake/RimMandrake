@@ -13,7 +13,7 @@ Contract: a new module src/RimMandrake/rimflow/list_dispatch.py with its setting
     each row {"item", "decision", "why"}; a "stopped" row also has "need": {"outcome", "why_not_recovered",
     "smallest_act"}, all three non-empty.
   load_cfg() -> the shipped settings; every numeric limit NAME has a "_NAME_doc" that names the danger it guards.
-Expected when built: PASS 20/20.  Today: FAIL 0/20, because list_dispatch.py does not exist."""
+Expected: PASS 20/20. Watched failing 0/20 on 5a64425b3ae8 (list_dispatch.py absent); moved here green."""
 import os
 import sys
 

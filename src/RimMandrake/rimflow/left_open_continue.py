@@ -230,6 +230,8 @@ def plan(rec, got, lane_states, now=None, gates=None, root=None):
     base = {"unit": rec.get("unit"), "item": item}
     if rec.get("continued_by"):
         return dict(base, act="none", why="already continued as %s" % rec["continued_by"])
+    if rec.get("next_act_owner"):     # list_dispatch counts its own runs (design/specs/2026-11-23-list-dispatch)
+        return dict(base, act="none", why="its next act belongs to %s, which launched it" % rec["next_act_owner"])
     if res.startswith("killed"):
         return dict(base, act="none", why="killed runs are never continued (%s)" % res)
     cap = capped(rec)

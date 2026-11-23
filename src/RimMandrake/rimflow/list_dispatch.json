@@ -1,0 +1,19 @@
+{
+  "_doc": "list_dispatch.py's settings: the List Pipeline's Waiting, Ready and Work stages (item RIMMANDRAKE_BUILD_LIST_LANE_ON_RED_DISPATCH_GOALS_FIRST; plan design/specs/2026-11-22-coordination-every-agent-must-use/plan.md step 2; page design/specs/2026-11-23-list-dispatch/boundary.md). One detached helper per open list item whose outcome check fails; the check runs again before every attempt; at most two Work runs per item.",
+  "enabled": true,
+  "seat": "BENCH",
+  "max_live": 2,
+  "_max_live_doc": "Starvation: list work and mod work each keep their own slots, so a burst of one does not drop the other (plan.md §Shares; 25 list debts sat untouched over a day while mods ran). Live detached runs on lane items, hand launches included; mod and nightly-test runs are not counted.",
+  "max_runs_per_item": 2,
+  "_max_runs_per_item_doc": "A chain that feeds itself: the retired Relentless churned items through rerun after rerun (2026-11-05); the owner's condition of 2026-11-14 is no automatic loops. A second run only on the first run's named next act.",
+  "max_chain_depth": 2,
+  "_max_chain_depth_doc": "A chain that feeds itself through new items: a lane run that files an item that the lane then works. An item whose caused_by ancestors already hold this many lane runs is not launched (plan.md §Shares).",
+  "max_never_started": 2,
+  "_max_never_started_doc": "A launch that cannot start, sent again unchanged on every tick (CLAUDE.md §A fault of form: a program never sends the same refused input again unchanged). Never-started launches in a row before the item reads stopped.",
+  "sonnet_cap_usd": 5,
+  "_sonnet_cap_usd_doc": "Runaway spend by one helper, stopped from outside by spend_watchdog (detached_helper --budget-usd); the brief never states it. Same as red_dispatch.json.",
+  "opus_cap_usd": 12,
+  "_opus_cap_usd_doc": "Runaway spend by one helper, stopped from outside by spend_watchdog; the brief never states it. Same as red_dispatch.json.",
+  "sonnet_if_check_regex": "^cmd:.*(selftest_|_accept\\.py)",
+  "_sonnet_if_doc": "Ladder (infrastructure/agents/Agent_Policy.md): sonnet for well-defined coding a test proves; the item's check is that test when it runs a selftest or an acceptance script. Every other check (a path check on prose, a study) gets opus."
+}

@@ -2077,6 +2077,9 @@ def main(argv=None):
     a.add_argument("--continue-on-cap", type=int, default=0, metavar="N",
                    help="a stop by the spend watchdog is carried on by itself up to N times (left_open_continue.py); "
                         "default 0: a cap stop ends the work")
+    a.add_argument("--next-act-owner", metavar="NAME",
+                   help="the program that reads this run's LEFT OPEN: note and decides its next run (list_dispatch: the "
+                        "List Pipeline's two-run rule); left_open_continue.py does not continue such a run")
     f = sub.add_parser("finish")
     f.add_argument("--unit", required=True)
     b = sub.add_parser("return", help="give the run's pool clone back, bundled (the unit's last step; --all sweeps strays)")
@@ -2116,6 +2119,8 @@ def main(argv=None):
             rc, text = 2, "REFUSED: --budget-usd %g is negative (0 = no cap)" % budget
         else:
             extra = {"continue_on_cap": args.continue_on_cap} if args.continue_on_cap > 0 else {}
+            if args.next_act_owner:
+                extra["next_act_owner"] = args.next_act_owner
             session, first = args.resume, ""
             if session and not args.planned_resume:     # the one resume rule (left_open_continue.whole_or_fresh): a large session with a progress
                 import left_open_continue as LOC        # record starts fresh from it

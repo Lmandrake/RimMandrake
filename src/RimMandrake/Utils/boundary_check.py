@@ -27,6 +27,7 @@ TOP = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "
 PAGES = {
     "design/specs/2026-11-23-wake-his-words/boundary.md": "src/RimMandrake/rimflow/selftest_wake_words.py",
     "design/specs/2026-11-22-steve-idle-takeable/boundary.md": "src/RimMandrake/Utils/selftest_steve_idle_takeable.py",
+    "design/specs/2026-11-23-list-dispatch/boundary.md": "src/RimMandrake/rimflow/selftest_list_dispatch.py",
     "design/specs/2026-11-22-list-outcome-checks/boundary.md": "src/RimMandrake/rimflow/selftest_list_effect.py",
     "design/specs/2026-11-22-art-worker-own-signin/boundary.md": "src/RimMandrake/Utils/artpipe/selftest_artpipe_signin.py",
     "design/specs/2026-11-22-clone-pool-disk-floor/boundary.md": "src/RimMandrake/Utils/selftest_pool_floor.py",

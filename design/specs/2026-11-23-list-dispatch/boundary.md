@@ -1,0 +1,75 @@
+# BOUNDARY: the List Pipeline's Waiting, Ready and Work stages (list_dispatch.py), Design Version 0.1.0
+
+Code: `src/RimMandrake/rimflow/list_dispatch.py` (all of it), `src/RimMandrake/rimflow/list_dispatch.json`,
+`src/RimMandrake/Utils/systemd/rm-list-dispatch.{service,timer}`, the `list_dispatch` family in
+`src/RimMandrake/rimflow/control.py`, `detached_helper.py launch --next-act-owner` and the one line in
+`left_open_continue.plan` that reads it.
+Item: `RIMMANDRAKE_BUILD_LIST_LANE_ON_RED_DISPATCH_GOALS_FIRST`, step 2 of
+`design/specs/2026-11-22-coordination-every-agent-must-use/plan.md`. Why: on 2026-11-23 about 918 open list items
+waited for the Conductor's hand, because no program launched them. Each promise has a test of its name in
+`src/RimMandrake/rimflow/selftest_list_dispatch.py`. The plan's acceptance script
+(`src/RimMandrake/rimflow/acceptance/step2_list_lane_accept.py`) checks `decide` over fake facts.
+
+## ACCEPTS (the only inputs this is built for)
+
+- **an-open-list-item-with-an-outcome-check.** A ledger item that is not done, dropped or superseded and that carries an
+  outcome check (`Item.effect`, step 1). The check is run by `list_effect.run` in the clone that the tick runs from.
+- **an-open-list-item-whose-verify-names-an-acceptance-script.** An item with no check whose `## verify` or
+  `## criteria` section names `python3 <repo path>_accept.py`, and that file exists. The tick attaches
+  `cmd:python3 <path>` as its check through `rimflow effect` (the step-1 gate: it must be seen failing). It launches
+  nothing on that tick.
+- **the-detached-run-records.** `detached_helper.all_records()` and `live_status`: a unit is live while it is
+  `launching` or `running`.
+- **the-gates.** The pipeline's pause (`pipeline_pause.blocks`), the control store (`control.blocked` with family
+  `list_dispatch`, the item and the item's mod), the owner's mod holds (`mod_owner_hold`), the Dispatcher's account pick
+  (`maturation_dispatch.account_gate`), the clone pool's admission (`scratch_clone.pool_admit`).
+
+## DOES NOT SURVIVE (not promised)
+
+- **an-item-whose-mod-is-not-named-in-its-id-or-title.** The mod of a list item is read from its id and title words.
+  An item about a held mod that names no mod is launched. `detached_helper.launch` refuses it only if its brief sets
+  `RM_CONTROL_MOD`.
+- **a-check-that-passes-for-the-wrong-reason.** Step 1's page says it. The lane trusts the check.
+- **two-ticks-at-once.** The tick holds a file lock; a second tick on another clone with another state directory is not
+  seen.
+
+## PROMISES (each one is owed a test of the same name)
+
+- **decide-is-pure-and-says-why-on-every-row.** `decide(cfg, st, facts, now, account)` reads only its inputs, writes
+  only `st`, and returns one row per item with a non-empty `why`. A ledger that could not be read (`facts["items"]` is
+  None) is one `blind` row and no launch.
+- **the-check-runs-before-every-attempt.** An item whose check holds reads `close`, whatever its runs; the tick closes it
+  as the pipeline's act (`list_effect.close_item`, role unit `rm-list-dispatch.service`) and launches nothing on it. An
+  unmeasured check reads `blind`. An item with no check reads `no_effect`.
+- **one-work-run-then-one-more-only-on-a-named-next-act.** An item gets a first Work run. After a run ended with the check
+  failing, it gets one more run only when that run left a `LEFT OPEN:` note (its next act) and did not put a wait on the
+  item. `max_runs_per_item` (2) runs is the most. Every other end reads `stopped`.
+- **a-launch-that-never-started-is-not-spent.** A launch that returned no unit is recorded with `failed` set and is not
+  counted as a run. After `max_never_started` such launches in a row the item reads `stopped`, so a launch that cannot
+  start is not sent again unchanged on every tick.
+- **a-stop-names-the-outcome-the-reason-and-the-smallest-act.** A `stopped` row carries `need` with `outcome` (the
+  check that still fails), `why_not_recovered` and `smallest_act`, all non-empty. The tick writes it once as a Needs
+  Conductor line, and not again until the item changes.
+- **waits-are-not-launched.** An item that waits on an open item reads `waits_on` and names that item. An item with a
+  dated wait in the future reads `waiting`. An item whose dated wait has passed and whose check still fails reads
+  `reshape` (plan: a date never launches old work; the Shape stage, step 4, takes it). A blocked item reads `blocked`.
+- **the-gates-launch-nothing.** The lane launches nothing when it is disabled, under the pause, under `pipe off` (all,
+  `family:list_dispatch`, the item or its mod), on an item whose mod is held by the owner, under an account hold, when
+  the control store cannot be read, or when the clone pool refuses a new clone. Each reads its own decision.
+- **the-lane-has-its-own-slots-and-chain-rule.** At most `max_live` live runs on lane items. Mod and nightly-test runs do
+  not count. An item whose chain of causes (its `caused_by` ancestors) already holds `max_chain_depth` lane runs reads
+  `chain_stop`. Live runs on items that carry no check do not fill the lane's slots.
+- **a-claimed-item-is-not-the-lanes.** An item that is `doing` under a live lease, with no lane run on it, reads
+  `claimed`: it is not launched and not adopted. The lease of the lane's own run does not stop its second run.
+- **oldest-blocking-item-first.** Items are taken in this order: an item that another open item waits on first, then the
+  oldest filing first.
+- **the-run-owns-no-continuation.** A lane launch passes `--next-act-owner list_dispatch`; `left_open_continue.plan` does
+  not continue such a run, so its `LEFT OPEN:` note is read by the lane alone and the two-run rule holds.
+- **the-tick-files-nothing.** A tick writes no `file` or `spawn` event. Its ledger writes are `close` (a check that holds)
+  and `effect` (an adopted acceptance script).
+- **a-dry-tick-writes-nothing.** A tick without `--apply` launches nothing, closes nothing, attaches nothing and writes no
+  state.
+- **each-limit-names-its-danger.** Each numeric setting in `list_dispatch.json` has a `_<name>_doc` that names the danger
+  it guards.
+
+Later lists beside this page: `polish.md` (none yet).

@@ -29,12 +29,12 @@ file: src/RimMandrake/rimflow/maturation_dispatch.py
 file: src/RimMandrake/rimflow/detached_helper.py
 
 ## criteria
-- `python3 design/specs/2026-11-22-coordination-every-agent-must-use/acceptance/step2_list_lane_accept.py` exits 0 and prints `PASS 20/20`.
+- `python3 src/RimMandrake/rimflow/acceptance/step2_list_lane_accept.py` exits 0 and prints `PASS 20/20`.
 - Live proof 1: the debt "his plan of 2026-11-22 (one week on mods, to 2026-11-29) is not in `infrastructure/state/CONDUCTOR_GOALS.md`" is filed with a check, the lane launches one helper, and the check passes after the run. UNRUN until built.
 - Live proof 2: the same kind of debt with the helper killed after it wrote the file: the next tick closes the item and launches nothing. UNRUN until built.
 
 ## verify
-python3 design/specs/2026-11-22-coordination-every-agent-must-use/acceptance/step2_list_lane_accept.py   # exit 0, PASS 20/20
+python3 src/RimMandrake/rimflow/acceptance/step2_list_lane_accept.py   # exit 0, PASS 20/20
 Acceptance test: watched failing on 68355dc59b2b: 16 of 16 fail, because the module the step adds does not exist. Expected:
 16 pass. Re-watched on 87a18efda498 after the update: 20 of 20 fail for the same reason; expected 20 pass. The script was also run against a throwaway reference to show that it can pass, and against a planted fault to
 show that it goes red (2026-11-22; the reference was deleted and is not in the repo).
