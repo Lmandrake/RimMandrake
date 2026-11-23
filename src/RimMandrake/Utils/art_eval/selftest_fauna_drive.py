@@ -46,6 +46,45 @@ def main():
         finally:
             RS.production_decisions = orig
 
+    # RIMMANDRAKE_FIX_ART_JUDGE_TIMER_IDLE_SINCE_NOV_EIGHT: a first pass judged under an adopted run is still a first
+    # pass, and its redraw's render is found under <DEF>__live_<tag> when <DEF>_<tag> was never drawn
+    with tempfile.TemporaryDirectory() as td:
+        ad = [("gptredo_t", {"subject": "D", "decision": "REGEN", "candidate": "live", "at": "2026-10-24T10:00:00+00:00"})]
+        check("an adopted first pass ('live') is not a candidate record",
+              FD.latest("D", False, ad) is not None and FD.latest("D", True, ad) is None)
+        saved = FD.ART
+        FD.ART = Path(td)
+        try:
+            def render(job):
+                (Path(td) / "done").mkdir(exist_ok=True)
+                (Path(td) / "done" / f"{job}.manifest.json").write_text(json.dumps({"status": "ok"}))
+                (Path(td) / "_artsrc" / job).mkdir(parents=True)
+                (Path(td) / "_artsrc" / job / f"{job}.png").write_bytes(b"x")
+            for f in ("south", "east", "north"):
+                render(f"arteval_D__live_r1_{f}")
+            check("the __live render is the def's r1", FD.job_stem("D", "r1") == "arteval_D__live_r1")
+            check("another round is not", FD.job_stem("D", "r2") == "arteval_D_r2")
+            render("arteval_D_r1_south")
+            check("a render under the def's own name wins", FD.job_stem("D", "r1") == "arteval_D_r1")
+            # a finished render the daemon pruned from _artsrc (14 days) is in the art store under its ledger sha
+            import shutil
+            shutil.rmtree(Path(td) / "_artsrc")
+            import os
+            os.environ["ARTSTORE"] = str(Path(td) / "store")
+            sha = "ab" * 32
+            (Path(td) / "store" / "ab").mkdir(parents=True)
+            (Path(td) / "store" / "ab" / f"{sha}.png").write_bytes(b"x")
+            FD._STORED = {"arteval_D__live_r1_south": sha, "arteval_D__live_r1_north": "cd" * 32}
+            got = FD.job_png("arteval_D__live_r1_south")
+            check("a pruned render is read from the art store", got is not None and got.name == f"{sha}.png", got)
+            check("a render the store does not hold, or no ledger names, is None",
+                  FD.job_png("arteval_D__live_r1_north") is None and FD.job_png("arteval_D__live_r1_east") is None)
+            FD._STORED["arteval_undone"] = sha
+            check("a job with no ok manifest is None even when the store holds it", FD.job_png("arteval_undone") is None)
+        finally:
+            FD.ART, FD._STORED = saved, None
+            os.environ.pop("ARTSTORE", None)
+
     # ARTEVAL_FILE_REGENS_JOBID_FIX_SERIES_TAG: a candidate judged under an adopted non-fauna run counts; an
     # unadopted audit run does not; a HOLD_ERROR (transport failure, no verdict) is not "judged"
     with tempfile.TemporaryDirectory() as td:

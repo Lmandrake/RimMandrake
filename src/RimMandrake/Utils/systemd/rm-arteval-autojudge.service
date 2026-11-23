@@ -1,9 +1,9 @@
 # Art-eval auto-judge — ARTEVAL_FINISHED_RENDERS_WIRE_AUTO_JUDGE (src/RimMandrake/Utils/art_eval/auto_judge.py).
 # Judges finished art-eval renders nobody judged: fauna regen rounds (fauna_drive candidates --auto -> runner.py run
 # --record --file-regens) and facing-audit rows (drv.py spec -> runner.py run --record), at most 4 subjects a pass.
-# Uses Claude, so it does nothing in allocator DARK or while BENCH runs its N helpers (the Agent spawn hook's
-# allowed_n), probes quota first and backs off 1 h on a failed probe or a HOLD_ERROR. Commits only its own paths,
-# never pushes. Status: /mnt/d/ClaudeWork/rimmandrake/arteval_autojudge/status.json (`auto_judge.py status`).
+# Uses Claude, so it does nothing in allocator DARK, while the pipeline is paused or `./pipe off family:art_judge` holds,
+# or while the account pick holds launches; it probes quota first and backs off 1 h on a failed probe or a HOLD_ERROR.
+# A row its driver cannot make a spec for fails the unit. Commits only its own paths, never pushes. Status: /mnt/d/ClaudeWork/rimmandrake/arteval_autojudge/status.json (`auto_judge.py status`).
 # Install:  cp src/RimMandrake/Utils/systemd/rm-arteval-autojudge.{service,timer} ~/.config/systemd/user/
 #           systemctl --user daemon-reload && systemctl --user enable --now rm-arteval-autojudge.timer
 # Remove:   systemctl --user disable --now rm-arteval-autojudge.timer

@@ -15,6 +15,7 @@ sys.path.insert(0, str(HERE))
 import auto_judge as AJ  # noqa: E402
 
 FAILS = []
+REAL_SH = AJ.sh
 
 
 def check(name, ok, detail=""):
@@ -26,9 +27,14 @@ def check(name, ok, detail=""):
 def main():
     # ---- the gate: the spawn hook's numbers decide; DARK is never a judging time
     check("DARK closes the gate even with slots", not AJ.gate_ok({"mode": "DARK", "n": 6, "running": 0})[0])
-    check("N=0 closes the gate", not AJ.gate_ok({"mode": "CRUISE", "n": 0, "running": 0})[0])
-    check("BENCH running N helpers closes the gate", not AJ.gate_ok({"mode": "BURN", "n": 3, "running": 3})[0])
-    check("a free slot opens the gate", AJ.gate_ok({"mode": "CRUISE", "n": 3, "running": 2})[0])
+    # RIMMANDRAKE_FIX_ART_JUDGE_TIMER_IDLE_SINCE_NOV_EIGHT: N is the window's helper count, and token limits are advisory
+    # (owner 2026-11-02). 80 of 170 passes since 11-07 read "allocator N=0" while the account had room.
+    check("N=0 does not close the gate", AJ.gate_ok({"mode": "CRUISE", "n": 0, "running": 0})[0])
+    check("helpers running in the window do not close the gate", AJ.gate_ok({"mode": "BURN", "n": 3, "running": 3})[0])
+    check("the pipeline's own pause or account hold closes the gate, by its words",
+          AJ.gate_ok({"mode": "CRUISE", "n": 3, "running": 0, "held": "the pipeline is paused"}) ==
+          (False, "the pipeline is paused"))
+    check("no reading of the mode is not DARK", AJ.gate_ok({"mode": None, "held": None})[0])
 
     # ---- HOLD_ERROR is a transport failure: the job stays owed
     recs = [("audit_a", {"subject": "RM_A_n", "artpipe_job": "arteval_RM_A_r2_n", "decision": "REGEN"}),
@@ -99,9 +105,9 @@ def main():
         check("DARK: no probe, no command, result says gate closed",
               calls == ["gate"] and st["result"].startswith("gate closed"), (calls, st.get("result")))
         calls.clear()
-        AJ.gate = lambda now=None: calls.append("gate") or {"mode": "CRUISE", "n": 2, "running": 2}
+        AJ.gate = lambda now=None: calls.append("gate") or {"mode": "CRUISE", "n": 2, "running": 0, "held": "pipe off: x"}
         AJ.cmd_run(A)
-        check("running >= N: no probe, no command", calls == ["gate"], calls)
+        check("held: no probe, no command", calls == ["gate"], calls)
         calls.clear()
         owed.update(facing=[])
         AJ.cmd_run(A)
@@ -118,10 +124,79 @@ def main():
         AJ.cmd_run(A)
         check("inside the backoff: nothing runs", calls == [] and "backing off" in
               json.loads(AJ.STATUS.read_text())["result"], calls)
+    idle_since_nov_eight()
     installs_and_unfiled()
     compare_veto()
     print("FAILED: " + ", ".join(FAILS) if FAILS else "all ok")
     return 1 if FAILS else 0
+
+
+def idle_since_nov_eight():
+    """RIMMANDRAKE_FIX_ART_JUDGE_TIMER_IDLE_SINCE_NOV_EIGHT: a row whose def is gone, a driver that fails, a commit with
+    nothing in it, and a first redraw filed as <DEF>__live, each read as "judged 0" or as a failed commit for 15 days."""
+    import subprocess
+    # ---- a facing row whose def is gone is not owed; a def that could not be looked up stays owed
+    owed = [("RM_Gone__Larva", "g"), ("RM_Here", "g"), ("RM_Blind", "g")]
+    st = {"RM_Gone__Larva": {"row": {"target_def": "RM_Gone"}}, "RM_Here": {"row": {}}, "RM_Blind": {"row": {"target_def": "RM_Blind"}}}
+    keep, gone = AJ.split_gone(owed, st, lambda d: {"RM_Gone": False, "RM_Here": True}.get(d))
+    check("a row whose def is gone leaves the owed list and is named; unknown stays owed",
+          keep == [("RM_Here", "g"), ("RM_Blind", "g")] and gone == ["RM_Gone__Larva"], (keep, gone))
+    here = AJ.def_exists
+    check("def_exists reads src: a real def True, a made-up one False", here("RM_Harrok") is True and here("RM_NoSuchDefEver") is False)
+
+    with tempfile.TemporaryDirectory() as td:
+        td = Path(td)
+        # ---- <DEF>__live_r1 is the def's round r1, filed under its first pass's candidate name
+        done = td / "done"
+        done.mkdir()
+        (done / "arteval_RM_Harrok__live_r1_south.json").write_text(json.dumps({"rimflow_item_id": AJ.FAUNA_ITEM}))
+        check("a __live redraw is owed under its def", AJ.fauna_defs(done) == ["RM_Harrok"], AJ.fauna_defs(done))
+
+        # ---- a commit with nothing new is not a failure
+        repo = td / "repo"
+        repo.mkdir()
+        for c in (["init", "-q", "-b", "main"], ["config", "user.email", "t@t"], ["config", "user.name", "t"]):
+            subprocess.run(["git", *c], cwd=repo, check=True)
+        (repo / "a.json").write_text("{}")
+        saved, saved_sleep, saved_sh = AJ.ROOT, AJ.time.sleep, AJ.sh
+        AJ.ROOT, AJ.sh = repo, REAL_SH
+        slept = []
+        AJ.time.sleep = lambda s: slept.append(s) if s >= 1 else saved_sleep(s)
+        try:
+            one = AJ.commit(["a.json"], "first", td / "log")
+            two = AJ.commit(["a.json"], "again", td / "log")
+        finally:
+            AJ.ROOT, AJ.time.sleep, AJ.sh = saved, saved_sleep, saved_sh
+        check("the first commit lands", len(one) == 10 and "failed" not in one, one)
+        check("a commit with nothing new says so, and does not retry", two == "nothing to commit" and not slept, (two, slept))
+
+        # ---- the driver imports pnglib from where the image skills live now
+        env = AJ.driver_env()
+        r = subprocess.run([sys.executable, "-c", "import pnglib"], env=env, cwd=str(td), capture_output=True, text=True)
+        check("the driver's environment can import pnglib", r.returncode == 0, r.stderr[-200:])
+
+        # ---- a driver that makes no spec is said, fails the pass, and commits nothing
+        keep = (AJ.SCRATCH, AJ.STATUS, AJ.scan, AJ.gate, AJ.probe, AJ.sh, AJ.load_drv, AJ.DRV, AJ.commit)
+        AJ.SCRATCH, AJ.STATUS, AJ.DRV = td / "scratch", td / "scratch/status.json", td / "drv.py"
+        (td / "state.json").write_text(json.dumps({"RM_B": {"row": {}}}))
+        commits = []
+        AJ.scan = lambda: {"fauna_defs": [], "facing": [("RM_B", "g1")]}
+        AJ.gate = lambda now=None: {"mode": "CRUISE", "n": 0, "running": 0, "held": None}
+        AJ.probe = lambda: (True, "probe ok")
+        AJ.sh = lambda *a, **k: 1
+        AJ.load_drv = lambda: None
+        AJ.commit = lambda *a, **k: commits.append(a) or "x"
+
+        class A:
+            max_subjects, dry_run = 4, False
+        try:
+            rc = AJ.cmd_run(A)
+            got = json.loads(AJ.STATUS.read_text())
+        finally:
+            AJ.SCRATCH, AJ.STATUS, AJ.scan, AJ.gate, AJ.probe, AJ.sh, AJ.load_drv, AJ.DRV, AJ.commit = keep
+        check("a row the driver made no spec for is named and the pass fails",
+              rc == 1 and got.get("spec_failed") == ["RM_B"] and "no spec" in got["result"], (rc, got.get("result")))
+        check("a pass that judged nothing commits nothing", commits == [], commits)
 
 
 PLAN = """RimMandrake.Biomes mandrake.rm.biomes         9 file(s) HELD

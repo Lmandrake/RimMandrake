@@ -199,7 +199,46 @@ def job_png(job: str):
     if not m.is_file() or json.loads(m.read_text()).get("status") != "ok":
         return None
     p = ART / "_artsrc" / job / f"{job}.png"
-    return p if p.is_file() else None
+    return p if p.is_file() else stored_png(job)
+
+
+_STORED = None      # {job: sha}, read once a process
+
+
+def stored_png(job: str):
+    """The render's file in the art store, or None. artpiped prunes _artsrc/<job>/ 14 days after the job ends; a render
+    not judged by then read as "waiting" for good (RM_Sytheclaw r2, the six __live redraws of 10-24)."""
+    global _STORED
+    sys.path.insert(0, str(HERE.parent / "art"))
+    import artledger as AL
+    if _STORED is None:                 # in time order: the newest variant of a job wins
+        _STORED = {e["job"]: e["sha"] for e in AL.read_events()
+                   if e.get("type") == "variant" and e.get("job") and e.get("sha")}
+    sha = _STORED.get(job)
+    return AL.store_path(sha) if sha and AL.store_has(sha) else None
+
+
+def job_stem(defname: str, tg: str) -> str:
+    """The artpipe job id stem of the def's round `tg`. A first pass whose candidate was named "live" filed its redraw as
+    arteval_<DEF>__live_<tag> until the job id followed the series tag (2026-10-28): six such renders waited a month
+    under a name nothing looked up (RIMMANDRAKE_FIX_ART_JUDGE_TIMER_IDLE_SINCE_NOV_EIGHT)."""
+    own, live = f"arteval_{defname}_{tg}", f"arteval_{defname}__live_{tg}"
+    faces = ("south", "east", "north")
+    if not any(job_png(f"{own}_{f}") for f in faces) and all(job_png(f"{live}_{f}") for f in faces):
+        return live
+    return own
+
+
+def base_spec(specs: Path, d: str, build: bool) -> Path | None:
+    """The def's live spec file; built now when `build` and there is none (a def first judged outside the fauna runs)."""
+    hit = next(specs.glob(f"**/{d}.spec.json"), None)
+    if hit is None and build:
+        r = subprocess.run([sys.executable, str(HERE / "fauna_spec.py"), "build", d, "--out", str(specs / "auto")],
+                           cwd=str(HERE), capture_output=True, text=True, timeout=900)   # hang guard
+        hit = next(specs.glob(f"**/{d}.spec.json"), None)
+        if hit is None:
+            print(f"{d}: fauna_spec made no spec (rc {r.returncode}): {(r.stdout + r.stderr)[-200:].strip()}")
+    return hit
 
 
 def cmd_candidates(a):
@@ -217,7 +256,7 @@ def cmd_candidates(a):
     judged = judged_set(recs)
     nreg = RS.regen_counts(recs, rs)
     for d in a.defs:
-        base = next(Path(a.specs).glob(f"**/{d}.spec.json"), None)
+        base = base_spec(Path(a.specs), d, False)
         why = halted(d, json.loads(base.read_text()) if base else None, rs)
         if why:
             print(f"{d}: {why} - no candidate")
@@ -227,23 +266,28 @@ def cmd_candidates(a):
             if a.round == 0 or (d, RS.tag(d, a.round, rs)) in judged or (d, RS.tag(d, a.round + 1, rs)) in judged:
                 continue
         tg = RS.tag(d, a.round, rs)
-        if base is None:
-            continue
-        s = json.loads(base.read_text())
-        jobs = {f: f"arteval_{d}_{tg}_{f}" for f in ("south", "east", "north")}
-        pngs = {f: job_png(j) for f, j in jobs.items()}
+        stem = job_stem(d, tg)
+        pngs = {f: job_png(f"{stem}_{f}") for f in ("south", "east", "north")}
         if not all(pngs.values()):
-            waiting.append(d)
+            if base is not None:
+                waiting.append(d)
             continue
+        if base is None:
+            base = base_spec(Path(a.specs), d, True)
+            why = halted(d, json.loads(base.read_text()), rs) if base else "no base spec"
+            if why:
+                print(f"{d}: {why} - no candidate")
+                continue
+        s = json.loads(base.read_text())
         imgs = {f: str(p) for f, p in pngs.items()}
         sz = s["size"]["drawSize"][0]
         cp = out / "panels" / f"{d}_{tg}_scale.png"
         SP.render_panel(pngs["east"].read_bytes(), {"kind": "animal", "drawSize": (sz, sz)}, cp,
                         out / "panels" / f"{d}_{tg}_scale_full.png")
         imgs["scale"] = str(cp)
-        s.update({"candidate": tg, "images": imgs, "artpipe_job": f"arteval_{d}_{tg}",
-                  "provenance": f"art-eval regen round {tg}, artpipe jobs arteval_{d}_{tg}_*",
-                  "previous_prompt": (rows.get(f"arteval_{d}_{tg}") or {}).get("prompt")})
+        s.update({"candidate": tg, "images": imgs, "artpipe_job": stem,
+                  "provenance": f"art-eval regen round {tg}, artpipe jobs {stem}_*",
+                  "previous_prompt": (rows.get(stem) or {}).get("prompt")})
         s.pop("images_flight_note", None)
         (out / f"{d}_{tg}.spec.json").write_text(json.dumps(s, indent=1))
         made.append(d)
@@ -277,7 +321,7 @@ def latest(defname: str, cand: bool, recs=None):
         # an adopted run (judgestall_*) has no fauna_ name to read: its records name their candidate
         # and an auto-judge run (fauna_auto_<stamp>) judges candidates under a stamp name: its record's tag says so
         iscand = (bool(CAND_RUN.search(run.split("fauna_", 1)[1])) or bool(CAND_TAG.match(str(r.get("candidate") or ""))))\
-            if run.startswith("fauna_") else bool(r.get("candidate"))
+            if run.startswith("fauna_") else r.get("candidate") not in (None, "", "live")
         if iscand != cand or r["subject"] != defname:
             continue
         if out is None or RS._instant(r.get("at")) >= RS._instant(out.get("at")):   # newest by time, not run name
@@ -370,7 +414,7 @@ def cmd_install(a):
     locals_ = {}
     for fl in files:
         f = fl["face"]
-        src = job_png(f"arteval_{a.defname}_{tg}_{f}")
+        src = job_png(f"{job_stem(a.defname, tg)}_{f}")
         if not src:
             print(f"{a.defname}: {f} has no render - nothing installed (a partial set would mix two pictures)")
             return 1

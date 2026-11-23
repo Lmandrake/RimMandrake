@@ -1,23 +1,31 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_Mirrak",
  "nearest_earth_animal": "stingray",
  "earth_body_named": false,
  "departures": [
-  "wafer-flat body lying flush against the ground, with almost no visible thickness",
-  "long, tapering outline shaped like a cast shadow, stretching away from a boulder",
-  "uniformly matte, dark back with no pattern, eyes or face visible from above",
-  "body hinged so it can fold shut over prey like a closing book or clamshell, not the wing-flapping of a ray",
-  "no fins, tail spine or visible limbs breaking the shadow silhouette"
+  {
+   "feature": "wafer-flat body",
+   "quote": "wafer-flat"
+  },
+  {
+   "feature": "matte, dark back",
+   "quote": "matte, dark back"
+  },
+  {
+   "feature": "back reads as a boulder's long shadow",
+   "quote": "passes for a boulder's long shadow"
+  }
  ],
  "body_plan": null,
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-24T01:42:12-07:00",
+ "at": "2026-11-23T10:16:33-08:00",
  "source": "description only (no image)"
 }

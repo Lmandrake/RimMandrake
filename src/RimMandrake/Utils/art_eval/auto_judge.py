@@ -18,8 +18,9 @@ Two sources of owed renders, each judged the way the rimworld-art-evaluation ski
           its artpipe job id -> `drv.py spec <group> <subject>` -> `runner.py run --run-id audit_auto_<stamp> --record`.
           drv.py regen / install stay owed follow-ups (listed in status.json), never done here.
 
-Judging calls Claude, so a pass does nothing unless the slot allocator allows it (the same allowed_n as the Agent
-spawn hook .claude/hooks/block_agent_over_slots.py): never in DARK, never while BENCH already runs N helpers. A tiny
+Judging calls Claude, so a pass does nothing in allocator DARK, while the pipeline is paused or `./pipe off` holds
+family:art_judge, or while the Dispatcher's account pick holds launches. The window's helper count N holds nothing here
+(token limits are advisory, owner 2026-11-02; N=0 closed 80 of 170 passes while the account had room). A tiny
 quota probe runs before any judge call (subagent_budget.md); a failed probe or a HOLD_ERROR record (429, timeout)
 backs the pass off for an hour and is never counted as a verdict (fauna_drive.judged_set). At most --max-subjects
 subjects per pass. The pass commits only its own paths (its run dirs, the delegated verdicts it wrote,
@@ -80,7 +81,7 @@ def fauna_defs(done_dir: Path) -> list:
                 continue
         except (OSError, ValueError):
             continue
-        out.add(m.group(1))
+        out.add(m.group(1).removesuffix("__live"))      # a first pass's redraw: fauna_drive.job_stem
     return sorted(out)
 
 
@@ -123,22 +124,75 @@ def facing_owed(state: dict, judged: set, job_ok, stopped) -> list:
     return out
 
 
+def def_exists(d: str):
+    """True | False: src holds <defName>d</defName>. None: git could not say (never read as gone)."""
+    try:
+        r = subprocess.run(["git", "grep", "-lF", f"<defName>{d}</defName>", "--", "src"], cwd=ROOT, capture_output=True,
+                           text=True, timeout=300)       # hang guard
+    except (OSError, subprocess.TimeoutExpired):
+        return None
+    return {0: True, 1: False}.get(r.returncode)
+
+
+def split_gone(owed, state: dict, exists) -> tuple:
+    """(owed rows, subjects whose def is gone). A renamed def leaves its old row behind for good: RSW_SmogMothLarvae,
+    judged to round 3 as RM_IllothLarvae, was picked and failed at every pass from 11-07 on."""
+    keep, gone = [], []
+    for k, g in owed:
+        d = ((state.get(k) or {}).get("row") or {}).get("target_def")
+        if d and exists(d) is False:
+            gone.append(k)
+        else:
+            keep.append((k, g))
+    return keep, gone
+
+
+def driver_env() -> dict:
+    """The facing driver (D:, outside this repo) imports pnglib by name; the image skills moved on 2026-11-19."""
+    sys.path.insert(0, str(UTILS))
+    import image_skills
+    scripts = str(image_skills.require(image_skills.GENERATING_SCRIPTS))
+    return dict(os.environ, PYTHONPATH=os.pathsep.join(x for x in (scripts, os.environ.get("PYTHONPATH")) if x))
+
+
 def hold_errors(recs) -> list:
     return [r["subject"] for r in recs if r.get("decision") == "HOLD_ERROR"]
 
 
 def own_paths(run_ids, recs, day: str) -> list:
-    """The repo paths a pass wrote: its run dirs, a delegated verdict per record (runner.write_delegated), rounds."""
+    """The repo paths a pass wrote: its run dirs, a delegated verdict per record (runner.write_delegated), the departures
+    brief a spec build refreshed, rounds."""
     import runner as RN
     p = [f"infrastructure/state/art_eval/runs/{r}" for r in run_ids]
     p += sorted({f"infrastructure/state/delegated/{day}/{RN.spec_key(r)}.json" for r in recs})
+    p += sorted({f"infrastructure/state/art_eval/briefs/{r['subject'].split('__')[0]}.json" for r in recs})
     return p + ["infrastructure/state/art_eval/regen_rounds.json"]
 
 
 # ---------------------------------------------------------------- gate
 
+def pipeline_hold(now: float):
+    """Why the pipeline holds this pass, or None: its pause, `./pipe off family:art_judge`, the Dispatcher's account pick.
+    A gate that cannot be read holds."""
+    sys.path.insert(0, str(ROOT / "src/RimMandrake/rimflow"))
+    try:
+        import pipeline_pause as PP
+        if PP.blocks(None, now):
+            return "the pipeline is paused"
+        import control as C
+        b = C.blocked({"family": "art_judge", "item": "ARTEVAL_FINISHED_RENDERS_WIRE_AUTO_JUDGE"})
+        if b:
+            return f"pipe off: {b}"
+        import maturation_dispatch as MD
+        go, why = MD.account_gate()
+        return None if go else why
+    except Exception as e:  # noqa: BLE001
+        return f"a gate could not be read ({type(e).__name__}: {e})"
+
+
 def gate(now: float | None = None) -> dict:
-    """The Agent spawn hook's own numbers: N for BENCH, the allocator mode, running helpers."""
+    """The allocator's mode and N (as the Agent spawn hook reads them; N is recorded, it decides nothing) and the
+    pipeline's hold."""
     now = now or time.time()
     sys.path.insert(0, str(UTILS))
     import slot_allocator as SA
@@ -147,21 +201,15 @@ def gate(now: float | None = None) -> dict:
     spec.loader.exec_module(hook)
     rules = SA.load_rules(os.environ.get("RM_SLOT_RULES") or UTILS / "slot_rules.json")
     n, mode, why, src = hook.allowed_n(SA, rules, SEAT, now)
-    running = len(SA.running_helpers([SA.projects_dir() / SA.SEAT_PROJECT[SEAT]], now, rules))
-    return {"n": n, "mode": mode, "running": running, "source": src, "why": why}
+    return {"n": n, "mode": mode, "source": src, "why": why, "held": pipeline_hold(now)}
 
 
 def gate_ok(g: dict) -> tuple:
     if g.get("mode") == "DARK":
         return False, "allocator DARK: no Claude use"
-    card = os.environ.get("ARTEVAL_AUTOJUDGE_CARD")  # owner card 2026-11-07 4:48 PM "Judge, install, redraw": art judging only
-    if int(g.get("n") or 0) <= 0:
-        if card:
-            return True, f"allocator N={g.get('n')} overridden for art judging by card: {card}"
-        return False, f"allocator N={g.get('n')}"
-    if int(g.get("running") or 0) >= int(g["n"]) and not os.environ.get("ARTEVAL_AUTOJUDGE_CARD"):
-        return False, f"{SEAT} already runs {g['running']} helper(s), N={g['n']}"
-    return True, f"mode {g.get('mode')}, N={g['n']}, running {g.get('running')}"
+    if g.get("held"):
+        return False, str(g["held"])
+    return True, f"mode {g.get('mode')}, N={g.get('n')} (advisory)"
 
 
 def probe() -> tuple:
@@ -188,6 +236,9 @@ def load_drv():
     if not DRV.is_file():
         return None
     sys.path.insert(0, str(DRV.parent))
+    sys.path.insert(0, str(UTILS))
+    import image_skills
+    image_skills.add_to_path()
     spec = importlib.util.spec_from_file_location("facing_drv", DRV)
     m = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(m)
@@ -201,8 +252,8 @@ def scan() -> dict:
     drv = load_drv()
     if drv is not None:
         st = json.loads((DRV.parent / "state.json").read_text())
-        out["facing"] = facing_owed(st, judged_jobs(recs), lambda r: all(drv.job_state(j) == "ok" for j in drv.jobs(r)),
-                                    RS.stopped)
+        owed = facing_owed(st, judged_jobs(recs), lambda r: all(drv.job_state(j) == "ok" for j in drv.jobs(r)), RS.stopped)
+        out["facing"], out["gone"] = split_gone(owed, st, def_exists)
     out["fauna_judged"] = len(FD.judged_set(FD.production()))
     return out
 
@@ -523,13 +574,13 @@ def deploy(paths: list, log: Path) -> list:
     return out
 
 
-def sh(cmd, cwd, log: Path, timeout=RUN_TIMEOUT) -> int:
+def sh(cmd, cwd, log: Path, timeout=RUN_TIMEOUT, env=None) -> int:
     with log.open("a") as fh:
         fh.write(f"\n$ {' '.join(map(str, cmd))}  ({now_iso()})\n")
         fh.flush()
         try:
             return subprocess.run(list(map(str, cmd)), cwd=str(cwd), stdout=fh, stderr=subprocess.STDOUT,
-                                  timeout=timeout).returncode
+                                  timeout=timeout, env=env).returncode
         except subprocess.TimeoutExpired:
             fh.write(f"TIMEOUT after {timeout}s\n")
             return 124
@@ -546,6 +597,10 @@ def commit(paths: list, msg: str, log: Path) -> str:
     if not paths:
         return "nothing to commit"
     for _ in range(5):
+        dirty = subprocess.run(["git", "status", "--porcelain", "--", *paths], cwd=ROOT, capture_output=True,
+                               text=True, timeout=300)      # hang guard
+        if dirty.returncode == 0 and not dirty.stdout.strip():
+            return "nothing to commit"
         a = sh(["git", "add", "--", *paths], ROOT, log, timeout=120)
         c = sh(["git", "commit", "-q", "-m", msg, "--", *paths], ROOT, log, timeout=120) if a == 0 else a
         if c == 0:
@@ -617,7 +672,7 @@ def post_run(run_recs, specs, log: Path, st: dict) -> tuple:
                     row["result"] = f"compare refused the ACCEPT -> {v['decision']} ({reason[:120]})"
                     vetoed = True
                     break
-            rc = sh(c, ROOT if kind == "fauna" else DRV.parent, log, timeout=540)
+            rc = sh(c, ROOT if kind == "fauna" else DRV.parent, log, timeout=540, **({} if kind == "fauna" else {"env": driver_env()}))
             row["rc"].append(rc)
             if rc != 0:
                 row["result"] = f"{Path(str(c[1])).name} rc {rc} (see log)"
@@ -687,7 +742,7 @@ def cmd_run(a) -> int:
     ready = []
     if owed["fauna_defs"]:
         sh([sys.executable, HERE / "fauna_drive.py", "candidates", *owed["fauna_defs"], "--auto", "--out", cand_dir],
-           HERE, log, timeout=300)
+           HERE, log, timeout=1800)     # hang guard: a def's first spec is built here (about 20 s each)
         rf = cand_dir / "ready.txt"
         ready = [x for x in rf.read_text().split() if x] if rf.is_file() else []
         ready = unjudged_specs(ready, judged_jobs(RS.production_decisions(STATE / "runs")))
@@ -719,9 +774,10 @@ def cmd_run(a) -> int:
     if facing:
         drv = load_drv()
         for k, grp in facing:
-            sh([sys.executable, DRV, "spec", grp, k], DRV.parent, log, timeout=300)
+            sh([sys.executable, DRV, "spec", grp, k], DRV.parent, log, timeout=300, env=driver_env())
         sts = json.loads((DRV.parent / "state.json").read_text())
         specs = [sts[k]["spec"] for k, _ in facing if (sts.get(k) or {}).get("spec") and Path(sts[k]["spec"]).is_file()]
+        st["spec_failed"] = [k for k, _ in facing if not ((sts.get(k) or {}).get("spec") and Path(sts[k]["spec"]).is_file())]
         if drv is not None and specs:
             rid = f"audit_auto_{stamp}"
             for part in chunks(specs):
@@ -739,20 +795,24 @@ def cmd_run(a) -> int:
     if errs:
         st["backoff_until"] = time.time() + BACKOFF_S
         st["hold_errors"] = errs
-    day = datetime.now().date().isoformat()
-    extra = changed + [str(x.relative_to(ROOT)) for x in (ART_EVENTS, FAUNA_INSTALLS, LEDGER)] if changed else \
-        [str(LEDGER.relative_to(ROOT))] if st.get("unfiled_items") else []
-    st["commit"] = commit(own_paths(runs, [r for r in recs if r.get("decision") != "HOLD_ERROR"], day) + extra,
-                          f"art_eval auto-judge pass {stamp}: {', '.join(runs)} "
-                          f"({len(recs)} decision(s), {len(changed)} installed file(s)) "
-                          f"(ARTEVAL_FINISHED_RENDERS_WIRE_AUTO_JUDGE)", log)
+    if runs:
+        day = datetime.now().date().isoformat()
+        extra = changed + [str(x.relative_to(ROOT)) for x in (ART_EVENTS, FAUNA_INSTALLS, LEDGER)] if changed else \
+            [str(LEDGER.relative_to(ROOT))] if st.get("unfiled_items") else []
+        st["commit"] = commit(own_paths(runs, [r for r in recs if r.get("decision") != "HOLD_ERROR"], day) + extra,
+                              f"art_eval auto-judge pass {stamp}: {', '.join(runs)} "
+                              f"({len(recs)} decision(s), {len(changed)} installed file(s)) "
+                              f"(ARTEVAL_FINISHED_RENDERS_WIRE_AUTO_JUDGE)", log)
     if installed:
         st["deploy"] = deploy(installed, log)
     st["log"] = str(log)
     st["result"] = f"judged {len(recs)}: {st['decisions']}"
+    failed = st.get("spec_failed") or []
+    if failed:
+        st["result"] += f"; the driver made no spec for {', '.join(failed)} (see the log)"
     write_status(st)
     print(st["result"])
-    return 0
+    return 1 if failed else 0       # a row that can never be judged is a failed unit, not a quiet "judged 0"
 
 
 def cmd_install(a) -> int:

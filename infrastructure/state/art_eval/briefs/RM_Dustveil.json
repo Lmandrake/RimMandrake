@@ -1,22 +1,31 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_Dustveil",
  "nearest_earth_animal": "moth",
  "earth_body_named": true,
  "departures": [
-  "wings hang downward around the body like a draped veil or curtain, not spread flat or folded tent-wise",
-  "wings unusually broad relative to the body, wider than an ordinary moth's",
-  "wing surface pale and dust-soft, with a powdery, almost fabric-like texture rather than patterned scales",
-  "a visible coat of fine shearable moth-silk on the adult's body"
+  {
+   "feature": "wings made of a felt of fungal threads instead of scaled membrane",
+   "quote": "its pale wings are a living felt of fungal threads"
+  },
+  {
+   "feature": "wings dusted with spores",
+   "quote": "dusted with spores"
+  },
+  {
+   "feature": "wings hang from the body like a veil",
+   "quote": "they hang from it like a veil"
+  }
  ],
  "body_plan": "flyer",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-24T01:42:18-07:00",
+ "at": "2026-11-23T10:17:37-08:00",
  "source": "description only (no image)"
 }
