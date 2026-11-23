@@ -1,13 +1,13 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":344431,"DISPATCH":24895,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"HOLDER.run-1795441975":2951,"HOLDER.run-1795448832":1450,"JUDGE.judge-1794890427":18837,"JUDGE.judge-1795437145":6544,"OWNER":1207} body_sha256=993b46ab0c3482a81ad8899a94cfdd7d2564c36be94034679503f1e760441c83 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":344431,"DISPATCH":24895,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"HOLDER.run-1795441975":2951,"HOLDER.run-1795448832":4869,"JUDGE.judge-1794890427":18837,"JUDGE.judge-1795437145":6544,"OWNER":1207} body_sha256=d649b6bb7ab160559d0c6e55ab20d79b06b3f63baa1f7de8bd9715df1373a31c -->
 # ExplosiveKnockback — mod ledger packet
-version 0.1.0 · stage in_game · 600 events in 14 shards · reducer 1
-holder lease run-1795448832, token 16, last active 2026-11-23T17:04:25Z
+version 0.1.0 · stage in_game · 610 events in 14 shards · reducer 1
+holder lease run-1795448832, token 16, last active 2026-11-23T19:04:32Z
 holder session 950be88c-e671-4415-b6be-88f8498662f3, context 197312 of ceiling 400000
 
-## Last checkpoint (HOLDER.run-1795441975, 2026-11-23T14:21:47Z)
-- done: cycle 6 record completed by measurement (decider reruns at e0e997836e, L1_SHIELD settled by planted T_GAS_CLUMP_ORDER run, fresh reader of fa2de6ee4b: sound); reader fix 4b7d56b65c; advanced to in_game
-- next: Run Stage 6 in-game acceptance on the build with fa2de6ee4b (tumbled goods) and the 8 caller faults no offline test caught
-- ruled out: the red offline bars in the Exit block: a killed judge wrote them before its fixes; all five deciders rc 0 at HEAD
+## Last checkpoint (HOLDER.run-1795448832, 2026-11-23T19:04:32Z)
+- done: visit 4 on ArchBig: mod fault fixed 2590111487 (thrown colonist on a covered pit fell twice), sc_cauldron_gas/sc_pit_fall/sc_pawn_hits_pawn repaired and seen both ways, 54 of 56 PASS, walk save EK_VISIT4_WALK_20261123
+- next: Steward: read fix 2590111487 as fresh reader, then fix sc_spared carrier hold, run the walk frame arms, fix koth.isid identity and rerun barrage and walk raid
+- ruled out: pawn_arc rehaul=False is crowding (cell_reserved), not the list; wind drift was never tested properly
 
 ## Open findings (44)
 (claimed fixes, awaiting a judge, on one line each with the oldest 41 open findings, named without their 'finding:': `modledger.py show --mod ExplosiveKnockback finding:<NAME>`)
@@ -237,6 +237,6 @@ spend recorded: USD 178.61, 171672717 tokens
 - tests: 106, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
 - claimed fixes in brief: 1 on one line (name and sha), their claim, test and fix by `show`
 - open findings in brief: the oldest 41 on one line, their fix and accept by `modledger.py show --mod ExplosiveKnockback <subject>`
-- the full history: 600 events (views/history.md; never read whole)
+- the full history: 610 events (views/history.md; never read whole)
 
-cursor: t=2026-11-23T17:04:25Z.1795453465182080268 (modledger.py since --mod ExplosiveKnockback t=2026-11-23T17:04:25Z.1795453465182080268 prints what changed after this packet)
+cursor: t=2026-11-23T19:04:32Z.1795460672835406479 (modledger.py since --mod ExplosiveKnockback t=2026-11-23T19:04:32Z.1795460672835406479 prints what changed after this packet)

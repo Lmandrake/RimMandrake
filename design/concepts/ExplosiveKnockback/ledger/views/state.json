@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "cab2d5d7fd6a5bc8aa81fcd0547480940f1fafbdff9355bf010646a41489ebad",
+  "body_sha256": "199c3a245732e182c1707d353f695c00cee7e82d761d69b77c07e290eba68ea4",
   "reducer": 1,
   "shards": {
    "BACKFILL": 344431,
@@ -13,7 +13,7 @@
    "HOLDER.run-1794895533": 1780,
    "HOLDER.run-1795435910": 630,
    "HOLDER.run-1795441975": 2951,
-   "HOLDER.run-1795448832": 1450,
+   "HOLDER.run-1795448832": 4869,
    "JUDGE.judge-1794890427": 18837,
    "JUDGE.judge-1795437145": 6544,
    "OWNER": 1207
@@ -683,11 +683,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795441975",
-   "done": "cycle 6 record completed by measurement (decider reruns at e0e997836e, L1_SHIELD settled by planted T_GAS_CLUMP_ORDER run, fresh reader of fa2de6ee4b: sound); reader fix 4b7d56b65c; advanced to in_game",
-   "next": "Run Stage 6 in-game acceptance on the build with fa2de6ee4b (tumbled goods) and the 8 caller faults no offline test caught",
-   "ruled_out": "the red offline bars in the Exit block: a killed judge wrote them before its fixes; all five deciders rc 0 at HEAD",
-   "ts": "2026-11-23T14:21:47Z"
+   "by": "HOLDER.run-1795448832",
+   "done": "visit 4 on ArchBig: mod fault fixed 2590111487 (thrown colonist on a covered pit fell twice), sc_cauldron_gas/sc_pit_fall/sc_pawn_hits_pawn repaired and seen both ways, 54 of 56 PASS, walk save EK_VISIT4_WALK_20261123",
+   "next": "Steward: read fix 2590111487 as fresh reader, then fix sc_spared carrier hold, run the walk frame arms, fix koth.isid identity and rerun barrage and walk raid",
+   "ruled_out": "pawn_arc rehaul=False is crowding (cell_reserved), not the list; wind drift was never tested properly",
+   "ts": "2026-11-23T19:04:32Z"
   },
   "decisions": {
    "bar:inv_items_teleport": {
@@ -883,7 +883,7 @@
     "ts": "2026-11-16T06:51:51Z"
    }
   },
-  "events": 600,
+  "events": 610,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -2505,7 +2505,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-23T17:04:25Z",
+   "last": "2026-11-23T19:04:32Z",
    "lease": "run-1795448832",
    "released": false,
    "token": 16
