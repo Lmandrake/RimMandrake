@@ -11377,3 +11377,5 @@
 {"seat":"RUNNER","event":"live","id":"OPS_MATURATION_MOD_PAUSED_FYEB","result":"broken","detail":"Ops alarm MATURATION_PAUSED: maturation.paused = 1 mods (MEASURED), line > 0","ts":"2026-11-23T01:18:26Z","tsn":1795396706112794451}
 {"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_CAUSE_1208658F","result":"kept","detail":"sweep: running again","ts":"2026-11-23T01:18:40Z","tsn":1795396720793438796}
 {"seat":"RUNNER","event":"live","id":"OPS_DISPATCH_CLONE_BEHIND_UNSTICK_YUYW","result":"kept","detail":"sweep: running again","ts":"2026-11-23T01:18:49Z","tsn":1795396729258900421}
+{"seat":"RUNNER","event":"live","id":"OPS_MATURATION_MOD_PAUSED_FYEB","result":"broken","detail":"Ops alarm MATURATION_PAUSED: maturation.paused = 1 mods (MEASURED), line > 0","ts":"2026-11-23T01:19:48Z","tsn":1795396788087537537}
+{"seat":"RUNNER","event":"live","id":"OPS_MATURATION_MOD_PAUSED_FYEB","result":"broken","detail":"Ops alarm MATURATION_PAUSED: maturation.paused = 1 mods (MEASURED), line > 0","ts":"2026-11-23T01:22:41Z","tsn":1795396961327493540}
