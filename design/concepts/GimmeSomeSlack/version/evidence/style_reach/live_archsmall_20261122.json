@@ -1,0 +1,243 @@
+{
+ "script": "style_reach_live.py",
+ "started": "2026-11-22T19:42:33",
+ "rows": [
+  {
+   "id": "R0_scene",
+   "status": "PASS",
+   "detail": {
+    "errors": [],
+    "H": [
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    "lampA": {
+     "id": 39772,
+     "x": 65,
+     "z": 149,
+     "rawStyle": "StandingLamp_Industrial",
+     "look": "Industrial",
+     "run": 39756,
+     "runLook": "Industrial",
+     "drawnPath": "RimMandrake/GimmeSomeSlack/Styles/Industrial/StandingLamp",
+     "lit": false
+    },
+    "lampB": {
+     "id": 39773,
+     "x": 65,
+     "z": 154,
+     "rawStyle": "StandingLamp_Modern",
+     "look": "Modern",
+     "run": 39764,
+     "runLook": "Modern",
+     "drawnPath": "RimMandrake/GimmeSomeSlack/Styles/Modern/StandingLamp",
+     "lit": false
+    }
+   }
+  },
+  {
+   "id": "R1_reach_menu_counts",
+   "status": "PASS",
+   "detail": {
+    "labels": [
+     "This item: this power conduit only",
+     "All connected: 8 pieces, 1 lamps",
+     "All on map: 16 pieces, 2 lamps you own"
+    ]
+   }
+  },
+  {
+   "id": "R2_this_item_only",
+   "status": "PASS",
+   "detail": {
+    "call": {
+     "success": true,
+     "cmd": "crestyleone:65,148:Futuristic",
+     "changed": 1,
+     "message": "Restyled this power conduit only to Futuristic.",
+     "_probeSerial": 11
+    },
+    "cell": "PowerConduit_Futuristic",
+    "piece": "Futuristic",
+    "others": [
+     "PowerConduit_Industrial",
+     "PowerConduit_Industrial",
+     "PowerConduit_Industrial",
+     "PowerConduit_Industrial",
+     "PowerConduit_Industrial",
+     "PowerConduit_Industrial",
+     "PowerConduit_Industrial"
+    ],
+    "lampA": "Industrial"
+   }
+  },
+  {
+   "id": "R3_new_piece_takes_touched_look",
+   "status": "PASS",
+   "detail": {
+    "nearF": "PowerConduit_Futuristic",
+    "farEnd": "PowerConduit_Industrial",
+    "place": [
+     true,
+     true
+    ],
+    "message": "Restyled this power conduit only to Futuristic."
+   }
+  },
+  {
+   "id": "R4_all_connected",
+   "status": "PASS",
+   "detail": {
+    "call": {
+     "success": true,
+     "cmd": "crestyle:62,148:Modern_Blue",
+     "changed": 10,
+     "message": "Restyled this run (10 pieces, 10 changed) to Modern: blue; lamps on it: 1 changed.",
+     "_probeSerial": 18
+    },
+    "A": [
+     "PowerConduit_Modern_Blue",
+     "PowerConduit_Modern_Blue",
+     "PowerConduit_Modern_Blue",
+     "PowerConduit_Modern_Blue",
+     "PowerConduit_Modern_Blue",
+     "PowerConduit_Modern_Blue",
+     "PowerConduit_Modern_Blue",
+     "PowerConduit_Modern_Blue",
+     "PowerConduit_Modern_Blue",
+     "PowerConduit_Modern_Blue"
+    ],
+    "lampA": "Modern"
+   }
+  },
+  {
+   "id": "R5_all_on_map_player_only",
+   "status": "PASS",
+   "detail": {
+    "call": {
+     "success": true,
+     "cmd": "crestyleall:Futuristic:player",
+     "changed": 20,
+     "message": "Restyled everything on the map that you own to Futuristic: 2 runs, 18 pieces changed, 2 of 2 lamps changed.",
+     "_probeSerial": 21
+    },
+    "H": [
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    "lamps": [
+     {
+      "id": 39772,
+      "x": 65,
+      "z": 149,
+      "rawStyle": "StandingLamp_Futuristic",
+      "look": "Futuristic",
+      "run": 39756,
+      "runLook": "Futuristic",
+      "drawnPath": "RimMandrake/GimmeSomeSlack/Styles/Futuristic/StandingLamp",
+      "lit": false
+     },
+     {
+      "id": 39773,
+      "x": 65,
+      "z": 154,
+      "rawStyle": "StandingLamp_Futuristic",
+      "look": "Futuristic",
+      "run": 39764,
+      "runLook": "Futuristic",
+      "drawnPath": "RimMandrake/GimmeSomeSlack/Styles/Futuristic/StandingLamp",
+      "lit": false
+     }
+    ]
+   }
+  },
+  {
+   "id": "R6_all_on_map_god_every_faction",
+   "status": "PASS",
+   "detail": {
+    "call": {
+     "success": true,
+     "cmd": "crestyleall:Industrial:god",
+     "changed": 25,
+     "message": "Restyled everything on the map (god mode: every faction) to Industrial: 3 runs, 23 pieces changed, 2 of 2 lamps changed.",
+     "_probeSerial": 24
+    },
+    "H": [
+     "PowerConduit_Industrial",
+     "PowerConduit_Industrial",
+     "PowerConduit_Industrial",
+     "PowerConduit_Industrial",
+     "PowerConduit_Industrial"
+    ]
+   }
+  },
+  {
+   "id": "R7_lamp_all_connected",
+   "status": "PASS",
+   "detail": {
+    "call": {
+     "success": true,
+     "cmd": "clamprun:65,154:Scrapper",
+     "hooked": true,
+     "message": "Restyled this run (8 pieces, 8 changed) to Scrapper; lamps on it: 1 changed. This lamp: Scrapper.",
+     "_probeSerial": 27
+    },
+    "B": [
+     "PowerConduit_Scrapper",
+     "PowerConduit_Scrapper",
+     "PowerConduit_Scrapper",
+     "PowerConduit_Scrapper",
+     "PowerConduit_Scrapper",
+     "PowerConduit_Scrapper",
+     "PowerConduit_Scrapper",
+     "PowerConduit_Scrapper"
+    ],
+    "lampB": "Scrapper"
+   }
+  }
+ ],
+ "log": [
+  {
+   "shot": "reach0_scene",
+   "src": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\Screenshots\\reach0_scene__cell_rect.png",
+   "dst": "D:\\ClaudeWork\\scratch\\gss_style_reach_20261122\\reach0_scene.png",
+   "ok": true
+  },
+  {
+   "shot": "reach1_menu_open",
+   "src": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\Screenshots\\reach1_menu_open__cell_rect.png",
+   "dst": "D:\\ClaudeWork\\scratch\\gss_style_reach_20261122\\reach1_menu_open.png",
+   "ok": true
+  },
+  {
+   "shot": "reach2_this_item",
+   "src": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\Screenshots\\reach2_this_item__cell_rect.png",
+   "dst": "D:\\ClaudeWork\\scratch\\gss_style_reach_20261122\\reach2_this_item.png",
+   "ok": true
+  },
+  {
+   "shot": "reach3_all_connected",
+   "src": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\Screenshots\\reach3_all_connected__cell_rect.png",
+   "dst": "D:\\ClaudeWork\\scratch\\gss_style_reach_20261122\\reach3_all_connected.png",
+   "ok": true
+  },
+  {
+   "shot": "reach4_all_on_map",
+   "src": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\Screenshots\\reach4_all_on_map__cell_rect.png",
+   "dst": "D:\\ClaudeWork\\scratch\\gss_style_reach_20261122\\reach4_all_on_map.png",
+   "ok": true
+  },
+  {
+   "shot": "reach5_lamp_run",
+   "src": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\Screenshots\\reach5_lamp_run__cell_rect.png",
+   "dst": "D:\\ClaudeWork\\scratch\\gss_style_reach_20261122\\reach5_lamp_run.png",
+   "ok": true
+  }
+ ]
+}

@@ -126,8 +126,7 @@ def main(argv=None):
 
     r = B.ap("creach:%d,%d:open" % A[0])
     labels = r.get("reaches") or []
-    time.sleep(0.5)
-    shot(B, "reach1_menu_open", a.shots, log)
+    # the map-rect capture renders the map only, never the UI: the menu's labels are read (R1), not captured
     B.ap("cclosemenus")
     ok1 = len(labels) == 3 and labels[0].startswith("This item") and labels[1] == "All connected: 8 pieces, 1 lamps" and \
         labels[2].startswith("All on map: 16 pieces, 2 lamps")
