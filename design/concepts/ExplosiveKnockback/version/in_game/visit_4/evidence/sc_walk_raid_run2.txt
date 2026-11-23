@@ -1,0 +1,23 @@
+ROW                          STATUS     DETAIL
+W_PRECONDITIONS              PASS       full list, FlowWorks, Cauldron gas, shelves, closed container, cover
+A_IMPACTS_IN_ROOM            PASS       3 shell(s) at [(100, 40), (99, 41), (101, 39)]; 41 request(s) centred in the storeroom, 14 throw(s)
+A_SAVE_MIDAIR                PASS       2 carrier(s) in the air; save EK_WALK_RAID_MIDAIR_20261123T101320; triplet UNMEASURED
+A_RELOAD_NO_DUP_LOST         UNMEASURED UNMEASURED: at tick 13237: live 7, load 7, reload 0 things; dup {}; lost [] new [] (load vs live); arm C: arm ended at tick 13228, not the target 13237 (asked for 10 ticks)
+A_COVER_BROKEN_ONE_DESCENT   PASS       grenade ok; cover left none; riders ['Human41802'] (killed []); 1 descent(s) {'Human41802': 1}, twice []
+A_GAS_CLUMP_BY_CLUMP         PASS       24 bursts on 5 ticks, 24 distinct cells; mean distance from lit (98, 41) by tick [1.0, 2.4, 3.3, 4.2, 5.2]; burst again {}
+A_GAS_GOODS_MOVED            PASS       19 throw(s) from 24 burst(s)
+A_REQUESTS_MATCH_PLAN        PASS       88 requests, 0 mismatch(es): []; answered by a corpse: []
+A_REACHED_ACCOUNTED          PASS       0 thing(s) inside a shell's radius with no journal line: []
+B_GAS_CLUMP_BY_CLUMP         PASS       33 bursts on 5 ticks, 33 distinct cells; mean distance from lit (98, 41) by tick [1.0, 2.3, 3.4, 4.3, 5.2]; burst again {}
+B_GAS_GOODS_MOVED            PASS       27 throw(s) from 33 burst(s)
+B_IMPACTS_IN_ROOM            PASS       3 shell(s) at [(100, 40), (99, 41), (101, 39)]; 31 request(s) centred in the storeroom, 21 throw(s)
+B_COVER_BROKEN_ONE_DESCENT   UNMEASURED SITE: the grenade killed every rider, and a corpse never descends; grenade ok; cover left none; riders ['Human41802'] (killed ['Human41802']); 0 descent(s) {}, twice []
+B_REQUESTS_MATCH_PLAN        PASS       130 requests, 0 mismatch(es): []; answered by a corpse: ['Human41802 as Corpse_Human43823', 'Human38765 as Corpse_Human43929']
+B_REACHED_ACCOUNTED          PASS       0 thing(s) inside a shell's radius with no journal line: []
+C_OFF_IMPACTS_NO_THROWS      PASS       mod off: 3 shell(s) went off (all), 0 throw line(s), 0 of 11 storeroom stack(s) moved
+CARRIER_TICK_COST            PASS       meanTickTime 4.837275 ms at rest, 4.771063 ms 1 s after the shells with 0 carrier(s) in the air, clock running (recorded, not judged)
+FRAME_BUDGET                 UNMEASURED the frame arms run on the small list (owner 2026-11-16): run this leaf with --frames-only on the Explosive Knockback tier, then pass its json as --frame-evidence
+evidence: design/concepts/ExplosiveKnockback/version/in_game/visit_4/evidence/sc_walk_raid_run2.json   throwaway saves: ['EK_WALK_RAID_BASE_20261123T101320', 'EK_WALK_RAID_MIDAIR_20261123T101320']
+[bridge split] 158.0 s wall: load 4.0 / ticks 22.5 / reads 29.7 / other 26.8 / outside calls 74.9 s
+[bridge split] WARN 96 calls of jawa/mod_settings_field (8.5 s): batch them
+[bridge split] WARN 63 calls of jawa/static_call (7.9 s): batch them

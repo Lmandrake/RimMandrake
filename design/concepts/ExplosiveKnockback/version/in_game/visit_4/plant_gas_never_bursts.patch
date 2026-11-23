@@ -1,0 +1,13 @@
+diff --git a/src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs b/src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs
+index ed7c8995e1..2c7686cdfc 100644
+--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs
++++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs
+@@ -990,7 +990,7 @@ namespace RimMandrake.ExplosiveKnockback
+                 return;
+             }
+             RM_MapComponent_Knockback comp = map.GetComponent<RM_MapComponent_Knockback>();
+-            if (comp == null)
++            if (true || comp == null)
+             {
+                 return;
+             }

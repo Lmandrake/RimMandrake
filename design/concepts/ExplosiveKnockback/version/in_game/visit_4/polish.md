@@ -1,0 +1,4 @@
+- sc_pawn_arc / RM_PawnFlyerPatches.ResumeHaul: when the haul's stockpile cell is reserved by another pawn while the colonist is in the air (resume_skip cell_reserved, 7 of 10 on the crowded walk map 2026-11-23), the haul is given up; it could pick another free cell.
+- judge_certificate asks_on_empty_game parses RM_KnockbackProof.cs as Python and reads DID NOT RUN.
+- sc_pit_enemy cannot see PF_CALLER_PAWN_LANDING_KEEPS_COVER or PF_CALLER_GOODS_LANDING_KEEPS_COVER (no covered lane); sc_pit_fall's solo lanes do.
+- Planted faults no in-game check sees: PF_PROOF_RESET_NOOP (Settings reset no-op), PF_PROOF_WALL_SCENE_DROPPED (a scene missing from the Names list still runs by name), PF_CALLER_PAWN_LANDING_NOT_STANDABLE (needs a wall built over the takeoff mid-flight), PF_MAPAGREE_ALWAYS_OK and PF_SAVELOAD_ALWAYS_OK (exit-code faults in scripts no check runs).

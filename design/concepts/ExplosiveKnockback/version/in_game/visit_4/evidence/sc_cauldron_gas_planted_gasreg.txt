@@ -1,0 +1,3 @@
+baseline rc=0 gas_census       PASS chain=True goods=True shove=True cover=True bursts=21 burstTicks=5 goodsMoves=4 maxGoodsPlanned=2 pawnShoves=1 cooldownOk=True gasReg=True coverHp=160/160
+planted gasreg=off rc=1 gas_census       INVALID the Cauldron's vent gas is not registered with the gas chain
+restored rc=0 gas_census       PASS chain=True goods=True shove=True cover=True bursts=23 burstTicks=5 goodsMoves=4 maxGoodsPlanned=2 pawnShoves=1 cooldownOk=True gasReg=True coverHp=160/160

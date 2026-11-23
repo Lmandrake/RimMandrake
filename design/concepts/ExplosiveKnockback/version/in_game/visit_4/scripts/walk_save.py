@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Build the owner's labelled walk save for visit 3: stage proof scenes at the map's scene origins (one station each),
+"""Build the owner's labelled walk save for visit 4: stage proof scenes at the map's scene origins (one station each),
 step each to rest, read its verdict, pin a sign book on each station (SIGN nn <scene> <VERDICT>, LOOK / DO / DECIDE),
 then save through reviewmap.save_keeper (refuses an existing name, proves one new file and none changed).
 
-    python.exe design\\concepts\\ExplosiveKnockback\\version\\in_game\\visit_3\\scripts\\walk_save.py NAME [--ticks 300]
+    python.exe design\\concepts\\ExplosiveKnockback\\version\\in_game\\visit_4\\scripts\\walk_save.py NAME [--ticks 300]
 
 Prints one line per station and the save_keeper result as JSON on the last line. Settings are put back after.
 """
@@ -64,7 +64,7 @@ def main():
                 x, z = (int(c) for c in org.split(","))
                 key = "%02d" % (i + 1)
                 signs.append(RM.sign_book(x, z - 3, key, "%s %s" % (scene, v), look=look, do=do, decide=decide,
-                                          more="visit 3 proof verdict %s; check rows in design/concepts/ExplosiveKnockback/version/in_game/visit_3/rows.jsonl" % v))
+                                          more="visit 4 proof verdict %s; check rows in design/concepts/ExplosiveKnockback/version/in_game/visit_4/rows.jsonl" % v))
                 rows.append((key, scene, v, org))
                 print("SIGN %s %-20s %-8s at %s" % (key, scene, v, org), flush=True)
         finally:
