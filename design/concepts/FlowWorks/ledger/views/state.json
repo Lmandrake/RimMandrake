@@ -1,10 +1,10 @@
 {
  "_view": {
-  "body_sha256": "ac357d42b2fdc8de4933f69349190304f73fc366016403b2029edc940d5fd2eb",
+  "body_sha256": "4243c41dbd82fdb6bf47735fd649b32f18861b9d01ddddc882bd9487594ebf44",
   "reducer": 1,
   "shards": {
    "BACKFILL": 893183,
-   "DISPATCH": 76184,
+   "DISPATCH": 76867,
    "HOLDER.run-1794816885": 928,
    "HOLDER.run-1794848129": 1121,
    "HOLDER.run-1794861652": 2822,
@@ -1744,7 +1744,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1658,
+  "events": 1660,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7922,10 +7922,10 @@
   "reducer": 1,
   "session": {
    "ceiling": 400000,
-   "context_tokens": 121160,
+   "context_tokens": 179951,
    "rotate_due": false,
-   "session_id": "26b405bb-9c4f-4ecd-87ca-898323d2417c",
-   "ts": "2026-11-23T09:14:16Z"
+   "session_id": "4ce89f49-44fa-4c1e-ba31-c6154a7a736f",
+   "ts": "2026-11-23T10:19:21Z"
   },
   "shards": [
    "BACKFILL",
