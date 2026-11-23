@@ -32,10 +32,11 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             var names = ConduitStyles.AllStyleDefNames().ToList();
             bool round = names.All(n => ConduitStyles.TryParseStyleDefName(n, out string d, out string l, out string c) &&
                                         ConduitStyles.StyleDefName(d, l, c) == n);
-            Check(names.Count == 28 && names.Distinct().Count() == 28 && round && ConduitStyles.KeysFor("PowerConduit").Count == 10 &&
+            // 0.2.0 (bar wall_lamp_takes_looks): the wall lamp's 4 looks join the roster (28 -> 32)
+            Check(names.Count == 32 && names.Distinct().Count() == 32 && round && ConduitStyles.KeysFor("PowerConduit").Count == 10 &&
                   ConduitStyles.KeysFor("PowerSwitch").Count == 4 && ConduitStyles.KeysFor("StandingLamp").Count == 4 &&
-                  names.Contains("StandingLamp_Futuristic"),
-                  $"naming: 2 conduit defs x 10 keys (4 looks + 5 Modern colours + Mix) + switch x 4 + floor lamp x 4 looks = {names.Count} distinct style defs, each parses back");
+                  ConduitStyles.KeysFor("WallLamp").Count == 4 && names.Contains("StandingLamp_Futuristic") && names.Contains("WallLamp_Futuristic"),
+                  $"naming: 2 conduit defs x 10 keys (4 looks + 5 Modern colours + Mix) + switch x 4 + floor lamp x 4 + wall lamp x 4 looks = {names.Count} distinct style defs (want 32), each parses back");
             Check(ConduitStyles.IsLampDef("StandingLamp") && !ConduitStyles.IsSwitchDef("StandingLamp") && !ConduitStyles.IsConduitDef("StandingLamp") &&
                   !ConduitStyles.TryParseStyleDefName("StandingLamp_Modern_Orange", out _, out _, out _),
                   "lamp (round 5): styled by look only (no Modern colour), and not a switch/conduit so it never joins a run");
