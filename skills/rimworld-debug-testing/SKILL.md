@@ -5,41 +5,52 @@ description: Testing anything in RimWorld without spending a cold load — start
 
 # Debug testing: never wait for a map you can make
 
-> 🟢 **UPDATED 2026-08-19 — the economics changed.** On the 13-mod minimal list
-> (`modlist_swap.py`, see the `rimworld-load-round` skill) a **cold load is 22 seconds** and
-> `rimworld/start_debug_game_ready` produces a full quicktest world+map in **5 seconds**.
-> The whole edit → build → deploy → launch → test cycle is about **one minute**. Everything
-> below about protecting a load still holds for the owner's real full stack (`ModsConfig.FULL.LATEST.xml`); for tool and
-> mechanism work, just relaunch.
+A **quicktest** is a throwaway dev colony that the bridge starts. Old evidence and struck lines:
+[references/history.md](references/history.md).
+
+> 🟢 **UPDATED 2026-08-19 — the economics changed.**
 >
-> ⚠️ **What a minimal-list quicktest still cannot prove:** anything depending on real tile
-> IDs (it generates 119,904 tiles, not 21,872), anything needing the content mods, and
-> anything about the owner's actual mod interactions. It proves MECHANISM, not CONTENT.
+> - On the 13-mod minimal list (`modlist_swap.py`, see the `rimworld-load-round` skill), a **cold load is 22 seconds**.
+>   `ModsConfig.MINIMAL.xml` holds more mods now, and its load time is UNMEASURED (`rimworld-load-round` §0).
+> - On that list, `rimworld/start_debug_game_ready` makes a full quicktest world and map in **5 seconds**.
+> - The whole edit → build → deploy → launch → test cycle is about **one minute**.
+> - Each rule below that protects a load still holds for the owner's real full list (`ModsConfig.FULL.LATEST.xml`).
+> - For tool work and mechanism work, relaunch at once.
 >
-> ⚠️ **`rimworld/search_debug_actions` timed out at 30 s even on 13 mods** — the debug
-> discovery hang is not only a heavy-modlist problem.
+> ⚠️ **What a minimal-list quicktest still cannot prove:**
+>
+> - anything that depends on real tile IDs. Such a quicktest makes 119,904 tiles, not 21,872;
+> - anything that needs the content mods;
+> - anything about the owner's actual mod interactions.
+>
+> A minimal-list quicktest proves MECHANISM, not CONTENT.
+>
+> **`rimworld/search_debug_actions` timed out at 30 s even on 13 mods.** So a heavy mod list is not the only cause
+> when the search for debug actions hangs.
 
-⚠️ **This skill is METHOD, not mechanics.** How to drive the bridge — the call
-palette, debug actions, map authoring, speed, the companion DLL — is
-`skills/rimbridge/SKILL.md`, and its hard-won failure catalogue is
-`skills/rimbridge/references/traps.md`. **Read the traps file before any live
-session; it is the one that stops you re-paying for a lesson.** This file only
-answers *what to test on, and what a result is worth.*
+**This skill is METHOD, not mechanics.**
 
-A cold load of the owner's FULL list costs **~15 minutes** (MEASURED 2026-09-07 on 599 mods; CLAUDE.md), a minimal
-list ~22 seconds, and one game is shared by both windows. A dev quicktest colony costs **~30 seconds** and belongs to
-nobody.
+- `skills/rimbridge/SKILL.md` says how to drive the bridge: the call palette, debug actions, map authoring, speed and
+  the companion DLL.
+- `skills/rimbridge/references/traps.md` is the index of the bridge failures. **Read the traps file before any live
+  session.** That file stops you from paying for a lesson a second time.
+- This skill answers only *what to test on, and what a result is worth.*
 
-> 🔴 **"Blocked on a map" is almost never real.** Owner's ruling,
-> `infrastructure/agents/CHARTER.md` (maps, saves and colonies are "not precious"):
-> **whoever holds the bridge may create and destroy dev colonies at will.** No
-> permission, no queue entry, no waiting for worldgen.
+The cost of each:
 
-**This skill is why that ruling exists.** On 2026-08-13 four seats sat idle
-waiting for the owner to generate a world, holding tests that needed *a* map and
-not *the* map. One of them — the only possible proof that `JawaIonWeapons` works
-— had been hoarded for weeks as a scarce-session item. It never needed the
-campaign at all.
+- A cold load of the owner's FULL list costs **~15 minutes** (MEASURED 2026-09-07 on 599 mods). The other measured times
+  are in `rimworld-load-round` §0.
+- The 13-mod minimal list cost ~22 seconds.
+- A quicktest costs from seconds to ~90 s (§1), and belongs to nobody.
+- There are four games, each with its own bridge lock (root `CLAUDE.md` §There are several live games). A quicktest on
+  a tier does not need ArchBig.
+
+> 🔴 **"Blocked on a map" is almost never real.** Owner's ruling, `infrastructure/agents/CHARTER.md` (maps, saves and
+> colonies are "not precious"): **whoever holds the bridge may create and destroy dev colonies at will.** You need no
+> permission, no queue entry and no wait for worldgen.
+
+Before you call a test blocked on a map, ask one question. Does the test need *a* map, or *the* map (the campaign
+map)? Do not save up a test that needs only *a* map.
 
 ---
 
@@ -49,67 +60,93 @@ campaign at all.
 rimworld/start_debug_game_ready
 ```
 
-⚠️ **It exceeds the 30-second client timeout and succeeds anyway.** The response
-is merely late. This has already cost real time, so it is the first thing here:
+**The time, as measured:**
 
-- **Do NOT retry** — the connection is desynced, not idle.
-- **Do NOT re-issue** — you get a *second* map.
-- **Open a fresh connection**, then wait for the map with the existing helper
-  `live_site.wait_ready(rb, budget_s=…)` (`src/RimMandrake/Utils/live_site.py`) rather
-  than a new hand-written poll. ⏱️ Measured **78.5 s** on the 580-mod stack, so budget
-  well over a minute rather than guessing a sleep. One shared lifecycle wait is
-  PLANNED (item READYWAITS_UNIFY_ONE_HELPER, `await_lifecycle`). About 57 copied ready
-  loops are already in the tree, so do not add another.
+| list or sample | time |
+|---|---|
+| the 13-mod minimal list (2026-08-19) | 5 s |
+| 68 calls of one night (2026-11-11 to 2026-11-12) | 10 s each |
+| the 580-mod stack | **78.5 s** |
+| plan, when you do not know (root `CLAUDE.md`) | about 90 s |
 
-⚠️ **It needs `rimworld/go_to_main_menu` first** if a game is already loaded —
-from inside a running colony it will not start a fresh one.
+⚠️ **The call exceeds the 30-second client timeout and succeeds anyway.** The response is only late.
 
-🔴 **Never call it on the owner's FULL mod list — it has crashed the process outright, and
-also failed short of a crash, in different ways on different nights.** On one full ~599-mod
-run, `Player.log` stopped growing mid-worldgen for 5+ minutes and the process was simply
-gone, no crash dialog (2026-09-08). On another full ~590-mod run it never crashed but never
-produced a game either — real, reproducible `WorldGenStep`/pawn-generation exceptions (a
-MonoMod IL collision between two content mods), looping forever at `Entry`,
-`hasCurrentGame:false`, with nothing surfaced to the bridge caller — only `Player.log` shows
-it (2026-09-12). Either failure mode costs the load. **Build a `modset_builder.py` tier
-first** and quicktest on that; a normal boot-to-menu or a real save load on the full list is
-fine, only quicktest worldgen on that stack is dangerous.
+- **Give the client a longer timeout first.** 30 s is the default of `rimbridge_client.RimBridge`.
+  `prove_quicktest_world.py` uses `timeout=600.0` on the client and `timeoutMs=280000` on the call.
+- If the call timed out, **do NOT retry** on that connection. The connection is desynced, not idle.
+- **Do NOT issue the call again.** You get a *second* map.
+- **Open a fresh connection.** Then wait for the map with `live_site.wait_ready(rb, budget_s=…)`
+  (`src/RimMandrake/Utils/live_site.py`).
+- Do not write a new poll by hand, and do not guess a sleep. Budget well over a minute. `wait_ready` uses the one shared
+  lifecycle wait, `await_lifecycle` (READYWAITS_UNIFY_ONE_HELPER).
 
-🔴 **And it DISCARDS the current map without further warning** — that is how it
-gets you a clean one. Anything another seat left on the old map is gone.
-**Announce before calling it, and check nobody is mid-audit.**
+**If a game is already loaded, call `rimworld/go_to_main_menu` first.**
 
-Then it is an ordinary map: spawn, build, paint terrain, set time, screenshot.
+- From inside a running colony, the call starts no fresh colony. The call can wait 280 s, and the old map stays
+  ("A game is already loaded.").
+- If the call answered, accept the start only when four things are true. The call said `success: true`. `programState` is
+  `Playing`. `hasCurrentGame` is true. One map is loaded.
+- If the call timed out, you have no answer to read. Then `wait_ready` decides.
+- `src/RimMandrake/bridgetools/prove_quicktest_world.py` does the whole route and refuses to leave a real colony.
 
-**Destroy it by starting another, or by leaving it.** It is scratch. Nothing about
-a quicktest is precious and nothing about it needs cleaning up — the only cost of
-a stale one is confusing yourself about which map a result came from (§3).
+🔴 **Do not quicktest on the owner's FULL mod list when a tier can answer.** On the full list, a quicktest failed on two
+nights, in two ways:
+
+- On a full ~599-mod run, the process crashed outright. `Player.log` stopped in the middle of worldgen for 5+ minutes,
+  and the process was gone with no crash dialog (2026-09-08).
+- On a full ~590-mod run, no game came and nothing crashed. `WorldGenStep` and pawn-generation exceptions looped
+  forever at `Entry`, with `hasCurrentGame:false` (a MonoMod IL collision between two content mods). The bridge caller
+  saw nothing. Only `Player.log` shows it (2026-09-12).
+
+Either failure costs the load.
+
+- **Build a `modset_builder.py` tier first**, and quicktest on the tier. A tier is a named small mod list.
+- A normal boot to the menu on the full list is fine, and so is a load of a real save. Quicktest worldgen there is the
+  dangerous act.
+- The quicktest worked on the full 629-mod list on 2026-09-27, after three faults in our own content were fixed. No record
+  was found that ties those faults to the two failures above. The next fault of either kind costs a load again.
+- So use the full list only for the final verification pass (`rimworld-load-round` §0, "Which list to test on"). If the
+  start fails there, read the FIRST exception in `Player.log`
+  (`skills/live-debugging-proof-harness/references/traps.md`).
+
+🔴 **The route DISCARDS the current map without further warning.** `rimworld/go_to_main_menu` drops the game, and
+anything that another seat left on the old map is gone. **Before you
+call `go_to_main_menu` or `start_debug_game_ready`, read the driver lock:**
+`python3 src/RimMandrake/rimflow/game_lock.py query` (ArchBig and ArchSmall; the test lane drives Steve1 and Steve2). Do
+not call them while another process drives that game.
+
+The result is an ordinary map: spawn, build, paint terrain, set the time, take a screenshot.
+
+**To destroy a quicktest, start another one, or leave it.**
+
+- A quicktest is scratch. Nothing in it is precious, and nothing in it needs a cleanup.
+- A stale quicktest has one cost: you can confuse which map a result came from (§3).
 
 ### 🔴 Reversible, cheap and unobtrusive are three different properties
 
-A quicktest is **reversible**. It is not free, and it is not invisible. Each
-`start_debug_game_ready` is a full RimWorld **world** generation: a
-loop of seven (measured on a since-deleted worldgen sweep script) took
-`/proc/loadavg` to **22.58** (RAM fine —
-CPU and 9p-mount contention on the disk RimWorld streams assets from), and the
-owner reported the game *"stuck on Generating Map…"*, then *"running badly"*.
-Nothing was stuck. **From the keyboard, an agent-driven worldgen and a hang are
-the same event** — there is no *"an agent is doing this"* indicator anywhere on
-RimWorld's loading screen.
+A quicktest is **reversible**. A quicktest is not free, and it is not invisible.
 
-🔴 **A shared RimWorld process crashing during ANY quicktest map-gen attempt takes down
-the WHOLE process — including an already-loaded, stable campaign running in the same
-session.** "Just testing a quicktest" is not isolated from a live campaign; two separate
-agents hit this crashing the same stable, freshly-recovered campaign load (2026-09-09/10).
+- Each `start_debug_game_ready` is a full RimWorld **world** generation.
+- A loop of seven took `/proc/loadavg` to **22.58**. RAM was fine. The load was CPU and 9p-mount contention on the disk
+  that RimWorld streams assets from. The owner reported *"stuck on Generating Map…"*, then *"running badly"*. Nothing
+  was stuck.
+- **From the keyboard, an agent-driven worldgen and a hang are the same event.** There is no *"an agent is doing this"*
+  indicator on RimWorld's loading screen.
 
-**Announce anything that occupies the game's own UI to the OWNER before it
-starts, and report when it ends.** Announcing to peer seats does not count — they
-cannot see it and do not care, while the owner can see it and has no way to
-identify it. Prefer to run world or map generation when nobody is at the
-keyboard, and check `/proc/loadavg` before and during: over ~10 on this box means
-somebody's frames are being eaten. Applies to any loop over
-`start_debug_game_ready`, `load_game`, `go_to_main_menu` or long `save_game`
-calls.
+🔴 **If a quicktest map generation crashes, the crash takes down the WHOLE process of that game.**
+
+- A stable campaign that is loaded in the same process goes down too. Two agents crashed the same stable, freshly
+  recovered campaign load this way (2026-09-09/10).
+- So "Just testing a quicktest" is not isolated from a live campaign in the same game. Use another game.
+
+**When work occupies the UI of a game on his machine, tell the OWNER before the work starts. Report when it ends.**
+
+- A message to peer seats does not count. The owner sees the screen and cannot identify the work.
+- The message does not gate the work. Do not wait for an answer. Do not wait for the owner to leave the keyboard
+  (root `CLAUDE.md` §The bridge is passed through one file).
+- Run a loop on another game when a tier list can prove the work (root `CLAUDE.md` §There are several live games).
+- Read `/proc/loadavg` before and during the work. Over ~10 on this box, the load takes frames from a game.
+- The rule applies to each loop of `start_debug_game_ready`, `load_game`, `go_to_main_menu` or long `save_game` calls.
 
 More traps for this section: [references/traps.md](references/traps.md) § 1. Start one.
 
@@ -120,275 +157,283 @@ More traps for this section: [references/traps.md](references/traps.md) § 1. St
 | does this def load, spawn, and behave | anything about **worldgen choices** — the Configure Factions page is spent once, on the campaign |
 | does this tool/API call work at all | anything about **the campaign's own state** — its pawns, its factions, its map |
 | does this art read correctly at game scale | **faction relations that took game-time to form** |
-| does this terrain/map-gen override appear — **a quicktest map IS a newly generated map** | **anything requiring the real 580-mod load order to differ from what is loaded now** |
+| does this terrain/map-gen override appear — **a quicktest map IS a newly generated map** | **anything that needs the real 580-mod load order to differ from what is loaded now** |
 | does a silent failure actually fire (§4) | a claim about **save-file** contents |
 
-⚠️ **A trimmed tier list's own GenStep NREs and `StatRequest for null def` spam are its
-NORMAL behaviour, not a defect.** An unresolved `BiomePlantRecord`/`BiomeAnimalRecord`
-cross-reference leaves a record with a null `plant`/`animal` field IN the list (only
-`MayRequire` removes the entry outright), and code like
-`WildPlantSpawner.EnoughLowerOrderPlantsNearby` dereferences it unguarded. A BiomeDef
-naming 480 species across mods the tier doesn't load makes hundreds of these nulls the
-expected tier state — do not read that count as a defect, and do not let it stand in for
-anything about the full mod list (2026-09-20).
+**On a trimmed tier list, GenStep NREs and `StatRequest for null def` spam are NORMAL behaviour.** They are not a
+defect.
 
-**The rule of thumb:** a quicktest answers *"does this work?"* It never answers
-*"is this true of our campaign?"*
+- An unresolved `BiomePlantRecord` or `BiomeAnimalRecord` cross-reference leaves a record IN the list, with a null
+  `plant` or `animal` field. Only `MayRequire` removes the entry outright.
+- Code like `WildPlantSpawner.EnoughLowerOrderPlantsNearby` then reads that null field with no guard.
+- A BiomeDef can name 480 species of mods that the tier does not load. Then hundreds of these nulls are the expected
+  state of the tier.
+- Do not read that count as a defect. Do not let that count stand for anything about the full mod list (2026-09-20).
+
+**The rule of thumb:** a quicktest answers *"does this work?"* A quicktest never answers *"is this true of our
+campaign?"*
 
 More traps for this section: [references/traps.md](references/traps.md) § 2. What a quicktest proves, and what it cannot.
 
 ## 3. Always say which map a result came from
 
-**A quicktest finding and a campaign finding are different claims.** Report which
-one you were on, every time, or the next reader cannot tell what you established.
+**A quicktest finding and a campaign finding are different claims.** Report which one you were on, every time. Without
+that, the next reader cannot tell what you established.
 
-⏸️ **SUSPENDED 2026-08-13 — not repealed. It comes back when play starts.**
-This section said the campaign save must not be tested on. That protection is
-correct *for a campaign being played* and premature now — nothing is being
-played yet, so it costs tests and buys nothing. **Owner's standing ruling:**
+⏸️ **SUSPENDED 2026-08-13 — not repealed. It comes back when play starts.** The suspended rule is: do not test on the
+campaign save. That protection is correct *for a campaign being played*. Nothing is being played yet, so the protection
+costs tests and buys nothing. **Owner's standing ruling:**
 
 > *"NO AGENT SHOULD TRY TO PRESERVE MAP CONTENTS OR CAMPAIGN INTEGRITY AT THIS
 > TIME OR ANY TIME IN THE FUTURE. YOU WILL BE INFORMED WHEN WE GET TO THAT
 > PHASE. STOP ASKING FOR NOW."*
 
-**Test destructively. Wipe, overwrite, regenerate.** Do not defer a test, hoard
-one as a scarce-session item, or ask permission, to protect a map.
+**Test destructively. Wipe, overwrite, regenerate.** To protect a map, do not defer a test, save a test up
+or ask permission.
 
-🔔 **THE TRIGGER THAT BRINGS IT BACK:** the owner says the play phase has begun.
-**Nobody else may reinstate it, and nobody should ask.** When that word comes,
-this section reverts to *"the campaign save is untouchable — do not test on it"*
-and every seat is told. **Until then, test destructively.**
+- Two limits stay. The first is the canonical world saves (`infrastructure/state/CANONICAL_SAVE.md`). Test on a loaded
+  game. Write over a frozen one only as that page allows.
+- The second: do not kill a game that the owner is actively PLAYING (`infrastructure/GAME_STATE_WORKFLOW.md`).
 
-⚠️ **This is written as a suspension rather than a deletion on purpose.** A rule
-that is simply erased does not come back when the situation that justified it
-returns — it is forgotten, and rediscovered by losing a colony.
+🔔 **THE TRIGGER THAT BRINGS IT BACK:** the owner says that the play phase has begun.
 
-⚙️ **Saying which map a result came from still stands** — that is evidence
-hygiene, not preservation. A quicktest finding and a campaign finding are
-different claims regardless of how disposable both maps are.
+- **Nobody else may reinstate the rule, and nobody should ask.**
+- When he says so, this section reverts to *"the campaign save is untouchable — do not test on it"*, and every seat is
+  told. **Until then, test destructively.**
 
-🔴 **Say which MOD LIST too — and read it from the game, not the label.** A proof
-labelled "gimmesomeslack tier" ran on 550 mods: its preflight only checked the
-mod was PRESENT. Three of its 15 FAILs PASS on the 11-mod list. Before comparing
-two runs, read `len(env.running)` (`jawa/running_mods`) on each; a run that does
-not record the running list cannot be compared at all (2026-10-11).
+**This rule is suspended and not deleted on purpose.** An erased rule does not come back when its situation returns.
+People forget it, and then find it again when they lose a colony.
+
+⚙️ **You must still say which map a result came from.** The report is evidence hygiene, not
+preservation, however disposable both maps are.
+
+🔴 **Say which MOD LIST too — and read it from the game, not the label.**
+
+- A proof with the label "gimmesomeslack tier" ran on 550 mods. Its preflight checked only that the mod was PRESENT.
+  Three of its 15 FAILs PASS on the 11-mod list.
+- Before you compare two runs, read `len(env.running)` (`jawa/running_mods`) on each run. You cannot compare a run that
+  does not record the running list (2026-10-11).
 
 ## 3a. 🔴 One crash signature that looks like several: a missing `thingClass` blocks EVERY route to a `Game`
 
-A null `thingClass` on ANY ThingDef — even something as unrelated as a colored
-water-bottle item — crashes `ReadingPolicyDatabase.GenerateStartingPolicies()` inside
-`Game..ctor()` with no null guard on the engine's side. That kills campaign load, new
-colony, AND quicktest identically, because all three construct a `Game`. It looks like
-"a crash loop across several different doors" and is actually one bug with one cause —
-hit twice independently (2026-09-09/10, then again 2026-09-12 on four newly-authored
-defs that silently blocked a full night of loads before being found). A `has null
-thingClass` config-error line is a game-breaking finding, not def-quality noise: check
-every new ThingDef has an explicit `thingClass` before the first live load, not after
-several failed loads get blamed on something else.
+A null `thingClass` on ANY ThingDef crashes `ReadingPolicyDatabase.GenerateStartingPolicies()` inside `Game..ctor()`.
+The engine has no null guard there. The ThingDef can be as unrelated as a colored water-bottle item.
+
+- Campaign load, new colony AND quicktest all construct a `Game`. So all three die in the same way.
+- The result looks like "a crash loop across several different doors". The cause is one bug. The bug hit twice,
+  independently (2026-09-09/10, and 2026-09-12 on four newly-authored defs that silently blocked a full night of
+  loads).
+- A `has null thingClass` config-error line is a game-breaking finding, not def-quality noise.
+- Check that every new ThingDef has an explicit `thingClass` before the first live load. Do not wait until several
+  failed loads get blamed on something else.
 
 ## 4. A clean log is not evidence
 
-Two independent traps, both measured here, both of which make "no errors" mean
-nothing:
+Two independent traps make "no errors" mean nothing. Both were measured here.
 
-**Some failures cannot log even in principle.** `JawaIonWeapons`' user-string
-heap is four bytes, all zero — there is no string for it to print. A clean
-`Player.log` is *compatible with total failure*. The only proof is the positive
-observation: put a KotOR droid in front of it and look.
+**Some failures cannot log even in principle.**
 
-**A negative needs a positive observation.** If the claim is *"X no longer
-appears"*, absence of an error is not evidence. Go and see that X is gone.
+- When an assembly has no string for the failure, the failure cannot print one. An earlier `JawaIonWeapons` build was
+  like that: its user-string heap (the table of string literals in a .NET assembly) was four bytes, all zero.
+- A clean `Player.log` is *compatible with total failure*. The only proof is the positive observation: put a KotOR droid
+  in front of the weapon and look.
+
+**A negative needs a positive observation.** If the claim is *"X no longer appears"*, the absence of an error is not
+evidence. Go and see that X is gone.
 
 **A single spawned pawn is not a sample.** Owner's instruction, 2026-08-30:
 *"Please always spawn MANY examples to test, because sometimes random humans
-pop up at the beginning of a new colony."* A fresh `start_debug_game_ready`
-map seeds wildlife and can seed wandering/joining humans near the player
-start, so one test pawn's outcome can be confounded by an unrelated pawn
-nearby — and RimWorld's own pawn-generation RNG (damage rolls, storyteller-
-seeded traits/xenotype, hit-location variance) means one result cannot
-distinguish "this is what the mechanism does" from "this is what happened to
-happen once." Measured the same day: spawning 5 identical droids and killing
-each with identical damage produced 4 clean corpse+detonation results and one
-pawn that merely lost both arms to bad hit-location rolls before a follow-up
-hit finished it — a single-pawn test would have reported that one as a
-mechanism failure. **Spawn a batch (3-5+) of the same kind, run the same test
-on each, and confirm the result is consistent across the batch** before
-reporting a mechanism as proven or broken; cross-check `jawa/list_pawns` for
-any unrelated pawn near the test site first.
+pop up at the beginning of a new colony."*
 
-🔴 **A flying creature needs a BIGGER batch than most mechanisms — the RNG gate
-is per job-start, not per pawn.** `flightStartChanceOnJobStart` (typically
-~0.1–0.15) means one spawned flier only rolls the dice each time it starts a
-new job, so a single pawn watched for a few minutes can easily never take off
-— exactly what happened chasing FireHawk's flight for ~35 minutes solo
-(`FIREHAWK_FLIGHT_BEHAVIOR_1`, 2026-09-24). Owner's fix, verbatim, 2026-09-25:
-*"the way to test flyers is to spawn like 20 of them to see if any start
-flying, not just one."* **Spawn ~20** (`jawa/spawn_pawn` `count: 20`, faction
-`none`) instead of one when the test is "does this thing fly" — the odds do
-the work a long attentive watch otherwise has to. This applies whether the
-owner is watching live or not; it does not license an *unattended* flight
-hunt — `CLAUDE.md`'s "do not live-test a flyer's flight without a human
-present" stands regardless of batch size.
+- A fresh `start_debug_game_ready` map seeds wildlife, and can seed wandering or joining humans near the player
+  start. So an unrelated pawn nearby can confound the outcome of one test pawn.
+- RimWorld also rolls dice for each pawn: damage, hit location, and the storyteller-seeded traits and xenotype. So one
+  result cannot tell "this is what the mechanism does" from "this is what happened to happen once."
+- Measured the same day: 5 identical droids took identical damage. 4 gave a clean corpse and detonation. One only lost
+  both arms to bad hit-location rolls, and a follow-up hit finished it. A test with that one pawn reports a mechanism
+  failure.
+- **Spawn a batch (3-5+) of the same kind, run the same test on each, and confirm that the result is consistent across
+  the batch.** Only then report a mechanism as proven or broken. First check `jawa/list_pawns` for an unrelated pawn
+  near the test site.
+- A batch is the sample of one run. How many runs decide a scene is in root `CLAUDE.md` §A live test declares its kind.
+
+🔴 **A flying creature needs a BIGGER batch than most mechanisms — the RNG gate is per job-start, not per pawn.**
+
+- `flightStartChanceOnJobStart` is typically ~0.1–0.15. A flier rolls that chance only when it starts a new job.
+- So one pawn that you watch for a few minutes can easily never take off. One solo watch of FireHawk's flight gave
+  nothing in ~35 minutes (`FIREHAWK_FLIGHT_BEHAVIOR_1`, 2026-09-24).
+- Owner's fix, verbatim, 2026-09-25: *"the way to test flyers is to spawn like 20 of them to see if any start
+  flying, not just one."*
+- When the test is "does this thing fly", **spawn ~20** (`jawa/spawn_pawn` `count: 20`, faction `none`). The odds then
+  do the work of a long watch.
+- The batch size applies whether the owner watches live or not. The batch does not license an *unattended* flight hunt.
+- Root `CLAUDE.md` says "Never live-test a flyer's flight without the owner present", at any batch size. Verify flight
+  with the state read `jawa/pawn_flight` (`skills/rimworld-modding/references/flight.md`).
 
 🔴 **A state assertion and the screen can both be right, and still disagree.**
-A pit mod's `expect_pawn_despawned` PASSED — the pawn really left the map —
-while the building drew its first occupant via a custom render hook over a
-vanilla placeholder texture, so the player actually saw someone standing in a
-box labelled Pit. Any suite that asserts only state will certify a mod whose
-state is correct and whose in-game EXPERIENCE is absent or wrong. A
-mechanism-correctness pass (this skill) is not a substitute for a look
-(`rimworld-live-review`) — run both before calling a feature done.
+
+- A pit mod's `expect_pawn_despawned` PASSED, and the pawn really left the map. But a custom render hook drew the first
+  occupant over a vanilla placeholder texture. So the player saw a person who stands in a box with the label Pit.
+- A suite that asserts only state will certify a wrong mod: one with correct state and an absent or wrong in-game
+  EXPERIENCE.
+- A mechanism pass (this skill) does not replace a look (`rimworld-live-review`). Run both before you call a feature
+  done.
 
 More traps for this section: [references/traps.md](references/traps.md) § 4. A clean log is not evidence.
 
 ## 4b. Live proofs and validation scripts → `live-debugging-proof-harness`
 
-Writing, running or reading a proof (`proof_all.py`, `proof_hose.py`, a `northstar/` runner, a
-`validation.py`), log budgets, perf rows, timing windows, pre-port save fixtures, and classifying
-rows as MOD / SITE / HARNESS all live in `skills/live-debugging-proof-harness/`.
+`skills/live-debugging-proof-harness/` holds these topics:
 
-Running a north-star suite live — the bland world (generated or saved), the situational envelope
-(`modcheck run --situational`), the live_queue jobs, the companion-reading detectors, the
-interference playbook (naming dialogs, focus theft, late replies, extra maps) and the time ledger of
-a live pass — lives in `skills/northstar-validation/`.
+- how to write, run or read a proof (`proof_all.py`, `proof_hose.py`, a `northstar/` runner, a `validation.py`);
+- log budgets, perf rows, timing windows and pre-port save fixtures;
+- how to class a row as MOD, SITE or HARNESS.
 
-Any proof meant to run unattended (a `live-proof` line, a testq/Lightspeed job) follows
-`skills/live-debugging-proof-harness/references/lightspeed-authoring.md`: exit 0/1/2,
-deterministic rows, no `$`-built commands, `B.ticks` rather than poll loops, a named
-UNMEASURED reason for a bad site, and flyers read as state only.
+`skills/northstar-validation/` holds these topics:
+
+- how to run a north-star suite live: the bland world (generated or saved), and the situational envelope
+  (`modcheck run --situational`);
+- the live_queue jobs, and the detectors that read the companion;
+- the interference playbook (naming dialogs, focus theft, late replies, extra maps);
+- the time ledger of a live pass.
+
+A proof that runs unattended (a `live-proof` line, a testq/Lightspeed job) follows
+`skills/live-debugging-proof-harness/references/lightspeed-authoring.md`:
+
+- exit 0/1/2, and deterministic rows;
+- no `$`-built commands;
+- `B.ticks`, never a poll loop;
+- a named UNMEASURED reason for a bad site;
+- a flyer is read as state only.
 
 ## 4a. 🔴 LOOK AT IT. `take_screenshot` and then READ the image.
 
-**Owner's instruction, 2026-08-13, and it is the most under-used capability we
-have.** `take_screenshot` returns an absolute path, and **you can open that path
-and actually look at the picture.** Not parse it — *look* at it.
+**Owner's instruction, 2026-08-13, and it is the most under-used capability we have.** `take_screenshot` returns an
+absolute path. **You can open that path and actually look at the picture.** Do not parse the picture. *Look* at it.
 
-**This matters because most of our evidence is inference and a screenshot is
-observation.** `list_pawns` returning a xenotype name tells you what a field
-says. A screenshot tells you what the player sees — which is the only thing the
-v1 gate ever asked for:
+**Most of our evidence is inference, and a screenshot is observation.** A xenotype name from `list_pawns` tells you
+what a field says. A screenshot tells you what the player sees. The v1 gate asked for only that:
 
 > **"Every v1 item must be seen working in-game once. Not 'the log is clean' —
 > SEEN."**
 
-**A def query cannot close that gate. A screenshot can.**
+**A def query cannot close that gate. A screenshot can.** A passing bar is an experience of the player too (root
+`CLAUDE.md` §A passing bar is an experience).
 
 ### What only a screenshot will tell you
 
-- **Art that is technically correct and reads wrong** — right canvas, right
-  alpha, unreadable at game scale. Every offline validator passes.
+- **Art that is technically correct and reads wrong**: the right canvas, the right alpha, and unreadable at game scale.
+  Every offline validator passes.
 - **A texture that loaded as the magenta/checker placeholder.** Nothing logs it.
 - **Terrain that painted but looks like the wrong material.**
-- **A faction name that is GENERATED** — the Fallen Dominion's label is not a
-  fixed string, so no grep finds it. You look, and you screenshot it.
-- **UI state**: a quest actually sitting in the Quests tab, a letter actually in
-  the notification pane, a pawn actually holding the weapon.
-- **Anything where "it exists in a def" and "the player experiences it" differ**,
-  which after today is most things.
+- **A faction name that is GENERATED.** The Fallen Dominion's label is not a fixed string, so no grep finds it. Look,
+  and take a screenshot.
+- **UI state.** A quest is actually in the Quests tab, a letter in the notification pane, or a weapon in a pawn's hands.
+- **Anything where "it exists in a def" and "the player experiences it" differ.** That is most things.
 
 ### 🔴 A SCREENSHOT IS A CACHE, NOT AN OBSERVATION — read this before trusting one
 
-**Two traps already cost real debug cycles and both are in
-`skills/rimbridge/references/traps/` (indexed in `traps.md`). That file is the home; this is the
-pointer.** They matter here because §4a tells you to trust an image:
+**These traps cost real debug cycles.** Their home is `skills/rimbridge/references/traps/` (indexed in `traps.md`),
+mostly in `camera.md`. This list is the pointer.
 
-0. **`take_screenshot` names files by SECOND — two shots in the same second silently
-   return the same file.** md5sum any batch you take in quick succession and reshoot
-   with ~1.5 s sleeps between calls, or the second "result" is just the first file read
-   twice (2026-09-08).
-1. **Screenshots overwrite by FILENAME, so a stale image reads as a failed
-   action.** Measured: eight Jawas spawned, `success: true` on all eight, and the
-   screenshot showed **empty ground** — because the call reused a `fileName` from
-   an earlier failed attempt and the old file was read. `list_colonists` showed
-   all eight exactly where requested.
-   ⇒ **Give every screenshot a UNIQUE name**, or cross-check with
-   `list_colonists` / `get_camera_state` before believing it. **When the action
-   reports success and the picture says nothing happened, suspect the picture.**
-2. **You cannot photograph a stale mesh** — every framed-shot tool moves the
-   camera, and camera movement repaints the map sections. Any visual A/B over the
-   bridge must ask what the act of looking changed.
+0. **`take_screenshot` names files by SECOND. Two shots in the same second silently return the same file.** Run md5sum
+   on any batch that you take fast. Shoot again with ~1.5 s sleeps between calls. Without that, the second "result" is
+   the first file, read twice (2026-09-08).
+1. **Screenshots overwrite by FILENAME, so a stale image reads as a failed action.**
+   - Measured: eight Jawas spawned, with `success: true` on all eight. The screenshot showed **empty ground**, because
+     the call used the `fileName` of an earlier failed attempt again. `list_colonists` showed all eight exactly where
+     requested.
+   - **Give every screenshot a UNIQUE name**, or cross-check with `list_colonists` or `get_camera_state` before you
+     believe it. `Session.look` in `rimbench` makes the name unique for you.
+   - **When the action reports success and the picture says that nothing happened, suspect the picture.**
+2. **You cannot photograph a stale mesh.** Every framed-shot tool moves the camera, and camera movement repaints the map
+   sections. For any visual A/B over the bridge, ask what the act of looking changed.
 
-⚠️ **So §4a and this section are in tension on purpose.** Look at the image —
-*and* know that an image file is the one piece of evidence that can be silently
-out of date. It is the same silent-failure family as everything else in this
-project: nothing errors.
+⚠️ **The advice to look and these traps pull against each other on purpose.** Look at the image. Also know that an
+image file is the one piece of evidence that can be silently out of date. Nothing errors.
 
 ### How to use it well
 
-1. **Screenshot before AND after** a change. One image proves a state; two prove
-   a *transition*, which is usually the actual claim.
-2. **Attach it to the finding.** A path in the report beats a sentence of
-   description, and it lets the next reader disagree with you.
-3. **Screenshot the irreversible screens** — worldgen, Configure Factions. They
-   cannot be revisited, so an image is the only record that survives them.
-4. **When a result surprises you, look before you theorise.** Two rulings were
-   wrong for an hour today because they reasoned from a file instead of looking.
+1. **Take a screenshot before AND after** a change. One image proves a state. Two images prove a *transition*, and a
+   transition is usually the actual claim.
+2. **Attach the image to the finding.** A path in the report beats a sentence of description. The next reader can then
+   disagree with you.
+3. **Screenshot the irreversible screens**: worldgen, Configure Factions. Nobody can open them again, so an image is the
+   only record that survives them.
+4. **When a result surprises you, look before you theorise.** Two rulings were wrong for an hour (2026-08-13) because
+   they came from a file and not from a look.
 
-🔴 **CLEAR THE DEBUG LOG WINDOW BEFORE YOU SHOOT.** Owner's instruction,
-2026-08-13. Dev mode's log window sits over the game and eats most of the frame,
-so the screenshot documents *our own error console* instead of the thing being
-tested. **Close it, and clear it, then take the shot.**
+🔴 **CLEAR THE DEBUG LOG WINDOW BEFORE YOU SHOOT.** Owner's instruction, 2026-08-13. The log window of dev mode covers
+most of the frame. So the screenshot documents *our own error console*, not the thing under test. **Close it, and clear
+it, then take the shot.** `jawa/clear_ui` closes the window. `rimworld/clear_log` empties the log and does not close the
+window (`rimworld-live-review` §5).
 
-Two reasons, and the second is the one that bites:
+There are two reasons, and the second one costs more:
 
-1. **It occludes the evidence.** A shot that is 70% debug output proves nothing
-   about the map underneath it.
-2. **Stale lines read as fresh failures.** An unfiltered log window carries
-   errors from earlier in the session, so the next reader attributes them to the
-   thing in the screenshot. **Clear it, then act, then shoot** — anything showing
-   afterwards was caused by what you just did, which is a far stronger claim.
+1. **The window hides the evidence.** A shot that is 70% debug output proves nothing about the map under it.
+2. **Stale lines read as fresh failures.** An unfiltered log window carries errors from earlier in the session. The next
+   reader blames them on the thing in the screenshot. **Clear it, then act, then shoot.** Then what you just did caused
+   anything that shows. That is a far stronger claim.
 
-⚙️ Zoom and camera matter: an object correctly spawned off-screen is
-indistinguishable from one that never spawned. Frame it before you shoot.
+⚙️ Zoom and camera matter. An object that spawned correctly off-screen looks the same as an object that never spawned.
+Frame the object before you shoot.
 
 ## 5. 🔴 A def dump is DISK. The running game is RUNTIME. They differ.
 
-**Read `references/disk-vs-runtime.md` before you quote any number off a dump.** It is the
-single most expensive confusion in this project and it has three distinct shapes:
+**Read `references/disk-vs-runtime.md` before you quote any number off a dump.** The difference is the single most
+expensive confusion in this project. The difference has four distinct shapes:
 
 | shape | the tell |
 |---|---|
-| the dump is STALE — captured under a different mod set | dump `modCount` != `<activeMods>` children. Compare the SET, never a timestamp |
+| the dump is STALE: captured under a different mod set | dump `modCount` != `<activeMods>` children. Compare the SET, never a timestamp |
 | the def loaded and was then DELETED at runtime by a dedup mod | present in the dump, absent in game, no log line |
-| the field is present and current but a **C# comp computes the real value** | the mod's assembly declares a member named after the field (`AdjustedArmorPenetration`, `get_ArmorPenetrationInt`). Read it out of the metadata with `ilprobe` — ⛔ not `strings`, which the blind-scan hook refuses and which sees a minority of names anyway. `references/disk-vs-runtime.md` has the command |
-| a **runtime enforcer silently rewrites a value your XML never claimed** | a startup mod capped `BiomeDef.plantDensity` at 1.0 and rescaled `wildPlantRegrowDays` for every biome, ours included — culprit identified only by diffing a raw `jawa/get_defs` read-back against the authored XML. The fix was a `LongEventHandler`+`GameComponent` enforcer that re-asserts our values after the offending mod runs, not an XML edit (2026-09-17); Map Designer (`zylle.mapdesigner`) does this with no log line (Pyrelands 1.55 -> 1.0, regrow 9 -> 9/1.55), so density nudges read 'still too bare'. Wild plant cover per cell is `min(plantDensity x fertility^2, 1)` (fertility multiplies twice); shipped countermeasure `RM_PyrelandsDensityEnforcer` re-asserts after all mods load |
+| the field is present and current but a **C# comp computes the real value** | the mod's assembly declares a member named after the field (`AdjustedArmorPenetration`, `get_ArmorPenetrationInt`). Read it out of the metadata with `ilprobe`. ⛔ Not `strings`: the blind-scan hook refuses it, and it sees a minority of names anyway. `references/disk-vs-runtime.md` has the command |
+| a **runtime enforcer silently rewrites a value your XML never claimed** | a raw `jawa/get_defs` read-back differs from the authored XML. The difference shows the rewrite. To find the mod that did it, add one mod at a time |
 
-The third is the newest and the nastiest, because nothing about the dump looks wrong. The
-in-game info card is the arbiter, and reading one costs no map, no spawn and no bridge
-privileges.
+The third shape is the nastiest, because nothing about the dump looks wrong. The in-game info card is the arbiter. A
+read of the card costs no map, no spawn and no bridge privileges.
+
+The measured case of the fourth shape (2026-09-17):
+
+- A startup mod capped `BiomeDef.plantDensity` at 1.0 and rescaled `wildPlantRegrowDays` for every biome, ours included.
+  Map Designer (`zylle.mapdesigner`) does this with no log line.
+- The Pyrelands went from 1.55 to 1.0, and its regrow from 9 to 9/1.55. So each density nudge still read 'still too
+  bare'.
+- Wild plant cover per cell is `min(plantDensity x fertility^2, 1)`. Fertility multiplies twice.
+- The fix was not an XML edit. The fix is an enforcer (`LongEventHandler`+`GameComponent`) that asserts our values again
+  after the other mod runs. `RM_PyrelandsDensityEnforcer` ships it, and it runs after all mods load.
 
 More traps for this section: [references/traps.md](references/traps.md) § 5. 🔴 A def dump is DISK. The running game is RUNTIME. They differ..
 
 ## 6. Choosing: bridge test, quicktest, or a real load
 
-Ask in this order and stop at the first yes.
+Ask in this order. Stop at the first yes.
 
-1. **Can a file on disk settle it?** — an `About.xml`, a def, `ModsConfig.xml`.
-   Free. But re-read §5 before trusting it about *runtime*.
-2. **Can the live bridge settle it on whatever map exists?** — seconds.
-3. **Does it just need *a* map?** — quicktest, ~30 seconds. **Most "needs a load"
-   items land here.**
-4. **Does it need the real campaign, or a changed mod list?** — only now is it a
-   cold load. **A mod-list change is the one thing a quicktest cannot fake**, and
-   it only lands on a restart.
+1. **Can a file on disk settle it?** An `About.xml`, a def, `ModsConfig.xml`: all free. Read §5 again before you trust
+   a file about *runtime*.
+2. **Can the live bridge settle it on whatever map exists?** That costs seconds.
+3. **Does it just need *a* map?** Use a quicktest (§1). **Most "needs a load" items land here.**
+4. **Does it need the real campaign, or a changed mod list?** Only now is it a cold load. **A quicktest cannot fake a
+   mod-list change**, and a mod-list change takes effect only on a restart.
 
-**Before you put anything on the cold-load run-sheet item, run this list.** An item that a
-quicktest could have closed does not deserve a 25-minute slot.
+**Before you put anything on a cold-load run sheet (an item `COLD_LOAD_RUN_SHEET_*`), run this list.** An item that a
+quicktest can close does not deserve a slot of the full load.
 
-⚠️ **A quicktest map's biome-purity census can read as contamination when it is
-just Odyssey blending its NEIGHBOUR biomes into the map's edge zones.** A
-biome-purity census on a lone re-tiled scratch tile read as 78% foreign
-plants, when the map was simply bleeding its (correct) neighbours at the
-edges. Census biome content only on a tile whose neighbours share the biome,
-or use the spatial split (quadrant shares by def family) as the cheap
-discriminator between edge bleed and a genuine global injection defect.
+**A biome-purity census on a quicktest map can read as contamination when Odyssey only blends NEIGHBOUR biomes into the
+map's edge zones.**
 
-⚠️ **"Just needs a quicktest" is only true if the thing under test is already deployed AND
-in `ModsConfig`.** A design's "pre-build quicktest gate" can quietly be a
-deploy-+-mod-list-write-+-restart in disguise if the mod under test isn't loaded yet — in
-one case the right move was to implement both branches behind one def field rather than
-restart the owner's live 599-mod session to settle a one-field decision. Check that the
-subject is actually live before calling a check "just a quicktest" (2026-09-09).
+- A biome-purity census counts how much of the map's content belongs to the biome. On a lone re-tiled scratch tile,
+  one census read 78% foreign plants. The map only bled its (correct) neighbours at the edges.
+- Take a census only on a tile whose neighbours share the biome. Or use the spatial split: compare the shares of each
+  def family per quadrant. The split tells edge bleed from a genuine global injection defect, at low cost.
+
+**"Just needs a quicktest" is true only if the thing under test is already deployed AND in `ModsConfig`.**
+
+- If the mod under test is not loaded yet, a "pre-build quicktest gate" in a design can hide three acts. They are
+  a deploy, a mod-list write and a restart.
+- In one case, the right move was to implement both branches behind one def field. A restart of the owner's live 599-mod
+  session to settle a one-field decision was the wrong move.
+- Check that the subject is actually live before you call a check "just a quicktest" (2026-09-09).
 
 ## 7. The validation plan → `live-debugging-proof-harness`
 
@@ -397,34 +442,32 @@ PROVE / EXPECT / LIES, the six fields and "a live run must be proven needed":
 
 ## 8. Advising: turning "can you check X" into a plan
 
-Most requests arrive half-formed. *"Can you check the bandolier looks right?"*
-*"Does the ion weapon work?"* **These are not checks. They are gestures at an
-area**, and accepting one as written is how a load gets spent producing an opinion
-instead of a finding.
+Most requests arrive half-formed. *"Can you check the bandolier looks right?"* *"Does the ion weapon work?"* **These are
+not checks. Each one only points at an area.** If you accept one as written, you spend a load on an opinion, not a
+finding.
 
 🔴 **Ask two questions before you agree to look at anything:**
 
-1. **"What would you SEE?"** — forces the observable. If the answer is "the log
-   would be clean" or "it would work", there is no check yet; keep asking until a
-   thing on screen is named. *Bandolier looks right* → **a pawn selected, facing
-   north, with the strap drawn over the torso and not behind it.*
-2. **"What number do you expect?"** — forces the prediction. A range is fine, a
-   guess is fine, *"I don't know"* is the useful answer because it means the look
-   cannot fail and therefore cannot succeed either. *Does the ion weapon work* →
-   **a KotOR droid at 8 tiles drops in ≤3 shots.**
+1. **"What would you SEE?"** This question forces the observable. If the answer is "the log would be clean" or "it would
+   work", there is no check yet. Keep asking until someone names a thing on screen. *Bandolier looks right* → **a pawn
+   selected, facing north, with the strap drawn over the torso and not behind it.*
+2. **"What number do you expect?"** This question forces the prediction. A range is fine, and a guess is fine. *"I don't
+   know"* is the useful answer: the look cannot fail, and so it cannot succeed either. *Does the ion weapon work* → **a
+   KotOR droid at 8 tiles drops in ≤3 shots.**
 
-Then close it out loud: **"so the bar is one screenshot of X, and I am not chasing
-Y."** State the threshold back to the asker (§9, the threshold discipline) — that is the half they did not
-think about, and it is the half that costs them a second load.
+Then close it out loud: **"so the bar is one screenshot of X, and I am not chasing Y."** State the threshold back to the
+asker (§9, the threshold discipline). The asker did not think about the threshold, and a missing threshold costs a
+second load.
 
-⚠️ **You are entitled to refuse the shape, not the request.** "I can look, but as
-written nothing I see will settle it — here is the version that would" is a
-complete and helpful answer. **Never accept a check whose failure mode is
-identical to its success mode** (`DOC_BUDGET.md`: *ask what your check would print
-if the thing were broken*).
+**You are entitled to refuse the shape, not the request.**
 
-⭐ **Advising is where the false-pass field earns its keep.** The asker knows what
-they built; they almost never know how the instrument lies. That is what you add.
+- "I can look, but as written nothing I see will settle it — here is the version that would" is a complete and helpful
+  answer.
+- **Never accept a check whose failure mode is identical to its success mode**: *ask what your check would print
+  if the thing were broken*.
+
+**The false-pass field of the plan (§7) matters most when you advise.** The asker knows what they built. The asker
+almost never knows how the instrument lies. Add that.
 
 ## 9. Threshold discipline → `live-debugging-proof-harness`
 
@@ -433,32 +476,36 @@ Every item states the bar that closes it and the minutia not chased:
 
 ## Keeping this skill honest
 
-Every numbered trap here cost a real debug cycle. If you find another, add it with
-its evidence — and if you find one of these is wrong, say so loudly rather than
-softening it. Two of the rulings that produced §5 were mine and were confidently
-wrong for an hour.
+Every numbered trap here cost a real debug cycle.
+
+- If you find another trap, file it with its evidence: `python3 src/RimMandrake/Utils/lessons.py add "…"`. A curation
+  session adds it here.
+- If you find that one of these is wrong, say so loudly. Do not soften it.
 
 ### 🔴 Never CHOOSE between mods by reading a def dump
 
-A dump shows the post-load, post-dedup world. If one of the mods you are choosing
-between deletes the others at load, they are **already gone from the dump** and your
-preference list silently collapses to one option.
+A dump shows the world after the load and after the dedup. One of the mods that you choose between can delete the
+others at load. Then they are **already gone from the dump**, and your preference list silently collapses to one
+option.
 
-Measured 2026-08-15. `gen_races_mod.py` declared "source preference BTD, then SWX,
-then Outer Rim" and picked with `next((c for c in cand if c in x))`, where `x` was the
-live dump. BTD deletes the SWX and Outer Rim duplicates at load, so those candidates
-were never in `x`; the fallback could not fire, and all 70 species were built from
-BTD's gene lists. BTD's lists carry the head*bone* genes but not the head*type* genes
-the other donors had — so `guy762_Head_rodian` was dropped and Rodians shipped with a
-generic scale head. The build was correct about everything it could see, and blind to
-two thirds of its own input.
+Measured 2026-08-15, in `gen_races_mod.py` (fixed since):
 
-⇒ **To compare mods, read their XML on disk. Use the dump only for what the game
-finally built.** The same failure hides behind any "best available source" rule.
+- The tool declared "source preference BTD, then SWX, then Outer Rim". It picked with
+  `next((c for c in cand if c in x))`, where `x` was the live dump. BTD, SWX and Outer Rim were three mods with the same
+  species.
+- BTD deletes the SWX and Outer Rim duplicates at load. So those candidates were never in `x`, and the fallback could
+  not fire. The tool built all 70 species from BTD's gene lists.
+- BTD's lists carry the head*bone* genes, but not the head*type* genes that the other donors had. So
+  `guy762_Head_rodian` was dropped, and Rodians shipped with a generic scale head.
+- The build was correct about everything that it could see, and blind to two thirds of its own input.
 
-⚠️ And a headless COUNT will not find the worst version of this: a species whose only
-head-forcing gene is a GENERIC one (`Outland_ScaleSkin`) has a head type, resolves
-clean, and still renders as the wrong creature. Ask the running game for
-`forcedHeadTypes` per gene and check WHICH head it forces, not whether one exists.
+⇒ **To compare mods, read their XML on disk. Use the dump only for what the game finally built.** The same failure hides
+behind any "best available source" rule.
+
+A headless COUNT (a count of species with no head type) does not find the worst version of this fault.
+
+- A species whose only head-forcing gene is a GENERIC one (`Outland_ScaleSkin`) has a head type and resolves clean. It
+  still renders as the wrong creature.
+- Ask the running game for `forcedHeadTypes` per gene. Check WHICH head the gene forces, not whether one exists.
 
 More traps for this section: [references/traps.md](references/traps.md) § **A quicktest finding and a campaign finding are different claims.** Report which.

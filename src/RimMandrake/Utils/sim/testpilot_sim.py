@@ -70,12 +70,12 @@ TP_PRIORS = {
     "crit2_mult": (0.2, 0.6, "TP: second review (plan + code) sensitivity against crit_s, on what the first missed"),
     "plan_ite": (50e3, 200e3, "ITE to write one item's test plan"),
     "plan_min": (5, 20, "TP: wall minutes from critic pass to an approved plan (written after the critic)"),
-    "reload_min": (1.5, 5.0, "minimal-list reload: close, deploy, 22 s load (load-round SKILL:14), quicktest colony "
-                             "5-30 s (debug-testing SKILL:10,30), canary, bridge reconnect"),
+    "reload_min": (1.5, 5.0, "minimal-list reload: close, deploy, 22 s load (load-round SKILL §0), quicktest colony "
+                             "5-30 s (debug-testing SKILL head, §1), canary, bridge reconnect"),
     "build_min": (1.0, 4.0, "extra minutes when the deploy set holds a C# DLL (winbuild; DLL only in the shutdown "
-                            "window, rimworld-deploy SKILL:195)"),
+                            "window, rimworld-deploy SKILL §7)"),
     "p_cs": (0.2, 0.5, "share of items/fixes that touch C#"),
-    "full_load_min": (15, 30, "owner's full list load (brief: about 15 min; load-round SKILL:14 says ~25)"),
+    "full_load_min": (15, 30, "owner's full list load (brief: about 15 min; load-round SKILL §0 says ~25)"),
     "test_min": (3, 15, "wall minutes per item's live test plan inside a loaded session"),
     "clash_min": (2, 6, "TP+: per-item clash check inside a batched full-list session"),
     "test_ite": (40e3, 200e3, "ITE per live test (bridge calls, screenshots, log reads)"),
@@ -84,10 +84,10 @@ TP_PRIORS = {
     "ctx_decay": (0.0, 0.02, "TP: per-test loss of the long pilot's sensitivity since its last handoff"),
     "handoff_n": (15, 40, "TP: tests before the long pilot's context forces a handoff"),
     "handoff_min": (3, 10, "TP: wall minutes for that handoff (the game stays up)"),
-    "p_crash": (0.005, 0.04, "a test crashes or menu-drops the game (debug-testing SKILL:98: a map-gen crash kills "
+    "p_crash": (0.005, 0.04, "a test crashes or menu-drops the game (debug-testing SKILL §1: a map-gen crash kills "
                              "the whole process)"),
     "p_invalid": (0.05, 0.15, "a test is void for HARNESS/SITE reasons (testq day one: 10 INVALID of 109 = 0.09, "
-                              "as_built 2.15; harness SKILL:12-18 eleven of twelve findings were harness/site)"),
+                              "as_built 2.15; harness SKILL head, eleven of twelve findings were harness/site)"),
     "p_hot_ok": (0.5, 0.9, "a void test is rescued in session by a hot harness/site fix (savegame edit, restage)"),
     "hot_min": (3, 12, "minutes for that in-session harness/site fix"),
     "follow_ok": (0.6, 0.95, "after a MOD failure the session is still a valid place for the next item's test"),
