@@ -1,0 +1,23 @@
+# GimmeSomeSlack 0.2.0 — in-game acceptance, visit 1
+
+Run: detached helper on RIMMANDRAKE_DRIVE_GIMMESOMESLACK_IN_GAME_VISIT_ONE_RUN_THREE, game ArchBig on Archmagi.
+Started 2026-11-23 1:14 PM PST.
+
+## Progress
+- 1:14 PM precondition in_game 0.2.0 [measured]; item claimed; bridge ArchBig taken by BENCH; skeleton written.
+- 1:15 PM ArchBig found cold-loading his full list (315 mods, started 1:11 PM, bridge free). GSS deploy dry run: in sync
+  (378 files; DLL sha256 fe67c9ef = its .srchash). Saves backed up (661 .rws, 8.2 GB) to
+  D:\ClaudeWork\rimmandrake\backups\saves_a_gss_020_visit1_20261123, with MANIFEST_before.txt.
+- 1:22-1:31 PM offline gate: red O6_review_round1. Class HARNESS: its 'fire hose' sweep reads selftest_gss_no_hose.py's
+  planted text (added 650bdab37b). O6 decides sc_spans and sc_four_looks, so it was repaired: the sweep skips selftest_*
+  files. Planted (a def description with 'fire hose') FAIL; real PASS (evidence/o6_check.py).
+- 1:32 PM ArchBig at the main menu. build_match identity --full: 314 of 315 listed mods present, mod_sha cf5a867a53, mod_hash
+  sha256:a9e908d1ed3e, game 1.6.4871 rev590 (evidence/identity_full.json). Offline gate rerun after the O6 repair: red []
+  (evidence/offline_gate.json).
+- 1:33-1:37 PM review map built on a full-list quicktest (31 stations, 62 labels, 31 sign books, 5 non-colonists swept), plus
+  two 0.2.0 stands by the scenes' own verbs (stand_020.py: 32 one line with every piece, 33 wall lamps); saved as
+  GSS_020_VISIT1_WALK_20261123.rws (one new file, none changed).
+- 1:38-1:40 PM sc_walk PASS on his full list (cords, soak 8 blasts, ui 24/24, save_reload_b 7/7).
+- 1:41-1:43 PM walk save reloaded: master off reads vanilla conduit and lamp art with no cord layer, on reads both back
+  (evidence/full_master_off_on.json); stations captured and looked at.
+- 1:44 PM relaunched on tier gimmesomeslack (12 mods, all 5 DLC), bridge up 25 s; runC and runB started.

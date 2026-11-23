@@ -1,0 +1,143 @@
+{
+ "lamps": [
+  [
+   "StandingLamp",
+   "Industrial",
+   [
+    "Industrial",
+    "StandingLamp"
+   ],
+   0
+  ],
+  [
+   "StandingLamp",
+   "Industrial",
+   [
+    "Industrial",
+    "StandingLamp"
+   ],
+   0
+  ],
+  [
+   "WallLamp",
+   "Scrapper",
+   [
+    "Scrapper",
+    "WallLamp"
+   ],
+   0
+  ],
+  [
+   "WallLamp",
+   "Industrial",
+   [
+    "Industrial",
+    "WallLamp"
+   ],
+   0
+  ],
+  [
+   "WallLamp",
+   "Modern",
+   [
+    "Modern",
+    "WallLamp"
+   ],
+   0
+  ],
+  [
+   "WallLamp",
+   "Futuristic",
+   [
+    "Futuristic",
+    "WallLamp"
+   ],
+   0
+  ],
+  [
+   "WallLamp",
+   "Industrial",
+   [
+    "Industrial",
+    "WallLamp"
+   ],
+   0
+  ],
+  [
+   "WallLamp",
+   "Futuristic",
+   [
+    "Futuristic",
+    "WallLamp"
+   ],
+   1
+  ],
+  [
+   "WallLamp",
+   "Industrial",
+   [
+    "Industrial",
+    "WallLamp"
+   ],
+   3
+  ],
+  [
+   "WallLamp",
+   "Modern",
+   [
+    "Modern",
+    "WallLamp"
+   ],
+   2
+  ]
+ ],
+ "on0": {
+  "invisibleApplied": true,
+  "layerVisible": true,
+  "spawnedConduitTexture": "ConduitTransparent",
+  "tex": [
+   "RimMandrake/GimmeSomeSlack/ConduitTransparent"
+  ],
+  "edges": null,
+  "offLine": 0,
+  "offSlope": 1,
+  "taken": 401
+ },
+ "off": {
+  "invisibleApplied": false,
+  "layerVisible": false,
+  "spawnedConduitTexture": "PowerConduit_Atlas",
+  "tex": [
+   "Things/Building/Linked/PowerConduit_Atlas",
+   "Things/Building/Linked/WaterproofConduit_Atlas",
+   "UI/CSG/IConduit"
+  ],
+  "edges": null,
+  "offLine": 0,
+  "offSlope": 1,
+  "taken": 401
+ },
+ "lamps_off": [
+  "Things/Building/Furniture/LampStanding",
+  "Things/Building/Furniture/WallLamp/WallLamp"
+ ],
+ "on1": {
+  "invisibleApplied": true,
+  "layerVisible": true,
+  "spawnedConduitTexture": "ConduitTransparent",
+  "tex": [
+   "RimMandrake/GimmeSomeSlack/ConduitTransparent"
+  ],
+  "edges": null,
+  "offLine": 0,
+  "offSlope": 1,
+  "taken": 401
+ },
+ "lamps_on": [
+  "RimMandrake/GimmeSomeSlack/Styles/Futuristic/WallLamp",
+  "RimMandrake/GimmeSomeSlack/Styles/Industrial/StandingLamp",
+  "RimMandrake/GimmeSomeSlack/Styles/Industrial/WallLamp",
+  "RimMandrake/GimmeSomeSlack/Styles/Modern/WallLamp",
+  "RimMandrake/GimmeSomeSlack/Styles/Scrapper/WallLamp"
+ ]
+}

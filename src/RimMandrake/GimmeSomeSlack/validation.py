@@ -405,7 +405,8 @@ def fire_hose_sweep_paths():
         p = os.path.join(REPO, rel)
         if os.path.exists(p):
             out.append(p)
-    return [p for p in out if not p.endswith("validation.py")]
+    # a test plants the words it must catch (selftest_gss_no_hose.py's _plant_description, 650bdab37b): no player or reviewer reads it
+    return [p for p in out if not p.endswith("validation.py") and not os.path.basename(p).startswith("selftest_")]
 
 
 def o6_review_round1(rows):
