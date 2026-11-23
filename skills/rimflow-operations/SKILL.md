@@ -169,8 +169,8 @@ More traps for this section: [references/traps.md](references/traps.md) § 5. St
   - the nightly sweep: §2.3;
   - testq lanes and filler hours: §2.7;
   - which test for which code: §4;
-  - which tunables an agent may move: §0. An agent may move only D/A tunables. Mark D is a code default that nobody ruled
-    on. Mark A is an agent proposal.
+  - which tunables an agent may move: §0. An agent may move only a tunable with the mark D or the mark A. Mark D is a code
+    default that nobody ruled on. Mark A is an agent proposal.
 
 More traps for this section: [references/traps.md](references/traps.md) § 6. Throttles and timers.
 
