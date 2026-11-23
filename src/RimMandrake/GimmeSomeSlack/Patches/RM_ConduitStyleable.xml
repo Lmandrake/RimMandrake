@@ -35,4 +35,15 @@
       </value>
     </nomatch>
   </Operation>
+  <!-- WallLamp (0.2.0): vanilla already lists CompProperties_Styleable, so this normally adds nothing; kept, as for the
+       standing lamp, so a mod that stripped it does not leave the wall lamp's picked look unsaved. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="WallLamp"]/comps/li[@Class="CompProperties_Styleable"]</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName="WallLamp"]/comps</xpath>
+      <value>
+        <li Class="CompProperties_Styleable" />
+      </value>
+    </nomatch>
+  </Operation>
 </Patch>

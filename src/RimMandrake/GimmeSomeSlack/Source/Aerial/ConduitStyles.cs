@@ -26,8 +26,10 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public static readonly string[] ConduitDefs = { "PowerConduit", "WaterproofConduit" };
         public static readonly string[] SwitchDefs = { "PowerSwitch" };
         /// <summary>Styled by the same picker (4 looks, build menu, copy, Frame guard) but NOT a run member: a lamp is a
-        /// machine, and machines end a run (design 2.1), so a lamp keeps its own picked look (art round 5, 2026-10-04).</summary>
-        public static readonly string[] LampDefs = { "StandingLamp" };
+        /// machine, and machines end a run (design 2.1), so a lamp keeps its own picked look (art round 5, 2026-10-04).
+        /// 0.2.0 (bar wall_lamp_takes_looks, T_WALL_LAMP_LOOKS_OFFLINE): the vanilla wall lamp takes the looks as the standing
+        /// lamp does; every lamp rule here and in RM_MapComponent_ConduitRuns reads this list, never a def name.</summary>
+        public static readonly string[] LampDefs = { "StandingLamp", "WallLamp" };
 
         /// <summary>Modern (extension cord) colours, in CordMaterials' strand order.</summary>
         public static readonly string[] Colours = { "Orange", "Green", "Brown", "Yellow", "Blue" };
@@ -67,6 +69,37 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         /// stored look (legacy, hidden conduit, no victim) = the default look, the same legacy rule as every run member.</summary>
         public static string TapLook(string victimRawLook, string defaultLook) => AerialStyles.IsLook(victimRawLook) ? victimRawLook : defaultLook;
         public static bool IsColour(string c) => c != null && Array.IndexOf(Colours, c) >= 0;
+
+        // ------------------------------------------------------------------ look menus and their icons
+        /// <summary>The menu keys of a look menu: the looks, plus, for conduit, the Modern colour choices (Mix, Multi = one random
+        /// colour per run, then each colour). ConduitStylePicker.MenuKeys is this.</summary>
+        public static List<string> MenuKeys(bool conduit)
+        {
+            var l = new List<string>();
+            foreach (string look in AerialStyles.Looks)
+            {
+                if (look != "Modern" || !conduit) { l.Add(look); continue; }
+                l.Add(Key("Modern", Mix));
+                l.Add(Key("Modern", Multi));
+                foreach (string c in Colours) l.Add(Key("Modern", c));
+            }
+            return l;
+        }
+
+        /// <summary>Where the look icons are, under the mod's Textures/ (one picture per look, 256 square; the same picture
+        /// every RimMandrake mod with these looks ships at RimMandrake/&lt;Mod&gt;/UI/Looks/&lt;Look&gt;:
+        /// design/specs/2026-11-20-vanilla-electrical-art-home/commissions.md).</summary>
+        public const string LookIconDir = "RimMandrake/GimmeSomeSlack/UI/Looks/";
+
+        /// <summary>0.2.0 (bar look_menu_icons, his walk 2026-11-20): the icon of a look-menu entry is its LOOK's icon, for
+        /// every entry of the build menu's look choice and of the Restyle menus; a Modern colour choice (a colour, Mix,
+        /// Multi) shows the Modern icon and names its colour in the label. Null for a key that is no look (an entry like
+        /// "Match its cable run").</summary>
+        public static string LookIconPath(string key)
+        {
+            if (key == Key("Modern", Multi)) return LookIconDir + "Modern";
+            return TryParseKey(key, out string look, out _) ? LookIconDir + look : null;
+        }
 
         // ------------------------------------------------------------------ naming
         /// <summary>A style key is "Look" or, for Modern conduit, "Modern_Colour" / "Modern_Mix".</summary>

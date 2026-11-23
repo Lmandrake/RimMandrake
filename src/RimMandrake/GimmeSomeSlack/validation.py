@@ -2165,7 +2165,10 @@ SCENE_OWN_ROWS = {"sc_cords_under_items": "UNDER_ROWS",
                   "sc_switch_off_ends": "SWITCH_OFF_ROWS", "sc_pole_icons_loaded": "POLE_ICON_ROWS",
                   "sc_pole_south_of_tree": "POLE_SOUTH_ROWS", "sc_no_roof_over_pole": "NO_ROOF_ROWS",
                   # RIMMANDRAKE_LIGHT_SLACK_SWITCH_GREEN_RED_DARK_WHEN_UNPOWERED (bar switch_light_reads_state)
-                  "sc_switch_light": "SWITCH_LIGHT_ROWS"}
+                  "sc_switch_light": "SWITCH_LIGHT_ROWS",
+                  # 0.2.0 MINOR (bars restyle_whole_line, look_menu_icons, wall_lamp_takes_looks)
+                  "sc_restyle_whole_line": "RESTYLE_LINE_ROWS", "sc_look_menu_icons": "LOOK_ICON_ROWS",
+                  "sc_wall_lamp_looks": "WALL_LAMP_ROWS"}
 
 
 def scene_rows_for(sid, scenes=None, row_leaves=None):
@@ -2354,7 +2357,22 @@ def scene_switch_light(B, V, rows):
     """scenes.json sc_switch_light (bar switch_light_reads_state): scene_rows.switch_light, decided by SWITCH_LIGHT_ROWS."""
     return _own_scene("sc_switch_light", "switch_light", B, V, rows)
 
-ONE_SCENES = ("scene_switch_off_ends", "scene_pole_icons_loaded", "scene_pole_south_of_tree", "scene_no_roof_over_pole", "scene_switch_light")
+def scene_restyle_whole_line(B, V, rows):
+    """0.2.0 sc_restyle_whole_line (bar restyle_whole_line): scene_rows.restyle_whole_line, decided by RESTYLE_LINE_ROWS."""
+    return _own_scene("sc_restyle_whole_line", "restyle_whole_line", B, V, rows)
+
+def scene_look_menu_icons(B, V, rows):
+    """0.2.0 sc_look_menu_icons (bar look_menu_icons): scene_rows.look_menu_icons, decided by LOOK_ICON_ROWS (its shot row stays
+    UNMEASURED until a judge reads the capture)."""
+    return _own_scene("sc_look_menu_icons", "look_menu_icons", B, V, rows, [])
+
+def scene_wall_lamp_looks(B, V, rows):
+    """0.2.0 sc_wall_lamp_looks (bar wall_lamp_takes_looks): scene_rows.wall_lamp_looks, decided by WALL_LAMP_ROWS (its shot row stays
+    UNMEASURED until a judge reads the capture)."""
+    return _own_scene("sc_wall_lamp_looks", "wall_lamp_looks", B, V, rows, [])
+
+ONE_SCENES = ("scene_switch_off_ends", "scene_pole_icons_loaded", "scene_pole_south_of_tree", "scene_no_roof_over_pole", "scene_switch_light",
+              "scene_restyle_whole_line", "scene_look_menu_icons", "scene_wall_lamp_looks")
 
 
 def run_one_scene(name, out=None):

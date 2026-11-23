@@ -188,13 +188,17 @@ NEW = {  # specified at this lock; Stage 3 builds each and shows it red first
         stage="4-5", file=G + "Source/SelfTest/LookIconChecks.cs",
         observes="every look entry of the build menu's look choice and of the Restyle button takes its icon from the shared look-icon path "
                  "(UI/Looks/<Look>), the four pictures exist and differ; planted: a menu entry back on its strand art goes red (bar look_menu_icons)",
-        reads=[G + "Source/Aerial/ConduitStylePicker.cs", G + "Textures"]),
+        reads=[G + "Source/Aerial/ConduitStylePicker.cs", G + "Source/Aerial/ConduitStyles.cs", G + "Textures/RimMandrake/GimmeSomeSlack/UI/Looks",
+               G + "Source/SelfTest/Program.cs", "src/RimMandrake/Utils/selftest_gimmesomeslack.py"]),
     "T_WALL_LAMP_LOOKS_OFFLINE": dict(
         stage="4-5", file=G + "Source/SelfTest/WallLampLookChecks.cs",
         observes="WallLamp is a lamp def of the picker with one style def per look, each look's texture exists for every facing it draws, "
                  "the wall lamp follows its line as the standing lamp does, and the master switch off draws vanilla; planted: a look with a "
                  "missing facing goes red (bar wall_lamp_takes_looks)",
-        reads=[G + "Source/Aerial/ConduitStyles.cs", G + "Defs", G + "Textures"]),
+        reads=[G + "Source/Aerial/ConduitStyles.cs", G + "Source/Aerial/ConduitStylePicker.cs", G + "Source/Aerial/RM_MapComponent_ConduitRuns.cs",
+               G + "Defs/Aerial/RM_ConduitStyles.xml", G + "Patches/RM_ConduitStyleable.xml"]
+              + sorted(glob.glob(G + "Textures/RimMandrake/GimmeSomeSlack/Styles/*/WallLamp_*.png"))
+              + [G + "Source/SelfTest/Program.cs", "src/RimMandrake/Utils/selftest_gimmesomeslack.py"]),
     "T_MAST_BEHIND_TALL_SOUTH_PICTURE_OFFLINE": dict(
         stage="4-5", file=G + "selftest_gss_mast_behind_tall_south_picture.py",
         observes="the reverse case of the south rule: a building whose picture reaches north into a mast just north of it draws in front of "
@@ -204,6 +208,13 @@ NEW = {  # specified at this lock; Stage 3 builds each and shows it red first
         reads=[G + "selftest_gss_pole_south_draws_front.py", G + "Defs/Aerial/RM_AerialAnchors.xml",
                "src/RimMandrake/MandrakePatches/Source/SouthDrawsFront/SouthDrawsFrontKernel.cs"]),
 }
+
+# the live checks of the three 0.2.0 scenes against a fake game (good game PASS, 8 planted wrong games FAIL, a blind probe never PASS)
+OFF["T_LOOK_SCENES_FAKE_GAME"] = dict(stage="4-5", file=G + "selftest_gss_look_scenes.py", support_only=True,
+    observes="sc_restyle_whole_line, sc_look_menu_icons and sc_wall_lamp_looks (northstar/scene_rows.py) on a fake game: every program-decided "
+             "row PASS on the shipped behaviour; a flood stopping at the pole, a flood across the cut, lamps never following, a wall lamp "
+             "not a lamp, a wall lamp on standing lamp art, the master switch ignored and a strand icon each read FAIL; a blind probe no PASS",
+    reads=[G + "northstar/scene_rows.py", G + "validation.py"])
 
 # ---- the judgment: which offline tests decide (or support) each bar ----
 OFF_DECIDES = {
@@ -234,6 +245,8 @@ OFF_DECIDES = {
 }
 OFF_DECIDES["poles_draw_in_front_when_south"].append("T_MAST_BEHIND_TALL_SOUTH_PICTURE_OFFLINE")
 OFF_SUPPORTS = {
+    "restyle_whole_line": ["T_LOOK_SCENES_FAKE_GAME"], "look_menu_icons": ["T_LOOK_SCENES_FAKE_GAME"],
+    "wall_lamp_takes_looks": ["T_LOOK_SCENES_FAKE_GAME"],
     "conduit_invisible": ["T_GATE"], "cords_lie_slack": ["T_MATRIX", "T_END_HEAP"], "cords_meet_walls_at_face": ["T_CORE", "T_END_HEAP"],
     "strip_at_every_junction": ["T_JUNCTION_ART", "T_STRIP_ART"], "dense_block_tangle": ["T_MATRIX"],
     "drawing_true_to_grid": ["T_MATRIX"], "no_stall_on_rewire": ["T_CORE"], "spans_above_everything": ["T_CORE", "T_FW_PIT_DRAW_CENSUS"],
@@ -345,8 +358,9 @@ NEW_CMD = {"T_CORD_GEOMETRY_OFFLINE": ["src/RimMandrake/Utils/selftest_gimmesome
            "T_SHOCK_RULE_OFFLINE": ["src/RimMandrake/Utils/selftest_gimmesomeslack.py"],
            # 0.2.0: a SelfTest .cs is run by T_CORE once Stage 3 writes it
            "T_LINE_RESTYLE_OFFLINE": ["src/RimMandrake/Utils/selftest_gimmesomeslack.py"],
-           "T_LOOK_ICONS_OFFLINE": ["src/RimMandrake/Utils/selftest_gimmesomeslack.py"],
-           "T_WALL_LAMP_LOOKS_OFFLINE": ["src/RimMandrake/Utils/selftest_gimmesomeslack.py"]}
+           # built 2026-11-23 (RIMMANDRAKE_FINISH_SLACK_ICON_LAMP_CHECKS_CAPPED_AT_HALF): both run alone under --looks-only
+           "T_LOOK_ICONS_OFFLINE": ["src/RimMandrake/Utils/selftest_gimmesomeslack.py", "--no-export", "--looks-only"],
+           "T_WALL_LAMP_LOOKS_OFFLINE": ["src/RimMandrake/Utils/selftest_gimmesomeslack.py", "--no-export", "--looks-only"]}
 for k, t in NEW.items():
     argv = NEW_CMD.get(k) or [t["file"]]
     row = dict(id=k, kind="offline", stage=t["stage"], file=t["file"], observes=t["observes"], reads=t["reads"], new=True,
@@ -440,16 +454,16 @@ NEW_LIVE = {
         "a line of floor cords, a power switch, two poles with an overhead span, a wall bracket and a hooked lamp, all Industrial: "
         "All connected on the far pole to Futuristic; the GSS probe cstyles reads every piece, the span and the lamp Futuristic; then a "
         "cut span and All connected on one side to Modern leaves the other side Futuristic",
-        [G + "Source/Aerial/ConduitStyleProbe.cs", G + "Source/Aerial/RM_MapComponent_ConduitRuns.cs"],
+        [G + "Source/Aerial/ConduitStyleProbe.cs", G + "Source/Aerial/RM_MapComponent_ConduitRuns.cs", G + "northstar/scene_rows.py"],
         "a run is worked out from the running map (things, spans and their Up state); only the live map has them"),
     "sc_look_menu_icons": ("look_menu_icons", "scene_look_menu_icons",
         "a capture of the build menu's look choice and of the Restyle menu: each look shows its own icon, the same picture in both menus",
-        [G + "Source/Aerial/ConduitStylePicker.cs"],
+        [G + "Source/Aerial/ConduitStylePicker.cs", G + "Source/Aerial/ConduitStyleProbe.cs", G + "northstar/scene_rows.py"],
         "a float menu and its icons are drawn only by the running game's UI"),
     "sc_wall_lamp_looks": ("wall_lamp_takes_looks", "scene_wall_lamp_looks",
         "wall lamps on a wall in each look beside a standing lamp, captured at play zoom; a restyle of the line they hook to repaints "
         "them as it does the standing lamp; the master switch off draws vanilla wall lamps without a restart",
-        [G + "Source/Aerial/ConduitStyles.cs", G + "Source/Aerial/ConduitStyleProbe.cs"],
+        [G + "Source/Aerial/ConduitStyles.cs", G + "Source/Aerial/ConduitStyleProbe.cs", G + "northstar/scene_rows.py"],
         "the drawn picture of a style def exists only in the running renderer"),
 }
 for sid, (bid, fn, obs, rd, why) in NEW_LIVE.items():

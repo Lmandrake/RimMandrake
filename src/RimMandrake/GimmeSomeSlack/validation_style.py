@@ -123,11 +123,12 @@ def stage2_style_names():
             names.append("%s_%s" % (d, l))
             if l == "Modern":
                 names += ["%s_Modern_%s" % (d, c) for c in COLOURS + ["Mix"]]
-    return names + ["PowerSwitch_%s" % l for l in LOOKS] + ["StandingLamp_%s" % l for l in LOOKS]
+    return (names + ["PowerSwitch_%s" % l for l in LOOKS] + ["StandingLamp_%s" % l for l in LOOKS]
+            + ["WallLamp_%s" % l for l in LOOKS])
 
 
 def s0b_offline(rows):
-    """Stage 2 offline: the 28 style defs (conduit markers carry NO graphic; switch styles point at art on disk), the guarded
+    """Stage 2 offline: the 32 style defs (28, and the 4 wall lamp looks of 0.2.0) (conduit markers carry NO graphic; switch styles point at art on disk), the guarded
     CompProperties_Styleable patch, and the per-look art the cord layer and the switch now pick."""
     probs, info = [], {}
     root = ET.parse(os.path.join(HERE, "Defs", "Aerial", "RM_ConduitStyles.xml")).getroot()
@@ -143,11 +144,21 @@ def s0b_offline(rows):
                 probs.append("%s: art missing %s" % (n, tp))
             if n.startswith("StandingLamp_") and tp != "RimMandrake/GimmeSomeSlack/Styles/%s/StandingLamp" % n.split("_", 1)[1]:
                 probs.append("%s: lamp must draw its own look's art, got %s" % (n, tp))
+        elif n.startswith("WallLamp_"):
+            # 0.2.0 wall_lamp_takes_looks: Graphic_Multi, a picture per facing it draws (west mirrors east)
+            tp = e.findtext("graphicData/texPath") or ""
+            if tp != "RimMandrake/GimmeSomeSlack/Styles/%s/WallLamp" % n.split("_", 1)[1]:
+                probs.append("%s: lamp must draw its own look's art, got %s" % (n, tp))
+            if (e.findtext("graphicData/graphicClass") or "") != "Graphic_Multi":
+                probs.append("%s: a wall lamp faces its wall: Graphic_Multi" % n)
+            for f in ("north", "east", "south"):
+                if not os.path.exists(os.path.join(TEX, tp + "_%s.png" % f)):
+                    probs.append("%s: art missing %s_%s" % (n, tp, f))
         elif has_g:
             probs.append("%s: a conduit style must be a marker (a graphic would make the conduit visible)" % n)
     pt = os.path.join(HERE, "Patches", "RM_ConduitStyleable.xml")
     patch = open(pt, encoding="utf-8").read() if os.path.exists(pt) else ""
-    for d in ("PowerConduit", "PowerSwitch", "StandingLamp"):
+    for d in ("PowerConduit", "PowerSwitch", "StandingLamp", "WallLamp"):
         if 'defName="%s"]/comps/li[@Class="CompProperties_Styleable"]' % d not in patch or "PatchOperationConditional" not in patch:
             probs.append("patch: %s lacks the guarded CompProperties_Styleable add" % d)
     if 'defName="WaterproofConduit"' in patch:
@@ -168,7 +179,7 @@ def s0b_offline(rows):
         for f in fs:
             if f.endswith(".xml") and "Defs" in dp:
                 t = open(os.path.join(dp, f), encoding="utf-8", errors="replace").read()
-                if re.search(r"<StyleCategoryDef[\s>]", t) and re.search(r"(PowerConduit|WaterproofConduit|PowerSwitch|StandingLamp)_(Scrapper|Industrial|Modern|Futuristic)", t):
+                if re.search(r"<StyleCategoryDef[\s>]", t) and re.search(r"(PowerConduit|WaterproofConduit|PowerSwitch|StandingLamp|WallLamp)_(Scrapper|Industrial|Modern|Futuristic)", t):
                     hits += 1
     if hits:
         probs.append("%d StyleCategoryDef files list stage-2 styles" % hits)

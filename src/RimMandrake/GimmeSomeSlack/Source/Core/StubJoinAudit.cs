@@ -22,7 +22,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
 {
     internal static class StubArt
     {
-        internal enum Join { Stubs, PositionOnly, LooseEnd, Cord, Hidden }
+        /// <summary>Menu: a menu picture (UI/Looks), never drawn on the map, so no cord ever joins it.</summary>
+        internal enum Join { Stubs, PositionOnly, LooseEnd, Cord, Hidden, Menu }
 
         /// <summary>Every texture basename under Textures/, how a cord joins it, and where that was read.</summary>
         internal static readonly (string Art, Join How, string Why)[] Census =
@@ -108,6 +109,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
             ("PoleTopDown", Join.PositionOnly, "pole top seen from above"),
             ("Insulator", Join.PositionOnly, "the line rests on top of it (owner reference photo 2026-11-08)"),
             ("StandingLamp", Join.PositionOnly, "lamp base (owner 2026-11-16, station 26)"),
+            ("WallLamp_north", Join.PositionOnly, "wall lamp: a stubless fixture on its wall, as the standing lamp (0.2.0 wall_lamp_takes_looks)"),
+            ("WallLamp_east", Join.PositionOnly, "wall lamp, east facing (drawn flipped for west): stubless"),
+            ("WallLamp_south", Join.PositionOnly, "wall lamp, south facing: stubless"),
             ("TapClamp", Join.PositionOnly, "jaws grip the overhead wire: no cord stub drawn"),
             ("EndFrayed_Live", Join.LooseEnd, "a loose end itself"),
             ("EndFrayed_Dead", Join.LooseEnd, "a loose end itself"),
@@ -120,6 +124,10 @@ namespace RimMandrake.GimmeSomeSlack.Core
             ("Strand_Jawa", Join.Cord, "cord"), ("Strand_Orange", Join.Cord, "cord"), ("Strand_ScrapTaped", Join.Cord, "cord"),
             ("Strand_Yellow", Join.Cord, "cord"),
             ("ConduitTransparent", Join.Hidden, "the invisible conduit"),
+            ("Scrapper", Join.Menu, "look icon UI/Looks/Scrapper: a menu picture (0.2.0 look_menu_icons)"),
+            ("Industrial", Join.Menu, "look icon UI/Looks/Industrial: a menu picture"),
+            ("Modern", Join.Menu, "look icon UI/Looks/Modern: a menu picture"),
+            ("Futuristic", Join.Menu, "look icon UI/Looks/Futuristic: a menu picture"),
         };
 
         /// <summary>The arm length of both junction boxes, art units (times the decal's Scale).</summary>

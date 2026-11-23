@@ -100,6 +100,8 @@
     <Compile Include="StyleStage2Checks.cs" />
     <Compile Include="StyleReachChecks.cs" />
     <Compile Include="LineRestyleChecks.cs" />
+    <Compile Include="LookIconChecks.cs" />
+    <Compile Include="WallLampLookChecks.cs" />
     <Compile Include="BatchedLinkStyleMergeChecks.cs" />
     <Compile Include="TheftChecks.cs" />
     <Compile Include="TapWindowChecks.cs" />

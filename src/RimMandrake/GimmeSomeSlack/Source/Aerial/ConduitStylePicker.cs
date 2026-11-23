@@ -47,18 +47,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public static int picks;
 
         /// <summary>The menu keys: the looks, plus Modern colour choices for conduit (Multi = one random colour per run).</summary>
-        public static List<string> MenuKeys(bool conduit)
-        {
-            var l = new List<string>();
-            foreach (string look in AerialStyles.Looks)
-            {
-                if (look != "Modern" || !conduit) { l.Add(look); continue; }
-                l.Add(ConduitStyles.Key("Modern", ConduitStyles.Mix));
-                l.Add(ConduitStyles.Key("Modern", ConduitStyles.Multi));
-                foreach (string c in ConduitStyles.Colours) l.Add(ConduitStyles.Key("Modern", c));
-            }
-            return l;
-        }
+        public static List<string> MenuKeys(bool conduit) => ConduitStyles.MenuKeys(conduit);
 
         static ConduitStylePicker()
         {
@@ -185,9 +174,15 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             return "Modern: " + colour.ToLowerInvariant();
         }
 
-        /// <summary>A menu icon: the strand art of that look / colour for conduit; the switch's own style art.</summary>
+        /// <summary>A menu icon. 0.2.0 (bar look_menu_icons, T_LOOK_ICONS_OFFLINE): the look's own icon
+        /// (ConduitStyles.LookIconPath, UI/Looks/&lt;Look&gt;), the same picture in the build menu and the Restyle menus. Only
+        /// if that picture failed to load: the strand art of that look / colour for conduit, the style's own art otherwise,
+        /// so an entry is never blank.</summary>
         public static Texture2D Icon(ThingDef d, string key)
         {
+            string iconPath = ConduitStyles.LookIconPath(key);
+            Texture2D lookIcon = iconPath == null ? null : RimMandrake.GimmeSomeSlack.SafeTex.Get(iconPath, false);
+            if (lookIcon != null) return lookIcon;
             if (!IsConduit(d))
             {
                 ThingStyleDef s = StyleFor(d, key);
@@ -315,7 +310,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 defaultDesc = "Give this " + b.def.label + " another look (" + (cur ?? (lamp ? "vanilla" : StylePicker.DefaultLook)) + " now). " +
                               "First choose how far: this item only, everything connected to it, or everything you own on the map. " +
                               "Art only: it costs nothing and changes nothing else.\n\n" +
-                              "Floor lamps hooked to a run change with it on \"All connected\", unless a lamp wears a look no piece of the run had.",
+                              "Floor and wall lamps hooked to a run change with it on \"All connected\", unless a lamp wears a look no piece of the run had.",
                 icon = lamp ? Icon(b.def, cur ?? StylePicker.DefaultLook)
                             : Icon(DefDatabase<ThingDef>.GetNamedSilentFail("PowerConduit") ?? b.def, ConduitStyles.Key(cur ?? StylePicker.DefaultLook, RawColour(b))),
                 action = () => Find.WindowStack.Add(new FloatMenu(ReachMenu(b)))

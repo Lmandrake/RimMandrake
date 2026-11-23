@@ -978,3 +978,220 @@ def no_roof_over_pole(B, V, rows):
           "SITE" if up0 == 0 or roofed is not True else "MOD",
           {"upBefore": up0, "roofedAfterForce": roofed, "ticksWaited": SWEEP_TICKS + 2, "afterForcedRoof": cut1[:4]})
     B.call("jawa/set_roof_batch", ops="None:%d,%d,%d,%d" % SITE)
+
+
+# ---- 0.2.0 MINOR live halves (opened 2026-11-23). Each builds its own site on the gimmesomeslack tier and reads it with the
+# cstyles / clookicons probes; UNRUN until Stage 6:
+#   python.exe src\RimMandrake\GimmeSomeSlack\validation.py --scene scene_restyle_whole_line   (and the two others)
+RESTYLE_LINE_ROWS = ["SC_restyle_line_staged", "SC_restyle_whole_line_from_pole", "SC_restyle_whole_line_from_switch",
+                     "SC_restyle_whole_line_from_bracket", "SC_restyle_whole_line_from_cord", "SC_restyle_cut_span_ends_line"]
+LOOK_ICON_ROWS = ["SC_look_icons_build_menu", "SC_look_icons_restyle_menus", "SC_look_icons_same_picture", "SC_look_icons_shot"]
+WALL_LAMP_ROWS = ["SC_wall_lamp_draws_each_look", "SC_wall_lamp_every_facing", "SC_wall_lamp_follows_line_restyle",
+                  "SC_wall_lamp_master_off_vanilla", "SC_wall_lamp_shot"]
+LOOK_NAMES = ("Scrapper", "Industrial", "Modern", "Futuristic")
+
+
+def _styles(B, rect):
+    r = B.ap("cstyles:%d,%d,%d,%d" % rect)
+    return r, {(m["x"], m["z"]): m for m in r.get("members") or []}, {(l["x"], l["z"]): l for l in r.get("lamps") or []}
+
+
+def line_look_verdict(members, lamps, want, cells):
+    """-> the members at `cells` (and every lamp in `lamps`, cells or None = all) not wearing `want`; [] = all do."""
+    bad = [("member", c, (members.get(c) or {}).get("look")) for c in cells if (members.get(c) or {}).get("look") != want]
+    bad += [("lamp", c, l.get("look")) for c, l in lamps.items() if l.get("look") != want]
+    return bad
+
+
+def restyle_whole_line(B, V, rows):
+    """sc_restyle_whole_line (bar restyle_whole_line): leg A = floor cord, a power switch in it, cord, a pole; an overhead span to a far
+    pole; leg B = cord to a wall bracket on a wall; a standing lamp hooked to leg A. Every piece is set Industrial one by one
+    (crestyleone, "This item"). Then All connected (crestyle, RestyleRun: the gizmo's own call) from the far pole, the switch, the
+    bracket and a cord must each repaint every piece and the lamp; the span cut, All connected on leg B leaves leg A as it was.
+    The FlowWorks half ("a FlowWorks item keeps its own look") is decided offline (T_LINE_RESTYLE_OFFLINE). Rows: RESTYLE_LINE_ROWS."""
+    x, z = SC0
+    _site(B, V)
+    leg_a = _line(x + 2, z + 4, x + 8, z + 4) + _line(x + 10, z + 4, x + 12, z + 4)
+    sw, ma, mb, br = (x + 9, z + 4), (x + 13, z + 4), (x + 22, z + 4), (x + 27, z + 4)
+    leg_b = _line(x + 23, z + 4, x + 26, z + 4)
+    lamp = (x + 5, z + 5)
+    B.call("jawa/build_batch", ops=V.ops("Wall", [(br[0], br[1] + 1)]), stuff="Steel", faction="player", wipeExisting=False)
+    B.call("jawa/build_batch", ops=V.ops("PowerConduit", leg_a + leg_b), faction="player", wipeExisting=False)
+    B.call("jawa/build_batch", ops="PowerSwitch:%d,%d,0;RM_AerialMast:%d,%d;RM_AerialMast:%d,%d;RM_AerialWallBracket:%d,%d,0" % (sw + ma + mb + br),
+           faction="player", wipeExisting=False)
+    B.call("jawa/map_commit")
+    B.ap("cplace:StandingLamp:Industrial:%d,%d:god" % lamp)
+    B.ticks(3)
+    rect = (x, z, 32, 10)
+    r0, mem, _ = _styles(B, rect)
+    ids = {c: m.get("id") for c, m in mem.items()}
+    link = B.ap("link:%d,%d" % (ids[ma], ids[mb])) if ids.get(ma) and ids.get(mb) else {"success": False, "error": "a mast is missing"}
+    B.ap("cprocess")
+    cells_a, cells_b = leg_a + [sw, ma], leg_b + [mb, br]
+    for c in cells_a + cells_b:
+        B.ap("crestyleone:%d,%d:Industrial" % c)
+    B.ap("cprocess")
+    B.ticks(2)
+    _, mem, lamps = _styles(B, rect)
+    staged = line_look_verdict(mem, lamps, "Industrial", cells_a + cells_b)
+    # the site is staged when every piece stands in Industrial with the span linked; whether the mod makes ONE run of it is the
+    # verdict below, never a site check (a flood that stops at the pole must read FAIL, not UNMEASURED: selftest_gss_look_scenes.py)
+    one_run = len({(mem.get(c) or {}).get("run") for c in cells_a + cells_b}) == 1
+    ok_stage = not staged and bool(link.get("success")) and len(lamps) == 1
+    V.row(rows, "SC_restyle_line_staged", "PASS" if ok_stage else "UNMEASURED", "SITE",
+          {"notIndustrial": staged[:6], "link": link, "oneRunByTheMod": one_run, "lamps": len(lamps), "first": r0.get("error")})
+    for row, at, look in (("SC_restyle_whole_line_from_pole", mb, "Futuristic"), ("SC_restyle_whole_line_from_switch", sw, "Modern"),
+                          ("SC_restyle_whole_line_from_bracket", br, "Scrapper"), ("SC_restyle_whole_line_from_cord", leg_a[0], "Industrial")):
+        rr = B.ap("crestyle:%d,%d:%s" % (at[0], at[1], look))
+        B.ap("cprocess")
+        B.ticks(2)
+        _, mem, lamps = _styles(B, rect)
+        bad = line_look_verdict(mem, lamps, look, cells_a + cells_b)
+        V.row(rows, row, "UNMEASURED" if not ok_stage or not rr.get("success") else ("PASS" if not bad else "FAIL"),
+              "SITE" if not ok_stage else "HARNESS" if not rr.get("success") else "MOD",
+              {"from": at, "look": look, "restyle": rr, "wrong": bad[:8]})
+    # the cut: leg B restyled alone, leg A (and its lamp) keep Industrial
+    cut = B.ap("cut:%d,%d" % (ids.get(ma) or -1, ids.get(mb) or -1))
+    B.ticks(3)
+    rr = B.ap("crestyle:%d,%d:Modern" % leg_b[1])
+    B.ap("cprocess")
+    B.ticks(2)
+    _, mem, lamps = _styles(B, rect)
+    bad = line_look_verdict(mem, {}, "Modern", cells_b) + line_look_verdict(mem, lamps, "Industrial", cells_a)
+    cut_ok = bool(cut.get("done"))
+    V.row(rows, "SC_restyle_cut_span_ends_line", "UNMEASURED" if not (ok_stage and cut_ok and rr.get("success")) else ("PASS" if not bad else "FAIL"),
+          "SITE" if not (ok_stage and cut_ok) else "HARNESS" if not rr.get("success") else "MOD", {"cut": cut, "restyle": rr, "wrong": bad[:8]})
+
+
+def look_icon_verdict(menus):
+    """menus: {piece: clookicons reply}. -> (build faults, restyle faults, looks drawn with more than one picture, entries read)."""
+    build, restyle, pics, n = [], [], {}, 0
+    for piece, r in menus.items():
+        for e in r.get("entries") or []:
+            n += 1
+            if e.get("label") == "Match its cable run":
+                continue
+            bad = (piece, e.get("menu"), e.get("label"), e.get("icon"))
+            if not e.get("look") or not e.get("lookIcon"):
+                (build if e.get("menu") == "build" else restyle).append(bad)
+            if e.get("look"):
+                pics.setdefault(e["look"], set()).add(e.get("icon"))
+    return build, restyle, {k: sorted(v, key=str) for k, v in pics.items() if len(v) != 1}, n
+
+
+def look_menu_icons(B, V, rows, log):
+    """sc_look_menu_icons (bar look_menu_icons): a cord with a switch in it, a pole beside it, a standing lamp and a wall lamp on it. The
+    clookicons probe reads every entry of each piece's build menu and Restyle menus, the icon texture each option carries and whether it
+    is the look icon (UI/Looks/<Look>) of the look its label names. The All connected menu is opened on screen and captured for the judge.
+    Rows: LOOK_ICON_ROWS."""
+    x, z = SC0
+    _site(B, V)
+    cord = _line(x + 2, z + 4, x + 6, z + 4) + _line(x + 8, z + 4, x + 12, z + 4)
+    sw, mast, lamp, wl = (x + 7, z + 4), (x + 13, z + 4), (x + 4, z + 5), (x + 10, z + 5)
+    B.call("jawa/build_batch", ops=V.ops("Wall", [(wl[0], wl[1] + 1)]), stuff="Steel", faction="player", wipeExisting=False)
+    B.call("jawa/build_batch", ops=V.ops("PowerConduit", cord) + ";PowerSwitch:%d,%d,0;RM_AerialMast:%d,%d" % (sw + mast),
+           faction="player", wipeExisting=False)
+    B.call("jawa/map_commit")
+    B.ap("cplace:StandingLamp:Modern:%d,%d:god" % lamp)
+    B.ap("cplace:WallLamp:Industrial:%d,%d:god" % wl)
+    B.ticks(3)
+    menus = {name: B.ap("clookicons:%d,%d" % at) for name, at in (("cord", cord[0]), ("switch", sw), ("pole", mast),
+                                                                    ("standing lamp", lamp), ("wall lamp", wl))}
+    blind = [k for k, r in menus.items() if not r.get("success")]
+    build, restyle, multi, n = look_icon_verdict(menus)
+    st = "UNMEASURED" if blind or n == 0 else None
+    V.row(rows, "SC_look_icons_build_menu", st or ("PASS" if not build else "FAIL"), "HARNESS" if st else "MOD",
+          {"entries": n, "wrong": build[:8], "blind": blind})
+    V.row(rows, "SC_look_icons_restyle_menus", st or ("PASS" if not restyle else "FAIL"), "HARNESS" if st else "MOD",
+          {"wrong": restyle[:8], "blind": blind})
+    V.row(rows, "SC_look_icons_same_picture", st or ("PASS" if not multi else "FAIL"), "HARNESS" if st else "MOD", {"lookWithManyPictures": multi})
+    B.ap("clookicons:%d,%d:open" % cord[0])
+    try:
+        V.frame_fit(B, (x, z, 20, 10))
+        dst = V.shot(B, "sc_look_menu_icons", (x, z, 20, 10), log)
+    finally:
+        B.ap("cclosemenus")
+    V.row(rows, "SC_look_icons_shot", "UNMEASURED", "LOOK",
+          {"shot": dst, "judge": "the All connected look menu: each look shows its own icon, the four tell apart before the label is read"})
+
+
+def wall_lamp_verdict(lamps, want):
+    """lamps: cstyles lamp rows by cell; want: {cell: look or None (vanilla)}. -> [(cell, look, drawnPath)] wrong."""
+    bad = []
+    for c, look in want.items():
+        l = lamps.get(c) or {}
+        path = l.get("drawnPath") or ""
+        ok = (l.get("look") == look and path == "RimMandrake/GimmeSomeSlack/Styles/%s/WallLamp" % look) if look else \
+            path == "Things/Building/Furniture/WallLamp/WallLamp"
+        if not ok:
+            bad.append((c, l.get("look"), path or None))
+    return bad
+
+
+def wall_lamp_looks(B, V, rows, log):
+    """sc_wall_lamp_looks (bar wall_lamp_takes_looks): a steel wall with a floor cord along it; four wall lamps on it, one per look (the
+    build menu's pick, cplace), a fifth in Industrial and a standing lamp in Industrial on the same cord; wall lamps facing east, west and
+    south on their own walls, each given a look by its Restyle (clamp). Reads (cstyles lamps): each draws its look's wall lamp; the cord
+    restyled All connected Industrial -> Modern takes the two Industrial lamps along and leaves the Scrapper and Futuristic ones; the
+    master switch off draws every wall lamp vanilla (then restored). A capture is kept for the judge. Rows: WALL_LAMP_ROWS."""
+    x, z = SC0
+    _site(B, V)
+    wall = _line(x + 2, z + 8, x + 24, z + 8) + _line(x + 26, z + 2, x + 26, z + 7)
+    cord = _line(x + 2, z + 6, x + 24, z + 6)
+    B.call("jawa/build_batch", ops=V.ops("Wall", wall), stuff="Steel", faction="player", wipeExisting=False)
+    B.ap("cline:PowerConduit:Industrial:%d,%d:%d,%d:god" % (cord[0] + cord[-1]))
+    each = {(x + 3 + 4 * i, z + 7): look for i, look in enumerate(LOOK_NAMES)}
+    follow, stand = (x + 21, z + 7), (x + 18, z + 5)
+    placed = [B.ap("cplace:WallLamp:%s:%d,%d:god" % (look, c[0], c[1])) for c, look in each.items()]
+    placed.append(B.ap("cplace:WallLamp:Industrial:%d,%d:god" % follow))
+    placed.append(B.ap("cplace:StandingLamp:Industrial:%d,%d:god" % stand))
+    # facings: east (wall to its east), west (wall to its west), south (the long wall to its south); built bare, then given a look
+    east, west, south = (x + 25, z + 4), (x + 27, z + 4), (x + 6, z + 9)
+    B.call("jawa/build_batch", ops="WallLamp:%d,%d,1;WallLamp:%d,%d,3;WallLamp:%d,%d,2" % (east + west + south), faction="player", wipeExisting=False)
+    B.ticks(2)
+    facing = {east: "Futuristic", west: "Industrial", south: "Modern"}
+    styled = [B.ap("clamp:%d,%d:%s" % (c[0], c[1], look)) for c, look in facing.items()]
+    B.ap("cprocess")
+    B.ticks(2)
+    rect = (x, z, 30, 12)
+    r, _, lamps = _styles(B, rect)
+    # a wall lamp the mod does not style is refused by name (cplace: "not a stage-2 styled def", clamp: "no styled floor lamp
+    # there"): that is the mod's fault and reads FAIL; any other refusal leaves the site unstaged (UNMEASURED)
+    mod_refused = [p.get("error") for p in placed + styled if "not a stage-2 styled def" in (p.get("error") or "")
+                   or "no styled floor lamp" in (p.get("error") or "")]
+    site_err = [p.get("error") for p in placed + styled if not p.get("success") and p.get("error") not in mod_refused]
+    site_ok = not site_err and bool(r.get("success"))
+    st = (lambda bad: "UNMEASURED" if not site_ok else "FAIL" if bad or mod_refused or len(lamps) != 9 else "PASS")
+    bad = wall_lamp_verdict(lamps, {**each, follow: "Industrial"})
+    V.row(rows, "SC_wall_lamp_draws_each_look", st(bad), "MOD" if site_ok else "SITE",
+          {"wrong": bad, "refusedByMod": mod_refused, "siteErrors": site_err, "lamps": len(lamps)})
+    badf = wall_lamp_verdict(lamps, facing)
+    rots = {c: (lamps.get(c) or {}).get("rot") for c in facing}
+    V.row(rows, "SC_wall_lamp_every_facing", st(badf), "MOD" if site_ok else "SITE",
+          {"wrong": badf, "rots": {str(k): v for k, v in rots.items()}, "refusedByMod": mod_refused})
+    rr = B.ap("crestyle:%d,%d:Modern" % cord[5])
+    B.ap("cprocess")
+    B.ticks(2)
+    _, _, lamps = _styles(B, rect)
+    # the two Industrial lamps on the cord follow it; Scrapper and Futuristic were given looks no piece drew, so they keep them
+    want = {follow: "Modern", (x + 7, z + 7): "Modern", (x + 3, z + 7): "Scrapper", (x + 15, z + 7): "Futuristic", (x + 11, z + 7): "Modern"}
+    badr = wall_lamp_verdict(lamps, want)
+    st_ok = (lamps.get(stand) or {}).get("look") == "Modern"
+    V.row(rows, "SC_wall_lamp_follows_line_restyle", "UNMEASURED" if not (site_ok and rr.get("success")) else ("PASS" if not badr and st_ok else "FAIL"),
+          "SITE" if not site_ok else "HARNESS" if not rr.get("success") else "MOD",
+          {"restyle": rr, "wrong": badr, "standingLampLook": (lamps.get(stand) or {}).get("look")})
+    V.frame_fit(B, (x, z, 30, 12))
+    dst = V.shot(B, "sc_wall_lamp_looks", (x, z, 30, 12), log)
+    off = B.probe("set:enabled=False")
+    try:
+        B.ticks(2)
+        _, _, lamps = _styles(B, rect)
+        wl = {c: None for c, l in lamps.items() if l.get("def") == "WallLamp"}
+        badv = wall_lamp_verdict(lamps, wl)
+        seen = site_ok and off.get("success") and (wl or mod_refused)
+        V.row(rows, "SC_wall_lamp_master_off_vanilla", "UNMEASURED" if not seen else ("PASS" if not badv and not mod_refused else "FAIL"),
+              "SITE" if not site_ok else "HARNESS" if not seen else "MOD", {"set": off, "wallLamps": len(wl), "wrong": badv, "refusedByMod": mod_refused})
+    finally:
+        B.probe("set:enabled=True")
+    V.row(rows, "SC_wall_lamp_shot", "UNMEASURED", "LOOK",
+          {"shot": dst, "judge": "each wall lamp reads as its look's wall lamp, hung on its wall, from north, east, west and south"})

@@ -22,6 +22,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     ///   cplace:def:key:x,z:god|build | cline:def:key:x0,z0:x1,z1:god|build | cfinishbuild | cprocess | cclearpicks
     ///   crestyle:x,z:key             the gizmo's own call | cdeconstruct:x,z   a member destroyed as by deconstruction
     ///   clamp:x,z:<Look>|MatchRun    round 6: a floor lamp's own Restyle gizmo call (cstyles lists "lamps")
+    ///   clookicons:x,z[:open]        0.2.0: every look-menu entry of the piece there, with the icon it carries
     ///   creach:x,z | crestyleone:x,z:key | crestyleall:key:player|god | clamprun:x,z:key   0.1.1 reaches (design 2.5)
     ///   cmultilink:x,z;x,z;...[:plan]  S12c (GPT D5): select the anchors at those cells and fire the "Auto-link selected"
     ///                                gizmo's own action ONCE (every TryLink of the spanning forest queues in ONE call, no
@@ -102,6 +103,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 bool changed = runs.RestyleLamp(t, p[1], false);
                 return AerialProbe.Ok(cmd, "\"changed\":" + B(changed) + ",\"rawStyle\":" + S(StylePicker.RawStyle(t)?.defName) + ",\"message\":" + S(runs.lastMessage));
             }
+            if (cmd.StartsWith("clookicons:")) return LookIcons(map, cmd);
             if (cmd.StartsWith("cmultilink:")) return MultiLink(map, runs, cmd);
             if (cmd.StartsWith("csavenow:")) return SaveNow(map, runs, cmd);
             if (cmd.StartsWith("cdeconstruct:"))
@@ -178,6 +180,39 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             bool landed = System.IO.File.Exists(path) && System.IO.File.GetLastWriteTimeUtc(path) >= before;
             string body = "\"pendingAtSave\":" + pendingAtSave + ",\"saved\":" + B(landed) + ",\"path\":" + S(path) + ",\"place\":" + placed;
             return landed ? AerialProbe.Ok(cmd, body) : AerialProbe.Fail(cmd, "SaveGame wrote no fresh file at " + path).TrimEnd('}') + "," + body + "}";
+        }
+
+        /// <summary>0.2.0 (bar look_menu_icons, sc_look_menu_icons): clookicons:x,z[:open] -- for the piece at x,z, every entry
+        /// of its build menu's look choice (ConduitStylePicker.MenuFor on its Architect designator) and of its Restyle menus
+        /// (LookMenu for each reach): the label, the icon texture the option carries, and whether that texture is the look
+        /// icon (UI/Looks/&lt;Look&gt;) of the look the label names. :open also shows the All connected look menu on screen.</summary>
+        private static string LookIcons(Map map, string cmd)
+        {
+            string[] p = cmd.Substring(11).Split(':');
+            Thing t = Cell(p[0]).GetThingList(map).FirstOrDefault(x => ConduitStylePicker.IsMember(x.def) || ConduitStylePicker.IsLamp(x.def));
+            if (!(t is Building b)) return AerialProbe.Fail(cmd, "no run member or lamp there");
+            var rows = new List<string>();
+            void Read(string menu, List<FloatMenuOption> opts)
+            {
+                foreach (FloatMenuOption o in opts)
+                {
+                    Texture2D tex = Traverse.Create(o).Field("iconTex").GetValue<Texture2D>();
+                    string label = o.Label ?? "";
+                    string look = AerialStyles.Looks.FirstOrDefault(l => label.StartsWith(l, StringComparison.Ordinal));
+                    Texture2D want = look == null ? null : RimMandrake.GimmeSomeSlack.SafeTex.Get(ConduitStyles.LookIconPath(look), false);
+                    rows.Add("{\"menu\":" + S(menu) + ",\"label\":" + S(label) + ",\"look\":" + S(look) + ",\"icon\":" + S(tex?.name) +
+                             ",\"lookIcon\":" + B(want != null && ReferenceEquals(tex, want)) + "}");
+                }
+            }
+            if (ConduitStylePicker.IsOurs(b.def))
+            {
+                Designator_Build des = BuildCopyCommandUtility.FindAllowedDesignator(b.def, mustBeVisible: false);
+                if (des != null) Read("build", ConduitStylePicker.MenuFor(des));
+            }
+            foreach (ConduitStyles.Reach r in new[] { ConduitStyles.Reach.Item, ConduitStyles.Reach.Connected, ConduitStyles.Reach.Map })
+                Read("restyle " + ConduitStyles.ReachLabel(r), ConduitStylePicker.LookMenu(b, r));
+            if (p.Length > 1 && p[1] == "open") Find.WindowStack.Add(new FloatMenu(ConduitStylePicker.LookMenu(b, ConduitStyles.Reach.Connected)));
+            return AerialProbe.Ok(cmd, "\"def\":" + S(b.def.defName) + ",\"entries\":[" + string.Join(",", rows) + "]");
         }
 
         private static string Place(Map map, string cmd)
@@ -298,7 +333,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                     List<Thing> lr = runs.RunOfLamp(l);
                     string drawn;
                     try { drawn = l.Graphic?.path; } catch (Exception ex) { drawn = "ERR " + ex.GetType().Name; }
-                    lampRows.Add("{\"id\":" + l.thingIDNumber + ",\"x\":" + l.Position.x + ",\"z\":" + l.Position.z + ",\"rawStyle\":" + S(StylePicker.RawStyle(l)?.defName) +
+                    lampRows.Add("{\"id\":" + l.thingIDNumber + ",\"def\":" + S(l.def.defName) + ",\"rot\":" + l.Rotation.AsInt + ",\"x\":" + l.Position.x + ",\"z\":" + l.Position.z + ",\"rawStyle\":" + S(StylePicker.RawStyle(l)?.defName) +
                                  ",\"look\":" + S(ConduitStylePicker.RawLook(l)) + ",\"run\":" + (lr == null ? "null" : lr[0].thingIDNumber.ToString()) +
                                  ",\"runLook\":" + S(lr == null ? null : RM_MapComponent_ConduitRuns.Info(lr).Look ?? StylePicker.DefaultLook) +
                                  ",\"drawnPath\":" + S(drawn) + ",\"lit\":" + B(l.TryGetComp<CompGlower>()?.Glows ?? false) + "}");

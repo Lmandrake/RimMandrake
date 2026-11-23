@@ -101,12 +101,16 @@ def main(argv):
     # DLL while this one rebuilt it, MSB3027, 2026-11-16; RIMMANDRAKE_LOCK_GSS_SELFTEST_STAGE_SHARED_BY_EVERY_CLONE)
     with winbuild.exclusive("GimmeSomeSlackSelfTest"):
         rc, rec = winbuild.stage_build(CSPROJ, stage_name="GimmeSomeSlackSelfTest",
-                                       extra_dirs=[os.path.join(REPO, "src", "RimMandrake", "GimmeSomeSlack", "Source", "Core")])
+                                       extra_dirs=[os.path.join(REPO, "src", "RimMandrake", "GimmeSomeSlack", d)
+                                                   # Defs, Patches: read by LookIconChecks / WallLampLookChecks (0.2.0)
+                                                   for d in ("Source/Core", "Defs", "Patches")])
         if rc:
             print("selftest build FAILED")
             return rc
         dll = winbuild.staged_win(rec, SELFTEST) + "\\bin\\Release\\net8.0\\RimMandrakeGimmeSomeSlack.SelfTest.dll"
-        args = [winbuild.dotnet_exe(), dll] + (["--probe"] if "--probe" in argv else []) + (["--perdig-only"] if "--perdig-only" in argv else []) + (["--slice-repeat"] if "--slice-repeat" in argv else []) + (["--old-form"] if "--old-form" in argv else []) + (["--lay-profile"] if "--lay-profile" in argv else []) + (["--shape-diag"] if "--shape-diag" in argv else []) + (["--endkind-only"] if "--endkind-only" in argv else []) + (["--joins-only"] if "--joins-only" in argv else []) + (["--reach-only"] if "--reach-only" in argv else []) + (["--switchoff-only"] if "--switchoff-only" in argv else []) + [f for f in ("--switchlight-only", "--switchlight-plant", "--kinks-only") if f in argv] + (["--live-sweep-only"] if "--live-sweep-only" in argv else []) + (["--geometry"] if "--geometry" in argv else []) + (["--geometry-only"] if "--geometry-only" in argv else []) + (["--no-slacken"] if "--no-slacken" in argv else []) + (["--no-unkink"] if "--no-unkink" in argv else []) + [f for f in ("--probe-read-only", "--probe-read-old") if f in argv]
+        args = [winbuild.dotnet_exe(), dll] + (["--probe"] if "--probe" in argv else []) + (["--perdig-only"] if "--perdig-only" in argv else []) + (["--slice-repeat"] if "--slice-repeat" in argv else []) + (["--old-form"] if "--old-form" in argv else []) + (["--lay-profile"] if "--lay-profile" in argv else []) + (["--shape-diag"] if "--shape-diag" in argv else []) + (["--endkind-only"] if "--endkind-only" in argv else []) + (["--joins-only"] if "--joins-only" in argv else []) + (["--reach-only"] if "--reach-only" in argv else []) + (["--looks-only"] if "--looks-only" in argv else []) + (["--switchoff-only"] if "--switchoff-only" in argv else []) + [f for f in ("--switchlight-only", "--switchlight-plant", "--kinks-only") if f in argv] + (["--live-sweep-only"] if "--live-sweep-only" in argv else []) + (["--geometry"] if "--geometry" in argv else []) + (["--geometry-only"] if "--geometry-only" in argv else []) + (["--no-slacken"] if "--no-slacken" in argv else []) + (["--no-unkink"] if "--no-unkink" in argv else []) + [f for f in ("--probe-read-only", "--probe-read-old") if f in argv]
+        # the stage holds no PNGs (winbuild.RSYNC_EXCLUDES): LookIconChecks / WallLampLookChecks read the clone's Textures/
+        args += ["--textures", winbuild.win(os.path.join(REPO, "src", "RimMandrake", "GimmeSomeSlack", "Textures"))]
         for i, a in enumerate(argv):   # approach B fuzz knobs (GssFuzz.cs): --fuzz-scale F, --fuzz-only NAME, --fuzz-seed N
             if a.startswith("--fuzz") and i + 1 < len(argv):
                 args += [a, argv[i + 1]]

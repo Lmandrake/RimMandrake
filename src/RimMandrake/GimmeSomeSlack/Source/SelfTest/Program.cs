@@ -40,8 +40,14 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             if (!ok) { fails++; Console.WriteLine("FAIL " + msg); }
         }
 
+        /// <summary>The mod's Textures/ (the build stage excludes PNGs: winbuild.RSYNC_EXCLUDES), passed by
+        /// selftest_gimmesomeslack.py as --textures; read by LookIconChecks and WallLampLookChecks.</summary>
+        internal static string TexturesDir;
+
         private static int Main(string[] args)
         {
+            int tx = Array.IndexOf(args, "--textures");
+            if (tx >= 0 && tx + 1 < args.Length) TexturesDir = args[tx + 1];
             if (args.Contains("--no-unkink")) { CordBuilder.UnkinkOff = true; Console.WriteLine("unkink: OFF (--no-unkink, the builder before CordShape.Unkink)"); }
             int lab = Array.IndexOf(args, "--lab");
             if (lab >= 0) return LabWorld.Run(args[lab + 1], args[lab + 2]);
@@ -80,6 +86,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             if (args.Contains("--switchlight-only")) { SwitchLightChecks.Run(); SwitchLightChecks.Plant(); Console.WriteLine($"{checks - fails}/{checks} checks passed (switch light only)"); return fails == 0 ? 0 : 1; }
             if (args.Contains("--switchlight-plant")) { SwitchLightChecks.Plant(); Console.WriteLine($"{checks - fails}/{checks} checks passed (switch light plant)"); return fails == 0 ? 0 : 1; }
             if (args.Contains("--switchoff-only")) { SwitchOffChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (switch off only)"); return fails == 0 ? 0 : 1; }
+            if (args.Contains("--looks-only")) { LookIconChecks.Run(); WallLampLookChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (look icons + wall lamp looks only)"); return fails == 0 ? 0 : 1; }
             if (args.Contains("--line-restyle-only")) { LineRestyleChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (line restyle only)"); return fails == 0 ? 0 : 1; }
             if (args.Contains("--reach-only")) { StyleStage2Checks.Run(); StyleReachChecks.Run(); BatchedLinkStyleMergeChecks.Run(); LineRestyleChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (style reach only)"); return fails == 0 ? 0 : 1; }
             if (args.Contains("--joins-only")) { StubJoinChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (stub joins only)"); return fails == 0 ? 0 : 1; }
@@ -139,6 +146,8 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             StyleStage1Checks.Run();       // per-build style stage 1 (2026-10-04): StyleStage1Checks.cs + ../Aerial/AerialStyles.cs
             StyleStage2Checks.Run();       // per-build style stage 2, conduit runs (2026-10-04): StyleStage2Checks.cs + ../Aerial/ConduitStyles.cs
             LineRestyleChecks.Run();       // 0.2.0 T_LINE_RESTYLE_OFFLINE: All connected takes the whole line (generated range): LineRestyleChecks.cs
+            LookIconChecks.Run();          // 0.2.0 T_LOOK_ICONS_OFFLINE: every look menu entry shows its look's icon: LookIconChecks.cs
+            WallLampLookChecks.Run();      // 0.2.0 T_WALL_LAMP_LOOKS_OFFLINE: the wall lamp takes the looks: WallLampLookChecks.cs
             StyleReachChecks.Run();        // 0.1.1: three reaches + mixed-look runs + Gust default: StyleReachChecks.cs + ../Aerial/ConduitStyles.cs
             BatchedLinkStyleMergeChecks.Run(); // GSS_BATCHED_LINK_FIX_SKIPS_STYLE_MERGE
 TexPathChecks.Run();           // RIMMANDRAKE_TRACE_GSS_ILLEGAL_PATH_ONLY_ON_FIRST_START: TexPathChecks.cs + ../Core/TexPath.cs
