@@ -344,7 +344,7 @@ expensive it requires immediate action for sure. But not starving it or failing 
   - a **forecast against the goals**. The forecast takes the work of the goals in `infrastructure/state/CONDUCTOR_GOALS.md`.
     The forecast runs at the measured burn, to the reset of each account.
 - When the forecast says that a goal's work does not fit before a date, say so in your note, on your own item. Then put
-  one `OPS PROPOSAL <id>: ...` note on the shared item (`V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE`), in plan words: which
+  one `OPS PROPOSAL OP-<yyyymmddThhmmZ>: ...` note (a new id for the proposal) on the shared item (`V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE`), in plan words: which
   work will not fit before which date. Write no such note for a clean forecast.
 - The figures stay in your note on your own item.
 - The Conductor decides the cut. You do not cut work yourself.
