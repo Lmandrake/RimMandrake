@@ -54,6 +54,38 @@ def call(tmp, changed):
             return str(e), buf.getvalue()
 
 
+def t_a_check_that_died_on_enomem_runs_again(tmp):
+    # (RIMMANDRAKE_RERUN_DOOR_CHECK_DEAD_ON_ENOMEM_NOT_RED)
+    def counted(name, body):
+        script(tmp, name, "import os, sys\np = os.path.abspath(__file__) + '.n'\n"
+               "n = int(open(p).read()) if os.path.exists(p) else 0\nopen(p, 'w').write(str(n + 1))\n" + body)
+
+    def runs(name):
+        return int(open(os.path.join(tmp, name + ".n")).read())
+
+    boom = "raise OSError(12, 'Cannot allocate memory')\n"
+    counted("mem_once.py", "if n == 0:\n    " + boom + "print('ok')\n")
+    counted("mem_always.py", boom)
+    counted("mem_then_red.py", "if n == 0:\n    " + boom + "print('FAIL real fault'); sys.exit(1)\n")
+    counted("red_names_it.py", "print('FAIL the page says Cannot allocate memory'); sys.exit(1)\n")
+    fixture(tmp, ["green.py", "mem_once.py"])
+    err, out = call(tmp, ["src/a.py"])
+    check(err is None and "2 green" in out and "mem_once.py" in out and "ran again" in out and runs("mem_once.py") == 2,
+          "a-check-that-died-on-enomem-runs-again: it passes on its second run and the output says so (%r, %r)"
+          % (err, out.strip()[-160:]))
+    fixture(tmp, ["mem_always.py"])
+    err, out = call(tmp, ["src/a.py"])
+    check(bool(err) and "mem_always.py" in err and runs("mem_always.py") == 2,
+          "a-check-that-died-on-enomem-runs-again: out of memory twice is still refused, after two runs")
+    fixture(tmp, ["mem_then_red.py"])
+    err, out = call(tmp, ["src/a.py"])
+    check(bool(err) and "real fault" in err, "a-check-that-died-on-enomem-runs-again: a red second run is refused")
+    fixture(tmp, ["red_names_it.py"])
+    err, out = call(tmp, ["src/a.py"])
+    check(bool(err) and runs("red_names_it.py") == 1,
+          "a-check-that-died-on-enomem-runs-again: a FAIL whose text names the words is a red, never run again")
+
+
 GIT = ["git", "-c", "user.name=t", "-c", "user.email=t@example.invalid", "-c", "core.hooksPath=/dev/null",
        "-c", "init.defaultBranch=main"]
 
@@ -472,6 +504,7 @@ def main():
         fixture(tmp, ["green.py", "slow.py"])
         err, out = call(tmp, ["src/a.py"])
         check(err is None and "UNMEASURED" in out and "slow.py" in out, "a timeout warns and refuses nothing")
+        t_a_check_that_died_on_enomem_runs_again(tmp)
         # RIMMANDRAKE_STRIP_HOLDER_WRITER_FROM_DOOR_TESTS: a holder run's unit carries RM_MODLEDGER_WRITER=HOLDER.<lease>;
         # a door test that writes a DISPATCH or BACKFILL shard was refused under it, so no holder could publish.
         script(tmp, "holder.py", "import os, sys\nw = os.environ.get('RM_MODLEDGER_WRITER')\n"

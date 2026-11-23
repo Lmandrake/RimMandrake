@@ -1,6 +1,6 @@
 # BOUNDARY: ./publish's whole-tree checks judge the tree that lands, Design Version 0.1.0
 
-Code: `src/RimMandrake/Utils/publish.py` (`tree_checks`, `landing_rev`, `replay`, `rebase`).
+Code: `src/RimMandrake/Utils/publish.py` (`tree_checks`, `landing_rev`, `replay`, `rebase`, `died_on_enomem`).
 Item: `RIMMANDRAKE_CHECK_PUBLISH_TREE_ON_REBASED_HEAD_NOT_STALE`, written 2026-11-22. A clone 19 commits behind origin had
 `./publish` refused twice by `selftest_modledger_tree.py` for mod-ledger lines that origin had already restored; the
 refusal named the ledger, and the real repair was `./sync`. Each promise has a test of its name in
@@ -39,3 +39,7 @@ has no page.
   replayed tree, naming the check and its fix, and the commit is undone, whether the clone is behind origin or not.
 - **a-red-origin-has-not-repaired-is-still-refused.** When origin itself is still red on a whole-tree check, a clone
   behind it is refused naming that check, as an up-to-date clone is.
+- **a-check-that-died-on-enomem-runs-again.** A check whose last output line is an `OSError: [Errno 12]` or `MemoryError`
+  traceback measured nothing: it runs once more, alone, and the output says so. The second reading stands, so a red
+  one, or a second out of memory, is refused. A check's own FAIL text that names the words is a red and runs once
+  (`RIMMANDRAKE_RERUN_DOOR_CHECK_DEAD_ON_ENOMEM_NOT_RED`, a sound landing refused 2026-11-23).

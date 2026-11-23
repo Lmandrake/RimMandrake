@@ -1036,6 +1036,16 @@ GAME_CHOICE = ("RM_GAME_INSTANCE", "RM_GAME_USERDATA", "RM_GAME_LOGDIR", "GABP_S
                "RIMFLOW_DRIVER_LOCK")
 
 
+# RIMMANDRAKE_RERUN_DOOR_CHECK_DEAD_ON_ENOMEM_NOT_RED: a check killed by the machine's memory measured nothing, and one
+# refused a sound landing (2026-11-23). Only a traceback's last line counts: a check's own FAIL text is a red.
+ENOMEM_RX = re.compile(r"^OSError: \[Errno 12\]|^MemoryError\b")
+
+
+def died_on_enomem(rc, output):
+    last = (output.strip().splitlines() or [""])[-1]
+    return rc not in (0, None) and bool(ENOMEM_RX.match(last))
+
+
 def _run_tree_checks(top, cfg, what="tree check", base=None, committed=False):
     """base: (sha, why) from door_base for the pipeline checks, whose reds are re-run on it (split_pre_existing); None
     for the whole-tree checks, which refuse on any red."""
@@ -1059,6 +1069,10 @@ def _run_tree_checks(top, cfg, what="tree check", base=None, committed=False):
     t0 = time.monotonic()
     with concurrent.futures.ThreadPoolExecutor(max_workers=6) as ex:
         res = list(ex.map(one, cfg["checks"]))
+    for i, (c, rc, o, _t) in enumerate(res):   # again once, alone (the six at a time are over); its second reading stands
+        if died_on_enomem(rc, o):
+            print("%s %s died on out of memory (it measured nothing): ran again, alone" % (what, c["test"]))
+            res[i] = one(c)
     wall = time.monotonic() - t0
     slow = [c["test"] for c, rc, _o, _t in res if rc is None]
     for c, _rc, o, _t in res:   # a shadow check is shown, never refused
