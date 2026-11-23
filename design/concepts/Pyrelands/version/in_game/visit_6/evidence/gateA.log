@@ -1,0 +1,14 @@
+PASS       3.8.1                bridge lock held by this seat  BENCH
+PASS       3.8.2                game started after the newest deploy (plan 3.2.5)  Player.log created 2026-11-22 21:59:01; newest deploy 2026-11-22 18:33:43 (Ullai_east.png)
+PASS       3.8.3                running mod set == tier manifest  17 running; equals manifest
+PASS       3.2.1                deploy current: compose biomes + UtinniPatches  --compose biomes rc=0 drift=0; --mod UtinniPatches rc=0 drift=0
+PASS       3.8.4                .srchash agrees across source, repo and deployed  3 DLLs agree
+PASS       3.2.3                loaded assemblies are the deployed ones  FireEcologyHook mvid=56b900f3-21be-44b0-811f-1f5842cfa005; RimMandrake.Biomes mvid=9cc43136-e4c4-4f0a-b7cb-be6bb3cd7bfc; RimMandrake.Utinni.UtinniPatches mvid=7
+PASS       3.8.5                defs as loaded + def fingerprint  found 29/29 notFound [] fingerprint 417df172fdb5e402
+PASS       3.3                  Mod Settings at shipped defaults  all 45 at shipped defaults; no settings file (defaults: ON)
+PASS       3.8.7                log since load is clean  0 refusing line(s); 0 allowed burnedDef lines
+PASS       3.8.12               loadavg < 10  4.15
+PASS       3.8.dialogs          no unexpected dialogs  closed 1 benign, 0 open
+PASS       3.8.snapshot         Mod_* settings snapshot  3 Mod_*.xml snapshotted to Transient/pv6_snapshot
+GATE A: CLEAN (12 rows)
+[bridge split] 161.9 s wall: load 0.0 / ticks 0.0 / reads 0.2 / other 2.4 / outside calls 159.2 s

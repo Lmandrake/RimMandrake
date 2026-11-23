@@ -1,0 +1,121 @@
+{
+ "extra": {
+  "def_fingerprint": "417df172fdb5e40242b10206e41f3ababbf632875a28fdf7b16a89ec6236618f",
+  "settings_snapshot": "Transient/pv6_snapshot",
+  "storyteller_before": null
+ },
+ "gate": "A",
+ "ok": true,
+ "refused_rows": [],
+ "rows": [
+  {
+   "expected": "BENCH",
+   "id": "3.8.1",
+   "name": "bridge lock held by this seat",
+   "observed": "BENCH",
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  },
+  {
+   "expected": "game launched AFTER the newest deploy",
+   "id": "3.8.2",
+   "name": "game started after the newest deploy (plan 3.2.5)",
+   "observed": "Player.log created 2026-11-22 21:59:01; newest deploy 2026-11-22 18:33:43 (Ullai_east.png)",
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  },
+  {
+   "expected": "17 ids in tier order, all 5 DLCs",
+   "id": "3.8.3",
+   "name": "running mod set == tier manifest",
+   "observed": "17 running; equals manifest",
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  },
+  {
+   "expected": "0 changes (plan only)",
+   "id": "3.2.1",
+   "name": "deploy current: compose biomes + UtinniPatches",
+   "observed": "--compose biomes rc=0 drift=0; --mod UtinniPatches rc=0 drift=0",
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  },
+  {
+   "expected": "source == repo stamp == deployed stamp, DLL bytes equal",
+   "id": "3.8.4",
+   "name": ".srchash agrees across source, repo and deployed",
+   "observed": "3 DLLs agree",
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  },
+  {
+   "expected": "each assembly loaded once, by its owning mod, from the deployed bytes",
+   "id": "3.2.3",
+   "name": "loaded assemblies are the deployed ones",
+   "observed": "FireEcologyHook mvid=56b900f3-21be-44b0-811f-1f5842cfa005; RimMandrake.Biomes mvid=9cc43136-e4c4-4f0a-b7cb-be6bb3cd7bfc; RimMandrake.Utinni.UtinniPatches mvid=7c27b566-4293-4844-ba97-eb86c1e2c586",
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  },
+  {
+   "expected": "all 29 defs found",
+   "id": "3.8.5",
+   "name": "defs as loaded + def fingerprint",
+   "observed": "found 29/29 notFound [] fingerprint 417df172fdb5e402",
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  },
+  {
+   "expected": "shipped defaults (plan 3.3)",
+   "id": "3.3",
+   "name": "Mod Settings at shipped defaults",
+   "observed": "all 45 at shipped defaults; no settings file (defaults: ON)",
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  },
+  {
+   "expected": "no CommonalityOfAnimal / roster xref / Pyrelands exception",
+   "id": "3.8.7",
+   "name": "log since load is clean",
+   "observed": "0 refusing line(s); 0 allowed burnedDef lines",
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  },
+  {
+   "expected": "< 10.0",
+   "id": "3.8.12",
+   "name": "loadavg < 10",
+   "observed": 4.15,
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  },
+  {
+   "expected": "0 open dialogs",
+   "id": "3.8.dialogs",
+   "name": "no unexpected dialogs",
+   "observed": "closed 1 benign, 0 open",
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  },
+  {
+   "expected": "snapshot written",
+   "id": "3.8.snapshot",
+   "name": "Mod_* settings snapshot",
+   "observed": "3 Mod_*.xml snapshotted to Transient/pv6_snapshot",
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  }
+ ],
+ "utc": "2026-11-23T06:03:56Z"
+}
