@@ -481,11 +481,13 @@
    "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py --offline-gate",
    "runs_today": {
     "ran": true,
-    "rc": 1,
-    "seconds": 408.02,
+    "rc": 0,
+    "seconds": 606.7,
     "last": "O4_python_oracle             PASS      44/44 checks passed",
-    "at": "2026-11-22T20:15:46-08:00",
-    "result": "FAIL"
+    "at": "2026-11-23T02:44:02-08:00",
+    "result": "PASS",
+    "by": "RIMMANDRAKE_STEWARD_GIMMESOMESLACK_PREFLIGHT_STAGE_RUN_TWO (rerun at preflight; seconds = sum of GATE_JSON step wall_s)",
+    "replaces": "FAIL at 2026-11-22T20:15:46-08:00: O7 D9 pin alone, repaired in 9004eb0a49 (check wording, red on a planted false, green on the code)"
    }
   },
   "T_MATRIX": {

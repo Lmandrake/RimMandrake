@@ -1,37 +1,37 @@
 {
  "mod": "GimmeSomeSlack",
- "version": "0.1.1",
- "ran_at": "2026-11-20T16:47:59-0800",
- "seconds": 4.85,
- "dump_read_seconds": 4.4,
- "dump": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/captures/2026-11-20T19-51-00Z",
+ "version": "0.2.0",
+ "ran_at": "2026-11-23T02:47:28-0800",
+ "seconds": 31.17,
+ "dump_read_seconds": 28.43,
+ "dump": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/captures/2026-11-23T07-57-35Z",
  "by": "design/concepts/GimmeSomeSlack/version/preflight_throwaway.py (throwaway, no model)",
  "verdict": "refuse",
  "checks": [
   {
    "check": "bars_match_required_ids",
    "result": "pass",
-   "n": 53
+   "n": 57
   },
   {
    "check": "every_bar_has_a_test",
    "result": "pass",
-   "n": 53
+   "n": 57
   },
   {
    "check": "every_test_names_its_stage",
    "result": "pass",
-   "n": 240
+   "n": 251
   },
   {
    "check": "every_cited_test_is_listed",
    "result": "pass",
-   "n": 744
+   "n": 755
   },
   {
    "check": "game_tests_say_why",
    "result": "pass",
-   "n": 203
+   "n": 207
   },
   {
    "check": "full_list_tests_say_why",
@@ -41,32 +41,32 @@
   {
    "check": "named_files_exist",
    "result": "pass",
-   "n": 1349
+   "n": 1609
   },
   {
    "check": "inventory_evidence_exists",
    "result": "pass",
-   "n": 74
+   "n": 82
   },
   {
    "check": "built_mod_decider_entries_exist",
    "result": "refuse",
-   "n": 31
+   "n": 35
   },
   {
    "check": "built_mod_offline_deciders_run",
    "result": "refuse",
-   "n": 9
+   "n": 15
   },
   {
    "check": "built_offline_tests_green",
    "result": "pass",
-   "n": 35
+   "n": 40
   },
   {
    "check": "named_defs_and_symbols_real",
    "result": "pass",
-   "n": 68
+   "n": 78
   },
   {
    "check": "our_defs_in_dump",
@@ -97,8 +97,8 @@
   {
    "check": "held_statements_without_a_bar",
    "result": "note",
-   "n": 19,
-   "note": "7 of 19 placed statements sit on no bar of this version (requests, other mods' art, next version)"
+   "n": 21,
+   "note": "5 of 21 placed statements sit on no bar of this version (requests, other mods' art, next version)"
   },
   {
    "check": "lock_pins_current",
@@ -109,14 +109,14 @@
  "refusals": [
   {
    "check": "built_mod_decider_entries_exist",
-   "line": "sc_no_roof_over_pole, sc_pole_icons_loaded, sc_pole_south_of_tree, sc_switch_off_ends",
+   "line": "sc_look_menu_icons, sc_restyle_whole_line, sc_wall_lamp_looks",
    "evidence": "scenes.json names entry points that are not defined: 'def <entry>(' occurs 0 times in the named file",
    "smallest_fix": "Stage 3 builds the entry points (item GSS_SCENES_BUILD_EVERY_CORD_A_FOIL, live), each red first",
    "return_to": "3"
   },
   {
    "check": "built_mod_offline_deciders_run",
-   "line": "T_POLE_SOUTH_DRAWS_FRONT_OFFLINE, T_SWITCH_OFF_NODE_OFFLINE",
+   "line": "T_LINE_RESTYLE_OFFLINE, T_LOOK_ICONS_OFFLINE, T_MAST_BEHIND_TALL_SOUTH_PICTURE_OFFLINE, T_WALL_LAMP_LOOKS_OFFLINE",
    "evidence": "specified at this lock, not built",
    "smallest_fix": "Stage 3 builds them, red first",
    "return_to": "3"
@@ -124,13 +124,16 @@
  ],
  "name_classes": {
   "csharp": [
+   "ArchSmall",
    "BuildingOnTop",
+   "ClaudeWork",
    "DecalKind",
    "ExternalContacts",
    "IsBlob",
    "JunctionPiece",
    "JunctionTape",
    "JunctionTin",
+   "LampDefs",
    "NodeType",
    "OwnerMismatchSweep",
    "PoseJunction",
@@ -149,6 +152,8 @@
    "RM_FallenWireShock",
    "RM_HoseReel",
    "RM_RestringSpan",
+   "StandingLamp",
+   "WallLamp",
    "WaterproofConduit"
   ],
   "file": [
@@ -157,6 +162,7 @@
    "AerialSettings",
    "CompAerialAnchor",
    "CompPowerTap",
+   "ConduitStylePicker",
    "ConduitStyles",
    "ConduitVisuals",
    "CordAudit",
@@ -187,6 +193,10 @@
    "StubJoinChecks",
    "StylePicker",
    "SwitchFlipChecks",
+   "SwitchLampArt",
+   "SwitchLight",
+   "SwitchLightChecks",
+   "SwitchLightDraw",
    "TapLedger",
    "WallMount"
   ],

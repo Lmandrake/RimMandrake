@@ -13,12 +13,12 @@ mods read alike.
 - **Design Version 0.1.0, locked** on his word 2026-11-13 ~3:40 PM PST (`version/VERSION.json`); the lock record pins the text
   at that word, `bf33322d77` (re-pinned 2026-11-14, steward's decision). Code: `src/RimMandrake/GimmeSomeSlack/` (C#, 62
   sources; C# SelfTest 4515 checks; `validation.py`; `northstar/proof_all.py`, the one dense live proof).
-- **Stage now:** Stage 2, preflight, since 2026-11-23 2:24 AM PST (`version/stage_record.json`).
+- **Stage now:** Stage 3, offline build, since 2026-11-23 2:47 AM PST (`version/stage_record.json`).
 - **Bars:** 48 (23 inventory rows of `record.json` + 26 leaves of `tree.json`; `shock_reach_setting` is both, so 49 rows
   name 48 ids; `cords_draw_under_things` added by his card 2026-11-14). The test-and-stage table is
   `version/test_table.json` (read view `version/test_table.md`), made by the throwaway `version/make_test_table.py`. Of 48
   bars: 48 have a deciding test runnable today (counts as of now: "Waiting on").
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-23 12:21 AM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-23 2:47 AM PST).
 - **Open questions for him:** "Questions for him", the last part of this top section.
 
 ### The vision (his root paragraph, `record.json` root, OWNER:1793895896496551063)
@@ -560,3 +560,11 @@ row 2; Stage 3 about $10.3 and 50 minutes (12:15 to 13:05 PST). No helpers, no g
   `look_menu_icons` search_scope, not symbols of the code. The search_scope now names `ConduitStylePicker.Icon`. No bar
   text changed; `version/bars.md` re-pins record.json (re-pin rule, 2026-11-14).
 
+### 2026-11-23 2:47 AM PST, stage change: Preflight (Stage 2) to Offline build (Stage 3) (by BENCH)
+
+- Why: Stage 2 preflight for 0.2.0 ran (preflight_throwaway.py, verdict refuse, 2 refusals, both unbuilt 0.2.0 deciders = Stage 3 work); T_GATE's stale red re-measured green
+- Checks passed: order, by, version, hold, preflight_record, steward_confirms.
+- Steward confirms: read version/preflight.json for 0.2.0 (2026-11-23, 31.2 s): 17 checks pass or note; refusal built_mod_decider_entries_exist = sc_look_menu_icons, sc_restyle_whole_line, sc_wall_lamp_looks, scene entry points specified at this lock, unbuilt check (Stage 3 builds them red first); refusal built_mod_offline_deciders_run = T_LINE_RESTYLE_OFFLINE, T_LOOK_ICONS_OFFLINE, T_MAST_BEHIND_TALL_SOUTH_PICTURE_OFFLINE, T_WALL_LAMP_LOOKS_OFFLINE, specified not built, unbuilt check (Stage 3). No spec fault: every named file, def, mod and held statement is real and placed; lock pins current. First run also refused built_offline_tests_green on T_GATE: a stale FAIL of 2026-11-22 20:15 from the O7 D9 pin alone (HARNESS, repaired 9004eb0a49 red/green by its maker); class RECORD GAP, rerun for real today (proof_all.py --offline-gate exit 0, red [], 9 O-rows PASS) and recorded in test_table.json; verdict: advance.
+- Was, "Stage now": - **Stage now:** Stage 2, preflight, since 2026-11-23 2:24 AM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-23 12:21 AM PST).
+- Record: `version/stage_record.json`.

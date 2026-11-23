@@ -2,10 +2,10 @@
   "schema": 1,
   "mod": "GimmeSomeSlack",
   "version": "0.2.0",
-  "stage": "preflight",
-  "stage_label": "Preflight (Stage 2)",
-  "since": "2026-11-23T02:24:49-08:00",
-  "since_from": "next-version by DESIGNER",
+  "stage": "offline_build",
+  "stage_label": "Offline build (Stage 3)",
+  "since": "2026-11-23T02:47:42-08:00",
+  "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
     "at": "2026-11-23T02:24:49-08:00",
@@ -28,6 +28,25 @@
       "why": "0.2.0 MINOR opened from his own words (whole-line restyle 2026-11-22; look icons and wall lamp, his walk 2026-11-20), locked under Evidence-for-Ask; 57 bars; brief RIMMANDRAKE_OPEN_SLACK_NEXT_VERSION_SO_THREE_MODS_ADVANCE_TONIGHT",
       "version_from": "0.1.1",
       "version_to": "0.2.0"
+    },
+    {
+      "from": "preflight",
+      "to": "offline_build",
+      "at": "2026-11-23T02:47:42-08:00",
+      "by": "BENCH",
+      "why": "Stage 2 preflight for 0.2.0 ran (preflight_throwaway.py, verdict refuse, 2 refusals, both unbuilt 0.2.0 deciders = Stage 3 work); T_GATE's stale red re-measured green",
+      "unit": "rm-detached-bench-rimmandrake-steward-gimmesomeslack-prefl-1795429792",
+      "confirmed": {
+        "steward_confirms": "read version/preflight.json for 0.2.0 (2026-11-23, 31.2 s): 17 checks pass or note; refusal built_mod_decider_entries_exist = sc_look_menu_icons, sc_restyle_whole_line, sc_wall_lamp_looks, scene entry points specified at this lock, unbuilt check (Stage 3 builds them red first); refusal built_mod_offline_deciders_run = T_LINE_RESTYLE_OFFLINE, T_LOOK_ICONS_OFFLINE, T_MAST_BEHIND_TALL_SOUTH_PICTURE_OFFLINE, T_WALL_LAMP_LOOKS_OFFLINE, specified not built, unbuilt check (Stage 3). No spec fault: every named file, def, mod and held statement is real and placed; lock pins current. First run also refused built_offline_tests_green on T_GATE: a stale FAIL of 2026-11-22 20:15 from the O7 D9 pin alone (HARNESS, repaired 9004eb0a49 red/green by its maker); class RECORD GAP, rerun for real today (proof_all.py --offline-gate exit 0, red [], 9 O-rows PASS) and recorded in test_table.json; verdict: advance."
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "preflight_record",
+        "steward_confirms"
+      ]
     }
   ]
 }
