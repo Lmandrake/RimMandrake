@@ -2,9 +2,9 @@
   "schema": 1,
   "mod": "Pyrelands",
   "version": "0.1.0",
-  "stage": "offline_build",
-  "stage_label": "Offline build (Stage 3)",
-  "since": "2026-11-23T09:55:31-08:00",
+  "stage": "blind_challenge",
+  "stage_label": "Blind challenge, tests first (Stages 4 and 5)",
+  "since": "2026-11-23T14:16:25-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -16,7 +16,7 @@
   },
   "cycles": {
     "visit": 1,
-    "total": 5
+    "total": 6
   },
   "pre_human_arrivals": 0,
   "moves": [
@@ -307,6 +307,27 @@
         "by",
         "version",
         "hold"
+      ]
+    },
+    {
+      "from": "offline_build",
+      "to": "blind_challenge",
+      "at": "2026-11-23T14:16:25-08:00",
+      "by": "BENCH",
+      "why": "steward: every Stage 3 exit test passes; certificate rerun 2b9c29ee0f is on main; both visit 7 road-back items closed (510d96f7b8 lone fire, aca7464fe3 furnace barn roof)",
+      "unit": "rm-detached-bench-rimmandrake-advance-pyrelands-past-offli-1795472076",
+      "confirmed": {
+        "steward_confirms": "read maturation.py next (7 exit tests pass, no refusals, no not-met reason to sort), certificate OK (16 bars, red_seen 6 grandfathered, WARN only), gate open; re-ran accept_lone_fire_lane.py 8 of 8 and accept_furnace_beast_spares_roof.py PASS on this build; read the removed test lines of 510d96f7b8 (T_BURN_LANES, T_BURN_ECOLOGY, fuzz): nothing read was weakened; bars unchanged since d55977d87f. Live checks sc_burn_line_walks, sc_fire_walks_with_wind, P_furnace_room recorded UNRUN for Stage 6. Verdict: advance"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "every_bar_has_a_check_that_runs",
+        "table_version",
+        "fourth_cycle",
+        "judge_certificate"
       ]
     }
   ],

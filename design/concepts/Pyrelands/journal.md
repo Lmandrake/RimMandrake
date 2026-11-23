@@ -12,7 +12,7 @@ Pyrelands is not the pilot. It advances beside the pilot (Explosive Knockback), 
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`). Scope: the biome alone; the Deep
   Desert Tribes are a separate mod (`design/concepts/PyrelandsMechanics`), started only after this version passes.
   Code exists: `src/RimMandrake/Pyrelands/` (packageId `mandrake.rm.pyrelands`, ships composed in `mandrake.rm.biomes`).
-- **Stage now:** Stage 3, offline build, since 2026-11-23 9:55 AM PST (`version/stage_record.json`).
+- **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-23 2:16 PM PST (`version/stage_record.json`).
 - **Bars:** 42 (21 inventory rows of `record.json` + 21 leaves of `tree.json`), as `version/bars.md` counts them; 41 at
   the lock, `inv_firehawk_hunt_rewards` added by his card 2026-11-14.
   Two inventory rows (`inv_firebreak_firefoam`, `inv_lightning_breaker`) are scope `out`: cut, kept only as absence checks.
@@ -29,7 +29,7 @@ Pyrelands is not the pilot. It advances beside the pilot (Explosive Knockback), 
   14 PROBLEM, 3 CORRECTION, 1 POLISH (g3). By his card 2026-11-15 12:22 PM PST the 17 are fixed in one locked change
   (`RIMMANDRAKE_FIX_PYRELANDS_ROUND_SIX_SEVENTEEN_GAPS`); g3 stays in `version/polish.md`, out of passing.
 - **Held look statements for this mod:** 0 (measured).
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-23 9:55 AM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-23 2:16 PM PST).
 
 ### The vision (his root paragraph, approved by card 2026-11-06, OWNER:1793950669508519029)
 
@@ -516,4 +516,14 @@ the tree, record and test-table edits, the re-pin and the lock-bars add are queu
 - Steward confirms: read visit_7 SUMMARY.md, rows.jsonl, strange.jsonl, the day-end sheet and the lane mask by eye (one-cell lanes and flat-sided bands, wind-off row ragged), and the harness repair 5e888e1af2 (weakens nothing: an asked kind or a critical trigger still stops; planted wrong tend FAIL, real 5/5 PASS); no mod fix in the visit, no fix reader owed; verdict: not met, REAL MISS on both, road back offline_build
 - Was, "Stage now": - **Stage now:** Stage 6, in-game acceptance, since 2026-11-23 4:04 AM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-23 4:04 AM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-23 2:16 PM PST, stage change: Offline build (Stage 3) to Blind challenge, tests first (Stages 4 and 5) (by BENCH)
+
+- Why: steward: every Stage 3 exit test passes; certificate rerun 2b9c29ee0f is on main; both visit 7 road-back items closed (510d96f7b8 lone fire, aca7464fe3 furnace barn roof)
+- Checks passed: order, by, version, hold, every_bar_has_a_check_that_runs, table_version, fourth_cycle, judge_certificate.
+- Steward confirms: read maturation.py next (7 exit tests pass, no refusals, no not-met reason to sort), certificate OK (16 bars, red_seen 6 grandfathered, WARN only), gate open; re-ran accept_lone_fire_lane.py 8 of 8 and accept_furnace_beast_spares_roof.py PASS on this build; read the removed test lines of 510d96f7b8 (T_BURN_LANES, T_BURN_ECOLOGY, fuzz): nothing read was weakened; bars unchanged since d55977d87f. Live checks sc_burn_line_walks, sc_fire_walks_with_wind, P_furnace_room recorded UNRUN for Stage 6. Verdict: advance
+- Blind cycle 1 of this visit (6 in all).
+- Was, "Stage now": - **Stage now:** Stage 3, offline build, since 2026-11-23 9:55 AM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-23 9:55 AM PST).
 - Record: `version/stage_record.json`.
