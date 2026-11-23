@@ -106,7 +106,7 @@ claude-account fleet-stop | fleet-start          # the two halves, e.g. a hard s
   while the machine is DISARMED. `fleet-stop` and `fleet-start` refuse in the same two cases.
 - The engine arms, switches and disarms in one pass. If the machine was armed before the pass, the engine leaves it armed.
 - From a script, prefer `systemd-run`. Never use a shell that a window owns.
-- Nothing else should call `use`. The two exceptions are `login_watch.py`, when a login dies, and `account_handover.py`,
+- Let nothing else call `use`. The two exceptions are `login_watch.py`, when a login dies, and `account_handover.py`,
   for one change-over at a named line.
 - If the plan owns the machine, change the plan or write a `HOLD` file. Do not fight the plan.
 
@@ -131,9 +131,9 @@ More traps for this section: [references/traps.md](references/traps.md) § 4. Re
 
 ## 5. Stand-down / stand-up costs (why switches are not free)
 
-- A switch kills every window and helper on the machine. Unpublished work dies. **Publish at every green point.** Write
-  the handoff BEFORE a switch. The plan waits for detached runs to end (the drain). But a hard line, a failed switch or
-  a hand switch still kills them.
+- A switch kills every window and helper on the machine. Unpublished work dies. **Publish at every green point**: each
+  time the checks of your work pass. Write the handoff file (the `handoff` skill) BEFORE a switch. The plan waits for
+  detached runs to end (the drain). But a hard line, a failed switch or a hand switch still kills them.
 - A switch likely drops the Remote Control sessions, and they need a new attach (UNMEASURED; see the skill
   `claude-remote-control`).
 - Vault freshness: a vault whose token has under 15 min left cannot be probed. `account_usage.py` warms such a DORMANT
@@ -169,7 +169,8 @@ More traps for this section: [references/traps.md](references/traps.md) § 5. St
   - the nightly sweep: §2.3;
   - testq lanes and filler hours: §2.7;
   - which test for which code: §4;
-  - an agent may move only D/A tunables (D: a code default that nobody ruled on; A: an agent proposal): §0.
+  - which tunables an agent may move: §0. An agent may move only D/A tunables. Mark D is a code default that nobody ruled
+    on. Mark A is an agent proposal.
 
 More traps for this section: [references/traps.md](references/traps.md) § 6. Throttles and timers.
 

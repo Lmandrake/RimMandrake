@@ -13,9 +13,9 @@ The front matter is byte-identical, the `description` included.
 
 | measure | before | after |
 |---|---|---|
-| bytes | 11,129 | 14,847 |
-| words in linted prose | 988 | 1,583 |
-| STE violations per 100 words | 3.74 | 1.58 |
+| bytes | 11,129 | 14962 |
+| words in linted prose | 988 | 1,605 |
+| STE violations per 100 words | 3.74 | 1.56 |
 | sentences over 20 words | 14 | 2 |
 | flagged lines (mechanical) | 2 | 0 |
 | hand count (lines a cold reader cannot act on) | 11 | 0 |
@@ -76,8 +76,8 @@ No selftest names `skills/rimflow-operations`. Names of people: the diff was rea
 
 ## What the meaning read found
 
-Four fresh Opus reads (rm-judge), one after the other. No reader got the writer's reasoning. Reads 1 and 2 were of the
-whole file. Reads 3 and 4 were of the repaired bullets. (The plan asks for the same reader. A resumed reader runs in the
+Five fresh Opus reads (rm-judge), one after the other. No reader got the writer's reasoning. Reads 1 and 2 were of the
+whole file. Reads 3 to 5 were of the repaired bullets. (The plan asks for the same reader. A resumed reader runs in the
 background, where the end of this run could kill it. So a fresh reader read the repairs.)
 
 | read | finding | repair |
@@ -93,7 +93,8 @@ background, where the end of this run could kill it. So a fresh reader read the 
 | 3 | the age of a notice is its `at` | added |
 | 4 | true; nothing lost | none |
 
-No line of `SKILL.md` was edited after the last read of that line.
+The first landing's prose check named 4 sentences: "should call", "green point", "the handoff", "D/A". Each was repaired in
+a second landing. A fifth reader read those three places against the old text: no meaning was lost or weakened. After that read, the D/A sub-bullet was split into three sentences with the same words; no reader read the split.
 
 ## Could not determine
 
