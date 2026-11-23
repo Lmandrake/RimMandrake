@@ -491,7 +491,7 @@ VERBS = {
     # shadow preflight, its run id (= the line in ~/.local/state/rimmandrake/preflight/runs.jsonl), time and verdict.
     # Informational: nothing replays them. An older reader strips them (_tolerate_unknown_fields).
     "file":      {"who": "any",   "req": ("for", "title", "kind"),
-                  "opt": ("row", "target", "needs", "spec", "from", "name_note") + PREFLIGHT_FIELDS},
+                  "opt": ("row", "target", "needs", "spec", "from", "name_note", "effect", "effectSeen") + PREFLIGHT_FIELDS},
     "claim":     {"who": "owner", "req": (), "opt": PREFLIGHT_FIELDS},
     "start":     {"who": "owner", "req": (), "opt": PREFLIGHT_FIELDS},
     # `until` (RIM-1, 2026-10-25): the level of `on` that SATISFIES this block,
@@ -580,6 +580,11 @@ VERBS = {
     "drop":      {"who": "any",   "req": ("reason",), "opt": ("release_dependents",)},
     "supersede": {"who": "any",   "req": ("by",), "opt": ("reason",)},
     "note":      {"who": "any",   "req": ("text",), "opt": ()},
+    # 🔑 `effect` (RIMMANDRAKE_BUILD_LIST_OUTCOME_CHECKS_SEVEN_DONE_NEVER_CLOSED; list_effect.py): the item's outcome
+    # check, a string a program runs (`check`), with the attach reading that shows it can fail (`seen`); `cleared`
+    # removes it. `file --effect` writes the same two as `effect`/`effectSeen`. State does not move: only the
+    # list_effect tick's `close` does. A reader older than this entry refuses the verb into `world.errors`.
+    "effect":    {"who": "any",   "req": (), "opt": ("check", "seen", "cleared")},
     # 🔑 `raise` (2026-10-26, STEVE_STEWARD_BUILD_NO_LLM_OWNER, design §6.4 T+30): puts an
     # OPEN item at the top of its seat's `next`, ahead of rows and `this_deployment`.
     # Unlike `this_deployment` nothing clears it but the item ending, so an escalation
@@ -1608,7 +1613,7 @@ VERB_RANK = {
     "block": 2, "unblock": 2, "wait": 2, "unwait": 2, "needs": 2, "retarget": 2,
     "reassign": 3, "reclaim": 3, "lease": 3.5,
     "claim": 4, "start": 5,
-    "note": 7, "reconcile": 7, "live": 7, "guard": 7, "implemented": 7.5, "verify": 8,
+    "note": 7, "effect": 7, "reconcile": 7, "live": 7, "guard": 7, "implemented": 7.5, "verify": 8,
     "close": 9, "drop": 9, "supersede": 9,
 }
 _BRIDGE_RANK = {"released": 0, "taken": 1}
@@ -1746,7 +1751,7 @@ class Item(object):
                  "reconciles", "cited_shas",
                  "built_sha", "built_ref", "built_at", "built_by", "makers", "criteria", "outstanding",
                  "passed", "level_reached", "lease", "raised", "raised_tsn",
-                 "held", "done_index", "walks", "released_dependents")
+                 "held", "done_index", "walks", "released_dependents", "effect", "effect_seen")
 
     def __init__(self, iid, index):
         self.id, self.created_index = iid, index
@@ -1792,6 +1797,7 @@ class Item(object):
         self.raised = None              # ts of the first `raise`, or None
         self.released_dependents = False    # a `drop --release-dependents`: blocks on it end (priority.follow)
         self.walks = []                 # `walk` events, in ledger order: [{ts, seat, phase, save, found, findings, detail}]
+        self.effect = self.effect_seen = None   # the outcome check and its attach reading (list_effect.py)
         self.raised_tsn = 0             # tsn of that same first `raise` (0 when absent): `ts` is to the
         #                                 second, so a Producer raising C, A, B in one run needs it for order
 
@@ -2156,6 +2162,7 @@ def _apply_file(ev, index, world):
     item.needs = ev.get("needs") or "offline"
     item.created_at = ev["ts"]
     item.caused_by = ev.get("caused_by")
+    item.effect, item.effect_seen = ev.get("effect") or None, ev.get("effectSeen")
     # 🔑 THE FILING IS THE ITEM'S FIRST HISTORY ENTRY — the same reason `spawn` records
     # its own, and it was missing here until 2026-09-03. Three live items rendered
     # "history (0 events)" while plainly existing, which reads as a gap in the record
@@ -2771,6 +2778,13 @@ def _apply_item_verb(ev, index, item, seat, world):
         item.blocked_reason = item.blocked_on = item.blocked_until = None
         item.blocked_kind = item.blocked_lift_at = None
         item.blocked_also = ()
+    elif verb == "effect":
+        if ev.get("cleared"):
+            item.effect = item.effect_seen = None
+        elif ev.get("check"):
+            item.effect, item.effect_seen = ev["check"], ev.get("seen")
+        else:
+            raise SchemaError("effect %s: give a check, or cleared" % item.id)
     elif verb == "note":
         for sha in CITED_SHA_RE.findall(str(ev.get("text") or "")):
             if sha not in item.cited_shas:

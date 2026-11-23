@@ -100,6 +100,7 @@ FAMILIES = {                        # the 7 launch families of the re-measure (0
     "testq": "testq/steward.py wake unit",
     "ops_held_filer": "ops_watch.start_held_filer (rm-ops-held-filer): files the alarms a sense pass held, outside the beat",
     "probe": "selftest probes (rm-probe-*)",
+    "list_effect": "list_effect.py tick (rm-list-effect): runs list items' outcome checks, closes what holds; launches nothing",
 }
 STAGES = ("intake", "designer", "preflight", "offline_build", "blind_challenge", "in_game", "pre_human", "his_walk",
           "passed")

@@ -2149,6 +2149,8 @@ def _file(args, seat, w, pf):
           "needs": args.needs, "spec": args.spec, "caused_by": args.caused_by}
     if name_note:
         ev["name_note"] = list(name_note)
+    if getattr(args, "effect", None):
+        ev["effect"], ev["effectSeen"] = _effect_gate(args.effect, getattr(args, "holds_why", None), None)
     fw = priority.flowworks_seat(args.id)
     if fw and args.for_ != fw:
         print("FlowWorks is %s's lane (infrastructure/state/flowworks_lane.json): filing %s for %s, not %s. File it and move on."
@@ -2207,6 +2209,43 @@ def _file(args, seat, w, pf):
         print("     passing verify would still miss. You are the only one who knows")
         print("     what you were looking at when you filed it.")
         print("   items/%s.md   (optional; the item is already claimable)" % args.id)
+    return 0
+
+
+def _effect_gate(check, holds_why, filed_ts):
+    """-> (check, seen) for an outcome check that can be seen failing, or `die` with the refusal and its path to pass
+    (list_effect.attach_gate). Nothing is written on a refusal."""
+    import list_effect
+    seen, refusal = list_effect.attach_gate(check, list_effect.check_root(), filed_ts=filed_ts, holds_why=holds_why)
+    if refusal:
+        die(refusal + "\nNothing was written.")
+    return check.strip(), seen
+
+
+def cmd_effect(args, seat):
+    """`rimflow effect <ID> --check "<check>" [--holds-why ...] | --clear`: give an item its outcome check (the
+    list_effect tick closes it when the check holds), or remove it."""
+    _, w = load()
+    it = w.items.get(args.id)
+    if it is None:
+        die("effect: %s has never been filed." % args.id)
+    if it.state in model.TERMINAL:
+        die("effect: %s is %s already; a closed item takes no outcome check." % (args.id, it.state))
+    if bool(args.clear) == bool(args.check):
+        die("effect: give --check \"<check>\" or --clear (one of them).")
+    ev = {"seat": seat, "event": "effect", "id": args.id}
+    if args.clear:
+        ev["cleared"] = True
+    else:
+        ev["check"], ev["seen"] = _effect_gate(args.check, args.holds_why, model.epoch(it.created_at))
+    _emit(ev, w, quiet=True)
+    if args.clear:
+        print("%s: outcome check removed." % args.id)
+    else:
+        seen = ev["seen"]
+        print("%s: outcome check %s (seen %s%s). The list_effect tick closes it when the check holds."
+              % (args.id, ev["check"], seen["verdict"], (" at " + seen["rev"]) if seen.get("rev") else
+                 (": " + seen["why"]) if seen.get("why") else " now"))
     return 0
 
 
@@ -4863,6 +4902,20 @@ def build_parser():
     s.add_argument("--replaces", dest="replaces", metavar="ID",
                    help="this item takes over ID's work: supersede ID in the same act, "
                         "so the parent closes and names its successor")
+    s.add_argument("--effect", metavar="CHECK",
+                   help="an outcome check a program runs: path-has:<repo path>::<text>, path-lacks:<repo path>::<text> "
+                        "or cmd:<command> (exit 0 holds, 1 fails). It must fail now; the list_effect tick closes the "
+                        "item when it holds (list_effect.py)")
+    s.add_argument("--holds-why", dest="holds_why", metavar="WHY",
+                   help="the check holds already: why it cannot be seen failing (recorded beside it)")
+
+    s = add("effect", "give an item its outcome check (the list_effect tick closes it when the check holds), or "
+            "--clear it", cmd_effect)
+    s.add_argument("id")
+    s.add_argument("--check", help="path-has:<repo path>::<text> | path-lacks:<repo path>::<text> | cmd:<command>")
+    s.add_argument("--holds-why", dest="holds_why", metavar="WHY",
+                   help="the check holds now and did not fail at the item's filing: why it cannot be seen failing")
+    s.add_argument("--clear", action="store_true", help="remove the item's outcome check")
 
     s = add("claim", "take it under a LEASE and start it (-> doing); never re-offers it",
             cmd_claim)

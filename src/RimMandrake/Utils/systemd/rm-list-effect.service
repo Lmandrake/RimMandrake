@@ -1,0 +1,23 @@
+# The list lane's first step (rimflow/list_effect.py; item RIMMANDRAKE_BUILD_LIST_OUTCOME_CHECKS_SEVEN_DONE_NEVER_CLOSED):
+# runs the outcome check of every open list item that carries one and closes an item whose check holds, as the
+# pipeline's act (seat BENCH, role_unit rm-list-effect.service), with the check's output as its evidence. It launches
+# nothing and files nothing. It obeys the pipeline's pause and `./pipe off` (all, family:list_effect, item:<ID>).
+# No model of its own. Runs from the dispatch clone.
+# Reading: D:\ClaudeWork\rimmandrake\dispatcher\list_effect\reading.json (WSL /mnt/d/ClaudeWork/rimmandrake/dispatcher/list_effect/reading.json)
+# Install:  cp src/RimMandrake/Utils/systemd/rm-list-effect.{service,timer} ~/.config/systemd/user/
+#           systemctl --user daemon-reload && systemctl --user enable --now rm-list-effect.timer
+# Off:      ./pipe off family:list_effect --why "..."   (or systemctl --user disable --now rm-list-effect.timer)
+[Unit]
+Description=RimMandrake list lane: close list items whose outcome check holds, every 15 min
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/mandrake/rm/dispatch
+Environment=PATH=/home/mandrake/.local/bin:/usr/local/bin:/usr/bin:/bin
+Environment=PYTHONUNBUFFERED=1
+Environment=RM_ROLE_UNIT=rm-list-effect.service
+ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/rimflow/list_effect.py tick --apply
+Nice=10
+MemoryMax=2G
+# Hang guard: a beat is a ledger replay plus each check (CMD_TIMEOUT_S each) and a close per passing item.
+TimeoutStartSec=60min

@@ -1183,6 +1183,8 @@ CANONICAL = {
                                                   {"id": "A1", "level": "L1"}]),
     # step 3 (selftest_lease.py covers the semantics; this fuzzes the field reads)
     "walk":      dict(seat="BUILD", id="A_B_1", phase="staged", save="s.rws"),
+    # list_effect.py (selftest_list_effect.py covers the semantics; this fuzzes the field reads)
+    "effect":    dict(seat="BUILD", id="A_B_1", check="cmd:test -f x", seen={"verdict": "fails", "at": 1}),
     "lease":     dict(seat="BUILD", id="A_B_1", action="take", token="BUILD.abc.1234abcd",
                       expires="2099-01-01T00:30:00Z"),
 }
