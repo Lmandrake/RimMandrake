@@ -8,7 +8,25 @@ deleted, git holds the history. His words are cited from the ledger notes on `V3
 
 ---
 
-## From Sun 2026-11-22, about 5:57 PM PST: one week on mods, to 2026-11-29 (block 9, on top)
+## From Mon 2026-11-23, about 8:15 AM PST: the reread and rewrite of the rule files comes first (block 10, on top)
+
+His words (ledger, owner-said note on `RIMMANDRAKE_REWRITE_RULE_DOCS_PLAIN_ENGLISH_LOSE_NOTHING`): *"I think this
+reread/rewrite activity is exceptionally important and deserves top priority. Agreed we need to ensure meaning remains
+intact. We should also have a dedicated process that checks my own quoted statements. They are not immune from
+imprecise language."* Block 9 stays in force below this block: the rewrite work is offline and takes no game, so the
+mods keep their games. When the two compete for a run slot or an account, this block's work goes first.
+
+1. **Reread and rewrite every rule file in plain English, with the meaning intact**:
+   `RIMMANDRAKE_REWRITE_RULE_DOCS_PLAIN_ENGLISH_LOSE_NOTHING` and its batches. A rewrite counts when a second reader
+   has read its repairs (`RIMMANDRAKE_REREAD_REWRITE_REPAIRS_NO_READER_SAW_THEM`).
+2. **Every term a rewrite could not determine is resolved from its source**:
+   `RIMMANDRAKE_COLLECT_REWRITE_CONFLICTS_UNDEFINED_TERMS_ONE_LIST`. Only a term that no source explains goes to him.
+3. **A check at write time keeps new guiding prose clear**:
+   `RIMMANDRAKE_CHECK_GUIDING_PROSE_AT_WRITE_NO_SEARCHING_FOR_MEANING`.
+4. **His own quoted statements are checked for imprecise language**:
+   `RIMMANDRAKE_CHECK_HIS_QUOTED_RULINGS_FOR_IMPRECISE_WORDS_TOO`.
+
+## From Sun 2026-11-22, about 5:57 PM PST: one week on mods, to 2026-11-29 (block 9)
 
 His card (ledger, owner-said note on `RIMMANDRAKE_DEBATE_CLEAN_HOUSE_ADVICE_WITH_GPT_ONE_AGENT_PER_VIEWPOINT`):
 *"One week focusing on mods. At the end of the week, we study what we know. If there are some trials we KNOW will
