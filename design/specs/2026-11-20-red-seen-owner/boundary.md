@@ -32,6 +32,9 @@ certificate refused 18 of 26 bars on `red_seen` after two fixers edited its deci
   (`cert_kind` `red`); one that also refuses anything else (`registered`, stale stamps) gives None, as before.
 - **one-try-per-set.** After a launch on a set of tests, the same set refused again reads `stopped`, never a second
   automatic launch; a red-decider launch on the same tests does not count against it.
+- **a-new-set-gets-its-own-try.** "The same set" means a set that shares a test with the last try's set (red or
+  `red_seen` kind). A refused set that shares no test with it launches its own try. A set that still holds a test of the
+  last try, and is not a strict subset of it, reads `stopped`.
 - **warm-editor-is-resumed.** `cert_launch` of the `red_seen` kind passes the session of the one run whose window holds
   the last commit to the decider's file, when that run ended under 55 min ago; ended 2 h ago, two runs in the window,
   or a file git cannot read, it launches fresh.

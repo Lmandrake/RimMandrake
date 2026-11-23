@@ -1201,7 +1201,10 @@ def cert_red_decide(cfg, s, f, row, put, now, account, live_total, cap, releases
     retry = bool(prior and not prior.get("unit") and AUT.tries_left(cfg, mod, prior.get("tries"))
                  and (AUT.transient(str(prior.get("failed") or "")) or (
                      cfg.get("_code") and prior.get("code") != cfg["_code"])))
-    if prior and not retry and not set(reds) < set(prior.get("tests") or []):
+    # "the same reds" share a test with the last try; a disjoint set is new work that try never saw (Pyrelands' T_SITE
+    # after a 2026-11-22 try on T_FUZZ and T_SETTINGS_SCREENS read as the same, 2026-11-23: test a-new-set-gets-its-own-try)
+    if (prior and not retry and set(reds) & set(prior.get("tests") or [])
+            and not set(reds) < set(prior.get("tests") or [])):
         why = ("the builder %s on red deciders %s ended and %s still red" % (
             prior["unit"], ", ".join(prior.get("tests") or []), ", ".join(reds)) if prior.get("unit") else
             "the launch on red deciders %s failed: %s" % (", ".join(prior.get("tests") or []), prior.get("failed")))

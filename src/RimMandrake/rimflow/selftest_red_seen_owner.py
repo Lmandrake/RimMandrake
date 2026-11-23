@@ -58,6 +58,21 @@ def t_one_try_per_set():
             and other == "launch" and row2.get("cert_kind") == "red_seen"), (again, put, other)
 
 
+def t_a_new_set_gets_its_own_try():
+    """Pyrelands, 2026-11-23 4:17 AM PST: a red_seen run on T_FUZZ and T_SETTINGS_SCREENS (2026-11-22) cleared both;
+    an edit at f7773e31d1 then owed T_SITE alone, and the tick read the disjoint set as "the same reds" and stopped the
+    mod (RIMMANDRAKE_UNPAUSE_PYRELANDS_SITE_DECIDER_RED_AFTER_VISIT_SIX_PASSED). A set that shares no test with the last
+    try's launches; a set that still holds a test the last try was on stays stopped."""
+    old = {"tests": ["T_FUZZ", "T_SETTINGS_SCREENS"], "unit": "u-old", "at": NOW - 40000, "failed": None}
+    new, nrow, _ = decide({"certificate": cert(("T_SITE", "b1", "red_seen"))}, {"cert_red_seen": dict(old)})
+    redn, rrow, _ = decide({"certificate": cert(("T_SITE", "b1", "green"))}, {"cert_red": dict(old)})
+    kept, _, kput = decide({"certificate": cert(("T_FUZZ", "b1", "red_seen"), ("T_SITE", "b2", "red_seen"))},
+                           {"cert_red_seen": dict(old)})
+    return (new == "launch" and nrow.get("cert_reds") == ["T_SITE"] and redn == "launch"
+            and rrow.get("cert_reds") == ["T_SITE"] and kept == "decided" and any(p[0] == "stopped" for p in kput)), \
+        (new, redn, kept, kput)
+
+
 REC_U = {"unit": "rm-detached-bench-mend-slack-1", "session": "11111111-2222-3333-4444-555555555555",
          "at": NOW - 3000, "ended": NOW - 1500}
 REC_V = {"unit": "rm-detached-bench-other-run-2", "session": "66666666-7777-8888-9999-000000000000",
@@ -102,7 +117,7 @@ def t_brief_names_the_proof():
 
 def main():
     tests = [t_red_seen_only_launches, t_mixed_refusal_keeps_its_route, t_one_try_per_set, t_warm_editor_is_resumed,
-             t_brief_names_the_proof]
+             t_brief_names_the_proof, t_a_new_set_gets_its_own_try]
     fails = []
     for fn in tests:
         try:
