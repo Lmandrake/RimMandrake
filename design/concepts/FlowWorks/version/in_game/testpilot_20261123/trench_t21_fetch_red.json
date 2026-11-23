@@ -1,0 +1,4892 @@
+{
+  "script": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\runner\\src/RimMandrake/FlowWorks/northstar\\concept_scenes.py",
+  "started": 1795454384.2107706,
+  "mode": "live",
+  "calls": [
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 59,
+        "z": 60,
+        "deepenLevels": 8,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 59,
+          "z": 60
+        },
+        "depth": 8,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_83646dcd38bb44e29fa632d3c1d32531",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 60,
+        "z": 60,
+        "deepenLevels": 8,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 60
+        },
+        "depth": 8,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_cdbd3c0025f6452cb836ecff2f0d40a4",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 42
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 59,
+        "z": 61,
+        "deepenLevels": 8,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 59,
+          "z": 61
+        },
+        "depth": 8,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_a9b9ce10780b484bbc225fb67c3ef602",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 42
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 60,
+        "z": 61,
+        "deepenLevels": 8,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 61
+        },
+        "depth": 8,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_71fefa267d6d481a9dd8dced105f77e1",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 59,
+        "z": 62,
+        "deepenLevels": 8,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 59,
+          "z": 62
+        },
+        "depth": 8,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_37f1138b2a024a9bb05d6931d5c713f3",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 42
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 60,
+        "z": 62,
+        "deepenLevels": 8,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 62
+        },
+        "depth": 8,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_eaca98a312cb4324853ed45be22f2dc4",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 57
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 59,
+        "z": 63,
+        "deepenLevels": 8,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 59,
+          "z": 63
+        },
+        "depth": 8,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_6db14dfeffd24771a261f4540a30fe4c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 42
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 60,
+        "z": 63,
+        "deepenLevels": 8,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 63
+        },
+        "depth": 8,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_3ba59942f87e4a8ab6b3bdc286a61511",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 59,
+        "z": 64,
+        "deepenLevels": 8,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 59,
+          "z": 64
+        },
+        "depth": 8,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_1daa6851a1cc49b9bc00c6a75345243b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 57
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 60,
+        "z": 64,
+        "deepenLevels": 8,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 64
+        },
+        "depth": 8,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_6b6d7c9ea0a44c3d887101534aa61f0b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 44
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 59,
+        "z": 65,
+        "deepenLevels": 8,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 59,
+          "z": 65
+        },
+        "depth": 8,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_b3fb59754e184897a05bd9747495991c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 60,
+        "z": 65,
+        "deepenLevels": 8,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 65
+        },
+        "depth": 8,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_f6a4a8ac5d004ac79fb1539f1933f46a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 44
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 59,
+        "z": 66,
+        "deepenLevels": 8,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 59,
+          "z": 66
+        },
+        "depth": 8,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_63280f05ad704c2f9ab7e066785fb575",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 58
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 60,
+        "z": 66,
+        "deepenLevels": 8,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 66
+        },
+        "depth": 8,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_3fff3ad4d2e64c0583f8c32fde5c35e8",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 59,
+        "z": 67,
+        "deepenLevels": 8,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 59,
+          "z": 67
+        },
+        "depth": 8,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_bd1d4a5cf6014be5b1255c1b0b8824b4",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 60,
+        "z": 67,
+        "deepenLevels": 8,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 67
+        },
+        "depth": 8,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_b2fbb1db57bd48b3b57c7d59ee753b4f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 58
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/spawn_batch",
+      "args": {
+        "ops": "RM_Spikes:59,60;RM_Spikes:60,60;RM_Spikes:59,61;RM_Spikes:60,61;RM_Spikes:59,62;RM_Spikes:60,62;RM_Spikes:59,63;RM_Spikes:60,63;RM_Spikes:59,64;RM_Spikes:60,64;RM_Spikes:59,65;RM_Spikes:60,65;RM_Spikes:59,66;RM_Spikes:60,66;RM_Spikes:59,67;RM_Spikes:60,67"
+      },
+      "result": {
+        "success": true,
+        "message": "Placed 16 thing(s) of 16 requested across 16 of 16 op(s).",
+        "opsRequested": 16,
+        "spawned": 16,
+        "failed": 0,
+        "thingsRequested": 16,
+        "thingsPlaced": 16,
+        "thingsShort": 0,
+        "stacksOverLimit": 0,
+        "cellsOutOfBounds": 0,
+        "perDef": {
+          "RM_Spikes": 16
+        },
+        "errors": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_b118f9b0408a4bf39fc147b1ac1ba89a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 41
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/build_batch",
+      "args": {
+        "ops": "Wall:42,60;Wall:43,60;Wall:44,60;Wall:45,60;Wall:46,60;Wall:47,60;Wall:48,60;Wall:49,60;Wall:50,60;Wall:51,60;Wall:52,60;Wall:53,60;Wall:54,60;Wall:55,60;Wall:56,60;Wall:57,60;Wall:62,60;Wall:63,60;Wall:64,60;Wall:65,60;Wall:66,60;Wall:67,60;Wall:68,60;Wall:69,60;Wall:70,60;Wall:71,60;Wall:72,60;Wall:73,60;Wall:74,60;Wall:75,60;Wall:76,60;Wall:77,60;Wall:78,60",
+        "stuff": "BlocksGranite",
+        "faction": "player"
+      },
+      "result": {
+        "success": true,
+        "partial": false,
+        "placed": 33,
+        "survived": 33,
+        "lostToLaterOps": 0,
+        "failedCount": 0,
+        "failed": [],
+        "displacedCount": 2,
+        "displaced": [
+          {
+            "op": "Wall:63,60",
+            "destroyed": "Plant_Grass",
+            "x": 63,
+            "z": 60,
+            "placedByThisBatch": false,
+            "sameDefReplacedInPlace": false
+          },
+          {
+            "op": "Wall:63,60",
+            "destroyed": "Filth_RubbleRock",
+            "x": 63,
+            "z": 60,
+            "placedByThisBatch": false,
+            "sameDefReplacedInPlace": false
+          }
+        ],
+        "placeWorkerWarningsCount": 0,
+        "placeWorkerWarnings": [],
+        "qualityIgnoredForDefs": [],
+        "message": "33 placed; 2 pre-existing thing(s) were wiped. See displaced[].",
+        "note": "Walls create NO roof - roof separately. Run jawa/map_commit after the batch.",
+        "things": [
+          {
+            "def": "Wall",
+            "stuff": "BlocksGranite",
+            "x": 42,
+            "z": 60,
+            "rot": 0,
+            "faction": "PlayerColony",
+            "hitPoints": 510,
+            "maxHitPoints": 510,
+            "destroyed": false
+          },
+          {
+            "def": "Wall",
+            "stuff": "BlocksGranite",
+            "x": 43,
+            "z": 60,
+            "rot": 0,
+            "faction": "PlayerColony",
+            "hitPoints": 510,
+            "maxHitPoints": 510,
+            "destroyed": false
+          },
+          {
+            "def": "Wall",
+            "stuff": "BlocksGranite",
+            "x": 44,
+            "z": 60,
+            "rot": 0,
+            "faction": "PlayerColony",
+            "hitPoints": 510,
+            "maxHitPoints": 510,
+            "destroyed": false
+          },
+          {
+            "def": "Wall",
+            "stuff": "BlocksGranite",
+            "x": 45,
+            "z": 60,
+            "rot": 0,
+            "faction": "PlayerColony",
+            "hitPoints": 510,
+            "maxHitPoints": 510,
+            "destroyed": false
+          },
+          {
+            "def": "Wall",
+            "stuff": "BlocksGranite",
+            "x": 46,
+            "z": 60,
+            "rot": 0,
+            "faction": "PlayerColony",
+            "hitPoints": 510,
+            "maxHitPoints": 510,
+            "destroyed": false
+          },
+          {
+            "def": "Wall",
+            "stuff": "BlocksGranite",
+            "x": 47,
+            "z": 60,
+            "rot": 0,
+            "faction": "PlayerColony",
+            "hitPoints": 510,
+            "maxHitPoints": 510,
+            "destroyed": false
+          },
+          {
+            "def": "Wall",
+            "stuff": "BlocksGranite",
+            "x": 48,
+            "z": 60,
+            "rot": 0,
+            "faction": "PlayerColony",
+            "hitPoints": 510,
+            "maxHitPoints": 510,
+            "destroyed": false
+          },
+          {
+            "def": "Wall",
+            "stuff": "BlocksGranite",
+            "x": 49,
+            "z": 60,
+            "rot": 0,
+            "faction": "PlayerColony",
+            "hitPoints": 510,
+            "maxHitPoints": 510,
+            "destroyed": false
+          }
+        ],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_7b6f6bf2d56d457687b8d8198c3d42ce",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 140
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_things",
+      "args": {
+        "defName": "Wall",
+        "rect": "42,60,37,1"
+      },
+      "result": {
+        "success": true,
+        "things": [
+          {
+            "id": "Wall21185",
+            "def": "Wall",
+            "label": "Granite wall",
+            "x": 42,
+            "z": 60,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 1,
+            "hitPoints": 510,
+            "maxHitPoints": 510,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "stuff": "BlocksGranite"
+          },
+          {
+            "id": "Wall21186",
+            "def": "Wall",
+            "label": "Granite wall",
+            "x": 43,
+            "z": 60,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 1,
+            "hitPoints": 510,
+            "maxHitPoints": 510,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "stuff": "BlocksGranite"
+          },
+          {
+            "id": "Wall21187",
+            "def": "Wall",
+            "label": "Granite wall",
+            "x": 44,
+            "z": 60,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 1,
+            "hitPoints": 510,
+            "maxHitPoints": 510,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "stuff": "BlocksGranite"
+          },
+          {
+            "id": "Wall21188",
+            "def": "Wall",
+            "label": "Granite wall",
+            "x": 45,
+            "z": 60,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 1,
+            "hitPoints": 510,
+            "maxHitPoints": 510,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "stuff": "BlocksGranite"
+          },
+          {
+            "id": "Wall21189",
+            "def": "Wall",
+            "label": "Granite wall",
+            "x": 46,
+            "z": 60,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 1,
+            "hitPoints": 510,
+            "maxHitPoints": 510,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "stuff": "BlocksGranite"
+          },
+          {
+            "id": "Wall21190",
+            "def": "Wall",
+            "label": "Granite wall",
+            "x": 47,
+            "z": 60,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 1,
+            "hitPoints": 510,
+            "maxHitPoints": 510,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "stuff": "BlocksGranite"
+          },
+          {
+            "id": "Wall21191",
+            "def": "Wall",
+            "label": "Granite wall",
+            "x": 48,
+            "z": 60,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 1,
+            "hitPoints": 510,
+            "maxHitPoints": 510,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "stuff": "BlocksGranite"
+          },
+          {
+            "id": "Wall21192",
+            "def": "Wall",
+            "label": "Granite wall",
+            "x": 49,
+            "z": 60,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 1,
+            "hitPoints": 510,
+            "maxHitPoints": 510,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "stuff": "BlocksGranite"
+          },
+          {
+            "id": "Wall21193",
+            "def": "Wall",
+            "label": "Granite wall",
+            "x": 50,
+            "z": 60,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 1,
+            "hitPoints": 510,
+            "maxHitPoints": 510,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "stuff": "BlocksGranite"
+          },
+          {
+            "id": "Wall21194",
+            "def": "Wall",
+            "label": "Granite wall",
+            "x": 51,
+            "z": 60,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 1,
+            "hitPoints": 510,
+            "maxHitPoints": 510,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "stuff": "BlocksGranite"
+          },
+          {
+            "id": "Wall21195",
+            "def": "Wall",
+            "label": "Granite wall",
+            "x": 52,
+            "z": 60,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 1,
+            "hitPoints": 510,
+            "maxHitPoints": 510,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "stuff": "BlocksGranite"
+          },
+          {
+            "id": "Wall21196",
+            "def": "Wall",
+            "label": "Granite wall",
+            "x": 53,
+            "z": 60,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 1,
+            "hitPoints": 510,
+            "maxHitPoints": 510,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "stuff": "BlocksGranite"
+          },
+          {
+            "id": "Wall21197",
+            "def": "Wall",
+            "label": "Granite wall",
+            "x": 54,
+            "z": 60,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 1,
+            "hitPoints": 510,
+            "maxHitPoints": 510,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "stuff": "BlocksGranite"
+          },
+          {
+            "id": "Wall21198",
+            "def": "Wall",
+            "label": "Granite wall",
+            "x": 55,
+            "z": 60,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 1,
+            "hitPoints": 510,
+            "maxHitPoints": 510,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "stuff": "BlocksGranite"
+          },
+          {
+            "id": "Wall21199",
+            "def": "Wall",
+            "label": "Granite wall",
+            "x": 56,
+            "z": 60,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 1,
+            "hitPoints": 510,
+            "maxHitPoints": 510,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "stuff": "BlocksGranite"
+          },
+          {
+            "id": "Wall21200",
+            "def": "Wall",
+            "label": "Granite wall",
+            "x": 57,
+            "z": 60,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 1,
+            "hitPoints": 510,
+            "maxHitPoints": 510,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "stuff": "BlocksGranite"
+          },
+          {
+            "id": "Wall21201",
+            "def": "Wall",
+            "label": "Granite wall",
+            "x": 62,
+            "z": 60,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 1,
+            "hitPoints": 510,
+            "maxHitPoints": 510,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "stuff": "BlocksGranite"
+          },
+          {
+            "id": "Wall21202",
+            "def": "Wall",
+            "label": "Granite wall",
+            "x": 63,
+            "z": 60,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 1,
+            "hitPoints": 510,
+            "maxHitPoints": 510,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "stuff": "BlocksGranite"
+          },
+          {
+            "id": "Wall21203",
+            "def": "Wall",
+            "label": "Granite wall",
+            "x": 64,
+            "z": 60,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 1,
+            "hitPoints": 510,
+            "maxHitPoints": 510,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "stuff": "BlocksGranite"
+          },
+          {
+            "id": "Wall21204",
+            "def": "Wall",
+            "label": "Granite wall",
+            "x": 65,
+            "z": 60,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 1,
+            "hitPoints": 510,
+            "maxHitPoints": 510,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "stuff": "BlocksGranite"
+          },
+          {
+            "id": "Wall21205",
+            "def": "Wall",
+            "label": "Granite wall",
+            "x": 66,
+            "z": 60,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 1,
+            "hitPoints": 510,
+            "maxHitPoints": 510,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "stuff": "BlocksGranite"
+          },
+          {
+            "id": "Wall21206",
+            "def": "Wall",
+            "label": "Granite wall",
+            "x": 67,
+            "z": 60,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 1,
+            "hitPoints": 510,
+            "maxHitPoints": 510,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "stuff": "BlocksGranite"
+          },
+          {
+            "id": "Wall21207",
+            "def": "Wall",
+            "label": "Granite wall",
+            "x": 68,
+            "z": 60,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 1,
+            "hitPoints": 510,
+            "maxHitPoints": 510,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "stuff": "BlocksGranite"
+          },
+          {
+            "id": "Wall21208",
+            "def": "Wall",
+            "label": "Granite wall",
+            "x": 69,
+            "z": 60,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 1,
+            "hitPoints": 510,
+            "maxHitPoints": 510,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "stuff": "BlocksGranite"
+          },
+          {
+            "id": "Wall21209",
+            "def": "Wall",
+            "label": "Granite wall",
+            "x": 70,
+            "z": 60,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 1,
+            "hitPoints": 510,
+            "maxHitPoints": 510,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "stuff": "BlocksGranite"
+          },
+          {
+            "id": "Wall21210",
+            "def": "Wall",
+            "label": "Granite wall",
+            "x": 71,
+            "z": 60,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 1,
+            "hitPoints": 510,
+            "maxHitPoints": 510,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "stuff": "BlocksGranite"
+          },
+          {
+            "id": "Wall21211",
+            "def": "Wall",
+            "label": "Granite wall",
+            "x": 72,
+            "z": 60,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 1,
+            "hitPoints": 510,
+            "maxHitPoints": 510,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "stuff": "BlocksGranite"
+          },
+          {
+            "id": "Wall21212",
+            "def": "Wall",
+            "label": "Granite wall",
+            "x": 73,
+            "z": 60,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 1,
+            "hitPoints": 510,
+            "maxHitPoints": 510,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "stuff": "BlocksGranite"
+          },
+          {
+            "id": "Wall21213",
+            "def": "Wall",
+            "label": "Granite wall",
+            "x": 74,
+            "z": 60,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 1,
+            "hitPoints": 510,
+            "maxHitPoints": 510,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "stuff": "BlocksGranite"
+          },
+          {
+            "id": "Wall21214",
+            "def": "Wall",
+            "label": "Granite wall",
+            "x": 75,
+            "z": 60,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 1,
+            "hitPoints": 510,
+            "maxHitPoints": 510,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "stuff": "BlocksGranite"
+          },
+          {
+            "id": "Wall21215",
+            "def": "Wall",
+            "label": "Granite wall",
+            "x": 76,
+            "z": 60,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 1,
+            "hitPoints": 510,
+            "maxHitPoints": 510,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "stuff": "BlocksGranite"
+          },
+          {
+            "id": "Wall21216",
+            "def": "Wall",
+            "label": "Granite wall",
+            "x": 77,
+            "z": 60,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 1,
+            "hitPoints": 510,
+            "maxHitPoints": 510,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "stuff": "BlocksGranite"
+          },
+          {
+            "id": "Wall21217",
+            "def": "Wall",
+            "label": "Granite wall",
+            "x": 78,
+            "z": 60,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 1,
+            "hitPoints": 510,
+            "maxHitPoints": 510,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "stuff": "BlocksGranite"
+          }
+        ],
+        "scanned": 15150,
+        "countReturned": 33,
+        "countMatched": 33,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 3,
+        "perDef": {
+          "Wall": 33
+        },
+        "ticksGame": 2,
+        "message": "33 of 33 matching thing(s) returned, 15150 examined.",
+        "operation": {
+          "OperationId": "op_d37dca69749f45f1b2706001b517df1a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 40
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/build_batch",
+      "args": {
+        "ops": "RM_PitCover_PlankLattice:59,60;RM_PitCover_PlankLattice:60,60;RM_PitCover_PlankLattice:59,61;RM_PitCover_PlankLattice:60,61;RM_PitCover_PlankLattice:59,62;RM_PitCover_PlankLattice:60,62;RM_PitCover_PlankLattice:59,63;RM_PitCover_PlankLattice:60,63;RM_PitCover_PlankLattice:59,64;RM_PitCover_PlankLattice:60,64;RM_PitCover_PlankLattice:59,65;RM_PitCover_PlankLattice:60,65;RM_PitCover_PlankLattice:59,66;RM_PitCover_PlankLattice:60,66;RM_PitCover_PlankLattice:59,67;RM_PitCover_PlankLattice:60,67",
+        "faction": "player",
+        "wipeExisting": false
+      },
+      "result": {
+        "success": true,
+        "partial": false,
+        "placed": 16,
+        "survived": 16,
+        "lostToLaterOps": 0,
+        "failedCount": 0,
+        "failed": [],
+        "displacedCount": 0,
+        "displaced": [],
+        "placeWorkerWarningsCount": 0,
+        "placeWorkerWarnings": [],
+        "qualityIgnoredForDefs": [],
+        "message": "16 placed.",
+        "note": "Walls create NO roof - roof separately. Run jawa/map_commit after the batch.",
+        "things": [
+          {
+            "def": "RM_PitCover_PlankLattice",
+            "x": 59,
+            "z": 60,
+            "rot": 0,
+            "faction": "PlayerColony",
+            "hitPoints": 80,
+            "maxHitPoints": 80,
+            "destroyed": false
+          },
+          {
+            "def": "RM_PitCover_PlankLattice",
+            "x": 60,
+            "z": 60,
+            "rot": 0,
+            "faction": "PlayerColony",
+            "hitPoints": 80,
+            "maxHitPoints": 80,
+            "destroyed": false
+          },
+          {
+            "def": "RM_PitCover_PlankLattice",
+            "x": 59,
+            "z": 61,
+            "rot": 0,
+            "faction": "PlayerColony",
+            "hitPoints": 80,
+            "maxHitPoints": 80,
+            "destroyed": false
+          },
+          {
+            "def": "RM_PitCover_PlankLattice",
+            "x": 60,
+            "z": 61,
+            "rot": 0,
+            "faction": "PlayerColony",
+            "hitPoints": 80,
+            "maxHitPoints": 80,
+            "destroyed": false
+          },
+          {
+            "def": "RM_PitCover_PlankLattice",
+            "x": 59,
+            "z": 62,
+            "rot": 0,
+            "faction": "PlayerColony",
+            "hitPoints": 80,
+            "maxHitPoints": 80,
+            "destroyed": false
+          },
+          {
+            "def": "RM_PitCover_PlankLattice",
+            "x": 60,
+            "z": 62,
+            "rot": 0,
+            "faction": "PlayerColony",
+            "hitPoints": 80,
+            "maxHitPoints": 80,
+            "destroyed": false
+          },
+          {
+            "def": "RM_PitCover_PlankLattice",
+            "x": 59,
+            "z": 63,
+            "rot": 0,
+            "faction": "PlayerColony",
+            "hitPoints": 80,
+            "maxHitPoints": 80,
+            "destroyed": false
+          },
+          {
+            "def": "RM_PitCover_PlankLattice",
+            "x": 60,
+            "z": 63,
+            "rot": 0,
+            "faction": "PlayerColony",
+            "hitPoints": 80,
+            "maxHitPoints": 80,
+            "destroyed": false
+          }
+        ],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_49d1f2dd23ac46f78474dd9224f99407",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 41
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_PromotionProofs",
+        "ProofCover",
+        "59,60"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCover(System.String)",
+        "result": "COVER cell=59,60 present=True covered=True sprung=False depth=8 cellTerrain=RM_Channel_Superdeep printed=Gravel matOk=True around=Gravel inspect=Gives_way_under_120_kg_on_the_whole_concealed_pit.",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_ee44ad0555534b5a80dfbff77a0b843d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 42
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_PromotionProofs",
+        "ProofCover",
+        "60,60"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCover(System.String)",
+        "result": "COVER cell=60,60 present=True covered=True sprung=False depth=8 cellTerrain=RM_Channel_Superdeep printed=Gravel matOk=True around=Gravel inspect=Gives_way_under_120_kg_on_the_whole_concealed_pit.",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_b46cbc3c1b30487583c07af44e1b6ab3",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 58
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_PromotionProofs",
+        "ProofCover",
+        "59,61"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCover(System.String)",
+        "result": "COVER cell=59,61 present=True covered=True sprung=False depth=8 cellTerrain=RM_Channel_Superdeep printed=Gravel matOk=True around=Gravel inspect=Gives_way_under_120_kg_on_the_whole_concealed_pit.",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_60a40866af224c8bb9742bdaf7f79bbe",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_PromotionProofs",
+        "ProofCover",
+        "60,61"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCover(System.String)",
+        "result": "COVER cell=60,61 present=True covered=True sprung=False depth=8 cellTerrain=RM_Channel_Superdeep printed=Gravel matOk=True around=Gravel inspect=Gives_way_under_120_kg_on_the_whole_concealed_pit.",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_0872fd88356b45e9832a86f257121fc8",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_PromotionProofs",
+        "ProofCover",
+        "59,62"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCover(System.String)",
+        "result": "COVER cell=59,62 present=True covered=True sprung=False depth=8 cellTerrain=RM_Channel_Superdeep printed=Limestone_Rough matOk=True around=Limestone_Rough inspect=Gives_way_under_120_kg_on_the_whole_concealed_pit.",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_9456c612f24942b78a00336baef8a9d8",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 58
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_PromotionProofs",
+        "ProofCover",
+        "60,62"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCover(System.String)",
+        "result": "COVER cell=60,62 present=True covered=True sprung=False depth=8 cellTerrain=RM_Channel_Superdeep printed=Soil matOk=True around=Soil inspect=Gives_way_under_120_kg_on_the_whole_concealed_pit.",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_a09b21256c4f4fe399048840be3dacb8",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_PromotionProofs",
+        "ProofCover",
+        "59,63"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCover(System.String)",
+        "result": "COVER cell=59,63 present=True covered=True sprung=False depth=8 cellTerrain=RM_Channel_Superdeep printed=Limestone_Rough matOk=True around=Limestone_Rough inspect=Gives_way_under_120_kg_on_the_whole_concealed_pit.",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_49dde8eb1e4a4ee183df632c41725e3a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_PromotionProofs",
+        "ProofCover",
+        "60,63"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCover(System.String)",
+        "result": "COVER cell=60,63 present=True covered=True sprung=False depth=8 cellTerrain=RM_Channel_Superdeep printed=Soil matOk=True around=Soil inspect=Gives_way_under_120_kg_on_the_whole_concealed_pit.",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_289dc5a1f83b45bfa6aa6943344de875",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 58
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_PromotionProofs",
+        "ProofCover",
+        "59,64"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCover(System.String)",
+        "result": "COVER cell=59,64 present=True covered=True sprung=False depth=8 cellTerrain=RM_Channel_Superdeep printed=Limestone_Rough matOk=True around=Limestone_Rough inspect=Gives_way_under_120_kg_on_the_whole_concealed_pit.",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_33653ecef6fc46e497441379ca30b75e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_PromotionProofs",
+        "ProofCover",
+        "60,64"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCover(System.String)",
+        "result": "COVER cell=60,64 present=True covered=True sprung=False depth=8 cellTerrain=RM_Channel_Superdeep printed=Gravel matOk=True around=Gravel inspect=Gives_way_under_120_kg_on_the_whole_concealed_pit.",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_dc21b1d063b64d6a921bf8a2a3f4630b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 42
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_PromotionProofs",
+        "ProofCover",
+        "59,65"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCover(System.String)",
+        "result": "COVER cell=59,65 present=True covered=True sprung=False depth=8 cellTerrain=RM_Channel_Superdeep printed=Limestone_Rough matOk=True around=Limestone_Rough inspect=Gives_way_under_120_kg_on_the_whole_concealed_pit.",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_a3dc7db576e5460d8d993ab433b818de",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_PromotionProofs",
+        "ProofCover",
+        "60,65"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCover(System.String)",
+        "result": "COVER cell=60,65 present=True covered=True sprung=False depth=8 cellTerrain=RM_Channel_Superdeep printed=Gravel matOk=True around=Gravel inspect=Gives_way_under_120_kg_on_the_whole_concealed_pit.",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_81e606a5b818489a9311e66bba19c42e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_PromotionProofs",
+        "ProofCover",
+        "59,66"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCover(System.String)",
+        "result": "COVER cell=59,66 present=True covered=True sprung=False depth=8 cellTerrain=RM_Channel_Superdeep printed=Limestone_Rough matOk=True around=Limestone_Rough inspect=Gives_way_under_120_kg_on_the_whole_concealed_pit.",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_8da2d5bbb2a24e22b32adac85af52fe7",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 44
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_PromotionProofs",
+        "ProofCover",
+        "60,66"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCover(System.String)",
+        "result": "COVER cell=60,66 present=True covered=True sprung=False depth=8 cellTerrain=RM_Channel_Superdeep printed=Gravel matOk=True around=Gravel inspect=Gives_way_under_120_kg_on_the_whole_concealed_pit.",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_e09ad07b323e49e5a7925a0cc7481765",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_PromotionProofs",
+        "ProofCover",
+        "59,67"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCover(System.String)",
+        "result": "COVER cell=59,67 present=True covered=True sprung=False depth=8 cellTerrain=RM_Channel_Superdeep printed=Gravel matOk=True around=Gravel inspect=Gives_way_under_120_kg_on_the_whole_concealed_pit.",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_b833da7c916f400699d9a70385e783ab",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 73
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_PromotionProofs",
+        "ProofCover",
+        "60,67"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCover(System.String)",
+        "result": "COVER cell=60,67 present=True covered=True sprung=False depth=8 cellTerrain=RM_Channel_Superdeep printed=Limestone_Rough matOk=True around=Gravel inspect=Gives_way_under_120_kg_on_the_whole_concealed_pit.",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_1c33a3641fe54eba96ec02a238720b4c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/set_plants",
+      "args": {
+        "ops": "Plant_TreeOak:69,56,3,2",
+        "density": 1.0,
+        "growth": 1.0
+      },
+      "result": {
+        "success": true,
+        "message": "Planted 5, cleared 1, REJECTED 1.",
+        "planted": 5,
+        "cleared": 1,
+        "rejected": 1,
+        "rejectionReasons": {
+          "terrain or conditions cannot support Plant_TreeOak: blocked by marble chunk. [ChunkMarble]": 1
+        },
+        "rejectedCells": [
+          {
+            "x": 71,
+            "z": 56,
+            "terrain": "Soil",
+            "fertility": 1.0,
+            "fertilityMin": 0.7,
+            "polluted": false,
+            "blocker": "ChunkMarble",
+            "reason": "blocked by marble chunk. [ChunkMarble]"
+          }
+        ],
+        "cellsSkippedByDensity": 0,
+        "cellsOutOfBounds": 0,
+        "growth": 1.0,
+        "errors": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_43801bcc36e246ce91fd50a63410c203",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/spawn_pawn",
+      "args": {
+        "kindDef": "Colonist",
+        "x": 58,
+        "z": 77,
+        "faction": "player",
+        "count": 1,
+        "xenotype": "Baseliner"
+      },
+      "result": {
+        "success": true,
+        "message": "Spawned 1/1 Colonist in faction PlayerColony as Baseliner.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "xenotypeRequested": "Baseliner",
+        "pawns": [
+          {
+            "ok": true,
+            "id": "Human21239",
+            "name": "Gumpy",
+            "kindRequested": "Colonist",
+            "kindActual": "Colonist",
+            "kindSubstituted": false,
+            "faction": "PlayerColony",
+            "hostile": false,
+            "x": 58,
+            "z": 77,
+            "spawned": true,
+            "xenotype": "Baseliner",
+            "xenotypeRequested": "Baseliner",
+            "xenotypeApplied": true
+          }
+        ],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_c9084b407dd142e28892c06f840c62f7",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 58
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/spawn_pawn",
+      "args": {
+        "kindDef": "Colonist",
+        "x": 62,
+        "z": 77,
+        "faction": "player",
+        "count": 1,
+        "xenotype": "Baseliner"
+      },
+      "result": {
+        "success": true,
+        "message": "Spawned 1/1 Colonist in faction PlayerColony as Baseliner.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "xenotypeRequested": "Baseliner",
+        "pawns": [
+          {
+            "ok": true,
+            "id": "Human21250",
+            "name": "Whitaker",
+            "kindRequested": "Colonist",
+            "kindActual": "Colonist",
+            "kindSubstituted": false,
+            "faction": "PlayerColony",
+            "hostile": false,
+            "x": 62,
+            "z": 77,
+            "spawned": true,
+            "xenotype": "Baseliner",
+            "xenotypeRequested": "Baseliner",
+            "xenotypeApplied": true
+          }
+        ],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_ab076973c81d486f8c89f463bcfe69a8",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 42
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/fire_raid",
+      "args": {
+        "points": 700,
+        "dryRun": false,
+        "faction": "PirateWaster",
+        "strategy": "ImmediateAttack",
+        "arrivalMode": "EdgeWalkIn",
+        "spawnCenter": "60,48"
+      },
+      "result": {
+        "success": true,
+        "dryRun": false,
+        "resolved": {
+          "incident": "RaidEnemy",
+          "points": 700.0,
+          "faction": "PirateWaster",
+          "raidStrategy": "ImmediateAttack",
+          "raidArrivalMode": "EdgeWalkIn",
+          "spawnCenter": {
+            "x": 60,
+            "z": 48
+          }
+        },
+        "executed": true,
+        "factionNotes": [],
+        "windowsOpened": [],
+        "blockedByDialog": false,
+        "actual": {
+          "faction": "PirateWaster",
+          "name": "Decay Packers",
+          "substituted": false,
+          "requested": "PirateWaster"
+        },
+        "arrived": [
+          {
+            "faction": "PirateWaster",
+            "name": "Decay Packers",
+            "pawnsArrived": 9,
+            "hostileToPlayer": true
+          }
+        ],
+        "pawnsArrivedTotal": 9,
+        "note": "Raid fired. arrived[] is counted off the map; an arrival mode that delays entry can legitimately show 0 pawns this instant.",
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_be09583522814feb92ee3a44b5e38775",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 84
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_pawns",
+      "args": {
+        "faction": "hostile"
+      },
+      "result": {
+        "success": true,
+        "message": "9 pawn(s), 5 filtered by faction.",
+        "pawns": [
+          {
+            "id": "Human21253",
+            "name": "Xorkun",
+            "kind": "Mercenary_GunnerTox",
+            "kindDef": "Mercenary_GunnerTox",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Waster",
+            "xenotypeLabel": "waster",
+            "uniqueXenotype": false,
+            "faction": "PirateWaster",
+            "factionName": "Decay Packers",
+            "isPlayer": false,
+            "hostile": true,
+            "x": 65,
+            "z": 47,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human21260",
+            "name": "Ambush",
+            "kind": "Scavenger",
+            "kindDef": "Scavenger",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Waster",
+            "xenotypeLabel": "waster",
+            "uniqueXenotype": false,
+            "faction": "PirateWaster",
+            "factionName": "Decay Packers",
+            "isPlayer": false,
+            "hostile": true,
+            "x": 62,
+            "z": 49,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human21266",
+            "name": "Sty",
+            "kind": "Pirate",
+            "kindDef": "Pirate",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Pigskin",
+            "xenotypeLabel": "pigskin",
+            "uniqueXenotype": false,
+            "faction": "PirateWaster",
+            "factionName": "Decay Packers",
+            "isPlayer": false,
+            "hostile": true,
+            "x": 63,
+            "z": 52,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human21273",
+            "name": "Skunk",
+            "kind": "Mercenary_GunnerTox",
+            "kindDef": "Mercenary_GunnerTox",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Waster",
+            "xenotypeLabel": "waster",
+            "uniqueXenotype": false,
+            "faction": "PirateWaster",
+            "factionName": "Decay Packers",
+            "isPlayer": false,
+            "hostile": true,
+            "x": 59,
+            "z": 49,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human21281",
+            "name": "Slay",
+            "kind": "Grenadier_Destructive",
+            "kindDef": "Grenadier_Destructive",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Waster",
+            "xenotypeLabel": "waster",
+            "uniqueXenotype": false,
+            "faction": "PirateWaster",
+            "factionName": "Decay Packers",
+            "isPlayer": false,
+            "hostile": true,
+            "x": 58,
+            "z": 51,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human21288",
+            "name": "Rare",
+            "kind": "Mercenary_GunnerTox",
+            "kindDef": "Mercenary_GunnerTox",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Waster",
+            "xenotypeLabel": "waster",
+            "uniqueXenotype": false,
+            "faction": "PirateWaster",
+            "factionName": "Decay Packers",
+            "isPlayer": false,
+            "hostile": true,
+            "x": 61,
+            "z": 55,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human21295",
+            "name": "Happy",
+            "kind": "Mercenary_GunnerTox",
+            "kindDef": "Mercenary_GunnerTox",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Hussar",
+            "xenotypeLabel": "hussar",
+            "uniqueXenotype": false,
+            "faction": "PirateWaster",
+            "factionName": "Decay Packers",
+            "isPlayer": false,
+            "hostile": true,
+            "x": 59,
+            "z": 48,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human21303",
+            "name": "Choker",
+            "kind": "Mercenary_GunnerTox",
+            "kindDef": "Mercenary_GunnerTox",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Waster",
+            "xenotypeLabel": "waster",
+            "uniqueXenotype": false,
+            "faction": "PirateWaster",
+            "factionName": "Decay Packers",
+            "isPlayer": false,
+            "hostile": true,
+            "x": 57,
+            "z": 48,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human21311",
+            "name": "Angel",
+            "kind": "Drifter",
+            "kindDef": "Drifter",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Waster",
+            "xenotypeLabel": "waster",
+            "uniqueXenotype": false,
+            "faction": "PirateWaster",
+            "factionName": "Decay Packers",
+            "isPlayer": false,
+            "hostile": true,
+            "x": 61,
+            "z": 48,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          }
+        ],
+        "returned": 9,
+        "truncated": 0,
+        "totalOnMap": 14,
+        "ticksGame": 62,
+        "operation": {
+          "OperationId": "op_6ddcac5917d346e49f278ab109c3f666",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 42
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 62
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_things",
+      "args": {
+        "group": "Corpse",
+        "rect": "58,59,4,10"
+      },
+      "result": {
+        "success": true,
+        "things": [],
+        "scanned": 2,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 0,
+        "perDef": {},
+        "ticksGame": 62,
+        "message": "NOTHING MATCHED. 2 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+          "OperationId": "op_5e967e93886a4933b58f2c7171fc11ec",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 57
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 62
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_things",
+      "args": {
+        "defName": "RM_LadderPortable",
+        "rect": "58,59,4,10"
+      },
+      "result": {
+        "success": true,
+        "things": [],
+        "scanned": 15181,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 14,
+        "perDef": {},
+        "ticksGame": 62,
+        "message": "NOTHING MATCHED. 15181 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+          "OperationId": "op_6f9e692adc95470a8b2be8e7c2bee888",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 62
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_pawns",
+      "args": {
+        "faction": "hostile"
+      },
+      "result": {
+        "success": true,
+        "message": "9 pawn(s), 5 filtered by faction.",
+        "pawns": [
+          {
+            "id": "Human21253",
+            "name": "Xorkun",
+            "kind": "Mercenary_GunnerTox",
+            "kindDef": "Mercenary_GunnerTox",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Waster",
+            "xenotypeLabel": "waster",
+            "uniqueXenotype": false,
+            "faction": "PirateWaster",
+            "factionName": "Decay Packers",
+            "isPlayer": false,
+            "hostile": true,
+            "x": 65,
+            "z": 50,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human21260",
+            "name": "Ambush",
+            "kind": "Scavenger",
+            "kindDef": "Scavenger",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Waster",
+            "xenotypeLabel": "waster",
+            "uniqueXenotype": false,
+            "faction": "PirateWaster",
+            "factionName": "Decay Packers",
+            "isPlayer": false,
+            "hostile": true,
+            "x": 60,
+            "z": 52,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human21266",
+            "name": "Sty",
+            "kind": "Pirate",
+            "kindDef": "Pirate",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Pigskin",
+            "xenotypeLabel": "pigskin",
+            "uniqueXenotype": false,
+            "faction": "PirateWaster",
+            "factionName": "Decay Packers",
+            "isPlayer": false,
+            "hostile": true,
+            "x": 60,
+            "z": 56,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human21273",
+            "name": "Skunk",
+            "kind": "Mercenary_GunnerTox",
+            "kindDef": "Mercenary_GunnerTox",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Waster",
+            "xenotypeLabel": "waster",
+            "uniqueXenotype": false,
+            "faction": "PirateWaster",
+            "factionName": "Decay Packers",
+            "isPlayer": false,
+            "hostile": true,
+            "x": 59,
+            "z": 53,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human21281",
+            "name": "Slay",
+            "kind": "Grenadier_Destructive",
+            "kindDef": "Grenadier_Destructive",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Waster",
+            "xenotypeLabel": "waster",
+            "uniqueXenotype": false,
+            "faction": "PirateWaster",
+            "factionName": "Decay Packers",
+            "isPlayer": false,
+            "hostile": true,
+            "x": 60,
+            "z": 54,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human21288",
+            "name": "Rare",
+            "kind": "Mercenary_GunnerTox",
+            "kindDef": "Mercenary_GunnerTox",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Waster",
+            "xenotypeLabel": "waster",
+            "uniqueXenotype": false,
+            "faction": "PirateWaster",
+            "factionName": "Decay Packers",
+            "isPlayer": false,
+            "hostile": true,
+            "x": 61,
+            "z": 58,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human21295",
+            "name": "Happy",
+            "kind": "Mercenary_GunnerTox",
+            "kindDef": "Mercenary_GunnerTox",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Hussar",
+            "xenotypeLabel": "hussar",
+            "uniqueXenotype": false,
+            "faction": "PirateWaster",
+            "factionName": "Decay Packers",
+            "isPlayer": false,
+            "hostile": true,
+            "x": 59,
+            "z": 51,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human21303",
+            "name": "Choker",
+            "kind": "Mercenary_GunnerTox",
+            "kindDef": "Mercenary_GunnerTox",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Waster",
+            "xenotypeLabel": "waster",
+            "uniqueXenotype": false,
+            "faction": "PirateWaster",
+            "factionName": "Decay Packers",
+            "isPlayer": false,
+            "hostile": true,
+            "x": 58,
+            "z": 51,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human21311",
+            "name": "Angel",
+            "kind": "Drifter",
+            "kindDef": "Drifter",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Waster",
+            "xenotypeLabel": "waster",
+            "uniqueXenotype": false,
+            "faction": "PirateWaster",
+            "factionName": "Decay Packers",
+            "isPlayer": false,
+            "hostile": true,
+            "x": 60,
+            "z": 51,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          }
+        ],
+        "returned": 9,
+        "truncated": 0,
+        "totalOnMap": 14,
+        "ticksGame": 122,
+        "operation": {
+          "OperationId": "op_e83da7a3c3924cc6aae65b2437295e7b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 44
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 122
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_things",
+      "args": {
+        "group": "Corpse",
+        "rect": "58,59,4,10"
+      },
+      "result": {
+        "success": true,
+        "things": [],
+        "scanned": 2,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 0,
+        "perDef": {},
+        "ticksGame": 122,
+        "message": "NOTHING MATCHED. 2 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+          "OperationId": "op_68a656393fad4ddda66b360c498b770e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 41
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 122
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_things",
+      "args": {
+        "defName": "RM_LadderPortable",
+        "rect": "58,59,4,10"
+      },
+      "result": {
+        "success": true,
+        "things": [],
+        "scanned": 15181,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 14,
+        "perDef": {},
+        "ticksGame": 122,
+        "message": "NOTHING MATCHED. 15181 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+          "OperationId": "op_447f039904384ecd842253ba6e718f6c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 122
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_pawns",
+      "args": {
+        "faction": "hostile"
+      },
+      "result": {
+        "success": true,
+        "message": "9 pawn(s), 5 filtered by faction.",
+        "pawns": [
+          {
+            "id": "Human21253",
+            "name": "Xorkun",
+            "kind": "Mercenary_GunnerTox",
+            "kindDef": "Mercenary_GunnerTox",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Waster",
+            "xenotypeLabel": "waster",
+            "uniqueXenotype": false,
+            "faction": "PirateWaster",
+            "factionName": "Decay Packers",
+            "isPlayer": false,
+            "hostile": true,
+            "x": 63,
+            "z": 53,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human21260",
+            "name": "Ambush",
+            "kind": "Scavenger",
+            "kindDef": "Scavenger",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Waster",
+            "xenotypeLabel": "waster",
+            "uniqueXenotype": false,
+            "faction": "PirateWaster",
+            "factionName": "Decay Packers",
+            "isPlayer": false,
+            "hostile": true,
+            "x": 59,
+            "z": 55,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human21266",
+            "name": "Sty",
+            "kind": "Pirate",
+            "kindDef": "Pirate",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Pigskin",
+            "xenotypeLabel": "pigskin",
+            "uniqueXenotype": false,
+            "faction": "PirateWaster",
+            "factionName": "Decay Packers",
+            "isPlayer": false,
+            "hostile": true,
+            "x": 60,
+            "z": 60,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human21273",
+            "name": "Skunk",
+            "kind": "Mercenary_GunnerTox",
+            "kindDef": "Mercenary_GunnerTox",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Waster",
+            "xenotypeLabel": "waster",
+            "uniqueXenotype": false,
+            "faction": "PirateWaster",
+            "factionName": "Decay Packers",
+            "isPlayer": false,
+            "hostile": true,
+            "x": 59,
+            "z": 56,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human21281",
+            "name": "Slay",
+            "kind": "Grenadier_Destructive",
+            "kindDef": "Grenadier_Destructive",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Waster",
+            "xenotypeLabel": "waster",
+            "uniqueXenotype": false,
+            "faction": "PirateWaster",
+            "factionName": "Decay Packers",
+            "isPlayer": false,
+            "hostile": true,
+            "x": 60,
+            "z": 58,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human21288",
+            "name": "Rare",
+            "kind": "Mercenary_GunnerTox",
+            "kindDef": "Mercenary_GunnerTox",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Waster",
+            "xenotypeLabel": "waster",
+            "uniqueXenotype": false,
+            "faction": "PirateWaster",
+            "factionName": "Decay Packers",
+            "isPlayer": false,
+            "hostile": true,
+            "x": 58,
+            "z": 61,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human21295",
+            "name": "Happy",
+            "kind": "Mercenary_GunnerTox",
+            "kindDef": "Mercenary_GunnerTox",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Hussar",
+            "xenotypeLabel": "hussar",
+            "uniqueXenotype": false,
+            "faction": "PirateWaster",
+            "factionName": "Decay Packers",
+            "isPlayer": false,
+            "hostile": true,
+            "x": 59,
+            "z": 54,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human21303",
+            "name": "Choker",
+            "kind": "Mercenary_GunnerTox",
+            "kindDef": "Mercenary_GunnerTox",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Waster",
+            "xenotypeLabel": "waster",
+            "uniqueXenotype": false,
+            "faction": "PirateWaster",
+            "factionName": "Decay Packers",
+            "isPlayer": false,
+            "hostile": true,
+            "x": 60,
+            "z": 54,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human21311",
+            "name": "Angel",
+            "kind": "Drifter",
+            "kindDef": "Drifter",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Waster",
+            "xenotypeLabel": "waster",
+            "uniqueXenotype": false,
+            "faction": "PirateWaster",
+            "factionName": "Decay Packers",
+            "isPlayer": false,
+            "hostile": true,
+            "x": 59,
+            "z": 53,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          }
+        ],
+        "returned": 9,
+        "truncated": 0,
+        "totalOnMap": 14,
+        "ticksGame": 182,
+        "operation": {
+          "OperationId": "op_b019c51afb0344f2b6ce489b6b525409",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 59
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 182
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_NorthstarProofs",
+        "ProofTrap",
+        "Human21266"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofTrap(System.String)",
+        "result": "TRAP descents=0 lastCell=60,60 pos=60,60 held=False last=-",
+        "thingArgs": [],
+        "ticksGame": 182,
+        "operation": {
+          "OperationId": "op_d8c1152afeb04cb4b97f49aec823af2e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 40
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 182
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_things",
+      "args": {
+        "group": "Corpse",
+        "rect": "58,59,4,10"
+      },
+      "result": {
+        "success": true,
+        "things": [],
+        "scanned": 2,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 0,
+        "perDef": {},
+        "ticksGame": 182,
+        "message": "NOTHING MATCHED. 2 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+          "OperationId": "op_7f8d9ce8b93f495c8898577d4a9ec066",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 44
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 182
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_things",
+      "args": {
+        "defName": "RM_LadderPortable",
+        "rect": "58,59,4,10"
+      },
+      "result": {
+        "success": true,
+        "things": [],
+        "scanned": 15181,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 14,
+        "perDef": {},
+        "ticksGame": 182,
+        "message": "NOTHING MATCHED. 15181 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+          "OperationId": "op_9bb1a269260546bdaf510525d5cafa11",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 182
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_pawns",
+      "args": {
+        "faction": "hostile"
+      },
+      "result": {
+        "success": true,
+        "message": "9 pawn(s), 5 filtered by faction.",
+        "pawns": [
+          {
+            "id": "Human21253",
+            "name": "Xorkun",
+            "kind": "Mercenary_GunnerTox",
+            "kindDef": "Mercenary_GunnerTox",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Waster",
+            "xenotypeLabel": "waster",
+            "uniqueXenotype": false,
+            "faction": "PirateWaster",
+            "factionName": "Decay Packers",
+            "isPlayer": false,
+            "hostile": true,
+            "x": 61,
+            "z": 57,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human21260",
+            "name": "Ambush",
+            "kind": "Scavenger",
+            "kindDef": "Scavenger",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Waster",
+            "xenotypeLabel": "waster",
+            "uniqueXenotype": false,
+            "faction": "PirateWaster",
+            "factionName": "Decay Packers",
+            "isPlayer": false,
+            "hostile": true,
+            "x": 59,
+            "z": 59,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human21266",
+            "name": "Sty",
+            "kind": "Pirate",
+            "kindDef": "Pirate",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Pigskin",
+            "xenotypeLabel": "pigskin",
+            "uniqueXenotype": false,
+            "faction": "PirateWaster",
+            "factionName": "Decay Packers",
+            "isPlayer": false,
+            "hostile": true,
+            "x": 60,
+            "z": 60,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human21273",
+            "name": "Skunk",
+            "kind": "Mercenary_GunnerTox",
+            "kindDef": "Mercenary_GunnerTox",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Waster",
+            "xenotypeLabel": "waster",
+            "uniqueXenotype": false,
+            "faction": "PirateWaster",
+            "factionName": "Decay Packers",
+            "isPlayer": false,
+            "hostile": true,
+            "x": 59,
+            "z": 59,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human21281",
+            "name": "Slay",
+            "kind": "Grenadier_Destructive",
+            "kindDef": "Grenadier_Destructive",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Waster",
+            "xenotypeLabel": "waster",
+            "uniqueXenotype": false,
+            "faction": "PirateWaster",
+            "factionName": "Decay Packers",
+            "isPlayer": false,
+            "hostile": true,
+            "x": 60,
+            "z": 60,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human21288",
+            "name": "Rare",
+            "kind": "Mercenary_GunnerTox",
+            "kindDef": "Mercenary_GunnerTox",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Waster",
+            "xenotypeLabel": "waster",
+            "uniqueXenotype": false,
+            "faction": "PirateWaster",
+            "factionName": "Decay Packers",
+            "isPlayer": false,
+            "hostile": true,
+            "x": 56,
+            "z": 63,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human21295",
+            "name": "Happy",
+            "kind": "Mercenary_GunnerTox",
+            "kindDef": "Mercenary_GunnerTox",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Hussar",
+            "xenotypeLabel": "hussar",
+            "uniqueXenotype": false,
+            "faction": "PirateWaster",
+            "factionName": "Decay Packers",
+            "isPlayer": false,
+            "hostile": true,
+            "x": 59,
+            "z": 57,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human21303",
+            "name": "Choker",
+            "kind": "Mercenary_GunnerTox",
+            "kindDef": "Mercenary_GunnerTox",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Waster",
+            "xenotypeLabel": "waster",
+            "uniqueXenotype": false,
+            "faction": "PirateWaster",
+            "factionName": "Decay Packers",
+            "isPlayer": false,
+            "hostile": true,
+            "x": 60,
+            "z": 57,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human21311",
+            "name": "Angel",
+            "kind": "Drifter",
+            "kindDef": "Drifter",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Waster",
+            "xenotypeLabel": "waster",
+            "uniqueXenotype": false,
+            "faction": "PirateWaster",
+            "factionName": "Decay Packers",
+            "isPlayer": false,
+            "hostile": true,
+            "x": 59,
+            "z": 57,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          }
+        ],
+        "returned": 9,
+        "truncated": 0,
+        "totalOnMap": 14,
+        "ticksGame": 242,
+        "operation": {
+          "OperationId": "op_0f5ee1cf750743c7a555d405001ab0ed",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 242
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_NorthstarProofs",
+        "ProofTrap",
+        "Human21266"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofTrap(System.String)",
+        "result": "TRAP descents=2 lastCell=60,60 pos=60,60 held=True last=Human21281@60,60_t=213_fall=11.0",
+        "thingArgs": [],
+        "ticksGame": 242,
+        "operation": {
+          "OperationId": "op_8d14aee7d4a9414e87f236fa5f45029b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 39
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 242
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_NorthstarProofs",
+        "ProofTrap",
+        "Human21281"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofTrap(System.String)",
+        "result": "TRAP descents=2 lastCell=60,60 pos=60,60 held=True last=Human21281@60,60_t=213_fall=11.0",
+        "thingArgs": [],
+        "ticksGame": 242,
+        "operation": {
+          "OperationId": "op_28daf5da94ab426d99ddfda049cc872a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 42
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 242
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_things",
+      "args": {
+        "group": "Corpse",
+        "rect": "58,59,4,10"
+      },
+      "result": {
+        "success": true,
+        "things": [],
+        "scanned": 2,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 0,
+        "perDef": {},
+        "ticksGame": 242,
+        "message": "NOTHING MATCHED. 2 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+          "OperationId": "op_6e0088660fea4dd8a929bcea6ed64ba8",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 74
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 242
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_things",
+      "args": {
+        "defName": "RM_LadderPortable",
+        "rect": "58,59,4,10"
+      },
+      "result": {
+        "success": true,
+        "things": [],
+        "scanned": 15182,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 14,
+        "perDef": {},
+        "ticksGame": 242,
+        "message": "NOTHING MATCHED. 15182 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+          "OperationId": "op_b988744de1ab43e0a06da84aacf16017",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 242
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_PromotionProofs",
+        "ProofCover",
+        "59,60"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCover(System.String)",
+        "result": "COVER cell=59,60 present=False covered=False sprung=False depth=8 cellTerrain=RM_Channel_Superdeep printed=Gravel matOk=True around=Gravel inspect=none",
+        "thingArgs": [],
+        "ticksGame": 242,
+        "operation": {
+          "OperationId": "op_c87bd509b068409b9c12ba70350a9c67",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 242
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_PromotionProofs",
+        "ProofCover",
+        "60,60"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCover(System.String)",
+        "result": "COVER cell=60,60 present=False covered=False sprung=False depth=8 cellTerrain=RM_Channel_Superdeep printed=Gravel matOk=True around=Gravel inspect=none",
+        "thingArgs": [],
+        "ticksGame": 242,
+        "operation": {
+          "OperationId": "op_02a0917384b54d44a3859d265d635b64",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 58
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 242
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_PromotionProofs",
+        "ProofCover",
+        "59,61"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCover(System.String)",
+        "result": "COVER cell=59,61 present=False covered=False sprung=False depth=8 cellTerrain=RM_Channel_Superdeep printed=Gravel matOk=True around=Gravel inspect=none",
+        "thingArgs": [],
+        "ticksGame": 242,
+        "operation": {
+          "OperationId": "op_2a14d3fec74644059d22c3ad3290587d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 42
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 242
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_PromotionProofs",
+        "ProofCover",
+        "60,61"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCover(System.String)",
+        "result": "COVER cell=60,61 present=False covered=False sprung=False depth=8 cellTerrain=RM_Channel_Superdeep printed=Gravel matOk=True around=Gravel inspect=none",
+        "thingArgs": [],
+        "ticksGame": 242,
+        "operation": {
+          "OperationId": "op_8eb4c8bde35d4fac8560c2b27fb3a09c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 42
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 242
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_PromotionProofs",
+        "ProofCover",
+        "59,62"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCover(System.String)",
+        "result": "COVER cell=59,62 present=False covered=False sprung=False depth=8 cellTerrain=RM_Channel_Superdeep printed=Limestone_Rough matOk=True around=Limestone_Rough inspect=none",
+        "thingArgs": [],
+        "ticksGame": 242,
+        "operation": {
+          "OperationId": "op_cb76673750c34a81af1363eb5538e0e3",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 242
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_PromotionProofs",
+        "ProofCover",
+        "60,62"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCover(System.String)",
+        "result": "COVER cell=60,62 present=False covered=False sprung=False depth=8 cellTerrain=RM_Channel_Superdeep printed=Soil matOk=True around=Soil inspect=none",
+        "thingArgs": [],
+        "ticksGame": 242,
+        "operation": {
+          "OperationId": "op_d32b1d02ae0940809b70ad6bfae07998",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 242
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_PromotionProofs",
+        "ProofCover",
+        "59,63"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCover(System.String)",
+        "result": "COVER cell=59,63 present=False covered=False sprung=False depth=8 cellTerrain=RM_Channel_Superdeep printed=Limestone_Rough matOk=True around=Limestone_Rough inspect=none",
+        "thingArgs": [],
+        "ticksGame": 242,
+        "operation": {
+          "OperationId": "op_86d9a065bd914a60a873b4ee16346860",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 242
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_PromotionProofs",
+        "ProofCover",
+        "60,63"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCover(System.String)",
+        "result": "COVER cell=60,63 present=False covered=False sprung=False depth=8 cellTerrain=RM_Channel_Superdeep printed=Soil matOk=True around=Soil inspect=none",
+        "thingArgs": [],
+        "ticksGame": 242,
+        "operation": {
+          "OperationId": "op_3c37637a72bf4e68ad3721f7c0d07b7e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 41
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 242
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_PromotionProofs",
+        "ProofCover",
+        "59,64"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCover(System.String)",
+        "result": "COVER cell=59,64 present=False covered=False sprung=False depth=8 cellTerrain=RM_Channel_Superdeep printed=Limestone_Rough matOk=True around=Limestone_Rough inspect=none",
+        "thingArgs": [],
+        "ticksGame": 242,
+        "operation": {
+          "OperationId": "op_c0d0ae4bfd934677a54e1a522dd0df9c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 58
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 242
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_PromotionProofs",
+        "ProofCover",
+        "60,64"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCover(System.String)",
+        "result": "COVER cell=60,64 present=False covered=False sprung=False depth=8 cellTerrain=RM_Channel_Superdeep printed=Gravel matOk=True around=Gravel inspect=none",
+        "thingArgs": [],
+        "ticksGame": 242,
+        "operation": {
+          "OperationId": "op_ca79deab16ca45429004647926220dbe",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 42
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 242
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_PromotionProofs",
+        "ProofCover",
+        "59,65"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCover(System.String)",
+        "result": "COVER cell=59,65 present=False covered=False sprung=False depth=8 cellTerrain=RM_Channel_Superdeep printed=Limestone_Rough matOk=True around=Limestone_Rough inspect=none",
+        "thingArgs": [],
+        "ticksGame": 242,
+        "operation": {
+          "OperationId": "op_f2714baad1c34e2f85967929ae1ad4bd",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 41
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 242
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_PromotionProofs",
+        "ProofCover",
+        "60,65"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCover(System.String)",
+        "result": "COVER cell=60,65 present=False covered=False sprung=False depth=8 cellTerrain=RM_Channel_Superdeep printed=Gravel matOk=True around=Gravel inspect=none",
+        "thingArgs": [],
+        "ticksGame": 242,
+        "operation": {
+          "OperationId": "op_d2ace9b45e404d5b82932dfaed41c62d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 58
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 242
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_PromotionProofs",
+        "ProofCover",
+        "59,66"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCover(System.String)",
+        "result": "COVER cell=59,66 present=False covered=False sprung=False depth=8 cellTerrain=RM_Channel_Superdeep printed=Limestone_Rough matOk=True around=Limestone_Rough inspect=none",
+        "thingArgs": [],
+        "ticksGame": 242,
+        "operation": {
+          "OperationId": "op_a6428b0d65e1449a99cd63dc768384a3",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 242
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_PromotionProofs",
+        "ProofCover",
+        "60,66"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCover(System.String)",
+        "result": "COVER cell=60,66 present=False covered=False sprung=False depth=8 cellTerrain=RM_Channel_Superdeep printed=Gravel matOk=True around=Gravel inspect=none",
+        "thingArgs": [],
+        "ticksGame": 242,
+        "operation": {
+          "OperationId": "op_47d6cd556cab4cb1865a55b1c4b884de",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 41
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 242
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_PromotionProofs",
+        "ProofCover",
+        "59,67"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCover(System.String)",
+        "result": "COVER cell=59,67 present=False covered=False sprung=False depth=8 cellTerrain=RM_Channel_Superdeep printed=Gravel matOk=True around=Gravel inspect=none",
+        "thingArgs": [],
+        "ticksGame": 242,
+        "operation": {
+          "OperationId": "op_368f5a0d06814554b4e12c8ec907398b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 42
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 242
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_PromotionProofs",
+        "ProofCover",
+        "60,67"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCover(System.String)",
+        "result": "COVER cell=60,67 present=False covered=False sprung=False depth=8 cellTerrain=RM_Channel_Superdeep printed=Limestone_Rough matOk=True around=Gravel inspect=none",
+        "thingArgs": [],
+        "ticksGame": 242,
+        "operation": {
+          "OperationId": "op_e2c8fa85818a4d538d332b8c1b84fced",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 58
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 242
+        }
+      }
+    },
+    {
+      "tool": "jawa/pawn_force_incapacitate",
+      "args": {
+        "pawn": "Human21266",
+        "action": "downed"
+      },
+      "result": {
+        "success": true,
+        "action": "downed",
+        "allowBleedingWoundsHonoured": true,
+        "downedBefore": false,
+        "deadBefore": false,
+        "downedAfter": true,
+        "deadAfter": false,
+        "changed": true,
+        "hediffCount": 14,
+        "ticksGame": 362,
+        "operation": {
+          "OperationId": "op_86c8d62d27a64210964ac66c25221791",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 362
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_NorthstarProofs",
+        "ProofCaptureDown",
+        "Human21266"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofCaptureDown(System.String)",
+        "result": "VERDICT Allowed held=True prisoner=False cell=60,60",
+        "thingArgs": [],
+        "ticksGame": 362,
+        "operation": {
+          "OperationId": "op_657457d8e8bf41e8b58fbd130ee7b6ff",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 362
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_pawns",
+      "args": {
+        "faction": "hostile"
+      },
+      "result": {
+        "success": true,
+        "message": "9 pawn(s), 5 filtered by faction.",
+        "pawns": [
+          {
+            "id": "Human21253",
+            "name": "Xorkun",
+            "kind": "Mercenary_GunnerTox",
+            "kindDef": "Mercenary_GunnerTox",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Waster",
+            "xenotypeLabel": "waster",
+            "uniqueXenotype": false,
+            "faction": "PirateWaster",
+            "factionName": "Decay Packers",
+            "isPlayer": false,
+            "hostile": true,
+            "x": 61,
+            "z": 57,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human21260",
+            "name": "Ambush",
+            "kind": "Scavenger",
+            "kindDef": "Scavenger",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Waster",
+            "xenotypeLabel": "waster",
+            "uniqueXenotype": false,
+            "faction": "PirateWaster",
+            "factionName": "Decay Packers",
+            "isPlayer": false,
+            "hostile": true,
+            "x": 62,
+            "z": 54,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human21266",
+            "name": "Sty",
+            "kind": "Pirate",
+            "kindDef": "Pirate",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Pigskin",
+            "xenotypeLabel": "pigskin",
+            "uniqueXenotype": false,
+            "faction": "PirateWaster",
+            "factionName": "Decay Packers",
+            "isPlayer": false,
+            "hostile": true,
+            "x": 60,
+            "z": 60,
+            "spawned": true,
+            "dead": false,
+            "downed": true,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human21273",
+            "name": "Skunk",
+            "kind": "Mercenary_GunnerTox",
+            "kindDef": "Mercenary_GunnerTox",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Waster",
+            "xenotypeLabel": "waster",
+            "uniqueXenotype": false,
+            "faction": "PirateWaster",
+            "factionName": "Decay Packers",
+            "isPlayer": false,
+            "hostile": true,
+            "x": 59,
+            "z": 59,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human21281",
+            "name": "Slay",
+            "kind": "Grenadier_Destructive",
+            "kindDef": "Grenadier_Destructive",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Waster",
+            "xenotypeLabel": "waster",
+            "uniqueXenotype": false,
+            "faction": "PirateWaster",
+            "factionName": "Decay Packers",
+            "isPlayer": false,
+            "hostile": true,
+            "x": 60,
+            "z": 60,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human21288",
+            "name": "Rare",
+            "kind": "Mercenary_GunnerTox",
+            "kindDef": "Mercenary_GunnerTox",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Waster",
+            "xenotypeLabel": "waster",
+            "uniqueXenotype": false,
+            "faction": "PirateWaster",
+            "factionName": "Decay Packers",
+            "isPlayer": false,
+            "hostile": true,
+            "x": 55,
+            "z": 64,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human21295",
+            "name": "Happy",
+            "kind": "Mercenary_GunnerTox",
+            "kindDef": "Mercenary_GunnerTox",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Hussar",
+            "xenotypeLabel": "hussar",
+            "uniqueXenotype": false,
+            "faction": "PirateWaster",
+            "factionName": "Decay Packers",
+            "isPlayer": false,
+            "hostile": true,
+            "x": 57,
+            "z": 59,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human21303",
+            "name": "Choker",
+            "kind": "Mercenary_GunnerTox",
+            "kindDef": "Mercenary_GunnerTox",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Waster",
+            "xenotypeLabel": "waster",
+            "uniqueXenotype": false,
+            "faction": "PirateWaster",
+            "factionName": "Decay Packers",
+            "isPlayer": false,
+            "hostile": true,
+            "x": 62,
+            "z": 59,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human21311",
+            "name": "Angel",
+            "kind": "Drifter",
+            "kindDef": "Drifter",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Waster",
+            "xenotypeLabel": "waster",
+            "uniqueXenotype": false,
+            "faction": "PirateWaster",
+            "factionName": "Decay Packers",
+            "isPlayer": false,
+            "hostile": true,
+            "x": 58,
+            "z": 64,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          }
+        ],
+        "returned": 9,
+        "truncated": 0,
+        "totalOnMap": 14,
+        "ticksGame": 362,
+        "operation": {
+          "OperationId": "op_44c49c36dcd84543a8f03f44da9da741",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 362
+        }
+      }
+    },
+    {
+      "tool": "jawa/ordered_job",
+      "args": {
+        "pawnId": "Human21303",
+        "jobDef": "RM_RaiderFetchFallen",
+        "targetAId": "Human21266",
+        "targetBX": 61,
+        "targetBZ": 60
+      },
+      "result": {
+        "success": true,
+        "accepted": true,
+        "interruptibleBefore": true,
+        "beforeJobDef": "Wait_Combat",
+        "requestedJobDef": "RM_RaiderFetchFallen",
+        "afterJobDef": "RM_RaiderFetchFallen",
+        "nowRunningRequested": true,
+        "ticksElapsed": 0,
+        "pausedDuringWait": true,
+        "queueLength": 0,
+        "operation": {
+          "OperationId": "op_52acaa486eda4d6da55d7688cc81efb9",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 16686
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 362
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_NorthstarProofs",
+        "ProofTrap",
+        "Human21266"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofTrap(System.String)",
+        "result": "TRAP descents=2 lastCell=60,60 pos=60,60 held=True last=Human21281@60,60_t=213_fall=11.0",
+        "thingArgs": [],
+        "ticksGame": 362,
+        "operation": {
+          "OperationId": "op_5b6df4dca7024d6c963502e98154f4cc",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 42
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 362
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_NorthstarProofs",
+        "ProofTrap",
+        "Human21281"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofTrap(System.String)",
+        "result": "TRAP descents=2 lastCell=60,60 pos=60,60 held=True last=Human21281@60,60_t=213_fall=11.0",
+        "thingArgs": [],
+        "ticksGame": 362,
+        "operation": {
+          "OperationId": "op_6c360c5dec694f9bb4ec818ea928056f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 74
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 362
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_NorthstarProofs",
+        "ProofTrap",
+        "Human21281"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofTrap(System.String)",
+        "result": "TRAP descents=2 lastCell=60,60 pos=60,60 held=True last=Human21281@60,60_t=213_fall=11.0",
+        "thingArgs": [],
+        "ticksGame": 392,
+        "operation": {
+          "OperationId": "op_c83eeb7a50e04b19b8d59bbfb42c7c68",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 42
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 392
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_NorthstarProofs",
+        "ProofTrap",
+        "Human21266"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofTrap(System.String)",
+        "result": "TRAP descents=2 lastCell=62,59 pos=62,59 held=False last=Human21281@60,60_t=213_fall=11.0",
+        "thingArgs": [],
+        "ticksGame": 392,
+        "operation": {
+          "OperationId": "op_abf13009b5f34fa6b5e6f7dfacd93c82",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 58
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 392
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_NorthstarProofs",
+        "ProofTrap",
+        "Human21281"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofTrap(System.String)",
+        "result": "TRAP descents=2 lastCell=60,60 pos=60,60 held=True last=Human21281@60,60_t=213_fall=11.0",
+        "thingArgs": [],
+        "ticksGame": 422,
+        "operation": {
+          "OperationId": "op_b533c7feee0f41dfa245850631a04087",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 58
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 422
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_NorthstarProofs",
+        "ProofTrap",
+        "Human21266"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofTrap(System.String)",
+        "result": "TRAP descents=2 lastCell=62,59 pos=62,59 held=False last=Human21281@60,60_t=213_fall=11.0",
+        "thingArgs": [],
+        "ticksGame": 422,
+        "operation": {
+          "OperationId": "op_b8fe04418e294f08b76704d9355b0154",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 42
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 422
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_NorthstarProofs",
+        "ProofTrap",
+        "Human21281"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofTrap(System.String)",
+        "result": "TRAP descents=2 lastCell=60,60 pos=60,60 held=True last=Human21281@60,60_t=213_fall=11.0",
+        "thingArgs": [],
+        "ticksGame": 452,
+        "operation": {
+          "OperationId": "op_c69f9848b1b84df8b8aadbdd49c162b7",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 42
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 452
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_NorthstarProofs",
+        "ProofTrap",
+        "Human21266"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofTrap(System.String)",
+        "result": "TRAP descents=2 lastCell=62,59 pos=62,59 held=False last=Human21281@60,60_t=213_fall=11.0",
+        "thingArgs": [],
+        "ticksGame": 452,
+        "operation": {
+          "OperationId": "op_f8251db7c6a247dd984425722ffce554",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 452
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_NorthstarProofs",
+        "ProofTrap",
+        "Human21281"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofTrap(System.String)",
+        "result": "TRAP descents=2 lastCell=60,60 pos=60,60 held=True last=Human21281@60,60_t=213_fall=11.0",
+        "thingArgs": [],
+        "ticksGame": 482,
+        "operation": {
+          "OperationId": "op_fc9400683b37489d8c1ac37f327f87bd",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 58
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 482
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_NorthstarProofs",
+        "ProofTrap",
+        "Human21266"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofTrap(System.String)",
+        "result": "TRAP descents=2 lastCell=62,59 pos=62,59 held=False last=Human21281@60,60_t=213_fall=11.0",
+        "thingArgs": [],
+        "ticksGame": 482,
+        "operation": {
+          "OperationId": "op_90775424438048a59652d554c5a06a77",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 482
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_NorthstarProofs",
+        "ProofTrap",
+        "Human21281"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofTrap(System.String)",
+        "result": "TRAP descents=2 lastCell=60,60 pos=60,60 held=True last=Human21281@60,60_t=213_fall=11.0",
+        "thingArgs": [],
+        "ticksGame": 512,
+        "operation": {
+          "OperationId": "op_eac2c728a8df4dcaa5229239261adaba",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 59
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 512
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_NorthstarProofs",
+        "ProofTrap",
+        "Human21266"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofTrap(System.String)",
+        "result": "TRAP descents=2 lastCell=62,59 pos=62,59 held=False last=Human21281@60,60_t=213_fall=11.0",
+        "thingArgs": [],
+        "ticksGame": 512,
+        "operation": {
+          "OperationId": "op_3d49d56f584a47edbc27b9f01f604321",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 42
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 512
+        }
+      }
+    }
+  ],
+  "site": {
+    "site": "calm",
+    "save": "RM_TestSite_calm_v3",
+    "utc": "2026-11-23T17:19:44Z",
+    "problems": [],
+    "load_s": 5.4,
+    "quietMap": {
+      "profile": "quiet_site",
+      "suite": "isolated",
+      "row": "test_site_saves_load_calm",
+      "topic": null,
+      "controls": [
+        {
+          "name": "threat_structures_cleared",
+          "what": "hostile threat structures vanished at setup (vitals classifier: turret, spawner, dormant, condition causer, non-humanlike faction); keep_defs spared",
+          "hides": "hive/infestation/mech-cluster interactions; insect-faction behaviour on the site",
+          "readBack": {
+            "removed": [],
+            "threatsAfter": 0,
+            "kept": 0,
+            "errors": []
+          }
+        },
+        {
+          "name": "hostiles_removed",
+          "what": "hostile pawns present at setup removed by Vanish (no death action, no corpse)",
+          "hides": "combat interactions with the mod's things",
+          "readBack": {
+            "acted": 0,
+            "residue": []
+          }
+        },
+        {
+          "name": "proximity_letters_sent",
+          "what": "every CompProximityLetter marked sent (the mapgen void monolith's 'Fallen monolith')",
+          "hides": "the Anomaly monolith discovery letter and any mod building's proximity letter",
+          "readBack": {
+            "letters": [
+              [
+                "VoidMonolith",
+                "Fallen monolith",
+                true
+              ]
+            ],
+            "unsentAfter": 0
+          }
+        },
+        {
+          "name": "modal_broker",
+          "what": "explicit window handlers only (MODAL_HANDLERS); an unknown force-pause window is CAPTURED and blocks the row, never closed blindly; the same window still open after its handler escalates",
+          "hides": "the handled dialog's other choices (VEF new-faction: 'Do nothing' means the faction is not spawned)",
+          "readBack": {
+            "handled": [],
+            "unknown": []
+          }
+        }
+      ],
+      "notSuppressed": [
+        "active quests and their parts (never ended by default: ending a quest changes the world)",
+        "scenario parts (ScenPart_CreateIncident ticks outside the storyteller)",
+        "existing game conditions, map/world/game components and mod tickers",
+        "hives and other pawn-spawning structures, births, egg hatching, breeders",
+        "pending drop pods / shuttles / transporters, caravans and world pawns arriving",
+        "weather transitions, fires, existing hostile behaviour"
+      ],
+      "keepDefs": [],
+      "events": [],
+      "problems": [],
+      "verify": null,
+      "arrivals": [],
+      "note": "enableStoryteller is not saved with the game: re-apply after any load"
+    },
+    "sky": {
+      "weather": [
+        {
+          "after": "Clear",
+          "ok": true
+        },
+        {
+          "after": "Clear",
+          "ok": true
+        }
+      ],
+      "extinguished": 0,
+      "strayFires": 0,
+      "verified": true,
+      "error": null
+    },
+    "check": {
+      "site": "calm",
+      "utc": "2026-11-23T17:19:51Z",
+      "problems": [],
+      "map": {
+        "tile": 112579,
+        "mapId": 0,
+        "sizeX": 250,
+        "sizeZ": 250,
+        "mapBiome": "AridShrubland",
+        "outdoorTempNow": 13.9428368
+      },
+      "foggedCells": 0,
+      "triggers": 0,
+      "danger": [],
+      "ruins": 0,
+      "hostiles": [],
+      "threatStructures": [],
+      "fires": 0,
+      "weather": {
+        "current": "Clear",
+        "rainRate": 0.0
+      },
+      "colonists": [
+        [
+          "Human475",
+          false
+        ],
+        [
+          "Human478",
+          false
+        ],
+        [
+          "Human483",
+          false
+        ]
+      ],
+      "verified": true
+    },
+    "ready_s": 7.5,
+    "verified": true
+  },
+  "scene": "scene_pit_trap_raid",
+  "rows": [
+    {
+      "id": "TP_held_stay_held",
+      "status": "FAIL",
+      "kind": "MOD",
+      "detail": "{'held': ['Human21266', 'Human21281'], 'left': {'Human21266': {'tick': 392, 'at': (62, 59), 'poll': 1, 'trap': 'TRAP descents=2 lastCell=62,59 pos=62,59 held=False last=Human21281@60,60_t=213_fall=11.0', 'fate': 'last damage Blunt at tick 362, no kill event'}}, 'polls': 6, 'width': 2, 'length': 8, 'strip': 1}"
+    }
+  ],
+  "raidFaction": {
+    "faction": "PirateWaster",
+    "arrived": 9,
+    "tried": [
+      [
+        "PirateWaster",
+        true,
+        9
+      ]
+    ]
+  },
+  "coversAfterFall": {
+    "59,60": "nt=False covered=False sprung=False depth=8 cell",
+    "60,60": "nt=False covered=False sprung=False depth=8 cell",
+    "59,61": "nt=False covered=False sprung=False depth=8 cell",
+    "60,61": "nt=False covered=False sprung=False depth=8 cell",
+    "59,62": "nt=False covered=False sprung=False depth=8 cell",
+    "60,62": "nt=False covered=False sprung=False depth=8 cell",
+    "59,63": "nt=False covered=False sprung=False depth=8 cell",
+    "60,63": "nt=False covered=False sprung=False depth=8 cell",
+    "59,64": "nt=False covered=False sprung=False depth=8 cell",
+    "60,64": "nt=False covered=False sprung=False depth=8 cell",
+    "59,65": "nt=False covered=False sprung=False depth=8 cell",
+    "60,65": "nt=False covered=False sprung=False depth=8 cell",
+    "59,66": "nt=False covered=False sprung=False depth=8 cell",
+    "60,66": "nt=False covered=False sprung=False depth=8 cell",
+    "59,67": "nt=False covered=False sprung=False depth=8 cell",
+    "60,67": "nt=False covered=False sprung=False depth=8 cell"
+  },
+  "orderFetch": {
+    "fallen": "Human21266",
+    "at": [
+      60,
+      60
+    ],
+    "lip": [
+      61,
+      60
+    ],
+    "rescuer": "Human21303",
+    "reply": {
+      "success": true,
+      "accepted": true,
+      "interruptibleBefore": true,
+      "beforeJobDef": "Wait_Combat",
+      "requestedJobDef": "RM_RaiderFetchFallen",
+      "afterJobDef": "RM_RaiderFetchFallen",
+      "nowRunningRequested": true,
+      "ticksElapsed": 0,
+      "pausedDuringWait": true,
+      "queueLength": 0,
+      "operation": {
+        "OperationId": "op_52acaa486eda4d6da55d7688cc81efb9",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 16686
+      },
+      "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 362
+      }
+    }
+  },
+  "holdTrace": [
+    "t=362 C Human21239@58,70:FleeAndCower>69,76 | C Human21250@60,70:GotoWander>49,59 | F Human21253@61,57:Wait_Combat>- | F Human21273@59,59:Goto>46,65 | F Human21295@57,59:Wait_Combat>- | F Human21303@62,59:RM_RaiderFetchFallen>60,60 | F Human21311@58,64:AttackMelee>58,70 | H Human21266@60,60:None>- held=True | H Human21281@60,60:Wait>- held=True ladders=[]",
+    "t=392 C Human21239@59,70:FleeAndCower>69,76 | C Human21250@60,70:FleeAndCower>65,86 | F Human21253@61,57:Wait_Combat>- | F Human21273@59,59:Goto>46,65 | F Human21295@57,59:Wait_Combat>- | F Human21303@61,59:Goto>62,59 | F Human21311@58,65:AttackMelee>59,70 | H Human21266@62,59:None>- held=False | H Human21281@60,60:Wait>- held=True ladders=[]",
+    "t=422 C Human21239@61,70:FleeAndCower>69,76 | C Human21250@61,70:FleeAndCower>65,86 | F Human21253@61,57:Wait_Combat>- | F Human21273@59,59:Goto>46,65 | F Human21295@57,59:Wait_Combat>- | F Human21303@63,59:Goto>79,60 | F Human21311@58,67:AttackMelee>61,70 | H Human21266@62,59:Wait_Downed>- held=False | H Human21281@60,60:Wait>- held=True ladders=[]",
+    "t=452 C Human21239@62,70:FleeAndCower>69,76 | F Human21253@61,57:Wait_Combat>- | F Human21273@59,59:Goto>46,65 | F Human21295@57,59:Wait_Combat>- | F Human21311@58,68:AttackMelee>61,71 | H Human21266@62,59:Wait_Downed>- held=False | H Human21281@60,60:Wait>- held=True ladders=[]",
+    "t=482 C Human21239@63,70:FleeAndCower>69,76 | F Human21253@61,57:Wait_Combat>- | F Human21273@59,59:Goto>46,65 | F Human21295@57,59:Wait_Combat>- | F Human21311@60,69:AttackMelee>61,72 | H Human21266@62,59:Wait_Downed>- held=False | H Human21281@60,60:Wait>- held=True ladders=[]",
+    "t=512 F Human21253@61,57:Wait_Combat>- | F Human21273@59,59:Goto>46,65 | F Human21295@57,59:Wait_Combat>- | F Human21311@60,70:AttackMelee>61,73 | H Human21266@62,59:Wait_Downed>- held=False | H Human21281@60,60:Wait>- held=True ladders=[]"
+  ],
+  "holdLeft": {
+    "Human21266": {
+      "tick": 392,
+      "at": [
+        62,
+        59
+      ],
+      "poll": 1,
+      "trap": "TRAP descents=2 lastCell=62,59 pos=62,59 held=False last=Human21281@60,60_t=213_fall=11.0",
+      "fate": "last damage Blunt at tick 362, no kill event"
+    }
+  },
+  "holdHeld": [
+    "Human21266",
+    "Human21281"
+  ],
+  "status": "FAIL",
+  "error": "AssertionError(\"rows not all PASS: [('TP_held_stay_held', 'FAIL')]\")",
+  "finished": 1795454428.0280442
+}

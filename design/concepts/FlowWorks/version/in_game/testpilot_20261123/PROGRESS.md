@@ -139,3 +139,20 @@ Host: ArchBig (archmagi), bridge taken 06:06 PST 2026-11-23. Clone: .../RIMMANDR
 ## The melee rule of this sitting was replaced (owner ruling, 2026-11-23, RIMMANDRAKE_ENACT_PIT_MELEE_REACH_EQUALS_CLIMB_SIZE_DECIDES)
 - "No melee across a pit's edge" (3 m pit rooms, both ways, every size) is gone. Melee reach is now the climb criterion:
   `design/RimMandrake/relative_depth_climb_design_2026-10-12.md` §8.8. Capture from the rim is unchanged. Live: UNRUN.
+## 10:25-11:15 PST the fix, both ways
+- d15dd762b231: RM_RaiderFetchFallen walks ONTO the fallen man's square (OnCell) and lifts only when
+  RM_RaiderTrenchMath.FetchLiftAllowed(rescuer depth, fallen depth, climb limit); a refused lift is not handed out for 250 ticks.
+- Live, Steve1 (retaken, guard gen 2431, FlowWorks DLL deployed, restart 41 s): ordered fetch BEFORE: lifted out 2 of 2 (t21, t22);
+  AFTER: 0 of 2 (g1 job ended at once, g2 job ended inside 60 ticks; the man stayed held). sc_fetch_fallen PASS 2 of 2 (3 m, ladder,
+  brought out). sc_pit_trap_raid PASS 3 of 3 before the fix (p1-p3, new row) and 3 of 3 after (q1-q3). Player.log after the fix: 0
+  exception lines, 0 "Resolved path returned no nodes" in 7 scene runs.
+- C# case RaiderFetch_no_lift_from_the_rim_of_a_deep_pit: FAIL with "return true" planted, 11/11 on the fix
+  (selftest_flowworks_stock.py --only 'RaiderFetch_*,RaiderTrench_*'). Four earlier attempts timed out waiting on the shared
+  build lock (other FlowWorks runs), not on the case.
+- Filed: RIMMANDRAKE_TRACE_FLOWWORKS_RAIDER_IN_OPEN_PIT_WALKED_OUT (the t6 stray raider; cause unread).
+- Steve1 released 10:50 PST, left UP on the flowworks tier (the lane swaps tiers itself; ModsConfig backup
+  deployed/config/ModsConfig.before-tier-flowworks.xml on Steve). Keeper save TP_FETCH_LIFTS_FROM_RIM_4M.rws:
+  D:\ClaudeWork\rimmandrake\testpilot_pit_capture_faults and Steve1's Saves folder.
+- NOT done: the staleness theory V1 (why TryFetch's CanReach said yes right after the lids fell) is unproven; the fix does not
+  depend on it. The big-pit owner look on ArchBig was not restaged (ArchBig is driven by the ExplosiveKnockback visit).
+- Surprise book: biome AridShrubland (jawa/map_info, live). 1 filed, 1 real_bug, 1 explained.

@@ -2035,12 +2035,18 @@ def _pit_trap_raid(S):
         # RIMMANDRAKE_TRACE_FLOWWORKS_HELD_RAIDER_LEFT_4M_TRENCH_ONCE: a raider the 4 m trench holds, alive and no prisoner,
         # read on a square outside the pit (seen once, 2026-11-21, on the old 1-wide staging; how he left was never read).
         # Red for that: the detail carries the last three 30-tick trace lines before the read that found him out.
-        # Test Pilot 2026-11-23 (Steve1, build 1c053b325bc5): 0 of 31 held raiders left in 15 runs of 1,500 ticks with the
-        # raid on the map (design/concepts/FlowWorks/version/in_game/testpilot_20261123/PROGRESS.md), so the cause is unnamed.
-        # RULED OUT there, each by its own run: a comrade's ladder (no ladder was ever read by the trench; 4 m is past a
+        # CAUSE (Test Pilot 2026-11-23, Steve1, measured, fixed d15dd762b231): a comrade's fetch. A raider who falls and is
+        # DOWNED on the spikes was picked up by a free raider standing on the rim: RM_RaiderFetchFallen's carry walked to
+        # ClosestTouch, so the rim was near enough, and no ladder was ever set (run t18 caught it in the wild 1 run in 18;
+        # ordered straight on a free raider it lifted the man out within 30 ticks, 2 of 2; on the fix 0 of 2, and the 3 m
+        # fetch scene still brings its fallen out by the ladder, 2 of 2). The check that asks it on demand:
+        # design/concepts/FlowWorks/version/in_game/testpilot_20261123/trench.py <out> 2 300 --down-held --order-fetch
+        # (row TP_held_stay_held); the C# case is RaiderFetch_no_lift_from_the_rim_of_a_deep_pit.
+        # RULED OUT, each by its own run: a ladder (none was read by the trench on any 30-tick read; 4 m is past a
         # portable ladder), a kidnap job on a held raider beside a colonist downed on the strip (the free raiders took the
         # colonists; the held stayed), the raid's flight (the held stayed when every free raider left the map), the old
-        # across-the-gap staging (held raiders walked the trench floor to hit the wall at its end and stayed held).
+        # across-the-gap staging (held raiders walked the trench floor to hit the wall at its end and stayed held), a
+        # standing held raider (31 of 31 stayed for 1,500 ticks: only a downed one is carried).
         S.row('PTR_held_stay_in_the_trench', bool(caught) and not any('out' in c for c in caught),
               [c['out'] for c in caught if 'out' in c] or 'every captive read stood on a pit square until taken (%d trace lines)'
               % len(ptrace), unmeasured=not caught or all(c['before'] is None for c in caught))
