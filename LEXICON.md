@@ -1,8 +1,11 @@
 # LEXICON — this project's terminology
 
-Project tier: it narrows or extends the fleet's `~/dev/Lodestar/LEXICON.md` and **wins on
-collision** — say so loudly when one happens. A term here is authorization to use it when
-talking to Mandrake.
+This file is the project tier. It narrows or extends the fleet's `~/dev/Lodestar/LEXICON.md`.
+
+- If a term here and a term in the fleet file collide, the term here **wins on
+  collision**. Then say so loudly.
+- A term here is authorization to use the term when you talk to Mandrake.
+- In the tables, "he", "him" and "his" mean Mandrake.
 
 ## Who does the work
 

@@ -1,12 +1,15 @@
 # STRUCTURE.md — where things live, and why
 
-_The map of the repo. Read it once to learn which tier a file belongs to, then read
-that tier's own `README.md`, which is authoritative about what belongs inside it._
+_This file is the map of the repo. Read the map once to learn which tier a file belongs to. Then read
+that tier's own `README.md`. The tier's `README.md` is authoritative about what belongs inside the tier._
 
-**This file names homes. It does not restate a tier's rules and it carries no
-counts** — a count copied out of `ls` drifts within hours and never announces that
-it is wrong. Every path below was checked against the tree; if one is dead, fix it
-here in the same commit.
+**This file names homes.** A home is the folder or file where one kind of thing belongs.
+
+- This file does not restate a tier's rules, and it carries no counts. A count copied out of `ls` drifts within hours
+  and never announces that the count is wrong.
+- On 2026-11-23 a run checked the paths below against the tree. The line of an absent path says that it is absent. A
+  gitignored path can be absent from one clone and exist in another.
+- If a path is dead, fix the path here in the same commit.
 
 ---
 
@@ -14,25 +17,31 @@ here in the same commit.
 
 | Path | What it is |
 |---|---|
-| `CLAUDE.md` | Standing operating rules. **Pinned** — Claude Code auto-loads the root copy and only the root copy. |
-| `GLOBAL_CLAUDE.md` | Tracked mirror of `~/.claude/CLAUDE.md`, kept beside it for the same reason. |
-| `.gitignore` | The payload rules. Read it before adding a binary. |
-| `.claude/` | **Pinned by the harness.** `hooks/` (`block_blanket_git_stage.py`, `set_session_title.py`), `settings.json`, `skills/` symlinks, gitignored `session_roles/`. |
-| `skills/` | Skill sources — the directory *is* the skill. **Pinned**; see the warning below. |
+| `CLAUDE.md` | Standing operating rules. **Pinned** (must stay at the root): Claude Code auto-loads the root copy and only the root copy. |
+| `GLOBAL_CLAUDE.md` | Tracked mirror of `~/.claude/CLAUDE.md`, kept beside `CLAUDE.md` for the same reason. The mirror is out of date (`design/specs/2026-11-19-plain-english-rule-docs/census.md`). |
+| `.gitignore` | The payload rules: which files git does not track. Read it before you add a binary. |
+| `.claude/` | **Pinned by the harness.** Holds `hooks/` (for example `block_blanket_git_stage.py`, `set_session_title.py`), `settings.json`, `skills/` symlinks, and the gitignored `session_roles/`. |
+| `skills/` | Skill sources. The directory *is* the skill. **Pinned**; see the warning below this table. |
 | `design/` `src/` `deployed/` `observed/` `vendor/` `research/` `infrastructure/` | The seven tiers. |
 
-🔴 **The `skills/` pin is the dangerous one.** Five entries in `.claude/skills/` are
-**relative symlinks** into it. Git stores a symlink as its literal target string, so
-a `git mv` does **not** update them — the links break with **no error at all** and
-the harness silently stops offering those skills. Moving `skills/` is gated on the
-owner; if that gate opens, the `git mv` and the five `ln -sfn` land in one commit.
+This table is not complete. On 2026-11-23 the root also held `GUIDING_PRINCIPLES.md`, `PURPOSE.md`, `README.md`,
+`LEXICON.md`, `world/`, `tickets/`, `conversations/`, `Transient/` and other entries. The other entries have no row here.
+
+🔴 **The `skills/` pin is the dangerous one.**
+
+- The entries in `.claude/skills/` are **relative symlinks** into `skills/`. Git stores a symlink as its literal target
+  string. So a `git mv` does **not** update the symlinks.
+- If someone moves `skills/`, the links break with **no error at all**. Then the harness silently stops offering those
+  skills.
+- A move of `skills/` is gated on the owner. If that gate opens, land the `git mv` and an `ln -sfn` for each entry in
+  one commit.
 
 ---
 
 ## The seven tiers
 
-Every tracked path is in exactly one. The questions are different, and that is the
-whole design: **intent, source, installed, measured, theirs, studied, ourselves.**
+Every tracked path is in exactly one tier, except the root entries outside the seven tiers. Each tier answers a
+different question. The seven questions are the whole design: **intent, source, installed, measured, theirs, studied, ourselves.**
 
 | Tier | Answers | Its rule lives in |
 |---|---|---|
@@ -44,136 +53,142 @@ whole design: **intent, source, installed, measured, theirs, studied, ourselves.
 | `research/` | What did *someone else* write that we studied? | `research/README.md` |
 | `infrastructure/` | How does the *project* run itself? | `infrastructure/README.md` |
 
-The four boundaries crossed by mistake:
+Agents cross these four boundaries by mistake:
 
-- **`design/` vs `observed/`** — reasoning stays in design; a *conclusion* only a
-  running game could settle is an observation.
-- **`src/` vs `deployed/`** — we wrote it vs it is installed. They drift, and the
-  drift is the point of tracking both.
-- **`vendor/` vs `research/`** — installed vs merely studied. A mod we run is
-  vendor; a mod we read about and rejected is research.
-- **`observed/` vs a script's own output** — map-synth PNGs and art-bench
-  intermediates are *our* tool's artifacts, not a game's behaviour. They stay
-  gitignored beside their generator in `src/`.
+- **`design/` vs `observed/`**: reasoning stays in `design/`. A *conclusion* that only a running game could settle is an
+  observation.
+- **`src/` vs `deployed/`**: we wrote the first; the second is installed. The two drift. The drift is why we track both.
+- **`vendor/` vs `research/`**: the first is installed; the second is merely studied. A mod that we run is vendor. A mod
+  that we read about and rejected is research.
+- **`observed/` vs a script's own output**: map-synth PNGs and art-bench intermediates are artifacts of *our* tools. These
+  artifacts are not a game's behaviour. The artifacts stay gitignored beside their generator in `src/`.
 
 ### The `Jawa/` vs `RimMandrake/` split
 
-`design/`, `src/` and `research/` carry it. `deployed/`, `observed/` and
-`infrastructure/` **do not**, deliberately — an installed config, a measurement and
-a seat definition belong to something other than our reuse category.
+- `design/`, `src/` and `research/` carry the split. In `src/`, new work uses the three naming tiers
+  (`design/NAMING_SCHEME_PLAN.md`): `src/RimMandrake/`, `src/RimStarWars/` and `src/RimUtinni/`.
+- `deployed/`, `observed/` and `infrastructure/` **do not** carry the split, deliberately. An installed config, a
+  measurement and a seat definition belong to something other than our reuse category.
 
 > **The owner's promotion test:** *"Am I likely to want this in a totally unrelated
 > playthrough, or will I have to fundamentally remake it — not just reconfigure
 > it?"* **Reconfigure → `RimMandrake/`. Remake → `Jawa/`.**
 
-⚠️ **When unsure, `Jawa/`.** Promoting later is a `git mv`; discovering that a
-"generic" doc silently assumed Star Wars is a debugging session.
+⚠️ **When unsure, `Jawa/`.**
+
+To promote a file later costs only a `git mv`. If a "generic" doc silently assumed Star Wars, the cost is a debugging
+session.
 
 ---
 
 ## `design/` — intent
 
-**Not:** measurements (→ `observed/`), mod operating wisdom (→ `vendor/wisdom/`),
+**Not here:** measurements (→ `observed/`), mod operating wisdom (→ `vendor/wisdom/`),
 material we did not write (→ `research/`), **anything a machine generates**.
 
 | Path | Holds |
 |---|---|
-| `design/Jawa/concept.md`, `build_plan.md` | The campaign premise and the build order above everything else. |
+| `design/Jawa/concept.md`, `build_plan.md` | The campaign premise, and the build order above everything else. |
 | `design/Jawa/worldbuilding/` | The world, ship, xenotype, factions, biomes, droids, water and physics doctrine. |
-| `design/Jawa/worldbuilding/data/` | Hand-kept data backing those specs (`mech_inventory.json`). |
-| `design/Jawa/worldbuilding/review/` | HTML registers rendered for owner review — biomes, species, mechs, anomalies. |
-| `design/Jawa/worldbuilding/ship_build/` | The deck plan as machine-readable tiles and exported layouts. |
+| `design/Jawa/worldbuilding/data/` | Hand-kept data that backs those specs (`mech_inventory.json`). |
+| `design/Jawa/worldbuilding/review/` | HTML registers rendered for owner review: biomes, species, mechs, anomalies. |
+| `design/Jawa/worldbuilding/ship_build/` | The deck plan as machine-readable tiles, and exported layouts. |
 | `design/Jawa/mods/` | Adoption, bans, cherry-pick lists, the armoury keeplist, mod config rulings. |
-| `design/Jawa/art/` | Art briefs, the graphics-overhaul protocol, the salvage palette, scan/filter scripts. |
-| `design/RimMandrake/` | **Method, not content** — faction authoring, save-authoring pipeline, map authoring, balance paradigm, the LLM/voice stack, `rimbridge.md`. |
+| `design/Jawa/art/` | Art briefs, the graphics-overhaul protocol, the salvage palette, scan and filter scripts. |
+| `design/RimMandrake/` | **Method, not content**: faction authoring, save-authoring pipeline, map authoring, balance paradigm, the LLM and voice stack, `rimbridge.md`. |
 
 ---
 
 ## `src/` — source we author
 
-**Not:** third-party source (→ `vendor/`), build outputs and copied config
-(→ `deployed/`). A script's run-artifacts stay gitignored beside it, never in
+**Not here:** third-party source (→ `vendor/`), build outputs and copied config
+(→ `deployed/`). A script's run-artifacts stay gitignored beside the script, never in
 `observed/`.
 
 | Path | Holds |
 |---|---|
-| `src/README.md` | The tier rule and the `RimMandrake.<name>` / `Jawa.<name>` naming rule for **new** work only. |
-| `src/DEPLOY_HOLD.txt` | The deploy interlock — read it before `--apply`. |
-| `src/Jawa/` | Campaign mods: `Jawa_Patches`, `Jawa_Armoury`, `Jawa_Doctrine`, `JawaVoice`, `JawaIonWeapons`, `DesertVehicleReskin`, plus `art_bench/` (gitignored `_review/`). |
-| `src/RimMandrake/Utils/` | The Python tooling — `deploy_custom_mods.py`, `harvest_log.py`, `refresh.py`, `check_refs.py`, `set_agent_window.sh`, `show.sh`, def/save/animal inventory scripts. |
+| `src/README.md` | The tier rule, and the `RimMandrake.<name>` / `Jawa.<name>` naming rule for **new** work only. For a new name, `CLAUDE.md` now names `design/NAMING_SCHEME_PLAN.md`. |
+| `src/DEPLOY_HOLD.txt` | The deploy interlock: the files that are held back from a deploy on purpose. Read it before `--apply`. |
+| `src/Jawa/` | The old home of the campaign mods `Jawa_Patches`, `Jawa_Armoury`, `Jawa_Doctrine`, `JawaVoice`, `JawaIonWeapons`, `DesertVehicleReskin`. None of the six is here now (2026-11-23). `Jawa_Armoury` is now `src/RimStarWars/Armoury/`, and `Jawa_Doctrine` is now `src/RimUtinni/Doctrine/`. `JawaVoice`, `JawaIonWeapons` and `DesertVehicleReskin` are in `src/RimStarWars/`. `src/Jawa/` still holds `art_bench/` (gitignored `_review/`). |
+| `src/RimMandrake/Utils/` | The Python tools: `deploy_custom_mods.py`, `harvest_log.py`, `refresh.py`, `check_refs.py`, `set_agent_window.sh`, `show.sh`, and the def, save and animal inventory scripts. |
 | `src/RimMandrake/bridgetools/` | The RimBridge companion assembly (gitignored `artifacts/`). |
-| `src/RimMandrake/mapsynth/` | Ship and map layout synthesis; `runs/` output is gitignored. |
+| `src/RimMandrake/mapsynth/` | Ship and map layout synthesis. The `runs/` output is gitignored. |
 | `src/RimMandrake/RimDefDump/` | The def-dump mod that produces `observed/**/dumps/`. |
-| `src/RimMandrake/MissingArtFixes/`, `WreckedMachines/` | Generic mods — a stranger owning the donor mod could use them unchanged. |
-| `src/RimMandrake/*Fix/` | Per-mod art and orientation fixes: `BlastDoorFrameAsyncFix`, `CereanManeFix`, `GravshipAstronautFix`, `KotORBandolierNorthFix`, `PhytokinBarkHeadFix`, `ResearchKitEastFix`, `SauridFrillFix`, `ToolBeltFix`. |
-| ~~`src/RimMandrake/JawaSeaShaper/`~~ | ⛔ DEAD — owner ruled 2026-08-19, all in-game worldgen hooks stripped; the route is the live bridge, see `ASHKARR_WORLD_DEFINITION.md` §12. The directory is DELETED from the repo, from the game's Mods folder and from `ModsConfig.xml`. Do not recreate it. |
+| `src/RimMandrake/MissingArtFixes/`, `WreckedMachines/` | Generic mods: a stranger who owns the donor mod could use them unchanged. `MissingArtFixes/` is absent (2026-11-23): commit `78b6c1fb23` retired it. |
+| `src/RimMandrake/*Fix/` | Per-mod art and orientation fixes: `BlastDoorFrameAsyncFix`, `CereanManeFix`, `GravshipAstronautFix`, `KotORBandolierNorthFix`, `PhytokinBarkHeadFix`, `ResearchKitEastFix`, `SauridFrillFix`, `ToolBeltFix`. No `*Fix/` folder is here now (2026-11-23). `BlastDoorFrameAsyncFix` and `CereanManeFix` are in `src/RimStarWars/StarWarsPatches/Source/`. `KotORBandolierNorthFix` is in `src/RimStarWars/`. `GravshipAstronautFix`, `PhytokinBarkHeadFix`, `ResearchKitEastFix` and `ToolBeltFix` are in `src/RimMandrake/MandrakePatches/Source/`. `SauridFrillFix` has no folder in `src/`. |
+| ~~`src/RimMandrake/JawaSeaShaper/`~~ | ⛔ DEAD. Owner ruled 2026-08-19: all in-game worldgen hooks are stripped. The route is the live bridge; see `ASHKARR_WORLD_DEFINITION.md` §12. The directory is DELETED from the repo, from the game's Mods folder and from `ModsConfig.xml`. Do not recreate it. |
 
 ---
 
 ## `deployed/` — what the install is configured with
 
-**Not:** source (→ `src/`), third-party source (→ `vendor/`), anything a running
+**Not here:** source (→ `src/`), third-party source (→ `vendor/`), anything a running
 game produced (→ `observed/`).
 
 | Path | Holds |
 |---|---|
-| `deployed/config/` | Copied game config, stamped and diffable — `ModsConfig.*.xml` snapshots and per-mod `Mod_<id>_<Name>.*.xml` settings. |
+| `deployed/config/` | Copied game config, stamped and diffable: `ModsConfig.*.xml` snapshots and per-mod `Mod_<id>_<Name>.*.xml` settings. |
 
-⏳ **`deployed/mods/` and `deployed/MODLIST.md` DO NOT EXIST.** The charter
-describes them; the modlist needs `harvest_log.py --emit-modlist`. Do not cite
-either as though it exists.
+⏳ **`deployed/mods/` and `deployed/MODLIST.md` DO NOT EXIST.**
+
+- The charter describes the two.
+- The modlist needs `harvest_log.py --emit-modlist`.
+- Do not cite either one as though it exists.
 
 ---
 
 ## `observed/` — what a running game did
 
-**Not:** tool run-artifacts (→ beside their generator in `src/`), copied game config
-(→ `deployed/config/`). Per stamp, **only `MANIFEST.json` is tracked**; saves, def
-dumps, `Player.log` and screenshots are gitignored and stay on disk.
+**Not here:** tool run-artifacts (→ beside their generator in `src/`), copied game config
+(→ `deployed/config/`).
+
+- For each stamp (dated folder), **only `MANIFEST.json` is tracked**.
+- Saves, def dumps, `Player.log` and screenshots are gitignored and stay on disk.
 
 | Path | Holds |
 |---|---|
-| `observed/2026-08-13/dumps/` | 🔴 **The current generated-data home, not a snapshot.** The def-name and mod manifests every offline validator joins against. |
-| `observed/<date>/<subject>/` | Per-experiment captures — a `README.md` and the artefacts one run produced. |
-| `observed/LIVE.md` | Facts you would otherwise need a running game to learn. Published by CHECK. |
+| `observed/2026-08-13/dumps/` | 🔴 **The current generated-data home, not a snapshot.** The def-name and mod manifests every offline validator joins against. This path is absent from the tree and from the bench clone (2026-11-23). `CLAUDE.md` names `observed/inventory/DefDump_OFFICIAL/` as the only design target; that path is gitignored, and is not in this clone or the bench clone either. |
+| `observed/<date>/<subject>/` | Captures of one experiment: a `README.md`, and the artefacts that one run produced. |
+| `observed/LIVE.md` | Facts you would otherwise need a running game to learn. Published by CHECK, a retired seat. |
 
-⚠️ **Judge a directory here by its inbound references, never by how old its stamp
-looks.** Auditing on the date alone deletes live data.
+⚠️ **Judge a directory here by its inbound references, never by how old its stamp looks.**
+
+- An audit on the date alone deletes live data.
 
 ---
 
 ## `vendor/` — Steam content that is not ours
 
-**Not:** our patches against their mods (→ `src/`), candidates we have not adopted
-(→ `research/`). We track *that* we have a payload and which version — never bytes.
+**Not here:** our patches against their mods (→ `src/`), candidates we have not adopted
+(→ `research/`). We track *that* we have a payload, and which version. We never track the bytes.
 
 | Path | Holds |
 |---|---|
 | `vendor/mod_sources/` | Third-party mod source. **Gitignored, ~430 MB, and it stays that way.** |
 | `vendor/salvage/` | Salvaged stray game assemblies, stamped by date. |
-| `vendor/wisdom/` | Ours, but *about their mod* — `benign_log_errors.md` (read §0 first), `def_override_clusters.md`, `Factory_lore.md`, `cqf_quest_types_explainer.md`. |
+| `vendor/wisdom/` | Ours, but *about their mod*: `benign_log_errors.md` (read §0 first), `def_override_clusters.md`, `Factory_lore.md`, `cqf_quest_types_explainer.md`. |
 
 ---
 
 ## `research/` — material we did not author
 
-**Not:** content installed in the game (→ `vendor/`), what *we* intend (→ `design/`).
-Payloads are gitignored; **the teardown is the work product.**
+**Not here:** content installed in the game (→ `vendor/`), what *we* intend (→ `design/`).
+Payloads are gitignored; **the teardown is the work product.** A teardown is our written study of the payload.
 
 | Path | Holds |
 |---|---|
-| `research/Jawa/` | Star Wars reference — the visual dossier and species scale atlas (PDF), the ingredients inventory. |
-| `research/RimMandrake/hand_authored_maps/` | Downloaded study maps; `.rws`/`.zip`/binaries gitignored, the teardown committed. |
+| `research/Jawa/` | Star Wars reference: the visual dossier and species scale atlas (PDF), the ingredients inventory. |
+| `research/RimMandrake/hand_authored_maps/` | Downloaded study maps. The `.rws`/`.zip`/binaries are gitignored; the teardown is committed. |
 | `research/RimMandrake/reference/`, `inspiration/` | Format and technique references, visual inspiration. |
-| `research/RimMandrake/samuel_streamer_study/` | Another creator's campaign torn down for technique. |
-| `research/RimMandrake/installed_packageids.json` | The packageId index the tooling joins against. |
+| `research/RimMandrake/samuel_streamer_study/` | Another creator's campaign, torn down for technique. |
+| `research/RimMandrake/installed_packageids.json` | The packageId index that the tools join against. |
 
 ---
 
 ## `infrastructure/` — how the project runs itself
 
-**Not:** anything about the campaign (→ `design/`), findings about the game
-(→ `observed/`). **No `Jawa/`/`RimMandrake/` split** — coordination is singular.
+**Not here:** anything about the campaign (→ `design/`), findings about the game
+(→ `observed/`). **No `Jawa/`/`RimMandrake/` split**: coordination is singular.
 
 ### Slow-moving rules
 
@@ -181,35 +196,40 @@ Payloads are gitignored; **the teardown is the work product.**
 |---|---|
 | `infrastructure/README.md` | The tier rule, and the rules-vs-state line. |
 | `infrastructure/STRUCTURE.md` | This file. |
-| `infrastructure/agents/CHARTER.md` | The whole process rulebook since 2026-08-27 (redesign #4); POLICY.md is a supersession stub. |
-| `infrastructure/agents/<WINDOW>.md` | One charter per window: `CONDUCTOR.md` (the workshop file was folded into it 2026-11-04). The retired seat files are stubs. |
+| `infrastructure/agents/CHARTER.md` | The whole process rulebook since 2026-08-27 (redesign #4). `POLICY.md` is a supersession stub. |
+| `infrastructure/agents/<WINDOW>.md` | One charter per window: `CONDUCTOR.md`. The workshop file was folded into it on 2026-11-04. The retired seat files are stubs. |
 | `infrastructure/REFRESH.md` | What to re-run after the mod list changes. |
-| `infrastructure/archive/` | Superseded narrative kept only for *why* — `context.md`. Never current state. |
-| `infrastructure/output/` | Reports **still being read** — audits, options papers, plans. Evidence, never doctrine. |
+| `infrastructure/archive/` | Superseded narrative kept only for *why*: `context.md`. Never current state. `context.md` is absent (2026-11-23). |
+| `infrastructure/output/` | Reports **still being read**: audits, options papers, plans. Evidence, never doctrine. |
 
 ### The live-state spine — `infrastructure/state/`
 
-The moving half. The test is *would a reader be wrong tomorrow if they trusted
-this?* A rule is durable; a queue is meant to be consumed.
+`infrastructure/state/` is the moving half. Test each file with this question: *would a reader be wrong tomorrow if
+they trusted this?*
+
+- A rule is durable.
+- A queue is meant to be consumed.
 
 | Path | Holds |
 |---|---|
-| `infrastructure/state/V1_CHAIN.md` | 🔴 What ships in v1, in the order the engine forces. **Check it before queueing anything.** The authority on the v1/v2 line. |
-| `infrastructure/state/items/` live item prose · `items/closed/` terminal · `infrastructure/state/handoffs/` reboot handoffs (2026-09-19) |
-| `infrastructure/state/items/COLD_LOAD_RUN_SHEET_*.md` | The run sheet for the next game load — a normal queue item since 2026-08-27; the two hand-kept run-sheet files are deleted. |
+| `infrastructure/state/V1_CHAIN.md` | 🔴 What ships in v1, in the order the engine forces. **Check it before you queue anything.** The authority on the v1/v2 line. |
+| `infrastructure/state/items/` | Live item prose. `items/closed/` holds terminal items (done, dropped or superseded). `infrastructure/state/handoffs/` holds reboot handoffs (2026-09-19). |
+| `infrastructure/state/items/COLD_LOAD_RUN_SHEET_*.md` | The run sheet for the next game load, a normal queue item since 2026-08-27. The two hand-kept run-sheet files are deleted. The open folder holds none now; four are in `items/closed/` (2026-11-23). |
 | `infrastructure/state/OWNER_DECISIONS.md` | Every question only the owner can answer, and their rulings. |
 | `infrastructure/state/WORLDGEN_FACTION_CHECKLIST.md` | The Configure Factions page, box by box, for world creation. |
 | `design/V2_DREAMS.md` | Deferred `[v2]` bodies, kept intact. Append-only; every seat may write to it directly. |
-| `infrastructure/state/TEST_PLAN.md` | How deployed material gets proved in-game. Written by a retired seat; still cited by `load_session.py`. |
+| `infrastructure/state/TEST_PLAN.md` | How deployed material gets proved in-game. A retired seat wrote it. `load_session.py` still cites it. |
 | game state | One `game` event on the ledger, measured or owner-announced (`./game`). The old `status/game.json` stamp and its directory are gone. |
-| `infrastructure/state/queue/<SEAT>.md` | Rendered views of a seat's queue (gitignored; `rimflow queue <SEAT>` renders one on read), plus hand-written `HUMAN`. File work with `rimflow file --for <SEAT>`. |
+| `infrastructure/state/queue/<SEAT>.md` | Rendered views of a seat's queue (gitignored; `rimflow queue <SEAT>` renders one on read), plus the hand-written `HUMAN`. File work with `rimflow file --for <SEAT>`. |
 
 ### The Conductor's window and the helpers it launches — since 2026-11-13
 
-**The Conductor (seat key `BENCH`).** Earlier splits are retired: the 2026-08-14 names, the four seats
-DECIDE/BUILD/CHECK/REP, then BENCH · FOUNDRY (2026-08-27 to 2026-11-02); legacy items keep their old owners in the
-ledger. The Windows Terminal profiles set the window; the manual path is
-`./src/RimMandrake/Utils/set_agent_window.sh <WINDOW>`, which refuses the retired FOUNDRY.
+- **The Conductor (seat key `BENCH`).** The first retired split is the 2026-08-14 names. The next is the four seats
+  DECIDE/BUILD/CHECK/REP.
+- The last retired split is BENCH · FOUNDRY (2026-08-27 to 2026-11-02).
+- Legacy items keep their old owners in the ledger.
+- The Windows Terminal profiles set the window. The manual path is
+  `./src/RimMandrake/Utils/set_agent_window.sh <WINDOW>`, which refuses the retired FOUNDRY.
 
 | Who | Role | Its question |
 |---|---|---|
@@ -220,52 +240,70 @@ ledger. The Windows Terminal profiles set the window; the manual path is
 
 ## `skills/` — loadable procedure
 
-**Charter: `skills/README.md`** — what earns a skill versus a traps entry, the
-`SKILL.md` / `references/` / `scripts/` split, and the enforced caps (500-line body,
-1024-char description). Archives are gitignored build outputs: rebuild with
-`python3 src/RimMandrake/Utils/package_skill.py --all` at hand-off.
+**Charter: `skills/README.md`.** The charter holds these rules:
 
-The directory is the source; `<name>.skill` zips beside it are untracked packaging
-artifacts. **Which skill to load when is `CLAUDE.md`'s job**, not this file's.
+- what earns a skill versus a traps entry;
+- the `SKILL.md` / `references/` / `scripts/` split;
+- the enforced caps (500-line body, 1024-char description).
+
+Archives are gitignored build outputs. At hand-off, rebuild them with
+`python3 src/RimMandrake/Utils/package_skill.py --all`.
+
+The directory is the source. The `<name>.skill` zips beside it are untracked packaging artifacts.
+
+**Which skill to load when is `CLAUDE.md`'s job**, not this file's.
 
 `efficient-subagents` ·
 `generating-rimworld-sprites` · `gravship-layout` · `rimbridge` ·
 `rimworld-debug-testing` · `rimworld-deploy` · `rimworld-load-round` ·
 `rimworld-modding` · `rimworld-savegame` · `rimworld-start-prep`
 
-Earned lessons index: `skills/rimworld-modding/references/traps.md` — it routes to
-topic files; open the one matching what you are about to do.
+These ten are not the whole roster. The roster is `skills/README.md`. `efficient-subagents` moved to MandrakeWorkflows
+(commit `41eebdb659`).
+
+The index of earned lessons is `skills/rimworld-modding/references/traps.md`. The index routes to
+topic files. Open the topic file that matches what you are about to do.
 
 ---
 
 ## Three cross-tier rules you will hit today
 
-**Writing a file in `src/` is not deploying it.** The game reads
-`C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\<ModName>` and nothing
-syncs it from this tree. Plan first with
-`src/RimMandrake/Utils/deploy_custom_mods.py`, then `--apply --mod <Name>`; a bare
-`--apply` pushes every mod in the tree including another seat's half-finished work.
-Procedure: `skills/rimworld-deploy/SKILL.md`.
+**Writing a file in `src/` is not deploying it.**
 
-**Track the manifest, never the payload.** Saves, def dumps, `Player.log`,
-screenshots, downloaded `.rws` maps, `vendor/mod_sources/` — all gitignored, all
-still on disk. **Git never forgets, so the rule is about refusing the *next*
-payload**, not cleaning up the last. Never delete one "for size"; it buys nothing.
-Never commit a file over ~50 MB — one oversized file blocks every seat's push.
+- The game reads `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\<ModName>`. Nothing syncs that folder from
+  this tree.
+- First plan with `src/RimMandrake/Utils/deploy_custom_mods.py`. Then run `--apply --mod <Name>`.
+- A bare `--apply` pushes every mod in the tree, another seat's half-finished work included.
+- The procedure is in `skills/rimworld-deploy/SKILL.md`.
 
-**One working tree, five seats.** `git status` a shared doc before editing it.
-Commit **explicit paths only** — never `git add -A`, `git add .`, or `git commit -a`
-— and read `git diff --cached --stat` before committing. Enforced by
-`.claude/hooks/block_blanket_git_stage.py`. ⚠️ `git commit <path>` records the
-**working tree** at that path, not your index — a peer's uncommitted edit to the
-same file rides along.
+**Track the manifest, never the payload.**
+
+- Payloads are saves, def dumps, `Player.log`, screenshots, downloaded `.rws` maps, `vendor/mod_sources/`. All are
+  gitignored, and all are still on disk.
+- **Git never forgets, so the rule is about refusing the *next* payload**, not about the last one.
+- Never delete a payload "for size". Such a delete buys nothing.
+- Never commit a file over ~50 MB. One oversized file blocks every seat's push.
+
+**One working tree, five seats.**
+
+- An older layout had five seats in one tree. Now each seat has its own clone, and a helper works in the clone that its
+  brief names (`CLAUDE.md` §Git).
+- A window and its subagents still share one working tree. So the rules below stay.
+
+- Before you edit a shared doc, `git status` it.
+- Commit **explicit paths only**. Never use `git add -A`, `git add .`, or `git commit -a`.
+- Before you commit, read `git diff --cached --stat`.
+- The hook `.claude/hooks/block_blanket_git_stage.py` enforces the explicit paths.
+- ⚠️ `git commit <path>` records the **working tree** at that path, not your index. A peer's uncommitted edit to the
+  same file rides along.
 
 ---
 
 ## Keeping this file true
 
 **A manifest is the one document that cannot be maintained by reading documents.**
-Diff it against the tree; it takes about a minute:
+
+Diff this file against the tree. The diff takes about a minute:
 
 ```bash
 find /mnt/d/Luke/dev/RimMandrake -maxdepth 2 -type d -not -path '*/.git*'
@@ -273,7 +311,8 @@ ls /mnt/d/Luke/dev/RimMandrake/*/README.md    # every tier states its own rule
 ```
 
 **A new top-level directory, a new root file, or a new `infrastructure/state/`
-entry belongs here in the same commit.** Everything else in the repo announces
-itself; a missing entry on a map does not. A tier's deeper internals are its own
-README's problem — do not mirror them here, or the copy will drift and this file
-will start lying about the tree it exists to describe.
+entry belongs here in the same commit.**
+
+- Everything else in the repo announces itself. A missing entry on a map does not.
+- A tier's deeper internals are the problem of that tier's own README. Do not mirror those internals here. If you do,
+  the copy drifts. Then this file starts to lie about the tree that it exists to describe.
