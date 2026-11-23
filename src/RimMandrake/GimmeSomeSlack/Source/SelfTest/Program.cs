@@ -101,7 +101,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             int di = Array.IndexOf(args, "--dump");
             if (di >= 0) { dumpDir = args[di + 1]; Directory.CreateDirectory(dumpDir); }
             int lc = Array.IndexOf(args, "--live-census");
-            string path = args.Where((a, i) => !a.StartsWith("--") && (lc < 0 || i < lc) && (i == 0 || (args[i - 1] != "--dump" && !args[i - 1].StartsWith("--fuzz")))).FirstOrDefault() ?? Path.Combine(AppContext.BaseDirectory, "oracle_scenes.json");
+            string path = args.Where((a, i) => !a.StartsWith("--") && (lc < 0 || i < lc) && (i == 0 || (args[i - 1] != "--dump" && args[i - 1] != "--textures" && !args[i - 1].StartsWith("--fuzz")))).FirstOrDefault() ?? Path.Combine(AppContext.BaseDirectory, "oracle_scenes.json");
             using JsonDocument doc = JsonDocument.Parse(File.ReadAllText(path));
             var scenes = doc.RootElement.GetProperty("scenes").EnumerateArray().ToList();
             OracleScenes = scenes;
