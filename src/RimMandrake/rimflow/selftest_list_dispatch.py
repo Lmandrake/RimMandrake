@@ -250,6 +250,27 @@ def t_the_tick_files_nothing():
     os.remove(os.path.join(os.environ["RM_LIST_DISPATCH_DIR"], "state.json"))
 
 
+def t_a_heavy_acceptance_script_is_not_adopted():
+    cfg = dict(CFG, max_adopt_check_s=60)
+    chk(lambda: dec({"A": it(effect=None, verdict=None, accept="a/b_accept.py", accept_s=None)}, cfg=cfg)
+        == ("adopt_too_heavy", []), "a script that outran the bound is not adopted")
+    chk(lambda: dec({"A": it(effect=None, verdict=None, accept="a/b_accept.py", accept_s=3.0)}, cfg=cfg)
+        == ("adopt", []), "a quick script is adopted")
+    import subprocess as SP
+
+    def slow(argv, **k):
+        raise SP.TimeoutExpired(argv, k.get("timeout"))
+    chk(lambda: not LD().time_script("a/b_accept.py", 60, runner=slow).ok
+        and "60" in LD().time_script("a/b_accept.py", 60, runner=slow).cause, "a script past the bound: could not look, why")
+    chk(lambda: isinstance(LD().time_script("a/b_accept.py", 60, runner=lambda argv, **k: None).value, float),
+        "a script that ends inside the bound reads its seconds")
+    st = {"items": {}}
+    calls = []
+    t = LD().timed_accept("A", "a/b_accept.py", 7, st, 60, runner=lambda argv, **k: calls.append(1))
+    t2 = LD().timed_accept("A", "a/b_accept.py", 7, st, 60, runner=lambda argv, **k: calls.append(1))
+    chk(lambda: len(calls) == 1 and t == t2, "a script is timed once per item state, not every tick")
+
+
 def t_a_dry_tick_writes_nothing():
     d = tempfile.mkdtemp(prefix="ld_dry_")
     os.environ["RM_LIST_DISPATCH_DIR"] = d
@@ -296,6 +317,7 @@ def main():
               t_oldest_blocking_item_first,
               t_the_run_owns_no_continuation,
               t_the_tick_files_nothing,
+              t_a_heavy_acceptance_script_is_not_adopted,
               t_a_dry_tick_writes_nothing,
               t_only_narrows_the_items_never_the_gates,
               t_each_limit_names_its_danger):

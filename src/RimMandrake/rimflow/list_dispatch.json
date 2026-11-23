@@ -10,6 +10,8 @@
   "_max_chain_depth_doc": "A chain that feeds itself through new items: a lane run that files an item that the lane then works. An item whose caused_by ancestors already hold this many lane runs is not launched (plan.md §Shares).",
   "max_never_started": 2,
   "_max_never_started_doc": "A launch that cannot start, sent again unchanged on every tick (CLAUDE.md §A fault of form: a program never sends the same refused input again unchanged). Never-started launches in a row before the item reads stopped.",
+  "max_adopt_check_s": 120,
+  "_max_adopt_check_s_doc": "A heavy check run on every beat of two timers (list_effect every 15 min, this lane every 10): measured 2026-11-23, modledger_cutover_accept.py ran over 3 min and took this unit to its 2 GB cap. An acceptance script that does not end inside this bound is not attached as a check. Also the hang guard of that one timing run.",
   "sonnet_cap_usd": 5,
   "_sonnet_cap_usd_doc": "Runaway spend by one helper, stopped from outside by spend_watchdog (detached_helper --budget-usd); the brief never states it. Same as red_dispatch.json.",
   "opus_cap_usd": 12,

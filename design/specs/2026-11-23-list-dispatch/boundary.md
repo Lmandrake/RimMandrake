@@ -65,6 +65,9 @@ waited for the Conductor's hand, because no program launched them. Each promise 
   oldest filing first.
 - **the-run-owns-no-continuation.** A lane launch passes `--next-act-owner list_dispatch`; `left_open_continue.plan` does
   not continue such a run, so its `LEFT OPEN:` note is read by the lane alone and the two-run rule holds.
+- **a-heavy-acceptance-script-is-not-adopted.** Before it adopts an acceptance script, the tick runs it once, bounded by
+  `max_adopt_check_s`, and keeps the reading per item state. A script that does not end inside the bound reads
+  `adopt_too_heavy` and is not attached, because an attached check runs on every beat of two timers.
 - **the-tick-files-nothing.** A tick writes no `file` or `spawn` event. Its ledger writes are `close` (a check that holds)
   and `effect` (an adopted acceptance script).
 - **a-dry-tick-writes-nothing.** A tick without `--apply` launches nothing, closes nothing, attaches nothing and writes no

@@ -124,6 +124,32 @@ def mod_of(iid, title, mods):
     return None
 
 
+def time_script(path, limit, runner=subprocess.run):
+    """-> probe_result: value(seconds one `python3 <path>` run took from the repo root), or could_not_look(cause) when it
+    did not end inside `limit` or could not start: either way it cannot be a beat's check."""
+    import probe_result as PR
+    t0 = time.time()
+    try:
+        runner(["python3", path], cwd=REPO, capture_output=True, text=True, timeout=limit, stdin=subprocess.DEVNULL)
+    except subprocess.TimeoutExpired:
+        return PR.could_not_look("it did not end inside %gs" % limit)
+    except OSError as e:
+        return PR.could_not_look("it could not start: %s" % e)
+    return PR.value(round(time.time() - t0, 1))
+
+
+def timed_accept(iid, path, events, st, limit, runner=subprocess.run):
+    """-> the script's seconds, or None with the cause kept in st (over the bound, or it could not start). Measured once
+    per (path, item event count, bound) and kept in st."""
+    s = st.setdefault("items", {}).setdefault(iid, {})
+    got = s.get("accept_timed") or {}
+    if got.get("fp") != [path, events, limit]:
+        r = time_script(path, limit, runner)
+        got = s["accept_timed"] = {"fp": [path, events, limit], "s": r.value if r.ok else None,
+                                   "why": None if r.ok else r.cause}
+    return got.get("s")
+
+
 def spent(attempts):
     return [a for a in attempts or [] if not a.get("failed")]
 
@@ -201,6 +227,11 @@ def decide(cfg, st, facts, now, account=(True, "")):
             ref = s.get("adopt_refused") or {}
             if acc and ref.get("fp") == [acc, it.get("events")]:
                 put("adopt_refused", "attaching %s was refused: %s" % (acc, _one(ref.get("why"), 200)))
+            elif acc and "accept_s" in it and it["accept_s"] is None:
+                put("adopt_too_heavy", "its ## verify runs %s: %s; a check runs on every beat of two timers, so it is "
+                                       "not attached (Shape, step 4, gives it a lighter check)"
+                    % (acc, it.get("accept_why") or "it did not end inside %ss" % cfg.get(
+                        "max_adopt_check_s", _shipped().get("max_adopt_check_s"))))
             elif acc:
                 put("adopt", "no outcome check; its ## verify runs %s, attached as its check this tick" % acc)
                 row["accept"] = acc
@@ -434,6 +465,9 @@ def gather(st, now=None, root=None):
                 d["blocked"], d["blocked_reason"] = True, "its wait date %r cannot be read" % x.wait_until
         if acc:
             d["accept"] = acc
+            if not d.get("claimed"):
+                d["accept_s"] = timed_accept(iid, acc, d["events"], st, float(_shipped().get("max_adopt_check_s")))
+                d["accept_why"] = ((st.get("items") or {}).get(iid) or {}).get("accept_timed", {}).get("why")
         items[iid] = d
     ordered = {i: items[i] for i in order_ids(items)}
     runs = _runs(set(ordered))
