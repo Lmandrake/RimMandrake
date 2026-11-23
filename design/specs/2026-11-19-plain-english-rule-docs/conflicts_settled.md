@@ -68,6 +68,12 @@ helper by `conductor_acts.check`. So the ledger notes of this item carry the Con
 | `rm-judge.md`: a skill for art / root: `art_judge_brief.md` for art and cosmetic | the brief for both; the skill for the art-evaluation pipeline | 3; `delegation_policy.md` §4.3 | B |
 | A program's output: scratch (shared block) / `/tmp` (root) | scratch under the agent storage root | 2: his 2026-10-19 storage rule is later than the 2026-08-27 line | C |
 
+## `runner_options.md`
+
+| conflict | decision | rule and evidence | commit |
+|---|---|---|---|
+| `launch_and_wait()` "uses Steam" / a named game starts directly; ext4 work runs from the Codex scratch / only for Windows Codex (2 rows) | the code | 1: `game_instance.py`, `agent_runner.py` | Earlier: `c48745065e` |
+
 ## Git, game state, spec, rulings
 
 | conflict (side 1 / side 2) | decision | rule and evidence | commit |
