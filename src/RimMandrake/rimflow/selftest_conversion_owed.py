@@ -201,7 +201,8 @@ def t_rule_texts_corrected():
     sr = read("design/RimMandrake/standing_rulings.md")
     check("Biome mechanics are promised inside our own biomes only" not in sr
           and "## Biome mechanics work by their conditions" in sr
-          and "we're not going to validate\nthat at this time" in sr, "standing_rulings: his 2026-10-15 words stay")
+          and "we're not going to validate that at this time" in " ".join(sr.split()),   # his words, any line wrap
+          "standing_rulings: his 2026-10-15 words stay")
     gp = read("GUIDING_PRINCIPLES.md")
     entries = [ln for ln in gp.splitlines() if ln.startswith("## ") and "(RULED " in ln]
     check(1 <= len(entries) <= 7, "GUIDING_PRINCIPLES.md has 1 to 7 ruled entries", len(entries))
