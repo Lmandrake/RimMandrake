@@ -197,7 +197,7 @@ opportunity at the deciding moment (example: the carrier stands inside the blast
 - An ENVIRONMENT FAULT needs a record: the spoiling thing, and why the mod could not have caused it. No record means
   UNRESOLVED. Example: a carrier walked out of the blast before it fired. The job trace shows that the carrier left for
   food. This run is an ENVIRONMENT FAULT. With no trace, the run is UNRESOLVED.
-- The tag is on the scene in the test table: `tests.<id>.test_kind`, `tag_evidence`, `budget`, `x_of_y`. The Stage 6 exit
+- The tag is on the scene in `design/concepts/<Mod>/version/test_table.json`: `tests.<id>.test_kind`, `tag_evidence`, `budget`, `x_of_y`. The Stage 6 exit
   reads the tags and the outcomes, and it works out INCONCLUSIVE itself (`src/RimMandrake/rimflow/live_kinds.py`; page
   `design/specs/2026-11-23-live-kinds-exit-reader/boundary.md`). A row with no `outcome` is read by its verdict and class.
 
