@@ -796,7 +796,7 @@ modlist:
   # XML and count `activeMods` children, or the number is wrong by exactly five.
   note: >
     A differing live count does NOT invalidate the frozen dump, greater or lesser. Our own
-    small custom mods change it constantly. Only the owner re-freezes.
+    small custom mods change it constantly. Only the owner, or the Conductor's recorded act, re-freezes.
   # 🔴 Twenty distinct mod counts are asserted across design/, and only four carry an
   # as-of date: 548 · 561 · 562 · 568 · 570 · 573 · 574 · 575 · 576 · 577 · 578 · 580 ·
   # 585 · 587. None of them is WRONG — each was true on the day it was written. What is

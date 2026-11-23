@@ -1,7 +1,7 @@
 # CHARTER — binds the Conductor and its helpers
 
-*Adopted 2026-08-27 (owner's ruling, this date). **This file does not grow: a new line must delete the line it
-replaces.***
+*Adopted 2026-08-27 (owner's ruling, this date). **This file gains no rule: a new rule must replace a
+rule.** A rewrite that adds no rule may use more words.*
 
 ## Posture
 
@@ -59,7 +59,9 @@ policy."*).
    check every installed workshop mod for a dependency on a mod before you switch that mod off.
 4. **Savegame writes** to the frozen world or ship saves. Back up first (`rimworld-savegame`).
 5. **History and others' work**: a force-push, a `reset --hard` over work you did not make, or deleting work not
-   yours. Warn in one line. Then act only with the owner's word. A leftover can be our own, proven unread and
+   yours. Warn in one line. Then act only with the owner's word. The Conductor window may also delete or overwrite work
+   that is not ours, as its recorded act with `lost:` and `undo:` (`delegation_policy.md` §2). Nobody force-pushes
+   (`~/.claude/CLAUDE.md`). A leftover can be our own, proven unread and
    pushed. If all three are true, archive the leftover, delete it, and report it in the digest (`delegation_policy.md`
    §2).
 6. **Anything the owner must LOOK at.** First we read it. An agent checks every item that an agent can judge. The
@@ -123,7 +125,9 @@ means proven, dead means probed. This ruling removed the seat boundary, not the 
 Naming: CLAUDE.md's "Queue items are NAMED" section. Helpers, lanes and groupings are named too, never coded: no C6, A5
 or "Lane A2". Such codes collide with legacy ledger ids (hook `block_agent_coded_name.py`).
 
-v2 ideas go straight to `design/V2_DREAMS.md`, from any window, with no permission.
+An idea for a mod's next version is a Divergent change: a ticket with its acceptance test, for that version (`CLAUDE.md`
+§Each mod has its own Design Version). A nonbinding idea that belongs to no mod's next version may go
+straight to `design/V2_DREAMS.md`, from any window, with no permission. Owed work never goes there.
 
 ## Done means running — owner, 2026-10-31
 
@@ -205,7 +209,7 @@ Use the instruments in this order:
 
 **Be suspicious of every dump and harvest: it answers only for the mod set and moment it captured.** Check the
 currency of a dump by fingerprint, never by timestamp. The frozen `official` dump is the design target. Only the owner
-re-freezes it. The silent-failure traps (patches, deploys, defName guessing) are in CLAUDE.md's "Facts you cannot
+re-freezes it, or the Conductor window as its recorded act (`delegation_policy.md` §2). The silent-failure traps (patches, deploys, defName guessing) are in CLAUDE.md's "Facts you cannot
 guess".
 
 Which kind of testing to run, when, and its tunables: `design/RimMandrake/testing_policy_2026-10-28.md` and
@@ -216,7 +220,7 @@ Which kind of testing to run, when, and its tunables: `design/RimMandrake/testin
 The rule lines are in `CLAUDE.md` §How we debug. `design/RimMandrake/debug_process.md` is the process. Its §1 holds
 the build pause and its lift, and its §2 says what a first script must contain.
 
-- Loosening a bar stays his.
+- Only the Conductor may loosen a bar, as a mindful act (`CLAUDE.md` §How we debug).
 - **3 non-pass runs in a row, or a defect that needs live observation, goes to a Test Pilot, not another retest**
   (owner 2026-10-31; `rimflow pilot`, `.claude/agents/rm-testpilot.md`, `standing_rulings.md`).
 
@@ -241,8 +245,8 @@ the build pause and its lift, and its §2 says what a first script must contain.
 
 ## Windows
 
-The windows are **the Conductor** (with the owner; `CONDUCTOR.md`) and the helpers it launches (`rm-builder`,
-`rm-judge`). `Agent_Policy.md` holds every model choice, for seats and subagents alike.
+The windows are **the Conductor** (with the owner; `CONDUCTOR.md`) and the helpers it launches: the `rm-*` types of
+`Agent_Policy.md` §Helpers in this repo, and detached runs. `Agent_Policy.md` holds every model choice, for seats and subagents alike.
 
 - Spawn subagents freely, always with `model`.
 - A subagent's return is evidence, never a finding.

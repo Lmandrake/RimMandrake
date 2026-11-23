@@ -485,7 +485,7 @@ def freeze(dump=None, by="", id_="", note="", known_damage="", why="", per_rulin
     -> (entry_dict, wrote_bool). Never writes unless `by == "owner"`, or `by == "conductor"` with the Conductor's act
     (`per_ruling` the five-acts ruling, a `why` that conductor_acts.check accepts; its digest note is written first).
 
-    🔴 **Only the OWNER re-freezes, and this is the only command that can.**
+    🔴 **Only the OWNER re-freezes, or the Conductor window as its act, and this is the only command that can.**
     Re-freezing moves the design target every seat authors against, so it must be
     a decision, never a way to clear a warning. Any other `by` produces the entry
     and returns `wrote=False`, which is the dry run.

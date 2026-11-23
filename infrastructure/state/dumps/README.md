@@ -18,7 +18,7 @@ someone would eventually re-freeze it just to clear the warning. That would sile
 move the target everyone is building toward, which is a far worse failure than a stale
 warning, because nothing would announce it.
 
-⛔ **Only the owner re-freezes, deliberately.** Nothing automates it.
+⛔ **Only the owner re-freezes, or the Conductor window as its recorded act, deliberately.** Nothing automates it.
 
 **The command, in full** — and it is the ONLY one that appends a freeze
 (`freeze_dump.py` was folded into `refresh.py` and deleted, 2026-08-21,

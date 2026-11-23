@@ -112,7 +112,8 @@ provenance:
 ## Dumps: which one is canon
 
 🔴 **The `official` dump (full 578 list) is FROZEN and is the design target.** The owner ruled this on 2026-08-20.
-- Only the owner re-freezes the `official` dump.
+- Only the owner re-freezes the `official` dump, or the Conductor window as its recorded act
+  (`design/RimMandrake/delegation_policy.md` §2).
 - `refresh.py` reports the `official` dump as `FROZEN (by owner, <date>)`, never `STALE`.
 - A `verification` dump answers only "does the running game match?". It never answers "what should I design
   against?".

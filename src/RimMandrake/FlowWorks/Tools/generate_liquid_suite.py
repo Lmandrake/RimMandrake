@@ -41,7 +41,7 @@ absorbed in the doc's own §4c "films — v2 candidate, deferred").
 
 Source of the post-patch leaf: the FROZEN official dump, OFFICIAL-2026-08-29
 (infrastructure/state/dumps/REGISTRY.jsonl), never a live capture — dumps
-decay, the official one is the design target and only the owner re-freezes it.
+decay, the official one is the design target and only the owner or the Conductor's recorded act re-freezes it.
 """
 
 import json

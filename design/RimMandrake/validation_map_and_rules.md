@@ -265,9 +265,9 @@ joint session (his rule of 2026-09-19 in `CLAUDE.md` stands). The tool refuses o
 Owner, 2026-11-12 ~9:35 PM PST: *"Make it a rule to store these items until our validation ladder is fully defined and
 regenerated. Then we will ingest them properly where and how they belong."* Every defect he reports in a look is
 appended to the holding store `design/RimMandrake/validation_holding/` when reported (its `README.md` says how). Nothing
-from the store is placed into the ladder, a gate, the nightly sweep or a close check until the ladder is fully defined and
-regenerated; then each entry is ingested where and how it belongs and leaves the store
-(`RIMMANDRAKE_INGEST_HELD_LOOK_DEFECTS_WHEN_LADDER_REGENERATED`).
+from the store is placed into the ladder, a gate, the nightly sweep or a close check until its mod reaches preflight
+(Stage 2); there each held statement goes into the mod's test table, and that placement is the ingest (owner by card
+2026-11-14: "Per mod, as it advances."; `RIMMANDRAKE_INGEST_HELD_LOOK_DEFECTS_WHEN_LADDER_REGENERATED`).
 
 ---
 

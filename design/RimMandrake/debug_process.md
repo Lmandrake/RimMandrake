@@ -246,7 +246,8 @@ them or grow them."*
 - **The owner's validated north-star bars are a separate layer and are untouched.** These bars are the hash-bound
   `## north star` sections in walks with `state: VALIDATED`. `modcheck floor --all` re-derives which sections those
   are. CLAUDE.md's hash rule stands: a functional script never edits a hashed section. An agent may still draft
-  north-star lines (DRAFT). Only his `modcheck validate --owner-said` binds them.
+  north-star lines (DRAFT). Three routes bind them: his `modcheck validate --owner-said`; `--delegated --judge-verdict`, for new bars only
+  (`delegation_policy.md` §1); and `--per-ruling`, as the Conductor's act (`delegation_policy.md` §2).
 - **Periodic adversarial review.** The owner releases adversarial agents and GPT reviews against the scripts, on his
   clock (`NORTHSTAR_ADVERSARIAL_REVIEW_1`). A weakened, proxy or never-red check that they find is a script defect.
   Fix it and record it like any bug. Record each round in `design/RimMandrake/northstar_adversarial_rounds/`
@@ -375,7 +376,7 @@ Superseded by the owner:
   area, a needed colonist hurt or dead, the sample gone) → restart the row. Never score the row FAIL.
 - **Every threat that appears during a test is logged AND gets a test-environment item.** The job of the item is to
   stop that interference next time.
-- **Long runs of game time** (owner, same sitting): *"long runs are possible but risky: they require more time, more monitoring, and fewer assumptions to succeed. Avoid them when possible unless it's a clear win for time efficiency compared to an alternative."*
+- **Long runs of game time:** start none (§Long-duration properties below: his words of 2.5 h later the same day).
 - **Staging is put back by a script step, never by an agent remembering** (owner, 2026-11-03; item
   `AGENT_WRAPUP_ENFORCE_ASKING_NEVER_WORKED`). A teardown step in the script restores whatever a scene forces (event
   chances, spawns, cleared plants, drafted pawns). A run that ends early still runs the teardown step.
@@ -421,5 +422,7 @@ them properly where and how they belong."* (2026-11-12 ~9:35 PM PST.) This rule 
 - the 2026-11-12 ~9:20 PM "closes only with a named check" text.
 
 Append each defect that he reports in a look to `design/RimMandrake/validation_holding/`. Wire nothing from there into
-a ladder stage, gate, nightly list or close check until someone regenerates the ladder. Rule:
-`design/RimMandrake/validation_map_and_rules.md` Rule 12.
+a ladder stage, gate, nightly list or close check until its mod reaches preflight (Stage 2). There each held statement
+goes into the mod's test table (owner by card 2026-11-14: "Per mod, as it advances."). Rule:
+`design/RimMandrake/validation_map_and_rules.md` Rule 12. A live session that debugs such a defect also ends with its
+check in the mod's own functional script (§0.4). The script is not a ladder stage, gate, nightly list or close check.

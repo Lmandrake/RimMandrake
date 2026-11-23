@@ -29,10 +29,16 @@ question below: if this goes wrong, who catches it?) is measured, not argued.
 The rule "never Fable for game-waiting" has one exception. The Test Pilot runs on Fable 5.2 (owner 2026-11-16; the
 Fable row below).
 
-The Conductor runs on Fable 5.2 and orchestrates.
+Lodestar's file holds the ladder of the whole fleet. This file is the only home of that ladder's application in this
+repo: which of this repo's jobs goes to which rung.
+
+The Conductor window runs on Fable 5.2 and orchestrates. The headless quick checks of the Conductor role run on Opus
+(`model` in `src/RimMandrake/rimflow/dispatcher_schedule.json`).
 
 - The Conductor does not do design in-window, and it does not grind.
 - The Conductor holds the owner's attention. It backgrounds design to an **Opus** subagent and keeps the conclusion.
+  Design of a whole mod from a blank page goes to a detached Fable run (`detached_helper.py --model fable`), one run
+  that owns the whole design, never an `rm-*` helper.
 - Each item is classified by the rule below. Opus-class items go to an `rm-builder` (Opus) subagent.
 - When `rimflow next` routes an item to a Test Pilot, the item goes to an `rm-testpilot` subagent instead (owner
   2026-10-31). `rm-testpilot` runs on Fable 5.2 (owner 2026-11-16).
@@ -66,7 +72,7 @@ Cheap models are safe exactly where failure is loud, and dangerous exactly where
 | | Alias | For |
 |---|---|---|
 | **Fable 5.2** | `fable` | **The Conductor's window.** One agent finishing a whole mod against its checklist. Design from a blank page. One escalation attempt on a clean ticket that Opus failed at high effort. Every run has a hard dollar budget, enforced from outside by `spend_watchdog.py`. Never use `--max-budget-usd`, and no agent is told its spend (owner 2026-11-16). Never a helper, a rerun, a fleet worker or a game-waiter. **Exception, the Test Pilot (`rm-testpilot`): Fable 5.2,** although a sitting waits on a live game. Owner, 2026-11-16 10:13 PM PST: "Test Pilot should also run as Fable 5.2 when it's called. For obvious reasons." Do not move the Test Pilot back to Opus under the game-waiter rule. Price: 2× Opus fresh, 1× cached. |
-| **Opus 5.5** (+fast mode) | `opus` | **Design**, always as a backgrounded subagent from the Conductor: design judgment, decision drafting, synthesis across contradictory evidence, rosters, specs, skill curation. **Complex code generation**: Harmony/C#, new systems, multi-file forensics, bridge writes, the frozen world. |
+| **Opus 5.5** (+fast mode) | `opus` | **Design** that is not a blank page, always as a backgrounded subagent from the Conductor: design judgment, decision drafting, synthesis across contradictory evidence, rosters, specs, skill curation. **Complex code generation**: Harmony/C#, new systems, multi-file forensics, bridge writes, the frozen world. |
 | **Sonnet 5.5** | `sonnet` | **Well-defined coding with a checkable outcome**: patches, defs, deploys, quicktests, fixes that a selftest or validator proves. Log triage, interpretive sweeps, first drafts. **OS-level searches**: greps, globs, censuses, existence checks, inventories (folded in 2026-10-01 when Haiku was struck from the ladder). The default for helpers that build. |
 
 ### 🔴 Sonnet vs Opus — owner ruling, 2026-10-29 (replaces "Sonnet default, self-escalate after one failed attempt")
@@ -189,7 +195,7 @@ named types, but the hook blocks them.
 | Well-defined coding a compiler, selftest or validator will check | **sonnet** |
 | Sweep where the agent must interpret or classify | **sonnet** |
 | Fan-out whose returns will contradict; adversarial refutation | **sonnet** |
-| **Design** — a spec, a roster, a taxonomy, anything the owner reads as design | **opus**, backgrounded |
+| **Design** — a spec, a roster, a taxonomy, anything the owner reads as design | **opus**, backgrounded; a whole mod's design from a blank page: a detached **fable** run |
 | **Complex code generation** — a new system, Harmony/C#, cross-file changes with no test to catch them | **opus** |
 | Anything acted on **without re-deriving it** | **opus** — and ask why it is a subagent |
 
