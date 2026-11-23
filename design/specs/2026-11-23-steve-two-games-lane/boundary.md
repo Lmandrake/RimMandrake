@@ -66,6 +66,7 @@ host `stevedesktop.b`); the map is `src/RimMandrake/rimflow/game_names.py`.
   `QHOME/steve_both_busy.json` (the two jobs), so its age is the time since both games were last busy together: the
   item's `--live` promise reads it.
 - **a-proof-that-crashes-is-unmeasured-not-fail.** A live-proof line that exits 1 with its output ending in an uncaught
-  Python exception (a traceback, then `SomethingError: ...` as the last line) reads UNMEASURED ("crashed: could not
-  look"), never FAIL; a FAIL line printed after a quoted traceback stays FAIL. (2026-11-23: the Rot giants' proof died on
+  Python exception (a traceback, then an unindented `SomethingError: ...` line, with no PASS or FAIL word after it; an
+  exit hook's line such as `[bridge split] ...` may follow) reads UNMEASURED ("crashed: could not look"), never FAIL;
+  a FAIL line printed after a quoted traceback stays FAIL. (2026-11-23: the Rot giants' proof died on
   `ModuleNotFoundError: numpy` under SteveDesktop's Windows python and was recorded FAIL, J20261123T115429Z-9dd04f.)

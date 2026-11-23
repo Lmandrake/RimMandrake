@@ -593,20 +593,26 @@ def guard_held_by_other():
     return "%s (%s)" % (st.get("seat"), st.get("purpose"))
 
 
+VERDICT_RX = re.compile(r"\b(FAIL|PASS)\b")
 UNCAUGHT_RX = re.compile(r"^(?:[A-Za-z_][\w.]*\.)?[A-Za-z_]\w*(?:Error|Exception|Interrupt)(?::.*)?$")
 
 
 def proof_verdict(rc, tail):
     """A live-proof line's (verdict, crash) from its exit code and output tail: 0 PASS, 1 FAIL, else UNMEASURED. An exit
-    1 whose output ENDS in an uncaught Python exception (a traceback, its exception line last) is a crash: UNMEASURED,
+    1 whose output ends in an uncaught Python exception (the last traceback's unindented exception line, with no PASS or
+    FAIL word after it; an exit hook's line may follow) is a crash: UNMEASURED,
     could not look, never FAIL (2026-11-23: a missing numpy under SteveDesktop's Windows python read FAIL,
     J20261123T115429Z-9dd04f). A FAIL line printed after a quoted traceback is still the script's FAIL."""
     if rc == 0:
         return "PASS", None
     if rc == 1:
-        lines = [x.strip() for x in (tail or "").splitlines() if x.strip()]
-        if lines and "Traceback (most recent call last)" in (tail or "") and UNCAUGHT_RX.match(lines[-1]):
-            return "UNMEASURED", lines[-1][:160]
+        lines = (tail or "").splitlines()
+        tb = [i for i, x in enumerate(lines) if x.startswith("Traceback (most recent call last)")]
+        if tb:
+            after = lines[tb[-1] + 1:]
+            exc = [i for i, x in enumerate(after) if UNCAUGHT_RX.match(x.rstrip())]     # unindented: the exception line
+            if exc and not any(VERDICT_RX.search(x) for x in after[exc[0] + 1:]):        # exit hooks may print after it
+                return "UNMEASURED", after[exc[0]].strip()[:160]
         return "FAIL", None
     return "UNMEASURED", None
 

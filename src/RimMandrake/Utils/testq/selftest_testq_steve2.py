@@ -386,10 +386,13 @@ def t_a_proof_that_crashes_is_unmeasured_not_fail(r):
     tb = ("Traceback (most recent call last):\n  File \"x.py\", line 33, in <module>\n    import numpy as np\n"
           "ModuleNotFoundError: No module named 'numpy'\n")
     cases = [[0, "all PASS"], [1, "ROT_click_RM_X FAIL: a picture cell did not select it"], [1, tb],
-             [1, "rows:\n" + tb + "ROT_click_RM_X FAIL: 3 cells missed\n"], [2, "UNMEASURED HARNESS"], [None, ""]]
+             [1, "rows:\n" + tb + "ROT_click_RM_X FAIL: 3 cells missed\n"], [2, "UNMEASURED HARNESS"], [None, ""],
+             [1, tb.replace("ModuleNotFoundError: No module named 'numpy'", "PermissionError: [WinError 5] Access is "
+                            "denied: '/mnt/d/ClaudeWork'") + "[bridge split] 33.9 s wall: load 0.8 / ticks 0.0\n"]]
     got = r.py("import worker as W\nprint(json.dumps([W.proof_verdict(rc, t)[0] for rc, t in %r]))" % (cases,))
-    check(got == ["PASS", "FAIL", "UNMEASURED", "FAIL", "UNMEASURED", "UNMEASURED"],
-          "a-proof-that-crashes-is-unmeasured-not-fail: exit 1 ending in a traceback reads UNMEASURED, a FAIL line "
+    check(got == ["PASS", "FAIL", "UNMEASURED", "FAIL", "UNMEASURED", "UNMEASURED", "UNMEASURED"],
+          "a-proof-that-crashes-is-unmeasured-not-fail: exit 1 ending in a traceback (exit lines after it allowed) reads "
+          "UNMEASURED, a FAIL line "
           "after a quoted traceback stays FAIL (%s)" % (got,))
 
 
