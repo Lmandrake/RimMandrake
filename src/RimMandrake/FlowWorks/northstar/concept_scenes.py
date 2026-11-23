@@ -1318,26 +1318,33 @@ def _ice(S):
 # exhaustion, the capture is the RM_CaptureDown order from the lip, and the chemfuel is a powered pump pouring a Dump
 # tank's two levels into the drained moat, read on the moat's own cells. Each row needs its event: no raider read, no
 # swimmer, nothing drained, no chemfuel cell reads UNMEASURED, never PASS.
-#   ring: x O0..O0+11, z O1..O1+11, two squares wide, 6 notches dug, 3 m water = brim-full; plot inside x/z +2..+9
-#   leaf: x O0+6 from z O1-1 (raider bank) to O1+2 (colony bank; winch at O1+3, in the plot); sluice (O0+12, O1+5)
-#   drain pit x +13..+19, z +2..+8; in the plot: pump (O0+2, O1+5) beside the moat, tank (2x2) at (O0+3, O1+5),
-#   battery (O0+4, O1+7); raiders z O1-6
+#   ring: 16 x 16 at O, four squares wide, dug 4 m, 3 m of water (a metre of wall above it); plot 8 x 8 inside, x/z +4..+11
+#   leaf: x O0+8 from z O1-1 (raider bank) to O1+4 (colony bank; winch at O1+5, in the plot); sluice (O0+16, O1+7)
+#   drain pit x +17..+23, z +4..+10, 20 m; in the plot: pump (O0+4, O1+7) beside the moat, tank (2x2) at (O0+5, O1+7),
+#   battery (O0+6, O1+9); raiders z O1-6
 # RIMMANDRAKE_TRACE_FLOWWORKS_MOAT_SWIMMERS_ONLY_IN_THE_CONTROL (Test Pilot sitting 2026-11-21, game b): the ring was dug 8
 # notches and filled 2 m, so 2 m of wall stood above the water. The mod judges a dug swim square at its water surface
 # (RM_MapComponent_Excavation.ClimbDepthAt), a half-full pit keeps its wall, and no raider could reach the colony: all six
 # took AttackMelee, then Wait, on their spawn squares (RM_WallReach.ProofReachPair canReach: 2.0 m False, 2.5 m False,
-# 3.0 m True, 4.0 m True; at 4.0 m all six swam and tired). The moat is now dug to its water (brim-full), and staging
-# reads that back. It is 3 m deep, not 2 m: a drained 2 m moat held the raiders (IsHeld) but ProofCaptureDown read NotHeld,
-# because a pit room holds a person only from pitRoomMinDepthMetres (3 m) down (RM_PitRooms.HoldsBySize). The swim watch
-# stopped at the first poll with two in the water, where exhaustion still read 0.000 (RM_Swim adds it every 250 ticks);
-# it now reads on in 50-tick steps until one swimmer reads tired. The control ran its whole 3,000 ticks; once the colonist was down the raiders smashed the winch and the
-# leaf's anchors from the deck, the leaf fell and two swam (2026-11-19, tick 1445). The control now ends at the crossing
-# and counts a swimmer only while the leaf reads lowered.
-MOAT_N, MOAT_DEEP, MOAT_WATER_M = 12, 6, 3.0         # MOAT_WATER_M == MOAT_DEEP x 0.5 m: brim-full, or nobody can swim it
-MOAT_PIT_DEEP = 20                                   # 7 m below the moat floor x 49 squares holds the ring's 80 x 3 m
+# 3.0 m True, 4.0 m True; at 4.0 m all six swam and tired). Staging reads every square's depth and water back. The moat is
+# over 3 m deep: a drained 2 m moat held the raiders (IsHeld) but ProofCaptureDown read NotHeld, because a pit room holds a
+# person only from pitRoomMinDepthMetres (3 m) down (RM_PitRooms.HoldsBySize). RM_Swim adds exhaustion every 250 ticks, so a
+# read at the first swim is 0.000: the swimmers are read on through the drain. The control ran its whole 3,000 ticks; once the
+# colonist was down the raiders smashed the winch and the leaf's anchors from the deck, the leaf fell and two swam (2026-11-19,
+# tick 1445). The control now ends at the crossing and counts a swimmer only while the leaf reads lowered.
+# RIMMANDRAKE_DECIDE_MOAT_RAID_BAR_TEXT_SAYS_D4_SCENE_NEEDS_SIX (2026-11-23; map: design/concepts/FlowWorks/version/moat_geometry/):
+# the ring was 2 wide, brim-full 3 m, and drained by bare flow pulses: 2,000 ticks of draining in no game time, the raiders
+# frozen in the water. Played in game time a brim-full moat holds nobody until its level fell 1 m (4 pulses, 1,000 ticks) and a
+# raider swims 2 squares in about 130, so two were held in 0-2 raids of 100. Now the water stands a metre below the rim, the most
+# a person climbs: raiders swim in and out, and the first fall of the level holds whoever is in the water. Four squares is the
+# longest timber leaf and the widest ring whose every square is within capture reach of the inner rim. The moat drains in game
+# time while the raid goes on. At 3 m exactly the raiders can enter; one decilitre less and they cannot (staging reads it).
+MOAT_PLOT, MOAT_W, MOAT_DEEP, MOAT_WATER_M = 8, 4, 8, 3.0
+MOAT_N = MOAT_PLOT + 2 * MOAT_W
+MOAT_PIT_DEEP = 40                                   # 16 m below the moat floor x 49 squares holds the ring's 192 x 3 m
 MOAT_KIND, MOAT_RAIDERS = 'Mercenary_Slasher', 6     # melee: they must cross to reach the colonist
-MOAT_POLL, MOAT_POLLS = 120, 25                      # 3,000 ticks a watch
-MOAT_DRAIN_PULSES, MOAT_CAPTURE_TICKS = 80, 900
+MOAT_POLL, MOAT_POLLS = 60, 50                       # 3,000 ticks a watch
+MOAT_DRAIN_TICKS, MOAT_CAPTURE_TICKS = 6000, 900     # a drain that never ends holds the bridge for ever; the kernel twin says 2,000
 MOAT_TANK_UNITS = 20000                              # two pump levels (RM_PumpMath.TankUnitsPerLevel = 10,000)
 SWIMP = 'RimMandrake.FlowWorks.Swimming.RM_Swim'
 SWIMSET = 'RimMandrake.FlowWorks.Swimming.RM_SwimSettings'
@@ -1347,12 +1354,13 @@ WALLREACH = 'RimMandrake.FlowWorks.RM_WallReach'
 
 def _moat_geom():
     x0, z0 = O
-    ring = [(x0 + i, z0 + j) for i in range(MOAT_N) for j in range(MOAT_N)
-            if i < 2 or i >= MOAT_N - 2 or j < 2 or j >= MOAT_N - 2]
-    return {'ring': ring, 'leaf': ((x0 + 6, z0 - 1), (x0 + 6, z0 + 2)), 'deck': (x0 + 6, z0), 'winch': (x0 + 6, z0 + 3),
-            'sluice': (x0 + MOAT_N, z0 + 5), 'pit': [(x0 + 13 + i, z0 + 2 + j) for i in range(7) for j in range(7)],
-            'pump': (x0 + 2, z0 + 5), 'tank': (x0 + 3, z0 + 5), 'battery': (x0 + 4, z0 + 7), 'col': (x0 + 7, z0 + 6),
-            'raiders_at': [(x0 + 3 + k, z0 - 6) for k in range(MOAT_RAIDERS)]}
+    W, n = MOAT_W, MOAT_N
+    ring = [(x0 + i, z0 + j) for i in range(n) for j in range(n) if i < W or i >= n - W or j < W or j >= n - W]
+    return {'ring': ring, 'leaf': ((x0 + W + 4, z0 - 1), (x0 + W + 4, z0 + W)), 'deck': (x0 + W + 4, z0),
+            'winch': (x0 + W + 4, z0 + W + 1), 'sluice': (x0 + n, z0 + W + 3),
+            'pit': [(x0 + n + 1 + i, z0 + W + j) for i in range(7) for j in range(7)],
+            'pump': (x0 + W, z0 + W + 3), 'tank': (x0 + W + 1, z0 + W + 3), 'battery': (x0 + W + 2, z0 + W + 5),
+            'col': (x0 + W + 5, z0 + W + 4), 'raiders_at': [(x0 + W + 1 + k, z0 - 6) for k in range(MOAT_RAIDERS)]}
 
 
 def _moat_stage(S, raised=True):
@@ -1370,11 +1378,15 @@ def _moat_stage(S, raised=True):
     shut = S.sc(DOORS, 'ProofSetGate', 'current|%d,%d|false' % G['sluice'])
     require('lifted=False' in shut, 'the sluice does not read lowered: %s' % shut)
     S.fill(G['ring'], MOAT_WATER_M, WATER)
-    # site: a moat with wall above its water is a pit no raider enters (the 2026-11-21 sitting); read the brim back
-    at = G['ring'][0]
-    q = S.call('jawa/flowworks_excavation_drive', x=at[0], z=at[1], deepenLevels=0, setBodyWaterM=-1)
-    require(q.get('depth') == MOAT_DEEP and abs(float(q.get('waterM') or 0) - MOAT_DEEP * 0.5) < 0.05,
-            'the moat is not brim-full (dug %s notches of 0.5 m, water %s m): raiders cannot swim it' % (q.get('depth'), q.get('waterM')))
+    # site: with more than a metre of wall above its water a moat is a pit no raider enters (the 2026-11-21 sitting); read
+    # every square's depth and water back
+    q = S.cells(G['ring'])
+    off = [(c, r.get('d'), r.get('dl')) for c, r in zip(G['ring'], q)
+           if r.get('d') != MOAT_DEEP or (r.get('dl') or 0) < round(MOAT_WATER_M * 20000)]
+    require(not off, 'the moat is not dug %s notches with %s m of water (more than 1 m of wall above the water: raiders cannot '
+            'enter it): %s' % (MOAT_DEEP, MOAT_WATER_M, off[:4]))
+    pit = [(c, r.get('d')) for c, r in zip(G['pit'], S.cells(G['pit'])) if r.get('d') != MOAT_PIT_DEEP]
+    require(not pit, 'the drain pit is not dug %s notches: %s' % (MOAT_PIT_DEEP, pit[:4]))
     txt = S.sc(DPROOF, 'ProofMakeDrawbridge', '%d,%d;%d,%d;timber;B;winch' % (G['leaf'][0] + G['leaf'][1]))
     d = kv(txt)
     require(d.get('ok') == 'True' and d.get('leaves') == '1', 'the drawbridge was not built as one leaf: %s' % txt)
@@ -1419,41 +1431,41 @@ def _moat_live(S, G):
             if p.get('id') in mine and not p.get('dead') and p.get('x') is not None]
 
 
+def _moat_read(S, G, seen):
+    """One read of every live raider of ours into `seen`. -> how many are in a swim square of the ring now."""
+    ring, live, now = set(G['ring']), _moat_live(S, G), 0
+    seen['last'] = live
+    for pid, x, z in live:
+        if O[0] <= x < O[0] + MOAT_N and O[1] <= z < O[1] + MOAT_N:
+            seen['reached'].add(pid)
+            if (x, z) not in ring:
+                seen['crossed'].add(pid)
+        txt = S.sc(SWIMP, 'ProofSwim', '%d,%d' % (x, z))
+        if not txt.startswith('SWIM ' + pid + ' '):
+            seen['refused'] += 1
+            continue
+        seen['read'].add(pid)
+        d = kv(txt)
+        wet = d.get('deepCell') == 'True' and (x, z) in ring
+        now += wet
+        if wet or pid in seen['swam']:       # exhaustion outlasts the swim: a swimmer is read again once ashore
+            try:
+                ex = float(d.get('exhaustion'))
+            except (TypeError, ValueError):
+                ex = None                    # a swim square with no exhaustion field: swum, tiredness unread
+            had = seen['swam'].get(pid)
+            seen['swam'][pid] = ex if had is None else (had if ex is None else max(had, ex))
+    return now
+
+
 def _moat_watch(S, G, polls=MOAT_POLLS, until_swimmers=2, until_crossed=0):
     """MOAT_POLL chunks (the caller narrowed the governor). Each poll reads RM_Swim.ProofSwim under every live raider of ours: who read
     deepCell=True (a swim square) and the most exhaustion each reached; who stood inside the ring's outer box (got there);
-    who stood in the plot (crossed). until_crossed (the bridge-down control): the leaf is read each poll, the watch ends
-    once that many have crossed, and it ends unjudged the moment the leaf no longer reads lowered ('leafDown' False), since a
-    raider on a deck that fell swims for a reason the control does not ask about."""
-    ring = set(G['ring'])
+    who stood in the plot (crossed). The watch ends once until_swimmers are in the water at once. until_crossed (the
+    bridge-down control): the leaf is read each poll, the watch ends once that many have crossed, and it ends unjudged the
+    moment the leaf no longer reads lowered ('leafDown' False), since a raider on a deck that fell swims for a reason the
+    control does not ask about."""
     seen = {'polls': 0, 'read': set(), 'swam': {}, 'reached': set(), 'crossed': set(), 'last': [], 'refused': 0, 'leafDown': None}
-    def read():
-        """One read of every live raider of ours. -> how many are in a swim square of the ring now."""
-        live = _moat_live(S, G)
-        seen['last'] = live
-        now = 0
-        for pid, x, z in live:
-            if O[0] <= x < O[0] + MOAT_N and O[1] <= z < O[1] + MOAT_N:
-                seen['reached'].add(pid)
-                if (x, z) not in ring:
-                    seen['crossed'].add(pid)
-            txt = S.sc(SWIMP, 'ProofSwim', '%d,%d' % (x, z))
-            if not txt.startswith('SWIM ' + pid + ' '):
-                seen['refused'] += 1
-                continue
-            seen['read'].add(pid)
-            d = kv(txt)
-            wet = d.get('deepCell') == 'True' and (x, z) in ring
-            now += wet
-            if wet or pid in seen['swam']:       # exhaustion outlasts the swim: a swimmer is read again once ashore
-                try:
-                    ex = float(d.get('exhaustion'))
-                except (TypeError, ValueError):
-                    ex = None                    # a swim square with no exhaustion field: swum, tiredness unread
-                had = seen['swam'].get(pid)
-                seen['swam'][pid] = ex if had is None else (had if ex is None else max(had, ex))
-        return now
-
     for _ in range(polls):
         S.ticks(MOAT_POLL)
         seen['polls'] += 1
@@ -1462,17 +1474,48 @@ def _moat_watch(S, G, polls=MOAT_POLLS, until_swimmers=2, until_crossed=0):
             seen['leafDown'] = leaf.get('progress') == '0' and leaf.get('target') == 'lowered'
             if not seen['leafDown']:
                 break
-        now = read()
+        now = _moat_read(S, G, seen)
         if until_swimmers and now >= until_swimmers:
-            for _ in range(6):                   # two are in the water: read on until one reads tired (added every 250 ticks)
-                if any((v or 0) > 0 for v in seen['swam'].values()):
-                    break
-                S.ticks(50)
-                read()
             break
         if until_crossed and len(seen['crossed']) >= until_crossed:
             break
     return seen
+
+
+def _moat_in_ring(S, G):
+    """Our live raiders standing on ring squares: [(id, (x, z), ProofCaptureDown's verdict)]."""
+    ring = set(G['ring'])
+    return [(pid, (x, z), S.sc(NSP, 'ProofCaptureDown', pid)) for pid, x, z in _moat_live(S, G) if (x, z) in ring]
+
+
+def _moat_drain(S, G, seen):
+    """The sluice is open and the raid goes on, in game ticks (never bare flow pulses: they drain in no game time and the
+    raiders stand still). Swim reads go on into `seen`. The moment the moat holds a raider, the raiders it did not catch
+    leave the map (the pit-trap idiom) and so does the colonist they came for; ends when every ring square reads dry."""
+    d = {'heldAfterTicks': None, 'dryAfterTicks': None, 'dl': None, 'gone': [], 'bait': None}
+    for k in range(1, MOAT_DRAIN_TICKS // MOAT_POLL + 1):
+        S.ticks(MOAT_POLL)
+        _moat_read(S, G, seen)
+        if d['heldAfterTicks'] is None:
+            inside = _moat_in_ring(S, G)
+            if any('held=True' in v for _, _, v in inside):
+                d['heldAfterTicks'] = k * MOAT_POLL
+                d['gone'] = _raid_driven_off(S, {i[0] for i in inside})
+                d['bait'] = _moat_bait_off(S, G)
+        if k % 4 == 0:                          # a flow pulse is 250 ticks: the level is read about once a pulse
+            d['dl'] = S.dl(G['ring'])
+            if None not in d['dl'] and not any(d['dl']):
+                d['dryAfterTicks'] = k * MOAT_POLL
+                break
+    return d
+
+
+def _moat_bait_off(S, G):
+    """The colonist the raid came for leaves the map, so no held raider has him to fight. -> what he was doing, or None."""
+    bait = next((q for q in S.call('jawa/site_state').get('pawns') or [] if q.get('id') == G['colonist']), None)
+    if bait:
+        S.call('jawa/pawn_force_incapacitate', pawn=G['colonist'], action='vanish')
+    return bait and (bait.get('job') or 'no job')
 
 
 def _moat_lip(G, at):
@@ -1517,8 +1560,8 @@ def _rim_stabs(hits_by_warden, raiders):
 
 
 def _moat_plot_lip(at):
-    """The plot square nearest the raider at `at` (the plot is x/z O+2..O+9: undug, inside the ring)."""
-    plot = [(O[0] + i, O[1] + j) for i in range(2, MOAT_N - 2) for j in range(2, MOAT_N - 2)]
+    """The plot square nearest the raider at `at` (the undug square inside the ring)."""
+    plot = [(O[0] + MOAT_W + i, O[1] + MOAT_W + j) for i in range(MOAT_PLOT) for j in range(MOAT_PLOT)]
     return min(plot, key=lambda c: (c[0] - at[0]) ** 2 + (c[1] - at[1]) ** 2)
 
 
@@ -1554,42 +1597,36 @@ def _moat_raid(S):
 
 def _moat_rows(S, G):
     w = _moat_watch(S, G)
+    reach = S.sc(WALLREACH, 'ProofReachPair', '%s;%d,%d' % ((G['raiders'][0].replace('Human', ''),) + G['col'])) if not w['swam'] else '-'
+    early = [i for i in _moat_in_ring(S, G) if 'held=True' in i[2]]
+    require(not early, 'a raider reads held before the sluice opened (the moat holds on its own): %s' % early[:2])
+    # open the sluice onto the dry pit while they swim: every ring square must read dry within MOAT_DRAIN_TICKS
+    up = S.sc(DOORS, 'ProofSetGate', 'current|%d,%d|true' % G['sluice'])
+    require('lifted=True' in up, 'the sluice did not lift: %s' % up)
+    drain = _moat_drain(S, G, w)
+    dry_at, dl = drain['dryAfterTicks'], drain['dl']
     swimmers = sorted(w['swam'])
     tired = [p for p in swimmers if (w['swam'][p] or 0) > 0]
-    reach = S.sc(WALLREACH, 'ProofReachPair', '%s;%d,%d' % ((G['raiders'][0].replace('Human', ''),) + G['col'])) if not swimmers else '-'
     S.row('MOAT_raiders_swim', bool(tired),
           {'swimmers': swimmers, 'exhaustion': w['swam'], 'polls': w['polls'], 'read': sorted(w['read']), 'last': w['last'],
            'reachWhenNobodySwam': reach},
           unmeasured=not w['read'] or (bool(swimmers) and all(w['swam'][p] is None for p in swimmers)))
-    # open the sluice onto the dry pit: every ring square must read dry within MOAT_DRAIN_PULSES pulses
-    up = S.sc(DOORS, 'ProofSetGate', 'current|%d,%d|true' % G['sluice'])
-    require('lifted=True' in up, 'the sluice did not lift: %s' % up)
-    dry_at, dl = None, None
-    for k in range(1, MOAT_DRAIN_PULSES + 1):
-        S.pulse(1)
-        dl = S.dl(G['ring'])
-        if None not in dl and not any(dl):
-            dry_at = k
-            break
-    S.row('MOAT_drains_fast', dry_at is not None, {'dryAfterPulses': dry_at, 'bound': MOAT_DRAIN_PULSES,
+    S.row('MOAT_drains_fast', dry_at is not None, {'dryAfterTicks': dry_at, 'heldAfterTicks': drain['heldAfterTicks'],
+                                                   'bound': MOAT_DRAIN_TICKS,
                                                    'wetSquares': None if dl is None else sum(1 for v in dl if v)},
           unmeasured=dl is None or None in dl)
     # the drained ring holds the swimmers; capture two from the lip, by the pit-trap scene's idiom (_pit_trap_raid): the
-    # raiders the drain did not catch leave the map first, and each captive gets a fresh warden on a plot square, both
-    # ordered at once. The 2026-11-21 sitting on game b: the one unarmed colonist the raid came for was FleeAndCower, then
-    # downed, once in the drained moat itself among the held raiders, and never finished a capture; healed, he made one
-    # prisoner and was gone before the second order. He is taken off the map too, so no held raider has him to fight.
+    # raiders the drain did not catch left the map when it first held one, and each captive gets a fresh warden on a plot
+    # square, all ordered at once. The 2026-11-21 sitting on game b: the one unarmed colonist the raid came for was
+    # FleeAndCower, then downed, once in the drained moat itself among the held raiders, and never finished a capture; healed,
+    # he made one prisoner and was gone before the second order. He is taken off the map too, so no held raider has him to fight.
     S.ticks(60)
-    held = []
-    for pid, x, z in _moat_live(S, G):
-        if (x, z) in set(G['ring']):
-            v = S.sc(NSP, 'ProofCaptureDown', pid)
-            if 'held=True' in v:
-                held.append((pid, (x, z), v))
-    gone = _raid_driven_off(S, {h[0] for h in held}) if held else []
-    bait = next((q for q in S.call('jawa/site_state').get('pawns') or [] if q.get('id') == G['colonist']), None)
-    if held and bait:
-        S.call('jawa/pawn_force_incapacitate', pawn=G['colonist'], action='vanish')
+    inside = _moat_in_ring(S, G)
+    held = [i for i in inside if 'held=True' in i[2]]
+    loose = [i for i in inside if 'held=False' in i[2]] if dry_at is not None else []
+    gone, bait = drain['gone'], drain['bait']
+    if held and drain['heldAfterTicks'] is None:
+        gone, bait = _raid_driven_off(S, {i[0] for i in inside}), _moat_bait_off(S, G)
     caught = []
     for pid, at, v in held:                         # every held raider gets a warden; the row asks for two prisoners
         lip = _moat_plot_lip(at)                    # in the plot: the drained moat cuts a warden off from the outer bank
@@ -1619,8 +1656,10 @@ def _moat_rows(S, G):
     lost = [c for c in caught if c not in made and (c['wardenAbleAfter'] is False or not c['after'].startswith('VERDICT'))]
     S.row('MOAT_two_held_and_captured', len(made) >= 2,
           {'held': [h[0] for h in held], 'prisoners': [c['pawn'] for c in made], 'wardensDowned': len([c for c in caught if c['wardenAbleAfter'] is False]),
-           'captured': caught, 'freeRaidersDrivenOff': len(gone), 'baitColonist': (bait or {}).get('job', 'not on the map')},
-          unmeasured=not swimmers or dry_at is None or len(held) < 2 or (len(made) < 2 and len(made) + len(lost) == len(caught)))
+           'captured': caught, 'freeRaidersDrivenOff': len(gone), 'baitColonist': bait or 'not on the map',
+           'standingLooseInTheDrainedMoat': loose},
+          unmeasured=not swimmers or dry_at is None or (len(held) < 2 and (bool(held) or not loose))
+          or (bool(held) and len(made) < 2 and len(made) + len(lost) == len(caught)))
     # RIMMANDRAKE_HOLD_FLOWWORKS_PIT_PRISONERS_THREE_CAPTURE_FAULTS: no held raider's hand weapon reaches a warden on the rim
     # (setting pitLipMeleeDeniedEnabled, shipped on). Red before 1c053b325bc5: visit 8 run T042734 (2 wardens downed) and the
     # sitting's E3 (a warden standing on the rim downed in 360 ticks by 3 stabs).
@@ -1644,7 +1683,8 @@ def _moat_rows(S, G):
     S.row('MOAT_chemfuel_pumped', bool(fuel) and units[1] < units[0],
           {'pumpBefore': p0, 'pumpAfter': p1, 'chemfuelSquares': len(fuel), 'drained': dry_at is not None}, unmeasured=blind)
     if fuel:
-        _toss(S, fuel[0], 'MOAT_moat_burns', at=_moat_lip(G, fuel[0]))
+        near = next((c for c in fuel if _moat_lip(G, c)), fuel[0])      # a chemfuel square a colonist on solid ground can stand by
+        _toss(S, near, 'MOAT_moat_burns', at=_moat_lip(G, near))
     else:
         S.row('MOAT_moat_burns', False, 'no chemfuel square in the moat to light', unmeasured=True)
     # control: the same raid with the leaf lowered -- they walk over the bridge and nobody swims

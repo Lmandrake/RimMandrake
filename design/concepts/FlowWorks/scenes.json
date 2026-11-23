@@ -437,10 +437,10 @@
    "staged_by": "script",
    "entry_point": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py::scene_moat_raid",
    "start": [
-    "the flagship fortress map: D4 water moat full from a pond, drawbridge raised, sluice shut to a dry drain pit, chemfuel tank and pump at the rim (each asserted)",
+    "the flagship fortress map: D4 (4 m) water moat, four squares wide, its water a metre below the rim, drawbridge raised, sluice shut to a dry drain pit, chemfuel tank and pump at the rim (each asserted)",
     "a raid of 6 at the map edge"
    ],
-   "action": "the raiders swim; open the sluice; capture two from the rim; pump chemfuel; order toss a flame",
+   "action": "the raiders swim; open the sluice while they swim (game time runs on); capture two from the rim; pump chemfuel; order toss a flame",
    "expect": "swim and tire, drain fast, held and captured, chemfuel pumped from the tank, moat burns",
    "control": {
     "case": "the same raid with the drawbridge lowered",

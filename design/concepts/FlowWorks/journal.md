@@ -500,3 +500,4 @@ None open; question 3 (the dig speed) is answered in the history entry of 2026-1
 - Was, "Stage now": - **Stage now:** Stage 6, in-game acceptance, since 2026-11-22 3:48 PM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-22 3:48 PM PST).
 - Record: `version/stage_record.json`.
+- RE-PIN (stage 6, 2026-11-23 8:05 AM PST, kind re-pin): `version/bars.md` re-pinned for scenes.json (`90e671a405a0`): the start and action text of `sc_moat_raid` only (D4 = 4 m, four squares wide, water a metre below the rim, the sluice opens while the raiders swim). No bar, expect line or control changed; tree.json untouched. Why: `version/moat_geometry/DECISION.md` (RIMMANDRAKE_DECIDE_MOAT_RAID_BAR_TEXT_SAYS_D4_SCENE_NEEDS_SIX).

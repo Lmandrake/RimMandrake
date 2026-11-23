@@ -9,13 +9,19 @@ fake map that holds each staging call to its tool's contract and models what san
   - the pump pours one level (10,000 tank units) a 250-tick cycle, only from a Dump tank, only while powered, only into a
     dry or same-fluid square beside it; a lowered leaf decks its squares (no swim there);
   - the governor: a hostile on the default stop list stops safe_advance and site_recover vanishes it.
-The healthy fake (raiders swim the ring and tire, the sluice drains it into the pit, the dry ring holds them, two are taken
-from the lip, the pump pours chemfuel and the toss lights it; over a lowered leaf they walk) reads every row PASS. A mod
+  - RIMMANDRAKE_DECIDE_MOAT_RAID_BAR_TEXT_SAYS_D4_SCENE_NEEDS_SIX (2026-11-23): the water is the kernel's own twin
+    (validation_v2.PulseOracle over level_water.py, the recorded live drain to 1 dL), one pulse per 250 game ticks; a raider
+    pays the mod's own step costs in game ticks (a swim square 113, a 2-notch climb 90 more), tires at each 250-tick check, steps
+    in or out only while at most 2 notches of wall stand above the water, and is held where more do; six of them set out 48
+    ticks apart. So a drain in bare flow pulses (no game time) and a moat raiders cross before it holds are both seen here.
+The healthy fake (raiders swim the moat and tire, the sluice drains it into the pit in game time, it holds them, two are taken
+from the lip, the pump pours chemfuel and the toss lights it; over a lowered leaf they walk) reads every row PASS. Red on the
+scene at 7606237d1a (2 wide, brim-full, drained in no game time), and on that geometry in the scene as it stands now. A mod
 whose raiders never enter the water reads the swim FAIL; a sluice that never drains reads the drain FAIL and what needs a dry
-moat UNMEASURED; a dry ring that holds nobody reads the capture FAIL; a raid that is gone, or a swim read that comes back
-REFUSED, reads UNMEASURED, never PASS; with fire_raid answering success (visit 1's second run) no row PASSes on a REFUSED
-reply (the draft's MOAT_chemfuel_pumped did); an unpowered pump reads the chemfuel UNMEASURED. Red on the draft at 2b4bffe212, green
-on the fix. The fake proves the scene's logic, never the game; the live half is
+moat UNMEASURED; a drained moat whose raiders read not held reads the capture FAIL; a raid that is gone, or a swim read that
+comes back REFUSED, reads UNMEASURED, never PASS; with fire_raid answering success (visit 1's second run) no row PASSes on a
+REFUSED reply (the draft's MOAT_chemfuel_pumped did); an unpowered pump reads the chemfuel UNMEASURED. The fake proves the
+scene's logic, never the game; the live half is
 `python.exe src/RimMandrake/FlowWorks/northstar/concept_scenes.py --scene scene_moat_raid --out <json>`.
     python3 selftest_moat_scene.py [path/to/concept_scenes.py]
 """
@@ -34,6 +40,7 @@ SRC = Path(sys.argv[1]) if len(sys.argv) > 1 else HERE / 'concept_scenes.py'
 spec = importlib.util.spec_from_file_location('concept_scenes_under_test', SRC)
 C = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(C)
+from validation_v2 import PulseOracle      # noqa: E402  the kernel's Python twin
 O = C.O
 XZ = r'-?\d+,-?\d+'
 THINGDEFS = {d.text.strip() for f in (HERE.parent / 'Defs').rglob('*.xml') for t in ET.parse(f).getroot().iter('ThingDef')
@@ -41,7 +48,9 @@ THINGDEFS = {d.text.strip() for f in (HERE.parent / 'Defs').rglob('*.xml') for t
 HOSTILE = 'Pirate'
 LEVEL = 10000                # RM_PumpMath.TankUnitsPerLevel
 CAPACITY = 160000            # a 2x2 RM_LiquidTank: 4 squares x 4 levels x 10,000
-DL_PER_M = 10000             # water dL in one square per metre (2 notches)
+U = 10000                    # water dL in one 0.5 m notch of one square (RM_Volume.UnitsPerLevel)
+DL_PER_M = 2 * U
+SWIM, CLIMB = 113, 90        # ticks: the median recorded raider's swim square; a 2-notch climb (45 x slow factor 2)
 TANK_MODES = ('Store', 'Fill', 'Empty', 'Dump')
 
 
@@ -51,16 +60,16 @@ def xz(s):
 
 
 class Fake:
-    """mod: 'healthy', 'noswim' (raiders stop at the bank), 'nodrain' (the lifted sluice moves nothing), 'nohold' (the dry ring
-    holds nobody). fault: 'gone' (the raid is gone at the first poll), 'swimrefused' (ProofSwim REFUSED), 'nopower',
+    """mod: 'healthy', 'noswim' (raiders stop at the bank), 'nodrain' (the lifted sluice moves nothing), 'nohold' (walls
+    stand, but no raider in the moat reads held). fault: 'gone' (the raid is gone at the first poll), 'swimrefused' (ProofSwim REFUSED), 'nopower',
     'edgeraid' (jawa/fire_raid answers success)."""
 
     def __init__(self, mod='healthy', fault=None):
         self.mod, self.fault = mod, fault
         self.stop_on = 'default'
         self.g = {'dug': {}, 'water': {}, 'fluid': {}, 'built': {}, 'pawns': {}, 'announced': set(), 'n': 0, 'lifted': False,
-                  'leaf': None, 'tank': None, 'pour': False, 'charged': False, 'tick': 0, 'orders': [], 'lit': set()}
-        self.saves, self.contract = {}, []
+                  'leaf': None, 'tank': None, 'pour': False, 'charged': False, 'tick': 0, 'orders': [], 'lit': set(), 'mark': {}}
+        self.saves, self.contract, self.drained_in = {}, [], None
 
     def save(self, k):
         self.saves[k] = deepcopy(self.g)
@@ -73,19 +82,25 @@ class Fake:
 
     # ---- geometry the fake reads off what was dug and built
     def ring(self, c):
-        return self.g['dug'].get(c, 0) == getattr(C, 'MOAT_DEEP', 8)
+        return self.g['dug'].get(c, 0) == C.MOAT_DEEP and c != self.g['built'].get('RM_Sluice')
 
     def decked(self, c):
         lf = self.g['leaf']
         return bool(lf) and lf['progress'] == 0 and c in lf['deck']
 
     def deep(self, c):
-        return self.g['water'].get(c, 0) >= DL_PER_M and not self.decked(c)
+        return self.g['water'].get(c, 0) >= 4 * U and not self.decked(c)          # 2 m and deeper is swum
+
+    def climb(self, c):
+        """Notches of wall a person on c stands under: the surface of chest-deep or deeper water, else the floor."""
+        d, w = self.g['dug'].get(c, 0), self.g['water'].get(c, 0)
+        if self.decked(c) or self.g['fluid'].get(c) == 'RM_Fluid_Chemfuel':
+            return 0 if self.decked(c) else d
+        return d - w // U if w >= 3 * U else d
 
     # ---- the clock and the governor (validation_core.Bridge.ticks over jawa/safe_advance)
     def ticks(self, n):
         g = self.g
-        g['tick'] += n
         hostile = [k for k, p in g['pawns'].items() if p['hostile']]
         new = [k for k in hostile if k not in g['announced']]
         g['announced'].update(new)
@@ -96,40 +111,68 @@ class Fake:
         if self.fault == 'gone':
             for k in hostile:
                 del g['pawns'][k]
-        self.settle()
-        for _ in range(n // 120):
+        for _ in range(n // 10):
+            g['tick'] += 10
+            if g['tick'] % 250 == 0:
+                self.flow()
+                self.step_pump(250)
+                for p in g['pawns'].values():
+                    if p['hostile'] and self.deep((p['x'], p['z'])):
+                        p['exh'] = round(p['exh'] + 0.1, 3)
             self.step_raid()
-            self.settle()
-        for pid, cap in list(g['orders']):
-            if n >= 900 and pid in g['pawns'] and g['pawns'][pid]['held']:
-                g['pawns'][pid]['prisoner'] = True
-                g['orders'].remove((pid, cap))
-        self.step_pump(n)
+            for o in list(g['orders']):
+                pid, _, at = o
+                if pid in g['pawns'] and self.held(pid) and g['tick'] - at >= 180:
+                    g['pawns'][pid]['prisoner'] = True
+                    g['orders'].remove(o)
         return {'success': True, 'advanced': n}
 
-    def step_raid(self):
-        g = self.g
-        lf = g['leaf']
-        for p in g['pawns'].values():
-            if not p['hostile'] or p['held'] or p['prisoner']:
-                continue
-            if lf and lf['progress'] == 0 and p['x'] != lf['deck'][0][0] and p['z'] < O[1]:
-                p['x'] += 1 if p['x'] < lf['deck'][0][0] else -1      # over the lowered leaf
-                continue
-            nxt = (p['x'], p['z'] + 1)
-            if self.mod == 'noswim' and self.deep(nxt):
-                continue
-            if p['z'] < O[1] + 2:
-                p['z'] += 1
-            if self.deep((p['x'], p['z'])):
-                p['exh'] = round(p['exh'] + 0.1, 3)
+    def held(self, pid):
+        p = self.g['pawns'][pid]
+        c = (p['x'], p['z'])
+        return self.ring(c) and self.climb(c) > 2 and self.mod != 'nohold'
 
-    def settle(self):
-        """A raider of the ring on a drained (dry, undecked) square is held: a 4 m pit with nothing to swim in."""
-        for p in self.g['pawns'].values():
+    def step_raid(self):
+        g, lf = self.g, self.g['leaf']
+        for k, p in g['pawns'].items():
+            if not p['hostile'] or p['prisoner'] or g['tick'] < p['next']:
+                continue
             c = (p['x'], p['z'])
-            if p['hostile'] and self.ring(c) and not self.g['water'].get(c) and not self.decked(c) and self.mod != 'nohold':
-                p['held'] = True
+            if c[1] >= O[1] + getattr(C, 'MOAT_W', 2) + 1:
+                continue                                                          # in the plot, past the rim
+            if lf and lf['progress'] == 0 and c[0] != lf['deck'][0][0] and c[1] < O[1]:
+                nxt = (c[0] + (1 if c[0] < lf['deck'][0][0] else -1), c[1])       # over the lowered leaf
+            else:
+                nxt = (c[0], c[1] + 1)
+            if abs(self.climb(nxt) - self.climb(c)) > 2 or (self.mod == 'noswim' and self.deep(nxt)):
+                p['goal'] = None
+                continue
+            if p['goal'] != nxt:                                                  # he pays the next square's cost where he stands
+                p['goal'] = nxt
+                p['next'] = g['tick'] + (SWIM if self.deep(nxt) else 13) + (CLIMB if self.climb(c) - self.climb(nxt) == 2 else 0)
+                continue
+            p['x'], p['z'], p['goal'] = nxt[0], nxt[1], None
+
+    def flow(self):
+        """One flow pulse of the dug squares that hold no chemfuel (the kernel twin; a shut sluice seals its square)."""
+        g = self.g
+        if not any(v for c, v in g['water'].items() if g['fluid'].get(c) == 'RM_Fluid_Water'):
+            return
+        o = PulseOracle(160, 160, {}, {}, per=1, budget=True)
+        for c, d in g['dug'].items():
+            if g['fluid'].get(c) != 'RM_Fluid_Chemfuel':
+                o.D[c], o.W[c] = d, g['water'].get(c, 0)
+        s = g['built'].get('RM_Sluice')
+        o.sealed = {s} if s and (not g['lifted'] or self.mod == 'nodrain') else set()
+        o.pulse()
+        for c, w in o.W.items():
+            g['water'][c] = w
+            if w and g['fluid'].get(c) is None:
+                g['fluid'][c] = 'RM_Fluid_Water'
+        if 'liftedAt' in g['mark'] and 'dryAt' not in g['mark'] and not any(
+                v for c, v in g['water'].items() if self.ring(c)):
+            g['mark']['dryAt'] = g['tick']
+            self.drained_in = g['tick'] - g['mark']['liftedAt']
 
     def step_pump(self, n):
         g = self.g
@@ -144,7 +187,7 @@ class Fake:
             if not ok:
                 return
             t['units'] -= LEVEL
-            g['water'][ok[0]] = g['water'].get(ok[0], 0) + LEVEL // 2
+            g['water'][ok[0]] = g['water'].get(ok[0], 0) + LEVEL // 2 if g['fluid'].get(ok[0]) == 'RM_Fluid_Chemfuel' else LEVEL // 2
             g['fluid'][ok[0]] = 'RM_Fluid_Chemfuel'
 
     def running(self):
@@ -163,10 +206,8 @@ class Fake:
                     for x in range(kw['x'], kw['x'] + kw['w']) for z in range(kw['z'], kw['z'] + kw['h'])]
             return {'success': True, 'rows': rows}
         if tool == 'jawa/flowworks_pulse':
-            if g['lifted'] and self.mod != 'nodrain':
-                wet = [c for c, v in g['water'].items() if v and g['fluid'].get(c) == 'RM_Fluid_Water']
-                for c in wet:
-                    g['water'][c] = max(0, g['water'][c] - DL_PER_M // 4)
+            for _ in range(kw['count']):
+                self.flow()
             return {'success': True}
         if tool in ('jawa/spawn_batch', 'jawa/build_batch'):
             n = 0
@@ -191,8 +232,8 @@ class Fake:
                                                                     {'def': HOSTILE, 'hostile': True}]}}
             g['n'] += 1
             pid = 'Human%d' % (900 + g['n'])
-            g['pawns'][pid] = {'x': kw['x'], 'z': kw['z'], 'hostile': kw['faction'] == HOSTILE, 'exh': 0.0, 'held': False,
-                               'prisoner': False}
+            g['pawns'][pid] = {'x': kw['x'], 'z': kw['z'], 'hostile': kw['faction'] == HOSTILE, 'exh': 0.0,
+                               'prisoner': False, 'goal': None, 'next': g['tick'] + 250 + 48 * (g['n'] % 6)}
             if kw['faction'] not in ('player', HOSTILE):
                 self.bad('spawn_pawn faction %r' % kw['faction'])
             return {'success': True, 'pawns': [{'id': pid}]}
@@ -204,6 +245,11 @@ class Fake:
             hostile = kw.get('faction') == 'hostile'
             return {'success': True, 'pawns': [{'id': k, 'x': p['x'], 'z': p['z'], 'dead': False}
                                                for k, p in g['pawns'].items() if p['hostile'] == hostile]}
+        if tool == 'jawa/pawn_force_incapacitate':       # the free raiders and the bait colonist leave the map (pit-trap idiom)
+            if kw.get('action') != 'vanish' or kw.get('pawn') not in g['pawns']:
+                self.bad('pawn_force_incapacitate %s' % kw)
+            g['pawns'].pop(kw.get('pawn'), None)
+            return {'success': True}
         if tool == 'jawa/list_things':
             if kw.get('defName') == 'Battery' and 'Battery' in g['built']:
                 return {'success': True, 'things': [{'id': 'Battery77', 'def': 'Battery'}]}
@@ -216,7 +262,7 @@ class Fake:
                 lip = (kw.get('targetBX'), kw.get('targetBZ'))
                 if g['dug'].get(lip):
                     self.bad('RM_CaptureDown lip %s is a dug square' % (lip,))
-                g['orders'].append((kw['targetAId'], lip))
+                g['orders'].append((kw['targetAId'], lip, g['tick']))
                 return {'success': True, 'accepted': True, 'requestedJobDef': 'RM_CaptureDown'}
             if kw['jobDef'] == 'RM_TossFlame':
                 c = (kw['targetAX'], kw['targetAZ'])
@@ -288,6 +334,8 @@ class Fake:
                 self.bad('ProofSetGate %r with no flow door there' % arg)
                 return 'REFUSED: no flow door'
             g['lifted'] = m.group(2) == 'true'
+            if g['lifted']:
+                g['mark'] = {'liftedAt': g['tick']}
             return 'DOOR RM_Sluice lifted=%s open=%s' % (g['lifted'], g['lifted'])
         if method == 'ProofMakeDrawbridge':
             # hinge A sits at the first end, B at the second (the scene hinges on B since eb15c22de9); the winch is beyond it
@@ -329,8 +377,10 @@ class Fake:
             p = g['pawns'].get(arg)
             if not p:
                 return 'REFUSED: no spawned pawn ' + arg
-            return 'VERDICT %s held=%s prisoner=%s cell=%d,%d' % ('Allowed' if p['held'] else 'NotHeld', p['held'],
+            return 'VERDICT %s held=%s prisoner=%s cell=%d,%d' % ('Allowed' if self.held(arg) else 'NotHeld', self.held(arg),
                                                                   p['prisoner'], p['x'], p['z'])
+        if method == 'ProofReachPair':
+            return 'REACH canReach=False'
         if method == 'ProofReadout':
             return 'OK -'
         if method == 'ProofCell':
@@ -338,9 +388,16 @@ class Fake:
         raise AssertionError('unexpected static %s.%s %r' % (typ, method, arg))
 
 
-def run(mod='healthy', fault=None):
-    F = Fake(mod, fault)
-    out = C.scene_moat_raid(F, lambda: F.save('begin'), lambda: F.load('begin'), {'calls': []})
+def run(mod='healthy', fault=None, **geometry):
+    """geometry: MOAT_* constants of the scene for this run alone (a planted staging)."""
+    F, was = Fake(mod, fault), {k: getattr(C, k) for k in geometry}
+    for k, v in geometry.items():
+        setattr(C, k, v)
+    try:
+        out = C.scene_moat_raid(F, lambda: F.save('begin'), lambda: F.load('begin'), {'calls': []})
+    finally:
+        for k, v in was.items():
+            setattr(C, k, v)
     return {r['id']: r['status'] for r in out['rows']}, out, F
 
 
@@ -364,6 +421,17 @@ check('healthy fake (swim and tire, drain, hold, capture two, pump chemfuel, it 
       (rows, [x['detail'] for x in out['rows']][:3]))
 check('no row PASSes on a REFUSED reply', not any(x['status'] == 'PASS' and 'REFUSED' in x['detail'] for x in out['rows']),
       [x for x in out['rows'] if 'REFUSED' in x['detail']])
+check('the sluice drains the moat in game time, the raid going on (frozen flow pulses: 0 ticks)',
+      bool(F.drained_in) and F.drained_in >= 500, F.drained_in)
+if hasattr(C, 'MOAT_W'):
+    r, o, _ = run(MOAT_W=2, MOAT_N=12, MOAT_DEEP=6, MOAT_WATER_M=3.0, MOAT_PIT_DEEP=20)
+    check('the old staging (2 wide, brim-full 3 m) played in game time: raiders cross before it holds, the capture never PASSes',
+          r.get('MOAT_two_held_and_captured') in ('UNMEASURED', 'FAIL'), r)
+    r, o, _ = run(MOAT_WATER_M=4.0)
+    check('4 wide but brim-full: it holds too late, the capture never PASSes',
+          r.get('MOAT_two_held_and_captured') in ('UNMEASURED', 'FAIL'), r)
+    r, o, _ = run(MOAT_WATER_M=2.5)
+    check('more than a metre of wall above the water: nobody enters, the swim FAILs', r.get('MOAT_raiders_swim') == 'FAIL', r)
 r, o, _ = run(fault='edgeraid')
 check('fire_raid answering success (visit 1): no row PASSes on a REFUSED reply, and the healthy rows still PASS',
       not any(x['status'] == 'PASS' and 'REFUSED' in x['detail'] for x in o['rows']) and all(r.get(x) == 'PASS' for x in ROWS),
@@ -376,7 +444,7 @@ check('a lifted sluice that drains nothing: the drain FAILs, capture and chemfue
       r.get('MOAT_drains_fast') == 'FAIL' and r.get('MOAT_two_held_and_captured') == 'UNMEASURED'
       and r.get('MOAT_chemfuel_pumped') == 'UNMEASURED', r)
 r, o, _ = run(mod='nohold')
-check('a dry ring that holds nobody: the capture FAILs', r.get('MOAT_two_held_and_captured') == 'FAIL', r)
+check('a drained moat whose raiders read not held: the capture FAILs', r.get('MOAT_two_held_and_captured') == 'FAIL', r)
 r, o, _ = run(fault='stab')
 check('a held raider that stabs a warden on the rim (2026-11-23): MOAT_rim_wardens_not_stabbed FAILs',
       r.get('MOAT_rim_wardens_not_stabbed') == 'FAIL' and r.get('MOAT_two_held_and_captured') == 'PASS', r)
