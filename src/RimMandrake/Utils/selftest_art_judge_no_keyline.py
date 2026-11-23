@@ -32,7 +32,14 @@ DEMAND = re.compile(
 NEGATION = re.compile(r"\b(?:no|not|never|without|nor)\b[^.;:]{0,30}$", re.I)
 
 
+# A one-subject exception that the owner picked by date ("Exception: the Pyrelands ullai carries a MEDIUM black outline
+# (option B) by the owner's pick of 2026-11-23, this creature only.") is his ruling, not the retired general clause.
+# Only that shape is exempt: an exception with no dated owner pick, or one that is not limited to one subject, still fails.
+OWNER_EXCEPTION = re.compile(r"Exception:[^.]*?\bowner's pick of \d{4}-\d{2}-\d{2}\b[^.]*\bonly\.")
+
+
 def demands(body: str) -> list:
+    body = OWNER_EXCEPTION.sub(" ", body)
     return [m.group(0) for m in DEMAND.finditer(body)
             if not NEGATION.search(body[max(0, m.start() - 40):m.start()])]
 
