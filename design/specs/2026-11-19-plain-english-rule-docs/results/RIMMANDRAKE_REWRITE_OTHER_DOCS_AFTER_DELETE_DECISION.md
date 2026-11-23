@@ -174,3 +174,24 @@ files". `launch_fleet.ps1` is in the repo. The new text says so. No second reade
 - No reader read the repairs after the meaning read.
 - The in-game LLM call line of `README.md` and the RimSage login line are UNMEASURED.
 - The facts behind lines that this run did not change are not all checked again.
+
+## Second read of the repairs
+
+Run 2026-11-23, item `RIMMANDRAKE_REREAD_REWRITE_REPAIRS_NO_READER_SAW_THEM`. One fresh Opus reader that made none of
+these edits read each repair, restored line and late edit against the base text and the lines that travel with it. SAME
+means that a reader of the new line acts as a reader of the old line. A gloss reads SAME when its source says the same.
+His quotes: a script compared each quote of three words or more in the base with today's text, whitespace ignored. No quote differs.
+
+| file | line read | verdict | what was done |
+|---|---|---|---|
+| VALIDATION_LADDER | the `get_defs` line, shortened after the read (the `deep` parameter is in the code) | SAME | none |
+| STRUCTURE | "except the root entries outside the seven tiers" | SAME | true: the root table names such entries |
+| STRUCTURE | the absent-path and gitignored-path lines | SAME | none |
+| STRUCTURE | "each seat has its own clone, and a helper works in the clone that its brief names" | SAME | none |
+| STRUCTURE | where the four closed run sheets are | SAME | none |
+| README | "rather than merely execute …", one sentence again | SAME | none |
+| README | "The reason: an experiment whose output …" | SAME | none |
+| README | the installers as examples | SAME | none |
+| README | `pages` added | SAME | none |
+| README | "Besides sibling modules of this repo …" | SAME | none |
+| README | the measured-on footer | SAME | none |
