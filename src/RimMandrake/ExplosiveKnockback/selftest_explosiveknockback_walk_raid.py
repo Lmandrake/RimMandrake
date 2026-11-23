@@ -73,6 +73,7 @@ bursts one cell a tick outward from the lit cell, saves and loads copy the world
     python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_walk_raid.py
 """
 import copy
+import hashlib
 import io
 import json
 import math
@@ -320,12 +321,13 @@ class Fake:
 SMALL_MODS = 34                             # the Explosive Knockback tier (visit 3's env_minimal2: 34 mods, every DLC)
 
 
-def run(frames=False, args=None, n_mods=None, md5="cca4f0d4", **brk):
+def run(frames=False, args=None, n_mods=None, md5="cca4f0d4", src=None, **brk):
     """One walk against the fake. frames=True is the small-list frame run (--frames-only on SMALL_MODS active mods);
     otherwise the full-list walk (316 mods). `args` are appended (argparse: a later --out wins)."""
     n = n_mods if n_mods is not None else (SMALL_MODS if frames else 316)
     V.active_mods = lambda path=None: list(V.MODS_NEEDED) + ["m%d" % i for i in range(n - len(V.MODS_NEEDED))]
     V.DLL_MD5 = lambda: md5
+    V.DLL_SRC = lambda: src
     f = Fake(**brk)
     LAST.append(f)
     V.TRIPLET_SEAMS = {"saves_stat": lambda: dict((n + ".rws", (1, 1)) for n in f.saves), "wait_saved": lambda name: True}
@@ -530,6 +532,23 @@ def main():
             "missing": (1, "UNMEASURED"), "not_frames": (1, "UNMEASURED")}
     check("W34", got == want, "--frame-evidence carries a small-list FAIL as FAIL; a frame file from the full list, another "
           "deployed DLL, a missing file or a walk that is not --frames-only reads UNMEASURED (got %s)" % got)
+    # W39: a rebuild of the same sources at another commit differs in its commit stamp only (live 2026-11-23: 107deb57 and
+    # fd5178e3, 92 bytes apart), so the source id of the srchash beside the DLL is the second way to be the same build
+    _, _, sp = frames_file(tmp, "src", src="aaaa1111")
+    got = [run(args=["--frame-evidence", sp], md5="deadbeef", src=x)[1].get("FRAME_BUDGET") for x in ("aaaa1111", "bbbb2222", None)]
+    got += [run(args=["--frame-evidence", fpath], md5="deadbeef", src=None)[1].get("FRAME_BUDGET")]
+    ids = []
+    for k, body in enumerate(("# dll: %s\nff a.cs\nee b.cs\n", "# dll: %s\nee b.cs\nff a.cs\n", "# dll: %s\nff a.cs\nee c.cs\n", "# dll: 00%s\nff a.cs\nee b.cs\n")):
+        dll = os.path.join(tmp, "d%d.dll" % k)
+        with open(dll, "wb") as fh:
+            fh.write(b"dll %d" % k)
+        with open(dll + ".srchash", "w") as fh:
+            fh.write(body % hashlib.sha256(b"dll %d" % k).hexdigest())
+        ids.append(V.src_id_of(dll))
+    check("W39", got == ["PASS", "UNMEASURED", "UNMEASURED", "UNMEASURED"] and ids[0] and ids[0] == ids[1] and ids[2] not in (None, ids[0])
+          and ids[3] is None and V.src_id_of(os.path.join(tmp, "nope.dll")) is None,
+          "the same sources at another commit read as the same build; other sources, no source id, or a srchash that is not "
+          "this DLL's do not (got %s, ids %s)" % (got, ids))
     code, rows, txt = run(perf_blind=True)
     check("W21", code == 1 and rows.get("CARRIER_TICK_COST") == "UNMEASURED",
           "a tick-cost instrument that reads 0.0 leaves CARRIER_TICK_COST UNMEASURED (code %s, got %s)" % (code, rows.get("CARRIER_TICK_COST")))

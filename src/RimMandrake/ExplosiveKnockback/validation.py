@@ -384,6 +384,7 @@ GRENADE_THROWS = 5           # a hang guard: the grenade killed the rider in 3 o
 FRAME_MIN_ROWS = 30          # fewer unpaused rows in the window than this is no reading
 FRAME_ROWS_LIKE = 1.25       # arms whose window frame counts differ by more than this ratio are not like for like
 FRAME_ONLY_ROWS = ("W_PRECONDITIONS", "FRAME_BUDGET")   # what a --frames-only run judges (the small list)
+DLL_SRC = None               # the deployed DLL's source id reader (deployed_src_id; the offline selftest passes a fake)
 DLL_MD5 = None               # the deployed DLL's md5 reader (deployed_dll_md5; the offline selftest passes a fake)
 WALK_ROWS = ("W_PRECONDITIONS", "A_IMPACTS_IN_ROOM", "A_SAVE_MIDAIR", "A_RELOAD_NO_DUP_LOST", "A_COVER_BROKEN_ONE_DESCENT",
              "A_GAS_CLUMP_BY_CLUMP", "A_GAS_GOODS_MOVED", "A_REQUESTS_MATCH_PLAN", "A_REACHED_ACCOUNTED",
@@ -443,6 +444,37 @@ def deployed_dll_md5():
         from game_paths import LOCAL_MODS
         dlls = sorted(glob.glob(os.path.join(LOCAL_MODS, "ExplosiveKnockback", "Assemblies", "*.dll")))
         return hashlib.md5(open(dlls[0], "rb").read()).hexdigest()[:8] if dlls else None
+    except Exception:  # noqa: BLE001
+        return None
+
+
+def src_id_of(dll):
+    """Which sources built `dll`: a digest of the source lines of the .srchash beside it, or None unless that file names
+    this very DLL (its `# dll:` sha256). Two builds of one source tree at two commits differ in the commit stamp and the
+    ids derived from it only, so their md5s differ and this does not (live 2026-11-23)."""
+    import hashlib
+    try:
+        with open(dll + ".srchash", encoding="utf-8") as fh:
+            lines = [x.strip() for x in fh if x.strip()]
+        with open(dll, "rb") as fh:
+            sha = hashlib.sha256(fh.read()).hexdigest()
+    except OSError:
+        return None
+    body = sorted(x for x in lines if not x.startswith("#"))
+    if "# dll: " + sha not in lines or not body:
+        return None
+    return hashlib.sha256("\n".join(body).encode()).hexdigest()[:16]
+
+
+def deployed_src_id():
+    if DLL_SRC is not None:
+        return DLL_SRC()
+    import glob
+    try:
+        sys.path.insert(0, _UTILS)
+        from game_paths import LOCAL_MODS
+        dlls = sorted(glob.glob(os.path.join(LOCAL_MODS, "ExplosiveKnockback", "Assemblies", "*.dll")))
+        return src_id_of(dlls[0]) if dlls else None
     except Exception:  # noqa: BLE001
         return None
 
@@ -552,6 +584,7 @@ class _Walk:
             self.ev["active_mods"] = len(mods)
         self.ev["mode"] = "frames_only" if self.a.frames_only else "full"
         self.ev["dll_md5"] = deployed_dll_md5()
+        self.ev["src_id"] = deployed_src_id()
         if self.a.frames_only:              # the frame arms need only the stocked storeroom the shells go off over
             goods = self.haulables(self.room)
             if len(goods) < 3:
@@ -958,7 +991,7 @@ class _Walk:
     def frame_row_from_evidence(self):
         """FRAME_BUDGET on the full list: read from the small-list --frames-only run (owner 2026-11-16, the smallest
         list). UNMEASURED, never PASS, unless that file is a frames-only run, below --full-min active mods, with a
-        FRAME_BUDGET row, measured on the DLL deployed now."""
+        FRAME_BUDGET row, measured on the DLL deployed now, or on a build of the same sources."""
         path = self.a.frame_evidence
         if not path:
             self.row("FRAME_BUDGET", "UNMEASURED", "the frame arms run on the small list (owner 2026-11-16): run this leaf "
@@ -980,8 +1013,9 @@ class _Walk:
             why = "measured on %s active mods, not the small list (--full-min %d)" % (n, self.a.full_min)
         elif not row:
             why = "it holds no FRAME_BUDGET row"
-        elif not here or ev.get("dll_md5") != here:
-            why = "measured on DLL %s, the deployed DLL is %s" % (ev.get("dll_md5"), here)
+        elif not ((here and ev.get("dll_md5") == here) or (self.ev.get("src_id") and ev.get("src_id") == self.ev["src_id"])):
+            why = "measured on DLL %s (sources %s), the deployed DLL is %s (sources %s)" % (
+                ev.get("dll_md5"), ev.get("src_id"), here, self.ev.get("src_id"))
         self.ev["frame_evidence"] = {"path": path, "active_mods": n, "dll_md5": ev.get("dll_md5"), "row": row}
         if why:
             self.row("FRAME_BUDGET", "UNMEASURED", "--frame-evidence %s: %s" % (path, why))
