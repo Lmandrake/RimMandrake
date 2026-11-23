@@ -39,8 +39,9 @@ A scene with no tag is kind A.
   - That pass says "this was seen to work". It does not say how often it works.
   - How many runs to spend is a budget, written on the scene before the first run. When the budget ends with no
     SUCCESS, the verdict is INCONCLUSIVE, never PASS and never FAIL.
-  - A rate that is the feature (a yield, a drop chance) is checked offline, where runs are free. A live run only shows
-    that the outcome can happen.
+  - Where the result is random by design (a yield, a drop chance), the scene passes on X successes in Y valid
+    opportunities. X and Y come from the intended yield and from the testing budget, and are written before the first
+    run. Check the rate itself offline where that is possible, because offline runs are free.
 - **Kind C, intermittent hunt.** A temporary hunt for a fault that shows only sometimes. It looks for evidence of failure.
   It is never part of a mod's final acceptance tests. It may use kind A or B scenes to get exposure; their verdicts
   stay their own.
@@ -71,8 +72,9 @@ A scene with no tag is kind A.
 ## 6. A spoiled environment is repaired, in proportion
 - When a run names a thing that spoiled it, the run tries to remove that thing: hold or place it inside the scene, use
   the calm test environment, use a smaller mod list, use a bridge tool, or build a bridge tool.
-- Choose by total cost and by what the scene still proves afterwards. Be inventive. Stop when the next repair costs more
-  than the reruns it would save; what remains is the reason for tag B.
+- Lean towards building the control. A control is rarely for one scene: it lowers the cost of this scene's later runs
+  and of many later scenes. So weigh a control against the testing it makes possible, not against one proof.
+- Trace a spoiled run to its source. Be inventive. What still cannot be controlled is the reason for tag B.
 - The calm test environment is a named bridge profile. It reports which controls it switched on and which it could not.
   A scene checks that the controls it needs are on. A line in a list is not proof.
 
