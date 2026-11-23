@@ -135,7 +135,16 @@ def check_source(draw: str, csproj: str, ul: str) -> list[str]:
         bad.append("her nodes are not cut where they are drawn (GenDraw.DrawMeshNowOrLater)")
     if not re.search(r'\[HarmonyPatch\(typeof\(PawnRenderer\), "ParallelGetPreRenderResults"\)\][\s\S]{0,600}?ref bool disableCache[\s\S]{0,300}?disableCache = true', d):
         bad.append("vanilla's far-zoom atlas cache stays on for a wet pawn (one quad, nothing to cut)")
-    for cls in ("Patch_RM_SubmergePawnCut", "Patch_RM_SubmergePawnNode", "Patch_RM_SubmergePawnNoCache"):
+    # live matrix 2026-11-22: at far zoom vanilla draws a humanlike from the atlas and never calls PawnRenderTree.Draw, so
+    # a wet mark set only there was never set and the atlas stayed on (the pawn drawn whole): RenderPawnAt must mark it
+    if not re.search(r"\[HarmonyPatch\(typeof\(PawnRenderer\), nameof\(PawnRenderer\.RenderPawnAt\)\)\][\s\S]{0,400}?internal static class Patch_RM_SubmergePawnWet[\s\S]{0,600}?RM_SubmergeDraw\.NoteWet\(", d):
+        bad.append("a wet pawn first seen at far zoom keeps vanilla's atlas (the wet mark is set only inside PawnRenderTree.Draw, which the atlas path never reaches)")
+    # live matrix 2026-11-22: wound overlays (PawnOverlayDrawer.DoDrawCall) draw by Graphics.DrawMesh, outside GenDraw, so
+    # they stayed bright red and uncut on a pawn in a liquid: that one call must pass the same cut
+    if not (re.search(r'typeof\(PawnOverlayDrawer\), "DoDrawCall"[\s\S]{0,1500}?nameof\(RM_SubmergeDraw\.DrawOverlayMesh\)', d)
+            and re.search(r"public static void DrawOverlayMesh\([\s\S]{0,300}?if \(!DrawCutNode\(", d)):
+        bad.append("a pawn's wound overlays are drawn outside the cut (PawnOverlayDrawer.DoDrawCall's Graphics.DrawMesh): red wounds show under tar")
+    for cls in ("Patch_RM_SubmergePawnCut", "Patch_RM_SubmergePawnNode", "Patch_RM_SubmergePawnNoCache", "Patch_RM_SubmergePawnWet", "Patch_RM_SubmergePawnOverlay"):
         m = re.search(r'PatchFeature\("[^"]*", typeof\([^)]*\), "pitSubmergeCutEnabled"\)\]\s*internal static class ' + cls + r"\b", d)
         if not m:
             bad.append(f"{cls} does not obey the setting pitSubmergeCutEnabled")
@@ -150,6 +159,10 @@ def check_source(draw: str, csproj: str, ul: str) -> list[str]:
             bad.append("a portrait, atlas or statue render would be cut")
         if "RM_PawnCutMath.Decide(" not in b:
             bad.append("the cut does not ask the pure rule (RM_PawnCutMath.Decide)")
+        # live matrix 2026-11-22: a hare in 0.5 m of tar (exactly her height) passed the realtime gate's strict boundary and
+        # a Hidden decision fell back to drawing her whole: the cut itself must draw nothing when the rule says Hidden
+        if re.search(r"mode == RM_PawnCutMath\.Mode\.Whole \|\| mode == RM_PawnCutMath\.Mode\.Hidden\)\s*\{\s*return;", b):
+            bad.append("a pawn the rule hides (wholly under an opaque liquid) is drawn whole when the realtime gate lets her through")
         if "ParentHolder as Corpse" not in b:
             bad.append("a carried pawn would take her carrier's liquid (only a corpse's holder counts)")
     node = re.search(r"internal static bool DrawCutNode\([\s\S]*?\n\t\t\}", d)
@@ -229,6 +242,9 @@ def mutate() -> int:
         "setting ignored": lambda: check_source(draw.replace('"Pit contents under liquid (pawn nodes)", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "pitSubmergeCutEnabled"', '"Pit contents under liquid (pawn nodes)", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "none"'), csproj, ul),
         "opaque lower part drawn": lambda: check_source(draw.replace("if (cut.clear)\n", "if (true)\n", 1), csproj, ul),
         "not compiled": lambda: check_source(draw, csproj.replace("RM_PawnCutMath.cs", "RM_PawnCutMathX.cs"), ul),
+        "hidden drawn whole": lambda: check_source(draw.replace("if (mode == RM_PawnCutMath.Mode.Whole)\n", "if (mode == RM_PawnCutMath.Mode.Whole || mode == RM_PawnCutMath.Mode.Hidden)\n", 1), csproj, ul),
+        "overlays outside the cut": lambda: check_source(draw.replace("RM_SubmergeDraw.DrawOverlayMesh", "RM_SubmergeDraw.DrawOverlayMeshX"), csproj, ul),
+        "wet mark only in the tree": lambda: check_source(draw.replace("RM_SubmergeDraw.NoteWet(", "RM_SubmergeDraw.NoteWetX("), csproj, ul),
     }
     missed = 0
     for name, f in faults.items():

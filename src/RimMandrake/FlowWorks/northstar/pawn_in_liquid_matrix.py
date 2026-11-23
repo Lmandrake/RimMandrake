@@ -184,6 +184,16 @@ def stage():
     r = call("jawa/static_call", type="RimMandrake.FlowWorks.RM_NorthstarProofs", method="ProofResetRect",
              args="%d;%d;%d;%d" % (x, z, w, h))
     log("reset", str(r.get("result") or r)[:200])
+    # jawa/destroy_batch never destroys pawns (by design): a restage left the last stage's pawns standing in every pit, two
+    # bodies on one square z-fighting into stripes (measured 2026-11-22). Vanish every pawn in the site first. Clear the
+    # site's things before the sky gate reads them: its list_things read caps at 5000 and a busy map refused the site.
+    gone = 0
+    for p in (call("jawa/list_pawns", rect="%d,%d,%d,%d" % (x, z, w, h), limit=500).get("pawns") or []):
+        pid = p.get("id") or p.get("thingId") or p.get("pawnId")
+        if pid and call("jawa/pawn_force_incapacitate", pawn=str(pid), action="vanish").get("success") is True:
+            gone += 1
+    log("vanished_old_pawns", gone)
+    call("jawa/destroy_batch", rects="%d,%d,%d,%d" % (x, z, w, h), categories="All")
     sky_gate("before_stage", clear=True)
     call("jawa/destroy_batch", rects="%d,%d,%d,%d" % (x, z, w, h), categories="All")
     call("jawa/set_fog", action="unfog", rect="%d,%d,%d,%d" % (x, z, w, h))
@@ -213,10 +223,15 @@ def stage():
             if g.get("success") is not True:
                 row("%s_%s_wears_%s" % (rk, ck, ap), False, str(g)[:200])
         if lying:
-            d = call("jawa/pawn_force_incapacitate", pawn=pid, action="downed", allowBleedingWounds=False)
-            row("%s_%s_downed" % (rk, ck), bool(d.get("downedAfter") or (d.get("after") or {}).get("downed")) or d.get("success") is True, str(d)[:200])
-    ids = ",".join(PAWNS.values())
-    call("jawa/set_pawn_rotation", pawnId=ids, dir="south")
+            # lie down without wounds (anesthetic: the forced downing's wound decals swamped the look, 2026-11-22); a body
+            # that takes no anesthetic (a mechanoid, a droid) lies as its clean corpse (Pawn.Kill, no damage)
+            d = call("jawa/pawn_health", pawn=pid, action="add", hediff="Anesthetic", severity=1.0)
+            if "lying=False" in static("ProofPawnCutId", pid):
+                d = call("jawa/pawn_force_incapacitate", pawn=pid, action="kill")
+            log("lying_%s_%s" % (rk, ck), str(d)[:200])
+    # facing south, so the owner sees faces: one call per pawn (a comma list turned none, measured 2026-11-22)
+    turned = sum(1 for pid in PAWNS.values() if call("jawa/set_pawn_rotation", pawnId=pid, dir="south").get("success") is True)
+    log("turned_south", turned)
     call("jawa/kill_hostiles")
     save_pawns()
     labels()
@@ -280,7 +295,7 @@ def read(tag=""):
         px, pz = pos.get("x", x0 + 2.5), pos.get("z", z0 + 2.5)
         sel = static("ProofSelectAt", "%s,%s" % (px, pz))
         skv = kv_of(sel)
-        row(rid + "_click_selects_her", skv.get("selected") == pid or skv.get("selected") == pid.replace("Thing_", ""),
+        row(rid + "_click_selects_her", skv.get("selected") in (pid, pid.replace("Thing_", ""), "Corpse_" + pid),
             "%s (mode %s)" % (sel, kv.get("mode")))
     fails = [r for r in ROWS if r["verdict"] != "PASS"]
     log("rows", {"rows": len(ROWS), "fail": len(fails), "first_fails": [r["row"] for r in fails[:20]]})
@@ -294,15 +309,21 @@ def set_cut(on):
 
 
 def midday():
-    for _ in range(14):
-        t = call("jawa/time_clock")
-        if t.get("ticksAbs") is None:
-            return
-        hour = (t["ticksAbs"] % 60000) / 2500.0
-        if 10 <= hour <= 14:
-            log("hour", hour)
-            return
-        bridge().ticks(2000)
+    """Noon light for the captures WITHOUT running time: downed pawns lie in the liquid and would drown (the governor
+    stops a tick advance for that, measured 2026-11-22). The clock is set (jawa/time_set_ticks simulates nothing)."""
+    t = call("jawa/time_clock")
+    ta, tg = t.get("ticksAbs"), t.get("ticksGame")
+    if ta is None or tg is None:
+        log("hour", "UNMEASURED: " + str(t)[:160])
+        return
+    hour = (ta % 60000) / 2500.0
+    if 10 <= hour <= 14:
+        log("hour", hour)
+        return
+    delta = (12 * 2500 - ta % 60000) % 60000
+    r = call("jawa/time_set_ticks", ticks=int(tg + delta), timeException=True,
+             why="pawn-in-liquid matrix: noon light for the captures; no tick may run (downed pawns lie in liquid)")
+    log("hour_set", {"from": hour, "delta": delta, "r": str(r)[:160]})
     call("rimworld/pause_game")
 
 
@@ -384,7 +405,7 @@ if __name__ == "__main__":
         stage()
     if STEP in ("all", "shots"):
         midday()
-        shots()
+        shots()             # before the read: a pawn's render tree holds its draw requests only once she was drawn
     if STEP in ("all", "read"):
         read()
     if STEP in ("all", "off"):

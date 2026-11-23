@@ -570,6 +570,32 @@ namespace RimMandrake.FlowWorks
 
 		internal static bool NoCachedFrame(Pawn p) => p != null && wetPawns.Contains(p.thingIDNumber);
 
+		/// <summary>PawnRenderer.RenderPawnAt prefix (main thread, every draw): marks a pawn (or a corpse's pawn) standing,
+		/// lying or dead wet in a pit, so her next draw skips vanilla's far-zoom atlas (<see cref="NoCachedFrame"/>). The atlas
+		/// path never reaches PawnRenderTree.Draw, so a mark set only there was never set for a pawn first seen at far zoom
+		/// (live matrix 2026-11-22: every wet colonist read noCache=False).</summary>
+		internal static void NoteWet(Pawn pawn)
+		{
+			if (!On || pawn == null)
+			{
+				return;
+			}
+			Corpse corpse = pawn.Spawned ? null : pawn.ParentHolder as Corpse;
+			Thing at = pawn.Spawned ? pawn : corpse;
+			if (at == null)
+			{
+				return;   // carried, or a statue's or a preview's pawn: not in a liquid
+			}
+			if (at.Spawned && !pawn.Swimming && !pawn.Flying && Wet(at, out int _, out float _, out float _, false))
+			{
+				wetPawns.Add(pawn.thingIDNumber);
+			}
+			else
+			{
+				wetPawns.Remove(pawn.thingIDNumber);
+			}
+		}
+
 		private static readonly AccessTools.FieldRef<PawnRenderTree, List<PawnGraphicDrawRequest>> RequestsOf =
 			AccessTools.FieldRefAccess<PawnRenderTree, List<PawnGraphicDrawRequest>>("drawRequests");
 
@@ -611,9 +637,17 @@ namespace RimMandrake.FlowWorks
 			bool humanlike = pawn.RaceProps.Humanlike && HasHeadNode(reqs);
 			RM_PawnCutMath.Mode mode = RM_PawnCutMath.Decide(lying, false, humanlike, levelM, RM_Drowning.HeightOf(pawn),
 				RM_UnderLiquid.CorpseMetres, clarity, out float share, out float strength);
-			if (mode == RM_PawnCutMath.Mode.Whole || mode == RM_PawnCutMath.Mode.Hidden)
+			if (mode == RM_PawnCutMath.Mode.Whole)
 			{
-				return;   // Hidden: the realtime gate already skipped her draw (RealtimeRead); never reached in practice
+				return;
+			}
+			if (mode == RM_PawnCutMath.Mode.Hidden)
+			{
+				// wholly under an opaque liquid: none of her picture is drawn. The realtime gate (RealtimeRead) usually skips
+				// her draw already, but its boundary is strict: a hare in exactly her own height of tar passed it and was drawn
+				// whole (live matrix 2026-11-22). Her name label, her alert and a click still find her.
+				cut = new PawnCutState { on = true, mode = mode };
+				return;
 			}
 			float lineZ = 0f;
 			if (mode == RM_PawnCutMath.Mode.Cut)
@@ -818,6 +852,10 @@ namespace RimMandrake.FlowWorks
 			{
 				return false;
 			}
+			if (cut.mode == RM_PawnCutMath.Mode.Hidden)
+			{
+				return true;   // under an opaque liquid: not drawn
+			}
 			if (cut.mode == RM_PawnCutMath.Mode.Tinted)
 			{
 				DrawTinted(mesh, matrix, mat, props);
@@ -838,6 +876,17 @@ namespace RimMandrake.FlowWorks
 				}
 			}
 			return true;
+		}
+
+		/// <summary>PawnOverlayDrawer.DoDrawCall's Graphics.DrawMesh, rerouted (Patch_RM_SubmergePawnOverlay): a wound or
+		/// overlay decal on a pawn inside an open cut is cut and tinted with her, as every other part of her is.</summary>
+		public static void DrawOverlayMesh(Mesh mesh, Matrix4x4 matrix, Material mat, int layer, Camera camera, int submesh,
+			MaterialPropertyBlock props)
+		{
+			if (!DrawCutNode(mesh, matrix, mat, false, props))
+			{
+				UnityEngine.Graphics.DrawMesh(mesh, matrix, mat, layer, camera, submesh, props);
+			}
 		}
 
 		private static readonly MaterialPropertyBlock tintBlock = new MaterialPropertyBlock();
@@ -2007,6 +2056,20 @@ namespace RimMandrake.FlowWorks
 		}
 	}
 
+	/// <summary>Marks a wet pawn before vanilla picks its far-zoom atlas or its render tree (RM_SubmergeDraw.NoteWet).</summary>
+	[HarmonyPatch(typeof(PawnRenderer), nameof(PawnRenderer.RenderPawnAt))]
+	[RimMandrake.Shared.PatchFeature("Pit contents under liquid (pawn wet mark)", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "pitSubmergeCutEnabled")]
+	internal static class Patch_RM_SubmergePawnWet
+	{
+		private static readonly AccessTools.FieldRef<PawnRenderer, Pawn> PawnOf = AccessTools.FieldRefAccess<PawnRenderer, Pawn>("pawn");
+
+		[HarmonyPrefix]
+		private static void Prefix(PawnRenderer __instance)
+		{
+			RM_SubmergeDraw.NoteWet(PawnOf(__instance));
+		}
+	}
+
 	/// <summary>Every node a pawn's render tree draws passes here; inside an open cut it is drawn cut at the line or tinted
 	/// (RM_SubmergeDraw.DrawCutNode).</summary>
 	[HarmonyPatch(typeof(GenDraw), nameof(GenDraw.DrawMeshNowOrLater), new[] { typeof(Mesh), typeof(Matrix4x4), typeof(Material), typeof(bool), typeof(MaterialPropertyBlock) })]
@@ -2017,6 +2080,36 @@ namespace RimMandrake.FlowWorks
 		private static bool Prefix(Mesh mesh, Matrix4x4 matrix, Material mat, bool drawNow, MaterialPropertyBlock properties)
 		{
 			return !RM_SubmergeDraw.DrawCutNode(mesh, matrix, mat, drawNow, properties);
+		}
+	}
+
+	/// <summary>Wound and other overlay decals on a pawn (PawnOverlayDrawer.DoDrawCall) draw by Graphics.DrawMesh, outside
+	/// GenDraw: that one call is sent through the cut (RM_SubmergeDraw.DrawOverlayMesh), so a wound under tar is not drawn.</summary>
+	[HarmonyPatch(typeof(PawnOverlayDrawer), "DoDrawCall")]
+	[RimMandrake.Shared.PatchFeature("Pit contents under liquid (pawn overlays)", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "pitSubmergeCutEnabled")]
+	internal static class Patch_RM_SubmergePawnOverlay
+	{
+		[HarmonyTranspiler]
+		private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> code)
+		{
+			System.Reflection.MethodInfo draw = AccessTools.Method(typeof(UnityEngine.Graphics), nameof(UnityEngine.Graphics.DrawMesh),
+				new[] { typeof(Mesh), typeof(Matrix4x4), typeof(Material), typeof(int), typeof(Camera), typeof(int), typeof(MaterialPropertyBlock) });
+			System.Reflection.MethodInfo cut = AccessTools.Method(typeof(RM_SubmergeDraw), nameof(RM_SubmergeDraw.DrawOverlayMesh));
+			int n = 0;
+			foreach (CodeInstruction ins in code)
+			{
+				if ((ins.opcode == OpCodes.Call || ins.opcode == OpCodes.Callvirt) && ins.operand as System.Reflection.MethodInfo == draw)
+				{
+					n++;
+					yield return new CodeInstruction(OpCodes.Call, cut) { labels = ins.labels, blocks = ins.blocks };
+					continue;
+				}
+				yield return ins;
+			}
+			if (n != 1)
+			{
+				Log.Warning("[FlowWorks] PawnOverlayDrawer.DoDrawCall drew " + n + " Graphics.DrawMesh calls, expected 1: wound overlays may not be cut in liquid");
+			}
 		}
 	}
 
