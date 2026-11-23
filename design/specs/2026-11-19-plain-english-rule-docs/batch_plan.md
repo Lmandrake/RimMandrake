@@ -49,6 +49,10 @@ Each batch has its own result file. So no two batches edit one file.
 - **Never change what a rule means by a rewording.** A rule's meaning changes only through a conflict that you settle.
 - **Delete or correct a stale or false line in the batch.** Edit both places in one commit, and fix each inbound
   reference (`git grep` the old words). Never edit the owner's quoted words; a replaced quote moves to the history file.
+- **A false line that you see in another file is also yours to correct, in the same run.** That file can be code, a hook
+  message, a docstring or a reference page. Do not list it as "seen and left". Leave it only when another live run holds
+  that file; then put a note on that run's item, and name the item in your result file (owner, 2026-11-23: "do we want
+  that outcome?", about three stale statements that a rewrite run listed and left).
 - **Settle each conflict in the batch.** Stop at the first of these rules that decides the conflict:
   1. The code or the live tool decides a statement about behaviour. Read the code. The file that disagrees is false.
   2. A later ruling of the owner beats an earlier one. Take dates from `python3 src/RimMandrake/rimflow/owner_rulings.py
