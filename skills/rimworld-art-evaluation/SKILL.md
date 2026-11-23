@@ -16,9 +16,14 @@ Owner, 2026-10-23, verbatim (by card):
 >
 > Scope: *"Creatures + plants + machines"*.
 
-Why it is built this way: the 47-subject pilot (`design/RimMandrake/automated_art_evaluation_design_2026-10-23.md`
-§6) found **Opus sees the owner's defect almost every time but files it as polish**, and **GPT rules hard but
-perceives less**. So Opus looks first and severity comes from a written policy, not from either model's mood.
+Why it is built this way: a pilot of 47 subjects tested both reviewers
+(`design/RimMandrake/automated_art_evaluation_design_2026-10-23.md` §6). The pilot found two things:
+
+- **Opus sees the owner's defect almost every time but files it as polish.** Polish is a fault that does not stop an
+  accept.
+- **GPT rules hard but perceives less.**
+
+So Opus looks first. A written policy sets the severity of each finding. The mood of a model never sets it.
 
 ## The pipeline in one screen
 
@@ -27,7 +32,7 @@ card (cards.py) ── incomplete? ───────────────
    │  catch item and its living animal is REGEN? ───────────► REGEN_AFTER_SOURCE
    ▼
 Opus first pass (claude -p, Read only) ─ band by severity_policy.md
-   │ GOOD        = 0 blocking findings + every checklist item answered ok + model did not doubt  ─► ACCEPT
+   │ GOOD        = 0 blocking findings + every checklist item ok (or allowed n/a) + model did not doubt      ─► ACCEPT
    │ REALLY_BAD  = a gross code, or a blocking finding at confidence ≥ 0.8                      ─► REGEN
    │ WEAK        = anything else                                                                ─► GPT
    │ owner-KEPT art: routed the same, needs a revert record (else HOLD_KEPT); a redraw is flagged
@@ -42,7 +47,8 @@ REGEN: the unrefuted blocking findings become explicit prompt edits (regen_promp
 every decision → decisions.jsonl (prompt versions, model ids read back, image shas) → SHADOW SHEET after the run
 ```
 
-Each guard, as "owner's rule + guard", with its reason: `references/pipeline.md`. The records behind measured claims (the first pilot's score): `references/history.md`.
+`references/pipeline.md` gives each guard as "owner's rule + guard", with its reason. Its routing table lists each decision,
+also those that the diagram does not show. `references/history.md` holds the records behind measured claims (the first pilot's score).
 
 ## Run it
 
@@ -60,22 +66,38 @@ python3 race.py run --race <tag> --rows <rows.jsonl>... --variant incumbent --va
 python3 selftest_art_eval.py                            # pure parts + a mocked end-to-end run
 ```
 
-- One `run` call per few subjects (each Opus call ~40–70 s, GPT ~25–45 s); a run id is **resumable** — re-running
-  it skips subjects already decided, so split a batch across calls freely.
-- `--test` never counts regen rounds, never writes delegated verdicts, never files jobs. Production runs drop it,
-  add `--record` (writes `infrastructure/state/delegated/<date>/<subject>.json`, delegation_policy §3) and, when
-  regens should actually be drawn, `--file-regens` (artpipe `fill_queue.py`; NONE/PLACEHOLDER/DONOR or candidate art,
-  and owner-kept art only with its revert record — install with `art.py install --by-card` citing the card).
+- `DEF:LETTER` names one candidate picture of the pilot. A third part names the picture of the living animal (catch items).
+- **Batch size.** Give each `run` call a few subjects. One Opus call takes ~40–70 s. One GPT call takes ~25–45 s.
+- **A run id is resumable.** A second call with the same run id skips each subject that the run already decided. So you can
+  split a batch across calls freely. A `HOLD_ERROR` record also counts as decided
+  ([references/traps.md](references/traps.md) § Run it).
+- **`--test`** never counts regen rounds, never writes delegated verdicts and never files jobs.
+- **A production run** does not use `--test`.
+  - Add `--record`. The runner then writes `infrastructure/state/delegated/<date>/<subject>.json` (delegation_policy §3).
+  - Add `--file-regens` only when the regens should actually be drawn. The runner then files the jobs with artpipe
+    `fill_queue.py`. You may file for NONE/PLACEHOLDER/DONOR art (no art, a stand-in, or borrowed art) and for candidate
+    art. You may file for owner-kept art only with its revert record. Install the redraw of owner-kept art with
+    `art.py install --by-card`, and cite the card.
+  - The spec must hold `owner_kept`. Without that field, the runner turns a REGEN into `HOLD_INPUT`.
+    `fauna_spec.py` writes the field from the art ledger.
+- **Timer.** `rm-arteval-autojudge.timer` runs `auto_judge.py run` every 2 hours. That pass judges finished art-eval renders.
 - **Fresh rounds and owner prompts** (owner card 2026-10-24, "After round 3 fate → 1 + user improved prompts"):
-  never hand-edit `regen_rounds.json` or decision logs. `fauna_drive.py reset <DEF>... --source-run <run> --by-card
-  "…"` appends `infrastructure/state/art_eval/round_resets.jsonl`; every counter (runner cap, fauna_drive rows /
-  candidates / install) then counts the new series and job ids carry it (`arteval_<DEF>_s1r1_south`). Then
-  `fauna_drive.py rows <source run> --only <DEF>... --out <rows.json> --file` files round 1. His prompt text for a
-  creature (`fauna_drive.py owner-prompt <DEF> --text … --owner-said …`, or a `prompt` field on an
-  `owner_escalations_*` sheet row; a free sheet `note` is never a prompt — his notes are complaints and
-  instructions, so record one with `owner-prompt` only when it really is prompt text) is used VERBATIM inside the template's style sentences, never reworded; `fauna_drive.py
-  prompts` lists what was found. If he keeps or picks the creature's art meanwhile, end the series with
-  `fauna_drive.py stop <DEF>... --why|--by-card …` (rows/candidates/install then refuse it). Code: `src/RimMandrake/Utils/art_eval/round_series.py`.
+  - Never hand-edit `regen_rounds.json` or decision logs.
+  - To start a fresh series of rounds, run `fauna_drive.py reset <DEF>... --source-run <run> --by-card "…"`.
+    - A reset is the owner's decision. The tool also takes `--owner-said` or `--per-ruling`.
+    - The command appends a line to `infrastructure/state/art_eval/round_resets.jsonl`.
+    - Every counter then counts the new series: the runner cap, and fauna_drive rows / candidates / install.
+    - The job ids carry the series (`arteval_<DEF>_s1r1_south`).
+  - Then run `fauna_drive.py rows <source run> --only <DEF>... --out <rows.json> --file`. That command files round 1.
+  - His prompt text for a creature is used VERBATIM inside the template's style sentences, never reworded. Only
+    `fauna_drive.py rows` uses the text; `--file-regens` and the timer do not. The text has two sources:
+    `fauna_drive.py owner-prompt <DEF> --text … --owner-said …`, or a `prompt` field on an `owner_escalations_*` sheet row.
+  - A free sheet `note` is never a prompt, because his notes are complaints and instructions. Record a note with
+    `owner-prompt` only when the note really is prompt text.
+  - `fauna_drive.py prompts` lists the owner prompts that it found.
+  - If he keeps or picks the creature's art meanwhile, end the series with `fauna_drive.py stop <DEF>... --why|--by-card …`.
+    Then rows/candidates/install refuse the creature.
+  - Code: `src/RimMandrake/Utils/art_eval/round_series.py`.
 - A spec is JSON: `subject, label, template (creature|plant|machine), module, description, invented,
   earth_body_named, body_plan, departures[], canon{must_show, engine_limits}, owner_notes[], owner_kept,
   depends_on, artpipe_job, previous_prompt, images{south,east,north,west,single,scale,living_reference,
@@ -85,57 +107,75 @@ More traps for this section: [references/traps.md](references/traps.md) § Run i
 
 ## Before you trust a decision
 
-1. **The shadow sheet must show the picture that was judged.** `shadow.py build` FLAGs any row whose judged
-   picture (source sha) is not on the sheet — art_sheet shows installed art and renders found by name or by
-   `--jobs`. Give production specs their `artpipe_job` so the render is a column.
-2. **Nothing reaches the owner unread** still holds: the pipeline's look IS the prereview (`looked_by judge:<models>`),
-   but the sheet itself must render; build it with `art_sheet.py` only (`rimworld-review-sheets`).
-3. **A prompt, template or policy change re-runs `runner.py regress`** before it decides anything; the run's
-   `versions_key` names every prompt version, so two runs on different versions are never pooled.
+1. **The shadow sheet must show the picture that was judged.** `shadow.py build` FLAGs a row when one of
+   its judged records has no picture (by source sha) on that row. art_sheet shows installed art and renders that it finds
+   by name or by `--jobs`.
+   `shadow.py` also passes the judged pictures to art_sheet with `--references`. Give production specs their
+   `artpipe_job`, so that the render is a column.
+2. **Nothing reaches the owner unread** still holds. The pipeline's look IS the prereview (`looked_by judge:<models>`).
+   But the sheet itself must render. Build the sheet with `art_sheet.py` only (`rimworld-review-sheets`).
+3. **A prompt, template or policy change re-runs `runner.py regress`** before the change decides anything. Never pool two
+   runs on different versions. The run's `versions_key` names every prompt version, the severity policy and the creature
+   template. For a plant or a machine, the template version is in `prompt_versions` of each decision, not in `versions_key`.
 4. **Machines without an in-game assembled capture are held, not judged.** Captures come from a keeper save via
    `rimworld-live-review`, batched.
-5. **Never live-test a flyer to get frames** (owner): flight is judged from the flip-book stills. A pass from stills is
-   not evidence about motion: judges passed a wing baked into the plate, squash noise and flesh ripping away with the
-   wing, all of which he saw at speed. Give a flyer judge the `flyer_eye_checks.py parts` sheet and every frame full
-   size, count only its catches, and score any flyer check against `../rimworld-sprite-facings/references/flyer_truth_set.md`.
+5. **Never live-test a flyer to get frames** (owner). Judge flight from the flip-book stills.
+   - A pass from stills is not evidence about motion. Judges passed three faults: a wing baked into the plate, squash noise,
+     and flesh that rips away with the wing. He saw all three at speed. The plate is the body layer without the wings.
+   - Give a flyer judge the `flyer_eye_checks.py parts` sheet and every frame at full size.
+   - Count only the judge's catches.
+   - Score any flyer check against `../rimworld-sprite-facings/references/flyer_truth_set.md`.
 
 More traps for this section: [references/traps.md](references/traps.md) § Before you trust a decision.
 
 ## When the owner (or a live walk) disagrees
 
-Every override or walk finding is a criteria-ledger entry the same day (`ledger.py add --owner-said "<his words>"`),
-then a fix that names the check / prompt line / policy row changed and adds a regression example
-(`ledger.py fix … --regression DEF:LETTER --expect ACCEPT|NOT_ACCEPT`). One verdict is not a pattern: an entry can
-stay OPEN until a second case shows the rule — tuning to one key is how a judge learns a single sitting.
+- Every override or walk finding is a criteria-ledger entry the same day (`ledger.py add --owner-said "<his words>"`).
+- Then comes a fix. The fix names the check / prompt line / policy row that changed. The fix also adds a regression example
+  (`ledger.py fix … --regression DEF:LETTER --expect ACCEPT|NOT_ACCEPT`).
+- One verdict is not a pattern. An entry can stay OPEN until a second case shows the rule. A judge that you tune to one key
+  (the answers of one sitting) learns only that sitting.
+
 Format and examples: `references/criteria_ledger.md`.
 
 ## Files
 
 | file | what |
 |---|---|
-| `references/pipeline.md` | the owner's rules and each guard, routing table, shadow mode, open questions |
+| `references/pipeline.md` | the owner's rules and each guard, routing table, shadow mode, his answers to the open questions |
 | `references/schema.md` | card, reviewer replies, decision record, regen job |
 | `references/severity_policy.md` | every reason code: blocking / polish / gross, and the card facts that demote one (machine-read) |
 | `references/templates/{creature,plant,machine}.md` | the class module sent to reviewers + required panels + checklist (machine-read) |
 | `references/prompts/*.md` | preamble, opus_first_pass, gpt_targeted_second_look, regen_prompt_edit, departures_brief (versioned) |
 | `references/criteria_ledger.md` | the learning loop |
 | `references/prompt_variants_<date>.md` | variant races against owner verdicts: tables, decisions (method in the 2026-10-23 file) |
-| `src/RimMandrake/Utils/art_eval/` | policy.py (pure), cards.py, runner.py, shadow.py, ledger.py, selftest_art_eval.py |
-| `infrastructure/state/art_eval/` | settings.json, runs/<id>/, criteria_ledger.jsonl, regression.jsonl, briefs/, shadow_log.jsonl |
+| `src/RimMandrake/Utils/art_eval/` | policy.py (pure), cards.py, runner.py, shadow.py, ledger.py, selftest_art_eval.py, and the tools named above |
+| `infrastructure/state/art_eval/` | settings.json, runs/<id>/, criteria_ledger.jsonl, regression.jsonl, briefs/, shadow_log.jsonl, and the records named above |
 
-Neighbours: `rimworld-review-sheets` (his page), `design/RimMandrake/art_judge_brief.md` (constraint IDs the codes
-cite), `rimworld-sprite-facings` and `generating-rimworld-sprites` (the facts the preamble quotes),
-`rimworld-live-review` (machine captures), `chatgpt-consult` (GPT is guidance, never a grading key).
+Neighbours:
+
+- `rimworld-review-sheets`: his page.
+- `design/RimMandrake/art_judge_brief.md`: the constraint IDs that the codes cite.
+- `rimworld-sprite-facings` and `generating-rimworld-sprites`: the facts that the preamble quotes.
+- `rimworld-live-review`: machine captures.
+- `chatgpt-consult`: GPT is guidance, never a grading key.
 
 **Style memory**, learned from his overrides: `design/RimMandrake/art_style_memory.md`. That file is a reference for the art
-judge, not a constraint. The pipeline, its timers and its judge run exactly as written here.
+judge, not a constraint. The pipeline, its timers and its judge run exactly as this skill says.
 
 ## Subagent budget — read before spawning ANY helper for this pipeline (owner, 2026-10-23)
 
-Helpers on this stream burned the account's Opus session limit in one morning. Hard rules, full text and the
-measured incident in `references/subagent_budget.md`: **every brief carries `max_turns` and `max_judge_calls`
-(default 30 turns; judge-call count stated, no default); fresh helper per batch, never one long-lived one; one Opus helper at a time, three total;
-loops are one driver script, not a turn per picture; wait with Monitor, never polling turns; judge each picture once
-per (image hash, prompt version); prompt comparison = incumbent + 2 variants, ≤12 known verdicts, one round per
-order; probe quota before judge-heavy work and never record a 429 as a verdict; measure every helper afterwards with
-`scripts/helper_cost.py`.**
+Helpers on this stream burned the account's Opus session limit in one morning. The limits below are that day's answer. The
+full text and the measured incident are in `references/subagent_budget.md`. The hard rules:
+
+- **Every brief carries `max_turns` and `max_judge_calls`.** The default is 30 turns. The brief states the judge-call count;
+  that count has no default. Both numbers count work. Never put a token or spend figure in a brief (root `CLAUDE.md`
+  §No launched agent is told its spend).
+- **Use a fresh helper for each batch, never one long-lived helper.**
+- **Run one Opus helper at a time, and three helpers in total.**
+- **A loop is one driver script, not a turn per picture.**
+- **Wait with Monitor, never with polling turns.**
+- **Judge each picture once per (image hash, prompt version).**
+- **A prompt comparison is the incumbent + 2 variants, with ≤12 known verdicts and one round per order.**
+- **Probe the quota before judge-heavy work. Never record a 429 as a verdict.**
+- **Measure every helper afterwards with `scripts/helper_cost.py`.**

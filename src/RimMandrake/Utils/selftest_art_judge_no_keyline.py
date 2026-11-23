@@ -80,6 +80,21 @@ def main() -> int:
         fails.append("artpiped.FACTS_SINGLE_FILE_CHECKS names an outline check: %r"
                      % (artpiped.FACTS_SINGLE_FILE_CHECKS,))
 
+    # The art-eval prompts that code composes for the generator follow the same ruling as the judge.
+    sys.path.insert(0, str(HERE / "art_eval"))
+    import policy  # noqa: E402
+    import round_series  # noqa: E402
+    made = {"round_series.compose_owner_prompt": round_series.compose_owner_prompt("x", "A grey beast."),
+            "policy.deterministic_regen_prompt": policy.deterministic_regen_prompt(
+                {"subject": "RM_X", "description": "A grey beast."}, [])["prompt"]}
+    if not demands("painterly, realistic, clean dark outline, transparent background."):
+        fails.append("the demand pattern misses the retired 'clean dark outline' wording; the instrument is blind")
+    for name, body in made.items():
+        for hit in demands(body):
+            fails.append("%s asks the generator for an outline: %r" % (name, hit))
+        if "no outlines" not in body:
+            fails.append("%s does not say 'no outlines'" % name)
+
     files = [p for c in REGENS for p in sorted((TEX / c).glob(c + "_*.png"))]
     if len(files) < len(REGENS):
         fails.append("found %d regen facings under %s; the instrument cannot see them" % (len(files), TEX))
@@ -96,7 +111,7 @@ def main() -> int:
         print("FAIL  " + f)
     if fails:
         return 1
-    print("PASS  judge brief and art_checks agree: no outlines (owner card 2026-10-04)")
+    print("PASS  judge brief, art_checks and the two prompts that code composes agree: no outlines (owner card 2026-10-04)")
     return 0
 
 

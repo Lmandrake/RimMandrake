@@ -49,10 +49,10 @@ Helpers launched through the `rm-*` agent types carry their own bounds (autoComp
 > Monitor, never polling turns. At budget (or on any 429/session limit) stop, write a resume file naming the exact
 > command to continue, push, and report in <=12 lines. Do not record limit errors as verdicts.
 
-## Known gaps (GPT review 2026-10-23; filed as HELPER_BUDGET_GATE_ENFORCE_NOT_ASKING_NICELY)
+## Known gaps
 
-These rules are instructions, not enforcement. Owed: one launcher for helpers AND `claude -p` judges that validates
-the budget fields, reserves allowance before each call from a shared account/stream ledger (so parallel judge
-processes count, not just helpers), and refuses at zero. `helper_cost.py` measures after the fact only, counts usage
+These rules are instructions, not enforcement. The launcher that was to enforce them (`HELPER_BUDGET_GATE_ENFORCE_NOT_ASKING_NICELY`)
+was dropped on 2026-11-18: `spend_watchdog.wrap` stops a run at its spend cap from outside, and no launched agent is told
+its spend (root `CLAUDE.md`). `helper_cost.py` measures after the fact only, counts usage
 records not true turns, omits plain input tokens and external judge calls, and cache reads are not the quota.
 Interrupted live observations are UNMEASURED; valid earlier rows stay.

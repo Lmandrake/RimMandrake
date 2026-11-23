@@ -3,7 +3,7 @@
 
 Owner, 2026-10-23: *"Opus scores first. If it says good, auto-accept. If it says really bad, regen. If it says
 weak/need a call, send to GPT. If GPT says strong accept, accept, otherwise regen."* The guards (policy-decided
-severity, targeted GPT concerns, reason-driven regen with a 3-round cap, owner-kept art held, catch items following
+severity, targeted GPT concerns, reason-driven regen with a 3-round cap, owner-kept art redrawn only with a revert record, catch items following
 their living animal, every decision logged with prompt versions, model ids and image hashes) are in policy.py.
 
     python3 runner.py run --pilot RM_Huldu:C RM_HulduCatch:C:D --run-id e2e_20261023 --test

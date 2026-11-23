@@ -133,6 +133,12 @@ root.
 | situation | decision |
 |---|---|
 | required panel missing (machine without assembled capture, catch without living reference) | HOLD_INPUT |
+| production run: a spec that does not establish `owner_kept`, and the verdict is REGEN | HOLD_INPUT (not filed, no round counted) |
+| a spec with `owner_kept_unmeasured` (the art ledger could not be read) | HOLD_INPUT; no model is asked |
+| a render the pipeline ordered whose canvas is not the shipping canvas for its drawSize | HOLD_CANVAS |
+| a candidate picture that repeats one he banned with ✕ | REGEN (round n) or ESCALATE after 3; no model is asked |
+| the facing-truth check FLAGs the facing set (`runner.facing_truth`) | REGEN (round n) or ESCALATE after 3; no model is asked |
+| the same two cases on owner-kept art, with or without a revert record | REGEN or ESCALATE, because both checks run before HOLD_KEPT; the record has no `replaces_kept`, so `fill_queue.py` refuses to file the redraw |
 | catch, living animal REGEN / ESCALATE / waiting | REGEN_AFTER_SOURCE |
 | owner-kept, no revert record | HOLD_KEPT (+ kept-but-flagged line if not GOOD) |
 | owner-kept with a revert record | routed like any subject; a REGEN is flagged *replaced your kept art* + revert |

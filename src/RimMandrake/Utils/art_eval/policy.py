@@ -387,7 +387,7 @@ def deterministic_regen_prompt(card: dict, findings: list, previous_prompt: str 
         if card.get("departures"):
             body.append("It is NOT an Earth animal: " + "; ".join(card["departures"]) + ".")
         body += fixes
-        body.append("Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.")
+        body.append("Painterly vanilla RimWorld style, realistic, no outlines, transparent background.")
     return {"schema": "rm-art-eval/regen@v1", "subject": card["subject"],
             "edits": [{"finding": f["code"], "change": f.get("fix", "")} for f in findings],
             "invariants": [], "reference": "none" if anatomy else "keep", "prompt": " ".join(body),

@@ -1,5 +1,5 @@
 {
- "_about": "art_eval pipeline settings (skill rimworld-art-evaluation, references/pipeline.md). shadow.<template>.off_after_consecutive_clean is PROVISIONAL (seat proposal 2026-10-23; owner open question): the shadow sheet for a template becomes eligible to turn off after this many consecutive owner-reviewed subjects with no blocking override. Turning it off ('on': false) is the owner's call.",
+ "_about": "art_eval pipeline settings (skill rimworld-art-evaluation, references/pipeline.md). shadow.<template>.off_after_consecutive_clean is 30 by owner card 2026-10-23 (30 in a row): the shadow sheet for a template becomes eligible to turn off after this many consecutive owner-reviewed subjects with no blocking override. Turning it off ('on': false) is the owner's call.",
  "max_regen_rounds": 3,
  "min_refute_evidence_chars": 15,
  "shadow": {
