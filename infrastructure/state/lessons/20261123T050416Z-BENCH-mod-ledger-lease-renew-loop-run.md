@@ -1,0 +1,1 @@
+A mod-ledger lease renew loop run as a background Bash task dies at the harness's 2-hour background limit, and the holder lease lapses 45 minutes later; a FlowWorks helper fix run (2026-11-22) lost its lease that way while a 3-hour builder ran. Renew from inside a long foreground wait, or relaunch the loop before 2 hours.
