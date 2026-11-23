@@ -523,9 +523,11 @@ def cmd_tick(_a):
         except BlockingIOError:
             print("tick already running")
             return 0
+        visit_feed_step()       # an open visit's waiting checks queue first, so this tick admits them
         status = ssh_reachable()
         steve_up = status is not None
         if steve_up:
+            site_stage_step()
             try:
                 for rec in steve_running():
                     reconcile(rec)
@@ -538,6 +540,61 @@ def cmd_tick(_a):
                 steve_up = False
         archmagi_tick(steve_up=steve_up, steve_busy=bool(steve_running()) or bool((status or {}).get("busy")))
     return 0
+
+
+def visit_feed_step(now=None):
+    """An open in-game visit's testq checks go to the lane ahead of filler (visit_feed.py;
+    RIMMANDRAKE_ROUTE_VISIT_TESTQ_CHECKS_AHEAD_OF_FILLER). Never breaks the tick: a failure is logged and returned."""
+    try:
+        import visit_feed
+        return visit_feed.step(now=now)
+    except Exception as e:  # noqa: BLE001 - the feed failing must not stop dispatch, reconcile or ingest
+        log("visit feed failed: %s: %s" % (type(e).__name__, e))
+        return {"state": "failed", "why": "%s: %s" % (type(e).__name__, e)}
+
+
+SITE_STAGE = "site_saves_stage.json"
+# A failed site copy is tried again after this long, not every tick: a copy streams up to ~100 MB of saves over ssh,
+# and a cause that persists (a save missing here, a full disk there) would send them every 60 s.
+SITE_RETRY_S = 1800
+
+
+def site_stage_step(now=None, run=None):
+    """Ship every registered test-site save SteveDesktop lacks (sync_test_mods.site_saves;
+    RIMMANDRAKE_ROUTE_PYRE_TESTQ_OFF_STEVE_NO_SITE_THERE: no Pyrelands site there, 5 jobs 0 PASS). Runs when
+    test_site_saves.json changed since the last good copy, or SITE_RETRY_S after a failed one. Never breaks the tick."""
+    import hashlib
+    now = time.time() if now is None else now
+    if run is None and os.path.realpath(QHOME) != os.path.realpath("/mnt/d/ClaudeWork/rimmandrake/testq"):
+        # a selftest's temp queue: its tick never ships real saves over real ssh
+        return {"state": "skipped", "why": "not the live queue (%s)" % QHOME}
+    reg = os.path.join(REPO, "src", "RimMandrake", "Utils", "modcheck", "test_site_saves.json")
+    try:
+        with open(reg, "rb") as f:
+            want = hashlib.sha256(f.read()).hexdigest()
+    except OSError as e:
+        return {"state": "unmeasured", "why": "%s unreadable: %s" % (reg, e)}
+    st = read_json(q(SITE_STAGE)) or {}
+    if st.get("registry") == want and (st.get("rc") == 0 or now - float(st.get("epoch") or 0) < SITE_RETRY_S):
+        return {"state": "unchanged", "rc": st.get("rc")}
+    if run is None:
+        def run():
+            r = subprocess.run([sys.executable, os.path.join(REPO, "infrastructure", "stevedesktop", "sync_test_mods.py"),
+                                "--sites", "--apply"], capture_output=True, text=True, timeout=900)
+            return r.returncode, (r.stdout + r.stderr)[-1500:]
+    try:
+        rc, text = run()
+    except Exception as e:  # noqa: BLE001 - a failed copy is recorded and retried; dispatch goes on
+        rc, text = 2, "%s: %s" % (type(e).__name__, e)
+    rec = {"registry": want, "rc": rc, "epoch": now, "ts": S.utcnow(), "out": text}
+    S.dump(rec, q(SITE_STAGE))
+    log("site saves: sync_test_mods --sites --apply exit %s: %s" % (rc, " | ".join(text.strip().splitlines()[-3:])[:300]))
+    return dict(rec, state="ran")
+
+
+def cmd_visit_feed(a):
+    import visit_feed
+    return visit_feed.cmd_visit_feed(a)
 
 
 # ---------------------------------------------------------------- the Archmagi backfill (TESTQ_ARCHMAGI_LANE_BUILD_BACKFILL)
@@ -2108,6 +2165,8 @@ def main(argv=None):
     s.add_argument("--cap", type=int, default=int(os.environ.get("TESTQ_FILL_CAP") or FILL_CAP_DEFAULT),
                    help="filler jobs per day: a backstop (there is no lane-time budget: fill_plan)")
     sub.add_parser("tick")
+    s = sub.add_parser("visit-feed", help="queue an open in-game visit's waiting testq checks (the tick runs it)")
+    s.add_argument("--dry", action="store_true", help="say what it would queue")
     s = sub.add_parser("archmagi-report", help="the section 2 trial: verified items/day net of load and displaced time")
     s.add_argument("--days", type=float, default=7.0)
     s = sub.add_parser("pause", help="pause the lane by hand (with --hours: intentional until then)")
@@ -2129,7 +2188,7 @@ def main(argv=None):
             return fwd
     return {"submit": cmd_submit, "list": cmd_list, "show": cmd_show, "cancel": cmd_cancel, "resume": cmd_resume,
             "sweep": cmd_sweep, "fill": cmd_fill,
-            "tick": cmd_tick, "pause": cmd_pause, "maintenance": cmd_maintenance, "steward": cmd_steward, "steward-watch": cmd_steward_watch,
+            "tick": cmd_tick, "visit-feed": cmd_visit_feed, "pause": cmd_pause, "maintenance": cmd_maintenance, "steward": cmd_steward, "steward-watch": cmd_steward_watch,
             "archmagi-report": cmd_archmagi_report}[a.cmd](a)
 
 

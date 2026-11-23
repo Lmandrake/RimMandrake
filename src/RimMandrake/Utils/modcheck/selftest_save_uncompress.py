@@ -187,7 +187,7 @@ check("9 offline exit 2 when absent", C.main(["offline", "--red", red + "x", "--
 # 10. FIXTURES_FIX_REST_STILL_COMPRESSED: every site reads an expanded fixture, and the one save door expands for every builder
 FIXED = {"calm": "RM_TestSite_calm_v3", "river": "RM_TestSite_river_v3", "cauldron": "RM_TestSite_cauldron_v3",
          "contagion": "RM_TestSite_contagion_v3", "leaningscrub": "RM_TestSite_leaningscrub_v3",
-         "pyrelands": "NS_Pyrelands_site_1_417df172fdb5_calm3"}
+         "pyrelands": "NS_Pyrelands_site_1_417df172fdb5_visit5"}
 check("10 every site is listed", set(FIXED) == set(T.SITES), sorted(T.SITES))
 for site, name in FIXED.items():
     code = T.SITES[site]["save"] or "NS_Pyrelands_site_1_417df172fdb5_" + T.SITES[site]["tag"]

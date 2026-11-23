@@ -118,6 +118,67 @@ try:
     rc, out = run(lambda p: None, lambda p: None, ["--apply"])
     check("an unreadable target is UNMEASURED, exit 1, nothing pushed",
           rc == 1 and out.count("UNMEASURED") == 2 and pushed == [], (rc, out, pushed))
+
+    # site_saves (RIMMANDRAKE_ROUTE_PYRE_TESTQ_OFF_STEVE_NO_SITE_THERE): every registered save SteveDesktop lacks or holds
+    # in another version is pushed and read back by sha256; one missing here or unread there exits 1
+    import json
+    sv = os.path.join(tmp, "saves")
+    os.makedirs(sv)
+    for n, body in (("A_site", b"aaaa"), ("B_site", b"bbbb")):
+        with open(os.path.join(sv, n + ".rws"), "wb") as f:
+            f.write(body)
+    reg = os.path.join(tmp, "reg.json")
+    with open(reg, "w") as f:
+        json.dump({"a": {"save": "A_site"}, "b": {"save": "B_site"}, "c": {"save": "C_gone"}, "d": {"save": None}}, f)
+    sha_a, sha_b = (hashlib.sha256(b).hexdigest() for b in (b"aaaa", b"bbbb"))
+    there = {"A_site": sha_a, "B_site": ""}                    # A already there, B absent
+
+    def rsha(p):
+        return there.get(os.path.basename(p)[:-4])
+
+    def pf(src, d):
+        pushed.append((src, d))
+        there[os.path.basename(src)[:-4]] = hashlib.sha256(open(src, "rb").read()).hexdigest()
+    S.SAVES_WSL = "/steve/Saves"
+    S.remote_sha, S.push_file = rsha, pf
+    pushed.clear()
+    out = io.StringIO()
+    with contextlib.redirect_stdout(out):
+        rc = S.site_saves(True, registry=reg, saves=sv)
+    out = out.getvalue()
+    check("site saves: the absent one is pushed and read back, the same one is not, the one missing here is named",
+          rc == 1 and pushed == [(os.path.join(sv, "B_site.rws"), S.SAVES_WSL)] and "same site a" in out
+          and "MISSING site c" in out and " ok " in out, (rc, out, pushed))
+    with open(reg, "w") as f:
+        json.dump({"a": {"save": "A_site"}, "b": {"save": "B_site"}}, f)
+    pushed.clear()
+    out = io.StringIO()
+    with contextlib.redirect_stdout(out):
+        rc = S.site_saves(True, registry=reg, saves=sv)
+    check("site saves: all there -> exit 0, nothing pushed", rc == 0 and pushed == [], (rc, out.getvalue()))
+    there["A_site"] = "0" * 64                                  # another version of A there
+    out = io.StringIO()
+    with contextlib.redirect_stdout(out):
+        rc = S.site_saves(False, registry=reg, saves=sv)
+    check("site saves: another version there is 'copy'; the plan pushes nothing", rc == 0 and pushed == []
+          and "copy site a" in out.getvalue(), (rc, out.getvalue()))
+    S.SAVES_WSL = None
+    S.SSH = stub("import sys; sys.exit(255)")                 # SteveDesktop's own env unread: could not look
+    out = io.StringIO()
+    with contextlib.redirect_stdout(out):
+        rc = S.site_saves(True, registry=reg, saves=sv)
+    check("site saves: SteveDesktop's Saves folder unread is UNMEASURED, exit 1", rc == 1 and pushed == []
+          and "UNMEASURED site saves" in out.getvalue(), (rc, out.getvalue()))
+    S.SSH = stub("print('/mnt/c/Users/x/AppData/G')")
+    check("site saves: the Saves folder is read from SteveDesktop's RM_GAME_USERDATA",
+          S.remote_saves() == "/mnt/c/Users/x/AppData/G/Saves", S.remote_saves())
+    S.SAVES_WSL = "/steve/Saves"
+    S.remote_sha = lambda p: None
+    out = io.StringIO()
+    with contextlib.redirect_stdout(out):
+        rc = S.site_saves(True, registry=reg, saves=sv)
+    check("site saves: an unread target is UNMEASURED, exit 1, nothing pushed", rc == 1 and pushed == []
+          and out.getvalue().count("UNMEASURED") == 2, (rc, out.getvalue()))
 finally:
     shutil.rmtree(tmp, ignore_errors=True)
 

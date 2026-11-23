@@ -115,17 +115,16 @@
  },
  "pyrelands": {
   "biome": "RM_Pyrelands",
-  "builtUtc": "2026-10-15T16:08:23Z",
-  "bytes": 29144895,
-  "expandedFrom": "NS_Pyrelands_site_1_417df172fdb5_calm2",
-  "from": "NS_Pyrelands_site_1_417df172fdb5_r6",
-  "head": "b5c8547e8b",
-  "load": "northstar_site.py --site 1 --fingerprint 417df172fdb5 --tag calm3 --reload-only --tile 5",
+  "builtUtc": "2026-11-22T12:29:16Z",
+  "bytes": 27958242,
+  "from": "built by Pyrelands in-game visit 5 (design/concepts/Pyrelands/version/in_game/visit_5/SUMMARY.md) on tier pyrelands, 17 mods with all five DLC; no retired donor in its header. builtUtc is the save file's mtime on ArchBig",
+  "head": null,
+  "load": "northstar_site.py --site 1 --fingerprint 417df172fdb5e402 --tag visit5 --reload-only --tile 1496 --map-id 1",
   "mapId": 1,
-  "outdoorAtSave": 56.6729622,
+  "outdoorAtSave": null,
   "profile": "danger",
-  "save": "NS_Pyrelands_site_1_417df172fdb5_calm3",
-  "tile": 5
+  "save": "NS_Pyrelands_site_1_417df172fdb5_visit5",
+  "tile": 1496
  },
  "river": {
   "biome": "TemperateForest",

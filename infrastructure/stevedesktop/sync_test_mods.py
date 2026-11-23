@@ -28,6 +28,7 @@ present with the same file count and byte total is skipped. A target that cannot
 is UNMEASURED and a source folder absent here is MISSING; both exit 1, never 'same' or 'copy'.
 """
 import argparse
+import json
 import os
 import re
 import shlex
@@ -169,10 +170,90 @@ def push(src, dest_parent, name):
         raise RuntimeError("push %s failed: tar=%s ssh=%s %s" % (src, tar.returncode, r.returncode, r.stderr.strip()))
 
 
+SAVES_WSL = os.environ.get("STEVE_SAVES_WSL")    # else read on SteveDesktop (remote_saves): one env per machine
+ENV_SH = os.environ.get("STEVE_ENV_SH", "~/rm/runner/infrastructure/stevedesktop/testcentre_env.sh")
+
+
+def remote_saves():
+    """SteveDesktop's Saves folder (WSL form), from its own testcentre_env.sh (RM_GAME_USERDATA, game_paths' seam);
+    None when it could not be read."""
+    if SAVES_WSL:
+        return SAVES_WSL
+    try:
+        r = subprocess.run(SSH + ['. %s >/dev/null 2>&1; echo "${RM_GAME_USERDATA:-}"' % ENV_SH], capture_output=True,
+                           text=True, timeout=60)
+    except subprocess.TimeoutExpired:
+        return None
+    out = r.stdout.strip().splitlines()[-1:] if r.stdout.strip() else []
+    if r.returncode or not out or not out[0].startswith("/"):
+        return None
+    return out[0].rstrip("/") + "/Saves"
+REGISTRY = os.path.join(REPO, "src", "RimMandrake", "Utils", "modcheck", "test_site_saves.json")
+
+
+def site_saves(apply, registry=REGISTRY, saves=None):
+    """Copy every registered test-site save (test_site_saves.json) that SteveDesktop lacks or holds in another version
+    -> 0 ok / 1 when a save is missing here, unread there, or did not arrive whole. RIMMANDRAKE_ROUTE_PYRE_TESTQ_OFF_
+    STEVE_NO_SITE_THERE: SteveDesktop's Saves held no Pyrelands site, so `rimworld/load_game` of the registered save did
+    nothing and every Pyrelands job polled 420 s and read UNMEASURED SITE (5 jobs since 2026-11-19, 0 PASS). Compared by
+    sha256, never by size (a rebuilt save may keep its size)."""
+    saves = saves or gp.SAVES
+    try:
+        with open(registry, encoding="utf-8") as f:
+            reg = json.load(f)
+    except (OSError, ValueError) as e:
+        print("UNMEASURED site saves: %s unreadable (%s)" % (registry, e))
+        return 1
+    there = remote_saves()
+    if not there:
+        print("UNMEASURED site saves: SteveDesktop's Saves folder unread (RM_GAME_USERDATA from %s on %s)"
+              % (ENV_SH, TARGET))
+        return 1
+    bad = 0
+    for site, e in sorted(reg.items()):
+        name = (e or {}).get("save") if isinstance(e, dict) else None
+        if not name:
+            continue
+        src = os.path.join(saves, name + ".rws")
+        if not os.path.isfile(src):
+            print("MISSING site %s: %s is not in %s here" % (site, name, saves))
+            bad += 1
+            continue
+        want = CI.sha256(src) if hasattr(CI, "sha256") else _sha256(src)
+        got = remote_sha(there + "/" + name + ".rws")
+        if got is None:
+            print("UNMEASURED site %s: could not read %s on %s (ssh failed)" % (site, name, TARGET))
+            bad += 1
+            continue
+        state = "same" if got == want else "copy"
+        print("%-4s site %-13s %-44s %6.1f MB -> %s" % (state, site, name, os.path.getsize(src) / 1e6, there))
+        if state == "copy" and apply:
+            push_file(src, there)
+            after = remote_sha(there + "/" + name + ".rws")
+            bad += after != want
+            print("     %s (target sha %s)" % ("ok" if after == want else "MISMATCH", (after or "unreadable")[:12]))
+    return 1 if bad else 0
+
+
+def _sha256(path):
+    import hashlib
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        for b in iter(lambda: f.read(1 << 20), b""):
+            h.update(b)
+    return h.hexdigest()
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--apply", action="store_true", help="copy (default: plan only)")
+    ap.add_argument("--sites", action="store_true", help="only the registered test-site saves (test_site_saves.json)")
     a = ap.parse_args()
+    if a.sites:
+        rc = site_saves(a.apply)
+        if not a.apply:
+            print("\nplan only; --apply copies")
+        return rc
     ids = wanted()
     found = locate(ids)
     missing = [i for i in ids if i not in found]

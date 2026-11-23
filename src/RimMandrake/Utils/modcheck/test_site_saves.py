@@ -71,12 +71,14 @@ SITES = {
     # load and Map.FinalizeLoading NRE'd into a Root-level Update() storm. v2 is built on fw_gss_sitting (`tier`), and
     # `prove river` refuses any save whose header names a mod the running list lacks.
     # v3 (FIXTURES_FIX_REST_STILL_COMPRESSED): v2 with its compressed grid expanded, as calm_v3. Likewise cauldron_v3,
-    # contagion_v3, leaningscrub_v3 and Pyrelands calm3, whose header still names three retired donors.
+    # contagion_v3 and leaningscrub_v3.
     "river": {"save": "RM_TestSite_river_v3", "profile": "calm", "size": 250, "temp": (5.0, 30.0), "minColonists": 3,
               "minRiverEdges": 2, "tier": "fw_gss_sitting",
               "suites": ["FlowWorks/northstar/extension_proof.py --live --site river"]},
-    "pyrelands": {"save": None, "profile": "danger", "size": 250, "temp": None, "minColonists": 3, "tag": "calm3",   # calm (v1) lost its wildlife to the nonColonists sweep; never overwritten
-                  "suites": ["Pyrelands/northstar_site.py --reload-only --tag calm3, then northstar_driver run"]},
+    # visit5 (RIMMANDRAKE_ROUTE_PYRE_TESTQ_OFF_STEVE_NO_SITE_THERE): the site Pyrelands in-game visit 5 built on tier
+    # pyrelands; calm3's header named three retired donors and the site was never on SteveDesktop.
+    "pyrelands": {"save": None, "profile": "danger", "size": 250, "temp": None, "minColonists": 3, "tag": "visit5",
+                  "suites": ["Pyrelands/northstar_site.py --reload-only --tag visit5, then northstar_driver run"]},
     # BIOME_SPRINT_PROVE_SCRUB_SETS_PACE: a scratch-world RM_Cauldron patch, danger-cleaned (wildlife and vents stay).
     # Single source: src/RimMandrake/Cauldron/site_spec.py site_entry() (selftest_cauldron_site.py compares the two).
     # `builder` = the module whose build_site_save(session, work_dir) `build cauldron` runs.

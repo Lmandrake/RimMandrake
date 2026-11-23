@@ -215,15 +215,33 @@ def last_filled_mod():
     return jobs[-1].get("mod") if jobs else None
 
 
-def fill_order(mods, last):
-    """-> MODS rotated to start just after LAST (unrotated when LAST is not among them). The tick's fill loop gives
-    Steve's lane to the FIRST mod that picks, so walking a fixed order let FlowWorks, which never runs out of gaps,
-    starve every later wire (FeverWood and EnvironmentalHazards, wired 2026-11-04, had no job a day later;
-    LIGHTSPEED_WIDEN_112_MODS_NEVER_QUEUED). Rotation gives each wired mod its turn."""
+def advancing():
+    """-> the mods the Maturation Pipeline advances (maturation_dispatch.json `advancing`); [] when unreadable."""
+    try:
+        with open(os.path.join(HERE, "..", "..", "rimflow", "maturation_dispatch.json"), encoding="utf-8") as f:
+            return [m for m in json.load(f).get("advancing") or [] if isinstance(m, str)]
+    except (OSError, ValueError, AttributeError):
+        return []
+
+
+def _rotate(mods, last):
     if last not in mods:
         return list(mods)
     i = mods.index(last) + 1
     return list(mods[i:]) + list(mods[:i])
+
+
+def fill_order(mods, last):
+    """-> MODS with the advancing ones first (RIMMANDRAKE_ROUTE_VISIT_TESTQ_CHECKS_AHEAD_OF_FILLER: the filler spent the
+    lane on held and idle mods while the advancing mods' checks waited), each group rotated to start just after LAST
+    (unrotated when LAST is not in it). The tick's fill loop gives Steve's lane to the FIRST mod that picks, so walking a
+    fixed order let FlowWorks, which never runs out of gaps, starve every later wire (FeverWood and
+    EnvironmentalHazards, wired 2026-11-04, had no job a day later; LIGHTSPEED_WIDEN_112_MODS_NEVER_QUEUED). Rotation
+    gives each mod of a group its turn; a mod that is not advancing gets the lane when no advancing mod picks."""
+    adv = set(advancing())
+    first = [m for m in mods if m in adv]
+    rest = [m for m in mods if m not in adv]
+    return _rotate(first, last) + _rotate(rest, last)
 
 
 def dated(wired, recs):
