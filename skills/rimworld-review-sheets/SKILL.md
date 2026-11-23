@@ -140,7 +140,8 @@ The other files of this skill:
   - His device can be unable to reach that URL (a phone off the tailnet). Then export the sheet with
     `sheet_to_artifact.py`. Publish that page privately (`references/lifecycle.md`).
   - Code enforces this:
-    - A page that its sidecar (its live writer) does not serve blocks picks. The page names the URL (`sheet_live_guard.py`, req 16).
+    - A page that its sidecar (its live writer) does not serve blocks picks. The page names the URL. The code is
+      `sheet_live_guard.py`, and `scaled_review_gate.py` checks it as requirement 16 (req 16).
     - A hook refuses a copy out of the clone, and a copy refuses to serve.
     - `owner_doc_lint.py` refuses those paths in piles, Transient docs and cards.
 - **Every sheet shown must be truly new.** "Please ensure that each sheet is truly new." (owner)

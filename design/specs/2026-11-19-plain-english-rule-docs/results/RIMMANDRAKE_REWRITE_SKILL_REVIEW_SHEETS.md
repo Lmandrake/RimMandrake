@@ -11,7 +11,7 @@ No evidence left the active file, so this skill has no history file.
 
 | measure | before | after |
 |---|---|---|
-| bytes | 9,925 | 13,377 |
+| bytes | 9,925 | 13,452 |
 | words in linted prose | 1,314 | 1,870 |
 | STE violations per 100 words | 4.64 | 2.19 |
 | sentences over 20 words | 26 | 6 |
