@@ -1,0 +1,586 @@
+{
+ "faults": [
+  {
+   "id": "burn_merge_dropped",
+   "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs",
+   "old": "if (st == RM_CarryCell.Burning) break;",
+   "new": "if (st == RM_CarryCell.Burning) continue;",
+   "bars": [
+    "fire_walks_with_wind",
+    "burn_line_walks"
+   ],
+   "suites": [
+    "T_FUZZ",
+    "T_BURN_LANES",
+    "LANE1"
+   ]
+  },
+  {
+   "id": "burn_flank_opens_beside_burn",
+   "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs",
+   "old": "if (beside) continue;",
+   "new": "",
+   "bars": [
+    "fire_walks_with_wind",
+    "burn_line_walks"
+   ],
+   "suites": [
+    "T_FUZZ",
+    "T_BURN_LANES",
+    "LANE1"
+   ]
+  },
+  {
+   "id": "burn_flank_lone_closes",
+   "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs",
+   "old": "bool narrow = width <= FlankNarrow;",
+   "new": "bool narrow = false;",
+   "bars": [
+    "fire_walks_with_wind",
+    "burn_line_walks"
+   ],
+   "suites": [
+    "T_FUZZ",
+    "T_BURN_LANES",
+    "LANE1"
+   ]
+  },
+  {
+   "id": "burn_carry_age_ignores_spent_fuel",
+   "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs",
+   "old": "if (fuelHp <= FuelSpentHp) return WindCarryTicks;",
+   "new": "",
+   "bars": [
+    "burn_line_walks"
+   ],
+   "suites": [
+    "T_FUZZ",
+    "T_BURN_LANES",
+    "LANE1"
+   ]
+  },
+  {
+   "id": "foam_gate_ignores_draft",
+   "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_FoamPathKernel.cs",
+   "old": "if (drafted) return RM_FoamGate.Drafted;",
+   "new": "",
+   "bars": [
+    "firefoam_sprayer_reaches_the_fruit"
+   ],
+   "suites": [
+    "T_FUZZ",
+    "T_FIREFOAM_SCENE",
+    "T_SETTINGS_SWEEP_OFFLINE",
+    "LANE1"
+   ]
+  },
+  {
+   "id": "foam_skips_neighbours",
+   "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_FoamPathKernel.cs",
+   "old": "for (int k = 0; k < 8; k++)",
+   "new": "for (int k = 0; k < 4; k++)",
+   "bars": [
+    "firefoam_sprayer_reaches_the_fruit"
+   ],
+   "suites": [
+    "T_FUZZ",
+    "T_FIREFOAM_SCENE",
+    "T_SETTINGS_SWEEP_OFFLINE",
+    "LANE1"
+   ]
+  },
+  {
+   "id": "foam_aims_past_lookahead",
+   "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_FoamPathKernel.cs",
+   "old": "for (int i = -1; i < n; i++)\n            {\n                int cx = i < 0 ? px : pathX[i];\n                int cz = i < 0 ? pz : pathZ[i];\n                if (burning(cx, cz) && canHit(cx, cz))",
+   "new": "for (int i = 0; i < n; i++)\n            {\n                int cx = i < 0 ? px : pathX[i];\n                int cz = i < 0 ? pz : pathZ[i];\n                if (burning(cx, cz) && canHit(cx, cz))",
+   "bars": [
+    "firefoam_sprayer_reaches_the_fruit"
+   ],
+   "suites": [
+    "T_FUZZ",
+    "T_FIREFOAM_SCENE",
+    "T_SETTINGS_SWEEP_OFFLINE",
+    "LANE1"
+   ]
+  },
+  {
+   "id": "foam_switch_ignored",
+   "file": "src/RimMandrake/Pyrelands/Source/PyrelandsFoamPath.cs",
+   "old": "if (!RM_PyrelandsSettings.sprayerFoamsPathEnabled || SprayerDef == null) return;",
+   "new": "if (SprayerDef == null) return;",
+   "bars": [
+    "inv_settings_gate"
+   ],
+   "suites": [
+    "T_FUZZ",
+    "T_FIREFOAM_SCENE",
+    "T_SETTINGS_SWEEP_OFFLINE",
+    "LANE1"
+   ]
+  },
+  {
+   "id": "foam_any_faction",
+   "file": "src/RimMandrake/Pyrelands/Source/PyrelandsFoamPath.cs",
+   "old": "p.RaceProps.Humanlike && p.Faction == Faction.OfPlayer,",
+   "new": "true,",
+   "bars": [
+    "firefoam_sprayer_reaches_the_fruit"
+   ],
+   "suites": [
+    "T_FUZZ",
+    "T_FIREFOAM_SCENE",
+    "T_SETTINGS_SWEEP_OFFLINE",
+    "LANE1"
+   ]
+  },
+  {
+   "id": "foam_path_not_read",
+   "file": "src/RimMandrake/Pyrelands/Source/PyrelandsFoamPath.cs",
+   "old": "ahead.AddRange(peek);",
+   "new": "",
+   "bars": [
+    "firefoam_sprayer_reaches_the_fruit"
+   ],
+   "suites": [
+    "T_FUZZ",
+    "T_FIREFOAM_SCENE",
+    "T_SETTINGS_SWEEP_OFFLINE",
+    "LANE1"
+   ]
+  },
+  {
+   "id": "firesense_cancels_aim",
+   "file": "src/RimMandrake/Pyrelands/Source/PyrelandsFireSense.cs",
+   "old": "if (MapComponent_RM_FoamPath.AimingSprayer(pawn)) return null;",
+   "new": "",
+   "bars": [
+    "firefoam_sprayer_reaches_the_fruit"
+   ],
+   "suites": [
+    "T_FUZZ",
+    "T_FIREFOAM_SCENE",
+    "T_SETTINGS_SWEEP_OFFLINE",
+    "LANE1"
+   ]
+  },
+  {
+   "id": "firesense_fights_firefighter",
+   "file": "src/RimMandrake/Pyrelands/Source/PyrelandsFireSense.cs",
+   "old": "|| cur.playerForced || cur.workGiverDef?.workType == WorkTypeDefOf.Firefighter",
+   "new": "",
+   "bars": [
+    "walk_season_on_the_pyre"
+   ],
+   "suites": [
+    "T_LINT",
+    "T_ROUND6_GAPS",
+    "T_FUZZ"
+   ]
+  },
+  {
+   "id": "carry_marks_nothing",
+   "file": "src/RimMandrake/Pyrelands/Source/FireEcologyHook.cs",
+   "old": "            burn.MarkCarried(fire);\n            IntVec3 at",
+   "new": "            IntVec3 at",
+   "bars": [
+    "fire_walks_with_wind",
+    "burn_line_walks"
+   ],
+   "suites": [
+    "T_FUZZ",
+    "T_BURN_LANES",
+    "T_BURN_ECOLOGY",
+    "T_LINT"
+   ]
+  },
+  {
+   "id": "carry_anchor_blind",
+   "file": "src/RimMandrake/Pyrelands/Source/FireEcologyHook.cs",
+   "old": "return RM_BurnKernel.RecentBurn(c.ContainsStaticFire(map), stamp, now, RM_BurnKernel.HealRecentTicks);",
+   "new": "return false;",
+   "bars": [
+    "fire_walks_with_wind",
+    "burn_line_walks"
+   ],
+   "suites": [
+    "T_FUZZ",
+    "T_BURN_LANES",
+    "T_BURN_ECOLOGY",
+    "T_LINT"
+   ]
+  },
+  {
+   "id": "carry_vanilla_spread_too",
+   "file": "src/RimMandrake/Pyrelands/Source/FireEcologyHook.cs",
+   "old": "GroundSeed(map), RM_BurnKernel.HealReach, cell, anchor,",
+   "new": "GroundSeed(map), 0, cell, anchor,",
+   "bars": [
+    "fire_walks_with_wind",
+    "burn_line_walks"
+   ],
+   "suites": [
+    "T_FUZZ",
+    "T_BURN_LANES",
+    "T_BURN_ECOLOGY",
+    "T_LINT"
+   ]
+  },
+  {
+   "id": "burnline_carried_at_unset",
+   "file": "src/RimMandrake/Pyrelands/Source/MapComponent_BurnLine.cs",
+   "old": "if (fire.Position.InBounds(map)) carriedAt[map.cellIndices.CellToIndex(fire.Position)] = Find.TickManager.TicksGame;",
+   "new": "",
+   "bars": [
+    "fire_walks_with_wind",
+    "burn_line_walks"
+   ],
+   "suites": [
+    "T_FUZZ",
+    "T_BURN_LANES",
+    "T_LINT"
+   ]
+  },
+  {
+   "id": "burnline_ago_wrong_lag",
+   "file": "src/RimMandrake/Pyrelands/Source/MapComponent_BurnLine.cs",
+   "old": "Find.TickManager.TicksGame, BurnHistoryKeepTicks, ticksAgo);\n            return at >= 0",
+   "new": "Find.TickManager.TicksGame, BurnHistoryKeepTicks, 0);\n            return at >= 0",
+   "bars": [
+    "ullai_graze_old_burns"
+   ],
+   "suites": [
+    "T_FUZZ",
+    "T_SITE",
+    "T_LINT"
+   ]
+  },
+  {
+   "id": "history_probe_counts_before_prune",
+   "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs",
+   "old": "            int agoAt = IndexAgoPruned(ticks, cells, now, keepTicks, ticksAgo);\n            samples = ticks.Count;",
+   "new": "            samples = ticks.Count;\n            int agoAt = IndexAgoPruned(ticks, cells, now, keepTicks, ticksAgo);",
+   "bars": [
+    "ullai_graze_old_burns"
+   ],
+   "suites": [
+    "T_FUZZ",
+    "T_SITE",
+    "LANE1"
+   ]
+  },
+  {
+   "id": "ash_burn_tick_off_by_one",
+   "file": "src/RimMandrake/Pyrelands/Source/PyrelandsAshField.cs",
+   "old": "return burnTick[map.cellIndices.CellToIndex(c)];",
+   "new": "return -1;",
+   "bars": [
+    "fire_walks_with_wind",
+    "burn_line_walks"
+   ],
+   "suites": [
+    "T_FUZZ",
+    "T_ASH_PROBE_OFFLINE",
+    "T_BURN_LANES"
+   ]
+  },
+  {
+   "id": "probe_hands_back_base",
+   "file": "src/RimMandrake/Pyrelands/Source/PyrelandsAshField.cs",
+   "old": "return RM_FireEcoKernel.ProbeLine(m.fertilityGrid.FertilityAt(c), t?.defName,",
+   "new": "return RM_FireEcoKernel.ProbeLine(t?.fertility ?? 0f, t?.defName,",
+   "bars": [
+    "ash_fertility_probe"
+   ],
+   "suites": [
+    "T_ASH_PROBE_OFFLINE",
+    "T_FUZZ",
+    "LANE1"
+   ]
+  },
+  {
+   "id": "probe_never_watered",
+   "file": "src/RimMandrake/Pyrelands/Source/PyrelandsAshField.cs",
+   "old": "comp != null && comp.IsWatered(c, now), t?.fertility ?? 0f,",
+   "new": "false, t?.fertility ?? 0f,",
+   "bars": [
+    "ash_fertility_probe"
+   ],
+   "suites": [
+    "T_ASH_PROBE_OFFLINE",
+    "T_FUZZ",
+    "LANE1"
+   ]
+  },
+  {
+   "id": "probe_no_refusal",
+   "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs",
+   "old": ": !waterOn ? \"the ash field is off (ashWaterFertilityEnabled)\" : null;",
+   "new": ": null;",
+   "bars": [
+    "ash_fertility_probe"
+   ],
+   "suites": [
+    "T_ASH_PROBE_OFFLINE",
+    "T_FUZZ",
+    "LANE1"
+   ]
+  },
+  {
+   "id": "probe_bonus_never_fades",
+   "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs",
+   "old": "float f = 1f - (float)(now - burnTick) / durationTicks;",
+   "new": "float f = 1f;",
+   "bars": [
+    "ash_fertility_probe",
+    "fresh_burn_compounds_with_black_rain"
+   ],
+   "suites": [
+    "T_ASH_PROBE_OFFLINE",
+    "T_FUZZ",
+    "LANE1"
+   ]
+  },
+  {
+   "id": "text_not_engineered",
+   "file": "src/RimMandrake/Pyrelands/Defs/BiomeDefs/Pyrelands.xml",
+   "old": "<description>A hot, wind-scoured savanna, genetically engineered in a forgotten age to feed grazing herds, that has gone on burning on a schedule of its own for millennia. Coarse fast grass carpets the ground again within days of a burn, dries out soon after, and goes up at the first dry-storm strike. What is left behind is ash: drifting on every wind, falling in grey storms, banking into drifts, and lying deep over all of it. Dry, the ash is fair ground that takes a crop well enough, though the heat stunts it; wherever water reaches it, the ash turns very fertile, wet roots shrug off the heat and it grows almost anything. For a few days after a burn the ash itself feeds a field, and black rain on a fresh burn feeds it richer still. The rare rain here is black with it. Little grows tall enough to matter, so the horizon is nothing but grass, scars and smoke.</description>",
+   "new": "<description>A hot, wind-scoured savanna, natural in a forgotten age to feed grazing herds, that has gone on burning on a schedule of its own for millennia. Coarse fast grass carpets the ground again within days of a burn, dries out soon after, and goes up at the first dry-storm strike. What is left behind is ash: drifting on every wind, falling in grey storms, banking into drifts, and lying deep over all of it. Dry, the ash is fair ground that takes a crop well enough, though the heat stunts it; wherever water reaches it, the ash turns very fertile, wet roots shrug off the heat and it grows almost anything. For a few days after a burn the ash itself feeds a field, and black rain on a fresh burn feeds it richer still. The rare rain here is black with it. Little grows tall enough to matter, so the horizon is nothing but grass, scars and smoke.</description>",
+   "bars": [
+    "biome_text_says_engineered"
+   ],
+   "suites": [
+    "T_DEFS_OFFLINE",
+    "T_CUT_STAYS_CUT",
+    "LANE1"
+   ]
+  },
+  {
+   "id": "text_firebreak_back",
+   "file": "src/RimMandrake/Pyrelands/About/About.xml",
+   "old": "A firefoam sprayer lets you decide where the next burn stops.",
+   "new": "Lay a firebreak line to decide where the next burn stops.",
+   "bars": [
+    "inv_firebreak_firefoam"
+   ],
+   "suites": [
+    "T_DEFS_OFFLINE",
+    "T_CUT_STAYS_CUT",
+    "LANE1"
+   ]
+  },
+  {
+   "id": "text_breaker_back",
+   "file": "src/RimMandrake/Pyrelands/About/About.xml",
+   "old": "Pyrelands sand can be shovelled for glass sand,",
+   "new": "Forge lightning breakers from fulgurite. Pyrelands sand can be shovelled for glass sand,",
+   "bars": [
+    "inv_lightning_breaker"
+   ],
+   "suites": [
+    "T_DEFS_OFFLINE",
+    "T_CUT_STAYS_CUT",
+    "LANE1"
+   ]
+  },
+  {
+   "id": "def_firebreak_floor_back",
+   "file": "src/RimMandrake/Pyrelands/Defs/ThingDefs_Items/RM_FurnaceHide.xml",
+   "old": "<Defs>",
+   "new": "<Defs><TerrainDef><defName>RM_FE_FirebreakLine</defName><label>fire break</label></TerrainDef>",
+   "bars": [
+    "inv_firebreak_firefoam"
+   ],
+   "suites": [
+    "T_DEFS_OFFLINE",
+    "T_CUT_STAYS_CUT",
+    "LANE1"
+   ]
+  },
+  {
+   "id": "def_breaker_back",
+   "file": "src/RimMandrake/Pyrelands/Defs/ThingDefs_Items/RM_FurnaceHide.xml",
+   "old": "<Defs>",
+   "new": "<Defs><ThingDef><defName>RM_LightningBreaker</defName><label>lightning breaker</label></ThingDef>",
+   "bars": [
+    "inv_lightning_breaker"
+   ],
+   "suites": [
+    "T_DEFS_OFFLINE",
+    "T_CUT_STAYS_CUT",
+    "LANE1"
+   ]
+  },
+  {
+   "id": "art_ullai_facing_gone",
+   "file": "src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_Ullai.xml",
+   "old": "          <drawSize>1.6</drawSize>\n        </bodyGraphicData>\n      </li>\n      <li>\n        <bodyGraphicData>\n          <texPath>Things/Pawn/Animal/Pyrelands/Ullai/Ullai",
+   "new": "          <drawSize>1.6</drawSize>\n        </bodyGraphicData>\n      </li>\n      <li>\n        <bodyGraphicData>\n          <texPath>Things/Pawn/Animal/Pyrelands/Ullai/UllaiGone",
+   "bars": [
+    "inv_art_and_text"
+   ],
+   "suites": [
+    "T_DEFS_OFFLINE",
+    "T_CUT_STAYS_CUT",
+    "LANE1"
+   ]
+  },
+  {
+   "id": "art_flamefang_venom_no_description",
+   "file": "src/RimMandrake/Pyrelands/Defs/HediffDefs/RM_FlamefangVenom.xml",
+   "old": "    <description>A burning venom from a flamefang's bite. It does not spread like an infection so much as smolder in place, a coal lodged under the skin \u2014 hot, slow, and worse the longer it sits untreated.</description>",
+   "new": "",
+   "bars": [
+    "inv_art_and_text"
+   ],
+   "suites": [
+    "T_DEFS_OFFLINE",
+    "T_CUT_STAYS_CUT",
+    "LANE1"
+   ]
+  },
+  {
+   "id": "settings_sprayer_off_by_default",
+   "file": "src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs",
+   "old": "public static bool sprayerFoamsPathEnabled = true;",
+   "new": "public static bool sprayerFoamsPathEnabled = false;",
+   "bars": [
+    "inv_settings_gate"
+   ],
+   "suites": [
+    "T_SETTINGS_SWEEP_OFFLINE",
+    "T_SETTINGS_SCREENS",
+    "T_SITE",
+    "LANE1"
+   ]
+  },
+  {
+   "id": "settings_sprayer_never_saved",
+   "file": "src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs",
+   "old": "            Scribe_Values.Look(ref sprayerFoamsPathEnabled, \"sprayerFoamsPathEnabled\", true);\n",
+   "new": "",
+   "bars": [
+    "inv_settings_gate"
+   ],
+   "suites": [
+    "T_SETTINGS_SWEEP_OFFLINE",
+    "T_SETTINGS_SCREENS",
+    "T_SITE",
+    "LANE1"
+   ]
+  },
+  {
+   "id": "settings_sprayer_box_bound_wrong",
+   "file": "src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs",
+   "old": "ref sprayerFoamsPathEnabled,\n",
+   "new": "ref sandShovelEnabled,\n",
+   "bars": [
+    "inv_settings_gate"
+   ],
+   "suites": [
+    "T_SETTINGS_SWEEP_OFFLINE",
+    "T_SETTINGS_SCREENS",
+    "T_SITE",
+    "LANE1"
+   ]
+  },
+  {
+   "id": "settings_gate_ignores_shell",
+   "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs",
+   "old": "return modMaster && (!shellPresent || shellOn);",
+   "new": "return modMaster;",
+   "bars": [
+    "inv_settings_gate"
+   ],
+   "suites": [
+    "T_SETTINGS_SWEEP_OFFLINE",
+    "T_SETTINGS_SCREENS",
+    "T_SITE",
+    "LANE1"
+   ]
+  },
+  {
+   "id": "venom_bite_old_dose",
+   "file": "src/RimMandrake/Pyrelands/Defs/DamageDefs/RM_FlamefangVenomBite.xml",
+   "old": "<severityPerDamageDealt>0.009<",
+   "new": "<severityPerDamageDealt>0.02<",
+   "bars": [
+    "flamefang_bite_carries_venom"
+   ],
+   "suites": [
+    "T_VENOM_DOSE",
+    "LANE1"
+   ]
+  },
+  {
+   "id": "venom_bite_unscaled",
+   "file": "src/RimMandrake/Pyrelands/Defs/DamageDefs/RM_FlamefangVenomBite.xml",
+   "old": "<hediff>RM_FlamefangVenom</hediff>",
+   "new": "<hediff>ToxicBuildup</hediff>",
+   "bars": [
+    "flamefang_bite_carries_venom"
+   ],
+   "suites": [
+    "T_VENOM_DOSE",
+    "T_VENOM_STAGING",
+    "LANE1",
+    "T_LINT"
+   ]
+  },
+  {
+   "id": "venom_slow_immunity",
+   "file": "src/RimMandrake/Pyrelands/Defs/HediffDefs/RM_FlamefangVenom.xml",
+   "old": "<immunityPerDaySick>0.8<",
+   "new": "<immunityPerDaySick>0.5<",
+   "bars": [
+    "flamefang_bite_carries_venom"
+   ],
+   "suites": [
+    "T_VENOM_DOSE",
+    "LANE1"
+   ]
+  },
+  {
+   "id": "venom_never_worsens",
+   "file": "src/RimMandrake/Pyrelands/Defs/HediffDefs/RM_FlamefangVenom.xml",
+   "old": "<severityPerDayNotImmune>0.35<",
+   "new": "<severityPerDayNotImmune>-0.35<",
+   "bars": [
+    "flamefang_bite_carries_venom"
+   ],
+   "suites": [
+    "T_VENOM_DOSE",
+    "T_VENOM_STAGING",
+    "LANE1"
+   ]
+  },
+  {
+   "id": "beast_holes_roofs",
+   "file": "src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_PyrelandsFauna.xml",
+   "old": "<sparesRoofs>true</sparesRoofs>",
+   "new": "<sparesRoofs>false</sparesRoofs>",
+   "bars": [
+    "furnacebeast_warms"
+   ],
+   "suites": [
+    "T_LINT",
+    "T_ROUND6_GAPS",
+    "ACCEPT_ROOF"
+   ]
+  },
+  {
+   "id": "beast_spare_gone",
+   "file": "src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_PyrelandsFauna.xml",
+   "old": "<li Class=\"RimMandrake.TitanicCreatures.RM_TitanicExtension\" MayRequire=\"mandrake.rm.hugethings\">",
+   "new": "<li Class=\"RimMandrake.TitanicCreatures.RM_TitanicExtension\" MayRequire=\"mandrake.rm.biomes\">",
+   "bars": [
+    "furnacebeast_warms"
+   ],
+   "suites": [
+    "T_LINT",
+    "T_ROUND6_GAPS",
+    "ACCEPT_ROOF"
+   ]
+  }
+ ]
+}
