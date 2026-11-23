@@ -1,0 +1,1 @@
+A DLL rebuilt from the same sources at another commit has another md5 (the SourceRevisionId stamp and the ids derived from it, 92 bytes): match evidence on the .srchash source lines, never on raw DLL md5, and deploy with deploy_custom_mods.py so the .srchash goes with the DLL.
