@@ -246,8 +246,8 @@ is running).
 
 **What you do raise.**
 
-- When the forecast of Operations says that a goal's work does not fit before a date, Operations files one item for you
-  that names that work.
+- A forecast of Operations can say that a goal's work does not fit before a date. Operations then files one item for
+  you that names that work.
 - You decide the cut (owner 2026-11-19, §Only five acts stay his). His stated goal order still binds.
 - Make the ticket edits. Then close that item with
   `--per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS --why "<the cut and why>"`. The decision reaches
