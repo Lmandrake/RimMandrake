@@ -59,7 +59,7 @@ and points here. Entries state what IS: delete a line the moment it turns false,
   - On a fast fall, the 10-minute pressure tick writes `~/.local/state/rm-scratch-reap/growth_capture.json`. That file
     names the top `/proc` `write_bytes` writers.
 - **A remote one-time-bootsequence trial of a cloned disk is only safe if someone can reach the power button.** If the
-  clone does not come back, nothing remote can recover the machine (Steve: offline 27+ min).
+  clone does not come back, nothing remote can recover the machine (SteveDesktop, 2026-11-01: offline 27+ min).
   Before the reboot, arrange owner hands (or a smart plug).
 - **`verify_clone.py` on two NVMe drives is latency-bound, not CPU-bound.** One shard ran at ~55 MB/s per side, with
   CPU 13% and queue 0.6. 6 parallel shards by top folder reached 225 GB in ~65 min.
@@ -74,10 +74,11 @@ and points here. Entries state what IS: delete a line the moment it turns false,
     path, or restore a file.
 - **Check a Windows folder's contents and size before a recursive copy off a failing drive.** `OneDrive\Desktop` held
   the 168k-file `old_computer`. A '19 own files' count had excluded that folder, and `robocopy` took all of it.
-- **SteveDesktop logs ~46,000 disk Id=7 `Harddisk1\DR1 has a bad block` events (since 2026-10-30, thousands per hour,
-  ongoing).**
-  - Harddisk1 is the Samsung 970 NVMe 2TB. Its SMART reliability counters are empty, and Health=Healthy.
-  - Nobody has examined these events. These events are possibly relevant to the CPU fault diagnosis.
+- **Do not hunt the ~46,000 `Harddisk1\DR1 has a bad block` events of SteveDesktop. The flood stopped on 2026-11-01.**
+  - The events are Windows System log events from source `disk`, event ID 7. They are one repeated message, not
+    distinct blocks. The flood ran from 2026-10-31 06:49 to 2026-11-01 17:25.
+  - The Samsung 970 that the events named is not in SteveDesktop now (`Get-Disk` by serial, 2026-11-17: a Kingston
+    SNV3S1000G NVMe and a WDC SATA). Verify a drive by serial before you spend a session on its symptom.
   - Also measured: the ME update's first reboot took ~19 min dark.
   - The 'Reset' text of `stage_on_steve.ps1` is stale. The text says PCI-E=Disabled, Wait F1=Enabled; the
     instructions say Enabled/Disabled.
@@ -162,7 +163,8 @@ By tool family: Git, publish and clones (3) · Ledger, rimflow, handoffs and les
   - Verify every GPT claim against the file or vanilla Data before you accept it. GPT reported an extra closing brace
     in a file whose braces balance 27/27. GPT called MeleeDodgeChance 8 an 800% bug, but vanilla uses 15 and 8 on the
     unfinalized scale.
-- **`gpt_consult` is refused under a low Codex runway unless given `--required "<rule>"`.** A code review is
+- **`gpt_consult` is refused under a low Codex runway unless given `--required "<rule>"`.** Low is a reading under
+  `codex_conserve_runway` in `src/RimMandrake/Utils/slot_rules.json`. A code review is
   rule-required, because code is not clean until a review says so.
 - **`gpt_consult --out` answer files end without a trailing newline.** So `cat a.txt b.txt` joins the last JSON line
   of one batch to the first line of the next (24 verdict lines read as 20). Join with an explicit newline
@@ -302,7 +304,7 @@ By tool family: Git, publish and clones (3) · Ledger, rimflow, handoffs and les
   - Template: `D:\ClaudeWork\rimmandrake\excavation_slice\labelbench`.
   - Mono ran the label floods about 1.5x slower than CLR net472.
 - **Pass `RM_DATA_ROOT` to `python.exe` per call, never `export` it for WSL python3.** The python.exe bridge scripts
-  and preflight O13 need `RM_DATA_ROOT='D:\ClaudeWork\rimmandrake' WSLENV=RM_DATA_ROOT` on that one command. If you
+  and preflight O13 (the `deploy_match` check of `preflight_bridge.py`) need `RM_DATA_ROOT='D:\ClaudeWork\rimmandrake' WSLENV=RM_DATA_ROOT` on that one command. If you
   export the variable shell-wide, WSL python3 tools read the backslash path as relative. They then create a literal
   `D:\ClaudeWork\rimmandrake` folder in the clone.
 - **`winbuild.py` fails because the Harmony workshop folder `2009463077` has no `Current/Assemblies`.** That folder now
@@ -450,7 +452,8 @@ By tool family: Git, publish and clones (3) · Ledger, rimflow, handoffs and les
   unattended sim with no stocked queue ranks proposers, not builders. A blanket exemption for process tickets hid
   fair-check cost from one arm class.
 - **TLA+ liveness: an unfair environment loop can starve a fair obligation, and TLC then reports a spurious L1/L2
-  violation.** Fix with guards, not more fairness (`Handoff.tla`):
+  violation.** L1 and L2 are two liveness properties of `Handoff.tla`, a model removed on 2026-11-05. L1: each candidate
+  is settled in the end. L2: each owner message is handled in the end. Fix with guards, not more fairness:
   - Begin requires the old inbox empty. That stops Begin/Cancel ping-pong.
   - Reload requires no pending C# fix. That stops the StopGame/Reload loop.
   - Yield fires for any context that still holds work, not only for drivers. (After Release then Cancel, a context

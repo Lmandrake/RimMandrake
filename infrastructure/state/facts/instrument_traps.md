@@ -49,7 +49,8 @@ beside the result.
   `D:\ClaudeWork\rimmandrake\artpipe`, outside git since 2026-10-02. `artpipe_state.py where` prints the state dir and
   its counts. The queue held **182** jobs when a count of `artpipe/queue/` reported 0, and that figure went to the
   owner. Before you repeat any count of zero, prove the path: glob `*.json`, which errors loudly. Also, **the artpipe
-  daemon does not run on the Mac**. So work queued on the Mac generates nothing until the Desktop runs it.
+  daemon does not run on the Mac**. So work queued on the Mac generates nothing until Archmagi (the Windows
+  desktop) runs it.
 - 🔴 **The shell here is zsh, and `for x in $NAMES` does NOT word-split** — it loops **ONCE** on the whole string. An
   artpipe art-existence check over 18 plant names ran exactly one query, on a nonsense 18-word string. The check
   reported a confident **"0 of 18"** and had checked nothing (2026-09-23). The real answer was also zero, so the bug
@@ -259,7 +260,7 @@ beside the result.
 - 🔴 **`grep` here is ugrep: `grep -vxFf patterns big_file` with a large pattern set (8 MB ledger shard) fails with
   'exceeds complexity limits' on stderr and prints a count of 0,** which reads as 'all lines present'. For
   line-membership checks against a big file, use a Python set, never `grep -Ff`.
-- 🔴 **OOB counters here are cgroup ceilings, not RAM.** Before you blame the machine, read `memory.events` per slice.
+- 🔴 **OOM (out-of-memory kill) counters here are cgroup ceilings, not RAM.** Before you blame the machine, read `memory.events` per slice.
   118 MB kills of identical size are likely a selftest's planted cap. Also, `oom_attribution.py --since` (and any
   `journalctl -k --since X`) reads ONLY the current boot, because `-k` implies `-b`. A window that reaches an earlier
   boot silently returns the kernel kills of that boot as nothing: 10-30..11-01 read 0 kills, and 17 were there. Use
@@ -321,7 +322,8 @@ beside the result.
   cell reads as a pipe. A bleed well (`Building_LiquidDrill`, role None) reads as nothing. Count ports by def, not by
   `net:` role.
 - **Anchor the basename when counting harnesses.** A glob that ends in `validation.py` matched 132 files, but only
-  129 are mod harnesses (3 are `selftest_*_validation.py`, 2 more are hook files). Count exactly `/validation.py`.
+  129 are mod harnesses (3 are `selftest_*_validation.py`). 2 more are hook files in `.claude/hooks`, outside the 132.
+  Count exactly `/validation.py`.
 - **A deleter that acts on 'the search found nothing' must check the search's exit code, not just stdout.** For
   `grep`/`git grep`/`git check-ignore`: exit 0 = hits, 1 = none, anything else = the search did not run. Two deleters
   read a failed search as 'nothing here': `saves_prune.py` deleted cited saves, and `seat_sync.py` let `reset --keep`
@@ -466,8 +468,8 @@ beside the result.
   `--resume` gets a result whose `modelUsage` and `total_cost_usd` are the whole claude session so far.
   `detached_helper.finish` recorded that session total as the run's `tokens` and `cost_usd`. The total went into the
   record, the Conductor log's `DETACHED RUN ENDED` line, and the maturation books and stage ceiling built on them.
-  Measured 2026-11-19: 27 of 27 resumed runs since 2026-11-18 that follow an earlier run of their session. On
-  2026-11-18 (PST): 81,158,999 of 371,342,565 recorded weighted tokens
+  Measured 2026-11-19: 27 of 27 resumed runs since 2026-11-18 that follow an earlier run of their session recorded
+  too much. On 2026-11-18 (PST), the overcount was 81,158,999 of 371,342,565 recorded weighted tokens
   (`design/experiments/2026-11-19-night-hypotheses/tools/check_resumed_run_tokens.py`, which prints the corrected
   sum). Records since then carry their own part, and `session`, `session_tokens`, `session_cost_usd`. Old records are
   not rewritten. The result's `usage` block is this process only (not cumulative), but it leaves out subagents.
