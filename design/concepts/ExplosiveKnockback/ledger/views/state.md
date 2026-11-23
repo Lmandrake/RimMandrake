@@ -1,7 +1,7 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":344431,"DISPATCH":31364,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"HOLDER.run-1795441975":2951,"HOLDER.run-1795448832":5159,"HOLDER.run-1795461416":958,"HOLDER.run-1795464425":3294,"JUDGE.judge-1794890427":18837,"JUDGE.judge-1795437145":6544,"OWNER":1207} body_sha256=4ab46755dfe5955dba2052dd14262694331e241032d1e8284dde1e297f7d8d30 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":344431,"DISPATCH":32032,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"HOLDER.run-1795441975":2951,"HOLDER.run-1795448832":5159,"HOLDER.run-1795461416":958,"HOLDER.run-1795464425":3294,"JUDGE.judge-1794890427":18837,"JUDGE.judge-1795437145":6544,"OWNER":1207} body_sha256=c0669c8e36580ddc447cd8bff8a105b577b0b0243ea8f393c8b10657a9a86ecf -->
 # ExplosiveKnockback — mod ledger packet
-version 0.1.0 · stage in_game · 641 events in 16 shards · reducer 1
-holder lease run-1795464425, token 20, last active 2026-11-23T22:33:55Z
+version 0.1.0 · stage in_game · 643 events in 16 shards · reducer 1
+holder lease run-1795478277, token 21, last active 2026-11-23T23:59:46Z
 holder session be102562-666c-4dd3-a4d3-d88ad2e23f66, context 366182 of ceiling 400000
 
 ## Last checkpoint (HOLDER.run-1795464425, 2026-11-23T22:33:55Z)
@@ -238,6 +238,6 @@ spend recorded: USD 178.61, 171672717 tokens
 - tests: 106, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
 - claimed fixes in brief: 1 on one line (name and sha), their claim, test and fix by `show`
 - open findings in brief: the oldest 41 on one line, their fix and accept by `modledger.py show --mod ExplosiveKnockback <subject>`
-- the full history: 641 events (views/history.md; never read whole)
+- the full history: 643 events (views/history.md; never read whole)
 
-cursor: t=2026-11-23T22:36:52Z.1795473412575886083 (modledger.py since --mod ExplosiveKnockback t=2026-11-23T22:36:52Z.1795473412575886083 prints what changed after this packet)
+cursor: t=2026-11-23T23:59:47Z.1795478387902489126 (modledger.py since --mod ExplosiveKnockback t=2026-11-23T23:59:47Z.1795478387902489126 prints what changed after this packet)
