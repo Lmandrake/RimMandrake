@@ -491,7 +491,14 @@ def check_def(defname: str, el: ET.Element, corpus: dict, rep: Report, src: Path
     given_by = el.find("givenBy") is not None
     referenced = (defname in corpus.get("incident_refs", [])
                   or quest_referenced_by_incident(defname, src))
-    fires = (weight > 0 and selectable) or special or given_by or referenced
+    decree = fnum("decreeSelectionWeight") != 0
+    # QuestScriptDef.IsRootAny, the predicate of the game's own ConfigError.
+    root_any = (weight != 0 and selectable) or decree or special
+    # A giver picks by rootSelectionWeight; a decree is picked only with decreeTags.
+    routed = ((weight > 0 and (selectable or given_by))
+              or (fnum("decreeSelectionWeight") > 0 and el.find("decreeTags") is not None)
+              or referenced)
+    fires = routed or special
 
     # A def with no text and no way to be offered is a Util_* sub-script, not a
     # playable quest. Vanilla ships 30 of them; the quest-level checks below would
@@ -714,18 +721,24 @@ def check_def(defname: str, el: ET.Element, corpus: dict, rep: Report, src: Path
             "autoAccept together with expireDaysRange is a ConfigError - an "
             "auto-accepted quest has no offer to expire.")
     # --- will it ever fire? ----------------------------------------------
-    if fnum("defaultChallengeRating") > 0 and not fires:
+    if fnum("defaultChallengeRating") > 0 and not root_any:
         add(WARN, "config-challenge",
             "defaultChallengeRating > 0 on a def that is not a root quest (IsRootAny) is "
-            "a ConfigError. A Util_* sub-script must not carry a star rating.")
+            "a ConfigError. Set isRootSpecial on an incident-only quest or a quest-giver quest; a "
+            "Util_* sub-script must not carry a star rating.")
 
     if not fires and not fragment:
         add(WARN, "never-fires",
             "This def takes none of the firing routes: no rootSelectionWeight (+ "
-            "randomlySelectable, - isRootSpecial), no <givenBy>, and no IncidentDef "
+            "randomlySelectable or <givenBy>), no decreeSelectionWeight with decreeTags, no "
+            "isRootSpecial, and no IncidentDef "
             "beside it names it. It will load, appear in the def dump, and never occur. "
             "That is deliberate for a Util_* sub-script; otherwise pick a route - and "
             "give yourself a deterministic trigger rather than waiting on the storyteller.")
+    if special and not routed:
+        add(INFO, "special-only",
+            "isRootSpecial alone starts nothing: only C# code or an incident in another mod "
+            "can offer this quest.")
     if weight > 2.0:
         add(INFO, "weight-out-of-family",
             f"rootSelectionWeight {weight} is out of family - shipped values run 0.15-2.0. "

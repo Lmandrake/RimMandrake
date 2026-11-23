@@ -23,7 +23,7 @@ QuestScriptDef                     <- the def you author
 
 At runtime the emitted `QuestPart`s talk **only by signal string** — `inSignal` to react, `outSignal…` to announce. That is the whole coupling, which is why quest logic reads flat.
 
-🔴 **You never name a `QuestPart` in XML.** 249 `QuestPart_*` classes exist; grepping all 249 names against every XML file in the six modules returns **zero** matches. They are built only from C# in `QuestNode.RunInt()`. The XML surface is `QuestNode_*` via `Class="…"`. A mod needing a new QuestPart must ship a C# `QuestNode` to emit it.
+🔴 **You never name a `QuestPart` in XML.** 244 `QuestPart_*` classes exist (TypeDef table); grepping the 249 names of an older byte scan against every XML file in the six modules returned **zero** matches. They are built only from C# in `QuestNode.RunInt()`. The XML surface is `QuestNode_*` via `Class="…"`. A mod needing a new QuestPart must ship a C# `QuestNode` to emit it.
 
 Two root families: **XML-composed** (`root Class="QuestNode_Sequence"` with `<nodes>` — what you author) and **C#-composed** (`root Class="QuestNode_Root_WandererJoin_WalkIn"` and ~70 siblings, `$D\Core\Defs\QuestScriptDefs\Script_WandererJoins.xml:21`) where the tree is hardcoded and the def supplies only text and root flags. The latter is not extensible from XML.
 
@@ -98,7 +98,7 @@ Two root families: **XML-composed** (`root Class="QuestNode_Sequence"` with `<no
 | `QuestNode_QuestUnique` | Abort if a live quest already holds `tag` (optionally per `faction`). | `$D\Core\...\Script_EndGame_ShipEscape.xml:23` |
 | `QuestNode_FactionExists` / `WorkDisabled` / `ChildrenAllowed` / `HasRoyalTitleInCurrentFaction` | Situational gates. | `$D\Royalty\...\Scripts_Permits.xml:36` |
 | `QuestNode_Signal` | On `inSignal`, run `node` — every time it fires. `outSignals` re-broadcasts; `inSignalDisable` switches it off. | `$D\Core\...\Script_BanditCamp.xml:156` |
-| `QuestNode_SignalActivable` | Same, but starts **disabled**; `inSignalEnable`/`inSignalDisable` gate it to one phase. | `$D\Royalty\...\Script_ChangeRoyalHeir.xml:116` |
+| `QuestNode_SignalActivable` | Same, but starts **disabled**; `inSignalEnable`/`inSignalDisable` gate it to one phase. An omitted `inSignalEnable` means the ambient `inSignal` (at the top level: acceptance). | `$D\Royalty\...\Script_ChangeRoyalHeir.xml:116` |
 | `QuestNode_SendSignals` | Emit `outSignals` now (or formatted, `outSignalsFormat`). | `$D\Core\...\Scripts_Utility_ThreatsCore.xml:326` |
 | `QuestNode_Delay` | After `delayTicks`, run `node` and emit `outSignalComplete`. `inSignalEnable/Disable`, `reactivatable`, `isQuestTimeout`, `waitUntilPlayerHasHomeMap`, `expiryInfoPart`. | `$D\Core\...\Script_TradeRequest.xml:139` |
 | `QuestNode_AnySignal` / `AllSignals` | OR / AND over `inSignals`. | `$D\Odyssey\...\Script_Site.xml:182` |
@@ -229,7 +229,7 @@ Complete list, read from the assembly's `Field` metadata (43 XML-facing fields +
 | `randomlySelectable` | bool | Whether the random chooser may pick it at all. | `false` | 12 · `Script_AlphaThrumboSighting.xml:6` |
 | `givenBy` | `List<QuestGiverTag>` | Who hands it out. Enum: `Traders`, `OrbitalScanner`, `Reading`, `Beggars`. | `<li>Traders</li>` | 12 · `Script_AlphaThrumboSighting.xml:7` |
 | `minRefireDays` | float | Cooldown before this script may fire again. | `30`–`300` | 7 · `$D\Anomaly\...\Script_MysteriousCargo.xml:8` |
-| `isRootSpecial` | bool | Excluded from the ordinary random pool — fired by an incident or by code. | `true` | 48 · `Script_WandererJoins.xml:8` |
+| `isRootSpecial` | bool | Marks a def that is offered some other way (`IsRootAny`: the dev menu lists it, `defaultChallengeRating` is allowed). Does not itself exclude the def from the random pool; only `rootSelectionWeight` and `randomlySelectable` do. | `true` | 48 · `Script_WandererJoins.xml:8` |
 | `autoAccept` | bool | Skip the accept step; quest starts active. | `true` | 56 · `Script_ItemStash.xml:7` |
 | `expireDaysRange` | `FloatRange` | How long the *offer* stays open. | `2`, `4~8`, `20~30`, `0.4~0.6` | 32 · `Script_BanditCamp.xml:9` |
 | `defaultChallengeRating` | int | Star rating shown to the player. | `1`, `3`, `4` | 22 · `Script_TradeRequest.xml:8` |
@@ -265,7 +265,7 @@ Complete list, read from the assembly's `Field` metadata (43 XML-facing fields +
 - **Dynamic var names**: `$raid(($raidLoopCounter))/raidDelayTicks` (`$D\Core\...\Scripts_Utility_ThreatsCore.xml:294`) — the inner `(( ))` substitutes first, giving `raid0/raidDelayTicks`, `raid1/…`.
 - **`prefix` on `QuestNode_SubScript`** namespaces everything the callee writes, so one sub-script can loop without collisions (`Scripts_Utility_ThreatsCore.xml:307`, `<prefix>raid$raidLoopCounter</prefix>`). `allowNonPrefixedLookup` lets it still *read* outer vars.
 - **Conventional names other nodes silently expect**: `map`, `asker`, `rewardValue`, `points`, `enemyFaction`, `site`, `siteTile`, `siteFaction`, `sitePartsParams`, `walkInSpot`, `customLetterLabel`/`customLetterText`(`Rules`). Convention only — grep the consumer first.
-- **1 day = 60000 ticks.** Every `delayTicks` in the corpus is a multiple of it.
+- **1 day = 60000 ticks.** Short delays in the corpus are plain ticks (300, 600, 1200, 1800, 3500, 7500), so not every `delayTicks` is whole days.
 
 ---
 
@@ -330,7 +330,7 @@ Those a shipped def listens for, by frequency: `.MapGenerated` 20 (`$D\Core\...\
 
 🔴 **`.Killed` has no XML precedent — vanilla uses `.Destroyed` for "the quest pawn died"** (`Script_ChangeRoyalHeir.xml:117`, `titleHolder.Destroyed`). About 40 of the 75 suffixes are wired only from C# roots and appear in no shipped def (`.Killed .Hacked .Studied .Activated .Spawned .Unfogged .CoreDefeated .TookDamage .Inspected .Released .Rescued .Banished .AllPawnsLost` and others). Valid, but nothing to copy.
 
-🔴 **There is no `Quest.Accepted` or `Quest.Ended` signal in XML.** Acceptance is expressed structurally: `<signalListenMode>` scopes a listener to `NotYetAcceptedOnly`, `OngoingOnly`, `OngoingOrNotYetAccepted` or `Always` (`$D\Royalty\...\Hospitality\Script_EndGame_RoyalAscent.xml:46,51,213,258`). `QuestTargetSignalPart_QuestEnded` exists for a parent quest watching a subquest; no vanilla def uses it.
+🔴 **There is no `Quest.Accepted` or `Quest.Ended` signal in XML.** Acceptance is expressed structurally: `<signalListenMode>` scopes a listener to `NotYetAcceptedOnly`, `OngoingOnly`, `OngoingOrNotYetAccepted`, `Always` or `HistoricalOnly` (no XML uses the last) (`$D\Royalty\...\Hospitality\Script_EndGame_RoyalAscent.xml:46,51,213,258`). `QuestTargetSignalPart_QuestEnded` exists for a parent quest watching a subquest; no vanilla def uses it.
 
 **Custom signals** — any bare PascalCase name you emit and listen for, so it can never collide with an object signal: `PeaceTalksTimeout` (`Script_PeaceTalks.xml:82,86,90`), `ColonistsReturned`/`ColonistsDied` (`Script_PawnLend.xml:257-258,278,294`), `AllRaidsSent` (`Scripts_Utility_ThreatsCore.xml:327`), `TradeRequestTimeout` (`Script_TradeRequest.xml:142,152`), `Incompletable` (`$D\Royalty\...\Decree\Scripts_Decree.xml:226` sends, `…\Scripts_Decree_Utility.xml:44` listens).
 
@@ -349,7 +349,7 @@ Those a shipped def listens for, by frequency: `.MapGenerated` 20 (`$D\Core\...\
 | `Unknown` | 2 | Ends with no verdict and no reputation/history consequence — dissolved through no player fault (`Script_ChangeRoyalHeir.xml:126,143`). |
 | `InvalidPreAcceptance` | 2 | Became impossible *before* acceptance; disappears silently rather than counting as failure. Always paired with `signalListenMode NotYetAcceptedOnly` (`Script_EndGame_RoyalAscent.xml:96-97`). |
 
-Omitting `<outcome>` is legal and common (`<node Class="QuestNode_End" />`, `$D\Core\...\Script_DownedRefugee.xml:191`); the default *appears* to be `Unknown`, inferred from context, not read from IL. Field usage across 148 `QuestNode_End` occurrences: `outcome` 121 · `goodwillChangeAmount`/`FactionOf`/`Reason` 32 each · `sendStandardLetter` 20 · `inSignal` 18 · `signalListenMode` 6. A fail carrying a reputation cost: `Script_Hospitality_Worker.xml:1208-1213`.
+Omitting `<outcome>` is legal and common (`<node Class="QuestNode_End" />`, `$D\Core\...\Script_DownedRefugee.xml:191`); the default is `Unknown` (enum value 0, `QuestEndOutcome.cs`). Field usage across 148 `QuestNode_End` occurrences: `outcome` 121 · `goodwillChangeAmount`/`FactionOf`/`Reason` 32 each · `sendStandardLetter` 20 · `inSignal` 18 · `signalListenMode` 6. A fail carrying a reputation cost: `Script_Hospitality_Worker.xml:1208-1213`.
 
 **Success vs failure is structural, not computed.** No evaluation step: place one `QuestNode_End` per terminal branch, hard-code its outcome, and whichever signal arrives first wins. Note the two-listener idiom at `Script_BanditCamp.xml:171-201` — `QuestNode_GiveRewards` on `site.AllEnemiesDefeated` and a *separate sibling* `QuestNode_End` on the same signal, so rewards resolve before the quest closes. `sendStandardLetter true` produces the built-in "Quest completed/failed" letter — omit it when you send your own (`Script_BanditCamp.xml:144-150` sends a custom letter *then* ends).
 
@@ -357,7 +357,7 @@ Omitting `<outcome>` is legal and common (`<node Class="QuestNode_End" />`, `$D\
 
 ## 10. How a quest gets offered
 
-1. **Natural random pool** — `rootSelectionWeight > 0`, `randomlySelectable` not false, `isRootSpecial` not true, `rootMin*` gates passed. Drawn via `IncidentDef GiveQuest_Random` (`$D\Core\Defs\Storyteller\Incidents_World_Quests.xml:15-20`).
+1. **Natural random pool** — `rootSelectionWeight > 0`, `randomlySelectable` not false, `rootMin*` gates passed. Drawn via `IncidentDef GiveQuest_Random` (`$D\Core\Defs\Storyteller\Incidents_World_Quests.xml:15-20`).
 2. **A named incident** — `IncidentDef` with `<workerClass>IncidentWorker_GiveQuest</workerClass>` and `<questScriptDef>YourDefName</questScriptDef>` (`…\Incidents_World_Quests.xml:22-28`). This is how `isRootSpecial` quests fire.
 3. **A quest giver** — `givenBy` (`Traders`/`OrbitalScanner`/`Reading`/`Beggars`) plus `randomlySelectable false` (`$D\Odyssey\Defs\QuestScriptDefs\Script_AlphaThrumboSighting.xml:6-11`). Odyssey only.
 
@@ -370,6 +370,6 @@ Omitting `<outcome>` is legal and common (`<node Class="QuestNode_End" />`, `$D\
 - **`nameMustBeUnique`, `neverPossibleInSpace`, root-level `layerWhitelist`/`layerBlacklist`** exist but are set by no shipped def — behaviour unverified.
 - **`QuestNode_TextRules`** (fields `rules`, `target`; enum `TextRulesTarget` = `Description`, `Name`, `DecriptionAndName` — Ludeon's typo, shipped), **`ResolveQuestName`, `ResolveQuestDescription`, `ResolveTextRequests`, `AnySignalActivable`, `AllSignalsActivable`, `CannotRun`, `ModIsActive`** exist but no shipped def uses them; XML shape untested.
 - **Whether `include` inside a quest's inline `RulePack` supports `ParentName` inheritance** the way `RulePackDef` does — no vanilla example to check.
-- **`QuestEndOutcome` integer ordering** unread; the omitted-`outcome` default is inferred.
-- **The `QuestPart_*` list is deliberately not reproduced** (249 types) — irrelevant to an XML author, see §1. The roster itself comes from the TypeDef table, not a byte scan — `python3 -c "import sys;sys.path.insert(0,'src/RimMandrake/Utils/ilprobe');import meta_core as m;print(len({t[0] for t in m.typedefs if t[0].startswith('QuestPart_')}))"` reads **244** distinct names. ⛔ The old route was `strings -a <…>/Assembly-CSharp.dll | grep QuestParts`; a byte scan of a `.dll` is refused by the blind-scan hook once the path is spelled out, and the grouping it produced — `Misc\` 88, `Control\Filter\` 31, `Control\Misc\` 21, `Control\Basic\` 18 (holds `QuestPart_QuestEnd`), `Lords\` 14, `Reward\` 11, `Threat\` 6 — is source paths seen by one scan of one string heap, so treat every figure there as a LOWER BOUND.
+- **`QuestEndOutcome` integer ordering**: `Unknown` 0, `Success` 1, `Fail` 2, `InvalidPreAcceptance` 3 (read 2026-11-23).
+- **The `QuestPart_*` list is deliberately not reproduced** (244 types) — irrelevant to an XML author, see §1. The roster itself comes from the TypeDef table, not a byte scan — `python3 -c "import sys;sys.path.insert(0,'src/RimMandrake/Utils/ilprobe');import meta_core as m;print(len({t[0] for t in m.typedefs if t[0].startswith('QuestPart_')}))"` reads **244** distinct names. ⛔ The old route was `strings -a <…>/Assembly-CSharp.dll | grep QuestParts`; a byte scan of a `.dll` is refused by the blind-scan hook once the path is spelled out, and the grouping it produced — `Misc\` 88, `Control\Filter\` 31, `Control\Misc\` 21, `Control\Basic\` 18 (holds `QuestPart_QuestEnd`), `Lords\` 14, `Reward\` 11, `Threat\` 6 — is source paths seen by one scan of one string heap, so treat every figure there as a LOWER BOUND.
 - **The §5 minimum viable quest has not been run in-game.**

@@ -39,9 +39,8 @@
 
   TWO DECISIONS WORTH KNOWING:
   * The survivor is generated with NO faction. A faction-appropriate lodger needs
-    QuestNode_GetRandomPawnKindForFaction, and both vanilla uses of that node supply
-    an Empire-specific <choices> block - whether <choices> is optional is not
-    established, and guessing it costs a game load. A factionless survivor also says
+    QuestNode_GetRandomPawnKindForFaction, and that node throws without a <choices>
+    block, and drops the quest when no entry matches and there is no <fallback>. A factionless survivor also says
     the thing the quest is about: nobody is coming to protect them but the deadline.
   * There is no delayed retaliation raid. A QuestPart scheduled after QuestNode_End
     never runs - the quest is cleaned up. The delayed consequence is the goodwill
